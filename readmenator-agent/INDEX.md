@@ -204,7 +204,7 @@
 | `progs/doomgeneric/i_joystick.c` | Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redi | doomgeneric | 10 |
 | `progs/doomgeneric/i_joystick.h` | Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redi | doomgeneric | 18 |
 | `progs/doomgeneric/i_main.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 4 |
-| `progs/doomgeneric/i_minios_sound.c` | - | doomgeneric | 40 |
+| `progs/doomgeneric/i_minios_sound.c` | - | doomgeneric | 54 |
 | `progs/doomgeneric/i_scale.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 39 |
 | `progs/doomgeneric/i_scale.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 18 |
 | `progs/doomgeneric/i_sound.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 34 |
@@ -354,8 +354,9 @@
 | `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 65 |
 | `progs/pokemon/fetch.sh` | fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstre | pokemon | 0 |
 | `progs/pokemon/minios_stubs/SDL.h` | SDL.h stub for MiniOS cross-compilation | misc | 10 |
-| `progs/pokemon/platform_minios.c` | - | pokemon | 105 |
-| `progs/quake2generic/q2generic_minios.c` | q2generic_minios.c - MiniOS platform layer for quake2generic. | misc | 30 |
+| `progs/pokemon/platform_minios.c` | - | pokemon | 107 |
+| `progs/quake2generic/q2generic_minios.c` | q2generic_minios.c - MiniOS platform layer for quake2generic. | quake2generic | 32 |
+| `progs/quake2generic/snddma_minios.c` | snddma_minios.c - Quake 2 DMA sound backend over the MiniOS pcm2 path. | quake2generic | 16 |
 | `progs/src/aes.c` | aes.c - command path AES-256-CTR encryption tools: aes and unaes. | src | 54 |
 | `progs/src/audio.c` | - | src | 17 |
 | `progs/src/cp.c` | - | src | 8 |

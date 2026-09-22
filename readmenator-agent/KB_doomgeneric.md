@@ -909,34 +909,34 @@ AM_drawThings
 - Doc: doomgeneric_minios.c - MiniOS platform layer for doomgeneric.
 - Language: c
 - Symbols:
-  - `color` (struct, line 79)
-  - `mini_parse_autoframes` (function, line 23) `static void mini_parse_autoframes(int argc, char **argv)`
-  - `sys_time_ms` (function, line 37) `static long sys_time_ms(void)`
-  - `sys_kbd` (function, line 42) `static long sys_kbd(void)`
-  - `sys_palette` (function, line 47) `static long sys_palette(const unsigned char *pal)`
-  - `sys_kbd_raw` (function, line 52) `static long sys_kbd_raw(int on)`
-  - `sys_vga_mode` (function, line 57) `static long sys_vga_mode(int on)`
-  - `sys_doom_frame` (function, line 62) `static long sys_doom_frame(void)`
-  - `load_vga_palette` (function, line 86) `static void load_vga_palette(void)`
-  - `scancode_to_doom` (function, line 99) `static unsigned char scancode_to_doom(unsigned char raw)`
-  - `kbd_enqueue` (function, line 158) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
-  - `kbd_poll` (function, line 165) `static void kbd_poll(void)`
-  - `DG_Init` (function, line 208) `void DG_Init(void)`
-  - `DG_DrawFrame` (function, line 216) `void DG_DrawFrame(void)`
-  - `DG_SleepMs` (function, line 246) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 252) `uint32_t DG_GetTicksMs(void)`
-  - `DG_GetKey` (function, line 256) `int DG_GetKey(int *pressed, unsigned char *key)`
-  - `DG_SetWindowTitle` (function, line 267) `void DG_SetWindowTitle(const char *title)`
+  - `color` (struct, line 80)
+  - `mini_parse_autoframes` (function, line 24) `static void mini_parse_autoframes(int argc, char **argv)`
+  - `sys_time_ms` (function, line 38) `static long sys_time_ms(void)`
+  - `sys_kbd` (function, line 43) `static long sys_kbd(void)`
+  - `sys_palette` (function, line 48) `static long sys_palette(const unsigned char *pal)`
+  - `sys_kbd_raw` (function, line 53) `static long sys_kbd_raw(int on)`
+  - `sys_vga_mode` (function, line 58) `static long sys_vga_mode(int on)`
+  - `sys_doom_frame` (function, line 63) `static long sys_doom_frame(void)`
+  - `load_vga_palette` (function, line 87) `static void load_vga_palette(void)`
+  - `scancode_to_doom` (function, line 100) `static unsigned char scancode_to_doom(unsigned char raw)`
+  - `kbd_enqueue` (function, line 159) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
+  - `kbd_poll` (function, line 166) `static void kbd_poll(void)`
+  - `DG_Init` (function, line 209) `void DG_Init(void)`
+  - `DG_DrawFrame` (function, line 217) `void DG_DrawFrame(void)`
+  - `DG_SleepMs` (function, line 248) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 254) `uint32_t DG_GetTicksMs(void)`
+  - `DG_GetKey` (function, line 258) `int DG_GetKey(int *pressed, unsigned char *key)`
+  - `DG_SetWindowTitle` (function, line 269) `void DG_SetWindowTitle(const char *title)`
   - `MINIOS_DOOM_BACKBUF_ADDR` (function, line 4) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
-  - `colors` (variable, line 80) `extern struct color colors[256];`
-  - `I_VideoBuffer` (variable, line 206) `extern unsigned char *I_VideoBuffer;`
-  - `myargc` (variable, line 209) `extern int myargc;`
-  - `myargv` (variable, line 210) `extern char **myargv;`
-  - `FB_ADDR` (macro, line 72) `#define FB_ADDR`
-  - `FB_WIDTH` (macro, line 73) `#define FB_WIDTH`
-  - `FB_HEIGHT` (macro, line 74) `#define FB_HEIGHT`
-  - `KBD_QUEUE_SIZE` (macro, line 154) `#define KBD_QUEUE_SIZE`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+  - `colors` (variable, line 81) `extern struct color colors[256];`
+  - `I_VideoBuffer` (variable, line 207) `extern unsigned char *I_VideoBuffer;`
+  - `myargc` (variable, line 210) `extern int myargc;`
+  - `myargv` (variable, line 211) `extern char **myargv;`
+  - `FB_ADDR` (macro, line 73) `#define FB_ADDR`
+  - `FB_WIDTH` (macro, line 74) `#define FB_WIDTH`
+  - `FB_HEIGHT` (macro, line 75) `#define FB_HEIGHT`
+  - `KBD_QUEUE_SIZE` (macro, line 155) `#define KBD_QUEUE_SIZE`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/doomgeneric_sdl.c
 - Layer: utility
@@ -1750,45 +1750,59 @@ HUlib_keyInIText
 - Language: c
 - Symbols:
   - `pcspk_channel_t` (struct, line 17)
-  - `mus_player_t` (struct, line 84)
-  - `sys_tone` (function, line 32) `static long sys_tone(unsigned f)`
+  - `mus_player_t` (struct, line 146)
+  - `sys_tone_hw` (function, line 32) `static long sys_tone_hw(unsigned f)`
   - `sys_time` (function, line 35) `static long sys_time(void)`
-  - `mus_read_varlen` (function, line 101) `static int mus_read_varlen(mus_player_t *m, unsigned long *out)`
-  - `mus_next_block` (function, line 115) `static int mus_next_block(mus_player_t *m, unsigned long *out)`
-  - `mus_note_cmp` (function, line 154) `static int mus_note_cmp(const void *a, const void *b)`
-  - `mus_build_chord` (function, line 162) `static void mus_build_chord(mus_player_t *m)`
-  - `mus_hold_tone` (function, line 185) `static void mus_hold_tone(unsigned freq, unsigned long ms)`
-  - `mus_play_chord` (function, line 196) `static void mus_play_chord(mus_player_t *m)`
-  - `mus_advance` (function, line 210) `static void mus_advance(mus_player_t *m, unsigned long ms)`
-  - `MUS_Init` (function, line 231) `static boolean MUS_Init(void)`
-  - `MUS_Shutdown` (function, line 236) `static void MUS_Shutdown(void)`
-  - `MUS_SetMusicVolume` (function, line 241) `static void MUS_SetMusicVolume(int volume)`
-  - `MUS_Pause` (function, line 243) `static void MUS_Pause(void)`
-  - `MUS_Resume` (function, line 244) `static void MUS_Resume(void)`
-  - `MUS_RegisterSong` (function, line 246) `static void *MUS_RegisterSong(void *data, int len)`
-  - `MUS_UnRegisterSong` (function, line 261) `static void MUS_UnRegisterSong(void *handle)`
-  - `MUS_PlaySong` (function, line 267) `static void MUS_PlaySong(void *handle, boolean looping)`
-  - `MUS_StopSong` (function, line 280) `static void MUS_StopSong(void)`
-  - `MUS_MusicIsPlaying` (function, line 285) `static boolean MUS_MusicIsPlaying(void)`
-  - `MUS_Poll` (function, line 289) `static void MUS_Poll(void)`
-  - `PCSPK_Init` (function, line 318) `static boolean PCSPK_Init(boolean use_sfx_prefix)`
-  - `PCSPK_Shutdown` (function, line 325) `static void PCSPK_Shutdown(void)`
-  - `PCSPK_GetSfxLumpNum` (function, line 330) `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
-  - `free_channel` (function, line 341) `static void free_channel(int i)`
-  - `PCSPK_Update` (function, line 350) `static void PCSPK_Update(void)`
-  - `PCSPK_UpdateSoundParams` (function, line 382) `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
-  - `PCSPK_StartSound` (function, line 386) `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
-  - `PCSPK_StopSound` (function, line 436) `static void PCSPK_StopSound(int channel)`
-  - `PCSPK_SoundIsPlaying` (function, line 442) `static boolean PCSPK_SoundIsPlaying(int channel)`
-  - `PCSPK_CacheSounds` (function, line 448) `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
+  - `sys_pcm2_open` (function, line 38) `static long sys_pcm2_open(long flags)`
+  - `sys_pcm2_write` (function, line 41) `static long sys_pcm2_write(const void *buf, long len)`
+  - `sys_pcm2_close` (function, line 44) `static void sys_pcm2_close(void)`
+  - `audio_ensure` (function, line 68) `static void audio_ensure(void)`
+  - `audio_pump` (function, line 77) `static void audio_pump(void)`
+  - `audio_tone` (function, line 85) `static void audio_tone(unsigned freq)`
+  - `audio_close` (function, line 92) `static void audio_close(void)`
+  - `mus_read_varlen` (function, line 169) `static int mus_read_varlen(mus_player_t *m, unsigned long *out)`
+  - `mus_next_block` (function, line 183) `static int mus_next_block(mus_player_t *m, unsigned long *out)`
+  - `mus_note_cmp` (function, line 228) `static int mus_note_cmp(const void *a, const void *b)`
+  - `mus_build_chord` (function, line 236) `static void mus_build_chord(mus_player_t *m)`
+  - `mus_hold_tone` (function, line 261) `static void mus_hold_tone(unsigned freq, unsigned long ms)`
+  - `mus_play_chord` (function, line 274) `static void mus_play_chord(mus_player_t *m)`
+  - `mus_advance` (function, line 288) `static void mus_advance(mus_player_t *m, unsigned long ms)`
+  - `mus_render_pcm` (function, line 320) `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)`
+  - `mus_render_push` (function, line 359) `static void mus_render_push(mus_player_t *m, unsigned n)`
+  - `mus_advance_pcm` (function, line 369) `static void mus_advance_pcm(mus_player_t *m)`
+  - `MUS_Init` (function, line 410) `static boolean MUS_Init(void)`
+  - `MUS_Shutdown` (function, line 415) `static void MUS_Shutdown(void)`
+  - `MUS_SetMusicVolume` (function, line 422) `static void MUS_SetMusicVolume(int volume)`
+  - `MUS_Pause` (function, line 424) `static void MUS_Pause(void)`
+  - `MUS_Resume` (function, line 425) `static void MUS_Resume(void)`
+  - `MUS_RegisterSong` (function, line 427) `static void *MUS_RegisterSong(void *data, int len)`
+  - `MUS_UnRegisterSong` (function, line 442) `static void MUS_UnRegisterSong(void *handle)`
+  - `MUS_PlaySong` (function, line 448) `static void MUS_PlaySong(void *handle, boolean looping)`
+  - `MUS_StopSong` (function, line 469) `static void MUS_StopSong(void)`
+  - `MUS_MusicIsPlaying` (function, line 474) `static boolean MUS_MusicIsPlaying(void)`
+  - `MUS_Poll` (function, line 478) `static void MUS_Poll(void)`
+  - `PCSPK_Init` (function, line 512) `static boolean PCSPK_Init(boolean use_sfx_prefix)`
+  - `PCSPK_Shutdown` (function, line 519) `static void PCSPK_Shutdown(void)`
+  - `PCSPK_GetSfxLumpNum` (function, line 529) `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
+  - `free_channel` (function, line 540) `static void free_channel(int i)`
+  - `PCSPK_Update` (function, line 549) `static void PCSPK_Update(void)`
+  - `PCSPK_UpdateSoundParams` (function, line 587) `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
+  - `PCSPK_StartSound` (function, line 591) `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
+  - `PCSPK_StopSound` (function, line 641) `static void PCSPK_StopSound(int channel)`
+  - `PCSPK_SoundIsPlaying` (function, line 647) `static boolean PCSPK_SoundIsPlaying(int channel)`
+  - `PCSPK_CacheSounds` (function, line 653) `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
+  - `muted` (function, line 51) `* pcm2 while sfx stay muted (effect tones ruined the melody);`
   - `PCSPK_CHANNELS` (macro, line 12) `#define PCSPK_CHANNELS`
   - `PCSPK_TICK_MS` (macro, line 13) `#define PCSPK_TICK_MS`
-  - `MUS_TICKS_PER_SEC` (macro, line 58) `#define MUS_TICKS_PER_SEC`
-  - `MUS_PERCUSSION_CHAN` (macro, line 59) `#define MUS_PERCUSSION_CHAN`
-  - `MUS_ARP_SLOT_MS` (macro, line 60) `#define MUS_ARP_SLOT_MS`
-  - `MUS_BASS_HOLD_MS` (macro, line 61) `#define MUS_BASS_HOLD_MS`
-  - `MUS_BASS_LINE_MIDI` (macro, line 62) `#define MUS_BASS_LINE_MIDI`
-  - `MUS_ARP_MAX` (macro, line 63) `#define MUS_ARP_MAX`
+  - `DOOM_PCM_RATE` (macro, line 55) `#define DOOM_PCM_RATE`
+  - `DOOM_PCM_VOL` (macro, line 56) `#define DOOM_PCM_VOL`
+  - `MUS_TICKS_PER_SEC` (macro, line 118) `#define MUS_TICKS_PER_SEC`
+  - `MUS_PERCUSSION_CHAN` (macro, line 119) `#define MUS_PERCUSSION_CHAN`
+  - `MUS_ARP_SLOT_MS` (macro, line 120) `#define MUS_ARP_SLOT_MS`
+  - `MUS_BASS_HOLD_MS` (macro, line 121) `#define MUS_BASS_HOLD_MS`
+  - `MUS_BASS_LINE_MIDI` (macro, line 122) `#define MUS_BASS_LINE_MIDI`
+  - `MUS_ARP_MAX` (macro, line 123) `#define MUS_ARP_MAX`
+  - `DOOM_PCM_DRUM_SMP` (macro, line 125) `#define DOOM_PCM_DRUM_SMP`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/i_scale.c
@@ -4557,7 +4571,7 @@ R_DrawVisSprite
   - `snd_channels` (variable, line 86) `extern int snd_channels;`
   - `__S_SOUND__` (macro, line 21) `#define __S_SOUND__`
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/sha1.c
 - Layer: utility

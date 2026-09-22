@@ -660,77 +660,77 @@
 ## drivers/pcm2.c
 
 ### pcm2_dma (function) `static unsigned char *pcm2_dma(void)`
-- Defined: `drivers/pcm2.c:77`
+- Defined: `drivers/pcm2.c:79`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_wait_write (function) `static int pcm2_wait_write(void)`
-- Defined: `drivers/pcm2.c:81`
+- Defined: `drivers/pcm2.c:83`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_cmd (function) `static void pcm2_cmd(unsigned char c)`
-- Defined: `drivers/pcm2.c:88`
+- Defined: `drivers/pcm2.c:90`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_dma_program (function) `static void pcm2_dma_program(void)`
-- Defined: `drivers/pcm2.c:93`
+- Defined: `drivers/pcm2.c:95`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_dma_stop (function) `static void pcm2_dma_stop(void)`
-- Defined: `drivers/pcm2.c:106`
+- Defined: `drivers/pcm2.c:108`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_dsp_play (function) `static void pcm2_dsp_play(void)`
-- Defined: `drivers/pcm2.c:110`
+- Defined: `drivers/pcm2.c:112`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_wake_owner (function) `static void pcm2_wake_owner(void)`
-- Defined: `drivers/pcm2.c:120`
+- Defined: `drivers/pcm2.c:122`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_arm_block (function) `static void pcm2_arm_block(void)`
-- Defined: `drivers/pcm2.c:133`
+- Defined: `drivers/pcm2.c:135`
 - Doc: Fill the DMA block from the ring (silence on underrun) and arm one single-cycle transfer. Runs under pcm2_lock, so a sin
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### loop (function) `* loop (the auto-init livelock is structurally impossible here). The IRQ
  * path rejects a stray ...`
-- Defined: `drivers/pcm2.c:148`
+- Defined: `drivers/pcm2.c:150`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_active (function) `int pcm2_active(void)`
-- Defined: `drivers/pcm2.c:177`
+- Defined: `drivers/pcm2.c:179`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_open (function) `int pcm2_open(unsigned flags, int owner)`
-- Defined: `drivers/pcm2.c:181`
+- Defined: `drivers/pcm2.c:183`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_owner_live (function) `static int pcm2_owner_live(void)`
-- Defined: `drivers/pcm2.c:212`
+- Defined: `drivers/pcm2.c:221`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_release_locked (function) `static void pcm2_release_locked(void)`
-- Defined: `drivers/pcm2.c:217`
-- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
-
-### pcm2_write (function) `int pcm2_write(const unsigned char *user, unsigned len, int owner)`
 - Defined: `drivers/pcm2.c:226`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
+### pcm2_write (function) `int pcm2_write(const unsigned char *user, unsigned len, int owner)`
+- Defined: `drivers/pcm2.c:235`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
+
 ### pcm2_close (function) `void pcm2_close(int owner)`
-- Defined: `drivers/pcm2.c:273`
+- Defined: `drivers/pcm2.c:282`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_irq (function) `void pcm2_irq(void)`
-- Defined: `drivers/pcm2.c:284`
+- Defined: `drivers/pcm2.c:293`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_poll (function) `void pcm2_poll(void)`
-- Defined: `drivers/pcm2.c:297`
+- Defined: `drivers/pcm2.c:306`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ### pcm2_counters (function) `void pcm2_counters(pcm2_counters_t *out)`
-- Defined: `drivers/pcm2.c:309`
+- Defined: `drivers/pcm2.c:318`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
 ## drivers/pcspk.c
@@ -3432,31 +3432,31 @@ static int zip_sanitize_name(con...`
 ## headers/pcm2.h
 
 ### pcm2_active (function) `int pcm2_active(void);`
-- Defined: `headers/pcm2.h:76`
-- Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
-
-### pcm2_open (function) `int pcm2_open(unsigned flags, int owner);`
 - Defined: `headers/pcm2.h:77`
 - Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
-### pcm2_write (function) `int pcm2_write(const unsigned char *user, unsigned len, int owner);`
+### pcm2_open (function) `int pcm2_open(unsigned flags, int owner);`
 - Defined: `headers/pcm2.h:78`
 - Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
-### pcm2_close (function) `void pcm2_close(int owner);`
+### pcm2_write (function) `int pcm2_write(const unsigned char *user, unsigned len, int owner);`
 - Defined: `headers/pcm2.h:79`
 - Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
-### pcm2_irq (function) `void pcm2_irq(void);`
+### pcm2_close (function) `void pcm2_close(int owner);`
 - Defined: `headers/pcm2.h:80`
 - Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
-### pcm2_poll (function) `void pcm2_poll(void);`
+### pcm2_irq (function) `void pcm2_irq(void);`
 - Defined: `headers/pcm2.h:81`
 - Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
-### pcm2_counters (function) `void pcm2_counters(pcm2_counters_t *out);`
+### pcm2_poll (function) `void pcm2_poll(void);`
 - Defined: `headers/pcm2.h:82`
+- Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
+
+### pcm2_counters (function) `void pcm2_counters(pcm2_counters_t *out);`
+- Defined: `headers/pcm2.h:83`
 - Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## headers/pcm_ring.h
@@ -6851,67 +6851,67 @@ static void shell_cmd_trac...`
 ### kstrlen (function) `unsigned long kstrlen(const char *s)`
 - Defined: `kernel/string.c:17`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kstrcpy (function) `char *kstrcpy(char *dst, const char *src)`
 - Defined: `kernel/string.c:23`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kstrncpy (function) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:29`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kstrncat (function) `char *kstrncat(char *dst, const char *src, unsigned long n)`
 - Defined: `kernel/string.c:35`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kstrcmp (function) `int kstrcmp(const char *a, const char *b)`
 - Defined: `kernel/string.c:43`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kstrncmp (function) `int kstrncmp(const char *a, const char *b, unsigned long n)`
 - Defined: `kernel/string.c:48`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kstrchr (function) `char *kstrchr(const char *s, int c)`
 - Defined: `kernel/string.c:53`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kstrstr (function) `char *kstrstr(const char *hay, const char *ndl)`
 - Defined: `kernel/string.c:58`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kmemcpy (function) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:68`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kmemset (function) `void *kmemset(void *dst, int c, unsigned long n)`
 - Defined: `kernel/string.c:75`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kmemcmp (function) `int kmemcmp(const void *a, const void *b, unsigned long n)`
 - Defined: `kernel/string.c:81`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### kmemmove (function) `void *kmemmove(void *dst, const void *src, unsigned long n)`
 - Defined: `kernel/string.c:87`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ### katol (function) `long katol(const char *s)`
 - Defined: `kernel/string.c:95`
 - Depends on: `headers/kernel.h`
-- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
+- Imported by: `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/test_driver.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcm.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tls_test.c`
 
 ## kernel/symtab.c
 
@@ -11434,76 +11434,76 @@ AM_drawThings
 ## progs/doomgeneric/doomgeneric_minios.c
 
 ### mini_parse_autoframes (function) `static void mini_parse_autoframes(int argc, char **argv)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:23`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:24`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### sys_time_ms (function) `static long sys_time_ms(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:37`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:38`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### sys_kbd (function) `static long sys_kbd(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:42`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:43`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### sys_palette (function) `static long sys_palette(const unsigned char *pal)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:47`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:48`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### sys_kbd_raw (function) `static long sys_kbd_raw(int on)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:52`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:53`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### sys_vga_mode (function) `static long sys_vga_mode(int on)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:57`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:58`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### sys_doom_frame (function) `static long sys_doom_frame(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:62`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:63`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### load_vga_palette (function) `static void load_vga_palette(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:86`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:87`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### scancode_to_doom (function) `static unsigned char scancode_to_doom(unsigned char raw)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:99`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:100`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### kbd_enqueue (function) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:158`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:159`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### kbd_poll (function) `static void kbd_poll(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:165`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:166`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### DG_Init (function) `void DG_Init(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:208`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:209`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### DG_DrawFrame (function) `void DG_DrawFrame(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:216`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:217`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### DG_SleepMs (function) `void DG_SleepMs(uint32_t ms)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:246`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:248`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### DG_GetTicksMs (function) `uint32_t DG_GetTicksMs(void)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:252`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:254`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### DG_GetKey (function) `int DG_GetKey(int *pressed, unsigned char *key)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:256`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:258`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### DG_SetWindowTitle (function) `void DG_SetWindowTitle(const char *title)`
-- Defined: `progs/doomgeneric/doomgeneric_minios.c:267`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Defined: `progs/doomgeneric/doomgeneric_minios.c:269`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ### MINIOS_DOOM_BACKBUF_ADDR (function) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
 - Defined: `progs/doomgeneric/doomgeneric_minios.c:4`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/minios_abi.h`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/doomgeneric_sdl.c
 
@@ -12710,7 +12710,7 @@ HUlib_keyInIText
 
 ## progs/doomgeneric/i_minios_sound.c
 
-### sys_tone (function) `static long sys_tone(unsigned f)`
+### sys_tone_hw (function) `static long sys_tone_hw(unsigned f)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:32`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
@@ -12718,120 +12718,166 @@ HUlib_keyInIText
 - Defined: `progs/doomgeneric/i_minios_sound.c:35`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
+### sys_pcm2_open (function) `static long sys_pcm2_open(long flags)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:38`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### sys_pcm2_write (function) `static long sys_pcm2_write(const void *buf, long len)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:41`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### sys_pcm2_close (function) `static void sys_pcm2_close(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:44`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### audio_ensure (function) `static void audio_ensure(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:68`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### audio_pump (function) `static void audio_pump(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:77`
+- Doc: SFX are muted on pcm2 (music only): effect tones ruined the melody, so audio_pump below only advances the shared clock a
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### audio_tone (function) `static void audio_tone(unsigned freq)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:85`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### audio_close (function) `static void audio_close(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:92`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
 ### mus_read_varlen (function) `static int mus_read_varlen(mus_player_t *m, unsigned long *out)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:101`
+- Defined: `progs/doomgeneric/i_minios_sound.c:169`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_next_block (function) `static int mus_next_block(mus_player_t *m, unsigned long *out)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:115`
+- Defined: `progs/doomgeneric/i_minios_sound.c:183`
 - Doc: Process one full block of events at the current tick and advance pos past * its delta.  Returns the delta in *out.  Retu
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_note_cmp (function) `static int mus_note_cmp(const void *a, const void *b)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:154`
+- Defined: `progs/doomgeneric/i_minios_sound.c:228`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_build_chord (function) `static void mus_build_chord(mus_player_t *m)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:162`
+- Defined: `progs/doomgeneric/i_minios_sound.c:236`
 - Doc: Split the sounding notes into a bass pedal (the lowest note below the bass line) and the melody arpeggio (the highest MU
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_hold_tone (function) `static void mus_hold_tone(unsigned freq, unsigned long ms)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:185`
-- Doc: } else { if (n < 16) all[n++] = (unsigned short)note; } } m->bass = bass; m->mel_len = 0; if (n > 1) qsort(all, n, sizeo
+- Defined: `progs/doomgeneric/i_minios_sound.c:261`
+- Doc: Hold a tone for the given number of milliseconds. On pcm2 the hold's audio is queued up front (NONBLOCK) and the busy-wa
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_play_chord (function) `static void mus_play_chord(mus_player_t *m)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:196`
+- Defined: `progs/doomgeneric/i_minios_sound.c:274`
 - Doc: Play one full cycle of the pseudo-polyphony: the bass pedal first, held long like the NES triangle voice, then the melod
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### mus_advance (function) `static void mus_advance(mus_player_t *m, unsigned long ms)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:210`
+- Defined: `progs/doomgeneric/i_minios_sound.c:288`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### mus_render_pcm (function) `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:320`
+- Doc: Polyphonic pcm2 music: every sounding voice at once, as the score has it. The legacy path above time-slices one square w
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### mus_render_push (function) `static void mus_render_push(mus_player_t *m, unsigned n)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:359`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### mus_advance_pcm (function) `static void mus_advance_pcm(mus_player_t *m)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:369`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Init (function) `static boolean MUS_Init(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:231`
+- Defined: `progs/doomgeneric/i_minios_sound.c:410`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Shutdown (function) `static void MUS_Shutdown(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:236`
+- Defined: `progs/doomgeneric/i_minios_sound.c:415`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_SetMusicVolume (function) `static void MUS_SetMusicVolume(int volume)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:241`
+- Defined: `progs/doomgeneric/i_minios_sound.c:422`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Pause (function) `static void MUS_Pause(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:243`
+- Defined: `progs/doomgeneric/i_minios_sound.c:424`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_Resume (function) `static void MUS_Resume(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:244`
+- Defined: `progs/doomgeneric/i_minios_sound.c:425`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_RegisterSong (function) `static void *MUS_RegisterSong(void *data, int len)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:246`
+- Defined: `progs/doomgeneric/i_minios_sound.c:427`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ### MUS_UnRegisterSong (function) `static void MUS_UnRegisterSong(void *handle)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:261`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### MUS_PlaySong (function) `static void MUS_PlaySong(void *handle, boolean looping)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:267`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### MUS_StopSong (function) `static void MUS_StopSong(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:280`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### MUS_MusicIsPlaying (function) `static boolean MUS_MusicIsPlaying(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:285`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### MUS_Poll (function) `static void MUS_Poll(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:289`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### PCSPK_Init (function) `static boolean PCSPK_Init(boolean use_sfx_prefix)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:318`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### PCSPK_Shutdown (function) `static void PCSPK_Shutdown(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:325`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### PCSPK_GetSfxLumpNum (function) `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:330`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### free_channel (function) `static void free_channel(int i)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:341`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### PCSPK_Update (function) `static void PCSPK_Update(void)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:350`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### PCSPK_UpdateSoundParams (function) `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:382`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### PCSPK_StartSound (function) `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:386`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### PCSPK_StopSound (function) `static void PCSPK_StopSound(int channel)`
-- Defined: `progs/doomgeneric/i_minios_sound.c:436`
-- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-
-### PCSPK_SoundIsPlaying (function) `static boolean PCSPK_SoundIsPlaying(int channel)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:442`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
-### PCSPK_CacheSounds (function) `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
+### MUS_PlaySong (function) `static void MUS_PlaySong(void *handle, boolean looping)`
 - Defined: `progs/doomgeneric/i_minios_sound.c:448`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### MUS_StopSong (function) `static void MUS_StopSong(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:469`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### MUS_MusicIsPlaying (function) `static boolean MUS_MusicIsPlaying(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:474`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### MUS_Poll (function) `static void MUS_Poll(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:478`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_Init (function) `static boolean PCSPK_Init(boolean use_sfx_prefix)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:512`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_Shutdown (function) `static void PCSPK_Shutdown(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:519`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_GetSfxLumpNum (function) `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:529`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### free_channel (function) `static void free_channel(int i)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:540`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_Update (function) `static void PCSPK_Update(void)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:549`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_UpdateSoundParams (function) `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:587`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_StartSound (function) `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:591`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_StopSound (function) `static void PCSPK_StopSound(int channel)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:641`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_SoundIsPlaying (function) `static boolean PCSPK_SoundIsPlaying(int channel)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:647`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### PCSPK_CacheSounds (function) `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
+- Defined: `progs/doomgeneric/i_minios_sound.c:653`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+
+### muted (function) `* pcm2 while sfx stay muted (effect tones ruined the melody);`
+- Defined: `progs/doomgeneric/i_minios_sound.c:51`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/i_scale.c
@@ -17880,73 +17926,73 @@ R_DrawVisSprite
 ### S_Init (function) `void S_Init(int sfxVolume, int musicVolume);`
 - Defined: `progs/doomgeneric/s_sound.h:32`
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_Shutdown (function) `void S_Shutdown(void);`
 - Defined: `progs/doomgeneric/s_sound.h:37`
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_Start (function) `void S_Start(void);`
 - Defined: `progs/doomgeneric/s_sound.h:47`
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_StartSound (function) `void S_StartSound(void *origin, int sound_id);`
 - Defined: `progs/doomgeneric/s_sound.h:54`
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_StopSound (function) `void S_StopSound(mobj_t *origin);`
 - Defined: `progs/doomgeneric/s_sound.h:57`
 - Doc: Stop sound for thing at <origin>
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_StartMusic (function) `void S_StartMusic(int music_id);`
 - Defined: `progs/doomgeneric/s_sound.h:61`
 - Doc: Start music using <music_id> from sounds.h
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_ChangeMusic (function) `void S_ChangeMusic(int music_id, int looping);`
 - Defined: `progs/doomgeneric/s_sound.h:65`
 - Doc: Start music using <music_id> from sounds.h, and set whether looping
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_StopMusic (function) `void S_StopMusic(void);`
 - Defined: `progs/doomgeneric/s_sound.h:71`
 - Doc: Stops the music fer sure.
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_PauseSound (function) `void S_PauseSound(void);`
 - Defined: `progs/doomgeneric/s_sound.h:74`
 - Doc: Stop and resume music, during game PAUSE.
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_ResumeSound (function) `void S_ResumeSound(void);`
 - Defined: `progs/doomgeneric/s_sound.h:75`
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_UpdateSounds (function) `void S_UpdateSounds(mobj_t *listener);`
 - Defined: `progs/doomgeneric/s_sound.h:81`
 - Doc: Updates music & sounds
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_SetMusicVolume (function) `void S_SetMusicVolume(int volume);`
 - Defined: `progs/doomgeneric/s_sound.h:83`
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ### S_SetSfxVolume (function) `void S_SetSfxVolume(int volume);`
 - Defined: `progs/doomgeneric/s_sound.h:84`
 - Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
-- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
 
 ## progs/doomgeneric/sha1.c
 
@@ -21500,285 +21546,292 @@ Z_DumpHeap
 - Defined: `progs/pokemon/platform_minios.c:113`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
+### sys_pcm2_open (function) `static long sys_pcm2_open(long flags)`
+- Defined: `progs/pokemon/platform_minios.c:119`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
+### sys_pcm2_write (function) `static long sys_pcm2_write(const void *buf, long len)`
+- Defined: `progs/pokemon/platform_minios.c:125`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
+### sys_pcm2_close (function) `static void sys_pcm2_close(void)`
+- Defined: `progs/pokemon/platform_minios.c:131`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
 ### gb_platform_set_debug (function) `void gb_platform_set_debug(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:153`
+- Defined: `progs/pokemon/platform_minios.c:169`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### _dl_argv (function) `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
  * DO NOT reintroduce argv ...`
-- Defined: `progs/pokemon/platform_minios.c:160`
+- Defined: `progs/pokemon/platform_minios.c:176`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_audio_sample (function) `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
-- Defined: `progs/pokemon/platform_minios.c:211`
+- Defined: `progs/pokemon/platform_minios.c:241`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_voice_in_range (function) `static bool gb_voice_in_range(unsigned f)`
-- Defined: `progs/pokemon/platform_minios.c:242`
+- Defined: `progs/pokemon/platform_minios.c:285`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### sample_apu_voices (function) `static void sample_apu_voices(gb_voice_t *v)`
-- Defined: `progs/pokemon/platform_minios.c:246`
+- Defined: `progs/pokemon/platform_minios.c:289`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### hold_tone (function) `static void hold_tone(unsigned freq, unsigned ms)`
-- Defined: `progs/pokemon/platform_minios.c:266`
+- Defined: `progs/pokemon/platform_minios.c:309`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_audio_play (function) `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
                             ...`
-- Defined: `progs/pokemon/platform_minios.c:274`
-- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-
-### minios_audio_frame (function) `static void minios_audio_frame(void)`
-- Defined: `progs/pokemon/platform_minios.c:309`
-- Doc: } if (m2) { mel[nmel++] = v[1].freq; } if (bass) { hold_tone(v[2].freq, MINIOS_ARP_BASS_MS); } if (nmel > 0) { hold_tone
+- Defined: `progs/pokemon/platform_minios.c:317`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### rebuild_joypad (function) `static void rebuild_joypad(void)`
-- Defined: `progs/pokemon/platform_minios.c:337`
+- Defined: `progs/pokemon/platform_minios.c:385`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### poll_keyboard (function) `static void poll_keyboard(void)`
-- Defined: `progs/pokemon/platform_minios.c:351`
+- Defined: `progs/pokemon/platform_minios.c:399`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### push_332_palette (function) `static void push_332_palette(void)`
-- Defined: `progs/pokemon/platform_minios.c:390`
+- Defined: `progs/pokemon/platform_minios.c:438`
 - Doc: 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B & 0xC0
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu_fill (function) `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)`
-- Defined: `progs/pokemon/platform_minios.c:546`
+- Defined: `progs/pokemon/platform_minios.c:594`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu_text (function) `static void menu_text(int x, int y, const char *s, uint8_t fg)`
-- Defined: `progs/pokemon/platform_minios.c:559`
+- Defined: `progs/pokemon/platform_minios.c:607`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu_osd (function) `static void menu_osd(const char *s)`
-- Defined: `progs/pokemon/platform_minios.c:578`
+- Defined: `progs/pokemon/platform_minios.c:626`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu_draw (function) `static void menu_draw(void)`
-- Defined: `progs/pokemon/platform_minios.c:584`
+- Defined: `progs/pokemon/platform_minios.c:632`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu_item_at (function) `static int menu_item_at(int lx, int ly)`
-- Defined: `progs/pokemon/platform_minios.c:614`
+- Defined: `progs/pokemon/platform_minios.c:662`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu_do_save (function) `static void menu_do_save(void)`
-- Defined: `progs/pokemon/platform_minios.c:621`
+- Defined: `progs/pokemon/platform_minios.c:669`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu_do_load (function) `static void menu_do_load(void)`
-- Defined: `progs/pokemon/platform_minios.c:637`
+- Defined: `progs/pokemon/platform_minios.c:685`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu_activate (function) `static void menu_activate(int it)`
-- Defined: `progs/pokemon/platform_minios.c:656`
+- Defined: `progs/pokemon/platform_minios.c:704`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### poll_menu (function) `static void poll_menu(void)`
-- Defined: `progs/pokemon/platform_minios.c:690`
+- Defined: `progs/pokemon/platform_minios.c:738`
 - Doc: Esc toggles, Up/Down move, Enter activates; the mouse is a bonus. * PS/2 Set 1: Esc = 0x01, Up = 0x48, Down = 0x50, Ente
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### pokemon_art_load_one (function) `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
                           ...`
-- Defined: `progs/pokemon/platform_minios.c:758`
+- Defined: `progs/pokemon/platform_minios.c:806`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### pokemon_art_load (function) `static void pokemon_art_load(void)`
-- Defined: `progs/pokemon/platform_minios.c:783`
+- Defined: `progs/pokemon/platform_minios.c:831`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### pokemon_art_draw_one (function) `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
                       ...`
-- Defined: `progs/pokemon/platform_minios.c:801`
+- Defined: `progs/pokemon/platform_minios.c:849`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### pokemon_art_draw (function) `static void pokemon_art_draw(void)`
-- Defined: `progs/pokemon/platform_minios.c:839`
+- Defined: `progs/pokemon/platform_minios.c:887`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### upload_frame (function) `static void upload_frame(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:850`
+- Defined: `progs/pokemon/platform_minios.c:898`
 - Doc: } } static void pokemon_art_draw(void) { int side_w = GB_DST_X0; int side_y = MENU_BAR_H; int side_h = FB_H - MENU_BAR_H
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_init (function) `bool gb_platform_init(int scale)`
-- Defined: `progs/pokemon/platform_minios.c:919`
+- Defined: `progs/pokemon/platform_minios.c:967`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_persist_path (function) `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                       ...`
-- Defined: `progs/pokemon/platform_minios.c:950`
+- Defined: `progs/pokemon/platform_minios.c:998`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_legacy_path (function) `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:959`
+- Defined: `progs/pokemon/platform_minios.c:1007`
 - Doc: Legacy ramdisk path (pre-MiniFS fix wrote bin/<id>.* onto volatile ramdisk). Loads still probe it as a fallback so a che
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_load_helper (function) `static bool minios_load_helper(const char *path, void *data, size_t size,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:965`
+- Defined: `progs/pokemon/platform_minios.c:1013`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_save_helper (function) `static bool minios_save_helper(const char *path, const void *data, size_t size)`
-- Defined: `progs/pokemon/platform_minios.c:983`
+- Defined: `progs/pokemon/platform_minios.c:1031`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_load_battery_ram (function) `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:994`
+- Defined: `progs/pokemon/platform_minios.c:1042`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_save_battery_ram (function) `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-- Defined: `progs/pokemon/platform_minios.c:1009`
+- Defined: `progs/pokemon/platform_minios.c:1057`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_load_rtc_data (function) `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-- Defined: `progs/pokemon/platform_minios.c:1019`
+- Defined: `progs/pokemon/platform_minios.c:1067`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_save_rtc_data (function) `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-- Defined: `progs/pokemon/platform_minios.c:1032`
+- Defined: `progs/pokemon/platform_minios.c:1080`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_fast_forward (function) `static inline bool minios_fast_forward(void)`
-- Defined: `progs/pokemon/platform_minios.c:1070`
+- Defined: `progs/pokemon/platform_minios.c:1118`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_state_path (function) `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:1074`
+- Defined: `progs/pokemon/platform_minios.c:1122`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_legacy_state_path (function) `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:1079`
+- Defined: `progs/pokemon/platform_minios.c:1127`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### minios_autosave (function) `static void minios_autosave(uint32_t now)`
-- Defined: `progs/pokemon/platform_minios.c:1084`
+- Defined: `progs/pokemon/platform_minios.c:1132`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### poll_hotkeys (function) `static void poll_hotkeys(void)`
-- Defined: `progs/pokemon/platform_minios.c:1098`
+- Defined: `progs/pokemon/platform_minios.c:1146`
 - Doc: PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, SPACE = 0x39, Shift = 0x2A/0x36. SPACE held is moment
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_register_context (function) `void gb_platform_register_context(GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:1150`
+- Defined: `progs/pokemon/platform_minios.c:1198`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_shutdown (function) `void gb_platform_shutdown(void)`
-- Defined: `progs/pokemon/platform_minios.c:1166`
+- Defined: `progs/pokemon/platform_minios.c:1220`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_poll_events (function) `bool gb_platform_poll_events(GBContext *ctx)`
-- Defined: `progs/pokemon/platform_minios.c:1173`
+- Defined: `progs/pokemon/platform_minios.c:1231`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_render_frame (function) `void gb_platform_render_frame(const uint32_t *framebuffer)`
-- Defined: `progs/pokemon/platform_minios.c:1182`
-- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-
-### gb_platform_present_framebuffer (function) `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
 - Defined: `progs/pokemon/platform_minios.c:1240`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
+### gb_platform_present_framebuffer (function) `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
+- Defined: `progs/pokemon/platform_minios.c:1300`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
 ### gb_platform_render_lcd_off_frame (function) `void gb_platform_render_lcd_off_frame(void)`
-- Defined: `progs/pokemon/platform_minios.c:1246`
+- Defined: `progs/pokemon/platform_minios.c:1306`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_vsync (function) `void gb_platform_vsync(uint32_t frame_cycles)`
-- Defined: `progs/pokemon/platform_minios.c:1263`
+- Defined: `progs/pokemon/platform_minios.c:1323`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_set_benchmark_mode (function) `void gb_platform_set_benchmark_mode(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:1284`
+- Defined: `progs/pokemon/platform_minios.c:1344`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_set_input_script (function) `bool gb_platform_set_input_script(const char *script)`
-- Defined: `progs/pokemon/platform_minios.c:1288`
+- Defined: `progs/pokemon/platform_minios.c:1348`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_set_input_record_file (function) `void gb_platform_set_input_record_file(const char *path)`
-- Defined: `progs/pokemon/platform_minios.c:1294`
+- Defined: `progs/pokemon/platform_minios.c:1354`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_set_persistence_dir (function) `bool gb_platform_set_persistence_dir(const char *path)`
-- Defined: `progs/pokemon/platform_minios.c:1299`
+- Defined: `progs/pokemon/platform_minios.c:1359`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_set_dump_frames (function) `void gb_platform_set_dump_frames(const char *frames)`
-- Defined: `progs/pokemon/platform_minios.c:1308`
-- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-
-### gb_platform_set_dump_present_frames (function) `void gb_platform_set_dump_present_frames(const char *frames)`
-- Defined: `progs/pokemon/platform_minios.c:1330`
-- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-
-### gb_platform_set_screenshot_prefix (function) `void gb_platform_set_screenshot_prefix(const char *prefix)`
-- Defined: `progs/pokemon/platform_minios.c:1351`
-- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-
-### gb_platform_get_timing_info (function) `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
-- Defined: `progs/pokemon/platform_minios.c:1357`
-- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-
-### gb_platform_get_joypad (function) `uint8_t gb_platform_get_joypad(void)`
-- Defined: `progs/pokemon/platform_minios.c:1364`
-- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-
-### gb_platform_set_title (function) `void gb_platform_set_title(const char *title)`
 - Defined: `progs/pokemon/platform_minios.c:1368`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
+### gb_platform_set_dump_present_frames (function) `void gb_platform_set_dump_present_frames(const char *frames)`
+- Defined: `progs/pokemon/platform_minios.c:1390`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
+### gb_platform_set_screenshot_prefix (function) `void gb_platform_set_screenshot_prefix(const char *prefix)`
+- Defined: `progs/pokemon/platform_minios.c:1411`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
+### gb_platform_get_timing_info (function) `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
+- Defined: `progs/pokemon/platform_minios.c:1417`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
+### gb_platform_get_joypad (function) `uint8_t gb_platform_get_joypad(void)`
+- Defined: `progs/pokemon/platform_minios.c:1424`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
+### gb_platform_set_title (function) `void gb_platform_set_title(const char *title)`
+- Defined: `progs/pokemon/platform_minios.c:1428`
+- Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+
 ### gb_platform_get_smooth_lcd_transitions (function) `bool gb_platform_get_smooth_lcd_transitions(void)`
-- Defined: `progs/pokemon/platform_minios.c:1374`
+- Defined: `progs/pokemon/platform_minios.c:1434`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_set_smooth_lcd_transitions (function) `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:1378`
+- Defined: `progs/pokemon/platform_minios.c:1438`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_set_launcher_return_enabled (function) `void gb_platform_set_launcher_return_enabled(bool enabled)`
-- Defined: `progs/pokemon/platform_minios.c:1382`
+- Defined: `progs/pokemon/platform_minios.c:1442`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_get_exit_action (function) `GBPlatformExitAction gb_platform_get_exit_action(void)`
-- Defined: `progs/pokemon/platform_minios.c:1386`
+- Defined: `progs/pokemon/platform_minios.c:1446`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_submit_port_frame (function) `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
-- Defined: `progs/pokemon/platform_minios.c:1390`
+- Defined: `progs/pokemon/platform_minios.c:1450`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_test_audio_concurrency (function) `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...`
-- Defined: `progs/pokemon/platform_minios.c:1396`
+- Defined: `progs/pokemon/platform_minios.c:1456`
 - Doc: void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction gb_platform_get_exit_
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### gb_platform_test_inject_persistence_fault (function) `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
-- Defined: `progs/pokemon/platform_minios.c:1405`
+- Defined: `progs/pokemon/platform_minios.c:1465`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### audio (function) `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies come from gb_audio_voice() * (runtime accessor over internal channel state: enabled, DA`
-- Defined: `progs/pokemon/platform_minios.c:181`
+- Defined: `progs/pokemon/platform_minios.c:197`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ### menu (function) `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it starts at GB_DST_Y0 = 36). Clicking FILE (or pressing Esc) drops a * 5-item menu: S`
-- Defined: `progs/pokemon/platform_minios.c:506`
+- Defined: `progs/pokemon/platform_minios.c:554`
 - Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
 
 ## progs/quake2generic/q2generic_minios.c
@@ -21817,71 +21870,71 @@ Z_DumpHeap
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### q2g_parse_autoframes (function) `static void q2g_parse_autoframes(int argc, char **argv)`
-- Defined: `progs/quake2generic/q2generic_minios.c:88`
+- Defined: `progs/quake2generic/q2generic_minios.c:98`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_GetMouseDiff (function) `void QG_GetMouseDiff(int *dx, int *dy)`
-- Defined: `progs/quake2generic/q2generic_minios.c:103`
+- Defined: `progs/quake2generic/q2generic_minios.c:131`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_CaptureMouse (function) `void QG_CaptureMouse(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:114`
+- Defined: `progs/quake2generic/q2generic_minios.c:142`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_ReleaseMouse (function) `void QG_ReleaseMouse(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:118`
+- Defined: `progs/quake2generic/q2generic_minios.c:146`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_Mkdir (function) `void QG_Mkdir(const char *path)`
-- Defined: `progs/quake2generic/q2generic_minios.c:121`
+- Defined: `progs/quake2generic/q2generic_minios.c:149`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### scancode_to_q2key (function) `static unsigned char scancode_to_q2key(unsigned char raw)`
-- Defined: `progs/quake2generic/q2generic_minios.c:125`
+- Defined: `progs/quake2generic/q2generic_minios.c:153`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### extended_to_q2key (function) `static unsigned char extended_to_q2key(unsigned char sc)`
-- Defined: `progs/quake2generic/q2generic_minios.c:208`
+- Defined: `progs/quake2generic/q2generic_minios.c:236`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### kbd_poll (function) `static void kbd_poll(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:226`
+- Defined: `progs/quake2generic/q2generic_minios.c:254`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_SetPalette (function) `void SWimp_SetPalette(const unsigned char *palette)`
-- Defined: `progs/quake2generic/q2generic_minios.c:256`
+- Defined: `progs/quake2generic/q2generic_minios.c:284`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_SetMode (function) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
-- Defined: `progs/quake2generic/q2generic_minios.c:266`
+- Defined: `progs/quake2generic/q2generic_minios.c:294`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_Init (function) `int SWimp_Init(void *hInstance, void *wndProc)`
-- Defined: `progs/quake2generic/q2generic_minios.c:283`
+- Defined: `progs/quake2generic/q2generic_minios.c:311`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_Shutdown (function) `void SWimp_Shutdown(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:289`
+- Defined: `progs/quake2generic/q2generic_minios.c:317`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_BeginFrame (function) `void SWimp_BeginFrame(float camera_separation)`
-- Defined: `progs/quake2generic/q2generic_minios.c:292`
+- Defined: `progs/quake2generic/q2generic_minios.c:320`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_EndFrame (function) `void SWimp_EndFrame(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:295`
+- Defined: `progs/quake2generic/q2generic_minios.c:323`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### SWimp_AppActivate (function) `void SWimp_AppActivate(qboolean active)`
-- Defined: `progs/quake2generic/q2generic_minios.c:314`
+- Defined: `progs/quake2generic/q2generic_minios.c:352`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### QG_Milliseconds (function) `int QG_Milliseconds(void)`
-- Defined: `progs/quake2generic/q2generic_minios.c:318`
+- Defined: `progs/quake2generic/q2generic_minios.c:356`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/quake2generic/q2generic_minios.c:322`
+- Defined: `progs/quake2generic/q2generic_minios.c:360`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ### MINIOS_DOOM_BACKBUF_ADDR (function) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
@@ -21892,6 +21945,64 @@ Z_DumpHeap
 - Defined: `progs/quake2generic/q2generic_minios.c:76`
 - Doc: Sys_Quit lives in the engine's system driver (other/q_system.c); not pulled * in through quake2.h, so declare it here fo
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
+
+### Cbuf_AddText (function) `extern void Cbuf_AddText(char *text);`
+- Defined: `progs/quake2generic/q2generic_minios.c:79`
+- Doc: Sys_Quit lives in the engine's system driver (other/q_system.c); not pulled * in through quake2.h, so declare it here fo
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
+
+### q2snd_probe (function) `extern int q2snd_probe(void);`
+- Defined: `progs/quake2generic/q2generic_minios.c:83`
+- Doc: Sound backend probe (snddma_minios.c): headless proof the DMA layer * reaches the pcm2 path, run with `quake2generic.elf
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
+
+## progs/quake2generic/snddma_minios.c
+
+### sys_pcm2_open (function) `static long sys_pcm2_open(long flags)`
+- Defined: `progs/quake2generic/snddma_minios.c:67`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### sys_pcm2_write (function) `static long sys_pcm2_write(const void *buf, long len)`
+- Defined: `progs/quake2generic/snddma_minios.c:75`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### sys_pcm2_close (function) `static void sys_pcm2_close(void)`
+- Defined: `progs/quake2generic/snddma_minios.c:83`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### sys_time_ms (function) `static long sys_time_ms(void)`
+- Defined: `progs/quake2generic/snddma_minios.c:89`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### q2_dma_push (function) `static int q2_dma_push(int end)`
+- Defined: `progs/quake2generic/snddma_minios.c:104`
+- Doc: Push the freshly painted range [q2_dma_written, end) in ring order with NONBLOCK writes that take what the kernel ring h
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### SNDDMA_Init (function) `qboolean SNDDMA_Init(void)`
+- Defined: `progs/quake2generic/snddma_minios.c:138`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### SNDDMA_GetDMAPos (function) `int SNDDMA_GetDMAPos(void)`
+- Defined: `progs/quake2generic/snddma_minios.c:182`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### SNDDMA_Shutdown (function) `void SNDDMA_Shutdown(void)`
+- Defined: `progs/quake2generic/snddma_minios.c:190`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### SNDDMA_BeginPainting (function) `void SNDDMA_BeginPainting(void)`
+- Defined: `progs/quake2generic/snddma_minios.c:202`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### SNDDMA_Submit (function) `void SNDDMA_Submit(void)`
+- Defined: `progs/quake2generic/snddma_minios.c:205`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
+### q2snd_probe (function) `int q2snd_probe(void)`
+- Defined: `progs/quake2generic/snddma_minios.c:222`
+- Doc: Headless plumbing probe (BDD hook): open pcm2, stream one pattern, close, report. Needs no game data, so it runs on a ba
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/src/aes.c
 
@@ -26615,10 +26726,10 @@ Z_DumpHeap
 - Defined: `tools/mutate.sh:112`
 
 ### record (function)
-- Defined: `tools/mutate.sh:303`
+- Defined: `tools/mutate.sh:306`
 
 ### find_index (function)
-- Defined: `tools/mutate.sh:309`
+- Defined: `tools/mutate.sh:312`
 - Doc: Locate a mutant by name.
 
 ## tools/probe_compute_vga.py
@@ -26771,16 +26882,16 @@ Z_DumpHeap
 - Doc: refute <marker>: the marker must NOT appear (suppressed hostile content).
 
 ### http_server_start (function)
-- Defined: `tools/test_bdd.sh:860`
+- Defined: `tools/test_bdd.sh:871`
 
 ### http_server_stop (function)
-- Defined: `tools/test_bdd.sh:867`
+- Defined: `tools/test_bdd.sh:878`
 
 ### http_fixture_start (function)
-- Defined: `tools/test_bdd.sh:872`
+- Defined: `tools/test_bdd.sh:883`
 
 ### http_fixture_stop (function)
-- Defined: `tools/test_bdd.sh:879`
+- Defined: `tools/test_bdd.sh:890`
 
 ## tools/test_call_align.py
 

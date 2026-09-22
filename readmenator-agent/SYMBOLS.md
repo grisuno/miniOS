@@ -204,25 +204,25 @@
 | `PCM2_PROBE_WAIT` | macro | `drivers/pcm2.c:55` | `#define PCM2_PROBE_WAIT` |
 | `PCM2_READY_MASK` | macro | `drivers/pcm2.c:54` | `#define PCM2_READY_MASK` |
 | `PCM2_SILENCE` | macro | `drivers/pcm2.c:56` | `#define PCM2_SILENCE` |
-| `loop` | function | `drivers/pcm2.c:148` | `* loop (the auto-init livelock is structurally impossible here). The IRQ
+| `loop` | function | `drivers/pcm2.c:150` | `* loop (the auto-init livelock is structurally impossible here). The IRQ
  * path rejects a stray ...` |
-| `pcm2_active` | function | `drivers/pcm2.c:177` | `int pcm2_active(void)` |
-| `pcm2_arm_block` | function | `drivers/pcm2.c:133` | `static void pcm2_arm_block(void)` |
-| `pcm2_close` | function | `drivers/pcm2.c:273` | `void pcm2_close(int owner)` |
-| `pcm2_cmd` | function | `drivers/pcm2.c:88` | `static void pcm2_cmd(unsigned char c)` |
-| `pcm2_counters` | function | `drivers/pcm2.c:309` | `void pcm2_counters(pcm2_counters_t *out)` |
-| `pcm2_dma` | function | `drivers/pcm2.c:77` | `static unsigned char *pcm2_dma(void)` |
-| `pcm2_dma_program` | function | `drivers/pcm2.c:93` | `static void pcm2_dma_program(void)` |
-| `pcm2_dma_stop` | function | `drivers/pcm2.c:106` | `static void pcm2_dma_stop(void)` |
-| `pcm2_dsp_play` | function | `drivers/pcm2.c:110` | `static void pcm2_dsp_play(void)` |
-| `pcm2_irq` | function | `drivers/pcm2.c:284` | `void pcm2_irq(void)` |
-| `pcm2_open` | function | `drivers/pcm2.c:181` | `int pcm2_open(unsigned flags, int owner)` |
-| `pcm2_owner_live` | function | `drivers/pcm2.c:212` | `static int pcm2_owner_live(void)` |
-| `pcm2_poll` | function | `drivers/pcm2.c:297` | `void pcm2_poll(void)` |
-| `pcm2_release_locked` | function | `drivers/pcm2.c:217` | `static void pcm2_release_locked(void)` |
-| `pcm2_wait_write` | function | `drivers/pcm2.c:81` | `static int pcm2_wait_write(void)` |
-| `pcm2_wake_owner` | function | `drivers/pcm2.c:120` | `static void pcm2_wake_owner(void)` |
-| `pcm2_write` | function | `drivers/pcm2.c:226` | `int pcm2_write(const unsigned char *user, unsigned len, int owner)` |
+| `pcm2_active` | function | `drivers/pcm2.c:179` | `int pcm2_active(void)` |
+| `pcm2_arm_block` | function | `drivers/pcm2.c:135` | `static void pcm2_arm_block(void)` |
+| `pcm2_close` | function | `drivers/pcm2.c:282` | `void pcm2_close(int owner)` |
+| `pcm2_cmd` | function | `drivers/pcm2.c:90` | `static void pcm2_cmd(unsigned char c)` |
+| `pcm2_counters` | function | `drivers/pcm2.c:318` | `void pcm2_counters(pcm2_counters_t *out)` |
+| `pcm2_dma` | function | `drivers/pcm2.c:79` | `static unsigned char *pcm2_dma(void)` |
+| `pcm2_dma_program` | function | `drivers/pcm2.c:95` | `static void pcm2_dma_program(void)` |
+| `pcm2_dma_stop` | function | `drivers/pcm2.c:108` | `static void pcm2_dma_stop(void)` |
+| `pcm2_dsp_play` | function | `drivers/pcm2.c:112` | `static void pcm2_dsp_play(void)` |
+| `pcm2_irq` | function | `drivers/pcm2.c:293` | `void pcm2_irq(void)` |
+| `pcm2_open` | function | `drivers/pcm2.c:183` | `int pcm2_open(unsigned flags, int owner)` |
+| `pcm2_owner_live` | function | `drivers/pcm2.c:221` | `static int pcm2_owner_live(void)` |
+| `pcm2_poll` | function | `drivers/pcm2.c:306` | `void pcm2_poll(void)` |
+| `pcm2_release_locked` | function | `drivers/pcm2.c:226` | `static void pcm2_release_locked(void)` |
+| `pcm2_wait_write` | function | `drivers/pcm2.c:83` | `static int pcm2_wait_write(void)` |
+| `pcm2_wake_owner` | function | `drivers/pcm2.c:122` | `static void pcm2_wake_owner(void)` |
+| `pcm2_write` | function | `drivers/pcm2.c:235` | `int pcm2_write(const unsigned char *user, unsigned len, int owner)` |
 | `PCSPK_MAX_FREQ` | macro | `drivers/pcspk.c:20` | `#define PCSPK_MAX_FREQ` |
 | `PCSPK_MIN_FREQ` | macro | `drivers/pcspk.c:19` | `#define PCSPK_MIN_FREQ` |
 | `PIT_CH2_CMD` | macro | `drivers/pcspk.c:15` | `#define PIT_CH2_CMD` |
@@ -1361,27 +1361,27 @@ static int zip_sanitize_name(con...` |
 | `rtl_iobase` | function | `headers/net/rtl8139.h:35` | `unsigned short rtl_iobase(void);` |
 | `rtl_present` | function | `headers/net/rtl8139.h:18` | `int rtl_present(void);` |
 | `rtl_send` | function | `headers/net/rtl8139.h:25` | `int rtl_send(const unsigned char *frame, unsigned len);` |
-| `PCM2_DMA_BYTES` | macro | `headers/pcm2.h:54` | `#define PCM2_DMA_BYTES` |
-| `PCM2_ERR_BUSY` | macro | `headers/pcm2.h:59` | `#define PCM2_ERR_BUSY` |
-| `PCM2_ERR_INVAL` | macro | `headers/pcm2.h:64` | `#define PCM2_ERR_INVAL` |
-| `PCM2_ERR_NODEV` | macro | `headers/pcm2.h:60` | `#define PCM2_ERR_NODEV` |
-| `PCM2_ERR_NOMEM` | macro | `headers/pcm2.h:61` | `#define PCM2_ERR_NOMEM` |
-| `PCM2_ERR_PERM` | macro | `headers/pcm2.h:62` | `#define PCM2_ERR_PERM` |
-| `PCM2_ERR_PIPE` | macro | `headers/pcm2.h:63` | `#define PCM2_ERR_PIPE` |
-| `PCM2_FLAG_NONBLOCK` | macro | `headers/pcm2.h:57` | `#define PCM2_FLAG_NONBLOCK` |
-| `PCM2_FRAG` | macro | `headers/pcm2.h:52` | `#define PCM2_FRAG` |
-| `PCM2_FRAGS` | macro | `headers/pcm2.h:53` | `#define PCM2_FRAGS` |
+| `PCM2_DMA_BYTES` | macro | `headers/pcm2.h:55` | `#define PCM2_DMA_BYTES` |
+| `PCM2_ERR_BUSY` | macro | `headers/pcm2.h:60` | `#define PCM2_ERR_BUSY` |
+| `PCM2_ERR_INVAL` | macro | `headers/pcm2.h:65` | `#define PCM2_ERR_INVAL` |
+| `PCM2_ERR_NODEV` | macro | `headers/pcm2.h:61` | `#define PCM2_ERR_NODEV` |
+| `PCM2_ERR_NOMEM` | macro | `headers/pcm2.h:62` | `#define PCM2_ERR_NOMEM` |
+| `PCM2_ERR_PERM` | macro | `headers/pcm2.h:63` | `#define PCM2_ERR_PERM` |
+| `PCM2_ERR_PIPE` | macro | `headers/pcm2.h:64` | `#define PCM2_ERR_PIPE` |
+| `PCM2_FLAG_NONBLOCK` | macro | `headers/pcm2.h:58` | `#define PCM2_FLAG_NONBLOCK` |
+| `PCM2_FRAG` | macro | `headers/pcm2.h:53` | `#define PCM2_FRAG` |
+| `PCM2_FRAGS` | macro | `headers/pcm2.h:54` | `#define PCM2_FRAGS` |
 | `PCM2_H` | macro | `headers/pcm2.h:2` | `#define PCM2_H` |
-| `PCM2_RATE` | macro | `headers/pcm2.h:51` | `#define PCM2_RATE` |
-| `PCM2_RING` | macro | `headers/pcm2.h:55` | `#define PCM2_RING` |
-| `pcm2_active` | function | `headers/pcm2.h:76` | `int pcm2_active(void);` |
-| `pcm2_close` | function | `headers/pcm2.h:79` | `void pcm2_close(int owner);` |
-| `pcm2_counters` | function | `headers/pcm2.h:82` | `void pcm2_counters(pcm2_counters_t *out);` |
-| `pcm2_counters_t` | struct | `headers/pcm2.h:66` | `` |
-| `pcm2_irq` | function | `headers/pcm2.h:80` | `void pcm2_irq(void);` |
-| `pcm2_open` | function | `headers/pcm2.h:77` | `int pcm2_open(unsigned flags, int owner);` |
-| `pcm2_poll` | function | `headers/pcm2.h:81` | `void pcm2_poll(void);` |
-| `pcm2_write` | function | `headers/pcm2.h:78` | `int pcm2_write(const unsigned char *user, unsigned len, int owner);` |
+| `PCM2_RATE` | macro | `headers/pcm2.h:52` | `#define PCM2_RATE` |
+| `PCM2_RING` | macro | `headers/pcm2.h:56` | `#define PCM2_RING` |
+| `pcm2_active` | function | `headers/pcm2.h:77` | `int pcm2_active(void);` |
+| `pcm2_close` | function | `headers/pcm2.h:80` | `void pcm2_close(int owner);` |
+| `pcm2_counters` | function | `headers/pcm2.h:83` | `void pcm2_counters(pcm2_counters_t *out);` |
+| `pcm2_counters_t` | struct | `headers/pcm2.h:67` | `` |
+| `pcm2_irq` | function | `headers/pcm2.h:81` | `void pcm2_irq(void);` |
+| `pcm2_open` | function | `headers/pcm2.h:78` | `int pcm2_open(unsigned flags, int owner);` |
+| `pcm2_poll` | function | `headers/pcm2.h:82` | `void pcm2_poll(void);` |
+| `pcm2_write` | function | `headers/pcm2.h:79` | `int pcm2_write(const unsigned char *user, unsigned len, int owner);` |
 | `PCM_RING_H` | macro | `headers/pcm_ring.h:2` | `#define PCM_RING_H` |
 | `pcm_ring_free` | function | `headers/pcm_ring.h:51` | `static inline unsigned pcm_ring_free(const pcm_ring_t *r)` |
 | `pcm_ring_init` | function | `headers/pcm_ring.h:36` | `static inline void pcm_ring_init(pcm_ring_t *r, unsigned char *buf,
@@ -4462,33 +4462,33 @@ AM_rotate
 | `DOOMGENERIC_RESX` | macro | `progs/doomgeneric/doomgeneric.h:7` | `#define DOOMGENERIC_RESX` |
 | `DOOMGENERIC_RESY` | macro | `progs/doomgeneric/doomgeneric.h:8` | `#define DOOMGENERIC_RESY` |
 | `DOOM_GENERIC` | macro | `progs/doomgeneric/doomgeneric.h:2` | `#define DOOM_GENERIC` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_minios.c:216` | `void DG_DrawFrame(void)` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_minios.c:256` | `int DG_GetKey(int *pressed, unsigned char *key)` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_minios.c:252` | `uint32_t DG_GetTicksMs(void)` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric_minios.c:208` | `void DG_Init(void)` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_minios.c:267` | `void DG_SetWindowTitle(const char *title)` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_minios.c:246` | `void DG_SleepMs(uint32_t ms)` |
-| `FB_ADDR` | macro | `progs/doomgeneric/doomgeneric_minios.c:72` | `#define FB_ADDR` |
-| `FB_HEIGHT` | macro | `progs/doomgeneric/doomgeneric_minios.c:74` | `#define FB_HEIGHT` |
-| `FB_WIDTH` | macro | `progs/doomgeneric/doomgeneric_minios.c:73` | `#define FB_WIDTH` |
-| `I_VideoBuffer` | variable | `progs/doomgeneric/doomgeneric_minios.c:206` | `extern unsigned char *I_VideoBuffer;` |
-| `KBD_QUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_minios.c:154` | `#define KBD_QUEUE_SIZE` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_minios.c:217` | `void DG_DrawFrame(void)` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_minios.c:258` | `int DG_GetKey(int *pressed, unsigned char *key)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_minios.c:254` | `uint32_t DG_GetTicksMs(void)` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_minios.c:209` | `void DG_Init(void)` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_minios.c:269` | `void DG_SetWindowTitle(const char *title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_minios.c:248` | `void DG_SleepMs(uint32_t ms)` |
+| `FB_ADDR` | macro | `progs/doomgeneric/doomgeneric_minios.c:73` | `#define FB_ADDR` |
+| `FB_HEIGHT` | macro | `progs/doomgeneric/doomgeneric_minios.c:75` | `#define FB_HEIGHT` |
+| `FB_WIDTH` | macro | `progs/doomgeneric/doomgeneric_minios.c:74` | `#define FB_WIDTH` |
+| `I_VideoBuffer` | variable | `progs/doomgeneric/doomgeneric_minios.c:207` | `extern unsigned char *I_VideoBuffer;` |
+| `KBD_QUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_minios.c:155` | `#define KBD_QUEUE_SIZE` |
 | `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/doomgeneric/doomgeneric_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
-| `color` | struct | `progs/doomgeneric/doomgeneric_minios.c:79` | `` |
-| `colors` | variable | `progs/doomgeneric/doomgeneric_minios.c:80` | `extern struct color colors[256];` |
-| `kbd_enqueue` | function | `progs/doomgeneric/doomgeneric_minios.c:158` | `static void kbd_enqueue(unsigned char doom_key, int pressed)` |
-| `kbd_poll` | function | `progs/doomgeneric/doomgeneric_minios.c:165` | `static void kbd_poll(void)` |
-| `load_vga_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:86` | `static void load_vga_palette(void)` |
-| `mini_parse_autoframes` | function | `progs/doomgeneric/doomgeneric_minios.c:23` | `static void mini_parse_autoframes(int argc, char **argv)` |
-| `myargc` | variable | `progs/doomgeneric/doomgeneric_minios.c:209` | `extern int myargc;` |
-| `myargv` | variable | `progs/doomgeneric/doomgeneric_minios.c:210` | `extern char **myargv;` |
-| `scancode_to_doom` | function | `progs/doomgeneric/doomgeneric_minios.c:99` | `static unsigned char scancode_to_doom(unsigned char raw)` |
-| `sys_doom_frame` | function | `progs/doomgeneric/doomgeneric_minios.c:62` | `static long sys_doom_frame(void)` |
-| `sys_kbd` | function | `progs/doomgeneric/doomgeneric_minios.c:42` | `static long sys_kbd(void)` |
-| `sys_kbd_raw` | function | `progs/doomgeneric/doomgeneric_minios.c:52` | `static long sys_kbd_raw(int on)` |
-| `sys_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:47` | `static long sys_palette(const unsigned char *pal)` |
-| `sys_time_ms` | function | `progs/doomgeneric/doomgeneric_minios.c:37` | `static long sys_time_ms(void)` |
-| `sys_vga_mode` | function | `progs/doomgeneric/doomgeneric_minios.c:57` | `static long sys_vga_mode(int on)` |
+| `color` | struct | `progs/doomgeneric/doomgeneric_minios.c:80` | `` |
+| `colors` | variable | `progs/doomgeneric/doomgeneric_minios.c:81` | `extern struct color colors[256];` |
+| `kbd_enqueue` | function | `progs/doomgeneric/doomgeneric_minios.c:159` | `static void kbd_enqueue(unsigned char doom_key, int pressed)` |
+| `kbd_poll` | function | `progs/doomgeneric/doomgeneric_minios.c:166` | `static void kbd_poll(void)` |
+| `load_vga_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:87` | `static void load_vga_palette(void)` |
+| `mini_parse_autoframes` | function | `progs/doomgeneric/doomgeneric_minios.c:24` | `static void mini_parse_autoframes(int argc, char **argv)` |
+| `myargc` | variable | `progs/doomgeneric/doomgeneric_minios.c:210` | `extern int myargc;` |
+| `myargv` | variable | `progs/doomgeneric/doomgeneric_minios.c:211` | `extern char **myargv;` |
+| `scancode_to_doom` | function | `progs/doomgeneric/doomgeneric_minios.c:100` | `static unsigned char scancode_to_doom(unsigned char raw)` |
+| `sys_doom_frame` | function | `progs/doomgeneric/doomgeneric_minios.c:63` | `static long sys_doom_frame(void)` |
+| `sys_kbd` | function | `progs/doomgeneric/doomgeneric_minios.c:43` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/doomgeneric/doomgeneric_minios.c:53` | `static long sys_kbd_raw(int on)` |
+| `sys_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:48` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_time_ms` | function | `progs/doomgeneric/doomgeneric_minios.c:38` | `static long sys_time_ms(void)` |
+| `sys_vga_mode` | function | `progs/doomgeneric/doomgeneric_minios.c:58` | `static long sys_vga_mode(int on)` |
 | `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_sdl.c:112` | `void DG_DrawFrame()` |
 | `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_sdl.c:133` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
 | `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_sdl.c:128` | `uint32_t DG_GetTicksMs()` |
@@ -5070,46 +5070,60 @@ HUlib_keyInIText
 | `M_FindResponseFile` | function | `progs/doomgeneric/i_main.c:35` | `void M_FindResponseFile(void);` |
 | `dg_Create` | function | `progs/doomgeneric/i_main.c:37` | `void dg_Create();` |
 | `main` | function | `progs/doomgeneric/i_main.c:40` | `int main(int argc, char **argv)` |
-| `MUS_ARP_MAX` | macro | `progs/doomgeneric/i_minios_sound.c:63` | `#define MUS_ARP_MAX` |
-| `MUS_ARP_SLOT_MS` | macro | `progs/doomgeneric/i_minios_sound.c:60` | `#define MUS_ARP_SLOT_MS` |
-| `MUS_BASS_HOLD_MS` | macro | `progs/doomgeneric/i_minios_sound.c:61` | `#define MUS_BASS_HOLD_MS` |
-| `MUS_BASS_LINE_MIDI` | macro | `progs/doomgeneric/i_minios_sound.c:62` | `#define MUS_BASS_LINE_MIDI` |
-| `MUS_Init` | function | `progs/doomgeneric/i_minios_sound.c:231` | `static boolean MUS_Init(void)` |
-| `MUS_MusicIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:285` | `static boolean MUS_MusicIsPlaying(void)` |
-| `MUS_PERCUSSION_CHAN` | macro | `progs/doomgeneric/i_minios_sound.c:59` | `#define MUS_PERCUSSION_CHAN` |
-| `MUS_Pause` | function | `progs/doomgeneric/i_minios_sound.c:243` | `static void MUS_Pause(void)` |
-| `MUS_PlaySong` | function | `progs/doomgeneric/i_minios_sound.c:267` | `static void MUS_PlaySong(void *handle, boolean looping)` |
-| `MUS_Poll` | function | `progs/doomgeneric/i_minios_sound.c:289` | `static void MUS_Poll(void)` |
-| `MUS_RegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:246` | `static void *MUS_RegisterSong(void *data, int len)` |
-| `MUS_Resume` | function | `progs/doomgeneric/i_minios_sound.c:244` | `static void MUS_Resume(void)` |
-| `MUS_SetMusicVolume` | function | `progs/doomgeneric/i_minios_sound.c:241` | `static void MUS_SetMusicVolume(int volume)` |
-| `MUS_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:236` | `static void MUS_Shutdown(void)` |
-| `MUS_StopSong` | function | `progs/doomgeneric/i_minios_sound.c:280` | `static void MUS_StopSong(void)` |
-| `MUS_TICKS_PER_SEC` | macro | `progs/doomgeneric/i_minios_sound.c:58` | `#define MUS_TICKS_PER_SEC` |
-| `MUS_UnRegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:261` | `static void MUS_UnRegisterSong(void *handle)` |
+| `DOOM_PCM_DRUM_SMP` | macro | `progs/doomgeneric/i_minios_sound.c:125` | `#define DOOM_PCM_DRUM_SMP` |
+| `DOOM_PCM_RATE` | macro | `progs/doomgeneric/i_minios_sound.c:55` | `#define DOOM_PCM_RATE` |
+| `DOOM_PCM_VOL` | macro | `progs/doomgeneric/i_minios_sound.c:56` | `#define DOOM_PCM_VOL` |
+| `MUS_ARP_MAX` | macro | `progs/doomgeneric/i_minios_sound.c:123` | `#define MUS_ARP_MAX` |
+| `MUS_ARP_SLOT_MS` | macro | `progs/doomgeneric/i_minios_sound.c:120` | `#define MUS_ARP_SLOT_MS` |
+| `MUS_BASS_HOLD_MS` | macro | `progs/doomgeneric/i_minios_sound.c:121` | `#define MUS_BASS_HOLD_MS` |
+| `MUS_BASS_LINE_MIDI` | macro | `progs/doomgeneric/i_minios_sound.c:122` | `#define MUS_BASS_LINE_MIDI` |
+| `MUS_Init` | function | `progs/doomgeneric/i_minios_sound.c:410` | `static boolean MUS_Init(void)` |
+| `MUS_MusicIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:474` | `static boolean MUS_MusicIsPlaying(void)` |
+| `MUS_PERCUSSION_CHAN` | macro | `progs/doomgeneric/i_minios_sound.c:119` | `#define MUS_PERCUSSION_CHAN` |
+| `MUS_Pause` | function | `progs/doomgeneric/i_minios_sound.c:424` | `static void MUS_Pause(void)` |
+| `MUS_PlaySong` | function | `progs/doomgeneric/i_minios_sound.c:448` | `static void MUS_PlaySong(void *handle, boolean looping)` |
+| `MUS_Poll` | function | `progs/doomgeneric/i_minios_sound.c:478` | `static void MUS_Poll(void)` |
+| `MUS_RegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:427` | `static void *MUS_RegisterSong(void *data, int len)` |
+| `MUS_Resume` | function | `progs/doomgeneric/i_minios_sound.c:425` | `static void MUS_Resume(void)` |
+| `MUS_SetMusicVolume` | function | `progs/doomgeneric/i_minios_sound.c:422` | `static void MUS_SetMusicVolume(int volume)` |
+| `MUS_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:415` | `static void MUS_Shutdown(void)` |
+| `MUS_StopSong` | function | `progs/doomgeneric/i_minios_sound.c:469` | `static void MUS_StopSong(void)` |
+| `MUS_TICKS_PER_SEC` | macro | `progs/doomgeneric/i_minios_sound.c:118` | `#define MUS_TICKS_PER_SEC` |
+| `MUS_UnRegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:442` | `static void MUS_UnRegisterSong(void *handle)` |
 | `PCSPK_CHANNELS` | macro | `progs/doomgeneric/i_minios_sound.c:12` | `#define PCSPK_CHANNELS` |
-| `PCSPK_CacheSounds` | function | `progs/doomgeneric/i_minios_sound.c:448` | `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)` |
-| `PCSPK_GetSfxLumpNum` | function | `progs/doomgeneric/i_minios_sound.c:330` | `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)` |
-| `PCSPK_Init` | function | `progs/doomgeneric/i_minios_sound.c:318` | `static boolean PCSPK_Init(boolean use_sfx_prefix)` |
-| `PCSPK_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:325` | `static void PCSPK_Shutdown(void)` |
-| `PCSPK_SoundIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:442` | `static boolean PCSPK_SoundIsPlaying(int channel)` |
-| `PCSPK_StartSound` | function | `progs/doomgeneric/i_minios_sound.c:386` | `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)` |
-| `PCSPK_StopSound` | function | `progs/doomgeneric/i_minios_sound.c:436` | `static void PCSPK_StopSound(int channel)` |
+| `PCSPK_CacheSounds` | function | `progs/doomgeneric/i_minios_sound.c:653` | `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)` |
+| `PCSPK_GetSfxLumpNum` | function | `progs/doomgeneric/i_minios_sound.c:529` | `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)` |
+| `PCSPK_Init` | function | `progs/doomgeneric/i_minios_sound.c:512` | `static boolean PCSPK_Init(boolean use_sfx_prefix)` |
+| `PCSPK_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:519` | `static void PCSPK_Shutdown(void)` |
+| `PCSPK_SoundIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:647` | `static boolean PCSPK_SoundIsPlaying(int channel)` |
+| `PCSPK_StartSound` | function | `progs/doomgeneric/i_minios_sound.c:591` | `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)` |
+| `PCSPK_StopSound` | function | `progs/doomgeneric/i_minios_sound.c:641` | `static void PCSPK_StopSound(int channel)` |
 | `PCSPK_TICK_MS` | macro | `progs/doomgeneric/i_minios_sound.c:13` | `#define PCSPK_TICK_MS` |
-| `PCSPK_Update` | function | `progs/doomgeneric/i_minios_sound.c:350` | `static void PCSPK_Update(void)` |
-| `PCSPK_UpdateSoundParams` | function | `progs/doomgeneric/i_minios_sound.c:382` | `static void PCSPK_UpdateSoundParams(int ch, int v, int s)` |
-| `free_channel` | function | `progs/doomgeneric/i_minios_sound.c:341` | `static void free_channel(int i)` |
-| `mus_advance` | function | `progs/doomgeneric/i_minios_sound.c:210` | `static void mus_advance(mus_player_t *m, unsigned long ms)` |
-| `mus_build_chord` | function | `progs/doomgeneric/i_minios_sound.c:162` | `static void mus_build_chord(mus_player_t *m)` |
-| `mus_hold_tone` | function | `progs/doomgeneric/i_minios_sound.c:185` | `static void mus_hold_tone(unsigned freq, unsigned long ms)` |
-| `mus_next_block` | function | `progs/doomgeneric/i_minios_sound.c:115` | `static int mus_next_block(mus_player_t *m, unsigned long *out)` |
-| `mus_note_cmp` | function | `progs/doomgeneric/i_minios_sound.c:154` | `static int mus_note_cmp(const void *a, const void *b)` |
-| `mus_play_chord` | function | `progs/doomgeneric/i_minios_sound.c:196` | `static void mus_play_chord(mus_player_t *m)` |
-| `mus_player_t` | struct | `progs/doomgeneric/i_minios_sound.c:84` | `` |
-| `mus_read_varlen` | function | `progs/doomgeneric/i_minios_sound.c:101` | `static int mus_read_varlen(mus_player_t *m, unsigned long *out)` |
+| `PCSPK_Update` | function | `progs/doomgeneric/i_minios_sound.c:549` | `static void PCSPK_Update(void)` |
+| `PCSPK_UpdateSoundParams` | function | `progs/doomgeneric/i_minios_sound.c:587` | `static void PCSPK_UpdateSoundParams(int ch, int v, int s)` |
+| `audio_close` | function | `progs/doomgeneric/i_minios_sound.c:92` | `static void audio_close(void)` |
+| `audio_ensure` | function | `progs/doomgeneric/i_minios_sound.c:68` | `static void audio_ensure(void)` |
+| `audio_pump` | function | `progs/doomgeneric/i_minios_sound.c:77` | `static void audio_pump(void)` |
+| `audio_tone` | function | `progs/doomgeneric/i_minios_sound.c:85` | `static void audio_tone(unsigned freq)` |
+| `free_channel` | function | `progs/doomgeneric/i_minios_sound.c:540` | `static void free_channel(int i)` |
+| `mus_advance` | function | `progs/doomgeneric/i_minios_sound.c:288` | `static void mus_advance(mus_player_t *m, unsigned long ms)` |
+| `mus_advance_pcm` | function | `progs/doomgeneric/i_minios_sound.c:369` | `static void mus_advance_pcm(mus_player_t *m)` |
+| `mus_build_chord` | function | `progs/doomgeneric/i_minios_sound.c:236` | `static void mus_build_chord(mus_player_t *m)` |
+| `mus_hold_tone` | function | `progs/doomgeneric/i_minios_sound.c:261` | `static void mus_hold_tone(unsigned freq, unsigned long ms)` |
+| `mus_next_block` | function | `progs/doomgeneric/i_minios_sound.c:183` | `static int mus_next_block(mus_player_t *m, unsigned long *out)` |
+| `mus_note_cmp` | function | `progs/doomgeneric/i_minios_sound.c:228` | `static int mus_note_cmp(const void *a, const void *b)` |
+| `mus_play_chord` | function | `progs/doomgeneric/i_minios_sound.c:274` | `static void mus_play_chord(mus_player_t *m)` |
+| `mus_player_t` | struct | `progs/doomgeneric/i_minios_sound.c:146` | `` |
+| `mus_read_varlen` | function | `progs/doomgeneric/i_minios_sound.c:169` | `static int mus_read_varlen(mus_player_t *m, unsigned long *out)` |
+| `mus_render_pcm` | function | `progs/doomgeneric/i_minios_sound.c:320` | `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)` |
+| `mus_render_push` | function | `progs/doomgeneric/i_minios_sound.c:359` | `static void mus_render_push(mus_player_t *m, unsigned n)` |
+| `muted` | function | `progs/doomgeneric/i_minios_sound.c:51` | `* pcm2 while sfx stay muted (effect tones ruined the melody);` |
 | `pcspk_channel_t` | struct | `progs/doomgeneric/i_minios_sound.c:17` | `` |
+| `sys_pcm2_close` | function | `progs/doomgeneric/i_minios_sound.c:44` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/doomgeneric/i_minios_sound.c:38` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/doomgeneric/i_minios_sound.c:41` | `static long sys_pcm2_write(const void *buf, long len)` |
 | `sys_time` | function | `progs/doomgeneric/i_minios_sound.c:35` | `static long sys_time(void)` |
-| `sys_tone` | function | `progs/doomgeneric/i_minios_sound.c:32` | `static long sys_tone(unsigned f)` |
+| `sys_tone_hw` | function | `progs/doomgeneric/i_minios_sound.c:32` | `static long sys_tone_hw(unsigned f)` |
 | `DRAW_PIXEL2` | macro | `progs/doomgeneric/i_scale.c:1099` | `#define DRAW_PIXEL2` |
 | `DRAW_PIXEL3` | macro | `progs/doomgeneric/i_scale.c:1194` | `#define DRAW_PIXEL3` |
 | `DRAW_PIXEL4` | macro | `progs/doomgeneric/i_scale.c:1276` | `#define DRAW_PIXEL4` |
@@ -8849,151 +8863,155 @@ Z_Malloc
 | `Uint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:6` | `typedef uint32_t Uint32;` |
 | `Uint64` | type_alias | `progs/pokemon/minios_stubs/SDL.h:5` | `typedef uint64_t Uint64;` |
 | `Uint8` | type_alias | `progs/pokemon/minios_stubs/SDL.h:9` | `typedef uint8_t Uint8;` |
-| `FB_ADDR` | macro | `progs/pokemon/platform_minios.c:123` | `#define FB_ADDR` |
-| `FB_H` | macro | `progs/pokemon/platform_minios.c:125` | `#define FB_H` |
-| `FB_W` | macro | `progs/pokemon/platform_minios.c:124` | `#define FB_W` |
-| `GB_DST_H` | macro | `progs/pokemon/platform_minios.c:129` | `#define GB_DST_H` |
-| `GB_DST_W` | macro | `progs/pokemon/platform_minios.c:128` | `#define GB_DST_W` |
-| `GB_DST_X0` | macro | `progs/pokemon/platform_minios.c:130` | `#define GB_DST_X0` |
-| `GB_DST_Y0` | macro | `progs/pokemon/platform_minios.c:131` | `#define GB_DST_Y0` |
-| `GB_SCALE` | macro | `progs/pokemon/platform_minios.c:127` | `#define GB_SCALE` |
-| `MENU_BAR_H` | macro | `progs/pokemon/platform_minios.c:521` | `#define MENU_BAR_H` |
-| `MENU_BG` | macro | `progs/pokemon/platform_minios.c:530` | `#define MENU_BG` |
-| `MENU_DROP_W` | macro | `progs/pokemon/platform_minios.c:525` | `#define MENU_DROP_W` |
-| `MENU_DROP_X0` | macro | `progs/pokemon/platform_minios.c:524` | `#define MENU_DROP_X0` |
-| `MENU_FG` | macro | `progs/pokemon/platform_minios.c:531` | `#define MENU_FG` |
-| `MENU_FILE_X0` | macro | `progs/pokemon/platform_minios.c:522` | `#define MENU_FILE_X0` |
-| `MENU_FILE_X1` | macro | `progs/pokemon/platform_minios.c:523` | `#define MENU_FILE_X1` |
-| `MENU_HOVER` | macro | `progs/pokemon/platform_minios.c:532` | `#define MENU_HOVER` |
-| `MENU_ITEM_H` | macro | `progs/pokemon/platform_minios.c:526` | `#define MENU_ITEM_H` |
-| `MENU_NITEMS` | macro | `progs/pokemon/platform_minios.c:527` | `#define MENU_NITEMS` |
-| `MENU_OSD_BG` | macro | `progs/pokemon/platform_minios.c:533` | `#define MENU_OSD_BG` |
-| `MINIOS_ARP_BASS_MS` | macro | `progs/pokemon/platform_minios.c:200` | `#define MINIOS_ARP_BASS_MS` |
-| `MINIOS_ARP_MEL_MS` | macro | `progs/pokemon/platform_minios.c:201` | `#define MINIOS_ARP_MEL_MS` |
-| `MINIOS_AUDIO_MAX_HZ` | macro | `progs/pokemon/platform_minios.c:199` | `#define MINIOS_AUDIO_MAX_HZ` |
-| `MINIOS_AUDIO_MIN_HZ` | macro | `progs/pokemon/platform_minios.c:198` | `#define MINIOS_AUDIO_MIN_HZ` |
-| `MINIOS_AUDIO_RATE` | macro | `progs/pokemon/platform_minios.c:196` | `#define MINIOS_AUDIO_RATE` |
-| `MINIOS_AUDIO_SILENCE_E` | macro | `progs/pokemon/platform_minios.c:197` | `#define MINIOS_AUDIO_SILENCE_E` |
-| `MINIOS_AUTOSAVE_MS` | macro | `progs/pokemon/platform_minios.c:1055` | `#define MINIOS_AUTOSAVE_MS` |
-| `MINIOS_FF_FRAMESKIP` | macro | `progs/pokemon/platform_minios.c:1067` | `#define MINIOS_FF_FRAMESKIP` |
+| `FB_ADDR` | macro | `progs/pokemon/platform_minios.c:139` | `#define FB_ADDR` |
+| `FB_H` | macro | `progs/pokemon/platform_minios.c:141` | `#define FB_H` |
+| `FB_W` | macro | `progs/pokemon/platform_minios.c:140` | `#define FB_W` |
+| `GB_DST_H` | macro | `progs/pokemon/platform_minios.c:145` | `#define GB_DST_H` |
+| `GB_DST_W` | macro | `progs/pokemon/platform_minios.c:144` | `#define GB_DST_W` |
+| `GB_DST_X0` | macro | `progs/pokemon/platform_minios.c:146` | `#define GB_DST_X0` |
+| `GB_DST_Y0` | macro | `progs/pokemon/platform_minios.c:147` | `#define GB_DST_Y0` |
+| `GB_SCALE` | macro | `progs/pokemon/platform_minios.c:143` | `#define GB_SCALE` |
+| `MENU_BAR_H` | macro | `progs/pokemon/platform_minios.c:569` | `#define MENU_BAR_H` |
+| `MENU_BG` | macro | `progs/pokemon/platform_minios.c:578` | `#define MENU_BG` |
+| `MENU_DROP_W` | macro | `progs/pokemon/platform_minios.c:573` | `#define MENU_DROP_W` |
+| `MENU_DROP_X0` | macro | `progs/pokemon/platform_minios.c:572` | `#define MENU_DROP_X0` |
+| `MENU_FG` | macro | `progs/pokemon/platform_minios.c:579` | `#define MENU_FG` |
+| `MENU_FILE_X0` | macro | `progs/pokemon/platform_minios.c:570` | `#define MENU_FILE_X0` |
+| `MENU_FILE_X1` | macro | `progs/pokemon/platform_minios.c:571` | `#define MENU_FILE_X1` |
+| `MENU_HOVER` | macro | `progs/pokemon/platform_minios.c:580` | `#define MENU_HOVER` |
+| `MENU_ITEM_H` | macro | `progs/pokemon/platform_minios.c:574` | `#define MENU_ITEM_H` |
+| `MENU_NITEMS` | macro | `progs/pokemon/platform_minios.c:575` | `#define MENU_NITEMS` |
+| `MENU_OSD_BG` | macro | `progs/pokemon/platform_minios.c:581` | `#define MENU_OSD_BG` |
+| `MINIOS_ARP_BASS_MS` | macro | `progs/pokemon/platform_minios.c:216` | `#define MINIOS_ARP_BASS_MS` |
+| `MINIOS_ARP_MEL_MS` | macro | `progs/pokemon/platform_minios.c:217` | `#define MINIOS_ARP_MEL_MS` |
+| `MINIOS_AUDIO_MAX_HZ` | macro | `progs/pokemon/platform_minios.c:215` | `#define MINIOS_AUDIO_MAX_HZ` |
+| `MINIOS_AUDIO_MIN_HZ` | macro | `progs/pokemon/platform_minios.c:214` | `#define MINIOS_AUDIO_MIN_HZ` |
+| `MINIOS_AUDIO_RATE` | macro | `progs/pokemon/platform_minios.c:212` | `#define MINIOS_AUDIO_RATE` |
+| `MINIOS_AUDIO_SILENCE_E` | macro | `progs/pokemon/platform_minios.c:213` | `#define MINIOS_AUDIO_SILENCE_E` |
+| `MINIOS_AUTOSAVE_MS` | macro | `progs/pokemon/platform_minios.c:1103` | `#define MINIOS_AUTOSAVE_MS` |
+| `MINIOS_FF_FRAMESKIP` | macro | `progs/pokemon/platform_minios.c:1115` | `#define MINIOS_FF_FRAMESKIP` |
 | `STBI_NO_STDIO` | macro | `progs/pokemon/platform_minios.c:58` | `#define STBI_NO_STDIO` |
 | `STBI_ONLY_PNG` | macro | `progs/pokemon/platform_minios.c:57` | `#define STBI_ONLY_PNG` |
 | `STB_IMAGE_IMPLEMENTATION` | macro | `progs/pokemon/platform_minios.c:56` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `_dl_argv` | function | `progs/pokemon/platform_minios.c:160` | `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
+| `_dl_argv` | function | `progs/pokemon/platform_minios.c:176` | `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
  * DO NOT reintroduce argv ...` |
 | `audible` | function | `progs/pokemon/platform_minios.c:32` | `* audible (noise SFX, sweep zaps), the raw mix estimate is played.
  *
  * Debug: heartbeat to stde...` |
-| `audio` | function | `progs/pokemon/platform_minios.c:181` | `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies come fr` |
-| `gb_platform_get_exit_action` | function | `progs/pokemon/platform_minios.c:1386` | `GBPlatformExitAction gb_platform_get_exit_action(void)` |
-| `gb_platform_get_joypad` | function | `progs/pokemon/platform_minios.c:1364` | `uint8_t gb_platform_get_joypad(void)` |
-| `gb_platform_get_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1374` | `bool gb_platform_get_smooth_lcd_transitions(void)` |
-| `gb_platform_get_timing_info` | function | `progs/pokemon/platform_minios.c:1357` | `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)` |
-| `gb_platform_init` | function | `progs/pokemon/platform_minios.c:919` | `bool gb_platform_init(int scale)` |
-| `gb_platform_poll_events` | function | `progs/pokemon/platform_minios.c:1173` | `bool gb_platform_poll_events(GBContext *ctx)` |
-| `gb_platform_present_framebuffer` | function | `progs/pokemon/platform_minios.c:1240` | `void gb_platform_present_framebuffer(const uint32_t *framebuffer)` |
-| `gb_platform_register_context` | function | `progs/pokemon/platform_minios.c:1150` | `void gb_platform_register_context(GBContext *ctx)` |
-| `gb_platform_render_frame` | function | `progs/pokemon/platform_minios.c:1182` | `void gb_platform_render_frame(const uint32_t *framebuffer)` |
-| `gb_platform_render_lcd_off_frame` | function | `progs/pokemon/platform_minios.c:1246` | `void gb_platform_render_lcd_off_frame(void)` |
-| `gb_platform_set_benchmark_mode` | function | `progs/pokemon/platform_minios.c:1284` | `void gb_platform_set_benchmark_mode(bool enabled)` |
-| `gb_platform_set_debug` | function | `progs/pokemon/platform_minios.c:153` | `void gb_platform_set_debug(bool enabled)` |
-| `gb_platform_set_dump_frames` | function | `progs/pokemon/platform_minios.c:1308` | `void gb_platform_set_dump_frames(const char *frames)` |
-| `gb_platform_set_dump_present_frames` | function | `progs/pokemon/platform_minios.c:1330` | `void gb_platform_set_dump_present_frames(const char *frames)` |
-| `gb_platform_set_input_record_file` | function | `progs/pokemon/platform_minios.c:1294` | `void gb_platform_set_input_record_file(const char *path)` |
-| `gb_platform_set_input_script` | function | `progs/pokemon/platform_minios.c:1288` | `bool gb_platform_set_input_script(const char *script)` |
-| `gb_platform_set_launcher_return_enabled` | function | `progs/pokemon/platform_minios.c:1382` | `void gb_platform_set_launcher_return_enabled(bool enabled)` |
-| `gb_platform_set_persistence_dir` | function | `progs/pokemon/platform_minios.c:1299` | `bool gb_platform_set_persistence_dir(const char *path)` |
-| `gb_platform_set_screenshot_prefix` | function | `progs/pokemon/platform_minios.c:1351` | `void gb_platform_set_screenshot_prefix(const char *prefix)` |
-| `gb_platform_set_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1378` | `void gb_platform_set_smooth_lcd_transitions(bool enabled)` |
-| `gb_platform_set_title` | function | `progs/pokemon/platform_minios.c:1368` | `void gb_platform_set_title(const char *title)` |
-| `gb_platform_shutdown` | function | `progs/pokemon/platform_minios.c:1166` | `void gb_platform_shutdown(void)` |
-| `gb_platform_submit_port_frame` | function | `progs/pokemon/platform_minios.c:1390` | `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)` |
-| `gb_platform_test_audio_concurrency` | function | `progs/pokemon/platform_minios.c:1396` | `bool gb_platform_test_audio_concurrency(uint32_t frames,
+| `audio` | function | `progs/pokemon/platform_minios.c:197` | `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies come fr` |
+| `gb_platform_get_exit_action` | function | `progs/pokemon/platform_minios.c:1446` | `GBPlatformExitAction gb_platform_get_exit_action(void)` |
+| `gb_platform_get_joypad` | function | `progs/pokemon/platform_minios.c:1424` | `uint8_t gb_platform_get_joypad(void)` |
+| `gb_platform_get_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1434` | `bool gb_platform_get_smooth_lcd_transitions(void)` |
+| `gb_platform_get_timing_info` | function | `progs/pokemon/platform_minios.c:1417` | `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)` |
+| `gb_platform_init` | function | `progs/pokemon/platform_minios.c:967` | `bool gb_platform_init(int scale)` |
+| `gb_platform_poll_events` | function | `progs/pokemon/platform_minios.c:1231` | `bool gb_platform_poll_events(GBContext *ctx)` |
+| `gb_platform_present_framebuffer` | function | `progs/pokemon/platform_minios.c:1300` | `void gb_platform_present_framebuffer(const uint32_t *framebuffer)` |
+| `gb_platform_register_context` | function | `progs/pokemon/platform_minios.c:1198` | `void gb_platform_register_context(GBContext *ctx)` |
+| `gb_platform_render_frame` | function | `progs/pokemon/platform_minios.c:1240` | `void gb_platform_render_frame(const uint32_t *framebuffer)` |
+| `gb_platform_render_lcd_off_frame` | function | `progs/pokemon/platform_minios.c:1306` | `void gb_platform_render_lcd_off_frame(void)` |
+| `gb_platform_set_benchmark_mode` | function | `progs/pokemon/platform_minios.c:1344` | `void gb_platform_set_benchmark_mode(bool enabled)` |
+| `gb_platform_set_debug` | function | `progs/pokemon/platform_minios.c:169` | `void gb_platform_set_debug(bool enabled)` |
+| `gb_platform_set_dump_frames` | function | `progs/pokemon/platform_minios.c:1368` | `void gb_platform_set_dump_frames(const char *frames)` |
+| `gb_platform_set_dump_present_frames` | function | `progs/pokemon/platform_minios.c:1390` | `void gb_platform_set_dump_present_frames(const char *frames)` |
+| `gb_platform_set_input_record_file` | function | `progs/pokemon/platform_minios.c:1354` | `void gb_platform_set_input_record_file(const char *path)` |
+| `gb_platform_set_input_script` | function | `progs/pokemon/platform_minios.c:1348` | `bool gb_platform_set_input_script(const char *script)` |
+| `gb_platform_set_launcher_return_enabled` | function | `progs/pokemon/platform_minios.c:1442` | `void gb_platform_set_launcher_return_enabled(bool enabled)` |
+| `gb_platform_set_persistence_dir` | function | `progs/pokemon/platform_minios.c:1359` | `bool gb_platform_set_persistence_dir(const char *path)` |
+| `gb_platform_set_screenshot_prefix` | function | `progs/pokemon/platform_minios.c:1411` | `void gb_platform_set_screenshot_prefix(const char *prefix)` |
+| `gb_platform_set_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1438` | `void gb_platform_set_smooth_lcd_transitions(bool enabled)` |
+| `gb_platform_set_title` | function | `progs/pokemon/platform_minios.c:1428` | `void gb_platform_set_title(const char *title)` |
+| `gb_platform_shutdown` | function | `progs/pokemon/platform_minios.c:1220` | `void gb_platform_shutdown(void)` |
+| `gb_platform_submit_port_frame` | function | `progs/pokemon/platform_minios.c:1450` | `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)` |
+| `gb_platform_test_audio_concurrency` | function | `progs/pokemon/platform_minios.c:1456` | `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...` |
-| `gb_platform_test_inject_persistence_fault` | function | `progs/pokemon/platform_minios.c:1405` | `void gb_platform_test_inject_persistence_fault(
+| `gb_platform_test_inject_persistence_fault` | function | `progs/pokemon/platform_minios.c:1465` | `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...` |
-| `gb_platform_vsync` | function | `progs/pokemon/platform_minios.c:1263` | `void gb_platform_vsync(uint32_t frame_cycles)` |
-| `gb_voice_in_range` | function | `progs/pokemon/platform_minios.c:242` | `static bool gb_voice_in_range(unsigned f)` |
-| `gb_voice_t` | struct | `progs/pokemon/platform_minios.c:237` | `` |
-| `hold_tone` | function | `progs/pokemon/platform_minios.c:266` | `static void hold_tone(unsigned freq, unsigned ms)` |
-| `menu` | function | `progs/pokemon/platform_minios.c:506` | `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it sta` |
-| `menu_activate` | function | `progs/pokemon/platform_minios.c:656` | `static void menu_activate(int it)` |
-| `menu_do_load` | function | `progs/pokemon/platform_minios.c:637` | `static void menu_do_load(void)` |
-| `menu_do_save` | function | `progs/pokemon/platform_minios.c:621` | `static void menu_do_save(void)` |
-| `menu_draw` | function | `progs/pokemon/platform_minios.c:584` | `static void menu_draw(void)` |
-| `menu_fill` | function | `progs/pokemon/platform_minios.c:546` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
-| `menu_item_at` | function | `progs/pokemon/platform_minios.c:614` | `static int menu_item_at(int lx, int ly)` |
-| `menu_osd` | function | `progs/pokemon/platform_minios.c:578` | `static void menu_osd(const char *s)` |
-| `menu_text` | function | `progs/pokemon/platform_minios.c:559` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
-| `minios_audio_frame` | function | `progs/pokemon/platform_minios.c:309` | `static void minios_audio_frame(void)` |
-| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:274` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
+| `gb_platform_vsync` | function | `progs/pokemon/platform_minios.c:1323` | `void gb_platform_vsync(uint32_t frame_cycles)` |
+| `gb_voice_in_range` | function | `progs/pokemon/platform_minios.c:285` | `static bool gb_voice_in_range(unsigned f)` |
+| `gb_voice_t` | struct | `progs/pokemon/platform_minios.c:280` | `` |
+| `hold_tone` | function | `progs/pokemon/platform_minios.c:309` | `static void hold_tone(unsigned freq, unsigned ms)` |
+| `menu` | function | `progs/pokemon/platform_minios.c:554` | `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it sta` |
+| `menu_activate` | function | `progs/pokemon/platform_minios.c:704` | `static void menu_activate(int it)` |
+| `menu_do_load` | function | `progs/pokemon/platform_minios.c:685` | `static void menu_do_load(void)` |
+| `menu_do_save` | function | `progs/pokemon/platform_minios.c:669` | `static void menu_do_save(void)` |
+| `menu_draw` | function | `progs/pokemon/platform_minios.c:632` | `static void menu_draw(void)` |
+| `menu_fill` | function | `progs/pokemon/platform_minios.c:594` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
+| `menu_item_at` | function | `progs/pokemon/platform_minios.c:662` | `static int menu_item_at(int lx, int ly)` |
+| `menu_osd` | function | `progs/pokemon/platform_minios.c:626` | `static void menu_osd(const char *s)` |
+| `menu_text` | function | `progs/pokemon/platform_minios.c:607` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
+| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:317` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
                             ...` |
-| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:211` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
-| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1084` | `static void minios_autosave(uint32_t now)` |
-| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1070` | `static inline bool minios_fast_forward(void)` |
-| `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:959` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
+| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:241` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
+| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1132` | `static void minios_autosave(uint32_t now)` |
+| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1118` | `static inline bool minios_fast_forward(void)` |
+| `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:1007` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
                        ...` |
-| `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1079` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
-| `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:994` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
+| `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1127` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:1042` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
                        ...` |
-| `minios_load_helper` | function | `progs/pokemon/platform_minios.c:965` | `static bool minios_load_helper(const char *path, void *data, size_t size,
+| `minios_load_helper` | function | `progs/pokemon/platform_minios.c:1013` | `static bool minios_load_helper(const char *path, void *data, size_t size,
                        ...` |
-| `minios_load_rtc_data` | function | `progs/pokemon/platform_minios.c:1019` | `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
+| `minios_load_rtc_data` | function | `progs/pokemon/platform_minios.c:1067` | `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
                           ...` |
-| `minios_persist_path` | function | `progs/pokemon/platform_minios.c:950` | `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
+| `minios_persist_path` | function | `progs/pokemon/platform_minios.c:998` | `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                       ...` |
-| `minios_save_battery_ram` | function | `progs/pokemon/platform_minios.c:1009` | `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
+| `minios_save_battery_ram` | function | `progs/pokemon/platform_minios.c:1057` | `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
                        ...` |
-| `minios_save_helper` | function | `progs/pokemon/platform_minios.c:983` | `static bool minios_save_helper(const char *path, const void *data, size_t size)` |
-| `minios_save_rtc_data` | function | `progs/pokemon/platform_minios.c:1032` | `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
+| `minios_save_helper` | function | `progs/pokemon/platform_minios.c:1031` | `static bool minios_save_helper(const char *path, const void *data, size_t size)` |
+| `minios_save_rtc_data` | function | `progs/pokemon/platform_minios.c:1080` | `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
                           ...` |
-| `minios_state_path` | function | `progs/pokemon/platform_minios.c:1074` | `static void minios_state_path(char *out, size_t n, const GBContext *ctx)` |
-| `pokemon_art_draw` | function | `progs/pokemon/platform_minios.c:839` | `static void pokemon_art_draw(void)` |
-| `pokemon_art_draw_one` | function | `progs/pokemon/platform_minios.c:801` | `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
+| `minios_state_path` | function | `progs/pokemon/platform_minios.c:1122` | `static void minios_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `pokemon_art_draw` | function | `progs/pokemon/platform_minios.c:887` | `static void pokemon_art_draw(void)` |
+| `pokemon_art_draw_one` | function | `progs/pokemon/platform_minios.c:849` | `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
                       ...` |
-| `pokemon_art_load` | function | `progs/pokemon/platform_minios.c:783` | `static void pokemon_art_load(void)` |
-| `pokemon_art_load_one` | function | `progs/pokemon/platform_minios.c:758` | `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
+| `pokemon_art_load` | function | `progs/pokemon/platform_minios.c:831` | `static void pokemon_art_load(void)` |
+| `pokemon_art_load_one` | function | `progs/pokemon/platform_minios.c:806` | `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
                           ...` |
-| `poll_hotkeys` | function | `progs/pokemon/platform_minios.c:1098` | `static void poll_hotkeys(void)` |
-| `poll_keyboard` | function | `progs/pokemon/platform_minios.c:351` | `static void poll_keyboard(void)` |
-| `poll_menu` | function | `progs/pokemon/platform_minios.c:690` | `static void poll_menu(void)` |
-| `push_332_palette` | function | `progs/pokemon/platform_minios.c:390` | `static void push_332_palette(void)` |
-| `rebuild_joypad` | function | `progs/pokemon/platform_minios.c:337` | `static void rebuild_joypad(void)` |
-| `sample_apu_voices` | function | `progs/pokemon/platform_minios.c:246` | `static void sample_apu_voices(gb_voice_t *v)` |
+| `poll_hotkeys` | function | `progs/pokemon/platform_minios.c:1146` | `static void poll_hotkeys(void)` |
+| `poll_keyboard` | function | `progs/pokemon/platform_minios.c:399` | `static void poll_keyboard(void)` |
+| `poll_menu` | function | `progs/pokemon/platform_minios.c:738` | `static void poll_menu(void)` |
+| `push_332_palette` | function | `progs/pokemon/platform_minios.c:438` | `static void push_332_palette(void)` |
+| `rebuild_joypad` | function | `progs/pokemon/platform_minios.c:385` | `static void rebuild_joypad(void)` |
+| `sample_apu_voices` | function | `progs/pokemon/platform_minios.c:289` | `static void sample_apu_voices(gb_voice_t *v)` |
 | `sys_gfx_title` | function | `progs/pokemon/platform_minios.c:107` | `static long sys_gfx_title(const char *t)` |
 | `sys_kbd` | function | `progs/pokemon/platform_minios.c:71` | `static long sys_kbd(void)` |
 | `sys_kbd_raw` | function | `progs/pokemon/platform_minios.c:95` | `static long sys_kbd_raw(int on)` |
 | `sys_mouse` | function | `progs/pokemon/platform_minios.c:83` | `static long sys_mouse(int *xybw)` |
 | `sys_nk_frame` | function | `progs/pokemon/platform_minios.c:77` | `static long sys_nk_frame(int *origin)` |
 | `sys_palette` | function | `progs/pokemon/platform_minios.c:101` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_pcm2_close` | function | `progs/pokemon/platform_minios.c:131` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/pokemon/platform_minios.c:119` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/pokemon/platform_minios.c:125` | `static long sys_pcm2_write(const void *buf, long len)` |
 | `sys_tone` | function | `progs/pokemon/platform_minios.c:113` | `static long sys_tone(unsigned f)` |
 | `sys_vga_mode` | function | `progs/pokemon/platform_minios.c:89` | `static long sys_vga_mode(int on)` |
-| `upload_frame` | function | `progs/pokemon/platform_minios.c:850` | `static void upload_frame(const uint32_t *framebuffer)` |
+| `upload_frame` | function | `progs/pokemon/platform_minios.c:898` | `static void upload_frame(const uint32_t *framebuffer)` |
+| `Cbuf_AddText` | function | `progs/quake2generic/q2generic_minios.c:79` | `extern void Cbuf_AddText(char *text);` |
 | `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/quake2generic/q2generic_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
 | `MINIOS_GFX_BUF_GAME` | function | `progs/quake2generic/q2generic_minios.c:5` | `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
  * compat alias) and the...` |
 | `Q2G_BACKBUF` | macro | `progs/quake2generic/q2generic_minios.c:72` | `#define Q2G_BACKBUF` |
 | `Q2G_FB_H` | macro | `progs/quake2generic/q2generic_minios.c:22` | `#define Q2G_FB_H` |
 | `Q2G_FB_W` | macro | `progs/quake2generic/q2generic_minios.c:21` | `#define Q2G_FB_W` |
-| `QG_CaptureMouse` | function | `progs/quake2generic/q2generic_minios.c:114` | `void QG_CaptureMouse(void)` |
-| `QG_GetMouseDiff` | function | `progs/quake2generic/q2generic_minios.c:103` | `void QG_GetMouseDiff(int *dx, int *dy)` |
-| `QG_Milliseconds` | function | `progs/quake2generic/q2generic_minios.c:318` | `int QG_Milliseconds(void)` |
-| `QG_Mkdir` | function | `progs/quake2generic/q2generic_minios.c:121` | `void QG_Mkdir(const char *path)` |
-| `QG_ReleaseMouse` | function | `progs/quake2generic/q2generic_minios.c:118` | `void QG_ReleaseMouse(void)` |
-| `SWimp_AppActivate` | function | `progs/quake2generic/q2generic_minios.c:314` | `void SWimp_AppActivate(qboolean active)` |
-| `SWimp_BeginFrame` | function | `progs/quake2generic/q2generic_minios.c:292` | `void SWimp_BeginFrame(float camera_separation)` |
-| `SWimp_EndFrame` | function | `progs/quake2generic/q2generic_minios.c:295` | `void SWimp_EndFrame(void)` |
-| `SWimp_Init` | function | `progs/quake2generic/q2generic_minios.c:283` | `int SWimp_Init(void *hInstance, void *wndProc)` |
-| `SWimp_SetMode` | function | `progs/quake2generic/q2generic_minios.c:266` | `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)` |
-| `SWimp_SetPalette` | function | `progs/quake2generic/q2generic_minios.c:256` | `void SWimp_SetPalette(const unsigned char *palette)` |
-| `SWimp_Shutdown` | function | `progs/quake2generic/q2generic_minios.c:289` | `void SWimp_Shutdown(void)` |
+| `QG_CaptureMouse` | function | `progs/quake2generic/q2generic_minios.c:142` | `void QG_CaptureMouse(void)` |
+| `QG_GetMouseDiff` | function | `progs/quake2generic/q2generic_minios.c:131` | `void QG_GetMouseDiff(int *dx, int *dy)` |
+| `QG_Milliseconds` | function | `progs/quake2generic/q2generic_minios.c:356` | `int QG_Milliseconds(void)` |
+| `QG_Mkdir` | function | `progs/quake2generic/q2generic_minios.c:149` | `void QG_Mkdir(const char *path)` |
+| `QG_ReleaseMouse` | function | `progs/quake2generic/q2generic_minios.c:146` | `void QG_ReleaseMouse(void)` |
+| `SWimp_AppActivate` | function | `progs/quake2generic/q2generic_minios.c:352` | `void SWimp_AppActivate(qboolean active)` |
+| `SWimp_BeginFrame` | function | `progs/quake2generic/q2generic_minios.c:320` | `void SWimp_BeginFrame(float camera_separation)` |
+| `SWimp_EndFrame` | function | `progs/quake2generic/q2generic_minios.c:323` | `void SWimp_EndFrame(void)` |
+| `SWimp_Init` | function | `progs/quake2generic/q2generic_minios.c:311` | `int SWimp_Init(void *hInstance, void *wndProc)` |
+| `SWimp_SetMode` | function | `progs/quake2generic/q2generic_minios.c:294` | `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)` |
+| `SWimp_SetPalette` | function | `progs/quake2generic/q2generic_minios.c:284` | `void SWimp_SetPalette(const unsigned char *palette)` |
+| `SWimp_Shutdown` | function | `progs/quake2generic/q2generic_minios.c:317` | `void SWimp_Shutdown(void)` |
 | `Sys_Quit` | function | `progs/quake2generic/q2generic_minios.c:76` | `extern void Sys_Quit(void);` |
-| `extended_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:208` | `static unsigned char extended_to_q2key(unsigned char sc)` |
-| `kbd_poll` | function | `progs/quake2generic/q2generic_minios.c:226` | `static void kbd_poll(void)` |
-| `main` | function | `progs/quake2generic/q2generic_minios.c:322` | `int main(int argc, char **argv)` |
-| `q2g_parse_autoframes` | function | `progs/quake2generic/q2generic_minios.c:88` | `static void q2g_parse_autoframes(int argc, char **argv)` |
-| `scancode_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:125` | `static unsigned char scancode_to_q2key(unsigned char raw)` |
+| `extended_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:236` | `static unsigned char extended_to_q2key(unsigned char sc)` |
+| `kbd_poll` | function | `progs/quake2generic/q2generic_minios.c:254` | `static void kbd_poll(void)` |
+| `main` | function | `progs/quake2generic/q2generic_minios.c:360` | `int main(int argc, char **argv)` |
+| `q2g_parse_autoframes` | function | `progs/quake2generic/q2generic_minios.c:98` | `static void q2g_parse_autoframes(int argc, char **argv)` |
+| `q2snd_probe` | function | `progs/quake2generic/q2generic_minios.c:83` | `extern int q2snd_probe(void);` |
+| `scancode_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:153` | `static unsigned char scancode_to_q2key(unsigned char raw)` |
 | `sys_doom_frame` | function | `progs/quake2generic/q2generic_minios.c:54` | `static long sys_doom_frame(void)` |
 | `sys_kbd` | function | `progs/quake2generic/q2generic_minios.c:30` | `static long sys_kbd(void)` |
 | `sys_kbd_raw` | function | `progs/quake2generic/q2generic_minios.c:42` | `static long sys_kbd_raw(int on)` |
@@ -9001,6 +9019,22 @@ Z_Malloc
 | `sys_palette` | function | `progs/quake2generic/q2generic_minios.c:36` | `static long sys_palette(const unsigned char *pal)` |
 | `sys_set_title` | function | `progs/quake2generic/q2generic_minios.c:66` | `static long sys_set_title(const char *t)` |
 | `sys_vga_mode` | function | `progs/quake2generic/q2generic_minios.c:48` | `static long sys_vga_mode(int on)` |
+| `Q2SND_AHEAD` | macro | `progs/quake2generic/snddma_minios.c:54` | `#define Q2SND_AHEAD` |
+| `Q2SND_BUF_BYTES` | macro | `progs/quake2generic/snddma_minios.c:56` | `#define Q2SND_BUF_BYTES` |
+| `Q2SND_RATE` | macro | `progs/quake2generic/snddma_minios.c:48` | `#define Q2SND_RATE` |
+| `Q2SND_SAMPLES` | macro | `progs/quake2generic/snddma_minios.c:49` | `#define Q2SND_SAMPLES` |
+| `Q2SND_SILENCE` | macro | `progs/quake2generic/snddma_minios.c:50` | `#define Q2SND_SILENCE` |
+| `SNDDMA_BeginPainting` | function | `progs/quake2generic/snddma_minios.c:202` | `void SNDDMA_BeginPainting(void)` |
+| `SNDDMA_GetDMAPos` | function | `progs/quake2generic/snddma_minios.c:182` | `int SNDDMA_GetDMAPos(void)` |
+| `SNDDMA_Init` | function | `progs/quake2generic/snddma_minios.c:138` | `qboolean SNDDMA_Init(void)` |
+| `SNDDMA_Shutdown` | function | `progs/quake2generic/snddma_minios.c:190` | `void SNDDMA_Shutdown(void)` |
+| `SNDDMA_Submit` | function | `progs/quake2generic/snddma_minios.c:205` | `void SNDDMA_Submit(void)` |
+| `q2_dma_push` | function | `progs/quake2generic/snddma_minios.c:104` | `static int q2_dma_push(int end)` |
+| `q2snd_probe` | function | `progs/quake2generic/snddma_minios.c:222` | `int q2snd_probe(void)` |
+| `sys_pcm2_close` | function | `progs/quake2generic/snddma_minios.c:83` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/quake2generic/snddma_minios.c:67` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/quake2generic/snddma_minios.c:75` | `static long sys_pcm2_write(const void *buf, long len)` |
+| `sys_time_ms` | function | `progs/quake2generic/snddma_minios.c:89` | `static long sys_time_ms(void)` |
 | `AES_AFFINE_C` | macro | `progs/src/aes.c:53` | `#define AES_AFFINE_C` |
 | `AES_BLOCK` | macro | `progs/src/aes.c:44` | `#define AES_BLOCK` |
 | `AES_EXIT_FAIL` | macro | `progs/src/aes.c:61` | `#define AES_EXIT_FAIL` |
@@ -10592,8 +10626,8 @@ Z_Malloc
 | `main` | function | `tools/mkramdisk.py:30` | `def main()` |
 | `pack_name` | function | `tools/mkramdisk.py:20` | `def pack_name(path, common)` |
 | `cleanup` | function | `tools/mutate.sh:112` | `` |
-| `find_index` | function | `tools/mutate.sh:309` | `` |
-| `record` | function | `tools/mutate.sh:303` | `` |
+| `find_index` | function | `tools/mutate.sh:312` | `` |
+| `record` | function | `tools/mutate.sh:306` | `` |
 | `restore_sources` | function | `tools/mutate.sh:105` | `` |
 | `usage` | function | `tools/mutate.sh:51` | `` |
 | `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
@@ -10628,10 +10662,10 @@ Z_Malloc
 | `cleanup_stale_qemu` | function | `tools/test_bdd.sh:43` | `` |
 | `expect` | function | `tools/test_bdd.sh:97` | `` |
 | `expect_count` | function | `tools/test_bdd.sh:119` | `` |
-| `http_fixture_start` | function | `tools/test_bdd.sh:872` | `` |
-| `http_fixture_stop` | function | `tools/test_bdd.sh:879` | `` |
-| `http_server_start` | function | `tools/test_bdd.sh:860` | `` |
-| `http_server_stop` | function | `tools/test_bdd.sh:867` | `` |
+| `http_fixture_start` | function | `tools/test_bdd.sh:883` | `` |
+| `http_fixture_stop` | function | `tools/test_bdd.sh:890` | `` |
+| `http_server_start` | function | `tools/test_bdd.sh:871` | `` |
+| `http_server_stop` | function | `tools/test_bdd.sh:878` | `` |
 | `refute` | function | `tools/test_bdd.sh:142` | `` |
 | `scenario` | function | `tools/test_bdd.sh:54` | `` |
 | `scenario_smp` | function | `tools/test_bdd.sh:74` | `` |

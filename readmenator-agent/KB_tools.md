@@ -448,8 +448,8 @@
   - `usage` (function, line 51)
   - `restore_sources` (function, line 105)
   - `cleanup` (function, line 112)
-  - `record` (function, line 303)
-  - `find_index` (function, line 309)
+  - `record` (function, line 306)
+  - `find_index` (function, line 312)
 
 ## tools/probe_compute_vga.py
 - Layer: utility
@@ -526,10 +526,10 @@
   - `expect` (function, line 97)
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
-  - `http_server_start` (function, line 860)
-  - `http_server_stop` (function, line 867)
-  - `http_fixture_start` (function, line 872)
-  - `http_fixture_stop` (function, line 879)
+  - `http_server_start` (function, line 871)
+  - `http_server_stop` (function, line 878)
+  - `http_fixture_start` (function, line 883)
+  - `http_fixture_stop` (function, line 890)
 
 ## tools/test_call_align.py
 - Layer: testing

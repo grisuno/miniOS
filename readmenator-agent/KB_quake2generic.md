@@ -1,0 +1,64 @@
+# Subsystem: quake2generic
+
+## progs/quake2generic/q2generic_minios.c
+- Layer: utility
+- Doc: q2generic_minios.c - MiniOS platform layer for quake2generic.
+- Language: c
+- Symbols:
+  - `MINIOS_GFX_BUF_GAME` (function, line 5) `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
+ * compat alias) and the...`
+  - `sys_kbd` (function, line 30) `static long sys_kbd(void)`
+  - `sys_palette` (function, line 36) `static long sys_palette(const unsigned char *pal)`
+  - `sys_kbd_raw` (function, line 42) `static long sys_kbd_raw(int on)`
+  - `sys_vga_mode` (function, line 48) `static long sys_vga_mode(int on)`
+  - `sys_doom_frame` (function, line 54) `static long sys_doom_frame(void)`
+  - `sys_mouse` (function, line 60) `static long sys_mouse(int *buf)`
+  - `sys_set_title` (function, line 66) `static long sys_set_title(const char *t)`
+  - `q2g_parse_autoframes` (function, line 98) `static void q2g_parse_autoframes(int argc, char **argv)`
+  - `QG_GetMouseDiff` (function, line 131) `void QG_GetMouseDiff(int *dx, int *dy)`
+  - `QG_CaptureMouse` (function, line 142) `void QG_CaptureMouse(void)`
+  - `QG_ReleaseMouse` (function, line 146) `void QG_ReleaseMouse(void)`
+  - `QG_Mkdir` (function, line 149) `void QG_Mkdir(const char *path)`
+  - `scancode_to_q2key` (function, line 153) `static unsigned char scancode_to_q2key(unsigned char raw)`
+  - `extended_to_q2key` (function, line 236) `static unsigned char extended_to_q2key(unsigned char sc)`
+  - `kbd_poll` (function, line 254) `static void kbd_poll(void)`
+  - `SWimp_SetPalette` (function, line 284) `void SWimp_SetPalette(const unsigned char *palette)`
+  - `SWimp_SetMode` (function, line 294) `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)`
+  - `SWimp_Init` (function, line 311) `int SWimp_Init(void *hInstance, void *wndProc)`
+  - `SWimp_Shutdown` (function, line 317) `void SWimp_Shutdown(void)`
+  - `SWimp_BeginFrame` (function, line 320) `void SWimp_BeginFrame(float camera_separation)`
+  - `SWimp_EndFrame` (function, line 323) `void SWimp_EndFrame(void)`
+  - `SWimp_AppActivate` (function, line 352) `void SWimp_AppActivate(qboolean active)`
+  - `QG_Milliseconds` (function, line 356) `int QG_Milliseconds(void)`
+  - `main` (function, line 360) `int main(int argc, char **argv)`
+  - `MINIOS_DOOM_BACKBUF_ADDR` (function, line 4) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
+  - `Sys_Quit` (function, line 76) `extern void Sys_Quit(void);`
+  - `Cbuf_AddText` (function, line 79) `extern void Cbuf_AddText(char *text);`
+  - `q2snd_probe` (function, line 83) `extern int q2snd_probe(void);`
+  - `Q2G_FB_W` (macro, line 21) `#define Q2G_FB_W`
+  - `Q2G_FB_H` (macro, line 22) `#define Q2G_FB_H`
+  - `Q2G_BACKBUF` (macro, line 72) `#define Q2G_BACKBUF`
+- Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
+
+## progs/quake2generic/snddma_minios.c
+- Layer: utility
+- Doc: snddma_minios.c - Quake 2 DMA sound backend over the MiniOS pcm2 path.
+- Language: c
+- Symbols:
+  - `sys_pcm2_open` (function, line 67) `static long sys_pcm2_open(long flags)`
+  - `sys_pcm2_write` (function, line 75) `static long sys_pcm2_write(const void *buf, long len)`
+  - `sys_pcm2_close` (function, line 83) `static void sys_pcm2_close(void)`
+  - `sys_time_ms` (function, line 89) `static long sys_time_ms(void)`
+  - `q2_dma_push` (function, line 104) `static int q2_dma_push(int end)`
+  - `SNDDMA_Init` (function, line 138) `qboolean SNDDMA_Init(void)`
+  - `SNDDMA_GetDMAPos` (function, line 182) `int SNDDMA_GetDMAPos(void)`
+  - `SNDDMA_Shutdown` (function, line 190) `void SNDDMA_Shutdown(void)`
+  - `SNDDMA_BeginPainting` (function, line 202) `void SNDDMA_BeginPainting(void)`
+  - `SNDDMA_Submit` (function, line 205) `void SNDDMA_Submit(void)`
+  - `q2snd_probe` (function, line 222) `int q2snd_probe(void)`
+  - `Q2SND_RATE` (macro, line 48) `#define Q2SND_RATE`
+  - `Q2SND_SAMPLES` (macro, line 49) `#define Q2SND_SAMPLES`
+  - `Q2SND_SILENCE` (macro, line 50) `#define Q2SND_SILENCE`
+  - `Q2SND_AHEAD` (macro, line 54) `#define Q2SND_AHEAD`
+  - `Q2SND_BUF_BYTES` (macro, line 56) `#define Q2SND_BUF_BYTES`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`

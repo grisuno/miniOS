@@ -736,27 +736,27 @@
 - Doc: pcm2.h -- low-latency PCM audio path over SB16 single-cycle DMA.
 - Language: h
 - Symbols:
-  - `pcm2_counters_t` (struct, line 66)
-  - `pcm2_active` (function, line 76) `int pcm2_active(void);`
-  - `pcm2_open` (function, line 77) `int pcm2_open(unsigned flags, int owner);`
-  - `pcm2_write` (function, line 78) `int pcm2_write(const unsigned char *user, unsigned len, int owner);`
-  - `pcm2_close` (function, line 79) `void pcm2_close(int owner);`
-  - `pcm2_irq` (function, line 80) `void pcm2_irq(void);`
-  - `pcm2_poll` (function, line 81) `void pcm2_poll(void);`
-  - `pcm2_counters` (function, line 82) `void pcm2_counters(pcm2_counters_t *out);`
+  - `pcm2_counters_t` (struct, line 67)
+  - `pcm2_active` (function, line 77) `int pcm2_active(void);`
+  - `pcm2_open` (function, line 78) `int pcm2_open(unsigned flags, int owner);`
+  - `pcm2_write` (function, line 79) `int pcm2_write(const unsigned char *user, unsigned len, int owner);`
+  - `pcm2_close` (function, line 80) `void pcm2_close(int owner);`
+  - `pcm2_irq` (function, line 81) `void pcm2_irq(void);`
+  - `pcm2_poll` (function, line 82) `void pcm2_poll(void);`
+  - `pcm2_counters` (function, line 83) `void pcm2_counters(pcm2_counters_t *out);`
   - `PCM2_H` (macro, line 2) `#define PCM2_H`
-  - `PCM2_RATE` (macro, line 51) `#define PCM2_RATE`
-  - `PCM2_FRAG` (macro, line 52) `#define PCM2_FRAG`
-  - `PCM2_FRAGS` (macro, line 53) `#define PCM2_FRAGS`
-  - `PCM2_DMA_BYTES` (macro, line 54) `#define PCM2_DMA_BYTES`
-  - `PCM2_RING` (macro, line 55) `#define PCM2_RING`
-  - `PCM2_FLAG_NONBLOCK` (macro, line 57) `#define PCM2_FLAG_NONBLOCK`
-  - `PCM2_ERR_BUSY` (macro, line 59) `#define PCM2_ERR_BUSY`
-  - `PCM2_ERR_NODEV` (macro, line 60) `#define PCM2_ERR_NODEV`
-  - `PCM2_ERR_NOMEM` (macro, line 61) `#define PCM2_ERR_NOMEM`
-  - `PCM2_ERR_PERM` (macro, line 62) `#define PCM2_ERR_PERM`
-  - `PCM2_ERR_PIPE` (macro, line 63) `#define PCM2_ERR_PIPE`
-  - `PCM2_ERR_INVAL` (macro, line 64) `#define PCM2_ERR_INVAL`
+  - `PCM2_RATE` (macro, line 52) `#define PCM2_RATE`
+  - `PCM2_FRAG` (macro, line 53) `#define PCM2_FRAG`
+  - `PCM2_FRAGS` (macro, line 54) `#define PCM2_FRAGS`
+  - `PCM2_DMA_BYTES` (macro, line 55) `#define PCM2_DMA_BYTES`
+  - `PCM2_RING` (macro, line 56) `#define PCM2_RING`
+  - `PCM2_FLAG_NONBLOCK` (macro, line 58) `#define PCM2_FLAG_NONBLOCK`
+  - `PCM2_ERR_BUSY` (macro, line 60) `#define PCM2_ERR_BUSY`
+  - `PCM2_ERR_NODEV` (macro, line 61) `#define PCM2_ERR_NODEV`
+  - `PCM2_ERR_NOMEM` (macro, line 62) `#define PCM2_ERR_NOMEM`
+  - `PCM2_ERR_PERM` (macro, line 63) `#define PCM2_ERR_PERM`
+  - `PCM2_ERR_PIPE` (macro, line 64) `#define PCM2_ERR_PIPE`
+  - `PCM2_ERR_INVAL` (macro, line 65) `#define PCM2_ERR_INVAL`
 - Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## headers/pcm_ring.h
