@@ -18,13 +18,13 @@ Open work clusters around documentation (88% file coverage), 0 security findings
 | Metric | Value |
 |--------|-------|
 | Files | 486 |
-| Symbols | 9896 |
+| Symbols | 9906 |
 | Resolved imports | 1248 |
 | Languages | S, c, h, lua, py, s, sh |
 | Communities | 13 |
 | Doc coverage | 88% (428/486 files) |
 | Security findings | 0 |
-| Estimated read cost | ~169715 tokens (chars/4, offline so $0) |
+| Estimated read cost | ~169813 tokens (chars/4, offline so $0) |
 
 ## Reading Order
 

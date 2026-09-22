@@ -1685,17 +1685,17 @@ static int zip_sanitize_name(con...`
 ## headers/desktop_shortcuts.h
 
 ### desktop_shortcuts_load (function) `void desktop_shortcuts_load(void);`
-- Defined: `headers/desktop_shortcuts.h:75`
+- Defined: `headers/desktop_shortcuts.h:82`
 - Doc: Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first draw.
 - Imported by: `kernel/vga_fb.c`
 
 ### desktop_shortcuts_draw (function) `void desktop_shortcuts_draw(void);`
-- Defined: `headers/desktop_shortcuts.h:78`
+- Defined: `headers/desktop_shortcuts.h:85`
 - Doc: Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first draw. v
 - Imported by: `kernel/vga_fb.c`
 
 ### desktop_shortcuts_hit_test (function) `const char *desktop_shortcuts_hit_test(int mx, int my);`
-- Defined: `headers/desktop_shortcuts.h:82`
+- Defined: `headers/desktop_shortcuts.h:89`
 - Doc: Handle a left-click at (mx, my).  Returns the command string if the * click hit an icon, or NULL otherwise.
 - Imported by: `kernel/vga_fb.c`
 
@@ -4777,43 +4777,59 @@ static int zip_sanitize_name(con...`
 - Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
 
-### pixels (function) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a failed snapshot leaves the new * frame in place, so every entry fails closed to a pl`
+### dock_bounce_counts (function) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);`
+- Defined: `headers/vga_fb.h:237`
+- Doc: Dock click bounce (Mac style): arm count and strip repaints while live, * for the serial-observable proof (`wm state` re
+- Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
+
+### dock_click_count (function) `void dock_click_count(unsigned long *edges);`
 - Defined: `headers/vga_fb.h:238`
 - Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
 
-### vga_fx_enabled (function) `int vga_fx_enabled(void);`
-- Defined: `headers/vga_fb.h:242`
+### dock_pending_active (function) `int dock_pending_active(void);`
+- Defined: `headers/vga_fb.h:239`
 - Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
 
-### vga_fx_snap_rect (function) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
+### pixels (function) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a failed snapshot leaves the new * frame in place, so every entry fails closed to a pl`
 - Defined: `headers/vga_fb.h:243`
 - Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
 
-### vga_fx_restore_rect (function) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
-- Defined: `headers/vga_fb.h:244`
+### vga_fx_enabled (function) `int vga_fx_enabled(void);`
+- Defined: `headers/vga_fb.h:247`
 - Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
 
-### vga_fx_free (function) `void vga_fx_free(unsigned int *buf);`
-- Defined: `headers/vga_fb.h:245`
-- Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
-
-### vga_fx_melt_rect (function) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
-- Defined: `headers/vga_fb.h:246`
-- Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
-- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
-
-### vga_fx_melt_from_black (function) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+### vga_fx_snap_rect (function) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
 - Defined: `headers/vga_fb.h:248`
 - Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
 
+### vga_fx_restore_rect (function) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
+- Defined: `headers/vga_fb.h:249`
+- Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
+
+### vga_fx_free (function) `void vga_fx_free(unsigned int *buf);`
+- Defined: `headers/vga_fb.h:250`
+- Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
+
+### vga_fx_melt_rect (function) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
+- Defined: `headers/vga_fb.h:251`
+- Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
+
+### vga_fx_melt_from_black (function) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+- Defined: `headers/vga_fb.h:253`
+- Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
+
 ### vga_fb_set_gfx_mode (function) `void vga_fb_set_gfx_mode(int on);`
-- Defined: `headers/vga_fb.h:259`
+- Defined: `headers/vga_fb.h:264`
 - Doc: Graphics-mode pointer. SYS_VGA_MODE toggles vga_fb_set_gfx_mode; while a ring-3 graphics program owns the display the ke
 - Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
 - Imported by: `drivers/kbd.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
@@ -6706,69 +6722,69 @@ static void desktop_unflag(const char *name)`
 
 ### tree (function) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-- Defined: `kernel/shell.c:1857`
+- Defined: `kernel/shell.c:1866`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_jobs (function) `static void shell_cmd_jobs(void)`
-- Defined: `kernel/shell.c:1870`
+- Defined: `kernel/shell.c:1879`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_has_child (function) `static int shell_has_child(int pid)`
-- Defined: `kernel/shell.c:1899`
+- Defined: `kernel/shell.c:1908`
 - Doc: Live-child check for one pid: a slot that is neither FREE nor reparented still belongs to this shell. Waiting on anythin
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_wait (function) `static void shell_cmd_wait(int argc, char **argv)`
-- Defined: `kernel/shell.c:1909`
+- Defined: `kernel/shell.c:1918`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_kill (function) `static void shell_cmd_kill(int argc, char **argv)`
-- Defined: `kernel/shell.c:1946`
+- Defined: `kernel/shell.c:1955`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_mem (function) `static void shell_cmd_mem(void)`
-- Defined: `kernel/shell.c:1971`
+- Defined: `kernel/shell.c:1980`
 - Doc: `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS free b
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### VMA (function) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-- Defined: `kernel/shell.c:2000`
+- Defined: `kernel/shell.c:2009`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### to (function) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-- Defined: `kernel/shell.c:2075`
+- Defined: `kernel/shell.c:2084`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_parse_u64 (function) `static int shell_parse_u64(const char *s, unsigned long *out)`
-- Defined: `kernel/shell.c:2144`
+- Defined: `kernel/shell.c:2153`
 - Doc: Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing garbage
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_parse_long (function) `int shell_parse_long(const char *s, long *out)`
-- Defined: `kernel/shell.c:2160`
+- Defined: `kernel/shell.c:2169`
 - Doc: Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow fail-c
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_gdb (function) `static void shell_cmd_gdb(int argc, char **argv)`
-- Defined: `kernel/shell.c:2185`
+- Defined: `kernel/shell.c:2194`
 - Doc: `gdb <op>` -- in-OS inspector half of the debugger story. Full register-level debugging (breakpoints, single-step, live 
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_cmd_hash (function) `static void shell_cmd_hash(int argc, char **argv)`
-- Defined: `kernel/shell.c:2228`
+- Defined: `kernel/shell.c:2237`
 - Doc: `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file never
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_resolve_arg (function) `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...`
-- Defined: `kernel/shell.c:2247`
+- Defined: `kernel/shell.c:2256`
 - Doc: Docstring: Resolve `arg` against the cwd into `out` (`RAMDISK_FNAME_LEN` bytes); on failure print `<cmd>: <arg>: <reason
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### shell_exec_builtin (function) `void shell_exec_builtin(int argc, char **argv)`
-- Defined: `kernel/shell.c:2334`
+- Defined: `kernel/shell.c:2343`
 - Doc: Dispatcher exemption from the -Wframe-larger-than=2048 gate: this function runs only on the shell's own boot stack (gene
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
@@ -6793,7 +6809,7 @@ static void shell_cmd_trac...`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ### frame (function) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row *)kmalloc(sizeof(struct ps_row) * MAX_PROCS);`
-- Defined: `kernel/shell.c:2677`
+- Defined: `kernel/shell.c:2686`
 - Depends on: `headers/drivers/kbd.h`, `headers/editor.h`, `headers/kernel.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ## kernel/spawn.c
@@ -7831,471 +7847,492 @@ long sys_linux_wait4(lon...`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_list_windows (function) `void vga_fb_list_windows(void)`
-- Defined: `kernel/vga_fb.c:1136`
-- Doc: Serial-observable window list for `wm list` (BDD surface). Parked state is read from the slots, never by disturbing the 
+- Defined: `kernel/vga_fb.c:1140`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_act_empty (function) `int vga_fb_act_empty(void)`
-- Defined: `kernel/vga_fb.c:1179`
+- Defined: `kernel/vga_fb.c:1194`
 - Doc: int gx, gy; gfx_target(&gx, &gy); ksprintf(b, "win gfx %c %s x=%d y=%d w=%d h=%d\n", (wm_focus == WM_FOCUS_GFX) ? '*' : 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_note_prompt (function) `void vga_fb_note_prompt(void)`
-- Defined: `kernel/vga_fb.c:1183`
+- Defined: `kernel/vga_fb.c:1198`
 - Doc: The shell loop calls note after printing a prompt (it is live in the * focused window) and clear once the line is submit
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_clear_prompt (function) `void vga_fb_clear_prompt(void)`
-- Defined: `kernel/vga_fb.c:1188`
+- Defined: `kernel/vga_fb.c:1203`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_prompted (function) `int vga_fb_prompted(void)`
-- Defined: `kernel/vga_fb.c:1193`
+- Defined: `kernel/vga_fb.c:1208`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_prompt_live (function) `int vga_fb_prompt_live(void)`
-- Defined: `kernel/vga_fb.c:1202`
+- Defined: `kernel/vga_fb.c:1217`
 - Doc: 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate `miniOS> 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_park_line (function) `void vga_fb_park_line(const char *b, int p)`
-- Defined: `kernel/vga_fb.c:1209`
+- Defined: `kernel/vga_fb.c:1224`
 - Doc: 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate `miniOS> 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_unpark_line (function) `int vga_fb_unpark_line(char *b, int *p)`
-- Defined: `kernel/vga_fb.c:1224`
+- Defined: `kernel/vga_fb.c:1239`
 - Doc: A fresh prompt parks empty: record no line, so `wm list` does not * claim a half-typed command that never existed. t->ha
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### tw_hit (function) `static int tw_hit(int i, int mx, int my)`
-- Defined: `kernel/vga_fb.c:1239`
+- Defined: `kernel/vga_fb.c:1254`
 - Doc: termwin_t *t; int k; wm_init_once(); if (wm_focus < 0 || wm_focus >= WM_MAX_TERMS) return 0; t = &twins[wm_focus]; if (!
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### gfx_hit (function) `static int gfx_hit(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1255`
+- Defined: `kernel/vga_fb.c:1270`
 - Doc: wm_window_t w; if (i < 0 || i >= WM_MAX_TERMS) return 0; w.kind = WM_WIN_TERMINAL; w.id = i; w.x = t->px_x; w.y = t->px_
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_set_gfx_palette (function) `void vga_fb_set_gfx_palette(const unsigned char *pal)`
-- Defined: `kernel/vga_fb.c:1353`
+- Defined: `kernel/vga_fb.c:1368`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### fb_pack_idx (function) `static unsigned long fb_pack_idx(unsigned idx)`
-- Defined: `kernel/vga_fb.c:1368`
+- Defined: `kernel/vga_fb.c:1383`
 - Doc: --- True-color pixel layer ---- VBE true-color framebuffers store pixels natively as B,G,R(,X) bytes, so the DAC is bypa
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### fb_write_packed (function) `void fb_write_packed(int x, int y, unsigned long rgb)`
-- Defined: `kernel/vga_fb.c:1384`
+- Defined: `kernel/vga_fb.c:1399`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### fb_read_packed (function) `unsigned long fb_read_packed(int x, int y)`
-- Defined: `kernel/vga_fb.c:1404`
+- Defined: `kernel/vga_fb.c:1419`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_read_rgb (function) `unsigned long vga_fb_read_rgb(int x, int y)`
-- Defined: `kernel/vga_fb.c:1428`
+- Defined: `kernel/vga_fb.c:1443`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wall_level (function) `static int wall_level(int v)`
-- Defined: `kernel/vga_fb.c:1431`
+- Defined: `kernel/vga_fb.c:1446`
 - Doc: 8-bit: return the raw palette index, not its resolved RGB. The cursor save/restore round-trips through fb_write_packed, 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_set_palette (function) `static void vga_fb_set_palette(void)`
-- Defined: `kernel/vga_fb.c:1440`
+- Defined: `kernel/vga_fb.c:1455`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### fb_glyph (function) `static const uint8_t *fb_glyph(unsigned char c)`
-- Defined: `kernel/vga_fb.c:1493`
+- Defined: `kernel/vga_fb.c:1508`
 - Doc: Resolve one byte to its 8-row glyph: ASCII through font8x8, Spanish Latin-1 through the table above, anything else (incl
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_pixel (function) `void vga_fb_pixel(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:1514`
+- Defined: `kernel/vga_fb.c:1529`
 - Doc: case 0xAC: return glyph_notsign; case 0xB4: return glyph_acute; case 0xB7: return glyph_middot; case 0xBA: return glyph_
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_rect (function) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
-- Defined: `kernel/vga_fb.c:1523`
+- Defined: `kernel/vga_fb.c:1538`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_pixel_rgb (function) `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)`
-- Defined: `kernel/vga_fb.c:1534`
+- Defined: `kernel/vga_fb.c:1549`
 - Doc: Direct RGB pixel: full color depth in true-color modes, best-effort quantization in 8-bit mode. This is the primitive fu
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_rect_rgb (function) `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)`
-- Defined: `kernel/vga_fb.c:1543`
+- Defined: `kernel/vga_fb.c:1558`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_char (function) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:1550`
+- Defined: `kernel/vga_fb.c:1565`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_str (function) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:1564`
+- Defined: `kernel/vga_fb.c:1579`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### text_px (function) `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:1575`
+- Defined: `kernel/vga_fb.c:1590`
 - Doc: Blit a text string at an absolute pixel position. Used for window chrome (title bar, taskbar) which lives outside the co
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wm_draw_buttons (function) `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
-- Defined: `kernel/vga_fb.c:1601`
+- Defined: `kernel/vga_fb.c:1616`
 - Doc: --- Window controls ---- Three glyph buttons at the right end of a window's title bar: minimize (_), maximize (square) a
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wm_buttons_hit (function) `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
-- Defined: `kernel/vga_fb.c:1627`
+- Defined: `kernel/vga_fb.c:1642`
 - Doc: } for (i = 1; i < WM_BTN_H - 1; i++) { vga_fb_pixel(bx + 1, by + i, fg); vga_fb_pixel(bx + WM_BTN_W - 2, by + i, fg); } 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wm_close_pending (function) `int wm_close_pending(void)`
-- Defined: `kernel/vga_fb.c:1642`
+- Defined: `kernel/vga_fb.c:1657`
 - Doc: Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the child's o
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wm_clear_close (function) `void wm_clear_close(void)`
-- Defined: `kernel/vga_fb.c:1643`
+- Defined: `kernel/vga_fb.c:1658`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wm_gfx_mode_active (function) `int wm_gfx_mode_active(void)`
-- Defined: `kernel/vga_fb.c:1644`
+- Defined: `kernel/vga_fb.c:1659`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_ps2_owner (function) `int vga_fb_ps2_owner(int pid)`
-- Defined: `kernel/vga_fb.c:1647`
+- Defined: `kernel/vga_fb.c:1662`
 - Doc: Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the child's o
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wm_button_click (function) `static int wm_button_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:1666`
+- Defined: `kernel/vga_fb.c:1681`
 - Doc: Hit-test and dispatch a click on a titled window's controls. The active window is the graphics window when one is compos
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### USER_LOAD_BASE (function) `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
  * fits with ~1 KB to s...`
-- Defined: `kernel/vga_fb.c:1715`
+- Defined: `kernel/vga_fb.c:1730`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### blit_gfx_buf (function) `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)`
-- Defined: `kernel/vga_fb.c:1762`
+- Defined: `kernel/vga_fb.c:1777`
 - Doc: Docstring: 2x nearest-neighbour zoom for the 320x200 game window, * set via SYS_GFX_ZOOM. One int of .bss; the NK buffer
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_blit_gfx_window (function) `void vga_fb_blit_gfx_window(void)`
-- Defined: `kernel/vga_fb.c:1862`
+- Defined: `kernel/vga_fb.c:1877`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_clear (function) `void vga_fb_clear(void)`
-- Defined: `kernel/vga_fb.c:1867`
+- Defined: `kernel/vga_fb.c:1882`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_blit_nk_window (function) `void vga_fb_blit_nk_window(void)`
-- Defined: `kernel/vga_fb.c:1882`
+- Defined: `kernel/vga_fb.c:1897`
 - Doc: Composite the Nuklear UI back-buffer onto the desktop as a titled window, mirroring the DOOM window: the back-buffer is 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### cube (function) `* quantized through the websafe cube (same degrade as the RGB wallpaper
  * path), so an RGB prese...`
-- Defined: `kernel/vga_fb.c:1892`
+- Defined: `kernel/vga_fb.c:1907`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_blit_nk_rgb_window (function) `void vga_fb_blit_nk_rgb_window(void)`
-- Defined: `kernel/vga_fb.c:1946`
+- Defined: `kernel/vga_fb.c:1961`
 - Doc: Composite the Nuklear RGB back-buffer (NK_RGB_ADDR, NK_W x NK_H x 3 bytes) as a titled window, mirroring the indexed pat
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### term_recalc (function) `static void term_recalc(void)`
-- Defined: `kernel/vga_fb.c:1990`
+- Defined: `kernel/vga_fb.c:2005`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### draw_title_win (function) `static void draw_title_win(int idx, int focused)`
-- Defined: `kernel/vga_fb.c:2016`
+- Defined: `kernel/vga_fb.c:2031`
 - Doc: Preserve the current window position, clamping it into range so a * drag or Ctrl+arrow move is not undone by the next la
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### taskbar_layout (function) `static void taskbar_layout(void)`
-- Defined: `kernel/vga_fb.c:2047`
+- Defined: `kernel/vga_fb.c:2062`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### draw_speaker_icon (function) `static void draw_speaker_icon(int x, int y, uint8_t color)`
-- Defined: `kernel/vga_fb.c:2078`
+- Defined: `kernel/vga_fb.c:2093`
 - Doc: Running-app button right after it: mini icon + title while a graphics program owns the display. Clicking it focuses the 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### taskbar_render (function) `static void taskbar_render(void)`
-- Defined: `kernel/vga_fb.c:2087`
+- Defined: `kernel/vga_fb.c:2102`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### taskbar_tick (function) `static void taskbar_tick(void)`
-- Defined: `kernel/vga_fb.c:2166`
+- Defined: `kernel/vga_fb.c:2181`
 - Doc: Redraw the clock only when the wall-clock second changes. Only the taskbar strip is repainted, so the cursor must be re-
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_theme_name (function) `int vga_fb_theme_name(char *dst, int cap)`
-- Defined: `kernel/vga_fb.c:2181`
+- Defined: `kernel/vga_fb.c:2196`
 - Doc: Docstring: Active Nuklear theme name for the taskbar widget.  Reads etc/themes/current (ramdisk); a missing file, a bad 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### taskbar_theme_cycle (function) `static void taskbar_theme_cycle(void)`
-- Defined: `kernel/vga_fb.c:2202`
+- Defined: `kernel/vga_fb.c:2217`
 - Doc: Cycle the active theme to the next etc/themes/ entry (ramdisk). Holds no locks; click context only. Writes the choice ba
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### taskbar_handle_click (function) `static void taskbar_handle_click(int mx, int my)`
-- Defined: `kernel/vga_fb.c:2242`
+- Defined: `kernel/vga_fb.c:2257`
 - Doc: Click handling for the keyboard widget, the speaker icon and -/+ buttons, plus the restore button that reappears while t
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### draw_scrollbar (function) `static void draw_scrollbar(void)`
-- Defined: `kernel/vga_fb.c:2298`
+- Defined: `kernel/vga_fb.c:2313`
 - Doc: return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v > TASKBA
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### render_blank_row (function) `static void render_blank_row(int vrow)`
-- Defined: `kernel/vga_fb.c:2333`
+- Defined: `kernel/vga_fb.c:2348`
 - Doc: Blank one viewport row: every cell is repainted with the terminal background. vga_fb_str with an empty string would draw
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### render_row (function) `static void render_row(int vrow, int abs)`
-- Defined: `kernel/vga_fb.c:2343`
+- Defined: `kernel/vga_fb.c:2358`
 - Doc: Render one display row at viewport row `vrow` for the absolute display row `abs`. Rows outside the history (above the ol
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### term_render (function) `static void term_render(void)`
-- Defined: `kernel/vga_fb.c:2371`
+- Defined: `kernel/vga_fb.c:2386`
 - Doc: Full repaint of the terminal window from the logical history, honouring the current scroll position. Used on desktop red
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### term_render_active (function) `static void term_render_active(void)`
-- Defined: `kernel/vga_fb.c:2384`
+- Defined: `kernel/vga_fb.c:2399`
 - Doc: Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the bottom 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### line (function) `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-- Defined: `kernel/vga_fb.c:2425`
+- Defined: `kernel/vga_fb.c:2440`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### escapes (function) `* swallowing them here keeps the escapes (which the serial side needs)
      * from printing as li...`
-- Defined: `kernel/vga_fb.c:2434`
+- Defined: `kernel/vga_fb.c:2449`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_puts_term (function) `void vga_fb_puts_term(const char *s)`
-- Defined: `kernel/vga_fb.c:2491`
+- Defined: `kernel/vga_fb.c:2506`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_text_cursor (function) `void vga_fb_text_cursor(int col)`
-- Defined: `kernel/vga_fb.c:2497`
+- Defined: `kernel/vga_fb.c:2512`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_hide_text_cursor (function) `void vga_fb_hide_text_cursor(void)`
-- Defined: `kernel/vga_fb.c:2505`
+- Defined: `kernel/vga_fb.c:2520`
 - Doc: Show the text cursor at character column `col` of the active line, or hide * it with a negative column. The cursor is a 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_draw_desktop (function) `void vga_fb_draw_desktop(void)`
-- Defined: `kernel/vga_fb.c:2510`
+- Defined: `kernel/vga_fb.c:2525`
 - Doc: it with a negative column. The cursor is a block rendered by render_row. void vga_fb_text_cursor(int col) { if (col < 0)
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_toggle_fullscreen (function) `void vga_fb_toggle_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:2574`
+- Defined: `kernel/vga_fb.c:2589`
 - Doc: if (fx_do) { unsigned int *fx_new = vga_fx_snap_rect(fx_cx, fx_cy, fx_cw, fx_ch); if (fx_new) { vga_fx_restore_rect(fx_c
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_toggle_minimize (function) `void vga_fb_toggle_minimize(void)`
-- Defined: `kernel/vga_fb.c:2596`
+- Defined: `kernel/vga_fb.c:2611`
 - Doc: Minimize/restore the terminal window. The content is not touched; the window is merely hidden and repainted on restore. 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_is_minimized (function) `int vga_fb_is_minimized(void)`
-- Defined: `kernel/vga_fb.c:2605`
+- Defined: `kernel/vga_fb.c:2620`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_is_fullscreen (function) `int vga_fb_is_fullscreen(void)`
-- Defined: `kernel/vga_fb.c:2606`
+- Defined: `kernel/vga_fb.c:2621`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### gfx_target (function) `static void gfx_target(int *x, int *y)`
-- Defined: `kernel/vga_fb.c:2610`
+- Defined: `kernel/vga_fb.c:2625`
 - Doc: Target origin of the graphics window under the current offsets (same * math as the blits, for hit-testing and `wm list` 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### gfx_snap (function) `static void gfx_snap(int zone)`
-- Defined: `kernel/vga_fb.c:2618`
+- Defined: `kernel/vga_fb.c:2633`
 - Doc: Snap the focused graphics window into a screen region (halves place it against that edge, quadrants into that corner). R
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_close_active (function) `int vga_fb_close_active(void)`
-- Defined: `kernel/vga_fb.c:2642`
+- Defined: `kernel/vga_fb.c:2657`
 - Doc: Close the focused window. For the graphics window (focused) this arms the close request that the syscall dispatcher hono
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_move_terminal (function) `void vga_fb_move_terminal(int dx, int dy)`
-- Defined: `kernel/vga_fb.c:2663`
+- Defined: `kernel/vga_fb.c:2678`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### term_max_cols (function) `static int term_max_cols(void)`
-- Defined: `kernel/vga_fb.c:2702`
+- Defined: `kernel/vga_fb.c:2717`
 - Doc: --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes it t
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### term_max_rows (function) `static int term_max_rows(void)`
-- Defined: `kernel/vga_fb.c:2706`
+- Defined: `kernel/vga_fb.c:2721`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### term_finish_layout (function) `static void term_finish_layout(void)`
-- Defined: `kernel/vga_fb.c:2711`
+- Defined: `kernel/vga_fb.c:2726`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_snap_window (function) `void vga_fb_snap_window(int zone)`
-- Defined: `kernel/vga_fb.c:2717`
+- Defined: `kernel/vga_fb.c:2732`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_resize (function) `void vga_fb_resize(int dcols, int drows)`
-- Defined: `kernel/vga_fb.c:2745`
+- Defined: `kernel/vga_fb.c:2760`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_reset_default (function) `void vga_fb_reset_default(void)`
-- Defined: `kernel/vga_fb.c:2765`
+- Defined: `kernel/vga_fb.c:2780`
 - Doc: int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if (nc
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wallpaper_ensure (function) `static void wallpaper_ensure(void)`
-- Defined: `kernel/vga_fb.c:2812`
+- Defined: `kernel/vga_fb.c:2827`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wallpaper_draw (function) `static void wallpaper_draw(void)`
-- Defined: `kernel/vga_fb.c:2876`
+- Defined: `kernel/vga_fb.c:2891`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### pipe_field (function) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-- Defined: `kernel/vga_fb.c:2914`
+- Defined: `kernel/vga_fb.c:2929`
 - Doc: --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line: name|icon_path|comm
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### icon_nearest (function) `static int icon_nearest(int r, int g, int b)`
-- Defined: `kernel/vga_fb.c:2932`
+- Defined: `kernel/vga_fb.c:2947`
 - Doc: Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far from
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### icon_embedded (function) `static const uint8_t *icon_embedded(const char *name)`
-- Defined: `kernel/vga_fb.c:2948`
+- Defined: `kernel/vga_fb.c:2963`
 - Doc: for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b - icon_pal[i]
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### icon_decode (function) `static const uint8_t *icon_decode(const char *path)`
-- Defined: `kernel/vga_fb.c:2968`
+- Defined: `kernel/vga_fb.c:2983`
 - Doc: Decode a shortcut's PNG to raw 32x32 RGBA pixels. Returns a heap buffer that lives until reboot, or 0 on any failure (mi
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### icon_embedded_rgba (function) `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
-- Defined: `kernel/vga_fb.c:3002`
+- Defined: `kernel/vga_fb.c:3017`
 - Doc: Expand an embedded index icon (desktop_icons.h, transparent 0) to RGBA through the icon palette, so fallback art follows
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### dock_label_px (function) `static int dock_label_px(const struct desktop_shortcut *sc)`
-- Defined: `kernel/vga_fb.c:3030`
+- Defined: `kernel/vga_fb.c:3045`
 - Doc: Width of the longest shortcut label in pixels (cached after load). Labels are centred under their icon and a dock column
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### shortcuts_layout (function) `static void shortcuts_layout(void)`
-- Defined: `kernel/vga_fb.c:3039`
+- Defined: `kernel/vga_fb.c:3054`
 - Doc: Dock layout: one centred row just above the taskbar. Every shortcut owns a column `dock_cell_w` wide (enough for its lab
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### shortcut_cell_left (function) `static int shortcut_cell_left(int i)`
-- Defined: `kernel/vga_fb.c:3057`
+- Defined: `kernel/vga_fb.c:3072`
 - Doc: dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y; x0 = (fb_width - dock_w) / 2; if (x0 < 0) x0 = 0; y0 =
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### desktop_shortcuts_load (function) `void desktop_shortcuts_load(void)`
-- Defined: `kernel/vga_fb.c:3064`
+- Defined: `kernel/vga_fb.c:3079`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### shortcut_draw_scaled (function) `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
                              ...`
-- Defined: `kernel/vga_fb.c:3120`
+- Defined: `kernel/vga_fb.c:3135`
 - Doc: Blit one shortcut icon scaled to dw x dh at (dx, dy), nearest neighbour from the cached 32x32 RGBA source. Alpha below 1
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### dock_hover_index (function) `static int dock_hover_index(int mx, int my)`
-- Defined: `kernel/vga_fb.c:3145`
+- Defined: `kernel/vga_fb.c:3160`
 - Doc: Index of the shortcut column under (mx, my), or -1. Same column bounds * as the click hit test, so hover and click alway
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
+### dock_bounce_counts (function) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)`
+- Defined: `kernel/vga_fb.c:3187`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
+### dock_click_count (function) `void dock_click_count(unsigned long *edges)`
+- Defined: `kernel/vga_fb.c:3197`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
+### dock_bounce_elapsed (function) `static unsigned long dock_bounce_elapsed(void)`
+- Defined: `kernel/vga_fb.c:3203`
+- Doc: Ticks elapsed since the bounce click, capped so the subtraction can * never wrap on a late read.
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
+### dock_bounce_live (function) `static int dock_bounce_live(void)`
+- Defined: `kernel/vga_fb.c:3211`
+- Doc: Ticks elapsed since the bounce click, capped so the subtraction can * never wrap on a late read. static unsigned long do
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
+### dock_pending_active (function) `int dock_pending_active(void)`
+- Defined: `kernel/vga_fb.c:3253`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+
 ### dock_paint_icons (function) `static void dock_paint_icons(int hover)`
-- Defined: `kernel/vga_fb.c:3166`
+- Defined: `kernel/vga_fb.c:3261`
 - Doc: Paint every shortcut icon and label at the given hover sizes. Shared by the full desktop paint and the flicker-free hove
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### desktop_shortcuts_draw (function) `void desktop_shortcuts_draw(void)`
-- Defined: `kernel/vga_fb.c:3199`
+- Defined: `kernel/vga_fb.c:3297`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### wallpaper_rect (function) `static void wallpaper_rect(int x0, int y0, int w, int h)`
-- Defined: `kernel/vga_fb.c:3226`
+- Defined: `kernel/vga_fb.c:3324`
 - Doc: Paint one wallpaper rectangle from the cache (solid fill when the cache * is absent or stale): the strip-erase primitive
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### dock_paint_hover (function) `static void dock_paint_hover(int hover)`
-- Defined: `kernel/vga_fb.c:3268`
+- Defined: `kernel/vga_fb.c:3366`
 - Doc: Hover repaint without the fullscreen flash: erase only the dock strip (bar plus the overflow the magnified icons rise in
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### gfx_task_icon (function) `static const uint8_t *gfx_task_icon(void)`
-- Defined: `kernel/vga_fb.c:3300`
+- Defined: `kernel/vga_fb.c:3402`
 - Doc: Icon for the taskbar running-app button. First the running program via its launch command (config-driven, covers apps th
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### desktop_shortcuts_hit_test (function) `const char *desktop_shortcuts_hit_test(int mx, int my)`
-- Defined: `kernel/vga_fb.c:3321`
+- Defined: `kernel/vga_fb.c:3423`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_focus_topmost (function) `static int mouse_focus_topmost(int mx, int my)`
-- Defined: `kernel/vga_fb.c:3335`
+- Defined: `kernel/vga_fb.c:3437`
 - Doc: const char *desktop_shortcuts_hit_test(int mx, int my) { shortcuts_layout(); for (int i = 0; i < shortcut_count; i++) { 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_apply_wheel (function) `static void mouse_apply_wheel(int wheel, int step)`
-- Defined: `kernel/vga_fb.c:3361`
+- Defined: `kernel/vga_fb.c:3463`
 - Doc: if (!twins[f].present) continue; if (tw_hit(f, mx, my)) { if (f == wm_focus) return 0; before = wm_focus; tw_select(f); 
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_drag_gfx (function) `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)`
-- Defined: `kernel/vga_fb.c:3382`
+- Defined: `kernel/vga_fb.c:3484`
 - Doc: Docstring: Title-bar drag of the graphics window. Redraws on every offset change and once more on release, so the persis
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_drag_term (function) `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)`
-- Defined: `kernel/vga_fb.c:3421`
+- Defined: `kernel/vga_fb.c:3523`
 - Doc: Docstring: Title-bar drag of the focused terminal window. The motion path already repaints per step; the release edge re
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### mouse_scrollbar (function) `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)`
-- Defined: `kernel/vga_fb.c:3444`
+- Defined: `kernel/vga_fb.c:3546`
 - Doc: wm_grab_cx = (mx - term_px_x) / FONT_W; } } else { wm_dragging = 0; } if (wm_dragging) { vga_fb_drag_terminal(mx, my, wm
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_mouse_tick (function) `void vga_fb_mouse_tick(void)`
-- Defined: `kernel/vga_fb.c:3467`
+- Defined: `kernel/vga_fb.c:3569`
 - Doc: total = total_rows(); visible = term_rows; if (total <= visible || sh <= 0) return; max_off = total - visible; new_off =
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_mouse_init (function) `void vga_fb_mouse_init(void)`
-- Defined: `kernel/vga_fb.c:3564`
+- Defined: `kernel/vga_fb.c:3716`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### vga_fb_init (function) `void vga_fb_init(void)`
-- Defined: `kernel/vga_fb.c:3583`
+- Defined: `kernel/vga_fb.c:3741`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### app (function) `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep landing on the shell * while the app looks hung. The enable arm mirrors the focus-gf`
@@ -8303,15 +8340,15 @@ long sys_linux_wait4(lon...`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### title (function) `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t *ipx = gfx_task_icon();`
-- Defined: `kernel/vga_fb.c:2097`
+- Defined: `kernel/vga_fb.c:2112`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### command (function) `* its launch command (config-driven, covers apps that never set a window * title);`
-- Defined: `kernel/vga_fb.c:3295`
+- Defined: `kernel/vga_fb.c:3397`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ### path (function) `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and raced every present * (~60fps vs 25Hz): stale restores painted trails and flicker, worst`
-- Defined: `kernel/vga_fb.c:3478`
+- Defined: `kernel/vga_fb.c:3580`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ## kernel/vga_fx.c

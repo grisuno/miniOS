@@ -101,10 +101,10 @@
 - Doc: desktop_shortcuts.h -- configurable desktop icon shortcuts.
 - Language: h
 - Symbols:
-  - `desktop_shortcut` (struct, line 65)
-  - `desktop_shortcuts_load` (function, line 75) `void desktop_shortcuts_load(void);`
-  - `desktop_shortcuts_draw` (function, line 78) `void desktop_shortcuts_draw(void);`
-  - `desktop_shortcuts_hit_test` (function, line 82) `const char *desktop_shortcuts_hit_test(int mx, int my);`
+  - `desktop_shortcut` (struct, line 72)
+  - `desktop_shortcuts_load` (function, line 82) `void desktop_shortcuts_load(void);`
+  - `desktop_shortcuts_draw` (function, line 85) `void desktop_shortcuts_draw(void);`
+  - `desktop_shortcuts_hit_test` (function, line 89) `const char *desktop_shortcuts_hit_test(int mx, int my);`
   - `DESKTOP_SHORTCUTS_H` (macro, line 13) `#define DESKTOP_SHORTCUTS_H`
   - `MAX_SHORTCUTS` (macro, line 18) `#define MAX_SHORTCUTS`
   - `SHORTCUT_NAME_LEN` (macro, line 19) `#define SHORTCUT_NAME_LEN`
@@ -124,8 +124,10 @@
   - `DOCK_MAG_H` (macro, line 49) `#define DOCK_MAG_H`
   - `DOCK_NEAR_W` (macro, line 50) `#define DOCK_NEAR_W`
   - `DOCK_NEAR_H` (macro, line 51) `#define DOCK_NEAR_H`
-  - `ICON_PAL_BASE` (macro, line 58) `#define ICON_PAL_BASE`
-  - `ICON_PAL_SIZE` (macro, line 59) `#define ICON_PAL_SIZE`
+  - `DOCK_BOUNCE_H` (macro, line 57) `#define DOCK_BOUNCE_H`
+  - `DOCK_BOUNCE_TICKS` (macro, line 58) `#define DOCK_BOUNCE_TICKS`
+  - `ICON_PAL_BASE` (macro, line 65) `#define ICON_PAL_BASE`
+  - `ICON_PAL_SIZE` (macro, line 66) `#define ICON_PAL_SIZE`
 - Imported by: `kernel/vga_fb.c`
 
 ## headers/driver.h
@@ -1424,14 +1426,17 @@
   - `wm_gfx_mode_active` (function, line 232) `int wm_gfx_mode_active(void);`
   - `vga_fb_mouse_tick` (function, line 233) `void vga_fb_mouse_tick(void);`
   - `vga_fb_mouse_init` (function, line 234) `void vga_fb_mouse_init(void);`
-  - `pixels` (function, line 238) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a failed snapshot leaves the new * frame in place, so every entry fails closed to a pl`
-  - `vga_fx_enabled` (function, line 242) `int vga_fx_enabled(void);`
-  - `vga_fx_snap_rect` (function, line 243) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
-  - `vga_fx_restore_rect` (function, line 244) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
-  - `vga_fx_free` (function, line 245) `void vga_fx_free(unsigned int *buf);`
-  - `vga_fx_melt_rect` (function, line 246) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
-  - `vga_fx_melt_from_black` (function, line 248) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
-  - `vga_fb_set_gfx_mode` (function, line 259) `void vga_fb_set_gfx_mode(int on);`
+  - `dock_bounce_counts` (function, line 237) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);`
+  - `dock_click_count` (function, line 238) `void dock_click_count(unsigned long *edges);`
+  - `dock_pending_active` (function, line 239) `int dock_pending_active(void);`
+  - `pixels` (function, line 243) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a failed snapshot leaves the new * frame in place, so every entry fails closed to a pl`
+  - `vga_fx_enabled` (function, line 247) `int vga_fx_enabled(void);`
+  - `vga_fx_snap_rect` (function, line 248) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
+  - `vga_fx_restore_rect` (function, line 249) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
+  - `vga_fx_free` (function, line 250) `void vga_fx_free(unsigned int *buf);`
+  - `vga_fx_melt_rect` (function, line 251) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
+  - `vga_fx_melt_from_black` (function, line 253) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+  - `vga_fb_set_gfx_mode` (function, line 264) `void vga_fb_set_gfx_mode(int on);`
   - `fb_width` (variable, line 23) `extern int fb_width;`
   - `fb_height` (variable, line 24) `extern int fb_height;`
   - `fb_pitch` (variable, line 25) `extern int fb_pitch;`
@@ -1442,8 +1447,8 @@
   - `nk_win_y` (variable, line 79) `extern int nk_win_x, nk_win_y;`
   - `term_rows` (variable, line 156) `extern int term_x, term_y, term_cols, term_rows;`
   - `mouse_state` (variable, line 167) `extern mouse_state_t mouse_state;`
-  - `fx_melts_completed` (variable, line 252) `extern unsigned long fx_melts_completed;`
-  - `vga_fb_active` (variable, line 261) `extern int vga_fb_active;`
+  - `fx_melts_completed` (variable, line 257) `extern unsigned long fx_melts_completed;`
+  - `vga_fb_active` (variable, line 266) `extern int vga_fb_active;`
   - `VGA_FB_H` (macro, line 2) `#define VGA_FB_H`
   - `FB_ADDR` (macro, line 22) `#define FB_ADDR`
   - `DOOM_W` (macro, line 46) `#define DOOM_W`

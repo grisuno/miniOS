@@ -4,14 +4,14 @@
 
 ## Definition
 
-This community groups 11 file(s) rooted at `headers` with dominant language h (cohesion 0.63). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`, `DOCK_MAG_H`, `DOCK_MAG_W`. Core file: `kernel/vga_fb.c` (161 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
+This community groups 11 file(s) rooted at `headers` with dominant language h (cohesion 0.63). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`, `DOCK_BOUNCE_TICKS`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`. Core file: `kernel/vga_fb.c` (166 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
 
 ## Files
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `headers/desktop_icons.h` | h | utility | 3 | yes |
-| `headers/desktop_shortcuts.h` | h | utility | 25 | yes |
+| `headers/desktop_shortcuts.h` | h | utility | 27 | yes |
 | `headers/wm_events.h` | h | infrastructure | 39 | yes |
 | `headers/wm_focus.h` | h | utility | 5 | yes |
 | `headers/wm_geom.h` | h | utility | 11 | yes |
@@ -19,7 +19,7 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 | `headers/wm_render.h` | h | presentation | 5 | yes |
 | `headers/wm_tiling.h` | h | utility | 3 | yes |
 | `headers/wm_window.h` | h | utility | 10 | yes |
-| `kernel/vga_fb.c` | c | utility | 161 | no |
+| `kernel/vga_fb.c` | c | utility | 166 | no |
 | `tests/test_wm.c` | c | testing | 2 | yes |
 
 ## Key Symbols
@@ -46,14 +46,14 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 - `DOCK_MAG_H` (macro, `headers/desktop_shortcuts.h:49`) `#define DOCK_MAG_H`
 - `DOCK_NEAR_W` (macro, `headers/desktop_shortcuts.h:50`) `#define DOCK_NEAR_W`
 - `DOCK_NEAR_H` (macro, `headers/desktop_shortcuts.h:51`) `#define DOCK_NEAR_H`
-- `ICON_PAL_BASE` (macro, `headers/desktop_shortcuts.h:58`) `#define ICON_PAL_BASE`
-- `ICON_PAL_SIZE` (macro, `headers/desktop_shortcuts.h:59`) `#define ICON_PAL_SIZE`
-- `desktop_shortcut` (struct, `headers/desktop_shortcuts.h:65`) - A decoded+cached desktop shortcut. Pixels are raw RGBA bytes (ICON_W*ICON_H*4): the PNG's own colors
-- `desktop_shortcuts_load` (function, `headers/desktop_shortcuts.h:75`) `void desktop_shortcuts_load(void);` - Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desk
-- `desktop_shortcuts_draw` (function, `headers/desktop_shortcuts.h:78`) `void desktop_shortcuts_draw(void);` - Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desk
-- `desktop_shortcuts_hit_test` (function, `headers/desktop_shortcuts.h:82`) `const char *desktop_shortcuts_hit_test(int mx, int my);` - Handle a left-click at (mx, my).  Returns the command string if the * click hit an icon, or NULL oth
-- `WM_EVENTS_H` (macro, `headers/wm_events.h:11`) `#define WM_EVENTS_H`
-- `wm_mouse_t` (struct, `headers/wm_events.h:25`) - #define WM_EVENTS_H #include "drivers/modifiers.h" /** Docstring: Discrete window manager event kind
+- `DOCK_BOUNCE_H` (macro, `headers/desktop_shortcuts.h:57`) `#define DOCK_BOUNCE_H`
+- `DOCK_BOUNCE_TICKS` (macro, `headers/desktop_shortcuts.h:58`) `#define DOCK_BOUNCE_TICKS`
+- `ICON_PAL_BASE` (macro, `headers/desktop_shortcuts.h:65`) `#define ICON_PAL_BASE`
+- `ICON_PAL_SIZE` (macro, `headers/desktop_shortcuts.h:66`) `#define ICON_PAL_SIZE`
+- `desktop_shortcut` (struct, `headers/desktop_shortcuts.h:72`) - A decoded+cached desktop shortcut. Pixels are raw RGBA bytes (ICON_W*ICON_H*4): the PNG's own colors
+- `desktop_shortcuts_load` (function, `headers/desktop_shortcuts.h:82`) `void desktop_shortcuts_load(void);` - Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desk
+- `desktop_shortcuts_draw` (function, `headers/desktop_shortcuts.h:85`) `void desktop_shortcuts_draw(void);` - Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desk
+- `desktop_shortcuts_hit_test` (function, `headers/desktop_shortcuts.h:89`) `const char *desktop_shortcuts_hit_test(int mx, int my);` - Handle a left-click at (mx, my).  Returns the command string if the * click hit an icon, or NULL oth
 
 ## Internal vs External Edges
 
@@ -69,14 +69,14 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 
 - [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_render.h` (presentation)
 - [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_layout.h` (presentation)
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2092` `taskbar_render` `lx`: `lx` assigned at line 2092 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2429` `line` `rows_before`: `rows_before` assigned at line 2429 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2865` `wallpaper_ensure` `dst`: `dst` assigned at line 2865 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2991` `icon_decode` `dst`: `dst` assigned at line 2991 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3010` `icon_embedded_rgba` `dst`: `dst` assigned at line 3010 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3469` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 3469 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3470` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 3470 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3472` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 3472 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2107` `taskbar_render` `lx`: `lx` assigned at line 2107 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2444` `line` `rows_before`: `rows_before` assigned at line 2444 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2880` `wallpaper_ensure` `dst`: `dst` assigned at line 2880 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3006` `icon_decode` `dst`: `dst` assigned at line 3006 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3025` `icon_embedded_rgba` `dst`: `dst` assigned at line 3025 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3571` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 3571 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3572` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 3572 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3574` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 3574 but never read afterwards.
 
 ## Open Questions
 
