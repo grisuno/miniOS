@@ -29,11 +29,71 @@ static pcspk_channel_t channels[PCSPK_CHANNELS];
 static int pcspk_ready;
 static boolean pcspk_sfx_prefix;
 
-static long sys_tone(unsigned f) {
+static long sys_tone_hw(unsigned f) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(MINIOS_SYS_PCSPK_TONE),"D"((long)f):"rcx","r11","memory"); return r;
 }
 static long sys_time(void) {
     long r; __asm__ volatile("syscall":"=a"(r):"a"(MINIOS_SYS_TIME),"D"(0):"rcx","r11","memory"); return r;
+}
+static long sys_pcm2_open(long flags) {
+    long r; __asm__ volatile("syscall":"=a"(r):"a"(MINIOS_SYS_PCM2_OPEN),"D"(flags):"rcx","r11","memory"); return r;
+}
+static long sys_pcm2_write(const void *buf, long len) {
+    long r; __asm__ volatile("syscall":"=a"(r):"a"(MINIOS_SYS_PCM2_WRITE),"D"(buf),"S"(len):"rcx","r11","memory"); return r;
+}
+static void sys_pcm2_close(void) {
+    __asm__ volatile("syscall"::"a"(MINIOS_SYS_PCM2_CLOSE):"rcx","r11","memory");
+}
+
+/* pcm2 primary with PC-speaker fallback (standard audio mode contract).
+ *
+ * When the SB16 is present, music streams as polyphonic 8-bit PCM through
+ * pcm2 while sfx stay muted (effect tones ruined the melody); when
+ * pcm2_open refuses, every audio_tone falls through to the legacy sys_tone
+ * and the game sounds exactly as before, sfx included. All pushes are
+ * NONBLOCK and short counts are dropped (a gap beats a stalled game). */
+#define DOOM_PCM_RATE 22050
+#define DOOM_PCM_VOL 100
+
+static int audio_pcm2 = 0;
+static int audio_pcm2_failed = 0;
+static unsigned long audio_last_ms = 0;
+static unsigned drum_seed = 12345u;
+/* Polyphony diagnostics: max simultaneous voices rendered and percussion
+ * hits seen. Reported at shutdown; a real MUS score must show voices > 1
+ * (chords) for the pcm2 path to be proven polyphonic, not arpeggiated. */
+static int mus_max_voices = 0;
+static unsigned long mus_drum_hits = 0;
+
+static void audio_ensure(void) {
+    if (audio_pcm2 || audio_pcm2_failed) return;
+    if (sys_pcm2_open(MINIOS_PCM2_NONBLOCK) == 0) audio_pcm2 = 1;
+    else audio_pcm2_failed = 1;
+}
+
+/* SFX are muted on pcm2 (music only): effect tones ruined the melody, so
+ * audio_pump below only advances the shared clock and mus_render_pcm mixes
+ * music plus drums. The legacy speaker path still programs real tones. */
+static void audio_pump(void) {
+    unsigned long now;
+    audio_ensure();
+    if (!audio_pcm2) return;
+    now = (unsigned long)sys_time();
+    audio_last_ms = now;
+}
+
+static void audio_tone(unsigned freq) {
+    audio_ensure();
+    if (!audio_pcm2) {
+        sys_tone_hw(freq);
+    }
+}
+
+static void audio_close(void) {
+    if (audio_pcm2) {
+        sys_pcm2_close();
+        audio_pcm2 = 0;
+    }
 }
 
 /* MUS (Doom's music format) decoded for the PC speaker with NES-style
@@ -61,6 +121,8 @@ static long sys_time(void) {
 #define MUS_BASS_HOLD_MS 28
 #define MUS_BASS_LINE_MIDI 43
 #define MUS_ARP_MAX 4
+/* Polyphonic pcm2 drum burst: 25 ms of noise per percussion hit. */
+#define DOOM_PCM_DRUM_SMP ((25u * DOOM_PCM_RATE) / 1000u)
 
 static const unsigned short mus_freq_table[128] = {
         8,     9,     9,    10,    10,    11,    12,    12,
@@ -94,6 +156,12 @@ typedef struct {
     unsigned short mel[MUS_ARP_MAX];
     int mel_len;
     int arp_index;
+    /* Polyphonic pcm2 renderer state (legacy arpeggio ignores it). */
+    unsigned phase[16];
+    unsigned drum_ticks;
+    unsigned long delta_rem;
+    unsigned long tick_carry;
+    unsigned long tick_total;
 } mus_player_t;
 
 static mus_player_t *mus_cur;
@@ -135,8 +203,14 @@ static int mus_next_block(mus_player_t *m, unsigned long *out) {
             if (key & 0x80) {           /* velocity byte follows */
                 m->pos++;
             }
-            if (ch != MUS_PERCUSSION_CHAN)
-                m->active[ch] = key & 0x7F;
+            if (ch != MUS_PERCUSSION_CHAN) {
+                int nk = key & 0x7F;
+                if (m->active[ch] != nk) m->phase[ch] = 0;
+                m->active[ch] = nk;
+            } else {
+                m->drum_ticks = DOOM_PCM_DRUM_SMP;
+                mus_drum_hits++;
+            }
         } else if (ev == 0x20) {        /* pitch wheel */
             m->pos++;
         } else if (ev == 0x30) {        /* system event */
@@ -181,9 +255,13 @@ static void mus_build_chord(mus_player_t *m) {
     m->arp_index = 0;
 }
 
-/* Hold a tone for the given number of milliseconds. */
+/* Hold a tone for the given number of milliseconds. On pcm2 the hold's
+ * audio is queued up front (NONBLOCK) and the busy-wait preserves timing
+ * while it plays; on the legacy speaker the tone is programmed and held. */
 static void mus_hold_tone(unsigned freq, unsigned long ms) {
-    sys_tone(freq);
+    /* Legacy-only: mus_play_chord (its sole caller) runs only when pcm2 is
+     * inactive, so this never executes on the pcm2 path. */
+    audio_tone(freq);
     unsigned long until = (unsigned long)sys_time() + ms;
     while ((unsigned long)sys_time() < until)
         __asm__ volatile("pause");
@@ -196,7 +274,7 @@ static void mus_hold_tone(unsigned freq, unsigned long ms) {
 static void mus_play_chord(mus_player_t *m) {
     int i;
     if (m->mel_len == 0 && m->bass == 0) {
-        sys_tone(0);
+        audio_tone(0);
         return;
     }
     if (m->bass)
@@ -219,7 +297,7 @@ static void mus_advance(mus_player_t *m, unsigned long ms) {
                 continue;
             }
             m->playing = 0;
-            sys_tone(0);
+            audio_tone(0);
             return;
         }
         consumed += delta;
@@ -228,19 +306,122 @@ static void mus_advance(mus_player_t *m, unsigned long ms) {
     mus_play_chord(m);
 }
 
+/* Polyphonic pcm2 music: every sounding voice at once, as the score has
+ * it. The legacy path above time-slices one square wave because the PC
+ * speaker is a single channel; pcm2 takes mixed PCM, so there is no
+ * reason to arpeggiate. Each MUS tick renders its active set (all melody
+ * voices plus the bass, each with a persistent phase for click-free
+ * sustains) normalized to a constant level, plus a short noise burst for
+ * percussion hits captured in mus_next_block. Timing is tick-exact: ticks
+ * convert to samples with an absolute counter, so the rate never drifts.
+ * Runs under the shared audio_last_ms clock, so sfx and music never
+ * double-render an interval; the current sfx tone mixes in as one more
+ * voice, giving true sfx+music polyphony. */
+static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n) {
+    unsigned i;
+    int ch;
+    for (i = 0; i < n; i++) {
+        int s = 0, nact = 0;
+        for (ch = 0; ch < 16; ch++) {
+            int note;
+            unsigned f;
+            if (ch == MUS_PERCUSSION_CHAN) continue;
+            note = m->active[ch];
+            if (note <= 0 || note >= 128) continue;
+            f = mus_freq_table[note];
+            if (f == 0) continue;
+            m->phase[ch] += f;
+            if (m->phase[ch] >= DOOM_PCM_RATE) m->phase[ch] -= DOOM_PCM_RATE;
+            s += (m->phase[ch] < DOOM_PCM_RATE / 2) ? 1 : -1;
+            nact++;
+        }
+        /* SFX are muted on pcm2 by design: effect tones through this mixer
+         * ruined the music melody, so music (plus drums) plays alone here
+         * and sfx stay on the legacy speaker fallback. */
+        if (m->drum_ticks > 0) {
+            drum_seed = drum_seed * 1103515245u + 12345u;
+            s += ((drum_seed >> 16) & 1u) ? 1 : -1;
+            nact++;
+            m->drum_ticks--;
+        }
+        if (nact == 0) {
+            out[i] = 0x80;
+        } else {
+            int v = (s * DOOM_PCM_VOL) / nact;
+            if (nact > mus_max_voices) mus_max_voices = nact;
+            if (v > 127) v = 127;
+            else if (v < -128) v = -128;
+            out[i] = (unsigned char)(0x80 + v);
+        }
+    }
+}
+
+static void mus_render_push(mus_player_t *m, unsigned n) {
+    unsigned char tmp[256];
+    while (n > 0) {
+        unsigned k = n > sizeof(tmp) ? sizeof(tmp) : n;
+        mus_render_pcm(m, tmp, k);
+        if (sys_pcm2_write(tmp, (long)k) <= 0) break;
+        n -= k;
+    }
+}
+
+static void mus_advance_pcm(mus_player_t *m) {
+    unsigned long now = (unsigned long)sys_time();
+    unsigned long ms, ticks;
+    audio_ensure();
+    if (!audio_pcm2 || now <= audio_last_ms) return;
+    ms = now - audio_last_ms;
+    if (ms > 100) ms = 100;
+    audio_last_ms = now;
+    m->tick_carry += ms * MUS_TICKS_PER_SEC;
+    ticks = m->tick_carry / 1000;
+    m->tick_carry %= 1000;
+    while (ticks > 0) {
+        unsigned long s0, s1;
+        unsigned n;
+        if (m->delta_rem == 0) {
+            unsigned long delta;
+            if (!mus_next_block(m, &delta)) {
+                if (m->looping) {
+                    m->pos = m->score_start;
+                    memset(m->active, 0, sizeof(m->active));
+                    memset(m->phase, 0, sizeof(m->phase));
+                    m->drum_ticks = 0;
+                    m->delta_rem = 0;
+                    continue;
+                }
+                m->playing = 0;
+                return;
+            }
+            m->delta_rem = delta;
+            if (m->delta_rem == 0) continue;
+        }
+        s0 = (m->tick_total * DOOM_PCM_RATE) / MUS_TICKS_PER_SEC;
+        s1 = ((m->tick_total + 1) * DOOM_PCM_RATE) / MUS_TICKS_PER_SEC;
+        n = (unsigned)(s1 - s0);
+        mus_render_push(m, n);
+        m->tick_total++;
+        m->delta_rem--;
+        ticks--;
+    }
+}
+
 static boolean MUS_Init(void) {
     mus_cur = NULL;
     return true;
 }
 
 static void MUS_Shutdown(void) {
-    if (mus_cur) sys_tone(0);
+    if (mus_cur) audio_tone(0);
+    audio_pump();
+    audio_close();
     mus_cur = NULL;
 }
 
 static void MUS_SetMusicVolume(int volume) { (void)volume; }
 
-static void MUS_Pause(void) { if (mus_cur) sys_tone(0); }
+static void MUS_Pause(void) { if (mus_cur) audio_tone(0); }
 static void MUS_Resume(void) { }
 
 static void *MUS_RegisterSong(void *data, int len) {
@@ -260,7 +441,7 @@ static void *MUS_RegisterSong(void *data, int len) {
 
 static void MUS_UnRegisterSong(void *handle) {
     mus_player_t *m = (mus_player_t *)handle;
-    if (m == mus_cur) { sys_tone(0); mus_cur = NULL; }
+    if (m == mus_cur) { audio_tone(0); mus_cur = NULL; }
     if (m) Z_Free(m);
 }
 
@@ -273,12 +454,20 @@ static void MUS_PlaySong(void *handle, boolean looping) {
     m->looping = looping;
     m->last_ms = (unsigned long)sys_time();
     mus_cur = m;
-    mus_build_chord(m);
-    mus_play_chord(m);
+    audio_ensure();
+    m->delta_rem = 0;
+    m->tick_carry = 0;
+    m->tick_total = 0;
+    m->drum_ticks = 0;
+    memset(m->phase, 0, sizeof(m->phase));
+    if (!audio_pcm2) {
+        mus_build_chord(m);
+        mus_play_chord(m);
+    }
 }
 
 static void MUS_StopSong(void) {
-    if (mus_cur) { mus_cur->playing = 0; sys_tone(0); }
+    if (mus_cur) { mus_cur->playing = 0; audio_tone(0); }
     mus_cur = NULL;
 }
 
@@ -290,6 +479,11 @@ static void MUS_Poll(void) {
     mus_player_t *m = mus_cur;
     unsigned long now, ms;
     if (!m || !m->playing) return;
+    audio_ensure();
+    if (audio_pcm2) {
+        mus_advance_pcm(m);
+        return;
+    }
     now = (unsigned long)sys_time();
     ms = now - m->last_ms;
     m->last_ms = now;
@@ -323,8 +517,13 @@ static boolean PCSPK_Init(boolean use_sfx_prefix) {
 }
 
 static void PCSPK_Shutdown(void) {
-    sys_tone(0);
+    audio_tone(0);
+    audio_pump();
+    audio_close();
     pcspk_ready = 0;
+    printf("mus: maxvoices=%d drums=%lu\n", mus_max_voices, mus_drum_hits);
+    if (mus_max_voices > 1) printf("mus: polyphonic\n");
+    fflush(stdout);
 }
 
 static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx) {
@@ -349,6 +548,12 @@ static void free_channel(int i) {
 
 static void PCSPK_Update(void) {
     if (!pcspk_ready) return;
+    audio_ensure();
+    /* When polyphonic music owns the interval, it mixes the sfx tone in
+     * itself; pumping here as well would render the same time twice. */
+    if (!(audio_pcm2 && mus_cur && mus_cur->playing)) {
+        audio_pump();
+    }
     int best = -1, bestpri = -1;
     unsigned now = (unsigned)sys_time();
     int i;
@@ -375,8 +580,8 @@ static void PCSPK_Update(void) {
         best = i;
         bestpri = channels[i].priority;
     }
-    if (best >= 0) sys_tone(channels[best].freq);
-    else sys_tone(0);
+    if (best >= 0) audio_tone(channels[best].freq);
+    else audio_tone(0);
 }
 
 static void PCSPK_UpdateSoundParams(int ch, int v, int s) {
@@ -429,7 +634,7 @@ static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep) {
 
     channels[ch].sfx = sfx;
     channels[ch].priority = sfx->priority;
-    sys_tone(channels[ch].freq);
+    audio_tone(channels[ch].freq);
     return ch;
 }
 

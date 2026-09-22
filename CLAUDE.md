@@ -2471,14 +2471,29 @@ active channel, turning the speaker off when none remain. `S_UpdateSounds`
 in `d_main.c` was re-enabled so `I_UpdateSound` actually runs each frame;
 before that neither the sfx sequencer nor the music decoder was ever polled.
 
-The level music is played over the same speaker by a
-`music_pcspeaker_module` in `i_minios_sound.c`, selected when
-`snd_musicdevice == SNDDEVICE_PCSPEAKER`. It decodes each MUS lump (Doom's
-music format, `D_E1M1` etc.) straight from its interleaved event stream at
-the stock 140 ticks/sec: a block of events at one tick ends when a
-descriptor byte's bit 7 is set, then a variable-length delta leads to the
-next block. The speaker is one square-wave channel, so chords are faked
-with the NES pseudo-polyphony trick: the lowest sounding bass note (below
+Doom uses pcm2 as its primary sink (standard audio mode contract) for
+music only: the MUS score streams as polyphonic 8-bit PCM while sfx stay
+muted, because effect tones mixed into the music read as a second melody;
+on the legacy speaker (no SB16) sfx and music share the single channel as
+before, so nothing is ever silent. `S_Shutdown` (via
+`I_AtExit`, plus explicitly on the `mini_autoframes` exit path which
+bypasses `I_Quit`) releases pcm2 so the next program can open it; the
+kernel also reclaims a dead owner's device on the next open.
+
+The level music is played by a `music_pcspeaker_module` in
+`i_minios_sound.c`, selected when `snd_musicdevice == SNDDEVICE_PCSPEAKER`.
+It decodes each MUS lump (Doom's music format, `D_E1M1` etc.) straight from
+its interleaved event stream at the stock 140 ticks/sec: a block of events
+at one tick ends when a descriptor byte's bit 7 is set, then a
+variable-length delta leads to the next block. On pcm2 (standard mode) the
+score plays as written, polyphonically: every tick renders all its sounding
+voices at once (each with a persistent phase, normalized to a constant
+level), plus a short noise burst for percussion hits on channel 15, with
+tick-exact timing that never drifts. SFX stay muted on pcm2 (effect tones
+ruined the melody); they sound on the legacy speaker fallback. Timing and
+rendering share one clock (`audio_last_ms`), so nothing ever
+double-renders an interval. When pcm2 is unavailable the same decoder falls
+back to the single-speaker arpeggio: the lowest sounding bass note (below
 `MUS_BASS_LINE_MIDI`, midi 43) becomes a pedal held for `MUS_BASS_HOLD_MS`
 like the NES triangle voice, and only the highest `MUS_ARP_MAX` melody
 notes are fast-arpeggiated round-robin at `MUS_ARP_SLOT_MS` (7 ms) each by
@@ -2491,11 +2506,12 @@ rapid cycle into a single strummed chord instead of hearing one voice, the
 classic chiptune broke-chord sound. A handle is allocated in
 `MUS_RegisterSong` (validated against the `MUS\x1a`
 magic and the 12-byte header), `MUS_PlaySong` resets the cursor, active
-notes and chord, `MUS_Poll` advances by elapsed ms (`sys_tone`/`sys_time`
-syscalls 204/210) and loops by rewinding to the score start, and
-`MUS_StopSong` silences the speaker. The
+notes and chord, `MUS_Poll` advances by elapsed ms and loops by rewinding
+to the score start, and `MUS_StopSong` silences the speaker. The
 `music_sdl_module`/`music_opl_module` stubs stay
-all-zero; the PC speaker module is the only music source.
+all-zero. Shutdown reports `mus: maxvoices=N drums=M` plus `mus: polyphonic`
+when more than one voice sounded together (BDD-pinned), so an arpeggio
+regression reads as `maxvoices=1`.
 
 ### Sound Blaster 16 DMA audio (`sb16.c` + piano)
 The kernel owns a real PCM audio device (QEMU `-device sb16`, 8-bit mono at
@@ -2505,6 +2521,16 @@ exposes two sinks: `sb16_tone` (square wave, the `sys_tone` sink) and
 renderer, the piano's FM synth path). The rate is programmed with the DSP 0x41
 command (two frequency bytes, low then high) so the clock matches the declared
 `SB16_PCM_RATE` exactly.
+
+- **pcm2 is the standard audio mode for ring-3 programs.** Every audio
+  consumer (piano, Quake 2, DOOM, Pokémon) opens pcm2 (syscalls
+  246/247/248: 8-bit mono 22050 Hz single-cycle DMA, ~23 ms latency) and
+  falls back to the legacy path only when `pcm2_open` refuses (no SB16).
+  The legacy SB16 ring (221/222, ~650 ms) and the PC speaker (209/210)
+  stay as the fallback sinks so nothing goes silent on a deviceless
+  machine; they are never the primary path for anything new. Do not add a
+  third engine: one low-latency path plus the two legacy fallbacks is the
+  whole audio surface.
 
 - **DMA completion is driven by an interrupt AND a timer watchdog.** QEMU
   raises the SB16 completion IRQ (vector 37) only once its audio engine has
@@ -2551,7 +2577,8 @@ command (two frequency bytes, low then high) so the clock matches the declared
   melodies are playable; the pressed mouse key is latched so releasing
   off-key cannot stick a voice.
 - **Low-latency path pcm2 (`pcm2.h` + `drivers/pcm2.c`, syscalls
-  246/247/248)**: the second SB16 engine, for interactive synths. The
+  246/247/248)**: the standard SB16 engine for ring-3 audio (piano, Quake 2,
+  DOOM, Pokémon; see the standard-mode contract above). The
   legacy ring above is ~650 ms of buffering re-armed from a watchdog:
   right for Doom music, wrong for a piano (every 100 ms of buffer reads
   as input lag, and a blind re-arm replays stale audio). pcm2 programs

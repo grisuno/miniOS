@@ -116,6 +116,22 @@ static long sys_tone(unsigned f) {
     return ret;
 }
 
+static long sys_pcm2_open(long flags) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_PCM2_OPEN), "D"(flags) : "rcx","r11","memory");
+    return ret;
+}
+
+static long sys_pcm2_write(const void *buf, long len) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_PCM2_WRITE), "D"(buf), "S"(len) : "rcx","r11","memory");
+    return ret;
+}
+
+static void sys_pcm2_close(void) {
+    __asm__ volatile("syscall" : : "a"(MINIOS_SYS_PCM2_CLOSE) : "rcx","r11","memory");
+}
+
 /* ============================================================================
  * Framebuffer: 800x360 NK backbuffer, GB at exact 2x centered
  * ========================================================================== */
@@ -208,6 +224,20 @@ static uint64_t g_audio_energy = 0;
 static int g_audio_prev_sign = 0;
 static bool g_audio_have_prev = false;
 
+/* pcm2 primary with PC-speaker fallback (standard audio mode contract).
+ * When the SB16 is present, the runtime's 44100 Hz stereo mix is tapped
+ * directly: every 2nd sample is folded to mono, converted to 8-bit, and
+ * staged; a full 512 B stage is pushed with one NONBLOCK write (≈86
+ * syscalls/sec, not 44k). Short writes are dropped, never retried here:
+ * the callback runs at sample rate and must not stall the emulator. When
+ * pcm2_open refuses, the flag stays clear and the legacy per-frame tone
+ * path below owns the speaker exactly as before. */
+static int g_pcm2 = 0;
+static bool g_pcm2_mute = false;
+static unsigned char g_pcm2_stage[512];
+static unsigned g_pcm2_fill = 0;
+static unsigned g_pcm2_decim = 0;
+
 static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right) {
     (void)ctx;
     int32_t mono = ((int32_t)left >> 1) + ((int32_t)right >> 1);
@@ -222,6 +252,19 @@ static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right) {
     }
     g_audio_energy += (uint64_t)(mono < 0 ? -mono : mono);
     g_audio_n++;
+    if (g_pcm2 && !g_pcm2_mute) {
+        g_pcm2_decim ^= 1u;
+        if (g_pcm2_decim == 0) {
+            int v = (int)(mono >> 8) + 128;
+            if (v < 0) v = 0;
+            else if (v > 255) v = 255;
+            g_pcm2_stage[g_pcm2_fill++] = (unsigned char)v;
+            if (g_pcm2_fill >= sizeof(g_pcm2_stage)) {
+                g_pcm2_fill = 0;
+                sys_pcm2_write(g_pcm2_stage, (long)sizeof(g_pcm2_stage));
+            }
+        }
+    }
 }
 
 /* --- Per-channel note frequencies, live from the APU ---
@@ -305,12 +348,17 @@ static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
     }
 }
 
-/* Called once per rendered frame: a handful of syscalls, max. */
+/* Called once per rendered frame: a handful of syscalls, max. When pcm2
+ * owns the output the sample callback already streamed the mix, so there
+ * is nothing to play here (and none of the tone busy-waits to pay). */
 static void minios_audio_frame(void) {
     uint64_t n = g_audio_n, e = g_audio_energy, zc = g_audio_zc;
     g_audio_zc = 0;
     g_audio_n = 0;
     g_audio_energy = 0;
+    if (g_pcm2) {
+        return;
+    }
     bool pcm_audible = (n > 0) && (e / n >= MINIOS_AUDIO_SILENCE_E);
     unsigned zc_freq = (n > 0) ? (unsigned)((zc * MINIOS_AUDIO_RATE) / (2u * n)) : 0;
     gb_voice_t v[3];
@@ -1161,9 +1209,19 @@ void gb_platform_register_context(GBContext *ctx) {
     cbs.load_rtc_data = minios_load_rtc_data;
     cbs.save_rtc_data = minios_save_rtc_data;
     gb_set_platform_callbacks(ctx, &cbs);
+    /* pcm2 primary; a refusal leaves g_pcm2 clear and the legacy tone
+     * path owns the speaker. Tried once: a missing SB16 must not cost a
+     * syscall per sample. */
+    if (!g_pcm2 && sys_pcm2_open(MINIOS_PCM2_NONBLOCK) == 0) {
+        g_pcm2 = 1;
+    }
 }
 
 void gb_platform_shutdown(void) {
+    if (g_pcm2) {
+        sys_pcm2_close();
+        g_pcm2 = 0;
+    }
     sys_tone(0);       /* silence the speaker */
     sys_vga_mode(0);   /* back to VGA text */
     sys_kbd_raw(0);
@@ -1190,6 +1248,7 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
         if (!g_ff_muted) {
             sys_tone(0);
             g_ff_muted = true;
+            g_pcm2_mute = true;
         }
         g_ff_counter++;
         if ((g_ff_counter % (MINIOS_FF_FRAMESKIP + 1u)) != 0) {
@@ -1212,6 +1271,7 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
     } else {
         g_ff_counter = 0;
         g_ff_muted = false;
+        g_pcm2_mute = false;
         upload_frame(framebuffer);
         minios_audio_frame();
         minios_autosave(now);

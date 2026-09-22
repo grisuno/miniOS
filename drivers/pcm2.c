@@ -74,6 +74,8 @@ static spinlock_t pcm2_lock;
 static unsigned long pcm2_arm_ms;
 static pcm2_counters_t pcm2_stat;
 
+static void pcm2_release_locked(void);
+
 static unsigned char *pcm2_dma(void) {
     return (unsigned char *)(unsigned long)PCM2_DMA_ADDR;
 }
@@ -185,8 +187,15 @@ int pcm2_open(unsigned flags, int owner) {
     if (owner < 0 || owner >= MAX_PROCS) return PCM2_ERR_PERM;
     spin_lock_irqsave(&pcm2_lock, &irq);
     if (pcm2_on) {
-        spin_unlock_irqrestore(&pcm2_lock, irq);
-        return PCM2_ERR_BUSY;
+        proc_t *o = proc_get(pcm2_owner);
+        if (o && o->state != PROC_FREE && o->state != PROC_ZOMBIE) {
+            spin_unlock_irqrestore(&pcm2_lock, irq);
+            return PCM2_ERR_BUSY;
+        }
+        /* Dead owner (a process that exited without close) must not strand
+         * the device for the next opener; reclaim it here. A live owner,
+         * even BLOCKED in a write, keeps it. */
+        pcm2_release_locked();
     }
     if (sb16_legacy_busy()) {
         spin_unlock_irqrestore(&pcm2_lock, irq);

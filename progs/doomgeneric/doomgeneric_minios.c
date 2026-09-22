@@ -11,6 +11,7 @@
 
 #include "doomgeneric.h"
 #include "doomkeys.h"
+#include "s_sound.h"
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
@@ -239,6 +240,7 @@ void DG_DrawFrame(void) {
     if (mini_autoframes > 0 && ++mini_frames >= mini_autoframes) {
         printf("minios: played %d frames, quitting\n", mini_frames);
         fflush(stdout);
+        S_Shutdown();
         exit(0);
     }
 }

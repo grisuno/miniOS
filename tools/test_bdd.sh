@@ -363,6 +363,17 @@ expect "started as job pid 1"
 expect "kill: pid 1 terminated"
 expect "powering off"
 
+# DOOM music is polyphonic on pcm2 (all MUS voices mixed at once, plus
+# drums), not the legacy single-channel arpeggio. A short attract run must
+# report more than one simultaneous voice; an arpeggio would show
+# maxvoices=1 and no drums. SB16 attached on the null backend.
+SCENARIO_QEMU_ARGS="-audiodev none,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1"
+scenario "doom plays polyphonic music" "run doomgeneric.elf mini_autoframes 60
+poweroff"
+expect "mus: polyphonic"
+expect "exit code: 0"
+SCENARIO_QEMU_ARGS=""
+
 scenario "kill rejects a non-numeric pid" "kill abc
 poweroff"
 expect "usage: kill <pid>"

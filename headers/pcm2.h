@@ -10,8 +10,9 @@
  * the right shape for background music and the wrong shape for an
  * interactive synth, where every extra 100 ms of buffering reads as
  * input lag and a watchdog re-arm replays stale audio. pcm2 is the
- * second engine for that job; the two share only the DSP and never at
- * the same time (mutual -EBUSY, both directions).
+ * standard engine for ring-3 audio (piano, Quake 2, DOOM, Pokémon); the
+ * two share only the DSP and never at the same time (mutual -EBUSY, both
+ * directions).
  *
  * Hardware program (OSDev "Sound Blaster 16", Creative programming
  * guide): DSP 0x41 rate (high byte then low, the order Linux uses),
