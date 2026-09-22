@@ -24,11 +24,17 @@
  *   0x10000 - 0x8FFFF  kernel staging buffer (one chunk at a time; the
  *                      first 64 KB are reclaimed by the user page tables)
  *   0x90000            protected/long mode stack top; the kernel stack
- *                      grows DOWN from here.  The region ABOVE it is the
- *                      reserved SB16 DMA audio ring [0x90000, 0x94000):
- *                      it is identity mapped (low 1 MB) and below the ISA
- *                      DMA 16 MB limit, so the 8237 can reach it.  The
- *                      stack never grows up past 0x90000 to touch it.
+ *                      grows DOWN from here.  The region ABOVE it holds
+ *                      the DMA audio buffers, identity mapped (low 1 MB)
+ *                      and below the ISA DMA 16 MB limit, so the 8237
+ *                      can reach them.  The stack never grows up past
+ *                      0x90000 to touch them.
+ *                      legacy SB16 ring [0x90000, 0x94000) (8 x 2048 B,
+ *                      single-cycle DMA slots plus the silence slot);
+ *                      pcm2 low-latency buffer [0x94000, 0x94200)
+ *                      (one 512 B single-cycle block, never crossing a
+ *                      64 KB page).  The stack never grows up past
+ *                      0x90000 to touch either.
  *   0x100000           kernel link-time virtual base (physical base is
  *                      randomized by KASLR into [0x0600000, 0x0E000000)
  *                      when enabled). The kernel image (code + .bss) maps
@@ -79,6 +85,11 @@
 #define BOOT_BIOS_MAX_SECTORS     64
 
 #define BOOT_PM_STACK_TOP         0x90000
+
+#define BOOT_SB16_DMA_ADDR        0x90000
+#define BOOT_SB16_DMA_BYTES       0x4000
+#define BOOT_PCM2_DMA_ADDR        0x94000
+#define BOOT_PCM2_DMA_BYTES       0x200
 
 #define BIOS_DISK_INT             0x13
 #define BIOS_DISK_EXT_CHECK       0x41

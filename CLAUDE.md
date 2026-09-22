@@ -2531,19 +2531,17 @@ command (two frequency bytes, low then high) so the clock matches the declared
   `[0x90000, 0x94000)` (8 slots of 2 KB, the last is the permanent silence
   buffer); no kernel-static array is used because under KASLR the kernel
   image's physical base can land above the 16 MB the 8237 can reach.
-- **Piano pacing**: `progs/piano/piano.c` renders the wall-clock time elapsed
-  per frame clamped to `MAX_AUDIO_MS` (600 ms, just under the ring's ~650 ms
-  capacity) instead of the old 50 ms cap, so a slow frame no longer
-  under-renders and starves the ring into a choppy buzz. The backlog is
-  paced at `PIANO_FRAME_MS` (15 ms, under one ~93 ms DMA buffer) per frame
-  with the remainder kept as debt for the frames after, so a stall drains
-  over several frames instead of one giant catch-up render spiking the CPU
-  and halving the mouse poll rate — identical total audio, bounded
-  worst-case frame cost. A fully-filled buffer
-  whose submit is refused is held and retried next frame (`sb_flush`), and a
-  drop is counted only when a new submit is blocked by a still-pending buffer.
-  The frame loop yields (`SYS_SCHED_YIELD`) instead of busy-spinning 8 ms,
-  so input polling stays fresh while audio renders.
+- **Piano pacing**: `progs/piano/piano.c` renders through the pcm2 path
+  below (NONBLOCK writes of what each frame synthesizes, capped at
+  `PIANO_FRAME_MS` 80 ms; debt past 500 ms is dropped, never repaid, so
+  a stall cannot overproduce into a ring the engine already padded).
+  A short write is held and retried next frame (`sb_flush`); the hold
+  buffer fits a whole `MAX_AUDIO_MS` (600 ms) stall, and once it fills
+  the synth idles instead of burning OPL3 time into a dead backend.
+  Video runs dirty-or-500 ms through the indexed present (id 1); audio
+  runs every iteration. The frame loop yields (`SYS_SCHED_YIELD`)
+  instead of busy-spinning, so input polling stays fresh while audio
+  renders.
 - **Piano keyboard**: three octaves C4..B6 (middle-C base, 21 white + 15
   black keys fitting the 800 px window) clickable with velocity, plus a
   PC-keyboard MIDI layer Fruity Loops style fed by a raw-scancode hook in
@@ -2552,6 +2550,31 @@ command (two frequency bytes, low then high) so the clock matches the declared
   octave shift. Each scancode owns its voice (`sc_chan`) so chords and
   melodies are playable; the pressed mouse key is latched so releasing
   off-key cannot stick a voice.
+- **Low-latency path pcm2 (`pcm2.h` + `drivers/pcm2.c`, syscalls
+  246/247/248)**: the second SB16 engine, for interactive synths. The
+  legacy ring above is ~650 ms of buffering re-armed from a watchdog:
+  right for Doom music, wrong for a piano (every 100 ms of buffer reads
+  as input lag, and a blind re-arm replays stale audio). pcm2 programs
+  the DSP once (rate 0x41 high-then-low like the legacy path, speaker
+  on) and arms one 512 B single-cycle block at a time at
+  `BOOT_PCM2_DMA_ADDR` (0x94000, never crossing a 64 KB page) with DMA
+  mode 0x49 (single-cycle read) and DSP 0x14 (single-cycle 8-bit). IRQ5
+  (acked at 0x22E) retires the block and re-arms the next at once (the
+  audible gap is the ISR), with a `ktime_ms` poll on the 100 Hz audio
+  tick as the null-backend fallback; the heap ring (`pcm_ring.h`, 1024 B:
+  overrun counts drops, underrun pads 0x80 silence and counts, never
+  stalls) feeds both. Auto-init DMA is deliberately unused: in emulation
+  it holds the ISA DMA engine busy and wedges the IDE PIO path, stalling
+  every MiniFS read for minutes (the guest hang right after the first
+  pcm2 open). Steady latency is about one block (~23 ms). Writes block
+  (`PROC_BLOCKED` + `schedule`, predicate and sleep sharing one
+  irqsave lock, futex discipline) unless opened `NONBLOCK`; the device
+  is exclusive open (OSS-style) with mutual `-EBUSY` against the
+  legacy engine in both directions, and a killed owner is released
+  with `-EPIPE` instead of stranding a writer. The `sb16` builtin
+  reports the pcm2 counters beside the legacy ones; `make test-pcm`
+  pins the ring on the host and the `pcm2` BDD slice pins
+  open/stream/release under the null backend.
 
 ## MicroPython (`micropython.elf`)
 MicroPython runs inside MiniOS exactly like DOOM does: the upstream project
@@ -3175,6 +3198,7 @@ make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts gree
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
+make test-pcm        # low-latency PCM ring suite green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green
@@ -3688,6 +3712,7 @@ make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts gree
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green
 make test-driver test-sync  # device registry + sync/PI suites green
+make test-pcm        # low-latency PCM ring suite green
 make test-rtc        # RTC civil-date math suite green
 make test-vedit      # vedit IDE build-contract suite green
 make test-file       # file browser assoc-contract suite green

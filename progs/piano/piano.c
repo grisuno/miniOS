@@ -6,14 +6,13 @@
  * default octave already sings instead of rumbling) with Nuklear, and each
  * key triggers a note on the Nuked-OPL3 FM chip emulator: one modulator +
  * one carrier per channel driving a real Yamaha FM engine.  The emulator
- * is cycle-accurate but heavy, so it renders in small bounded per-frame
- * bites (PIANO_FRAME_MS) into the mono mix; the backlog stays as debt for
- * later frames, so the ring never starves and the UI never blocks on one
- * giant catch-up render.  The mix is 8-bit mono PCM streamed to the
- * kernel's Sound Blaster 16 driver through the MiniOS PCM syscalls
- * (221 open, 222 submit, 224 pump) — the same real-audio path the SB16
- * driver provides.  The frame loop yields instead of busy-spinning, so the
- * mouse keeps its poll rate while audio renders.
+ * is cycle-accurate but heavy, so audio renders in small paced bites
+ * and streams to the kernel's low-latency pcm2 path (syscalls 246 open,
+ * 247 write, 248 close: SB16 single-cycle DMA, 512-byte blocks, ~23 ms
+ * steady-state latency) instead of the legacy game path (221/222/224,
+ * 2048-byte submits, ~650 ms ring) that Doom music keeps.  The frame
+ * loop yields instead of busy-spinning, so the mouse keeps its poll
+ * rate while audio renders.
  *
  * The PC keyboard is a MIDI keyboard (Fruity Loops style): the A row
  * (A S D F G H J K L ;) plays white keys, the Q row (W E T Y U O P)
@@ -55,12 +54,21 @@
 #define UI_MEMORY (4 * 1024 * 1024)
 static char ui_memory[UI_MEMORY];
 
-#define SYS_SB16_OPEN   MINIOS_SYS_SB16_OPEN
-#define SYS_SB16_SUBMIT MINIOS_SYS_SB16_SUBMIT
-#define SYS_SB16_PUMP   MINIOS_SYS_SB16_PUMP
+#define SYS_PCM2_OPEN   MINIOS_SYS_PCM2_OPEN
+#define SYS_PCM2_WRITE  MINIOS_SYS_PCM2_WRITE
+#define SYS_PCM2_CLOSE  MINIOS_SYS_PCM2_CLOSE
 
-#define RATE    22050u
-#define PCM_BUF 2048u        /* == SB16 PCM buffer size (bytes) */
+#define RATE    MINIOS_PCM2_RATE
+#define PCM_FRAG MINIOS_PCM2_FRAG
+#define PCM_BUF 13312u       /* local hold buffer: ~603 ms of audio, so a
+                              * whole MAX_AUDIO_MS stall fits without losing
+                              * a sample; a short NONBLOCK write is retried
+                              * next frame instead of dropped. Past the debt
+                              * horizon the clock resets and the hold drains
+                              * first, so stale audio never replays forever:
+                              * under a dead backend the hold fills once and
+                              * the synth then idles (no OPL3 work) instead
+                              * of burning CPU into a ring nobody drains. */
 /* Upper bound on audio rendered per frame, in milliseconds.  The kernel-side
  * audio ring absorbs up to ~3 seconds of buffered PCM, so a slow frame can
  * render more without starving the speaker.  The clamp is kept conservative
@@ -68,24 +76,41 @@ static char ui_memory[UI_MEMORY];
 #define MAX_AUDIO_MS 600
 /* Per-frame render bite: after a stall the backlog is paced over several
  * frames instead of one giant catch-up render, bounding the worst-case CPU
- * spike (Nuked OPL3 is heavy) while the debt below is preserved, so not a
- * single millisecond of audio is lost.  Kept small (15 ms) on purpose: a
- * 30 ms bite costs a full extra frame of OPL3 time and halves the mouse
- * poll rate while the backlog drains; 15 ms still outruns the ~93 ms DMA
- * buffer so the ring never starves. */
-#define PIANO_FRAME_MS 15
+ * spike while the debt below is preserved, so not a single millisecond of
+ * audio is lost.  Must cover a typical frame time (nk rasterize 800x360 +
+ * nk_frame composite costs 30-50 ms in QEMU): a 15 ms bite renders at
+ * 15/40 = 0.37x wall-clock and sounds slow/low even with a trivial synth,
+ * which is why the bite stays just under one DMA buffer (~93 ms). */
+#define PIANO_FRAME_MS 80
+/* Frame period: the old yield-only loop spun uncapped (hundreds of fps),
+ * rasterizing 800x360 + presenting + rendering OPL3 every iteration and
+ * pinning the host CPU.  Other NK apps cap with a pause loop; piano caps
+ * at ~60 fps so input stays snappy while rasterize+present+OPL3 run at
+ * most 60x/s.  Audio still tracks wall-clock: the pacing delay counts
+ * toward the next frame's elapsed, rendered up to PIANO_FRAME_MS. */
+#define PIANO_FRAME_PERIOD 16
 
-static long sys_pcm_open(long on) {
-    long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_OPEN),"D"(on):"rcx","r11","memory"); return r;
+static long sys_pcm_open(long flags) {
+    long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_PCM2_OPEN),"D"(flags):"rcx","r11","memory"); return r;
 }
-static long sys_pcm_submit(const void *buf, long len) {
-    long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_SUBMIT),"D"((long)buf),"S"(len):"rcx","r11","memory"); return r;
+/* Returns bytes taken (NONBLOCK short count on backpressure, never a
+ * stall), or negative on a dead path. */
+static long sys_pcm_write(const void *buf, long len) {
+    long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_PCM2_WRITE),"D"((long)buf),"S"(len):"rcx","r11","memory"); return r;
 }
-static long sys_pcm_pump(void) {
-    long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_PUMP):"rcx","r11","memory"); return r;
+static void sys_pcm_close(void) {
+    __asm__ volatile("syscall"::"a"(SYS_PCM2_CLOSE):"rcx","r11","memory");
 }
 static void sys_yield(void) {
     __asm__ volatile("syscall"::"a"(MINIOS_SYS_SCHED_YIELD):"rcx","r11","memory");
+}
+/* Indexed present (buffer id 1): the 288 KB indexed copy instead of the
+ * 864 KB RGB twin. Piano inks are flat UI colors that survive the palette
+ * mapping, so the RGB path buys nothing here and costs ~3x in the kernel
+ * blit under TCG. nk_sys_nk_frame would pick RGB whenever the kernel maps
+ * it; piano bypasses it on purpose. Origin reporting matches. */
+static long sys_present_idx(int *origin) {
+    long r; __asm__ volatile("syscall":"=a"(r):"a"(MINIOS_SYS_GFX_PRESENT),"D"((long)1),"S"((long)origin):"rcx","r11","memory"); return r;
 }
 
 /* ── Nuked-OPL3 FM engine ───────────────────────────────────────────── */
@@ -430,32 +455,36 @@ static float fx_process(float x) {
     return x;
 }
 
-/* ── PCM renderer (bounded per frame, ring-paced) ───────────────────── */
+/* ── PCM renderer (paced, NONBLOCK hold-and-retry) ────────────────── */
 static unsigned char obuf[PCM_BUF];
 static int fill;
 static long last_render;
-static unsigned long sb_submit_drops;
+static unsigned long pcm2_backpressure;
 
-/* Flush a fully-filled buffer to the kernel audio ring.  When the ring is
- * full the submit is refused; the buffer is kept in place (fill stays at
- * PCM_BUF) so the next frame retries it, and a drop is counted only when a
- * new submit is blocked by a still-pending buffer, never silently.  After a
- * successful submit we call sys_pcm_pump to eagerly drain the kernel ring
- * into DMA slots, reducing playback latency on the fast path. */
+/* Flush held bytes to the low-latency ring. A short NONBLOCK write is
+ * backpressure, not loss: the remainder stays held (fill < PCM_BUF)
+ * and the next frame retries it, and the event is counted so `sb16`
+ * shows whether the synth outruns the engine. Only a negative return
+ * (dead path) drops the buffer, fail-loud instead of spinning on it. */
 static void sb_flush(void) {
-    if (fill != PCM_BUF) return;
-    if (sys_pcm_submit(obuf, PCM_BUF) == 0) {
+    long n;
+    if (fill == 0) return;
+    n = sys_pcm_write(obuf, fill);
+    if (n < 0) { fill = 0; return; }
+    if (n == 0 || n < fill) pcm2_backpressure++;
+    if (n > 0 && n < fill) {
+        int i, left = fill - (int)n;
+        for (i = 0; i < left; i++) obuf[i] = obuf[(int)n + i];
+        fill = left;
+    } else if (n == fill) {
         fill = 0;
-        sys_pcm_pump();
-    } else {
-        sb_submit_drops++;
     }
 }
 
 static void render_audio(long ms) {
     static int16_t st[512 * 2];
     sb_flush();
-    if (fill == PCM_BUF) return;    /* ring full: hold the buffer, wait */
+    if (fill > 0) return;    /* backpressure: held bytes drain first */
     long nsamples = ms * (long)RATE / 1000;
     long left = nsamples;
     while (left > 0) {
@@ -471,11 +500,12 @@ static void render_audio(long ms) {
             obuf[fill++] = (unsigned char)((out >> 8) + 128);
             if (fill == PCM_BUF) {
                 sb_flush();
-                if (fill == PCM_BUF) return;   /* ring full mid-frame */
+                if (fill > 0) return;   /* ring full mid-frame */
             }
         }
         left -= n;
     }
+    sb_flush();
 }
 
 static void key_rect(int key, int *x, int *y, int *w, int *h) {
@@ -572,7 +602,10 @@ static void ui_run(int bench_ms) {
     nk_sys_palette(pal768);
     nk_sys_fb_info(&fw, &fh, &fp);
 
-    audio_on = sys_pcm_open(1) == 1 ? 1 : 0;
+    long pcm2_rc = sys_pcm_open(MINIOS_PCM2_NONBLOCK);
+    audio_on = pcm2_rc == 0 ? 1 : 0;
+    if (!audio_on)
+        printf("piano: pcm2 unavailable (%ld), silent\n", pcm2_rc);
     OPL3_Reset(&o3, RATE);
     int i;
     for (i = 0; i < NKEYS; i++) key_to_chan[i] = -1;
@@ -603,15 +636,28 @@ static void ui_run(int bench_ms) {
     int pressed_key = -1;
     long bench_start = (bench_ms > 0) ? (long)nk_sys_time_ms() : 0;
     long bench_frames = 0;
+    long bench_audio_ms = 0;
+    long bench_ui_ms = 0;
+    /* Dirty-present: rasterize (user, ~1M stores with the RGB twin) +
+     * GFX_PRESENT (kernel, 864 KB RGB copy + keep-save) cost ~1 s/frame
+     * under TCG without KVM, while OPL3 renders faster than real-time.
+     * So video runs on state change or a slow heartbeat; audio runs
+     * every loop iteration. Bench mode keeps the every-frame present
+     * to measure full cost. */
+    long last_present_ms = 0;
+    unsigned last_dirty_hash = 0;
+    int first_present = 1;
     while (!quit) {
         bench_frames++;
         if (bench_ms > 0 && (long)nk_sys_time_ms() - bench_start >= bench_ms) {
-            printf("piano: bench %ld frames in %d ms (~%.1f fps)\n",
+            printf("piano: bench %ld frames in %d ms (~%.1f fps, audio %ld ms, ui %ld ms)\n",
                    bench_frames, bench_ms,
-                   (float)bench_frames * 1000.0f / (float)bench_ms);
+                   (float)bench_frames * 1000.0f / (float)bench_ms,
+                   bench_audio_ms, bench_ui_ms);
             quit = 1;
             break;
         }
+        long frame_t0 = (long)nk_sys_time_ms();
         nk_input_begin(&ctx);
         nk_poll_input(&ctx);
         nk_input_end(&ctx);
@@ -699,23 +745,68 @@ static void ui_run(int bench_ms) {
         }
         last_down = down;
 
-        nk_rasterize(&ctx);
-        if (nk_sys_nk_frame(origin) == 0)
-            nk_set_window_origin(origin[0], origin[1]);
-        nk_clear(&ctx);
+        /* Cheap dirty word over everything the canvas shows: sounding
+         * keys, pressed key, mouse edge, octave, volume, pedal and FX
+         * toggles. Mouse motion alone changes nothing (no hover ink). */
+        unsigned dirty_hash = 2166136261u;
+        {
+            int k;
+            for (k = 0; k < NKEYS; k++) {
+                dirty_hash ^= (unsigned)(key_sounding(k) ? 1u : 0u) + 0x9e3779b9u + (dirty_hash << 6) + (dirty_hash >> 2);
+                dirty_hash ^= (unsigned)(k * 31u) + (dirty_hash << 6) + (dirty_hash >> 2);
+            }
+            dirty_hash ^= (unsigned)(pressed_key + 2) * 16777619u;
+            dirty_hash ^= (unsigned)(down ? 0x1234u : 0x5678u) * 16777619u;
+            dirty_hash ^= (unsigned)(octave + 8) * 16777619u;
+            dirty_hash ^= (unsigned)volume * 16777619u;
+            dirty_hash ^= (unsigned)(sustain_pedal ? 1u : 0u) * 16777619u;
+            dirty_hash ^= (unsigned)fx_delay_len * 16777619u;
+            dirty_hash ^= (unsigned)fx_tremolo_pct * 16777619u;
+            dirty_hash ^= (unsigned)fx_softclip * 16777619u;
+        }
+        int ui_dirty = first_present || dirty_hash != last_dirty_hash;
+        /* Slow heartbeat: the UI is static while a note is held, so 2 Hz
+         * is plenty. Every present costs ~1 s under TCG without KVM; at
+         * 10 Hz the BSP never breathes and the mouse IRQ starves behind
+         * the translation load. Dirty changes still present at once. */
+        int heartbeat = frame_t0 - last_present_ms >= 500;
+        int do_present = (bench_ms > 0) || ui_dirty || heartbeat;
 
-        /* Render the PCM for the wall-clock time since the last frame,
-         * paced: each frame renders at most PIANO_FRAME_MS and the rest
-         * stays as debt for the frames after, so a stall never turns
-         * into one giant catch-up spike.  The small bite keeps the frame
-         * short so the mouse poll rate stays up while the backlog drains
-         * over several frames. */
+        long t_ui0 = (bench_ms > 0 || do_present) ? (long)nk_sys_time_ms() : 0;
+        if (do_present) {
+            nk_rasterize(&ctx);
+            if (sys_present_idx(origin) == 0)
+                nk_set_window_origin(origin[0], origin[1]);
+            last_present_ms = (long)nk_sys_time_ms();
+            last_dirty_hash = dirty_hash;
+            first_present = 0;
+            /* Let pending IRQs (mouse, PIT) run before the next heavy
+             * slice instead of chaining rasterize straight into OPL3. */
+            sys_yield();
+            sys_yield();
+        }
+        nk_clear(&ctx);
+        if (bench_ms > 0)
+            bench_ui_ms += (long)nk_sys_time_ms() - t_ui0;
+
+        /* Audio runs every iteration, video only above: the two renders
+         * share nothing but the loop. Debt past half a second is
+         * dropped, never repaid: repaying a 1 s stall at 80 ms/frame
+         * would run the audio clock over wall-clock for seconds
+         * (overproduction into a ring the engine already padded with
+         * silence), which reads as slow smeared pitch. */
         long now = (long)nk_sys_time_ms();
         long elapsed = now - last_render;
-        if (elapsed > MAX_AUDIO_MS) elapsed = MAX_AUDIO_MS;
+        if (elapsed > 500) {
+            last_render = now;
+            elapsed = 0;
+        }
         if (elapsed > PIANO_FRAME_MS) elapsed = PIANO_FRAME_MS;
         if (elapsed > 0 && audio_on) {
+            long t_a0 = (bench_ms > 0) ? (long)nk_sys_time_ms() : 0;
             render_audio(elapsed);
+            if (bench_ms > 0)
+                bench_audio_ms += (long)nk_sys_time_ms() - t_a0;
             last_render += elapsed;
         } else {
             last_render = now;
@@ -723,15 +814,22 @@ static void ui_run(int bench_ms) {
 
         /* Yield instead of busy-spinning: the old 8 ms pause loop burned
          * CPU every frame and delayed input polling; a yield hands the
-         * machine back so the mouse/ISR state stays fresh. */
-        sys_yield();
+         * machine back so the mouse/ISR state stays fresh.  The period
+         * wait below caps the frame rate (bench mode skips it so the
+         * benchmark still measures raw throughput). */
+        if (bench_ms <= 0) {
+            while ((long)nk_sys_time_ms() - frame_t0 < PIANO_FRAME_PERIOD)
+                sys_yield();
+        } else {
+            sys_yield();
+        }
     }
 
     nk_set_scancode_hook(0, 0);
     nk_free(&ctx);
     nk_sys_kbd_raw(0);
     nk_sys_vga_mode(0);
-    sys_pcm_open(0);
+    sys_pcm_close();
 }
 
 /* ── Headless selftest (BDD hook) ───────────────────────────────────── */
@@ -851,23 +949,28 @@ static int run_selftest(void) {
     float t2 = fx_process(0.8f);
     if (fabsf(t1 - t2) < 1e-6f) { printf("piano: tremolo not modulating\n"); return 1; }
 
-    /* Audio pacing: one PCM buffer must span a full SB16 buffer duration
-     * and a whole ring must be able to absorb a MAX_AUDIO_MS frame,
-     * otherwise a slow frame either under-renders (starving the ring into
-     * a buzz) or over-renders (silently dropping audio).  The per-frame
-     * bite must stay below one DMA buffer so frames stay short and the
-     * mouse poll rate never collapses while the backlog drains. */
+    /* Audio pacing on the pcm2 geometry: one frame bite must produce
+     * more than one DMA fragment on average (or the engine drains the
+     * hold buffer faster than the synth refills it), the hold buffer
+     * must absorb a whole MAX_AUDIO_MS stall, and the debt-drop
+     * horizon (500 ms) must sit below MAX_AUDIO_MS so a drop never
+     * discards a frame the bite cap would still have rendered. */
     {
-        long buf_ms = (long)PCM_BUF * 1000 / (long)RATE;
-        long ring_ms = buf_ms * 7;
-        if (MAX_AUDIO_MS <= buf_ms || MAX_AUDIO_MS > ring_ms) {
-            printf("piano: pacing constants fail (max=%d buf=%ld ring=%ld)\n",
-                   MAX_AUDIO_MS, buf_ms, ring_ms);
+        long frag_ms = (long)PCM_FRAG * 1000 / (long)RATE;
+        long bite_samples = (long)PIANO_FRAME_MS * (long)RATE / 1000;
+        long hold_ms = (long)PCM_BUF * 1000 / (long)RATE;
+        if (bite_samples <= (long)PCM_FRAG) {
+            printf("piano: bite too small (%ld samples <= frag %d)\n",
+                   bite_samples, PCM_FRAG);
             return 1;
         }
-        if (PIANO_FRAME_MS > buf_ms) {
-            printf("piano: frame bite too big (%d > buf %ld)\n",
-                   PIANO_FRAME_MS, buf_ms);
+        if (hold_ms < MAX_AUDIO_MS) {
+            printf("piano: hold too small (%ld ms < max %d)\n",
+                   hold_ms, MAX_AUDIO_MS);
+            return 1;
+        }
+        if (500 >= MAX_AUDIO_MS || frag_ms <= 0) {
+            printf("piano: pacing constants fail\n");
             return 1;
         }
     }
@@ -902,9 +1005,45 @@ static int run_selftest(void) {
     return 0;
 }
 
+/* Headless pcm2 plumbing probe (BDD hook): open NONBLOCK, stream one
+ * 2048-byte pattern, close, reopen (release symmetry), close. Passes on
+ * any backend: a draining engine accepts everything, a stalled one
+ * (null backend, no IRQ, no DMA progress) still accepts the first
+ * kernel ring (1024 B) without blocking. Prints
+ * `pcm2: probe ok (accepted=N)` or a diagnostic; needs no SB16 IRQ
+ * and no GUI. */
+static int run_pcm2_probe(void) {
+    static unsigned char pat[2048];
+    long rc, acc;
+    unsigned i;
+    for (i = 0; i < sizeof pat; i++) pat[i] = (unsigned char)(i & 0xFF);
+    rc = sys_pcm_open(MINIOS_PCM2_NONBLOCK);
+    if (rc != 0) {
+        printf("piano: pcm2 open refused (%ld)\n", rc);
+        return 1;
+    }
+    acc = sys_pcm_write(pat, (long)sizeof pat);
+    if (acc < 1024 || acc > 2048) {
+        printf("piano: pcm2 short write (%ld)\n", acc);
+        sys_pcm_close();
+        return 1;
+    }
+    sys_pcm_close();
+    rc = sys_pcm_open(MINIOS_PCM2_NONBLOCK);
+    if (rc != 0) {
+        printf("piano: pcm2 reopen refused (%ld)\n", rc);
+        return 1;
+    }
+    sys_pcm_close();
+    printf("pcm2: probe ok (accepted=%ld)\n", acc);
+    return 0;
+}
+
 int main(int argc, char **argv) {
     if (argc > 1 && strcmp(argv[1], "--selftest") == 0)
         return run_selftest();
+    if (argc > 1 && strcmp(argv[1], "--pcm2-probe") == 0)
+        return run_pcm2_probe();
     if (argc > 1 && strcmp(argv[1], "--bench") == 0) {
         ui_run(2000);
         return 0;

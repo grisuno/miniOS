@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "sb16.h"
+#include "pcm2.h"
 #include "sync.h"
 #include "driver.h"
 
@@ -237,6 +238,7 @@ void sb16_pump(void) {
     int i;
     int busy = 0;
     if (!sb16_ready || sb16_mode != SB16_MODE_PCM) return;
+    if (pcm2_active()) return;
     /* No free DMA slot: keep the stream data and retry on the next tick.
      * Mixing here would consume stream bytes that no slot can take, which
      * silently drops audio under load (audible as gaps). */
@@ -346,6 +348,7 @@ static void sb16_refill(int slot_index) {
 static void sb16_arm(int from_irq) {
     unsigned long now = ktime_ms();
     if (!sb16_ready || !sb16_inflight) return;
+    if (pcm2_active()) return;
     if ((long)(now - sb16_last_arm_ms) < (long)SB16_ARM_PERIOD_MS) return;
     if (sb16_mode == SB16_MODE_PCM) {
         if (pcm_free == SB16_RING_CAP) {
@@ -371,6 +374,7 @@ int sb16_present(void) { return sb16_ready; }
 
 void sb16_tone(unsigned freq) {
     if (!sb16_ready) return;
+    if (pcm2_active()) return;
     sb16_mode = SB16_MODE_TONE;
     sb16_freq = freq;
     pcm_head = pcm_tail = 0;
@@ -386,6 +390,7 @@ void sb16_tone(unsigned freq) {
 
 void sb16_pcm_open(void) {
     if (!sb16_ready) return;
+    if (pcm2_active()) return;
     sb16_mode = SB16_MODE_PCM;
     sb16_freq = 0;
     pcm_head = pcm_tail = 0;
@@ -418,6 +423,7 @@ void sb16_pcm_close(void) {
 
 int sb16_pcm_submit(const unsigned char *pcm, unsigned len) {
     if (!sb16_ready || sb16_mode != SB16_MODE_PCM) return -1;
+    if (pcm2_active()) return -1;
     if (len == 0 || len > SB16_BUF) return -1;
     if (legacy_stream == WQ_NONE) return -1;
 
@@ -435,18 +441,33 @@ int sb16_pcm_submit(const unsigned char *pcm, unsigned len) {
 
 void sb16_irq(void) {
     if (!sb16_ready || !sb16_inflight) return;
+    if (pcm2_active()) return;
     (void)inb(SB16_IRQ_ACK);
     sb16_pump();
     sb16_arm(1);
 }
 
 void sb16_poll(void) {
+    /* The position poll is the pcm2 IRQ fallback (null backend): it
+     * runs on the same audio tick, so no ISR wiring changes. Legacy
+     * pump/arm below self-guard on pcm2 ownership. */
+    pcm2_poll();
     sb16_pump();
     sb16_arm(0);
 }
 
 unsigned sb16_ring_free(void) { return pcm_free; }
 int sb16_mode_active(void) { return sb16_mode; }
+
+/* Audible legacy ownership for the pcm2 mutual exclusion: a PCM
+ * stream is always audible-by-contract, a tone only when sounding.
+ * Silent/idle legacy state (probe-only, tone(0)) never blocks pcm2. */
+int sb16_legacy_busy(void) {
+    if (legacy_stream != WQ_NONE) return 1;
+    if (sb16_inflight && sb16_mode == SB16_MODE_PCM) return 1;
+    if (sb16_inflight && sb16_freq != 0) return 1;
+    return 0;
+}
 
 void sb16_counters(sb16_counters_t *out) {
     if (out) *out = sb16_stat;

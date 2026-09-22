@@ -85,6 +85,11 @@ int  sb16_stream_count(void);
 unsigned sb16_ring_free(void);
 int      sb16_mode_active(void);
 
+/* True while the legacy engine audibly owns the DSP (PCM stream open
+ * or a tone sounding). pcm2_open consults it for the mutual -EBUSY;
+ * silent/idle legacy state never blocks the low-latency path. */
+int sb16_legacy_busy(void);
+
 void sb16_counters(sb16_counters_t *out);
 
 #endif

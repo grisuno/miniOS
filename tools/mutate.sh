@@ -97,6 +97,7 @@ SOURCES="$SOURCES progs/freedomui/freedomui_minios.c tests/test_freedomui.c"
 # under the next mutant, whose kill is then vacuous). This bit paint
 # when progs/paint/paint.c shipped mutants without a SOURCES entry.
 SOURCES="$SOURCES progs/paint/paint.c tests/test_paint.c"
+SOURCES="$SOURCES drivers/pcm2.c headers/pcm2.h headers/pcm_ring.h tests/test_pcm.c"
 SOURCES="$SOURCES progs/nk_palette.h progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/wl/wlcomp.c"
 SOURCES="$SOURCES progs/minicraft/minicraft.c"
 SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
@@ -178,6 +179,13 @@ kill-wait-garbage-accepted | s/if (!shell_parse_long(argv\\[1\\], &pv) || pv <= 
 rlimit-garbage-accepted | s/if (!shell_parse_long(argv\\[2\\], &lv) || lv < 0) {/if (0) {/ | kernel/shell.c
 sleep-garbage-accepted | s/if (!shell_parse_long(argv\\[1\\], &sv)) {/if (0) {/ | kernel/shell.c
 rtc-always-fails | s/    return 1;/    return 0;/ | drivers/rtc.c
+pcm-ring-drops-lost | s/r->drops += (unsigned long)(len - space);/r->drops += 0;/ | headers/pcm_ring.h
+pcm-ring-pad-zero | s/for (j = taken; j < len; j++) dst\[j\] = 0x80;/for (j = taken; j < len; j++) dst[j] = 0x00;/ | headers/pcm_ring.h
+pcm-ring-wrap-broken | s/if (r->head >= r->cap) r->head = 0;/if (r->head > r->cap) r->head = 0;/ | headers/pcm_ring.h
+pcm-ring-underrun-lost | s/r->underruns++;/r->underruns += 0;/ | headers/pcm_ring.h
+pcm2-open-always-busy | s/    if (pcm2_on) {/    if (1) {/ | drivers/pcm2.c
+pcm2-write-always-zero | s/        chunk = len - accepted;/        chunk = 0;/ | drivers/pcm2.c
+pcm2-close-no-release | s/    pcm2_release_locked();/    ;/ | drivers/pcm2.c
 
 zip-traversal-allowed | s/if (clen == 2 \\&\\& start\\[0\\] == \\x27.\\x27 \\&\\& start\\[1\\] == \\x27.\\x27) return 0;/if (0) return 0;/ | fs/zip.c
 zip-bad-magic-accepted | s/if (!mz_zip_reader_init_mem(\\&zip, abuf, (size_t)asize, 0)) {/if (0) {/ | fs/zip.c
@@ -400,6 +408,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         headers/sanitize.h)
             make -C "$HERE" test-sanitize > "$BACKUP/suite.log" 2>&1
             ;;
+        headers/pcm_ring.h|tests/test_pcm.c)
+            make -C "$HERE" test-pcm > "$BACKUP/suite.log" 2>&1
+            ;;
         progs/lisp/lisp.c)
             make -C "$HERE" test-lisp > "$BACKUP/suite.log" 2>&1
             ;;
@@ -423,6 +434,14 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/paint/paint.c)
             MATCH="paint" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        drivers/pcm2.c|headers/pcm2.h)
+            # Null-backend probe slice: open/write/close plumbing only.
+            # IRQ-ack and auto-init-command mutants are deliberately NOT
+            # in the table: with no completion IRQ they are invisible
+            # here and would survive vacuously; they are covered by live
+            # runs (irq counter climbs) instead of the gate.
+            MATCH="pcm2" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         progs/minios_abi.h)
             python3 "$HERE/tools/check_abi_numbers.py" > "$BACKUP/suite.log" 2>&1

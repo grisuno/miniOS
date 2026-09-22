@@ -1303,6 +1303,13 @@ vma_test: tests/test_vma.c vma.c vma.h
 test-vma: vma_test
 	$(TOOLS_DIR)/vma_test
 
+# PCM ring buffer host test (tests/test_pcm.c + headers/pcm_ring.h)
+pcm_test: tests/test_pcm.c headers/pcm_ring.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -o $(TOOLS_DIR)/pcm_test tests/test_pcm.c
+
+test-pcm: pcm_test
+	$(TOOLS_DIR)/pcm_test
+
 # VMA benchmark (informational) + fault-injection suite (boyscout gaps 9-10).
 vma_bench: tests/test_vma_bench.c vma.c vma.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/vma_bench tests/test_vma_bench.c vma.c
@@ -1596,7 +1603,7 @@ console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h
+         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h
 # NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
 # and the image ends just below USER_LOAD_BASE, so the check-size gate
 # is binding: bytes matter more than compiler speed in the prompt,
@@ -1660,7 +1667,7 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
 # NOTE: -Os, same pattern as shell.o (measured -3.5 KB vs -O1). The
 # dispatcher is a large switch, cold paths dominate; revalidate with
 # test_all.sh plus the syscall-heavy BDD scenarios after any change here.
@@ -1809,7 +1816,7 @@ $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip: tools/gen_zip_fixtures.p
 # the caller's set survives every voluntary switch by construction.
 # Removing a flag reopens the lost-waitpid-pid hang; check_abi_numbers
 # does not cover it, the thdemo/fptest BDD scenarios do.
-sched.o: kernel/sched.c sched.h kernel.h arch/x86/boot/bootdefs.h arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcspk.h futex.h percpu_rq.h rcu.h
+sched.o: kernel/sched.c sched.h kernel.h $(BOOTDEFS) arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcm2.h pcspk.h futex.h percpu_rq.h rcu.h
 	$(CC) $(CFLAGS_KERN) -ffixed-rbx -ffixed-r12 -ffixed-r13 -ffixed-r14 -ffixed-r15 -c $< -o $@
 
 tick.o: kernel/tick.c tick.h
@@ -1827,7 +1834,10 @@ vga_fx.o: kernel/vga_fx.c vga_fb.h vga_fx.h kernel.h
 pcspk.o: drivers/pcspk.c pcspk.h driver.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-sb16.o: drivers/sb16.c sb16.h kernel.h driver.h
+sb16.o: drivers/sb16.c sb16.h pcm2.h kernel.h driver.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+pcm2.o: drivers/pcm2.c pcm2.h pcm_ring.h sb16.h kernel.h sched.h spinlock.h $(BOOTDEFS)
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 rtc.o: drivers/rtc.c rtc.h kernel.h
@@ -1880,10 +1890,10 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
-	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o rtc.o xxhash.o \
+	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
 kernel.bin: kernel.elf | check-size

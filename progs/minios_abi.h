@@ -38,7 +38,7 @@
  * It is verified at build time (kernel _Static_asserts), not at load time:
  * see the ABI Version note above for why the loader cannot gate on it.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 7
+#define MINIOS_ABI_VERSION 8
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -73,7 +73,10 @@
     MINIOS_SYS_FDATASYNC       ^ \
     MINIOS_SYS_SET_ROBUST_LIST ^ \
     MINIOS_SYS_STATX           ^ \
-    MINIOS_SYS_RLIMIT            \
+    MINIOS_SYS_RLIMIT            ^ \
+    MINIOS_SYS_PCM2_OPEN         ^ \
+    MINIOS_SYS_PCM2_WRITE        ^ \
+    MINIOS_SYS_PCM2_CLOSE          \
 )
 
 /* =========================================================================
@@ -281,6 +284,19 @@
 #define MINIOS_SYS_WL_ATTACH     243
 #define MINIOS_SYS_WL_COMMIT     244
 #define MINIOS_SYS_WL_INPUT      245
+/* Low-latency PCM path (pcm2, 8-bit mono 22050 Hz over SB16 single-cycle
+ * DMA): OPEN takes flags (bit 0 NONBLOCK), WRITE returns bytes taken
+ * (blocking unless NONBLOCK), CLOSE releases. Numbers 246-248 are
+ * free in Linux x86-64 (no table entry), so no DEVIATION is needed. */
+#define MINIOS_SYS_PCM2_OPEN     246
+#define MINIOS_SYS_PCM2_WRITE    247
+#define MINIOS_SYS_PCM2_CLOSE    248
+#define MINIOS_PCM2_NONBLOCK     1
+/* pcm2 geometry: 8-bit mono at MINIOS_PCM2_RATE, DMA fragments of
+ * MINIOS_PCM2_FRAG bytes (~11.6 ms). A writer produces whole
+ * fragments; the kernel refills finished ones from its ring. */
+#define MINIOS_PCM2_RATE         22050
+#define MINIOS_PCM2_FRAG         256
 
 #define MINIOS_SYS_CLONE             300
 

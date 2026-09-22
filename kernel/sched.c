@@ -11,6 +11,7 @@
 #include "bootdefs.h"
 #include "vga_fb.h"
 #include "sb16.h"
+#include "pcm2.h"
 #include "tick.h"
 #include "arch/x86/hal_io.h"
 #include "arch/x86/msr.h"
@@ -1091,7 +1092,8 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
     }
     if (vector == 37) { /* IRQ5: Sound Blaster 16 DMA buffer complete */
         __sync_fetch_and_add(&isr_cnt_sb16, 1);
-        sb16_irq();
+        if (pcm2_active()) pcm2_irq();
+        else sb16_irq();
         pic_eoi(5);
         return;
     }

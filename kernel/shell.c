@@ -7,6 +7,7 @@
 #include "vga_fb.h"
 #include "pcspk.h"
 #include "sb16.h"
+#include "pcm2.h"
 #include "rtc.h"
 #include "drivers/kbd.h"
 #include "wm_layout.h"
@@ -2832,7 +2833,9 @@ void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "sb16") == 0) {
         sb16_counters_t c;
+        pcm2_counters_t p2;
         sb16_counters(&c);
+        pcm2_counters(&p2);
         kprintf("sb16: present=%d mode=%d ring=%u/%u streams=%d\n",
                 sb16_present(), sb16_mode_active(), sb16_ring_free(),
                 (unsigned)SB16_RING_CAP, sb16_stream_count());
@@ -2840,6 +2843,10 @@ void shell_exec_builtin(int argc, char **argv) {
                 c.irq_arms, c.poll_arms, c.submits, c.drops);
         kprintf("sb16: stalls=%lu pump_fills=%lu mixes=%lu\n",
                 c.stalls, c.pump_fills, c.mixes);
+        kprintf("pcm2: active=%d irqs=%lu polls=%lu spurious=%lu\n",
+                pcm2_active(), p2.irqs, p2.polls, p2.spurious);
+        kprintf("pcm2: bytes=%lu underruns=%lu drops=%lu wakes=%lu\n",
+                p2.bytes, p2.underruns, p2.drops, p2.wakes);
     }
     else if (kstrcmp(argv[0], "gfx") == 0) {
         shell_cmd_gfx(argc, argv);

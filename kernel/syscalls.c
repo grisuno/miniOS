@@ -23,6 +23,7 @@
 #include "vga_fb.h"
 #include "pcspk.h"
 #include "sb16.h"
+#include "pcm2.h"
 #include "rtc.h"
 #include "lz4_kernel.h"
 #include "drivers/kbd.h"
@@ -427,6 +428,29 @@ static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, lo
     SANITIZE_RANGE(a2, len);
     return sb16_stream_submit((int)a1, pcm, (unsigned)len);
 }
+/* Low-latency PCM path (pcm2, syscalls 246-248): OPEN takes flags,
+ * WRITE returns bytes taken (blocking unless NONBLOCK), CLOSE
+ * releases. Pointer/length validated at the boundary like every
+ * other dispatcher case; the driver copies in fragment chunks and
+ * blocks with the scheduler, never with a spin. */
+static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a1 < 0) return PCM2_ERR_INVAL;
+    return pcm2_open((unsigned)a1, current_pid);
+}
+static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    const unsigned char *pcm = (const unsigned char *)a1;
+    long len = a2;
+    SANITIZE_LEN_NEG(len);
+    SANITIZE_RANGE(a1, len);
+    return pcm2_write(pcm, (unsigned)len, current_pid);
+}
+static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    pcm2_close(current_pid);
+    return 0;
+}
 static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     sb16_stream_volume((int)a1, (unsigned char)a2); return 0;
@@ -729,6 +753,9 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_NICE - MINIOS_SYSCALL_BASE] = { sys_minios_nice, "nice" },
     [MINIOS_SYS_DIR_LIST - MINIOS_SYSCALL_BASE] = { sys_minios_dir_list, "dir_list" },
     [MINIOS_SYS_GFX_ZOOM - MINIOS_SYSCALL_BASE] = { sys_minios_gfx_zoom, "gfx_zoom" },
+    [MINIOS_SYS_PCM2_OPEN - MINIOS_SYSCALL_BASE] = { sys_minios_pcm2_open, "pcm2_open" },
+    [MINIOS_SYS_PCM2_WRITE - MINIOS_SYSCALL_BASE] = { sys_minios_pcm2_write, "pcm2_write" },
+    [MINIOS_SYS_PCM2_CLOSE - MINIOS_SYSCALL_BASE] = { sys_minios_pcm2_close, "pcm2_close" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };

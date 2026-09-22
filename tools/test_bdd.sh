@@ -1448,6 +1448,19 @@ scenario "piano selftest verifies velocity, sustain and live DSP" "piano --selft
 poweroff"
 expect "piano: selftest ok"
 
+# The pcm2 probe runs on the same null-backend boot shape as sb16: with no
+# IRQ and no DMA progress the NONBLOCK open must still succeed and the
+# first kernel ring (1024 B) must be accepted without blocking; close must
+# release so a reopen succeeds. A draining backend accepts up to the full
+# 2048, so the pin is a range, never an exact count.
+SCENARIO_QEMU_ARGS="-audiodev none,id=snd1 -device sb16,iobase=0x220,irq=5,dma=1,audiodev=snd1"
+scenario "pcm2 low-latency path opens, streams and releases (null backend)" "piano --pcm2-probe
+sb16
+poweroff"
+expect "pcm2: probe ok"
+SCENARIO_QEMU_ARGS=""
+expect "pcm2: active=0"
+
 # The SB16 audio scenario needs the device attached, which the default
 # scenario flags do not include. Set SCENARIO_QEMU_ARGS for this one boot.
 # A healthy driver drains the ring via the timer watchdog even when the host
