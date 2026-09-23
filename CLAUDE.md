@@ -2364,10 +2364,16 @@ count, fail closed on bad pointers, overlong names and truncation.
   there is no fullscreen flash, and it stays out while a button is down,
   a drag is live, or a fullscreen terminal hides the dock. A click arms a
   Mac-style bounce on the clicked icon (`dock_bounce_kick` in `vga_fb.c`):
-  three decaying parabolic hops (peaks 24/12/6 px over `DOCK_BOUNCE_TICKS`
-  = 75 sys_ticks, 0.75 s, integer-only in `dock_bounce_height`) painted by
-  the same strip path every tick while live, with one settle repaint on
-  expiry. The launch stays pending (`dock_pending_cmd`) until the hops
+  two full parabolic hops (peaks 24/14 px over `DOCK_BOUNCE_TICKS`
+  = 90 sys_ticks, 0.9 s, integer-only in `dock_bounce_height`, both hops
+  starting and landing at exactly 0) painted by the same strip path.
+  Flicker discipline: a repaint is an erase (wallpaper flash) plus a
+  redraw, so the tick repaints only on a real change — a new bounce
+  height (`dock_last_bounce_h`, exact under a held timer IRQ so no torn
+  read doubles into a redundant flash) or a hover that persisted two
+  consecutive ticks (a pointer on a cell edge jitters ±1 count between
+  neighbours). Repaint count therefore equals the height transitions
+  (58), never the idle-tick rate. The launch stays pending (`dock_pending_cmd`) until the hops
   finish and only then runs `desktop_launch`, because a synchronous launch
   in the click tick blocks the shell loop that drives the strip and zero
   bounce frames ever paint (measured: instant launch = no visible hop).

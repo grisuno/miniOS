@@ -51,11 +51,11 @@
 #define DOCK_NEAR_H 48
 
 /* Click bounce (Mac style): the clicked icon hops while its program
- * launches. Three decaying parabolic hops over DOCK_BOUNCE_TICKS
- * (100 Hz sys_ticks, so 75 = 0.75 s) with peak DOCK_BOUNCE_H px.
+ * launches. Two full parabolic hops over DOCK_BOUNCE_TICKS
+ * (100 Hz sys_ticks, so 90 = 0.9 s) with peaks 24/14 px.
  * Integer-only parabolic arcs, no float/SSE in the kernel. */
 #define DOCK_BOUNCE_H 24
-#define DOCK_BOUNCE_TICKS 75
+#define DOCK_BOUNCE_TICKS 90
 
 /* Icon palette: 16 colours loaded into VGA DAC indices 240-255 in the
  * 8-bit fallback mode. Indices 0-14 stay as the desktop palette; the icon

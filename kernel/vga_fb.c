@@ -3213,36 +3213,44 @@ static int dock_bounce_live(void) {
     return (unsigned long)sys_ticks - dock_bounce_start < DOCK_BOUNCE_TICKS;
 }
 
-/* Bounce lift in pixels for elapsed 100 Hz ticks: three decaying parabolic
- * hops (peaks 24/12/6 px, total 0.75 s). Integer-only: h = H - H*d*d/hw*hw
- * around each hop centre, so consecutive hops join within 2 px and the
- * tail lands exactly at 0. */
+/* Bounce lift in pixels for elapsed 100 Hz ticks: two full parabolic
+ * hops (peaks 24/14 px over 45 ticks each, total 0.9 s). Integer-only:
+ * h = H - H*d*d/hw*hw around each hop centre, so both hops start and
+ * land at exactly 0 and the tail joins the slot with no step. */
 static int dock_bounce_height(unsigned long t) {
     long d;
-    if (t < 30) {
-        d = (long)t - 15;
-        return 24 - (int)(24 * d * d / (15 * 15));
-    }
-    if (t < 55) {
-        d = (long)t - 42;
-        return 12 - (int)(12 * d * d / (13 * 13));
+    if (t < 45) {
+        d = (long)t - 22;
+        return 24 - (int)(24 * d * d / (22 * 22));
     }
     if (t < DOCK_BOUNCE_TICKS) {
-        d = (long)t - 65;
-        return 6 - (int)(6 * d * d / (10 * 10));
+        d = (long)t - 67;
+        return 14 - (int)(14 * d * d / (22 * 22));
     }
     return 0;
 }
 
+/* Last bounce height painted (-1 = none). The idle tick runs far faster
+ * than the 100 Hz height clock, so most ticks would erase+redraw an
+ * identical strip (a wallpaper flash reads as flicker). Gated repaints
+ * only on a new height. Hover stability candidate below: a pointer
+ * resting on a cell edge jitters ±1 count between neighbours, and
+ * repainting every flip flashes the strip the same way. */
+static int dock_last_bounce_h = -1;
+static int dock_hover_cand = -2;
+static int dock_hover_n = 0;
+
 /* Arm the bounce for the clicked icon. Called on the click edge; the
  * launch stays pending until the hops finish, so the animation paints
  * before desktop_launch blocks the tick (a synchronous launch in the
- * same tick would never show a frame). */
+ * same tick would never show a frame). Pretends height 0 already
+ * painted so the first idle tick does not flash an identical strip. */
 static void dock_bounce_kick(int idx) {
     if (idx < 0 || idx >= shortcut_count) return;
     dock_bounce_idx = idx;
     dock_bounce_start = (unsigned long)sys_ticks;
     dock_bounce_kicks++;
+    dock_last_bounce_h = 0;
 }
 
 /* Deferred dock launch: the shortcut command waits here while its icon
@@ -3659,25 +3667,54 @@ void vga_fb_mouse_tick(void) {
     my = mouse_state.y;
 
     /* Dock magnify lives in the dock paint, which a full desktop paint
-     * runs only occasionally, so the tick repaints the dock strip itself
-     * once per hover crossing (never while a button is down, a drag is
-     * live, or a fullscreen terminal hides the dock): strip-only, no
-     * clear, no wallpaper rewrite, zero cost while hovering still. A live
-     * click bounce repaints every tick instead (button state ignored, the
-     * press that armed it is already consumed) and settles once on expiry,
-     * so the hops animate at tick rate and the icon lands back in its slot. */
+     * runs only occasionally, so the tick repaints the dock strip itself:
+     * strip-only, no clear, no wallpaper rewrite, zero cost while hovering
+     * still. Flicker discipline: a repaint is an erase (wallpaper flash)
+     * plus a redraw, so the tick repaints only on a real change — a new
+     * bounce height, or a hover that persisted two consecutive ticks
+     * (a pointer on a cell edge jitters between neighbours). The height
+     * decision and its paint run with the timer IRQ held: the 100 Hz ISR
+     * advances sys_ticks between the check and the paint otherwise, and
+     * every torn read doubles into a redundant flash. A live bounce
+     * ignores the button state (the arming press is consumed) and settles
+     * once on expiry, so the hops animate and the icon lands back in its
+     * slot. The deferred launch fires after the IRQ restore: it blocks
+     * running a program and must never hold the IRQ off. */
     if (!gfx_cursor && !term_fullscreen && !wm_dragging && !wm_gdrag) {
         int hover = dock_hover_index(mx, my);
-        int bounce = dock_bounce_live();
-        if (bounce || (hover != dock_last_hover && !(mouse_state.buttons & 1)))
+        int bounce;
+        int stable;
+        int fire = 0;
+        char launch[128];
+        irqflags_t dflags;
+        launch[0] = 0;
+        dflags = spin_save_irq();
+        bounce = dock_bounce_live();
+        if (hover != dock_hover_cand) {
+            dock_hover_cand = hover;
+            dock_hover_n = 0;
+        } else if (dock_hover_n < 2) {
+            dock_hover_n++;
+        }
+        stable = (dock_hover_n >= 1);
+        if (bounce) {
+            int h = dock_bounce_height(dock_bounce_elapsed());
+            if (h != dock_last_bounce_h ||
+                (stable && hover != dock_last_hover)) {
+                dock_paint_hover(hover);
+                dock_last_bounce_h = h;
+            }
+        } else if (stable && hover != dock_last_hover &&
+                   !(mouse_state.buttons & 1)) {
             dock_paint_hover(hover);
-        else if (dock_bounce_idx >= 0 &&
+            dock_last_bounce_h = -1;
+        } else if (dock_bounce_idx >= 0 &&
                  (unsigned long)sys_ticks - dock_bounce_start >= DOCK_BOUNCE_TICKS) {
+            unsigned i = 0;
             dock_bounce_idx = -1;
+            dock_last_bounce_h = -1;
             dock_paint_hover(hover);
             if (dock_pending_len > 0) {
-                char launch[128];
-                unsigned i = 0;
                 while (dock_pending_cmd[i] && i < sizeof(launch) - 1) {
                     launch[i] = dock_pending_cmd[i];
                     i++;
@@ -3685,9 +3722,13 @@ void vga_fb_mouse_tick(void) {
                 launch[i] = 0;
                 dock_pending_len = 0;
                 dock_pending_cmd[0] = 0;
-                desktop_launch(launch);
-                return;
+                fire = 1;
             }
+        }
+        spin_restore_irq(dflags);
+        if (fire) {
+            desktop_launch(launch);
+            return;
         }
     } else if (dock_bounce_idx >= 0 &&
                (unsigned long)sys_ticks - dock_bounce_start >= DOCK_BOUNCE_TICKS) {
@@ -3734,6 +3775,9 @@ void vga_fb_mouse_init(void) {
     dock_bounce_start = 0;
     dock_bounce_kicks = 0;
     dock_bounce_paints = 0;
+    dock_last_bounce_h = -1;
+    dock_hover_cand = -2;
+    dock_hover_n = 0;
     dock_pending_len = 0;
     dock_pending_cmd[0] = 0;
 }
