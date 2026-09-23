@@ -4,7 +4,7 @@
 [![License: AGPL](https://img.shields.io/badge/License-AGPL-yellow.svg)](https://opensource.org/licenses/AGPL)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?logo=github)](https://ko-fi.com/grisuno)
-[![Download the app](https://img.shields.io/github/v/release/grisuno/miniOS-app?label=Download%20app&color=2563eb)](https://github.com/grisuno/miniOS-app/releases/latest)
+[![Download the app](https://img.shields.io/github/v/release/grisuno/miniOS?label=Download%20app&color=2563eb)](https://github.com/grisuno/miniOS/releases/latest)
 
 I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). That same [beacon](https://github.com/grisuno/blacksandbeacon) already had some things that I reused, like AES and the JSON implementation. LZSS comes from [CompressLoader](https://github.com/grisuno/CompressLoader), another tool, and at one point I said, "Can I run this on my kernel?" And well, here we are.
 
