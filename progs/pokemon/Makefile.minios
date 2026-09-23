@@ -36,10 +36,13 @@ endif
 
 CC = clang
 
-FLAGS = -Os -static -no-pie -ffunction-sections -fdata-sections \
+FLAGS = -O2 -static -no-pie -ffunction-sections -fdata-sections \
         -I$(STUBS) -I$(RUNTIME)/include -I$(MINIOS_DIR)/progs \
         -I$(MINIOS_DIR)/third_party/stb \
         -DGB_HAS_SDL2 -DGB_MINIOS -DNDEBUG -w
+# NOTE: -O2, not -Os: the recompiler/interpreter core is CPU-bound and the
+# game runs under QEMU-TCG, where -Os costs real fps. Size is no concern:
+# the ELF ships on MiniFS (768 MB), never on the size-budgeted ramdisk.
 LDFLAGS = -static -no-pie -Wl,--gc-sections
 LIBS    = -lm
 

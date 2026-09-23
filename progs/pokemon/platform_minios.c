@@ -132,6 +132,23 @@ static void sys_pcm2_close(void) {
     __asm__ volatile("syscall" : : "a"(MINIOS_SYS_PCM2_CLOSE) : "rcx","r11","memory");
 }
 
+/* Millisecond wait with batched clock polls: one sys_time_ms syscall per
+ * ~4096 pauses instead of one per pause. The old per-iteration syscall
+ * burned thousands of traps per vsync/tone wait under emulation for no
+ * timing gain (overshoot is microseconds against millisecond waits).
+ * Difference-based, so it stays correct across the 32-bit wrap. */
+static void wait_ms_batch(uint32_t ms) {
+    uint32_t wstart = (uint32_t)sys_time_ms();
+    for (;;) {
+        for (volatile unsigned i = 0; i < 4096; i++) {
+            __asm__ volatile("pause");
+        }
+        if ((uint32_t)sys_time_ms() - wstart >= ms) {
+            break;
+        }
+    }
+}
+
 /* ============================================================================
  * Framebuffer: 800x360 NK backbuffer, GB at exact 2x centered
  * ========================================================================== */
@@ -308,10 +325,7 @@ static unsigned g_arp_index = 0;
 
 static void hold_tone(unsigned freq, unsigned ms) {
     sys_tone(freq);
-    unsigned long until = (unsigned long)sys_time_ms() + ms;
-    while ((unsigned long)sys_time_ms() < until) {
-        __asm__ volatile("pause");
-    }
+    wait_ms_batch(ms);
 }
 
 static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
@@ -590,6 +604,27 @@ static int g_win_ox = 0, g_win_oy = 0;
 static int g_prev_lbtn = 0;
 static unsigned g_osd_until = 0;
 static char g_osd[56] = {0};
+
+/* Fringe-redraw tracking: the side art is static, so it is painted once
+ * and only repainted when something drew over it (menu dropdown opens or
+ * closes, OSD toast shows or expires). Redrawing two ~240x344 scaled
+ * strips with per-pixel divisions every frame cost more than the GB
+ * image itself; this keeps one repaint per transition. */
+static bool g_menu_was_open = false;
+static bool g_osd_was_vis = false;
+static bool g_art_ready = false;
+
+static bool ui_fringe_dirty(uint32_t now) {
+    bool osd_vis = g_osd[0] != 0 && now < g_osd_until;
+    return !g_art_ready || (g_menu_open != g_menu_was_open) ||
+           (osd_vis != g_osd_was_vis);
+}
+
+static void ui_fringe_sync(uint32_t now) {
+    g_menu_was_open = g_menu_open;
+    g_osd_was_vis = g_osd[0] != 0 && now < g_osd_until;
+    g_art_ready = true;
+}
 
 static void menu_fill(int x0, int y0, int w, int h, uint8_t idx) {
     volatile uint8_t *dst = FB_ADDR;
@@ -894,11 +929,22 @@ static void pokemon_art_draw(void) {
                          GB_DST_X0 + GB_DST_W, side_y, side_w, side_h);
 }
 
-/* Scale and upload frame to backbuffer (nearest neighbor, exact 2x). */
+/* Scale and upload frame to backbuffer (nearest neighbor, exact 2x).
+ * The GB palette holds 4 shades, so a 16-entry direct-mapped pixel cache
+ * skips the RGB shift/mask math on repeats (the common case) while staying
+ * exact on every miss. Fringes repaint only on menu/OSD transitions. */
+static uint32_t g_px_lut[16];
+static uint8_t g_px_lut_idx[16];
+static uint8_t g_px_lut_ok[16];
+
 static void upload_frame(const uint32_t *framebuffer) {
     volatile uint8_t *dst = FB_ADDR;
+    uint32_t fr_now = (uint32_t)sys_time_ms();
 
-    pokemon_art_draw();
+    if (ui_fringe_dirty(fr_now)) {
+        pokemon_art_draw();
+    }
+    ui_fringe_sync(fr_now);
     for (int y = 0; y < GB_DST_H; y++) {
         int src_y = y >> 1;
         const uint32_t *src_row = framebuffer + src_y * GB_SCREEN_WIDTH;
@@ -906,11 +952,21 @@ static void upload_frame(const uint32_t *framebuffer) {
 
         for (int x = 0; x < GB_DST_W; x++) {
             uint32_t pixel = src_row[x >> 1];
-            uint8_t r = (uint8_t)((pixel >> 16) & 0xFF);
-            uint8_t g = (uint8_t)((pixel >> 8) & 0xFF);
-            uint8_t b = (uint8_t)(pixel & 0xFF);
-            dst_row[x] = (uint8_t)((r & 0xE0) | ((g & 0xE0) >> 3) |
-                                   ((b & 0xC0) >> 6));
+            unsigned h = (unsigned)((pixel ^ (pixel >> 9) ^ (pixel >> 17)) & 15u);
+            uint8_t idx;
+            if (g_px_lut_ok[h] && g_px_lut[h] == pixel) {
+                idx = g_px_lut_idx[h];
+            } else {
+                uint8_t r = (uint8_t)((pixel >> 16) & 0xFF);
+                uint8_t g = (uint8_t)((pixel >> 8) & 0xFF);
+                uint8_t b = (uint8_t)(pixel & 0xFF);
+                idx = (uint8_t)((r & 0xE0) | ((g & 0xE0) >> 3) |
+                                ((b & 0xC0) >> 6));
+                g_px_lut[h] = pixel;
+                g_px_lut_idx[h] = idx;
+                g_px_lut_ok[h] = 1;
+            }
+            dst_row[x] = idx;
         }
     }
 
@@ -977,6 +1033,7 @@ bool gb_platform_init(int scale) {
     push_332_palette();
     pokemon_art_load();
     pokemon_art_draw();
+    ui_fringe_sync((uint32_t)sys_time_ms());
 
     g_last_frame_time = (uint32_t)sys_time_ms();
     fprintf(stderr, "[MINIOS] Platform initialized, backbuffer at %p\n",
@@ -1272,9 +1329,20 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
         g_ff_counter = 0;
         g_ff_muted = false;
         g_pcm2_mute = false;
-        upload_frame(framebuffer);
-        minios_audio_frame();
-        minios_autosave(now);
+        /* Static screen (dialog open, standing still): the 92 KB upload
+         * plus the 288 KB kernel composite buy nothing, so skip both.
+         * Menu/OSD transitions still force a present, as do the first
+         * frames (menu bar not on screen yet). */
+        if (g_present_count >= 2 && !g_menu_open && !ui_fringe_dirty(now) &&
+            memcmp(framebuffer, g_last_guest_framebuffer,
+                   sizeof(g_last_guest_framebuffer)) == 0) {
+            minios_audio_frame();
+            minios_autosave(now);
+        } else {
+            upload_frame(framebuffer);
+            minios_audio_frame();
+            minios_autosave(now);
+        }
     }
 
     memcpy(g_last_guest_framebuffer, framebuffer,
@@ -1298,7 +1366,13 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
 }
 
 void gb_platform_present_framebuffer(const uint32_t *framebuffer) {
-    upload_frame(framebuffer);
+    /* Mid-frame LCD-transition slice: skip the whole upload when the
+     * pixels match the last presented frame. */
+    if (framebuffer &&
+        memcmp(framebuffer, g_last_guest_framebuffer,
+               sizeof(g_last_guest_framebuffer)) != 0) {
+        upload_frame(framebuffer);
+    }
     g_dbg_present++;
     dbg_heartbeat();
 }
@@ -1309,6 +1383,7 @@ void gb_platform_render_lcd_off_frame(void) {
         memset((void *)(dst + (GB_DST_Y0 + y) * FB_W + GB_DST_X0), 0, GB_DST_W);
     }
     pokemon_art_draw();
+    ui_fringe_sync((uint32_t)sys_time_ms());
     menu_draw();
     {
         int origin[2] = {0, 0};
@@ -1333,11 +1408,7 @@ void gb_platform_vsync(uint32_t frame_cycles) {
     uint32_t target_ms = 1000 * g_speed_percent / 5970;
     uint32_t elapsed = now - g_last_frame_time;
     if (elapsed < target_ms) {
-        uint32_t wait = target_ms - elapsed;
-        uint32_t wstart = (uint32_t)sys_time_ms();
-        while ((uint32_t)sys_time_ms() - wstart < wait) {
-            __asm__ volatile("pause");
-        }
+        wait_ms_batch(target_ms - elapsed);
     }
 }
 
