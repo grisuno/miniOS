@@ -214,6 +214,8 @@ generation 1), and `make selfhost` verifies the bootstrap fixed point on the
 host. Inside the OS the self-hosted compiler drives the same edit/compile/
 link/run loop as `objects/minigcc.o`.
 
+### Workflow 
+
 <img width="4081" height="7841" alt="diagram" src="https://github.com/user-attachments/assets/2926b49d-6fef-4032-95d9-c5c2d18bf28e" />
 
 ## Build and run
@@ -232,6 +234,8 @@ make usb-list   # lists candidate target devices for USB writing
 make usb USB=/dev/sdX  # writes the bootable image to a USB pendrive (DD mode)
 make vdi        # converts the image to os.vdi for VirtualBox (hard disk)
 ```
+
+### Diagram: Boot path, kernel space & user space
 
 <img width="5760" height="2709" alt="miniOS" src="https://github.com/user-attachments/assets/95ac0420-f891-4d4f-aca1-e663f50f3819" />
 
