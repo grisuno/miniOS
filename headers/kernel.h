@@ -18,6 +18,9 @@
 #define ALIGN_UP(x, a) (((x) + (a) - 1) & ~((a) - 1))
 #ifndef PORT_IO_DEFINED
 #define PORT_IO_DEFINED
+/* Forward: PIT-calibrated wall clock (defined in kernel/time.c); valid
+ * once pit_init has run. Used only by the deadline polls below. */
+unsigned long ktime_ms(void);
 static inline void outb(unsigned short port, unsigned char val) {
     __asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));
 }
@@ -33,6 +36,51 @@ static inline unsigned short inw(unsigned short port) {
     unsigned short r;
     __asm__ volatile("inw %1, %0" : "=a"(r) : "Nd"(port));
     return r;
+}
+/* String port I/O: one instruction moves `count` words between the port
+ * and the buffer.  Under KVM every port access is a VM-exit, so a 512 B
+ * sector costs 1 exit this way instead of 256 single-word inw/outw
+ * (measured: MiniFS reads ran at ~250 KB/s before, bulk ELF loads took
+ * minutes).  `cld` pins the direction; alignment is not required. */
+static inline void insw(unsigned short port, unsigned short *buf,
+                        unsigned count) {
+    __asm__ volatile("cld; rep insw"
+                     : "+D"(buf), "+c"(count)
+                     : "d"(port)
+                     : "memory");
+}
+static inline void outsw(unsigned short port, const unsigned short *buf,
+                         unsigned count) {
+    __asm__ volatile("cld; rep outsw"
+                     : "+S"(buf), "+c"(count)
+                     : "d"(port)
+                     : "memory");
+}
+/* Deadline-bounded port poll.  A bare `while(spins--) inb(...)` under KVM
+ * turns every iteration into a VM-exit: a 100k-spin timeout against a
+ * device that answers in milliseconds burns ~200 ms of exits per wait,
+ * and mouse_hw_init issues dozens of waits (measured 5 s of boot).  This
+ * polls the port once per batch of pauses (exits drop ~1000x) against a
+ * ktime_ms wall deadline (valid after pit_init, which precedes every
+ * user), and bails out early when the bus floats at 0xFF (absent ISA
+ * device) instead of spinning out the whole budget.  Returns 1 when the
+ * masked bit reached the wanted state, 0 on timeout/absent. */
+static inline int port_wait_mask(unsigned short port, unsigned char mask,
+                                 int want_set, unsigned long budget_ms) {
+    unsigned long end = ktime_ms() + budget_ms;
+    int ff = 0;
+    for (;;) {
+        unsigned char s = inb(port);
+        if (want_set ? (s & mask) : !(s & mask)) return 1;
+        if (s == 0xFF) {
+            if (++ff >= 16) return 0;
+        } else {
+            ff = 0;
+        }
+        if ((long)(ktime_ms() - end) >= 0) return 0;
+        for (volatile unsigned i = 0; i < 1024; i++)
+            __asm__ volatile("pause");
+    }
 }
 #endif
 

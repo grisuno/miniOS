@@ -9,18 +9,16 @@
 #include "drivers/mouse.h"
 
 /* ---- PS/2 mouse hardware init ---- */
+/* Every wait is deadline-bounded through port_wait_mask (see kernel.h):
+ * the old bare 100k-spin polls burned ~200 ms of KVM VM-exits per wait
+ * and mouse_hw_init issues dozens of them (measured 5 s of boot).
+ * 100 ms is generous: a real controller answers in microseconds. */
 static void mouse_wait_cmd(void) {
-    int timeout = HAL_MOUSE_HW_TIMEOUT;
-    while (timeout--) {
-        if (!(hal_inb(HAL_PS2_STATUS) & HAL_PS2_IBF_EMPTY)) return;
-    }
+    port_wait_mask(HAL_PS2_STATUS, HAL_PS2_IBF_EMPTY, 0, 100);
 }
 
 static void mouse_wait_data(void) {
-    int timeout = HAL_MOUSE_HW_TIMEOUT;
-    while (timeout--) {
-        if (hal_inb(HAL_PS2_STATUS) & HAL_PS2_OBF_FULL) return;
-    }
+    port_wait_mask(HAL_PS2_STATUS, HAL_PS2_OBF_FULL, 1, 100);
 }
 
 static void mouse_write(unsigned char data) {

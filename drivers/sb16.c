@@ -84,7 +84,6 @@
 #define SB16_SILENCE_SLOT   (SB16_SLOTS - 1u)
 #define SB16_BUF            SB16_PCM_BUF
 
-#define SB16_PROBE_WAIT     200000u
 
 #define SB16_MODE_TONE 0
 #define SB16_MODE_PCM  1
@@ -277,10 +276,7 @@ void sb16_pump(void) {
  * kernel; the byte is still issued after the timeout (the DSP takes it
  * once it catches up after a reset). */
 static int sb16_wait_write(void) {
-    unsigned i = 0;
-    while ((inb(SB16_DSP_STATUS) & SB16_DSP_READY_MASK) && i < SB16_PROBE_WAIT)
-        i++;
-    return i < SB16_PROBE_WAIT;
+    return port_wait_mask(SB16_DSP_STATUS, SB16_DSP_READY_MASK, 0, 100);
 }
 
 static void sb16_cmd(unsigned char c) {
@@ -289,28 +285,39 @@ static void sb16_cmd(unsigned char c) {
 }
 
 static int sb16_read_data(unsigned char *out) {
-    unsigned i = 0;
     /* Data-ready is bit 7 of the read-status port (0x22E); the byte itself
      * comes from the read-data port (0x22A).  Polling the data port for
      * readiness consumes the pending byte and eats the reply. */
-    while (!(inb(SB16_DSP_RDSTATUS) & SB16_DSP_READY_MASK) && i < SB16_PROBE_WAIT)
-        i++;
-    if (i >= SB16_PROBE_WAIT) return 0;
+    if (!port_wait_mask(SB16_DSP_RDSTATUS, SB16_DSP_READY_MASK, 1, 100))
+        return 0;
     *out = inb(SB16_DSP_READ_DATA);
     return 1;
 }
 
 static int sb16_reset_dsp(void) {
+    unsigned long end = ktime_ms() + 200;
+    int ff = 0;
     unsigned i;
     outb(SB16_DSP_RESET, 1);
     for (i = 0; i < 10000u; i++) __asm__ volatile("pause");
     outb(SB16_DSP_RESET, 0);
     for (i = 0; i < 10000u; i++) __asm__ volatile("pause");
-    for (i = 0; i < SB16_PROBE_WAIT; i++) {
-        if (!(inb(SB16_DSP_RDSTATUS) & SB16_DSP_READY_MASK)) continue;
-        if (inb(SB16_DSP_READ_DATA) == 0xAA) return 1;
+    /* Absent device floats at 0xFF with the ready bit set: without the
+     * paired DATA check below, the old loop burned its whole 200k-spin
+     * budget (~1 s of KVM exits) on every boot without audio. */
+    for (;;) {
+        unsigned char st = inb(SB16_DSP_RDSTATUS);
+        if (st == 0xFF) {
+            if (++ff >= 16) return 0;
+        } else {
+            ff = 0;
+            if (st & SB16_DSP_READY_MASK) {
+                if (inb(SB16_DSP_READ_DATA) == 0xAA) return 1;
+            }
+        }
+        if ((long)(ktime_ms() - end) >= 0) return 0;
+        for (i = 0; i < 1024; i++) __asm__ volatile("pause");
     }
-    return 0;
 }
 
 static void sb16_dma_play(unsigned addr, unsigned len) {

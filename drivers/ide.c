@@ -28,6 +28,11 @@ static int ide_wait_not_busy(unsigned int timeout) {
     unsigned int i;
     for (i = 0; i < timeout; i++) {
         if (!(ide_read_status() & IDE_STATUS_BSY)) return 0;
+        /* One port read per pause batch: under KVM each inb is a VM-exit,
+         * and QEMU answers status changes in microseconds, so polling
+         * every spin burns thousands of exits per wait for no time gain. */
+        for (volatile unsigned k = 0; k < 64; k++)
+            __asm__ volatile("pause");
     }
     return -1;
 }
@@ -39,6 +44,8 @@ static int ide_wait_drq(unsigned int timeout) {
         if (status & IDE_STATUS_ERR) return -1;
         if (status & IDE_STATUS_DF)  return -1;
         if (status & IDE_STATUS_DRQ) return 0;
+        for (volatile unsigned k = 0; k < 64; k++)
+            __asm__ volatile("pause");
     }
     return -1;
 }
@@ -164,10 +171,11 @@ int ide_read_sectors(unsigned int lba, unsigned int count, void *buf) {
     outb(IDE_PRIMARY_BASE + IDE_REG_STATUS, IDE_CMD_READ);
 
     for (i = 0; i < count; i++) {
-        unsigned int j;
         if (ide_wait_drq(IDE_TIMEOUT) < 0) return -1;
-        for (j = 0; j < IDE_SECTOR_SIZE / 2; j++)
-            ((unsigned short *)p)[j] = inw(IDE_PRIMARY_BASE + IDE_REG_DATA);
+        /* One rep-insw per sector: a single VM-exit under KVM instead of
+         * 256 single-word exits. */
+        insw(IDE_PRIMARY_BASE + IDE_REG_DATA, (unsigned short *)p,
+             IDE_SECTOR_SIZE / 2);
         p += IDE_SECTOR_SIZE;
     }
     return 0;
@@ -191,10 +199,10 @@ int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf) {
     outb(IDE_PRIMARY_BASE + IDE_REG_STATUS, IDE_CMD_WRITE);
 
     for (i = 0; i < count; i++) {
-        unsigned int j;
         if (ide_wait_drq(IDE_TIMEOUT) < 0) return -1;
-        for (j = 0; j < IDE_SECTOR_SIZE / 2; j++)
-            outw(IDE_PRIMARY_BASE + IDE_REG_DATA, ((const unsigned short *)p)[j]);
+        /* One rep-outsw per sector, same VM-exit reasoning as the read. */
+        outsw(IDE_PRIMARY_BASE + IDE_REG_DATA, (const unsigned short *)p,
+              IDE_SECTOR_SIZE / 2);
         p += IDE_SECTOR_SIZE;
     }
     if (ide_wait_not_busy(IDE_TIMEOUT) < 0) return -1;

@@ -16,20 +16,24 @@
  *
  * Video: GB screen (160x144) at exact 2x (320x288) centered in the
  * 800x360 NK backbuffer. The DOOM buffer (320x200) cannot fit 2x
- * (320x288), so the NK buffer is used instead.
+ * (320x288), so the NK buffer is used instead. Each source pixel
+ * converts once into a 2x2 block and rows unchanged since the last
+ * upload are skipped. The frame stays indexed 1 byte per pixel on
+ * purpose: under emulation memory traffic dominates, so the narrowest
+ * buffer wins (an RGB companion was tried and ran slower).
  *
  * Audio (DOOM-style: sparse syscalls from poll points, no threads):
  * the runtime mixes 44100 Hz stereo PCM and calls on_audio_sample per
  * sample; a syscall per sample (44k/sec) would die under emulation, so
  * the callback only accumulates zero crossings + energy (a handful of
- * integer ops, no syscalls). Once per rendered frame the APU registers
- * are sampled for per-channel note frequencies (squares + wave, like
- * DOOM decodes MUS voices; noise is dropped like DOOM drops
- * percussion) and played as bass pedal + melody arpeggio with DOOM-like
- * busy-wait slots. The PCM energy gates everything, so envelopes,
- * fades and silence behave correctly and a decayed-but-on channel can
- * never drone forever. If the mix sounds but no register voice is
- * audible (noise SFX, sweep zaps), the raw mix estimate is played.
+ * integer ops, no syscalls) and stages pcm2 bytes. Once per rendered
+ * frame the APU registers are sampled for per-channel note frequencies
+ * (squares + wave, like DOOM decodes MUS voices; noise is dropped like
+ * DOOM drops percussion) and the fallback plays one non-blocking tone
+ * round-robined across the voices. The PCM energy gates everything, so
+ * envelopes, fades and silence behave correctly and a decayed-but-on
+ * channel can never drone forever. If the mix sounds but no register
+ * voice is audible (noise SFX, sweep zaps), the raw mix estimate plays.
  *
  * Debug: heartbeat to stderr is OFF unless the game is started with
  * --debug. Detected via a constructor scanning _dl_argv (static
@@ -323,43 +327,42 @@ static void sample_apu_voices(gb_voice_t *v) {
 
 static unsigned g_arp_index = 0;
 
-static void hold_tone(unsigned freq, unsigned ms) {
-    sys_tone(freq);
-    wait_ms_batch(ms);
-}
-
 static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
                               unsigned zc_freq) {
+    unsigned mel[2];
+    int nmel = 0;
     if (!pcm_audible) {
         sys_tone(0);
         return;
     }
-    bool m1 = v[0].audible, m2 = v[1].audible, bass = v[2].audible;
-    if (!m1 && !m2 && !bass) {
+    if (v[0].audible) {
+        mel[nmel++] = v[0].freq;
+    }
+    if (v[1].audible) {
+        mel[nmel++] = v[1].freq;
+    }
+    if (!v[0].audible && !v[1].audible && !v[2].audible) {
         /* Mix sounds but no tonal voice (noise SFX, out-of-range sweep):
          * fall back to the raw mix estimate. */
         if (zc_freq >= MINIOS_AUDIO_MIN_HZ && zc_freq <= MINIOS_AUDIO_MAX_HZ) {
-            hold_tone(zc_freq, 8);
+            sys_tone(zc_freq);
         } else {
             sys_tone(0);
         }
         return;
     }
-    unsigned mel[2];
-    int nmel = 0;
-    if (m1) {
-        mel[nmel++] = v[0].freq;
+    /* One tone per frame, no busy-wait: the old bass-pedal + arpeggio
+     * slots blocked up to 11 ms per frame, over half the 16.7 ms budget
+     * at 59.7 fps. Round-robin across bass/melody voices keeps the tune
+     * recognizable; frame pacing itself is the timing. */
+    if (v[2].audible && (g_arp_index % 3u) == 2u) {
+        sys_tone(v[2].freq);
+    } else if (nmel > 0) {
+        sys_tone(mel[g_arp_index % (unsigned)nmel]);
+    } else {
+        sys_tone(v[2].freq);
     }
-    if (m2) {
-        mel[nmel++] = v[1].freq;
-    }
-    if (bass) {
-        hold_tone(v[2].freq, MINIOS_ARP_BASS_MS);
-    }
-    if (nmel > 0) {
-        hold_tone(mel[g_arp_index % (unsigned)nmel], MINIOS_ARP_MEL_MS);
-        g_arp_index++;
-    }
+    g_arp_index++;
 }
 
 /* Called once per rendered frame: a handful of syscalls, max. When pcm2
@@ -929,13 +932,45 @@ static void pokemon_art_draw(void) {
                          GB_DST_X0 + GB_DST_W, side_y, side_w, side_h);
 }
 
-/* Scale and upload frame to backbuffer (nearest neighbor, exact 2x).
- * The GB palette holds 4 shades, so a 16-entry direct-mapped pixel cache
- * skips the RGB shift/mask math on repeats (the common case) while staying
- * exact on every miss. Fringes repaint only on menu/OSD transitions. */
+/* Scale and upload frame to backbuffer.
+ *
+ * Each GB source pixel converts once and lands as a 2x2 block (the old
+ * loop converted every destination pixel, paying the RGB shift/mask math
+ * twice per source pixel). Rows identical to the last uploaded frame
+ * skip convert and stores: the destination already holds them, which
+ * covers the common middle case (dialog box over a still background)
+ * that the whole-frame skip upstream cannot catch.
+ *
+ * g_last_guest_framebuffer always mirrors what the destination holds:
+ * it is written here and only here, never on skipped frames. The LCD-off
+ * path zeroes the destination without uploading, so it arms
+ * g_gb_dst_stale to force a full rewrite on the next upload. The frame
+ * stays indexed 1 byte per pixel on purpose: under emulation memory
+ * traffic dominates, so the narrowest buffer wins over fancier formats. */
 static uint32_t g_px_lut[16];
 static uint8_t g_px_lut_idx[16];
 static uint8_t g_px_lut_ok[16];
+static bool g_gb_dst_stale = true;
+static uint32_t g_last_guest_framebuffer[GB_FRAMEBUFFER_SIZE];
+
+static uint8_t px_to_idx(uint32_t pixel) {
+    unsigned h = (unsigned)((pixel ^ (pixel >> 9) ^ (pixel >> 17)) & 15u);
+    uint8_t idx;
+    if (g_px_lut_ok[h] && g_px_lut[h] == pixel) {
+        return g_px_lut_idx[h];
+    }
+    {
+        uint8_t r = (uint8_t)((pixel >> 16) & 0xFF);
+        uint8_t g = (uint8_t)((pixel >> 8) & 0xFF);
+        uint8_t b = (uint8_t)(pixel & 0xFF);
+        idx = (uint8_t)((r & 0xE0) | ((g & 0xE0) >> 3) |
+                        ((b & 0xC0) >> 6));
+    }
+    g_px_lut[h] = pixel;
+    g_px_lut_idx[h] = idx;
+    g_px_lut_ok[h] = 1;
+    return idx;
+}
 
 static void upload_frame(const uint32_t *framebuffer) {
     volatile uint8_t *dst = FB_ADDR;
@@ -945,30 +980,29 @@ static void upload_frame(const uint32_t *framebuffer) {
         pokemon_art_draw();
     }
     ui_fringe_sync(fr_now);
-    for (int y = 0; y < GB_DST_H; y++) {
-        int src_y = y >> 1;
-        const uint32_t *src_row = framebuffer + src_y * GB_SCREEN_WIDTH;
-        volatile uint8_t *dst_row = dst + (GB_DST_Y0 + y) * FB_W + GB_DST_X0;
-
-        for (int x = 0; x < GB_DST_W; x++) {
-            uint32_t pixel = src_row[x >> 1];
-            unsigned h = (unsigned)((pixel ^ (pixel >> 9) ^ (pixel >> 17)) & 15u);
-            uint8_t idx;
-            if (g_px_lut_ok[h] && g_px_lut[h] == pixel) {
-                idx = g_px_lut_idx[h];
-            } else {
-                uint8_t r = (uint8_t)((pixel >> 16) & 0xFF);
-                uint8_t g = (uint8_t)((pixel >> 8) & 0xFF);
-                uint8_t b = (uint8_t)(pixel & 0xFF);
-                idx = (uint8_t)((r & 0xE0) | ((g & 0xE0) >> 3) |
-                                ((b & 0xC0) >> 6));
-                g_px_lut[h] = pixel;
-                g_px_lut_idx[h] = idx;
-                g_px_lut_ok[h] = 1;
+    for (int sy = 0; sy < GB_SCREEN_HEIGHT; sy++) {
+        const uint32_t *src_row = framebuffer + sy * GB_SCREEN_WIDTH;
+        const uint32_t *last_row =
+            g_last_guest_framebuffer + sy * GB_SCREEN_WIDTH;
+        if (!g_gb_dst_stale &&
+            memcmp(src_row, last_row,
+                   (size_t)GB_SCREEN_WIDTH * sizeof(uint32_t)) == 0) {
+            continue;
+        }
+        for (int sx = 0; sx < GB_SCREEN_WIDTH; sx++) {
+            uint8_t idx = px_to_idx(src_row[sx]);
+            for (int dy = 0; dy < 2; dy++) {
+                volatile uint8_t *dst_row = dst +
+                    (GB_DST_Y0 + sy * 2 + dy) * FB_W +
+                    GB_DST_X0 + sx * 2;
+                dst_row[0] = idx;
+                dst_row[1] = idx;
             }
-            dst_row[x] = idx;
         }
     }
+    g_gb_dst_stale = false;
+    memcpy(g_last_guest_framebuffer, framebuffer,
+           sizeof(g_last_guest_framebuffer));
 
     /* Menu bar + dropdown + OSD live in the margins the 2x image never
      * touches; then present and capture the window content origin so the
@@ -992,7 +1026,6 @@ static int g_speed_percent = 100;
 static int g_benchmark_mode = 0;
 static GBPlatformExitAction g_exit_action = GB_PLATFORM_EXIT_QUIT;
 static uint64_t g_present_count = 0;
-static uint32_t g_last_guest_framebuffer[GB_FRAMEBUFFER_SIZE];
 
 /* Timing */
 static double g_timing_render_total = 0.0;
@@ -1299,7 +1332,7 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
 
     if (minios_fast_forward()) {
         /* Max-speed path: silence the speaker once, skip audio (its
-         * busy-wait slots would cap the speed) and upload only 1 of
+         * per-frame tone syscalls would cap the speed) and upload only 1 of
          * every MINIOS_FF_FRAMESKIP+1 frames. Counters and autosave
          * still advance so timing/quit behaviour stays sane. */
         if (!g_ff_muted) {
@@ -1309,8 +1342,6 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
         }
         g_ff_counter++;
         if ((g_ff_counter % (MINIOS_FF_FRAMESKIP + 1u)) != 0) {
-            memcpy(g_last_guest_framebuffer, framebuffer,
-                   sizeof(g_last_guest_framebuffer));
             g_timing_frame_count++;
             g_present_count++;
             g_dbg_render++;
@@ -1332,8 +1363,11 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
         /* Static screen (dialog open, standing still): the 92 KB upload
          * plus the 288 KB kernel composite buy nothing, so skip both.
          * Menu/OSD transitions still force a present, as do the first
-         * frames (menu bar not on screen yet). */
-        if (g_present_count >= 2 && !g_menu_open && !ui_fringe_dirty(now) &&
+         * frames (menu bar not on screen yet) and any frame after the
+         * LCD-off path zeroed the destination. Row-level dirt inside
+         * upload_frame covers partially static frames. */
+        if (!g_gb_dst_stale && g_present_count >= 2 && !g_menu_open &&
+            !ui_fringe_dirty(now) &&
             memcmp(framebuffer, g_last_guest_framebuffer,
                    sizeof(g_last_guest_framebuffer)) == 0) {
             minios_audio_frame();
@@ -1344,9 +1378,6 @@ void gb_platform_render_frame(const uint32_t *framebuffer) {
             minios_autosave(now);
         }
     }
-
-    memcpy(g_last_guest_framebuffer, framebuffer,
-           sizeof(g_last_guest_framebuffer));
 
     g_timing_frame_count++;
     g_present_count++;
@@ -1382,6 +1413,10 @@ void gb_platform_render_lcd_off_frame(void) {
     for (int y = 0; y < GB_DST_H; y++) {
         memset((void *)(dst + (GB_DST_Y0 + y) * FB_W + GB_DST_X0), 0, GB_DST_W);
     }
+    /* The destination no longer mirrors g_last_guest_framebuffer: force
+     * a full rewrite (and a present even for a pixels-identical frame)
+     * on the next upload. */
+    g_gb_dst_stale = true;
     pokemon_art_draw();
     ui_fringe_sync((uint32_t)sys_time_ms());
     menu_draw();

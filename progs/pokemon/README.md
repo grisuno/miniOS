@@ -73,13 +73,26 @@ serial prints cost frame rate). All other upstream runtime flags
 
 ## Audio
 
-PC speaker, DOOM-style: per-channel note frequencies come from
-`gb_audio_voice()` (a small additive runtime accessor over live
-channel state) once per frame and play as bass pedal + melody
-arpeggio (noise drums are dropped, like DOOM drops percussion).
+pcm2 primary (44100 Hz stereo mix folded to 8-bit mono, one NONBLOCK
+write per 512 B stage), PC speaker fallback. Per-channel note
+frequencies come from `gb_audio_voice()` (a small additive runtime
+accessor over live channel state) once per frame and play as a single
+non-blocking tone round-robined across bass/melody voices (noise drums
+are dropped, like DOOM drops percussion); the old blocking
+bass-pedal + arpeggio slots cost up to 11 ms per frame and are gone.
 A PCM energy gate keeps envelopes, fades and silence honest. Tune
 `MINIOS_AUDIO_SILENCE_E` / `MINIOS_AUDIO_{MIN,MAX}_HZ` in
 `platform_minios.c` if music sounds wrong on your speaker.
+
+## Video
+
+GB at exact 2x in the 800x360 NK backbuffer. Each source pixel converts
+once into a 2x2 block (indexed 3-3-2, 1 byte per pixel) and rows
+unchanged since the last upload are skipped. The frame stays indexed on
+purpose: under emulation memory traffic dominates, so the narrowest
+buffer wins (an RGB companion path was tried and measured slower). The
+kernel's indexed-to-truecolor blit expands through a per-call u32 table
+(one load per pixel).
 
 ## Saves
 
@@ -108,4 +121,7 @@ too. Only `make clean` (which deletes the images) loses them.
 - The NK desktop window title says "Nuklear" (kernel-side label,
   cosmetic).
 - Under QEMU-TCG (no KVM) the frame rate is low; use `run-kvm`
-  when available.
+  when available. KVM needs fast disk I/O for the ~100 MB ELF: the IDE
+  PIO data phase uses `rep insw/outsw` (one VM-exit per sector) and
+  device polls are deadline-bounded, measured 102 MB in ~16 s;
+  bulk DMA would be the next step, not finer polling.

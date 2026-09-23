@@ -1724,18 +1724,27 @@ static int wm_button_click(int mx, int my) {
 const char *gfx_win_title = GFX_TITLE_DEFAULT;
 
 /* Fast true-color blit of an indexed back-buffer row block. Bounds are
- * clipped once here; the inner loop expands through gfx_pal inline with row
- * pointers, no per-pixel call or check. px holds 0x00RRGGBB so a 32-bit LE
- * store lands as B,G,R,0, the VBE byte order. Deliberately no cached u32
- * table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
- * fits with ~1 KB to spare, so this file spends zero new .bss. */
+ * clipped once here; the inner loop expands through a stack u32 table
+ * built once per call from gfx_pal, so each pixel pays one indexed load
+ * instead of three palette loads plus shifts. px holds 0x00RRGGBB so a
+ * 32-bit LE store lands as B,G,R,0, the VBE byte order. The table is
+ * stack, not .bss: the kernel image must end below USER_LOAD_BASE
+ * (mm guard) and it fits with ~1 KB to spare, so this file spends zero
+ * new .bss. 1 KB of stack keeps the frame under the 2 KB kernel gate. */
 static void blit_indexed_truecolor(const volatile uint8_t *bb, int bb_w,
                                    int bb_h, int dst_x, int dst_y) {
     volatile uint8_t *fb = (volatile uint8_t *)FB_ADDR;
     unsigned pitch = (unsigned)fb_pitch;
     int width = fb_width, height = fb_height;
     int is32 = (fb_bpp == 32);
+    unsigned px_lut[256];
     int r;
+    for (r = 0; r < 256; r++) {
+        unsigned o = (unsigned)r * 3u;
+        px_lut[r] = ((unsigned)gfx_pal[o] << 16)
+                  | ((unsigned)gfx_pal[o + 1] << 8)
+                  |  (unsigned)gfx_pal[o + 2];
+    }
     for (r = 0; r < bb_h; r++) {
         int y = dst_y + r;
         const volatile uint8_t *src;
@@ -1750,19 +1759,15 @@ static void blit_indexed_truecolor(const volatile uint8_t *bb, int bb_w,
         w = x1 - x0;
         if (is32) {
             for (b = 0; b < w; b++) {
-                unsigned o = (unsigned)src[b] * 3u;
-                unsigned px = ((unsigned)gfx_pal[o] << 16)
-                            | ((unsigned)gfx_pal[o + 1] << 8)
-                            |  (unsigned)gfx_pal[o + 2];
-                *(volatile unsigned *)row = px;
+                *(volatile unsigned *)row = px_lut[src[b]];
                 row += 4;
             }
         } else {
             for (b = 0; b < w; b++) {
-                unsigned o = (unsigned)src[b] * 3u;
-                row[0] = gfx_pal[o + 2];
-                row[1] = gfx_pal[o + 1];
-                row[2] = gfx_pal[o];
+                unsigned px = px_lut[src[b]];
+                row[0] = (uint8_t)(px & 0xFF);
+                row[1] = (uint8_t)((px >> 8) & 0xFF);
+                row[2] = (uint8_t)((px >> 16) & 0xFF);
                 row += 3;
             }
         }
