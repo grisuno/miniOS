@@ -38,6 +38,7 @@ This community groups 2 file(s) rooted at `headers/drivers` with dominant langua
 
 - [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
 - [EXTRACTED] depends_on community 4 <-> 5 (strength 0.9): Extracted import edge crosses communities: headers/wm_events.h imports headers/drivers/modifiers.h.
+- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language c) with no import path between community 1 (headers) and community 5 (headers/drivers).
 
 ## Risks
 

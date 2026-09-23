@@ -1,6 +1,6 @@
 # Second Brain
 
-*Last synthesized: 2026-09-22 | 486 files | 13 concept pages | offline, zero tokens*
+*Last synthesized: 2026-09-23 | 486 files | 13 concept pages | offline, zero tokens*
 
 > Raw sources -> readmenator wiki -> links (Karpathy LLM Wiki Pattern, deterministic).
 > Start here, then open one community page. Prefer grep over full reads.
@@ -18,13 +18,13 @@ Open work clusters around documentation (88% file coverage), 0 security findings
 | Metric | Value |
 |--------|-------|
 | Files | 486 |
-| Symbols | 9906 |
+| Symbols | 9912 |
 | Resolved imports | 1248 |
 | Languages | S, c, h, lua, py, s, sh |
 | Communities | 13 |
 | Doc coverage | 88% (428/486 files) |
 | Security findings | 0 |
-| Estimated read cost | ~169813 tokens (chars/4, offline so $0) |
+| Estimated read cost | ~169554 tokens (chars/4, offline so $0) |
 
 ## Reading Order
 
@@ -57,7 +57,7 @@ readmenator query "<question>" --target miniOS
 
 | File | Score |
 |------|-------|
-| `headers/kernel.h` | 141.4 |
+| `headers/kernel.h` | 141.7 |
 | `kernel/string.c` | 133.3 |
 | `progs/doomgeneric/doomtype.h` | 101.4 |
 | `progs/doomgeneric/doomdef.h` | 90.9 |

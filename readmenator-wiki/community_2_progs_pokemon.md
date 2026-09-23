@@ -4,7 +4,7 @@
 
 ## Definition
 
-This community groups 4 file(s) rooted at `progs/pokemon` with dominant language h (cohesion 0.43). Central symbols: `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`, `AUDIO_H`, `AUDIO_RATE_DEFAULT`, `CHECK`, `FB_ADDR`, `FB_H`. Core file: `progs/pokemon/platform_minios.c` (107 symbols). Documented purpose: Unified audio API for MiniOS..
+This community groups 4 file(s) rooted at `progs/pokemon` with dominant language h (cohesion 0.43). Central symbols: `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`, `AUDIO_H`, `AUDIO_RATE_DEFAULT`, `CHECK`, `FB_ADDR`, `FB_H`. Core file: `progs/pokemon/platform_minios.c` (111 symbols). Documented purpose: Unified audio API for MiniOS..
 
 ## Files
 
@@ -12,7 +12,7 @@ This community groups 4 file(s) rooted at `progs/pokemon` with dominant language
 |------|----------|-------|---------|-----|
 | `headers/audio.h` | h | infrastructure | 18 | yes |
 | `progs/minios_png.h` | h | utility | 21 | yes |
-| `progs/pokemon/platform_minios.c` | c | data_access | 107 | no |
+| `progs/pokemon/platform_minios.c` | c | data_access | 111 | no |
 | `tests/test_minios_png.c` | c | testing | 10 | yes |
 
 ## Key Symbols
@@ -56,8 +56,6 @@ This community groups 4 file(s) rooted at `progs/pokemon` with dominant language
 ## Connections
 
 - [EXTRACTED] depends_on community 8 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/file/file.c imports progs/minios_png.h.
-- [INFERRED] shares_context community 0 <-> 2 (strength 0.5): Inferred shared context (language c) with no import path between community 0 (headers) and community 2 (progs/pokemon).
-- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (language c) with no import path between community 1 (headers) and community 2 (progs/pokemon).
 
 ## Risks
 

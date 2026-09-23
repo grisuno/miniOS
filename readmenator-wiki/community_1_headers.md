@@ -50,10 +50,10 @@ This community groups 11 file(s) rooted at `headers` with dominant language c (c
 - `ide_delay` (function, `drivers/ide.c:13`) `static void ide_delay(void)`
 - `ide_read_status` (function, `drivers/ide.c:23`) `static unsigned char ide_read_status(void)`
 - `ide_wait_not_busy` (function, `drivers/ide.c:27`) `static int ide_wait_not_busy(unsigned int timeout)`
-- `ide_wait_drq` (function, `drivers/ide.c:35`) `static int ide_wait_drq(unsigned int timeout)`
-- `ide_select_drive` (function, `drivers/ide.c:46`) `static void ide_select_drive(unsigned char drive)`
-- `ide_soft_reset` (function, `drivers/ide.c:52`) `static void ide_soft_reset(void)`
-- `ide_identify` (function, `drivers/ide.c:59`) `static int ide_identify(void)`
+- `ide_wait_drq` (function, `drivers/ide.c:40`) `static int ide_wait_drq(unsigned int timeout)`
+- `ide_select_drive` (function, `drivers/ide.c:53`) `static void ide_select_drive(unsigned char drive)`
+- `ide_soft_reset` (function, `drivers/ide.c:59`) `static void ide_soft_reset(void)`
+- `ide_identify` (function, `drivers/ide.c:66`) `static int ide_identify(void)`
 
 ## Internal vs External Edges
 
@@ -64,8 +64,9 @@ This community groups 11 file(s) rooted at `headers` with dominant language c (c
 
 - [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
 - [EXTRACTED] depends_on community 1 <-> 8 (strength 0.9): Extracted import edge crosses communities: tests/test_driver.c imports kernel/string.c.
-- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (language c) with no import path between community 1 (headers) and community 2 (progs/pokemon).
 - [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 3 (headers).
+- [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 4 (headers).
+- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language c) with no import path between community 1 (headers) and community 5 (headers/drivers).
 
 ## Risks
 

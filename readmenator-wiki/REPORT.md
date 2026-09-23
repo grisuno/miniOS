@@ -1,6 +1,6 @@
 # Audit Report
 
-*Project: miniOS | 2026-09-22 | offline, deterministic*
+*Project: miniOS | 2026-09-23 | offline, deterministic*
 
 ## Confidence Trail
 
@@ -31,7 +31,7 @@ Every edge is tagged. Extracted means parsed from source; inferred means derived
 
 ## Token Benchmark
 
-- Wiki index plus community pages estimate: ~169213 tokens (chars/4).
+- Wiki index plus community pages estimate: ~168954 tokens (chars/4).
 - Full re-read of every source file would cost strictly more on any non-trivial project; this wiki is the cheaper entry point.
 - Generation cost: $0, offline, no network calls.
 

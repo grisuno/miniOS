@@ -4,7 +4,7 @@
 
 These files have the most connections. Changes here have high blast radius.
 
-- `headers/kernel.h` (score: 141.40)
+- `headers/kernel.h` (score: 141.70)
 - `kernel/string.c` (score: 133.30)
 - `progs/doomgeneric/doomtype.h` (score: 101.40)
 - `progs/doomgeneric/doomdef.h` (score: 90.90)
@@ -25,8 +25,8 @@ These files have the most connections. Changes here have high blast radius.
 - `kernel/string.c` -- complexity: 0.0, centrality: 0.8, combined: 0.5
 - `kernel/vga_fb.c` -- complexity: 0.5, centrality: 0.4, combined: 0.5
 - `progs/doomgeneric/m_menu.c` -- complexity: 0.2, centrality: 0.6, combined: 0.4
-- `progs/minios_abi.h` -- complexity: 0.4, centrality: 0.4, combined: 0.4
 - `progs/doomgeneric/doomstat.h` -- complexity: 0.2, centrality: 0.5, combined: 0.4
+- `progs/minios_abi.h` -- complexity: 0.4, centrality: 0.4, combined: 0.4
 
 ## Dependency Cycles
 
@@ -42,8 +42,8 @@ Circular dependencies. Refactor to break the cycle.
 
 ## Dataflow Issues (INFERRED, review each lead)
 
-- `drivers/sb16.c:260` `sb16_pump` [DEAD_STORE] `dst`: `dst` assigned at line 260 but never read afterwards.
-- `drivers/sb16.c:524` `sb16_init` [DEAD_STORE] `major`: `major` assigned at line 524 but never read afterwards.
+- `drivers/sb16.c:259` `sb16_pump` [DEAD_STORE] `dst`: `dst` assigned at line 259 but never read afterwards.
+- `drivers/sb16.c:531` `sb16_init` [DEAD_STORE] `major`: `major` assigned at line 531 but never read afterwards.
 - `kernel/loader.c:458` `load_exec_elf` [DEAD_STORE] `base`: `base` assigned at line 458 but never read afterwards.
 - `kernel/loader.c:463` `load_exec_elf` [DEAD_STORE] `max_end`: `max_end` assigned at line 463 but never read afterwards.
 - `kernel/mm/paging.c:42` `mm_setup_protections` [DEAD_STORE] `pd`: `pd` assigned at line 42 but never read afterwards.

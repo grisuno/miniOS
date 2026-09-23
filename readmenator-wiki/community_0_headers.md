@@ -4,7 +4,7 @@
 
 ## Definition
 
-This community groups 100 file(s) rooted at `headers` with dominant language c (cohesion 0.84). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`. Core file: `headers/kernel.h` (314 symbols). Documented purpose: SMP application-processor bootstrap stub..
+This community groups 100 file(s) rooted at `headers` with dominant language c (cohesion 0.84). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`. Core file: `headers/kernel.h` (317 symbols). Documented purpose: SMP application-processor bootstrap stub..
 
 ## Files
 
@@ -34,7 +34,7 @@ This community groups 100 file(s) rooted at `headers` with dominant language c (
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `drivers/kbd.c` | c | infrastructure | 34 | yes |
-| `drivers/mouse.c` | c | infrastructure | 8 | yes |
+| `drivers/mouse.c` | c | infrastructure | 7 | yes |
 
 ### `.` (4 files)
 
@@ -154,26 +154,26 @@ This community groups 100 file(s) rooted at `headers` with dominant language c (
 - [EXTRACTED] depends_on community 0 <-> 6 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
 - [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
 - [EXTRACTED] depends_on community 9 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
-- [INFERRED] shares_context community 0 <-> 2 (strength 0.5): Inferred shared context (language c) with no import path between community 0 (headers) and community 2 (progs/pokemon).
 - [INFERRED] shares_context community 0 <-> 11 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 11 (tests).
+- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 12 (orphans).
 
 ## Risks
 
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/vma.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/vma.h` via `subprocess` (3 hops)
-- [taint high] `mcp/minios_addons.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/minios_addons.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `mcp/minios_addons.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/minios_addons.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
-- [dataflow DEAD_STORE] `drivers/sb16.c:260` `sb16_pump` `dst`: `dst` assigned at line 260 but never read afterwards.
-- [dataflow DEAD_STORE] `drivers/sb16.c:524` `sb16_init` `major`: `major` assigned at line 524 but never read afterwards.
+- [taint high] `mcp/minios_addons.py` -> `headers/vma.h` via `subprocess` (3 hops)
+- [dataflow DEAD_STORE] `drivers/sb16.c:259` `sb16_pump` `dst`: `dst` assigned at line 259 but never read afterwards.
+- [dataflow DEAD_STORE] `drivers/sb16.c:531` `sb16_init` `major`: `major` assigned at line 531 but never read afterwards.
 - [dataflow DEAD_STORE] `kernel/loader.c:458` `load_exec_elf` `base`: `base` assigned at line 458 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/loader.c:463` `load_exec_elf` `max_end`: `max_end` assigned at line 463 but never read afterwards.
 
 ## Open Questions
 

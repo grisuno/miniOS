@@ -118,24 +118,24 @@
 | `device_register` | function | `drivers/driver.c:44` | `int device_register(device_t *dev)` |
 | `device_reset` | function | `drivers/driver.c:32` | `void device_reset(void)` |
 | `ide_delay` | function | `drivers/ide.c:13` | `static void ide_delay(void)` |
-| `ide_identify` | function | `drivers/ide.c:59` | `static int ide_identify(void)` |
-| `ide_init` | function | `drivers/ide.c:84` | `void ide_init(void)` |
-| `ide_ops_present` | function | `drivers/ide.c:121` | `static int ide_ops_present(device_t *dev)` |
-| `ide_ops_read` | function | `drivers/ide.c:106` | `static int ide_ops_read(device_t *dev, unsigned lba, unsigned count, void *buf)` |
-| `ide_ops_total` | function | `drivers/ide.c:116` | `static unsigned ide_ops_total(device_t *dev)` |
-| `ide_ops_write` | function | `drivers/ide.c:111` | `static int ide_ops_write(device_t *dev, unsigned lba, unsigned count, const void *buf)` |
-| `ide_present` | function | `drivers/ide.c:103` | `int ide_present(void)` |
-| `ide_read_sector` | function | `drivers/ide.c:206` | `int ide_read_sector(unsigned int lba, void *buf)` |
-| `ide_read_sectors` | function | `drivers/ide.c:145` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)` |
+| `ide_identify` | function | `drivers/ide.c:66` | `static int ide_identify(void)` |
+| `ide_init` | function | `drivers/ide.c:91` | `void ide_init(void)` |
+| `ide_ops_present` | function | `drivers/ide.c:128` | `static int ide_ops_present(device_t *dev)` |
+| `ide_ops_read` | function | `drivers/ide.c:113` | `static int ide_ops_read(device_t *dev, unsigned lba, unsigned count, void *buf)` |
+| `ide_ops_total` | function | `drivers/ide.c:123` | `static unsigned ide_ops_total(device_t *dev)` |
+| `ide_ops_write` | function | `drivers/ide.c:118` | `static int ide_ops_write(device_t *dev, unsigned lba, unsigned count, const void *buf)` |
+| `ide_present` | function | `drivers/ide.c:110` | `int ide_present(void)` |
+| `ide_read_sector` | function | `drivers/ide.c:214` | `int ide_read_sector(unsigned int lba, void *buf)` |
+| `ide_read_sectors` | function | `drivers/ide.c:152` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)` |
 | `ide_read_status` | function | `drivers/ide.c:23` | `static unsigned char ide_read_status(void)` |
-| `ide_register_device` | function | `drivers/ide.c:141` | `void ide_register_device(void)` |
-| `ide_select_drive` | function | `drivers/ide.c:46` | `static void ide_select_drive(unsigned char drive)` |
-| `ide_soft_reset` | function | `drivers/ide.c:52` | `static void ide_soft_reset(void)` |
-| `ide_total_sectors` | function | `drivers/ide.c:104` | `unsigned int ide_total_sectors(void)` |
-| `ide_wait_drq` | function | `drivers/ide.c:35` | `static int ide_wait_drq(unsigned int timeout)` |
+| `ide_register_device` | function | `drivers/ide.c:148` | `void ide_register_device(void)` |
+| `ide_select_drive` | function | `drivers/ide.c:53` | `static void ide_select_drive(unsigned char drive)` |
+| `ide_soft_reset` | function | `drivers/ide.c:59` | `static void ide_soft_reset(void)` |
+| `ide_total_sectors` | function | `drivers/ide.c:111` | `unsigned int ide_total_sectors(void)` |
+| `ide_wait_drq` | function | `drivers/ide.c:40` | `static int ide_wait_drq(unsigned int timeout)` |
 | `ide_wait_not_busy` | function | `drivers/ide.c:27` | `static int ide_wait_not_busy(unsigned int timeout)` |
-| `ide_write_sector` | function | `drivers/ide.c:210` | `int ide_write_sector(unsigned int lba, const void *buf)` |
-| `ide_write_sectors` | function | `drivers/ide.c:176` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf)` |
+| `ide_write_sector` | function | `drivers/ide.c:218` | `int ide_write_sector(unsigned int lba, const void *buf)` |
+| `ide_write_sectors` | function | `drivers/ide.c:184` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf)` |
 | `KBD_QUEUE_LEN` | macro | `drivers/kbd.c:121` | `#define KBD_QUEUE_LEN` |
 | `KBD_RAW_LEN` | macro | `drivers/kbd.c:141` | `#define KBD_RAW_LEN` |
 | `KBD_SCAN_DEL` | macro | `drivers/kbd.c:122` | `#define KBD_SCAN_DEL` |
@@ -171,14 +171,13 @@
 | `too` | function | `drivers/kbd.c:215` | `* too (DOOM strafes with Alt+arrows);` |
 | `wm_combo_dispatch` | function | `drivers/kbd.c:226` | `static int wm_combo_dispatch(int action, int zone)` |
 | `wm_raw_combo` | function | `drivers/kbd.c:278` | `static int wm_raw_combo(int code, int e0)` |
-| `mouse_disable` | function | `drivers/mouse.c:89` | `void mouse_disable(void)` |
-| `mouse_enable` | function | `drivers/mouse.c:90` | `void mouse_enable(void)` |
-| `mouse_hw_init` | function | `drivers/mouse.c:38` | `void mouse_hw_init(void)` |
-| `mouse_read` | function | `drivers/mouse.c:33` | `static unsigned char mouse_read(void)` |
-| `mouse_wait_cmd` | function | `drivers/mouse.c:12` | `static void mouse_wait_cmd(void)` |
-| `mouse_wait_data` | function | `drivers/mouse.c:19` | `static void mouse_wait_data(void)` |
-| `mouse_write` | function | `drivers/mouse.c:26` | `static void mouse_write(unsigned char data)` |
-| `wrong` | function | `drivers/mouse.c:60` | `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(HAL_MOUSE` |
+| `mouse_disable` | function | `drivers/mouse.c:87` | `void mouse_disable(void)` |
+| `mouse_enable` | function | `drivers/mouse.c:88` | `void mouse_enable(void)` |
+| `mouse_hw_init` | function | `drivers/mouse.c:36` | `void mouse_hw_init(void)` |
+| `mouse_read` | function | `drivers/mouse.c:31` | `static unsigned char mouse_read(void)` |
+| `mouse_wait_data` | function | `drivers/mouse.c:20` | `static void mouse_wait_data(void)` |
+| `mouse_write` | function | `drivers/mouse.c:24` | `static void mouse_write(unsigned char data)` |
+| `wrong` | function | `drivers/mouse.c:58` | `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */ mouse_write(HAL_MOUSE` |
 | `PCM2_BASE_PORT` | macro | `drivers/pcm2.c:26` | `#define PCM2_BASE_PORT` |
 | `PCM2_BLOCK_MS` | macro | `drivers/pcm2.c:59` | `#define PCM2_BLOCK_MS` |
 | `PCM2_BLOCK_SLACK_MS` | macro | `drivers/pcm2.c:60` | `#define PCM2_BLOCK_SLACK_MS` |
@@ -293,44 +292,43 @@
 | `SB16_FREQ_HI` | macro | `drivers/sb16.c:71` | `#define SB16_FREQ_HI` |
 | `SB16_FREQ_LO` | macro | `drivers/sb16.c:70` | `#define SB16_FREQ_LO` |
 | `SB16_IRQ_ACK` | macro | `drivers/sb16.c:53` | `#define SB16_IRQ_ACK` |
-| `SB16_MODE_PCM` | macro | `drivers/sb16.c:90` | `#define SB16_MODE_PCM` |
-| `SB16_MODE_TONE` | macro | `drivers/sb16.c:89` | `#define SB16_MODE_TONE` |
-| `SB16_PROBE_WAIT` | macro | `drivers/sb16.c:87` | `#define SB16_PROBE_WAIT` |
+| `SB16_MODE_PCM` | macro | `drivers/sb16.c:89` | `#define SB16_MODE_PCM` |
+| `SB16_MODE_TONE` | macro | `drivers/sb16.c:88` | `#define SB16_MODE_TONE` |
 | `SB16_SILENCE_SLOT` | macro | `drivers/sb16.c:84` | `#define SB16_SILENCE_SLOT` |
-| `SB16_SQ_CYCLE` | macro | `drivers/sb16.c:92` | `#define SB16_SQ_CYCLE` |
-| `pending` | function | `drivers/sb16.c:528` | `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread her` |
-| `sb16_arm` | function | `drivers/sb16.c:348` | `static void sb16_arm(int from_irq)` |
-| `sb16_cmd` | function | `drivers/sb16.c:286` | `static void sb16_cmd(unsigned char c)` |
-| `sb16_counters` | function | `drivers/sb16.c:472` | `void sb16_counters(sb16_counters_t *out)` |
-| `sb16_dma_play` | function | `drivers/sb16.c:316` | `static void sb16_dma_play(unsigned addr, unsigned len)` |
-| `sb16_init` | function | `drivers/sb16.c:523` | `int sb16_init(void)` |
-| `sb16_irq` | function | `drivers/sb16.c:442` | `void sb16_irq(void)` |
-| `sb16_kring_reset` | function | `drivers/sb16.c:119` | `static void sb16_kring_reset(void)` |
-| `sb16_legacy_busy` | function | `drivers/sb16.c:465` | `int sb16_legacy_busy(void)` |
-| `sb16_mix_all` | function | `drivers/sb16.c:195` | `static void sb16_mix_all(void)` |
-| `sb16_mode_active` | function | `drivers/sb16.c:460` | `int sb16_mode_active(void)` |
-| `sb16_ops_pcm_close` | function | `drivers/sb16.c:491` | `static void sb16_ops_pcm_close(device_t *dev)` |
-| `sb16_ops_pcm_open` | function | `drivers/sb16.c:484` | `static void sb16_ops_pcm_open(device_t *dev)` |
-| `sb16_ops_pcm_submit` | function | `drivers/sb16.c:498` | `static int sb16_ops_pcm_submit(device_t *dev, const unsigned char *pcm, unsigned len)` |
-| `sb16_ops_present` | function | `drivers/sb16.c:477` | `static int sb16_ops_present(device_t *dev)` |
-| `sb16_pcm_close` | function | `drivers/sb16.c:415` | `void sb16_pcm_close(void)` |
-| `sb16_pcm_open` | function | `drivers/sb16.c:391` | `void sb16_pcm_open(void)` |
-| `sb16_pcm_submit` | function | `drivers/sb16.c:424` | `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)` |
-| `sb16_poll` | function | `drivers/sb16.c:450` | `void sb16_poll(void)` |
-| `sb16_present` | function | `drivers/sb16.c:373` | `int sb16_present(void)` |
-| `sb16_pump` | function | `drivers/sb16.c:237` | `void sb16_pump(void)` |
-| `sb16_read_data` | function | `drivers/sb16.c:291` | `static int sb16_read_data(unsigned char *out)` |
-| `sb16_refill` | function | `drivers/sb16.c:332` | `static void sb16_refill(int slot_index)` |
-| `sb16_reset_dsp` | function | `drivers/sb16.c:303` | `static int sb16_reset_dsp(void)` |
-| `sb16_ring_free` | function | `drivers/sb16.c:459` | `unsigned sb16_ring_free(void)` |
-| `sb16_slot` | function | `drivers/sb16.c:131` | `static unsigned char *sb16_slot(unsigned i)` |
-| `sb16_stream_close` | function | `drivers/sb16.c:155` | `void sb16_stream_close(int id)` |
-| `sb16_stream_count` | function | `drivers/sb16.c:184` | `int sb16_stream_count(void)` |
-| `sb16_stream_open` | function | `drivers/sb16.c:139` | `int sb16_stream_open(void)` |
-| `sb16_stream_submit` | function | `drivers/sb16.c:163` | `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)` |
-| `sb16_stream_volume` | function | `drivers/sb16.c:178` | `void sb16_stream_volume(int id, unsigned char vol)` |
-| `sb16_tone` | function | `drivers/sb16.c:375` | `void sb16_tone(unsigned freq)` |
-| `sb16_wait_write` | function | `drivers/sb16.c:279` | `static int sb16_wait_write(void)` |
+| `SB16_SQ_CYCLE` | macro | `drivers/sb16.c:91` | `#define SB16_SQ_CYCLE` |
+| `pending` | function | `drivers/sb16.c:535` | `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread her` |
+| `sb16_arm` | function | `drivers/sb16.c:355` | `static void sb16_arm(int from_irq)` |
+| `sb16_cmd` | function | `drivers/sb16.c:282` | `static void sb16_cmd(unsigned char c)` |
+| `sb16_counters` | function | `drivers/sb16.c:479` | `void sb16_counters(sb16_counters_t *out)` |
+| `sb16_dma_play` | function | `drivers/sb16.c:323` | `static void sb16_dma_play(unsigned addr, unsigned len)` |
+| `sb16_init` | function | `drivers/sb16.c:530` | `int sb16_init(void)` |
+| `sb16_irq` | function | `drivers/sb16.c:449` | `void sb16_irq(void)` |
+| `sb16_kring_reset` | function | `drivers/sb16.c:118` | `static void sb16_kring_reset(void)` |
+| `sb16_legacy_busy` | function | `drivers/sb16.c:472` | `int sb16_legacy_busy(void)` |
+| `sb16_mix_all` | function | `drivers/sb16.c:194` | `static void sb16_mix_all(void)` |
+| `sb16_mode_active` | function | `drivers/sb16.c:467` | `int sb16_mode_active(void)` |
+| `sb16_ops_pcm_close` | function | `drivers/sb16.c:498` | `static void sb16_ops_pcm_close(device_t *dev)` |
+| `sb16_ops_pcm_open` | function | `drivers/sb16.c:491` | `static void sb16_ops_pcm_open(device_t *dev)` |
+| `sb16_ops_pcm_submit` | function | `drivers/sb16.c:505` | `static int sb16_ops_pcm_submit(device_t *dev, const unsigned char *pcm, unsigned len)` |
+| `sb16_ops_present` | function | `drivers/sb16.c:484` | `static int sb16_ops_present(device_t *dev)` |
+| `sb16_pcm_close` | function | `drivers/sb16.c:422` | `void sb16_pcm_close(void)` |
+| `sb16_pcm_open` | function | `drivers/sb16.c:398` | `void sb16_pcm_open(void)` |
+| `sb16_pcm_submit` | function | `drivers/sb16.c:431` | `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)` |
+| `sb16_poll` | function | `drivers/sb16.c:457` | `void sb16_poll(void)` |
+| `sb16_present` | function | `drivers/sb16.c:380` | `int sb16_present(void)` |
+| `sb16_pump` | function | `drivers/sb16.c:236` | `void sb16_pump(void)` |
+| `sb16_read_data` | function | `drivers/sb16.c:287` | `static int sb16_read_data(unsigned char *out)` |
+| `sb16_refill` | function | `drivers/sb16.c:339` | `static void sb16_refill(int slot_index)` |
+| `sb16_reset_dsp` | function | `drivers/sb16.c:297` | `static int sb16_reset_dsp(void)` |
+| `sb16_ring_free` | function | `drivers/sb16.c:466` | `unsigned sb16_ring_free(void)` |
+| `sb16_slot` | function | `drivers/sb16.c:130` | `static unsigned char *sb16_slot(unsigned i)` |
+| `sb16_stream_close` | function | `drivers/sb16.c:154` | `void sb16_stream_close(int id)` |
+| `sb16_stream_count` | function | `drivers/sb16.c:183` | `int sb16_stream_count(void)` |
+| `sb16_stream_open` | function | `drivers/sb16.c:138` | `int sb16_stream_open(void)` |
+| `sb16_stream_submit` | function | `drivers/sb16.c:162` | `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)` |
+| `sb16_stream_volume` | function | `drivers/sb16.c:177` | `void sb16_stream_volume(int id, unsigned char vol)` |
+| `sb16_tone` | function | `drivers/sb16.c:382` | `void sb16_tone(unsigned freq)` |
+| `sb16_wait_write` | function | `drivers/sb16.c:278` | `static int sb16_wait_write(void)` |
 | `fs_drop` | function | `fs/kfile.c:63` | `static inline void fs_drop(irqflags_t flags)` |
 | `fs_take` | function | `fs/kfile.c:59` | `static inline void fs_take(irqflags_t *flags)` |
 | `kfclose` | function | `fs/kfile.c:144` | `int kfclose(KFILE *f)` |
@@ -878,320 +876,326 @@ static int zip_sanitize_name(con...` |
 | `ide_write_sector` | function | `headers/ide.h:58` | `int ide_write_sector(unsigned int lba, const void *buf);` |
 | `ide_write_sectors` | function | `headers/ide.h:54` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `ALIGN_UP` | macro | `headers/kernel.h:18` | `#define ALIGN_UP(x, a)` |
-| `C` | function | `headers/kernel.h:621` | `* it with pointer subtraction in C (undefined behaviour). The value is
+| `C` | function | `headers/kernel.h:669` | `* it with pointer subtraction in C (undefined behaviour). The value is
  * a link-time difference,...` |
 | `EFAULT` | macro | `headers/kernel.h:4` | `#define EFAULT` |
-| `EI_NIDENT` | macro | `headers/kernel.h:546` | `#define EI_NIDENT` |
-| `EOF` | macro | `headers/kernel.h:341` | `#define EOF` |
-| `ETREL_TRUSTED_DIR` | macro | `headers/kernel.h:223` | `#define ETREL_TRUSTED_DIR` |
-| `ETREL_TRUSTED_LEN` | macro | `headers/kernel.h:224` | `#define ETREL_TRUSTED_LEN` |
-| `ET_DYN` | macro | `headers/kernel.h:573` | `#define ET_DYN` |
-| `ET_EXEC` | macro | `headers/kernel.h:572` | `#define ET_EXEC` |
-| `ET_REL` | macro | `headers/kernel.h:571` | `#define ET_REL` |
-| `Elf64_Addr` | type_alias | `headers/kernel.h:547` | `typedef unsigned long long Elf64_Addr;` |
-| `Elf64_Ehdr` | struct | `headers/kernel.h:554` | `` |
-| `Elf64_Half` | type_alias | `headers/kernel.h:550` | `typedef unsigned short Elf64_Half;` |
-| `Elf64_Off` | type_alias | `headers/kernel.h:548` | `typedef unsigned long long Elf64_Off;` |
-| `Elf64_Sxword` | type_alias | `headers/kernel.h:552` | `typedef long long Elf64_Sxword;` |
-| `Elf64_Word` | type_alias | `headers/kernel.h:549` | `typedef unsigned int Elf64_Word;` |
-| `Elf64_Xword` | type_alias | `headers/kernel.h:551` | `typedef unsigned long long Elf64_Xword;` |
-| `HEAP_BASE` | macro | `headers/kernel.h:140` | `#define HEAP_BASE` |
-| `HEAP_SIZE` | macro | `headers/kernel.h:141` | `#define HEAP_SIZE` |
+| `EI_NIDENT` | macro | `headers/kernel.h:594` | `#define EI_NIDENT` |
+| `EOF` | macro | `headers/kernel.h:389` | `#define EOF` |
+| `ETREL_TRUSTED_DIR` | macro | `headers/kernel.h:271` | `#define ETREL_TRUSTED_DIR` |
+| `ETREL_TRUSTED_LEN` | macro | `headers/kernel.h:272` | `#define ETREL_TRUSTED_LEN` |
+| `ET_DYN` | macro | `headers/kernel.h:621` | `#define ET_DYN` |
+| `ET_EXEC` | macro | `headers/kernel.h:620` | `#define ET_EXEC` |
+| `ET_REL` | macro | `headers/kernel.h:619` | `#define ET_REL` |
+| `Elf64_Addr` | type_alias | `headers/kernel.h:595` | `typedef unsigned long long Elf64_Addr;` |
+| `Elf64_Ehdr` | struct | `headers/kernel.h:602` | `` |
+| `Elf64_Half` | type_alias | `headers/kernel.h:598` | `typedef unsigned short Elf64_Half;` |
+| `Elf64_Off` | type_alias | `headers/kernel.h:596` | `typedef unsigned long long Elf64_Off;` |
+| `Elf64_Sxword` | type_alias | `headers/kernel.h:600` | `typedef long long Elf64_Sxword;` |
+| `Elf64_Word` | type_alias | `headers/kernel.h:597` | `typedef unsigned int Elf64_Word;` |
+| `Elf64_Xword` | type_alias | `headers/kernel.h:599` | `typedef unsigned long long Elf64_Xword;` |
+| `HEAP_BASE` | macro | `headers/kernel.h:188` | `#define HEAP_BASE` |
+| `HEAP_SIZE` | macro | `headers/kernel.h:189` | `#define HEAP_SIZE` |
 | `KERNEL_H` | macro | `headers/kernel.h:2` | `#define KERNEL_H` |
-| `KEY_ARR_DOWN` | macro | `headers/kernel.h:94` | `#define KEY_ARR_DOWN` |
-| `KEY_ARR_LEFT` | macro | `headers/kernel.h:96` | `#define KEY_ARR_LEFT` |
-| `KEY_ARR_RIGHT` | macro | `headers/kernel.h:95` | `#define KEY_ARR_RIGHT` |
-| `KEY_ARR_UP` | macro | `headers/kernel.h:93` | `#define KEY_ARR_UP` |
-| `KEY_BACKSPACE` | macro | `headers/kernel.h:81` | `#define KEY_BACKSPACE` |
-| `KEY_CAPS` | macro | `headers/kernel.h:85` | `#define KEY_CAPS` |
-| `KEY_CSI` | macro | `headers/kernel.h:92` | `#define KEY_CSI` |
-| `KEY_DOWN` | macro | `headers/kernel.h:88` | `#define KEY_DOWN` |
-| `KEY_E0` | macro | `headers/kernel.h:86` | `#define KEY_E0` |
-| `KEY_END` | macro | `headers/kernel.h:110` | `#define KEY_END` |
-| `KEY_END_SEQ` | macro | `headers/kernel.h:98` | `#define KEY_END_SEQ` |
-| `KEY_ENTER` | macro | `headers/kernel.h:82` | `#define KEY_ENTER` |
-| `KEY_ESC` | macro | `headers/kernel.h:91` | `#define KEY_ESC` |
-| `KEY_F11` | macro | `headers/kernel.h:105` | `#define KEY_F11` |
-| `KEY_F5` | macro | `headers/kernel.h:104` | `#define KEY_F5` |
-| `KEY_HOME` | macro | `headers/kernel.h:109` | `#define KEY_HOME` |
-| `KEY_HOME_SEQ` | macro | `headers/kernel.h:97` | `#define KEY_HOME_SEQ` |
-| `KEY_LALT` | macro | `headers/kernel.h:107` | `#define KEY_LALT` |
-| `KEY_LCTRL` | macro | `headers/kernel.h:103` | `#define KEY_LCTRL` |
-| `KEY_LEFT` | macro | `headers/kernel.h:101` | `#define KEY_LEFT` |
-| `KEY_LSHIFT` | macro | `headers/kernel.h:83` | `#define KEY_LSHIFT` |
-| `KEY_PGDN` | macro | `headers/kernel.h:90` | `#define KEY_PGDN` |
-| `KEY_PGDN_SEQ` | macro | `headers/kernel.h:100` | `#define KEY_PGDN_SEQ` |
-| `KEY_PGUP` | macro | `headers/kernel.h:89` | `#define KEY_PGUP` |
-| `KEY_PGUP_SEQ` | macro | `headers/kernel.h:99` | `#define KEY_PGUP_SEQ` |
-| `KEY_RALT` | macro | `headers/kernel.h:108` | `#define KEY_RALT` |
-| `KEY_RIGHT` | macro | `headers/kernel.h:102` | `#define KEY_RIGHT` |
-| `KEY_RSHIFT` | macro | `headers/kernel.h:84` | `#define KEY_RSHIFT` |
-| `KEY_SUPER_L` | macro | `headers/kernel.h:112` | `#define KEY_SUPER_L` |
-| `KEY_SUPER_R` | macro | `headers/kernel.h:113` | `#define KEY_SUPER_R` |
-| `KEY_TAB` | macro | `headers/kernel.h:111` | `#define KEY_TAB` |
-| `KEY_TILDE` | macro | `headers/kernel.h:106` | `#define KEY_TILDE` |
-| `KEY_UP` | macro | `headers/kernel.h:87` | `#define KEY_UP` |
-| `KFD_MAX` | macro | `headers/kernel.h:596` | `#define KFD_MAX` |
-| `KFILE` | struct | `headers/kernel.h:343` | `` |
-| `KPROG_MAX` | macro | `headers/kernel.h:441` | `#define KPROG_MAX` |
-| `KProg` | struct | `headers/kernel.h:448` | `` |
-| `KSYM_MAX` | macro | `headers/kernel.h:440` | `#define KSYM_MAX` |
-| `KSym` | struct | `headers/kernel.h:443` | `` |
+| `KEY_ARR_DOWN` | macro | `headers/kernel.h:142` | `#define KEY_ARR_DOWN` |
+| `KEY_ARR_LEFT` | macro | `headers/kernel.h:144` | `#define KEY_ARR_LEFT` |
+| `KEY_ARR_RIGHT` | macro | `headers/kernel.h:143` | `#define KEY_ARR_RIGHT` |
+| `KEY_ARR_UP` | macro | `headers/kernel.h:141` | `#define KEY_ARR_UP` |
+| `KEY_BACKSPACE` | macro | `headers/kernel.h:129` | `#define KEY_BACKSPACE` |
+| `KEY_CAPS` | macro | `headers/kernel.h:133` | `#define KEY_CAPS` |
+| `KEY_CSI` | macro | `headers/kernel.h:140` | `#define KEY_CSI` |
+| `KEY_DOWN` | macro | `headers/kernel.h:136` | `#define KEY_DOWN` |
+| `KEY_E0` | macro | `headers/kernel.h:134` | `#define KEY_E0` |
+| `KEY_END` | macro | `headers/kernel.h:158` | `#define KEY_END` |
+| `KEY_END_SEQ` | macro | `headers/kernel.h:146` | `#define KEY_END_SEQ` |
+| `KEY_ENTER` | macro | `headers/kernel.h:130` | `#define KEY_ENTER` |
+| `KEY_ESC` | macro | `headers/kernel.h:139` | `#define KEY_ESC` |
+| `KEY_F11` | macro | `headers/kernel.h:153` | `#define KEY_F11` |
+| `KEY_F5` | macro | `headers/kernel.h:152` | `#define KEY_F5` |
+| `KEY_HOME` | macro | `headers/kernel.h:157` | `#define KEY_HOME` |
+| `KEY_HOME_SEQ` | macro | `headers/kernel.h:145` | `#define KEY_HOME_SEQ` |
+| `KEY_LALT` | macro | `headers/kernel.h:155` | `#define KEY_LALT` |
+| `KEY_LCTRL` | macro | `headers/kernel.h:151` | `#define KEY_LCTRL` |
+| `KEY_LEFT` | macro | `headers/kernel.h:149` | `#define KEY_LEFT` |
+| `KEY_LSHIFT` | macro | `headers/kernel.h:131` | `#define KEY_LSHIFT` |
+| `KEY_PGDN` | macro | `headers/kernel.h:138` | `#define KEY_PGDN` |
+| `KEY_PGDN_SEQ` | macro | `headers/kernel.h:148` | `#define KEY_PGDN_SEQ` |
+| `KEY_PGUP` | macro | `headers/kernel.h:137` | `#define KEY_PGUP` |
+| `KEY_PGUP_SEQ` | macro | `headers/kernel.h:147` | `#define KEY_PGUP_SEQ` |
+| `KEY_RALT` | macro | `headers/kernel.h:156` | `#define KEY_RALT` |
+| `KEY_RIGHT` | macro | `headers/kernel.h:150` | `#define KEY_RIGHT` |
+| `KEY_RSHIFT` | macro | `headers/kernel.h:132` | `#define KEY_RSHIFT` |
+| `KEY_SUPER_L` | macro | `headers/kernel.h:160` | `#define KEY_SUPER_L` |
+| `KEY_SUPER_R` | macro | `headers/kernel.h:161` | `#define KEY_SUPER_R` |
+| `KEY_TAB` | macro | `headers/kernel.h:159` | `#define KEY_TAB` |
+| `KEY_TILDE` | macro | `headers/kernel.h:154` | `#define KEY_TILDE` |
+| `KEY_UP` | macro | `headers/kernel.h:135` | `#define KEY_UP` |
+| `KFD_MAX` | macro | `headers/kernel.h:644` | `#define KFD_MAX` |
+| `KFILE` | struct | `headers/kernel.h:391` | `` |
+| `KPROG_MAX` | macro | `headers/kernel.h:489` | `#define KPROG_MAX` |
+| `KProg` | struct | `headers/kernel.h:496` | `` |
+| `KSYM_MAX` | macro | `headers/kernel.h:488` | `#define KSYM_MAX` |
+| `KSym` | struct | `headers/kernel.h:491` | `` |
 | `PORT_IO_DEFINED` | macro | `headers/kernel.h:20` | `#define PORT_IO_DEFINED` |
-| `RAMDISK_FNAME_LEN` | macro | `headers/kernel.h:184` | `#define RAMDISK_FNAME_LEN` |
-| `RAMDISK_MAX_FILES` | macro | `headers/kernel.h:183` | `#define RAMDISK_MAX_FILES` |
-| `RDFile` | struct | `headers/kernel.h:186` | `` |
-| `RD_DATA_MAX` | macro | `headers/kernel.h:206` | `#define RD_DATA_MAX` |
-| `SYS_KSTK_BASE` | macro | `headers/kernel.h:138` | `#define SYS_KSTK_BASE` |
-| `SYS_KSTK_TOP` | macro | `headers/kernel.h:137` | `#define SYS_KSTK_TOP` |
-| `USER_BRK_END` | macro | `headers/kernel.h:132` | `#define USER_BRK_END` |
-| `USER_LOAD_BASE` | macro | `headers/kernel.h:127` | `#define USER_LOAD_BASE` |
-| `USER_LOAD_END` | macro | `headers/kernel.h:128` | `#define USER_LOAD_END` |
-| `USER_STACK_BASE` | macro | `headers/kernel.h:131` | `#define USER_STACK_BASE` |
-| `USER_STACK_SIZE` | macro | `headers/kernel.h:129` | `#define USER_STACK_SIZE` |
-| `USER_STACK_TOP` | macro | `headers/kernel.h:130` | `#define USER_STACK_TOP` |
-| `VGA_BASE` | macro | `headers/kernel.h:40` | `#define VGA_BASE` |
-| `VGA_COLS` | macro | `headers/kernel.h:41` | `#define VGA_COLS` |
-| `VGA_ROWS` | macro | `headers/kernel.h:42` | `#define VGA_ROWS` |
-| `block_init` | function | `headers/kernel.h:658` | `void block_init(void);` |
-| `block_read` | function | `headers/kernel.h:659` | `int block_read(unsigned int block_num, void *buf);` |
-| `block_read_multi` | function | `headers/kernel.h:661` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
-| `block_total` | function | `headers/kernel.h:663` | `unsigned int block_total(void);` |
-| `block_write` | function | `headers/kernel.h:660` | `int block_write(unsigned int block_num, const void *buf);` |
-| `block_write_multi` | function | `headers/kernel.h:662` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
-| `bootlog_mark` | function | `headers/kernel.h:635` | `void bootlog_mark(const char *name);` |
-| `bootlog_report` | function | `headers/kernel.h:636` | `void bootlog_report(void);` |
-| `console_getc` | function | `headers/kernel.h:424` | `int console_getc(void);` |
-| `console_lock` | variable | `headers/kernel.h:55` | `extern spinlock_t console_lock;` |
-| `console_peek` | function | `headers/kernel.h:425` | `int console_peek(void);` |
-| `desktop_launch` | function | `headers/kernel.h:494` | `void desktop_launch(const char *cmd);` |
-| `dlmalloc_calloc` | function | `headers/kernel.h:156` | `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);` |
-| `dlmalloc_free` | function | `headers/kernel.h:155` | `void dlmalloc_free(void *ptr);` |
-| `dlmalloc_init` | function | `headers/kernel.h:153` | `void dlmalloc_init(void);` |
-| `dlmalloc_malloc` | function | `headers/kernel.h:154` | `void *dlmalloc_malloc(unsigned long size);` |
-| `dlmalloc_realloc` | function | `headers/kernel.h:157` | `void *dlmalloc_realloc(void *ptr, unsigned long size);` |
-| `dlmalloc_usage` | function | `headers/kernel.h:159` | `void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);` |
-| `elf_load` | function | `headers/kernel.h:575` | `void *elf_load(void *data, unsigned size, void **base_out);` |
-| `exec_exit_code` | variable | `headers/kernel.h:486` | `extern int exec_exit_code;` |
-| `exec_return` | variable | `headers/kernel.h:485` | `extern kjmpbuf exec_return;` |
-| `fd_lock` | variable | `headers/kernel.h:602` | `extern spinlock_t fd_lock;` |
-| `fd_lock` | function | `headers/kernel.h:607` | `* fd_lock (never nested, never held across yields);` |
-| `file_operations` | type_alias | `headers/kernel.h:294` | `typedef vfs_ops_t file_operations;` |
-| `fs_cwd` | variable | `headers/kernel.h:307` | `extern char fs_cwd[];` |
-| `fs_dir_exists` | function | `headers/kernel.h:213` | `int fs_dir_exists(const char *dir);` |
-| `fs_is_dir` | function | `headers/kernel.h:214` | `int fs_is_dir(const char *resolved);` |
-| `fs_lock` | variable | `headers/kernel.h:609` | `extern spinlock_t fs_lock;` |
-| `fs_resolve` | function | `headers/kernel.h:212` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
-| `g_brk` | variable | `headers/kernel.h:539` | `extern unsigned long g_brk;` |
-| `g_brk_limit` | variable | `headers/kernel.h:540` | `extern unsigned long g_brk_limit;` |
-| `ide_init` | function | `headers/kernel.h:649` | `void ide_init(void);` |
-| `ide_present` | function | `headers/kernel.h:655` | `int ide_present(void);` |
-| `ide_read_sector` | function | `headers/kernel.h:652` | `int ide_read_sector(unsigned int lba, void *buf);` |
-| `ide_read_sectors` | function | `headers/kernel.h:650` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
-| `ide_total_sectors` | function | `headers/kernel.h:654` | `unsigned int ide_total_sectors(void);` |
-| `ide_write_sector` | function | `headers/kernel.h:653` | `int ide_write_sector(unsigned int lba, const void *buf);` |
-| `ide_write_sectors` | function | `headers/kernel.h:651` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
-| `inb` | function | `headers/kernel.h:24` | `static inline unsigned char inb(unsigned short port)` |
-| `inw` | function | `headers/kernel.h:32` | `static inline unsigned short inw(unsigned short port)` |
-| `k_exec_user` | function | `headers/kernel.h:473` | `int k_exec_user(void *entry, int argc, char **argv);` |
-| `k_register_process` | function | `headers/kernel.h:465` | `void k_register_process(const char *name, void *proc_entry);` |
-| `k_register_program` | function | `headers/kernel.h:464` | `void k_register_program(const char *name, prog_entry_t entry);` |
-| `k_register_symbol` | function | `headers/kernel.h:466` | `void k_register_symbol(const char *name, void *addr);` |
-| `k_run_on_stack` | function | `headers/kernel.h:478` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
-| `k_run_rel` | function | `headers/kernel.h:474` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
-| `k_spawn` | function | `headers/kernel.h:463` | `int k_spawn(const char *name, int argc, char **argv);` |
-| `k_user_fault_return` | function | `headers/kernel.h:666` | `void k_user_fault_return(void);` |
-| `kallocator_init` | function | `headers/kernel.h:148` | `void kallocator_init(void);` |
-| `katol` | function | `headers/kernel.h:391` | `long katol(const char *s);` |
-| `kbd_available` | function | `headers/kernel.h:116` | `int kbd_available(void);` |
-| `kbd_read` | function | `headers/kernel.h:115` | `int kbd_read(void);` |
-| `kbd_reset_for_shell` | function | `headers/kernel.h:117` | `void kbd_reset_for_shell(void);` |
-| `kcalloc` | function | `headers/kernel.h:146` | `void *kcalloc(unsigned long nmemb, unsigned long size);` |
-| `kernel_end` | variable | `headers/kernel.h:612` | `extern unsigned long kernel_end;` |
-| `kexit` | function | `headers/kernel.h:475` | `void kexit(int code);` |
-| `kfclose` | function | `headers/kernel.h:358` | `int kfclose(KFILE *f);` |
-| `kfd_get` | function | `headers/kernel.h:603` | `KFILE *kfd_get(int fd);` |
-| `kfd_put` | function | `headers/kernel.h:604` | `void kfd_put(KFILE *f);` |
-| `kfd_table` | variable | `headers/kernel.h:597` | `extern KFILE *kfd_table[KFD_MAX];` |
-| `kfflush` | function | `headers/kernel.h:368` | `int kfflush(KFILE *f);` |
-| `kfgetc` | function | `headers/kernel.h:359` | `int kfgetc(KFILE *f);` |
-| `kfgets` | function | `headers/kernel.h:360` | `char *kfgets(char *buf, int size, KFILE *f);` |
-| `kfile_stderr` | function | `headers/kernel.h:376` | `KFILE *kfile_stderr(void);` |
-| `kfile_stdin` | function | `headers/kernel.h:374` | `KFILE *kfile_stdin(void);` |
-| `kfile_stdout` | function | `headers/kernel.h:375` | `KFILE *kfile_stdout(void);` |
-| `kfopen` | function | `headers/kernel.h:357` | `KFILE *kfopen(const char *path, const char *mode);` |
-| `kfprintf` | function | `headers/kernel.h:395` | `int kfprintf(KFILE *f, const char *fmt, ...);` |
-| `kfputc` | function | `headers/kernel.h:367` | `int kfputc(int c, KFILE *f);` |
-| `kfputs` | function | `headers/kernel.h:366` | `int kfputs(const char *s, KFILE *f);` |
-| `kfread` | function | `headers/kernel.h:362` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
-| `kfree` | function | `headers/kernel.h:145` | `void kfree(void *ptr);` |
-| `kfseek` | function | `headers/kernel.h:364` | `int kfseek(KFILE *f, long offset, int whence);` |
-| `kftell` | function | `headers/kernel.h:365` | `long kftell(KFILE *f);` |
-| `kfungetc` | function | `headers/kernel.h:361` | `int kfungetc(int c, KFILE *f);` |
-| `kfwrite` | function | `headers/kernel.h:363` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
-| `kjmpbuf` | struct | `headers/kernel.h:482` | `` |
-| `klog` | function | `headers/kernel.h:412` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
-| `klog_disable` | function | `headers/kernel.h:418` | `void klog_disable(void);` |
-| `klog_enable` | function | `headers/kernel.h:419` | `void klog_enable(void);` |
-| `klog_hexdump` | function | `headers/kernel.h:414` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
-| `klog_set_level` | function | `headers/kernel.h:416` | `void klog_set_level(log_level_t level);` |
-| `klog_set_subsys_level` | function | `headers/kernel.h:417` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
-| `klongjmp` | function | `headers/kernel.h:484` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
-| `kmalloc` | function | `headers/kernel.h:143` | `void *kmalloc(unsigned long size);` |
-| `kmalloc_fail_after` | variable | `headers/kernel.h:144` | `extern long kmalloc_fail_after;` |
-| `kmalloc_percpu` | function | `headers/kernel.h:149` | `void *kmalloc_percpu(unsigned long size, unsigned long align);` |
-| `kmemcmp` | function | `headers/kernel.h:389` | `int kmemcmp(const void *a, const void *b, unsigned long n);` |
-| `kmemcpy` | function | `headers/kernel.h:387` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
-| `kmemmove` | function | `headers/kernel.h:390` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
-| `kmemset` | function | `headers/kernel.h:388` | `void *kmemset(void *dst, int c, unsigned long n);` |
-| `kprintf` | function | `headers/kernel.h:394` | `int kprintf(const char *fmt, ...);` |
-| `kprog_count` | variable | `headers/kernel.h:458` | `extern int kprog_count;` |
-| `kprog_lookup` | function | `headers/kernel.h:461` | `KProg *kprog_lookup(const char *name);` |
-| `kprog_slot` | function | `headers/kernel.h:460` | `KProg *kprog_slot(const char *name);` |
-| `kprog_table` | variable | `headers/kernel.h:457` | `extern KProg kprog_table[];` |
-| `krealloc` | function | `headers/kernel.h:147` | `void *krealloc(void *ptr, unsigned long size);` |
-| `krewind` | function | `headers/kernel.h:369` | `void krewind(KFILE *f);` |
-| `ksetjmp` | function | `headers/kernel.h:483` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
-| `ksnprintf` | function | `headers/kernel.h:397` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
-| `ksprintf` | function | `headers/kernel.h:396` | `int ksprintf(char *buf, const char *fmt, ...);` |
-| `kstderr` | variable | `headers/kernel.h:373` | `extern KFILE *kstderr;` |
-| `kstdin` | variable | `headers/kernel.h:371` | `extern KFILE *kstdin;` |
-| `kstdout` | variable | `headers/kernel.h:372` | `extern KFILE *kstdout;` |
-| `kstrchr` | function | `headers/kernel.h:385` | `char *kstrchr(const char *s, int c);` |
-| `kstrcmp` | function | `headers/kernel.h:383` | `int kstrcmp(const char *a, const char *b);` |
-| `kstrcpy` | function | `headers/kernel.h:380` | `char *kstrcpy(char *dst, const char *src);` |
-| `kstrlen` | function | `headers/kernel.h:379` | `unsigned long kstrlen(const char *s);` |
-| `kstrncat` | function | `headers/kernel.h:382` | `char *kstrncat(char *dst, const char *src, unsigned long n);` |
-| `kstrncmp` | function | `headers/kernel.h:384` | `int kstrncmp(const char *a, const char *b, unsigned long n);` |
-| `kstrncpy` | function | `headers/kernel.h:381` | `char *kstrncpy(char *dst, const char *src, unsigned long n);` |
-| `kstrstr` | function | `headers/kernel.h:386` | `char *kstrstr(const char *hay, const char *ndl);` |
-| `ksym_count` | variable | `headers/kernel.h:456` | `extern int ksym_count;` |
-| `ksym_resolve` | function | `headers/kernel.h:462` | `void *ksym_resolve(const char *name);` |
-| `ksym_table` | variable | `headers/kernel.h:455` | `extern KSym ksym_table[];` |
-| `ksyscall` | function | `headers/kernel.h:589` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `ktime_ms` | function | `headers/kernel.h:630` | `unsigned long ktime_ms(void);` |
-| `ktime_us` | function | `headers/kernel.h:631` | `unsigned long ktime_us(void);` |
-| `load_exec_elf` | function | `headers/kernel.h:576` | `void *load_exec_elf(void *data, unsigned size);` |
-| `load_exec_elf_into` | function | `headers/kernel.h:577` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);` |
-| `minifs_mkdir_p` | function | `headers/kernel.h:306` | `int minifs_mkdir_p(const char *resolved);` |
-| `mm_copy_user_page` | function | `headers/kernel.h:581` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
-| `mm_setup_protections` | function | `headers/kernel.h:528` | `void mm_setup_protections(void);` |
-| `mm_user_ensure_page` | function | `headers/kernel.h:580` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
-| `mm_user_pte_update` | function | `headers/kernel.h:531` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
-| `mm_user_set_exec` | function | `headers/kernel.h:532` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
-| `outb` | function | `headers/kernel.h:21` | `static inline void outb(unsigned short port, unsigned char val)` |
-| `outw` | function | `headers/kernel.h:29` | `static inline void outw(unsigned short port, unsigned short val)` |
-| `pcspk_get_volume` | function | `headers/kernel.h:643` | `unsigned pcspk_get_volume(void);` |
-| `pcspk_init` | function | `headers/kernel.h:639` | `void pcspk_init(void);` |
-| `pcspk_off` | function | `headers/kernel.h:641` | `void pcspk_off(void);` |
-| `pcspk_set_volume` | function | `headers/kernel.h:642` | `void pcspk_set_volume(unsigned volume);` |
-| `pcspk_tone` | function | `headers/kernel.h:640` | `void pcspk_tone(unsigned freq);` |
-| `pt_clone_user_empty` | function | `headers/kernel.h:579` | `unsigned long pt_clone_user_empty(void);` |
-| `pt_page_alloc` | function | `headers/kernel.h:529` | `void *pt_page_alloc(void);` |
-| `pt_page_free` | function | `headers/kernel.h:530` | `void pt_page_free(void *ptr);` |
-| `ramdisk_count` | function | `headers/kernel.h:201` | `int ramdisk_count(void);` |
-| `ramdisk_create` | function | `headers/kernel.h:196` | `RDFile *ramdisk_create(const char *name, unsigned size);` |
-| `ramdisk_delete` | function | `headers/kernel.h:198` | `int ramdisk_delete(RDFile *f);` |
-| `ramdisk_end` | variable | `headers/kernel.h:614` | `extern char ramdisk_end[];` |
-| `ramdisk_file_name` | function | `headers/kernel.h:202` | `const char *ramdisk_file_name(int idx);` |
-| `ramdisk_init` | function | `headers/kernel.h:192` | `void ramdisk_init(void);` |
-| `ramdisk_list` | function | `headers/kernel.h:199` | `int ramdisk_list(RDFile **out, int max);` |
-| `ramdisk_open` | function | `headers/kernel.h:193` | `RDFile *ramdisk_open(const char *name);` |
-| `ramdisk_read` | function | `headers/kernel.h:194` | `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);` |
-| `ramdisk_resize` | function | `headers/kernel.h:197` | `int ramdisk_resize(RDFile *f, unsigned newsize);` |
-| `ramdisk_setup_from` | function | `headers/kernel.h:200` | `void ramdisk_setup_from(void *data, unsigned size);` |
-| `ramdisk_size` | variable | `headers/kernel.h:615` | `extern char ramdisk_size[];` |
-| `ramdisk_start` | variable | `headers/kernel.h:613` | `extern char ramdisk_start[];` |
-| `ramdisk_usage` | function | `headers/kernel.h:204` | `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);` |
-| `ramdisk_write` | function | `headers/kernel.h:195` | `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);` |
-| `redirect_active` | function | `headers/kernel.h:430` | `int redirect_active(void);` |
-| `redirect_begin` | function | `headers/kernel.h:428` | `int redirect_begin(void);` |
-| `redirect_commit` | function | `headers/kernel.h:429` | `int redirect_commit(const char *path, int append_mode);` |
-| `redirect_resume` | function | `headers/kernel.h:427` | `void redirect_resume(int was);` |
-| `redirect_suspend` | function | `headers/kernel.h:426` | `int redirect_suspend(void);` |
-| `register_libc_symbols` | function | `headers/kernel.h:470` | `void register_libc_symbols(void);` |
-| `rtc_read_tod` | function | `headers/kernel.h:646` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
-| `sb_capture_row0` | function | `headers/kernel.h:65` | `void sb_capture_row0(void);` |
-| `sb_get_char` | function | `headers/kernel.h:69` | `char sb_get_char(int row, int col);` |
-| `sb_get_count` | function | `headers/kernel.h:67` | `int sb_get_count(void);` |
-| `sb_get_head` | function | `headers/kernel.h:68` | `int sb_get_head(void);` |
-| `sb_init` | function | `headers/kernel.h:64` | `void sb_init(void);` |
-| `sb_reset` | function | `headers/kernel.h:66` | `void sb_reset(void);` |
-| `ser_e_cpu` | variable | `headers/kernel.h:76` | `extern unsigned long ser_e_ra, ser_e_cpu;` |
-| `serial_available` | function | `headers/kernel.h:77` | `int serial_available(void);` |
-| `serial_e_count` | function | `headers/kernel.h:75` | `unsigned long serial_e_count(void);` |
-| `serial_getc` | function | `headers/kernel.h:78` | `int serial_getc(void);` |
-| `serial_init` | function | `headers/kernel.h:72` | `void serial_init(void);` |
-| `serial_putc` | function | `headers/kernel.h:73` | `void serial_putc(char c);` |
-| `serial_puts` | function | `headers/kernel.h:74` | `void serial_puts(const char *s);` |
-| `setup_user_stack` | function | `headers/kernel.h:487` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
-| `shell_exec_builtin` | function | `headers/kernel.h:433` | `void shell_exec_builtin(int argc, char **argv);` |
-| `shell_fg_active` | variable | `headers/kernel.h:521` | `extern volatile int shell_fg_active;` |
-| `shell_focus_park` | function | `headers/kernel.h:518` | `void shell_focus_park(void);` |
-| `shell_focus_restore` | function | `headers/kernel.h:519` | `void shell_focus_restore(void);` |
-| `shell_init` | function | `headers/kernel.h:422` | `void shell_init(void);` |
-| `shell_queue_launch` | function | `headers/kernel.h:495` | `void shell_queue_launch(const char *cmd);` |
-| `shell_readline_active` | function | `headers/kernel.h:517` | `int shell_readline_active(void);` |
-| `shell_report` | function | `headers/kernel.h:435` | `void shell_report(const char *what, const char *detail);` |
-| `shell_report_exit` | function | `headers/kernel.h:434` | `void shell_report_exit(int code);` |
-| `shell_run` | function | `headers/kernel.h:423` | `void shell_run(void);` |
-| `shell_run_any` | function | `headers/kernel.h:432` | `int shell_run_any(const char *name, int argc, char **argv);` |
-| `shell_take_redirect` | function | `headers/kernel.h:431` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
-| `swap_in` | function | `headers/kernel.h:536` | `int swap_in(void);` |
-| `swap_out` | function | `headers/kernel.h:535` | `int swap_out(unsigned long window_sz);` |
-| `syscall_init` | function | `headers/kernel.h:585` | `void syscall_init(void);` |
-| `syscall_name` | function | `headers/kernel.h:595` | `const char *syscall_name(long n);` |
-| `syscall_trace_enabled` | function | `headers/kernel.h:590` | `long syscall_trace_enabled(void);` |
-| `syscall_trace_set` | function | `headers/kernel.h:591` | `void syscall_trace_set(int on);` |
-| `syscall_trace_shown` | function | `headers/kernel.h:594` | `unsigned long syscall_trace_shown(void);` |
-| `syscall_trace_verbose_enabled` | function | `headers/kernel.h:592` | `long syscall_trace_verbose_enabled(void);` |
-| `syscall_trace_verbose_set` | function | `headers/kernel.h:593` | `void syscall_trace_verbose_set(int on);` |
-| `user_mmap_cur` | variable | `headers/kernel.h:541` | `extern unsigned long user_mmap_cur;` |
-| `user_range_ok` | function | `headers/kernel.h:524` | `int user_range_ok(unsigned long p, unsigned long len);` |
-| `user_str_ok` | function | `headers/kernel.h:525` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
-| `vfs_close` | function | `headers/kernel.h:302` | `int vfs_close(vfs_file_t *f);` |
-| `vfs_file` | struct | `headers/kernel.h:279` | `` |
-| `vfs_fstat` | function | `headers/kernel.h:303` | `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);` |
-| `vfs_init` | function | `headers/kernel.h:304` | `void vfs_init(void);` |
-| `vfs_open` | function | `headers/kernel.h:299` | `int vfs_open(const char *path, int mode, vfs_file_t *f);` |
-| `vfs_ops` | struct | `headers/kernel.h:270` | `` |
-| `vfs_read` | function | `headers/kernel.h:300` | `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);` |
-| `vfs_register` | function | `headers/kernel.h:297` | `int vfs_register(const char *prefix, const vfs_ops_t *ops);` |
-| `vfs_register_builtins` | function | `headers/kernel.h:305` | `void vfs_register_builtins(void);` |
-| `vfs_unregister` | function | `headers/kernel.h:298` | `int vfs_unregister(const char *prefix);` |
-| `vfs_write` | function | `headers/kernel.h:301` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
-| `vga_clear` | function | `headers/kernel.h:44` | `void vga_clear(void);` |
-| `vga_cursor_enable` | function | `headers/kernel.h:50` | `void vga_cursor_enable(int on);` |
-| `vga_fb_act_empty` | function | `headers/kernel.h:509` | `int vga_fb_act_empty(void);` |
-| `vga_fb_clear_prompt` | function | `headers/kernel.h:512` | `void vga_fb_clear_prompt(void);` |
-| `vga_fb_focus_get` | function | `headers/kernel.h:500` | `int vga_fb_focus_get(void);` |
-| `vga_fb_focus_id` | function | `headers/kernel.h:499` | `int vga_fb_focus_id(int id);` |
-| `vga_fb_focus_next` | function | `headers/kernel.h:498` | `void vga_fb_focus_next(void);` |
-| `vga_fb_list_windows` | function | `headers/kernel.h:505` | `void vga_fb_list_windows(void);` |
-| `vga_fb_note_prompt` | function | `headers/kernel.h:511` | `void vga_fb_note_prompt(void);` |
-| `vga_fb_nterms_get` | function | `headers/kernel.h:501` | `int vga_fb_nterms_get(void);` |
-| `vga_fb_park_line` | function | `headers/kernel.h:506` | `void vga_fb_park_line(const char *b, int p);` |
-| `vga_fb_prompt_live` | function | `headers/kernel.h:510` | `int vga_fb_prompt_live(void);` |
-| `vga_fb_prompted` | function | `headers/kernel.h:513` | `int vga_fb_prompted(void);` |
-| `vga_fb_set_gfx_program` | function | `headers/kernel.h:508` | `void vga_fb_set_gfx_program(const char *name);` |
-| `vga_fb_term_close_focused` | function | `headers/kernel.h:503` | `int vga_fb_term_close_focused(void);` |
-| `vga_fb_term_split` | function | `headers/kernel.h:502` | `int vga_fb_term_split(void);` |
-| `vga_fb_tile_all` | function | `headers/kernel.h:504` | `void vga_fb_tile_all(void);` |
-| `vga_fb_unpark_line` | function | `headers/kernel.h:507` | `int vga_fb_unpark_line(char *b, int *p);` |
-| `vga_get_color` | function | `headers/kernel.h:61` | `char vga_get_color(void);` |
-| `vga_get_x` | function | `headers/kernel.h:58` | `int vga_get_x(void);` |
-| `vga_get_y` | function | `headers/kernel.h:59` | `int vga_get_y(void);` |
-| `vga_gfx_ran_set` | function | `headers/kernel.h:491` | `void vga_gfx_ran_set(int on);` |
-| `vga_mode_is_active` | function | `headers/kernel.h:490` | `int vga_mode_is_active(void);` |
-| `vga_mode_set` | function | `headers/kernel.h:489` | `void vga_mode_set(int on);` |
-| `vga_newline` | function | `headers/kernel.h:49` | `void vga_newline(void);` |
-| `vga_putc` | function | `headers/kernel.h:45` | `void vga_putc(char c);` |
-| `vga_puts` | function | `headers/kernel.h:46` | `void vga_puts(const char *s);` |
-| `vga_scroll` | function | `headers/kernel.h:47` | `void vga_scroll(void);` |
-| `vga_set_cursor` | function | `headers/kernel.h:48` | `void vga_set_cursor(int x, int y);` |
-| `vga_set_xy` | function | `headers/kernel.h:60` | `void vga_set_xy(int x, int y);` |
-| `vnode_t` | type_alias | `headers/kernel.h:295` | `typedef vfs_file_t vnode_t;` |
-| `wall_us_now` | function | `headers/kernel.h:632` | `unsigned long wall_us_now(void);` |
+| `RAMDISK_FNAME_LEN` | macro | `headers/kernel.h:232` | `#define RAMDISK_FNAME_LEN` |
+| `RAMDISK_MAX_FILES` | macro | `headers/kernel.h:231` | `#define RAMDISK_MAX_FILES` |
+| `RDFile` | struct | `headers/kernel.h:234` | `` |
+| `RD_DATA_MAX` | macro | `headers/kernel.h:254` | `#define RD_DATA_MAX` |
+| `SYS_KSTK_BASE` | macro | `headers/kernel.h:186` | `#define SYS_KSTK_BASE` |
+| `SYS_KSTK_TOP` | macro | `headers/kernel.h:185` | `#define SYS_KSTK_TOP` |
+| `USER_BRK_END` | macro | `headers/kernel.h:180` | `#define USER_BRK_END` |
+| `USER_LOAD_BASE` | macro | `headers/kernel.h:175` | `#define USER_LOAD_BASE` |
+| `USER_LOAD_END` | macro | `headers/kernel.h:176` | `#define USER_LOAD_END` |
+| `USER_STACK_BASE` | macro | `headers/kernel.h:179` | `#define USER_STACK_BASE` |
+| `USER_STACK_SIZE` | macro | `headers/kernel.h:177` | `#define USER_STACK_SIZE` |
+| `USER_STACK_TOP` | macro | `headers/kernel.h:178` | `#define USER_STACK_TOP` |
+| `VGA_BASE` | macro | `headers/kernel.h:88` | `#define VGA_BASE` |
+| `VGA_COLS` | macro | `headers/kernel.h:89` | `#define VGA_COLS` |
+| `VGA_ROWS` | macro | `headers/kernel.h:90` | `#define VGA_ROWS` |
+| `block_init` | function | `headers/kernel.h:706` | `void block_init(void);` |
+| `block_read` | function | `headers/kernel.h:707` | `int block_read(unsigned int block_num, void *buf);` |
+| `block_read_multi` | function | `headers/kernel.h:709` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
+| `block_total` | function | `headers/kernel.h:711` | `unsigned int block_total(void);` |
+| `block_write` | function | `headers/kernel.h:708` | `int block_write(unsigned int block_num, const void *buf);` |
+| `block_write_multi` | function | `headers/kernel.h:710` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
+| `bootlog_mark` | function | `headers/kernel.h:683` | `void bootlog_mark(const char *name);` |
+| `bootlog_report` | function | `headers/kernel.h:684` | `void bootlog_report(void);` |
+| `console_getc` | function | `headers/kernel.h:472` | `int console_getc(void);` |
+| `console_lock` | variable | `headers/kernel.h:103` | `extern spinlock_t console_lock;` |
+| `console_peek` | function | `headers/kernel.h:473` | `int console_peek(void);` |
+| `desktop_launch` | function | `headers/kernel.h:542` | `void desktop_launch(const char *cmd);` |
+| `dlmalloc_calloc` | function | `headers/kernel.h:204` | `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);` |
+| `dlmalloc_free` | function | `headers/kernel.h:203` | `void dlmalloc_free(void *ptr);` |
+| `dlmalloc_init` | function | `headers/kernel.h:201` | `void dlmalloc_init(void);` |
+| `dlmalloc_malloc` | function | `headers/kernel.h:202` | `void *dlmalloc_malloc(unsigned long size);` |
+| `dlmalloc_realloc` | function | `headers/kernel.h:205` | `void *dlmalloc_realloc(void *ptr, unsigned long size);` |
+| `dlmalloc_usage` | function | `headers/kernel.h:207` | `void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);` |
+| `elf_load` | function | `headers/kernel.h:623` | `void *elf_load(void *data, unsigned size, void **base_out);` |
+| `exec_exit_code` | variable | `headers/kernel.h:534` | `extern int exec_exit_code;` |
+| `exec_return` | variable | `headers/kernel.h:533` | `extern kjmpbuf exec_return;` |
+| `fd_lock` | variable | `headers/kernel.h:650` | `extern spinlock_t fd_lock;` |
+| `fd_lock` | function | `headers/kernel.h:655` | `* fd_lock (never nested, never held across yields);` |
+| `file_operations` | type_alias | `headers/kernel.h:342` | `typedef vfs_ops_t file_operations;` |
+| `fs_cwd` | variable | `headers/kernel.h:355` | `extern char fs_cwd[];` |
+| `fs_dir_exists` | function | `headers/kernel.h:261` | `int fs_dir_exists(const char *dir);` |
+| `fs_is_dir` | function | `headers/kernel.h:262` | `int fs_is_dir(const char *resolved);` |
+| `fs_lock` | variable | `headers/kernel.h:657` | `extern spinlock_t fs_lock;` |
+| `fs_resolve` | function | `headers/kernel.h:260` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
+| `g_brk` | variable | `headers/kernel.h:587` | `extern unsigned long g_brk;` |
+| `g_brk_limit` | variable | `headers/kernel.h:588` | `extern unsigned long g_brk_limit;` |
+| `ide_init` | function | `headers/kernel.h:697` | `void ide_init(void);` |
+| `ide_present` | function | `headers/kernel.h:703` | `int ide_present(void);` |
+| `ide_read_sector` | function | `headers/kernel.h:700` | `int ide_read_sector(unsigned int lba, void *buf);` |
+| `ide_read_sectors` | function | `headers/kernel.h:698` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
+| `ide_total_sectors` | function | `headers/kernel.h:702` | `unsigned int ide_total_sectors(void);` |
+| `ide_write_sector` | function | `headers/kernel.h:701` | `int ide_write_sector(unsigned int lba, const void *buf);` |
+| `ide_write_sectors` | function | `headers/kernel.h:699` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
+| `inb` | function | `headers/kernel.h:27` | `static inline unsigned char inb(unsigned short port)` |
+| `insw` | function | `headers/kernel.h:45` | `static inline void insw(unsigned short port, unsigned short *buf,
+                        unsigne...` |
+| `inw` | function | `headers/kernel.h:35` | `static inline unsigned short inw(unsigned short port)` |
+| `k_exec_user` | function | `headers/kernel.h:521` | `int k_exec_user(void *entry, int argc, char **argv);` |
+| `k_register_process` | function | `headers/kernel.h:513` | `void k_register_process(const char *name, void *proc_entry);` |
+| `k_register_program` | function | `headers/kernel.h:512` | `void k_register_program(const char *name, prog_entry_t entry);` |
+| `k_register_symbol` | function | `headers/kernel.h:514` | `void k_register_symbol(const char *name, void *addr);` |
+| `k_run_on_stack` | function | `headers/kernel.h:526` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
+| `k_run_rel` | function | `headers/kernel.h:522` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
+| `k_spawn` | function | `headers/kernel.h:511` | `int k_spawn(const char *name, int argc, char **argv);` |
+| `k_user_fault_return` | function | `headers/kernel.h:714` | `void k_user_fault_return(void);` |
+| `kallocator_init` | function | `headers/kernel.h:196` | `void kallocator_init(void);` |
+| `katol` | function | `headers/kernel.h:439` | `long katol(const char *s);` |
+| `kbd_available` | function | `headers/kernel.h:164` | `int kbd_available(void);` |
+| `kbd_read` | function | `headers/kernel.h:163` | `int kbd_read(void);` |
+| `kbd_reset_for_shell` | function | `headers/kernel.h:165` | `void kbd_reset_for_shell(void);` |
+| `kcalloc` | function | `headers/kernel.h:194` | `void *kcalloc(unsigned long nmemb, unsigned long size);` |
+| `kernel_end` | variable | `headers/kernel.h:660` | `extern unsigned long kernel_end;` |
+| `kexit` | function | `headers/kernel.h:523` | `void kexit(int code);` |
+| `kfclose` | function | `headers/kernel.h:406` | `int kfclose(KFILE *f);` |
+| `kfd_get` | function | `headers/kernel.h:651` | `KFILE *kfd_get(int fd);` |
+| `kfd_put` | function | `headers/kernel.h:652` | `void kfd_put(KFILE *f);` |
+| `kfd_table` | variable | `headers/kernel.h:645` | `extern KFILE *kfd_table[KFD_MAX];` |
+| `kfflush` | function | `headers/kernel.h:416` | `int kfflush(KFILE *f);` |
+| `kfgetc` | function | `headers/kernel.h:407` | `int kfgetc(KFILE *f);` |
+| `kfgets` | function | `headers/kernel.h:408` | `char *kfgets(char *buf, int size, KFILE *f);` |
+| `kfile_stderr` | function | `headers/kernel.h:424` | `KFILE *kfile_stderr(void);` |
+| `kfile_stdin` | function | `headers/kernel.h:422` | `KFILE *kfile_stdin(void);` |
+| `kfile_stdout` | function | `headers/kernel.h:423` | `KFILE *kfile_stdout(void);` |
+| `kfopen` | function | `headers/kernel.h:405` | `KFILE *kfopen(const char *path, const char *mode);` |
+| `kfprintf` | function | `headers/kernel.h:443` | `int kfprintf(KFILE *f, const char *fmt, ...);` |
+| `kfputc` | function | `headers/kernel.h:415` | `int kfputc(int c, KFILE *f);` |
+| `kfputs` | function | `headers/kernel.h:414` | `int kfputs(const char *s, KFILE *f);` |
+| `kfread` | function | `headers/kernel.h:410` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
+| `kfree` | function | `headers/kernel.h:193` | `void kfree(void *ptr);` |
+| `kfseek` | function | `headers/kernel.h:412` | `int kfseek(KFILE *f, long offset, int whence);` |
+| `kftell` | function | `headers/kernel.h:413` | `long kftell(KFILE *f);` |
+| `kfungetc` | function | `headers/kernel.h:409` | `int kfungetc(int c, KFILE *f);` |
+| `kfwrite` | function | `headers/kernel.h:411` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
+| `kjmpbuf` | struct | `headers/kernel.h:530` | `` |
+| `klog` | function | `headers/kernel.h:460` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
+| `klog_disable` | function | `headers/kernel.h:466` | `void klog_disable(void);` |
+| `klog_enable` | function | `headers/kernel.h:467` | `void klog_enable(void);` |
+| `klog_hexdump` | function | `headers/kernel.h:462` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
+| `klog_set_level` | function | `headers/kernel.h:464` | `void klog_set_level(log_level_t level);` |
+| `klog_set_subsys_level` | function | `headers/kernel.h:465` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
+| `klongjmp` | function | `headers/kernel.h:532` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
+| `kmalloc` | function | `headers/kernel.h:191` | `void *kmalloc(unsigned long size);` |
+| `kmalloc_fail_after` | variable | `headers/kernel.h:192` | `extern long kmalloc_fail_after;` |
+| `kmalloc_percpu` | function | `headers/kernel.h:197` | `void *kmalloc_percpu(unsigned long size, unsigned long align);` |
+| `kmemcmp` | function | `headers/kernel.h:437` | `int kmemcmp(const void *a, const void *b, unsigned long n);` |
+| `kmemcpy` | function | `headers/kernel.h:435` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
+| `kmemmove` | function | `headers/kernel.h:438` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
+| `kmemset` | function | `headers/kernel.h:436` | `void *kmemset(void *dst, int c, unsigned long n);` |
+| `kprintf` | function | `headers/kernel.h:442` | `int kprintf(const char *fmt, ...);` |
+| `kprog_count` | variable | `headers/kernel.h:506` | `extern int kprog_count;` |
+| `kprog_lookup` | function | `headers/kernel.h:509` | `KProg *kprog_lookup(const char *name);` |
+| `kprog_slot` | function | `headers/kernel.h:508` | `KProg *kprog_slot(const char *name);` |
+| `kprog_table` | variable | `headers/kernel.h:505` | `extern KProg kprog_table[];` |
+| `krealloc` | function | `headers/kernel.h:195` | `void *krealloc(void *ptr, unsigned long size);` |
+| `krewind` | function | `headers/kernel.h:417` | `void krewind(KFILE *f);` |
+| `ksetjmp` | function | `headers/kernel.h:531` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
+| `ksnprintf` | function | `headers/kernel.h:445` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
+| `ksprintf` | function | `headers/kernel.h:444` | `int ksprintf(char *buf, const char *fmt, ...);` |
+| `kstderr` | variable | `headers/kernel.h:421` | `extern KFILE *kstderr;` |
+| `kstdin` | variable | `headers/kernel.h:419` | `extern KFILE *kstdin;` |
+| `kstdout` | variable | `headers/kernel.h:420` | `extern KFILE *kstdout;` |
+| `kstrchr` | function | `headers/kernel.h:433` | `char *kstrchr(const char *s, int c);` |
+| `kstrcmp` | function | `headers/kernel.h:431` | `int kstrcmp(const char *a, const char *b);` |
+| `kstrcpy` | function | `headers/kernel.h:428` | `char *kstrcpy(char *dst, const char *src);` |
+| `kstrlen` | function | `headers/kernel.h:427` | `unsigned long kstrlen(const char *s);` |
+| `kstrncat` | function | `headers/kernel.h:430` | `char *kstrncat(char *dst, const char *src, unsigned long n);` |
+| `kstrncmp` | function | `headers/kernel.h:432` | `int kstrncmp(const char *a, const char *b, unsigned long n);` |
+| `kstrncpy` | function | `headers/kernel.h:429` | `char *kstrncpy(char *dst, const char *src, unsigned long n);` |
+| `kstrstr` | function | `headers/kernel.h:434` | `char *kstrstr(const char *hay, const char *ndl);` |
+| `ksym_count` | variable | `headers/kernel.h:504` | `extern int ksym_count;` |
+| `ksym_resolve` | function | `headers/kernel.h:510` | `void *ksym_resolve(const char *name);` |
+| `ksym_table` | variable | `headers/kernel.h:503` | `extern KSym ksym_table[];` |
+| `ksyscall` | function | `headers/kernel.h:637` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ktime_ms` | function | `headers/kernel.h:23` | `unsigned long ktime_ms(void);` |
+| `ktime_us` | function | `headers/kernel.h:679` | `unsigned long ktime_us(void);` |
+| `load_exec_elf` | function | `headers/kernel.h:624` | `void *load_exec_elf(void *data, unsigned size);` |
+| `load_exec_elf_into` | function | `headers/kernel.h:625` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);` |
+| `minifs_mkdir_p` | function | `headers/kernel.h:354` | `int minifs_mkdir_p(const char *resolved);` |
+| `mm_copy_user_page` | function | `headers/kernel.h:629` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
+| `mm_setup_protections` | function | `headers/kernel.h:576` | `void mm_setup_protections(void);` |
+| `mm_user_ensure_page` | function | `headers/kernel.h:628` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
+| `mm_user_pte_update` | function | `headers/kernel.h:579` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
+| `mm_user_set_exec` | function | `headers/kernel.h:580` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
+| `outb` | function | `headers/kernel.h:24` | `static inline void outb(unsigned short port, unsigned char val)` |
+| `outsw` | function | `headers/kernel.h:52` | `static inline void outsw(unsigned short port, const unsigned short *buf,
+                        ...` |
+| `outw` | function | `headers/kernel.h:32` | `static inline void outw(unsigned short port, unsigned short val)` |
+| `pcspk_get_volume` | function | `headers/kernel.h:691` | `unsigned pcspk_get_volume(void);` |
+| `pcspk_init` | function | `headers/kernel.h:687` | `void pcspk_init(void);` |
+| `pcspk_off` | function | `headers/kernel.h:689` | `void pcspk_off(void);` |
+| `pcspk_set_volume` | function | `headers/kernel.h:690` | `void pcspk_set_volume(unsigned volume);` |
+| `pcspk_tone` | function | `headers/kernel.h:688` | `void pcspk_tone(unsigned freq);` |
+| `pt_clone_user_empty` | function | `headers/kernel.h:627` | `unsigned long pt_clone_user_empty(void);` |
+| `pt_page_alloc` | function | `headers/kernel.h:577` | `void *pt_page_alloc(void);` |
+| `pt_page_free` | function | `headers/kernel.h:578` | `void pt_page_free(void *ptr);` |
+| `ramdisk_count` | function | `headers/kernel.h:249` | `int ramdisk_count(void);` |
+| `ramdisk_create` | function | `headers/kernel.h:244` | `RDFile *ramdisk_create(const char *name, unsigned size);` |
+| `ramdisk_delete` | function | `headers/kernel.h:246` | `int ramdisk_delete(RDFile *f);` |
+| `ramdisk_end` | variable | `headers/kernel.h:662` | `extern char ramdisk_end[];` |
+| `ramdisk_file_name` | function | `headers/kernel.h:250` | `const char *ramdisk_file_name(int idx);` |
+| `ramdisk_init` | function | `headers/kernel.h:240` | `void ramdisk_init(void);` |
+| `ramdisk_list` | function | `headers/kernel.h:247` | `int ramdisk_list(RDFile **out, int max);` |
+| `ramdisk_open` | function | `headers/kernel.h:241` | `RDFile *ramdisk_open(const char *name);` |
+| `ramdisk_read` | function | `headers/kernel.h:242` | `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);` |
+| `ramdisk_resize` | function | `headers/kernel.h:245` | `int ramdisk_resize(RDFile *f, unsigned newsize);` |
+| `ramdisk_setup_from` | function | `headers/kernel.h:248` | `void ramdisk_setup_from(void *data, unsigned size);` |
+| `ramdisk_size` | variable | `headers/kernel.h:663` | `extern char ramdisk_size[];` |
+| `ramdisk_start` | variable | `headers/kernel.h:661` | `extern char ramdisk_start[];` |
+| `ramdisk_usage` | function | `headers/kernel.h:252` | `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);` |
+| `ramdisk_write` | function | `headers/kernel.h:243` | `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);` |
+| `redirect_active` | function | `headers/kernel.h:478` | `int redirect_active(void);` |
+| `redirect_begin` | function | `headers/kernel.h:476` | `int redirect_begin(void);` |
+| `redirect_commit` | function | `headers/kernel.h:477` | `int redirect_commit(const char *path, int append_mode);` |
+| `redirect_resume` | function | `headers/kernel.h:475` | `void redirect_resume(int was);` |
+| `redirect_suspend` | function | `headers/kernel.h:474` | `int redirect_suspend(void);` |
+| `register_libc_symbols` | function | `headers/kernel.h:518` | `void register_libc_symbols(void);` |
+| `rtc_read_tod` | function | `headers/kernel.h:694` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
+| `sb_capture_row0` | function | `headers/kernel.h:113` | `void sb_capture_row0(void);` |
+| `sb_get_char` | function | `headers/kernel.h:117` | `char sb_get_char(int row, int col);` |
+| `sb_get_count` | function | `headers/kernel.h:115` | `int sb_get_count(void);` |
+| `sb_get_head` | function | `headers/kernel.h:116` | `int sb_get_head(void);` |
+| `sb_init` | function | `headers/kernel.h:112` | `void sb_init(void);` |
+| `sb_reset` | function | `headers/kernel.h:114` | `void sb_reset(void);` |
+| `ser_e_cpu` | variable | `headers/kernel.h:124` | `extern unsigned long ser_e_ra, ser_e_cpu;` |
+| `serial_available` | function | `headers/kernel.h:125` | `int serial_available(void);` |
+| `serial_e_count` | function | `headers/kernel.h:123` | `unsigned long serial_e_count(void);` |
+| `serial_getc` | function | `headers/kernel.h:126` | `int serial_getc(void);` |
+| `serial_init` | function | `headers/kernel.h:120` | `void serial_init(void);` |
+| `serial_putc` | function | `headers/kernel.h:121` | `void serial_putc(char c);` |
+| `serial_puts` | function | `headers/kernel.h:122` | `void serial_puts(const char *s);` |
+| `setup_user_stack` | function | `headers/kernel.h:535` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
+| `shell_exec_builtin` | function | `headers/kernel.h:481` | `void shell_exec_builtin(int argc, char **argv);` |
+| `shell_fg_active` | variable | `headers/kernel.h:569` | `extern volatile int shell_fg_active;` |
+| `shell_focus_park` | function | `headers/kernel.h:566` | `void shell_focus_park(void);` |
+| `shell_focus_restore` | function | `headers/kernel.h:567` | `void shell_focus_restore(void);` |
+| `shell_init` | function | `headers/kernel.h:470` | `void shell_init(void);` |
+| `shell_queue_launch` | function | `headers/kernel.h:543` | `void shell_queue_launch(const char *cmd);` |
+| `shell_readline_active` | function | `headers/kernel.h:565` | `int shell_readline_active(void);` |
+| `shell_report` | function | `headers/kernel.h:483` | `void shell_report(const char *what, const char *detail);` |
+| `shell_report_exit` | function | `headers/kernel.h:482` | `void shell_report_exit(int code);` |
+| `shell_run` | function | `headers/kernel.h:471` | `void shell_run(void);` |
+| `shell_run_any` | function | `headers/kernel.h:480` | `int shell_run_any(const char *name, int argc, char **argv);` |
+| `shell_take_redirect` | function | `headers/kernel.h:479` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
+| `swap_in` | function | `headers/kernel.h:584` | `int swap_in(void);` |
+| `swap_out` | function | `headers/kernel.h:583` | `int swap_out(unsigned long window_sz);` |
+| `syscall_init` | function | `headers/kernel.h:633` | `void syscall_init(void);` |
+| `syscall_name` | function | `headers/kernel.h:643` | `const char *syscall_name(long n);` |
+| `syscall_trace_enabled` | function | `headers/kernel.h:638` | `long syscall_trace_enabled(void);` |
+| `syscall_trace_set` | function | `headers/kernel.h:639` | `void syscall_trace_set(int on);` |
+| `syscall_trace_shown` | function | `headers/kernel.h:642` | `unsigned long syscall_trace_shown(void);` |
+| `syscall_trace_verbose_enabled` | function | `headers/kernel.h:640` | `long syscall_trace_verbose_enabled(void);` |
+| `syscall_trace_verbose_set` | function | `headers/kernel.h:641` | `void syscall_trace_verbose_set(int on);` |
+| `user_mmap_cur` | variable | `headers/kernel.h:589` | `extern unsigned long user_mmap_cur;` |
+| `user_range_ok` | function | `headers/kernel.h:572` | `int user_range_ok(unsigned long p, unsigned long len);` |
+| `user_str_ok` | function | `headers/kernel.h:573` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
+| `vfs_close` | function | `headers/kernel.h:350` | `int vfs_close(vfs_file_t *f);` |
+| `vfs_file` | struct | `headers/kernel.h:327` | `` |
+| `vfs_fstat` | function | `headers/kernel.h:351` | `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);` |
+| `vfs_init` | function | `headers/kernel.h:352` | `void vfs_init(void);` |
+| `vfs_open` | function | `headers/kernel.h:347` | `int vfs_open(const char *path, int mode, vfs_file_t *f);` |
+| `vfs_ops` | struct | `headers/kernel.h:318` | `` |
+| `vfs_read` | function | `headers/kernel.h:348` | `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);` |
+| `vfs_register` | function | `headers/kernel.h:345` | `int vfs_register(const char *prefix, const vfs_ops_t *ops);` |
+| `vfs_register_builtins` | function | `headers/kernel.h:353` | `void vfs_register_builtins(void);` |
+| `vfs_unregister` | function | `headers/kernel.h:346` | `int vfs_unregister(const char *prefix);` |
+| `vfs_write` | function | `headers/kernel.h:349` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
+| `vga_clear` | function | `headers/kernel.h:92` | `void vga_clear(void);` |
+| `vga_cursor_enable` | function | `headers/kernel.h:98` | `void vga_cursor_enable(int on);` |
+| `vga_fb_act_empty` | function | `headers/kernel.h:557` | `int vga_fb_act_empty(void);` |
+| `vga_fb_clear_prompt` | function | `headers/kernel.h:560` | `void vga_fb_clear_prompt(void);` |
+| `vga_fb_focus_get` | function | `headers/kernel.h:548` | `int vga_fb_focus_get(void);` |
+| `vga_fb_focus_id` | function | `headers/kernel.h:547` | `int vga_fb_focus_id(int id);` |
+| `vga_fb_focus_next` | function | `headers/kernel.h:546` | `void vga_fb_focus_next(void);` |
+| `vga_fb_list_windows` | function | `headers/kernel.h:553` | `void vga_fb_list_windows(void);` |
+| `vga_fb_note_prompt` | function | `headers/kernel.h:559` | `void vga_fb_note_prompt(void);` |
+| `vga_fb_nterms_get` | function | `headers/kernel.h:549` | `int vga_fb_nterms_get(void);` |
+| `vga_fb_park_line` | function | `headers/kernel.h:554` | `void vga_fb_park_line(const char *b, int p);` |
+| `vga_fb_prompt_live` | function | `headers/kernel.h:558` | `int vga_fb_prompt_live(void);` |
+| `vga_fb_prompted` | function | `headers/kernel.h:561` | `int vga_fb_prompted(void);` |
+| `vga_fb_set_gfx_program` | function | `headers/kernel.h:556` | `void vga_fb_set_gfx_program(const char *name);` |
+| `vga_fb_term_close_focused` | function | `headers/kernel.h:551` | `int vga_fb_term_close_focused(void);` |
+| `vga_fb_term_split` | function | `headers/kernel.h:550` | `int vga_fb_term_split(void);` |
+| `vga_fb_tile_all` | function | `headers/kernel.h:552` | `void vga_fb_tile_all(void);` |
+| `vga_fb_unpark_line` | function | `headers/kernel.h:555` | `int vga_fb_unpark_line(char *b, int *p);` |
+| `vga_get_color` | function | `headers/kernel.h:109` | `char vga_get_color(void);` |
+| `vga_get_x` | function | `headers/kernel.h:106` | `int vga_get_x(void);` |
+| `vga_get_y` | function | `headers/kernel.h:107` | `int vga_get_y(void);` |
+| `vga_gfx_ran_set` | function | `headers/kernel.h:539` | `void vga_gfx_ran_set(int on);` |
+| `vga_mode_is_active` | function | `headers/kernel.h:538` | `int vga_mode_is_active(void);` |
+| `vga_mode_set` | function | `headers/kernel.h:537` | `void vga_mode_set(int on);` |
+| `vga_newline` | function | `headers/kernel.h:97` | `void vga_newline(void);` |
+| `vga_putc` | function | `headers/kernel.h:93` | `void vga_putc(char c);` |
+| `vga_puts` | function | `headers/kernel.h:94` | `void vga_puts(const char *s);` |
+| `vga_scroll` | function | `headers/kernel.h:95` | `void vga_scroll(void);` |
+| `vga_set_cursor` | function | `headers/kernel.h:96` | `void vga_set_cursor(int x, int y);` |
+| `vga_set_xy` | function | `headers/kernel.h:108` | `void vga_set_xy(int x, int y);` |
+| `vnode_t` | type_alias | `headers/kernel.h:343` | `typedef vfs_file_t vnode_t;` |
+| `waits` | function | `headers/kernel.h:62` | `* and mouse_hw_init issues dozens of waits (measured 5 s of boot).  This
+ * polls the port once p...` |
+| `wall_us_now` | function | `headers/kernel.h:680` | `unsigned long wall_us_now(void);` |
 | `CONSOLE_IN_H` | macro | `headers/kernel/console_in.h:2` | `#define CONSOLE_IN_H` |
 | `Consumers` | function | `headers/kernel/console_in.h:7` | `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into kernel/` |
 | `console_job_get` | function | `headers/kernel/console_in.h:26` | `int console_job_get(void);` |
@@ -2845,9 +2849,7 @@ long sys_linux_wait4(lon...` |
 | `GFX_KEEP_W` | macro | `kernel/vga_fb.c:335` | `#define GFX_KEEP_W` |
 | `GFX_PROG_LEN` | macro | `kernel/vga_fb.c:407` | `#define GFX_PROG_LEN` |
 | `LG_LINE` | macro | `kernel/vga_fb.c:170` | `#define LG_LINE(a)` |
-| `TB_GFX_TITLE_MAX` | macro | `kernel/vga_fb.c:2060` | `#define TB_GFX_TITLE_MAX` |
-| `USER_LOAD_BASE` | function | `kernel/vga_fb.c:1730` | `* table: the kernel image must end below USER_LOAD_BASE (mm guard) and it
- * fits with ~1 KB to s...` |
+| `TB_GFX_TITLE_MAX` | macro | `kernel/vga_fb.c:2065` | `#define TB_GFX_TITLE_MAX` |
 | `WIN_DEF_COLS` | macro | `kernel/vga_fb.c:647` | `#define WIN_DEF_COLS` |
 | `WIN_DEF_ROWS` | macro | `kernel/vga_fb.c:648` | `#define WIN_DEF_ROWS` |
 | `WIN_DEF_X` | macro | `kernel/vga_fb.c:649` | `#define WIN_DEF_X` |
@@ -2856,30 +2858,32 @@ long sys_linux_wait4(lon...` |
 | `WM_MAX_TERMS` | macro | `kernel/vga_fb.c:678` | `#define WM_MAX_TERMS` |
 | `act_nrows` | function | `kernel/vga_fb.c:208` | `static int act_nrows(void)` |
 | `app` | function | `kernel/vga_fb.c:893` | `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep land` |
-| `blit_gfx_buf` | function | `kernel/vga_fb.c:1777` | `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)` |
+| `blit_gfx_buf` | function | `kernel/vga_fb.c:1782` | `static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh)` |
+| `blit_indexed_truecolor` | function | `kernel/vga_fb.c:1734` | `static void blit_indexed_truecolor(const volatile uint8_t *bb, int bb_w,
+                        ...` |
 | `ci_eq` | function | `kernel/vga_fb.c:446` | `static int ci_eq(const char *a, const char *b)` |
-| `command` | function | `kernel/vga_fb.c:3397` | `* its launch command (config-driven, covers apps that never set a window * title);` |
+| `command` | function | `kernel/vga_fb.c:3410` | `* its launch command (config-driven, covers apps that never set a window * title);` |
 | `content` | function | `kernel/vga_fb.c:942` | `* windows would share content (same prompt/output on both) and a park
  * would alias src == dst. ...` |
-| `cube` | function | `kernel/vga_fb.c:1907` | `* quantized through the websafe cube (same degrade as the RGB wallpaper
+| `cube` | function | `kernel/vga_fb.c:1912` | `* quantized through the websafe cube (same degrade as the RGB wallpaper
  * path), so an RGB prese...` |
-| `desktop_shortcuts_draw` | function | `kernel/vga_fb.c:3297` | `void desktop_shortcuts_draw(void)` |
-| `desktop_shortcuts_hit_test` | function | `kernel/vga_fb.c:3423` | `const char *desktop_shortcuts_hit_test(int mx, int my)` |
-| `desktop_shortcuts_load` | function | `kernel/vga_fb.c:3079` | `void desktop_shortcuts_load(void)` |
+| `desktop_shortcuts_draw` | function | `kernel/vga_fb.c:3310` | `void desktop_shortcuts_draw(void)` |
+| `desktop_shortcuts_hit_test` | function | `kernel/vga_fb.c:3436` | `const char *desktop_shortcuts_hit_test(int mx, int my)` |
+| `desktop_shortcuts_load` | function | `kernel/vga_fb.c:3084` | `void desktop_shortcuts_load(void)` |
 | `disp_clamp` | function | `kernel/vga_fb.c:219` | `static void disp_clamp(void)` |
-| `dock_bounce_counts` | function | `kernel/vga_fb.c:3187` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)` |
-| `dock_bounce_elapsed` | function | `kernel/vga_fb.c:3203` | `static unsigned long dock_bounce_elapsed(void)` |
-| `dock_bounce_live` | function | `kernel/vga_fb.c:3211` | `static int dock_bounce_live(void)` |
-| `dock_click_count` | function | `kernel/vga_fb.c:3197` | `void dock_click_count(unsigned long *edges)` |
-| `dock_hover_index` | function | `kernel/vga_fb.c:3160` | `static int dock_hover_index(int mx, int my)` |
-| `dock_label_px` | function | `kernel/vga_fb.c:3045` | `static int dock_label_px(const struct desktop_shortcut *sc)` |
-| `dock_paint_hover` | function | `kernel/vga_fb.c:3366` | `static void dock_paint_hover(int hover)` |
-| `dock_paint_icons` | function | `kernel/vga_fb.c:3261` | `static void dock_paint_icons(int hover)` |
-| `dock_pending_active` | function | `kernel/vga_fb.c:3253` | `int dock_pending_active(void)` |
-| `draw_scrollbar` | function | `kernel/vga_fb.c:2313` | `static void draw_scrollbar(void)` |
-| `draw_speaker_icon` | function | `kernel/vga_fb.c:2093` | `static void draw_speaker_icon(int x, int y, uint8_t color)` |
-| `draw_title_win` | function | `kernel/vga_fb.c:2031` | `static void draw_title_win(int idx, int focused)` |
-| `escapes` | function | `kernel/vga_fb.c:2449` | `* swallowing them here keeps the escapes (which the serial side needs)
+| `dock_bounce_counts` | function | `kernel/vga_fb.c:3192` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)` |
+| `dock_bounce_elapsed` | function | `kernel/vga_fb.c:3208` | `static unsigned long dock_bounce_elapsed(void)` |
+| `dock_bounce_live` | function | `kernel/vga_fb.c:3216` | `static int dock_bounce_live(void)` |
+| `dock_click_count` | function | `kernel/vga_fb.c:3202` | `void dock_click_count(unsigned long *edges)` |
+| `dock_hover_index` | function | `kernel/vga_fb.c:3165` | `static int dock_hover_index(int mx, int my)` |
+| `dock_label_px` | function | `kernel/vga_fb.c:3050` | `static int dock_label_px(const struct desktop_shortcut *sc)` |
+| `dock_paint_hover` | function | `kernel/vga_fb.c:3379` | `static void dock_paint_hover(int hover)` |
+| `dock_paint_icons` | function | `kernel/vga_fb.c:3274` | `static void dock_paint_icons(int hover)` |
+| `dock_pending_active` | function | `kernel/vga_fb.c:3266` | `int dock_pending_active(void)` |
+| `draw_scrollbar` | function | `kernel/vga_fb.c:2318` | `static void draw_scrollbar(void)` |
+| `draw_speaker_icon` | function | `kernel/vga_fb.c:2098` | `static void draw_speaker_icon(int x, int y, uint8_t color)` |
+| `draw_title_win` | function | `kernel/vga_fb.c:2036` | `static void draw_title_win(int idx, int focused)` |
+| `escapes` | function | `kernel/vga_fb.c:2454` | `* swallowing them here keeps the escapes (which the serial side needs)
      * from printing as li...` |
 | `fb_bytes_per_pixel` | function | `kernel/vga_fb.c:116` | `int fb_bytes_per_pixel(void)` |
 | `fb_glyph` | function | `kernel/vga_fb.c:1508` | `static const uint8_t *fb_glyph(unsigned char c)` |
@@ -2892,63 +2896,65 @@ long sys_linux_wait4(lon...` |
 | `gfx_keep_save` | function | `kernel/vga_fb.c:341` | `static void gfx_keep_save(int x, int y, int w, int h)` |
 | `gfx_place` | function | `kernel/vga_fb.c:506` | `static void gfx_place(int w, int h, int *ox, int *oy)` |
 | `gfx_prog_icon` | function | `kernel/vga_fb.c:459` | `static const uint8_t *gfx_prog_icon(void)` |
-| `gfx_snap` | function | `kernel/vga_fb.c:2633` | `static void gfx_snap(int zone)` |
-| `gfx_target` | function | `kernel/vga_fb.c:2625` | `static void gfx_target(int *x, int *y)` |
-| `gfx_task_icon` | function | `kernel/vga_fb.c:3402` | `static const uint8_t *gfx_task_icon(void)` |
+| `gfx_snap` | function | `kernel/vga_fb.c:2638` | `static void gfx_snap(int zone)` |
+| `gfx_target` | function | `kernel/vga_fb.c:2630` | `static void gfx_target(int *x, int *y)` |
+| `gfx_task_icon` | function | `kernel/vga_fb.c:3415` | `static const uint8_t *gfx_task_icon(void)` |
 | `gfx_tile_right` | function | `kernel/vga_fb.c:1117` | `static void gfx_tile_right(void)` |
-| `icon_decode` | function | `kernel/vga_fb.c:2983` | `static const uint8_t *icon_decode(const char *path)` |
-| `icon_embedded` | function | `kernel/vga_fb.c:2963` | `static const uint8_t *icon_embedded(const char *name)` |
-| `icon_embedded_rgba` | function | `kernel/vga_fb.c:3017` | `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` |
-| `icon_nearest` | function | `kernel/vga_fb.c:2947` | `static int icon_nearest(int r, int g, int b)` |
+| `icon_decode` | function | `kernel/vga_fb.c:2988` | `static const uint8_t *icon_decode(const char *path)` |
+| `icon_embedded` | function | `kernel/vga_fb.c:2968` | `static const uint8_t *icon_embedded(const char *name)` |
+| `icon_embedded_rgba` | function | `kernel/vga_fb.c:3022` | `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` |
+| `icon_nearest` | function | `kernel/vga_fb.c:2952` | `static int icon_nearest(int r, int g, int b)` |
 | `lg_get` | function | `kernel/vga_fb.c:179` | `static const char *lg_get(int i)` |
 | `lg_push` | function | `kernel/vga_fb.c:186` | `static void lg_push(const char *line, int len)` |
-| `line` | function | `kernel/vga_fb.c:2440` | `* display stale bytes left over from a longer previous line (e.g. the prompt
+| `line` | function | `kernel/vga_fb.c:2445` | `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...` |
 | `line_at` | function | `kernel/vga_fb.c:237` | `static const char *line_at(int abs, int *off)` |
 | `line_nrows` | function | `kernel/vga_fb.c:201` | `static int line_nrows(int len)` |
-| `mouse_apply_wheel` | function | `kernel/vga_fb.c:3463` | `static void mouse_apply_wheel(int wheel, int step)` |
-| `mouse_drag_gfx` | function | `kernel/vga_fb.c:3484` | `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` |
-| `mouse_drag_term` | function | `kernel/vga_fb.c:3523` | `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` |
-| `mouse_focus_topmost` | function | `kernel/vga_fb.c:3437` | `static int mouse_focus_topmost(int mx, int my)` |
-| `mouse_scrollbar` | function | `kernel/vga_fb.c:3546` | `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` |
-| `path` | function | `kernel/vga_fb.c:3580` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and raced ev` |
-| `pipe_field` | function | `kernel/vga_fb.c:2929` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
-| `render_blank_row` | function | `kernel/vga_fb.c:2348` | `static void render_blank_row(int vrow)` |
-| `render_row` | function | `kernel/vga_fb.c:2358` | `static void render_row(int vrow, int abs)` |
+| `mouse_apply_wheel` | function | `kernel/vga_fb.c:3476` | `static void mouse_apply_wheel(int wheel, int step)` |
+| `mouse_drag_gfx` | function | `kernel/vga_fb.c:3497` | `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` |
+| `mouse_drag_term` | function | `kernel/vga_fb.c:3536` | `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` |
+| `mouse_focus_topmost` | function | `kernel/vga_fb.c:3450` | `static int mouse_focus_topmost(int mx, int my)` |
+| `mouse_scrollbar` | function | `kernel/vga_fb.c:3559` | `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` |
+| `path` | function | `kernel/vga_fb.c:3593` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and raced ev` |
+| `pipe_field` | function | `kernel/vga_fb.c:2934` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
+| `render_blank_row` | function | `kernel/vga_fb.c:2353` | `static void render_blank_row(int vrow)` |
+| `render_row` | function | `kernel/vga_fb.c:2363` | `static void render_row(int vrow, int abs)` |
 | `shcmd_base` | function | `kernel/vga_fb.c:429` | `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` |
-| `shortcut_cell_left` | function | `kernel/vga_fb.c:3072` | `static int shortcut_cell_left(int i)` |
-| `shortcut_draw_scaled` | function | `kernel/vga_fb.c:3135` | `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
+| `shortcut_cell_left` | function | `kernel/vga_fb.c:3077` | `static int shortcut_cell_left(int i)` |
+| `shortcut_draw_scaled` | function | `kernel/vga_fb.c:3140` | `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
                              ...` |
-| `shortcuts_layout` | function | `kernel/vga_fb.c:3054` | `static void shortcuts_layout(void)` |
-| `taskbar_handle_click` | function | `kernel/vga_fb.c:2257` | `static void taskbar_handle_click(int mx, int my)` |
-| `taskbar_layout` | function | `kernel/vga_fb.c:2062` | `static void taskbar_layout(void)` |
-| `taskbar_render` | function | `kernel/vga_fb.c:2102` | `static void taskbar_render(void)` |
-| `taskbar_theme_cycle` | function | `kernel/vga_fb.c:2217` | `static void taskbar_theme_cycle(void)` |
-| `taskbar_tick` | function | `kernel/vga_fb.c:2181` | `static void taskbar_tick(void)` |
-| `term_finish_layout` | function | `kernel/vga_fb.c:2726` | `static void term_finish_layout(void)` |
-| `term_max_cols` | function | `kernel/vga_fb.c:2717` | `static int term_max_cols(void)` |
-| `term_max_rows` | function | `kernel/vga_fb.c:2721` | `static int term_max_rows(void)` |
-| `term_recalc` | function | `kernel/vga_fb.c:2005` | `static void term_recalc(void)` |
-| `term_render` | function | `kernel/vga_fb.c:2386` | `static void term_render(void)` |
-| `term_render_active` | function | `kernel/vga_fb.c:2399` | `static void term_render_active(void)` |
+| `shortcuts_layout` | function | `kernel/vga_fb.c:3059` | `static void shortcuts_layout(void)` |
+| `state` | function | `kernel/vga_fb.c:3684` | `* ignores the button state (the arming press is consumed) and settles
+     * once on expiry, so t...` |
+| `taskbar_handle_click` | function | `kernel/vga_fb.c:2262` | `static void taskbar_handle_click(int mx, int my)` |
+| `taskbar_layout` | function | `kernel/vga_fb.c:2067` | `static void taskbar_layout(void)` |
+| `taskbar_render` | function | `kernel/vga_fb.c:2107` | `static void taskbar_render(void)` |
+| `taskbar_theme_cycle` | function | `kernel/vga_fb.c:2222` | `static void taskbar_theme_cycle(void)` |
+| `taskbar_tick` | function | `kernel/vga_fb.c:2186` | `static void taskbar_tick(void)` |
+| `term_finish_layout` | function | `kernel/vga_fb.c:2731` | `static void term_finish_layout(void)` |
+| `term_max_cols` | function | `kernel/vga_fb.c:2722` | `static int term_max_cols(void)` |
+| `term_max_rows` | function | `kernel/vga_fb.c:2726` | `static int term_max_rows(void)` |
+| `term_recalc` | function | `kernel/vga_fb.c:2010` | `static void term_recalc(void)` |
+| `term_render` | function | `kernel/vga_fb.c:2391` | `static void term_render(void)` |
+| `term_render_active` | function | `kernel/vga_fb.c:2404` | `static void term_render_active(void)` |
 | `termwin_t` | struct | `kernel/vga_fb.c:685` | `` |
 | `text_px` | function | `kernel/vga_fb.c:1590` | `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` |
-| `title` | function | `kernel/vga_fb.c:2112` | `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t ` |
+| `title` | function | `kernel/vga_fb.c:2117` | `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t ` |
 | `total_rows` | function | `kernel/vga_fb.c:211` | `static int total_rows(void)` |
 | `tw_hit` | function | `kernel/vga_fb.c:1254` | `static int tw_hit(int i, int mx, int my)` |
 | `tw_park` | function | `kernel/vga_fb.c:742` | `static void tw_park(int i)` |
 | `tw_select` | function | `kernel/vga_fb.c:832` | `static void tw_select(int i)` |
 | `tw_unpark` | function | `kernel/vga_fb.c:772` | `static void tw_unpark(int i)` |
 | `vga_fb_act_empty` | function | `kernel/vga_fb.c:1194` | `int vga_fb_act_empty(void)` |
-| `vga_fb_blit_gfx_window` | function | `kernel/vga_fb.c:1877` | `void vga_fb_blit_gfx_window(void)` |
-| `vga_fb_blit_nk_rgb_window` | function | `kernel/vga_fb.c:1961` | `void vga_fb_blit_nk_rgb_window(void)` |
-| `vga_fb_blit_nk_window` | function | `kernel/vga_fb.c:1897` | `void vga_fb_blit_nk_window(void)` |
+| `vga_fb_blit_gfx_window` | function | `kernel/vga_fb.c:1882` | `void vga_fb_blit_gfx_window(void)` |
+| `vga_fb_blit_nk_rgb_window` | function | `kernel/vga_fb.c:1966` | `void vga_fb_blit_nk_rgb_window(void)` |
+| `vga_fb_blit_nk_window` | function | `kernel/vga_fb.c:1902` | `void vga_fb_blit_nk_window(void)` |
 | `vga_fb_boot_config` | function | `kernel/vga_fb.c:89` | `void vga_fb_boot_config(void)` |
 | `vga_fb_char` | function | `kernel/vga_fb.c:1565` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)` |
-| `vga_fb_clear` | function | `kernel/vga_fb.c:1882` | `void vga_fb_clear(void)` |
+| `vga_fb_clear` | function | `kernel/vga_fb.c:1887` | `void vga_fb_clear(void)` |
 | `vga_fb_clear_prompt` | function | `kernel/vga_fb.c:1203` | `void vga_fb_clear_prompt(void)` |
-| `vga_fb_close_active` | function | `kernel/vga_fb.c:2657` | `int vga_fb_close_active(void)` |
-| `vga_fb_draw_desktop` | function | `kernel/vga_fb.c:2525` | `void vga_fb_draw_desktop(void)` |
+| `vga_fb_close_active` | function | `kernel/vga_fb.c:2662` | `int vga_fb_close_active(void)` |
+| `vga_fb_draw_desktop` | function | `kernel/vga_fb.c:2530` | `void vga_fb_draw_desktop(void)` |
 | `vga_fb_focus_event` | function | `kernel/vga_fb.c:727` | `const wm_notify_event_t *vga_fb_focus_event(void)` |
 | `vga_fb_focus_get` | function | `kernel/vga_fb.c:844` | `int vga_fb_focus_get(void)` |
 | `vga_fb_focus_id` | function | `kernel/vga_fb.c:917` | `int vga_fb_focus_id(int id)` |
@@ -2956,18 +2962,18 @@ long sys_linux_wait4(lon...` |
 | `vga_fb_focus_report` | function | `kernel/vga_fb.c:733` | `void vga_fb_focus_report(int before, int source)` |
 | `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:529` | `static void vga_fb_gfx_cursor_draw(void)` |
 | `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:522` | `static void vga_fb_gfx_cursor_erase(void)` |
-| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:2520` | `void vga_fb_hide_text_cursor(void)` |
-| `vga_fb_init` | function | `kernel/vga_fb.c:3741` | `void vga_fb_init(void)` |
-| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:2621` | `int vga_fb_is_fullscreen(void)` |
-| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:2620` | `int vga_fb_is_minimized(void)` |
+| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:2525` | `void vga_fb_hide_text_cursor(void)` |
+| `vga_fb_init` | function | `kernel/vga_fb.c:3790` | `void vga_fb_init(void)` |
+| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:2626` | `int vga_fb_is_fullscreen(void)` |
+| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:2625` | `int vga_fb_is_minimized(void)` |
 | `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:1034` | `void vga_fb_layout_cycle(void)` |
 | `vga_fb_layout_get` | function | `kernel/vga_fb.c:1050` | `int vga_fb_layout_get(void)` |
 | `vga_fb_layout_name` | function | `kernel/vga_fb.c:1056` | `const char *vga_fb_layout_name(void)` |
 | `vga_fb_layout_set` | function | `kernel/vga_fb.c:1023` | `int vga_fb_layout_set(int mode)` |
 | `vga_fb_list_windows` | function | `kernel/vga_fb.c:1140` | `void vga_fb_list_windows(void)` |
-| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:3716` | `void vga_fb_mouse_init(void)` |
-| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:3569` | `void vga_fb_mouse_tick(void)` |
-| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:2678` | `void vga_fb_move_terminal(int dx, int dy)` |
+| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:3762` | `void vga_fb_mouse_init(void)` |
+| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:3582` | `void vga_fb_mouse_tick(void)` |
+| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:2683` | `void vga_fb_move_terminal(int dx, int dy)` |
 | `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1198` | `void vga_fb_note_prompt(void)` |
 | `vga_fb_nterms_get` | function | `kernel/vga_fb.c:845` | `int vga_fb_nterms_get(void)` |
 | `vga_fb_park_line` | function | `kernel/vga_fb.c:1224` | `void vga_fb_park_line(const char *b, int p)` |
@@ -2976,28 +2982,28 @@ long sys_linux_wait4(lon...` |
 | `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1217` | `int vga_fb_prompt_live(void)` |
 | `vga_fb_prompted` | function | `kernel/vga_fb.c:1208` | `int vga_fb_prompted(void)` |
 | `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:1662` | `int vga_fb_ps2_owner(int pid)` |
-| `vga_fb_puts_term` | function | `kernel/vga_fb.c:2506` | `void vga_fb_puts_term(const char *s)` |
+| `vga_fb_puts_term` | function | `kernel/vga_fb.c:2511` | `void vga_fb_puts_term(const char *s)` |
 | `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1443` | `unsigned long vga_fb_read_rgb(int x, int y)` |
 | `vga_fb_rect` | function | `kernel/vga_fb.c:1538` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
 | `vga_fb_rect_rgb` | function | `kernel/vga_fb.c:1558` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)` |
-| `vga_fb_reset_default` | function | `kernel/vga_fb.c:2780` | `void vga_fb_reset_default(void)` |
-| `vga_fb_resize` | function | `kernel/vga_fb.c:2760` | `void vga_fb_resize(int dcols, int drows)` |
+| `vga_fb_reset_default` | function | `kernel/vga_fb.c:2785` | `void vga_fb_reset_default(void)` |
+| `vga_fb_resize` | function | `kernel/vga_fb.c:2765` | `void vga_fb_resize(int dcols, int drows)` |
 | `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:472` | `void vga_fb_set_gfx_mode(int on)` |
 | `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1368` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
 | `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:410` | `void vga_fb_set_gfx_program(const char *name)` |
 | `vga_fb_set_palette` | function | `kernel/vga_fb.c:1455` | `static void vga_fb_set_palette(void)` |
-| `vga_fb_snap_window` | function | `kernel/vga_fb.c:2732` | `void vga_fb_snap_window(int zone)` |
+| `vga_fb_snap_window` | function | `kernel/vga_fb.c:2737` | `void vga_fb_snap_window(int zone)` |
 | `vga_fb_str` | function | `kernel/vga_fb.c:1579` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
-| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:2512` | `void vga_fb_text_cursor(int col)` |
-| `vga_fb_theme_name` | function | `kernel/vga_fb.c:2196` | `int vga_fb_theme_name(char *dst, int cap)` |
+| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:2517` | `void vga_fb_text_cursor(int col)` |
+| `vga_fb_theme_name` | function | `kernel/vga_fb.c:2201` | `int vga_fb_theme_name(char *dst, int cap)` |
 | `vga_fb_tile_all` | function | `kernel/vga_fb.c:1062` | `void vga_fb_tile_all(void)` |
-| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:2589` | `void vga_fb_toggle_fullscreen(void)` |
-| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:2611` | `void vga_fb_toggle_minimize(void)` |
+| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:2594` | `void vga_fb_toggle_fullscreen(void)` |
+| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:2616` | `void vga_fb_toggle_minimize(void)` |
 | `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1239` | `int vga_fb_unpark_line(char *b, int *p)` |
 | `wall_level` | function | `kernel/vga_fb.c:1446` | `static int wall_level(int v)` |
-| `wallpaper_draw` | function | `kernel/vga_fb.c:2891` | `static void wallpaper_draw(void)` |
-| `wallpaper_ensure` | function | `kernel/vga_fb.c:2827` | `static void wallpaper_ensure(void)` |
-| `wallpaper_rect` | function | `kernel/vga_fb.c:3324` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
+| `wallpaper_draw` | function | `kernel/vga_fb.c:2896` | `static void wallpaper_draw(void)` |
+| `wallpaper_ensure` | function | `kernel/vga_fb.c:2832` | `static void wallpaper_ensure(void)` |
+| `wallpaper_rect` | function | `kernel/vga_fb.c:3337` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
 | `wm_button_click` | function | `kernel/vga_fb.c:1681` | `static int wm_button_click(int mx, int my)` |
 | `wm_buttons_hit` | function | `kernel/vga_fb.c:1642` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
 | `wm_clear_close` | function | `kernel/vga_fb.c:1658` | `void wm_clear_close(void)` |
@@ -8873,129 +8879,135 @@ Z_Malloc
 | `Uint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:6` | `typedef uint32_t Uint32;` |
 | `Uint64` | type_alias | `progs/pokemon/minios_stubs/SDL.h:5` | `typedef uint64_t Uint64;` |
 | `Uint8` | type_alias | `progs/pokemon/minios_stubs/SDL.h:9` | `typedef uint8_t Uint8;` |
-| `FB_ADDR` | macro | `progs/pokemon/platform_minios.c:139` | `#define FB_ADDR` |
-| `FB_H` | macro | `progs/pokemon/platform_minios.c:141` | `#define FB_H` |
-| `FB_W` | macro | `progs/pokemon/platform_minios.c:140` | `#define FB_W` |
-| `GB_DST_H` | macro | `progs/pokemon/platform_minios.c:145` | `#define GB_DST_H` |
-| `GB_DST_W` | macro | `progs/pokemon/platform_minios.c:144` | `#define GB_DST_W` |
-| `GB_DST_X0` | macro | `progs/pokemon/platform_minios.c:146` | `#define GB_DST_X0` |
-| `GB_DST_Y0` | macro | `progs/pokemon/platform_minios.c:147` | `#define GB_DST_Y0` |
-| `GB_SCALE` | macro | `progs/pokemon/platform_minios.c:143` | `#define GB_SCALE` |
-| `MENU_BAR_H` | macro | `progs/pokemon/platform_minios.c:569` | `#define MENU_BAR_H` |
-| `MENU_BG` | macro | `progs/pokemon/platform_minios.c:578` | `#define MENU_BG` |
-| `MENU_DROP_W` | macro | `progs/pokemon/platform_minios.c:573` | `#define MENU_DROP_W` |
-| `MENU_DROP_X0` | macro | `progs/pokemon/platform_minios.c:572` | `#define MENU_DROP_X0` |
-| `MENU_FG` | macro | `progs/pokemon/platform_minios.c:579` | `#define MENU_FG` |
-| `MENU_FILE_X0` | macro | `progs/pokemon/platform_minios.c:570` | `#define MENU_FILE_X0` |
-| `MENU_FILE_X1` | macro | `progs/pokemon/platform_minios.c:571` | `#define MENU_FILE_X1` |
-| `MENU_HOVER` | macro | `progs/pokemon/platform_minios.c:580` | `#define MENU_HOVER` |
-| `MENU_ITEM_H` | macro | `progs/pokemon/platform_minios.c:574` | `#define MENU_ITEM_H` |
-| `MENU_NITEMS` | macro | `progs/pokemon/platform_minios.c:575` | `#define MENU_NITEMS` |
-| `MENU_OSD_BG` | macro | `progs/pokemon/platform_minios.c:581` | `#define MENU_OSD_BG` |
-| `MINIOS_ARP_BASS_MS` | macro | `progs/pokemon/platform_minios.c:216` | `#define MINIOS_ARP_BASS_MS` |
-| `MINIOS_ARP_MEL_MS` | macro | `progs/pokemon/platform_minios.c:217` | `#define MINIOS_ARP_MEL_MS` |
-| `MINIOS_AUDIO_MAX_HZ` | macro | `progs/pokemon/platform_minios.c:215` | `#define MINIOS_AUDIO_MAX_HZ` |
-| `MINIOS_AUDIO_MIN_HZ` | macro | `progs/pokemon/platform_minios.c:214` | `#define MINIOS_AUDIO_MIN_HZ` |
-| `MINIOS_AUDIO_RATE` | macro | `progs/pokemon/platform_minios.c:212` | `#define MINIOS_AUDIO_RATE` |
-| `MINIOS_AUDIO_SILENCE_E` | macro | `progs/pokemon/platform_minios.c:213` | `#define MINIOS_AUDIO_SILENCE_E` |
-| `MINIOS_AUTOSAVE_MS` | macro | `progs/pokemon/platform_minios.c:1103` | `#define MINIOS_AUTOSAVE_MS` |
-| `MINIOS_FF_FRAMESKIP` | macro | `progs/pokemon/platform_minios.c:1115` | `#define MINIOS_FF_FRAMESKIP` |
-| `STBI_NO_STDIO` | macro | `progs/pokemon/platform_minios.c:58` | `#define STBI_NO_STDIO` |
-| `STBI_ONLY_PNG` | macro | `progs/pokemon/platform_minios.c:57` | `#define STBI_ONLY_PNG` |
-| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/pokemon/platform_minios.c:56` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `_dl_argv` | function | `progs/pokemon/platform_minios.c:176` | `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
+| `FB_ADDR` | macro | `progs/pokemon/platform_minios.c:160` | `#define FB_ADDR` |
+| `FB_H` | macro | `progs/pokemon/platform_minios.c:162` | `#define FB_H` |
+| `FB_W` | macro | `progs/pokemon/platform_minios.c:161` | `#define FB_W` |
+| `GB_DST_H` | macro | `progs/pokemon/platform_minios.c:166` | `#define GB_DST_H` |
+| `GB_DST_W` | macro | `progs/pokemon/platform_minios.c:165` | `#define GB_DST_W` |
+| `GB_DST_X0` | macro | `progs/pokemon/platform_minios.c:167` | `#define GB_DST_X0` |
+| `GB_DST_Y0` | macro | `progs/pokemon/platform_minios.c:168` | `#define GB_DST_Y0` |
+| `GB_SCALE` | macro | `progs/pokemon/platform_minios.c:164` | `#define GB_SCALE` |
+| `MENU_BAR_H` | macro | `progs/pokemon/platform_minios.c:586` | `#define MENU_BAR_H` |
+| `MENU_BG` | macro | `progs/pokemon/platform_minios.c:595` | `#define MENU_BG` |
+| `MENU_DROP_W` | macro | `progs/pokemon/platform_minios.c:590` | `#define MENU_DROP_W` |
+| `MENU_DROP_X0` | macro | `progs/pokemon/platform_minios.c:589` | `#define MENU_DROP_X0` |
+| `MENU_FG` | macro | `progs/pokemon/platform_minios.c:596` | `#define MENU_FG` |
+| `MENU_FILE_X0` | macro | `progs/pokemon/platform_minios.c:587` | `#define MENU_FILE_X0` |
+| `MENU_FILE_X1` | macro | `progs/pokemon/platform_minios.c:588` | `#define MENU_FILE_X1` |
+| `MENU_HOVER` | macro | `progs/pokemon/platform_minios.c:597` | `#define MENU_HOVER` |
+| `MENU_ITEM_H` | macro | `progs/pokemon/platform_minios.c:591` | `#define MENU_ITEM_H` |
+| `MENU_NITEMS` | macro | `progs/pokemon/platform_minios.c:592` | `#define MENU_NITEMS` |
+| `MENU_OSD_BG` | macro | `progs/pokemon/platform_minios.c:598` | `#define MENU_OSD_BG` |
+| `MINIOS_ARP_BASS_MS` | macro | `progs/pokemon/platform_minios.c:237` | `#define MINIOS_ARP_BASS_MS` |
+| `MINIOS_ARP_MEL_MS` | macro | `progs/pokemon/platform_minios.c:238` | `#define MINIOS_ARP_MEL_MS` |
+| `MINIOS_AUDIO_MAX_HZ` | macro | `progs/pokemon/platform_minios.c:236` | `#define MINIOS_AUDIO_MAX_HZ` |
+| `MINIOS_AUDIO_MIN_HZ` | macro | `progs/pokemon/platform_minios.c:235` | `#define MINIOS_AUDIO_MIN_HZ` |
+| `MINIOS_AUDIO_RATE` | macro | `progs/pokemon/platform_minios.c:233` | `#define MINIOS_AUDIO_RATE` |
+| `MINIOS_AUDIO_SILENCE_E` | macro | `progs/pokemon/platform_minios.c:234` | `#define MINIOS_AUDIO_SILENCE_E` |
+| `MINIOS_AUTOSAVE_MS` | macro | `progs/pokemon/platform_minios.c:1193` | `#define MINIOS_AUTOSAVE_MS` |
+| `MINIOS_FF_FRAMESKIP` | macro | `progs/pokemon/platform_minios.c:1205` | `#define MINIOS_FF_FRAMESKIP` |
+| `STBI_NO_STDIO` | macro | `progs/pokemon/platform_minios.c:62` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/pokemon/platform_minios.c:61` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/pokemon/platform_minios.c:60` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `_dl_argv` | function | `progs/pokemon/platform_minios.c:197` | `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).
  * DO NOT reintroduce argv ...` |
-| `audible` | function | `progs/pokemon/platform_minios.c:32` | `* audible (noise SFX, sweep zaps), the raw mix estimate is played.
+| `audible` | function | `progs/pokemon/platform_minios.c:36` | `* voice is audible (noise SFX, sweep zaps), the raw mix estimate plays.
  *
- * Debug: heartbeat to stde...` |
-| `audio` | function | `progs/pokemon/platform_minios.c:197` | `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies come fr` |
-| `gb_platform_get_exit_action` | function | `progs/pokemon/platform_minios.c:1446` | `GBPlatformExitAction gb_platform_get_exit_action(void)` |
-| `gb_platform_get_joypad` | function | `progs/pokemon/platform_minios.c:1424` | `uint8_t gb_platform_get_joypad(void)` |
-| `gb_platform_get_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1434` | `bool gb_platform_get_smooth_lcd_transitions(void)` |
-| `gb_platform_get_timing_info` | function | `progs/pokemon/platform_minios.c:1417` | `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)` |
-| `gb_platform_init` | function | `progs/pokemon/platform_minios.c:967` | `bool gb_platform_init(int scale)` |
-| `gb_platform_poll_events` | function | `progs/pokemon/platform_minios.c:1231` | `bool gb_platform_poll_events(GBContext *ctx)` |
-| `gb_platform_present_framebuffer` | function | `progs/pokemon/platform_minios.c:1300` | `void gb_platform_present_framebuffer(const uint32_t *framebuffer)` |
-| `gb_platform_register_context` | function | `progs/pokemon/platform_minios.c:1198` | `void gb_platform_register_context(GBContext *ctx)` |
-| `gb_platform_render_frame` | function | `progs/pokemon/platform_minios.c:1240` | `void gb_platform_render_frame(const uint32_t *framebuffer)` |
-| `gb_platform_render_lcd_off_frame` | function | `progs/pokemon/platform_minios.c:1306` | `void gb_platform_render_lcd_off_frame(void)` |
-| `gb_platform_set_benchmark_mode` | function | `progs/pokemon/platform_minios.c:1344` | `void gb_platform_set_benchmark_mode(bool enabled)` |
-| `gb_platform_set_debug` | function | `progs/pokemon/platform_minios.c:169` | `void gb_platform_set_debug(bool enabled)` |
-| `gb_platform_set_dump_frames` | function | `progs/pokemon/platform_minios.c:1368` | `void gb_platform_set_dump_frames(const char *frames)` |
-| `gb_platform_set_dump_present_frames` | function | `progs/pokemon/platform_minios.c:1390` | `void gb_platform_set_dump_present_frames(const char *frames)` |
-| `gb_platform_set_input_record_file` | function | `progs/pokemon/platform_minios.c:1354` | `void gb_platform_set_input_record_file(const char *path)` |
-| `gb_platform_set_input_script` | function | `progs/pokemon/platform_minios.c:1348` | `bool gb_platform_set_input_script(const char *script)` |
-| `gb_platform_set_launcher_return_enabled` | function | `progs/pokemon/platform_minios.c:1442` | `void gb_platform_set_launcher_return_enabled(bool enabled)` |
-| `gb_platform_set_persistence_dir` | function | `progs/pokemon/platform_minios.c:1359` | `bool gb_platform_set_persistence_dir(const char *path)` |
-| `gb_platform_set_screenshot_prefix` | function | `progs/pokemon/platform_minios.c:1411` | `void gb_platform_set_screenshot_prefix(const char *prefix)` |
-| `gb_platform_set_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1438` | `void gb_platform_set_smooth_lcd_transitions(bool enabled)` |
-| `gb_platform_set_title` | function | `progs/pokemon/platform_minios.c:1428` | `void gb_platform_set_title(const char *title)` |
-| `gb_platform_shutdown` | function | `progs/pokemon/platform_minios.c:1220` | `void gb_platform_shutdown(void)` |
-| `gb_platform_submit_port_frame` | function | `progs/pokemon/platform_minios.c:1450` | `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)` |
-| `gb_platform_test_audio_concurrency` | function | `progs/pokemon/platform_minios.c:1456` | `bool gb_platform_test_audio_concurrency(uint32_t frames,
+ * Debug: heartbeat to...` |
+| `audio` | function | `progs/pokemon/platform_minios.c:218` | `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies come fr` |
+| `frames` | function | `progs/pokemon/platform_minios.c:1366` | `* frames (menu bar not on screen yet) and any frame after the
+         * LCD-off path zeroed the ...` |
+| `gain` | function | `progs/pokemon/platform_minios.c:142` | `* timing gain (overshoot is microseconds against millisecond waits).
+ * Difference-based, so it s...` |
+| `gb_platform_get_exit_action` | function | `progs/pokemon/platform_minios.c:1552` | `GBPlatformExitAction gb_platform_get_exit_action(void)` |
+| `gb_platform_get_joypad` | function | `progs/pokemon/platform_minios.c:1530` | `uint8_t gb_platform_get_joypad(void)` |
+| `gb_platform_get_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1540` | `bool gb_platform_get_smooth_lcd_transitions(void)` |
+| `gb_platform_get_timing_info` | function | `progs/pokemon/platform_minios.c:1523` | `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)` |
+| `gb_platform_init` | function | `progs/pokemon/platform_minios.c:1056` | `bool gb_platform_init(int scale)` |
+| `gb_platform_poll_events` | function | `progs/pokemon/platform_minios.c:1321` | `bool gb_platform_poll_events(GBContext *ctx)` |
+| `gb_platform_present_framebuffer` | function | `progs/pokemon/platform_minios.c:1399` | `void gb_platform_present_framebuffer(const uint32_t *framebuffer)` |
+| `gb_platform_register_context` | function | `progs/pokemon/platform_minios.c:1288` | `void gb_platform_register_context(GBContext *ctx)` |
+| `gb_platform_render_frame` | function | `progs/pokemon/platform_minios.c:1330` | `void gb_platform_render_frame(const uint32_t *framebuffer)` |
+| `gb_platform_render_lcd_off_frame` | function | `progs/pokemon/platform_minios.c:1411` | `void gb_platform_render_lcd_off_frame(void)` |
+| `gb_platform_set_benchmark_mode` | function | `progs/pokemon/platform_minios.c:1450` | `void gb_platform_set_benchmark_mode(bool enabled)` |
+| `gb_platform_set_debug` | function | `progs/pokemon/platform_minios.c:190` | `void gb_platform_set_debug(bool enabled)` |
+| `gb_platform_set_dump_frames` | function | `progs/pokemon/platform_minios.c:1474` | `void gb_platform_set_dump_frames(const char *frames)` |
+| `gb_platform_set_dump_present_frames` | function | `progs/pokemon/platform_minios.c:1496` | `void gb_platform_set_dump_present_frames(const char *frames)` |
+| `gb_platform_set_input_record_file` | function | `progs/pokemon/platform_minios.c:1460` | `void gb_platform_set_input_record_file(const char *path)` |
+| `gb_platform_set_input_script` | function | `progs/pokemon/platform_minios.c:1454` | `bool gb_platform_set_input_script(const char *script)` |
+| `gb_platform_set_launcher_return_enabled` | function | `progs/pokemon/platform_minios.c:1548` | `void gb_platform_set_launcher_return_enabled(bool enabled)` |
+| `gb_platform_set_persistence_dir` | function | `progs/pokemon/platform_minios.c:1465` | `bool gb_platform_set_persistence_dir(const char *path)` |
+| `gb_platform_set_screenshot_prefix` | function | `progs/pokemon/platform_minios.c:1517` | `void gb_platform_set_screenshot_prefix(const char *prefix)` |
+| `gb_platform_set_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1544` | `void gb_platform_set_smooth_lcd_transitions(bool enabled)` |
+| `gb_platform_set_title` | function | `progs/pokemon/platform_minios.c:1534` | `void gb_platform_set_title(const char *title)` |
+| `gb_platform_shutdown` | function | `progs/pokemon/platform_minios.c:1310` | `void gb_platform_shutdown(void)` |
+| `gb_platform_submit_port_frame` | function | `progs/pokemon/platform_minios.c:1556` | `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)` |
+| `gb_platform_test_audio_concurrency` | function | `progs/pokemon/platform_minios.c:1562` | `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...` |
-| `gb_platform_test_inject_persistence_fault` | function | `progs/pokemon/platform_minios.c:1465` | `void gb_platform_test_inject_persistence_fault(
+| `gb_platform_test_inject_persistence_fault` | function | `progs/pokemon/platform_minios.c:1571` | `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...` |
-| `gb_platform_vsync` | function | `progs/pokemon/platform_minios.c:1323` | `void gb_platform_vsync(uint32_t frame_cycles)` |
-| `gb_voice_in_range` | function | `progs/pokemon/platform_minios.c:285` | `static bool gb_voice_in_range(unsigned f)` |
-| `gb_voice_t` | struct | `progs/pokemon/platform_minios.c:280` | `` |
-| `hold_tone` | function | `progs/pokemon/platform_minios.c:309` | `static void hold_tone(unsigned freq, unsigned ms)` |
-| `menu` | function | `progs/pokemon/platform_minios.c:554` | `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it sta` |
-| `menu_activate` | function | `progs/pokemon/platform_minios.c:704` | `static void menu_activate(int it)` |
-| `menu_do_load` | function | `progs/pokemon/platform_minios.c:685` | `static void menu_do_load(void)` |
-| `menu_do_save` | function | `progs/pokemon/platform_minios.c:669` | `static void menu_do_save(void)` |
-| `menu_draw` | function | `progs/pokemon/platform_minios.c:632` | `static void menu_draw(void)` |
-| `menu_fill` | function | `progs/pokemon/platform_minios.c:594` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
-| `menu_item_at` | function | `progs/pokemon/platform_minios.c:662` | `static int menu_item_at(int lx, int ly)` |
-| `menu_osd` | function | `progs/pokemon/platform_minios.c:626` | `static void menu_osd(const char *s)` |
-| `menu_text` | function | `progs/pokemon/platform_minios.c:607` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
-| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:317` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
+| `gb_platform_vsync` | function | `progs/pokemon/platform_minios.c:1433` | `void gb_platform_vsync(uint32_t frame_cycles)` |
+| `gb_voice_in_range` | function | `progs/pokemon/platform_minios.c:306` | `static bool gb_voice_in_range(unsigned f)` |
+| `gb_voice_t` | struct | `progs/pokemon/platform_minios.c:301` | `` |
+| `menu` | function | `progs/pokemon/platform_minios.c:571` | `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it sta` |
+| `menu_activate` | function | `progs/pokemon/platform_minios.c:742` | `static void menu_activate(int it)` |
+| `menu_do_load` | function | `progs/pokemon/platform_minios.c:723` | `static void menu_do_load(void)` |
+| `menu_do_save` | function | `progs/pokemon/platform_minios.c:707` | `static void menu_do_save(void)` |
+| `menu_draw` | function | `progs/pokemon/platform_minios.c:670` | `static void menu_draw(void)` |
+| `menu_fill` | function | `progs/pokemon/platform_minios.c:632` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
+| `menu_item_at` | function | `progs/pokemon/platform_minios.c:700` | `static int menu_item_at(int lx, int ly)` |
+| `menu_osd` | function | `progs/pokemon/platform_minios.c:664` | `static void menu_osd(const char *s)` |
+| `menu_text` | function | `progs/pokemon/platform_minios.c:645` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
+| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:330` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
                             ...` |
-| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:241` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
-| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1132` | `static void minios_autosave(uint32_t now)` |
-| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1118` | `static inline bool minios_fast_forward(void)` |
-| `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:1007` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
+| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:262` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
+| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1222` | `static void minios_autosave(uint32_t now)` |
+| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1208` | `static inline bool minios_fast_forward(void)` |
+| `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:1097` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
                        ...` |
-| `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1127` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
-| `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:1042` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
+| `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1217` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:1132` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
                        ...` |
-| `minios_load_helper` | function | `progs/pokemon/platform_minios.c:1013` | `static bool minios_load_helper(const char *path, void *data, size_t size,
+| `minios_load_helper` | function | `progs/pokemon/platform_minios.c:1103` | `static bool minios_load_helper(const char *path, void *data, size_t size,
                        ...` |
-| `minios_load_rtc_data` | function | `progs/pokemon/platform_minios.c:1067` | `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
+| `minios_load_rtc_data` | function | `progs/pokemon/platform_minios.c:1157` | `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
                           ...` |
-| `minios_persist_path` | function | `progs/pokemon/platform_minios.c:998` | `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
+| `minios_persist_path` | function | `progs/pokemon/platform_minios.c:1088` | `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                       ...` |
-| `minios_save_battery_ram` | function | `progs/pokemon/platform_minios.c:1057` | `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
+| `minios_save_battery_ram` | function | `progs/pokemon/platform_minios.c:1147` | `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
                        ...` |
-| `minios_save_helper` | function | `progs/pokemon/platform_minios.c:1031` | `static bool minios_save_helper(const char *path, const void *data, size_t size)` |
-| `minios_save_rtc_data` | function | `progs/pokemon/platform_minios.c:1080` | `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
+| `minios_save_helper` | function | `progs/pokemon/platform_minios.c:1121` | `static bool minios_save_helper(const char *path, const void *data, size_t size)` |
+| `minios_save_rtc_data` | function | `progs/pokemon/platform_minios.c:1170` | `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
                           ...` |
-| `minios_state_path` | function | `progs/pokemon/platform_minios.c:1122` | `static void minios_state_path(char *out, size_t n, const GBContext *ctx)` |
-| `pokemon_art_draw` | function | `progs/pokemon/platform_minios.c:887` | `static void pokemon_art_draw(void)` |
-| `pokemon_art_draw_one` | function | `progs/pokemon/platform_minios.c:849` | `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
+| `minios_state_path` | function | `progs/pokemon/platform_minios.c:1212` | `static void minios_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `pokemon_art_draw` | function | `progs/pokemon/platform_minios.c:925` | `static void pokemon_art_draw(void)` |
+| `pokemon_art_draw_one` | function | `progs/pokemon/platform_minios.c:887` | `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
                       ...` |
-| `pokemon_art_load` | function | `progs/pokemon/platform_minios.c:831` | `static void pokemon_art_load(void)` |
-| `pokemon_art_load_one` | function | `progs/pokemon/platform_minios.c:806` | `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
+| `pokemon_art_load` | function | `progs/pokemon/platform_minios.c:869` | `static void pokemon_art_load(void)` |
+| `pokemon_art_load_one` | function | `progs/pokemon/platform_minios.c:844` | `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
                           ...` |
-| `poll_hotkeys` | function | `progs/pokemon/platform_minios.c:1146` | `static void poll_hotkeys(void)` |
-| `poll_keyboard` | function | `progs/pokemon/platform_minios.c:399` | `static void poll_keyboard(void)` |
-| `poll_menu` | function | `progs/pokemon/platform_minios.c:738` | `static void poll_menu(void)` |
-| `push_332_palette` | function | `progs/pokemon/platform_minios.c:438` | `static void push_332_palette(void)` |
-| `rebuild_joypad` | function | `progs/pokemon/platform_minios.c:385` | `static void rebuild_joypad(void)` |
-| `sample_apu_voices` | function | `progs/pokemon/platform_minios.c:289` | `static void sample_apu_voices(gb_voice_t *v)` |
-| `sys_gfx_title` | function | `progs/pokemon/platform_minios.c:107` | `static long sys_gfx_title(const char *t)` |
-| `sys_kbd` | function | `progs/pokemon/platform_minios.c:71` | `static long sys_kbd(void)` |
-| `sys_kbd_raw` | function | `progs/pokemon/platform_minios.c:95` | `static long sys_kbd_raw(int on)` |
-| `sys_mouse` | function | `progs/pokemon/platform_minios.c:83` | `static long sys_mouse(int *xybw)` |
-| `sys_nk_frame` | function | `progs/pokemon/platform_minios.c:77` | `static long sys_nk_frame(int *origin)` |
-| `sys_palette` | function | `progs/pokemon/platform_minios.c:101` | `static long sys_palette(const unsigned char *pal)` |
-| `sys_pcm2_close` | function | `progs/pokemon/platform_minios.c:131` | `static void sys_pcm2_close(void)` |
-| `sys_pcm2_open` | function | `progs/pokemon/platform_minios.c:119` | `static long sys_pcm2_open(long flags)` |
-| `sys_pcm2_write` | function | `progs/pokemon/platform_minios.c:125` | `static long sys_pcm2_write(const void *buf, long len)` |
-| `sys_tone` | function | `progs/pokemon/platform_minios.c:113` | `static long sys_tone(unsigned f)` |
-| `sys_vga_mode` | function | `progs/pokemon/platform_minios.c:89` | `static long sys_vga_mode(int on)` |
-| `upload_frame` | function | `progs/pokemon/platform_minios.c:898` | `static void upload_frame(const uint32_t *framebuffer)` |
+| `poll_hotkeys` | function | `progs/pokemon/platform_minios.c:1236` | `static void poll_hotkeys(void)` |
+| `poll_keyboard` | function | `progs/pokemon/platform_minios.c:416` | `static void poll_keyboard(void)` |
+| `poll_menu` | function | `progs/pokemon/platform_minios.c:776` | `static void poll_menu(void)` |
+| `push_332_palette` | function | `progs/pokemon/platform_minios.c:455` | `static void push_332_palette(void)` |
+| `px_to_idx` | function | `progs/pokemon/platform_minios.c:956` | `static uint8_t px_to_idx(uint32_t pixel)` |
+| `rebuild_joypad` | function | `progs/pokemon/platform_minios.c:402` | `static void rebuild_joypad(void)` |
+| `sample_apu_voices` | function | `progs/pokemon/platform_minios.c:310` | `static void sample_apu_voices(gb_voice_t *v)` |
+| `sys_gfx_title` | function | `progs/pokemon/platform_minios.c:111` | `static long sys_gfx_title(const char *t)` |
+| `sys_kbd` | function | `progs/pokemon/platform_minios.c:75` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/pokemon/platform_minios.c:99` | `static long sys_kbd_raw(int on)` |
+| `sys_mouse` | function | `progs/pokemon/platform_minios.c:87` | `static long sys_mouse(int *xybw)` |
+| `sys_nk_frame` | function | `progs/pokemon/platform_minios.c:81` | `static long sys_nk_frame(int *origin)` |
+| `sys_palette` | function | `progs/pokemon/platform_minios.c:105` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_pcm2_close` | function | `progs/pokemon/platform_minios.c:135` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/pokemon/platform_minios.c:123` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/pokemon/platform_minios.c:129` | `static long sys_pcm2_write(const void *buf, long len)` |
+| `sys_tone` | function | `progs/pokemon/platform_minios.c:117` | `static long sys_tone(unsigned f)` |
+| `sys_vga_mode` | function | `progs/pokemon/platform_minios.c:93` | `static long sys_vga_mode(int on)` |
+| `ui_fringe_dirty` | function | `progs/pokemon/platform_minios.c:620` | `static bool ui_fringe_dirty(uint32_t now)` |
+| `ui_fringe_sync` | function | `progs/pokemon/platform_minios.c:626` | `static void ui_fringe_sync(uint32_t now)` |
+| `upload_frame` | function | `progs/pokemon/platform_minios.c:975` | `static void upload_frame(const uint32_t *framebuffer)` |
 | `Cbuf_AddText` | function | `progs/quake2generic/q2generic_minios.c:79` | `extern void Cbuf_AddText(char *text);` |
 | `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/quake2generic/q2generic_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
 | `MINIOS_GFX_BUF_GAME` | function | `progs/quake2generic/q2generic_minios.c:5` | `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel

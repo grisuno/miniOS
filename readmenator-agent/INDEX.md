@@ -12,11 +12,11 @@
 | `drivers/driver.c` | driver.c -- Device registry for the Strategy-pattern driver layer. | - | 8 |
 | `drivers/ide.c` | IDE/ATA PIO driver for MiniOS. | - | 19 |
 | `drivers/kbd.c` | ================================================================ | - | 34 |
-| `drivers/mouse.c` | Docstring: PS/2 mouse device driver (drivers/mouse.c). | - | 8 |
+| `drivers/mouse.c` | Docstring: PS/2 mouse device driver (drivers/mouse.c). | - | 7 |
 | `drivers/pcm2.c` | drivers/pcm2.c -- low-latency PCM audio over SB16 single-cycle DMA. | - | 43 |
 | `drivers/pcspk.c` | PC speaker driver with a software master volume. The speaker has no | - | 18 |
 | `drivers/rtc.c` | CMOS RTC time-of-day reader. The desktop clock and the shell `date` builtin | - | 25 |
-| `drivers/sb16.c` | Sound Blaster 16 DMA audio driver. | - | 65 |
+| `drivers/sb16.c` | Sound Blaster 16 DMA audio driver. | - | 64 |
 | `fs/kfile.c` | ================================================================ | fs | 20 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 61 |
 | `fs/ramdisk.c` | ================================================================ | fs | 19 |
@@ -39,7 +39,7 @@
 | `headers/editor.h` | editor.h -- the built-in line editor contract. | headers | 2 |
 | `headers/futex.h` | Docstring: futex.h -- Fast userspace mutex sleep/wake contract. | headers | 17 |
 | `headers/ide.h` | IDE/ATA PIO driver for MiniOS. | headers | 35 |
-| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 314 |
+| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 317 |
 | `headers/kernel/console_in.h` | Docstring: console_in.h -- boundary of the console input device | kernel | 8 |
 | `headers/kernel/vga_cursor.h` | Docstring: vga_cursor.h -- boundary of the pointer sprite layer | kernel | 9 |
 | `headers/ktime.h` | ktime.h -- pure time-conversion helpers shared by the kernel clock | headers | 3 |
@@ -115,7 +115,7 @@
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | - | 9 |
 | `kernel/time.c` | ================================================================ | - | 4 |
 | `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | - | 13 |
-| `kernel/vga_fb.c` | - | - | 166 |
+| `kernel/vga_fb.c` | - | - | 167 |
 | `kernel/vga_fx.c` | DOOM-melt desktop effects (see headers/vga_fx.h for the contract). | - | 8 |
 | `mcp/__init__.py` | - | mcp | 0 |
 | `mcp/mcp_dbg_driver.py` | Debug driver: boot MiniOS through the MCP bridge and run freedom. | mcp | 6 |
@@ -354,7 +354,7 @@
 | `progs/piano/piano.c` | piano.c — a Nuklear piano that plays FM sound through the SB16 driver. | misc | 65 |
 | `progs/pokemon/fetch.sh` | fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstre | pokemon | 0 |
 | `progs/pokemon/minios_stubs/SDL.h` | SDL.h stub for MiniOS cross-compilation | misc | 10 |
-| `progs/pokemon/platform_minios.c` | - | pokemon | 107 |
+| `progs/pokemon/platform_minios.c` | - | pokemon | 111 |
 | `progs/quake2generic/q2generic_minios.c` | q2generic_minios.c - MiniOS platform layer for quake2generic. | quake2generic | 32 |
 | `progs/quake2generic/snddma_minios.c` | snddma_minios.c - Quake 2 DMA sound backend over the MiniOS pcm2 path. | quake2generic | 16 |
 | `progs/src/aes.c` | aes.c - command path AES-256-CTR encryption tools: aes and unaes. | src | 54 |
