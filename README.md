@@ -7,7 +7,7 @@
 [![Download the app](https://img.shields.io/github/v/release/grisuno/miniOS?label=Download%20app&color=2563eb)](https://github.com/grisuno/miniOS/releases/latest)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/grisuno/miniOS)
 
-I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). That same [beacon](https://github.com/grisuno/blacksandbeacon) already had some things that I reused, like AES and the JSON implementation. LZSS comes from [CompressLoader](https://github.com/grisuno/CompressLoader), another tool, and at one point I said, "Can I run this on my kernel?" And well, here we are.
+I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [compiler/linker](https://github.com/grisuno/ld), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). That same [beacon](https://github.com/grisuno/blacksandbeacon) already had some things that I reused, like AES and the JSON implementation. LZSS comes from [CompressLoader](https://github.com/grisuno/CompressLoader), another tool, and at one point I said, "Can I run this on my kernel?" And well, here we are.
 
 <img width="1029" height="829" alt="image" src="https://github.com/user-attachments/assets/c08520bc-60d9-4cc6-b663-eada68b7b20f" />
 
