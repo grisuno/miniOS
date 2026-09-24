@@ -4,11 +4,11 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 ## Suggested
 
-### Q: What does kernel.h depend on, and what depends on it? (55 connections)
+### Q: What does kernel.h depend on, and what depends on it? (60 connections)
 
 - Status: unanswered
 
-### Q: What does string.c depend on, and what depends on it? (66 connections)
+### Q: What does string.c depend on, and what depends on it? (67 connections)
 
 - Status: unanswered
 
@@ -16,7 +16,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: How are the 100 files in 'headers' related to each other?
+### Q: How are the 33 files in 'headers' related to each other?
 
 - Status: unanswered
 

@@ -12,6 +12,9 @@
   - `console_job_try` (function, line 25) `int console_job_try(void);`
   - `console_job_get` (function, line 26) `int console_job_get(void);`
   - `console_ungetc` (function, line 30) `void console_ungetc(unsigned char c);`
+  - `console_stdin_push` (function, line 37) `int console_stdin_push(const char *data, unsigned long len);`
+  - `console_stdin_clear` (function, line 38) `void console_stdin_clear(void);`
+  - `console_stdin_active` (function, line 39) `int console_stdin_active(void);`
   - `CONSOLE_IN_H` (macro, line 2) `#define CONSOLE_IN_H`
 - Depends on: `headers/kernel.h`
 - Imported by: `headers/shell.h`, `kernel/console_in.c`, `kernel/shell.c`

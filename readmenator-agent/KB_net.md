@@ -7,7 +7,7 @@
 - Symbols:
   - `net_arp_entry` (struct, line 69)
   - `net_dns_state` (struct, line 195)
-  - `net_tcp_sock` (struct, line 380)
+  - `net_tcp_sock` (struct, line 382)
   - `net_put16` (function, line 31) `static void net_put16(unsigned char *p, unsigned short v)`
   - `net_put32` (function, line 36) `static void net_put32(unsigned char *p, unsigned int v)`
   - `net_get16` (function, line 43) `static unsigned short net_get16(const unsigned char *p)`
@@ -26,85 +26,95 @@
   - `net_udp_send` (function, line 303) `net_udp_send((const unsigned char[])`
   - `net_icmp_rx` (function, line 322) `static void net_icmp_rx(const unsigned char *ip, unsigned len)`
   - `net_ping` (function, line 351) `static int net_ping(const unsigned char ip[4])`
-  - `net_sock_alloc` (function, line 406) `static struct net_tcp_sock *net_sock_alloc(void)`
-  - `net_sock_index` (function, line 420) `static int net_sock_index(const struct net_tcp_sock *s)`
-  - `net_tcp_checksum` (function, line 429) `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
+  - `net_sock_alloc` (function, line 410) `static struct net_tcp_sock *net_sock_alloc(void)`
+  - `net_sock_index` (function, line 425) `static int net_sock_index(const struct net_tcp_sock *s)`
+  - `net_tcp_checksum` (function, line 434) `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
       ...`
-  - `net_udp_checksum_ok` (function, line 445) `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
+  - `net_udp_checksum_ok` (function, line 450) `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
               ...`
-  - `net_tcp_xmit` (function, line 461) `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
+  - `net_tcp_xmit` (function, line 466) `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
                         const uns...`
-  - `net_tcp_rx` (function, line 492) `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
-  - `net_tcp_connect_into` (function, line 579) `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
+  - `net_tcp_rx` (function, line 500) `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
+  - `net_tcp_passive_open` (function, line 628) `static int net_tcp_passive_open(struct net_tcp_sock *ls,
+        const unsigned char peer[4], uns...`
+  - `net_tcp_connect_into` (function, line 652) `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
               ...`
-  - `net_tcp_send` (function, line 606) `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)`
-  - `net_tcp_recv` (function, line 632) `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)`
-  - `net_tcp_close` (function, line 670) `static void net_tcp_close(struct net_tcp_sock *s)`
-  - `net_rx_handle_frame` (function, line 690) `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
-  - `net_open` (function, line 748) `int net_open(void)`
-  - `net_connect` (function, line 754) `int net_connect(const char *host, unsigned short port)`
-  - `net_send` (function, line 763) `int net_send(int fd, const char *buf, int len)`
-  - `net_recv` (function, line 768) `int net_recv(int fd, char *buf, int len)`
-  - `net_recv_timeout` (function, line 773) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
-  - `net_close` (function, line 778) `void net_close(int fd)`
-  - `net_sys_socket` (function, line 787) `long net_sys_socket(long a1, long a2, long a3)`
-  - `net_sys_connect` (function, line 796) `long net_sys_connect(long fd, long sockaddr, long addrlen)`
-  - `net_sys_sendto` (function, line 809) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
-  - `net_sys_recvfrom` (function, line 819) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
-  - `net_sys_shutdown` (function, line 829) `long net_sys_shutdown(long fd, long how)`
-  - `net_sys_close` (function, line 836) `long net_sys_close(long fd)`
-  - `net_sys_poll` (function, line 843) `long net_sys_poll(long fds, long nfds, long timeout_ms)`
-  - `net_sys_dns` (function, line 880) `long net_sys_dns(long host)`
-  - `net_parse_ip` (function, line 891) `static int net_parse_ip(const char *text, unsigned char ip[4])`
-  - `net_cmd_status` (function, line 916) `void net_cmd_status(void)`
-  - `net_get_addrs` (function, line 933) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])`
-  - `net_cmd_ping` (function, line 939) `void net_cmd_ping(const char *ip_text)`
-  - `net_cmd_dns` (function, line 950) `void net_cmd_dns(const char *host)`
-  - `net_register_symbols` (function, line 963) `void net_register_symbols(void)`
-  - `net_init` (function, line 971) `void net_init(void)`
+  - `net_tcp_send` (function, line 679) `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)`
+  - `net_tcp_recv` (function, line 705) `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)`
+  - `net_tcp_close` (function, line 743) `static void net_tcp_close(struct net_tcp_sock *s)`
+  - `net_rx_handle_frame` (function, line 763) `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
+  - `net_open` (function, line 821) `int net_open(void)`
+  - `net_connect` (function, line 827) `int net_connect(const char *host, unsigned short port)`
+  - `net_send` (function, line 836) `int net_send(int fd, const char *buf, int len)`
+  - `net_recv` (function, line 841) `int net_recv(int fd, char *buf, int len)`
+  - `net_recv_timeout` (function, line 846) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
+  - `net_close` (function, line 851) `void net_close(int fd)`
+  - `net_listen` (function, line 862) `int net_listen(unsigned short port)`
+  - `net_accept_nb` (function, line 877) `int net_accept_nb(int fd)`
+  - `polling` (function, line 894) `* without polling (the peer's ACK arrives through rtl_poll). */
+int net_accept(int fd, unsigned l...`
+  - `net_sock_state` (function, line 911) `int net_sock_state(int fd)`
+  - `net_sys_socket` (function, line 963) `long net_sys_socket(long a1, long a2, long a3)`
+  - `net_sys_connect` (function, line 972) `long net_sys_connect(long fd, long sockaddr, long addrlen)`
+  - `net_sys_bind` (function, line 985) `long net_sys_bind(long fd, long sockaddr, long addrlen)`
+  - `net_sys_listen` (function, line 1000) `long net_sys_listen(long fd, long backlog)`
+  - `net_sys_accept` (function, line 1011) `long net_sys_accept(long fd, long sockaddr, long addrlen)`
+  - `net_sys_sendto` (function, line 1030) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
+  - `net_sys_recvfrom` (function, line 1039) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
+  - `net_sys_shutdown` (function, line 1049) `long net_sys_shutdown(long fd, long how)`
+  - `net_sys_close` (function, line 1056) `long net_sys_close(long fd)`
+  - `net_sys_poll` (function, line 1063) `long net_sys_poll(long fds, long nfds, long timeout_ms)`
+  - `net_sys_dns` (function, line 1100) `long net_sys_dns(long host)`
+  - `net_parse_ip` (function, line 1111) `static int net_parse_ip(const char *text, unsigned char ip[4])`
+  - `net_cmd_status` (function, line 1136) `void net_cmd_status(void)`
+  - `net_get_addrs` (function, line 1153) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])`
+  - `net_cmd_ping` (function, line 1159) `void net_cmd_ping(const char *ip_text)`
+  - `net_cmd_dns` (function, line 1170) `void net_cmd_dns(const char *host)`
+  - `net_register_symbols` (function, line 1183) `void net_register_symbols(void)`
+  - `net_init` (function, line 1191) `void net_init(void)`
   - `NET_TCP_CLOSED` (macro, line 374) `#define NET_TCP_CLOSED`
   - `NET_TCP_SYN_SENT` (macro, line 375) `#define NET_TCP_SYN_SENT`
   - `NET_TCP_ESTABLISHED` (macro, line 376) `#define NET_TCP_ESTABLISHED`
   - `NET_TCP_FIN_SENT` (macro, line 377) `#define NET_TCP_FIN_SENT`
   - `NET_TCP_DEAD` (macro, line 378) `#define NET_TCP_DEAD`
+  - `NET_TCP_LISTEN` (macro, line 379) `#define NET_TCP_LISTEN`
+  - `NET_TCP_SYN_RCVD` (macro, line 380) `#define NET_TCP_SYN_RCVD`
 - Depends on: `headers/kernel.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/tls.h`
 
 ## net/rtl8139.c
 - Layer: utility
 - Language: c
 - Symbols:
-  - `outl_port` (function, line 26) `static void outl_port(unsigned short port, unsigned int val)`
-  - `inl_port` (function, line 30) `static unsigned int inl_port(unsigned short port)`
-  - `rtl_reg8` (function, line 36) `static unsigned char rtl_reg8(unsigned short off)`
-  - `rtl_reg8_w` (function, line 37) `static void rtl_reg8_w(unsigned short off, unsigned char v)`
-  - `rtl_reg16` (function, line 38) `static unsigned short rtl_reg16(unsigned short off)`
-  - `rtl_reg16_w` (function, line 39) `static void rtl_reg16_w(unsigned short off, unsigned short v)`
-  - `rtl_reg32` (function, line 40) `static unsigned int rtl_reg32(unsigned short off)`
-  - `rtl_reg32_w` (function, line 41) `static void rtl_reg32_w(unsigned short off, unsigned int v)`
-  - `pci_read32` (function, line 52) `static unsigned int pci_read32(unsigned bus, unsigned dev, unsigned func, unsigned reg)`
-  - `pci_write32` (function, line 57) `static void pci_write32(unsigned bus, unsigned dev, unsigned func, unsigned reg, unsigned int val)`
-  - `rtl_find` (function, line 62) `static unsigned short rtl_find(void)`
-  - `rtl_rdtsc` (function, line 84) `static unsigned long rtl_rdtsc(void)`
-  - `net_time_init` (function, line 90) `static void net_time_init(void)`
-  - `net_time_ms` (function, line 104) `unsigned long net_time_ms(void)`
-  - `rtl_present` (function, line 120) `int rtl_present(void)`
-  - `rtl_reset` (function, line 124) `static void rtl_reset(void)`
-  - `rtl_init` (function, line 133) `void rtl_init(void)`
-  - `rtl_send` (function, line 164) `int rtl_send(const unsigned char *frame, unsigned len)`
-  - `rtl_get_mac` (function, line 192) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
-  - `rtl_iobase` (function, line 197) `unsigned short rtl_iobase(void)`
-  - `rtl_counters` (function, line 201) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
-  - `rtl_rx_frame_wrapped` (function, line 208) `static void rtl_rx_frame_wrapped(unsigned length)`
-  - `rtl_poll` (function, line 219) `void rtl_poll(void)`
-  - `RTL_REG_CR` (macro, line 43) `#define RTL_REG_CR`
-  - `RTL_REG_TSD0` (macro, line 44) `#define RTL_REG_TSD0`
-  - `RTL_REG_TSAD0` (macro, line 45) `#define RTL_REG_TSAD0`
-  - `RTL_REG_RBSTART` (macro, line 46) `#define RTL_REG_RBSTART`
-  - `RTL_REG_CAPR` (macro, line 47) `#define RTL_REG_CAPR`
-  - `RTL_REG_CBR` (macro, line 48) `#define RTL_REG_CBR`
-  - `RTL_REG_9346CR` (macro, line 49) `#define RTL_REG_9346CR`
-  - `RTL_REG_CONFIG1` (macro, line 50) `#define RTL_REG_CONFIG1`
-- Depends on: `headers/kernel.h`, `headers/net.h`, `headers/net/rtl8139.h`
+  - `outl_port` (function, line 27) `static void outl_port(unsigned short port, unsigned int val)`
+  - `inl_port` (function, line 31) `static unsigned int inl_port(unsigned short port)`
+  - `rtl_reg8` (function, line 37) `static unsigned char rtl_reg8(unsigned short off)`
+  - `rtl_reg8_w` (function, line 38) `static void rtl_reg8_w(unsigned short off, unsigned char v)`
+  - `rtl_reg16` (function, line 39) `static unsigned short rtl_reg16(unsigned short off)`
+  - `rtl_reg16_w` (function, line 40) `static void rtl_reg16_w(unsigned short off, unsigned short v)`
+  - `rtl_reg32` (function, line 41) `static unsigned int rtl_reg32(unsigned short off)`
+  - `rtl_reg32_w` (function, line 42) `static void rtl_reg32_w(unsigned short off, unsigned int v)`
+  - `rtl_find` (function, line 56) `static unsigned short rtl_find(void)`
+  - `rtl_rdtsc` (function, line 77) `static unsigned long rtl_rdtsc(void)`
+  - `net_time_init` (function, line 83) `static void net_time_init(void)`
+  - `net_time_ms` (function, line 97) `unsigned long net_time_ms(void)`
+  - `rtl_present` (function, line 113) `int rtl_present(void)`
+  - `rtl_reset` (function, line 117) `static void rtl_reset(void)`
+  - `rtl_init` (function, line 126) `void rtl_init(void)`
+  - `rtl_send` (function, line 157) `int rtl_send(const unsigned char *frame, unsigned len)`
+  - `rtl_get_mac` (function, line 185) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
+  - `rtl_iobase` (function, line 190) `unsigned short rtl_iobase(void)`
+  - `rtl_counters` (function, line 194) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
+  - `rtl_rx_frame_wrapped` (function, line 201) `static void rtl_rx_frame_wrapped(unsigned length)`
+  - `rtl_poll` (function, line 212) `void rtl_poll(void)`
+  - `RTL_REG_CR` (macro, line 44) `#define RTL_REG_CR`
+  - `RTL_REG_TSD0` (macro, line 45) `#define RTL_REG_TSD0`
+  - `RTL_REG_TSAD0` (macro, line 46) `#define RTL_REG_TSAD0`
+  - `RTL_REG_RBSTART` (macro, line 47) `#define RTL_REG_RBSTART`
+  - `RTL_REG_CAPR` (macro, line 48) `#define RTL_REG_CAPR`
+  - `RTL_REG_CBR` (macro, line 49) `#define RTL_REG_CBR`
+  - `RTL_REG_9346CR` (macro, line 50) `#define RTL_REG_9346CR`
+  - `RTL_REG_CONFIG1` (macro, line 51) `#define RTL_REG_CONFIG1`
+- Depends on: `headers/drivers/pci.h`, `headers/kernel.h`, `headers/net.h`, `headers/net/rtl8139.h`
 
 ## net/tls.c
 - Layer: utility

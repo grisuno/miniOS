@@ -60,3 +60,35 @@
   - `MOUSE_H` (macro, line 2) `#define MOUSE_H`
 - Depends on: `headers/kernel.h`
 - Imported by: `drivers/mouse.c`, `kernel/sched.c`
+
+## headers/drivers/pci.h
+- Layer: infrastructure
+- Doc: Docstring: drivers/pci.h -- PCI configuration-space access.
+- Language: h
+- Symbols:
+  - `pci_cfg_read` (function, line 22) `static inline unsigned pci_cfg_read(unsigned bus, unsigned dev,
+        unsigned func, unsigned r...`
+  - `pci_cfg_write` (function, line 32) `static inline void pci_cfg_write(unsigned bus, unsigned dev,
+        unsigned func, unsigned reg,...`
+  - `pci_find` (function, line 44) `static inline int pci_find(unsigned vendor, unsigned device,
+        unsigned (*inl)(unsigned sho...`
+  - `DRIVERS_PCI_H` (macro, line 11) `#define DRIVERS_PCI_H`
+  - `PCI_CFG_ADDR` (macro, line 13) `#define PCI_CFG_ADDR`
+  - `PCI_CFG_DATA` (macro, line 14) `#define PCI_CFG_DATA`
+  - `PCI_MAX_BUS` (macro, line 15) `#define PCI_MAX_BUS`
+  - `PCI_MAX_DEV` (macro, line 16) `#define PCI_MAX_DEV`
+  - `PCI_MAX_FUNC` (macro, line 17) `#define PCI_MAX_FUNC`
+- Imported by: `drivers/virtio_blk.c`, `net/rtl8139.c`, `tests/test_pci.c`
+
+## headers/drivers/virtio_blk.h
+- Layer: infrastructure
+- Doc: Docstring: drivers/virtio_blk.h -- virtio-blk boundary.
+- Language: h
+- Symbols:
+  - `vblk_init` (function, line 11) `int vblk_init(void);`
+  - `vblk_present` (function, line 12) `int vblk_present(void);`
+  - `vblk_sectors` (function, line 13) `unsigned long vblk_sectors(void);`
+  - `vblk_read_sectors` (function, line 14) `int vblk_read_sectors(unsigned lba, unsigned count, void *buf);`
+  - `vblk_write_sectors` (function, line 15) `int vblk_write_sectors(unsigned lba, unsigned count, const void *buf);`
+  - `DRIVERS_VIRTIO_BLK_H` (macro, line 9) `#define DRIVERS_VIRTIO_BLK_H`
+- Imported by: `drivers/virtio_blk.c`, `kernel/shell.c`

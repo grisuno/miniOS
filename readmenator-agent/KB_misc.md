@@ -1,5 +1,40 @@
 # Subsystem: misc
 
+## boot/uefi_stub.c
+- Layer: testing
+- Doc: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1).
+- Language: c
+- Symbols:
+  - `efi_simple_text_output` (struct, line 55)
+  - `efi_gop` (struct, line 94)
+  - `efi_table_header` (struct, line 39)
+  - `efi_input_key` (struct, line 47)
+  - `efi_pixel_bitmask` (struct, line 68)
+  - `efi_gop_mode_info` (struct, line 75)
+  - `efi_gop_mode` (struct, line 84)
+  - `efi_mem_desc` (struct, line 101)
+  - `efi_boot_services` (struct, line 109)
+  - `efi_system_table` (struct, line 163)
+  - `efi_block_io` (struct, line 232)
+  - `efi_block_media` (struct, line 242)
+  - `u64` (type_alias, line 20) `typedef unsigned long long u64;`
+  - `u32` (type_alias, line 22) `typedef unsigned int u32;`
+  - `u16` (type_alias, line 23) `typedef unsigned short u16;`
+  - `u8` (type_alias, line 24) `typedef unsigned char u8;`
+  - `efi_status` (type_alias, line 25) `typedef u64 efi_status;`
+  - `efi_physical_addr` (type_alias, line 27) `typedef u64 efi_physical_addr;`
+  - `efi_virtual_addr` (type_alias, line 28) `typedef u64 efi_virtual_addr;`
+  - `efi_simple_text_output` (type_alias, line 51) `typedef struct efi_simple_text_output efi_simple_text_output;`
+  - `efi_gop` (type_alias, line 92) `typedef struct efi_gop efi_gop;`
+  - `com1_putc` (function, line 180) `static void com1_putc(char c)`
+  - `puts_both` (function, line 189) `static void puts_both(const char *s)`
+  - `puts_con` (function, line 197) `static void puts_con(const u16 *s)`
+  - `put_u64` (function, line 202) `static void put_u64(u64 v)`
+  - `put_hex` (function, line 219) `static void put_hex(u64 v)`
+  - `efi_main` (function, line 259) `efi_status EFIABI efi_main(efi_handle image, efi_system_table *systab)`
+  - `EFIABI` (macro, line 35) `#define EFIABI`
+  - `EFI_SUCCESS` (macro, line 37) `#define EFI_SUCCESS`
+
 ## headers/arch/x86/boot/bootdefs.h
 - Layer: utility
 - Doc: bootdefs.h - centralized configuration for the MiniOS two-stage boot path.
@@ -148,7 +183,7 @@
   - `CMOS_REG_SECONDS` (macro, line 276) `#define CMOS_REG_SECONDS`
   - `CMOS_REG_MINUTES` (macro, line 277) `#define CMOS_REG_MINUTES`
   - `CMOS_REG_HOURS` (macro, line 278) `#define CMOS_REG_HOURS`
-- Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
+- Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
 
 ## headers/net/rtl8139.h
 - Layer: utility

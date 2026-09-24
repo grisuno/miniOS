@@ -189,6 +189,15 @@
   - `CHECK` (macro, line 23) `#define CHECK(cond, msg)`
 - Depends on: `headers/arch/x86/hal_io.h`
 
+## tests/test_httpd.c
+- Layer: testing
+- Doc: Docstring: Host test for headers/httpd.h (make test-httpd).
+- Language: c
+- Symbols:
+  - `main` (function, line 25) `int main(void)`
+  - `CHECK` (macro, line 18) `#define CHECK(cond, msg)`
+- Depends on: `headers/httpd.h`, `kernel/string.c`
+
 ## tests/test_ktime.c
 - Layer: testing
 - Doc: test_ktime.c -- host test for the pure conversion math in ktime.h
@@ -264,6 +273,29 @@
   - `T_PATH_MAX` (macro, line 26) `#define T_PATH_MAX`
 - Depends on: `kernel/string.c`
 
+## tests/test_panic.c
+- Layer: testing
+- Doc: Docstring: Host test for headers/panic.h (make test-panic).
+- Language: c
+- Symbols:
+  - `always_valid` (function, line 23) `static int always_valid(unsigned long addr)`
+  - `never_valid` (function, line 28) `static int never_valid(unsigned long addr)`
+  - `deny_valid` (function, line 35) `static int deny_valid(unsigned long addr)`
+  - `main` (function, line 39) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+- Depends on: `headers/panic.h`
+
+## tests/test_pci.c
+- Layer: testing
+- Doc: Docstring: Host test for headers/drivers/pci.h (make test-pci).
+- Language: c
+- Symbols:
+  - `fake_outl` (function, line 25) `static void fake_outl(unsigned short port, unsigned val)`
+  - `fake_inl` (function, line 36) `static unsigned fake_inl(unsigned short port)`
+  - `main` (function, line 47) `int main(void)`
+  - `CHECK` (macro, line 15) `#define CHECK(cond, msg)`
+- Depends on: `headers/drivers/pci.h`
+
 ## tests/test_pcm.c
 - Layer: testing
 - Doc: Host-side unit test for the PCM ring buffer (headers/pcm_ring.h).
@@ -288,6 +320,15 @@
   - `main` (function, line 24) `int main(void)`
   - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
 - Depends on: `headers/percpu_rq.h`
+
+## tests/test_pipe.c
+- Layer: testing
+- Doc: Docstring: Host test for headers/pipe.h (make test-pipe).
+- Language: c
+- Symbols:
+  - `main` (function, line 23) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+- Depends on: `headers/pipe.h`
 
 ## tests/test_randmix.c
 - Layer: testing

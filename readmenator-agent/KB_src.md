@@ -113,6 +113,20 @@
   - `fib` (function, line 1) `int fib(int n)`
   - `main` (function, line 6) `int main(void)`
 
+## progs/src/forktest.c
+- Layer: testing
+- Language: c
+- Symbols:
+  - `fx_syscall6` (function, line 13) `static long fx_syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `fx_strlen` (function, line 33) `static unsigned long fx_strlen(const char *s)`
+  - `fx_write` (function, line 39) `static void fx_write(const char *s)`
+  - `fx_exit` (function, line 43) `static void fx_exit(long code)`
+  - `_start` (function, line 48) `void _start(void)`
+  - `SYS_write` (macro, line 26) `#define SYS_write`
+  - `SYS_fork` (macro, line 27) `#define SYS_fork`
+  - `SYS_exit` (macro, line 28) `#define SYS_exit`
+  - `SYS_wait4` (macro, line 29) `#define SYS_wait4`
+
 ## progs/src/fptest.c
 - Layer: testing
 - Doc: fptest.c -- FPU/SSE context-switch probe (Phase 0.1, ADR-0014).

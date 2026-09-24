@@ -1,5 +1,29 @@
 # Subsystem: mm
 
+## kernel/mm/cow.c
+- Layer: utility
+- Doc: Docstring: kernel/mm/cow.c -- Copy-on-write fork support.
+- Language: c
+- Symbols:
+  - `cow_entry_t` (struct, line 45)
+  - `cow_find` (function, line 53) `static int cow_find(unsigned long phys)`
+  - `cow_track` (function, line 62) `static int cow_track(unsigned long phys)`
+  - `cow_walk` (function, line 84) `static void cow_walk(unsigned long cr3, cow_walk_fn fn)`
+  - `cow_fork_one` (function, line 118) `static void cow_fork_one(unsigned long pcr3, unsigned long va,
+        volatile unsigned long *ppte)`
+  - `published` (function, line 148) `* with nothing published (the half-built window is freed). The caller
+ * flushes the parent TLB a...`
+  - `cow_resolve` (function, line 178) `int cow_resolve(unsigned long cr3, unsigned long va)`
+  - `cow_release_window` (function, line 241) `void cow_release_window(unsigned long cr3)`
+  - `cow_shared` (function, line 279) `int cow_shared(void)`
+  - `alternative` (function, line 20) `* window is one instruction wide and the alternative (no CoW) is * documented, so the trade stands. */ #include "kernel.h" #include "bootdefs.h" #include "vga_fb.h" #include "sched.h" #define COW_MAX `
+  - `private` (function, line 80) `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor owns them. */ typedef void (*cow_walk_fn)(unsigned long cr3, unsigned long va, volatile`
+  - `COW_MAX` (macro, line 28) `#define COW_MAX`
+  - `PT_USER_RO` (macro, line 33) `#define PT_USER_RO`
+  - `PT_USER_RW_ENTRY` (macro, line 34) `#define PT_USER_RW_ENTRY`
+  - `PT_PTE_RW` (macro, line 35) `#define PT_PTE_RW`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/kernel.h`, `headers/sched.h`, `headers/vga_fb.h`
+
 ## kernel/mm/paging.c
 - Layer: utility
 - Doc: paging.c - Page table management for the user window and per-process KPTI.
@@ -16,8 +40,8 @@
   - `mt_shared_slot` (function, line 322) `static int mt_shared_slot(unsigned long pd_idx)`
   - `pt_clone_user_empty` (function, line 341) `unsigned long pt_clone_user_empty(void)`
   - `mm_user_ensure_page` (function, line 398) `int mm_user_ensure_page(unsigned long cr3, unsigned long va)`
-  - `mm_copy_user_page` (function, line 426) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)`
-  - `pt_free_user` (function, line 498) `void pt_free_user(uint64_t cr3)`
+  - `mm_copy_user_page` (function, line 429) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)`
+  - `pt_free_user` (function, line 505) `void pt_free_user(uint64_t cr3)`
   - `_kernel_end` (variable, line 47) `extern char _kernel_end[];`
   - `PT_ALLOC_HDR` (macro, line 190) `#define PT_ALLOC_HDR`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/kernel.h`, `headers/vga_fb.h`

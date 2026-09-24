@@ -1,10 +1,10 @@
 # headers
 
-*Community 1 | 11 files | cohesion 0.46*
+*Community 1 | 13 files | cohesion 0.47*
 
 ## Definition
 
-This community groups 11 file(s) rooted at `headers` with dominant language c (cohesion 0.46). Central symbols: `BC_LINE`, `BC_MASK`, `BC_WAYS`, `BLOCK_H`, `BLOCK_SHIFT`, `BLOCK_SIZE`, `DEV_MAX`, `DEV_NAME_LEN`. Core file: `fs/minifs.c` (61 symbols). Documented purpose: Block device layer for MiniFS..
+This community groups 13 file(s) rooted at `headers` with dominant language c (cohesion 0.47). Central symbols: `BC_LINE`, `BC_MASK`, `BC_WAYS`, `BLOCK_H`, `BLOCK_SHIFT`, `BLOCK_SIZE`, `DEV_MAX`, `DEV_NAME_LEN`. Core file: `fs/minifs.c` (61 symbols). Documented purpose: Block device layer for MiniFS..
 
 ## Files
 
@@ -13,11 +13,13 @@ This community groups 11 file(s) rooted at `headers` with dominant language c (c
 | `drivers/block.c` | c | infrastructure | 15 | yes |
 | `drivers/driver.c` | c | infrastructure | 8 | yes |
 | `drivers/ide.c` | c | infrastructure | 19 | yes |
+| `drivers/pcspk.c` | c | infrastructure | 18 | yes |
 | `fs/minifs.c` | c | utility | 61 | yes |
 | `headers/block.h` | h | utility | 12 | yes |
 | `headers/driver.h` | h | infrastructure | 16 | yes |
 | `headers/ide.h` | h | utility | 35 | yes |
 | `headers/lz4_kernel.h` | h | utility | 4 | no |
+| `headers/pcspk.h` | h | utility | 9 | no |
 | `kernel/lz4_kernel.c` | c | utility | 10 | no |
 | `kernel/mm/swap.c` | c | utility | 11 | yes |
 | `tests/test_driver.c` | c | testing | 5 | yes |
@@ -57,16 +59,14 @@ This community groups 11 file(s) rooted at `headers` with dominant language c (c
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 13
-- Cross-boundary resolved imports (EXTRACTED): 15
+- Internal resolved imports (EXTRACTED): 15
+- Cross-boundary resolved imports (EXTRACTED): 17
 
 ## Connections
 
-- [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
-- [EXTRACTED] depends_on community 1 <-> 8 (strength 0.9): Extracted import edge crosses communities: tests/test_driver.c imports kernel/string.c.
-- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 3 (headers).
-- [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 4 (headers).
-- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language c) with no import path between community 1 (headers) and community 5 (headers/drivers).
+- [EXTRACTED] depends_on community 1 <-> 2 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 0 <-> 1 (strength 0.9): Extracted import edge crosses communities: drivers/sb16.c imports headers/driver.h.
+- [EXTRACTED] depends_on community 1 <-> 6 (strength 0.9): Extracted import edge crosses communities: tests/test_driver.c imports kernel/string.c.
 
 ## Risks
 
@@ -74,20 +74,22 @@ This community groups 11 file(s) rooted at `headers` with dominant language c (c
 
 ## Open Questions
 
-- Why do 2 file(s) lack file-level docs (e.g. `headers/lz4_kernel.h`)? What purpose do they serve?
+- Why do 3 file(s) lack file-level docs (e.g. `headers/lz4_kernel.h`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.46?
+- Should headers be split, given cohesion 0.47?
 
 ## Sources
 
 - `drivers/block.c`
 - `drivers/driver.c`
 - `drivers/ide.c`
+- `drivers/pcspk.c`
 - `fs/minifs.c`
 - `headers/block.h`
 - `headers/driver.h`
 - `headers/ide.h`
 - `headers/lz4_kernel.h`
+- `headers/pcspk.h`
 - `kernel/lz4_kernel.c`
 - `kernel/mm/swap.c`
 - `tests/test_driver.c`

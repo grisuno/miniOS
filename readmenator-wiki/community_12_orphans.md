@@ -1,10 +1,10 @@
 # orphans
 
-*Community 12 | 85 files | cohesion 0.00*
+*Community 12 | 87 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 85 file(s) rooted at `tools` with dominant language py (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Mutation testing for the MiniOS MCP bridge. Every mutant is injected into a private copy of minios_mcp.py and run against the unit and BDD suite. A mutant that .
+This community groups 87 file(s) rooted at `tools` with dominant language py (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
@@ -15,7 +15,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 | `tools/boot_run.sh` | sh | utility | 0 | yes |
 | `tools/check_abi_numbers.py` | py | utility | 4 | yes |
 
-### `progs/src` (22 files)
+### `progs/src` (23 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -47,7 +47,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `arch/x86/ctx_sw.S` | S | utility | 6 | no |
+| `arch/x86/ctx_sw.S` | S | utility | 7 | no |
 | `arch/x86/isr_stubs.S` | S | testing | 24 | no |
 
 ### `progs/micropython/variants/minios` (2 files)
@@ -55,7 +55,6 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/micropython/variants/minios/manifest.py` | py | utility | 0 | yes |
-| `progs/micropython/variants/minios/mpconfigvariant.h` | h | infrastructure | 38 | no |
 
 ### `tests` (2 files)
 
@@ -68,6 +67,12 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `bootloader.c` | c | utility | 2 | no |
+
+### `boot` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `boot/uefi_stub.c` | c | testing | 29 | yes |
 
 ### `kernel` (1 files)
 
@@ -93,7 +98,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 65 more files in this community.*
+*... and 67 more files in this community.*
 
 
 ## Key Symbols
@@ -102,8 +107,9 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 - `switch_to` (function, `arch/x86/ctx_sw.S:53`)
 - `switch_to_notrap` (function, `arch/x86/ctx_sw.S:96`)
 - `user_trampoline` (function, `arch/x86/ctx_sw.S:185`)
-- `resume_iretq` (function, `arch/x86/ctx_sw.S:198`)
-- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:238`)
+- `fork_trampoline` (function, `arch/x86/ctx_sw.S:197`)
+- `resume_iretq` (function, `arch/x86/ctx_sw.S:211`)
+- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:251`)
 - `tf_rax` (function, `arch/x86/isr_stubs.S:67`)
 - `tf_rbx` (function, `arch/x86/isr_stubs.S:68`)
 - `tf_rcx` (function, `arch/x86/isr_stubs.S:69`)
@@ -127,7 +133,6 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 - `tf_vector` (function, `arch/x86/isr_stubs.S:87`)
 - `tf_errcode` (function, `arch/x86/isr_stubs.S:88`)
 - `isr_common` (function, `arch/x86/isr_stubs.S:96`)
-- `isr_stub_table` (function, `arch/x86/isr_stubs.S:195`)
 
 ## Internal vs External Edges
 
@@ -136,7 +141,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 12 (orphans).
+- No cross-community bridges recorded. This community is self-contained.
 
 ## Risks
 
@@ -144,7 +149,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 
 ## Open Questions
 
-- Why do 30 file(s) lack file-level docs (e.g. `arch/x86/ctx_sw.S`)? What purpose do they serve?
+- Why do 31 file(s) lack file-level docs (e.g. `arch/x86/ctx_sw.S`)? What purpose do they serve?
 - What would break if the most connected file in orphans changed?
 - Should orphans be split, given cohesion 0.00?
 
@@ -152,6 +157,7 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 
 - `arch/x86/ctx_sw.S`
 - `arch/x86/isr_stubs.S`
+- `boot/uefi_stub.c`
 - `bootloader.c`
 - `kernel/cvm_host.c`
 - `mcp/__init__.py`
@@ -169,5 +175,4 @@ This community groups 85 file(s) rooted at `tools` with dominant language py (co
 - `progs/asm/w1.s`
 - `progs/doomgeneric/doom.h`
 - `progs/doomgeneric/icon.c`
-- `progs/doomgeneric/m_random.c`
-- *... and 65 more*
+- *... and 67 more*

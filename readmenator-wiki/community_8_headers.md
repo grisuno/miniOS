@@ -1,6 +1,6 @@
 # headers
 
-*Community 6 | 3 files | cohesion 0.67*
+*Community 8 | 3 files | cohesion 0.67*
 
 ## Definition
 
@@ -52,7 +52,7 @@ This community groups 3 file(s) rooted at `headers` with dominant language c (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 6 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
+- [EXTRACTED] depends_on community 0 <-> 8 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
 
 ## Risks
 

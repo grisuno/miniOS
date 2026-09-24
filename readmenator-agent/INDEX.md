@@ -5,8 +5,9 @@
 | `arch/x86/ap_entry.S` | ap_entry.S - SMP application-processor bootstrap stub. | - | 9 |
 | `arch/x86/boot/stage1.S` | stage1.S - MiniOS boot sector. | boot | 11 |
 | `arch/x86/boot/stage2.S` | stage2.S - MiniOS second-stage loader. | boot | 40 |
-| `arch/x86/ctx_sw.S` | - | - | 6 |
+| `arch/x86/ctx_sw.S` | - | - | 7 |
 | `arch/x86/isr_stubs.S` | - | - | 24 |
+| `boot/uefi_stub.c` | Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1). | misc | 29 |
 | `bootloader.c` | - | root | 2 |
 | `drivers/block.c` | Block device layer for MiniFS. | - | 15 |
 | `drivers/driver.c` | driver.c -- Device registry for the Strategy-pattern driver layer. | - | 8 |
@@ -17,10 +18,11 @@
 | `drivers/pcspk.c` | PC speaker driver with a software master volume. The speaker has no | - | 18 |
 | `drivers/rtc.c` | CMOS RTC time-of-day reader. The desktop clock and the shell `date` builtin | - | 25 |
 | `drivers/sb16.c` | Sound Blaster 16 DMA audio driver. | - | 64 |
-| `fs/kfile.c` | ================================================================ | fs | 20 |
+| `drivers/virtio_blk.c` | Docstring: drivers/virtio_blk.c -- Polled legacy virtio-blk driver. | - | 35 |
+| `fs/kfile.c` | ================================================================ | fs | 23 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 61 |
 | `fs/ramdisk.c` | ================================================================ | fs | 19 |
-| `fs/vfs.c` | ================================================================ | fs | 30 |
+| `fs/vfs.c` | ================================================================ | fs | 41 |
 | `fs/zip.c` | zip.c — the unzip/zip shell builtins over the miniz zip library. | fs | 10 |
 | `headers/abi.h` | Docstring: abi.h -- Boot-time ABI manifest gate contract. | headers | 10 |
 | `headers/ap_stub.h` | generated from ap_stub.bin - do not edit | headers | 0 |
@@ -36,29 +38,34 @@
 | `headers/drivers/kbd.h` | Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled from the | drivers | 23 |
 | `headers/drivers/modifiers.h` | Docstring: Unified modifier tracking for cooked and raw paths. | drivers | 11 |
 | `headers/drivers/mouse.h` | Docstring: mouse.h -- boundary of the PS/2 mouse device driver | drivers | 4 |
+| `headers/drivers/pci.h` | Docstring: drivers/pci.h -- PCI configuration-space access. | drivers | 9 |
+| `headers/drivers/virtio_blk.h` | Docstring: drivers/virtio_blk.h -- virtio-blk boundary. | drivers | 6 |
 | `headers/editor.h` | editor.h -- the built-in line editor contract. | headers | 2 |
 | `headers/futex.h` | Docstring: futex.h -- Fast userspace mutex sleep/wake contract. | headers | 17 |
+| `headers/httpd.h` | Docstring: httpd.h -- Minimal static HTTP/1.0 server contract. | headers | 10 |
 | `headers/ide.h` | IDE/ATA PIO driver for MiniOS. | headers | 35 |
-| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 317 |
-| `headers/kernel/console_in.h` | Docstring: console_in.h -- boundary of the console input device | kernel | 8 |
+| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 339 |
+| `headers/kernel/console_in.h` | Docstring: console_in.h -- boundary of the console input device | kernel | 11 |
 | `headers/kernel/vga_cursor.h` | Docstring: vga_cursor.h -- boundary of the pointer sprite layer | kernel | 9 |
 | `headers/ktime.h` | ktime.h -- pure time-conversion helpers shared by the kernel clock | headers | 3 |
 | `headers/lz4_kernel.h` | - | headers | 4 |
 | `headers/minifetch.h` | Docstring: minifetch.h -- neofetch-style system screen contract. | headers | 2 |
 | `headers/minifs.h` | MiniFS: a minimal Unix-like filesystem for MiniOS. | headers | 76 |
-| `headers/net.h` | ========== Fixed slirp configuration (QEMU -nic user) ========== | headers | 59 |
+| `headers/net.h` | ========== Fixed slirp configuration (QEMU -nic user) ========== | headers | 69 |
 | `headers/net/rtl8139.h` | - | misc | 8 |
+| `headers/panic.h` | Docstring: panic.h -- Kernel panic backtrace contract (header-only). | headers | 3 |
 | `headers/pcm2.h` | pcm2.h -- low-latency PCM audio path over SB16 single-cycle DMA. | headers | 21 |
 | `headers/pcm_ring.h` | pcm_ring.h -- single-producer/single-consumer byte ring for PCM audio. | headers | 7 |
 | `headers/pcspk.h` | - | headers | 9 |
 | `headers/percpu_rq.h` | Docstring: percpu_rq.h -- Per-CPU runqueues with work stealing. | headers | 14 |
+| `headers/pipe.h` | Docstring: pipe.h -- Kernel pipe ring contract (header-only). | headers | 15 |
 | `headers/qga.h` | ========== QEMU guest agent channel (COM2, ISA 16550) ========== | headers | 29 |
 | `headers/randmix.h` | randmix.h -- entropy mixer for getrandom (318). | headers | 2 |
 | `headers/rcu.h` | Docstring: rcu.h -- Read-copy-update, lite epoch edition. | headers | 17 |
 | `headers/rtc.h` | - | headers | 6 |
 | `headers/sanitize.h` | Docstring: sanitize.h -- Single choke point for syscall argument checks. | headers | 5 |
 | `headers/sb16.h` | Sound Blaster 16 DMA audio driver contract. | headers | 28 |
-| `headers/sched.h` | ---- Process states ---- | headers | 101 |
+| `headers/sched.h` | ---- Process states ---- | headers | 102 |
 | `headers/shell.h` | shell.h -- shared shell constants and the line reader/parser reused by | headers | 7 |
 | `headers/smp.h` | SMP bring-up: wake the application processors (APs) via the LAPIC INIT/SIPI | headers | 11 |
 | `headers/spawn.h` | Docstring: Scalar shared-window view saved across a child run. | headers | 9 |
@@ -85,8 +92,9 @@
 | `kernel.c` | kernel.c -- Mediator: boot orchestration and the syscall trampoline. | root | 20 |
 | `kernel/abi.c` | Docstring: kernel/abi.c -- Boot-time ABI manifest gate. | - | 3 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | - | 1 |
+| `kernel/clip.c` | Docstring: kernel/clip.c -- Shared text clipboard. | - | 4 |
 | `kernel/console.c` | console.c -- Execution-context output: text console, capture, libc names. | - | 24 |
-| `kernel/console_in.c` | Docstring: Console input device (kernel/console_in.c). | - | 26 |
+| `kernel/console_in.c` | Docstring: Console input device (kernel/console_in.c). | - | 29 |
 | `kernel/cvm_host.c` | - | - | 45 |
 | `kernel/editor.c` | ================================================================ | - | 22 |
 | `kernel/exec.c` | exec.c - Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | - | 10 |
@@ -96,21 +104,23 @@
 | `kernel/lz4_kernel.c` | - | - | 10 |
 | `kernel/minifetch.c` | Docstring: kernel/minifetch.c -- neofetch-style system screen. | - | 6 |
 | `kernel/mm.c` | ================================================================ | - | 6 |
+| `kernel/mm/cow.c` | Docstring: kernel/mm/cow.c -- Copy-on-write fork support. | mm | 15 |
 | `kernel/mm/paging.c` | paging.c - Page table management for the user window and per-process KPTI. | mm | 14 |
 | `kernel/mm/swap.c` | swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap). | mm | 11 |
+| `kernel/panic.c` | Docstring: kernel/panic.c -- Kernel panic screen. | - | 4 |
 | `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | - | 9 |
 | `kernel/printf.c` | ================================================================ | - | 10 |
 | `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | - | 14 |
 | `kernel/redirect.c` | ================================================================ | - | 3 |
-| `kernel/sched.c` | - | - | 93 |
+| `kernel/sched.c` | - | - | 97 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | - | 8 |
 | `kernel/serial.c` | serial.c -- COM1 16550 UART driver. | - | 9 |
-| `kernel/shell.c` | ================================================================ | - | 80 |
+| `kernel/shell.c` | ================================================================ | - | 90 |
 | `kernel/spawn.c` | Docstring: Save the caller shared-window view into ctx. | - | 9 |
 | `kernel/string.c` | string.c -- Kernel string and memory functions. | - | 13 |
 | `kernel/symtab.c` | ================================================================ | - | 7 |
 | `kernel/sync.c` | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | - | 26 |
-| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | - | 113 |
+| `kernel/syscalls.c` | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | - | 124 |
 | `kernel/syscalls_proc.c` | syscalls_proc.c - Process-management syscall handlers. | - | 14 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | - | 9 |
 | `kernel/time.c` | ================================================================ | - | 4 |
@@ -124,8 +134,8 @@
 | `mcp/minios_mcp.py` | MiniOS MCP bridge.  Exposes a running MiniOS instance as tools over the MCP stdi | mcp | 50 |
 | `mcp/mutate_mcp.sh` | Mutation testing for the MiniOS MCP bridge. Every mutant is injected into a priv | mcp | 1 |
 | `mcp/test_minios_mcp.py` | Unit and BDD suite for the MiniOS MCP bridge.  Unit tests exercise protocol disp | mcp | 104 |
-| `net/net.c` | MiniOS network stack: rtl8139 under QEMU slirp user networking. | net | 56 |
-| `net/rtl8139.c` | - | net | 31 |
+| `net/net.c` | MiniOS network stack: rtl8139 under QEMU slirp user networking. | net | 66 |
+| `net/rtl8139.c` | - | net | 29 |
 | `net/tls.c` | tls.c - TLS 1.2 client sessions for MiniOS. | net | 27 |
 | `net/tls_crypto.c` | tls_crypto.c - the crypto behind the kernel TLS 1.2 client. | net | 78 |
 | `net/tls_x509.c` | tls_x509.c - minimal X.509 DER parsing and chain verification. | net | 23 |
@@ -339,7 +349,7 @@
 | `progs/micropython/variants/minios/minios_module.c` | - | minios | 21 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 |
 | `progs/minicraft/minicraft.c` | minicraft.c - Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 237 |
-| `progs/minios_abi.h` | minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI. | progs | 138 |
+| `progs/minios_abi.h` | minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI. | progs | 141 |
 | `progs/minios_png.h` | Docstring: shared ring-3 PNG helpers for MiniOS apps (progs/minios_png.h). | progs | 21 |
 | `progs/nk_palette.h` | nk_palette.h - one shared hybrid palette for every NK-window app. | progs | 9 |
 | `progs/nuklear/cvm_emit.c` | cvm_emit.c — node-graph to CVM bytecode compiler. | nuklear | 56 |
@@ -362,6 +372,7 @@
 | `progs/src/cp.c` | - | src | 8 |
 | `progs/src/cpl.c` | Ring-3 privilege probe. Reads the CS selector at runtime and exits with | src | 3 |
 | `progs/src/fib.c` | - | src | 2 |
+| `progs/src/forktest.c` | - | src | 9 |
 | `progs/src/fptest.c` | fptest.c -- FPU/SSE context-switch probe (Phase 0.1, ADR-0014). | src | 9 |
 | `progs/src/freedom.c` | freedom - a headless text browser for MiniOS. | src | 61 |
 | `progs/src/freedom_wl.c` | freedom_wl - Wayland to MiniOS intermediate layer for FreeDom. | src | 62 |
@@ -395,7 +406,7 @@
 | `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 130 |
 | `progs/wl/wl_client.h` | wl_client.h - Thin mailbox client for Wayland-mini (ADR-0026). | wl | 5 |
 | `progs/wl/wl_mbox.h` | wl_mbox.h - Mailbox file transport for Wayland-mini (ADR-0026). | wl | 26 |
-| `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 104 |
+| `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 110 |
 | `progs/wl/wl_pixbuf.h` | Docstring: heap pixel store for the Wayland-mini server. | wl | 18 |
 | `progs/wl/wlcomp.c` | wlcomp - Wayland-mini ring-3 compositor (ADR-0024, ADR-0026). | wl | 45 |
 | `qga.c` | MiniOS QEMU guest agent (QGA). | root | 27 |
@@ -413,13 +424,17 @@
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 6 |
 | `tests/test_fx.c` | Docstring: Host test for headers/vga_fx.h (make test-fx). | tests | 2 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 3 |
+| `tests/test_httpd.c` | Docstring: Host test for headers/httpd.h (make test-httpd). | tests | 2 |
 | `tests/test_ktime.c` | test_ktime.c -- host test for the pure conversion math in ktime.h | tests | 2 |
 | `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 10 |
 | `tests/test_modifiers.c` | - | tests | 2 |
 | `tests/test_notify.c` | - | tests | 3 |
 | `tests/test_paint.c` | Docstring: host test for the paint canvas/PNG contract (make test-paint). | tests | 21 |
+| `tests/test_panic.c` | Docstring: Host test for headers/panic.h (make test-panic). | tests | 5 |
+| `tests/test_pci.c` | Docstring: Host test for headers/drivers/pci.h (make test-pci). | tests | 4 |
 | `tests/test_pcm.c` | Host-side unit test for the PCM ring buffer (headers/pcm_ring.h). | tests | 9 |
 | `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 2 |
+| `tests/test_pipe.c` | Docstring: Host test for headers/pipe.h (make test-pipe). | tests | 2 |
 | `tests/test_randmix.c` | test_randmix.c -- host test for the getrandom mixer in randmix.h | tests | 3 |
 | `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 4 |
 | `tests/test_rtc.c` | test_rtc.c -- host test for the pure date math in drivers/rtc.c | tests | 2 |
@@ -440,7 +455,7 @@
 | `tools/check_addons.py` | check_addons.py -- validate the MiniOS addon marketplace index.  Loads every add | tools | 2 |
 | `tools/check_cohesion.py` | check_cohesion.py -- Architectural cohesion gate for MiniOS CI.  Parses the CPG  | tools | 4 |
 | `tools/check_complexity.py` | check_complexity.py -- Kernel complexity gate for MiniOS CI.  Validates that ker | tools | 3 |
-| `tools/check_fork_stubs.py` | Fail-closed stub gate for unimplemented process syscalls.  fork, vfork and execv | tools | 4 |
+| `tools/check_fork_stubs.py` | Fail-closed stub gate for unimplemented process syscalls.  vfork and execve have | tools | 4 |
 | `tools/check_kb_sync.py` | check_kb_sync.py -- Verify KNOWLEDGE_BASE.md is in sync with code.  Runs readmen | tools | 2 |
 | `tools/check_mutant_anchors.py` | Verify every mutate.sh mutant anchor matches its target file.  A mutant whose se | tools | 5 |
 | `tools/check_surprising.py` | check_surprising.py -- Detect surprising architectural connections.  Parses the  | tools | 5 |
@@ -472,7 +487,7 @@
 | `tools/qga_client.py` | Minimal QEMU guest agent client for MiniOS.  Connects to the guest agent socket  | tools | 4 |
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the | tools | 3 |
 | `tools/repro_gui.py` | repro_gui.py — reproduce the VGA/mouse state bug after ring-3 programs.  Boots M | tools | 10 |
-| `tools/test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | tools | 11 |
+| `tools/test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the | tools | 12 |
 | `tools/test_call_align.py` | test_call_align.py - verify stack alignment at call sites, both parities.  Compi | tools | 4 |
 | `tools/test_codecs.sh` | test_codecs.sh -- exercise the lzss/lz4/aes command-pair tools inside the OS.  T | tools | 0 |
 | `tools/test_gui_fashion.py` | test_gui_fashion.py -- GUI proof for the cursor/flicker/quit fixes.  Boots the r | tools | 18 |
