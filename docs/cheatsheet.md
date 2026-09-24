@@ -23,6 +23,13 @@ the guest the prompt is `miniOS>`; in the editor it is `edit>`.
 | `load <file>` | load an ELF (`.o` relocatable or Linux executable) |
 | `sh <script.sh>` | run a shell script file |
 | `cmd > file` / `cmd >> file` | redirect output (truncate / append); exit codes stay on console |
+| `cmd 2> file` | same capture (MiniOS merges stdout/stderr at the console) |
+| `a \| b [\| c]` | pipe stdout of each stage into stdin of the next (sequential capture); bare `cat` copies stdin |
+| `panic` | paint the kernel panic screen (vector/RIP/RSP/backtrace), demo without halting |
+| `mount [prefix driver]` / `unmount <prefix>` / `vfstest` | list, add/drop (ramdisk/minifs/mem) and prove VFS mounts; busy refuses, `/` pinned |
+| `httpd [--once] <port> [root]` / `httpd --selftest` | static file server over server TCP (GET, any VFS root) / headless handshake proof |
+| `clip [text\|clear]` | shared text clipboard: publish, print, empty (4096 byte cap, never truncates) |
+| `vblk` | virtio-blk probe: LBA 0 boot signature + MiniFS superblock off the virtio queue |
 | `ps` | list live processes (pid/ppid/state) |
 | `smp` | per-CPU state, dispatches, runqueue hits/steals/drops |
 | `net` | NIC status (MAC, IP, counters); `net ping <ip>` sends one ICMP echo |
@@ -30,7 +37,7 @@ the guest the prompt is `miniOS>`; in the editor it is `edit>`.
 | `strace <cmd> [args]` | run one command with verbose syscall tracing, then restore mode |
 | `ltrace <cmd> [args]` | no-PLT proxy: allocator-trap view (`brk/mmap/mprotect/open/close`) |
 | `vmmap [pid]` | user-window map (text/brk/mmap/bufs/stack) + live VMA tree |
-| `schedtop` | uptime, per-CPU cur, one row per proc (state/nice/vruntime/ticks) |
+| `schedtop` | uptime, per-CPU cur, one row per thread (tgid group, T/P flag, state/nice/vruntime/ticks) |
 | `irqstat` | ISR arrivals: timer/kbd/mouse/sb16 + net/sb16 queues + gfx frames |
 | `bootlog` | timestamped boot phases in ms since power-on |
 | `gdb regs [pid]` / `gdb dump <a> <l>` / `gdb qemu` | in-OS inspector (LIVE regs for running pid; decimal/`0x` addr; 1..256 bytes) / remote-GDB hookup |

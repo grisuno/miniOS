@@ -39,6 +39,13 @@ las superficies son estado dentro del compositor y ningun byte shm
 cruza procesos todavia. Fase posterior: `AF_UNIX` real si el kernel
 lo gana.
 
+Shared clipboard: object `WL_ID_CLIPBOARD` with `WL_OP_CLIPBOARD_SET`
+(publish) and `WL_OP_CLIPBOARD_GET` (fetch), bounded by `WL_CLIP_MAX`
+4096 bytes through `wl_clip_encode/decode` (fail-closed on oversize,
+truncation and liar sizes, same discipline as attach/commit). The
+kernel slot behind syscalls 249/250 and the shell `clip` builtin speak
+the same bounds. Terminal selection and vedit paste on top are Phase 2.
+
 ## Compositor
 
 `bin/wlcomp` ring-3 (no kernel): posee N<=8 superficies, z-order por

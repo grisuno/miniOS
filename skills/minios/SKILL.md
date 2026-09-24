@@ -21,7 +21,10 @@ minios_status        {booted, pid, log_bytes}
 Everything else goes through the shell. `minios_send` sends ONE line, waits
 for the next `miniOS> ` prompt and returns everything the kernel printed in
 between, including `exit code: N`. Never send a multi-line command; use one
-`minios_send` per line.
+`minios_send` per line. Pipelines work (`ls | cat`, `echo hi | cat`), `2>`
+captures like `>`, and `panic`/`mount`/`vfstest`/`httpd --selftest`/`clip`/
+`vblk`/`mrun bin/forktest.elf` exercise the newer kernel contracts
+headlessly.
 
 For an assertion-style check, use `minios_test`: it sends a list of shell
 commands and asserts which markers appear (and which do not), returning a

@@ -23,6 +23,7 @@ on screen instead of printing a forged number.
 | `irqstat` | interrupt arrivals | is the hardware talking, is the guest keeping up? |
 | `bootlog` | boot phases with ms | where did boot time go? |
 | `gdb` | contexts, memory, remote hookup | what is the value RIGHT NOW? |
+| `panic` | fault vector/RIP/RSP/backtrace on screen | what killed the machine, with no serial? |
 | `ps` / `jobs` | processes / shell children | what exists, what finished? |
 | `kstack` | kernel-stack high water + canary | did a stack overflow? |
 | `smp` / `sb16` / `net` / `gfx` | subsystem status | per-domain health |
@@ -93,8 +94,8 @@ stack, 128 regions, then `truncated`).
 miniOS> schedtop
 schedtop: up 4s ticks 448 cpus 1
   cpu0 cur=0 dispatched=0 polls=0
-  pid  ppid state nice vruntime ticks name
-  0    -1   run   0    0        0     kernel
+  pid  tgid T/P ppid state nice vruntime ticks name
+  0    0    P   -1   run   0    0        0     kernel
 miniOS> irqstat
 irqstat: timer=463 kbd=1 mouse=13 sb16=0 bad_gs=0
 irqstat: net tx=0 rx=0 drop=0 sb16 sub=0 drop=0 gfx=0
@@ -137,6 +138,19 @@ gdb: 0x400000: 7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00
   the prompt for every byte. Real breakpoints/single-step:
   `make gdb`, host `target remote :1234` +
   `add-symbol-file kernel.elf 0x100000` (ring-3 ELF: base `0x400000`).
+
+### panic (screen half)
+
+```
+miniOS> panic
+panic: vector=00 err=00000000 rip=000000000010f6ff rsp=000000000008f280 bt= 0000000000112188 00000000001001d2
+```
+
+- Unrecoverable faults paint the same screen from the fault handler
+  (vector/err/RIP/RSP plus up to five frame-pointer returns) on the
+  framebuffer terminal, raw VGA text, or serial-only under a graphics
+  mode, then halt. Recovering ring-3 faults and killed threads never
+  reach it. `panic` demos the screen without halting.
 
 ## MCP bridge (agent-driven debugging)
 

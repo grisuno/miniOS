@@ -1,4 +1,4 @@
-# MiniOS ABI — Programmer's Manual (v4)
+# MiniOS ABI — Programmer's Manual (v9)
 
 Target: ring-3 `ET_EXEC`/`ET_DYN` programs (static, `-no-pie`).
 Single source of truth: `progs/minios_abi.h`.
@@ -33,6 +33,18 @@ Linux 0-199 passthrough; MiniOS 200-299 custom. New in v4:
 | 239 | `NICE` | `value, set?` | `-20..19`, default 0; fair-share weight |
 | 240 | `RLIMIT` | `op, res, val` | cgroups-lite: 1=AS bytes, 2=CPU ticks, 3=NOFILE; op 1=SET 2=GET; 0=unlimited; CPU overrun kills with 137 |
 
+New in v9 (pipes, server TCP, fork, clipboard):
+
+| # | Name | Args | Notes |
+|---|---|---|---|
+| 22/32/33 | `pipe`/`dup`/`dup2` | Linux layout | KFILE pipes: empty+open reads `-EAGAIN`, drained+closed reads EOF; `dup2` targets 0..31 incl. stdio |
+| 43/49/50 | `accept`/`bind`/`listen` | Linux `sockaddr_in` | server TCP beside the client machine; single backlog slot; `accept` waits up to `NET_ACCEPT_TMO_MS` |
+| 57 | `fork` | — | copy-on-write clone of isolated processes; child resumes at the trapped return with 0; legacy pid 0 and `CLONE_VM` threads get `-ENOSYS` |
+| 249/250 | `CLIP_SET`/`CLIP_GET` | `data, len` / `buf, cap` | shared text clipboard, 4096 bytes; set refuses past cap, get refuses empty/undersize, never truncates |
+
+243-245 stay reserved for Wayland-mini (`WL_ATTACH`/`WL_COMMIT`/`WL_INPUT`)
+and out of the checksum until the kernel answers them.
+
 Example (generic present):
 
 ```c
@@ -48,7 +60,7 @@ syscall(239, 10, 1, 0, 0, 0, 0);
 
 ## Versioning
 
-`MINIOS_ABI_VERSION` bumps on incompatible change (now 7).
+`MINIOS_ABI_VERSION` bumps on incompatible change (now 9).
 `MINIOS_ABI_CHECKSUM` XOR-folds layout + new numbers; loader rejects mismatch
 with `-EABI_MISMATCH`.
 

@@ -12,7 +12,7 @@
 **Total Files Parsed:** 501 | **Total Symbols Extracted:** 10161 | **Total Imports:** 1880
  | **Resolved Imports:** 1270
 
-<!-- ranking_model: v1.0 | weights: {ppr:0.45,auth:0.2,test:0.15,doc:0.1,fresh:0.1} | alpha:0.85 | commit:fcb0634 | date:2026-07-18 -->
+<!-- ranking_model: v1.0 | weights: {ppr:0.45,auth:0.2,test:0.15,doc:0.1,fresh:0.1} | alpha:0.85 | commit:1d66811 | date:2026-07-18 -->
 
 
 ## Table of Contents
@@ -199,7 +199,7 @@ Files ranked by composite score for the current query context. The ranking combi
 | 9 | `kernel_feature_survey.py` | 0.1125 | 0.0000 | 0.0000 | 0.00 | 1.12 |
 | 10 | `spawn.c` | 0.1113 | 0.0000 | 0.0011 | 0.00 | 1.11 |
 
-**Query anchors:** progs/file/file.c, progs/pokemon/platform_minios.c, progs/nuklear/nuklear_minios.c, progs/paint/paint.c
+**Query anchors:** progs/paint/paint.c, progs/file/file.c, progs/pokemon/platform_minios.c, progs/nuklear/nuklear_minios.c
 
 ---
 
@@ -442,42 +442,42 @@ Taint analysis traces how dangerous imports propagate through the codebase via t
   Path: mcp_dbg_driver.py
 - `mcp_dbg_driver.py` imports `subprocess` (1 hop to `time.c`) [high]
   Path: mcp_dbg_driver.py -> time.c
-- `mcp_dbg_driver.py` imports `subprocess` (2 hops to `ktime.h`) [high]
-  Path: mcp_dbg_driver.py -> time.c -> ktime.h
 - `mcp_dbg_driver.py` imports `subprocess` (2 hops to `kernel.h`) [high]
   Path: mcp_dbg_driver.py -> time.c -> kernel.h
+- `mcp_dbg_driver.py` imports `subprocess` (2 hops to `ktime.h`) [high]
+  Path: mcp_dbg_driver.py -> time.c -> ktime.h
+- `mcp_dbg_driver.py` imports `subprocess` (3 hops to `spinlock.h`) [high]
+  Path: mcp_dbg_driver.py -> time.c -> kernel.h -> spinlock.h
 - `mcp_dbg_driver.py` imports `subprocess` (3 hops to `vma.h`) [high]
   Path: mcp_dbg_driver.py -> time.c -> kernel.h -> vma.h
 - `mcp_dbg_driver.py` imports `subprocess` (3 hops to `pipe.h`) [high]
   Path: mcp_dbg_driver.py -> time.c -> kernel.h -> pipe.h
-- `mcp_dbg_driver.py` imports `subprocess` (3 hops to `spinlock.h`) [high]
-  Path: mcp_dbg_driver.py -> time.c -> kernel.h -> spinlock.h
 - `mcp_dbg_driver.py` imports `subprocess` (3 hops to `minios_abi.h`) [high]
   Path: mcp_dbg_driver.py -> time.c -> kernel.h -> minios_abi.h
 - `mcp_dogfood.py` imports `subprocess` (0 hop to `mcp_dogfood.py`) [high]
   Path: mcp_dogfood.py
 - `mcp_dogfood.py` imports `subprocess` (1 hop to `time.c`) [high]
   Path: mcp_dogfood.py -> time.c
-- `mcp_dogfood.py` imports `subprocess` (2 hops to `ktime.h`) [high]
-  Path: mcp_dogfood.py -> time.c -> ktime.h
 - `mcp_dogfood.py` imports `subprocess` (2 hops to `kernel.h`) [high]
   Path: mcp_dogfood.py -> time.c -> kernel.h
+- `mcp_dogfood.py` imports `subprocess` (2 hops to `ktime.h`) [high]
+  Path: mcp_dogfood.py -> time.c -> ktime.h
+- `mcp_dogfood.py` imports `subprocess` (3 hops to `spinlock.h`) [high]
+  Path: mcp_dogfood.py -> time.c -> kernel.h -> spinlock.h
 - `mcp_dogfood.py` imports `subprocess` (3 hops to `vma.h`) [high]
   Path: mcp_dogfood.py -> time.c -> kernel.h -> vma.h
 - `mcp_dogfood.py` imports `subprocess` (3 hops to `pipe.h`) [high]
   Path: mcp_dogfood.py -> time.c -> kernel.h -> pipe.h
-- `mcp_dogfood.py` imports `subprocess` (3 hops to `spinlock.h`) [high]
-  Path: mcp_dogfood.py -> time.c -> kernel.h -> spinlock.h
 - `mcp_dogfood.py` imports `subprocess` (3 hops to `minios_abi.h`) [high]
   Path: mcp_dogfood.py -> time.c -> kernel.h -> minios_abi.h
 - `minios_addons.py` imports `subprocess` (0 hop to `minios_addons.py`) [high]
   Path: minios_addons.py
 - `minios_addons.py` imports `subprocess` (1 hop to `time.c`) [high]
   Path: minios_addons.py -> time.c
-- `minios_addons.py` imports `subprocess` (2 hops to `ktime.h`) [high]
-  Path: minios_addons.py -> time.c -> ktime.h
 - `minios_addons.py` imports `subprocess` (2 hops to `kernel.h`) [high]
   Path: minios_addons.py -> time.c -> kernel.h
+- `minios_addons.py` imports `subprocess` (2 hops to `ktime.h`) [high]
+  Path: minios_addons.py -> time.c -> ktime.h
 
 ---
 
@@ -582,21 +582,21 @@ Files sorted by how many other files would be affected if they changed. High-imp
 
 | File | Direct Dependents | Transitive Dependents | Total Impact |
 |------|------------------|----------------------|--------------|
-| `spinlock.h` | 8 | 50 | 69 |
-| `vma.h` | 8 | 50 | 66 |
+| `minios_abi.h` | 29 | 50 | 85 |
+| `spinlock.h` | 8 | 50 | 67 |
 | `string.c` | 50 | 0 | 66 |
-| `d_mode.h` | 6 | 50 | 60 |
+| `vma.h` | 8 | 50 | 62 |
+| `m_fixed.h` | 9 | 50 | 59 |
 | `pipe.h` | 3 | 50 | 58 |
-| `m_fixed.h` | 9 | 48 | 57 |
 | `kernel.h` | 50 | 0 | 56 |
-| `d_think.h` | 3 | 50 | 56 |
-| `tables.h` | 6 | 50 | 56 |
 | `v_patch.h` | 2 | 50 | 54 |
-| `d_ticcmd.h` | 6 | 47 | 53 |
 | `i_video.h` | 18 | 35 | 53 |
 | `p_mobj.h` | 4 | 49 | 53 |
-| `sha1.h` | 5 | 48 | 53 |
-| `info.h` | 4 | 48 | 52 |
+| `doomdef.h` | 41 | 11 | 52 |
+| `d_items.h` | 2 | 49 | 51 |
+| `doomdata.h` | 2 | 49 | 51 |
+| `info.h` | 4 | 47 | 51 |
+| `net_defs.h` | 9 | 42 | 51 |
 
 ---
 

@@ -73,8 +73,9 @@ start a REPL, `micropython src/script.py` runs a file, and
 
 ```sh
 make test-host           # all fast host suites (sync, vma, futex, percpu_rq,
-                         # batch, rcu, sanitize, tick, hal, driver, ktime,
-                         # randmix, wm, modifiers, notify, abi, wl, lisp)
+                         # batch, rcu, sanitize, tick, pipe, panic, pci,
+                         # httpd, hal, driver, ktime, randmix, wm,
+                         # modifiers, notify, abi, wl, lisp)
 make test-tick test-hal  # tick listener bus + HAL port mapping only
 make test-lisp           # Lisp interpreter vectors + in-OS suite head only
 make test-wl             # Wayland-mini wire roundtrip + fail-closed bounds only
@@ -104,6 +105,8 @@ make test-vma
 make test-futex test-percpu-rq test-batch test-rcu
 make test-sanitize
 make test-tick test-hal
+make test-pipe test-panic test-pci test-httpd
+make uefi.img           # stub image boots under OVMF (scenario_uefi in test_bdd.sh)
 ```
 
 ## 8. Where to read next
