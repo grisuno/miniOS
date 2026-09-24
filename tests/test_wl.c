@@ -260,6 +260,43 @@ int main(void) {
     }
 
     {
+        unsigned char m[64];
+        unsigned char out[64];
+        unsigned n = 0;
+        int r;
+        r = wl_clip_encode(m, sizeof m, (unsigned char *)"hi", 2);
+        CHECK(r == 8, "clip encode ok");
+        CHECK(wl_clip_decode(m, r, out, sizeof out, &n) == WL_ERR_OK
+            && n == 2 && out[0] == 'h' && out[1] == 'i',
+            "clip roundtrip");
+        CHECK(wl_clip_encode(m, sizeof m, 0, 4) == WL_ERR_BOUND,
+            "clip null text refused");
+        {
+            /* Oversize must die on the size bound, not on the cap:
+             * use a buffer big enough to hold the liar payload. */
+            static unsigned char big[8192];
+            CHECK(wl_clip_encode(big, sizeof big, (unsigned char *)"hi",
+                    WL_CLIP_MAX + 1) == WL_ERR_BOUND,
+                "clip oversize refused");
+        }
+        CHECK(wl_clip_encode(m, 4, (unsigned char *)"hi", 2)
+            == WL_ERR_BOUND, "clip short cap refused");
+        r = wl_clip_encode(m, sizeof m, (unsigned char *)"hi", 2);
+        CHECK(wl_clip_decode(m, 6, out, sizeof out, &n) == WL_ERR_TRUNC,
+            "clip trunc refused");
+        CHECK(wl_clip_decode(m, 8, out, 1, &n) == WL_ERR_BOUND,
+            "clip small dst refused");
+        CHECK(wl_clip_decode(0, 8, out, sizeof out, &n) == WL_ERR_BOUND,
+            "clip null src refused");
+        CHECK(wl_clip_decode(m, 8, 0, sizeof out, &n) == WL_ERR_BOUND,
+            "clip null dst refused");
+        m[0] = (WL_CLIP_MAX + 1) & 0xFF; m[1] = ((WL_CLIP_MAX + 1) >> 8) & 0xFF;
+        m[2] = 0; m[3] = 0;
+        CHECK(wl_clip_decode(m, 8, out, sizeof out, &n) == WL_ERR_BOUND,
+            "clip liar size refused");
+    }
+
+    {
         unsigned char s[256];
         unsigned char bad[16];
         wl_hdr_t m;

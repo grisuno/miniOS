@@ -1,9 +1,11 @@
 """Fail-closed stub gate for unimplemented process syscalls.
 
-fork, vfork and execve have no implementation in this kernel. A stub
-that answers success lets userland believe a child exists when none
-does, so all three must answer Linux ENOSYS. The check scans the
-handler definitions and fails on any success return.
+vfork and execve have no implementation in this kernel. A stub that
+answers success lets userland believe a child exists when none does,
+so both must answer Linux ENOSYS. fork() is implemented (do_fork with
+copy-on-write pages, kernel/sched.c) and is checked by the fork BDD
+scenario instead. The check scans the handler definitions and fails
+on any success return.
 """
 
 import re
@@ -14,7 +16,7 @@ class Config:
     """Centralized tunable values for the stub gate."""
 
     target_file = "kernel/syscalls_proc.c"
-    handlers = ("sys_linux_fork", "sys_linux_vfork", "sys_linux_execve")
+    handlers = ("sys_linux_vfork", "sys_linux_execve")
     enosys_literal = "-38"
     success_pattern = re.compile(r"\breturn\s+0\s*;")
 
@@ -54,7 +56,7 @@ def main():
         print("FAIL: " + failure)
     if failures:
         return 1
-    print("stub gate: ok (fork/vfork/execve answer ENOSYS)")
+    print("stub gate: ok (vfork/execve answer ENOSYS)")
     return 0
 
 

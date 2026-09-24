@@ -5,74 +5,149 @@
  *  VFS (Virtual File System) abstraction layer
  * ================================================================ */
 
-#define VFS_MAX_MOUNTS 8
-#define VFS_PREFIX_LEN 32
-
 typedef struct {
     char prefix[VFS_PREFIX_LEN];
+    char driver[VFS_DRIVER_LEN];
     const vfs_ops_t *ops;
     int in_use;
+    int open_refs;
 } vfs_mount_t;
 
 static vfs_mount_t vfs_mounts[VFS_MAX_MOUNTS];
 static int vfs_mount_count;
+static spinlock_t vfs_lock = SPINLOCK_INIT;
 
 void vfs_init(void) {
     vfs_mount_count = 0;
     kmemset(vfs_mounts, 0, sizeof(vfs_mounts));
 }
 
-int vfs_register(const char *prefix, const vfs_ops_t *ops) {
+int vfs_register(const char *prefix, const vfs_ops_t *ops, const char *driver) {
+    irqflags_t flags;
+    int rc = -1, i;
     if (!prefix || !ops) return -1;
-    if (vfs_mount_count >= VFS_MAX_MOUNTS) return -1;
-    for (int i = 0; i < VFS_MAX_MOUNTS; i++) {
+    if (kstrlen(prefix) >= VFS_PREFIX_LEN) return -1;
+    spin_lock_irqsave(&vfs_lock, &flags);
+    if (vfs_mount_count >= VFS_MAX_MOUNTS) { spin_unlock_irqrestore(&vfs_lock, flags); return -1; }
+    for (i = 0; i < VFS_MAX_MOUNTS; i++) {
+        if (vfs_mounts[i].in_use && kstrcmp(vfs_mounts[i].prefix, prefix) == 0) {
+            spin_unlock_irqrestore(&vfs_lock, flags);
+            return -1;
+        }
+    }
+    for (i = 0; i < VFS_MAX_MOUNTS; i++) {
         if (!vfs_mounts[i].in_use) {
             kstrncpy(vfs_mounts[i].prefix, prefix, VFS_PREFIX_LEN - 1);
             vfs_mounts[i].prefix[VFS_PREFIX_LEN - 1] = 0;
+            if (driver && driver[0]) {
+                kstrncpy(vfs_mounts[i].driver, driver, VFS_DRIVER_LEN - 1);
+                vfs_mounts[i].driver[VFS_DRIVER_LEN - 1] = 0;
+            } else {
+                kstrncpy(vfs_mounts[i].driver, "?", VFS_DRIVER_LEN - 1);
+            }
             vfs_mounts[i].ops = ops;
             vfs_mounts[i].in_use = 1;
+            vfs_mounts[i].open_refs = 0;
             vfs_mount_count++;
-            return 0;
+            rc = 0;
+            break;
         }
     }
-    return -1;
+    spin_unlock_irqrestore(&vfs_lock, flags);
+    return rc;
 }
 
 int vfs_unregister(const char *prefix) {
+    irqflags_t flags;
+    int rc = -1, i;
     if (!prefix) return -1;
-    for (int i = 0; i < VFS_MAX_MOUNTS; i++) {
+    if (!prefix[0]) return -22;
+    spin_lock_irqsave(&vfs_lock, &flags);
+    for (i = 0; i < VFS_MAX_MOUNTS; i++) {
         if (vfs_mounts[i].in_use && kstrcmp(vfs_mounts[i].prefix, prefix) == 0) {
+            if (vfs_mounts[i].open_refs > 0) {
+                spin_unlock_irqrestore(&vfs_lock, flags);
+                return -16;
+            }
             vfs_mounts[i].in_use = 0;
+            vfs_mounts[i].ops = 0;
             vfs_mount_count--;
-            return 0;
+            rc = 0;
+            break;
         }
     }
-    return -1;
+    spin_unlock_irqrestore(&vfs_lock, flags);
+    return rc;
+}
+
+/** Docstring: Mount table snapshot for the `mount` builtin. Returns the
+ * slot count filled (up to cap). Fail-closed on null output. */
+int vfs_list(char prefixes[][VFS_PREFIX_LEN], char drivers[][VFS_DRIVER_LEN],
+        int refs[], int cap) {
+    irqflags_t flags;
+    int n = 0, i;
+    if (!prefixes || !drivers || !refs || cap <= 0) return 0;
+    spin_lock_irqsave(&vfs_lock, &flags);
+    for (i = 0; i < VFS_MAX_MOUNTS && n < cap; i++) {
+        if (!vfs_mounts[i].in_use) continue;
+        kstrncpy(prefixes[n], vfs_mounts[i].prefix, VFS_PREFIX_LEN - 1);
+        prefixes[n][VFS_PREFIX_LEN - 1] = 0;
+        kstrncpy(drivers[n], vfs_mounts[i].driver, VFS_DRIVER_LEN - 1);
+        drivers[n][VFS_DRIVER_LEN - 1] = 0;
+        refs[n] = vfs_mounts[i].open_refs;
+        n++;
+    }
+    spin_unlock_irqrestore(&vfs_lock, flags);
+    return n;
 }
 
 int vfs_open(const char *path, int mode, vfs_file_t *f) {
+    irqflags_t flags;
+    int best = -1;
+    unsigned best_len = 0;
+    int i;
     if (!path || !f) return -1;
-    for (int i = 0; i < VFS_MAX_MOUNTS; i++) {
+    if (mode < 0 || mode > 2) return -1;
+    /* Longest-prefix-first (the documented contract): the root ""
+     * matches everything, so first-match would bury every later
+     * mount. The best match wins; ties keep the earliest slot. */
+    spin_lock_irqsave(&vfs_lock, &flags);
+    for (i = 0; i < VFS_MAX_MOUNTS; i++) {
+        unsigned plen;
         if (!vfs_mounts[i].in_use) continue;
-        unsigned plen = kstrlen(vfs_mounts[i].prefix);
+        plen = kstrlen(vfs_mounts[i].prefix);
+        if (plen < best_len) continue;
         if (kstrncmp(path, vfs_mounts[i].prefix, plen) == 0 &&
             (path[plen] == '/' || path[plen] == 0 || plen == 0)) {
-            const char *subpath = path + plen;
-            if (*subpath == '/') subpath++;
-            void *handle = 0;
-            if (vfs_mounts[i].ops->open) {
-                if (vfs_mounts[i].ops->open(subpath, mode, &handle) < 0)
-                    return -1;
+            if (plen > best_len || best < 0) {
+                best = i;
+                best_len = plen;
             }
-            f->ops = vfs_mounts[i].ops;
-            f->handle = handle;
-            f->pos = 0;
-            f->mode = mode;
-            f->is_console = 0;
-            return 0;
         }
     }
-    return -1;
+    if (best >= 0) vfs_mounts[best].open_refs++;
+    spin_unlock_irqrestore(&vfs_lock, flags);
+    if (best < 0) return -1;
+    {
+        const char *subpath = path + best_len;
+        void *handle = 0;
+        if (*subpath == '/') subpath++;
+        if (vfs_mounts[best].ops->open) {
+            if (vfs_mounts[best].ops->open(subpath, mode, &handle) < 0) {
+                spin_lock_irqsave(&vfs_lock, &flags);
+                vfs_mounts[best].open_refs--;
+                spin_unlock_irqrestore(&vfs_lock, flags);
+                return -1;
+            }
+        }
+        f->ops = vfs_mounts[best].ops;
+        f->handle = handle;
+        f->pos = 0;
+        f->mode = mode;
+        f->is_console = 0;
+        f->mount_idx = best;
+        return 0;
+    }
 }
 
 /* ================================================================
@@ -249,6 +324,108 @@ static const vfs_ops_t minifs_vfs_ops = {
 };
 
 /* ================================================================
+ *  mem: volatile in-memory driver (dynamic-mount proof)
+ * ================================================================ */
+
+#define MEM_FILES 8
+#define MEM_FNAME 32
+#define MEM_FSIZE 1024
+
+typedef struct {
+    char name[MEM_FNAME];
+    unsigned char data[MEM_FSIZE];
+    unsigned size;
+    int used;
+} mem_file_t;
+
+static mem_file_t mem_files[MEM_FILES];
+
+static int mem_lookup(const char *path) {
+    int i;
+    for (i = 0; i < MEM_FILES; i++)
+        if (mem_files[i].used && kstrcmp(mem_files[i].name, path) == 0)
+            return i;
+    return -1;
+}
+
+static int mem_open(const char *path, int mode, void **handle) {
+    int i = mem_lookup(path);
+    if (!path || !path[0] || kstrlen(path) >= MEM_FNAME) return -1;
+    if (mode < 0 || mode > 2) return -1;
+    if (i < 0) {
+        if (mode == 0) return -1;
+        for (i = 0; i < MEM_FILES; i++)
+            if (!mem_files[i].used) break;
+        if (i >= MEM_FILES) return -1;
+        kstrncpy(mem_files[i].name, path, MEM_FNAME - 1);
+        mem_files[i].name[MEM_FNAME - 1] = 0;
+        mem_files[i].size = 0;
+        mem_files[i].used = 1;
+    } else if (mode == 1) {
+        mem_files[i].size = 0;
+    }
+    *handle = (void *)(unsigned long)(i + 1);
+    return 0;
+}
+
+static int mem_slot(void *handle) {
+    unsigned long i = (unsigned long)handle;
+    if (i < 1u || i > (unsigned long)MEM_FILES) return -1;
+    if (!mem_files[i - 1].used) return -1;
+    return (int)(i - 1);
+}
+
+static int mem_read(void *handle, void *buf, unsigned long pos, unsigned long len) {
+    int i = mem_slot(handle);
+    if (i < 0 || !buf) return -1;
+    if (pos >= mem_files[i].size) return 0;
+    if (pos + len > mem_files[i].size) len = mem_files[i].size - pos;
+    if (len == 0) return 0;
+    kmemcpy(buf, mem_files[i].data + pos, len);
+    return (int)len;
+}
+
+static int mem_write(void *handle, const void *buf, unsigned long pos, unsigned long len) {
+    int i = mem_slot(handle);
+    if (i < 0 || !buf) return -1;
+    if (pos >= MEM_FSIZE) return 0;
+    if (pos + len > MEM_FSIZE) len = MEM_FSIZE - pos;
+    if (len == 0) return 0;
+    kmemcpy(mem_files[i].data + pos, buf, len);
+    if (pos + len > mem_files[i].size) mem_files[i].size = (unsigned)(pos + len);
+    return (int)len;
+}
+
+static int mem_close(void *handle) {
+    return mem_slot(handle) < 0 ? -1 : 0;
+}
+
+static int mem_fstat(void *handle, unsigned long *size_out) {
+    int i = mem_slot(handle);
+    if (i < 0 || !size_out) return -1;
+    *size_out = mem_files[i].size;
+    return 0;
+}
+
+static int mem_truncate(void *handle, unsigned long size) {
+    int i = mem_slot(handle);
+    if (i < 0 || size > MEM_FSIZE) return -1;
+    if (size > mem_files[i].size)
+        kmemset(mem_files[i].data + mem_files[i].size, 0, size - mem_files[i].size);
+    mem_files[i].size = (unsigned)size;
+    return 0;
+}
+
+static const vfs_ops_t mem_vfs_ops = {
+    .open    = mem_open,
+    .read    = mem_read,
+    .write   = mem_write,
+    .close   = mem_close,
+    .fstat   = mem_fstat,
+    .truncate = mem_truncate,
+};
+
+/* ================================================================
  *  Path resolution and directory queries
  * ================================================================ */
 
@@ -350,8 +527,23 @@ int minifs_mkdir_p(const char *resolved) {
 
 void vfs_register_builtins(void) {
     vfs_init();
-    vfs_register("", &ramdisk_vfs_ops);
-    vfs_register("minifs:", &minifs_vfs_ops);
+    vfs_register("", &ramdisk_vfs_ops, "ramdisk");
+    vfs_register("minifs:", &minifs_vfs_ops, "minifs");
+    vfs_register("mem:", &mem_vfs_ops, "mem");
+}
+
+/** Docstring: Mount a known driver under a prefix (the `mount` builtin
+ * path). driver names ramdisk, minifs or mem; anything else refuses.
+ * A duplicate prefix refuses like a duplicate registration, never an
+ * alias. The root "" stays pinned: mounting over it refuses. */
+int vfs_mount_driver(const char *prefix, const char *driver) {
+    const vfs_ops_t *ops = 0;
+    if (!prefix || !prefix[0] || !driver) return -1;
+    if (kstrcmp(driver, "ramdisk") == 0) ops = &ramdisk_vfs_ops;
+    else if (kstrcmp(driver, "minifs") == 0) ops = &minifs_vfs_ops;
+    else if (kstrcmp(driver, "mem") == 0) ops = &mem_vfs_ops;
+    else return -1;
+    return vfs_register(prefix, ops, driver);
 }
 
 /* ================================================================
@@ -374,6 +566,13 @@ int vfs_write(vfs_file_t *f, const void *buf, unsigned long len) {
     int n;
     if (!f || !f->ops || !f->ops->write || !buf) return -1;
     if (len == 0) return 0;
+    /* Append mode writes at the end regardless of pos (the ops
+     * contract): rebase pos from the live size first, so a reopened
+     * append handle (pos 0) cannot overwrite the head. */
+    if (f->mode == 2 && f->ops->fstat) {
+        unsigned long sz = 0;
+        if (f->ops->fstat(f->handle, &sz) == 0) f->pos = (unsigned)sz;
+    }
     n = f->ops->write(f->handle, buf, f->pos, len);
     if (n > 0) f->pos += (unsigned)n;
     return n;
@@ -381,10 +580,19 @@ int vfs_write(vfs_file_t *f, const void *buf, unsigned long len) {
 
 int vfs_close(vfs_file_t *f) {
     int rc;
+    irqflags_t flags;
     if (!f || !f->ops || !f->ops->close) return -1;
     rc = f->ops->close(f->handle);
+    if (f->mount_idx >= 0 && f->mount_idx < VFS_MAX_MOUNTS) {
+        spin_lock_irqsave(&vfs_lock, &flags);
+        if (vfs_mounts[f->mount_idx].in_use &&
+                vfs_mounts[f->mount_idx].open_refs > 0)
+            vfs_mounts[f->mount_idx].open_refs--;
+        spin_unlock_irqrestore(&vfs_lock, flags);
+    }
     f->ops = 0;
     f->handle = 0;
+    f->mount_idx = -1;
     return rc;
 }
 

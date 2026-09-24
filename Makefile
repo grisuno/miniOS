@@ -179,6 +179,7 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(SRC_DIR)/test.lua $(SRC_DIR)/test.lisp $(SRC_DIR)/test_all.sh \
             $(PROGS_DIR)/etc/alias \
+            $(PROGS_DIR)/etc/init \
             $(PROGS_DIR)/etc/shortcuts \
             $(PROGS_DIR)/etc/association \
             $(PROGS_DIR)/etc/abi \
@@ -315,6 +316,9 @@ $(BIN_DIR)/lxhello.elf: $(SRC_DIR)/lxhello.c
 # ── Isolation probes: report the runtime CPL and test that kernel-space
 #    pointers are rejected by the syscall boundary (same build recipe). ──
 $(BIN_DIR)/cpl.elf: $(SRC_DIR)/cpl.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+$(BIN_DIR)/forktest.elf: $(SRC_DIR)/forktest.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
 $(BIN_DIR)/kmem.elf: $(SRC_DIR)/kmem.c
@@ -1241,7 +1245,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
                $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
                $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
-               $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
+               $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/forktest.elf \
                $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
                $(BIN_DIR)/spin.elf \
                $(SRC_DIR)/spin.c \
@@ -1252,7 +1256,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
                $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
-               $(SRC_DIR)/nx.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
+               $(SRC_DIR)/nx.c $(SRC_DIR)/forktest.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
                $(SRC_DIR)/hello.py \
                $(SRC_DIR)/test.lua \
                $(SRC_DIR)/test.lisp \
@@ -1423,12 +1427,40 @@ tick_test: tests/test_tick.c kernel/tick.c tick.h | $(TOOLS_DIR)
 test-tick: tick_test
 	$(TOOLS_DIR)/tick_test
 
+# Pipe ring host test (tests/test_pipe.c + headers/pipe.h, header-only).
+pipe_test: tests/test_pipe.c headers/pipe.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/pipe_test tests/test_pipe.c
+
+test-pipe: pipe_test
+	$(TOOLS_DIR)/pipe_test
+
+# Panic backtrace host test (tests/test_panic.c + headers/panic.h).
+panic_test: tests/test_panic.c headers/panic.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/panic_test tests/test_panic.c
+
+test-panic: panic_test
+	$(TOOLS_DIR)/panic_test
+
+# httpd wire host test (tests/test_httpd.c + headers/httpd.h).
+httpd_test: tests/test_httpd.c headers/httpd.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/httpd_test tests/test_httpd.c
+
+test-httpd: httpd_test
+	$(TOOLS_DIR)/httpd_test
+
 # HAL I/O host test (tests/test_hal_io.c + arch/x86/hal_io.h).
 hal_test: tests/test_hal_io.c arch/x86/hal_io.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/hal_test tests/test_hal_io.c
 
 test-hal: hal_test
 	$(TOOLS_DIR)/hal_test
+
+# PCI config-space host test (tests/test_pci.c + headers/drivers/pci.h).
+pci_test: tests/test_pci.c headers/drivers/pci.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/pci_test tests/test_pci.c
+
+test-pci: pci_test
+	$(TOOLS_DIR)/pci_test
 
 # RTC date-math host test (tests/test_rtc.c + rtc.h inline).
 rtc_test: tests/test_rtc.c rtc.h | $(TOOLS_DIR)
@@ -1535,7 +1567,7 @@ wl: os.img
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test lisp-host
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test pci_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test lisp-host
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1604,6 +1636,29 @@ stage2.elf: stage2.o arch/x86/boot/stage2.ld
 stage2.bin: stage2.elf
 	$(OBJCOPY) -O binary $< $@
 
+# ── UEFI stub (Phase 1 environment proof, boot/uefi_stub.c) ──────
+# Freestanding PE32+ application: i386pep link, subsystem EFI (10),
+# entry efi_main. No gnu-efi: the stub carries its own table types.
+# uefi.img is a whole-disk FAT image (mtools superfloppy layout)
+# OVMF boots as a hard disk; the BDD uefi slice asserts the banner.
+uefi_stub.o: boot/uefi_stub.c
+	$(CC) -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os -fshort-wchar -mno-red-zone -fno-pic -fno-ident -mcmodel=large -c $< -o $@
+
+BOOTX64.EFI: uefi_stub.o
+	$(LD) -m i386pep --subsystem 10 -e efi_main $< -o $@
+
+uefi.img: BOOTX64.EFI tools/uefi_part.sfdisk
+	rm -f $@
+	dd if=/dev/zero of=$@ bs=1M count=32 status=none
+	sfdisk $@ < tools/uefi_part.sfdisk > /dev/null 2>&1
+	MTOOLS_SKIP_CHECK=1 mformat -i $@@@1048576 ::
+	MTOOLS_SKIP_CHECK=1 mmd -i $@@@1048576 ::/EFI
+	MTOOLS_SKIP_CHECK=1 mmd -i $@@@1048576 ::/EFI/BOOT
+	MTOOLS_SKIP_CHECK=1 mcopy -o -i $@@@1048576 $< ::/EFI/BOOT/BOOTX64.EFI
+	MTOOLS_SKIP_CHECK=1 mdir -i $@@@1048576 ::/EFI/BOOT | grep -q BOOTX64
+
+uefi: uefi.img
+
 # ── Kernel ────────────────────────────────────────────────────────
 kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
@@ -1612,7 +1667,7 @@ console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h
+         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h
 # NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
 # and the image ends just below USER_LOAD_BASE, so the check-size gate
 # is binding: bytes matter more than compiler speed in the prompt,
@@ -1649,6 +1704,9 @@ scrollback.o: kernel/scrollback.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 paging.o: kernel/mm/paging.c kernel.h $(BOOTDEFS) vga_fb.h arch/x86/msr.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+cow.o: kernel/mm/cow.c kernel.h $(BOOTDEFS) vga_fb.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 swap.o: kernel/mm/swap.c kernel.h ide.h lz4_kernel.h
@@ -1697,6 +1755,12 @@ kfile.o: fs/kfile.c kernel.h
 redirect.o: kernel/redirect.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+panic.o: kernel/panic.c kernel.h sched.h vga_fb.h panic.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+clip.o: kernel/clip.c kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 symtab.o: kernel/symtab.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -1721,6 +1785,9 @@ ramdisk_data.o: ramdisk_data.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 ide.o: drivers/ide.c ide.h driver.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+virtio_blk.o: drivers/virtio_blk.c kernel.h drivers/pci.h drivers/virtio_blk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 block.o: drivers/block.c block.h ide.h driver.h kernel.h
@@ -1899,9 +1966,9 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
-	      ramdisk_data.o ide.o block.o driver.o minifs.o lz4_kernel.o \
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
+	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
@@ -2179,7 +2246,7 @@ clean: saves-backup
 	rm -f $(OBJ_DIR)/*.o
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
-	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf \
+	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/forktest.elf \
 	      $(BIN_DIR)/cp $(BIN_DIR)/freedom $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
 	      $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
 	      $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \

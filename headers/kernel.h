@@ -13,6 +13,7 @@
 #include "minios_abi.h"
 #include "vma.h"
 #include "spinlock.h"
+#include "pipe.h"
 
 /* ========== Port I/O helpers ========== */
 #define ALIGN_UP(x, a) (((x) + (a) - 1) & ~((a) - 1))
@@ -307,6 +308,10 @@ int fs_is_dir(const char *resolved);
  *           the file's size after a read.
  *   mode:   0=read, 1=write, 2=append.  Set by open, immutable after.
  *   is_console: 1 for stdin/stdout/stderr (console I/O path).
+ *   mount_idx: vfs_mounts slot holding this handle's driver, -1 after
+ *           close. Lets close drop the mount's open refcount, so an
+ *           unmount with live handles refuses with -EBUSY (-16)
+ *           instead of stranding them on a dead ops table.
  *
  * Invariants:
  *   1. vfs_open returns a vfs_file_t with ops != NULL on success.
@@ -314,6 +319,8 @@ int fs_is_dir(const char *resolved);
  *   3. read/write on a closed handle is undefined (debug builds assert).
  *   4. VFS_MAX_MOUNTS (8) limits concurrent registrations.
  *   5. Prefix matching is longest-prefix-first.
+ *   6. The root mount ("", ramdisk) is pinned: unregister refuses it,
+ *      so the system always has a filesystem.
  * ========================================================================= */
 typedef struct vfs_ops {
     int      (*open)(const char *path, int mode, void **handle);
@@ -330,6 +337,7 @@ typedef struct vfs_file {
     unsigned         pos;
     int              mode;       /* 0=read, 1=write, 2=append */
     int              is_console;
+    int              mount_idx;  /* vfs_mounts slot, -1 when closed */
 } vfs_file_t;
 
 /* Facade aliases (thesis correction 2B, 4.4BSD/Linux vnode model): vfs_ops_t
@@ -342,8 +350,14 @@ typedef struct vfs_file {
 typedef vfs_ops_t file_operations;
 typedef vfs_file_t vnode_t;
 
-int  vfs_register(const char *prefix, const vfs_ops_t *ops);
+int  vfs_register(const char *prefix, const vfs_ops_t *ops, const char *driver);
 int  vfs_unregister(const char *prefix);
+#define VFS_MAX_MOUNTS 8
+#define VFS_PREFIX_LEN 32
+#define VFS_DRIVER_LEN 16
+int  vfs_list(char prefixes[][VFS_PREFIX_LEN], char drivers[][VFS_DRIVER_LEN],
+        int refs[], int cap);
+int  vfs_mount_driver(const char *prefix, const char *driver);
 int  vfs_open(const char *path, int mode, vfs_file_t *f);
 int  vfs_read(vfs_file_t *f, void *buf, unsigned long len);
 int  vfs_write(vfs_file_t *f, const void *buf, unsigned long len);
@@ -400,6 +414,10 @@ typedef struct {
     unsigned minifs_size;
     struct vfs_file *vfs; /* VFS backend (when non-NULL, dispatch via ops) */
     int      ref;         /* table + snapshot references, see invariant 6 */
+    int      is_pipe;     /* 1 = pipe end, dispatch via pipe_ring below */
+    int      pipe_write;  /* 1 = write end, 0 = read end */
+    pipe_ring_t *pring;   /* shared ring, refcounted, see pipe.h */
+    int      *pring_ref;  /* shared refcount, freed with the ring */
 } KFILE;
 
 KFILE *kfopen(const char *path, const char *mode);
@@ -475,7 +493,21 @@ int  redirect_suspend(void);
 void redirect_resume(int was);
 int  redirect_begin(void);
 int  redirect_commit(const char *path, int append_mode);
+char *redirect_take(unsigned long *len_out);
 int  redirect_active(void);
+int console_stdin_push(const char *data, unsigned long len);
+void console_stdin_clear(void);
+int console_stdin_active(void);
+
+/* ========== Panic screen (kernel/panic.c) ========== */
+void panic_screen(unsigned long vector, unsigned long err,
+        unsigned long rip, unsigned long rsp, unsigned long rbp, int halt);
+
+/* ========== Shared clipboard (kernel/clip.c) ========== */
+int clip_set(const char *data, unsigned long len);
+int clip_get(char *out, unsigned long cap);
+void clip_clear(void);
+int clip_len_get(void);
 int  shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);
 int  shell_run_any(const char *name, int argc, char **argv);
 void shell_exec_builtin(int argc, char **argv);
@@ -628,6 +660,14 @@ unsigned long pt_clone_user_empty(void);
 int mm_user_ensure_page(unsigned long cr3, unsigned long va);
 int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3,
                       unsigned long va);
+/* Copy-on-write fork (kernel/mm/cow.c): share on fork, privatize on
+ * first write. cow_fork_window builds the child window, cow_resolve
+ * fixes one write fault (0 = resume), cow_release_window drops a
+ * dying window's shares ahead of pt_free_user. */
+unsigned long cow_fork_window(unsigned long parent_cr3);
+int cow_resolve(unsigned long cr3, unsigned long va);
+void cow_release_window(unsigned long cr3);
+int cow_shared(void);
 
 /* ========== Linux syscall interface ========== */
 void syscall_init(void);
@@ -650,6 +690,10 @@ extern KFILE *kfd_table[KFD_MAX];
 extern spinlock_t fd_lock;
 KFILE *kfd_get(int fd);
 void kfd_put(KFILE *f);
+KFILE *kfd_override(int fd, KFILE *f);
+int kpipe_pair(KFILE **rend_out, KFILE **wend_out);
+int kpipe_empty_wopen(KFILE *f);
+int kpipe_is_write_end(KFILE *f);
 /* Big filesystem lock, defined in fs/kfile.c: serializes whole kf*
  * bodies plus unlink and dir_list against each other. Leaf like
  * fd_lock (never nested, never held across yields); heavy IO may

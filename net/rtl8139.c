@@ -1,6 +1,7 @@
 #include "kernel.h"
 #include "net.h"
 #include "net/rtl8139.h"
+#include "drivers/pci.h"
 
 /*
  * Polled rtl8139 NIC driver (QEMU slirp user networking target).
@@ -49,29 +50,21 @@ static void rtl_reg32_w(unsigned short off, unsigned int v) { outl_port((unsigne
 #define RTL_REG_9346CR  0x50
 #define RTL_REG_CONFIG1 0x52
 
-static unsigned int pci_read32(unsigned bus, unsigned dev, unsigned func, unsigned reg) {
-    outl_port(0xCF8, 0x80000000u | (bus << 16) | (dev << 11) | (func << 8) | (reg & 0xFC));
-    return inl_port(0xCFC);
-}
-
-static void pci_write32(unsigned bus, unsigned dev, unsigned func, unsigned reg, unsigned int val) {
-    outl_port(0xCF8, 0x80000000u | (bus << 16) | (dev << 11) | (func << 8) | (reg & 0xFC));
-    outl_port(0xCFC, val);
-}
-
+/* PCI config space lives in drivers/pci.h now (shared with
+ * virtio-blk and future devices); only the dword port pair stays
+ * local, passed in as callbacks. */
 static unsigned short rtl_find(void) {
-    unsigned dev;
-    for (dev = 0; dev < 32; dev++) {
-        unsigned int id = pci_read32(0, dev, 0, 0);
-        if ((id & 0xFFFF) == NET_PCI_VENDOR && ((id >> 16) & 0xFFFF) == NET_PCI_DEVICE) {
-            unsigned int cmd = pci_read32(0, dev, 0, 4);
-            pci_write32(0, dev, 0, 4, cmd | 0x7);
-            unsigned int bar0 = pci_read32(0, dev, 0, 0x10);
+    int dev = pci_find(NET_PCI_VENDOR, NET_PCI_DEVICE, inl_port, outl_port);
+    if (dev < 0) return 0;
+    {
+        unsigned int cmd = pci_cfg_read(0, (unsigned)dev, 0, 4, outl_port, inl_port);
+        pci_cfg_write(0, (unsigned)dev, 0, 4, cmd | 0x7, outl_port);
+        {
+            unsigned int bar0 = pci_cfg_read(0, (unsigned)dev, 0, 0x10, outl_port, inl_port);
             if (bar0 & 1) return (unsigned short)(bar0 & ~3u);
             return 0;
         }
     }
-    return 0;
 }
 
 /* ================================================================

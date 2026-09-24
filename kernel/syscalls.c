@@ -65,7 +65,7 @@ KFILE *kfd_get(int fd) {
     irqflags_t flags;
     KFILE *f = 0;
     spin_lock_irqsave(&fd_lock, &flags);
-    if (fd >= 3 && fd < KFD_MAX && kfd_table[fd]) {
+    if (fd >= 0 && fd < KFD_MAX && kfd_table[fd]) {
         f = kfd_table[fd];
         f->ref++;
     }
@@ -451,6 +451,37 @@ static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, l
     pcm2_close(current_pid);
     return 0;
 }
+/* Shared text clipboard (syscalls 249-250): SET copies len bytes in
+ * (refused past 4096, never truncated), GET copies out up to cap
+ * (refused when empty or undersize, never a partial paste). All
+ * pointers validated at the boundary; kernel addresses fail with
+ * -EFAULT before entry. */
+static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6) {
+    const char *data = (const char *)a1;
+    long len = a2;
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_LEN_NEG(len);
+    if (len == 0) { clip_clear(); return 0; }
+    SANITIZE_RANGE(a1, len);
+    if ((unsigned long)len > 4096u) return -22;
+    return clip_set(data, (unsigned long)len);
+}
+static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6) {
+    char *out = (char *)a1;
+    long cap = a2;
+    char *kbuf;
+    int n;
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_LEN_NEG(cap);
+    if (cap == 0) return -22;
+    SANITIZE_RANGE(a1, cap);
+    kbuf = kmalloc((unsigned)cap);
+    if (!kbuf) return -12;
+    n = clip_get(kbuf, (unsigned long)cap);
+    if (n >= 0) kmemcpy(out, kbuf, (unsigned long)n);
+    kfree(kbuf);
+    return n;
+}
 static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     sb16_stream_volume((int)a1, (unsigned char)a2); return 0;
@@ -756,6 +787,8 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_PCM2_OPEN - MINIOS_SYSCALL_BASE] = { sys_minios_pcm2_open, "pcm2_open" },
     [MINIOS_SYS_PCM2_WRITE - MINIOS_SYSCALL_BASE] = { sys_minios_pcm2_write, "pcm2_write" },
     [MINIOS_SYS_PCM2_CLOSE - MINIOS_SYSCALL_BASE] = { sys_minios_pcm2_close, "pcm2_close" },
+    [MINIOS_SYS_CLIP_SET - MINIOS_SYSCALL_BASE] = { sys_minios_clip_set, "clip_set" },
+    [MINIOS_SYS_CLIP_GET - MINIOS_SYSCALL_BASE] = { sys_minios_clip_get, "clip_get" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };
@@ -804,9 +837,26 @@ static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)
     }
     if (a1 == 0) {
         if (!vga_fb_ps2_owner(current_pid)) return -11;
+        {
+            /* A dup2/pipe override on fd 0 (pipeline stage stdin):
+             * serve it instead of the live console. Drained with the
+             * writer open is EAGAIN (-11, retry); drained and closed
+             * is EOF (0). */
+            KFILE *o = kfd_get(0);
+            if (o) {
+                long r = (long)kfread(buf, 1, (unsigned long)cnt, o);
+                int retry = (r == 0 && kpipe_empty_wopen(o)) ? 1 : 0;
+                kfd_put(o);
+                if (retry) return -11;
+                return r;
+            }
+        }
         while (i < cnt) {
             int c = console_getc();
-            if (c < 0) continue;
+            if (c < 0) {
+                if (console_stdin_active()) break;
+                continue;
+            }
             if (c == '\r') c = '\n';
             vga_putc((char)c);
             buf[i++] = (char)c;
@@ -830,7 +880,19 @@ static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6
     (void)a4; (void)a5; (void)a6;
     const char *buf = (const char *)a2; long cnt = a3, i;
     if (cnt > 0) { SANITIZE_RANGE(buf, (unsigned long)cnt); }
-    if (a1 == 1 || a1 == 2) { for (i = 0; i < cnt; i++) vga_putc(buf[i]); return cnt; }
+    if (a1 == 1 || a1 == 2) {
+        /* A dup2/pipe override on fd 1/2 (pipeline stage stdout):
+         * serve it instead of the console. No override means the
+         * historical console path, byte for byte. */
+        KFILE *o = kfd_get((int)a1);
+        if (o) {
+            long r = (long)kfwrite(buf, 1, (unsigned long)cnt, o);
+            kfd_put(o);
+            return r;
+        }
+        for (i = 0; i < cnt; i++) vga_putc(buf[i]);
+        return cnt;
+    }
     {
         KFILE *f = kfd_get((int)a1);
         if (f) {
@@ -910,6 +972,112 @@ static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)
     return do_open_path((const char *)a1, a2);
 }
 
+/* Claim the lowest free fd slot for an already-opened KFILE (pipes,
+ * dup). The slot scan and publish re-check under fd_lock like
+ * do_open_path; the caller keeps ownership on failure. */
+static long kfd_claim(KFILE *f) {
+    int fd;
+    irqflags_t flags_irq;
+    if (!f) return -9;
+    spin_lock_irqsave(&fd_lock, &flags_irq);
+    for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
+    if (fd >= KFD_MAX) {
+        spin_unlock_irqrestore(&fd_lock, flags_irq);
+        return -24;
+    }
+    kfd_table[fd] = f;
+    spin_unlock_irqrestore(&fd_lock, flags_irq);
+    {
+        proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
+        if (op && op->open_files < KFD_MAX) op->open_files++;
+    }
+    return fd;
+}
+
+/** Docstring: Install f as the live mapping for fd 0..KFD_MAX (dup2
+ * target or pipeline override), returning the previous mapping without
+ * dropping its reference (the caller restores or closes it). Fail-closed
+ * on a wild fd. The table takes no new reference: the caller lends its
+ * own (a held kfd_get reference or a fresh pipe end). */
+KFILE *kfd_override(int fd, KFILE *f) {
+    irqflags_t flags_irq;
+    KFILE *old = 0;
+    if (fd < 0 || fd >= KFD_MAX) return 0;
+    spin_lock_irqsave(&fd_lock, &flags_irq);
+    old = kfd_table[fd];
+    kfd_table[fd] = f;
+    spin_unlock_irqrestore(&fd_lock, flags_irq);
+    return old;
+}
+
+static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6) {
+    int *ufd = (int *)a1;
+    KFILE *r = 0, *w = 0;
+    long rfd, wfd;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_RANGE(ufd, 2u * sizeof(int));
+    if (kpipe_pair(&r, &w) != 0) return -24;
+    rfd = kfd_claim(r);
+    if (rfd < 0) { kfclose(r); kfclose(w); return rfd; }
+    wfd = kfd_claim(w);
+    if (wfd < 0) {
+        irqflags_t flags_irq;
+        spin_lock_irqsave(&fd_lock, &flags_irq);
+        if (rfd >= 0 && rfd < KFD_MAX && kfd_table[rfd] == r) kfd_table[rfd] = 0;
+        spin_unlock_irqrestore(&fd_lock, flags_irq);
+        kfclose(r);
+        kfclose(w);
+        return wfd;
+    }
+    ufd[0] = (int)rfd;
+    ufd[1] = (int)wfd;
+    return 0;
+}
+
+static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6) {
+    KFILE *f;
+    long fd;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a1 >= NET_FD_BASE || a1 < 0) return -9;
+    f = kfd_get((int)a1);
+    if (!f) {
+        if (a1 < 3) return a1;
+        return -9;
+    }
+    fd = kfd_claim(f);
+    if (fd < 0) kfd_put(f);
+    return fd;
+}
+
+static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6) {
+    KFILE *f, *old;
+    irqflags_t flags_irq;
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a1 >= NET_FD_BASE || a1 < 0 || a2 < 0 || a2 >= KFD_MAX) return -9;
+    if (a1 == a2) {
+        if (a1 >= 3 && !kfd_table[(int)a1]) return -9;
+        return a2;
+    }
+    f = kfd_get((int)a1);
+    if (!f) {
+        if (a1 < 3) {
+            spin_lock_irqsave(&fd_lock, &flags_irq);
+            old = kfd_table[(int)a2];
+            kfd_table[(int)a2] = 0;
+            spin_unlock_irqrestore(&fd_lock, flags_irq);
+            if (old) kfd_put(old);
+            return a2;
+        }
+        return -9;
+    }
+    spin_lock_irqsave(&fd_lock, &flags_irq);
+    old = kfd_table[(int)a2];
+    kfd_table[(int)a2] = f;
+    spin_unlock_irqrestore(&fd_lock, flags_irq);
+    if (old) kfd_put(old);
+    return a2;
+}
+
 static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1 >= NET_FD_BASE) return net_sys_close(a1);
@@ -917,7 +1085,7 @@ static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6
         irqflags_t flags_irq;
         KFILE *f = 0;
         spin_lock_irqsave(&fd_lock, &flags_irq);
-        if (a1 >= 3 && a1 < KFD_MAX && kfd_table[a1]) {
+        if (a1 >= 0 && a1 < KFD_MAX && kfd_table[a1]) {
             f = kfd_table[a1];
             kfd_table[a1] = 0;
         }
@@ -1378,6 +1546,23 @@ static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long 
     return net_sys_connect(a1, a2, a3);
 }
 
+static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    SANITIZE_RANGE(a2, 16);
+    return net_sys_bind(a1, a2, a3);
+}
+
+static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return net_sys_listen(a1, a2);
+}
+
+static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    if (a2 && a3 >= 16) { SANITIZE_RANGE(a2, 16); }
+    return net_sys_accept(a1, a2, a3);
+}
+
 static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6) {
     if (a3 > 0) { SANITIZE_RANGE(a2, (unsigned long)a3); }
     return net_sys_sendto(a1, a2, a3, a4, a5, a6);
@@ -1553,14 +1738,20 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [16]  = { sys_linux_ioctl,        "ioctl" },
     [20]  = { sys_linux_writev,       "writev" },
     [21]  = { sys_linux_access,       "access" },
+    [22]  = { sys_linux_pipe,         "pipe" },
     [24]  = { sys_linux_yield,        "yield" },
     [25]  = { sys_linux_mremap,       "mremap" },
+    [32]  = { sys_linux_dup,          "dup" },
+    [33]  = { sys_linux_dup2,         "dup2" },
     [39]  = { sys_linux_getpid,       "getpid" },
     [41]  = { sys_linux_socket,       "socket" },
     [42]  = { sys_linux_connect,      "connect" },
+    [43]  = { sys_linux_accept,       "accept" },
     [44]  = { sys_linux_sendto,       "sendto" },
     [45]  = { sys_linux_recvfrom,     "recvfrom" },
     [48]  = { sys_linux_shutdown,     "shutdown" },
+    [49]  = { sys_linux_bind,         "bind" },
+    [50]  = { sys_linux_listen,       "listen" },
     [57]  = { sys_linux_fork,         "fork" },
     [58]  = { sys_linux_vfork,        "vfork" },
     [59]  = { sys_linux_execve,       "execve" },
@@ -1596,9 +1787,9 @@ static int trace_is_noisy(long n) {
 struct sc_extra_name { long n; const char *name; };
 static const struct sc_extra_name sc_extra_names[] = {
     { 4, "stat" }, { 6, "lstat" }, { 15, "rt_sigreturn" },
-    { 17, "pread64" }, { 18, "pwrite64" }, { 22, "pipe" },
+    { 17, "pread64" }, { 18, "pwrite64" },
     { 23, "select" }, { 28, "madvise" },
-    { 32, "dup" }, { 33, "dup2" }, { 35, "nanosleep" },
+    { 35, "nanosleep" },
     { 56, "clone" }, { 72, "fcntl" }, { 78, "getdents" },
     { 97, "getrlimit" }, { 102, "getuid" }, { 104, "getgid" },
     { 107, "geteuid" }, { 108, "getegid" }, { 157, "prctl" },

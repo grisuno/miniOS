@@ -52,6 +52,7 @@
 #define NET_DNS_TMO_MS    1500
 #define NET_CONNECT_TMO_S 5
 #define NET_RETRY_MS      1000
+#define NET_ACCEPT_TMO_MS 30000
 #define NET_TX_MAX        1536
 
 /* ========== Socket layer ========== */
@@ -78,9 +79,26 @@ int  net_recv(int fd, char *buf, int len);
 int  net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);
 void net_close(int fd);
 
+/* Server side: net_listen binds a local port and listens (socket
+ * index, or -1). net_accept_nb takes an established child without
+ * waiting; net_accept waits up to timeout_ms. net_sock_state reports
+ * the TCP state for diagnostics. net_test_inject_tcp feeds one peer
+ * segment through the production demux (httpd selftest). */
+int  net_listen(unsigned short port);
+int  net_accept_nb(int fd);
+int  net_accept(int fd, unsigned long timeout_ms);
+int  net_sock_state(int fd);
+int  net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);
+int  net_test_inject_tcp(const unsigned char peer[4], unsigned short pport,
+        unsigned short lport, unsigned char flags, unsigned int seq,
+        unsigned int ack, const unsigned char *data, unsigned datalen);
+
 /* Linux syscall ABI (sockaddr_in layout matches Linux) */
 long net_sys_socket(long a1, long a2, long a3);
 long net_sys_connect(long fd, long sockaddr, long addrlen);
+long net_sys_bind(long fd, long sockaddr, long addrlen);
+long net_sys_listen(long fd, long backlog);
+long net_sys_accept(long fd, long sockaddr, long addrlen);
 long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);
 long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);
 long net_sys_shutdown(long fd, long how);

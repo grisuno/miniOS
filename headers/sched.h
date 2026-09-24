@@ -303,6 +303,7 @@ void     resume_iretq(void);
 void     yield(void);
 void     do_exit(int code);
 long     do_clone(long flags, long newsp);
+long     do_fork(void);
 long     do_thread_spawn(unsigned long fn, unsigned long stack,
                          unsigned long arg);
 int      do_waitpid(int pid);

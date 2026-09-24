@@ -426,6 +426,9 @@ later carrier.
 | `<cmd> [args]` | run an ELF from `bin/<cmd>`: the Linux-style command path |
 | `<cmd> > <file>` | redirect command output to a ramdisk file |
 | `<cmd> >> <file>` | append command output to a ramdisk file |
+| `<cmd> 2> <file>` | same capture (MiniOS merges stdout/stderr at the console) |
+| `<a> \| <b>` | pipe stdout of a into stdin of b (sequential capture model) |
+| `cat` (no args) | copy pipeline stdin to stdout (terminates a pipe) |
 | `date` | print the CMOS clock (`HH:MM:SS`), the same clock the taskbar shows |
 | `vol [0-100]` | print the PC-speaker volume; with an argument, set it |
 | `net` | network status (MAC, IP, counters) |
@@ -440,7 +443,15 @@ later carrier.
 | `trace [on\|off\|verbose\|quiet]` | syscall tracing, numeric or named+decoded |
 | `strace <cmd>` / `ltrace <cmd>` | one-command verbose trace / no-PLT allocator-trap proxy |
 | `vmmap [pid]` | user-window map + live VMA tree |
-| `schedtop` | scheduler top: cpus, vruntime, ticks per proc |
+| `schedtop` | scheduler top: cpus, thread groups (tgid, T/P), ticks per thread |
+| `panic` | paint the kernel panic screen (demo, no halt) |
+| `mount [prefix driver]` | list VFS mounts or mount ramdisk/minifs/mem under a prefix |
+| `unmount <prefix>` | drop a mount (busy refuses, `/` is pinned) |
+| `vfstest` | prove mount/unmount/remount lifecycle on `mem:` |
+| `httpd [--once] <port> [root]` | static file server over server-side TCP (GET, VFS root) |
+| `httpd --selftest` | prove the server handshake headless (injected segments) |
+| `clip [text\|clear]` | shared text clipboard (terminal copy, vedit paste) |
+| `vblk` | virtio-blk probe + sector proof (LBA0, MiniFS superblock) |
 | `irqstat` | ISR arrivals: timer/kbd/mouse/sb16 + net/sb16 queues + gfx frames |
 | `bootlog` | timestamped boot phases (ms since power-on) |
 | `gdb regs [pid]` / `gdb dump <a> <l>` / `gdb qemu` | in-OS inspector / remote-GDB hookup |
@@ -508,6 +519,50 @@ and query tool. `json <file>` validates and pretty-prints; `json <file> <path>`
 prints the value at a dotted path (`.a.b`, `.a.3`). The parser is fail-closed:
 truncated input, unbalanced braces and unknown escapes all produce a diagnostic
 and exit 1.
+
+## Pipes, mounts, clipboard, fork, httpd
+
+The shell runs pipelines sequentially: `ls | cat` captures the left stage
+through the redirect buffer (builtins, ET_REL) or a pipe override on fd 1
+(ET_EXEC) and feeds it as stdin to the next stage through both stdin doors
+(console reader and fd 0). Linux syscalls pipe/dup/dup2 (22/32/33) work
+for ring-3 threads on shared KFILE pipes with EAGAIN/EOF semantics.
+`2>` is an alias of `>` because MiniOS merges stdout and stderr at the
+console. `panic` paints the kernel panic screen (vector, RIP/RSP, five
+frame-pointer returns) without halting; real faults halt through the same
+screen from the fault handler, which keeps the serial forensics first.
+
+VFS mounts are dynamic: `mount` lists prefix, driver and open refs,
+`mount <prefix> <ramdisk|minifs|mem>` registers, `unmount <prefix>` drops
+(refused with -EBUSY while handles are open, `/` is pinned). Matching is
+longest-prefix-first and `mem:` is a volatile in-memory driver that proves
+the lifecycle (`vfstest`). The TCP stack answers passive open (bind 49,
+listen 50, accept 43 plus the libc-style net_listen/net_accept), and
+`httpd` serves static files from any VFS root over it (GET only, 404/400
+fail-closed); `httpd --selftest` drives a full handshake through the
+production demux with injected segments. The shared clipboard lives in the
+kernel behind MiniOS syscalls 249/250 (ABI v9) and the wl_mini set/get
+messages; `clip` publishes, prints and clears it. Terminal selection and
+vedit paste on top are Phase 2. `fork()` (57) duplicates isolated
+processes with copy-on-write pages shared read-only and privatized by a
+#PF resolve path; `mrun bin/forktest.elf` proves both-direction isolation
+and the exit code. Legacy pid-0 and CLONE_VM callers get -ENOSYS.
+
+## Storage and boot hardware
+
+`drivers/pci.h` owns PCI config-space access for every device (rtl8139
+uses it, virtio-blk uses it). `vblk` proves the virtio-blk driver: with
+the image attached as `-device virtio-blk-pci`, it reads LBA 0 and the
+MiniFS superblock off the virtio queue and checks both magics, proving
+the fast path serves the same bytes as IDE PIO (request header and
+status live on the heap because KASLR slides statics out from under
+DMA). `make uefi` builds `BOOTX64.EFI` plus `uefi.img` (MBR + FAT16,
+`EFI/BOOT/BOOTX64.EFI`); under OVMF the stub prints its banner, a full
+memory map and an LBA 0 read through Block I/O. USB-HID (xHCI), E1000
+and AHCI remain surveyed future work: xHCI needs a full USB stack
+(3-6 months), E1000/AHCI need the same PCI discovery virtio-blk
+already uses. Runtime TrueType stays out: stb_truetype is float-heavy
+and the kernel builds -mno-sse, so fonts remain build-time bitmaps.
 
 ## Nuklear node editor
 
@@ -2051,7 +2106,7 @@ relies on QEMU-zeroed RAM (NOBITS, no loader fill).
 ## Validation gate, governance, libraries
 
 Every change must pass, in order: `make` (zero warnings),
-`sh src/test_all.sh` (81 PASS), `./tools/test_bdd.sh` (full serial suite),
+`sh src/test_all.sh` (92 PASS), `./tools/test_bdd.sh` (full serial suite),
 `./tools/test_codecs.sh` (lzss/lz4/aes roundtrips, pass=3), `./tools/mutate.sh`
 (every kernel/boot mutant killed; survivors mean a missing scenario, and only
 provably equivalent mutants may leave the set), `make test-tls` (host crypto
@@ -2062,8 +2117,10 @@ vectors plus OpenSSL-driven full handshakes and the negative set),
 `make test-futex test-percpu-rq test-batch test-rcu` (SMP scaling contracts),
 `make test-sanitize` (syscall sanitize macros),
 `make test-tick test-hal` (timer tick bus + HAL port mapping),
+`make test-pipe test-panic test-pci test-httpd` (pipe ring, panic walk,
+PCI config space, httpd wire),
 `make test-wm` (window manager geometry, events, window model, render plan,
-tiling and focus contracts),
+tiling and focus contracts), `make uefi` (stub image boots under OVMF),
 `python3 -m unittest -v mcp/test_minios_mcp.py`, and `mcp/mutate_mcp.sh`.
 Methodology is SDD (spec in `CLAUDE.md` first), TDD (failing scenario first),
 BDD (`test_bdd.sh` over the serial console), mutation testing, and the Boy

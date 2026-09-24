@@ -1,6 +1,8 @@
 #include "kernel.h"
 #include "net.h"
+#include "httpd.h"
 #include "minifs.h"
+#include "drivers/virtio_blk.h"
 #include "sched.h"
 #include "smp.h"
 #include "percpu_rq.h"
@@ -135,6 +137,8 @@ void shell_focus_restore(void) {
 static void shell_prompt(void) { vga_puts("\nminiOS> "); vga_fb_note_prompt(); }
 
 void shell_exec_builtin(int argc, char **argv);
+static int shell_run_pipeline(char **argv, int argc,
+        const char *redir_path, int redir_append, int redirected);
 static int etrel_path_trusted(const char *full);
 
 /* Strict decimal parse for the `vol` builtin: delegates the digit and
@@ -206,13 +210,12 @@ static const char *shell_name_base(const char *path) {
  * only the shell dispatch below knows them, so they are listed once here
  * for the completer instead of hiding behind the file tiers). */
 static const char *shell_builtin_names[] = {
-    "bootlog", "cat", "catfs", "cd", "clear", "clock", "date", "desktop",
-    "echo", "edit",
-    "fx", "gdb", "gfx", "hash", "help", "irqstat", "jobs", "kbd", "kill", "kstack",
-    "load", "ls", "lsfs", "ltrace", "mem", "minifetch", "mkdir", "mrun", "net",
-    "nice", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
-    "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unzip",
-    "vmmap", "vol", "wait", "wm", "zip",
+    "bootlog", "cat", "catfs", "cd", "clear", "clip", "clock", "date", "desktop",
+    "echo", "edit",    "fx", "gdb", "gfx", "hash", "help", "httpd", "irqstat", "jobs", "kbd", "kill", "kstack",
+    "load", "ls", "lsfs", "ltrace", "mem", "minifetch", "mkdir", "mount", "mrun", "net",
+    "nice", "panic", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
+    "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
+    "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk",
 };
 #define SHELL_BUILTIN_COUNT (sizeof(shell_builtin_names) / sizeof(shell_builtin_names[0]))
 
@@ -737,6 +740,50 @@ int shell_parse(char *line, char **argv, int max_args) {
 
 static void desktop_unflag(const char *name);
 
+/* Startup commands from etc/init: one shell command per line, `#`
+ * comments and blank lines skipped. Runs once at boot before the
+ * first prompt; a missing file means a plain boot. Each line goes
+ * through the same parse + redirect + builtin dispatch as an
+ * interactive command, so init stays a plain command list. */
+static void shell_run_init(void) {
+    KFILE *f = kfopen("etc/init", "r");
+    char line[CMD_BUF_SZ];
+    if (!f) return;
+    while (kfgets(line, sizeof(line), f)) {
+        char *argv[MAX_ARGS + 1];
+        char *redir_path = 0;
+        int redir_append = 0;
+        int redirected;
+        int argc;
+        unsigned n = 0;
+        while (line[n] && line[n] != '\n' && line[n] != '\r') n++;
+        if (!line[n]) {
+            /* No line end: the command overflowed the buffer. Drain
+             * the rest so the tail never runs as its own command. */
+            int c;
+            do { c = kfgetc(f); } while (c >= 0 && c != '\n');
+            continue;
+        }
+        line[n] = 0;
+        {
+            char *p = line;
+            while (*p == ' ' || *p == '\t') p++;
+            if (*p == 0 || *p == '#') continue;
+        }
+        argc = shell_parse(line, argv, MAX_ARGS);
+        if (argc <= 0) continue;
+        redirected = shell_take_redirect(&argc, argv, &redir_path, &redir_append);
+        if (redirected < 0 || argc == 0) continue;
+        if (shell_run_pipeline(argv, argc, redir_path, redir_append, redirected))
+            continue;
+        if (redirected && !redirect_begin()) continue;
+        shell_exec_builtin(argc, argv);
+        if (redirected && redirect_commit(redir_path, redir_append) != 0)
+            kprintf("init: cannot write %s\n", redir_path);
+    }
+    kfclose(f);
+}
+
 void shell_run(void) {
     /* Drop session flags left by a previous life (poweroff during a
      * desktop session): client mode with no server would blind NK
@@ -744,6 +791,7 @@ void shell_run(void) {
      * boot, before the first prompt. */
     desktop_unflag("client");
     desktop_unflag("quit");
+    shell_run_init();
     while (1) {
         /* Reap finished background jobs before printing the prompt, so a
          * dead job never lingers past one command and pid slots cannot
@@ -789,6 +837,8 @@ void shell_run(void) {
             vga_puts("syntax: > needs a command\n");
             continue;
         }
+        if (shell_run_pipeline(argv, argc, redir_path, redir_append, redirected))
+            continue;
         if (redirected && !redirect_begin()) {
             vga_puts("redirect: out of memory\n");
             continue;
@@ -2340,12 +2390,278 @@ static void shell_cmd_ls(int argc, char **argv) {
  * every syscall/ISR-reachable function stays gated. */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wframe-larger-than="
+/* Dispatcher exemption from the -Wframe-larger-than=2048 gate: this
+ * function runs only on the shell's own boot stack (generous), never on
+ * a 16 KB proc slot — no ring-3 syscall path reaches it — and -Os
+ * inlines single-use command helpers into its frame. Shrinking the
+ * number further would mean splitting every branch for the metric
+ * without changing peak stack one byte, so the exemption stands while
+ * every syscall/ISR-reachable function stays gated. */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wframe-larger-than="
+
+/* ---- httpd helpers (static file server over server-side TCP) ---- */
+
+#define HTTPD_REQ_CAP 2048u
+#define HTTPD_IO_CHUNK 2048u
+
+/* Serve one accepted connection: read one request, map GET path onto
+ * the VFS mounts under root, stream head + body, close. Every failure
+ * is a status code, never a hang: the request read is deadline
+ * bounded and every oversize/shortfall path answers 4xx. */
+static void shell_httpd_one(int child, const char *root) {
+    char *req = 0;
+    char upath[HTTPD_MAX_PATH];
+    char fspath[RAMDISK_FNAME_LEN];
+    char head[HTTPD_HEAD_MAX];
+    vfs_file_t f;
+    unsigned long body_len = 0u;
+    int code = 200;
+    const char *reason = "OK";
+    int n, hn;
+    req = kmalloc(HTTPD_REQ_CAP);
+    if (!req) return;
+    n = net_recv_timeout(child, req, (int)(HTTPD_REQ_CAP - 1), 10000);
+    if (n <= 0) {
+        hn = httpd_header(400, "Bad Request", "text/plain", 0u, head, sizeof(head));
+        if (hn > 0) net_send(child, head, hn);
+        kfree(req);
+        return;
+    }
+    req[n] = 0;
+    if (httpd_parse_get(req, (unsigned long)n, upath, sizeof(upath)) != 0) {
+        code = 400;
+        reason = "Bad Request";
+    } else {
+        unsigned long rl = kstrlen(root), pl = kstrlen(upath);
+        if (rl + 1u + pl >= sizeof(fspath)) {
+            code = 414;
+            reason = "URI Too Long";
+        } else {
+            unsigned long k;
+            for (k = 0u; k < rl; k++) fspath[k] = root[k];
+            fspath[rl] = '/';
+            for (k = 0u; k <= pl; k++) fspath[rl + 1u + k] = upath[k];
+            if (vfs_open(fspath, 0, &f) != 0) {
+                code = 404;
+                reason = "Not Found";
+            } else {
+                if (vfs_fstat(&f, &body_len) != 0) {
+                    vfs_close(&f);
+                    code = 500;
+                    reason = "Internal Error";
+                }
+            }
+        }
+    }
+    if (code != 200) {
+        hn = httpd_header(code, reason, "text/plain", 0u, head, sizeof(head));
+        if (hn > 0) net_send(child, head, hn);
+        kprintf("httpd: GET %s -> %d\n", code == 400 ? "?" : upath, code);
+        kfree(req);
+        return;
+    }
+    hn = httpd_header(200, "OK", httpd_ctype(upath), body_len, head, sizeof(head));
+    if (hn <= 0 || net_send(child, head, hn) != hn) {
+        vfs_close(&f);
+        kfree(req);
+        return;
+    }
+    {
+        char *chunk = kmalloc(HTTPD_IO_CHUNK);
+        unsigned long sent = 0u;
+        if (chunk) {
+            while (sent < body_len) {
+                int want = (int)((body_len - sent > HTTPD_IO_CHUNK) ?
+                        HTTPD_IO_CHUNK : (body_len - sent));
+                int got = vfs_read(&f, chunk, (unsigned long)want);
+                int w;
+                if (got <= 0) break;
+                w = net_send(child, chunk, got);
+                if (w != got) break;
+                sent += (unsigned long)got;
+            }
+            kfree(chunk);
+        }
+        kprintf("httpd: GET /%s -> 200 (%lu bytes)\n", upath, sent);
+    }
+    vfs_close(&f);
+    kfree(req);
+}
+
+/* Accept loop: one connection at a time, Ctrl+C quits. The accept
+ * poll is non-blocking with a yield so the desktop tick and the
+ * console stay live while waiting for peers. max_conn < 0 serves
+ * forever; otherwise the loop exits after that many connections
+ * (--once scripts a single fetch from the host with -hostfwd). */
+static void shell_httpd_serve(unsigned short port, const char *root,
+        int max_conn) {
+    int lfd = net_listen(port);
+    int served = 0;
+    if (lfd < 0) {
+        kprintf("httpd: cannot listen on %u\n", (unsigned)port);
+        return;
+    }
+    kprintf("httpd: serving '%s' on port %u (Ctrl+C quits)\n",
+            root[0] ? root : "/", (unsigned)port);
+    for (;;) {
+        int child;
+        if (console_peek() == 0x03) {
+            console_getc();
+            vga_puts("^C\n");
+            break;
+        }
+        child = net_accept_nb(lfd);
+        if (child < 0) {
+            yield();
+            continue;
+        }
+        shell_httpd_one(child, root);
+        net_close(child);
+        served++;
+        if (max_conn >= 0 && served >= max_conn) break;
+    }
+    net_close(lfd);
+}
+
+/* Headless proof: the full server handshake plus one request/response
+ * through the production demux with injected peer segments (no NIC
+ * needed: transmits fail closed without ARP, receives are real). */
+static void shell_httpd_selftest(void) {
+    static const unsigned char peer[4] = { 10, 0, 2, 99 };
+    static const char body[] = "httpd-selftest-bytes";
+    static const char get[] = "GET /self.txt HTTP/1.0\r\n\r\n";
+    int lfd, child;
+    unsigned cseq = 0u, cack = 0u;
+    vfs_file_t f;
+    char req[HTTPD_REQ_CAP];
+    char upath[HTTPD_MAX_PATH];
+    char head[HTTPD_HEAD_MAX];
+    int n, hn;
+    lfd = net_listen(18080);
+    if (lfd < 0) {
+        vga_puts("httpd: selftest listen failed\n");
+        return;
+    }
+    vga_puts("httpd: listen ok\n");
+    /* Seed the served file on the mem: proof tree. */
+    if (vfs_open("mem:/self.txt", 1, &f) != 0 ||
+            vfs_write(&f, body, 20) != 20) {
+        vga_puts("httpd: selftest seed failed\n");
+        net_close(lfd);
+        return;
+    }
+    vfs_close(&f);
+    net_test_inject_tcp(peer, 50000, 18080, 0x02, 1000u, 0u, 0, 0);
+    if (net_accept_nb(lfd) >= 0) {
+        vga_puts("httpd: selftest accepted before ACK\n");
+        net_close(lfd);
+        return;
+    }
+    vga_puts("httpd: syn ok\n");
+    {
+        int ci;
+        /* Pending child only: find the SYN_RCVD socket on this port. */
+        int found = -1;
+        for (ci = 0; ci < 16; ci++) {
+            if (net_sock_state(ci) == 6) { found = ci; break; }
+        }
+        if (found < 0 || net_sock_seq(found, &cseq, &cack) != 0) {
+            vga_puts("httpd: selftest no pending child\n");
+            net_close(lfd);
+            return;
+        }
+    }
+    /* A wrong ACK completes nothing: the child stays SYN_RCVD and the
+     * accept still finds nobody. Only the exact ack establishes. */
+    net_test_inject_tcp(peer, 50000, 18080, 0x10, 1001u, cseq + 500u, 0, 0);
+    if (net_accept_nb(lfd) >= 0) {
+        vga_puts("httpd: selftest accepted on wrong ack\n");
+        net_close(lfd);
+        return;
+    }
+    vga_puts("httpd: ack guard ok\n");
+    net_test_inject_tcp(peer, 50000, 18080, 0x10, 1001u, cseq, 0, 0);
+    child = net_accept_nb(lfd);
+    if (child < 0 || net_sock_state(child) != 2) {
+        vga_puts("httpd: selftest handshake failed\n");
+        net_close(child);
+        net_close(lfd);
+        return;
+    }
+    vga_puts("httpd: handshake ok\n");
+    if (net_sock_seq(child, &cseq, &cack) != 0) {
+        vga_puts("httpd: selftest seq read failed\n");
+        net_close(child);
+        net_close(lfd);
+        return;
+    }
+    net_test_inject_tcp(peer, 50000, 18080, 0x18, cack, cseq,
+            (const unsigned char *)get, 26);
+    net_test_inject_tcp(peer, 50000, 18080, 0x11, cack + 26u, cseq, 0, 0);
+    n = net_recv_timeout(child, req, (int)sizeof(req) - 1, 2000);
+    if (n != 26 || httpd_parse_get(req, (unsigned long)n, upath,
+                sizeof(upath)) != 0) {
+        vga_puts("httpd: selftest request failed\n");
+        net_close(child);
+        net_close(lfd);
+        return;
+    }
+    vga_puts("httpd: request ok\n");
+    if (vfs_open("mem:/self.txt", 0, &f) != 0) {
+        vga_puts("httpd: selftest serve open failed\n");
+        net_close(child);
+        net_close(lfd);
+        return;
+    }
+    {
+        unsigned long sz = 0u;
+        char got[32];
+        int gotn;
+        vfs_fstat(&f, &sz);
+        gotn = vfs_read(&f, got, sz < 20u ? sz : 20u);
+        vfs_close(&f);
+        hn = httpd_header(200, "OK", httpd_ctype(upath), sz, head,
+                sizeof(head));
+        if (sz != 20u || gotn != 20 || hn <= 0) {
+            vga_puts("httpd: selftest body failed\n");
+            net_close(child);
+            net_close(lfd);
+            return;
+        }
+        {
+            int k, ok = 1;
+            for (k = 0; k < 20; k++)
+                if (got[k] != body[k]) ok = 0;
+            if (!ok) {
+                vga_puts("httpd: selftest body mismatch\n");
+                net_close(child);
+                net_close(lfd);
+                return;
+            }
+        }
+    }
+    vga_puts("httpd: 200 ok\n");
+    hn = httpd_header(404, "Not Found", "text/plain", 0u, head,
+            sizeof(head));
+    if (hn <= 0) {
+        vga_puts("httpd: selftest 404 failed\n");
+        net_close(child);
+        net_close(lfd);
+        return;
+    }
+    vga_puts("httpd: 404 ok\n");
+    net_close(child);
+    net_close(lfd);
+    vga_puts("httpd: selftest ok\n");
+}
+
 void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls lsfs cat catfs echo edit vedit rm mkdir cd pwd ps load run sh\n");
         vga_puts("          net trace strace ltrace vmmap schedtop irqstat bootlog gdb date vol kbd gfx wm hash\n");
         vga_puts("          unzip zip smp kstack mem minifetch sb16 perf clock jobs wait kill sleep mrun\n");
-        vga_puts("          rmdir rlimit nice seccomp poweroff\n");
+        vga_puts("          rmdir rlimit nice seccomp poweroff mount unmount vfstest httpd clip panic\n");
         vga_puts("  ls [dir]           list files (under the cwd by default)\n");
         vga_puts("  lsfs               list files on the MiniFS disk filesystem\n");
         vga_puts("  catfs <file>       print a file from MiniFS\n");
@@ -2365,10 +2681,17 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  strace <cmd>       run one command with verbose tracing\n");
         vga_puts("  ltrace <cmd>       allocator-trap proxy (no PLT on static ELFs)\n");
         vga_puts("  vmmap [pid]        user-window map + VMA tree\n");
-        vga_puts("  schedtop           cpus, vruntime, ticks per proc\n");
+        vga_puts("  schedtop           cpus, thread groups, ticks per thread\n");
         vga_puts("  irqstat            timer/kbd/mouse/sb16/net/gfx arrivals\n");
         vga_puts("  bootlog            timestamped boot phases\n");
         vga_puts("  gdb [regs|dump|qemu] in-OS inspector; remote GDB via `make gdb`\n");
+        vga_puts("  panic              paint the panic screen (demo, no halt)\n");
+        vga_puts("  mount [p driver]   list VFS mounts or mount ramdisk|minifs|mem\n");
+        vga_puts("  unmount <prefix>   drop a VFS mount (busy refuses, / pinned)\n");
+        vga_puts("  vfstest            prove mount/unmount/remount on mem:\n");
+        vga_puts("  httpd [--once] <port> [root] static file server (GET, VFS root)\n");
+        vga_puts("  httpd --selftest   prove the server handshake headless\n");
+        vga_puts("  clip [text|clear]  shared clipboard (terminal copy, vedit paste)\n");
         vga_puts("  date               print the CMOS clock (HH:MM:SS)\n");
         vga_puts("  vol [0-100]        print or set the PC-speaker volume\n");
         vga_puts("  kbd [en|es]        print or set the keyboard layout\n");
@@ -2390,6 +2713,8 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  mrun <a.elf> [...] run isolated ELFs concurrently (multitask)\n");
         vga_puts("  load <file>        load an ELF (.o relocatable or Linux exe)\n");
         vga_puts("  <cmd> > <file>     redirect command output to a file\n");
+        vga_puts("  <cmd> 2> <file>    same capture (MiniOS merges stdout/stderr)\n");
+        vga_puts("  <a> | <b>          pipe stdout of a into stdin of b\n");
         vga_puts("  <cmd> [args...]    run a file or bare name (objects/bin/cvm)\n");
         vga_puts("Keys: TAB complete, Up/Dn prefix history, Right accept suggestion\n");
         vga_puts("Toolchain: edit p.c; minigcc.o p.c > p.s;\n");
@@ -2431,7 +2756,20 @@ void shell_exec_builtin(int argc, char **argv) {
         kprintf("perf: done (sink %ld)\n", (long)sink);
     }
     else if (kstrcmp(argv[0], "cat") == 0) {
-        if (argc < 2) { vga_puts("usage: cat <file> [file...]\n"); return; }
+        /* No file arguments: copy stdin to stdout, so `cat` terminates
+         * a pipeline (`echo hi | cat`) and echoes piped bytes. stdin
+         * here is console_getc, which serves the pipeline buffer when
+         * a pipe feeds this stage and the live console otherwise. */
+        if (argc < 2) {
+            int c;
+            if (!console_stdin_active()) {
+                vga_puts("usage: cat <file> [file...]\n");
+                return;
+            }
+            while ((c = console_getc()) >= 0)
+                vga_putc((char)c);
+            return;
+        }
         int fi;
         for (fi = 1; fi < argc; fi++) {
             char resolved[RAMDISK_FNAME_LEN];
@@ -2519,6 +2857,206 @@ void shell_exec_builtin(int argc, char **argv) {
             return;
         }
         kprintf("rm: %s: no such file\n", argv[1]);
+    }
+    /* `mount [prefix driver]`: list the live VFS mounts, or mount a
+     * known driver (ramdisk, minifs, mem) under a new prefix.
+     * `unmount <prefix>`: drop a mount; busy (open handles) refuses
+     * with -EBUSY, the pinned root "" refuses, unknown refuses. */
+    else if (kstrcmp(argv[0], "mount") == 0) {
+        if (argc == 1) {
+            char (*pfx)[VFS_PREFIX_LEN] = kmalloc(8u * VFS_PREFIX_LEN);
+            char (*drv)[VFS_DRIVER_LEN] = 0;
+            int *refs = 0;
+            int n = 0, i;
+            if (!pfx) { vga_puts("mount: out of memory\n"); return; }
+            drv = kmalloc(8u * VFS_DRIVER_LEN);
+            refs = kmalloc(8u * sizeof(int));
+            if (!drv || !refs) {
+                if (drv) kfree(drv);
+                if (refs) kfree(refs);
+                kfree(pfx);
+                vga_puts("mount: out of memory\n");
+                return;
+            }
+            n = vfs_list(pfx, drv, refs, 8);
+            for (i = 0; i < n; i++)
+                kprintf("  %s (%s) refs=%d\n",
+                        pfx[i][0] ? pfx[i] : "/",
+                        drv[i], refs[i]);
+            if (!n) vga_puts("  (no mounts)\n");
+            kfree(pfx); kfree(drv); kfree(refs);
+            return;
+        }
+        if (argc == 3) {
+            if (vfs_mount_driver(argv[1], argv[2]) == 0) {
+                kprintf("mount: %s on %s\n", argv[2], argv[1]);
+                return;
+            }
+            kprintf("mount: cannot mount %s on %s\n", argv[2], argv[1]);
+            return;
+        }
+        vga_puts("usage: mount [prefix driver]\n");
+        return;
+    }
+    else if (kstrcmp(argv[0], "unmount") == 0) {
+        int rc;
+        if (argc != 2) { vga_puts("usage: unmount <prefix>\n"); return; }
+        rc = vfs_unregister(argv[1]);
+        if (rc == 0) { kprintf("unmount: %s removed\n", argv[1]); return; }
+        if (rc == -16) { kprintf("unmount: %s busy\n", argv[1]); return; }
+        if (rc == -22) { vga_puts("unmount: / is pinned\n"); return; }
+        kprintf("unmount: %s: no such mount\n", argv[1]);
+        return;
+    }
+    /* `vfstest`: end-to-end proof of dynamic mounts through the public
+     * VFS API: write/read on mem:, busy-refused unmount with a live
+     * handle, unmount, closed refusal, remount. Every step prints its
+     * marker, so the BDD suite pins the whole lifecycle. */
+    else if (kstrcmp(argv[0], "vfstest") == 0) {
+        static const char msg[] = "vfs-works";
+        vfs_file_t f;
+        char back[16];
+        int n, i, ok;
+        if (vfs_open("mem:/vfs_proof", 1, &f) != 0) {
+            vga_puts("vfstest: open for write failed\n");
+            return;
+        }
+        if (vfs_write(&f, msg, 9) != 9) {
+            vfs_close(&f);
+            vga_puts("vfstest: write failed\n");
+            return;
+        }
+        vfs_close(&f);
+        vga_puts("vfstest: rw ok\n");
+        if (vfs_open("mem:/vfs_proof", 0, &f) != 0) {
+            vga_puts("vfstest: reopen failed\n");
+            return;
+        }
+        kmemset(back, 0, sizeof(back));
+        n = vfs_read(&f, back, 9);
+        ok = (n == 9);
+        for (i = 0; ok && i < 9; i++)
+            if (back[i] != msg[i]) ok = 0;
+        if (!ok) {
+            vfs_close(&f);
+            vga_puts("vfstest: data mismatch\n");
+            return;
+        }
+        vga_puts("vfstest: data ok\n");
+        if (vfs_unregister("mem:") != -16) {
+            vfs_close(&f);
+            vga_puts("vfstest: busy unmount not refused\n");
+            return;
+        }
+        vga_puts("vfstest: busy refused\n");
+        vfs_close(&f);
+        if (vfs_unregister("mem:") != 0) {
+            vga_puts("vfstest: unmount failed\n");
+            return;
+        }
+        vga_puts("vfstest: unmount ok\n");
+        if (vfs_open("mem:/vfs_proof", 0, &f) == 0) {
+            vfs_close(&f);
+            vga_puts("vfstest: open after unmount not refused\n");
+            return;
+        }
+        vga_puts("vfstest: closed ok\n");
+        if (vfs_mount_driver("mem:", "mem") != 0 ||
+                vfs_open("mem:/vfs_proof", 0, &f) != 0) {
+            vga_puts("vfstest: remount failed\n");
+            return;
+        }
+        vfs_close(&f);
+        vga_puts("vfstest: remount ok\n");
+    }
+    /* `clip [text...|clear]`: the shared text clipboard (terminal
+     * copy, vedit paste). Bare `clip` prints the slot, `clip <words>`
+     * publishes them joined by spaces, `clip clear` empties it. Past
+     * 4096 bytes refuses, never a silently truncated paste. */
+    else if (kstrcmp(argv[0], "clip") == 0) {
+        if (argc == 1) {
+            /* Fixed 4 KB read buffer (the whole slot, heap): clip_get
+             * refuses empty itself, so the empty path is one call,
+             * not a racy len-then-get pair. */
+            char *buf = kmalloc(4096u);
+            int n;
+            if (!buf) { vga_puts("clip: out of memory\n"); return; }
+            n = clip_get(buf, 4096u);
+            if (n < 0) {
+                kfree(buf);
+                vga_puts("(empty)\n");
+                return;
+            }
+            buf[n] = 0;
+            kprintf("%s\n", buf);
+            kfree(buf);
+            return;
+        }
+        if (argc == 2 && kstrcmp(argv[1], "clear") == 0) {
+            clip_clear();
+            return;
+        }
+        {
+            unsigned long total = 0u;
+            int i;
+            char *joined;
+            unsigned long at;
+            for (i = 1; i < argc; i++)
+                total += kstrlen(argv[i]) + 1u;
+            if (total == 0u || total - 1u > 4096u) {
+                vga_puts("clip: text too long\n");
+                return;
+            }
+            joined = kmalloc(total);
+            if (!joined) { vga_puts("clip: out of memory\n"); return; }
+            at = 0u;
+            for (i = 1; i < argc; i++) {
+                unsigned long l = kstrlen(argv[i]), k;
+                for (k = 0u; k < l; k++) joined[at++] = argv[i][k];
+                if (i + 1 < argc) joined[at++] = ' ';
+            }
+            if (clip_set(joined, at) != 0)
+                vga_puts("clip: text too long\n");
+            kfree(joined);
+        }
+    }
+    /* `vblk`: virtio-blk probe and sector proof. Initializes the
+     * device (absent hardware reports `absent`, never hangs), prints
+     * capacity, then reads LBA 0 (boot signature) and LBA 2048 (the
+     * MiniFS superblock) straight off the virtio queue and checks
+     * both magics, proving the fast path serves the same bytes as
+     * IDE PIO. */
+    else if (kstrcmp(argv[0], "vblk") == 0) {
+        unsigned char *sec;
+        unsigned long magic;
+        if (!vblk_init()) {
+            vga_puts("vblk: absent\n");
+            return;
+        }
+        sec = kmalloc(512u);
+        if (!sec) { vga_puts("vblk: out of memory\n"); return; }
+        kprintf("vblk: present sectors=%lu\n", vblk_sectors());
+        if (vblk_read_sectors(0, 1, sec) != 0 ||
+                sec[510] != 0x55 || sec[511] != 0xAA) {
+            vga_puts("vblk: LBA0 boot signature mismatch\n");
+            kfree(sec);
+            return;
+        }
+        vga_puts("vblk: LBA0 ok\n");
+        if (vblk_read_sectors(2048, 1, sec) != 0) {
+            vga_puts("vblk: superblock unreadable\n");
+            kfree(sec);
+            return;
+        }
+        magic = (unsigned long)sec[0] | ((unsigned long)sec[1] << 8) |
+                ((unsigned long)sec[2] << 16) | ((unsigned long)sec[3] << 24);
+        if (magic != MINIFS_MAGIC) {
+            vga_puts("vblk: superblock magic mismatch\n");
+            kfree(sec);
+            return;
+        }
+        vga_puts("vblk: superblock ok\n");
+        kfree(sec);
     }
     else if (kstrcmp(argv[0], "mkdir") == 0) {
         if (argc < 2) { vga_puts("usage: mkdir <name>\n"); return; }
@@ -2680,6 +3218,44 @@ void shell_exec_builtin(int argc, char **argv) {
             vga_puts("usage: net [ping <ip> | dns <host>]\n");
         }
     }
+    /* `httpd`: minimal static file server over the server-side TCP
+     * stack (bind/listen/accept). GET only, one connection at a time,
+     * paths mapped onto the VFS mounts under vfs-root (default "mem:"
+     * proof tree, "" serves the ramdisk). `--selftest` drives a full
+     * handshake plus request/response through the production demux
+     * with injected peer segments (no NIC needed). */
+    else if (kstrcmp(argv[0], "httpd") == 0) {
+        if (argc >= 2 && kstrcmp(argv[1], "--selftest") == 0) {
+            shell_httpd_selftest();
+            return;
+        }
+        if (argc < 2) { vga_puts("usage: httpd [--once] <port> [vfs-root]\n"); return; }
+        {
+            long port = -1;
+            int once = 0;
+            const char *root = "";
+            int ai;
+            for (ai = 1; ai < argc; ai++) {
+                long v;
+                if (kstrcmp(argv[ai], "--once") == 0) {
+                    once = 1;
+                } else if (port < 0 && shell_parse_long(argv[ai], &v) &&
+                        v > 0 && v <= 65535) {
+                    port = v;
+                } else if (port >= 0 && root[0] == 0 && argv[ai][0] != 0) {
+                    root = argv[ai];
+                } else {
+                    vga_puts("usage: httpd [--once] <port> [vfs-root]\n");
+                    return;
+                }
+            }
+            if (port < 0) {
+                vga_puts("usage: httpd [--once] <port> [vfs-root]\n");
+                return;
+            }
+            shell_httpd_serve((unsigned short)port, root, once ? 1 : -1);
+        }
+    }
     else if (kstrcmp(argv[0], "ps") == 0) {
         struct ps_row { int pid; int ppid; int state; char name[32]; };
         /* Heap snapshot like schedtop_report: 64 rows are 3 KB and must
@@ -2708,6 +3284,16 @@ void shell_exec_builtin(int argc, char **argv) {
                     shell_proc_state(snap[i].state), snap[i].name);
         if (!n) vga_puts("  (no processes)\n");
         kfree(snap);
+    }
+    /* `panic`: paint the kernel panic screen with live registers and a
+     * frame-pointer backtrace, then return (demo mode, no halt). Real
+     * faults halt through the same screen from the fault handler. */
+    else if (kstrcmp(argv[0], "panic") == 0) {
+        unsigned long rip = 0, rsp = 0, rbp = 0;
+        __asm__ volatile("leaq 0(%%rip), %0" : "=r"(rip));
+        __asm__ volatile("mov %%rsp, %0" : "=r"(rsp));
+        __asm__ volatile("mov %%rbp, %0" : "=r"(rbp));
+        panic_screen(0x100, 0, rip, rsp, rbp, 0);
     }
     else if (kstrcmp(argv[0], "smp") == 0) {
         int c;
@@ -2959,6 +3545,226 @@ void shell_exec_builtin(int argc, char **argv) {
 }
 #pragma GCC diagnostic pop
 
+/* ---- Pipelines (`left | right [| ...]`) ----
+ *
+ * Sequential capture model for a single-threaded shell: every stage runs
+ * to completion, its stdout is captured, and the capture becomes the
+ * next stage's stdin. Two capture paths run in parallel because the two
+ * program kinds write through different doors: builtins and ET_REL
+ * children write vga_putc (caught by redirect_begin/take), ET_EXEC
+ * children write sys_write fd 1 (caught by a kfd_table[1] pipe
+ * override). Two stdin doors match: console_getc (builtins, ET_REL,
+ * fed by console_stdin_push) and sys_read fd 0 (ET_EXEC, fed by a
+ * kfd_table[0] pipe override). Exactly one door carries bytes per
+ * stage; both are drained and concatenated, so no output is ever lost.
+ *
+ * Merged streams: MiniOS has one console stream, so stderr flows into
+ * the pipe exactly like stdout (`2>` is an alias of `>`).
+ * Per-stage `exit code:` lines report to the console, never into the
+ * pipe (shell_report suspends the capture), so `run x | cat` shows the
+ * code beside the piped bytes. Tracing pollutes pipelines the same
+ * way: `trace on` kprintf lines land in the capture.
+ * Bounds: each hop is capped at 16 MB (redirect_take plus the pipe
+ * drain); past it the hop is dropped with a diagnostic, never
+ * truncated. A stage that reads stdin with no pipe coming in reads the
+ * live console exactly as without a pipe. */
+
+#define PIPE_HOP_MAX (16UL * 1024 * 1024)
+
+static int shell_is_pipe_tok(const char *a) {
+    return a[0] == '|' && a[1] == 0;
+}
+
+/* Drain a closed-writer pipe read end into a heap buffer. Returns the
+ * buffer (caller frees) with its length, or 0 with len 0 on empty/OOM.
+ * Bounded by PIPE_HOP_MAX, fail-closed past it. */
+static char *shell_drain_pipe(KFILE *r, unsigned long *len_out) {
+    unsigned long len = 0u, cap = 4096u;
+    char *out;
+    *len_out = 0u;
+    if (!r) return 0;
+    out = kmalloc(cap);
+    if (!out) return 0;
+    for (;;) {
+        unsigned long got;
+        if (len == cap) {
+            char *grown;
+            if (cap >= PIPE_HOP_MAX) { kfree(out); return 0; }
+            cap *= 2u;
+            if (cap > PIPE_HOP_MAX) cap = PIPE_HOP_MAX;
+            grown = krealloc(out, cap);
+            if (!grown) { kfree(out); return 0; }
+            out = grown;
+        }
+        got = kfread(out + len, 1, cap - len, r);
+        if (got == 0) break;
+        len += got;
+    }
+    *len_out = len;
+    if (len == 0) { kfree(out); return 0; }
+    return out;
+}
+
+/* Run one pipeline stage with stdin/out doors installed. input may be
+ * 0 (first stage reads the live console). Returns the stage output
+ * (caller frees) with its length; on any setup failure prints a
+ * diagnostic and returns 0 with len 0. not_last selects the stdout
+ * pipe override for ET_EXEC children. */
+static char *shell_run_stage(char **sargv, int sargc,
+        const char *input, unsigned long input_len,
+        int not_last, unsigned long *len_out) {
+    KFILE *rin = 0, *win = 0, *rout = 0, *wout = 0;
+    KFILE *old0 = 0, *old1 = 0;
+    char *taken = 0, *drained = 0, *out = 0;
+    unsigned long taken_len = 0u, drained_len = 0u, total = 0u, i;
+    *len_out = 0u;
+    if (input && input_len > 0u) {
+        /* ET_EXEC door: pipe pair, input written, writer closed (EOF
+         * after drain), read end on fd 0. */
+        if (kpipe_pair(&rin, &win) != 0) {
+            vga_puts("pipe: out of memory\n");
+            return 0;
+        }
+        if (kfwrite(input, 1, input_len, win) != input_len) {
+            kfd_put(win); kfd_put(rin);
+            vga_puts("pipe: input too large\n");
+            return 0;
+        }
+        kfclose(win);
+        win = 0;
+        old0 = kfd_override(0, rin);
+        /* Builtin/ET_REL door: same bytes through the console reader. */
+        if (!console_stdin_push(input, input_len)) {
+            kfd_override(0, old0);
+            kfclose(rin);
+            vga_puts("pipe: out of memory\n");
+            return 0;
+        }
+    }
+    if (not_last) {
+        if (kpipe_pair(&rout, &wout) != 0) {
+            if (rin) { kfd_override(0, old0); kfclose(rin); }
+            console_stdin_clear();
+            vga_puts("pipe: out of memory\n");
+            return 0;
+        }
+        old1 = kfd_override(1, wout);
+    }
+    if (!redirect_begin()) {
+        if (rin) { kfd_override(0, old0); kfclose(rin); }
+        if (rout) { kfd_override(1, old1); kfclose(rout); kfclose(wout); }
+        console_stdin_clear();
+        vga_puts("pipe: out of memory\n");
+        return 0;
+    }
+    shell_exec_builtin(sargc, sargv);
+    if (rin) { kfd_override(0, old0); kfclose(rin); }
+    if (rout) {
+        kfd_override(1, old1);
+        kfclose(wout);
+        drained = shell_drain_pipe(rout, &drained_len);
+        kfclose(rout);
+        if (drained_len >= PIPE_HOP_MAX && !drained) {
+            console_stdin_clear();
+            redirect_take(0);
+            vga_puts("pipe: stage output too large\n");
+            return 0;
+        }
+    }
+    console_stdin_clear();
+    taken = redirect_take(&taken_len);
+    total = drained_len + taken_len;
+    if (total == 0u) return 0;
+    if (total > PIPE_HOP_MAX) {
+        if (taken) kfree(taken);
+        if (drained) kfree(drained);
+        vga_puts("pipe: stage output too large\n");
+        return 0;
+    }
+    out = kmalloc(total + 1);
+    if (!out) {
+        if (taken) kfree(taken);
+        if (drained) kfree(drained);
+        vga_puts("pipe: out of memory\n");
+        return 0;
+    }
+    for (i = 0u; i < drained_len; i++) out[i] = drained[i];
+    for (i = 0u; i < taken_len; i++) out[drained_len + i] = taken[i];
+    out[total] = 0;
+    if (taken) kfree(taken);
+    if (drained) kfree(drained);
+    *len_out = total;
+    return out;
+}
+
+/* Run argv as a pipeline when it holds `|` tokens, else return 0 and
+ * leave everything (including argv) untouched for the normal dispatch.
+ * A malformed pipeline prints a diagnostic and returns 1 (handled).
+ * The last stage prints to the console, or commits to redir_path when
+ * redirected (the `> file` / `2> file` tail was already split off by
+ * shell_take_redirect before this runs). */
+static int shell_run_pipeline(char **argv, int argc,
+        const char *redir_path, int redir_append, int redirected) {
+    int i, nstages = 1, s;
+    char *input = 0;
+    unsigned long input_len = 0u;
+    for (i = 0; i < argc; i++)
+        if (shell_is_pipe_tok(argv[i])) nstages++;
+    if (nstages == 1) return 0;
+    s = 0;
+    for (i = 0; i <= argc; i++) {
+        if (i == argc || shell_is_pipe_tok(argv[i])) {
+            char **sargv = argv + s;
+            int sargc = i - s;
+            int last = (i == argc);
+            char *out = 0;
+            unsigned long out_len = 0u;
+            if (sargc == 0) {
+                if (input) kfree(input);
+                vga_puts("syntax: | needs a command\n");
+                return 1;
+            }
+            argv[i] = 0;
+            out = shell_run_stage(sargv, sargc, input, input_len,
+                    !last, &out_len);
+            if (input) { kfree(input); input = 0; input_len = 0u; }
+            if (!last) {
+                input = out;
+                input_len = out_len;
+                if (!input) { input_len = 0u; }
+            } else {
+                if (redirected) {
+                    /* Commit the vga_putc capture to the file, then
+                     * append the ET_EXEC pipe half: redirect_take
+                     * already ran inside the stage, so re-emit both
+                     * halves through a plain file write. */
+                    KFILE *f = kfopen(redir_path, redir_append ? "a" : "w");
+                    if (!f) {
+                        if (out) kfree(out);
+                        kprintf("redirect: cannot write %s\n", redir_path);
+                        return 1;
+                    }
+                    if (out && out_len > 0u &&
+                            kfwrite(out, 1, out_len, f) != out_len) {
+                        kfclose(f);
+                        kfree(out);
+                        kprintf("redirect: cannot write %s\n", redir_path);
+                        return 1;
+                    }
+                    kfclose(f);
+                    if (out) kfree(out);
+                } else if (out && out_len > 0u) {
+                    unsigned long k;
+                    for (k = 0u; k < out_len; k++) vga_putc(out[k]);
+                    kfree(out);
+                }
+            }
+            s = i + 1;
+        }
+    }
+    return 1;
+}
+
 /* ---- shell script runner ----
  *
  * Reads a .sh file line by line and executes each non-empty, non-comment
@@ -3011,6 +3817,9 @@ int shell_cmd_sh(int argc, char **argv)
             continue;
         }
 
+        if (shell_run_pipeline(parse_argv, parse_argc,
+                    redir_path, redir_append, redir))
+            continue;
         if (redir && !redirect_begin()) {
             kprintf("sh: line %d: redirect out of memory\n", line_no);
             continue;

@@ -82,7 +82,7 @@ if [ "$RESET" = "1" ]; then
     rm -f "$STATE_FILE"
 fi
 
-SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c"
+SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c headers/pipe.h headers/panic.h kernel/clip.c kernel/mm/cow.c arch/x86/ctx_sw.S drivers/virtio_blk.c headers/drivers/pci.h boot/uefi_stub.c"
 SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c headers/rtc.h headers/sanitize.h"
 # Every file a MUTATIONS entry touches MUST be listed here: restore_sources
 # backs these up before the run and restores after each mutant. A file
@@ -100,6 +100,12 @@ SOURCES="$SOURCES progs/paint/paint.c tests/test_paint.c"
 SOURCES="$SOURCES drivers/pcm2.c headers/pcm2.h headers/pcm_ring.h tests/test_pcm.c progs/quake2generic/snddma_minios.c"
 SOURCES="$SOURCES progs/nk_palette.h progs/wl/wl_mini.h progs/wl/wl_mbox.h progs/wl/wlcomp.c"
 SOURCES="$SOURCES progs/minicraft/minicraft.c"
+# Backup/restore completeness (2026-09 audit): every mutation-target
+# file must appear here or its mutants leak and stack. futex/batch/
+# rcu/percpu/lisp predated the allowlist and their kills were vacuous
+# for a whole run; httpd.h shipped its own mutants without an entry.
+SOURCES="$SOURCES kernel/futex.c kernel/percpu_rq.c kernel/batch.c kernel/rcu.c"
+SOURCES="$SOURCES progs/lisp/lisp.c headers/httpd.h"
 SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
 
 restore_sources() {
@@ -198,6 +204,34 @@ vma-del-color-reversion | s/        y->red = z->red;/        y->red = y_orig_red
 vma-pool-init-broken | s/    vma_pool_n = 0;/    vma_pool_n = VMA_MAX;/ | vma.c
 vma-rotate-left-broken | s/    x->right = y->left;/    x->right = y->right;/ | vma.c
 vma-find-comparison-inverted | s/        else if (base < x->base) x = x->left;/        else if (base < x->base) x = x->right;/ | vma.c
+pipe-empty-eof-confused | s/    return r->wopen ? PIPE_EMPTY : 0;/    return 0;/ | headers/pipe.h
+pipe-write-count-lost | s/        r->count++;/        r->count += 0;/ | headers/pipe.h
+pipe-init-unbounded | s/    if (cap == 0u || cap > PIPE_CAP_MAX)/    if (cap == 0u)/ | headers/pipe.h
+pipe-close-never | s/    r->wopen = 0;/    r->wopen = 1;/ | headers/pipe.h
+pipe-empty-stage-accepted | s/            if (sargc == 0) {/            if (0) {/ | kernel/shell.c
+panic-null-ret-continues | s/        if (ret == 0u)/        if (0)/ | headers/panic.h
+panic-max-never-clamps | s/        max = PANIC_BT_MAX;/        max = 0;/ | headers/panic.h
+panic-valid-unchecked | s/        if (!valid(rbp) || !valid(rbp + 8u))/        if (0)/ | headers/panic.h
+vfs-first-match-wins | s/            if (plen > best_len || best < 0) {/            if (best < 0) {/ | fs/vfs.c
+vfs-busy-unmount-allowed | s/                return -16;/                return 0;/ | fs/vfs.c
+vfs-root-unmountable | s/    if (!prefix\[0\]) return -22;/    if (0) return -22;/ | fs/vfs.c
+schedtop-threads-unlabeled | s/  pid  tgid T\/P ppid/  pid  tgid ppid/ | kernel/sched.c
+httpd-traversal-accepted | s/            if (path_out\[k\] == '.' && path_out\[k + 1u\] == '.')/            if (0)/ | headers/httpd.h
+httpd-length-unreported | s/Content-Length: /X-Length: / | headers/httpd.h
+httpd-syn-ignored | s/        if ((seg\[13\] & 0x12) != 0x02) return;/        if ((seg[13] \& 0x12) != 0x03) return;/ | net/net.c
+httpd-ack-unchecked | s/            if ((flags & 0x12) == 0x10 && ack == s->seq) {/            if ((flags \& 0x12) == 0x10) {/ | net/net.c
+clip-store-dropped | s/    clip_valid = 1;/    clip_valid = 0;/ | kernel/clip.c
+clip-empty-accepted | s/    if (!clip_valid || clip_len == 0u) return -1;/    if (0) return -1;/ | kernel/clip.c
+fork-child-nonzero | s/        xorl    %eax, %eax/        incl    %eax/ | arch/x86/ctx_sw.S
+fork-share-dropped | s/        cpt\[(va >> 12) & 0x1FF\] = phys | PT_USER_RO | flags;/        cpt[(va >> 12) \& 0x1FF] = 0;/ | kernel/mm/cow.c
+fork-resolve-never | s/            resolved = cow_resolve(cur_cr3, fault_addr);/            resolved = -1;/ | kernel/sched.c
+pci-find-first-only | s/    for (dev = 0; dev < PCI_MAX_DEV; dev++)/    for (dev = 0; dev < 1; dev++)/ | headers/drivers/pci.h
+vblk-status-unchecked | s/statusp != 0/statusp == 0/ | drivers/virtio_blk.c
+uefi-blk-guid-wrong | s/0x8E, 0x39, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B/0x8E, 0x39, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3C/ | boot/uefi_stub.c
+uefi-lba-sig-ignored | s/sec\[510\] == 0x55/sec[510] != 0x55/ | boot/uefi_stub.c
+uefi-mmap-unchecked | s/puts_both(\"uefi: mmap entries=\");/;/ | boot/uefi_stub.c
+wl-clip-size-unbounded | s/|| n > (unsigned)WL_CLIP_MAX)/|| n > 999999u)/ | progs/wl/wl_mini.h
+wl-clip-trunc-unchecked | s/    if (len < 0 || (unsigned)len < total)/    if (0)/ | progs/wl/wl_mini.h
 
 smp-icr-shorthand-broken | s/LAPIC_ICR_ALL_EXC 0xC0000u/LAPIC_ICR_ALL_EXC 0x30000u/ | smp.c
 smp-init-missing | s/LAPIC_ICR_INIT);/0);/ | smp.c
@@ -206,7 +240,7 @@ smp-ap-no-lapic-eoi | s/            hal_lapic_eoi();/            \/* mutant: no 
 smp-bsp-ctx-switch-not-guarded | s/if (cpu->is_bsp \&\& proc_count > 1)/if (proc_count > 1)/ | kernel/sched.c
 smp-gs-base-not-set | s/wrmsr(MSR_GSBASE, (unsigned long)\\&cpus\\[cpu\\]);/\\/* mutant: no gs base \\*/ | smp.c
 poll-host-order | s/kmemcpy(\&events, entry + 4, 2);/events = net_get16((const unsigned char *)entry + 4);/ | net/net.c
-rlimit-as-shell-ignored | s/if (kstrcmp(argv\[1\], "as") == 0) rp->rl_as_max = v;/if (kstrcmp(argv[1], "as") == 0) rp->rl_as_max = 0;/ | kernel/shell.c
+rlimit-as-shell-ignored | s/if (kstrcmp(argv\[1\], \"as\") == 0) rp->rl_as_max = v;/if (kstrcmp(argv[1], \"as\") == 0) rp->rl_as_max = 0;/ | kernel/shell.c
 lapic-cal-fallback | s/lapic_cal_valid = 1;/lapic_cal_valid = 0;/ | smp.c
 futex-value-check-inverted | s/if (\\*(volatile int \\*)uaddr != val)/if (*(volatile int *)uaddr == val)/ | kernel/futex.c
 futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pid != WQ_NONE)/ | kernel/futex.c
@@ -366,7 +400,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
     RUN=$((RUN + 1))
 
     restore_sources
-    if ! eval "sed -i '$expr' '$HERE/$file'" 2>/dev/null; then
+    # Direct sed, never eval: an expression carrying a literal quote
+    # (vol-sign-ignored's '-') re-quotes under eval, sed receives a
+    # de-quoted pattern and reports "matched nothing" while the anchor
+    # checker (ground truth: plain sed) passes. Every table entry is a
+    # single s/// program, so eval buys nothing and breaks quoting.
+    if ! sed -i "$expr" "$HERE/$file" 2>/dev/null; then
         echo "MUTANT $name: ERROR (sed failed)"
         record "$name" BROKEN
         BROKEN=$((BROKEN + 1))
@@ -411,6 +450,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         headers/sanitize.h)
             make -C "$HERE" test-sanitize > "$BACKUP/suite.log" 2>&1
             ;;
+        headers/pipe.h)
+            make -C "$HERE" test-pipe > "$BACKUP/suite.log" 2>&1
+            ;;
+        headers/panic.h)
+            make -C "$HERE" test-panic > "$BACKUP/suite.log" 2>&1
+            ;;
         headers/pcm_ring.h|tests/test_pcm.c)
             make -C "$HERE" test-pcm > "$BACKUP/suite.log" 2>&1
             ;;
@@ -437,6 +482,35 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/paint/paint.c)
             MATCH="paint" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/clip.c)
+            MATCH="clip" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/mm/cow.c)
+            MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        arch/x86/ctx_sw.S)
+            # One file, two contracts: fpu-no-save breaks FPU
+            # save/restore (killed by the fptest slice), while the
+            # fork trampoline mutant breaks child-zero return (killed
+            # by the fork slice). Routing by file alone sent
+            # fpu-no-save to the fork slice, where it survived
+            # vacuously on 3 unrelated passes; route by name.
+            if [ "$name" = "fpu-no-save" ]; then
+                MATCH="fpu" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
+            ;;
+        headers/drivers/pci.h)
+            make -C "$HERE" test-pci > "$BACKUP/suite.log" 2>&1
+            ;;
+        drivers/virtio_blk.c)
+            MATCH="virtio" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        boot/uefi_stub.c)
+            make -C "$HERE" uefi.img > "$BACKUP/suite.log" 2>&1 && \
+            MATCH="uefi" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
             ;;
         drivers/pcm2.c|headers/pcm2.h)
             # Null-backend probe slice: open/write/close plumbing only.

@@ -158,6 +158,37 @@ refute() {
     fi
 }
 
+# scenario_uefi <name> -- like scenario but boots uefi.img under OVMF
+# instead of os.img under SeaBIOS. No shell commands: the stub runs on
+# its own and halts. Skips cleanly when OVMF or the stub image is
+# absent (same doctrine as QEMU-absent skips).
+OVMF_CODE="${OVMF_CODE:-/usr/share/OVMF/OVMF_CODE_4M.fd}"
+UEFI_IMAGE="$HERE/uefi.img"
+scenario_uefi() {
+    SCENARIO="$1"
+    if ! should_run; then echo "--- $SCENARIO (SKIP)"; SKIP=1; return 0; fi
+    if [ ! -f "$OVMF_CODE" ] || [ ! -f "$UEFI_IMAGE" ]; then
+        echo "--- $SCENARIO (SKIP: no OVMF/uefi.img)"
+        SKIP=1
+        return 0
+    fi
+    SKIP=0
+    echo "--- $SCENARIO"
+    cleanup_stale_qemu
+    local vars="$HERE/build/ovmf_vars.fd"
+    [ -f /usr/share/OVMF/OVMF_VARS_4M.fd ] && cp /usr/share/OVMF/OVMF_VARS_4M.fd "$vars"
+    # The stub halts instead of powering off, so the timeout is the
+    # exit path (30 s: OVMF boots in ~10, the stub prints by ~15).
+    timeout 30 "$QEMU" \
+        -drive "if=pflash,format=raw,readonly=on,file=$OVMF_CODE" \
+        -drive "if=pflash,format=raw,file=$vars" \
+        -drive "file=$UEFI_IMAGE,format=raw,if=ide" -m 512 \
+        -display none -serial stdio -no-reboot > "$LOG" 2>&1
+    if [ $? -eq 124 ]; then
+        echo "    NOTE: timed out (stub halts, never powers off)"
+    fi
+}
+
 if [ ! -f "$IMAGE" ]; then
     echo "os.img not found; run make first"
     exit 1
@@ -537,6 +568,87 @@ scenario "shell redirects command output to a file" "echo redirected text > r.tx
 cat r.txt
 poweroff"
 expect "redirected text"
+
+scenario "shell pipes command output into cat" "echo piped text | cat
+poweroff"
+expect "^piped text$"
+
+scenario "shell pipes chained through two cats" "echo chained text | cat | cat
+poweroff"
+expect "^chained text$"
+
+scenario "shell pipe refuses an empty stage" "echo a | | cat
+poweroff"
+expect "syntax: | needs a command"
+
+scenario "shell pipe carries stderr redirect" "echo err text 2> e.txt
+cat e.txt
+poweroff"
+expect "^err text$"
+
+scenario "panic builtin paints the screen without halting" "panic
+poweroff"
+expect "panic: vector="
+expect "bt="
+
+scenario "vfs mounts list and prove the full lifecycle" "mount
+vfstest
+poweroff"
+expect "mem: (mem)"
+expect "vfstest: remount ok"
+
+scenario "vfs unmount refuses the pinned root and unknown prefixes" "unmount \"\"
+unmount nosuch:
+mount
+poweroff"
+expect "unmount: / is pinned"
+expect "no such mount"
+expect "/ (ramdisk)"
+
+scenario "schedtop reports thread groups with per-thread ticks" "schedtop
+poweroff"
+expect "pid  tgid T/P"
+expect "ticks name"
+
+scenario "httpd selftest proves the server handshake and responses" "httpd --selftest
+poweroff"
+expect "httpd: handshake ok"
+expect "httpd: ack guard ok"
+expect "httpd: 200 ok"
+expect "httpd: 404 ok"
+expect "httpd: selftest ok"
+
+scenario "clipboard publishes and clears text" "clip hello-clip
+clip
+clip clear
+clip
+poweroff"
+expect "^hello-clip$"
+expect "^(empty)$"
+
+scenario "fork duplicates with copy-on-write isolation" "mrun bin/forktest.elf
+poweroff"
+expect "fork: child ok"
+expect "^fork: ok$"
+expect "exit code: 0"
+
+# virtio-blk proves the fast path against a copy of the image attached
+# as a second drive (same file twice is write-locked, so the scenario
+# boots its own copy): the shell reads LBA0 and the MiniFS superblock
+# off the virtio queue and checks both magics.
+cp "$IMAGE" "$HERE/build/vblk-bdd.img"
+SCENARIO_QEMU_ARGS="-drive file=$HERE/build/vblk-bdd.img,format=raw,if=none,id=vblk -device virtio-blk-pci,drive=vblk"
+scenario "virtio-blk serves the same sectors as IDE" "vblk
+poweroff"
+expect "vblk: LBA0 ok"
+expect "vblk: superblock ok"
+SCENARIO_QEMU_ARGS=""
+rm -f "$HERE/build/vblk-bdd.img"
+
+scenario_uefi "uefi stub proves firmware handshake and disk read"
+expect "uefi: MiniOS stub alive"
+expect "uefi: mmap entries="
+expect "uefi: LBA0 ok"
 
 scenario "append redirect adds instead of truncating" "cp src/fib.c log.txt
 cat src/fib.c >> log.txt

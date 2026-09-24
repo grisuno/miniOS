@@ -139,8 +139,7 @@ int redirect_begin(void) {
     return 1;
 }
 
-int redirect_commit(const char *path, int append_mode) {
-    KFILE *f;
+int redirect_commit(const char *path, int append_mode) {    KFILE *f;
     unsigned long written;
     int rc;
 
@@ -154,6 +153,26 @@ int redirect_commit(const char *path, int append_mode) {
     if (redir_len && written != redir_len) rc = -1;
     redir_len = 0;
     return rc;
+}
+
+/** Docstring: Take the captured output as a heap buffer instead of
+ * committing it to a file. Deactivates the capture, hands a malloc'd
+ * copy (caller frees) with its length, and resets the ring. The shell
+ * pipeline runner owns this: stage N's output becomes stage N+1's
+ * stdin. Fail-closed: NULL with len 0 on empty capture or OOM. */
+char *redirect_take(unsigned long *len_out) {
+    char *out = 0;
+    unsigned long i;
+    redir_active = 0;
+    if (len_out) *len_out = 0;
+    if (redir_overflow || redir_len == 0) { redir_len = 0; return 0; }
+    out = kmalloc(redir_len + 1);
+    if (!out) { redir_len = 0; return 0; }
+    for (i = 0; i < redir_len; i++) out[i] = redir_buf[i];
+    out[redir_len] = 0;
+    if (len_out) *len_out = redir_len;
+    redir_len = 0;
+    return out;
 }
 
 spinlock_t console_lock = SPINLOCK_INIT;

@@ -422,13 +422,17 @@ int mm_user_ensure_page(unsigned long cr3, unsigned long va) {
 }
 
 /* Copy one present user page from src_cr3 to the same VA in dst_cr3,
- * allocating the destination page. Used by fork-style clones. */
+ * allocating the destination page. Used by fork-style clones. The
+ * executable bit rides along: ensure_page maps NX, so an exec source
+ * left as-is would fault the clone's fetch with #PF/NX (seen as
+ * err=15 on the child's entry rip). */
 int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va) {
     volatile unsigned long *spml4;
     volatile unsigned long *spdpt;
     volatile unsigned long *spd;
     volatile unsigned long *spt;
     unsigned long src_phys;
+    unsigned long src_pte;
     unsigned long dst_phys;
     volatile unsigned long *dpml4;
     volatile unsigned long *dpdpt;
@@ -440,7 +444,8 @@ int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned lon
     spdpt = (volatile unsigned long *)(spml4[0] & PT_ADDR_MASK);
     spd = (volatile unsigned long *)(spdpt[0] & PT_ADDR_MASK);
     spt = (volatile unsigned long *)((spd[va >> PT_PD_INDEX_SHIFT]) & PT_ADDR_MASK);
-    src_phys = spt[(va >> 12) & 0x1FF] & PT_ADDR_MASK;
+    src_pte = spt[(va >> 12) & 0x1FF];
+    src_phys = src_pte & PT_ADDR_MASK;
     if (!src_phys) return -1;
     dpml4 = (volatile unsigned long *)(dst_cr3 & PT_ADDR_MASK);
     dpdpt = (volatile unsigned long *)(dpml4[0] & PT_ADDR_MASK);
@@ -448,6 +453,8 @@ int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned lon
     dpt = (volatile unsigned long *)((dpd[va >> PT_PD_INDEX_SHIFT]) & PT_ADDR_MASK);
     dst_phys = dpt[(va >> 12) & 0x1FF] & PT_ADDR_MASK;
     if (!dst_phys) return -1;
+    if (!(src_pte & PT_FLAGS_NX))
+        dpt[(va >> 12) & 0x1FF] &= ~(unsigned long)PT_FLAGS_NX;
     __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
     __asm__ volatile("cli");
     kmemcpy((void *)dst_phys, (void *)src_phys, 0x1000);
@@ -497,6 +504,7 @@ static void pt_free_data_pages(uint64_t cr3) {
 
 void pt_free_user(uint64_t cr3) {
     if (cr3 == 0) return;
+    cow_release_window(cr3);
     pt_free_data_pages(cr3);
     volatile unsigned long *pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
     volatile unsigned long *pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);

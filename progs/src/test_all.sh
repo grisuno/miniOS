@@ -47,6 +47,44 @@ cat /tmp/redir_test.txt
 echo PASS: append-ok
 rm /tmp/redir_test.txt
 
+# === PIPES ===
+echo pipe-data-123 | cat
+echo PASS: pipe-basic-ok
+echo pipe-chain-456 | cat | cat
+echo PASS: pipe-chain-ok
+echo pipe-err-789 2> /tmp/stderr_test.txt
+cat /tmp/stderr_test.txt
+echo PASS: stderr-redirect-ok
+rm /tmp/stderr_test.txt
+
+# === PANIC (demo, no halt) ===
+panic
+echo PASS: panic-ok
+
+# === VFS MOUNTS ===
+mount
+vfstest
+echo PASS: vfs-ok
+
+# === HTTPD (inject-driven server proof, no NIC needed) ===
+httpd --selftest
+echo PASS: httpd-ok
+
+# === CLIPBOARD ===
+clip hello-clip-test
+clip
+clip clear
+clip
+echo PASS: clip-ok
+
+# === FORK (isolated CoW) ===
+mrun bin/forktest.elf
+echo PASS: fork-ok
+
+# === VIRTIO-BLK (absent on IDE-only boots, proved with a virtio drive) ===
+vblk
+echo PASS: vblk-ok
+
 # === ECHO ===
 echo echo-test-123
 echo PASS: echo-ok

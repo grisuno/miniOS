@@ -26,7 +26,9 @@ static int kfile_bad_ptr(const void *p) {
     return p && (unsigned long)p >= 0x0000800000000000UL;
 }
 static int kfile_corrupt(const KFILE *f) {
-    return kfile_bad_ptr((const void *)f->rf) || kfile_bad_ptr((const void *)f->vfs);
+    return kfile_bad_ptr((const void *)f->rf) || kfile_bad_ptr((const void *)f->vfs) ||
+        (f->is_pipe && (kfile_bad_ptr((const void *)f->pring) ||
+                         kfile_bad_ptr((const void *)f->pring_ref)));
 }
 
 /* A write lands on the ramdisk only when the parent directory entry
@@ -62,6 +64,92 @@ static inline void fs_take(irqflags_t *flags) {
 
 static inline void fs_drop(irqflags_t flags) {
     spin_unlock_irqrestore(&fs_lock, flags);
+}
+
+/** Docstring: Create a connected pipe pair sharing one ring. The read
+ * end drains, the write end appends; the ring (and its refcount) dies
+ * with the last closed end. Fail-closed: any allocation failure frees
+ * what was taken and returns -1 with both outs zeroed. */
+int kpipe_pair(KFILE **rend_out, KFILE **wend_out) {
+    KFILE *r = 0, *w = 0;
+    pipe_ring_t *ring = 0;
+    unsigned char *buf = 0;
+    int *ref = 0;
+    if (!rend_out || !wend_out) return -1;
+    *rend_out = 0;
+    *wend_out = 0;
+    buf = kmalloc(PIPE_CAP_DEFAULT);
+    ring = (pipe_ring_t *)kmalloc(sizeof(pipe_ring_t));
+    ref = (int *)kmalloc(sizeof(int));
+    r = kmalloc(sizeof(KFILE));
+    w = kmalloc(sizeof(KFILE));
+    if (!buf || !ring || !ref || !r || !w) {
+        if (buf) kfree(buf);
+        if (ring) kfree(ring);
+        if (ref) kfree(ref);
+        if (r) kfree(r);
+        if (w) kfree(w);
+        return -1;
+    }
+    if (pipe_ring_init(ring, buf, PIPE_CAP_DEFAULT) != 0) {
+        kfree(buf); kfree(ring); kfree(ref); kfree(r); kfree(w);
+        return -1;
+    }
+    *ref = 2;
+    kmemset(r, 0, sizeof(KFILE));
+    kmemset(w, 0, sizeof(KFILE));
+    r->is_pipe = 1; r->pipe_write = 0; r->pring = ring; r->pring_ref = ref; r->ref = 1;
+    w->is_pipe = 1; w->pipe_write = 1; w->pring = ring; w->pring_ref = ref; w->ref = 1;
+    r->minifs_ino = -1;
+    w->minifs_ino = -1;
+    *rend_out = r;
+    *wend_out = w;
+    return 0;
+}
+
+/** Docstring: True when a pipe read end is empty with the writer still
+ * open (retry later, EAGAIN-style), false on EOF, on the write end, or
+ * on any non-pipe file. Lets the syscall layer tell "empty" from EOF,
+ * which kfread alone reports as 0 items in both cases. */
+int kpipe_empty_wopen(KFILE *f) {
+    irqflags_t flags;
+    int r = 0;
+    if (!f || !f->is_pipe || f->pipe_write || !f->pring) return 0;
+    fs_take(&flags);
+    r = (f->pring->count == 0u && f->pring->wopen) ? 1 : 0;
+    fs_drop(flags);
+    return r;
+}
+
+/** Docstring: True when f is the write end of a pipe. */
+int kpipe_is_write_end(KFILE *f) {
+    return f && f->is_pipe && f->pipe_write;
+}
+
+/** Docstring: Grow a pipe ring buffer, linearizing wrapped bytes first.
+ * Returns 0 on success, -1 past PIPE_CAP_MAX or on OOM. The ring keeps
+ * its readable bytes in order; only the capacity changes. */
+static int kpipe_grow(pipe_ring_t *ring) {
+    unsigned newcap;
+    unsigned char *nbuf;
+    unsigned i;
+    if (!ring || !ring->buf) return -1;
+    if (ring->cap >= PIPE_CAP_MAX) return -1;
+    newcap = ring->cap * 2u;
+    if (newcap > PIPE_CAP_MAX) newcap = PIPE_CAP_MAX;
+    nbuf = kmalloc(newcap);
+    if (!nbuf) return -1;
+    for (i = 0u; i < ring->count; i++) {
+        nbuf[i] = ring->buf[ring->head];
+        ring->head++;
+        if (ring->head >= ring->cap) ring->head = 0u;
+    }
+    kfree(ring->buf);
+    ring->buf = nbuf;
+    ring->cap = newcap;
+    ring->head = 0u;
+    ring->tail = ring->count;
+    return 0;
 }
 
 KFILE *kfopen(const char *path, const char *mode) {
@@ -150,6 +238,25 @@ int kfclose(KFILE *f) {
         kfree(f);
         return 0;
     }
+    if (f->is_pipe) {
+        int drop = 0;
+        fs_take(&flags);
+        if (f->pipe_write && f->pring) pipe_ring_close_writer(f->pring);
+        if (f->pring_ref) {
+            (*f->pring_ref)--;
+            if (*f->pring_ref <= 0) drop = 1;
+        } else drop = 1;
+        if (drop) {
+            if (f->pring) {
+                if (f->pring->buf) kfree(f->pring->buf);
+                kfree(f->pring);
+            }
+            if (f->pring_ref) kfree(f->pring_ref);
+        }
+        fs_drop(flags);
+        kfree(f);
+        return 0;
+    }
     fs_take(&flags);
     if (f->mode != 0) {
         rc = kfflush(f);
@@ -167,6 +274,19 @@ int kfgetc(KFILE *f) {
     if (f->is_console) {
         int c = console_getc();
         if (c == '\r') c = '\n';
+        return c;
+    }
+    if (f->is_pipe) {
+        irqflags_t flags;
+        unsigned char c;
+        int n;
+        if (!f->pring || kfile_corrupt(f)) return EOF;
+        if (f->pipe_write) return EOF;
+        fs_take(&flags);
+        n = pipe_ring_read(f->pring, &c, 1u);
+        fs_drop(flags);
+        if (n == PIPE_EMPTY) return EOF;
+        if (n <= 0) return EOF;
         return c;
     }
     if (f->minifs_ino >= 0) {
@@ -206,6 +326,7 @@ char *kfgets(char *buf, int size, KFILE *f) {
 
 int kfungetc(int c, KFILE *f) {
     if (!f || c == EOF || f->pos == 0) return EOF;
+    if (f->is_pipe) return EOF;
     f->pos--;
     return c;
 }
@@ -221,6 +342,21 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
         char *b = ptr; unsigned long got = 0;
         while (got < total) { int c = kfgetc(f); if (c == EOF) break; b[got++] = (char)c; }
         return got / size;
+    }
+    if (f->is_pipe) {
+        /* Read end drains, write end reads nothing. Empty with the
+         * writer open is EAGAIN-style (0 items, not EOF): the caller
+         * yields and retries. Empty with the writer closed is EOF. */
+        char *b = ptr;
+        int n;
+        if (!f->pring || kfile_corrupt(f)) return 0;
+        if (f->pipe_write) return 0;
+        fs_take(&flags);
+        n = pipe_ring_read(f->pring, (unsigned char *)b, (unsigned)total);
+        fs_drop(flags);
+        if (n == PIPE_EMPTY) return 0;
+        if (n <= 0) return 0;
+        return (unsigned long)n / size;
     }
     fs_take(&flags);
     if (f->minifs_ino >= 0) {
@@ -249,6 +385,28 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
         for (i = 0; i < bytes; i++) vga_putc(b[i]);
         return n;
     }
+    if (f->is_pipe) {
+        /* Write end appends (growing to PIPE_CAP_MAX, partial past
+         * it); read end writes nothing. Never blocks: a full ring
+         * past the cap reports what fit, never a silent drop. */
+        const unsigned char *b = ptr;
+        unsigned wrote = 0u;
+        if (!f->pring || kfile_corrupt(f)) return 0;
+        if (!f->pipe_write) return 0;
+        {
+            irqflags_t flags;
+            fs_take(&flags);
+            while (wrote < bytes) {
+                unsigned n = pipe_ring_write(f->pring, b + wrote,
+                                             (unsigned)(bytes - wrote));
+                wrote += n;
+                if (wrote >= bytes) break;
+                if (kpipe_grow(f->pring) != 0) break;
+            }
+            fs_drop(flags);
+        }
+        return wrote / size;
+    }
     if (f->mode != 1 && f->mode != 2) return 0;
     if (bytes > RD_DATA_MAX || f->wsize > RD_DATA_MAX - bytes) return 0;
     {
@@ -276,6 +434,7 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
 
 int kfseek(KFILE *f, long offset, int whence) {
     if (!f) return -1;
+    if (f->is_pipe) return -1;
     if (kfile_corrupt(f)) {
         kprintf("kfile: corrupt handle (rf=%lx vfs=%lx) on seek - refusing\n",
                 (unsigned long)f->rf, (unsigned long)f->vfs);

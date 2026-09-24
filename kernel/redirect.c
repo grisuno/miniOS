@@ -27,6 +27,24 @@ int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode) {
     *path = 0;
     *append_mode = 0;
     for (i = 0; i < *argc; i++) {
+        /* MiniOS merges stdout and stderr at the console (one vga_putc
+         * stream), so `2>` is the same capture as `>`: the alias
+         * exists so UNIX muscle memory works, never as a silent arg. */
+        if (argv[i][0] == '2' && argv[i][1] == '>') {
+            if (argv[i][2] == '>') {
+                *append_mode = 1;
+                if (argv[i][3]) *path = argv[i] + 3;
+            } else if (argv[i][2]) {
+                *path = argv[i] + 2;
+            }
+            if (!*path) {
+                if (i + 1 >= *argc) return -1;
+                *path = argv[i + 1];
+            }
+            *argc  = i;
+            argv[i] = 0;
+            return 1;
+        }
         if (argv[i][0] != '>') continue;
         if (argv[i][1] == '>') {
             *append_mode = 1;

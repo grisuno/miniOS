@@ -376,10 +376,14 @@ static int net_ping(const unsigned char ip[4]) {
 #define NET_TCP_ESTABLISHED 2
 #define NET_TCP_FIN_SENT    3
 #define NET_TCP_DEAD        4
+#define NET_TCP_LISTEN      5
+#define NET_TCP_SYN_RCVD    6
 
 struct net_tcp_sock {
     int           state;
     int           in_use;
+    int           bound;      /* bind() claimed a local port */
+    int           pending;    /* LISTEN: child index awaiting accept, -1 none */
     unsigned char dip[4];
     unsigned short dport;
     unsigned short sport;
@@ -411,6 +415,7 @@ static struct net_tcp_sock *net_sock_alloc(void) {
             kmemset(&net_sockets[i], 0, sizeof(net_sockets[i]));
             net_sockets[i].in_use = 1;
             net_sockets[i].state = NET_TCP_CLOSED;
+            net_sockets[i].pending = -1;
             return &net_sockets[i];
         }
     }
@@ -489,6 +494,9 @@ static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
 }
 
 /* Process one received TCP segment. */
+static int net_tcp_passive_open(struct net_tcp_sock *ls,
+        const unsigned char peer[4], unsigned short pport,
+        unsigned short lport, unsigned int pseq);
 static void net_tcp_rx(const unsigned char *ip, unsigned len) {
     const unsigned char *seg = ip + 20;
     unsigned seg_len = len - 20;
@@ -512,7 +520,25 @@ static void net_tcp_rx(const unsigned char *ip, unsigned len) {
             break;
         }
     }
-    if (found < 0) return;
+    if (found < 0) {
+        /* Passive open, first knock: a bare SYN to a listening port
+         * allocates the child, answers SYN-ACK and parks it on the
+         * listener for accept. Anything else (stray ACK/RST/data to
+         * no socket) is dropped, never answered. */
+        unsigned i;
+        if ((seg[13] & 0x12) != 0x02) return;
+        if (!net_sockets) return;
+        for (i = 0; i < NET_SOCKETS; i++) {
+            if (net_sockets[i].in_use &&
+                net_sockets[i].state == NET_TCP_LISTEN &&
+                net_sockets[i].sport == dport) {
+                net_tcp_passive_open(&net_sockets[i], ip + 12, sport,
+                        dport, seq);
+                return;
+            }
+        }
+        return;
+    }
     {
         struct net_tcp_sock *s = &net_sockets[found];
         unsigned flags = seg[13];
@@ -523,7 +549,24 @@ static void net_tcp_rx(const unsigned char *ip, unsigned len) {
             s->state = NET_TCP_DEAD;
             return;
         }
-        if (flags & 0x02) {                   /* SYN */
+        if (s->state == NET_TCP_SYN_RCVD) {
+            /* Passive open, second knock: a bare ACK completing the
+             * SYN-ACK handshake establishes; a SYN retransmit replays
+             * the SYN-ACK; anything else (early data, stray FIN) is
+             * dropped, never half-processed. */
+            if ((flags & 0x12) == 0x10 && ack == s->seq) {
+                s->state = NET_TCP_ESTABLISHED;
+                return;
+            }
+            if ((flags & 0x12) == 0x02 && seq + 1 == s->rx_next) {
+                net_tcp_xmit(s, 0x12, 0, 0, 0);
+                return;
+            }
+            return;
+        }
+        if (s->state == NET_TCP_LISTEN)
+            return;
+        if ((flags & 0x02) && s->state == NET_TCP_SYN_SENT) {  /* SYN */
             s->rx_next = seq + 1;
             s->ack = seq + 1;
             if (flags & 0x10) {               /* SYN+ACK */
@@ -532,6 +575,8 @@ static void net_tcp_rx(const unsigned char *ip, unsigned len) {
             }
             return;
         }
+        if (s->state != NET_TCP_ESTABLISHED && s->state != NET_TCP_FIN_SENT)
+            return;
         if (data_len > 0) {
             if (seq == s->rx_next) {
                 if (s->rx_tail > 0 && s->rx_head + data_len > sizeof(s->rx)) {
@@ -573,6 +618,34 @@ static void net_tcp_rx(const unsigned char *ip, unsigned len) {
             }
         }
     }
+}
+
+/* Passive open: park a SYN_RCVD child on a LISTEN socket and answer
+ * SYN-ACK. Single backlog slot: a second SYN while one pends is
+ * dropped (the peer retransmits), never queued unbounded. The SYN-ACK
+ * transmit fails closed without an ARP entry; the peer's SYN retry
+ * replays it once the entry resolves. */
+static int net_tcp_passive_open(struct net_tcp_sock *ls,
+        const unsigned char peer[4], unsigned short pport,
+        unsigned short lport, unsigned int pseq) {
+    struct net_tcp_sock *c;
+    int idx;
+    if (!ls || ls->state != NET_TCP_LISTEN || ls->pending >= 0) return 0;
+    c = net_sock_alloc();
+    if (!c) return 0;
+    idx = net_sock_index(c);
+    if (idx < 0) { c->in_use = 0; return 0; }
+    kmemcpy(c->dip, peer, 4);
+    c->dport = pport;
+    c->sport = lport;
+    c->seq = net_tcp_seq;
+    net_tcp_seq += 0x1000;
+    c->rx_next = pseq + 1;
+    c->ack = pseq + 1;
+    c->state = NET_TCP_SYN_RCVD;
+    net_tcp_xmit(c, 0x12, 0, 0, 1);
+    ls->pending = idx;
+    return 1;
 }
 
 /* Blocking connect of an allocated socket to an IPv4 address. */
@@ -781,6 +854,109 @@ void net_close(int fd) {
 }
 
 /* ================================================================
+ *  Server side: bind / listen / accept
+ * ================================================================ */
+
+/** Docstring: Allocate a socket bound to a local port and listening.
+ * Returns the socket index, or -1 when the table is full. */
+int net_listen(unsigned short port) {
+    struct net_tcp_sock *s;
+    if (port == 0) return -1;
+    s = net_sock_alloc();
+    if (!s) return -1;
+    s->sport = port;
+    s->bound = 1;
+    s->pending = -1;
+    s->state = NET_TCP_LISTEN;
+    return net_sock_index(s);
+}
+
+/** Docstring: Take a pending child off a LISTEN socket without
+ * waiting. Returns the child index, or -1 when no handshake has
+ * completed yet. The child is ESTABLISHED and owned by the caller. */
+int net_accept_nb(int fd) {
+    int child;
+    if (!net_sockets || fd < 0 || fd >= NET_SOCKETS) return -1;
+    if (!net_sockets[fd].in_use || net_sockets[fd].state != NET_TCP_LISTEN)
+        return -1;
+    child = net_sockets[fd].pending;
+    if (child < 0 || child >= NET_SOCKETS) return -1;
+    if (!net_sockets[child].in_use ||
+        net_sockets[child].state != NET_TCP_ESTABLISHED)
+        return -1;
+    net_sockets[fd].pending = -1;
+    return child;
+}
+
+/** Docstring: Blocking accept with a deadline: poll the NIC until a
+ * child establishes or timeout_ms passes. Returns the child index,
+ * or -1 on timeout. Never blocks past the deadline, never spins
+ * without polling (the peer's ACK arrives through rtl_poll). */
+int net_accept(int fd, unsigned long timeout_ms) {
+    unsigned long deadline = net_time_ms() + timeout_ms;
+    int child;
+    if (!net_sockets || fd < 0 || fd >= NET_SOCKETS) return -1;
+    if (!net_sockets[fd].in_use || net_sockets[fd].state != NET_TCP_LISTEN)
+        return -1;
+    for (;;) {
+        rtl_poll();
+        child = net_accept_nb(fd);
+        if (child >= 0) return child;
+        if (net_time_ms() > deadline) return -1;
+    }
+}
+
+/** Docstring: Socket state for diagnostics (the `net` builtin and the
+ * httpd selftest). -1 on a wild fd. */
+int net_sock_state(int fd) {
+    if (!net_sockets || fd < 0 || fd >= NET_SOCKETS) return -1;
+    if (!net_sockets[fd].in_use) return -1;
+    return net_sockets[fd].state;
+}
+
+/** Docstring: Live sequence numbers for the httpd selftest's injected
+ * ACK (the only in-OS reader of another socket's seq). -1 on a wild
+ * fd, else 0 with both values stored. */
+int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out) {
+    if (!net_sockets || fd < 0 || fd >= NET_SOCKETS) return -1;
+    if (!net_sockets[fd].in_use) return -1;
+    if (seq_out) *seq_out = net_sockets[fd].seq;
+    if (ack_out) *ack_out = net_sockets[fd].ack;
+    return 0;
+}
+
+/** Docstring: Test hook: feed one TCP segment from a fake peer through
+ * the production demux (checksums computed with the stack's own
+ * helpers, so a malformed injection is dropped exactly like wire
+ * garbage). The httpd selftest owns this: SYN, ACK, data and FIN walk
+ * the real handshake with no NIC involved. Bounded by NET_TX_MAX,
+ * fail-closed past it. */
+int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport,
+        unsigned short lport, unsigned char flags, unsigned int seq,
+        unsigned int ack, const unsigned char *data, unsigned datalen) {
+    unsigned char ip[20 + 20 + NET_TCP_MSS];
+    unsigned char *seg = ip + 20;
+    if (!peer || datalen > NET_TCP_MSS) return -1;
+    kmemset(ip, 0, 20);
+    ip[0] = 0x45;
+    kmemcpy(ip + 12, peer, 4);
+    kmemcpy(ip + 16, net_our_ip, 4);
+    kmemset(seg, 0, 20);
+    net_put16(seg, pport);
+    net_put16(seg + 2, lport);
+    net_put32(seg + 4, seq);
+    net_put32(seg + 8, ack);
+    seg[12] = 0x50;
+    seg[13] = flags;
+    net_put16(seg + 14, NET_TCP_WINDOW);
+    if (data && datalen > 0) kmemcpy(seg + 20, data, datalen);
+    net_put16(seg + 16, net_tcp_checksum(peer, net_our_ip, pport, lport,
+            seg, 20 + datalen));
+    net_tcp_rx(ip, 20 + 20 + datalen);
+    return 0;
+}
+
+/* ================================================================
  *  Linux syscall ABI
  * ================================================================ */
 
@@ -806,8 +982,52 @@ long net_sys_connect(long fd, long sockaddr, long addrlen) {
     return 0;
 }
 
-long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen) {
-    int rc;
+long net_sys_bind(long fd, long sockaddr, long addrlen) {
+    const unsigned char *sa = (const unsigned char *)sockaddr;
+    unsigned short port;
+    struct net_tcp_sock *s;
+    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS || addrlen < 16) return -22;
+    s = &net_sockets[fd - NET_FD_BASE];
+    if (!s->in_use || s->state != NET_TCP_CLOSED || s->bound) return -22;
+    if (sa[0] != 2 || sa[1] != 0) return -22; /* AF_INET */
+    port = net_get16(sa + 2);
+    if (port == 0) return -22;
+    s->sport = port;
+    s->bound = 1;
+    return 0;
+}
+
+long net_sys_listen(long fd, long backlog) {
+    struct net_tcp_sock *s;
+    (void)backlog;
+    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    s = &net_sockets[fd - NET_FD_BASE];
+    if (!s->in_use || !s->bound || s->state != NET_TCP_CLOSED) return -22;
+    s->pending = -1;
+    s->state = NET_TCP_LISTEN;
+    return 0;
+}
+
+long net_sys_accept(long fd, long sockaddr, long addrlen) {
+    struct net_tcp_sock *s;
+    int child;
+    unsigned char *sa = (unsigned char *)sockaddr;
+    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    s = &net_sockets[fd - NET_FD_BASE];
+    if (!s->in_use || s->state != NET_TCP_LISTEN) return -22;
+    child = net_accept(fd - NET_FD_BASE, NET_ACCEPT_TMO_MS);
+    if (child < 0) return -11;
+    if (sockaddr && addrlen >= 16) {
+        struct net_tcp_sock *c = &net_sockets[child];
+        sa[0] = 2; sa[1] = 0;
+        net_put16(sa + 2, c->dport);
+        kmemcpy(sa + 4, c->dip, 4);
+        kmemset(sa + 8, 0, 8);
+    }
+    return NET_FD_BASE + child;
+}
+
+long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen) {    int rc;
     (void)to; (void)tolen;
     if (flags) return -22;
     if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;

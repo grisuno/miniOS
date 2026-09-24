@@ -844,6 +844,65 @@ static inline int wl_commit_decode(const unsigned char *src, int len,
     return WL_ERR_OK;
 }
 
+/** Shared text clipboard (terminal copy, vedit paste). One text slot
+ * per compositor, plain bytes (no NUL required), capped at
+ * WL_CLIP_MAX. Object WL_ID_CLIPBOARD carries SET (publish) and GET
+ * (fetch); the kernel clip.c store and the shell `clip` builtin speak
+ * the same bounds, so a client publishing past the cap is refused at
+ * encode, never truncated on the wire. */
+#define WL_ID_CLIPBOARD 6u
+#define WL_OP_CLIPBOARD_SET 0u
+#define WL_OP_CLIPBOARD_GET 1u
+#define WL_CLIP_MAX 4096
+
+static inline int wl_clip_encode(unsigned char *dst, int cap,
+        const unsigned char *text, unsigned n) {
+    unsigned total;
+    unsigned pad;
+    unsigned i;
+    if (!dst)
+        return WL_ERR_BOUND;
+    if ((!text && n > 0u) || n > (unsigned)WL_CLIP_MAX)
+        return WL_ERR_BOUND;
+    total = 4u + n;
+    pad = (4u - (total & 3u)) & 3u;
+    total += pad;
+    if (cap < 0 || (unsigned)cap < total)
+        return WL_ERR_BOUND;
+    if (wl_u32_encode(dst, cap, 0, n) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    for (i = 0u; i < n; i++)
+        dst[4 + i] = text[i];
+    for (i = 0u; i < pad; i++)
+        dst[4 + n + i] = 0;
+    return (int)total;
+}
+
+static inline int wl_clip_decode(const unsigned char *src, int len,
+        unsigned char *dst, int dcap, unsigned *n_out) {
+    unsigned n = 0u;
+    unsigned total;
+    unsigned pad;
+    unsigned i;
+    if (!src || !dst || !n_out)
+        return WL_ERR_BOUND;
+    if (wl_u32_decode(src, len, 0, &n) != WL_ERR_OK)
+        return WL_ERR_BOUND;
+    if (n > (unsigned)WL_CLIP_MAX)
+        return WL_ERR_BOUND;
+    total = 4u + n;
+    pad = (4u - (total & 3u)) & 3u;
+    total += pad;
+    if (len < 0 || (unsigned)len < total)
+        return WL_ERR_TRUNC;
+    if (dcap < 0 || (unsigned)dcap < n)
+        return WL_ERR_BOUND;
+    for (i = 0u; i < n; i++)
+        dst[i] = src[4 + i];
+    *n_out = n;
+    return WL_ERR_OK;
+}
+
 /** Server-to-client input event, one fixed frame per focused box.
  * The server owns PS/2 while it owns the display, so clients never
  * touch the port in client mode: they poll their <box>.ev file and

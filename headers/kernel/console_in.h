@@ -29,4 +29,13 @@ int console_job_get(void);
  * console_getc/console_peek serves it first. Drops the byte when full. */
 void console_ungetc(unsigned char c);
 
+/** Docstring: Pipeline stdin override: the next console_getc calls serve
+ * len bytes from data, then report EOF (-1) instead of blocking on the
+ * live console until console_stdin_clear runs. The shell pipeline runner
+ * owns this: stage N+1 reads stage N's captured output as its stdin.
+ * Bounded by PIPE_CAP_MAX, fail-closed (0) past it or on OOM. */
+int console_stdin_push(const char *data, unsigned long len);
+void console_stdin_clear(void);
+int console_stdin_active(void);
+
 #endif

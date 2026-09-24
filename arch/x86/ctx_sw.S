@@ -186,6 +186,19 @@ user_trampoline:
         iretq
 
 /*
+ * fork_trampoline -- first entry of a fork child. Identical to
+ * user_trampoline except rax is zeroed first: switch_to restores
+ * every GPR from the PCB except rax (its own scratch), so a fork
+ * child would otherwise resume with whatever rax the previous
+ * occupant left. The fork contract (0 in the child) needs it here,
+ * in the one instruction before the iretq consumes the frame.
+ */
+        .globl  fork_trampoline
+fork_trampoline:
+        xorl    %eax, %eax
+        iretq
+
+/*
  * resume_iretq -- resume a process preempted from ring 3.
  * isr_dispatch copies the preempted trap frame to the process's own
  * kernel stack, points ctx.rsp at the copy and ctx.rip here; switch_to

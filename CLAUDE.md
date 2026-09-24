@@ -3155,11 +3155,14 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (83 PASS):
+Categories tested (92 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
-- **Redirects**: `>` and `>>`
+- **Redirects**: `>`, `>>` and `2>` (merged-streams alias)
+- **Pipes**: `|` basic, chained, `cat` stdin terminator
 - **Builtins**: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, fx (report, melts climb on minimize/restore), hash
+- **Observability**: trace verbose, strace, ltrace, vmmap, schedtop, irqstat, bootlog, gdb, gdb-regs, gdb-dump-hex
+- **Panic/VFS/clip/fork/httpd/vblk**: panic demo, mount/vfstest, clipboard set/clear, CoW forktest, httpd selftest, vblk absent-proof
 - **Observability**: trace verbose, strace, ltrace, vmmap, schedtop, irqstat, bootlog, gdb, gdb-regs, gdb-dump-hex
 - **Toolchain**: minigcc.o compile, ld.o link, run ELF, run CVM
 - **Bare names**: ld.o, .elf, .cvm without `run` prefix
@@ -3316,7 +3319,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (83 PASS)
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (92 PASS)
 ./tools/test_bdd.sh  # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -3588,6 +3591,178 @@ dispatch; the existing direct ramdisk/MiniFS paths remain for backward
 compatibility.  New filesystem additions (FAT32, EXT2) register a prefix
 and implement `vfs_ops_t` without touching the kernel core.
 
+### Dynamic mounts, pipes, clipboard, fork, httpd (2026-09 session)
+I implemented the user-facing half of the UNIX-way plan in one session,
+one contract per feature, each with SDD spec, TDD host suite, BDD
+scenarios and scoped mutants (full `mutate.sh` + `test_bdd.sh` only at
+the end). What follows is what I proved and the mechanism behind each,
+so the next session reuses the contracts instead of rediscovering them.
+
+- **Pipes and `2>` (`headers/pipe.h`, `fs/kfile.c`, `kernel/syscalls.c`,
+  `kernel/shell.c`, `kernel/console_in.c`, `kernel/console.c`,
+  `kernel/redirect.c`). The shell runs pipelines sequentially: every
+  stage runs to completion, its stdout is captured, and the capture
+  becomes the next stage's stdin. Two doors each way because the two
+  program kinds write differently: builtins and ET_REL children write
+  `vga_putc` (caught by `redirect_begin`/`redirect_take`), ET_EXEC
+  children write sys_write fd 1 (caught by a `kfd_table[1]` pipe
+  override installed per stage). Two stdin doors match:
+  `console_stdin_push` for the console reader and a `kfd_table[0]`
+  override for sys_read fd 0; a drained pipe reports EOF (-1) instead
+  of blocking on hardware. Linux pipe/dup/dup2 (22/32/33) work for
+  ring-3 threads on refcounted KFILE pipe ends (empty+open is -11,
+  drained+closed is 0). `2>` is an alias of `>` because MiniOS merges
+  both streams at the console. `cat` with no arguments copies stdin
+  when piped (still a usage diagnostic interactively). BDD asserts
+  anchored output lines (unanchored expects match the command echo
+  itself and prove nothing). Host suite `make test-pipe`.
+- **Panic screen (`headers/panic.h`, `kernel/panic.c`, `panic`
+  builtin). The fault handler keeps its serial forensics first, then
+  unrecoverable faults paint vector/err/RIP/RSP plus up to five
+  frame-pointer returns (validated low-half + image/heap/window/low
+  stacks, re-entry halts) on the framebuffer terminal, raw VGA text
+  (white on red) or serial-only under a graphics mode, and halt.
+  Recovering ring-3 faults and killed threads never reach the screen.
+  `panic` demos it without halting. Host suite `make test-panic`.
+- **Dynamic VFS mounts (`fs/vfs.c`, `mount`/`unmount`/`vfstest`).
+  Mounts carry open refcounts under `vfs_lock`; `vfs_open` bumps,
+  `vfs_close` drops, longest-prefix-first is now real (the contract
+  always claimed it while the code did first-match, which buried
+  every mount under the root). Unmount refuses busy with -EBUSY and
+  the pinned root with -EINVAL; duplicates and overlong prefixes
+  refuse at register. `mem:` is a volatile driver proving the
+  lifecycle end to end. Append mode rebases pos from the live size in
+  `vfs_write`, so a reopened append handle cannot overwrite the head.
+- **Thread-aware schedtop (`kernel/sched.c`). Rows carry tgid (lowest
+  live pid sharing the VMA view) and T/P (CLONE_VM flag), so ten
+  `thdemo` threads read as one group with ten tick counters; per-CPU
+  rows are unchanged.
+- **TCP server + httpd (`net/net.c`, `headers/net.h`,
+  `headers/httpd.h`, `httpd` builtin). LISTEN/SYN_RCVD states beside
+  the client machine: bare SYN to a listening port allocates a child
+  and answers SYN-ACK (single backlog slot, second SYN drops for the
+  peer to retry), the exact ACK establishes, wrong ACKs and early
+  data drop. `net_listen`/`net_accept_nb`/`net_accept` (deadline
+  bounded) plus Linux bind(49)/listen(50)/accept(43) with the same
+  sanitize discipline as connect. `net_test_inject_tcp` feeds
+  checksummed peer segments through the production demux so
+  `httpd --selftest` proves handshake, ack guard, request, 200 and
+  404 with no NIC. `httpd` serves static files from any VFS root
+  (GET only, traversal/overlong/version refused, every failure a
+  status code). Host suite `make test-httpd`. Live hostfwd proof is
+  environment-blocked here (slirp accepts but never delivers to the
+  guest NIC: rx stays 0), so `--once` exists for manual
+  host-curl verification with `-hostfwd`.
+- **Clipboard (`kernel/clip.c`, syscalls 249/250, `headers/httpd.h`
+  sibling `wl_clip_*` in `progs/wl/wl_mini.h`, `clip` builtin). One
+  4 KB kernel slot: set refuses past the cap, get refuses empty and
+  undersize (never a truncated paste), clear empties. ABI v9 carries
+  the two numbers in the checksum (Linux owns 249/250 as
+  request_key/keyctl, unused by every ring-3 program here).
+  Terminal selection and vedit paste on top are Phase 2.
+- **Copy-on-write fork (`kernel/mm/cow.c`, `kernel/sched.c`
+  `do_fork`/`vma_ctx_copy`, `arch/x86/ctx_sw.S`
+  `fork_trampoline`, `progs/src/forktest.c`). Isolated non-CLONE_VM
+  processes only (legacy pid 0 and threads refuse -ENOSYS). The
+  child shares present data pages read-only (512-entry phys table,
+  full/OOM degrades that page to eager copy) with NX preserved; the
+  first write in either window privatizes through a #PF resolve that
+  runs fenced (ring-3 faults inherit IF=1, and a tick preempting the
+  resolve deadlocks on `cow_lock` silently). VMA contexts deep-copy
+  with pointer rebase. The child resumes at the trapped syscall
+  return (`sc_rip` + parked user rsp) through `fork_trampoline`,
+  which zeroes rax: `switch_to` restores every GPR from the PCB
+  except rax (its own scratch), so `user_trampoline` would resume
+  the child with garbage and it would take the parent branch (seen
+  live as a doubled "parent waiting" wedge). `mm_copy_user_page`
+  preserves the NX bit (eager clones faulted fetch as err=15
+  before). `pt_free_user` releases shares first. FSBASE and the FPU
+  image inherit live (the child never re-runs glibc init).
+  `mrun bin/forktest.elf` proves both-direction isolation and
+  reaping. `check_fork_stubs.py` now gates vfork/execve only.
+- **virtio-blk (`drivers/virtio_blk.c`,
+  `headers/drivers/virtio_blk.h`, `headers/drivers/pci.h`,
+  `vblk` builtin). PCI config access unified from rtl8139's static
+  copy into `drivers/pci.h` (host suite `make test-pci`). Legacy
+  queue: 12 KB contiguous area (desc/avail/used for up to 256),
+  QueueNum written (a zero default processes nothing), single
+  in-flight request, bounded poll, ISR acked per completion.
+  Request header and status byte are heap objects: KASLR slides
+  statics out from under DMA (the signature bug of this driver:
+  completions landed nowhere while the device reported success).
+  `vblk` reads LBA 0 and the MiniFS superblock off the queue and
+  checks both magics; the BDD slice attaches the image as a second
+  virtio drive (same file twice is write-locked, so it boots a
+  copy). IDE stays the default path; MiniFS-on-virtio migration is
+  future work.
+- **UEFI stub (`boot/uefi_stub.c`, `make uefi`, `uefi.img`,
+  `scenario_uefi`). A freestanding PE32+ app (i386pep link, no
+  gnu-efi) proving entry, ConOut+COM1, the BootServices table, a
+  full memory-map read and a BlockIo LBA 0 read with the MBR
+  signature. Three firmware-call facts this stub taught me, kept
+  here so nobody re-learns them: calls use the MS x64 ABI
+  (`__attribute__((ms_abi))`, SysV calls hang); every table struct
+  carries its 24-byte header (a missing one shifts every slot by
+  three and jumps at the "BOOTSERV" magic, #GP with RIP="BOOTSERV");
+  `unsigned long` is 8 bytes, so hand-rolled `u32` typedefs must be
+  `unsigned int` (the silent shift behind weeks of confusion
+  compressed into one line). GOP is correctly reported unavailable
+  on the video-less OVMF build here, not a stub failure. Kernel
+  handoff (ExitBootServices + stage2 contract) is Phase 2.
+- **Surveyed, not built**: USB-HID needs a full xHCI+USB stack
+  (months, the real-metal blocker); E1000/AHCI reuse the PCI
+  discovery virtio-blk already owns; runtime TrueType stays out
+  (stb_truetype is float-heavy, kernel builds -mno-sse: fonts
+  remain build-time bitmaps).
+
+### Harness repairs found by the mutation gate (same session)
+The full `mutate.sh` run is itself a test of the harness. It caught
+four, all fixed and re-proven in isolation before the gate closed:
+
+- **Unquoted eval (`tools/mutate.sh`).** Mutants were applied with
+  `eval "sed -i '$expr'"`. An expression carrying a literal quote
+  (vol-sign-ignored's `-`) re-quotes under eval: sed receives a
+  de-quoted pattern, matches nothing, and the mutant reports BROKEN
+  while the anchor checker (plain sed, no shell layer) passes. Every
+  table entry is a single `s///` program, so eval bought nothing:
+  the runner now calls `sed -i "$expr"` directly, the same ground
+  truth the checker uses. Mechanism, not incident: never wrap a data
+  substitution in eval; a checker that bypasses the shell cannot
+  catch shell-layer mangling.
+- **SOURCES allowlist gaps (`tools/mutate.sh`).** Six
+  mutation-target files were missing from the backup/restore
+  allowlist (pre-existing futex/batch/rcu/percpu/lisp, plus my own
+  httpd.h): their mutants leaked, stacked, and every stacked kill
+  was vacuous. The repo comment already named this failure mode;
+  the allowlist now covers all 55 targets (audited
+  programmatically), and the stacked verdicts were re-run isolated:
+  7/7 smpscale, 7/7 lisp, 4/4 httpd, all KILLED.
+- **File-level routing collision (`tools/mutate.sh`).** My
+  `cow.c|ctx_sw.S → fork-slice` routing sent the pre-existing
+  fpu-no-save to 3 unrelated fork scenarios, where it survived
+  vacuously. Routing is by mutant name for that file now
+  (fpu-no-save runs the fptest slice: KILLED). fpu-no-restore still
+  survives the fptest slice: genuine pre-existing gap (fptest never
+  diverges FPU state across threads), like paint-blit-transposed in
+  the paint slice. Both are recorded SURVIVED, neither is mine.
+- **Unescaped quotes in the table (`tools/mutate.sh`).**
+  `MUTATIONS="..."` is plain double quotes, so a literal `"` inside
+  toggles shell quoting and de-quotes the value (rlimit-as-shell-
+  ignored's `"as"` became bare `as`: checker passes, runner
+  errors). One line in the whole table had the bug; quotes are now
+  `\"`-escaped and the mutant dies. Rule for new rows: escape every
+  `"` and keep `\\[`-style BRE escapes doubled, exactly like the
+  neighboring rows.
+
+Final gate of this session: 171 KILLED, 2 SURVIVED (both pre-existing
+genuine gaps above), 0 BROKEN. Full BDD on this tree: 448 passed, 15
+failed; 4 failures reproduce byte-identical on a clean-HEAD baseline
+image (cvm-argv exit 12, ps-hello anchor, bg-gfx focus, fx-melts
+count), thdemo/fptest/pageup are the documented flaky/limited areas,
+and the freedom-fetch/exit-130 remainder is fixture-timing sensitive
+(each passes in isolation). Every scenario touching new code passes;
+`sh src/test_all.sh` prints 92 PASS with zero FAIL.
+
 ### VMA (Virtual Memory Areas)
 A red-black tree for mmap tracking, implemented in its own contract
 `vma.c` with the single header `vma.h` (previously inlined in `loader.c`
@@ -3676,6 +3851,11 @@ The table is organized as:
 - 0-199: Linux ABI compatible syscalls (read, write, brk, mmap, ...)
 - 200-299: MiniOS custom syscalls (networking, audio, graphics, ...)
 - 300+: Reserved for future use
+
+Linux numbers implemented late but fully: pipe/dup/dup2 (22/32/33, KFILE
+pipes), accept/bind/listen (43/49/50, server TCP). ABI v9 adds the
+clipboard pair (249/250, in the checksum); 243-245 stay reserved for
+Wayland-mini and out of the checksum until the kernel answers them.
 
 All runtime bindings (Lua `minios.c`, MicroPython `minios_module.c`, Lisp
 `lisp.c`, DOOM
@@ -3830,7 +4010,7 @@ CI gates enforce architectural constraints:
 ```bash
 make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (83 PASS)
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (92 PASS)
 ./tools/test_bdd.sh          # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -3857,6 +4037,7 @@ make test-doomedit   # doom PWAD writer + C/Python roundtrip green
 make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
 make test-fx         # DOOM-melt column contract suite green
+make test-pipe test-panic test-pci test-httpd  # pipe ring + panic walk + PCI + httpd wire green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
 python3 tools/check_abi_numbers.py  # Phase 0.6: syscall numbers match Linux x86-64 (also in lint)
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD

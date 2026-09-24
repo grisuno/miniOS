@@ -1,0 +1,5 @@
+# MiniOS startup commands (etc/init)
+# One shell command per line. Lines starting with # are comments.
+# Executed once at boot before the first prompt. A missing file
+# means a plain boot with no startup commands.
+minifetch

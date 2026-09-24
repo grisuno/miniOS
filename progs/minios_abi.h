@@ -38,7 +38,7 @@
  * It is verified at build time (kernel _Static_asserts), not at load time:
  * see the ABI Version note above for why the loader cannot gate on it.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 8
+#define MINIOS_ABI_VERSION 9
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -76,7 +76,9 @@
     MINIOS_SYS_RLIMIT            ^ \
     MINIOS_SYS_PCM2_OPEN         ^ \
     MINIOS_SYS_PCM2_WRITE        ^ \
-    MINIOS_SYS_PCM2_CLOSE          \
+    MINIOS_SYS_PCM2_CLOSE        ^ \
+    MINIOS_SYS_CLIP_SET          ^ \
+    MINIOS_SYS_CLIP_GET            \
 )
 
 /* =========================================================================
@@ -291,6 +293,15 @@
 #define MINIOS_SYS_PCM2_OPEN     246
 #define MINIOS_SYS_PCM2_WRITE    247
 #define MINIOS_SYS_PCM2_CLOSE    248
+/* Shared text clipboard (terminal copy, vedit paste): SET copies len
+ * bytes in (refused past 4096, never truncated), GET copies out up to
+ * the caller's cap (refused when empty or undersize). Linux x86-64
+ * owns 249 (request_key) and 250 (keyctl); no ring-3 program MiniOS
+ * runs calls either (no keyutils in the static set), so the MiniOS
+ * window reuses them the same way 200+ reuses other Linux numbers.
+ * Bumping the ABI version with the addition, per contract. */
+#define MINIOS_SYS_CLIP_SET      249
+#define MINIOS_SYS_CLIP_GET      250
 #define MINIOS_PCM2_NONBLOCK     1
 /* pcm2 geometry: 8-bit mono at MINIOS_PCM2_RATE, DMA fragments of
  * MINIOS_PCM2_FRAG bytes (~11.6 ms). A writer produces whole

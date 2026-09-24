@@ -73,7 +73,7 @@ long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6) {
 
 long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return -38;
+    return do_fork();
 }
 
 long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6) {

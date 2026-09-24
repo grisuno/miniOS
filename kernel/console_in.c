@@ -11,10 +11,49 @@
 #include "drivers/kbd.h"
 #include "vga_fb.h"
 #include "kernel/console_in.h"
+#include "pipe.h"
 
 #define PB_LEN 8
 static unsigned char pb_buf[PB_LEN];
 static int pb_head, pb_tail;
+
+/* Pipeline stdin override (see console_in.h): heap buffer served ahead
+ * of every live source while set. Drained means EOF (-1), never a block
+ * on hardware, so `grep x` at a pipe tail terminates instead of hanging
+ * on the keyboard. Single-owner (the shell runner), never nested. */
+static unsigned char *pipe_stdin_buf;
+static unsigned long pipe_stdin_len;
+static unsigned long pipe_stdin_pos;
+static int pipe_stdin_on;
+
+/** Docstring: Install a pipeline stdin buffer (see header). */
+int console_stdin_push(const char *data, unsigned long len) {
+    unsigned long i;
+    if (!data || len == 0u || len > PIPE_CAP_MAX) return 0;
+    console_stdin_clear();
+    pipe_stdin_buf = kmalloc(len);
+    if (!pipe_stdin_buf) return 0;
+    for (i = 0u; i < len; i++) pipe_stdin_buf[i] = (unsigned char)data[i];
+    pipe_stdin_len = len;
+    pipe_stdin_pos = 0u;
+    pipe_stdin_on = 1;
+    return 1;
+}
+
+/** Docstring: Release the pipeline stdin buffer, back to live console. */
+void console_stdin_clear(void) {
+    if (pipe_stdin_buf) kfree(pipe_stdin_buf);
+    pipe_stdin_buf = 0;
+    pipe_stdin_len = 0u;
+    pipe_stdin_pos = 0u;
+    pipe_stdin_on = 0;
+}
+
+/** Docstring: True while a pipeline stdin buffer is installed (drained
+ * or not). Lets sys_read tell piped EOF from a live block. */
+int console_stdin_active(void) {
+    return pipe_stdin_on;
+}
 
 static int pb_empty(void) { return pb_head == pb_tail; }
 static int pb_count(void) { return (pb_tail - pb_head + PB_LEN) % PB_LEN; }
@@ -131,6 +170,11 @@ static int consume_page_after_esc(void) {
  * pushback FIFO, so once it returns console_getc() simply serves the FIFO
  * again. */
 int console_getc(void) {
+    if (pipe_stdin_on) {
+        if (pipe_stdin_pos < pipe_stdin_len)
+            return pipe_stdin_buf[pipe_stdin_pos++];
+        return -1;
+    }
     if (!pb_empty()) return pb_pop();
     int c = raw_blocking_getc();
     if (c != KEY_ESC) return c;
