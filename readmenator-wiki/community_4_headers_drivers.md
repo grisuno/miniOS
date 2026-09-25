@@ -56,7 +56,6 @@ This community groups 4 file(s) rooted at `headers/drivers` with dominant langua
 ## Connections
 
 - [EXTRACTED] depends_on community 4 <-> 2 (strength 0.9): Extracted import edge crosses communities: drivers/virtio_blk.c imports headers/kernel.h.
-- [INFERRED] shares_context community 0 <-> 4 (strength 0.5): Inferred shared context (language c) with no import path between community 0 (headers) and community 4 (headers/drivers).
 
 ## Risks
 

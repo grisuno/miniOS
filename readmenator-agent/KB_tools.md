@@ -527,10 +527,10 @@
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
   - `scenario_uefi` (function, line 167)
-  - `http_server_start` (function, line 983)
-  - `http_server_stop` (function, line 990)
-  - `http_fixture_start` (function, line 995)
-  - `http_fixture_stop` (function, line 1002)
+  - `http_server_start` (function, line 993)
+  - `http_server_stop` (function, line 1000)
+  - `http_fixture_start` (function, line 1005)
+  - `http_fixture_stop` (function, line 1012)
 
 ## tools/test_call_align.py
 - Layer: testing

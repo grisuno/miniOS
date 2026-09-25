@@ -422,15 +422,23 @@
 - Doc: Docstring: Host test for the vedit IDE build contract (make test-vedit).
 - Language: c
 - Symbols:
-  - `t_has_ext` (function, line 33) `static int t_has_ext(const char *fname, const char *ext)`
-  - `t_base_of` (function, line 44) `static int t_base_of(const char *fname, char *dst, size_t cap)`
-  - `t_join` (function, line 64) `static int t_join(const char *dir, const char *base, const char *ext,
+  - `t_has_ext` (function, line 40) `static int t_has_ext(const char *fname, const char *ext)`
+  - `t_base_of` (function, line 51) `static int t_base_of(const char *fname, char *dst, size_t cap)`
+  - `t_join` (function, line 71) `static int t_join(const char *dir, const char *base, const char *ext,
                   char *dst...`
-  - `t_link_fmt` (function, line 80) `static int t_link_fmt(const char *s)`
-  - `t_lang_of` (function, line 94) `static int t_lang_of(const char *fname)`
-  - `t_run_kind` (function, line 114) `static int t_run_kind(const char *fname)`
-  - `main` (function, line 123) `int main(void)`
-  - `CHECK` (macro, line 26) `#define CHECK(cond, msg)`
+  - `t_link_fmt` (function, line 87) `static int t_link_fmt(const char *s)`
+  - `t_lang_of` (function, line 101) `static int t_lang_of(const char *fname)`
+  - `t_run_kind` (function, line 121) `static int t_run_kind(const char *fname)`
+  - `t_str_case` (function, line 131) `static void t_str_case(char *s, int mode)`
+  - `t_transpose` (function, line 157) `static void t_transpose(char *s, int len, int pos)`
+  - `t_mclass` (function, line 166) `static int t_mclass(int c, const char *cls)`
+  - `t_matom` (function, line 188) `static int t_matom(const char *pat, int c, int *atom_len)`
+  - `t_mhere` (function, line 211) `static int t_mhere(const char *text, const char *pat, int *mlen)`
+  - `t_magic` (function, line 268) `static int t_magic(const char *text, const char *pat, int *mlen)`
+  - `t_cmd` (function, line 299) `static int t_cmd(const char *name)`
+  - `t_parse_key` (function, line 312) `static int t_parse_key(const char *s)`
+  - `main` (function, line 345) `int main(void)`
+  - `CHECK` (macro, line 33) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`
 
 ## tests/test_vma.c

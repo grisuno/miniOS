@@ -2803,6 +2803,7 @@
 - `progs/vedit/vedit.c` -> `stdio.h`
 - `progs/vedit/vedit.c` -> `stdlib.h`
 - `progs/vedit/vedit.c` -> `string.h`
+- `progs/vedit/vedit.c` -> `sys/stat.h`
 - `progs/wl/wl_client.h` -> `wl/wl_mbox.h`
 - `progs/wl/wl_mbox.h` -> `wl_mini.h`
 - `progs/wl/wl_pixbuf.h` -> `stddef.h`

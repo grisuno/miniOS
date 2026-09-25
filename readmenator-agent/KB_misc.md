@@ -929,141 +929,256 @@
 - Doc: vedit IDE build and run contract.
 - Language: c
 - Symbols:
-  - `vedit_getc_raw` (function, line 23) `static long vedit_getc_raw(long blocking)`
-  - `vedit_set_title` (function, line 32) `static long vedit_set_title(const char *t)`
-  - `vedit_spawn` (function, line 41) `static long vedit_spawn(const char *path, const char *redir, int argc,
+  - `vedit_getc_raw` (function, line 35) `static long vedit_getc_raw(long blocking)`
+  - `vedit_set_title` (function, line 44) `static long vedit_set_title(const char *t)`
+  - `vedit_spawn` (function, line 53) `static long vedit_spawn(const char *path, const char *redir, int argc,
                         co...`
-  - `vedit_vga` (function, line 53) `static long vedit_vga(int on)`
-  - `vedit_kbd_raw` (function, line 65) `static long vedit_kbd_raw(int on)`
-  - `vedit_time_ms` (function, line 74) `static unsigned long vedit_time_ms(void)`
-  - `vedit_c_bg` (function, line 150) `static struct nk_color vedit_c_bg(void)`
-  - `vedit_c_gutter` (function, line 151) `static struct nk_color vedit_c_gutter(void)`
-  - `vedit_c_default` (function, line 152) `static struct nk_color vedit_c_default(void)`
-  - `vedit_c_keyword` (function, line 153) `static struct nk_color vedit_c_keyword(void)`
-  - `vedit_c_string` (function, line 154) `static struct nk_color vedit_c_string(void)`
-  - `vedit_c_comment` (function, line 155) `static struct nk_color vedit_c_comment(void)`
-  - `vedit_c_number` (function, line 156) `static struct nk_color vedit_c_number(void)`
-  - `vedit_c_preproc` (function, line 157) `static struct nk_color vedit_c_preproc(void)`
-  - `vedit_c_header` (function, line 158) `static struct nk_color vedit_c_header(void)`
-  - `vedit_c_headtxt` (function, line 159) `static struct nk_color vedit_c_headtxt(void)`
-  - `vedit_c_status` (function, line 160) `static struct nk_color vedit_c_status(void)`
-  - `vedit_c_cursor` (function, line 161) `static struct nk_color vedit_c_cursor(void)`
-  - `vedit_ink` (function, line 163) `static struct nk_color vedit_ink(int col)`
-  - `vedit_set_msg` (function, line 239) `static void vedit_set_msg(const char *s)`
-  - `vedit_is_alpha` (function, line 246) `static int vedit_is_alpha(int c)`
-  - `vedit_is_digit` (function, line 250) `static int vedit_is_digit(int c)`
-  - `vedit_is_wordc` (function, line 254) `static int vedit_is_wordc(int c)`
-  - `vedit_is_kw` (function, line 258) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
-  - `separators` (function, line 281) `* allow_quote exists because C digit separators (1'000'000) are not
+  - `vedit_vga` (function, line 65) `static long vedit_vga(int on)`
+  - `vedit_kbd_raw` (function, line 77) `static long vedit_kbd_raw(int on)`
+  - `vedit_time_ms` (function, line 86) `static unsigned long vedit_time_ms(void)`
+  - `vedit_clip_set` (function, line 94) `static long vedit_clip_set(const char *s, long len)`
+  - `vedit_clip_get` (function, line 102) `static long vedit_clip_get(char *out, long cap)`
+  - `vedit_c_bg` (function, line 179) `static struct nk_color vedit_c_bg(void)`
+  - `vedit_c_gutter` (function, line 180) `static struct nk_color vedit_c_gutter(void)`
+  - `vedit_c_default` (function, line 181) `static struct nk_color vedit_c_default(void)`
+  - `vedit_c_keyword` (function, line 182) `static struct nk_color vedit_c_keyword(void)`
+  - `vedit_c_string` (function, line 183) `static struct nk_color vedit_c_string(void)`
+  - `vedit_c_comment` (function, line 184) `static struct nk_color vedit_c_comment(void)`
+  - `vedit_c_number` (function, line 185) `static struct nk_color vedit_c_number(void)`
+  - `vedit_c_preproc` (function, line 186) `static struct nk_color vedit_c_preproc(void)`
+  - `vedit_c_header` (function, line 187) `static struct nk_color vedit_c_header(void)`
+  - `vedit_c_headtxt` (function, line 188) `static struct nk_color vedit_c_headtxt(void)`
+  - `vedit_c_status` (function, line 189) `static struct nk_color vedit_c_status(void)`
+  - `vedit_c_cursor` (function, line 190) `static struct nk_color vedit_c_cursor(void)`
+  - `vedit_ink` (function, line 192) `static struct nk_color vedit_ink(int col)`
+  - `vedit_set_msg` (function, line 357) `static void vedit_set_msg(const char *s)`
+  - `vedit_is_alpha` (function, line 364) `static int vedit_is_alpha(int c)`
+  - `vedit_is_digit` (function, line 368) `static int vedit_is_digit(int c)`
+  - `vedit_is_wordc` (function, line 372) `static int vedit_is_wordc(int c)`
+  - `vedit_is_kw` (function, line 376) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
+  - `separators` (function, line 399) `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...`
-  - `vedit_parse_number` (function, line 304) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
-  - `vedit_parse_keyword` (function, line 319) `static int vedit_parse_keyword(const char *t, int len, int i,
+  - `vedit_parse_number` (function, line 422) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
+  - `vedit_parse_keyword` (function, line 437) `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...`
-  - `vedit_lang_of` (function, line 336) `static int vedit_lang_of(const char *fname)`
-  - `vedit_lang_name` (function, line 357) `static const char *vedit_lang_name(int lang)`
-  - `vedit_scan_line` (function, line 367) `static int vedit_scan_line(const char *t, int len, int st)`
-  - `vedit_state_at` (function, line 638) `static int vedit_state_at(int row)`
-  - `vedit_row_ptr` (function, line 647) `static char *vedit_row_ptr(int idx)`
-  - `vedit_clamp` (function, line 651) `static void vedit_clamp(void)`
-  - `vedit_follow` (function, line 663) `static void vedit_follow(void)`
-  - `vedit_insert_char` (function, line 676) `static void vedit_insert_char(int c)`
-  - `vedit_delete_line_at` (function, line 702) `static void vedit_delete_line_at(int idx)`
-  - `vedit_backspace` (function, line 713) `static void vedit_backspace(void)`
-  - `vedit_delete_char` (function, line 744) `static void vedit_delete_char(void)`
-  - `vedit_split` (function, line 772) `static void vedit_split(void)`
-  - `vedit_tab` (function, line 820) `static void vedit_tab(void)`
-  - `vedit_find` (function, line 847) `static void vedit_find(const char *needle)`
-  - `vedit_save` (function, line 897) `static int vedit_save(void)`
-  - `vedit_load` (function, line 940) `static int vedit_load(void)`
-  - `vedit_has_ext` (function, line 997) `static int vedit_has_ext(const char *fname, const char *ext)`
-  - `vedit_base_of` (function, line 1009) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
-  - `vedit_join` (function, line 1030) `static int vedit_join(const char *dir, const char *base, const char *ext,
-                      c...`
-  - `vedit_link_fmt` (function, line 1047) `static int vedit_link_fmt(const char *s)`
-  - `vedit_print_log` (function, line 1060) `static void vedit_print_log(const char *path)`
-  - `vedit_spawn_visible` (function, line 1077) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
-                  ...`
-  - `vedit_cmd_exec` (function, line 1106) `static void vedit_cmd_exec(const char *out, int kind)`
-  - `vedit_run_kind` (function, line 1119) `static int vedit_run_kind(const char *fname)`
-  - `vedit_cmd_run` (function, line 1129) `static void vedit_cmd_run(void)`
-  - `vedit_cmd_link` (function, line 1206) `static void vedit_cmd_link(const char *fmt)`
-  - `vedit_selftest_build` (function, line 1257) `static int vedit_selftest_build(void)`
-  - `vedit_read_key_poll` (function, line 1354) `static int vedit_read_key_poll(void)`
-  - `vedit_ansi_for` (function, line 1405) `static void vedit_ansi_for(int col)`
-  - `vedit_console_dump` (function, line 1413) `static void vedit_console_dump(void)`
-  - `vedit_prompt_open` (function, line 1453) `static void vedit_prompt_open(const char *label, int mode)`
-  - `vedit_prompt_find` (function, line 1464) `static void vedit_prompt_find(void)`
-  - `vedit_prompt_saveas` (function, line 1468) `static void vedit_prompt_saveas(void)`
-  - `vedit_draw_row` (function, line 1478) `static void vedit_draw_row(struct nk_command_buffer *canvas,
-                           struct nk...`
-  - `vedit_draw_ui` (function, line 1557) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+  - `vedit_lang_of` (function, line 454) `static int vedit_lang_of(const char *fname)`
+  - `vedit_lang_name` (function, line 475) `static const char *vedit_lang_name(int lang)`
+  - `vedit_scan_line` (function, line 485) `static int vedit_scan_line(const char *t, int len, int st)`
+  - `vedit_state_at` (function, line 756) `static int vedit_state_at(int row)`
+  - `vedit_row_ptr` (function, line 765) `static char *vedit_row_ptr(int idx)`
+  - `vedit_clamp` (function, line 769) `static void vedit_clamp(void)`
+  - `vedit_follow` (function, line 781) `static void vedit_follow(void)`
+  - `vedit_insert_char` (function, line 794) `static void vedit_insert_char(int c)`
+  - `vedit_delete_line_at` (function, line 832) `static void vedit_delete_line_at(int idx)`
+  - `vedit_backspace` (function, line 843) `static void vedit_backspace(void)`
+  - `vedit_delete_char` (function, line 879) `static void vedit_delete_char(void)`
+  - `vedit_split` (function, line 912) `static void vedit_split(void)`
+  - `vedit_tab` (function, line 965) `static void vedit_tab(void)`
+  - `vedit_str_case` (function, line 1001) `static void vedit_str_case(char *s, int mode)`
+  - `vedit_str_transpose` (function, line 1028) `static void vedit_str_transpose(char *s, int len, int pos)`
+  - `vedit_magic_class` (function, line 1040) `static int vedit_magic_class(int c, const char *cls)`
+  - `vedit_magic_atom` (function, line 1062) `static int vedit_magic_atom(const char *pat, int c, int *atom_len)`
+  - `vedit_magic_here` (function, line 1085) `static int vedit_magic_here(const char *text, const char *pat, int *mlen)`
+  - `vedit_magic_match` (function, line 1146) `static int vedit_magic_match(const char *text, const char *pat, int *mlen)`
+  - `vedit_buf_alloc` (function, line 1175) `static int vedit_buf_alloc(int idx)`
+  - `vedit_next_buffer` (function, line 1203) `static int vedit_next_buffer(void)`
+  - `vedit_hist_push` (function, line 1217) `static void vedit_hist_push(const char *fname)`
+  - `vedit_set_mark` (function, line 1236) `static void vedit_set_mark(void)`
+  - `vedit_region` (function, line 1244) `static int vedit_region(int *y0, int *x0, int *y1, int *x1)`
+  - `vedit_copy_region` (function, line 1265) `static int vedit_copy_region(void)`
+  - `vedit_kill_region` (function, line 1295) `static int vedit_kill_region(void)`
+  - `vedit_kill_line` (function, line 1341) `static int vedit_kill_line(void)`
+  - `vedit_yank` (function, line 1379) `static int vedit_yank(void)`
+  - `vedit_word_move` (function, line 1412) `static int vedit_word_move(int dir)`
+  - `vedit_case_word` (function, line 1447) `static int vedit_case_word(int mode)`
+  - `vedit_transpose` (function, line 1486) `static int vedit_transpose(void)`
+  - `vedit_goto_fence` (function, line 1509) `static int vedit_goto_fence(void)`
+  - `vedit_count_words` (function, line 1575) `static void vedit_count_words(void)`
+  - `vedit_match_at` (function, line 1618) `static int vedit_match_at(int row, int col, const char *needle, int magic,
+                      ...`
+  - `vedit_search_fwd` (function, line 1655) `static int vedit_search_fwd(int row, int col, const char *needle, int magic,
                     ...`
-  - `vedit_prompt_key` (function, line 1688) `static void vedit_prompt_key(int key)`
-  - `vedit_key` (function, line 1747) `static void vedit_key(int key, int *quit, int *save_and_quit)`
-  - `vedit_sync_title` (function, line 1827) `static void vedit_sync_title(void)`
-  - `vedit_gui_run` (function, line 1837) `static void vedit_gui_run(void)`
-  - `vedit_selftest` (function, line 1916) `static int vedit_selftest(void)`
-  - `main` (function, line 1992) `int main(int argc, char **argv)`
-  - `VEDIT_MAX_LINES` (macro, line 82) `#define VEDIT_MAX_LINES`
-  - `VEDIT_LINE_MAX` (macro, line 83) `#define VEDIT_LINE_MAX`
-  - `VEDIT_LINE_USED` (macro, line 84) `#define VEDIT_LINE_USED`
-  - `VEDIT_FILE_MAX` (macro, line 85) `#define VEDIT_FILE_MAX`
-  - `VEDIT_FNAME_MAX` (macro, line 86) `#define VEDIT_FNAME_MAX`
-  - `VEDIT_DEFAULT_FILE` (macro, line 87) `#define VEDIT_DEFAULT_FILE`
-  - `VEDIT_MSG_MAX` (macro, line 88) `#define VEDIT_MSG_MAX`
-  - `VEDIT_WORD_MAX` (macro, line 89) `#define VEDIT_WORD_MAX`
-  - `VEDIT_TAB_W` (macro, line 90) `#define VEDIT_TAB_W`
-  - `VEDIT_ESC_MS` (macro, line 91) `#define VEDIT_ESC_MS`
-  - `VEDIT_FRAME_MS` (macro, line 92) `#define VEDIT_FRAME_MS`
-  - `VEDIT_UI_MEMORY` (macro, line 93) `#define VEDIT_UI_MEMORY`
-  - `VEDIT_KEY_RUN` (macro, line 94) `#define VEDIT_KEY_RUN`
-  - `VEDIT_KEY_LINK` (macro, line 95) `#define VEDIT_KEY_LINK`
-  - `VEDIT_KEY_DUMP` (macro, line 96) `#define VEDIT_KEY_DUMP`
-  - `VEDIT_TOOL_MINIGCC` (macro, line 97) `#define VEDIT_TOOL_MINIGCC`
-  - `VEDIT_TOOL_LD` (macro, line 98) `#define VEDIT_TOOL_LD`
-  - `VEDIT_TOOL_CVM` (macro, line 99) `#define VEDIT_TOOL_CVM`
-  - `VEDIT_TOOL_LUA` (macro, line 100) `#define VEDIT_TOOL_LUA`
-  - `VEDIT_TOOL_PY` (macro, line 101) `#define VEDIT_TOOL_PY`
-  - `VEDIT_TOOL_LISP` (macro, line 102) `#define VEDIT_TOOL_LISP`
-  - `VEDIT_DIR_ASM` (macro, line 103) `#define VEDIT_DIR_ASM`
-  - `VEDIT_DIR_BIN` (macro, line 104) `#define VEDIT_DIR_BIN`
-  - `VEDIT_DIR_CVM` (macro, line 105) `#define VEDIT_DIR_CVM`
-  - `VEDIT_BUILD_LOG` (macro, line 106) `#define VEDIT_BUILD_LOG`
-  - `VEDIT_LINK_ELF` (macro, line 107) `#define VEDIT_LINK_ELF`
-  - `VEDIT_LINK_CVM` (macro, line 108) `#define VEDIT_LINK_CVM`
-  - `VEDIT_STATUS_MAX` (macro, line 109) `#define VEDIT_STATUS_MAX`
-  - `VEDIT_BASE_MAX` (macro, line 110) `#define VEDIT_BASE_MAX`
-  - `VEDIT_PATH_MAX` (macro, line 111) `#define VEDIT_PATH_MAX`
-  - `VEDIT_LOG_TAIL` (macro, line 112) `#define VEDIT_LOG_TAIL`
-  - `VEDIT_LANG_TEXT` (macro, line 115) `#define VEDIT_LANG_TEXT`
-  - `VEDIT_LANG_C` (macro, line 116) `#define VEDIT_LANG_C`
-  - `VEDIT_LANG_PY` (macro, line 117) `#define VEDIT_LANG_PY`
-  - `VEDIT_LANG_LUA` (macro, line 118) `#define VEDIT_LANG_LUA`
-  - `VEDIT_LANG_ASM` (macro, line 119) `#define VEDIT_LANG_ASM`
-  - `VEDIT_LANG_LISP` (macro, line 120) `#define VEDIT_LANG_LISP`
-  - `VEDIT_COL_DEFAULT` (macro, line 123) `#define VEDIT_COL_DEFAULT`
-  - `VEDIT_COL_KEYWORD` (macro, line 124) `#define VEDIT_COL_KEYWORD`
-  - `VEDIT_COL_STRING` (macro, line 125) `#define VEDIT_COL_STRING`
-  - `VEDIT_COL_COMMENT` (macro, line 126) `#define VEDIT_COL_COMMENT`
-  - `VEDIT_COL_NUMBER` (macro, line 127) `#define VEDIT_COL_NUMBER`
-  - `VEDIT_COL_PREPROC` (macro, line 128) `#define VEDIT_COL_PREPROC`
-  - `VEDIT_ST_BLOCK` (macro, line 131) `#define VEDIT_ST_BLOCK`
-  - `VEDIT_ST_PY3S` (macro, line 132) `#define VEDIT_ST_PY3S`
-  - `VEDIT_ST_PY3D` (macro, line 133) `#define VEDIT_ST_PY3D`
-  - `VEDIT_ST_LUABLK` (macro, line 134) `#define VEDIT_ST_LUABLK`
-  - `VEDIT_ST_LUASTR` (macro, line 135) `#define VEDIT_ST_LUASTR`
-  - `VEDIT_KEY_UP` (macro, line 138) `#define VEDIT_KEY_UP`
-  - `VEDIT_KEY_DOWN` (macro, line 139) `#define VEDIT_KEY_DOWN`
-  - `VEDIT_KEY_LEFT` (macro, line 140) `#define VEDIT_KEY_LEFT`
-  - `VEDIT_KEY_RIGHT` (macro, line 141) `#define VEDIT_KEY_RIGHT`
-  - `VEDIT_KEY_HOME` (macro, line 142) `#define VEDIT_KEY_HOME`
-  - `VEDIT_KEY_END` (macro, line 143) `#define VEDIT_KEY_END`
-  - `VEDIT_KEY_PGUP` (macro, line 144) `#define VEDIT_KEY_PGUP`
-  - `VEDIT_KEY_PGDN` (macro, line 145) `#define VEDIT_KEY_PGDN`
-  - `VEDIT_KEY_DEL` (macro, line 146) `#define VEDIT_KEY_DEL`
-  - `VEDIT_KEY_ESC` (macro, line 147) `#define VEDIT_KEY_ESC`
-  - `VEDIT_PROMPT_FIND` (macro, line 1447) `#define VEDIT_PROMPT_FIND`
-  - `VEDIT_PROMPT_GOTO` (macro, line 1448) `#define VEDIT_PROMPT_GOTO`
-  - `VEDIT_PROMPT_NAME` (macro, line 1449) `#define VEDIT_PROMPT_NAME`
-  - `VEDIT_PROMPT_LINK` (macro, line 1450) `#define VEDIT_PROMPT_LINK`
+  - `vedit_search_rev` (function, line 1687) `static int vedit_search_rev(int row, int col, const char *needle, int magic)`
+  - `vedit_isearch_step` (function, line 1710) `static void vedit_isearch_step(void)`
+  - `vedit_replace_at` (function, line 1737) `static int vedit_replace_at(int row, int col, const char *old_s,
+                            cons...`
+  - `vedit_replace_all` (function, line 1757) `static int vedit_replace_all(const char *old_s, const char *new_s,
+                             i...`
+  - `vedit_fill_paragraph` (function, line 1810) `static int vedit_fill_paragraph(void)`
+  - `vedit_find` (function, line 1894) `static void vedit_find(const char *needle)`
+  - `vedit_save` (function, line 1984) `static int vedit_save(void)`
+  - `vedit_load` (function, line 2047) `static int vedit_load(void)`
+  - `vedit_open_in_buffer` (function, line 2118) `static int vedit_open_in_buffer(const char *fname, int ro)`
+  - `vedit_insert_file` (function, line 2172) `static int vedit_insert_file(const char *fname)`
+  - `vedit_has_ext` (function, line 2235) `static int vedit_has_ext(const char *fname, const char *ext)`
+  - `vedit_base_of` (function, line 2247) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
+  - `vedit_join` (function, line 2268) `static int vedit_join(const char *dir, const char *base, const char *ext,
+                      c...`
+  - `vedit_link_fmt` (function, line 2285) `static int vedit_link_fmt(const char *s)`
+  - `vedit_print_log` (function, line 2298) `static void vedit_print_log(const char *path)`
+  - `vedit_spawn_visible` (function, line 2315) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+                  ...`
+  - `vedit_cmd_exec` (function, line 2344) `static void vedit_cmd_exec(const char *out, int kind)`
+  - `vedit_run_kind` (function, line 2357) `static int vedit_run_kind(const char *fname)`
+  - `vedit_cmd_run` (function, line 2367) `static void vedit_cmd_run(void)`
+  - `vedit_cmd_link` (function, line 2444) `static void vedit_cmd_link(const char *fmt)`
+  - `vedit_selftest_build` (function, line 2495) `static int vedit_selftest_build(void)`
+  - `vedit_pane_save` (function, line 2695) `static void vedit_pane_save(int p)`
+  - `vedit_first_open` (function, line 2703) `static int vedit_first_open(void)`
+  - `vedit_pane_load` (function, line 2711) `static void vedit_pane_load(int p)`
+  - `vedit_count_open` (function, line 2723) `static int vedit_count_open(void)`
+  - `vedit_split_set` (function, line 2732) `static void vedit_split_set(int on)`
+  - `vedit_next_pane` (function, line 2751) `static void vedit_next_pane(void)`
+  - `vedit_cmd_lookup` (function, line 2783) `static int vedit_cmd_lookup(const char *name)`
+  - `vedit_parse_key` (function, line 2799) `static int vedit_parse_key(const char *s)`
+  - `vedit_cmd_bind` (function, line 2851) `static int vedit_cmd_bind(int key, int cmd)`
+  - `vedit_cmd_bound` (function, line 2867) `static int vedit_cmd_bound(int key)`
+  - `vedit_list_buffers` (function, line 2875) `static void vedit_list_buffers(void)`
+  - `vedit_hist_show` (function, line 2894) `static void vedit_hist_show(void)`
+  - `vedit_help_text` (function, line 2902) `static void vedit_help_text(void)`
+  - `vedit_cmd_exec_id` (function, line 2918) `static void vedit_cmd_exec_id(int id, const char *arg, int *quit,
+                              i...`
+  - `strcmp` (function, line 3106) `strcmp(name, "describe-bindings") == 0)`
+  - `vedit_run_rc` (function, line 3124) `static void vedit_run_rc(const char *path)`
+  - `vedit_sel_clear` (function, line 3202) `static void vedit_sel_clear(void)`
+  - `vedit_sel_norm` (function, line 3207) `static void vedit_sel_norm(void)`
+  - `vedit_sel_copy` (function, line 3220) `static int vedit_sel_copy(void)`
+  - `vedit_clip_paste` (function, line 3263) `static int vedit_clip_paste(void)`
+  - `vedit_region_to_clip` (function, line 3293) `static int vedit_region_to_clip(void)`
+  - `vedit_sh_split` (function, line 3338) `static int vedit_sh_split(const char *line, char *buf, const char **argv)`
+  - `vedit_shell_command` (function, line 3358) `static void vedit_shell_command(const char *line)`
+  - `vedit_write_region` (function, line 3387) `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,
+                   ...`
+  - `vedit_filter_buffer` (function, line 3431) `static void vedit_filter_buffer(const char *prog)`
+  - `vedit_grep` (function, line 3491) `static void vedit_grep(const char *pat)`
+  - `vedit_next_error` (function, line 3554) `static void vedit_next_error(void)`
+  - `vedit_read_key_poll` (function, line 3602) `static int vedit_read_key_poll(void)`
+  - `vedit_ansi_for` (function, line 3656) `static void vedit_ansi_for(int col)`
+  - `vedit_console_dump` (function, line 3664) `static void vedit_console_dump(void)`
+  - `vedit_prompt_open` (function, line 3694) `static void vedit_prompt_open(const char *label, int mode)`
+  - `vedit_prompt_find` (function, line 3705) `static void vedit_prompt_find(void)`
+  - `vedit_prompt_isearch` (function, line 3709) `static void vedit_prompt_isearch(int dir)`
+  - `vedit_qrep_next` (function, line 3719) `static void vedit_qrep_next(int r, int c)`
+  - `vedit_qrep_answer` (function, line 3731) `static void vedit_qrep_answer(int key)`
+  - `vedit_prompt_saveas` (function, line 3770) `static void vedit_prompt_saveas(void)`
+  - `vedit_draw_row` (function, line 3780) `static void vedit_draw_row(struct nk_command_buffer *canvas,
+                           struct nk...`
+  - `vedit_draw_ui` (function, line 3878) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+                    ...`
+  - `vedit_prompt_key` (function, line 4158) `static void vedit_prompt_key(int key)`
+  - `vedit_key` (function, line 4332) `static void vedit_key(int key, int *quit, int *save_and_quit)`
+  - `vedit_sync_title` (function, line 4572) `static void vedit_sync_title(void)`
+  - `vedit_gui_run` (function, line 4582) `static void vedit_gui_run(void)`
+  - `vedit_selftest` (function, line 4673) `static int vedit_selftest(void)`
+  - `main` (function, line 4749) `int main(int argc, char **argv)`
+  - `definitions` (function, line 264) `* definitions (C99, one file, no headers). */ static void vedit_str_case(char *s, int mode);`
+  - `VEDIT_MAX_LINES` (macro, line 111) `#define VEDIT_MAX_LINES`
+  - `VEDIT_LINE_MAX` (macro, line 112) `#define VEDIT_LINE_MAX`
+  - `VEDIT_LINE_USED` (macro, line 113) `#define VEDIT_LINE_USED`
+  - `VEDIT_FILE_MAX` (macro, line 114) `#define VEDIT_FILE_MAX`
+  - `VEDIT_FNAME_MAX` (macro, line 115) `#define VEDIT_FNAME_MAX`
+  - `VEDIT_DEFAULT_FILE` (macro, line 116) `#define VEDIT_DEFAULT_FILE`
+  - `VEDIT_MSG_MAX` (macro, line 117) `#define VEDIT_MSG_MAX`
+  - `VEDIT_WORD_MAX` (macro, line 118) `#define VEDIT_WORD_MAX`
+  - `VEDIT_TAB_W` (macro, line 119) `#define VEDIT_TAB_W`
+  - `VEDIT_ESC_MS` (macro, line 120) `#define VEDIT_ESC_MS`
+  - `VEDIT_FRAME_MS` (macro, line 121) `#define VEDIT_FRAME_MS`
+  - `VEDIT_UI_MEMORY` (macro, line 122) `#define VEDIT_UI_MEMORY`
+  - `VEDIT_KEY_RUN` (macro, line 123) `#define VEDIT_KEY_RUN`
+  - `VEDIT_KEY_LINK` (macro, line 124) `#define VEDIT_KEY_LINK`
+  - `VEDIT_KEY_DUMP` (macro, line 125) `#define VEDIT_KEY_DUMP`
+  - `VEDIT_TOOL_MINIGCC` (macro, line 126) `#define VEDIT_TOOL_MINIGCC`
+  - `VEDIT_TOOL_LD` (macro, line 127) `#define VEDIT_TOOL_LD`
+  - `VEDIT_TOOL_CVM` (macro, line 128) `#define VEDIT_TOOL_CVM`
+  - `VEDIT_TOOL_LUA` (macro, line 129) `#define VEDIT_TOOL_LUA`
+  - `VEDIT_TOOL_PY` (macro, line 130) `#define VEDIT_TOOL_PY`
+  - `VEDIT_TOOL_LISP` (macro, line 131) `#define VEDIT_TOOL_LISP`
+  - `VEDIT_DIR_ASM` (macro, line 132) `#define VEDIT_DIR_ASM`
+  - `VEDIT_DIR_BIN` (macro, line 133) `#define VEDIT_DIR_BIN`
+  - `VEDIT_DIR_CVM` (macro, line 134) `#define VEDIT_DIR_CVM`
+  - `VEDIT_BUILD_LOG` (macro, line 135) `#define VEDIT_BUILD_LOG`
+  - `VEDIT_LINK_ELF` (macro, line 136) `#define VEDIT_LINK_ELF`
+  - `VEDIT_LINK_CVM` (macro, line 137) `#define VEDIT_LINK_CVM`
+  - `VEDIT_STATUS_MAX` (macro, line 138) `#define VEDIT_STATUS_MAX`
+  - `VEDIT_BASE_MAX` (macro, line 139) `#define VEDIT_BASE_MAX`
+  - `VEDIT_PATH_MAX` (macro, line 140) `#define VEDIT_PATH_MAX`
+  - `VEDIT_LOG_TAIL` (macro, line 141) `#define VEDIT_LOG_TAIL`
+  - `VEDIT_LANG_TEXT` (macro, line 144) `#define VEDIT_LANG_TEXT`
+  - `VEDIT_LANG_C` (macro, line 145) `#define VEDIT_LANG_C`
+  - `VEDIT_LANG_PY` (macro, line 146) `#define VEDIT_LANG_PY`
+  - `VEDIT_LANG_LUA` (macro, line 147) `#define VEDIT_LANG_LUA`
+  - `VEDIT_LANG_ASM` (macro, line 148) `#define VEDIT_LANG_ASM`
+  - `VEDIT_LANG_LISP` (macro, line 149) `#define VEDIT_LANG_LISP`
+  - `VEDIT_COL_DEFAULT` (macro, line 152) `#define VEDIT_COL_DEFAULT`
+  - `VEDIT_COL_KEYWORD` (macro, line 153) `#define VEDIT_COL_KEYWORD`
+  - `VEDIT_COL_STRING` (macro, line 154) `#define VEDIT_COL_STRING`
+  - `VEDIT_COL_COMMENT` (macro, line 155) `#define VEDIT_COL_COMMENT`
+  - `VEDIT_COL_NUMBER` (macro, line 156) `#define VEDIT_COL_NUMBER`
+  - `VEDIT_COL_PREPROC` (macro, line 157) `#define VEDIT_COL_PREPROC`
+  - `VEDIT_ST_BLOCK` (macro, line 160) `#define VEDIT_ST_BLOCK`
+  - `VEDIT_ST_PY3S` (macro, line 161) `#define VEDIT_ST_PY3S`
+  - `VEDIT_ST_PY3D` (macro, line 162) `#define VEDIT_ST_PY3D`
+  - `VEDIT_ST_LUABLK` (macro, line 163) `#define VEDIT_ST_LUABLK`
+  - `VEDIT_ST_LUASTR` (macro, line 164) `#define VEDIT_ST_LUASTR`
+  - `VEDIT_KEY_UP` (macro, line 167) `#define VEDIT_KEY_UP`
+  - `VEDIT_KEY_DOWN` (macro, line 168) `#define VEDIT_KEY_DOWN`
+  - `VEDIT_KEY_LEFT` (macro, line 169) `#define VEDIT_KEY_LEFT`
+  - `VEDIT_KEY_RIGHT` (macro, line 170) `#define VEDIT_KEY_RIGHT`
+  - `VEDIT_KEY_HOME` (macro, line 171) `#define VEDIT_KEY_HOME`
+  - `VEDIT_KEY_END` (macro, line 172) `#define VEDIT_KEY_END`
+  - `VEDIT_KEY_PGUP` (macro, line 173) `#define VEDIT_KEY_PGUP`
+  - `VEDIT_KEY_PGDN` (macro, line 174) `#define VEDIT_KEY_PGDN`
+  - `VEDIT_KEY_DEL` (macro, line 175) `#define VEDIT_KEY_DEL`
+  - `VEDIT_KEY_ESC` (macro, line 176) `#define VEDIT_KEY_ESC`
+  - `VEDIT_NBUF` (macro, line 247) `#define VEDIT_NBUF`
+  - `VEDIT_KILL_N` (macro, line 248) `#define VEDIT_KILL_N`
+  - `VEDIT_KILL_MAX` (macro, line 249) `#define VEDIT_KILL_MAX`
+  - `VEDIT_MACRO_MAX` (macro, line 250) `#define VEDIT_MACRO_MAX`
+  - `VEDIT_HIST_N` (macro, line 251) `#define VEDIT_HIST_N`
+  - `VEDIT_CMD_MAX` (macro, line 252) `#define VEDIT_CMD_MAX`
+  - `VEDIT_MAGIC_MAX` (macro, line 253) `#define VEDIT_MAGIC_MAX`
+  - `VEDIT_KEY_META` (macro, line 254) `#define VEDIT_KEY_META(c)`
+  - `VEDIT_KEY_ARG` (macro, line 255) `#define VEDIT_KEY_ARG`
+  - `VEDIT_KEY_MARK` (macro, line 256) `#define VEDIT_KEY_MARK`
+  - `VEDIT_KEY_KILL_LINE` (macro, line 257) `#define VEDIT_KEY_KILL_LINE`
+  - `VEDIT_KEY_YANK` (macro, line 258) `#define VEDIT_KEY_YANK`
+  - `VEDIT_KEY_TRANSPOSE` (macro, line 259) `#define VEDIT_KEY_TRANSPOSE`
+  - `VEDIT_KEY_FENCE` (macro, line 260) `#define VEDIT_KEY_FENCE`
+  - `VEDIT_KEY_BOL` (macro, line 261) `#define VEDIT_KEY_BOL`
+  - `VEDIT_KEY_EOL` (macro, line 262) `#define VEDIT_KEY_EOL`
+  - `vedit_pool` (macro, line 289) `#define vedit_pool`
+  - `vedit_used` (macro, line 290) `#define vedit_used`
+  - `vedit_count` (macro, line 291) `#define vedit_count`
+  - `vedit_cx` (macro, line 292) `#define vedit_cx`
+  - `vedit_cy` (macro, line 293) `#define vedit_cy`
+  - `vedit_top` (macro, line 294) `#define vedit_top`
+  - `vedit_hoff` (macro, line 295) `#define vedit_hoff`
+  - `vedit_dirty` (macro, line 296) `#define vedit_dirty`
+  - `vedit_trunc` (macro, line 297) `#define vedit_trunc`
+  - `vedit_lang` (macro, line 298) `#define vedit_lang`
+  - `vedit_fname` (macro, line 299) `#define vedit_fname`
+  - `vedit_msg` (macro, line 300) `#define vedit_msg`
+  - `VEDIT_PROMPT_FIND` (macro, line 309) `#define VEDIT_PROMPT_FIND`
+  - `VEDIT_PROMPT_GOTO` (macro, line 310) `#define VEDIT_PROMPT_GOTO`
+  - `VEDIT_PROMPT_NAME` (macro, line 311) `#define VEDIT_PROMPT_NAME`
+  - `VEDIT_PROMPT_LINK` (macro, line 312) `#define VEDIT_PROMPT_LINK`
+  - `VEDIT_PROMPT_CMD` (macro, line 313) `#define VEDIT_PROMPT_CMD`
+  - `VEDIT_PROMPT_ISEARCH_F` (macro, line 314) `#define VEDIT_PROMPT_ISEARCH_F`
+  - `VEDIT_PROMPT_ISEARCH_R` (macro, line 315) `#define VEDIT_PROMPT_ISEARCH_R`
+  - `VEDIT_PROMPT_REP_OLD` (macro, line 316) `#define VEDIT_PROMPT_REP_OLD`
+  - `VEDIT_PROMPT_REP_NEW` (macro, line 317) `#define VEDIT_PROMPT_REP_NEW`
+  - `VEDIT_PROMPT_QREP` (macro, line 318) `#define VEDIT_PROMPT_QREP`
+  - `VEDIT_PROMPT_SHELLCMD` (macro, line 319) `#define VEDIT_PROMPT_SHELLCMD`
+  - `VEDIT_PROMPT_FILTER` (macro, line 320) `#define VEDIT_PROMPT_FILTER`
+  - `VEDIT_PROMPT_SELECT` (macro, line 321) `#define VEDIT_PROMPT_SELECT`
+  - `VEDIT_PROMPT_GREP` (macro, line 322) `#define VEDIT_PROMPT_GREP`
+  - `VEDIT_PROMPT_BINDKEY` (macro, line 323) `#define VEDIT_PROMPT_BINDKEY`
+  - `VEDIT_PROMPT_BINDCMD` (macro, line 324) `#define VEDIT_PROMPT_BINDCMD`
+  - `VEDIT_FILL_COL` (macro, line 1608) `#define VEDIT_FILL_COL`
+  - `VEDIT_TMP_OUT` (macro, line 3183) `#define VEDIT_TMP_OUT`
+  - `VEDIT_TMP_IN` (macro, line 3184) `#define VEDIT_TMP_IN`
+  - `VEDIT_TMP_F` (macro, line 3185) `#define VEDIT_TMP_F`
+  - `VEDIT_SH_ARGS` (macro, line 3186) `#define VEDIT_SH_ARGS`
+  - `VEDIT_SH_LINE` (macro, line 3187) `#define VEDIT_SH_LINE`
+  - `VEDIT_CLIP_MAX` (macro, line 3188) `#define VEDIT_CLIP_MAX`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`

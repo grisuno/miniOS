@@ -141,7 +141,7 @@ This community groups 87 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- No cross-community bridges recorded. This community is self-contained.
+- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 12 (orphans).
 
 ## Risks
 

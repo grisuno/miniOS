@@ -113,9 +113,9 @@ This community groups 33 file(s) rooted at `headers` with dominant language c (c
 - [EXTRACTED] depends_on community 0 <-> 7 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
 - [EXTRACTED] depends_on community 9 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/ktime.h.
 - [EXTRACTED] depends_on community 0 <-> 6 (strength 0.9): Extracted import edge crosses communities: tests/test_pcm.c imports kernel/string.c.
-- [INFERRED] shares_context community 0 <-> 4 (strength 0.5): Inferred shared context (language c) with no import path between community 0 (headers) and community 4 (headers/drivers).
 - [INFERRED] shares_context community 0 <-> 5 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 5 (headers).
 - [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 10 (progs/src).
+- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 12 (orphans).
 
 ## Risks
 

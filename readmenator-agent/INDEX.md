@@ -403,7 +403,7 @@
 | `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 5 |
 | `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 15 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 128 |
-| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 130 |
+| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 239 |
 | `progs/wl/wl_client.h` | wl_client.h - Thin mailbox client for Wayland-mini (ADR-0026). | wl | 5 |
 | `progs/wl/wl_mbox.h` | wl_mbox.h - Mailbox file transport for Wayland-mini (ADR-0026). | wl | 26 |
 | `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 110 |
@@ -442,7 +442,7 @@
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 |
 | `tests/test_theme.c` | Docstring: host test for the shared Nuklear theme contract. | tests | 8 |
 | `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 6 |
-| `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 8 |
+| `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 16 |
 | `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 8 |
 | `tests/test_vma_bench.c` | test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 6 |
 | `tests/test_wl.c` | Host test for progs/wl/wl_mini.h (make test-wl). | tests | 2 |

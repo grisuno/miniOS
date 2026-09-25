@@ -24657,307 +24657,597 @@ Z_DumpHeap
 ## progs/vedit/vedit.c
 
 ### vedit_getc_raw (function) `static long vedit_getc_raw(long blocking)`
-- Defined: `progs/vedit/vedit.c:23`
-- Doc: the graphics mode first so the desktop terminal stays ordered and the toolchain output lands on the console, then the ID
+- Defined: `progs/vedit/vedit.c:35`
+- Doc: plus bare commands). Clipboard (249/250): mouse drag selects into it, M-v pastes, M-W copies the region; --selftest-buil
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_set_title (function) `static long vedit_set_title(const char *t)`
-- Defined: `progs/vedit/vedit.c:32`
+- Defined: `progs/vedit/vedit.c:44`
 - Doc: #include "nuklear.h" #include "nuklear_minios.h" #include "nuklear_theme.h" /** Platform syscalls vedit needs beyond the
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_spawn (function) `static long vedit_spawn(const char *path, const char *redir, int argc,
                         co...`
-- Defined: `progs/vedit/vedit.c:41`
+- Defined: `progs/vedit/vedit.c:53`
 - Doc: : "rcx", "r11", "memory"); return ret; } /** Set the graphics window title. static long vedit_set_title(const char *t) {
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_vga (function) `static long vedit_vga(int on)`
-- Defined: `progs/vedit/vedit.c:53`
+- Defined: `progs/vedit/vedit.c:65`
 - Doc: /** Run a program through SYS_SPAWN, preserving the IDE across the child. static long vedit_spawn(const char *path, cons
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_kbd_raw (function) `static long vedit_kbd_raw(int on)`
-- Defined: `progs/vedit/vedit.c:65`
+- Defined: `progs/vedit/vedit.c:77`
 - Doc: Force cooked keyboard mode: GETC_RAW (this editor's only key source) starves while raw mode diverts PS/2 bytes to the ra
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_time_ms (function) `static unsigned long vedit_time_ms(void)`
-- Defined: `progs/vedit/vedit.c:74`
+- Defined: `progs/vedit/vedit.c:86`
 - Doc: Force cooked keyboard mode: GETC_RAW (this editor's only key source) starves while raw mode diverts PS/2 bytes to the ra
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+### vedit_clip_set (function) `static long vedit_clip_set(const char *s, long len)`
+- Defined: `progs/vedit/vedit.c:94`
+- Doc: : "a"(MINIOS_SYS_KBD_RAW), "D"((long)on) : "rcx", "r11", "memory"); return ret; } /** Wall-clock milliseconds for the cr
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_clip_get (function) `static long vedit_clip_get(char *out, long cap)`
+- Defined: `progs/vedit/vedit.c:102`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ### vedit_c_bg (function) `static struct nk_color vedit_c_bg(void)`
-- Defined: `progs/vedit/vedit.c:150`
+- Defined: `progs/vedit/vedit.c:179`
 - Doc: /* ---- Decoded keys above any byte ---- #define VEDIT_KEY_UP 1000 #define VEDIT_KEY_DOWN 1001 #define VEDIT_KEY_LEFT 10
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_gutter (function) `static struct nk_color vedit_c_gutter(void)`
-- Defined: `progs/vedit/vedit.c:151`
+- Defined: `progs/vedit/vedit.c:180`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_default (function) `static struct nk_color vedit_c_default(void)`
-- Defined: `progs/vedit/vedit.c:152`
+- Defined: `progs/vedit/vedit.c:181`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_keyword (function) `static struct nk_color vedit_c_keyword(void)`
-- Defined: `progs/vedit/vedit.c:153`
+- Defined: `progs/vedit/vedit.c:182`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_string (function) `static struct nk_color vedit_c_string(void)`
-- Defined: `progs/vedit/vedit.c:154`
+- Defined: `progs/vedit/vedit.c:183`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_comment (function) `static struct nk_color vedit_c_comment(void)`
-- Defined: `progs/vedit/vedit.c:155`
+- Defined: `progs/vedit/vedit.c:184`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_number (function) `static struct nk_color vedit_c_number(void)`
-- Defined: `progs/vedit/vedit.c:156`
+- Defined: `progs/vedit/vedit.c:185`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_preproc (function) `static struct nk_color vedit_c_preproc(void)`
-- Defined: `progs/vedit/vedit.c:157`
+- Defined: `progs/vedit/vedit.c:186`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_header (function) `static struct nk_color vedit_c_header(void)`
-- Defined: `progs/vedit/vedit.c:158`
+- Defined: `progs/vedit/vedit.c:187`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_headtxt (function) `static struct nk_color vedit_c_headtxt(void)`
-- Defined: `progs/vedit/vedit.c:159`
+- Defined: `progs/vedit/vedit.c:188`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_status (function) `static struct nk_color vedit_c_status(void)`
-- Defined: `progs/vedit/vedit.c:160`
+- Defined: `progs/vedit/vedit.c:189`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_c_cursor (function) `static struct nk_color vedit_c_cursor(void)`
-- Defined: `progs/vedit/vedit.c:161`
+- Defined: `progs/vedit/vedit.c:190`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_ink (function) `static struct nk_color vedit_ink(int col)`
-- Defined: `progs/vedit/vedit.c:163`
+- Defined: `progs/vedit/vedit.c:192`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_set_msg (function) `static void vedit_set_msg(const char *s)`
-- Defined: `progs/vedit/vedit.c:239`
+- Defined: `progs/vedit/vedit.c:357`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_alpha (function) `static int vedit_is_alpha(int c)`
-- Defined: `progs/vedit/vedit.c:246`
+- Defined: `progs/vedit/vedit.c:364`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_digit (function) `static int vedit_is_digit(int c)`
-- Defined: `progs/vedit/vedit.c:250`
+- Defined: `progs/vedit/vedit.c:368`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_wordc (function) `static int vedit_is_wordc(int c)`
-- Defined: `progs/vedit/vedit.c:254`
+- Defined: `progs/vedit/vedit.c:372`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_is_kw (function) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
-- Defined: `progs/vedit/vedit.c:258`
+- Defined: `progs/vedit/vedit.c:376`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### separators (function) `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...`
-- Defined: `progs/vedit/vedit.c:281`
+- Defined: `progs/vedit/vedit.c:399`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_parse_number (function) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
-- Defined: `progs/vedit/vedit.c:304`
+- Defined: `progs/vedit/vedit.c:422`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_parse_keyword (function) `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...`
-- Defined: `progs/vedit/vedit.c:319`
+- Defined: `progs/vedit/vedit.c:437`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_lang_of (function) `static int vedit_lang_of(const char *fname)`
-- Defined: `progs/vedit/vedit.c:336`
+- Defined: `progs/vedit/vedit.c:454`
 - Doc: int wl = 0; int j = i; int k; while (j < len && vedit_is_wordc((unsigned char)t[j])) { if (wl < VEDIT_WORD_MAX - 1) w[wl
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_lang_name (function) `static const char *vedit_lang_name(int lang)`
-- Defined: `progs/vedit/vedit.c:357`
+- Defined: `progs/vedit/vedit.c:475`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_scan_line (function) `static int vedit_scan_line(const char *t, int len, int st)`
-- Defined: `progs/vedit/vedit.c:367`
+- Defined: `progs/vedit/vedit.c:485`
 - Doc: } /** Name a highlight language for the status row. static const char *vedit_lang_name(int lang) { if (lang == VEDIT_LAN
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_state_at (function) `static int vedit_state_at(int row)`
-- Defined: `progs/vedit/vedit.c:638`
+- Defined: `progs/vedit/vedit.c:756`
 - Doc: } else if (c == '"' || c == '\'') { i = vedit_parse_string(t, len, i); } else if (vedit_is_digit(c)) { i = vedit_parse_n
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_row_ptr (function) `static char *vedit_row_ptr(int idx)`
-- Defined: `progs/vedit/vedit.c:647`
+- Defined: `progs/vedit/vedit.c:765`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_clamp (function) `static void vedit_clamp(void)`
-- Defined: `progs/vedit/vedit.c:651`
+- Defined: `progs/vedit/vedit.c:769`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_follow (function) `static void vedit_follow(void)`
-- Defined: `progs/vedit/vedit.c:663`
+- Defined: `progs/vedit/vedit.c:781`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_insert_char (function) `static void vedit_insert_char(int c)`
-- Defined: `progs/vedit/vedit.c:676`
+- Defined: `progs/vedit/vedit.c:794`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_delete_line_at (function) `static void vedit_delete_line_at(int idx)`
-- Defined: `progs/vedit/vedit.c:702`
+- Defined: `progs/vedit/vedit.c:832`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_backspace (function) `static void vedit_backspace(void)`
-- Defined: `progs/vedit/vedit.c:713`
+- Defined: `progs/vedit/vedit.c:843`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_delete_char (function) `static void vedit_delete_char(void)`
-- Defined: `progs/vedit/vedit.c:744`
+- Defined: `progs/vedit/vedit.c:879`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_split (function) `static void vedit_split(void)`
-- Defined: `progs/vedit/vedit.c:772`
+- Defined: `progs/vedit/vedit.c:912`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_tab (function) `static void vedit_tab(void)`
-- Defined: `progs/vedit/vedit.c:820`
+- Defined: `progs/vedit/vedit.c:965`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_str_case (function) `static void vedit_str_case(char *s, int mode)`
+- Defined: `progs/vedit/vedit.c:1001`
+- Doc: Upper/lower/capitalize a NUL string in place; mode 1=upper, 2=lower, * 3=capitalize. Pure: the host suite mirrors it byt
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_str_transpose (function) `static void vedit_str_transpose(char *s, int len, int pos)`
+- Defined: `progs/vedit/vedit.c:1028`
+- Doc: new_word = 0; } else { if (new_word) { if (c >= 'a' && c <= 'z') s[i] = (char)(c - 32); new_word = 0; } else { if (c >= 
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_magic_class (function) `static int vedit_magic_class(int c, const char *cls)`
+- Defined: `progs/vedit/vedit.c:1040`
+- Doc: Minimal magic matcher (uemacs search.c subset): '.' any, '*' repeat, '^'/'$' anchors, '[...]' classes with ranges and '^
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_magic_atom (function) `static int vedit_magic_atom(const char *pat, int c, int *atom_len)`
+- Defined: `progs/vedit/vedit.c:1062`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_magic_here (function) `static int vedit_magic_here(const char *text, const char *pat, int *mlen)`
+- Defined: `progs/vedit/vedit.c:1085`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_magic_match (function) `static int vedit_magic_match(const char *text, const char *pat, int *mlen)`
+- Defined: `progs/vedit/vedit.c:1146`
+- Doc: if (vedit_magic_here(text + k, rest, &sub)) { mlen = total + k + sub; return 1; } if (k == 0) break; } return 0; } } mle
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_buf_alloc (function) `static int vedit_buf_alloc(int idx)`
+- Defined: `progs/vedit/vedit.c:1175`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_next_buffer (function) `static int vedit_next_buffer(void)`
+- Defined: `progs/vedit/vedit.c:1203`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_hist_push (function) `static void vedit_hist_push(const char *fname)`
+- Defined: `progs/vedit/vedit.c:1217`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_set_mark (function) `static void vedit_set_mark(void)`
+- Defined: `progs/vedit/vedit.c:1236`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_region (function) `static int vedit_region(int *y0, int *x0, int *y1, int *x1)`
+- Defined: `progs/vedit/vedit.c:1244`
+- Doc: for (k = 0; k < VEDIT_HIST_N - 1; k++) memcpy(vedit_hist[k], vedit_hist[k + 1], VEDIT_FNAME_MAX); memcpy(vedit_hist[VEDI
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_copy_region (function) `static int vedit_copy_region(void)`
+- Defined: `progs/vedit/vedit.c:1265`
+- Doc: int t = *y0; y0 = *y1; y1 = t; t = *x0; x0 = *x1; x1 = t; } if (*y0 == *y1 && *x0 == *x1) return 0; if (*y0 >= vedit_cou
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_kill_region (function) `static int vedit_kill_region(void)`
+- Defined: `progs/vedit/vedit.c:1295`
+- Doc: if (a > vedit_used[y]) a = vedit_used[y]; if (b > vedit_used[y]) b = vedit_used[y]; for (k = a; k < b && pos < VEDIT_KIL
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_kill_line (function) `static int vedit_kill_line(void)`
+- Defined: `progs/vedit/vedit.c:1341`
+- Doc: } for (k = 0; k < tail; k++) first[x0 + k] = last[x1 + k]; vedit_used[y0] = x0 + tail; for (y = y1; y > y0; y--) vedit_d
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_yank (function) `static int vedit_yank(void)`
+- Defined: `progs/vedit/vedit.c:1379`
+- Doc: vedit_kill[vedit_kill_head][0] = '\n'; vedit_kill[vedit_kill_head][1] = 0; vedit_kill_len[vedit_kill_head] = 1; vedit_de
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_word_move (function) `static int vedit_word_move(int dir)`
+- Defined: `progs/vedit/vedit.c:1412`
+- Doc: vedit_row_ptr(vedit_cy)[vedit_cx] = s[k]; vedit_cx++; vedit_dirty = 1; } else { vedit_insert_char((unsigned char)s[k]); 
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_case_word (function) `static int vedit_case_word(int mode)`
+- Defined: `progs/vedit/vedit.c:1447`
+- Doc: vedit_cx = vedit_used[vedit_cy]; return 0; } while (vedit_cx > 0 && !vedit_is_wordc((unsigned char)l[vedit_cx - 1])) ved
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_transpose (function) `static int vedit_transpose(void)`
+- Defined: `progs/vedit/vedit.c:1486`
+- Doc: if (mode == 1 && c >= 'a' && c <= 'z') l[k] = (char)(c - 32); else if (mode == 2 && c >= 'A' && c <= 'Z') l[k] = (char)(
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_goto_fence (function) `static int vedit_goto_fence(void)`
+- Defined: `progs/vedit/vedit.c:1509`
+- Doc: vedit_set_msg("nothing to transpose"); return -1; } if (vedit_cx <= 0) vedit_cx = 1; if (vedit_cx >= vedit_used[vedit_cy
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_count_words (function) `static void vedit_count_words(void)`
+- Defined: `progs/vedit/vedit.c:1575`
+- Doc: vedit_cy = y; vedit_cx = x; vedit_msg[0] = 0; return 0; } depth--; } } } vedit_set_msg("no match"); return -1; } /** Cou
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_match_at (function) `static int vedit_match_at(int row, int col, const char *needle, int magic,
+                      ...`
+- Defined: `progs/vedit/vedit.c:1618`
+- Doc: printf("vedit: %s\n", nb); } /* ---- uemacs F2: magic search, isearch, replace, fill ---- #define VEDIT_FILL_COL 72 stat
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_search_fwd (function) `static int vedit_search_fwd(int row, int col, const char *needle, int magic,
+                    ...`
+- Defined: `progs/vedit/vedit.c:1655`
+- Doc: if (avail > VEDIT_LINE_MAX) avail = VEDIT_LINE_MAX; for (k = 0; k < avail; k++) tmp[k] = l[col + k]; tmp[avail] = 0; if 
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_search_rev (function) `static int vedit_search_rev(int row, int col, const char *needle, int magic)`
+- Defined: `progs/vedit/vedit.c:1687`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_isearch_step (function) `static void vedit_isearch_step(void)`
+- Defined: `progs/vedit/vedit.c:1710`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_replace_at (function) `static int vedit_replace_at(int row, int col, const char *old_s,
+                            cons...`
+- Defined: `progs/vedit/vedit.c:1737`
+- Doc: vedit_set_msg("wrapped"); else vedit_msg[0] = 0; } else { if (vedit_search_rev(vedit_isearch_oy, vedit_isearch_ox, vedit
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_replace_all (function) `static int vedit_replace_all(const char *old_s, const char *new_s,
+                             i...`
+- Defined: `progs/vedit/vedit.c:1757`
+- Doc: if (!vedit_match_at(row, col, old_s, magic, &mlen) || mlen <= 0) return -1; l = vedit_row_ptr(row); nlen = (int)strlen(n
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_fill_paragraph (function) `static int vedit_fill_paragraph(void)`
+- Defined: `progs/vedit/vedit.c:1810`
+- Doc: r++; c = 0; if (r >= vedit_count) break; } } { char nb[64]; snprintf(nb, sizeof(nb), "replaced %d", count); vedit_set_ms
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_find (function) `static void vedit_find(const char *needle)`
-- Defined: `progs/vedit/vedit.c:847`
+- Defined: `progs/vedit/vedit.c:1894`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_save (function) `static int vedit_save(void)`
-- Defined: `progs/vedit/vedit.c:897`
+- Defined: `progs/vedit/vedit.c:1984`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_load (function) `static int vedit_load(void)`
-- Defined: `progs/vedit/vedit.c:940`
+- Defined: `progs/vedit/vedit.c:2047`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_open_in_buffer (function) `static int vedit_open_in_buffer(const char *fname, int ro)`
+- Defined: `progs/vedit/vedit.c:2118`
+- Doc: { struct stat st; if (stat(vedit_fname, &st) == 0) { vedit_sizes[vedit_cur] = (long)st.st_size; vedit_mtimes[vedit_cur] 
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_insert_file (function) `static int vedit_insert_file(const char *fname)`
+- Defined: `progs/vedit/vedit.c:2172`
+- Doc: memcpy(vedit_fname, fname, n + 1); vedit_lang = vedit_lang_of(vedit_fname); vedit_ros[idx] = ro; vedit_hist_push(fname);
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_has_ext (function) `static int vedit_has_ext(const char *fname, const char *ext)`
-- Defined: `progs/vedit/vedit.c:997`
-- Doc: vedit_trunc = 1; } } } if (used > 0 && idx < VEDIT_MAX_LINES) { vedit_used[idx] = used; idx++; } vedit_count = idx; fclo
+- Defined: `progs/vedit/vedit.c:2235`
+- Doc: vedit_insert_char((unsigned char)data[k]); } if (vedit_msg[0]) { free(data); vedit_set_msg("insert stopped: buffer full"
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_base_of (function) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
-- Defined: `progs/vedit/vedit.c:1009`
+- Defined: `progs/vedit/vedit.c:2247`
 - Doc: /** Report whether a file name ends with the given extension. static int vedit_has_ext(const char *fname, const char *ex
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_join (function) `static int vedit_join(const char *dir, const char *base, const char *ext,
                       c...`
-- Defined: `progs/vedit/vedit.c:1030`
+- Defined: `progs/vedit/vedit.c:2268`
 - Doc: if (fname[k] == '/') s = k + 1; } for (k = s; k < n; k++) { if (fname[k] == '.') e = k; } if (e <= s) e = n; len = e - s
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_link_fmt (function) `static int vedit_link_fmt(const char *s)`
-- Defined: `progs/vedit/vedit.c:1047`
+- Defined: `progs/vedit/vedit.c:2285`
 - Doc: size_t b = strlen(base); size_t e = strlen(ext); size_t k = 0; size_t i; if (d + b + e + 1 > cap) return -1; if (d + b +
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_print_log (function) `static void vedit_print_log(const char *path)`
-- Defined: `progs/vedit/vedit.c:1060`
+- Defined: `progs/vedit/vedit.c:2298`
 - Doc: /** Accept only the two linker formats, rejecting anything else. static int vedit_link_fmt(const char *s) { size_t k = 0
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_spawn_visible (function) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
                   ...`
-- Defined: `progs/vedit/vedit.c:1077`
+- Defined: `progs/vedit/vedit.c:2315`
 - Doc: size_t n; if (!f) { printf("vedit: no output captured (%s missing)\n", path); return; } while ((n = fread(buf, 1, sizeof
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_exec (function) `static void vedit_cmd_exec(const char *out, int kind)`
-- Defined: `progs/vedit/vedit.c:1106`
+- Defined: `progs/vedit/vedit.c:2344`
 - Doc: if (rc < 0) { snprintf(nb, sizeof(nb), "%s failed (%ld)", label, rc); vedit_set_msg(nb); } else if (rc != 0) { snprintf(
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_run_kind (function) `static int vedit_run_kind(const char *fname)`
-- Defined: `progs/vedit/vedit.c:1119`
+- Defined: `progs/vedit/vedit.c:2357`
 - Doc: /** Run a freshly linked artifact so its output lands on the console. static void vedit_cmd_exec(const char *out, int ki
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_run (function) `static void vedit_cmd_run(void)`
-- Defined: `progs/vedit/vedit.c:1129`
+- Defined: `progs/vedit/vedit.c:2367`
 - Doc: vedit_spawn_visible(VEDIT_TOOL_CVM, 0, 1, args, label); } /** Decide the ^R tool for a file: 1=minigcc, 2=lua, 3=python,
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_cmd_link (function) `static void vedit_cmd_link(const char *fmt)`
-- Defined: `progs/vedit/vedit.c:1206`
+- Defined: `progs/vedit/vedit.c:2444`
 - Doc: vedit_set_msg("usage: save as .c, .s, .lua, .py or .lisp first"); return; } args[0] = tool; args[1] = vedit_fname; args[
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_selftest_build (function) `static int vedit_selftest_build(void)`
-- Defined: `progs/vedit/vedit.c:1257`
+- Defined: `progs/vedit/vedit.c:2495`
 - Doc: Headless build contract check: no display, no syscalls, exit status only. Mirror contract with tests/test_vedit_build.c:
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
+### vedit_pane_save (function) `static void vedit_pane_save(int p)`
+- Defined: `progs/vedit/vedit.c:2695`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_first_open (function) `static int vedit_first_open(void)`
+- Defined: `progs/vedit/vedit.c:2703`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_pane_load (function) `static void vedit_pane_load(int p)`
+- Defined: `progs/vedit/vedit.c:2711`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_count_open (function) `static int vedit_count_open(void)`
+- Defined: `progs/vedit/vedit.c:2723`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_split_set (function) `static void vedit_split_set(int on)`
+- Defined: `progs/vedit/vedit.c:2732`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_next_pane (function) `static void vedit_next_pane(void)`
+- Defined: `progs/vedit/vedit.c:2751`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_cmd_lookup (function) `static int vedit_cmd_lookup(const char *name)`
+- Defined: `progs/vedit/vedit.c:2783`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_parse_key (function) `static int vedit_parse_key(const char *s)`
+- Defined: `progs/vedit/vedit.c:2799`
+- Doc: Parse a key description into a decoded key code: ^A..^Z ^@ ^[ ^\ ^] ^^ ^_, M-<c>, or Up Down Left Right Home End PgUp Pg
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_cmd_bind (function) `static int vedit_cmd_bind(int key, int cmd)`
+- Defined: `progs/vedit/vedit.c:2851`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_cmd_bound (function) `static int vedit_cmd_bound(int key)`
+- Defined: `progs/vedit/vedit.c:2867`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_list_buffers (function) `static void vedit_list_buffers(void)`
+- Defined: `progs/vedit/vedit.c:2875`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_hist_show (function) `static void vedit_hist_show(void)`
+- Defined: `progs/vedit/vedit.c:2894`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_help_text (function) `static void vedit_help_text(void)`
+- Defined: `progs/vedit/vedit.c:2902`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_cmd_exec_id (function) `static void vedit_cmd_exec_id(int id, const char *arg, int *quit,
+                              i...`
+- Defined: `progs/vedit/vedit.c:2918`
+- Doc: printf("arrows/Home/End/PgUp/PgDn move, ^U arg, ^A/^E bol/eol\n"); printf("M-f/M-b word, M-c/M-l/M-u case word, ^@/M-SP 
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### strcmp (function) `strcmp(name, "describe-bindings") == 0)`
+- Defined: `progs/vedit/vedit.c:3106`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_run_rc (function) `static void vedit_run_rc(const char *path)`
+- Defined: `progs/vedit/vedit.c:3124`
+- Doc: Run the startup script: `bind <key> <cmd>` plus bare commands with * an optional trailing argument. Unknown lines are re
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_sel_clear (function) `static void vedit_sel_clear(void)`
+- Defined: `progs/vedit/vedit.c:3202`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_sel_norm (function) `static void vedit_sel_norm(void)`
+- Defined: `progs/vedit/vedit.c:3207`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_sel_copy (function) `static int vedit_sel_copy(void)`
+- Defined: `progs/vedit/vedit.c:3220`
+- Doc: static void vedit_sel_norm(void) { if (vedit_sy0 > vedit_sy1 || (vedit_sy0 == vedit_sy1 && vedit_sx0 > vedit_sx1)) { int
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_clip_paste (function) `static int vedit_clip_paste(void)`
+- Defined: `progs/vedit/vedit.c:3263`
+- Doc: } if (vedit_clip_set(vedit_clipbuf, pos) != 0) { vedit_set_msg("clipboard refused"); return -1; } { char nb[64]; snprint
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_region_to_clip (function) `static int vedit_region_to_clip(void)`
+- Defined: `progs/vedit/vedit.c:3293`
+- Doc: vedit_split(); else vedit_insert_char((unsigned char)vedit_clipbuf[k]); if (vedit_msg[0]) { vedit_set_msg("paste stopped
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_sh_split (function) `static int vedit_sh_split(const char *line, char *buf, const char **argv)`
+- Defined: `progs/vedit/vedit.c:3338`
+- Doc: } if (pos <= 0) { vedit_set_msg("nothing selected"); return -1; } if (vedit_clip_set(vedit_clipbuf, pos) != 0) { vedit_s
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_shell_command (function) `static void vedit_shell_command(const char *line)`
+- Defined: `progs/vedit/vedit.c:3358`
+- Doc: if (!*line) break; if (argc >= VEDIT_SH_ARGS) return -1; argv[argc++] = buf + k; while (*line && *line != ' ' && *line !
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_write_region (function) `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,
+                   ...`
+- Defined: `progs/vedit/vedit.c:3387`
+- Doc: idx = vedit_open_in_buffer("*shell*", 0); if (idx < 0) return; vedit_count = 0; vedit_cx = 0; vedit_cy = 0; vedit_top = 
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_filter_buffer (function) `static void vedit_filter_buffer(const char *prog)`
+- Defined: `progs/vedit/vedit.c:3431`
+- Doc: if (y < y1) putc('\n', f); } if (fclose(f) != 0) { vedit_set_msg("cannot write temp file"); return -1; } if (y0o) *y0o =
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_grep (function) `static void vedit_grep(const char *pat)`
+- Defined: `progs/vedit/vedit.c:3491`
+- Doc: vedit_cx = x1; vedit_mark_y = y0; vedit_mark_x = x0; vedit_mark_on = 1; if (vedit_kill_region() != 0) return; if (vedit_
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_next_error (function) `static void vedit_next_error(void)`
+- Defined: `progs/vedit/vedit.c:3554`
+- Doc: } vedit_switch_buffer(idx); vedit_grep_src = src; vedit_cx = 0; vedit_cy = 0; vedit_top = 0; { char nb[64]; snprintf(nb,
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
 ### vedit_read_key_poll (function) `static int vedit_read_key_poll(void)`
-- Defined: `progs/vedit/vedit.c:1354`
+- Defined: `progs/vedit/vedit.c:3602`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_ansi_for (function) `static void vedit_ansi_for(int col)`
-- Defined: `progs/vedit/vedit.c:1405`
+- Defined: `progs/vedit/vedit.c:3656`
 - Doc: vedit_esc_state = 3; vedit_esc_t0 = now; return -1; } return VEDIT_KEY_ESC; } vedit_esc_state = 0; if (c != '~') return 
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_console_dump (function) `static void vedit_console_dump(void)`
-- Defined: `progs/vedit/vedit.c:1413`
+- Defined: `progs/vedit/vedit.c:3664`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_open (function) `static void vedit_prompt_open(const char *label, int mode)`
-- Defined: `progs/vedit/vedit.c:1453`
+- Defined: `progs/vedit/vedit.c:3694`
+- Doc: vedit_ansi_for(vedit_cell[c]); cur = vedit_cell[c]; } putchar(l[c]); } if (cur != VEDIT_COL_DEFAULT) printf("\033[0m"); 
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_find (function) `static void vedit_prompt_find(void)`
-- Defined: `progs/vedit/vedit.c:1464`
+- Defined: `progs/vedit/vedit.c:3705`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_prompt_isearch (function) `static void vedit_prompt_isearch(int dir)`
+- Defined: `progs/vedit/vedit.c:3709`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_qrep_next (function) `static void vedit_qrep_next(int r, int c)`
+- Defined: `progs/vedit/vedit.c:3719`
+- Doc: static void vedit_prompt_find(void) { vedit_prompt_open("find: ", VEDIT_PROMPT_FIND); } static void vedit_prompt_isearch
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### vedit_qrep_answer (function) `static void vedit_qrep_answer(int key)`
+- Defined: `progs/vedit/vedit.c:3731`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_saveas (function) `static void vedit_prompt_saveas(void)`
-- Defined: `progs/vedit/vedit.c:1468`
+- Defined: `progs/vedit/vedit.c:3770`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_draw_row (function) `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...`
-- Defined: `progs/vedit/vedit.c:1478`
+- Defined: `progs/vedit/vedit.c:3780`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_draw_ui (function) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...`
-- Defined: `progs/vedit/vedit.c:1557`
-- Doc: nk_fill_rect(canvas, nk_rect((float)ccx, (float)y, (float)vedit_cw, (float)vedit_ch), 0, vedit_c_cursor()); if (vedit_cx
+- Defined: `progs/vedit/vedit.c:3878`
+- Doc: if (a < 0) a = 0; if (b > len) b = len; for (c = a; c < b; c++) { int vc = c - vedit_hoff; if (vc < 0 || vc >= textw) co
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_prompt_key (function) `static void vedit_prompt_key(int key)`
-- Defined: `progs/vedit/vedit.c:1688`
+- Defined: `progs/vedit/vedit.c:4158`
 - Doc: vedit_cw), (float)(vedit_status_y + 2), (float)vedit_cw, (float)vedit_ch), 0, vedit_c_cursor()); } nk_draw_text(canvas, 
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_key (function) `static void vedit_key(int key, int *quit, int *save_and_quit)`
-- Defined: `progs/vedit/vedit.c:1747`
-- Doc: if (key == '\b' || key == 127) { if (vedit_prompt_pos > 0) { vedit_prompt_pos--; vedit_prompt_buf[vedit_prompt_pos] = 0;
+- Defined: `progs/vedit/vedit.c:4332`
+- Doc: vedit_isearch_step(); } return; } if (key >= 32 && key < 127 && vedit_prompt_pos < VEDIT_LINE_MAX - 1) { vedit_prompt_bu
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_sync_title (function) `static void vedit_sync_title(void)`
-- Defined: `progs/vedit/vedit.c:1827`
+- Defined: `progs/vedit/vedit.c:4572`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_gui_run (function) `static void vedit_gui_run(void)`
-- Defined: `progs/vedit/vedit.c:1837`
+- Defined: `progs/vedit/vedit.c:4582`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### vedit_selftest (function) `static int vedit_selftest(void)`
-- Defined: `progs/vedit/vedit.c:1916`
+- Defined: `progs/vedit/vedit.c:4673`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ### main (function) `int main(int argc, char **argv)`
-- Defined: `progs/vedit/vedit.c:1992`
+- Defined: `progs/vedit/vedit.c:4749`
+- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+### definitions (function) `* definitions (C99, one file, no headers). */ static void vedit_str_case(char *s, int mode);`
+- Defined: `progs/vedit/vedit.c:264`
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/wl/wl_client.h
@@ -26420,34 +26710,68 @@ Z_DumpHeap
 ## tests/test_vedit_build.c
 
 ### t_has_ext (function) `static int t_has_ext(const char *fname, const char *ext)`
-- Defined: `tests/test_vedit_build.c:33`
+- Defined: `tests/test_vedit_build.c:40`
 - Depends on: `kernel/string.c`
 
 ### t_base_of (function) `static int t_base_of(const char *fname, char *dst, size_t cap)`
-- Defined: `tests/test_vedit_build.c:44`
+- Defined: `tests/test_vedit_build.c:51`
 - Depends on: `kernel/string.c`
 
 ### t_join (function) `static int t_join(const char *dir, const char *base, const char *ext,
                   char *dst...`
-- Defined: `tests/test_vedit_build.c:64`
+- Defined: `tests/test_vedit_build.c:71`
 - Depends on: `kernel/string.c`
 
 ### t_link_fmt (function) `static int t_link_fmt(const char *s)`
-- Defined: `tests/test_vedit_build.c:80`
+- Defined: `tests/test_vedit_build.c:87`
 - Depends on: `kernel/string.c`
 
 ### t_lang_of (function) `static int t_lang_of(const char *fname)`
-- Defined: `tests/test_vedit_build.c:94`
+- Defined: `tests/test_vedit_build.c:101`
 - Doc: Mirror of vedit_lang_of: 1=C, 2=PY, 3=LUA, 4=ASM, 5=LISP. Unknown * defaults to C, exactly like the guest (untitled high
 - Depends on: `kernel/string.c`
 
 ### t_run_kind (function) `static int t_run_kind(const char *fname)`
-- Defined: `tests/test_vedit_build.c:114`
+- Defined: `tests/test_vedit_build.c:121`
 - Doc: } if (n >= 3 && fname[n - 3] == '.' && fname[n - 2] == 'p' && fname[n - 1] == 'y') return 2; if (n >= 4 && fname[n - 4] 
 - Depends on: `kernel/string.c`
 
+### t_str_case (function) `static void t_str_case(char *s, int mode)`
+- Defined: `tests/test_vedit_build.c:131`
+- Doc: return 1; } /* Mirror of vedit_run_kind: 1=minigcc, 2=lua, 3=python, 4=ld, 5=lisp, else 0. static int t_run_kind(const c
+- Depends on: `kernel/string.c`
+
+### t_transpose (function) `static void t_transpose(char *s, int len, int pos)`
+- Defined: `tests/test_vedit_build.c:157`
+- Depends on: `kernel/string.c`
+
+### t_mclass (function) `static int t_mclass(int c, const char *cls)`
+- Defined: `tests/test_vedit_build.c:166`
+- Doc: } i++; } } static void t_transpose(char *s, int len, int pos) { char t; if (!s || len < 2 || pos < 1 || pos >= len) retu
+- Depends on: `kernel/string.c`
+
+### t_matom (function) `static int t_matom(const char *pat, int c, int *atom_len)`
+- Defined: `tests/test_vedit_build.c:188`
+- Depends on: `kernel/string.c`
+
+### t_mhere (function) `static int t_mhere(const char *text, const char *pat, int *mlen)`
+- Defined: `tests/test_vedit_build.c:211`
+- Depends on: `kernel/string.c`
+
+### t_magic (function) `static int t_magic(const char *text, const char *pat, int *mlen)`
+- Defined: `tests/test_vedit_build.c:268`
+- Depends on: `kernel/string.c`
+
+### t_cmd (function) `static int t_cmd(const char *name)`
+- Defined: `tests/test_vedit_build.c:299`
+- Depends on: `kernel/string.c`
+
+### t_parse_key (function) `static int t_parse_key(const char *s)`
+- Defined: `tests/test_vedit_build.c:312`
+- Depends on: `kernel/string.c`
+
 ### main (function) `int main(void)`
-- Defined: `tests/test_vedit_build.c:123`
+- Defined: `tests/test_vedit_build.c:345`
 - Depends on: `kernel/string.c`
 
 ## tests/test_vma.c
@@ -27667,16 +27991,16 @@ Z_DumpHeap
 - Defined: `tools/test_bdd.sh:167`
 
 ### http_server_start (function)
-- Defined: `tools/test_bdd.sh:983`
+- Defined: `tools/test_bdd.sh:993`
 
 ### http_server_stop (function)
-- Defined: `tools/test_bdd.sh:990`
+- Defined: `tools/test_bdd.sh:1000`
 
 ### http_fixture_start (function)
-- Defined: `tools/test_bdd.sh:995`
+- Defined: `tools/test_bdd.sh:1005`
 
 ### http_fixture_stop (function)
-- Defined: `tools/test_bdd.sh:1002`
+- Defined: `tools/test_bdd.sh:1012`
 
 ## tools/test_call_align.py
 
