@@ -9,12 +9,24 @@
  * the graphics mode first so the desktop terminal stays ordered and the
  * toolchain output lands on the console, then the IDE resumes. Untitled
  * buffers highlight as C until a name with an extension is given.
+ *
+ * uemacs adoption (8 buffers, kill ring, macros, M-x, splits, shell):
+ * ^A/^E bol/eol, M-f/M-b word motion, M-c/M-l/M-u case word, ^@ set mark,
+ * M-w copy, M-k kill region, ^K kill line, ^Y yank, ^T transpose,
+ * ^] goto fence, ^U universal arg, M-s/M-r isearch, M-n hunt, M-% query
+ * replace, M-q fill, M-1/M-2/M-o windows, M-x command, M-! shell capture,
+ * M-# filter, M-( M-) M-e macro, M-x grep + next-error. Saving writes a
+ * "~" backup and refuses a disk-changed file until forced by a second
+ * save. Startup runs /etc/vedit.rc then ./vedit.rc (`bind <key> <cmd>`
+ * plus bare commands). Clipboard (249/250): mouse drag selects into it,
+ * M-v pastes, M-W copies the region; --selftest-build proves the wire.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <sys/stat.h>
 #include "nuklear.h"
 #include "nuklear_minios.h"
 #include "nuklear_theme.h"
@@ -78,6 +90,23 @@ static unsigned long vedit_time_ms(void) {
     return (unsigned long)ret;
 }
 
+/** Shared clipboard: SET copies in (249), GET copies out (250). */
+static long vedit_clip_set(const char *s, long len) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret)
+                     : "a"(MINIOS_SYS_CLIP_SET), "D"(s), "S"(len)
+                     : "rcx", "r11", "memory");
+    return ret;
+}
+
+static long vedit_clip_get(char *out, long cap) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret)
+                     : "a"(MINIOS_SYS_CLIP_GET), "D"(out), "S"(cap)
+                     : "rcx", "r11", "memory");
+    return ret;
+}
+
 /** Central configuration: every bound, key, tool, directory and label. */
 #define VEDIT_MAX_LINES 4096
 #define VEDIT_LINE_MAX 256
@@ -88,7 +117,7 @@ static unsigned long vedit_time_ms(void) {
 #define VEDIT_MSG_MAX 128
 #define VEDIT_WORD_MAX 32
 #define VEDIT_TAB_W 4
-#define VEDIT_ESC_MS 100
+#define VEDIT_ESC_MS 1000
 #define VEDIT_FRAME_MS 8
 #define VEDIT_UI_MEMORY (4 * 1024 * 1024)
 #define VEDIT_KEY_RUN 18
@@ -208,20 +237,109 @@ static const char *vedit_kw_asm =
     " lodsb lodsw lodsl lodsq scas scasb scasw scasl scasq cmps cmpsb cmpsw"
     " cmpsl cmpsq rep repz repnz repzb repzl repzq cltq cqto cqo cdq";
 
-/* ---- Buffer: flat pool plus parallel used counts (no structs needed) ---- */
-static char *vedit_pool;
-static int *vedit_used;
-static int vedit_count;
-static int vedit_cx;
-static int vedit_cy;
-static int vedit_top;
-static int vedit_hoff;
-static int vedit_dirty;
-static int vedit_trunc;
-static int vedit_lang;
-static char vedit_fname[VEDIT_FNAME_MAX];
-static char vedit_msg[VEDIT_MSG_MAX];
+/* ---- Buffer: flat pool plus parallel used counts (no structs needed) ----
+ * uemacs model: up to VEDIT_NBUF live buffers, each with its own pool and
+ * cursor. The active buffer's state is addressed through macros so every
+ * existing editing op works unchanged; switching parks nothing because the
+ * state already lives per buffer. Buffer 0 is the startup buffer. */
+
+/* ---- IDE (uemacs adoption): every new bound lives here, never inline --- */
+#define VEDIT_NBUF 8
+#define VEDIT_KILL_N 8
+#define VEDIT_KILL_MAX 4096
+#define VEDIT_MACRO_MAX 1024
+#define VEDIT_HIST_N 16
+#define VEDIT_CMD_MAX 48
+#define VEDIT_MAGIC_MAX 128
+#define VEDIT_KEY_META(c) (3000 + (c))
+#define VEDIT_KEY_ARG 21
+#define VEDIT_KEY_MARK 0
+#define VEDIT_KEY_KILL_LINE 11
+#define VEDIT_KEY_YANK 25
+#define VEDIT_KEY_TRANSPOSE 20
+#define VEDIT_KEY_FENCE 29
+#define VEDIT_KEY_BOL 1
+#define VEDIT_KEY_EOL 5
+/* Forward: pure F1/F4 helpers used by the build selftest before their
+ * definitions (C99, one file, no headers). */
+static void vedit_str_case(char *s, int mode);
+static void vedit_str_transpose(char *s, int len, int pos);
+static int vedit_magic_match(const char *text, const char *pat, int *mlen);
+static int vedit_cmd_lookup(const char *name);
+static int vedit_parse_key(const char *s);
+static void vedit_sel_clear(void);
+static int vedit_clip_paste(void);
+static int vedit_region_to_clip(void);
+static char *vedit_pools[VEDIT_NBUF];
+static int *vedit_useds[VEDIT_NBUF];
+static int vedit_counts[VEDIT_NBUF];
+static int vedit_cxs[VEDIT_NBUF];
+static int vedit_cys[VEDIT_NBUF];
+static int vedit_tops[VEDIT_NBUF];
+static int vedit_hoffs[VEDIT_NBUF];
+static int vedit_dirtys[VEDIT_NBUF];
+static int vedit_truncs[VEDIT_NBUF];
+static int vedit_langs[VEDIT_NBUF];
+static int vedit_ros[VEDIT_NBUF];
+static long vedit_sizes[VEDIT_NBUF];
+static long vedit_mtimes[VEDIT_NBUF];
+static char vedit_fnames[VEDIT_NBUF][VEDIT_FNAME_MAX];
+static char vedit_msgs[VEDIT_NBUF][VEDIT_MSG_MAX];
+static int vedit_cur;
+#define vedit_pool (vedit_pools[vedit_cur])
+#define vedit_used (vedit_useds[vedit_cur])
+#define vedit_count (vedit_counts[vedit_cur])
+#define vedit_cx (vedit_cxs[vedit_cur])
+#define vedit_cy (vedit_cys[vedit_cur])
+#define vedit_top (vedit_tops[vedit_cur])
+#define vedit_hoff (vedit_hoffs[vedit_cur])
+#define vedit_dirty (vedit_dirtys[vedit_cur])
+#define vedit_trunc (vedit_truncs[vedit_cur])
+#define vedit_lang (vedit_langs[vedit_cur])
+#define vedit_fname (vedit_fnames[vedit_cur])
+#define vedit_msg (vedit_msgs[vedit_cur])
 static int vedit_cell[VEDIT_LINE_MAX];
+
+/** Prompt state for find/goto/save-as/link, answered on the status row.
+ * Lives up here (not with the UI) because the F2/F4 verbs open prompts. */
+static int vedit_prompt_on;
+static char vedit_prompt_label[16];
+static char vedit_prompt_buf[VEDIT_LINE_MAX];
+static int vedit_prompt_pos;
+#define VEDIT_PROMPT_FIND 0
+#define VEDIT_PROMPT_GOTO 1
+#define VEDIT_PROMPT_NAME 2
+#define VEDIT_PROMPT_LINK 3
+#define VEDIT_PROMPT_CMD 4
+#define VEDIT_PROMPT_ISEARCH_F 5
+#define VEDIT_PROMPT_ISEARCH_R 6
+#define VEDIT_PROMPT_REP_OLD 7
+#define VEDIT_PROMPT_REP_NEW 8
+#define VEDIT_PROMPT_QREP 9
+#define VEDIT_PROMPT_SHELLCMD 10
+#define VEDIT_PROMPT_FILTER 11
+#define VEDIT_PROMPT_SELECT 12
+#define VEDIT_PROMPT_GREP 13
+#define VEDIT_PROMPT_BINDKEY 14
+#define VEDIT_PROMPT_BINDCMD 15
+static int vedit_prompt_mode;
+
+/* ---- Mark, kill ring, macro, history (uemacs region.c + main.c) ---- */
+static int vedit_mark_on;
+static int vedit_mark_y;
+static int vedit_mark_x;
+static char vedit_kill[VEDIT_KILL_N][VEDIT_KILL_MAX];
+static int vedit_kill_len[VEDIT_KILL_N];
+static int vedit_kill_head;
+static int vedit_arg;
+static int vedit_arg_on;
+static int vedit_overwrite;
+static int vedit_macro_rec;
+static int vedit_macro_len;
+static int vedit_macro[VEDIT_MACRO_MAX];
+static char vedit_hist[VEDIT_HIST_N][VEDIT_FNAME_MAX];
+static int vedit_hist_n;
+static char vedit_last_find[VEDIT_LINE_MAX];
 
 /* ---- View geometry, derived from the window and font at runtime ---- */
 static int vedit_cw;
@@ -676,6 +794,11 @@ static void vedit_follow(void) {
 static void vedit_insert_char(int c) {
     char *l;
     int k;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return;
+    }
+    vedit_sel_clear();
     if (vedit_count <= 0) {
         if (vedit_count >= VEDIT_MAX_LINES) {
             vedit_set_msg("buffer full");
@@ -687,6 +810,13 @@ static void vedit_insert_char(int c) {
         vedit_cx = 0;
     }
     l = vedit_row_ptr(vedit_cy);
+    if (vedit_overwrite && vedit_cx < vedit_used[vedit_cy]) {
+        l[vedit_cx] = (char)c;
+        vedit_cx++;
+        vedit_dirty = 1;
+        vedit_msg[0] = 0;
+        return;
+    }
     if (vedit_used[vedit_cy] >= VEDIT_LINE_USED) {
         vedit_set_msg("line full");
         return;
@@ -715,6 +845,11 @@ static void vedit_backspace(void) {
     char *p;
     int k;
     int n;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return;
+    }
+    vedit_sel_clear();
     if (vedit_count <= 0 || vedit_cy >= vedit_count) return;
     l = vedit_row_ptr(vedit_cy);
     if (vedit_cx > 0) {
@@ -746,6 +881,11 @@ static void vedit_delete_char(void) {
     char *nx;
     int k;
     int n;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return;
+    }
+    vedit_sel_clear();
     if (vedit_count <= 0 || vedit_cy >= vedit_count) return;
     l = vedit_row_ptr(vedit_cy);
     if (vedit_cx < vedit_used[vedit_cy]) {
@@ -775,6 +915,11 @@ static void vedit_split(void) {
     int ni = 0;
     int k;
     int t;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return;
+    }
+    vedit_sel_clear();
     if (vedit_count <= 0) {
         if (vedit_count >= VEDIT_MAX_LINES) {
             vedit_set_msg("buffer full");
@@ -820,6 +965,11 @@ static void vedit_split(void) {
 static void vedit_tab(void) {
     char *l;
     int k;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return;
+    }
+    vedit_sel_clear();
     if (vedit_count <= 0) {
         if (vedit_count >= VEDIT_MAX_LINES) {
             vedit_set_msg("buffer full");
@@ -844,6 +994,903 @@ static void vedit_tab(void) {
     vedit_msg[0] = 0;
 }
 
+/* ---- uemacs F1: pure helpers (mirrored by make test-vedit) ---- */
+
+/** Upper/lower/capitalize a NUL string in place; mode 1=upper, 2=lower,
+ * 3=capitalize. Pure: the host suite mirrors it byte for byte. */
+static void vedit_str_case(char *s, int mode) {
+    int i = 0;
+    int new_word = 1;
+    if (!s || (mode != 1 && mode != 2 && mode != 3)) return;
+    while (s[i]) {
+        int c = (unsigned char)s[i];
+        if (c == ' ' || c == '\t' || c == '\n') {
+            new_word = 1;
+        } else if (mode == 1) {
+            if (c >= 'a' && c <= 'z') s[i] = (char)(c - 32);
+            new_word = 0;
+        } else if (mode == 2) {
+            if (c >= 'A' && c <= 'Z') s[i] = (char)(c + 32);
+            new_word = 0;
+        } else {
+            if (new_word) {
+                if (c >= 'a' && c <= 'z') s[i] = (char)(c - 32);
+                new_word = 0;
+            } else {
+                if (c >= 'A' && c <= 'Z') s[i] = (char)(c + 32);
+            }
+        }
+        i++;
+    }
+}
+
+/** Transpose two adjacent bytes around dot; pure string core of ^T. */
+static void vedit_str_transpose(char *s, int len, int pos) {
+    char t;
+    if (!s || len < 2 || pos < 1 || pos >= len) return;
+    t = s[pos - 1];
+    s[pos - 1] = s[pos];
+    s[pos] = t;
+}
+
+/** Minimal magic matcher (uemacs search.c subset): '.' any, '*' repeat,
+ * '^'/'$' anchors, '[...]' classes with ranges and '^' negation. Returns 1
+ * on a match of pat against the prefix of text, with *mlen set to the
+ * matched length. Pure: host suite pins every vector. */
+static int vedit_magic_class(int c, const char *cls) {
+    int neg = 0;
+    int hit = 0;
+    if (!cls || cls[0] != '[') return 0;
+    cls++;
+    if (*cls == '^') {
+        neg = 1;
+        cls++;
+    }
+    while (*cls && *cls != ']') {
+        if (cls[1] == '-' && cls[2] && cls[2] != ']') {
+            if (c >= (unsigned char)cls[0] && c <= (unsigned char)cls[2])
+                hit = 1;
+            cls += 3;
+        } else {
+            if (c == (unsigned char)*cls) hit = 1;
+            cls++;
+        }
+    }
+    return neg ? !hit : hit;
+}
+
+static int vedit_magic_atom(const char *pat, int c, int *atom_len) {
+    if (!pat || !pat[0] || c < 0) return 0;
+    if (pat[0] == '.') {
+        *atom_len = 1;
+        return 1;
+    }
+    if (pat[0] == '[') {
+        int k = 1;
+        if (pat[k] == '^') k++;
+        if (pat[k] == ']') k++;
+        while (pat[k] && pat[k] != ']') k++;
+        if (!pat[k]) return 0;
+        *atom_len = k + 1;
+        return vedit_magic_class(c, pat);
+    }
+    if (pat[0] == '\\' && pat[1]) {
+        *atom_len = 2;
+        return c == (unsigned char)pat[1];
+    }
+    *atom_len = 1;
+    return c == (unsigned char)pat[0];
+}
+
+static int vedit_magic_here(const char *text, const char *pat, int *mlen) {
+    int total = 0;
+    if (!text || !pat || !mlen) return 0;
+    if (pat[0] == '$' && pat[1] == 0) {
+        *mlen = 0;
+        return text[0] == 0;
+    }
+    while (pat[0]) {
+        int alen = 0;
+        int star = 0;
+        if (pat[0] == '$' && pat[1] == 0) {
+            *mlen = total;
+            return text[0] == 0;
+        }
+        if (pat[0] == '[') {
+            int k = 1;
+            if (pat[k] == '^') k++;
+            if (pat[k] == ']') k++;
+            while (pat[k] && pat[k] != ']') k++;
+            if (!pat[k]) return 0;
+            alen = k + 1;
+        } else if (pat[0] == '\\' && pat[1]) {
+            alen = 2;
+        } else {
+            alen = 1;
+        }
+        star = (pat[alen] == '*');
+        if (!star) {
+            if (!text[0]) return 0;
+            if (!vedit_magic_atom(pat, (unsigned char)text[0], &alen))
+                return 0;
+            text++;
+            total++;
+            pat += alen;
+        } else {
+            const char *rest = pat + alen + 1;
+            int max = 0;
+            int k;
+            while (text[max]) {
+                int dummy = 0;
+                if (!vedit_magic_atom(pat, (unsigned char)text[max],
+                                      &dummy))
+                    break;
+                max++;
+            }
+            for (k = max; k >= 0; k--) {
+                int sub = 0;
+                if (vedit_magic_here(text + k, rest, &sub)) {
+                    *mlen = total + k + sub;
+                    return 1;
+                }
+                if (k == 0) break;
+            }
+            return 0;
+        }
+    }
+    *mlen = total;
+    return 1;
+}
+
+/** Match pat anywhere in text; anchored when pat starts with '^'. */
+static int vedit_magic_match(const char *text, const char *pat, int *mlen) {
+    int off = 0;
+    int anchored = 0;
+    if (!text || !pat || !mlen) return 0;
+    if (pat[0] == '^') {
+        anchored = 1;
+        pat++;
+    }
+    if (anchored) return vedit_magic_here(text, pat, mlen);
+    while (text[off]) {
+        int sub = 0;
+        if (vedit_magic_here(text + off, pat, &sub)) {
+            *mlen = sub;
+            return 1;
+        }
+        off++;
+    }
+    {
+        int sub = 0;
+        if (vedit_magic_here(text + off, pat, &sub)) {
+            *mlen = sub;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/* ---- uemacs F1: buffers, mark, kill ring, word ops, fence ---- */
+
+static int vedit_buf_alloc(int idx) {
+    if (idx < 0 || idx >= VEDIT_NBUF) return -1;
+    if (vedit_pools[idx]) return 0;
+    vedit_pools[idx] = malloc(VEDIT_MAX_LINES * VEDIT_LINE_MAX);
+    if (!vedit_pools[idx]) return -1;
+    vedit_useds[idx] = malloc(VEDIT_MAX_LINES * sizeof(int));
+    if (!vedit_useds[idx]) {
+        free(vedit_pools[idx]);
+        vedit_pools[idx] = 0;
+        return -1;
+    }
+    memset(vedit_useds[idx], 0, VEDIT_MAX_LINES * sizeof(int));
+    return 0;
+}
+
+/** Parked-cursor buffer switch: state already lives per buffer, so this
+ * only retargets the macros and clears the mark (a mark never spans
+ * buffers, exactly like uemacs). */
+static int vedit_switch_buffer(int idx) {
+    if (idx < 0 || idx >= VEDIT_NBUF) return -1;
+    if (!vedit_pools[idx]) return -1;
+    vedit_cur = idx;
+    vedit_mark_on = 0;
+    vedit_sel_clear();
+    vedit_msg[0] = 0;
+    return 0;
+}
+
+static int vedit_next_buffer(void) {
+    int k;
+    for (k = 1; k <= VEDIT_NBUF; k++) {
+        int idx = (vedit_cur + k) % VEDIT_NBUF;
+        if (vedit_pools[idx]) {
+            vedit_switch_buffer(idx);
+            return 0;
+        }
+    }
+    return -1;
+}
+
+static int vedit_open_in_buffer(const char *fname, int ro);
+
+static void vedit_hist_push(const char *fname) {
+    size_t n;
+    int k;
+    if (!fname || !fname[0]) return;
+    n = strlen(fname);
+    if (n >= VEDIT_FNAME_MAX) return;
+    for (k = 0; k < vedit_hist_n; k++) {
+        if (strcmp(vedit_hist[k], fname) == 0) return;
+    }
+    if (vedit_hist_n < VEDIT_HIST_N) {
+        memcpy(vedit_hist[vedit_hist_n], fname, n + 1);
+        vedit_hist_n++;
+    } else {
+        for (k = 0; k < VEDIT_HIST_N - 1; k++)
+            memcpy(vedit_hist[k], vedit_hist[k + 1], VEDIT_FNAME_MAX);
+        memcpy(vedit_hist[VEDIT_HIST_N - 1], fname, n + 1);
+    }
+}
+
+static void vedit_set_mark(void) {
+    vedit_mark_on = 1;
+    vedit_mark_y = vedit_cy;
+    vedit_mark_x = vedit_cx;
+    vedit_set_msg("mark set");
+}
+
+/** Region bounds in buffer order; returns 0 when no usable region. */
+static int vedit_region(int *y0, int *x0, int *y1, int *x1) {
+    if (!vedit_mark_on || !y0 || !x0 || !y1 || !x1) return 0;
+    *y0 = vedit_mark_y;
+    *x0 = vedit_mark_x;
+    *y1 = vedit_cy;
+    *x1 = vedit_cx;
+    if (*y0 > *y1 || (*y0 == *y1 && *x0 > *x1)) {
+        int t = *y0;
+        *y0 = *y1;
+        *y1 = t;
+        t = *x0;
+        *x0 = *x1;
+        *x1 = t;
+    }
+    if (*y0 == *y1 && *x0 == *x1) return 0;
+    if (*y0 >= vedit_count) return 0;
+    if (*y1 >= vedit_count) *y1 = vedit_count - 1;
+    return 1;
+}
+
+/** Copy the region into the kill ring head (uemacs copy-region). */
+static int vedit_copy_region(void) {
+    int y0;
+    int x0;
+    int y1;
+    int x1;
+    int y;
+    int pos = 0;
+    if (!vedit_region(&y0, &x0, &y1, &x1)) {
+        vedit_set_msg("no region");
+        return -1;
+    }
+    vedit_kill_head = (vedit_kill_head + 1) % VEDIT_KILL_N;
+    for (y = y0; y <= y1 && pos < VEDIT_KILL_MAX - 1; y++) {
+        int a = (y == y0) ? x0 : 0;
+        int b = (y == y1) ? x1 : vedit_used[y];
+        int k;
+        if (a > vedit_used[y]) a = vedit_used[y];
+        if (b > vedit_used[y]) b = vedit_used[y];
+        for (k = a; k < b && pos < VEDIT_KILL_MAX - 1; k++)
+            vedit_kill[vedit_kill_head][pos++] = vedit_row_ptr(y)[k];
+        if (y < y1 && pos < VEDIT_KILL_MAX - 1)
+            vedit_kill[vedit_kill_head][pos++] = '\n';
+    }
+    vedit_kill[vedit_kill_head][pos] = 0;
+    vedit_kill_len[vedit_kill_head] = pos;
+    vedit_set_msg("copied");
+    return 0;
+}
+
+/** Delete the region after copying it (uemacs kill-region). */
+static int vedit_kill_region(void) {
+    int y0;
+    int x0;
+    int y1;
+    int x1;
+    int y;
+    int k;
+    int tail;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    vedit_sel_clear();
+    if (vedit_copy_region() != 0) return -1;
+    if (y0 < 0 || y1 >= vedit_count) return -1;
+    if (y0 == y1) {
+        char *l = vedit_row_ptr(y0);
+        if (x0 > vedit_used[y0]) x0 = vedit_used[y0];
+        if (x1 > vedit_used[y0]) x1 = vedit_used[y0];
+        for (k = x1; k < vedit_used[y0]; k++) l[x0 + k - x1] = l[k];
+        vedit_used[y0] -= (x1 - x0);
+        vedit_cy = y0;
+        vedit_cx = x0;
+    } else {
+        char *first = vedit_row_ptr(y0);
+        char *last = vedit_row_ptr(y1);
+        if (x0 > vedit_used[y0]) x0 = vedit_used[y0];
+        if (x1 > vedit_used[y1]) x1 = vedit_used[y1];
+        tail = vedit_used[y1] - x1;
+        if (x0 + tail > VEDIT_LINE_USED) {
+            vedit_set_msg("line too long to join");
+            return -1;
+        }
+        for (k = 0; k < tail; k++) first[x0 + k] = last[x1 + k];
+        vedit_used[y0] = x0 + tail;
+        for (y = y1; y > y0; y--) vedit_delete_line_at(y);
+        vedit_cy = y0;
+        vedit_cx = x0;
+    }
+    vedit_mark_on = 0;
+    vedit_dirty = 1;
+    vedit_set_msg("killed");
+    return 0;
+}
+
+/** Kill to end of line, or the newline itself when already at it. */
+static int vedit_kill_line(void) {
+    char *l;
+    int n;
+    int k;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    if (vedit_count <= 0 || vedit_cy >= vedit_count) return -1;
+    l = vedit_row_ptr(vedit_cy);
+    vedit_kill_head = (vedit_kill_head + 1) % VEDIT_KILL_N;
+    if (vedit_cx < vedit_used[vedit_cy]) {
+        n = vedit_used[vedit_cy] - vedit_cx;
+        if (n > VEDIT_KILL_MAX - 1) n = VEDIT_KILL_MAX - 1;
+        for (k = 0; k < n; k++)
+            vedit_kill[vedit_kill_head][k] = l[vedit_cx + k];
+        vedit_kill[vedit_kill_head][n] = 0;
+        vedit_kill_len[vedit_kill_head] = n;
+        vedit_used[vedit_cy] = vedit_cx;
+    } else {
+        if (vedit_cy + 1 >= vedit_count) {
+            vedit_set_msg("nothing to kill");
+            return -1;
+        }
+        vedit_kill[vedit_kill_head][0] = '\n';
+        vedit_kill[vedit_kill_head][1] = 0;
+        vedit_kill_len[vedit_kill_head] = 1;
+        vedit_delete_char();
+        vedit_set_msg("killed");
+        vedit_dirty = 1;
+        return 0;
+    }
+    vedit_dirty = 1;
+    vedit_set_msg("killed");
+    return 0;
+}
+
+/** Yank the ring head at dot (uemacs yank). */
+static int vedit_yank(void) {
+    const char *s;
+    int k;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    if (vedit_kill_len[vedit_kill_head] <= 0) {
+        vedit_set_msg("kill ring empty");
+        return -1;
+    }
+    s = vedit_kill[vedit_kill_head];
+    for (k = 0; s[k]; k++) {
+        if (s[k] == '\n') {
+            vedit_cx = vedit_used[vedit_cy];
+            vedit_split();
+            if (vedit_msg[0]) return -1;
+        } else {
+            if (vedit_overwrite && vedit_cx < vedit_used[vedit_cy]) {
+                vedit_row_ptr(vedit_cy)[vedit_cx] = s[k];
+                vedit_cx++;
+                vedit_dirty = 1;
+            } else {
+                vedit_insert_char((unsigned char)s[k]);
+                if (vedit_msg[0]) return -1;
+            }
+        }
+    }
+    vedit_msg[0] = 0;
+    return 0;
+}
+
+/** Word motion core: dir +1 forward, -1 back. */
+static int vedit_word_move(int dir) {
+    if (vedit_count <= 0) return -1;
+    if (dir > 0) {
+        char *l = vedit_row_ptr(vedit_cy);
+        while (vedit_cx < vedit_used[vedit_cy] &&
+               !vedit_is_wordc((unsigned char)l[vedit_cx]))
+            vedit_cx++;
+        while (vedit_cx < vedit_used[vedit_cy] &&
+               vedit_is_wordc((unsigned char)l[vedit_cx]))
+            vedit_cx++;
+        if (vedit_cx < vedit_used[vedit_cy]) return 0;
+        if (vedit_cy + 1 >= vedit_count) return 0;
+        vedit_cy++;
+        vedit_cx = 0;
+        return 0;
+    }
+    {
+        char *l = vedit_row_ptr(vedit_cy);
+        if (vedit_cx == 0) {
+            if (vedit_cy == 0) return 0;
+            vedit_cy--;
+            vedit_cx = vedit_used[vedit_cy];
+            return 0;
+        }
+        while (vedit_cx > 0 &&
+               !vedit_is_wordc((unsigned char)l[vedit_cx - 1]))
+            vedit_cx--;
+        while (vedit_cx > 0 &&
+               vedit_is_wordc((unsigned char)l[vedit_cx - 1]))
+            vedit_cx--;
+        return 0;
+    }
+}
+
+/** Apply case mode to the word at/after dot (uemacs word.c). */
+static int vedit_case_word(int mode) {
+    char *l;
+    int start;
+    int end;
+    int k;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    if (vedit_count <= 0 || vedit_cy >= vedit_count) return -1;
+    l = vedit_row_ptr(vedit_cy);
+    start = vedit_cx;
+    while (start < vedit_used[vedit_cy] &&
+           !vedit_is_wordc((unsigned char)l[start]))
+        start++;
+    end = start;
+    while (end < vedit_used[vedit_cy] &&
+           vedit_is_wordc((unsigned char)l[end]))
+        end++;
+    if (end <= start) {
+        vedit_set_msg("no word");
+        return -1;
+    }
+    for (k = start; k < end; k++) {
+        int c = (unsigned char)l[k];
+        if (mode == 1 && c >= 'a' && c <= 'z') l[k] = (char)(c - 32);
+        else if (mode == 2 && c >= 'A' && c <= 'Z') l[k] = (char)(c + 32);
+        else if (mode == 3) {
+            if (k == start && c >= 'a' && c <= 'z') l[k] = (char)(c - 32);
+            if (k > start && c >= 'A' && c <= 'Z') l[k] = (char)(c + 32);
+        }
+    }
+    vedit_cx = end;
+    vedit_dirty = 1;
+    vedit_msg[0] = 0;
+    return 0;
+}
+
+/** Transpose the two characters around dot (uemacs random.c). */
+static int vedit_transpose(void) {
+    char *l;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    if (vedit_count <= 0 || vedit_cy >= vedit_count) return -1;
+    l = vedit_row_ptr(vedit_cy);
+    if (vedit_used[vedit_cy] < 2) {
+        vedit_set_msg("nothing to transpose");
+        return -1;
+    }
+    if (vedit_cx <= 0) vedit_cx = 1;
+    if (vedit_cx >= vedit_used[vedit_cy])
+        vedit_cx = vedit_used[vedit_cy] - 1;
+    vedit_str_transpose(l, vedit_used[vedit_cy], vedit_cx);
+    if (vedit_cx < vedit_used[vedit_cy]) vedit_cx++;
+    vedit_dirty = 1;
+    vedit_msg[0] = 0;
+    return 0;
+}
+
+/** Jump to the fence matching the one under dot (uemacs random.c). */
+static int vedit_goto_fence(void) {
+    char open = 0;
+    char close = 0;
+    int dir = 0;
+    int depth = 0;
+    int y;
+    int x;
+    char *l;
+    if (vedit_count <= 0 || vedit_cy >= vedit_count) return -1;
+    l = vedit_row_ptr(vedit_cy);
+    if (vedit_cx < vedit_used[vedit_cy]) {
+        char c = l[vedit_cx];
+        if (c == '(' || c == '[' || c == '{') {
+            open = c;
+            close = (c == '(') ? ')' : (c == '[') ? ']' : '}';
+            dir = 1;
+        } else if (c == ')' || c == ']' || c == '}') {
+            close = c;
+            open = (c == ')') ? '(' : (c == ']') ? '[' : '{';
+            dir = -1;
+        }
+    }
+    if (!dir) {
+        vedit_set_msg("no fence under cursor");
+        return -1;
+    }
+    y = vedit_cy;
+    x = vedit_cx;
+    while (1) {
+        if (dir > 0) {
+            x++;
+            if (x >= vedit_used[y]) {
+                y++;
+                x = -1;
+                if (y >= vedit_count) break;
+                continue;
+            }
+        } else {
+            x--;
+            if (x < 0) {
+                y--;
+                if (y < 0) break;
+                x = vedit_used[y] - 1;
+                if (x < 0) continue;
+                continue;
+            }
+        }
+        {
+            char c = vedit_row_ptr(y)[x];
+            if (c == open) depth++;
+            else if (c == close) {
+                if (depth == 0) {
+                    vedit_cy = y;
+                    vedit_cx = x;
+                    vedit_msg[0] = 0;
+                    return 0;
+                }
+                depth--;
+            }
+        }
+    }
+    vedit_set_msg("no match");
+    return -1;
+}
+
+/** Count words/lines/chars from dot to end, emacs-style, into msg. */
+static void vedit_count_words(void) {
+    int y;
+    int words = 0;
+    int lines = 0;
+    int chars = 0;
+    int in_word = 0;
+    char nb[96];
+    for (y = vedit_cy; y < vedit_count; y++) {
+        char *l = vedit_row_ptr(y);
+        int a = (y == vedit_cy) ? vedit_cx : 0;
+        int k;
+        lines++;
+        for (k = a; k < vedit_used[y]; k++) {
+            chars++;
+            if (vedit_is_wordc((unsigned char)l[k])) {
+                if (!in_word) {
+                    words++;
+                    in_word = 1;
+                }
+            } else {
+                in_word = 0;
+            }
+        }
+        chars++;
+        in_word = 0;
+    }
+    snprintf(nb, sizeof(nb), "words=%d lines=%d chars=%d", words, lines,
+             chars);
+    vedit_set_msg(nb);
+    printf("vedit: %s\n", nb);
+}
+
+/* ---- uemacs F2: magic search, isearch, replace, fill ---- */
+#define VEDIT_FILL_COL 72
+
+static int vedit_isearch_oy;
+static int vedit_isearch_ox;
+static int vedit_isearch_dir;
+static int vedit_qrep_on;
+static char vedit_qrep_old[VEDIT_MAGIC_MAX];
+static char vedit_qrep_new[VEDIT_LINE_MAX];
+
+/** Match needle at line/col; magic when flag set. Returns match length. */
+static int vedit_match_at(int row, int col, const char *needle, int magic,
+                          int *mlen) {
+    char *l;
+    int nlen;
+    int k;
+    if (!needle || !needle[0] || !mlen) return 0;
+    if (row < 0 || row >= vedit_count) return 0;
+    l = vedit_row_ptr(row);
+    if (col < 0 || col > vedit_used[row]) return 0;
+    if (!magic) {
+        nlen = (int)strlen(needle);
+        if (col + nlen > vedit_used[row]) return 0;
+        for (k = 0; k < nlen; k++) {
+            if ((unsigned char)l[col + k] != (unsigned char)needle[k])
+                return 0;
+        }
+        *mlen = nlen;
+        return 1;
+    }
+    {
+        char tmp[VEDIT_LINE_MAX + 1];
+        int m = 0;
+        int avail = vedit_used[row] - col;
+        if (avail > VEDIT_LINE_MAX) avail = VEDIT_LINE_MAX;
+        for (k = 0; k < avail; k++) tmp[k] = l[col + k];
+        tmp[avail] = 0;
+        if (!vedit_magic_match(tmp, needle, &m)) return 0;
+        if (m == 0) {
+            *mlen = 0;
+            return 1;
+        }
+        *mlen = m;
+        return 1;
+    }
+}
+
+/** Forward search from (row,col); wraps once. Moves dot, returns 0. */
+static int vedit_search_fwd(int row, int col, const char *needle, int magic,
+                            int *wrapped) {
+    int r;
+    int c;
+    int mlen = 0;
+    int start_r = row;
+    int start_c = col;
+    if (wrapped) *wrapped = 0;
+    for (r = row; r < vedit_count; r++) {
+        c = (r == row) ? col : 0;
+        for (; c <= vedit_used[r]; c++) {
+            if (vedit_match_at(r, c, needle, magic, &mlen) && mlen > 0) {
+                vedit_cy = r;
+                vedit_cx = c;
+                return 0;
+            }
+        }
+    }
+    for (r = 0; r <= start_r && r < vedit_count; r++) {
+        int end = (r == start_r) ? start_c : vedit_used[r];
+        for (c = 0; c < end; c++) {
+            if (vedit_match_at(r, c, needle, magic, &mlen) && mlen > 0) {
+                vedit_cy = r;
+                vedit_cx = c;
+                if (wrapped) *wrapped = 1;
+                return 0;
+            }
+        }
+    }
+    return -1;
+}
+
+static int vedit_search_rev(int row, int col, const char *needle, int magic) {
+    int r;
+    int c;
+    int mlen = 0;
+    int best_r = -1;
+    int best_c = -1;
+    for (r = 0; r <= row && r < vedit_count; r++) {
+        int end = (r == row) ? col : vedit_used[r] + 1;
+        for (c = 0; c < end; c++) {
+            if (vedit_match_at(r, c, needle, magic, &mlen) && mlen > 0) {
+                best_r = r;
+                best_c = c;
+            }
+        }
+    }
+    if (best_r >= 0) {
+        vedit_cy = best_r;
+        vedit_cx = best_c;
+        return 0;
+    }
+    return -1;
+}
+
+static void vedit_isearch_step(void) {
+    int w = 0;
+    if (!vedit_prompt_buf[0]) {
+        vedit_cy = vedit_isearch_oy;
+        vedit_cx = vedit_isearch_ox;
+        vedit_msg[0] = 0;
+        return;
+    }
+    if (vedit_isearch_dir > 0) {
+        if (vedit_search_fwd(vedit_isearch_oy, vedit_isearch_ox,
+                             vedit_prompt_buf, 0, &w) != 0)
+            vedit_set_msg("failing");
+        else if (w)
+            vedit_set_msg("wrapped");
+        else
+            vedit_msg[0] = 0;
+    } else {
+        if (vedit_search_rev(vedit_isearch_oy, vedit_isearch_ox,
+                             vedit_prompt_buf, 0) != 0)
+            vedit_set_msg("failing");
+        else
+            vedit_msg[0] = 0;
+    }
+    memcpy(vedit_last_find, vedit_prompt_buf, VEDIT_LINE_MAX);
+}
+
+/** Replace one occurrence at (row,col); returns new cursor col or -1. */
+static int vedit_replace_at(int row, int col, const char *old_s,
+                            const char *new_s, int magic) {
+    char *l;
+    int mlen = 0;
+    int nlen;
+    int k;
+    if (!vedit_match_at(row, col, old_s, magic, &mlen) || mlen <= 0)
+        return -1;
+    l = vedit_row_ptr(row);
+    nlen = (int)strlen(new_s);
+    if (vedit_used[row] - mlen + nlen > VEDIT_LINE_USED) return -1;
+    for (k = vedit_used[row] - 1; k >= col + mlen; k--)
+        l[k - mlen + nlen] = l[k];
+    for (k = 0; k < nlen; k++) l[col + k] = new_s[k];
+    vedit_used[row] += nlen - mlen;
+    vedit_dirty = 1;
+    return col + nlen;
+}
+
+/** Replace all, forward from dot with wrap; reports count, fail closed. */
+static int vedit_replace_all(const char *old_s, const char *new_s,
+                             int magic) {
+    int count = 0;
+    int guard = 0;
+    int r = vedit_cy;
+    int c = vedit_cx;
+    int mlen = 0;
+    if (!old_s || !old_s[0] || !new_s) {
+        vedit_set_msg("usage: old and new text");
+        return -1;
+    }
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    while (guard++ < VEDIT_MAX_LINES * 4) {
+        int nc;
+        if (!vedit_match_at(r, c, old_s, magic, &mlen) || mlen <= 0) {
+            c++;
+            if (c > vedit_used[r]) {
+                r++;
+                c = 0;
+                if (r >= vedit_count) break;
+            }
+            continue;
+        }
+        nc = vedit_replace_at(r, c, old_s, new_s, magic);
+        if (nc < 0) {
+            c++;
+            if (c > vedit_used[r]) {
+                r++;
+                c = 0;
+                if (r >= vedit_count) break;
+            }
+            continue;
+        }
+        count++;
+        c = nc;
+        if (c > vedit_used[r]) {
+            r++;
+            c = 0;
+            if (r >= vedit_count) break;
+        }
+    }
+    {
+        char nb[64];
+        snprintf(nb, sizeof(nb), "replaced %d", count);
+        vedit_set_msg(nb);
+    }
+    return 0;
+}
+
+/** Refill the blank-line-delimited paragraph at dot (uemacs word.c). */
+static int vedit_fill_paragraph(void) {
+    int top;
+    int bot;
+    int y;
+    int k;
+    char words[VEDIT_FILE_MAX / 8];
+    int wpos = 0;
+    int wstart;
+    int col;
+    int first;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    if (vedit_count <= 0) return -1;
+    top = vedit_cy;
+    while (top > 0 && vedit_used[top - 1] > 0) top--;
+    bot = vedit_cy;
+    while (bot + 1 < vedit_count && vedit_used[bot + 1] > 0) bot++;
+    for (y = top; y <= bot; y++) {
+        char *l = vedit_row_ptr(y);
+        for (k = 0; k < vedit_used[y] && wpos < (int)sizeof(words) - 1;
+             k++) {
+            if (l[k] == ' ' || l[k] == '\t') {
+                if (wpos > 0 && words[wpos - 1] != ' ')
+                    words[wpos++] = ' ';
+            } else {
+                words[wpos++] = l[k];
+            }
+        }
+    }
+    while (wpos > 0 && words[wpos - 1] == ' ') wpos--;
+    words[wpos] = 0;
+    while (top < bot) {
+        vedit_delete_line_at(top);
+        bot--;
+    }
+    vedit_used[top] = 0;
+    vedit_cy = top;
+    vedit_cx = 0;
+    col = 0;
+    first = 1;
+    wstart = 0;
+    while (words[wstart]) {
+        int wend = wstart;
+        int wlen;
+        while (words[wend] && words[wend] != ' ') wend++;
+        wlen = wend - wstart;
+        if (!first && col + 1 + wlen > VEDIT_FILL_COL) {
+            if (vedit_count >= VEDIT_MAX_LINES) {
+                vedit_set_msg("buffer full");
+                return -1;
+            }
+            vedit_cy = top;
+            vedit_cx = vedit_used[top];
+            vedit_split();
+            if (vedit_msg[0]) return -1;
+            top++;
+            vedit_cy = top;
+            vedit_cx = 0;
+            col = 0;
+            first = 1;
+        }
+        if (!first) {
+            vedit_row_ptr(top)[vedit_used[top]++] = ' ';
+            col++;
+        }
+        for (k = 0; k < wlen; k++) {
+            if (vedit_used[top] >= VEDIT_LINE_USED) {
+                vedit_set_msg("line full");
+                return -1;
+            }
+            vedit_row_ptr(top)[vedit_used[top]++] = words[wstart + k];
+            col++;
+        }
+        first = 0;
+        wstart = wend;
+        while (words[wstart] == ' ') wstart++;
+    }
+    vedit_dirty = 1;
+    vedit_msg[0] = 0;
+    return 0;
+}
+
 static void vedit_find(const char *needle) {
     int r;
     int k;
@@ -853,6 +1900,7 @@ static void vedit_find(const char *needle) {
         return;
     }
     nlen = (int)strlen(needle);
+    if (nlen >= VEDIT_LINE_MAX) nlen = VEDIT_LINE_MAX - 1;
     for (r = vedit_cy; r < vedit_count; r++) {
         char *l = vedit_row_ptr(r);
         int start = (r == vedit_cy) ? vedit_cx : 0;
@@ -863,9 +1911,13 @@ static void vedit_find(const char *needle) {
                 m++;
             if (m == nlen) {
                 char nb[32];
+                int q;
                 vedit_cy = r;
                 vedit_cx = k;
                 vedit_msg[0] = 0;
+                for (q = 0; q < nlen; q++)
+                    vedit_last_find[q] = needle[q];
+                vedit_last_find[nlen] = 0;
                 snprintf(nb, sizeof(nb), "found line %d", r + 1);
                 vedit_set_msg(nb);
                 return;
@@ -894,13 +1946,63 @@ static void vedit_find(const char *needle) {
 
 /* ---- Load/save (byte-parity with the kernel editor: NL between lines) -- */
 
+static int vedit_armed[VEDIT_NBUF];
+
+/** Copy the on-disk file to its "~" backup; 0 ok, -1 when there is
+ * nothing to back up or the copy fails (fail closed, save continues). */
+static int vedit_backup(void) {
+    char bak[VEDIT_FNAME_MAX];
+    size_t n;
+    FILE *in;
+    FILE *out;
+    char chunk[512];
+    size_t r;
+    n = strlen(vedit_fname);
+    if (n + 1 >= VEDIT_FNAME_MAX) return -1;
+    memcpy(bak, vedit_fname, n);
+    bak[n] = '~';
+    bak[n + 1] = 0;
+    in = fopen(vedit_fname, "r");
+    if (!in) return -1;
+    out = fopen(bak, "w");
+    if (!out) {
+        fclose(in);
+        return -1;
+    }
+    while ((r = fread(chunk, 1, sizeof(chunk), in)) > 0) {
+        if (fwrite(chunk, 1, r, out) != r) {
+            fclose(in);
+            fclose(out);
+            return -1;
+        }
+    }
+    fclose(in);
+    if (fclose(out) != 0) return -1;
+    return 0;
+}
+
 static int vedit_save(void) {
     FILE *f;
     int i;
+    struct stat st;
     if (vedit_trunc) {
         vedit_set_msg("refusing to save: file did not fit in the buffer");
         return -1;
     }
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    if (stat(vedit_fname, &st) == 0 && vedit_sizes[vedit_cur] >= 0 &&
+        (st.st_size != vedit_sizes[vedit_cur] ||
+         st.st_mtime != vedit_mtimes[vedit_cur]) &&
+        !vedit_armed[vedit_cur]) {
+        vedit_armed[vedit_cur] = 1;
+        vedit_set_msg("file changed on disk; save again to force");
+        return -1;
+    }
+    vedit_armed[vedit_cur] = 0;
+    vedit_backup();
     f = fopen(vedit_fname, "w");
     if (!f) {
         vedit_set_msg("save failed");
@@ -930,9 +2032,14 @@ static int vedit_save(void) {
     vedit_dirty = 0;
     {
         char nb[96];
+        struct stat st;
         snprintf(nb, sizeof(nb), "wrote %d line(s) to %s",
                  vedit_count, vedit_fname);
         vedit_set_msg(nb);
+        if (stat(vedit_fname, &st) == 0) {
+            vedit_sizes[vedit_cur] = (long)st.st_size;
+            vedit_mtimes[vedit_cur] = (long)st.st_mtime;
+        }
     }
     return 0;
 }
@@ -948,7 +2055,11 @@ static int vedit_load(void) {
     vedit_count = 0;
     vedit_trunc = 0;
     f = fopen(vedit_fname, "r");
-    if (!f) return 0;
+    if (!f) {
+        vedit_sizes[vedit_cur] = -1;
+        vedit_mtimes[vedit_cur] = -1;
+        return 0;
+    }
     while ((n = fread(chunk, 1, sizeof(chunk), f)) > 0) {
         total += (int)n;
         if (total > VEDIT_FILE_MAX) {
@@ -990,7 +2101,134 @@ static int vedit_load(void) {
     }
     vedit_count = idx;
     fclose(f);
+    {
+        struct stat st;
+        if (stat(vedit_fname, &st) == 0) {
+            vedit_sizes[vedit_cur] = (long)st.st_size;
+            vedit_mtimes[vedit_cur] = (long)st.st_mtime;
+        } else {
+            vedit_sizes[vedit_cur] = -1;
+            vedit_mtimes[vedit_cur] = -1;
+        }
+    }
     return 1;
+}
+
+/** Open a file in a free buffer (or reuse the pristine untitled one). */
+static int vedit_open_in_buffer(const char *fname, int ro) {
+    int idx = -1;
+    int k;
+    size_t n;
+    if (!fname || !fname[0]) {
+        vedit_set_msg("empty name");
+        return -1;
+    }
+    n = strlen(fname);
+    if (n >= VEDIT_FNAME_MAX) {
+        vedit_set_msg("name too long");
+        return -1;
+    }
+    for (k = 0; k < VEDIT_NBUF; k++) {
+        if (vedit_pools[k] && strcmp(vedit_fnames[k], fname) == 0) {
+            vedit_switch_buffer(k);
+            vedit_ros[k] = ro;
+            return k;
+        }
+    }
+    if (vedit_count == 0 && !vedit_dirty &&
+        strcmp(vedit_fname, VEDIT_DEFAULT_FILE) == 0)
+        idx = vedit_cur;
+    else {
+        for (k = 0; k < VEDIT_NBUF; k++) {
+            if (!vedit_pools[k] && vedit_buf_alloc(k) != 0) {
+                vedit_set_msg("out of memory");
+                return -1;
+            }
+            if (vedit_counts[k] == 0 && !vedit_dirtys[k]) {
+                idx = k;
+                break;
+            }
+        }
+        if (idx < 0) {
+            vedit_set_msg("no free buffer (8 max)");
+            return -1;
+        }
+    }
+    vedit_switch_buffer(idx);
+    memcpy(vedit_fname, fname, n + 1);
+    vedit_lang = vedit_lang_of(vedit_fname);
+    vedit_ros[idx] = ro;
+    vedit_hist_push(fname);
+    vedit_load();
+    vedit_cx = 0;
+    vedit_cy = 0;
+    vedit_top = 0;
+    vedit_hoff = 0;
+    vedit_mark_on = 0;
+    return idx;
+}
+
+/** Insert a file at dot, char by char through the fail-closed ops. */
+static int vedit_insert_file(const char *fname) {
+    FILE *f;
+    long size;
+    char *data;
+    size_t n;
+    size_t k;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    f = fopen(fname, "r");
+    if (!f) {
+        vedit_set_msg("cannot read file");
+        return -1;
+    }
+    if (fseek(f, 0, SEEK_END) != 0) {
+        fclose(f);
+        vedit_set_msg("cannot read file");
+        return -1;
+    }
+    size = ftell(f);
+    if (size < 0 || size > VEDIT_FILE_MAX) {
+        fclose(f);
+        vedit_set_msg("file too large");
+        return -1;
+    }
+    if (fseek(f, 0, SEEK_SET) != 0) {
+        fclose(f);
+        vedit_set_msg("cannot read file");
+        return -1;
+    }
+    if (size == 0) {
+        fclose(f);
+        vedit_set_msg("empty file");
+        return 0;
+    }
+    data = malloc((size_t)size);
+    if (!data) {
+        fclose(f);
+        vedit_set_msg("out of memory");
+        return -1;
+    }
+    n = fread(data, 1, (size_t)size, f);
+    fclose(f);
+    for (k = 0; k < n; k++) {
+        if (data[k] == '\n' || data[k] == '\r') {
+            if (data[k] == '\r') continue;
+            vedit_split();
+        } else {
+            vedit_insert_char((unsigned char)data[k]);
+        }
+        if (vedit_msg[0]) {
+            free(data);
+            vedit_set_msg("insert stopped: buffer full");
+            return -1;
+        }
+    }
+    free(data);
+    vedit_msg[0] = 0;
+    return 0;
 }
 
 /** Report whether a file name ends with the given extension. */
@@ -1332,12 +2570,1019 @@ static int vedit_selftest_build(void) {
         printf("vedit: shortcut contract broken\n");
         fails++;
     }
+    {
+        char sc[32];
+        int ml = 0;
+        memcpy(sc, "hello world", 12);
+        vedit_str_case(sc, 1);
+        if (strcmp(sc, "HELLO WORLD") != 0) {
+            printf("vedit: upper broken (%s)\n", sc);
+            fails++;
+        }
+        memcpy(sc, "Hello World", 12);
+        vedit_str_case(sc, 2);
+        if (strcmp(sc, "hello world") != 0) {
+            printf("vedit: lower broken (%s)\n", sc);
+            fails++;
+        }
+        memcpy(sc, "hello world", 12);
+        vedit_str_case(sc, 3);
+        if (strcmp(sc, "Hello World") != 0) {
+            printf("vedit: capitalize broken (%s)\n", sc);
+            fails++;
+        }
+        memcpy(sc, "ab", 3);
+        vedit_str_transpose(sc, 2, 1);
+        if (strcmp(sc, "ba") != 0) {
+            printf("vedit: transpose broken (%s)\n", sc);
+            fails++;
+        }
+        if (!vedit_magic_match("foobar", "foo", &ml) || ml != 3) {
+            printf("vedit: magic exact broken\n");
+            fails++;
+        }
+        if (!vedit_magic_match("foobar", "f.o", &ml) || ml != 3) {
+            printf("vedit: magic dot broken\n");
+            fails++;
+        }
+        if (!vedit_magic_match("foobar", "f*bar", &ml)) {
+            printf("vedit: magic star broken\n");
+            fails++;
+        }
+        if (!vedit_magic_match("foobar", "^foo", &ml) || ml != 3) {
+            printf("vedit: magic anchor broken\n");
+            fails++;
+        }
+        if (vedit_magic_match("xfoobar", "^foo", &ml)) {
+            printf("vedit: magic anchor must fail\n");
+            fails++;
+        }
+        if (!vedit_magic_match("foobar", "bar$", &ml) || ml != 3) {
+            printf("vedit: magic end anchor broken\n");
+            fails++;
+        }
+        if (!vedit_magic_match("a1c", "a[0-9]c", &ml) || ml != 3) {
+            printf("vedit: magic class broken\n");
+            fails++;
+        }
+        if (vedit_magic_match("abc", "a[^0-9]c", &ml)) {
+            (void)ml;
+        } else {
+            printf("vedit: magic negated class broken\n");
+            fails++;
+        }
+        if (!vedit_magic_match("abc", "z*", &ml) || ml != 0) {
+            printf("vedit: magic empty star broken\n");
+            fails++;
+        }
+        if (vedit_cmd_lookup("save-file") < 0 ||
+            vedit_cmd_lookup("query-replace") < 0 ||
+            vedit_cmd_lookup("no-such-cmd") >= 0) {
+            printf("vedit: command table broken\n");
+            fails++;
+        }
+        if (vedit_parse_key("^K") != 11 || vedit_parse_key("^@") != 0 ||
+            vedit_parse_key("M-f") != VEDIT_KEY_META('f') ||
+            vedit_parse_key("PgDn") != VEDIT_KEY_PGDN ||
+            vedit_parse_key("bogus") >= 0) {
+            printf("vedit: key parser broken\n");
+            fails++;
+        }
+    }
     if (fails) {
         printf("vedit: build selftest FAIL (%d)\n", fails);
         return 1;
     }
+    {
+        char cb[16];
+        long n;
+        if (vedit_clip_set("abc", 3) != 0) {
+            printf("vedit: clip set broken\n");
+            fails++;
+        }
+        n = vedit_clip_get(cb, sizeof(cb));
+        if (n != 3 || memcmp(cb, "abc", 3) != 0) {
+            printf("vedit: clip get broken (n=%ld)\n", n);
+            fails++;
+        }
+        if (vedit_clip_set("x", 4097) == 0) {
+            printf("vedit: clip must refuse oversize\n");
+            fails++;
+        }
+        if (vedit_clip_get(cb, 1) >= 0) {
+            printf("vedit: clip must refuse undersize\n");
+            fails++;
+        }
+    }
+    if (fails) {
+        printf("vedit: clip selftest FAIL (%d)\n", fails);
+        return 1;
+    }
     printf("vedit: build ok (run=^R link=^L dump=^D)\n");
     return 0;
+}
+
+/* ---- uemacs F3: two-pane split (uemacs window.c, stacked) ---- */
+static int vedit_split_on;
+static int vedit_apane;
+static int vedit_panes_buf[2];
+static int vedit_panes_cy[2];
+static int vedit_panes_cx[2];
+static int vedit_panes_top[2];
+static int vedit_pane_y0;
+static int vedit_pane_cursor_on;
+
+static void vedit_pane_save(int p) {
+    if (p < 0 || p > 1) return;
+    vedit_panes_buf[p] = vedit_cur;
+    vedit_panes_cy[p] = vedit_cy;
+    vedit_panes_cx[p] = vedit_cx;
+    vedit_panes_top[p] = vedit_top;
+}
+
+static int vedit_first_open(void) {
+    int k;
+    for (k = 0; k < VEDIT_NBUF; k++) {
+        if (vedit_pools[k]) return k;
+    }
+    return -1;
+}
+
+static void vedit_pane_load(int p) {
+    if (p < 0 || p > 1) return;
+    vedit_cur = vedit_panes_buf[p];
+    if (vedit_cur < 0 || vedit_cur >= VEDIT_NBUF || !vedit_pools[vedit_cur])
+        vedit_cur = vedit_first_open();
+    if (vedit_cur < 0) vedit_cur = 0;
+    vedit_cy = vedit_panes_cy[p];
+    vedit_cx = vedit_panes_cx[p];
+    vedit_top = vedit_panes_top[p];
+    vedit_mark_on = 0;
+}
+
+static int vedit_count_open(void) {
+    int n = 0;
+    int k;
+    for (k = 0; k < VEDIT_NBUF; k++) {
+        if (vedit_pools[k]) n++;
+    }
+    return n;
+}
+
+static void vedit_split_set(int on) {
+    if (on) {
+        vedit_pane_save(0);
+        vedit_panes_buf[1] = vedit_panes_buf[0];
+        vedit_panes_cy[1] = vedit_panes_cy[0];
+        vedit_panes_cx[1] = vedit_panes_cx[0];
+        vedit_panes_top[1] = vedit_panes_top[0];
+        vedit_apane = 1;
+        vedit_split_on = 1;
+        vedit_set_msg("split: M-o switches pane, M-1 single");
+    } else {
+        vedit_pane_load(vedit_apane);
+        vedit_split_on = 0;
+        vedit_apane = 0;
+        vedit_panes_buf[0] = vedit_cur;
+        vedit_set_msg("single window");
+    }
+}
+
+static void vedit_next_pane(void) {
+    if (!vedit_split_on) {
+        vedit_set_msg("single window (M-2 splits)");
+        return;
+    }
+    vedit_pane_save(vedit_apane);
+    vedit_apane = 1 - vedit_apane;
+    vedit_pane_load(vedit_apane);
+    vedit_sel_clear();
+    vedit_msg[0] = 0;
+}
+
+/* ---- uemacs F4: named commands, macros, bindings, startup rc ---- */
+
+/** Named-command table (uemacs names.c + exec.c M-x). IDs are dense;
+ * vedit_cmd_lookup is pure and mirrored by the host suite. */
+static const char *vedit_cmd_names[] = {
+    "save-file", "find-file", "insert-file", "view-file", "list-buffers",
+    "select-buffer", "next-buffer", "kill-buffer", "copy-region",
+    "kill-region", "yank", "kill-line", "transpose-chars",
+    "goto-matching-fence", "count-words", "fill-paragraph",
+    "overwrite-mode", "read-only", "goto-line", "search-forward",
+    "search-reverse", "search-forward-magic", "hunt-forward",
+    "hunt-backward", "replace-string", "query-replace", "set-mark",
+    "exchange-point-and-mark", "split-window", "single-window",
+    "next-window", "begin-macro", "end-macro", "execute-macro",
+    "shell-command", "filter-buffer", "grep", "next-error", "compile",
+    "link", "help", "describe-bindings", "save-and-quit", "quit",
+    "paste", "copy-to-clipboard",
+    0
+};
+
+static int vedit_cmd_lookup(const char *name) {
+    int k = 0;
+    if (!name || !name[0]) return -1;
+    while (vedit_cmd_names[k]) {
+        const char *t = vedit_cmd_names[k];
+        int i = 0;
+        while (t[i] && name[i] == t[i]) i++;
+        if (!t[i] && !name[i]) return k;
+        k++;
+    }
+    return -1;
+}
+
+/** Parse a key description into a decoded key code: ^A..^Z ^@ ^[ ^\ ^]
+ * ^^ ^_, M-<c>, or Up Down Left Right Home End PgUp PgDn Del Esc.
+ * Pure: host suite pins every vector. */
+static int vedit_parse_key(const char *s) {
+    if (!s || !s[0]) return -1;
+    if (s[0] == '^' && s[1] && !s[2]) {
+        int c = (unsigned char)s[1];
+        if (c >= 'a' && c <= 'z') return c - 'a' + 1;
+        if (c >= 'A' && c <= 'Z') return c - 'A' + 1;
+        if (c == '@') return 0;
+        if (c == '[') return 27;
+        if (c == '\\') return 28;
+        if (c == ']') return 29;
+        if (c == '^') return 30;
+        if (c == '_') return 31;
+        return -1;
+    }
+    if (s[0] == 'M' && s[1] == '-' && s[2] && !s[3])
+        return VEDIT_KEY_META((unsigned char)s[2]);
+    {
+        const char *names[] = {"Up", "Down", "Left", "Right", "Home",
+                               "End", "PgUp", "PgDn", "Del", "Esc", 0};
+        int codes[] = {VEDIT_KEY_UP, VEDIT_KEY_DOWN, VEDIT_KEY_LEFT,
+                       VEDIT_KEY_RIGHT, VEDIT_KEY_HOME, VEDIT_KEY_END,
+                       VEDIT_KEY_PGUP, VEDIT_KEY_PGDN, VEDIT_KEY_DEL,
+                       VEDIT_KEY_ESC};
+        int k = 0;
+        while (names[k]) {
+            const char *t = names[k];
+            int i = 0;
+            while (t[i] && s[i] == t[i]) i++;
+            if (!t[i] && !s[i]) return codes[k];
+            k++;
+        }
+    }
+    return -1;
+}
+
+static int vedit_bind_key[VEDIT_CMD_MAX];
+static int vedit_bind_cmd[VEDIT_CMD_MAX];
+static int vedit_nbind;
+static int vedit_find_magic;
+static int vedit_select_insert;
+static int vedit_macro_depth;
+static char vedit_bindkey_tmp[32];
+
+/* Forward: prompt opener (defined with the UI) and F5 IDE verbs. */
+static void vedit_prompt_open(const char *label, int mode);
+static void vedit_prompt_isearch(int dir);
+static void vedit_key(int key, int *quit, int *save_and_quit);
+static void vedit_shell_command(const char *line);
+static void vedit_filter_buffer(const char *prog);
+static void vedit_grep(const char *pat);
+static void vedit_next_error(void);
+
+static int vedit_cmd_bind(int key, int cmd) {
+    int k;
+    if (cmd < 0 || !vedit_cmd_names[cmd]) return -1;
+    for (k = 0; k < vedit_nbind; k++) {
+        if (vedit_bind_key[k] == key) {
+            vedit_bind_cmd[k] = cmd;
+            return 0;
+        }
+    }
+    if (vedit_nbind >= VEDIT_CMD_MAX) return -1;
+    vedit_bind_key[vedit_nbind] = key;
+    vedit_bind_cmd[vedit_nbind] = cmd;
+    vedit_nbind++;
+    return 0;
+}
+
+static int vedit_cmd_bound(int key) {
+    int k;
+    for (k = 0; k < vedit_nbind; k++) {
+        if (vedit_bind_key[k] == key) return vedit_bind_cmd[k];
+    }
+    return -1;
+}
+
+static void vedit_list_buffers(void) {
+    int k;
+    int n = 0;
+    printf("--- buffers ---\n");
+    for (k = 0; k < VEDIT_NBUF; k++) {
+        if (!vedit_pools[k]) continue;
+        n++;
+        printf("%c %d: %s%s %d lines\n", k == vedit_cur ? '*' : ' ', k,
+               vedit_fnames[k], vedit_dirtys[k] ? " (modified)" : "",
+               vedit_counts[k]);
+    }
+    fflush(stdout);
+    {
+        char nb[32];
+        snprintf(nb, sizeof(nb), "%d buffer(s)", n);
+        vedit_set_msg(nb);
+    }
+}
+
+static void vedit_hist_show(void) {
+    int k;
+    if (vedit_hist_n <= 0) return;
+    printf("--- recent files ---\n");
+    for (k = 0; k < vedit_hist_n; k++) printf("%s\n", vedit_hist[k]);
+    fflush(stdout);
+}
+
+static void vedit_help_text(void) {
+    printf("--- vedit keys ---\n");
+    printf("arrows/Home/End/PgUp/PgDn move, ^U arg, ^A/^E bol/eol\n");
+    printf("M-f/M-b word, M-c/M-l/M-u case word, ^@/M-SP mark, M-w copy\n");
+    printf("M-k kill region, ^K kill line, ^Y yank, ^T transpose\n");
+    printf("^] goto fence, M-s/M-r isearch, M-n hunt, M-%% query\n");
+    printf("M-q fill, M-1/M-2/M-o windows, M-x command, M-! shell\n");
+    printf("M-# filter, M-( M-) M-e macro, ^W find, ^G goto\n");
+    printf("M-v paste, M-W region to clipboard, drag selects to clipboard\n");
+    printf("^O/^S save, ^N name, ^R run, ^L link, ^D dump, ^X done\n");
+    printf("M-x help names every command; vedit.rc runs at startup\n");
+    fflush(stdout);
+    vedit_set_msg("see console for key list");
+}
+
+/** Execute a named command id; arg carries an rc-file argument or 0. */
+static void vedit_cmd_exec_id(int id, const char *arg, int *quit,
+                              int *save_and_quit) {
+    const char *name = vedit_cmd_names[id];
+    (void)arg;
+    if (!name) {
+        vedit_set_msg("unknown command");
+        return;
+    }
+    if (strcmp(name, "save-file") == 0) {
+        if (vedit_save() == 0)
+            printf("vedit: wrote %d line(s) to %s\n", vedit_count,
+                   vedit_fname);
+    } else if (strcmp(name, "find-file") == 0) {
+        if (arg && arg[0]) vedit_open_in_buffer(arg, 0);
+        else {
+            vedit_select_insert = 0;
+            vedit_hist_show();
+            vedit_prompt_open("find file: ", VEDIT_PROMPT_SELECT);
+        }
+    } else if (strcmp(name, "insert-file") == 0) {
+        if (arg && arg[0]) vedit_insert_file(arg);
+        else {
+            vedit_select_insert = 1;
+            vedit_prompt_open("insert file: ", VEDIT_PROMPT_SELECT);
+        }
+    } else if (strcmp(name, "view-file") == 0) {
+        if (arg && arg[0]) vedit_open_in_buffer(arg, 1);
+        else {
+            vedit_select_insert = 0;
+            vedit_hist_show();
+            vedit_prompt_open("view file: ", VEDIT_PROMPT_SELECT);
+        }
+    } else if (strcmp(name, "list-buffers") == 0) {
+        vedit_list_buffers();
+    } else if (strcmp(name, "select-buffer") == 0) {
+        vedit_select_insert = 0;
+        vedit_list_buffers();
+        vedit_prompt_open("buffer: ", VEDIT_PROMPT_SELECT);
+    } else if (strcmp(name, "next-buffer") == 0) {
+        if (vedit_next_buffer() != 0) vedit_set_msg("only one buffer");
+    } else if (strcmp(name, "kill-buffer") == 0) {
+        if (vedit_dirty) {
+            vedit_set_msg("unsaved changes (save first)");
+        } else if (vedit_count_open() <= 1) {
+            vedit_set_msg("only one buffer");
+        } else {
+            int k = vedit_cur;
+            free(vedit_pools[k]);
+            free(vedit_useds[k]);
+            vedit_pools[k] = 0;
+            vedit_useds[k] = 0;
+            vedit_next_buffer();
+            if (vedit_split_on) {
+                vedit_panes_buf[0] = vedit_cur;
+                vedit_panes_buf[1] = vedit_cur;
+            } else {
+                vedit_panes_buf[0] = vedit_cur;
+            }
+            vedit_set_msg("buffer killed");
+        }
+    } else if (strcmp(name, "copy-region") == 0) {
+        vedit_copy_region();
+    } else if (strcmp(name, "kill-region") == 0) {
+        vedit_kill_region();
+    } else if (strcmp(name, "yank") == 0) {
+        vedit_yank();
+    } else if (strcmp(name, "kill-line") == 0) {
+        vedit_kill_line();
+    } else if (strcmp(name, "transpose-chars") == 0) {
+        vedit_transpose();
+    } else if (strcmp(name, "goto-matching-fence") == 0) {
+        vedit_goto_fence();
+    } else if (strcmp(name, "count-words") == 0) {
+        vedit_count_words();
+    } else if (strcmp(name, "fill-paragraph") == 0) {
+        vedit_fill_paragraph();
+    } else if (strcmp(name, "overwrite-mode") == 0) {
+        vedit_overwrite = !vedit_overwrite;
+        vedit_set_msg(vedit_overwrite ? "overwrite on" : "overwrite off");
+    } else if (strcmp(name, "read-only") == 0) {
+        vedit_ros[vedit_cur] = !vedit_ros[vedit_cur];
+        vedit_set_msg(vedit_ros[vedit_cur] ? "read-only on" :
+                      "read-only off");
+    } else if (strcmp(name, "goto-line") == 0) {
+        if (arg && arg[0]) {
+            int n = 0;
+            int i = 0;
+            while (arg[i] >= '0' && arg[i] <= '9') {
+                n = n * 10 + (arg[i] - '0');
+                i++;
+            }
+            if (i > 0 && !arg[i] && n >= 1 && n <= vedit_count) {
+                vedit_cy = n - 1;
+                vedit_cx = 0;
+                vedit_msg[0] = 0;
+            } else {
+                vedit_set_msg("no such line");
+            }
+        } else {
+            vedit_prompt_open("goto: ", VEDIT_PROMPT_GOTO);
+        }
+    } else if (strcmp(name, "search-forward") == 0) {
+        vedit_find_magic = 0;
+        vedit_prompt_open("find: ", VEDIT_PROMPT_FIND);
+    } else if (strcmp(name, "search-reverse") == 0) {
+        vedit_prompt_isearch(-1);
+    } else if (strcmp(name, "search-forward-magic") == 0) {
+        vedit_find_magic = 1;
+        vedit_prompt_open("magic: ", VEDIT_PROMPT_FIND);
+    } else if (strcmp(name, "hunt-forward") == 0) {
+        if (!vedit_last_find[0]) vedit_set_msg("no previous search");
+        else {
+            int w = 0;
+            if (vedit_search_fwd(vedit_cy, vedit_cx + 1, vedit_last_find,
+                                 0, &w) != 0)
+                vedit_set_msg("not found");
+            else if (w) vedit_set_msg("wrapped");
+            else vedit_msg[0] = 0;
+        }
+    } else if (strcmp(name, "hunt-backward") == 0) {
+        if (!vedit_last_find[0]) vedit_set_msg("no previous search");
+        else if (vedit_search_rev(vedit_cy, vedit_cx - 1, vedit_last_find,
+                                  0) != 0)
+            vedit_set_msg("not found");
+        else vedit_msg[0] = 0;
+    } else if (strcmp(name, "replace-string") == 0) {
+        vedit_qrep_on = 0;
+        vedit_prompt_open("replace: ", VEDIT_PROMPT_REP_OLD);
+    } else if (strcmp(name, "query-replace") == 0) {
+        vedit_qrep_on = 1;
+        vedit_prompt_open("query replace: ", VEDIT_PROMPT_REP_OLD);
+    } else if (strcmp(name, "set-mark") == 0) {
+        vedit_set_mark();
+    } else if (strcmp(name, "exchange-point-and-mark") == 0) {
+        if (!vedit_mark_on) vedit_set_msg("no mark");
+        else {
+            int t = vedit_mark_y;
+            vedit_mark_y = vedit_cy;
+            vedit_cy = t;
+            t = vedit_mark_x;
+            vedit_mark_x = vedit_cx;
+            vedit_cx = t;
+            vedit_msg[0] = 0;
+        }
+    } else if (strcmp(name, "split-window") == 0) {
+        if (!vedit_split_on) vedit_split_set(1);
+    } else if (strcmp(name, "single-window") == 0) {
+        if (vedit_split_on) vedit_split_set(0);
+    } else if (strcmp(name, "next-window") == 0) {
+        vedit_next_pane();
+    } else if (strcmp(name, "begin-macro") == 0) {
+        vedit_macro_rec = 1;
+        vedit_macro_len = 0;
+        vedit_set_msg("recording macro");
+    } else if (strcmp(name, "end-macro") == 0) {
+        vedit_macro_rec = 0;
+        vedit_set_msg("macro recorded");
+    } else if (strcmp(name, "execute-macro") == 0) {
+        if (vedit_macro_len <= 0) vedit_set_msg("no macro");
+        else if (vedit_macro_depth >= 4) vedit_set_msg("macro too deep");
+        else {
+            int k;
+            vedit_macro_depth++;
+            for (k = 0; k < vedit_macro_len; k++) {
+                vedit_key(vedit_macro[k], quit, save_and_quit);
+                if (*quit) break;
+            }
+            vedit_macro_depth--;
+            vedit_msg[0] = 0;
+        }
+    } else if (strcmp(name, "shell-command") == 0) {
+        if (arg && arg[0]) vedit_shell_command(arg);
+        else vedit_prompt_open("!: ", VEDIT_PROMPT_SHELLCMD);
+    } else if (strcmp(name, "filter-buffer") == 0) {
+        if (arg && arg[0]) vedit_filter_buffer(arg);
+        else vedit_prompt_open("filter: ", VEDIT_PROMPT_FILTER);
+    } else if (strcmp(name, "grep") == 0) {
+        if (arg && arg[0]) vedit_grep(arg);
+        else vedit_prompt_open("grep: ", VEDIT_PROMPT_GREP);
+    } else if (strcmp(name, "next-error") == 0) {
+        vedit_next_error();
+    } else if (strcmp(name, "compile") == 0) {
+        vedit_cmd_run();
+    } else if (strcmp(name, "link") == 0) {
+        vedit_prompt_open("link elf/cvm: ", VEDIT_PROMPT_LINK);
+    } else if (strcmp(name, "bind-to-key") == 0) {
+        vedit_prompt_open("bind key: ", VEDIT_PROMPT_BINDKEY);
+    } else if (strcmp(name, "help") == 0 ||
+               strcmp(name, "describe-bindings") == 0) {
+        vedit_help_text();
+    } else if (strcmp(name, "save-and-quit") == 0) {
+        *save_and_quit = 1;
+        *quit = 1;
+    } else if (strcmp(name, "quit") == 0) {
+        *quit = 1;
+    } else if (strcmp(name, "paste") == 0) {
+        vedit_clip_paste();
+    } else if (strcmp(name, "copy-to-clipboard") == 0) {
+        vedit_region_to_clip();
+    } else {
+        vedit_set_msg("not implemented");
+    }
+}
+
+/** Run the startup script: `bind <key> <cmd>` plus bare commands with
+ * an optional trailing argument. Unknown lines are reported, never fatal. */
+static void vedit_run_rc(const char *path) {
+    FILE *f = fopen(path, "r");
+    char line[256];
+    if (!f) return;
+    while (fgets(line, sizeof(line), f)) {
+        char cmd[64];
+        char arg[128];
+        int i = 0;
+        int a = 0;
+        int b = 0;
+        while (line[i] == ' ' || line[i] == '\t') i++;
+        if (!line[i] || line[i] == '#' || line[i] == '\n' ||
+            line[i] == ';')
+            continue;
+        while (line[i] && line[i] != ' ' && line[i] != '\t' &&
+               line[i] != '\n' && a < (int)sizeof(cmd) - 1)
+            cmd[a++] = line[i++];
+        cmd[a] = 0;
+        while (line[i] == ' ' || line[i] == '\t') i++;
+        while (line[i] && line[i] != '\n' && b < (int)sizeof(arg) - 1)
+            arg[b++] = line[i++];
+        arg[b] = 0;
+        if (strcmp(cmd, "bind") == 0) {
+            char key[32];
+            char name[64];
+            int q = 0;
+            int r = 0;
+            int id;
+            int keycode;
+            while (arg[q] && arg[q] != ' ' && arg[q] != '\t' &&
+                   r < (int)sizeof(key) - 1)
+                key[r++] = arg[q++];
+            key[r] = 0;
+            while (arg[q] == ' ' || arg[q] == '\t') q++;
+            r = 0;
+            while (arg[q] && r < (int)sizeof(name) - 1) name[r++] = arg[q++];
+            name[r] = 0;
+            id = vedit_cmd_lookup(name);
+            keycode = vedit_parse_key(key);
+            if (id < 0 || keycode < 0 ||
+                vedit_cmd_bind(keycode, id) != 0)
+                printf("vedit.rc: bad bind %s %s\n", key, name);
+            (void)b;
+        } else {
+            int id = vedit_cmd_lookup(cmd);
+            int dummy_q = 0;
+            int dummy_s = 0;
+            if (id < 0) {
+                printf("vedit.rc: unknown command %s\n", cmd);
+                continue;
+            }
+            vedit_cmd_exec_id(id, arg[0] ? arg : 0, &dummy_q, &dummy_s);
+        }
+    }
+    fclose(f);
+    fflush(stdout);
+}
+
+/* ---- uemacs F5: shell capture, filter, grep (spawn.c + IDE) ---- */
+#define VEDIT_TMP_OUT "/tmp/vedit-out"
+#define VEDIT_TMP_IN "/tmp/vedit-in"
+#define VEDIT_TMP_F "/tmp/vedit-filter"
+#define VEDIT_SH_ARGS 8
+#define VEDIT_SH_LINE 256
+#define VEDIT_CLIP_MAX 4096
+
+static int vedit_grep_src = -1;
+
+/* ---- Clipboard selection + paste (Phase 2: syscalls 249/250) ---- */
+static int vedit_sel_down;
+static int vedit_sel_on;
+static int vedit_sel_buf;
+static int vedit_sy0;
+static int vedit_sx0;
+static int vedit_sy1;
+static int vedit_sx1;
+static char vedit_clipbuf[VEDIT_CLIP_MAX + 1];
+
+static void vedit_sel_clear(void) {
+    vedit_sel_on = 0;
+    vedit_sel_down = 0;
+}
+
+static void vedit_sel_norm(void) {
+    if (vedit_sy0 > vedit_sy1 ||
+        (vedit_sy0 == vedit_sy1 && vedit_sx0 > vedit_sx1)) {
+        int t = vedit_sy0;
+        vedit_sy0 = vedit_sy1;
+        vedit_sy1 = t;
+        t = vedit_sx0;
+        vedit_sx0 = vedit_sx1;
+        vedit_sx1 = t;
+    }
+}
+
+/** Copy the mouse selection into the kernel clipboard; 0 ok. */
+static int vedit_sel_copy(void) {
+    int y;
+    int pos = 0;
+    vedit_sel_norm();
+    for (y = vedit_sy0; y <= vedit_sy1; y++) {
+        int a = (y == vedit_sy0) ? vedit_sx0 : 0;
+        int b = (y == vedit_sy1) ? vedit_sx1 : vedit_used[y];
+        int k;
+        if (y < 0 || y >= vedit_count) continue;
+        if (a > vedit_used[y]) a = vedit_used[y];
+        if (b > vedit_used[y]) b = vedit_used[y];
+        for (k = a; k < b; k++) {
+            if (pos >= VEDIT_CLIP_MAX) {
+                vedit_set_msg("selection too big (4096 max)");
+                return -1;
+            }
+            vedit_clipbuf[pos++] = vedit_row_ptr(y)[k];
+        }
+        if (y < vedit_sy1) {
+            if (pos >= VEDIT_CLIP_MAX) {
+                vedit_set_msg("selection too big (4096 max)");
+                return -1;
+            }
+            vedit_clipbuf[pos++] = '\n';
+        }
+    }
+    if (pos <= 0) {
+        vedit_set_msg("nothing selected");
+        return -1;
+    }
+    if (vedit_clip_set(vedit_clipbuf, pos) != 0) {
+        vedit_set_msg("clipboard refused");
+        return -1;
+    }
+    {
+        char nb[64];
+        snprintf(nb, sizeof(nb), "copied %d byte(s)", pos);
+        vedit_set_msg(nb);
+    }
+    return 0;
+}
+
+/** Paste the kernel clipboard at dot; fail closed, never truncated. */
+static int vedit_clip_paste(void) {
+    long n;
+    long k;
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return -1;
+    }
+    n = vedit_clip_get(vedit_clipbuf, VEDIT_CLIP_MAX);
+    if (n < 0) {
+        vedit_set_msg("clipboard empty (or too big)");
+        return -1;
+    }
+    vedit_clipbuf[n] = 0;
+    for (k = 0; k < n; k++) {
+        if (vedit_clipbuf[k] == '\r') continue;
+        if (vedit_clipbuf[k] == '\n')
+            vedit_split();
+        else
+            vedit_insert_char((unsigned char)vedit_clipbuf[k]);
+        if (vedit_msg[0]) {
+            vedit_set_msg("paste stopped: buffer full");
+            return -1;
+        }
+    }
+    vedit_sel_clear();
+    vedit_msg[0] = 0;
+    return 0;
+}
+
+/** Copy the emacs region (not the mouse) into the clipboard. */
+static int vedit_region_to_clip(void) {
+    int y0;
+    int x0;
+    int y1;
+    int x1;
+    int y;
+    int pos = 0;
+    if (!vedit_region(&y0, &x0, &y1, &x1)) {
+        vedit_set_msg("no region");
+        return -1;
+    }
+    for (y = y0; y <= y1; y++) {
+        int a = (y == y0) ? x0 : 0;
+        int b = (y == y1) ? x1 : vedit_used[y];
+        int k;
+        if (a > vedit_used[y]) a = vedit_used[y];
+        if (b > vedit_used[y]) b = vedit_used[y];
+        for (k = a; k < b; k++) {
+            if (pos >= VEDIT_CLIP_MAX) {
+                vedit_set_msg("region too big (4096 max)");
+                return -1;
+            }
+            vedit_clipbuf[pos++] = vedit_row_ptr(y)[k];
+        }
+        if (y < y1) {
+            if (pos >= VEDIT_CLIP_MAX) {
+                vedit_set_msg("region too big (4096 max)");
+                return -1;
+            }
+            vedit_clipbuf[pos++] = '\n';
+        }
+    }
+    if (pos <= 0) {
+        vedit_set_msg("nothing selected");
+        return -1;
+    }
+    if (vedit_clip_set(vedit_clipbuf, pos) != 0) {
+        vedit_set_msg("clipboard refused");
+        return -1;
+    }
+    vedit_set_msg("copied to clipboard");
+    return 0;
+}
+
+/** Split a shell line into argv; returns argc or -1 on overflow. */
+static int vedit_sh_split(const char *line, char *buf, const char **argv) {
+    int argc = 0;
+    int k = 0;
+    if (!line || !buf || !argv) return -1;
+    while (*line) {
+        while (*line == ' ' || *line == '\t') line++;
+        if (!*line) break;
+        if (argc >= VEDIT_SH_ARGS) return -1;
+        argv[argc++] = buf + k;
+        while (*line && *line != ' ' && *line != '\t') {
+            if (k >= VEDIT_SH_LINE - 1) return -1;
+            buf[k++] = *line++;
+        }
+        buf[k++] = 0;
+    }
+    argv[argc] = 0;
+    return argc;
+}
+
+/** Run a shell line, capturing stdout into the *shell* buffer. */
+static void vedit_shell_command(const char *line) {
+    char shb[VEDIT_SH_LINE];
+    const char *argv[VEDIT_SH_ARGS + 1];
+    int argc;
+    int idx;
+    if (!line || !line[0]) {
+        vedit_set_msg("usage: M-! program [args]");
+        return;
+    }
+    argc = vedit_sh_split(line, shb, argv);
+    if (argc <= 0) {
+        vedit_set_msg("too many args (8 max)");
+        return;
+    }
+    vedit_spawn_visible(argv[0], VEDIT_TMP_OUT, argc, argv, line);
+    idx = vedit_open_in_buffer("*shell*", 0);
+    if (idx < 0) return;
+    vedit_count = 0;
+    vedit_cx = 0;
+    vedit_cy = 0;
+    vedit_top = 0;
+    vedit_insert_file(VEDIT_TMP_OUT);
+    vedit_cx = 0;
+    vedit_cy = 0;
+    vedit_top = 0;
+    vedit_set_msg("see *shell* buffer");
+}
+
+/** Write the region (or whole buffer) to path; 0 ok. */
+static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,
+                              int *x1o) {
+    FILE *f;
+    int y0;
+    int x0;
+    int y1;
+    int x1;
+    int y;
+    if (!vedit_region(&y0, &x0, &y1, &x1)) {
+        y0 = 0;
+        x0 = 0;
+        y1 = vedit_count - 1;
+        x1 = (y1 >= 0) ? vedit_used[y1] : 0;
+        if (y1 < 0) {
+            vedit_set_msg("buffer empty");
+            return -1;
+        }
+    }
+    f = fopen(path, "w");
+    if (!f) {
+        vedit_set_msg("cannot write temp file");
+        return -1;
+    }
+    for (y = y0; y <= y1; y++) {
+        int a = (y == y0) ? x0 : 0;
+        int b = (y == y1) ? x1 : vedit_used[y];
+        int k;
+        if (a > vedit_used[y]) a = vedit_used[y];
+        if (b > vedit_used[y]) b = vedit_used[y];
+        for (k = a; k < b; k++) putc(vedit_row_ptr(y)[k], f);
+        if (y < y1) putc('\n', f);
+    }
+    if (fclose(f) != 0) {
+        vedit_set_msg("cannot write temp file");
+        return -1;
+    }
+    if (y0o) *y0o = y0;
+    if (x0o) *x0o = x0;
+    if (y1o) *y1o = y1;
+    if (x1o) *x1o = x1;
+    return 0;
+}
+
+/** Pipe the region (or buffer) through an external program. */
+static void vedit_filter_buffer(const char *prog) {
+    char shb[VEDIT_SH_LINE];
+    const char *argv[VEDIT_SH_ARGS + 1];
+    const char *base[2];
+    int y0;
+    int x0;
+    int y1;
+    int x1;
+    int argc;
+    int k;
+    long rc;
+    if (!prog || !prog[0]) {
+        vedit_set_msg("usage: M-# program");
+        return;
+    }
+    if (vedit_ros[vedit_cur]) {
+        vedit_set_msg("buffer is read-only");
+        return;
+    }
+    if (vedit_write_region(VEDIT_TMP_IN, &y0, &x0, &y1, &x1) != 0) return;
+    base[0] = prog;
+    base[1] = VEDIT_TMP_IN;
+    argc = 2;
+    for (k = 0; k < argc; k++) {
+        size_t n = strlen(base[k]);
+        if (n > VEDIT_SH_LINE - 1) {
+            vedit_set_msg("name too long");
+            return;
+        }
+    }
+    {
+        size_t p = 0;
+        size_t i;
+        for (k = 0; k < argc; k++) {
+            argv[k] = shb + p;
+            for (i = 0; base[k][i]; i++) shb[p++] = base[k][i];
+            shb[p++] = 0;
+        }
+        argv[argc] = 0;
+    }
+    rc = vedit_spawn_visible(prog, VEDIT_TMP_F, argc, argv, prog);
+    if (rc != 0) {
+        vedit_set_msg("filter failed, buffer kept");
+        return;
+    }
+    vedit_cy = y1;
+    vedit_cx = x1;
+    vedit_mark_y = y0;
+    vedit_mark_x = x0;
+    vedit_mark_on = 1;
+    if (vedit_kill_region() != 0) return;
+    if (vedit_insert_file(VEDIT_TMP_F) != 0) {
+        vedit_set_msg("filter output did not fit");
+        return;
+    }
+    vedit_mark_on = 0;
+    vedit_set_msg("filtered");
+}
+
+/** Magic grep of the current buffer into the *grep* buffer. */
+static void vedit_grep(const char *pat) {
+    int idx;
+    int r;
+    int hits = 0;
+    int src;
+    if (!pat || !pat[0]) {
+        vedit_set_msg("usage: M-x grep <pattern>");
+        return;
+    }
+    src = vedit_cur;
+    idx = vedit_open_in_buffer("*grep*", 0);
+    if (idx < 0) return;
+    vedit_count = 0;
+    vedit_cx = 0;
+    vedit_cy = 0;
+    vedit_top = 0;
+    vedit_cur = src;
+    for (r = 0; r < vedit_counts[src]; r++) {
+        char tmp[VEDIT_LINE_MAX + 1];
+        int mlen = 0;
+        int k;
+        int avail = vedit_useds[src][r];
+        if (avail > VEDIT_LINE_MAX) avail = VEDIT_LINE_MAX;
+        for (k = 0; k < avail; k++)
+            tmp[k] = vedit_pools[src][r * VEDIT_LINE_MAX + k];
+        tmp[avail] = 0;
+        if (!vedit_magic_match(tmp, pat, &mlen)) continue;
+        vedit_cur = idx;
+        {
+            char line[VEDIT_LINE_MAX];
+            int n = snprintf(line, sizeof(line), "%d: %s", r + 1, tmp);
+            int q;
+            if (n < 0) {
+                vedit_cur = src;
+                break;
+            }
+            if (vedit_count >= VEDIT_MAX_LINES) {
+                vedit_set_msg("grep output full");
+                break;
+            }
+            if (n > VEDIT_LINE_USED) n = VEDIT_LINE_USED;
+            for (q = 0; q < n; q++)
+                vedit_pools[idx][vedit_count * VEDIT_LINE_MAX + q] =
+                    line[q];
+            vedit_useds[idx][vedit_count] = n;
+            vedit_count++;
+            hits++;
+        }
+        vedit_cur = src;
+    }
+    vedit_switch_buffer(idx);
+    vedit_grep_src = src;
+    vedit_cx = 0;
+    vedit_cy = 0;
+    vedit_top = 0;
+    {
+        char nb[64];
+        snprintf(nb, sizeof(nb), "%d match(es)", hits);
+        vedit_set_msg(nb);
+    }
+}
+
+/** Jump to the match under dot in *grep* ("N: text" -> src buffer line N). */
+static void vedit_next_error(void) {
+    int n = 0;
+    int i = 0;
+    char *l;
+    if (vedit_grep_src < 0 || !vedit_pools[vedit_grep_src]) {
+        vedit_set_msg("no grep buffer");
+        return;
+    }
+    if (vedit_count <= 0 || vedit_cy >= vedit_count) return;
+    l = vedit_row_ptr(vedit_cy);
+    while (i < vedit_used[vedit_cy] && l[i] >= '0' && l[i] <= '9') {
+        n = n * 10 + (l[i] - '0');
+        i++;
+    }
+    if (i == 0 || i >= vedit_used[vedit_cy] || l[i] != ':') {
+        if (vedit_cy + 1 < vedit_count) {
+            vedit_cy++;
+            vedit_cx = 0;
+            vedit_next_error();
+        } else {
+            vedit_set_msg("no more matches");
+        }
+        return;
+    }
+    if (n < 1 || n > vedit_counts[vedit_grep_src]) {
+        vedit_set_msg("line out of range");
+        return;
+    }
+    vedit_switch_buffer(vedit_grep_src);
+    vedit_cy = n - 1;
+    vedit_cx = 0;
+    vedit_msg[0] = 0;
 }
 
 /** Keyboard: GETC_RAW bytes decoded into extended key codes.
@@ -1346,7 +3591,10 @@ static int vedit_selftest_build(void) {
  * across frames with a bounded timeout, so the loop keeps presenting
  * (and draining the mouse wheel) while a sequence is in flight instead
  * of blocking the whole UI on the next byte. An incomplete sequence
- * degrades to ESC, never a hang. */
+ * degrades to ESC, never a hang. The timeout is a full second on
+ * purpose: ESC is also the Meta prefix (ESC, then a key), and a human
+ * hunting for the second key must not be mistaken for a lone ESC
+ * (which quits). A lone ESC therefore quits up to one second late. */
 static int vedit_esc_state;
 static int vedit_esc_p1;
 static unsigned vedit_esc_t0;
@@ -1373,7 +3621,10 @@ static int vedit_read_key_poll(void) {
     }
     if (vedit_esc_state == 1) {
         vedit_esc_state = 0;
-        if (c != '[') return VEDIT_KEY_ESC;
+        if (c != '[') {
+            if (c >= 0 && c < 128) return VEDIT_KEY_META((int)c);
+            return VEDIT_KEY_ESC;
+        }
         vedit_esc_state = 2;
         vedit_esc_t0 = now;
         return -1;
@@ -1439,17 +3690,7 @@ static void vedit_console_dump(void) {
 
 /* ---- Nuklear UI ---- */
 
-/** Prompt state for find/goto/save-as/link, answered on the status row. */
-static int vedit_prompt_on;
-static char vedit_prompt_label[16];
-static char vedit_prompt_buf[VEDIT_LINE_MAX];
-static int vedit_prompt_pos;
-#define VEDIT_PROMPT_FIND 0
-#define VEDIT_PROMPT_GOTO 1
-#define VEDIT_PROMPT_NAME 2
-#define VEDIT_PROMPT_LINK 3
-static int vedit_prompt_mode;
-
+/** Prompt openers (state lives at the top with the other IDE state). */
 static void vedit_prompt_open(const char *label, int mode) {
     size_t n = strlen(label);
     if (n > sizeof(vedit_prompt_label) - 1) n = sizeof(vedit_prompt_label) - 1;
@@ -1463,6 +3704,67 @@ static void vedit_prompt_open(const char *label, int mode) {
 
 static void vedit_prompt_find(void) {
     vedit_prompt_open("find: ", VEDIT_PROMPT_FIND);
+}
+
+static void vedit_prompt_isearch(int dir) {
+    vedit_isearch_oy = vedit_cy;
+    vedit_isearch_ox = vedit_cx;
+    vedit_isearch_dir = dir;
+    vedit_prompt_open(dir > 0 ? "I-search: " : "reverse-I-search: ",
+                      dir > 0 ? VEDIT_PROMPT_ISEARCH_F :
+                      VEDIT_PROMPT_ISEARCH_R);
+}
+
+/** Step the pending query-replace from (r,c); prompts or finishes. */
+static void vedit_qrep_next(int r, int c) {
+    int w = 0;
+    if (vedit_search_fwd(r, c, vedit_qrep_old, 0, &w) != 0) {
+        vedit_qrep_on = 0;
+        vedit_prompt_on = 0;
+        vedit_set_msg("query-replace done");
+        return;
+    }
+    vedit_qrep_on = 1;
+    vedit_prompt_open("query (y/n/!/q): ", VEDIT_PROMPT_QREP);
+}
+
+static void vedit_qrep_answer(int key) {
+    if (key == 'q' || key == 'Q' || key == VEDIT_KEY_ESC) {
+        vedit_qrep_on = 0;
+        vedit_prompt_on = 0;
+        vedit_set_msg("query-replace quit");
+        return;
+    }
+    if (key == '!') {
+        vedit_prompt_on = 0;
+        vedit_replace_all(vedit_qrep_old, vedit_qrep_new, 0);
+        vedit_qrep_on = 0;
+        return;
+    }
+    if (key == 'y' || key == 'Y' || key == ' ') {
+        int nc = vedit_replace_at(vedit_cy, vedit_cx, vedit_qrep_old,
+                                  vedit_qrep_new, 0);
+        if (nc < 0) nc = vedit_cx + 1;
+        vedit_prompt_on = 0;
+        vedit_qrep_next(vedit_cy, nc);
+        return;
+    }
+    if (key == 'n' || key == 'N' || key == '\b' || key == 127) {
+        int c = vedit_cx + 1;
+        int r = vedit_cy;
+        if (c > vedit_used[r]) {
+            r++;
+            c = 0;
+        }
+        vedit_prompt_on = 0;
+        if (r >= vedit_count) {
+            vedit_qrep_on = 0;
+            vedit_set_msg("query-replace done");
+            return;
+        }
+        vedit_qrep_next(r, c);
+        return;
+    }
 }
 
 static void vedit_prompt_saveas(void) {
@@ -1485,7 +3787,7 @@ static void vedit_draw_row(struct nk_command_buffer *canvas,
     int cur;
     int run_start;
     int x = vedit_gutter_w * vedit_cw;
-    int y = vedit_code_y + vrow * vedit_ch;
+    int y = vedit_pane_y0 + vrow * vedit_ch;
     char num[16];
     struct nk_color bg = vedit_c_bg();
     if (line_idx < vedit_count) {
@@ -1537,7 +3839,8 @@ static void vedit_draw_row(struct nk_command_buffer *canvas,
             }
         }
     }
-    if (is_cursor_row && vedit_cx >= vedit_hoff &&
+    if (is_cursor_row && vedit_pane_cursor_on &&
+        vedit_cx >= vedit_hoff &&
         vedit_cx < vedit_hoff + (vedit_cols - vedit_gutter_w)) {
         int ccx = x + (vedit_cx - vedit_hoff) * vedit_cw;
         nk_fill_rect(canvas, nk_rect((float)ccx, (float)y, (float)vedit_cw,
@@ -1551,6 +3854,24 @@ static void vedit_draw_row(struct nk_command_buffer *canvas,
                          vedit_c_bg());
         }
     }
+    if (vedit_sel_on && vedit_cur == vedit_sel_buf && line_idx >= 0 &&
+        line_idx < vedit_count && line_idx >= vedit_sy0 &&
+        line_idx <= vedit_sy1) {
+        int textw = vedit_cols - vedit_gutter_w;
+        int a = (line_idx == vedit_sy0) ? vedit_sx0 : 0;
+        int b = (line_idx == vedit_sy1) ? vedit_sx1 : len;
+        int c;
+        if (a < 0) a = 0;
+        if (b > len) b = len;
+        for (c = a; c < b; c++) {
+            int vc = c - vedit_hoff;
+            if (vc < 0 || vc >= textw) continue;
+            nk_draw_text(canvas,
+                         nk_rect((float)(x + vc * vedit_cw), (float)y,
+                                 (float)vedit_cw, (float)vedit_ch),
+                         l + c, 1, font, vedit_c_cursor(), vedit_c_bg());
+        }
+    }
 }
 
 /** Draw the IDE window: menu buttons, code rows, status and help. */
@@ -1561,21 +3882,23 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
     int li;
     char status[VEDIT_STATUS_MAX];
     static const char *help =
-        "arrows move  type  Enter split  Tab indent  ^O save  ^N name  ^X done  "
-        "^W find  ^G goto  ^R run  ^L link+run  ^D console  Esc exit";
+        "^O save ^W find ^R run ^L link ^D dump ^X done  "
+        "M-x cmd M-s search ^K kill ^Y yank M-v paste M-2 split";
     static int prev_buttons = 0;
     int mouse[4] = {0, 0, 0, 0};
     int mdown = 0;
     int clicked = 0;
-    int btn_w = 12 * vedit_cw;
+    int btn_w = 11 * vedit_cw;
     int btn_h = vedit_ch + 6;
     int bx = vedit_cw;
     int by = 2;
-    static const char *labels[6] = {"^O Save", "^W Find", "^N Name",
-                                        "^R Run", "^L Link", "^X Done"};
+    static const char *labels[8] = {"^O Save", "^W Find", "^N Name",
+                                        "^R Run", "^L Link", "Buf",
+                                        "M-x", "^X Done"};
 
     vedit_clamp();
     vedit_follow();
+    vedit_pane_save(vedit_apane);
 
     if (!nk_begin_titled(ctx, "vedit", "vedit",
                          nk_rect(0, 0, (float)NK_W, (float)NK_H),
@@ -1606,9 +3929,8 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
 
     nk_fill_rect(canvas, nk_rect(0, 0, (float)NK_W, (float)vedit_menu_h), 0,
                  vedit_c_header());
-    for (r = 0; r < 6; r++) {
-        int x = bx + r * (btn_w + vedit_cw);
-        int hover = mdown && mouse[0] >= x && mouse[0] < x + btn_w &&
+    for (r = 0; r < 8; r++) {
+        int x = bx + r * (btn_w + vedit_cw);        int hover = mdown && mouse[0] >= x && mouse[0] < x + btn_w &&
             mouse[1] >= by && mouse[1] < by + btn_h;
         nk_fill_rect(canvas, nk_rect((float)x, (float)by, (float)btn_w,
                                      (float)btn_h),
@@ -1633,6 +3955,17 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                 vedit_cmd_run();
             } else if (r == 4) {
                 vedit_prompt_open("link elf/cvm: ", VEDIT_PROMPT_LINK);
+            } else if (r == 5) {
+                if (vedit_next_buffer() == 0) {
+                    char nb[96];
+                    snprintf(nb, sizeof(nb), "buffer %s", vedit_fname);
+                    vedit_set_msg(nb);
+                    if (vedit_split_on) vedit_pane_save(vedit_apane);
+                } else {
+                    vedit_set_msg("only one buffer");
+                }
+            } else if (r == 6) {
+                vedit_prompt_open("M-x ", VEDIT_PROMPT_CMD);
             } else {
                 *save_and_quit = 1;
                 *quit = 1;
@@ -1640,9 +3973,106 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
         }
     }
 
-    for (r = 0; r < vedit_code_rows; r++) {
-        li = vedit_top + r;
-        vedit_draw_row(canvas, font, r, li, li == vedit_cy);
+    {
+        int gy0;
+        int grows;
+        if (!vedit_split_on) {
+            gy0 = vedit_code_y;
+            grows = vedit_code_rows;
+        } else if (vedit_apane == 0) {
+            gy0 = vedit_code_y;
+            grows = vedit_code_rows / 2;
+            if (grows < 1) grows = 1;
+        } else {
+            int rows0 = vedit_code_rows / 2;
+            if (rows0 < 1) rows0 = 1;
+            gy0 = vedit_code_y + rows0 * vedit_ch + vedit_ch;
+            grows = vedit_code_rows - rows0 - 1;
+            if (grows < 1) grows = 1;
+        }
+        if (mdown) {
+            int rx = mouse[0] - vedit_gutter_w * vedit_cw;
+            int vrow = (vedit_ch > 0) ? (mouse[1] - gy0) / vedit_ch : -1;
+            if (mouse[0] >= vedit_gutter_w * vedit_cw && vrow >= 0 &&
+                vrow < grows) {
+                int line = vedit_top + vrow;
+                int col = (rx >= 0 ? rx / vedit_cw : 0) + vedit_hoff;
+                if (line >= vedit_count) line = vedit_count - 1;
+                if (line < 0) line = 0;
+                if (col < 0) col = 0;
+                if (line < vedit_count && col > vedit_used[line])
+                    col = vedit_used[line];
+                if (clicked && !vedit_sel_down) {
+                    vedit_sel_down = 1;
+                    vedit_sel_buf = vedit_cur;
+                    vedit_sy0 = line;
+                    vedit_sx0 = col;
+                    vedit_sy1 = line;
+                    vedit_sx1 = col;
+                    vedit_sel_on = 0;
+                } else if (vedit_sel_down &&
+                           vedit_sel_buf == vedit_cur) {
+                    vedit_sy1 = line;
+                    vedit_sx1 = col;
+                    if (line != vedit_sy0 || col != vedit_sx0) {
+                        vedit_sel_on = 1;
+                        vedit_sel_norm();
+                    }
+                }
+            }
+        }
+        if (!mdown && vedit_sel_down) {
+            vedit_sel_down = 0;
+            if (vedit_sel_on && vedit_sel_buf == vedit_cur)
+                vedit_sel_copy();
+            else
+                vedit_sel_on = 0;
+        }
+    }
+
+    if (!vedit_split_on) {
+        vedit_pane_y0 = vedit_code_y;
+        vedit_pane_cursor_on = 1;
+        for (r = 0; r < vedit_code_rows; r++) {
+            li = vedit_top + r;
+            vedit_draw_row(canvas, font, r, li, li == vedit_cy);
+        }
+    } else {
+        int rows0 = vedit_code_rows / 2;
+        int rows1 = vedit_code_rows - rows0 - 1;
+        int sepy;
+        if (rows0 < 1) rows0 = 1;
+        if (rows1 < 1) rows1 = 1;
+        vedit_pane_load(0);
+        vedit_clamp();
+        vedit_follow();
+        vedit_pane_y0 = vedit_code_y;
+        vedit_pane_cursor_on = (vedit_apane == 0);
+        for (r = 0; r < rows0; r++) {
+            li = vedit_top + r;
+            vedit_draw_row(canvas, font, r, li, li == vedit_cy);
+        }
+        sepy = vedit_code_y + rows0 * vedit_ch;
+        nk_fill_rect(canvas, nk_rect(0, (float)sepy, (float)NK_W,
+                                     (float)vedit_ch),
+                     0, vedit_c_status());
+        nk_draw_text(canvas,
+                     nk_rect((float)vedit_cw, (float)sepy,
+                             (float)(NK_W - 2 * vedit_cw), (float)vedit_ch),
+                     vedit_fnames[vedit_panes_buf[1]],
+                     (int)strlen(vedit_fnames[vedit_panes_buf[1]]), font,
+                     vedit_c_status(), vedit_c_headtxt());
+        vedit_pane_load(1);
+        vedit_clamp();
+        vedit_follow();
+        vedit_pane_y0 = sepy + vedit_ch;
+        vedit_pane_cursor_on = (vedit_apane == 1);
+        for (r = 0; r < rows1; r++) {
+            li = vedit_top + r;
+            vedit_draw_row(canvas, font, r, li, li == vedit_cy);
+        }
+        vedit_pane_load(vedit_apane);
+        vedit_pane_save(vedit_apane);
     }
 
     if (vedit_prompt_on) {
@@ -1655,9 +4085,49 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
             status[ln++] = vedit_prompt_buf[k];
         status[ln] = 0;
     } else {
-        snprintf(status, sizeof(status), " %s [%s] Ln %d/%d Col %d %s",
-                 vedit_fname, vedit_lang_name(vedit_lang), vedit_cy + 1,
-                 vedit_count > 0 ? vedit_count : 1, vedit_cx + 1, vedit_msg);
+        char flags[32];
+        int pct = 0;
+        flags[0] = 0;
+        if (vedit_count > 0)
+            pct = (vedit_cy + 1) * 100 / vedit_count;
+        {
+            size_t fl = 0;
+            if (vedit_ros[vedit_cur] && fl < sizeof(flags) - 5) {
+                memcpy(flags + fl, " RO", 3);
+                fl += 3;
+            }
+            if (vedit_overwrite && fl < sizeof(flags) - 5) {
+                memcpy(flags + fl, " OVR", 4);
+                fl += 4;
+            }
+            if (vedit_macro_rec && fl < sizeof(flags) - 5) {
+                memcpy(flags + fl, " REC", 4);
+                fl += 4;
+            }
+            if (vedit_mark_on && fl < sizeof(flags) - 5) {
+                memcpy(flags + fl, " MRK", 4);
+                fl += 4;
+            }
+            if (vedit_sel_on && fl < sizeof(flags) - 5) {
+                memcpy(flags + fl, " SEL", 4);
+                fl += 4;
+            }
+            if (vedit_esc_state && fl < sizeof(flags) - 6) {
+                memcpy(flags + fl, " META", 5);
+                fl += 5;
+            }
+            if (vedit_arg_on && fl < sizeof(flags) - 5) {
+                memcpy(flags + fl, " ARG", 4);
+                fl += 4;
+            }
+            flags[fl] = 0;
+        }
+        snprintf(status, sizeof(status), " %s [%s] B%d/%d Ln %d/%d(%d%%)"
+                 " Col %d%s %s", vedit_fname,
+                 vedit_lang_name(vedit_lang), vedit_cur + 1,
+                 vedit_count_open(), vedit_cy + 1,
+                 vedit_count > 0 ? vedit_count : 1, pct, vedit_cx + 1,
+                 flags, vedit_msg);
     }
     nk_fill_rect(canvas,
                  nk_rect(0, (float)vedit_status_y, (float)NK_W,
@@ -1686,7 +4156,12 @@ static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
 
 /** Route one decoded key while a prompt is open. */
 static void vedit_prompt_key(int key) {
+    if (vedit_prompt_mode == VEDIT_PROMPT_QREP) {
+        vedit_qrep_answer(key);
+        return;
+    }
     if (key == '\n' || key == '\r') {
+        int mode = vedit_prompt_mode;
         vedit_prompt_on = 0;
         if (vedit_prompt_mode == VEDIT_PROMPT_GOTO) {
             int n = 0;
@@ -1720,13 +4195,117 @@ static void vedit_prompt_key(int key) {
             }
         } else if (vedit_prompt_mode == VEDIT_PROMPT_LINK) {
             vedit_cmd_link(vedit_prompt_buf);
+        } else if (mode == VEDIT_PROMPT_ISEARCH_F ||
+                   mode == VEDIT_PROMPT_ISEARCH_R) {
+            if (vedit_prompt_buf[0]) {
+                memcpy(vedit_last_find, vedit_prompt_buf, VEDIT_LINE_MAX);
+                vedit_msg[0] = 0;
+            } else {
+                vedit_cy = vedit_isearch_oy;
+                vedit_cx = vedit_isearch_ox;
+            }
+        } else if (mode == VEDIT_PROMPT_REP_OLD) {
+            size_t n = strlen(vedit_prompt_buf);
+            if (n == 0) {
+                vedit_set_msg("empty pattern");
+            } else {
+                if (n > VEDIT_MAGIC_MAX - 1) n = VEDIT_MAGIC_MAX - 1;
+                memcpy(vedit_qrep_old, vedit_prompt_buf, n);
+                vedit_qrep_old[n] = 0;
+                vedit_prompt_open("replace with: ", VEDIT_PROMPT_REP_NEW);
+            }
+        } else if (mode == VEDIT_PROMPT_REP_NEW) {
+            size_t n = strlen(vedit_prompt_buf);
+            if (n > VEDIT_LINE_MAX - 1) n = VEDIT_LINE_MAX - 1;
+            memcpy(vedit_qrep_new, vedit_prompt_buf, n);
+            vedit_qrep_new[n] = 0;
+            if (vedit_qrep_on)
+                vedit_qrep_next(vedit_cy, vedit_cx);
+            else
+                vedit_replace_all(vedit_qrep_old, vedit_qrep_new, 0);
+        } else if (mode == VEDIT_PROMPT_CMD) {
+            int id = vedit_cmd_lookup(vedit_prompt_buf);
+            if (id < 0) {
+                vedit_set_msg("unknown command (M-x help)");
+            } else {
+                int dq = 0;
+                int ds = 0;
+                vedit_cmd_exec_id(id, 0, &dq, &ds);
+            }
+        } else if (mode == VEDIT_PROMPT_SELECT) {
+            if (!vedit_prompt_buf[0]) {
+                vedit_set_msg("empty name");
+            } else if (vedit_select_insert) {
+                vedit_select_insert = 0;
+                vedit_insert_file(vedit_prompt_buf);
+            } else {
+                int k;
+                int found = -1;
+                for (k = 0; k < VEDIT_NBUF; k++) {
+                    if (vedit_pools[k] &&
+                        strcmp(vedit_fnames[k], vedit_prompt_buf) == 0) {
+                        found = k;
+                        break;
+                    }
+                }
+                if (found >= 0) {
+                    vedit_switch_buffer(found);
+                } else {
+                    vedit_open_in_buffer(vedit_prompt_buf, 0);
+                }
+            }
+            vedit_select_insert = 0;
+        } else if (mode == VEDIT_PROMPT_BINDKEY) {
+            if (vedit_parse_key(vedit_prompt_buf) < 0) {
+                vedit_set_msg("bad key (try ^K, M-f, PgDn)");
+            } else {
+                size_t n = strlen(vedit_prompt_buf);
+                if (n > sizeof(vedit_bindkey_tmp) - 1)
+                    n = sizeof(vedit_bindkey_tmp) - 1;
+                memcpy(vedit_bindkey_tmp, vedit_prompt_buf, n);
+                vedit_bindkey_tmp[n] = 0;
+                vedit_prompt_open("command: ", VEDIT_PROMPT_BINDCMD);
+            }
+        } else if (mode == VEDIT_PROMPT_BINDCMD) {
+            int id = vedit_cmd_lookup(vedit_prompt_buf);
+            int kc = vedit_parse_key(vedit_bindkey_tmp);
+            if (id < 0) {
+                vedit_set_msg("unknown command");
+            } else if (kc < 0 || vedit_cmd_bind(kc, id) != 0) {
+                vedit_set_msg("bind failed");
+            } else {
+                vedit_set_msg("bound");
+            }
+        } else if (mode == VEDIT_PROMPT_SHELLCMD) {
+            vedit_shell_command(vedit_prompt_buf);
+        } else if (mode == VEDIT_PROMPT_FILTER) {
+            vedit_filter_buffer(vedit_prompt_buf);
+        } else if (mode == VEDIT_PROMPT_GREP) {
+            vedit_grep(vedit_prompt_buf);
+        } else if (vedit_find_magic) {
+            int w = 0;
+            vedit_find_magic = 0;
+            if (vedit_search_fwd(vedit_cy, vedit_cx, vedit_prompt_buf, 1,
+                                 &w) != 0)
+                vedit_set_msg("not found");
+            else if (w)
+                vedit_set_msg("wrapped");
+            else
+                vedit_msg[0] = 0;
         } else {
+            vedit_find_magic = 0;
             vedit_find(vedit_prompt_buf);
         }
         return;
     }
     if (key == VEDIT_KEY_ESC) {
+        if (vedit_prompt_mode == VEDIT_PROMPT_ISEARCH_F ||
+            vedit_prompt_mode == VEDIT_PROMPT_ISEARCH_R) {
+            vedit_cy = vedit_isearch_oy;
+            vedit_cx = vedit_isearch_ox;
+        }
         vedit_prompt_on = 0;
+        vedit_qrep_on = 0;
         vedit_set_msg("cancelled");
         return;
     }
@@ -1734,59 +4313,220 @@ static void vedit_prompt_key(int key) {
         if (vedit_prompt_pos > 0) {
             vedit_prompt_pos--;
             vedit_prompt_buf[vedit_prompt_pos] = 0;
+            if (vedit_prompt_mode == VEDIT_PROMPT_ISEARCH_F ||
+                vedit_prompt_mode == VEDIT_PROMPT_ISEARCH_R)
+                vedit_isearch_step();
         }
         return;
     }
     if (key >= 32 && key < 127 && vedit_prompt_pos < VEDIT_LINE_MAX - 1) {
         vedit_prompt_buf[vedit_prompt_pos++] = (char)key;
         vedit_prompt_buf[vedit_prompt_pos] = 0;
+        if (vedit_prompt_mode == VEDIT_PROMPT_ISEARCH_F ||
+            vedit_prompt_mode == VEDIT_PROMPT_ISEARCH_R)
+            vedit_isearch_step();
     }
 }
 
 /** Route one decoded key when no prompt is open. */
 static void vedit_key(int key, int *quit, int *save_and_quit) {
+    int rep;
+    int k;
     if (vedit_prompt_on) {
         vedit_prompt_key(key);
         return;
     }
+    if (key == VEDIT_KEY_ARG) {
+        if (!vedit_arg_on) {
+            vedit_arg_on = 1;
+            vedit_arg = 4;
+        } else {
+            vedit_arg *= 4;
+            if (vedit_arg > 4096) vedit_arg = 4096;
+        }
+        {
+            char nb[32];
+            snprintf(nb, sizeof(nb), "arg=%d", vedit_arg);
+            vedit_set_msg(nb);
+        }
+        return;
+    }
+    if (vedit_arg_on && key >= '0' && key <= '9') {
+        vedit_arg = vedit_arg * 10 + (key - '0');
+        if (vedit_arg > 4096) vedit_arg = 4096;
+        {
+            char nb[32];
+            snprintf(nb, sizeof(nb), "arg=%d", vedit_arg);
+            vedit_set_msg(nb);
+        }
+        return;
+    }
+    rep = vedit_arg_on ? vedit_arg : 1;
+    vedit_arg_on = 0;
+    if (rep < 1) rep = 1;
+    if (rep > 4096) rep = 4096;
+    if (key != VEDIT_KEY_META('(') && key != VEDIT_KEY_META(')') &&
+        key != VEDIT_KEY_META('e') && key != VEDIT_KEY_META('E')) {
+        if (vedit_macro_rec && vedit_macro_len < VEDIT_MACRO_MAX)
+            vedit_macro[vedit_macro_len++] = key;
+    }
+    {
+        int bound = vedit_cmd_bound(key);
+        if (bound >= 0) {
+            vedit_cmd_exec_id(bound, 0, quit, save_and_quit);
+            return;
+        }
+    }
     if (key == VEDIT_KEY_UP) {
-        if (vedit_cy > 0) vedit_cy--;
+        for (k = 0; k < rep; k++) {
+            if (vedit_cy > 0) vedit_cy--;
+        }
         vedit_msg[0] = 0;
     } else if (key == VEDIT_KEY_DOWN) {
-        if (vedit_cy + 1 < vedit_count) vedit_cy++;
+        for (k = 0; k < rep; k++) {
+            if (vedit_cy + 1 < vedit_count) vedit_cy++;
+        }
         vedit_msg[0] = 0;
     } else if (key == VEDIT_KEY_LEFT) {
-        if (vedit_cx > 0) {
-            vedit_cx--;
-        } else if (vedit_cy > 0) {
-            vedit_cy--;
-            vedit_cx = vedit_used[vedit_cy];
+        for (k = 0; k < rep; k++) {
+            if (vedit_cx > 0) {
+                vedit_cx--;
+            } else if (vedit_cy > 0) {
+                vedit_cy--;
+                vedit_cx = vedit_used[vedit_cy];
+            }
         }
         vedit_msg[0] = 0;
     } else if (key == VEDIT_KEY_RIGHT) {
-        if (vedit_count > 0 && vedit_cy < vedit_count &&
-            vedit_cx < vedit_used[vedit_cy]) {
-            vedit_cx++;
-        } else if (vedit_cy + 1 < vedit_count) {
-            vedit_cy++;
-            vedit_cx = 0;
+        for (k = 0; k < rep; k++) {
+            if (vedit_count > 0 && vedit_cy < vedit_count &&
+                vedit_cx < vedit_used[vedit_cy]) {
+                vedit_cx++;
+            } else if (vedit_cy + 1 < vedit_count) {
+                vedit_cy++;
+                vedit_cx = 0;
+            }
         }
         vedit_msg[0] = 0;
-    } else if (key == VEDIT_KEY_HOME) {
+    } else if (key == VEDIT_KEY_HOME || key == VEDIT_KEY_BOL) {
         vedit_cx = 0;
         vedit_msg[0] = 0;
-    } else if (key == VEDIT_KEY_END) {
+    } else if (key == VEDIT_KEY_END || key == VEDIT_KEY_EOL) {
         if (vedit_count > 0 && vedit_cy < vedit_count)
             vedit_cx = vedit_used[vedit_cy];
         vedit_msg[0] = 0;
+    } else if (key == VEDIT_KEY_MARK || key == VEDIT_KEY_META(' ')) {
+        vedit_set_mark();
+    } else if (key == VEDIT_KEY_KILL_LINE) {
+        for (k = 0; k < rep; k++) {
+            if (vedit_kill_line() != 0) break;
+        }
+    } else if (key == VEDIT_KEY_YANK) {
+        vedit_yank();
+    } else if (key == VEDIT_KEY_TRANSPOSE) {
+        for (k = 0; k < rep; k++) {
+            if (vedit_transpose() != 0) break;
+        }
+    } else if (key == VEDIT_KEY_FENCE) {
+        vedit_goto_fence();
+    } else if (key == VEDIT_KEY_META('f') || key == VEDIT_KEY_META('F')) {
+        for (k = 0; k < rep; k++) vedit_word_move(1);
+        vedit_msg[0] = 0;
+    } else if (key == VEDIT_KEY_META('b') || key == VEDIT_KEY_META('B')) {
+        for (k = 0; k < rep; k++) vedit_word_move(-1);
+        vedit_msg[0] = 0;
+    } else if (key == VEDIT_KEY_META('c') || key == VEDIT_KEY_META('C')) {
+        vedit_case_word(3);
+    } else if (key == VEDIT_KEY_META('l') || key == VEDIT_KEY_META('L')) {
+        vedit_case_word(2);
+    } else if (key == VEDIT_KEY_META('u') || key == VEDIT_KEY_META('U')) {
+        vedit_case_word(1);
+    } else if (key == VEDIT_KEY_META('w') || key == VEDIT_KEY_META('W')) {
+        if (key == VEDIT_KEY_META('W'))
+            vedit_region_to_clip();
+        else
+            vedit_copy_region();
+    } else if (key == VEDIT_KEY_META('k') || key == VEDIT_KEY_META('K')) {
+        vedit_kill_region();
+    } else if (key == VEDIT_KEY_META('s') || key == VEDIT_KEY_META('S')) {
+        vedit_prompt_isearch(1);
+    } else if (key == VEDIT_KEY_META('r') || key == VEDIT_KEY_META('R')) {
+        vedit_prompt_isearch(-1);
+    } else if (key == VEDIT_KEY_META('n') || key == VEDIT_KEY_META('N')) {
+        if (!vedit_last_find[0]) {
+            vedit_set_msg("no previous search");
+        } else {
+            int w = 0;
+            int c = vedit_cx + 1;
+            int r = vedit_cy;
+            if (c > vedit_used[r]) {
+                r++;
+                c = 0;
+            }
+            if (r >= vedit_count ||
+                vedit_search_fwd(r, c, vedit_last_find, 0, &w) != 0)
+                vedit_set_msg("not found");
+            else if (w)
+                vedit_set_msg("wrapped");
+            else
+                vedit_msg[0] = 0;
+        }
+    } else if (key == VEDIT_KEY_META('%')) {
+        vedit_qrep_on = 1;
+        vedit_prompt_open("query replace: ", VEDIT_PROMPT_REP_OLD);
+    } else if (key == VEDIT_KEY_META('q') || key == VEDIT_KEY_META('Q')) {
+        vedit_fill_paragraph();
+    } else if (key == VEDIT_KEY_META('x') || key == VEDIT_KEY_META('X')) {
+        vedit_prompt_open("M-x ", VEDIT_PROMPT_CMD);
+    } else if (key == VEDIT_KEY_META('!')) {
+        vedit_prompt_open("!: ", VEDIT_PROMPT_SHELLCMD);
+    } else if (key == VEDIT_KEY_META('#')) {
+        vedit_prompt_open("filter: ", VEDIT_PROMPT_FILTER);
+    } else if (key == VEDIT_KEY_META('(')) {
+        vedit_macro_rec = 1;
+        vedit_macro_len = 0;
+        vedit_set_msg("recording macro");
+    } else if (key == VEDIT_KEY_META(')')) {
+        vedit_macro_rec = 0;
+        vedit_set_msg("macro recorded");
+    } else if (key == VEDIT_KEY_META('e') || key == VEDIT_KEY_META('E')) {        if (vedit_macro_len <= 0) vedit_set_msg("no macro");
+        else if (vedit_macro_depth >= 4) vedit_set_msg("macro too deep");
+        else {
+            vedit_macro_depth++;
+            for (k = 0; k < vedit_macro_len; k++) {
+                vedit_key(vedit_macro[k], quit, save_and_quit);
+                if (*quit) break;
+            }
+            vedit_macro_depth--;
+            vedit_msg[0] = 0;
+        }
+    } else if (key == VEDIT_KEY_META('2')) {
+        if (!vedit_split_on) vedit_split_set(1);
+        else vedit_set_msg("already split");
+    } else if (key == VEDIT_KEY_META('1')) {
+        if (vedit_split_on) vedit_split_set(0);
+        else vedit_set_msg("single window");
+    } else if (key == VEDIT_KEY_META('o') || key == VEDIT_KEY_META('O')) {
+        vedit_next_pane();
+    } else if (key == VEDIT_KEY_META('v') || key == VEDIT_KEY_META('V')) {
+        vedit_clip_paste();
     } else if (key == VEDIT_KEY_PGUP) {
-        vedit_cy -= vedit_code_rows;
-        if (vedit_cy < 0) vedit_cy = 0;
+        for (k = 0; k < rep; k++) {
+            vedit_cy -= vedit_code_rows;
+            if (vedit_cy < 0) {
+                vedit_cy = 0;
+                break;
+            }
+        }
         vedit_msg[0] = 0;
     } else if (key == VEDIT_KEY_PGDN) {
-        vedit_cy += vedit_code_rows;
-        if (vedit_count > 0 && vedit_cy >= vedit_count)
-            vedit_cy = vedit_count - 1;
+        for (k = 0; k < rep; k++) {
+            vedit_cy += vedit_code_rows;
+            if (vedit_count > 0 && vedit_cy >= vedit_count) {
+                vedit_cy = vedit_count - 1;
+                break;
+            }
+        }
         vedit_msg[0] = 0;
     } else if (key == VEDIT_KEY_DEL) {
         vedit_delete_char();
@@ -1818,7 +4558,12 @@ static void vedit_key(int key, int *quit, int *save_and_quit) {
     } else if (key == '\b' || key == 127) {
         vedit_backspace();
     } else if (key >= 32 && key < 127) {
-        vedit_insert_char(key);
+        for (k = 0; k < rep; k++) {
+            vedit_insert_char(key);
+            if (vedit_msg[0]) break;
+        }
+    } else if (key >= 3000) {
+        vedit_set_msg("unbound (M-x help lists keys)");
     }
 }
 
@@ -1861,6 +4606,18 @@ static void vedit_gui_run(void) {
     vedit_gutter_w = 6;
     vedit_menu_h = vedit_ch * 2;
     vedit_code_y = vedit_menu_h;
+    vedit_pane_y0 = vedit_code_y;
+    vedit_pane_cursor_on = 1;
+    vedit_split_on = 0;
+    vedit_apane = 0;
+    vedit_panes_buf[0] = vedit_cur;
+    vedit_panes_cy[0] = vedit_cy;
+    vedit_panes_cx[0] = vedit_cx;
+    vedit_panes_top[0] = vedit_top;
+    vedit_panes_buf[1] = vedit_cur;
+    vedit_panes_cy[1] = vedit_cy;
+    vedit_panes_cx[1] = vedit_cx;
+    vedit_panes_top[1] = vedit_top;
     {
         int status_h = vedit_ch + 4;
         int help_h = vedit_ch + 4;
@@ -2012,19 +4769,20 @@ int main(int argc, char **argv) {
     n = strlen(fname);
     memcpy(vedit_fname, fname, n);
     vedit_fname[n] = 0;
-    vedit_pool = malloc(VEDIT_MAX_LINES * VEDIT_LINE_MAX);
-    if (!vedit_pool) {
+    for (n = 0; n < VEDIT_NBUF; n++) {
+        vedit_pools[n] = 0;
+        vedit_useds[n] = 0;
+        vedit_sizes[n] = -1;
+        vedit_mtimes[n] = -1;
+    }
+    if (vedit_buf_alloc(0) != 0) {
         printf("vedit: out of memory\n");
         return 1;
     }
-    vedit_used = malloc(VEDIT_MAX_LINES * sizeof(int));
-    if (!vedit_used) {
-        printf("vedit: out of memory\n");
-        return 1;
-    }
-    memset(vedit_used, 0, VEDIT_MAX_LINES * sizeof(int));
+    vedit_cur = 0;
     vedit_lang = vedit_lang_of(vedit_fname);
     vedit_dirty = 0;
+    vedit_hist_push(fname);
     rc = vedit_load();
     if (rc < 0) {
         printf("vedit: file too large\n");
@@ -2038,8 +4796,12 @@ int main(int argc, char **argv) {
     vedit_top = 0;
     vedit_hoff = 0;
     vedit_msg[0] = 0;
+    vedit_run_rc("/etc/vedit.rc");
+    vedit_run_rc("vedit.rc");
     vedit_gui_run();
-    free(vedit_pool);
-    free(vedit_used);
+    for (n = 0; n < VEDIT_NBUF; n++) {
+        free(vedit_pools[n]);
+        free(vedit_useds[n]);
+    }
     return 0;
 }

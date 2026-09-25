@@ -1,10 +1,12 @@
 /** Docstring: Host test for the vedit IDE build contract (make test-vedit).
  *
  * Spec-level pin for progs/vedit/vedit.c: extension routing, base-name
- * stripping, path joins, link-format parsing and the shortcut contract.
- * The code-level killer is the guest selftest (vedit --selftest-build),
- * which executes the same vectors against the real implementation; this
- * host test locks the spec so silent contract drift fails the build.
+ * stripping, path joins, link-format parsing, the shortcut contract, plus
+ * the uemacs-adoption pure helpers (case/transpose/magic/command-table/
+ * key-parser). The code-level killer is the guest selftest
+ * (vedit --selftest-build), which executes the same vectors against the
+ * real implementation; this host test locks the spec so silent contract
+ * drift fails the build.
  *
  * MIRROR CONTRACT (keep in sync with vedit_selftest_build):
  *   t_has_ext  <-> vedit_has_ext    (same suffix match, empty ext fails)
@@ -14,6 +16,11 @@
  *   t_lang_of  <-> vedit_lang_of    (untitled/.c/.h=C, .s=ASM, .py=PY, .lua=LUA,
  *                                      .lisp=LISP)
  *   t_run_kind <-> vedit_run_kind   (c/h=1, lua=2, py=3, s=4, lisp=5, else 0)
+ *   t_str_case <-> vedit_str_case   (1=upper, 2=lower, 3=capitalize)
+ *   t_transpose<-> vedit_str_transpose (swap bytes around pos)
+ *   t_magic    <-> vedit_magic_match (exact/dot/star/anchors/classes)
+ *   t_cmd      <-> vedit_cmd_lookup  (named commands, -1 unknown)
+ *   t_parse_key<-> vedit_parse_key   (^X/M-c/words, -1 bogus)
  *   shortcuts  <-> VEDIT_KEY_RUN/LINK/DUMP (18/12/4)
  * If a vector changes in the guest, update the host CHECKs here too.
  */
@@ -120,9 +127,226 @@ static int t_run_kind(const char *fname) {
     return 0;
 }
 
+/* Mirror of vedit_str_case. */
+static void t_str_case(char *s, int mode) {
+    int i = 0;
+    int new_word = 1;
+    if (!s || (mode != 1 && mode != 2 && mode != 3)) return;
+    while (s[i]) {
+        int c = (unsigned char)s[i];
+        if (c == ' ' || c == '\t' || c == '\n') {
+            new_word = 1;
+        } else if (mode == 1) {
+            if (c >= 'a' && c <= 'z') s[i] = (char)(c - 32);
+            new_word = 0;
+        } else if (mode == 2) {
+            if (c >= 'A' && c <= 'Z') s[i] = (char)(c + 32);
+            new_word = 0;
+        } else {
+            if (new_word) {
+                if (c >= 'a' && c <= 'z') s[i] = (char)(c - 32);
+                new_word = 0;
+            } else {
+                if (c >= 'A' && c <= 'Z') s[i] = (char)(c + 32);
+            }
+        }
+        i++;
+    }
+}
+
+static void t_transpose(char *s, int len, int pos) {
+    char t;
+    if (!s || len < 2 || pos < 1 || pos >= len) return;
+    t = s[pos - 1];
+    s[pos - 1] = s[pos];
+    s[pos] = t;
+}
+
+/* Mirror of vedit_magic_match (subset: ./star/anchors/classes). */
+static int t_mclass(int c, const char *cls) {
+    int neg = 0;
+    int hit = 0;
+    if (!cls || cls[0] != '[') return 0;
+    cls++;
+    if (*cls == '^') {
+        neg = 1;
+        cls++;
+    }
+    while (*cls && *cls != ']') {
+        if (cls[1] == '-' && cls[2] && cls[2] != ']') {
+            if (c >= (unsigned char)cls[0] && c <= (unsigned char)cls[2])
+                hit = 1;
+            cls += 3;
+        } else {
+            if (c == (unsigned char)*cls) hit = 1;
+            cls++;
+        }
+    }
+    return neg ? !hit : hit;
+}
+
+static int t_matom(const char *pat, int c, int *atom_len) {
+    if (!pat || !pat[0] || c < 0) return 0;
+    if (pat[0] == '.') {
+        *atom_len = 1;
+        return 1;
+    }
+    if (pat[0] == '[') {
+        int k = 1;
+        if (pat[k] == '^') k++;
+        if (pat[k] == ']') k++;
+        while (pat[k] && pat[k] != ']') k++;
+        if (!pat[k]) return 0;
+        *atom_len = k + 1;
+        return t_mclass(c, pat);
+    }
+    if (pat[0] == '\\' && pat[1]) {
+        *atom_len = 2;
+        return c == (unsigned char)pat[1];
+    }
+    *atom_len = 1;
+    return c == (unsigned char)pat[0];
+}
+
+static int t_mhere(const char *text, const char *pat, int *mlen) {
+    int total = 0;
+    if (!text || !pat || !mlen) return 0;
+    if (pat[0] == '$' && pat[1] == 0) {
+        *mlen = 0;
+        return text[0] == 0;
+    }
+    while (pat[0]) {
+        int alen = 0;
+        int star = 0;
+        if (pat[0] == '$' && pat[1] == 0) {
+            *mlen = total;
+            return text[0] == 0;
+        }
+        if (pat[0] == '[') {
+            int k = 1;
+            if (pat[k] == '^') k++;
+            if (pat[k] == ']') k++;
+            while (pat[k] && pat[k] != ']') k++;
+            if (!pat[k]) return 0;
+            alen = k + 1;
+        } else if (pat[0] == '\\' && pat[1]) {
+            alen = 2;
+        } else {
+            alen = 1;
+        }
+        star = (pat[alen] == '*');
+        if (!star) {
+            if (!text[0]) return 0;
+            if (!t_matom(pat, (unsigned char)text[0], &alen)) return 0;
+            text++;
+            total++;
+            pat += alen;
+        } else {
+            const char *rest = pat + alen + 1;
+            int max = 0;
+            int k;
+            while (text[max]) {
+                int dummy = 0;
+                if (!t_matom(pat, (unsigned char)text[max], &dummy)) break;
+                max++;
+            }
+            for (k = max; k >= 0; k--) {
+                int sub = 0;
+                if (t_mhere(text + k, rest, &sub)) {
+                    *mlen = total + k + sub;
+                    return 1;
+                }
+                if (k == 0) break;
+            }
+            return 0;
+        }
+    }
+    *mlen = total;
+    return 1;
+}
+
+static int t_magic(const char *text, const char *pat, int *mlen) {
+    int off = 0;
+    int anchored = 0;
+    if (!text || !pat || !mlen) return 0;
+    if (pat[0] == '^') {
+        anchored = 1;
+        pat++;
+    }
+    if (anchored) return t_mhere(text, pat, mlen);
+    while (text[off]) {
+        int sub = 0;
+        if (t_mhere(text + off, pat, &sub)) {
+            *mlen = sub;
+            return 1;
+        }
+        off++;
+    }
+    {
+        int sub = 0;
+        if (t_mhere(text + off, pat, &sub)) {
+            *mlen = sub;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+static const char *t_cmds[] = {
+    "save-file", "find-file", "query-replace", "shell-command", 0
+};
+
+static int t_cmd(const char *name) {
+    int k = 0;
+    if (!name || !name[0]) return -1;
+    while (t_cmds[k]) {
+        const char *t = t_cmds[k];
+        int i = 0;
+        while (t[i] && name[i] == t[i]) i++;
+        if (!t[i] && !name[i]) return k;
+        k++;
+    }
+    return -1;
+}
+
+static int t_parse_key(const char *s) {
+    if (!s || !s[0]) return -1;
+    if (s[0] == '^' && s[1] && !s[2]) {
+        int c = (unsigned char)s[1];
+        if (c >= 'a' && c <= 'z') return c - 'a' + 1;
+        if (c >= 'A' && c <= 'Z') return c - 'A' + 1;
+        if (c == '@') return 0;
+        if (c == '[') return 27;
+        if (c == '\\') return 28;
+        if (c == ']') return 29;
+        if (c == '^') return 30;
+        if (c == '_') return 31;
+        return -1;
+    }
+    if (s[0] == 'M' && s[1] == '-' && s[2] && !s[3])
+        return 3000 + (unsigned char)s[2];
+    {
+        const char *names[] = {"Up", "Down", "Left", "Right", "Home",
+                               "End", "PgUp", "PgDn", "Del", "Esc", 0};
+        int codes[] = {1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007,
+                       1008, 1009};
+        int k = 0;
+        while (names[k]) {
+            const char *t = names[k];
+            int i = 0;
+            while (t[i] && s[i] == t[i]) i++;
+            if (!t[i] && !s[i]) return codes[k];
+            k++;
+        }
+    }
+    return -1;
+}
+
 int main(void) {
     char base[48];
     char path[64];
+    char sc[32];
+    int ml = 0;
 
     CHECK(t_lang_of("untitled") == 1, "untitled highlights as C");
     CHECK(t_lang_of("a.c") == 1, ".c highlights as C");
@@ -166,6 +390,41 @@ int main(void) {
     CHECK(t_link_fmt("ELF") == 0, "case sensitive");
 
     CHECK(18 == 18 && 12 == 12 && 4 == 4, "shortcut contract pinned");
+
+    memcpy(sc, "hello world", 12);
+    t_str_case(sc, 1);
+    CHECK(strcmp(sc, "HELLO WORLD") == 0, "upper works");
+    memcpy(sc, "Hello World", 12);
+    t_str_case(sc, 2);
+    CHECK(strcmp(sc, "hello world") == 0, "lower works");
+    memcpy(sc, "hello world", 12);
+    t_str_case(sc, 3);
+    CHECK(strcmp(sc, "Hello World") == 0, "capitalize works");
+
+    memcpy(sc, "ab", 3);
+    t_transpose(sc, 2, 1);
+    CHECK(strcmp(sc, "ba") == 0, "transpose swaps");
+
+    CHECK(t_magic("foobar", "foo", &ml) && ml == 3, "magic exact");
+    CHECK(t_magic("foobar", "f.o", &ml) && ml == 3, "magic dot");
+    CHECK(t_magic("foobar", "f*bar", &ml), "magic star");
+    CHECK(t_magic("foobar", "^foo", &ml) && ml == 3, "magic anchor");
+    CHECK(!t_magic("xfoobar", "^foo", &ml), "magic anchor rejects");
+    CHECK(t_magic("foobar", "bar$", &ml) && ml == 3, "magic end anchor");
+    CHECK(t_magic("a1c", "a[0-9]c", &ml) && ml == 3, "magic class");
+    CHECK(t_magic("abc", "a[^0-9]c", &ml), "magic negated class");
+    CHECK(t_magic("abc", "z*", &ml) && ml == 0, "magic empty star");
+    CHECK(!t_magic("abc", "z+", &ml), "magic plus is literal-plus");
+
+    CHECK(t_cmd("save-file") >= 0, "save-file known");
+    CHECK(t_cmd("query-replace") >= 0, "query-replace known");
+    CHECK(t_cmd("no-such-cmd") < 0, "unknown command rejected");
+
+    CHECK(t_parse_key("^K") == 11, "^K parses");
+    CHECK(t_parse_key("^@") == 0, "^@ parses");
+    CHECK(t_parse_key("M-f") == 3000 + 'f', "M-f parses");
+    CHECK(t_parse_key("PgDn") == 1007, "PgDn parses");
+    CHECK(t_parse_key("bogus") < 0, "bogus key rejected");
 
     if (failures) {
         printf("vedit build host test FAIL (%d)\n", failures);

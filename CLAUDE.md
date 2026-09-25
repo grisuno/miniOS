@@ -2250,8 +2250,32 @@ beside it).
   build/run by extension, `^L` link (prompts `elf|cvm`), `^X`
   save+quit, Esc quit without saving, `^D` dumps the buffer with ANSI
   highlight to the console (serial fallback and BDD hook; moved from
-  `^L` so the linker owns `^L`). Save/Find/Name/Run/Link/Done are also
-  clickable buttons; the wheel scrolls by moving the cursor (the old
+  `^L` so the linker owns `^L`). uemacs adoption (buffers, region,
+  search, windows, macros, shell, in the same file, every bound in
+  `VEDIT_*`): 8 buffers (`M-x find-file/view-file/insert-file`,
+  `select-buffer`, `next-buffer`, `kill-buffer`, `list-buffers`, Buf
+  button, recent-file history), mark/region (`^@`, `M-w` copy, `M-k`
+  kill, 8-deep kill ring, `^K` kill line, `^Y` yank), word ops (`M-f`/
+  `M-b`, `M-c`/`M-l`/`M-u` case), `^T` transpose, `^]` goto fence,
+  `^U` universal arg (repeat motions/kills/inserts, digits accumulate),
+  `^A`/`^E` bol/eol, `M-s`/`M-r` incremental search, `M-n` hunt,
+  `M-%` query-replace (`y/n/!/q`), `M-x replace-string`, magic
+  search (`M-x search-forward-magic`: `. * ^ $ [class]`, host-pinned),
+  `M-q` fill paragraph, stacked 2-pane split (`M-2`/`M-1`/`M-o`),
+  keyboard macros (`M-( M-) M-e`, depth-guarded), `M-x` named commands
+  (46, `help` lists keys on the console), `bind-to-key` plus
+  `/etc/vedit.rc` + `./vedit.rc` startup (`bind <key> <cmd>`, bare
+  commands), `M-!` shell capture into `*shell*`, `M-#` filter region
+  through a program, `M-x grep` (magic) into `*grep*` with `next-error`,
+  read-only toggle, overwrite toggle, `~` backup on save with
+  changed-on-disk armed-force, stat-backed mtime guard, status row
+  (`B1/8 Ln Col %` plus `RO OVR REC MRK ARG`). Clipboard Phase 2 is
+  wired: mouse drag selects into syscalls 249/250 (4 KB, fail closed,
+  inverted highlight, `SEL` flag), `M-v`/`M-x paste` pastes, `M-W`/
+  `M-x copy-to-clipboard` copies the emacs region, and
+  `--selftest-build` proves the wire live (set/get roundtrip plus the
+  oversize/undersize refusals). Save/Find/Name/Run/Link/
+  Buf/M-x/Done are also clickable buttons; the wheel scrolls by moving the cursor (the old
   code moved only the viewport offset, which the cursor-follow pass
    snapped straight back, so wheeling long files did nothing). A
    4096-line / 255-char heap buffer (1 MB pool, so real sources like

@@ -560,6 +560,16 @@ expect "exit code: 9"
 scenario "vedit links and runs ELF from IDE shortcuts without hanging" $'cd src\nvedit ideb2.c\nint main(void) { return 12; }\x12\x0celf\n\x18\npoweroff'
 expect "vedit: run /bin/ideb2.elf exit code: 12"
 
+scenario "vedit M-x count-words reports through the console" $'vedit cw.txt\nhello world\x01\x1bXcount-words\n\x18\npoweroff'
+expect "words=2"
+
+scenario "vedit kill-line plus yank roundtrips" $'vedit kl.txt\nworld\x01\x0b\x19\x18\ncat kl.txt\npoweroff'
+expect "^world$"
+
+scenario "vedit kill-line without yank deletes" $'vedit kd.txt\nworld\x01\x0bWIDE\x18\ncat kd.txt\npoweroff'
+expect "^WIDE$"
+refute "^world$"
+
 scenario "nested spawn from a background interpreter reaps its child" $'echo import minios > /tmp/mbg.py\necho print(\'M\'+\'BG\') >> /tmp/mbg.py\necho print(minios.run(\'/bin/cp\',[\'/src/hello.c\',\'/tmp/mbg_out.c\'])) >> /tmp/mbg.py\necho print(\'M\'+\'BGEND\') >> /tmp/mbg.py\nrun micropython.elf /tmp/mbg.py &\nsleep 25\npoweroff'
 expect "MBG"
 expect "MBGEND"

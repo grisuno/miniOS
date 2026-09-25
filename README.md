@@ -783,6 +783,67 @@ shows the filename, current line number and a `*` when the buffer is modified.
 A file too large for the buffer is loaded read-only: the editor refuses to
 write it back rather than silently dropping the part it never read.
 
+### Visual IDE (vedit)
+
+`vedit [file]` is the fullscreen visual IDE (ring-3 static ELF on
+MiniFS, one file: `progs/vedit/vedit.c`, full guide in
+`progs/vedit/README.md`). `^A` is Control+A; `M-w` is ESC followed by
+`w` within one second — the status row shows `META` while armed
+(do not hold Alt — that just types the letter; a lone ESC quits).
+`M-SP` (ESC, Space) is the reliable set-mark,
+since Ctrl+Space arrives as plain space on PS/2. If nothing responds,
+focus the graphics window (`Alt-Tab`) — the terminal may own the
+keyboard. Buttons on the top bar mirror the main shortcuts: Save,
+Find, Name, Run, Link, Buf, M-x, Done.
+
+| Key | Action |
+|-----|--------|
+| arrows, Home/End, PgUp/PgDn | move |
+| type, Enter, Tab, Backspace/Delete | edit (Enter splits with auto-indent) |
+| `^O` / `^S` | save (keeps a `~` backup; second save forces when the disk changed) |
+| `^N` | save-as |
+| `^W` | find (wraps once) |
+| `^G` | go to line |
+| `^R` | save, then build/run by extension (`.c`→minigcc, `.s`→ld+run, `.lua`/`.py`/`.lisp`→runners) |
+| `^L` | save, link `asm/<base>.s` (`elf`\|`cvm`), run the artifact |
+| `^D` | dump buffer to the console with highlight |
+| `^X` | save and quit |
+| Esc | quit without saving |
+| `^A` / `^E` | beginning / end of line |
+| `^@` (Ctrl+Space) or `M-SP` | set mark |
+| `M-w` / `M-k` | copy / kill region (8-deep kill ring) |
+| `M-W` | copy region to the clipboard |
+| `^K` / `^Y` | kill line / yank |
+| `M-v` | paste from the clipboard |
+| `M-f` / `M-b` | word forward / back |
+| `M-c` / `M-l` / `M-u` | capitalize / lower / upper word |
+| `^T` | transpose characters |
+| `^]` | jump to the matching fence |
+| `^U` + digits | universal argument (repeats motions, kills, inserts) |
+| `M-s` / `M-r` | incremental search forward / reverse (Enter keeps, ESC restores) |
+| `M-n` | repeat last search |
+| `M-%` | query replace (`y`/`n`/`!`/`q`) |
+| `M-q` | refill paragraph to 72 columns |
+| `M-2` / `M-1` / `M-o` | split / single / switch pane |
+| `M-(` `M-)` `M-e` | record / stop / play keyboard macro |
+| `M-x` | any of 46 named commands (`help` lists them) |
+| `M-!` | run a program, capture stdout into `*shell*` |
+| `M-#` | filter the region (or buffer) through a program |
+
+`M-x` highlights: `find-file` / `view-file` / `insert-file` /
+`select-buffer` / `next-buffer` / `kill-buffer` / `list-buffers` (8
+buffers, recent-file history), `replace-string`, `search-forward-magic`
+(`.` `*` `^` `$` `[class]`), `grep` into `*grep*` with `next-error`,
+`bind-to-key`, `overwrite-mode`, `read-only`, `count-words`,
+`compile`, `link`, `paste`, `copy-to-clipboard`. Startup runs
+`/etc/vedit.rc` then `./vedit.rc` (`bind <key> <cmd>`, bare commands).
+
+Mouse drag in the code area selects into the kernel clipboard
+(syscalls 249/250, 4 KB, fail closed, `SEL` flag); the shell `clip`
+builtin shares the slot. Status row:
+`name [Lang] B1/8 Ln 12/300(4%) Col 5 RO OVR REC MRK ARG SEL msg`.
+Limits: 255-char lines, 4096 lines / 1 MB per buffer, no undo.
+
 ## Program formats
 
 MiniOS runs three kinds of program:
