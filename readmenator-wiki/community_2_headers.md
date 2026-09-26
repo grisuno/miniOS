@@ -68,7 +68,6 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 - [INFERRED] shares_context community 2 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 4 (headers).
 - [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 5 (tools).
 - [INFERRED] shares_context community 2 <-> 6 (strength 0.5): Inferred shared context (language h and layer utility) with no import path between community 2 (headers) and community 6 (progs/doomgeneric).
-- [INFERRED] shares_context community 2 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 7 (progs/src).
 
 ## Risks
 

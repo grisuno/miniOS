@@ -97,6 +97,14 @@
   },
   {
     "community_a": 0,
+    "community_b": 8,
+    "connection_type": "shares_context",
+    "explanation": "Inferred shared context (layer utility) with no import path between community 0 (headers) and community 8 (tests).",
+    "strength": 0.5,
+    "confidence": "INFERRED"
+  },
+  {
+    "community_a": 0,
     "community_b": 9,
     "connection_type": "shares_context",
     "explanation": "Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 9 (orphans).",
@@ -113,9 +121,9 @@
   },
   {
     "community_a": 1,
-    "community_b": 3,
+    "community_b": 8,
     "connection_type": "shares_context",
-    "explanation": "Inferred shared context (language c) with no import path between community 1 (progs/doomgeneric) and community 3 (headers/drivers).",
+    "explanation": "Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 8 (tests).",
     "strength": 0.5,
     "confidence": "INFERRED"
   },
@@ -148,14 +156,6 @@
     "community_b": 6,
     "connection_type": "shares_context",
     "explanation": "Inferred shared context (language h and layer utility) with no import path between community 2 (headers) and community 6 (progs/doomgeneric).",
-    "strength": 0.5,
-    "confidence": "INFERRED"
-  },
-  {
-    "community_a": 2,
-    "community_b": 7,
-    "connection_type": "shares_context",
-    "explanation": "Inferred shared context (layer utility) with no import path between community 2 (headers) and community 7 (progs/src).",
     "strength": 0.5,
     "confidence": "INFERRED"
   }

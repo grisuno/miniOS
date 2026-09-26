@@ -57,7 +57,6 @@ This community groups 4 file(s) rooted at `progs/src` with dominant language py 
 
 - [EXTRACTED] depends_on community 7 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
 - [INFERRED] shares_context community 0 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 7 (progs/src).
-- [INFERRED] shares_context community 2 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 7 (progs/src).
 
 ## Risks
 
