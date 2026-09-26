@@ -1,14 +1,14 @@
 # orphans
 
-*Community 9 | 92 files | cohesion 0.00*
+*Community 11 | 93 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 92 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
+This community groups 93 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
-### `tools` (36 files)
+### `tools` (37 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -98,7 +98,7 @@ This community groups 92 file(s) rooted at `tools` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 72 more files in this community.*
+*... and 73 more files in this community.*
 
 
 ## Key Symbols
@@ -141,8 +141,7 @@ This community groups 92 file(s) rooted at `tools` with dominant language c (coh
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 9 (orphans).
-- [INFERRED] shares_context community 1 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (progs/doomgeneric) and community 9 (orphans).
+- [INFERRED] shares_context community 0 <-> 11 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 11 (orphans).
 
 ## Risks
 
@@ -176,4 +175,4 @@ This community groups 92 file(s) rooted at `tools` with dominant language c (coh
 - `progs/asm/w1.s`
 - `progs/doomgeneric/doom.h`
 - `progs/doomgeneric/icon.c`
-- *... and 72 more*
+- *... and 73 more*

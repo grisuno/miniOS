@@ -1,10 +1,10 @@
 # headers
 
-*Community 2 | 11 files | cohesion 0.63*
+*Community 3 | 13 files | cohesion 0.66*
 
 ## Definition
 
-This community groups 11 file(s) rooted at `headers` with dominant language h (cohesion 0.63). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`, `DOCK_BOUNCE_TICKS`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`. Core file: `kernel/vga_fb.c` (167 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
+This community groups 13 file(s) rooted at `headers` with dominant language h (cohesion 0.66). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`, `DOCK_BOUNCE_TICKS`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`. Core file: `kernel/vga_fb.c` (167 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
 
 ## Files
 
@@ -12,6 +12,7 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 |------|----------|-------|---------|-----|
 | `headers/desktop_icons.h` | h | utility | 3 | yes |
 | `headers/desktop_shortcuts.h` | h | utility | 27 | yes |
+| `headers/vga_fx.h` | h | utility | 9 | yes |
 | `headers/wm_events.h` | h | infrastructure | 39 | yes |
 | `headers/wm_focus.h` | h | utility | 5 | yes |
 | `headers/wm_geom.h` | h | utility | 11 | yes |
@@ -20,6 +21,7 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 | `headers/wm_tiling.h` | h | utility | 3 | yes |
 | `headers/wm_window.h` | h | utility | 10 | yes |
 | `kernel/vga_fb.c` | c | utility | 167 | no |
+| `tests/test_fx.c` | c | testing | 2 | yes |
 | `tests/test_wm.c` | c | testing | 2 | yes |
 
 ## Key Symbols
@@ -57,17 +59,14 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 19
+- Internal resolved imports (EXTRACTED): 21
 - Cross-boundary resolved imports (EXTRACTED): 11
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 2 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/wm_events.h.
-- [EXTRACTED] depends_on community 2 <-> 3 (strength 0.9): Extracted import edge crosses communities: headers/wm_events.h imports headers/drivers/modifiers.h.
-- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 2 (headers).
-- [INFERRED] shares_context community 2 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 4 (headers).
-- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 5 (tools).
-- [INFERRED] shares_context community 2 <-> 6 (strength 0.5): Inferred shared context (language h and layer utility) with no import path between community 2 (headers) and community 6 (progs/doomgeneric).
+- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/wm_events.h.
+- [EXTRACTED] depends_on community 3 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/wm_events.h imports headers/drivers/modifiers.h.
+- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language h) with no import path between community 1 (headers/drivers) and community 3 (headers).
 
 ## Risks
 
@@ -86,12 +85,13 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 
 - Why do 1 file(s) lack file-level docs (e.g. `kernel/vga_fb.c`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.63?
+- Should headers be split, given cohesion 0.66?
 
 ## Sources
 
 - `headers/desktop_icons.h`
 - `headers/desktop_shortcuts.h`
+- `headers/vga_fx.h`
 - `headers/wm_events.h`
 - `headers/wm_focus.h`
 - `headers/wm_geom.h`
@@ -100,4 +100,5 @@ This community groups 11 file(s) rooted at `headers` with dominant language h (c
 - `headers/wm_tiling.h`
 - `headers/wm_window.h`
 - `kernel/vga_fb.c`
+- `tests/test_fx.c`
 - `tests/test_wm.c`

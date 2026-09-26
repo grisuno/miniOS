@@ -1,6 +1,6 @@
 # headers
 
-*Community 4 | 9 files | cohesion 0.63*
+*Community 5 | 9 files | cohesion 0.63*
 
 ## Definition
 
@@ -60,10 +60,9 @@ This community groups 9 file(s) rooted at `headers` with dominant language c (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 4 <-> 1 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
-- [EXTRACTED] depends_on community 4 <-> 5 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
-- [EXTRACTED] depends_on community 4 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
-- [INFERRED] shares_context community 2 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 4 (headers).
+- [EXTRACTED] depends_on community 5 <-> 6 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 5 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 5 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
 
 ## Risks
 

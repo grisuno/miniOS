@@ -126,6 +126,17 @@
   - `audit_file` (method, line 217) `def audit_file(path)`
   - `main` (method, line 228) `def main()`
 
+## tools/clip_bridge.py
+- Layer: utility
+- Doc: Host to MiniOS clipboard bridge plan builder.  Builds the exact shell lines that carry a host text file into the guest t
+- Language: py
+- Symbols:
+  - `ClipBridgeConfig` (class, line 30) `class ClipBridgeConfig`
+  - `valid_dst` (method, line 41) `def valid_dst(name, cfg)`
+  - `printable_line` (method, line 52) `def printable_line(line, cfg)`
+  - `build_plan` (method, line 59) `def build_plan(text, dst, cfg)`
+  - `main` (method, line 84) `def main(argv)`
+
 ## tools/doom_pwad.py
 - Layer: utility
 - Doc: doom_pwad.py - grid map to vanilla Doom PWAD writer and checker.  Converts a text grid map into a single-level PWAD that

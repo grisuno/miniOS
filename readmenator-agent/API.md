@@ -27989,6 +27989,24 @@ Z_DumpHeap
 - Defined: `tools/check_syscall_sanitize.py:228`
 - Doc: Entry point used by lint and CI.
 
+## tools/clip_bridge.py
+
+### valid_dst (method) `def valid_dst(name, cfg)`
+- Defined: `tools/clip_bridge.py:41`
+- Doc: True when name is a safe guest path.
+
+### printable_line (method) `def printable_line(line, cfg)`
+- Defined: `tools/clip_bridge.py:52`
+- Doc: True when every char survives the kernel readline.
+
+### build_plan (method) `def build_plan(text, dst, cfg)`
+- Defined: `tools/clip_bridge.py:59`
+- Doc: Return (ok, lines, diagnostic) for carrying text to dst.
+
+### main (method) `def main(argv)`
+- Defined: `tools/clip_bridge.py:84`
+- Doc: Entry point: clip_bridge.py <src-file> <dst-name>.
+
 ## tools/doom_pwad.py
 
 ### pad_tex (method) `def pad_tex(raw)`

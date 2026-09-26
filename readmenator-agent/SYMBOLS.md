@@ -11123,6 +11123,11 @@ Z_Malloc
 | `main` | method | `tools/check_syscall_sanitize.py:228` | `def main()` |
 | `split_functions` | method | `tools/check_syscall_sanitize.py:69` | `def split_functions(lines)` |
 | `split_top_args` | method | `tools/check_syscall_sanitize.py:143` | `def split_top_args(argtext)` |
+| `ClipBridgeConfig` | class | `tools/clip_bridge.py:30` | `class ClipBridgeConfig` |
+| `build_plan` | method | `tools/clip_bridge.py:59` | `def build_plan(text, dst, cfg)` |
+| `main` | method | `tools/clip_bridge.py:84` | `def main(argv)` |
+| `printable_line` | method | `tools/clip_bridge.py:52` | `def printable_line(line, cfg)` |
+| `valid_dst` | method | `tools/clip_bridge.py:41` | `def valid_dst(name, cfg)` |
 | `DoomPwadConfig` | class | `tools/doom_pwad.py:52` | `class DoomPwadConfig` |
 | `PwadError` | class | `tools/doom_pwad.py:161` | `class PwadError(Exception)` |
 | `build_lumps` | method | `tools/doom_pwad.py:516` | `def build_lumps(rows)` |

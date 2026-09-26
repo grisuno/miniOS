@@ -1,6 +1,6 @@
 # tools
 
-*Community 5 | 21 files | cohesion 0.79*
+*Community 7 | 21 files | cohesion 0.79*
 
 ## Definition
 
@@ -86,10 +86,9 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 4 <-> 5 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
-- [EXTRACTED] depends_on community 5 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
-- [EXTRACTED] depends_on community 1 <-> 5 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
-- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 5 (tools).
+- [EXTRACTED] depends_on community 5 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 7 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 6 <-> 7 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
 
 ## Risks
 

@@ -473,6 +473,7 @@
 | `tools/check_mutant_anchors.py` | Verify every mutate.sh mutant anchor matches its target file.  A mutant whose se | tools | 5 |
 | `tools/check_surprising.py` | check_surprising.py -- Detect surprising architectural connections.  Parses the  | tools | 5 |
 | `tools/check_syscall_sanitize.py` | Scoped audit gate for syscall user-pointer sanitization.  Every ring-3 pointer t | tools | 8 |
+| `tools/clip_bridge.py` | Host to MiniOS clipboard bridge plan builder.  Builds the exact shell lines that | tools | 5 |
 | `tools/doom_pwad.py` | doom_pwad.py - grid map to vanilla Doom PWAD writer and checker.  Converts a tex | tools | 25 |
 | `tools/extract_shell.py` | tools/extract_shell.py -- Plan for Phase 6.1 shell extraction.  This script docu | tools | 0 |
 | `tools/gdb_repro.py` | gdb_repro.py — drive a graphics-program sequence under the GDB stub.  Boots Mini | tools | 4 |

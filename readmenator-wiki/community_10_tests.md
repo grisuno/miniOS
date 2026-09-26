@@ -1,6 +1,6 @@
 # tests
 
-*Community 8 | 2 files | cohesion 1.00*
+*Community 10 | 2 files | cohesion 1.00*
 
 ## Definition
 
@@ -53,8 +53,7 @@ This community groups 2 file(s) rooted at `tests` with dominant language py (coh
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 8 (tests).
-- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 8 (tests).
+- No cross-community bridges recorded. This community is self-contained.
 
 ## Risks
 

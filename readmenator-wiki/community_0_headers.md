@@ -1,14 +1,14 @@
 # headers
 
-*Community 0 | 138 files | cohesion 0.91*
+*Community 0 | 132 files | cohesion 0.90*
 
 ## Definition
 
-This community groups 138 file(s) rooted at `headers` with dominant language c (cohesion 0.91). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`. Core file: `headers/kernel.h` (342 symbols). Documented purpose: SMP application-processor bootstrap stub..
+This community groups 132 file(s) rooted at `headers` with dominant language c (cohesion 0.90). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`. Core file: `headers/kernel.h` (342 symbols). Documented purpose: SMP application-processor bootstrap stub..
 
 ## Files
 
-### `headers` (43 files)
+### `headers` (42 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -22,14 +22,14 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 | `kernel/abi.c` | c | utility | 3 | yes |
 | `kernel/batch.c` | c | utility | 1 | yes |
 
-### `tests` (25 files)
+### `tests` (23 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `tests/test_abi.c` | c | testing | 2 | yes |
 | `tests/test_batch.c` | c | testing | 3 | yes |
 
-### `drivers` (10 files)
+### `drivers` (9 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -49,12 +49,6 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 |------|----------|-------|---------|-----|
 | `kernel.c` | c | utility | 20 | yes |
 
-### `headers/drivers` (4 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `headers/drivers/kbd.h` | h | infrastructure | 23 | yes |
-
 ### `kernel/mm` (3 files)
 
 | File | Language | Layer | Symbols | Doc |
@@ -72,6 +66,12 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `headers/arch/x86/hal_io.h` | h | utility | 59 | yes |
+
+### `headers/drivers` (2 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `headers/drivers/kbd.h` | h | infrastructure | 23 | yes |
 
 ### `headers/kernel` (2 files)
 
@@ -103,7 +103,7 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 |------|----------|-------|---------|-----|
 | `headers/net/rtl8139.h` | h | utility | 8 | no |
 
-*... and 118 more files in this community.*
+*... and 112 more files in this community.*
 
 
 ## Key Symbols
@@ -141,19 +141,21 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 301
-- Cross-boundary resolved imports (EXTRACTED): 29
+- Internal resolved imports (EXTRACTED): 293
+- Cross-boundary resolved imports (EXTRACTED): 32
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
-- [EXTRACTED] depends_on community 0 <-> 2 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/wm_events.h.
-- [EXTRACTED] depends_on community 0 <-> 1 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 4 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
-- [EXTRACTED] depends_on community 5 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
-- [INFERRED] shares_context community 0 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 7 (progs/src).
-- [INFERRED] shares_context community 0 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 8 (tests).
-- [INFERRED] shares_context community 0 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 9 (orphans).
+- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
+- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/wm_events.h.
+- [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/virtio_blk.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 0 <-> 8 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
+- [EXTRACTED] depends_on community 5 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
+- [EXTRACTED] depends_on community 6 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/string.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 7 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
+- [INFERRED] shares_context community 0 <-> 2 (strength 0.5): Inferred shared context (language c) with no import path between community 0 (headers) and community 2 (progs/pokemon).
+- [INFERRED] shares_context community 0 <-> 9 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 9 (progs/src).
+- [INFERRED] shares_context community 0 <-> 11 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 11 (orphans).
 
 ## Risks
 
@@ -177,7 +179,7 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 
 - Why do 10 file(s) lack file-level docs (e.g. `headers/lz4_kernel.h`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.91?
+- Should headers be split, given cohesion 0.90?
 
 ## Sources
 
@@ -193,7 +195,6 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 - `drivers/pcspk.c`
 - `drivers/rtc.c`
 - `drivers/sb16.c`
-- `drivers/virtio_blk.c`
 - `fs/ext4.c`
 - `fs/fat32.c`
 - `fs/fsimg.c`
@@ -201,4 +202,5 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 - `fs/minifs.c`
 - `fs/ramdisk.c`
 - `fs/vfs.c`
-- *... and 118 more*
+- `fs/zip.c`
+- *... and 112 more*

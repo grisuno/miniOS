@@ -1,6 +1,6 @@
 # headers/drivers
 
-*Community 3 | 2 files | cohesion 0.33*
+*Community 4 | 2 files | cohesion 0.33*
 
 ## Definition
 
@@ -36,8 +36,8 @@ This community groups 2 file(s) rooted at `headers/drivers` with dominant langua
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
-- [EXTRACTED] depends_on community 2 <-> 3 (strength 0.9): Extracted import edge crosses communities: headers/wm_events.h imports headers/drivers/modifiers.h.
+- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
+- [EXTRACTED] depends_on community 3 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/wm_events.h imports headers/drivers/modifiers.h.
 
 ## Risks
 

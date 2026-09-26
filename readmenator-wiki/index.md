@@ -1,15 +1,15 @@
 # Second Brain
 
-*Last synthesized: 2026-09-26 | 514 files | 10 concept pages | offline, zero tokens*
+*Last synthesized: 2026-09-26 | 515 files | 12 concept pages | offline, zero tokens*
 
 > Raw sources -> readmenator wiki -> links (Karpathy LLM Wiki Pattern, deterministic).
 > Start here, then open one community page. Prefer grep over full reads.
 
 ## Vault Overview
 
-The codebase centres on `kernel.h`, `string.c`, `doomtype.h`. Architecturally it is 5 layers, dominant utility (390 files) across 10 import-based communities. Recorded risk surface: 0 security findings and 1 dependency cycles.
+The codebase centres on `kernel.h`, `string.c`, `doomtype.h`. Architecturally it is 5 layers, dominant utility (391 files) across 12 import-based communities. Recorded risk surface: 0 security findings and 1 dependency cycles.
 
-Surprising tissue lives between headers (community 0), progs/doomgeneric (community 1), headers (community 2): 11 extracted cross-community imports and 9 inferred bridges. Follow `connections.json` sorted by strength before refactoring.
+Surprising tissue lives between headers (community 0), headers/drivers (community 1), progs/pokemon: 15 extracted cross-community imports and 5 inferred bridges. Follow `connections.json` sorted by strength before refactoring.
 
 Open work clusters around documentation (89% file coverage), 0 security findings, 20 taint paths, and 5 suggested exploration questions in `queries.md`.
 
@@ -17,14 +17,14 @@ Open work clusters around documentation (89% file coverage), 0 security findings
 
 | Metric | Value |
 |--------|-------|
-| Files | 514 |
-| Symbols | 10516 |
+| Files | 515 |
+| Symbols | 10521 |
 | Resolved imports | 1305 |
 | Languages | S, c, h, lua, py, s, sh |
-| Communities | 10 |
-| Doc coverage | 89% (455/514 files) |
+| Communities | 12 |
+| Doc coverage | 89% (456/515 files) |
 | Security findings | 0 |
-| Estimated read cost | ~180742 tokens (chars/4, offline so $0) |
+| Estimated read cost | ~181108 tokens (chars/4, offline so $0) |
 
 ## Reading Order
 
@@ -39,16 +39,18 @@ readmenator query "<question>" --target miniOS
 
 ## Concept Wiki
 
-- [headers (community 0) (138 files, cohesion 0.91)](./community_0_headers.md)
-- [progs/doomgeneric (community 1) (60 files, cohesion 0.67)](./community_1_progs_doomgeneric.md)
-- [headers (community 2) (11 files, cohesion 0.63)](./community_2_headers.md)
-- [headers/drivers (2 files, cohesion 0.33)](./community_3_headers_drivers.md)
-- [headers (community 4) (9 files, cohesion 0.63)](./community_4_headers.md)
-- [tools (21 files, cohesion 0.79)](./community_5_tools.md)
-- [progs/doomgeneric (community 6) (175 files, cohesion 0.95)](./community_6_progs_doomgeneric.md)
-- [progs/src (4 files, cohesion 0.75)](./community_7_progs_src.md)
-- [tests (2 files, cohesion 1.00)](./community_8_tests.md)
-- [orphans (92 files, cohesion 0.00)](./community_9_orphans.md)
+- [headers (community 0) (132 files, cohesion 0.90)](./community_0_headers.md)
+- [headers/drivers (community 1) (4 files, cohesion 0.50)](./community_1_headers_drivers.md)
+- [progs/pokemon (4 files, cohesion 0.43)](./community_2_progs_pokemon.md)
+- [headers (community 3) (13 files, cohesion 0.66)](./community_3_headers.md)
+- [headers/drivers (community 4) (2 files, cohesion 0.33)](./community_4_headers_drivers.md)
+- [headers (community 5) (9 files, cohesion 0.63)](./community_5_headers.md)
+- [progs/doomgeneric (192 files, cohesion 0.95)](./community_6_progs_doomgeneric.md)
+- [tools (21 files, cohesion 0.79)](./community_7_tools.md)
+- [progs/nuklear (39 files, cohesion 0.66)](./community_8_progs_nuklear.md)
+- [progs/src (4 files, cohesion 0.75)](./community_9_progs_src.md)
+- [tests (2 files, cohesion 1.00)](./community_10_tests.md)
+- [orphans (93 files, cohesion 0.00)](./community_11_orphans.md)
 
 ## God Nodes
 
@@ -62,16 +64,16 @@ readmenator query "<question>" --target miniOS
 
 ## Strongest Connections
 
+- 0 -> 4: depends_on (strength 0.9, EXTRACTED)
 - 0 -> 3: depends_on (strength 0.9, EXTRACTED)
-- 0 -> 2: depends_on (strength 0.9, EXTRACTED)
-- 0 -> 1: depends_on (strength 0.9, EXTRACTED)
-- 4 -> 1: depends_on (strength 0.9, EXTRACTED)
-- 4 -> 5: depends_on (strength 0.9, EXTRACTED)
-- 4 -> 0: depends_on (strength 0.9, EXTRACTED)
-- 2 -> 3: depends_on (strength 0.9, EXTRACTED)
+- 1 -> 0: depends_on (strength 0.9, EXTRACTED)
+- 0 -> 8: depends_on (strength 0.9, EXTRACTED)
+- 5 -> 6: depends_on (strength 0.9, EXTRACTED)
+- 5 -> 7: depends_on (strength 0.9, EXTRACTED)
 - 5 -> 0: depends_on (strength 0.9, EXTRACTED)
-- 6 -> 1: depends_on (strength 0.9, EXTRACTED)
-- 1 -> 5: depends_on (strength 0.9, EXTRACTED)
+- 3 -> 4: depends_on (strength 0.9, EXTRACTED)
+- 6 -> 0: depends_on (strength 0.9, EXTRACTED)
+- 7 -> 0: depends_on (strength 0.9, EXTRACTED)
 
 ## Navigation Tips
 
