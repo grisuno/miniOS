@@ -381,9 +381,28 @@ the image, so it can never collide.
 Entropy mixing keeps its strength independent of boot timing: hours,
 minutes and seconds feed separate bytes, so two boots in the same second
 still differ by the RDTSC term. The kernel heap and user window are
-unaffected; KASLR randomizes only the kernel image's physical base. A KASLR
-kernel spans physical `[X, X+KASLR_IMAGE_SPAN)` and the BDD suite asserts
-the banner never reports base `0x100000`.
+ unaffected; KASLR randomizes only the kernel image's physical base. A KASLR
+ kernel spans physical `[X, X+KASLR_IMAGE_SPAN)` and the BDD suite asserts
+ the banner never reports base `0x100000`.
+
+### Userspace ASLR
+Every exec (legacy `run`, `mrun`/SPAWN, `execve`) jitters the new
+ program's addresses with fresh TSC+ticks+counter entropy
+ (`aslr_mix` in `kernel/sched.c`, declared in `sched.h`): the stack
+ top slides 1..4096 bytes (same pages ensured, the unused top is a
+ guard gap), brk starts 1..256 pages past the image (clamped to the
+ cap, never past it), the mmap cursor starts up to 255 pages down
+ (clamped above brk_limit), and an ET_DYN base slides up to 47 2 MB
+ slots (loader bounds still fail closed). Slides are never zero for
+ stack/brk, so consecutive execs differ observably. Fork never
+ re-randomizes (children share by definition). Proven by
+ `progs/src/aslr.c`: a self-exec chain prints sp/brk/mmap in gen0,
+ re-execs carrying them, and gen1 prints `aslr: ok` when any
+ dimension differs (`SAME` otherwise, exit 1); the BDD scenario runs
+ it with `mrun` and the `aslr-no-entropy` mutant (mixer forced to
+ zero, every slide constant) dies on it. No in-tree ET_DYN binary
+ exists yet, so the DYN slide shares the mutant-pinned mixer but
+ waits for the first PIE for live proof.
 
 ### Memory-layout hazard contract (read before touching the low 4 MB)
 The low 4 MB are a deliberately hand-arranged jigsaw: kernel image + `.bss`,
@@ -580,6 +599,38 @@ asserts "SMP: Brought up 2 CPUs"; a single-CPU scenario asserts
 position), `smp-init-missing` (no INIT before SIPI), `smp-sipi-vector-zero`
 (zero vector), `smp-ap-no-lapic-eoi` (missing AP EOI), `smp-bsp-ctx-switch-not-guarded`
 (AP corrupts process table), `smp-gs-base-not-set` (missing GS base).
+
+### SMP Beyond Threads: Per-CPU Memory Views (SDD spec, not yet built)
+APs run `CLONE_VM` threads only; isolated processes never leave the
+BSP. Lifting that needs no new IPI and no CR3/TLB machinery
+(`switch_to` already swaps CR3/FPU/FSBASE, and `mov %cr3` flushes
+non-global TLB entries, so a freed window can never haunt the CPU
+that frees it: only zombies are freed and zombies never run). The
+blocker is the memory-management VIEW, which is global today:
+`g_brk`/`g_brk_limit`/`user_mmap_cur` plus `vma_live_root`/
+`vma_free_root` (112 use sites across `sched.c`, `syscalls.c`,
+`loader.c`, `spawn.c`, `shell.c` and the headers, `vma.c` host-tested
+against the globals). Two CPUs running two isolated procs would
+clobber each other's view on every preempt. Token/gang workarounds
+were considered and rejected: a single shared view serializes all
+non-VM execution through one owner, which is uniprocessor
+throughput with migration overhead. The build is per-CPU views
+(`cpu_view[cpu]` carrying brk/brk-limit/mmap-cur plus live/free
+roots, bound at the existing save/load sites, `vma.c` host suite
+re-homed first), then AP claim/preempt with `vm_only=0` plus the
+`smp_ap_nonvm` counter. Proof is `progs/src/burn.c`: brk+mmap+CPU
+with checksum `417386880`, already in-tree and BDD-pinned under
+`-smp 2` beside `smp`/`kstack` (today it pins coexistence while APs
+take threads only; post-views the same scenario with an
+`ap_nonvm=[1-9]` expect proves APs ran isolated procs). Mutants:
+`smp-ap-vm-only` (APs refuse non-VM, counter stays 0) and
+`smp-ap-no-view` (AP skips the brk restore, burn checksum breaks).
+`munmap` needs no shootdown (it only edits the VMA tree, never
+clears a PTE), and CoW needs none either once the upgrade path is
+idempotent (an RW PTE means another CPU already upgraded: flush
+local and resume instead of killing). Until views land, treat
+overlapping heavyweight ring-3 processes as the known-red
+configuration (characterized under Shell, same section).
 
 ### SMP Scaling: Per-CPU Runqueues, Futexes, Batch, RCU-Lite
 
@@ -843,12 +894,51 @@ cooperative and preemption is the backstop, not the norm.
   (never claimable) until fully built; publishing `READY` early let a
   tick claim a half-built context (the 192 KB pool alloc widened that
   window to a whole tick, hanging the machine with no output).
-- Honest limits remaining: one shared fd table, no `fork`/`execve`
-  (`sys_linux_fork/vfork/execve` answer `-ENOSYS`, never success: a stub
+- Honest limits remaining: one shared fd table (no CLOEXEC in v1, so
+  `execve` keeps descriptors like `fork`), no `vfork`
+  (`sys_linux_vfork` answers `-ENOSYS`, never success: a stub
   that returned 0 let userland believe a child existed when none did;
   `tools/check_fork_stubs.py` gates this; `mm_copy_user_page`
   waits for it), APs claim `CLONE_VM` threads only, no Alt-Tab
   mid-`edit`, serial sees one interleaved console (use `wm list`).
+- **Known race, root-caused 2026-09-25 (not a regression): `run thdemo`
+  faults deterministically in this environment (`EXCEPTION 0e`,
+  user read of `0x10` in `_IO_puts`, i.e. `%fs:0x10` with FSBASE 0)
+  and fails byte-identically on a clean-HEAD baseline image, so no
+  session change is implicated (verified by stashing the whole tree,
+  rebuilding and rerunning). Mechanism: the main thread's first
+  `printf` runs single-threaded (no FS read); once producers spawn,
+  any tick that runs a thread (whose PCB `fsbase` is 0, never set)
+  `wrmsr`s 0, and the resume onto pid 0 skips the FSBASE restore
+  (`ctx_sw.S` restores it for every pid except 0), so the next
+  `printf` reads TLS through base 0. Whether the tick lands inside
+  the spawn loop is boot-timing dependent, which is why the suite
+  historically flakes here instead of failing always. The honest fix
+  (save FSBASE on every park including `switch_save_only`, restore
+  for pid 0 too) touches every context switch and waits for its own
+  SDD cycle with fptest/thdemo validation, so it is scoped as
+  follow-up work, never a drive-by.
+- **`execve(59)` replaces the caller's image in place** (`do_execve` in
+  `kernel/sched.c`, entered through `arch/x86/ctx_sw.S` `exec_enter`):
+  the caller keeps pid/parent/children/fds/limits while window, VMA,
+  brk view, stack, FPU, FSBASE and name rebuild around the new
+  ET_EXEC/ET_DYN program, entered directly through `user_trampoline`
+  (never returns on success). ET_REL refuses `-ENOEXEC` (ring-0 trust
+  gate stays SPAWN-only), a thread calling `execve` refuses `-ENOSYS`
+  (it would keep `CLONE_VM` on a private window) while sibling
+  threads die with the old image like Linux (zombied at adopt for
+  their parent, so a spawn racing the adopt lock either dies first
+  or shares the new window), argv is
+  bounded (32 x 255, `-E2BIG` past) and copied per-byte so a racing
+  sibling can only change content, never overflow. Mechanism lessons
+  from proving it: a C inline asm cannot zero GPRs around an
+  address operand (GCC may allocate it into a zeroed register and land
+  rsp at 0, iretq'ing out of the IVT alive and silent), hence the
+  dedicated `exec_enter`; and debug scaffolding that returns past the
+  adopt point leaves the caller on a freed window, so every breadcrumb
+  dies before the merge. Proven by `progs/src/execho.c`
+  (`mrun bin/execho.elf`: fork, exec lxhello with argc=2, reap 2 then
+  a ghost-exec 42, `execho: ok` exit 0).
 
 ### Taskbar with clock and volume (`vga_fb.c` + `rtc.c` + `pcspk.c`)
 The bottom taskbar is the desktop's status strip, not a hint line. It shows
@@ -1522,7 +1612,12 @@ completes runnable-first across the ramdisk and the MiniFS root (where the
 big ELFs live under bare names): the `.elf` tier, then `.cvm`, then `.o`,
 and only the highest-priority non-empty tier is kept, so `poke` offers
 `pokemon.elf` instead of its icon PNG. An explicit path or an argument word
-keeps every match, so navigating to data files still works. The completion
+keeps every match, so navigating to data files still works: the ramdisk
+half matches full names and basenames, and `shell_complete_minifs_arg`
+adds the MiniFS half (the word's directory part resolves against the cwd,
+entries of that MiniFS directory match the leaf prefix, directories with
+a trailing `/`), so a file created under a MiniFS-only directory by a
+redirect completes exactly like a ramdisk one. The completion
 is bounds-checked and never writes past the command buffer.
 
 Terminal scrollback is a 256-line logical ring (`SB_MAX_LINES` in
@@ -2048,6 +2143,34 @@ on the IDE disk):
   fall back to MiniFS via `kfopen`, so deletes must too, or a file the
   shell just created is undeletable); a missing file is a diagnostic and
   a directory name (trailing `/`) is refused, never silently removed.
+- `mv <src> <dst>` renames one file within its filesystem through
+  `fs_rename` (`fs/kfile.c`): ramdisk entries rename in place, MiniFS
+  entries move directory slots with no data copy, all under `fs_lock`.
+  Directories refuse, a missing src is a diagnostic, an existing dst
+  refuses (no silent overwrite in v1) and a dst whose parent lives only
+  on the other filesystem refuses instead of shadowing a MiniFS
+  directory with a volatile ramdisk entry or half-moving across the
+  boundary (copy+delete stays explicit). The Linux `rename` syscall (82,
+  `MINIOS_SYS_RENAME`, ABI v10) serves the same function to ring-3
+  programs with the same user-pointer validation as every other
+  dispatcher case; `progs/src/mvrn.c` proves it headless (`mvrn: ok`,
+  exit 0, plus the missing-src and kernel-pointer refusals).
+- `fat ls <img> [dir]` / `fat cat <img> <file>` read a FAT32 disk
+  image stored as an ordinary file (`etc/fat.img`, host-built with
+  `mkfs.vfat` + mtools and packed on MiniFS). The driver
+  (`fs/fat32.c`, `headers/fat32.h`) is read-only by construction:
+  BPB validation, cluster-chain walking and 8.3 traversal with every
+  offset bounds-checked against the image size, walks step-bounded,
+  depth capped, LFN skipped, write/truncate refusing; the loopback
+  backend is ramdisk-first/MiniFS-fallback with the flat-root
+  basename rule, exactly like `kfopen`. File bytes flow through the
+  real `fat:` VFS driver (`img:fatpath` per open, registered at boot
+  and mountable via `mount X fat`), listings through `fat32_list`
+  (the VFS table has no readdir verb). Proven by `make test-fat`
+  (host suite over a synthetic image: units, multi-cluster reads,
+  fail-closed edges) and two BDD scenarios on the reference image
+  (list/read plus missing-file/bad-image refusals); the
+  `fat-lfn-check-inverted` mutant dies on both.
 - `ls [dir]` lists the entries under a directory, defaulting to the cwd,
   names relative to it. At root, both ramdisk and MiniFS entries are shown
   (merged view). In subdirectories, ramdisk entries take priority; when the
@@ -2213,7 +2336,10 @@ overflow fail-closed, shared via `shell.h`), and the editor's line numbers
 (`g`, `l`, `i`) use the same function instead of a second copy. The digit
 loop itself lives once in `shell_parse_mag`, behind `shell_parse_u64`
 (hex-aware, inspector operands), `shell_parse_long` (signed, shell/editor
-operands) and `shell_parse_vol` (which only adds the 0..100 clamp). Garbage
+operands), `shell_parse_vol` (which only adds the 0..100 clamp) and
+`shell_parse_pid` (which only adds the `min_pid <= pid < MAX_PROCS` range,
+so `wait`/`kill` use min 1 and `vmmap` uses min 0 with no per-site copy).
+Garbage
 is always a diagnostic (`kill 12abc` is `usage: kill <pid>`, never pid 12),
 and silent zeroing is gone (`rlimit as abc` no longer zeroes the cap,
 `nice abc` no longer resets niceness). Pinned by BDD scenarios and the
@@ -3179,7 +3305,7 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (92 PASS):
+Categories tested (96 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
 - **Redirects**: `>`, `>>` and `2>` (merged-streams alias)
@@ -3204,7 +3330,7 @@ Categories tested (92 PASS):
 Usage from host:
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 81
+strings boot_run.log | grep -c 'PASS:'   # expect 96
 ```
 
 ### In-OS test suites (Lua / MicroPython / Lisp toolchain)
@@ -3343,7 +3469,7 @@ is forbidden; the answer to a survivor is a new scenario.
 ```bash
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (92 PASS)
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (96 PASS)
 ./tools/test_bdd.sh  # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -3680,7 +3806,7 @@ so the next session reuses the contracts instead of rediscovering them.
 - **Clipboard (`kernel/clip.c`, syscalls 249/250, `headers/httpd.h`
   sibling `wl_clip_*` in `progs/wl/wl_mini.h`, `clip` builtin). One
   4 KB kernel slot: set refuses past the cap, get refuses empty and
-  undersize (never a truncated paste), clear empties. ABI v9 carries
+  undersize (never a truncated paste), clear empties. ABI v10 carries
   the two numbers in the checksum (Linux owns 249/250 as
   request_key/keyctl, unused by every ring-3 program here).
   Terminal selection and vedit paste on top are Phase 2.
@@ -3760,7 +3886,15 @@ four, all fixed and re-proven in isolation before the gate closed:
   was vacuous. The repo comment already named this failure mode;
   the allowlist now covers all 55 targets (audited
   programmatically), and the stacked verdicts were re-run isolated:
-  7/7 smpscale, 7/7 lisp, 4/4 httpd, all KILLED.
+  7/7 smpscale, 7/7 lisp, 4/4 httpd, all KILLED. The same class
+  recurred when `syscalls_proc.c` (split from `syscalls.c` after that
+  audit) shipped a mutant row without an entry: `execve-never-replaces`
+  leaked `rc = -38` into the tree and the shipped image. The anchor
+  checker caught it (expression matched nothing), the line was
+  restored, and `loader.c`/`exec.c` ride along as the
+  execve-adjacent surface. Rule restated: a new mutant row lands its
+  SOURCES entry in the same edit, and a green anchor check is required
+  before any mutant run, not after.
 - **File-level routing collision (`tools/mutate.sh`).** My
   `cow.c|ctx_sw.S → fork-slice` routing sent the pre-existing
   fpu-no-save to 3 unrelated fork scenarios, where it survived
@@ -3785,7 +3919,7 @@ image (cvm-argv exit 12, ps-hello anchor, bg-gfx focus, fx-melts
 count), thdemo/fptest/pageup are the documented flaky/limited areas,
 and the freedom-fetch/exit-130 remainder is fixture-timing sensitive
 (each passes in isolation). Every scenario touching new code passes;
-`sh src/test_all.sh` prints 92 PASS with zero FAIL.
+`sh src/test_all.sh` prints 96 PASS with zero FAIL.
 
 ### VMA (Virtual Memory Areas)
 A red-black tree for mmap tracking, implemented in its own contract
@@ -3877,7 +4011,8 @@ The table is organized as:
 - 300+: Reserved for future use
 
 Linux numbers implemented late but fully: pipe/dup/dup2 (22/32/33, KFILE
-pipes), accept/bind/listen (43/49/50, server TCP). ABI v9 adds the
+pipes), accept/bind/listen (43/49/50, server TCP), rename (82, fs_rename).
+ABI v10 adds rename (82, in the checksum); ABI v9 added the
 clipboard pair (249/250, in the checksum); 243-245 stay reserved for
 Wayland-mini and out of the checksum until the kernel answers them.
 
@@ -4034,7 +4169,7 @@ CI gates enforce architectural constraints:
 ```bash
 make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (92 PASS)
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (96 PASS)
 ./tools/test_bdd.sh          # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -4062,6 +4197,7 @@ make test-theme      # shared Nuklear theme suite green
 make test-wm         # WM geometry + event translator suite green
 make test-fx         # DOOM-melt column contract suite green
 make test-pipe test-panic test-pci test-httpd  # pipe ring + panic walk + PCI + httpd wire green
+make test-fat  # FAT32 loopback driver: units, multi-cluster reads, fail-closed edges green
 make test-ktime test-randmix  # Phase 0 truthfulness: TSC->usec + getrandom mixer green
 python3 tools/check_abi_numbers.py  # Phase 0.6: syscall numbers match Linux x86-64 (also in lint)
 python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD

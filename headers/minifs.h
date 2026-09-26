@@ -124,6 +124,11 @@ int  minifs_create(const char *path, unsigned short mode);
 int  minifs_mkdir(const char *path, unsigned short mode);
 int  minifs_unlink(const char *path);
 int  minifs_rmdir(const char *path);
+/** Docstring: Move one MiniFS directory entry to a new parent/name,
+ * keeping its inode (no data moves). Files only; directories refuse.
+ * An existing file dst refuses (no silent overwrite); a missing dst
+ * parent refuses. Returns 0 on success, -1 on any failure. */
+int  minifs_rename(const char *oldpath, const char *newpath);
 int  minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len);
 int  minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len);
 int  minifs_truncate(int inode_num, unsigned int new_size);

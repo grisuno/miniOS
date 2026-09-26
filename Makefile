@@ -324,6 +324,26 @@ $(BIN_DIR)/forktest.elf: $(SRC_DIR)/forktest.c
 $(BIN_DIR)/kmem.elf: $(SRC_DIR)/kmem.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
 
+# rename(82) probe: create/move/refuse/unlink through raw syscalls.
+$(BIN_DIR)/mvrn.elf: $(SRC_DIR)/mvrn.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+# fork+exec(59) probe: fork, execve a fresh image, parent reaps it.
+$(BIN_DIR)/execho.elf: $(SRC_DIR)/execho.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+# ASLR probe: self-exec chain comparing stack/brk/mmap across execs.
+$(BIN_DIR)/aslr.elf: $(SRC_DIR)/aslr.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+# SMP mixed-workload probe: brk/mmap/CPU burn, deterministic checksum.
+$(BIN_DIR)/burn.elf: $(SRC_DIR)/burn.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
+# execve sibling-kill probe: thread spins, main execs over it.
+$(BIN_DIR)/execthr.elf: $(SRC_DIR)/execthr.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
 # NX probe: calls a `ret` written to the stack through a function pointer.
 # Kept at -O0 so the indirect call survives, and volatile so the buffer
 # really lives on the stack instead of being materialized in .data.
@@ -1246,16 +1266,19 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
                $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
                $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/forktest.elf \
+               $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf \
                $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
                $(BIN_DIR)/spin.elf \
                $(SRC_DIR)/spin.c \
                 $(BIN_DIR)/pollready.elf $(BIN_DIR)/pollready \
                 $(BIN_DIR)/minigcc.elf \
                 $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip \
+                $(PROGS_DIR)/etc/fat.img \
                 $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
                $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
                $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
+               $(SRC_DIR)/mvrn.c $(SRC_DIR)/execho.c $(SRC_DIR)/aslr.c $(SRC_DIR)/burn.c $(SRC_DIR)/execthr.c \
                $(SRC_DIR)/nx.c $(SRC_DIR)/forktest.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
                $(SRC_DIR)/hello.py \
                $(SRC_DIR)/test.lua \
@@ -1567,7 +1590,7 @@ wl: os.img
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test lisp-host
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test fat_test lisp-host
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1586,7 +1609,16 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/notify_test
 	$(TOOLS_DIR)/abi_test
 	$(TOOLS_DIR)/wl_test
+	$(TOOLS_DIR)/fat_test
 	python3 tools/test_lisp.py --binary $(TOOLS_DIR)/lisp
+
+# FAT32 loopback driver host test (tests/test_fat32.c + fs/fat32.c with
+# stubbed kernel surface over a synthetic in-memory image).
+fat_test: tests/test_fat32.c fs/fat32.c headers/fat32.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -Iheaders -Iprogs -o $(TOOLS_DIR)/fat_test tests/test_fat32.c
+
+test-fat: fat_test
+	$(TOOLS_DIR)/fat_test
 
 # Phase 0.2/0.3 host test: pure TSC-to-microsecond conversion in ktime.h.
 ktime_test: tests/test_ktime.c ktime.h | $(TOOLS_DIR)
@@ -1749,6 +1781,9 @@ syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+fat32.o: fs/fat32.c kernel.h minifs.h fat32.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 kfile.o: fs/kfile.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -1885,6 +1920,23 @@ art: $(DESKTOP_ART)
 $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip: tools/gen_zip_fixtures.py
 	python3 tools/gen_zip_fixtures.py $(PROGS_DIR)/etc/
 
+# FAT32 loopback fixture for the fat builtin: host-produced image proving
+# interop with a reference writer (mkfs.vfat + mtools). Fixed volume ID
+# and label keep it reproducible; content is one short file, one
+# multi-cluster file (chain-walk proof) and one empty file (EOF path).
+$(PROGS_DIR)/etc/fat.img:
+	rm -f $@
+	dd if=/dev/zero of=$@ bs=1M count=64 status=none
+	mkfs.vfat -F 32 -i 0x12345678 -n MINIFAT $@ > /dev/null
+	printf 'hello from fat32\n' > build/fat_hello.txt
+	: > build/fat_empty.txt
+	awk 'BEGIN{for(i=0;i<150;i++)print "fat32 note line"}' > build/fat_note.txt
+	MTOOLS_SKIP_CHECK=1 mcopy -i $@ build/fat_hello.txt ::HELLO.TXT
+	MTOOLS_SKIP_CHECK=1 mcopy -i $@ build/fat_empty.txt ::EMPTY.TXT
+	MTOOLS_SKIP_CHECK=1 mmd -i $@ ::SUB
+	MTOOLS_SKIP_CHECK=1 mcopy -i $@ build/fat_note.txt ::SUB/NOTE.TXT
+	rm -f build/fat_hello.txt build/fat_empty.txt build/fat_note.txt
+
 # sched.o reserves the callee-saved registers (ADR-0014): the voluntary
 # switch saves schedule()'s live registers, not its caller's, so a
 # thread resumed in its caller must still find its own rbx/r12-r15.
@@ -1966,9 +2018,9 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
-	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o lz4_kernel.o \
+	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
@@ -2247,6 +2299,7 @@ clean: saves-backup
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
 	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/forktest.elf \
+	      $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf \
 	      $(BIN_DIR)/cp $(BIN_DIR)/freedom $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
 	      $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
 	      $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \

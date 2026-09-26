@@ -28,6 +28,11 @@ int shell_parse(char *line, char **argv, int max_args);
  * site, so `kill 12abc` is a diagnostic instead of pid 12. */
 int shell_parse_long(const char *s, long *out);
 
+/* Bounded pid parse: strict shell_parse_long plus min_pid <= pid < MAX_PROCS.
+ * Unifies the wait/kill/vmmap range checks so the bound cannot drift per
+ * call site. Returns 1 and sets *out on success, 0 otherwise. */
+int shell_parse_pid(const char *s, int min_pid, int *out);
+
 /* Execute a shell script: read `path` line by line, skip blanks and `#`
  * comments, parse each line and dispatch it through the normal builtin/
  * program path.  Returns 0 on success, 1 on file error. */

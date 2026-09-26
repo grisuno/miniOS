@@ -133,7 +133,9 @@ extern unsigned long syscall_kstack;
 
 int k_exec_user(void *entry, int argc, char **argv) {
     char *stk = (char *)USER_STACK_BASE;
-    unsigned long *sp = setup_user_stack(stk, USER_STACK_SIZE, argc, argv);
+    unsigned long *sp = setup_user_stack(stk,
+                                         USER_STACK_SIZE - aslr_stack_bytes(),
+                                         argc, argv);
     unsigned long frame[5];
     if (!sp) return -1;
     exec_exit_code = 0;

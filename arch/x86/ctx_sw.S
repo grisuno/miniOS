@@ -199,6 +199,37 @@ fork_trampoline:
         iretq
 
 /*
+ * exec_enter -- enter a freshly adopted image (do_execve tail).
+ * rdi = iretq frame address on the new kstack. Zeroes every GPR (the
+ * glibc _start contract: rdx must be 0 or it is registered as
+ * rtld_fini), loads rsp from rdi, zeroes rdi itself, then iretqs
+ * through user_trampoline. A C inline asm cannot do this: GCC may
+ * allocate the frame address into a register the zeroing then
+ * clobbers, landing rsp at 0 and iretq'ing out of the IVT (alive,
+ * silent, IF=0). rdi is the only input and it is consumed last, so
+ * no allocation hazard exists here.
+ */
+        .globl  exec_enter
+exec_enter:
+        xorl    %eax, %eax
+        xorl    %ebx, %ebx
+        xorl    %ecx, %ecx
+        xorl    %edx, %edx
+        xorl    %esi, %esi
+        xorl    %ebp, %ebp
+        xorl    %r8d, %r8d
+        xorl    %r9d, %r9d
+        xorl    %r10d, %r10d
+        xorl    %r11d, %r11d
+        xorl    %r12d, %r12d
+        xorl    %r13d, %r13d
+        xorl    %r14d, %r14d
+        xorl    %r15d, %r15d
+        movq    %rdi, %rsp
+        xorl    %edi, %edi
+        jmp     user_trampoline
+
+/*
  * resume_iretq -- resume a process preempted from ring 3.
  * isr_dispatch copies the preempted trap frame to the process's own
  * kernel stack, points ctx.rsp at the copy and ctx.rip here; switch_to

@@ -1,5 +1,47 @@
 # Subsystem: fs
 
+## fs/fat32.c
+- Layer: utility
+- Doc: ================================================================
+- Language: c
+- Symbols:
+  - `fat_img_t` (struct, line 29)
+  - `fat_geo_t` (struct, line 89)
+  - `fat_ld16` (function, line 16) `static unsigned fat_ld16(const unsigned char *p)`
+  - `fat_ld32` (function, line 20) `static unsigned fat_ld32(const unsigned char *p)`
+  - `fat_img_open` (function, line 35) `static int fat_img_open(const char *resolved, fat_img_t *img)`
+  - `fat_img_read` (function, line 71) `static int fat_img_read(const fat_img_t *img, unsigned long off,
+                        void *bu...`
+  - `fat_parse_bpb` (function, line 100) `static int fat_parse_bpb(const fat_img_t *img, fat_geo_t *g)`
+  - `fat_clus_ok` (function, line 145) `static int fat_clus_ok(const fat_geo_t *g, unsigned c)`
+  - `fat_entry` (function, line 152) `static int fat_entry(const fat_img_t *img, const fat_geo_t *g,
+                     unsigned clus...`
+  - `fat_eoc` (function, line 169) `static int fat_eoc(unsigned v)`
+  - `fat_badch` (function, line 183) `static int fat_badch(char c)`
+  - `fat_qword` (function, line 195) `static int fat_qword(const char *q, unsigned qlen, char name8[8],
+                     char ext3[3])`
+  - `fat_match` (function, line 226) `static int fat_match(const unsigned char *de, const char name8[8],
+                     const cha...`
+  - `fat_resolve` (function, line 242) `static int fat_resolve(const fat_img_t *img, const fat_geo_t *g,
+                       const cha...`
+  - `fat32_list` (function, line 342) `int fat32_list(const char *imgpath, const char *dirpath,
+               char names[][FAT32_NAME_M...`
+  - `fat_split` (function, line 419) `static int fat_split(const char *path, char *img, char *fatp)`
+  - `fat32_vfs_open` (function, line 440) `int fat32_vfs_open(const char *path, int mode, void **handle)`
+  - `fat_views` (function, line 478) `static void fat_views(const fat32_handle_t *h, fat_img_t *img,
+                      fat_geo_t *g)`
+  - `fat_seek` (function, line 495) `static int fat_seek(const fat32_handle_t *h, unsigned long pos,
+                    unsigned *clu...`
+  - `fat32_vfs_read` (function, line 520) `int fat32_vfs_read(void *handle, void *buf, unsigned long pos,
+                   unsigned long len)`
+  - `fat32_vfs_write` (function, line 566) `int fat32_vfs_write(void *handle, const void *buf, unsigned long pos,
+                    unsigne...`
+  - `fat32_vfs_close` (function, line 575) `int fat32_vfs_close(void *handle)`
+  - `fat32_vfs_fstat` (function, line 580) `int fat32_vfs_fstat(void *handle, unsigned long *size_out)`
+  - `fat32_vfs_truncate` (function, line 587) `int fat32_vfs_truncate(void *handle, unsigned long size)`
+- Depends on: `headers/fat32.h`, `headers/kernel.h`, `headers/minifs.h`
+- Imported by: `tests/test_fat32.c`
+
 ## fs/kfile.c
 - Layer: utility
 - Doc: ================================================================
@@ -17,18 +59,21 @@
   - `kpipe_is_write_end` (function, line 125) `int kpipe_is_write_end(KFILE *f)`
   - `kpipe_grow` (function, line 132) `static int kpipe_grow(pipe_ring_t *ring)`
   - `kfopen` (function, line 155) `KFILE *kfopen(const char *path, const char *mode)`
-  - `kfclose` (function, line 232) `int kfclose(KFILE *f)`
-  - `kfgetc` (function, line 272) `int kfgetc(KFILE *f)`
-  - `kfgets` (function, line 313) `char *kfgets(char *buf, int size, KFILE *f)`
-  - `kfungetc` (function, line 327) `int kfungetc(int c, KFILE *f)`
-  - `kfread` (function, line 334) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfwrite` (function, line 379) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfseek` (function, line 435) `int kfseek(KFILE *f, long offset, int whence)`
-  - `kftell` (function, line 455) `long kftell(KFILE *f)`
-  - `kfflush` (function, line 459) `int kfflush(KFILE *f)`
-  - `kfputs` (function, line 482) `int kfputs(const char *s, KFILE *f)`
-  - `kfputc` (function, line 488) `int kfputc(int c, KFILE *f)`
-  - `krewind` (function, line 493) `void krewind(KFILE *f)`
+  - `fs_rename_on_minifs` (function, line 250) `static int fs_rename_on_minifs(const char *dst)`
+  - `entry` (function, line 269) `* directory with a volatile ramdisk entry (the kfopen misroute class) or
+ * need a copy+delete th...`
+  - `kfclose` (function, line 311) `int kfclose(KFILE *f)`
+  - `kfgetc` (function, line 351) `int kfgetc(KFILE *f)`
+  - `kfgets` (function, line 392) `char *kfgets(char *buf, int size, KFILE *f)`
+  - `kfungetc` (function, line 406) `int kfungetc(int c, KFILE *f)`
+  - `kfread` (function, line 413) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfwrite` (function, line 458) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfseek` (function, line 514) `int kfseek(KFILE *f, long offset, int whence)`
+  - `kftell` (function, line 534) `long kftell(KFILE *f)`
+  - `kfflush` (function, line 538) `int kfflush(KFILE *f)`
+  - `kfputs` (function, line 561) `int kfputs(const char *s, KFILE *f)`
+  - `kfputc` (function, line 567) `int kfputc(int c, KFILE *f)`
+  - `krewind` (function, line 572) `void krewind(KFILE *f)`
 - Depends on: `headers/kernel.h`, `headers/minifs.h`
 
 ## fs/minifs.c
@@ -80,27 +125,30 @@ void minifs_journal_touch(unsigned int phys)`
                           ...`
   - `minifs_dir_remove_entry` (function, line 799) `int minifs_dir_remove_entry(int dir_ino, const char *name)`
   - `minifs_dir_read` (function, line 830) `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)`
-  - `minifs_resolve_path` (function, line 869) `int minifs_resolve_path(const char *path)`
-  - `minifs_create` (function, line 902) `int minifs_create(const char *path, unsigned short mode)`
-  - `minifs_mkdir` (function, line 956) `int minifs_mkdir(const char *path, unsigned short mode)`
-  - `minifs_unlink` (function, line 1006) `int minifs_unlink(const char *path)`
-  - `minifs_rmdir` (function, line 1045) `int minifs_rmdir(const char *path)`
-  - `minifs_read` (function, line 1085) `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)`
-  - `minifs_write` (function, line 1156) `int minifs_write(int inode_num, const void *buf, unsigned int offset,
+  - `minifs_resolve_path` (function, line 880) `int minifs_resolve_path(const char *path)`
+  - `minifs_create` (function, line 913) `int minifs_create(const char *path, unsigned short mode)`
+  - `minifs_mkdir` (function, line 967) `int minifs_mkdir(const char *path, unsigned short mode)`
+  - `minifs_unlink` (function, line 1017) `int minifs_unlink(const char *path)`
+  - `minifs_split_parent` (function, line 1059) `static int minifs_split_parent(const char *path, char *parent_out,
+                              ...`
+  - `minifs_rename` (function, line 1084) `int minifs_rename(const char *oldpath, const char *newpath)`
+  - `minifs_rmdir` (function, line 1116) `int minifs_rmdir(const char *path)`
+  - `minifs_read` (function, line 1156) `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)`
+  - `minifs_write` (function, line 1227) `int minifs_write(int inode_num, const void *buf, unsigned int offset,
                  unsigned i...`
-  - `minifs_truncate` (function, line 1245) `int minifs_truncate(int inode_num, unsigned int new_size)`
-  - `minifs_stat` (function, line 1261) `int minifs_stat(int inode_num, MiniFSInode *out)`
-  - `minifs_access` (function, line 1265) `int minifs_access(const char *path)`
-  - `minifs_init` (function, line 1271) `void minifs_init(void)`
-  - `minifs_get_lba_start` (function, line 1279) `unsigned int minifs_get_lba_start(void)`
-  - `minifs_is_mounted` (function, line 1280) `int minifs_is_mounted(void)`
-  - `minifs_mount` (function, line 1288) `int minifs_mount(void)`
-  - `minifs_mkfs` (function, line 1438) `int minifs_mkfs(unsigned int total_blocks)`
-  - `minifs_sync` (function, line 1509) `int minifs_sync(void)`
-  - `minifs_file_open` (function, line 1524) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-  - `minifs_file_close` (function, line 1538) `int minifs_file_close(MiniFSFile *f)`
-  - `minifs_get_total_blocks` (function, line 1545) `unsigned int minifs_get_total_blocks(void)`
-  - `minifs_usage` (function, line 1550) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+  - `minifs_truncate` (function, line 1316) `int minifs_truncate(int inode_num, unsigned int new_size)`
+  - `minifs_stat` (function, line 1332) `int minifs_stat(int inode_num, MiniFSInode *out)`
+  - `minifs_access` (function, line 1336) `int minifs_access(const char *path)`
+  - `minifs_init` (function, line 1342) `void minifs_init(void)`
+  - `minifs_get_lba_start` (function, line 1350) `unsigned int minifs_get_lba_start(void)`
+  - `minifs_is_mounted` (function, line 1351) `int minifs_is_mounted(void)`
+  - `minifs_mount` (function, line 1359) `int minifs_mount(void)`
+  - `minifs_mkfs` (function, line 1509) `int minifs_mkfs(unsigned int total_blocks)`
+  - `minifs_sync` (function, line 1580) `int minifs_sync(void)`
+  - `minifs_file_open` (function, line 1595) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
+  - `minifs_file_close` (function, line 1609) `int minifs_file_close(MiniFSFile *f)`
+  - `minifs_get_total_blocks` (function, line 1616) `unsigned int minifs_get_total_blocks(void)`
+  - `minifs_usage` (function, line 1621) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
                   unsigned int *fr...`
   - `minifs_journal_touch` (function, line 15) `void minifs_journal_touch(unsigned int phys);`
   - `blocks` (function, line 494) `* blocks (self-protection);`
@@ -127,6 +175,7 @@ void minifs_journal_touch(unsigned int phys)`
   - `ramdisk_usage` (function, line 202) `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max)`
   - `ramdisk_file_name` (function, line 208) `const char *ramdisk_file_name(int idx)`
   - `ramdisk_delete` (function, line 213) `int ramdisk_delete(RDFile *f)`
+  - `ramdisk_rename` (function, line 235) `int ramdisk_rename(const char *oldname, const char *newname)`
   - `RD_MAGIC` (macro, line 7) `#define RD_MAGIC`
   - `RD_HEADER_SIZE` (macro, line 8) `#define RD_HEADER_SIZE`
   - `RD_ENTRY_SIZE` (macro, line 9) `#define RD_ENTRY_SIZE`
@@ -139,48 +188,48 @@ void minifs_journal_touch(unsigned int phys)`
 - Doc: ================================================================
 - Language: c
 - Symbols:
-  - `vfs_mount_t` (struct, line 8)
-  - `ramdisk_handle_t` (struct, line 157)
-  - `minifs_handle_t` (struct, line 248)
-  - `mem_file_t` (struct, line 334)
-  - `vfs_init` (function, line 20) `void vfs_init(void)`
-  - `vfs_register` (function, line 25) `int vfs_register(const char *prefix, const vfs_ops_t *ops, const char *driver)`
-  - `vfs_unregister` (function, line 60) `int vfs_unregister(const char *prefix)`
-  - `vfs_open` (function, line 104) `int vfs_open(const char *path, int mode, vfs_file_t *f)`
-  - `ramdisk_vfs_open` (function, line 173) `static int ramdisk_vfs_open(const char *path, int mode, void **handle)`
-  - `ramdisk_vfs_read` (function, line 199) `static int ramdisk_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
-  - `ramdisk_vfs_write` (function, line 208) `static int ramdisk_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
-  - `ramdisk_vfs_close` (function, line 216) `static int ramdisk_vfs_close(void *handle)`
-  - `ramdisk_vfs_fstat` (function, line 222) `static int ramdisk_vfs_fstat(void *handle, unsigned long *size_out)`
-  - `ramdisk_vfs_truncate` (function, line 229) `static int ramdisk_vfs_truncate(void *handle, unsigned long size)`
-  - `minifs_vfs_open` (function, line 253) `static int minifs_vfs_open(const char *path, int mode, void **handle)`
-  - `minifs_vfs_read` (function, line 281) `static int minifs_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
-  - `minifs_vfs_write` (function, line 290) `static int minifs_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
-  - `minifs_vfs_close` (function, line 298) `static int minifs_vfs_close(void *handle)`
-  - `minifs_vfs_fstat` (function, line 304) `static int minifs_vfs_fstat(void *handle, unsigned long *size_out)`
-  - `minifs_vfs_truncate` (function, line 311) `static int minifs_vfs_truncate(void *handle, unsigned long size)`
-  - `mem_lookup` (function, line 343) `static int mem_lookup(const char *path)`
-  - `mem_open` (function, line 351) `static int mem_open(const char *path, int mode, void **handle)`
-  - `mem_slot` (function, line 371) `static int mem_slot(void *handle)`
-  - `mem_read` (function, line 378) `static int mem_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
-  - `mem_write` (function, line 388) `static int mem_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
-  - `mem_close` (function, line 399) `static int mem_close(void *handle)`
-  - `mem_fstat` (function, line 403) `static int mem_fstat(void *handle, unsigned long *size_out)`
-  - `mem_truncate` (function, line 410) `static int mem_truncate(void *handle, unsigned long size)`
-  - `fs_resolve` (function, line 434) `int fs_resolve(const char *path, char *out, unsigned cap)`
-  - `fs_dir_exists` (function, line 467) `int fs_dir_exists(const char *dir)`
-  - `fs_is_dir` (function, line 492) `int fs_is_dir(const char *resolved)`
-  - `minifs_mkdir_p` (function, line 505) `int minifs_mkdir_p(const char *resolved)`
-  - `vfs_register_builtins` (function, line 528) `void vfs_register_builtins(void)`
-  - `vfs_mount_driver` (function, line 539) `int vfs_mount_driver(const char *prefix, const char *driver)`
-  - `vfs_read` (function, line 556) `int vfs_read(vfs_file_t *f, void *buf, unsigned long len)`
-  - `vfs_write` (function, line 565) `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len)`
-  - `vfs_close` (function, line 581) `int vfs_close(vfs_file_t *f)`
-  - `vfs_fstat` (function, line 599) `int vfs_fstat(vfs_file_t *f, unsigned long *size_out)`
-  - `MEM_FILES` (macro, line 330) `#define MEM_FILES`
-  - `MEM_FNAME` (macro, line 331) `#define MEM_FNAME`
-  - `MEM_FSIZE` (macro, line 332) `#define MEM_FSIZE`
-- Depends on: `headers/kernel.h`, `headers/minifs.h`
+  - `vfs_mount_t` (struct, line 9)
+  - `ramdisk_handle_t` (struct, line 158)
+  - `minifs_handle_t` (struct, line 249)
+  - `mem_file_t` (struct, line 335)
+  - `vfs_init` (function, line 21) `void vfs_init(void)`
+  - `vfs_register` (function, line 26) `int vfs_register(const char *prefix, const vfs_ops_t *ops, const char *driver)`
+  - `vfs_unregister` (function, line 61) `int vfs_unregister(const char *prefix)`
+  - `vfs_open` (function, line 105) `int vfs_open(const char *path, int mode, vfs_file_t *f)`
+  - `ramdisk_vfs_open` (function, line 174) `static int ramdisk_vfs_open(const char *path, int mode, void **handle)`
+  - `ramdisk_vfs_read` (function, line 200) `static int ramdisk_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
+  - `ramdisk_vfs_write` (function, line 209) `static int ramdisk_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
+  - `ramdisk_vfs_close` (function, line 217) `static int ramdisk_vfs_close(void *handle)`
+  - `ramdisk_vfs_fstat` (function, line 223) `static int ramdisk_vfs_fstat(void *handle, unsigned long *size_out)`
+  - `ramdisk_vfs_truncate` (function, line 230) `static int ramdisk_vfs_truncate(void *handle, unsigned long size)`
+  - `minifs_vfs_open` (function, line 254) `static int minifs_vfs_open(const char *path, int mode, void **handle)`
+  - `minifs_vfs_read` (function, line 282) `static int minifs_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
+  - `minifs_vfs_write` (function, line 291) `static int minifs_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
+  - `minifs_vfs_close` (function, line 299) `static int minifs_vfs_close(void *handle)`
+  - `minifs_vfs_fstat` (function, line 305) `static int minifs_vfs_fstat(void *handle, unsigned long *size_out)`
+  - `minifs_vfs_truncate` (function, line 312) `static int minifs_vfs_truncate(void *handle, unsigned long size)`
+  - `mem_lookup` (function, line 344) `static int mem_lookup(const char *path)`
+  - `mem_open` (function, line 352) `static int mem_open(const char *path, int mode, void **handle)`
+  - `mem_slot` (function, line 372) `static int mem_slot(void *handle)`
+  - `mem_read` (function, line 379) `static int mem_read(void *handle, void *buf, unsigned long pos, unsigned long len)`
+  - `mem_write` (function, line 389) `static int mem_write(void *handle, const void *buf, unsigned long pos, unsigned long len)`
+  - `mem_close` (function, line 400) `static int mem_close(void *handle)`
+  - `mem_fstat` (function, line 404) `static int mem_fstat(void *handle, unsigned long *size_out)`
+  - `mem_truncate` (function, line 411) `static int mem_truncate(void *handle, unsigned long size)`
+  - `fs_resolve` (function, line 435) `int fs_resolve(const char *path, char *out, unsigned cap)`
+  - `fs_dir_exists` (function, line 468) `int fs_dir_exists(const char *dir)`
+  - `fs_is_dir` (function, line 493) `int fs_is_dir(const char *resolved)`
+  - `minifs_mkdir_p` (function, line 506) `int minifs_mkdir_p(const char *resolved)`
+  - `vfs_register_builtins` (function, line 529) `void vfs_register_builtins(void)`
+  - `vfs_mount_driver` (function, line 543) `int vfs_mount_driver(const char *prefix, const char *driver)`
+  - `vfs_read` (function, line 561) `int vfs_read(vfs_file_t *f, void *buf, unsigned long len)`
+  - `vfs_write` (function, line 570) `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len)`
+  - `vfs_close` (function, line 586) `int vfs_close(vfs_file_t *f)`
+  - `vfs_fstat` (function, line 604) `int vfs_fstat(vfs_file_t *f, unsigned long *size_out)`
+  - `MEM_FILES` (macro, line 331) `#define MEM_FILES`
+  - `MEM_FNAME` (macro, line 332) `#define MEM_FNAME`
+  - `MEM_FSIZE` (macro, line 333) `#define MEM_FSIZE`
+- Depends on: `headers/fat32.h`, `headers/kernel.h`, `headers/minifs.h`
 
 ## fs/zip.c
 - Layer: utility

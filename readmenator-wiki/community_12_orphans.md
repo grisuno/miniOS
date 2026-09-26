@@ -1,10 +1,10 @@
 # orphans
 
-*Community 12 | 87 files | cohesion 0.00*
+*Community 12 | 92 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 87 file(s) rooted at `tools` with dominant language py (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
+This community groups 92 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
@@ -15,12 +15,12 @@ This community groups 87 file(s) rooted at `tools` with dominant language py (co
 | `tools/boot_run.sh` | sh | utility | 0 | yes |
 | `tools/check_abi_numbers.py` | py | utility | 4 | yes |
 
-### `progs/src` (23 files)
+### `progs/src` (28 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/src/aes.c` | c | utility | 54 | yes |
-| `progs/src/cp.c` | c | utility | 8 | no |
+| `progs/src/aslr.c` | c | utility | 10 | yes |
 
 ### `progs/asm` (10 files)
 
@@ -47,7 +47,7 @@ This community groups 87 file(s) rooted at `tools` with dominant language py (co
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `arch/x86/ctx_sw.S` | S | utility | 7 | no |
+| `arch/x86/ctx_sw.S` | S | utility | 8 | no |
 | `arch/x86/isr_stubs.S` | S | testing | 24 | no |
 
 ### `progs/micropython/variants/minios` (2 files)
@@ -98,7 +98,7 @@ This community groups 87 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 67 more files in this community.*
+*... and 72 more files in this community.*
 
 
 ## Key Symbols
@@ -108,8 +108,9 @@ This community groups 87 file(s) rooted at `tools` with dominant language py (co
 - `switch_to_notrap` (function, `arch/x86/ctx_sw.S:96`)
 - `user_trampoline` (function, `arch/x86/ctx_sw.S:185`)
 - `fork_trampoline` (function, `arch/x86/ctx_sw.S:197`)
-- `resume_iretq` (function, `arch/x86/ctx_sw.S:211`)
-- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:251`)
+- `exec_enter` (function, `arch/x86/ctx_sw.S:213`)
+- `resume_iretq` (function, `arch/x86/ctx_sw.S:242`)
+- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:282`)
 - `tf_rax` (function, `arch/x86/isr_stubs.S:67`)
 - `tf_rbx` (function, `arch/x86/isr_stubs.S:68`)
 - `tf_rcx` (function, `arch/x86/isr_stubs.S:69`)
@@ -132,7 +133,6 @@ This community groups 87 file(s) rooted at `tools` with dominant language py (co
 - `tf_ss` (function, `arch/x86/isr_stubs.S:86`)
 - `tf_vector` (function, `arch/x86/isr_stubs.S:87`)
 - `tf_errcode` (function, `arch/x86/isr_stubs.S:88`)
-- `isr_common` (function, `arch/x86/isr_stubs.S:96`)
 
 ## Internal vs External Edges
 
@@ -141,7 +141,7 @@ This community groups 87 file(s) rooted at `tools` with dominant language py (co
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 12 (orphans).
+- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 12 (orphans).
 
 ## Risks
 
@@ -175,4 +175,4 @@ This community groups 87 file(s) rooted at `tools` with dominant language py (co
 - `progs/asm/w1.s`
 - `progs/doomgeneric/doom.h`
 - `progs/doomgeneric/icon.c`
-- *... and 67 more*
+- *... and 72 more*

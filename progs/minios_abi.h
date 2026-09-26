@@ -38,7 +38,7 @@
  * It is verified at build time (kernel _Static_asserts), not at load time:
  * see the ABI Version note above for why the loader cannot gate on it.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 9
+#define MINIOS_ABI_VERSION 10
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -78,7 +78,8 @@
     MINIOS_SYS_PCM2_WRITE        ^ \
     MINIOS_SYS_PCM2_CLOSE        ^ \
     MINIOS_SYS_CLIP_SET          ^ \
-    MINIOS_SYS_CLIP_GET            \
+    MINIOS_SYS_CLIP_GET          ^ \
+    MINIOS_SYS_RENAME              \
 )
 
 /* =========================================================================
@@ -203,6 +204,7 @@
 #define MINIOS_SYS_KILL         62
 #define MINIOS_SYS_UNAME        63
 #define MINIOS_SYS_UNLINK       87
+#define MINIOS_SYS_RENAME       82
 #define MINIOS_SYS_READLINK     89
 #define MINIOS_SYS_GETTID      186
 /* Phase 0.6 (ADR-0014): flock was 74, but Linux x86-64 74 is fsync

@@ -304,6 +304,25 @@ void     yield(void);
 void     do_exit(int code);
 long     do_clone(long flags, long newsp);
 long     do_fork(void);
+/* execve argument bounds: at most 32 words, each at most 255 chars plus
+ * NUL. Past either bound the call refuses with -E2BIG, never truncates. */
+#define EXECVE_MAX_ARGS 32
+#define EXECVE_MAX_ARG  256
+/* ASLR jitter, fresh per exec (TSC + ticks + per-exec counter, never
+ * zero for stack/brk so consecutive execs differ observably):
+ * stack top slides 1..4096 bytes, brk start 1..256 pages past the
+ * image, mmap cursor up to 255 pages down, ET_DYN base up to 47
+ * 2 MB slots up. */
+unsigned long aslr_stack_bytes(void);
+unsigned long aslr_brk_pages(void);
+unsigned long aslr_mmap_pages(void);
+unsigned long aslr_dyn_base(void);
+/* do_execve() - replace the caller's image with a fresh ET_EXEC/ET_DYN
+ * program (kernel/sched.c). The caller keeps pid, parent, children,
+ * kstack slot family, fd table and limits; everything else (window,
+ * VMA, brk view, stack, FPU, FSBASE, name) is rebuilt. Returns only on
+ * failure (negative errno); success enters ring 3 and never returns. */
+long     do_execve(char *kpath, int kargc, char **kargv);
 long     do_thread_spawn(unsigned long fn, unsigned long stack,
                          unsigned long arg);
 int      do_waitpid(int pid);

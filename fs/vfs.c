@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "minifs.h"
+#include "fat32.h"
 
 /* ================================================================
  *  VFS (Virtual File System) abstraction layer
@@ -530,18 +531,22 @@ void vfs_register_builtins(void) {
     vfs_register("", &ramdisk_vfs_ops, "ramdisk");
     vfs_register("minifs:", &minifs_vfs_ops, "minifs");
     vfs_register("mem:", &mem_vfs_ops, "mem");
+    vfs_register("fat:", &fat32_vfs_ops, "fat");
 }
 
 /** Docstring: Mount a known driver under a prefix (the `mount` builtin
- * path). driver names ramdisk, minifs or mem; anything else refuses.
- * A duplicate prefix refuses like a duplicate registration, never an
- * alias. The root "" stays pinned: mounting over it refuses. */
+ * path). driver names ramdisk, minifs, mem or fat; anything else
+ * refuses. A duplicate prefix refuses like a duplicate registration,
+ * never an alias. The root "" stays pinned: mounting over it refuses.
+ * The fat driver parses "imgpath:fatpath" per open (loopback image
+ * file plus in-image path), so one registration serves every image. */
 int vfs_mount_driver(const char *prefix, const char *driver) {
     const vfs_ops_t *ops = 0;
     if (!prefix || !prefix[0] || !driver) return -1;
     if (kstrcmp(driver, "ramdisk") == 0) ops = &ramdisk_vfs_ops;
     else if (kstrcmp(driver, "minifs") == 0) ops = &minifs_vfs_ops;
     else if (kstrcmp(driver, "mem") == 0) ops = &mem_vfs_ops;
+    else if (kstrcmp(driver, "fat") == 0) ops = &fat32_vfs_ops;
     else return -1;
     return vfs_register(prefix, ops, driver);
 }

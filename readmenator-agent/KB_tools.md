@@ -74,13 +74,13 @@
 
 ## tools/check_fork_stubs.py
 - Layer: testing
-- Doc: Fail-closed stub gate for unimplemented process syscalls.  vfork and execve have no implementation in this kernel. A stu
+- Doc: Fail-closed stub gate for unimplemented process syscalls.  vfork has no implementation in this kernel. A stub that answe
 - Language: py
 - Symbols:
-  - `Config` (class, line 15) `class Config`
-  - `handler_body` (method, line 24) `def handler_body(text, name)`
-  - `check_stubs` (method, line 34) `def check_stubs(text, cfg)`
-  - `main` (method, line 49) `def main()`
+  - `Config` (class, line 18) `class Config`
+  - `handler_body` (method, line 27) `def handler_body(text, name)`
+  - `check_stubs` (method, line 37) `def check_stubs(text, cfg)`
+  - `main` (method, line 52) `def main()`
 
 ## tools/check_kb_sync.py
 - Layer: utility
@@ -446,10 +446,10 @@
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 111)
-  - `cleanup` (function, line 118)
-  - `record` (function, line 340)
-  - `find_index` (function, line 346)
+  - `restore_sources` (function, line 118)
+  - `cleanup` (function, line 125)
+  - `record` (function, line 352)
+  - `find_index` (function, line 358)
 
 ## tools/probe_compute_vga.py
 - Layer: utility
@@ -527,10 +527,10 @@
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
   - `scenario_uefi` (function, line 167)
-  - `http_server_start` (function, line 993)
-  - `http_server_stop` (function, line 1000)
-  - `http_fixture_start` (function, line 1005)
-  - `http_fixture_stop` (function, line 1012)
+  - `http_server_start` (function, line 1028)
+  - `http_server_stop` (function, line 1035)
+  - `http_fixture_start` (function, line 1040)
+  - `http_fixture_stop` (function, line 1047)
 
 ## tools/test_call_align.py
 - Layer: testing

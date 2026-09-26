@@ -13,7 +13,7 @@ echo PASS: help-ok
 clear
 echo PASS: clear-ok
 
-# === FILESYSTEM: ls, mkdir, cd, pwd, rm, cp ===
+# === FILESYSTEM: ls, mkdir, cd, pwd, rm, mv, cp ===
 ls
 echo PASS: ls-root-ok
 ls objects/
@@ -31,6 +31,24 @@ echo PASS: cd-root-ok
 mkdir delme
 rm delme
 echo PASS: rm-ok
+echo mv-payload > mv_src.txt
+mv mv_src.txt mv_dst.txt
+cat mv_dst.txt
+echo PASS: mv-ok
+rm mv_dst.txt
+echo mv-payload2 > /tmp/mv_src.txt
+mv /tmp/mv_src.txt /tmp/mv_dst.txt
+cat /tmp/mv_dst.txt
+echo PASS: mv-minifs-ok
+rm /tmp/mv_dst.txt
+mv ghost-file.txt mv_nowhere.txt
+echo PASS: mv-missing-ok
+echo keep-me > mv_keep.txt
+echo victim > mv_victim.txt
+mv mv_keep.txt mv_victim.txt
+echo PASS: mv-exists-ok
+rm mv_keep.txt
+rm mv_victim.txt
 cp src/fib.c /tmp/cp_test.txt
 cat /tmp/cp_test.txt
 echo PASS: cp-cat-ok

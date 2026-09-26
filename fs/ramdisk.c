@@ -231,3 +231,17 @@ int ramdisk_delete(RDFile *f) {
     rd_used -= f->size;
     return 1;
 }
+
+int ramdisk_rename(const char *oldname, const char *newname) {
+    RDFile *src;
+    if (!rd || !oldname || !newname) return -1;
+    if (kstrlen(oldname) >= RAMDISK_FNAME_LEN ||
+        kstrlen(newname) >= RAMDISK_FNAME_LEN) return -1;
+    if (kstrcmp(oldname, newname) == 0) return 0;
+    src = ramdisk_open(oldname);
+    if (!src) return -1;
+    if (ramdisk_open(newname)) return -1;
+    kstrncpy(src->name, newname, RAMDISK_FNAME_LEN - 1);
+    src->name[RAMDISK_FNAME_LEN - 1] = 0;
+    return 0;
+}

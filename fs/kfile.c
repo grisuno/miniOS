@@ -229,6 +229,85 @@ KFILE *kfopen(const char *path, const char *mode) {
     return f;
 }
 
+/* True when `dst` can live on the ramdisk: no directory part, or its
+ * parent prefix exists THERE (not merely on MiniFS, the kfopen rule). */
+static int fs_rename_on_ramdisk(const char *dst) {
+    const char *slash = dst + kstrlen(dst);
+    while (slash > dst && slash[-1] != '/') slash--;
+    if (slash == dst) return 1;
+    {
+        char parent[RAMDISK_FNAME_LEN];
+        unsigned plen = (unsigned)(slash - dst);
+        if (plen >= sizeof(parent)) return 0;
+        kmemcpy(parent, dst, plen);
+        parent[plen] = 0;
+        return ramdisk_dir_exists(parent);
+    }
+}
+
+/* True when `dst` can live on MiniFS: no directory part (root), or its
+ * parent resolves there. */
+static int fs_rename_on_minifs(const char *dst) {
+    const char *slash = dst + kstrlen(dst);
+    while (slash > dst && slash[-1] != '/') slash--;
+    if (slash == dst) return 1;
+    {
+        char parent[RAMDISK_FNAME_LEN];
+        unsigned plen = (unsigned)(slash - dst - 1);
+        if (plen >= sizeof(parent)) return 0;
+        kmemcpy(parent, dst, plen);
+        parent[plen] = 0;
+        return minifs_resolve_path(parent) >= 0;
+    }
+}
+
+/** Docstring: Rename one file within its own filesystem. Both paths are
+ * already fs_resolve'd (RAMDISK_FNAME_LEN, never truncated). Directories
+ * refuse with -21, a missing src with -2, an existing dst with -17 (no
+ * silent overwrite in v1). A dst whose parent lives only on the other
+ * filesystem refuses with -18: moving it would either shadow a MiniFS
+ * directory with a volatile ramdisk entry (the kfopen misroute class) or
+ * need a copy+delete the caller must ask for explicitly. Owns fs_lock
+ * for the whole decision, so src and dst cannot change under it. */
+int fs_rename(const char *oldr, const char *newr) {
+    irqflags_t flags;
+    int r;
+    if (!oldr || !newr) return -2;
+    if (kstrcmp(oldr, newr) == 0) return 0;
+    if (fs_is_dir(oldr) || fs_is_dir(newr)) return -21;
+    fs_take(&flags);
+    if (ramdisk_open(oldr)) {
+        if (ramdisk_open(newr) ||
+            (minifs_is_mounted() && minifs_resolve_path(newr) >= 0)) {
+            fs_drop(flags);
+            return -17;
+        }
+        if (!fs_rename_on_ramdisk(newr)) {
+            fs_drop(flags);
+            return -18;
+        }
+        r = ramdisk_rename(oldr, newr);
+        fs_drop(flags);
+        return r;
+    }
+    if (minifs_is_mounted() && minifs_resolve_path(oldr) >= 0) {
+        if (ramdisk_open(newr) ||
+            minifs_resolve_path(newr) >= 0) {
+            fs_drop(flags);
+            return -17;
+        }
+        if (!fs_rename_on_minifs(newr)) {
+            fs_drop(flags);
+            return -18;
+        }
+        r = minifs_rename(oldr, newr);
+        fs_drop(flags);
+        return r;
+    }
+    fs_drop(flags);
+    return -2;
+}
+
 int kfclose(KFILE *f) {
     int rc = 0;
     irqflags_t flags;

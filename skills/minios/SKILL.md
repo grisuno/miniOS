@@ -37,6 +37,15 @@ minios_test {commands: ["lzss rep.txt rep.lzs", "unlzss rep.lzs rep.out", "cat r
              expect: ["lzss: rep.txt -> rep.lzs", "the quick brown fox"]}
 ```
 
+File operations beyond read and write: `mv <src> <dst>` renames within
+one filesystem (an existing destination or a cross-filesystem move
+refuses instead of guessing), and `fat ls <img> [dir]` plus
+`fat cat <img> <file>` read a FAT32 disk image stored as a file
+(`etc/fat.img` ships one). TAB completes argument paths from both the
+ramdisk and MiniFS, so a file created by a redirect completes like any
+shipped one. Isolated programs compose through `fork` plus `execve`
+(syscall 59); the shell's `mrun` runs several at once.
+
 Compile, link and run inside the OS:
 
 ```text

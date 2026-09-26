@@ -11,6 +11,7 @@
 
 #include "kernel.h"
 #include "sched.h"
+#include "sanitize.h"
 
 long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
@@ -82,8 +83,62 @@ long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6) {
 }
 
 long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return -38;
+    const char *upath = (const char *)a1;
+    const char *const *uargv = (const char *const *)a2;
+    char resolved[RAMDISK_FNAME_LEN];
+    char *kargv[EXECVE_MAX_ARGS + 1];
+    char *strbuf = 0;
+    int kargc = 0;
+    long rc;
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    /* a3 (envp) is ignored: setup_user_stack builds argc/argv only, so
+     * every execve starts with an empty environment. Documented, not
+     * silent: no caller-supplied pointer is dereferenced. */
+    SANITIZE_STR(upath, RAMDISK_FNAME_LEN);
+    if (!fs_resolve(upath, resolved, sizeof(resolved))) return -36;
+    if (uargv) {
+        if (!user_range_ok((unsigned long)uargv, sizeof(char *)))
+            return EFAULT;
+        strbuf = (char *)kmalloc(
+            (unsigned long)EXECVE_MAX_ARGS * EXECVE_MAX_ARG);
+        if (!strbuf) return -12;
+        for (kargc = 0; kargc <= EXECVE_MAX_ARGS; kargc++) {
+            const char *w;
+            char *dst;
+            unsigned long n;
+            if (!user_range_ok((unsigned long)(uargv + kargc),
+                               sizeof(char *))) {
+                rc = EFAULT;
+                goto execve_out;
+            }
+            w = uargv[kargc];
+            if (!w) break;
+            if (kargc >= EXECVE_MAX_ARGS) { rc = -7; goto execve_out; }
+            /* Bounded per-byte copy: a racing sibling thread can only
+             * change content inside the validated window, never push
+             * the copy past strbuf (the NUL is guaranteed by
+             * construction, overlong words refuse with -E2BIG). */
+            dst = strbuf + (unsigned long)kargc * EXECVE_MAX_ARG;
+            for (n = 0; n < EXECVE_MAX_ARG; n++) {
+                if (!user_range_ok((unsigned long)(w + n), 1)) {
+                    rc = EFAULT;
+                    goto execve_out;
+                }
+                dst[n] = w[n];
+                if (!w[n]) break;
+            }
+            if (n >= EXECVE_MAX_ARG) { rc = -7; goto execve_out; }
+            kargv[kargc] = dst;
+        }
+        if (kargc > EXECVE_MAX_ARGS) { rc = -7; goto execve_out; }
+    }
+    kargv[kargc] = 0;
+    /* Success never returns (ring-3 entry through user_trampoline);
+     * failure frees strbuf below with the caller untouched. */
+    rc = do_execve(resolved, kargc, kargv);
+execve_out:
+    if (strbuf) kfree(strbuf);
+    return rc;
 }
 
 /* Shared by sys_linux_exit (60) and the exit_group fall-through (231).

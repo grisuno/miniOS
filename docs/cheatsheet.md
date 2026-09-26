@@ -16,6 +16,8 @@ the guest the prompt is `miniOS>`; in the editor it is `edit>`.
 | `cd [dir]` / `pwd` | change / print working directory (`cd` alone goes to root, `cd ..` pops) |
 | `mkdir <name>` | create a directory entry (parent must exist) |
 | `rm <file>` | delete a file (ramdisk first, MiniFS fallback; directories refused, use `rmdir`) |
+| `mv <src> <dst>` | rename within one filesystem (existing dst, directories and cross-filesystem moves refused) |
+| `fat ls <img> [dir]` / `fat cat <img> <file>` | read-only FAT32 loopback image browser (`etc/fat.img` ships one) |
 | `echo <text>` | print text |
 | `edit <file>` | line editor over ramdisk/MiniFS files |
 | `run <name\|file>` | run a program: `.o` at ring 0, `.elf` at ring 3, `.cvm` on the interpreter |
@@ -26,7 +28,7 @@ the guest the prompt is `miniOS>`; in the editor it is `edit>`.
 | `cmd 2> file` | same capture (MiniOS merges stdout/stderr at the console) |
 | `a \| b [\| c]` | pipe stdout of each stage into stdin of the next (sequential capture); bare `cat` copies stdin |
 | `panic` | paint the kernel panic screen (vector/RIP/RSP/backtrace), demo without halting |
-| `mount [prefix driver]` / `unmount <prefix>` / `vfstest` | list, add/drop (ramdisk/minifs/mem) and prove VFS mounts; busy refuses, `/` pinned |
+| `mount [prefix driver]` / `unmount <prefix>` / `vfstest` | list, add/drop (ramdisk/minifs/mem/fat) and prove VFS mounts; busy refuses, `/` pinned |
 | `httpd [--once] <port> [root]` / `httpd --selftest` | static file server over server TCP (GET, any VFS root) / headless handshake proof |
 | `clip [text\|clear]` | shared text clipboard: publish, print, empty (4096 byte cap, never truncates) |
 | `vblk` | virtio-blk probe: LBA 0 boot signature + MiniFS superblock off the virtio queue |
@@ -87,7 +89,7 @@ run cvm/p.cvm
 | Ctrl+A / Ctrl+E | start / end of line |
 | Ctrl+U / Ctrl+K | kill to start / end |
 | Ctrl+W | kill word before cursor |
-| TAB | complete (twice lists candidates on ambiguous prefix) |
+| TAB | complete (twice lists candidates on ambiguous prefix); argument words complete MiniFS paths too |
 
 ## Editor commands
 

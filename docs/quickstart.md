@@ -8,7 +8,9 @@ root on the host unless marked `miniOS>` (inside the guest).
 ## 1. Prerequisites
 
 Host tools: `gcc`, binutils (`ld`, `objcopy`, `xxd`), `qemu-system-x86_64`,
-`python3`, `git`. No absolute paths are assumed anywhere in the build;
+`python3`, `git`, mtools plus `mkfs.vfat` (FAT fixtures: `etc/fat.img`
+for the `fat` builtin, `uefi.img` for the UEFI stub). No absolute paths
+are assumed anywhere in the build;
 every external checkout location is overridable (see `make sources-status`).
 
 ## 2. Fetch the sibling sources

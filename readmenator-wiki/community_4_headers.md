@@ -1,6 +1,6 @@
 # headers
 
-*Community 7 | 3 files | cohesion 0.67*
+*Community 4 | 3 files | cohesion 0.67*
 
 ## Definition
 
@@ -40,7 +40,7 @@ This community groups 3 file(s) rooted at `headers` with dominant language c (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 7 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
+- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
 
 ## Risks
 

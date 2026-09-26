@@ -107,6 +107,13 @@ SOURCES="$SOURCES progs/minicraft/minicraft.c"
 SOURCES="$SOURCES kernel/futex.c kernel/percpu_rq.c kernel/batch.c kernel/rcu.c"
 SOURCES="$SOURCES progs/lisp/lisp.c headers/httpd.h"
 SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
+# execve row targets syscalls_proc.c (the proc-leaf TU split from
+# syscalls.c after the allowlist audits); loader.c and exec.c ride
+# along as the ASLR/execve-adjacent surface for future rows. A missing
+# entry leaked execve-never-replaces into the tree (rc = -38 shipped
+# in os.img), caught by the anchor checker, never by review.
+SOURCES="$SOURCES kernel/syscalls_proc.c kernel/loader.c kernel/exec.c"
+SOURCES="$SOURCES fs/fat32.c"
 
 restore_sources() {
     local f
@@ -181,7 +188,12 @@ write-pointer-check-bypassed | s/int user_range_ok(unsigned long p, unsigned lon
 vol-default-zero | s/static unsigned pcspk_volume = PCSPK_VOL_DEFAULT;/static unsigned pcspk_volume = 0;/ | drivers/pcspk.c
 vol-sign-ignored | s/if (\*s == '-') { neg = 1; s++; }/if (*s == '-') { neg = 0; s++; }/ | kernel/shell.c
 vol-garbage-accepted | s/if (!shell_parse_vol(argv\\[1\\], &v)) {/if (0) {/ | kernel/shell.c
-kill-wait-garbage-accepted | s/if (!shell_parse_long(argv\\[1\\], &pv) || pv <= 0 || pv >= MAX_PROCS) {/if (0) {/ | kernel/shell.c
+kill-wait-garbage-accepted | s/if (!shell_parse_pid(argv\\[1\\], 1, &pid)) {/if (0) {/ | kernel/shell.c
+mv-rename-silenced | s/r = fs_rename(src, dst);/r = -2;/ | kernel/shell.c
+tab-minifs-arg-dropped | s/if (ncomps < 32)/if (0)/ | kernel/shell.c
+execve-never-replaces | s/rc = do_execve(resolved, kargc, kargv);/rc = -38;/ | kernel/syscalls_proc.c
+aslr-no-entropy | s/return t ^ (aslr_counter \* 0xBF58476D1CE4E5FUL);/return 0;/ | kernel/sched.c
+fat-lfn-check-inverted | s/if (de\[11\] == 0x0F) return 0;/if (de[11] != 0x0F) return 0;/ | fs/fat32.c
 rlimit-garbage-accepted | s/if (!shell_parse_long(argv\\[2\\], &lv) || lv < 0) {/if (0) {/ | kernel/shell.c
 sleep-garbage-accepted | s/if (!shell_parse_long(argv\\[1\\], &sv)) {/if (0) {/ | kernel/shell.c
 rtc-always-fails | s/    return 1;/    return 0;/ | drivers/rtc.c
@@ -528,6 +540,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/minios_abi.h)
             python3 "$HERE/tools/check_abi_numbers.py" > "$BACKUP/suite.log" 2>&1
+            ;;
+        fs/fat32.c)
+            # Host parser suite first (no boot), then the live fat
+            # slice proving VFS wiring, mount table and builtin.
+            make -C "$HERE" test-fat > "$BACKUP/suite.log" 2>&1 && \
+            MATCH="fat " FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
             ;;
         headers/vga_fx.h|tests/test_fx.c)
             make -C "$HERE" test-fx > "$BACKUP/suite.log" 2>&1

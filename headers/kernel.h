@@ -245,6 +245,10 @@ int      ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len
 RDFile  *ramdisk_create(const char *name, unsigned size);
 int      ramdisk_resize(RDFile *f, unsigned newsize);
 int      ramdisk_delete(RDFile *f);
+/** Docstring: In-place rename of one ramdisk entry. Both names fit
+ * RAMDISK_FNAME_LEN (fs_resolve guarantees it); missing src or an
+ * existing dst refuses, never overwrites. Returns 0 on success. */
+int      ramdisk_rename(const char *oldname, const char *newname);
 int      ramdisk_list(RDFile **out, int max);
 void     ramdisk_setup_from(void *data, unsigned size);
 int      ramdisk_count(void);
@@ -422,6 +426,9 @@ typedef struct {
 
 KFILE *kfopen(const char *path, const char *mode);
 int    kfclose(KFILE *f);
+/* Rename one file within its filesystem; see fs/kfile.c for the contract:
+ * 0 ok, -2 missing src, -21 directory, -17 existing dst, -18 cross-fs. */
+int    fs_rename(const char *oldr, const char *newr);
 int    kfgetc(KFILE *f);
 char  *kfgets(char *buf, int size, KFILE *f);
 int    kfungetc(int c, KFILE *f);

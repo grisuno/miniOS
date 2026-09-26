@@ -418,6 +418,9 @@ later carrier.
 | `echo <text>` | print text to the console |
 | `mkdir <name>` | create a directory entry |
 | `rm <file>` | delete a ramdisk file |
+| `mv <src> <dst>` | rename a file within its filesystem |
+| `fat ls <img> [dir]` | list a FAT32 loopback image directory |
+| `fat cat <img> <file>` | print a file from a FAT32 loopback image |
 | `pwd` | print the current working directory |
 | `cd [dir]` | change directory (bare cd goes to root) |
 | `edit <file>` | line editor |
@@ -533,7 +536,7 @@ frame-pointer returns) without halting; real faults halt through the same
 screen from the fault handler, which keeps the serial forensics first.
 
 VFS mounts are dynamic: `mount` lists prefix, driver and open refs,
-`mount <prefix> <ramdisk|minifs|mem>` registers, `unmount <prefix>` drops
+`mount <prefix> <ramdisk|minifs|mem|fat>` registers, `unmount <prefix>` drops
 (refused with -EBUSY while handles are open, `/` is pinned). Matching is
 longest-prefix-first and `mem:` is a volatile in-memory driver that proves
 the lifecycle (`vfstest`). The TCP stack answers passive open (bind 49,
@@ -541,12 +544,29 @@ listen 50, accept 43 plus the libc-style net_listen/net_accept), and
 `httpd` serves static files from any VFS root over it (GET only, 404/400
 fail-closed); `httpd --selftest` drives a full handshake through the
 production demux with injected segments. The shared clipboard lives in the
-kernel behind MiniOS syscalls 249/250 (ABI v9) and the wl_mini set/get
+kernel behind MiniOS syscalls 249/250 (ABI v10) and the wl_mini set/get
 messages; `clip` publishes, prints and clears it. Terminal selection and
 vedit paste on top are Phase 2. `fork()` (57) duplicates isolated
 processes with copy-on-write pages shared read-only and privatized by a
 #PF resolve path; `mrun bin/forktest.elf` proves both-direction isolation
 and the exit code. Legacy pid-0 and CLONE_VM callers get -ENOSYS.
+
+`execve()` (59) replaces the caller's image in place and completes the
+UNIX composition fork alone cannot give: the caller keeps pid, parent,
+children, descriptors and limits while its window, VMA context, brk view,
+stack, FPU state, thread-local base and name are rebuilt around the new
+ET_EXEC/ET_DYN program, entered directly without returning. Ring-0
+relocatables refuse with -ENOEXEC (they load only through the SPAWN trust
+gate), a thread calling `execve` refuses with -ENOSYS while already-live
+sibling threads die with the old image like on Linux, argv is bounded
+(32 words of 255 chars, -E2BIG past it) and copied per byte so a racing
+sibling can only change content, never overflow. There is no CLOEXEC in
+v1 (descriptors survive like after `fork`) and no environment (every
+exec starts empty); both are documented, not silent. `mrun bin/execho.elf`
+proves it headless: fork, exec lxhello with argc 2, reap exit 2, fail a
+ghost exec with -ENOENT, `execho: ok`. `mrun bin/execthr.elf` proves a
+spinning sibling thread dies with the old image instead of faulting on
+the freed window.
 
 ## Storage and boot hardware
 
@@ -734,7 +754,7 @@ serial log for these markers. The script ships on the ramdisk.
 
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 81
+strings boot_run.log | grep -c 'PASS:'   # expect 96
 ```
 
 Categories tested (81 PASS):
@@ -860,6 +880,16 @@ MiniOS runs three kinds of program:
   executed by the cvm2 interpreter in `objects/cvm.o`. An x86-64 JIT
   compiler compiles each module to native code at load time; the output
   is identical to the interpreter and the JIT is transparent to the user.
+
+Ring-3 syscall probes (static ELFs, no libc, raw `syscall` only) pin the
+boundary headlessly: `mvrn.elf` (rename creates, moves, refuses missing
+sources and kernel pointers, unlinks), `execho.elf` (fork plus execve
+plus wait), `execthr.elf` (a spinning sibling thread dies on exec),
+`aslr.elf` (self-exec address comparison), `burn.elf` (brk plus mmap
+plus CPU burn with checksum `417386880`). Probes enter through a hand
+written `_start` that calls into C: a C `_start` function observes the
+entry stack misaligned by 8 and any vectorized spill faults with #GP,
+which is why every probe shares the `call lmain` shape.
 
 ## CVM JIT compiler
 
@@ -1656,6 +1686,18 @@ separate bytes) and slides the kernel into one of 64 aligned 2 MB slots in
 the boot banner reports its randomized physical base. Disable with
 `make ENABLE_KASLR=0` for deterministic physical layout.
 
+Every exec randomizes the new program's userspace addresses (userspace
+ASLR). The stack top slides 1..4096 bytes, brk starts 1..256 pages past
+the image (clamped to its cap), the mmap cursor starts up to 255 pages
+down (clamped above the brk limit), and a position-independent (ET_DYN)
+base slides up to 47 slots of 2 MB (loader bounds still fail closed).
+Entropy mixes the TSC, the tick count and a per-exec counter, and stack
+and brk slides are never zero so consecutive runs differ observably.
+`fork` never re-randomizes (children share by definition). The headless
+proof is `bin/aslr.elf`: a self-exec chain that prints stack, brk and
+mmap addresses in generation 0, re-execs carrying them, and prints
+`aslr: ok` in generation 1 when any dimension differs.
+
 ## Integer overflow protection
 
 `kfread` and `kfwrite` compute `size * n` before accessing the buffer. A
@@ -1863,6 +1905,20 @@ brk/mmap view and VMA trees against concurrent syscalls from threads on
 different CPUs (lock order: `sched_lock` -> `mm_lock`). Per-CPU data needs
 no lock.
 
+APs run `CLONE_VM` threads only; isolated processes stay on the BSP.
+That boundary is structural, not a tunable: the brk/mmap/VMA view is
+global (`g_brk`, `user_mmap_cur`, the live and free roots, 112 use
+sites), so two CPUs running two isolated processes would clobber each
+other's view on every preempt, and a token scheme would serialize all
+non-VM execution back through one owner. Lifting it means per-CPU
+views first, then AP claim and preempt with no VM-only filter (no new
+IPI and no CR3 machinery is needed: `switch_to` already swaps CR3,
+FPU and thread-local base, and a `mov %cr3` flushes non-global TLB
+entries). The `burn.elf` probe already pins the coexistence contract
+under `-smp 2` (four copies beside `smp` and `kstack`); once views
+land, the same scenario with an AP-claimed counter proves APs ran
+isolated code. See CLAUDE.md for the full spec.
+
 ## Multithreading
 
 Threads are 1:1 kernel entities (`proc_t` with `CLONE_VM`, shared CR3) that
@@ -1890,6 +1946,17 @@ slots before creating threads, and after that allocate only under a mutex
 never holding the queue lock across `schedule()`), mutexes, counting
 semaphores, Mesa condition variables and a writer-preferring rwlock,
 host-tested by `tests/test_sync.c` (`make test-sync`).
+
+Known race (root-caused, pre-existing, verified byte-identical on a clean
+HEAD image): `run thdemo` and `run fptest` can fault reading thread-local
+storage through base 0 (`%fs:0x10` with FSBASE 0). Threads start with no
+thread-local base of their own, and the resume onto pid 0 skips the base
+restore, so once a tick runs a thread, the next `printf` of the main
+thread faults. Whether the tick lands inside the spawn loop is boot
+timing, which is why the suite flakes here instead of failing always.
+Until the context switch saves the base on every park and restores it
+for pid 0 too, treat overlapping heavyweight ring-3 processes as the
+known-red configuration and run them sequentially.
 
 Scheduler internals this enables: `PROC_SWITCHING` (unclaimable while a
 context is half-saved), `schedule()` parking a thread as "returned from
@@ -1975,7 +2042,11 @@ history commands complete too, so TAB after `minigcc` offers the most recent
 matching command. A bare first word completes runnable-first across ramdisk
 and MiniFS root (`.elf`, then `.cvm`, then `.o`; highest-priority non-empty
 tier wins), so `poke` offers `pokemon.elf` instead of its icon PNG; paths
-and argument words keep every match. Completion is bounds-checked against
+and argument words keep every match. An argument word also completes from
+MiniFS: the word's directory part resolves against the cwd and entries of
+that MiniFS directory match the leaf prefix (directories with trailing
+`/`), so a file created under a MiniFS-only directory by a redirect
+completes exactly like a ramdisk one. Completion is bounds-checked against
 the command buffer.
 
 Terminal scrollback is a 256-line logical ring (`SB_MAX_LINES`): completed
@@ -2007,6 +2078,27 @@ directory entry exists there; otherwise (for example `> asm/_t.s` or
 creates the file with `minifs_create`, writes with `minifs_write` and
 persists bitmaps with `minifs_sync` on close. `fstat`/`access`/`unlink`
 cover MiniFS-backed files too.
+
+`mv <src> <dst>` renames one file within its own filesystem through
+`fs_rename`: ramdisk entries rename in place, MiniFS entries move
+directory slots with no data copy, all under the filesystem lock.
+Directories refuse, a missing source is a diagnostic, an existing
+destination refuses (no silent overwrite in v1), and a destination
+whose parent lives only on the other filesystem refuses instead of
+shadowing a MiniFS directory with a volatile ramdisk entry. The Linux
+`rename` syscall (82) serves ring-3 programs the same way.
+
+`fat ls <img> [dir]` and `fat cat <img> <file>` read a FAT32 disk image
+stored as an ordinary file (`etc/fat.img`, built on the host with
+`mkfs.vfat` plus mtools and packed on MiniFS). The driver is read-only
+by construction: BPB validation, cluster-chain walking and 8.3
+traversal with every offset bounds-checked against the image size,
+bounded walks, capped depth, long names skipped, writes refused. The
+loopback backend is ramdisk-first with MiniFS fallback (including the
+flat-root basename rule), file bytes flow through the real `fat:` VFS
+driver, and listings use `fat32_list` because the VFS table has no
+readdir verb. Only the root directory, 8.3 short names and regular
+files are served; anything else is a diagnostic, never a guess.
 
 ## User isolation and syscall boundary
 
@@ -2167,7 +2259,7 @@ relies on QEMU-zeroed RAM (NOBITS, no loader fill).
 ## Validation gate, governance, libraries
 
 Every change must pass, in order: `make` (zero warnings),
-`sh src/test_all.sh` (92 PASS), `./tools/test_bdd.sh` (full serial suite),
+`sh src/test_all.sh` (96 PASS), `./tools/test_bdd.sh` (full serial suite),
 `./tools/test_codecs.sh` (lzss/lz4/aes roundtrips, pass=3), `./tools/mutate.sh`
 (every kernel/boot mutant killed; survivors mean a missing scenario, and only
 provably equivalent mutants may leave the set), `make test-tls` (host crypto
@@ -2180,6 +2272,8 @@ vectors plus OpenSSL-driven full handshakes and the negative set),
 `make test-tick test-hal` (timer tick bus + HAL port mapping),
 `make test-pipe test-panic test-pci test-httpd` (pipe ring, panic walk,
 PCI config space, httpd wire),
+`make test-fat` (FAT32 loopback driver: units, multi-cluster reads,
+fail-closed edges over a synthetic image),
 `make test-wm` (window manager geometry, events, window model, render plan,
 tiling and focus contracts), `make uefi` (stub image boots under OVMF),
 `python3 -m unittest -v mcp/test_minios_mcp.py`, and `mcp/mutate_mcp.sh`.
@@ -2219,6 +2313,7 @@ be a minimal wire client, not a port).
 | `test-tls` | host TLS suite: crypto vectors + full handshakes |
 | `test-vma` | host VMA suite: red-black tree invariants, pool exhaustion, full drain |
 | `test-sync` | host sync suite: wait queues, mutex/sem/cond/rwlock over the real `kernel/sync.c` |
+| `test-fat` | host FAT32 suite: BPB units, multi-cluster reads, fail-closed edges over a synthetic image |
 | `test-tick` | host tick suite: listener order, separation, gating, bounds over the real `kernel/tick.c` |
 | `test-hal` | host HAL suite: port/device constants and stub routing for `arch/x86/hal_io.h` |
 | `test-wm` | host WM suite: geometry, events, window model, render plan, tiling and focus over the header-only `wm_*.h` contracts |

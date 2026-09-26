@@ -1640,6 +1640,24 @@ static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long
     return -22;
 }
 
+/* rename(82): same-filesystem file move through fs_rename (ramdisk
+ * in-place, MiniFS entry move). Both paths sanitize as user strings and
+ * resolve against the shell cwd like unlink; directories, existing dst
+ * and cross-filesystem dsts refuse with their errno, never half-moved. */
+static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6) {
+    const char *oldp = (const char *)a1;
+    const char *newp = (const char *)a2;
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_STR(oldp, RAMDISK_FNAME_LEN);
+    SANITIZE_STR(newp, RAMDISK_FNAME_LEN);
+    {
+        char oldr[RAMDISK_FNAME_LEN], newr[RAMDISK_FNAME_LEN];
+        if (!fs_resolve(oldp, oldr, sizeof(oldr))) return -36;
+        if (!fs_resolve(newp, newr, sizeof(newr))) return -36;
+        return fs_rename(oldr, newr);
+    }
+}
+
 static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned long *st = (unsigned long *)a2;
@@ -1763,6 +1781,7 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [74]  = { sys_linux_fsync,        "fsync" },
     [75]  = { sys_linux_fdatasync,    "fdatasync" },
     [79]  = { sys_linux_getcwd,       "getcwd" },
+    [82]  = { sys_linux_rename,       "rename" },
     [87]  = { sys_linux_unlink,       "unlink" },
     [89]  = { sys_linux_readlink,     "readlink" },
     [96]  = { sys_linux_gettimeofday, "gettimeofday" },
@@ -1826,7 +1845,7 @@ const char *syscall_name(long n) {
 static int trace_hint_snapshot(long n, long a1, long a2, char *out) {
     const char *p = 0;
     unsigned long i;
-    if (n == 2 || n == 21 || n == 87 || n == 89) p = (const char *)a1;
+    if (n == 2 || n == 21 || n == 82 || n == 87 || n == 89) p = (const char *)a1;
     else if (n == 257 || n == 262) p = (const char *)a2;
     else return TRACE_HINT_NONE;
     if (!user_str_ok((unsigned long)p, 49)) {

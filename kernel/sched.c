@@ -3,6 +3,7 @@
  */
 #include "kernel.h"
 #include "sched.h"
+#include "spawn.h"
 #include "smp.h"
 #include "sync.h"
 #include "futex.h"
@@ -49,6 +50,7 @@ spinlock_t sched_lock = SPINLOCK_INIT;
 
 extern void user_trampoline(void);
 extern void fork_trampoline(void);
+extern void exec_enter(unsigned long frame);
 
 static inline unsigned long read_cr3(void) {
     unsigned long v;
@@ -1676,7 +1678,11 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
     __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
     __asm__ volatile("cli");
     __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)new_cr3) : "memory");
-    sp = setup_user_stack((char *)USER_STACK_BASE, USER_STACK_SIZE,
+    /* ASLR: the stack top slides down 1..4096 bytes, so argv addresses
+     * differ every spawn. Pages stay ensured for the full range; the
+     * unused top is a guard gap, never trusted. */
+    sp = setup_user_stack((char *)USER_STACK_BASE,
+                          USER_STACK_SIZE - aslr_stack_bytes(),
                           argc, argv);
     __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
     __asm__ volatile("sti");
@@ -1709,6 +1715,13 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
     child->mmap_cur = USER_BRK_END;
     if (DOOM_BACKBUF_ADDR < child->mmap_cur)
         child->mmap_cur = DOOM_BACKBUF_ADDR;
+    /* ASLR: the anonymous-map cursor starts below the ceiling by a
+     * random slide, clamped so it never crosses brk_limit. */
+    {
+        unsigned long mp = aslr_mmap_pages() * 0x1000UL;
+        if (child->mmap_cur > child->brk_limit + mp)
+            child->mmap_cur -= mp;
+    }
     kstrncpy(child->name, name, sizeof(child->name) - 1);
     kstack_top = alloc_kstack();
     if (!kstack_top) {
@@ -2229,6 +2242,208 @@ long do_fork(void) {
     spin_unlock_irqrestore(&sched_lock, sflags);
     __asm__ volatile("sti");
     return pid;
+}
+
+/* ASLR entropy: TSC low bits mixed with the 100 Hz tick count and a
+ * per-exec counter, avalanche-multiplied. Consecutive execs always
+ * advance the counter and the TSC, so back-to-back slides differ with
+ * probability 1 - 1/range per dimension; across boots the TSC seeds
+ * it. Never zero for stack/brk: a zero slide is unobservable, and the
+ * aslr BDD verdict plus the aslr-no-entropy mutant pin that property. */
+static unsigned long aslr_counter = 0;
+static unsigned long aslr_mix(unsigned long salt) {
+    unsigned lo, hi;
+    unsigned long t;
+    __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
+    aslr_counter += 0x9E3779B9UL + salt;
+    t = (((unsigned long)hi << 32) | lo) ^ (unsigned long)sys_ticks;
+    return t ^ (aslr_counter * 0xBF58476D1CE4E5FUL);
+}
+
+unsigned long aslr_stack_bytes(void) { return 1 + aslr_mix(1) % 4096; }
+unsigned long aslr_brk_pages(void) { return 1 + aslr_mix(2) % 256; }
+unsigned long aslr_mmap_pages(void) { return aslr_mix(3) % 256; }
+unsigned long aslr_dyn_base(void) {
+    return (aslr_mix(4) % 48) * 0x200000UL;
+}
+
+/* do_execve() - replace the caller's ET_EXEC/ET_DYN image in place.
+ *
+ * The caller keeps its pid, parent, children, fd table and limits; the
+ * window, VMA context, brk/mmap view, user stack, FPU image, FSBASE and
+ * name are rebuilt around the new program. File content loads before
+ * cli (disk PIO must never run with the timer held off); everything
+ * from the fresh-window build through the iretq runs atomic like
+ * proc_spawn_elf_inner, then the new program is entered directly on a
+ * fresh kstack through user_trampoline. Success never returns.
+ *
+ * Scope, fail-closed: the caller must be an isolated non-CLONE_VM
+ * ring-3 proc (pid 0 has no own window; a thread calling execve
+ * would keep CLONE_VM on a private window, which the view switch
+ * does not serve, so it refuses with -ENOSYS). Sibling threads die
+ * with the old image like Linux: at adopt, every CLONE_VM sharer of
+ * the old window becomes a zombie for its parent. ET_REL refuses
+ * with -ENOEXEC (ring-0 extensions load only through SPAWN's trust
+ * gate). OOM at any pre-adopt step releases what was claimed and
+ * returns -12 with the caller byte-identical. No CLOEXEC in v1: the
+ * fd table is process-shared by design, so descriptors survive like
+ * fork; documented, not silent. envp is not carried: setup_user_stack
+ * builds argc/argv only, so every execve starts with an empty
+ * environment. */
+long do_execve(char *kpath, int kargc, char **kargv) {
+    proc_t *cur = proc_get(current_pid);
+    unsigned char *data = 0;
+    unsigned data_size = 0;
+    uint64_t new_cr3 = 0;
+    uint64_t old_cr3 = 0;
+    uint64_t fresh_top = 0;
+    void *entry = 0;
+    void *new_fpu = 0;
+    vma_ctx_t *new_vma = 0;
+    unsigned long saved_cr3 = 0;
+    unsigned long va;
+    unsigned long *sp = 0;
+    unsigned long brk = 0;
+    irqflags_t sflags, mflags;
+    int i;
+    if (!cur) return -38;
+    if (current_pid == 0) return -38;
+    if (cur->clone_flags & CLONE_VM) return -38;
+    if (!cur->ctx.cr3) return -38;
+    if (!kpath) return -14;
+    if (kargc < 0 || kargc > EXECVE_MAX_ARGS) return -7;
+    data = spawn_load_image(kpath, &data_size);
+    if (!data) return -2;
+    if (data_size < 4 ||
+        !(data[0] == 0x7F && data[1] == 'E' &&
+          data[2] == 'L' && data[3] == 'F')) {
+        kfree(data);
+        return -8;
+    }
+    if (data_size >= 18 && data[16] == 1 && data[17] == 0) {
+        kfree(data);
+        return -8;
+    }
+    __asm__ volatile("cli");
+    new_cr3 = pt_clone_user_empty();
+    if (!new_cr3) { __asm__ volatile("sti"); kfree(data); return -12; }
+    entry = load_exec_elf_into(data, data_size, new_cr3, &brk);
+    kfree(data);
+    data = 0;
+    if (!entry) { pt_free_user(new_cr3); __asm__ volatile("sti"); return -8; }
+    for (va = USER_STACK_BASE; va < USER_STACK_TOP; va += 0x1000) {
+        if (mm_user_ensure_page(new_cr3, va)) {
+            pt_free_user(new_cr3);
+            __asm__ volatile("sti");
+            return -12;
+        }
+    }
+    __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
+    __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)new_cr3) : "memory");
+    sp = setup_user_stack((char *)USER_STACK_BASE,
+                          USER_STACK_SIZE - aslr_stack_bytes(),
+                          kargc, kargv);
+    __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
+    if (!sp) { pt_free_user(new_cr3); __asm__ volatile("sti"); return -12; }
+    fresh_top = alloc_kstack();
+    if (!fresh_top) {
+        pt_free_user(new_cr3);
+        __asm__ volatile("sti");
+        return -12;
+    }
+    new_fpu = fpu_alloc_clean();
+    if (!new_fpu) {
+        free_kstack(fresh_top);
+        pt_free_user(new_cr3);
+        __asm__ volatile("sti");
+        return -12;
+    }
+    new_vma = vma_ctx_alloc();
+    if (!new_vma) {
+        kfree(new_fpu);
+        free_kstack(fresh_top);
+        pt_free_user(new_cr3);
+        __asm__ volatile("sti");
+        return -12;
+    }
+    old_cr3 = cur->ctx.cr3;
+    spin_lock_irqsave(&sched_lock, &sflags);
+    /* Linux semantics: sibling threads die with the old image. Any
+     * CLONE_VM proc still sharing the old window becomes a zombie
+     * for its parent instead of being freed under (spawns racing
+     * this lock either published first and die here, or run after
+     * and share the new window, which is correct). */
+    for (i = 0; i < MAX_PROCS; i++) {
+        if (i != current_pid && procs[i].state != PROC_FREE &&
+            procs[i].state != PROC_ZOMBIE &&
+            (procs[i].clone_flags & CLONE_VM) &&
+            procs[i].ctx.cr3 == old_cr3) {
+            procs[i].exit_code = -1;
+            procs[i].state = PROC_ZOMBIE;
+            procs[i].exited = 1;
+            if (procs[i].parent_pid >= 0) {
+                proc_t *par = proc_get(procs[i].parent_pid);
+                if (par && par != cur && par->state == PROC_BLOCKED)
+                    par->state = PROC_READY;
+            }
+        }
+    }
+    spin_lock_irqsave(&mm_lock, &mflags);
+    if (vma_owned(cur)) {
+        vma_ctx_save(cur->vma);
+        vma_ctx_free(cur->vma);
+    }
+    cur->vma = new_vma;
+    vma_load_proc(cur);
+    cur->brk = brk;
+    cur->brk_limit = USER_BRK_END;
+    if (DOOM_BACKBUF_ADDR < cur->brk_limit)
+        cur->brk_limit = DOOM_BACKBUF_ADDR;
+    cur->mmap_cur = USER_BRK_END;
+    if (DOOM_BACKBUF_ADDR < cur->mmap_cur)
+        cur->mmap_cur = DOOM_BACKBUF_ADDR;
+    {
+        unsigned long mp = aslr_mmap_pages() * 0x1000UL;
+        if (cur->mmap_cur > cur->brk_limit + mp)
+            cur->mmap_cur -= mp;
+    }
+    g_brk = cur->brk;
+    g_brk_limit = cur->brk_limit;
+    user_mmap_cur = cur->mmap_cur;
+    kstrncpy(cur->name, kpath, sizeof(cur->name) - 1);
+    cur->name[sizeof(cur->name) - 1] = 0;
+    cur->ctx.cr3 = new_cr3;
+    cur->fsbase = 0;
+    fpu_free_proc(cur);
+    cur->fpu_save = new_fpu;
+    {
+        unsigned long *frame = (unsigned long *)(fresh_top - 40);
+        frame[0] = (unsigned long)entry;
+        frame[1] = (unsigned long)(GDT64_USER_CODE_SEL | 3);
+        frame[2] = 0x202;
+        frame[3] = (unsigned long)sp;
+        frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
+    }
+    cur->ctx.rip = (uint64_t)user_trampoline;
+    cur->ctx.rsp = fresh_top - 40;
+    cur->ctx.rflags = 0x202;
+    spin_unlock_irqrestore(&mm_lock, mflags);
+    spin_unlock_irqrestore(&sched_lock, sflags);
+    __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)new_cr3) : "memory");
+    cow_release_window(old_cr3);
+    pt_free_user(old_cr3);
+    free_kstack(cur->kstack);
+    cur->kstack = fresh_top;
+    /* Ring-3 entry state mirrors a fresh spawn: KGS re-armed so the next
+     * entry swapgs finds this CPU, FSBASE zeroed (the new libc sets its
+     * own TLS), clean FPU live, GPRs zeroed like the kmemset spawn PCB
+     * (glibc _start reads argc/argv off the stack only, rdx must be 0
+     * or it registers garbage as rtld_fini). iretq restores IF=1. */
+    sched_rearm_kgs();
+    wrmsr(MSR_FSBASE, 0);
+    fpu_restore_from(new_fpu);
+    exec_enter(fresh_top - 40);
+    __builtin_unreachable();
 }
 
 /* Reap one zombie child of current_pid matching pid (-1 = any). Returns

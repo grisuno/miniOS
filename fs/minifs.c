@@ -846,6 +846,17 @@ int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)
         while (off < MINIFS_BLOCK_SIZE) {
             MiniFSDirEntry *de = (MiniFSDirEntry *)(buf + off);
             if (de->rec_len == 0) break;
+            /* A name longer than every caller buffer would smash the
+             * 64-byte name_out all six callers pass, and a lying
+             * name_len could read past the block: skip such entries
+             * (resolved paths cap leaves at 63, so nothing reachable
+             * is hidden; exact lookup still finds them). */
+            if (de->name_len >= RAMDISK_FNAME_LEN ||
+                off + MINIFS_DIR_ENTRY_HDR_SIZE + de->name_len >
+                MINIFS_BLOCK_SIZE) {
+                off += de->rec_len;
+                continue;
+            }
             if (de->inode != 0) {
                 if (count == index) {
                     kmemcpy(out, de, sizeof(MiniFSDirEntry));
@@ -1038,6 +1049,66 @@ int minifs_unlink(const char *path) {
     }
     if (parent_ino >= 0)
         minifs_dir_remove_entry(parent_ino, child_name);
+    minifs_journal_clear();
+    return 0;
+}
+
+/* Split a resolved path into its parent directory path ("" for root) and
+ * its leaf name. Single copy for minifs_rename; create/mkdir/unlink keep
+ * their inline splits untouched. */
+static int minifs_split_parent(const char *path, char *parent_out,
+                               char *name_out) {
+    char tmp[RAMDISK_FNAME_LEN];
+    char *name_start;
+    kstrncpy(tmp, path, RAMDISK_FNAME_LEN - 1);
+    tmp[RAMDISK_FNAME_LEN - 1] = 0;
+    name_start = tmp;
+    {
+        char *slash = kstrchr(tmp, '/');
+        while (slash) { name_start = slash + 1; slash = kstrchr(slash + 1, '/'); }
+    }
+    kstrncpy(name_out, name_start, MINIFS_MAX_FILENAME);
+    name_out[MINIFS_MAX_FILENAME] = 0;
+    if (!name_out[0]) return -1;
+    if (name_start > tmp) {
+        unsigned plen = (unsigned)(name_start - tmp - 1);
+        if (plen >= RAMDISK_FNAME_LEN) return -1;
+        kmemcpy(parent_out, tmp, plen);
+        parent_out[plen] = 0;
+    } else {
+        parent_out[0] = 0;
+    }
+    return 0;
+}
+
+int minifs_rename(const char *oldpath, const char *newpath) {
+    char old_parent[RAMDISK_FNAME_LEN], new_parent[RAMDISK_FNAME_LEN];
+    char old_name[MINIFS_MAX_FILENAME + 1], new_name[MINIFS_MAX_FILENAME + 1];
+    int old_pin, new_pin, child;
+    MiniFSInode st;
+    if (!oldpath || !newpath) return -1;
+    if (kstrcmp(oldpath, newpath) == 0) return 0;
+    if (minifs_split_parent(oldpath, old_parent, old_name) < 0) return -1;
+    if (minifs_split_parent(newpath, new_parent, new_name) < 0) return -1;
+    old_pin = old_parent[0] ? minifs_resolve_path(old_parent) : MINIFS_ROOT_INODE;
+    new_pin = new_parent[0] ? minifs_resolve_path(new_parent) : MINIFS_ROOT_INODE;
+    if (old_pin < 0 || new_pin < 0) return -1;
+    child = minifs_dir_lookup(old_pin, old_name);
+    if (child < 0) return -1;
+    if (fs_read_inode((unsigned)child, &st) < 0) return -1;
+    if (st.mode & MINIFS_S_IFDIR) return -1;
+    if (minifs_dir_lookup(new_pin, new_name) >= 0) return -1;
+    minifs_journal_begin(0);
+    minifs_journal_commit(0);
+    if (minifs_dir_remove_entry(old_pin, old_name) < 0) {
+        minifs_journal_abort();
+        return -1;
+    }
+    if (minifs_dir_add_entry(new_pin, new_name, child, MINIFS_FT_FILE) < 0) {
+        minifs_dir_add_entry(old_pin, old_name, child, MINIFS_FT_FILE);
+        minifs_journal_abort();
+        return -1;
+    }
     minifs_journal_clear();
     return 0;
 }

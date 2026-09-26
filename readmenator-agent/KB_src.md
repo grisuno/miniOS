@@ -61,6 +61,22 @@
   - `AES_SEEK_END` (macro, line 59) `#define AES_SEEK_END`
   - `AES_EXIT_FAIL` (macro, line 61) `#define AES_EXIT_FAIL`
 
+## progs/src/aslr.c
+- Layer: utility
+- Doc: aslr -- userspace ASLR probe (self-exec chain).
+- Language: c
+- Symbols:
+  - `as_sc` (function, line 10) `static long as_sc(long n, long a1, long a2, long a3)`
+  - `as_mmap` (function, line 18) `static long as_mmap(void)`
+  - `as_write` (function, line 31) `static void as_write(const char *s, unsigned long len)`
+  - `as_exit` (function, line 35) `static void as_exit(long code)`
+  - `as_execve` (function, line 40) `static void as_execve(const char *path, const char **argv)`
+  - `as_putu` (function, line 47) `static void as_putu(unsigned long v)`
+  - `as_atou` (function, line 59) `static unsigned long as_atou(const char *s)`
+  - `as_rsp` (function, line 68) `static unsigned long as_rsp(void)`
+  - `as_fail` (function, line 74) `static void as_fail(int step)`
+  - `lmain` (function, line 82) `int lmain(long argc, char **argv)`
+
 ## progs/src/audio.c
 - Layer: infrastructure
 - Language: c
@@ -84,6 +100,19 @@
   - `audio_stream_volume` (function, line 76) `void audio_stream_volume(int id, unsigned char vol)`
 - Depends on: `progs/minios_abi.h`
 
+## progs/src/burn.c
+- Layer: utility
+- Doc: burn -- SMP mixed-workload probe: brk plus mmap plus CPU burn with
+- Language: c
+- Symbols:
+  - `bn_sc` (function, line 6) `static long bn_sc(long n, long a1, long a2, long a3)`
+  - `bn_mmap` (function, line 14) `static long bn_mmap(unsigned long len)`
+  - `bn_write` (function, line 27) `static void bn_write(const char *s, unsigned long len)`
+  - `bn_exit` (function, line 31) `static void bn_exit(long code)`
+  - `bn_putu` (function, line 36) `static void bn_putu(unsigned long v)`
+  - `bn_fail` (function, line 48) `static void bn_fail(void)`
+  - `lmain` (function, line 53) `int lmain(void)`
+
 ## progs/src/cp.c
 - Layer: utility
 - Language: c
@@ -105,6 +134,29 @@
   - `read_cpl` (function, line 6) `static long read_cpl(void)`
   - `exit_now` (function, line 12) `static void exit_now(long code)`
   - `_start` (function, line 16) `void _start(void)`
+
+## progs/src/execho.c
+- Layer: utility
+- Doc: execho -- fork(57) + execve(59) + wait4(61) probe.
+- Language: c
+- Symbols:
+  - `path` (function, line 7) `* execs a ghost path (must fail -2, exits 42). The parent checks
+ * both statuses and prints "exe...`
+  - `ex_write` (function, line 18) `static void ex_write(const char *s, unsigned long len)`
+  - `ex_exit` (function, line 22) `static void ex_exit(long code)`
+  - `ex_fail` (function, line 27) `static void ex_fail(int step)`
+  - `lmain` (function, line 35) `int lmain(void)`
+  - `program` (function, line 5) `* * Proves the UNIX process composition the kernel lacked: a child * produced by fork replaces its image with execve and the parent * reaps the REPLACED program (not a clone). First child execs * bin/`
+
+## progs/src/execthr.c
+- Layer: utility
+- Doc: execthr -- execve kills sibling threads (Linux semantics).
+- Language: c
+- Symbols:
+  - `et_sc` (function, line 11) `static long et_sc(long n, long a1, long a2, long a3)`
+  - `et_exit` (function, line 19) `static void et_exit(long code)`
+  - `et_thread` (function, line 27) `static void et_thread(void)`
+  - `lmain` (function, line 33) `int lmain(void)`
 
 ## progs/src/fib.c
 - Layer: utility
@@ -523,6 +575,17 @@
   - `MMUTEX_SPINS` (macro, line 34) `#define MMUTEX_SPINS`
 - Depends on: `progs/minios_abi.h`
 - Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
+
+## progs/src/mvrn.c
+- Layer: utility
+- Doc: mvrn -- rename(82) syscall probe.
+- Language: c
+- Symbols:
+  - `mvrn_sc3` (function, line 9) `static long mvrn_sc3(long n, long a1, long a2, long a3)`
+  - `mvrn_write` (function, line 16) `static void mvrn_write(const char *s, unsigned long len)`
+  - `mvrn_exit` (function, line 20) `static void mvrn_exit(long code)`
+  - `mvrn_fail` (function, line 24) `static void mvrn_fail(int step)`
+  - `lmain` (function, line 32) `int lmain(void)`
 
 ## progs/src/nx.c
 - Layer: utility

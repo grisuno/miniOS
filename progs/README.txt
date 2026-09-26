@@ -1,6 +1,6 @@
 # MiniOS - minimal 64-bit kernel for x86_64
 
-Commands: help clear ls cat echo edit rm mkdir cd pwd ps load run poweroff
+Commands: help clear ls cat echo edit rm mv mkdir cd pwd ps load run poweroff
 Redirection: `<cmd> > <file>` stores the command's output in a ramdisk file
 
 The ramdisk is organized by kind:

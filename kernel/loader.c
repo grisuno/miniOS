@@ -1,5 +1,6 @@
 #include "kernel.h"
 #include "vga_fb.h"
+#include "sched.h"
 
 /* ================================================================
  *  ELF loader
@@ -456,6 +457,7 @@ void *load_exec_elf(void *data, unsigned size) {
     if (e->e_phnum > ELF_MAX_SEGMENTS) { kprintf("exec: too many segments %d\n", e->e_phnum); return 0; }
 
     unsigned long base = (e->e_type == ET_DYN) ? USER_LOAD_BASE : 0;
+    if (e->e_type == ET_DYN) base += aslr_dyn_base();
 
     Elf64_Phdr *ph = (Elf64_Phdr *)((char *)data + e->e_phoff);
     struct exec_range xr[ELF_MAX_SEGMENTS];
@@ -531,6 +533,17 @@ void *load_exec_elf(void *data, unsigned size) {
     user_mmap_cur = USER_BRK_END;
     if (DOOM_BACKBUF_ADDR < g_brk_limit) g_brk_limit = DOOM_BACKBUF_ADDR;
     if (DOOM_BACKBUF_ADDR < user_mmap_cur) user_mmap_cur = DOOM_BACKBUF_ADDR;
+    /* ASLR: the heap starts past a random pad (clamped, never past the
+     * cap) and the mmap cursor starts below the ceiling (clamped above
+     * brk_limit), so consecutive runs map differently. */
+    {
+        unsigned long pad = aslr_brk_pages() * 0x1000UL;
+        if (g_brk + pad <= g_brk_limit && g_brk + pad >= g_brk)
+            g_brk += pad;
+        pad = aslr_mmap_pages() * 0x1000UL;
+        if (user_mmap_cur > g_brk_limit + pad)
+            user_mmap_cur -= pad;
+    }
     vma_tree_init();
     {
         int was = redirect_suspend();
@@ -578,6 +591,7 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
     if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize) { kprintf("exec_into: phnum\n"); return 0; }
     if (e->e_phnum > ELF_MAX_SEGMENTS) { kprintf("exec_into: too many segs\n"); return 0; }
     base = (e->e_type == ET_DYN) ? USER_LOAD_BASE : 0;
+    if (e->e_type == ET_DYN) base += aslr_dyn_base();
     ph = (Elf64_Phdr *)((char *)data + e->e_phoff);
     __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
     for (i = 0; i < e->e_phnum; i++) {
@@ -639,8 +653,11 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
     {
         unsigned long b = ALIGN_UP(max_end, 0x1000);
         unsigned long lim = USER_BRK_END;
+        unsigned long pad;
         if (DOOM_BACKBUF_ADDR < lim) lim = DOOM_BACKBUF_ADDR;
         if (b > lim) { kprintf("exec_into: brk over cap\n"); goto fail; }
+        pad = aslr_brk_pages() * 0x1000UL;
+        if (b + pad <= lim && b + pad >= b) b += pad;
         *brk_out = b;
     }
     return (void *)(base + e->e_entry);

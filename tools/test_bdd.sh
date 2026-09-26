@@ -233,6 +233,16 @@ expect "thdemo: PASS"
 expect "kstack: ok"
 refute "OVERFLOW"
 
+scenario_smp "isolated procs run correct beside AP threads" "mrun bin/burn.elf bin/burn.elf bin/burn.elf bin/burn.elf
+smp
+kstack
+poweroff"
+expect_count 4 "burn: done 417386880"
+expect "smp: 2 CPU(s)"
+expect "kstack: ok"
+refute "burn: FAIL"
+refute "OVERFLOW"
+
 scenario_smp "mthreads producer-consumer passes on both CPUs" "run thdemo
 poweroff"
 expect "thdemo: PASS"
@@ -350,6 +360,11 @@ poweroff"
 expect "nx: jumping to stack"
 expect "EXCEPTION 0000000e err=00000015"
 refute "exit code: 0"
+
+scenario "rename syscall moves files and fails closed" "run bin/mvrn.elf
+poweroff"
+expect "mvrn: ok"
+expect "exit code: 0"
 
 scenario "mmap/munmap reclaim lets a free/reallocate working set survive" "mmreuse.elf
 poweroff"
@@ -522,6 +537,9 @@ expect_count 2 "volume:"
 scenario "TAB prefers the .elf binary over data files" $'lxhello\t\npoweroff'
 expect "Hello"
 
+scenario "TAB completes argument paths from MiniFS" $'echo argcomplete-42 > argonly_dir/probe.txt\ncat argonly_dir/pro\t\npoweroff'
+expect_count 2 "argcomplete-42"
+
 scenario "editor guards unsaved changes on quit" "edit guard.txt
 a
 work in progress
@@ -641,6 +659,23 @@ poweroff"
 expect "fork: child ok"
 expect "^fork: ok$"
 expect "exit code: 0"
+
+scenario "fork plus execve replaces the child image" "mrun bin/execho.elf
+poweroff"
+expect "Hello"
+expect "execho: ok"
+expect "exit code: 0"
+
+scenario "execve kills sibling threads with the old image" "mrun bin/execthr.elf
+poweroff"
+expect "Hello"
+expect "exit code: 2"
+
+scenario "consecutive execs map stack, brk and mmap differently" "mrun bin/aslr.elf
+poweroff"
+expect "aslr: ok"
+expect "exit code: 0"
+refute "aslr: SAME"
 
 # virtio-blk proves the fast path against a copy of the image attached
 # as a second drive (same file twice is write-locked, so the scenario
@@ -1213,6 +1248,41 @@ expect "removed doomed.txt"
 expect "cat: doomed.txt: no such file"
 expect "rm: doomed.txt: no such file"
 expect "rm: work: is a directory"
+
+scenario "mv renames files and refuses bad moves" "mkdir work
+edit mvold.txt
+a
+hello-mv
+x
+mv mvold.txt mvnew.txt
+cat mvnew.txt
+cat mvold.txt
+mv ghost.txt mvnew2.txt
+mv mvnew.txt mvnew.txt
+mv work mvnew3.txt
+poweroff"
+expect "renamed mvold.txt to mvnew.txt"
+expect_count 2 "hello-mv"
+expect "cat: mvold.txt: no such file"
+expect "mv: ghost.txt: no such file"
+expect "renamed mvnew.txt to mvnew.txt"
+expect "mv: work: is a directory"
+
+scenario "fat lists and reads a host-produced FAT32 image" "fat ls etc/fat.img /
+fat cat etc/fat.img /HELLO.TXT
+fat cat etc/fat.img /SUB/NOTE.TXT
+poweroff"
+expect "  HELLO.TXT"
+expect "  SUB/"
+expect "hello from fat32"
+expect "fat32 note line"
+
+scenario "fat refuses missing files and non-fat images" "fat cat etc/fat.img /NOPE.TXT
+echo x > bad.img
+fat ls bad.img /
+poweroff"
+expect "fat: /NOPE.TXT: no such file"
+expect "fat: bad.img: cannot list /"
 
 scenario "ps lists registered programs" "load objects/hello.o
 ps

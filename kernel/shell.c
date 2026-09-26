@@ -2,6 +2,7 @@
 #include "net.h"
 #include "httpd.h"
 #include "minifs.h"
+#include "fat32.h"
 #include "drivers/virtio_blk.h"
 #include "sched.h"
 #include "smp.h"
@@ -211,8 +212,8 @@ static const char *shell_name_base(const char *path) {
  * for the completer instead of hiding behind the file tiers). */
 static const char *shell_builtin_names[] = {
     "bootlog", "cat", "catfs", "cd", "clear", "clip", "clock", "date", "desktop",
-    "echo", "edit",    "fx", "gdb", "gfx", "hash", "help", "httpd", "irqstat", "jobs", "kbd", "kill", "kstack",
-    "load", "ls", "lsfs", "ltrace", "mem", "minifetch", "mkdir", "mount", "mrun", "net",
+    "echo", "edit", "fat", "fx", "gdb", "gfx", "hash", "help", "httpd", "irqstat", "jobs", "kbd", "kill", "kstack",
+    "load", "ls", "lsfs", "ltrace", "mem", "minifetch",     "mkdir", "mount", "mrun", "mv", "net",
     "nice", "panic", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
     "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
     "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk",
@@ -248,6 +249,79 @@ static void shell_complete_replace(char *buf, int size, int *pos,
     *pos = (int)(head + tlen + tail);
     buf[*pos] = 0;
     shell_line_repaint(buf, size, *pos);
+}
+
+/* Complete an argument word from MiniFS (the ramdisk loop at the call
+ * site covers the ramdisk half). The word's directory part resolves
+ * against the cwd; entries of that MiniFS directory matching the leaf
+ * prefix are offered as full word-relative paths, directories with a
+ * trailing '/'. At most 8 entries in static storage, never truncated,
+ * duplicates of ramdisk offers skipped. */
+static void shell_complete_minifs_arg(const char *word, unsigned long wlen,
+                                      char **comps, int *ncomps) {
+    static char tab_arg[8][RAMDISK_FNAME_LEN];
+    char dir[RAMDISK_FNAME_LEN], leaf[RAMDISK_FNAME_LEN];
+    char cdir[RAMDISK_FNAME_LEN];
+    unsigned long slash = wlen, leaflen = 0, k;
+    int narg = 0, idx = 0, dir_ino;
+    MiniFSDirEntry de;
+    MiniFSInode st;
+    char mname[RAMDISK_FNAME_LEN];
+    unsigned long dl;
+    for (k = 0; k < wlen; k++)
+        if (word[k] == '/') slash = k;
+    if (slash < wlen) {
+        if (slash >= sizeof(dir)) return;
+        kmemcpy(dir, word, slash);
+        dir[slash] = 0;
+        leaflen = wlen - slash - 1;
+        if (leaflen >= sizeof(leaf)) return;
+        kmemcpy(leaf, word + slash + 1, leaflen);
+        leaf[leaflen] = 0;
+    } else {
+        dir[0] = 0;
+        if (wlen >= sizeof(leaf)) return;
+        kmemcpy(leaf, word, wlen);
+        leaf[wlen] = 0;
+    }
+    if (dir[0]) {
+        if (!fs_resolve(dir, cdir, sizeof(cdir))) return;
+    } else {
+        kmemcpy(cdir, fs_cwd, sizeof(cdir));
+    }
+    dl = kstrlen(cdir);
+    if (dl > 0 && cdir[dl - 1] == '/') cdir[dl - 1] = 0;
+    if (!minifs_is_mounted()) return;
+    dir_ino = minifs_resolve_path(cdir);
+    if (dir_ino < 0) return;
+    if (minifs_stat(dir_ino, &st) < 0) return;
+    if ((st.mode & MINIFS_S_IFMT) != MINIFS_S_IFDIR) return;
+    while (narg < 8 && *ncomps < 32 &&
+           minifs_dir_read(dir_ino, idx, &de, mname) == 0) {
+        unsigned long ml, base;
+        int isdir = 0, dup = 0, j;
+        MiniFSInode est;
+        idx++;
+        if (de.inode == 0) continue;
+        if (kstrncmp(mname, leaf, leaflen) != 0) continue;
+        ml = kstrlen(mname);
+        if (minifs_stat(de.inode, &est) == 0 &&
+            (est.mode & MINIFS_S_IFMT) == MINIFS_S_IFDIR) isdir = 1;
+        base = (slash < wlen) ? slash + 1 : 0;
+        if (base + ml + (unsigned long)(isdir ? 1 : 0) + 1 > sizeof(tab_arg[0]))
+            continue;
+        kmemcpy(tab_arg[narg], word, base);
+        kmemcpy(tab_arg[narg] + base, mname, ml + 1);
+        if (isdir) {
+            tab_arg[narg][base + ml] = '/';
+            tab_arg[narg][base + ml + 1] = 0;
+        }
+        for (j = 0; j < *ncomps; j++)
+            if (kstrcmp(comps[j], tab_arg[narg]) == 0) { dup = 1; break; }
+        if (dup) continue;
+        comps[(*ncomps)++] = tab_arg[narg];
+        narg++;
+    }
 }
 
 static void shell_readline(void) {
@@ -626,6 +700,13 @@ static void shell_readline_hist(char *buf, int size) {
                             kstrncmp(base, word_start, wlen) == 0)
                             comps[ncomps++] = files[i]->name;
                     }
+                    /* Argument words complete MiniFS paths too: without
+                     * this a file created under a MiniFS-only directory
+                     * (every redirect outside the ramdisk namespace) can
+                     * never be TAB-completed. */
+                    if (ncomps < 32)
+                        shell_complete_minifs_arg(word_start, wlen, comps,
+                                                  &ncomps);
                 }
             }
             if (ncomps == 0) { vga_putc('\a'); continue; }
@@ -1967,15 +2048,13 @@ static int shell_has_child(int pid) {
 
 static void shell_cmd_wait(int argc, char **argv) {
     if (argc > 1) {
-        long pv;
         int pid;
         int one[1];
         int code;
-        if (!shell_parse_long(argv[1], &pv) || pv <= 0 || pv >= MAX_PROCS) {
+        if (!shell_parse_pid(argv[1], 1, &pid)) {
             vga_puts("usage: wait [pid]\n");
             return;
         }
-        pid = (int)pv;
         one[0] = pid;
         if (!shell_reap_one(pid, &code)) {
             if (!shell_has_child(pid)) {
@@ -2004,13 +2083,11 @@ static void shell_cmd_wait(int argc, char **argv) {
 
 static void shell_cmd_kill(int argc, char **argv) {
     int pid, i, mine = 0;
-    long pv;
     if (argc < 2) { vga_puts("usage: kill <pid>\n"); return; }
-    if (!shell_parse_long(argv[1], &pv) || pv <= 0 || pv >= MAX_PROCS) {
+    if (!shell_parse_pid(argv[1], 1, &pid)) {
         vga_puts("usage: kill <pid>\n");
         return;
     }
-    pid = (int)pv;
     spin_lock(&sched_lock);
     for (i = 0; i < MAX_PROCS; i++)
         if (procs[i].state != PROC_FREE && procs[i].pid == pid &&
@@ -2065,13 +2142,11 @@ static void shell_cmd_vmmap(int argc, char **argv) {
     vma_node_t *live = VMA_NIL;
     char pname[32];
     int found = 0;
-    long pv;
     if (argc > 1) {
-        if (!shell_parse_long(argv[1], &pv) || pv < 0 || pv >= MAX_PROCS) {
+        if (!shell_parse_pid(argv[1], 0, &pid)) {
             kprintf("vmmap: pid %s out of range 0..%d\n", argv[1], MAX_PROCS - 1);
             return;
         }
-        pid = (int)pv;
     }
     spin_lock(&sched_lock);
     if (procs[pid].state == PROC_FREE) {
@@ -2231,6 +2306,17 @@ int shell_parse_long(const char *s, long *out) {
     } else {
         *out = (long)v;
     }
+    return 1;
+}
+
+/* Bounded pid parse shared by wait/kill/vmmap: one range check instead of
+ * three open-coded copies. min_pid is 1 for job commands (pid 0 is the
+ * shell view, never a job) and 0 for inspectors like vmmap. */
+int shell_parse_pid(const char *s, int min_pid, int *out) {
+    long v;
+    if (!shell_parse_long(s, &v)) return 0;
+    if (v < min_pid || v >= MAX_PROCS) return 0;
+    *out = (int)v;
     return 1;
 }
 
@@ -2669,6 +2755,8 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  mkdir <name>       create a directory entry\n");
         vga_puts("  rmdir <dir>        remove an empty directory\n");
         vga_puts("  rm <file>          delete a ramdisk file\n");
+        vga_puts("  mv <src> <dst>    rename a file within its filesystem\n");
+        vga_puts("  fat ls|cat        read-only FAT32 loopback image browser\n");
         vga_puts("  rlimit [k] [v]     caps: as bytes, cpu ticks, nofile count\n");
         vga_puts("  nice [n]           scheduler niceness -20..19\n");
         vga_puts("  seccomp <op> [n]   deny/allow MiniOS syscalls 200..231\n");
@@ -2686,7 +2774,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  bootlog            timestamped boot phases\n");
         vga_puts("  gdb [regs|dump|qemu] in-OS inspector; remote GDB via `make gdb`\n");
         vga_puts("  panic              paint the panic screen (demo, no halt)\n");
-        vga_puts("  mount [p driver]   list VFS mounts or mount ramdisk|minifs|mem\n");
+        vga_puts("  mount [p driver]   list VFS mounts or mount ramdisk|minifs|mem|fat\n");
         vga_puts("  unmount <prefix>   drop a VFS mount (busy refuses, / pinned)\n");
         vga_puts("  vfstest            prove mount/unmount/remount on mem:\n");
         vga_puts("  httpd [--once] <port> [root] static file server (GET, VFS root)\n");
@@ -2858,6 +2946,24 @@ void shell_exec_builtin(int argc, char **argv) {
         }
         kprintf("rm: %s: no such file\n", argv[1]);
     }
+    else if (kstrcmp(argv[0], "mv") == 0) {
+        /* `mv <src> <dst>`: one file, same filesystem, through fs_rename
+         * (ramdisk in-place, MiniFS entry move, no data copy). Refuses
+         * directories, a missing src, an existing dst (no silent
+         * overwrite) and cross-filesystem moves, each with its own
+         * diagnostic, never a half-moved file. */
+        char src[RAMDISK_FNAME_LEN], dst[RAMDISK_FNAME_LEN];
+        int r;
+        if (argc < 3) { vga_puts("usage: mv <src> <dst>\n"); return; }
+        if (!shell_resolve_arg("mv", argv[1], "no such file", src)) return;
+        if (!shell_resolve_arg("mv", argv[2], "name too long", dst)) return;
+        r = fs_rename(src, dst);
+        if (r == 0) { kprintf("renamed %s to %s\n", src, dst); return; }
+        if (r == -21) { kprintf("mv: %s: is a directory\n", argv[1]); return; }
+        if (r == -17) { kprintf("mv: %s: already exists\n", argv[2]); return; }
+        if (r == -18) { kprintf("mv: %s: other filesystem or missing directory\n", argv[2]); return; }
+        kprintf("mv: %s: no such file\n", argv[1]);
+    }
     /* `mount [prefix driver]`: list the live VFS mounts, or mount a
      * known driver (ramdisk, minifs, mem) under a new prefix.
      * `unmount <prefix>`: drop a mount; busy (open handles) refuses
@@ -2968,6 +3074,71 @@ void shell_exec_builtin(int argc, char **argv) {
         }
         vfs_close(&f);
         vga_puts("vfstest: remount ok\n");
+    }
+    /* `fat ls <img> [dir]` / `fat cat <img> <file>`: read-only FAT32
+     * loopback. The image is an ordinary file (etc/fat.img on MiniFS);
+     * directory entries list through fat32_list, file bytes stream
+     * through the fat: VFS driver ("img:fatpath" per open, registered
+     * at boot beside mem:), 4 KB heap chunks so a hostile size can
+     * never drive an oversized alloc. Bad magic, missing files and
+     * overlong names are diagnostics. */
+    else if (kstrcmp(argv[0], "fat") == 0) {
+        if (argc >= 2 && kstrcmp(argv[1], "ls") == 0) {
+            static char names[FAT32_LIST_CAP][FAT32_NAME_MAX];
+            static int isdir[FAT32_LIST_CAP];
+            char img[RAMDISK_FNAME_LEN];
+            const char *dir = (argc >= 4) ? argv[3] : "/";
+            int n, i;
+            if (argc < 3) { vga_puts("usage: fat ls <img> [dir]\n"); return; }
+            if (!shell_resolve_arg("fat", argv[2], "no such image", img))
+                return;
+            n = fat32_list(img, dir, names, isdir, FAT32_LIST_CAP);
+            if (n < 0) { kprintf("fat: %s: cannot list %s\n", argv[2], dir); return; }
+            for (i = 0; i < n; i++) {
+                vga_puts("  ");
+                vga_puts(names[i]);
+                vga_putc('\n');
+            }
+            return;
+        }
+        if (argc >= 2 && kstrcmp(argv[1], "cat") == 0) {
+            char img[RAMDISK_FNAME_LEN];
+            char vpath[5 + RAMDISK_FNAME_LEN + 1 + RAMDISK_FNAME_LEN];
+            vfs_file_t f;
+            char *chunk;
+            int n;
+            if (argc < 4) { vga_puts("usage: fat cat <img> <file>\n"); return; }
+            if (!shell_resolve_arg("fat", argv[2], "no such image", img))
+                return;
+            if (kstrlen(argv[3]) >= RAMDISK_FNAME_LEN) {
+                kprintf("fat: %s: name too long\n", argv[3]);
+                return;
+            }
+            /* "fat:/img:file": the VFS prefix match needs '/' after
+             * "fat:", stripped before the driver splits img from file. */
+            {
+                unsigned long il = kstrlen(img), fl = kstrlen(argv[3]);
+                kmemcpy(vpath, "fat:/", 5);
+                kmemcpy(vpath + 5, img, il);
+                vpath[5 + il] = ':';
+                kmemcpy(vpath + 6 + il, argv[3], fl + 1);
+            }
+            if (vfs_open(vpath, 0, &f) != 0) {
+                kprintf("fat: %s: no such file\n", argv[3]);
+                return;
+            }
+            chunk = (char *)kmalloc(4096);
+            if (!chunk) { vfs_close(&f); vga_puts("fat: out of memory\n"); return; }
+            for (;;) {
+                n = vfs_read(&f, chunk, 4096);
+                if (n <= 0) break;
+                for (int i = 0; i < n; i++) vga_putc(chunk[i]);
+            }
+            vfs_close(&f);
+            kfree(chunk);
+            return;
+        }
+        vga_puts("usage: fat ls <img> [dir] | fat cat <img> <file>\n");
     }
     /* `clip [text...|clear]`: the shared text clipboard (terminal
      * copy, vedit paste). Bare `clip` prints the slot, `clip <words>`
