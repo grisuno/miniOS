@@ -9,7 +9,8 @@ root on the host unless marked `miniOS>` (inside the guest).
 
 Host tools: `gcc`, binutils (`ld`, `objcopy`, `xxd`), `qemu-system-x86_64`,
 `python3`, `git`, mtools plus `mkfs.vfat` (FAT fixtures: `etc/fat.img`
-for the `fat` builtin, `uefi.img` for the UEFI stub). No absolute paths
+for the `fat` builtin, `uefi.img` for the UEFI stub), e2fsprogs
+(`mkfs.ext4`, `etc/ext4.img` for the `ext4` builtin). No absolute paths
 are assumed anywhere in the build;
 every external checkout location is overridable (see `make sources-status`).
 

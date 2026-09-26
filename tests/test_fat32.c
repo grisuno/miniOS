@@ -19,6 +19,7 @@
 #include "kernel.h"
 #include "minifs.h"
 #include "fat32.h"
+#include "fsimg.h"
 
 void *kmalloc(unsigned long size) {
     return malloc((unsigned long)size ? (unsigned long)size : 1);
@@ -98,6 +99,22 @@ int minifs_read(int ino, void *buf, unsigned off, unsigned len) {
     return -1;
 }
 
+int ide_present(void) {
+    return 0;
+}
+
+unsigned int ide_total_sectors(void) {
+    return 0;
+}
+
+int ide_read_sectors(unsigned int lba, unsigned int count, void *buf) {
+    (void)lba;
+    (void)count;
+    (void)buf;
+    return -1;
+}
+
+#include "fs/fsimg.c"
 #include "fs/fat32.c"
 
 static int failures = 0;

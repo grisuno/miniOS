@@ -113,7 +113,7 @@ SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx
 # entry leaked execve-never-replaces into the tree (rc = -38 shipped
 # in os.img), caught by the anchor checker, never by review.
 SOURCES="$SOURCES kernel/syscalls_proc.c kernel/loader.c kernel/exec.c"
-SOURCES="$SOURCES fs/fat32.c"
+SOURCES="$SOURCES fs/fat32.c fs/ext4.c"
 
 restore_sources() {
     local f
@@ -194,6 +194,9 @@ tab-minifs-arg-dropped | s/if (ncomps < 32)/if (0)/ | kernel/shell.c
 execve-never-replaces | s/rc = do_execve(resolved, kargc, kargv);/rc = -38;/ | kernel/syscalls_proc.c
 aslr-no-entropy | s/return t ^ (aslr_counter \* 0xBF58476D1CE4E5FUL);/return 0;/ | kernel/sched.c
 fat-lfn-check-inverted | s/if (de\[11\] == 0x0F) return 0;/if (de[11] != 0x0F) return 0;/ | fs/fat32.c
+fat-dev-never-found | s/fat_dev_cached = (long)base;/fat_dev_cached = -2;/ | fs/fat32.c
+ext4-magic-unchecked | s/if (ext_ld16(sb + 56) != EXT4_MAGIC) return -1;/if (0) return -1;/ | fs/ext4.c
+ext4-dev-never-found | s/ext_dev_cached = (long)base;/ext_dev_cached = -2;/ | fs/ext4.c
 rlimit-garbage-accepted | s/if (!shell_parse_long(argv\\[2\\], &lv) || lv < 0) {/if (0) {/ | kernel/shell.c
 sleep-garbage-accepted | s/if (!shell_parse_long(argv\\[1\\], &sv)) {/if (0) {/ | kernel/shell.c
 rtc-always-fails | s/    return 1;/    return 0;/ | drivers/rtc.c
@@ -546,6 +549,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # slice proving VFS wiring, mount table and builtin.
             make -C "$HERE" test-fat > "$BACKUP/suite.log" 2>&1 && \
             MATCH="fat " FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
+            ;;
+        fs/ext4.c)
+            # Host parser suite first (no boot), then the live ext4
+            # slice proving VFS wiring, mount table and builtin.
+            make -C "$HERE" test-ext4 > "$BACKUP/suite.log" 2>&1 && \
+            MATCH="ext4 " FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
             ;;
         headers/vga_fx.h|tests/test_fx.c)
             make -C "$HERE" test-fx > "$BACKUP/suite.log" 2>&1

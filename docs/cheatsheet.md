@@ -18,6 +18,8 @@ the guest the prompt is `miniOS>`; in the editor it is `edit>`.
 | `rm <file>` | delete a file (ramdisk first, MiniFS fallback; directories refused, use `rmdir`) |
 | `mv <src> <dst>` | rename within one filesystem (existing dst, directories and cross-filesystem moves refused) |
 | `fat ls <img> [dir]` / `fat cat <img> <file>` | read-only FAT32 loopback image browser (`etc/fat.img` ships one) |
+| `fat ls hd0 /` / `fat cat hd0 <file>` | same driver on a real disk partition (MBR FAT32 entry first, magic scan fallback) |
+| `ext4 ls <img> [dir]` / `ext4 cat <img> <file>` | read-only ext4 loopback/partition browser (`etc/ext4.img` ships one, `hd0` probes `0x83`) |
 | `echo <text>` | print text |
 | `edit <file>` | line editor over ramdisk/MiniFS files |
 | `run <name\|file>` | run a program: `.o` at ring 0, `.elf` at ring 3, `.cvm` on the interpreter |

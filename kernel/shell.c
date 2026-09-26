@@ -3,6 +3,7 @@
 #include "httpd.h"
 #include "minifs.h"
 #include "fat32.h"
+#include "ext4.h"
 #include "drivers/virtio_blk.h"
 #include "sched.h"
 #include "smp.h"
@@ -212,7 +213,7 @@ static const char *shell_name_base(const char *path) {
  * for the completer instead of hiding behind the file tiers). */
 static const char *shell_builtin_names[] = {
     "bootlog", "cat", "catfs", "cd", "clear", "clip", "clock", "date", "desktop",
-    "echo", "edit", "fat", "fx", "gdb", "gfx", "hash", "help", "httpd", "irqstat", "jobs", "kbd", "kill", "kstack",
+    "echo", "edit", "ext4", "fat", "fx", "gdb", "gfx", "hash", "help", "httpd", "irqstat", "jobs", "kbd", "kill", "kstack",
     "load", "ls", "lsfs", "ltrace", "mem", "minifetch",     "mkdir", "mount", "mrun", "mv", "net",
     "nice", "panic", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
     "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
@@ -2742,6 +2743,54 @@ static void shell_httpd_selftest(void) {
     vga_puts("httpd: selftest ok\n");
 }
 
+/* Stream one file from a cross-filesystem VFS driver (fat:, ext4:)
+ * to the console: "drv:/img:path" per open (the prefix match needs
+ * '/' after "drv:", stripped before the driver splits img from
+ * path), 4 KB heap chunks so a hostile size can never drive an
+ * oversized alloc. Shared by the fat and ext4 builtins instead of
+ * one copy each. */
+static void shell_cross_cat(const char *drv, const char *imgarg,
+                            const char *patharg) {
+    char img[RAMDISK_FNAME_LEN];
+    char vpath[5 + RAMDISK_FNAME_LEN + 1 + EXT4_PATH_MAX];
+    vfs_file_t f;
+    char *chunk;
+    int n;
+    unsigned long dl = kstrlen(drv);
+    if (dl == 0 || dl > 4) return;
+    if (!shell_resolve_arg(drv, imgarg, "no such image", img)) return;
+    if (kstrlen(patharg) >= EXT4_PATH_MAX) {
+        kprintf("%s: %s: name too long\n", drv, patharg);
+        return;
+    }
+    {
+        unsigned long il = kstrlen(img), fl = kstrlen(patharg), k;
+        for (k = 0; k < dl; k++) vpath[k] = drv[k];
+        vpath[dl] = ':';
+        vpath[dl + 1] = '/';
+        kmemcpy(vpath + dl + 2, img, il);
+        vpath[dl + 2 + il] = ':';
+        kmemcpy(vpath + dl + 3 + il, patharg, fl + 1);
+    }
+    if (vfs_open(vpath, 0, &f) != 0) {
+        kprintf("%s: %s: no such file\n", drv, patharg);
+        return;
+    }
+    chunk = (char *)kmalloc(4096);
+    if (!chunk) {
+        vfs_close(&f);
+        kprintf("%s: out of memory\n", drv);
+        return;
+    }
+    for (;;) {
+        n = vfs_read(&f, chunk, 4096);
+        if (n <= 0) break;
+        for (int i = 0; i < n; i++) vga_putc(chunk[i]);
+    }
+    vfs_close(&f);
+    kfree(chunk);
+}
+
 void shell_exec_builtin(int argc, char **argv) {
     if (kstrcmp(argv[0], "help") == 0) {
         vga_puts("Commands: help clear ls lsfs cat catfs echo edit vedit rm mkdir cd pwd ps load run sh\n");
@@ -2757,6 +2806,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  rm <file>          delete a ramdisk file\n");
         vga_puts("  mv <src> <dst>    rename a file within its filesystem\n");
         vga_puts("  fat ls|cat        read-only FAT32 loopback image browser\n");
+        vga_puts("  ext4 ls|cat       read-only ext4 loopback/partition browser\n");
         vga_puts("  rlimit [k] [v]     caps: as bytes, cpu ticks, nofile count\n");
         vga_puts("  nice [n]           scheduler niceness -20..19\n");
         vga_puts("  seccomp <op> [n]   deny/allow MiniOS syscalls 200..231\n");
@@ -2774,7 +2824,7 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("  bootlog            timestamped boot phases\n");
         vga_puts("  gdb [regs|dump|qemu] in-OS inspector; remote GDB via `make gdb`\n");
         vga_puts("  panic              paint the panic screen (demo, no halt)\n");
-        vga_puts("  mount [p driver]   list VFS mounts or mount ramdisk|minifs|mem|fat\n");
+        vga_puts("  mount [p driver]   list VFS mounts or mount ramdisk|minifs|mem|fat|ext4\n");
         vga_puts("  unmount <prefix>   drop a VFS mount (busy refuses, / pinned)\n");
         vga_puts("  vfstest            prove mount/unmount/remount on mem:\n");
         vga_puts("  httpd [--once] <port> [root] static file server (GET, VFS root)\n");
@@ -3102,43 +3152,40 @@ void shell_exec_builtin(int argc, char **argv) {
             return;
         }
         if (argc >= 2 && kstrcmp(argv[1], "cat") == 0) {
-            char img[RAMDISK_FNAME_LEN];
-            char vpath[5 + RAMDISK_FNAME_LEN + 1 + RAMDISK_FNAME_LEN];
-            vfs_file_t f;
-            char *chunk;
-            int n;
             if (argc < 4) { vga_puts("usage: fat cat <img> <file>\n"); return; }
-            if (!shell_resolve_arg("fat", argv[2], "no such image", img))
-                return;
-            if (kstrlen(argv[3]) >= RAMDISK_FNAME_LEN) {
-                kprintf("fat: %s: name too long\n", argv[3]);
-                return;
-            }
-            /* "fat:/img:file": the VFS prefix match needs '/' after
-             * "fat:", stripped before the driver splits img from file. */
-            {
-                unsigned long il = kstrlen(img), fl = kstrlen(argv[3]);
-                kmemcpy(vpath, "fat:/", 5);
-                kmemcpy(vpath + 5, img, il);
-                vpath[5 + il] = ':';
-                kmemcpy(vpath + 6 + il, argv[3], fl + 1);
-            }
-            if (vfs_open(vpath, 0, &f) != 0) {
-                kprintf("fat: %s: no such file\n", argv[3]);
-                return;
-            }
-            chunk = (char *)kmalloc(4096);
-            if (!chunk) { vfs_close(&f); vga_puts("fat: out of memory\n"); return; }
-            for (;;) {
-                n = vfs_read(&f, chunk, 4096);
-                if (n <= 0) break;
-                for (int i = 0; i < n; i++) vga_putc(chunk[i]);
-            }
-            vfs_close(&f);
-            kfree(chunk);
+            shell_cross_cat("fat", argv[2], argv[3]);
             return;
         }
         vga_puts("usage: fat ls <img> [dir] | fat cat <img> <file>\n");
+    }
+    /* `ext4 ls <img> [dir]` / `ext4 cat <img> <file>`: read-only ext4
+     * loopback and disk partitions, the same contract as `fat` over
+     * a harder format (extents, block groups, linear dirs). */
+    else if (kstrcmp(argv[0], "ext4") == 0) {
+        if (argc >= 2 && kstrcmp(argv[1], "ls") == 0) {
+            static char names[EXT4_LIST_CAP][EXT4_NAME_MAX + 1];
+            static int isdir[EXT4_LIST_CAP];
+            char img[RAMDISK_FNAME_LEN];
+            const char *dir = (argc >= 4) ? argv[3] : "/";
+            int n, i;
+            if (argc < 3) { vga_puts("usage: ext4 ls <img> [dir]\n"); return; }
+            if (!shell_resolve_arg("ext4", argv[2], "no such image", img))
+                return;
+            n = ext4_list(img, dir, names, isdir, EXT4_LIST_CAP);
+            if (n < 0) { kprintf("ext4: %s: cannot list %s\n", argv[2], dir); return; }
+            for (i = 0; i < n; i++) {
+                vga_puts("  ");
+                vga_puts(names[i]);
+                vga_putc('\n');
+            }
+            return;
+        }
+        if (argc >= 2 && kstrcmp(argv[1], "cat") == 0) {
+            if (argc < 4) { vga_puts("usage: ext4 cat <img> <file>\n"); return; }
+            shell_cross_cat("ext4", argv[2], argv[3]);
+            return;
+        }
+        vga_puts("usage: ext4 ls <img> [dir] | ext4 cat <img> <file>\n");
     }
     /* `clip [text...|clear]`: the shared text clipboard (terminal
      * copy, vedit paste). Bare `clip` prints the slot, `clip <words>`

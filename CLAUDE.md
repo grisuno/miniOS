@@ -2131,6 +2131,12 @@ on the IDE disk):
   4 KB scratch buffer, never `block_read` straight into the 48-byte
   superblock (the old code smeared 4096 bytes over the neighbouring
   `.bss` on every boot).
+- **Directory reads distrust entry lengths.** `minifs_dir_read` skips
+  entries whose name would overflow the 64-byte buffer every caller
+  passes or run past the block (resolved paths cap leaves at 63, so
+  nothing reachable is hidden; exact lookup still finds them). All
+  six callers shared the smash before the guard landed at the choke
+  point.
 - `pwd` prints the cwd (`/` for root). `cd [dir]` changes it: bare `cd` goes
   to root, `cd ..` pops one level, anything else resolves against the current
   cwd. A directory is any ramdisk name ending in `/` **or** a MiniFS directory
@@ -2171,6 +2177,37 @@ on the IDE disk):
   fail-closed edges) and two BDD scenarios on the reference image
   (list/read plus missing-file/bad-image refusals); the
   `fat-lfn-check-inverted` mutant dies on both.
+- `fat ls hd0 ...` reads a real disk partition (primary IDE master)
+  through the same parser over absolute LBA sectors: location is a
+  probe, never computed (genuine MBR `0x0B`/`0x0C`/`0x1B`/`0x1C`
+  entries first, each proven by a BPB read, then a 2048-aligned magic
+  scan for superfloppy layouts; GPT protective degrades to the scan).
+  `os.img` appends the reference image past swap so the suite
+  exercises the device path end to end. Real-hardware rules ride
+  along: CHS ignored, LBA28 only, primaries only, a file named `hd0`
+  always wins over the device name, and every read funnels through
+  the one bounds-checked choke point (a per-backend copy in the read
+  loop once forgot the device and went silent; unifying it is what
+  keeps   the third backend honest). The `fat-dev-never-found` mutant
+  dies on the `hd0` scenario.
+- `ext4 ls <img> [dir]` / `ext4 cat <img> <file>` do the same for
+  ext4, read-only, over the shared image backend (`fs/fsimg.c`,
+  extracted from the FAT driver so the loopback/device contract
+  lives once). Served: 1K/2K/4K blocks, 32/64-bit group
+  descriptors, extent trees (bounded depth, uninitialized read as
+  zeros), legacy direct plus singly-indirect, linear dirs. Refused:
+  htree dirs, symlinks, encrypted/inline files, double/triple
+  indirect, writes; checksums unverified, journal ignored (last
+  consistent state). `hd0` probes a native `0x83` partition the
+  same way. Proven by `make test-ext4` (synthetic image: units,
+  multi-extent and legacy-indirect reads, fail-closed set) and
+  three BDD scenarios (list/read, refusals, `hd0`); the
+  `ext4-magic-unchecked` and `ext4-dev-never-found` mutants die on
+  the host suite and the `hd0` scenario. The fragment-then-copy
+  rule (whole block in, fragment out) is load-bearing: a read
+  that copies block-relative bytes for a fragment offset returns
+  the wrong bytes with the right length, which only a
+  content-checking cross-fragment vector catches.
 - `ls [dir]` lists the entries under a directory, defaulting to the cwd,
   names relative to it. At root, both ramdisk and MiniFS entries are shown
   (merged view). In subdirectories, ramdisk entries take priority; when the
@@ -3734,12 +3771,16 @@ than a host reboot.
 A registration-based filesystem dispatch layer (implementation in kernel.c).
 Filesystem drivers register a prefix and a set of operations (`vfs_ops_t`).
 The VFS layer dispatches open/read/write to the registered driver based on
-path prefix matching.  Two drivers are registered at boot: ramdisk (always
-available) and MiniFS (registered when the IDE disk is found and mounted).
-The KFILE struct carries a `vfs_file_t *vfs` pointer for future VFS-backed
-dispatch; the existing direct ramdisk/MiniFS paths remain for backward
-compatibility.  New filesystem additions (FAT32, EXT2) register a prefix
-and implement `vfs_ops_t` without touching the kernel core.
+path prefix matching.  Four drivers are registered at boot: ramdisk
+(always available), MiniFS (when the IDE disk mounts), `fat:` and
+`ext4:` (per-open `imgpath:inpath` addressing, so one registration
+serves every image and partition). Both disk drivers ride the shared
+`fs/fsimg.c` backend (loopback file or absolute disk region, every
+offset fenced). The KFILE struct carries a `vfs_file_t *vfs` pointer
+for future VFS-backed dispatch; the existing direct ramdisk/MiniFS
+paths remain for backward compatibility. New filesystem additions
+register a prefix and implement `vfs_ops_t` without touching the
+kernel core.
 
 ### Dynamic mounts, pipes, clipboard, fork, httpd (2026-09 session)
 I implemented the user-facing half of the UNIX-way plan in one session,

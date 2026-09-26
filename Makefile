@@ -1273,7 +1273,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                 $(BIN_DIR)/pollready.elf $(BIN_DIR)/pollready \
                 $(BIN_DIR)/minigcc.elf \
                 $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip \
-                $(PROGS_DIR)/etc/fat.img \
+                $(PROGS_DIR)/etc/fat.img $(PROGS_DIR)/etc/ext4.img \
                 $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
                $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
@@ -1590,7 +1590,7 @@ wl: os.img
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test fat_test lisp-host
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test fat_test ext4_test lisp-host
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1610,6 +1610,7 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/abi_test
 	$(TOOLS_DIR)/wl_test
 	$(TOOLS_DIR)/fat_test
+	$(TOOLS_DIR)/ext4_test
 	python3 tools/test_lisp.py --binary $(TOOLS_DIR)/lisp
 
 # FAT32 loopback driver host test (tests/test_fat32.c + fs/fat32.c with
@@ -1619,6 +1620,14 @@ fat_test: tests/test_fat32.c fs/fat32.c headers/fat32.h | $(TOOLS_DIR)
 
 test-fat: fat_test
 	$(TOOLS_DIR)/fat_test
+
+# ext4 loopback driver host test (tests/test_ext4.c + fs/ext4.c with
+# stubbed kernel surface over a synthetic in-memory image).
+ext4_test: tests/test_ext4.c fs/ext4.c headers/ext4.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -Iheaders -Iprogs -o $(TOOLS_DIR)/ext4_test tests/test_ext4.c
+
+test-ext4: ext4_test
+	$(TOOLS_DIR)/ext4_test
 
 # Phase 0.2/0.3 host test: pure TSC-to-microsecond conversion in ktime.h.
 ktime_test: tests/test_ktime.c ktime.h | $(TOOLS_DIR)
@@ -1781,7 +1790,13 @@ syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-fat32.o: fs/fat32.c kernel.h minifs.h fat32.h
+fat32.o: fs/fat32.c kernel.h minifs.h fat32.h fsimg.h ide.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+ext4.o: fs/ext4.c kernel.h minifs.h ext4.h fsimg.h ide.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+fsimg.o: fs/fsimg.c kernel.h minifs.h fsimg.h ide.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 kfile.o: fs/kfile.c kernel.h
@@ -1937,6 +1952,23 @@ $(PROGS_DIR)/etc/fat.img:
 	MTOOLS_SKIP_CHECK=1 mcopy -i $@ build/fat_note.txt ::SUB/NOTE.TXT
 	rm -f build/fat_hello.txt build/fat_empty.txt build/fat_note.txt
 
+# ext4 loopback fixture for the ext4 builtin: host-produced image
+# proving interop with the reference writer (mkfs.ext4). Fixed UUID
+# and label keep it reproducible; the feature set is the minimal
+# modern one the driver serves (extents, 1K blocks, no journal, no
+# htree, no 64bit, no checksums). Content mirrors the FAT fixture:
+# one short file, one multi-block file (extent proof) and one empty
+# file (EOF path), plus a subdirectory.
+$(PROGS_DIR)/etc/ext4.img:
+	rm -rf build/ext4stage
+	mkdir -p build/ext4stage/sub
+	printf 'hello from ext4\n' > build/ext4stage/hello.txt
+	: > build/ext4stage/empty.txt
+	awk 'BEGIN{for(i=0;i<150;i++)print "ext4 note line"}' > build/ext4stage/note.txt
+	cp build/ext4stage/note.txt build/ext4stage/sub/note.txt
+	mkfs.ext4 -q -F -b 1024 -U 12345678-1234-1234-1234-123456789abc -L MINIEXT -O ^has_journal,^dir_index,^64bit,^metadata_csum,^metadata_csum_seed -d build/ext4stage $@ 32M
+	rm -rf build/ext4stage
+
 # sched.o reserves the callee-saved registers (ADR-0014): the voluntary
 # switch saves schedule()'s live registers, not its caller's, so a
 # thread resumed in its caller must still find its own rbx/r12-r15.
@@ -2018,9 +2050,9 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
-	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o lz4_kernel.o \
+	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
@@ -2080,7 +2112,7 @@ minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(PROGS_DIR
 	python3 tools/mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES) $$EXTRA; \
 	rm -rf "$$STAGE"
 
-os.img: stage1.bin stage2.bin kernel.bin minifs.bin
+os.img: stage1.bin stage2.bin kernel.bin minifs.bin $(PROGS_DIR)/etc/fat.img $(PROGS_DIR)/etc/ext4.img
 	@STAGE="$(SAVES_STAGE)"; \
 	rm -rf "$$STAGE"; \
 	if [ -f os.img ]; then python3 tools/minifs_saves.py backup os.img "$$STAGE"; fi; \
@@ -2097,18 +2129,24 @@ os.img: stage1.bin stage2.bin kernel.bin minifs.bin
 	 img=$$(( (total + $(DISK_ALIGN_SECTORS) - 1) / $(DISK_ALIGN_SECTORS) * $(DISK_ALIGN_SECTORS) )); \
 	 fsec=$$(( ($$(stat -c%s minifs.bin) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
 	 swap=131072; \
-	 final=$$(( img + fsec + swap )); \
+	 fatsec=$$(( ($$(stat -c%s $(PROGS_DIR)/etc/fat.img) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
+	 extsec=$$(( ($$(stat -c%s $(PROGS_DIR)/etc/ext4.img) + $(SECTOR_BYTES) - 1) / $(SECTOR_BYTES) )); \
+	 final=$$(( img + fsec + swap + fatsec + extsec )); \
 	 dd if=/dev/zero of=$@ bs=$(SECTOR_BYTES) count=$$final status=none; \
 	 dd if=stage1.bin of=$@ conv=notrunc status=none; \
 	 dd if=stage2.bin of=$@ bs=$(SECTOR_BYTES) seek=$(STAGE2_LBA) conv=notrunc status=none; \
 	 dd if=kernel.bin of=$@ bs=$(SECTOR_BYTES) seek=$(KERNEL_LBA) conv=notrunc status=none; \
 	 dd if=minifs.bin of=$@ bs=$(SECTOR_BYTES) seek=$$img conv=notrunc status=none; \
+	 dd if=$(PROGS_DIR)/etc/fat.img of=$@ bs=$(SECTOR_BYTES) seek=$$(( img + fsec + swap )) conv=notrunc status=none; \
+	 dd if=$(PROGS_DIR)/etc/ext4.img of=$@ bs=$(SECTOR_BYTES) seek=$$(( img + fsec + swap + fatsec )) conv=notrunc status=none; \
 	 echo "=== os.img built ==="; \
 	 echo "stage1:  $$(stat -c%s stage1.bin) bytes at LBA 0"; \
 	 echo "stage2:  $$(stat -c%s stage2.bin) bytes at LBA $(STAGE2_LBA)"; \
 	 echo "kernel:  $$(stat -c%s kernel.bin) bytes ($$ksec sectors) at LBA $(KERNEL_LBA)"; \
 	 echo "minifs:  $$(stat -c%s minifs.bin) bytes ($$fsec sectors) at LBA $$img"; \
-	 echo "swap:    $$swap sectors (64 MB) at end of disk"; \
+	 echo "swap:    $$swap sectors (64 MB) before the fat tail"; \
+	 echo "fat:     $$fatsec sectors at LBA $$(( img + fsec + swap )) (superfloppy, no MBR entry)"; \
+	 echo "ext4:    $$extsec sectors at LBA $$(( img + fsec + swap + fatsec )) (superfloppy, no MBR entry)"; \
 	 echo "image:   $$final sectors"
 
 # ── USB bootable image (MBR partition table + boot chain) ───────────

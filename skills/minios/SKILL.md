@@ -39,12 +39,12 @@ minios_test {commands: ["lzss rep.txt rep.lzs", "unlzss rep.lzs rep.out", "cat r
 
 File operations beyond read and write: `mv <src> <dst>` renames within
 one filesystem (an existing destination or a cross-filesystem move
-refuses instead of guessing), and `fat ls <img> [dir]` plus
-`fat cat <img> <file>` read a FAT32 disk image stored as a file
-(`etc/fat.img` ships one). TAB completes argument paths from both the
-ramdisk and MiniFS, so a file created by a redirect completes like any
-shipped one. Isolated programs compose through `fork` plus `execve`
-(syscall 59); the shell's `mrun` runs several at once.
+refuses instead of guessing), `fat ls|cat` read a FAT32 image or real
+partition (`hd0`), and `ext4 ls|cat` do the same for ext4. TAB
+completes argument paths from both the ramdisk and MiniFS, so a file
+created by a redirect completes like any shipped one. Isolated
+programs compose through `fork` plus `execve` (syscall 59); the
+shell's `mrun` runs several at once.
 
 Compile, link and run inside the OS:
 

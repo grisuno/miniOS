@@ -1730,10 +1730,15 @@ range-checks the pid and fails closed with `-EFAULT` before indexing
 ### VFS (Virtual File System)
 A registration-based filesystem dispatch layer.  Filesystem drivers register
 a prefix and a set of operations (`vfs_ops_t`).  The VFS layer dispatches
-open/read/write to the registered driver based on path prefix matching.
-The existing dual-backend (ramdisk + MiniFS) remains; the VFS layer provides
-the abstraction for future filesystem additions (FAT32, EXT2) without
-touching the kernel core.
+open/read/write to the registered driver based on path prefix matching
+(longest match wins; the root stays pinned and busy mounts refuse).
+Beyond ramdisk and MiniFS, `fat:` and `ext4:` drivers serve real
+on-disk formats read-only, addressed per open as `imgpath:inpath`
+(the VFS table has no readdir verb, so listings go through
+`fat32_list`/`ext4_list` directly). Both ride one shared backend
+(`fs/fsimg.c`): a loopback image file (ramdisk first, MiniFS fallback)
+or an absolute disk region, every offset fenced before use, so a new
+backend is added once instead of once per driver.
 
 ### VMA (Virtual Memory Areas)
 A red-black tree (`vma.c`, `vma.h`) for mmap tracking, replacing the flat
@@ -2100,6 +2105,35 @@ driver, and listings use `fat32_list` because the VFS table has no
 readdir verb. Only the root directory, 8.3 short names and regular
 files are served; anything else is a diagnostic, never a guess.
 
+The same driver reads a real disk partition as `hd0` (primary IDE
+master): `fat ls hd0 /` lists it. Location is a real probe, never a
+computed offset: a genuine MBR FAT32 entry first (types `0x0B`/`0x0C`
+plus hidden `0x1B`/`0x1C`, each proven by a BPB read because a type
+byte alone is a rumor), then a magic scan over 2048-aligned LBAs for
+superfloppy layouts with no table. `os.img` carries the reference
+image appended past swap for the suite; on real hardware any
+partitioned disk works the same way. CHS is ignored (LBA only),
+LBA48 is out of scope (LBA28 covers 137 GB), logical volumes wait
+for an EBR follower, and a GPT protective entry degrades to the scan
+instead of misreading. A literal file named `hd0` keeps working: files
+always win over the device name.
+
+`ext4 ls <img> [dir]` and `ext4 cat <img> <file>` do the same for
+ext4, read-only, over the shared image backend (`fs/fsimg.c`, one
+contract for loopback files and disk regions instead of a copy per
+driver). Served subset: 1K/2K/4K blocks, 32 and 64 bit group
+descriptors, extent trees (bounded depth, uninitialized extents read
+as zeros), legacy direct plus singly-indirect blocks, linear
+directories. Refused fail-closed: htree-indexed directories,
+symlinks (even fast ones), encrypted and inline-data files, doubly
+and triply indirect blocks, writes. Checksums are not verified;
+every structural offset is bounds-checked instead, and the journal
+is ignored (reads see the last consistent state). `etc/ext4.img`
+ships a host-built reference (fixed UUID and label); `ext4 ls hd0`
+probes a Linux-native (`0x83`) partition the same way `hd0` works
+for FAT. `make test-ext4` pins the parser on the host over a
+synthetic image.
+
 ## User isolation and syscall boundary
 
 `ET_EXEC`/`ET_DYN` run at ring 3 (CS `USER_CODE_SEL`, SS `USER_DATA_SEL`)
@@ -2232,7 +2266,12 @@ page tables (identity 2 MB leaves for the first gigabyte, low 4 MB split
 into the `PT0`/`PT1` KASLR scheme), enables PAE and long mode, installs the
 64-bit GDT at `0x8000` and jumps to `0x100000` (`KERNEL_SECTORS` comes from
 the `kernel.bin` size; LBA constants from `bootdefs.h`). Disk layout: LBA 0
-stage 1, LBA 1-8 stage 2, LBA 9+ kernel image with embedded ramdisk. VESA is
+stage 1, LBA 1-8 stage 2, LBA 9+ kernel image with embedded ramdisk,
+then the MiniFS partition (2048-aligned, found by superblock probe,
+never by computed offset), 64 MB of swap, and the FAT32 plus ext4
+reference images appended past swap (superfloppy, no MBR entries;
+found by the same probe-then-scan discipline the drivers use on real
+disks). VESA is
 probed before long mode kills BIOS video (800x600x8, then 640x480x8, then
 Mode 13h fallback) into the struct at `VBE_INFO_ADDR` (`0x7E20`); the kernel
 maps that framebuffer at `FB_ADDR`.

@@ -18,10 +18,15 @@
 #define FAT32_LIST_CAP  64
 #define FAT32_CLUS_MAX  65536
 
-/* One open FAT file: image backend plus the located entry. */
+/* One open FAT file: image backend plus the located entry. A loopback
+ * image reads through ramdisk/minifs at file offsets; a real disk
+ * partition (`hd0`, first FAT32 found) reads absolute LBA sectors
+ * through the IDE driver at dev_lba + offset. */
 typedef struct {
     int ino;
     RDFile *rf;
+    int is_dev;
+    unsigned long dev_lba;
     unsigned long img_size;
     unsigned byts_per_sec;
     unsigned sec_per_clus;
@@ -39,6 +44,14 @@ typedef struct {
  * Returns the entry count, or -1 when the image, path or walk fails. */
 int fat32_list(const char *imgpath, const char *dirpath,
                char names[][FAT32_NAME_MAX], int *isdir, int cap);
+
+/* Locate the first FAT32 partition on the primary IDE master: a real
+ * MBR FAT32 entry first (real hardware with a partition table), then
+ * a magic scan over 2048-aligned LBAs (superfloppy images with no
+ * table, like the os.img tail). Returns the base LBA, or -1 when no
+ * FAT32 is present. Result is cached; the disk never changes under
+ * a running guest. */
+long fat_dev_base(void);
 
 /* VFS verbs: open "imgpath:fatpath" (first ':' splits), read, close,
  * fstat. Write/truncate refuse. All fail closed with -1. */

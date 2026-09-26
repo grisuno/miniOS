@@ -1,6 +1,8 @@
 #include "kernel.h"
 #include "minifs.h"
 #include "fat32.h"
+#include "fsimg.h"
+#include "ide.h"
 
 /* ================================================================
  *  FAT32 -- read-only loopback driver
@@ -22,65 +24,19 @@ static unsigned fat_ld32(const unsigned char *p) {
         ((unsigned)p[2] << 16) | ((unsigned)p[3] << 24);
 }
 
-/* Loopback image backend: ramdisk first, MiniFS fallback, like kfopen.
- * img_size is the exact file size; every later offset is checked
- * against it with `len > size || off > size - len`, so a hostile BPB
- * can neither wrap the arithmetic nor read past the image. */
-typedef struct {
-    RDFile *rf;
-    int ino;
-    unsigned long size;
-} fat_img_t;
-
-static int fat_img_open(const char *resolved, fat_img_t *img) {
-    RDFile *rf;
-    MiniFSInode st;
-    int ino;
-    if (!resolved || !img) return -1;
-    img->rf = 0;
-    img->ino = -1;
-    img->size = 0;
-    rf = ramdisk_open(resolved);
-    if (rf) {
-        img->rf = rf;
-        img->size = rf->size;
-        return 0;
-    }
-    if (!minifs_is_mounted()) return -1;
-    ino = minifs_resolve_path(resolved);
-    if (ino < 0 && kstrchr(resolved, '/')) {
-        /* Flat-root packing (mkfs packs files by basename, like
-         * kfopen/spawn_load_image): etc/fat.img lives as fat.img. */
-        const char *base = resolved;
-        const char *p;
-        for (p = resolved; *p; p++)
-            if (*p == '/') base = p + 1;
-        ino = minifs_resolve_path(base);
-    }
-    if (ino < 0) return -1;
-    if (minifs_stat(ino, &st) < 0) return -1;
-    if (st.mode & MINIFS_S_IFDIR) return -1;
-    img->ino = ino;
-    img->size = st.size;
-    /* All sector math below is 32-bit: an image past 4 GB refuses
-     * instead of truncating offsets. */
-    if (img->size > 0xFFFFFFFFUL) return -1;
-    return 0;
-}
-
-static int fat_img_read(const fat_img_t *img, unsigned long off,
-                        void *buf, unsigned long len) {
-    if (!img || !buf) return -1;
-    if (len == 0) return 0;
-    if (len > img->size || off > img->size - len) return -1;
-    if (off > 0xFFFFFFFFUL || len > 0xFFFFFFFFUL) return -1;
-    if (img->rf)
-        return ramdisk_read(img->rf, buf, (unsigned)off,
-                            (unsigned)len) == (int)len ? 0 : -1;
-    /* Strict byte count: a short MiniFS read is a torn backend, not
-     * a partial file (bounds were checked above), so it fails. */
-    return minifs_read(img->ino, buf, (unsigned)off,
-                       (unsigned)len) == (int)len ? 0 : -1;
+/* Open by resolved path: files first (a real file named hd0 keeps
+ * working), the hd0 disk device only as a fallback. */
+static int fat_img_open(const char *resolved, fsimg_t *img) {
+    long base;
+    unsigned long total;
+    if (fsimg_open_file(resolved, img) == 0) return 0;
+    if (kstrcmp(resolved, "hd0") != 0) return -1;
+    if (!ide_present()) return -1;
+    base = fat_dev_base();
+    if (base < 0) return -1;
+    total = (unsigned long)ide_total_sectors();
+    return fsimg_open_dev((unsigned long)base,
+                          total - (unsigned long)base, img);
 }
 
 /* Parsed BPB plus derived geometry. secs = total data clusters + 2
@@ -97,11 +53,11 @@ typedef struct {
     unsigned nclus;
 } fat_geo_t;
 
-static int fat_parse_bpb(const fat_img_t *img, fat_geo_t *g) {
+static int fat_parse_bpb(const fsimg_t *img, fat_geo_t *g) {
     unsigned char bpb[512];
     unsigned tot16, tot32, fatsz16, data_sec;
     unsigned long fatsz_bytes, data_bytes;
-    if (fat_img_read(img, 0, bpb, sizeof(bpb)) < 0) return -1;
+    if (fsimg_read(img, 0, bpb, sizeof(bpb)) < 0) return -1;
     if (bpb[510] != 0x55 || bpb[511] != 0xAA) return -1;
     g->byts_per_sec = fat_ld16(bpb + 11);
     if (g->byts_per_sec != 512 && g->byts_per_sec != 1024 &&
@@ -142,6 +98,115 @@ static int fat_parse_bpb(const fat_img_t *img, fat_geo_t *g) {
     return 0;
 }
 
+/* MBR partition entry offsets and the FAT32 type bytes, including
+ * hidden variants real dual-boot setups carry. Extended types are
+ * deliberately absent: v1 serves primaries, logical volumes wait
+ * for an EBR follower. */
+#define FAT_MBR_SIG_OFF   510
+#define FAT_MBR_TAB_OFF   0x1BE
+#define FAT_MBR_ENTRY_SZ  16
+#define FAT_MBR_NENTRY    4
+#define FAT_MBR_TYPE_OFF  4
+#define FAT_MBR_START_OFF 8
+#define FAT_MBR_COUNT_OFF 12
+#define FAT_MBR_GPT_PROT  0xEE
+
+static int fat_mbr_is_fat(unsigned char t) {
+    return t == 0x0B || t == 0x0C || t == 0x1B || t == 0x1C;
+}
+
+/* Validate one MBR entry and, when it claims FAT32, prove it with a
+ * BPB read at its start LBA (a type byte alone is a rumor: stage1
+ * code bytes at 0x1BE on a table-less image decode as garbage
+ * entries). Bounds are 64-bit and fenced to the drive size, so a
+ * hostile table can neither wrap nor address past the disk. Real
+ * hardware notes: CHS fields are ignored (LBA only, like every
+ * modern loader), LBA48 is out of scope (LBA28 covers 137 GB), and
+ * only the primary master is served. */
+static int fat_mbr_entry(const unsigned char *mbr, int idx,
+                         unsigned long total_sec, unsigned long *base_out) {
+    const unsigned char *e = mbr + FAT_MBR_TAB_OFF + idx * FAT_MBR_ENTRY_SZ;
+    unsigned long start, count;
+    fsimg_t probe;
+    fat_geo_t g;
+    if (!fat_mbr_is_fat(e[FAT_MBR_TYPE_OFF])) return -1;
+    start = (unsigned long)e[FAT_MBR_START_OFF] |
+        ((unsigned long)e[FAT_MBR_START_OFF + 1] << 8) |
+        ((unsigned long)e[FAT_MBR_START_OFF + 2] << 16) |
+        ((unsigned long)e[FAT_MBR_START_OFF + 3] << 24);
+    count = (unsigned long)e[FAT_MBR_COUNT_OFF] |
+        ((unsigned long)e[FAT_MBR_COUNT_OFF + 1] << 8) |
+        ((unsigned long)e[FAT_MBR_COUNT_OFF + 2] << 16) |
+        ((unsigned long)e[FAT_MBR_COUNT_OFF + 3] << 24);
+    if (start == 0 || count == 0) return -1;
+    if (start >= total_sec || count > total_sec - start) return -1;
+    probe.rf = 0;
+    probe.ino = -1;
+    probe.is_dev = 1;
+    probe.dev_lba = start;
+    probe.size = count * 512UL;
+    if (probe.size > 0xFFFFFFFFUL) return -1;
+    if (fat_parse_bpb(&probe, &g) < 0) return -1;
+    *base_out = start;
+    return 0;
+}
+
+/* First FAT32 partition on the disk: a real MBR entry first (real
+ * hardware carries a table), then a magic scan over 2048-aligned
+ * LBAs for superfloppy layouts with no table at all (the os.img
+ * tail). The scan skips LBA 0 (boot sector) and fences every
+ * candidate to the drive size. */
+static int fat_scan_dev(unsigned long total_sec, unsigned long *base_out) {
+    unsigned char sec[512];
+    unsigned long lba;
+    for (lba = 2048; lba < total_sec; lba += 2048) {
+        fsimg_t probe;
+        fat_geo_t g;
+        if (ide_read_sectors((unsigned int)lba, 1, sec) < 0) return -1;
+        if (sec[510] != 0x55 || sec[511] != 0xAA) continue;
+        probe.rf = 0;
+        probe.ino = -1;
+        probe.is_dev = 1;
+        probe.dev_lba = lba;
+        probe.size = (total_sec - lba) * 512UL;
+        if (probe.size > 0xFFFFFFFFUL) probe.size = 0xFFFFFFFFUL;
+        if (fat_parse_bpb(&probe, &g) < 0) continue;
+        *base_out = lba;
+        return 0;
+    }
+    return -1;
+}
+
+static long fat_dev_cached = -1;
+
+long fat_dev_base(void) {
+    unsigned char mbr[512];
+    unsigned long total;
+    unsigned long base;
+    int i;
+    if (fat_dev_cached != -1) return fat_dev_cached;
+    fat_dev_cached = -2;
+    if (!ide_present()) return -2;
+    total = (unsigned long)ide_total_sectors();
+    if (total < 2048) return -2;
+    if (ide_read_sectors(0, 1, mbr) < 0) return -2;
+    if (mbr[FAT_MBR_SIG_OFF] == 0x55 && mbr[FAT_MBR_SIG_OFF + 1] == 0xAA &&
+        mbr[FAT_MBR_TAB_OFF + FAT_MBR_TYPE_OFF] != FAT_MBR_GPT_PROT) {
+        for (i = 0; i < FAT_MBR_NENTRY; i++) {
+            if (fat_mbr_entry(mbr, i, total, &base) == 0) {
+                fat_dev_cached = (long)base;
+                return fat_dev_cached;
+            }
+        }
+    }
+    if (fat_scan_dev(total, &base) == 0) {
+        fat_dev_cached = (long)base;
+        return fat_dev_cached;
+    }
+    return -2;
+}
+
+
 static int fat_clus_ok(const fat_geo_t *g, unsigned c) {
     return c >= 2 && c < g->nclus + 2;
 }
@@ -149,7 +214,7 @@ static int fat_clus_ok(const fat_geo_t *g, unsigned c) {
 /* One FAT32 entry (low 28 bits). Reads the 512 B sector holding it;
  * the entry offset can never leave the image because the cluster is
  * range-checked first and the FAT region precedes data_off. */
-static int fat_entry(const fat_img_t *img, const fat_geo_t *g,
+static int fat_entry(const fsimg_t *img, const fat_geo_t *g,
                      unsigned clus, unsigned *out) {
     unsigned long ent_off;
     unsigned char sec[512];
@@ -161,7 +226,7 @@ static int fat_entry(const fat_img_t *img, const fat_geo_t *g,
     sec_off = ent_off & ~(unsigned long)511;
     at = (unsigned)(ent_off - sec_off);
     if (sec_off + 512 > img->size) return -1;
-    if (fat_img_read(img, sec_off, sec, sizeof(sec)) < 0) return -1;
+    if (fsimg_read(img, sec_off, sec, sizeof(sec)) < 0) return -1;
     *out = fat_ld32(sec + at) & 0x0FFFFFFFUL;
     return 0;
 }
@@ -239,7 +304,7 @@ static int fat_match(const unsigned char *de, const char name8[8],
 /* Resolve a FAT path to its first cluster, size and subdir bit.
  * Iterative over '/'-separated 8.3 words, depth-capped; '..' and
  * empty middles refuse. "" or "/" is the root directory itself. */
-static int fat_resolve(const fat_img_t *img, const fat_geo_t *g,
+static int fat_resolve(const fsimg_t *img, const fat_geo_t *g,
                        const char *path, unsigned *clus_out,
                        unsigned long *size_out, int *isdir_out) {
     unsigned char *blk = 0;
@@ -281,7 +346,7 @@ static int fat_resolve(const fat_img_t *img, const fat_geo_t *g,
             unsigned long k;
             unsigned v;
             if (off + clus_bytes > img->size) break;
-            if (fat_img_read(img, off, blk, clus_bytes) < 0) break;
+            if (fsimg_read(img, off, blk, clus_bytes) < 0) break;
             for (k = 0; k < clus_bytes; k += 32) {
                 unsigned nc;
                 unsigned long ns;
@@ -342,7 +407,7 @@ next_word:
 int fat32_list(const char *imgpath, const char *dirpath,
                char names[][FAT32_NAME_MAX], int *isdir, int cap) {
     char resolved[RAMDISK_FNAME_LEN];
-    fat_img_t img;
+    fsimg_t img;
     fat_geo_t g;
     unsigned char *blk = 0;
     unsigned long clus_bytes;
@@ -369,7 +434,7 @@ int fat32_list(const char *imgpath, const char *dirpath,
         unsigned v;
         int done = 0;
         if (off + clus_bytes > img.size) break;
-        if (fat_img_read(&img, off, blk, clus_bytes) < 0) break;
+        if (fsimg_read(&img, off, blk, clus_bytes) < 0) break;
         for (k = 0; k < clus_bytes && n < cap; k += 32) {
             unsigned i, nl = 0, xl = 0;
             int di;
@@ -414,40 +479,18 @@ int fat32_list(const char *imgpath, const char *dirpath,
     return n;
 }
 
-/* Split "imgpath:fatpath" at the first ':' (image names never carry
- * one: the MCP/shell whitelist forbids it). */
-static int fat_split(const char *path, char *img, char *fatp) {
-    unsigned long i = 0, j = 0;
-    if (!path || !img || !fatp) return -1;
-    while (path[i] && path[i] != ':') {
-        if (i >= RAMDISK_FNAME_LEN - 1) return -1;
-        img[i] = path[i];
-        i++;
-    }
-    img[i] = 0;
-    if (!path[i]) return -1;
-    i++;
-    if (!path[i]) return -1;
-    while (path[i]) {
-        if (j >= RAMDISK_FNAME_LEN - 1) return -1;
-        fatp[j++] = path[i++];
-    }
-    fatp[j] = 0;
-    if (img[0] == 0 || fatp[0] == 0) return -1;
-    return 0;
-}
-
 int fat32_vfs_open(const char *path, int mode, void **handle) {
     char img[RAMDISK_FNAME_LEN], fatp[RAMDISK_FNAME_LEN];
     char resolved[RAMDISK_FNAME_LEN];
-    fat_img_t fimg;
+    fsimg_t fimg;
     fat_geo_t g;
     fat32_handle_t *h = 0;
     unsigned sc = 0;
     unsigned long sz = 0;
     int isdir = 0;
     if (mode == 1 || mode == 2) return -1;
-    if (fat_split(path, img, fatp) < 0) return -1;
+    if (fsimg_split(path, img, sizeof(img), fatp, sizeof(fatp)) < 0)
+        return -1;
     if (!fs_resolve(img, resolved, sizeof(resolved))) return -1;
     if (fat_img_open(resolved, &fimg) < 0) return -1;
     if (fat_parse_bpb(&fimg, &g) < 0) return -1;
@@ -459,6 +502,8 @@ int fat32_vfs_open(const char *path, int mode, void **handle) {
     if (!h) return -1;
     h->ino = fimg.ino;
     h->rf = fimg.rf;
+    h->is_dev = fimg.is_dev;
+    h->dev_lba = fimg.dev_lba;
     h->img_size = fimg.size;
     h->byts_per_sec = g.byts_per_sec;
     h->sec_per_clus = g.sec_per_clus;
@@ -475,10 +520,12 @@ int fat32_vfs_open(const char *path, int mode, void **handle) {
 }
 
 /* Fill the loopback backend and geometry views of an open handle. */
-static void fat_views(const fat32_handle_t *h, fat_img_t *img,
+static void fat_views(const fat32_handle_t *h, fsimg_t *img,
                       fat_geo_t *g) {
     img->rf = h->rf;
     img->ino = h->ino;
+    img->is_dev = h->is_dev;
+    img->dev_lba = h->dev_lba;
     img->size = h->img_size;
     g->byts_per_sec = h->byts_per_sec;
     g->sec_per_clus = h->sec_per_clus;
@@ -494,7 +541,7 @@ static void fat_views(const fat32_handle_t *h, fat_img_t *img,
  * step-bounded by the cluster count so a cyclic FAT terminates. */
 static int fat_seek(const fat32_handle_t *h, unsigned long pos,
                     unsigned *clus_out, unsigned long *coff_out) {
-    fat_img_t img;
+    fsimg_t img;
     fat_geo_t g;
     unsigned c = h->start_clus;
     unsigned long skip;
@@ -532,7 +579,7 @@ int fat32_vfs_read(void *handle, void *buf, unsigned long pos,
     clus_bytes = (unsigned long)h->sec_per_clus * h->byts_per_sec;
     if (fat_seek(h, pos, &c, &coff) < 0) return -1;
     while (done < len) {
-        fat_img_t img;
+        fsimg_t img;
         fat_geo_t g;
         unsigned long take;
         unsigned long off;
@@ -542,16 +589,10 @@ int fat32_vfs_read(void *handle, void *buf, unsigned long pos,
         if (take > len - done) take = len - done;
         off = h->data_off + ((unsigned long)c - 2) * clus_bytes +
             coff;
-        if (take > img.size || off > img.size - take) return -1;
-        if (img.rf) {
-            if (ramdisk_read(img.rf, out + done, (unsigned)off,
-                             (unsigned)take) != (int)take)
-                return -1;
-        } else {
-            if (minifs_read(img.ino, out + done, (unsigned)off,
-                            (unsigned)take) < 0)
-                return -1;
-        }
+        /* One checked choke point serves all three backends
+         * (ramdisk, MiniFS, real disk): no per-backend copy, so a
+         * new backend can never be forgotten here again. */
+        if (fsimg_read(&img, off, out + done, take) < 0) return -1;
         done += take;
         coff = 0;
         if (done >= len) break;

@@ -1284,6 +1284,42 @@ poweroff"
 expect "fat: /NOPE.TXT: no such file"
 expect "fat: bad.img: cannot list /"
 
+scenario "fat reads a real disk partition through hd0" "fat ls hd0 /
+fat cat hd0 /HELLO.TXT
+fat cat hd0 /SUB/NOTE.TXT
+fat ls hd9 /
+poweroff"
+expect "  HELLO.TXT"
+expect "  SUB/"
+expect "hello from fat32"
+expect "fat32 note line"
+expect "fat: hd9: cannot list /"
+
+scenario "ext4 lists and reads a host-produced image" "ext4 ls etc/ext4.img /
+ext4 cat etc/ext4.img /hello.txt
+ext4 cat etc/ext4.img /sub/note.txt
+poweroff"
+expect "  hello.txt"
+expect "  sub/"
+expect "hello from ext4"
+expect "ext4 note line"
+
+scenario "ext4 refuses missing files and non-ext4 images" "ext4 cat etc/ext4.img /NOPE.TXT
+echo x > bad.img
+ext4 ls bad.img /
+poweroff"
+expect "ext4: /NOPE.TXT: no such file"
+expect "ext4: bad.img: cannot list /"
+
+scenario "ext4 reads a real disk partition through hd0" "ext4 ls hd0 /
+ext4 cat hd0 /hello.txt
+ext4 cat hd0 /sub/note.txt
+poweroff"
+expect "  hello.txt"
+expect "  sub/"
+expect "hello from ext4"
+expect "ext4 note line"
+
 scenario "ps lists registered programs" "load objects/hello.o
 ps
 poweroff"
