@@ -45,9 +45,16 @@ int main(void) {
     CHECK(HAL_MOUSE_PACKET_LEN == 4, "mouse packet length");
     CHECK(HAL_PS2_CMD_WRITE_MOUSE == 0xD4, "ps2 forward-to-mouse command");
     CHECK(HAL_PS2_CMD_ENABLE_AUX == 0xA8, "ps2 enable aux command");
+    CHECK(HAL_PS2_CMD_DISABLE_AUX == 0xA7, "ps2 disable aux command");
+    CHECK(HAL_PS2_CMD_ENABLE_KBD == 0xAE, "ps2 enable kbd command");
+    CHECK(HAL_PS2_CMD_DISABLE_KBD == 0xAD, "ps2 disable kbd command");
     CHECK(HAL_PS2_CMD_READ_CONFIG == 0x20, "ps2 read config command");
     CHECK(HAL_PS2_CMD_WRITE_CONFIG == 0x60, "ps2 write config command");
     CHECK(HAL_PS2_CONFIG_IRQ12 == 0x02, "ps2 irq12 config bit");
+    CHECK(HAL_PS2_CONFIG_IRQ1 == 0x01, "ps2 irq1 config bit");
+    CHECK(HAL_PS2_CONFIG_DISABLE_KBD == 0x10, "ps2 disable-kbd config bit");
+    CHECK(HAL_PS2_CONFIG_DISABLE_AUX == 0x20, "ps2 disable-aux config bit");
+    CHECK(HAL_PS2_CONFIG_TRANSLATE == 0x40, "ps2 translate config bit");
     CHECK(HAL_MOUSE_CMD_RESET == 0xFF, "mouse reset command");
     CHECK(HAL_MOUSE_CMD_SET_RATE == 0xF3, "mouse set rate command");
     CHECK(HAL_MOUSE_CMD_GET_ID == 0xF2, "mouse get id command");

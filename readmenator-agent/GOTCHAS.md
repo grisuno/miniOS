@@ -4,8 +4,8 @@
 
 These files have the most connections. Changes here have high blast radius.
 
-- `headers/kernel.h` (score: 158.20)
-- `kernel/string.c` (score: 137.30)
+- `headers/kernel.h` (score: 164.20)
+- `kernel/string.c` (score: 139.30)
 - `progs/doomgeneric/doomtype.h` (score: 101.40)
 - `progs/doomgeneric/doomdef.h` (score: 90.90)
 - `progs/doomgeneric/doomstat.h` (score: 84.80)
@@ -17,14 +17,14 @@ These files have the most connections. Changes here have high blast radius.
 
 ## Hotspots (complexity + centrality)
 
-- `headers/kernel.h` -- complexity: 1.0, centrality: 0.8, combined: 0.9
+- `headers/kernel.h` -- complexity: 1.0, centrality: 0.9, combined: 0.9
 - `progs/doomgeneric/d_main.c` -- complexity: 0.1, centrality: 1.0, combined: 0.6
 - `progs/doomgeneric/g_game.c` -- complexity: 0.2, centrality: 0.9, combined: 0.6
 - `kernel/syscalls.c` -- complexity: 0.4, centrality: 0.7, combined: 0.6
 - `kernel/string.c` -- complexity: 0.0, centrality: 0.9, combined: 0.5
 - `progs/doomgeneric/st_stuff.c` -- complexity: 0.4, centrality: 0.6, combined: 0.5
+- `kernel/shell.c` -- complexity: 0.3, centrality: 0.6, combined: 0.5
 - `kernel/vga_fb.c` -- complexity: 0.5, centrality: 0.4, combined: 0.5
-- `kernel/shell.c` -- complexity: 0.3, centrality: 0.6, combined: 0.4
 - `progs/doomgeneric/m_menu.c` -- complexity: 0.2, centrality: 0.6, combined: 0.4
 - `progs/doomgeneric/doomtype.h` -- complexity: 0.0, centrality: 0.7, combined: 0.4
 

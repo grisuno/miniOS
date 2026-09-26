@@ -1,10 +1,10 @@
 # progs/doomgeneric
 
-*Community 3 | 48 files | cohesion 0.55*
+*Community 1 | 60 files | cohesion 0.67*
 
 ## Definition
 
-This community groups 48 file(s) rooted at `progs/doomgeneric` with dominant language c (cohesion 0.55). Central symbols: `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`, `AUDIO_H`, `AUDIO_RATE_DEFAULT`, `AllocTracker`, `BACKBUF`, `BEZIER_PAD`. Core file: `progs/vedit/vedit.c` (239 symbols). Documented purpose: Unified audio API for MiniOS..
+This community groups 60 file(s) rooted at `progs/doomgeneric` with dominant language c (cohesion 0.67). Central symbols: `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`, `AUDIO_H`, `AUDIO_RATE_DEFAULT`, `AllocTracker`, `BACKBUF`, `BEZIER_PAD`. Core file: `progs/vedit/vedit.c` (239 symbols). Documented purpose: Unified audio API for MiniOS..
 
 ## Files
 
@@ -14,25 +14,31 @@ This community groups 48 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/doomgeneric/doomgeneric.c` | c | utility | 1 | no |
 
-### `progs/nuklear` (7 files)
+### `progs/nuklear` (8 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/nuklear/cvm_emit.c` | c | utility | 56 | yes |
 
-### `progs/src` (7 files)
+### `progs/src` (8 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/src/audio.c` | c | infrastructure | 17 | no |
 
-### `tests` (5 files)
+### `tests` (8 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `tests/test_file_assoc.c` | c | testing | 10 | yes |
 
-### `progs` (2 files)
+### `progs/wl` (5 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/wl/wl_client.h` | h | infrastructure | 5 | yes |
+
+### `progs` (3 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -67,6 +73,12 @@ This community groups 48 file(s) rooted at `progs/doomgeneric` with dominant lan
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/doomedit/doomedit.c` | c | infrastructure | 108 | yes |
+
+### `progs/freedomui` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/freedomui/freedomui_minios.c` | c | presentation | 42 | yes |
 
 ### `progs/lisp` (1 files)
 
@@ -116,19 +128,7 @@ This community groups 48 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/tls_u/tls_u_port.c` | c | utility | 15 | yes |
 
-### `progs/topogpt3` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `progs/topogpt3/topogpt3.c` | c | utility | 128 | no |
-
-### `progs/vedit` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `progs/vedit/vedit.c` | c | infrastructure | 239 | yes |
-
-*... and 28 more files in this community.*
+*... and 40 more files in this community.*
 
 
 ## Key Symbols
@@ -166,24 +166,25 @@ This community groups 48 file(s) rooted at `progs/doomgeneric` with dominant lan
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 82
-- Cross-boundary resolved imports (EXTRACTED): 67
+- Internal resolved imports (EXTRACTED): 113
+- Cross-boundary resolved imports (EXTRACTED): 57
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 6 <-> 3 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
-- [EXTRACTED] depends_on community 8 <-> 3 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
-- [EXTRACTED] depends_on community 3 <-> 7 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
-- [EXTRACTED] depends_on community 9 <-> 3 (strength 0.9): Extracted import edge crosses communities: progs/freedomui/freedomui_minios.c imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 10 <-> 3 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 2 <-> 3 (strength 0.9): Extracted import edge crosses communities: tests/test_abi.c imports progs/minios_abi.h.
-- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 3 (progs/doomgeneric).
+- [EXTRACTED] depends_on community 0 <-> 1 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
+- [EXTRACTED] depends_on community 4 <-> 1 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 6 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
+- [EXTRACTED] depends_on community 1 <-> 5 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
+- [EXTRACTED] depends_on community 7 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
+- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 2 (headers).
+- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 8 (tests).
+- [INFERRED] shares_context community 1 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (progs/doomgeneric) and community 9 (orphans).
 
 ## Risks
 
 - [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
+- [layer strict] `tests/test_freedomui.c` (testing) -> `progs/freedomui/freedomui_minios.c` (presentation)
 - [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:1556` `dmap_build_wad` `side`: `side` assigned at line 1556 but never read afterwards.
 - [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:1633` `dmap_build_wad` `dir`: `dir` assigned at line 1633 but never read afterwards.
 - [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:2145` `dmap_selftest` `mrgb`: `mrgb` assigned at line 2145 but never read afterwards.
@@ -197,7 +198,7 @@ This community groups 48 file(s) rooted at `progs/doomgeneric` with dominant lan
 
 - Why do 11 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric.c`)? What purpose do they serve?
 - What would break if the most connected file in progs/doomgeneric changed?
-- Should progs/doomgeneric be split, given cohesion 0.55?
+- Should progs/doomgeneric be split, given cohesion 0.67?
 
 ## Sources
 
@@ -215,10 +216,10 @@ This community groups 48 file(s) rooted at `progs/doomgeneric` with dominant lan
 - `progs/doomgeneric/memio.h`
 - `progs/file/file.c`
 - `progs/file/file_assoc.h`
+- `progs/freedomui/freedomui_minios.c`
 - `progs/lisp/lisp.c`
 - `progs/lua/lua_main.c`
 - `progs/micropython/variants/minios/minios_module.c`
 - `progs/minicraft/minicraft.c`
 - `progs/minios_abi.h`
-- `progs/minios_png.h`
-- *... and 28 more*
+- *... and 40 more*

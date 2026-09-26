@@ -163,27 +163,63 @@
 - Depends on: `headers/kernel.h`
 - Imported by: `kernel/editor.c`, `kernel/shell.c`
 
+## headers/ext4.h
+- Layer: utility
+- Doc: ext4.h -- Read-only ext4 loopback/device driver.
+- Language: h
+- Symbols:
+  - `ext4_handle_t` (struct, line 22)
+  - `ext4_list` (function, line 35) `int ext4_list(const char *imgpath, const char *dirpath, char names[][EXT4_NAME_MAX + 1], int *isdir, int cap);`
+  - `ext4_vfs_open` (function, line 40) `int ext4_vfs_open(const char *path, int mode, void **handle);`
+  - `ext4_vfs_read` (function, line 41) `int ext4_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len);`
+  - `ext4_vfs_write` (function, line 43) `int ext4_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len);`
+  - `ext4_vfs_close` (function, line 45) `int ext4_vfs_close(void *handle);`
+  - `ext4_vfs_fstat` (function, line 46) `int ext4_vfs_fstat(void *handle, unsigned long *size_out);`
+  - `ext4_vfs_truncate` (function, line 47) `int ext4_vfs_truncate(void *handle, unsigned long size);`
+  - `first` (function, line 50) `* MBR 0x83 entry first (proven by a superblock read), then a magic * scan over 2048-aligned LBAs for superfloppy layouts. Returns the * base LBA, or -1 when no ext4 is present. Cached. */ long ext_dev`
+  - `ext4_vfs_ops` (variable, line 55) `extern const vfs_ops_t ext4_vfs_ops;`
+  - `EXT4_H` (macro, line 2) `#define EXT4_H`
+  - `EXT4_NAME_MAX` (macro, line 16) `#define EXT4_NAME_MAX`
+  - `EXT4_MAX_DEPTH` (macro, line 17) `#define EXT4_MAX_DEPTH`
+  - `EXT4_LIST_CAP` (macro, line 18) `#define EXT4_LIST_CAP`
+  - `EXT4_PATH_MAX` (macro, line 19) `#define EXT4_PATH_MAX`
+- Imported by: `fs/ext4.c`, `fs/vfs.c`, `kernel/shell.c`, `tests/test_ext4.c`
+
 ## headers/fat32.h
 - Layer: utility
 - Doc: fat32.h -- Read-only FAT32 loopback driver over ramdisk/MiniFS images.
 - Language: h
 - Symbols:
-  - `fat32_handle_t` (struct, line 22)
+  - `fat32_handle_t` (struct, line 25)
   - `file` (function, line 6) `* * A FAT32 disk image stored as a regular file (built on the host with * mkfs.vfat, packed into minifs.bin) is parsed here: BPB validation, * cluster-chain walking and 8.3 directory traversal. Only t`
-  - `fat32_list` (function, line 40) `int fat32_list(const char *imgpath, const char *dirpath, char names[][FAT32_NAME_MAX], int *isdir, int cap);`
-  - `fat32_vfs_open` (function, line 45) `int fat32_vfs_open(const char *path, int mode, void **handle);`
-  - `fat32_vfs_read` (function, line 46) `int fat32_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len);`
-  - `fat32_vfs_write` (function, line 48) `int fat32_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len);`
-  - `fat32_vfs_close` (function, line 50) `int fat32_vfs_close(void *handle);`
-  - `fat32_vfs_fstat` (function, line 51) `int fat32_vfs_fstat(void *handle, unsigned long *size_out);`
-  - `fat32_vfs_truncate` (function, line 52) `int fat32_vfs_truncate(void *handle, unsigned long size);`
-  - `fat32_vfs_ops` (variable, line 54) `extern const vfs_ops_t fat32_vfs_ops;`
+  - `fat32_list` (function, line 45) `int fat32_list(const char *imgpath, const char *dirpath, char names[][FAT32_NAME_MAX], int *isdir, int cap);`
+  - `fat_dev_base` (function, line 54) `long fat_dev_base(void);`
+  - `fat32_vfs_open` (function, line 58) `int fat32_vfs_open(const char *path, int mode, void **handle);`
+  - `fat32_vfs_read` (function, line 59) `int fat32_vfs_read(void *handle, void *buf, unsigned long pos, unsigned long len);`
+  - `fat32_vfs_write` (function, line 61) `int fat32_vfs_write(void *handle, const void *buf, unsigned long pos, unsigned long len);`
+  - `fat32_vfs_close` (function, line 63) `int fat32_vfs_close(void *handle);`
+  - `fat32_vfs_fstat` (function, line 64) `int fat32_vfs_fstat(void *handle, unsigned long *size_out);`
+  - `fat32_vfs_truncate` (function, line 65) `int fat32_vfs_truncate(void *handle, unsigned long size);`
+  - `fat32_vfs_ops` (variable, line 67) `extern const vfs_ops_t fat32_vfs_ops;`
   - `FAT32_H` (macro, line 2) `#define FAT32_H`
   - `FAT32_NAME_MAX` (macro, line 16) `#define FAT32_NAME_MAX`
   - `FAT32_MAX_DEPTH` (macro, line 17) `#define FAT32_MAX_DEPTH`
   - `FAT32_LIST_CAP` (macro, line 18) `#define FAT32_LIST_CAP`
   - `FAT32_CLUS_MAX` (macro, line 19) `#define FAT32_CLUS_MAX`
 - Imported by: `fs/fat32.c`, `fs/vfs.c`, `kernel/shell.c`, `tests/test_fat32.c`
+
+## headers/fsimg.h
+- Layer: utility
+- Doc: fsimg.h -- One image backend for read-only filesystem drivers.
+- Language: h
+- Symbols:
+  - `fsimg_t` (struct, line 13)
+  - `fsimg_open_file` (function, line 23) `int fsimg_open_file(const char *resolved, fsimg_t *img);`
+  - `fsimg_open_dev` (function, line 27) `int fsimg_open_dev(unsigned long base_lba, unsigned long nsec, fsimg_t *img);`
+  - `fsimg_read` (function, line 32) `int fsimg_read(const fsimg_t *img, unsigned long off, void *buf, unsigned long len);`
+  - `fsimg_split` (function, line 40) `int fsimg_split(const char *path, char *left, unsigned llen, char *right, unsigned rlen);`
+  - `FSIMG_H` (macro, line 2) `#define FSIMG_H`
+- Imported by: `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `tests/test_ext4.c`, `tests/test_fat32.c`
 
 ## headers/futex.h
 - Layer: utility
@@ -268,7 +304,7 @@
   - `IDE_DRIVE_SLAVE` (macro, line 40) `#define IDE_DRIVE_SLAVE`
   - `IDE_TIMEOUT` (macro, line 43) `#define IDE_TIMEOUT`
   - `IDE_SECTOR_SIZE` (macro, line 46) `#define IDE_SECTOR_SIZE`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `fs/minifs.c`, `kernel.c`, `kernel/mm/swap.c`, `kernel/syscalls.c`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/minifs.c`, `kernel.c`, `kernel/mm/swap.c`, `kernel/syscalls.c`
 
 ## headers/kernel.h
 - Layer: utility
@@ -622,7 +658,7 @@
   - `ET_DYN` (macro, line 660) `#define ET_DYN`
   - `KFD_MAX` (macro, line 691) `#define KFD_MAX`
 - Depends on: `headers/pipe.h`, `headers/spinlock.h`, `headers/vma.h`, `progs/minios_abi.h`
-- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/pcm2.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `drivers/virtio_blk.c`, `fs/fat32.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `headers/drivers/mouse.h`, `headers/editor.h`, `headers/kernel/console_in.h`, `headers/kernel/vga_cursor.h`, `headers/shell.h`, `headers/spawn.h`, `headers/tls_port.h`, `kernel.c`, `kernel/abi.c`, `kernel/clip.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/panic.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `smp.c`, `tests/test_fat32.c`
+- Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/pcm2.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `drivers/virtio_blk.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `headers/drivers/mouse.h`, `headers/editor.h`, `headers/kernel/console_in.h`, `headers/kernel/vga_cursor.h`, `headers/shell.h`, `headers/spawn.h`, `headers/tls_port.h`, `kernel.c`, `kernel/abi.c`, `kernel/clip.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/panic.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `smp.c`, `tests/test_ext4.c`, `tests/test_fat32.c`
 
 ## headers/ktime.h
 - Layer: utility
@@ -738,7 +774,7 @@
   - `MINIFS_JOP_COMMIT` (macro, line 85) `#define MINIFS_JOP_COMMIT`
   - `MINIFS_JSTATE_CLEAN` (macro, line 87) `#define MINIFS_JSTATE_CLEAN`
   - `MINIFS_JSTATE_DIRTY` (macro, line 88) `#define MINIFS_JSTATE_DIRTY`
-- Imported by: `fs/fat32.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/vfs.c`, `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `tests/test_fat32.c`
+- Imported by: `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/vfs.c`, `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `tests/test_ext4.c`, `tests/test_fat32.c`
 
 ## headers/net.h
 - Layer: utility

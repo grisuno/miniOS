@@ -1,6 +1,6 @@
 # progs/doomgeneric
 
-*Community 8 | 175 files | cohesion 0.95*
+*Community 6 | 175 files | cohesion 0.95*
 
 ## Definition
 
@@ -81,7 +81,8 @@ This community groups 175 file(s) rooted at `progs/doomgeneric` with dominant la
 
 ## Connections
 
-- [EXTRACTED] depends_on community 8 <-> 3 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
+- [EXTRACTED] depends_on community 6 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
+- [INFERRED] shares_context community 2 <-> 6 (strength 0.5): Inferred shared context (language h and layer utility) with no import path between community 2 (headers) and community 6 (progs/doomgeneric).
 
 ## Risks
 

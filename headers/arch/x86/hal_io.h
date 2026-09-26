@@ -42,12 +42,26 @@
 #define HAL_PS2_CMD_WRITE_MOUSE 0xD4
 /** Docstring: PS/2 controller command: enable the auxiliary (mouse) port. */
 #define HAL_PS2_CMD_ENABLE_AUX 0xA8
+/** Docstring: PS/2 controller command: disable the auxiliary (mouse) port. */
+#define HAL_PS2_CMD_DISABLE_AUX 0xA7
+/** Docstring: PS/2 controller command: enable the keyboard port. */
+#define HAL_PS2_CMD_ENABLE_KBD 0xAE
+/** Docstring: PS/2 controller command: disable the keyboard port. */
+#define HAL_PS2_CMD_DISABLE_KBD 0xAD
 /** Docstring: PS/2 controller command: read the config byte. */
 #define HAL_PS2_CMD_READ_CONFIG 0x20
 /** Docstring: PS/2 controller command: write the config byte. */
 #define HAL_PS2_CMD_WRITE_CONFIG 0x60
+/** Docstring: PS/2 config byte bit: enable IRQ1 keyboard interrupts. */
+#define HAL_PS2_CONFIG_IRQ1 0x01
 /** Docstring: PS/2 config byte bit: enable IRQ12 mouse interrupts. */
 #define HAL_PS2_CONFIG_IRQ12 0x02
+/** Docstring: PS/2 config byte bit: disable the keyboard port when set. */
+#define HAL_PS2_CONFIG_DISABLE_KBD 0x10
+/** Docstring: PS/2 config byte bit: disable the mouse port when set. */
+#define HAL_PS2_CONFIG_DISABLE_AUX 0x20
+/** Docstring: PS/2 config byte bit: translate set 2 to set 1. */
+#define HAL_PS2_CONFIG_TRANSLATE 0x40
 /** Docstring: Mouse device command: reset. */
 #define HAL_MOUSE_CMD_RESET 0xFF
 /** Docstring: Mouse device command: set sample rate (next byte is the rate). */

@@ -5,23 +5,23 @@
 - Doc: Docstring: x86 port I/O hardware abstraction contract.
 - Language: h
 - Symbols:
-  - `hal_outb` (function, line 102) `static inline void hal_outb(unsigned short port, unsigned char val)`
-  - `hal_inb` (function, line 109) `static inline unsigned char hal_inb(unsigned short port)`
-  - `hal_outw` (function, line 115) `static inline void hal_outw(unsigned short port, unsigned short val)`
-  - `hal_inw` (function, line 122) `static inline unsigned short hal_inw(unsigned short port)`
-  - `hal_lapic_eoi` (function, line 128) `static inline void hal_lapic_eoi(void)`
-  - `hal_pic_eoi` (function, line 133) `static inline void hal_pic_eoi(int irq)`
-  - `hal_outb` (function, line 143) `static inline void hal_outb(unsigned short port, unsigned char val)`
-  - `hal_inb` (function, line 148) `static inline unsigned char hal_inb(unsigned short port)`
-  - `hal_outw` (function, line 155) `static inline void hal_outw(unsigned short port, unsigned short val)`
-  - `hal_inw` (function, line 160) `static inline unsigned short hal_inw(unsigned short port)`
-  - `hal_lapic_eoi` (function, line 167) `static inline void hal_lapic_eoi(void)`
-  - `hal_pic_eoi` (function, line 172) `static inline void hal_pic_eoi(int irq)`
-  - `hal_io_stub_writes` (variable, line 91) `extern unsigned hal_io_stub_writes;`
-  - `hal_io_stub_last_port` (variable, line 93) `extern unsigned hal_io_stub_last_port;`
-  - `hal_io_stub_last_val` (variable, line 95) `extern unsigned hal_io_stub_last_val;`
-  - `hal_io_stub_lapic_eois` (variable, line 97) `extern unsigned hal_io_stub_lapic_eois;`
-  - `hal_io_stub_read_val` (variable, line 99) `extern unsigned char hal_io_stub_read_val;`
+  - `hal_outb` (function, line 116) `static inline void hal_outb(unsigned short port, unsigned char val)`
+  - `hal_inb` (function, line 123) `static inline unsigned char hal_inb(unsigned short port)`
+  - `hal_outw` (function, line 129) `static inline void hal_outw(unsigned short port, unsigned short val)`
+  - `hal_inw` (function, line 136) `static inline unsigned short hal_inw(unsigned short port)`
+  - `hal_lapic_eoi` (function, line 142) `static inline void hal_lapic_eoi(void)`
+  - `hal_pic_eoi` (function, line 147) `static inline void hal_pic_eoi(int irq)`
+  - `hal_outb` (function, line 157) `static inline void hal_outb(unsigned short port, unsigned char val)`
+  - `hal_inb` (function, line 162) `static inline unsigned char hal_inb(unsigned short port)`
+  - `hal_outw` (function, line 169) `static inline void hal_outw(unsigned short port, unsigned short val)`
+  - `hal_inw` (function, line 174) `static inline unsigned short hal_inw(unsigned short port)`
+  - `hal_lapic_eoi` (function, line 181) `static inline void hal_lapic_eoi(void)`
+  - `hal_pic_eoi` (function, line 186) `static inline void hal_pic_eoi(int irq)`
+  - `hal_io_stub_writes` (variable, line 105) `extern unsigned hal_io_stub_writes;`
+  - `hal_io_stub_last_port` (variable, line 107) `extern unsigned hal_io_stub_last_port;`
+  - `hal_io_stub_last_val` (variable, line 109) `extern unsigned hal_io_stub_last_val;`
+  - `hal_io_stub_lapic_eois` (variable, line 111) `extern unsigned hal_io_stub_lapic_eois;`
+  - `hal_io_stub_read_val` (variable, line 113) `extern unsigned char hal_io_stub_read_val;`
   - `HAL_IO_H` (macro, line 13) `#define HAL_IO_H`
   - `HAL_PIC1_CMD` (macro, line 16) `#define HAL_PIC1_CMD`
   - `HAL_PIC1_DATA` (macro, line 18) `#define HAL_PIC1_DATA`
@@ -37,26 +37,33 @@
   - `HAL_PS2_OBF_FULL` (macro, line 40) `#define HAL_PS2_OBF_FULL`
   - `HAL_PS2_CMD_WRITE_MOUSE` (macro, line 42) `#define HAL_PS2_CMD_WRITE_MOUSE`
   - `HAL_PS2_CMD_ENABLE_AUX` (macro, line 44) `#define HAL_PS2_CMD_ENABLE_AUX`
-  - `HAL_PS2_CMD_READ_CONFIG` (macro, line 46) `#define HAL_PS2_CMD_READ_CONFIG`
-  - `HAL_PS2_CMD_WRITE_CONFIG` (macro, line 48) `#define HAL_PS2_CMD_WRITE_CONFIG`
-  - `HAL_PS2_CONFIG_IRQ12` (macro, line 50) `#define HAL_PS2_CONFIG_IRQ12`
-  - `HAL_MOUSE_CMD_RESET` (macro, line 52) `#define HAL_MOUSE_CMD_RESET`
-  - `HAL_MOUSE_CMD_SET_RATE` (macro, line 54) `#define HAL_MOUSE_CMD_SET_RATE`
-  - `HAL_MOUSE_CMD_GET_ID` (macro, line 56) `#define HAL_MOUSE_CMD_GET_ID`
-  - `HAL_MOUSE_CMD_DEFAULTS` (macro, line 58) `#define HAL_MOUSE_CMD_DEFAULTS`
-  - `HAL_MOUSE_CMD_ENABLE` (macro, line 60) `#define HAL_MOUSE_CMD_ENABLE`
-  - `HAL_MOUSE_CMD_DISABLE` (macro, line 62) `#define HAL_MOUSE_CMD_DISABLE`
-  - `HAL_MOUSE_RATE_KNOCK_200` (macro, line 64) `#define HAL_MOUSE_RATE_KNOCK_200`
-  - `HAL_MOUSE_RATE_KNOCK_100` (macro, line 66) `#define HAL_MOUSE_RATE_KNOCK_100`
-  - `HAL_MOUSE_RATE_KNOCK_80` (macro, line 68) `#define HAL_MOUSE_RATE_KNOCK_80`
-  - `HAL_MOUSE_ID_INTELLI` (macro, line 70) `#define HAL_MOUSE_ID_INTELLI`
-  - `HAL_MOUSE_HW_TIMEOUT` (macro, line 72) `#define HAL_MOUSE_HW_TIMEOUT`
-  - `HAL_MOUSE_SYNC_BIT` (macro, line 75) `#define HAL_MOUSE_SYNC_BIT`
-  - `HAL_MOUSE_OVF_BITS` (macro, line 77) `#define HAL_MOUSE_OVF_BITS`
-  - `HAL_MOUSE_BUTTON_MASK` (macro, line 79) `#define HAL_MOUSE_BUTTON_MASK`
-  - `HAL_MOUSE_PACKET_LEN` (macro, line 81) `#define HAL_MOUSE_PACKET_LEN`
-  - `HAL_MOUSE_SCALE` (macro, line 83) `#define HAL_MOUSE_SCALE`
-  - `HAL_LAPIC_EOI_ADDR` (macro, line 86) `#define HAL_LAPIC_EOI_ADDR`
+  - `HAL_PS2_CMD_DISABLE_AUX` (macro, line 46) `#define HAL_PS2_CMD_DISABLE_AUX`
+  - `HAL_PS2_CMD_ENABLE_KBD` (macro, line 48) `#define HAL_PS2_CMD_ENABLE_KBD`
+  - `HAL_PS2_CMD_DISABLE_KBD` (macro, line 50) `#define HAL_PS2_CMD_DISABLE_KBD`
+  - `HAL_PS2_CMD_READ_CONFIG` (macro, line 52) `#define HAL_PS2_CMD_READ_CONFIG`
+  - `HAL_PS2_CMD_WRITE_CONFIG` (macro, line 54) `#define HAL_PS2_CMD_WRITE_CONFIG`
+  - `HAL_PS2_CONFIG_IRQ1` (macro, line 56) `#define HAL_PS2_CONFIG_IRQ1`
+  - `HAL_PS2_CONFIG_IRQ12` (macro, line 58) `#define HAL_PS2_CONFIG_IRQ12`
+  - `HAL_PS2_CONFIG_DISABLE_KBD` (macro, line 60) `#define HAL_PS2_CONFIG_DISABLE_KBD`
+  - `HAL_PS2_CONFIG_DISABLE_AUX` (macro, line 62) `#define HAL_PS2_CONFIG_DISABLE_AUX`
+  - `HAL_PS2_CONFIG_TRANSLATE` (macro, line 64) `#define HAL_PS2_CONFIG_TRANSLATE`
+  - `HAL_MOUSE_CMD_RESET` (macro, line 66) `#define HAL_MOUSE_CMD_RESET`
+  - `HAL_MOUSE_CMD_SET_RATE` (macro, line 68) `#define HAL_MOUSE_CMD_SET_RATE`
+  - `HAL_MOUSE_CMD_GET_ID` (macro, line 70) `#define HAL_MOUSE_CMD_GET_ID`
+  - `HAL_MOUSE_CMD_DEFAULTS` (macro, line 72) `#define HAL_MOUSE_CMD_DEFAULTS`
+  - `HAL_MOUSE_CMD_ENABLE` (macro, line 74) `#define HAL_MOUSE_CMD_ENABLE`
+  - `HAL_MOUSE_CMD_DISABLE` (macro, line 76) `#define HAL_MOUSE_CMD_DISABLE`
+  - `HAL_MOUSE_RATE_KNOCK_200` (macro, line 78) `#define HAL_MOUSE_RATE_KNOCK_200`
+  - `HAL_MOUSE_RATE_KNOCK_100` (macro, line 80) `#define HAL_MOUSE_RATE_KNOCK_100`
+  - `HAL_MOUSE_RATE_KNOCK_80` (macro, line 82) `#define HAL_MOUSE_RATE_KNOCK_80`
+  - `HAL_MOUSE_ID_INTELLI` (macro, line 84) `#define HAL_MOUSE_ID_INTELLI`
+  - `HAL_MOUSE_HW_TIMEOUT` (macro, line 86) `#define HAL_MOUSE_HW_TIMEOUT`
+  - `HAL_MOUSE_SYNC_BIT` (macro, line 89) `#define HAL_MOUSE_SYNC_BIT`
+  - `HAL_MOUSE_OVF_BITS` (macro, line 91) `#define HAL_MOUSE_OVF_BITS`
+  - `HAL_MOUSE_BUTTON_MASK` (macro, line 93) `#define HAL_MOUSE_BUTTON_MASK`
+  - `HAL_MOUSE_PACKET_LEN` (macro, line 95) `#define HAL_MOUSE_PACKET_LEN`
+  - `HAL_MOUSE_SCALE` (macro, line 97) `#define HAL_MOUSE_SCALE`
+  - `HAL_LAPIC_EOI_ADDR` (macro, line 100) `#define HAL_LAPIC_EOI_ADDR`
 - Imported by: `drivers/kbd.c`, `drivers/mouse.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_hal_io.c`
 
 ## headers/arch/x86/msr.h

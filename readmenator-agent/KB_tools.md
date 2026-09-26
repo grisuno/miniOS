@@ -448,8 +448,8 @@
   - `usage` (function, line 51)
   - `restore_sources` (function, line 118)
   - `cleanup` (function, line 125)
-  - `record` (function, line 352)
-  - `find_index` (function, line 358)
+  - `record` (function, line 355)
+  - `find_index` (function, line 361)
 
 ## tools/probe_compute_vga.py
 - Layer: utility

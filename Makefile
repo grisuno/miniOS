@@ -2283,9 +2283,12 @@ vb: os.usb.img
 	  --acpi on --ioapic on --pae on --chipset piix3 \
 	  --boot1 disk --boot2 none --boot3 none --boot4 none \
 	  --nic1 nat --audio-enabled on --audio-controller sb16 --audio-codec sb16 \
+	  --mouse ps2 --keyboard ps2 \
 	  --graphicscontroller vboxvga || exit 1; \
-	if ! VBoxManage showvminfo "$(VB_VM)" 2>/dev/null | grep -q 'Storage Controller Name.*IDE'; then \
-	  VBoxManage storagectl "$(VB_VM)" --name IDE --add ide --controller PIIX4 || exit 1; \
+	if ! VBoxManage showvminfo "$(VB_VM)" --machinereadable 2>/dev/null | grep -qi '^storagecontrollername.*="IDE"'; then \
+	  VBoxManage storagectl "$(VB_VM)" --name IDE --add ide --controller PIIX4 || { \
+	    VBoxManage showvminfo "$(VB_VM)" --machinereadable 2>/dev/null | grep -qi '^storagecontrollername.*="IDE"' || exit 1; \
+	  }; \
 	fi; \
 	VBoxManage storageattach "$(VB_VM)" --storagectl IDE --port 0 --device 0 \
 	  --type hdd --medium "$(abspath $(VB_VDI))" || exit 1; \

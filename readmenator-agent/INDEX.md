@@ -19,7 +19,9 @@
 | `drivers/rtc.c` | CMOS RTC time-of-day reader. The desktop clock and the shell `date` builtin | - | 25 |
 | `drivers/sb16.c` | Sound Blaster 16 DMA audio driver. | - | 64 |
 | `drivers/virtio_blk.c` | Docstring: drivers/virtio_blk.c -- Polled legacy virtio-blk driver. | - | 35 |
-| `fs/fat32.c` | ================================================================ | fs | 24 |
+| `fs/ext4.c` | ================================================================ | fs | 37 |
+| `fs/fat32.c` | ================================================================ | fs | 31 |
+| `fs/fsimg.c` | ================================================================ | fs | 5 |
 | `fs/kfile.c` | ================================================================ | fs | 25 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 63 |
 | `fs/ramdisk.c` | ================================================================ | fs | 20 |
@@ -28,7 +30,7 @@
 | `headers/abi.h` | Docstring: abi.h -- Boot-time ABI manifest gate contract. | headers | 10 |
 | `headers/ap_stub.h` | generated from ap_stub.bin - do not edit | headers | 0 |
 | `headers/arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | misc | 143 |
-| `headers/arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 52 |
+| `headers/arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 59 |
 | `headers/arch/x86/msr.h` | Model-Specific Register access for x86-64. | x86 | 9 |
 | `headers/audio.h` | Unified audio API for MiniOS. | headers | 18 |
 | `headers/batch.h` | Docstring: batch.h -- Batched synchronous syscall submission. | headers | 12 |
@@ -42,7 +44,9 @@
 | `headers/drivers/pci.h` | Docstring: drivers/pci.h -- PCI configuration-space access. | drivers | 9 |
 | `headers/drivers/virtio_blk.h` | Docstring: drivers/virtio_blk.h -- virtio-blk boundary. | drivers | 6 |
 | `headers/editor.h` | editor.h -- the built-in line editor contract. | headers | 2 |
-| `headers/fat32.h` | fat32.h -- Read-only FAT32 loopback driver over ramdisk/MiniFS images. | headers | 15 |
+| `headers/ext4.h` | ext4.h -- Read-only ext4 loopback/device driver. | headers | 15 |
+| `headers/fat32.h` | fat32.h -- Read-only FAT32 loopback driver over ramdisk/MiniFS images. | headers | 16 |
+| `headers/fsimg.h` | fsimg.h -- One image backend for read-only filesystem drivers. | headers | 6 |
 | `headers/futex.h` | Docstring: futex.h -- Fast userspace mutex sleep/wake contract. | headers | 17 |
 | `headers/httpd.h` | Docstring: httpd.h -- Minimal static HTTP/1.0 server contract. | headers | 10 |
 | `headers/ide.h` | IDE/ATA PIO driver for MiniOS. | headers | 35 |
@@ -117,7 +121,7 @@
 | `kernel/sched.c` | - | - | 105 |
 | `kernel/scrollback.c` | scrollback.c - Console scrollback ring buffer. | - | 8 |
 | `kernel/serial.c` | serial.c -- COM1 16550 UART driver. | - | 9 |
-| `kernel/shell.c` | ================================================================ | - | 93 |
+| `kernel/shell.c` | ================================================================ | - | 94 |
 | `kernel/spawn.c` | Docstring: Save the caller shared-window view into ctx. | - | 9 |
 | `kernel/string.c` | string.c -- Kernel string and memory functions. | - | 13 |
 | `kernel/symtab.c` | ================================================================ | - | 7 |
@@ -424,7 +428,8 @@
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 3 |
 | `tests/test_doom_pwad.py` | test_doom_pwad.py - host contract suite for tools/doom_pwad.py.  Runs the grid c | tests | 44 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 5 |
-| `tests/test_fat32.c` | Docstring: Host test for the FAT32 loopback driver (make test-fat). | tests | 23 |
+| `tests/test_ext4.c` | Docstring: Host test for the ext4 loopback driver (make test-ext4). | tests | 29 |
+| `tests/test_fat32.c` | Docstring: Host test for the FAT32 loopback driver (make test-fat). | tests | 26 |
 | `tests/test_fault.c` | test_fault.c -- fault-injection suite (boyscout gap #10). | tests | 11 |
 | `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 10 |
 | `tests/test_freedom_wl.c` | test_freedom_wl - host suite for the Wayland to MiniOS mapping. | tests | 3 |

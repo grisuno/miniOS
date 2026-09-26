@@ -1,6 +1,6 @@
 # orphans
 
-*Community 12 | 92 files | cohesion 0.00*
+*Community 9 | 92 files | cohesion 0.00*
 
 ## Definition
 
@@ -141,7 +141,8 @@ This community groups 92 file(s) rooted at `tools` with dominant language c (coh
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 12 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 12 (orphans).
+- [INFERRED] shares_context community 0 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 9 (orphans).
+- [INFERRED] shares_context community 1 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (progs/doomgeneric) and community 9 (orphans).
 
 ## Risks
 

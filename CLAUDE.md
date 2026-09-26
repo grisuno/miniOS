@@ -4115,7 +4115,18 @@ Extracted so far:
 - Mouse: the PS/2 controller handshake, Intellimouse knock and
   enable/disable verbs moved from `kernel/sched.c` to `drivers/mouse.c`
   with the boundary header `drivers/mouse.h`; the IRQ12 packet phase
-  machine stays in the scheduler ISR dispatch beside its consumer
+  machine stays in the scheduler ISR dispatch beside its consumer.
+  `mouse_hw_init` performs the full OSDev init sequence, never trusting
+  firmware state: disable both ports (0xAD/0xA7) before the config
+  read-modify-write, publish a known-good command byte (IRQ1 + IRQ12 +
+  set-2-to-set-1 translation on, both disable-port bits clear), then
+  enable both ports (0xAE/0xA8) before the mouse reset/knock. Skipping
+  the disable-first step corrupted the command byte on VirtualBox (whose
+  BIOS leaves different strays than SeaBIOS), silencing the keyboard and
+  the mouse together even with host input captured, while QEMU worked.
+  The `vb` recipe pins `--mouse ps2 --keyboard ps2` so no VirtualBox
+  default (USB tablet) can starve the i8042 path; input still requires a
+  click to capture (no Guest Additions), Host key releases.
 - Filesystem: minifs, zip moved to `fs/`
 - Network: net, tls, tls_crypto, tls_x509 moved to `net/`; the rtl8139
   driver further split into its own contract `net/rtl8139.c` with the

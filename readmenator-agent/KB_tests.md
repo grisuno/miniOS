@@ -102,35 +102,77 @@
   - `main` (function, line 65) `int main(void)`
 - Depends on: `headers/driver.h`, `kernel/string.c`
 
+## tests/test_ext4.c
+- Layer: testing
+- Doc: Docstring: Host test for the ext4 loopback driver (make test-ext4).
+- Language: c
+- Symbols:
+  - `kmalloc` (function, line 24) `void *kmalloc(unsigned long size)`
+  - `kfree` (function, line 28) `void kfree(void *ptr)`
+  - `kstrlen` (function, line 32) `unsigned long kstrlen(const char *s)`
+  - `kstrncmp` (function, line 36) `int kstrncmp(const char *a, const char *b, unsigned long n)`
+  - `kstrncpy` (function, line 40) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
+  - `kmemcpy` (function, line 47) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
+  - `kstrchr` (function, line 51) `char *kstrchr(const char *s, int c)`
+  - `fs_resolve` (function, line 55) `int fs_resolve(const char *path, char *out, unsigned cap)`
+  - `ramdisk_open` (function, line 68) `RDFile *ramdisk_open(const char *name)`
+  - `ramdisk_read` (function, line 73) `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len)`
+  - `minifs_is_mounted` (function, line 81) `int minifs_is_mounted(void)`
+  - `minifs_resolve_path` (function, line 85) `int minifs_resolve_path(const char *path)`
+  - `minifs_stat` (function, line 90) `int minifs_stat(int ino, MiniFSInode *out)`
+  - `minifs_read` (function, line 96) `int minifs_read(int ino, void *buf, unsigned off, unsigned len)`
+  - `ide_present` (function, line 104) `int ide_present(void)`
+  - `ide_total_sectors` (function, line 108) `unsigned int ide_total_sectors(void)`
+  - `ide_read_sectors` (function, line 112) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)`
+  - `e16` (function, line 132) `static void e16(unsigned char *p, unsigned v)`
+  - `e32` (function, line 137) `static void e32(unsigned char *p, unsigned long v)`
+  - `ext_fix_de` (function, line 145) `static unsigned ext_fix_de(unsigned char *d, unsigned off, const char *nm,
+                      ...`
+  - `ext_fix_inode` (function, line 157) `static void ext_fix_inode(unsigned ino, unsigned mode, unsigned long size,
+                      ...`
+  - `ext_fix_x1` (function, line 169) `static void ext_fix_x1(unsigned char *iblk, unsigned l0, unsigned p0,
+                       unsi...`
+  - `ext_fix_build` (function, line 181) `static void ext_fix_build(void)`
+  - `test_image` (function, line 294) `static void test_image(void)`
+  - `test_bad_magic` (function, line 401) `static void test_bad_magic(void)`
+  - `main` (function, line 410) `int main(void)`
+  - `EXT_FIX_BLOCKS` (macro, line 62) `#define EXT_FIX_BLOCKS`
+  - `EXT_FIX_SIZE` (macro, line 63) `#define EXT_FIX_SIZE`
+  - `CHECK` (macro, line 124) `#define CHECK(cond)`
+- Depends on: `fs/ext4.c`, `fs/fsimg.c`, `headers/ext4.h`, `headers/fsimg.h`, `headers/kernel.h`, `headers/minifs.h`, `kernel/string.c`
+
 ## tests/test_fat32.c
 - Layer: testing
 - Doc: Docstring: Host test for the FAT32 loopback driver (make test-fat).
 - Language: c
 - Symbols:
-  - `kmalloc` (function, line 23) `void *kmalloc(unsigned long size)`
-  - `kfree` (function, line 27) `void kfree(void *ptr)`
-  - `kstrlen` (function, line 31) `unsigned long kstrlen(const char *s)`
-  - `kstrncmp` (function, line 35) `int kstrncmp(const char *a, const char *b, unsigned long n)`
-  - `kstrncpy` (function, line 39) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
-  - `kmemcpy` (function, line 46) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
-  - `fs_resolve` (function, line 50) `int fs_resolve(const char *path, char *out, unsigned cap)`
-  - `ramdisk_open` (function, line 65) `RDFile *ramdisk_open(const char *name)`
-  - `ramdisk_read` (function, line 70) `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len)`
-  - `minifs_is_mounted` (function, line 78) `int minifs_is_mounted(void)`
-  - `minifs_resolve_path` (function, line 82) `int minifs_resolve_path(const char *path)`
-  - `minifs_stat` (function, line 87) `int minifs_stat(int ino, MiniFSInode *out)`
-  - `minifs_read` (function, line 93) `int minifs_read(int ino, void *buf, unsigned off, unsigned len)`
-  - `st16` (function, line 113) `static void st16(unsigned char *p, unsigned v)`
-  - `st32` (function, line 118) `static void st32(unsigned char *p, unsigned long v)`
-  - `fat_fix_build` (function, line 125) `static void fat_fix_build(void)`
-  - `test_units` (function, line 204) `static void test_units(void)`
-  - `test_image` (function, line 226) `static void test_image(void)`
-  - `test_bad_magic` (function, line 288) `static void test_bad_magic(void)`
-  - `main` (function, line 297) `int main(void)`
-  - `FAT_FIX_SECTORS` (macro, line 57) `#define FAT_FIX_SECTORS`
-  - `FAT_FIX_SIZE` (macro, line 58) `#define FAT_FIX_SIZE`
-  - `CHECK` (macro, line 105) `#define CHECK(cond)`
-- Depends on: `fs/fat32.c`, `headers/fat32.h`, `headers/kernel.h`, `headers/minifs.h`, `kernel/string.c`
+  - `kmalloc` (function, line 24) `void *kmalloc(unsigned long size)`
+  - `kfree` (function, line 28) `void kfree(void *ptr)`
+  - `kstrlen` (function, line 32) `unsigned long kstrlen(const char *s)`
+  - `kstrncmp` (function, line 36) `int kstrncmp(const char *a, const char *b, unsigned long n)`
+  - `kstrncpy` (function, line 40) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
+  - `kmemcpy` (function, line 47) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
+  - `fs_resolve` (function, line 51) `int fs_resolve(const char *path, char *out, unsigned cap)`
+  - `ramdisk_open` (function, line 66) `RDFile *ramdisk_open(const char *name)`
+  - `ramdisk_read` (function, line 71) `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len)`
+  - `minifs_is_mounted` (function, line 79) `int minifs_is_mounted(void)`
+  - `minifs_resolve_path` (function, line 83) `int minifs_resolve_path(const char *path)`
+  - `minifs_stat` (function, line 88) `int minifs_stat(int ino, MiniFSInode *out)`
+  - `minifs_read` (function, line 94) `int minifs_read(int ino, void *buf, unsigned off, unsigned len)`
+  - `ide_present` (function, line 102) `int ide_present(void)`
+  - `ide_total_sectors` (function, line 106) `unsigned int ide_total_sectors(void)`
+  - `ide_read_sectors` (function, line 110) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)`
+  - `st16` (function, line 130) `static void st16(unsigned char *p, unsigned v)`
+  - `st32` (function, line 135) `static void st32(unsigned char *p, unsigned long v)`
+  - `fat_fix_build` (function, line 142) `static void fat_fix_build(void)`
+  - `test_units` (function, line 221) `static void test_units(void)`
+  - `test_image` (function, line 243) `static void test_image(void)`
+  - `test_bad_magic` (function, line 305) `static void test_bad_magic(void)`
+  - `main` (function, line 314) `int main(void)`
+  - `FAT_FIX_SECTORS` (macro, line 58) `#define FAT_FIX_SECTORS`
+  - `FAT_FIX_SIZE` (macro, line 59) `#define FAT_FIX_SIZE`
+  - `CHECK` (macro, line 122) `#define CHECK(cond)`
+- Depends on: `fs/fat32.c`, `fs/fsimg.c`, `headers/fat32.h`, `headers/fsimg.h`, `headers/kernel.h`, `headers/minifs.h`, `kernel/string.c`
 
 ## tests/test_fault.c
 - Layer: testing
