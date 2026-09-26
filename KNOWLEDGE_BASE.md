@@ -12,7 +12,7 @@
 **Total Files Parsed:** 514 | **Total Symbols Extracted:** 10516 | **Total Imports:** 1920
  | **Resolved Imports:** 1305
 
-<!-- ranking_model: v1.0 | weights: {ppr:0.45,auth:0.2,test:0.15,doc:0.1,fresh:0.1} | alpha:0.85 | commit:5be9a30 | date:2026-07-18 -->
+<!-- ranking_model: v1.0 | weights: {ppr:0.45,auth:0.2,test:0.15,doc:0.1,fresh:0.1} | alpha:0.85 | commit:61ad9f4 | date:2026-07-18 -->
 
 
 ## Table of Contents
@@ -202,7 +202,7 @@ Files ranked by composite score for the current query context. The ranking combi
 | 9 | `kernel_feature_survey.py` | 0.1125 | 0.0000 | 0.0000 | 0.00 | 1.12 |
 | 10 | `spawn.c` | 0.1113 | 0.0000 | 0.0011 | 0.00 | 1.11 |
 
-**Query anchors:** progs/nuklear/nuklear_minios.c, progs/file/file.c, progs/paint/paint.c, progs/pokemon/platform_minios.c
+**Query anchors:** progs/file/file.c, progs/paint/paint.c, progs/nuklear/nuklear_minios.c, progs/pokemon/platform_minios.c
 
 ---
 
@@ -426,12 +426,12 @@ Taint analysis traces how dangerous imports propagate through the codebase via t
   Path: mcp_dbg_driver.py -> time.c -> kernel.h
 - `mcp_dbg_driver.py` imports `subprocess` (2 hops to `ktime.h`) [high]
   Path: mcp_dbg_driver.py -> time.c -> ktime.h
-- `mcp_dbg_driver.py` imports `subprocess` (3 hops to `spinlock.h`) [high]
-  Path: mcp_dbg_driver.py -> time.c -> kernel.h -> spinlock.h
-- `mcp_dbg_driver.py` imports `subprocess` (3 hops to `minios_abi.h`) [high]
-  Path: mcp_dbg_driver.py -> time.c -> kernel.h -> minios_abi.h
 - `mcp_dbg_driver.py` imports `subprocess` (3 hops to `vma.h`) [high]
   Path: mcp_dbg_driver.py -> time.c -> kernel.h -> vma.h
+- `mcp_dbg_driver.py` imports `subprocess` (3 hops to `minios_abi.h`) [high]
+  Path: mcp_dbg_driver.py -> time.c -> kernel.h -> minios_abi.h
+- `mcp_dbg_driver.py` imports `subprocess` (3 hops to `spinlock.h`) [high]
+  Path: mcp_dbg_driver.py -> time.c -> kernel.h -> spinlock.h
 - `mcp_dbg_driver.py` imports `subprocess` (3 hops to `pipe.h`) [high]
   Path: mcp_dbg_driver.py -> time.c -> kernel.h -> pipe.h
 - `mcp_dogfood.py` imports `subprocess` (0 hop to `mcp_dogfood.py`) [high]
@@ -442,12 +442,12 @@ Taint analysis traces how dangerous imports propagate through the codebase via t
   Path: mcp_dogfood.py -> time.c -> kernel.h
 - `mcp_dogfood.py` imports `subprocess` (2 hops to `ktime.h`) [high]
   Path: mcp_dogfood.py -> time.c -> ktime.h
-- `mcp_dogfood.py` imports `subprocess` (3 hops to `spinlock.h`) [high]
-  Path: mcp_dogfood.py -> time.c -> kernel.h -> spinlock.h
-- `mcp_dogfood.py` imports `subprocess` (3 hops to `minios_abi.h`) [high]
-  Path: mcp_dogfood.py -> time.c -> kernel.h -> minios_abi.h
 - `mcp_dogfood.py` imports `subprocess` (3 hops to `vma.h`) [high]
   Path: mcp_dogfood.py -> time.c -> kernel.h -> vma.h
+- `mcp_dogfood.py` imports `subprocess` (3 hops to `minios_abi.h`) [high]
+  Path: mcp_dogfood.py -> time.c -> kernel.h -> minios_abi.h
+- `mcp_dogfood.py` imports `subprocess` (3 hops to `spinlock.h`) [high]
+  Path: mcp_dogfood.py -> time.c -> kernel.h -> spinlock.h
 - `mcp_dogfood.py` imports `subprocess` (3 hops to `pipe.h`) [high]
   Path: mcp_dogfood.py -> time.c -> kernel.h -> pipe.h
 - `minios_addons.py` imports `subprocess` (0 hop to `minios_addons.py`) [high]
@@ -562,21 +562,21 @@ Files sorted by how many other files would be affected if they changed. High-imp
 
 | File | Direct Dependents | Transitive Dependents | Total Impact |
 |------|------------------|----------------------|--------------|
-| `minios_abi.h` | 29 | 50 | 98 |
-| `spinlock.h` | 8 | 50 | 73 |
+| `minios_abi.h` | 29 | 50 | 91 |
+| `spinlock.h` | 8 | 50 | 68 |
 | `string.c` | 50 | 0 | 68 |
 | `vma.h` | 8 | 50 | 67 |
 | `pipe.h` | 3 | 50 | 63 |
 | `kernel.h` | 50 | 0 | 61 |
-| `m_fixed.h` | 9 | 49 | 58 |
 | `tables.h` | 6 | 50 | 56 |
 | `d_think.h` | 3 | 50 | 55 |
+| `info.h` | 4 | 50 | 54 |
 | `v_patch.h` | 2 | 50 | 54 |
+| `d_mode.h` | 6 | 47 | 53 |
 | `d_ticcmd.h` | 6 | 47 | 53 |
 | `i_video.h` | 18 | 35 | 53 |
-| `net_defs.h` | 9 | 43 | 52 |
-| `sha1.h` | 5 | 47 | 52 |
-| `d_items.h` | 2 | 49 | 51 |
+| `doomdef.h` | 41 | 11 | 52 |
+| `d_event.h` | 13 | 38 | 51 |
 
 ---
 

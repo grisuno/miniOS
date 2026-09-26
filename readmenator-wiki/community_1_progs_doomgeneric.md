@@ -177,7 +177,7 @@ This community groups 60 file(s) rooted at `progs/doomgeneric` with dominant lan
 - [EXTRACTED] depends_on community 1 <-> 5 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
 - [EXTRACTED] depends_on community 7 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
 - [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 2 (headers).
-- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 8 (tests).
+- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language c) with no import path between community 1 (progs/doomgeneric) and community 3 (headers/drivers).
 - [INFERRED] shares_context community 1 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (progs/doomgeneric) and community 9 (orphans).
 
 ## Risks
