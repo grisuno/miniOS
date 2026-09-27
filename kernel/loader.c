@@ -469,12 +469,16 @@ void *load_exec_elf(void *data, unsigned size) {
      * atomic section: a 100 Hz tick between two segments would switch
      * CR3 into another process (copies landing in its pages, NX marks
      * and brk carved from its view) and corrupt whoever loses. The
-     * isolated loader already works this way (cli around every CR3
-     * switch); the only difference here is that no switch is needed,
-     * just no preemption. Serial output stays polled, allocation
-     * stays heap-local, relocs stay pure, so nothing inside needs
-     * interrupts. Every exit below restores them. */
-    __asm__ volatile("cli");
+     * isolated loader already works this way (irq saved around every
+     * CR3 switch); the only difference here is that no switch is
+     * needed, just no preemption. Serial output stays polled,
+     * allocation stays heap-local, relocs stay pure, so nothing inside
+     * needs interrupts. Every exit below restores them.
+     * Interrupt masking uses spin_save_irq/spin_restore_irq (the same
+     * primitive spin_lock_irqsave is built on), never bare cli/sti: a
+     * bare sti on a path entered with IF=0 would wrongly enable
+     * interrupts, and on SMP the saved-flags form nests safely. */
+    irqflags_t irqf = spin_save_irq();
     for (i = 0; i < e->e_phnum; i++) {
         if (ph[i].p_type != PT_LOAD) continue;
         if (ph[i].p_vaddr > USER_LOAD_END - base) { kprintf("exec: vaddr %lx too big\n", ph[i].p_vaddr); goto fail; }
@@ -550,10 +554,10 @@ void *load_exec_elf(void *data, unsigned size) {
         kprintf("exec: loaded at %lx entry %lx brk %lx\n", base + USER_LOAD_BASE, base + e->e_entry, g_brk);
         redirect_resume(was);
     }
-    __asm__ volatile("sti");
+    spin_restore_irq(irqf);
     return (void *)(base + e->e_entry);
 fail:
-    __asm__ volatile("sti");
+    spin_restore_irq(irqf);
     return 0;
 }
 
@@ -606,7 +610,10 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
         if (ph[i].p_offset > size || ph[i].p_filesz > size - ph[i].p_offset) { kprintf("exec_into: beyond file\n"); goto fail; }
         for (p = dst & ~0xFFFUL; p < dst + ph[i].p_memsz; p += 0x1000)
             if (mm_user_ensure_page(cr3, p)) { kprintf("exec_into: OOM at %lx\n", p); goto fail; }
-        __asm__ volatile("cli");
+        /* CR3 switch window: interrupts off locally with flags saved,
+         * so a tick can never observe the foreign address space and a
+         * caller that entered with IF=0 is restored exactly. */
+        { irqflags_t wflags = spin_save_irq();
         __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)cr3) : "memory");
         kmemcpy((void *)dst, (char *)data + ph[i].p_offset,
                 (unsigned long)ph[i].p_filesz);
@@ -614,7 +621,7 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
             kmemset((void *)(dst + ph[i].p_filesz), 0,
                     (unsigned long)(ph[i].p_memsz - ph[i].p_filesz));
         __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
-        __asm__ volatile("sti");
+        spin_restore_irq(wflags); }
         if (ph[i].p_filesz > 0 && (ph[i].p_flags & PF_X) && nxr < ELF_MAX_SEGMENTS) {
             xr[nxr].start = dst;
             xr[nxr].end   = dst + ph[i].p_filesz;
@@ -641,12 +648,12 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
         if (ph[i].p_filesz == 0) continue;
         dst = base + ph[i].p_vaddr;
         want = ph[i].p_filesz;
-        __asm__ volatile("cli");
+        { irqflags_t vflags = spin_save_irq();
         __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)cr3) : "memory");
         for (k = 0; k < want; k++)
             if (((unsigned char *)dst)[k] != ((unsigned char *)data)[ph[i].p_offset + k]) { bad = 1; badat = k; break; }
         __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
-        __asm__ volatile("sti");
+        spin_restore_irq(vflags); }
         if (bad) kprintf("exec_into: VERIFY-FAIL seg %u dst %lx off %lx\n",
                          i, dst, badat);
     }
@@ -662,7 +669,9 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
     }
     return (void *)(base + e->e_entry);
 fail:
+    /* IF is the caller's property: every CR3 window above restores its
+     * own flags, so this path must not sti (the old bare sti enabled
+     * interrupts mid-spawn whenever the caller had them off). */
     __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
-    __asm__ volatile("sti");
     return 0;
 }

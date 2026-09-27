@@ -49,21 +49,18 @@
  *   0x0C000000 .. 0x18000000   192 MB kernel heap (HEAP_BASE/HEAP_SIZE)
  */
 
-/* Asm-safe (no UL suffix) mirror of the user window for the syscall-entry
- * return discriminator; the trampoline is a raw string literal, so the C
- * preprocessor cannot paste the UL-suffixed macros into it. The values must
- * track minios_abi.h; the _Static_asserts below prove they do. */
-#define USER_WIN_LO     0x00400000
-#define USER_WIN_HI     0x0C000000
-#define STR_(x) #x
-#define STR(x)  STR_(x)
-
 /* The kernel's layout constants are derived from minios_abi.h, and the
- * asm-safe mirrors above are checked against them at compile time, so a
- * layout edit in the ABI header can never silently leave the syscall return
- * discriminator, the page-table zone sizing or a ring-3 program out of step. */
-_Static_assert(USER_WIN_LO == MINIOS_USER_LOAD_BASE, "USER_WIN_LO drift");
-_Static_assert(USER_WIN_HI == MINIOS_USER_LOAD_END, "USER_WIN_HI drift");
+ * syscall trampoline's numerics (headers/syscall_asm.h, consumed by
+ * arch/x86/syscall_entry.S) are checked against them at compile time,
+ * so a layout edit in the ABI header can never silently leave the
+ * syscall return discriminator, the page-table zone sizing or a ring-3
+ * program out of step. */
+#include "syscall_asm.h"
+_Static_assert(SYSCALL_USER_WIN_LO == MINIOS_USER_LOAD_BASE, "syscall win lo drift");
+_Static_assert(SYSCALL_USER_WIN_HI == MINIOS_USER_LOAD_END, "syscall win hi drift");
+_Static_assert(SYSCALL_PROC_T_SIZE == PROC_T_SIZE, "syscall proc size drift");
+_Static_assert(SYSCALL_PROC_KSTACK_OFF == PROC_KSTACK_OFF, "syscall kstack off drift");
+_Static_assert(SYSCALL_MAX_PROCS == MAX_PROCS, "syscall max procs drift");
 _Static_assert(USER_LOAD_BASE == MINIOS_USER_LOAD_BASE, "USER_LOAD_BASE drift");
 _Static_assert(USER_LOAD_END == MINIOS_USER_LOAD_END, "USER_LOAD_END drift");
 _Static_assert(USER_STACK_TOP == MINIOS_USER_STACK_TOP, "USER_STACK_TOP drift");
@@ -125,47 +122,18 @@ extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a
  * moved to kernel/syscalls.c */
 
 
-/* ---- syscall trampoline: marshal Linux ABI regs into the C ABI ----------
- * Every syscall swaps onto the calling proc's own kernel stack
- * (procs[pid].kstack, located as procs + pid * PROC_T_SIZE +
- * PROC_KSTACK_OFF; the C side asserts both numbers and the asm derives
- * both immediates from the macros, so growing proc_t can never strand
- * a stale stride here again), so concurrent thread syscalls never share one:
- * sharing a single entry stack corrupts both frames when a timer tick
- * interleaves two syscalls.  Ring-0 ET_REL syscalls use the same
- * per-proc stack of whoever runs them (never the legacy shared
- * `syscall_kstack`, which could not survive two threads entering
- * ring-0 syscalls on one CPU).
- *
- * The entry has no free register and no stack before the swap, so n and
- * the user rip park in per-CPU scratch (cpu_t sc_n/sc_rip at gs:72/80,
- * asserted below): per-CPU, never global, so two CPUs cannot share a
- * slot, and always under cli, so one CPU cannot interleave with itself.
- * The kstack top likewise cannot live in a global (a thread preempted
- * mid-syscall would have its top overwritten by the next thread's
- * entry): it is saved per-pid in sc_top_save[], written at entry and
- * read at exit by the owning thread only.  Pid is range-checked at
- * entry (13f: jae 98f, fail closed with -EFAULT touching no memory),
- * so a corrupt cur_pid can neither index sc_top_save OOB nor xchg
- * onto a wild kstack address.  The pushed frame layout is
- * identical on both paths (r11/rip/n/a1..a6/pid/pcb), and the kernel
- * never runs on a user stack and never touches the user red zone.  The
- * return discriminates on the caller RIP, never on the saved rsp: rsp
- * is attacker-controlled (a ring-3 caller sets any rsp before syscall
- * without faulting, since syscall touches no stack), while rip is
- * constrained to executable mappings (a ring-3 caller can only trap
- * from the user window; heap/kernel fetch faults at CPL3).  A syscall
- * trapped from the user window returns with sysretq (ring 3); a ring-0
- * ET_REL syscall trapped from heap/kernel code returns with `jmp *%rcx`,
- * the old contract, because sysretq always lands on ring 3.  Checking
- * rsp instead lets a ring-3 attacker set rsp=0, force the jmp path and
- * retain CPL0 with a controlled rip. */
+/* ---- syscall trampoline (arch/x86/syscall_entry.S) ----------------------
+ * The entry path lives in a dedicated assembly file now (it used to be
+ * a 180-line inline-asm string here): standard GNU directives, .cfi
+ * unwind info, no optimizer interaction. The design contract moved
+ * with it; see the header comment there. What stays here are the
+ * machine-checked layout proofs the .S file cannot express in C. */
 
-/* cpu_t layout contract for the syscall_entry asm below: it reads
- * cur_pid at gs:12 (gs:0 is the self pointer for this_cpu(), gs:8 is
- * cpu_id).  Reading gs:8 instead resolves every thread to the wrong
- * kstack (0 on the BSP, 1 on APs): harmless while a single process
- * runs, fatal as soon as two threads syscall concurrently. */
+/* cpu_t layout contract for arch/x86/syscall_entry.S: it reads cur_pid
+ * at gs:12 (gs:0 is the self pointer for this_cpu(), gs:8 is cpu_id).
+ * Reading gs:8 instead resolves every thread to the wrong kstack (0 on
+ * the BSP, 1 on APs): harmless while a single process runs, fatal as
+ * soon as two threads syscall concurrently. */
 _Static_assert(__builtin_offsetof(cpu_t, cur_pid) == 12, "cpu cur_pid off");
 _Static_assert(__builtin_offsetof(cpu_t, cpu_id) == 8, "cpu cpu_id off");
 _Static_assert(__builtin_offsetof(cpu_t, sc_n) == 72, "cpu sc_n off");
@@ -173,199 +141,13 @@ _Static_assert(__builtin_offsetof(cpu_t, sc_rip) == 80, "cpu sc_rip off");
 _Static_assert(__builtin_offsetof(cpu_t, sc_pid) == 88, "cpu sc_pid off");
 _Static_assert(__builtin_offsetof(cpu_t, sc_ret) == 96, "cpu sc_ret off");
 _Static_assert(__builtin_offsetof(cpu_t, sc_tmp) == 112, "cpu sc_tmp off");
+_Static_assert(__builtin_offsetof(cpu_t, cur_pid) == SYSCALL_CPU_CUR_PID_OFF, "syscall pid off");
+_Static_assert(__builtin_offsetof(cpu_t, sc_n) == SYSCALL_CPU_SC_N_OFF, "syscall n off");
+_Static_assert(__builtin_offsetof(cpu_t, sc_rip) == SYSCALL_CPU_SC_RIP_OFF, "syscall rip off");
+_Static_assert(__builtin_offsetof(cpu_t, sc_pid) == SYSCALL_CPU_SC_PID_OFF, "syscall pid2 off");
+_Static_assert(__builtin_offsetof(cpu_t, sc_ret) == SYSCALL_CPU_SC_RET_OFF, "syscall ret off");
+_Static_assert(__builtin_offsetof(cpu_t, sc_tmp) == SYSCALL_CPU_SC_TMP_OFF, "syscall tmp off");
 
-/* Per-pid kstack-top save area, written by the owning thread at entry
- * and read back by it at exit (see above).  Indexed by pid like the
- * kstack math; a pid only ever runs on one CPU at a time, so no lock.
- * "used" because the only references live in the asm string below. */
-static unsigned long sc_top_save[MAX_PROCS] __attribute__((used));
-
-__asm__(
-    ".text\n"
-    ".global syscall_kstack\n"
-    ".data\n"
-    ".align 8\n"
-    "syscall_kstack:\n"
-    "  .quad 0\n"
-    ".align 8\n"
-    "kstack_base:\n"
-    "  .quad procs+" STR(PROC_KSTACK_OFF) "\n"
-    ".align 8\n"
-    "sc_top_save_addr:\n"
-    "  .quad sc_top_save\n"
-    ".text\n"
-    ".global syscall_entry\n"
-    "syscall_entry:\n"
-    /* A timer tick observing kernel CS with a user GS base reads garbage
-     * per-CPU state and dies in this_cpu().  That pairing exists from the
-     * syscall insn (kernel CS, user GS) until the entry swapgs, and again
-     * from the exit swapgs to sysretq, so both windows run with interrupts
-     * off on the ring-3 path.  Ring-3 IF is provably 1 (CPL3 cannot clear
-     * it).  sysretq restores the user IF, so the exit needs no sti;
-     * the entry re-enables before ksyscall so blocking calls still work.
-     * The whole exit runs under cli too (see below), so per-CPU scratch
-     * is never observed mid-update. */
-    "  cli\n"
-    "  cmpq $" STR(USER_WIN_LO) ", %rsp\n"
-    "  jb 10f\n"
-    "  cmpq $" STR(USER_WIN_HI) ", %rsp\n"
-    "  jae 10f\n"
-    /* --- ring 3: per-proc kernel stack --- */
-    "  swapgs\n"                     /* switch to kernel GS (per-CPU) */
-    "  movq %rax, %gs:72\n"         /* sc_n = n (per-CPU scratch) */
-    "  movq %rcx, %gs:80\n"         /* sc_rip = user rip */
-    "  movl %gs:12, %eax\n"         /* cur_pid (gs:8 is cpu_id) */
-    "  movq %rax, %gs:88\n"         /* sc_pid = pid */
-    "  imulq $" STR(PROC_T_SIZE) ", %rax\n"  /* == sizeof(proc_t), see sched.h */
-    "  addq kstack_base(%rip), %rax\n"  /* rax = &PCB.kstack */
-    "  jmp 13f\n"
-    /* --- ring 0: per-proc kernel stack; swapgs puts the per-CPU base
-     * under GS (ET_REL programs run with a base-0 GS descriptor) --- */
-    "10:\n"
-    "  swapgs\n"
-    "  movq %rax, %gs:72\n"
-    "  movq %rcx, %gs:80\n"
-    "  movl %gs:12, %eax\n"
-    "  movq %rax, %gs:88\n"
-    "  imulq $" STR(PROC_T_SIZE) ", %rax\n"
-    "  addq kstack_base(%rip), %rax\n"
-    /* --- shared swap + top save (IF=0, rax = &PCB.kstack) --- */
-    "13:\n"
-    "  movl %gs:88, %ecx\n"       /* pid; rip stays parked in gs:80 */
-    "  cmpl $" STR(MAX_PROCS) ", %ecx\n"
-    "  jae 98f\n"                 /* pid OOB (incl. -1 idle): fail closed below */
-    "  movq %gs:80, %rcx\n"       /* restore caller rip */
-    "  xchgq %rsp, (%rax)\n"        /* rsp = top; rsp saved in the PCB */
-    "  pushq %rax\n"                /* &PCB.kstack */
-    "  movq %gs:88, %rcx\n"         /* pid (rip safe in scratch) */
-    "  pushq %rcx\n"                /* pid */
-    "  pushq %rsi\n"                /* park a2 (kstack, IF=0) */
-    "  pushq %rdx\n"                /* park a3 */
-    "  leaq 32(%rsp), %rdx\n"       /* top (4 parks above) */
-    "  movq sc_top_save_addr(%rip), %rsi\n"
-    "  movq %rdx, (%rsi,%rcx,8)\n"  /* per-pid top */
-    "  popq %rdx\n"                 /* a3 */
-    "  popq %rsi\n"                 /* a2 */
-    "  popq %rcx\n"                 /* pid */
-    "  popq %rax\n"                 /* &PCB.kstack (rsp = top again) */
-    "12:\n"
-    "  pushq %rax\n"                /* 80(%rsp) &PCB.kstack */
-    "  pushq %rcx\n"                /* 72(%rsp) pid */
-    "  pushq %r9\n"              /* 64(%rsp) a6 */
-    "  pushq %r8\n"              /* 56       a5 */
-    "  pushq %r10\n"             /* 48       a4 */
-    "  pushq %rdx\n"             /* 40       a3 */
-    "  pushq %rsi\n"             /* 32       a2 */
-    "  pushq %rdi\n"             /* 24       a1 */
-    "  pushq %gs:72\n"           /* 16       n / return value slot */
-    "  pushq %gs:80\n"           /*  8       user rip */
-    "  pushq %r11\n"             /*  0       user rflags */
-    "  sti\n"                       /* bodies stay preemptible */
-    "11:\n"
-    "  movq 16(%rsp), %rdi\n"    /* C arg1 = n  */
-    "  movq 24(%rsp), %rsi\n"    /* C arg2 = a1 */
-    "  movq 32(%rsp), %rdx\n"    /* C arg3 = a2 */
-    "  movq 40(%rsp), %rcx\n"    /* C arg4 = a3 */
-    "  movq 48(%rsp), %r8\n"     /* C arg5 = a4 */
-    "  movq 56(%rsp), %r9\n"     /* C arg6 = a5 */
-    "  movq 64(%rsp), %rax\n"
-    "  pushq %rax\n"             /* C arg7 = a6 (stack) */
-    "  call ksyscall\n"
-    "  addq $8, %rsp\n"
-    "  cli\n"                       /* exit runs atomic: scratch is per-CPU */
-    "  movq %rax, %gs:96\n"      /* sc_ret = return value */
-    "  movl %gs:12, %eax\n"
-    "  movq %rax, %gs:88\n"      /* sc_pid = pid */
-    "  imulq $" STR(PROC_T_SIZE) ", %rax\n"
-    "  addq kstack_base(%rip), %rax\n"  /* rax = &PCB.kstack */
-    "  cmpq $" STR(USER_WIN_LO) ", 8(%rsp)\n"  /* caller rip in frame; rsp is spoofable */
-    "  jb 20f\n"
-    "  cmpq $" STR(USER_WIN_HI) ", 8(%rsp)\n"
-    "  jae 20f\n"
-    /* --- ring-3 exit: restore the user rsp saved in the PCB, and put
-     * the kstack top back so the next entry finds a stack, not a stale
-     * user rsp (running a syscall on a user stack drifts every return
-     * until a ret lands on data). --- */
-    "  popq %r11\n"
-    "  popq %rcx\n"              /* user rip: park next */
-    "  movq %rcx, %gs:80\n"
-    "  popq %rax\n"              /* stale n */
-    "  popq %rdi\n"
-    "  popq %rsi\n"
-    "  popq %rdx\n"
-    "  popq %r10\n"
-    "  popq %r8\n"
-    "  popq %r9\n"
-    "  popq %rcx\n"              /* pid */
-    "  popq %rax\n"              /* &PCB.kstack */
-    "  pushq %rdx\n"             /* park a3 (kstack, IF=0) */
-    "  pushq %rsi\n"             /* park a2 */
-    "  movq (%rax), %rdx\n"      /* user rsp */
-    "  movq %rdx, %gs:112\n"     /* park user rsp (sc_tmp) */
-    "  movq sc_top_save_addr(%rip), %rsi\n"
-    "  movq (%rsi,%rcx,8), %rdx\n"  /* top (pid still in rcx) */
-    "  movq %rdx, (%rax)\n"      /* PCB.kstack = top: invariant restored */
-    "  popq %rsi\n"              /* a2 */
-    "  popq %rdx\n"              /* a3 */
-    "  movq %gs:112, %rsp\n"     /* rsp = user rsp; no kstack use past here */
-    "  movq %gs:96, %rax\n"      /* restore return value */
-    "  movq %gs:80, %rcx\n"      /* restore user rip */
-    "  swapgs\n"                     /* restore user GS */
-    "  jmp 21f\n"
-    /* --- ring-0 exit: same pops, no swapgs --- */
-    "20:\n"
-    "  popq %r11\n"
-    "  popq %rcx\n"
-    "  movq %rcx, %gs:80\n"
-    "  popq %rax\n"
-    "  popq %rdi\n"
-    "  popq %rsi\n"
-    "  popq %rdx\n"
-    "  popq %r10\n"
-    "  popq %r8\n"
-    "  popq %r9\n"
-    "  popq %rcx\n"
-    "  popq %rax\n"
-    "  pushq %rdx\n"
-    "  pushq %rsi\n"             /* park a2 (rsi is scratch below) */
-    "  movq (%rax), %rdx\n"
-    "  movq %rdx, %gs:112\n"
-    "  movq sc_top_save_addr(%rip), %rsi\n"
-    "  movq (%rsi,%rcx,8), %rdx\n"
-    "  movq %rdx, (%rax)\n"
-    "  popq %rsi\n"              /* a2 */
-    "  popq %rdx\n"
-    "  movq %gs:112, %rsp\n"
-    "  movq %gs:96, %rax\n"
-    "  movq %gs:80, %rcx\n"
-    "  swapgs\n"                 /* undo the entry swapgs (ring-0 path) */
-    "  sti\n"                    /* ring-0 callers ran with IF=1 (old contract) */
-    "21:\n"
-    "  cmpq $" STR(USER_WIN_LO) ", %rcx\n"  /* rcx = caller rip; rsp is spoofable */
-    "  jb 1f\n"
-    "  cmpq $" STR(USER_WIN_HI) ", %rcx\n"
-    "  jae 1f\n"
-    "  sysretq\n"
-    "1:\n"
-    "  jmp *%rcx\n"
-    /* --- pid-OOB fail closed: entry validated pid before any mem use,
-     * so sc_top_save and the kstack xchg are never indexed wild. No
-     * stack or scratch touched yet: r11/rsp still caller-owned, rip
-     * reloaded from scratch, -EFAULT in rax, return by rip like 21f. */
-    "98:\n"
-    "  movq %gs:80, %rcx\n"       /* caller rip */
-    "  movq $-14, %rax\n"         /* -EFAULT */
-    "  cmpq $" STR(USER_WIN_LO) ", %rcx\n"
-    "  jb 97f\n"
-    "  cmpq $" STR(USER_WIN_HI) ", %rcx\n"
-    "  jae 97f\n"
-    "  swapgs\n"                  /* restore user GS */
-    "  sysretq\n"
-    "97:\n"
-    "  swapgs\n"                 /* undo the entry swapgs (ring-0 path) */
-    "  sti\n"                    /* ring-0 callers ran with IF=1 */
-    "  jmp *%rcx\n"
-);
 
 
 /* k_exec_user, k_run_rel, kexit moved to kernel/exec.c */

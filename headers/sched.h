@@ -33,6 +33,13 @@ typedef struct {
     uint64_t rip, rsp, rflags;
     uint64_t cr3;
 } ctx_regs_t;
+/* Byte offsets into ctx_regs_t for the pure-asm park capture
+ * (sched_park_capture in arch/x86/ctx_sw.S, which cannot use C).
+ * Proven by _Static_asserts in kernel/sched.c; never hand-sync. */
+#define CTX_RBP_OFF    48
+#define CTX_RIP_OFF    120
+#define CTX_RSP_OFF    128
+#define CTX_RFLAGS_OFF 136
 
 /* ---- Process Control Block ---- */
 typedef struct {
@@ -84,10 +91,11 @@ typedef struct {
     uint64_t    fsbase;
 } proc_t;
 /* Single source of truth for the PCB footprint (review fix for the
- * 0a92118 imulq drift): the syscall_entry trampoline in kernel.c cannot
- * use C, so it multiplies pid by PROC_T_SIZE and adds PROC_KSTACK_OFF.
- * Both immediates derive from these macros via STR(); the _Static_asserts
- * in kernel/sched.c prove macro == struct. Adding a field changes the
+ * 0a92118 imulq drift): the syscall_entry trampoline in
+ * arch/x86/syscall_entry.S cannot use C, so it multiplies pid by
+ * PROC_T_SIZE and adds PROC_KSTACK_OFF. Both immediates derive from
+ * headers/syscall_asm.h; the _Static_asserts in kernel.c and
+ * kernel/sched.c prove header == struct. Adding a field changes the
  * macros' values automatically on rebuild -- no asm hunt. procs[] itself
  * is a static 64-entry .bss array (~19 KB at 304 B/entry), far below the
  * USER_LOAD_BASE budget enforced by `make check-size`. */
@@ -299,6 +307,12 @@ void     rlimit_cpu_tick(int pid);
 void     switch_to(proc_t *prev, proc_t *next);
 void     switch_to_notrap(proc_t *prev, proc_t *next);
 void     switch_save_only(proc_t *prev);
+/* Pure-asm continuation capture (arch/x86/ctx_sw.S): parks the live
+ * schedule() frame into cur->ctx (rip/rsp/rbp/rflags) with no compiler
+ * builtins involved, so frame-pointer omission or ABI drift can never
+ * park a wrong resume point. Called via `call`, hence (%rsp) is the
+ * return address into schedule() by construction. */
+void     sched_park_capture(proc_t *cur);
 void     resume_iretq(void);
 void     yield(void);
 void     do_exit(int code);

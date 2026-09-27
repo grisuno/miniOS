@@ -58,12 +58,17 @@ static inline unsigned long read_cr3(void) {
     return v;
 }
 
-/* Layout contract with the syscall_entry asm in kernel.c, which locates
- * the current proc's kernel stack top as procs + pid * PROC_T_SIZE +
- * PROC_KSTACK_OFF (it cannot use C here). The asm derives both immediates
- * from the sched.h macros via STR(), so this assert is the single check:
- * if it fires, the struct changed and the macros in sched.h must be
- * updated to match -- the asm follows automatically. */
+/* Layout contract with arch/x86/syscall_entry.S, which locates the
+ * current proc's kernel stack top as procs + pid * PROC_T_SIZE +
+ * PROC_KSTACK_OFF (it cannot use C here). The asm derives both
+ * immediates from headers/syscall_asm.h, so this assert is the single
+ * check: if it fires, the struct changed and the macros in sched.h
+ * (plus their syscall_asm.h mirrors) must be updated to match. */
+_Static_assert(__builtin_offsetof(ctx_regs_t, rbp) == CTX_RBP_OFF, "ctx rbp off");
+_Static_assert(__builtin_offsetof(ctx_regs_t, rip) == CTX_RIP_OFF, "ctx rip off");
+_Static_assert(__builtin_offsetof(ctx_regs_t, rsp) == CTX_RSP_OFF, "ctx rsp off");
+_Static_assert(__builtin_offsetof(ctx_regs_t, rflags) == CTX_RFLAGS_OFF, "ctx rflags off");
+_Static_assert(__builtin_offsetof(proc_t, ctx) == 0, "proc ctx off");
 _Static_assert(__builtin_offsetof(proc_t, kstack) == PROC_KSTACK_OFF, "proc kstack off");
 _Static_assert(__builtin_offsetof(proc_t, fpu_save) == PROC_FPU_OFF, "proc fpu off");
 _Static_assert(__builtin_offsetof(proc_t, pid) == PROC_PID_OFF, "proc pid off");
@@ -1181,10 +1186,9 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             int resolved;
             __asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
             __asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));
-            __asm__ volatile("pushfq; popq %0; cli" : "=r"(irqflags) :: "memory");
+            irqflags = spin_save_irq();
             resolved = cow_resolve(cur_cr3, fault_addr);
-            if (irqflags & 0x200)
-                __asm__ volatile("sti" ::: "memory");
+            spin_restore_irq(irqflags);
             if (resolved == 0) return;
         }
         /* Serial-only dump: the exception handler must not fault.  The
@@ -1676,7 +1680,7 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
             return -1;
         }
     __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
-    __asm__ volatile("cli");
+    irqflags_t sflags_inner = spin_save_irq();
     __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)new_cr3) : "memory");
     /* ASLR: the stack top slides down 1..4096 bytes, so argv addresses
      * differ every spawn. Pages stay ensured for the full range; the
@@ -1685,7 +1689,7 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
                           USER_STACK_SIZE - aslr_stack_bytes(),
                           argc, argv);
     __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
-    __asm__ volatile("sti");
+    spin_restore_irq(sflags_inner);
     if (!sp) { kprintf("mrun: bad stack\n"); pt_free_user(new_cr3); return -1; }
     spin_lock_irqsave(&sched_lock, &sflags);
     for (pid = 1; pid < MAX_PROCS; pid++)
@@ -1770,13 +1774,17 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
 /* Atomic spawn wrapper: the whole construction (page tables, image
  * copy, stack, publish) runs with the timer held off, so a running
  * process's syscalls can never interleave the newcomer's heap and
- * table writes. See the inner note for why the newcomer paid. */
+ * table writes. See the inner note for why the newcomer paid.
+ * Flags saved/restored (not bare cli/sti) so a caller that entered
+ * with IF=0 keeps it; scheduler-structure protection inside is
+ * spin_lock_irqsave on sched_lock/mm_lock, the CR3 windows save
+ * theirs locally. */
 int proc_spawn_elf(const char *name, void *data, unsigned size,
                    int argc, char **argv) {
     int rc;
-    __asm__ volatile("cli");
+    irqflags_t wflags = spin_save_irq();
     rc = proc_spawn_elf_inner(name, data, size, argc, argv);
-    __asm__ volatile("sti");
+    spin_restore_irq(wflags);
     return rc;
 }
 
@@ -1787,31 +1795,37 @@ int proc_spawn_elf(const char *name, void *data, unsigned size,
  * schedule()'s tail on a foreign CPU — the tail's unlock and
  * current_pid writes must never run twice.
  *
- * Frame walk done right: this MUST observe schedule()'s own frame, so
- * it is always_inline (it runs as part of schedule(), whose live rbp
- * is its frame) and uses __builtin_return_address(0) /
- * __builtin_frame_address(0) instead of hand-rolled rbp arithmetic.
- * The previous revision was a noinline helper that read (%%rbp) on
- * entry: gcc omits the frame of such a leaf, so the walk started one
- * frame too deep and parked the CALLER's return address (e.g. the
- * address after `call do_waitpid` in sys_linux_wait4) as the resume
- * rip. A thread resumed without an intervening timer preempt (which
- * would have re-parked it correctly via resume_iretq) then continued
- * AFTER its own syscall helper — skipping the reap in do_waitpid and
- * returning the parked rip as the syscall result. Threads that were
- * preempted first behaved, which is why heavy workloads (thdemo)
- * passed while a single spawn/block/resume tripped it deterministically.
+ * Frame walk done right: the capture lives in pure asm
+ * (sched_park_capture in arch/x86/ctx_sw.S), entered with `call` and
+ * no prologue, so %rbp is schedule()'s frame and 8(%rbp) its return
+ * address by construction — no compiler builtins involved. The parked
+ * rip is the return into schedule()'s CALLER (yield / do_waitpid /
+ * do_exit), never into schedule()'s own tail: a resume into the tail
+ * would run the publish/unlock/switch sequence twice (this exact bug
+ * shipped once as `movq (%rsp), %rax` in the asm capture and hung
+ * every voluntary switch), while a resume into the caller simply
+ * continues it. The older revisions failed twice here: a noinline
+ * helper reading (%%rbp) on entry (gcc omits the frame of such a
+ * leaf, so the walk started one frame too deep and parked the
+ * CALLER's return address, e.g. the address after `call do_waitpid`
+ * in sys_linux_wait4), and the __builtin_frame/return_address inline
+ * form (correct only while the compiler keeps the frame and ABI shape
+ * it was written against; GCC also lowers its return_address to
+ * *(rbp+8), i.e. return-to-caller, which is the semantic this capture
+ * preserves). A thread resumed without an intervening timer preempt
+ * (which would have re-parked it correctly via resume_iretq) then
+ * continued AFTER its own syscall helper — skipping the reap in
+ * do_waitpid and returning the parked rip as the syscall result.
+ * Threads that were preempted first behaved, which is why heavy
+ * workloads (thdemo) passed while a single spawn/block/resume
+ * tripped it deterministically.
  * switch_save_only has just captured the live callee-saved GPRs, which
  * the caller needs; rip/rsp/rbp/rflags are overridden, because a resume
  * that keeps schedule()'s own rbp runs the caller's frame accesses
  * (locals, leave/ret) on the wrong frame. */
 __attribute__((always_inline))
 static inline void sched_park_as_returned(proc_t *cur) {
-    unsigned long sched_rbp = (unsigned long)__builtin_frame_address(0);
-    cur->ctx.rip = (unsigned long)__builtin_return_address(0);
-    cur->ctx.rsp = sched_rbp + 16;
-    cur->ctx.rbp = *(unsigned long *)sched_rbp;
-    cur->ctx.rflags = 0x202;
+    sched_park_capture(cur);
 }
 
 void schedule(void) {
@@ -2146,16 +2160,16 @@ long do_fork(void) {
     if (current_pid == 0) return -38;
     if (cur->clone_flags & CLONE_VM) return -38;
     if (!cur->ctx.cr3) return -38;
-    __asm__ volatile("cli");
+    irqflags_t fflags = spin_save_irq();
     new_cr3 = cow_fork_window(cur->ctx.cr3);
-    if (!new_cr3) { __asm__ volatile("sti"); return -12; }
+    if (!new_cr3) { spin_restore_irq(fflags); return -12; }
     urip = (unsigned long)this_cpu()->sc_rip;
     ursp = (unsigned long)cur->kstack;
     if (urip < USER_LOAD_BASE || urip >= USER_LOAD_END ||
         ursp < USER_LOAD_BASE || ursp >= USER_LOAD_END) {
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
-        __asm__ volatile("sti");
+        spin_restore_irq(fflags);
         return -38;
     }
     spin_lock_irqsave(&sched_lock, &sflags);
@@ -2165,7 +2179,7 @@ long do_fork(void) {
         spin_unlock_irqrestore(&sched_lock, sflags);
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
-        __asm__ volatile("sti");
+        spin_restore_irq(fflags);
         return -11;
     }
     child = &procs[pid];
@@ -2196,7 +2210,7 @@ long do_fork(void) {
         spin_unlock_irqrestore(&sched_lock, sflags);
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
-        __asm__ volatile("sti");
+        spin_restore_irq(fflags);
         return -12;
     }
     child->kstack = kstack_top;
@@ -2208,7 +2222,7 @@ long do_fork(void) {
         spin_unlock_irqrestore(&sched_lock, sflags);
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
-        __asm__ volatile("sti");
+        spin_restore_irq(fflags);
         return -12;
     }
     __asm__ volatile("fxsave (%0)" :: "r"(child->fpu_save) : "memory");
@@ -2221,7 +2235,7 @@ long do_fork(void) {
         spin_unlock_irqrestore(&sched_lock, sflags);
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
-        __asm__ volatile("sti");
+        spin_restore_irq(fflags);
         return -12;
     }
     {
@@ -2240,7 +2254,7 @@ long do_fork(void) {
     if (proc_count <= pid) proc_count = pid + 1;
     child->state = PROC_READY;
     spin_unlock_irqrestore(&sched_lock, sflags);
-    __asm__ volatile("sti");
+    spin_restore_irq(fflags);
     return pid;
 }
 
@@ -2324,17 +2338,19 @@ long do_execve(char *kpath, int kargc, char **kargv) {
         kfree(data);
         return -8;
     }
-    __asm__ volatile("cli");
+    /* Success path never restores: exec_enter iretqs with IF=1. Every
+     * early exit restores the saved flags instead of a bare sti. */
+    irqflags_t eflags = spin_save_irq();
     new_cr3 = pt_clone_user_empty();
-    if (!new_cr3) { __asm__ volatile("sti"); kfree(data); return -12; }
+    if (!new_cr3) { spin_restore_irq(eflags); kfree(data); return -12; }
     entry = load_exec_elf_into(data, data_size, new_cr3, &brk);
     kfree(data);
     data = 0;
-    if (!entry) { pt_free_user(new_cr3); __asm__ volatile("sti"); return -8; }
+    if (!entry) { pt_free_user(new_cr3); spin_restore_irq(eflags); return -8; }
     for (va = USER_STACK_BASE; va < USER_STACK_TOP; va += 0x1000) {
         if (mm_user_ensure_page(new_cr3, va)) {
             pt_free_user(new_cr3);
-            __asm__ volatile("sti");
+            spin_restore_irq(eflags);
             return -12;
         }
     }
@@ -2344,18 +2360,18 @@ long do_execve(char *kpath, int kargc, char **kargv) {
                           USER_STACK_SIZE - aslr_stack_bytes(),
                           kargc, kargv);
     __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
-    if (!sp) { pt_free_user(new_cr3); __asm__ volatile("sti"); return -12; }
+    if (!sp) { pt_free_user(new_cr3); spin_restore_irq(eflags); return -12; }
     fresh_top = alloc_kstack();
     if (!fresh_top) {
         pt_free_user(new_cr3);
-        __asm__ volatile("sti");
+        spin_restore_irq(eflags);
         return -12;
     }
     new_fpu = fpu_alloc_clean();
     if (!new_fpu) {
         free_kstack(fresh_top);
         pt_free_user(new_cr3);
-        __asm__ volatile("sti");
+        spin_restore_irq(eflags);
         return -12;
     }
     new_vma = vma_ctx_alloc();
@@ -2363,7 +2379,7 @@ long do_execve(char *kpath, int kargc, char **kargv) {
         kfree(new_fpu);
         free_kstack(fresh_top);
         pt_free_user(new_cr3);
-        __asm__ volatile("sti");
+        spin_restore_irq(eflags);
         return -12;
     }
     old_cr3 = cur->ctx.cr3;

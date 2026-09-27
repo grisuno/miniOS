@@ -2009,6 +2009,12 @@ isr_stubs.o: arch/x86/isr_stubs.S
 ctx_sw.o: arch/x86/ctx_sw.S
 	$(CC) -c -m64 $< -o $@
 
+# SYSCALL trampoline (was inline asm in kernel.c): dedicated assembly so
+# it gets .cfi unwind info and no optimizer interaction. Needs -Iheaders
+# for syscall_asm.h, the numeric contract it shares with kernel.c.
+syscall_entry.o: arch/x86/syscall_entry.S headers/syscall_asm.h
+	$(CC) -c -m64 -Iheaders $< -o $@
+
 # ── SMP AP bootstrap stub ───────────────────────────────────────────────
 # A flat binary the BSP copies to AP_STUB_ADDR (0x6000) and wakes every AP
 # with.  Placed at its real-mode address by ap_entry.ld, then extracted with
@@ -2050,10 +2056,10 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
-	      sched.o tick.o isr_stubs.o ctx_sw.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
+	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
 kernel.bin: kernel.elf | check-size
@@ -2068,9 +2074,26 @@ kernel.bin: kernel.elf | check-size
 # the kernel derives its layout from, so the two cannot disagree.
 KERNEL_END_MAX = $(shell sed -n 's/^#define[ \t]*MINIOS_USER_LOAD_BASE[ \t]*0[xX]\([0-9a-fA-F]*\).*/0x\1/p' $(PROGS_DIR)/minios_abi.h)
 
+# Linker-mirror proof: _user_win_lo/hi in kernel.ld must equal the ABI
+# header (ring-3 source of truth). The linker ASSERT already fences the
+# image; this gate fences the mirrors themselves, so editing the window
+# in one file without the other fails here, never at boot.
+LD_MIRROR_LO = $(shell sed -n 's/^_MINIOS_USER_BASE *= *0[xX]\([0-9a-fA-F]*\).*/0x\1/p' kernel.ld)
+LD_MIRROR_HI = $(shell sed -n 's/^_MINIOS_USER_END *= *0[xX]\([0-9a-fA-F]*\).*/0x\1/p' kernel.ld)
+ABI_WIN_LO = $(shell sed -n 's/^#define[ \t]*MINIOS_USER_LOAD_BASE[ \t]*0[xX]\([0-9a-fA-F]*\).*/0x\1/p' $(PROGS_DIR)/minios_abi.h)
+ABI_WIN_HI = $(shell sed -n 's/^#define[ \t]*MINIOS_USER_LOAD_END[ \t]*0[xX]\([0-9a-fA-F]*\).*/0x\1/p' $(PROGS_DIR)/minios_abi.h)
+
 .PHONY: check-size
 check-size: kernel.elf
-	@end=0x$$(nm kernel.elf | awk '$$3 == "_kernel_end" {print $$1}'); \
+	@if [ -z "$(LD_MIRROR_LO)" ] || [ $$(($(LD_MIRROR_LO))) -ne $$(($(ABI_WIN_LO))) ]; then \
+	    printf 'error: kernel.ld _MINIOS_USER_BASE (%s) != minios_abi.h MINIOS_USER_LOAD_BASE (%s)\n' "$(LD_MIRROR_LO)" "$(ABI_WIN_LO)" >&2; \
+	    exit 1; \
+	fi; \
+	if [ -z "$(LD_MIRROR_HI)" ] || [ $$(($(LD_MIRROR_HI))) -ne $$(($(ABI_WIN_HI))) ]; then \
+	    printf 'error: kernel.ld _MINIOS_USER_END (%s) != minios_abi.h MINIOS_USER_LOAD_END (%s)\n' "$(LD_MIRROR_HI)" "$(ABI_WIN_HI)" >&2; \
+	    exit 1; \
+	fi; \
+	end=0x$$(nm kernel.elf | awk '$$3 == "_kernel_end" {print $$1}'); \
 	max=$$(($(KERNEL_END_MAX))); \
 	end=$$((end)); \
 	if [ $$end -gt $$max ]; then \

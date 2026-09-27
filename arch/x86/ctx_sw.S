@@ -41,6 +41,44 @@
         .globl  switch_to
         .globl  switch_to_notrap
         .globl  switch_save_only
+        .globl  sched_park_capture
+/*
+ * sched_park_capture -- park the live schedule() continuation (pure asm).
+ * void sched_park_capture(proc_t *cur);  rdi = &cur (ctx at offset 0).
+ *
+ * Replaces the old __builtin_frame_address/__builtin_return_address C
+ * helper with deterministic asm: no builtins, no optimizer interaction.
+ * Entered with `call` and no prologue/epilogue, so by construction:
+ *   8(%rbp) = schedule()'s return address   -> ctx.rip (see below)
+ *   %rbp    = schedule()'s frame pointer     -> ctx.rsp = rbp + 16
+ *   (%rbp)  = schedule()'s saved rbp         -> ctx.rbp
+ * Only caller-saved regs are touched (rcx); switch_save_only already
+ * captured the rest. Offsets mirror CTX_*_OFF in headers/sched.h
+ * (asserted in C). Requires frame pointers (CFLAGS_KERN carries
+ * -fno-omit-frame-pointer; without it %rbp is meaningless here).
+ *
+ * rip MUST be 8(%rbp) -- the return into schedule()'s CALLER (yield /
+ * do_waitpid / do_exit) -- never (%rsp), the return into schedule()
+ * itself. A resume into schedule's tail re-runs the publish/unlock/
+ * switch sequence a second time (double unlock of sched_lock plus a
+ * switch to the stale nxt), which hangs the machine; a resume into
+ * the caller simply continues it (callees restore rsp from rbp with
+ * `leave`, so the parked rsp=rbp+16 is exact). This mirrors what GCC
+ * lowers __builtin_return_address(0) to (*(rbp+8)) and is the reason
+ * the old comment insists the tail must never run twice.
+ */
+sched_park_capture:
+        .cfi_startproc
+        movq    8(%rbp), %rcx
+        movq    %rcx, 120(%rdi)      /* ctx.rip */
+        movq    %rbp, %rcx
+        addq    $16, %rcx
+        movq    %rcx, 128(%rdi)      /* ctx.rsp */
+        movq    (%rbp), %rcx
+        movq    %rcx, 48(%rdi)       /* ctx.rbp */
+        movq    $0x202, 136(%rdi)    /* ctx.rflags */
+        ret
+        .cfi_endproc
 switch_save_only:
         /* Save-only entry: rdi = prev, (%rsp) = return address.  Captures
          * the live continuation into prev->ctx and RETs to the caller.

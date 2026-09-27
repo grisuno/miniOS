@@ -2,18 +2,20 @@
 #include "net.h"
 #include "net/rtl8139.h"
 #include "drivers/pci.h"
+#include "sched.h"
 
 /*
  * Polled rtl8139 NIC driver (QEMU slirp user networking target).
  *
  * The driver owns the port I/O, PCI discovery, the transmit descriptors
  * and the classic 8 KB receive ring.  There is no interrupt controller
- * configured, so the stack drives receive through rtl_poll and the
- * driver busy-waits on the TX descriptor owner bit with a deadline.
+ * configured, so the stack drives receive through rtl_poll and TX waits
+ * on the descriptor owner bit with a deadline, yielding the CPU while
+ * it waits instead of spinning it away.
  *
- * The TSC clock is calibrated once against a PIT channel 2 one-shot; the
- * resulting net_time_ms clock is shared with the protocol stack for its
- * retransmission and timeout logic.
+ * Time is queried, never calibrated here: net_time_ms is a thin query
+ * over the central PIT-calibrated TSC clock (kernel/time.c ktime_ms),
+ * which is owned by the early boot path. Drivers must never calibrate.
  */
 
 /* ================================================================
@@ -68,34 +70,18 @@ static unsigned short rtl_find(void) {
 }
 
 /* ================================================================
- *  TSC clock (PIT channel 2 one-shot calibration)
- * ================================================================ */
-
-static unsigned long rtl_tsc_base;
-static unsigned long rtl_tsc_per_ms;
-
-static unsigned long rtl_rdtsc(void) {
-    unsigned int lo, hi;
-    __asm__ volatile("rdtsc" : "=a"(lo), "=d"(hi));
-    return ((unsigned long)hi << 32) | lo;
-}
-
-static void net_time_init(void) {
-    unsigned long t0, t1;
-    outb(0x61, (unsigned char)((inb(0x61) & 0x0F) | 0x01));
-    outb(0x43, 0xB0);
-    outb(0x42, 0x96);
-    outb(0x42, 0x04);
-    t0 = rtl_rdtsc();
-    while (!(inb(0x61) & 0x20));
-    t1 = rtl_rdtsc();
-    outb(0x61, (unsigned char)(inb(0x61) & 0x0F));
-    rtl_tsc_per_ms = t1 - t0;
-    rtl_tsc_base = t1;
-}
+ *  Time query (owned by kernel/time.c, queried here)
+ * ================================================================
+ *
+ * The central ktime_ms clock is PIT-calibrated on first use by the
+ * early boot path. This driver only queries it for its TX/reset
+ * deadlines; the private TSC calibration used to live here and has
+ * been deleted (a second base/per-ms pair beside ktime's is a second
+ * clock, and drivers must never calibrate).
+ */
 
 unsigned long net_time_ms(void) {
-    return rtl_tsc_per_ms ? (rtl_rdtsc() - rtl_tsc_base) / rtl_tsc_per_ms : 0;
+    return ktime_ms();
 }
 
 /* ================================================================
@@ -125,7 +111,6 @@ static void rtl_reset(void) {
 
 void rtl_init(void) {
     unsigned long ptr;
-    net_time_init();
     rtl_iobase_val = rtl_find();
     if (!rtl_iobase_val) return;
 
@@ -154,6 +139,22 @@ void rtl_init(void) {
     rtl_reg8_w(RTL_REG_CR, 0x0D);
 }
 
+/* Cooperative TX wait: the NIC owns no interrupt line in this build,
+ * so completion is polled, but a congested descriptor must not spin
+ * the CPU away from every other thread. The wait yields every
+ * RTL_TX_YIELD_EVERY spins and stays deadline-bounded (fail closed
+ * with 0 past the deadline, exactly like the old busy-wait). */
+#define RTL_TX_YIELD_EVERY 1024u
+
+static int rtl_tx_wait(unsigned slot, unsigned long deadline) {
+    unsigned spins = 0;
+    while (!(rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot * 4)) & 0x2000)) {
+        if (net_time_ms() > deadline) return 0;
+        if ((++spins & (RTL_TX_YIELD_EVERY - 1u)) == 0) yield();
+    }
+    return 1;
+}
+
 int rtl_send(const unsigned char *frame, unsigned len) {
     unsigned long deadline;
     unsigned attempt;
@@ -165,16 +166,12 @@ int rtl_send(const unsigned char *frame, unsigned len) {
         unsigned int tsd = rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot * 4));
         if (!(tsd & 0x2000)) {
             deadline = net_time_ms() + 2000;
-            while (!(rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot * 4)) & 0x2000)) {
-                if (net_time_ms() > deadline) return 0;
-            }
+            if (!rtl_tx_wait(slot, deadline)) return 0;
         }
         rtl_reg32_w((unsigned short)(RTL_REG_TSAD0 + slot * 4), (unsigned int)(unsigned long)frame);
         rtl_reg32_w((unsigned short)(RTL_REG_TSD0 + slot * 4), len & 0x1FFF);
         deadline = net_time_ms() + 2000;
-        while (!(rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot * 4)) & 0x2000)) {
-            if (net_time_ms() > deadline) return 0;
-        }
+        if (!rtl_tx_wait(slot, deadline)) return 0;
         rtl_tx_slot = (slot + 1) % NET_TX_SLOTS;
         rtl_tx_packets++;
         return 1;
@@ -197,11 +194,17 @@ void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames) {
 }
 
 /* Copy one received frame out of the ring into the scratch buffer,
- * wrapping at the ring end, then hand it to the protocol demux. */
+ * wrapping at the ring end, then hand it to the protocol demux.
+ * Fail closed on a hostile length: the caller validates, but this
+ * function must never trust it (an underflowed n would copy ~4 GB,
+ * an oversized one would overflow the scratch). */
 static void rtl_rx_frame_wrapped(unsigned length) {
-    unsigned n = length - 4;
+    unsigned n;
     unsigned pos = rtl_rx_capr + 4;
     unsigned k;
+    if (length < 4) { net_rx_dropped++; return; }
+    n = length - 4;
+    if (n > sizeof(rtl_rx_scratch)) { net_rx_dropped++; return; }
     for (k = 0; k < n; k++) {
         rtl_rx_scratch[k] = rtl_rx_ring[pos & (NET_RX_BUF_LEN - 1)];
         pos++;

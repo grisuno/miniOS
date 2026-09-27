@@ -533,7 +533,7 @@ single-CPU exactly as before.
 scheduler paths (isr_dispatch, schedule, yield, do_exit, do_waitpid)
 automatically operate on the correct CPU's state.
 
-**GS base per-CPU (`sched.c` + `syscall_entry` in `kernel.c`):** the BSP
+**GS base per-CPU (`sched.c` + `syscall_entry` in `arch/x86/syscall_entry.S`):** the BSP
 sets `MSR_GSBASE` to `&cpus[0]` during `sched_init()`.  `syscall_entry`
 uses `swapgs` to switch to the kernel GS base on entry and back on
 `sysretq`/`klongjmp`, so ring-3 code never sees the kernel's per-CPU
@@ -1286,8 +1286,10 @@ a one-line edit in one file instead of a cross-file address hunt. This is the
 direct fix for the historical bug where moving an address (DOOM's back-buffer
 `0x7C00000 -> 0x0B000000`, the user-window growth) left a consumer writing the
 old value and silently breaking. Belt and suspenders: `_Static_assert`s in
-`kernel.c` prove the kernel's values equal the ABI header, and the asm-safe
-`USER_WIN_LO`/`USER_WIN_HI` syscall-return mirrors are checked too. **Rule: never
+`kernel.c` prove the kernel's values equal the ABI header, the asm-safe
+`SYSCALL_*` numerics in `headers/syscall_asm.h` are asserted the same way,
+and `kernel.ld` carries machine-checked `_user_win_lo/hi` mirrors plus a
+link-time `ASSERT` fenced by the `check-size` gate. **Rule: never
 hardcode a layout address in the kernel or a ring-3 program; put it in
 `minios_abi.h`.** The scheduler's old local `MY_USER_STACK_TOP` (`0x07400000`)
 is gone — it went stale when the window grew and would have stacked a scheduled

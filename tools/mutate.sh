@@ -88,7 +88,7 @@ SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c headers/rtc.
 # backs these up before the run and restores after each mutant. A file
 # missing here keeps its mutation (the fpu-no-save residue disabled
 # fxsave/fxrstor in the tree for days and poisoned every later boot).
-SOURCES="$SOURCES arch/x86/ctx_sw.S progs/minios_abi.h headers/ktime.h headers/randmix.h headers/sched.h progs/src/mthreads.h"
+SOURCES="$SOURCES arch/x86/ctx_sw.S arch/x86/syscall_entry.S progs/minios_abi.h headers/ktime.h headers/randmix.h headers/sched.h progs/src/mthreads.h"
 SOURCES="$SOURCES progs/src/freedom_wl.c progs/vedit/vedit.c"
 SOURCES="$SOURCES progs/freedomui/freedomui_minios.c tests/test_freedomui.c"
 # Mechanism: SOURCES is the backup/restore allowlist, not documentation.
@@ -288,9 +288,9 @@ fpu-no-restore | s/fxrstor (%rax)/\\/* mutant: no restore *\\// | arch/x86/ctx_s
 fpu-preempt-no-save | s/if (cur->fpu_save) fpu_save_to(cur->fpu_save);/if (0) {}/ | kernel/sched.c
 fpu-mxcsr-zero | s/a\\[FPU_MXCSR_OFF\\] = (unsigned char)(FPU_MXCSR_DEFAULT & 0xFF);/a[FPU_MXCSR_OFF] = 0;/ | kernel/sched.c
 fpu-cw-single | s/a\\[0\\] = 0x7F; a\\[1\\] = 0x03;/a[0] = 0; a[1] = 0;/ | kernel/sched.c
-sched-imulq-stale | s/STR(PROC_T_SIZE)/304/ | kernel.c
-sched-park-rip-zero | s/cur->ctx.rip = (unsigned long)__builtin_return_address(0);/cur->ctx.rip = 0;/ | kernel/sched.c
-sched-park-rbp-zero | s/cur->ctx.rbp = \\*(unsigned long \\*)sched_rbp;/cur->ctx.rbp = 0;/ | kernel/sched.c
+sched-imulq-stale | s/imulq \$SYSCALL_PROC_T_SIZE, %rax/imulq \$304, %rax/ | arch/x86/syscall_entry.S
+sched-park-rip-zero | s/movq    8(%rbp), %rcx/movq    \$0, %rcx/ | arch/x86/ctx_sw.S
+sched-park-rbp-zero | s/movq    (%rbp), %rcx/movq    \$0, %rcx/ | arch/x86/ctx_sw.S
 mthreads-stack-no-adjust | s/(mthread_stacks\\[i\\] + MTHREAD_STACK_SZ) - 8;/(mthread_stacks[i] + MTHREAD_STACK_SZ);/ | progs/src/mthreads.h
 ktime-us-factor | s/\\* 1000UL +/ * 100UL +/ | headers/ktime.h
 randmix-constant | s/return x ^ (x >> 31);/return 0;/ | headers/randmix.h
@@ -505,17 +505,27 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         arch/x86/ctx_sw.S)
-            # One file, two contracts: fpu-no-save breaks FPU
+            # One file, three contracts: fpu-no-save breaks FPU
             # save/restore (killed by the fptest slice), while the
             # fork trampoline mutant breaks child-zero return (killed
             # by the fork slice). Routing by file alone sent
             # fpu-no-save to the fork slice, where it survived
             # vacuously on 3 unrelated passes; route by name.
+            # sched-park-* break the voluntary-switch park used by
+            # every blocking wait, so the fork slice (forktest blocks
+            # in waitpid) kills them.
             if [ "$name" = "fpu-no-save" ]; then
                 MATCH="fpu" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             else
                 MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             fi
+            ;;
+        arch/x86/syscall_entry.S)
+            # The entry trampoline serves every syscall: a stale stride
+            # lands every thread on the wrong kstack, so the full BDD
+            # suite (the old kernel.c routing for this same mutant)
+            # kills it.
+            FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         headers/drivers/pci.h)
             make -C "$HERE" test-pci > "$BACKUP/suite.log" 2>&1

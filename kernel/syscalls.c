@@ -9,8 +9,9 @@
  * fork/vfork/execve stubs, exit, wait4, kill) live in syscalls_proc.c
  * (declared in syscalls_proc.h); the tables below reference them.
  *
- * The asm trampoline (syscall_entry / syscall_kstack) stays in kernel.c
- * because it defines the global symbols the boot code installs into MSR_LSTAR.
+ * The asm trampoline (syscall_entry / syscall_kstack) lives in
+ * arch/x86/syscall_entry.S; it defines the global symbols the boot
+ * code installs into MSR_LSTAR.
  */
 
 #include "kernel.h"
