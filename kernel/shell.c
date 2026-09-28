@@ -3770,10 +3770,10 @@ void shell_exec_builtin(int argc, char **argv) {
  * next stage's stdin. Two capture paths run in parallel because the two
  * program kinds write through different doors: builtins and ET_REL
  * children write vga_putc (caught by redirect_begin/take), ET_EXEC
- * children write sys_write fd 1 (caught by a kfd_table[1] pipe
+ * children write sys_write fd 1 (caught by a view-relative fd-1 pipe
  * override). Two stdin doors match: console_getc (builtins, ET_REL,
  * fed by console_stdin_push) and sys_read fd 0 (ET_EXEC, fed by a
- * kfd_table[0] pipe override). Exactly one door carries bytes per
+ * view-relative fd-0 pipe override). Exactly one door carries bytes per
  * stage; both are drained and concatenated, so no output is ever lost.
  *
  * Merged streams: MiniOS has one console stream, so stderr flows into

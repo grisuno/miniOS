@@ -118,8 +118,8 @@ void syscall_init(void) {
 extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);
 
 
-/* ksyscall_dispatch, kfd_table, user_range_ok, user_str_ok, k_syscall_spawn
- * moved to kernel/syscalls.c */
+/* ksyscall_dispatch, per-process fd views, user_range_ok, user_str_ok,
+ * k_syscall_spawn moved to kernel/syscalls.c */
 
 
 /* ---- syscall trampoline (arch/x86/syscall_entry.S) ----------------------

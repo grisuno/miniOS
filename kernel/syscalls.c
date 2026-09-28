@@ -1,7 +1,7 @@
 /* syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN.
  *
  * Extracted from kernel.c.  Contains ksyscall (trace wrapper),
- * ksyscall_dispatch (the ABI switch), the file-descriptor table (kfd_table),
+ * ksyscall_dispatch (the ABI switch), the per-process fd views plus the
  * user-pointer validation, and k_syscall_spawn (the bridge between the
  * Linux ABI and the internal ELF loaders).
  *
@@ -42,10 +42,30 @@
 #include "ktime.h"
 #include "randmix.h"
 
-/* ---- File descriptor table for open/read/write/close -------------------- */
+/* ---- Per-process file-descriptor views (open/read/write/close) -------- */
 
 #define KFD_MAX 32
-KFILE *kfd_table[KFD_MAX];
+
+/* Root view for the shell and every pid without its own (pid 0, AP
+ * idle): .bss-zeroed entries, never freed, so NULL proc->kfd and an
+ * invalid current_pid degrade to the historical shared table. */
+static kfd_view_t kfd_root;
+
+/** Docstring: View owning the caller's fds: its own on isolated procs
+ * and threads, the root on pid 0 and any pid without one. */
+static kfd_view_t *kfd_view_current(void) {
+    if (current_pid >= 1 && current_pid < MAX_PROCS
+        && procs[current_pid].state != PROC_FREE
+        && procs[current_pid].kfd)
+        return procs[current_pid].kfd;
+    return &kfd_root;
+}
+
+/** Docstring: Static root view (shell pid 0, pids without their own):
+ * entries are the historical shared table, never freed. */
+kfd_view_t *kfd_view_root(void) {
+    return &kfd_root;
+}
 
 /* Guards g_brk/g_brk_limit/user_mmap_cur and the VMA trees against
  * concurrent brk/mmap/munmap syscalls from threads on different CPUs.
@@ -54,20 +74,21 @@ KFILE *kfd_table[KFD_MAX];
  * mm_lock alone).  Declared extern in the scheduler via sched.c. */
 spinlock_t mm_lock = SPINLOCK_INIT;
 
-/* Leaf lock for kfd_table membership plus KFILE refcounts (see the
+/* Leaf lock for every view's membership plus KFILE refcounts (see the
  * KFILE contract in kernel.h). Every section is a few instructions:
  * scan, assign, clear, bump or drop. File IO itself always runs
  * outside it with a held reference instead, so a close racing a
- * read drops the table slot but never frees under the reader, and
+ * read drops the view slot but never frees under the reader, and
  * two racing opens can never claim the same slot twice. */
 spinlock_t fd_lock = SPINLOCK_INIT;
 
 KFILE *kfd_get(int fd) {
     irqflags_t flags;
     KFILE *f = 0;
+    kfd_view_t *v = kfd_view_current();
     spin_lock_irqsave(&fd_lock, &flags);
-    if (fd >= 0 && fd < KFD_MAX && kfd_table[fd]) {
-        f = kfd_table[fd];
+    if (fd >= 0 && fd < KFD_MAX && v->f[fd]) {
+        f = v->f[fd];
         f->ref++;
     }
     spin_unlock_irqrestore(&fd_lock, flags);
@@ -83,6 +104,114 @@ void kfd_put(KFILE *f) {
     if (f->ref <= 0) drop = 1;
     spin_unlock_irqrestore(&fd_lock, flags);
     if (drop) kfclose(f);
+}
+
+/** Docstring: Count live entries in a view (fd accounting source). */
+static int kfd_view_count(kfd_view_t *v) {
+    int i, n = 0;
+    if (!v) return 0;
+    for (i = 0; i < KFD_MAX; i++) if (v->f[i]) n++;
+    return n;
+}
+
+/** Docstring: Share the caller's view with a new thread (CLONE_FILES /
+ * CLONE_VM): one view refcount bump, entries untouched. The child must
+ * be unpublished (PROC_SWITCHING) so no other CPU can claim it mid-way. */
+void kfd_view_share(proc_t *child) {
+    irqflags_t flags;
+    kfd_view_t *v = kfd_view_current();
+    spin_lock_irqsave(&fd_lock, &flags);
+    if (v != &kfd_root) v->ref++;
+    spin_unlock_irqrestore(&fd_lock, flags);
+    child->kfd = (v == &kfd_root) ? 0 : v;
+    child->open_files = kfd_view_count(v);
+}
+
+/** Docstring: Copy a parent's view for an isolated child (fork, spawn):
+ * a fresh heap view with one KFILE ref bump per live entry, so either
+ * side closing never drops the other's handle. A NULL parent (or one
+ * without its own view) copies the root. Returns 0 on OOM with the
+ * child untouched (caller refuses fail-closed). */
+int kfd_view_copy(proc_t *child, proc_t *parent) {
+    irqflags_t flags;
+    kfd_view_t *v = kfd_view_root();
+    kfd_view_t *nv;
+    int i;
+    if (parent && parent->kfd) v = parent->kfd;
+    nv = (kfd_view_t *)kmalloc(sizeof(kfd_view_t));
+    if (!nv) return 0;
+    for (i = 0; i < KFD_MAX; i++) nv->f[i] = 0;
+    nv->cloexec = 0;
+    nv->ref = 1;
+    spin_lock_irqsave(&fd_lock, &flags);
+    for (i = 0; i < KFD_MAX; i++) {
+        nv->f[i] = v->f[i];
+        if (nv->f[i]) nv->f[i]->ref++;
+    }
+    nv->cloexec = v->cloexec;
+    spin_unlock_irqrestore(&fd_lock, flags);
+    child->kfd = nv;
+    child->open_files = kfd_view_count(nv);
+    return 1;
+}
+
+/** Docstring: Release a reaped process's view: drop one view ref and,
+ * at zero, one KFILE ref per live entry (closing what the last owner
+ * held) plus the view itself. The root view is never freed. Idempotent
+ * on NULL (already released or never owned). */
+void kfd_view_release(proc_t *p) {
+    irqflags_t flags;
+    kfd_view_t *v;
+    KFILE *drop[KFD_MAX];
+    int i, ndrop = 0, free_view = 0;
+    if (!p || !p->kfd) return;
+    v = p->kfd;
+    p->kfd = 0;
+    p->open_files = 0;
+    spin_lock_irqsave(&fd_lock, &flags);
+    v->ref--;
+    if (v->ref <= 0 && v != &kfd_root) {
+        free_view = 1;
+        for (i = 0; i < KFD_MAX; i++) {
+            if (v->f[i]) {
+                v->f[i]->ref--;
+                if (v->f[i]->ref <= 0 && ndrop < KFD_MAX)
+                    drop[ndrop++] = v->f[i];
+                v->f[i] = 0;
+            }
+        }
+    }
+    spin_unlock_irqrestore(&fd_lock, flags);
+    for (i = 0; i < ndrop; i++) kfclose(drop[i]);
+    if (free_view) kfree(v);
+}
+
+/** Docstring: Close every CLOEXEC fd in the caller's own view (execve:
+ * the image is replaced, marked descriptors must not survive). Runs on
+ * the live view entries with the same ref discipline as close. */
+void kfd_view_cloexec(void) {
+    irqflags_t flags;
+    kfd_view_t *v = kfd_view_current();
+    KFILE *drop[KFD_MAX];
+    unsigned mask;
+    int i, ndrop = 0;
+    proc_t *cp = (current_pid >= 0 && current_pid < MAX_PROCS)
+        ? &procs[current_pid] : 0;
+    spin_lock_irqsave(&fd_lock, &flags);
+    mask = v->cloexec;
+    v->cloexec = 0;
+    for (i = 0; i < KFD_MAX && mask; i++) {
+        if ((mask & (1u << (unsigned)i)) && v->f[i]) {
+            KFILE *f = v->f[i];
+            v->f[i] = 0;
+            f->ref--;
+            if (f->ref <= 0 && ndrop < KFD_MAX) drop[ndrop++] = f;
+            if (cp && cp->open_files > 0) cp->open_files--;
+        }
+        mask &= ~(1u << (unsigned)i);
+    }
+    spin_unlock_irqrestore(&fd_lock, flags);
+    for (i = 0; i < ndrop; i++) kfclose(drop[i]);
 }
 
 /* ---- MiniOS custom syscall table (200-299) --------------------------------
@@ -937,11 +1066,13 @@ static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a
 /* Shared by sys_linux_open (2) and the openat fall-through (257). The
  * slot scan and the publish re-check under fd_lock, so two racing
  * opens can never claim the same slot; the slow kfopen runs outside
- * the lock with nothing published yet. */
+ * the lock with nothing published yet. Linux O_CLOEXEC (0x80000) arms
+ * the close-on-exec bit without disturbing the mode selection. */
 static long do_open_path(const char *path, long flags) {
     const char *mode = ((flags & 1) || (flags & 0x40)) ? "w" : "r";
-    int fd;
+    int fd, cloexec = (flags & 0x80000) ? 1 : 0;
     irqflags_t flags_irq;
+    kfd_view_t *v;
     SANITIZE_STR(path, RAMDISK_FNAME_LEN);
     {
         proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
@@ -952,14 +1083,16 @@ static long do_open_path(const char *path, long flags) {
     if (!f) {
         return -2;
     }
+    v = kfd_view_current();
     spin_lock_irqsave(&fd_lock, &flags_irq);
-    for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
+    for (fd = 3; fd < KFD_MAX; fd++) if (!v->f[fd]) break;
     if (fd >= KFD_MAX) {
         spin_unlock_irqrestore(&fd_lock, flags_irq);
         kfclose(f);
         return -24;
     }
-    kfd_table[fd] = f;
+    v->f[fd] = f;
+    if (cloexec) v->cloexec |= (1u << (unsigned)fd);
     spin_unlock_irqrestore(&fd_lock, flags_irq);
     {
         proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
@@ -979,14 +1112,16 @@ static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)
 static long kfd_claim(KFILE *f) {
     int fd;
     irqflags_t flags_irq;
+    kfd_view_t *v;
     if (!f) return -9;
+    v = kfd_view_current();
     spin_lock_irqsave(&fd_lock, &flags_irq);
-    for (fd = 3; fd < KFD_MAX; fd++) if (!kfd_table[fd]) break;
+    for (fd = 3; fd < KFD_MAX; fd++) if (!v->f[fd]) break;
     if (fd >= KFD_MAX) {
         spin_unlock_irqrestore(&fd_lock, flags_irq);
         return -24;
     }
-    kfd_table[fd] = f;
+    v->f[fd] = f;
     spin_unlock_irqrestore(&fd_lock, flags_irq);
     {
         proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
@@ -1003,10 +1138,12 @@ static long kfd_claim(KFILE *f) {
 KFILE *kfd_override(int fd, KFILE *f) {
     irqflags_t flags_irq;
     KFILE *old = 0;
+    kfd_view_t *v;
     if (fd < 0 || fd >= KFD_MAX) return 0;
+    v = kfd_view_current();
     spin_lock_irqsave(&fd_lock, &flags_irq);
-    old = kfd_table[fd];
-    kfd_table[fd] = f;
+    old = v->f[fd];
+    v->f[fd] = f;
     spin_unlock_irqrestore(&fd_lock, flags_irq);
     return old;
 }
@@ -1023,8 +1160,9 @@ static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)
     wfd = kfd_claim(w);
     if (wfd < 0) {
         irqflags_t flags_irq;
+        kfd_view_t *v = kfd_view_current();
         spin_lock_irqsave(&fd_lock, &flags_irq);
-        if (rfd >= 0 && rfd < KFD_MAX && kfd_table[rfd] == r) kfd_table[rfd] = 0;
+        if (rfd >= 0 && rfd < KFD_MAX && v->f[rfd] == r) v->f[rfd] = 0;
         spin_unlock_irqrestore(&fd_lock, flags_irq);
         kfclose(r);
         kfclose(w);
@@ -1053,27 +1191,31 @@ static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6) 
 static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6) {
     KFILE *f, *old;
     irqflags_t flags_irq;
+    kfd_view_t *v;
     (void)a3; (void)a4; (void)a5; (void)a6;
     if (a1 >= NET_FD_BASE || a1 < 0 || a2 < 0 || a2 >= KFD_MAX) return -9;
     if (a1 == a2) {
-        if (a1 >= 3 && !kfd_table[(int)a1]) return -9;
+        kfd_view_t *vv = kfd_view_current();
+        if (a1 >= 3 && !vv->f[(int)a1]) return -9;
         return a2;
     }
     f = kfd_get((int)a1);
     if (!f) {
         if (a1 < 3) {
+            v = kfd_view_current();
             spin_lock_irqsave(&fd_lock, &flags_irq);
-            old = kfd_table[(int)a2];
-            kfd_table[(int)a2] = 0;
+            old = v->f[(int)a2];
+            v->f[(int)a2] = 0;
             spin_unlock_irqrestore(&fd_lock, flags_irq);
             if (old) kfd_put(old);
             return a2;
         }
         return -9;
     }
+    v = kfd_view_current();
     spin_lock_irqsave(&fd_lock, &flags_irq);
-    old = kfd_table[(int)a2];
-    kfd_table[(int)a2] = f;
+    old = v->f[(int)a2];
+    v->f[(int)a2] = f;
     spin_unlock_irqrestore(&fd_lock, flags_irq);
     if (old) kfd_put(old);
     return a2;
@@ -1085,10 +1227,12 @@ static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6
     {
         irqflags_t flags_irq;
         KFILE *f = 0;
+        kfd_view_t *v = kfd_view_current();
         spin_lock_irqsave(&fd_lock, &flags_irq);
-        if (a1 >= 0 && a1 < KFD_MAX && kfd_table[a1]) {
-            f = kfd_table[a1];
-            kfd_table[a1] = 0;
+        if (a1 >= 0 && a1 < KFD_MAX && v->f[a1]) {
+            f = v->f[a1];
+            v->f[a1] = 0;
+            v->cloexec &= ~(1u << (unsigned)a1);
         }
         spin_unlock_irqrestore(&fd_lock, flags_irq);
         if (f) {

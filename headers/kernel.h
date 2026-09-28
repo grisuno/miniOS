@@ -195,7 +195,8 @@ void  kfree(void *ptr);
 void *kcalloc(unsigned long nmemb, unsigned long size);
 void *krealloc(void *ptr, unsigned long size);
 void  kallocator_init(void);
-void *kmalloc_percpu(unsigned long size, unsigned long align);
+void *kmalloc_aligned(unsigned long size, unsigned long align);
+void  kfree_aligned(void *ptr);
 
 /* dlmalloc backend (third_party/dlmalloc): an mspace rooted over the fixed
  * kernel heap. The kernel's allocator delegates to these. */
@@ -689,11 +690,24 @@ void syscall_trace_verbose_set(int on);
 unsigned long syscall_trace_shown(void);
 const char *syscall_name(long n);
 #define KFD_MAX 32
-extern KFILE *kfd_table[KFD_MAX];
-/* Leaf lock for the table above: taken last, held only across slot
- * scan/assign/clear and refcount bumps, never across file IO, so it
- * cannot deadlock against sched_lock/mm_lock and never stalls ticks
- * behind a slow device. */
+/** Docstring: Per-process file-descriptor view.
+ *
+ * Each process owns one view (heap-allocated, shared on CLONE_FILES with
+ * a refcount, deep-copied on fork/spawn/exec-parent with one KFILE ref
+ * bump per live entry). f[fd] is the table; cloexec carries one
+ * close-on-exec bit per fd; ref counts view owners (never the entries:
+ * those keep their own KFILE ref). The shell and every pid without its
+ * own view (pid 0, AP idle) use the static root view, which is never
+ * freed. All membership mutates only under fd_lock. */
+typedef struct kfd_view {
+    KFILE   *f[KFD_MAX];
+    unsigned cloexec;
+    int      ref;
+} kfd_view_t;
+/* Leaf lock for every view's membership plus KFILE refcounts (never
+ * nested, never held across yields); heavy IO may delay a tick, which
+ * beats torn metadata. Lock order: sched_lock -> fd_lock (views are
+ * attached under sched_lock, mutated under fd_lock alone). */
 extern spinlock_t fd_lock;
 KFILE *kfd_get(int fd);
 void kfd_put(KFILE *f);

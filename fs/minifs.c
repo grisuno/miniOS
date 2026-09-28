@@ -15,6 +15,13 @@
 void minifs_journal_touch(unsigned int phys);
 void minifs_journal_clear(void);
 void minifs_journal_abort(void);
+static int fs_read_inode(unsigned int num, MiniFSInode *out);
+int minifs_inode_get_block(MiniFSInode *inode, unsigned int logical_block,
+                           unsigned int *phys_block);
+static unsigned char *blk_new(void);
+static void blk_free(unsigned char *b);
+static unsigned int minifs_crc32(const void *data, unsigned int len);
+int minifs_resolve_path(const char *path);
 
 static MiniFSSuper fs_sb;
 static unsigned char *fs_ibitmap;
@@ -110,6 +117,52 @@ static int fs_write_super(void) {
 
 /* ---- Inode I/O ---- */
 
+/* Inode integrity, mkfs-compatible: the crc32 over the first 124 bytes of
+ * the 128-byte slot lives at slot offset 124 (where mkfs/minifs_fsck
+ * read and write it). The struct's legacy checksum field (offset 76)
+ * stays zero so both sides compute over identical bytes. A slot whose
+ * checksum does not verify fails closed on read: its block pointers can
+ * never reach a write, a free or a resolve. Images written by an older
+ * kernel stored the same crc at offset 76 instead (byte order the old
+ * write path used), so a read accepts either home: a foreign image
+ * stays readable, a freshly sealed one is still fully verified. */
+#define MINIFS_INODE_CRC_OFF 124
+static void fs_inode_seal(MiniFSInode *in) {
+    unsigned char *p = (unsigned char *)in;
+    unsigned int c;
+    p[76] = p[77] = p[78] = p[79] = 0;
+    p[124] = p[125] = p[126] = p[127] = 0;
+    c = minifs_crc32(p, MINIFS_INODE_CRC_OFF);
+    p[124] = (unsigned char)(c & 255);
+    p[125] = (unsigned char)((c >> 8) & 255);
+    p[126] = (unsigned char)((c >> 16) & 255);
+    p[127] = (unsigned char)(c >> 24);
+}
+static int fs_inode_check(const MiniFSInode *in) {
+    unsigned char tmp[sizeof(MiniFSInode)];
+    const unsigned char *p = (const unsigned char *)in;
+    unsigned int c = minifs_crc32(p, MINIFS_INODE_CRC_OFF);
+    unsigned int s = (unsigned int)p[124] |
+        ((unsigned int)p[125] << 8) |
+        ((unsigned int)p[126] << 16) |
+        ((unsigned int)p[127] << 24);
+    unsigned int legacy = (unsigned int)p[76] |
+        ((unsigned int)p[77] << 8) |
+        ((unsigned int)p[78] << 16) |
+        ((unsigned int)p[79] << 24);
+    if (c == s) return 0;
+    /* Old-kernel slot: the crc was computed over the struct while the
+     * checksum field still read zero, then stored AT offset 76. Recompute
+     * with that field zeroed before comparing, or a foreign image would
+     * fail every read. */
+    if (legacy != 0) {
+        kmemcpy(tmp, p, MINIFS_INODE_CRC_OFF);
+        tmp[76] = tmp[77] = tmp[78] = tmp[79] = 0;
+        if (minifs_crc32(tmp, MINIFS_INODE_CRC_OFF) == legacy) return 0;
+    }
+    return -1;
+}
+
 static int fs_read_inode(unsigned int num, MiniFSInode *out) {
     unsigned int block = fs_sb.inode_table_start + (num / MINIFS_INODES_PER_BLOCK);
     unsigned int offset = (num % MINIFS_INODES_PER_BLOCK) * sizeof(MiniFSInode);
@@ -118,6 +171,7 @@ static int fs_read_inode(unsigned int num, MiniFSInode *out) {
     if (block_read(block, buf) < 0) { blk_free(buf); return -1; }
     kmemcpy(out, buf + offset, sizeof(MiniFSInode));
     blk_free(buf);
+    if (out->mode != 0 && fs_inode_check(out) < 0) return -1;
     return 0;
 }
 
@@ -126,10 +180,16 @@ static int fs_write_inode(unsigned int num, const MiniFSInode *in) {
     minifs_journal_touch(block);
     unsigned int offset = (num % MINIFS_INODES_PER_BLOCK) * sizeof(MiniFSInode);
     unsigned char *buf = blk_new();
+    MiniFSInode sealed;
     int rc;
     if (!buf) return -1;
     if (block_read(block, buf) < 0) { blk_free(buf); return -1; }
-    kmemcpy(buf + offset, in, sizeof(MiniFSInode));
+    /* Single choke point: every persisted inode is sealed here, so a
+     * caller that mutates size or mappings (dir append, write grow)
+     * cannot store a stale checksum. Sealing is idempotent. */
+    sealed = *in;
+    fs_inode_seal(&sealed);
+    kmemcpy(buf + offset, &sealed, sizeof(MiniFSInode));
     rc = block_write(block, buf);
     blk_free(buf);
     return rc;
@@ -943,7 +1003,6 @@ int minifs_create(const char *path, unsigned short mode) {
     inode.mode = MINIFS_S_IFREG | (mode & 0777);
     inode.link_count = 1;
     inode.size = 0;
-    inode.checksum = minifs_crc32(&inode, sizeof(MiniFSInode) - 4);
 
     /* Transaction: DIRTY barrier first, then mutations (each auto-touch
      * snapshots its old block), then CLEAN; errors undo via abort. */
@@ -997,7 +1056,6 @@ int minifs_mkdir(const char *path, unsigned short mode) {
     inode.mode = MINIFS_S_IFDIR | (mode & 0777);
     inode.link_count = 2;
     inode.size = 0;
-    inode.checksum = minifs_crc32(&inode, sizeof(MiniFSInode) - 4);
     minifs_journal_begin(0);
     minifs_journal_commit(0);
     if (fs_write_inode((unsigned int)child_ino, &inode) < 0) {
@@ -1268,7 +1326,6 @@ int minifs_write(int inode_num, const void *buf, unsigned int offset,
         inode.size = offset + len;
     }
     inode.mtime = 0;
-    inode.checksum = minifs_crc32(&inode, sizeof(MiniFSInode) - 4);
     fs_write_inode((unsigned int)inode_num, &inode);
     rc = (int)done;
     kfree(blkbuf);
@@ -1299,8 +1356,7 @@ int minifs_write_compressed(int inode_num, const void *buf, unsigned int len) {
                 if (ret < 0) return -1;
                 if (fs_read_inode((unsigned int)inode_num, &inode) < 0) return -1;
                 inode.size = clen;
-                inode.checksum = minifs_crc32(&inode, sizeof(MiniFSInode) - 4);
-                fs_write_inode((unsigned int)inode_num, &inode);
+                            fs_write_inode((unsigned int)inode_num, &inode);
                 return (int)clen;
             }
             kfree(cbuf);
@@ -1325,7 +1381,6 @@ int minifs_truncate(int inode_num, unsigned int new_size) {
         }
     }
     inode.size = new_size;
-    inode.checksum = minifs_crc32(&inode, sizeof(MiniFSInode) - 4);
     return fs_write_inode((unsigned int)inode_num, &inode);
 }
 
@@ -1557,7 +1612,7 @@ int minifs_mkfs(unsigned int total_blocks) {
     kmemset(&root, 0, sizeof(MiniFSInode));
     root.mode = MINIFS_S_IFDIR | 0755;
     root.link_count = 2;
-    root.checksum = minifs_crc32(&root, sizeof(MiniFSInode) - 4);
+    root.checksum = 0;
     fs_write_inode(MINIFS_ROOT_INODE, &root);
 
     fs_ibitmap = (unsigned char *)kmalloc(ibm_blocks * MINIFS_BLOCK_SIZE);

@@ -8,10 +8,10 @@
  *
  *   spin_lock / spin_unlock
  *     Disables interrupts on acquisition and re-enables on release.
- *     Safe when the caller knows interrupts are already disabled (ISRs).
- *     Must NOT be nested: a caller that already holds another spinlock
- *     with interrupts disabled and calls spin_lock will deadlock when
- *     the inner spin_unlock re-enables interrupts prematurely.
+ *     Single-level sections only: the caller must hold no other
+ *     interrupt-disabling lock, and must not run inside an ISR.
+ *     Nested or ISR paths must use spin_lock_irqsave instead, or the
+ *     inner spin_unlock re-enables interrupts prematurely.
  *
  *   spin_lock_irqsave / spin_unlock_irqrestore
  *     Saves RFLAGS.IF before disabling interrupts and restores the
@@ -23,8 +23,9 @@
  * Contract:
  *   A spinlock must never be held across a blocking operation.
  *   A spinlock must never be acquired twice without releasing (deadlock).
- *   spin_lock is for ISR context (interrupts already off or single-level).
- *   spin_lock_irqsave is for all other kernel paths.
+ *   spin_lock is for single-level sections with interrupts enabled
+ *   on entry. spin_lock_irqsave is for ISR paths, nested sections and
+ *   all other kernel paths where the entry state is unknown.
  *
  * Per-CPU vs shared:
  *   spinlocks protect SHARED data structures (proc_table, ready_queue).
@@ -56,6 +57,7 @@ static inline irqflags_t spin_save_irq(void) { return 0; }
 static inline void spin_restore_irq(irqflags_t flags) { (void)flags; }
 static inline void spin_lock(spinlock_t *lock) {
     while (__sync_lock_test_and_set(&lock->locked, 1)) {
+        __asm__ volatile("pause" ::: "memory");
     }
     __sync_synchronize();
 }
@@ -66,6 +68,7 @@ static inline void spin_unlock(spinlock_t *lock) {
 static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags) {
     (void)flags;
     while (__sync_lock_test_and_set(&lock->locked, 1)) {
+        __asm__ volatile("pause" ::: "memory");
     }
     __sync_synchronize();
 }
@@ -104,6 +107,7 @@ static inline void spin_restore_irq(irqflags_t flags) {
 static inline void spin_lock(spinlock_t *lock) {
     __asm__ volatile("cli");
     while (__sync_lock_test_and_set(&lock->locked, 1)) {
+        __asm__ volatile("pause" ::: "memory");
     }
     __sync_synchronize();
 }
@@ -135,6 +139,7 @@ static inline void spin_unlock_keep_irq(spinlock_t *lock) {
 static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags) {
     *flags = spin_save_irq();
     while (__sync_lock_test_and_set(&lock->locked, 1)) {
+        __asm__ volatile("pause" ::: "memory");
     }
     __sync_synchronize();
 }

@@ -12,6 +12,13 @@ S_IFDIR = 0o040000
 
 def u16(d,o): return struct.unpack_from('<H',d,o)[0]
 def u32(d,o): return struct.unpack_from('<I',d,o)[0]
+def crc32(data):
+    crc=0xFFFFFFFF
+    for b in data:
+        crc^=b
+        for _ in range(8):
+            crc=(crc>>1)^(0xEDB88320 if (crc&1) else 0)
+    return crc^0xFFFFFFFF
 
 class FSCK:
     def __init__(self, fn):
@@ -55,6 +62,12 @@ class FSCK:
         r['direct']=[u32(b,24+j*4) for j in range(10)]
         r['indirect']=u32(b,64)
         return r
+    def inode_crc_ok(self,i):
+        o=self.base+self.sb['inode_table_start']*BLOCK_SIZE+i*128
+        b=self.d[o:o+128]
+        if len(b)<128: return False
+        if u16(b,0)==0: return True
+        return crc32(bytes(b[:124]))==u32(b,124)
     def read(self,ino):
         r=self.inode(ino)
         if r['size']==0: return b''
@@ -81,6 +94,9 @@ class FSCK:
         if i<ROOT_INODE or i>=self.sb['total_inodes']: return
         self.imap[i]=1
         r=self.inode(i)
+        if r['mode']!=0 and not self.inode_crc_ok(i):
+            self.err(f"inode {i}: checksum mismatch (slot corrupt, kernel refuses it)")
+            return
         sz=r['size']
         if sz>0:
             blks=(sz+BLOCK_SIZE-1)//BLOCK_SIZE

@@ -1564,7 +1564,6 @@ int proc_create(const char *name, int parent_pid) {
     p->rl_cpu_max = 0;
     p->rl_nofile_max = 0;
     p->cpu_ticks = 0;
-    p->open_files = 0;
     p->cpu_kill_pending = 0;
     p->pid = pid;
     /* Build unpublished: a READY slot is claimable by another CPU mid-
@@ -1601,6 +1600,18 @@ int proc_create(const char *name, int parent_pid) {
     }
     p->vma = vma_ctx_alloc();
     if (!p->vma) {
+        fpu_free_proc(p);
+        free_kstack(kstack_top);
+        p->kstack = 0;
+        p->state = PROC_FREE;
+        spin_unlock(&sched_lock);
+        return -1;
+    }
+    /* Isolated child: a private fd view copied from the named parent
+     * (root when parentless), so its closes never touch the parent. */
+    if (!kfd_view_copy(p, parent)) {
+        vma_ctx_free(p->vma);
+        p->vma = 0;
         fpu_free_proc(p);
         free_kstack(kstack_top);
         p->kstack = 0;
@@ -1745,6 +1756,20 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
     }
     child->vma = vma_ctx_alloc();
     if (!child->vma) {
+        fpu_free_proc(child);
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock_irqrestore(&sched_lock, sflags);
+        pt_free_user(new_cr3);
+        return -1;
+    }
+    /* The pipeline overrides live in the spawner's view (fd 0/1 pipe
+     * doors installed before the spawn), so the child inherits them
+     * by copying that view, then runs isolated from later closes. */
+    if (!kfd_view_copy(child, proc_get(current_pid))) {
+        vma_ctx_free(child->vma);
+        child->vma = 0;
         fpu_free_proc(child);
         free_kstack(kstack_top);
         child->kstack = 0;
@@ -1960,7 +1985,7 @@ void do_exit(int code) {
  * before the call (8 KB each per the roadmap) with its TOP passed here,
  * and must stay alive until the thread is joined.  fn and stack must lie
  * in the user window (checked by the syscall wrapper).  The thread shares
- * CR3, the file table and (by the schedule() CLONE_VM rule) the live
+ * CR3, the fd view and (by the schedule() CLONE_VM rule) the live
  * brk/mmap view with its parent; the parent joins it with do_waitpid,
  * which reaps the exit code without freeing the shared page tables.
  * Returns the child PID, or -1 when no slot or stack is usable. */
@@ -1987,7 +2012,6 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     child->rl_cpu_max = cur->rl_cpu_max;
     child->rl_nofile_max = cur->rl_nofile_max;
     child->cpu_ticks = 0;
-    child->open_files = 0;
     child->cpu_kill_pending = 0;
     kstrncpy(child->name, cur->name, sizeof(child->name) - 1);
 
@@ -2016,6 +2040,9 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     child->brk_limit = cur->brk_limit;
     child->mmap_cur = cur->mmap_cur;
     child->vma = cur->vma ? cur->vma : &vma_legacy;
+    /* Threads share the address space and the fd view (CLONE_VM rule);
+     * the view refcount, not the entries, records the new owner. */
+    kfd_view_share(child);
 
     /* iretq frame [rip, cs, rflags, rsp, ss]: start at fn(arg). */
     unsigned long *frame = (unsigned long *)(kstack_top - 40);
@@ -2043,8 +2070,9 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
 
 /* do_clone(flags, newsp) - create a thread or process.
  * CLONE_VM: share address space (same CR3).
- * CLONE_FILES: share fd table (not yet implemented).
- * Returns child PID to parent, 0 to child. */
+ * CLONE_FILES: share fd view (refcount bump, entries shared).
+ * Without either flag the child is isolated: fresh window plus a
+ * private fd-view copy. Returns child PID to parent, 0 to child. */
 long do_clone(long flags, long newsp) {
     int cflags = (int)flags;
     proc_t *cur = proc_get(current_pid);
@@ -2066,7 +2094,6 @@ long do_clone(long flags, long newsp) {
     child->rl_cpu_max = cur->rl_cpu_max;
     child->rl_nofile_max = cur->rl_nofile_max;
     child->cpu_ticks = 0;
-    child->open_files = 0;
     child->cpu_kill_pending = 0;
     kstrncpy(child->name, cur->name, sizeof(child->name) - 1);
 
@@ -2100,6 +2127,24 @@ long do_clone(long flags, long newsp) {
             spin_unlock(&sched_lock);
             return -1;
         }
+    }
+    if (cflags & CLONE_FILES)
+        kfd_view_share(child);
+    else if (!kfd_view_copy(child, cur)) {
+        if (!(cflags & CLONE_VM)) {
+            if (child->ctx.cr3 != cur->ctx.cr3)
+                pt_free_user(child->ctx.cr3);
+            if (child->vma && child->vma != cur->vma
+                && child->vma != &vma_legacy)
+                vma_ctx_free(child->vma);
+            child->vma = 0;
+        }
+        fpu_free_proc(child);
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock(&sched_lock);
+        return -12;
     }
 
     child->brk = cur->brk;
@@ -2192,7 +2237,6 @@ long do_fork(void) {
     child->rl_cpu_max = cur->rl_cpu_max;
     child->rl_nofile_max = cur->rl_nofile_max;
     child->cpu_ticks = 0;
-    child->open_files = 0;
     child->cpu_kill_pending = 0;
     kstrncpy(child->name, cur->name, sizeof(child->name) - 1);
     child->brk = cur->brk;
@@ -2228,6 +2272,21 @@ long do_fork(void) {
     __asm__ volatile("fxsave (%0)" :: "r"(child->fpu_save) : "memory");
     child->vma = vma_ctx_copy(cur->vma);
     if (!child->vma) {
+        fpu_free_proc(child);
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock_irqrestore(&sched_lock, sflags);
+        cow_release_window(new_cr3);
+        pt_free_user(new_cr3);
+        spin_restore_irq(fflags);
+        return -12;
+    }
+    /* Fork copies the fd view like the VMA context: the child closes
+     * without touching the parent's handles and vice versa. */
+    if (!kfd_view_copy(child, cur)) {
+        vma_ctx_free(child->vma);
+        child->vma = 0;
         fpu_free_proc(child);
         free_kstack(kstack_top);
         child->kstack = 0;
@@ -2299,9 +2358,9 @@ unsigned long aslr_dyn_base(void) {
  * the old window becomes a zombie for its parent. ET_REL refuses
  * with -ENOEXEC (ring-0 extensions load only through SPAWN's trust
  * gate). OOM at any pre-adopt step releases what was claimed and
- * returns -12 with the caller byte-identical. No CLOEXEC in v1: the
- * fd table is process-shared by design, so descriptors survive like
- * fork; documented, not silent. envp is not carried: setup_user_stack
+ * returns -12 with the caller byte-identical. CLOEXEC fds close at
+ * adopt (armed by Linux O_CLOEXEC on open); the rest survive like
+ * fork. envp is not carried: setup_user_stack
  * builds argc/argv only, so every execve starts with an empty
  * environment. */
 long do_execve(char *kpath, int kargc, char **kargv) {
@@ -2443,6 +2502,9 @@ long do_execve(char *kpath, int kargc, char **kargv) {
     cur->ctx.rip = (uint64_t)user_trampoline;
     cur->ctx.rsp = fresh_top - 40;
     cur->ctx.rflags = 0x202;
+    /* The image is replaced but the pid (and its view) survives: fds
+     * marked O_CLOEXEC close here, the rest carry over like fork. */
+    kfd_view_cloexec();
     spin_unlock_irqrestore(&mm_lock, mflags);
     spin_unlock_irqrestore(&sched_lock, sflags);
     __asm__ volatile("mov %0, %%cr3" :: "r"((unsigned long)new_cr3) : "memory");
@@ -2480,6 +2542,7 @@ static int waitpid_scan(int pid, int *found) {
                 pt_free_user(procs[i].ctx.cr3);
             if (vma_owned(&procs[i])) vma_ctx_free(procs[i].vma);
             procs[i].vma = 0;
+            kfd_view_release(&procs[i]);
             free_kstack(procs[i].kstack);
             procs[i].kstack = 0;
             fpu_free_proc(&procs[i]);

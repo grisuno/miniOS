@@ -1492,6 +1492,17 @@ The BDD suite proves the isolation with `cpl.elf` (reports ring 3),
 `kmem.elf` (kernel pointers rejected) and `nx.elf` (a `ret` written to the
 stack faults on fetch, so `poweroff` is never reached).
 
+Every legacy `run` clones those tables with `pt_clone_user` and frees the
+clone with `pt_free_user` on return. The graphics pass (framebuffer plus
+DOOM/Nuklear/RGB slots) installs a second private PT per slot on top of
+the main loop's copy: it must release the replaced table first, or every
+legacy run leaks one page per graphics slot (measured 40 KB/run, heap
+never returning, fragmenting the arena until big contiguous allocs fail
+far from the cause — the shape of the post-minicraft "desmontado"
+incident). Proven by `mem` before/after two `run bin/fib.elf` (5534K flat
+after the fix, +40KB per run before); DOOM still composites 60/60 frames
+after it, so the installed mappings are unchanged.
+
 A user program is entered with `iretq` to ring 3 (CS `USER_CODE_SEL`, SS
 `USER_DATA_SEL`, RPL 3) on a user stack carved from the top of the user
 window (`USER_STACK_BASE`..`USER_STACK_TOP`). The program break is bounded
@@ -1591,9 +1602,15 @@ loader (`shell_run_elf_buf`): `ET_REL` `.o` objects run at ring 0 through
 loaded on demand (`shell_run_cvm`). Because the file is reloaded and
 relocated fresh on every invocation, running a toolchain object does not
 grow the registered-program table. The relocated image is freed when the
-run returns (`elf_load` reports its base, `run`/`SPAWN` release it), so
-repeated compiles do not bleed the heap: ten vedit builds cost no more
-than one. The exit code is reported exactly as
+run returns (`elf_load` reports its base, `run`/`SPAWN` release it), and the
+toolchain's OWN malloc arena is freed too: `ld.o` releases all five link
+buffers (`ld_release` in the sibling `ld.c`: `blob_data`, `data_region`,
+`code`, `pool`, `fixups`, plus counters) before every return/exit from
+`main` and `elf_build`, and `minigcc.o` was already clean (source, includes,
+string pool all freed on the success path). Measured `mem` before/after:
+compile, `-f elf` link, `-f cvm` link and `cvm` runs are all flat after a
+one-time first-touch; sibling suites stay green (`ld` 37/37, `miniGCC`
+67/67) and `sh src/test_all.sh` prints 96 PASS. The exit code is reported exactly as
 `run` reports it; an unresolvable name falls through to
 `command not found` (bare) or `run: not found` (with `run`). `objects/`
 and `cvm/` are never on the bare command path — only registered programs,
@@ -3462,11 +3479,24 @@ The two kernel allocator entry points that matter for isolation are unchanged:
 `kallocator_init` still builds the heap once at boot, and every kmalloc path
 still fails closed (returns 0) rather than faulting on an exhausted heap.
 `kfree` fails loud instead of cryptic: a pointer outside
-`[HEAP_BASE, HEAP_BASE+HEAP_SIZE)` halts with `kfree: wild pointer <p>
-from <caller>` naming the culprit, because a wild free inside dlmalloc
+`[HEAP_BASE, HEAP_BASE+HEAP_SIZE)` reports through `panic_screen` (vector 13,
+serial forensics plus framebuffer backtrace, then halt) naming the culprit,
+because a wild free inside dlmalloc
 surfaces far away as a poisoned-pointer `#GP` with no attribution (seen
 once as a Quake 2 shutdown crash that clean headless runs never
 reproduced: `minios_autoframes 400` climbs `gfx frames` 0 to 400).
+
+### Aligned allocation contract (`kmalloc_aligned` / `kfree_aligned`)
+Page-aligned kernel buffers are allocated through `kmalloc_aligned(size,
+align)` (`kernel/mm.c`), which requires a nonzero power-of-two alignment,
+overflow-checks `size + align + sizeof(void *)` and stores the raw
+`kmalloc` pointer in the word below the aligned base. `kfree_aligned`
+releases that stored raw pointer, so an aligned buffer is always safely
+freeable. `mm_page_aligned_alloc` (`kernel/mm/paging.c`) delegates to it
+for the DOOM/Nuklear back-buffers; the historical untracked-raw pattern
+(boot-only leak by documentation) is gone. `kmalloc_percpu` is deleted:
+it had zero callers and the same untracked-aligned defect, so removal
+beat repair (a future per-CPU allocator starts from `kmalloc_aligned`).
 
 ## Development Methodology (SDD + TDD + BDD)
 1. **SDD**: every feature begins with a spec in this file.
@@ -4067,12 +4097,42 @@ must reference the `MINIOS_SYS_*` constants instead of defining their own.
 Compatibility aliases (`SYS_TIME_MS`, `SYS_PALETTE`, etc.) are provided
 for backward compatibility but new code should use the canonical names.
 
+### Per-process file descriptors (`kfd_view_t`, `kernel/syscalls.c`)
+`KFILE *kfd_table[KFD_MAX]` is gone. Each process owns a heap `kfd_view_t`
+(32 slots, a close-on-exec bitmask, a view refcount) through `proc_t.kfd;
+NULL means the static root view, which serves the shell (pid 0), AP idle
+and any pid without its own and is never freed. `proc_t` grew 328 to 336
+bytes (`PROC_T_SIZE`, mirrored by `SYSCALL_PROC_T_SIZE`; `kstack`/`fpu`/
+`fsbase` offsets unchanged, proven by the same `_Static_assert`s), costing
+512 B of `.bss` against the `check-size` gate. Every syscall (open, pipe,
+dup, dup2, close, read, write, override) resolves the caller's view once
+(`kfd_view_current`) and mutates slots only under `fd_lock`, so a close in
+one process never drops another's handle. Threads (`do_thread_spawn`,
+`do_clone` with `CLONE_FILES`) share the view with a refcount bump; fork,
+`proc_create` and isolated spawn (`proc_spawn_elf`, which copies the
+spawner's view so pipeline fd 0/1 overrides are inherited, then isolated)
+deep-copy it with one `KFILE` ref per live entry; `waitpid_scan` releases
+it at reap beside the VMA context (shared views drop one view ref, entries
+close only at zero); `do_execve` keeps the view minus `O_CLOEXEC` fds
+(Linux `0x80000`, armed at open, cleared at close). `spawn_backup`/
+`spawn_restore` snapshot and restore the caller's own view, preserving the
+ring-0 ET_REL borrow semantics. `RLIM_NOFILE` is now enforced per view
+instead of best-effort. Proven by the `forktest` fd leg (pre-fork pipe,
+parent closes write at once, child writes after 2000 yields, parent reads
+back after the child's closes: `fork: fd ok`, exit 0) with the BDD scenario
+extended and the `fd-fork-shares-view` mutant (copy replaced by share)
+routed to the fork slice, where it dies.
+
 ### SMP Synchronization (Phase 1.3)
 
 `spinlock.h` provides a lightweight xchg-based spinlock with two acquisition
 modes:
 - `spin_lock` / `spin_unlock`: disables interrupts on acquire, re-enables on
-  release. Safe for ISR context or single-level critical sections.
+  release. Single-level sections only: the caller must hold no other
+  interrupt-disabling lock and must not run inside an ISR. Nested or ISR
+  paths must use `spin_lock_irqsave` instead, or the inner `spin_unlock`
+  re-enables interrupts prematurely. Every contention loop emits `pause`,
+  so a spinning core does not saturate the bus against its siblings.
 - `spin_lock_irqsave` / `spin_unlock_irqrestore`: saves RFLAGS.IF before
   disabling, restores the saved state on release. Safe for nested critical
   sections where the outer lock has IF=0.

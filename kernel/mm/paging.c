@@ -22,16 +22,14 @@
  * pointer would make the first mapped page start at `buf & ~0xFFF` —
  * i.e. up to 4095 bytes BEFORE the buffer. A guest writing its frame to
  * the mapped VA then overwrote the heap chunk in front of the buffer
- * (a live KFILE), which is the corrupt-handle black screen. Over-
- * allocate one page and round the base up so VA offset 0 is buffer
- * offset 0. The raw pointer is deliberately untracked: both callers
- * allocate once at boot and never free. */
+ * (a live KFILE), which is the corrupt-handle black screen. The block is
+ * page aligned through kmalloc_aligned, so the raw pointer travels in
+ * the word below the base and kfree_aligned releases it safely. */
 static unsigned char *mm_page_aligned_alloc(unsigned size,
                                             unsigned long *phys_out) {
-    unsigned char *raw = (unsigned char *)kmalloc((unsigned long)size + 0x1000);
-    unsigned char *buf;
-    if (!raw) return 0;
-    buf = (unsigned char *)(((unsigned long)raw + 0xFFF) & ~0xFFFUL);
+    unsigned char *buf = (unsigned char *)kmalloc_aligned(
+            (unsigned long)size, 0x1000);
+    if (!buf) return 0;
     *phys_out = (unsigned long)buf;
     return buf;
 }
@@ -277,9 +275,18 @@ uint64_t pt_clone_user(uint64_t parent_cr3) {
             volatile unsigned long *our_pt =
                 (volatile unsigned long *)pt_page_alloc();
             unsigned long k;
-            if (!our_pt || !boot_pt) continue;
+            unsigned long old;
+            if (!our_pt || !boot_pt) {
+                if (our_pt) pt_page_free((void *)our_pt);
+                continue;
+            }
             for (k = 0; k < PT_PD_ENTRIES; k++)
                 our_pt[k] = boot_pt[k];
+            /* The main loop above already installed a private PT for
+             * this slot: release it before replacing, or every legacy
+             * exec leaks one page per graphics slot. */
+            old = pd[idx] & PT_ADDR_MASK;
+            if (old) pt_page_free((void *)old);
             pd[idx] = ((unsigned long)our_pt) | (boot_pd[idx] & 0x7);
         }
         {
@@ -293,9 +300,15 @@ uint64_t pt_clone_user(uint64_t parent_cr3) {
                 volatile unsigned long *our_pt =
                     (volatile unsigned long *)pt_page_alloc();
                 unsigned long k;
-                if (!our_pt || !boot_pt) continue;
+                unsigned long oldb;
+                if (!our_pt || !boot_pt) {
+                    if (our_pt) pt_page_free((void *)our_pt);
+                    continue;
+                }
                 for (k = 0; k < PT_PD_ENTRIES; k++)
                     our_pt[k] = boot_pt[k];
+                oldb = pd[bidx] & PT_ADDR_MASK;
+                if (oldb) pt_page_free((void *)oldb);
                 pd[bidx] = ((unsigned long)our_pt) | (boot_pd[bidx] & 0x7);
             }
         }

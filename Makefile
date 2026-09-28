@@ -1382,6 +1382,7 @@ lint: | $(TOOLS_DIR)
 	python3 tools/check_abi_numbers.py
 	python3 tools/check_fork_stubs.py
 	python3 tools/check_syscall_sanitize.py
+	python3 tools/check_spin_discipline.py
 	python3 tools/check_addons.py
 	python3 tools/check_mutant_anchors.py
 	bash -n tools/mutate.sh && bash -n tools/test_bdd.sh && echo "lint: ok"

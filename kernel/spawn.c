@@ -55,10 +55,15 @@ void spawn_restore(spawn_ctx_t *ctx)
         irqflags_t flags_irq;
         KFILE *drop[KFD_MAX];
         int ndrop = 0;
+        kfd_view_t *v = kfd_view_root();
+        if (current_pid >= 1 && current_pid < MAX_PROCS
+            && procs[current_pid].state != PROC_FREE
+            && procs[current_pid].kfd)
+            v = procs[current_pid].kfd;
         spin_lock_irqsave(&fd_lock, &flags_irq);
         for (i = 0; i < KFD_MAX; i++) {
-            KFILE *old = kfd_table[i];
-            kfd_table[i] = ctx->kfd[i];
+            KFILE *old = v->f[i];
+            v->f[i] = ctx->kfd[i];
             ctx->kfd[i] = 0;
             if (old) {
                 old->ref--;

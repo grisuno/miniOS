@@ -5,6 +5,11 @@
 #include "spinlock.h"
 #include "vma.h"
 
+/* Forward: full view lives in kernel.h (needs KFILE first); the PCB
+ * only carries a pointer, so the incomplete type suffices here and
+ * sched.h stays includable without kernel.h. */
+typedef struct kfd_view kfd_view_t;
+
 /* ---- Process states ---- */
 #define PROC_FREE       0
 #define PROC_READY      1
@@ -89,6 +94,12 @@ typedef struct {
      * rides the context switch now; 0 means unset (fresh spawn, the
      * Linux-like default the program overwrites itself). */
     uint64_t    fsbase;
+    /* Per-process file-descriptor view (heap kfd_view_t, NULL means the
+     * static root view): CLONE_FILES/CLONE_VM threads share the parent's
+     * pointer with a refcount bump, fork/spawn children own a copy with
+     * one KFILE ref per live entry, execve keeps it minus CLOEXEC fds.
+     * A close in one process therefore never drops another's handle. */
+    kfd_view_t *kfd;
 } proc_t;
 /* Single source of truth for the PCB footprint (review fix for the
  * 0a92118 imulq drift): the syscall_entry trampoline in
@@ -97,9 +108,18 @@ typedef struct {
  * headers/syscall_asm.h; the _Static_asserts in kernel.c and
  * kernel/sched.c prove header == struct. Adding a field changes the
  * macros' values automatically on rebuild -- no asm hunt. procs[] itself
- * is a static 64-entry .bss array (~19 KB at 304 B/entry), far below the
+ * is a static 64-entry .bss array (~21 KB at 336 B/entry), far below the
  * USER_LOAD_BASE budget enforced by `make check-size`. */
-#define PROC_T_SIZE 328
+#define PROC_T_SIZE 336
+/* Per-process fd-view lifecycle (owned by kernel/syscalls.c, where
+ * fd_lock lives): share bumps the view ref for a thread, copy forks a
+ * private view with one KFILE ref per live entry (0 on OOM), release
+ * drops the view at reap, cloexec closes marked fds on execve. */
+void kfd_view_share(proc_t *child);
+int  kfd_view_copy(proc_t *child, proc_t *parent);
+void kfd_view_release(proc_t *p);
+void kfd_view_cloexec(void);
+kfd_view_t *kfd_view_root(void);
 #define PROC_KSTACK_OFF 168
 /* Offset of fpu_save inside proc_t: the ctx_sw.S save/restore paths
  * address it as imm(proc) without C, so it is named here beside
@@ -133,8 +153,8 @@ typedef struct {
  * 0 = unlimited (the default). Inherited across proc_create/clone/spawn.
  *   RLIM_AS    total user bytes (brk growth + mmap) beyond the load base
  *   RLIM_CPU   timer ticks of CPU time, then SIGKILL-equivalent (137)
- *   RLIM_NOFILE open-file count attributed to the pid (best-effort: the
- *     fd table is global/shared, so close() attributes to the closer) */
+ *   RLIM_NOFILE open-file count in the process's own fd view (enforced
+ *     at open against that view, attributed to the opener) */
 #define RLIM_OP_SET   1
 #define RLIM_OP_GET   2
 #define RLIM_AS       1

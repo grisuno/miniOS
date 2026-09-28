@@ -657,6 +657,7 @@ expect "^(empty)$"
 scenario "fork duplicates with copy-on-write isolation" "mrun bin/forktest.elf
 poweroff"
 expect "fork: child ok"
+expect "fork: fd ok"
 expect "^fork: ok$"
 expect "exit code: 0"
 

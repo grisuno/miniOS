@@ -240,6 +240,7 @@ clip-empty-accepted | s/    if (!clip_valid || clip_len == 0u) return -1;/    if
 fork-child-nonzero | s/        xorl    %eax, %eax/        incl    %eax/ | arch/x86/ctx_sw.S
 fork-share-dropped | s/        cpt\[(va >> 12) & 0x1FF\] = phys | PT_USER_RO | flags;/        cpt[(va >> 12) \& 0x1FF] = 0;/ | kernel/mm/cow.c
 fork-resolve-never | s/            resolved = cow_resolve(cur_cr3, fault_addr);/            resolved = -1;/ | kernel/sched.c
+fd-fork-shares-view | s/    if (!kfd_view_copy(child, cur)) {/    kfd_view_share(child); if (0) {/ | kernel/sched.c
 pci-find-first-only | s/    for (dev = 0; dev < PCI_MAX_DEV; dev++)/    for (dev = 0; dev < 1; dev++)/ | headers/drivers/pci.h
 vblk-status-unchecked | s/statusp != 0/statusp == 0/ | drivers/virtio_blk.c
 uefi-blk-guid-wrong | s/0x8E, 0x39, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B/0x8E, 0x39, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3C/ | boot/uefi_stub.c
@@ -585,6 +586,16 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # false SURVIVED while disabling fxsave in the tree).
             FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1 && \
             python3 "$HERE/tools/check_abi_numbers.py" >> "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/sched.c)
+            # fd-fork-shares-view drops the fork-time view copy (the
+            # forktest fd leg pins both directions), so the fork slice
+            # kills it; every other sched.c mutant keeps the full suite.
+            if [ "$name" = "fd-fork-shares-view" ]; then
+                MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
             ;;
         *)
             FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
