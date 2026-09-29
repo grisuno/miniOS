@@ -327,6 +327,16 @@
 #define MINIOS_SYS_WINDOW_PRESENT     MINIOS_SYS_NK_FRAME
 #define MINIOS_SYS_WINDOW_TITLE       MINIOS_SYS_GFX_SET_TITLE
 
+/* GFX_ZOOM (242) argument values. 0/1 are the original native/2x game
+ * zoom; 2 asks the WM for true fullscreen (the app scales to the whole
+ * display with its aspect kept, no chrome, keyboard focus taken) and 3
+ * returns to the windowed view it came from. Kernels that predate the
+ * fullscreen values answer -EINVAL, so a caller simply stays windowed. */
+#define MINIOS_GFX_ZOOM_NATIVE     0
+#define MINIOS_GFX_ZOOM_2X         1
+#define MINIOS_GFX_ZOOM_FULLSCREEN 2
+#define MINIOS_GFX_ZOOM_WINDOWED   3
+
 /* --- Compatibility aliases for runtime bindings --- */
 #define SYS_TIME_MS    MINIOS_SYS_TIME
 #define SYS_PALETTE    MINIOS_SYS_PALETTE

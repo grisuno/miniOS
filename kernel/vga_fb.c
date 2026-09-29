@@ -30,6 +30,7 @@
 #include "wm_focus.h"
 #include "wm_layout.h"
 #include "wm_notify.h"
+#include "wm_gfxview.h"
 #include "vga_fx.h"
 
 /** Docstring: Focus ids share one space across terminals and graphics. */
@@ -117,6 +118,131 @@ int fb_bytes_per_pixel(void) {
     if (fb_bpp == 32) return 4;
     if (fb_bpp == 24) return 3;
     return 1;
+}
+
+/* ---- Render target (double-buffered desktop composition) ----
+ *
+ * Every drawing primitive in this file writes through FBT. It is the
+ * framebuffer itself unless a full desktop composition is in flight, in
+ * which case it is an off-screen heap shadow of identical layout (same
+ * pitch, same pixel format). A composition clears, repaints wallpaper,
+ * dock, taskbar, terminals and the graphics layer into the shadow and
+ * then presents it with one bulk copy, so the screen never shows the
+ * intermediate cleared or half-painted frame: that transient is exactly
+ * the flash every drag, Alt-Tab and tile used to produce. Nested
+ * compositions (an ISR tick composing inside a syscall composition) draw
+ * into the same shadow and leave the present to the outermost owner.
+ * The shadow is allocated once on first use and never freed (no
+ * alloc/free race with the ISR tick); an OOM degrades to direct drawing,
+ * which is the historical behaviour. A held present leaves the finished
+ * frame in the shadow so a melt can read it and reveal it instead of
+ * flashing it first. */
+static volatile uint8_t *fb_tgt;
+static uint8_t *fb_shadow;
+static unsigned long fb_shadow_bytes;
+static int fb_compose_depth;
+static int fb_hold_present;
+#define FBT (fb_tgt ? fb_tgt : FB_ADDR)
+
+/** Docstring: Bulk copy through the string engine: quadwords first
+ * (rep movsq, an eighth of the iterations, which is what matters under
+ * an emulator that runs every string iteration as its own step), then
+ * the byte tail. Source and destination never overlap here. */
+static void fb_copy_bytes(volatile void *dst, const volatile void *src, unsigned long n)
+{
+    void *d = (void *)dst;
+    const void *s = (const void *)src;
+    unsigned long q = n >> 3;
+    unsigned long t = n & 7UL;
+    __asm__ volatile("cld; rep movsq"
+                     : "+D"(d), "+S"(s), "+c"(q)
+                     :
+                     : "memory");
+    __asm__ volatile("rep movsb"
+                     : "+D"(d), "+S"(s), "+c"(t)
+                     :
+                     : "memory");
+}
+
+/** Docstring: Fill n 32-bit words with one value: pairs as quadwords
+ * (rep stosq), then the odd word. */
+static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n)
+{
+    void *d = (void *)dst;
+    unsigned long q = n >> 1;
+    unsigned long pat = ((unsigned long)v << 32) | (unsigned long)v;
+    __asm__ volatile("cld; rep stosq"
+                     : "+D"(d), "+c"(q)
+                     : "a"(pat)
+                     : "memory");
+    if (n & 1UL)
+        *(volatile unsigned int *)d = v;
+}
+
+/** Docstring: Bytes one framebuffer frame spans (pitch times height). */
+static unsigned long fb_frame_bytes(void)
+{
+    return (unsigned long)fb_pitch * (unsigned long)fb_height;
+}
+
+/** Docstring: Ensure the shadow exists; 1 when it is usable. */
+static int fb_shadow_ready(void)
+{
+    unsigned long need = fb_frame_bytes();
+    if (need == 0) {
+        return 0;
+    }
+    if (fb_shadow && fb_shadow_bytes >= need) {
+        return 1;
+    }
+    if (fb_shadow) {
+        return 0;
+    }
+    fb_shadow = (uint8_t *)kmalloc(need);
+    if (!fb_shadow) {
+        return 0;
+    }
+    fb_shadow_bytes = need;
+    return 1;
+}
+
+/** Docstring: Copy the whole shadow onto the visible framebuffer. */
+static void fb_present_shadow(void)
+{
+    if (!fb_shadow) {
+        return;
+    }
+    fb_copy_bytes(FB_ADDR, fb_shadow, fb_frame_bytes());
+}
+
+/** Docstring: Enter a composition. Returns 1 for the outermost owner
+ * that redirected drawing into the shadow, 0 for a nested or degraded
+ * entry that must not present. */
+static int fb_compose_begin(void)
+{
+    if (fb_compose_depth++ > 0) {
+        return 0;
+    }
+    if (!fb_shadow_ready()) {
+        return 0;
+    }
+    fb_tgt = fb_shadow;
+    return 1;
+}
+
+/** Docstring: Leave a composition; the owner presents unless held. */
+static void fb_compose_end(int owner)
+{
+    if (fb_compose_depth > 0) {
+        fb_compose_depth--;
+    }
+    if (!owner) {
+        return;
+    }
+    fb_tgt = 0;
+    if (!fb_hold_present) {
+        fb_present_shadow();
+    }
 }
 
 /* ---- Mouse state (fed by sched.c IRQ12 handler) ---- */
@@ -287,115 +413,138 @@ static int fx_close_x, fx_close_y, fx_close_w, fx_close_h;
 
 /* Snapshot the current fullscreen frame for a show/hide melt. Cursor erased
  * first so its pixels do not bake into the old frame. Returns 0 when the
- * effect is off or the snapshot OOMs, and the caller then just redraws. */
+ * effect is off or the snapshot OOMs, and the caller then just redraws.
+ * On success the presents of the redraws that follow are held: the new
+ * frame stays in the shadow, so fx_finish_full can melt it in without the
+ * screen ever showing it whole first (the old flash-then-melt). */
 static unsigned int *fx_start_full(void)
 {
+    unsigned int *oldb;
     if (!vga_fx_enabled()) {
         return 0;
     }
     cursor_erase();
-    return vga_fx_snap_rect(0, 0, fb_width, fb_height);
+    oldb = vga_fx_snap_rect(0, 0, fb_width, fb_height);
+    if (oldb && fb_compose_depth == 0 && fb_shadow_ready()) {
+        fb_hold_present = 1;
+    }
+    return oldb;
 }
 
 /* Complete a show/hide melt after the new state has been drawn: snapshot
- * the new frame, restore the old one, melt old->new. Frees both snapshots.
- * A 0 old snapshot (effect off or OOM) is a no-op: the new frame stays. */
+ * the new frame (from the held shadow when there is one, else from the
+ * screen after restoring the old pixels), melt old->new on the visible
+ * framebuffer and free both snapshots. A 0 old snapshot (effect off or
+ * OOM) is a no-op: the new frame stays. */
 static void fx_finish_full(unsigned int *oldb)
 {
     unsigned int *newb;
+    int held = fb_hold_present;
     if (!oldb) {
         return;
     }
-    newb = vga_fx_snap_rect(0, 0, fb_width, fb_height);
-    if (!newb) {
+    fb_hold_present = 0;
+    if (held) {
+        fb_tgt = fb_shadow;
+        newb = vga_fx_snap_rect(0, 0, fb_width, fb_height);
+        fb_tgt = 0;
+        if (!newb) {
+            fb_present_shadow();
+            vga_fx_free(oldb);
+            cursor_invalidate();
+            return;
+        }
+    } else {
+        newb = vga_fx_snap_rect(0, 0, fb_width, fb_height);
+        if (!newb) {
+            vga_fx_free(oldb);
+            return;
+        }
         vga_fx_restore_rect(0, 0, fb_width, fb_height, oldb);
-        vga_fx_free(oldb);
-        return;
     }
-    vga_fx_restore_rect(0, 0, fb_width, fb_height, oldb);
     vga_fx_melt_rect(0, 0, fb_width, fb_height, oldb, newb);
     vga_fx_free(oldb);
     vga_fx_free(newb);
     cursor_invalidate();
 }
 
-/* Persistent graphics layer: the last composited window (title bar plus
- * content) as raw framebuffer pixels. A desktop redraw (Alt+Tab, tile,
- * drag, taskbar tick) wipes the whole framebuffer, which used to bury any
- * program that only composites on input — vedit/Nuklear sit blocked in
- * read with no next frame coming, so the window vanished until the next
- * keypress. draw_desktop re-blits this copy on top after the terminals, so
- * the window survives every redraw at its current WM offset. One fixed
- * buffer sized for the largest window (Nuklear + title), allocated once on
- * the first composite and never freed: no alloc/free races between the
- * syscall composite path and the ISR-driven desktop tick, and no UAF. Dims
- * invalidate on mode-on so a new program never flashes the previous one's
- * frame. A save racing a restore tears one cosmetic frame; every copy
- * clamps, so even torn dims stay in bounds. */
-#define GFX_KEEP_W (NK_W + SCROLLBAR_W)
-#define GFX_KEEP_H (NK_H + FONT_H)
+/* Persistent graphics layer: a private copy of the last presented SOURCE
+ * frame (the back-buffer bytes, before scaling), not of the screen pixels.
+ * A desktop redraw (Alt+Tab, tile, drag, taskbar tick) wipes the whole
+ * framebuffer, which used to bury any program that only composites on
+ * input — vedit/Nuklear sit blocked in read with no next frame coming, so
+ * the window vanished until the next keypress. draw_desktop re-composes
+ * this copy on top after the terminals, at the CURRENT view: because the
+ * copy is the unscaled source, the same frame re-renders correctly when
+ * the window is re-tiled, maximized or animated between two rects, which
+ * a screen-pixel copy could never do. One fixed buffer sized for the
+ * largest source (the RGB Nuklear buffer), allocated once on the first
+ * present and never freed: no alloc/free race between the syscall present
+ * path and the ISR-driven desktop tick, and no UAF. The copy is taken
+ * right after the present reads the back-buffer, so a program rendering
+ * its next frame can never tear what the desktop re-shows. Validity
+ * resets on mode-on so a new program never flashes the previous one. */
+#define GFX_SRC_IDX 0
+#define GFX_SRC_RGB 1
+#define GFX_KEEP_BYTES ((unsigned long)NK_RGB_BYTES)
 static uint8_t *gfx_keep;
-static int gfx_keep_w, gfx_keep_h, gfx_keep_bpx;
-static void gfx_target(int *x, int *y);
+static int gfx_keep_valid, gfx_keep_kind, gfx_keep_sw, gfx_keep_sh;
 
-static void gfx_keep_save(int x, int y, int w, int h) {
-    int r, c, bpx;
-    if (w > GFX_KEEP_W) w = GFX_KEEP_W;
-    if (h > GFX_KEEP_H) h = GFX_KEEP_H;
-    if (w <= 0 || h <= 0) return;
-    if (!gfx_keep) {
-        gfx_keep = kmalloc((unsigned long)GFX_KEEP_W *
-                           (unsigned long)GFX_KEEP_H * 4UL);
-        if (!gfx_keep) return;
-    }
-    bpx = fb_bytes_per_pixel();
-    for (r = 0; r < h; r++) {
-        int sy = y + r;
-        uint8_t *drow;
-        if (sy < 0 || sy >= fb_height) continue;
-        drow = gfx_keep + (unsigned long)r * (unsigned long)GFX_KEEP_W * 4UL;
-        for (c = 0; c < w; c++) {
-            int sx = x + c;
-            unsigned long px;
-            if (sx < 0 || sx >= fb_width) continue;
-            px = fb_read_packed(sx, sy);
-            drow[(unsigned long)c * 4UL + 0] = (uint8_t)(px & 0xFF);
-            drow[(unsigned long)c * 4UL + 1] = (uint8_t)((px >> 8) & 0xFF);
-            drow[(unsigned long)c * 4UL + 2] = (uint8_t)((px >> 16) & 0xFF);
-        }
-    }
-    gfx_keep_w = w;
-    gfx_keep_h = h;
-    gfx_keep_bpx = bpx;
+/* View state of the graphics window (wm_gfxview.h owns the math).
+ * gfx_view_mode is the requested mode; gfx_view_back is where fullscreen
+ * returns to; gfx_cell is the frame the tiling layout assigned; gfx_hidden
+ * is the minimized flag (the program keeps running, nothing composites);
+ * gfx_view is the geometry the last present or restore actually used, and
+ * the hit-tests, `wm list` and the pointer map all read it, so what the WM
+ * reports is always what is on screen. gfx_frame_dirty forces the next
+ * present to repaint chrome plus letterbox (after a desktop redraw or a
+ * view change); steady frames repaint only the title and the content. */
+static int gfx_view_mode = WM_GFXVIEW_FLOAT;
+static int gfx_view_back = WM_GFXVIEW_FLOAT;
+static wm_gfxview_rect_t gfx_cell;
+static int gfx_hidden;
+static wm_gfxview_t gfx_view;
+static int gfx_view_valid;
+static int gfx_frame_dirty = 1;
+static int gfx_suppress;
+static int gfx_cursor_lx = -1, gfx_cursor_ly = -1;
+static unsigned long gfx_cursor_moved;
+
+/** Docstring: Hide the pointer over a fullscreen app after this many
+ * idle timer ticks (100 Hz), so a game plays without a stray arrow. */
+#define GFX_CURSOR_IDLE_TICKS 150
+
+/** Docstring: View configuration shared by every graphics path. */
+static wm_gfxview_config_t gfx_view_cfg(void)
+{
+    wm_gfxview_config_t cfg = WM_GFXVIEW_CONFIG_DEFAULT;
+    cfg.title_h = FONT_H;
+    return cfg;
 }
 
-static void gfx_keep_restore(void) {
-    int r, c, w, h, x, y;
-    if (!vga_fb_gfx_mode || !gfx_keep || gfx_keep_w <= 0 || gfx_keep_h <= 0)
-        return;
-    if (gfx_keep_bpx != fb_bytes_per_pixel()) return;
-    w = gfx_keep_w;
-    h = gfx_keep_h;
-    if (w > GFX_KEEP_W) w = GFX_KEEP_W;
-    if (h > GFX_KEEP_H) h = GFX_KEEP_H;
-    gfx_target(&x, &y);
-    gfx_win_x = x;
-    gfx_win_y = y;
-    for (r = 0; r < h; r++) {
-        int dy = y + r;
-        uint8_t *srow;
-        if (dy < 0 || dy >= fb_height) continue;
-        srow = gfx_keep + (unsigned long)r * (unsigned long)GFX_KEEP_W * 4UL;
-        for (c = 0; c < w; c++) {
-            int dx = x + c;
-            unsigned long px;
-            if (dx < 0 || dx >= fb_width) continue;
-            px = (unsigned long)srow[(unsigned long)c * 4UL + 0] |
-                 ((unsigned long)srow[(unsigned long)c * 4UL + 1] << 8) |
-                 ((unsigned long)srow[(unsigned long)c * 4UL + 2] << 16);
-            fb_write_packed(dx, dy, px);
-        }
+/** Docstring: 1 while a visible fullscreen graphics window owns every
+ * pixel: the terminals, taskbar and dock must not paint through it. */
+static int gfx_covers_screen(void)
+{
+    return vga_fb_gfx_mode && !gfx_hidden && gfx_view_mode == WM_GFXVIEW_FULL;
+}
+
+/** Docstring: Copy the presented source into the persistent layer. */
+static void gfx_keep_save(const volatile uint8_t *src, int kind, int sw, int sh)
+{
+    unsigned long n;
+    if (!src || sw <= 0 || sh <= 0) return;
+    n = (unsigned long)sw * (unsigned long)sh * (kind == GFX_SRC_RGB ? 3UL : 1UL);
+    if (n > GFX_KEEP_BYTES) return;
+    if (!gfx_keep) {
+        gfx_keep = kmalloc(GFX_KEEP_BYTES);
+        if (!gfx_keep) return;
     }
+    fb_copy_bytes(gfx_keep, src, n);
+    gfx_keep_kind = kind;
+    gfx_keep_sw = sw;
+    gfx_keep_sh = sh;
+    gfx_keep_valid = 1;
 }
 
 /* Compositor identity for the taskbar button: basename of the program that
@@ -477,16 +626,25 @@ void vga_fb_set_gfx_mode(int on) {
         gfx_win_oy = 0;
         gfx_prog[0] = '\0';
         /* Arm the close melt: the redraw that follows still shows the
-         * graphics window, so draw_desktop snapshots this rect first. */
-        if (gfx_win_w > 0 && gfx_win_h > 0) {
+         * graphics window, so draw_desktop snapshots this rect first. A
+         * hidden window is not on screen, so there is nothing to melt. */
+        if (gfx_win_w > 0 && gfx_win_h > 0 && !gfx_hidden) {
             fx_close_x = gfx_win_x;
             fx_close_y = gfx_win_y;
             fx_close_w = gfx_win_w;
             fx_close_h = gfx_win_h;
             fx_close_pending = 1;
         }
+        gfx_view_mode = WM_GFXVIEW_FLOAT;
+        gfx_view_back = WM_GFXVIEW_FLOAT;
+        gfx_hidden = 0;
+        gfx_view_valid = 0;
+        gfx_keep_valid = 0;
     } else {
-        gfx_keep_w = 0;
+        gfx_keep_valid = 0;
+        gfx_view_valid = 0;
+        gfx_hidden = 0;
+        gfx_frame_dirty = 1;
         /* Arm the open melt: the next composite melts the desktop into
          * the fresh window instead of flashing it. */
         fx_gfx_armed = 1;
@@ -496,24 +654,85 @@ void vga_fb_set_gfx_mode(int on) {
     /* A new graphics program claims the display: drop any title the previous
      * one set (via SYS_GFX_SET_TITLE), so the next DOOM window is not
      * mis-labelled with the last program's name. */
-/** Docstring: Reset graphics mode and restore the default window title. */
     if (on) gfx_win_title = GFX_TITLE_DEFAULT;
 }
 
-/* Centered origin of a w×h graphics window, plus the WM offset, clamped
- * on screen. Every blit positions through here, so move/snap/tile/drag
- * govern graphics windows exactly like terminals. */
-static void gfx_place(int w, int h, int *ox, int *oy) {
-    int cx = (fb_width - w) / 2 + gfx_win_ox;
-    int cy = (fb_height - h) / 2 + gfx_win_oy;
-    if (cx < 0) cx = 0;
-    if (cy < 0) cy = 0;
-    if (cx + w > fb_width) cx = fb_width - w;
-    if (cy + h > fb_height) cy = fb_height - h;
-    if (cx < 0) cx = 0;
-    if (cy < 0) cy = 0;
-    *ox = cx;
-    *oy = cy;
+/** Docstring: 2x nearest-neighbour zoom for the 320x200 game window,
+ * set via SYS_GFX_ZOOM. One int of .bss; the NK buffer never zooms. */
+int gfx_zoom_2x;
+
+/** Docstring: Compute the view for a sw x sh source under the current
+ * mode. A tiled mode without a usable cell, or any degenerate result,
+ * falls back to floating so a frame is never dropped for geometry. */
+static int gfx_view_for(int sw, int sh, wm_gfxview_t *v)
+{
+    wm_gfxview_config_t cfg = gfx_view_cfg();
+    int zoom = (gfx_zoom_2x && sw == DOOM_W && sh == DOOM_H) ? 2 : 1;
+    if (wm_gfxview_compute(&cfg, gfx_view_mode, sw, sh, zoom, fb_width,
+                           fb_height, &gfx_cell, gfx_win_ox, gfx_win_oy, v))
+        return 1;
+    return wm_gfxview_compute(&cfg, WM_GFXVIEW_FLOAT, sw, sh, zoom, fb_width,
+                              fb_height, &gfx_cell, gfx_win_ox, gfx_win_oy, v);
+}
+
+/** Docstring: Publish a view as the window geometry every reader uses. */
+static void gfx_view_publish(const wm_gfxview_t *v)
+{
+    gfx_view = *v;
+    gfx_view_valid = 1;
+    gfx_win_x = v->frame.x;
+    gfx_win_y = v->frame.y;
+    gfx_win_w = v->frame.w;
+    gfx_win_h = v->frame.h;
+    nk_win_x = v->content.x;
+    nk_win_y = v->content.y - FONT_H;
+}
+
+/** Docstring: Floating-mode frame of the current source, used by the
+ * snap and drag math, which move the native window, never a tile. */
+static int gfx_float_frame(wm_gfxview_rect_t *out)
+{
+    wm_gfxview_config_t cfg = gfx_view_cfg();
+    wm_gfxview_t v;
+    int sw = gfx_keep_valid ? gfx_keep_sw : DOOM_W;
+    int sh = gfx_keep_valid ? gfx_keep_sh : DOOM_H;
+    int zoom = (gfx_zoom_2x && sw == DOOM_W && sh == DOOM_H) ? 2 : 1;
+    if (!wm_gfxview_compute(&cfg, WM_GFXVIEW_FLOAT, sw, sh, zoom, fb_width,
+                            fb_height, 0, 0, 0, &v))
+        return 0;
+    *out = v.frame;
+    return 1;
+}
+
+/** Docstring: Content origin of the graphics window (the point an app
+ * subtracts from SYS_MOUSE coordinates), for the present syscalls. */
+void vga_fb_gfx_origin(int *x, int *y)
+{
+    if (!x || !y) return;
+    if (gfx_view_valid) {
+        *x = gfx_view.content.x;
+        *y = gfx_view.content.y;
+    } else {
+        *x = nk_win_x;
+        *y = nk_win_y + FONT_H;
+    }
+}
+
+/** Docstring: Map a desktop pointer into the graphics app's back-buffer
+ * space when its view is scaled. A 1:1 view is left untouched so native
+ * windows keep the exact historical coordinates (including outside the
+ * window); a scaled view maps through the inverse transform so the app's
+ * `mouse - origin` lands on the pixel under the arrow. */
+void vga_fb_gfx_map_mouse(int *x, int *y)
+{
+    int sw, sh;
+    if (!x || !y || !vga_fb_gfx_mode || !gfx_view_valid || !gfx_keep_valid)
+        return;
+    sw = gfx_keep_sw;
+    sh = gfx_keep_sh;
+    if (gfx_view.content.w == sw && gfx_view.content.h == sh)
+        return;
+    wm_gfxview_map_point(&gfx_view, sw, sh, *x, *y, x, y);
 }
 
 /* Restore the last composite's pointer before the new frame covers it. Only
@@ -525,7 +744,10 @@ static void vga_fb_gfx_cursor_erase(void) {
 }
 
 /* Clamp the mouse into the framebuffer (the idle loop that normally clamps
- * never runs in graphics mode) and draw the pointer at the current position. */
+ * never runs in graphics mode) and draw the pointer at the current position.
+ * Over a fullscreen app the arrow hides after GFX_CURSOR_IDLE_TICKS without
+ * motion and reappears on the next move, so a game never plays with a
+ * stray pointer parked in the middle of the screen. */
 static void vga_fb_gfx_cursor_draw(void) {
     int mx, my;
     if (!vga_fb_gfx_mode) return;
@@ -537,6 +759,14 @@ static void vga_fb_gfx_cursor_draw(void) {
     if (my >= fb_height)   my = fb_height - 1;
     mouse_state.x = mx;
     mouse_state.y = my;
+    if (mx != gfx_cursor_lx || my != gfx_cursor_ly) {
+        gfx_cursor_lx = mx;
+        gfx_cursor_ly = my;
+        gfx_cursor_moved = (unsigned long)sys_ticks;
+    }
+    if (gfx_covers_screen() &&
+        (unsigned long)sys_ticks - gfx_cursor_moved > GFX_CURSOR_IDLE_TICKS)
+        return;
     cursor_place(mx, my);
 }
 
@@ -681,7 +911,11 @@ static void term_finish_layout(void);
 static void term_recalc(void);
 static int term_max_cols(void);
 static int term_max_rows(void);
-static void gfx_tile_right(void);
+static void term_toggle_minimize(void);
+static void term_toggle_fullscreen(void);
+static void term_close_default(void);
+static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled);
+static void gfx_drop_focus(int source);
 typedef struct {
     int present;
     int valid;
@@ -736,7 +970,7 @@ void vga_fb_focus_report(int before, int source)
 }
 /** Docstring: Active layout mode plus last published plan for repaint skip. */
 static int wm_layout_mode = WM_LAYOUT_TILE;
-static wm_layout_cell_t wm_last_cells[WM_MAX_TERMS];
+static wm_layout_cell_t wm_last_cells[WM_MAX_TERMS + 1];
 static int wm_last_n = -1;
 
 static void tw_park(int i) {
@@ -878,9 +1112,18 @@ void vga_fb_focus_next(void) {
         tw_park(wm_term);
         wm_focus = WM_FOCUS_GFX;
         kbd_raw_flush();
+        if (gfx_hidden) {
+            gfx_hidden = 0;
+            gfx_frame_dirty = 1;
+        }
     } else {
         if ((user_program_active || shell_fg_active) && wm_focus == WM_FOCUS_GFX)
             serial_puts("wm: fg program owns input; use `run X &` so Alt-Tab splits input\n");
+        /* Leaving a fullscreen app would hand the keyboard to a terminal
+         * the app still covers: minimize it like any desktop does, and the
+         * next Alt-Tab back restores it fullscreen. */
+        if (wm_focus == WM_FOCUS_GFX && gfx_covers_screen())
+            gfx_hidden = 1;
         tw_select(nx);
     }
     wm_emit_focus_moved(before, WM_FOCUS_SRC_KEYBOARD);
@@ -919,17 +1162,25 @@ int vga_fb_focus_id(int id) {
     wm_snapshot_state(&st);
     if (wm_focus_set(&st, id) < 0) return -1;
     if (id == WM_FOCUS_GFX) {
-        if (wm_focus == WM_FOCUS_GFX) return 0;
-        if (shell_readline_active()) shell_focus_park();
-        tw_park(wm_term);
-        wm_focus = WM_FOCUS_GFX;
-        kbd_raw_flush();
+        if (wm_focus == WM_FOCUS_GFX && !gfx_hidden) return 0;
+        if (gfx_hidden) {
+            gfx_hidden = 0;
+            gfx_frame_dirty = 1;
+        }
+        if (wm_focus != WM_FOCUS_GFX) {
+            if (shell_readline_active()) shell_focus_park();
+            tw_park(wm_term);
+            wm_focus = WM_FOCUS_GFX;
+            kbd_raw_flush();
+        }
         vga_fb_draw_desktop();
         return 0;
     }
     if (id == wm_focus) return 0;
     if ((user_program_active || shell_fg_active) && wm_focus == WM_FOCUS_GFX)
         serial_puts("wm: fg program owns input; use `run X &` so Alt-Tab splits input\n");
+    if (wm_focus == WM_FOCUS_GFX && gfx_covers_screen())
+        gfx_hidden = 1;
     tw_select(id);
     wm_term = id;
     vga_fb_draw_desktop();
@@ -1059,15 +1310,30 @@ const char *vga_fb_layout_name(void)
     return n ? n : "tile";
 }
 
+/** Docstring: Tile every window, graphics included, through the layout
+ * contract. The graphics window is one more layout participant (placed
+ * after the terminals, so the tile mode keeps it on the right like the
+ * historical side-tile); its cell becomes the tiled view and the app is
+ * scaled to fit it with the aspect kept. A fullscreen graphics window
+ * drops back to its tile, and the fullscreen layout shows the focused
+ * window alone (an unfocused graphics window minimizes to the taskbar,
+ * exactly like the hidden terminals). The graphics move glides. */
 void vga_fb_tile_all(void) {
     int mc, mr;
     int cur;
     wm_focus_state_t st;
     wm_layout_config_t lcfg = WM_LAYOUT_CONFIG_DEFAULT;
-    wm_layout_window_t wins[WM_MAX_TERMS];
-    wm_layout_cell_t cells[WM_MAX_TERMS];
+    wm_layout_window_t wins[WM_MAX_TERMS + 1];
+    wm_layout_cell_t cells[WM_MAX_TERMS + 1];
+    int slot_of[WM_MAX_TERMS + 1];
+    int nwin = 0;
     int n;
     int i;
+    int c;
+    int with_gfx = vga_fb_gfx_mode && (!gfx_hidden || wm_layout_mode != WM_LAYOUT_FULLSCREEN);
+    wm_gfxview_rect_t gfx_from = gfx_view.frame;
+    int gfx_from_titled = gfx_view.title_h > 0;
+    int gfx_had = vga_fb_gfx_mode && gfx_view_valid && !gfx_hidden;
     wm_snapshot_state(&st);
     cur = wm_term;
     tw_park(cur);
@@ -1076,55 +1342,95 @@ void vga_fb_tile_all(void) {
     mr = (fb_height - 2 * FONT_H) / FONT_H;
     if (mr > TERM_MAX_ROWS) mr = TERM_MAX_ROWS;
     for (i = 0; i < wm_nterms && i < WM_MAX_TERMS; i++) {
-        wins[i].kind = 1;
-        wins[i].id = i;
-        wins[i].present = st.present[i];
-        wins[i].min_cols = 1;
-        wins[i].min_rows = 1;
+        wins[nwin].kind = 1;
+        wins[nwin].id = i;
+        wins[nwin].present = st.present[i];
+        wins[nwin].min_cols = 1;
+        wins[nwin].min_rows = 1;
+        slot_of[nwin] = i;
+        nwin++;
     }
-    n = wm_layout_compute(&lcfg, wins, wm_nterms, wm_layout_mode, cur, mc, mr, cells, WM_MAX_TERMS);
+    if (with_gfx) {
+        wins[nwin].kind = 2;
+        wins[nwin].id = WM_FOCUS_GFX;
+        wins[nwin].present = 1;
+        wins[nwin].min_cols = 1;
+        wins[nwin].min_rows = 1;
+        slot_of[nwin] = WM_FOCUS_GFX;
+        nwin++;
+    }
+    n = wm_layout_compute(&lcfg, wins, nwin, wm_layout_mode, wm_focus, mc, mr,
+                          cells, WM_MAX_TERMS + 1);
     if (n <= 0) {
         tw_unpark(cur);
         term_finish_layout();
         return;
     }
-    if ((wm_nterms < 2 || !twins[1].present) && !vga_fb_gfx_mode) {
+    /* A window of c columns paints c cells of content plus a
+     * SCROLLBAR_W-wide scrollbar (or letterbox strip) on its right, one
+     * more grid column than the layout reserved, so a cell with a
+     * neighbour to its right gives that column back instead of painting
+     * under the neighbour's first column (the 8 px overlap every split
+     * used to show). The rightmost cell keeps it: the grid already
+     * leaves exactly one scrollbar of room at the screen edge. */
+    for (i = 0; i < n; i++) {
+        int sb_cols = (SCROLLBAR_W + FONT_W - 1) / FONT_W;
+        if (cells[i].cols > sb_cols && cells[i].x + cells[i].cols < mc)
+            cells[i].cols -= sb_cols;
+    }
+    if (!with_gfx && (wm_nterms < 2 || !twins[1].present)) {
         twins[0].fullscreen = 1;
         twins[0].minimized = 0;
         wm_last_n = -1;
-    } else {
-        if (wm_last_n == n && wm_layout_same(wm_last_cells, cells, n)) {
-            tw_unpark(cur);
-            return;
-        }
-        for (i = 0; i < n && i < WM_MAX_TERMS; i++) {
-            twins[i].fullscreen = cells[i].fullscreen;
-            twins[i].minimized = 0;
-            twins[i].sz_cols = cells[i].cols;
-            twins[i].sz_rows = cells[i].rows;
-            twins[i].x = cells[i].x;
-            twins[i].y = cells[i].y;
-            wm_last_cells[i] = cells[i];
-        }
-        wm_last_n = n;
-        if (vga_fb_gfx_mode) gfx_tile_right();
+        tw_unpark(cur);
+        term_finish_layout();
+        return;
     }
+    if (wm_last_n == n && wm_layout_same(wm_last_cells, cells, n) &&
+        (!with_gfx || (gfx_view_mode == WM_GFXVIEW_TILED && !gfx_hidden))) {
+        tw_unpark(cur);
+        return;
+    }
+    c = 0;
+    for (i = 0; i < nwin && c < n; i++) {
+        int id;
+        if (!wins[i].present) continue;
+        id = slot_of[i];
+        if (id == WM_FOCUS_GFX) {
+            if (cells[c].cols <= 0 || cells[c].rows <= 0) {
+                gfx_hidden = 1;
+                if (wm_focus == WM_FOCUS_GFX) gfx_drop_focus(WM_FOCUS_SRC_MODE);
+            } else {
+                gfx_cell.x = cells[c].x * FONT_W;
+                gfx_cell.y = cells[c].y * FONT_H;
+                gfx_cell.w = cells[c].cols * FONT_W + SCROLLBAR_W;
+                gfx_cell.h = (cells[c].rows + 1) * FONT_H;
+                gfx_hidden = 0;
+                gfx_view_mode = WM_GFXVIEW_TILED;
+                gfx_view_back = WM_GFXVIEW_TILED;
+                gfx_win_ox = 0;
+                gfx_win_oy = 0;
+                gfx_frame_dirty = 1;
+            }
+        } else if (id >= 0 && id < WM_MAX_TERMS) {
+            twins[id].fullscreen = cells[c].fullscreen;
+            twins[id].minimized = 0;
+            twins[id].sz_cols = cells[c].cols;
+            twins[id].sz_rows = cells[c].rows;
+            twins[id].x = cells[c].x;
+            twins[id].y = cells[c].y;
+        }
+        wm_last_cells[c] = cells[c];
+        c++;
+    }
+    wm_last_n = n;
     tw_unpark(cur);
-    term_finish_layout();
-}
-
-/** Docstring: Park the graphics window right, side-tiled when it fits. */
-static void gfx_tile_right(void) {
-    int w = gfx_win_w;
-    int cx = (fb_width - w) / 2;
-    int tx;
-    if (w <= 0) return;
-    if (w <= fb_width / 2)
-        tx = fb_width * 3 / 4 - w / 2;
+    term_recalc();
+    disp_off = 0;
+    if (with_gfx && !gfx_hidden)
+        gfx_transition(gfx_had ? &gfx_from : 0, gfx_from_titled);
     else
-        tx = fb_width - w;
-    gfx_win_ox = tx - cx;
-    gfx_win_oy = 0;
+        vga_fb_draw_desktop();
 }
 
 /* Serial-observable window list for `wm list` (BDD surface). Parked state
@@ -1177,11 +1483,15 @@ void vga_fb_list_windows(void) {
         }
     }
     if (vga_fb_gfx_mode) {
-        int gx, gy;
-        gfx_target(&gx, &gy);
-        ksprintf(b, "win gfx %c %s x=%d y=%d w=%d h=%d\n",
+        const char *vn = gfx_hidden ? "minimized" : wm_gfxview_mode_name(gfx_view_mode);
+        ksprintf(b, "win gfx %c %s x=%d y=%d w=%d h=%d view=%s cx=%d cy=%d cw=%d ch=%d\n",
                  (wm_focus == WM_FOCUS_GFX) ? '*' : ' ',
-                 gfx_win_title, gx, gy, gfx_win_w, gfx_win_h);
+                 gfx_win_title, gfx_win_x, gfx_win_y, gfx_win_w, gfx_win_h,
+                 vn ? vn : "floating",
+                 gfx_view_valid ? gfx_view.content.x : gfx_win_x,
+                 gfx_view_valid ? gfx_view.content.y : gfx_win_y,
+                 gfx_view_valid ? gfx_view.content.w : 0,
+                 gfx_view_valid ? gfx_view.content.h : 0);
         serial_puts(b);
         taskbar_layout();
         ksprintf(b, "win gfxbtn x=%d w=%d %s\n",
@@ -1266,27 +1576,19 @@ static int tw_hit(int i, int mx, int my) {
     return wm_window_contains(&w, mx, my);
 }
 
-/** Docstring: True when point hits the graphics window including content. */
+/** Docstring: True when point hits the visible graphics window, chrome
+ * and letterbox included (the whole frame belongs to the app). */
 static int gfx_hit(int mx, int my) {
     wm_window_t w;
-    int gx;
-    int gy;
-    int ww = gfx_win_w;
-    int wh = gfx_win_h;
-    if (!vga_fb_gfx_mode) {
+    if (!vga_fb_gfx_mode || gfx_hidden || !gfx_view_valid) {
         return 0;
     }
-    if (ww <= 0 || wh <= 0) {
-        ww = DOOM_W + SCROLLBAR_W;
-        wh = DOOM_H + FONT_H;
-    }
-    gfx_place(ww, wh, &gx, &gy);
     w.kind = WM_WIN_GRAPHICS;
     w.id = WM_FOCUS_GFX;
-    w.x = gx;
-    w.y = gy;
-    w.w = ww;
-    w.h = wh;
+    w.x = gfx_view.frame.x;
+    w.y = gfx_view.frame.y;
+    w.w = gfx_view.frame.w;
+    w.h = gfx_view.frame.h;
     w.present = 1;
     w.minimized = 0;
     return wm_window_contains(&w, mx, my);
@@ -1399,7 +1701,7 @@ static unsigned long fb_pack_idx(unsigned idx) {
 void fb_write_packed(int x, int y, unsigned long rgb) {
     volatile uint8_t *p;
     if (x < 0 || x >= fb_width || y < 0 || y >= fb_height) return;
-    p = FB_ADDR + (unsigned)y * (unsigned)fb_pitch;
+    p = FBT + (unsigned)y * (unsigned)fb_pitch;
     if (fb_bpp == 32) {
         p += (unsigned)x * 4;
         p[0] = (uint8_t)(rgb & 0xFF);
@@ -1419,7 +1721,7 @@ void fb_write_packed(int x, int y, unsigned long rgb) {
 unsigned long fb_read_packed(int x, int y) {
     volatile uint8_t *p;
     if (x < 0 || x >= fb_width || y < 0 || y >= fb_height) return 0;
-    p = FB_ADDR + (unsigned)y * (unsigned)fb_pitch;
+    p = FBT + (unsigned)y * (unsigned)fb_pitch;
     if (fb_bpp == 32) {
         p += (unsigned)x * 4;
         return (unsigned long)p[0]
@@ -1441,6 +1743,86 @@ unsigned long fb_read_packed(int x, int y) {
 }
 
 unsigned long vga_fb_read_rgb(int x, int y) { return fb_read_packed(x, y); }
+
+/** Docstring: Write n packed pixels (0x00RRGGBB, or raw indices in 8-bit
+ * mode) to row y from column x, clipped once. The row fast path the
+ * melt and the snapshot restore use instead of one call per pixel. */
+void fb_write_row_packed(int x, int y, const unsigned int *src, int n) {
+    volatile uint8_t *p;
+    int i;
+    int x0 = 0;
+    if (!src || y < 0 || y >= fb_height || n <= 0) return;
+    if (x < 0) { x0 = -x; }
+    if (x + n > fb_width) n = fb_width - x;
+    if (x0 >= n) return;
+    p = FBT + (unsigned)y * (unsigned)fb_pitch;
+    if (fb_bpp == 32) {
+        volatile unsigned int *q = (volatile unsigned int *)(p + (unsigned)(x + x0) * 4u);
+        for (i = x0; i < n; i++)
+            *q++ = src[i] & 0x00FFFFFFu;
+    } else if (fb_bpp == 24) {
+        volatile uint8_t *q = p + (unsigned)(x + x0) * 3u;
+        for (i = x0; i < n; i++) {
+            q[0] = (uint8_t)(src[i] & 0xFF);
+            q[1] = (uint8_t)((src[i] >> 8) & 0xFF);
+            q[2] = (uint8_t)((src[i] >> 16) & 0xFF);
+            q += 3;
+        }
+    } else {
+        volatile uint8_t *q = p + (unsigned)(x + x0);
+        for (i = x0; i < n; i++)
+            *q++ = (uint8_t)(src[i] & 0xFF);
+    }
+}
+
+/** Docstring: Read n packed pixels of row y from column x into dst,
+ * clipped once; pixels outside the screen read as 0. */
+void fb_read_row_packed(int x, int y, unsigned int *dst, int n) {
+    volatile uint8_t *p;
+    int i;
+    if (!dst || n <= 0) return;
+    for (i = 0; i < n; i++) dst[i] = 0;
+    if (y < 0 || y >= fb_height) return;
+    p = FBT + (unsigned)y * (unsigned)fb_pitch;
+    for (i = 0; i < n; i++) {
+        int xx = x + i;
+        if (xx < 0 || xx >= fb_width) continue;
+        if (fb_bpp == 32) {
+            dst[i] = *(volatile unsigned int *)(p + (unsigned)xx * 4u) & 0x00FFFFFFu;
+        } else if (fb_bpp == 24) {
+            const volatile uint8_t *q = p + (unsigned)xx * 3u;
+            dst[i] = (unsigned int)q[0] | ((unsigned int)q[1] << 8) | ((unsigned int)q[2] << 16);
+        } else {
+            dst[i] = p[xx];
+        }
+    }
+}
+
+/** Docstring: Fill a clipped horizontal run with one packed pixel. */
+static void fb_fill_run(int x, int y, int n, unsigned long px) {
+    volatile uint8_t *p;
+    int i;
+    if (y < 0 || y >= fb_height || n <= 0) return;
+    if (x < 0) { n += x; x = 0; }
+    if (x + n > fb_width) n = fb_width - x;
+    if (n <= 0) return;
+    p = FBT + (unsigned)y * (unsigned)fb_pitch;
+    if (fb_bpp == 32) {
+        fb_fill_u32(p + (unsigned)x * 4u, (unsigned int)(px & 0x00FFFFFFu), (unsigned long)n);
+    } else if (fb_bpp == 24) {
+        volatile uint8_t *q = p + (unsigned)x * 3u;
+        for (i = 0; i < n; i++) {
+            q[0] = (uint8_t)(px & 0xFF);
+            q[1] = (uint8_t)((px >> 8) & 0xFF);
+            q[2] = (uint8_t)((px >> 16) & 0xFF);
+            q += 3;
+        }
+    } else {
+        volatile uint8_t *q = p + (unsigned)x;
+        for (i = 0; i < n; i++)
+            q[i] = (uint8_t)(px & 0xFF);
+    }
+}
 
 /* Nearest cube level for one 0-255 channel (boundaries at 25/76/127/178/229). */
 static int wall_level(int v) {
@@ -1529,17 +1911,32 @@ static const uint8_t *fb_glyph(unsigned char c) {
 void vga_fb_pixel(int x, int y, uint8_t color) {
     if (fb_bpp == 8) {
         if (x >= 0 && x < fb_width && y >= 0 && y < fb_height)
-            FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)x] = color;
+            FBT[(unsigned)y * (unsigned)fb_pitch + (unsigned)x] = color;
         return;
     }
     fb_write_packed(x, y, fb_pack_idx(color));
 }
 
+/** Docstring: Clear the render target to black in bulk. */
+void vga_fb_clear(void) {
+    unsigned long n = fb_frame_bytes();
+    if ((n & 3UL) == 0)
+        fb_fill_u32(FBT, 0u, n / 4UL);
+    else
+        kmemset((void *)FBT, 0, n);
+}
+
+/** Docstring: Solid rectangle: the color resolves once, every row is one
+ * clipped run fill instead of a per-pixel palette lookup and call. */
 void vga_fb_rect(int x, int y, int w, int h, uint8_t color) {
-    int i, j;
-    for (j = y; j < y + h; j++)
-        for (i = x; i < x + w; i++)
-            vga_fb_pixel(i, j, color);
+    int j;
+    unsigned long px;
+    if (w <= 0 || h <= 0) return;
+    px = (fb_bpp == 8) ? (unsigned long)color : fb_pack_idx(color);
+    if (y < 0) { h += y; y = 0; }
+    if (y + h > fb_height) h = fb_height - y;
+    for (j = 0; j < h; j++)
+        fb_fill_run(x, y + j, w, px);
 }
 
 /* Direct RGB pixel: full color depth in true-color modes, best-effort
@@ -1675,203 +2072,250 @@ int vga_fb_ps2_owner(int pid) {
     return pid == 0;
 }
 
-/* Hit-test and dispatch a click on a titled window's controls. The active
- * window is the graphics window when one is composited, else the terminal.
- * Returns 1 when the click was consumed by a window control. */
+/* Hit-test and dispatch a click on a titled window's controls. The
+ * graphics window composites on top, so its title buttons are tested
+ * first; a click elsewhere falls through to the focused terminal's
+ * buttons, which work while a graphics program runs too. Graphics
+ * minimize hides the app to the taskbar (it never closes it), maximize
+ * toggles true fullscreen, close arms the close request. The terminal
+ * buttons act on the terminal even while the graphics window holds the
+ * focus, so its X can never close the game. Returns 1 when a control
+ * consumed the click. */
 static int wm_button_click(int mx, int my) {
-    int win_x, win_y, win_w;
     int btn;
-    if (vga_fb_gfx_mode) {
-        win_x = gfx_win_x;
-        win_y = gfx_win_y;
-        win_w = gfx_win_w;
-    } else {
-        if (term_minimized) return 0;
-        win_x = term_px_x;
-        win_y = term_px_y;
-        win_w = term_px_w + SCROLLBAR_W;
+    if (vga_fb_gfx_mode && !gfx_hidden && gfx_view_valid && gfx_view.title_h > 0) {
+        btn = wm_buttons_hit(mx, my, gfx_view.frame.x, gfx_view.frame.y, gfx_view.frame.w);
+        switch (btn) {
+        case WM_BTN_MIN:
+            vga_fb_gfx_set_hidden(1);
+            return 1;
+        case WM_BTN_MAX:
+            vga_fb_gfx_set_fullscreen(1);
+            return 1;
+        case WM_BTN_CLOSE:
+            wm_close_request = 1;
+            return 1;
+        default:
+            break;
+        }
     }
-    btn = wm_buttons_hit(mx, my, win_x, win_y, win_w);
+    if (gfx_covers_screen() || gfx_hit(mx, my) || term_minimized) return 0;
+    btn = wm_buttons_hit(mx, my, term_px_x, term_px_y, term_px_w + SCROLLBAR_W);
     switch (btn) {
     case WM_BTN_MIN:
-        if (vga_fb_gfx_mode) {
-            wm_close_request = 1;
-        } else {
-            vga_fb_toggle_minimize();
-        }
+        term_toggle_minimize();
         return 1;
     case WM_BTN_MAX:
-        if (vga_fb_gfx_mode) {
-            /* Graphics windows are already sized to the display; no-op. */
-        } else {
-            vga_fb_toggle_fullscreen();
-        }
+        term_toggle_fullscreen();
         return 1;
     case WM_BTN_CLOSE:
-        vga_fb_close_active();
+        if (vga_fb_gfx_mode) return 1;
+        term_close_default();
         return 1;
     default:
         return 0;
     }
 }
 
-/* Composite the graphics back-buffer (e.g. DOOM's 320x200 frame) onto the
- * desktop in a titled window at native resolution, leaving the shell window
- * and desktop visible around it. Centered on the screen because the graphics
- * program owns the display while it runs (no mouse), so the window cannot be
- * dragged into a better spot. */
 /** Docstring: Current graphics window title set via SYS_GFX_SET_TITLE. */
 const char *gfx_win_title = GFX_TITLE_DEFAULT;
 
-/* Fast true-color blit of an indexed back-buffer row block. Bounds are
- * clipped once here; the inner loop expands through a stack u32 table
- * built once per call from gfx_pal, so each pixel pays one indexed load
- * instead of three palette loads plus shifts. px holds 0x00RRGGBB so a
- * 32-bit LE store lands as B,G,R,0, the VBE byte order. The table is
- * stack, not .bss: the kernel image must end below USER_LOAD_BASE
- * (mm guard) and it fits with ~1 KB to spare, so this file spends zero
- * new .bss. 1 KB of stack keeps the frame under the 2 KB kernel gate. */
-static void blit_indexed_truecolor(const volatile uint8_t *bb, int bb_w,
-                                   int bb_h, int dst_x, int dst_y) {
-    volatile uint8_t *fb = (volatile uint8_t *)FB_ADDR;
-    unsigned pitch = (unsigned)fb_pitch;
-    int width = fb_width, height = fb_height;
-    int is32 = (fb_bpp == 32);
-    unsigned px_lut[256];
-    int r;
-    for (r = 0; r < 256; r++) {
-        unsigned o = (unsigned)r * 3u;
-        px_lut[r] = ((unsigned)gfx_pal[o] << 16)
-                  | ((unsigned)gfx_pal[o + 1] << 8)
-                  |  (unsigned)gfx_pal[o + 2];
-    }
-    for (r = 0; r < bb_h; r++) {
-        int y = dst_y + r;
-        const volatile uint8_t *src;
-        volatile uint8_t *row;
-        int x0, x1, b, w;
-        if (y < 0 || y >= height) continue;
-        x0 = dst_x < 0 ? -dst_x : 0;
-        x1 = dst_x + bb_w > width ? width - dst_x : bb_w;
-        if (x0 >= x1) continue;
-        src = bb + r * bb_w + x0;
-        row = fb + (unsigned)y * pitch + (unsigned)(dst_x + x0) * (is32 ? 4u : 3u);
-        w = x1 - x0;
-        if (is32) {
-            for (b = 0; b < w; b++) {
-                *(volatile unsigned *)row = px_lut[src[b]];
-                row += 4;
+/** Docstring: Convert one source row into the target at the given scale.
+ * sx advances in 16.16 fixed point from the first visible column, so
+ * there is no division per pixel. Indexed sources expand through the
+ * caller's lookup table in true color and copy as indices in 8-bit mode;
+ * RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */
+static void gfx_scale_row(volatile uint8_t *row, const volatile uint8_t *srow,
+                          int kind, int sw, int n, unsigned long fx,
+                          unsigned long step, const unsigned *lut)
+{
+    int i;
+    if (fb_bpp == 32) {
+        volatile unsigned *q = (volatile unsigned *)row;
+        for (i = 0; i < n; i++) {
+            unsigned long sx = fx >> 16;
+            if (sx >= (unsigned long)sw) sx = (unsigned long)sw - 1;
+            if (kind == GFX_SRC_RGB) {
+                const volatile uint8_t *p = srow + sx * 3UL;
+                q[i] = ((unsigned)p[0] << 16) | ((unsigned)p[1] << 8) | (unsigned)p[2];
+            } else {
+                q[i] = lut[srow[sx]];
             }
-        } else {
-            for (b = 0; b < w; b++) {
-                unsigned px = px_lut[src[b]];
-                row[0] = (uint8_t)(px & 0xFF);
-                row[1] = (uint8_t)((px >> 8) & 0xFF);
-                row[2] = (uint8_t)((px >> 16) & 0xFF);
-                row += 3;
+            fx += step;
+        }
+    } else if (fb_bpp == 24) {
+        for (i = 0; i < n; i++) {
+            unsigned long sx = fx >> 16;
+            unsigned px;
+            if (sx >= (unsigned long)sw) sx = (unsigned long)sw - 1;
+            if (kind == GFX_SRC_RGB) {
+                const volatile uint8_t *p = srow + sx * 3UL;
+                px = ((unsigned)p[0] << 16) | ((unsigned)p[1] << 8) | (unsigned)p[2];
+            } else {
+                px = lut[srow[sx]];
             }
+            row[0] = (uint8_t)(px & 0xFF);
+            row[1] = (uint8_t)((px >> 8) & 0xFF);
+            row[2] = (uint8_t)((px >> 16) & 0xFF);
+            row += 3;
+            fx += step;
+        }
+    } else {
+        for (i = 0; i < n; i++) {
+            unsigned long sx = fx >> 16;
+            if (sx >= (unsigned long)sw) sx = (unsigned long)sw - 1;
+            if (kind == GFX_SRC_RGB) {
+                const volatile uint8_t *p = srow + sx * 3UL;
+                row[i] = (uint8_t)(WALL_PAL_BASE +
+                         (wall_level((int)p[0]) * 6 + wall_level((int)p[1])) * 6 +
+                         wall_level((int)p[2]));
+            } else {
+                row[i] = srow[sx];
+            }
+            fx += step;
         }
     }
 }
 
-/** Docstring: 2x nearest-neighbour zoom for the 320x200 game window,
- * set via SYS_GFX_ZOOM. One int of .bss; the NK buffer never zooms. */
-int gfx_zoom_2x;
-
-/** Docstring: Composite one indexed back-buffer as a titled graphics window. */
-static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh) {
-    int dst_x, dst_y;
-    int r, b;
-    int zoom = gfx_zoom_2x && bw == DOOM_W && bh == DOOM_H;
-    int dw = zoom ? bw * 2 : bw;
-    int dh = zoom ? bh * 2 : bh;
-    int win_w = dw + SCROLLBAR_W;
-    int win_h = dh + FONT_H;
-    uint8_t gbg;
-    unsigned int *fx_old = 0;
-    int fx_do = fx_gfx_armed && vga_fx_enabled();
-    fx_gfx_armed = 0;
-    gfx_frames_composited++;
-    vga_fb_gfx_cursor_erase();
-    gfx_place(win_w, win_h, &dst_x, &dst_y);
-    gfx_win_x = dst_x;
-    gfx_win_y = dst_y;
-    gfx_win_w = win_w;
-    gfx_win_h = win_h;
-    if (fx_do) {
-        fx_old = vga_fx_snap_rect(dst_x, dst_y, win_w, win_h);
+/** Docstring: Nearest-neighbour blit of a sw x sh source into the dw x dh
+ * rect at (dx, dy) of the render target, clipped once. The lookup table
+ * is built once per call from gfx_pal (1 KB of stack, under the 2 KB
+ * frame gate). Consecutive destination rows that sample the same source
+ * row are copied from the row just written instead of re-converted, so a
+ * 2.5x upscale costs barely more than the 1x path. */
+static void gfx_scale_blit(const volatile uint8_t *src, int kind, int sw, int sh,
+                           int dx, int dy, int dw, int dh)
+{
+    unsigned lut[256];
+    unsigned long step;
+    unsigned long bpx = (unsigned long)fb_bytes_per_pixel();
+    int x0, x1, y, prev_sy = -1;
+    volatile uint8_t *prev_row = 0;
+    if (!src || sw <= 0 || sh <= 0 || dw <= 0 || dh <= 0) return;
+    if (kind != GFX_SRC_RGB) {
+        int k;
+        for (k = 0; k < 256; k++) {
+            unsigned o = (unsigned)k * 3u;
+            lut[k] = ((unsigned)gfx_pal[o] << 16) | ((unsigned)gfx_pal[o + 1] << 8) |
+                     (unsigned)gfx_pal[o + 2];
+        }
     }
-    gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
-    vga_fb_rect(dst_x, dst_y, win_w, FONT_H, gbg);
-    text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, gbg);
-    wm_draw_buttons(dst_x, dst_y, win_w, COL_TITLE_TXT, gbg);
-    if (fb_bpp == 8) {
-        if (!zoom) {
-            for (r = 0; r < bh; r++) {
-                volatile uint8_t *dst = &FB_ADDR[(unsigned)(dst_y + FONT_H + r) * (unsigned)fb_pitch + (unsigned)dst_x];
-                const volatile uint8_t *src = bb + r * bw;
-                for (b = 0; b < bw; b++)
-                    dst[b] = src[b];
-            }
+    x0 = dx < 0 ? -dx : 0;
+    x1 = dx + dw > fb_width ? fb_width - dx : dw;
+    if (x0 >= x1) return;
+    step = ((unsigned long)sw << 16) / (unsigned long)dw;
+    for (y = 0; y < dh; y++) {
+        int ty = dy + y;
+        int sy;
+        volatile uint8_t *row;
+        if (ty < 0) continue;
+        if (ty >= fb_height) break;
+        sy = (int)(((long)y * (long)sh) / (long)dh);
+        if (sy >= sh) sy = sh - 1;
+        row = FBT + (unsigned long)ty * (unsigned long)fb_pitch +
+              (unsigned long)(dx + x0) * bpx;
+        if (sy == prev_sy && prev_row) {
+            fb_copy_bytes(row, prev_row, (unsigned long)(x1 - x0) * bpx);
         } else {
-            int x0 = dst_x < 0 ? -dst_x : 0;
-            int x1 = dst_x + dw > fb_width ? fb_width - dst_x : dw;
-            for (r = 0; r < bh; r++) {
-                const volatile uint8_t *src = bb + r * bw;
-                int k;
-                for (k = 0; k < 2; k++) {
-                    int y = dst_y + FONT_H + r * 2 + k;
-                    volatile uint8_t *dst;
-                    int xx;
-                    if (y < 0 || y >= fb_height) continue;
-                    if (x0 >= x1) continue;
-                    dst = &FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)dst_x];
-                    for (xx = x0; xx < x1; xx++)
-                        dst[xx] = src[xx / 2];
-                }
-            }
+            const volatile uint8_t *srow = src + (unsigned long)sy * (unsigned long)sw *
+                                           (kind == GFX_SRC_RGB ? 3UL : 1UL);
+            gfx_scale_row(row, srow, kind, sw, x1 - x0,
+                          (unsigned long)x0 * step, step, lut);
         }
-    } else if (!zoom) {
-        blit_indexed_truecolor(bb, bw, bh, dst_x, dst_y + FONT_H);
-    } else {
-        volatile uint8_t *fb = (volatile uint8_t *)FB_ADDR;
-        unsigned pitch = (unsigned)fb_pitch;
-        int is32 = (fb_bpp == 32);
-        unsigned ps = is32 ? 4u : 3u;
-        for (r = 0; r < bh; r++) {
-            for (b = 0; b < bw; b++) {
-                unsigned o = (unsigned)bb[r * bw + b] * 3u;
-                unsigned px = ((unsigned)gfx_pal[o] << 16)
-                            | ((unsigned)gfx_pal[o + 1] << 8)
-                            | (unsigned)gfx_pal[o + 2];
-                int dx = dst_x + b * 2, dy = dst_y + FONT_H + r * 2;
-                int yy, xx;
-                for (yy = 0; yy < 2; yy++) {
-                    int y = dy + yy;
-                    if (y < 0 || y >= fb_height) continue;
-                    for (xx = 0; xx < 2; xx++) {
-                        int x = dx + xx;
-                        volatile uint8_t *p;
-                        if (x < 0 || x >= fb_width) continue;
-                        p = fb + (unsigned)y * pitch + (unsigned)x * ps;
-                        if (is32)
-                            *(volatile unsigned *)p = px;
-                        else {
-                            p[0] = gfx_pal[o + 2];
-                            p[1] = gfx_pal[o + 1];
-                            p[2] = gfx_pal[o];
-                        }
-                    }
-                }
-            }
-        }
+        prev_sy = sy;
+        prev_row = row;
     }
-    gfx_keep_save(dst_x, dst_y, win_w, win_h);
+}
+
+/** Docstring: Clear the frame area the content does not cover (the
+ * letterbox bars of a tiled or fullscreen view) to black. */
+static void gfx_letterbox(const wm_gfxview_t *v)
+{
+    int ax = v->frame.x;
+    int ay = v->frame.y + v->title_h;
+    int aw = v->frame.w;
+    int ah = v->frame.h - v->title_h;
+    const wm_gfxview_rect_t *c = &v->content;
+    if (aw <= 0 || ah <= 0) return;
+    if (c->y > ay)
+        vga_fb_rect(ax, ay, aw, c->y - ay, COL_BLACK);
+    if (c->y + c->h < ay + ah)
+        vga_fb_rect(ax, c->y + c->h, aw, ay + ah - (c->y + c->h), COL_BLACK);
+    if (c->x > ax)
+        vga_fb_rect(ax, c->y, c->x - ax, c->h, COL_BLACK);
+    if (c->x + c->w < ax + aw)
+        vga_fb_rect(c->x + c->w, c->y, ax + aw - (c->x + c->w), c->h, COL_BLACK);
+}
+
+/** Docstring: Paint the title strip (title text plus window controls). */
+static void gfx_title(const wm_gfxview_t *v)
+{
+    uint8_t gbg;
+    if (v->title_h <= 0) return;
+    gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
+    vga_fb_rect(v->frame.x, v->frame.y, v->frame.w, v->title_h, gbg);
+    text_px(v->frame.x + 4, v->frame.y, gfx_win_title, COL_TITLE_TXT, gbg);
+    wm_draw_buttons(v->frame.x, v->frame.y, v->frame.w, COL_TITLE_TXT, gbg);
+}
+
+/** Docstring: Compose one graphics frame at a view into the render target:
+ * title, letterbox (when full is set) and the scaled content. */
+static void gfx_compose(const volatile uint8_t *src, int kind, int sw, int sh,
+                        const wm_gfxview_t *v, int full)
+{
+    gfx_title(v);
+    if (full)
+        gfx_letterbox(v);
+    gfx_scale_blit(src, kind, sw, sh, v->content.x, v->content.y,
+                   v->content.w, v->content.h);
+}
+
+/** Docstring: Re-compose the persistent layer at the current view on top
+ * of a desktop redraw (the target is the shadow inside draw_desktop). */
+static void gfx_keep_restore(void) {
+    wm_gfxview_t v;
+    if (!vga_fb_gfx_mode || gfx_hidden || gfx_suppress || !gfx_keep || !gfx_keep_valid)
+        return;
+    if (!gfx_view_for(gfx_keep_sw, gfx_keep_sh, &v)) return;
+    gfx_view_publish(&v);
+    gfx_compose(gfx_keep, gfx_keep_kind, gfx_keep_sw, gfx_keep_sh, &v, 1);
+    gfx_frame_dirty = 0;
+}
+
+/** Docstring: Present one back-buffer as the graphics window.
+ * Every source (DOOM 320x200, the 800x360 indexed and RGB Nuklear
+ * buffers) funnels through here, so the three view modes, the open melt,
+ * the persistent layer and the pointer ownership are identical for every
+ * app. A minimized window still counts and keeps its frame (the program
+ * runs on) but paints nothing. */
+static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)
+{
+    wm_gfxview_t v;
+    unsigned int *fx_old = 0;
+    int fx_do;
+    int changed;
+    gfx_frames_composited++;
+    if (!gfx_view_for(sw, sh, &v)) return;
+    changed = !gfx_view_valid || !wm_gfxview_rect_same(&v.frame, &gfx_view.frame) ||
+              !wm_gfxview_rect_same(&v.content, &gfx_view.content);
+    gfx_view_publish(&v);
+    if (gfx_hidden) {
+        gfx_keep_save(bb, kind, sw, sh);
+        return;
+    }
+    fx_do = fx_gfx_armed && vga_fx_enabled();
+    fx_gfx_armed = 0;
+    vga_fb_gfx_cursor_erase();
+    if (fx_do)
+        fx_old = vga_fx_snap_rect(v.frame.x, v.frame.y, v.frame.w, v.frame.h);
+    gfx_compose(bb, kind, sw, sh, &v, changed || gfx_frame_dirty);
+    gfx_frame_dirty = 0;
+    gfx_keep_save(bb, kind, sw, sh);
     if (fx_old) {
-        unsigned int *fx_new = vga_fx_snap_rect(dst_x, dst_y, win_w, win_h);
+        unsigned int *fx_new = vga_fx_snap_rect(v.frame.x, v.frame.y, v.frame.w, v.frame.h);
         if (fx_new) {
-            vga_fx_restore_rect(dst_x, dst_y, win_w, win_h, fx_old);
-            vga_fx_melt_rect(dst_x, dst_y, win_w, win_h, fx_old, fx_new);
+            vga_fx_restore_rect(v.frame.x, v.frame.y, v.frame.w, v.frame.h, fx_old);
+            vga_fx_melt_rect(v.frame.x, v.frame.y, v.frame.w, v.frame.h, fx_old, fx_new);
             vga_fx_free(fx_new);
         }
         vga_fx_free(fx_old);
@@ -1880,126 +2324,22 @@ static void blit_gfx_buf(const volatile uint8_t *bb, int bw, int bh) {
 }
 
 void vga_fb_blit_gfx_window(void) {
-    const volatile uint8_t *bb = (const volatile uint8_t *)DOOM_BACKBUF_ADDR;
-    blit_gfx_buf(bb, DOOM_W, DOOM_H);
+    gfx_present((const volatile uint8_t *)DOOM_BACKBUF_ADDR, GFX_SRC_IDX, DOOM_W, DOOM_H);
 }
 
-void vga_fb_clear(void) {
-    kmemset((void *)FB_ADDR, 0, (unsigned long)fb_pitch * (unsigned long)fb_height);
-}
-
-/* Window origin of the last Nuklear composite. SYS_NK_FRAME reports this so a
- * ring-3 Nuklear app can translate desktop mouse coordinates into the local
- * coordinates its UI expects (the app renders into the back-buffer, whose
- * top-left lands at this desktop origin). */
+/* Window origin of the last Nuklear composite. Kept for ABI readers of
+ * the header; the present syscalls report vga_fb_gfx_origin, which is the
+ * real content origin in every view mode. */
 int nk_win_x, nk_win_y;
 
-/* Composite the Nuklear UI back-buffer onto the desktop as a titled window,
- * mirroring the DOOM window: the back-buffer is a kernel-heap region mapped
- * into the user window that the ring-3 app renders into, and the kernel blits
- * it to the framebuffer on SYS_NK_FRAME. The window is centered and the shell
- * window stays visible around it. */
 void vga_fb_blit_nk_window(void) {
-    const volatile uint8_t *bb = (const volatile uint8_t *)NK_BACKBUF_ADDR;
-    blit_gfx_buf(bb, NK_W, NK_H);
-    nk_win_x = gfx_win_x;
-    nk_win_y = gfx_win_y;
-}
-
-/* Fast true-color blit of an RGB back-buffer row block (R,G,B byte order).
- * Bounds are clipped once here; the inner loop copies straight through with
- * row pointers, no per-pixel call or check. In 8-bit mode the source is
- * quantized through the websafe cube (same degrade as the RGB wallpaper
- * path), so an RGB present stays correct on a palette desktop. */
-static void blit_rgb_truecolor(const volatile uint8_t *bb, int bb_w,
-                               int bb_h, int dst_x, int dst_y) {
-    volatile uint8_t *fb = (volatile uint8_t *)FB_ADDR;
-    unsigned pitch = (unsigned)fb_pitch;
-    int width = fb_width, height = fb_height;
-    int is32 = (fb_bpp == 32);
-    int r;
-    for (r = 0; r < bb_h; r++) {
-        int y = dst_y + r;
-        const volatile uint8_t *src;
-        volatile uint8_t *row;
-        int x0, x1, b, w;
-        if (y < 0 || y >= height) continue;
-        x0 = dst_x < 0 ? -dst_x : 0;
-        x1 = dst_x + bb_w > width ? width - dst_x : bb_w;
-        if (x0 >= x1) continue;
-        src = bb + ((r * bb_w) + x0) * 3;
-        if (fb_bpp == 8) {
-            volatile uint8_t *dst = &FB_ADDR[(unsigned)y * pitch + (unsigned)(dst_x + x0)];
-            for (b = 0; b < x1 - x0; b++) {
-                unsigned R = src[b * 3], G = src[b * 3 + 1], B = src[b * 3 + 2];
-                dst[b] = (uint8_t)(WALL_PAL_BASE +
-                         (wall_level((int)R) * 6 + wall_level((int)G)) * 6 +
-                         wall_level((int)B));
-            }
-            continue;
-        }
-        row = fb + (unsigned)y * pitch + (unsigned)(dst_x + x0) * (is32 ? 4u : 3u);
-        w = x1 - x0;
-        if (is32) {
-            for (b = 0; b < w; b++) {
-                unsigned px = ((unsigned)src[b * 3] << 16)
-                            | ((unsigned)src[b * 3 + 1] << 8)
-                            |  (unsigned)src[b * 3 + 2];
-                *(volatile unsigned *)row = px;
-                row += 4;
-            }
-        } else {
-            for (b = 0; b < w; b++) {
-                row[0] = src[b * 3 + 2];
-                row[1] = src[b * 3 + 1];
-                row[2] = src[b * 3];
-                row += 3;
-            }
-        }
-    }
+    gfx_present((const volatile uint8_t *)NK_BACKBUF_ADDR, GFX_SRC_IDX, NK_W, NK_H);
 }
 
 /* Composite the Nuklear RGB back-buffer (NK_RGB_ADDR, NK_W x NK_H x 3 bytes)
- * as a titled window, mirroring the indexed path's chrome, melt and cursor
- * handling. Presented with GFX_PRESENT + MINIOS_GFX_BUF_NK_RGB; the indexed
- * NK_FRAME path is untouched. The NK buffer never zooms. */
+ * through the same present path as the indexed buffers. */
 void vga_fb_blit_nk_rgb_window(void) {
-    const volatile uint8_t *bb = (const volatile uint8_t *)NK_RGB_ADDR;
-    int dst_x, dst_y;
-    int win_w = NK_W + SCROLLBAR_W;
-    int win_h = NK_H + FONT_H;
-    uint8_t gbg;
-    unsigned int *fx_old = 0;
-    int fx_do = fx_gfx_armed && vga_fx_enabled();
-    fx_gfx_armed = 0;
-    gfx_frames_composited++;
-    vga_fb_gfx_cursor_erase();
-    gfx_place(win_w, win_h, &dst_x, &dst_y);
-    gfx_win_x = dst_x;
-    gfx_win_y = dst_y;
-    gfx_win_w = win_w;
-    gfx_win_h = win_h;
-    nk_win_x = dst_x;
-    nk_win_y = dst_y;
-    if (fx_do) {
-        fx_old = vga_fx_snap_rect(dst_x, dst_y, win_w, win_h);
-    }
-    gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
-    vga_fb_rect(dst_x, dst_y, win_w, FONT_H, gbg);
-    text_px(dst_x + 4, dst_y, gfx_win_title, COL_TITLE_TXT, gbg);
-    wm_draw_buttons(dst_x, dst_y, win_w, COL_TITLE_TXT, gbg);
-    blit_rgb_truecolor(bb, NK_W, NK_H, dst_x, dst_y + FONT_H);
-    gfx_keep_save(dst_x, dst_y, win_w, win_h);
-    if (fx_old) {
-        unsigned int *fx_new = vga_fx_snap_rect(dst_x, dst_y, win_w, win_h);
-        if (fx_new) {
-            vga_fx_restore_rect(dst_x, dst_y, win_w, win_h, fx_old);
-            vga_fx_melt_rect(dst_x, dst_y, win_w, win_h, fx_old, fx_new);
-            vga_fx_free(fx_new);
-        }
-        vga_fx_free(fx_old);
-    }
-    vga_fb_gfx_cursor_draw();
+    gfx_present((const volatile uint8_t *)NK_RGB_ADDR, GFX_SRC_RGB, NK_W, NK_H);
 }
 
 /* ---- Layout ---- */
@@ -2187,6 +2527,7 @@ static void taskbar_tick(void) {
     int h, m, s;
     int y = fb_height - FONT_H;
     static int last_h = -1, last_m = -1, last_s = -1;
+    if (gfx_covers_screen()) return;
     if (!rtc_read_tod(&h, &m, &s)) return;
     if (h == last_h && m == last_m && s == last_s) return;
     last_h = h; last_m = m; last_s = s;
@@ -2276,6 +2617,10 @@ static void taskbar_handle_click(int mx, int my) {
     if (vga_fb_gfx_mode && tb_gfx_w > 0 &&
         mx >= tb_gfx_x && mx < tb_gfx_x + tb_gfx_w) {
         int before = wm_focus;
+        if (gfx_hidden) {
+            vga_fb_gfx_set_hidden(0);
+            return;
+        }
         vga_fb_focus_id(WM_FOCUS_GFX);
         wm_emit_focus_moved(before, WM_FOCUS_SRC_TASKBAR);
         return;
@@ -2388,9 +2733,17 @@ static void render_row(int vrow, int abs) {
 /* Full repaint of the terminal window from the logical history, honouring the
  * current scroll position. Used on desktop redraws, resize, wrap, scroll and
  * any structural change. */
+/** Docstring: 1 when the live terminal window may paint: never while it
+ * is minimized (its text used to print onto the desktop where the window
+ * had been) or while a fullscreen graphics window covers the display. */
+static int term_paintable(void) {
+    return !term_minimized && !gfx_covers_screen();
+}
+
 static void term_render(void) {
     int top = disp_top();
     int v;
+    if (!term_paintable()) return;
     vga_fb_rect(term_px_x, term_content_y(), term_px_w, term_px_h, COL_TERMINAL);
     for (v = 0; v < term_rows; v++)
         render_row(v, top + v);
@@ -2406,6 +2759,7 @@ static void term_render_active(void) {
     int abs_active = total_rows() - act_nrows();
     int v0 = abs_active - top;
     int v;
+    if (!term_paintable()) return;
     if (v0 < 0) v0 = 0;
     if (v0 >= term_rows) v0 = term_rows - 1;
     for (v = v0; v < term_rows; v++)
@@ -2425,6 +2779,7 @@ static void term_draw_cell(int col) {
     int cl = col % term_cols;
     int abs = active_start + crow;
     int vrow = abs - top;
+    if (!term_paintable()) return;
     if (vrow < 0 || vrow >= term_rows) return;
     char ch = (col < act_len) ? act[col] : ' ';
     int is_cur = (term_cursor_col == col);
@@ -2526,18 +2881,35 @@ void vga_fb_hide_text_cursor(void) {
     term_cursor_col = -1;
 }
 
-/** Docstring: Repaint the desktop through the shared render plan. */
+/** Docstring: Paint the pointer into the frame being composed, so the
+ * presented frame already carries it (no pointer-less flash after every
+ * redraw). The graphics path keeps its idle autohide. */
+static void desktop_cursor_paint(void) {
+    cursor_invalidate();
+    if (!mouse_state.present && !vga_fb_gfx_mode) return;
+    if (vga_fb_gfx_mode) {
+        vga_fb_gfx_cursor_draw();
+        return;
+    }
+    wm_clamp_point(&mouse_state.x, &mouse_state.y, fb_width, fb_height);
+    cursor_place(mouse_state.x, mouse_state.y);
+}
+
+/** Docstring: Repaint the desktop through the shared render plan.
+ * The whole frame composes off-screen (see the render-target section)
+ * and is presented once, pointer included, so a redraw never flashes a
+ * cleared or half-painted screen. A pending graphics-close melt keeps
+ * the closing rect showing the old pixels in the presented frame and
+ * then melts the fresh desktop over it on the visible framebuffer. */
 void vga_fb_draw_desktop(void) {
     int cur;
     int i;
+    int owner;
     int present[WM_MAX_TERMS];
     wm_render_config_t rcfg = WM_RENDER_CONFIG_DEFAULT;
     wm_render_item_t plan[8];
     int nplan = 0;
     int focus_term;
-    /* Graphics-window close melt: the framebuffer still shows the window
-     * here (the clear below has not run), so snapshot its rect first and
-     * melt the fresh desktop over it at the end. */
     int fx_cx = fx_close_x, fx_cy = fx_close_y, fx_cw = fx_close_w, fx_ch = fx_close_h;
     unsigned int *fx_old = 0;
     int fx_do = fx_close_pending && vga_fx_enabled();
@@ -2549,6 +2921,7 @@ void vga_fb_draw_desktop(void) {
             fx_do = 0;
         }
     }
+    owner = fb_compose_begin();
     vga_fb_set_palette();
     vga_fb_clear();
     wm_init_once();
@@ -2576,32 +2949,246 @@ void vga_fb_draw_desktop(void) {
         }
     }
     tw_unpark(cur);
+    gfx_frame_dirty = 1;
     gfx_keep_restore();
     if (fx_do) {
         unsigned int *fx_new = vga_fx_snap_rect(fx_cx, fx_cy, fx_cw, fx_ch);
+        cursor_invalidate();
         if (fx_new) {
             vga_fx_restore_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old);
+            fb_compose_end(owner);
             vga_fx_melt_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old, fx_new);
             vga_fx_free(fx_new);
+        } else {
+            fb_compose_end(owner);
         }
         vga_fx_free(fx_old);
+        cursor_invalidate();
+        return;
     }
+    if (!fb_hold_present)
+        desktop_cursor_paint();
+    else
+        cursor_invalidate();
+    fb_compose_end(owner);
+}
+
+/* ---- Graphics window transitions ----
+ *
+ * A view change (fullscreen on/off, tile, snap, reset, minimize, restore)
+ * glides the graphics window between its old and new frame instead of
+ * jumping: the desktop without the graphics layer is composed once, kept
+ * as a background, and every animation step copies it back into the
+ * shadow, scales the persistent source frame into the interpolated rect
+ * (ease-out cubic, wm_gfxview.h) and presents. Steps are paced against
+ * the PIT-calibrated clock by deadline, so a slow step shortens the next
+ * wait instead of stretching the whole glide. The final frame is a
+ * normal desktop redraw, so the end state is byte-identical with the
+ * effect on or off, and every failure (effect off, OOM, no source yet,
+ * nested composition) degrades to that plain redraw. */
+
+/** Docstring: Busy-wait until an absolute ktime_ms deadline. */
+static void gfx_wait_until(unsigned long deadline)
+{
+    while ((long)(deadline - ktime_ms()) > 0) {
+    }
+}
+
+/** Docstring: View of the persistent source inside an arbitrary frame,
+ * titled when the frame is tall enough to carry a title strip. */
+static void gfx_view_in_rect(const wm_gfxview_rect_t *r, int titled, wm_gfxview_t *v)
+{
+    wm_gfxview_config_t cfg = gfx_view_cfg();
+    wm_gfxview_rect_t area;
+    v->mode = gfx_view_mode;
+    v->frame = *r;
+    v->title_h = (titled && r->h > 2 * FONT_H) ? FONT_H : 0;
+    area.x = r->x;
+    area.y = r->y + v->title_h;
+    area.w = r->w;
+    area.h = r->h - v->title_h;
+    if (area.h < 1) area.h = 1;
+    if (!wm_gfxview_place_content(&cfg, gfx_keep_sw, gfx_keep_sh, &area, &v->content)) {
+        v->content = area;
+    }
+}
+
+/** Docstring: Glide the persistent source frame from one rect to
+ * another over the desktop, then settle with a plain redraw. */
+static void gfx_animate(const wm_gfxview_rect_t *from, const wm_gfxview_rect_t *to,
+                        int from_titled, int to_titled)
+{
+    wm_gfxview_config_t cfg = gfx_view_cfg();
+    uint8_t *bg;
+    unsigned long bytes;
+    unsigned long t0;
+    int t;
+    int n = cfg.anim_frames;
+    if (!from || !to || !vga_fx_enabled() || !gfx_keep || !gfx_keep_valid ||
+        fb_compose_depth > 0 || fb_hold_present || !fb_shadow_ready() || n < 2 ||
+        wm_gfxview_rect_same(from, to)) {
+        vga_fb_draw_desktop();
+        return;
+    }
+    bytes = fb_frame_bytes();
+    bg = (uint8_t *)kmalloc(bytes);
+    if (!bg) {
+        vga_fb_draw_desktop();
+        return;
+    }
+    gfx_suppress = 1;
+    fb_hold_present = 1;
+    vga_fb_draw_desktop();
+    fb_hold_present = 0;
+    gfx_suppress = 0;
+    fb_copy_bytes(bg, fb_shadow, bytes);
+    cursor_erase();
+    t0 = ktime_ms();
+    for (t = 1; t < n; t++) {
+        wm_gfxview_rect_t r;
+        wm_gfxview_t v;
+        wm_gfxview_lerp_rect(from, to, t, n, &r);
+        gfx_view_in_rect(&r, (t * 2 < n) ? from_titled : to_titled, &v);
+        fb_copy_bytes(fb_shadow, bg, bytes);
+        fb_compose_depth++;
+        fb_tgt = fb_shadow;
+        gfx_compose(gfx_keep, gfx_keep_kind, gfx_keep_sw, gfx_keep_sh, &v, 0);
+        fb_tgt = 0;
+        fb_compose_depth--;
+        fb_present_shadow();
+        gfx_wait_until(t0 + (unsigned long)(t * cfg.anim_frame_ms));
+    }
+    kfree(bg);
     cursor_invalidate();
+    gfx_frame_dirty = 1;
+    vga_fb_draw_desktop();
+}
+
+/** Docstring: Taskbar button rect of the running app (minimize target). */
+static void gfx_taskbar_rect(wm_gfxview_rect_t *r)
+{
+    taskbar_layout();
+    r->x = tb_gfx_x;
+    r->y = fb_height - FONT_H;
+    r->w = tb_gfx_w > 0 ? tb_gfx_w : FONT_W;
+    r->h = FONT_H;
+}
+
+/** Docstring: Glide from a previous frame to the view the current state
+ * computes (or just redraw when there is nothing to glide from). */
+static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled)
+{
+    wm_gfxview_t to;
+    if (!from || gfx_hidden || !gfx_keep_valid ||
+        !gfx_view_for(gfx_keep_sw, gfx_keep_sh, &to)) {
+        gfx_frame_dirty = 1;
+        vga_fb_draw_desktop();
+        return;
+    }
+    gfx_animate(from, &to.frame, from_titled, to.title_h > 0);
+}
+
+/** Docstring: Hand keyboard focus to the graphics window without a
+ * redraw (callers repaint once afterwards). */
+static void gfx_take_focus(int source)
+{
+    int before = wm_focus;
+    if (wm_focus == WM_FOCUS_GFX) return;
+    if (shell_readline_active()) shell_focus_park();
+    tw_park(wm_term);
+    wm_focus = WM_FOCUS_GFX;
+    kbd_raw_flush();
+    wm_emit_focus_moved(before, source);
+}
+
+/** Docstring: Hand keyboard focus back to the last terminal. */
+static void gfx_drop_focus(int source)
+{
+    int before = wm_focus;
+    if (wm_focus != WM_FOCUS_GFX) return;
+    tw_select(wm_term);
+    wm_emit_focus_moved(before, source);
+}
+
+/** Docstring: Enter or leave true fullscreen for the graphics window.
+ * Fullscreen scales the app to the whole display (aspect kept, black
+ * bars, no chrome, taskbar and terminals hidden) and takes the keyboard;
+ * leaving returns to the view it came from (floating or tiled). Returns
+ * 0 on success, -1 without a graphics program. */
+int vga_fb_gfx_set_fullscreen(int on)
+{
+    wm_gfxview_rect_t from;
+    int had = gfx_view_valid && !gfx_hidden;
+    int titled = had && gfx_view.title_h > 0;
+    if (!vga_fb_gfx_mode) return -1;
+    from = gfx_view.frame;
+    if (gfx_hidden) {
+        gfx_hidden = 0;
+        gfx_taskbar_rect(&from);
+        had = 1;
+        titled = 0;
+    }
+    if (on) {
+        if (gfx_view_mode == WM_GFXVIEW_FULL) return 0;
+        gfx_view_back = gfx_view_mode;
+        gfx_view_mode = WM_GFXVIEW_FULL;
+        gfx_take_focus(WM_FOCUS_SRC_MODE);
+    } else {
+        if (gfx_view_mode != WM_GFXVIEW_FULL) return 0;
+        gfx_view_mode = (gfx_view_back == WM_GFXVIEW_FULL) ? WM_GFXVIEW_FLOAT : gfx_view_back;
+    }
+    gfx_frame_dirty = 1;
+    wm_last_n = -1;
+    gfx_transition(had ? &from : 0, titled);
+    return 0;
+}
+
+/** Docstring: Minimize (hide) or restore the graphics window. The app
+ * keeps running; a hidden window paints nothing, drops the keyboard to
+ * the terminal and glides into its taskbar button; a restore glides back
+ * out and takes the keyboard. Returns 0, or -1 without a program. */
+int vga_fb_gfx_set_hidden(int hide)
+{
+    wm_gfxview_rect_t btn;
+    wm_gfxview_rect_t from;
+    int titled;
+    if (!vga_fb_gfx_mode) return -1;
+    if ((hide ? 1 : 0) == gfx_hidden) return 0;
+    gfx_taskbar_rect(&btn);
+    if (hide) {
+        from = gfx_view.frame;
+        titled = gfx_view.title_h > 0;
+        gfx_hidden = 1;
+        gfx_drop_focus(WM_FOCUS_SRC_TASKBAR);
+        wm_last_n = -1;
+        if (gfx_view_valid)
+            gfx_animate(&from, &btn, titled, 0);
+        else
+            vga_fb_draw_desktop();
+        return 0;
+    }
+    gfx_hidden = 0;
+    gfx_take_focus(WM_FOCUS_SRC_TASKBAR);
+    wm_last_n = -1;
+    gfx_transition(&btn, 0);
+    return 0;
+}
+
+/** Docstring: Graphics view state for `wm state`/`wm list`. */
+const char *vga_fb_gfx_view_name(void)
+{
+    const char *n;
+    if (!vga_fb_gfx_mode) return "none";
+    if (gfx_hidden) return "minimized";
+    n = wm_gfxview_mode_name(gfx_view_mode);
+    return n ? n : "floating";
 }
 
 /* ---- Keyboard shortcuts ---- */
-/** Docstring: Toggle fullscreen on the focused window, recenter graphics. */
-void vga_fb_toggle_fullscreen(void) {
+
+/** Docstring: Toggle fullscreen of the focused terminal window. */
+static void term_toggle_fullscreen(void) {
     unsigned int *fx_old = fx_start_full();
-    if (vga_fb_gfx_mode && wm_focus == WM_FOCUS_GFX) {
-        gfx_win_ox = 0;
-        gfx_win_oy = 0;
-        wm_layout_mode = WM_LAYOUT_FULLSCREEN;
-        wm_last_n = -1;
-        vga_fb_draw_desktop();
-        fx_finish_full(fx_old);
-        return;
-    }
     term_fullscreen = !term_fullscreen;
     if (term_fullscreen) term_minimized = 0;
     disp_off = 0;
@@ -2610,10 +3197,20 @@ void vga_fb_toggle_fullscreen(void) {
     fx_finish_full(fx_old);
 }
 
+/** Docstring: Toggle fullscreen on the focused window: the graphics
+ * window scales to the whole display, a terminal fills the grid. */
+void vga_fb_toggle_fullscreen(void) {
+    if (vga_fb_gfx_mode && wm_focus == WM_FOCUS_GFX) {
+        vga_fb_gfx_set_fullscreen(gfx_view_mode != WM_GFXVIEW_FULL);
+        return;
+    }
+    term_toggle_fullscreen();
+}
+
 /* Minimize/restore the terminal window. The content is not touched; the
  * window is merely hidden and repainted on restore. Fullscreen and minimize
  * are mutually exclusive: entering fullscreen un-minimizes. */
-void vga_fb_toggle_minimize(void) {
+static void term_toggle_minimize(void) {
     unsigned int *fx_old = fx_start_full();
     term_minimized = !term_minimized;
     if (term_minimized) term_fullscreen = 0;
@@ -2622,23 +3219,33 @@ void vga_fb_toggle_minimize(void) {
     fx_finish_full(fx_old);
 }
 
+/** Docstring: Minimize/restore the focused window (graphics or terminal). */
+void vga_fb_toggle_minimize(void) {
+    if (vga_fb_gfx_mode && wm_focus == WM_FOCUS_GFX) {
+        vga_fb_gfx_set_hidden(1);
+        return;
+    }
+    term_toggle_minimize();
+}
+
 int vga_fb_is_minimized(void) { return term_minimized; }
 int vga_fb_is_fullscreen(void) { return term_fullscreen; }
 
-/* Target origin of the graphics window under the current offsets (same
- * math as the blits, for hit-testing and `wm list` without a frame). */
-static void gfx_target(int *x, int *y) {
-    gfx_place(gfx_win_w, gfx_win_h, x, y);
-}
-
 /* Snap the focused graphics window into a screen region (halves place it
- * against that edge, quadrants into that corner). Redraws immediately so
- * the persistent layer re-blits at the new offset: without it the old
- * pixels stay and the window duplicates until the next Alt-Tab/composite. */
+ * against that edge, quadrants into that corner) at its native size: a
+ * snap floats the window, it never scales it. Glides to the target. */
 static void gfx_snap(int zone) {
-    int w = gfx_win_w, h = gfx_win_h;
-    int cx = (fb_width - w) / 2, cy = (fb_height - h) / 2;
-    int tx = cx, ty = cy;
+    wm_gfxview_rect_t ff;
+    wm_gfxview_rect_t from = gfx_view.frame;
+    int titled = gfx_view.title_h > 0;
+    int w, h, cx, cy, tx, ty;
+    if (!gfx_float_frame(&ff)) return;
+    w = ff.w;
+    h = ff.h;
+    cx = (fb_width - w) / 2;
+    cy = (fb_height - h) / 2;
+    tx = cx;
+    ty = cy;
     switch (zone) {
     case TILING_LEFT: tx = 0; ty = cy; break;
     case TILING_RIGHT: tx = fb_width - w; ty = cy; break;
@@ -2650,8 +3257,25 @@ static void gfx_snap(int zone) {
     case TILING_BOTTOM_RIGHT: tx = fb_width - w; ty = fb_height - h; break;
     default: return;
     }
+    gfx_view_mode = WM_GFXVIEW_FLOAT;
+    gfx_view_back = WM_GFXVIEW_FLOAT;
     gfx_win_ox = tx - cx;
     gfx_win_oy = ty - cy;
+    gfx_frame_dirty = 1;
+    gfx_transition(gfx_view_valid ? &from : 0, titled);
+}
+
+/** Docstring: Terminal close button: restore the default geometry (the
+ * shell cannot be closed). */
+static void term_close_default(void) {
+    term_minimized = 0;
+    term_fullscreen = 0;
+    term_sz_cols = WIN_DEF_COLS;
+    term_sz_rows = WIN_DEF_ROWS;
+    term_x = WIN_DEF_X;
+    term_y = WIN_DEF_Y;
+    disp_off = 0;
+    vga_fb_draw_desktop();
 }
 
 /* Close the focused window. For the graphics window (focused) this arms
@@ -2669,23 +3293,22 @@ int vga_fb_close_active(void) {
          * window may close it, never a terminal shortcut. */
         return 0;
     }
-    term_minimized = 0;
-    term_fullscreen = 0;
-    term_sz_cols = WIN_DEF_COLS;
-    term_sz_rows = WIN_DEF_ROWS;
-    term_x = WIN_DEF_X;
-    term_y = WIN_DEF_Y;
-    disp_off = 0;
-    vga_fb_draw_desktop();
+    term_close_default();
     return 0;
 }
 
 void vga_fb_move_terminal(int dx, int dy) {
     /* Ctrl+arrows move the focused window: terminals by cell, graphics
-     * by pixels. The graphics branch redraws immediately so the
-     * persistent layer re-blits at the new offset instead of leaving
-     * the old copy behind until Alt-Tab. */
+     * by pixels (which floats a tiled graphics window first). */
     if (wm_focus == WM_FOCUS_GFX && vga_fb_gfx_mode) {
+        if (gfx_view_mode == WM_GFXVIEW_FULL) return;
+        if (gfx_view_mode != WM_GFXVIEW_FLOAT) {
+            gfx_view_mode = WM_GFXVIEW_FLOAT;
+            gfx_view_back = WM_GFXVIEW_FLOAT;
+            gfx_win_ox = 0;
+            gfx_win_oy = 0;
+        }
+        gfx_frame_dirty = 1;
         if (dx == 0 && dy == 0) { gfx_win_ox = 0; gfx_win_oy = 0; vga_fb_draw_desktop(); return; }
         gfx_win_ox += dx * FONT_W;
         gfx_win_oy += dy * FONT_H;
@@ -2737,8 +3360,8 @@ static void term_finish_layout(void) {
 void vga_fb_snap_window(int zone) {
     int mc;
     if (wm_focus == WM_FOCUS_GFX && vga_fb_gfx_mode) {
-        gfx_snap(zone);
-        vga_fb_draw_desktop();
+        if (gfx_view_mode != WM_GFXVIEW_FULL)
+            gfx_snap(zone);
         return;
     }
     mc = term_max_cols();
@@ -2786,6 +3409,9 @@ void vga_fb_reset_default(void) {
     if (vga_fb_gfx_mode) {
         gfx_win_ox = 0;
         gfx_win_oy = 0;
+        gfx_view_mode = WM_GFXVIEW_FLOAT;
+        gfx_view_back = WM_GFXVIEW_FLOAT;
+        gfx_frame_dirty = 1;
     }
     term_fullscreen = 0;
     term_sz_cols = WIN_DEF_COLS;
@@ -2824,17 +3450,27 @@ static void vga_fb_drag_terminal(int mx, int my, int grab_cx) {
  * wallpaper shows its real colors instead of the 216-entry websafe cube.
  * A failed or missing image falls back to the solid COL_BG fill, and
  * a failed cache allocation does the same, never a partial background. */
-static uint8_t *wall_cache;
-static uint8_t *wall_rgb;
-static int wall_cw, wall_ch;
+/** Docstring: Wallpaper cache in the framebuffer's native pixel format
+ * (palette indices in 8-bit, B,G,R in 24-bit, B,G,R,X in 32-bit), rows of
+ * fb_width pixels with no pitch padding. A full paint or a strip erase is
+ * then one bulk row copy per scanline instead of a packed write per
+ * pixel, which is what makes every desktop redraw cheap. */
+static uint8_t *wall_native;
+static int wall_cw, wall_ch, wall_bpx;
 static int wall_tried;
 
 static void wallpaper_ensure(void) {
     int w, h, ch, x, y;
+    int bpx = fb_bytes_per_pixel();
     unsigned char *img;
+    uint8_t *cache;
+    unsigned long npix;
     if (wall_tried || fb_width <= 0 || fb_height <= 0)
         return;
     wall_tried = 1;
+    npix = (unsigned long)fb_width * (unsigned long)fb_height;
+    if (npix == 0 || npix > 4194304UL)
+        return;
     img = stbi_load_file(WALLPAPER_PATH, &w, &h, &ch, 4);
     if (!img)
         return;
@@ -2842,81 +3478,56 @@ static void wallpaper_ensure(void) {
         stbi_image_free(img);
         return;
     }
-    if (fb_bpp == 8) {
-        uint8_t *cache;
-        cache = kmalloc((unsigned long)fb_width * (unsigned long)fb_height);
-        if (!cache) {
-            stbi_image_free(img);
-            return;
-        }
-        for (y = 0; y < fb_height; y++) {
-            int sy = y * h / fb_height;
-            for (x = 0; x < fb_width; x++) {
-                int sx = x * w / fb_width;
-                unsigned char *px = img + ((sy * w) + sx) * 4;
-                int idx = (wall_level(px[0]) * 6 + wall_level(px[1])) * 6
-                          + wall_level(px[2]);
-                cache[y * fb_width + x] = (uint8_t)(WALL_PAL_BASE + idx);
-            }
-        }
+    cache = kmalloc(npix * (unsigned long)bpx);
+    if (!cache) {
         stbi_image_free(img);
-        wall_cache = cache;
-        wall_cw = fb_width;
-        wall_ch = fb_height;
         return;
     }
-    {
-        uint8_t *rgb;
-        unsigned long npix = (unsigned long)fb_width * (unsigned long)fb_height;
-        if (npix == 0 || npix > 4194304UL) {
-            stbi_image_free(img);
-            return;
-        }
-        rgb = kmalloc(npix * 3);
-        if (!rgb) {
-            stbi_image_free(img);
-            return;
-        }
-        for (y = 0; y < fb_height; y++) {
-            int sy = y * h / fb_height;
-            for (x = 0; x < fb_width; x++) {
-                int sx = x * w / fb_width;
-                unsigned char *px = img + ((sy * w) + sx) * 4;
-                uint8_t *dst = rgb + ((unsigned long)y * (unsigned long)fb_width + (unsigned long)x) * 3;
-                dst[0] = px[0]; dst[1] = px[1]; dst[2] = px[2];
+    for (y = 0; y < fb_height; y++) {
+        int sy = y * h / fb_height;
+        uint8_t *drow = cache + (unsigned long)y * (unsigned long)fb_width * (unsigned long)bpx;
+        for (x = 0; x < fb_width; x++) {
+            int sx = x * w / fb_width;
+            unsigned char *px = img + ((sy * w) + sx) * 4;
+            if (bpx == 1) {
+                int idx = (wall_level(px[0]) * 6 + wall_level(px[1])) * 6
+                          + wall_level(px[2]);
+                drow[x] = (uint8_t)(WALL_PAL_BASE + idx);
+            } else {
+                uint8_t *d = drow + (unsigned long)x * (unsigned long)bpx;
+                d[0] = px[2];
+                d[1] = px[1];
+                d[2] = px[0];
+                if (bpx == 4)
+                    d[3] = 0;
             }
         }
-        stbi_image_free(img);
-        wall_rgb = rgb;
-        wall_cw = fb_width;
-        wall_ch = fb_height;
     }
+    stbi_image_free(img);
+    wall_native = cache;
+    wall_cw = fb_width;
+    wall_ch = fb_height;
+    wall_bpx = bpx;
+}
+
+/** Docstring: True when the native cache matches the live mode. */
+static int wallpaper_usable(void) {
+    return wall_native && wall_cw == fb_width && wall_ch == fb_height &&
+           wall_bpx == fb_bytes_per_pixel();
 }
 
 static void wallpaper_draw(void) {
-    int x, y;
+    int y;
+    unsigned long row;
     wallpaper_ensure();
-    if (fb_bpp == 8) {
-        if (!wall_cache || wall_cw != fb_width || wall_ch != fb_height) {
-            vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
-            return;
-        }
-        for (y = 0; y < fb_height; y++)
-            for (x = 0; x < fb_width; x++)
-                FB_ADDR[(unsigned)y * (unsigned)fb_pitch + (unsigned)x] =
-                    wall_cache[y * fb_width + x];
-        return;
-    }
-    if (!wall_rgb || wall_cw != fb_width || wall_ch != fb_height) {
+    if (!wallpaper_usable()) {
         vga_fb_rect(0, 0, fb_width, fb_height, COL_BG);
         return;
     }
-    /* True color: direct RGB from the cache, no cube quantization. */
+    row = (unsigned long)fb_width * (unsigned long)wall_bpx;
     for (y = 0; y < fb_height; y++)
-        for (x = 0; x < fb_width; x++) {
-            uint8_t *px = wall_rgb + ((unsigned long)y * (unsigned long)fb_width + (unsigned long)x) * 3;
-            fb_write_packed(x, y, ((unsigned long)px[0] << 16) | ((unsigned long)px[1] << 8) | (unsigned long)px[2]);
-        }
+        fb_copy_bytes(FBT + (unsigned long)y * (unsigned long)fb_pitch,
+                      wall_native + (unsigned long)y * row, row);
 }
 
 /* ---- Desktop shortcut icons ----
@@ -3335,36 +3946,25 @@ void desktop_shortcuts_draw(void) {
 /* Paint one wallpaper rectangle from the cache (solid fill when the cache
  * is absent or stale): the strip-erase primitive for the hover repaint. */
 static void wallpaper_rect(int x0, int y0, int w, int h) {
-    int y, x;
+    int y;
+    unsigned long row;
     if (x0 < 0) { w += x0; x0 = 0; }
     if (y0 < 0) { h += y0; y0 = 0; }
     if (w <= 0 || h <= 0) return;
     if (x0 + w > fb_width) w = fb_width - x0;
     if (y0 + h > fb_height) h = fb_height - y0;
     if (w <= 0 || h <= 0) return;
-    if (fb_bpp == 8) {
-        if (!wall_cache || wall_cw != fb_width || wall_ch != fb_height) {
-            vga_fb_rect(x0, y0, w, h, COL_BG);
-            return;
-        }
-        for (y = 0; y < h; y++)
-            for (x = 0; x < w; x++)
-                FB_ADDR[(unsigned)(y0 + y) * (unsigned)fb_pitch +
-                        (unsigned)(x0 + x)] =
-                    wall_cache[(y0 + y) * fb_width + (x0 + x)];
-        return;
-    }
-    if (!wall_rgb || wall_cw != fb_width || wall_ch != fb_height) {
+    if (!wallpaper_usable()) {
         vga_fb_rect(x0, y0, w, h, COL_BG);
         return;
     }
+    row = (unsigned long)fb_width * (unsigned long)wall_bpx;
     for (y = 0; y < h; y++)
-        for (x = 0; x < w; x++) {
-            uint8_t *px = wall_rgb + ((unsigned long)(y0 + y) * (unsigned long)fb_width +
-                                      (unsigned long)(x0 + x)) * 3;
-            fb_write_packed(x0 + x, y0 + y,
-                            ((unsigned long)px[0] << 16) | ((unsigned long)px[1] << 8) | (unsigned long)px[2]);
-        }
+        fb_copy_bytes(FBT + (unsigned long)(y0 + y) * (unsigned long)fb_pitch +
+                          (unsigned long)x0 * (unsigned long)wall_bpx,
+                      wall_native + (unsigned long)(y0 + y) * row +
+                          (unsigned long)x0 * (unsigned long)wall_bpx,
+                      (unsigned long)w * (unsigned long)wall_bpx);
 }
 
 /* Hover repaint without the fullscreen flash: erase only the dock strip
@@ -3493,24 +4093,38 @@ static void mouse_apply_wheel(int wheel, int step)
 
 /** Docstring: Title-bar drag of the graphics window. Redraws on every
  * offset change and once more on release, so the persistent layer moves
- * with the pointer and no duplicated copy survives the drop. */
+ * with the pointer and no duplicated copy survives the drop. Grabbing a
+ * tiled window floats it at native size under the pointer (the grab point
+ * keeps its relative position along the title); a fullscreen window has
+ * no title and never drags. */
 static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)
 {
-    int gx, gy;
+    int gx, gy, gw;
     int was = wm_gdrag;
     int old_ox = gfx_win_ox, old_oy = gfx_win_oy;
-    if (!vga_fb_gfx_mode || wm_skip_drag) {
+    wm_gfxview_rect_t ff;
+    if (!vga_fb_gfx_mode || wm_skip_drag || gfx_hidden || !gfx_view_valid ||
+        gfx_view_mode == WM_GFXVIEW_FULL || gfx_view.title_h <= 0) {
         wm_gdrag = 0;
         if (was) vga_fb_draw_desktop();
         return;
     }
-    gfx_target(&gx, &gy);
-    if (wm_hit_title_bar(gcfg, gx, gy, gfx_win_w, mx, my)) {
+    gx = gfx_view.frame.x;
+    gy = gfx_view.frame.y;
+    gw = gfx_view.frame.w;
+    if (wm_hit_title_bar(gcfg, gx, gy, gw, mx, my)) {
         if (mouse_state.buttons & 1) {
             if (!wm_gdrag) {
                 wm_gdrag = 1;
                 wm_ggx = mx - gx;
                 wm_ggy = my - gy;
+                if (gfx_view_mode != WM_GFXVIEW_FLOAT && gfx_float_frame(&ff) && gw > 0) {
+                    wm_ggx = (int)(((long)(mx - gx) * (long)ff.w) / (long)gw);
+                    gfx_view_mode = WM_GFXVIEW_FLOAT;
+                    gfx_view_back = WM_GFXVIEW_FLOAT;
+                    gfx_frame_dirty = 1;
+                    old_ox = old_oy = 0x7FFFFFFF;
+                }
             }
         } else {
             wm_gdrag = 0;
@@ -3519,8 +4133,10 @@ static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)
         wm_gdrag = 0;
     }
     if (wm_gdrag) {
-        int cx = (fb_width - gfx_win_w) / 2;
-        int cy = (fb_height - gfx_win_h) / 2;
+        int cx, cy;
+        if (!gfx_float_frame(&ff)) return;
+        cx = (fb_width - ff.w) / 2;
+        cy = (fb_height - ff.h) / 2;
         gfx_win_ox = mx - wm_ggx - cx;
         gfx_win_oy = my - wm_ggy - cy;
         if (gfx_win_ox != old_ox || gfx_win_oy != old_oy)
@@ -3600,6 +4216,23 @@ void vga_fb_mouse_tick(void) {
      * themselves); anywhere else the invalidation is gated off. */
     gfx_cursor = vga_fb_gfx_mode;
 
+    /* A fullscreen graphics window owns every pixel and every click: no
+     * taskbar widget, dock icon, terminal title or scrollbar lies under
+     * the pointer, so a click only (re)focuses the app and nothing else
+     * in the desktop may paint. */
+    if (gfx_covers_screen()) {
+        if (wm_is_click_edge(&ecfg, (int)tb_prev_buttons, mouse_state.buttons)) {
+            dock_click_edges++;
+            mouse_focus_topmost(mouse_state.x, mouse_state.y);
+        }
+        tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
+        wm_skip_drag = (mouse_state.buttons & 1) ? 1 : 0;
+        wm_dragging = 0;
+        wm_gdrag = 0;
+        wm_clamp_point(&mouse_state.x, &mouse_state.y, fb_width, fb_height);
+        return;
+    }
+
     taskbar_tick();
     if (wm_is_click_edge(&ecfg, (int)tb_prev_buttons, mouse_state.buttons)) {
         dock_click_edges++;
@@ -3640,7 +4273,11 @@ void vga_fb_mouse_tick(void) {
     if (!(mouse_state.buttons & 1)) wm_skip_drag = 0;
     tb_prev_buttons = (unsigned)(mouse_state.buttons & 1);
 
-    {
+    /* The wheel belongs to whoever holds the focus: a focused graphics
+     * app reads it through SYS_MOUSE, so the tick must leave it alone
+     * (consuming it here silently ate vedit's and the file browser's
+     * wheel scroll whenever a tick landed between two app polls). */
+    if (!vga_fb_gfx_mode || wm_focus != WM_FOCUS_GFX) {
         int wheel;
         irqflags_t flags = spin_save_irq();
         wheel = mouse_state.wheel;

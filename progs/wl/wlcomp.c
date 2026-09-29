@@ -396,6 +396,13 @@ static int wlcomp_selftest(void) {
  * into the slot buffer. */
 static struct wpix_store wlserv_pix;
 
+/** Per-slot copy of the client's raw pixels as last published. A
+ * layout or resize step only resamples from this copy; the .raw file
+ * is re-read only when the client itself published (attach or commit
+ * marked the slot dirty). Re-reading every surface's file on every
+ * resize motion step used to turn a window drag into disk traffic. */
+static struct wpix_store wlserv_raw;
+
 typedef struct {
     wl_comp_t comp;
     wl_mbox_box_t boxes[WL_MAX_SURFACES];
@@ -403,6 +410,7 @@ typedef struct {
     int ph[WL_MAX_SURFACES];
     int rw[WL_MAX_SURFACES];
     int rh[WL_MAX_SURFACES];
+    int raw_dirty[WL_MAX_SURFACES];
     int origin[2];
     int last_count;
 } wlserv_t;
@@ -412,11 +420,13 @@ static void wlserv_init(wlserv_t *s) {
     wl_comp_init(&s->comp);
     wl_mbox_init(s->boxes);
     wpix_init(&wlserv_pix);
+    wpix_init(&wlserv_raw);
     for (i = 0; i < WL_MAX_SURFACES; i++) {
         s->pw[i] = 0;
         s->ph[i] = 0;
         s->rw[i] = 0;
         s->rh[i] = 0;
+        s->raw_dirty[i] = 1;
     }
     s->origin[0] = 0;
     s->origin[1] = 0;
@@ -474,32 +484,75 @@ static int wlserv_present(wlserv_t *s) {
     return 0;
 }
 
-/** Drop one slot cache so its surface falls back to solid ink. */
+/** Drop one slot cache so its surface falls back to solid ink until
+ * the client publishes again (the raw copy reloads on the next fit). */
 static void wlserv_drop(wlserv_t *s, int idx) {
     if (!s || idx < 0 || idx >= WL_MAX_SURFACES)
         return;
     wpix_drop(&wlserv_pix, idx);
+    wpix_drop(&wlserv_raw, idx);
     s->pw[idx] = 0;
     s->ph[idx] = 0;
+    s->raw_dirty[idx] = 1;
+}
+
+/** Reload the raw copy of one slot from its box .raw file. Returns 0 on
+ * success; any short file, size lie or allocation failure returns -1
+ * and leaves the caller to drop the slot. */
+static int wlserv_load_raw(wlserv_t *s, int b, int idx) {
+    char path[WL_MBOX_NAME_MAX];
+    FILE *f = 0;
+    long n = 0;
+    long want = (long)s->rw[idx] * (long)s->rh[idx];
+    if (want <= 0 || want > (long)WPIX_SLOT_MAX)
+        return -1;
+    if (wpix_tmp(&wlserv_pix, (size_t)want) != 0)
+        return -1;
+    if (wl_mbox_raw_name(path, sizeof path, s->boxes[b].box) <= 0)
+        return -1;
+    f = fopen(path, "rb");
+    if (!f)
+        return -1;
+    if (fseek(f, 0, SEEK_END) != 0) {
+        fclose(f);
+        return -1;
+    }
+    n = ftell(f);
+    if (n != want || fseek(f, 0, SEEK_SET) != 0) {
+        fclose(f);
+        return -1;
+    }
+    if (fread(wpix_raw(&wlserv_pix), 1, (unsigned long)n, f)
+        != (unsigned long)n) {
+        fclose(f);
+        return -1;
+    }
+    fclose(f);
+    if (wpix_ensure(&wlserv_raw, idx, s->rw[idx], s->rh[idx]) != 0)
+        return -1;
+    if (wpix_commit(&wlserv_raw, idx, wpix_raw(&wlserv_pix), s->rw[idx],
+            s->rh[idx]) != 0)
+        return -1;
+    s->raw_dirty[idx] = 0;
+    return 0;
 }
 
 /** Fit every mapped surface to its laid-out size: reload the box raw
- * file at attach dims, then resample into the live cell. Heap slots
- * size on geometry change only, so steady frames allocate nothing;
- * any short file or size lie drops that cache, never a neighbour,
- * so one hostile client cannot blank the desktop. */
+ * copy only when the client published since the last fit, then
+ * resample into the live cell only when the pixels or the cell
+ * changed. Heap slots size on geometry change only, so steady frames
+ * allocate nothing and a move or resize never touches the disk; any
+ * short file or size lie drops that cache, never a neighbour, so one
+ * hostile client cannot blank the desktop. */
 static void wlserv_fit(wlserv_t *s) {
     int b = 0;
     for (b = 0; b < WL_MAX_SURFACES; b++) {
-        char path[WL_MBOX_NAME_MAX];
-        FILE *f = 0;
-        long n = 0;
-        long want = 0;
         long cells = 0;
         int idx = -1;
         int w = 0;
         int h = 0;
-        size_t need = 0;
+        int fresh = 0;
+        unsigned char *raw = 0;
         if (!s || !s->boxes[b].used)
             continue;
         idx = wlserv_slot(&s->comp,
@@ -514,52 +567,28 @@ static void wlserv_fit(wlserv_t *s) {
             wlserv_drop(s, idx);
             continue;
         }
-        want = (long)s->rw[idx] * (long)s->rh[idx];
         cells = (long)w * (long)h;
-        if (want <= 0 || want > (long)WPIX_SLOT_MAX || cells <= 0
-            || cells > (long)WPIX_SLOT_MAX) {
+        if (cells <= 0 || cells > (long)WPIX_SLOT_MAX) {
             wlserv_drop(s, idx);
             continue;
         }
-        if (wpix_ensure(&wlserv_pix, idx, w, h) != 0) {
+        if (s->raw_dirty[idx] || !wpix_ptr(&wlserv_raw, idx)) {
+            if (wlserv_load_raw(s, b, idx) != 0) {
+                wlserv_drop(s, idx);
+                continue;
+            }
+            fresh = 1;
+        }
+        if (!fresh && s->pw[idx] == w && s->ph[idx] == h
+            && wpix_ptr(&wlserv_pix, idx))
+            continue;
+        raw = wpix_ptr(&wlserv_raw, idx);
+        if (!raw || wpix_ensure(&wlserv_pix, idx, w, h) != 0
+            || wpix_tmp(&wlserv_pix, (size_t)cells) != 0) {
             wlserv_drop(s, idx);
             continue;
         }
-        need = (size_t)want > (size_t)cells ? (size_t)want : (size_t)cells;
-        if (wpix_tmp(&wlserv_pix, need) != 0) {
-            wlserv_drop(s, idx);
-            continue;
-        }
-        if (wl_mbox_raw_name(path, sizeof path,
-                s->boxes[b].box) <= 0) {
-            wlserv_drop(s, idx);
-            continue;
-        }
-        f = fopen(path, "rb");
-        if (!f) {
-            wlserv_drop(s, idx);
-            continue;
-        }
-        if (fseek(f, 0, SEEK_END) != 0) {
-            fclose(f);
-            wlserv_drop(s, idx);
-            continue;
-        }
-        n = ftell(f);
-        if (n != want || fseek(f, 0, SEEK_SET) != 0) {
-            fclose(f);
-            wlserv_drop(s, idx);
-            continue;
-        }
-        if (fread(wpix_raw(&wlserv_pix), 1, (unsigned long)n, f)
-            != (unsigned long)n) {
-            fclose(f);
-            wlserv_drop(s, idx);
-            continue;
-        }
-        fclose(f);
-        if (wl_scale_nearest(wpix_dst(&wlserv_pix), w, h,
-                wpix_raw(&wlserv_pix), s->rw[idx],
+        if (wl_scale_nearest(wpix_dst(&wlserv_pix), w, h, raw, s->rw[idx],
                 s->rh[idx]) != WL_ERR_OK) {
             wlserv_drop(s, idx);
             continue;
@@ -635,9 +664,13 @@ static unsigned wlserv_ev_wheel = 0;
 static int wlserv_focus_box(const wlserv_t *s) {
     unsigned int id = 0;
     int b = -1;
+    int top = -1;
     if (!s || s->comp.count <= 0)
         return -1;
-    id = s->comp.items[s->comp.order[s->comp.count - 1]].id;
+    top = wl_comp_top_visible(&s->comp);
+    if (top < 0)
+        return -1;
+    id = s->comp.items[top].id;
     if (!wl_surface_id_valid(id))
         return -1;
     b = (int)(id - WL_ID_SURFACE_BASE);
@@ -793,9 +826,110 @@ static int wlserv_close(wlserv_t *s, unsigned int id) {
     return 1;
 }
 
+/** 1 when a box name already owns a server slot. */
+static int wlserv_box_known(const wlserv_t *s, const char *box) {
+    int i;
+    if (!s || !box)
+        return 0;
+    for (i = 0; i < WL_MAX_SURFACES; i++) {
+        if (s->boxes[i].used && strcmp(s->boxes[i].box, box) == 0)
+            return 1;
+    }
+    return 0;
+}
+
+/** Give back a slot that a rejected message claimed for a box the
+ * server had never accepted: the surface the route may have created and
+ * the box entry both go, so torn, stale or hostile files can never squat
+ * one of the WL_MAX_SURFACES slots forever (eight bad names used to lock
+ * every real client out until restart). */
+static void wlserv_unclaim(wlserv_t *s, int slot) {
+    unsigned int sid;
+    int idx;
+    if (!s || slot < 0 || slot >= WL_MAX_SURFACES)
+        return;
+    sid = WL_ID_SURFACE_BASE + (unsigned int)slot;
+    idx = wlserv_slot(&s->comp, sid);
+    if (idx >= 0) {
+        wl_comp_remove(&s->comp, sid);
+        wlserv_drop(s, idx);
+        s->rw[idx] = 0;
+        s->rh[idx] = 0;
+    }
+    s->boxes[slot].used = 0;
+    s->boxes[slot].box[0] = '\0';
+    s->boxes[slot].seq_last = 0;
+}
+
+/** Take one mailbox file for an assigned slot: read, validate, route.
+ * Returns 1 when it routed (w/h report an attach), 0 when a torn write
+ * was left for the next poll, -1 when the file was rejected and removed. */
+static int wlserv_take(wlserv_t *s, const char *box, unsigned int seq,
+        int slot, int *w, int *h) {
+    char path[WL_MBOX_NAME_MAX];
+    unsigned char file[WL_MAX_MSG + WL_MBOX_FRAME_HEAD + 1];
+    unsigned int fseq = 0;
+    int off = 0;
+    int mlen = 0;
+    int r = 0;
+    int rslot = slot;
+    long n = 0;
+    FILE *f = 0;
+    wl_hdr_t mh;
+    if (wl_mbox_name(path, sizeof path, box, seq) <= 0)
+        return 0;
+    if (wl_mbox_fresh(s->boxes, slot, seq) == 0) {
+        unlink(path);
+        return -1;
+    }
+    f = fopen(path, "rb");
+    if (!f)
+        return 0;
+    if (fseek(f, 0, SEEK_END) != 0) {
+        fclose(f);
+        return 0;
+    }
+    n = ftell(f);
+    if (n < WL_MBOX_FRAME_HEAD || n > WL_MAX_MSG + WL_MBOX_FRAME_HEAD) {
+        fclose(f);
+        if (n >= 0 && n < WL_MBOX_FRAME_HEAD)
+            return 0;
+        unlink(path);
+        return -1;
+    }
+    if (fseek(f, 0, SEEK_SET) != 0
+        || fread(file, 1, (unsigned long)n, f) != (unsigned long)n) {
+        fclose(f);
+        return 0;
+    }
+    fclose(f);
+    r = wl_mbox_frame_decode(file, (int)n, &fseq, &off, &mlen);
+    if (r == WL_ERR_TRUNC)
+        return 0;
+    if (r != WL_ERR_OK || fseq != seq
+        || wl_hdr_decode(file + off, mlen, &mh) != WL_ERR_OK) {
+        unlink(path);
+        return -1;
+    }
+    r = wl_mbox_route(&s->comp, s->boxes, box, mh.id, mh.opcode,
+        file + off + WL_HDR_SZ, mlen - WL_HDR_SZ, &rslot, w, h);
+    if (r != WL_ERR_OK || rslot != slot) {
+        unlink(path);
+        return -1;
+    }
+    s->boxes[slot].seq_last = seq;
+    s->boxes[slot].used = 1;
+    unlink(path);
+    return 1;
+}
+
 /** Drain at most WL_MBOX_POLL_MAX mailbox files: validate every frame
  * before dispatch, unlink what was consumed, and leave torn writes
- * for the next poll. Returns 1 when pixels changed. */
+ * for the next poll. A box whose first message is torn or rejected
+ * never keeps the slot it was provisionally given. Every routed
+ * message marks the slot's raw pixels dirty (clients republish the
+ * .raw file before each attach/commit), so the next fit reloads them.
+ * Returns 1 when pixels changed. */
 static int wlserv_drain(wlserv_t *s) {
     char names[4096];
     long count = 0;
@@ -816,15 +950,9 @@ static int wlserv_drain(wlserv_t *s) {
         int slot = -1;
         int w = -1;
         int h = -1;
-        int di = 0;
-        FILE *f = 0;
-        long n = 0;
-        unsigned char file[WL_MAX_MSG + WL_MBOX_FRAME_HEAD + 1];
-        unsigned int fseq = 0;
-        int off = 0;
-        int mlen = 0;
-        wl_hdr_t mh;
+        int known = 0;
         int r = 0;
+        int idx = -1;
         int nl = 0;
         while (p[nl] != '\0')
             nl++;
@@ -834,97 +962,29 @@ static int wlserv_drain(wlserv_t *s) {
             p += nl + 1;
             continue;
         }
+        p += nl + 1;
+        known = wlserv_box_known(s, box);
         slot = wl_mbox_assign(s->boxes, box);
-        if (slot < 0) {
-            p += nl + 1;
+        if (slot < 0)
+            continue;
+        r = wlserv_take(s, box, seq, slot, &w, &h);
+        if (r <= 0) {
+            if (!known)
+                wlserv_unclaim(s, slot);
             continue;
         }
-        if (wl_mbox_fresh(s->boxes, slot, seq) == 0) {
-            di = wl_mbox_name(path, sizeof path, box, seq);
-            if (di > 0)
-                unlink(path);
-            p += nl + 1;
-            continue;
-        }
-        di = wl_mbox_name(path, sizeof path, box, seq);
-        if (di <= 0) {
-            p += nl + 1;
-            continue;
-        }
-        f = fopen(path, "rb");
-        if (!f) {
-            p += nl + 1;
-            continue;
-        }
-        if (fseek(f, 0, SEEK_END) != 0) {
-            fclose(f);
-            p += nl + 1;
-            continue;
-        }
-        n = ftell(f);
-        if (n < WL_MBOX_FRAME_HEAD || n > WL_MAX_MSG + WL_MBOX_FRAME_HEAD) {
-            fclose(f);
-            if (n >= 0 && n < WL_MBOX_FRAME_HEAD) {
-                p += nl + 1;
-                continue;
-            }
-            unlink(path);
-            p += nl + 1;
-            continue;
-        }
-        if (fseek(f, 0, SEEK_SET) != 0) {
-            fclose(f);
-            p += nl + 1;
-            continue;
-        }
-        if (fread(file, 1, (unsigned long)n, f) != (unsigned long)n) {
-            fclose(f);
-            p += nl + 1;
-            continue;
-        }
-        fclose(f);
-        r = wl_mbox_frame_decode(file, (int)n, &fseq, &off, &mlen);
-        if (r == WL_ERR_TRUNC) {
-            p += nl + 1;
-            continue;
-        }
-        if (r != WL_ERR_OK) {
-            unlink(path);
-            p += nl + 1;
-            continue;
-        }
-        if (fseq != seq) {
-            unlink(path);
-            p += nl + 1;
-            continue;
-        }
-        if (wl_hdr_decode(file + off, mlen, &mh) != WL_ERR_OK) {
-            unlink(path);
-            p += nl + 1;
-            continue;
-        }
-        r = wl_mbox_route(&s->comp, s->boxes, box, mh.id, mh.opcode,
-            file + off + WL_HDR_SZ, mlen - WL_HDR_SZ, &slot, &w, &h);
-        if (r != WL_ERR_OK) {
-            unlink(path);
-            p += nl + 1;
-            continue;
-        }
-        s->boxes[slot].seq_last = seq;
-        s->boxes[slot].used = 1;
-        unlink(path);
         routed++;
-        if (w > 0 && h > 0) {
-            int idx = wlserv_slot(&s->comp,
-                WL_ID_SURFACE_BASE + (unsigned int)slot);
-            if (idx >= 0) {
+        idx = wlserv_slot(&s->comp,
+            WL_ID_SURFACE_BASE + (unsigned int)slot);
+        if (idx >= 0) {
+            if (w > 0 && h > 0) {
                 wlserv_drop(s, idx);
                 s->rw[idx] = w;
                 s->rh[idx] = h;
             }
+            s->raw_dirty[idx] = 1;
         }
         changed = 1;
-        p += nl + 1;
     }
     if (changed)
         wlserv_recolor(&s->comp);
@@ -1348,9 +1408,10 @@ static int wlcomp_server(void) {
                         }
                         ev_force = 1;
                     }
-                    if (code == 0x32L && s.comp.focus >= 0) {
+                    if (code == 0x32L
+                        && wl_comp_top_visible(&s.comp) >= 0) {
                         unsigned int id =
-                            s.comp.items[s.comp.focus].id;
+                            s.comp.items[wl_comp_top_visible(&s.comp)].id;
                         if (id != 0
                             && wl_comp_set_minimized(&s.comp, id,
                                 1) == WL_ERR_OK) {

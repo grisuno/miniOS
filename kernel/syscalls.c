@@ -371,12 +371,18 @@ static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, l
     gfx_note_compositor();
     vga_fb_blit_gfx_window(); return 0;
 }
-/* 2x nearest-neighbour zoom for the 320x200 game window (a1 0/1).
- * Scalar only, no pointer to validate; anything else is EINVAL. */
+/* Graphics window scale request (a1): 0 native, 1 2x nearest-neighbour
+ * zoom for the 320x200 game window, 2 true fullscreen (aspect-fit to the
+ * whole display, the WM view contract in wm_gfxview.h), 3 leave
+ * fullscreen. Scalar only, no pointer to validate; anything else is
+ * EINVAL, and 2/3 without a graphics program are EINVAL too, so an old
+ * caller probing the call keeps its windowed behaviour. */
 static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     extern int gfx_zoom_2x;
-    if (a1 < 0 || a1 > 1) return -22;
+    if (a1 == MINIOS_GFX_ZOOM_FULLSCREEN || a1 == MINIOS_GFX_ZOOM_WINDOWED)
+        return vga_fb_gfx_set_fullscreen(a1 == MINIOS_GFX_ZOOM_FULLSCREEN) ? -22 : 0;
+    if (a1 < MINIOS_GFX_ZOOM_NATIVE || a1 > MINIOS_GFX_ZOOM_2X) return -22;
     gfx_zoom_2x = (int)a1;
     return 0;
 }
@@ -476,6 +482,7 @@ static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a
     mw = mouse_state.wheel;
     mouse_state.wheel = 0;
     spin_restore_irq(flags);
+    vga_fb_gfx_map_mouse(&mx, &my);
     m[0] = mx;
     m[1] = my;
     m[2] = mb;
@@ -490,7 +497,7 @@ static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, lon
     vga_fb_blit_nk_window();
     if (a1) {
         int *o = (int *)(unsigned long)a1;
-        o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
+        vga_fb_gfx_origin(&o[0], &o[1]);
     }
     return 0;
 }
@@ -661,10 +668,11 @@ static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, 
     if (a1 == 1) {
         if (a2)
             SANITIZE_RANGE(a2, 2 * sizeof(int));
+        gfx_note_compositor();
         vga_fb_blit_nk_window();
         if (a2) {
             int *o = (int *)(unsigned long)a2;
-            o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
+            vga_fb_gfx_origin(&o[0], &o[1]);
         }
         return 0;
     }
@@ -675,10 +683,11 @@ static long sys_minios_gfx_present(long a1, long a2, long a3, long a4, long a5, 
         vga_fb_blit_nk_rgb_window();
         if (a2) {
             int *o = (int *)(unsigned long)a2;
-            o[0] = nk_win_x; o[1] = nk_win_y + FONT_H;
+            vga_fb_gfx_origin(&o[0], &o[1]);
         }
         return 0;
     }
+    gfx_note_compositor();
     vga_fb_blit_gfx_window();
     return 0;
 }

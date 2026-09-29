@@ -16,7 +16,7 @@ make test-freedomui >build/wl_scoped_fui.log 2>&1 || die "test-freedomui failed"
 grep -q "freedomui: ok" build/wl_scoped_fui.log || die "freedomui vectors missing"
 rm -f progs/bin/wlcomp.elf progs/bin/wlcomp
 make progs/bin/wlcomp >build/wl_scoped_build.log 2>&1 || die "wlcomp guest build failed"
-if grep -E "warning|error" build/wl_scoped_build.log; then die "warnings in wlcomp build"; fi
+if grep -E "warning:|error:" build/wl_scoped_build.log; then die "warnings in wlcomp build"; fi
 grep -q "wl_comp_layout_tile" progs/wl/wl_mini.h || die "tile layout missing"
 grep -q "wlcomp_blit" progs/wl/wl_mini.h || die "pixel blit missing"
 grep -q "wlcomp_blit_chrome" progs/wl/wl_mini.h || die "chrome blit missing"
@@ -68,9 +68,9 @@ grep -q "spin_raw_file" progs/src/spin.c || die "tiny raw publish missing"
 grep -q "spin.elf" Makefile || die "spin build missing"
 rm -f progs/bin/spin.elf
 make progs/bin/spin.elf >build/wl_scoped_spin.log 2>&1 || die "spin guest build failed"
-if grep -E "warning|error" build/wl_scoped_spin.log; then die "warnings in spin build"; fi
+if grep -E "warning:|error:" build/wl_scoped_spin.log; then die "warnings in spin build"; fi
 make progs/bin/wlcomp >build/wl_scoped_wlcomp.log 2>&1 || die "wlcomp rebuild failed"
-if grep -E "warning|error" build/wl_scoped_wlcomp.log; then die "warnings in wlcomp rebuild"; fi
+if grep -E "warning:|error:" build/wl_scoped_wlcomp.log; then die "warnings in wlcomp rebuild"; fi
 grep -q "^wl:" Makefile || die "make wl target missing"
 cp progs/wl/wl_mini.h build/wl_scoped_backup.h
 cp progs/wl/wl_mbox.h build/wl_scoped_mbox.h
@@ -111,6 +111,10 @@ mut "ev-map-outside" 's/if \(fx < x0 || fy < y0 || fx >= x0 + cw || fy >= y0 + c
 mut "ev-nsc" 's/ev->nsc > \(unsigned int\)WL_EV_SC_MAX/ev->nsc > 999/'
 mutm "box-pid" 's/if \(pid < 0\)/if (0)/'
 mutm "ev-name-suffix" 's/static const char suf\[\] = WL_MBOX_EV_SUFFIX;/static const char suf[] = ".xx";/'
+mut "minimize-sink" 's/c->order\[0\] = \(unsigned int\)i;/c->order[0] = c->order[0];/'
+mut "minimize-focus" 's/c->focus = wl_comp_top_visible\(c\);/c->focus = c->focus;/'
+mut "chrome-body-title" 's/int sy = \(\(ly - 1 - WL_TITLE_H\) \* s->h\) \/ bh;/int sy = ((ly - 1) * s->h) \/ bh;/'
+mut "ev-map-body" 's/ch = \(long\)sh - 2 - WL_TITLE_H;/ch = (long)sh - 2 - WL_TITLE_H - 1;/'
 cp build/wl_scoped_backup.h progs/wl/wl_mini.h
 cp build/wl_scoped_mbox.h progs/wl/wl_mbox.h
 make test-wl >build/wl_scoped_test.log 2>&1 || die "test-wl failed after restore"

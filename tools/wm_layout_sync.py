@@ -20,7 +20,7 @@ class WmLayoutSyncConfig:
     def __init__(self, root: pathlib.Path) -> None:
         """Docstring: Bind all paths to one repository root."""
         self.root = root
-        self.header = root / "wm_layout.h"
+        self.header = root / "headers" / "wm_layout.h"
         self.tests = root / "tests" / "test_wm.c"
         self.manifest = root / "docs" / "wm_layout_manifest.md"
         self.required_modes = ("tile", "bsp", "cascade", "fibonacci", "fullscreen")

@@ -200,6 +200,21 @@ void     vga_fb_reset_default(void);
 void     vga_fb_toggle_minimize(void);
 int      vga_fb_is_minimized(void);
 int      vga_fb_is_fullscreen(void);
+/* Graphics window view (headers/wm_gfxview.h owns the math). Fullscreen
+ * scales the app to the whole display with the aspect kept and takes the
+ * keyboard; hidden minimizes it to its taskbar button while it keeps
+ * running. Both glide between frames and return -1 without a program.
+ * The origin is the content top-left an app subtracts from SYS_MOUSE
+ * coordinates, and map_mouse converts a desktop pointer into the app's
+ * back-buffer space when its view is scaled (1:1 views pass through). */
+int      vga_fb_gfx_set_fullscreen(int on);
+int      vga_fb_gfx_set_hidden(int hide);
+const char *vga_fb_gfx_view_name(void);
+void     vga_fb_gfx_origin(int *x, int *y);
+void     vga_fb_gfx_map_mouse(int *x, int *y);
+/* Row fast paths of the packed-pixel primitives (clipped once per row). */
+void     fb_write_row_packed(int x, int y, const unsigned int *src, int n);
+void     fb_read_row_packed(int x, int y, unsigned int *dst, int n);
 int      vga_fb_close_active(void);
 /* Multi-window manager: Alt-Tab focus cycle, Super-Tab tiling, second
  * terminal. Focus ids 0/1 = terminals, 2 = graphics window. */

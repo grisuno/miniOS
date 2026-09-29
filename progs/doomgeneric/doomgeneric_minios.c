@@ -33,6 +33,24 @@ static void mini_parse_autoframes(int argc, char **argv) {
     }
 }
 
+/* Windowed opt-out: DOOM asks the WM for true fullscreen (scaled to the
+ * whole display with the aspect kept; Alt+Enter or the title maximize
+ * button toggles back) unless the command line carries `mini_windowed`
+ * or a headless `mini_autoframes` run is in progress, which keeps the
+ * cheap native window the BDD suite measures. */
+static int mini_windowed;
+
+static void mini_parse_windowed(int argc, char **argv) {
+    int i;
+    mini_windowed = 0;
+    for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "mini_windowed") == 0) {
+            mini_windowed = 1;
+            return;
+        }
+    }
+}
+
 /* ---------- MiniOS syscalls (canonical table from minios_abi.h) ---------- */
 
 static long sys_time_ms(void) {
@@ -58,6 +76,11 @@ static long sys_kbd_raw(int on) {
 static long sys_vga_mode(int on) {
     long ret;
     __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on) : "rcx","r11","memory");
+    return ret;
+}
+static long sys_gfx_zoom(long mode) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_ZOOM), "D"(mode) : "rcx","r11","memory");
     return ret;
 }
 static long sys_doom_frame(void) {
@@ -210,7 +233,10 @@ void DG_Init(void) {
     extern int myargc;
     extern char **myargv;
     mini_parse_autoframes(myargc, myargv);
+    mini_parse_windowed(myargc, myargv);
     sys_vga_mode(1);  /* tell kernel to stop touching VGA text hardware */
+    if (!mini_windowed && mini_autoframes <= 0)
+        sys_gfx_zoom(MINIOS_GFX_ZOOM_FULLSCREEN);
     sys_kbd_raw(1);   /* enable raw keyboard mode for DOOM */
 }
 

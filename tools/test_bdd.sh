@@ -494,6 +494,49 @@ expect "win term0"
 expect "exit code: 130"
 expect "powering off"
 
+# Order-sensitive by counts: expect is an unordered grep, and a toggle
+# visits both states whether it starts right or wrong. The correct run
+# is never floating (fullscreen start, tile, maximize, maximize back to
+# the tile) and shows fullscreen exactly twice and tiled exactly three
+# times, so a windowed start, a tile that skips the graphics window or a
+# maximize that ignores it all change a count.
+scenario "gfxview doom starts fullscreen and the tiler governs it" "run doomgeneric.elf &
+sleep 12
+wm list
+wm tile
+wm list
+wm maximize
+wm list
+wm maximize
+wm list
+wm minimize
+wm list
+wm focus 2
+wm list
+wm close
+wait
+poweroff"
+expect "started as job pid"
+expect_count 2 "view=fullscreen"
+expect_count 3 "view=tiled"
+expect_count 1 "view=minimized"
+refute "view=floating"
+expect "exit code: 130"
+expect "powering off"
+
+scenario "gfxview alt-tab away from a fullscreen app minimizes it" "run doomgeneric.elf &
+sleep 12
+wm focus next
+wm focus next
+wm close
+wait
+poweroff"
+expect "started as job pid"
+expect_count 1 "wm: gfx view minimized"
+expect_count 1 "wm: gfx view fullscreen"
+expect "exit code: 130"
+expect "powering off"
+
 scenario "a bare .cvm name runs directly from cvm/ without run" "w1.cvm
 poweroff"
 expect "hola cvm"

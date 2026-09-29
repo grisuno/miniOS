@@ -575,6 +575,17 @@ int main(void) {
             "chrome minimize ok");
         CHECK(wl_comp_hit(&w, 6, 2) == (int)a,
             "chrome minimized skips hit");
+        CHECK(wl_comp_top_visible(&w) == 0 && w.focus == 0,
+            "minimize hands focus to the top visible surface");
+        CHECK(w.order[0] == 1u,
+            "minimize sinks the surface to the bottom");
+        CHECK(wl_comp_set_minimized(&w, a, 1) == WL_ERR_OK
+            && wl_comp_top_visible(&w) == -1 && w.focus == -1,
+            "all minimized leaves no focus");
+        CHECK(wl_comp_set_minimized(&w, a, 0) == WL_ERR_OK
+            && wl_comp_top_visible(&w) == 0,
+            "restore brings focus back");
+        CHECK(wl_comp_top_visible(0) == -1, "top visible null refused");
         CHECK(wl_comp_layout_tile(&w, 32, 24) == 1,
             "chrome tile skips minimized");
         CHECK(wl_comp_set_minimized(&w, 7, 1) == WL_ERR_ID,
@@ -585,6 +596,43 @@ int main(void) {
             == WL_ERR_BOUND, "chrome null refused");
         CHECK(wlcomp_blit_chrome(&w, 0, 32, 24, 0, 0, 0)
             == WL_ERR_BOUND, "chrome null fb refused");
+    }
+
+    {
+        wl_comp_t w;
+        wl_client_t wc;
+        unsigned int a = 0;
+        unsigned char fb[40 * 40];
+        unsigned char px30[30 * 30];
+        const unsigned char *px[WL_MAX_SURFACES];
+        int pw[WL_MAX_SURFACES];
+        int ph[WL_MAX_SURFACES];
+        int i;
+        int cx = -1;
+        int cy = -1;
+        wl_comp_init(&w);
+        wl_client_init(&wc);
+        for (i = 0; i < WL_MAX_SURFACES; i++) {
+            px[i] = 0;
+            pw[i] = 0;
+            ph[i] = 0;
+        }
+        for (i = 0; i < 30 * 30; i++)
+            px30[i] = (unsigned char)(20 + i / 30);
+        CHECK(wl_client_surface(&wc, &a) == WL_ERR_OK, "body surf");
+        CHECK(wl_comp_add(&w, a, 30, 30) == WL_ERR_OK, "body add");
+        px[0] = px30;
+        pw[0] = 30;
+        ph[0] = 30;
+        CHECK(wlcomp_blit_chrome(&w, fb, 40, 40, px, pw, ph) == WL_ERR_OK,
+            "body blit ok");
+        CHECK(fb[(1 + WL_TITLE_H) * 40 + 10] == 20,
+            "first body row shows the client's first row");
+        CHECK(fb[28 * 40 + 10] == 20 + (13 * 30) / 14,
+            "last body row samples the matching client row");
+        CHECK(wl_ev_map(10, 28, 0, 0, 30, 30, 30, 30, &cx, &cy) == 1
+            && px30[cy * 30 + cx] == fb[28 * 40 + 10],
+            "pointer map and pixels agree");
     }
 
     {
@@ -626,8 +674,11 @@ int main(void) {
         CHECK(wl_ev_encode(0, WL_EV_SZ, &e) == WL_ERR_BOUND,
             "ev null refused");
         CHECK(wl_ev_map(10, 20, 0, 0, 30, 30, 30, 30, &cx, &cy) == 1
-            && cx == 9 && cy == 11,
+            && cx == 9 && cy == 10,
             "ev map centers");
+        CHECK(wl_ev_map(28, 28, 0, 0, 30, 30, 30, 30, &cx, &cy) == 1
+            && cx == 28 && cy == 27,
+            "ev map reaches the last body pixel");
         CHECK(wl_ev_map(200, 200, 0, 0, 30, 30, 30, 30, &cx, &cy) == 0
             && cx == -1 && cy == -1,
             "ev map outside refused");

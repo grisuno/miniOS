@@ -15,6 +15,7 @@
 #include "wm_tiling.h"
 #include "wm_focus.h"
 #include "wm_layout.h"
+#include "wm_gfxview.h"
 
 static int failures = 0;
 
@@ -373,6 +374,87 @@ int main(void)
         CHECK(wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 0, 40, cells, 4) == 0, "zero grid lays nothing");
         CHECK(wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 80, 40, 0, 4) == 0, "null out lays nothing");
         CHECK(wm_layout_compute(&lcfg, two, 2, WM_LAYOUT_TILE, 0, 80, 40, cells, 1) == 0, "small cap lays nothing");
+    }
+
+    {
+        wm_gfxview_config_t vcfg = WM_GFXVIEW_CONFIG_DEFAULT;
+        wm_gfxview_t v;
+        wm_gfxview_rect_t cell;
+        wm_gfxview_rect_t a;
+        wm_gfxview_rect_t b;
+        wm_gfxview_rect_t m;
+        int dw = -1;
+        int dh = -1;
+        int vx = -1;
+        int vy = -1;
+        CHECK(wm_gfxview_fit(&vcfg, 320, 200, 1024, 768, &dw, &dh) == 1
+              && dw == 960 && dh == 600, "fit keeps a crisp 3x when it covers");
+        CHECK(wm_gfxview_fit(&vcfg, 320, 200, 800, 600, &dw, &dh) == 1
+              && dw == 800 && dh == 500, "fit takes the exact fit over a small 2x");
+        CHECK(wm_gfxview_fit(&vcfg, 800, 360, 400, 300, &dw, &dh) == 1
+              && dw == 400 && dh == 180, "fit downscales keeping aspect");
+        CHECK(wm_gfxview_fit(&vcfg, 0, 200, 800, 600, &dw, &dh) == 0, "fit refuses zero source");
+        CHECK(wm_gfxview_fit(&vcfg, 320, 200, 800, 600, 0, &dh) == 0, "fit refuses null out");
+        CHECK(wm_gfxview_compute(&vcfg, WM_GFXVIEW_FULL, 320, 200, 1, 1024, 768, 0, 0, 0, &v) == 1
+              && v.title_h == 0 && v.frame.w == 1024 && v.frame.h == 768
+              && v.content.x == 32 && v.content.y == 84 && v.content.w == 960,
+              "fullscreen fills the display, centered, no chrome");
+        CHECK(wm_gfxview_compute(&vcfg, WM_GFXVIEW_FLOAT, 320, 200, 1, 800, 600, 0, 0, 0, &v) == 1
+              && v.frame.w == 320 && v.frame.h == 208 && v.frame.x == 240
+              && v.content.y == v.frame.y + 8 && v.content.w == 320,
+              "floating is native and centered under a title");
+        CHECK(wm_gfxview_compute(&vcfg, WM_GFXVIEW_FLOAT, 320, 200, 2, 800, 600, 0, 0, 0, &v) == 1
+              && v.content.w == 640 && v.content.h == 400, "floating honours the 2x zoom");
+        CHECK(wm_gfxview_compute(&vcfg, WM_GFXVIEW_FLOAT, 320, 200, 1, 800, 600, 0, 9999, 0, &v) == 1
+              && v.frame.x + v.frame.w == 800, "floating offset clamps on screen");
+        CHECK(wm_gfxview_compute(&vcfg, WM_GFXVIEW_FLOAT, 800, 360, 1, 640, 480, 0, 0, 0, &v) == 1
+              && v.content.w <= 640 && v.frame.h <= 480, "oversized floating source fits the screen");
+        cell.x = 400;
+        cell.y = 0;
+        cell.w = 400;
+        cell.h = 592;
+        CHECK(wm_gfxview_compute(&vcfg, WM_GFXVIEW_TILED, 320, 200, 1, 800, 600, &cell, 0, 0, &v) == 1
+              && v.frame.x == 400 && v.frame.w == 400 && v.title_h == 8
+              && v.content.w == 400 && v.content.h == 250
+              && v.content.x == 400 && v.content.y > 8,
+              "tiled scales into the cell under its title");
+        CHECK(wm_gfxview_compute(&vcfg, WM_GFXVIEW_TILED, 320, 200, 1, 800, 600, 0, 0, 0, &v) == 0,
+              "tiled without a cell fails closed");
+        CHECK(wm_gfxview_compute(&vcfg, 7, 320, 200, 1, 800, 600, &cell, 0, 0, &v) == 0,
+              "unknown view mode fails closed");
+        CHECK(wm_gfxview_mode_name(WM_GFXVIEW_FULL) != 0 && wm_gfxview_mode_name(9) == 0,
+              "mode names cover the table only");
+        CHECK(wm_gfxview_compute(&vcfg, WM_GFXVIEW_FULL, 320, 200, 1, 800, 600, 0, 0, 0, &v) == 1,
+              "fullscreen view for the map");
+        CHECK(wm_gfxview_map_point(&v, 320, 200, v.content.x, v.content.y, &vx, &vy) == 1
+              && vx == v.content.x && vy == v.content.y, "map origin stays origin");
+        CHECK(wm_gfxview_map_point(&v, 320, 200, v.content.x + v.content.w - 1,
+                                   v.content.y + v.content.h - 1, &vx, &vy) == 1
+              && vx - v.content.x == 319 && vy - v.content.y == 199, "map far corner hits last pixel");
+        CHECK(wm_gfxview_map_point(&v, 320, 200, v.content.x + 400, v.content.y + 250, &vx, &vy) == 1
+              && vx - v.content.x == 160 && vy - v.content.y == 100, "map center hits source center");
+        CHECK(wm_gfxview_map_point(&v, 320, 200, 0, 0, &vx, &vy) == 0
+              && vx - v.content.x == 0 && vy - v.content.y == 0, "map outside clamps to the edge");
+        CHECK(wm_gfxview_map_point(0, 320, 200, 0, 0, &vx, &vy) == -1, "map null view refused");
+        CHECK(wm_gfxview_ease(0, 10, 4096) == 0 && wm_gfxview_ease(10, 10, 4096) == 4096,
+              "ease starts at 0 and lands exactly");
+        CHECK(wm_gfxview_ease(5, 10, 4096) > 2048, "ease out front-loads the motion");
+        CHECK(wm_gfxview_ease(3, 10, 4096) <= wm_gfxview_ease(4, 10, 4096), "ease is monotonic");
+        a.x = 0;
+        a.y = 0;
+        a.w = 100;
+        a.h = 100;
+        b.x = 100;
+        b.y = 200;
+        b.w = 300;
+        b.h = 100;
+        CHECK(wm_gfxview_lerp_rect(&a, &b, 0, 10, &m) == 1 && wm_gfxview_rect_same(&m, &a),
+              "lerp starts at the old rect");
+        CHECK(wm_gfxview_lerp_rect(&a, &b, 10, 10, &m) == 1 && wm_gfxview_rect_same(&m, &b),
+              "lerp ends at the new rect");
+        CHECK(wm_gfxview_lerp_rect(&a, &b, 5, 10, &m) == 1 && m.x > 50 && m.x < 100,
+              "lerp midpoint is past halfway under ease-out");
+        CHECK(wm_gfxview_lerp_rect(0, &b, 5, 10, &m) == 0, "lerp null refused");
     }
 
     if (failures == 0) {

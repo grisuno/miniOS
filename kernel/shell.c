@@ -1953,6 +1953,7 @@ static void shell_cmd_wm(int argc, char **argv) {
             wm_gfx_mode_active(), vga_fb_focus_get(),
             vga_fb_nterms_get());
     kprintf("wm: fx %s\n", vga_fx_enabled() ? "on" : "off");
+    kprintf("wm: gfx view %s\n", vga_fb_gfx_view_name());
     kprintf("wm: layout %s\n", vga_fb_layout_name());
     {
         unsigned long kicks = 0;

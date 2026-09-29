@@ -435,17 +435,48 @@ static inline int wl_surface_hit_zone(const wl_surface_t *s, int x, int y) {
     return WL_HIT_BODY;
 }
 
+/** Slot of the top-most mapped, non-minimized surface, or -1. This is
+ * the window that owns keyboard input: the raw top of the z-order can
+ * be a minimized surface, which must never receive keys it cannot show. */
+static inline int wl_comp_top_visible(const wl_comp_t *c) {
+    int i;
+    if (!c)
+        return -1;
+    for (i = c->count - 1; i >= 0; i--) {
+        int slot = (int)c->order[i];
+        if (slot < 0 || slot >= WL_MAX_SURFACES)
+            continue;
+        if (c->items[slot].mapped && !c->items[slot].minimized)
+            return slot;
+    }
+    return -1;
+}
+
 /** Minimize/restore one surface. Minimized surfaces keep their slot
  * and geometry but skip hit testing, tiling and compositing until
- * restored. */
+ * restored. Minimizing sinks the surface to the bottom of the z-order
+ * and hands focus to the top-most visible surface, so the next key or
+ * Alt+M lands on a window the user can see. */
 static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,
         int minimized) {
     int i;
+    int k;
     if (!c)
         return WL_ERR_BOUND;
     for (i = 0; i < WL_MAX_SURFACES; i++) {
         if (c->items[i].id == id) {
             c->items[i].minimized = minimized ? 1 : 0;
+            if (minimized) {
+                for (k = 0; k < c->count; k++) {
+                    if ((int)c->order[k] == i) {
+                        for (; k > 0; k--)
+                            c->order[k] = c->order[k - 1];
+                        c->order[0] = (unsigned int)i;
+                        break;
+                    }
+                }
+            }
+            c->focus = wl_comp_top_visible(c);
             wl_comp_refresh_active(c);
             return WL_ERR_OK;
         }
@@ -663,9 +694,13 @@ static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,
 
 /** Composite with window chrome: a title strip inside the frame
  * paints active vs inactive, with a close box at its right end, and
- * client pixels fill only below it. Small surfaces render exactly
- * like wlcomp_blit so the legacy selftest vectors never move. Pure
- * function, same fail-closed bounds as wlcomp_blit, same slot tables. */
+ * client pixels fill only the body below it. The w x h pixel table is
+ * resampled into the body (inside the 1 px border, below the title),
+ * the exact rect wl_ev_map maps pointer events from, so the pixel under
+ * the arrow is the pixel the client receives and no client row hides
+ * under the title strip. Small surfaces render exactly like wlcomp_blit
+ * so the legacy selftest vectors never move. Pure function, same
+ * fail-closed bounds as wlcomp_blit, same slot tables. */
 static inline int wlcomp_blit_chrome(const wl_comp_t *c, unsigned char *fb,
         int fb_w, int fb_h, const unsigned char * const *px,
         const int *pw, const int *ph) {
@@ -724,6 +759,20 @@ static inline int wlcomp_blit_chrome(const wl_comp_t *c, unsigned char *fb,
                     else
                         fb[y * fb_w + x] = (unsigned char)(s->active
                             ? WL_TITLE_ACTIVE : WL_TITLE_INACTIVE);
+                } else if (src && has_title) {
+                    int bw = s->w - 2;
+                    int bh = s->h - 2 - WL_TITLE_H;
+                    int sx = ((lx - 1) * s->w) / bw;
+                    int sy = ((ly - 1 - WL_TITLE_H) * s->h) / bh;
+                    if (sx < 0)
+                        sx = 0;
+                    if (sy < 0)
+                        sy = 0;
+                    if (sx >= s->w)
+                        sx = s->w - 1;
+                    if (sy >= s->h)
+                        sy = s->h - 1;
+                    fb[y * fb_w + x] = src[sy * s->w + sx];
                 } else if (src) {
                     fb[y * fb_w + x] = src[(y - s->y) * s->w + (x - s->x)];
                 } else {
@@ -1016,7 +1065,7 @@ static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,
     x0 = (long)sx + 1;
     y0 = (long)sy + 1 + WL_TITLE_H;
     cw = (long)sw - 2;
-    ch = (long)sh - 2 - WL_TITLE_H - 1;
+    ch = (long)sh - 2 - WL_TITLE_H;
     if (cw <= 0 || ch <= 0)
         return 0;
     if (fx < x0 || fy < y0 || fx >= x0 + cw || fy >= y0 + ch)

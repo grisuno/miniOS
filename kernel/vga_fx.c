@@ -29,13 +29,12 @@ int vga_fx_enabled(void)
     return fx_enabled;
 }
 
-/* Busy-wait pacing over the PIT-calibrated TSC clock. Interrupts stay on,
+/* Deadline pacing over the PIT-calibrated TSC clock. Interrupts stay on,
  * so the 100 Hz tick keeps running; a concurrent desktop tick may tear one
  * melt frame cosmetically, never corrupt state. */
-static void fx_wait_ms(unsigned long ms)
+static void fx_wait_until(unsigned long deadline)
 {
-    unsigned long t0 = ktime_ms();
-    while (ktime_ms() - t0 < ms) {
+    while ((long)(deadline - ktime_ms()) > 0) {
     }
 }
 
@@ -43,7 +42,7 @@ unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)
 {
     unsigned int *buf;
     unsigned long n;
-    int r, c;
+    int r;
     if (vga_fx_clamp_rect(&x, &y, &w, &h, fb_width, fb_height)) {
         return 0;
     }
@@ -56,17 +55,14 @@ unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)
         return 0;
     }
     for (r = 0; r < h; r++) {
-        for (c = 0; c < w; c++) {
-            buf[(unsigned long)r * (unsigned long)w + (unsigned long)c] =
-                (unsigned int)fb_read_packed(x + c, y + r);
-        }
+        fb_read_row_packed(x, y + r, buf + (unsigned long)r * (unsigned long)w, w);
     }
     return buf;
 }
 
 void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)
 {
-    int r, c;
+    int r;
     if (!buf) {
         return;
     }
@@ -74,10 +70,7 @@ void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)
         return;
     }
     for (r = 0; r < h; r++) {
-        for (c = 0; c < w; c++) {
-            fb_write_packed(x + c, y + r,
-                (unsigned long)buf[(unsigned long)r * (unsigned long)w + (unsigned long)c]);
-        }
+        fb_write_row_packed(x, y + r, buf + (unsigned long)r * (unsigned long)w, w);
     }
 }
 
@@ -88,19 +81,24 @@ void vga_fx_free(unsigned int *buf)
     }
 }
 
-/* Drive one old->new melt. The framebuffer must show the old rect on entry
- * and shows the new rect on return. Each pixel is written exactly once:
- * prev[] tracks the revealed frontier per column, so the total cost is one
- * rect copy plus the pacing waits. */
-void vga_fx_melt_rect(int x, int y, int w, int h,
-    const unsigned int *oldb, const unsigned int *newb)
+/* Shared melt driver: reveal newb over whatever the rect shows on entry.
+ * Column fronts advance in virtual melt frames of cfg.frame_ms each, and
+ * the driver catches up by elapsed time: a paint that took longer than a
+ * frame advances several frames before the next paint, so the melt always
+ * finishes in its nominal duration and moves at a constant speed instead
+ * of stuttering whenever a paint runs slow. Each pixel is written exactly
+ * once (prev[] tracks the revealed frontier per column), then the final
+ * restore guarantees the exact new frame. */
+static void fx_melt_run(int x, int y, int w, int h, const unsigned int *newb)
 {
     vga_fx_config_t cfg = VGA_FX_CONFIG_DEFAULT;
     int *cols;
     int *prev;
     int i, r;
-    int frames;
-    (void)oldb;
+    int budget;
+    int done = 0;
+    unsigned long t0;
+    unsigned long frames_done = 0;
     if (!newb) {
         return;
     }
@@ -121,9 +119,15 @@ void vga_fx_melt_rect(int x, int y, int w, int h,
     for (i = 0; i < w; i++) {
         prev[i] = 0;
     }
-    frames = h + cfg.max_delay + 8;
-    while (frames-- > 0) {
-        int done = vga_fx_advance(&cfg, cols, w, h);
+    budget = h + cfg.max_delay + 8;
+    t0 = ktime_ms();
+    while (!done && budget > 0) {
+        unsigned long due = (ktime_ms() - t0) / (unsigned long)cfg.frame_ms + 1UL;
+        while (frames_done < due && !done && budget > 0) {
+            done = vga_fx_advance(&cfg, cols, w, h);
+            frames_done++;
+            budget--;
+        }
         for (i = 0; i < w; i++) {
             int front = vga_fx_front(cols[i], h);
             for (r = prev[i]; r < front; r++) {
@@ -132,62 +136,27 @@ void vga_fx_melt_rect(int x, int y, int w, int h,
             }
             prev[i] = front;
         }
-        if (done) {
-            break;
+        if (!done) {
+            fx_wait_until(t0 + frames_done * (unsigned long)cfg.frame_ms);
         }
-        fx_wait_ms((unsigned long)cfg.frame_ms);
     }
     fx_melts_completed++;
     vga_fx_restore_rect(x, y, w, h, newb);
     kfree(cols);
 }
 
+/* Drive one old->new melt. The framebuffer must show the old rect on entry
+ * and shows the new rect on return. */
+void vga_fx_melt_rect(int x, int y, int w, int h,
+    const unsigned int *oldb, const unsigned int *newb)
+{
+    (void)oldb;
+    fx_melt_run(x, y, w, h, newb);
+}
+
 /* Boot melt: the framebuffer is already cleared to black on entry, so no
  * old snapshot is needed; the new frame scrolls down over black. */
 void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)
 {
-    vga_fx_config_t cfg = VGA_FX_CONFIG_DEFAULT;
-    int *cols;
-    int *prev;
-    int i, r;
-    int frames;
-    if (!newb) {
-        return;
-    }
-    if (vga_fx_clamp_rect(&x, &y, &w, &h, fb_width, fb_height)) {
-        return;
-    }
-    cols = kmalloc((unsigned long)w * 2UL * sizeof(int));
-    if (!cols) {
-        vga_fx_restore_rect(x, y, w, h, newb);
-        return;
-    }
-    prev = cols + w;
-    if (vga_fx_init_cols(&cfg, cols, w)) {
-        kfree(cols);
-        vga_fx_restore_rect(x, y, w, h, newb);
-        return;
-    }
-    for (i = 0; i < w; i++) {
-        prev[i] = 0;
-    }
-    frames = h + cfg.max_delay + 8;
-    while (frames-- > 0) {
-        int done = vga_fx_advance(&cfg, cols, w, h);
-        for (i = 0; i < w; i++) {
-            int front = vga_fx_front(cols[i], h);
-            for (r = prev[i]; r < front; r++) {
-                fb_write_packed(x + i, y + r,
-                    (unsigned long)newb[(unsigned long)r * (unsigned long)w + (unsigned long)i]);
-            }
-            prev[i] = front;
-        }
-        if (done) {
-            break;
-        }
-        fx_wait_ms((unsigned long)cfg.frame_ms);
-    }
-    fx_melts_completed++;
-    vga_fx_restore_rect(x, y, w, h, newb);
-    kfree(cols);
+    fx_melt_run(x, y, w, h, newb);
 }

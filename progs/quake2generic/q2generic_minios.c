@@ -69,7 +69,30 @@ static long sys_set_title(const char *t) {
     return ret;
 }
 
+static long sys_gfx_zoom(long mode) {
+    long ret;
+    __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_GFX_ZOOM), "D"(mode) : "rcx","r11","memory");
+    return ret;
+}
+
 #define Q2G_BACKBUF ((volatile uint8_t *)MINIOS_DOOM_BACKBUF_ADDR)
+
+/* Windowed opt-out: the game asks the WM for true fullscreen (scaled to
+ * the whole display, aspect kept, Alt+Enter toggles) unless the command
+ * line carries `minios_windowed` or a headless `minios_autoframes` run is
+ * in progress (the BDD runs keep the cheap native window). */
+static int s_windowed;
+
+static void q2g_parse_windowed(int argc, char **argv) {
+    int i;
+    s_windowed = 0;
+    for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "minios_windowed") == 0) {
+            s_windowed = 1;
+            return;
+        }
+    }
+}
 
 /* Sys_Quit lives in the engine's system driver (other/q_system.c); not pulled
  * in through quake2.h, so declare it here for the autoquit hook below. */
@@ -129,8 +152,11 @@ static int s_prev_mouse_x;
 static int s_prev_mouse_y;
 
 void QG_GetMouseDiff(int *dx, int *dy) {
-    int m[4];
-    sys_mouse(m);
+    int m[4] = { 0, 0, 0, 0 };
+    *dx = 0;
+    *dy = 0;
+    if (sys_mouse(m) != 0)
+        return;
     int cur_x = m[0];
     int cur_y = m[1];
     *dx = cur_x - s_prev_mouse_x;
@@ -310,6 +336,9 @@ rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen) 
 
 int SWimp_Init(void *hInstance, void *wndProc) {
     sys_vga_mode(1);
+    sys_set_title("Quake 2");
+    if (!s_windowed && s_autoframes <= 0)
+        sys_gfx_zoom(MINIOS_GFX_ZOOM_FULLSCREEN);
     sys_kbd_raw(1);
     return 1;
 }
@@ -365,15 +394,15 @@ int main(int argc, char **argv) {
 
     q2g_parse_autoframes(argc, argv);
     q2g_parse_sndtest(argc, argv);
-
-    sys_set_title("Quake 2");
+    q2g_parse_windowed(argc, argv);
 
     Quake2_Init(argc, argv);
 
-    int m[4];
-    sys_mouse(m);
-    s_prev_mouse_x = m[0];
-    s_prev_mouse_y = m[1];
+    int m[4] = { 0, 0, 0, 0 };
+    if (sys_mouse(m) == 0) {
+        s_prev_mouse_x = m[0];
+        s_prev_mouse_y = m[1];
+    }
 
     oldtime = Quake2_Milliseconds();
     while (1) {

@@ -107,6 +107,9 @@ SOURCES="$SOURCES progs/minicraft/minicraft.c"
 SOURCES="$SOURCES kernel/futex.c kernel/percpu_rq.c kernel/batch.c kernel/rcu.c"
 SOURCES="$SOURCES progs/lisp/lisp.c headers/httpd.h"
 SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
+# gfxview-* rows (graphics view contract) target the header, the
+# compositor and the zoom syscall; the latter two are listed above.
+SOURCES="$SOURCES headers/wm_gfxview.h tests/test_wm.c"
 # execve row targets syscalls_proc.c (the proc-leaf TU split from
 # syscalls.c after the allowlist audits); loader.c and exec.c ride
 # along as the ASLR/execve-adjacent surface for future rows. A missing
@@ -173,7 +176,7 @@ tcp-ack-not-advanced | s/                    s->ack = s->rx_next;/              
 rx-frame-truncated | s/    for (k = 0; k < n; k++) {/    for (k = 0; k < n - 128; k++) {/ | net/rtl8139.c
 
 nk-frame-not-composited | s/        vga_fb_blit_nk_window();/        if (0) vga_fb_blit_nk_window();/ | kernel/syscalls.c
-nk-origin-not-reported | s/            o\\[0\\] = nk_win_x;/            o\\[0\\] = 0;/ | kernel/syscalls.c
+nk-origin-not-reported | s/            vga_fb_gfx_origin(\&o\\[0\\], \&o\\[1\\]);/            o[0] = 0; o[1] = 0;/ | kernel/syscalls.c
 nk-mouse-bounds-unchecked | s/    SANITIZE_RANGE(a1, 4 \\* sizeof(int));/    (void)a1;/ | kernel/syscalls.c
 nk-backbuf-not-mapped | s/        buf = mm_page_aligned_alloc(NK_W \\* NK_H, \\&phys);/        buf = 0;/ | kernel/mm/paging.c
 
@@ -325,6 +328,14 @@ fx-finish-skips-melt | s/    vga_fx_melt_rect(0, 0, fb_width, fb_height, oldb, n
 fx-open-never-armed | s/        fx_gfx_armed = 1;/        fx_gfx_armed = 0;/ | kernel/vga_fb.c
 fx-advance-stuck | s/            cols\[i\]++;/            cols[i] += 0;/ | headers/vga_fx.h
 fx-front-clamp-lost | s/    if (col_y > h) {/    if (col_y > h + 1) {/ | headers/vga_fx.h
+gfxview-fullscreen-request-dropped | s/        return vga_fb_gfx_set_fullscreen(a1 == MINIOS_GFX_ZOOM_FULLSCREEN) ? -22 : 0;/        return 0;/ | kernel/syscalls.c
+gfxview-tile-skips-graphics | s/                gfx_view_mode = WM_GFXVIEW_TILED;/                gfx_view_mode = gfx_view_mode;/ | kernel/vga_fb.c
+gfxview-minimize-closes | s/^        vga_fb_gfx_set_hidden(1);/        wm_close_request = 1;/ | kernel/vga_fb.c
+gfxview-maximize-ignores-gfx | s/        vga_fb_gfx_set_fullscreen(gfx_view_mode != WM_GFXVIEW_FULL);/        term_toggle_fullscreen();/ | kernel/vga_fb.c
+gfxview-fit-integer-lost | s/        fw = k \\* (long)sw;/        fw = fw;/ | headers/wm_gfxview.h
+gfxview-map-unscaled | s/    lx = ((long)(mx - v->content.x) \\* (long)sw) \\/ (long)v->content.w;/    lx = (long)(mx - v->content.x);/ | headers/wm_gfxview.h
+gfxview-ease-linear | s/    r = den - (den \\* inv \\* inv \\* inv) \\/ ((long)n \\* (long)n \\* (long)n);/    r = (den * (long)t) \\/ (long)n;/ | headers/wm_gfxview.h
+gfxview-alttab-keeps-fullscreen | s/^        if (wm_focus == WM_FOCUS_GFX \\&\\& gfx_covers_screen())/        if (0)/ | kernel/vga_fb.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -570,12 +581,23 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         headers/vga_fx.h|tests/test_fx.c)
             make -C "$HERE" test-fx > "$BACKUP/suite.log" 2>&1
             ;;
+        headers/wm_gfxview.h|tests/test_wm.c)
+            make -C "$HERE" test-wm > "$BACKUP/suite.log" 2>&1
+            ;;
         kernel/vga_fx.c|kernel/vga_fb.c)
+            # gfxview-* rows break the graphics view contract (fullscreen,
+            # tile, minimize), which only the gfxview scenario observes:
+            # route them by name so they never survive vacuously on the
+            # melt-counter slice.
+            if [[ "$name" == gfxview-* ]]; then
+                MATCH="gfxview" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
             # No non-fx mutant touches these files yet, so the fx-filtered
             # BDD (3 scenarios, melts-counter pins) is the targeted suite;
             # revisit the routing if other vga_fb.c mutants ever land.
             make -C "$HERE" test-fx > "$BACKUP/suite.log" 2>&1 && \
             MATCH="fx" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
+            fi
             ;;
         kernel/syscalls.c)
             # MATCH must not leak into the suite: --match selects MUTANTS
@@ -584,8 +606,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # lacks the string, the suite exits 0 on zero assertions, and
             # the mutant SURVIVES vacuously (this is how fpu-no-save got a
             # false SURVIVED while disabling fxsave in the tree).
+            if [[ "$name" == gfxview-* ]]; then
+                MATCH="gfxview" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
             FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1 && \
             python3 "$HERE/tools/check_abi_numbers.py" >> "$BACKUP/suite.log" 2>&1
+            fi
             ;;
         kernel/sched.c)
             # fd-fork-shares-view drops the fork-time view copy (the
