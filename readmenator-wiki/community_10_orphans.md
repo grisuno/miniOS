@@ -1,14 +1,14 @@
 # orphans
 
-*Community 11 | 93 files | cohesion 0.00*
+*Community 10 | 94 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 93 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
+This community groups 94 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
-### `tools` (37 files)
+### `tools` (38 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -47,7 +47,7 @@ This community groups 93 file(s) rooted at `tools` with dominant language c (coh
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `arch/x86/ctx_sw.S` | S | utility | 8 | no |
+| `arch/x86/ctx_sw.S` | S | utility | 9 | no |
 | `arch/x86/isr_stubs.S` | S | testing | 24 | no |
 
 ### `progs/micropython/variants/minios` (2 files)
@@ -98,19 +98,20 @@ This community groups 93 file(s) rooted at `tools` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 73 more files in this community.*
+*... and 74 more files in this community.*
 
 
 ## Key Symbols
 
-- `switch_save_only` (function, `arch/x86/ctx_sw.S:44`)
-- `switch_to` (function, `arch/x86/ctx_sw.S:53`)
-- `switch_to_notrap` (function, `arch/x86/ctx_sw.S:96`)
-- `user_trampoline` (function, `arch/x86/ctx_sw.S:185`)
-- `fork_trampoline` (function, `arch/x86/ctx_sw.S:197`)
-- `exec_enter` (function, `arch/x86/ctx_sw.S:213`)
-- `resume_iretq` (function, `arch/x86/ctx_sw.S:242`)
-- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:282`)
+- `sched_park_capture` (function, `arch/x86/ctx_sw.S:70`) - captured the rest. Offsets mirror CTX_*_OFF in headers/sched.h (asserted in C). Requires frame point
+- `switch_save_only` (function, `arch/x86/ctx_sw.S:82`)
+- `switch_to` (function, `arch/x86/ctx_sw.S:91`)
+- `switch_to_notrap` (function, `arch/x86/ctx_sw.S:134`)
+- `user_trampoline` (function, `arch/x86/ctx_sw.S:223`)
+- `fork_trampoline` (function, `arch/x86/ctx_sw.S:235`)
+- `exec_enter` (function, `arch/x86/ctx_sw.S:251`)
+- `resume_iretq` (function, `arch/x86/ctx_sw.S:280`)
+- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:320`)
 - `tf_rax` (function, `arch/x86/isr_stubs.S:67`)
 - `tf_rbx` (function, `arch/x86/isr_stubs.S:68`)
 - `tf_rcx` (function, `arch/x86/isr_stubs.S:69`)
@@ -132,7 +133,6 @@ This community groups 93 file(s) rooted at `tools` with dominant language c (coh
 - `tf_rsp` (function, `arch/x86/isr_stubs.S:85`)
 - `tf_ss` (function, `arch/x86/isr_stubs.S:86`)
 - `tf_vector` (function, `arch/x86/isr_stubs.S:87`)
-- `tf_errcode` (function, `arch/x86/isr_stubs.S:88`)
 
 ## Internal vs External Edges
 
@@ -141,7 +141,8 @@ This community groups 93 file(s) rooted at `tools` with dominant language c (coh
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 11 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 11 (orphans).
+- [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 10 (orphans).
+- [INFERRED] shares_context community 1 <-> 10 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 10 (orphans).
 
 ## Risks
 
@@ -175,4 +176,4 @@ This community groups 93 file(s) rooted at `tools` with dominant language c (coh
 - `progs/asm/w1.s`
 - `progs/doomgeneric/doom.h`
 - `progs/doomgeneric/icon.c`
-- *... and 73 more*
+- *... and 74 more*

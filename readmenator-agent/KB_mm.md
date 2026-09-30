@@ -29,21 +29,21 @@
 - Doc: paging.c - Page table management for the user window and per-process KPTI.
 - Language: c
 - Symbols:
-  - `mm_page_aligned_alloc` (function, line 29) `static unsigned char *mm_page_aligned_alloc(unsigned size,
+  - `mm_page_aligned_alloc` (function, line 28) `static unsigned char *mm_page_aligned_alloc(unsigned size,
                                       ...`
-  - `mm_setup_protections` (function, line 39) `void mm_setup_protections(void)`
-  - `mm_user_pte_update` (function, line 159) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
-  - `mm_user_set_exec` (function, line 180) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-  - `pt_page_alloc` (function, line 192) `void *pt_page_alloc(void)`
-  - `pt_page_free` (function, line 202) `void pt_page_free(void *ptr)`
-  - `pt_clone_user` (function, line 208) `uint64_t pt_clone_user(uint64_t parent_cr3)`
-  - `mt_shared_slot` (function, line 322) `static int mt_shared_slot(unsigned long pd_idx)`
-  - `pt_clone_user_empty` (function, line 341) `unsigned long pt_clone_user_empty(void)`
-  - `mm_user_ensure_page` (function, line 398) `int mm_user_ensure_page(unsigned long cr3, unsigned long va)`
-  - `mm_copy_user_page` (function, line 429) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)`
-  - `pt_free_user` (function, line 505) `void pt_free_user(uint64_t cr3)`
-  - `_kernel_end` (variable, line 47) `extern char _kernel_end[];`
-  - `PT_ALLOC_HDR` (macro, line 190) `#define PT_ALLOC_HDR`
+  - `mm_setup_protections` (function, line 37) `void mm_setup_protections(void)`
+  - `mm_user_pte_update` (function, line 157) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
+  - `mm_user_set_exec` (function, line 178) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
+  - `pt_page_alloc` (function, line 190) `void *pt_page_alloc(void)`
+  - `pt_page_free` (function, line 200) `void pt_page_free(void *ptr)`
+  - `pt_clone_user` (function, line 206) `uint64_t pt_clone_user(uint64_t parent_cr3)`
+  - `mt_shared_slot` (function, line 335) `static int mt_shared_slot(unsigned long pd_idx)`
+  - `pt_clone_user_empty` (function, line 354) `unsigned long pt_clone_user_empty(void)`
+  - `mm_user_ensure_page` (function, line 411) `int mm_user_ensure_page(unsigned long cr3, unsigned long va)`
+  - `mm_copy_user_page` (function, line 442) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)`
+  - `pt_free_user` (function, line 518) `void pt_free_user(uint64_t cr3)`
+  - `_kernel_end` (variable, line 45) `extern char _kernel_end[];`
+  - `PT_ALLOC_HDR` (macro, line 188) `#define PT_ALLOC_HDR`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/kernel.h`, `headers/vga_fb.h`
 
 ## kernel/mm/swap.c

@@ -85,36 +85,36 @@ int net_accept(int fd, unsigned l...`
 - Layer: utility
 - Language: c
 - Symbols:
-  - `outl_port` (function, line 27) `static void outl_port(unsigned short port, unsigned int val)`
-  - `inl_port` (function, line 31) `static unsigned int inl_port(unsigned short port)`
-  - `rtl_reg8` (function, line 37) `static unsigned char rtl_reg8(unsigned short off)`
-  - `rtl_reg8_w` (function, line 38) `static void rtl_reg8_w(unsigned short off, unsigned char v)`
-  - `rtl_reg16` (function, line 39) `static unsigned short rtl_reg16(unsigned short off)`
-  - `rtl_reg16_w` (function, line 40) `static void rtl_reg16_w(unsigned short off, unsigned short v)`
-  - `rtl_reg32` (function, line 41) `static unsigned int rtl_reg32(unsigned short off)`
-  - `rtl_reg32_w` (function, line 42) `static void rtl_reg32_w(unsigned short off, unsigned int v)`
-  - `rtl_find` (function, line 56) `static unsigned short rtl_find(void)`
-  - `rtl_rdtsc` (function, line 77) `static unsigned long rtl_rdtsc(void)`
-  - `net_time_init` (function, line 83) `static void net_time_init(void)`
-  - `net_time_ms` (function, line 97) `unsigned long net_time_ms(void)`
-  - `rtl_present` (function, line 113) `int rtl_present(void)`
-  - `rtl_reset` (function, line 117) `static void rtl_reset(void)`
-  - `rtl_init` (function, line 126) `void rtl_init(void)`
-  - `rtl_send` (function, line 157) `int rtl_send(const unsigned char *frame, unsigned len)`
-  - `rtl_get_mac` (function, line 185) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
-  - `rtl_iobase` (function, line 190) `unsigned short rtl_iobase(void)`
-  - `rtl_counters` (function, line 194) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
-  - `rtl_rx_frame_wrapped` (function, line 201) `static void rtl_rx_frame_wrapped(unsigned length)`
-  - `rtl_poll` (function, line 212) `void rtl_poll(void)`
-  - `RTL_REG_CR` (macro, line 44) `#define RTL_REG_CR`
-  - `RTL_REG_TSD0` (macro, line 45) `#define RTL_REG_TSD0`
-  - `RTL_REG_TSAD0` (macro, line 46) `#define RTL_REG_TSAD0`
-  - `RTL_REG_RBSTART` (macro, line 47) `#define RTL_REG_RBSTART`
-  - `RTL_REG_CAPR` (macro, line 48) `#define RTL_REG_CAPR`
-  - `RTL_REG_CBR` (macro, line 49) `#define RTL_REG_CBR`
-  - `RTL_REG_9346CR` (macro, line 50) `#define RTL_REG_9346CR`
-  - `RTL_REG_CONFIG1` (macro, line 51) `#define RTL_REG_CONFIG1`
-- Depends on: `headers/drivers/pci.h`, `headers/kernel.h`, `headers/net.h`, `headers/net/rtl8139.h`
+  - `outl_port` (function, line 29) `static void outl_port(unsigned short port, unsigned int val)`
+  - `inl_port` (function, line 33) `static unsigned int inl_port(unsigned short port)`
+  - `rtl_reg8` (function, line 39) `static unsigned char rtl_reg8(unsigned short off)`
+  - `rtl_reg8_w` (function, line 40) `static void rtl_reg8_w(unsigned short off, unsigned char v)`
+  - `rtl_reg16` (function, line 41) `static unsigned short rtl_reg16(unsigned short off)`
+  - `rtl_reg16_w` (function, line 42) `static void rtl_reg16_w(unsigned short off, unsigned short v)`
+  - `rtl_reg32` (function, line 43) `static unsigned int rtl_reg32(unsigned short off)`
+  - `rtl_reg32_w` (function, line 44) `static void rtl_reg32_w(unsigned short off, unsigned int v)`
+  - `rtl_find` (function, line 58) `static unsigned short rtl_find(void)`
+  - `deleted` (function, line 79) `* been deleted (a second base/per-ms pair beside ktime's is a second
+ * clock, and drivers must n...`
+  - `rtl_present` (function, line 99) `int rtl_present(void)`
+  - `rtl_reset` (function, line 103) `static void rtl_reset(void)`
+  - `rtl_init` (function, line 112) `void rtl_init(void)`
+  - `rtl_tx_wait` (function, line 149) `static int rtl_tx_wait(unsigned slot, unsigned long deadline)`
+  - `rtl_send` (function, line 158) `int rtl_send(const unsigned char *frame, unsigned len)`
+  - `rtl_get_mac` (function, line 182) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
+  - `rtl_iobase` (function, line 187) `unsigned short rtl_iobase(void)`
+  - `rtl_counters` (function, line 191) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
+  - `rtl_poll` (function, line 215) `void rtl_poll(void)`
+  - `RTL_REG_CR` (macro, line 46) `#define RTL_REG_CR`
+  - `RTL_REG_TSD0` (macro, line 47) `#define RTL_REG_TSD0`
+  - `RTL_REG_TSAD0` (macro, line 48) `#define RTL_REG_TSAD0`
+  - `RTL_REG_RBSTART` (macro, line 49) `#define RTL_REG_RBSTART`
+  - `RTL_REG_CAPR` (macro, line 50) `#define RTL_REG_CAPR`
+  - `RTL_REG_CBR` (macro, line 51) `#define RTL_REG_CBR`
+  - `RTL_REG_9346CR` (macro, line 52) `#define RTL_REG_9346CR`
+  - `RTL_REG_CONFIG1` (macro, line 53) `#define RTL_REG_CONFIG1`
+  - `RTL_TX_YIELD_EVERY` (macro, line 147) `#define RTL_TX_YIELD_EVERY`
+- Depends on: `headers/drivers/pci.h`, `headers/kernel.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`
 
 ## net/tls.c
 - Layer: utility

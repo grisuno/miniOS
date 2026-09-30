@@ -160,79 +160,84 @@
 - Doc: MiniFS: minimal Unix-like filesystem for MiniOS.
 - Language: c
 - Symbols:
-  - `minifs_compress` (function, line 27) `unsigned int minifs_compress(const void *src, unsigned int src_len,
+  - `minifs_compress` (function, line 34) `unsigned int minifs_compress(const void *src, unsigned int src_len,
                              ...`
-  - `minifs_decompress` (function, line 38) `unsigned int minifs_decompress(const void *src, unsigned int src_len,
+  - `minifs_decompress` (function, line 45) `unsigned int minifs_decompress(const void *src, unsigned int src_len,
                            ...`
-  - `minifs_crc16` (function, line 49) `static unsigned short minifs_crc16(const void *data, unsigned int len)`
-  - `minifs_crc32` (function, line 61) `static unsigned int minifs_crc32(const void *data, unsigned int len)`
-  - `roundup4` (function, line 73) `static unsigned int roundup4(unsigned int v)`
-  - `div_round_up` (function, line 75) `static unsigned int div_round_up(unsigned int n, unsigned int d)`
-  - `returns` (function, line 84) `* overflowed the slot and smashed returns (measured ring-0 #UD on
+  - `minifs_crc16` (function, line 56) `static unsigned short minifs_crc16(const void *data, unsigned int len)`
+  - `minifs_crc32` (function, line 68) `static unsigned int minifs_crc32(const void *data, unsigned int len)`
+  - `roundup4` (function, line 80) `static unsigned int roundup4(unsigned int v)`
+  - `div_round_up` (function, line 82) `static unsigned int div_round_up(unsigned int n, unsigned int d)`
+  - `returns` (function, line 91) `* overflowed the slot and smashed returns (measured ring-0 #UD on
  * lua->lua->cp). Every scratch...`
-  - `blk_free` (function, line 92) `static void blk_free(unsigned char *b)`
-  - `fs_write_super` (function, line 99) `static int fs_write_super(void)`
-  - `fs_read_inode` (function, line 113) `static int fs_read_inode(unsigned int num, MiniFSInode *out)`
-  - `fs_write_inode` (function, line 124) `static int fs_write_inode(unsigned int num, const MiniFSInode *in)`
-  - `bm_test` (function, line 140) `static int bm_test(unsigned char *bm, unsigned int bit)`
-  - `bm_set` (function, line 144) `static void bm_set(unsigned char *bm, unsigned int bit)`
-  - `bm_clear` (function, line 148) `static void bm_clear(unsigned char *bm, unsigned int bit)`
-  - `minifs_alloc_block` (function, line 154) `int minifs_alloc_block(void)`
-  - `minifs_free_block` (function, line 171) `void minifs_free_block(unsigned int block)`
-  - `minifs_alloc_inode` (function, line 179) `int minifs_alloc_inode(void)`
-  - `minifs_free_inode` (function, line 191) `void minifs_free_inode(int num)`
-  - `minifs_inode_get_block` (function, line 199) `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logblk,
+  - `blk_free` (function, line 99) `static void blk_free(unsigned char *b)`
+  - `fs_write_super` (function, line 106) `static int fs_write_super(void)`
+  - `instead` (function, line 126) `* kernel stored the same crc at offset 76 instead (byte order the old
+ * write path used), so a r...`
+  - `fs_inode_check` (function, line 141) `static int fs_inode_check(const MiniFSInode *in)`
+  - `fs_read_inode` (function, line 166) `static int fs_read_inode(unsigned int num, MiniFSInode *out)`
+  - `fs_write_inode` (function, line 178) `static int fs_write_inode(unsigned int num, const MiniFSInode *in)`
+  - `bm_test` (function, line 200) `static int bm_test(unsigned char *bm, unsigned int bit)`
+  - `bm_set` (function, line 204) `static void bm_set(unsigned char *bm, unsigned int bit)`
+  - `bm_clear` (function, line 208) `static void bm_clear(unsigned char *bm, unsigned int bit)`
+  - `minifs_alloc_block` (function, line 214) `int minifs_alloc_block(void)`
+  - `minifs_free_block` (function, line 231) `void minifs_free_block(unsigned int block)`
+  - `minifs_alloc_inode` (function, line 239) `int minifs_alloc_inode(void)`
+  - `minifs_free_inode` (function, line 251) `void minifs_free_inode(int num)`
+  - `minifs_inode_get_block` (function, line 259) `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logblk,
                            un...`
-  - `fs_inode_set_block` (function, line 228) `static int fs_inode_set_block(MiniFSInode *inode, unsigned int logblk,
+  - `fs_inode_set_block` (function, line 288) `static int fs_inode_set_block(MiniFSInode *inode, unsigned int logblk,
                           ...`
-  - `minifs_inode_alloc_block` (function, line 282) `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logblk)`
-  - `fs_inode_free_all_blocks` (function, line 303) `static void fs_inode_free_all_blocks(MiniFSInode *inode)`
-  - `journal_load_super` (function, line 385) `static void journal_load_super(void)`
-  - `journal_save_super` (function, line 403) `static void journal_save_super(unsigned int state)`
-  - `journal_save_entries` (function, line 417) `static void journal_save_entries(void)`
-  - `minifs_journal_begin` (function, line 434) `void minifs_journal_begin(unsigned int txn_id)`
-  - `minifs_journal_add_block` (function, line 443) `void minifs_journal_add_block(unsigned int block)`
-  - `minifs_journal_commit` (function, line 450) `int minifs_journal_commit(unsigned int txn_id)`
-  - `minifs_journal_clear` (function, line 460) `void minifs_journal_clear(void)`
-  - `minifs_journal_abort` (function, line 470) `void minifs_journal_abort(void)`
-  - `first` (function, line 495) `* keep the first (oldest) snapshot. */
+  - `minifs_inode_alloc_block` (function, line 342) `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logblk)`
+  - `fs_inode_free_all_blocks` (function, line 363) `static void fs_inode_free_all_blocks(MiniFSInode *inode)`
+  - `journal_load_super` (function, line 445) `static void journal_load_super(void)`
+  - `journal_save_super` (function, line 463) `static void journal_save_super(unsigned int state)`
+  - `journal_save_entries` (function, line 477) `static void journal_save_entries(void)`
+  - `minifs_journal_begin` (function, line 494) `void minifs_journal_begin(unsigned int txn_id)`
+  - `minifs_journal_add_block` (function, line 503) `void minifs_journal_add_block(unsigned int block)`
+  - `minifs_journal_commit` (function, line 510) `int minifs_journal_commit(unsigned int txn_id)`
+  - `minifs_journal_clear` (function, line 520) `void minifs_journal_clear(void)`
+  - `minifs_journal_abort` (function, line 530) `void minifs_journal_abort(void)`
+  - `first` (function, line 555) `* keep the first (oldest) snapshot. */
 void minifs_journal_touch(unsigned int phys)`
-  - `minifs_journal_recover` (function, line 536) `void minifs_journal_recover(void)`
-  - `fs_namecmp` (function, line 622) `static int fs_namecmp(const char *a, unsigned char alen, const char *b)`
-  - `minifs_dir_lookup` (function, line 631) `int minifs_dir_lookup(int dir_ino, const char *name)`
-  - `minifs_dir_add_entry` (function, line 661) `int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
+  - `minifs_journal_recover` (function, line 596) `void minifs_journal_recover(void)`
+  - `fs_namecmp` (function, line 682) `static int fs_namecmp(const char *a, unsigned char alen, const char *b)`
+  - `minifs_dir_lookup` (function, line 691) `int minifs_dir_lookup(int dir_ino, const char *name)`
+  - `minifs_dir_add_entry` (function, line 721) `int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,
                           ...`
-  - `minifs_dir_remove_entry` (function, line 799) `int minifs_dir_remove_entry(int dir_ino, const char *name)`
-  - `minifs_dir_read` (function, line 830) `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)`
-  - `minifs_resolve_path` (function, line 880) `int minifs_resolve_path(const char *path)`
-  - `minifs_create` (function, line 913) `int minifs_create(const char *path, unsigned short mode)`
-  - `minifs_mkdir` (function, line 967) `int minifs_mkdir(const char *path, unsigned short mode)`
-  - `minifs_unlink` (function, line 1017) `int minifs_unlink(const char *path)`
-  - `minifs_split_parent` (function, line 1059) `static int minifs_split_parent(const char *path, char *parent_out,
+  - `minifs_dir_remove_entry` (function, line 859) `int minifs_dir_remove_entry(int dir_ino, const char *name)`
+  - `minifs_dir_read` (function, line 890) `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)`
+  - `minifs_resolve_path` (function, line 940) `int minifs_resolve_path(const char *path)`
+  - `minifs_create` (function, line 973) `int minifs_create(const char *path, unsigned short mode)`
+  - `minifs_mkdir` (function, line 1026) `int minifs_mkdir(const char *path, unsigned short mode)`
+  - `minifs_unlink` (function, line 1075) `int minifs_unlink(const char *path)`
+  - `minifs_split_parent` (function, line 1117) `static int minifs_split_parent(const char *path, char *parent_out,
                               ...`
-  - `minifs_rename` (function, line 1084) `int minifs_rename(const char *oldpath, const char *newpath)`
-  - `minifs_rmdir` (function, line 1116) `int minifs_rmdir(const char *path)`
-  - `minifs_read` (function, line 1156) `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)`
-  - `minifs_write` (function, line 1227) `int minifs_write(int inode_num, const void *buf, unsigned int offset,
+  - `minifs_rename` (function, line 1142) `int minifs_rename(const char *oldpath, const char *newpath)`
+  - `minifs_rmdir` (function, line 1174) `int minifs_rmdir(const char *path)`
+  - `minifs_read` (function, line 1214) `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)`
+  - `minifs_write` (function, line 1285) `int minifs_write(int inode_num, const void *buf, unsigned int offset,
                  unsigned i...`
-  - `minifs_truncate` (function, line 1316) `int minifs_truncate(int inode_num, unsigned int new_size)`
-  - `minifs_stat` (function, line 1332) `int minifs_stat(int inode_num, MiniFSInode *out)`
-  - `minifs_access` (function, line 1336) `int minifs_access(const char *path)`
-  - `minifs_init` (function, line 1342) `void minifs_init(void)`
-  - `minifs_get_lba_start` (function, line 1350) `unsigned int minifs_get_lba_start(void)`
-  - `minifs_is_mounted` (function, line 1351) `int minifs_is_mounted(void)`
-  - `minifs_mount` (function, line 1359) `int minifs_mount(void)`
-  - `minifs_mkfs` (function, line 1509) `int minifs_mkfs(unsigned int total_blocks)`
-  - `minifs_sync` (function, line 1580) `int minifs_sync(void)`
-  - `minifs_file_open` (function, line 1595) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-  - `minifs_file_close` (function, line 1609) `int minifs_file_close(MiniFSFile *f)`
-  - `minifs_get_total_blocks` (function, line 1616) `unsigned int minifs_get_total_blocks(void)`
-  - `minifs_usage` (function, line 1621) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+  - `minifs_truncate` (function, line 1372) `int minifs_truncate(int inode_num, unsigned int new_size)`
+  - `minifs_stat` (function, line 1387) `int minifs_stat(int inode_num, MiniFSInode *out)`
+  - `minifs_access` (function, line 1391) `int minifs_access(const char *path)`
+  - `minifs_init` (function, line 1397) `void minifs_init(void)`
+  - `minifs_get_lba_start` (function, line 1405) `unsigned int minifs_get_lba_start(void)`
+  - `minifs_is_mounted` (function, line 1406) `int minifs_is_mounted(void)`
+  - `minifs_mount` (function, line 1414) `int minifs_mount(void)`
+  - `minifs_mkfs` (function, line 1564) `int minifs_mkfs(unsigned int total_blocks)`
+  - `minifs_sync` (function, line 1635) `int minifs_sync(void)`
+  - `minifs_file_open` (function, line 1650) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
+  - `minifs_file_close` (function, line 1664) `int minifs_file_close(MiniFSFile *f)`
+  - `minifs_get_total_blocks` (function, line 1671) `unsigned int minifs_get_total_blocks(void)`
+  - `minifs_usage` (function, line 1676) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
                   unsigned int *fr...`
   - `minifs_journal_touch` (function, line 15) `void minifs_journal_touch(unsigned int phys);`
-  - `blocks` (function, line 494) `* blocks (self-protection);`
+  - `blk_new` (function, line 21) `static unsigned char *blk_new(void);`
+  - `blocks` (function, line 554) `* blocks (self-protection);`
   - `DE_NAME` (macro, line 12) `#define DE_NAME(de)`
   - `DE_NAME_W` (macro, line 13) `#define DE_NAME_W(de)`
+  - `MINIFS_INODE_CRC_OFF` (macro, line 129) `#define MINIFS_INODE_CRC_OFF`
 - Depends on: `headers/block.h`, `headers/ide.h`, `headers/kernel.h`, `headers/lz4_kernel.h`, `headers/minifs.h`
 
 ## fs/ramdisk.c

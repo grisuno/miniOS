@@ -909,33 +909,35 @@ AM_drawThings
 - Doc: doomgeneric_minios.c - MiniOS platform layer for doomgeneric.
 - Language: c
 - Symbols:
-  - `color` (struct, line 80)
+  - `color` (struct, line 103)
   - `mini_parse_autoframes` (function, line 24) `static void mini_parse_autoframes(int argc, char **argv)`
-  - `sys_time_ms` (function, line 38) `static long sys_time_ms(void)`
-  - `sys_kbd` (function, line 43) `static long sys_kbd(void)`
-  - `sys_palette` (function, line 48) `static long sys_palette(const unsigned char *pal)`
-  - `sys_kbd_raw` (function, line 53) `static long sys_kbd_raw(int on)`
-  - `sys_vga_mode` (function, line 58) `static long sys_vga_mode(int on)`
-  - `sys_doom_frame` (function, line 63) `static long sys_doom_frame(void)`
-  - `load_vga_palette` (function, line 87) `static void load_vga_palette(void)`
-  - `scancode_to_doom` (function, line 100) `static unsigned char scancode_to_doom(unsigned char raw)`
-  - `kbd_enqueue` (function, line 159) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
-  - `kbd_poll` (function, line 166) `static void kbd_poll(void)`
-  - `DG_Init` (function, line 209) `void DG_Init(void)`
-  - `DG_DrawFrame` (function, line 217) `void DG_DrawFrame(void)`
-  - `DG_SleepMs` (function, line 248) `void DG_SleepMs(uint32_t ms)`
-  - `DG_GetTicksMs` (function, line 254) `uint32_t DG_GetTicksMs(void)`
-  - `DG_GetKey` (function, line 258) `int DG_GetKey(int *pressed, unsigned char *key)`
-  - `DG_SetWindowTitle` (function, line 269) `void DG_SetWindowTitle(const char *title)`
+  - `mini_parse_windowed` (function, line 43) `static void mini_parse_windowed(int argc, char **argv)`
+  - `sys_time_ms` (function, line 56) `static long sys_time_ms(void)`
+  - `sys_kbd` (function, line 61) `static long sys_kbd(void)`
+  - `sys_palette` (function, line 66) `static long sys_palette(const unsigned char *pal)`
+  - `sys_kbd_raw` (function, line 71) `static long sys_kbd_raw(int on)`
+  - `sys_vga_mode` (function, line 76) `static long sys_vga_mode(int on)`
+  - `sys_gfx_zoom` (function, line 81) `static long sys_gfx_zoom(long mode)`
+  - `sys_doom_frame` (function, line 86) `static long sys_doom_frame(void)`
+  - `load_vga_palette` (function, line 110) `static void load_vga_palette(void)`
+  - `scancode_to_doom` (function, line 123) `static unsigned char scancode_to_doom(unsigned char raw)`
+  - `kbd_enqueue` (function, line 182) `static void kbd_enqueue(unsigned char doom_key, int pressed)`
+  - `kbd_poll` (function, line 189) `static void kbd_poll(void)`
+  - `DG_Init` (function, line 232) `void DG_Init(void)`
+  - `DG_DrawFrame` (function, line 243) `void DG_DrawFrame(void)`
+  - `DG_SleepMs` (function, line 274) `void DG_SleepMs(uint32_t ms)`
+  - `DG_GetTicksMs` (function, line 280) `uint32_t DG_GetTicksMs(void)`
+  - `DG_GetKey` (function, line 284) `int DG_GetKey(int *pressed, unsigned char *key)`
+  - `DG_SetWindowTitle` (function, line 295) `void DG_SetWindowTitle(const char *title)`
   - `MINIOS_DOOM_BACKBUF_ADDR` (function, line 4) `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);`
-  - `colors` (variable, line 81) `extern struct color colors[256];`
-  - `I_VideoBuffer` (variable, line 207) `extern unsigned char *I_VideoBuffer;`
-  - `myargc` (variable, line 210) `extern int myargc;`
-  - `myargv` (variable, line 211) `extern char **myargv;`
-  - `FB_ADDR` (macro, line 73) `#define FB_ADDR`
-  - `FB_WIDTH` (macro, line 74) `#define FB_WIDTH`
-  - `FB_HEIGHT` (macro, line 75) `#define FB_HEIGHT`
-  - `KBD_QUEUE_SIZE` (macro, line 155) `#define KBD_QUEUE_SIZE`
+  - `colors` (variable, line 104) `extern struct color colors[256];`
+  - `I_VideoBuffer` (variable, line 230) `extern unsigned char *I_VideoBuffer;`
+  - `myargc` (variable, line 233) `extern int myargc;`
+  - `myargv` (variable, line 234) `extern char **myargv;`
+  - `FB_ADDR` (macro, line 96) `#define FB_ADDR`
+  - `FB_WIDTH` (macro, line 97) `#define FB_WIDTH`
+  - `FB_HEIGHT` (macro, line 98) `#define FB_HEIGHT`
+  - `KBD_QUEUE_SIZE` (macro, line 178) `#define KBD_QUEUE_SIZE`
 - Depends on: `kernel/string.c`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/s_sound.h`, `progs/minios_abi.h`
 
 ## progs/doomgeneric/doomgeneric_sdl.c

@@ -555,6 +555,6 @@
 - Doc: Docstring: Host test for wm_geom.h and wm_events.h (make test-wm).
 - Language: c
 - Symbols:
-  - `main` (function, line 28) `int main(void)`
-  - `CHECK` (macro, line 21) `#define CHECK(cond, msg)`
-- Depends on: `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_layout.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+  - `main` (function, line 29) `int main(void)`
+  - `CHECK` (macro, line 22) `#define CHECK(cond, msg)`
+- Depends on: `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_gfxview.h`, `headers/wm_layout.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`

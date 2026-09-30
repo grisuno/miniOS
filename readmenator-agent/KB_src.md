@@ -169,15 +169,20 @@
 - Layer: testing
 - Language: c
 - Symbols:
-  - `fx_syscall6` (function, line 13) `static long fx_syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `fx_strlen` (function, line 33) `static unsigned long fx_strlen(const char *s)`
-  - `fx_write` (function, line 39) `static void fx_write(const char *s)`
-  - `fx_exit` (function, line 43) `static void fx_exit(long code)`
-  - `_start` (function, line 48) `void _start(void)`
-  - `SYS_write` (macro, line 26) `#define SYS_write`
-  - `SYS_fork` (macro, line 27) `#define SYS_fork`
-  - `SYS_exit` (macro, line 28) `#define SYS_exit`
-  - `SYS_wait4` (macro, line 29) `#define SYS_wait4`
+  - `fx_syscall6` (function, line 17) `static long fx_syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `fx_strlen` (function, line 41) `static unsigned long fx_strlen(const char *s)`
+  - `fx_write` (function, line 47) `static void fx_write(const char *s)`
+  - `fx_exit` (function, line 51) `static void fx_exit(long code)`
+  - `_start` (function, line 56) `void _start(void)`
+  - `this` (function, line 115) `* this (and the child's closes must survive below). */ fx_syscall6(SYS_close, pfd[1], 0, 0, 0, 0, 0);`
+  - `SYS_read` (macro, line 30) `#define SYS_read`
+  - `SYS_write` (macro, line 31) `#define SYS_write`
+  - `SYS_close` (macro, line 32) `#define SYS_close`
+  - `SYS_pipe` (macro, line 33) `#define SYS_pipe`
+  - `SYS_yield` (macro, line 34) `#define SYS_yield`
+  - `SYS_fork` (macro, line 35) `#define SYS_fork`
+  - `SYS_exit` (macro, line 36) `#define SYS_exit`
+  - `SYS_wait4` (macro, line 37) `#define SYS_wait4`
 
 ## progs/src/fptest.c
 - Layer: testing

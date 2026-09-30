@@ -12,28 +12,23 @@
 - Doc: kernel.c -- Mediator: boot orchestration and the syscall trampoline.
 - Language: c
 - Symbols:
-  - `syscall_init` (function, line 108) `void syscall_init(void)`
-  - `bootlog_mark` (function, line 398) `void bootlog_mark(const char *name)`
-  - `bootlog_report` (function, line 405) `void bootlog_report(void)`
-  - `__attribute__` (function, line 413) `__attribute__((section(".init.text")))
+  - `syscall_init` (function, line 105) `void syscall_init(void)`
+  - `bootlog_mark` (function, line 180) `void bootlog_mark(const char *name)`
+  - `bootlog_report` (function, line 187) `void bootlog_report(void)`
+  - `__attribute__` (function, line 195) `__attribute__((section(".init.text")))
 void kmain(void)`
-  - `table` (function, line 95) `* Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------`
-  - `ksyscall` (function, line 121) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sysretq` (function, line 158) `* trapped from the user window returns with sysretq (ring 3);`
-  - `kstack` (function, line 167) `* kstack (0 on the BSP, 1 on APs): harmless while a single process * runs, fatal as soon as two threads syscall concurrently. */ _Static_assert(__builtin_offsetof(cpu_t, cur_pid) == 12, "cpu cur_pid o`
-  - `ms` (function, line 391) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-  - `EM` (function, line 427) `* CR0: clear EM (bit 2), set MP (bit 1);`
-  - `size` (function, line 468) `* image size (see kernel.ld);`
-  - `syscall_kstack` (variable, line 106) `extern unsigned long syscall_kstack;`
-  - `ramdisk_start` (variable, line 385) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 386) `extern char ramdisk_end[];`
-  - `USER_WIN_LO` (macro, line 56) `#define USER_WIN_LO`
-  - `USER_WIN_HI` (macro, line 57) `#define USER_WIN_HI`
-  - `STR_` (macro, line 58) `#define STR_(x)`
-  - `STR` (macro, line 59) `#define STR(x)`
-  - `KSYM_MAX` (macro, line 98) `#define KSYM_MAX`
-  - `BOOTLOG_MAX` (macro, line 394) `#define BOOTLOG_MAX`
-- Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/ide.h`, `headers/kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/vga_fb.h`
+  - `table` (function, line 92) `* Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------`
+  - `ksyscall` (function, line 118) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `kstack` (function, line 134) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single process runs, fatal as * soon as two threads syscall concurrently. */ _Static_asser`
+  - `ms` (function, line 173) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+  - `EM` (function, line 209) `* CR0: clear EM (bit 2), set MP (bit 1);`
+  - `size` (function, line 250) `* image size (see kernel.ld);`
+  - `syscall_kstack` (variable, line 103) `extern unsigned long syscall_kstack;`
+  - `ramdisk_start` (variable, line 167) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 168) `extern char ramdisk_end[];`
+  - `KSYM_MAX` (macro, line 95) `#define KSYM_MAX`
+  - `BOOTLOG_MAX` (macro, line 176) `#define BOOTLOG_MAX`
+- Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/ide.h`, `headers/kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
 
 ## qga.c
 - Layer: utility

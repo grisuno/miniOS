@@ -60,9 +60,10 @@ This community groups 9 file(s) rooted at `headers` with dominant language c (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 5 <-> 6 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
-- [EXTRACTED] depends_on community 5 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 5 <-> 1 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 5 <-> 6 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
 - [EXTRACTED] depends_on community 5 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
+- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 2 (headers) and community 5 (headers).
 
 ## Risks
 

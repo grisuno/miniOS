@@ -200,6 +200,26 @@ and the freedom-fetch/exit-130 remainder is fixture-timing sensitive
 (each passes in isolation). Every scenario touching new code passes;
 `sh src/test_all.sh` prints 96 PASS with zero FAIL.
 
+#### Mutation anchor hygiene and the equivalent-mutant record
+Every `mutate.sh` expression must match its target file, or `mutate.sh`
+reports BROKEN instead of a kill and the gate silently weakens.
+`tools/check_mutant_anchors.py` (in `make lint`) applies each expression
+with sed itself to a scratch copy and fails closed on any no-change anchor.
+A BRE metacharacter left unescaped (notably a bare `*` where a literal star
+stands in the source) matches nothing. The checker derives the table bounds
+from the `MUTATIONS="` markers, never from line numbers: a hardcoded range
+once silently dropped the last row (and would have dropped every row added
+past it). The same BRE caution applies to `test_bdd.sh` markers: `usage:
+wait [pid]` matches one char of {p,i,d}, never the brackets; assert
+`usage: wait` instead.
+
+The only mutant ever removed as provably equivalent stopped
+`redirect_resume` from restoring the capture: every shell status print is
+the last thing a command does, so nothing observable followed the missed
+resume. It was replaced by `redirect-captures-nothing` and
+`status-leaks-into-redirect`, which exercise the same contract through
+effects the suite can see.
+
 ### VMA (Virtual Memory Areas)
 A red-black tree for mmap tracking, implemented in its own contract
 `vma.c` with the single header `vma.h` (previously inlined in `loader.c`

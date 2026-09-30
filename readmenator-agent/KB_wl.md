@@ -66,10 +66,10 @@
   - `wl_cfg_t` (struct, line 63)
   - `wl_surface_t` (struct, line 251)
   - `wl_comp_t` (struct, line 264)
-  - `wl_ev_t` (struct, line 919)
-  - `wl_client_t` (struct, line 1037)
-  - `wl_stream_t` (struct, line 1075)
-  - `wl_iface_t` (struct, line 1130)
+  - `wl_ev_t` (struct, line 968)
+  - `wl_client_t` (struct, line 1086)
+  - `wl_stream_t` (struct, line 1124)
+  - `wl_iface_t` (struct, line 1179)
   - `wl_hdr_encode` (function, line 71) `static inline int wl_hdr_encode(unsigned char *dst, int cap,
         unsigned int id, unsigned in...`
   - `wl_hdr_decode` (function, line 99) `static inline int wl_hdr_decode(const unsigned char *src, int len,
@@ -93,52 +93,53 @@
   - `wl_comp_focus` (function, line 372) `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)`
   - `wl_comp_hit` (function, line 397) `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)`
   - `wl_surface_hit_zone` (function, line 415) `static inline int wl_surface_hit_zone(const wl_surface_t *s, int x, int y)`
-  - `wl_comp_set_minimized` (function, line 441) `static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,
+  - `wl_comp_top_visible` (function, line 441) `static inline int wl_comp_top_visible(const wl_comp_t *c)`
+  - `wl_comp_set_minimized` (function, line 460) `static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,
         int minimized)`
-  - `wl_comp_set_color` (function, line 456) `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)`
-  - `wlcomp_render` (function, line 481) `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,
+  - `wl_comp_set_color` (function, line 487) `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)`
+  - `wlcomp_render` (function, line 512) `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,
         int fb_w, int fb_h)`
-  - `wl_comp_set_rect` (function, line 519) `static inline int wl_comp_set_rect(wl_comp_t *c, unsigned int id,
+  - `wl_comp_set_rect` (function, line 550) `static inline int wl_comp_set_rect(wl_comp_t *c, unsigned int id,
         int x, int y, int w, in...`
-  - `wl_comp_layout_tile` (function, line 546) `static inline int wl_comp_layout_tile(wl_comp_t *c, int fb_w, int fb_h)`
-  - `wlcomp_blit` (function, line 606) `static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,
+  - `wl_comp_layout_tile` (function, line 577) `static inline int wl_comp_layout_tile(wl_comp_t *c, int fb_w, int fb_h)`
+  - `wlcomp_blit` (function, line 637) `static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,
         int fb_w, int fb_h, ...`
-  - `wlcomp_blit_chrome` (function, line 669) `static inline int wlcomp_blit_chrome(const wl_comp_t *c, unsigned char *fb,
-        int fb_w, int...`
-  - `wl_scale_nearest` (function, line 744) `static inline int wl_scale_nearest(unsigned char *dst, int dw, int dh,
+  - `body` (function, line 698) `* resampled into the body (inside the 1 px border, below the title),
+ * the exact rect wl_ev_map ...`
+  - `wl_scale_nearest` (function, line 793) `static inline int wl_scale_nearest(unsigned char *dst, int dw, int dh,
         const unsigned cha...`
-  - `wl_attach_encode` (function, line 774) `static inline int wl_attach_encode(unsigned char *dst, int cap,
+  - `wl_attach_encode` (function, line 823) `static inline int wl_attach_encode(unsigned char *dst, int cap,
         unsigned int pool, int w,...`
-  - `wl_attach_decode` (function, line 793) `static inline int wl_attach_decode(const unsigned char *src, int len,
+  - `wl_attach_decode` (function, line 842) `static inline int wl_attach_decode(const unsigned char *src, int len,
         unsigned int *pool,...`
-  - `wl_commit_encode` (function, line 821) `static inline int wl_commit_encode(unsigned char *dst, int cap,
+  - `wl_commit_encode` (function, line 870) `static inline int wl_commit_encode(unsigned char *dst, int cap,
         unsigned int id)`
-  - `wl_commit_decode` (function, line 834) `static inline int wl_commit_decode(const unsigned char *src, int len,
+  - `wl_commit_decode` (function, line 883) `static inline int wl_commit_decode(const unsigned char *src, int len,
         unsigned int *id)`
-  - `wl_clip_encode` (function, line 858) `static inline int wl_clip_encode(unsigned char *dst, int cap,
+  - `wl_clip_encode` (function, line 907) `static inline int wl_clip_encode(unsigned char *dst, int cap,
         const unsigned char *text, ...`
-  - `wl_clip_decode` (function, line 881) `static inline int wl_clip_decode(const unsigned char *src, int len,
+  - `wl_clip_decode` (function, line 930) `static inline int wl_clip_decode(const unsigned char *src, int len,
         unsigned char *dst, i...`
-  - `wl_ev_encode` (function, line 929) `static inline int wl_ev_encode(unsigned char *dst, int cap,
+  - `wl_ev_encode` (function, line 978) `static inline int wl_ev_encode(unsigned char *dst, int cap,
         const wl_ev_t *ev)`
-  - `wl_ev_decode` (function, line 959) `static inline int wl_ev_decode(const unsigned char *src, int len,
+  - `wl_ev_decode` (function, line 1008) `static inline int wl_ev_decode(const unsigned char *src, int len,
         wl_ev_t *ev)`
-  - `wl_ev_map` (function, line 1002) `static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,
+  - `wl_ev_map` (function, line 1051) `static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,
         int sh, int rw, int r...`
-  - `wl_client_init` (function, line 1043) `static inline void wl_client_init(wl_client_t *cl)`
-  - `wl_client_surface` (function, line 1051) `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)`
-  - `wl_client_pool` (function, line 1060) `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)`
-  - `wl_stream_init` (function, line 1080) `static inline void wl_stream_init(wl_stream_t *s)`
-  - `wl_stream_feed` (function, line 1086) `static inline int wl_stream_feed(wl_stream_t *s, const unsigned char *src,
+  - `wl_client_init` (function, line 1092) `static inline void wl_client_init(wl_client_t *cl)`
+  - `wl_client_surface` (function, line 1100) `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)`
+  - `wl_client_pool` (function, line 1109) `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)`
+  - `wl_stream_init` (function, line 1129) `static inline void wl_stream_init(wl_stream_t *s)`
+  - `wl_stream_feed` (function, line 1135) `static inline int wl_stream_feed(wl_stream_t *s, const unsigned char *src,
         int n)`
-  - `wl_stream_next` (function, line 1101) `static inline int wl_stream_next(wl_stream_t *s, int *size)`
-  - `wl_stream_consume` (function, line 1117) `static inline int wl_stream_consume(wl_stream_t *s, int n)`
-  - `wl_iface_find` (function, line 1138) `static inline int wl_iface_find(const char *name)`
-  - `wl_comp_attach_buf` (function, line 1169) `static inline int wl_comp_attach_buf(wl_comp_t *c, unsigned int id,
+  - `wl_stream_next` (function, line 1150) `static inline int wl_stream_next(wl_stream_t *s, int *size)`
+  - `wl_stream_consume` (function, line 1166) `static inline int wl_stream_consume(wl_stream_t *s, int n)`
+  - `wl_iface_find` (function, line 1187) `static inline int wl_iface_find(const char *name)`
+  - `wl_comp_attach_buf` (function, line 1218) `static inline int wl_comp_attach_buf(wl_comp_t *c, unsigned int id,
         unsigned int pool, in...`
-  - `wl_dispatch` (function, line 1196) `static inline int wl_dispatch(wl_comp_t *c, wl_client_t *cl,
+  - `wl_dispatch` (function, line 1245) `static inline int wl_dispatch(wl_comp_t *c, wl_client_t *cl,
         unsigned int id, unsigned in...`
-  - `coords` (function, line 910) `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw Set-1 bytes * (E0 prefixes included) the client's own translator consumes. * A slow cl`
+  - `coords` (function, line 959) `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw Set-1 bytes * (E0 prefixes included) the client's own translator consumes. * A slow cl`
   - `WL_MINI_H` (macro, line 18) `#define WL_MINI_H`
   - `WL_MAX_MSG` (macro, line 20) `#define WL_MAX_MSG`
   - `WL_MAX_STR` (macro, line 21) `#define WL_MAX_STR`
@@ -185,17 +186,17 @@
   - `WL_HIT_TITLE` (macro, line 247) `#define WL_HIT_TITLE`
   - `WL_HIT_CLOSE` (macro, line 248) `#define WL_HIT_CLOSE`
   - `WL_HIT_RESIZE` (macro, line 249) `#define WL_HIT_RESIZE`
-  - `WLCOMP_BG` (macro, line 478) `#define WLCOMP_BG`
-  - `WLCOMP_BORDER` (macro, line 479) `#define WLCOMP_BORDER`
-  - `WL_ID_CLIPBOARD` (macro, line 853) `#define WL_ID_CLIPBOARD`
-  - `WL_OP_CLIPBOARD_SET` (macro, line 854) `#define WL_OP_CLIPBOARD_SET`
-  - `WL_OP_CLIPBOARD_GET` (macro, line 855) `#define WL_OP_CLIPBOARD_GET`
-  - `WL_CLIP_MAX` (macro, line 856) `#define WL_CLIP_MAX`
-  - `WL_EV_MAGIC` (macro, line 915) `#define WL_EV_MAGIC`
-  - `WL_EV_SC_MAX` (macro, line 916) `#define WL_EV_SC_MAX`
-  - `WL_EV_SZ` (macro, line 917) `#define WL_EV_SZ`
-  - `WL_STREAM_CAP` (macro, line 1073) `#define WL_STREAM_CAP`
-  - `WL_IFACE_COUNT` (macro, line 1136) `#define WL_IFACE_COUNT`
+  - `WLCOMP_BG` (macro, line 509) `#define WLCOMP_BG`
+  - `WLCOMP_BORDER` (macro, line 510) `#define WLCOMP_BORDER`
+  - `WL_ID_CLIPBOARD` (macro, line 902) `#define WL_ID_CLIPBOARD`
+  - `WL_OP_CLIPBOARD_SET` (macro, line 903) `#define WL_OP_CLIPBOARD_SET`
+  - `WL_OP_CLIPBOARD_GET` (macro, line 904) `#define WL_OP_CLIPBOARD_GET`
+  - `WL_CLIP_MAX` (macro, line 905) `#define WL_CLIP_MAX`
+  - `WL_EV_MAGIC` (macro, line 964) `#define WL_EV_MAGIC`
+  - `WL_EV_SC_MAX` (macro, line 965) `#define WL_EV_SC_MAX`
+  - `WL_EV_SZ` (macro, line 966) `#define WL_EV_SZ`
+  - `WL_STREAM_CAP` (macro, line 1122) `#define WL_STREAM_CAP`
+  - `WL_IFACE_COUNT` (macro, line 1185) `#define WL_IFACE_COUNT`
 - Imported by: `progs/src/freedom_wl.c`, `progs/wl/wl_mbox.h`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
 
 ## progs/wl/wl_pixbuf.h
@@ -230,8 +231,8 @@
 - Language: c
 - Symbols:
   - `wlcomp_cfg_t` (struct, line 43)
-  - `wlserv_t` (struct, line 399)
-  - `wlclient_pat_t` (struct, line 935)
+  - `wlserv_t` (struct, line 406)
+  - `wlclient_pat_t` (struct, line 995)
   - `wlcomp_sys_title` (function, line 57) `static long wlcomp_sys_title(const char *t)`
   - `wlcomp_sys_present` (function, line 65) `static long wlcomp_sys_present(long buf)`
   - `wlcomp_sys_present_origin` (function, line 73) `static long wlcomp_sys_present_origin(long buf, int *origin)`
@@ -251,28 +252,31 @@
         unsigned int op...`
   - `wlcomp_session` (function, line 272) `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)`
   - `wlcomp_selftest` (function, line 345) `static int wlcomp_selftest(void)`
-  - `wlserv_init` (function, line 410) `static void wlserv_init(wlserv_t *s)`
-  - `wlserv_slot` (function, line 427) `static int wlserv_slot(const wl_comp_t *c, unsigned int id)`
-  - `wlserv_recolor` (function, line 440) `static void wlserv_recolor(wl_comp_t *c)`
-  - `wlserv_present` (function, line 457) `static int wlserv_present(wlserv_t *s)`
-  - `wlserv_drop` (function, line 478) `static void wlserv_drop(wlserv_t *s, int idx)`
-  - `wlserv_fit` (function, line 491) `static void wlserv_fit(wlserv_t *s)`
-  - `wlserv_gc_strays` (function, line 580) `static void wlserv_gc_strays(void)`
-  - `wlserv_focus_box` (function, line 635) `static int wlserv_focus_box(const wlserv_t *s)`
-  - `wlserv_key` (function, line 653) `static void wlserv_key(wlserv_t *s, unsigned char byte)`
-  - `wlserv_ev_clear` (function, line 673) `static void wlserv_ev_clear(wlserv_t *s, int b)`
-  - `wlserv_push_ev` (function, line 684) `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)`
-  - `wlserv_clean_ev` (function, line 732) `static void wlserv_clean_ev(void)`
-  - `wlserv_close` (function, line 765) `static int wlserv_close(wlserv_t *s, unsigned int id)`
-  - `wlserv_drain` (function, line 799) `static int wlserv_drain(wlserv_t *s)`
-  - `wlclient_find` (function, line 945) `static const wlclient_pat_t *wlclient_find(const char *name)`
-  - `wlcomp_client` (function, line 974) `static int wlcomp_client(const char *box, const char *pat)`
-  - `wlcomp_path` (function, line 1043) `static int wlcomp_path(char *dst, int cap, const char *name)`
-  - `wlserv_relayout_present` (function, line 1063) `static int wlserv_relayout_present(wlserv_t *s)`
-  - `wlcomp_clean` (function, line 1077) `static int wlcomp_clean(void)`
-  - `wlcomp_once` (function, line 1105) `static int wlcomp_once(void)`
-  - `wlcomp_server` (function, line 1137) `static int wlcomp_server(void)`
-  - `main` (function, line 1406) `int main(int argc, char **argv)`
+  - `wlserv_init` (function, line 418) `static void wlserv_init(wlserv_t *s)`
+  - `wlserv_slot` (function, line 437) `static int wlserv_slot(const wl_comp_t *c, unsigned int id)`
+  - `wlserv_recolor` (function, line 450) `static void wlserv_recolor(wl_comp_t *c)`
+  - `wlserv_present` (function, line 467) `static int wlserv_present(wlserv_t *s)`
+  - `wlserv_load_raw` (function, line 502) `static int wlserv_load_raw(wlserv_t *s, int b, int idx)`
+  - `wlserv_fit` (function, line 547) `static void wlserv_fit(wlserv_t *s)`
+  - `wlserv_gc_strays` (function, line 609) `static void wlserv_gc_strays(void)`
+  - `wlserv_focus_box` (function, line 664) `static int wlserv_focus_box(const wlserv_t *s)`
+  - `wlserv_key` (function, line 686) `static void wlserv_key(wlserv_t *s, unsigned char byte)`
+  - `wlserv_ev_clear` (function, line 706) `static void wlserv_ev_clear(wlserv_t *s, int b)`
+  - `wlserv_push_ev` (function, line 717) `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)`
+  - `wlserv_clean_ev` (function, line 765) `static void wlserv_clean_ev(void)`
+  - `wlserv_close` (function, line 798) `static int wlserv_close(wlserv_t *s, unsigned int id)`
+  - `wlserv_box_known` (function, line 830) `static int wlserv_box_known(const wlserv_t *s, const char *box)`
+  - `forever` (function, line 844) `* one of the WL_MAX_SURFACES slots forever (eight bad names used to lock
+ * every real client out...`
+  - `wlserv_drain` (function, line 933) `static int wlserv_drain(wlserv_t *s)`
+  - `wlclient_find` (function, line 1005) `static const wlclient_pat_t *wlclient_find(const char *name)`
+  - `wlcomp_client` (function, line 1034) `static int wlcomp_client(const char *box, const char *pat)`
+  - `wlcomp_path` (function, line 1103) `static int wlcomp_path(char *dst, int cap, const char *name)`
+  - `wlserv_relayout_present` (function, line 1123) `static int wlserv_relayout_present(wlserv_t *s)`
+  - `wlcomp_clean` (function, line 1137) `static int wlcomp_clean(void)`
+  - `wlcomp_once` (function, line 1165) `static int wlcomp_once(void)`
+  - `wlcomp_server` (function, line 1197) `static int wlcomp_server(void)`
+  - `main` (function, line 1467) `int main(int argc, char **argv)`
   - `WLCOMP_W` (macro, line 39) `#define WLCOMP_W`
   - `WLCOMP_H` (macro, line 40) `#define WLCOMP_H`
   - `WLCOMP_CFG_DEFAULT` (macro, line 53) `#define WLCOMP_CFG_DEFAULT`

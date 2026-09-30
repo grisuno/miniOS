@@ -136,17 +136,21 @@
   - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 326) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
   - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 327) `#define MINIOS_SYS_WINDOW_PRESENT`
   - `MINIOS_SYS_WINDOW_TITLE` (macro, line 328) `#define MINIOS_SYS_WINDOW_TITLE`
-  - `SYS_TIME_MS` (macro, line 331) `#define SYS_TIME_MS`
-  - `SYS_PALETTE` (macro, line 332) `#define SYS_PALETTE`
-  - `SYS_PCSPK_INIT` (macro, line 333) `#define SYS_PCSPK_INIT`
-  - `SYS_PCSPK_TONE` (macro, line 334) `#define SYS_PCSPK_TONE`
-  - `SYS_RTC` (macro, line 335) `#define SYS_RTC`
-  - `SYS_FB_INFO` (macro, line 336) `#define SYS_FB_INFO`
-  - `SYS_PCSPK_VOL` (macro, line 337) `#define SYS_PCSPK_VOL`
-  - `SYS_SPAWN` (macro, line 338) `#define SYS_SPAWN`
-  - `SYS_TIME` (macro, line 339) `#define SYS_TIME`
-  - `SYS_WRITE` (macro, line 340) `#define SYS_WRITE`
-  - `MINIOS_EABI_MISMATCH` (macro, line 343) `#define MINIOS_EABI_MISMATCH`
+  - `MINIOS_GFX_ZOOM_NATIVE` (macro, line 335) `#define MINIOS_GFX_ZOOM_NATIVE`
+  - `MINIOS_GFX_ZOOM_2X` (macro, line 336) `#define MINIOS_GFX_ZOOM_2X`
+  - `MINIOS_GFX_ZOOM_FULLSCREEN` (macro, line 337) `#define MINIOS_GFX_ZOOM_FULLSCREEN`
+  - `MINIOS_GFX_ZOOM_WINDOWED` (macro, line 338) `#define MINIOS_GFX_ZOOM_WINDOWED`
+  - `SYS_TIME_MS` (macro, line 341) `#define SYS_TIME_MS`
+  - `SYS_PALETTE` (macro, line 342) `#define SYS_PALETTE`
+  - `SYS_PCSPK_INIT` (macro, line 343) `#define SYS_PCSPK_INIT`
+  - `SYS_PCSPK_TONE` (macro, line 344) `#define SYS_PCSPK_TONE`
+  - `SYS_RTC` (macro, line 345) `#define SYS_RTC`
+  - `SYS_FB_INFO` (macro, line 346) `#define SYS_FB_INFO`
+  - `SYS_PCSPK_VOL` (macro, line 347) `#define SYS_PCSPK_VOL`
+  - `SYS_SPAWN` (macro, line 348) `#define SYS_SPAWN`
+  - `SYS_TIME` (macro, line 349) `#define SYS_TIME`
+  - `SYS_WRITE` (macro, line 350) `#define SYS_WRITE`
+  - `MINIOS_EABI_MISMATCH` (macro, line 353) `#define MINIOS_EABI_MISMATCH`
 - Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
 
 ## progs/minios_png.h

@@ -1,14 +1,14 @@
 # tools
 
-*Community 7 | 21 files | cohesion 0.79*
+*Community 6 | 22 files | cohesion 0.81*
 
 ## Definition
 
-This community groups 21 file(s) rooted at `tools` with dominant language py (cohesion 0.79). Central symbols: `AddonError`, `AddonState`, `Client`, `FrameDiff`, `GdbChannel`, `Guest`, `Handler`, `HyperChecks`. Core file: `tools/minios_hyper.py` (51 symbols). Documented purpose: Debug driver: boot MiniOS through the MCP bridge and run freedom..
+This community groups 22 file(s) rooted at `tools` with dominant language py (cohesion 0.81). Central symbols: `AddonError`, `AddonState`, `Client`, `Config`, `FrameDiff`, `GdbChannel`, `Guest`, `Handler`. Core file: `tools/minios_hyper.py` (51 symbols). Documented purpose: Debug driver: boot MiniOS through the MCP bridge and run freedom..
 
 ## Files
 
-### `tools` (16 files)
+### `tools` (17 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -22,11 +22,11 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 | `tools/qga_client.py` | py | infrastructure | 4 | yes |
 | `tools/repro_gui.py` | py | presentation | 10 | yes |
 | `tools/test_gui_fashion.py` | py | testing | 18 | yes |
+| `tools/test_gui_gfxview.py` | py | testing | 7 | yes |
 | `tools/test_gui_icon_cwd.py` | py | testing | 17 | yes |
 | `tools/test_gui_menu.py` | py | testing | 1 | yes |
 | `tools/test_gui_wm.py` | py | testing | 17 | yes |
 | `tools/test_gui_zoom.py` | py | testing | 1 | yes |
-| `tools/test_http_server.py` | py | testing | 3 | yes |
 
 ### `mcp` (4 files)
 
@@ -43,7 +43,7 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `kernel/time.c` | c | utility | 4 | yes |
 
-*... and 1 more files in this community.*
+*... and 2 more files in this community.*
 
 
 ## Key Symbols
@@ -81,38 +81,38 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 23
+- Internal resolved imports (EXTRACTED): 25
 - Cross-boundary resolved imports (EXTRACTED): 7
 
 ## Connections
 
-- [EXTRACTED] depends_on community 5 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
-- [EXTRACTED] depends_on community 7 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
-- [EXTRACTED] depends_on community 6 <-> 7 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
+- [EXTRACTED] depends_on community 5 <-> 6 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 6 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
+- [EXTRACTED] depends_on community 1 <-> 6 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
 
 ## Risks
 
 - [taint high] `mcp/mcp_dbg_driver.py` -> `mcp/mcp_dbg_driver.py` via `subprocess` (0 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `kernel/time.c` via `subprocess` (1 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ktime.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/vma.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/pipe.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `mcp/mcp_dogfood.py` via `subprocess` (0 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `kernel/time.c` via `subprocess` (1 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/ktime.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/kernel.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/vma.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/pipe.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
 
 ## Open Questions
 
 - Is the dangerous import `subprocess` in `mcp/mcp_dbg_driver.py` still required, or can it be isolated?
 - What would break if the most connected file in tools changed?
-- Should tools be split, given cohesion 0.79?
+- Should tools be split, given cohesion 0.81?
 
 ## Sources
 
@@ -131,9 +131,9 @@ This community groups 21 file(s) rooted at `tools` with dominant language py (co
 - `tools/qga_client.py`
 - `tools/repro_gui.py`
 - `tools/test_gui_fashion.py`
+- `tools/test_gui_gfxview.py`
 - `tools/test_gui_icon_cwd.py`
 - `tools/test_gui_menu.py`
 - `tools/test_gui_wm.py`
 - `tools/test_gui_zoom.py`
-- `tools/test_http_server.py`
-- *... and 1 more*
+- *... and 2 more*

@@ -43,6 +43,21 @@ registered with a null address. Section header arithmetic uses the
 overflow-safe pattern `sh_offset > size || sh_size > size - sh_offset` to
 prevent unsigned wrap from bypassing the bounds check.
 
+### CVM modules (`.cvm`) argv contract
+A CVM v2 module runs with a Linux-style argv: `run <file>.cvm [args...]`
+passes the module path as `argv[0]` and the remaining words as `argv[1..]`,
+so the startup code every `ld -f cvm` module carries reads `argc` and
+`argv` exactly as on real hardware, and a program like
+`run minigcc.cvm test.c` works without extra ceremony. The data section is
+laid out so that argument passing can never corrupt module data: globals,
+string blobs and extern slots precede the x86 stack region, `ld` stores the
+region's offset and size in the module ABI area, and the interpreter reads
+those values at run time (older modules without the stored offset fall back
+to the fixed layout). `cvm_set_args` copies the argument strings into the
+module heap and builds the argv pointer array in the reserved area above the
+stack region; a module whose layout cannot hold the argument list is
+rejected with a diagnostic, never silently corrupted.
+
 ### Integer overflow protection
 `kfread` and `kfwrite` compute `size * n` before accessing the buffer.
 A ring-3 program passing `size=0xFFFFFFFF, n=2` would cause the product

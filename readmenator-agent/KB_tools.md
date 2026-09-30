@@ -101,6 +101,16 @@
   - `anchor_matches` (method, line 67) `def anchor_matches(repo, target, expr)`
   - `main` (method, line 86) `def main()`
 
+## tools/check_spin_discipline.py
+- Layer: infrastructure
+- Doc: Check spinlock call-site discipline across kernel C sources.  Rules, derived from the headers/spinlock.h contract: S1  N
+- Language: py
+- Symbols:
+  - `Config` (class, line 23) `class Config`
+  - `iter_functions` (method, line 38) `def iter_functions(path)`
+  - `check_file` (method, line 64) `def check_file(path)`
+  - `main` (method, line 99) `def main(argv)`
+
 ## tools/check_surprising.py
 - Layer: utility
 - Doc: check_surprising.py -- Detect surprising architectural connections.  Parses the CPG JSON-LD output from readmenator and 
@@ -277,19 +287,21 @@
 - Symbols:
   - `u16` (function, line 13) `def u16(d, o)`
   - `u32` (function, line 14) `def u32(d, o)`
-  - `FSCK` (class, line 16) `class FSCK`
-  - `main` (method, line 136) `def main()`
-  - `__init__` (method, line 17) `def __init__(self, fn)`
-  - `_find_base` (method, line 24) `def _find_base(self)`
-  - `blk` (method, line 42) `def blk(self, n)`
-  - `_sb` (method, line 45) `def _sb(self)`
-  - `inode` (method, line 51) `def inode(self, i)`
-  - `read` (method, line 58) `def read(self, ino)`
-  - `err` (method, line 73) `def err(self, msg)`
-  - `mark_block` (method, line 75) `def mark_block(self, n)`
-  - `scan_inode` (method, line 80) `def scan_inode(self, i)`
-  - `scan_dir` (method, line 89) `def scan_dir(self, ino)`
-  - `run` (method, line 121) `def run(self)`
+  - `crc32` (function, line 15) `def crc32(data)`
+  - `FSCK` (class, line 23) `class FSCK`
+  - `main` (method, line 152) `def main()`
+  - `__init__` (method, line 24) `def __init__(self, fn)`
+  - `_find_base` (method, line 31) `def _find_base(self)`
+  - `blk` (method, line 49) `def blk(self, n)`
+  - `_sb` (method, line 52) `def _sb(self)`
+  - `inode` (method, line 58) `def inode(self, i)`
+  - `inode_crc_ok` (method, line 65) `def inode_crc_ok(self, i)`
+  - `read` (method, line 71) `def read(self, ino)`
+  - `err` (method, line 86) `def err(self, msg)`
+  - `mark_block` (method, line 88) `def mark_block(self, n)`
+  - `scan_inode` (method, line 93) `def scan_inode(self, i)`
+  - `scan_dir` (method, line 105) `def scan_dir(self, ino)`
+  - `run` (method, line 137) `def run(self)`
 
 ## tools/minifs_saves.py
 - Layer: utility
@@ -457,10 +469,10 @@
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 118)
-  - `cleanup` (function, line 125)
-  - `record` (function, line 355)
-  - `find_index` (function, line 361)
+  - `restore_sources` (function, line 121)
+  - `cleanup` (function, line 128)
+  - `record` (function, line 367)
+  - `find_index` (function, line 373)
 
 ## tools/probe_compute_vga.py
 - Layer: utility
@@ -538,10 +550,10 @@
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
   - `scenario_uefi` (function, line 167)
-  - `http_server_start` (function, line 1028)
-  - `http_server_stop` (function, line 1035)
-  - `http_fixture_start` (function, line 1040)
-  - `http_fixture_stop` (function, line 1047)
+  - `http_server_start` (function, line 1072)
+  - `http_server_stop` (function, line 1079)
+  - `http_fixture_start` (function, line 1084)
+  - `http_fixture_stop` (function, line 1091)
 
 ## tools/test_call_align.py
 - Layer: testing
@@ -582,6 +594,20 @@
   - `dump` (method, line 168) `def dump(self, name)`
   - `stop` (method, line 175) `def stop(self)`
 - Depends on: `kernel/time.c`
+
+## tools/test_gui_gfxview.py
+- Layer: testing
+- Doc: test_gui_gfxview.py -- pixel + serial proof of the graphics view contract.  Purpose Proves that the tiling WM governs gr
+- Language: py
+- Symbols:
+  - `Config` (class, line 39) `class Config`
+  - `note` (method, line 55) `def note(ok, msg)`
+  - `last_line` (method, line 62) `def last_line(g, prefix)`
+  - `gfx_row` (method, line 72) `def gfx_row(g)`
+  - `dark_share` (method, line 84) `def dark_share(img, box)`
+  - `wait_frames` (method, line 94) `def wait_frames(g, want)`
+  - `main` (method, line 109) `def main()`
+- Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
 
 ## tools/test_gui_icon_cwd.py
 - Layer: testing
@@ -638,7 +664,7 @@
   - `dump` (method, line 176) `def dump(self, name)`
   - `stop` (method, line 183) `def stop(self)`
 - Depends on: `kernel/time.c`
-- Imported by: `tools/test_gui_menu.py`, `tools/test_gui_zoom.py`
+- Imported by: `tools/test_gui_gfxview.py`, `tools/test_gui_menu.py`, `tools/test_gui_zoom.py`
 
 ## tools/test_gui_zoom.py
 - Layer: testing

@@ -4,7 +4,7 @@
 
 ## Definition
 
-This community groups 13 file(s) rooted at `headers` with dominant language h (cohesion 0.66). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`, `DOCK_BOUNCE_TICKS`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`. Core file: `kernel/vga_fb.c` (167 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
+This community groups 13 file(s) rooted at `headers` with dominant language h (cohesion 0.66). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`, `DOCK_BOUNCE_TICKS`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`. Core file: `kernel/vga_fb.c` (199 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
 
 ## Files
 
@@ -13,14 +13,14 @@ This community groups 13 file(s) rooted at `headers` with dominant language h (c
 | `headers/desktop_icons.h` | h | utility | 3 | yes |
 | `headers/desktop_shortcuts.h` | h | utility | 27 | yes |
 | `headers/vga_fx.h` | h | utility | 9 | yes |
-| `headers/wm_events.h` | h | infrastructure | 39 | yes |
 | `headers/wm_focus.h` | h | utility | 5 | yes |
 | `headers/wm_geom.h` | h | utility | 11 | yes |
+| `headers/wm_gfxview.h` | h | presentation | 15 | yes |
 | `headers/wm_layout.h` | h | presentation | 16 | yes |
 | `headers/wm_render.h` | h | presentation | 5 | yes |
 | `headers/wm_tiling.h` | h | utility | 3 | yes |
 | `headers/wm_window.h` | h | utility | 10 | yes |
-| `kernel/vga_fb.c` | c | utility | 167 | no |
+| `kernel/vga_fb.c` | c | utility | 199 | no |
 | `tests/test_fx.c` | c | testing | 2 | yes |
 | `tests/test_wm.c` | c | testing | 2 | yes |
 
@@ -64,22 +64,23 @@ This community groups 13 file(s) rooted at `headers` with dominant language h (c
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/wm_events.h.
-- [EXTRACTED] depends_on community 3 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/wm_events.h imports headers/drivers/modifiers.h.
-- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language h) with no import path between community 1 (headers/drivers) and community 3 (headers).
+- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: kernel/shell.c imports headers/wm_layout.h.
+- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 3 (headers).
+- [INFERRED] shares_context community 2 <-> 3 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 3 (headers).
 
 ## Risks
 
 - [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_render.h` (presentation)
 - [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_layout.h` (presentation)
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2112` `taskbar_render` `lx`: `lx` assigned at line 2112 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2449` `line` `rows_before`: `rows_before` assigned at line 2449 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2885` `wallpaper_ensure` `dst`: `dst` assigned at line 2885 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3011` `icon_decode` `dst`: `dst` assigned at line 3011 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3030` `icon_embedded_rgba` `dst`: `dst` assigned at line 3030 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3584` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 3584 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3585` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 3585 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3587` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 3587 but never read afterwards.
+- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_gfxview.h` (presentation)
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2452` `taskbar_render` `lx`: `lx` assigned at line 2452 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2804` `line` `rows_before`: `rows_before` assigned at line 2804 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3497` `wallpaper_ensure` `d`: `d` assigned at line 3497 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3622` `icon_decode` `dst`: `dst` assigned at line 3622 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3641` `icon_embedded_rgba` `dst`: `dst` assigned at line 3641 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4200` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 4200 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4201` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 4201 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4203` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 4203 but never read afterwards.
 
 ## Open Questions
 
@@ -92,9 +93,9 @@ This community groups 13 file(s) rooted at `headers` with dominant language h (c
 - `headers/desktop_icons.h`
 - `headers/desktop_shortcuts.h`
 - `headers/vga_fx.h`
-- `headers/wm_events.h`
 - `headers/wm_focus.h`
 - `headers/wm_geom.h`
+- `headers/wm_gfxview.h`
 - `headers/wm_layout.h`
 - `headers/wm_render.h`
 - `headers/wm_tiling.h`
