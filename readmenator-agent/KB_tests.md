@@ -29,6 +29,15 @@
   - `main` (function, line 25) `int main(void)`
 - Depends on: `headers/abi.h`, `progs/minios_abi.h`
 
+## tests/test_arena.c
+- Layer: testing
+- Doc: Docstring: host test for the bump arena (make test-arena).
+- Language: c
+- Symbols:
+  - `main` (function, line 23) `int main(void)`
+  - `CHECK` (macro, line 14) `#define CHECK(cond, msg)`
+- Depends on: `headers/arena.h`, `kernel/string.c`
+
 ## tests/test_batch.c
 - Layer: testing
 - Doc: Docstring: Host test for kernel/batch.c (make test-batch).
@@ -278,6 +287,17 @@
   - `main` (function, line 16) `int main(void)`
   - `CHECK` (macro, line 14) `#define CHECK(c, m)`
 - Depends on: `headers/ktime.h`
+
+## tests/test_leakcheck.c
+- Layer: testing
+- Doc: Docstring: host test for the leak tracker (make test-leakcheck).
+- Language: c
+- Symbols:
+  - `main` (function, line 27) `int main(void)`
+  - `MINIOS_LEAKCHECK_IMPL` (macro, line 10) `#define MINIOS_LEAKCHECK_IMPL`
+  - `MINIOS_LK_ENABLE` (macro, line 11) `#define MINIOS_LK_ENABLE`
+  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
+- Depends on: `headers/leakcheck.h`, `kernel/string.c`, `progs/file/file_assoc.h`
 
 ## tests/test_minios_png.c
 - Layer: testing

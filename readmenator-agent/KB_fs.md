@@ -147,12 +147,12 @@
   - `kfungetc` (function, line 406) `int kfungetc(int c, KFILE *f)`
   - `kfread` (function, line 413) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
   - `kfwrite` (function, line 458) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfseek` (function, line 514) `int kfseek(KFILE *f, long offset, int whence)`
-  - `kftell` (function, line 534) `long kftell(KFILE *f)`
-  - `kfflush` (function, line 538) `int kfflush(KFILE *f)`
-  - `kfputs` (function, line 561) `int kfputs(const char *s, KFILE *f)`
-  - `kfputc` (function, line 567) `int kfputc(int c, KFILE *f)`
-  - `krewind` (function, line 572) `void krewind(KFILE *f)`
+  - `kfseek` (function, line 521) `int kfseek(KFILE *f, long offset, int whence)`
+  - `kftell` (function, line 541) `long kftell(KFILE *f)`
+  - `kfflush` (function, line 545) `int kfflush(KFILE *f)`
+  - `kfputs` (function, line 568) `int kfputs(const char *s, KFILE *f)`
+  - `kfputc` (function, line 574) `int kfputc(int c, KFILE *f)`
+  - `krewind` (function, line 579) `void krewind(KFILE *f)`
 - Depends on: `headers/kernel.h`, `headers/minifs.h`
 
 ## fs/minifs.c

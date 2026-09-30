@@ -1,18 +1,24 @@
 # progs/doomgeneric
 
-*Community 1 | 96 files | cohesion 0.60*
+*Community 4 | 124 files | cohesion 0.64*
 
 ## Definition
 
-This community groups 96 file(s) rooted at `progs/doomgeneric` with dominant language c (cohesion 0.60). Central symbols: `ANG1`, `ANG180`, `ANG1_X`, `ANG270`, `ANG45`, `ANG60`, `ANG90`, `ANGLETOFINESHIFT`. Core file: `progs/vedit/vedit.c` (239 symbols). Documented purpose: Unified audio API for MiniOS..
+This community groups 124 file(s) rooted at `progs/doomgeneric` with dominant language c (cohesion 0.64). Central symbols: `ANG1`, `ANG180`, `ANG1_X`, `ANG270`, `ANG45`, `ANG60`, `ANG90`, `ANGLETOFINESHIFT`. Core file: `progs/vedit/vedit.c` (243 symbols). Documented purpose: Unified audio API for MiniOS..
 
 ## Files
 
-### `progs/doomgeneric` (44 files)
+### `progs/doomgeneric` (70 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/doomgeneric/config.h` | h | infrastructure | 16 | yes |
+
+### `tests` (9 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `tests/test_file_assoc.c` | c | testing | 10 | yes |
 
 ### `progs/nuklear` (8 files)
 
@@ -26,12 +32,6 @@ This community groups 96 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/src/audio.c` | c | infrastructure | 17 | no |
 
-### `tests` (8 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `tests/test_file_assoc.c` | c | testing | 10 | yes |
-
 ### `progs/wl` (5 files)
 
 | File | Language | Layer | Symbols | Doc |
@@ -44,23 +44,23 @@ This community groups 96 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/minios_abi.h` | h | utility | 146 | yes |
 
+### `headers` (2 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `headers/audio.h` | h | infrastructure | 18 | yes |
+
 ### `progs/file` (2 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/file/file.c` | c | utility | 63 | yes |
+| `progs/file/file.c` | c | utility | 65 | yes |
 
 ### `progs/quake2generic` (2 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/quake2generic/q2generic_minios.c` | c | utility | 34 | yes |
-
-### `headers` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `headers/audio.h` | h | infrastructure | 18 | yes |
 
 ### `kernel` (1 files)
 
@@ -128,7 +128,7 @@ This community groups 96 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/pokemon/minios_stubs/SDL.h` | h | testing | 10 | yes |
 
-*... and 76 more files in this community.*
+*... and 104 more files in this community.*
 
 
 ## Key Symbols
@@ -151,35 +151,32 @@ This community groups 96 file(s) rooted at `progs/doomgeneric` with dominant lan
 - `audio_stream_close` (function, `headers/audio.h:41`) `void audio_stream_close(int id);`
 - `audio_stream_submit` (function, `headers/audio.h:42`) `int audio_stream_submit(int id, const void *buf, unsigned len);`
 - `audio_stream_volume` (function, `headers/audio.h:43`) `void audio_stream_volume(int id, unsigned char vol);`
-- `kstrlen` (function, `kernel/string.c:17`) `unsigned long kstrlen(const char *s)`
-- `kstrcpy` (function, `kernel/string.c:23`) `char *kstrcpy(char *dst, const char *src)`
-- `kstrncpy` (function, `kernel/string.c:29`) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
-- `kstrncat` (function, `kernel/string.c:35`) `char *kstrncat(char *dst, const char *src, unsigned long n)`
-- `kstrcmp` (function, `kernel/string.c:43`) `int kstrcmp(const char *a, const char *b)`
-- `kstrncmp` (function, `kernel/string.c:48`) `int kstrncmp(const char *a, const char *b, unsigned long n)`
-- `kstrchr` (function, `kernel/string.c:53`) `char *kstrchr(const char *s, int c)`
-- `kstrstr` (function, `kernel/string.c:58`) `char *kstrstr(const char *hay, const char *ndl)`
-- `kmemcpy` (function, `kernel/string.c:68`) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
-- `kmemset` (function, `kernel/string.c:75`) `void *kmemset(void *dst, int c, unsigned long n)`
-- `kmemcmp` (function, `kernel/string.c:81`) `int kmemcmp(const void *a, const void *b, unsigned long n)`
-- `kmemmove` (function, `kernel/string.c:87`) `void *kmemmove(void *dst, const void *src, unsigned long n)`
+- `MINIOS_LEAKCHECK_H` (macro, `headers/leakcheck.h:28`) `#define MINIOS_LEAKCHECK_H`
+- `MINIOS_LK_PIPE` (macro, `headers/leakcheck.h:42`) `#define MINIOS_LK_PIPE`
+- `MINIOS_LK_PIPE` (macro, `headers/leakcheck.h:44`) `#define MINIOS_LK_PIPE`
+- `lk_block_t` (type_alias, `headers/leakcheck.h:49`) `typedef struct lk_block lk_block_t;` - #ifndef MINIOS_LK_KERNEL #include <stdlib.h> #include <stdio.h> #endif #ifndef MINIOS_LK_PIPE #ifdef
+- `lk_block` (struct, `headers/leakcheck.h:50`)
+- `kmalloc` (function, `headers/leakcheck.h:79`) `extern void *kmalloc(unsigned long size);` - ifdef MINIOS_LK_KERNEL
+- `kfree` (function, `headers/leakcheck.h:80`) `extern void kfree(void *ptr);`
+- `kprintf` (function, `headers/leakcheck.h:81`) `extern int kprintf(const char *fmt, ...);`
+- `MINIOS_LK_RAW_ALLOC` (macro, `headers/leakcheck.h:82`) `#define MINIOS_LK_RAW_ALLOC(sz)`
+- `MINIOS_LK_RAW_FREE` (macro, `headers/leakcheck.h:83`) `#define MINIOS_LK_RAW_FREE(p)`
+- `MINIOS_LK_RAW_ALLOC` (macro, `headers/leakcheck.h:88`) `#define MINIOS_LK_RAW_ALLOC(sz)`
+- `MINIOS_LK_RAW_FREE` (macro, `headers/leakcheck.h:89`) `#define MINIOS_LK_RAW_FREE(p)`
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 205
-- Cross-boundary resolved imports (EXTRACTED): 137
+- Internal resolved imports (EXTRACTED): 268
+- Cross-boundary resolved imports (EXTRACTED): 155
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 1 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 5 <-> 1 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
-- [EXTRACTED] depends_on community 7 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/am_map.c imports progs/doomgeneric/doomkeys.h.
-- [EXTRACTED] depends_on community 1 <-> 6 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
-- [EXTRACTED] depends_on community 8 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
-- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (progs/doomgeneric) and community 2 (headers).
-- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 3 (headers).
-- [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (progs/doomgeneric) and community 4 (headers).
-- [INFERRED] shares_context community 1 <-> 10 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 10 (orphans).
+- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
+- [EXTRACTED] depends_on community 8 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 10 <-> 4 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/am_map.c imports progs/doomgeneric/doomkeys.h.
+- [EXTRACTED] depends_on community 4 <-> 9 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
+- [EXTRACTED] depends_on community 11 <-> 4 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
+- [EXTRACTED] depends_on community 1 <-> 4 (strength 0.9): Extracted import edge crosses communities: tests/test_driver.c imports kernel/string.c.
 
 ## Risks
 
@@ -201,30 +198,30 @@ This community groups 96 file(s) rooted at `progs/doomgeneric` with dominant lan
 
 ## Open Questions
 
-- Why do 13 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric.c`)? What purpose do they serve?
+- Why do 14 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric.c`)? What purpose do they serve?
 - What would break if the most connected file in progs/doomgeneric changed?
-- Should progs/doomgeneric be split, given cohesion 0.60?
+- Should progs/doomgeneric be split, given cohesion 0.64?
 
 ## Sources
 
 - `headers/audio.h`
+- `headers/leakcheck.h`
 - `kernel/string.c`
 - `progs/doomedit/doomedit.c`
 - `progs/doomgeneric/config.h`
+- `progs/doomgeneric/d_items.c`
+- `progs/doomgeneric/d_items.h`
+- `progs/doomgeneric/d_loop.c`
 - `progs/doomgeneric/d_mode.c`
+- `progs/doomgeneric/d_player.h`
 - `progs/doomgeneric/d_textur.h`
+- `progs/doomgeneric/d_think.h`
+- `progs/doomgeneric/d_ticcmd.h`
+- `progs/doomgeneric/doomdata.h`
 - `progs/doomgeneric/doomgeneric.c`
 - `progs/doomgeneric/doomgeneric.h`
 - `progs/doomgeneric/doomgeneric_minios.c`
 - `progs/doomgeneric/doomgeneric_sdl.c`
 - `progs/doomgeneric/doomgeneric_soso.c`
 - `progs/doomgeneric/doomgeneric_sosox.c`
-- `progs/doomgeneric/doomgeneric_win.c`
-- `progs/doomgeneric/doomgeneric_xlib.c`
-- `progs/doomgeneric/doomkeys.h`
-- `progs/doomgeneric/doomtype.h`
-- `progs/doomgeneric/dummy.c`
-- `progs/doomgeneric/gusconf.h`
-- `progs/doomgeneric/i_cdmus.c`
-- `progs/doomgeneric/i_cdmus.h`
-- *... and 76 more*
+- *... and 104 more*

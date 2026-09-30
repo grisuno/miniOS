@@ -1,10 +1,10 @@
 # headers
 
-*Community 3 | 13 files | cohesion 0.66*
+*Community 6 | 18 files | cohesion 0.69*
 
 ## Definition
 
-This community groups 13 file(s) rooted at `headers` with dominant language h (cohesion 0.66). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`, `DOCK_BOUNCE_TICKS`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`. Core file: `kernel/vga_fb.c` (199 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
+This community groups 18 file(s) rooted at `headers` with dominant language h (cohesion 0.69). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`, `DOCK_BOUNCE_TICKS`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`. Core file: `kernel/vga_fb.c` (199 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
 
 ## Files
 
@@ -12,16 +12,21 @@ This community groups 13 file(s) rooted at `headers` with dominant language h (c
 |------|----------|-------|---------|-----|
 | `headers/desktop_icons.h` | h | utility | 3 | yes |
 | `headers/desktop_shortcuts.h` | h | utility | 27 | yes |
+| `headers/drivers/modifiers.h` | h | infrastructure | 11 | yes |
 | `headers/vga_fx.h` | h | utility | 9 | yes |
+| `headers/wm_events.h` | h | infrastructure | 39 | yes |
 | `headers/wm_focus.h` | h | utility | 5 | yes |
 | `headers/wm_geom.h` | h | utility | 11 | yes |
 | `headers/wm_gfxview.h` | h | presentation | 15 | yes |
 | `headers/wm_layout.h` | h | presentation | 16 | yes |
+| `headers/wm_notify.h` | h | utility | 9 | yes |
 | `headers/wm_render.h` | h | presentation | 5 | yes |
 | `headers/wm_tiling.h` | h | utility | 3 | yes |
 | `headers/wm_window.h` | h | utility | 10 | yes |
 | `kernel/vga_fb.c` | c | utility | 199 | no |
 | `tests/test_fx.c` | c | testing | 2 | yes |
+| `tests/test_modifiers.c` | c | testing | 2 | no |
+| `tests/test_notify.c` | c | testing | 3 | no |
 | `tests/test_wm.c` | c | testing | 2 | yes |
 
 ## Key Symbols
@@ -59,14 +64,13 @@ This community groups 13 file(s) rooted at `headers` with dominant language h (c
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 21
-- Cross-boundary resolved imports (EXTRACTED): 11
+- Internal resolved imports (EXTRACTED): 27
+- Cross-boundary resolved imports (EXTRACTED): 12
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: kernel/shell.c imports headers/wm_layout.h.
-- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric) and community 3 (headers).
-- [INFERRED] shares_context community 2 <-> 3 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (headers) and community 3 (headers).
+- [EXTRACTED] depends_on community 0 <-> 6 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
+- [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 6 (headers).
 
 ## Risks
 
@@ -84,22 +88,27 @@ This community groups 13 file(s) rooted at `headers` with dominant language h (c
 
 ## Open Questions
 
-- Why do 1 file(s) lack file-level docs (e.g. `kernel/vga_fb.c`)? What purpose do they serve?
+- Why do 3 file(s) lack file-level docs (e.g. `kernel/vga_fb.c`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.66?
+- Should headers be split, given cohesion 0.69?
 
 ## Sources
 
 - `headers/desktop_icons.h`
 - `headers/desktop_shortcuts.h`
+- `headers/drivers/modifiers.h`
 - `headers/vga_fx.h`
+- `headers/wm_events.h`
 - `headers/wm_focus.h`
 - `headers/wm_geom.h`
 - `headers/wm_gfxview.h`
 - `headers/wm_layout.h`
+- `headers/wm_notify.h`
 - `headers/wm_render.h`
 - `headers/wm_tiling.h`
 - `headers/wm_window.h`
 - `kernel/vga_fb.c`
 - `tests/test_fx.c`
+- `tests/test_modifiers.c`
+- `tests/test_notify.c`
 - `tests/test_wm.c`

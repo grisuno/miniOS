@@ -23,6 +23,28 @@
 - Language: h
 - Imported by: `smp.c`
 
+## headers/arena.h
+- Layer: utility
+- Doc: Docstring: bump arena for MiniOS, kernel and ring-3 alike.
+- Language: h
+- Symbols:
+  - `minios_arena` (struct, line 41)
+  - `arena_init` (function, line 48) `static inline void arena_init(arena_t *a, void *block, size_t size)`
+  - `arena_align_up` (function, line 62) `static inline size_t arena_align_up(size_t n, size_t align)`
+  - `arena_bytes_for` (function, line 74) `static inline size_t arena_bytes_for(size_t count, size_t elem_size)`
+  - `arena_alloc` (function, line 81) `static inline void *arena_alloc(arena_t *a, size_t size, size_t align)`
+  - `arena_used` (function, line 95) `static inline size_t arena_used(const arena_t *a)`
+  - `arena_free_bytes` (function, line 101) `static inline size_t arena_free_bytes(const arena_t *a)`
+  - `arena_reset` (function, line 107) `static inline void arena_reset(arena_t *a)`
+  - `arena_checkpoint` (function, line 113) `static inline size_t arena_checkpoint(const arena_t *a)`
+  - `arena_rewind` (function, line 119) `static inline int arena_rewind(arena_t *a, size_t checkpoint)`
+  - `arena_contains` (function, line 128) `static inline int arena_contains(const arena_t *a, const void *ptr)`
+  - `kmalloc` (function, line 3) `* * A bump arena serves one kmalloc (kernel) or malloc (ring-3) with pointer * bumps instead of N allocator round trips, then releases the whole scope * with a single free. That is the exact shape of `
+  - `kfree` (function, line 25) `* kfree(back);`
+  - `MINIOS_ARENA_H` (macro, line 33) `#define MINIOS_ARENA_H`
+  - `ARENA_DEFAULT_ALIGN` (macro, line 38) `#define ARENA_DEFAULT_ALIGN`
+- Imported by: `kernel/spawn.c`, `tests/test_arena.c`
+
 ## headers/audio.h
 - Layer: infrastructure
 - Doc: Unified audio API for MiniOS.
@@ -313,21 +335,21 @@
 - Symbols:
   - `vfs_ops` (struct, line 330)
   - `vfs_file` (struct, line 339)
-  - `kfd_view` (struct, line 702)
+  - `kfd_view` (struct, line 706)
   - `RDFile` (struct, line 236)
   - `KFILE` (struct, line 410)
-  - `KSym` (struct, line 531)
-  - `KProg` (struct, line 536)
-  - `kjmpbuf` (struct, line 570)
-  - `Elf64_Ehdr` (struct, line 642)
+  - `KSym` (struct, line 535)
+  - `KProg` (struct, line 540)
+  - `kjmpbuf` (struct, line 574)
+  - `Elf64_Ehdr` (struct, line 646)
   - `file_operations` (type_alias, line 355) `typedef vfs_ops_t file_operations;`
   - `vnode_t` (type_alias, line 356) `typedef vfs_file_t vnode_t;`
-  - `Elf64_Addr` (type_alias, line 635) `typedef unsigned long long Elf64_Addr;`
-  - `Elf64_Off` (type_alias, line 636) `typedef unsigned long long Elf64_Off;`
-  - `Elf64_Word` (type_alias, line 637) `typedef unsigned int Elf64_Word;`
-  - `Elf64_Half` (type_alias, line 638) `typedef unsigned short Elf64_Half;`
-  - `Elf64_Xword` (type_alias, line 639) `typedef unsigned long long Elf64_Xword;`
-  - `Elf64_Sxword` (type_alias, line 640) `typedef long long Elf64_Sxword;`
+  - `Elf64_Addr` (type_alias, line 639) `typedef unsigned long long Elf64_Addr;`
+  - `Elf64_Off` (type_alias, line 640) `typedef unsigned long long Elf64_Off;`
+  - `Elf64_Word` (type_alias, line 641) `typedef unsigned int Elf64_Word;`
+  - `Elf64_Half` (type_alias, line 642) `typedef unsigned short Elf64_Half;`
+  - `Elf64_Xword` (type_alias, line 643) `typedef unsigned long long Elf64_Xword;`
+  - `Elf64_Sxword` (type_alias, line 644) `typedef long long Elf64_Sxword;`
   - `outb` (function, line 25) `static inline void outb(unsigned short port, unsigned char val)`
   - `inb` (function, line 28) `static inline unsigned char inb(unsigned short port)`
   - `outw` (function, line 33) `static inline void outw(unsigned short port, unsigned short val)`
@@ -338,7 +360,7 @@
                         ...`
   - `waits` (function, line 63) `* and mouse_hw_init issues dozens of waits (measured 5 s of boot).  This
  * polls the port once p...`
-  - `C` (function, line 734) `* it with pointer subtraction in C (undefined behaviour). The value is
+  - `C` (function, line 738) `* it with pointer subtraction in C (undefined behaviour). The value is
  * a link-time difference,...`
   - `ktime_ms` (function, line 24) `unsigned long ktime_ms(void);`
   - `vga_clear` (function, line 93) `void vga_clear(void);`
@@ -458,117 +480,120 @@
   - `redirect_begin` (function, line 502) `int redirect_begin(void);`
   - `redirect_commit` (function, line 503) `int redirect_commit(const char *path, int append_mode);`
   - `redirect_take` (function, line 504) `char *redirect_take(unsigned long *len_out);`
-  - `redirect_active` (function, line 505) `int redirect_active(void);`
-  - `console_stdin_push` (function, line 506) `int console_stdin_push(const char *data, unsigned long len);`
-  - `console_stdin_clear` (function, line 507) `void console_stdin_clear(void);`
-  - `console_stdin_active` (function, line 508) `int console_stdin_active(void);`
-  - `panic_screen` (function, line 511) `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp, int halt);`
-  - `clip_set` (function, line 515) `int clip_set(const char *data, unsigned long len);`
-  - `clip_get` (function, line 516) `int clip_get(char *out, unsigned long cap);`
-  - `clip_clear` (function, line 517) `void clip_clear(void);`
-  - `clip_len_get` (function, line 518) `int clip_len_get(void);`
-  - `shell_take_redirect` (function, line 519) `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);`
-  - `shell_run_any` (function, line 520) `int shell_run_any(const char *name, int argc, char **argv);`
-  - `shell_exec_builtin` (function, line 521) `void shell_exec_builtin(int argc, char **argv);`
-  - `shell_report_exit` (function, line 522) `void shell_report_exit(int code);`
-  - `shell_report` (function, line 523) `void shell_report(const char *what, const char *detail);`
-  - `kprog_slot` (function, line 548) `KProg *kprog_slot(const char *name);`
-  - `kprog_lookup` (function, line 549) `KProg *kprog_lookup(const char *name);`
-  - `ksym_resolve` (function, line 550) `void *ksym_resolve(const char *name);`
-  - `k_spawn` (function, line 551) `int k_spawn(const char *name, int argc, char **argv);`
-  - `k_register_program` (function, line 552) `void k_register_program(const char *name, prog_entry_t entry);`
-  - `k_register_process` (function, line 553) `void k_register_process(const char *name, void *proc_entry);`
-  - `k_register_symbol` (function, line 554) `void k_register_symbol(const char *name, void *addr);`
-  - `register_libc_symbols` (function, line 558) `void register_libc_symbols(void);`
-  - `k_exec_user` (function, line 561) `int k_exec_user(void *entry, int argc, char **argv);`
-  - `k_run_rel` (function, line 562) `int k_run_rel(prog_entry_t entry, int argc, char **argv);`
-  - `kexit` (function, line 563) `void kexit(int code);`
-  - `k_run_on_stack` (function, line 566) `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);`
-  - `ksetjmp` (function, line 571) `int ksetjmp(void *buf) __attribute__((returns_twice));`
-  - `klongjmp` (function, line 572) `void klongjmp(void *buf, int val) __attribute__((noreturn));`
-  - `setup_user_stack` (function, line 575) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);`
-  - `vga_mode_set` (function, line 577) `void vga_mode_set(int on);`
-  - `vga_mode_is_active` (function, line 578) `int vga_mode_is_active(void);`
-  - `vga_gfx_ran_set` (function, line 579) `void vga_gfx_ran_set(int on);`
-  - `desktop_launch` (function, line 582) `void desktop_launch(const char *cmd);`
-  - `shell_queue_launch` (function, line 583) `void shell_queue_launch(const char *cmd);`
-  - `vga_fb_focus_next` (function, line 586) `void vga_fb_focus_next(void);`
-  - `vga_fb_focus_id` (function, line 587) `int vga_fb_focus_id(int id);`
-  - `vga_fb_focus_get` (function, line 588) `int vga_fb_focus_get(void);`
-  - `vga_fb_nterms_get` (function, line 589) `int vga_fb_nterms_get(void);`
-  - `vga_fb_term_split` (function, line 590) `int vga_fb_term_split(void);`
-  - `vga_fb_term_close_focused` (function, line 591) `int vga_fb_term_close_focused(void);`
-  - `vga_fb_tile_all` (function, line 592) `void vga_fb_tile_all(void);`
-  - `vga_fb_list_windows` (function, line 593) `void vga_fb_list_windows(void);`
-  - `vga_fb_park_line` (function, line 594) `void vga_fb_park_line(const char *b, int p);`
-  - `vga_fb_unpark_line` (function, line 595) `int vga_fb_unpark_line(char *b, int *p);`
-  - `vga_fb_set_gfx_program` (function, line 596) `void vga_fb_set_gfx_program(const char *name);`
-  - `vga_fb_act_empty` (function, line 597) `int vga_fb_act_empty(void);`
-  - `vga_fb_prompt_live` (function, line 598) `int vga_fb_prompt_live(void);`
-  - `vga_fb_note_prompt` (function, line 599) `void vga_fb_note_prompt(void);`
-  - `vga_fb_clear_prompt` (function, line 600) `void vga_fb_clear_prompt(void);`
-  - `vga_fb_prompted` (function, line 601) `int vga_fb_prompted(void);`
-  - `shell_readline_active` (function, line 605) `int shell_readline_active(void);`
-  - `shell_focus_park` (function, line 606) `void shell_focus_park(void);`
-  - `shell_focus_restore` (function, line 607) `void shell_focus_restore(void);`
-  - `user_range_ok` (function, line 612) `int user_range_ok(unsigned long p, unsigned long len);`
-  - `user_str_ok` (function, line 613) `int user_str_ok(unsigned long p, unsigned long maxlen);`
-  - `mm_setup_protections` (function, line 616) `void mm_setup_protections(void);`
-  - `pt_page_alloc` (function, line 617) `void *pt_page_alloc(void);`
-  - `pt_page_free` (function, line 618) `void pt_page_free(void *ptr);`
-  - `mm_user_pte_update` (function, line 619) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);`
-  - `mm_user_set_exec` (function, line 620) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);`
-  - `swap_out` (function, line 623) `int swap_out(unsigned long window_sz);`
-  - `swap_in` (function, line 624) `int swap_in(void);`
-  - `elf_load` (function, line 663) `void *elf_load(void *data, unsigned size, void **base_out);`
-  - `load_exec_elf` (function, line 664) `void *load_exec_elf(void *data, unsigned size);`
-  - `load_exec_elf_into` (function, line 665) `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);`
-  - `pt_clone_user_empty` (function, line 667) `unsigned long pt_clone_user_empty(void);`
-  - `mm_user_ensure_page` (function, line 668) `int mm_user_ensure_page(unsigned long cr3, unsigned long va);`
-  - `mm_copy_user_page` (function, line 669) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);`
-  - `fault` (function, line 673) `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */ unsigned long cow_fork_window(unsigned long parent_cr3);`
-  - `cow_resolve` (function, line 676) `int cow_resolve(unsigned long cr3, unsigned long va);`
-  - `cow_release_window` (function, line 677) `void cow_release_window(unsigned long cr3);`
-  - `cow_shared` (function, line 678) `int cow_shared(void);`
-  - `syscall_init` (function, line 681) `void syscall_init(void);`
-  - `ksyscall` (function, line 685) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `syscall_trace_enabled` (function, line 686) `long syscall_trace_enabled(void);`
-  - `syscall_trace_set` (function, line 687) `void syscall_trace_set(int on);`
-  - `syscall_trace_verbose_enabled` (function, line 688) `long syscall_trace_verbose_enabled(void);`
-  - `syscall_trace_verbose_set` (function, line 689) `void syscall_trace_verbose_set(int on);`
-  - `syscall_trace_shown` (function, line 690) `unsigned long syscall_trace_shown(void);`
-  - `syscall_name` (function, line 691) `const char *syscall_name(long n);`
-  - `kfd_get` (function, line 712) `KFILE *kfd_get(int fd);`
-  - `kfd_put` (function, line 713) `void kfd_put(KFILE *f);`
-  - `kfd_override` (function, line 714) `KFILE *kfd_override(int fd, KFILE *f);`
-  - `kpipe_pair` (function, line 715) `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);`
-  - `kpipe_empty_wopen` (function, line 716) `int kpipe_empty_wopen(KFILE *f);`
-  - `kpipe_is_write_end` (function, line 717) `int kpipe_is_write_end(KFILE *f);`
-  - `fd_lock` (function, line 720) `* fd_lock (never nested, never held across yields);`
-  - `ktime_us` (function, line 744) `unsigned long ktime_us(void);`
-  - `wall_us_now` (function, line 745) `unsigned long wall_us_now(void);`
-  - `bootlog_mark` (function, line 748) `void bootlog_mark(const char *name);`
-  - `bootlog_report` (function, line 749) `void bootlog_report(void);`
-  - `pcspk_init` (function, line 752) `void pcspk_init(void);`
-  - `pcspk_tone` (function, line 753) `void pcspk_tone(unsigned freq);`
-  - `pcspk_off` (function, line 754) `void pcspk_off(void);`
-  - `pcspk_set_volume` (function, line 755) `void pcspk_set_volume(unsigned volume);`
-  - `pcspk_get_volume` (function, line 756) `unsigned pcspk_get_volume(void);`
-  - `rtc_read_tod` (function, line 759) `int rtc_read_tod(int *hour, int *min, int *sec);`
-  - `ide_init` (function, line 762) `void ide_init(void);`
-  - `ide_read_sectors` (function, line 763) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);`
-  - `ide_write_sectors` (function, line 764) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);`
-  - `ide_read_sector` (function, line 765) `int ide_read_sector(unsigned int lba, void *buf);`
-  - `ide_write_sector` (function, line 766) `int ide_write_sector(unsigned int lba, const void *buf);`
-  - `ide_total_sectors` (function, line 767) `unsigned int ide_total_sectors(void);`
-  - `ide_present` (function, line 768) `int ide_present(void);`
-  - `block_init` (function, line 771) `void block_init(void);`
-  - `block_read` (function, line 772) `int block_read(unsigned int block_num, void *buf);`
-  - `block_write` (function, line 773) `int block_write(unsigned int block_num, const void *buf);`
-  - `block_read_multi` (function, line 774) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);`
-  - `block_write_multi` (function, line 775) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);`
-  - `block_total` (function, line 776) `unsigned int block_total(void);`
-  - `k_user_fault_return` (function, line 779) `void k_user_fault_return(void);`
+  - `redirect_pending` (function, line 505) `unsigned long redirect_pending(void);`
+  - `redirect_take_into` (function, line 506) `unsigned long redirect_take_into(char *dst, unsigned long cap, unsigned long *len_out);`
+  - `redirect_discard` (function, line 508) `void redirect_discard(void);`
+  - `redirect_active` (function, line 509) `int redirect_active(void);`
+  - `console_stdin_push` (function, line 510) `int console_stdin_push(const char *data, unsigned long len);`
+  - `console_stdin_clear` (function, line 511) `void console_stdin_clear(void);`
+  - `console_stdin_active` (function, line 512) `int console_stdin_active(void);`
+  - `panic_screen` (function, line 515) `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp, int halt);`
+  - `clip_set` (function, line 519) `int clip_set(const char *data, unsigned long len);`
+  - `clip_get` (function, line 520) `int clip_get(char *out, unsigned long cap);`
+  - `clip_clear` (function, line 521) `void clip_clear(void);`
+  - `clip_len_get` (function, line 522) `int clip_len_get(void);`
+  - `shell_take_redirect` (function, line 523) `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);`
+  - `shell_run_any` (function, line 524) `int shell_run_any(const char *name, int argc, char **argv);`
+  - `shell_exec_builtin` (function, line 525) `void shell_exec_builtin(int argc, char **argv);`
+  - `shell_report_exit` (function, line 526) `void shell_report_exit(int code);`
+  - `shell_report` (function, line 527) `void shell_report(const char *what, const char *detail);`
+  - `kprog_slot` (function, line 552) `KProg *kprog_slot(const char *name);`
+  - `kprog_lookup` (function, line 553) `KProg *kprog_lookup(const char *name);`
+  - `ksym_resolve` (function, line 554) `void *ksym_resolve(const char *name);`
+  - `k_spawn` (function, line 555) `int k_spawn(const char *name, int argc, char **argv);`
+  - `k_register_program` (function, line 556) `void k_register_program(const char *name, prog_entry_t entry);`
+  - `k_register_process` (function, line 557) `void k_register_process(const char *name, void *proc_entry);`
+  - `k_register_symbol` (function, line 558) `void k_register_symbol(const char *name, void *addr);`
+  - `register_libc_symbols` (function, line 562) `void register_libc_symbols(void);`
+  - `k_exec_user` (function, line 565) `int k_exec_user(void *entry, int argc, char **argv);`
+  - `k_run_rel` (function, line 566) `int k_run_rel(prog_entry_t entry, int argc, char **argv);`
+  - `kexit` (function, line 567) `void kexit(int code);`
+  - `k_run_on_stack` (function, line 570) `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);`
+  - `ksetjmp` (function, line 575) `int ksetjmp(void *buf) __attribute__((returns_twice));`
+  - `klongjmp` (function, line 576) `void klongjmp(void *buf, int val) __attribute__((noreturn));`
+  - `setup_user_stack` (function, line 579) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);`
+  - `vga_mode_set` (function, line 581) `void vga_mode_set(int on);`
+  - `vga_mode_is_active` (function, line 582) `int vga_mode_is_active(void);`
+  - `vga_gfx_ran_set` (function, line 583) `void vga_gfx_ran_set(int on);`
+  - `desktop_launch` (function, line 586) `void desktop_launch(const char *cmd);`
+  - `shell_queue_launch` (function, line 587) `void shell_queue_launch(const char *cmd);`
+  - `vga_fb_focus_next` (function, line 590) `void vga_fb_focus_next(void);`
+  - `vga_fb_focus_id` (function, line 591) `int vga_fb_focus_id(int id);`
+  - `vga_fb_focus_get` (function, line 592) `int vga_fb_focus_get(void);`
+  - `vga_fb_nterms_get` (function, line 593) `int vga_fb_nterms_get(void);`
+  - `vga_fb_term_split` (function, line 594) `int vga_fb_term_split(void);`
+  - `vga_fb_term_close_focused` (function, line 595) `int vga_fb_term_close_focused(void);`
+  - `vga_fb_tile_all` (function, line 596) `void vga_fb_tile_all(void);`
+  - `vga_fb_list_windows` (function, line 597) `void vga_fb_list_windows(void);`
+  - `vga_fb_park_line` (function, line 598) `void vga_fb_park_line(const char *b, int p);`
+  - `vga_fb_unpark_line` (function, line 599) `int vga_fb_unpark_line(char *b, int *p);`
+  - `vga_fb_set_gfx_program` (function, line 600) `void vga_fb_set_gfx_program(const char *name);`
+  - `vga_fb_act_empty` (function, line 601) `int vga_fb_act_empty(void);`
+  - `vga_fb_prompt_live` (function, line 602) `int vga_fb_prompt_live(void);`
+  - `vga_fb_note_prompt` (function, line 603) `void vga_fb_note_prompt(void);`
+  - `vga_fb_clear_prompt` (function, line 604) `void vga_fb_clear_prompt(void);`
+  - `vga_fb_prompted` (function, line 605) `int vga_fb_prompted(void);`
+  - `shell_readline_active` (function, line 609) `int shell_readline_active(void);`
+  - `shell_focus_park` (function, line 610) `void shell_focus_park(void);`
+  - `shell_focus_restore` (function, line 611) `void shell_focus_restore(void);`
+  - `user_range_ok` (function, line 616) `int user_range_ok(unsigned long p, unsigned long len);`
+  - `user_str_ok` (function, line 617) `int user_str_ok(unsigned long p, unsigned long maxlen);`
+  - `mm_setup_protections` (function, line 620) `void mm_setup_protections(void);`
+  - `pt_page_alloc` (function, line 621) `void *pt_page_alloc(void);`
+  - `pt_page_free` (function, line 622) `void pt_page_free(void *ptr);`
+  - `mm_user_pte_update` (function, line 623) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);`
+  - `mm_user_set_exec` (function, line 624) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);`
+  - `swap_out` (function, line 627) `int swap_out(unsigned long window_sz);`
+  - `swap_in` (function, line 628) `int swap_in(void);`
+  - `elf_load` (function, line 667) `void *elf_load(void *data, unsigned size, void **base_out);`
+  - `load_exec_elf` (function, line 668) `void *load_exec_elf(void *data, unsigned size);`
+  - `load_exec_elf_into` (function, line 669) `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);`
+  - `pt_clone_user_empty` (function, line 671) `unsigned long pt_clone_user_empty(void);`
+  - `mm_user_ensure_page` (function, line 672) `int mm_user_ensure_page(unsigned long cr3, unsigned long va);`
+  - `mm_copy_user_page` (function, line 673) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);`
+  - `fault` (function, line 677) `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */ unsigned long cow_fork_window(unsigned long parent_cr3);`
+  - `cow_resolve` (function, line 680) `int cow_resolve(unsigned long cr3, unsigned long va);`
+  - `cow_release_window` (function, line 681) `void cow_release_window(unsigned long cr3);`
+  - `cow_shared` (function, line 682) `int cow_shared(void);`
+  - `syscall_init` (function, line 685) `void syscall_init(void);`
+  - `ksyscall` (function, line 689) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `syscall_trace_enabled` (function, line 690) `long syscall_trace_enabled(void);`
+  - `syscall_trace_set` (function, line 691) `void syscall_trace_set(int on);`
+  - `syscall_trace_verbose_enabled` (function, line 692) `long syscall_trace_verbose_enabled(void);`
+  - `syscall_trace_verbose_set` (function, line 693) `void syscall_trace_verbose_set(int on);`
+  - `syscall_trace_shown` (function, line 694) `unsigned long syscall_trace_shown(void);`
+  - `syscall_name` (function, line 695) `const char *syscall_name(long n);`
+  - `kfd_get` (function, line 716) `KFILE *kfd_get(int fd);`
+  - `kfd_put` (function, line 717) `void kfd_put(KFILE *f);`
+  - `kfd_override` (function, line 718) `KFILE *kfd_override(int fd, KFILE *f);`
+  - `kpipe_pair` (function, line 719) `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);`
+  - `kpipe_empty_wopen` (function, line 720) `int kpipe_empty_wopen(KFILE *f);`
+  - `kpipe_is_write_end` (function, line 721) `int kpipe_is_write_end(KFILE *f);`
+  - `fd_lock` (function, line 724) `* fd_lock (never nested, never held across yields);`
+  - `ktime_us` (function, line 748) `unsigned long ktime_us(void);`
+  - `wall_us_now` (function, line 749) `unsigned long wall_us_now(void);`
+  - `bootlog_mark` (function, line 752) `void bootlog_mark(const char *name);`
+  - `bootlog_report` (function, line 753) `void bootlog_report(void);`
+  - `pcspk_init` (function, line 756) `void pcspk_init(void);`
+  - `pcspk_tone` (function, line 757) `void pcspk_tone(unsigned freq);`
+  - `pcspk_off` (function, line 758) `void pcspk_off(void);`
+  - `pcspk_set_volume` (function, line 759) `void pcspk_set_volume(unsigned volume);`
+  - `pcspk_get_volume` (function, line 760) `unsigned pcspk_get_volume(void);`
+  - `rtc_read_tod` (function, line 763) `int rtc_read_tod(int *hour, int *min, int *sec);`
+  - `ide_init` (function, line 766) `void ide_init(void);`
+  - `ide_read_sectors` (function, line 767) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);`
+  - `ide_write_sectors` (function, line 768) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);`
+  - `ide_read_sector` (function, line 769) `int ide_read_sector(unsigned int lba, void *buf);`
+  - `ide_write_sector` (function, line 770) `int ide_write_sector(unsigned int lba, const void *buf);`
+  - `ide_total_sectors` (function, line 771) `unsigned int ide_total_sectors(void);`
+  - `ide_present` (function, line 772) `int ide_present(void);`
+  - `block_init` (function, line 775) `void block_init(void);`
+  - `block_read` (function, line 776) `int block_read(unsigned int block_num, void *buf);`
+  - `block_write` (function, line 777) `int block_write(unsigned int block_num, const void *buf);`
+  - `block_read_multi` (function, line 778) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);`
+  - `block_write_multi` (function, line 779) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);`
+  - `block_total` (function, line 780) `unsigned int block_total(void);`
+  - `k_user_fault_return` (function, line 783) `void k_user_fault_return(void);`
   - `console_lock` (variable, line 104) `extern spinlock_t console_lock;`
   - `ser_e_cpu` (variable, line 125) `extern unsigned long ser_e_ra, ser_e_cpu;`
   - `kmalloc_fail_after` (variable, line 193) `extern long kmalloc_fail_after;`
@@ -576,22 +601,22 @@
   - `kstdin` (variable, line 445) `extern KFILE *kstdin;`
   - `kstdout` (variable, line 446) `extern KFILE *kstdout;`
   - `kstderr` (variable, line 447) `extern KFILE *kstderr;`
-  - `ksym_table` (variable, line 543) `extern KSym ksym_table[];`
-  - `ksym_count` (variable, line 544) `extern int ksym_count;`
-  - `kprog_table` (variable, line 545) `extern KProg kprog_table[];`
-  - `kprog_count` (variable, line 546) `extern int kprog_count;`
-  - `exec_return` (variable, line 573) `extern kjmpbuf exec_return;`
-  - `exec_exit_code` (variable, line 574) `extern int exec_exit_code;`
-  - `shell_fg_active` (variable, line 609) `extern volatile int shell_fg_active;`
-  - `g_brk` (variable, line 627) `extern unsigned long g_brk;`
-  - `g_brk_limit` (variable, line 628) `extern unsigned long g_brk_limit;`
-  - `user_mmap_cur` (variable, line 629) `extern unsigned long user_mmap_cur;`
-  - `fd_lock` (variable, line 711) `extern spinlock_t fd_lock;`
-  - `fs_lock` (variable, line 722) `extern spinlock_t fs_lock;`
-  - `kernel_end` (variable, line 725) `extern unsigned long kernel_end;`
-  - `ramdisk_start` (variable, line 726) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 727) `extern char ramdisk_end[];`
-  - `ramdisk_size` (variable, line 728) `extern char ramdisk_size[];`
+  - `ksym_table` (variable, line 547) `extern KSym ksym_table[];`
+  - `ksym_count` (variable, line 548) `extern int ksym_count;`
+  - `kprog_table` (variable, line 549) `extern KProg kprog_table[];`
+  - `kprog_count` (variable, line 550) `extern int kprog_count;`
+  - `exec_return` (variable, line 577) `extern kjmpbuf exec_return;`
+  - `exec_exit_code` (variable, line 578) `extern int exec_exit_code;`
+  - `shell_fg_active` (variable, line 613) `extern volatile int shell_fg_active;`
+  - `g_brk` (variable, line 631) `extern unsigned long g_brk;`
+  - `g_brk_limit` (variable, line 632) `extern unsigned long g_brk_limit;`
+  - `user_mmap_cur` (variable, line 633) `extern unsigned long user_mmap_cur;`
+  - `fd_lock` (variable, line 715) `extern spinlock_t fd_lock;`
+  - `fs_lock` (variable, line 726) `extern spinlock_t fs_lock;`
+  - `kernel_end` (variable, line 729) `extern unsigned long kernel_end;`
+  - `ramdisk_start` (variable, line 730) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 731) `extern char ramdisk_end[];`
+  - `ramdisk_size` (variable, line 732) `extern char ramdisk_size[];`
   - `KERNEL_H` (macro, line 2) `#define KERNEL_H`
   - `EFAULT` (macro, line 4) `#define EFAULT`
   - `ALIGN_UP` (macro, line 19) `#define ALIGN_UP(x, a)`
@@ -651,13 +676,13 @@
   - `VFS_PREFIX_LEN` (macro, line 361) `#define VFS_PREFIX_LEN`
   - `VFS_DRIVER_LEN` (macro, line 362) `#define VFS_DRIVER_LEN`
   - `EOF` (macro, line 408) `#define EOF`
-  - `KSYM_MAX` (macro, line 528) `#define KSYM_MAX`
-  - `KPROG_MAX` (macro, line 529) `#define KPROG_MAX`
-  - `EI_NIDENT` (macro, line 634) `#define EI_NIDENT`
-  - `ET_REL` (macro, line 659) `#define ET_REL`
-  - `ET_EXEC` (macro, line 660) `#define ET_EXEC`
-  - `ET_DYN` (macro, line 661) `#define ET_DYN`
-  - `KFD_MAX` (macro, line 692) `#define KFD_MAX`
+  - `KSYM_MAX` (macro, line 532) `#define KSYM_MAX`
+  - `KPROG_MAX` (macro, line 533) `#define KPROG_MAX`
+  - `EI_NIDENT` (macro, line 638) `#define EI_NIDENT`
+  - `ET_REL` (macro, line 663) `#define ET_REL`
+  - `ET_EXEC` (macro, line 664) `#define ET_EXEC`
+  - `ET_DYN` (macro, line 665) `#define ET_DYN`
+  - `KFD_MAX` (macro, line 696) `#define KFD_MAX`
 - Depends on: `headers/pipe.h`, `headers/spinlock.h`, `headers/vma.h`, `progs/minios_abi.h`
 - Imported by: `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/pcm2.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/sb16.c`, `drivers/virtio_blk.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`, `headers/drivers/mouse.h`, `headers/editor.h`, `headers/kernel/console_in.h`, `headers/kernel/vga_cursor.h`, `headers/shell.h`, `headers/spawn.h`, `headers/tls_port.h`, `kernel.c`, `kernel/abi.c`, `kernel/clip.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/editor.c`, `kernel/exec.c`, `kernel/klog.c`, `kernel/loader.c`, `kernel/lz4_kernel.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/mm/swap.c`, `kernel/panic.c`, `kernel/printf.c`, `kernel/redirect.c`, `kernel/sched.c`, `kernel/scrollback.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/string.c`, `kernel/symtab.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/time.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `net/net.c`, `net/rtl8139.c`, `qga.c`, `smp.c`, `tests/test_ext4.c`, `tests/test_fat32.c`
 
@@ -672,6 +697,38 @@
                           ...`
   - `KTIME_H` (macro, line 2) `#define KTIME_H`
 - Imported by: `kernel/syscalls.c`, `kernel/time.c`, `tests/test_ktime.c`
+
+## headers/leakcheck.h
+- Layer: utility
+- Doc: Docstring: allocation tracker for MiniOS, STB leakcheck lineage.
+- Language: h
+- Symbols:
+  - `lk_block` (struct, line 50)
+  - `lk_block_t` (type_alias, line 49) `typedef struct lk_block lk_block_t;`
+  - `lk_malloc` (function, line 96) `void *lk_malloc(size_t size, const char *file, int line)`
+  - `lk_unlink` (function, line 110) `static void lk_unlink(lk_block_t *b)`
+  - `lk_find` (function, line 120) `static lk_block_t *lk_find(void *ptr)`
+  - `lk_free` (function, line 130) `void lk_free(void *ptr)`
+  - `lk_realloc` (function, line 143) `void *lk_realloc(void *ptr, size_t size, const char *file, int line)`
+  - `lk_print` (function, line 186) `static void lk_print(const char *reason, const lk_block_t *b)`
+  - `lk_dumpmem` (function, line 197) `void lk_dumpmem(void)`
+  - `lk_live_count` (function, line 206) `unsigned long lk_live_count(void)`
+  - `lk_live_bytes` (function, line 217) `unsigned long lk_live_bytes(void)`
+  - `kmalloc` (function, line 79) `extern void *kmalloc(unsigned long size);`
+  - `kfree` (function, line 80) `extern void kfree(void *ptr);`
+  - `kprintf` (function, line 81) `extern int kprintf(const char *fmt, ...);`
+  - `MINIOS_LEAKCHECK_H` (macro, line 28) `#define MINIOS_LEAKCHECK_H`
+  - `MINIOS_LK_PIPE` (macro, line 42) `#define MINIOS_LK_PIPE`
+  - `MINIOS_LK_PIPE` (macro, line 44) `#define MINIOS_LK_PIPE`
+  - `MINIOS_LK_RAW_ALLOC` (macro, line 82) `#define MINIOS_LK_RAW_ALLOC(sz)`
+  - `MINIOS_LK_RAW_FREE` (macro, line 83) `#define MINIOS_LK_RAW_FREE(p)`
+  - `MINIOS_LK_RAW_ALLOC` (macro, line 88) `#define MINIOS_LK_RAW_ALLOC(sz)`
+  - `MINIOS_LK_RAW_FREE` (macro, line 89) `#define MINIOS_LK_RAW_FREE(p)`
+  - `malloc` (macro, line 235) `#define malloc(sz)`
+  - `free` (macro, line 236) `#define free(p)`
+  - `realloc` (macro, line 237) `#define realloc(p, sz)`
+- Depends on: `kernel/string.c`
+- Imported by: `progs/file/file.c`, `progs/vedit/vedit.c`, `tests/test_leakcheck.c`
 
 ## headers/lz4_kernel.h
 - Layer: utility
@@ -1271,10 +1328,10 @@
   - `spawn_backup` (function, line 27) `int spawn_backup(spawn_ctx_t *ctx);`
   - `spawn_restore` (function, line 30) `void spawn_restore(spawn_ctx_t *ctx);`
   - `spawn_validate_argv` (function, line 33) `int spawn_validate_argv(int argc, const char **uargv);`
-  - `spawn_copy_argv` (function, line 36) `char **spawn_copy_argv(int argc, const char **uargv);`
-  - `spawn_free_argv` (function, line 39) `void spawn_free_argv(char **kargv, int argc);`
-  - `spawn_load_image` (function, line 42) `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);`
-  - `spawn_execute` (function, line 45) `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc, char **kargv, const char **uargv_fallback);`
+  - `spawn_copy_argv` (function, line 38) `char **spawn_copy_argv(int argc, const char **uargv);`
+  - `spawn_free_argv` (function, line 41) `void spawn_free_argv(char **kargv, int argc);`
+  - `spawn_load_image` (function, line 44) `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);`
+  - `spawn_execute` (function, line 47) `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc, char **kargv, const char **uargv_fallback);`
   - `SPAWN_H` (macro, line 2) `#define SPAWN_H`
 - Depends on: `headers/kernel.h`, `headers/sched.h`, `headers/vma.h`
 - Imported by: `kernel/sched.c`, `kernel/spawn.c`, `kernel/syscalls.c`

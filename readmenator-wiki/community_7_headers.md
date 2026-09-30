@@ -1,6 +1,6 @@
 # headers
 
-*Community 4 | 3 files | cohesion 0.67*
+*Community 7 | 3 files | cohesion 0.67*
 
 ## Definition
 
@@ -52,9 +52,7 @@ This community groups 3 file(s) rooted at `headers` with dominant language c (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
-- [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (progs/doomgeneric) and community 4 (headers).
-- [INFERRED] shares_context community 2 <-> 4 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 2 (headers) and community 4 (headers).
+- [EXTRACTED] depends_on community 0 <-> 7 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
 
 ## Risks
 

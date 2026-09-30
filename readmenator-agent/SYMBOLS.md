@@ -505,7 +505,7 @@
 | `fs_rename_on_minifs` | function | `fs/kfile.c:250` | `static int fs_rename_on_minifs(const char *dst)` |
 | `fs_take` | function | `fs/kfile.c:61` | `static inline void fs_take(irqflags_t *flags)` |
 | `kfclose` | function | `fs/kfile.c:311` | `int kfclose(KFILE *f)` |
-| `kfflush` | function | `fs/kfile.c:538` | `int kfflush(KFILE *f)` |
+| `kfflush` | function | `fs/kfile.c:545` | `int kfflush(KFILE *f)` |
 | `kfgetc` | function | `fs/kfile.c:351` | `int kfgetc(KFILE *f)` |
 | `kfgets` | function | `fs/kfile.c:392` | `char *kfgets(char *buf, int size, KFILE *f)` |
 | `kfile_corrupt` | function | `fs/kfile.c:28` | `static int kfile_corrupt(const KFILE *f)` |
@@ -513,17 +513,17 @@
 | `kfile_stdin` | function | `fs/kfile.c:15` | `KFILE *kfile_stdin(void)` |
 | `kfile_stdout` | function | `fs/kfile.c:16` | `KFILE *kfile_stdout(void)` |
 | `kfopen` | function | `fs/kfile.c:155` | `KFILE *kfopen(const char *path, const char *mode)` |
-| `kfputc` | function | `fs/kfile.c:567` | `int kfputc(int c, KFILE *f)` |
-| `kfputs` | function | `fs/kfile.c:561` | `int kfputs(const char *s, KFILE *f)` |
+| `kfputc` | function | `fs/kfile.c:574` | `int kfputc(int c, KFILE *f)` |
+| `kfputs` | function | `fs/kfile.c:568` | `int kfputs(const char *s, KFILE *f)` |
 | `kfread` | function | `fs/kfile.c:413` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
-| `kfseek` | function | `fs/kfile.c:514` | `int kfseek(KFILE *f, long offset, int whence)` |
-| `kftell` | function | `fs/kfile.c:534` | `long kftell(KFILE *f)` |
+| `kfseek` | function | `fs/kfile.c:521` | `int kfseek(KFILE *f, long offset, int whence)` |
+| `kftell` | function | `fs/kfile.c:541` | `long kftell(KFILE *f)` |
 | `kfungetc` | function | `fs/kfile.c:406` | `int kfungetc(int c, KFILE *f)` |
 | `kfwrite` | function | `fs/kfile.c:458` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
 | `kpipe_grow` | function | `fs/kfile.c:132` | `static int kpipe_grow(pipe_ring_t *ring)` |
 | `kpipe_is_write_end` | function | `fs/kfile.c:125` | `int kpipe_is_write_end(KFILE *f)` |
 | `kpipe_pair` | function | `fs/kfile.c:73` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out)` |
-| `krewind` | function | `fs/kfile.c:572` | `void krewind(KFILE *f)` |
+| `krewind` | function | `fs/kfile.c:579` | `void krewind(KFILE *f)` |
 | `recovery` | function | `fs/kfile.c:23` | `* halts the machine with no recovery (the DOOM ABI-drift black screen),
  * so every public KFILE ...` |
 | `DE_NAME` | macro | `fs/minifs.c:12` | `#define DE_NAME(de)` |
@@ -899,6 +899,21 @@ static int zip_sanitize_name(con...` |
 | `MSR_STAR` | macro | `headers/arch/x86/msr.h:19` | `#define MSR_STAR` |
 | `rdmsr` | function | `headers/arch/x86/msr.h:13` | `static inline unsigned long rdmsr(unsigned msr)` |
 | `wrmsr` | function | `headers/arch/x86/msr.h:8` | `static inline void wrmsr(unsigned msr, unsigned long val)` |
+| `ARENA_DEFAULT_ALIGN` | macro | `headers/arena.h:38` | `#define ARENA_DEFAULT_ALIGN` |
+| `MINIOS_ARENA_H` | macro | `headers/arena.h:33` | `#define MINIOS_ARENA_H` |
+| `arena_align_up` | function | `headers/arena.h:62` | `static inline size_t arena_align_up(size_t n, size_t align)` |
+| `arena_alloc` | function | `headers/arena.h:81` | `static inline void *arena_alloc(arena_t *a, size_t size, size_t align)` |
+| `arena_bytes_for` | function | `headers/arena.h:74` | `static inline size_t arena_bytes_for(size_t count, size_t elem_size)` |
+| `arena_checkpoint` | function | `headers/arena.h:113` | `static inline size_t arena_checkpoint(const arena_t *a)` |
+| `arena_contains` | function | `headers/arena.h:128` | `static inline int arena_contains(const arena_t *a, const void *ptr)` |
+| `arena_free_bytes` | function | `headers/arena.h:101` | `static inline size_t arena_free_bytes(const arena_t *a)` |
+| `arena_init` | function | `headers/arena.h:48` | `static inline void arena_init(arena_t *a, void *block, size_t size)` |
+| `arena_reset` | function | `headers/arena.h:107` | `static inline void arena_reset(arena_t *a)` |
+| `arena_rewind` | function | `headers/arena.h:119` | `static inline int arena_rewind(arena_t *a, size_t checkpoint)` |
+| `arena_used` | function | `headers/arena.h:95` | `static inline size_t arena_used(const arena_t *a)` |
+| `kfree` | function | `headers/arena.h:25` | `* kfree(back);` |
+| `kmalloc` | function | `headers/arena.h:3` | `* * A bump arena serves one kmalloc (kernel) or malloc (ring-3) with pointer * bumps instead of N allocator round trips,` |
+| `minios_arena` | struct | `headers/arena.h:41` | `` |
 | `AUDIO_CHANNELS_MONO` | macro | `headers/audio.h:16` | `#define AUDIO_CHANNELS_MONO` |
 | `AUDIO_FORMAT_S16` | macro | `headers/audio.h:18` | `#define AUDIO_FORMAT_S16` |
 | `AUDIO_FORMAT_U8` | macro | `headers/audio.h:17` | `#define AUDIO_FORMAT_U8` |
@@ -1147,23 +1162,23 @@ static int zip_sanitize_name(con...` |
 | `ide_write_sector` | function | `headers/ide.h:58` | `int ide_write_sector(unsigned int lba, const void *buf);` |
 | `ide_write_sectors` | function | `headers/ide.h:54` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `ALIGN_UP` | macro | `headers/kernel.h:19` | `#define ALIGN_UP(x, a)` |
-| `C` | function | `headers/kernel.h:734` | `* it with pointer subtraction in C (undefined behaviour). The value is
+| `C` | function | `headers/kernel.h:738` | `* it with pointer subtraction in C (undefined behaviour). The value is
  * a link-time difference,...` |
 | `EFAULT` | macro | `headers/kernel.h:4` | `#define EFAULT` |
-| `EI_NIDENT` | macro | `headers/kernel.h:634` | `#define EI_NIDENT` |
+| `EI_NIDENT` | macro | `headers/kernel.h:638` | `#define EI_NIDENT` |
 | `EOF` | macro | `headers/kernel.h:408` | `#define EOF` |
 | `ETREL_TRUSTED_DIR` | macro | `headers/kernel.h:277` | `#define ETREL_TRUSTED_DIR` |
 | `ETREL_TRUSTED_LEN` | macro | `headers/kernel.h:278` | `#define ETREL_TRUSTED_LEN` |
-| `ET_DYN` | macro | `headers/kernel.h:661` | `#define ET_DYN` |
-| `ET_EXEC` | macro | `headers/kernel.h:660` | `#define ET_EXEC` |
-| `ET_REL` | macro | `headers/kernel.h:659` | `#define ET_REL` |
-| `Elf64_Addr` | type_alias | `headers/kernel.h:635` | `typedef unsigned long long Elf64_Addr;` |
-| `Elf64_Ehdr` | struct | `headers/kernel.h:642` | `` |
-| `Elf64_Half` | type_alias | `headers/kernel.h:638` | `typedef unsigned short Elf64_Half;` |
-| `Elf64_Off` | type_alias | `headers/kernel.h:636` | `typedef unsigned long long Elf64_Off;` |
-| `Elf64_Sxword` | type_alias | `headers/kernel.h:640` | `typedef long long Elf64_Sxword;` |
-| `Elf64_Word` | type_alias | `headers/kernel.h:637` | `typedef unsigned int Elf64_Word;` |
-| `Elf64_Xword` | type_alias | `headers/kernel.h:639` | `typedef unsigned long long Elf64_Xword;` |
+| `ET_DYN` | macro | `headers/kernel.h:665` | `#define ET_DYN` |
+| `ET_EXEC` | macro | `headers/kernel.h:664` | `#define ET_EXEC` |
+| `ET_REL` | macro | `headers/kernel.h:663` | `#define ET_REL` |
+| `Elf64_Addr` | type_alias | `headers/kernel.h:639` | `typedef unsigned long long Elf64_Addr;` |
+| `Elf64_Ehdr` | struct | `headers/kernel.h:646` | `` |
+| `Elf64_Half` | type_alias | `headers/kernel.h:642` | `typedef unsigned short Elf64_Half;` |
+| `Elf64_Off` | type_alias | `headers/kernel.h:640` | `typedef unsigned long long Elf64_Off;` |
+| `Elf64_Sxword` | type_alias | `headers/kernel.h:644` | `typedef long long Elf64_Sxword;` |
+| `Elf64_Word` | type_alias | `headers/kernel.h:641` | `typedef unsigned int Elf64_Word;` |
+| `Elf64_Xword` | type_alias | `headers/kernel.h:643` | `typedef unsigned long long Elf64_Xword;` |
 | `HEAP_BASE` | macro | `headers/kernel.h:189` | `#define HEAP_BASE` |
 | `HEAP_SIZE` | macro | `headers/kernel.h:190` | `#define HEAP_SIZE` |
 | `KERNEL_H` | macro | `headers/kernel.h:2` | `#define KERNEL_H` |
@@ -1200,12 +1215,12 @@ static int zip_sanitize_name(con...` |
 | `KEY_TAB` | macro | `headers/kernel.h:160` | `#define KEY_TAB` |
 | `KEY_TILDE` | macro | `headers/kernel.h:155` | `#define KEY_TILDE` |
 | `KEY_UP` | macro | `headers/kernel.h:136` | `#define KEY_UP` |
-| `KFD_MAX` | macro | `headers/kernel.h:692` | `#define KFD_MAX` |
+| `KFD_MAX` | macro | `headers/kernel.h:696` | `#define KFD_MAX` |
 | `KFILE` | struct | `headers/kernel.h:410` | `` |
-| `KPROG_MAX` | macro | `headers/kernel.h:529` | `#define KPROG_MAX` |
-| `KProg` | struct | `headers/kernel.h:536` | `` |
-| `KSYM_MAX` | macro | `headers/kernel.h:528` | `#define KSYM_MAX` |
-| `KSym` | struct | `headers/kernel.h:531` | `` |
+| `KPROG_MAX` | macro | `headers/kernel.h:533` | `#define KPROG_MAX` |
+| `KProg` | struct | `headers/kernel.h:540` | `` |
+| `KSYM_MAX` | macro | `headers/kernel.h:532` | `#define KSYM_MAX` |
+| `KSym` | struct | `headers/kernel.h:535` | `` |
 | `PORT_IO_DEFINED` | macro | `headers/kernel.h:21` | `#define PORT_IO_DEFINED` |
 | `RAMDISK_FNAME_LEN` | macro | `headers/kernel.h:234` | `#define RAMDISK_FNAME_LEN` |
 | `RAMDISK_FNAME_LEN` | function | `headers/kernel.h:250` | `* RAMDISK_FNAME_LEN (fs_resolve guarantees it);` |
@@ -1226,81 +1241,81 @@ static int zip_sanitize_name(con...` |
 | `VGA_BASE` | macro | `headers/kernel.h:89` | `#define VGA_BASE` |
 | `VGA_COLS` | macro | `headers/kernel.h:90` | `#define VGA_COLS` |
 | `VGA_ROWS` | macro | `headers/kernel.h:91` | `#define VGA_ROWS` |
-| `block_init` | function | `headers/kernel.h:771` | `void block_init(void);` |
-| `block_read` | function | `headers/kernel.h:772` | `int block_read(unsigned int block_num, void *buf);` |
-| `block_read_multi` | function | `headers/kernel.h:774` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
-| `block_total` | function | `headers/kernel.h:776` | `unsigned int block_total(void);` |
-| `block_write` | function | `headers/kernel.h:773` | `int block_write(unsigned int block_num, const void *buf);` |
-| `block_write_multi` | function | `headers/kernel.h:775` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
-| `bootlog_mark` | function | `headers/kernel.h:748` | `void bootlog_mark(const char *name);` |
-| `bootlog_report` | function | `headers/kernel.h:749` | `void bootlog_report(void);` |
-| `clip_clear` | function | `headers/kernel.h:517` | `void clip_clear(void);` |
-| `clip_get` | function | `headers/kernel.h:516` | `int clip_get(char *out, unsigned long cap);` |
-| `clip_len_get` | function | `headers/kernel.h:518` | `int clip_len_get(void);` |
-| `clip_set` | function | `headers/kernel.h:515` | `int clip_set(const char *data, unsigned long len);` |
+| `block_init` | function | `headers/kernel.h:775` | `void block_init(void);` |
+| `block_read` | function | `headers/kernel.h:776` | `int block_read(unsigned int block_num, void *buf);` |
+| `block_read_multi` | function | `headers/kernel.h:778` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
+| `block_total` | function | `headers/kernel.h:780` | `unsigned int block_total(void);` |
+| `block_write` | function | `headers/kernel.h:777` | `int block_write(unsigned int block_num, const void *buf);` |
+| `block_write_multi` | function | `headers/kernel.h:779` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
+| `bootlog_mark` | function | `headers/kernel.h:752` | `void bootlog_mark(const char *name);` |
+| `bootlog_report` | function | `headers/kernel.h:753` | `void bootlog_report(void);` |
+| `clip_clear` | function | `headers/kernel.h:521` | `void clip_clear(void);` |
+| `clip_get` | function | `headers/kernel.h:520` | `int clip_get(char *out, unsigned long cap);` |
+| `clip_len_get` | function | `headers/kernel.h:522` | `int clip_len_get(void);` |
+| `clip_set` | function | `headers/kernel.h:519` | `int clip_set(const char *data, unsigned long len);` |
 | `console_getc` | function | `headers/kernel.h:498` | `int console_getc(void);` |
 | `console_lock` | variable | `headers/kernel.h:104` | `extern spinlock_t console_lock;` |
 | `console_peek` | function | `headers/kernel.h:499` | `int console_peek(void);` |
-| `console_stdin_active` | function | `headers/kernel.h:508` | `int console_stdin_active(void);` |
-| `console_stdin_clear` | function | `headers/kernel.h:507` | `void console_stdin_clear(void);` |
-| `console_stdin_push` | function | `headers/kernel.h:506` | `int console_stdin_push(const char *data, unsigned long len);` |
-| `cow_release_window` | function | `headers/kernel.h:677` | `void cow_release_window(unsigned long cr3);` |
-| `cow_resolve` | function | `headers/kernel.h:676` | `int cow_resolve(unsigned long cr3, unsigned long va);` |
-| `cow_shared` | function | `headers/kernel.h:678` | `int cow_shared(void);` |
-| `desktop_launch` | function | `headers/kernel.h:582` | `void desktop_launch(const char *cmd);` |
+| `console_stdin_active` | function | `headers/kernel.h:512` | `int console_stdin_active(void);` |
+| `console_stdin_clear` | function | `headers/kernel.h:511` | `void console_stdin_clear(void);` |
+| `console_stdin_push` | function | `headers/kernel.h:510` | `int console_stdin_push(const char *data, unsigned long len);` |
+| `cow_release_window` | function | `headers/kernel.h:681` | `void cow_release_window(unsigned long cr3);` |
+| `cow_resolve` | function | `headers/kernel.h:680` | `int cow_resolve(unsigned long cr3, unsigned long va);` |
+| `cow_shared` | function | `headers/kernel.h:682` | `int cow_shared(void);` |
+| `desktop_launch` | function | `headers/kernel.h:586` | `void desktop_launch(const char *cmd);` |
 | `dlmalloc_calloc` | function | `headers/kernel.h:206` | `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);` |
 | `dlmalloc_free` | function | `headers/kernel.h:205` | `void dlmalloc_free(void *ptr);` |
 | `dlmalloc_init` | function | `headers/kernel.h:203` | `void dlmalloc_init(void);` |
 | `dlmalloc_malloc` | function | `headers/kernel.h:204` | `void *dlmalloc_malloc(unsigned long size);` |
 | `dlmalloc_realloc` | function | `headers/kernel.h:207` | `void *dlmalloc_realloc(void *ptr, unsigned long size);` |
 | `dlmalloc_usage` | function | `headers/kernel.h:209` | `void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);` |
-| `elf_load` | function | `headers/kernel.h:663` | `void *elf_load(void *data, unsigned size, void **base_out);` |
-| `exec_exit_code` | variable | `headers/kernel.h:574` | `extern int exec_exit_code;` |
-| `exec_return` | variable | `headers/kernel.h:573` | `extern kjmpbuf exec_return;` |
-| `fault` | function | `headers/kernel.h:673` | `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */ unsig` |
-| `fd_lock` | variable | `headers/kernel.h:711` | `extern spinlock_t fd_lock;` |
-| `fd_lock` | function | `headers/kernel.h:720` | `* fd_lock (never nested, never held across yields);` |
+| `elf_load` | function | `headers/kernel.h:667` | `void *elf_load(void *data, unsigned size, void **base_out);` |
+| `exec_exit_code` | variable | `headers/kernel.h:578` | `extern int exec_exit_code;` |
+| `exec_return` | variable | `headers/kernel.h:577` | `extern kjmpbuf exec_return;` |
+| `fault` | function | `headers/kernel.h:677` | `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */ unsig` |
+| `fd_lock` | variable | `headers/kernel.h:715` | `extern spinlock_t fd_lock;` |
+| `fd_lock` | function | `headers/kernel.h:724` | `* fd_lock (never nested, never held across yields);` |
 | `file_operations` | type_alias | `headers/kernel.h:355` | `typedef vfs_ops_t file_operations;` |
 | `fs_cwd` | variable | `headers/kernel.h:374` | `extern char fs_cwd[];` |
 | `fs_dir_exists` | function | `headers/kernel.h:267` | `int fs_dir_exists(const char *dir);` |
 | `fs_is_dir` | function | `headers/kernel.h:268` | `int fs_is_dir(const char *resolved);` |
-| `fs_lock` | variable | `headers/kernel.h:722` | `extern spinlock_t fs_lock;` |
+| `fs_lock` | variable | `headers/kernel.h:726` | `extern spinlock_t fs_lock;` |
 | `fs_rename` | function | `headers/kernel.h:432` | `int fs_rename(const char *oldr, const char *newr);` |
 | `fs_resolve` | function | `headers/kernel.h:266` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
-| `g_brk` | variable | `headers/kernel.h:627` | `extern unsigned long g_brk;` |
-| `g_brk_limit` | variable | `headers/kernel.h:628` | `extern unsigned long g_brk_limit;` |
-| `ide_init` | function | `headers/kernel.h:762` | `void ide_init(void);` |
-| `ide_present` | function | `headers/kernel.h:768` | `int ide_present(void);` |
-| `ide_read_sector` | function | `headers/kernel.h:765` | `int ide_read_sector(unsigned int lba, void *buf);` |
-| `ide_read_sectors` | function | `headers/kernel.h:763` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
-| `ide_total_sectors` | function | `headers/kernel.h:767` | `unsigned int ide_total_sectors(void);` |
-| `ide_write_sector` | function | `headers/kernel.h:766` | `int ide_write_sector(unsigned int lba, const void *buf);` |
-| `ide_write_sectors` | function | `headers/kernel.h:764` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
+| `g_brk` | variable | `headers/kernel.h:631` | `extern unsigned long g_brk;` |
+| `g_brk_limit` | variable | `headers/kernel.h:632` | `extern unsigned long g_brk_limit;` |
+| `ide_init` | function | `headers/kernel.h:766` | `void ide_init(void);` |
+| `ide_present` | function | `headers/kernel.h:772` | `int ide_present(void);` |
+| `ide_read_sector` | function | `headers/kernel.h:769` | `int ide_read_sector(unsigned int lba, void *buf);` |
+| `ide_read_sectors` | function | `headers/kernel.h:767` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
+| `ide_total_sectors` | function | `headers/kernel.h:771` | `unsigned int ide_total_sectors(void);` |
+| `ide_write_sector` | function | `headers/kernel.h:770` | `int ide_write_sector(unsigned int lba, const void *buf);` |
+| `ide_write_sectors` | function | `headers/kernel.h:768` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `inb` | function | `headers/kernel.h:28` | `static inline unsigned char inb(unsigned short port)` |
 | `insw` | function | `headers/kernel.h:46` | `static inline void insw(unsigned short port, unsigned short *buf,
                         unsigne...` |
 | `inw` | function | `headers/kernel.h:36` | `static inline unsigned short inw(unsigned short port)` |
-| `k_exec_user` | function | `headers/kernel.h:561` | `int k_exec_user(void *entry, int argc, char **argv);` |
-| `k_register_process` | function | `headers/kernel.h:553` | `void k_register_process(const char *name, void *proc_entry);` |
-| `k_register_program` | function | `headers/kernel.h:552` | `void k_register_program(const char *name, prog_entry_t entry);` |
-| `k_register_symbol` | function | `headers/kernel.h:554` | `void k_register_symbol(const char *name, void *addr);` |
-| `k_run_on_stack` | function | `headers/kernel.h:566` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
-| `k_run_rel` | function | `headers/kernel.h:562` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
-| `k_spawn` | function | `headers/kernel.h:551` | `int k_spawn(const char *name, int argc, char **argv);` |
-| `k_user_fault_return` | function | `headers/kernel.h:779` | `void k_user_fault_return(void);` |
+| `k_exec_user` | function | `headers/kernel.h:565` | `int k_exec_user(void *entry, int argc, char **argv);` |
+| `k_register_process` | function | `headers/kernel.h:557` | `void k_register_process(const char *name, void *proc_entry);` |
+| `k_register_program` | function | `headers/kernel.h:556` | `void k_register_program(const char *name, prog_entry_t entry);` |
+| `k_register_symbol` | function | `headers/kernel.h:558` | `void k_register_symbol(const char *name, void *addr);` |
+| `k_run_on_stack` | function | `headers/kernel.h:570` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
+| `k_run_rel` | function | `headers/kernel.h:566` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
+| `k_spawn` | function | `headers/kernel.h:555` | `int k_spawn(const char *name, int argc, char **argv);` |
+| `k_user_fault_return` | function | `headers/kernel.h:783` | `void k_user_fault_return(void);` |
 | `kallocator_init` | function | `headers/kernel.h:197` | `void kallocator_init(void);` |
 | `katol` | function | `headers/kernel.h:465` | `long katol(const char *s);` |
 | `kbd_available` | function | `headers/kernel.h:165` | `int kbd_available(void);` |
 | `kbd_read` | function | `headers/kernel.h:164` | `int kbd_read(void);` |
 | `kbd_reset_for_shell` | function | `headers/kernel.h:166` | `void kbd_reset_for_shell(void);` |
 | `kcalloc` | function | `headers/kernel.h:195` | `void *kcalloc(unsigned long nmemb, unsigned long size);` |
-| `kernel_end` | variable | `headers/kernel.h:725` | `extern unsigned long kernel_end;` |
-| `kexit` | function | `headers/kernel.h:563` | `void kexit(int code);` |
+| `kernel_end` | variable | `headers/kernel.h:729` | `extern unsigned long kernel_end;` |
+| `kexit` | function | `headers/kernel.h:567` | `void kexit(int code);` |
 | `kfclose` | function | `headers/kernel.h:429` | `int kfclose(KFILE *f);` |
-| `kfd_get` | function | `headers/kernel.h:712` | `KFILE *kfd_get(int fd);` |
-| `kfd_override` | function | `headers/kernel.h:714` | `KFILE *kfd_override(int fd, KFILE *f);` |
-| `kfd_put` | function | `headers/kernel.h:713` | `void kfd_put(KFILE *f);` |
-| `kfd_view` | struct | `headers/kernel.h:702` | `` |
+| `kfd_get` | function | `headers/kernel.h:716` | `KFILE *kfd_get(int fd);` |
+| `kfd_override` | function | `headers/kernel.h:718` | `KFILE *kfd_override(int fd, KFILE *f);` |
+| `kfd_put` | function | `headers/kernel.h:717` | `void kfd_put(KFILE *f);` |
+| `kfd_view` | struct | `headers/kernel.h:706` | `` |
 | `kfflush` | function | `headers/kernel.h:442` | `int kfflush(KFILE *f);` |
 | `kfgetc` | function | `headers/kernel.h:433` | `int kfgetc(KFILE *f);` |
 | `kfgets` | function | `headers/kernel.h:434` | `char *kfgets(char *buf, int size, KFILE *f);` |
@@ -1318,14 +1333,14 @@ static int zip_sanitize_name(con...` |
 | `kftell` | function | `headers/kernel.h:439` | `long kftell(KFILE *f);` |
 | `kfungetc` | function | `headers/kernel.h:435` | `int kfungetc(int c, KFILE *f);` |
 | `kfwrite` | function | `headers/kernel.h:437` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
-| `kjmpbuf` | struct | `headers/kernel.h:570` | `` |
+| `kjmpbuf` | struct | `headers/kernel.h:574` | `` |
 | `klog` | function | `headers/kernel.h:486` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
 | `klog_disable` | function | `headers/kernel.h:492` | `void klog_disable(void);` |
 | `klog_enable` | function | `headers/kernel.h:493` | `void klog_enable(void);` |
 | `klog_hexdump` | function | `headers/kernel.h:488` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
 | `klog_set_level` | function | `headers/kernel.h:490` | `void klog_set_level(log_level_t level);` |
 | `klog_set_subsys_level` | function | `headers/kernel.h:491` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
-| `klongjmp` | function | `headers/kernel.h:572` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
+| `klongjmp` | function | `headers/kernel.h:576` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
 | `kmalloc` | function | `headers/kernel.h:192` | `void *kmalloc(unsigned long size);` |
 | `kmalloc_aligned` | function | `headers/kernel.h:198` | `void *kmalloc_aligned(unsigned long size, unsigned long align);` |
 | `kmalloc_fail_after` | variable | `headers/kernel.h:193` | `extern long kmalloc_fail_after;` |
@@ -1333,17 +1348,17 @@ static int zip_sanitize_name(con...` |
 | `kmemcpy` | function | `headers/kernel.h:461` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
 | `kmemmove` | function | `headers/kernel.h:464` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
 | `kmemset` | function | `headers/kernel.h:462` | `void *kmemset(void *dst, int c, unsigned long n);` |
-| `kpipe_empty_wopen` | function | `headers/kernel.h:716` | `int kpipe_empty_wopen(KFILE *f);` |
-| `kpipe_is_write_end` | function | `headers/kernel.h:717` | `int kpipe_is_write_end(KFILE *f);` |
-| `kpipe_pair` | function | `headers/kernel.h:715` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);` |
+| `kpipe_empty_wopen` | function | `headers/kernel.h:720` | `int kpipe_empty_wopen(KFILE *f);` |
+| `kpipe_is_write_end` | function | `headers/kernel.h:721` | `int kpipe_is_write_end(KFILE *f);` |
+| `kpipe_pair` | function | `headers/kernel.h:719` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);` |
 | `kprintf` | function | `headers/kernel.h:468` | `int kprintf(const char *fmt, ...);` |
-| `kprog_count` | variable | `headers/kernel.h:546` | `extern int kprog_count;` |
-| `kprog_lookup` | function | `headers/kernel.h:549` | `KProg *kprog_lookup(const char *name);` |
-| `kprog_slot` | function | `headers/kernel.h:548` | `KProg *kprog_slot(const char *name);` |
-| `kprog_table` | variable | `headers/kernel.h:545` | `extern KProg kprog_table[];` |
+| `kprog_count` | variable | `headers/kernel.h:550` | `extern int kprog_count;` |
+| `kprog_lookup` | function | `headers/kernel.h:553` | `KProg *kprog_lookup(const char *name);` |
+| `kprog_slot` | function | `headers/kernel.h:552` | `KProg *kprog_slot(const char *name);` |
+| `kprog_table` | variable | `headers/kernel.h:549` | `extern KProg kprog_table[];` |
 | `krealloc` | function | `headers/kernel.h:196` | `void *krealloc(void *ptr, unsigned long size);` |
 | `krewind` | function | `headers/kernel.h:443` | `void krewind(KFILE *f);` |
-| `ksetjmp` | function | `headers/kernel.h:571` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
+| `ksetjmp` | function | `headers/kernel.h:575` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
 | `ksnprintf` | function | `headers/kernel.h:471` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
 | `ksprintf` | function | `headers/kernel.h:470` | `int ksprintf(char *buf, const char *fmt, ...);` |
 | `kstderr` | variable | `headers/kernel.h:447` | `extern KFILE *kstderr;` |
@@ -1357,37 +1372,37 @@ static int zip_sanitize_name(con...` |
 | `kstrncmp` | function | `headers/kernel.h:458` | `int kstrncmp(const char *a, const char *b, unsigned long n);` |
 | `kstrncpy` | function | `headers/kernel.h:455` | `char *kstrncpy(char *dst, const char *src, unsigned long n);` |
 | `kstrstr` | function | `headers/kernel.h:460` | `char *kstrstr(const char *hay, const char *ndl);` |
-| `ksym_count` | variable | `headers/kernel.h:544` | `extern int ksym_count;` |
-| `ksym_resolve` | function | `headers/kernel.h:550` | `void *ksym_resolve(const char *name);` |
-| `ksym_table` | variable | `headers/kernel.h:543` | `extern KSym ksym_table[];` |
-| `ksyscall` | function | `headers/kernel.h:685` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ksym_count` | variable | `headers/kernel.h:548` | `extern int ksym_count;` |
+| `ksym_resolve` | function | `headers/kernel.h:554` | `void *ksym_resolve(const char *name);` |
+| `ksym_table` | variable | `headers/kernel.h:547` | `extern KSym ksym_table[];` |
+| `ksyscall` | function | `headers/kernel.h:689` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `ktime_ms` | function | `headers/kernel.h:24` | `unsigned long ktime_ms(void);` |
-| `ktime_us` | function | `headers/kernel.h:744` | `unsigned long ktime_us(void);` |
-| `load_exec_elf` | function | `headers/kernel.h:664` | `void *load_exec_elf(void *data, unsigned size);` |
-| `load_exec_elf_into` | function | `headers/kernel.h:665` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);` |
+| `ktime_us` | function | `headers/kernel.h:748` | `unsigned long ktime_us(void);` |
+| `load_exec_elf` | function | `headers/kernel.h:668` | `void *load_exec_elf(void *data, unsigned size);` |
+| `load_exec_elf_into` | function | `headers/kernel.h:669` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out);` |
 | `minifs_mkdir_p` | function | `headers/kernel.h:373` | `int minifs_mkdir_p(const char *resolved);` |
-| `mm_copy_user_page` | function | `headers/kernel.h:669` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
-| `mm_setup_protections` | function | `headers/kernel.h:616` | `void mm_setup_protections(void);` |
-| `mm_user_ensure_page` | function | `headers/kernel.h:668` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
-| `mm_user_pte_update` | function | `headers/kernel.h:619` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
-| `mm_user_set_exec` | function | `headers/kernel.h:620` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
+| `mm_copy_user_page` | function | `headers/kernel.h:673` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
+| `mm_setup_protections` | function | `headers/kernel.h:620` | `void mm_setup_protections(void);` |
+| `mm_user_ensure_page` | function | `headers/kernel.h:672` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
+| `mm_user_pte_update` | function | `headers/kernel.h:623` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
+| `mm_user_set_exec` | function | `headers/kernel.h:624` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
 | `outb` | function | `headers/kernel.h:25` | `static inline void outb(unsigned short port, unsigned char val)` |
 | `outsw` | function | `headers/kernel.h:53` | `static inline void outsw(unsigned short port, const unsigned short *buf,
                         ...` |
 | `outw` | function | `headers/kernel.h:33` | `static inline void outw(unsigned short port, unsigned short val)` |
-| `panic_screen` | function | `headers/kernel.h:511` | `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp, int ` |
-| `pcspk_get_volume` | function | `headers/kernel.h:756` | `unsigned pcspk_get_volume(void);` |
-| `pcspk_init` | function | `headers/kernel.h:752` | `void pcspk_init(void);` |
-| `pcspk_off` | function | `headers/kernel.h:754` | `void pcspk_off(void);` |
-| `pcspk_set_volume` | function | `headers/kernel.h:755` | `void pcspk_set_volume(unsigned volume);` |
-| `pcspk_tone` | function | `headers/kernel.h:753` | `void pcspk_tone(unsigned freq);` |
-| `pt_clone_user_empty` | function | `headers/kernel.h:667` | `unsigned long pt_clone_user_empty(void);` |
-| `pt_page_alloc` | function | `headers/kernel.h:617` | `void *pt_page_alloc(void);` |
-| `pt_page_free` | function | `headers/kernel.h:618` | `void pt_page_free(void *ptr);` |
+| `panic_screen` | function | `headers/kernel.h:515` | `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp, int ` |
+| `pcspk_get_volume` | function | `headers/kernel.h:760` | `unsigned pcspk_get_volume(void);` |
+| `pcspk_init` | function | `headers/kernel.h:756` | `void pcspk_init(void);` |
+| `pcspk_off` | function | `headers/kernel.h:758` | `void pcspk_off(void);` |
+| `pcspk_set_volume` | function | `headers/kernel.h:759` | `void pcspk_set_volume(unsigned volume);` |
+| `pcspk_tone` | function | `headers/kernel.h:757` | `void pcspk_tone(unsigned freq);` |
+| `pt_clone_user_empty` | function | `headers/kernel.h:671` | `unsigned long pt_clone_user_empty(void);` |
+| `pt_page_alloc` | function | `headers/kernel.h:621` | `void *pt_page_alloc(void);` |
+| `pt_page_free` | function | `headers/kernel.h:622` | `void pt_page_free(void *ptr);` |
 | `ramdisk_count` | function | `headers/kernel.h:255` | `int ramdisk_count(void);` |
 | `ramdisk_create` | function | `headers/kernel.h:246` | `RDFile *ramdisk_create(const char *name, unsigned size);` |
 | `ramdisk_delete` | function | `headers/kernel.h:248` | `int ramdisk_delete(RDFile *f);` |
-| `ramdisk_end` | variable | `headers/kernel.h:727` | `extern char ramdisk_end[];` |
+| `ramdisk_end` | variable | `headers/kernel.h:731` | `extern char ramdisk_end[];` |
 | `ramdisk_file_name` | function | `headers/kernel.h:256` | `const char *ramdisk_file_name(int idx);` |
 | `ramdisk_init` | function | `headers/kernel.h:242` | `void ramdisk_init(void);` |
 | `ramdisk_list` | function | `headers/kernel.h:253` | `int ramdisk_list(RDFile **out, int max);` |
@@ -1396,18 +1411,21 @@ static int zip_sanitize_name(con...` |
 | `ramdisk_rename` | function | `headers/kernel.h:252` | `int ramdisk_rename(const char *oldname, const char *newname);` |
 | `ramdisk_resize` | function | `headers/kernel.h:247` | `int ramdisk_resize(RDFile *f, unsigned newsize);` |
 | `ramdisk_setup_from` | function | `headers/kernel.h:254` | `void ramdisk_setup_from(void *data, unsigned size);` |
-| `ramdisk_size` | variable | `headers/kernel.h:728` | `extern char ramdisk_size[];` |
-| `ramdisk_start` | variable | `headers/kernel.h:726` | `extern char ramdisk_start[];` |
+| `ramdisk_size` | variable | `headers/kernel.h:732` | `extern char ramdisk_size[];` |
+| `ramdisk_start` | variable | `headers/kernel.h:730` | `extern char ramdisk_start[];` |
 | `ramdisk_usage` | function | `headers/kernel.h:258` | `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);` |
 | `ramdisk_write` | function | `headers/kernel.h:245` | `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);` |
-| `redirect_active` | function | `headers/kernel.h:505` | `int redirect_active(void);` |
+| `redirect_active` | function | `headers/kernel.h:509` | `int redirect_active(void);` |
 | `redirect_begin` | function | `headers/kernel.h:502` | `int redirect_begin(void);` |
 | `redirect_commit` | function | `headers/kernel.h:503` | `int redirect_commit(const char *path, int append_mode);` |
+| `redirect_discard` | function | `headers/kernel.h:508` | `void redirect_discard(void);` |
+| `redirect_pending` | function | `headers/kernel.h:505` | `unsigned long redirect_pending(void);` |
 | `redirect_resume` | function | `headers/kernel.h:501` | `void redirect_resume(int was);` |
 | `redirect_suspend` | function | `headers/kernel.h:500` | `int redirect_suspend(void);` |
 | `redirect_take` | function | `headers/kernel.h:504` | `char *redirect_take(unsigned long *len_out);` |
-| `register_libc_symbols` | function | `headers/kernel.h:558` | `void register_libc_symbols(void);` |
-| `rtc_read_tod` | function | `headers/kernel.h:759` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
+| `redirect_take_into` | function | `headers/kernel.h:506` | `unsigned long redirect_take_into(char *dst, unsigned long cap, unsigned long *len_out);` |
+| `register_libc_symbols` | function | `headers/kernel.h:562` | `void register_libc_symbols(void);` |
+| `rtc_read_tod` | function | `headers/kernel.h:763` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
 | `sb_capture_row0` | function | `headers/kernel.h:114` | `void sb_capture_row0(void);` |
 | `sb_get_char` | function | `headers/kernel.h:118` | `char sb_get_char(int row, int col);` |
 | `sb_get_count` | function | `headers/kernel.h:116` | `int sb_get_count(void);` |
@@ -1421,31 +1439,31 @@ static int zip_sanitize_name(con...` |
 | `serial_init` | function | `headers/kernel.h:121` | `void serial_init(void);` |
 | `serial_putc` | function | `headers/kernel.h:122` | `void serial_putc(char c);` |
 | `serial_puts` | function | `headers/kernel.h:123` | `void serial_puts(const char *s);` |
-| `setup_user_stack` | function | `headers/kernel.h:575` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
-| `shell_exec_builtin` | function | `headers/kernel.h:521` | `void shell_exec_builtin(int argc, char **argv);` |
-| `shell_fg_active` | variable | `headers/kernel.h:609` | `extern volatile int shell_fg_active;` |
-| `shell_focus_park` | function | `headers/kernel.h:606` | `void shell_focus_park(void);` |
-| `shell_focus_restore` | function | `headers/kernel.h:607` | `void shell_focus_restore(void);` |
+| `setup_user_stack` | function | `headers/kernel.h:579` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
+| `shell_exec_builtin` | function | `headers/kernel.h:525` | `void shell_exec_builtin(int argc, char **argv);` |
+| `shell_fg_active` | variable | `headers/kernel.h:613` | `extern volatile int shell_fg_active;` |
+| `shell_focus_park` | function | `headers/kernel.h:610` | `void shell_focus_park(void);` |
+| `shell_focus_restore` | function | `headers/kernel.h:611` | `void shell_focus_restore(void);` |
 | `shell_init` | function | `headers/kernel.h:496` | `void shell_init(void);` |
-| `shell_queue_launch` | function | `headers/kernel.h:583` | `void shell_queue_launch(const char *cmd);` |
-| `shell_readline_active` | function | `headers/kernel.h:605` | `int shell_readline_active(void);` |
-| `shell_report` | function | `headers/kernel.h:523` | `void shell_report(const char *what, const char *detail);` |
-| `shell_report_exit` | function | `headers/kernel.h:522` | `void shell_report_exit(int code);` |
+| `shell_queue_launch` | function | `headers/kernel.h:587` | `void shell_queue_launch(const char *cmd);` |
+| `shell_readline_active` | function | `headers/kernel.h:609` | `int shell_readline_active(void);` |
+| `shell_report` | function | `headers/kernel.h:527` | `void shell_report(const char *what, const char *detail);` |
+| `shell_report_exit` | function | `headers/kernel.h:526` | `void shell_report_exit(int code);` |
 | `shell_run` | function | `headers/kernel.h:497` | `void shell_run(void);` |
-| `shell_run_any` | function | `headers/kernel.h:520` | `int shell_run_any(const char *name, int argc, char **argv);` |
-| `shell_take_redirect` | function | `headers/kernel.h:519` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
-| `swap_in` | function | `headers/kernel.h:624` | `int swap_in(void);` |
-| `swap_out` | function | `headers/kernel.h:623` | `int swap_out(unsigned long window_sz);` |
-| `syscall_init` | function | `headers/kernel.h:681` | `void syscall_init(void);` |
-| `syscall_name` | function | `headers/kernel.h:691` | `const char *syscall_name(long n);` |
-| `syscall_trace_enabled` | function | `headers/kernel.h:686` | `long syscall_trace_enabled(void);` |
-| `syscall_trace_set` | function | `headers/kernel.h:687` | `void syscall_trace_set(int on);` |
-| `syscall_trace_shown` | function | `headers/kernel.h:690` | `unsigned long syscall_trace_shown(void);` |
-| `syscall_trace_verbose_enabled` | function | `headers/kernel.h:688` | `long syscall_trace_verbose_enabled(void);` |
-| `syscall_trace_verbose_set` | function | `headers/kernel.h:689` | `void syscall_trace_verbose_set(int on);` |
-| `user_mmap_cur` | variable | `headers/kernel.h:629` | `extern unsigned long user_mmap_cur;` |
-| `user_range_ok` | function | `headers/kernel.h:612` | `int user_range_ok(unsigned long p, unsigned long len);` |
-| `user_str_ok` | function | `headers/kernel.h:613` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
+| `shell_run_any` | function | `headers/kernel.h:524` | `int shell_run_any(const char *name, int argc, char **argv);` |
+| `shell_take_redirect` | function | `headers/kernel.h:523` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
+| `swap_in` | function | `headers/kernel.h:628` | `int swap_in(void);` |
+| `swap_out` | function | `headers/kernel.h:627` | `int swap_out(unsigned long window_sz);` |
+| `syscall_init` | function | `headers/kernel.h:685` | `void syscall_init(void);` |
+| `syscall_name` | function | `headers/kernel.h:695` | `const char *syscall_name(long n);` |
+| `syscall_trace_enabled` | function | `headers/kernel.h:690` | `long syscall_trace_enabled(void);` |
+| `syscall_trace_set` | function | `headers/kernel.h:691` | `void syscall_trace_set(int on);` |
+| `syscall_trace_shown` | function | `headers/kernel.h:694` | `unsigned long syscall_trace_shown(void);` |
+| `syscall_trace_verbose_enabled` | function | `headers/kernel.h:692` | `long syscall_trace_verbose_enabled(void);` |
+| `syscall_trace_verbose_set` | function | `headers/kernel.h:693` | `void syscall_trace_verbose_set(int on);` |
+| `user_mmap_cur` | variable | `headers/kernel.h:633` | `extern unsigned long user_mmap_cur;` |
+| `user_range_ok` | function | `headers/kernel.h:616` | `int user_range_ok(unsigned long p, unsigned long len);` |
+| `user_str_ok` | function | `headers/kernel.h:617` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
 | `vfs_close` | function | `headers/kernel.h:369` | `int vfs_close(vfs_file_t *f);` |
 | `vfs_file` | struct | `headers/kernel.h:339` | `` |
 | `vfs_fstat` | function | `headers/kernel.h:370` | `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);` |
@@ -1461,28 +1479,28 @@ static int zip_sanitize_name(con...` |
 | `vfs_write` | function | `headers/kernel.h:368` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
 | `vga_clear` | function | `headers/kernel.h:93` | `void vga_clear(void);` |
 | `vga_cursor_enable` | function | `headers/kernel.h:99` | `void vga_cursor_enable(int on);` |
-| `vga_fb_act_empty` | function | `headers/kernel.h:597` | `int vga_fb_act_empty(void);` |
-| `vga_fb_clear_prompt` | function | `headers/kernel.h:600` | `void vga_fb_clear_prompt(void);` |
-| `vga_fb_focus_get` | function | `headers/kernel.h:588` | `int vga_fb_focus_get(void);` |
-| `vga_fb_focus_id` | function | `headers/kernel.h:587` | `int vga_fb_focus_id(int id);` |
-| `vga_fb_focus_next` | function | `headers/kernel.h:586` | `void vga_fb_focus_next(void);` |
-| `vga_fb_list_windows` | function | `headers/kernel.h:593` | `void vga_fb_list_windows(void);` |
-| `vga_fb_note_prompt` | function | `headers/kernel.h:599` | `void vga_fb_note_prompt(void);` |
-| `vga_fb_nterms_get` | function | `headers/kernel.h:589` | `int vga_fb_nterms_get(void);` |
-| `vga_fb_park_line` | function | `headers/kernel.h:594` | `void vga_fb_park_line(const char *b, int p);` |
-| `vga_fb_prompt_live` | function | `headers/kernel.h:598` | `int vga_fb_prompt_live(void);` |
-| `vga_fb_prompted` | function | `headers/kernel.h:601` | `int vga_fb_prompted(void);` |
-| `vga_fb_set_gfx_program` | function | `headers/kernel.h:596` | `void vga_fb_set_gfx_program(const char *name);` |
-| `vga_fb_term_close_focused` | function | `headers/kernel.h:591` | `int vga_fb_term_close_focused(void);` |
-| `vga_fb_term_split` | function | `headers/kernel.h:590` | `int vga_fb_term_split(void);` |
-| `vga_fb_tile_all` | function | `headers/kernel.h:592` | `void vga_fb_tile_all(void);` |
-| `vga_fb_unpark_line` | function | `headers/kernel.h:595` | `int vga_fb_unpark_line(char *b, int *p);` |
+| `vga_fb_act_empty` | function | `headers/kernel.h:601` | `int vga_fb_act_empty(void);` |
+| `vga_fb_clear_prompt` | function | `headers/kernel.h:604` | `void vga_fb_clear_prompt(void);` |
+| `vga_fb_focus_get` | function | `headers/kernel.h:592` | `int vga_fb_focus_get(void);` |
+| `vga_fb_focus_id` | function | `headers/kernel.h:591` | `int vga_fb_focus_id(int id);` |
+| `vga_fb_focus_next` | function | `headers/kernel.h:590` | `void vga_fb_focus_next(void);` |
+| `vga_fb_list_windows` | function | `headers/kernel.h:597` | `void vga_fb_list_windows(void);` |
+| `vga_fb_note_prompt` | function | `headers/kernel.h:603` | `void vga_fb_note_prompt(void);` |
+| `vga_fb_nterms_get` | function | `headers/kernel.h:593` | `int vga_fb_nterms_get(void);` |
+| `vga_fb_park_line` | function | `headers/kernel.h:598` | `void vga_fb_park_line(const char *b, int p);` |
+| `vga_fb_prompt_live` | function | `headers/kernel.h:602` | `int vga_fb_prompt_live(void);` |
+| `vga_fb_prompted` | function | `headers/kernel.h:605` | `int vga_fb_prompted(void);` |
+| `vga_fb_set_gfx_program` | function | `headers/kernel.h:600` | `void vga_fb_set_gfx_program(const char *name);` |
+| `vga_fb_term_close_focused` | function | `headers/kernel.h:595` | `int vga_fb_term_close_focused(void);` |
+| `vga_fb_term_split` | function | `headers/kernel.h:594` | `int vga_fb_term_split(void);` |
+| `vga_fb_tile_all` | function | `headers/kernel.h:596` | `void vga_fb_tile_all(void);` |
+| `vga_fb_unpark_line` | function | `headers/kernel.h:599` | `int vga_fb_unpark_line(char *b, int *p);` |
 | `vga_get_color` | function | `headers/kernel.h:110` | `char vga_get_color(void);` |
 | `vga_get_x` | function | `headers/kernel.h:107` | `int vga_get_x(void);` |
 | `vga_get_y` | function | `headers/kernel.h:108` | `int vga_get_y(void);` |
-| `vga_gfx_ran_set` | function | `headers/kernel.h:579` | `void vga_gfx_ran_set(int on);` |
-| `vga_mode_is_active` | function | `headers/kernel.h:578` | `int vga_mode_is_active(void);` |
-| `vga_mode_set` | function | `headers/kernel.h:577` | `void vga_mode_set(int on);` |
+| `vga_gfx_ran_set` | function | `headers/kernel.h:583` | `void vga_gfx_ran_set(int on);` |
+| `vga_mode_is_active` | function | `headers/kernel.h:582` | `int vga_mode_is_active(void);` |
+| `vga_mode_set` | function | `headers/kernel.h:581` | `void vga_mode_set(int on);` |
 | `vga_newline` | function | `headers/kernel.h:98` | `void vga_newline(void);` |
 | `vga_putc` | function | `headers/kernel.h:94` | `void vga_putc(char c);` |
 | `vga_puts` | function | `headers/kernel.h:95` | `void vga_puts(const char *s);` |
@@ -1492,7 +1510,7 @@ static int zip_sanitize_name(con...` |
 | `vnode_t` | type_alias | `headers/kernel.h:356` | `typedef vfs_file_t vnode_t;` |
 | `waits` | function | `headers/kernel.h:63` | `* and mouse_hw_init issues dozens of waits (measured 5 s of boot).  This
  * polls the port once p...` |
-| `wall_us_now` | function | `headers/kernel.h:745` | `unsigned long wall_us_now(void);` |
+| `wall_us_now` | function | `headers/kernel.h:749` | `unsigned long wall_us_now(void);` |
 | `CONSOLE_IN_H` | macro | `headers/kernel/console_in.h:2` | `#define CONSOLE_IN_H` |
 | `Consumers` | function | `headers/kernel/console_in.h:7` | `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into kernel/` |
 | `console_job_get` | function | `headers/kernel/console_in.h:26` | `int console_job_get(void);` |
@@ -1518,6 +1536,30 @@ static int zip_sanitize_name(con...` |
                       ...` |
 | `wall_us_from_parts` | function | `headers/ktime.h:30` | `static inline unsigned long wall_us_from_parts(unsigned long base_sec,
                           ...` |
+| `MINIOS_LEAKCHECK_H` | macro | `headers/leakcheck.h:28` | `#define MINIOS_LEAKCHECK_H` |
+| `MINIOS_LK_PIPE` | macro | `headers/leakcheck.h:42` | `#define MINIOS_LK_PIPE` |
+| `MINIOS_LK_PIPE` | macro | `headers/leakcheck.h:44` | `#define MINIOS_LK_PIPE` |
+| `MINIOS_LK_RAW_ALLOC` | macro | `headers/leakcheck.h:82` | `#define MINIOS_LK_RAW_ALLOC(sz)` |
+| `MINIOS_LK_RAW_ALLOC` | macro | `headers/leakcheck.h:88` | `#define MINIOS_LK_RAW_ALLOC(sz)` |
+| `MINIOS_LK_RAW_FREE` | macro | `headers/leakcheck.h:83` | `#define MINIOS_LK_RAW_FREE(p)` |
+| `MINIOS_LK_RAW_FREE` | macro | `headers/leakcheck.h:89` | `#define MINIOS_LK_RAW_FREE(p)` |
+| `free` | macro | `headers/leakcheck.h:236` | `#define free(p)` |
+| `kfree` | function | `headers/leakcheck.h:80` | `extern void kfree(void *ptr);` |
+| `kmalloc` | function | `headers/leakcheck.h:79` | `extern void *kmalloc(unsigned long size);` |
+| `kprintf` | function | `headers/leakcheck.h:81` | `extern int kprintf(const char *fmt, ...);` |
+| `lk_block` | struct | `headers/leakcheck.h:50` | `` |
+| `lk_block_t` | type_alias | `headers/leakcheck.h:49` | `typedef struct lk_block lk_block_t;` |
+| `lk_dumpmem` | function | `headers/leakcheck.h:197` | `void lk_dumpmem(void)` |
+| `lk_find` | function | `headers/leakcheck.h:120` | `static lk_block_t *lk_find(void *ptr)` |
+| `lk_free` | function | `headers/leakcheck.h:130` | `void lk_free(void *ptr)` |
+| `lk_live_bytes` | function | `headers/leakcheck.h:217` | `unsigned long lk_live_bytes(void)` |
+| `lk_live_count` | function | `headers/leakcheck.h:206` | `unsigned long lk_live_count(void)` |
+| `lk_malloc` | function | `headers/leakcheck.h:96` | `void *lk_malloc(size_t size, const char *file, int line)` |
+| `lk_print` | function | `headers/leakcheck.h:186` | `static void lk_print(const char *reason, const lk_block_t *b)` |
+| `lk_realloc` | function | `headers/leakcheck.h:143` | `void *lk_realloc(void *ptr, size_t size, const char *file, int line)` |
+| `lk_unlink` | function | `headers/leakcheck.h:110` | `static void lk_unlink(lk_block_t *b)` |
+| `malloc` | macro | `headers/leakcheck.h:235` | `#define malloc(sz)` |
+| `realloc` | macro | `headers/leakcheck.h:237` | `#define realloc(p, sz)` |
 | `LZ4_KERNEL_H` | macro | `headers/lz4_kernel.h:2` | `#define LZ4_KERNEL_H` |
 | `LZ4_compressBound` | function | `headers/lz4_kernel.h:5` | `int LZ4_compressBound(int inputSize);` |
 | `LZ4_compress_default` | function | `headers/lz4_kernel.h:4` | `int LZ4_compress_default(const char *src, char *dst, int srcSize, int dstCapacity);` |
@@ -1982,11 +2024,11 @@ static int zip_sanitize_name(con...` |
 | `smp_lock` | variable | `headers/smp.h:25` | `extern spinlock_t smp_lock;` |
 | `SPAWN_H` | macro | `headers/spawn.h:2` | `#define SPAWN_H` |
 | `spawn_backup` | function | `headers/spawn.h:27` | `int spawn_backup(spawn_ctx_t *ctx);` |
-| `spawn_copy_argv` | function | `headers/spawn.h:36` | `char **spawn_copy_argv(int argc, const char **uargv);` |
+| `spawn_copy_argv` | function | `headers/spawn.h:38` | `char **spawn_copy_argv(int argc, const char **uargv);` |
 | `spawn_ctx_t` | struct | `headers/spawn.h:9` | `` |
-| `spawn_execute` | function | `headers/spawn.h:45` | `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc, char **` |
-| `spawn_free_argv` | function | `headers/spawn.h:39` | `void spawn_free_argv(char **kargv, int argc);` |
-| `spawn_load_image` | function | `headers/spawn.h:42` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` |
+| `spawn_execute` | function | `headers/spawn.h:47` | `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc, char **` |
+| `spawn_free_argv` | function | `headers/spawn.h:41` | `void spawn_free_argv(char **kargv, int argc);` |
+| `spawn_load_image` | function | `headers/spawn.h:44` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` |
 | `spawn_restore` | function | `headers/spawn.h:30` | `void spawn_restore(spawn_ctx_t *ctx);` |
 | `spawn_validate_argv` | function | `headers/spawn.h:33` | `int spawn_validate_argv(int argc, const char **uargv);` |
 | `SPINLOCK_H` | macro | `headers/spinlock.h:2` | `#define SPINLOCK_H` |
@@ -2535,14 +2577,18 @@ void kmain(void)` |
 | `REDIR_INITIAL_CAP` | macro | `kernel/console.c:96` | `#define REDIR_INITIAL_CAP` |
 | `REDIR_MAX_BYTES` | macro | `kernel/console.c:97` | `#define REDIR_MAX_BYTES` |
 | `XXH_STATIC_LINKING_ONLY` | macro | `kernel/console.c:4` | `#define XXH_STATIC_LINKING_ONLY` |
-| `redir_grow` | function | `kernel/console.c:105` | `static int redir_grow(void)` |
-| `redirect_active` | function | `kernel/console.c:115` | `int redirect_active(void)` |
-| `redirect_begin` | function | `kernel/console.c:134` | `int redirect_begin(void)` |
-| `redirect_commit` | function | `kernel/console.c:142` | `int redirect_commit(const char *path, int append_mode)` |
-| `redirect_putc` | function | `kernel/console.c:117` | `static int redirect_putc(char c)` |
-| `redirect_resume` | function | `kernel/console.c:130` | `void redirect_resume(int was)` |
-| `redirect_suspend` | function | `kernel/console.c:124` | `int redirect_suspend(void)` |
-| `register_libc_symbols` | function | `kernel/console.c:228` | `void register_libc_symbols(void)` |
+| `redir_grow` | function | `kernel/console.c:110` | `static int redir_grow(void)` |
+| `redirect_active` | function | `kernel/console.c:120` | `int redirect_active(void)` |
+| `redirect_begin` | function | `kernel/console.c:139` | `int redirect_begin(void)` |
+| `redirect_commit` | function | `kernel/console.c:147` | `int redirect_commit(const char *path, int append_mode)` |
+| `redirect_discard` | function | `kernel/console.c:216` | `void redirect_discard(void)` |
+| `redirect_pending` | function | `kernel/console.c:185` | `unsigned long redirect_pending(void)` |
+| `redirect_putc` | function | `kernel/console.c:122` | `static int redirect_putc(char c)` |
+| `redirect_resume` | function | `kernel/console.c:135` | `void redirect_resume(int was)` |
+| `redirect_suspend` | function | `kernel/console.c:129` | `int redirect_suspend(void)` |
+| `redirect_take_into` | function | `kernel/console.c:196` | `unsigned long redirect_take_into(char *dst, unsigned long cap,
+        unsigned long *len_out)` |
+| `register_libc_symbols` | function | `kernel/console.c:271` | `void register_libc_symbols(void)` |
 | `vga_clear` | function | `kernel/console.c:25` | `void vga_clear(void)` |
 | `vga_cursor_enable` | function | `kernel/console.c:81` | `void vga_cursor_enable(int on)` |
 | `vga_get_color` | function | `kernel/console.c:21` | `char vga_get_color(void)` |
@@ -2550,8 +2596,8 @@ void kmain(void)` |
 | `vga_get_y` | function | `kernel/console.c:19` | `int vga_get_y(void)` |
 | `vga_newline` | function | `kernel/console.c:75` | `void vga_newline(void)` |
 | `vga_offset` | function | `kernel/console.c:23` | `static inline unsigned vga_offset(int x, int y)` |
-| `vga_putc` | function | `kernel/console.c:180` | `void vga_putc(char c)` |
-| `vga_puts` | function | `kernel/console.c:224` | `void vga_puts(const char *s)` |
+| `vga_putc` | function | `kernel/console.c:223` | `void vga_putc(char c)` |
+| `vga_puts` | function | `kernel/console.c:267` | `void vga_puts(const char *s)` |
 | `vga_raw_space` | function | `kernel/console.c:88` | `static void vga_raw_space(void)` |
 | `vga_scroll` | function | `kernel/console.c:56` | `void vga_scroll(void)` |
 | `vga_set_cursor` | function | `kernel/console.c:36` | `void vga_set_cursor(int x, int y)` |
@@ -3077,18 +3123,18 @@ static void shell_cmd_trac...` |
 | `tree` | function | `kernel/shell.c:1999` | `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...` |
 | `window` | function | `kernel/shell.c:1276` | `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small ` |
-| `spawn_backup` | function | `kernel/spawn.c:10` | `int spawn_backup(spawn_ctx_t *ctx)` |
-| `spawn_copy_argv` | function | `kernel/spawn.c:91` | `char **spawn_copy_argv(int argc, const char **uargv)` |
-| `spawn_execute` | function | `kernel/spawn.c:236` | `int spawn_execute(const char *resolved, const char *redirect,
+| `spawn_backup` | function | `kernel/spawn.c:11` | `int spawn_backup(spawn_ctx_t *ctx)` |
+| `spawn_copy_argv` | function | `kernel/spawn.c:96` | `char **spawn_copy_argv(int argc, const char **uargv)` |
+| `spawn_execute` | function | `kernel/spawn.c:264` | `int spawn_execute(const char *resolved, const char *redirect,
                   unsigned char *da...` |
-| `spawn_free_argv` | function | `kernel/spawn.c:81` | `void spawn_free_argv(char **kargv, int argc)` |
-| `spawn_load_image` | function | `kernel/spawn.c:130` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out)` |
-| `spawn_restore` | function | `kernel/spawn.c:36` | `void spawn_restore(spawn_ctx_t *ctx)` |
-| `spawn_run_exec` | function | `kernel/spawn.c:191` | `static int spawn_run_exec(const char *resolved, const char *redirect,
+| `spawn_free_argv` | function | `kernel/spawn.c:84` | `void spawn_free_argv(char **kargv, int argc)` |
+| `spawn_load_image` | function | `kernel/spawn.c:158` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out)` |
+| `spawn_restore` | function | `kernel/spawn.c:37` | `void spawn_restore(spawn_ctx_t *ctx)` |
+| `spawn_run_exec` | function | `kernel/spawn.c:219` | `static int spawn_run_exec(const char *resolved, const char *redirect,
                            ...` |
-| `spawn_run_rel` | function | `kernel/spawn.c:165` | `static int spawn_run_rel(const char *resolved, const char *redirect,
+| `spawn_run_rel` | function | `kernel/spawn.c:193` | `static int spawn_run_rel(const char *resolved, const char *redirect,
                          uns...` |
-| `spawn_validate_argv` | function | `kernel/spawn.c:112` | `int spawn_validate_argv(int argc, const char **uargv)` |
+| `spawn_validate_argv` | function | `kernel/spawn.c:140` | `int spawn_validate_argv(int argc, const char **uargv)` |
 | `katol` | function | `kernel/string.c:95` | `long katol(const char *s)` |
 | `kmemcmp` | function | `kernel/string.c:81` | `int kmemcmp(const void *a, const void *b, unsigned long n)` |
 | `kmemcpy` | function | `kernel/string.c:68` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
@@ -8319,71 +8365,73 @@ Z_Malloc
 | `Z_Malloc` | function | `progs/doomgeneric/z_zone.h:54` | `void* Z_Malloc (int size, int tag, void *ptr);` |
 | `Z_ZoneSize` | function | `progs/doomgeneric/z_zone.h:63` | `unsigned int Z_ZoneSize(void);` |
 | `__Z_ZONE__` | macro | `progs/doomgeneric/z_zone.h:25` | `#define __Z_ZONE__` |
-| `FILE_ACTION_INTERNAL` | macro | `progs/file/file.c:46` | `#define FILE_ACTION_INTERNAL` |
-| `FILE_ACTION_SHELL` | macro | `progs/file/file.c:45` | `#define FILE_ACTION_SHELL` |
-| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:70` | `#define FILE_ACT_INTERNAL` |
-| `FILE_ACT_SHELL` | macro | `progs/file/file.c:69` | `#define FILE_ACT_SHELL` |
-| `FILE_ACT_TEXT` | macro | `progs/file/file.c:68` | `#define FILE_ACT_TEXT` |
-| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:71` | `#define FILE_ACT_UNKNOWN` |
-| `FILE_ASSOC_PATH` | macro | `progs/file/file.c:34` | `#define FILE_ASSOC_PATH` |
-| `FILE_EXT_MAX` | macro | `progs/file/file.c:35` | `#define FILE_EXT_MAX` |
-| `FILE_ICON_BIG` | macro | `progs/file/file.c:55` | `#define FILE_ICON_BIG` |
-| `FILE_ICON_FILES` | macro | `progs/file/file.c:59` | `#define FILE_ICON_FILES` |
-| `FILE_ICON_FOLDER` | macro | `progs/file/file.c:58` | `#define FILE_ICON_FOLDER` |
-| `FILE_ICON_IMAGE` | macro | `progs/file/file.c:60` | `#define FILE_ICON_IMAGE` |
-| `FILE_ICON_MAX` | macro | `progs/file/file.c:56` | `#define FILE_ICON_MAX` |
-| `FILE_ICON_N` | macro | `progs/file/file.c:57` | `#define FILE_ICON_N` |
-| `FILE_ICON_OBJECT` | macro | `progs/file/file.c:61` | `#define FILE_ICON_OBJECT` |
-| `FILE_ICON_PATH_FILES` | macro | `progs/file/file.c:63` | `#define FILE_ICON_PATH_FILES` |
-| `FILE_ICON_PATH_FOLDER` | macro | `progs/file/file.c:62` | `#define FILE_ICON_PATH_FOLDER` |
-| `FILE_ICON_PATH_IMAGE` | macro | `progs/file/file.c:64` | `#define FILE_ICON_PATH_IMAGE` |
-| `FILE_ICON_PATH_OBJECT` | macro | `progs/file/file.c:65` | `#define FILE_ICON_PATH_OBJECT` |
-| `FILE_ICON_SMALL` | macro | `progs/file/file.c:54` | `#define FILE_ICON_SMALL` |
-| `FILE_LIST_CAP` | macro | `progs/file/file.c:33` | `#define FILE_LIST_CAP` |
-| `FILE_LOG_LINE` | macro | `progs/file/file.c:47` | `#define FILE_LOG_LINE` |
-| `FILE_MAX_ENTRIES` | macro | `progs/file/file.c:31` | `#define FILE_MAX_ENTRIES` |
-| `FILE_MAX_PATH` | macro | `progs/file/file.c:30` | `#define FILE_MAX_PATH` |
-| `FILE_NAME_MAX` | macro | `progs/file/file.c:32` | `#define FILE_NAME_MAX` |
-| `FILE_PREVIEW_FILE_MAX` | macro | `progs/file/file.c:43` | `#define FILE_PREVIEW_FILE_MAX` |
-| `FILE_PREVIEW_H` | macro | `progs/file/file.c:42` | `#define FILE_PREVIEW_H` |
-| `FILE_PREVIEW_W` | macro | `progs/file/file.c:41` | `#define FILE_PREVIEW_W` |
-| `FILE_PROG_MAX` | macro | `progs/file/file.c:36` | `#define FILE_PROG_MAX` |
-| `FILE_STATUS_MAX` | macro | `progs/file/file.c:39` | `#define FILE_STATUS_MAX` |
-| `FILE_TITLE` | macro | `progs/file/file.c:44` | `#define FILE_TITLE` |
-| `FILE_TOOL_CVM` | macro | `progs/file/file.c:38` | `#define FILE_TOOL_CVM` |
-| `FILE_TOOL_VEDIT` | macro | `progs/file/file.c:37` | `#define FILE_TOOL_VEDIT` |
-| `FILE_UI_MEMORY` | macro | `progs/file/file.c:40` | `#define FILE_UI_MEMORY` |
+| `FILE_ACTION_INTERNAL` | macro | `progs/file/file.c:49` | `#define FILE_ACTION_INTERNAL` |
+| `FILE_ACTION_SHELL` | macro | `progs/file/file.c:48` | `#define FILE_ACTION_SHELL` |
+| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:73` | `#define FILE_ACT_INTERNAL` |
+| `FILE_ACT_SHELL` | macro | `progs/file/file.c:72` | `#define FILE_ACT_SHELL` |
+| `FILE_ACT_TEXT` | macro | `progs/file/file.c:71` | `#define FILE_ACT_TEXT` |
+| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:74` | `#define FILE_ACT_UNKNOWN` |
+| `FILE_ASSOC_PATH` | macro | `progs/file/file.c:37` | `#define FILE_ASSOC_PATH` |
+| `FILE_EXT_MAX` | macro | `progs/file/file.c:38` | `#define FILE_EXT_MAX` |
+| `FILE_ICON_BIG` | macro | `progs/file/file.c:58` | `#define FILE_ICON_BIG` |
+| `FILE_ICON_FILES` | macro | `progs/file/file.c:62` | `#define FILE_ICON_FILES` |
+| `FILE_ICON_FOLDER` | macro | `progs/file/file.c:61` | `#define FILE_ICON_FOLDER` |
+| `FILE_ICON_IMAGE` | macro | `progs/file/file.c:63` | `#define FILE_ICON_IMAGE` |
+| `FILE_ICON_MAX` | macro | `progs/file/file.c:59` | `#define FILE_ICON_MAX` |
+| `FILE_ICON_N` | macro | `progs/file/file.c:60` | `#define FILE_ICON_N` |
+| `FILE_ICON_OBJECT` | macro | `progs/file/file.c:64` | `#define FILE_ICON_OBJECT` |
+| `FILE_ICON_PATH_FILES` | macro | `progs/file/file.c:66` | `#define FILE_ICON_PATH_FILES` |
+| `FILE_ICON_PATH_FOLDER` | macro | `progs/file/file.c:65` | `#define FILE_ICON_PATH_FOLDER` |
+| `FILE_ICON_PATH_IMAGE` | macro | `progs/file/file.c:67` | `#define FILE_ICON_PATH_IMAGE` |
+| `FILE_ICON_PATH_OBJECT` | macro | `progs/file/file.c:68` | `#define FILE_ICON_PATH_OBJECT` |
+| `FILE_ICON_SMALL` | macro | `progs/file/file.c:57` | `#define FILE_ICON_SMALL` |
+| `FILE_LIST_CAP` | macro | `progs/file/file.c:36` | `#define FILE_LIST_CAP` |
+| `FILE_LOG_LINE` | macro | `progs/file/file.c:50` | `#define FILE_LOG_LINE` |
+| `FILE_MAX_ENTRIES` | macro | `progs/file/file.c:34` | `#define FILE_MAX_ENTRIES` |
+| `FILE_MAX_PATH` | macro | `progs/file/file.c:33` | `#define FILE_MAX_PATH` |
+| `FILE_NAME_MAX` | macro | `progs/file/file.c:35` | `#define FILE_NAME_MAX` |
+| `FILE_PREVIEW_FILE_MAX` | macro | `progs/file/file.c:46` | `#define FILE_PREVIEW_FILE_MAX` |
+| `FILE_PREVIEW_H` | macro | `progs/file/file.c:45` | `#define FILE_PREVIEW_H` |
+| `FILE_PREVIEW_W` | macro | `progs/file/file.c:44` | `#define FILE_PREVIEW_W` |
+| `FILE_PROG_MAX` | macro | `progs/file/file.c:39` | `#define FILE_PROG_MAX` |
+| `FILE_STATUS_MAX` | macro | `progs/file/file.c:42` | `#define FILE_STATUS_MAX` |
+| `FILE_TITLE` | macro | `progs/file/file.c:47` | `#define FILE_TITLE` |
+| `FILE_TOOL_CVM` | macro | `progs/file/file.c:41` | `#define FILE_TOOL_CVM` |
+| `FILE_TOOL_VEDIT` | macro | `progs/file/file.c:40` | `#define FILE_TOOL_VEDIT` |
+| `FILE_UI_MEMORY` | macro | `progs/file/file.c:43` | `#define FILE_UI_MEMORY` |
+| `MINIOS_LEAKCHECK_IMPL` | macro | `progs/file/file.c:28` | `#define MINIOS_LEAKCHECK_IMPL` |
+| `MINIOS_LK_ENABLE` | macro | `progs/file/file.c:29` | `#define MINIOS_LK_ENABLE` |
 | `STBI_NO_STDIO` | macro | `progs/file/file.c:26` | `#define STBI_NO_STDIO` |
 | `STBI_ONLY_PNG` | macro | `progs/file/file.c:25` | `#define STBI_ONLY_PNG` |
 | `STB_IMAGE_IMPLEMENTATION` | macro | `progs/file/file.c:24` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `file_action_of` | function | `progs/file/file.c:320` | `static int file_action_of(const char *fname, const char **prog_out)` |
-| `file_activate` | function | `progs/file/file.c:477` | `static void file_activate(const char *dir, const char *name)` |
-| `file_assoc` | struct | `progs/file/file.c:73` | `` |
-| `file_assoc_line` | function | `progs/file/file.c:266` | `static int file_assoc_line(const char *line, char *ext, char *prog)` |
-| `file_assoc_load` | function | `progs/file/file.c:299` | `static void file_assoc_load(void)` |
-| `file_assoc_lookup` | function | `progs/file/file.c:315` | `static const char *file_assoc_lookup(const char *ext)` |
-| `file_ext_of` | function | `progs/file/file.c:119` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
-| `file_gui_run` | function | `progs/file/file.c:761` | `static void file_gui_run(void)` |
-| `file_icon_decode` | function | `progs/file/file.c:162` | `static int file_icon_decode(const char *path, unsigned char *px,
+| `file_action_of` | function | `progs/file/file.c:323` | `static int file_action_of(const char *fname, const char **prog_out)` |
+| `file_activate` | function | `progs/file/file.c:480` | `static void file_activate(const char *dir, const char *name)` |
+| `file_assoc` | struct | `progs/file/file.c:76` | `` |
+| `file_assoc_line` | function | `progs/file/file.c:269` | `static int file_assoc_line(const char *line, char *ext, char *prog)` |
+| `file_assoc_load` | function | `progs/file/file.c:302` | `static void file_assoc_load(void)` |
+| `file_assoc_lookup` | function | `progs/file/file.c:318` | `static const char *file_assoc_lookup(const char *ext)` |
+| `file_ext_of` | function | `progs/file/file.c:122` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
+| `file_gui_run` | function | `progs/file/file.c:779` | `static void file_gui_run(void)` |
+| `file_icon_decode` | function | `progs/file/file.c:165` | `static int file_icon_decode(const char *path, unsigned char *px,
                             unsi...` |
-| `file_icon_kind` | function | `progs/file/file.c:143` | `static int file_icon_kind(const char *fname, int isdir)` |
-| `file_icon_sz` | function | `progs/file/file.c:155` | `static int file_icon_sz(void)` |
-| `file_icons_load` | function | `progs/file/file.c:210` | `static int file_icons_load(void)` |
-| `file_join` | function | `progs/file/file.c:242` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
-| `file_open_text` | function | `progs/file/file.c:427` | `static void file_open_text(const char *path)` |
-| `file_parent` | function | `progs/file/file.c:256` | `static void file_parent(char *path)` |
-| `file_preview_blit` | function | `progs/file/file.c:382` | `static void file_preview_blit(int ox, int oy)` |
-| `file_preview_load` | function | `progs/file/file.c:348` | `static int file_preview_load(const char *path)` |
-| `file_refresh` | function | `progs/file/file.c:333` | `static void file_refresh(void)` |
-| `file_run_shell` | function | `progs/file/file.c:438` | `static void file_run_shell(const char *path)` |
-| `file_selftest` | function | `progs/file/file.c:607` | `static int file_selftest(void)` |
-| `file_spawn_visible` | function | `progs/file/file.c:404` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+| `file_icon_kind` | function | `progs/file/file.c:146` | `static int file_icon_kind(const char *fname, int isdir)` |
+| `file_icon_sz` | function | `progs/file/file.c:158` | `static int file_icon_sz(void)` |
+| `file_icons_load` | function | `progs/file/file.c:213` | `static int file_icons_load(void)` |
+| `file_join` | function | `progs/file/file.c:245` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
+| `file_open_text` | function | `progs/file/file.c:430` | `static void file_open_text(const char *path)` |
+| `file_parent` | function | `progs/file/file.c:259` | `static void file_parent(char *path)` |
+| `file_preview_blit` | function | `progs/file/file.c:385` | `static void file_preview_blit(int ox, int oy)` |
+| `file_preview_load` | function | `progs/file/file.c:351` | `static int file_preview_load(const char *path)` |
+| `file_refresh` | function | `progs/file/file.c:336` | `static void file_refresh(void)` |
+| `file_run_shell` | function | `progs/file/file.c:441` | `static void file_run_shell(const char *path)` |
+| `file_selftest` | function | `progs/file/file.c:613` | `static int file_selftest(void)` |
+| `file_spawn_visible` | function | `progs/file/file.c:407` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,
                    ...` |
-| `file_sys_dir_list` | function | `progs/file/file.c:98` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
-| `file_sys_spawn` | function | `progs/file/file.c:108` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
-| `file_toggle_icons` | function | `progs/file/file.c:235` | `static int file_toggle_icons(void)` |
-| `file_ui_build` | function | `progs/file/file.c:508` | `static void file_ui_build(struct nk_context *ctx)` |
-| `main` | function | `progs/file/file.c:819` | `int main(int argc, char **argv)` |
+| `file_sys_dir_list` | function | `progs/file/file.c:101` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
+| `file_sys_spawn` | function | `progs/file/file.c:111` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
+| `file_toggle_icons` | function | `progs/file/file.c:238` | `static int file_toggle_icons(void)` |
+| `file_ui_build` | function | `progs/file/file.c:511` | `static void file_ui_build(struct nk_context *ctx)` |
+| `main` | function | `progs/file/file.c:838` | `int main(int argc, char **argv)` |
 | `FASSOC_EXT_MAX` | macro | `progs/file/file_assoc.h:22` | `#define FASSOC_EXT_MAX` |
 | `FASSOC_GROW_DEN` | macro | `progs/file/file_assoc.h:42` | `#define FASSOC_GROW_DEN` |
 | `FASSOC_GROW_NUM` | macro | `progs/file/file_assoc.h:38` | `#define FASSOC_GROW_NUM` |
@@ -10306,258 +10354,262 @@ Z_Malloc
                   ...` |
 | `torus_soft_assign` | function | `progs/topogpt3/topogpt3.c:821` | `static void torus_soft_assign(const float *phi1, const float *phi2,
                              ...` |
-| `VEDIT_BASE_MAX` | macro | `progs/vedit/vedit.c:139` | `#define VEDIT_BASE_MAX` |
-| `VEDIT_BUILD_LOG` | macro | `progs/vedit/vedit.c:135` | `#define VEDIT_BUILD_LOG` |
-| `VEDIT_CLIP_MAX` | macro | `progs/vedit/vedit.c:3188` | `#define VEDIT_CLIP_MAX` |
-| `VEDIT_CMD_MAX` | macro | `progs/vedit/vedit.c:252` | `#define VEDIT_CMD_MAX` |
-| `VEDIT_COL_COMMENT` | macro | `progs/vedit/vedit.c:155` | `#define VEDIT_COL_COMMENT` |
-| `VEDIT_COL_DEFAULT` | macro | `progs/vedit/vedit.c:152` | `#define VEDIT_COL_DEFAULT` |
-| `VEDIT_COL_KEYWORD` | macro | `progs/vedit/vedit.c:153` | `#define VEDIT_COL_KEYWORD` |
-| `VEDIT_COL_NUMBER` | macro | `progs/vedit/vedit.c:156` | `#define VEDIT_COL_NUMBER` |
-| `VEDIT_COL_PREPROC` | macro | `progs/vedit/vedit.c:157` | `#define VEDIT_COL_PREPROC` |
-| `VEDIT_COL_STRING` | macro | `progs/vedit/vedit.c:154` | `#define VEDIT_COL_STRING` |
-| `VEDIT_DEFAULT_FILE` | macro | `progs/vedit/vedit.c:116` | `#define VEDIT_DEFAULT_FILE` |
-| `VEDIT_DIR_ASM` | macro | `progs/vedit/vedit.c:132` | `#define VEDIT_DIR_ASM` |
-| `VEDIT_DIR_BIN` | macro | `progs/vedit/vedit.c:133` | `#define VEDIT_DIR_BIN` |
-| `VEDIT_DIR_CVM` | macro | `progs/vedit/vedit.c:134` | `#define VEDIT_DIR_CVM` |
-| `VEDIT_ESC_MS` | macro | `progs/vedit/vedit.c:120` | `#define VEDIT_ESC_MS` |
-| `VEDIT_FILE_MAX` | macro | `progs/vedit/vedit.c:114` | `#define VEDIT_FILE_MAX` |
-| `VEDIT_FILL_COL` | macro | `progs/vedit/vedit.c:1608` | `#define VEDIT_FILL_COL` |
-| `VEDIT_FNAME_MAX` | macro | `progs/vedit/vedit.c:115` | `#define VEDIT_FNAME_MAX` |
-| `VEDIT_FRAME_MS` | macro | `progs/vedit/vedit.c:121` | `#define VEDIT_FRAME_MS` |
-| `VEDIT_HIST_N` | macro | `progs/vedit/vedit.c:251` | `#define VEDIT_HIST_N` |
-| `VEDIT_KEY_ARG` | macro | `progs/vedit/vedit.c:255` | `#define VEDIT_KEY_ARG` |
-| `VEDIT_KEY_BOL` | macro | `progs/vedit/vedit.c:261` | `#define VEDIT_KEY_BOL` |
-| `VEDIT_KEY_DEL` | macro | `progs/vedit/vedit.c:175` | `#define VEDIT_KEY_DEL` |
-| `VEDIT_KEY_DOWN` | macro | `progs/vedit/vedit.c:168` | `#define VEDIT_KEY_DOWN` |
-| `VEDIT_KEY_DUMP` | macro | `progs/vedit/vedit.c:125` | `#define VEDIT_KEY_DUMP` |
-| `VEDIT_KEY_END` | macro | `progs/vedit/vedit.c:172` | `#define VEDIT_KEY_END` |
-| `VEDIT_KEY_EOL` | macro | `progs/vedit/vedit.c:262` | `#define VEDIT_KEY_EOL` |
-| `VEDIT_KEY_ESC` | macro | `progs/vedit/vedit.c:176` | `#define VEDIT_KEY_ESC` |
-| `VEDIT_KEY_FENCE` | macro | `progs/vedit/vedit.c:260` | `#define VEDIT_KEY_FENCE` |
-| `VEDIT_KEY_HOME` | macro | `progs/vedit/vedit.c:171` | `#define VEDIT_KEY_HOME` |
-| `VEDIT_KEY_KILL_LINE` | macro | `progs/vedit/vedit.c:257` | `#define VEDIT_KEY_KILL_LINE` |
-| `VEDIT_KEY_LEFT` | macro | `progs/vedit/vedit.c:169` | `#define VEDIT_KEY_LEFT` |
-| `VEDIT_KEY_LINK` | macro | `progs/vedit/vedit.c:124` | `#define VEDIT_KEY_LINK` |
-| `VEDIT_KEY_MARK` | macro | `progs/vedit/vedit.c:256` | `#define VEDIT_KEY_MARK` |
-| `VEDIT_KEY_META` | macro | `progs/vedit/vedit.c:254` | `#define VEDIT_KEY_META(c)` |
-| `VEDIT_KEY_PGDN` | macro | `progs/vedit/vedit.c:174` | `#define VEDIT_KEY_PGDN` |
-| `VEDIT_KEY_PGUP` | macro | `progs/vedit/vedit.c:173` | `#define VEDIT_KEY_PGUP` |
-| `VEDIT_KEY_RIGHT` | macro | `progs/vedit/vedit.c:170` | `#define VEDIT_KEY_RIGHT` |
-| `VEDIT_KEY_RUN` | macro | `progs/vedit/vedit.c:123` | `#define VEDIT_KEY_RUN` |
-| `VEDIT_KEY_TRANSPOSE` | macro | `progs/vedit/vedit.c:259` | `#define VEDIT_KEY_TRANSPOSE` |
-| `VEDIT_KEY_UP` | macro | `progs/vedit/vedit.c:167` | `#define VEDIT_KEY_UP` |
-| `VEDIT_KEY_YANK` | macro | `progs/vedit/vedit.c:258` | `#define VEDIT_KEY_YANK` |
-| `VEDIT_KILL_MAX` | macro | `progs/vedit/vedit.c:249` | `#define VEDIT_KILL_MAX` |
-| `VEDIT_KILL_N` | macro | `progs/vedit/vedit.c:248` | `#define VEDIT_KILL_N` |
-| `VEDIT_LANG_ASM` | macro | `progs/vedit/vedit.c:148` | `#define VEDIT_LANG_ASM` |
-| `VEDIT_LANG_C` | macro | `progs/vedit/vedit.c:145` | `#define VEDIT_LANG_C` |
-| `VEDIT_LANG_LISP` | macro | `progs/vedit/vedit.c:149` | `#define VEDIT_LANG_LISP` |
-| `VEDIT_LANG_LUA` | macro | `progs/vedit/vedit.c:147` | `#define VEDIT_LANG_LUA` |
-| `VEDIT_LANG_PY` | macro | `progs/vedit/vedit.c:146` | `#define VEDIT_LANG_PY` |
-| `VEDIT_LANG_TEXT` | macro | `progs/vedit/vedit.c:144` | `#define VEDIT_LANG_TEXT` |
-| `VEDIT_LINE_MAX` | macro | `progs/vedit/vedit.c:112` | `#define VEDIT_LINE_MAX` |
-| `VEDIT_LINE_USED` | macro | `progs/vedit/vedit.c:113` | `#define VEDIT_LINE_USED` |
-| `VEDIT_LINK_CVM` | macro | `progs/vedit/vedit.c:137` | `#define VEDIT_LINK_CVM` |
-| `VEDIT_LINK_ELF` | macro | `progs/vedit/vedit.c:136` | `#define VEDIT_LINK_ELF` |
-| `VEDIT_LOG_TAIL` | macro | `progs/vedit/vedit.c:141` | `#define VEDIT_LOG_TAIL` |
-| `VEDIT_MACRO_MAX` | macro | `progs/vedit/vedit.c:250` | `#define VEDIT_MACRO_MAX` |
-| `VEDIT_MAGIC_MAX` | macro | `progs/vedit/vedit.c:253` | `#define VEDIT_MAGIC_MAX` |
-| `VEDIT_MAX_LINES` | macro | `progs/vedit/vedit.c:111` | `#define VEDIT_MAX_LINES` |
-| `VEDIT_MSG_MAX` | macro | `progs/vedit/vedit.c:117` | `#define VEDIT_MSG_MAX` |
-| `VEDIT_NBUF` | macro | `progs/vedit/vedit.c:247` | `#define VEDIT_NBUF` |
-| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:140` | `#define VEDIT_PATH_MAX` |
-| `VEDIT_PROMPT_BINDCMD` | macro | `progs/vedit/vedit.c:324` | `#define VEDIT_PROMPT_BINDCMD` |
-| `VEDIT_PROMPT_BINDKEY` | macro | `progs/vedit/vedit.c:323` | `#define VEDIT_PROMPT_BINDKEY` |
-| `VEDIT_PROMPT_CMD` | macro | `progs/vedit/vedit.c:313` | `#define VEDIT_PROMPT_CMD` |
-| `VEDIT_PROMPT_FILTER` | macro | `progs/vedit/vedit.c:320` | `#define VEDIT_PROMPT_FILTER` |
-| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:309` | `#define VEDIT_PROMPT_FIND` |
-| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:310` | `#define VEDIT_PROMPT_GOTO` |
-| `VEDIT_PROMPT_GREP` | macro | `progs/vedit/vedit.c:322` | `#define VEDIT_PROMPT_GREP` |
-| `VEDIT_PROMPT_ISEARCH_F` | macro | `progs/vedit/vedit.c:314` | `#define VEDIT_PROMPT_ISEARCH_F` |
-| `VEDIT_PROMPT_ISEARCH_R` | macro | `progs/vedit/vedit.c:315` | `#define VEDIT_PROMPT_ISEARCH_R` |
-| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:312` | `#define VEDIT_PROMPT_LINK` |
-| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:311` | `#define VEDIT_PROMPT_NAME` |
-| `VEDIT_PROMPT_QREP` | macro | `progs/vedit/vedit.c:318` | `#define VEDIT_PROMPT_QREP` |
-| `VEDIT_PROMPT_REP_NEW` | macro | `progs/vedit/vedit.c:317` | `#define VEDIT_PROMPT_REP_NEW` |
-| `VEDIT_PROMPT_REP_OLD` | macro | `progs/vedit/vedit.c:316` | `#define VEDIT_PROMPT_REP_OLD` |
-| `VEDIT_PROMPT_SELECT` | macro | `progs/vedit/vedit.c:321` | `#define VEDIT_PROMPT_SELECT` |
-| `VEDIT_PROMPT_SHELLCMD` | macro | `progs/vedit/vedit.c:319` | `#define VEDIT_PROMPT_SHELLCMD` |
-| `VEDIT_SH_ARGS` | macro | `progs/vedit/vedit.c:3186` | `#define VEDIT_SH_ARGS` |
-| `VEDIT_SH_LINE` | macro | `progs/vedit/vedit.c:3187` | `#define VEDIT_SH_LINE` |
-| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:138` | `#define VEDIT_STATUS_MAX` |
-| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:160` | `#define VEDIT_ST_BLOCK` |
-| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:163` | `#define VEDIT_ST_LUABLK` |
-| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:164` | `#define VEDIT_ST_LUASTR` |
-| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:162` | `#define VEDIT_ST_PY3D` |
-| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:161` | `#define VEDIT_ST_PY3S` |
-| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:119` | `#define VEDIT_TAB_W` |
-| `VEDIT_TMP_F` | macro | `progs/vedit/vedit.c:3185` | `#define VEDIT_TMP_F` |
-| `VEDIT_TMP_IN` | macro | `progs/vedit/vedit.c:3184` | `#define VEDIT_TMP_IN` |
-| `VEDIT_TMP_OUT` | macro | `progs/vedit/vedit.c:3183` | `#define VEDIT_TMP_OUT` |
-| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:128` | `#define VEDIT_TOOL_CVM` |
-| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:127` | `#define VEDIT_TOOL_LD` |
-| `VEDIT_TOOL_LISP` | macro | `progs/vedit/vedit.c:131` | `#define VEDIT_TOOL_LISP` |
-| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:129` | `#define VEDIT_TOOL_LUA` |
-| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:126` | `#define VEDIT_TOOL_MINIGCC` |
-| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:130` | `#define VEDIT_TOOL_PY` |
-| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:122` | `#define VEDIT_UI_MEMORY` |
-| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:118` | `#define VEDIT_WORD_MAX` |
-| `definitions` | function | `progs/vedit/vedit.c:264` | `* definitions (C99, one file, no headers). */ static void vedit_str_case(char *s, int mode);` |
-| `main` | function | `progs/vedit/vedit.c:4749` | `int main(int argc, char **argv)` |
-| `separators` | function | `progs/vedit/vedit.c:399` | `* allow_quote exists because C digit separators (1'000'000) are not
+| `MINIOS_LEAKCHECK_IMPL` | macro | `progs/vedit/vedit.c:33` | `#define MINIOS_LEAKCHECK_IMPL` |
+| `MINIOS_LK_ENABLE` | macro | `progs/vedit/vedit.c:34` | `#define MINIOS_LK_ENABLE` |
+| `VEDIT_BASE_MAX` | macro | `progs/vedit/vedit.c:142` | `#define VEDIT_BASE_MAX` |
+| `VEDIT_BUILD_LOG` | macro | `progs/vedit/vedit.c:138` | `#define VEDIT_BUILD_LOG` |
+| `VEDIT_CLIP_MAX` | macro | `progs/vedit/vedit.c:3262` | `#define VEDIT_CLIP_MAX` |
+| `VEDIT_CMD_MAX` | macro | `progs/vedit/vedit.c:255` | `#define VEDIT_CMD_MAX` |
+| `VEDIT_COL_COMMENT` | macro | `progs/vedit/vedit.c:158` | `#define VEDIT_COL_COMMENT` |
+| `VEDIT_COL_DEFAULT` | macro | `progs/vedit/vedit.c:155` | `#define VEDIT_COL_DEFAULT` |
+| `VEDIT_COL_KEYWORD` | macro | `progs/vedit/vedit.c:156` | `#define VEDIT_COL_KEYWORD` |
+| `VEDIT_COL_NUMBER` | macro | `progs/vedit/vedit.c:159` | `#define VEDIT_COL_NUMBER` |
+| `VEDIT_COL_PREPROC` | macro | `progs/vedit/vedit.c:160` | `#define VEDIT_COL_PREPROC` |
+| `VEDIT_COL_STRING` | macro | `progs/vedit/vedit.c:157` | `#define VEDIT_COL_STRING` |
+| `VEDIT_DEFAULT_FILE` | macro | `progs/vedit/vedit.c:119` | `#define VEDIT_DEFAULT_FILE` |
+| `VEDIT_DIR_ASM` | macro | `progs/vedit/vedit.c:135` | `#define VEDIT_DIR_ASM` |
+| `VEDIT_DIR_BIN` | macro | `progs/vedit/vedit.c:136` | `#define VEDIT_DIR_BIN` |
+| `VEDIT_DIR_CVM` | macro | `progs/vedit/vedit.c:137` | `#define VEDIT_DIR_CVM` |
+| `VEDIT_ESC_MS` | macro | `progs/vedit/vedit.c:123` | `#define VEDIT_ESC_MS` |
+| `VEDIT_FILE_MAX` | macro | `progs/vedit/vedit.c:117` | `#define VEDIT_FILE_MAX` |
+| `VEDIT_FILL_COL` | macro | `progs/vedit/vedit.c:1611` | `#define VEDIT_FILL_COL` |
+| `VEDIT_FNAME_MAX` | macro | `progs/vedit/vedit.c:118` | `#define VEDIT_FNAME_MAX` |
+| `VEDIT_FRAME_MS` | macro | `progs/vedit/vedit.c:124` | `#define VEDIT_FRAME_MS` |
+| `VEDIT_HIST_N` | macro | `progs/vedit/vedit.c:254` | `#define VEDIT_HIST_N` |
+| `VEDIT_KEY_ARG` | macro | `progs/vedit/vedit.c:258` | `#define VEDIT_KEY_ARG` |
+| `VEDIT_KEY_BOL` | macro | `progs/vedit/vedit.c:264` | `#define VEDIT_KEY_BOL` |
+| `VEDIT_KEY_DEL` | macro | `progs/vedit/vedit.c:178` | `#define VEDIT_KEY_DEL` |
+| `VEDIT_KEY_DOWN` | macro | `progs/vedit/vedit.c:171` | `#define VEDIT_KEY_DOWN` |
+| `VEDIT_KEY_DUMP` | macro | `progs/vedit/vedit.c:128` | `#define VEDIT_KEY_DUMP` |
+| `VEDIT_KEY_END` | macro | `progs/vedit/vedit.c:175` | `#define VEDIT_KEY_END` |
+| `VEDIT_KEY_EOL` | macro | `progs/vedit/vedit.c:265` | `#define VEDIT_KEY_EOL` |
+| `VEDIT_KEY_ESC` | macro | `progs/vedit/vedit.c:179` | `#define VEDIT_KEY_ESC` |
+| `VEDIT_KEY_FENCE` | macro | `progs/vedit/vedit.c:263` | `#define VEDIT_KEY_FENCE` |
+| `VEDIT_KEY_HOME` | macro | `progs/vedit/vedit.c:174` | `#define VEDIT_KEY_HOME` |
+| `VEDIT_KEY_KILL_LINE` | macro | `progs/vedit/vedit.c:260` | `#define VEDIT_KEY_KILL_LINE` |
+| `VEDIT_KEY_LEFT` | macro | `progs/vedit/vedit.c:172` | `#define VEDIT_KEY_LEFT` |
+| `VEDIT_KEY_LINK` | macro | `progs/vedit/vedit.c:127` | `#define VEDIT_KEY_LINK` |
+| `VEDIT_KEY_MARK` | macro | `progs/vedit/vedit.c:259` | `#define VEDIT_KEY_MARK` |
+| `VEDIT_KEY_META` | macro | `progs/vedit/vedit.c:257` | `#define VEDIT_KEY_META(c)` |
+| `VEDIT_KEY_PGDN` | macro | `progs/vedit/vedit.c:177` | `#define VEDIT_KEY_PGDN` |
+| `VEDIT_KEY_PGUP` | macro | `progs/vedit/vedit.c:176` | `#define VEDIT_KEY_PGUP` |
+| `VEDIT_KEY_RIGHT` | macro | `progs/vedit/vedit.c:173` | `#define VEDIT_KEY_RIGHT` |
+| `VEDIT_KEY_RUN` | macro | `progs/vedit/vedit.c:126` | `#define VEDIT_KEY_RUN` |
+| `VEDIT_KEY_TRANSPOSE` | macro | `progs/vedit/vedit.c:262` | `#define VEDIT_KEY_TRANSPOSE` |
+| `VEDIT_KEY_UP` | macro | `progs/vedit/vedit.c:170` | `#define VEDIT_KEY_UP` |
+| `VEDIT_KEY_YANK` | macro | `progs/vedit/vedit.c:261` | `#define VEDIT_KEY_YANK` |
+| `VEDIT_KILL_MAX` | macro | `progs/vedit/vedit.c:252` | `#define VEDIT_KILL_MAX` |
+| `VEDIT_KILL_N` | macro | `progs/vedit/vedit.c:251` | `#define VEDIT_KILL_N` |
+| `VEDIT_LANG_ASM` | macro | `progs/vedit/vedit.c:151` | `#define VEDIT_LANG_ASM` |
+| `VEDIT_LANG_C` | macro | `progs/vedit/vedit.c:148` | `#define VEDIT_LANG_C` |
+| `VEDIT_LANG_LISP` | macro | `progs/vedit/vedit.c:152` | `#define VEDIT_LANG_LISP` |
+| `VEDIT_LANG_LUA` | macro | `progs/vedit/vedit.c:150` | `#define VEDIT_LANG_LUA` |
+| `VEDIT_LANG_PY` | macro | `progs/vedit/vedit.c:149` | `#define VEDIT_LANG_PY` |
+| `VEDIT_LANG_TEXT` | macro | `progs/vedit/vedit.c:147` | `#define VEDIT_LANG_TEXT` |
+| `VEDIT_LINE_MAX` | macro | `progs/vedit/vedit.c:115` | `#define VEDIT_LINE_MAX` |
+| `VEDIT_LINE_USED` | macro | `progs/vedit/vedit.c:116` | `#define VEDIT_LINE_USED` |
+| `VEDIT_LINK_CVM` | macro | `progs/vedit/vedit.c:140` | `#define VEDIT_LINK_CVM` |
+| `VEDIT_LINK_ELF` | macro | `progs/vedit/vedit.c:139` | `#define VEDIT_LINK_ELF` |
+| `VEDIT_LOG_TAIL` | macro | `progs/vedit/vedit.c:144` | `#define VEDIT_LOG_TAIL` |
+| `VEDIT_MACRO_MAX` | macro | `progs/vedit/vedit.c:253` | `#define VEDIT_MACRO_MAX` |
+| `VEDIT_MAGIC_MAX` | macro | `progs/vedit/vedit.c:256` | `#define VEDIT_MAGIC_MAX` |
+| `VEDIT_MAX_LINES` | macro | `progs/vedit/vedit.c:114` | `#define VEDIT_MAX_LINES` |
+| `VEDIT_MSG_MAX` | macro | `progs/vedit/vedit.c:120` | `#define VEDIT_MSG_MAX` |
+| `VEDIT_NBUF` | macro | `progs/vedit/vedit.c:250` | `#define VEDIT_NBUF` |
+| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:143` | `#define VEDIT_PATH_MAX` |
+| `VEDIT_PROMPT_BINDCMD` | macro | `progs/vedit/vedit.c:327` | `#define VEDIT_PROMPT_BINDCMD` |
+| `VEDIT_PROMPT_BINDKEY` | macro | `progs/vedit/vedit.c:326` | `#define VEDIT_PROMPT_BINDKEY` |
+| `VEDIT_PROMPT_CMD` | macro | `progs/vedit/vedit.c:316` | `#define VEDIT_PROMPT_CMD` |
+| `VEDIT_PROMPT_FILTER` | macro | `progs/vedit/vedit.c:323` | `#define VEDIT_PROMPT_FILTER` |
+| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:312` | `#define VEDIT_PROMPT_FIND` |
+| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:313` | `#define VEDIT_PROMPT_GOTO` |
+| `VEDIT_PROMPT_GREP` | macro | `progs/vedit/vedit.c:325` | `#define VEDIT_PROMPT_GREP` |
+| `VEDIT_PROMPT_ISEARCH_F` | macro | `progs/vedit/vedit.c:317` | `#define VEDIT_PROMPT_ISEARCH_F` |
+| `VEDIT_PROMPT_ISEARCH_R` | macro | `progs/vedit/vedit.c:318` | `#define VEDIT_PROMPT_ISEARCH_R` |
+| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:315` | `#define VEDIT_PROMPT_LINK` |
+| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:314` | `#define VEDIT_PROMPT_NAME` |
+| `VEDIT_PROMPT_QREP` | macro | `progs/vedit/vedit.c:321` | `#define VEDIT_PROMPT_QREP` |
+| `VEDIT_PROMPT_REP_NEW` | macro | `progs/vedit/vedit.c:320` | `#define VEDIT_PROMPT_REP_NEW` |
+| `VEDIT_PROMPT_REP_OLD` | macro | `progs/vedit/vedit.c:319` | `#define VEDIT_PROMPT_REP_OLD` |
+| `VEDIT_PROMPT_SELECT` | macro | `progs/vedit/vedit.c:324` | `#define VEDIT_PROMPT_SELECT` |
+| `VEDIT_PROMPT_SHELLCMD` | macro | `progs/vedit/vedit.c:322` | `#define VEDIT_PROMPT_SHELLCMD` |
+| `VEDIT_SH_ARGS` | macro | `progs/vedit/vedit.c:3260` | `#define VEDIT_SH_ARGS` |
+| `VEDIT_SH_LINE` | macro | `progs/vedit/vedit.c:3261` | `#define VEDIT_SH_LINE` |
+| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:141` | `#define VEDIT_STATUS_MAX` |
+| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:163` | `#define VEDIT_ST_BLOCK` |
+| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:166` | `#define VEDIT_ST_LUABLK` |
+| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:167` | `#define VEDIT_ST_LUASTR` |
+| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:165` | `#define VEDIT_ST_PY3D` |
+| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:164` | `#define VEDIT_ST_PY3S` |
+| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:122` | `#define VEDIT_TAB_W` |
+| `VEDIT_TMP_F` | macro | `progs/vedit/vedit.c:3259` | `#define VEDIT_TMP_F` |
+| `VEDIT_TMP_IN` | macro | `progs/vedit/vedit.c:3258` | `#define VEDIT_TMP_IN` |
+| `VEDIT_TMP_OUT` | macro | `progs/vedit/vedit.c:3257` | `#define VEDIT_TMP_OUT` |
+| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:131` | `#define VEDIT_TOOL_CVM` |
+| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:130` | `#define VEDIT_TOOL_LD` |
+| `VEDIT_TOOL_LISP` | macro | `progs/vedit/vedit.c:134` | `#define VEDIT_TOOL_LISP` |
+| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:132` | `#define VEDIT_TOOL_LUA` |
+| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:129` | `#define VEDIT_TOOL_MINIGCC` |
+| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:133` | `#define VEDIT_TOOL_PY` |
+| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:125` | `#define VEDIT_UI_MEMORY` |
+| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:121` | `#define VEDIT_WORD_MAX` |
+| `definitions` | function | `progs/vedit/vedit.c:267` | `* definitions (C99, one file, no headers). */ static void vedit_str_case(char *s, int mode);` |
+| `main` | function | `progs/vedit/vedit.c:4823` | `int main(int argc, char **argv)` |
+| `separators` | function | `progs/vedit/vedit.c:402` | `* allow_quote exists because C digit separators (1'000'000) are not
  * valid in Python/Lua number...` |
-| `strcmp` | function | `progs/vedit/vedit.c:3106` | `strcmp(name, "describe-bindings") == 0)` |
-| `vedit_ansi_for` | function | `progs/vedit/vedit.c:3656` | `static void vedit_ansi_for(int col)` |
-| `vedit_backspace` | function | `progs/vedit/vedit.c:843` | `static void vedit_backspace(void)` |
-| `vedit_base_of` | function | `progs/vedit/vedit.c:2247` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
-| `vedit_buf_alloc` | function | `progs/vedit/vedit.c:1175` | `static int vedit_buf_alloc(int idx)` |
-| `vedit_c_bg` | function | `progs/vedit/vedit.c:179` | `static struct nk_color vedit_c_bg(void)` |
-| `vedit_c_comment` | function | `progs/vedit/vedit.c:184` | `static struct nk_color vedit_c_comment(void)` |
-| `vedit_c_cursor` | function | `progs/vedit/vedit.c:190` | `static struct nk_color vedit_c_cursor(void)` |
-| `vedit_c_default` | function | `progs/vedit/vedit.c:181` | `static struct nk_color vedit_c_default(void)` |
-| `vedit_c_gutter` | function | `progs/vedit/vedit.c:180` | `static struct nk_color vedit_c_gutter(void)` |
-| `vedit_c_header` | function | `progs/vedit/vedit.c:187` | `static struct nk_color vedit_c_header(void)` |
-| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:188` | `static struct nk_color vedit_c_headtxt(void)` |
-| `vedit_c_keyword` | function | `progs/vedit/vedit.c:182` | `static struct nk_color vedit_c_keyword(void)` |
-| `vedit_c_number` | function | `progs/vedit/vedit.c:185` | `static struct nk_color vedit_c_number(void)` |
-| `vedit_c_preproc` | function | `progs/vedit/vedit.c:186` | `static struct nk_color vedit_c_preproc(void)` |
-| `vedit_c_status` | function | `progs/vedit/vedit.c:189` | `static struct nk_color vedit_c_status(void)` |
-| `vedit_c_string` | function | `progs/vedit/vedit.c:183` | `static struct nk_color vedit_c_string(void)` |
-| `vedit_case_word` | function | `progs/vedit/vedit.c:1447` | `static int vedit_case_word(int mode)` |
-| `vedit_clamp` | function | `progs/vedit/vedit.c:769` | `static void vedit_clamp(void)` |
-| `vedit_clip_get` | function | `progs/vedit/vedit.c:102` | `static long vedit_clip_get(char *out, long cap)` |
-| `vedit_clip_paste` | function | `progs/vedit/vedit.c:3263` | `static int vedit_clip_paste(void)` |
-| `vedit_clip_set` | function | `progs/vedit/vedit.c:94` | `static long vedit_clip_set(const char *s, long len)` |
-| `vedit_cmd_bind` | function | `progs/vedit/vedit.c:2851` | `static int vedit_cmd_bind(int key, int cmd)` |
-| `vedit_cmd_bound` | function | `progs/vedit/vedit.c:2867` | `static int vedit_cmd_bound(int key)` |
-| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:2344` | `static void vedit_cmd_exec(const char *out, int kind)` |
-| `vedit_cmd_exec_id` | function | `progs/vedit/vedit.c:2918` | `static void vedit_cmd_exec_id(int id, const char *arg, int *quit,
+| `strcmp` | function | `progs/vedit/vedit.c:3180` | `strcmp(name, "describe-bindings") == 0)` |
+| `vedit_ansi_for` | function | `progs/vedit/vedit.c:3730` | `static void vedit_ansi_for(int col)` |
+| `vedit_backspace` | function | `progs/vedit/vedit.c:846` | `static void vedit_backspace(void)` |
+| `vedit_base_of` | function | `progs/vedit/vedit.c:2268` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
+| `vedit_buf_alloc` | function | `progs/vedit/vedit.c:1178` | `static int vedit_buf_alloc(int idx)` |
+| `vedit_c_bg` | function | `progs/vedit/vedit.c:182` | `static struct nk_color vedit_c_bg(void)` |
+| `vedit_c_comment` | function | `progs/vedit/vedit.c:187` | `static struct nk_color vedit_c_comment(void)` |
+| `vedit_c_cursor` | function | `progs/vedit/vedit.c:193` | `static struct nk_color vedit_c_cursor(void)` |
+| `vedit_c_default` | function | `progs/vedit/vedit.c:184` | `static struct nk_color vedit_c_default(void)` |
+| `vedit_c_gutter` | function | `progs/vedit/vedit.c:183` | `static struct nk_color vedit_c_gutter(void)` |
+| `vedit_c_header` | function | `progs/vedit/vedit.c:190` | `static struct nk_color vedit_c_header(void)` |
+| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:191` | `static struct nk_color vedit_c_headtxt(void)` |
+| `vedit_c_keyword` | function | `progs/vedit/vedit.c:185` | `static struct nk_color vedit_c_keyword(void)` |
+| `vedit_c_number` | function | `progs/vedit/vedit.c:188` | `static struct nk_color vedit_c_number(void)` |
+| `vedit_c_preproc` | function | `progs/vedit/vedit.c:189` | `static struct nk_color vedit_c_preproc(void)` |
+| `vedit_c_status` | function | `progs/vedit/vedit.c:192` | `static struct nk_color vedit_c_status(void)` |
+| `vedit_c_string` | function | `progs/vedit/vedit.c:186` | `static struct nk_color vedit_c_string(void)` |
+| `vedit_case_word` | function | `progs/vedit/vedit.c:1450` | `static int vedit_case_word(int mode)` |
+| `vedit_clamp` | function | `progs/vedit/vedit.c:772` | `static void vedit_clamp(void)` |
+| `vedit_clip_get` | function | `progs/vedit/vedit.c:105` | `static long vedit_clip_get(char *out, long cap)` |
+| `vedit_clip_paste` | function | `progs/vedit/vedit.c:3337` | `static int vedit_clip_paste(void)` |
+| `vedit_clip_set` | function | `progs/vedit/vedit.c:97` | `static long vedit_clip_set(const char *s, long len)` |
+| `vedit_cmd_bind` | function | `progs/vedit/vedit.c:2925` | `static int vedit_cmd_bind(int key, int cmd)` |
+| `vedit_cmd_bound` | function | `progs/vedit/vedit.c:2941` | `static int vedit_cmd_bound(int key)` |
+| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:2365` | `static void vedit_cmd_exec(const char *out, int kind)` |
+| `vedit_cmd_exec_id` | function | `progs/vedit/vedit.c:2992` | `static void vedit_cmd_exec_id(int id, const char *arg, int *quit,
                               i...` |
-| `vedit_cmd_link` | function | `progs/vedit/vedit.c:2444` | `static void vedit_cmd_link(const char *fmt)` |
-| `vedit_cmd_lookup` | function | `progs/vedit/vedit.c:2783` | `static int vedit_cmd_lookup(const char *name)` |
-| `vedit_cmd_run` | function | `progs/vedit/vedit.c:2367` | `static void vedit_cmd_run(void)` |
-| `vedit_console_dump` | function | `progs/vedit/vedit.c:3664` | `static void vedit_console_dump(void)` |
-| `vedit_copy_region` | function | `progs/vedit/vedit.c:1265` | `static int vedit_copy_region(void)` |
-| `vedit_count` | macro | `progs/vedit/vedit.c:291` | `#define vedit_count` |
-| `vedit_count_open` | function | `progs/vedit/vedit.c:2723` | `static int vedit_count_open(void)` |
-| `vedit_count_words` | function | `progs/vedit/vedit.c:1575` | `static void vedit_count_words(void)` |
-| `vedit_cx` | macro | `progs/vedit/vedit.c:292` | `#define vedit_cx` |
-| `vedit_cy` | macro | `progs/vedit/vedit.c:293` | `#define vedit_cy` |
-| `vedit_delete_char` | function | `progs/vedit/vedit.c:879` | `static void vedit_delete_char(void)` |
-| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:832` | `static void vedit_delete_line_at(int idx)` |
-| `vedit_dirty` | macro | `progs/vedit/vedit.c:296` | `#define vedit_dirty` |
-| `vedit_draw_row` | function | `progs/vedit/vedit.c:3780` | `static void vedit_draw_row(struct nk_command_buffer *canvas,
+| `vedit_cmd_link` | function | `progs/vedit/vedit.c:2465` | `static void vedit_cmd_link(const char *fmt)` |
+| `vedit_cmd_lookup` | function | `progs/vedit/vedit.c:2857` | `static int vedit_cmd_lookup(const char *name)` |
+| `vedit_cmd_run` | function | `progs/vedit/vedit.c:2388` | `static void vedit_cmd_run(void)` |
+| `vedit_console_dump` | function | `progs/vedit/vedit.c:3738` | `static void vedit_console_dump(void)` |
+| `vedit_copy_region` | function | `progs/vedit/vedit.c:1268` | `static int vedit_copy_region(void)` |
+| `vedit_count` | macro | `progs/vedit/vedit.c:294` | `#define vedit_count` |
+| `vedit_count_open` | function | `progs/vedit/vedit.c:2797` | `static int vedit_count_open(void)` |
+| `vedit_count_words` | function | `progs/vedit/vedit.c:1578` | `static void vedit_count_words(void)` |
+| `vedit_cx` | macro | `progs/vedit/vedit.c:295` | `#define vedit_cx` |
+| `vedit_cy` | macro | `progs/vedit/vedit.c:296` | `#define vedit_cy` |
+| `vedit_delete_char` | function | `progs/vedit/vedit.c:882` | `static void vedit_delete_char(void)` |
+| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:835` | `static void vedit_delete_line_at(int idx)` |
+| `vedit_dirty` | macro | `progs/vedit/vedit.c:299` | `#define vedit_dirty` |
+| `vedit_draw_row` | function | `progs/vedit/vedit.c:3854` | `static void vedit_draw_row(struct nk_command_buffer *canvas,
                            struct nk...` |
-| `vedit_draw_ui` | function | `progs/vedit/vedit.c:3878` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+| `vedit_draw_ui` | function | `progs/vedit/vedit.c:3952` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
                     ...` |
-| `vedit_fill_paragraph` | function | `progs/vedit/vedit.c:1810` | `static int vedit_fill_paragraph(void)` |
-| `vedit_filter_buffer` | function | `progs/vedit/vedit.c:3431` | `static void vedit_filter_buffer(const char *prog)` |
-| `vedit_find` | function | `progs/vedit/vedit.c:1894` | `static void vedit_find(const char *needle)` |
-| `vedit_first_open` | function | `progs/vedit/vedit.c:2703` | `static int vedit_first_open(void)` |
-| `vedit_fname` | macro | `progs/vedit/vedit.c:299` | `#define vedit_fname` |
-| `vedit_follow` | function | `progs/vedit/vedit.c:781` | `static void vedit_follow(void)` |
-| `vedit_getc_raw` | function | `progs/vedit/vedit.c:35` | `static long vedit_getc_raw(long blocking)` |
-| `vedit_goto_fence` | function | `progs/vedit/vedit.c:1509` | `static int vedit_goto_fence(void)` |
-| `vedit_grep` | function | `progs/vedit/vedit.c:3491` | `static void vedit_grep(const char *pat)` |
-| `vedit_gui_run` | function | `progs/vedit/vedit.c:4582` | `static void vedit_gui_run(void)` |
-| `vedit_has_ext` | function | `progs/vedit/vedit.c:2235` | `static int vedit_has_ext(const char *fname, const char *ext)` |
-| `vedit_help_text` | function | `progs/vedit/vedit.c:2902` | `static void vedit_help_text(void)` |
-| `vedit_hist_push` | function | `progs/vedit/vedit.c:1217` | `static void vedit_hist_push(const char *fname)` |
-| `vedit_hist_show` | function | `progs/vedit/vedit.c:2894` | `static void vedit_hist_show(void)` |
-| `vedit_hoff` | macro | `progs/vedit/vedit.c:295` | `#define vedit_hoff` |
-| `vedit_ink` | function | `progs/vedit/vedit.c:192` | `static struct nk_color vedit_ink(int col)` |
-| `vedit_insert_char` | function | `progs/vedit/vedit.c:794` | `static void vedit_insert_char(int c)` |
-| `vedit_insert_file` | function | `progs/vedit/vedit.c:2172` | `static int vedit_insert_file(const char *fname)` |
-| `vedit_is_alpha` | function | `progs/vedit/vedit.c:364` | `static int vedit_is_alpha(int c)` |
-| `vedit_is_digit` | function | `progs/vedit/vedit.c:368` | `static int vedit_is_digit(int c)` |
-| `vedit_is_kw` | function | `progs/vedit/vedit.c:376` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
-| `vedit_is_wordc` | function | `progs/vedit/vedit.c:372` | `static int vedit_is_wordc(int c)` |
-| `vedit_isearch_step` | function | `progs/vedit/vedit.c:1710` | `static void vedit_isearch_step(void)` |
-| `vedit_join` | function | `progs/vedit/vedit.c:2268` | `static int vedit_join(const char *dir, const char *base, const char *ext,
+| `vedit_fill_paragraph` | function | `progs/vedit/vedit.c:1813` | `static int vedit_fill_paragraph(void)` |
+| `vedit_filter_buffer` | function | `progs/vedit/vedit.c:3505` | `static void vedit_filter_buffer(const char *prog)` |
+| `vedit_find` | function | `progs/vedit/vedit.c:1897` | `static void vedit_find(const char *needle)` |
+| `vedit_first_open` | function | `progs/vedit/vedit.c:2777` | `static int vedit_first_open(void)` |
+| `vedit_fname` | macro | `progs/vedit/vedit.c:302` | `#define vedit_fname` |
+| `vedit_follow` | function | `progs/vedit/vedit.c:784` | `static void vedit_follow(void)` |
+| `vedit_getc_raw` | function | `progs/vedit/vedit.c:38` | `static long vedit_getc_raw(long blocking)` |
+| `vedit_goto_fence` | function | `progs/vedit/vedit.c:1512` | `static int vedit_goto_fence(void)` |
+| `vedit_grep` | function | `progs/vedit/vedit.c:3565` | `static void vedit_grep(const char *pat)` |
+| `vedit_gui_run` | function | `progs/vedit/vedit.c:4656` | `static void vedit_gui_run(void)` |
+| `vedit_has_ext` | function | `progs/vedit/vedit.c:2256` | `static int vedit_has_ext(const char *fname, const char *ext)` |
+| `vedit_help_text` | function | `progs/vedit/vedit.c:2976` | `static void vedit_help_text(void)` |
+| `vedit_hist_push` | function | `progs/vedit/vedit.c:1220` | `static void vedit_hist_push(const char *fname)` |
+| `vedit_hist_show` | function | `progs/vedit/vedit.c:2968` | `static void vedit_hist_show(void)` |
+| `vedit_hoff` | macro | `progs/vedit/vedit.c:298` | `#define vedit_hoff` |
+| `vedit_ink` | function | `progs/vedit/vedit.c:195` | `static struct nk_color vedit_ink(int col)` |
+| `vedit_insert_buf` | function | `progs/vedit/vedit.c:2182` | `static char *vedit_insert_buf(long size)` |
+| `vedit_insert_char` | function | `progs/vedit/vedit.c:797` | `static void vedit_insert_char(int c)` |
+| `vedit_insert_file` | function | `progs/vedit/vedit.c:2195` | `static int vedit_insert_file(const char *fname)` |
+| `vedit_is_alpha` | function | `progs/vedit/vedit.c:367` | `static int vedit_is_alpha(int c)` |
+| `vedit_is_digit` | function | `progs/vedit/vedit.c:371` | `static int vedit_is_digit(int c)` |
+| `vedit_is_kw` | function | `progs/vedit/vedit.c:379` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
+| `vedit_is_wordc` | function | `progs/vedit/vedit.c:375` | `static int vedit_is_wordc(int c)` |
+| `vedit_isearch_step` | function | `progs/vedit/vedit.c:1713` | `static void vedit_isearch_step(void)` |
+| `vedit_join` | function | `progs/vedit/vedit.c:2289` | `static int vedit_join(const char *dir, const char *base, const char *ext,
                       c...` |
-| `vedit_kbd_raw` | function | `progs/vedit/vedit.c:77` | `static long vedit_kbd_raw(int on)` |
-| `vedit_key` | function | `progs/vedit/vedit.c:4332` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
-| `vedit_kill_line` | function | `progs/vedit/vedit.c:1341` | `static int vedit_kill_line(void)` |
-| `vedit_kill_region` | function | `progs/vedit/vedit.c:1295` | `static int vedit_kill_region(void)` |
-| `vedit_lang` | macro | `progs/vedit/vedit.c:298` | `#define vedit_lang` |
-| `vedit_lang_name` | function | `progs/vedit/vedit.c:475` | `static const char *vedit_lang_name(int lang)` |
-| `vedit_lang_of` | function | `progs/vedit/vedit.c:454` | `static int vedit_lang_of(const char *fname)` |
-| `vedit_link_fmt` | function | `progs/vedit/vedit.c:2285` | `static int vedit_link_fmt(const char *s)` |
-| `vedit_list_buffers` | function | `progs/vedit/vedit.c:2875` | `static void vedit_list_buffers(void)` |
-| `vedit_load` | function | `progs/vedit/vedit.c:2047` | `static int vedit_load(void)` |
-| `vedit_magic_atom` | function | `progs/vedit/vedit.c:1062` | `static int vedit_magic_atom(const char *pat, int c, int *atom_len)` |
-| `vedit_magic_class` | function | `progs/vedit/vedit.c:1040` | `static int vedit_magic_class(int c, const char *cls)` |
-| `vedit_magic_here` | function | `progs/vedit/vedit.c:1085` | `static int vedit_magic_here(const char *text, const char *pat, int *mlen)` |
-| `vedit_magic_match` | function | `progs/vedit/vedit.c:1146` | `static int vedit_magic_match(const char *text, const char *pat, int *mlen)` |
-| `vedit_match_at` | function | `progs/vedit/vedit.c:1618` | `static int vedit_match_at(int row, int col, const char *needle, int magic,
+| `vedit_kbd_raw` | function | `progs/vedit/vedit.c:80` | `static long vedit_kbd_raw(int on)` |
+| `vedit_key` | function | `progs/vedit/vedit.c:4406` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
+| `vedit_kill_line` | function | `progs/vedit/vedit.c:1344` | `static int vedit_kill_line(void)` |
+| `vedit_kill_region` | function | `progs/vedit/vedit.c:1298` | `static int vedit_kill_region(void)` |
+| `vedit_lang` | macro | `progs/vedit/vedit.c:301` | `#define vedit_lang` |
+| `vedit_lang_name` | function | `progs/vedit/vedit.c:478` | `static const char *vedit_lang_name(int lang)` |
+| `vedit_lang_of` | function | `progs/vedit/vedit.c:457` | `static int vedit_lang_of(const char *fname)` |
+| `vedit_link_fmt` | function | `progs/vedit/vedit.c:2306` | `static int vedit_link_fmt(const char *s)` |
+| `vedit_list_buffers` | function | `progs/vedit/vedit.c:2949` | `static void vedit_list_buffers(void)` |
+| `vedit_load` | function | `progs/vedit/vedit.c:2050` | `static int vedit_load(void)` |
+| `vedit_magic_atom` | function | `progs/vedit/vedit.c:1065` | `static int vedit_magic_atom(const char *pat, int c, int *atom_len)` |
+| `vedit_magic_class` | function | `progs/vedit/vedit.c:1043` | `static int vedit_magic_class(int c, const char *cls)` |
+| `vedit_magic_here` | function | `progs/vedit/vedit.c:1088` | `static int vedit_magic_here(const char *text, const char *pat, int *mlen)` |
+| `vedit_magic_match` | function | `progs/vedit/vedit.c:1149` | `static int vedit_magic_match(const char *text, const char *pat, int *mlen)` |
+| `vedit_match_at` | function | `progs/vedit/vedit.c:1621` | `static int vedit_match_at(int row, int col, const char *needle, int magic,
                       ...` |
-| `vedit_msg` | macro | `progs/vedit/vedit.c:300` | `#define vedit_msg` |
-| `vedit_next_buffer` | function | `progs/vedit/vedit.c:1203` | `static int vedit_next_buffer(void)` |
-| `vedit_next_error` | function | `progs/vedit/vedit.c:3554` | `static void vedit_next_error(void)` |
-| `vedit_next_pane` | function | `progs/vedit/vedit.c:2751` | `static void vedit_next_pane(void)` |
-| `vedit_open_in_buffer` | function | `progs/vedit/vedit.c:2118` | `static int vedit_open_in_buffer(const char *fname, int ro)` |
-| `vedit_pane_load` | function | `progs/vedit/vedit.c:2711` | `static void vedit_pane_load(int p)` |
-| `vedit_pane_save` | function | `progs/vedit/vedit.c:2695` | `static void vedit_pane_save(int p)` |
-| `vedit_parse_key` | function | `progs/vedit/vedit.c:2799` | `static int vedit_parse_key(const char *s)` |
-| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:437` | `static int vedit_parse_keyword(const char *t, int len, int i,
+| `vedit_msg` | macro | `progs/vedit/vedit.c:303` | `#define vedit_msg` |
+| `vedit_next_buffer` | function | `progs/vedit/vedit.c:1206` | `static int vedit_next_buffer(void)` |
+| `vedit_next_error` | function | `progs/vedit/vedit.c:3628` | `static void vedit_next_error(void)` |
+| `vedit_next_pane` | function | `progs/vedit/vedit.c:2825` | `static void vedit_next_pane(void)` |
+| `vedit_open_in_buffer` | function | `progs/vedit/vedit.c:2121` | `static int vedit_open_in_buffer(const char *fname, int ro)` |
+| `vedit_pane_load` | function | `progs/vedit/vedit.c:2785` | `static void vedit_pane_load(int p)` |
+| `vedit_pane_save` | function | `progs/vedit/vedit.c:2769` | `static void vedit_pane_save(int p)` |
+| `vedit_parse_key` | function | `progs/vedit/vedit.c:2873` | `static int vedit_parse_key(const char *s)` |
+| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:440` | `static int vedit_parse_keyword(const char *t, int len, int i,
                                cons...` |
-| `vedit_parse_number` | function | `progs/vedit/vedit.c:422` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
-| `vedit_pool` | macro | `progs/vedit/vedit.c:289` | `#define vedit_pool` |
-| `vedit_print_log` | function | `progs/vedit/vedit.c:2298` | `static void vedit_print_log(const char *path)` |
-| `vedit_prompt_find` | function | `progs/vedit/vedit.c:3705` | `static void vedit_prompt_find(void)` |
-| `vedit_prompt_isearch` | function | `progs/vedit/vedit.c:3709` | `static void vedit_prompt_isearch(int dir)` |
-| `vedit_prompt_key` | function | `progs/vedit/vedit.c:4158` | `static void vedit_prompt_key(int key)` |
-| `vedit_prompt_open` | function | `progs/vedit/vedit.c:3694` | `static void vedit_prompt_open(const char *label, int mode)` |
-| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:3770` | `static void vedit_prompt_saveas(void)` |
-| `vedit_qrep_answer` | function | `progs/vedit/vedit.c:3731` | `static void vedit_qrep_answer(int key)` |
-| `vedit_qrep_next` | function | `progs/vedit/vedit.c:3719` | `static void vedit_qrep_next(int r, int c)` |
-| `vedit_read_key_poll` | function | `progs/vedit/vedit.c:3602` | `static int vedit_read_key_poll(void)` |
-| `vedit_region` | function | `progs/vedit/vedit.c:1244` | `static int vedit_region(int *y0, int *x0, int *y1, int *x1)` |
-| `vedit_region_to_clip` | function | `progs/vedit/vedit.c:3293` | `static int vedit_region_to_clip(void)` |
-| `vedit_replace_all` | function | `progs/vedit/vedit.c:1757` | `static int vedit_replace_all(const char *old_s, const char *new_s,
+| `vedit_parse_number` | function | `progs/vedit/vedit.c:425` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
+| `vedit_pool` | macro | `progs/vedit/vedit.c:292` | `#define vedit_pool` |
+| `vedit_print_log` | function | `progs/vedit/vedit.c:2319` | `static void vedit_print_log(const char *path)` |
+| `vedit_prompt_find` | function | `progs/vedit/vedit.c:3779` | `static void vedit_prompt_find(void)` |
+| `vedit_prompt_isearch` | function | `progs/vedit/vedit.c:3783` | `static void vedit_prompt_isearch(int dir)` |
+| `vedit_prompt_key` | function | `progs/vedit/vedit.c:4232` | `static void vedit_prompt_key(int key)` |
+| `vedit_prompt_open` | function | `progs/vedit/vedit.c:3768` | `static void vedit_prompt_open(const char *label, int mode)` |
+| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:3844` | `static void vedit_prompt_saveas(void)` |
+| `vedit_qrep_answer` | function | `progs/vedit/vedit.c:3805` | `static void vedit_qrep_answer(int key)` |
+| `vedit_qrep_next` | function | `progs/vedit/vedit.c:3793` | `static void vedit_qrep_next(int r, int c)` |
+| `vedit_read_key_poll` | function | `progs/vedit/vedit.c:3676` | `static int vedit_read_key_poll(void)` |
+| `vedit_region` | function | `progs/vedit/vedit.c:1247` | `static int vedit_region(int *y0, int *x0, int *y1, int *x1)` |
+| `vedit_region_to_clip` | function | `progs/vedit/vedit.c:3367` | `static int vedit_region_to_clip(void)` |
+| `vedit_replace_all` | function | `progs/vedit/vedit.c:1760` | `static int vedit_replace_all(const char *old_s, const char *new_s,
                              i...` |
-| `vedit_replace_at` | function | `progs/vedit/vedit.c:1737` | `static int vedit_replace_at(int row, int col, const char *old_s,
+| `vedit_replace_at` | function | `progs/vedit/vedit.c:1740` | `static int vedit_replace_at(int row, int col, const char *old_s,
                             cons...` |
-| `vedit_row_ptr` | function | `progs/vedit/vedit.c:765` | `static char *vedit_row_ptr(int idx)` |
-| `vedit_run_kind` | function | `progs/vedit/vedit.c:2357` | `static int vedit_run_kind(const char *fname)` |
-| `vedit_run_rc` | function | `progs/vedit/vedit.c:3124` | `static void vedit_run_rc(const char *path)` |
-| `vedit_save` | function | `progs/vedit/vedit.c:1984` | `static int vedit_save(void)` |
-| `vedit_scan_line` | function | `progs/vedit/vedit.c:485` | `static int vedit_scan_line(const char *t, int len, int st)` |
-| `vedit_search_fwd` | function | `progs/vedit/vedit.c:1655` | `static int vedit_search_fwd(int row, int col, const char *needle, int magic,
+| `vedit_row_ptr` | function | `progs/vedit/vedit.c:768` | `static char *vedit_row_ptr(int idx)` |
+| `vedit_run_kind` | function | `progs/vedit/vedit.c:2378` | `static int vedit_run_kind(const char *fname)` |
+| `vedit_run_rc` | function | `progs/vedit/vedit.c:3198` | `static void vedit_run_rc(const char *path)` |
+| `vedit_save` | function | `progs/vedit/vedit.c:1987` | `static int vedit_save(void)` |
+| `vedit_scan_line` | function | `progs/vedit/vedit.c:488` | `static int vedit_scan_line(const char *t, int len, int st)` |
+| `vedit_search_fwd` | function | `progs/vedit/vedit.c:1658` | `static int vedit_search_fwd(int row, int col, const char *needle, int magic,
                     ...` |
-| `vedit_search_rev` | function | `progs/vedit/vedit.c:1687` | `static int vedit_search_rev(int row, int col, const char *needle, int magic)` |
-| `vedit_sel_clear` | function | `progs/vedit/vedit.c:3202` | `static void vedit_sel_clear(void)` |
-| `vedit_sel_copy` | function | `progs/vedit/vedit.c:3220` | `static int vedit_sel_copy(void)` |
-| `vedit_sel_norm` | function | `progs/vedit/vedit.c:3207` | `static void vedit_sel_norm(void)` |
-| `vedit_selftest` | function | `progs/vedit/vedit.c:4673` | `static int vedit_selftest(void)` |
-| `vedit_selftest_build` | function | `progs/vedit/vedit.c:2495` | `static int vedit_selftest_build(void)` |
-| `vedit_set_mark` | function | `progs/vedit/vedit.c:1236` | `static void vedit_set_mark(void)` |
-| `vedit_set_msg` | function | `progs/vedit/vedit.c:357` | `static void vedit_set_msg(const char *s)` |
-| `vedit_set_title` | function | `progs/vedit/vedit.c:44` | `static long vedit_set_title(const char *t)` |
-| `vedit_sh_split` | function | `progs/vedit/vedit.c:3338` | `static int vedit_sh_split(const char *line, char *buf, const char **argv)` |
-| `vedit_shell_command` | function | `progs/vedit/vedit.c:3358` | `static void vedit_shell_command(const char *line)` |
-| `vedit_spawn` | function | `progs/vedit/vedit.c:53` | `static long vedit_spawn(const char *path, const char *redir, int argc,
+| `vedit_search_rev` | function | `progs/vedit/vedit.c:1690` | `static int vedit_search_rev(int row, int col, const char *needle, int magic)` |
+| `vedit_sel_clear` | function | `progs/vedit/vedit.c:3276` | `static void vedit_sel_clear(void)` |
+| `vedit_sel_copy` | function | `progs/vedit/vedit.c:3294` | `static int vedit_sel_copy(void)` |
+| `vedit_sel_norm` | function | `progs/vedit/vedit.c:3281` | `static void vedit_sel_norm(void)` |
+| `vedit_selftest` | function | `progs/vedit/vedit.c:4747` | `static int vedit_selftest(void)` |
+| `vedit_selftest_build` | function | `progs/vedit/vedit.c:2516` | `static int vedit_selftest_build(void)` |
+| `vedit_selftest_leak` | function | `progs/vedit/vedit.c:2709` | `static int vedit_selftest_leak(void)` |
+| `vedit_set_mark` | function | `progs/vedit/vedit.c:1239` | `static void vedit_set_mark(void)` |
+| `vedit_set_msg` | function | `progs/vedit/vedit.c:360` | `static void vedit_set_msg(const char *s)` |
+| `vedit_set_title` | function | `progs/vedit/vedit.c:47` | `static long vedit_set_title(const char *t)` |
+| `vedit_sh_split` | function | `progs/vedit/vedit.c:3412` | `static int vedit_sh_split(const char *line, char *buf, const char **argv)` |
+| `vedit_shell_command` | function | `progs/vedit/vedit.c:3432` | `static void vedit_shell_command(const char *line)` |
+| `vedit_spawn` | function | `progs/vedit/vedit.c:56` | `static long vedit_spawn(const char *path, const char *redir, int argc,
                         co...` |
-| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:2315` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:2336` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
                   ...` |
-| `vedit_split` | function | `progs/vedit/vedit.c:912` | `static void vedit_split(void)` |
-| `vedit_split_set` | function | `progs/vedit/vedit.c:2732` | `static void vedit_split_set(int on)` |
-| `vedit_state_at` | function | `progs/vedit/vedit.c:756` | `static int vedit_state_at(int row)` |
-| `vedit_str_case` | function | `progs/vedit/vedit.c:1001` | `static void vedit_str_case(char *s, int mode)` |
-| `vedit_str_transpose` | function | `progs/vedit/vedit.c:1028` | `static void vedit_str_transpose(char *s, int len, int pos)` |
-| `vedit_sync_title` | function | `progs/vedit/vedit.c:4572` | `static void vedit_sync_title(void)` |
-| `vedit_tab` | function | `progs/vedit/vedit.c:965` | `static void vedit_tab(void)` |
-| `vedit_time_ms` | function | `progs/vedit/vedit.c:86` | `static unsigned long vedit_time_ms(void)` |
-| `vedit_top` | macro | `progs/vedit/vedit.c:294` | `#define vedit_top` |
-| `vedit_transpose` | function | `progs/vedit/vedit.c:1486` | `static int vedit_transpose(void)` |
-| `vedit_trunc` | macro | `progs/vedit/vedit.c:297` | `#define vedit_trunc` |
-| `vedit_used` | macro | `progs/vedit/vedit.c:290` | `#define vedit_used` |
-| `vedit_vga` | function | `progs/vedit/vedit.c:65` | `static long vedit_vga(int on)` |
-| `vedit_word_move` | function | `progs/vedit/vedit.c:1412` | `static int vedit_word_move(int dir)` |
-| `vedit_write_region` | function | `progs/vedit/vedit.c:3387` | `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,
+| `vedit_split` | function | `progs/vedit/vedit.c:915` | `static void vedit_split(void)` |
+| `vedit_split_set` | function | `progs/vedit/vedit.c:2806` | `static void vedit_split_set(int on)` |
+| `vedit_state_at` | function | `progs/vedit/vedit.c:759` | `static int vedit_state_at(int row)` |
+| `vedit_str_case` | function | `progs/vedit/vedit.c:1004` | `static void vedit_str_case(char *s, int mode)` |
+| `vedit_str_transpose` | function | `progs/vedit/vedit.c:1031` | `static void vedit_str_transpose(char *s, int len, int pos)` |
+| `vedit_sync_title` | function | `progs/vedit/vedit.c:4646` | `static void vedit_sync_title(void)` |
+| `vedit_tab` | function | `progs/vedit/vedit.c:968` | `static void vedit_tab(void)` |
+| `vedit_time_ms` | function | `progs/vedit/vedit.c:89` | `static unsigned long vedit_time_ms(void)` |
+| `vedit_top` | macro | `progs/vedit/vedit.c:297` | `#define vedit_top` |
+| `vedit_transpose` | function | `progs/vedit/vedit.c:1489` | `static int vedit_transpose(void)` |
+| `vedit_trunc` | macro | `progs/vedit/vedit.c:300` | `#define vedit_trunc` |
+| `vedit_used` | macro | `progs/vedit/vedit.c:293` | `#define vedit_used` |
+| `vedit_vga` | function | `progs/vedit/vedit.c:68` | `static long vedit_vga(int on)` |
+| `vedit_word_move` | function | `progs/vedit/vedit.c:1415` | `static int vedit_word_move(int dir)` |
+| `vedit_write_region` | function | `progs/vedit/vedit.c:3461` | `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,
                    ...` |
-| `vedit_yank` | function | `progs/vedit/vedit.c:1379` | `static int vedit_yank(void)` |
+| `vedit_yank` | function | `progs/vedit/vedit.c:1382` | `static int vedit_yank(void)` |
 | `WL_CLIENT_H` | macro | `progs/wl/wl_client.h:14` | `#define WL_CLIENT_H` |
 | `WL_CLIENT_MSGS` | macro | `progs/wl/wl_client.h:18` | `#define WL_CLIENT_MSGS` |
 | `wl_client_attach` | function | `progs/wl/wl_client.h:75` | `static inline int wl_client_attach(const char *box, unsigned int seq0,
@@ -10879,6 +10931,8 @@ Z_Malloc
 | `roundtrip` | function | `tests/host_codecs.sh:31` | `` |
 | `expect` | function | `tests/test_abi.c:16` | `static void expect(const char *name, const char *manifest, int want)` |
 | `main` | function | `tests/test_abi.c:25` | `int main(void)` |
+| `CHECK` | macro | `tests/test_arena.c:14` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_arena.c:23` | `int main(void)` |
 | `CHECK` | macro | `tests/test_batch.c:17` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_batch.c:31` | `int main(void)` |
 | `stub_dispatch` | function | `tests/test_batch.c:24` | `static long stub_dispatch(uint32_t opcode)` |
@@ -11031,6 +11085,10 @@ Z_Malloc
 | `main` | function | `tests/test_httpd.c:25` | `int main(void)` |
 | `CHECK` | macro | `tests/test_ktime.c:14` | `#define CHECK(c, m)` |
 | `main` | function | `tests/test_ktime.c:16` | `int main(void)` |
+| `CHECK` | macro | `tests/test_leakcheck.c:20` | `#define CHECK(cond, msg)` |
+| `MINIOS_LEAKCHECK_IMPL` | macro | `tests/test_leakcheck.c:10` | `#define MINIOS_LEAKCHECK_IMPL` |
+| `MINIOS_LK_ENABLE` | macro | `tests/test_leakcheck.c:11` | `#define MINIOS_LK_ENABLE` |
+| `main` | function | `tests/test_leakcheck.c:27` | `int main(void)` |
 | `CHECK` | macro | `tests/test_minios_png.c:16` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_minios_png.c:191` | `int main(void)` |
 | `t_332` | function | `tests/test_minios_png.c:24` | `static void t_332(void)` |

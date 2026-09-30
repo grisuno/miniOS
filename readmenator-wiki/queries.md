@@ -8,7 +8,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: What does string.c depend on, and what depends on it? (69 connections)
+### Q: What does string.c depend on, and what depends on it? (72 connections)
 
 - Status: unanswered
 
@@ -16,7 +16,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: How are the 135 files in 'headers' related to each other?
+### Q: How are the 101 files in 'headers' related to each other?
 
 - Status: unanswered
 

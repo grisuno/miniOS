@@ -33,6 +33,7 @@
 | `headers/arch/x86/boot/bootdefs.h` | bootdefs.h - centralized configuration for the MiniOS two-stage boot path. | misc | 143 |
 | `headers/arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | x86 | 59 |
 | `headers/arch/x86/msr.h` | Model-Specific Register access for x86-64. | x86 | 9 |
+| `headers/arena.h` | Docstring: bump arena for MiniOS, kernel and ring-3 alike. | headers | 15 |
 | `headers/audio.h` | Unified audio API for MiniOS. | headers | 18 |
 | `headers/batch.h` | Docstring: batch.h -- Batched synchronous syscall submission. | headers | 12 |
 | `headers/block.h` | Block device abstraction for MiniFS. Maps 4096-byte logical blocks to 512-byte I | headers | 12 |
@@ -51,10 +52,11 @@
 | `headers/futex.h` | Docstring: futex.h -- Fast userspace mutex sleep/wake contract. | headers | 17 |
 | `headers/httpd.h` | Docstring: httpd.h -- Minimal static HTTP/1.0 server contract. | headers | 10 |
 | `headers/ide.h` | IDE/ATA PIO driver for MiniOS. | headers | 35 |
-| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 343 |
+| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 346 |
 | `headers/kernel/console_in.h` | Docstring: console_in.h -- boundary of the console input device | kernel | 11 |
 | `headers/kernel/vga_cursor.h` | Docstring: vga_cursor.h -- boundary of the pointer sprite layer | kernel | 9 |
 | `headers/ktime.h` | ktime.h -- pure time-conversion helpers shared by the kernel clock | headers | 3 |
+| `headers/leakcheck.h` | Docstring: allocation tracker for MiniOS, STB leakcheck lineage. | headers | 24 |
 | `headers/lz4_kernel.h` | - | headers | 4 |
 | `headers/minifetch.h` | Docstring: minifetch.h -- neofetch-style system screen contract. | headers | 2 |
 | `headers/minifs.h` | MiniFS: a minimal Unix-like filesystem for MiniOS. | headers | 78 |
@@ -102,7 +104,7 @@
 | `kernel/abi.c` | Docstring: kernel/abi.c -- Boot-time ABI manifest gate. | - | 3 |
 | `kernel/batch.c` | Docstring: kernel/batch.c -- Ordered batch executor. | - | 1 |
 | `kernel/clip.c` | Docstring: kernel/clip.c -- Shared text clipboard. | - | 4 |
-| `kernel/console.c` | console.c -- Execution-context output: text console, capture, libc names. | - | 24 |
+| `kernel/console.c` | console.c -- Execution-context output: text console, capture, libc names. | - | 27 |
 | `kernel/console_in.c` | Docstring: Console input device (kernel/console_in.c). | - | 29 |
 | `kernel/cvm_host.c` | - | - | 45 |
 | `kernel/editor.c` | ================================================================ | - | 22 |
@@ -345,7 +347,7 @@
 | `progs/doomgeneric/wi_stuff.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 5 |
 | `progs/doomgeneric/z_zone.c` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 18 |
 | `progs/doomgeneric/z_zone.h` | Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  Th | doomgeneric | 13 |
-| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | file | 63 |
+| `progs/file/file.c` | Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf). | file | 65 |
 | `progs/file/file_assoc.h` | Docstring: dynamic association table for the MiniOS file browser. | file | 17 |
 | `progs/freedomui/freedomui_minios.c` | freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern. | misc | 42 |
 | `progs/lisp/lisp.c` | - | lisp | 105 |
@@ -417,7 +419,7 @@
 | `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 5 |
 | `progs/tls_u/tls_u_port.c` | tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3). | tls_u | 15 |
 | `progs/topogpt3/topogpt3.c` | - | misc | 128 |
-| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 239 |
+| `progs/vedit/vedit.c` | vedit IDE build and run contract. | misc | 243 |
 | `progs/wl/wl_client.h` | wl_client.h - Thin mailbox client for Wayland-mini (ADR-0026). | wl | 5 |
 | `progs/wl/wl_mbox.h` | wl_mbox.h - Mailbox file transport for Wayland-mini (ADR-0026). | wl | 26 |
 | `progs/wl/wl_mini.h` | wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024). | wl | 111 |
@@ -428,6 +430,7 @@
 | `tests/host_aes.sh` | host_aes.sh - host-side verification for the AES-256-CTR command tools.  The min | tests | 3 |
 | `tests/host_codecs.sh` | host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The | tests | 5 |
 | `tests/test_abi.c` | Docstring: tests/test_abi.c -- Host test for the ABI manifest gate. | tests | 2 |
+| `tests/test_arena.c` | Docstring: host test for the bump arena (make test-arena). | tests | 2 |
 | `tests/test_batch.c` | Docstring: Host test for kernel/batch.c (make test-batch). | tests | 3 |
 | `tests/test_doom_pwad.py` | test_doom_pwad.py - host contract suite for tools/doom_pwad.py.  Runs the grid c | tests | 44 |
 | `tests/test_driver.c` | test_driver.c -- Host test for the Strategy-pattern device registry. | tests | 5 |
@@ -442,6 +445,7 @@
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 3 |
 | `tests/test_httpd.c` | Docstring: Host test for headers/httpd.h (make test-httpd). | tests | 2 |
 | `tests/test_ktime.c` | test_ktime.c -- host test for the pure conversion math in ktime.h | tests | 2 |
+| `tests/test_leakcheck.c` | Docstring: host test for the leak tracker (make test-leakcheck). | tests | 4 |
 | `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 10 |
 | `tests/test_modifiers.c` | - | tests | 2 |
 | `tests/test_notify.c` | - | tests | 3 |
