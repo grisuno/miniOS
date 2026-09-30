@@ -3834,7 +3834,7 @@ static char *shell_run_stage(char **sargv, int sargc,
         int not_last, unsigned long *len_out) {
     KFILE *rin = 0, *win = 0, *rout = 0, *wout = 0;
     KFILE *old0 = 0, *old1 = 0;
-    char *taken = 0, *drained = 0, *out = 0;
+    char *drained = 0, *out = 0;
     unsigned long taken_len = 0u, drained_len = 0u, total = 0u, i;
     *len_out = 0u;
     if (input && input_len > 0u) {
@@ -3885,33 +3885,35 @@ static char *shell_run_stage(char **sargv, int sargc,
         kfclose(rout);
         if (drained_len >= PIPE_HOP_MAX && !drained) {
             console_stdin_clear();
-            redirect_take(0);
+            redirect_discard();
             vga_puts("pipe: stage output too large\n");
             return 0;
         }
     }
     console_stdin_clear();
-    taken = redirect_take(&taken_len);
+    taken_len = redirect_pending();
     total = drained_len + taken_len;
-    if (total == 0u) return 0;
-    if (total > PIPE_HOP_MAX) {
-        if (taken) kfree(taken);
+    if (total == 0u) {
         if (drained) kfree(drained);
+        return 0;
+    }
+    if (total > PIPE_HOP_MAX) {
+        if (drained) kfree(drained);
+        redirect_discard();
         vga_puts("pipe: stage output too large\n");
         return 0;
     }
     out = kmalloc(total + 1);
     if (!out) {
-        if (taken) kfree(taken);
         if (drained) kfree(drained);
+        redirect_discard();
         vga_puts("pipe: out of memory\n");
         return 0;
     }
     for (i = 0u; i < drained_len; i++) out[i] = drained[i];
-    for (i = 0u; i < taken_len; i++) out[drained_len + i] = taken[i];
-    out[total] = 0;
-    if (taken) kfree(taken);
     if (drained) kfree(drained);
+    redirect_take_into(out + drained_len, taken_len, &taken_len);
+    out[total] = 0;
     *len_out = total;
     return out;
 }

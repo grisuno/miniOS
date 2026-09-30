@@ -96,6 +96,11 @@ static void vga_raw_space(void) {
 #define REDIR_INITIAL_CAP (16UL * 1024)
 #define REDIR_MAX_BYTES   (16UL * 1024 * 1024)
 
+/** Docstring: persistent bump arena for console captures. The block only
+ * grows (16 KB seed, doubling to a 16 MB cap) and every begin/commit/
+ * take/discard rewinds the length to zero without freeing, so repeated
+ * Ctrl+R / Ctrl+L toolchain runs reuse one buffer instead of churning
+ * the dlmalloc heap once per build. */
 static char         *redir_buf;
 static unsigned long  redir_len;
 static unsigned long  redir_cap;
@@ -160,8 +165,7 @@ int redirect_commit(const char *path, int append_mode) {    KFILE *f;
  * copy (caller frees) with its length, and resets the ring. The shell
  * pipeline runner owns this: stage N's output becomes stage N+1's
  * stdin. Fail-closed: NULL with len 0 on empty capture or OOM. */
-char *redirect_take(unsigned long *len_out) {
-    char *out = 0;
+char *redirect_take(unsigned long *len_out) {    char *out = 0;
     unsigned long i;
     redir_active = 0;
     if (len_out) *len_out = 0;
@@ -173,6 +177,45 @@ char *redirect_take(unsigned long *len_out) {
     if (len_out) *len_out = redir_len;
     redir_len = 0;
     return out;
+}
+
+/** Docstring: Bytes waiting in the capture, 0 when idle or overflowed.
+ * Lets a caller size one arena block for the whole capture instead of
+ * taking a throwaway heap copy first. */
+unsigned long redirect_pending(void) {
+    if (redir_overflow || redir_len == 0) return 0;
+    return redir_len;
+}
+
+/** Docstring: Drain the capture into the caller's arena memory instead
+ * of a fresh heap block. Copies at most cap bytes, deactivates the
+ * capture and resets the ring exactly like redirect_take, but the
+ * caller owns dst so a pipeline stage assembles its output with one
+ * kmalloc instead of three. Reports the copied count in len_out;
+ * 0 with len 0 on empty capture or overflow. */
+unsigned long redirect_take_into(char *dst, unsigned long cap,
+        unsigned long *len_out) {
+    unsigned long n;
+    unsigned long i;
+    redir_active = 0;
+    if (len_out) *len_out = 0;
+    if (redir_overflow || redir_len == 0) { redir_len = 0; return 0; }
+    n = redir_len < cap ? redir_len : cap;
+    if (dst) {
+        for (i = 0; i < n; i++) dst[i] = redir_buf[i];
+    }
+    if (len_out) *len_out = n;
+    redir_len = 0;
+    return n;
+}
+
+/** Docstring: Drop the capture without any allocation. The ring keeps
+ * its backing block for the next Ctrl+R / Ctrl+L build, so repeated
+ * toolchain runs reuse one persistent bump buffer instead of churning
+ * the heap. */
+void redirect_discard(void) {
+    redir_active = 0;
+    redir_len = 0;
 }
 
 spinlock_t console_lock = SPINLOCK_INIT;

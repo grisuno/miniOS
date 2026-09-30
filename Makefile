@@ -992,10 +992,10 @@ $(BIN_DIR)/piano: $(BIN_DIR)/piano.elf
 VEDIT_SRCS = $(PROGS_DIR)/vedit/vedit.c \
              $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h
+$(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h headers/leakcheck.h headers/arena.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
-	      -I$(PROGS_DIR) \
+	      -I$(PROGS_DIR) -Iheaders \
 	      -o $@ $(VEDIT_SRCS) -lm
 	chmod +x $@
 
@@ -1011,10 +1011,10 @@ $(BIN_DIR)/vedit: $(BIN_DIR)/vedit.elf
 FILE_SRCS = $(PROGS_DIR)/file/file.c \
             $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/file.elf: $(FILE_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/file/file_assoc.h
+$(BIN_DIR)/file.elf: $(FILE_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/file/file_assoc.h headers/leakcheck.h headers/arena.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
-	      -I$(PROGS_DIR) -Ithird_party/stb \
+	      -I$(PROGS_DIR) -Ithird_party/stb -Iheaders \
 	      -o $@ $(FILE_SRCS) -lm
 	chmod +x $@
 
@@ -1507,6 +1507,20 @@ file_assoc_test: tests/test_file_assoc.c progs/file/file_assoc.h | $(TOOLS_DIR)
 test-file: file_assoc_test
 	$(TOOLS_DIR)/file_assoc_test
 
+# Bump arena host test (tests/test_arena.c, spec pin).
+arena_test: tests/test_arena.c headers/arena.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/arena_test tests/test_arena.c
+
+test-arena: arena_test
+	$(TOOLS_DIR)/arena_test
+
+# Leak tracker host test (tests/test_leakcheck.c, spec pin).
+leakcheck_test: tests/test_leakcheck.c headers/leakcheck.h progs/file/file_assoc.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/leakcheck_test tests/test_leakcheck.c
+
+test-leakcheck: leakcheck_test
+	$(TOOLS_DIR)/leakcheck_test
+
 # Paint canvas/PNG-contract host test (tests/test_paint.c, spec pin).
 paint_test: tests/test_paint.c | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/paint_test tests/test_paint.c
@@ -1782,7 +1796,7 @@ syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h bl
 # test_all.sh plus the syscall-heavy BDD scenarios after any change here.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
-spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h
+spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h arena.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h

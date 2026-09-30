@@ -502,6 +502,10 @@ void redirect_resume(int was);
 int  redirect_begin(void);
 int  redirect_commit(const char *path, int append_mode);
 char *redirect_take(unsigned long *len_out);
+unsigned long redirect_pending(void);
+unsigned long redirect_take_into(char *dst, unsigned long cap,
+        unsigned long *len_out);
+void redirect_discard(void);
 int  redirect_active(void);
 int console_stdin_push(const char *data, unsigned long len);
 void console_stdin_clear(void);

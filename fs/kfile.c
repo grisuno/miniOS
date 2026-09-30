@@ -498,10 +498,17 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
             if (!f->wbuf) { fs_drop(flags); return 0; }
         }
         while (f->wsize + bytes > f->wcap) {
+            unsigned oldcap = f->wcap;
+            void *grown;
             if (f->wcap > RD_DATA_MAX / 2) { fs_drop(flags); return 0; }
             f->wcap *= 2;
-            f->wbuf = krealloc(f->wbuf, f->wcap);
-            if (!f->wbuf) { fs_drop(flags); return 0; }
+            grown = krealloc(f->wbuf, f->wcap);
+            if (!grown) {
+                f->wcap = oldcap;
+                fs_drop(flags);
+                return 0;
+            }
+            f->wbuf = grown;
         }
         kmemcpy(f->wbuf + f->wsize, ptr, bytes);
         f->wsize += bytes;

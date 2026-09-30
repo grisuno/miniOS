@@ -25,6 +25,9 @@
 #define STBI_ONLY_PNG
 #define STBI_NO_STDIO
 #include "stb_image.h"
+#define MINIOS_LEAKCHECK_IMPL
+#define MINIOS_LK_ENABLE
+#include "leakcheck.h"
 
 /** Central configuration: every bound, tool, directory, label and limit. */
 #define FILE_MAX_PATH 128
@@ -603,13 +606,20 @@ static void file_ui_build(struct nk_context *ctx) {
     nk_end(ctx);
 }
 
-/** Headless selftest for BDD: assoc vectors plus a live listing. */
+/** Headless selftest for BDD: assoc vectors plus a live listing. The live
+ * set must drain to its entry baseline: every icon decode, preview
+ * decode and assoc push in this body frees what it borrows, so a
+ * regression in the file -> vedit open path fails here first. */
 static int file_selftest(void) {
     char ext[FILE_EXT_MAX + 1];
     const char *prog = "";
     int act;
     char buf[512];
     long rc;
+    unsigned long leak_base;
+    printf("file: leak warmup\n");
+    fflush(stdout);
+    leak_base = lk_live_count();
     fassoc_clear(&file_assocs);
     if (fassoc_push(&file_assocs, "c", "/vedit") != 0) {
         printf("file: selftest assoc push failed\n");
@@ -753,6 +763,14 @@ static int file_selftest(void) {
         }
         printf("file: ok (%ld entries at /, theme %s)\n", rc, theme);
     }
+    fassoc_free(&file_assocs);
+    if (lk_live_count() != leak_base) {
+        printf("file: selftest leaked %lu blocks\n",
+            lk_live_count() - leak_base);
+        lk_dumpmem();
+        return 1;
+    }
+    printf("file: leak ok\n");
     return 0;
 }
 
@@ -812,6 +830,7 @@ static void file_gui_run(void) {
         }
     }
     nk_free(&ctx);
+    fassoc_free(&file_assocs);
     nk_sys_kbd_raw(0);
     nk_sys_vga_mode(0);
 }
@@ -819,10 +838,13 @@ static void file_gui_run(void) {
 int main(int argc, char **argv) {
     if (argc > 1 && strcmp(argv[1], "--selftest") == 0)
         return file_selftest();
+    if (argc > 1 && strcmp(argv[1], "--selftest-leak") == 0)
+        return file_selftest();
     if (argc > 1 && strcmp(argv[1], "--help") == 0) {
         printf("file: Nuklear file browser (ramdisk + MiniFS)\n");
         printf("  (no args)   GUI browser\n");
         printf("  --selftest  assoc vectors plus a live listing\n");
+        printf("  --selftest-leak  same selftest (leak drain asserted)\n");
         return 0;
     }
     file_gui_run();

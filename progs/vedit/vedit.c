@@ -30,6 +30,9 @@
 #include "nuklear.h"
 #include "nuklear_minios.h"
 #include "nuklear_theme.h"
+#define MINIOS_LEAKCHECK_IMPL
+#define MINIOS_LK_ENABLE
+#include "leakcheck.h"
 
 /** Platform syscalls vedit needs beyond the platform layer. */
 static long vedit_getc_raw(long blocking) {
@@ -2168,6 +2171,26 @@ static int vedit_open_in_buffer(const char *fname, int ro) {
     return idx;
 }
 
+/** Insert scratch arena: one reusable block serves every insert-file and
+ * shell-capture load, reset per call and grown only when the file
+ * outgrows it. Repeated Ctrl+R builds and M-! captures stop churning
+ * one malloc/free pair per run; the block frees once at IDE exit. */
+static char *vedit_insert_scratch;
+static size_t vedit_insert_cap;
+
+/** Docstring: borrow size bytes of insert scratch, growing it when short. */
+static char *vedit_insert_buf(long size) {
+    char *grown;
+    if (size <= 0 || (unsigned long)size > VEDIT_FILE_MAX) return 0;
+    if (vedit_insert_scratch && (unsigned long)size <= vedit_insert_cap)
+        return vedit_insert_scratch;
+    grown = realloc(vedit_insert_scratch, (size_t)size);
+    if (!grown) return 0;
+    vedit_insert_scratch = grown;
+    vedit_insert_cap = (size_t)size;
+    return grown;
+}
+
 /** Insert a file at dot, char by char through the fail-closed ops. */
 static int vedit_insert_file(const char *fname) {
     FILE *f;
@@ -2205,7 +2228,7 @@ static int vedit_insert_file(const char *fname) {
         vedit_set_msg("empty file");
         return 0;
     }
-    data = malloc((size_t)size);
+    data = vedit_insert_buf(size);
     if (!data) {
         fclose(f);
         vedit_set_msg("out of memory");
@@ -2221,12 +2244,10 @@ static int vedit_insert_file(const char *fname) {
             vedit_insert_char((unsigned char)data[k]);
         }
         if (vedit_msg[0]) {
-            free(data);
             vedit_set_msg("insert stopped: buffer full");
             return -1;
         }
     }
-    free(data);
     vedit_msg[0] = 0;
     return 0;
 }
@@ -2679,6 +2700,59 @@ static int vedit_selftest_build(void) {
         return 1;
     }
     printf("vedit: build ok (run=^R link=^L dump=^D)\n");
+    return 0;
+}
+
+/** Headless leak contract: the insert scratch arena and one buffer
+ * lifecycle must net zero live blocks. Exercises exactly the reuse
+ * path every Ctrl+R / Ctrl+L build walks, with no display syscalls. */
+static int vedit_selftest_leak(void) {
+    unsigned long base;
+    char *b1;
+    char *b2;
+    printf("vedit: leak warmup\n");
+    fflush(stdout);
+    base = lk_live_count();
+    b1 = vedit_insert_buf(64);
+    if (!b1) {
+        printf("vedit: leak scratch borrow failed\n");
+        return 1;
+    }
+    if (lk_live_count() != base + 1) {
+        printf("vedit: leak scratch must hold one block\n");
+        return 1;
+    }
+    b2 = vedit_insert_buf(40);
+    if (b2 != b1 || lk_live_count() != base + 1) {
+        printf("vedit: leak scratch must reuse its block\n");
+        return 1;
+    }
+    b2 = vedit_insert_buf(4096);
+    if (!b2 || lk_live_count() != base + 1) {
+        printf("vedit: leak scratch growth must keep one block\n");
+        return 1;
+    }
+    if (vedit_buf_alloc(0) != 0) {
+        printf("vedit: leak buffer alloc failed\n");
+        return 1;
+    }
+    if (lk_live_count() != base + 3) {
+        printf("vedit: leak buffer must add two blocks\n");
+        return 1;
+    }
+    free(vedit_pools[0]);
+    free(vedit_useds[0]);
+    vedit_pools[0] = 0;
+    vedit_useds[0] = 0;
+    free(vedit_insert_scratch);
+    vedit_insert_scratch = 0;
+    vedit_insert_cap = 0;
+    if (lk_live_count() != base) {
+        printf("vedit: leak live set did not drain\n");
+        lk_dumpmem();
+        return 1;
+    }
+    printf("vedit: leak ok\n");
     return 0;
 }
 
@@ -4754,6 +4828,8 @@ int main(int argc, char **argv) {
         return vedit_selftest();
     if (argc > 1 && strcmp(argv[1], "--selftest-build") == 0)
         return vedit_selftest_build();
+    if (argc > 1 && strcmp(argv[1], "--selftest-leak") == 0)
+        return vedit_selftest_leak();
     if (argc == 1) {
         fname = VEDIT_DEFAULT_FILE;
     } else if (argc == 2) {
@@ -4803,5 +4879,8 @@ int main(int argc, char **argv) {
         free(vedit_pools[n]);
         free(vedit_useds[n]);
     }
+    free(vedit_insert_scratch);
+    vedit_insert_scratch = 0;
+    vedit_insert_cap = 0;
     return 0;
 }

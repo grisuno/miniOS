@@ -120,6 +120,14 @@ beside it).
   (C-only quote flag)/`vedit_parse_keyword` helpers; per-language quirks
   (C `#`/`/* */`, Python triple-quote, Lua long brackets, Lisp `;`)
   stay in the caller.
+- Allocation discipline: the insert path (`insert-file`, `M-!` capture)
+  borrows a reusable scratch arena that grows to the largest file seen
+  and resets per load, so repeated builds stop churning one
+  malloc/free pair per run; buffers and the scratch free exactly once
+  at exit and `kill-buffer` frees its pair. `vedit --selftest-leak`
+  pins the contract headless (scratch reuse, growth, one buffer
+  lifecycle, drained live set, `vedit: leak ok`), and the whole unit
+  compiles with the `headers/leakcheck.h` tracker enabled.
 - The kernel `edit` stays: scripted flows (the MCP `minios_write`
   editor upload, the marketplace, the BDD suite) drive it
   non-interactively, which a fullscreen program cannot serve.
@@ -190,7 +198,12 @@ count, fail closed on bad pointers, overlong names and truncation.
   mixes icon and text rows.
 - Proof: `file --selftest` runs the assoc vectors plus a live `/`
   listing (`file: ok (N entries at /, theme dark)`, BDD-pinned), and
-  `make test-file` locks the same parser vectors on the host.
+  `make test-file` locks the same parser vectors on the host. The
+  selftest asserts a drained allocation live set (`file: leak ok`) over
+  the icon/preview decode and assoc paths with the
+  `headers/leakcheck.h` tracker enabled, and the browser frees the
+  assoc table on GUI exit; `make test-leakcheck` locks the tracker
+  plus an assoc push/clear/free cycle on the host.
 - Every NK app quits the same way: ESC or Alt+F4 through the platform
   latch (`nk_quit_requested` in `nuklear_minios.c`, polled per frame)
   plus an on-canvas Quit control (file's `quit` button, piano's `Quit`

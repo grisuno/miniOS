@@ -2,6 +2,7 @@
 #include "sched.h"
 #include "vma.h"
 #include "spawn.h"
+#include "arena.h"
 #include "minifs.h"
 #include "vga_fb.h"
 #include "arch/x86/msr.h"
@@ -77,32 +78,59 @@ void spawn_restore(spawn_ctx_t *ctx)
     }
 }
 
-/** Docstring: Release a copy produced by spawn_copy_argv. */
+/** Docstring: Release a copy produced by spawn_copy_argv. The copy is one
+ * arena block holding the pointer vector plus every word, so one kfree
+ * releases the whole scope; argc only sizes the legacy contract. */
 void spawn_free_argv(char **kargv, int argc)
 {
-    int i;
+    (void)argc;
     if (!kargv) return;
-    for (i = 0; i < argc; i++)
-        if (kargv[i]) kfree(kargv[i]);
     kfree(kargv);
 }
 
-/** Docstring: Copy user argv into kernel memory, zero terminated. */
+/** Docstring: Copy user argv into kernel memory, zero terminated. One
+ * kmalloc serves the pointer vector plus every word through a bump
+ * arena, so a Ctrl+R / Ctrl+L spawn costs a single heap block and frees
+ * it with a single kfree instead of argc+1 round trips that fragment
+ * the heap and leak one word per missed free. Fail-closed with 0. */
 char **spawn_copy_argv(int argc, const char **uargv)
 {
     char **kargv;
+    arena_t a;
+    unsigned long total;
+    unsigned long vec;
     int i;
     if (argc <= 0 || !uargv) return 0;
-    kargv = (char **)kmalloc((unsigned)(argc + 1) * sizeof(char *));
+    vec = arena_bytes_for((size_t)argc + 1, sizeof(char *));
+    if (vec == 0) return 0;
+    total = vec;
+    for (i = 0; i < argc; i++) {
+        unsigned long slen;
+        if (!uargv[i]) break;
+        slen = (unsigned long)kstrlen(uargv[i]) + 1;
+        if (slen == 0 || total > (unsigned long)-1 - slen) return 0;
+        total += slen;
+    }
+    kargv = (char **)kmalloc(total);
     if (!kargv) return 0;
+    arena_init(&a, kargv, (size_t)total);
+    if (!arena_alloc(&a, vec, sizeof(char *))) {
+        kfree(kargv);
+        return 0;
+    }
     for (i = 0; i <= argc; i++) kargv[i] = 0;
     for (i = 0; i < argc; i++) {
-        unsigned slen;
+        unsigned long slen;
+        char *dst;
         if (!uargv[i]) break;
-        slen = (unsigned)kstrlen(uargv[i]) + 1;
-        kargv[i] = (char *)kmalloc(slen);
-        if (!kargv[i]) { spawn_free_argv(kargv, i); return 0; }
-        kmemcpy(kargv[i], uargv[i], slen);
+        slen = (unsigned long)kstrlen(uargv[i]) + 1;
+        dst = (char *)arena_alloc(&a, (size_t)slen, 1);
+        if (!dst) {
+            kfree(kargv);
+            return 0;
+        }
+        kmemcpy(dst, uargv[i], slen);
+        kargv[i] = dst;
     }
     kargv[argc] = 0;
     return kargv;

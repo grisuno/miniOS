@@ -32,10 +32,12 @@ void spawn_restore(spawn_ctx_t *ctx);
 /** Docstring: Validate user argv words against the user window. */
 int spawn_validate_argv(int argc, const char **uargv);
 
-/** Docstring: Copy user argv into kernel memory, zero terminated. */
+/** Docstring: Copy user argv into kernel memory, zero terminated. One heap
+ * block serves the vector plus every word through a bump arena; the
+ * caller releases the whole scope with spawn_free_argv. */
 char **spawn_copy_argv(int argc, const char **uargv);
 
-/** Docstring: Release a copy produced by spawn_copy_argv. */
+/** Docstring: Release a copy produced by spawn_copy_argv with one kfree. */
 void spawn_free_argv(char **kargv, int argc);
 
 /** Docstring: Snapshot a resolved path into a kernel buffer. */

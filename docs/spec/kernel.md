@@ -188,6 +188,27 @@ strict SysV E=0 with its own SIMD spills would break the other way;
 that conflict is resolved in the toolchain repos, never by silently
 changing E here.
 
+### Bump arenas and leak tracking (`headers/arena.h`, `headers/leakcheck.h`)
+Per-keypress churn is scoped, never counted: `spawn_copy_argv` serves
+the pointer vector plus every argv word from one kmalloc through a
+bump arena (`spawn_free_argv` is a single kfree), so a Ctrl+R / Ctrl+L
+spawn costs one heap block instead of argc+1 round trips. The redirect
+capture is a persistent bump buffer by the same logic (16 KB seed,
+doubling to 16 MB, length rewound on begin/commit/take/discard, block
+never freed), and `redirect_take_into` / `redirect_pending` /
+`redirect_discard` let the shell pipeline stage assemble its output
+with one kmalloc instead of three while fixing the discarded
+`redirect_take(0)` block on the oversize path. `kfwrite` keeps the
+pre-grow capacity when `krealloc` fails instead of installing the null
+and orphaning the old write buffer. The leak tracker is the
+long-pasted `stb_leakcheck` finally wired in as `headers/leakcheck.h`
+with a hosted backend (malloc/free, stdout) and a kernel backend
+(kmalloc/kfree, kprintf), unknown-pointer-tolerant frees, and
+`lk_live_count` baselines; the kernel never overrides its allocator
+globally (permanent caches would drown the report), ring-3 file and
+vedit compile with `MINIOS_LK_ENABLE` and assert a drained live set in
+their selftests. Host pins: `make test-arena test-leakcheck`.
+
 ### Audio Strategy (`driver.h` + `drivers/sb16.c`)
 The PCM sink joins the tone sink in the device registry: `audio_ops_t`
 carries `present`/`pcm_open`/`pcm_close`/`pcm_submit` beside the tone
