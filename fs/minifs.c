@@ -9,6 +9,7 @@
 #include "block.h"
 #include "ide.h"
 #include "lz4_kernel.h"
+#include "pcache.h"
 #define DE_NAME(de) ((const char *)((de) + 1))
 #define DE_NAME_W(de) ((char *)((de) + 1))
 
@@ -1086,6 +1087,7 @@ int minifs_unlink(const char *path) {
     inode.link_count = 0;
     fs_write_inode((unsigned int)ino, &inode);
     minifs_free_inode(ino);
+    pcache_invalidate_ino(ino);
 
     char parent_buf[RAMDISK_FNAME_LEN];
     char *name_start;
@@ -1381,7 +1383,9 @@ int minifs_truncate(int inode_num, unsigned int new_size) {
         }
     }
     inode.size = new_size;
-    return fs_write_inode((unsigned int)inode_num, &inode);
+    if (fs_write_inode((unsigned int)inode_num, &inode) < 0) return -1;
+    pcache_invalidate_ino((int)inode_num);
+    return 0;
 }
 
 int minifs_stat(int inode_num, MiniFSInode *out) {

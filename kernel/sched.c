@@ -4,6 +4,7 @@
 #include "kernel.h"
 #include "sched.h"
 #include "spawn.h"
+#include "pcache.h"
 #include "smp.h"
 #include "sync.h"
 #include "futex.h"
@@ -281,6 +282,33 @@ static vma_ctx_t *vma_ctx_copy(vma_ctx_t *src) {
         dst->mru = &dst->pool[src->mru - src->pool];
     else { vma_ctx_free(dst); return 0; }
     dst->mru_base = src->mru_base;
+    {
+        vma_node_t *stack[64];
+        int sp = 0;
+        vma_node_t *x = dst->live;
+        while (x != &dst->nil || sp > 0) {
+            while (x != &dst->nil) {
+                if (sp < 64) stack[sp++] = x;
+                x = x->left;
+            }
+            x = stack[--sp];
+            if (x->f_file && x->f_ino >= 0) {
+                unsigned long va;
+                unsigned long end = x->base + x->len;
+                if (end >= x->base) {
+                    for (va = x->base; va < end; va += 0x1000) {
+                        unsigned idx =
+                            (unsigned)((x->f_off + (va - x->base)) /
+                                0x1000UL);
+                        unsigned long phys =
+                            mm_file_page_phys(0, va);
+                        if (phys) pcache_ref_if(x->f_ino, idx, phys);
+                    }
+                }
+            }
+            x = x->right;
+        }
+    }
     return dst;
 }
 
@@ -1188,6 +1216,20 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             __asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));
             irqflags = spin_save_irq();
             resolved = cow_resolve(cur_cr3, fault_addr);
+            if (resolved != 0)
+                resolved = mm_file_break(cur_cr3, fault_addr);
+            spin_restore_irq(irqflags);
+            if (resolved == 0) return;
+        }
+        if (vector == 14 && !(frame->errcode & 1)) {
+            unsigned long fault_addr = 0;
+            unsigned long cur_cr3 = 0;
+            unsigned long irqflags = 0;
+            int resolved;
+            __asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
+            __asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));
+            irqflags = spin_save_irq();
+            resolved = mm_file_fault(cur_cr3, fault_addr);
             spin_restore_irq(irqflags);
             if (resolved == 0) return;
         }
@@ -2537,6 +2579,25 @@ static int waitpid_scan(int pid, int *found) {
             && (pid == -1 || pid == procs[i].pid)) {
             int code = procs[i].exit_code;
             if (found) *found = procs[i].pid;
+            if (vma_owned(&procs[i]) && procs[i].vma) {
+                vma_node_t *stack[64];
+                int sp = 0;
+                vma_node_t *x = procs[i].vma->live;
+                while (x != &procs[i].vma->nil || sp > 0) {
+                    while (x != &procs[i].vma->nil) {
+                        if (sp < 64) stack[sp++] = x;
+                        x = x->left;
+                    }
+                    x = stack[--sp];
+                    if (x->f_file && x->f_ino >= 0) {
+                        unsigned long end = x->base + x->len;
+                        if (end >= x->base)
+                            mm_file_range_release(procs[i].ctx.cr3,
+                                x->base, x->len, x->f_ino, x->f_off, 0);
+                    }
+                    x = x->right;
+                }
+            }
             if (procs[i].ctx.cr3
                 && !(procs[i].clone_flags & CLONE_VM))
                 pt_free_user(procs[i].ctx.cr3);

@@ -356,6 +356,12 @@ $(BIN_DIR)/nx.elf: $(SRC_DIR)/nx.c
 $(BIN_DIR)/mprot.elf: $(SRC_DIR)/mprot.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O0 -o $@ $<
 
+# pcmap probe: file-backed MAP_PRIVATE mmap share check (raw syscalls,
+# no libc). Two mappings of one MiniFS file, content checksum plus an
+# offset-overlap check; mappings stay resident for the mem count.
+$(BIN_DIR)/pcmap.elf: $(SRC_DIR)/pcmap.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 -o $@ $<
+
 # Syscall fuzzer: two seeded threads hammer mmap/munmap/mprotect/yield
 # and fold every result into a checksum oracle. -Iprogs for mthreads.h
 # (minios_abi.h); no libc, no malloc in workers.
@@ -1278,7 +1284,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
                $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
                $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
-               $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/forktest.elf \
+               $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/pcmap.elf $(BIN_DIR)/forktest.elf \
                $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf \
                $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
                $(BIN_DIR)/scfuzz.elf \
@@ -1293,7 +1299,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
                $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
                $(SRC_DIR)/mvrn.c $(SRC_DIR)/execho.c $(SRC_DIR)/aslr.c $(SRC_DIR)/burn.c $(SRC_DIR)/execthr.c \
-               $(SRC_DIR)/nx.c $(SRC_DIR)/mprot.c $(SRC_DIR)/scfuzz.c $(SRC_DIR)/forktest.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
+               $(SRC_DIR)/nx.c $(SRC_DIR)/mprot.c $(SRC_DIR)/pcmap.c $(SRC_DIR)/scfuzz.c $(SRC_DIR)/forktest.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
                $(SRC_DIR)/hello.py \
                $(SRC_DIR)/test.lua \
                $(SRC_DIR)/test.lisp \
@@ -1528,6 +1534,13 @@ arena_test: tests/test_arena.c headers/arena.h | $(TOOLS_DIR)
 test-arena: arena_test
 	$(TOOLS_DIR)/arena_test
 
+# Page cache store host test (tests/test_pcache.c + fs/pcache.c).
+pcache_test: tests/test_pcache.c fs/pcache.c headers/pcache.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -DSYNC_HOST_TEST -I. -Iheaders -Iprogs -o $(TOOLS_DIR)/pcache_test tests/test_pcache.c
+
+test-pcache: pcache_test
+	$(TOOLS_DIR)/pcache_test
+
 # Leak tracker host test (tests/test_leakcheck.c, spec pin).
 leakcheck_test: tests/test_leakcheck.c headers/leakcheck.h progs/file/file_assoc.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/leakcheck_test tests/test_leakcheck.c
@@ -1730,14 +1743,14 @@ uefi.img: BOOTX64.EFI tools/uefi_part.sfdisk
 uefi: uefi.img
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h
+kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h drivers/virtio_blk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_net.h
+         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_net.h pcache.h
 # NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
 # and the image ends just below USER_LOAD_BASE, so the check-size gate
 # is binding: bytes matter more than compiler speed in the prompt,
@@ -1831,6 +1844,9 @@ fsimg.o: fs/fsimg.c kernel.h minifs.h fsimg.h ide.h
 kfile.o: fs/kfile.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+pcache.o: fs/pcache.c kernel.h pcache.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 redirect.o: kernel/redirect.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -1878,7 +1894,7 @@ block.o: drivers/block.c block.h ide.h driver.h kernel.h drivers/virtio_blk.h
 driver.o: drivers/driver.c driver.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-minifs.o: fs/minifs.c minifs.h block.h ide.h kernel.h
+minifs.o: fs/minifs.c minifs.h block.h ide.h kernel.h pcache.h
 # NOTE: -Os, same pattern as shell.o (measured -2.6 KB vs -O1). Revalidate
 # with the filesystem-heavy suites (test_all.sh, lua/python suites writing
 # through the MiniFS fallback) after any change here.
@@ -2088,8 +2104,8 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o $(KERN_TLS_OBJS) \
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
@@ -2394,7 +2410,7 @@ clean: saves-backup
 	rm -f $(OBJ_DIR)/*.o
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
-	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/scfuzz.elf $(BIN_DIR)/forktest.elf \
+	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/pcmap.elf $(BIN_DIR)/scfuzz.elf $(BIN_DIR)/forktest.elf \
 	      $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf \
 	      $(BIN_DIR)/cp $(BIN_DIR)/freedom $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
 	      $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \

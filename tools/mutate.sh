@@ -247,6 +247,10 @@ fd-fork-shares-view | s/    if (!kfd_view_copy(child, cur)) {/    kfd_view_share
 pci-find-first-only | s/    for (dev = 0; dev < PCI_MAX_DEV; dev++)/    for (dev = 0; dev < 1; dev++)/ | headers/drivers/pci.h
 vblk-status-unchecked | s/statusp != 0/statusp == 0/ | drivers/virtio_blk.c
 vnet-never-preferred | s/net_use_virtio = vnet_init() ? 1 : 0;/net_use_virtio = 0;/ | net/net.c
+mmap-file-off-dropped | s/mmap_tag_file(user_mmap_cur, fino, foff)/mmap_tag_file(user_mmap_cur, fino, 0)/ | kernel/syscalls.c
+mmap-file-anon-fallback | s/if (!(mflags \\& (unsigned long)LINUX_MAP_ANONYMOUS)) {/if (0) {/ | kernel/syscalls.c
+pcache-shared-not-ro | s/mm_user_map_page(cr3, va, (unsigned long)pg, 0, 0)/mm_user_map_page(cr3, va, (unsigned long)pg, 1, 0)/ | kernel/mm/paging.c
+pcache-break-dropped | s/resolved = mm_file_break(cur_cr3, fault_addr);/resolved = -1;/ | kernel/sched.c
 vnet-rx-not-writable | s/VNET_RX_SIZE, VNET_DESC_WRITE, 0u);/VNET_RX_SIZE, 0u, 0u);/ | drivers/virtio_net.c
 vnet-tx-kick-wrong-queue | s/(unsigned short)VNET_Q_TX);/(unsigned short)VNET_Q_RX);/ | drivers/virtio_net.c
 vfs-readdir-mem-subdir-allowed | s/if (\*path != 0) return -1;/if (0) return -1;/ | fs/vfs.c
@@ -643,6 +647,8 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
                 MATCH="gfxview" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             elif [[ "$name" == mprotect-* ]]; then
                 MATCH="mprotect" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [[ "$name" == mmap-file-* || "$name" == pcache-* ]]; then
+                MATCH="pcache" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             else
             FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1 && \
             python3 "$HERE/tools/check_abi_numbers.py" >> "$BACKUP/suite.log" 2>&1
@@ -654,6 +660,18 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # kills it; every other sched.c mutant keeps the full suite.
             if [ "$name" = "fd-fork-shares-view" ]; then
                 MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [[ "$name" == pcache-* ]]; then
+                MATCH="pcache" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
+            ;;
+        kernel/mm/paging.c)
+            # pcache-* rows break the file-fault populate proved by
+            # the pcache slice; every other paging.c mutant keeps
+            # the full suite.
+            if [[ "$name" == pcache-* ]]; then
+                MATCH="pcache" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             else
                 FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             fi

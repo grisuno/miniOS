@@ -20,6 +20,7 @@
 #include "minifs.h"
 #include "ide.h"
 #include "block.h"
+#include "pcache.h"
 #include "sched.h"
 #include "vga_fb.h"
 #include "pcspk.h"
@@ -1309,11 +1310,53 @@ static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6) 
     return r;
 }
 
+/* Linux mmap(9) flags. Named, never bare. File-backed mappings
+ * are MAP_PRIVATE over a MiniFS file at a page-aligned offset;
+ * MAP_SHARED refuses until slice 3 proves writeback ordering, and
+ * ramdisk/pipe/console fds refuse (identity without sharing). */
+#define LINUX_MAP_SHARED 1
+#define LINUX_MAP_PRIVATE 2
+#define LINUX_MAP_FIXED 0x10
+#define LINUX_MAP_ANONYMOUS 0x20
+
+/** Docstring: Tag a freshly carved live node as file-backed. The
+ * node was just inserted at base, so the exact find hits; failure
+ * leaves it anonymous and fails the call, never half-tagged. */
+static int mmap_tag_file(unsigned long base, int ino, unsigned long off) {
+    vma_node_t *fnd = vma_tree_find(vma_live_root, base);
+    if (fnd == VMA_NIL) return -1;
+    fnd->f_file = 1;
+    fnd->f_ino = ino;
+    fnd->f_off = off;
+    return 0;
+}
+
 static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a1; (void)a3; (void)a4; (void)a5; (void)a6;
+    (void)a1; (void)a3;
     unsigned long len = (unsigned long)a2;
     unsigned long n = ALIGN_UP(len ? len : 1, 0x1000);
+    unsigned long mflags = (unsigned long)a4;
     irqflags_t flags;
+    int is_file = 0;
+    int fino = -1;
+    unsigned long foff = 0;
+    if (!(mflags & (unsigned long)LINUX_MAP_ANONYMOUS)) {
+        KFILE *f;
+        if ((mflags & (unsigned long)LINUX_MAP_SHARED) ||
+                !(mflags & (unsigned long)LINUX_MAP_PRIVATE))
+            return -22;
+        if (((unsigned long)a6) & 0xFFFUL) return -22;
+        f = kfd_get((int)a5);
+        if (!f) return -EBADF;
+        if (f->is_pipe || f->is_console || f->minifs_ino < 0) {
+            kfd_put(f);
+            return -22;
+        }
+        fino = f->minifs_ino;
+        foff = (unsigned long)a6;
+        kfd_put(f);
+        is_file = 1;
+    }
     spin_lock_irqsave(&mm_lock, &flags);
     long ret;
     if (n > user_mmap_cur - USER_LOAD_BASE) { ret = -12; goto mmap_out; }
@@ -1346,18 +1389,30 @@ static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)
             if (rem_len > 0)
                 vma_tree_insert(&vma_free_root, rem_base, rem_len);
             vma_tree_insert(&vma_live_root, addr, n);
+            if (is_file && mmap_tag_file(addr, fino, foff)) {
+                vma_tree_delete(&vma_live_root, addr);
+                vma_tree_insert(&vma_free_root, addr, n);
+                ret = -12;
+                goto mmap_out;
+            }
             ret = (long)addr;
             goto mmap_out;
         }
     }
     if (user_mmap_cur - n < g_brk) { ret = -12; goto mmap_out; }
     user_mmap_cur -= n;
-    if (mm_ensure_cur(user_mmap_cur, user_mmap_cur + n)) {
+    if (!is_file && mm_ensure_cur(user_mmap_cur, user_mmap_cur + n)) {
         user_mmap_cur += n;
         ret = -12;
         goto mmap_out;
     }
     vma_tree_insert(&vma_live_root, user_mmap_cur, n);
+    if (is_file && mmap_tag_file(user_mmap_cur, fino, foff)) {
+        vma_tree_delete(&vma_live_root, user_mmap_cur);
+        user_mmap_cur += n;
+        ret = -12;
+        goto mmap_out;
+    }
     ret = (long)user_mmap_cur;
 mmap_out:
     spin_unlock_irqrestore(&mm_lock, flags);
@@ -1374,6 +1429,9 @@ static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a
     vma_node_t *fnd = vma_tree_find(vma_live_root, base);
     long ret = -1;
     if (fnd != VMA_NIL && n <= fnd->len) {
+        if (fnd->f_file)
+            mm_file_range_release(0, fnd->base, fnd->len, fnd->f_ino,
+                fnd->f_off, 1);
         vma_tree_insert(&vma_free_root, fnd->base, fnd->len);
         vma_tree_delete(&vma_live_root, base);
         ret = 0;
@@ -1421,7 +1479,9 @@ static volatile unsigned long *mprotect_pte(unsigned long cr3,
  * and exec, reads still succeed) because the reaper only frees
  * present data pages, and CoW-shared pages refuse with -ENOMEM
  * (upgrading them in place would let one window write another's
- * bytes past cow_resolve). */
+ * bytes past cow_resolve). Cache-shared file pages refuse the same
+ * way: touch-write them first (the fault breaks a private copy) and
+ * then protect the private pages. */
 static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
     unsigned long base = (unsigned long)a1;
@@ -1454,6 +1514,10 @@ static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long
         phys = pte & (unsigned long)PT_ADDR_MASK;
         if (!phys) { spin_unlock_irqrestore(&mm_lock, flags); return -12; }
         if (want_write && cow_page_shared(phys)) {
+            spin_unlock_irqrestore(&mm_lock, flags);
+            return -12;
+        }
+        if (want_write && pcache_owns_phys(phys)) {
             spin_unlock_irqrestore(&mm_lock, flags);
             return -12;
         }
@@ -1531,6 +1595,9 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
     unsigned long flags = (unsigned long)a4;
     unsigned long fixed = (unsigned long)a5;
     unsigned long fnd_base = 0, fnd_len = 0;
+    int fnd_file = 0;
+    int fnd_ino = -1;
+    unsigned long fnd_off = 0;
     irqflags_t mflags;
     vma_node_t *fnd;
     long ret;
@@ -1547,6 +1614,9 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
         fnd = vma_tree_find(vma_live_root, old);
         ret = -14;
         if (fnd != VMA_NIL && old_len <= fnd->len) {
+            if (fnd->f_file)
+                mm_file_range_release(0, fnd->base, fnd->len, fnd->f_ino,
+                    fnd->f_off, 1);
             vma_tree_insert(&vma_free_root, fnd->base, fnd->len);
             vma_tree_delete(&vma_live_root, old);
             ret = (long)old;
@@ -1565,14 +1635,34 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
     if (fnd == VMA_NIL || old_len > fnd->len) goto mremap_out;
     fnd_base = fnd->base;
     fnd_len = fnd->len;
+    fnd_file = fnd->f_file;
+    fnd_ino = fnd->f_ino;
+    fnd_off = fnd->f_off;
     if (new_len <= fnd_len && new_len <= old_len) {
         unsigned long tail = fnd_len - new_len;
         unsigned long tail_base = fnd_base + new_len;
+        vma_node_t *shrunk = VMA_NIL;
         vma_tree_delete(&vma_live_root, old);
-        if (vma_tree_insert(&vma_live_root, old, new_len) == VMA_NIL) {
-            vma_tree_insert(&vma_live_root, fnd_base, fnd_len);
+        shrunk = vma_tree_insert(&vma_live_root, old, new_len);
+        if (shrunk == VMA_NIL) {
+            vma_node_t *restored =
+                vma_tree_insert(&vma_live_root, fnd_base, fnd_len);
+            if (restored != VMA_NIL && fnd_file) {
+                restored->f_file = 1;
+                restored->f_ino = fnd_ino;
+                restored->f_off = fnd_off;
+            }
             ret = -12;
             goto mremap_out;
+        }
+        if (fnd_file) {
+            shrunk->f_file = 1;
+            shrunk->f_ino = fnd_ino;
+            shrunk->f_off = fnd_off;
+            if (tail > 0) {
+                mm_file_range_release(0, tail_base, tail, fnd_ino,
+                    fnd_off + new_len, 1);
+            }
         }
         if (tail > 0)
             vma_tree_insert(&vma_free_root, tail_base, tail);
@@ -1601,6 +1691,14 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
         unsigned long cb, cl, rem;
         if (cov == VMA_NIL || vma_live_overlap(fixed, new_len)) {
             ret = -12;
+            goto mremap_out;
+        }
+        /* File mappings never move by bytes: the destination would be
+         * a private snapshot instead of the shared pages, silently
+         * breaking every other mapper. Refuse; shrink/grow keep the
+         * tags and stay shared. */
+        if (fnd_file) {
+            ret = -22;
             goto mremap_out;
         }
         cb = cov->base;
@@ -1641,11 +1739,25 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
             unsigned long rem_base = adj + delta;
             unsigned long rem_len = (cb + cl) - rem_base;
             unsigned long grown = fnd_len + delta;
+            vma_node_t *big = VMA_NIL;
+            vma_node_t *restored = VMA_NIL;
             vma_tree_delete(&vma_live_root, old);
-            if (vma_tree_insert(&vma_live_root, old, grown) == VMA_NIL) {
-                vma_tree_insert(&vma_live_root, fnd_base, fnd_len);
+            big = vma_tree_insert(&vma_live_root, old, grown);
+            if (big == VMA_NIL) {
+                restored = vma_tree_insert(&vma_live_root, fnd_base,
+                    fnd_len);
+                if (restored != VMA_NIL && fnd_file) {
+                    restored->f_file = 1;
+                    restored->f_ino = fnd_ino;
+                    restored->f_off = fnd_off;
+                }
                 ret = -12;
                 goto mremap_out;
+            }
+            if (fnd_file) {
+                big->f_file = 1;
+                big->f_ino = fnd_ino;
+                big->f_off = fnd_off;
             }
             vma_tree_delete(&vma_free_root, cb);
             if (rem_len > 0)

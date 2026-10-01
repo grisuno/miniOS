@@ -151,6 +151,9 @@ vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long
     if (z == VMA_NIL) return VMA_NIL;
     z->base = base;
     z->len = len;
+    z->f_file = 0;
+    z->f_ino = -1;
+    z->f_off = 0;
     z->left = z->right = z->parent = VMA_NIL;
     z->red = 1;
 
@@ -177,6 +180,24 @@ vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base) {
         if (base == x->base) { vma_mru = x; vma_mru_base = base; return x; }
         else if (base < x->base) x = x->left;
         else x = x->right;
+    }
+    return VMA_NIL;
+}
+
+/** Docstring: Find the live node containing va (base <= va < base+len),
+ * or VMA_NIL. The fault path needs interior hits; the exact-base find
+ * above cannot serve it. Pure tree walk, no MRU (the MRU keys exact
+ * bases only). Overflow-closed: a wrapping range never contains. */
+vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va) {
+    vma_node_t *x = root;
+    while (x != VMA_NIL) {
+        if (va < x->base) {
+            x = x->left;
+        } else if (x->len == 0 || va - x->base >= x->len) {
+            x = x->right;
+        } else {
+            return x;
+        }
     }
     return VMA_NIL;
 }

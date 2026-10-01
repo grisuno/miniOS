@@ -73,3 +73,11 @@ Boyscout find (2026-09): the first guest run timed out because
 poll never reported readiness. Fixed in `net/net.c` (host-order
 `kmemcpy`), with regression scenario "poll reports a connected socket
 readable" (`progs/src/pollready.c`, `run bin/pollready.elf`).
+
+Known flake (2026-10 audit): `make test-tls` fails ~1 run in 10 at
+`chain-good` (`freedom: tls: chain: verification failed`) with
+`ConnectionResetError` in the fixture server threads, then passes on
+retry with no tree change. Suspect is a harness race (parallel
+openssl/python servers vs client connect), not the stack: the same
+binaries pass 8/9. Follow-up is a server-ready retry in
+`tools/tls_test.py`, never a looser assertion.

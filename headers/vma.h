@@ -23,6 +23,9 @@ typedef struct vma_node {
     unsigned long    len;
     int              red;                 /* 1 = red, 0 = black */
     struct vma_node *left, *right, *parent;
+    int              f_file;              /* 1 = file-backed mapping */
+    int              f_ino;               /* MiniFS inode when file-backed */
+    unsigned long    f_off;               /* file offset of base */
 } vma_node_t;
 
 #define VMA_MAX 2048
@@ -59,6 +62,7 @@ extern vma_ctx_t   vma_legacy;
 void        vma_tree_init(void);
 vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);
 vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);
+vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);
 int         vma_tree_delete(vma_node_t **root, unsigned long base);
 void        vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);
 void        vma_ctx_bind(vma_ctx_t *c);

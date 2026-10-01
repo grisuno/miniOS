@@ -98,7 +98,7 @@ python3 tools/test_gui_gfxview.py   # fullscreen DOOM, Alt+Enter, tile, minimize
 make test-tls test-vma test-lisp test-wl test-freedom-wl test-freedomui
 make test-futex test-percpu-rq test-batch test-rcu test-sanitize test-tick test-hal
 make test-driver test-sync test-pcm test-rtc test-vedit test-file test-paint test-png
-make test-arena test-leakcheck
+make test-arena test-leakcheck test-pcache
 make test-doomedit test-theme test-wm test-fx test-pipe test-panic test-pci test-httpd
 make test-fat test-ext4 test-ktime test-randmix
 python3 tools/check_abi_numbers.py

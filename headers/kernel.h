@@ -706,6 +706,13 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
                          unsigned long *brk_out);
 unsigned long pt_clone_user_empty(void);
 int mm_user_ensure_page(unsigned long cr3, unsigned long va);
+int mm_user_map_page(unsigned long cr3, unsigned long va,
+    unsigned long phys, int write, int exec);
+int mm_file_fault(unsigned long cr3, unsigned long va);
+int mm_file_break(unsigned long cr3, unsigned long va);
+unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va);
+void mm_file_range_release(unsigned long cr3, unsigned long base,
+    unsigned long len, int ino, unsigned long off, int unmap);
 int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3,
                       unsigned long va);
 /* Copy-on-write fork (kernel/mm/cow.c): share on fork, privatize on

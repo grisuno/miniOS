@@ -164,10 +164,43 @@ static void test_full_drain(void) {
     CHECK(tree_valid(vma_live_root), "empty tree is valid");
 }
 
+static void test_file_tags_and_containing(void) {
+    vma_node_t *node;
+    vma_node_t *found;
+    vma_tree_init();
+    node = vma_tree_insert(&vma_live_root, 0x10000UL, 0x3000);
+    CHECK(node != VMA_NIL, "file node inserts");
+    CHECK(node->f_file == 0 && node->f_ino == -1 && node->f_off == 0,
+          "fresh nodes default to anonymous");
+    node->f_file = 1;
+    node->f_ino = 7;
+    node->f_off = 0x2000;
+    node = vma_tree_insert(&vma_live_root, 0x20000UL, 0x1000);
+    CHECK(node != VMA_NIL, "second node inserts");
+    CHECK(tree_valid(vma_live_root), "invariants with tagged nodes");
+    found = vma_tree_find_containing(vma_live_root, 0x10000UL);
+    CHECK(found != VMA_NIL && found->f_ino == 7, "containing hits base");
+    found = vma_tree_find_containing(vma_live_root, 0x12FFFUL);
+    CHECK(found != VMA_NIL && found->f_off == 0x2000, "containing hits interior");
+    found = vma_tree_find_containing(vma_live_root, 0x15000UL);
+    CHECK(found == VMA_NIL, "containing misses between nodes");
+    found = vma_tree_find_containing(vma_live_root, 0x13000UL);
+    CHECK(found == VMA_NIL, "containing misses the end edge");
+    found = vma_tree_find_containing(vma_live_root, 0x20000UL);
+    CHECK(found != VMA_NIL && found->f_file == 0, "containing hits anon node");
+    found = vma_tree_find_containing(vma_live_root, 0xFFFFUL);
+    CHECK(found == VMA_NIL, "containing misses below all nodes");
+    found = vma_tree_find_containing(vma_live_root, 0x21000UL);
+    CHECK(found == VMA_NIL, "containing misses above all nodes");
+    found = vma_tree_find_containing(VMA_NIL, 0x10000UL);
+    CHECK(found == VMA_NIL, "containing empty tree is nil");
+}
+
 int main(void) {
     test_insert_find_delete();
     test_pool_exhaustion();
     test_full_drain();
+    test_file_tags_and_containing();
 
     if (failures) {
         fprintf(stderr, "test_vma: %d failure(s)\n", failures);

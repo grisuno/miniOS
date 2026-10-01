@@ -14,6 +14,8 @@
 #include "minifs.h"
 #include "ide.h"
 #include "block.h"
+#include "pcache.h"
+#include "drivers/virtio_blk.h"
 #include "sched.h"
 #include "vga_fb.h"
 #include "sb16.h"
@@ -266,9 +268,10 @@ void kmain(void) {
     }
 
     block_init();
+    pcache_init();
     minifs_init();
     bootlog_mark("block+minifs");
-    if (ide_present()) {
+    if (ide_present() || vblk_present()) {
         if (minifs_mount() < 0) {
             kprintf("minifs: no filesystem found on disk\n");
         }

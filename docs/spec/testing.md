@@ -204,6 +204,20 @@ surfaces far away as a poisoned-pointer `#GP` with no attribution (seen
 once as a Quake 2 shutdown crash that clean headless runs never
 reproduced: `minios_autoframes 400` climbs `gfx frames` 0 to 400).
 
+### Slab verdict (T6, deferred with evidence, not scheduled)
+A slab/SLUB for kernel objects would cut per-allocation cost and
+fragmentation, but it is optimizing the wrong layer today: the SMP
+blocker is the global memory-management VIEW (`g_brk`,
+`user_mmap_cur`, the VMA roots, 112 sites), not the dlmalloc lock,
+and `smp-sched.md` already specs that migration (per-CPU views)
+ahead of any allocator work. The dlmalloc sections are pure heap
+math under one spin (short, never blocking), and every newer
+subsystem (pcache, file-mmap fault paths) deliberately funnels
+through the same `mm_lock` leaf discipline, which is exactly the
+shape the per-CPU migration needs to visit. Revisit T6 the day a
+two-CPU malloc-churn probe stops scaling: until a measurement says
+otherwise, the lock is not the ceiling.
+
 ### Aligned allocation contract (`kmalloc_aligned` / `kfree_aligned`)
 Page-aligned kernel buffers are allocated through `kmalloc_aligned(size,
 align)` (`kernel/mm.c`), which requires a nonzero power-of-two alignment,

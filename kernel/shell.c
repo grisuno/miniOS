@@ -6,6 +6,7 @@
 #include "ext4.h"
 #include "drivers/virtio_blk.h"
 #include "drivers/virtio_net.h"
+#include "pcache.h"
 #include "sched.h"
 #include "smp.h"
 #include "percpu_rq.h"
@@ -2119,9 +2120,13 @@ static void shell_cmd_mem(void) {
             ru / 1024, rc / 1024, rm / 1024, ramdisk_count());
     if (minifs_is_mounted()) {
         unsigned int fb = 0, tb = 0, fi = 0, ti = 0;
+        unsigned long pages = 0, hits = 0, miss = 0, ev = 0, dirty = 0;
         minifs_usage(&fb, &tb, &fi, &ti);
         kprintf("mem: minifs free=%u/%u blocks free=%u/%u inodes\n",
                 fb, tb, fi, ti);
+        pcache_stats(&pages, &hits, &miss, &ev, &dirty);
+        kprintf("mem: pcache pages=%lu hits=%lu miss=%lu evicted=%lu dirty=%lu\n",
+                pages, hits, miss, ev, dirty);
     } else {
         vga_puts("mem: minifs not mounted\n");
     }

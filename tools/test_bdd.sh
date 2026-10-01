@@ -375,6 +375,18 @@ expect "scfuzz: start"
 expect "scfuzz: 9cfa1899"
 expect "exit code: 0"
 
+scenario "pcache shares file text between mappers" "mrun bin/pcmap.elf
+mrun bin/pcmap.elf
+mem
+poweroff"
+expect_count 2 "pcmap: 522f3b83"
+expect_count 2 "exit code: 0"
+expect "pcache pages=17"
+
+scenario "pcache survives concurrent mappers" "mrun bin/pcmap.elf bin/pcmap.elf
+poweroff"
+expect_count 2 "exit code: 0"
+
 scenario "desktop glibc TLS survives preemption" "desktop
 run bin/file.elf --selftest
 poweroff"

@@ -26,6 +26,27 @@ boot path is named in `bootdefs.h`; neither stage may carry a bare constant.
 The image is attached as an IDE disk: LBA addressing is not available for
 floppies.
 
+### UEFI native boot, Phase 2 (T7, specified, stub proven)
+`boot/uefi_stub.c` already proves the firmware handshake under OVMF
+(GOP mode query, memory map, LBA0 read; BDD `scenario_uefi`), but the
+kernel still boots only through stage1/stage2, so CSM-less hardware
+is out of reach. The handoff lands in three slices. (a) The stub
+reads `kernel.bin` whole through SimpleFileSystem (ramdisk rides
+embedded, so one blob), calls ExitBootServices, and jumps to a
+64-bit UEFI entry that prints its handoff block over serial and
+halts: proves load + exit + jump with no kernel changes, BDD-visible
+over OVMF COM1. (b) Dynamic framebuffer: `FB_ADDR` is ABI-fixed in
+`minios_abi.h` today and no GOP mode is guaranteed to match it, so
+`vga_fb` must accept the handoff framebuffer (base/pitch/geometry)
+with an ABI version bump; VESA/VGA text stays as the fallback, never
+removed in the same slice. (c) Full boot to shell under OVMF with the
+BDD suite re-run against the UEFI image (the `scenario_uefi` harness
+already exists; it asserts handshake lines today, shell markers
+after). The page-table scheme reuses the PT0/PT1 KASLR layout (an
+identity region for the loaded image, built by the entry, not by
+firmware), and INT 13h code paths stay untouched: one image boots
+both ways, selected by firmware, never by build flag.
+
 ### Disk layout
 ```
 LBA 0        stage 1

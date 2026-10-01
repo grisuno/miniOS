@@ -13,6 +13,8 @@
 #include "bootdefs.h"
 #include "vga_fb.h"
 #include "arch/x86/msr.h"
+#include "minifs.h"
+#include "pcache.h"
 
 /* ---- Page table helpers (from kernel.c, now shared via bootdefs.h) ---- */
 
@@ -434,6 +436,315 @@ int mm_user_ensure_page(unsigned long cr3, unsigned long va) {
     return 0;
 }
 
+/** Docstring: Map one known phys page at va inside cr3 (fail-closed).
+ * Creates the page-table page when missing (PD flags mirror the
+ * window setup); refuses shared graphics slots, out-of-window
+ * addresses and unaligned phys. write/exec select the RW/NX bits
+ * and invlpg keeps the local TLB honest (cross-CPU shootdown rides
+ * the documented T5 follow-up, same as the CoW path). The file
+ * fault populate and the file CoW-break own this: no anonymous
+ * caller should bypass ensure_page through it. Returns 0 mapped,
+ * -1 refused. */
+int mm_user_map_page(unsigned long cr3, unsigned long va,
+        unsigned long phys, int write, int exec) {
+    volatile unsigned long *pml4;
+    volatile unsigned long *pdpt;
+    volatile unsigned long *pd;
+    volatile unsigned long *pt;
+    unsigned long pd_idx;
+    unsigned long pte_idx;
+    unsigned long pte;
+    if (cr3 == 0 || phys == 0) return -1;
+    if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return -1;
+    if (mt_shared_slot(va >> PT_PD_INDEX_SHIFT)) return -1;
+    if (phys & 0xFFFUL) return -1;
+    pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
+    if (!(pml4[0] & PT_FLAGS_PRESENT_RW)) return -1;
+    pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
+    if (!(pdpt[0] & PT_FLAGS_PRESENT_RW) || (pdpt[0] & PT_FLAGS_PS))
+        return -1;
+    pd = (volatile unsigned long *)(pdpt[0] & PT_ADDR_MASK);
+    pd_idx = va >> PT_PD_INDEX_SHIFT;
+    if (pd[pd_idx] & PT_FLAGS_PS) return -1;
+    if (!(pd[pd_idx] & PT_FLAGS_PRESENT_RW)) {
+        void *npt = pt_page_alloc();
+        if (!npt) return -1;
+        pd[pd_idx] = ((unsigned long)npt) | PT_USER_ENTRY;
+    }
+    pt = (volatile unsigned long *)(pd[pd_idx] & PT_ADDR_MASK);
+    pte_idx = (va >> 12) & 0x1FF;
+    pte = (phys & PT_ADDR_MASK) | 0x001UL | (unsigned long)PT_FLAGS_USER;
+    if (write) pte |= 0x002UL;
+    if (!exec) pte |= (unsigned long)PT_FLAGS_NX;
+    pt[pte_idx] = pte;
+    __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+    return 0;
+}
+
+extern spinlock_t mm_lock;
+
+/** Docstring: PTE walker shared by the fault, fork and teardown
+ * paths (forward declaration; documented at the definition). */
+static volatile unsigned long *mm_file_pte(unsigned long cr3,
+        unsigned long va);
+
+/** Docstring: Read the mapped phys for va in cr3, 0 when the PTE
+ * is absent or non-present. Fork and teardown prove sharing through
+ * the tables before taking or dropping cache refs. */
+unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va) {
+    volatile unsigned long *pp;
+    unsigned long pte;
+    unsigned long phys;
+    if (cr3 == 0)
+        __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    va &= ~0xFFFUL;
+    pp = mm_file_pte(cr3, va);
+    if (!pp) return 0;
+    pte = *pp;
+    if (!(pte & 0x001UL)) return 0;
+    phys = pte & PT_ADDR_MASK;
+    return phys;
+}
+
+/** Docstring: Locate the PTE for va in cr3 without allocating.
+ * Returns 0 for any missing level, huge page or out-of-window
+ * address. Read-only walk for the fault path (use mm_user_map_page
+ * to change bits). */
+static volatile unsigned long *mm_file_pte(unsigned long cr3,
+        unsigned long va) {
+    volatile unsigned long *pml4;
+    volatile unsigned long *pdpt;
+    volatile unsigned long *pd;
+    volatile unsigned long *pt;
+    if (!cr3) return 0;
+    if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return 0;
+    if (mt_shared_slot(va >> PT_PD_INDEX_SHIFT)) return 0;
+    pml4 = (volatile unsigned long *)(cr3 & PT_ADDR_MASK);
+    if (!(pml4[0] & PT_FLAGS_PRESENT_RW)) return 0;
+    pdpt = (volatile unsigned long *)(pml4[0] & PT_ADDR_MASK);
+    if (!(pdpt[0] & PT_FLAGS_PRESENT_RW) || (pdpt[0] & PT_FLAGS_PS))
+        return 0;
+    pd = (volatile unsigned long *)(pdpt[0] & PT_ADDR_MASK);
+    if (!(pd[va >> PT_PD_INDEX_SHIFT] & PT_FLAGS_PRESENT_RW)) return 0;
+    if (pd[va >> PT_PD_INDEX_SHIFT] & PT_FLAGS_PS) return 0;
+    pt = (volatile unsigned long *)
+        ((pd[va >> PT_PD_INDEX_SHIFT]) & PT_ADDR_MASK);
+    return &pt[(va >> 12) & 0x1FF];
+}
+
+/** Docstring: Populate one faulted file-backed page (fail-closed).
+ * Only non-present faults arrive here; present faults belong to
+ * cow_resolve (fork-shared, tried first) and mm_file_break below.
+ * VMA lookup runs under mm_lock with the disk I/O outside it (the
+ * block-cache leaf discipline), then the node is revalidated before
+ * mapping so a racing munmap cannot retag the range. In-file pages
+ * come from the shared cache (ref held till munmap/teardown), past-
+ * EOF tails and uncached fallbacks map private zero/file bytes.
+ * The mapping starts read-only: the first write re-faults into the
+ * break path, so shared text is never written in place. Returns 0
+ * resumed, -1 for the kill path. */
+int mm_file_fault(unsigned long cr3, unsigned long va) {
+    vma_node_t *node;
+    int ino;
+    unsigned long idx;
+    unsigned long off;
+    int slot;
+    unsigned char *pg;
+    MiniFSInode st;
+    irqflags_t flags;
+    va &= ~0xFFFUL;
+    if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return -1;
+    spin_lock_irqsave(&mm_lock, &flags);
+    node = vma_tree_find_containing(vma_live_root, va);
+    if (node == VMA_NIL || !node->f_file || node->f_ino < 0 ||
+            (node->f_off & 0xFFFUL)) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        return -1;
+    }
+    ino = node->f_ino;
+    off = node->f_off + (va - node->base);
+    spin_unlock_irqrestore(&mm_lock, flags);
+    idx = (unsigned)(off / 0x1000UL);
+    if (minifs_stat(ino, &st) < 0) return -1;
+    if ((unsigned long)idx * 0x1000UL >= st.size) {
+        void *zp = pt_page_alloc();
+        if (!zp) return -1;
+        if (mm_user_map_page(cr3, va, (unsigned long)zp, 1, 0)) {
+            pt_page_free(zp);
+            return -1;
+        }
+        return 0;
+    }
+    spin_lock_irqsave(&mm_lock, &flags);
+    {
+        volatile unsigned long *pp = mm_file_pte(cr3, va);
+        if (pp && (*pp & 0x001UL)) {
+            spin_unlock_irqrestore(&mm_lock, flags);
+            return -1;
+        }
+    }
+    spin_unlock_irqrestore(&mm_lock, flags);
+    {
+        void *priv = pt_page_alloc();
+        unsigned long r;
+        if (!priv) return -1;
+        kmemset(priv, 0, 0x1000);
+        r = (unsigned long)minifs_read(ino, priv, idx * 0x1000UL, 0x1000);
+        (void)r;
+        slot = pcache_publish(ino, idx, priv);
+        if (slot < 0) {
+            if (mm_user_map_page(cr3, va, (unsigned long)priv, 1, 0)) {
+                pt_page_free(priv);
+                return -1;
+            }
+            return 0;
+        }
+        pt_page_free(priv);
+    }
+    pg = pcache_data(slot);
+    if (!pg) {
+        pcache_put(slot);
+        return -1;
+    }
+    if (mm_user_map_page(cr3, va, (unsigned long)pg, 0, 0)) {
+        pcache_put(slot);
+        return -1;
+    }
+    return 0;
+}
+
+/** Docstring: Release one freed file range precisely (fail-closed).
+ * For every page, the PTE proves what the mapping held: a cached
+ * page drops exactly one ref, a private heap page is freed like
+ * the teardown sweeper frees it, and CoW-shared pages stay (another
+ * window needs them, same as anon today). cr3 == 0 reads the live
+ * tables (munmap/mremap in caller context, under their mm_lock);
+ * teardown passes the dying window explicitly (zombie-exclusive, no
+ * lock needed). unmap == 0 drops refs only (teardown, whose tables
+ * die next); unmap == 1 also clears and frees (munmap, whose range
+ * is immediately reusable). Never allocates. */
+void mm_file_range_release(unsigned long cr3, unsigned long base,
+        unsigned long len, int ino, unsigned long off, int unmap) {
+    unsigned long va;
+    unsigned long end;
+    if (ino < 0 || len == 0 || base + len < base) return;
+    if (base < USER_LOAD_BASE || base + len > USER_LOAD_END + 1) return;
+    if (cr3 == 0)
+        __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    end = base + len;
+    for (va = base; va < end; va += 0x1000) {
+        volatile unsigned long *pp = mm_file_pte(cr3, va);
+        unsigned long pte;
+        unsigned long phys;
+        unsigned idx;
+        void *raw;
+        if (!pp) continue;
+        pte = *pp;
+        if (!(pte & 0x001UL)) continue;
+        phys = pte & PT_ADDR_MASK;
+        if (!phys) continue;
+        idx = (unsigned)((off + (va - base)) / 0x1000UL);
+        pcache_put_if(ino, idx, phys);
+        if (!unmap) continue;
+        if (cow_page_shared(phys)) continue;
+        if (pcache_owns_phys(phys)) {
+            *pp = 0;
+            __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+            continue;
+        }
+        if (phys < HEAP_BASE || phys >= HEAP_BASE + HEAP_SIZE) continue;
+        raw = *((void **)(phys - PT_ALLOC_HDR));
+        if ((unsigned long)raw < HEAP_BASE ||
+            (unsigned long)raw >= HEAP_BASE + HEAP_SIZE)
+            continue;
+        kfree(raw);
+        *pp = 0;
+        __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+    }
+}
+
+/** Docstring: Break a write fault on a cache-shared file page into
+ * a private copy (fail-closed). Fires after cow_resolve refuses (a
+ * file page is never in the cow table outside fork, and fork-shared
+ * ones resolve there first). The PTE must be present, read-only and
+ * pointing at the cached page the VMA node names; anything else
+ * (recycled slot, truncated file, mprotect-RO anon) returns -1 for
+ * the kill path. The mapping keeps its cache ref until munmap or
+ * teardown, so the accounting stays balanced. Returns 0 resumed. */
+int mm_file_break(unsigned long cr3, unsigned long va) {
+    vma_node_t *node;
+    volatile unsigned long *pp;
+    unsigned long pte;
+    unsigned long phys;
+    int ino;
+    unsigned idx;
+    int slot;
+    unsigned char *pg;
+    void *priv;
+    irqflags_t flags;
+    va &= ~0xFFFUL;
+    if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return -1;
+    spin_lock_irqsave(&mm_lock, &flags);
+    node = vma_tree_find_containing(vma_live_root, va);
+    if (node == VMA_NIL || !node->f_file || node->f_ino < 0 ||
+            (node->f_off & 0xFFFUL)) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        return -1;
+    }
+    ino = node->f_ino;
+    idx = (unsigned)((node->f_off + (va - node->base)) / 0x1000UL);
+    pp = mm_file_pte(cr3, va);
+    if (!pp) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        return -1;
+    }
+    pte = *pp;
+    if (!(pte & 0x001UL) || (pte & 0x002UL)) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        return -1;
+    }
+    phys = pte & PT_ADDR_MASK;
+    slot = pcache_lookup(ino, idx);
+    if (slot < 0) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        return -1;
+    }
+    pg = pcache_data(slot);
+    if (!pg || (unsigned long)pg != phys) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        return -1;
+    }
+    priv = pt_page_alloc();
+    if (!priv) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        return -1;
+    }
+    spin_unlock_irqrestore(&mm_lock, flags);
+    kmemcpy(priv, pg, 0x1000);
+    spin_lock_irqsave(&mm_lock, &flags);
+    node = vma_tree_find_containing(vma_live_root, va);
+    if (node == VMA_NIL || !node->f_file || node->f_ino != ino ||
+            node->f_off + (va - node->base) != (unsigned long)idx * 0x1000UL) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        pt_page_free(priv);
+        return -1;
+    }
+    pp = mm_file_pte(cr3, va);
+    if (!pp || (*pp & PT_ADDR_MASK) != phys) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        pt_page_free(priv);
+        return -1;
+    }
+    if (mm_user_map_page(cr3, va, (unsigned long)priv, 1,
+            !(pte & (unsigned long)PT_FLAGS_NX))) {
+        spin_unlock_irqrestore(&mm_lock, flags);
+        pt_page_free(priv);
+        return -1;
+    }
+    spin_unlock_irqrestore(&mm_lock, flags);
+    return 0;
+}
+
 /* Copy one present user page from src_cr3 to the same VA in dst_cr3,
  * allocating the destination page. Used by fork-style clones. The
  * executable bit rides along: ensure_page maps NX, so an exec source
@@ -506,6 +817,7 @@ static void pt_free_data_pages(uint64_t cr3) {
             void *raw;
             if (!(pte & PT_FLAGS_PRESENT_RW)) continue;
             phys = pte & PT_ADDR_MASK;
+            if (pcache_owns_phys(phys)) continue;
             if (phys < HEAP_BASE || phys >= HEAP_BASE + HEAP_SIZE) continue;
             raw = *((void **)(phys - PT_ALLOC_HDR));
             if ((unsigned long)raw < HEAP_BASE ||
