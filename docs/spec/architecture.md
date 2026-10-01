@@ -58,6 +58,40 @@ no-crash run) with `mmap-file-*`/`pcache-*` mutants. Slice 3
 (writeback + pressure eviction with reverse shootdown) waits for
 its first writer; `ld.so` (T8) is unblocked on slices 1-2.
 
+### Dynamic linking, minimal (T8, specified, not yet implemented)
+Goal: share `.text` between processes (the RAM win), nothing more.
+Functions only in v1: data stays per-binary behind the `ld` stubs
+(`errno`/`stdout` keep working exactly as today), no lazy PLT, no
+`dlopen`/`dlsym`, no TLS, no versioning, no C++. The toolchain
+already cooperates without knowing it: miniGCC emits bare `call
+extfunc` extern refs, and `ld -f elf` already writes zero-based
+ET_DYN (fully RIP-relative intra-binary code, which is why the
+ASLR slide works today). What is missing, in order:
+L1 (`ld` repo): `-shared` builds ET_DYN with SONAME plus
+`.dynsym`/`.dynstr` over the defined global functions (no
+relocations needed inside: self-contained miniGCC code is already
+position-independent).
+L2 (`ld` repo): `-f elf -d lib.so` verifies each undefined function
+against the lib's dynsym (typos stay hard link errors, the existing
+contract) and emits standard RELA (`R_X86_64_PC32` for direct
+calls, patched in place: executables are never shared so no GOT is
+owed) plus `.dynamic` (`DT_NEEDED`) and the import dynsym/dynstr.
+L3 (kernel): a boot-global lib registry (path to base, dynsym and
+refcount: the first loader maps, the rest share), loading through
+the T5 file mmap (demand pages, shared phys), eager PC32 patching
+of the executable's private pages with RX via T2 afterwards, then
+entry transfer. Load bases come from a reserved lib region carved
+at VMA init (exact bounds need a memory-map audit first: the mmap
+cursor must never eat it, and graphics/stack/heap are all pinned);
+no fixed cross-repo addresses, the kernel assigns per boot.
+L4 (BDD): `libcmini.so` (strlen/strcmp/memcpy/memset) plus two
+probes built entirely in-guest (edit, minigcc, `ld -shared`,
+`ld -f elf -d`, run), proving correct output, one registry load
+for both (`ld.so: libcmini shared x2` marker) and demand-shared
+text, with `ldso-*` mutants under `MATCH="ldso"`.
+miniGCC needs zero changes; CVM programs naming shared symbols
+keep failing to link (documented, same as errno today).
+
 ### Dynamic mounts, pipes, clipboard, fork, httpd (2026-09 session)
 I implemented the user-facing half of the UNIX-way plan in one session,
 one contract per feature, each with SDD spec, TDD host suite, BDD
