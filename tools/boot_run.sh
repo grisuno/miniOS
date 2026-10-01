@@ -26,6 +26,7 @@ set -u
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 QEMU="${QEMU:-qemu-system-x86_64}"
 MEM="${MEM:-1G}"
+SMP="${SMP:-}"
 TMO=200
 LOG="$HERE/boot_run.log"
 CMDS=()
@@ -34,12 +35,13 @@ while [ $# -gt 0 ]; do
     case "$1" in
         --timeout) TMO="$2"; shift 2 ;;
         --log)     LOG="$2"; shift 2 ;;
+        --smp)     SMP="$2"; shift 2 ;;
         *)         CMDS+=("$1"); shift ;;
     esac
 done
 
 if [ ${#CMDS[@]} -eq 0 ]; then
-    echo "usage: $0 <cmd> [cmd...] [--timeout N] [--log FILE]" >&2
+    echo "usage: $0 <cmd> [cmd...] [--timeout N] [--log FILE] [--smp N]" >&2
     exit 1
 fi
 
@@ -54,6 +56,7 @@ sleep 0.5
 } | timeout "$TMO" "$QEMU" \
     -drive "file=$HERE/os.img,format=raw,if=ide" -m "$MEM" \
     -nic user,model=rtl8139 \
+    ${SMP:+-smp "$SMP"} \
     -display none -serial stdio -no-reboot > "$LOG" 2>&1
 
 rc=$?
