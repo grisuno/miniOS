@@ -810,7 +810,10 @@ int ldso_bind_into(void *data, unsigned size, unsigned long base,
     int rc = -1;
     unsigned li;
     if (!data || size < 64) return -1;
-    if (base < USER_LOAD_BASE || base >= USER_LOAD_END) return -1;
+    /* No base guard here: ET_EXEC passes base 0 with absolute segment
+     * VAs (host gcc static non-PIE binaries), ET_DYN passes its load
+     * base. The per-segment memsz and per-row slot_va window checks
+     * below validate every address regardless. */
     {
         int fr = ldso_find_dynamic(exefile, size, &dyn_off, &dyn_size);
         if (fr == 0) return 0;
