@@ -455,8 +455,8 @@
 - Doc: Build a MiniOS ramdisk image from files in a directory tree.  Each packed file is named by its path relative to the shar
 - Language: py
 - Symbols:
-  - `pack_name` (function, line 20) `def pack_name(path, common)`
-  - `main` (function, line 30) `def main()`
+  - `pack_name` (function, line 38) `def pack_name(path, common)`
+  - `main` (function, line 48) `def main()`
 
 ## tools/mkroots.sh
 - Layer: utility
@@ -469,10 +469,10 @@
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 121)
-  - `cleanup` (function, line 128)
-  - `record` (function, line 367)
-  - `find_index` (function, line 373)
+  - `restore_sources` (function, line 126)
+  - `cleanup` (function, line 133)
+  - `record` (function, line 399)
+  - `find_index` (function, line 405)
 
 ## tools/probe_compute_vga.py
 - Layer: utility
@@ -550,10 +550,10 @@
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
   - `scenario_uefi` (function, line 167)
-  - `http_server_start` (function, line 1072)
-  - `http_server_stop` (function, line 1079)
-  - `http_fixture_start` (function, line 1084)
-  - `http_fixture_stop` (function, line 1091)
+  - `http_server_start` (function, line 1188)
+  - `http_server_stop` (function, line 1195)
+  - `http_fixture_start` (function, line 1200)
+  - `http_fixture_stop` (function, line 1207)
 
 ## tools/test_call_align.py
 - Layer: testing

@@ -12,23 +12,23 @@
 - Doc: kernel.c -- Mediator: boot orchestration and the syscall trampoline.
 - Language: c
 - Symbols:
-  - `syscall_init` (function, line 105) `void syscall_init(void)`
-  - `bootlog_mark` (function, line 180) `void bootlog_mark(const char *name)`
-  - `bootlog_report` (function, line 187) `void bootlog_report(void)`
-  - `__attribute__` (function, line 195) `__attribute__((section(".init.text")))
+  - `syscall_init` (function, line 111) `void syscall_init(void)`
+  - `bootlog_mark` (function, line 186) `void bootlog_mark(const char *name)`
+  - `bootlog_report` (function, line 193) `void bootlog_report(void)`
+  - `__attribute__` (function, line 201) `__attribute__((section(".init.text")))
 void kmain(void)`
-  - `table` (function, line 92) `* Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------`
-  - `ksyscall` (function, line 118) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `kstack` (function, line 134) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single process runs, fatal as * soon as two threads syscall concurrently. */ _Static_asser`
-  - `ms` (function, line 173) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-  - `EM` (function, line 209) `* CR0: clear EM (bit 2), set MP (bit 1);`
-  - `size` (function, line 250) `* image size (see kernel.ld);`
-  - `syscall_kstack` (variable, line 103) `extern unsigned long syscall_kstack;`
-  - `ramdisk_start` (variable, line 167) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 168) `extern char ramdisk_end[];`
-  - `KSYM_MAX` (macro, line 95) `#define KSYM_MAX`
-  - `BOOTLOG_MAX` (macro, line 176) `#define BOOTLOG_MAX`
-- Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/ide.h`, `headers/kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
+  - `table` (function, line 98) `* Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------`
+  - `ksyscall` (function, line 124) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `kstack` (function, line 140) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single process runs, fatal as * soon as two threads syscall concurrently. */ _Static_asser`
+  - `ms` (function, line 179) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+  - `EM` (function, line 215) `* CR0: clear EM (bit 2), set MP (bit 1);`
+  - `size` (function, line 256) `* image size (see kernel.ld);`
+  - `syscall_kstack` (variable, line 109) `extern unsigned long syscall_kstack;`
+  - `ramdisk_start` (variable, line 173) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 174) `extern char ramdisk_end[];`
+  - `KSYM_MAX` (macro, line 101) `#define KSYM_MAX`
+  - `BOOTLOG_MAX` (macro, line 182) `#define BOOTLOG_MAX`
+- Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/virtio_blk.h`, `headers/ide.h`, `headers/kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
 
 ## qga.c
 - Layer: utility
@@ -148,15 +148,18 @@ void kmain(void)`
   - `vma_ctx_init` (function, line 32) `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)`
   - `vma_ctx_bind` (function, line 46) `void vma_ctx_bind(vma_ctx_t *c)`
   - `vma_ctx_save` (function, line 57) `void vma_ctx_save(vma_ctx_t *c)`
-  - `vma_tree_init` (function, line 66) `void vma_tree_init(void)`
-  - `vma_alloc_node` (function, line 80) `static vma_node_t *vma_alloc_node(void)`
-  - `vma_rotate_left` (function, line 86) `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)`
-  - `vma_rotate_right` (function, line 98) `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)`
-  - `vma_insert_fixup` (function, line 110) `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)`
-  - `vma_tree_insert` (function, line 149) `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)`
-  - `vma_tree_find` (function, line 172) `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)`
-  - `vma_transplant` (function, line 184) `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)`
-  - `vma_tree_minimum` (function, line 191) `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
-  - `vma_delete_fixup` (function, line 196) `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
-  - `vma_tree_delete` (function, line 251) `int vma_tree_delete(vma_node_t **root, unsigned long base)`
+  - `vma_view_save` (function, line 66) `void vma_view_save(vma_view_t *v)`
+  - `vma_view_load` (function, line 77) `void vma_view_load(const vma_view_t *v)`
+  - `vma_tree_init` (function, line 88) `void vma_tree_init(void)`
+  - `vma_alloc_node` (function, line 102) `static vma_node_t *vma_alloc_node(void)`
+  - `vma_rotate_left` (function, line 108) `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)`
+  - `vma_rotate_right` (function, line 120) `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)`
+  - `vma_insert_fixup` (function, line 132) `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)`
+  - `vma_tree_insert` (function, line 171) `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)`
+  - `vma_tree_find` (function, line 197) `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)`
+  - `vma_tree_find_containing` (function, line 213) `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va)`
+  - `vma_transplant` (function, line 227) `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)`
+  - `vma_tree_minimum` (function, line 234) `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
+  - `vma_delete_fixup` (function, line 239) `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
+  - `vma_tree_delete` (function, line 294) `int vma_tree_delete(vma_node_t **root, unsigned long base)`
 - Depends on: `headers/vma.h`

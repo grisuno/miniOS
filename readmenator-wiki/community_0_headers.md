@@ -1,53 +1,65 @@
 # headers
 
-*Community 0 | 101 files | cohesion 0.77*
+*Community 0 | 154 files | cohesion 0.94*
 
 ## Definition
 
-This community groups 101 file(s) rooted at `headers` with dominant language c (cohesion 0.77). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`. Core file: `headers/kernel.h` (346 symbols). Documented purpose: SMP application-processor bootstrap stub..
+This community groups 154 file(s) rooted at `headers` with dominant language c (cohesion 0.94). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`. Core file: `headers/kernel.h` (376 symbols). Documented purpose: SMP application-processor bootstrap stub..
 
 ## Files
 
-### `headers` (31 files)
+### `headers` (53 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `headers/abi.h` | h | utility | 10 | yes |
 | `headers/ap_stub.h` | h | testing | 0 | yes |
 
-### `kernel` (27 files)
+### `kernel` (30 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `kernel/abi.c` | c | utility | 3 | yes |
 | `kernel/clip.c` | c | utility | 4 | yes |
 
-### `tests` (17 files)
+### `tests` (27 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `tests/test_abi.c` | c | testing | 2 | yes |
 | `tests/test_arena.c` | c | testing | 2 | yes |
 
-### `drivers` (5 files)
+### `drivers` (11 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `drivers/kbd.c` | c | infrastructure | 34 | yes |
-| `drivers/mouse.c` | c | infrastructure | 7 | yes |
+| `drivers/block.c` | c | infrastructure | 17 | yes |
+| `drivers/driver.c` | c | infrastructure | 8 | yes |
 
-### `.` (3 files)
+### `fs` (9 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `fs/ext4.c` | c | utility | 38 | yes |
+| `fs/fat32.c` | c | utility | 31 | yes |
+
+### `headers/drivers` (6 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `headers/drivers/kbd.h` | h | infrastructure | 23 | yes |
+
+### `.` (4 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `kernel.c` | c | utility | 15 | yes |
-| `smp.c` | c | utility | 39 | yes |
 
-### `arch/x86` (2 files)
+### `kernel/mm` (3 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `arch/x86/ap_entry.S` | S | utility | 9 | yes |
+| `kernel/mm/cow.c` | c | utility | 16 | yes |
 
 ### `arch/x86/boot` (2 files)
 
@@ -55,23 +67,11 @@ This community groups 101 file(s) rooted at `headers` with dominant language c (
 |------|----------|-------|---------|-----|
 | `arch/x86/boot/stage1.S` | S | utility | 11 | yes |
 
-### `fs` (2 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `fs/ramdisk.c` | c | infrastructure | 20 | yes |
-
 ### `headers/arch/x86` (2 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `headers/arch/x86/hal_io.h` | h | utility | 59 | yes |
-
-### `headers/drivers` (2 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `headers/drivers/kbd.h` | h | infrastructure | 23 | yes |
 
 ### `headers/kernel` (2 files)
 
@@ -79,17 +79,17 @@ This community groups 101 file(s) rooted at `headers` with dominant language c (
 |------|----------|-------|---------|-----|
 | `headers/kernel/console_in.h` | h | utility | 11 | yes |
 
-### `kernel/mm` (2 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `kernel/mm/cow.c` | c | utility | 15 | yes |
-
 ### `net` (2 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `net/net.c` | c | utility | 66 | yes |
+| `net/net.c` | c | utility | 69 | yes |
+
+### `arch/x86` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `arch/x86/ap_entry.S` | S | utility | 9 | yes |
 
 ### `headers/arch/x86/boot` (1 files)
 
@@ -103,7 +103,7 @@ This community groups 101 file(s) rooted at `headers` with dominant language c (
 |------|----------|-------|---------|-----|
 | `headers/net/rtl8139.h` | h | utility | 8 | no |
 
-*... and 81 more files in this community.*
+*... and 134 more files in this community.*
 
 
 ## Key Symbols
@@ -141,66 +141,64 @@ This community groups 101 file(s) rooted at `headers` with dominant language c (
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 214
-- Cross-boundary resolved imports (EXTRACTED): 65
+- Internal resolved imports (EXTRACTED): 359
+- Cross-boundary resolved imports (EXTRACTED): 24
 
 ## Connections
 
-- [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
-- [EXTRACTED] depends_on community 0 <-> 6 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
-- [EXTRACTED] depends_on community 2 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/rtc.c imports headers/kernel.h.
-- [EXTRACTED] depends_on community 3 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/virtio_blk.c imports headers/kernel.h.
-- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 8 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
-- [EXTRACTED] depends_on community 0 <-> 7 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
-- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
-- [EXTRACTED] depends_on community 9 <-> 0 (strength 0.9): Extracted import edge crosses communities: kernel/time.c imports headers/kernel.h.
-- [INFERRED] shares_context community 0 <-> 11 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 11 (progs/src).
+- [EXTRACTED] depends_on community 0 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
+- [EXTRACTED] depends_on community 6 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
+- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
+- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
+- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/ktime.h.
+- [EXTRACTED] depends_on community 0 <-> 1 (strength 0.9): Extracted import edge crosses communities: kernel.c imports headers/syscall_asm.h.
+- [INFERRED] shares_context community 0 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 8 (progs/src).
+- [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 10 (orphans).
 
 ## Risks
 
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/pipe.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/vma.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/pipe.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ldso.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/kernel.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/pipe.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/vma.h` via `subprocess` (3 hops)
-- [taint high] `mcp/minios_addons.py` -> `headers/kernel.h` via `subprocess` (2 hops)
-- [taint high] `mcp/minios_addons.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/pipe.h` via `subprocess` (3 hops)
+- [taint high] `mcp/mcp_dogfood.py` -> `headers/ldso.h` via `subprocess` (3 hops)
 - [layer strict] `tests/test_httpd.c` (testing) -> `headers/httpd.h` (presentation)
+- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_render.h` (presentation)
+- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_layout.h` (presentation)
+- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_gfxview.h` (presentation)
 - [dataflow DEAD_STORE] `drivers/sb16.c:259` `sb16_pump` `dst`: `dst` assigned at line 259 but never read afterwards.
-- [dataflow DEAD_STORE] `drivers/sb16.c:531` `sb16_init` `major`: `major` assigned at line 531 but never read afterwards.
 
 ## Open Questions
 
-- Why do 7 file(s) lack file-level docs (e.g. `arch/x86/syscall_entry.S`)? What purpose do they serve?
+- Why do 12 file(s) lack file-level docs (e.g. `headers/lz4_kernel.h`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.77?
+- Should headers be split, given cohesion 0.94?
 
 ## Sources
 
 - `arch/x86/ap_entry.S`
 - `arch/x86/boot/stage1.S`
 - `arch/x86/boot/stage2.S`
-- `arch/x86/syscall_entry.S`
+- `drivers/block.c`
+- `drivers/driver.c`
+- `drivers/ide.c`
 - `drivers/kbd.c`
 - `drivers/mouse.c`
 - `drivers/pcm2.c`
 - `drivers/pcspk.c`
+- `drivers/rtc.c`
 - `drivers/sb16.c`
-- `fs/ramdisk.c`
-- `fs/zip.c`
-- `headers/abi.h`
-- `headers/ap_stub.h`
-- `headers/arch/x86/boot/bootdefs.h`
-- `headers/arch/x86/hal_io.h`
-- `headers/arch/x86/msr.h`
-- `headers/arena.h`
-- `headers/drivers/kbd.h`
-- `headers/drivers/mouse.h`
-- `headers/editor.h`
-- *... and 81 more*
+- `drivers/virtio_blk.c`
+- `drivers/virtio_net.c`
+- `fs/ext4.c`
+- `fs/fat32.c`
+- `fs/fsimg.c`
+- `fs/kfile.c`
+- `fs/minifs.c`
+- `fs/pcache.c`
+- *... and 134 more*

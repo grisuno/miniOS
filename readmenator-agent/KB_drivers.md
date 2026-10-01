@@ -78,7 +78,7 @@
   - `PCI_MAX_BUS` (macro, line 15) `#define PCI_MAX_BUS`
   - `PCI_MAX_DEV` (macro, line 16) `#define PCI_MAX_DEV`
   - `PCI_MAX_FUNC` (macro, line 17) `#define PCI_MAX_FUNC`
-- Imported by: `drivers/virtio_blk.c`, `net/rtl8139.c`, `tests/test_pci.c`
+- Imported by: `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `net/rtl8139.c`, `tests/test_pci.c`
 
 ## headers/drivers/virtio_blk.h
 - Layer: infrastructure
@@ -90,5 +90,22 @@
   - `vblk_sectors` (function, line 13) `unsigned long vblk_sectors(void);`
   - `vblk_read_sectors` (function, line 14) `int vblk_read_sectors(unsigned lba, unsigned count, void *buf);`
   - `vblk_write_sectors` (function, line 15) `int vblk_write_sectors(unsigned lba, unsigned count, const void *buf);`
+  - `vblk_register_device` (function, line 18) `void vblk_register_device(void);`
   - `DRIVERS_VIRTIO_BLK_H` (macro, line 9) `#define DRIVERS_VIRTIO_BLK_H`
-- Imported by: `drivers/virtio_blk.c`, `kernel/shell.c`
+- Imported by: `drivers/block.c`, `drivers/virtio_blk.c`, `kernel.c`, `kernel/shell.c`
+
+## headers/drivers/virtio_net.h
+- Layer: infrastructure
+- Doc: Docstring: drivers/virtio_net.h -- virtio-net boundary.
+- Language: h
+- Symbols:
+  - `vnet_init` (function, line 16) `int vnet_init(void);`
+  - `vnet_present` (function, line 19) `int vnet_present(void);`
+  - `failure` (function, line 22) `* 0 on failure (no device, oversize, or TX deadline expiry). Pads * short frames to 60 bytes like the rtl8139 path. */ int vnet_send(const unsigned char *frame, unsigned len);`
+  - `vnet_poll` (function, line 28) `void vnet_poll(void);`
+  - `vnet_get_mac` (function, line 31) `void vnet_get_mac(unsigned char out[6]);`
+  - `vnet_iobase` (function, line 34) `unsigned short vnet_iobase(void);`
+  - `vnet_counters` (function, line 37) `void vnet_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
+  - `vnet_link_up` (function, line 40) `int vnet_link_up(void);`
+  - `DRIVERS_VIRTIO_NET_H` (macro, line 10) `#define DRIVERS_VIRTIO_NET_H`
+- Imported by: `drivers/virtio_net.c`, `kernel/shell.c`, `net/net.c`

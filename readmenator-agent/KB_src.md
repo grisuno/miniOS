@@ -340,16 +340,18 @@
 
 ## progs/src/ftest.c
 - Layer: testing
-- Doc: Exercises the kernel libc surface used by loaded .o programs: fprintf to stdout/stderr, snprintf into a buffer, and exit
+- Doc: Exercises the kernel libc surface used by loaded .o programs:
 - Language: c
 - Symbols:
-  - `main` (function, line 10) `int main(int argc, char **argv)`
-  - `fprintf` (function, line 3) `extern int fprintf(void *stream, const char *fmt, ...);`
-  - `snprintf` (function, line 4) `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);`
-  - `printf` (function, line 5) `extern int printf(const char *fmt, ...);`
-  - `exit` (function, line 6) `extern void exit(int code);`
-  - `stdout` (variable, line 7) `extern void *stdout;`
-  - `stderr` (variable, line 8) `extern void *stderr;`
+  - `main` (function, line 13) `int main(int argc, char **argv)`
+  - `fprintf` (function, line 4) `extern int fprintf(void *stream, const char *fmt, ...);`
+  - `snprintf` (function, line 5) `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);`
+  - `printf` (function, line 6) `extern int printf(const char *fmt, ...);`
+  - `exit` (function, line 7) `extern void exit(int code);`
+  - `fopen` (function, line 11) `extern void *fopen(const char *path, const char *mode);`
+  - `stdout` (variable, line 8) `extern void *stdout;`
+  - `stderr` (variable, line 9) `extern void *stderr;`
+  - `errno` (variable, line 10) `extern int errno;`
 
 ## progs/src/hello.c
 - Layer: utility
@@ -553,6 +555,17 @@
   - `_start` (function, line 35) `void _start(void)`
   - `ENOMEM` (function, line 3) `* downward mmap cursor drains until a map fails with ENOMEM (-12);`
 
+## progs/src/mprot.c
+- Layer: utility
+- Doc: mprotect probe. Maps two anonymous regions and walks the protection
+- Language: c
+- Symbols:
+  - `mmap_anon` (function, line 11) `static long mmap_anon(long len)`
+  - `mprotect_sys` (function, line 25) `static long mprotect_sys(long addr, long len, long prot)`
+  - `write_str` (function, line 36) `static long write_str(const char *s, long n)`
+  - `exit_now` (function, line 44) `static void exit_now(long code)`
+  - `_start` (function, line 48) `void _start(void)`
+
 ## progs/src/mthreads.h
 - Layer: utility
 - Doc: mthreads.h -- Minimal pthread-like threads for MiniOS ELFs (roadmap
@@ -579,7 +592,7 @@
   - `MMUTEX_CONTENDED` (macro, line 33) `#define MMUTEX_CONTENDED`
   - `MMUTEX_SPINS` (macro, line 34) `#define MMUTEX_SPINS`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/src/fptest.c`, `progs/src/thdemo.c`
+- Imported by: `progs/src/fptest.c`, `progs/src/scfuzz.c`, `progs/src/thdemo.c`
 
 ## progs/src/mvrn.c
 - Layer: utility
@@ -626,6 +639,20 @@
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 - Imported by: `progs/piano/piano.c`
 
+## progs/src/pcmap.c
+- Layer: utility
+- Doc: pcmap probe: file-backed MAP_PRIVATE mmap shares text.
+- Language: c
+- Symbols:
+  - `sc_open` (function, line 12) `static long sc_open(const char *p)`
+  - `sc_mmap` (function, line 21) `static long sc_mmap(long len, long prot, long flags, long fd, long off)`
+  - `sc_write` (function, line 34) `static long sc_write(long fd, const char *s, long n)`
+  - `sc_exit` (function, line 42) `static void sc_exit(long code)`
+  - `sc_fnv` (function, line 46) `static unsigned long sc_fnv(const char *p, long n)`
+  - `sc_hex8` (function, line 56) `static void sc_hex8(unsigned long v, char *out)`
+  - `sc_munmap` (function, line 65) `static long sc_munmap(long addr, long len)`
+  - `_start` (function, line 75) `void _start(void)`
+
 ## progs/src/pollready.c
 - Layer: utility
 - Language: c
@@ -655,6 +682,33 @@
   - `BUF` (macro, line 26) `#define BUF`
   - `WINDOW_MS` (macro, line 27) `#define WINDOW_MS`
 - Depends on: `progs/minios_abi.h`
+
+## progs/src/scfuzz.c
+- Layer: utility
+- Doc: scfuzz: deterministic syscall fuzzer (syzkaller spirit, BDD scale).
+- Language: c
+- Symbols:
+  - `guest` (function, line 7) `* the guest (the BDD timeout then talks). All fuzz maps stay inside
+ * one private 4 MB arena (pa...`
+  - `sc_mprotect` (function, line 38) `static long sc_mprotect(long addr, long len, long prot)`
+  - `sc_munmap` (function, line 49) `static long sc_munmap(long addr, long len)`
+  - `sc_write` (function, line 53) `static long sc_write(long fd, const char *s, long n)`
+  - `sc_exit` (function, line 61) `static void sc_exit(long code)`
+  - `sc_rng` (function, line 67) `static unsigned long sc_rng(unsigned long *s)`
+  - `sc_fold` (function, line 76) `static unsigned long sc_fold(unsigned long h, unsigned long v)`
+  - `sc_hex8` (function, line 88) `static void sc_hex8(unsigned long v, char *out)`
+  - `sc_worker` (function, line 97) `static unsigned long sc_worker(int me, unsigned long seed)`
+  - `sc_thread1` (function, line 154) `static void *sc_thread1(void *arg)`
+  - `_start` (function, line 160) `void _start(void)`
+  - `SC_OPS` (macro, line 15) `#define SC_OPS`
+  - `SC_ARENA` (macro, line 16) `#define SC_ARENA`
+  - `SC_PAGE` (macro, line 17) `#define SC_PAGE`
+  - `SC_PAGES` (macro, line 18) `#define SC_PAGES`
+  - `SC_T0_BASE` (macro, line 19) `#define SC_T0_BASE`
+  - `SC_T0_N` (macro, line 20) `#define SC_T0_N`
+  - `SC_T1_BASE` (macro, line 21) `#define SC_T1_BASE`
+  - `SC_T1_N` (macro, line 22) `#define SC_T1_N`
+- Depends on: `progs/src/mthreads.h`
 
 ## progs/src/shell.py
 - Layer: utility

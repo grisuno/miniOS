@@ -1,113 +1,87 @@
 # headers
 
-*Community 6 | 18 files | cohesion 0.69*
+*Community 6 | 9 files | cohesion 0.63*
 
 ## Definition
 
-This community groups 18 file(s) rooted at `headers` with dominant language h (cohesion 0.69). Central symbols: `CHECK`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`, `DOCK_BOUNCE_TICKS`, `DOCK_CRYSTAL_STEP`, `DOCK_GAP`, `DOCK_LABEL_GAP`. Core file: `kernel/vga_fb.c` (199 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
+This community groups 9 file(s) rooted at `headers` with dominant language c (cohesion 0.63). Central symbols: `CHECK`, `PORT_IO_DEFINED`, `TLS_ALERT_LEVEL_FATAL`, `TLS_ALERT_LEVEL_WARNING`, `TLS_BN_384_WORDS`, `TLS_BN_4096_WORDS`, `TLS_BN_WORDS`, `TLS_CERT_MAX`. Core file: `net/tls_crypto.c` (78 symbols). Documented purpose: Portability shim between the MiniOS kernel and the host-side test.
 
 ## Files
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `headers/desktop_icons.h` | h | utility | 3 | yes |
-| `headers/desktop_shortcuts.h` | h | utility | 27 | yes |
-| `headers/drivers/modifiers.h` | h | infrastructure | 11 | yes |
-| `headers/vga_fx.h` | h | utility | 9 | yes |
-| `headers/wm_events.h` | h | infrastructure | 39 | yes |
-| `headers/wm_focus.h` | h | utility | 5 | yes |
-| `headers/wm_geom.h` | h | utility | 11 | yes |
-| `headers/wm_gfxview.h` | h | presentation | 15 | yes |
-| `headers/wm_layout.h` | h | presentation | 16 | yes |
-| `headers/wm_notify.h` | h | utility | 9 | yes |
-| `headers/wm_render.h` | h | presentation | 5 | yes |
-| `headers/wm_tiling.h` | h | utility | 3 | yes |
-| `headers/wm_window.h` | h | utility | 10 | yes |
-| `kernel/vga_fb.c` | c | utility | 199 | no |
-| `tests/test_fx.c` | c | testing | 2 | yes |
-| `tests/test_modifiers.c` | c | testing | 2 | no |
-| `tests/test_notify.c` | c | testing | 3 | no |
-| `tests/test_wm.c` | c | testing | 2 | yes |
+| `headers/tls.h` | h | utility | 73 | yes |
+| `headers/tls_port.h` | h | utility | 49 | yes |
+| `headers/tls_roots.h` | h | utility | 0 | yes |
+| `headers/tls_test_roots.h` | h | testing | 0 | yes |
+| `net/tls.c` | c | utility | 27 | yes |
+| `net/tls_crypto.c` | c | utility | 78 | yes |
+| `net/tls_x509.c` | c | utility | 23 | yes |
+| `progs/tls_u/tls_u_main.c` | c | utility | 5 | yes |
+| `tls_test.c` | c | testing | 23 | yes |
 
 ## Key Symbols
 
-- `DESKTOP_ICONS_H` (macro, `headers/desktop_icons.h:8`) `#define DESKTOP_ICONS_H`
-- `ICON_EMBEDDED_W` (macro, `headers/desktop_icons.h:12`) `#define ICON_EMBEDDED_W`
-- `ICON_EMBEDDED_H` (macro, `headers/desktop_icons.h:13`) `#define ICON_EMBEDDED_H`
-- `DESKTOP_SHORTCUTS_H` (macro, `headers/desktop_shortcuts.h:13`) `#define DESKTOP_SHORTCUTS_H`
-- `MAX_SHORTCUTS` (macro, `headers/desktop_shortcuts.h:18`) `#define MAX_SHORTCUTS`
-- `SHORTCUT_NAME_LEN` (macro, `headers/desktop_shortcuts.h:19`) `#define SHORTCUT_NAME_LEN`
-- `SHORTCUT_CMD_LEN` (macro, `headers/desktop_shortcuts.h:20`) `#define SHORTCUT_CMD_LEN`
-- `SHORTCUT_PATH_LEN` (macro, `headers/desktop_shortcuts.h:21`) `#define SHORTCUT_PATH_LEN`
-- `ICON_W` (macro, `headers/desktop_shortcuts.h:24`) `#define ICON_W`
-- `ICON_H` (macro, `headers/desktop_shortcuts.h:25`) `#define ICON_H`
-- `ICON_PAD_X` (macro, `headers/desktop_shortcuts.h:26`) `#define ICON_PAD_X`
-- `ICON_PAD_Y` (macro, `headers/desktop_shortcuts.h:27`) `#define ICON_PAD_Y`
-- `ICON_LABEL_H` (macro, `headers/desktop_shortcuts.h:28`) `#define ICON_LABEL_H`
-- `DOCK_PAD_X` (macro, `headers/desktop_shortcuts.h:33`) `#define DOCK_PAD_X`
-- `DOCK_PAD_Y` (macro, `headers/desktop_shortcuts.h:34`) `#define DOCK_PAD_Y`
-- `DOCK_GAP` (macro, `headers/desktop_shortcuts.h:35`) `#define DOCK_GAP`
-- `DOCK_LABEL_GAP` (macro, `headers/desktop_shortcuts.h:36`) `#define DOCK_LABEL_GAP`
-- `DOCK_CRYSTAL_STEP` (macro, `headers/desktop_shortcuts.h:41`) `#define DOCK_CRYSTAL_STEP`
-- `DOCK_MAG_W` (macro, `headers/desktop_shortcuts.h:48`) `#define DOCK_MAG_W`
-- `DOCK_MAG_H` (macro, `headers/desktop_shortcuts.h:49`) `#define DOCK_MAG_H`
-- `DOCK_NEAR_W` (macro, `headers/desktop_shortcuts.h:50`) `#define DOCK_NEAR_W`
-- `DOCK_NEAR_H` (macro, `headers/desktop_shortcuts.h:51`) `#define DOCK_NEAR_H`
-- `DOCK_BOUNCE_H` (macro, `headers/desktop_shortcuts.h:57`) `#define DOCK_BOUNCE_H`
-- `DOCK_BOUNCE_TICKS` (macro, `headers/desktop_shortcuts.h:58`) `#define DOCK_BOUNCE_TICKS`
-- `ICON_PAL_BASE` (macro, `headers/desktop_shortcuts.h:65`) `#define ICON_PAL_BASE`
-- `ICON_PAL_SIZE` (macro, `headers/desktop_shortcuts.h:66`) `#define ICON_PAL_SIZE`
-- `desktop_shortcut` (struct, `headers/desktop_shortcuts.h:72`) - A decoded+cached desktop shortcut. Pixels are raw RGBA bytes (ICON_W*ICON_H*4): the PNG's own colors
-- `desktop_shortcuts_load` (function, `headers/desktop_shortcuts.h:82`) `void desktop_shortcuts_load(void);` - Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desk
-- `desktop_shortcuts_draw` (function, `headers/desktop_shortcuts.h:85`) `void desktop_shortcuts_draw(void);` - Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desk
-- `desktop_shortcuts_hit_test` (function, `headers/desktop_shortcuts.h:89`) `const char *desktop_shortcuts_hit_test(int mx, int my);` - Handle a left-click at (mx, my).  Returns the command string if the * click hit an icon, or NULL oth
+- `TLS_H` (macro, `headers/tls.h:2`) `#define TLS_H`
+- `TLS_CT_CCS` (macro, `headers/tls.h:7`) `#define TLS_CT_CCS`
+- `TLS_CT_ALERT` (macro, `headers/tls.h:8`) `#define TLS_CT_ALERT`
+- `TLS_CT_HANDSHAKE` (macro, `headers/tls.h:9`) `#define TLS_CT_HANDSHAKE`
+- `TLS_CT_APPDATA` (macro, `headers/tls.h:10`) `#define TLS_CT_APPDATA`
+- `TLS_REC_HEADER` (macro, `headers/tls.h:11`) `#define TLS_REC_HEADER`
+- `TLS_REC_MAX` (macro, `headers/tls.h:12`) `#define TLS_REC_MAX`
+- `TLS_MSG_MAX` (macro, `headers/tls.h:13`) `#define TLS_MSG_MAX`
+- `TLS_PLAIN_MAX` (macro, `headers/tls.h:14`) `#define TLS_PLAIN_MAX`
+- `TLS_VERSION_TLS12` (macro, `headers/tls.h:15`) `#define TLS_VERSION_TLS12`
+- `TLS_VERSION_TLS10` (macro, `headers/tls.h:16`) `#define TLS_VERSION_TLS10`
+- `TLS_HS_CLIENT_HELLO` (macro, `headers/tls.h:19`) `#define TLS_HS_CLIENT_HELLO`
+- `TLS_HS_SERVER_HELLO` (macro, `headers/tls.h:20`) `#define TLS_HS_SERVER_HELLO`
+- `TLS_HS_CERTIFICATE` (macro, `headers/tls.h:21`) `#define TLS_HS_CERTIFICATE`
+- `TLS_HS_SERVER_KEY_EXCHANGE` (macro, `headers/tls.h:22`) `#define TLS_HS_SERVER_KEY_EXCHANGE`
+- `TLS_HS_SERVER_HELLO_DONE` (macro, `headers/tls.h:23`) `#define TLS_HS_SERVER_HELLO_DONE`
+- `TLS_HS_CLIENT_KEY_EXCHANGE` (macro, `headers/tls.h:24`) `#define TLS_HS_CLIENT_KEY_EXCHANGE`
+- `TLS_HS_FINISHED` (macro, `headers/tls.h:25`) `#define TLS_HS_FINISHED`
+- `TLS_CSUITE_ECDHE_RSA_AES128GCM` (macro, `headers/tls.h:28`) `#define TLS_CSUITE_ECDHE_RSA_AES128GCM`
+- `TLS_CSUITE_ECDHE_ECDSA_AES128GCM` (macro, `headers/tls.h:29`) `#define TLS_CSUITE_ECDHE_ECDSA_AES128GCM`
+- `TLS_SIG_RSA_PKCS1_SHA256` (macro, `headers/tls.h:32`) `#define TLS_SIG_RSA_PKCS1_SHA256`
+- `TLS_SIG_ECDSA_P256_SHA256` (macro, `headers/tls.h:33`) `#define TLS_SIG_ECDSA_P256_SHA256`
+- `TLS_SIG_ECDSA_P384_SHA384` (macro, `headers/tls.h:34`) `#define TLS_SIG_ECDSA_P384_SHA384`
+- `TLS_GROUP_SECP256R1` (macro, `headers/tls.h:37`) `#define TLS_GROUP_SECP256R1`
+- `TLS_EXT_SERVER_NAME` (macro, `headers/tls.h:40`) `#define TLS_EXT_SERVER_NAME`
+- `TLS_EXT_SUPPORTED_GROUPS` (macro, `headers/tls.h:41`) `#define TLS_EXT_SUPPORTED_GROUPS`
+- `TLS_EXT_EC_POINT_FORMATS` (macro, `headers/tls.h:42`) `#define TLS_EXT_EC_POINT_FORMATS`
+- `TLS_EXT_SIGNATURE_ALGS` (macro, `headers/tls.h:43`) `#define TLS_EXT_SIGNATURE_ALGS`
+- `TLS_ALERT_LEVEL_WARNING` (macro, `headers/tls.h:46`) `#define TLS_ALERT_LEVEL_WARNING`
+- `TLS_ALERT_LEVEL_FATAL` (macro, `headers/tls.h:47`) `#define TLS_ALERT_LEVEL_FATAL`
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 27
-- Cross-boundary resolved imports (EXTRACTED): 12
+- Internal resolved imports (EXTRACTED): 12
+- Cross-boundary resolved imports (EXTRACTED): 7
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 6 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
+- [EXTRACTED] depends_on community 6 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 6 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
+- [EXTRACTED] depends_on community 6 <-> 0 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports headers/kernel.h.
+- [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (arch/x86) and community 6 (headers).
 
 ## Risks
 
-- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_render.h` (presentation)
-- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_layout.h` (presentation)
-- [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_gfxview.h` (presentation)
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2452` `taskbar_render` `lx`: `lx` assigned at line 2452 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2804` `line` `rows_before`: `rows_before` assigned at line 2804 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3497` `wallpaper_ensure` `d`: `d` assigned at line 3497 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3622` `icon_decode` `dst`: `dst` assigned at line 3622 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3641` `icon_embedded_rgba` `dst`: `dst` assigned at line 3641 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4200` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 4200 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4201` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 4201 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4203` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 4203 but never read afterwards.
+- [dataflow UNINIT_USE] `net/tls_crypto.c:1227` `ecdsa_verify` `gen`: `gen` may be read before initialization (declared line 1223).
 
 ## Open Questions
 
-- Why do 3 file(s) lack file-level docs (e.g. `kernel/vga_fb.c`)? What purpose do they serve?
 - What would break if the most connected file in headers changed?
-- Should headers be split, given cohesion 0.69?
+- Should headers be split, given cohesion 0.63?
 
 ## Sources
 
-- `headers/desktop_icons.h`
-- `headers/desktop_shortcuts.h`
-- `headers/drivers/modifiers.h`
-- `headers/vga_fx.h`
-- `headers/wm_events.h`
-- `headers/wm_focus.h`
-- `headers/wm_geom.h`
-- `headers/wm_gfxview.h`
-- `headers/wm_layout.h`
-- `headers/wm_notify.h`
-- `headers/wm_render.h`
-- `headers/wm_tiling.h`
-- `headers/wm_window.h`
-- `kernel/vga_fb.c`
-- `tests/test_fx.c`
-- `tests/test_modifiers.c`
-- `tests/test_notify.c`
-- `tests/test_wm.c`
+- `headers/tls.h`
+- `headers/tls_port.h`
+- `headers/tls_roots.h`
+- `headers/tls_test_roots.h`
+- `net/tls.c`
+- `net/tls_crypto.c`
+- `net/tls_x509.c`
+- `progs/tls_u/tls_u_main.c`
+- `tls_test.c`

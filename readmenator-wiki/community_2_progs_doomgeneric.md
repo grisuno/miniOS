@@ -1,18 +1,24 @@
 # progs/doomgeneric
 
-*Community 4 | 124 files | cohesion 0.64*
+*Community 2 | 62 files | cohesion 0.67*
 
 ## Definition
 
-This community groups 124 file(s) rooted at `progs/doomgeneric` with dominant language c (cohesion 0.64). Central symbols: `ANG1`, `ANG180`, `ANG1_X`, `ANG270`, `ANG45`, `ANG60`, `ANG90`, `ANGLETOFINESHIFT`. Core file: `progs/vedit/vedit.c` (243 symbols). Documented purpose: Unified audio API for MiniOS..
+This community groups 62 file(s) rooted at `progs/doomgeneric` with dominant language c (cohesion 0.67). Central symbols: `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`, `AUDIO_H`, `AUDIO_RATE_DEFAULT`, `AllocTracker`, `BACKBUF`, `BEZIER_PAD`. Core file: `progs/vedit/vedit.c` (243 symbols). Documented purpose: Unified audio API for MiniOS..
 
 ## Files
 
-### `progs/doomgeneric` (70 files)
+### `progs/doomgeneric` (9 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/doomgeneric/config.h` | h | infrastructure | 16 | yes |
+| `progs/doomgeneric/doomgeneric.c` | c | utility | 1 | no |
+
+### `progs/src` (9 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/src/audio.c` | c | infrastructure | 17 | no |
 
 ### `tests` (9 files)
 
@@ -26,12 +32,6 @@ This community groups 124 file(s) rooted at `progs/doomgeneric` with dominant la
 |------|----------|-------|---------|-----|
 | `progs/nuklear/cvm_emit.c` | c | utility | 56 | yes |
 
-### `progs/src` (8 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `progs/src/audio.c` | c | infrastructure | 17 | no |
-
 ### `progs/wl` (5 files)
 
 | File | Language | Layer | Symbols | Doc |
@@ -42,7 +42,7 @@ This community groups 124 file(s) rooted at `progs/doomgeneric` with dominant la
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/minios_abi.h` | h | utility | 146 | yes |
+| `progs/minios_abi.h` | h | utility | 150 | yes |
 
 ### `headers` (2 files)
 
@@ -122,13 +122,13 @@ This community groups 124 file(s) rooted at `progs/doomgeneric` with dominant la
 |------|----------|-------|---------|-----|
 | `progs/pokemon/platform_minios.c` | c | data_access | 111 | no |
 
-### `progs/pokemon/minios_stubs` (1 files)
+### `progs/topogpt3` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/pokemon/minios_stubs/SDL.h` | h | testing | 10 | yes |
+| `progs/topogpt3/topogpt3.c` | c | utility | 128 | no |
 
-*... and 104 more files in this community.*
+*... and 42 more files in this community.*
 
 
 ## Key Symbols
@@ -166,17 +166,17 @@ This community groups 124 file(s) rooted at `progs/doomgeneric` with dominant la
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 268
-- Cross-boundary resolved imports (EXTRACTED): 155
+- Internal resolved imports (EXTRACTED): 119
+- Cross-boundary resolved imports (EXTRACTED): 59
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 8 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
-- [EXTRACTED] depends_on community 10 <-> 4 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/am_map.c imports progs/doomgeneric/doomkeys.h.
-- [EXTRACTED] depends_on community 4 <-> 9 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
-- [EXTRACTED] depends_on community 11 <-> 4 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 1 <-> 4 (strength 0.9): Extracted import edge crosses communities: tests/test_driver.c imports kernel/string.c.
+- [EXTRACTED] depends_on community 0 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
+- [EXTRACTED] depends_on community 6 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 7 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
+- [EXTRACTED] depends_on community 2 <-> 4 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
+- [EXTRACTED] depends_on community 8 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
+- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (arch/x86) and community 2 (progs/doomgeneric).
 
 ## Risks
 
@@ -191,16 +191,12 @@ This community groups 124 file(s) rooted at `progs/doomgeneric` with dominant la
 - [dataflow UNINIT_USE] `progs/doomgeneric/doomgeneric_minios.c:235` `DG_Init` `myargv`: `myargv` may be read before initialization (declared line 234).
 - [dataflow DEAD_STORE] `progs/doomgeneric/doomgeneric_minios.c:251` `DG_DrawFrame` `dst`: `dst` assigned at line 251 but never read afterwards.
 - [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/doomgeneric_soso.c:144` `DG_Init` `FrameBuffer`: Result of allocator stored in `FrameBuffer` is never checked against NULL.
-- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/i_system.c:77` `I_AtExit` `entry`: Result of allocator stored in `entry` is never checked against NULL.
-- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/i_system.c:286` `EscapeShellString` `result`: Result of allocator stored in `result` is never checked against NULL.
-- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/i_system.c:338` `ZenityErrorBox` `errorboxpath`: Result of allocator stored in `errorboxpath` is never checked against NULL.
-- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/m_argv.c:109` `LoadResponseFile` `file`: Result of allocator stored in `file` is never checked against NULL.
 
 ## Open Questions
 
-- Why do 14 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric.c`)? What purpose do they serve?
+- Why do 11 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric.c`)? What purpose do they serve?
 - What would break if the most connected file in progs/doomgeneric changed?
-- Should progs/doomgeneric be split, given cohesion 0.64?
+- Should progs/doomgeneric be split, given cohesion 0.67?
 
 ## Sources
 
@@ -208,20 +204,20 @@ This community groups 124 file(s) rooted at `progs/doomgeneric` with dominant la
 - `headers/leakcheck.h`
 - `kernel/string.c`
 - `progs/doomedit/doomedit.c`
-- `progs/doomgeneric/config.h`
-- `progs/doomgeneric/d_items.c`
-- `progs/doomgeneric/d_items.h`
-- `progs/doomgeneric/d_loop.c`
-- `progs/doomgeneric/d_mode.c`
-- `progs/doomgeneric/d_player.h`
-- `progs/doomgeneric/d_textur.h`
-- `progs/doomgeneric/d_think.h`
-- `progs/doomgeneric/d_ticcmd.h`
-- `progs/doomgeneric/doomdata.h`
 - `progs/doomgeneric/doomgeneric.c`
 - `progs/doomgeneric/doomgeneric.h`
 - `progs/doomgeneric/doomgeneric_minios.c`
-- `progs/doomgeneric/doomgeneric_sdl.c`
 - `progs/doomgeneric/doomgeneric_soso.c`
 - `progs/doomgeneric/doomgeneric_sosox.c`
-- *... and 104 more*
+- `progs/doomgeneric/doomgeneric_win.c`
+- `progs/doomgeneric/doomgeneric_xlib.c`
+- `progs/doomgeneric/memio.c`
+- `progs/doomgeneric/memio.h`
+- `progs/file/file.c`
+- `progs/file/file_assoc.h`
+- `progs/freedomui/freedomui_minios.c`
+- `progs/lisp/lisp.c`
+- `progs/lua/lua_main.c`
+- `progs/micropython/variants/minios/minios_module.c`
+- `progs/minicraft/minicraft.c`
+- *... and 42 more*

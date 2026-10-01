@@ -1,10 +1,10 @@
 # orphans
 
-*Community 13 | 94 files | cohesion 0.00*
+*Community 10 | 96 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 94 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
+This community groups 96 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
@@ -15,7 +15,7 @@ This community groups 94 file(s) rooted at `tools` with dominant language c (coh
 | `tools/boot_run.sh` | sh | utility | 0 | yes |
 | `tools/check_abi_numbers.py` | py | utility | 4 | yes |
 
-### `progs/src` (28 files)
+### `progs/src` (30 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -98,7 +98,7 @@ This community groups 94 file(s) rooted at `tools` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 74 more files in this community.*
+*... and 76 more files in this community.*
 
 
 ## Key Symbols
@@ -107,11 +107,11 @@ This community groups 94 file(s) rooted at `tools` with dominant language c (coh
 - `switch_save_only` (function, `arch/x86/ctx_sw.S:82`)
 - `switch_to` (function, `arch/x86/ctx_sw.S:91`)
 - `switch_to_notrap` (function, `arch/x86/ctx_sw.S:134`)
-- `user_trampoline` (function, `arch/x86/ctx_sw.S:223`)
-- `fork_trampoline` (function, `arch/x86/ctx_sw.S:235`)
-- `exec_enter` (function, `arch/x86/ctx_sw.S:251`)
-- `resume_iretq` (function, `arch/x86/ctx_sw.S:280`)
-- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:320`)
+- `user_trampoline` (function, `arch/x86/ctx_sw.S:221`)
+- `fork_trampoline` (function, `arch/x86/ctx_sw.S:233`)
+- `exec_enter` (function, `arch/x86/ctx_sw.S:249`)
+- `resume_iretq` (function, `arch/x86/ctx_sw.S:278`)
+- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:318`)
 - `tf_rax` (function, `arch/x86/isr_stubs.S:67`)
 - `tf_rbx` (function, `arch/x86/isr_stubs.S:68`)
 - `tf_rcx` (function, `arch/x86/isr_stubs.S:69`)
@@ -141,7 +141,7 @@ This community groups 94 file(s) rooted at `tools` with dominant language c (coh
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 13 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 13 (orphans).
+- [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 10 (orphans).
 
 ## Risks
 
@@ -175,4 +175,4 @@ This community groups 94 file(s) rooted at `tools` with dominant language c (coh
 - `progs/asm/w1.s`
 - `progs/doomgeneric/doom.h`
 - `progs/doomgeneric/icon.c`
-- *... and 74 more*
+- *... and 76 more*

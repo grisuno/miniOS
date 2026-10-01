@@ -1,39 +1,44 @@
 # progs/doomgeneric
 
-*Community 10 | 113 files | cohesion 0.79*
+*Community 7 | 175 files | cohesion 0.95*
 
 ## Definition
 
-This community groups 113 file(s) rooted at `progs/doomgeneric` with dominant language h (cohesion 0.79). Central symbols: `AMSTR_FOLLOWOFF`, `AMSTR_FOLLOWON`, `AMSTR_GRIDOFF`, `AMSTR_GRIDON`, `AMSTR_MARKEDSPOT`, `AMSTR_MARKSCLEARED`, `AM_Drawer`, `AM_LevelInit`. Core file: `progs/doomgeneric/d_englsh.h` (286 symbols). Documented purpose: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the .
+This community groups 175 file(s) rooted at `progs/doomgeneric` with dominant language h (cohesion 0.95). Central symbols: `AMSTR_FOLLOWOFF`, `AMSTR_FOLLOWON`, `AMSTR_GRIDOFF`, `AMSTR_GRIDON`, `AMSTR_MARKEDSPOT`, `AMSTR_MARKSCLEARED`, `AM_Drawer`, `AM_LevelInit`. Core file: `progs/doomgeneric/d_englsh.h` (286 symbols). Documented purpose: Copyright(C) 1993-1996 Id Software, Inc. Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it and/or modify it under the .
 
 ## Files
 
-### `progs/doomgeneric` (113 files)
+### `progs/doomgeneric` (174 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/doomgeneric/am_map.c` | c | utility | 87 | yes |
 | `progs/doomgeneric/am_map.h` | h | utility | 8 | yes |
+| `progs/doomgeneric/config.h` | h | infrastructure | 16 | yes |
 | `progs/doomgeneric/d_englsh.h` | h | utility | 286 | yes |
 | `progs/doomgeneric/d_event.c` | c | infrastructure | 3 | yes |
 | `progs/doomgeneric/d_event.h` | h | infrastructure | 4 | yes |
+| `progs/doomgeneric/d_items.c` | c | utility | 0 | yes |
+| `progs/doomgeneric/d_items.h` | h | utility | 3 | yes |
 | `progs/doomgeneric/d_iwad.c` | c | utility | 27 | yes |
 | `progs/doomgeneric/d_iwad.h` | h | utility | 14 | yes |
+| `progs/doomgeneric/d_loop.c` | c | utility | 18 | yes |
 | `progs/doomgeneric/d_loop.h` | h | utility | 10 | yes |
 | `progs/doomgeneric/d_main.c` | c | utility | 29 | yes |
 | `progs/doomgeneric/d_main.h` | h | utility | 8 | yes |
+| `progs/doomgeneric/d_mode.c` | c | utility | 6 | yes |
 | `progs/doomgeneric/d_mode.h` | h | utility | 3 | yes |
 | `progs/doomgeneric/d_net.c` | c | utility | 8 | yes |
-| `progs/doomgeneric/deh_main.h` | h | utility | 12 | yes |
-| `progs/doomgeneric/deh_misc.h` | h | utility | 49 | yes |
-| `progs/doomgeneric/deh_str.h` | h | utility | 11 | yes |
-| `progs/doomgeneric/doomdef.c` | c | utility | 0 | yes |
-| `progs/doomgeneric/doomdef.h` | h | utility | 9 | yes |
-| `progs/doomgeneric/doomfeatures.h` | h | utility | 2 | yes |
-| `progs/doomgeneric/doomstat.c` | c | utility | 0 | yes |
-| `progs/doomgeneric/doomstat.h` | h | utility | 68 | yes |
+| `progs/doomgeneric/d_player.h` | h | utility | 5 | yes |
+| `progs/doomgeneric/d_textur.h` | h | utility | 2 | yes |
 
-*... and 93 more files in this community.*
+### `progs/pokemon/minios_stubs` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/pokemon/minios_stubs/SDL.h` | h | testing | 10 | yes |
+
+*... and 155 more files in this community.*
 
 
 ## Key Symbols
@@ -71,12 +76,13 @@ This community groups 113 file(s) rooted at `progs/doomgeneric` with dominant la
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 508
-- Cross-boundary resolved imports (EXTRACTED): 135
+- Internal resolved imports (EXTRACTED): 754
+- Cross-boundary resolved imports (EXTRACTED): 38
 
 ## Connections
 
-- [EXTRACTED] depends_on community 10 <-> 4 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/am_map.c imports progs/doomgeneric/doomkeys.h.
+- [EXTRACTED] depends_on community 7 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
+- [INFERRED] shares_context community 1 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (arch/x86) and community 7 (progs/doomgeneric).
 
 ## Risks
 
@@ -88,34 +94,38 @@ This community groups 113 file(s) rooted at `progs/doomgeneric` with dominant la
 - [dataflow DEAD_STORE] `progs/doomgeneric/g_game.c:1082` `G_PlayerReborn` `killcount`: `killcount` assigned at line 1082 but never read afterwards.
 - [dataflow DEAD_STORE] `progs/doomgeneric/g_game.c:1083` `G_PlayerReborn` `itemcount`: `itemcount` assigned at line 1083 but never read afterwards.
 - [dataflow DEAD_STORE] `progs/doomgeneric/g_game.c:1084` `G_PlayerReborn` `secretcount`: `secretcount` assigned at line 1084 but never read afterwards.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/i_system.c:77` `I_AtExit` `entry`: Result of allocator stored in `entry` is never checked against NULL.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/i_system.c:286` `EscapeShellString` `result`: Result of allocator stored in `result` is never checked against NULL.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/i_system.c:338` `ZenityErrorBox` `errorboxpath`: Result of allocator stored in `errorboxpath` is never checked against NULL.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/m_argv.c:109` `LoadResponseFile` `file`: Result of allocator stored in `file` is never checked against NULL.
 
 ## Open Questions
 
-- Why do 1 file(s) lack file-level docs (e.g. `progs/doomgeneric/statdump.h`)? What purpose do they serve?
+- Why do 4 file(s) lack file-level docs (e.g. `progs/doomgeneric/dummy.c`)? What purpose do they serve?
 - Can the cycle `progs/doomgeneric/r_data.h` -> `progs/doomgeneric/r_state.h` be broken with an interface?
 - What would break if the most connected file in progs/doomgeneric changed?
-- Should progs/doomgeneric be split, given cohesion 0.79?
+- Should progs/doomgeneric be split, given cohesion 0.95?
 
 ## Sources
 
 - `progs/doomgeneric/am_map.c`
 - `progs/doomgeneric/am_map.h`
+- `progs/doomgeneric/config.h`
 - `progs/doomgeneric/d_englsh.h`
 - `progs/doomgeneric/d_event.c`
 - `progs/doomgeneric/d_event.h`
+- `progs/doomgeneric/d_items.c`
+- `progs/doomgeneric/d_items.h`
 - `progs/doomgeneric/d_iwad.c`
 - `progs/doomgeneric/d_iwad.h`
+- `progs/doomgeneric/d_loop.c`
 - `progs/doomgeneric/d_loop.h`
 - `progs/doomgeneric/d_main.c`
 - `progs/doomgeneric/d_main.h`
+- `progs/doomgeneric/d_mode.c`
 - `progs/doomgeneric/d_mode.h`
 - `progs/doomgeneric/d_net.c`
-- `progs/doomgeneric/deh_main.h`
-- `progs/doomgeneric/deh_misc.h`
-- `progs/doomgeneric/deh_str.h`
-- `progs/doomgeneric/doomdef.c`
-- `progs/doomgeneric/doomdef.h`
-- `progs/doomgeneric/doomfeatures.h`
-- `progs/doomgeneric/doomstat.c`
-- `progs/doomgeneric/doomstat.h`
-- *... and 93 more*
+- `progs/doomgeneric/d_player.h`
+- `progs/doomgeneric/d_textur.h`
+- `progs/doomgeneric/d_think.h`
+- *... and 155 more*

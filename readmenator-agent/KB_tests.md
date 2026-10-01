@@ -288,6 +288,25 @@
   - `CHECK` (macro, line 14) `#define CHECK(c, m)`
 - Depends on: `headers/ktime.h`
 
+## tests/test_ldso.c
+- Layer: testing
+- Doc: Docstring: host test for the ld.so pure parser (make test-ldso).
+- Language: c
+- Symbols:
+  - `w16` (function, line 27) `static void w16(unsigned char *p, unsigned v)`
+  - `w32` (function, line 32) `static void w32(unsigned char *p, unsigned long v)`
+  - `w64` (function, line 39) `static void w64(unsigned char *p, unsigned long long v)`
+  - `build_tables` (function, line 92) `static void build_tables(unsigned char *img, int rela_type)`
+  - `main` (function, line 127) `int main(void)`
+  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
+  - `IMG_SZ` (macro, line 53) `#define IMG_SZ`
+  - `DYN_OFF` (macro, line 54) `#define DYN_OFF`
+  - `STR_OFF` (macro, line 55) `#define STR_OFF`
+  - `SYM_OFF` (macro, line 56) `#define SYM_OFF`
+  - `HASH_OFF` (macro, line 57) `#define HASH_OFF`
+  - `RELA_OFF` (macro, line 58) `#define RELA_OFF`
+- Depends on: `headers/ldso.h`, `kernel/ldso_parse.c`, `kernel/string.c`
+
 ## tests/test_leakcheck.c
 - Layer: testing
 - Doc: Docstring: host test for the leak tracker (make test-leakcheck).
@@ -376,6 +395,18 @@
   - `main` (function, line 39) `int main(void)`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `headers/panic.h`
+
+## tests/test_pcache.c
+- Layer: testing
+- Doc: Docstring: host test for the page cache store (make test-pcache).
+- Language: c
+- Symbols:
+  - `kmalloc` (function, line 19) `void *kmalloc(unsigned long size)`
+  - `kfree` (function, line 23) `void kfree(void *ptr)`
+  - `kprintf` (function, line 27) `int kprintf(const char *fmt, ...)`
+  - `main` (function, line 43) `int main(void)`
+  - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
+- Depends on: `fs/pcache.c`, `headers/kernel.h`, `headers/pcache.h`, `kernel/string.c`
 
 ## tests/test_pci.c
 - Layer: testing
@@ -544,7 +575,8 @@
   - `test_insert_find_delete` (function, line 89) `static void test_insert_find_delete(void)`
   - `test_pool_exhaustion` (function, line 136) `static void test_pool_exhaustion(void)`
   - `test_full_drain` (function, line 153) `static void test_full_drain(void)`
-  - `main` (function, line 167) `int main(void)`
+  - `test_file_tags_and_containing` (function, line 167) `static void test_file_tags_and_containing(void)`
+  - `main` (function, line 199) `int main(void)`
   - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
 - Depends on: `headers/vma.h`
 

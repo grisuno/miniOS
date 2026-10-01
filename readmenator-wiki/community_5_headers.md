@@ -4,34 +4,46 @@
 
 ## Definition
 
-This community groups 3 file(s) rooted at `headers` with dominant language c (cohesion 0.67). Central symbols: `BATCH_ERR_COUNT`, `BATCH_ERR_OPCODE`, `BATCH_ERR_PTR`, `BATCH_H`, `BATCH_MAX_OPS`, `BATCH_OK`, `BATCH_OP_GETPID`, `BATCH_OP_NOP`. Core file: `headers/batch.h` (12 symbols). Documented purpose: Docstring: batch.h -- Batched synchronous syscall submission..
+This community groups 3 file(s) rooted at `headers` with dominant language c (cohesion 0.67). Central symbols: `CHECK`, `TICK_CONFIG_DEFAULT`, `TICK_H`, `TICK_MAX_AUDIO_LISTENERS`, `TICK_MAX_DESKTOP_LISTENERS`, `dummy`, `main`, `rec_a`. Core file: `headers/tick.h` (13 symbols). Documented purpose: Docstring: Tick listener bus contract..
 
 ## Files
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `headers/batch.h` | h | utility | 12 | yes |
-| `kernel/batch.c` | c | utility | 1 | yes |
-| `tests/test_batch.c` | c | testing | 3 | yes |
+| `headers/tick.h` | h | utility | 13 | yes |
+| `kernel/tick.c` | c | utility | 9 | yes |
+| `tests/test_tick.c` | c | testing | 6 | yes |
 
 ## Key Symbols
 
-- `BATCH_H` (macro, `headers/batch.h:2`) `#define BATCH_H`
-- `BATCH_MAX_OPS` (macro, `headers/batch.h:41`) `#define BATCH_MAX_OPS`
-- `BATCH_OP_NOP` (macro, `headers/batch.h:43`) `#define BATCH_OP_NOP`
-- `BATCH_OP_YIELD` (macro, `headers/batch.h:44`) `#define BATCH_OP_YIELD`
-- `BATCH_OP_TIME` (macro, `headers/batch.h:45`) `#define BATCH_OP_TIME`
-- `BATCH_OP_GETPID` (macro, `headers/batch.h:46`) `#define BATCH_OP_GETPID`
-- `BATCH_OK` (macro, `headers/batch.h:48`) `#define BATCH_OK`
-- `BATCH_ERR_COUNT` (macro, `headers/batch.h:49`) `#define BATCH_ERR_COUNT`
-- `BATCH_ERR_PTR` (macro, `headers/batch.h:50`) `#define BATCH_ERR_PTR`
-- `BATCH_ERR_OPCODE` (macro, `headers/batch.h:51`) `#define BATCH_ERR_OPCODE`
-- `batch_op_t` (struct, `headers/batch.h:53`)
-- `batch_exec` (function, `headers/batch.h:62`) `long batch_exec(const batch_op_t *ops, long *results, int count, int *completed,`
-- `batch_exec` (function, `kernel/batch.c:19`) `long batch_exec(const batch_op_t *ops, long *results, int count,` - Docstring: Run ops in order, storing one result per index.  Returns BATCH_OK when every operation di
-- `CHECK` (macro, `tests/test_batch.c:17`) `#define CHECK(cond, msg)`
-- `stub_dispatch` (function, `tests/test_batch.c:24`) `static long stub_dispatch(uint32_t opcode)`
-- `main` (function, `tests/test_batch.c:31`) `int main(void)`
+- `TICK_H` (macro, `headers/tick.h:18`) `#define TICK_H`
+- `tick_config_t` (struct, `headers/tick.h:21`) - desktop effect, plus a pure gating predicate for the desktop tick.  Design: fixed-size tables, no he
+- `TICK_MAX_AUDIO_LISTENERS` (macro, `headers/tick.h:27`) `#define TICK_MAX_AUDIO_LISTENERS`
+- `TICK_MAX_DESKTOP_LISTENERS` (macro, `headers/tick.h:29`) `#define TICK_MAX_DESKTOP_LISTENERS`
+- `TICK_CONFIG_DEFAULT` (macro, `headers/tick.h:32`) `#define TICK_CONFIG_DEFAULT`
+- `tick_reset` (function, `headers/tick.h:41`) `void tick_reset(void);` - #define TICK_MAX_AUDIO_LISTENERS 8 /** Docstring: Default desktop bus capacity. #define TICK_MAX_DES
+- `tick_register_audio` (function, `headers/tick.h:48`) `int tick_register_audio(tick_fn_t fn, void *ctx);` - Docstring: Register an unconditional BSP audio effect.  Returns 0 on success, -1 when the handler is
+- `tick_register_desktop` (function, `headers/tick.h:55`) `int tick_register_desktop(tick_fn_t fn, void *ctx);` - Docstring: Register a gated desktop effect.  Returns 0 on success, -1 when the handler is null or th
+- `tick_run_audio` (function, `headers/tick.h:58`) `void tick_run_audio(void);` - Docstring: Register a gated desktop effect.  Returns 0 on success, -1 when the handler is null or th
+- `tick_run_desktop` (function, `headers/tick.h:61`) `void tick_run_desktop(void);` - Docstring: Register a gated desktop effect.  Returns 0 on success, -1 when the handler is null or th
+- `tick_audio_count` (function, `headers/tick.h:64`) `int tick_audio_count(void);` - Docstring: Register a gated desktop effect.  Returns 0 on success, -1 when the handler is null or th
+- `tick_desktop_count` (function, `headers/tick.h:67`) `int tick_desktop_count(void);` - table is full. A refusal changes nothing.  int tick_register_desktop(tick_fn_t fn, void *ctx); /** D
+- `tick_desktop_due` (function, `headers/tick.h:75`) `int tick_desktop_due(unsigned long long ticks, unsigned interval);` - Docstring: Pure desktop gating predicate.  Returns nonzero when the given tick count falls on a desk
+- `tick_slot_t` (struct, `kernel/tick.c:15`) - Docstring: Tick listener bus implementation.  Owns two fixed listener tables behind the tick.h contr
+- `tick_reset` (function, `kernel/tick.c:30`) `void tick_reset(void)` - tick_fn_t fn; void *ctx; } tick_slot_t; /** Docstring: Audio listener table. static tick_slot_t tick
+- `tick_register_audio` (function, `kernel/tick.c:49`) `int tick_register_audio(tick_fn_t fn, void *ctx)` - Docstring: Register an unconditional BSP audio effect.  Returns 0 on success, -1 when the handler is
+- `tick_register_desktop` (function, `kernel/tick.c:67`) `int tick_register_desktop(tick_fn_t fn, void *ctx)` - Docstring: Register a gated desktop effect.  Returns 0 on success, -1 when the handler is null or th
+- `tick_run_audio` (function, `kernel/tick.c:81`) `void tick_run_audio(void)` - int tick_register_desktop(tick_fn_t fn, void *ctx) { if (fn == NULL) { return -1; } if (tick_desktop
+- `tick_run_desktop` (function, `kernel/tick.c:91`) `void tick_run_desktop(void)` - return 0; } /** Docstring: Run audio listeners in registration order. void tick_run_audio(void) { in
+- `tick_audio_count` (function, `kernel/tick.c:101`) `int tick_audio_count(void)` - } } /** Docstring: Run desktop listeners in registration order. void tick_run_desktop(void) { int i;
+- `tick_desktop_count` (function, `kernel/tick.c:112`) `int tick_desktop_count(void)` - } /** Docstring: Count registered audio listeners. int tick_audio_count(void) { if (tick_audio_used
+- `tick_desktop_due` (function, `kernel/tick.c:128`) `int tick_desktop_due(unsigned long long ticks, unsigned interval)` - Docstring: Pure desktop gating predicate.  Returns nonzero when the given tick count falls on a desk
+- `CHECK` (macro, `tests/test_tick.c:17`) `#define CHECK(cond, msg)`
+- `rec_a` (function, `tests/test_tick.c:24`) `static void rec_a(void *ctx)`
+- `rec_b` (function, `tests/test_tick.c:31`) `static void rec_b(void *ctx)`
+- `rec_d` (function, `tests/test_tick.c:38`) `static void rec_d(void *ctx)`
+- `dummy` (function, `tests/test_tick.c:47`) `static void dummy(void *ctx)`
+- `main` (function, `tests/test_tick.c:52`) `int main(void)`
 
 ## Internal vs External Edges
 
@@ -40,7 +52,8 @@ This community groups 3 file(s) rooted at `headers` with dominant language c (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
+- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
+- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (arch/x86) and community 5 (headers).
 
 ## Risks
 
@@ -53,6 +66,6 @@ This community groups 3 file(s) rooted at `headers` with dominant language c (co
 
 ## Sources
 
-- `headers/batch.h`
-- `kernel/batch.c`
-- `tests/test_batch.c`
+- `headers/tick.h`
+- `kernel/tick.c`
+- `tests/test_tick.c`
