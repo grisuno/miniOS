@@ -222,6 +222,15 @@ void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *a
  * The ramdisk is a contiguous region in memory with a header, entry table,
  * and data area.  File names are at most RAMDISK_FNAME_LEN - 1 characters.
  *
+ * Boot image: tools/mkramdisk.py writes each payload deflate compressed
+ * (zlib stream) when that is smaller, with a raw flag otherwise; the
+ * entry carries raw_size, stored_size, data_offset and flags.
+ * ramdisk_setup_from decompresses every entry once at boot into the
+ * working rd_data area, so open/read/write/resize below always see
+ * plain bytes and the runtime pays nothing per access: only the
+ * embedded image shrinks. A payload that fails to inflate aborts the
+ * whole setup (count 0) instead of publishing a torn file.
+ *
  * Contract (RDFile):
  *   name:   NUL-terminated file name, at most RAMDISK_FNAME_LEN - 1 chars.
  *   size:   file size in bytes.  0 for empty files.

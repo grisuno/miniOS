@@ -146,7 +146,8 @@ pd-drop-page-size | s/#define PT_FLAGS_PRESENT_RW_PS    0x083/#define PT_FLAGS_P
 gdt64-code-to-data | s/#define GDT64_DESC_CODE           0x00209A0000000000/#define GDT64_DESC_CODE           0x0000920000000000/ | headers/arch/x86/boot/bootdefs.h
 kernel-buffer-seg | s/#define BOOT_KERNEL_BUF_SEG       0x1000/#define BOOT_KERNEL_BUF_SEG       0x1001/ | headers/arch/x86/boot/bootdefs.h
 chunk-copy-length | s/#define SECTOR_DWORD_SHIFT        7/#define SECTOR_DWORD_SHIFT        6/ | headers/arch/x86/boot/bootdefs.h
-ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 4)/ | fs/ramdisk.c
+ramdisk-entry-stride | s/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 16)/#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)/ | fs/ramdisk.c
+ramdisk-deflate-ignored | s/if (fflg \& RD_FLAG_DEFLATE) {/if (0) {/ | fs/ramdisk.c
 redirect-captures-nothing | s/    redir_active = 1;/    redir_active = 0;/ | kernel/console.c
 status-leaks-into-redirect | s/int was = redirect_suspend();/int was = 0;/ | kernel/redirect.c
 editor-drops-unsaved | s/if (e->dirty) {/if (0) {/ | kernel/editor.c
@@ -720,6 +721,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             else
                 FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             fi
+            ;;
+        fs/ramdisk.c)
+            # ramdisk-* rows break the boot image decoder, so anything
+            # that runs a ramdisk file dies: the bare-.o scenarios load
+            # objects/minigcc.o and objects/ld.o through it.
+            MATCH="bare .o" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         *)
             FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1

@@ -38,6 +38,14 @@ reproducible from those upstreams alone, so:
 - `ramdisk.bin` lists the `Makefile` among its prerequisites: the file list
   lives there, so editing it must invalidate the image even when no
   individual file changed.  `minifs.bin` carries the same rule for the same reason.
+- `tools/mkramdisk.py` deflate-compresses every payload (zlib stream,
+  decoded by the kernel's miniz) and stores raw only when compression
+  does not pay, with `raw_size`/`stored_size`/`data_offset`/`flags` per
+  entry. `ramdisk_setup_from` inflates every entry once at boot into the
+  working area, so the on-disk/embedded image drops to ~28% of the raw
+  size (kernel image 957 KB -> 569 KB) while reads, writes and resizes
+  see plain bytes and lose no performance. A payload that fails to
+  inflate aborts setup rather than publishing a torn file.
 - `progs/bin/` ships the command-path utilities: `cp`, `freedom`, `lzss`
   and `unlzss`, compiled from this repository's own sources in `progs/src/`
   through the miniGCC-to-ld chain, with the sources on the ramdisk too so the

@@ -1806,8 +1806,8 @@ cow.o: kernel/mm/cow.c kernel.h $(BOOTDEFS) vga_fb.h
 swap.o: kernel/mm/swap.c kernel.h ide.h lz4_kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-ramdisk.o: fs/ramdisk.c kernel.h
-	$(CC) $(CFLAGS_KERN) -c $< -o $@
+ramdisk.o: fs/ramdisk.c kernel.h third_party/miniz/miniz.h
+	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
 
 time.o: kernel/time.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@

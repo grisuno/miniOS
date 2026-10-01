@@ -1,14 +1,27 @@
 #include "kernel.h"
+#include "miniz.h"
 
 /* ================================================================
  *  RAMDisk — flat file system in memory
+ *
+ *  The embedded image carries each payload deflate compressed (zlib
+ *  stream, decoded by the same miniz the zip builtins use) or raw when
+ *  compression does not pay. ramdisk_setup_from decompresses every
+ *  entry exactly once at boot into the working rd_data area, so reads,
+ *  writes and resizes below operate on plain bytes and the runtime
+ *  loses no performance: only the boot image is smaller.
  * ================================================================ */
 
 #define RD_MAGIC       0x4B534452
 #define RD_HEADER_SIZE 8
-#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 8)
+#define RD_ENTRY_SIZE  (RAMDISK_FNAME_LEN + 16)
 #define RD_DATA_MIN    (512UL * 1024)
 #define RD_DATA_SPARE  (1024UL * 1024)
+#define RD_ENTRY_RAW_OFF   (RAMDISK_FNAME_LEN)
+#define RD_ENTRY_STO_OFF   (RAMDISK_FNAME_LEN + 4)
+#define RD_ENTRY_OFF_OFF   (RAMDISK_FNAME_LEN + 8)
+#define RD_ENTRY_FLG_OFF   (RAMDISK_FNAME_LEN + 12)
+#define RD_FLAG_DEFLATE    1u
 
 typedef struct {
     unsigned magic;
@@ -59,11 +72,14 @@ void ramdisk_setup_from(void *data, unsigned size) {
     unsigned long total = 0;
     for (i = 0; i < count; i++) {
         char *esrc = entry_start + (unsigned long)i * RD_ENTRY_SIZE;
-        unsigned fsize = *(unsigned *)(esrc + RAMDISK_FNAME_LEN);
-        unsigned forig = *(unsigned *)(esrc + RAMDISK_FNAME_LEN + 4);
-        if (forig > payload || fsize > payload - forig) return;
-        if (total > RD_DATA_MAX - fsize) return;
-        total += fsize;
+        unsigned fraw = *(unsigned *)(esrc + RD_ENTRY_RAW_OFF);
+        unsigned fsto = *(unsigned *)(esrc + RD_ENTRY_STO_OFF);
+        unsigned forig = *(unsigned *)(esrc + RD_ENTRY_OFF_OFF);
+        unsigned fflg = *(unsigned *)(esrc + RD_ENTRY_FLG_OFF);
+        if (fflg & ~RD_FLAG_DEFLATE) return;
+        if (fsto > payload || forig > payload - fsto) return;
+        if (total > RD_DATA_MAX - fraw) return;
+        total += fraw;
     }
 
     if (!rd) ramdisk_init();
@@ -77,15 +93,33 @@ void ramdisk_setup_from(void *data, unsigned size) {
     unsigned offset = 0;
     for (i = 0; i < count; i++) {
         char *esrc = entry_start + (unsigned long)i * RD_ENTRY_SIZE;
-        unsigned fsize = *(unsigned *)(esrc + RAMDISK_FNAME_LEN);
-        unsigned forig = *(unsigned *)(esrc + RAMDISK_FNAME_LEN + 4);
+        unsigned fraw = *(unsigned *)(esrc + RD_ENTRY_RAW_OFF);
+        unsigned fsto = *(unsigned *)(esrc + RD_ENTRY_STO_OFF);
+        unsigned forig = *(unsigned *)(esrc + RD_ENTRY_OFF_OFF);
+        unsigned fflg = *(unsigned *)(esrc + RD_ENTRY_FLG_OFF);
         RDFile *f = &rd->files[i];
         kmemcpy(f->name, esrc, RAMDISK_FNAME_LEN);
         f->name[RAMDISK_FNAME_LEN - 1] = 0;
-        f->size   = fsize;
+        f->size   = fraw;
         f->offset = offset;
-        if (fsize) kmemcpy(rd_data + offset, data_start + forig, fsize);
-        offset += fsize;
+        if (fraw) {
+            const char *src = data_start + forig;
+            char *dst = rd_data + offset;
+            if (fflg & RD_FLAG_DEFLATE) {
+                mz_ulong out = fraw;
+                int rc = mz_uncompress((unsigned char *)dst, &out,
+                    (const unsigned char *)src, (mz_ulong)fsto);
+                if (rc != MZ_OK || out != (mz_ulong)fraw) {
+                    kprintf("ramdisk: bad deflate payload for %s\n", f->name);
+                    rd->count = 0;
+                    rd_used = 0;
+                    return;
+                }
+            } else {
+                kmemcpy(dst, src, fraw);
+            }
+        }
+        offset += fraw;
     }
     rd->count = count;
     rd_used   = offset;
