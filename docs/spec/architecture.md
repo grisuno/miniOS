@@ -58,7 +58,7 @@ no-crash run) with `mmap-file-*`/`pcache-*` mutants. Slice 3
 (writeback + pressure eviction with reverse shootdown) waits for
 its first writer; `ld.so` (T8) is unblocked on slices 1-2.
 
-### Dynamic linking, minimal (T8, specified, not yet implemented)
+### Dynamic linking, minimal (T8: L1 landed, L2 as-built, L3/L4 specified)
 Goal: share `.text` between processes (the RAM win), nothing more.
 Functions only in v1: data stays per-binary behind the `ld` stubs
 (`errno`/`stdout` keep working exactly as today), no lazy PLT, no
@@ -67,20 +67,30 @@ already cooperates without knowing it: miniGCC emits bare `call
 extfunc` extern refs, and `ld -f elf` already writes zero-based
 ET_DYN (fully RIP-relative intra-binary code, which is why the
 ASLR slide works today). What is missing, in order:
-L1 (`ld` repo): `-shared` builds ET_DYN with SONAME plus
+L1 (`ld` repo, LANDED): `-shared` builds ET_DYN with SONAME plus
 `.dynsym`/`.dynstr` over the defined global functions (no
 relocations needed inside: self-contained miniGCC code is already
-position-independent).
-L2 (`ld` repo): `-f elf -d lib.so` verifies each undefined function
-against the lib's dynsym (typos stay hard link errors, the existing
-contract) and emits standard RELA (`R_X86_64_PC32` for direct
-calls, patched in place: executables are never shared so no GOT is
-owed) plus `.dynamic` (`DT_NEEDED`) and the import dynsym/dynstr.
+position-independent), proven by host `dlopen` (`dynlib: 42 5`).
+L2 (`ld` repo, AS-BUILT): `-f elf -d lib.so` verifies each undefined
+function against the lib's dynsym (typos stay hard link errors, the
+existing contract) and emits one 16-byte eager PLT stub per import
+(`jmp *GOT; 10x CC` fail-closed padding, control never falls
+through) in RX after `.text`, the matching GOT in RW BSS, one
+standard `R_X86_64_GLOB_DAT` row per import (sym = its `.dynsym`
+index, addend 0: RELATIVE would wrongly bind the executable's own
+slide), plus `.dynamic` (`DT_NEEDED`) and the import dynsym/dynstr.
+Layout invariant (burned once: GOT writes ate later RELA rows and
+the host died at row 22): `.rela` is placed in the data region
+BEFORE the BSS-anchored GOT, never overlapping; `readelf -r`
+must show disjoint ranges. Host proof: `ld-linux exe` returns
+`42`/`47` through the stubs.
 L3 (kernel): a boot-global lib registry (path to base, dynsym and
 refcount: the first loader maps, the rest share), loading through
-the T5 file mmap (demand pages, shared phys), eager PC32 patching
-of the executable's private pages with RX via T2 afterwards, then
-entry transfer. Load bases come from a reserved lib region carved
+the T5 file mmap (demand pages, shared phys), eager `GLOB_DAT`
+resolution by name against each `DT_NEEDED` lib in order (linear
+dynsym walk is fine at this scale; the executable's private GOT
+slots get `lib_base + st_value`, RX via T2 afterwards), then entry
+transfer. Load bases come from a reserved lib region carved
 at VMA init (exact bounds need a memory-map audit first: the mmap
 cursor must never eat it, and graphics/stack/heap are all pinned);
 no fixed cross-repo addresses, the kernel assigns per boot.
