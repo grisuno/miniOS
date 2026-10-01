@@ -130,17 +130,31 @@ the built-in runtime (syscall stubs + libc fallbacks) as assembly,
 each chunk behind a `.text` reset, so `ld -shared` over it yields a
 49-routine `libcmini.so`. All host-pinned in the ld suite.
 Measured reality (why the win is not there yet): a program linked
-`-d libcmini.so` came out LARGER than the static one (8153 vs 4588
-bytes) because (a) `ld` still injects all 49 stub bodies into every
-binary and (b) `ld_read_lib` imports every library export, so the
-exe carries 51 GOT/PLT/RELA rows it never calls. The win needs two
-pruning passes: inject only the stubs the program actually
-references (shrinks static binaries too) and import only the
-referenced library symbols. A full shared libc that also moves the
-error-setting syscall wrappers shifts `errno`/`stdout` into the
-shared image (shared across processes) unless they move to a
-per-process TLS slot via FSBASE; that is the open design decision
-for the all-functions-in-libc version, tracked here, not shipped.
+`-d libcmini.so` came out LARGER than the static one (lzss 16876 vs
+18217 bytes) because (a) `ld` still injects all stub bodies into
+every binary and (b) the dynamic metadata is heavier than the tiny
+assembly stubs it replaces. Two pruning passes were attempted:
+import pruning LANDED (after the user source is encoded, `ld_imports`
+keeps only the exports some call fixup names, so GOT/PLT/RELA carry
+just the used rows: usestr 51->2, lzss 51->12); body pruning (drop
+unreferenced stubs) is deferred because runtime routines share local
+helper labels (`.Lstub_vfmt`, `.Lstub_resolve_fd`) that sit between
+`.globl` functions, so skipping one body can swallow a helper another
+routine still calls, and it needs block-level helper tracking first.
+Even with both, the per-binary files barely move: the RW segment is
+page-aligned and the runtime is already small, so a 2 KB stub cut is
+absorbed by the <1 page gap before `.data`, and the ~127 bytes of
+GOT+PLT+RELA+dynsym+dynstr per import exceed the ~40-byte stub it
+replaces. The honest conclusion for the distro: dynamic linking of
+this hand-written runtime is close to size-neutral, and the real
+space levers are image-level compression (the ramdisk already packs
+objects; compress the bin/ tree the way the kernel image is) and
+shrinking the fixed ELF scaffolding, not per-symbol sharing. A full
+shared libc that also moves the error-setting syscall wrappers shifts
+`errno`/`stdout` into the shared image (shared across processes)
+unless they move to a per-process TLS slot via FSBASE; that is the
+open design decision for the all-functions-in-libc version, tracked
+here, not shipped.
 
 ### Dynamic mounts, pipes, clipboard, fork, httpd (2026-09 session)
 I implemented the user-facing half of the UNIX-way plan in one session,
