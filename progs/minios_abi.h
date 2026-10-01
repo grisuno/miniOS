@@ -136,6 +136,24 @@
 #define MINIOS_NK_BACKBUF_ADDR    0x0B600000UL
 #define MINIOS_NK_W               800
 #define MINIOS_NK_H               360
+/* =========================================================================
+ * Shared-library region (T8 ld.so, functions only)
+ * =========================================================================
+ * Boot-global home for ET_DYN shared libraries. The kernel assigns each
+ * library a base inside this region on first use (bump allocator, page
+ * aligned, fail closed when full); every process maps the same virtual
+ * address, and file-backed text pages are shared through the pcache
+ * (one phys page, N mappings), so the second loader only bumps the
+ * registry refcount and reuses the frames. brk and the mmap cursor are
+ * capped at LDSO_BASE, the munmap path refuses the region, and the end
+ * abuts DOOM_BACKBUF_ADDR (the graphics tail), so heap, mmap, stack
+ * and framebuffers can never reach it. No fixed cross-repo addresses:
+ * only the region bounds live here, per-boot bases stay in the kernel.
+ * ========================================================================= */
+#define MINIOS_LDSO_BASE            0x09000000UL
+#define MINIOS_LDSO_SIZE            (32UL * 1024 * 1024)
+#define MINIOS_LDSO_END             (MINIOS_LDSO_BASE + MINIOS_LDSO_SIZE)
+
 /* RGB companion of NK_BACKBUF_ADDR: 800x360 x 3 bytes (R,G,B order), written
  * by ring-3 Nuklear apps that want full color depth and presented with
  * GFX_PRESENT + MINIOS_GFX_BUF_NK_RGB. Sits clear of the framebuffer's worst

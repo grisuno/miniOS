@@ -67,6 +67,21 @@ int         vma_tree_delete(vma_node_t **root, unsigned long base);
 void        vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);
 void        vma_ctx_bind(vma_ctx_t *c);
 void        vma_ctx_save(vma_ctx_t *c);
+/* Opaque snapshot of the bound view (all globals vma_ctx_bind swaps,
+ * including the MRU). The ld.so child-window dance saves the spawner
+ * view, binds the child, and restores exactly, so a stale MRU can
+ * never hand one window's node to another. */
+typedef struct {
+    vma_node_t  *nil;
+    vma_node_t  *live;
+    vma_node_t  *free;
+    vma_node_t  *pool;
+    int          pool_n;
+    vma_node_t  *mru;
+    unsigned long mru_base;
+} vma_view_t;
+void        vma_view_save(vma_view_t *v);
+void        vma_view_load(const vma_view_t *v);
 /* Heap-backed contexts live in sched.c (vma.c stays host-testable):
  * alloc returns a fresh context with a private pool, or 0 on OOM. */
 vma_ctx_t  *vma_ctx_alloc(void);

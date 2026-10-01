@@ -115,7 +115,12 @@ SOURCES="$SOURCES headers/wm_gfxview.h tests/test_wm.c"
 # along as the ASLR/execve-adjacent surface for future rows. A missing
 # entry leaked execve-never-replaces into the tree (rc = -38 shipped
 # in os.img), caught by the anchor checker, never by review.
-SOURCES="$SOURCES kernel/syscalls_proc.c kernel/loader.c kernel/exec.c"
+SOURCES="$SOURCES kernel/syscalls_proc.c kernel/loader.c kernel/exec.c kernel/ldso_parse.c"
+# ldso-* rows target the pure dynamic-table parser (kernel/ldso_parse.c,
+# host-pinned by make test-ldso) and its kernel glue (kernel/loader.c);
+# the BDD dynamic scenarios are the guest kill. headers/ldso.h and
+# headers/kernel.h carry the contract but no mutable logic.
+SOURCES="$SOURCES headers/ldso.h headers/kernel.h"
 SOURCES="$SOURCES fs/fat32.c fs/ext4.c"
 
 restore_sources() {
@@ -355,6 +360,12 @@ gfxview-fit-integer-lost | s/        fw = k \\* (long)sw;/        fw = fw;/ | he
 gfxview-map-unscaled | s/    lx = ((long)(mx - v->content.x) \\* (long)sw) \\/ (long)v->content.w;/    lx = (long)(mx - v->content.x);/ | headers/wm_gfxview.h
 gfxview-ease-linear | s/    r = den - (den \\* inv \\* inv \\* inv) \\/ ((long)n \\* (long)n \\* (long)n);/    r = (den * (long)t) \\/ (long)n;/ | headers/wm_gfxview.h
 gfxview-alttab-keeps-fullscreen | s/^        if (wm_focus == WM_FOCUS_GFX \\&\\& gfx_covers_screen())/        if (0)/ | kernel/vga_fb.c
+
+ldso-needed-dropped | s/info->needed_off\[info->needed_count++\] = val;/;/ | kernel/ldso_parse.c
+ldso-func-symbol-skipped | s/type != LDSO_STT_FUNC && type != LDSO_STT_NOTYPE/type != LDSO_STT_NOTYPE/ | kernel/ldso_parse.c
+ldso-reloc-type-inverted | s/type != LDSO_R_GLOB_DAT && type != LDSO_R_JUMP_SLOT/type == LDSO_R_GLOB_DAT || type == LDSO_R_JUMP_SLOT/ | kernel/ldso_parse.c
+ldso-lib-base-dropped | s/lib->base + (unsigned long)v;/(unsigned long)v;/ | kernel/loader.c
+ldso-text-not-exec | s/mm_user_set_exec(start, end, cr3);/;/ | kernel/loader.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -694,6 +705,18 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # the full suite.
             if [[ "$name" == errno-* ]]; then
                 MATCH="errno" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
+            ;;
+        kernel/ldso_parse.c|kernel/loader.c)
+            # ldso-* rows: the host parser suite first (kills the pure
+            # table mutants without a boot), then the two BDD dynamic
+            # scenarios (live window and isolated window) kill the
+            # loader-glue mutants.
+            if [[ "$name" == ldso-* ]]; then
+                make -C "$HERE" test-ldso > "$BACKUP/suite.log" 2>&1 && \
+                MATCH="shared library" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
             else
                 FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             fi

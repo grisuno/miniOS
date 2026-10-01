@@ -67,6 +67,10 @@ _Static_assert(USER_LOAD_BASE == MINIOS_USER_LOAD_BASE, "USER_LOAD_BASE drift");
 _Static_assert(USER_LOAD_END == MINIOS_USER_LOAD_END, "USER_LOAD_END drift");
 _Static_assert(USER_STACK_TOP == MINIOS_USER_STACK_TOP, "USER_STACK_TOP drift");
 _Static_assert(USER_BRK_END == MINIOS_USER_BRK_END, "USER_BRK_END drift");
+_Static_assert(LDSO_REGION_BASE == MINIOS_LDSO_BASE, "LDSO_BASE drift");
+_Static_assert(LDSO_REGION_SIZE == MINIOS_LDSO_SIZE, "LDSO_SIZE drift");
+_Static_assert(LDSO_REGION_END == MINIOS_LDSO_END, "LDSO_END drift");
+_Static_assert(MINIOS_LDSO_END <= MINIOS_DOOM_BACKBUF_ADDR, "LDSO overlaps graphics tail");
 _Static_assert(HEAP_BASE == MINIOS_HEAP_BASE, "HEAP_BASE drift");
 _Static_assert(HEAP_SIZE == MINIOS_HEAP_SIZE, "HEAP_SIZE drift");
 

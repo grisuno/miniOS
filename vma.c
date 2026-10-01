@@ -63,6 +63,28 @@ void vma_ctx_save(vma_ctx_t *c) {
     c->mru_base = vma_mru_base;
 }
 
+void vma_view_save(vma_view_t *v) {
+    if (!v) return;
+    v->nil = VMA_NIL;
+    v->live = vma_live_root;
+    v->free = vma_free_root;
+    v->pool = vma_pool_ptr;
+    v->pool_n = vma_pool_n;
+    v->mru = vma_mru;
+    v->mru_base = vma_mru_base;
+}
+
+void vma_view_load(const vma_view_t *v) {
+    if (!v) return;
+    VMA_NIL = v->nil;
+    vma_live_root = v->live;
+    vma_free_root = v->free;
+    vma_pool_ptr = v->pool;
+    vma_pool_n = v->pool_n;
+    vma_mru = v->mru;
+    vma_mru_base = v->mru_base;
+}
+
 void vma_tree_init(void) {
     if (!VMA_NIL) vma_ctx_bind(&vma_legacy);
     if (!VMA_NIL) return;

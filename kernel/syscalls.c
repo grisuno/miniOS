@@ -1424,6 +1424,11 @@ static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a
     unsigned long base = (unsigned long)a1;
     unsigned long n = ALIGN_UP((unsigned long)a2, 0x1000);
     if (n == 0) return 0;
+    /* The shared-library region is kernel-managed (registry bases,
+     * shared text): user munmap there refuses, never half-unmaps. */
+    if (base < LDSO_REGION_END && base + n > LDSO_REGION_BASE &&
+            base + n > base)
+        return -1;
     irqflags_t flags;
     spin_lock_irqsave(&mm_lock, &flags);
     vma_node_t *fnd = vma_tree_find(vma_live_root, base);

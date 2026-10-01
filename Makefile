@@ -1541,6 +1541,14 @@ pcache_test: tests/test_pcache.c fs/pcache.c headers/pcache.h | $(TOOLS_DIR)
 test-pcache: pcache_test
 	$(TOOLS_DIR)/pcache_test
 
+# Minimal dynamic-linker parser host test (tests/test_ldso.c +
+# kernel/ldso_parse.c, no fixtures: images built in memory).
+ldso_test: tests/test_ldso.c kernel/ldso_parse.c headers/ldso.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/ldso_test tests/test_ldso.c
+
+test-ldso: ldso_test
+	$(TOOLS_DIR)/ldso_test
+
 # Leak tracker host test (tests/test_leakcheck.c, spec pin).
 leakcheck_test: tests/test_leakcheck.c headers/leakcheck.h progs/file/file_assoc.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/leakcheck_test tests/test_leakcheck.c
@@ -1772,9 +1780,12 @@ serial.o: kernel/serial.c kernel.h
 string.o: kernel/string.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-loader.o: kernel/loader.c kernel.h
+loader.o: kernel/loader.c kernel.h headers/ldso.h headers/pcache.h headers/minifs.h
 # NOTE: -Os, same pattern as shell.o (measured -2.2 KB vs -O1). Revalidate
 # with the ELF/CVM load scenarios (cpl/kmem/nx/mmreuse/fib/w1) after change.
+	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
+
+ldso_parse.o: kernel/ldso_parse.c headers/ldso.h
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
 vma.o: vma.c vma.h
@@ -1786,7 +1797,7 @@ mm.o: kernel/mm.c kernel.h
 scrollback.o: kernel/scrollback.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-paging.o: kernel/mm/paging.c kernel.h $(BOOTDEFS) vga_fb.h arch/x86/msr.h
+paging.o: kernel/mm/paging.c kernel.h headers/ldso.h $(BOOTDEFS) vga_fb.h arch/x86/msr.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 cow.o: kernel/mm/cow.c kernel.h $(BOOTDEFS) vga_fb.h
@@ -2104,8 +2115,8 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@

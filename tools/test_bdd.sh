@@ -584,6 +584,32 @@ direct.elf
 poweroff"
 expect "exit code: 55"
 
+scenario "dynamic executable binds a shared library and runs" "echo \"int dynadd(int a, int b) { return a + b; }\" > src/dyn.c
+run objects/minigcc.o src/dyn.c > asm/dyn.s
+run objects/ld.o -shared -o dyn.so asm/dyn.s
+echo \"int dynadd(int a, int b);\" > src/du.c
+echo \"int main(void) { return dynadd(40, 2); }\" >> src/du.c
+run objects/minigcc.o src/du.c > asm/du.s
+run objects/ld.o -f elf -d dyn.so -o bin/du.elf asm/du.s
+run bin/du.elf
+run bin/du.elf
+poweroff"
+expect "ld.so: dyn.so shared x1"
+expect "ld.so: dyn.so shared x2"
+expect_count 2 "exit code: 42"
+
+scenario "an isolated window binds the same shared library" "echo \"int dynadd(int a, int b) { return a + b; }\" > src/dyn.c
+run objects/minigcc.o src/dyn.c > asm/dyn.s
+run objects/ld.o -shared -o dyn.so asm/dyn.s
+echo \"int dynadd(int a, int b);\" > src/du.c
+echo \"int main(void) { return dynadd(40, 2); }\" >> src/du.c
+run objects/minigcc.o src/du.c > asm/du.s
+run objects/ld.o -f elf -d dyn.so -o bin/du.elf asm/du.s
+mrun bin/du.elf
+poweroff"
+expect "ld.so: dyn.so shared x1"
+expect "mrun: pid 1 exit code: 42"
+
 scenario "an unresolvable bare name falls through to command not found" "nosuchfile.o
 poweroff"
 expect "command not found: nosuchfile.o"

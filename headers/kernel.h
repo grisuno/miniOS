@@ -11,6 +11,7 @@
  * and DOOM's window go dark when the layout moved. Do not hardcode a layout
  * address in the kernel or in a ring-3 program; put it in minios_abi.h. */
 #include "minios_abi.h"
+#include "ldso.h"
 #include "vma.h"
 #include "spinlock.h"
 #include "pipe.h"
@@ -179,6 +180,12 @@ void vga_cursor_enable(int on);
 #define USER_STACK_TOP   MINIOS_USER_STACK_TOP
 #define USER_STACK_BASE  MINIOS_USER_STACK_BASE
 #define USER_BRK_END     MINIOS_USER_BRK_END
+
+/* Shared-library region (T8 ld.so): mirrors of the ABI header, the same
+ * drift-proof pattern as the user-window defines above. */
+#define LDSO_REGION_BASE MINIOS_LDSO_BASE
+#define LDSO_REGION_SIZE MINIOS_LDSO_SIZE
+#define LDSO_REGION_END  MINIOS_LDSO_END
 
 /* Syscall kernel stack: a dedicated region below the kernel image, exchanged
  * on syscall entry so the kernel never runs on a user stack. The 32 KB region
@@ -700,10 +707,28 @@ typedef struct {
 #define ET_EXEC     2
 #define ET_DYN      3
 
+/* Heap/mmap ceiling: the shared-library region starts here with the
+ * graphics tail above it, so brk growth and the mmap cursor can reach
+ * neither. Replaces bare USER_BRK_END wherever a fresh user view is
+ * seeded; the DOOM_BACKBUF_ADDR clamp stays alongside as the graphics
+ * pin, a no-op today and a guard if the region ever moves. */
+#define USER_HEAP_CEIL LDSO_REGION_BASE
+
 void *elf_load(void *data, unsigned size, void **base_out);       /* ET_REL relocatable .o */
 void *load_exec_elf(void *data, unsigned size);  /* ET_EXEC / ET_DYN */
 void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
-                         unsigned long *brk_out);
+                         unsigned long *brk_out, unsigned long *base_out);
+
+/* Minimal dynamic linker (T8 ld.so, kernel/loader.c). bind_into maps the
+ * DT_NEEDED libraries of an already-copied image into the target window
+ * (live legacy view when vma is 0 and cr3 is the current one, isolated
+ * window otherwise) and resolves its GLOB_DAT slots; the pseudo_* hooks
+ * serve registry file bytes to the page-fault path under ldso pseudo
+ * inodes, so text stays shared through the pcache. */
+int ldso_bind_into(void *data, unsigned size, unsigned long base,
+                   unsigned long cr3, vma_ctx_t *vma);
+int ldso_pseudo_stat(int ino, unsigned long *size_out);
+int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len);
 unsigned long pt_clone_user_empty(void);
 int mm_user_ensure_page(unsigned long cr3, unsigned long va);
 int mm_user_map_page(unsigned long cr3, unsigned long va,

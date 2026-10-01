@@ -84,21 +84,40 @@ the host died at row 22): `.rela` is placed in the data region
 BEFORE the BSS-anchored GOT, never overlapping; `readelf -r`
 must show disjoint ranges. Host proof: `ld-linux exe` returns
 `42`/`47` through the stubs.
-L3 (kernel): a boot-global lib registry (path to base, dynsym and
-refcount: the first loader maps, the rest share), loading through
-the T5 file mmap (demand pages, shared phys), eager `GLOB_DAT`
-resolution by name against each `DT_NEEDED` lib in order (linear
-dynsym walk is fine at this scale; the executable's private GOT
-slots get `lib_base + st_value`, RX via T2 afterwards), then entry
-transfer. Load bases come from a reserved lib region carved
-at VMA init (exact bounds need a memory-map audit first: the mmap
-cursor must never eat it, and graphics/stack/heap are all pinned);
-no fixed cross-repo addresses, the kernel assigns per boot.
-L4 (BDD): `libcmini.so` (strlen/strcmp/memcpy/memset) plus two
+L3 (kernel, LANDED): a boot-global lib registry keyed by basename
+(`ldso_libs[8]`: base, map span, heap copy of the file, pseudo ino,
+refcount; the first loader reads and reserves, every later binder
+reuses). The reserved region is `MINIOS_LDSO_BASE..END`
+(0x09000000..0x0B000000, 32 MB) in `progs/minios_abi.h`, below the
+graphics tail; `brk`/mmap seed at `USER_HEAP_CEIL` (= the region
+base) and `munmap` refuses the range, so the heap never eats it.
+Binding (`ldso_bind_into`) runs after the executable's segments land:
+each `DT_NEEDED` loads through a pseudo inode (`LDSO_INO_BASE+slot`)
+whose bytes are served by `ldso_pseudo_stat/read`, and every page is
+published into the T5 pcache and mapped explicitly
+(`mm_user_map_page`, shared read-only; private zero past EOF; data
+breaks private on first write through `mm_file_break`). Explicit
+mapping is deliberate: the live window is identity pre-mapped, so
+demand faults never fire there, while isolated windows start empty,
+and one path serves both. `R_X86_64_GLOB_DAT` rows resolve by name
+in exe-then-libs-then-`ksym_resolve` order (v1 links functions only;
+unresolved names stay zero and fault only if called), then RX is set
+over verified text (`mm_user_set_exec`; a first-page content check
+fails the bind before anything executes). The pure parser lives in
+`kernel/ldso_parse.c` + `headers/ldso.h` (host-pinned by
+`make test-ldso`, no kernel calls), so the loader only moves bytes
+and installs mappings. Live runs release the previous run's registry
+nodes first (`ldso_forget_live`: refs dropped, pages unmapped,
+ranges freed) so the pcache never leaks across `run`s. Proven
+in-guest: `ld -shared` + `ld -f elf -d` + `run` prints
+`ld.so: dyn.so shared x1`, then `x2` on a second run (one registry
+load for both) and the same for `mrun` (isolated window), exit 42;
+`ldso-*` mutants under `MATCH="ldso-"` all killed.
+L4 (next): `libcmini.so` (strlen/strcmp/memcpy/memset) plus two
 probes built entirely in-guest (edit, minigcc, `ld -shared`,
-`ld -f elf -d`, run), proving correct output, one registry load
-for both (`ld.so: libcmini shared x2` marker) and demand-shared
-text, with `ldso-*` mutants under `MATCH="ldso"`.
+`ld -f elf -d`, run), proving correct output and demand-shared text;
+then the space win the distro wants: link programs against the one
+shared libc instead of embedding the static stubs.
 miniGCC needs zero changes; CVM programs naming shared symbols
 keep failing to link (documented, same as errno today).
 

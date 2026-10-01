@@ -11,6 +11,7 @@
 
 #include "kernel.h"
 #include "bootdefs.h"
+#include "ldso.h"
 #include "vga_fb.h"
 #include "arch/x86/msr.h"
 #include "minifs.h"
@@ -565,15 +566,32 @@ int mm_file_fault(unsigned long cr3, unsigned long va) {
     off = node->f_off + (va - node->base);
     spin_unlock_irqrestore(&mm_lock, flags);
     idx = (unsigned)(off / 0x1000UL);
-    if (minifs_stat(ino, &st) < 0) return -1;
-    if ((unsigned long)idx * 0x1000UL >= st.size) {
-        void *zp = pt_page_alloc();
-        if (!zp) return -1;
-        if (mm_user_map_page(cr3, va, (unsigned long)zp, 1, 0)) {
-            pt_page_free(zp);
-            return -1;
+    /* Registry libraries Fault through the same shared cache under
+     * pseudo inodes (served from the registry copy, never MiniFS),
+     * so their text stays shared across windows by construction. */
+    if (ino >= LDSO_INO_BASE) {
+        unsigned long reg_size = 0;
+        if (ldso_pseudo_stat(ino, &reg_size) < 0) return -1;
+        if ((unsigned long)idx * 0x1000UL >= reg_size) {
+            void *zp = pt_page_alloc();
+            if (!zp) return -1;
+            if (mm_user_map_page(cr3, va, (unsigned long)zp, 1, 0)) {
+                pt_page_free(zp);
+                return -1;
+            }
+            return 0;
         }
-        return 0;
+    } else {
+        if (minifs_stat(ino, &st) < 0) return -1;
+        if ((unsigned long)idx * 0x1000UL >= st.size) {
+            void *zp = pt_page_alloc();
+            if (!zp) return -1;
+            if (mm_user_map_page(cr3, va, (unsigned long)zp, 1, 0)) {
+                pt_page_free(zp);
+                return -1;
+            }
+            return 0;
+        }
     }
     spin_lock_irqsave(&mm_lock, &flags);
     {
@@ -589,7 +607,12 @@ int mm_file_fault(unsigned long cr3, unsigned long va) {
         unsigned long r;
         if (!priv) return -1;
         kmemset(priv, 0, 0x1000);
-        r = (unsigned long)minifs_read(ino, priv, idx * 0x1000UL, 0x1000);
+        if (ino >= LDSO_INO_BASE)
+            r = (unsigned long)ldso_pseudo_read(ino, priv,
+                idx * 0x1000UL, 0x1000);
+        else
+            r = (unsigned long)minifs_read(ino, priv, idx * 0x1000UL,
+                0x1000);
         (void)r;
         slot = pcache_publish(ino, idx, priv);
         if (slot < 0) {

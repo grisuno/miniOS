@@ -1625,8 +1625,8 @@ int proc_create(const char *name, int parent_pid) {
         p->mmap_cur = parent->mmap_cur;
     } else {
         p->brk = 0;
-        p->brk_limit = USER_BRK_END;
-        p->mmap_cur = USER_BRK_END;
+        p->brk_limit = USER_HEAP_CEIL;
+        p->mmap_cur = USER_HEAP_CEIL;
     }
 
     uint64_t kstack_top = alloc_kstack();
@@ -1716,6 +1716,7 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
     unsigned long *sp = 0;
     void *entry;
     unsigned long brk = 0;
+    unsigned long imgbase = 0;
     int pid;
     proc_t *child;
     uint64_t kstack_top;
@@ -1724,7 +1725,7 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
     if (argc < 0 || argc > 64) return -1;
     new_cr3 = pt_clone_user_empty();
     if (!new_cr3) { kprintf("mrun: no page tables\n"); return -1; }
-    entry = load_exec_elf_into(data, size, new_cr3, &brk);
+    entry = load_exec_elf_into(data, size, new_cr3, &brk, &imgbase);
     if (!entry) { pt_free_user(new_cr3); return -1; }
     for (va = USER_STACK_BASE; va < USER_STACK_TOP; va += 0x1000)
         if (mm_user_ensure_page(new_cr3, va)) {
@@ -1766,10 +1767,10 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
     child->parent_pid = current_pid;
     child->clone_flags = 0;
     child->brk = brk;
-    child->brk_limit = USER_BRK_END;
+    child->brk_limit = USER_HEAP_CEIL;
     if (DOOM_BACKBUF_ADDR < child->brk_limit)
         child->brk_limit = DOOM_BACKBUF_ADDR;
-    child->mmap_cur = USER_BRK_END;
+    child->mmap_cur = USER_HEAP_CEIL;
     if (DOOM_BACKBUF_ADDR < child->mmap_cur)
         child->mmap_cur = DOOM_BACKBUF_ADDR;
     /* ASLR: the anonymous-map cursor starts below the ceiling by a
@@ -1810,6 +1811,20 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
      * doors installed before the spawn), so the child inherits them
      * by copying that view, then runs isolated from later closes. */
     if (!kfd_view_copy(child, proc_get(current_pid))) {
+        vma_ctx_free(child->vma);
+        child->vma = 0;
+        fpu_free_proc(child);
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock_irqrestore(&sched_lock, sflags);
+        pt_free_user(new_cr3);
+        return -1;
+    }
+    /* Dynamic binding after the child's VMA exists (the loader only
+     * copies; libraries map here, same bases as every other window).
+     * Static images return at once, so this is free for them. */
+    if (ldso_bind_into(data, size, imgbase, new_cr3, child->vma)) {
         vma_ctx_free(child->vma);
         child->vma = 0;
         fpu_free_proc(child);
@@ -2419,6 +2434,7 @@ long do_execve(char *kpath, int kargc, char **kargv) {
     unsigned long va;
     unsigned long *sp = 0;
     unsigned long brk = 0;
+    unsigned long imgbase = 0;
     irqflags_t sflags, mflags;
     int i;
     if (!cur) return -38;
@@ -2444,14 +2460,13 @@ long do_execve(char *kpath, int kargc, char **kargv) {
     irqflags_t eflags = spin_save_irq();
     new_cr3 = pt_clone_user_empty();
     if (!new_cr3) { spin_restore_irq(eflags); kfree(data); return -12; }
-    entry = load_exec_elf_into(data, data_size, new_cr3, &brk);
-    kfree(data);
-    data = 0;
-    if (!entry) { pt_free_user(new_cr3); spin_restore_irq(eflags); return -8; }
+    entry = load_exec_elf_into(data, data_size, new_cr3, &brk, &imgbase);
+    if (!entry) { pt_free_user(new_cr3); spin_restore_irq(eflags); kfree(data); return -8; }
     for (va = USER_STACK_BASE; va < USER_STACK_TOP; va += 0x1000) {
         if (mm_user_ensure_page(new_cr3, va)) {
             pt_free_user(new_cr3);
             spin_restore_irq(eflags);
+            kfree(data);
             return -12;
         }
     }
@@ -2461,11 +2476,12 @@ long do_execve(char *kpath, int kargc, char **kargv) {
                           USER_STACK_SIZE - aslr_stack_bytes(),
                           kargc, kargv);
     __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
-    if (!sp) { pt_free_user(new_cr3); spin_restore_irq(eflags); return -12; }
+    if (!sp) { pt_free_user(new_cr3); spin_restore_irq(eflags); kfree(data); return -12; }
     fresh_top = alloc_kstack();
     if (!fresh_top) {
         pt_free_user(new_cr3);
         spin_restore_irq(eflags);
+        kfree(data);
         return -12;
     }
     new_fpu = fpu_alloc_clean();
@@ -2473,6 +2489,7 @@ long do_execve(char *kpath, int kargc, char **kargv) {
         free_kstack(fresh_top);
         pt_free_user(new_cr3);
         spin_restore_irq(eflags);
+        kfree(data);
         return -12;
     }
     new_vma = vma_ctx_alloc();
@@ -2481,8 +2498,22 @@ long do_execve(char *kpath, int kargc, char **kargv) {
         free_kstack(fresh_top);
         pt_free_user(new_cr3);
         spin_restore_irq(eflags);
+        kfree(data);
         return -12;
     }
+    /* Dynamic binding while the old window still runs (clean unwind:
+     * static images return at once). The image bytes leave after. */
+    if (ldso_bind_into(data, data_size, imgbase, new_cr3, new_vma)) {
+        vma_ctx_free(new_vma);
+        kfree(new_fpu);
+        free_kstack(fresh_top);
+        pt_free_user(new_cr3);
+        spin_restore_irq(eflags);
+        kfree(data);
+        return -8;
+    }
+    kfree(data);
+    data = 0;
     old_cr3 = cur->ctx.cr3;
     spin_lock_irqsave(&sched_lock, &sflags);
     /* Linux semantics: sibling threads die with the old image. Any
@@ -2513,10 +2544,10 @@ long do_execve(char *kpath, int kargc, char **kargv) {
     cur->vma = new_vma;
     vma_load_proc(cur);
     cur->brk = brk;
-    cur->brk_limit = USER_BRK_END;
+    cur->brk_limit = USER_HEAP_CEIL;
     if (DOOM_BACKBUF_ADDR < cur->brk_limit)
         cur->brk_limit = DOOM_BACKBUF_ADDR;
-    cur->mmap_cur = USER_BRK_END;
+    cur->mmap_cur = USER_HEAP_CEIL;
     if (DOOM_BACKBUF_ADDR < cur->mmap_cur)
         cur->mmap_cur = DOOM_BACKBUF_ADDR;
     {

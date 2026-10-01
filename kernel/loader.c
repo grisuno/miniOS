@@ -1,4 +1,7 @@
 #include "kernel.h"
+#include "ldso.h"
+#include "minifs.h"
+#include "pcache.h"
 #include "vga_fb.h"
 #include "sched.h"
 
@@ -8,6 +11,9 @@
  *  Two loaders:
  *    elf_load       — ET_REL relocatable .o objects (ring-0 toolchain)
  *    load_exec_elf  — ET_EXEC / ET_DYN Linux binaries (ring-3)
+ *  Plus the T8 ld.so glue below: a boot-global shared-library
+ *  registry with eager GLOB_DAT binding. Static images never reach
+ *  it (no PT_DYNAMIC means no-op), so their behavior is unchanged.
  * ================================================================ */
 
 /* ELF64 types shared with kernel.h: EI_NIDENT, Elf64_{Addr,Off,Word,Half,
@@ -358,6 +364,611 @@ void *elf_load(void *data, unsigned size, void **base_out) {
     return entry;
 }
 
+/* ---- T8 ld.so: boot-global shared-library registry ----
+ *
+ * One slot per library path basename: the first loader reserves a base
+ * in the ABI region, keeps a heap copy of the file (fault-time reads
+ * and rebinds) and publishes nothing yet; every bound process faults
+ * the same file pages through the pcache, so text is shared while
+ * data breaks private on first write and BSS stays per-process zero.
+ * Pseudo inodes (LDSO_INO_BASE + slot) keep registry pages apart from
+ * MiniFS inodes in the shared cache. No unload in v1: slots and file
+ * copies live for the machine's life, and the refcount names how many
+ * executables bound since boot (the BDD shared-marker reads it).
+ * All validation funnels through headers/ldso.h (host-tested); this
+ * file only moves bytes and installs mappings. */
+
+typedef struct {
+    int used;
+    char name[LDSO_NAME_LEN];
+    unsigned long base;
+    unsigned long map_len;
+    unsigned char *file;
+    unsigned file_size;
+    int ino;
+    int refcount;
+} LdsoLibEnt;
+
+static LdsoLibEnt ldso_libs[LDSO_MAX_LIBS];
+static unsigned long ldso_bump;
+
+int ldso_pseudo_stat(int ino, unsigned long *size_out) {
+    int i;
+    if (!size_out) return -1;
+    if (ino < LDSO_INO_BASE || ino >= LDSO_INO_BASE + LDSO_MAX_LIBS)
+        return -1;
+    for (i = 0; i < LDSO_MAX_LIBS; i++) {
+        if (ldso_libs[i].used && ldso_libs[i].ino == ino) {
+            *size_out = ldso_libs[i].file_size;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len) {
+    int i;
+    if (!dst || len > 0x1000) return -1;
+    if (ino < LDSO_INO_BASE || ino >= LDSO_INO_BASE + LDSO_MAX_LIBS)
+        return -1;
+    for (i = 0; i < LDSO_MAX_LIBS; i++) {
+        LdsoLibEnt *lib = &ldso_libs[i];
+        unsigned long avail;
+        if (!lib->used || lib->ino != ino) continue;
+        if (!lib->file || off > lib->file_size) return -1;
+        avail = lib->file_size - off;
+        if (len > avail) {
+            kmemcpy(dst, lib->file + off, avail);
+            kmemset((char *)dst + avail, 0, len - avail);
+            return (int)len;
+        }
+        kmemcpy(dst, lib->file + off, len);
+        return (int)len;
+    }
+    return -1;
+}
+
+/* Read a whole library file by DT_NEEDED name: exact path first, then
+ * the basename, ramdisk before MiniFS (the shell's own search order).
+ * The buffer is heap-owned; every failure releases it. */
+static int ldso_read_file(const char *name, unsigned char **out,
+        unsigned *size_out) {
+    char base[LDSO_NAME_LEN];
+    unsigned char *buf = 0;
+    RDFile *rf;
+    int ino;
+    MiniFSInode st;
+    if (!name || !out || !size_out) return -1;
+    ldso_basename(base, name);
+    if (base[0] == '\0') return -1;
+    rf = ramdisk_open(name);
+    if (!rf && kstrcmp(name, base) != 0) rf = ramdisk_open(base);
+    if (rf) {
+        if (rf->size == 0 || rf->size > LDSO_FILE_MAX) return -1;
+        buf = kmalloc(rf->size);
+        if (!buf) return -1;
+        ramdisk_read(rf, buf, 0, rf->size);
+        *out = buf;
+        *size_out = rf->size;
+        return 0;
+    }
+    ino = minifs_resolve_path(name);
+    if (ino < 0 && kstrcmp(name, base) != 0)
+        ino = minifs_resolve_path(base);
+    if (ino < 0) return -1;
+    if (minifs_stat(ino, &st) < 0) return -1;
+    if (st.size == 0 || st.size > LDSO_FILE_MAX) return -1;
+    buf = kmalloc(st.size);
+    if (!buf) return -1;
+    if (minifs_read(ino, buf, 0, st.size) != (int)st.size) {
+        kfree(buf);
+        return -1;
+    }
+    *out = buf;
+    *size_out = st.size;
+    return 0;
+}
+
+/* Resolve a DT_NEEDED name to a registry slot, loading and reserving
+ * on first use. Validates the full dynamic contract (tables present,
+ * 24-byte symbols, hash-sized count, load span inside the region)
+ * before publishing anything. */
+static int ldso_ensure_slot(const char *needed, int *slot_out) {
+    char key[LDSO_NAME_LEN];
+    unsigned char *file = 0;
+    unsigned fsize = 0;
+    unsigned long long dyn_off = 0;
+    unsigned long long dyn_size = 0;
+    LdsoDynInfo info;
+    LdsoSeg segs[8];
+    unsigned nseg = 0;
+    unsigned i;
+    unsigned long span_end = 0;
+    unsigned long span;
+    unsigned long long strtab_off = 0;
+    unsigned long long symtab_off = 0;
+    unsigned nsyms = 0;
+    unsigned long long hash_off = 0;
+    int slot = -1;
+    int trouvent = -1;
+    if (!needed || !slot_out) return -1;
+    ldso_basename(key, needed);
+    if (key[0] == '\0') return -1;
+    for (i = 0; i < LDSO_MAX_LIBS; i++) {
+        if (ldso_libs[i].used) {
+            if (kstrcmp(ldso_libs[i].name, key) == 0) {
+                *slot_out = (int)i;
+                return 0;
+            }
+        } else if (trouvent < 0) trouvent = (int)i;
+    }
+    if (ldso_read_file(needed, &file, &fsize)) {
+        kprintf("ld.so: cannot open '%s'\n", key);
+        return -1;
+    }
+    if (ldso_find_dynamic(file, fsize, &dyn_off, &dyn_size) != 1) {
+        kprintf("ld.so: '%s' has no dynamic section\n", key);
+        goto fail;
+    }
+    if (ldso_scan_dynamic(file, fsize, dyn_off, dyn_size, &info)) goto fail;
+    if (info.strsz == 0 || info.syment != LDSO_SYM_SIZE) goto fail;
+    if (ldso_vaddr_to_offset(file, fsize, info.strtab_va, &strtab_off))
+        goto fail;
+    if (ldso_vaddr_to_offset(file, fsize, info.symtab_va, &symtab_off))
+        goto fail;
+    if (ldso_vaddr_to_offset(file, fsize, info.hash_va, &hash_off))
+        goto fail;
+    if (ldso_sym_count(file, fsize, hash_off, &nsyms)) goto fail;
+    if (ldso_segments(file, fsize, segs, 8, &nseg)) goto fail;
+    for (i = 0; i < nseg; i++) {
+        unsigned long end;
+        if (segs[i].memsz > LDSO_REGION_SIZE) goto fail;
+        if (segs[i].vaddr > LDSO_REGION_SIZE - segs[i].memsz) goto fail;
+        end = segs[i].vaddr + segs[i].memsz;
+        if (end > span_end) span_end = end;
+    }
+    span = ALIGN_UP(span_end, 0x1000UL);
+    if (span == 0 || span > LDSO_REGION_SIZE) goto fail;
+    if (trouvent < 0) {
+        kprintf("ld.so: too many libraries\n");
+        goto fail;
+    }
+    if (ldso_bump == 0) ldso_bump = LDSO_REGION_BASE;
+    if (ldso_bump < LDSO_REGION_BASE || ldso_bump > LDSO_REGION_END)
+        goto fail;
+    if (span > LDSO_REGION_END - ldso_bump) {
+        kprintf("ld.so: library region full\n");
+        goto fail;
+    }
+    (void)nsyms;
+    slot = trouvent;
+    kmemset(&ldso_libs[slot], 0, sizeof(ldso_libs[slot]));
+    kstrncpy(ldso_libs[slot].name, key, sizeof(ldso_libs[slot].name) - 1);
+    ldso_libs[slot].base = ldso_bump;
+    ldso_libs[slot].map_len = span;
+    ldso_libs[slot].file = file;
+    ldso_libs[slot].file_size = fsize;
+    ldso_libs[slot].ino = LDSO_INO_BASE + slot;
+    ldso_libs[slot].refcount = 0;
+    ldso_libs[slot].used = 1;
+    ldso_bump += span;
+    *slot_out = slot;
+    return 0;
+fail:
+    if (file) kfree(file);
+    kprintf("ld.so: '%s' refused (corrupt library)\n", key);
+    return -1;
+}
+
+/* Install one library in the currently bound VMA view: file-backed
+ * node over the reserved range, then explicit publish-and-map of every
+ * page (shared text through the pcache on first publish, hits after;
+ * private zero pages past the file end). Explicit mapping, never
+ * touch-to-fault: the live window is identity pre-mapped, so demand
+ * faults cannot fire there, while isolated windows start empty; one
+ * path serves both. Data pages start shared read-only and break
+ * private on first write; RX marking follows a content check, so only
+ * verified bytes ever execute. Failure keeps node, mappings and refs
+ * consistent (the next exec forgets them, a dying window frees them),
+ * and only reports. */
+static int ldso_map_one(LdsoLibEnt *lib, unsigned long cr3) {
+    vma_node_t *fnd;
+    unsigned char *tmp = 0;
+    LdsoSeg segs[8];
+    unsigned nseg = 0;
+    unsigned long va;
+    unsigned long first = 0;
+    unsigned i;
+    if (!lib || !lib->used) return -1;
+    fnd = vma_tree_insert(&vma_live_root, lib->base, lib->map_len);
+    if (fnd == VMA_NIL) {
+        kprintf("ld.so: cannot map '%s'\n", lib->name);
+        return -1;
+    }
+    fnd->f_file = 1;
+    fnd->f_ino = lib->ino;
+    fnd->f_off = 0;
+    tmp = kmalloc(0x1000);
+    if (!tmp) return -1;
+    kmemset(tmp, 0, 0x1000);
+    for (va = lib->base; va < lib->base + lib->map_len; va += 0x1000) {
+        unsigned long idx = (va - lib->base) / 0x1000UL;
+        unsigned long foff = idx * 0x1000UL;
+        if (foff < lib->file_size) {
+            unsigned long avail = lib->file_size - foff;
+            if (avail >= 0x1000UL) {
+                int slot = pcache_publish(lib->ino, (unsigned)idx,
+                    lib->file + foff);
+                unsigned char *pg;
+                if (slot < 0) {
+                    kprintf("ld.so: cache full, refusing '%s'\n",
+                        lib->name);
+                    kfree(tmp);
+                    return -1;
+                }
+                pg = pcache_data(slot);
+                if (!pg) {
+                    kfree(tmp);
+                    return -1;
+                }
+                if (mm_user_map_page(cr3, va, (unsigned long)pg, 0,
+                        0)) {
+                    kfree(tmp);
+                    return -1;
+                }
+            } else {
+                void *priv;
+                int slot;
+                kmemcpy(tmp, lib->file + foff, avail);
+                slot = pcache_publish(lib->ino, (unsigned)idx, tmp);
+                if (slot < 0) {
+                    kprintf("ld.so: cache full, refusing '%s'\n",
+                        lib->name);
+                    kfree(tmp);
+                    return -1;
+                }
+                priv = (void *)pcache_data(slot);
+                if (!priv) {
+                    kfree(tmp);
+                    return -1;
+                }
+                if (mm_user_map_page(cr3, va, (unsigned long)priv, 0,
+                        0)) {
+                    kfree(tmp);
+                    return -1;
+                }
+                kmemset(tmp, 0, 0x1000);
+            }
+        } else {
+            void *zp = pt_page_alloc();
+            if (!zp) {
+                kfree(tmp);
+                return -1;
+            }
+            kmemset(zp, 0, 0x1000);
+            if (mm_user_map_page(cr3, va, (unsigned long)zp, 1, 0)) {
+                pt_page_free(zp);
+                kfree(tmp);
+                return -1;
+            }
+        }
+    }
+    kfree(tmp);
+    first = lib->file_size < 0x1000UL ? lib->file_size : 0x1000UL;
+    if (first > 0 && kmemcmp((void *)lib->base, lib->file, first) != 0) {
+        kprintf("ld.so: '%s' content mismatch\n", lib->name);
+        return -1;
+    }
+    if (ldso_segments(lib->file, lib->file_size, segs, 8, &nseg)) return -1;
+    for (i = 0; i < nseg; i++) {
+        unsigned long start;
+        unsigned long end;
+        if (!(segs[i].flags & LDSO_PF_X)) continue;
+        if (segs[i].filesz == 0) continue;
+        if (segs[i].vaddr > lib->map_len) return -1;
+        if (segs[i].filesz > lib->map_len - segs[i].vaddr) return -1;
+        start = lib->base + segs[i].vaddr;
+        end = start + segs[i].filesz;
+        if (end < start || end > USER_LOAD_END) return -1;
+        mm_user_set_exec(start, end, cr3);
+    }
+    return 0;
+}
+
+/* Forget the previous exec's registry mappings in the live window:
+ * registry file nodes release (refs dropped, pages unmapped, range
+ * returned to the free tree) before the tree resets, so refcounts
+ * never pin the pool across runs. Only pseudo-ino nodes are
+ * touched: user MiniFS mappings keep Linux-like exec survival. */
+static void ldso_forget_live(void) {
+    vma_node_t *stack[16];
+    unsigned long bases[LDSO_MAX_LIBS];
+    unsigned long lens[LDSO_MAX_LIBS];
+    int inos[LDSO_MAX_LIBS];
+    unsigned n = 0;
+    int sp = 0;
+    vma_node_t *x = vma_live_root;
+    unsigned i;
+    while (x != VMA_NIL || sp > 0) {
+        while (x != VMA_NIL) {
+            if (sp < 16) stack[sp++] = x;
+            x = x->left;
+        }
+        x = stack[--sp];
+        if (x->f_file && x->f_ino >= LDSO_INO_BASE && n < LDSO_MAX_LIBS) {
+            bases[n] = x->base;
+            lens[n] = x->len;
+            inos[n] = x->f_ino;
+            n++;
+        }
+        x = x->right;
+    }
+    for (i = 0; i < n; i++) {
+        mm_file_range_release(0, bases[i], lens[i], inos[i], 0, 1);
+        vma_tree_insert(&vma_free_root, bases[i], lens[i]);
+        vma_tree_delete(&vma_live_root, bases[i]);
+    }
+}
+
+/* Resolve one imported name: the executable's own definition first
+ * (standard scope order), then each DT_NEEDED library in order, then
+ * the kernel symbol table (the runtime cohort the toolchain leaves
+ * undefined but never calls stays bound to whatever the kernel
+ * exports, exactly like the static apply path). Unresolvable names
+ * stay zero and fault only if called. */
+static int ldso_resolve_one(const char *name,
+        const unsigned char *exefile, unsigned long exefsize,
+        unsigned long long exsym_off, unsigned exnsyms,
+        unsigned long long exstr_off, unsigned long long exstrsz,
+        unsigned long exebase, int *libs, unsigned nlibs,
+        unsigned long long *value_out) {
+    unsigned long long v = 0;
+    unsigned i;
+    int rc;
+    if (!name || !value_out) return -1;
+    if (exnsyms >= 2) {
+        rc = ldso_sym_lookup(exefile, exefsize, exsym_off, exnsyms,
+            exstr_off, exstrsz, name, &v);
+        if (rc < 0) return -1;
+        if (rc == 1) {
+            if (v >= USER_LOAD_END - exebase) return -1;
+            *value_out = exebase + (unsigned long)v;
+            return 1;
+        }
+    }
+    for (i = 0; i < nlibs; i++) {
+        LdsoLibEnt *lib = &ldso_libs[libs[i]];
+        unsigned long long dyn_off = 0;
+        unsigned long long dyn_size = 0;
+        LdsoDynInfo info;
+        unsigned long long strtab_off = 0;
+        unsigned long long symtab_off = 0;
+        unsigned long long hash_off = 0;
+        unsigned nsyms = 0;
+        if (ldso_find_dynamic(lib->file, lib->file_size, &dyn_off,
+                &dyn_size) != 1) return -1;
+        if (ldso_scan_dynamic(lib->file, lib->file_size, dyn_off,
+                dyn_size, &info)) return -1;
+        if (ldso_vaddr_to_offset(lib->file, lib->file_size,
+                info.strtab_va, &strtab_off)) return -1;
+        if (ldso_vaddr_to_offset(lib->file, lib->file_size,
+                info.symtab_va, &symtab_off)) return -1;
+        if (ldso_vaddr_to_offset(lib->file, lib->file_size,
+                info.hash_va, &hash_off)) return -1;
+        if (ldso_sym_count(lib->file, lib->file_size, hash_off, &nsyms))
+            return -1;
+        rc = ldso_sym_lookup(lib->file, lib->file_size, symtab_off,
+            nsyms, strtab_off, info.strsz, name, &v);
+        if (rc < 0) return -1;
+        if (rc == 1) {
+            if (v >= lib->map_len) continue;
+            if (lib->base > USER_LOAD_END - (unsigned long)v) return -1;
+            *value_out = lib->base + (unsigned long)v;
+            return 1;
+        }
+    }
+    {
+        void *a = ksym_resolve(name);
+        if (!a && name[0] == '_') a = ksym_resolve(name + 1);
+        if (a) {
+            *value_out = (unsigned long)a;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/* Bind one executable image with DT_NEEDED libraries: map every
+ * library into the target window, then resolve each GLOB_DAT row.
+ * Static images (no dynamic section, or none needed) return 0 at
+ * once, so the legacy paths never observe a difference. Live callers
+ * pass cr3 0 and vma 0 (current tables, legacy view already bound);
+ * isolated callers pass the child's tables and context. */
+int ldso_bind_into(void *data, unsigned size, unsigned long base,
+        unsigned long cr3, vma_ctx_t *vma) {
+    unsigned char *exefile = (unsigned char *)data;
+    unsigned long long dyn_off = 0;
+    unsigned long long dyn_size = 0;
+    LdsoDynInfo info;
+    LdsoSeg segs[8];
+    unsigned nseg = 0;
+    unsigned long exspan = 0;
+    unsigned long long strtab_off = 0;
+    unsigned long long symtab_off = 0;
+    unsigned long long rela_off = 0;
+    unsigned nsyms = 0;
+    unsigned nrela = 0;
+    unsigned long long hash_off = 0;
+    int libs[LDSO_MAX_NEEDED];
+    unsigned nlibs = 0;
+    unsigned i;
+    unsigned long usecr3 = cr3;
+    unsigned long saved_cr3 = 0;
+    vma_view_t view;
+    irqflags_t flags;
+    int live;
+    int rc = -1;
+    unsigned li;
+    if (!data || size < 64) return -1;
+    if (base < USER_LOAD_BASE || base >= USER_LOAD_END) return -1;
+    {
+        int fr = ldso_find_dynamic(exefile, size, &dyn_off, &dyn_size);
+        if (fr == 0) return 0;
+        if (fr != 1) return -1;
+    }
+    if (ldso_scan_dynamic(exefile, size, dyn_off, dyn_size, &info))
+        return -1;
+    if (info.needed_count == 0) return 0;
+    if (ldso_vaddr_to_offset(exefile, size, info.strtab_va, &strtab_off))
+        return -1;
+    if (ldso_vaddr_to_offset(exefile, size, info.symtab_va, &symtab_off))
+        return -1;
+    if (info.has_rela) {
+        if (ldso_vaddr_to_offset(exefile, size, info.rela_va, &rela_off))
+            return -1;
+    }
+    if (ldso_vaddr_to_offset(exefile, size, info.hash_va, &hash_off))
+        return -1;
+    if (ldso_sym_count(exefile, size, hash_off, &nsyms)) return -1;
+    if (ldso_rela_count(&info, &nrela)) return -1;
+    if (ldso_segments(exefile, size, segs, 8, &nseg)) return -1;
+    for (i = 0; i < nseg; i++) {
+        unsigned long end;
+        if (segs[i].memsz > USER_LOAD_END) return -1;
+        if (segs[i].vaddr > USER_LOAD_END - segs[i].memsz) return -1;
+        end = segs[i].vaddr + segs[i].memsz;
+        if (end > exspan) exspan = end;
+    }
+    if (exspan == 0) return -1;
+    /* File I/O and heap live outside the target window: the child CR3
+     * owns user pages only, so resolution runs on the caller side and
+     * only mappings and GOT stores go inside. */
+    for (li = 0; li < info.needed_count; li++) {
+        char need[LDSO_NAME_LEN];
+        int slot = -1;
+        if (ldso_copy_str(exefile, size, strtab_off, info.strsz,
+                info.needed_off[li], need, sizeof(need))) {
+            kprintf("ld.so: bad NEEDED string\n");
+            return -1;
+        }
+        if (ldso_ensure_slot(need, &slot)) return -1;
+        {
+            unsigned d;
+            int seen = 0;
+            for (d = 0; d < nlibs; d++) {
+                if (libs[d] == slot) {
+                    seen = 1;
+                    break;
+                }
+            }
+            if (!seen && nlibs < LDSO_MAX_NEEDED) libs[nlibs++] = slot;
+        }
+    }
+    live = (vma == 0);
+    if (live) {
+        __asm__ volatile("mov %%cr3, %0" : "=r"(usecr3));
+        flags = spin_save_irq();
+    } else {
+        vma_view_save(&view);
+        vma_ctx_bind(vma);
+        __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
+        flags = spin_save_irq();
+        __asm__ volatile("mov %0, %%cr3" :: "r"(cr3) : "memory");
+    }
+    for (li = 0; li < nlibs; li++) {
+        if (ldso_map_one(&ldso_libs[libs[li]], usecr3)) goto out;
+        ldso_libs[libs[li]].refcount++;
+        kprintf("ld.so: %s shared x%d\n", ldso_libs[libs[li]].name,
+            ldso_libs[libs[li]].refcount);
+    }
+    for (i = 0; i < nrela; i++) {
+        LdsoRelaRow row;
+        char symname[LDSO_NAME_LEN];
+        unsigned long long symval = 0;
+        unsigned long slot_va;
+        int r;
+        unsigned k;
+        int in_image = 0;
+        r = ldso_read_rela(exefile, size, rela_off, nrela, i, nsyms,
+            &row);
+        if (r == -2) {
+            kprintf("ld.so: reloc %u: unsupported type\n", i);
+            goto out;
+        }
+        if (r) {
+            kprintf("ld.so: reloc %u: bad row\n", i);
+            goto out;
+        }
+        {
+            const unsigned char *syms;
+            unsigned long long total = (unsigned long long)nsyms *
+                LDSO_SYM_SIZE;
+            if (symtab_off > size || total > size - symtab_off) {
+                kprintf("ld.so: reloc %u: bad symtab\n", i);
+                goto out;
+            }
+            syms = exefile + symtab_off;
+            if (row.sym * LDSO_SYM_SIZE + 4 > total) {
+                kprintf("ld.so: reloc %u: bad sym\n", i);
+                goto out;
+            }
+            {
+                unsigned long nmoff =
+                    (unsigned)syms[row.sym * LDSO_SYM_SIZE] |
+                    ((unsigned)syms[row.sym * LDSO_SYM_SIZE + 1] << 8) |
+                    ((unsigned)syms[row.sym * LDSO_SYM_SIZE + 2] << 16) |
+                    ((unsigned)syms[row.sym * LDSO_SYM_SIZE + 3] << 24);
+                if (ldso_copy_str(exefile, size, strtab_off,
+                        info.strsz, nmoff, symname,
+                        sizeof(symname))) {
+                    kprintf("ld.so: reloc %u: bad name\n", i);
+                    goto out;
+                }
+            }
+        }
+        if (row.offset > exspan || 8 > exspan - row.offset) {
+            kprintf("ld.so: reloc %u: slot %lx outside image %lx\n", i,
+                row.offset, exspan);
+            goto out;
+        }
+        slot_va = base + row.offset;
+        if (slot_va < USER_LOAD_BASE || slot_va > USER_LOAD_END - 8) {
+            kprintf("ld.so: reloc %u: slot outside window\n", i);
+            goto out;
+        }
+        for (k = 0; k < nseg; k++) {
+            if (row.offset >= segs[k].vaddr &&
+                    row.offset <= segs[k].vaddr + segs[k].memsz - 8) {
+                in_image = 1;
+                break;
+            }
+        }
+        if (!in_image) {
+            kprintf("ld.so: reloc %u: slot outside segments\n", i);
+            goto out;
+        }
+        r = ldso_resolve_one(symname, exefile, size, symtab_off, nsyms,
+            strtab_off, info.strsz, (unsigned long)base, libs, nlibs,
+            &symval);
+        if (r < 0) {
+            kprintf("ld.so: reloc %u: resolve failed\n", i);
+            goto out;
+        }
+        if (r == 1) *(unsigned long *)slot_va = symval;
+    }
+    rc = 0;
+out:
+    if (live) {
+        spin_restore_irq(flags);
+    } else {
+        vma_ctx_save(vma);
+        vma_view_load(&view);
+        __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
+        spin_restore_irq(flags);
+    }
+    return rc;
+}
+
 /* ---- ET_EXEC / ET_DYN loader (Linux ring-3 binaries) ---- */
 
 static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
@@ -533,8 +1144,8 @@ void *load_exec_elf(void *data, unsigned size) {
     apply_exec_relocs(data, size, base, xr, nxr);
 
     g_brk       = ALIGN_UP(max_end, 0x1000);
-    g_brk_limit = USER_BRK_END;
-    user_mmap_cur = USER_BRK_END;
+    g_brk_limit = USER_HEAP_CEIL;
+    user_mmap_cur = USER_HEAP_CEIL;
     if (DOOM_BACKBUF_ADDR < g_brk_limit) g_brk_limit = DOOM_BACKBUF_ADDR;
     if (DOOM_BACKBUF_ADDR < user_mmap_cur) user_mmap_cur = DOOM_BACKBUF_ADDR;
     /* ASLR: the heap starts past a random pad (clamped, never past the
@@ -549,6 +1160,11 @@ void *load_exec_elf(void *data, unsigned size) {
             user_mmap_cur -= pad;
     }
     vma_tree_init();
+    /* Registry mappings from the previous run release first (refs,
+     * pages, ranges), then the fresh image binds its DT_NEEDED set.
+     * Static images return 0 at once inside the binder. */
+    ldso_forget_live();
+    if (ldso_bind_into(data, size, base, 0, 0)) goto fail;
     {
         int was = redirect_suspend();
         kprintf("exec: loaded at %lx entry %lx brk %lx\n", base + USER_LOAD_BASE, base + e->e_entry, g_brk);
@@ -568,13 +1184,17 @@ fail:
  * one. Pages are allocated with mm_user_ensure_page and filled under
  * a short CR3 switch with interrupts off; the caller's address space
  * is restored before return. Globals (g_brk, VMA) stay untouched: the
- * caller owns the per-process brk, reported via brk_out. Shared
- * graphics slots are never written. Returns the entry VA, or 0 with
- * a diagnostic. No relocation fixups: static ET_EXEC binaries load
- * identity-clean; ET_DYN without RELA still runs when linked
- * non-PIE by the MiniOS toolchain path. */
+ * caller owns the per-process brk, reported via brk_out, and learns
+ * the link base via base_out (0 when the caller runs static images
+ * only: the dynamic binder needs the same base the segments used,
+ * and ASLR never repeats it). Shared graphics slots are never
+ * written. Returns the entry VA, or 0 with a diagnostic. Relocation
+ * fixups stay with the caller: static images need none, and DT_NEEDED
+ * images bind through ldso_bind_into once their VMA context exists.
+ * No function symbol is ever resolved to a null address:
+ * unresolvable imports stay zero and fault only if called. */
 void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
-                         unsigned long *brk_out) {
+                         unsigned long *brk_out, unsigned long *base_out) {
     Elf64_Ehdr *e = (Elf64_Ehdr *)data;
     unsigned long base;
     Elf64_Phdr *ph;
@@ -659,7 +1279,7 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
     }
     {
         unsigned long b = ALIGN_UP(max_end, 0x1000);
-        unsigned long lim = USER_BRK_END;
+        unsigned long lim = USER_HEAP_CEIL;
         unsigned long pad;
         if (DOOM_BACKBUF_ADDR < lim) lim = DOOM_BACKBUF_ADDR;
         if (b > lim) { kprintf("exec_into: brk over cap\n"); goto fail; }
@@ -667,6 +1287,7 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
         if (b + pad <= lim && b + pad >= b) b += pad;
         *brk_out = b;
     }
+    if (base_out) *base_out = base;
     return (void *)(base + e->e_entry);
 fail:
     /* IF is the caller's property: every CR3 window above restores its
