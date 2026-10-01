@@ -120,6 +120,27 @@ then the space win the distro wants: link programs against the one
 shared libc instead of embedding the static stubs.
 miniGCC needs zero changes; CVM programs naming shared symbols
 keep failing to link (documented, same as errno today).
+L4 toolchain pieces that LANDED (ld repo): `-shared` no longer
+injects the runtime stubs, so a library may define and export names
+the stubs also provide; `-f elf -d` pre-registers one placeholder
+per import before the stub scan, so the colliding stub body shadows
+itself and the resolver routes the call through the PLT (library
+definition wins, a user definition stays local); `-runtime` prints
+the built-in runtime (syscall stubs + libc fallbacks) as assembly,
+each chunk behind a `.text` reset, so `ld -shared` over it yields a
+49-routine `libcmini.so`. All host-pinned in the ld suite.
+Measured reality (why the win is not there yet): a program linked
+`-d libcmini.so` came out LARGER than the static one (8153 vs 4588
+bytes) because (a) `ld` still injects all 49 stub bodies into every
+binary and (b) `ld_read_lib` imports every library export, so the
+exe carries 51 GOT/PLT/RELA rows it never calls. The win needs two
+pruning passes: inject only the stubs the program actually
+references (shrinks static binaries too) and import only the
+referenced library symbols. A full shared libc that also moves the
+error-setting syscall wrappers shifts `errno`/`stdout` into the
+shared image (shared across processes) unless they move to a
+per-process TLS slot via FSBASE; that is the open design decision
+for the all-functions-in-libc version, tracked here, not shipped.
 
 ### Dynamic mounts, pipes, clipboard, fork, httpd (2026-09 session)
 I implemented the user-facing half of the UNIX-way plan in one session,
