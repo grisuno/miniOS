@@ -141,7 +141,7 @@ This community groups 94 file(s) rooted at `tools` with dominant language c (coh
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 13 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 13 (orphans).
+- [INFERRED] shares_context community 0 <-> 13 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 13 (orphans).
 
 ## Risks
 

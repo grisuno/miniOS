@@ -5,6 +5,7 @@
 #include "fat32.h"
 #include "ext4.h"
 #include "drivers/virtio_blk.h"
+#include "drivers/virtio_net.h"
 #include "sched.h"
 #include "smp.h"
 #include "percpu_rq.h"
@@ -217,7 +218,7 @@ static const char *shell_builtin_names[] = {
     "load", "ls", "lsfs", "ltrace", "mem", "minifetch",     "mkdir", "mount", "mrun", "mv", "net",
     "nice", "panic", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
     "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
-    "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk",
+    "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk", "vnet",
 };
 #define SHELL_BUILTIN_COUNT (sizeof(shell_builtin_names) / sizeof(shell_builtin_names[0]))
 
@@ -2744,6 +2745,46 @@ static void shell_httpd_selftest(void) {
     vga_puts("httpd: selftest ok\n");
 }
 
+/* List one directory from a cross-filesystem VFS driver (fat:,
+ * ext4:) to the console: same "drv:/img:path" addressing as the cat
+ * twin, served by the readdir verb so the builtin never names the
+ * backing driver. Shared by the fat and ext4 builtins. */
+#define SHELL_LS_CAP 64
+static void shell_cross_ls(const char *drv, const char *imgarg,
+                           const char *dirarg) {
+    char img[RAMDISK_FNAME_LEN];
+    char vpath[5 + RAMDISK_FNAME_LEN + 1 + EXT4_PATH_MAX];
+    static vfs_dirent_t dents[SHELL_LS_CAP];
+    int n;
+    int i;
+    unsigned long dl = kstrlen(drv);
+    if (dl == 0 || dl > 4) return;
+    if (!shell_resolve_arg(drv, imgarg, "no such image", img)) return;
+    if (kstrlen(dirarg) >= EXT4_PATH_MAX) {
+        kprintf("%s: %s: name too long\n", drv, dirarg);
+        return;
+    }
+    {
+        unsigned long il = kstrlen(img), fl = kstrlen(dirarg), k;
+        for (k = 0; k < dl; k++) vpath[k] = drv[k];
+        vpath[dl] = ':';
+        vpath[dl + 1] = '/';
+        kmemcpy(vpath + dl + 2, img, il);
+        vpath[dl + 2 + il] = ':';
+        kmemcpy(vpath + dl + 3 + il, dirarg, fl + 1);
+    }
+    n = vfs_readdir(vpath, dents, SHELL_LS_CAP);
+    if (n < 0) {
+        kprintf("%s: %s: cannot list %s\n", drv, imgarg, dirarg);
+        return;
+    }
+    for (i = 0; i < n; i++) {
+        vga_puts("  ");
+        vga_puts(dents[i].name);
+        vga_putc('\n');
+    }
+}
+
 /* Stream one file from a cross-filesystem VFS driver (fat:, ext4:)
  * to the console: "drv:/img:path" per open (the prefix match needs
  * '/' after "drv:", stripped before the driver splits img from
@@ -3071,6 +3112,8 @@ void shell_exec_builtin(int argc, char **argv) {
      * marker, so the BDD suite pins the whole lifecycle. */
     else if (kstrcmp(argv[0], "vfstest") == 0) {
         static const char msg[] = "vfs-works";
+        static vfs_dirent_t dents[8];
+        static vfs_dirent_t roots[64];
         vfs_file_t f;
         char back[16];
         int n, i, ok;
@@ -3125,31 +3168,89 @@ void shell_exec_builtin(int argc, char **argv) {
         }
         vfs_close(&f);
         vga_puts("vfstest: remount ok\n");
+        if (vfs_open("mem:/vfs_ls", 1, &f) != 0) {
+            vga_puts("vfstest: ls create failed\n");
+            return;
+        }
+        if (vfs_write(&f, msg, 4) != 4) {
+            vfs_close(&f);
+            vga_puts("vfstest: ls write failed\n");
+            return;
+        }
+        vfs_close(&f);
+        {
+            int m = vfs_readdir("mem:/", dents, 8);
+            int found = 0;
+            int i;
+            for (i = 0; i < m; i++) {
+                if (kstrcmp(dents[i].name, "vfs_ls") == 0 &&
+                        !dents[i].isdir)
+                    found = 1;
+            }
+            if (m < 0 || !found) {
+                vga_puts("vfstest: readdir mismatch\n");
+                return;
+            }
+        }
+        if (vfs_readdir("mem:/vfs_ls", dents, 8) != -1) {
+            vga_puts("vfstest: readdir subdir not refused\n");
+            return;
+        }
+        {
+            int m = vfs_readdir("", roots, 64);
+            int i;
+            int k;
+            if (m <= 0) {
+                vga_puts("vfstest: ramdisk root empty\n");
+                return;
+            }
+            for (i = 0; i < m; i++) {
+                for (k = i + 1; k < m; k++) {
+                    if (kstrcmp(roots[i].name, roots[k].name) == 0 &&
+                            roots[i].isdir == roots[k].isdir) {
+                        vga_puts("vfstest: ramdisk root duplicated\n");
+                        return;
+                    }
+                }
+            }
+        }
+        {
+            static char fpath[8 + RAMDISK_FNAME_LEN];
+            int c = vfs_readdir("minifs:/", roots, 64);
+            int i = 0;
+            int k;
+            if (c <= 0) {
+                vga_puts("vfstest: minifs root empty\n");
+                return;
+            }
+            while (i < c && roots[i].isdir) i++;
+            if (i >= c) {
+                vga_puts("vfstest: minifs root has no file\n");
+                return;
+            }
+            kmemcpy(fpath, "minifs:/", 8);
+            for (k = 0; roots[i].name[k] && k < RAMDISK_FNAME_LEN - 1; k++)
+                fpath[8 + k] = roots[i].name[k];
+            fpath[8 + k] = 0;
+            if (vfs_readdir(fpath, roots, 64) >= 0) {
+                vga_puts("vfstest: minifs file list not refused\n");
+                return;
+            }
+        }
+        vga_puts("vfstest: readdir ok\n");
     }
     /* `fat ls <img> [dir]` / `fat cat <img> <file>`: read-only FAT32
      * loopback. The image is an ordinary file (etc/fat.img on MiniFS);
-     * directory entries list through fat32_list, file bytes stream
-     * through the fat: VFS driver ("img:fatpath" per open, registered
-     * at boot beside mem:), 4 KB heap chunks so a hostile size can
-     * never drive an oversized alloc. Bad magic, missing files and
-     * overlong names are diagnostics. */
+     * directory entries list through the fat: readdir verb, file bytes
+     * stream through the fat: VFS driver ("img:fatpath" per open,
+     * registered at boot beside mem:), 4 KB heap chunks so a hostile
+     * size can never drive an oversized alloc. Bad magic, missing files
+     * and overlong names are diagnostics. */
     else if (kstrcmp(argv[0], "fat") == 0) {
         if (argc >= 2 && kstrcmp(argv[1], "ls") == 0) {
-            static char names[FAT32_LIST_CAP][FAT32_NAME_MAX];
-            static int isdir[FAT32_LIST_CAP];
-            char img[RAMDISK_FNAME_LEN];
             const char *dir = (argc >= 4) ? argv[3] : "/";
-            int n, i;
             if (argc < 3) { vga_puts("usage: fat ls <img> [dir]\n"); return; }
-            if (!shell_resolve_arg("fat", argv[2], "no such image", img))
-                return;
-            n = fat32_list(img, dir, names, isdir, FAT32_LIST_CAP);
-            if (n < 0) { kprintf("fat: %s: cannot list %s\n", argv[2], dir); return; }
-            for (i = 0; i < n; i++) {
-                vga_puts("  ");
-                vga_puts(names[i]);
-                vga_putc('\n');
-            }
+            shell_cross_ls("fat", argv[2], dir);
             return;
         }
         if (argc >= 2 && kstrcmp(argv[1], "cat") == 0) {
@@ -3164,21 +3265,9 @@ void shell_exec_builtin(int argc, char **argv) {
      * a harder format (extents, block groups, linear dirs). */
     else if (kstrcmp(argv[0], "ext4") == 0) {
         if (argc >= 2 && kstrcmp(argv[1], "ls") == 0) {
-            static char names[EXT4_LIST_CAP][EXT4_NAME_MAX + 1];
-            static int isdir[EXT4_LIST_CAP];
-            char img[RAMDISK_FNAME_LEN];
             const char *dir = (argc >= 4) ? argv[3] : "/";
-            int n, i;
             if (argc < 3) { vga_puts("usage: ext4 ls <img> [dir]\n"); return; }
-            if (!shell_resolve_arg("ext4", argv[2], "no such image", img))
-                return;
-            n = ext4_list(img, dir, names, isdir, EXT4_LIST_CAP);
-            if (n < 0) { kprintf("ext4: %s: cannot list %s\n", argv[2], dir); return; }
-            for (i = 0; i < n; i++) {
-                vga_puts("  ");
-                vga_puts(names[i]);
-                vga_putc('\n');
-            }
+            shell_cross_ls("ext4", argv[2], dir);
             return;
         }
         if (argc >= 2 && kstrcmp(argv[1], "cat") == 0) {
@@ -3276,6 +3365,34 @@ void shell_exec_builtin(int argc, char **argv) {
         }
         vga_puts("vblk: superblock ok\n");
         kfree(sec);
+    }
+    /* `vnet`: virtio-net probe and queue proof. Initializes the
+     * device (absent hardware reports `absent`, never hangs), prints
+     * the MAC, checks link-up in the config space, then pushes one
+     * minimum-size frame through the TX queue and checks completion,
+     * proving the queue/kick/completion path serves real descriptors. */
+    else if (kstrcmp(argv[0], "vnet") == 0) {
+        unsigned char mac[6];
+        unsigned char frame[60];
+        unsigned i;
+        if (!vnet_init()) {
+            vga_puts("vnet: absent\n");
+            return;
+        }
+        vnet_get_mac(mac);
+        kprintf("vnet: present mac=%02x:%02x:%02x:%02x:%02x:%02x\n",
+            mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+        if (!vnet_link_up()) {
+            vga_puts("vnet: link down\n");
+            return;
+        }
+        vga_puts("vnet: link up\n");
+        for (i = 0; i < sizeof(frame); i++) frame[i] = 0;
+        if (!vnet_send(frame, sizeof(frame))) {
+            vga_puts("vnet: TX failed\n");
+            return;
+        }
+        vga_puts("vnet: TX ok\n");
     }
     else if (kstrcmp(argv[0], "mkdir") == 0) {
         if (argc < 2) { vga_puts("usage: mkdir <name>\n"); return; }

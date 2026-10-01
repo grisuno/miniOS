@@ -170,8 +170,6 @@ switch_to_notrap:
         movq   104(%rax), %r14
         movq   112(%rax), %r15
 
-        cmpl    $0, 152(%rax)
-        je      6f
         pushq   %rcx
         leaq    smp_ap_idle_loop(%rip), %rcx
         cmpq    %rcx, 120(%rax)

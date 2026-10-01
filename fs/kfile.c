@@ -16,6 +16,11 @@ KFILE *kfile_stdin(void)  { return kstdin; }
 KFILE *kfile_stdout(void) { return kstdout; }
 KFILE *kfile_stderr(void) { return kstderr; }
 
+/** Docstring: The "errno" cell toolchain programs name extern. Written
+ * on KFILE failures only, with the POSIX code for the cause; the
+ * kernel itself never reads it. */
+int kerrno = 0;
+
 /* A KFILE field is a kernel pointer, so it always lives in the canonical
  * low half. A value outside it is the signature of heap corruption (a
  * wild write landed on a live or freed KFILE) or a freed-and-reused slot
@@ -157,10 +162,12 @@ KFILE *kfopen(const char *path, const char *mode) {
     int want_write;
     irqflags_t flags;
     KFILE *f = 0;
-    if (!fs_resolve(path, resolved, sizeof(resolved))) return 0;
-    if (fs_is_dir(resolved)) return 0;
+    if (!path || !mode || !mode[0]) { kerrno = EINVAL; return 0; }
+    if (kstrlen(path) >= RAMDISK_FNAME_LEN) { kerrno = ENAMETOOLONG; return 0; }
+    if (!fs_resolve(path, resolved, sizeof(resolved))) { kerrno = ENOENT; return 0; }
+    if (fs_is_dir(resolved)) { kerrno = EISDIR; return 0; }
     f = kmalloc(sizeof(KFILE));
-    if (!f) return 0;
+    if (!f) { kerrno = ENOMEM; return 0; }
     kmemset(f, 0, sizeof(KFILE));
     f->minifs_ino = -1;
     want_write = (mode[0] == 'w' || mode[0] == 'a');
@@ -184,7 +191,7 @@ KFILE *kfopen(const char *path, const char *mode) {
         }
         if (parent_ok) {
             f->rf = ramdisk_create(resolved, 0);
-            if (!f->rf) { kfree(f); fs_drop(flags); return 0; }
+            if (!f->rf) { kfree(f); fs_drop(flags); kerrno = ENOSPC; return 0; }
         }
     }
     if (!f->rf && minifs_is_mounted()) {
@@ -210,7 +217,7 @@ KFILE *kfopen(const char *path, const char *mode) {
             }
         }
     }
-    if (!f->rf && f->minifs_ino < 0) { kfree(f); fs_drop(flags); return 0; }
+    if (!f->rf && f->minifs_ino < 0) { kfree(f); fs_drop(flags); kerrno = ENOENT; return 0; }
     f->mode = (mode[0] == 'w') ? 1 : ((mode[0] == 'a') ? 2 : 0);
     f->pos = 0;
     if (f->mode == 2) {
@@ -218,11 +225,11 @@ KFILE *kfopen(const char *path, const char *mode) {
         else if (f->minifs_ino >= 0) f->pos = f->minifs_size;
     }
     if (f->mode != 0 && (f->rf || f->minifs_ino >= 0)) {
-        if (f->mode == 1 && f->rf && f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); fs_drop(flags); return 0; }
+        if (f->mode == 1 && f->rf && f->rf->size && !ramdisk_resize(f->rf, 0)) { kfree(f); fs_drop(flags); kerrno = EIO; return 0; }
         f->wbuf = kmalloc(4096);
         f->wcap = 4096;
         f->wsize = 0;
-        if (!f->wbuf) { kfree(f); fs_drop(flags); return 0; }
+        if (!f->wbuf) { kfree(f); fs_drop(flags); kerrno = ENOMEM; return 0; }
     }
     f->ref = 1;
     fs_drop(flags);
@@ -428,8 +435,8 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
          * yields and retries. Empty with the writer closed is EOF. */
         char *b = ptr;
         int n;
-        if (!f->pring || kfile_corrupt(f)) return 0;
-        if (f->pipe_write) return 0;
+        if (!f->pring || kfile_corrupt(f)) { kerrno = EIO; return 0; }
+        if (f->pipe_write) { kerrno = EBADF; return 0; }
         fs_take(&flags);
         n = pipe_ring_read(f->pring, (unsigned char *)b, (unsigned)total);
         fs_drop(flags);
@@ -444,6 +451,7 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
         f->pos += total;
         rc = total / size;
     } else if (!f->rf || kfile_corrupt(f)) {
+        kerrno = EIO;
         rc = 0;
     } else {
         if (f->pos + total > f->rf->size) total = f->rf->size - f->pos;
@@ -456,8 +464,10 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f) {
 }
 
 unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f) {
-    if (!f || !size || !n) return 0;
-    if (n > 0 && size > 0xFFFFFFFFUL / n) return 0;
+    if (!f) { kerrno = EBADF; return 0; }
+    if (!size || !n) return 0;
+    if (n > 0 && size > 0xFFFFFFFFUL / n) { kerrno = EINVAL; return 0; }
+    if (!ptr) { kerrno = EINVAL; return 0; }
     unsigned long bytes = size * n;
     if (f->is_console) {
         const char *b = ptr; unsigned long i;
@@ -486,8 +496,8 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
         }
         return wrote / size;
     }
-    if (f->mode != 1 && f->mode != 2) return 0;
-    if (bytes > RD_DATA_MAX || f->wsize > RD_DATA_MAX - bytes) return 0;
+    if (f->mode != 1 && f->mode != 2) { kerrno = EBADF; return 0; }
+    if (bytes > RD_DATA_MAX || f->wsize > RD_DATA_MAX - bytes) { kerrno = EFBIG; return 0; }
     {
         irqflags_t flags;
         fs_take(&flags);
@@ -495,17 +505,18 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
             f->wbuf = kmalloc(4096);
             f->wcap = 4096;
             f->wsize = 0;
-            if (!f->wbuf) { fs_drop(flags); return 0; }
+            if (!f->wbuf) { fs_drop(flags); kerrno = ENOMEM; return 0; }
         }
         while (f->wsize + bytes > f->wcap) {
             unsigned oldcap = f->wcap;
             void *grown;
-            if (f->wcap > RD_DATA_MAX / 2) { fs_drop(flags); return 0; }
+            if (f->wcap > RD_DATA_MAX / 2) { fs_drop(flags); kerrno = EFBIG; return 0; }
             f->wcap *= 2;
             grown = krealloc(f->wbuf, f->wcap);
             if (!grown) {
                 f->wcap = oldcap;
                 fs_drop(flags);
+                kerrno = ENOMEM;
                 return 0;
             }
             f->wbuf = grown;
@@ -519,11 +530,12 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
 }
 
 int kfseek(KFILE *f, long offset, int whence) {
-    if (!f) return -1;
-    if (f->is_pipe) return -1;
+    if (!f) { kerrno = EBADF; return -1; }
+    if (f->is_pipe) { kerrno = ESPIPE; return -1; }
     if (kfile_corrupt(f)) {
         kprintf("kfile: corrupt handle (rf=%lx vfs=%lx) on seek - refusing\n",
                 (unsigned long)f->rf, (unsigned long)f->vfs);
+        kerrno = EIO;
         return -1;
     }
     unsigned filesize = f->minifs_ino >= 0 ? f->minifs_size : (f->rf ? f->rf->size : 0);
@@ -543,22 +555,25 @@ long kftell(KFILE *f) {
 }
 
 int kfflush(KFILE *f) {
-    if (!f || f->mode == 0) return 0;
+    if (!f) { kerrno = EBADF; return -1; }
+    if (f->mode == 0) return 0;
     if (f->minifs_ino >= 0) {
         if (f->wbuf && f->wsize > 0) {
             unsigned base = (f->mode == 2) ? (unsigned)(f->pos - f->wsize) : 0;
-            if (minifs_write(f->minifs_ino, f->wbuf, base, f->wsize) < 0)
+            if (minifs_write(f->minifs_ino, f->wbuf, base, f->wsize) < 0) {
+                kerrno = EIO;
                 return -1;
+            }
             if (base + f->wsize > f->minifs_size)
                 f->minifs_size = base + f->wsize;
             f->wsize = 0;
         }
         return 0;
     }
-    if (!f->rf || kfile_corrupt(f)) return 0;
+    if (!f->rf || kfile_corrupt(f)) { kerrno = EIO; return -1; }
     if (f->wbuf && f->wsize > 0) {
         unsigned base = (f->mode == 2) ? (unsigned)(f->pos - f->wsize) : 0;
-        if (!ramdisk_resize(f->rf, base + f->wsize)) return -1;
+        if (!ramdisk_resize(f->rf, base + f->wsize)) { kerrno = EIO; return -1; }
         ramdisk_write(f->rf, f->wbuf, base, f->wsize);
         f->wsize = 0;
     }

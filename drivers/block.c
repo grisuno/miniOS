@@ -1,9 +1,13 @@
 /* Block device layer for MiniFS.
  *
- * Maps 4096-byte logical blocks to 512-byte IDE sectors.
+ * Maps 4096-byte logical blocks to 512-byte sectors behind the device
+ * registry: a virtio-blk drive carrying the same image wins over IDE
+ * PIO (polled virtio avoids one VM-exit per 32-bit data word), IDE
+ * stays as the fallback, and a direct IDE call covers the window
+ * before either device registers.
  *
- * A small direct-mapped write-through cache is layered on top of the IDE PIO
- * reads.  IDE PIO is the slowest part of the guest (every 32-bit data read is
+ * A small direct-mapped write-through cache is layered on top of the
+ * device reads.  IDE PIO is the slowest part of the guest (every 32-bit data read is
  * an emulated VM-exit under QEMU), and MiniFS's directory iteration re-reads
  * the same directory block for every entry (minifs_dir_read re-scans the whole
  * directory), so without a cache `lsfs` is O(entries x blocks) in disk reads.
@@ -13,11 +17,16 @@
 
 #include "kernel.h"
 #include "ide.h"
+#include "drivers/virtio_blk.h"
 #include "block.h"
 #include "driver.h"
 
 static unsigned int block_total_sectors;
 static unsigned int block_lba_base;
+/** Docstring: True once block_init preferred the virtio queue. Set
+ * exactly once at boot: a foreign disk attached later must never
+ * hijack MiniFS mid-run. */
+static int block_use_virtio;
 
 /* Direct-mapped cache: 16 x 4096 = 64 KB of recently-read blocks.
  * Every shared line mutates only under bc_lock, which is irqsave (a
@@ -66,9 +75,23 @@ static void bc_invalidate(unsigned int block_num) {
 }
 
 void block_init(void) {
+    unsigned int ide_total;
+    unsigned long vblk_total;
     ide_init();
-    block_total_sectors = ide_total_sectors();
+    ide_total = ide_total_sectors();
+    block_total_sectors = ide_total;
     block_lba_base = 0;
+    block_use_virtio = 0;
+    if (vblk_init()) {
+        vblk_register_device();
+        vblk_total = vblk_sectors();
+        if (ide_total == 0 || vblk_total == (unsigned long)ide_total) {
+            block_use_virtio = 1;
+            if (vblk_total <= 0xFFFFFFFFu)
+                block_total_sectors = (unsigned int)vblk_total;
+        }
+    }
+    kprintf("block: backend=%s\n", block_use_virtio ? "virtio" : "ide");
     bc_data = (unsigned char *)kmalloc(BC_WAYS * BLOCK_SIZE);
     if (!bc_data) kprintf("block: no cache (out of memory)\n");
 }
@@ -83,18 +106,32 @@ void block_set_base(unsigned int lba_base) {
 
 /* Strategy consumer: sector I/O goes through the registered block device's
  * ops table (dev->ops->read/write), never straight at the hardware. The
- * direct ide_* call is a fail-closed fallback for the window between
- * block_init's probe and the registry publish, and for images whose IDE
- * probe found no disk (registry still publishes, present() says 0). */
+ * virtio queue wins when block_init preferred it (same image as IDE, or
+ * IDE absent on virtio-only hardware); IDE stays as the fallback, and
+ * the direct ide_* call covers the window between block_init's probe
+ * and the registry publish, plus images whose IDE probe found no disk
+ * (registry still publishes, present() says 0). */
 static int block_dev_read(unsigned lba, unsigned count, void *buf) {
-    device_t *d = device_find("ide0");
+    device_t *d;
+    if (block_use_virtio) {
+        d = device_find("vblk0");
+        if (d && d->block && d->block->read_sectors)
+            return d->block->read_sectors(d, lba, count, buf);
+    }
+    d = device_find("ide0");
     if (d && d->block && d->block->read_sectors)
         return d->block->read_sectors(d, lba, count, buf);
     return ide_read_sectors(lba, count, buf);
 }
 
 static int block_dev_write(unsigned lba, unsigned count, const void *buf) {
-    device_t *d = device_find("ide0");
+    device_t *d;
+    if (block_use_virtio) {
+        d = device_find("vblk0");
+        if (d && d->block && d->block->write_sectors)
+            return d->block->write_sectors(d, lba, count, buf);
+    }
+    d = device_find("ide0");
     if (d && d->block && d->block->write_sectors)
         return d->block->write_sectors(d, lba, count, buf);
     return ide_write_sectors(lba, count, buf);

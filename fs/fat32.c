@@ -631,6 +631,47 @@ int fat32_vfs_truncate(void *handle, unsigned long size) {
     return -1;
 }
 
+/** Docstring: List one FAT directory through the VFS verb. Splits
+ * the "img:inpath" addressing exactly like open, then serves the
+ * existing bounded list helper into overflow-checked heap arrays
+ * and copies names verbatim (dir entries keep their trailing
+ * slash, like the shell ever printed them). */
+static int fat32_vfs_readdir(const char *path, vfs_dirent_t *ents,
+        int cap) {
+    char img[RAMDISK_FNAME_LEN];
+    char inpath[RAMDISK_FNAME_LEN];
+    char (*names)[FAT32_NAME_MAX];
+    int *isdir;
+    int n;
+    int i;
+    if (!path || !ents || cap <= 0) return -1;
+    if (fsimg_split(path, img, sizeof(img), inpath, sizeof(inpath)) < 0)
+        return -1;
+    if ((unsigned)cap > (unsigned)-1 / FAT32_NAME_MAX) return -1;
+    names = (char (*)[FAT32_NAME_MAX])kmalloc((unsigned)cap *
+        FAT32_NAME_MAX);
+    if (!names) return -1;
+    isdir = (int *)kmalloc((unsigned)cap * sizeof(int));
+    if (!isdir) {
+        kfree(names);
+        return -1;
+    }
+    n = fat32_list(img, inpath, names, isdir, cap);
+    if (n < 0) {
+        kfree(isdir);
+        kfree(names);
+        return -1;
+    }
+    for (i = 0; i < n; i++) {
+        kstrncpy(ents[i].name, names[i], VFS_NAME_MAX);
+        ents[i].name[VFS_NAME_MAX] = 0;
+        ents[i].isdir = isdir[i] != 0;
+    }
+    kfree(isdir);
+    kfree(names);
+    return n;
+}
+
 const vfs_ops_t fat32_vfs_ops = {
     .open     = fat32_vfs_open,
     .read     = fat32_vfs_read,
@@ -638,4 +679,5 @@ const vfs_ops_t fat32_vfs_ops = {
     .close    = fat32_vfs_close,
     .fstat    = fat32_vfs_fstat,
     .truncate = fat32_vfs_truncate,
+    .readdir  = fat32_vfs_readdir,
 };

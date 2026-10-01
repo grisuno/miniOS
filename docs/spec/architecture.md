@@ -18,7 +18,42 @@ offset fenced). The KFILE struct carries a `vfs_file_t *vfs` pointer
 for future VFS-backed dispatch; the existing direct ramdisk/MiniFS
 paths remain for backward compatibility. New filesystem additions
 register a prefix and implement `vfs_ops_t` without touching the
-kernel core.
+kernel core. Listings go through the `readdir` verb
+(`vfs_readdir`, path-based, longest-prefix match like open, stateless
+so a listing never pins an unmount): ramdisk splits flat names into
+leaves and deduplicated first-level subdirs, MiniFS walks indexes
+faithfully, mem: lists its flat root only, and fat:/ext4: wrap the
+bounded list helpers over "img:inpath" split addressing. The shell
+`fat ls`/`ext4 ls` build "drv:/img:dir" and print verbatim (dir
+slashes preserved), so no builtin names a driver anymore. Pin: `vfstest`
+readdir legs (mem find + subdir refusal, ramdisk root pairwise-unique,
+MiniFS root plus file refusal) and `vfs-readdir-*` mutants under
+`MATCH="vfs "`.
+
+### Page cache + file-backed mmap (T5, specified, not yet implemented)
+Today every file reader copies whole files through throwaway heap
+buffers (`spawn_load_image`, the ELF loader segment copy): N
+processes sharing `libc.so` would hold N private `.text` copies, and
+`sys_mmap` ignores fd/flags/prot outright (anonymous only). The
+landing is three slices, in order. (1) Page cache keyed by
+(filesystem, inode, page index) with refcount + dirty bits,
+attached at `minifs_read`/`minifs_write` (ramdisk needs none, it is
+already memory; FAT/ext4 stay read-only image readers for now).
+Writeback is synchronous at close/sync plus pressure eviction; no
+daemon thread until slice 1 proves itself. (2) File-backed
+`MAP_PRIVATE` mmap: VMA nodes tagged file-backed, the #PF handler
+populates from the cache (CoW privatizes on write, like anon pages
+today), `mprotect` from T2 already toggles the bits. `MAP_SHARED`
+stays out until writeback ordering against the MiniFS journal is
+proven. (3) Integration hazards, all named up front: swap is
+currently unwired so file pages simply never enter its scope;
+`munmap` today only does VMA bookkeeping and never unmaps, so file
+mappings need refcount drops there or the cache pins forever; and
+eviction needs reverse shootdown of every window mapping the page
+(local invlpg is not enough once two processes share `.text`).
+Each slice ships with SDD spec, BDD pins (shared-page proof: two
+processes, one `.text`, one dirty bit) and mutants; `ld.so` (T8)
+starts only after all three are green.
 
 ### Dynamic mounts, pipes, clipboard, fork, httpd (2026-09 session)
 I implemented the user-facing half of the UNIX-way plan in one session,

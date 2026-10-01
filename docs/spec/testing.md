@@ -123,6 +123,20 @@ tools stay exercised at the shell level by `tools/test_codecs.sh`, which
 drives the real `lzss`/`unlzss`, `lz4`/`unlz4` and `aes`/`unaes` roundtrips
 through the serial console (pass=3 in the gate).
 
+### Syscall fuzzer (`bin/scfuzz.elf`, syzkaller spirit at BDD scale)
+Two 1:1 threads (`progs/src/mthreads.h`) hammer mmap/munmap/mprotect/yield
+with seeded, interleaved operation streams and fold every return code and
+readback into an FNV-1a checksum; the BDD scenario pins the exact hash, so
+any race, lost update or behavioral drift fails it deterministically across
+boots (ASLR-proof: addresses never enter the hash, only codes and data).
+All fuzz maps stay inside one private 4 MB arena (per-thread partitions
+plus one shared atomic page) and transient single pages, so a fault always
+names a kernel bug: the oracle already proved itself when a fuzzer-side
+prot confusion (treating R|X as writable) faulted exactly like a real
+violation instead of passing silently. Bounded (400 ops/thread), raw
+syscalls, no libc, no malloc in workers; a wedge shows up as a BDD
+timeout, never a silent pass.
+
 ## Library integration assessments
 A library lands in MiniOS only when it fits the freestanding kernel's rules
 (integer-only, no POSIX, allocator and libc callbacks redirected through

@@ -152,6 +152,43 @@ int vfs_open(const char *path, int mode, vfs_file_t *f) {
     }
 }
 
+/** Docstring: List one directory through the ops table, no caller
+ * branch on the backing driver. Stateless like a single getdents:
+ * longest-prefix match selects the driver, the subpath strips the
+ * prefix exactly like open, and a missing readdir verb refuses
+ * instead of falling back to a driver-specific list. No mount
+ * refcount is taken (ops tables are static, never freed), so a
+ * listing can never pin an unmount the way an open handle does. */
+int vfs_readdir(const char *path, vfs_dirent_t *ents, int cap) {
+    irqflags_t flags;
+    int best = -1;
+    unsigned best_len = 0;
+    int i;
+    const vfs_ops_t *ops;
+    const char *subpath;
+    if (!path || !ents || cap <= 0) return -1;
+    spin_lock_irqsave(&vfs_lock, &flags);
+    for (i = 0; i < VFS_MAX_MOUNTS; i++) {
+        unsigned plen;
+        if (!vfs_mounts[i].in_use) continue;
+        plen = kstrlen(vfs_mounts[i].prefix);
+        if (plen < best_len) continue;
+        if (kstrncmp(path, vfs_mounts[i].prefix, plen) == 0 &&
+            (path[plen] == '/' || path[plen] == 0 || plen == 0)) {
+            if (plen > best_len || best < 0) {
+                best = i;
+                best_len = plen;
+            }
+        }
+    }
+    ops = best >= 0 ? vfs_mounts[best].ops : 0;
+    spin_unlock_irqrestore(&vfs_lock, flags);
+    if (!ops || !ops->readdir) return -1;
+    subpath = path + best_len;
+    if (*subpath == '/') subpath++;
+    return ops->readdir(subpath, ents, cap);
+}
+
 /* ================================================================
  *  Ramdisk VFS driver
  * ================================================================ */
@@ -234,6 +271,64 @@ static int ramdisk_vfs_truncate(void *handle, unsigned long size) {
     return ramdisk_resize(h->rf, (unsigned)size) ? 0 : -1;
 }
 
+/** Docstring: List ramdisk leaves under dir ("" or "/" is root).
+ * Flat names with "/" as data split into leaves and first-level
+ * subdirectories, deduplicated, so "src/sub/x" contributes "sub"
+ * once and "src/" contributes "src" as a directory. */
+static int ramdisk_vfs_readdir(const char *path, vfs_dirent_t *ents,
+        int cap) {
+    unsigned long dl;
+    int n = 0;
+    int i;
+    if (!path || !ents || cap <= 0) return -1;
+    while (*path == '/') path++;
+    dl = kstrlen(path);
+    if (dl >= (unsigned long)RAMDISK_FNAME_LEN) return -1;
+    for (i = 0; i < ramdisk_count(); i++) {
+        const char *nm = ramdisk_file_name(i);
+        const char *rest;
+        const char *slash;
+        unsigned long leaf;
+        int isdir;
+        int k;
+        int dup = 0;
+        if (!nm || !nm[0]) continue;
+        if (dl == 0) {
+            rest = nm;
+        } else {
+            if (kstrncmp(nm, path, dl) != 0) continue;
+            if (nm[dl] != '/' && nm[dl] != 0) continue;
+            if (nm[dl] == 0) continue;
+            rest = nm + dl + 1;
+        }
+        if (!rest[0]) continue;
+        slash = kstrchr(rest, '/');
+        if (!slash) {
+            leaf = kstrlen(rest);
+            isdir = 0;
+        } else if (!slash[1]) {
+            leaf = (unsigned long)(slash - rest);
+            isdir = 1;
+        } else {
+            leaf = (unsigned long)(slash - rest);
+            isdir = 1;
+        }
+        if (leaf == 0 || leaf > (unsigned long)VFS_NAME_MAX) continue;
+        for (k = 0; k < n; k++) {
+            if (kstrncmp(ents[k].name, rest, leaf) == 0 &&
+                    ents[k].name[leaf] == 0 && ents[k].isdir == isdir)
+                dup = 1;
+        }
+        if (dup) continue;
+        if (n >= cap) break;
+        kmemcpy(ents[n].name, rest, leaf);
+        ents[n].name[leaf] = 0;
+        ents[n].isdir = isdir;
+        n++;
+    }
+    return n;
+}
+
 static const vfs_ops_t ramdisk_vfs_ops = {
     .open    = ramdisk_vfs_open,
     .read    = ramdisk_vfs_read,
@@ -241,6 +336,7 @@ static const vfs_ops_t ramdisk_vfs_ops = {
     .close   = ramdisk_vfs_close,
     .fstat   = ramdisk_vfs_fstat,
     .truncate = ramdisk_vfs_truncate,
+    .readdir = ramdisk_vfs_readdir,
 };
 
 /* ================================================================
@@ -316,6 +412,34 @@ static int minifs_vfs_truncate(void *handle, unsigned long size) {
     return minifs_truncate(h->ino, size);
 }
 
+/** Docstring: List MiniFS directory entries by index order, faithful
+ * to what the directory holds (no dot filtering). Non-directories
+ * refuse with -20, missing paths with the resolver's -1. */
+static int minifs_vfs_readdir(const char *path, vfs_dirent_t *ents,
+        int cap) {
+    int ino;
+    MiniFSInode st;
+    MiniFSDirEntry de;
+    char name[RAMDISK_FNAME_LEN];
+    int idx = 0;
+    int n = 0;
+    if (!minifs_is_mounted() || !path || !ents || cap <= 0) return -1;
+    while (*path == '/') path++;
+    ino = minifs_resolve_path(path);
+    if (ino < 0) return -1;
+    if (minifs_stat(ino, &st) < 0) return -1;
+    if (!(st.mode & MINIFS_S_IFDIR)) return -20;
+    while (n < cap) {
+        if (minifs_dir_read(ino, idx, &de, name) != 0) break;
+        idx++;
+        kstrncpy(ents[n].name, name, VFS_NAME_MAX);
+        ents[n].name[VFS_NAME_MAX] = 0;
+        ents[n].isdir = (de.file_type == MINIFS_FT_DIR);
+        n++;
+    }
+    return n;
+}
+
 static const vfs_ops_t minifs_vfs_ops = {
     .open    = minifs_vfs_open,
     .read    = minifs_vfs_read,
@@ -323,6 +447,7 @@ static const vfs_ops_t minifs_vfs_ops = {
     .close   = minifs_vfs_close,
     .fstat   = minifs_vfs_fstat,
     .truncate = minifs_vfs_truncate,
+    .readdir = minifs_vfs_readdir,
 };
 
 /* ================================================================
@@ -418,6 +543,24 @@ static int mem_truncate(void *handle, unsigned long size) {
     return 0;
 }
 
+/** Docstring: List the flat mem: namespace (root only, files only).
+ * Anything below root refuses: there are no directories here. */
+static int mem_readdir(const char *path, vfs_dirent_t *ents, int cap) {
+    int n = 0;
+    int i;
+    if (!path || !ents || cap <= 0) return -1;
+    while (*path == '/') path++;
+    if (*path != 0) return -1;
+    for (i = 0; i < MEM_FILES && n < cap; i++) {
+        if (!mem_files[i].used) continue;
+        kstrncpy(ents[n].name, mem_files[i].name, VFS_NAME_MAX);
+        ents[n].name[VFS_NAME_MAX] = 0;
+        ents[n].isdir = 0;
+        n++;
+    }
+    return n;
+}
+
 static const vfs_ops_t mem_vfs_ops = {
     .open    = mem_open,
     .read    = mem_read,
@@ -425,6 +568,7 @@ static const vfs_ops_t mem_vfs_ops = {
     .close   = mem_close,
     .fstat   = mem_fstat,
     .truncate = mem_truncate,
+    .readdir = mem_readdir,
 };
 
 /* ================================================================

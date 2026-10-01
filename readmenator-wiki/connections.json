@@ -129,9 +129,17 @@
   },
   {
     "community_a": 0,
+    "community_b": 12,
+    "connection_type": "shares_context",
+    "explanation": "Inferred shared context (layer utility) with no import path between community 0 (headers) and community 12 (tests).",
+    "strength": 0.5,
+    "confidence": "INFERRED"
+  },
+  {
+    "community_a": 0,
     "community_b": 13,
     "connection_type": "shares_context",
-    "explanation": "Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 13 (orphans).",
+    "explanation": "Inferred shared context (layer utility) with no import path between community 0 (headers) and community 13 (orphans).",
     "strength": 0.5,
     "confidence": "INFERRED"
   },
@@ -145,17 +153,9 @@
   },
   {
     "community_a": 1,
-    "community_b": 5,
+    "community_b": 3,
     "connection_type": "shares_context",
-    "explanation": "Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 5 (headers).",
-    "strength": 0.5,
-    "confidence": "INFERRED"
-  },
-  {
-    "community_a": 1,
-    "community_b": 6,
-    "connection_type": "shares_context",
-    "explanation": "Inferred shared context (layer utility) with no import path between community 1 (headers) and community 6 (headers).",
+    "explanation": "Inferred shared context (language c) with no import path between community 1 (headers) and community 3 (headers/drivers).",
     "strength": 0.5,
     "confidence": "INFERRED"
   }

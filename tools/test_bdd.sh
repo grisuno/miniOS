@@ -361,6 +361,26 @@ expect "nx: jumping to stack"
 expect "EXCEPTION 0000000e err=00000015"
 refute "exit code: 0"
 
+scenario "mprotect guards pages and faults on violation" "run bin/mprot.elf
+poweroff"
+expect "mprot: legs ok"
+expect "mprot: exec ok"
+expect "mprot: protecting"
+expect "EXCEPTION 0000000e err=00000007"
+refute "exit code: 0"
+
+scenario "syscall fuzzer completes its seeded run" "run bin/scfuzz.elf
+poweroff"
+expect "scfuzz: start"
+expect "scfuzz: 9cfa1899"
+expect "exit code: 0"
+
+scenario "desktop glibc TLS survives preemption" "desktop
+run bin/file.elf --selftest
+poweroff"
+expect "desktop: wayland up"
+expect "file: leak ok"
+
 scenario "rename syscall moves files and fails closed" "run bin/mvrn.elf
 poweroff"
 expect "mvrn: ok"
@@ -666,6 +686,7 @@ scenario "vfs mounts list and prove the full lifecycle" "mount
 vfstest
 poweroff"
 expect "mem: (mem)"
+expect "vfstest: readdir ok"
 expect "vfstest: remount ok"
 
 scenario "vfs unmount refuses the pinned root and unknown prefixes" "unmount \"\"
@@ -688,6 +709,18 @@ expect "httpd: ack guard ok"
 expect "httpd: 200 ok"
 expect "httpd: 404 ok"
 expect "httpd: selftest ok"
+
+# virtio-net preference (T4): with a virtio NIC beside the stock
+# rtl8139 the stack reports the virtio backend, the queue proof
+# passes, and an ICMP ping flows through the virtio queues.
+SCENARIO_QEMU_ARGS="-nic user,model=virtio-net-pci"
+scenario "vnet backend is preferred when present" "vnet
+net ping 10.0.2.2
+poweroff"
+expect "net: backend=virtio"
+expect "vnet: TX ok"
+expect "^reply from 10.0.2.2"
+SCENARIO_QEMU_ARGS=""
 
 scenario "clipboard publishes and clears text" "clip hello-clip
 clip
@@ -734,6 +767,19 @@ expect "vblk: superblock ok"
 SCENARIO_QEMU_ARGS=""
 rm -f "$HERE/build/vblk-bdd.img"
 
+# The block layer prefers a virtio-blk drive carrying the same image
+# over IDE PIO: MiniFS (superblock probe, a compiler redirect write
+# and its readback) runs end to end through the virtio queue.
+cp "$IMAGE" "$HERE/build/vblk-bdd.img"
+SCENARIO_QEMU_ARGS="-drive file=$HERE/build/vblk-bdd.img,format=raw,if=none,id=vblk -device virtio-blk-pci,drive=vblk"
+scenario "block layer prefers virtio-blk for MiniFS IO" "run objects/minigcc.o src/test.c > asm/vb.s
+cat asm/vb.s
+poweroff"
+expect "block: backend=virtio"
+expect ".section .text"
+SCENARIO_QEMU_ARGS=""
+rm -f "$HERE/build/vblk-bdd.img"
+
 scenario_uefi "uefi stub proves firmware handshake and disk read"
 expect "uefi: MiniOS stub alive"
 expect "uefi: mmap entries="
@@ -763,6 +809,38 @@ run objects/minigcc.o src/p.c > asm/p.s
 run objects/ld.o -f elf -o bin/p.elf asm/p.s
 run bin/p.elf
 poweroff"
+expect "exit code: 7"
+
+scenario "errno reports failures to toolchain programs" "edit src/errno.c
+a
+extern int errno;
+a
+int printf();
+a
+void *fopen();
+a
+int main(void) {
+a
+void *f = fopen(\"no-such-xyz\", \"r\");
+a
+if (f) return 1;
+a
+printf(\"errno: %d\\n\", errno);
+a
+return 0;
+a
+}
+x
+run objects/minigcc.o src/errno.c > asm/errno.s
+run objects/ld.o -f elf -o bin/errno.elf asm/errno.s
+run bin/errno.elf
+poweroff"
+expect "errno: 2"
+expect "exit code: 0"
+
+scenario "kernel libc errno reaches loaded objects" "run objects/ftest.o
+poweroff"
+expect "ftest: errno=2 (expect 2)"
 expect "exit code: 7"
 
 scenario "toolchain also produces a cvm module inside the OS" "edit src/q.c

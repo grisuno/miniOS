@@ -207,6 +207,14 @@ on the IDE disk):
   4 KB scratch buffer, never `block_read` straight into the 48-byte
   superblock (the old code smeared 4096 bytes over the neighbouring
   `.bss` on every boot).
+- **Block backend preference is virtio-first, size-gated.** `block_init`
+  probes the virtio-blk queue after IDE and prefers it only when it
+  carries the same image (equal sector count) or IDE is absent
+  (virtio-only hardware); a foreign disk of another size never hijacks
+  MiniFS, and the choice is frozen at boot (`block: backend=...`
+  marker) so a late-attached disk cannot reroute a mounted filesystem.
+  The queue moves at most 16 sectors per request (single head
+  descriptor), so wider block reads chunk instead of refusing.
 - **Directory reads distrust entry lengths.** `minifs_dir_read` skips
   entries whose name would overflow the 64-byte buffer every caller
   passes or run past the block (resolved paths cap leaves at 63, so

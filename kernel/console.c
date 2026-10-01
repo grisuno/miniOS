@@ -317,6 +317,7 @@ void register_libc_symbols(void) {
     k_register_symbol("stdin",    (void *)&kstdin);
     k_register_symbol("stdout",   (void *)&kstdout);
     k_register_symbol("stderr",   (void *)&kstderr);
+    k_register_symbol("errno",    (void *)&kerrno);
 
     k_register_symbol("exit",     (void *)kexit);
 

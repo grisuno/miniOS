@@ -155,6 +155,22 @@ segfaults the host suite instead of passing it, which is how a committed
 mutant in this file was caught and reverted; never commit with a red
 `make test-sanitize`.
 
+### mprotect enforcement (`sys_linux_mprotect`, syscall 10)
+The old stub returned 0 without touching a bit, so every caller believed
+its pages were protected. The handler toggles RW/NX per page in the
+caller's live tables (syscall entry keeps the caller CR3 loaded) with a
+local invlpg each, the cow_resolve precedent, no cross-CPU shootdown
+yet. Two passes under mm_lock (validate all, then apply): unaligned
+base and unknown prot bits are -EINVAL, anything outside the user
+window, unmapped, non-user, phys-less or CoW-shared is -ENOMEM with
+nothing applied. A write to a cleared page falls through cow_resolve
+into the kill path exactly like nx. Two documented deviations:
+PROT_NONE stays present (denies write+exec, reads still succeed)
+because the reaper only frees present data pages, and CoW-shared pages
+refuse (upgrading them in place would write another window's bytes
+past cow_resolve). Pin: `run bin/mprot.elf` (legs, R|X exec, faulting
+write) plus `mprotect-*` mutants under `MATCH="mprotect"`.
+
 ### Spawn contract (`spawn.h` + `kernel/spawn.c`)
 `k_syscall_spawn` is a ~30-line thin wrapper: validate, copy argv,
 resolve, snapshot, `spawn_backup`, `spawn_execute`, release,
@@ -257,6 +273,38 @@ data buffer nor kernel `.bss` growth can ever clobber them.
 The BDD suite proves the isolation with `cpl.elf` (reports ring 3),
 `kmem.elf` (kernel pointers rejected) and `nx.elf` (a `ret` written to the
 stack faults on fetch, so `poweroff` is never reached).
+
+### FSBASE rides every switch, pid 0 included (`arch/x86/ctx_sw.S`)
+The switch saves `%fs` base into the outgoing PCB unconditionally and
+restores the incoming one, with one exception left standing: the AP
+idle loop (no user state to restore). The old pid-0 restore skip
+assumed pid 0 never runs TLS code, but `k_exec_user` runs glibc
+programs in the shared window, so every switch-back handed them the
+preemptor's base: `file.elf` faulted inside malloc with wlcomp up,
+deterministically, while text-mode runs (no TLS competitor) stayed
+green. Fresh spawns stay safe (PCB and MSR zeroed together at exec),
+fork inherits the live base, and `arch_prctl` needs no PCB write (the
+outgoing save heals the slot before any switch-in can read it). Pin:
+`desktop` + `run bin/file.elf --selftest` expecting `file: leak ok`,
+plus the `fsbase-restore-corrupted` mutant under `MATCH="glibc TLS"`.
+
+### errno for the miniGCC ABI (T10)
+miniGCC predefines `errno` as an extern global (`libc_global_name`),
+so any toolchain program naming it emits a reference the link chain
+must resolve. Two worlds, like `stdout` before it: `ld -f elf` links
+an `errno` cell from its stub layer (`ELF_STUBS_SRC`, sibling `ld`
+repo) and its open/read/write/malloc stubs store the negated syscall
+code without changing their returns, so in-guest toolchain programs
+read real POSIX codes; ET_REL `.o` programs resolve the kernel
+`"errno"` cell (`kerrno`, registered beside stdin) with codes set at
+the KFILE boundary (ENOENT/EIO/EBADF/ENOMEM/EFBIG/ESPIPE/ENAMETOOLONG,
+set-on-failure-only; glibc ELFs keep their own `%fs` errno and never
+touch it). One global cell is correct today (single shared ET_REL
+window, no miniGCC threads); per-thread moves with miniGCC threads,
+never before. CVM stays out (its natives live in another sibling).
+Pin: in-guest minigcc→ld→run probe (`errno: 2` after a failed open),
+`run objects/ftest.o` (`ftest: errno=2`), plus `errno-*` mutants
+under `MATCH="errno"`.
 
 Every legacy `run` clones those tables with `pt_clone_user` and frees the
 clone with `pt_free_user` on return. The graphics pass (framebuffer plus

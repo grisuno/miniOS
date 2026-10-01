@@ -49,6 +49,22 @@ driver, dropped fragments in the stack).
 - All constants are named in `net.h` (`NET_*`); none of the fixed
   addresses, ports or timeouts appears as a bare literal.
 
+### virtio-net preference (T4, specified, driver not yet written)
+Same shape as the virtio-blk landing: a polled legacy virtio-net driver
+(`drivers/virtio_net.c`, QEMU `-device virtio-net-pci`, no MSI-X, no
+interrupts, TX/RX queue pair with heap buffers as guest-physical by the
+identity-map rule, MAC from the config space) behind the `net.h`
+driver boundary (`vnet_send`, `vnet_poll`, `vnet_present`,
+`vnet_get_mac` mirroring the `rtl_*` verbs), and `net_init` prefers it
+when present (`net: backend=virtio`, else `rtl8139`), with a `vnet`
+diagnostic mirroring `vblk` (probe, MAC, queue proof). The preference
+is size-gate-free (NICs carry no image identity; presence decides),
+and the BDD proves the fast path end to end: virtio NIC attached
+beside the stock rtl8139, an HTTP fetch through the preferred device,
+plus the backend marker. Pin when implemented: backend marker,
+`vnet` queue proof, fetch over virtio, `vnet-*` mutants under
+`MATCH="vnet "`.
+
 ### TLS client (userspace: tlsget/freedom over net/tls*.c)
 TLS 1.2 left ring 0 (`net/tls*.c` never link into the image; 201/203
 always answer `-ENOSYS` and 202 serves Linux `futex(2)`). The same sources compile

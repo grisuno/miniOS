@@ -57,6 +57,19 @@ static int cow_find(unsigned long phys) {
     return -1;
 }
 
+/** Docstring: True when phys is still shared copy-on-write. mprotect
+ * consults this before setting a writable bit: upgrading a shared
+ * page in place would let one window write another's bytes without
+ * ever faulting into cow_resolve. Pure scan, no allocation, safe
+ * under the caller's mm_lock (cow_lock is a leaf here). */
+int cow_page_shared(unsigned long phys) {
+    int shared;
+    spin_lock(&cow_lock);
+    shared = cow_find(phys) >= 0;
+    spin_unlock(&cow_lock);
+    return shared;
+}
+
 /** Docstring: Share one phys page: bump its refcount, or install it.
  * Returns 0 shared, -1 when the table is full (caller eager-copies). */
 static int cow_track(unsigned long phys) {

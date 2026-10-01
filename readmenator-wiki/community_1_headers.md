@@ -104,8 +104,7 @@ This community groups 22 file(s) rooted at `headers` with dominant language c (c
 - [EXTRACTED] depends_on community 1 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/block.c imports headers/kernel.h.
 - [EXTRACTED] depends_on community 1 <-> 4 (strength 0.9): Extracted import edge crosses communities: tests/test_driver.c imports kernel/string.c.
 - [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 2 (headers).
-- [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 1 (headers) and community 5 (headers).
-- [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 6 (headers).
+- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (language c) with no import path between community 1 (headers) and community 3 (headers/drivers).
 
 ## Risks
 

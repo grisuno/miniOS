@@ -70,7 +70,6 @@ This community groups 18 file(s) rooted at `headers` with dominant language h (c
 ## Connections
 
 - [EXTRACTED] depends_on community 0 <-> 6 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/drivers/modifiers.h.
-- [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (headers) and community 6 (headers).
 
 ## Risks
 

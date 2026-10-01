@@ -1,8 +1,9 @@
-/* MiniOS network stack: rtl8139 under QEMU slirp user networking.
+/* MiniOS network stack: virtio-net preferred, rtl8139 fallback, under
+ * QEMU slirp user networking.
  *
- * Polled NIC driver (no interrupt controller is configured): TX waits on
- * the descriptor owner bit, RX drains the classic ring by comparing CBR
- * against our CAPR. On top: Ethernet + ARP cache, IPv4 (checksums
+ * Polled NIC drivers (no interrupt controller is configured): TX waits
+ * on completion with a deadline, RX drains completed buffers into the
+ * demux below. On top: Ethernet + ARP cache, IPv4 (checksums
  * verified, fragments dropped fail-closed), ICMP echo, UDP (DNS) and a
  * minimal client TCP: SYN handshake, stop-and-wait retransmission with a
  * PIT-calibrated TSC clock, FIN teardown, 536-byte MSS.
@@ -15,6 +16,7 @@
 #include "net.h"
 #include "tls.h"
 #include "net/rtl8139.h"
+#include "drivers/virtio_net.h"
 
 /* ================================================================
  *  Protocol state shared with the driver
@@ -23,6 +25,28 @@
 static unsigned char net_our_ip[4] = { NET_IP_ADDR };
 static unsigned char net_mac[NET_ETH_ALEN];
 unsigned int net_rx_dropped;
+
+/** Docstring: Backend preference, frozen at net_init: a virtio-net
+ * device wins when present, the rtl8139 stays as the fallback. All
+ * frame I/O below goes through these three verbs, so no caller names
+ * a driver; adding a NIC means registering its verbs here, never
+ * rewriting the callers (Open/Closed Principle). */
+static int net_use_virtio;
+
+static int net_drv_send(const unsigned char *frame, unsigned len) {
+    if (net_use_virtio) return vnet_send(frame, len);
+    return rtl_send(frame, len);
+}
+
+static void net_drv_poll(void) {
+    if (net_use_virtio) vnet_poll();
+    else rtl_poll();
+}
+
+static int net_drv_present(void) {
+    if (net_use_virtio) return vnet_present();
+    return rtl_present();
+}
 
 /* ================================================================
  *  Byte helpers
@@ -114,7 +138,7 @@ static void net_arp_request(const unsigned char *ip) {
     kmemcpy(frame + 22, net_mac, NET_ETH_ALEN);
     kmemcpy(frame + 28, net_our_ip, 4);
     kmemcpy(frame + 38, ip, 4);
-    rtl_send(frame, 42);
+    net_drv_send(frame, 42);
 }
 
 /* Resolve an IP on the 10.0.2.0/24 link. Retries, bounded timeout. */
@@ -125,7 +149,7 @@ static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out) {
         net_arp_request(ip);
         unsigned long wait = net_time_ms() + NET_RETRY_MS;
         while (net_time_ms() < wait) {
-            rtl_poll();
+            net_drv_poll();
             if (net_arp_lookup(ip, mac_out)) return 1;
         }
         if (net_time_ms() > deadline) return 0;
@@ -174,7 +198,7 @@ static int net_ip_send(const unsigned char *dip, unsigned char proto,
     net_put16(ip + 10, 0);                    /* field must be zero for the sum */
     net_put16(ip + 10, net_checksum(ip, 20));
     kmemcpy(ip + 20, payload, len);
-    if (!rtl_send(frame, (unsigned)(14 + total))) return 0;
+    if (!net_drv_send(frame, (unsigned)(14 + total))) return 0;
     net_tx_bytes += total;
     return 1;
 }
@@ -302,7 +326,7 @@ static int net_dns_resolve(const char *host, unsigned char ip_out[4]) {
         net_dns.done = 0;
         net_udp_send((const unsigned char[]){ NET_DNS }, net_udp_port++, NET_DNS_PORT, q, pos);
         deadline = net_time_ms() + NET_DNS_TMO_MS;
-        while (!net_dns.done && net_time_ms() < deadline) rtl_poll();
+        while (!net_dns.done && net_time_ms() < deadline) net_drv_poll();
         if (net_dns.done) {
             kmemcpy(ip_out, net_dns.ip, 4);
             rc = 1;
@@ -362,7 +386,7 @@ static int net_ping(const unsigned char ip[4]) {
     kmemcpy(net_ping_ip, ip, 4);
     net_ip_send(ip, NET_PROTO_ICMP, req, sizeof(req));
     deadline = net_time_ms() + NET_CONNECT_TMO_S * 1000;
-    while (!net_ping_got_reply && net_time_ms() < deadline) rtl_poll();
+    while (!net_ping_got_reply && net_time_ms() < deadline) net_drv_poll();
     net_ping_active = 0;
     return net_ping_got_reply;
 }
@@ -664,7 +688,7 @@ static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4
     while (s->state == NET_TCP_SYN_SENT && net_time_ms() < deadline) {
         unsigned long retry = net_time_ms() + NET_RETRY_MS;
         while (net_time_ms() < retry && s->state == NET_TCP_SYN_SENT)
-            rtl_poll();
+            net_drv_poll();
         if (s->state == NET_TCP_SYN_SENT) net_tcp_xmit(s, 0x02, 0, 0, 0);
     }
     if (s->state != NET_TCP_ESTABLISHED) {
@@ -690,7 +714,7 @@ static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len) {
         while (s->tx_pending && s->state == NET_TCP_ESTABLISHED &&
                net_time_ms() < deadline) {
             unsigned long retry = net_time_ms() + NET_RETRY_MS;
-            while (net_time_ms() < retry && s->tx_pending) rtl_poll();
+            while (net_time_ms() < retry && s->tx_pending) net_drv_poll();
             if (s->tx_pending) net_tcp_xmit(s, 0x18, s->tx_buf, chunk, 0);
         }
         if (s->tx_pending || s->state != NET_TCP_ESTABLISHED) return sent ? sent : -1;
@@ -704,7 +728,7 @@ static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len) {
 /* Blocking receive; 0 = EOF (FIN). */
 static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len) {
     while (s->state != NET_TCP_DEAD) {
-        rtl_poll();
+        net_drv_poll();
         if (s->rx_tail < s->rx_head) {
             unsigned avail = s->rx_head - s->rx_tail;
             unsigned take = avail > (unsigned)len ? (unsigned)len : avail;
@@ -725,7 +749,7 @@ static int net_tcp_recv_deadline(struct net_tcp_sock *s, char *buf, int len,
                                  unsigned long timeout_ms) {
     unsigned long deadline = net_time_ms() + timeout_ms;
     while (s->state != NET_TCP_DEAD) {
-        rtl_poll();
+        net_drv_poll();
         if (s->rx_tail < s->rx_head) {
             unsigned avail = s->rx_head - s->rx_tail;
             unsigned take = avail > (unsigned)len ? (unsigned)len : avail;
@@ -748,7 +772,7 @@ static void net_tcp_close(struct net_tcp_sock *s) {
         while (s->state == NET_TCP_FIN_SENT && net_time_ms() < deadline) {
             unsigned long retry = net_time_ms() + NET_RETRY_MS;
             while (net_time_ms() < retry && s->state == NET_TCP_FIN_SENT)
-                rtl_poll();
+                net_drv_poll();
             if (s->state == NET_TCP_FIN_SENT) net_tcp_xmit(s, 0x11, 0, 0, 0);
         }
     }
@@ -781,7 +805,7 @@ void net_rx_handle_frame(const unsigned char *frame, unsigned len) {
             kmemcpy(reply + 28, net_our_ip, 4);
             kmemcpy(reply + 32, frame + 22, NET_ETH_ALEN);
             kmemcpy(reply + 38, frame + 28, 4);
-            rtl_send(reply, 42);
+            net_drv_send(reply, 42);
         } else if (net_get16(frame + 20) == NET_ARP_REPLY) {
             net_arp_store(frame + 28, frame + 22);
         }
@@ -891,7 +915,7 @@ int net_accept_nb(int fd) {
 /** Docstring: Blocking accept with a deadline: poll the NIC until a
  * child establishes or timeout_ms passes. Returns the child index,
  * or -1 on timeout. Never blocks past the deadline, never spins
- * without polling (the peer's ACK arrives through rtl_poll). */
+ * without polling (the peer's ACK arrives through the driver poll). */
 int net_accept(int fd, unsigned long timeout_ms) {
     unsigned long deadline = net_time_ms() + timeout_ms;
     int child;
@@ -899,7 +923,7 @@ int net_accept(int fd, unsigned long timeout_ms) {
     if (!net_sockets[fd].in_use || net_sockets[fd].state != NET_TCP_LISTEN)
         return -1;
     for (;;) {
-        rtl_poll();
+        net_drv_poll();
         child = net_accept_nb(fd);
         if (child >= 0) return child;
         if (net_time_ms() > deadline) return -1;
@@ -1090,7 +1114,7 @@ long net_sys_poll(long fds, long nfds, long timeout_ms) {
         }
         if (ready > 0) return ready;
         if (timeout_ms == 0) return 0;
-        rtl_poll();
+        net_drv_poll();
         if (timeout_ms > 0 && net_time_ms() > deadline) return 0;
     }
 }
@@ -1135,12 +1159,17 @@ static int net_parse_ip(const char *text, unsigned char ip[4]) {
 
 void net_cmd_status(void) {
     unsigned int tx_frames, rx_frames;
-    if (!rtl_present()) {
-        vga_puts("net: no rtl8139 found\n");
+    if (!net_drv_present()) {
+        vga_puts("net: no NIC found\n");
         return;
     }
-    rtl_counters(&tx_frames, &rx_frames);
-    kprintf("rtl8139  iobase 0x%x\n", rtl_iobase());
+    if (net_use_virtio) {
+        vnet_counters(&tx_frames, &rx_frames);
+        kprintf("virtio-net iobase 0x%x\n", vnet_iobase());
+    } else {
+        rtl_counters(&tx_frames, &rx_frames);
+        kprintf("rtl8139  iobase 0x%x\n", rtl_iobase());
+    }
     kprintf("mac      %02x:%02x:%02x:%02x:%02x:%02x\n",
             net_mac[0], net_mac[1], net_mac[2], net_mac[3], net_mac[4], net_mac[5]);
     kprintf("ip       %u.%u.%u.%u/24\n", net_our_ip[0], net_our_ip[1], net_our_ip[2], net_our_ip[3]);
@@ -1158,7 +1187,7 @@ void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])
 
 void net_cmd_ping(const char *ip_text) {
     unsigned char ip[4];
-    if (!rtl_present()) { vga_puts("net: no rtl8139 found\n"); return; }
+    if (!net_drv_present()) { vga_puts("net: no NIC found\n"); return; }
     if (!net_parse_ip(ip_text, ip)) {
         vga_puts("usage: net ping <ip>\n");
         return;
@@ -1169,7 +1198,7 @@ void net_cmd_ping(const char *ip_text) {
 
 void net_cmd_dns(const char *host) {
     unsigned char ip[4];
-    if (!rtl_present()) { vga_puts("net: no rtl8139 found\n"); return; }
+    if (!net_drv_present()) { vga_puts("net: no NIC found\n"); return; }
     if (net_dns_resolve(host, ip))
         kprintf("%s = %u.%u.%u.%u\n", host, ip[0], ip[1], ip[2], ip[3]);
     else
@@ -1190,7 +1219,13 @@ void net_register_symbols(void) {
 
 void net_init(void) {
     rtl_init();
-    rtl_get_mac(net_mac);
+    net_use_virtio = vnet_init() ? 1 : 0;
+    if (net_use_virtio) {
+        vnet_get_mac(net_mac);
+    } else {
+        rtl_get_mac(net_mac);
+    }
+    kprintf("net: backend=%s\n", net_use_virtio ? "virtio" : "rtl8139");
     net_sockets = (struct net_tcp_sock *)kmalloc(NET_SOCKETS *
                                                  sizeof(*net_sockets));
     if (!net_sockets) kprintf("net: no socket table (out of memory)\n");

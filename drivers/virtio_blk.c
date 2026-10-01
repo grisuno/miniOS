@@ -21,6 +21,7 @@
  * block layer. */
 
 #include "kernel.h"
+#include "driver.h"
 #include "drivers/pci.h"
 #include "drivers/virtio_blk.h"
 
@@ -242,16 +243,87 @@ static int vblk_request(unsigned dir, unsigned long sector,
 }
 
 /** Docstring: Read count sectors from lba into buf. Same contract as
- * ide_read_sectors, so the block layer can prefer this device. */
+ * ide_read_sectors, so the block layer can prefer this device. One
+ * request carries at most 16 sectors (single head descriptor), so
+ * wider reads walk chunk by chunk instead of refusing. */
 int vblk_read_sectors(unsigned lba, unsigned count, void *buf) {
+    unsigned char *p = (unsigned char *)buf;
     if (!buf) return -1;
-    return vblk_request(VBLK_REQ_IN, lba, (unsigned char *)buf, count);
+    while (count > 0u) {
+        unsigned n = count > 16u ? 16u : count;
+        if (vblk_request(VBLK_REQ_IN, lba, p, n) != 0) return -1;
+        lba += n;
+        p += (unsigned long)n * VBLK_SECTOR;
+        count -= n;
+    }
+    return 0;
 }
 
 /** Docstring: Write count sectors from buf at lba. The caller buffer
  * is DMA-safe by construction (identity-mapped heap/user pages), so
- * it is handed to the device directly, never bounced. */
+ * it is handed to the device directly, never bounced. Chunks like
+ * the read path past 16 sectors. */
 int vblk_write_sectors(unsigned lba, unsigned count, const void *buf) {
+    const unsigned char *p = (const unsigned char *)buf;
     if (!buf) return -1;
-    return vblk_request(VBLK_REQ_OUT, lba, (unsigned char *)buf, count);
+    while (count > 0u) {
+        unsigned n = count > 16u ? 16u : count;
+        if (vblk_request(VBLK_REQ_OUT, lba, (unsigned char *)p, n) != 0)
+            return -1;
+        lba += n;
+        p += (unsigned long)n * VBLK_SECTOR;
+        count -= n;
+    }
+    return 0;
+}
+
+/** Docstring: Registry ops for the block layer dispatch. Same shape as
+ * the ide0 table, so block_dev_read/write resolve vblk0 by name. */
+static int vblk_ops_read(device_t *dev, unsigned lba, unsigned count,
+        void *buf) {
+    (void)dev;
+    return vblk_read_sectors(lba, count, buf);
+}
+
+/** Docstring: Registry write op, const buffer through the queue. */
+static int vblk_ops_write(device_t *dev, unsigned lba, unsigned count,
+        const void *buf) {
+    (void)dev;
+    return vblk_write_sectors(lba, count, buf);
+}
+
+/** Docstring: Registry capacity op, sectors behind the queue. */
+static unsigned vblk_ops_total(device_t *dev) {
+    (void)dev;
+    return (unsigned)vblk_sectors();
+}
+
+/** Docstring: Registry presence op, true once the queue is up. */
+static int vblk_ops_present(device_t *dev) {
+    (void)dev;
+    return vblk_present();
+}
+
+/** Docstring: Block ops table published as vblk0. */
+static const block_ops_t vblk_block_ops = {
+    vblk_ops_read,
+    vblk_ops_write,
+    vblk_ops_total,
+    vblk_ops_present,
+};
+
+/** Docstring: Registry entry for the virtio queue, boot-time only. */
+static device_t vblk_device = {
+    "vblk0",
+    DEV_TYPE_BLOCK,
+    &vblk_block_ops,
+    0,
+    0,
+};
+
+/** Docstring: Publish vblk0 for the block layer preference. Boot-time
+ * only, before sti, like the ide0 registration; re-registration is a
+ * no-op (duplicate refused). */
+void vblk_register_device(void) {
+    device_register(&vblk_device);
 }

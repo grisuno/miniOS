@@ -304,6 +304,11 @@ int fs_is_dir(const char *resolved);
  *   truncate: handle is the value returned by open.  size is the new size.
  *             Files may grow (zero-filled) or shrink.
  *             Returns 0 on success, negative errno on failure.
+ *   readdir: path is the driver-relative directory ("" or "/" is root).
+ *            Fills up to cap entries, returns the count (>= 0) or a
+ *            negative errno. A NULL verb means the driver lists nothing.
+ *            VFS_NAME_MAX covers the longest leaf on every driver
+ *            (ext4, 255), so a listing never truncates a name.
  *
  * Contract (vfs_file_t):
  *   ops:    non-NULL after vfs_open succeeds.  NULL before open or after
@@ -327,6 +332,14 @@ int fs_is_dir(const char *resolved);
  *   6. The root mount ("", ramdisk) is pinned: unregister refuses it,
  *      so the system always has a filesystem.
  * ========================================================================= */
+/** Docstring: one directory entry behind the readdir verb. Defined
+ * before vfs_ops_t so the verb names the type directly. */
+#define VFS_NAME_MAX 255
+typedef struct vfs_dirent {
+    char name[VFS_NAME_MAX + 1];
+    int isdir;
+} vfs_dirent_t;
+
 typedef struct vfs_ops {
     int      (*open)(const char *path, int mode, void **handle);
     int      (*read)(void *handle, void *buf, unsigned long pos, unsigned long len);
@@ -334,6 +347,7 @@ typedef struct vfs_ops {
     int      (*close)(void *handle);
     int      (*fstat)(void *handle, unsigned long *size_out);
     int      (*truncate)(void *handle, unsigned long size);
+    int      (*readdir)(const char *path, vfs_dirent_t *ents, int cap);
 } vfs_ops_t;
 
 typedef struct vfs_file {
@@ -368,6 +382,7 @@ int  vfs_read(vfs_file_t *f, void *buf, unsigned long len);
 int  vfs_write(vfs_file_t *f, const void *buf, unsigned long len);
 int  vfs_close(vfs_file_t *f);
 int  vfs_fstat(vfs_file_t *f, unsigned long *size_out);
+int  vfs_readdir(const char *path, vfs_dirent_t *ents, int cap);
 void vfs_init(void);
 void vfs_register_builtins(void);
 int  minifs_mkdir_p(const char *resolved);
@@ -427,6 +442,27 @@ typedef struct {
 
 KFILE *kfopen(const char *path, const char *mode);
 int    kfclose(KFILE *f);
+/* POSIX codes reported through kerrno ("errno" for ET_REL toolchain
+ * programs, which name it extern like stdout; glibc ELFs keep their
+ * own %fs errno and never touch this cell). Set-on-failure-only:
+ * success leaves the previous value, exactly like libc. One global
+ * cell is correct today (single shared ET_REL window, no miniGCC
+ * threads); per-thread moves with miniGCC threads, never before.
+ * Guarded: host test TUs include system headers beside kernel.h. */
+#ifndef ENOENT
+#define ENOENT 2
+#define EIO 5
+#define EBADF 9
+#define ENOMEM 12
+#define ENOTDIR 20
+#define EISDIR 21
+#define EINVAL 22
+#define EFBIG 27
+#define ENOSPC 28
+#define ESPIPE 29
+#define ENAMETOOLONG 36
+#endif
+extern int kerrno;
 /* Rename one file within its filesystem; see fs/kfile.c for the contract:
  * 0 ok, -2 missing src, -21 directory, -17 existing dst, -18 cross-fs. */
 int    fs_rename(const char *oldr, const char *newr);
@@ -680,6 +716,7 @@ unsigned long cow_fork_window(unsigned long parent_cr3);
 int cow_resolve(unsigned long cr3, unsigned long va);
 void cow_release_window(unsigned long cr3);
 int cow_shared(void);
+int cow_page_shared(unsigned long phys);
 
 /* ========== Linux syscall interface ========== */
 void syscall_init(void);

@@ -350,6 +350,19 @@ $(BIN_DIR)/execthr.elf: $(SRC_DIR)/execthr.c
 $(BIN_DIR)/nx.elf: $(SRC_DIR)/nx.c
 	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O0 -o $@ $<
 
+# mprotect probe: mmap/mprotect validation legs, an R|X exec leg and a
+# faulting write to a read-only page. -O0 like nx so the indirect call
+# into the protected page survives optimization.
+$(BIN_DIR)/mprot.elf: $(SRC_DIR)/mprot.c
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O0 -o $@ $<
+
+# Syscall fuzzer: two seeded threads hammer mmap/munmap/mprotect/yield
+# and fold every result into a checksum oracle. -Iprogs for mthreads.h
+# (minios_abi.h); no libc, no malloc in workers.
+$(BIN_DIR)/scfuzz.elf: $(SRC_DIR)/scfuzz.c $(SRC_DIR)/mthreads.h
+	$(CC) -static -no-pie -nostdlib -ffreestanding -fno-pic -mno-red-zone -O2 \
+	      -I$(PROGS_DIR) -o $@ $<
+
 # mmap/munmap reclaim probe: repeatedly maps and unmaps a large region.  A
 # kernel whose munmap never returns address space drains the cursor until a
 # map fails with ENOMEM; exit 1 flags that leak.
@@ -1265,9 +1278,10 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
                $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
                $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
-               $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/forktest.elf \
+               $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/forktest.elf \
                $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf \
                $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
+               $(BIN_DIR)/scfuzz.elf \
                $(BIN_DIR)/spin.elf \
                $(SRC_DIR)/spin.c \
                 $(BIN_DIR)/pollready.elf $(BIN_DIR)/pollready \
@@ -1279,7 +1293,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
                $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
                $(SRC_DIR)/mvrn.c $(SRC_DIR)/execho.c $(SRC_DIR)/aslr.c $(SRC_DIR)/burn.c $(SRC_DIR)/execthr.c \
-               $(SRC_DIR)/nx.c $(SRC_DIR)/forktest.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
+               $(SRC_DIR)/nx.c $(SRC_DIR)/mprot.c $(SRC_DIR)/scfuzz.c $(SRC_DIR)/forktest.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
                $(SRC_DIR)/hello.py \
                $(SRC_DIR)/test.lua \
                $(SRC_DIR)/test.lisp \
@@ -1723,7 +1737,7 @@ console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h
+         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_net.h
 # NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
 # and the image ends just below USER_LOAD_BASE, so the check-size gate
 # is binding: bytes matter more than compiler speed in the prompt,
@@ -1829,12 +1843,15 @@ clip.o: kernel/clip.c kernel.h
 symtab.o: kernel/symtab.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-net.o: net/net.c net.h kernel.h
+net.o: net/net.c net.h kernel.h net/rtl8139.h drivers/virtio_net.h
 # NOTE: -Os, same pattern as shell.o (measured -1.8 KB vs -O1). Revalidate
 # with the net/freedom/tls BDD scenarios after any change here.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
 rtl8139.o: net/rtl8139.c net.h net/rtl8139.h kernel.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+virtio_net.o: drivers/virtio_net.c kernel.h net.h drivers/pci.h drivers/virtio_net.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 tls.o: net/tls.c tls.h tls_port.h tls_roots.h kernel.h net.h
@@ -1852,10 +1869,10 @@ ramdisk_data.o: ramdisk_data.c
 ide.o: drivers/ide.c ide.h driver.h kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-virtio_blk.o: drivers/virtio_blk.c kernel.h drivers/pci.h drivers/virtio_blk.h
+virtio_blk.o: drivers/virtio_blk.c kernel.h driver.h drivers/pci.h drivers/virtio_blk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-block.o: drivers/block.c block.h ide.h driver.h kernel.h
+block.o: drivers/block.c block.h ide.h driver.h kernel.h drivers/virtio_blk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 driver.o: drivers/driver.c driver.h
@@ -2071,8 +2088,8 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o $(KERN_TLS_OBJS) \
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
@@ -2377,7 +2394,7 @@ clean: saves-backup
 	rm -f $(OBJ_DIR)/*.o
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
-	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/forktest.elf \
+	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/scfuzz.elf $(BIN_DIR)/forktest.elf \
 	      $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf \
 	      $(BIN_DIR)/cp $(BIN_DIR)/freedom $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
 	      $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \

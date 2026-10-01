@@ -1382,8 +1382,92 @@ static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a
     return ret;
 }
 
+/** Docstring: Locate the PTE for a user address in the caller's live
+ * tables (syscall entry keeps the caller CR3 loaded, so no KPTI swap
+ * is needed). Mirrors the cow_resolve walk exactly: PML4 entry 0,
+ * PDPT entry 0, 4 KB PT pages only. Returns 0 for any missing level
+ * or huge page; the caller turns that into -ENOMEM without touching
+ * a single bit, so a half-mapped range never applies half. */
+static volatile unsigned long *mprotect_pte(unsigned long cr3,
+        unsigned long va) {
+    volatile unsigned long *pml4;
+    volatile unsigned long *pdpt;
+    volatile unsigned long *pd;
+    volatile unsigned long *pt;
+    if (!cr3) return 0;
+    pml4 = (volatile unsigned long *)(cr3 & (unsigned long)PT_ADDR_MASK);
+    if (!(pml4[0] & (unsigned long)PT_FLAGS_PRESENT_RW)) return 0;
+    pdpt = (volatile unsigned long *)(pml4[0] & (unsigned long)PT_ADDR_MASK);
+    if (!(pdpt[0] & (unsigned long)PT_FLAGS_PRESENT_RW)) return 0;
+    if (pdpt[0] & (unsigned long)PT_FLAGS_PS) return 0;
+    pd = (volatile unsigned long *)(pdpt[0] & (unsigned long)PT_ADDR_MASK);
+    if (!(pd[va >> PT_PD_INDEX_SHIFT] & (unsigned long)PT_FLAGS_PRESENT_RW))
+        return 0;
+    if (pd[va >> PT_PD_INDEX_SHIFT] & (unsigned long)PT_FLAGS_PS) return 0;
+    pt = (volatile unsigned long *)
+        ((pd[va >> PT_PD_INDEX_SHIFT]) & (unsigned long)PT_ADDR_MASK);
+    return &pt[(va >> 12) & 0x1FF];
+}
+
+/** Docstring: Linux mprotect(10), enforced for real. Toggles the RW
+ * and NX bits page by page with a local invlpg each (the cow_resolve
+ * precedent; no cross-CPU shootdown yet, noted in kernel.md). Two
+ * passes under mm_lock: validate every page first (present, user,
+ * private), then apply, so a half-mapped range reports -ENOMEM
+ * without changing anything. -EINVAL for unaligned base or unknown
+ * prot bits. A write fault on a cleared page falls through
+ * cow_resolve (not a CoW page) into the kill path, exactly like nx.
+ * Two documented deviations: PROT_NONE stays present (denies write
+ * and exec, reads still succeed) because the reaper only frees
+ * present data pages, and CoW-shared pages refuse with -ENOMEM
+ * (upgrading them in place would let one window write another's
+ * bytes past cow_resolve). */
 static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    (void)a4; (void)a5; (void)a6;
+    unsigned long base = (unsigned long)a1;
+    unsigned long n = ALIGN_UP((unsigned long)a2, 0x1000);
+    unsigned long prot = (unsigned long)a3;
+    unsigned long cr3 = 0;
+    unsigned long va;
+    irqflags_t flags;
+    int want_write;
+    int want_exec;
+    if (prot & ~(unsigned long)7) return -22;
+    if (base & 0xFFFUL) return -22;
+    if (base < USER_LOAD_BASE || base >= USER_LOAD_END) return -12;
+    if (n == 0) return 0;
+    if (base + n < base || base + n > USER_LOAD_END) return -12;
+    want_write = (prot & 2u) != 0;
+    want_exec = (prot & 4u) != 0;
+    __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    spin_lock_irqsave(&mm_lock, &flags);
+    for (va = base; va < base + n; va += 0x1000) {
+        volatile unsigned long *pp = mprotect_pte(cr3, va);
+        unsigned long pte;
+        unsigned long phys;
+        if (!pp) { spin_unlock_irqrestore(&mm_lock, flags); return -12; }
+        pte = *pp;
+        if (!(pte & 1u) || !(pte & (unsigned long)PT_FLAGS_USER)) {
+            spin_unlock_irqrestore(&mm_lock, flags);
+            return -12;
+        }
+        phys = pte & (unsigned long)PT_ADDR_MASK;
+        if (!phys) { spin_unlock_irqrestore(&mm_lock, flags); return -12; }
+        if (want_write && cow_page_shared(phys)) {
+            spin_unlock_irqrestore(&mm_lock, flags);
+            return -12;
+        }
+    }
+    for (va = base; va < base + n; va += 0x1000) {
+        volatile unsigned long *pp = mprotect_pte(cr3, va);
+        unsigned long pte = *pp;
+        pte &= ~((unsigned long)0x002 | (unsigned long)PT_FLAGS_NX);
+        if (want_write) pte |= (unsigned long)0x002;
+        if (!want_exec) pte |= (unsigned long)PT_FLAGS_NX;
+        *pp = pte;
+        __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+    }
+    spin_unlock_irqrestore(&mm_lock, flags);
     return 0;
 }
 

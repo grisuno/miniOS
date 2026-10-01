@@ -82,7 +82,7 @@ if [ "$RESET" = "1" ]; then
     rm -f "$STATE_FILE"
 fi
 
-SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c headers/pipe.h headers/panic.h kernel/clip.c kernel/mm/cow.c arch/x86/ctx_sw.S drivers/virtio_blk.c headers/drivers/pci.h boot/uefi_stub.c"
+SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/virtio_net.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c headers/pipe.h headers/panic.h kernel/clip.c kernel/mm/cow.c arch/x86/ctx_sw.S drivers/virtio_blk.c drivers/block.c headers/drivers/pci.h boot/uefi_stub.c"
 SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c headers/rtc.h headers/sanitize.h"
 # Every file a MUTATIONS entry touches MUST be listed here: restore_sources
 # backs these up before the run and restores after each mutant. A file
@@ -157,7 +157,7 @@ rm-dir-accepted | s/if (fs_is_dir(resolved)) {/if (0) {/ | kernel/shell.c
 mkdir-dup-passes | s/if (fs_dir_exists(dirname)) {/if (0) {/ | kernel/shell.c
 mkdir-parent-bypassed | s/if (!fs_dir_exists(parent)) {/if (0) {/ | kernel/shell.c
 cd-exists-bypassed | s/if (!fs_dir_exists(target)) {/if (0) {/ | kernel/shell.c
-kfopen-dir-refusal-bypassed | s/if (fs_is_dir(resolved)) return 0;/\\/* dir bypass *\\// | fs/kfile.c
+kfopen-dir-refusal-bypassed | s/if (fs_is_dir(resolved)) { kerrno = EISDIR; return 0; }/if (0) {}/ | fs/kfile.c
 ps-empty | s/kprintf(\\\"  pid  ppid state name\\\\n\\\");/kprintf(\\\"  pid  ppid state name\\\\n\\\"); n = 0;/ | kernel/shell.c
 cat-drops-second-file | s/for (fi = 1; fi < argc; fi++)/for (fi = 1; fi < 2; fi++)/ | kernel/shell.c
 append-flag-ignored | s/            \\*append_mode = 1;/            \\*append_mode = 0;/ | kernel/redirect.c
@@ -246,6 +246,20 @@ fork-resolve-never | s/            resolved = cow_resolve(cur_cr3, fault_addr);/
 fd-fork-shares-view | s/    if (!kfd_view_copy(child, cur)) {/    kfd_view_share(child); if (0) {/ | kernel/sched.c
 pci-find-first-only | s/    for (dev = 0; dev < PCI_MAX_DEV; dev++)/    for (dev = 0; dev < 1; dev++)/ | headers/drivers/pci.h
 vblk-status-unchecked | s/statusp != 0/statusp == 0/ | drivers/virtio_blk.c
+vnet-never-preferred | s/net_use_virtio = vnet_init() ? 1 : 0;/net_use_virtio = 0;/ | net/net.c
+vnet-rx-not-writable | s/VNET_RX_SIZE, VNET_DESC_WRITE, 0u);/VNET_RX_SIZE, 0u, 0u);/ | drivers/virtio_net.c
+vnet-tx-kick-wrong-queue | s/(unsigned short)VNET_Q_TX);/(unsigned short)VNET_Q_RX);/ | drivers/virtio_net.c
+vfs-readdir-mem-subdir-allowed | s/if (\*path != 0) return -1;/if (0) return -1;/ | fs/vfs.c
+errno-open-noent-dropped | s/kerrno = ENOENT; return 0;/kerrno = 0; return 0;/ | fs/kfile.c
+errno-symbol-unregistered | s/k_register_symbol(\"errno\",    (void \*)&kerrno);/k_register_symbol(\"enoda\",    (void \*)&kerrno);/ | kernel/console.c
+vfs-readdir-minifs-notdir-allowed | s/if (!(st.mode & MINIFS_S_IFDIR)) return -20;/if (0) return -20;/ | fs/vfs.c
+vfs-readdir-ramdisk-dedupe-dropped | s/if (dup) continue;/if (0) continue;/ | fs/vfs.c
+mprotect-write-unenforced | s/if (want_write) pte |= (unsigned long)0x002;/if (0) pte |= (unsigned long)0x002;/ | kernel/syscalls.c
+mprotect-exec-unenforced | s/if (!want_exec) pte |= (unsigned long)PT_FLAGS_NX;/if (1) pte |= (unsigned long)PT_FLAGS_NX;/ | kernel/syscalls.c
+mprotect-align-unchecked | s/if (base & 0xFFFUL) return -22;/if (0) return -22;/ | kernel/syscalls.c
+mprotect-prot-unchecked | s/if (prot & ~(unsigned long)7) return -22;/if (0) return -22;/ | kernel/syscalls.c
+blk-virtio-never-preferred | s/            block_use_virtio = 1;/            block_use_virtio = 0;/ | drivers/block.c
+blk-virtio-size-gate-dropped | s/if (ide_total == 0 || vblk_total == (unsigned long)ide_total)/if (ide_total == 0 || vblk_total != (unsigned long)ide_total)/ | drivers/block.c
 uefi-blk-guid-wrong | s/0x8E, 0x39, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B/0x8E, 0x39, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3C/ | boot/uefi_stub.c
 uefi-lba-sig-ignored | s/sec\[510\] == 0x55/sec[510] != 0x55/ | boot/uefi_stub.c
 uefi-mmap-unchecked | s/puts_both(\"uefi: mmap entries=\");/;/ | boot/uefi_stub.c
@@ -289,6 +303,7 @@ truth-getrandom-count-zero | s/return (long)cnt;/return 0;/ | kernel/syscalls.c
 truth-gettimeofday-usec-zero | s/tv\\[1\\] = total % 1000000UL;/tv[1] = 0;/ | kernel/syscalls.c
 fpu-no-save | s/fxsave  (%rax)/\\/* mutant: no save *\\// | arch/x86/ctx_sw.S
 fpu-no-restore | s/fxrstor (%rax)/\\/* mutant: no restore *\\// | arch/x86/ctx_sw.S
+fsbase-restore-corrupted | s/movq    320(%rax), %rax/movq    320(%rax), %rdx/ | arch/x86/ctx_sw.S
 fpu-preempt-no-save | s/if (cur->fpu_save) fpu_save_to(cur->fpu_save);/if (0) {}/ | kernel/sched.c
 fpu-mxcsr-zero | s/a\\[FPU_MXCSR_OFF\\] = (unsigned char)(FPU_MXCSR_DEFAULT & 0xFF);/a[FPU_MXCSR_OFF] = 0;/ | kernel/sched.c
 fpu-cw-single | s/a\\[0\\] = 0x7F; a\\[1\\] = 0x03;/a[0] = 0; a[1] = 0;/ | kernel/sched.c
@@ -528,6 +543,8 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # in waitpid) kills them.
             if [ "$name" = "fpu-no-save" ]; then
                 MATCH="fpu" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [ "$name" = "fsbase-restore-corrupted" ]; then
+                MATCH="glibc TLS" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             else
                 MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             fi
@@ -543,6 +560,22 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             make -C "$HERE" test-pci > "$BACKUP/suite.log" 2>&1
             ;;
         drivers/virtio_blk.c)
+            MATCH="virtio" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        drivers/virtio_net.c)
+            MATCH="vnet" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        net/net.c)
+            # vnet-* rows break the virtio preference proved by the
+            # vnet slice; every other net.c mutant keeps the full
+            # suite (TCP/ARP/DNS ride the rtl8139 path there).
+            if [[ "$name" == vnet-* ]]; then
+                MATCH="vnet" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
+            ;;
+        drivers/block.c)
             MATCH="virtio" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         boot/uefi_stub.c)
@@ -608,6 +641,8 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # false SURVIVED while disabling fxsave in the tree).
             if [[ "$name" == gfxview-* ]]; then
                 MATCH="gfxview" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [[ "$name" == mprotect-* ]]; then
+                MATCH="mprotect" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             else
             FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1 && \
             python3 "$HERE/tools/check_abi_numbers.py" >> "$BACKUP/suite.log" 2>&1
@@ -619,6 +654,28 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # kills it; every other sched.c mutant keeps the full suite.
             if [ "$name" = "fd-fork-shares-view" ]; then
                 MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
+            ;;
+        fs/vfs.c)
+            # vfs-readdir-* rows break listing legs pinned by the two
+            # vfs scenarios (lifecycle readdir + unmount refusals), so
+            # they run that slice; every other vfs.c mutant keeps the
+            # full suite.
+            if [[ "$name" == vfs-readdir-* ]]; then
+                MATCH="vfs " FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
+            ;;
+        fs/kfile.c|kernel/console.c)
+            # errno-* rows break the two errno scenarios (in-guest
+            # toolchain link+run, loaded-object libc surface), so they
+            # run that slice; every other mutant in these files keeps
+            # the full suite.
+            if [[ "$name" == errno-* ]]; then
+                MATCH="errno" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             else
                 FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             fi

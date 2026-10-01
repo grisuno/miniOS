@@ -91,8 +91,12 @@ typedef struct {
      * process resumed with another layout's TLS base and jumped wild
      * on the first %fs-relative indirect call (paint.elf died at its
      * own .rodata while wlcomp lived, deterministically). The base
-     * rides the context switch now; 0 means unset (fresh spawn, the
-     * Linux-like default the program overwrites itself). */
+     * rides the context switch now, pid 0 included: k_exec_user runs
+     * glibc programs in the shared window, and the old pid-0 restore
+     * skip handed them the preemptor's base on every switch-back
+     * (file.elf faulted in malloc with wlcomp up, deterministically);
+     * 0 means unset (fresh spawn, the Linux-like default the program
+     * overwrites itself). */
     uint64_t    fsbase;
     /* Per-process file-descriptor view (heap kfd_view_t, NULL means the
      * static root view): CLONE_FILES/CLONE_VM threads share the parent's
