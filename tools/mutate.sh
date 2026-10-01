@@ -367,6 +367,7 @@ ldso-func-symbol-skipped | s/type != LDSO_STT_FUNC && type != LDSO_STT_NOTYPE/ty
 ldso-reloc-type-inverted | s/type != LDSO_R_GLOB_DAT && type != LDSO_R_JUMP_SLOT/type == LDSO_R_GLOB_DAT || type == LDSO_R_JUMP_SLOT/ | kernel/ldso_parse.c
 ldso-lib-base-dropped | s/lib->base + (unsigned long)v;/(unsigned long)v;/ | kernel/loader.c
 ldso-text-not-exec | s/mm_user_set_exec(start, end, cr3);/;/ | kernel/loader.c
+ldso-static-rejected | s/if (fr == 0) return 0;/if (fr == 0) return -1;/ | kernel/loader.c
 "
 
 # Parse the mutation table into parallel arrays (preserving order).
@@ -715,7 +716,11 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # table mutants without a boot), then the two BDD dynamic
             # scenarios (live window and isolated window) kill the
             # loader-glue mutants.
-            if [[ "$name" == ldso-* ]]; then
+            if [[ "$name" == ldso-static-rejected ]]; then
+                # Breaks loading of every no-dynamic image, ET_EXEC
+                # included: the MiniFS lisp ELF is the kill.
+                MATCH="lisp evaluates" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [[ "$name" == ldso-* ]]; then
                 make -C "$HERE" test-ldso > "$BACKUP/suite.log" 2>&1 && \
                 MATCH="shared library" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
             else
