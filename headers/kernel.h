@@ -151,6 +151,7 @@ int  serial_getc(void);
 #define KEY_LEFT      0x4B
 #define KEY_RIGHT     0x4D
 #define KEY_LCTRL     0x1D
+#define KEY_RCTRL     0x1D
 #define KEY_F5        0x3F
 #define KEY_F11       0x57
 #define KEY_TILDE     '~'
@@ -195,6 +196,10 @@ void vga_cursor_enable(int on);
 
 #define HEAP_BASE  MINIOS_HEAP_BASE
 #define HEAP_SIZE  MINIOS_HEAP_SIZE
+
+/* Relocation window and identity address for PCI MMIO BARs (xHCI). */
+#define PCI_MMIO_BASE  MINIOS_PCI_MMIO_BASE
+#define PCI_MMIO_SIZE  MINIOS_PCI_MMIO_SIZE
 
 void *kmalloc(unsigned long size);
 extern long kmalloc_fail_after;
@@ -747,6 +752,12 @@ int mm_file_break(unsigned long cr3, unsigned long va);
 unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va);
 void mm_file_range_release(unsigned long cr3, unsigned long base,
     unsigned long len, int ino, unsigned long off, int unmap);
+
+/* Map a physical device region uncached at its identity address, so a PCI
+ * MMIO BAR inside the boot 1 GB window can be read as a register file. The
+ * returned virtual address equals phys. 0 means the request was refused
+ * (see kernel/mm/paging.c for the fail-closed list). */
+unsigned long kmm_map_uncached(unsigned long phys, unsigned long len);
 int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3,
                       unsigned long va);
 /* Copy-on-write fork (kernel/mm/cow.c): share on fork, privatize on

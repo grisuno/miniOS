@@ -211,6 +211,7 @@
 #define PT_FLAGS_PS               0x080
 #define PT_FLAGS_USER             0x004
 #define PT_FLAGS_PCD              0x010   /* page cache disable (uncacheable) */
+#define PT_FLAGS_PWT              0x008   /* page write-through */
 #define PT_FLAGS_NX              0x8000000000000000ULL  /* no-execute */
 #define PT_ADDR_MASK             0x000FFFFFFFFFF000ULL  /* physical addr mask */
 #define PT_USER_ENTRY            (0x003 | PT_FLAGS_USER)  /* present | rw | user */
@@ -224,6 +225,14 @@
  * stale in a write-back cache and the DMA plays garbage. */
 #define SB16_DMA_PT_ENTRY         (0x90000 >> 12)   /* PT0 entry index */
 #define SB16_DMA_PT_PAGES         4                 /* 0x90000..0x94000 */
+
+/* A device register window needs the same treatment and is built the other
+ * way round: the window is already identity mapped by the 2 MB leaves above,
+ * and kmm_map_uncached (kernel/mm/paging.c) splits the covering leaf into
+ * 4 KB entries with PCD|PWT.  Both bits are required: PCD alone leaves the
+ * page write-back, so a device writing a status register leaves a stale copy
+ * in cache and a poll loop never observes the update. */
+#define PT_FLAGS_UNCACHED         (PT_FLAGS_PCD | PT_FLAGS_PWT)
 #define PT_PD_ENTRIES             512
 #define PT_PD_ENTRY_BYTES         8
 #define PT_PD_PAGE_BYTES          0x200000

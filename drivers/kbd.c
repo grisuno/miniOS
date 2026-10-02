@@ -109,7 +109,7 @@ void kbd_toggle_layout(void) {
 /** Docstring: Single modifier state shared by cooked and raw paths. */
 static modifier_state_t kbd_mods;
 static const modifier_keys_t kbd_keys = {
-    KEY_LSHIFT, KEY_RSHIFT, KEY_LCTRL, KEY_LALT, KEY_RALT,
+    KEY_LSHIFT, KEY_RSHIFT, KEY_LCTRL, KEY_RCTRL, KEY_LALT, KEY_RALT,
     KEY_SUPER_L, KEY_SUPER_R
 };
 #define kbd_shift (kbd_mods.shift)
@@ -318,20 +318,23 @@ int kbd_sys_raw_filter(unsigned char sc) {
     return wm_raw_combo(code, e0 != 0);
 }
 
-int kbd_read(void) {
-    /* Not the PS/2 owner (bg gfx focused while the shell polls, or vice
-     * versa): touch no hardware, drop stale shell keys. The serial path
-     * in raw_try/blocking_getc is untouched, so the serial console stays
-     * a shell console at every focus. */
-    if (!vga_fb_ps2_owner(current_pid)) {
-        while (!kbd_q_empty()) kbd_q_pop();
-        return -1;
-    }
-    if (!kbd_q_empty()) return kbd_q_pop();
-    while (!kbd_available()) __asm__ volatile("pause");
-    unsigned char sc;
-    sc = hal_inb(HAL_PS2_DATA);
-
+/** Docstring: Feed one PS/2 set-1 scancode through the whole decode path.
+ *
+ * This is the single seam every keyboard byte crosses, whatever produced it:
+ * the 0x60 data port, or a USB HID boot report (drivers/usbhid.c), which
+ * reports the same key set in the same codes and is differenced into makes
+ * and breaks before it gets here. Everything downstream -- the shared
+ * modifier state, the WM combo lookup, the English and Spanish tables, the
+ * AltGr layer, the raw queue a game reads -- lives inside this function, so
+ * a second input source gets the whole behaviour instead of a fork of it.
+ *
+ * Returns a cooked byte for a printable or control key, or -1 when the
+ * scancode produced no byte: a break, a modifier, a swallowed WM combo, a
+ * navigation key (which is pushed to the cooked queue as an escape sequence
+ * instead) or a key that was only queued into the raw path. A caller that
+ * wants a byte must therefore also drain kbd_q_pop, which is what kbd_read
+ * does for the PS/2 port. */
+int kbd_feed_scancode(unsigned char sc) {
     /* Raw fill only for non-shell owners (a bg/fg proc reading through
      * GETC_RAW with raw mode on). The shell itself (pid 0, alive) always
      * takes the cooked translation below, so a background raw game can
@@ -441,6 +444,20 @@ int kbd_read(void) {
         }
         return ch;
     }
+}
+
+int kbd_read(void) {
+    /* Not the PS/2 owner (bg gfx focused while the shell polls, or vice
+     * versa): touch no hardware, drop stale shell keys. The serial path
+     * in raw_try/blocking_getc is untouched, so the serial console stays
+     * a shell console at every focus. */
+    if (!vga_fb_ps2_owner(current_pid)) {
+        while (!kbd_q_empty()) kbd_q_pop();
+        return -1;
+    }
+    if (!kbd_q_empty()) return kbd_q_pop();
+    while (!kbd_available()) __asm__ volatile("pause");
+    return kbd_feed_scancode(hal_inb(HAL_PS2_DATA));
 }
 
 void kbd_reset_for_shell(void) {

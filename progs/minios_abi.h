@@ -59,6 +59,8 @@
     MINIOS_NK_RGB_ADDR         ^ \
     MINIOS_HEAP_BASE           ^ \
     MINIOS_HEAP_SIZE           ^ \
+    MINIOS_PCI_MMIO_BASE       ^ \
+    MINIOS_PCI_MMIO_SIZE       ^ \
     MINIOS_FB_WIDTH_MAX        ^ \
     MINIOS_FB_HEIGHT_MAX       ^ \
     MINIOS_SYS_FUTEX_WAIT      ^ \
@@ -168,6 +170,31 @@
  * ========================================================================= */
 #define MINIOS_HEAP_BASE  0x0C000000UL
 #define MINIOS_HEAP_SIZE  (192UL * 1024 * 1024)
+
+/* =========================================================================
+ * PCI MMIO relocation window
+ * =========================================================================
+ * Physical window the xHCI driver relocates BAR0 into, and the single
+ * address at which a device register window is mapped. It is the identity
+ * physical address: stage 2 already identity maps the first gigabyte, so
+ * mapping needs no new page directory, only a 2 MB leaf split into 4 KB
+ * page-table entries with PCD|PWT set (uncached, what Linux's ioremap
+ * produces). A write-back mapping would let a register read be answered
+ * from cache and a stale event-ring status read looks exactly like a
+ * keyboard that never types.
+ *
+ * It sits in the gap above the heap and below the 1 GB identity limit:
+ * the heap ends at 0x18000000 and nothing else claims the region up to
+ * 0x40000000, so a driver cannot collide with the user window, the
+ * graphics slots or the kernel image under KASLR. The window is sized for
+ * the largest xHCI register block in the field (HCSPARAMS1 DB size capped
+ * by the hardware) plus room for the MMIO region, and a device whose
+ * probed BAR0 is larger than this is refused rather than truncated.
+ *
+ * Supervisor-only and outside [USER_LOAD_BASE, USER_LOAD_END): a ring-3
+ * program can never see or forge a device address. */
+#define MINIOS_PCI_MMIO_BASE  0x18000000UL
+#define MINIOS_PCI_MMIO_SIZE  0x00040000UL
 
 /* =========================================================================
  * Framebuffer geometry (queried via SYS_FB_INFO)

@@ -31,6 +31,7 @@ copying it onto the ramdisk, with no translation.
 | `docs/spec/desktop.md` | VESA desktop, graphics view contract, WM, double buffer, taskbar, dock, melt |
 | `docs/spec/shell-fs.md` | shell, redirects, history, resolver, ramdisk names, MiniFS/FAT/ext4, tracing, `edit` |
 | `docs/spec/network.md` | rtl8139 + stack, ring-3 TLS, `freedom`, `freedom_wl`, `freedomui` |
+| `docs/spec/usb.md` | xHCI host controller, HID boot input, USB mass storage |
 | `docs/spec/wayland.md` | `wlcomp`, mailbox transport, chrome, desktop builtin |
 | `docs/spec/apps.md` | vedit, file, paint, themes, MicroPython, Lisp, Nuklear, Quake 2, doomedit |
 | `docs/spec/audio.md` | PC speaker, SB16, pcm2, Doom MUS |
@@ -56,6 +57,14 @@ copying it onto the ramdisk, with no translation.
 - **Graphics apps**: present through `GFX_PRESENT`; mouse via the origin the
   present returns; set the title after `SYS_VGA_MODE(1)`; fullscreen is
   `GFX_ZOOM` value 2.
+- **USB**: PCI MMIO is mapped only through `kmm_map_uncached()` (write-back
+  register reads are a silently dead driver); BAR0 relocation is size-probed
+  and never assumed, and the original BAR is restored on a bail; device memory
+  is heap only (`.bss` and stacks are unreachable by a controller under
+  KASLR); every reset/command/transfer wait is bounded by a named budget;
+  the event ring is polled by decision, so no vector, IDT arm or PIC mask may
+  be added by a USB driver; HID input goes through `kbd_feed_scancode()`,
+  never straight into `kbd_q_push()`.
 - **Heavy ring-3 overlap** (two big glibc processes) is known-red until
   per-CPU views land; run heavyweights sequentially.
 

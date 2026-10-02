@@ -6,8 +6,9 @@
 #define KBD_LAYOUT_EN 0
 #define KBD_LAYOUT_ES 1
 
-int  kbd_available(void);
-int  kbd_read(void);
+int kbd_available(void);
+int kbd_read(void);
+int kbd_feed_scancode(unsigned char sc);
 void kbd_reset_for_shell(void);
 
 /* Layout selection */

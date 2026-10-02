@@ -99,6 +99,79 @@
 /** Docstring: Local APIC end-of-interrupt MMIO address. */
 #define HAL_LAPIC_EOI_ADDR 0xFEE000B0UL
 
+/* ---- Memory-mapped I/O ----
+ *
+ * Device register access and the fences that order it. These are plain
+ * dereferences and x86 fences, so the same definition serves the kernel and
+ * the host tests (unlike the port primitives below, which cannot execute off
+ * target and therefore need stubs).
+ *
+ * A device region must be mapped uncached (see kmm_map_uncached): a
+ * write-back mapping lets a register read be answered from cache, and a stale
+ * event-ring status register is a driver that works on nothing. The fences
+ * are the other half of the contract: TRB writes must be ordered before the
+ * doorbell store that publishes them, and event TRB reads before the cycle
+ * bit is released for reuse.
+ */
+
+/** Docstring: Read a 32-bit device register. */
+static inline unsigned hal_mmio_read32(const volatile unsigned *addr) {
+    return *addr;
+}
+
+/** Docstring: Write a 32-bit device register. */
+static inline void hal_mmio_write32(volatile unsigned *addr, unsigned val) {
+    *addr = val;
+}
+
+/** Docstring: Read a 64-bit device register. */
+static inline unsigned long long hal_mmio_read64(const volatile unsigned long long *addr) {
+    return *addr;
+}
+
+/** Docstring: Write a 64-bit device register. */
+static inline void hal_mmio_write64(volatile unsigned long long *addr,
+                                    unsigned long long val) {
+    *addr = val;
+}
+
+/** Docstring: Read a 16-bit device register. */
+static inline unsigned short hal_mmio_read16(const volatile unsigned short *addr) {
+    return *addr;
+}
+
+/** Docstring: Write a 16-bit device register. */
+static inline void hal_mmio_write16(volatile unsigned short *addr,
+                                    unsigned short val) {
+    *addr = val;
+}
+
+/** Docstring: Read an 8-bit device register. */
+static inline unsigned char hal_mmio_read8(const volatile unsigned char *addr) {
+    return *addr;
+}
+
+/** Docstring: Write an 8-bit device register. */
+static inline void hal_mmio_write8(volatile unsigned char *addr,
+                                   unsigned char val) {
+    *addr = val;
+}
+
+/** Docstring: Write memory barrier, orders prior stores before later stores. */
+static inline void hal_mmio_wmb(void) {
+    __asm__ volatile("sfence" ::: "memory");
+}
+
+/** Docstring: Read memory barrier, orders prior loads before later loads. */
+static inline void hal_mmio_rmb(void) {
+    __asm__ volatile("lfence" ::: "memory");
+}
+
+/** Docstring: Full memory barrier, orders every prior access before later ones. */
+static inline void hal_mmio_mb(void) {
+    __asm__ volatile("mfence" ::: "memory");
+}
+
 #ifdef HAL_IO_HOST_TEST
 
 /** Docstring: Stub log for host tests, counts port writes. */

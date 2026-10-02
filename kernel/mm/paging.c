@@ -157,8 +157,129 @@ void mm_setup_protections(void) {
     }
 }
 
-void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3) {
-    unsigned long pd_phys;
+/* ================================================================
+ *  Kernel device MMIO: uncached identity mapping for a BAR window
+ * ================================================================
+ *
+ *  PCI MMIO lives wherever firmware put it, which is outside the 1 GB
+ *  identity window stage 2 builds. Rather than grow the boot page
+ *  tables (PT_FILL_*, KASLR_IMAGE_SPAN and the stage1/stage2 scheme
+ *  would all have to move together, which the low-4MB hazard forbids
+ *  piecemeal), a driver relocates its BAR into PCI_MMIO_BASE and calls
+ *  kmm_map_uncached. The address is the identity physical address, so no
+ *  new page directory and no new base register is involved: the boot
+ *  2 MB leaf for the window is split into a 4 KB page table, and only
+ *  the mapped pages get the cache-disable bits.
+ *
+ *  Uncached is required, not tidy. A device register read through a
+ *  write-back mapping may be answered from cache, so a poll of the
+ *  xHCI event-ring status register can keep returning a value the
+ *  controller updated long ago -- a driver that reads registers and
+ *  never sees a completion, with no error to point at.
+ */
+
+/** Docstring: Top of the stage 2 identity window: the 512 2 MB leaves of
+ * PDPT slot 0 end here, so no address above it can be reached without a new
+ * page directory. Derived, never typed. */
+#define KMM_MAX_IDENTITY (PT_PD_ENTRIES * PT_PD_PAGE_BYTES)
+
+/** Docstring: Largest region one call will map. A 2 MB cap bounds the work
+ * to two 4 KB page tables, so a driver asking for a gigabyte fails loudly
+ * instead of looping over half a million pages. */
+#define KMM_UNCACHED_MAX PT_PD_PAGE_BYTES
+
+/** Docstring: 4 KB leaf flags for a device page: present, read-write,
+ * cache-disable and write-through. Matches what Linux's ioremap produces. */
+#define KMM_UNCACHED_FLAGS (PT_FLAGS_PRESENT_RW | PT_FLAGS_UNCACHED)
+
+/** Docstring: Identity 4 KB leaf flags, reproducing the access rights stage 2
+ * gave the 2 MB leaf it replaces: present, read-write, supervisor. The
+ * pages outside the requested range keep exactly the mapping they had. */
+#define KMM_IDENTITY_FLAGS PT_FLAGS_PRESENT_RW
+
+/** Docstring: Return the 4 KB page table backing a 2 MB slot, splitting the
+ * boot leaf if needed.
+ *
+ * A 2 MB leaf cannot be refined in place, so the slot is replaced by a
+ * freshly allocated page table whose 512 entries all point at the same
+ * physical pages the leaf covered, with the leaf's own rights. Because the
+ * page table lives on the heap, where VA == PA, its own address is a valid
+ * page-table address with no further mapping.
+ *
+ * Returns the page table, or 0 when the slot is empty (a hole in the boot
+ * identity map is a boot bug, not something to paper over), already a 4 KB
+ * table (another BAR window shared this megabyte, which is the common case
+ * and must reuse rather than re-split), or out of memory. */
+static volatile unsigned long *kmm_ensure_pt(unsigned long phys) {
+    volatile unsigned long *pd = (volatile unsigned long *)PT_PD_ADDR;
+    unsigned long slot = phys & ~(PT_PD_PAGE_BYTES - 1);
+    unsigned long pd_idx = slot >> PT_PD_INDEX_SHIFT;
+    unsigned long entry = pd[pd_idx];
+    volatile unsigned long *pt;
+    unsigned i;
+
+    if (entry == 0) return 0;
+    if (!(entry & PT_FLAGS_PS)) return (volatile unsigned long *)
+        (entry & PT_ADDR_MASK);
+    pt = (volatile unsigned long *)pt_page_alloc();
+    if (!pt) return 0;
+    for (i = 0; i < PT_PD_ENTRIES; i++)
+        pt[i] = (slot + i * 0x1000UL) | KMM_IDENTITY_FLAGS;
+    pd[pd_idx] = (unsigned long)pt | PT_FLAGS_PRESENT_RW;
+    return pt;
+}
+
+/** Docstring: Map a physical device region uncached at its identity address.
+ *
+ * Every page of [phys, phys+len) gets a present, read-write, cache-disabled,
+ * write-through 4 KB entry; pages of the same 2 MB slot outside the range keep
+ * the write-back identity mapping stage 2 gave them. Returns the virtual
+ * address, which equals phys by construction, or 0 on a refused request.
+ *
+ * Refusals, all fail-closed: a zero length or address, a length above
+ * KMM_UNCACHED_MAX, a range whose end overflows, a range reaching past
+ * KMM_MAX_IDENTITY (that needs a new page directory, which this function
+ * will not invent), and an unmappable or out-of-memory slot.
+ *
+ * The page tables this allocates are permanent: unmapping a BAR would leave
+ * a driver holding a window the hardware can still raise an interrupt for,
+ * so nothing here has an unmap. */
+unsigned long kmm_map_uncached(unsigned long phys, unsigned long len) {
+    unsigned long end;
+    unsigned long page;
+    unsigned long lo_mb = phys & ~(PT_PD_PAGE_BYTES - 1);
+    unsigned long hi_mb;
+
+    if (phys == 0 || len == 0) return 0;
+    if (len > KMM_UNCACHED_MAX) return 0;
+    if (phys > (unsigned long)-1 - len) return 0;
+    end = phys + len;
+    if (end > KMM_MAX_IDENTITY) return 0;
+    hi_mb = (end - 1) & ~(PT_PD_PAGE_BYTES - 1);
+
+    /* Split every 2 MB slot the range touches up front: a failure part-way
+     * through would leave the range half-mapped, and the caller cannot tell
+     * which half. Splitting changes no rights (the new table reproduces the
+     * leaf), so a later failure here is harmless. */
+    for (page = lo_mb; page <= hi_mb; page += PT_PD_PAGE_BYTES) {
+        if (!kmm_ensure_pt(page)) return 0;
+    }
+
+    for (page = phys & ~0xFFFUL; page < end; page += 0x1000UL) {
+        volatile unsigned long *pd = (volatile unsigned long *)PT_PD_ADDR;
+        unsigned long pd_idx = page >> PT_PD_INDEX_SHIFT;
+        unsigned long pt_off = (page >> 12) & (PT_PD_ENTRIES - 1);
+        volatile unsigned long *pt =
+            (volatile unsigned long *)(pd[pd_idx] & PT_ADDR_MASK);
+        pt[pt_off] = page | KMM_UNCACHED_FLAGS;
+    }
+    __asm__ volatile("mfence" ::: "memory");
+    for (page = phys & ~0xFFFUL; page < end; page += 0x1000UL)
+        __asm__ volatile("invlpg (%0)" :: "r"(page) : "memory");
+    return phys;
+}
+
+void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3) {    unsigned long pd_phys;
     if (cr3 == 0) {
         pd_phys = PT_PD_ADDR;
     } else {

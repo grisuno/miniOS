@@ -10,11 +10,17 @@ typedef struct {
     int super;
 } modifier_state_t;
 
-/** Docstring: Key codes feeding the tracker, one config per layout. */
+/** Docstring: Key codes feeding the tracker, one config per layout.
+ *
+ * The right-hand members are only recognised when the event carries the
+ * 0xE0 prefix, which is how scancode set 1 disambiguates the two halves of
+ * each pair. Right Alt is the exception that proves the rule: on a Spanish
+ * layout it is AltGr, so it feeds the separate altgr bit rather than alt. */
 typedef struct {
     int shift_l;
     int shift_r;
     int ctrl_l;
+    int ctrl_r;
     int alt_l;
     int alt_r;
     int super_l;
@@ -38,7 +44,13 @@ static inline void modifiers_init(modifier_state_t *st)
     st->super = 0;
 }
 
-/** Docstring: Track one make or break code, 1 when consumed. */
+/** Docstring: Track one make or break code, 1 when consumed.
+ *
+ * Set 1 gives both halves of Ctrl, Alt and Super the same base code and
+ * separates them with 0xE0, so an unprefixed code is always the left one.
+ * Right Ctrl arrived from a PS/2 keyboard and from a USB HID report with no
+ * prefix difference at all before this, and was silently dropped: the state
+ * said Ctrl was up while a key was physically held. */
 static inline int modifiers_update(const modifier_keys_t *keys,
                                    modifier_state_t *st,
                                    int code, int is_break, int e0)
@@ -60,6 +72,10 @@ static inline int modifiers_update(const modifier_keys_t *keys,
             return 1;
         }
         return 0;
+    }
+    if (code == keys->ctrl_r) {
+        st->ctrl = pressed;
+        return 1;
     }
     if (code == keys->alt_r) {
         st->altgr = pressed;

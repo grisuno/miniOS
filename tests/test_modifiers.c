@@ -2,7 +2,15 @@
 
 #include "drivers/modifiers.h"
 
-static const modifier_keys_t fixture = { 10, 11, 20, 30, 40, 50, 51 };
+/** Docstring: Designated initializers, so adding a member cannot silently
+ * shift every other one: positional order would have read the right-alt code
+ * as right-ctrl and failed eight assertions instead of one. */
+static const modifier_keys_t fixture = {
+    .shift_l = 10, .shift_r = 11,
+    .ctrl_l  = 20, .ctrl_r  = 21,
+    .alt_l   = 30, .alt_r   = 40,
+    .super_l = 50, .super_r = 51
+};
 
 static int failures = 0;
 
@@ -39,6 +47,28 @@ int main(void)
     CHECK(modifiers_match(&st, MOD_SUPER), "super mask matches");
     modifiers_init(&st);
     CHECK(!modifiers_match(&st, MOD_SUPER), "reset clears super");
+
+    /* Set 1 gives both halves of Ctrl the same base code and separates them
+     * with 0xE0, so the right one is only recognised when the prefix is
+     * present. It was not tracked at all before, which left the window
+     * manager believing Ctrl was up while a key was held. */
+    modifiers_init(&st);
+    CHECK(modifiers_update(&fixture, &st, 21, 0, 0) == 0,
+          "right ctrl without the e0 prefix is not a modifier");
+    CHECK(modifiers_update(&fixture, &st, 21, 0, 1) == 1,
+          "right ctrl e0 make consumed");
+    CHECK(modifiers_match(&st, MOD_CTRL), "right ctrl holds ctrl");
+    CHECK(!modifiers_match(&st, MOD_CTRL | MOD_ALT), "right ctrl is not alt");
+    CHECK(modifiers_update(&fixture, &st, 21, 1, 1) == 1,
+          "right ctrl e0 break consumed");
+    CHECK(!modifiers_match(&st, MOD_CTRL), "right ctrl released");
+
+    modifiers_init(&st);
+    CHECK(modifiers_update(&fixture, &st, 20, 0, 0) == 1, "left ctrl make");
+    CHECK(modifiers_match(&st, MOD_CTRL), "left ctrl holds ctrl");
+    CHECK(modifiers_update(&fixture, &st, 99, 0, 1) == 0,
+          "an e0-prefixed plain key is not consumed");
+    CHECK(modifiers_match(&st, MOD_CTRL), "left ctrl still held");
 
     if (failures == 0)
         printf("modifiers: ok\n");
