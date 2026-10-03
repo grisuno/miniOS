@@ -21,12 +21,16 @@ typedef struct {
 static tick_slot_t tick_audio_slots[TICK_MAX_AUDIO_LISTENERS];
 /** Docstring: Desktop listener table. */
 static tick_slot_t tick_desktop_slots[TICK_MAX_DESKTOP_LISTENERS];
+/** Docstring: USB listener table. */
+static tick_slot_t tick_usb_slots[TICK_MAX_USB_LISTENERS];
 /** Docstring: Active audio listener count. */
 static int tick_audio_used;
 /** Docstring: Active desktop listener count. */
 static int tick_desktop_used;
+/** Docstring: Active USB listener count. */
+static int tick_usb_used;
 
-/** Docstring: Reset both listener lists to empty. */
+/** Docstring: Reset every listener list to empty. */
 void tick_reset(void) {
     int i;
     for (i = 0; i < TICK_MAX_AUDIO_LISTENERS; i++) {
@@ -37,8 +41,13 @@ void tick_reset(void) {
         tick_desktop_slots[i].fn = NULL;
         tick_desktop_slots[i].ctx = NULL;
     }
+    for (i = 0; i < TICK_MAX_USB_LISTENERS; i++) {
+        tick_usb_slots[i].fn = NULL;
+        tick_usb_slots[i].ctx = NULL;
+    }
     tick_audio_used = 0;
     tick_desktop_used = 0;
+    tick_usb_used = 0;
 }
 
 /** Docstring: Register an unconditional BSP audio effect.
@@ -75,6 +84,29 @@ int tick_register_desktop(tick_fn_t fn, void *ctx) {
     tick_desktop_slots[tick_desktop_used].ctx = ctx;
     tick_desktop_used++;
     return 0;
+}
+
+int tick_register_usb(tick_fn_t fn, void *ctx) {
+    if (fn == NULL) {
+        return -1;
+    }
+    if (tick_usb_used < 0 || tick_usb_used >= TICK_MAX_USB_LISTENERS) {
+        return -1;
+    }
+    tick_usb_slots[tick_usb_used].fn = fn;
+    tick_usb_slots[tick_usb_used].ctx = ctx;
+    tick_usb_used++;
+    return 0;
+}
+
+/** Docstring: Run USB listeners in registration order. */
+void tick_run_usb(void) {
+    int i;
+    for (i = 0; i < tick_usb_used; i++) {
+        if (tick_usb_slots[i].fn != NULL) {
+            tick_usb_slots[i].fn(tick_usb_slots[i].ctx);
+        }
+    }
 }
 
 /** Docstring: Run audio listeners in registration order. */

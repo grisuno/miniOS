@@ -1416,7 +1416,9 @@ int minifs_is_mounted(void) { return fs_mounted; }
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wframe-larger-than="
 int minifs_mount(void) {
-    unsigned int total_sectors = ide_total_sectors();
+    unsigned long total_sec = block_disk_sectors();
+    unsigned int total_sectors = total_sec > 0xFFFFFFFFUL ?
+        0xFFFFFFFFu : (unsigned int)total_sec;
     unsigned int fs_lba_raw;
     unsigned int ibm_blocks, bbm_blocks;
     unsigned int i;

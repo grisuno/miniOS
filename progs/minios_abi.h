@@ -59,7 +59,7 @@
     MINIOS_NK_RGB_ADDR         ^ \
     MINIOS_HEAP_BASE           ^ \
     MINIOS_HEAP_SIZE           ^ \
-    MINIOS_PCI_MMIO_BASE       ^ \
+    MINIOS_DEV_MMIO_VBASE     ^ \
     MINIOS_PCI_MMIO_SIZE       ^ \
     MINIOS_FB_WIDTH_MAX        ^ \
     MINIOS_FB_HEIGHT_MAX       ^ \
@@ -193,8 +193,19 @@
  *
  * Supervisor-only and outside [USER_LOAD_BASE, USER_LOAD_END): a ring-3
  * program can never see or forge a device address. */
-#define MINIOS_PCI_MMIO_BASE  0x18000000UL
 #define MINIOS_PCI_MMIO_SIZE  0x00040000UL
+
+/* Virtual address the kernel maps a PCI MMIO BAR to. It is a kernel-chosen
+ * address with no relation to the BAR's physical one, which is the whole
+ * point: a BAR lives in the host bridge's PCI hole above all of RAM, and the
+ * region above the heap is guest RAM rather than a hole, so a BAR relocated
+ * there reads back the heap. The window sits in PDPT slot 4, above the 1 GB
+ * identity map and outside the user window, so nothing else can reach it.
+ *
+ * Supervisor-only: the KPTI clone copies this page directory into every
+ * ring-3 process, and without the supervisor bits a user program could read
+ * or write a device register through it. */
+#define MINIOS_DEV_MMIO_VBASE  0x0000000100000000UL
 
 /* =========================================================================
  * Framebuffer geometry (queried via SYS_FB_INFO)

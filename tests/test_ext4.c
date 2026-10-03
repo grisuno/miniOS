@@ -116,6 +116,17 @@ int ide_read_sectors(unsigned int lba, unsigned int count, void *buf) {
     return -1;
 }
 
+unsigned long block_disk_sectors(void) {
+    return 0;
+}
+
+int block_read_sectors(unsigned lba, unsigned count, void *buf) {
+    (void)lba;
+    (void)count;
+    (void)buf;
+    return -1;
+}
+
 #include "fs/fsimg.c"
 #include "fs/ext4.c"
 

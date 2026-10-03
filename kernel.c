@@ -16,6 +16,9 @@
 #include "block.h"
 #include "pcache.h"
 #include "drivers/virtio_blk.h"
+#include "drivers/xhci.h"
+#include "drivers/usbhid.h"
+#include "drivers/usbblk.h"
 #include "sched.h"
 #include "vga_fb.h"
 #include "sb16.h"
@@ -271,11 +274,33 @@ void kmain(void) {
         kprintf("abi: manifest ok (v%d)\n", MINIOS_ABI_VERSION);
     }
 
+    /* Bring up USB before the block layer, so a USB stick is a backend
+     * candidate rather than a device discovered too late to be used. This is
+     * a probe that finds nothing on a machine with no xHCI controller, and
+     * the boot is unchanged in that case. The controller needs the page
+     * tables (already built above) for its uncached register window and the
+     * heap for its rings, and it needs no interrupt, so it runs before the IDT
+     * exists without risk. */
+    if (xhc_init()) {
+        unsigned version = 0;
+        unsigned slots = 0;
+        unsigned ports = 0;
+        int found = xhc_enumerate_all();
+        int hid;
+        xhc_info(&version, &slots, &ports, 0);
+        kprintf("usb: xHCI %u.%u, %u slots, %u ports, %d devices\n",
+                (version >> 8) & 0xFFu, version & 0xFFu, slots, ports, found);
+        hid = usbhid_init();
+        if (hid)
+            kprintf("usb: hid kbd=%d mouse=%d\n", usbhid_keyboard_present(),
+                    usbhid_mouse_present());
+    }
+
     block_init();
     pcache_init();
     minifs_init();
     bootlog_mark("block+minifs");
-    if (ide_present() || vblk_present()) {
+    if (ide_present() || vblk_present() || ubk_present()) {
         if (minifs_mount() < 0) {
             kprintf("minifs: no filesystem found on disk\n");
         }

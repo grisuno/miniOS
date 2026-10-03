@@ -18,6 +18,7 @@
 #include "arch/x86/hal_io.h"
 #include "arch/x86/msr.h"
 #include "drivers/mouse.h"
+#include "drivers/xhci.h"
 
 /** Docstring: Audio tick adapter, forwards the bus dispatch to sb16_poll. */
 static void sched_tick_audio(void *ctx) {
@@ -29,6 +30,17 @@ static void sched_tick_audio(void *ctx) {
 static void sched_tick_desktop(void *ctx) {
     (void)ctx;
     vga_fb_mouse_tick();
+}
+
+/** Docstring: USB tick adapter. The xHCI event ring is polled by decision
+ * rather than interrupt-driven, so this is the polling trigger: it drains
+ * the ring and nothing else. Transfers are never issued here: an interrupt
+ * endpoint with nothing to say answers NAK instead of an event, and waiting
+ * for one with the tick held takes the machine with it. HID polling lives in
+ * the console input spin, where a missing report is just silence. */
+static void sched_tick_usb(void *ctx) {
+    (void)ctx;
+    xhc_poll();
 }
 
 /* The user-window and syscall-stack constants come from kernel.h, which
@@ -1008,6 +1020,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
         }
         if (cpu->is_bsp) {
             pic_eoi(0);
+            tick_run_usb();
             tick_run_audio();
             rcu_note_tick(cpu->cpu_id);
             rcu_poll();
@@ -2822,6 +2835,7 @@ void sched_init(void) {
     tick_reset();
     tick_register_audio(sched_tick_audio, 0);
     tick_register_desktop(sched_tick_desktop, 0);
+    tick_register_usb(sched_tick_usb, 0);
     pic_init();
     pit_init();
     mouse_hw_init();

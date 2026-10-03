@@ -178,9 +178,24 @@ int main(void) {
     CHECK(cfg[0][9][0][(PCI_REG_BAR0 >> 2) + 1] == 0u,
           "BAR size probe restores the high half");
 
+    /* A window above 4 GB implements every low-order address line, so the
+     * low half masks to zero and only the high half carries the count. A low
+     * half that still has an unimplemented line means the window is below
+     * 4 GB, whatever the high half says. */
+    bar_mask[0][9][0][PCI_REG_BAR0 >> 2] = 0x00000000u;
     bar_mask[0][9][0][(PCI_REG_BAR0 >> 2) + 1] = 0xFFFFFF00u;
     CHECK(pci_bar_size(0, 9, 0, 0, fake_outl, fake_inl) == (1ULL << 40),
-          "64-bit BAR above 4 GB gets the wide size");
+          "64-bit BAR above 4 GB counts the high half");
+    bar_mask[0][9][0][(PCI_REG_BAR0 >> 2) + 1] = 0xFFFFFFFFu;
+    CHECK(pci_bar_size(0, 9, 0, 0, fake_outl, fake_inl) == 0u,
+          "64-bit BAR with no unimplemented line is refused");
+    /* QEMU's xHCI shape: a 16 KB window, low half carrying the count, high
+     * half all ones. Reading the high half as the answer reports 2^32 here
+     * and refuses the controller. */
+    bar_mask[0][9][0][PCI_REG_BAR0 >> 2] = 0xFFFFC000u;
+    CHECK(pci_bar_size(0, 9, 0, 0, fake_outl, fake_inl) == 0x4000u,
+          "low half decides a below-4GB 64-bit BAR");
+    bar_mask[0][9][0][PCI_REG_BAR0 >> 2] = 0xFFFFF000u;
     bar_mask[0][9][0][(PCI_REG_BAR0 >> 2) + 1] = 0x00000000u;
 
     cfg[0][9][0][PCI_REG_BAR0 >> 2] = 0xE0000000u;
@@ -202,8 +217,12 @@ int main(void) {
           "mask decode of a 256-byte window");
     CHECK(pci_bar_size_from_mask(0x00000000ull) == 0u,
           "all-zero mask is refused");
-    CHECK(pci_bar_size_from_mask(0xFFFFFFFFFFFFFFFFull) == 0u,
-          "all-ones mask is refused");
+    CHECK(pci_bar_size_from_mask(0xFFFFFFFFFFFFC000ull) == 0x4000u,
+          "low half decides a below-4GB 64-bit BAR");
+    CHECK(pci_bar_size_from_mask(0xFFFFFF0000000000ull) == (1ULL << 40),
+          "high half decides an above-4GB 64-bit BAR");
+    CHECK(pci_bar_size_from_mask(0xFFFFFFFF00000000ull) == 0u,
+          "no unimplemented line in either half is refused");
 
     cfg[0][5][0][PCI_REG_BAR0 >> 2] = 0xE0000001u;
     CHECK(pci_bar_size(0, 5, 0, 0, fake_outl, fake_inl) == 0u,

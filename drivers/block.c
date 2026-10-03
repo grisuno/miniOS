@@ -18,6 +18,7 @@
 #include "kernel.h"
 #include "ide.h"
 #include "drivers/virtio_blk.h"
+#include "drivers/usbblk.h"
 #include "block.h"
 #include "driver.h"
 
@@ -27,6 +28,7 @@ static unsigned int block_lba_base;
  * exactly once at boot: a foreign disk attached later must never
  * hijack MiniFS mid-run. */
 static int block_use_virtio;
+static int block_use_usb;
 
 /* Direct-mapped cache: 16 x 4096 = 64 KB of recently-read blocks.
  * Every shared line mutates only under bc_lock, which is irqsave (a
@@ -91,7 +93,13 @@ void block_init(void) {
                 block_total_sectors = (unsigned int)vblk_total;
         }
     }
-    kprintf("block: backend=%s\n", block_use_virtio ? "virtio" : "ide");
+    if (!block_use_virtio && ubk_init()) {
+        block_use_usb = 1;
+        if (ubk_sectors() <= 0xFFFFFFFFu)
+            block_total_sectors = (unsigned int)ubk_sectors();
+    }
+    kprintf("block: backend=%s\n", block_use_virtio ? "virtio" :
+            block_use_usb ? "usb" : "ide");
     bc_data = (unsigned char *)kmalloc(BC_WAYS * BLOCK_SIZE);
     if (!bc_data) kprintf("block: no cache (out of memory)\n");
 }
@@ -118,6 +126,11 @@ static int block_dev_read(unsigned lba, unsigned count, void *buf) {
         if (d && d->block && d->block->read_sectors)
             return d->block->read_sectors(d, lba, count, buf);
     }
+    if (block_use_usb) {
+        d = device_find("usb");
+        if (d && d->block && d->block->read_sectors)
+            return d->block->read_sectors(d, lba, count, buf);
+    }
     d = device_find("ide0");
     if (d && d->block && d->block->read_sectors)
         return d->block->read_sectors(d, lba, count, buf);
@@ -128,6 +141,11 @@ static int block_dev_write(unsigned lba, unsigned count, const void *buf) {
     device_t *d;
     if (block_use_virtio) {
         d = device_find("vblk0");
+        if (d && d->block && d->block->write_sectors)
+            return d->block->write_sectors(d, lba, count, buf);
+    }
+    if (block_use_usb) {
+        d = device_find("usb");
         if (d && d->block && d->block->write_sectors)
             return d->block->write_sectors(d, lba, count, buf);
     }
@@ -212,4 +230,22 @@ void block_flush(void) { }
 unsigned int block_total(void) {
     if (block_total_sectors == 0) return 0;
     return block_total_sectors / SECTORS_PER_BLOCK;
+}
+
+/** Docstring: Absolute sector read on the active backend, with no cache
+ * and no base offset: partition tables and foreign filesystems address the
+ * whole disk, not the MiniFS window. */
+int block_read_sectors(unsigned lba, unsigned count, void *buf) {
+    unsigned long end;
+    if (!buf || count == 0) return -1;
+    end = (unsigned long)lba + count;
+    if (end > block_total_sectors) return -1;
+    if (block_dev_read(lba, count, buf) < 0) return -1;
+    return 0;
+}
+
+/** Docstring: Size of the active backend in sectors, so scanners fence to
+ * the USB stick when it is the backend and not to the IDE disk. */
+unsigned long block_disk_sectors(void) {
+    return (unsigned long)block_total_sectors;
 }

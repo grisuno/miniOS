@@ -197,8 +197,10 @@ void vga_cursor_enable(int on);
 #define HEAP_BASE  MINIOS_HEAP_BASE
 #define HEAP_SIZE  MINIOS_HEAP_SIZE
 
-/* Relocation window and identity address for PCI MMIO BARs (xHCI). */
-#define PCI_MMIO_BASE  MINIOS_PCI_MMIO_BASE
+/* Kernel-owned virtual window for PCI MMIO BARs, and the largest BAR the
+ * window can hold. The BAR's physical address is firmware's choice; this is
+ * where the kernel maps it. */
+#define DEV_MMIO_VBASE  MINIOS_DEV_MMIO_VBASE
 #define PCI_MMIO_SIZE  MINIOS_PCI_MMIO_SIZE
 
 void *kmalloc(unsigned long size);
@@ -753,11 +755,13 @@ unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va);
 void mm_file_range_release(unsigned long cr3, unsigned long base,
     unsigned long len, int ino, unsigned long off, int unmap);
 
-/* Map a physical device region uncached at its identity address, so a PCI
- * MMIO BAR inside the boot 1 GB window can be read as a register file. The
- * returned virtual address equals phys. 0 means the request was refused
- * (see kernel/mm/paging.c for the fail-closed list). */
-unsigned long kmm_map_uncached(unsigned long phys, unsigned long len);
+/* Map a physical device region uncached into the kernel-owned virtual device
+ * window at DEV_MMIO_VBASE and return that virtual address, so a PCI MMIO BAR
+ * living in the host bridge's hole above all of RAM can be read as a register
+ * file. The returned address is not the physical one. 0 means the request was
+ * refused (see kernel/mm/paging.c for the fail-closed list). */
+unsigned long kmm_map_device(unsigned long phys, unsigned long len);
+int kmm_make_uncached(unsigned long phys, unsigned long len);
 int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3,
                       unsigned long va);
 /* Copy-on-write fork (kernel/mm/cow.c): share on fork, privatize on

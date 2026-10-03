@@ -1,7 +1,7 @@
 #include "kernel.h"
 #include "minifs.h"
 #include "fsimg.h"
-#include "ide.h"
+#include "block.h"
 
 /* ================================================================
  *  fsimg -- shared loopback/device image backend
@@ -52,8 +52,8 @@ int fsimg_open_dev(unsigned long base_lba, unsigned long nsec,
                    fsimg_t *img) {
     unsigned long total;
     if (!img) return -1;
-    if (!ide_present()) return -1;
-    total = (unsigned long)ide_total_sectors();
+    total = block_disk_sectors();
+    if (total == 0) return -1;
     if (nsec == 0 || base_lba >= total || nsec > total - base_lba)
         return -1;
     img->rf = 0;
@@ -61,26 +61,36 @@ int fsimg_open_dev(unsigned long base_lba, unsigned long nsec,
     img->is_dev = 1;
     img->dev_lba = base_lba;
     img->size = nsec * 512UL;
-    if (img->size > 0xFFFFFFFFUL) return -1;
+    if (img->size > 0xFFFFFFFFUL) img->size = 0xFFFFFFFFUL;
     return 0;
 }
 
+/** Docstring: Sector reads off the active backend through the block layer,
+ * so a device image on USB reads from USB. The scratch is heap, never the
+ * caller's stack: the USB backend hands the buffer to the controller as a
+ * physical address, which a stack address is not. */
 static int fsimg_dev_read(const fsimg_t *img, unsigned long off,
                           void *buf, unsigned long len) {
-    unsigned char sec[512];
+    unsigned char *sec = (unsigned char *)kmalloc(512);
     unsigned char *out = (unsigned char *)buf;
+    int rc = 0;
+    if (!sec) return -1;
     while (len > 0) {
         unsigned long lba = img->dev_lba + off / 512UL;
         unsigned at = (unsigned)(off % 512UL);
         unsigned long take = 512UL - at;
         if (take > len) take = len;
-        if (ide_read_sectors((unsigned int)lba, 1, sec) < 0) return -1;
+        if (block_read_sectors((unsigned)lba, 1, sec) < 0) {
+            rc = -1;
+            break;
+        }
         kmemcpy(out, sec + at, take);
         out += take;
         off += take;
         len -= take;
     }
-    return 0;
+    kfree(sec);
+    return rc;
 }
 
 int fsimg_read(const fsimg_t *img, unsigned long off, void *buf,

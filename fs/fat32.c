@@ -2,7 +2,7 @@
 #include "minifs.h"
 #include "fat32.h"
 #include "fsimg.h"
-#include "ide.h"
+#include "block.h"
 
 /* ================================================================
  *  FAT32 -- read-only loopback driver
@@ -30,13 +30,19 @@ static int fat_img_open(const char *resolved, fsimg_t *img) {
     long base;
     unsigned long total;
     if (fsimg_open_file(resolved, img) == 0) return 0;
-    if (kstrcmp(resolved, "hd0") != 0) return -1;
-    if (!ide_present()) return -1;
+    if (kstrcmp(resolved, "hd0") != 0) {
+        kprintf("fat dbg: not hd0\n");
+        return -1;
+    }
+    total = block_disk_sectors();
+    if (total == 0) {
+        kprintf("fat dbg: no disk\n");
+        return -1;
+    }
     base = fat_dev_base();
     if (base < 0) return -1;
-    total = (unsigned long)ide_total_sectors();
-    return fsimg_open_dev((unsigned long)base,
-                          total - (unsigned long)base, img);
+    return fsimg_open_dev((unsigned long)base, total - (unsigned long)base,
+                          img);
 }
 
 /* Parsed BPB plus derived geometry. secs = total data clusters + 2
@@ -157,12 +163,14 @@ static int fat_mbr_entry(const unsigned char *mbr, int idx,
  * tail). The scan skips LBA 0 (boot sector) and fences every
  * candidate to the drive size. */
 static int fat_scan_dev(unsigned long total_sec, unsigned long *base_out) {
-    unsigned char sec[512];
+    unsigned char *sec = (unsigned char *)kmalloc(512);
     unsigned long lba;
+    int rc = -1;
+    if (!sec) return -1;
     for (lba = 2048; lba < total_sec; lba += 2048) {
         fsimg_t probe;
         fat_geo_t g;
-        if (ide_read_sectors((unsigned int)lba, 1, sec) < 0) return -1;
+        if (block_read_sectors((unsigned)lba, 1, sec) < 0) break;
         if (sec[510] != 0x55 || sec[511] != 0xAA) continue;
         probe.rf = 0;
         probe.ino = -1;
@@ -172,38 +180,44 @@ static int fat_scan_dev(unsigned long total_sec, unsigned long *base_out) {
         if (probe.size > 0xFFFFFFFFUL) probe.size = 0xFFFFFFFFUL;
         if (fat_parse_bpb(&probe, &g) < 0) continue;
         *base_out = lba;
-        return 0;
+        rc = 0;
+        break;
     }
-    return -1;
+    kfree(sec);
+    return rc;
 }
 
 static long fat_dev_cached = -1;
 
 long fat_dev_base(void) {
-    unsigned char mbr[512];
+    unsigned char *mbr = (unsigned char *)kmalloc(512);
     unsigned long total;
     unsigned long base;
     int i;
+    int rc = -2;
     if (fat_dev_cached != -1) return fat_dev_cached;
     fat_dev_cached = -2;
-    if (!ide_present()) return -2;
-    total = (unsigned long)ide_total_sectors();
-    if (total < 2048) return -2;
-    if (ide_read_sectors(0, 1, mbr) < 0) return -2;
+    if (!mbr) return -2;
+    total = block_disk_sectors();
+    if (total < 2048) goto out;
+    if (block_read_sectors(0, 1, mbr) < 0) goto out;
     if (mbr[FAT_MBR_SIG_OFF] == 0x55 && mbr[FAT_MBR_SIG_OFF + 1] == 0xAA &&
         mbr[FAT_MBR_TAB_OFF + FAT_MBR_TYPE_OFF] != FAT_MBR_GPT_PROT) {
         for (i = 0; i < FAT_MBR_NENTRY; i++) {
             if (fat_mbr_entry(mbr, i, total, &base) == 0) {
                 fat_dev_cached = (long)base;
-                return fat_dev_cached;
+                rc = fat_dev_cached;
+                goto out;
             }
         }
     }
     if (fat_scan_dev(total, &base) == 0) {
         fat_dev_cached = (long)base;
-        return fat_dev_cached;
+        rc = fat_dev_cached;
     }
-    return -2;
+out:
+    kfree(mbr);
+    return rc;
 }
 
 

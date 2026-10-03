@@ -2,9 +2,10 @@
  *
  * Decouples the 100 Hz timer ISR from its effects. The ISR used to call
  * sb16_poll and vga_fb_mouse_tick directly, which forced every new
- * periodic effect to edit sched.c. This bus owns two bounded listener
- * lists, one for unconditional BSP audio effects and one for the gated
- * desktop effect, plus a pure gating predicate for the desktop tick.
+ * periodic effect to edit sched.c. This bus owns three bounded listener
+ * lists: one for unconditional BSP audio effects, one for the gated
+ * desktop effect, and one for the polled USB controller, plus a pure
+ * gating predicate for the desktop tick.
  *
  * Design: fixed-size tables, no heap, no locks. Registration happens at
  * boot before sti, dispatch happens in ISR context and only reads. A
@@ -21,17 +22,22 @@
 typedef struct {
     int max_audio_listeners;
     int max_desktop_listeners;
+    int max_usb_listeners;
 } tick_config_t;
 
 /** Docstring: Default bus capacities. */
 #define TICK_MAX_AUDIO_LISTENERS 8
 /** Docstring: Default desktop bus capacity. */
 #define TICK_MAX_DESKTOP_LISTENERS 8
+/** Docstring: Default USB bus capacity. One listener is all the USB stack
+ * needs; the bound exists so the tables stay fixed-size. */
+#define TICK_MAX_USB_LISTENERS 2
 
 /** Docstring: Default bus configuration. */
 #define TICK_CONFIG_DEFAULT ((tick_config_t){ \
     TICK_MAX_AUDIO_LISTENERS, \
-    TICK_MAX_DESKTOP_LISTENERS \
+    TICK_MAX_DESKTOP_LISTENERS, \
+    TICK_MAX_USB_LISTENERS \
 })
 
 /** Docstring: Periodic effect signature. Context is opaque to the bus. */
@@ -53,6 +59,17 @@ int tick_register_audio(tick_fn_t fn, void *ctx);
  * table is full. A refusal changes nothing.
  */
 int tick_register_desktop(tick_fn_t fn, void *ctx);
+
+/** Docstring: Register a polled USB controller effect.
+ *
+ * The xHCI event ring is polled by decision rather than interrupt-driven, so
+ * this listener is the polling trigger. Returns 0 on success, -1 when the
+ * handler is null or the USB table is full. A refusal changes nothing.
+ */
+int tick_register_usb(tick_fn_t fn, void *ctx);
+
+/** Docstring: Run USB listeners in registration order. */
+void tick_run_usb(void);
 
 /** Docstring: Run audio listeners in registration order. */
 void tick_run_audio(void);

@@ -29,4 +29,14 @@ void block_flush(void);
 /* Total blocks available, 0 if no disk. */
 unsigned int block_total(void);
 
+/** Docstring: Backend-aware sector I/O on absolute LBAs, bypassing the
+ * block cache and the MiniFS base offset. This is what partition scanners
+ * and foreign filesystems use, so a FAT on a USB stick reads from USB and
+ * not from IDE. buf must be DMA-safe (heap): the USB backend hands it to
+ * the controller as a physical address. Returns 0 on success. */
+int block_read_sectors(unsigned lba, unsigned count, void *buf);
+
+/** Docstring: Backend-aware disk size in 512-byte sectors, 0 if no disk. */
+unsigned long block_disk_sectors(void);
+
 #endif

@@ -293,31 +293,38 @@ static inline unsigned pci_bar_ctz32(unsigned val) {
 
 /** Docstring: Size in bytes a probed BAR address mask describes.
  *
- * A BAR's address lines are contiguous, so the zero bits of its mask are
- * exactly the unimplemented low-order address lines and the region is
- * 2^(that count) bytes. Two things this must not do:
+ * A BAR's address lines are contiguous, so the window is 2^(number of
+ * unimplemented low-order address lines) and the mask's zero bits are exactly
+ * those lines. For a 64-bit BAR the low-order lines come from BAR0 and the
+ * next 32 from BAR1, which is what makes this subtler than it looks:
  *
- *   Read the mask as a flat 64-bit complement. A 32-bit BAR has no upper
- *   half, so the complement finds zeros up there and reports a region
- *   billions of times too large.
+ *   A BAR that fits below 4 GB has its unimplemented lines in the low half and
+ *   an all-ones high half. Reading the high half as the answer instead --
+ *   because it is the half that looks non-empty -- reports 2^32 for a 64 KB
+ *   window and refuses every controller.
  *
- *   Count the zeros of the whole 64-bit word at once. A 64-bit BAR whose
- *   high half has address lines describes a region above 4 GB, and its size
- *   is 2^(32 + trailing zeros of the high half), not 2^(trailing zeros of
- *   the low half).
+ *   A BAR above 4 GB implements all 32 low lines, so the low half is all ones
+ *   and the count comes from the high half.
  *
- * The low nibble carries the type bits, which are fields rather than address
- * lines, so it is cleared first. A mask with no zero bits at all describes
- * no window and is refused, which is the fail-closed answer a caller must
- * refuse on. */
+ * Only the low half carries the type bits, which are fields rather than
+ * address lines, so only the low half is masked. Applying the same nibble mask
+ * to the high half invents four unimplemented lines there and reports a
+ * window sixteen times too small. A mask with no unimplemented line in either
+ * half describes no window and is refused, which is the fail-closed answer a
+ * caller must refuse on. */
 static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)
 {
-    unsigned hi;
-    mask &= ~0xFULL;
-    if (mask == 0 || mask == 0xFFFFFFFFFFFFFFF0ULL) return 0;
-    hi = (unsigned)(mask >> 32);
-    if (hi != 0) return 1ULL << (32u + pci_bar_ctz32(hi));
-    return 1ULL << pci_bar_ctz32((unsigned)mask);
+    unsigned lo = (unsigned)(mask & 0xFFFFFFFFULL) & PCI_BAR_ADDR_MASK;
+    unsigned hi = (unsigned)(mask >> 32);
+    if (lo) {
+        unsigned n = pci_bar_ctz32(lo);
+        if (n != 0) return 1ULL << n;
+    }
+    if (hi) {
+        unsigned n = pci_bar_ctz32(hi);
+        if (n != 0) return 1ULL << (32u + n);
+    }
+    return 0;
 }
 
 /** Docstring: Probed size in bytes of a memory BAR, restoring its value.
@@ -351,9 +358,8 @@ static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev,
         mask = (unsigned long long)(pci_cfg_read(bus, dev, func, reg, outl,
                                                  inl) & PCI_BAR_ADDR_MASK);
         pci_cfg_write(bus, dev, func, reg + 4u, 0xFFFFFFFFu, outl);
-        mask |= (unsigned long long)(pci_cfg_read(bus, dev, func, reg + 4u,
-                                                  outl, inl) &
-                                     PCI_BAR_ADDR_MASK) << 32;
+        mask |= (unsigned long long)pci_cfg_read(bus, dev, func, reg + 4u,
+                                                 outl, inl) << 32;
         pci_cfg_write(bus, dev, func, reg, orig, outl);
         pci_cfg_write(bus, dev, func, reg + 4u, orig_hi, outl);
     } else {
@@ -387,6 +393,29 @@ static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func,
     if (orig & PCI_BAR_64BIT)
         pci_cfg_write(bus, dev, func, reg + 4u, (unsigned)(base >> 32), outl);
     return 1;
+}
+
+/** Docstring: Physical base a memory BAR is programmed with, read back from
+ * the device. Returns 0 for an absent function, an I/O BAR, or a BAR left
+ * unassigned, all of which a caller must refuse on.
+ *
+ * A 64-bit BAR's high half is zero when the address fits below 4 GB, which is
+ * the common case, so the two halves are combined by adding rather than by
+ * choosing: a 32-bit BAR's second dword is not part of the BAR at all and
+ * holds whatever the next BAR or a bridge window put there. */
+static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev,
+        unsigned func, unsigned bar,
+        void (*outl)(unsigned short, unsigned),
+        unsigned (*inl)(unsigned short)) {
+    unsigned reg = PCI_REG_BAR0 + bar * 4u;
+    unsigned lo = pci_cfg_read(bus, dev, func, reg, outl, inl);
+    unsigned hi = 0;
+    if (lo == PCI_ABSENT_ID) return 0;
+    if (lo & PCI_BAR_IO) return 0;
+    if (lo & PCI_BAR_64BIT)
+        hi = pci_cfg_read(bus, dev, func, reg + 4u, outl, inl);
+    return (unsigned long long)(lo & PCI_BAR_ADDR_MASK) |
+           ((unsigned long long)hi << 32);
 }
 
 /** Docstring: Restore a BAR pair to previously saved raw values. Used to put

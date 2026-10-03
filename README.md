@@ -230,6 +230,10 @@ make test       # behavioural suite (QEMU + serial console)
 make selfhost   # compile minigcc with minigcc, link with ld, check fixed point
 make run-iso    # boots the partitioned image in QEMU (IDE, like USB boot)
 make run-usb    # boots the partitioned image in QEMU over USB-HDD emulation
+make run-usb-fake  # IDE system disk + FAT32 test pendrive on xHCI (see below)
+make run-usb-host BUS=2 ADDR=5  # physical pendrive via QEMU USB passthrough (lsusb for numbers)
+make run-usb-boot  # boots os.usb.img as the system disk over xHCI, no IDE
+make pendrive.img  # builds the 64 MB FAT32 test pendrive (HELLO.TXT + README.TXT)
 make usb-list   # lists candidate target devices for USB writing
 make usb USB=/dev/sdX  # writes the bootable image to a USB pendrive (DD mode)
 make vdi        # converts the image to os.vdi for VirtualBox (hard disk)
@@ -272,6 +276,37 @@ device expects ISO9660 and will not boot. `make usb` refuses the disk
 holding the running root filesystem and any target smaller than the image,
 and asks for `YES` before writing.
 
+### Reading a USB pendrive (xHCI)
+
+The kernel drives USB 3 controllers (`drivers/xhci.c`, polled event
+ring, no interrupts), HID boot keyboards and mice
+(`drivers/usbhid.c`, typed through the same set-1 path as PS/2 so
+window-manager combos keep working) and USB sticks over Bulk-Only
+Transport (`drivers/usbblk.c`, registered as the `usb` block device).
+`usb` prints the controller, the devices, the HID state and the disk
+with its counters. Three ways to attach a stick:
+
+```bash
+make run-usb-fake    # 1. fake: 64 MB FAT32 pendrive.img on xHCI (rootless)
+make run-usb-host BUS=2 ADDR=5   # 2. physical stick via passthrough (lsusb)
+make run-usb-boot    # 3. boot os.usb.img itself from USB, no IDE
+```
+
+Inside MiniOS a data stick reads through the `hd0` disk device:
+
+```
+usb                 # disk present sectors=131072
+fat ls hd0 /        # HELLO.TXT, README.TXT
+fat cat hd0 HELLO.TXT
+```
+
+A present USB disk becomes the block backend (virtio, then USB, then
+IDE). With a FAT data stick attached the backend is the stick, so the
+MiniFS that lives on the IDE image is shadowed while the stick is
+attached: read the stick with `fat`, not MiniFS. Booting from the
+stick itself (`make run-usb-boot`, `make usb`) keeps MiniFS on USB
+with no shadow.
+
 ## Other hypervisors and real hardware
 
 QEMU is the reference platform, and every scenario in `test_bdd.sh` runs on
@@ -292,17 +327,19 @@ setup:
 - Boot is legacy MBR only (INT 13h LBA). There is no UEFI loader and no
   El Torito support, so UEFI-only firmware without a CSM module cannot
   boot the image.
-- The only disk driver is IDE PIO (`drivers/ide.c`). A machine or VM
-  exposing the disk exclusively through AHCI/SATA or NVMe will boot stage
-  1 and stage 2 (BIOS reads) but the kernel will not find its MiniFS
-  partition. Keep an IDE/compatibility mode available where possible.
+- Disk drivers are IDE PIO (`drivers/ide.c`), virtio-blk and USB mass
+  storage over xHCI (`drivers/usbblk.c`). A machine or VM exposing the
+  disk exclusively through AHCI/SATA or NVMe will boot stage 1 and stage
+  2 (BIOS reads) but the kernel will not find its MiniFS partition.
+  Keep an IDE/compatibility mode available where possible.
 - The only NIC driver is rtl8139 on QEMU user networking. Other
   hypervisors need their rtl8139 (or equivalent emulated) device, or the
   network stays down while everything else works.
 - Audio is the PC speaker plus Sound Blaster 16; input is PS/2
-  keyboard and mouse. USB keyboards after boot are not driven by the
-  kernel (the BIOS owns the stick only until stage 2 loads), so real
-  hardware needs PS/2 ports or BIOS PS/2 emulation for input.
+  keyboard and mouse plus USB HID keyboard and mouse through the xHCI
+  driver (`drivers/xhci.c`, `drivers/usbhid.c`, polled, no interrupts).
+  On machines without PS/2 ports the USB keyboard is the console
+  keyboard: type at the prompt and it answers.
 - Video needs VESA BIOS Extensions (8-bit palette modes preferred, VGA
   Mode 13h fallback). Headless BMC/KVM consoles without VBE will get
   the serial console only.
@@ -419,8 +456,8 @@ later carrier.
 | `mkdir <name>` | create a directory entry |
 | `rm <file>` | delete a ramdisk file |
 | `mv <src> <dst>` | rename a file within its filesystem |
-| `fat ls <img> [dir]` | list a FAT32 loopback image directory |
-| `fat cat <img> <file>` | print a file from a FAT32 loopback image |
+| `fat ls <img> [dir]` | list a FAT32 loopback image directory (`hd0` = disk partition) |
+| `fat cat <img> <file>` | print a file from a FAT32 loopback image (`hd0` = disk partition) |
 | `pwd` | print the current working directory |
 | `cd [dir]` | change directory (bare cd goes to root) |
 | `edit <file>` | line editor |
@@ -578,10 +615,12 @@ the fast path serves the same bytes as IDE PIO (request header and
 status live on the heap because KASLR slides statics out from under
 DMA). `make uefi` builds `BOOTX64.EFI` plus `uefi.img` (MBR + FAT16,
 `EFI/BOOT/BOOTX64.EFI`); under OVMF the stub prints its banner, a full
-memory map and an LBA 0 read through Block I/O. USB-HID (xHCI), E1000
-and AHCI remain surveyed future work: xHCI needs a full USB stack
-(3-6 months), E1000/AHCI need the same PCI discovery virtio-blk
-already uses. Runtime TrueType stays out: stb_truetype is float-heavy
+memory map and an LBA 0 read through Block I/O. USB mass storage and
+USB HID keyboard/mouse over xHCI are done (`drivers/xhci.c`,
+`drivers/usbblk.c`, `drivers/usbhid.c`; `make run-usb-fake` to try a
+FAT32 stick, `usb` to inspect it). E1000 and AHCI remain surveyed
+future work: they need the same PCI discovery virtio-blk already uses.
+Runtime TrueType stays out: stb_truetype is float-heavy
 and the kernel builds -mno-sse, so fonts remain build-time bitmaps.
 
 ## Nuklear node editor
@@ -2105,9 +2144,11 @@ driver, and listings use `fat32_list` because the VFS table has no
 readdir verb. Only the root directory, 8.3 short names and regular
 files are served; anything else is a diagnostic, never a guess.
 
-The same driver reads a real disk partition as `hd0` (primary IDE
-master): `fat ls hd0 /` lists it. Location is a real probe, never a
-computed offset: a genuine MBR FAT32 entry first (types `0x0B`/`0x0C`
+The same driver reads a real disk partition as `hd0` through the
+active block backend, so a FAT32 stick on USB reads from USB:
+`fat ls hd0 /` lists it, `fat cat hd0 HELLO.TXT` prints a file. Location
+is a real probe, never a computed offset: a genuine MBR FAT32 entry
+first (types `0x0B`/`0x0C`
 plus hidden `0x1B`/`0x1C`, each proven by a BPB read because a type
 byte alone is a rumor), then a magic scan over 2048-aligned LBAs for
 superfloppy layouts with no table. `os.img` carries the reference

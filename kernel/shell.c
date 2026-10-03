@@ -16,6 +16,9 @@
 #include "pcm2.h"
 #include "rtc.h"
 #include "drivers/kbd.h"
+#include "drivers/xhci.h"
+#include "drivers/usbhid.h"
+#include "drivers/usbblk.h"
 #include "wm_layout.h"
 #include "wm_notify.h"
 #define XXH_STATIC_LINKING_ONLY
@@ -219,6 +222,7 @@ static const char *shell_builtin_names[] = {
     "load", "ls", "lsfs", "ltrace", "mem", "minifetch",     "mkdir", "mount", "mrun", "mv", "net",
     "nice", "panic", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
     "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
+    "usb",
     "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk", "vnet",
 };
 #define SHELL_BUILTIN_COUNT (sizeof(shell_builtin_names) / sizeof(shell_builtin_names[0]))
@@ -3763,6 +3767,56 @@ void shell_exec_builtin(int argc, char **argv) {
             else { vga_puts("usage: kbd [en|es]\n"); return; }
         }
         kprintf("kbd: %s\n", kbd_get_layout() == KBD_LAYOUT_ES ? "es" : "en");
+    }
+    else if (kstrcmp(argv[0], "usb") == 0) {
+        unsigned version = 0;
+        unsigned slots = 0;
+        unsigned ports = 0;
+        unsigned caplength = 0;
+        xhc_counters_t xc;
+        usbhid_counters_t hc;
+        ubk_counters_t bc;
+        int ndev;
+        int i;
+        if (!xhc_info(&version, &slots, &ports, &caplength)) {
+            kprintf("usb: none (%s)\n", xhc_probe_note() ?
+                    xhc_probe_note() : "unknown");
+            return;
+        }
+        kprintf("usb: xHCI %u.%u caplength=%u slots=%u ports=%u\n",
+                (version >> 8) & 0xFFu, version & 0xFFu, caplength, slots,
+                ports);
+        ndev = xhc_device_count();
+        for (i = 0; i < ndev; i++) {
+            xhc_dev_t d;
+            xhc_port_t p;
+            if (!xhc_device_info(i, &d)) continue;
+            xhc_port_state(d.port, &p);
+            kprintf("usb: dev %d port %d slot %d addr %d speed %d powered %d\n",
+                    i, d.port, d.slot, d.address, d.speed, p.power);
+        }
+        usbhid_counters(&hc);
+        kprintf("usb: hid kbd=%d mouse=%d reports kbd=%lu mouse=%lu "
+                "scancodes=%lu errors=%lu\n",
+                usbhid_keyboard_present(), usbhid_mouse_present(),
+                hc.kbd_reports, hc.mouse_reports, hc.scancodes,
+                hc.transfer_errors);
+        ubk_counters(&bc);
+        if (ubk_present()) {
+            kprintf("usb: disk present sectors=%lu commands=%lu "
+                    "read=%lu write=%lu failures=%lu stalls=%lu\n",
+                    ubk_sectors(), bc.commands, bc.read_blocks,
+                    bc.write_blocks, bc.failures, bc.stalls);
+        } else {
+            kprintf("usb: disk absent\n");
+        }
+        xhc_counters(&xc);
+        kprintf("usb: cmd ok=%lu failed=%lu timeout=%lu "
+                "events=%lu unmatched=%lu xfers ok=%lu failed=%lu "
+                "enum_errors=%lu\n",
+                xc.cmd_ok, xc.cmd_failed, xc.cmd_timeout, xc.events_seen,
+                xc.events_unmatched, xc.xfers_done, xc.xfers_failed,
+                xc.enum_errors);
     }
     else if (kstrcmp(argv[0], "kstack") == 0) {
         kstack_report();

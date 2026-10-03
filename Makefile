@@ -1506,6 +1506,31 @@ pci_test: tests/test_pci.c headers/drivers/pci.h | $(TOOLS_DIR)
 test-pci: pci_test
 	$(TOOLS_DIR)/pci_test
 
+# USB HID host test (tests/test_usbhid.c + drivers/usbhid.c against the
+# tests/stubs kernel header, so the usage table, the report differ and the
+# mouse decoder run on the host with no QEMU boot).
+usbhid_test: tests/test_usbhid.c drivers/usbhid.c drivers/xhci.c tests/stubs/kernel.h | $(TOOLS_DIR)
+	$(CC) -Itests/stubs $(CFLAGS_HOST) -I. -Iprogs -o $(TOOLS_DIR)/usbhid_test tests/test_usbhid.c
+
+test-usbhid: usbhid_test
+	$(TOOLS_DIR)/usbhid_test
+
+# USB mass-storage host test (tests/test_usbblk.c + drivers/usbblk.c against
+# the tests/stubs kernel header: CBW framing and the CSW acceptance rule).
+usbblk_test: tests/test_usbblk.c drivers/usbblk.c drivers/xhci.c tests/stubs/kernel.h | $(TOOLS_DIR)
+	$(CC) -Itests/stubs $(CFLAGS_HOST) -I. -Iprogs -o $(TOOLS_DIR)/usbblk_test tests/test_usbblk.c
+
+test-usbblk: usbblk_test
+	$(TOOLS_DIR)/usbblk_test
+
+# xHCI controller host test (tests/test_xhci.c + drivers/xhci.c against the
+# tests/stubs kernel header: TRB size, DCI mapping, descriptor walk).
+xhci_test: tests/test_xhci.c drivers/xhci.c tests/stubs/kernel.h | $(TOOLS_DIR)
+	$(CC) -Itests/stubs $(CFLAGS_HOST) -I. -Iprogs -o $(TOOLS_DIR)/xhci_test tests/test_xhci.c
+
+test-xhci: xhci_test
+	$(TOOLS_DIR)/xhci_test
+
 # RTC date-math host test (tests/test_rtc.c + rtc.h inline).
 rtc_test: tests/test_rtc.c rtc.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/rtc_test tests/test_rtc.c
@@ -1751,14 +1776,14 @@ uefi.img: BOOTX64.EFI tools/uefi_part.sfdisk
 uefi: uefi.img
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h drivers/virtio_blk.h
+kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h drivers/virtio_blk.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_net.h pcache.h
+         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_net.h pcache.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h
 # NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
 # and the image ends just below USER_LOAD_BASE, so the check-size gate
 # is binding: bytes matter more than compiler speed in the prompt,
@@ -1768,7 +1793,7 @@ shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
 editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h kernel/console_in.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-console_in.o: kernel/console_in.c kernel.h drivers/kbd.h vga_fb.h kernel/console_in.h
+console_in.o: kernel/console_in.c kernel.h drivers/kbd.h drivers/xhci.h drivers/usbhid.h vga_fb.h kernel/console_in.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_cursor.o: kernel/vga_cursor.c kernel.h vga_fb.h kernel/vga_cursor.h
@@ -1843,13 +1868,13 @@ syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-fat32.o: fs/fat32.c kernel.h minifs.h fat32.h fsimg.h ide.h
+fat32.o: fs/fat32.c kernel.h minifs.h fat32.h fsimg.h block.h ide.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-ext4.o: fs/ext4.c kernel.h minifs.h ext4.h fsimg.h ide.h
+ext4.o: fs/ext4.c kernel.h minifs.h ext4.h fsimg.h block.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-fsimg.o: fs/fsimg.c kernel.h minifs.h fsimg.h ide.h
+fsimg.o: fs/fsimg.c kernel.h minifs.h fsimg.h block.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 kfile.o: fs/kfile.c kernel.h
@@ -1899,7 +1924,16 @@ ide.o: drivers/ide.c ide.h driver.h kernel.h
 virtio_blk.o: drivers/virtio_blk.c kernel.h driver.h drivers/pci.h drivers/virtio_blk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-block.o: drivers/block.c block.h ide.h driver.h kernel.h drivers/virtio_blk.h
+xhci.o: drivers/xhci.c kernel.h drivers/pci.h drivers/xhci.h arch/x86/hal_io.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+usbhid.o: drivers/usbhid.c kernel.h drivers/xhci.h drivers/kbd.h vga_fb.h drivers/modifiers.h arch/x86/hal_io.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+usbblk.o: drivers/usbblk.c kernel.h driver.h drivers/xhci.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+block.o: drivers/block.c block.h ide.h driver.h kernel.h drivers/virtio_blk.h drivers/usbblk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 driver.o: drivers/driver.c driver.h
@@ -2038,7 +2072,7 @@ $(PROGS_DIR)/etc/ext4.img:
 sched.o: kernel/sched.c sched.h kernel.h $(BOOTDEFS) arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcm2.h pcspk.h futex.h percpu_rq.h rcu.h
 	$(CC) $(CFLAGS_KERN) -ffixed-rbx -ffixed-r12 -ffixed-r13 -ffixed-r14 -ffixed-r15 -c $< -o $@
 
-tick.o: kernel/tick.c tick.h
+tick.o: kernel/tick.c tick.h drivers/xhci.h drivers/usbhid.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
@@ -2115,9 +2149,9 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
-	      ramdisk_data.o ide.o virtio_blk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
+	      ramdisk_data.o ide.o virtio_blk.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
@@ -2275,6 +2309,46 @@ run-iso: os.usb.img
 # Boot the partitioned image in QEMU over USB-HDD emulation
 run-usb: os.usb.img
 	$(QEMU) -drive file=$<,format=raw,if=none,id=usb0 -usb -device usb-storage,drive=usb0 $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) $(QEMU_AUDIO)
+
+# Test FAT32 pendrive image (64 MB, MBR + one FAT32 partition at LBA 2048
+# with HELLO.TXT and README.TXT). Rootless: the FAT is formatted in a
+# sidecar file and copied to its partition offset with dd.
+pendrive.img:
+	rm -f $@ $@.part
+	dd if=/dev/zero of=$@ bs=1M count=64 status=none
+	printf 'label: dos\nstart=2048, type=c\n' | sfdisk $@ > /dev/null
+	dd if=/dev/zero of=$@.part bs=512 count=129024 status=none
+	mkfs.vfat -F 32 -n MINIOSUSB $@.part > /dev/null
+	printf 'hello from USB\r\n' | mcopy -i $@.part - ::/HELLO.TXT
+	printf 'MiniOS USB stick\r\n' | mcopy -i $@.part - ::/README.TXT
+	dd if=$@.part of=$@ bs=512 seek=2048 conv=notrunc status=none
+	rm -f $@.part
+
+# Forma 1: pendrive falso. El sistema arranca de IDE y el pendrive FAT32
+# cuelga del xHCI; dentro de MiniOS se lee con `fat ls hd0`.
+# (El disco USB pasa a ser el backend: minifs de IDE queda en sombra.)
+run-usb-fake: os.img pendrive.img
+	$(QEMU) -drive file=os.img,format=raw,if=ide $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) \
+		-device nec-usb-xhci -device usb-kbd \
+		-drive file=pendrive.img,format=raw,if=none,id=stick0 -device usb-storage,drive=stick0 \
+		-display none -serial stdio -no-reboot
+
+# Forma 2: pendrive fisico por passthrough. BUS y ADDR salen de `lsusb`
+# (necesita permisos sobre el USB, tipicamente sudo o grupo plugdev).
+run-usb-host: os.img
+	@if [ -z "$(BUS)" -o -z "$(ADDR)" ]; then echo "uso: make run-usb-host BUS=2 ADDR=5  # (ver con lsusb)"; exit 1; fi
+	$(QEMU) -drive file=os.img,format=raw,if=ide $(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) \
+		-device nec-usb-xhci -device usb-kbd \
+		-device usb-host,hostbus=$(BUS),hostaddr=$(ADDR) \
+		-display none -serial stdio -no-reboot
+
+# Forma 3: arrancar desde USB. os.usb.img es el disco del sistema por xHCI
+# (sin IDE): backend=usb con minifs propio. Para hardware real y
+# VirtualBox (arranque USB-HDD); el SeaBIOS de QEMU no arranca de xHCI,
+# asi que en QEMU esta forma no llega al kernel.
+run-usb-boot: os.usb.img
+	$(QEMU) -drive file=$<,format=raw,if=none,id=usb0 -device nec-usb-xhci -device usb-storage,drive=usb0 \
+		$(QEMU_MEM) $(QEMU_NIC) $(QEMU_ACCEL) -display none -serial stdio -no-reboot
 
 # List candidate target devices for `make usb`.  The image must be
 # written in DD mode (raw LBA layout); ISO-mode writers and Ventoy
@@ -2469,6 +2543,6 @@ saves-backup:
 minifs-fsck:
 	python3 tools/minifs_fsck.py minifs.bin
 
-.PHONY: all run run-kvm run-headless run-iso run-usb clean debug gdb serial test \
+.PHONY: all run run-kvm run-headless run-iso run-usb run-usb-fake run-usb-host run-usb-boot clean debug gdb serial test \
         sources sources-update sources-status addons toolchain selfhost \
-        minifs-mkfs minifs-dump minifs-fsck saves-backup os.iso usb usb-list vdi os.usb.img
+        minifs-mkfs minifs-dump minifs-fsck saves-backup os.iso usb usb-list vdi os.usb.img pendrive.img

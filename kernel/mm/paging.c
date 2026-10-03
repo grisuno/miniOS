@@ -158,58 +158,68 @@ void mm_setup_protections(void) {
 }
 
 /* ================================================================
- *  Kernel device MMIO: uncached identity mapping for a BAR window
+ *  Kernel device MMIO: uncached mapping of a PCI BAR
  * ================================================================
  *
- *  PCI MMIO lives wherever firmware put it, which is outside the 1 GB
- *  identity window stage 2 builds. Rather than grow the boot page
- *  tables (PT_FILL_*, KASLR_IMAGE_SPAN and the stage1/stage2 scheme
- *  would all have to move together, which the low-4MB hazard forbids
- *  piecemeal), a driver relocates its BAR into PCI_MMIO_BASE and calls
- *  kmm_map_uncached. The address is the identity physical address, so no
- *  new page directory and no new base register is involved: the boot
- *  2 MB leaf for the window is split into a 4 KB page table, and only
- *  the mapped pages get the cache-disable bits.
+ *  A PCI BAR sits wherever firmware put it, which is normally in a host
+ *  bridge's PCI hole above all of RAM and therefore outside the 1 GB
+ *  identity window stage 2 builds. Relocating it somewhere inside that
+ *  window does not work, and it is worth saying why: the region above the
+ *  heap is guest RAM, not a hole, so a BAR pointed there is decoded as RAM
+ *  and reads back the heap's contents. The bridge only forwards addresses
+ *  in its own hole.
+ *
+ *  So the BAR is left where firmware put it and mapped where the kernel
+ *  wants it: a dedicated PDPT slot the kernel owns, above the identity
+ *  window and outside the user window, holding one page directory and one
+ *  4 KB page table. The virtual address is the kernel's choice and has
+ *  nothing to do with the physical one, which is why a controller above
+ *  4 GB needs no special case.
  *
  *  Uncached is required, not tidy. A device register read through a
- *  write-back mapping may be answered from cache, so a poll of the
- *  xHCI event-ring status register can keep returning a value the
- *  controller updated long ago -- a driver that reads registers and
- *  never sees a completion, with no error to point at.
+ *  write-back mapping may be answered from cache, so a poll of the xHCI
+ *  event-ring status register can keep returning a value the controller
+ *  updated long ago -- a driver that reads registers and never sees a
+ *  completion, with no error to point at.
  */
 
-/** Docstring: Top of the stage 2 identity window: the 512 2 MB leaves of
- * PDPT slot 0 end here, so no address above it can be reached without a new
- * page directory. Derived, never typed. */
+/** Docstring: Bytes one call will map: one 4 KB page table covers a 2 MB
+ * window, and no controller needs more. */
+#define KMM_DEVICE_MAX (PT_PD_PAGE_BYTES - 0x1000UL)
+
+/** Docstring: Top of the boot identity window that can be refined in place:
+ * the 512 2 MB leaves of the identity page directory. */
 #define KMM_MAX_IDENTITY (PT_PD_ENTRIES * PT_PD_PAGE_BYTES)
 
-/** Docstring: Largest region one call will map. A 2 MB cap bounds the work
- * to two 4 KB page tables, so a driver asking for a gigabyte fails loudly
- * instead of looping over half a million pages. */
-#define KMM_UNCACHED_MAX PT_PD_PAGE_BYTES
+/** Docstring: 4 KB device leaf: present, read-write, cache-disable,
+ * write-through, supervisor. Matches what Linux's ioremap produces. The
+ * supervisor bits matter: this window is reachable from the kernel PML4
+ * and gets copied into per-process tables by the KPTI clone, so without
+ * them a ring-3 program could reach a device register. */
+#define KMM_DEVICE_FLAGS (PT_FLAGS_PRESENT_RW | PT_FLAGS_UNCACHED)
 
-/** Docstring: 4 KB leaf flags for a device page: present, read-write,
- * cache-disable and write-through. Matches what Linux's ioremap produces. */
-#define KMM_UNCACHED_FLAGS (PT_FLAGS_PRESENT_RW | PT_FLAGS_UNCACHED)
-
-/** Docstring: Identity 4 KB leaf flags, reproducing the access rights stage 2
- * gave the 2 MB leaf it replaces: present, read-write, supervisor. The
- * pages outside the requested range keep exactly the mapping they had. */
-#define KMM_IDENTITY_FLAGS PT_FLAGS_PRESENT_RW
-
-/** Docstring: Return the 4 KB page table backing a 2 MB slot, splitting the
- * boot leaf if needed.
+/** Docstring: Map a physical device region uncached at the kernel's own
+ * virtual window, and return that virtual address, which is not the
+ * physical one. Refuses a second mapping, so a caller cannot quietly
+ * remap a live controller's registers.
+ *
+ * Refused requests, all fail-closed: a zero length or address, a length
+ * above KMM_DEVICE_MAX, a physical address that is not page aligned (a
+ * BAR is always page aligned, and an unaligned one would alias two pages
+ * onto the same window), a range whose end overflows, an allocation
+ * failure, or a window already in use.
+ *
+ * The page tables this allocates are permanent: unmapping a BAR would
+ * leave a driver holding a window the hardware can still raise an
+ * interrupt for, so nothing here has an unmap. */
+/** Docstring: Return the 4 KB page table backing a 2 MB identity slot,
+ * splitting the boot leaf if needed.
  *
  * A 2 MB leaf cannot be refined in place, so the slot is replaced by a
- * freshly allocated page table whose 512 entries all point at the same
- * physical pages the leaf covered, with the leaf's own rights. Because the
- * page table lives on the heap, where VA == PA, its own address is a valid
- * page-table address with no further mapping.
- *
- * Returns the page table, or 0 when the slot is empty (a hole in the boot
- * identity map is a boot bug, not something to paper over), already a 4 KB
- * table (another BAR window shared this megabyte, which is the common case
- * and must reuse rather than re-split), or out of memory. */
+ * freshly allocated page table whose entries reproduce the leaf's identity
+ * mapping and rights. Returns the table, or 0 when the slot is empty (a hole
+ * in the boot identity map is a boot bug, not something to paper over) or
+ * out of memory. */
 static volatile unsigned long *kmm_ensure_pt(unsigned long phys) {
     volatile unsigned long *pd = (volatile unsigned long *)PT_PD_ADDR;
     unsigned long slot = phys & ~(PT_PD_PAGE_BYTES - 1);
@@ -224,59 +234,91 @@ static volatile unsigned long *kmm_ensure_pt(unsigned long phys) {
     pt = (volatile unsigned long *)pt_page_alloc();
     if (!pt) return 0;
     for (i = 0; i < PT_PD_ENTRIES; i++)
-        pt[i] = (slot + i * 0x1000UL) | KMM_IDENTITY_FLAGS;
+        pt[i] = (slot + i * 0x1000UL) | PT_FLAGS_PRESENT_RW;
     pd[pd_idx] = (unsigned long)pt | PT_FLAGS_PRESENT_RW;
     return pt;
 }
 
-/** Docstring: Map a physical device region uncached at its identity address.
+/** Docstring: Make an identity-mapped range uncached in place.
  *
- * Every page of [phys, phys+len) gets a present, read-write, cache-disabled,
- * write-through 4 KB entry; pages of the same 2 MB slot outside the range keep
- * the write-back identity mapping stage 2 gave them. Returns the virtual
- * address, which equals phys by construction, or 0 on a refused request.
+ * Splits the covering boot 2 MB leaves into 4 KB page tables and sets PCD|PWT
+ * on exactly the requested pages, keeping the identity virtual address. Used
+ * for memory a device reads and writes by DMA: a controller that is not cache
+ * coherent (and an emulator that does not snoop the guest's caches) reads
+ * stale zeros out of a write-back line, which looks like a device that never
+ * answers.
  *
- * Refusals, all fail-closed: a zero length or address, a length above
- * KMM_UNCACHED_MAX, a range whose end overflows, a range reaching past
- * KMM_MAX_IDENTITY (that needs a new page directory, which this function
- * will not invent), and an unmappable or out-of-memory slot.
- *
- * The page tables this allocates are permanent: unmapping a BAR would leave
- * a driver holding a window the hardware can still raise an interrupt for,
- * so nothing here has an unmap. */
-unsigned long kmm_map_uncached(unsigned long phys, unsigned long len) {
+ * Refusals mirror kmm_map_device. Returns 1 on success, 0 on refusal, in
+ * which case nothing is changed. */
+int kmm_make_uncached(unsigned long phys, unsigned long len) {
     unsigned long end;
     unsigned long page;
-    unsigned long lo_mb = phys & ~(PT_PD_PAGE_BYTES - 1);
+    unsigned long lo_mb;
     unsigned long hi_mb;
 
     if (phys == 0 || len == 0) return 0;
-    if (len > KMM_UNCACHED_MAX) return 0;
+    if (len > KMM_DEVICE_MAX) return 0;
     if (phys > (unsigned long)-1 - len) return 0;
     end = phys + len;
     if (end > KMM_MAX_IDENTITY) return 0;
+    lo_mb = phys & ~(PT_PD_PAGE_BYTES - 1);
     hi_mb = (end - 1) & ~(PT_PD_PAGE_BYTES - 1);
 
-    /* Split every 2 MB slot the range touches up front: a failure part-way
-     * through would leave the range half-mapped, and the caller cannot tell
-     * which half. Splitting changes no rights (the new table reproduces the
-     * leaf), so a later failure here is harmless. */
     for (page = lo_mb; page <= hi_mb; page += PT_PD_PAGE_BYTES) {
         if (!kmm_ensure_pt(page)) return 0;
     }
-
     for (page = phys & ~0xFFFUL; page < end; page += 0x1000UL) {
         volatile unsigned long *pd = (volatile unsigned long *)PT_PD_ADDR;
         unsigned long pd_idx = page >> PT_PD_INDEX_SHIFT;
         unsigned long pt_off = (page >> 12) & (PT_PD_ENTRIES - 1);
         volatile unsigned long *pt =
             (volatile unsigned long *)(pd[pd_idx] & PT_ADDR_MASK);
-        pt[pt_off] = page | KMM_UNCACHED_FLAGS;
+        pt[pt_off] = page | KMM_DEVICE_FLAGS;
     }
     __asm__ volatile("mfence" ::: "memory");
     for (page = phys & ~0xFFFUL; page < end; page += 0x1000UL)
         __asm__ volatile("invlpg (%0)" :: "r"(page) : "memory");
-    return phys;
+    return 1;
+}
+
+unsigned long kmm_map_device(unsigned long phys, unsigned long len) {
+    volatile unsigned long *pdpt = (volatile unsigned long *)PT_PDPT_ADDR;
+    volatile unsigned long *pd;
+    volatile unsigned long *pt;
+    unsigned pages;
+    unsigned i;
+
+    if (phys == 0 || len == 0) return 0;
+    if (len > KMM_DEVICE_MAX) return 0;
+    if ((phys & 0xFFFUL) != 0) return 0;
+    if (phys > (unsigned long)-1 - len) return 0;
+    pages = (unsigned)((len + 0xFFFUL) >> 12);
+    if (pages > PT_PD_ENTRIES) return 0;
+    if (pdpt[KMM_DEVICE_PDPT_SLOT] != 0) return 0;
+
+    pd = (volatile unsigned long *)pt_page_alloc();
+    if (!pd) return 0;
+    pt = (volatile unsigned long *)pt_page_alloc();
+    if (!pt) {
+        pt_page_free((void *)pd);
+        return 0;
+    }
+    for (i = 0; i < PT_PD_ENTRIES; i++)
+        pd[i] = 0;
+    for (i = 0; i < pages; i++)
+        pt[i] = (phys + i * 0x1000UL) | KMM_DEVICE_FLAGS;
+    /* The rest of the table stays zero, so an address past the device's
+     * own window faults instead of reading whatever is there. */
+    pd[0] = ((unsigned long)pt & PT_ADDR_MASK) | PT_FLAGS_PRESENT_RW;
+    __asm__ volatile("mfence" ::: "memory");
+    pdpt[KMM_DEVICE_PDPT_SLOT] =
+        ((unsigned long)pd & PT_ADDR_MASK) | PT_FLAGS_PRESENT_RW;
+    __asm__ volatile("mfence" ::: "memory");
+    for (i = 0; i < pages; i++)
+        __asm__ volatile("invlpg (%0)" :: "r"(DEV_MMIO_VBASE +
+                                              (unsigned long)i * 0x1000UL)
+                         : "memory");
+    return DEV_MMIO_VBASE;
 }
 
 void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3) {    unsigned long pd_phys;

@@ -452,6 +452,30 @@ expect "mus: polyphonic"
 expect "exit code: 0"
 SCENARIO_QEMU_ARGS=""
 
+# USB HID arrives through the polled xHCI path: the controller is found by
+# class code, both devices address, and the boot-protocol claim drives the
+# kbd and mouse flags with no enumeration errors and no failed transfers.
+SCENARIO_QEMU_ARGS="-device nec-usb-xhci -device usb-kbd -device usb-mouse"
+scenario "usb xhci keyboard and mouse enumerate" "usb
+poweroff"
+expect "usb: xHCI 0.0, 16 slots, 8 ports, 2 devices"
+expect "hid kbd=1 mouse=1"
+expect "disk absent"
+expect "enum_errors=0"
+SCENARIO_QEMU_ARGS=""
+
+# A FAT32 data stick on xHCI becomes the block backend and reads through
+# BOT: partition discovery, directory listing and file bytes all come off
+# USB. Needs pendrive.img (make pendrive.img).
+SCENARIO_QEMU_ARGS="-device nec-usb-xhci -device usb-kbd -drive file=pendrive.img,format=raw,if=none,id=stick0 -device usb-storage,drive=stick0"
+scenario "usb stick fat32 reads" "fat ls hd0
+fat cat hd0 HELLO.TXT
+poweroff"
+expect "backend=usb"
+expect "HELLO.TXT"
+expect "hello from USB"
+SCENARIO_QEMU_ARGS=""
+
 scenario "kill rejects a non-numeric pid" "kill abc
 poweroff"
 expect "usage: kill <pid>"

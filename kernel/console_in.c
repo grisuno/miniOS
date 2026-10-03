@@ -9,6 +9,8 @@
  * and vga_fb.h only. */
 #include "kernel.h"
 #include "drivers/kbd.h"
+#include "drivers/xhci.h"
+#include "drivers/usbhid.h"
 #include "vga_fb.h"
 #include "kernel/console_in.h"
 #include "pipe.h"
@@ -84,8 +86,35 @@ void console_ungetc(unsigned char c) {
     pb_push_front(c);
 }
 
-/** Docstring: Next raw byte (kbd queue, then serial, then PS/2) without
- * touching the pushback FIFO; blocks until one is available. */
+/** Docstring: Service the polled USB input path: drain the controller's event
+ * ring, then take one report from each claimed HID endpoint. Both keyboard
+ * sources share the cooked queue downstream, so a report that produces a byte
+ * is visible to the very next kbd_q_pop. */
+static void console_poll_usb(void) {
+    xhc_poll();
+    usbhid_poll();
+}
+
+/** Docstring: True when the PS/2 data port should be read.
+ *
+ * On a machine with no 8042 -- every PC since roughly 2012, and anything with
+ * a USB keyboard -- port 0x64 reads back as 0xFF, which kbd_available reads as
+ * "output buffer full" and port 0x60 as 0xFF, which the decode path reads as
+ * a break code. Left unguarded, a shell prompt would spin forever swallowing
+ * 0xFF and never accept a character. So the PS/2 port is skipped entirely
+ * once a USB keyboard is driving the path. */
+static int console_ps2_live(void) {
+    if (usbhid_keyboard_present()) return 0;
+    return kbd_available();
+}
+
+/** Docstring: Next raw byte (kbd queue, then serial, then USB, then PS/2)
+ * without touching the pushback FIFO; blocks until one is available.
+ *
+ * USB is serviced here, not only on the tick, because the shell prompt is a
+ * spin loop: polling it in place gives a keystroke the next iteration rather
+ * than up to ten milliseconds later, which is the difference between typing
+ * and feeling the machine lag. */
 static int raw_blocking_getc(void) {
     static unsigned mouse_tick_cnt;
     for (;;) {
@@ -94,7 +123,9 @@ static int raw_blocking_getc(void) {
             int c = serial_getc();
             if (c >= 0) return c;
         }
-        if (kbd_available()) {
+        console_poll_usb();
+        if (!kbd_q_empty()) return kbd_q_pop();
+        if (console_ps2_live()) {
             int c = kbd_read();
             if (c >= 0) return c;
         }
@@ -111,7 +142,9 @@ static int raw_try_getc(void) {
         int c = serial_getc();
         if (c >= 0) return c;
     }
-    if (kbd_available()) {
+    console_poll_usb();
+    if (!kbd_q_empty()) return kbd_q_pop();
+    if (console_ps2_live()) {
         int c = kbd_read();
         if (c >= 0) return c;
     }
@@ -218,9 +251,12 @@ int console_raw_get(void) {
     return raw_blocking_getc();
 }
 
-/** Docstring: PS/2-only GETC_RAW source for ring-3 background jobs. */
+/** Docstring: GETC_RAW source for ring-3 background jobs. Serves the USB
+ * path too, so a ring-3 program that owns the keyboard on modern hardware is
+ * not handed a dead 8042. */
 int console_job_try(void) {
-    if (kbd_available()) {
+    console_poll_usb();
+    if (console_ps2_live()) {
         int c = kbd_read();
         if (c >= 0) return c;
     }

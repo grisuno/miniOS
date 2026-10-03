@@ -2,7 +2,7 @@
 #include "minifs.h"
 #include "ext4.h"
 #include "fsimg.h"
-#include "ide.h"
+#include "block.h"
 
 /* ================================================================
  *  ext4 -- read-only loopback/device driver (subset)
@@ -499,8 +499,8 @@ int ext4_list(const char *imgpath, const char *dirpath,
         {
             long base = ext_dev_base();
             unsigned long total;
-            if (base < 0 || !ide_present()) return -1;
-            total = (unsigned long)ide_total_sectors();
+            total = block_disk_sectors();
+            if (base < 0 || total == 0) return -1;
             if (fsimg_open_dev((unsigned long)base,
                                total - (unsigned long)base, &img) < 0)
                 return -1;
@@ -598,10 +598,10 @@ int ext4_vfs_open(const char *path, int mode, void **handle) {
         long base;
         unsigned long total;
         if (kstrcmp(resolved, "hd0") != 0) return -1;
-        if (!ide_present()) return -1;
         base = ext_dev_base();
         if (base < 0) return -1;
-        total = (unsigned long)ide_total_sectors();
+        total = block_disk_sectors();
+        if (total == 0) return -1;
         if (fsimg_open_dev((unsigned long)base,
                            total - (unsigned long)base, &fimg) < 0)
             return -1;
@@ -789,28 +789,32 @@ static int ext_scan_dev(unsigned long total_sec,
 static long ext_dev_cached = -1;
 
 long ext_dev_base(void) {
-    unsigned char mbr[512];
+    unsigned char *mbr = (unsigned char *)kmalloc(512);
     unsigned long total;
     unsigned long base;
     int i;
+    int rc = -2;
     if (ext_dev_cached != -1) return ext_dev_cached;
     ext_dev_cached = -2;
-    if (!ide_present()) return -2;
-    total = (unsigned long)ide_total_sectors();
-    if (total < 2048) return -2;
-    if (ide_read_sectors(0, 1, mbr) < 0) return -2;
+    if (!mbr) return -2;
+    total = block_disk_sectors();
+    if (total < 2048) goto out;
+    if (block_read_sectors(0, 1, mbr) < 0) goto out;
     if (mbr[510] == 0x55 && mbr[511] == 0xAA &&
         mbr[0x1BE + 4] != 0xEE) {
         for (i = 0; i < 4; i++) {
             if (ext_mbr_entry(mbr, i, total, &base) == 0) {
                 ext_dev_cached = (long)base;
-                return ext_dev_cached;
+                rc = ext_dev_cached;
+                goto out;
             }
         }
     }
     if (ext_scan_dev(total, &base) == 0) {
         ext_dev_cached = (long)base;
-        return ext_dev_cached;
+        rc = ext_dev_cached;
     }
-    return -2;
+out:
+    kfree(mbr);
+    return rc;
 }
