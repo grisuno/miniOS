@@ -1763,15 +1763,17 @@ uefi_stub.o: boot/uefi_stub.c
 BOOTX64.EFI: uefi_stub.o
 	$(LD) -m i386pep --subsystem 10 -e efi_main $< -o $@
 
-uefi.img: BOOTX64.EFI tools/uefi_part.sfdisk
+uefi.img: BOOTX64.EFI kernel.bin tools/uefi_part.sfdisk
 	rm -f $@
 	dd if=/dev/zero of=$@ bs=1M count=32 status=none
 	sfdisk $@ < tools/uefi_part.sfdisk > /dev/null 2>&1
 	MTOOLS_SKIP_CHECK=1 mformat -i $@@@1048576 ::
 	MTOOLS_SKIP_CHECK=1 mmd -i $@@@1048576 ::/EFI
 	MTOOLS_SKIP_CHECK=1 mmd -i $@@@1048576 ::/EFI/BOOT
-	MTOOLS_SKIP_CHECK=1 mcopy -o -i $@@@1048576 $< ::/EFI/BOOT/BOOTX64.EFI
+	MTOOLS_SKIP_CHECK=1 mcopy -o -i $@@@1048576 BOOTX64.EFI ::/EFI/BOOT/BOOTX64.EFI
+	MTOOLS_SKIP_CHECK=1 mcopy -o -i $@@@1048576 kernel.bin ::/kernel.bin
 	MTOOLS_SKIP_CHECK=1 mdir -i $@@@1048576 ::/EFI/BOOT | grep -q BOOTX64
+	MTOOLS_SKIP_CHECK=1 mdir -i $@@@1048576 :: | grep -q kernel
 
 uefi: uefi.img
 
@@ -1783,7 +1785,7 @@ console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_net.h pcache.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h
+         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_blk.h drivers/virtio_net.h drivers/nvme.h pcache.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h
 # NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
 # and the image ends just below USER_LOAD_BASE, so the check-size gate
 # is binding: bytes matter more than compiler speed in the prompt,
@@ -1924,6 +1926,9 @@ ide.o: drivers/ide.c ide.h driver.h kernel.h
 virtio_blk.o: drivers/virtio_blk.c kernel.h driver.h drivers/pci.h drivers/virtio_blk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+nvme.o: drivers/nvme.c kernel.h drivers/pci.h drivers/nvme.h arch/x86/hal_io.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 xhci.o: drivers/xhci.c kernel.h drivers/pci.h drivers/xhci.h arch/x86/hal_io.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -1933,7 +1938,7 @@ usbhid.o: drivers/usbhid.c kernel.h drivers/xhci.h drivers/kbd.h vga_fb.h driver
 usbblk.o: drivers/usbblk.c kernel.h driver.h drivers/xhci.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-block.o: drivers/block.c block.h ide.h driver.h kernel.h drivers/virtio_blk.h drivers/usbblk.h
+block.o: drivers/block.c block.h ide.h driver.h kernel.h drivers/virtio_blk.h drivers/nvme.h drivers/usbblk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 driver.o: drivers/driver.c driver.h
@@ -2149,9 +2154,9 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
-	      ramdisk_data.o ide.o virtio_blk.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
+	      ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 

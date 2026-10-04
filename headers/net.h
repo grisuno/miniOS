@@ -27,6 +27,7 @@
 #define NET_ETH_ALEN      6
 #define NET_ETHERTYPE_IP  0x0800
 #define NET_ETHERTYPE_ARP 0x0806
+#define NET_ETHERTYPE_IPV6 0x86DD
 
 /* ========== IP protocols ========== */
 #define NET_PROTO_ICMP    1
@@ -116,6 +117,7 @@ void net_rx_handle_frame(const unsigned char *frame, unsigned len);
 /* Aggregate RX drop counter shared between the driver (bad frames) and
  * the stack (dropped fragments); defined in net.c. */
 extern unsigned int net_rx_dropped;
+extern unsigned int net6_rx_dropped;
 
 /* TLS sessions attached to socket fds (tls.c); net_sys_close frees them.
  * With MINIOS_NO_TLS the engine is unlinked and tls.h carries the inline

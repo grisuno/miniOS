@@ -25,6 +25,7 @@
 static unsigned char net_our_ip[4] = { NET_IP_ADDR };
 static unsigned char net_mac[NET_ETH_ALEN];
 unsigned int net_rx_dropped;
+unsigned int net6_rx_dropped;
 
 /** Docstring: Backend preference, frozen at net_init: a virtio-net
  * device wins when present, the rtl8139 stays as the fallback. All
@@ -811,6 +812,10 @@ void net_rx_handle_frame(const unsigned char *frame, unsigned len) {
         }
         return;
     }
+    if (etype == NET_ETHERTYPE_IPV6) {
+        net6_rx_dropped++;
+        return;
+    }
     if (etype == NET_ETHERTYPE_IP) {
         const unsigned char *ip = frame + 14;
         unsigned ihl, iplen, proto;
@@ -1175,7 +1180,7 @@ void net_cmd_status(void) {
     kprintf("ip       %u.%u.%u.%u/24\n", net_our_ip[0], net_our_ip[1], net_our_ip[2], net_our_ip[3]);
     vga_puts("gateway  10.0.2.2  dns 10.0.2.3\n");
     kprintf("tx       %u frames, %u bytes\n", tx_frames, net_tx_bytes);
-    kprintf("rx       %u frames, %u bytes, %u dropped\n", rx_frames, net_rx_bytes, net_rx_dropped);
+    kprintf("rx       %u frames, %u bytes, %u dropped, %u v6 dropped\n", rx_frames, net_rx_bytes, net_rx_dropped, net6_rx_dropped);
 }
 
 /** Docstring: Copy the station MAC and IP out for status screens. */

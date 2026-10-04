@@ -842,10 +842,35 @@ expect ".section .text"
 SCENARIO_QEMU_ARGS=""
 rm -f "$HERE/build/vblk-bdd.img"
 
+# NVMe probe (Phase 1): with an nvme drive attached the class
+# 01:08:02 probe maps BAR0, reads a non-zero VS and reports present;
+# without it the same boot reports the fail-closed note. Queues are
+# Phase 2, so no IO is issued: IDE/virtio-blk stay untouched.
+cp "$IMAGE" "$HERE/build/nvme-bdd.img"
+SCENARIO_QEMU_ARGS="-drive file=$HERE/build/nvme-bdd.img,format=raw,if=none,id=nvme0 -device nvme,drive=nvme0,serial=nvmebdd"
+scenario "nvme probe reports present with version" "nvme
+poweroff"
+expect "nvme: present VS 0x"
+expect "nvme: present=1 VS"
+expect "nvme: LBA0 ok"
+expect "nvme: superblock ok"
+SCENARIO_QEMU_ARGS=""
+rm -f "$HERE/build/nvme-bdd.img"
+
 scenario_uefi "uefi stub proves firmware handshake and disk read"
 expect "uefi: MiniOS stub alive"
 expect "uefi: mmap entries="
 expect "uefi: LBA0 ok"
+
+scenario_uefi "uefi Phase2a reads kernel.bin and exits boot services"
+expect "uefi: SFS ok"
+expect "uefi: image ok"
+expect "uefi: handoff kernel="
+
+scenario_uefi "uefi Phase2b boots the kernel to a shell prompt"
+expect "MiniOS Kernel"
+expect "kernel: physical base 0x100000"
+expect "miniOS> "
 
 scenario "append redirect adds instead of truncating" "cp src/fib.c log.txt
 cat src/fib.c >> log.txt

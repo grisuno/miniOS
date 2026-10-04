@@ -82,7 +82,7 @@ if [ "$RESET" = "1" ]; then
     rm -f "$STATE_FILE"
 fi
 
-SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/virtio_net.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c headers/pipe.h headers/panic.h kernel/clip.c kernel/mm/cow.c arch/x86/ctx_sw.S drivers/virtio_blk.c drivers/block.c headers/drivers/pci.h boot/uefi_stub.c"
+SOURCES="kernel.c headers/arch/x86/boot/bootdefs.h net/net.c net/tls.c net/tls_x509.c net/rtl8139.c drivers/virtio_net.c drivers/pcspk.c drivers/rtc.c fs/zip.c fs/ramdisk.c fs/vfs.c fs/kfile.c kernel/redirect.c kernel/syscalls.c kernel/mm/paging.c kernel/shell.c kernel/editor.c vma.c headers/pipe.h headers/panic.h kernel/clip.c kernel/mm/cow.c arch/x86/ctx_sw.S drivers/virtio_blk.c drivers/nvme.c drivers/block.c headers/drivers/pci.h boot/uefi_stub.c"
 SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c headers/rtc.h headers/sanitize.h"
 # Every file a MUTATIONS entry touches MUST be listed here: restore_sources
 # backs these up before the run and restores after each mutant. A file
@@ -252,6 +252,11 @@ fork-resolve-never | s/            resolved = cow_resolve(cur_cr3, fault_addr);/
 fd-fork-shares-view | s/    if (!kfd_view_copy(child, cur)) {/    kfd_view_share(child); if (0) {/ | kernel/sched.c
 pci-find-first-only | s/    for (dev = 0; dev < PCI_MAX_DEV; dev++)/    for (dev = 0; dev < 1; dev++)/ | headers/drivers/pci.h
 vblk-status-unchecked | s/statusp != 0/statusp == 0/ | drivers/virtio_blk.c
+nvme-class-wrong | s/#define NVME_CLASS_PI 0x02u/#define NVME_CLASS_PI 0x03u/ | drivers/nvme.c
+nvme-present-inverted | s/return xnv_on;/return !xnv_on;/ | drivers/nvme.c
+nvme-nsid-zero | s/#define NVME_NSID 1u/#define NVME_NSID 0u/ | drivers/nvme.c
+nvme-opcode-read-wrong | s/#define NVME_OPC_READ 0x02u/#define NVME_OPC_READ 0x03u/ | drivers/nvme.c
+net6-branch-misclassified | s/if (etype == NET_ETHERTYPE_IPV6)/if (etype == NET_ETHERTYPE_IP)/ | net/net.c
 vnet-never-preferred | s/net_use_virtio = vnet_init() ? 1 : 0;/net_use_virtio = 0;/ | net/net.c
 mmap-file-off-dropped | s/mmap_tag_file(user_mmap_cur, fino, foff)/mmap_tag_file(user_mmap_cur, fino, 0)/ | kernel/syscalls.c
 mmap-file-anon-fallback | s/if (!(mflags \\& (unsigned long)LINUX_MAP_ANONYMOUS)) {/if (0) {/ | kernel/syscalls.c
@@ -271,6 +276,12 @@ mprotect-prot-unchecked | s/if (prot & ~(unsigned long)7) return -22;/if (0) ret
 blk-virtio-never-preferred | s/            block_use_virtio = 1;/            block_use_virtio = 0;/ | drivers/block.c
 blk-virtio-size-gate-dropped | s/if (ide_total == 0 || vblk_total == (unsigned long)ide_total)/if (ide_total == 0 || vblk_total != (unsigned long)ide_total)/ | drivers/block.c
 uefi-blk-guid-wrong | s/0x8E, 0x39, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3B/0x8E, 0x39, 0x00, 0xA0, 0xC9, 0x69, 0x72, 0x3C/ | boot/uefi_stub.c
+uefi-sfs-guid-wrong | s/0x22, 0x5B, 0x4E, 0x96, 0x59, 0x64/0x22, 0x5B, 0x4E, 0x96, 0x58, 0x64/ | boot/uefi_stub.c
+uefi-kernel-name-wrong | s/L\"kernel.bin\"/L\"kernel.binx\"/ | boot/uefi_stub.c
+uefi-errbit-dropped | s/0x8000000000000005ULL/5/ | boot/uefi_stub.c
+uefi-tramp-cs-wrong | s/0x6A, 0x08, 0xB8/0x6A, 0x10, 0xB8/ | boot/uefi_stub.c
+uefi-pt-flags-nops | s/| 0x83u/| 0x03u/ | boot/uefi_stub.c
+uefi-gdt-code-data | s/0x00209A0000000000ULL/0x0020920000000000ULL/ | boot/uefi_stub.c
 uefi-lba-sig-ignored | s/sec\[510\] == 0x55/sec[510] != 0x55/ | boot/uefi_stub.c
 uefi-mmap-unchecked | s/puts_both(\"uefi: mmap entries=\");/;/ | boot/uefi_stub.c
 wl-clip-size-unbounded | s/|| n > (unsigned)WL_CLIP_MAX)/|| n > 999999u)/ | progs/wl/wl_mini.h
@@ -578,6 +589,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         drivers/virtio_blk.c)
             MATCH="virtio" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        drivers/nvme.c)
+            MATCH="nvme" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         drivers/virtio_net.c)
             MATCH="vnet" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1

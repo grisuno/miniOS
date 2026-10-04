@@ -26,7 +26,39 @@ boot path is named in `bootdefs.h`; neither stage may carry a bare constant.
 The image is attached as an IDE disk: LBA addressing is not available for
 floppies.
 
-### UEFI native boot, Phase 2 (T7, specified, stub proven)
+### UEFI native boot, Phase 2a landed, (b)(c) specified (T7)
+`boot/uefi_stub.c` proves the firmware handshake under OVMF
+(GOP mode query, memory map, LBA0 read; BDD `scenario_uefi`), and
+slice (a) landed: the stub opens its own volume through LoadedImage
++ SimpleFileSystem, reads `kernel.bin` whole (AllocatePool,
+`kernel.bin` sits at the FAT root of `uefi.img` since the `uefi.img`
+rule copies it), validates a 4 KB..32 MB size plus a non-zero head,
+calls ExitBootServices with a fresh map key, and jumps to a 64-bit
+entry that prints `uefi: handoff kernel=<n> mmap=<m>` over COM1 and
+halts, with no kernel changes. Two hand-rolled facts this slice
+taught, kept here so nobody re-learns them: GUID Data1/Data2 are
+byte-checked against EDK2, never memory (LoadedImage is 5B1B31A1,
+SFS Data2 is 0x6459; each wrong byte is a silent EFI_NOT_FOUND),
+and EFI error codes carry bit 63 (BUFFER_TOO_SMALL is
+0x8000000000000005, never 5). Pinned by `uefi-sfs-guid-wrong`,
+`uefi-kernel-name-wrong` and `uefi-errbit-dropped` under
+`MATCH="uefi"`. Slice (a) landed above.
+Slice (b/c) Phase2b landed: the stub AllocateAddresses its low zones
+(page tables, GDT/trampoline/scratch, user-table zone; the 0x80000
+stack zone is map-verified post-exit-borrowed instead, one
+BootServicesData page there refuses AllocateAddress), writes the
+stage2 contract (KASLR dword, GOP-fed VBE block or zeroed fallback,
+5-entry GDT, 1 GB identity 2 MB tables), and jumps through a 67-byte
+trampoline (RETF with CS 0x08 pushed: EA ptr16:32 is #UD and FF/5
+m16:64 #GPs in long mode; LGDT is /2, /3 loads the IDT instead, found
+by objdump of kmain+0x15 faulting on its SS load). The kernel reaches
+a serial shell prompt under OVMF (`MiniOS Kernel`, `kernel:
+physical base 0x100000`, `miniOS> `, all `MATCH="uefi"`). Pinned by
+`uefi-tramp-cs-wrong`, `uefi-pt-flags-nops`, `uefi-gdt-code-data`.
+Remains: GOP-present validation (this OVMF build reports GOP
+unavailable, so the VBE-from-GOP path is written but unproven),
+UEFI KASLR (base is the plain link address), and booting os.img
+itself (FAT partition carrying BOOTX64.EFI) for the full BDD suite.
 `boot/uefi_stub.c` already proves the firmware handshake under OVMF
 (GOP mode query, memory map, LBA0 read; BDD `scenario_uefi`), but the
 kernel still boots only through stage1/stage2, so CSM-less hardware

@@ -257,9 +257,42 @@ so the next session reuses the contracts instead of rediscovering them.
   completions landed nowhere while the device reported success).
   `vblk` reads LBA 0 and the MiniFS superblock off the queue and
   checks both magics; the BDD slice attaches the image as a second
-  virtio drive (same file twice is write-locked, so it boots a
-  copy). IDE stays the default path; MiniFS-on-virtio migration is
-  future work.
+   virtio drive (same file twice is write-locked, so it boots a
+   copy). IDE stays the default path; MiniFS-on-virtio migration is
+   future work.
+- **NVMe probe (`drivers/nvme.c`, `headers/drivers/nvme.h`,
+  `nvme` builtin, Phase 1: probe-only, queues are Phase 2). PCI class
+  match 01:08:02 through the `pci_find_class` walk (found behind
+  bridges, like xHCI, never bus-0-only), BAR0 size-probed and never
+  assumed with the original BAR restored on any bail, registers read
+  through `kmm_map_device` (write-back reads are a silently dead
+  driver), heap-only discipline (no DMA buffers yet, so nothing to
+  misplace under KASLR), every wait bounded, no vector/IDT/PIC arm
+  (polled by decision, like every MiniOS driver). The VS register
+  gates: 0.0 means unspecified and is refused. `block_init` reports
+  `nvme: present VS 0x...` or the fail-closed note; the block-layer
+  preference stays virtio > usb > IDE, so Phase 1 issues no IO and
+  the legacy data path is untouched. The BDD slice attaches the image
+   as an nvme drive and asserts the boot marker plus the `present=1`
+   builtin wiring; `nvme-class-wrong` and `nvme-present-inverted` die under
+   `MATCH="nvme"`.
+- **NVMe queues (`drivers/nvme.c`, Phase 2: admin + one IO pair,
+  read-only).** After the probe the driver quiesces a firmware-left
+  running controller (CC.EN 0, bounded RDY wait; SeaBIOS leaves RDY
+  set), allocates 7 heap pages (admin SQ/CQ, IO SQ/CQ, identify,
+  2-page staging bounce so caller buffers never need page alignment),
+  enables with IOSQES 6 / IOCQES 4 (QEMU refuses 6/6 with Invalid
+  Field: CQEs are 16 bytes), Identifies namespace 1 (LBADS must be 9,
+  NSZE bounds every request), then creates IOCQ/IOSQ and serves
+  `nvme_read_sectors` (1..16 sectors, PRP1/PRP2 into the staging
+  pages, one command in flight per queue, deadline-bounded phase-tag
+  poll, fail-closed past it). Writes stay refused until the
+  journaling design lands, and the block-layer preference stays
+  virtio > usb > IDE, so the legacy data path is untouched. The
+  `nvme` builtin reads LBA 0 and the MiniFS superblock off the queue
+  and checks both magics; the BDD slice attaches the image as an
+  nvme drive and asserts both. `nvme-nsid-zero` and
+  `nvme-opcode-read-wrong` die under `MATCH="nvme"`.
 - **UEFI stub (`boot/uefi_stub.c`, `make uefi`, `uefi.img`,
   `scenario_uefi`). A freestanding PE32+ app (i386pep link, no
   gnu-efi) proving entry, ConOut+COM1, the BootServices table, a

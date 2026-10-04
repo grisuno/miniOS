@@ -6,6 +6,7 @@
 #include "ext4.h"
 #include "drivers/virtio_blk.h"
 #include "drivers/virtio_net.h"
+#include "drivers/nvme.h"
 #include "pcache.h"
 #include "sched.h"
 #include "smp.h"
@@ -223,7 +224,7 @@ static const char *shell_builtin_names[] = {
     "nice", "panic", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
     "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
     "usb",
-    "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk", "vnet",
+    "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk", "vnet", "nvme",
 };
 #define SHELL_BUILTIN_COUNT (sizeof(shell_builtin_names) / sizeof(shell_builtin_names[0]))
 
@@ -3373,6 +3374,47 @@ void shell_exec_builtin(int argc, char **argv) {
             return;
         }
         vga_puts("vblk: superblock ok\n");
+        kfree(sec);
+    }
+    /* `nvme`: NVMe probe and sector proof. Initializes the controller
+     * (absent hardware reports `absent`, never hangs), prints the VS
+     * register and the namespace capacity, then reads LBA 0 (boot
+     * signature) and LBA 2048 (the MiniFS superblock) through the
+     * IO queue pair and checks both magics, proving the queue path
+     * serves the same bytes as IDE PIO. Writes stay refused: the
+     * driver is read-only until the journaling design lands. */
+    else if (kstrcmp(argv[0], "nvme") == 0) {
+        unsigned char *sec;
+        unsigned long magic;
+        if (!nvme_init() || !nvme_present()) {
+            kprintf("nvme: absent (%s)\n", nvme_note());
+            return;
+        }
+        sec = kmalloc(512u);
+        if (!sec) { vga_puts("nvme: out of memory\n"); return; }
+        kprintf("nvme: present=%d VS 0x%x sectors=%lu (%s)\n",
+                nvme_present(), nvme_version(), nvme_sectors(),
+                nvme_note());
+        if (nvme_read_sectors(0, 1, sec) != 0 ||
+                sec[510] != 0x55 || sec[511] != 0xAA) {
+            vga_puts("nvme: LBA0 boot signature mismatch\n");
+            kfree(sec);
+            return;
+        }
+        vga_puts("nvme: LBA0 ok\n");
+        if (nvme_read_sectors(2048, 1, sec) != 0) {
+            vga_puts("nvme: superblock unreadable\n");
+            kfree(sec);
+            return;
+        }
+        magic = (unsigned long)sec[0] | ((unsigned long)sec[1] << 8) |
+                ((unsigned long)sec[2] << 16) | ((unsigned long)sec[3] << 24);
+        if (magic != MINIFS_MAGIC) {
+            vga_puts("nvme: superblock magic mismatch\n");
+            kfree(sec);
+            return;
+        }
+        vga_puts("nvme: superblock ok\n");
         kfree(sec);
     }
     /* `vnet`: virtio-net probe and queue proof. Initializes the

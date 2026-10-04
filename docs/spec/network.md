@@ -65,6 +65,20 @@ plus the backend marker. Pin when implemented: backend marker,
 `vnet` queue proof, fetch over virtio, `vnet-*` mutants under
 `MATCH="vnet "`.
 
+### IPv6 base, fail-closed (Phase 1: counted drop, no stack yet)
+`NET_ETHERTYPE_IPV6` (0x86DD) frames are dropped at the top of
+`net_rx_handle_frame` and counted in `net6_rx_dropped` (reported by
+`net` status as `v6 <n> dropped`); no IPv6 header is parsed, no reply
+is ever emitted. Rationale: QEMU slirp and real LANs deliver
+multicast/broadcast v6 (router advertisements, neighbour solicitation)
+that the old demux silently ignored inside the IPv4-only fallthrough;
+an explicit, counted drop keeps the fail-closed posture visible
+instead of silent. Full IPv6 (NDP, SLAAC/DHCPv6, TCP over v6) is
+future work and reuses this counter as its RX proof. The shape is
+pinned by the `net6-branch-misclassified` mutant (v6 branch folded
+into the IPv4 ethertype kills every TCP scenario, so the full suite
+is its gate).
+
 ### TLS client (userspace: tlsget/freedom over net/tls*.c)
 TLS 1.2 left ring 0 (`net/tls*.c` never link into the image; 201/203
 always answer `-ENOSYS` and 202 serves Linux `futex(2)`). The same sources compile

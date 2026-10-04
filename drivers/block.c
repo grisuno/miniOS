@@ -18,6 +18,7 @@
 #include "kernel.h"
 #include "ide.h"
 #include "drivers/virtio_blk.h"
+#include "drivers/nvme.h"
 #include "drivers/usbblk.h"
 #include "block.h"
 #include "driver.h"
@@ -98,6 +99,11 @@ void block_init(void) {
         if (ubk_sectors() <= 0xFFFFFFFFu)
             block_total_sectors = (unsigned int)ubk_sectors();
     }
+    if (nvme_init())
+        kprintf("nvme: present VS 0x%x sectors=%lu\n", nvme_version(),
+                nvme_sectors());
+    else
+        kprintf("nvme: %s\n", nvme_note());
     kprintf("block: backend=%s\n", block_use_virtio ? "virtio" :
             block_use_usb ? "usb" : "ide");
     bc_data = (unsigned char *)kmalloc(BC_WAYS * BLOCK_SIZE);
