@@ -2914,7 +2914,16 @@ void shell_exec_builtin(int argc, char **argv) {
         vga_puts("           lua src/test.lua runs the in-OS test suite (minios module)\n");
     }
     else if (kstrcmp(argv[0], "clear") == 0) {
-        vga_clear();
+        /* The framebuffer terminal owns the visible text when active;
+         * vga_clear only wipes the legacy text buffer, so without this
+         * branch `clear` is a silent no-op on the desktop. The ANSI
+         * sequence clears serial consoles and is swallowed without
+         * garbage by the framebuffer terminal (vedit pattern). */
+        if (vga_fb_active)
+            term_clear();
+        else
+            vga_clear();
+        vga_puts("\033[2J\033[H");
     }
     else if (kstrcmp(argv[0], "poweroff") == 0) {
         shell_cmd_poweroff();

@@ -2,6 +2,10 @@
 
 Commands: help clear ls cat echo edit rm mkdir cd pwd ps load run poweroff
 
+`bin/mtop.elf` is the ASCII system monitor (`run bin/mtop.elf [frames] [ms]`,
+q quits): live CPU churn, break/malloc probes, disk throughput, socket/DNS
+probes and 32-sample sparklines, built from `src/mtop.c` through miniGCC+ld.
+
 The ramdisk directory structure (use `ls <dir>` to list each kind):
 
 - `objects/` — ET_REL toolchain (`minigcc.o`, `ld.o`, `cvm.o`)

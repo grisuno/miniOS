@@ -294,6 +294,9 @@ extern volatile int sched_ready;
 extern proc_t ap_idle_proc[MAX_CPUS];
 extern volatile unsigned long smp_dispatches[MAX_CPUS];
 extern volatile unsigned long smp_idle_polls[MAX_CPUS];
+/* Per-CPU idle ticks at 100 Hz for the MINFO cpu selector (see the
+ * sibling definition in kernel/sched.c). */
+extern volatile unsigned long cpu_idle_ticks[MAX_CPUS];
 /* Timer ticks that arrived with a GS base outside cpus[] (fail-safe
  * EOI, no scheduling action).  Zero in a healthy boot. */
 extern volatile unsigned smp_dbg_bad_gs;

@@ -2750,6 +2750,24 @@ static void term_render(void) {
     draw_scrollbar();
 }
 
+/** Docstring: Clear the focused terminal view: drop the logical-line ring
+ * and the in-progress line, snap the viewport to the live bottom and
+ * repaint. The focused window owns the live globals, so a parked twin
+ * keeps its own snapshot and picks up the cleared state only when it
+ * becomes focused and parks again. Null-ring safe before vga_fb_init
+ * owns the buffer (indices reset, render reads an empty ring). */
+void term_clear(void) {
+    lg_head = 0;
+    lg_tail = 0;
+    lg_count = 0;
+    act[0] = '\0';
+    act_len = 0;
+    disp_off = 0;
+    term_cursor_col = 0;
+    csi_state = 0;
+    term_render();
+}
+
 /* Repaint only the bottom region that a live edit touches: from the active
  * line's first visible display row to the bottom of the window. Used for a
  * character append/backspace that does not change the number of display rows,

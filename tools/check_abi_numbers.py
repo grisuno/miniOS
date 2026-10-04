@@ -117,6 +117,7 @@ DEVIATIONS = {
     300: ("clone", "fanotify_init", "ADR-0014: MiniOS clone alias; Linux clone is 56 (Phase 1.B); fanotify never trapped by libc implicitly"),
     301: ("robust_fossil", "fanotify_mark", "ADR-0014: fossil set_robust_list alias, still answers 0; the true number is 273"),
     302: ("rlimit64", "prlimit64", "ADR-0014: same number, custom semantics (AS/CPU/NOFILE); glibc getrlimit sees 0 = unlimited, which is true"),
+    251: ("minfo", "ioprio_set", "ADR-0014 class: MiniOS minfo owns 251 in-guest; no port traps ioprio and a trapped call fails closed on selector validation"),
 }
 
 ABI_RE = re.compile(r"#define\s+(MINIOS_SYS_[A-Z0-9_]+)\s+(\d+)")

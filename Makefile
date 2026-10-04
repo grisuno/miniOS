@@ -175,7 +175,7 @@ DOC_DIR   = $(PROGS_DIR)/docs
 PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/ld.o $(OBJ_DIR)/cvm.o \
             $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o $(OBJ_DIR)/dlmalloc.o \
-            $(BIN_DIR)/cp \
+            $(BIN_DIR)/cp $(BIN_DIR)/mtop \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(SRC_DIR)/test.lua $(SRC_DIR)/test.lisp $(SRC_DIR)/test_all.sh \
             $(PROGS_DIR)/etc/alias \
@@ -465,6 +465,15 @@ $(CVMOD_DIR)/ld.cvm: $(TOOLS_DIR)/ld.s $(LD_TOOL)
 
 $(BIN_DIR)/http.elf: $(ASM_DIR)/http.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
+
+# mtop: ASCII real-time system monitor (progs/src/mtop.c, miniGCC subset).
+# Same toolchain path as http.elf: minigcc C->asm, ld asm->ELF.
+$(BIN_DIR)/mtop.elf: $(ASM_DIR)/mtop.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
+# Bare-name alias so `mtop` works without the .elf suffix.
+$(BIN_DIR)/mtop: $(BIN_DIR)/mtop.elf
+	cp $< $@
 
 # ── Command path utilities (bin/<cmd>, compiled by the toolchain) ──
 # bin/cp: the C source ships on the ramdisk as src/cp.c and the ELF as
@@ -1283,7 +1292,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 $(SRC_DIR)/lz4.c $(ASM_DIR)/lz4.s \
                $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
                $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
-               $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf \
+               $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf $(BIN_DIR)/mtop.elf \
                $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/pcmap.elf $(BIN_DIR)/forktest.elf \
                $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf \
                $(BIN_DIR)/mmreuse.elf $(BIN_DIR)/mmreuse \
@@ -1299,13 +1308,13 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
                $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
                $(SRC_DIR)/mvrn.c $(SRC_DIR)/execho.c $(SRC_DIR)/aslr.c $(SRC_DIR)/burn.c $(SRC_DIR)/execthr.c \
-               $(SRC_DIR)/nx.c $(SRC_DIR)/mprot.c $(SRC_DIR)/pcmap.c $(SRC_DIR)/scfuzz.c $(SRC_DIR)/forktest.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c \
+               $(SRC_DIR)/nx.c $(SRC_DIR)/mprot.c $(SRC_DIR)/pcmap.c $(SRC_DIR)/scfuzz.c $(SRC_DIR)/forktest.c $(SRC_DIR)/http.c $(SRC_DIR)/cp.c $(SRC_DIR)/mtop.c \
                $(SRC_DIR)/hello.py \
                $(SRC_DIR)/test.lua \
                $(SRC_DIR)/test.lisp \
                $(SRC_DIR)/test_all.sh \
                $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s \
-               $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s \
+               $(ASM_DIR)/w1.s $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/mtop.s \
                 $(DOC_DIR)/hostile.html \
                 $(PROGS_DIR)/README.txt \
                 $(PROGS_DIR)/icons $(PROGS_DIR)/wall
@@ -2501,8 +2510,8 @@ clean: saves-backup
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \
 	      $(BIN_DIR)/w1.elf $(BIN_DIR)/fib.elf $(BIN_DIR)/minigcc.elf \
 	      $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/pcmap.elf $(BIN_DIR)/scfuzz.elf $(BIN_DIR)/forktest.elf \
-	      $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf \
-	      $(BIN_DIR)/cp $(BIN_DIR)/freedom $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
+	      $(BIN_DIR)/mvrn.elf $(BIN_DIR)/execho.elf $(BIN_DIR)/aslr.elf $(BIN_DIR)/burn.elf $(BIN_DIR)/execthr.elf $(BIN_DIR)/mtop.elf \
+	      $(BIN_DIR)/cp $(BIN_DIR)/mtop $(BIN_DIR)/freedom $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
 	      $(BIN_DIR)/vedit.elf $(BIN_DIR)/vedit \
 	      $(BIN_DIR)/lzss $(BIN_DIR)/unlzss \
 	      $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 \
@@ -2524,7 +2533,7 @@ clean: saves-backup
 	rm -f $(PROGS_DIR)/icons/piano.png
 	rm -f $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm
 	rm -f $(ASM_DIR)/fib.s $(ASM_DIR)/ldhello.s $(ASM_DIR)/w1.s \
-	      $(ASM_DIR)/http.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \
+	      $(ASM_DIR)/http.s $(ASM_DIR)/mtop.s $(ASM_DIR)/cp.s $(ASM_DIR)/lzss.s \
 	      $(ASM_DIR)/lz4.s $(ASM_DIR)/json.s $(ASM_DIR)/aes.s \
 	      $(ASM_DIR)/freedom.s
 	rm -f ap_stub.bin headers/ap_stub.h ap_entry.o ap_entry.elf

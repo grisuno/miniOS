@@ -118,6 +118,13 @@ static char ap_idle_stack[MAX_CPUS][4096] __attribute__((aligned(16)));
 proc_t ap_idle_proc[MAX_CPUS];
 volatile unsigned long smp_dispatches[MAX_CPUS];
 volatile unsigned long smp_idle_polls[MAX_CPUS];
+/* Per-CPU idle ticks at 100 Hz: isr_dispatch bumps the current CPU's
+ * slot whenever the tick arrives with current_pid == -1 (the per-CPU
+ * idle context). Sibling of smp_idle_polls, which counts idle-loop
+ * passes instead of time; the MINFO cpu selector reports the sum so
+ * ring 3 can compute busy percent between two reads. Increment-only,
+ * read without a lock like the other ISR counters. */
+volatile unsigned long cpu_idle_ticks[MAX_CPUS];
 static volatile int ser_e_reported;
 
 /* ---- IDT ---- */
@@ -1018,6 +1025,12 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             __sync_fetch_and_add(&smp_dbg_bad_gs, 1);
             return;
         }
+        /* Idle time for the MINFO cpu selector: a tick that finds no
+         * process on this CPU (the per-CPU idle context) counts one
+         * idle tick here. Atomic like the sys_ticks bump above; the
+         * reader sums all slots, so a torn read only skews one frame. */
+        if (current_pid < 0)
+            __sync_fetch_and_add(&cpu_idle_ticks[cpu->cpu_id], 1);
         if (cpu->is_bsp) {
             pic_eoi(0);
             tick_run_usb();
@@ -2834,6 +2847,10 @@ void sched_init(void) {
     rcu_init();
     tick_reset();
     tick_register_audio(sched_tick_audio, 0);
+    /* MINFO sleep queue plus its per-tick waker: without the waker a
+     * timed sleep would never end, so init takes the registration
+     * result and sel 6 fails closed when it is missing. */
+    minfo_sleep_init(tick_register_audio(minfo_tick_wake, 0) == 0);
     tick_register_desktop(sched_tick_desktop, 0);
     tick_register_usb(sched_tick_usb, 0);
     pic_init();

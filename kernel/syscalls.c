@@ -35,6 +35,7 @@
 #include "futex.h"
 #include "batch.h"
 #include "rcu.h"
+#include "sync.h"
 #include "percpu_rq.h"
 #include "sanitize.h"
 #include "driver.h"
@@ -427,6 +428,130 @@ static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, lo
     if (v > 100) v = 100;
     pcspk_set_volume((unsigned)v);
     return (long)pcspk_get_volume();
+}
+/* MINFO sleep support: a timed park for ring-3 monitors, so a refresh
+ * loop does not burn its whole quantum polling the clock (which would
+ * pin the very CPU meter it draws at 100%). The sleeper arms a flag
+ * and blocks on minfo_sleep_q; the 100 Hz audio tick listener wakes
+ * the queue every tick and each sleeper re-checks its own deadline,
+ * so concurrent sleepers with different deadlines and spurious wakes
+ * are all harmless. The flag is set once and never cleared: after the
+ * first sleep every tick pays one empty-queue wake_up_all, which
+ * returns on the head check. Queue and tick registration happen at
+ * boot (minfo_sleep_init from sched_init); without them sel 6 fails
+ * closed with -EIO instead of hanging. Same block/wake discipline as
+ * futex_wait (PROC_BLOCKED + schedule, woken to PROC_READY). */
+static wait_queue_t minfo_sleep_q;
+static volatile int minfo_sleep_armed;
+static int minfo_sleep_ready;
+
+void minfo_sleep_init(int tick_ok) {
+    wq_init(&minfo_sleep_q);
+    minfo_sleep_ready = tick_ok ? 1 : 0;
+}
+
+void minfo_tick_wake(void *ctx) {
+    (void)ctx;
+    if (minfo_sleep_armed)
+        wake_up_all(&minfo_sleep_q);
+}
+
+/* MINFO (251): multiplexed kernel-statistics read for ring-3 monitors.
+ * a1 selects, a2/a3 take two long out-words (two only, so every call
+ * fits the three-argument inline-syscall form miniGCC supports):
+ * 0 = heap used/free KB, 1 = ramdisk used/cap KB, 2 = MiniFS
+ * free/total blocks (0/0 when unmounted), 3 = cpu total/idle 100 Hz
+ * ticks, 4 = cpu count/uptime seconds, 5 = clear the caller's terminal
+ * view (same as the `clear` builtin). Anything else is -EINVAL. Each
+ * out-word is range-checked before it is written, so a bad pointer is
+ * -EFAULT with nothing stored. Snapshot discipline like schedtop:
+ * counters are read without locks (single aligned words) and values
+ * may skew by one tick, never corrupt. */
+static long sys_minios_minfo(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    if (a1 == 0) {
+        unsigned long *used = (unsigned long *)(unsigned long)a2;
+        unsigned long *freeb = (unsigned long *)(unsigned long)a3;
+        unsigned long hu = 0, hf = 0, ha = 0;
+        SANITIZE_RANGE(a2, sizeof(unsigned long));
+        SANITIZE_RANGE(a3, sizeof(unsigned long));
+        dlmalloc_usage(&hu, &hf, &ha);
+        (void)ha;
+        *used = hu / 1024;
+        *freeb = hf / 1024;
+        return 0;
+    }
+    if (a1 == 1) {
+        unsigned long *rd_used = (unsigned long *)(unsigned long)a2;
+        unsigned long *rd_cap = (unsigned long *)(unsigned long)a3;
+        unsigned ru = 0, rc = 0, rm = 0;
+        SANITIZE_RANGE(a2, sizeof(unsigned long));
+        SANITIZE_RANGE(a3, sizeof(unsigned long));
+        ramdisk_usage(&ru, &rc, &rm);
+        (void)rm;
+        *rd_used = ru / 1024;
+        *rd_cap = rc / 1024;
+        return 0;
+    }
+    if (a1 == 2) {
+        unsigned long *fs_free = (unsigned long *)(unsigned long)a2;
+        unsigned long *fs_total = (unsigned long *)(unsigned long)a3;
+        SANITIZE_RANGE(a2, sizeof(unsigned long));
+        SANITIZE_RANGE(a3, sizeof(unsigned long));
+        *fs_free = 0;
+        *fs_total = 0;
+        if (minifs_is_mounted()) {
+            unsigned int fb = 0, tb = 0, fi = 0, ti = 0;
+            minifs_usage(&fb, &tb, &fi, &ti);
+            (void)fi; (void)ti;
+            *fs_free = fb;
+            *fs_total = tb;
+        }
+        return 0;
+    }
+    if (a1 == 3) {
+        unsigned long *ticks = (unsigned long *)(unsigned long)a2;
+        unsigned long *idle = (unsigned long *)(unsigned long)a3;
+        unsigned long id = 0;
+        int c;
+        SANITIZE_RANGE(a2, sizeof(unsigned long));
+        SANITIZE_RANGE(a3, sizeof(unsigned long));
+        for (c = 0; c < cpu_count && c < MAX_CPUS; c++)
+            id += cpu_idle_ticks[c];
+        *ticks = (unsigned long)sys_ticks;
+        *idle = id;
+        return 0;
+    }
+    if (a1 == 4) {
+        unsigned long *count = (unsigned long *)(unsigned long)a2;
+        unsigned long *up = (unsigned long *)(unsigned long)a3;
+        SANITIZE_RANGE(a2, sizeof(unsigned long));
+        SANITIZE_RANGE(a3, sizeof(unsigned long));
+        *count = (unsigned long)cpu_count;
+        *up = (unsigned long)(sys_ticks / 100);
+        return 0;
+    }
+    if (a1 == 5) {
+        if (vga_fb_active)
+            term_clear();
+        else
+            vga_clear();
+        return 0;
+    }
+    if (a1 == 6) {
+        long ms = a2;
+        unsigned long until;
+        if (!minfo_sleep_ready) return -5;
+        if (ms < 0) ms = 0;
+        if (ms > 60000) ms = 60000;
+        if (ms == 0) return 0;
+        until = (unsigned long)sys_ticks + (unsigned long)(ms / 10) + 1;
+        minfo_sleep_armed = 1;
+        while ((long)((unsigned long)sys_ticks - until) < 0)
+            sleep_on(&minfo_sleep_q);
+        return 0;
+    }
+    return -22;
 }
 static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a5; (void)a6;
@@ -929,6 +1054,7 @@ static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] =
     [MINIOS_SYS_PCM2_CLOSE - MINIOS_SYSCALL_BASE] = { sys_minios_pcm2_close, "pcm2_close" },
     [MINIOS_SYS_CLIP_SET - MINIOS_SYSCALL_BASE] = { sys_minios_clip_set, "clip_set" },
     [MINIOS_SYS_CLIP_GET - MINIOS_SYSCALL_BASE] = { sys_minios_clip_get, "clip_get" },
+    [MINIOS_SYS_MINFO - MINIOS_SYSCALL_BASE] = { sys_minios_minfo, "minfo" },
 };
 
 struct kiovec { const char *iov_base; unsigned long iov_len; };

@@ -38,7 +38,7 @@
  * It is verified at build time (kernel _Static_asserts), not at load time:
  * see the ABI Version note above for why the loader cannot gate on it.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 10
+#define MINIOS_ABI_VERSION 11
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -81,6 +81,7 @@
     MINIOS_SYS_PCM2_CLOSE        ^ \
     MINIOS_SYS_CLIP_SET          ^ \
     MINIOS_SYS_CLIP_GET          ^ \
+    MINIOS_SYS_MINFO               ^ \
     MINIOS_SYS_RENAME              \
 )
 
@@ -360,6 +361,23 @@
  * Bumping the ABI version with the addition, per contract. */
 #define MINIOS_SYS_CLIP_SET      249
 #define MINIOS_SYS_CLIP_GET      250
+/* Machine info (mtop, 251): multiplexed kernel-statistics read with a
+ * selector in a1 and up to two out-words in a2/a3 (longs, KB unless
+ * noted), so every call fits the three-argument inline-syscall form
+ * miniGCC supports. 0 = heap used/free KB, 1 = ramdisk used/cap KB,
+ * 2 = MiniFS free/total blocks (0/0 when unmounted), 3 = cpu total/idle
+ * 100 Hz ticks (busy percent is (dt-didle)*100/dt between two reads of
+ * the same call), 4 = cpu count/uptime seconds, 5 = clear the caller's
+ * terminal view, 6 = sleep a2 milliseconds (0..60000, clamped; parks
+ * the caller on a wait queue woken by the 100 Hz tick, -EIO when the
+ * waker is missing so it fails closed instead of hanging). Unknown
+ * selectors are -EINVAL, short/out-of-window pointers -EFAULT.
+ * DEVIATION: Linux x86-64 owns 251 (ioprio_set). No ring-3 program
+ * MiniOS runs traps ioprio (no ionice port, glibc never calls it
+ * implicitly), and a trapped call fails closed on selector validation,
+ * the same class as the CLIP reuse of 249/250. Listed in
+ * tools/check_abi_numbers.py DEVIATIONS. */
+#define MINIOS_SYS_MINFO         251
 #define MINIOS_PCM2_NONBLOCK     1
 /* pcm2 geometry: 8-bit mono at MINIOS_PCM2_RATE, DMA fragments of
  * MINIOS_PCM2_FRAG bytes (~11.6 ms). A writer produces whole

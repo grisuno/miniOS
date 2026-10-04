@@ -254,3 +254,66 @@ size-budgeted ramdisk.
   by `unaes`), dispatch modes, empty input, and the fail-closed set.  Five
   one-line mutants of the codec (ShiftRows drop, polynomial, affine
   constant, AES-256 extra SubWord, size-mismatch check) all die against it.
+
+### System monitor (`mtop`)
+`progs/src/mtop.c` builds `bin/mtop.elf` plus the bare-name copy
+`bin/mtop` (the `topogpt3` idiom, so plain `mtop` resolves through the
+command path) through the miniGCC-to-ld chain from the same
+conservative subset as `json`/`cp` (int/long/char only, no structs,
+output through `write` so layout never depends on `puts` newline
+behavior, raw `syscall` inline asm only with 3 or fewer arguments,
+which is all miniGCC supports: register pinning such as
+`register long r10 __asm__("r10")` is rejected, so every MINFO call
+carries at most a selector plus two out-words). Usage
+`mtop [frames] [interval_ms]` (`0` runs until quit, `-1` draws one
+snapshot, interval clamped to 100..5000 ms); quit keys are `q`/`Q`/
+ESC plus Ctrl+C/Ctrl+D through a nonblocking `SYS_GETC_RAW` (236)
+poll, so while it runs the monitor owns the keyboard focus like the
+fullscreen games do. Panels speak plain language (RAM ocupada X de Y,
+CPU en uso Z%, no syscall jargon); `etc/alias` carries the matching
+`mtop=bin/mtop` entry.
+
+- Figures come from the MINFO syscall (251, `MINIOS_SYS_MINFO`):
+  0 = heap used/free KB, 1 = ramdisk used/cap KB, 2 = MiniFS
+  free/total blocks, 3 = cpu total/idle 100 Hz ticks, 4 = cpu
+  count/uptime seconds, 5 = clear the caller's terminal view,
+  6 = sleep milliseconds. CPU busy percent is (dt-didle)*100/dt
+  between two reads of selector 3; idle ticks come from a per-CPU
+  counter bumped in the timer ISR when it finds no process on that
+  CPU. Every value is range-checked before display, so a foreign
+  kernel answering 251 with other semantics degrades to plain
+  unavailable instead of showing garbage.
+- Selector 6 exists because a polling refresh loop never lets the
+  CPU idle and would pin its own meter at 100%: the caller parks on
+  a wait queue (`sleep_on`, futex discipline) woken by a 100 Hz
+  audio-tick listener, in chunks of at most 50 ms so key checks stay
+  responsive. Registration happens at boot next to the other tick
+  listeners; without it sel 6 fails closed with -EIO. Number 251
+  shadows Linux `ioprio_set`: documented DEVIATION (no port traps
+  ioprio, trapped calls fail closed on selector validation), listed
+  in `tools/check_abi_numbers.py`, ABI bumped to v11 with the
+  manifest regenerated at build time.
+- Frames after the first clear the screen through selector 5, which
+  calls the new `term_clear` (framebuffer logical-line ring plus
+  in-progress line reset, viewport snapped live, repaint; parked twin
+  snapshots are unaffected until they refocus): a true redraw where
+  the terminal is live, ANSI clear on the serial console as fallback.
+  The `clear` builtin was a silent no-op on the desktop (it only wiped
+  the legacy text buffer), so it takes the same path plus the ANSI
+  sequence, which the framebuffer terminal swallows without garbage.
+- DISK throughput is measured live by reading a ramdisk probe opened
+  once and rewound every frame: the ld `fopen` stub keeps a 5-slot
+  table that `fclose` never releases (sibling-ld bug, tracked here),
+  so open-per-frame dies on the 5th frame. NET is a TCP socket
+  create/close plus a `localhost` DNS round trip, probed on frame 1
+  and every 10th frame and cached between (an unanswered DNS costs
+  seconds).
+- Each sampled panel keeps a 32-deep history drawn as an auto-scaled
+  sparkline (` .:-=+*#%@`) beside a `[####--]` bar scaled to the
+  observed maximum; UPTIME and CMOS clock (`SYS_RTC` 212) head every
+  frame.
+- Degradation is total: on a host without MiniOS syscalls (or before
+  the network is up) every failed probe prints `n/a` with its cause
+  and the program still renders and exits 0, so the same binary
+  smoke-tests on Linux (`mtop -1`) and live under QEMU
+  (`run bin/mtop.elf 3 200`, BDD-pinned output shape).

@@ -185,6 +185,7 @@ void     vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);
 void     vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);
 void     vga_fb_putc_term(char c);
 void     vga_fb_puts_term(const char *s);
+void     term_clear(void);
 void     vga_fb_text_cursor(int col);
 void     vga_fb_hide_text_cursor(void);
 /* Packed-pixel primitives (0x00RRGGBB): the cursor layer draws through

@@ -110,6 +110,12 @@ int  vga_get_y(void);
 void vga_set_xy(int x, int y);
 char vga_get_color(void);
 
+/* MINFO sleep support (kernel/syscalls.c): timed park for ring-3
+ * monitors. sched_init passes the tick-registration result; without a
+ * registered waker sel 6 fails closed instead of hanging. */
+void minfo_sleep_init(int tick_ok);
+void minfo_tick_wake(void *ctx);
+
 /* ========== Scrollback ring (kernel/scrollback.c) ========== */
 void sb_init(void);
 void sb_capture_row0(void);
