@@ -1,0 +1,100 @@
+# Subsystem: file
+
+## progs/file/file.c
+- Layer: utility
+- Doc: Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf).
+- Language: c
+- Symbols:
+  - `file_assoc` (struct, line 76)
+  - `file_sys_dir_list` (function, line 101) `static long file_sys_dir_list(const char *path, char *buf, long cap)`
+  - `file_sys_spawn` (function, line 111) `static long file_sys_spawn(const char *path, int argc, const char **argv)`
+  - `file_ext_of` (function, line 122) `static void file_ext_of(const char *fname, char *dst, unsigned cap)`
+  - `file_icon_kind` (function, line 146) `static int file_icon_kind(const char *fname, int isdir)`
+  - `file_icon_sz` (function, line 158) `static int file_icon_sz(void)`
+  - `file_icon_decode` (function, line 165) `static int file_icon_decode(const char *path, unsigned char *px,
+                            unsi...`
+  - `file_icons_load` (function, line 213) `static int file_icons_load(void)`
+  - `file_toggle_icons` (function, line 238) `static int file_toggle_icons(void)`
+  - `file_join` (function, line 245) `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)`
+  - `file_parent` (function, line 259) `static void file_parent(char *path)`
+  - `file_assoc_line` (function, line 269) `static int file_assoc_line(const char *line, char *ext, char *prog)`
+  - `file_assoc_load` (function, line 302) `static void file_assoc_load(void)`
+  - `file_assoc_lookup` (function, line 318) `static const char *file_assoc_lookup(const char *ext)`
+  - `file_action_of` (function, line 323) `static int file_action_of(const char *fname, const char **prog_out)`
+  - `file_refresh` (function, line 336) `static void file_refresh(void)`
+  - `file_preview_load` (function, line 351) `static int file_preview_load(const char *path)`
+  - `file_preview_blit` (function, line 385) `static void file_preview_blit(int ox, int oy)`
+  - `file_spawn_visible` (function, line 407) `static long file_spawn_visible(const char *tool, int argc, const char **argv,
+                   ...`
+  - `file_open_text` (function, line 430) `static void file_open_text(const char *path)`
+  - `file_run_shell` (function, line 441) `static void file_run_shell(const char *path)`
+  - `file_activate` (function, line 480) `static void file_activate(const char *dir, const char *name)`
+  - `file_ui_build` (function, line 511) `static void file_ui_build(struct nk_context *ctx)`
+  - `file_selftest` (function, line 613) `static int file_selftest(void)`
+  - `file_gui_run` (function, line 779) `static void file_gui_run(void)`
+  - `main` (function, line 838) `int main(int argc, char **argv)`
+  - `STB_IMAGE_IMPLEMENTATION` (macro, line 24) `#define STB_IMAGE_IMPLEMENTATION`
+  - `STBI_ONLY_PNG` (macro, line 25) `#define STBI_ONLY_PNG`
+  - `STBI_NO_STDIO` (macro, line 26) `#define STBI_NO_STDIO`
+  - `MINIOS_LEAKCHECK_IMPL` (macro, line 28) `#define MINIOS_LEAKCHECK_IMPL`
+  - `MINIOS_LK_ENABLE` (macro, line 29) `#define MINIOS_LK_ENABLE`
+  - `FILE_MAX_PATH` (macro, line 33) `#define FILE_MAX_PATH`
+  - `FILE_MAX_ENTRIES` (macro, line 34) `#define FILE_MAX_ENTRIES`
+  - `FILE_NAME_MAX` (macro, line 35) `#define FILE_NAME_MAX`
+  - `FILE_LIST_CAP` (macro, line 36) `#define FILE_LIST_CAP`
+  - `FILE_ASSOC_PATH` (macro, line 37) `#define FILE_ASSOC_PATH`
+  - `FILE_EXT_MAX` (macro, line 38) `#define FILE_EXT_MAX`
+  - `FILE_PROG_MAX` (macro, line 39) `#define FILE_PROG_MAX`
+  - `FILE_TOOL_VEDIT` (macro, line 40) `#define FILE_TOOL_VEDIT`
+  - `FILE_TOOL_CVM` (macro, line 41) `#define FILE_TOOL_CVM`
+  - `FILE_STATUS_MAX` (macro, line 42) `#define FILE_STATUS_MAX`
+  - `FILE_UI_MEMORY` (macro, line 43) `#define FILE_UI_MEMORY`
+  - `FILE_PREVIEW_W` (macro, line 44) `#define FILE_PREVIEW_W`
+  - `FILE_PREVIEW_H` (macro, line 45) `#define FILE_PREVIEW_H`
+  - `FILE_PREVIEW_FILE_MAX` (macro, line 46) `#define FILE_PREVIEW_FILE_MAX`
+  - `FILE_TITLE` (macro, line 47) `#define FILE_TITLE`
+  - `FILE_ACTION_SHELL` (macro, line 48) `#define FILE_ACTION_SHELL`
+  - `FILE_ACTION_INTERNAL` (macro, line 49) `#define FILE_ACTION_INTERNAL`
+  - `FILE_LOG_LINE` (macro, line 50) `#define FILE_LOG_LINE`
+  - `FILE_ICON_SMALL` (macro, line 57) `#define FILE_ICON_SMALL`
+  - `FILE_ICON_BIG` (macro, line 58) `#define FILE_ICON_BIG`
+  - `FILE_ICON_MAX` (macro, line 59) `#define FILE_ICON_MAX`
+  - `FILE_ICON_N` (macro, line 60) `#define FILE_ICON_N`
+  - `FILE_ICON_FOLDER` (macro, line 61) `#define FILE_ICON_FOLDER`
+  - `FILE_ICON_FILES` (macro, line 62) `#define FILE_ICON_FILES`
+  - `FILE_ICON_IMAGE` (macro, line 63) `#define FILE_ICON_IMAGE`
+  - `FILE_ICON_OBJECT` (macro, line 64) `#define FILE_ICON_OBJECT`
+  - `FILE_ICON_PATH_FOLDER` (macro, line 65) `#define FILE_ICON_PATH_FOLDER`
+  - `FILE_ICON_PATH_FILES` (macro, line 66) `#define FILE_ICON_PATH_FILES`
+  - `FILE_ICON_PATH_IMAGE` (macro, line 67) `#define FILE_ICON_PATH_IMAGE`
+  - `FILE_ICON_PATH_OBJECT` (macro, line 68) `#define FILE_ICON_PATH_OBJECT`
+  - `FILE_ACT_TEXT` (macro, line 71) `#define FILE_ACT_TEXT`
+  - `FILE_ACT_SHELL` (macro, line 72) `#define FILE_ACT_SHELL`
+  - `FILE_ACT_INTERNAL` (macro, line 73) `#define FILE_ACT_INTERNAL`
+  - `FILE_ACT_UNKNOWN` (macro, line 74) `#define FILE_ACT_UNKNOWN`
+- Depends on: `headers/leakcheck.h`, `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+## progs/file/file_assoc.h
+- Layer: utility
+- Doc: Docstring: dynamic association table for the MiniOS file browser.
+- Language: h
+- Symbols:
+  - `fassoc_entry` (struct, line 46)
+  - `fassoc_table` (struct, line 52)
+  - `fassoc_ext_ok` (function, line 59) `static int fassoc_ext_ok(const char *ext)`
+  - `fassoc_prog_ok` (function, line 73) `static int fassoc_prog_ok(const char *prog)`
+  - `fassoc_clear` (function, line 89) `static void fassoc_clear(struct fassoc_table *t)`
+  - `fassoc_free` (function, line 95) `static void fassoc_free(struct fassoc_table *t)`
+  - `fassoc_reserve` (function, line 104) `static int fassoc_reserve(struct fassoc_table *t, size_t want)`
+  - `fassoc_push` (function, line 125) `static int fassoc_push(struct fassoc_table *t, const char *ext, const char *prog)`
+  - `fassoc_lookup` (function, line 140) `static const char *fassoc_lookup(const struct fassoc_table *t, const char *ext)`
+  - `fassoc_count` (function, line 150) `static size_t fassoc_count(const struct fassoc_table *t)`
+  - `MINIOS_FILE_ASSOC_H` (macro, line 15) `#define MINIOS_FILE_ASSOC_H`
+  - `FASSOC_EXT_MAX` (macro, line 22) `#define FASSOC_EXT_MAX`
+  - `FASSOC_PROG_MAX` (macro, line 26) `#define FASSOC_PROG_MAX`
+  - `FASSOC_INIT_CAP` (macro, line 30) `#define FASSOC_INIT_CAP`
+  - `FASSOC_HARD_MAX` (macro, line 34) `#define FASSOC_HARD_MAX`
+  - `FASSOC_GROW_NUM` (macro, line 38) `#define FASSOC_GROW_NUM`
+  - `FASSOC_GROW_DEN` (macro, line 42) `#define FASSOC_GROW_DEN`
+- Depends on: `kernel/string.c`
+- Imported by: `progs/file/file.c`, `tests/test_file_assoc.c`, `tests/test_leakcheck.c`

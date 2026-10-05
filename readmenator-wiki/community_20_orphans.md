@@ -1,10 +1,10 @@
 # orphans
 
-*Community 10 | 96 files | cohesion 0.00*
+*Community 20 | 106 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 96 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
+This community groups 106 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
@@ -15,19 +15,26 @@ This community groups 96 file(s) rooted at `tools` with dominant language c (coh
 | `tools/boot_run.sh` | sh | utility | 0 | yes |
 | `tools/check_abi_numbers.py` | py | utility | 4 | yes |
 
-### `progs/src` (30 files)
+### `progs/src` (31 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/src/aes.c` | c | utility | 54 | yes |
 | `progs/src/aslr.c` | c | utility | 10 | yes |
 
-### `progs/asm` (10 files)
+### `progs/asm` (11 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/asm/aes.s` | s | utility | 30 | no |
 | `progs/asm/cp.s` | s | utility | 2 | no |
+
+### `kernel` (7 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `kernel/clip.c` | c | utility | 4 | yes |
+| `kernel/cvm_host.c` | c | utility | 45 | no |
 
 ### `mcp` (3 files)
 
@@ -41,14 +48,18 @@ This community groups 96 file(s) rooted at `tools` with dominant language c (coh
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/doomgeneric/doom.h` | h | utility | 2 | no |
-| `progs/doomgeneric/icon.c` | c | utility | 0 | no |
 
 ### `arch/x86` (2 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `arch/x86/ctx_sw.S` | S | utility | 9 | no |
-| `arch/x86/isr_stubs.S` | S | testing | 24 | no |
+
+### `fs` (2 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `fs/ramdisk.c` | c | infrastructure | 25 | yes |
 
 ### `progs/micropython/variants/minios` (2 files)
 
@@ -72,13 +83,7 @@ This community groups 96 file(s) rooted at `tools` with dominant language c (coh
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `boot/uefi_stub.c` | c | testing | 29 | yes |
-
-### `kernel` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `kernel/cvm_host.c` | c | utility | 45 | no |
+| `boot/uefi_stub.c` | c | testing | 50 | yes |
 
 ### `progs/lisp` (1 files)
 
@@ -98,7 +103,7 @@ This community groups 96 file(s) rooted at `tools` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 76 more files in this community.*
+*... and 86 more files in this community.*
 
 
 ## Key Symbols
@@ -141,15 +146,19 @@ This community groups 96 file(s) rooted at `tools` with dominant language c (coh
 
 ## Connections
 
-- [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers) and community 10 (orphans).
+- No cross-community bridges recorded. This community is self-contained.
 
 ## Risks
 
-- No scoped security, taint, cycle, or layer risks.
+- [taint high] `mcp/test_minios_mcp.py` -> `mcp/test_minios_mcp.py` via `subprocess` (0 hops)
+- [taint high] `tools/check_kb_sync.py` -> `tools/check_kb_sync.py` via `subprocess` (0 hops)
+- [taint high] `tools/check_mutant_anchors.py` -> `tools/check_mutant_anchors.py` via `subprocess` (0 hops)
+- [dataflow UNCHECKED_ALLOC] `boot/uefi_stub.c:518` `efi_main` `rc`: Result of allocator stored in `rc` is never checked against NULL.
 
 ## Open Questions
 
-- Why do 31 file(s) lack file-level docs (e.g. `arch/x86/ctx_sw.S`)? What purpose do they serve?
+- Why do 32 file(s) lack file-level docs (e.g. `arch/x86/ctx_sw.S`)? What purpose do they serve?
+- Is the dangerous import `subprocess` in `mcp/test_minios_mcp.py` still required, or can it be isolated?
 - What would break if the most connected file in orphans changed?
 - Should orphans be split, given cohesion 0.00?
 
@@ -159,7 +168,15 @@ This community groups 96 file(s) rooted at `tools` with dominant language c (coh
 - `arch/x86/isr_stubs.S`
 - `boot/uefi_stub.c`
 - `bootloader.c`
+- `fs/ramdisk.c`
+- `fs/zip.c`
+- `kernel/clip.c`
 - `kernel/cvm_host.c`
+- `kernel/klog.c`
+- `kernel/printf.c`
+- `kernel/redirect.c`
+- `kernel/scrollback.c`
+- `kernel/symtab.c`
 - `mcp/__init__.py`
 - `mcp/mutate_mcp.sh`
 - `mcp/test_minios_mcp.py`
@@ -167,12 +184,4 @@ This community groups 96 file(s) rooted at `tools` with dominant language c (coh
 - `progs/asm/cp.s`
 - `progs/asm/fib.s`
 - `progs/asm/freedom.s`
-- `progs/asm/http.s`
-- `progs/asm/json.s`
-- `progs/asm/ldhello.s`
-- `progs/asm/lz4.s`
-- `progs/asm/lzss.s`
-- `progs/asm/w1.s`
-- `progs/doomgeneric/doom.h`
-- `progs/doomgeneric/icon.c`
-- *... and 76 more*
+- *... and 86 more*

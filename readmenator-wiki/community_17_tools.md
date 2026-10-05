@@ -1,10 +1,10 @@
 # tools
 
-*Community 4 | 25 files | cohesion 0.82*
+*Community 17 | 22 files | cohesion 0.83*
 
 ## Definition
 
-This community groups 25 file(s) rooted at `tools` with dominant language py (cohesion 0.82). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `FrameDiff`, `GdbChannel`, `Guest`. Core file: `tools/minios_hyper.py` (51 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
+This community groups 22 file(s) rooted at `tools` with dominant language py (cohesion 0.83). Central symbols: `AddonError`, `AddonState`, `Client`, `Config`, `FrameDiff`, `GdbChannel`, `Guest`, `Handler`. Core file: `tools/minios_hyper.py` (51 symbols). Documented purpose: Debug driver: boot MiniOS through the MCP bridge and run freedom..
 
 ## Files
 
@@ -24,6 +24,9 @@ This community groups 25 file(s) rooted at `tools` with dominant language py (co
 | `tools/test_gui_fashion.py` | py | testing | 18 | yes |
 | `tools/test_gui_gfxview.py` | py | testing | 7 | yes |
 | `tools/test_gui_icon_cwd.py` | py | testing | 17 | yes |
+| `tools/test_gui_menu.py` | py | testing | 1 | yes |
+| `tools/test_gui_wm.py` | py | testing | 17 | yes |
+| `tools/test_gui_zoom.py` | py | testing | 1 | yes |
 
 ### `mcp` (4 files)
 
@@ -34,38 +37,17 @@ This community groups 25 file(s) rooted at `tools` with dominant language py (co
 | `mcp/minios_addons.py` | py | utility | 16 | yes |
 | `mcp/minios_mcp.py` | py | utility | 50 | yes |
 
-### `headers` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `headers/ktime.h` | h | utility | 3 | yes |
-
 ### `kernel` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `kernel/time.c` | c | utility | 4 | yes |
 
-### `progs/tls_u` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `progs/tls_u/tls_u_port.c` | c | utility | 15 | yes |
-
-### `tests` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `tests/test_ktime.c` | c | testing | 2 | yes |
-
-*... and 5 more files in this community.*
+*... and 2 more files in this community.*
 
 
 ## Key Symbols
 
-- `KTIME_H` (macro, `headers/ktime.h:2`) `#define KTIME_H`
-- `ktime_us_from_delta` (function, `headers/ktime.h:19`) `static inline unsigned long ktime_us_from_delta(unsigned long delta_ticks,`
-- `wall_us_from_parts` (function, `headers/ktime.h:30`) `static inline unsigned long wall_us_from_parts(unsigned long base_sec,` - wall_us_from_parts: wall-clock microseconds from an RTC-anchored base. base_sec is the last seen RTC
 - `ktime_rdtsc` (function, `kernel/time.c:13`) `static unsigned long ktime_rdtsc(void)`
 - `ktime_init` (function, `kernel/time.c:19`) `static void ktime_init(void)`
 - `ktime_ms` (function, `kernel/time.c:33`) `unsigned long ktime_ms(void)`
@@ -93,53 +75,50 @@ This community groups 25 file(s) rooted at `tools` with dominant language py (co
 - `load_addons_dir` (method, `mcp/minios_addons.py:323`) `def load_addons_dir(addons_dir)` - Load every addon yaml; each entry is a dict or an error string.
 - `split_for_editor` (method, `mcp/minios_addons.py:347`) `def split_for_editor(text)` - Split a source into editor-sized chunks. Raises AddonError.
 - `exit_code_of` (method, `mcp/minios_addons.py:372`) `def exit_code_of(text)`
+- `AddonState` (class, `mcp/minios_addons.py:377`) `class AddonState` - Host-side record of installed addons (system temp dir).
+- `__init__` (method, `mcp/minios_addons.py:380`) `def __init__(self, path)`
+- `load` (method, `mcp/minios_addons.py:383`) `def load(self)`
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 29
+- Internal resolved imports (EXTRACTED): 25
 - Cross-boundary resolved imports (EXTRACTED): 6
 
 ## Connections
 
-- [EXTRACTED] depends_on community 6 <-> 4 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
-- [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/ktime.h.
-- [EXTRACTED] depends_on community 2 <-> 4 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
-- [INFERRED] shares_context community 1 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (arch/x86) and community 4 (tools).
+- [EXTRACTED] depends_on community 16 <-> 17 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/time.c.
 
 ## Risks
 
 - [taint high] `mcp/mcp_dbg_driver.py` -> `mcp/mcp_dbg_driver.py` via `subprocess` (0 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ktime.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/kernel.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/vma.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/pipe.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `headers/ldso.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `mcp/mcp_dogfood.py` via `subprocess` (0 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/mcp_dogfood.py` -> `headers/ktime.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/kernel.h` via `subprocess` (2 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/spinlock.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `headers/vma.h` via `subprocess` (3 hops)
+- [taint high] `mcp/minios_addons.py` -> `mcp/minios_addons.py` via `subprocess` (0 hops)
+- [taint high] `mcp/minios_addons.py` -> `kernel/time.c` via `subprocess` (1 hops)
+- [taint high] `mcp/minios_addons.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `mcp/minios_mcp.py` -> `mcp/minios_mcp.py` via `subprocess` (0 hops)
+- [taint high] `mcp/minios_mcp.py` -> `kernel/time.c` via `subprocess` (1 hops)
+- [taint high] `mcp/minios_mcp.py` -> `mcp/minios_addons.py` via `subprocess` (1 hops)
+- [taint high] `mcp/minios_mcp.py` -> `headers/ktime.h` via `subprocess` (2 hops)
+- [taint high] `tools/boot_wl.py` -> `tools/boot_wl.py` via `subprocess` (0 hops)
+- [taint high] `tools/boot_wl.py` -> `kernel/time.c` via `subprocess` (1 hops)
 
 ## Open Questions
 
 - Is the dangerous import `subprocess` in `mcp/mcp_dbg_driver.py` still required, or can it be isolated?
 - What would break if the most connected file in tools changed?
-- Should tools be split, given cohesion 0.82?
+- Should tools be split, given cohesion 0.83?
 
 ## Sources
 
-- `headers/ktime.h`
 - `kernel/time.c`
 - `mcp/mcp_dbg_driver.py`
 - `mcp/mcp_dogfood.py`
 - `mcp/minios_addons.py`
 - `mcp/minios_mcp.py`
-- `progs/tls_u/tls_u_port.c`
-- `tests/test_ktime.c`
 - `tools/boot_wl.py`
 - `tools/gdb_repro.py`
 - `tools/minios_cli.py`
@@ -152,4 +131,7 @@ This community groups 25 file(s) rooted at `tools` with dominant language py (co
 - `tools/test_gui_fashion.py`
 - `tools/test_gui_gfxview.py`
 - `tools/test_gui_icon_cwd.py`
-- *... and 5 more*
+- `tools/test_gui_menu.py`
+- `tools/test_gui_wm.py`
+- `tools/test_gui_zoom.py`
+- *... and 2 more*

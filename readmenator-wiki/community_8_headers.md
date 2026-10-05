@@ -1,6 +1,6 @@
 # headers
 
-*Community 3 | 3 files | cohesion 0.67*
+*Community 8 | 3 files | cohesion 0.67*
 
 ## Definition
 
@@ -40,8 +40,7 @@ This community groups 3 file(s) rooted at `headers` with dominant language c (co
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
-- [INFERRED] shares_context community 1 <-> 3 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (arch/x86) and community 3 (headers).
+- No cross-community bridges recorded. This community is self-contained.
 
 ## Risks
 

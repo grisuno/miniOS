@@ -4,11 +4,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 ## Suggested
 
-### Q: What does kernel.h depend on, and what depends on it? (69 connections)
-
-- Status: unanswered
-
-### Q: What does string.c depend on, and what depends on it? (74 connections)
+### Q: What does string.c depend on, and what depends on it? (76 connections)
 
 - Status: unanswered
 
@@ -16,11 +12,15 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: How are the 154 files in 'headers' related to each other?
+### Q: What does doomdef.h depend on, and what depends on it? (45 connections)
 
 - Status: unanswered
 
-### Q: Why are ap_entry.S and i_cdmus.h connected through 8 hops across 3 communities?
+### Q: How are the 40 files in 'headers' related to each other?
+
+- Status: unanswered
+
+### Q: Why are ap_stub.h and i_cdmus.h connected through 9 hops across 2 communities?
 
 - Status: unanswered
 

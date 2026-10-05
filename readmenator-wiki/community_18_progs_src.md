@@ -1,6 +1,6 @@
 # progs/src
 
-*Community 8 | 4 files | cohesion 0.75*
+*Community 18 | 4 files | cohesion 0.75*
 
 ## Definition
 
@@ -55,9 +55,7 @@ This community groups 4 file(s) rooted at `progs/src` with dominant language py 
 
 ## Connections
 
-- [EXTRACTED] depends_on community 8 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
-- [INFERRED] shares_context community 0 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers) and community 8 (progs/src).
-- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (arch/x86) and community 8 (progs/src).
+- No cross-community bridges recorded. This community is self-contained.
 
 ## Risks
 

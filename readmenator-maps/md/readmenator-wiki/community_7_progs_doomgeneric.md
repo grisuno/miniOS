@@ -1,18 +1,18 @@
 # progs/doomgeneric
 
-*Community 2 | 62 files | cohesion 0.67*
+*Community 7 | 221 files | cohesion 0.95*
 
 ## Definition
 
-This community groups 62 file(s) rooted at `progs/doomgeneric` with dominant language c (cohesion 0.67). Central symbols: `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`, `AUDIO_H`, `AUDIO_RATE_DEFAULT`, `AllocTracker`, `BACKBUF`, `BEZIER_PAD`. Core file: `progs/vedit/vedit.c` (243 symbols). Documented purpose: Unified audio API for MiniOS..
+This community groups 221 file(s) rooted at `progs/doomgeneric` with dominant language c (cohesion 0.95). Central symbols: `AMSTR_FOLLOWOFF`, `AMSTR_FOLLOWON`, `AMSTR_GRIDOFF`, `AMSTR_GRIDON`, `AMSTR_MARKEDSPOT`, `AMSTR_MARKSCLEARED`, `AM_Drawer`, `AM_LevelInit`. Core file: `progs/doomgeneric/d_englsh.h` (286 symbols). Documented purpose: Unified audio API for MiniOS..
 
 ## Files
 
-### `progs/doomgeneric` (9 files)
+### `progs/doomgeneric` (183 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/doomgeneric/doomgeneric.c` | c | utility | 1 | no |
+| `progs/doomgeneric/am_map.c` | c | utility | 87 | yes |
 
 ### `progs/src` (9 files)
 
@@ -20,41 +20,23 @@ This community groups 62 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/src/audio.c` | c | infrastructure | 17 | no |
 
-### `tests` (9 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `tests/test_file_assoc.c` | c | testing | 10 | yes |
-
-### `progs/nuklear` (8 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `progs/nuklear/cvm_emit.c` | c | utility | 56 | yes |
-
 ### `progs/wl` (5 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/wl/wl_client.h` | h | infrastructure | 5 | yes |
 
-### `progs` (3 files)
+### `tests` (5 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/minios_abi.h` | h | utility | 150 | yes |
+| `tests/test_freedom_wl.c` | c | testing | 3 | yes |
 
-### `headers` (2 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `headers/audio.h` | h | infrastructure | 18 | yes |
-
-### `progs/file` (2 files)
+### `progs` (2 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/file/file.c` | c | utility | 65 | yes |
+| `progs/minios_abi.h` | h | utility | 153 | yes |
 
 ### `progs/quake2generic` (2 files)
 
@@ -62,17 +44,17 @@ This community groups 62 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/quake2generic/q2generic_minios.c` | c | utility | 34 | yes |
 
+### `headers` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `headers/audio.h` | h | infrastructure | 18 | yes |
+
 ### `kernel` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `kernel/string.c` | c | utility | 13 | yes |
-
-### `progs/doomedit` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `progs/doomedit/doomedit.c` | c | infrastructure | 108 | yes |
 
 ### `progs/freedomui` (1 files)
 
@@ -104,11 +86,11 @@ This community groups 62 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/minicraft/minicraft.c` | c | utility | 237 | yes |
 
-### `progs/paint` (1 files)
+### `progs/nuklear` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/paint/paint.c` | c | utility | 53 | yes |
+| `progs/nuklear/nuklear_minios.c` | c | utility | 52 | yes |
 
 ### `progs/piano` (1 files)
 
@@ -122,13 +104,31 @@ This community groups 62 file(s) rooted at `progs/doomgeneric` with dominant lan
 |------|----------|-------|---------|-----|
 | `progs/pokemon/platform_minios.c` | c | data_access | 111 | no |
 
+### `progs/pokemon/minios_stubs` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/pokemon/minios_stubs/SDL.h` | h | testing | 10 | yes |
+
+### `progs/tls_u` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/tls_u/tls_u_port.c` | c | utility | 15 | yes |
+
 ### `progs/topogpt3` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/topogpt3/topogpt3.c` | c | utility | 128 | no |
 
-*... and 42 more files in this community.*
+### `tests/stubs` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `tests/stubs/kernel.h` | h | testing | 15 | yes |
+
+*... and 201 more files in this community.*
 
 
 ## Key Symbols
@@ -151,73 +151,75 @@ This community groups 62 file(s) rooted at `progs/doomgeneric` with dominant lan
 - `audio_stream_close` (function, `headers/audio.h:41`) `void audio_stream_close(int id);`
 - `audio_stream_submit` (function, `headers/audio.h:42`) `int audio_stream_submit(int id, const void *buf, unsigned len);`
 - `audio_stream_volume` (function, `headers/audio.h:43`) `void audio_stream_volume(int id, unsigned char vol);`
-- `MINIOS_LEAKCHECK_H` (macro, `headers/leakcheck.h:28`) `#define MINIOS_LEAKCHECK_H`
-- `MINIOS_LK_PIPE` (macro, `headers/leakcheck.h:42`) `#define MINIOS_LK_PIPE`
-- `MINIOS_LK_PIPE` (macro, `headers/leakcheck.h:44`) `#define MINIOS_LK_PIPE`
-- `lk_block_t` (type_alias, `headers/leakcheck.h:49`) `typedef struct lk_block lk_block_t;` - #ifndef MINIOS_LK_KERNEL #include <stdlib.h> #include <stdio.h> #endif #ifndef MINIOS_LK_PIPE #ifdef
-- `lk_block` (struct, `headers/leakcheck.h:50`)
-- `kmalloc` (function, `headers/leakcheck.h:79`) `extern void *kmalloc(unsigned long size);` - ifdef MINIOS_LK_KERNEL
-- `kfree` (function, `headers/leakcheck.h:80`) `extern void kfree(void *ptr);`
-- `kprintf` (function, `headers/leakcheck.h:81`) `extern int kprintf(const char *fmt, ...);`
-- `MINIOS_LK_RAW_ALLOC` (macro, `headers/leakcheck.h:82`) `#define MINIOS_LK_RAW_ALLOC(sz)`
-- `MINIOS_LK_RAW_FREE` (macro, `headers/leakcheck.h:83`) `#define MINIOS_LK_RAW_FREE(p)`
-- `MINIOS_LK_RAW_ALLOC` (macro, `headers/leakcheck.h:88`) `#define MINIOS_LK_RAW_ALLOC(sz)`
-- `MINIOS_LK_RAW_FREE` (macro, `headers/leakcheck.h:89`) `#define MINIOS_LK_RAW_FREE(p)`
+- `kstrlen` (function, `kernel/string.c:17`) `unsigned long kstrlen(const char *s)`
+- `kstrcpy` (function, `kernel/string.c:23`) `char *kstrcpy(char *dst, const char *src)`
+- `kstrncpy` (function, `kernel/string.c:29`) `char *kstrncpy(char *dst, const char *src, unsigned long n)`
+- `kstrncat` (function, `kernel/string.c:35`) `char *kstrncat(char *dst, const char *src, unsigned long n)`
+- `kstrcmp` (function, `kernel/string.c:43`) `int kstrcmp(const char *a, const char *b)`
+- `kstrncmp` (function, `kernel/string.c:48`) `int kstrncmp(const char *a, const char *b, unsigned long n)`
+- `kstrchr` (function, `kernel/string.c:53`) `char *kstrchr(const char *s, int c)`
+- `kstrstr` (function, `kernel/string.c:58`) `char *kstrstr(const char *hay, const char *ndl)`
+- `kmemcpy` (function, `kernel/string.c:68`) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
+- `kmemset` (function, `kernel/string.c:75`) `void *kmemset(void *dst, int c, unsigned long n)`
+- `kmemcmp` (function, `kernel/string.c:81`) `int kmemcmp(const void *a, const void *b, unsigned long n)`
+- `kmemmove` (function, `kernel/string.c:87`) `void *kmemmove(void *dst, const void *src, unsigned long n)`
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 119
-- Cross-boundary resolved imports (EXTRACTED): 59
+- Internal resolved imports (EXTRACTED): 868
+- Cross-boundary resolved imports (EXTRACTED): 45
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
-- [EXTRACTED] depends_on community 6 <-> 2 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
-- [EXTRACTED] depends_on community 7 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
-- [EXTRACTED] depends_on community 2 <-> 4 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/time.c.
-- [EXTRACTED] depends_on community 8 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/lua/minios.c imports progs/minios_abi.h.
-- [INFERRED] shares_context community 1 <-> 2 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (arch/x86) and community 2 (progs/doomgeneric).
+- [EXTRACTED] depends_on community 9 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
+- [EXTRACTED] depends_on community 12 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/leakcheck.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 16 <-> 7 (strength 0.9): Extracted import edge crosses communities: headers/tls_port.h imports kernel/string.c.
 
 ## Risks
 
-- [taint high] `mcp/mcp_dbg_driver.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
-- [taint high] `mcp/mcp_dogfood.py` -> `progs/minios_abi.h` via `subprocess` (3 hops)
+- [cycle] `progs/doomgeneric/r_data.h` -> `progs/doomgeneric/r_state.h` -> `progs/doomgeneric/r_data.h`
 - [layer strict] `tests/test_freedomui.c` (testing) -> `progs/freedomui/freedomui_minios.c` (presentation)
-- [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:1556` `dmap_build_wad` `side`: `side` assigned at line 1556 but never read afterwards.
-- [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:1633` `dmap_build_wad` `dir`: `dir` assigned at line 1633 but never read afterwards.
-- [dataflow DEAD_STORE] `progs/doomedit/doomedit.c:2145` `dmap_selftest` `mrgb`: `mrgb` assigned at line 2145 but never read afterwards.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/d_iwad.c:217` `GetRegistryString` `result`: Result of allocator stored in `result` is never checked against NULL.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/d_iwad.c:346` `CheckSteamGUSPatches` `patch_path`: Result of allocator stored in `patch_path` is never checked against NULL.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/d_iwad.c:425` `CheckDirectoryHasIWAD` `filename`: Result of allocator stored in `filename` is never checked against NULL.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/d_iwad.c:764` `D_FindAllIWADs` `result`: Result of allocator stored in `result` is never checked against NULL.
 - [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/doomgeneric.c:8` `dg_Create` `DG_ScreenBuffer`: Result of allocator stored in `DG_ScreenBuffer` is never checked against NULL.
 - [dataflow UNINIT_USE] `progs/doomgeneric/doomgeneric_minios.c:235` `DG_Init` `myargc`: `myargc` may be read before initialization (declared line 233).
 - [dataflow UNINIT_USE] `progs/doomgeneric/doomgeneric_minios.c:235` `DG_Init` `myargv`: `myargv` may be read before initialization (declared line 234).
 - [dataflow DEAD_STORE] `progs/doomgeneric/doomgeneric_minios.c:251` `DG_DrawFrame` `dst`: `dst` assigned at line 251 but never read afterwards.
 - [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/doomgeneric_soso.c:144` `DG_Init` `FrameBuffer`: Result of allocator stored in `FrameBuffer` is never checked against NULL.
+- [dataflow DEAD_STORE] `progs/doomgeneric/g_game.c:1082` `G_PlayerReborn` `killcount`: `killcount` assigned at line 1082 but never read afterwards.
+- [dataflow DEAD_STORE] `progs/doomgeneric/g_game.c:1083` `G_PlayerReborn` `itemcount`: `itemcount` assigned at line 1083 but never read afterwards.
+- [dataflow DEAD_STORE] `progs/doomgeneric/g_game.c:1084` `G_PlayerReborn` `secretcount`: `secretcount` assigned at line 1084 but never read afterwards.
+- [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/i_system.c:77` `I_AtExit` `entry`: Result of allocator stored in `entry` is never checked against NULL.
 
 ## Open Questions
 
-- Why do 11 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric.c`)? What purpose do they serve?
+- Why do 15 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric.c`)? What purpose do they serve?
+- Can the cycle `progs/doomgeneric/r_data.h` -> `progs/doomgeneric/r_state.h` be broken with an interface?
 - What would break if the most connected file in progs/doomgeneric changed?
-- Should progs/doomgeneric be split, given cohesion 0.67?
+- Should progs/doomgeneric be split, given cohesion 0.95?
 
 ## Sources
 
 - `headers/audio.h`
-- `headers/leakcheck.h`
 - `kernel/string.c`
-- `progs/doomedit/doomedit.c`
-- `progs/doomgeneric/doomgeneric.c`
-- `progs/doomgeneric/doomgeneric.h`
-- `progs/doomgeneric/doomgeneric_minios.c`
-- `progs/doomgeneric/doomgeneric_soso.c`
-- `progs/doomgeneric/doomgeneric_sosox.c`
-- `progs/doomgeneric/doomgeneric_win.c`
-- `progs/doomgeneric/doomgeneric_xlib.c`
-- `progs/doomgeneric/memio.c`
-- `progs/doomgeneric/memio.h`
-- `progs/file/file.c`
-- `progs/file/file_assoc.h`
-- `progs/freedomui/freedomui_minios.c`
-- `progs/lisp/lisp.c`
-- `progs/lua/lua_main.c`
-- `progs/micropython/variants/minios/minios_module.c`
-- `progs/minicraft/minicraft.c`
-- *... and 42 more*
+- `progs/doomgeneric/am_map.c`
+- `progs/doomgeneric/am_map.h`
+- `progs/doomgeneric/config.h`
+- `progs/doomgeneric/d_englsh.h`
+- `progs/doomgeneric/d_event.c`
+- `progs/doomgeneric/d_event.h`
+- `progs/doomgeneric/d_items.c`
+- `progs/doomgeneric/d_items.h`
+- `progs/doomgeneric/d_iwad.c`
+- `progs/doomgeneric/d_iwad.h`
+- `progs/doomgeneric/d_loop.c`
+- `progs/doomgeneric/d_loop.h`
+- `progs/doomgeneric/d_main.c`
+- `progs/doomgeneric/d_main.h`
+- `progs/doomgeneric/d_mode.c`
+- `progs/doomgeneric/d_mode.h`
+- `progs/doomgeneric/d_net.c`
+- `progs/doomgeneric/d_player.h`
+- *... and 201 more*

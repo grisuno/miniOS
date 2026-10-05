@@ -1,0 +1,2481 @@
+# MiniOS
+
+[![GitHub stars](https://img.shields.io/github/stars/grisuno/miniOS?style=social)](https://github.com/grisuno/miniOS)
+[![License: AGPL](https://img.shields.io/badge/License-AGPL-yellow.svg)](https://opensource.org/licenses/AGPL)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?logo=github)](https://ko-fi.com/grisuno)
+[![Download the app](https://img.shields.io/github/v/release/grisuno/miniOS?label=Download%20app&color=2563eb)](https://github.com/grisuno/miniOS/releases/latest)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/grisuno/miniOS)
+
+I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [compiler/linker](https://github.com/grisuno/ld), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). That same [beacon](https://github.com/grisuno/blacksandbeacon), [TopoGPT3](https://github.com/grisuno/TopoGPT3), already had some things that I reused, like AES and the JSON implementation. LZSS comes from [CompressLoader](https://github.com/grisuno/CompressLoader), another tool, and at one point I said, "Can I run this on my kernel?" And well, here we are.
+
+<img width="1029" height="829" alt="image" src="https://github.com/user-attachments/assets/c08520bc-60d9-4cc6-b663-eada68b7b20f" />
+
+[LazyOwn](https://github.com/grisuno/LazyOwn) [RedTeam](https://medium.com/@lazyown.redteam) [has released an](https://www.youtube.com/@KillerMonkyRecordz) [educational](https://github.com/grisuno/miniOS/blob/main/README.md#knowledge-base) 64-bit x86 teaching kernel and operating system, with [basic](https://github.com/grisuno/miniOS/blob/main/README.md#user-isolation-and-syscall-boundary) [security](https://github.com/grisuno/miniOS/blob/main/README.md#security-nx-and-kaslr), and that carries its own complete [toolchain](https://github.com/grisuno/miniOS/blob/main/README.md#the-four-repositories) of a subset of C, [micropython](https://github.com/grisuno/miniOS/blob/main/README.md#micropython), [Lua](https://github.com/grisuno/miniOS/blob/main/progs/lua/lua_main.c), and [Lisp](https://github.com/grisuno/miniOS/blob/main/README.md#lisp), You can write a C
+program inside the running system, compile it, link it and execute it without
+leaving the machine or even vedit. With some [games](https://github.com/grisuno/miniOS/blob/main/README.md#doom), like [Quake2](https://github.com/grisuno/miniOS#quake-2), [MiniCraft](https://github.com/grisuno/MiniCraft), [Pokemon](https://github.com/grisuno/miniOS#pokemon-on-minios-gb-recompiled-port), [MCP](https://github.com/grisuno/miniOS/blob/main/README.md#agent-bridge-mcp--skill), [internet](https://github.com/grisuno/miniOS/blob/main/README.md#network-and-https), and [terminal utilities.](https://github.com/grisuno/miniOS/blob/main/README.md#shell) like a [llm](https://github.com/grisuno/miniOS/blob/main/README.md#topogpt3), [Paint](https://github.com/grisuno/miniOS#paint), [Nuklear](https://github.com/grisuno/miniOS#nuklear-node-editor) node editor, [Piano](https://github.com/grisuno/miniOS#piano-fm-synth---sb16),  It has been [developed with love](https://github.com/grisuno/miniOS/blob/main/README.md#acknowledgments).
+
+
+New here? Start with **[docs/quickstart.md](./docs/quickstart.md)** (build,
+boot, first program, verify) and keep **[docs/cheatsheet.md](./docs/cheatsheet.md)**
+open for shell, editor and make one-liners.
+
+# MiniOS Desktop Environment and Graphical Subsystem
+
+I have implemented a primitive desktop environment within MiniOS that operates independently of the serial console. This subsystem provides a graphical user interface (GUI) with window management, mouse support, and scrollable terminal emulation.
+
+## Key Features
+*   **Shell in VGA:** Handles basic shell and focus in VGA mode to avoid serial mode
+*   **Mouse Integration:** Full PS/2 mouse driver support with hardware cursor rendering.
+*   **Scrollable Terminal:** A virtual terminal emulator capable of handling large buffers and scrollback history via mouse wheel or keyboard shortcuts.
+*   **Speaker's Sound:** Sound support to speaker
+
+### Desktop icons, PNG, Nuklear and low-code CVM
+
+The desktop now supports PNG icons (via stb_image) that can be placed and launched from the graphical shell. Immediate-mode UI is powered by Nuklear, giving windows, buttons and widgets without a retained-mode toolkit. A low-code tool lets you author CVM modules in a simplified form that compile straight to bytecode and run natively on the CVM (with the existing JIT). Additional support includes xxHash for fast hashing and experimental TFT display output alongside the VESA framebuffer.
+
+## Testing the VGA desktop (doctrine)
+
+VGA-mode behaviour (the mouse cursor, window drag, title-bar buttons, the
+desktop compositor, and the return-to-desktop transition after a ring-3
+program) must be exercised with **`tools/minios_gui.py`, never headless.**
+Headless boots cannot observe or trigger these events, so a GUI bug verified
+by hand or assumed from code is not reproduced.
+
+`tools/minios_gui.py` boots QEMU with the emulated std VGA device (the
+linear framebuffer the desktop renders into), a QMP socket to inject PS/2
+mouse motion, clicks and keyboard, and a pty serial console to drive the
+shell. After each action it saves the current framebuffer to a PNG via QMP
+`screendump`, so a crashed desktop, a vanished cursor or a corrupted window
+is visible:
+
+```
+python3 tools/minios_gui.py send "doomgeneric.elf" sleep 10 \
+    key esc key down key down key down key down key down key ret key y \
+    dump after_doom
+```
+
+Actions: `send LINE`, `mouse DX DY`, `click`, `key QCODE`, `dump NAME`,
+`sleep SECS`. The serial console is on a pty; the kernel's `gfx`/`gfx pixel
+x y` commands probe the framebuffer state over serial (mouse present,
+position, palette index at a pixel), which is the text backstop when an
+image viewer is unavailable.
+
+## Desktop icons, PNG, Nuklear and low-code CVM (continued)
+
+```
+miniOS> edit src/p.c
+edit> a
+int main(void) { return 7; }
+edit> x
+miniOS> run objects/minigcc.o src/p.c > asm/p.s
+miniOS> run objects/ld.o -f elf -o bin/p.elf asm/p.s
+miniOS> run objects/ld.o -f cvm -o cvm/p.cvm asm/p.s
+miniOS> run bin/p.elf
+exit code: 7
+miniOS> run cvm/p.cvm
+exit code: 7
+miniOS>
+```
+
+## Taskbar, clock and volume
+
+The bottom taskbar is a live status strip, not a hint line:
+
+- **Clock:** reads the CMOS RTC (`rtc.c`) and shows `HH:MM:SS`, redrawn when the
+  second changes. A failed RTC read leaves the clock region blank rather than
+  showing a stale time. The shell `date` builtin prints the same clock over the
+  serial console.
+- **Volume:** a master volume `0..100` (`pcspk.c`). The PC speaker has no
+  hardware amplitude and the kernel does not drive a PWM carrier, so the volume
+  is a **mute switch**: the tone opens the speaker only when the volume is
+  above 0 (identical to the pre-volume driver), and at 0 the speaker is silent.
+  A click on the speaker icon toggles mute; the `-`/`+` buttons step the
+  volume. The shell `vol [0-100]` builtin reads and sets the same state, so the
+  desktop and the serial console can never disagree.
+- **Keyboard layout:** an `EN`/`ES` label left of the speaker shows the active
+  layout and toggles it on click (`EN` US qwerty, `ES` Spanish qwerty with
+  Latin-1 `ñ Ñ ¡ ¿ ´ ¨ · ª º ç Ç ¬` glyphs; dead keys emit their spacing symbol,
+  no composition; code characters live on Right Alt (AltGr) exactly like on
+  real hardware — `AltGr+3` is `#`, `AltGr+2` `@`, `AltGr+`` `[`,
+  `AltGr++` `]`, `AltGr+´` `{`, `AltGr+ç` `}`, `AltGr+º` `\`, `AltGr+1` `|`,
+  `AltGr+4` `~`, `AltGr+6` `¬` — so ES is fully usable for code editing;
+  only `€` is missing, it has no Latin-1 byte). The shell `kbd [en|es]`
+  builtin reads and sets the same state. The
+  cursor tip is the arrow's top-left pixel, so a click lands where it points.
+- **Theme selector** an selector of themes to minios.
+
+## Tiling window shortcuts
+
+Alt is the WM modifier. From the desktop:
+
+| Shortcut | Action |
+|----------|--------|
+| Alt+Enter / F11 | toggle fullscreen |
+| Alt+Arrow keys | snap the window to a screen half |
+| Alt+Home / Alt+End | snap to the top-left / bottom-right quadrant |
+| Alt+`[` / Alt+`]` | shrink / grow width |
+| Alt+`-` / Alt+`=` | shrink / grow both dimensions |
+| Alt+0 / F5 | reset the window to its default position (and size) |
+| Ctrl+Arrow keys | nudge the window by one cell |
+
+The window keeps its size across redraws, so a snap or resize persists instead
+of snapping back to the default.
+
+## Shell window and desktop mouse
+
+The shell runs in a **titled, movable window** on the desktop, not on the whole
+screen:
+
+- **Title bar** ("MiniOS Terminal"): drag it with the left mouse button to move
+  the window, it stays under the pointer, and the terminal content and prompt
+  survive the move.
+- **Scrollbar** on the window's right edge: the mouse wheel scrolls through
+  the scrollback history, and a left click on the scrollbar jumps the view to
+  that position.
+- **Adaptive content**: the terminal keeps its whole history as logical lines
+  and re-wraps them at the current window width on every draw, so resizing or
+  snapping re-flows the text instead of clipping it. A long wrapped line is
+  stored whole and re-wraps cleanly at any width, and the live screen and the
+  scrollback view always agree (no artifacts when scrolling over existing
+  output).
+- **Move and resize from the mouse**: Alt+`[`/`]` change the width, Alt+`-`/`=`
+  change both dimensions, and the arrow/Home/End tiling keys above re-position
+  and re-size the window. Alt+0 / F5 reset it to the default geometry.
+- **Fullscreen** with F11 or Alt+Enter.
+
+Moving, snapping and resizing never lose the current screen: the prompt and any
+typed or echoed text are re-rendered from the logical buffer at the new
+position and size.
+
+## Demo
+
+- [https://www.youtube.com/watch?v=G1H5dkMCvmI](https://www.youtube.com/watch?v=G1H5dkMCvmI)
+- [https://www.youtube.com/watch?v=fhYKG21Cx-A](https://www.youtube.com/watch?v=fhYKG21Cx-A)
+- [https://www.youtube.com/watch?v=M4yVOq6bzMs](https://www.youtube.com/watch?v=M4yVOq6bzMs)
+- [https://www.youtube.com/watch?v=YUYEK7lQt0U](https://www.youtube.com/watch?v=YUYEK7lQt0U)
+- [https://www.youtube.com/watch?v=4aHe6T0bD1o](https://www.youtube.com/watch?v=4aHe6T0bD1o)
+
+## Wiki
+
+- [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/grisuno/miniOS)
+
+## The four repositories
+
+MiniOS is one of four projects that together make up the system. This
+repository holds the kernel, the boot path and the ramdisk; the toolchain it
+carries lives next door.
+
+| Repository | Role |
+|------------|------|
+| [miniOS](https://github.com/grisuno/miniOS) | this repository: kernel, two-stage boot path, ramdisk, shell, editor |
+| [miniGCC](https://github.com/grisuno/miniGCC) | C compiler: C to x86-64 AT&T assembly |
+| [ld](https://github.com/grisuno/ld) | assembler and linker: assembly to a Linux ELF or a CVM module |
+| [cvm](https://github.com/grisuno/cvm) | the CVM / cvm2 bytecode interpreter |
+
+The ramdisk ships prebuilt objects in `progs/`, so `make` produces a bootable
+image with nothing else installed. To build the whole system from source
+instead, clone the other three next to this one:
+
+```bash
+make sources          # clone the missing repositories from GitHub
+make toolchain        # build minigcc, ld and cvm2 from those sources
+make                  # rebuild every ramdisk object and os.img
+```
+
+`make sources` never touches a directory that already exists, so a checkout
+with local work is left alone. `make sources-update` pulls the latest commit
+of each before rebuilding, and `make sources-status` shows which revision
+each one is sitting on.
+
+Expected layout: the directory holding this repository can have any name:
+
+```
+src/
+├── miniOS/     (this repository)
+├── miniGCC/
+├── ld/
+└── cvm/            with cvm/cvm2 inside
+```
+
+Point the build somewhere else with `MINIGCC_DIR=`, `LD_DIR=`,
+`CVM_REPO_DIR=` or `CVM_DIR=`; change where `make sources` clones from with
+`MINIGCC_URL=`, `LD_URL=` or `CVM_URL=`.
+
+Everything on the ramdisk is regenerated from source by `make`: `objects/minigcc.o`,
+`objects/ld.o` and `objects/cvm.o` are compiled from the sibling checkouts, and
+the demo programs (`fib`, `w1`, `minigcc`) are compiled from this repository's
+own C sources in `progs/src/` through the full miniGCC-to-ld chain. Nothing in
+the image is a binary you have to take on trust.
+
+The compiler on the ramdisk is self-hosted: `bin/minigcc.elf` was compiled by
+minigcc itself (generation 3) and linked by `ld` (no GNU as/ld anywhere after
+generation 1), and `make selfhost` verifies the bootstrap fixed point on the
+host. Inside the OS the self-hosted compiler drives the same edit/compile/
+link/run loop as `objects/minigcc.o`.
+
+### Workflow 
+
+<img width="4081" height="7841" alt="diagram" src="https://github.com/user-attachments/assets/2926b49d-6fef-4032-95d9-c5c2d18bf28e" />
+
+## Build and run
+
+```bash
+make            # builds os.img
+make run        # boots it in QEMU with a display
+make run-kvm    # boots it with KVM acceleration
+make run-headless # boots it headless on the serial console (no GUI window)
+make serial     # boots it headless on the serial console
+make test       # behavioural suite (QEMU + serial console)
+make selfhost   # compile minigcc with minigcc, link with ld, check fixed point
+make run-iso    # boots the partitioned image in QEMU (IDE, like USB boot)
+make run-usb    # boots the partitioned image in QEMU over USB-HDD emulation
+make run-usb-fake  # IDE system disk + FAT32 test pendrive on xHCI (see below)
+make run-usb-host BUS=2 ADDR=5  # physical pendrive via QEMU USB passthrough (lsusb for numbers)
+make run-usb-boot  # boots os.usb.img as the system disk over xHCI, no IDE
+make pendrive.img  # builds the 64 MB FAT32 test pendrive (HELLO.TXT + README.TXT)
+make usb-list   # lists candidate target devices for USB writing
+make usb USB=/dev/sdX  # writes the bootable image to a USB pendrive (DD mode)
+make vdi        # converts the image to os.vdi for VirtualBox (hard disk)
+```
+
+### Diagram: Boot path, kernel space & user space
+
+<img width="5760" height="2709" alt="miniOS" src="https://github.com/user-attachments/assets/95ac0420-f891-4d4f-aca1-e663f50f3819" />
+
+### Choosing KVM vs TCG
+
+The default `make run` uses **no acceleration (TCG)**. Use `make run-kvm` for
+KVM. There is a real trade-off, and it is deliberately left to the user:
+
+| Workload | TCG (`make run`) | KVM (`make run-kvm`) |
+|----------|------------------|----------------------|
+| CPU-bound (ring-3 GUI: `piano --bench`) | ~20 fps | ~60 fps |
+| IDE disk I/O (loading DOOM's WAD) | seconds | ~30 s |
+
+KVM makes pure CPU-bound work much faster, but every IDE PIO port access
+becomes a VM-exit, so disk-heavy loads are slower than under TCG, which
+handles port I/O inline. The IDE driver was optimized to reduce those exits
+(see below), which took DOOM's load from ~5 minutes to ~30 s under KVM, but
+the remaining data-transfer reads are inherent to PIO.
+
+The image is attached as an IDE disk. The boot path uses INT 13h extended
+(LBA) reads, which floppy emulation does not provide.
+
+### USB sticks, `os.iso` and VirtualBox
+
+`os.usb.img` is `os.img` plus a one-partition MBR table (the stage 1 code
+ends before the partition area, so nothing executable is overwritten);
+`os.iso` is that same raw disk image renamed for distribution. It is not an
+ISO9660 filesystem and carries no El Torito CD boot record and no UEFI
+loader, so it must always be written in DD mode (`make usb USB=/dev/sdX`,
+Rufus in DD mode, Balena Etcher) and never as an ISO-mode CD. For the same
+reason VirtualBox must attach the image as a hard disk (`make vdi`, then
+attach `os.vdi` on IDE/SATA), never as an optical drive: a virtual CD
+device expects ISO9660 and will not boot. `make usb` refuses the disk
+holding the running root filesystem and any target smaller than the image,
+and asks for `YES` before writing.
+
+### Reading a USB pendrive (xHCI)
+
+The kernel drives USB 3 controllers (`drivers/xhci.c`, polled event
+ring, no interrupts), HID boot keyboards and mice
+(`drivers/usbhid.c`, typed through the same set-1 path as PS/2 so
+window-manager combos keep working) and USB sticks over Bulk-Only
+Transport (`drivers/usbblk.c`, registered as the `usb` block device).
+`usb` prints the controller, the devices, the HID state and the disk
+with its counters. Three ways to attach a stick:
+
+```bash
+make run-usb-fake    # 1. fake: 64 MB FAT32 pendrive.img on xHCI (rootless)
+make run-usb-host BUS=2 ADDR=5   # 2. physical stick via passthrough (lsusb)
+make run-usb-boot    # 3. boot os.usb.img itself from USB, no IDE
+```
+
+Inside MiniOS a data stick reads through the `hd0` disk device:
+
+```
+usb                 # disk present sectors=131072
+fat ls hd0 /        # HELLO.TXT, README.TXT
+fat cat hd0 HELLO.TXT
+```
+
+A present USB disk becomes the block backend (virtio, then USB, then
+IDE). With a FAT data stick attached the backend is the stick, so the
+MiniFS that lives on the IDE image is shadowed while the stick is
+attached: read the stick with `fat`, not MiniFS. Booting from the
+stick itself (`make run-usb-boot`, `make usb`) keeps MiniFS on USB
+with no shadow.
+
+## Other hypervisors and real hardware
+
+QEMU is the reference platform, and every scenario in `test_bdd.sh` runs on
+it. Work is starting to boot the same image on other hypervisors as a
+stepping stone to real hardware, with no changes to the guest image: the
+file under test is always the stock `os.usb.img`.
+
+| Platform | How | Status |
+|----------|-----|--------|
+| VirtualBox | `make vdi`, attach `os.vdi` as IDE/SATA hard disk | boots (optical attach does not, see above) |
+| VMware | `qemu-img convert -O vmdk os.usb.img os.vmdk`, attach as IDE hard disk | to be tested |
+| GNOME Boxes / virt-manager | attach `os.usb.img` directly as an existing IDE disk image | to be tested |
+| Real hardware (USB) | `make usb USB=/dev/sdX`, Legacy/CSM boot, Secure Boot off, USB-HDD first | to be tested |
+
+Known constraints that these tests will probe, carried over from the QEMU
+setup:
+
+- Boot is legacy MBR only (INT 13h LBA). There is no UEFI loader and no
+  El Torito support, so UEFI-only firmware without a CSM module cannot
+  boot the image.
+- Disk drivers are IDE PIO (`drivers/ide.c`), virtio-blk and USB mass
+  storage over xHCI (`drivers/usbblk.c`). A machine or VM exposing the
+  disk exclusively through AHCI/SATA or NVMe will boot stage 1 and stage
+  2 (BIOS reads) but the kernel will not find its MiniFS partition.
+  Keep an IDE/compatibility mode available where possible.
+- The only NIC driver is rtl8139 on QEMU user networking. Other
+  hypervisors need their rtl8139 (or equivalent emulated) device, or the
+  network stays down while everything else works.
+- Audio is the PC speaker plus Sound Blaster 16; input is PS/2
+  keyboard and mouse plus USB HID keyboard and mouse through the xHCI
+  driver (`drivers/xhci.c`, `drivers/usbhid.c`, polled, no interrupts).
+  On machines without PS/2 ports the USB keyboard is the console
+  keyboard: type at the prompt and it answers.
+- Video needs VESA BIOS Extensions (8-bit palette modes preferred, VGA
+  Mode 13h fallback). Headless BMC/KVM consoles without VBE will get
+  the serial console only.
+
+Results from each platform will be recorded here as they land: what
+booted, what failed, and which driver gap it maps to.
+
+## Performance work
+
+- **IDE PIO driver** (`ide.c`): `ide_delay` used to read the IDE control
+  register 1000 times per call as a crude timer, and `ide_select_drive`
+  called it twice per sector. Under KVM that turned a 4 MB WAD load into
+  millions of VM-exits (~5 minutes). It is now a short CPU pause loop, which
+  cut DOOM's load to ~30 s under KVM while keeping TCG fast.
+- **Block cache** (`block.c`): a direct-mapped write-through cache of
+  recently-read disk blocks. MiniFS's directory iteration re-reads the same
+  directory block for every entry (`lsfs` was O(entries x blocks) in disk
+  reads); the cache turns that into one read per directory block plus one per
+  touched inode.
+- **Console output** (`vga_fb.c`): the windowed terminal redrew the whole
+  active line for every printable character (100 000 chars took ~14 s). It
+  now draws only the changed cell, so `ls` and all console output are fast.
+- **SB16 DMA buffers** (`sb16.c`, `stage2.S`, `bootdefs.h`): the DMA ring
+  `[0x90000, 0x94000)` is marked uncacheable (PCD) in the boot page tables so
+  the 8237 DMA controller reads freshly written PCM instead of stale cache.
+  The DSP write wait no longer burns a 100 000-iteration port-read spin on
+  the wrong status bit.
+- **SB16 timer watchdog** (`sb16.c`, `sched.c`): DMA completion is driven by
+  the SB16 IRQ *and* a timer-ISR watchdog (`sb16_poll`). QEMU raises the
+  completion IRQ only once its audio engine consumes a transfer, so a host
+  backend that never consumes left the 7-slot ring filled forever and every
+  later submit refused (the piano buzzed / fell silent). The watchdog re-arms
+  on elapsed guest time, and `sb16_arm` rate-limits both paths to one re-arm
+  per buffer, so the ring always drains at the declared rate. The `sb16`
+  builtin reports the counters (`irq_arms`, `poll_arms`, `submits`, `drops`).
+- **Syscall trace flood** (`kernel.c`): `trace on` no longer prints
+  `SYS_TIME`/`SYS_KBD`/`SYS_MOUSE` (clock/poll reads a pacing loop hammers
+  thousands of times a second). Tracing those made an interactive program a
+  100 ms-per-syscall crawl under TCG; the rest are traced one-to-one.
+- **Multi-sector IDE PIO** (`ide.c`): `ide_read_sectors`/`ide_write_sectors`
+issue one command with `SECCOUNT = count` instead of `count` single-sector
+commands, cutting the per-sector command-setup port traffic of bulk loads.
+Data is still pulled word-by-word through the PIO data port, so the
+remaining minifs load time is bounded by QEMU's 16-bit-only IDE port.
+- **AP LAPIC timer storm** (`smp.c`): the AP timer was programmed with a
+count derived from `PIT_HZ` (`745` at divide-by-16), but the LAPIC counts
+bus clocks, so under QEMU it fired every ~12 us (~84 kHz) instead of 100 Hz.
+An idle 2-CPU guest burned 176% host CPU and pokemon's 60 frames took
+29 s instead of 11.4 s. The local timer now stays masked; the halted AP
+wakes only on the BSP's 100 Hz IPI broadcast (AP idle CPU 0.1%, 60 frames
+back at 11.4 s, `thdemo: PASS` with AP dispatch confirmed).
+
+## Network and https
+
+The kernel owns an rtl8139 NIC under QEMU user networking (slirp): Ethernet,
+ARP, IPv4, ICMP echo, UDP, DNS and a client TCP (SYN handshake, stop-and-wait
+with retransmissions, FIN teardown). `net` shows the counters and
+`net ping 10.0.2.2` sends one ICMP echo.
+
+On top of TCP the kernel speaks TLS 1.2 as a client
+(`tls_handshake`/`tls_send`/`tls_recv`, MiniOS syscalls 201-203):
+ECDHE-RSA/ECDSA with AES-128-GCM, certificate chains verified down to 8
+embedded public roots, hostnames checked against SAN or CN with
+single-label wildcards. Real-world browsing works from the shell:
+
+```
+miniOS> run bin/freedom https://duckduckgo.com
+miniOS> run bin/freedom mini os kernel        # DuckDuckGo search over https
+miniOS> run bin/freedom https://en.wikipedia.org/wiki/Mini
+miniOS> run bin/freedom --dump-dom https://example.com
+miniOS> run bin/freedom --dump-css https://example.com
+```
+
+`bin/freedom` is the headless text browser: a curlfree-style HTTP engine
+with a [FreeDom-style](https://github.com/grisuno/FreeDom) omnibox (an argument that is not a URL is a DuckDuckGo
+search; bare hosts are fetched as `https://`), redirect chasing, chunked
+decoding, an HTML-to-text filter, and `--dump-css`/`--dump-dom` headless
+dumps. The crypto and the roots are host-tested by `make test-tls` (fixed
+vectors plus full TLS 1.2 handshakes against OpenSSL-driven servers,
+including the negative set).
+
+`bin/freedom_wl` is the graphical browser: the same omnibox and fetch
+semantics through the Wayland-to-MiniOS layer into a desktop window
+(100x45 text over the shared 8x8 font, scroll with arrows/PgUp/PgDn or
+the mouse wheel, `q`/ESC quits). `freedom_wl --once <url>` renders one
+frame and exits for scripts; without `--once` it browses interactively.
+Proven live: `freedom_wl --once http://10.0.2.2:8899/README.txt`
+fetches 3193 bytes and the `gfx frames` counter climbs by one.
+
+`bin/wlcomp` is the Wayland-mini compositor (ADR-0024/0025/0026,
+`docs/wayland.md`): up to 8 client surfaces with focus z-order over
+`GFX_PRESENT`, spoken through the header-only `progs/wl/wl_mini.h`
+subset plus the `progs/wl/wl_mbox.h` mailbox transport, with one
+shared palette in `progs/nk_palette.h`. `wlcomp --selftest` prints
+`wlcomp: frame ok (800x360)`; `make test-wl` pins wire, session and
+mailbox bounds. Bare `wlcomp` composites two demo surfaces into
+a desktop window (`wlcomp: presented 2 surfaces (800x360)`, BDD-pinned
+with `gfx frames`); `wlcomp --server` runs the interactive desktop
+(click focuses, drag moves, `t` re-tiles, ESC quits),
+`wlcomp --client` attaches from a second process and `wlcomp --once`
+drains once for scripts. `make wl` boots the whole desktop directly
+(`tools/boot_wl.py`: clean, three clients, server in background).
+Syscalls 243/244/245 stay reserved; kernel `pipe()` is the proper
+later carrier.
+
+## Shell
+
+| Command | Purpose |
+|---------|---------|
+| `help` | command summary |
+| `ls` | list directory entries |
+| `cat <file>` | print file contents |
+| `echo <text>` | print text to the console |
+| `mkdir <name>` | create a directory entry |
+| `rm <file>` | delete a ramdisk file |
+| `mv <src> <dst>` | rename a file within its filesystem |
+| `fat ls <img> [dir]` | list a FAT32 loopback image directory (`hd0` = disk partition) |
+| `fat cat <img> <file>` | print a file from a FAT32 loopback image (`hd0` = disk partition) |
+| `pwd` | print the current working directory |
+| `cd [dir]` | change directory (bare cd goes to root) |
+| `edit <file>` | line editor |
+| `load <file>` | load an ELF (`.o` relocatable, or a Linux executable) |
+| `run <name\|file> [args]` | run a program, an ELF or a `.cvm` module |
+| `<cmd> [args]` | run an ELF from `bin/<cmd>`: the Linux-style command path |
+| `<cmd> > <file>` | redirect command output to a ramdisk file |
+| `<cmd> >> <file>` | append command output to a ramdisk file |
+| `<cmd> 2> <file>` | same capture (MiniOS merges stdout/stderr at the console) |
+| `<a> \| <b>` | pipe stdout of a into stdin of b (sequential capture model) |
+| `cat` (no args) | copy pipeline stdin to stdout (terminates a pipe) |
+| `date` | print the CMOS clock (`HH:MM:SS`), the same clock the taskbar shows |
+| `vol [0-100]` | print the PC-speaker volume; with an argument, set it |
+| `net` | network status (MAC, IP, counters) |
+| `net ping <ip>` | send one ICMP echo |
+| `net dns <host>` | resolve a DNS A record |
+| `catfs <file>` | print a file from the MiniFS filesystem |
+| `lsfs` | list files on the MiniFS filesystem |
+| `hash <file>` | print XXH64 checksum of a file |
+| `ps` | list live processes (pid/ppid/state) |
+| `smp` | per-CPU state (`cur`, `dispatched`, `polls`) and `bad_gs` counter |
+| `sb16` | Sound Blaster 16 diagnostics (presence, mode, ring fill, counters) |
+| `trace [on\|off\|verbose\|quiet]` | syscall tracing, numeric or named+decoded |
+| `strace <cmd>` / `ltrace <cmd>` | one-command verbose trace / no-PLT allocator-trap proxy |
+| `vmmap [pid]` | user-window map + live VMA tree |
+| `schedtop` | scheduler top: cpus, thread groups (tgid, T/P), ticks per thread |
+| `panic` | paint the kernel panic screen (demo, no halt) |
+| `mount [prefix driver]` | list VFS mounts or mount ramdisk/minifs/mem under a prefix |
+| `unmount <prefix>` | drop a mount (busy refuses, `/` is pinned) |
+| `vfstest` | prove mount/unmount/remount lifecycle on `mem:` |
+| `httpd [--once] <port> [root]` | static file server over server-side TCP (GET, VFS root) |
+| `httpd --selftest` | prove the server handshake headless (injected segments) |
+| `clip [text\|clear]` | shared text clipboard (terminal copy, vedit paste) |
+| `vblk` | virtio-blk probe + sector proof (LBA0, MiniFS superblock) |
+| `irqstat` | ISR arrivals: timer/kbd/mouse/sb16 + net/sb16 queues + gfx frames |
+| `bootlog` | timestamped boot phases (ms since power-on) |
+| `gdb regs [pid]` / `gdb dump <a> <l>` / `gdb qemu` | in-OS inspector / remote-GDB hookup |
+| `kstack` | kernel-stack high-water marks + canary |
+| `wm state` | print window manager state |
+| `wm minimize` | minimize the terminal window |
+| `wm maximize` | toggle fullscreen |
+| `wm close` | close the active window |
+| `wm layout [tile\|bsp\|cascade\|fibonacci\|cycle]` | set tiling layout, report active |
+| `sh <script.sh>` | run a shell script (sequential commands, `#` comments) |
+| `piano` | FM piano GUI (`--selftest` for headless, `--bench` for fps) |
+| `file` | Nuklear file browser (`--selftest` lists root headless) |
+| `paint` | Nuklear canvas paint, PNG save/load (`--selftest` proves vectors, file roundtrip and one frame) |
+| `doomedit` | Doom PWAD tile editor: paint a room, preview in 3D, export to `/saves`, boot Doom on it (`--selftest`, `--demo out.wad`) |
+| `topogpt3` | TopoGPT3 transformer inference engine (`-i` for interactive) |
+| `clear` / `poweroff` | console and power |
+
+Redirection captures what the command writes, not what the shell reports
+about it, so `run objects/minigcc.o p.c > asm/p.s` yields assembly a linker
+can consume.
+
+`bin/cp` is a command-path utility: `cp src/fib.c x.txt` copies a ramdisk
+ file without `run` or `load`. It is compiled from this repository's own
+ `progs/src/cp.c` through the miniGCC-to-ld chain, and the source ships on
+ the ramdisk as `src/cp.c`, so the utility can be rebuilt inside the OS by
+ the OS.
+
+`bin/lzss` and `bin/unlzss` are the Okumura LZSS (de)compression tools, both
+ built from a single `progs/src/lzss.c`: `lzss rep.txt rep.lzs` compresses,
+ `unlzss rep.lzs rep.out` decompresses, and the binary picks its mode from
+ `argv[0]` (`unlzss` decodes; `-d` forces decode). The on-disk format is a
+ fail-closed `LZS1` magic plus the original size; decoding rejects a bad
+ magic, a truncated stream and any declared size beyond the expansion bound
+ derived from the input length, so a hostile header can never drive an
+ oversized allocation.
+
+`bin/lz4` and `bin/unlz4` are the LZ4 (de)compression tools, also built from a
+ single `progs/src/lz4.c`: `lz4 rep.txt rep.lz4` compresses and `unlz4
+rep.lz4 rep.out` decompresses, with the same `argv[0]`/`-d` dispatch as
+`lzss`. The codec lives in the kernel (`lz4_kernel.c`, the same one MiniFS
+uses), so the tools are thin front-ends over the MiniOS syscalls 216/217 and
+the on-disk block is exactly the MiniFS LZ4 block format: a 4-byte
+little-endian original size followed by the raw LZ4 stream, so `lz4` output
+interops with the filesystem's own blocks.
+
+`bin/aes` and `bin/unaes` are AES-256-CTR file encryption tools built from a
+single `progs/src/aes.c`, shipped on MiniFS like DOOM and MicroPython:
+`aes <key-hex64> <nonce-hex32> <src> <dst>` encrypts and the matching
+`unaes ...` decrypts. The S-box is generated procedurally from the GF(2^8)
+inverse plus the FIPS-197 affine transform (no magic tables), the mode is
+CTR with no padding, and the fail-closed `AES1` container detects bad magic,
+truncation and size tampering. CTR gives confidentiality only, pair it
+with a MAC if you need integrity.
+
+`unzip` and `zip` are shell builtins that read and write ZIP archives through
+the miniz library (vendored as `third_party/miniz/`). `zip <out.zip> <file...>`
+stores files with default compression; `unzip <archive.zip> [dir]` extracts
+into a directory (default cwd); `unzip -l <archive.zip>` lists entries. Entry
+names hostile data: traversal paths, absolute paths and empty components are
+all rejected, so a crafted archive can never write outside the target
+directory.
+
+`json` (`progs/src/json.c`) is a self-contained JSON validator, pretty-printer
+and query tool. `json <file>` validates and pretty-prints; `json <file> <path>`
+prints the value at a dotted path (`.a.b`, `.a.3`). The parser is fail-closed:
+truncated input, unbalanced braces and unknown escapes all produce a diagnostic
+and exit 1.
+
+## Pipes, mounts, clipboard, fork, httpd
+
+The shell runs pipelines sequentially: `ls | cat` captures the left stage
+through the redirect buffer (builtins, ET_REL) or a pipe override on fd 1
+(ET_EXEC) and feeds it as stdin to the next stage through both stdin doors
+(console reader and fd 0). Linux syscalls pipe/dup/dup2 (22/32/33) work
+for ring-3 threads on shared KFILE pipes with EAGAIN/EOF semantics.
+`2>` is an alias of `>` because MiniOS merges stdout and stderr at the
+console. `panic` paints the kernel panic screen (vector, RIP/RSP, five
+frame-pointer returns) without halting; real faults halt through the same
+screen from the fault handler, which keeps the serial forensics first.
+
+VFS mounts are dynamic: `mount` lists prefix, driver and open refs,
+`mount <prefix> <ramdisk|minifs|mem|fat>` registers, `unmount <prefix>` drops
+(refused with -EBUSY while handles are open, `/` is pinned). Matching is
+longest-prefix-first and `mem:` is a volatile in-memory driver that proves
+the lifecycle (`vfstest`). The TCP stack answers passive open (bind 49,
+listen 50, accept 43 plus the libc-style net_listen/net_accept), and
+`httpd` serves static files from any VFS root over it (GET only, 404/400
+fail-closed); `httpd --selftest` drives a full handshake through the
+production demux with injected segments. The shared clipboard lives in the
+kernel behind MiniOS syscalls 249/250 (ABI v10) and the wl_mini set/get
+messages; `clip` publishes, prints and clears it. Terminal selection and
+vedit paste on top are Phase 2. `fork()` (57) duplicates isolated
+processes with copy-on-write pages shared read-only and privatized by a
+#PF resolve path; `mrun bin/forktest.elf` proves both-direction isolation
+and the exit code. Legacy pid-0 and CLONE_VM callers get -ENOSYS.
+
+`execve()` (59) replaces the caller's image in place and completes the
+UNIX composition fork alone cannot give: the caller keeps pid, parent,
+children, descriptors and limits while its window, VMA context, brk view,
+stack, FPU state, thread-local base and name are rebuilt around the new
+ET_EXEC/ET_DYN program, entered directly without returning. Ring-0
+relocatables refuse with -ENOEXEC (they load only through the SPAWN trust
+gate), a thread calling `execve` refuses with -ENOSYS while already-live
+sibling threads die with the old image like on Linux, argv is bounded
+(32 words of 255 chars, -E2BIG past it) and copied per byte so a racing
+sibling can only change content, never overflow. There is no CLOEXEC in
+v1 (descriptors survive like after `fork`) and no environment (every
+exec starts empty); both are documented, not silent. `mrun bin/execho.elf`
+proves it headless: fork, exec lxhello with argc 2, reap exit 2, fail a
+ghost exec with -ENOENT, `execho: ok`. `mrun bin/execthr.elf` proves a
+spinning sibling thread dies with the old image instead of faulting on
+the freed window.
+
+## Storage and boot hardware
+
+`drivers/pci.h` owns PCI config-space access for every device (rtl8139
+uses it, virtio-blk uses it). `vblk` proves the virtio-blk driver: with
+the image attached as `-device virtio-blk-pci`, it reads LBA 0 and the
+MiniFS superblock off the virtio queue and checks both magics, proving
+the fast path serves the same bytes as IDE PIO (request header and
+status live on the heap because KASLR slides statics out from under
+DMA). `make uefi` builds `BOOTX64.EFI` plus `uefi.img` (MBR + FAT16,
+`EFI/BOOT/BOOTX64.EFI`); under OVMF the stub prints its banner, a full
+memory map and an LBA 0 read through Block I/O. USB mass storage and
+USB HID keyboard/mouse over xHCI are done (`drivers/xhci.c`,
+`drivers/usbblk.c`, `drivers/usbhid.c`; `make run-usb-fake` to try a
+FAT32 stick, `usb` to inspect it). E1000 and AHCI remain surveyed
+future work: they need the same PCI discovery virtio-blk already uses.
+Runtime TrueType stays out: stb_truetype is float-heavy
+and the kernel builds -mno-sse, so fonts remain build-time bitmaps.
+
+## Nuklear node editor
+
+MiniOS ships Nuklear as a static Linux ELF at ring 3, built from the upstream
+single-header immediate-mode UI library. The demo app is a visual node editor:
+a low-code tool for the CVM that compiles a dataflow graph into a `.cvm` module.
+
+```
+miniOS> nuklear                     # GUI: drag nodes, wire pins, compile
+miniOS> nuklear --selftest          # headless: renders one frame, proves pipeline
+miniOS> nuklear --demo cvm/demo.cvm # compiles a fixed (2+3)*4 graph
+miniOS> nuklear --compile src/graph.txt cvm/out.cvm
+miniOS> run cvm/out.cvm             # run the compiled module
+```
+
+The node editor supports Number, Add, Sub, Mul, Div, Neg, Print and Exit nodes.
+Pins are wired by dragging; Compile writes a `.cvm` module to the ramdisk.
+`--selftest` renders one frame through the full graphics pipeline and verifies
+the pixel landed in the framebuffer (`nuklear: frame ok (800x360)`).
+
+## File browser
+
+I ship `file` as a static ring-3 Nuklear browser over the unified
+filesystem (ramdisk first, MiniFS fallback) through the DIR_LIST syscall
+(241). Text kinds open in vedit via SYS_SPAWN, `.o`/`.elf` spawn directly,
+`.cvm` spawns through `/objects/cvm.o`, and png previews decode in-app
+with stb_image. Dispatch comes from `etc/association` (`ext|program`
+lines, `shell` for executables, `internal` for the png preview).
+
+```
+miniOS> file               # GUI: navigate, open, run, preview
+miniOS> file --selftest    # headless: assoc vectors plus a live listing
+```
+
+## Paint
+
+I ship `paint` as a static ring-3 Nuklear canvas (320x200) with PNG
+save and load. There is no OpenGL or GLFW anywhere in this port: MiniOS
+has no GPU stack, only the 8-bit composited back-buffer, so the program
+renders into the shared `NK_BACKBUF_ADDR` window and presents through
+`SYS_NK_FRAME` (220) like every other NK app.
+
+The layout keeps an honest promise: the white canvas cell is exactly
+320 pixels wide, so every white pixel shown is paintable. Tools, colors
+and buttons live in the side panel instead of above an oversized slot.
+
+```
+miniOS> paint                  # GUI: draw, save to /drawing.png
+miniOS> paint /art/mono.png    # GUI preloading a file
+miniOS> paint --selftest       # headless: vectors, png, file, frame
+```
+
+Tools are brush, line, rect, circle, fill and eraser with sizes 1/2/4,
+and a 16-swatch picker drawn from exact hybrid-palette entries (black,
+the 14 saturated accents, white), so a saved file reloads pixel
+identical. Shape tools rubber-band from a backup copy taken at stroke
+start. The status row always shows the active tool, swatch, size and
+the last file result, and the app quits with ESC, Alt+F4 or its Quit
+button.
+
+PNG output needs no encoder dependency: the writer emits 8-bit
+truecolor PNG with stored-deflate blocks, CRC-32 and Adler-32, all
+self-contained in `progs/paint/paint.c` (one file per contract, every
+bound in the config block). Loading decodes through stb_image and
+nearest-maps onto the hybrid palette, clamped top-left with white
+margins. Save paths go through a fail-closed gate (printable ASCII,
+bounded, `.png` suffix, no `..` traversal). The dock carries
+`Paint|icons/paint.png|paint`; the icon converts from `images/paint.png` through `tools/gen_desktop_pngs.py` like every other icon.
+
+Proof, all pinned: `paint --selftest` runs the core vectors, a 2x2
+encode/decode roundtrip (`paint: png ok`), a save/load roundtrip
+through the unified filesystem (`paint: file ok
+(/paint_selftest.png)`) and one composited frame (`paint: frame ok
+(800x360)`); `make test-paint` locks the mirror vectors plus the PNG
+byte-layout pin (192278 bytes for the canvas) on the host. The frame
+probe scans the whole framebuffer for a unique 4-pixel pattern instead
+of trusting the window origin report, so it holds in any video mode.
+Two honest limits: drag strokes have no headless proof (the
+hit-testing shares the blit rect by construction, so a landed blit
+implies aligned input), and the 16 swatches tie with the 6x6x6 cube on
+some entries, which the selftest asserts by color rather than index.
+
+Build from source:
+
+```bash
+make progs/bin/paint.elf    # or just `make` to rebuild everything
+make test-paint             # host vectors
+```
+
+## Doom map editor (doomedit)
+
+I edit Doom maps inside the OS and play them without touching the
+shipped IWAD. `doomedit` is a static ring-3 Nuklear app (one file,
+`progs/doomedit/doomedit.c`) with a tile canvas, wall/door/floor
+brushes, player start, exit switch and the full shareware-verified
+thing palette, plus a live DDA raycaster preview in the style of the
+sibling `../raycastlib` checkout. Export compiles the grid to a
+multi-sector E1M1 PWAD snapshot in `/saves`; Run (button or Ctrl+R)
+boots the shipped Doom on it with `-file`, and the next reboot
+returns to the original game unless the snapshot is launched again.
+Every same-style floor region is its own sector, so rooms differ in
+light, floor height and flats, and `+` door cells become tagged door
+sectors with working D1 push-doors on both faces. `,` paints dark
+low-light floor, `~` digs a damaging nukage pit. The level combo
+offers nine bundled maps (from `Hangar of Dawn` to `Gatehouse` and
+`Nukage Mills`, each a few hundred bytes of grid text compiled into
+the binary), and the Random button grows connected rooms joined by
+corridors, then splits them with a door-pierced wall divider and
+stains dark patches plus one nukage pool, retried until the validator
+accepts it, so every session can play something new. Painting any
+tile returns the combo to `Custom`. The desktop dock carries a
+dedicated DoomEdit shortcut (`DoomEdit|icons/doomedit.png|doomedit` in
+`progs/etc/shortcuts`, icon converted from `images/doomedit.png` by `tools/gen_desktop_pngs.py`), so the editor launches with one click.
+Snapshots survive image
+rebuilds through the same `saves/` preservation that protects game
+saves. The shareware `-file` refusal in `progs/doomgeneric/d_main.c`
+is relaxed to a notice (the registered-version lump check stays), and
+`tools/doom_pwad.py` implements the same writer in Python for host
+use (`build`, `check`, `info` verbs, fail closed on every malformed
+grid or mutated file). The BSP stays one trivial subsector under a
+single root node, which needs no ordering and keeps sight, collision
+and clipping correct; the checker pins multi-sector invariants (sized
+REJECT, paired sidedefs, tagged door lines, unique sector tags).
+
+```
+miniOS> doomedit                                # GUI editor
+miniOS> doomedit --demo /saves/dmap0.wad        # headless demo room
+miniOS> doomedit --preset 8 /saves/dmap1.wad    # bundled level (0-8)
+miniOS> doomedit --check /saves/dmap0.wad       # validate a snapshot
+miniOS> run doomgeneric.elf -file /saves/dmap0.wad mini_autoframes 30
+```
+
+Build from source:
+
+```bash
+make progs/bin/doomedit.elf   # or just `make` to rebuild everything
+make test-doomedit            # host vectors plus the C/Python roundtrip
+```
+
+## Nuklear themes
+
+I theme every Nuklear app (file, nuklear, piano, vedit, paint) from one
+shared loader (`progs/nuklear/nuklear_theme.c`). Themes live in `etc/themes` as
+plain `key r g b` files; `etc/themes/current` names the active one
+(`dark` by default; `light`, `amber`, `forest` and `slate` ship too).
+Values sit on the 6x6x6 cube so the 8-bit backend maps them exactly.
+Click the theme name in the taskbar (next to EN/ES) to cycle, or write
+it directly and relaunch the app:
+
+```
+miniOS> echo light > etc/themes/current
+miniOS> file               # now in light
+```
+
+Every graphical app quits with ESC or Alt+F4 as well as its Quit
+button, so closing never depends on the small title-bar X.
+
+Build from source:
+
+```bash
+make progs/bin/nuklear.elf    # or just `make` to rebuild everything
+```
+
+## One-boot comprehensive test (`src/test_all.sh`)
+
+`sh src/test_all.sh` runs the full non-interactive test suite inside a single
+QEMU boot. Every command prints a `PASS:` marker; the host runner greps the
+serial log for these markers. The script ships on the ramdisk.
+
+```bash
+tools/boot_run.sh "sh src/test_all.sh" --timeout 120
+strings boot_run.log | grep -c 'PASS:'   # expect 96
+```
+
+Categories tested (81 PASS):
+- Boot/help, filesystem (ls/mkdir/cd/pwd/rm/cp), redirects (>  >>)
+- Builtins: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, hash
+- Toolchain: minigcc.o compile, ld.o link, run ELF, run CVM
+- Bare names without `run` prefix
+- Self-host: minigcc.elf compiles, ld.o links, run
+- Codecs: lzss/lz4/aes roundtrips, error cases
+- JSON validate/query
+- ZIP: hostile archive (traversal refused), host-produced archive
+- ELF programs: lxhello, cpl, kmem, nx, mmreuse
+- CVM modules: fib, w1
+- Lisp: inline eval, in-OS suite
+- Selftests: xxhash.o, dlmalloc.o
+- Heap stability (repeated CVM runs), tracing
+
+No interactive commands, no external server dependencies.
+
+## Editor
+
+`edit <file>` opens a nano-like line editor over a ramdisk or MiniFS file
+(extracted to `kernel/editor.c`, contract in `editor.h`). The status line
+shows the filename, current line number and a `*` when the buffer is modified.
+
+| Key | Action |
+|-----|--------|
+| `h` | help |
+| `l` | list the buffer |
+| `p N` | print line N |
+| `.` | print the current line (no argument) |
+| `g N` | go to line N |
+| `n` / `b` | next / previous line (advance or rewind the cursor) |
+| `/ text` | search forward for `text` and jump to the match |
+| `=` | show status (current line, total lines, modified flag) |
+| `l a b` | list lines a through b |
+| `e N` | replace line N with the next line typed |
+| `a` | append the next line typed |
+| `i N` | insert before line N |
+| `d N` | delete line N |
+| `w` | save |
+| `x` | save and quit |
+| `q` | quit, refusing to discard unsaved changes |
+| `q!` | quit, discarding changes |
+
+A file too large for the buffer is loaded read-only: the editor refuses to
+write it back rather than silently dropping the part it never read.
+
+### Visual IDE (vedit)
+
+`vedit [file]` is the fullscreen visual IDE (ring-3 static ELF on
+MiniFS, one file: `progs/vedit/vedit.c`, full guide in
+`progs/vedit/README.md`). `^A` is Control+A; `M-w` is ESC followed by
+`w` within one second — the status row shows `META` while armed
+(do not hold Alt — that just types the letter; a lone ESC quits).
+`M-SP` (ESC, Space) is the reliable set-mark,
+since Ctrl+Space arrives as plain space on PS/2. If nothing responds,
+focus the graphics window (`Alt-Tab`) — the terminal may own the
+keyboard. Buttons on the top bar mirror the main shortcuts: Save,
+Find, Name, Run, Link, Buf, M-x, Done.
+
+| Key | Action |
+|-----|--------|
+| arrows, Home/End, PgUp/PgDn | move |
+| type, Enter, Tab, Backspace/Delete | edit (Enter splits with auto-indent) |
+| `^O` / `^S` | save (keeps a `~` backup; second save forces when the disk changed) |
+| `^N` | save-as |
+| `^W` | find (wraps once) |
+| `^G` | go to line |
+| `^R` | save, then build/run by extension (`.c`→minigcc, `.s`→ld+run, `.lua`/`.py`/`.lisp`→runners) |
+| `^L` | save, link `asm/<base>.s` (`elf`\|`cvm`), run the artifact |
+| `^D` | dump buffer to the console with highlight |
+| `^X` | save and quit |
+| Esc | quit without saving |
+| `^A` / `^E` | beginning / end of line |
+| `^@` (Ctrl+Space) or `M-SP` | set mark |
+| `M-w` / `M-k` | copy / kill region (8-deep kill ring) |
+| `M-W` | copy region to the clipboard |
+| `^K` / `^Y` | kill line / yank |
+| `M-v` | paste from the clipboard |
+| `M-f` / `M-b` | word forward / back |
+| `M-c` / `M-l` / `M-u` | capitalize / lower / upper word |
+| `^T` | transpose characters |
+| `^]` | jump to the matching fence |
+| `^U` + digits | universal argument (repeats motions, kills, inserts) |
+| `M-s` / `M-r` | incremental search forward / reverse (Enter keeps, ESC restores) |
+| `M-n` | repeat last search |
+| `M-%` | query replace (`y`/`n`/`!`/`q`) |
+| `M-q` | refill paragraph to 72 columns |
+| `M-2` / `M-1` / `M-o` | split / single / switch pane |
+| `M-(` `M-)` `M-e` | record / stop / play keyboard macro |
+| `M-x` | any of 46 named commands (`help` lists them) |
+| `M-!` | run a program, capture stdout into `*shell*` |
+| `M-#` | filter the region (or buffer) through a program |
+
+`M-x` highlights: `find-file` / `view-file` / `insert-file` /
+`select-buffer` / `next-buffer` / `kill-buffer` / `list-buffers` (8
+buffers, recent-file history), `replace-string`, `search-forward-magic`
+(`.` `*` `^` `$` `[class]`), `grep` into `*grep*` with `next-error`,
+`bind-to-key`, `overwrite-mode`, `read-only`, `count-words`,
+`compile`, `link`, `paste`, `copy-to-clipboard`. Startup runs
+`/etc/vedit.rc` then `./vedit.rc` (`bind <key> <cmd>`, bare commands).
+
+Mouse drag in the code area selects into the kernel clipboard
+(syscalls 249/250, 4 KB, fail closed, `SEL` flag); the shell `clip`
+builtin shares the slot. Status row:
+`name [Lang] B1/8 Ln 12/300(4%) Col 5 RO OVR REC MRK ARG SEL msg`.
+Limits: 255-char lines, 4096 lines / 1 MB per buffer, no undo.
+
+## Program formats
+
+MiniOS runs three kinds of program:
+
+- **Relocatable objects** (`.o`): linked at load time against the kernel's
+  libc symbol table. They run at ring 0 as kernel extensions.
+  `objects/minigcc.o`, `objects/ld.o` and `objects/cvm.o` ship this way.
+- **Linux executables** (`ET_EXEC` / `ET_DYN`): static binaries run
+  unmodified through the x86-64 `syscall` ABI at ring 3 under hardware
+  page protection. A binary built on the host can be used simply by
+  copying it onto the ramdisk. This is how DOOM, Quake 2, Lua,
+  MicroPython, and TopoGPT3 run.
+- **CVM modules** (`.cvm`): stack bytecode produced by `ld -f cvm` and
+  executed by the cvm2 interpreter in `objects/cvm.o`. An x86-64 JIT
+  compiler compiles each module to native code at load time; the output
+  is identical to the interpreter and the JIT is transparent to the user.
+
+Ring-3 syscall probes (static ELFs, no libc, raw `syscall` only) pin the
+boundary headlessly: `mvrn.elf` (rename creates, moves, refuses missing
+sources and kernel pointers, unlinks), `execho.elf` (fork plus execve
+plus wait), `execthr.elf` (a spinning sibling thread dies on exec),
+`aslr.elf` (self-exec address comparison), `burn.elf` (brk plus mmap
+plus CPU burn with checksum `417386880`). Probes enter through a hand
+written `_start` that calls into C: a C `_start` function observes the
+entry stack misaligned by 8 and any vectorized spill faults with #GP,
+which is why every probe shares the `call lmain` shape.
+
+## CVM JIT compiler
+
+Every `.cvm` module is compiled to native x86-64 code at load time by a
+baseline JIT. The JIT is transparent: output is byte-identical to the
+interpreter, and the full miniGCC compiler (`minigcc.cvm`) runs correctly
+under JIT inside the OS.
+
+The JIT compiles each function independently into a native code buffer on
+the kernel heap (executable via 2 MB pages). Cross-function control flow
+(CALL/RET) uses the interpreter's frame stack, so the ABI is unchanged.
+If JIT initialization fails, the interpreter takes over transparently.
+
+On the host the JIT buffer uses `mmap` (RWX); inside MiniOS it uses
+`malloc` (the kernel heap is already executable). Source files:
+`cvm_jit.c` (compiler), `cvm_jit_x86.c` (x86-64 emitter),
+`cvm_jit_help.c` (runtime helpers).
+
+## Ramdisk layout
+
+The ramdisk ships organized by kind, and the shell's `ls <dir>` lists each
+directory:
+
+| Directory | Contents |
+|-----------|----------|
+| `objects/` | ET_REL toolchain: `minigcc.o`, `ld.o`, `cvm.o`, demo `.o` |
+| `bin/` | Linux ELFs + command-path utilities (`cp`, `freedom`, `micropython`, `lisp`, `topogpt3`) |
+| `cvm/` | CVM modules: `fib.cvm`, `w1.cvm`, `minigcc.cvm` |
+| `src/` | C sources for every program on the ramdisk |
+| `asm/` | miniGCC assembly (`*.s`) for the toolchain-built programs |
+| `docs/` | HTML and other documentation fixtures |
+| `topogpt3/` | TopoGPT3 model: `topogpt3.c`, `topogpt3.fp16` (47 MB weights), `vocab.bin` |
+
+The ramdisk is flat, the `/` in a name is data, and `tools/mkramdisk.py`
+derives each name from the path relative to `progs/`.
+
+## Doom
+
+MiniOS ships a doomgeneric port that runs DOOM as a static Linux ELF at
+ring 3. The engine compiles from `progs/doomgeneric/` with the platform
+layer in `doomgeneric_minios.c`. The desktop runs on a VESA linear
+framebuffer (800x600x8 by default, falling back to 640x480 and Mode 13h);
+DOOM renders its 320x200 frame into a kernel back-buffer and the kernel
+composites it onto the desktop in a titled window (`SYS_DOOM_FRAME`, 211),
+centered on the screen, so the shell window stays visible while you play.
+The shareware WAD (`doom1.wad`) is bundled on the minifs.
+
+```
+miniOS> run doomgeneric.elf
+```
+
+| Key | Action |
+|-----|--------|
+| WASD | move |
+| Ctrl | fire |
+| Space | use / open |
+| Arrow keys | turn / strafe |
+| 1-7 | weapon select |
+| Shift | run |
+| Esc | menu |
+
+Sound effects play through the QEMU PC speaker: the kernel drives PIT
+channel 2 (ports 0x42/0x43) plus the gate bit on port 0x61, and the sound
+module in `i_minios_sound.c` maps each DP lump (1-byte frequency index +
+1-byte duration in 70 Hz ticks, after a 2-byte priority) through the
+original Doom PC-speaker frequency table. QEMU must wire the PC speaker
+to the audio backend, `-machine pc,pcspk-audiodev=<id>` in addition to
+`-audiodev <backend>,id=<id>` (the `run` target sets both via
+`QEMU_AUDIO`). A bare `-audiodev` alone routes nothing, so the beeps are
+silent without the machine option.
+
+The level music also plays on the same PC speaker with NES-style
+pseudo-polyphony. A `music_pcspeaker_module` in `i_minios_sound.c` decodes
+each MUS lump (the Doom music format, `D_E1M1` etc. at the stock 140
+ticks/sec) straight from its interleaved event stream, splits the sounding
+notes the way a NES split its voices: the lowest bass note becomes a
+sustained pedal (the triangle voice) while only the top few melody notes
+are fast-arpeggiated round-robin, holding each for 7 ms. The ear hears a
+strummed chord with a solid bass foundation instead of every voice chopped
+at equal length, the chiptune broke-chord trick, applied so dense
+arrangements stay clear. The module is
+picked when `snd_musicdevice` is the PC speaker, and `S_UpdateSounds` was
+re-enabled in `d_main.c` so both the sfx note sequencer and the music
+decoder are advanced each frame (they were previously never polled).
+
+The binary is built with the host toolchain (static, no-pie) and placed
+at `bin/doomgeneric.elf` on the minifs. To rebuild from source:
+
+```bash
+make doomgeneric.elf    # or just `make` to rebuild everything
+```
+
+The kernel provides four custom syscalls for the port: `time_ms` (204),
+`kbd` (205), `palette` (206) and `kbd_raw_mode` (207). VGA Mode 13h is
+entered through `sys_vga_mode` (208), which tells the kernel to stop
+touching VGA text hardware while the game runs.
+
+## Quake 2
+
+MiniOS ships a quake2generic port that runs Quake 2 as a static Linux ELF at
+ring 3. The engine compiles from `progs/quake2generic/` with the platform
+layer in `q2generic_minios.c`. It reuses the DOOM back-buffer infrastructure:
+the software renderer writes 320x200 8-bit paletted pixels into the kernel
+back-buffer at `DOOM_BACKBUF_ADDR` (0x0B000000), and `SYS_DOOM_FRAME` (211)
+composites it onto the desktop as a titled window. The window title is set to
+"Quake 2" via `SYS_Q2G_SET_TITLE` (223).
+
+```
+miniOS> run bin/quake2generic.elf +set basedir .
+```
+
+The engine requires `baseq2/pak0.pak` on the MiniFS. This image ships the
+**full retail pak** (184 MB, 3307 files), so every campaign mission (Outer
+Base, Warehouse, Installation, Command, Boss1/2, Fact, Hangar, Jail, Mine,
+Power) and every weapon, item and monster model is present and playable. The
+retail player model ships separately as `pak1.pak`. A small `pak2.pak` that
+aliased the shareware demo maps as base1/2/3 was removed once the full pak
+made it redundant.
+
+Controls: WASD to move, Ctrl to fire, Space to use/open, arrow keys to
+turn/strafe, the mouse to look, Shift to run, Esc for the menu. Sound is
+stubbed (the engine runs silently); the SB16 PCM path could be wired in the
+future. Rebuild from source with `make progs/bin/quake2generic.elf`.
+
+## The Quake 2 bring-up: memory layout as a story
+
+Getting Quake 2 to run was less about the game and more about the memory
+model the kernel had to grow into. This is the story of those decisions and
+of the two subtle bugs they uncovered, because they are the kind of bug that
+only exists after you move a memory map.
+
+**Why Quake needs so much memory.** The retail Quake 2 loads an entire
+level's worth of data up front: the BSP world, every model and sprite the
+mission references, the collision and drawing caches, plus the game's own
+hunk/zone allocations. With the full 184 MB pak the game reaches for roughly
+150-180 MB of the user window while loading a mission. The original layout
+gave ring-3 programs a 128 MB window and parked the graphics back-buffer
+inside it at 124 MB, which left the game roughly 120 MB to mmap into. That
+was never going to be enough, and it failed in the honest way: the game ran
+out of the window and the loader rejected further allocations.
+
+So the window grew. `USER_LOAD_END` went from 128 MB to **192 MB**, and the
+kernel heap moved up to sit right above it (192 MB to 384 MB). Growing the
+window has a cascade of costs that all had to be paid together:
+
+- **More page tables.** The user window runs on eager 4 KB page tables so the
+  no-execute bit works. A 192 MB window needs 94 page tables (one 4 KB table
+  per 2 MB PD slot). The page-table zone grew from 256 KB to **384 KB**
+  (`PT_USER_TABLES_BYTES`), living at `[0x10000, 0x70000)`, below the kernel
+  image. This zone is the single most dangerous address range in the kernel:
+  it is dedicated, so *nothing else* may claim a page inside it.
+- **Move the back-buffer up.** The DOOM/Quake back-buffer was inside the
+  window at 124 MB, exactly where the game wants to mmap. It moved up to
+  **176 MB** (`DOOM_BACKBUF_ADDR`), and the allocators are capped just below
+  it so the game can never mmap over the pages the kernel maps for rendering.
+- **Move KASLR up.** The kernel image's random physical base must sit above
+  the window and the heap. `KASLR_MIN_ADDR` rose to 0x1A000000 so the kernel
+  can never land inside either.
+- **More RAM.** A 192 MB window, a 192 MB heap and a KASLR range that tops out
+  near 600 MB simply do not fit in the old 512 MB guest. The image boots with
+  **1 GB** (`-m 1G`, mirrored in `test_bdd.sh` and the MCP bridge).
+- **A bigger filesystem.** The full retail pak is 184 MB. MiniFS grew from
+  128 MB to **256 MB** to hold it, the engine, DOOM and MicroPython together.
+
+With the memory in place the game stopped crashing on allocation and started
+loading missions. Two bugs remained, and both were invisible until the map
+grew, which is exactly why they are worth writing down.
+
+**Bug one: the syscall trampoline silently downgraded the game to ring 0.**
+The syscall entry decides how to return: ring-3 callers get `sysretq`,
+the ring-0 `.o` toolchain gets `jmp *%rcx`. At the time, the decision
+inspected the restored stack pointer against the user window, and the
+window bound for that decision, `USER_WIN_HI`, was still `0x07400000`
+(116 MB) after the window grew to 192 MB. The game's stack sits at the
+*top* of the window, near 192 MB, so every syscall saw
+`rsp >= USER_WIN_HI` and took the ring-0 return path. The game ran in
+supervisor mode for its whole life. The tell was the crash dump:
+`cs=8` (kernel) with a user stack pointer, a combination that is impossible
+for a real ring-3 fault, and it could only mean the game had been running at
+ring 0. The fix was a one-line correction: `USER_WIN_HI` to `0x0C000000`.
+Since then the decision moved to the caller RIP — RSP is attacker-settable
+without faulting while RIP is constrained to executable mappings, so an
+`RSP=0` spoof can no longer retain CPL0 — and the entry range-checks the
+pid, failing closed with `-EFAULT` before touching any per-pid state.
+This matters beyond Quake: any ring-3 program whose stack sits high in a
+grown window would silently lose its protection.
+
+**Bug two: the LAPIC page directory erased the user window's page tables.**
+Every boot, `smp_init` parks a dedicated page directory for the local APIC
+and zeroes it. It was parked at physical `0x60000`, which the comment called
+"the dead boot staging buffer." It had been dead, until the page-table zone
+grew. Index 82's user page table (the slot that maps roughly 165 MB of the
+window) now lives at exactly `0x60000`. So on every boot `smp_init` wrote
+zeros over the very page tables that made the game's 165 MB usable, and the
+game faulted on a "page not present" the moment its mmap reached that region.
+Diagnosis needed three steps: a page-table walk at the fault showed `pte=0`
+while the boot-time dump showed it present; boot-step instrumentation isolated
+the zeroing to `smp_init`; and reading the code found the collision. The fix
+moved `LAPIC_PD_ADDR` to `0x70000`, just above the page-table zone and below
+the syscall kernel stack. The lesson is the one the memory-map hazard contract
+already warned about: the page-table zone is a jigsaw, and a fixed low-memory
+address that was "dead" stays dead only until the map grows into it.
+
+**The regression that taught the rule.** After Quake worked, DOOM showed a
+black window while the game ran fine (you could hear it and drive the menu).
+Quake and DOOM share the back-buffer infrastructure, so the back-buffer
+mapping was not the problem, the *address DOOM wrote to* was. The kernel and
+Quake had moved to `0x0B000000`, but DOOM's platform layer still rendered into
+the old address `0x7C00000`, so the kernel composited an empty buffer. Every
+consumer of a moved address has to move together; the fix was one constant in
+`doomgeneric_minios.c`.
+
+**Bug three: the back-buffers were mapped from an unaligned heap pointer.**
+The DOOM and Nuklear back-buffers are `kmalloc` regions whose pages are mapped
+into the user window one PTE at a time. x86 masks a PTE's low 12 bits into
+flags, so mapping from a 16-byte-aligned pointer silently drops the offset:
+the first mapped page starts at `buf & ~0xFFF`, up to 4095 bytes *before* the
+buffer. A guest rendering its whole frame to the mapped address then overwrites
+the heap chunk in front of the buffer, and when that chunk is a live `KFILE`
+the next seek reads pixel data as a pointer (`kfile: corrupt handle`,
+`kfree: wild pointer`, then a no-recovery `#GP`). It only surfaced through
+`SYS_SPAWN` and after a few spawned programs, because that is when the
+vulnerable chunk in front of the buffer holds a live handle: DoomEdit's Run
+button and the file browser opening a text file in vedit reproduced it every
+time, while the same binaries run from the shell did not. The fix over-allocates
+one page and rounds the base up (`mm_page_aligned_alloc`) and asserts
+`phys & 0xFFF == 0` at boot.
+
+The takeaway is not the constants, it is why they are the way they are. A
+window sized for the biggest ring-3 program, a page-table zone nothing else
+may touch, a back-buffer above the mmap ceiling, a KASLR range above the heap,
+and RAM and a filesystem large enough for the payload are not independent
+tuning knobs. They are one layout, and changing any of them means re-checking
+every fixed low-memory address that assumed it was alone.
+
+
+## Minicraft
+
+MiniOS ships a Minecraft-like voxel walker as a static Linux ELF at ring 3,
+under the same contract as the DOOM and Quake 2 ports: host gcc,
+`-static -no-pie`, no MiniOS source compiled by miniGCC. It renders a
+64x64x32 block world with a per-pixel DDA raycaster (Amanatides and Woo)
+into the 320x200 game back-buffer and presents it with `SYS_GFX_PRESENT` /
+`BUF_GAME`, so the kernel composites it as a titled window exactly like
+DOOM. Palette, keyboard, mouse, time and VGA mode arrive through the
+canonical syscalls in `progs/minios_abi.h`; the whole game is one file,
+`progs/minicraft/minicraft.c`, plus the `Minicraft` desktop shortcut and
+the `addons/minicraft.yaml` host addon. The world has terrain with trees
+and lakes, per-column skylight, water that is visible but not solid, face
+shading, distance fog and dither, an AABB player with gravity, jumping and
+one-block autostep, and a 9-slot hotbar with a block inventory.
+
+```
+miniOS> run minicraft.elf        # or bare: minicraft
+miniOS> run minicraft.elf &      # background: shell stays usable, game keeps PS/2 focus
+```
+
+| Key | Action |
+|-----|--------|
+| WASD | move (W walks to the crosshair) |
+| Mouse / arrow keys | look (pitch clamped to +-72 deg) |
+| Space | jump (fly mode: rise) |
+| Shift | sprint x1.6 |
+| F | toggle fly (Space up, C down) |
+| 1-9 / wheel | hotbar select |
+| Left click | break block (adds to inventory) |
+| Right click | place selected block (spends inventory) |
+| R | save world |
+| T | rescue to surface |
+| N | new world |
+| C | level view |
+| P | position report on serial |
+| Esc | save and quit |
+
+The HUD shows `X Y Z F:<facing>`, the targeted block and distance,
+the selected block and its count, wood progress `W<n>/10`, a `FLY`
+flag, and a `T:SALIR` hint when buried below the surface. The game has
+one goal to give it shape: collect 10 WOOD, which prints
+`minicraft: GOAL firewood x10 DONE` on the serial console and
+`GOAL DONE` on the HUD. The world, player state and inventory persist
+in `/saves/minicraft.map` and survive image rebuilds through the same
+`saves/` preservation that protects the other games. Mobs respawn 10 s
+after dying (`MC_RESPAWN_MS`), but at night (`day_light` below
+`MC_NIGHT_LIGHT`) dead creepers regenerate after 3 s
+(`MC_CREEP_NIGHT_MS`), so the dark stays dangerous, while by day dead
+pigs regenerate after 3 s (`MC_PIG_DAY_MS`), so there is always pork
+to hunt and heal with.
+
+Two properties were verified numerically rather than by screenshots.
+The camera basis keeps forward, right and up separate and rotates pitch
+in the forward/up plane, so looking up and down works at every yaw and
+W always walks toward the crosshair (an earlier build rotated the
+lateral axis instead, which deadened pitch except at specific yaws).
+Headless proofs: `minicraft --selftest` prints
+`minicraft: frame ok (320x200)`, `minicraft autoframes N` climbs
+`gfx frames`, and `tools/probe_minicraft.py` boots the image, runs the
+game in the background, and asserts over the serial console that frames
+climb, the upper/lower framebuffer bands read sky over ground, and QMP
+keys move the player (arrow-key turn, fly toggle, Space rise, W walk,
+all confirmed through P reports). Rebuild from source:
+
+```bash
+make progs/bin/minicraft.elf   # guest ELF + bare-name alias on MiniFS
+make test-minicraft            # host selftest: movement, crosshair, pitch sweep
+```
+
+
+## Pokemon on MiniOS (gb-recompiled port)
+
+MiniOS runs a recompiled Game Boy / Game Boy Color game as a ring-3 static
+Linux ELF, under the same contract as the DOOM and Quake 2 ports: host clang,
+`-static -no-pie`, MiniOS syscalls instead of SDL2. The port is game-agnostic:
+it works with any gb-recompiled generated project, with no per-game patches.
+
+MiniOS-owned files live in `progs/pokemon/`:
+
+| File | Role |
+|------|------|
+| `platform_minios.c` | implements the `gb_platform_*` interface on MiniOS syscalls |
+| `Makefile.minios` | static build of a generated project plus the runtime |
+| `minios_stubs/SDL.h` | minimal `SDL.h` so `GB_HAS_SDL2`-guarded prototypes stay visible without SDL2 |
+| `fetch.sh` | clones the upstream tool (recompiler plus runtime) |
+| `main-minios.patch` | additive patch: `--debug` flag in generated `main.c` |
+| `runtime-audio-voice.patch` | additive patch: `gb_audio_voice()` speaker accessor over live channel state |
+
+Upstream ships no ROMs and no pre-generated game code, so the game project is
+generated locally from a ROM image you legally own:
+
+```sh
+cd progs/pokemon
+./fetch.sh                    # clone https://github.com/arcanite24/gb-recompiled into upstream/
+# build gbrecomp per the upstream README (cmake, ninja, SDL2 dev files), then:
+upstream/build/bin/gbrecomp /path/to/your/game.gbc -o game/
+```
+
+Then build the image from the repository root:
+
+```sh
+make os.img                     # POKEMON_DIR defaults to progs/pokemon/game
+make POKEMON_DIR=/path/to/game os.img   # with a project kept elsewhere
+make pokemon-fetch              # clone the upstream tool only
+make pokemon-clean              # remove progs/pokemon/build/
+```
+
+Without a generated project the pokemon build is skipped with a hint and
+`make` otherwise works normally, including offline. When present, the ELF is
+packed on MiniFS (`MINIFS_POKEMON_FILES`) and a Pokemon desktop icon is
+generated (`progs/icons/pokemon.png` via `tools/gen_icons.py`).
+
+```
+miniOS> run bin/pokemon.elf      # or: click the Pokemon desktop icon
+miniOS> run bin/pokemon.elf --debug
+```
+
+Video: the GB screen (160x144) renders at exact 2x (320x288), centered in the
+800x360 NK back-buffer (`NK_BACKBUF_ADDR`), because the 320x200 DOOM buffer
+cannot fit a 2x GB frame. The palette is a 3-3-2 RGB ramp pushed once at init
+(`SYS_PALETTE`, 206); frames are presented with `SYS_NK_FRAME` (220). The
+window title is set with `SYS_GFX_SET_TITLE` (223). The black side fringes
+carry art: the right strip always shows `/icons/pokemon.png` and the left
+strip shows the first decodable entry of the shared candidate list in
+`progs/minios_png.h` (`images/` icon art, cgoblin excluded as too large),
+integer-scaled and centered below the menu bar. Either side degrades to black
+when its file is missing or hostile. The mapping helpers live once in
+`progs/minios_png.h` (3-3-2 quantize, nearest palette, scale, blit, bounded
+load) and are shared with the file browser preview; `make test-png` pins them.
+
+Controls: arrows are the D-pad, Z is A, X is B, Enter is Start, Backspace is
+Select. The driver consumes raw PS/2 Set 1 scancodes (`SYS_KBD_RAW`, 207).
+
+Audio: PC speaker, DOOM-style. The runtime mixes 44100 Hz stereo PCM, but a
+syscall per sample (44k/sec) would not survive emulation, so the per-sample
+callback only accumulates zero crossings and energy (integer ops, no
+syscalls). Once per rendered frame the live APU voices are sampled through
+`gb_audio_voice()` (enabled flag, DAC, live envelope volume, master switch;
+never the raw `io[]` mirror, whose channel bits are never set on that path)
+for the two square channels plus the wave channel, and played as bass pedal
+plus melody arpeggio with DOOM-like busy-wait slots (6 ms bass, 5 ms melody).
+The noise channel is dropped, exactly like DOOM drops the percussion channel.
+The PCM energy gate (`MINIOS_AUDIO_SILENCE_E`, default 256 mean-abs) keeps
+envelopes, fades and silence honest so a decayed-but-on channel can never
+drone; passages with no tonal voice (noise SFX, sweep zaps) fall back to the
+raw mix estimate. Clamp the tunables `MINIOS_AUDIO_SILENCE_E` /
+`MINIOS_AUDIO_MIN_HZ` (40) / `MINIOS_AUDIO_MAX_HZ` (12000) in
+`platform_minios.c` if music sounds wrong on your speaker.
+
+Saves: battery RAM and RTC data persist on MiniFS as `bin/<save-id>.sav` and
+`bin/<save-id>.rtc` and survive reboot, unlike ramdisk files. Writes are
+direct (`fopen`/`fwrite`/`fclose`); there is no atomic temp-plus-rename
+because MiniOS has no `rename` syscall yet. The runtime only persists on
+clean exit, which QEMU poweroff never takes, so MiniOS flushes SRAM itself
+every 60 seconds (`MINIOS_AUTOSAVE_MS`), plus on-demand full emulator
+savestates: F5 or Ctrl+S saves `bin/<save-id>.state`, F8 loads it. Loads are
+size-checked: a short or overlong file fails closed and flags
+`persistence_load_failed`, never a partial SRAM image.
+
+Flags: `pokemon.elf --debug` enables the serial heartbeat (off by default;
+serial prints cost frame rate). All other upstream runtime flags
+(`--limit-frames`, `--input`, `--dump-frames`) work unchanged. The flag
+arrives through `gb_platform_set_debug()`, wired by `main-minios.patch`
+(marker-gated, SDL builds untouched). Do not reintroduce argv sniffing via
+`_dl_argv` in a constructor: this toolchain's loader internals do not expose
+a usable vector and the old scanner faulted at startup on unrelated storage.
+
+Known limits: the NK desktop window title says "Nuklear" (kernel-side label,
+cosmetic); under QEMU-TCG without KVM the frame rate is low, prefer
+`make run-kvm` when available. The ported ELF is about 88 MB, so a MiniFS
+carrying Quake 2 plus Pokemon approaches the image size budget (see the
+Makefile note near the MiniFS size definition).
+
+## Piano (FM synth -> SB16)
+
+MiniOS ships a ring-3 Nuklear piano that plays through the Sound Blaster 16
+driver. The synth is Nuked-OPL3 (a cycle-accurate Yamaha chip emulator),
+streaming 8-bit mono PCM at 22050 Hz to the kernel's SB16 DMA path via the
+MiniOS PCM syscalls (221 open, 222 submit). On top of the FM engine the
+piano adds expressive control: velocity (the click's vertical position sets
+the carrier output level), a sustain pedal, octave shift, a master volume,
+and live DSP effects on the mix (echo/delay, tremolo and soft clip), all from
+an on-screen control bar.
+
+```
+miniOS> piano                     # GUI: click the keys to play
+miniOS> piano --selftest          # headless regression hook
+miniOS> piano --bench             # headless render-loop benchmark (~fps)
+```
+
+`--selftest` exercises the velocity mapping, sustain hold/release, octave
+clamp, every FX stage and the audio pacing constants, and prints
+`piano: selftest ok`. `--bench` runs the UI render loop for two seconds and
+reports frames per second. Audio is rendered for the full wall-clock time
+elapsed per frame (clamped to the SB16 ring's ~650 ms backlog) so slow frames
+never under-render and starve the ring into a buzz.
+
+## OPL3 FM Synthesizer
+
+MiniOS ships a ring-3 OPL3 FM synthesizer (`opl3`) built from
+`progs/src/opl3.c`. It is a Nuked-OPL3 (cycle-accurate Yamaha chip emulator)
+that streams 8-bit mono PCM at 22050 Hz to the kernel's SB16 DMA path via
+`SYS_SB16_PCM_OPEN` (221) and `SYS_SB16_PCM_SUBMIT` (222). The demo plays a
+scale melody (A3 through C5 and back down) using a 2-operator FM instrument.
+
+```
+miniOS> run bin/opl3
+```
+
+This is a standalone demo of the FM synth engine that powers the piano. It
+runs headless, produces audio through the SB16, and exits when the melody
+completes.
+
+## Memory Leak Detector
+
+`mmreuse` (`progs/src/mmreuse.c`) is a ring-3 stress test for the kernel's
+mmap and munmap implementation. It maps and unmaps 8 MB regions 64 times and
+reports whether the address space leaked. Exit 0 means pass (no leak);
+exit 1 means a map failed (address space exhausted).
+
+```
+miniOS> run bin/mmreuse.elf
+exit code: 0
+```
+
+## Diagnostics
+
+`perf` is a shell builtin that measures raw CPU speed, the `sys_time` clock
+and console output throughput, pinpointing where guest time goes. `sbtone`
+is a headless ring-3 program that streams a clean 440 Hz sine to the SB16
+and reports submit throughput, isolating the audio path from any GUI. `sb16`
+prints the SB16 driver counters (IRQ arms, watchdog poll arms, submits,
+drops) and the ring fill, so ring health is observable over the serial
+console without ears.
+
+The full dissection toolbox lives in [docs/debug_tools.md](./docs/debug_tools.md):
+`trace`/`strace`/`ltrace` (syscall dialogue, atomic lines, no-PLT proxy),
+`vmmap` (user window + VMA tree), `schedtop`, `irqstat`, `bootlog`,
+`gdb` (LIVE regs for the running pid, decimal/`0x` dump, `make gdb` remote
+hookup), plus the MCP bridge tools (`minios_send`/`minios_expect`/
+`minios_test`) and the host harnesses (`boot_run.sh`, `test_bdd.sh`,
+`test_gui_*.py`). `sh src/test_all.sh` covers the toolbox with 81 PASS.
+
+## Lua
+
+MiniOS ships Lua 5.4 as a static Linux ELF at ring 3, built from the upstream
+reference interpreter with a custom entry point (`progs/lua/lua_main.c`) and a
+`minios` module (`progs/lua/minios.c`) that exposes kernel services to Lua
+scripts. The binary is linked with `gcc -static -no-pie`, exactly like DOOM
+and MicroPython.
+
+```
+miniOS> lua -e "print(6 * 7)"
+42
+miniOS> lua src/test.lua          # run the in-OS test suite
+miniOS> lua                       # interactive REPL
+> print(minios.time_ms())
+12345
+> print(minios.rtc())
+8	30	15
+> print(minios.fb_info())
+800	600	800
+> exit()
+miniOS>
+```
+
+The `minios` module provides the following functions:
+
+| Function | Purpose |
+|----------|---------|
+| `minios.time_ms()` | milliseconds since boot |
+| `minios.rtc()` | returns hour, minute, second from the CMOS clock |
+| `minios.fb_info()` | returns framebuffer width, height, pitch |
+| `minios.vol([v])` | get or set PC-speaker volume (0..100) |
+| `minios.pal(buf)` | load a 768-byte VGA DAC palette |
+| `minios.pcspeaker(freq, ms)` | play a tone at freq Hz for ms milliseconds |
+| `minios.run(path [,args] [,redirect])` | run a ramdisk program, preserving the interpreter |
+
+`minios.run` invokes `SYS_SPAWN` (215), which runs a child program while
+preserving the Lua interpreter state (user window, file descriptors, brk and
+mmap cursors). This lets Lua scripts orchestrate the toolchain from inside
+the OS:
+
+```
+miniOS> lua -e "minios.run('objects/minigcc.o', 'src/fib.c', nil, '>', 'asm/fib.s')"
+miniOS> lua -e "minios.run('objects/ld.o', '-f', 'elf', '-o', 'bin/fib.elf', 'asm/fib.s')"
+miniOS> lua -e "minios.run('bin/fib.elf')"
+exit code: 0
+```
+
+The interpreter resolves through the command path (`bin/lua`) like `cp` and
+`freedom`, so both `lua` and `run lua.elf` work. Scripts are opened through
+the unified filesystem (ramdisk first, MiniFS fallback), and the interactive
+REPL reads from the serial console. The in-OS test suite (`src/test.lua`)
+exercises every `minios` binding, the filesystem, and the compression and
+encryption tools.
+
+Build from source:
+
+```bash
+make sources          # clones the Lua repository if missing
+make                  # builds lua.elf and packs it into MiniFS
+```
+
+## Lisp
+
+MiniOS ships a small Lisp as a static Linux ELF at ring 3. Unlike Lua
+and MicroPython there is no upstream checkout: the interpreter is one
+self-contained file (`progs/lisp/lisp.c`), built with
+`gcc -static -no-pie` exactly like the other interpreters and shipped
+on MiniFS as `lisp.elf` plus the bare-name alias.
+
+```
+miniOS> lisp -e "(+ 40 2)"
+42
+miniOS> lisp src/test.lisp        # run the in-OS test suite
+miniOS> lisp                      # interactive REPL
+Lisp 2.1 (MiniOS)
+> ((lambda (x) (+ x 1)) 41)
+42
+>
+```
+
+The language covers int64 numbers, strings, symbols, cons cells and
+lexical closures (`quote`, `if`, `begin`, `define`, `set!`, `lambda`,
+`let`), file I/O (`open-file`, `read-char`, `write`, `close-file`),
+predicates (`null?`, `number?`, `string?`, `error-message`), `exit`,
+and the MiniOS primitives `time-ms`, `rtc`, `fb-info`, `vol`, `pal`,
+`pcspeaker` and `minios-run` (SYS_SPAWN 215, the same isolated-window
+path the other interpreters use, so the toolchain chain works):
+
+```
+miniOS> lisp -e '(minios-run "/objects/minigcc.o" (quote ("/src/fib.c")) "/asm/_t.s")'
+0
+```
+
+Arithmetic is fail-closed: overflow, division by zero and
+`INT64_MIN / -1` evaluate to error values instead of wrapping, file
+modes are whitelisted to read/write/append, and eval/print depth is
+capped. Errors are values: a fault prints to stderr with a nonzero
+exit, and `error-message` extracts the diagnostic for tests.
+
+Build and host-test from source:
+
+```bash
+make progs/bin/lisp.elf   # builds lisp.elf and the bare-name alias
+make test-lisp             # host suite: 49 vectors, zero warnings
+```
+
+The in-OS suite (`src/test.lisp`, on the ramdisk next to `test.lua`)
+covers the language, the MiniOS primitives and the full
+minigcc/ld/ELF roundtrip. Seven one-line mutants of the interpreter
+plus seven minigcc.lisp codegen/CLI mutants
+die in `tools/lisp_scoped.sh` (the `make test-lisp` routing in
+`mutate.sh` covers the full gate). `progs/lisp/minigcc.lisp` is a
+subset C compiler written in Lisp (one or more `int f(int a,
+...){return <expr>;}` with params, calls, `+ - * /` and parens,
+`ld`-ready assembly with the same `_start` wrapper minigcc emits,
+usage/version CLI); `lisp minigcc.lisp tin.c > out.s`
+works in-OS from MiniFS, and the real two-function `test.c`
+compiles to `exit code: 12`.
+
+## MicroPython
+
+MiniOS ships MicroPython as a static Linux ELF at ring 3, built from the
+upstream unix port with a custom MiniOS variant. The variant enables floats,
+the compiler, the `os` module and computed-goto, and disables readline
+(the kernel handles echo and line editing), sockets, threading, SSL, FFI,
+termios and native emitters. The binary is linked with `gcc -static -no-pie`,
+exactly like DOOM.
+
+```
+miniOS> micropython -c "print(6 * 7)"
+42
+miniOS> micropython -c "print(1.5 * 2)"
+3.0
+miniOS> micropython src/hello.py
+hello from python
+miniOS> micropython
+>>> print(40 + 2)
+42
+>>> exit()
+miniOS>
+```
+
+MicroPython resolves through the command path (`bin/micropython`) like `cp`
+and `freedom`, so both `micropython` and `run micropython.elf` work. Scripts
+are opened through the unified filesystem (ramdisk first, MiniFS fallback),
+and the interactive REPL reads from the serial console.
+
+The kernel provides several syscalls for glibc-static compatibility:
+`getcwd` (79) returns the shell working directory, `newfstatat` (262) reports
+`S_IFREG`/`S_IFDIR` with file sizes from the unified filesystem, and
+`readlink` (89) returns `EINVAL` (MiniOS has no symlinks) so glibc's
+`realpath()` treats every path as a regular file and keeps resolving. A
+script's `realpath()` and directory traversal work without needing a full
+VFS layer.
+
+#### Kernel fix: initial registers at the ELF entry
+
+MicroPython previously crashed on exit (`EXCEPTION 14`). The root cause was
+that `k_exec_user` did `iretq` to the ELF entry without zeroing the initial
+registers, unlike Linux. glibc's `_start` does `mov %rdx,%r9` to obtain
+`rtld_fini`; the leftover kernel value in `rdx` was a base-less function
+pointer, which `__libc_start_main` registered as an exit handler and then
+`__run_exit_handlers` demangled and called on exit, a wild jump. The fix
+zeroes `rdi`, `rsi` and `rdx` before `iretq`, so `rtld_fini` is `NULL` and
+every glibc binary exits cleanly.
+
+#### `minios` module and in-OS toolchain orchestration
+
+MicroPython ships with a `minios` C module (`progs/micropython/variants/minios/minios_module.c`)
+that exposes kernel services: `time_ms()`, `rtc()`, `fb_info()`, `vol()`,
+`pal()`, `pcspeaker()` and `run()`. `run(path, args, redirect)` invokes the
+kernel `SYS_SPAWN` (215) boundary, which runs a ramdisk program from the
+interpreter while preserving it, so scripts can chain toolchain commands.
+Three scripts on the ramdisk use this:
+
+```
+miniOS> micropython src/build.py          # minigcc -> ld -> run, every target
+miniOS> micropython src/shell.py          # pybash: variables, capture, run
+miniOS> micropython src/test.py           # in-OS test suite (kernel + toolchain)
+```
+
+`build.py` orchestrates the self-hosted toolchain (ET_REL `minigcc.o` and
+`ld.o` run at ring 0 via `SYS_SPAWN` and work), `shell.py` is a Python shell
+layer with variables and output capture, and `test.py` verifies the kernel
+bindings and the toolchain from inside the machine.
+
+Build from source:
+
+```bash
+make sources          # clones micropython if missing
+make                  # builds mpy-cross, the unix port, and packs the ELF
+```
+
+The variant files live in `progs/micropython/variants/minios/`; the build
+runs entirely on the host and copies the resulting ELF into `progs/bin/`.
+
+## TopoGPT3
+
+MiniOS ships [TopoGPT3](https://github.com/grisuno/TopoGPT3) as a static Linux ELF at ring 3. [TopoGPT3](https://github.com/grisuno/TopoGPT3) is a 24.5M
+parameter complex-valued autoregressive language model for code, built with
+quaternion-inspired spectral operators and a Mixture-of-Experts transformer.
+The C inference engine is a self-contained single-file implementation (~2000
+lines) that loads flat binary weight files and runs the full forward pass:
+GQA attention with RoPE, sliding window, RMSNorm, SwiGLU MoE with top-2
+routing, and quaternion torus spectral layers.
+
+```
+miniOS> topogpt3 -w topogpt3.fp16 -v vocab.bin -p "def fibonacci(n):" -n 30
+miniOS> topogpt3 -w topogpt3.fp16 -v vocab.bin -i
+```
+
+The engine supports three operating modes: headless (`-p` for a single
+prompt), interactive (`-i` for a REPL-style session), and file-based (`-f` to
+read a prompt from a file). The interactive mode provides commands for
+adjusting temperature, top-k, repetition penalty, and max tokens at runtime.
+
+Interactive session example:
+
+```
+miniOS> topogpt3 -w topogpt3.fp16 -v vocab.bin -i
+
+TopoGPT3 Inference Engine
+Model: small (d=256, heads=8, layers=6, kv=2)
+Loading weights from: topogpt3.fp16
+Loaded vocab: 50257 tokens (321428 bytes)
+Loading 380 tensors (fp16 v2)...
+  Layer 0 loaded
+  ...
+Weights loaded successfully (fp16).
+Ready.
+
+interactive mode. /help for commands.
+> def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+> /temp 0.1
+Temperature set to 0.10
+
+> /topk 20
+Top-k set to 20
+
+> /status
+Model: small (d=256, heads=8, layers=6, kv=2, experts=4, topk=2)
+Context: 32 tokens
+Parameters: temp=0.10 topk=20 rep=1.10 max=256
+
+> /quit
+```
+
+Interactive mode commands:
+
+| Command | Purpose |
+|---------|---------|
+| `/help` | show available commands |
+| `/quit` | exit interactive mode |
+| `/clear` | clear the prompt buffer |
+| `/temp N` | set temperature |
+| `/topk N` | set top-k |
+| `/rep N` | set repetition penalty |
+| `/newtokens N` | set max new tokens |
+| `/status` | show current settings and model info |
+
+The binary is built with the host toolchain (`gcc -static -no-pie`) and
+placed at `bin/topogpt3.elf` on the MiniFS. The model weights
+(`topogpt3.fp16`, 47 MB) and vocabulary (`vocab.bin`, 422 KB) are also
+shipped on the MiniFS.
+
+Weight loading supports two formats, auto-detected at load time: float32
+(`TG3W`, 94 MB) and float16 (`TG16`, 47 MB). The float16 format is used for
+MiniOS to keep the filesystem footprint small.
+
+Performance depends on the execution environment:
+
+| Platform | Speed |
+|----------|-------|
+| Linux host (KVM) | 17-29 tok/s |
+| MiniOS QEMU (no KVM) | 0.80 tok/s |
+| MiniOS QEMU (with KVM) | 17-29 tok/s |
+
+Build from source:
+
+```bash
+make progs/bin/topogpt3.elf    # compile the C engine
+make minifs.bin                 # rebuild MiniFS with weights + vocab
+make os.img                     # rebuild the full disk image
+```
+
+The source lives in `progs/topogpt3/topogpt3.c` with the weights and
+vocabulary alongside it. The `convert_weights_minios.py` script in the
+TopoGPT3 repository converts safetensors checkpoints to the float16 binary
+format.
+
+## Security: NX and KASLR
+
+User-mode binaries (ET_EXEC / ET_DYN) run at ring 3 with hardware
+no-execute (NX) page protection. The kernel builds eager 4 KB page tables
+for the whole user window and sets EFER.NXE at boot; every user page starts
+non-executable and `load_exec_elf` clears NX only on the pages a program's
+executable segments occupy. A program cannot execute from its stack, heap
+or `.data`, a jump into a non-executable page faults and the machine
+resets, never silently running shellcode (proven by the `nx.elf` probe in
+the BDD suite). The kernel heap keeps its 2 MB executable pages, because
+the `.o` toolchain programs execute from there at ring 0 by contract.
+
+The kernel image's physical base is randomized per boot (KASLR). Stage 2
+mixes the TSC with the CMOS clock (hours, minutes, seconds fed into
+separate bytes) and slides the kernel into one of 64 aligned 2 MB slots in
+`[0x6000000, 0xE000000)`. The kernel always executes at virtual `0x100000`;
+the boot banner reports its randomized physical base. Disable with
+`make ENABLE_KASLR=0` for deterministic physical layout.
+
+Every exec randomizes the new program's userspace addresses (userspace
+ASLR). The stack top slides 1..4096 bytes, brk starts 1..256 pages past
+the image (clamped to its cap), the mmap cursor starts up to 255 pages
+down (clamped above the brk limit), and a position-independent (ET_DYN)
+base slides up to 47 slots of 2 MB (loader bounds still fail closed).
+Entropy mixes the TSC, the tick count and a per-exec counter, and stack
+and brk slides are never zero so consecutive runs differ observably.
+`fork` never re-randomizes (children share by definition). The headless
+proof is `bin/aslr.elf`: a self-exec chain that prints stack, brk and
+mmap addresses in generation 0, re-execs carrying them, and prints
+`aslr: ok` in generation 1 when any dimension differs.
+
+## Integer overflow protection
+
+`kfread` and `kfwrite` compute `size * n` before accessing the buffer. A
+ring-3 program passing `size=0xFFFFFFFF, n=2` would cause the product to
+wrap to `0xFFFFFFFE`, smaller than the intended allocation, bypassing the
+`bytes > RD_DATA_MAX` check. Both functions now reject the call when
+`n != 0 && size > ULONG_MAX / n`, returning 0 before any buffer access.
+
+## Stack setup bounds checking
+
+`setup_user_stack` writes argv strings downward from the stack top. Without
+a bounds check, a program with many large argv entries could write below
+the stack base and corrupt kernel memory. Each iteration now checks that
+the string fits in the remaining space and returns NULL on overflow.
+`k_exec_user` checks the return value and refuses to enter ring 3 with a
+NULL stack pointer.
+
+## Syscall return hardening
+
+The syscall return path discriminates on the caller RIP, never on RSP:
+a ring-3 program can set any RSP before trapping (the `syscall`
+instruction touches no stack), while its RIP is confined to executable
+user-window mappings. A spoofed `RSP=0` therefore takes the `sysretq`
+path instead of retaining CPL0 through `jmp *%rcx`. The entry also
+range-checks the pid and fails closed with `-EFAULT` before indexing
+`sc_top_save` or swapping onto a per-proc kernel stack.
+
+## Architectural abstractions
+
+### VFS (Virtual File System)
+A registration-based filesystem dispatch layer.  Filesystem drivers register
+a prefix and a set of operations (`vfs_ops_t`).  The VFS layer dispatches
+open/read/write to the registered driver based on path prefix matching
+(longest match wins; the root stays pinned and busy mounts refuse).
+Beyond ramdisk and MiniFS, `fat:` and `ext4:` drivers serve real
+on-disk formats read-only, addressed per open as `imgpath:inpath`
+(the VFS table has no readdir verb, so listings go through
+`fat32_list`/`ext4_list` directly). Both ride one shared backend
+(`fs/fsimg.c`): a loopback image file (ramdisk first, MiniFS fallback)
+or an absolute disk region, every offset fenced before use, so a new
+backend is added once instead of once per driver.
+
+### VMA (Virtual Memory Areas)
+A red-black tree (`vma.c`, `vma.h`) for mmap tracking, replacing the flat
+`mmap_used`/`mmap_free` arrays with O(log n) insert/find/delete. Two trees:
+`vma_live_root` for active allocations, `vma_free_root` for reclaimed regions.
+A static node pool (`VMA_MAX` = 2048) backs both trees and is reset on every
+exec; exhaustion fails closed (returns `VMA_NIL`). The mmap syscall searches
+the free tree for reusable regions before carving fresh space; munmap moves the
+freed region to the free tree. Host-tested by `tests/test_vma.c` (`make
+test-vma`), which asserts the red-black invariants (root black, no double-red,
+equal black height, in-order uniqueness) across insert/find/delete, pool
+exhaustion and full drain.
+
+### Unified Audio API
+A hardware-agnostic audio interface providing tone mode (PC speaker square
+wave) and PCM streaming mode (SB16 DMA).  Ring-3 programs use these wrappers
+instead of raw syscalls.
+
+### Quake 2 decoupling
+The `SYS_Q2G_SET_TITLE` syscall is renamed to `SYS_GFX_SET_TITLE` (generic
+window title).  The Q2G build is conditional: skipped when the upstream
+checkout is absent.  The kernel contains no Quake-2-specific logic.
+
+### Network driver/protocol split
+The rtl8139 NIC driver (`net/rtl8139.c`, `net/rtl8139.h`) is separated from
+the protocol stack (`net/net.c`). The driver owns port I/O, PCI probe, TX
+descriptors, the receive ring, the NIC MAC and the PIT-calibrated TSC clock;
+the stack owns addressing, ARP/IP/UDP/DNS/ICMP/TCP, the sockets and the
+demux. The boundary header `rtl8139.h` exposes `rtl_send`, `rtl_poll`,
+`rtl_present`, `rtl_get_mac`, `rtl_iobase`, `rtl_counters`. Both sides
+share the aggregate RX drop counter (`net_rx_dropped`, extern in `net.h`).
+
+## Console scrollback
+
+A ring of 4096 lines that scrolled off the top of the 25-row VGA screen.
+Captured lazily from `vga_scroll()` and viewable with PageUp/PageDown.
+
+- **PageUp** (`\x1b[5~` serial, or PS/2 E0-49) scrolls upward through history.
+- **PageDown** (`\x1b[6~` serial, or PS/2 E0-51) scrolls downward.
+- The view hides the VGA cursor; any key other than the opposite page key
+  exits and re-injects that key for the readline layer.
+- Internally, `sb_ring` is a kmalloc'd circular buffer of `SCROLLBACK_ROWS *
+  VGA_COLS` bytes, updated every time a full row leaves the screen via
+  `sb_capture_row0()`.  `SCROLLBACK_ROWS` is 4096; the ring never wraps
+  silently, it drops oldest entries when full.
+- Serial PageUp/PageDown work natively.  PS/2 extended keys (E0-prefixed
+  make codes) are translated into the same CSI sequences (`ESC [ 5 ~`
+  / `ESC [ 6 ~`) by `kbd_read()` in `kernel.c:298`, the `KEY_E0` flag
+  is now tested **before** the release‑bit check so that `0xE0` is not
+  swallowed by the high‑bit handler.
+
+## Layout
+
+| File | Role |
+|------|------|
+| `bootdefs.h` | every constant shared by the boot path |
+| `stage1.S` | 512-byte boot sector: loads stage 2 over LBA |
+| `stage2.S` | loads the kernel above 1 MB, enters long mode |
+| `kernel.c` / `kernel.h` | kernel: console, heap, ramdisk, loaders, shell |
+| `kernel/shell.c` / `shell.h` | shell prompt, command resolution, builtins |
+| `kernel/editor.c` / `editor.h` | line editor (nano-like: status, goto, search, range listing) |
+| `kernel/syscalls.c` | Linux ABI syscall dispatcher, user pointer validation |
+| `kernel/syscalls_proc.c` / `syscalls_proc.h` | process syscalls: clone, seccomp, nice, yield, getpid/tid, exit, wait4, kill |
+| `kernel/redirect.c` | shell I/O redirection (`>`, `>>`) |
+| `kernel/sched.c` | process management, timer ISR, desktop tick |
+| `kernel/vga_fb.c` | VESA framebuffer desktop, windowed terminal, mouse, WM |
+| `net/rtl8139.c` / `net/rtl8139.h` | rtl8139 NIC driver: port I/O, PCI, TX/RX, TSC clock |
+| `net/net.c` / `net.h` | protocol stack: ARP/IP/ICMP/UDP/DNS/TCP, sockets |
+| `net/tls.c` / `net/tls_crypto.c` / `net/tls_x509.c` | kernel TLS 1.2 client, crypto, X.509 |
+| `vma.c` / `vma.h` | VMA red-black tree for mmap tracking |
+| `fs/ramdisk.c` | ramdisk filesystem driver |
+| `fs/minifs.c` | MiniFS filesystem driver |
+| `fs/kfile.c` | unified file API (ramdisk + MiniFS) |
+| `fs/vfs.c` | VFS dispatch layer |
+| `fs/zip.c` | ZIP archive read/write (miniz) |
+| `drivers/ide.c` | IDE PIO disk driver |
+| `drivers/pcspk.c` | PC speaker driver (tone, volume) |
+| `drivers/sb16.c` | Sound Blaster 16 DMA driver |
+| `drivers/rtc.c` | CMOS RTC clock driver |
+| `tls_roots_src/` + `tools/mkroots.sh` | the 8 embedded CA roots and their generator |
+| `tools/tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
+| `cvm_host.c` | CVM interpreter + JIT integration in MiniOS |
+| `progs/lua/lua_main.c` | Lua 5.4 entry point (REPL, -e, -l, script modes) |
+| `progs/lua/minios.c` | Lua bindings for MiniOS kernel services |
+| `progs/lisp/lisp.c` | self-contained Lisp interpreter + MiniOS primitives (ring-3 static ELF) |
+| `progs/lisp/minigcc.lisp` | subset C compiler in Lisp (v0.3: multi-function, params, calls, usage/version CLI, ld-ready asm) |
+| `progs/src/test.lisp` | in-OS Lisp suite: language, primitives, toolchain roundtrip |
+| `progs/wl/wl_mini.h` | Wayland-mini wire contract (header-only, ADR-0024) |
+| `progs/wl/wlcomp.c` | ring-3 Wayland-mini compositor (max 8 surfaces) |
+| `tools/test_lisp.py` | host Lisp suite: 39 vectors, zero-warning build |
+| `tools/lisp_scoped.sh` | scoped Lisp gate: rebuild plus 10 targeted mutants |
+| `progs/topogpt3/topogpt3.c` | TopoGPT3 C inference engine (~2000 lines) |
+| `progs/topogpt3/topogpt3.fp16` | TopoGPT3 float16 model weights (47 MB) |
+| `progs/topogpt3/vocab.bin` | GPT-2 BPE vocabulary (50257 tokens, 422 KB) |
+| `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
+| `tools/mkramdisk.py` | packs `progs/` into the ramdisk image |
+| `tools/test_bdd.sh` / `tools/test_http_server.py` | behavioural suite and its HTTP fixture |
+| `progs/src/test_all.sh` | one-boot comprehensive non-interactive test (81 PASS) |
+| `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
+| `mcp/test_minios_mcp.py` | unit + QEMU BDD suite for the bridge |
+| `mcp/mutate_mcp.sh` | mutation testing for the bridge |
+| `skills/minios/SKILL.md` | agent skill: the edit/compile/link/run workflow over the bridge |
+| `tools/mutate.sh` | mutation testing |
+
+## Agent bridge (MCP + skill)
+
+`mcp/minios_mcp.py` exposes a running MiniOS as MCP tools: `minios_boot`,
+`minios_status`, `minios_send`, `minios_expect`, `minios_snapshot`,
+`minios_write`, `minios_cat`, `minios_poweroff`. On top of the shell it adds
+`minios_python` (run a ramdisk `.py` script with MicroPython) and
+`minios_py_eval` (evaluate a one-liner). The server owns the QEMU
+child and a pty-backed serial console; the companion skill
+(`skills/minios/SKILL.md`) teaches the edit/compile/link/run workflow, so an
+agent can write a C program inside the OS, build it with `objects/minigcc.o` and
+`objects/ld.o`, run it and read `exit code: N`, or drive the in-OS Python
+toolchain (`build.py`, `shell.py`, `test.py`) or the Lua toolchain
+(`test.lua`), all without leaving the machine.
+
+```bash
+python3 -m unittest -v mcp/test_minios_mcp.py   # unit + QEMU BDD (skips without QEMU)
+mcp/mutate_mcp.sh                                # every bridge mutant must die
+```
+
+The bridge is driven over stdio JSON-RPC, uses only the Python standard
+library, validates every input before a byte reaches the console (path
+whitelist, printable ASCII, editor line and buffer limits), and never leaks
+a QEMU process: the pid file under the system temp dir reaps stale
+instances and every exit path terminates the child. See `CLAUDE.md` for the
+full contract.
+
+## SMP foundation
+
+With `-smp N` in QEMU the BSP wakes N-1 application processors (max 8) with
+the standard INIT-edge / SIPI / SIPI sequence through the local APIC mapped
+at `0xFEE00000`; without it the system runs single-CPU exactly as before.
+Each AP runs `arch/x86/ap_entry.S` from the stub at `0x6000` (below 1 MB for
+SIPI, patched with the C entry address), sets its GS base to its `cpu_t`
+(`cpus[]`, LAPIC ID, `cur_pid`, syscall stack, idle and BSP flags), loads the
+BSP's IDTR, enables its LAPIC SVR (so it can receive IPIs) with the local
+timer and both LINT pins masked, and enters the AP idle loop
+(`smp_ap_idle_loop`, which claims READY CLONE_VM threads and otherwise
+halts on a per-CPU 4 KB idle stack).  The AP has no periodic timer of its
+own: its only tick is the BSP's 100 Hz IPI broadcast, which wakes the halted
+AP and drives its preemption ISR (a LAPIC count derived from `PIT_HZ` fires
+~84 kHz under QEMU and wedges the machine under an interrupt storm; see
+Performance work).  Each CPU also owns a private TSS (`the_tss[cpu]`,
+`rsp0` on a per-CPU 8 KB stack) so ring-3 preempts on different CPUs never
+share an ISR stack; the runtime GDT grows to `5 + 2*MAX_CPUS` entries with
+CPU 0 keeping selector `0x28`.  APs never print during init: `kprintf` stack
+use plus an ISR trap frame overflows the stub stack.
+
+`this_cpu()` reads the current `cpu_t` via GS base (`MSR_GSBASE`,
+`swapgs` on syscall entry/exit so ring 3 never sees it); `current_pid` is a
+macro over it, so scheduler paths operate on the correct CPU. Vector 32
+checks `is_bsp`: the BSP sends PIC EOI and runs `sb16_poll`, APs send LAPIC
+EOI at `0xFEE000B0`, and the context-switch path is BSP-guarded so APs never
+corrupt `procs[]`. APs own no PIC, PS/2 mouse or SB16 ring. The INIT
+destination shorthand "all excluding self" is bits 19:18 (`0xC0000`) with
+delivery mode bits 10:8 (`0x500`); INIT is edge-triggered (`0x4000` level
+assert, never `0x8000` level-trigger, which hangs QEMU 11 with uncleared
+delivery status).
+
+`spinlock.h` provides xchg spinlocks (`spin_lock`/`spin_unlock` with
+interrupt disable, `spin_lock_irqsave`/`spin_unlock_irqrestore` saving
+RFLAGS.IF for nesting, `spin_trylock` without touching interrupts).
+`sched_lock` guards `procs[]`/`proc_count`/scheduler state, `smp_lock`
+guards the AP counter and LAPIC registers; `mm_lock` guards the shared
+brk/mmap view and VMA trees against concurrent syscalls from threads on
+different CPUs (lock order: `sched_lock` -> `mm_lock`). Per-CPU data needs
+no lock.
+
+APs run `CLONE_VM` threads only; isolated processes stay on the BSP.
+That boundary is structural, not a tunable: the brk/mmap/VMA view is
+global (`g_brk`, `user_mmap_cur`, the live and free roots, 112 use
+sites), so two CPUs running two isolated processes would clobber each
+other's view on every preempt, and a token scheme would serialize all
+non-VM execution back through one owner. Lifting it means per-CPU
+views first, then AP claim and preempt with no VM-only filter (no new
+IPI and no CR3 machinery is needed: `switch_to` already swaps CR3,
+FPU and thread-local base, and a `mov %cr3` flushes non-global TLB
+entries). The `burn.elf` probe already pins the coexistence contract
+under `-smp 2` (four copies beside `smp` and `kstack`); once views
+land, the same scenario with an AP-claimed counter proves APs ran
+isolated code. See CLAUDE.md for the full spec.
+
+## Multithreading
+
+Threads are 1:1 kernel entities (`proc_t` with `CLONE_VM`, shared CR3) that
+start at `fn(arg)` on a caller-owned 8 KB stack and are reaped with
+`waitpid`, which returns the exit code without freeing the shared page
+tables. `do_thread_spawn(fn, stack, arg)` (syscall 225
+`MINIOS_SYS_THREAD_SPAWN`, validated to the user window) creates them;
+`do_clone` (syscall 300) and `yield` (syscall 24) complete the surface.
+APs run only `CLONE_VM` threads (same CR3, no brk/mmap switch, no TLB work);
+anything else stays on the BSP. The BSP's 100 Hz tick leaves freshly parked
+VM threads unclaimed while an AP is idle, so threads run on the APs instead
+of losing every claim race to the BSP. `smp` prints per-CPU state
+(`cur`, `dispatched`, `polls`) plus `bad_gs`, which counts timer ticks that
+arrived with a GS base outside `cpus[]` (zero in a healthy boot; the ISR
+EOIs best-effort and skips scheduling instead of faulting with #GP).
+
+Userspace: `progs/src/mthreads.h` is a self-contained pthread-like layer
+over raw syscalls (`mthread_create`/`mthread_join`, spin+`yield` mutexes,
+max 16 threads). Rules of the single address space: allocate stacks and
+slots before creating threads, and after that allocate only under a mutex
+(brk/mmap are process-global; even `printf` may malloc). `bin/thdemo`
+(built from `progs/src/thdemo.c`) is the headless proof: 10 threads,
+1000 produced / 1000 consumed, prints `thdemo: PASS`. The kernel side ships
+`sync.h`/`kernel/sync.c`: wait queues (`sleep_on`/`wake_up`, FIFO of pids,
+never holding the queue lock across `schedule()`), mutexes, counting
+semaphores, Mesa condition variables and a writer-preferring rwlock,
+host-tested by `tests/test_sync.c` (`make test-sync`).
+
+Known race (root-caused, pre-existing, verified byte-identical on a clean
+HEAD image): `run thdemo` and `run fptest` can fault reading thread-local
+storage through base 0 (`%fs:0x10` with FSBASE 0). Threads start with no
+thread-local base of their own, and the resume onto pid 0 skips the base
+restore, so once a tick runs a thread, the next `printf` of the main
+thread faults. Whether the tick lands inside the spawn loop is boot
+timing, which is why the suite flakes here instead of failing always.
+Until the context switch saves the base on every park and restores it
+for pid 0 too, treat overlapping heavyweight ring-3 processes as the
+known-red configuration and run them sequentially.
+
+Scheduler internals this enables: `PROC_SWITCHING` (unclaimable while a
+context is half-saved), `schedule()` parking a thread as "returned from
+`schedule()`" so it resumes in its caller instead of replaying the tail on
+a foreign CPU, `switch_to_notrap` (load-only; a parked ring-3 frame resumes
+via `resume_iretq` + `iretq`, never via `ret` at CPL 0), per-pid trap-frame
+slots (`isr_park`), per-proc kernel stacks for syscall entry (no shared
+entry stack), and `ctx.rflags` saved but never restored by the switch (each
+resume path sets its own IF). `k_exec_user` runs its `swapgs` dance with
+interrupts off through the `iretq`. Exit discriminates on context, not on
+`proc_count`: pid 0 `klongjmp`s to the shell, every other pid dies a
+scheduler `ZOMBIE` for its parent; `SPAWN` is BSP-only and fails closed on
+APs.
+
+## ISR-driven desktop tick
+
+The desktop tick (`vga_fb_mouse_tick`) is driven from the 100 Hz PIT handler
+(vector 32) at `DESKTOP_TICK_INTERVAL` (default 4, i.e. 25 Hz) whenever
+`user_program_active` is set, so the cursor, taskbar clock, drag and
+scrollbar stay live while a ring-3 child owns the CPU. The flag is set in
+`k_exec_user` before `iretq` and cleared after `klongjmp`. When clear, the
+shell drives the desktop from its own idle poll as before. The PS/2 mouse
+stays enabled across `k_exec_user` so IRQ12 keeps `mouse_state` fresh (field
+stores are atomic; the tick or the shell is the sole reader). The `iretq`
+frame uses `RFLAGS=0x202` (IF=1): with IF=0 neither the timer nor IRQ12 fires
+from ring 3 and the desktop freezes. Dispatch goes through the tick listener
+bus (`tick.h` + `kernel/tick.c`): the ISR runs registered audio/desktop
+listeners instead of calling `sb16_poll` / `vga_fb_mouse_tick` directly, and
+port I/O on this path uses the `arch/x86/hal_io.h` names, never bare literals.
+
+## Window manager: minimize, restore, close
+
+Every titled window (terminal, DOOM, Nuklear) carries minimize (`_`),
+maximize (square) and close (`X`) buttons drawn and hit-tested by shared
+`wm_*` helpers. Minimize hides the terminal window without losing content
+(the logical ring is kept, restore repaints it); maximize toggles
+fullscreen; close resets the terminal to its default geometry because the
+shell cannot be closed. For a graphics window, close arms `wm_close_request`,
+honoured on the child's next syscall as `exec_exit_code = 130` with
+`klongjmp` on the child's own stack (never from the ISR). Fullscreen and
+minimize are mutually exclusive. While minimized the window is not drawn,
+wheel/drag/scrollbar are ignored, and the taskbar shows a `[]` restore
+button on the far left. Shortcuts: Alt+M toggles minimize, Alt+X / Alt+Q
+closes the active window. The `wm` builtin drives the same paths and reports
+state over serial (`wm state`, `wm minimize`, `wm maximize`, `wm close`),
+which is the BDD-observable surface.
+
+## Shell: history, editing, resolution, completion
+
+History: the last `SHELL_HIST_MAX` submitted commands (unknown ones included,
+consecutive duplicates skipped, reboot clears). Up (`ESC [ A`, PS/2 `E0 48`)
+recalls the newest older entry starting with the typed prefix (zsh
+`history-beginning-search`; empty prefix recalls everything), Down
+(`ESC [ B`, `E0 50`) moves forward to the live line, which is preserved
+while scrolling. Right at end of line accepts the suggestion (newest match
+for the prefix). A bare or truncated ESC is discarded, never inserted; the
+editor is unaffected.
+
+Mid-line editing: Left/Right (`ESC [ C`/`D`, `E0 4B`/`4D`), Home/End
+(`ESC [ H`/`F`, `E0 47`/`4F`), Delete (`ESC [ 3 ~`, `E0 53`), Backspace,
+Ctrl+A/E (start/end), Ctrl+U/K (kill to start/end), Ctrl+W (kill word).
+Inserts shift the tail; a framebuffer block cursor tracks the position and
+every operation repaints so display and serial agree. The escape reader polls
+a bounded number of spins for the final byte so a serial-split sequence is
+not mis-parsed, and never hangs.
+
+Resolution order is fixed: builtin, registered program, then one
+runnable-file resolver (`shell_run_any`, `shell_resolve_run`), so `run` and
+bare names behave identically. Suffix picks the directory (`shell_run_dirs`):
+`.cvm` to `cvm/`, `.o` to `objects/`, `.elf` and bare names to `bin/`, with
+cwd first and the remaining directories as fallback. Names containing `/`
+resolve against the cwd. Every candidate must be a real file
+(`ramdisk_open` succeeds, directories rejected); overlong full paths are
+skipped, never truncated. Content classifies the loader: `ET_REL` via
+`k_run_rel` at ring 0, `ET_EXEC`/`ET_DYN` via `k_exec_user` at ring 3, `.cvm`
+via the on-demand `objects/cvm.o` interpreter. Unresolvable names report
+`command not found` (bare) or `run: not found` (with `run`).
+
+TAB completes from registered programs and ramdisk names: first TAB fills the
+longest unambiguous prefix, second TAB on a unique match fills the whole
+name, ambiguous prefixes list candidates. On the first word the newest
+history commands complete too, so TAB after `minigcc` offers the most recent
+matching command. A bare first word completes runnable-first across ramdisk
+and MiniFS root (`.elf`, then `.cvm`, then `.o`; highest-priority non-empty
+tier wins), so `poke` offers `pokemon.elf` instead of its icon PNG; paths
+and argument words keep every match. An argument word also completes from
+MiniFS: the word's directory part resolves against the cwd and entries of
+that MiniFS directory match the leaf prefix (directories with trailing
+`/`), so a file created under a MiniFS-only directory by a redirect
+completes exactly like a ramdisk one. Completion is bounds-checked against
+the command buffer.
+
+Terminal scrollback is a 256-line logical ring (`SB_MAX_LINES`): completed
+lines are pushed whole on `\n` and the viewport repaints from the ring. A
+push that evicts the oldest line always fully renders (row-count comparison
+alone would take the active-line fast path and freeze the screen); blank
+rows are explicitly cleared.
+
+`sh <script>` runs sequential lines with `#` comments. `load <file>` loads an
+ELF (`.o` relocatable or Linux executable) without running it.
+
+## Filesystem: names, MiniFS fallback, unified opens
+
+Ramdisk names are at most `RAMDISK_FNAME_LEN - 1` chars; `/` is data (that is
+how `bin/cp` directories are expressed). `tools/mkramdisk.py` derives each name
+from the path relative to the shared parent, so `progs/src/cp.c` ships as
+`src/cp.c`. Overlong names and collisions are build errors, never silent
+truncations. `mkdir` creates a directory as an empty file named `<name>/`
+(parent must exist; existing name is a diagnostic). `rm` refuses trailing-`/`
+directories. `ls [dir]` merges ramdisk and MiniFS at root and prefers
+ramdisk below root. `cat` concatenates (`cat a b > c`). `kfopen` checks the
+ramdisk first, then MiniFS, and refuses directory names. All resolution goes
+through one choke point against the cwd (leading `/` is root, `..` pops);
+unfitting names are rejected like missing files.
+
+Writes fall back to MiniFS: a write goes to the ramdisk only when its parent
+directory entry exists there; otherwise (for example `> asm/_t.s` or
+`tmp/...`) `kfopen` creates the parent chain with `minifs_mkdir_p`,
+creates the file with `minifs_create`, writes with `minifs_write` and
+persists bitmaps with `minifs_sync` on close. `fstat`/`access`/`unlink`
+cover MiniFS-backed files too.
+
+`mv <src> <dst>` renames one file within its own filesystem through
+`fs_rename`: ramdisk entries rename in place, MiniFS entries move
+directory slots with no data copy, all under the filesystem lock.
+Directories refuse, a missing source is a diagnostic, an existing
+destination refuses (no silent overwrite in v1), and a destination
+whose parent lives only on the other filesystem refuses instead of
+shadowing a MiniFS directory with a volatile ramdisk entry. The Linux
+`rename` syscall (82) serves ring-3 programs the same way.
+
+`fat ls <img> [dir]` and `fat cat <img> <file>` read a FAT32 disk image
+stored as an ordinary file (`etc/fat.img`, built on the host with
+`mkfs.vfat` plus mtools and packed on MiniFS). The driver is read-only
+by construction: BPB validation, cluster-chain walking and 8.3
+traversal with every offset bounds-checked against the image size,
+bounded walks, capped depth, long names skipped, writes refused. The
+loopback backend is ramdisk-first with MiniFS fallback (including the
+flat-root basename rule), file bytes flow through the real `fat:` VFS
+driver, and listings use `fat32_list` because the VFS table has no
+readdir verb. Only the root directory, 8.3 short names and regular
+files are served; anything else is a diagnostic, never a guess.
+
+The same driver reads a real disk partition as `hd0` through the
+active block backend, so a FAT32 stick on USB reads from USB:
+`fat ls hd0 /` lists it, `fat cat hd0 HELLO.TXT` prints a file. Location
+is a real probe, never a computed offset: a genuine MBR FAT32 entry
+first (types `0x0B`/`0x0C`
+plus hidden `0x1B`/`0x1C`, each proven by a BPB read because a type
+byte alone is a rumor), then a magic scan over 2048-aligned LBAs for
+superfloppy layouts with no table. `os.img` carries the reference
+image appended past swap for the suite; on real hardware any
+partitioned disk works the same way. CHS is ignored (LBA only),
+LBA48 is out of scope (LBA28 covers 137 GB), logical volumes wait
+for an EBR follower, and a GPT protective entry degrades to the scan
+instead of misreading. A literal file named `hd0` keeps working: files
+always win over the device name.
+
+`ext4 ls <img> [dir]` and `ext4 cat <img> <file>` do the same for
+ext4, read-only, over the shared image backend (`fs/fsimg.c`, one
+contract for loopback files and disk regions instead of a copy per
+driver). Served subset: 1K/2K/4K blocks, 32 and 64 bit group
+descriptors, extent trees (bounded depth, uninitialized extents read
+as zeros), legacy direct plus singly-indirect blocks, linear
+directories. Refused fail-closed: htree-indexed directories,
+symlinks (even fast ones), encrypted and inline-data files, doubly
+and triply indirect blocks, writes. Checksums are not verified;
+every structural offset is bounds-checked instead, and the journal
+is ignored (reads see the last consistent state). `etc/ext4.img`
+ships a host-built reference (fixed UUID and label); `ext4 ls hd0`
+probes a Linux-native (`0x83`) partition the same way `hd0` works
+for FAT. `make test-ext4` pins the parser on the host over a
+synthetic image.
+
+## User isolation and syscall boundary
+
+`ET_EXEC`/`ET_DYN` run at ring 3 (CS `USER_CODE_SEL`, SS `USER_DATA_SEL`)
+entered by `iretq` on a user stack carved from the top of the user window,
+with `rdi`/`rsi`/`rdx` zeroed at entry so glibc `_start` sees `rtld_fini`
+NULL. `ET_REL` stays a ring-0 kernel extension by contract. The user window
+is eager 4 KB pages with EFER.NXE on: every page starts NX-clear and
+`load_exec_elf` clears NX only under executable segments, so stack, heap,
+`.data` and unmapped space never execute (a stray fetch faults and resets,
+proven by `cpl.elf`, `kmem.elf`, `nx.elf`). The kernel heap keeps 2 MB
+executable pages for `.o` execution. Tables live at `PT_USER_TABLES_ADDR`
+(`0x10000`), below the kernel image, never in the heap. Syscalls switch to a
+dedicated kernel stack (`SYS_KSTK_TOP`) and return with `sysretq`. Every
+pointer argument must lie in the user window and strings must be
+NUL-terminated inside it, or the call returns `-EFAULT`; `arch_prctl`
+accepts only canonical bases. `brk` is capped below the user stack and
+`mmap` carves from the same window, so every obtainable address is a user
+page. Faulting user code resets (no IDT); scheduling is separate. The single
+layout source is `progs/minios_abi.h` (`MINIOS_ABI_VERSION`,
+`MINIOS_ABI_CHECKSUM`, canonical `MINIOS_SYS_*` numbers 0-199 Linux, 200-299
+MiniOS, 300+ reserved); `kernel.c` static-asserts its derived constants
+against it. Never hardcode a layout address elsewhere.
+
+## Proving a game renders: `gfx frames`, autoquit, `boot_run.sh`
+
+A game that launches is not proof it plays. The kernel counts every
+`SYS_DOOM_FRAME` / `SYS_NK_FRAME` composite (`gfx_frames_composited`) and
+the `gfx frames` builtin reports it over serial. The check is: read the
+counter, run the game, read it again, assert it climbed.
+
+```sh
+tools/boot_run.sh "cmd1" "cmd2" ... [--timeout N] [--log FILE]
+```
+
+`boot_run.sh` boots `os.img`, drives the shell over the serial console,
+appends `poweroff`, and captures the transcript (exit 0 on clean poweroff,
+124 on timeout; stale guests are reaped first so the image lock is free):
+
+```
+tools/boot_run.sh "lua src/test.lua"
+tools/boot_run.sh "gfx frames" "run doomgeneric.elf mini_autoframes 150" "gfx frames"
+tools/boot_run.sh "gfx frames" \
+  "run bin/quake2generic.elf +set basedir . +set minios_autoframes 400" "gfx frames"
+```
+
+Headless autoquit (default is interactive play): DOOM
+`run doomgeneric.elf mini_autoframes 150` renders 150 attract-loop frames
+then `exit(0)` (parsed in `DG_Init`; avoids the `-timedemo` path whose
+bundled demos mismatch and fault headless); Quake 2
+`run bin/quake2generic.elf +set basedir . +set minios_autoframes 400`
+renders 400 frames then `Sys_Quit()`. Quake without a `demo1.bsp`-carrying
+pak still climbs the counter from the loading screen and quits cleanly.
+DOOM `I_Error` calls `exit(-1)` instead of spinning, so a missing WAD
+returns to the shell instead of hanging.
+
+## MCP marketplace and test tool
+
+Beyond the console tools (`minios_boot`, `status`, `send`, `expect`,
+`snapshot`, `write`, `cat`, `poweroff`, plus `minios_python` for a ramdisk
+script and `minios_py_eval` for a one-liner), the bridge ships a reusable
+harness and a package flow. `minios_test` sends shell commands and asserts
+each `expect` marker appears and each `refute` marker does not, returning
+`{pass, failures, transcript}` so sessions never hand-roll boot-and-assert
+scripts. `minios_addons` lists `addons/*.yaml` with installed state;
+`minios_install <name>` boots if needed, clones `repo_url`, uploads each
+`files` entry through the editor (split to 512-line parts with sub-128-char
+lines, reassembled with one `cat` per part and byte-checked modulo the
+trailing newline; overlong lines rejected up front), runs the `build` lines
+and asserts the `verify` exit codes. Success records the addon in the in-OS
+registry `var/lib/addons.txt` and a host state file; failure aborts without
+recording and removes upload parts. The YAML dialect is a strict stdlib-only
+subset (whitelisted keys, bounded names, validated `dst`, printable-ASCII
+lines); the host shell is never invoked. The marketplace ships `cp` and
+`freedom` as installable `guest` addons (the freedom addon rebuilds the
+browser inside the OS from git as `freedom-mini`, the http-only miniGCC
+twin, as the end-to-end dogfood, driven by `mcp/mcp_dogfood.py` over stdio
+JSON-RPC).
+
+Every external source also carries an addon file, so the marketplace is
+the one package index even for software the editor-upload path cannot
+carry: `host` addons (toolchain, interpreters, engines, libraries) are
+built on the host with the ordinary gcc toolchain and packed into the
+image by `make`, while `reference` addons are source-only checkouts that
+are never vendored, linked or built. `minios_install` refuses non-guest
+addons with a diagnostic naming the make target instead of half-installing
+them; `make addons` validates every file in `addons/`.
+
+| Addon | Kind | Origin | Artifact |
+|-------|------|--------|----------|
+| `cp` | guest | miniOS `progs/src/cp.c` | `bin/cp` (built in-OS) |
+| `freedom` | guest | miniOS `progs/src/freedom.c` | `bin/freedom-mini` (built in-OS) |
+| `minigcc` | host | sibling `../miniGCC` | `objects/minigcc.o` |
+| `ld` | host | sibling `../ld` | `objects/ld.o` |
+| `cvm` | host | sibling `../cvm` | `objects/cvm.o` |
+| `lua` | host | sibling `../lua` (`v5.4.7`) | `lua` on MiniFS |
+| `micropython` | host | sibling `../micropython` (`v1.28.0`) | `micropython` on MiniFS |
+| `lisp` | host | in-repo `progs/lisp` | `lisp` on MiniFS |
+| `nuklear` | host | sibling `../nuklear` | `nuklear` on MiniFS |
+| `nuked-opl3` | host | sibling `../nuked-opl3` | `opl3` on MiniFS |
+| `doom` | host | vendored `progs/doomgeneric` | `doomgeneric.elf` on MiniFS |
+| `quake2` | host | nested `progs/quake2generic/quake2generic` | `quake2generic.elf` on MiniFS |
+| `doomedit` | host | in-repo `progs/doomedit` | `doomedit` on MiniFS |
+| `wlmini` | host | in-repo `progs/wl` | `wlcomp` on MiniFS |
+| `raycastlib` | reference | sibling `../raycastlib` | none (preview reference only) |
+
+## QEMU guest agent channel (COM2)
+
+The kernel exposes a QEMU guest agent style channel on COM2 (ISA `0x2F8`,
+IRQ 3, 115200 baud 8N1, FIFO `0xC7`, MCR `0x0B`). `qga.c`/`qga.h` frame one
+JSON request per line; overlong lines past `QGA_LINE_MAX` (512, NUL
+included) are rejected fail-closed and replies are capped at
+`QGA_RESP_MAX` (2048, base64 for file reads). `tools/qga_client.py` speaks
+it from the host (`qga_client.py guest-ping`,
+`qga_client.py guest-exec '{"path":"..."}'`, `--sock` or `MINIOS_GA_SOCK`
+overriding `/tmp/minios-ga.sock`), including the framing QEMU's own
+`guest-agent-command` uses; `tools/qga_test.sh` exercises it. Wire the host
+side with a QEMU chardev/socket mapped to COM2.
+
+## Boot path, memory map, KASLR
+
+Two stages because one correct stage does not fit in 512 bytes; every
+address, BIOS service, descriptor and control bit lives in
+`arch/x86/boot/bootdefs.h` with no bare constants in either stage. `stage1.S`
+verifies INT 13h extended (LBA) support, reads stage 2 and jumps to it
+(`.org`-guarded to the sector). `stage2.S` enables A20 (clearing the
+fast-reset bit before port `0x92`), streams the kernel in 64 KB chunks
+through the staging buffer at `0x10000`, copies each chunk above 1 MB via a
+short protected-mode excursion (loop state in memory, never registers), builds
+page tables (identity 2 MB leaves for the first gigabyte, low 4 MB split
+into the `PT0`/`PT1` KASLR scheme), enables PAE and long mode, installs the
+64-bit GDT at `0x8000` and jumps to `0x100000` (`KERNEL_SECTORS` comes from
+the `kernel.bin` size; LBA constants from `bootdefs.h`). Disk layout: LBA 0
+stage 1, LBA 1-8 stage 2, LBA 9+ kernel image with embedded ramdisk,
+then the MiniFS partition (2048-aligned, found by superblock probe,
+never by computed offset), 64 MB of swap, and the FAT32 plus ext4
+reference images appended past swap (superfloppy, no MBR entries;
+found by the same probe-then-scan discipline the drivers use on real
+disks). VESA is
+probed before long mode kills BIOS video (800x600x8, then 640x480x8, then
+Mode 13h fallback) into the struct at `VBE_INFO_ADDR` (`0x7E20`); the kernel
+maps that framebuffer at `FB_ADDR`.
+
+Low memory is a fixed jigsaw: page tables at `0x1000-0x4FFF`, user page-table
+zone `0x10000` (64 KB, below the kernel link base so code, data and `.bss`
+can never reach it), GDT at `0x8000`, stage 2 at `0x9000`, syscall kernel
+stack below `0x88000`, AP stub stack at `0x78000`, kernel image at virtual
+`0x100000` (must end below `0x400000`, asserted at boot), user load base
+`0x400000`, heap from `0x0C000000`. Never move the user-table zone above
+`0x100000`; if the image outgrows `KASLR_IMAGE_SPAN` (3 MB), grow the span,
+the KASLR `PT1` mapping and the link layout together. `make check-size`
+fails the build if `_kernel_end` passes `USER_LOAD_BASE`; the documented
+levers are per-TU `-Os` (the `shell.o` precedent), trimming the ramdisk,
+and the `VMA_MAX` pool bound (2048 nodes: the two static pools plus the
+per-process heap pool all scale with it).
+
+KASLR (default on, `make ENABLE_KASLR=0` disables) keeps virtual `0x100000`
+but randomizes the physical base: stage 2 mixes TSC with CMOS hours/minutes/
+seconds in distinct bytes and picks one of 64 aligned 2 MB slots. The banner
+reports the base and the BDD suite asserts it is never `0x100000`. `.bss`
+relies on QEMU-zeroed RAM (NOBITS, no loader fill).
+
+## Validation gate, governance, libraries
+
+Every change must pass, in order: `make` (zero warnings),
+`sh src/test_all.sh` (96 PASS), `./tools/test_bdd.sh` (full serial suite),
+`./tools/test_codecs.sh` (lzss/lz4/aes roundtrips, pass=3), `./tools/mutate.sh`
+(every kernel/boot mutant killed; survivors mean a missing scenario, and only
+provably equivalent mutants may leave the set), `make test-tls` (host crypto
+vectors plus OpenSSL-driven full handshakes and the negative set),
+`make test-vma` (host red-black invariants, exhaustion, drain),
+`make test-lisp` (host Lisp interpreter vectors plus in-OS suite head),
+`make test-wl` (Wayland-mini wire roundtrip and fail-closed bounds),
+`make test-futex test-percpu-rq test-batch test-rcu` (SMP scaling contracts),
+`make test-sanitize` (syscall sanitize macros),
+`make test-tick test-hal` (timer tick bus + HAL port mapping),
+`make test-pipe test-panic test-pci test-httpd` (pipe ring, panic walk,
+PCI config space, httpd wire),
+`make test-fat` (FAT32 loopback driver: units, multi-cluster reads,
+fail-closed edges over a synthetic image),
+`make test-wm` (window manager geometry, events, window model, render plan,
+tiling and focus contracts), `make uefi` (stub image boots under OVMF),
+`python3 -m unittest -v mcp/test_minios_mcp.py`, and `mcp/mutate_mcp.sh`.
+Methodology is SDD (spec in `CLAUDE.md` first), TDD (failing scenario first),
+BDD (`test_bdd.sh` over the serial console), mutation testing, and the Boy
+Scout rule (debt and security defects found en route are fixed, never
+deferred). `mutate.sh` anchor hygiene is enforced by
+`tools/check_mutant_anchors.py` (in `make lint`): every expression must
+match its target file or the check fails closed.
+
+Governance gates (`ARCH_POLICY.yaml`): `tools/check_cohesion.py` (community
+cohesion floor), `tools/check_complexity.py` (kernel symbol budget),
+`tools/check_surprising.py` (long-hop coupling), `tools/check_kb_sync.py`
+(knowledge-base sync).
+
+Library policy: a library lands only if it fits the freestanding kernel
+(integer-only, no POSIX, allocator/libc redirected through macros) or runs
+at ring 3 as an unmodified static ELF. Accepted: miniz 3.0.2 (ZIP builtins),
+dlmalloc 2.8.6 (kernel heap mspace, `ONLY_MSPACES`, no `MORECORE`/`MMAP`
+growth, `objects/dlmalloc.o` selftest), stb_image (vendored; kernel keeps its
+8x8 bitmap font because the header is float-heavy and the kernel builds
+`-mno-sse -mno-mmx`, so a font swap would rasterize on the host at build
+time). Rejected: linenoise (POSIX line editor; the prompt implements editing
+natively), libgit2 (pthreads/OpenSSL/POSIX surface; a future git client would
+be a minimal wire client, not a port).
+
+## Make targets
+
+| Target | Purpose |
+|--------|---------|
+| `all` (default) | build `os.img` |
+| `sources` | clone the missing toolchain repositories from GitHub |
+| `sources-update` | pull the latest commit of each one |
+| `sources-status` | show the revision each checkout is on |
+| `toolchain` | build `minigcc`, `ld` and `cvm2` from those sources |
+| `selfhost` | compile minigcc with minigcc, link with `ld`, verify the bootstrap fixed point |
+| `test-tls` | host TLS suite: crypto vectors + full handshakes |
+| `test-vma` | host VMA suite: red-black tree invariants, pool exhaustion, full drain |
+| `test-sync` | host sync suite: wait queues, mutex/sem/cond/rwlock over the real `kernel/sync.c` |
+| `test-fat` | host FAT32 suite: BPB units, multi-cluster reads, fail-closed edges over a synthetic image |
+| `test-tick` | host tick suite: listener order, separation, gating, bounds over the real `kernel/tick.c` |
+| `test-hal` | host HAL suite: port/device constants and stub routing for `arch/x86/hal_io.h` |
+| `test-wm` | host WM suite: geometry, events, window model, render plan, tiling and focus over the header-only `wm_*.h` contracts |
+| `run` | boot the image in QEMU with a display (TCG by default) |
+| `run-kvm` | boot it with KVM acceleration (faster CPU, slower IDE I/O) |
+| `run-headless` | boot it headless on the serial console (no GUI window) |
+| `serial` / `debug` | boot the image in QEMU |
+| `test` | behavioural suite |
+| `test-tls` / `test-vma` | host suites (see Validation gate above) |
+| `progs/bin/topogpt3.elf` | build the TopoGPT3 C inference engine |
+| `progs/bin/nuklear.elf` | build the Nuklear node editor |
+| `progs/bin/quake2generic.elf` | build the Quake 2 engine |
+| `doomgeneric.elf` | build the DOOM engine |
+| `pokemon-fetch` / `pokemon-clean` | fetch the gb-recompiled tool / remove `progs/pokemon/build/` |
+| `minifs.bin` | rebuild MiniFS image (includes TopoGPT3 weights and vocab) |
+| `clean` | remove every build product |
+
+See `CLAUDE.md` for the full engineering contract.
+
+[https://medium.com/@lazyown.redteam/because-i-can-the-most-dangerous-words-in-a-world-of-subscription-based-obedience-05f38f99cd36](https://medium.com/@lazyown.redteam/because-i-can-the-most-dangerous-words-in-a-world-of-subscription-based-obedience-05f38f99cd36)
+
+## Acknowledgments
+
+MiniOS stands on the shoulders of third-party software. Thanks to every
+author and contributor behind the projects below; without their work this
+system would not exist.
+
+- [DOOM](https://github.com/SPinti-Software/doomgeneric), by id Software, played through the `doomgeneric` port layer by
+  ozkl, which is the bridge MiniOS builds its windowed port on.
+- [Quake 2](https://github.com/ozkl/quake2generic), by id Software, played through `quake2generic`, also by ozkl,
+  reusing the same back-buffer infrastructure as DOOM.
+- [MicroPython](https://github.com/micropython/micropython), by Damien George and the MicroPython contributors: the
+  unix-port `minios` variant runs unmodified sources as ring-3 programs.
+- [Lua.org](https://www.lua.org/), by the PUC-Rio team (Roberto Ierusalimschy, Luiz Henrique de
+  Figueiredo, Waldemar Celes): the 5.4 reference interpreter runs as a
+  ring-3 static ELF.
+- [Nuklear](https://github.com/vurtun/nuklear), by Dmitry Hrabrov (vurtun): the single-header immediate-mode
+  UI library behind the node editor, the file browser, the paint program,
+  vedit and every other graphical tool.
+- [Nuked-OPL3](https://github.com/nukeykt/Nuked-OPL3), by nukeykt: the cycle-accurate YMF262 emulator that renders
+  FM audio for the piano at ring 3.
+- [Lexbor](https://github.com/lexbor/lexbor), by Alexander Borisov and contributors: the HTML parser behind
+  the real FreeDom engine port.
+- [miniz](https://github.com/richgel999/miniz), by Rich Geldreich and contributors: the zip reader and writer
+  behind the `zip` and `unzip` shell builtins.
+- [dlmalloc](https://github.com/ennorehling/dlmalloc), by Doug Lea: the kernel heap allocator.
+- [stb](https://github.com/nothings/stb), by Sean Barrett and contributors: `stb_image` decodes the PNG
+  previews, icons and paint files.
+- [xxHash](https://github.com/cyan4973/xxhash), by Yann Collet and contributors: the checksums behind the
+  integrity selftests.
+- [The pokecrystal disassembly project](https://github.com/arcanite24/gb-recompiled) and its community: the data source
+  the Pokemon target builds from. [gb-recompiled](https://github.com/arcanite24/gb-recompiled)
+- [QEMU](https://www.qemu.org/), by Fabrice Bellard and the QEMU developers: the machine MiniOS
+  boots, tests and debugs on every day of development.
+- raycastlib, Public domain ray casting library, [Pokitto demos](https://gitlab.com/drummyfish/Pokitto-Raycasting) 
+
+ 
+## Easteregg
+
+An easter is that the wallpaper is the image from the [cgoblin](https://github.com/grisuno/cgoblin) readme, one of the first tools we wrote in Go.
+
+
+<!-- readmenator-kb-link -->
+## Knowledge Base
+
+This project has been analyzed by [ReadMenator](https://github.com/grisuno/ReadMenator),
+a zero-token polyglot static analysis tool. Analysis outputs are available:
+
+- **[KNOWLEDGE_BASE.md](./KNOWLEDGE_BASE.md)** -- Full architecture reference with all
+  classes, functions, imports, dependency graphs, UML class diagrams, security
+  audit findings, community analysis, and more.
+- **[readmenator-agent/](./readmenator-agent/)** -- Agent-friendly, grep-optimized index.
+  - `INDEX.md` -- Quick reference: what each file does
+  - `API.md` -- Public function contracts
+  - `GOTCHAS.md` -- Change warnings
+  - `SECURITY.md` -- Findings by severity
+- **[readmenator-wiki/](./readmenator-wiki/)** -- Navigable wiki (start here for the big picture).
+  - `index.md` -- Entry point: overview, reading order, god nodes, connections
+  - `community_*.md` -- One synthesis page per code community
+  - `REPORT.md` -- Honest audit: coverage, confidence, limits
+
+AI agents: Read `readmenator-wiki/index.md` first for the big picture, then `readmenator-agent/INDEX.md` for grep-friendly lookup.
+Developers: Read `KNOWLEDGE_BASE.md` for full architecture reference.
+<!-- /readmenator-kb-link -->
+
