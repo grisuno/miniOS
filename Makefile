@@ -202,13 +202,19 @@ sources:
 	        $(GIT) clone "$$url" "$$dir" || exit 1; \
 	    fi; \
 	done
+# MicroPython ships its frozen stdlib via the lib/micropython-lib submodule,
+# which a plain `git clone` leaves empty. The unix-port build fails on
+# frozen_content.c without it, so `sources` ensures it on both paths: a
+# fresh clone gets it initialized, and an existing checkout is healed.
 	@if [ -d "$(MICROPYTHON_DIR)/.git" ]; then \
 	    echo "present  $(MICROPYTHON_DIR)"; \
+	    $(GIT) -C "$(MICROPYTHON_DIR)" submodule update --init lib/micropython-lib || exit 1; \
 	elif [ -e "$(MICROPYTHON_DIR)" ]; then \
 	    echo "skipped  $(MICROPYTHON_DIR) exists and is not a git clone"; \
 	else \
 	    echo "cloning  $(MICROPYTHON_URL) -> $(MICROPYTHON_DIR) ($(MICROPYTHON_REF))"; \
 	    $(GIT) clone --depth 1 -b $(MICROPYTHON_REF) "$(MICROPYTHON_URL)" "$(MICROPYTHON_DIR)" || exit 1; \
+	    $(GIT) -C "$(MICROPYTHON_DIR)" submodule update --init lib/micropython-lib || exit 1; \
 	fi
 	@if [ -d "$(NUKLEAR_DIR)/.git" ]; then \
 	    echo "present  $(NUKLEAR_DIR)"; \
