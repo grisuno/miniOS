@@ -590,10 +590,26 @@ $(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS) $(PROGS_DIR)/minios_abi.h
 	chmod +x $@
 
 # ── DOOM WAD file ───────────────────────────────────────────────────
-# Doom1.wad is at the repository root (4.2 MB). It is packed into minifs
-# under the name bin/DOOM1.WAD, which is the exact case-sensitive name the
-# doomgeneric IWAD loader opens.
-$(BIN_DIR)/DOOM1.WAD: Doom1.wad
+# Doom1.wad (id Software v1.9 shareware episode, 4.2 MB) is deliberately
+# NOT committed: it is fetched on demand the first time a DOOM target
+# needs it. The shareware episode is freely redistributable, so pulling
+# the pristine v1.9 IWAD from archive.org keeps the file out of git while
+# keeping fresh-clone builds reproducible (MD5-pinned below).
+# It is packed into minifs under the name bin/DOOM1.WAD, which is the
+# exact case-sensitive name the doomgeneric IWAD loader opens.
+DOOM1_WAD     ?= Doom1.wad
+DOOM1_WAD_URL ?= https://archive.org/download/doom_20230531/doom_dos.ZIP
+DOOM1_WAD_MD5 ?= f0cefca49926d00903cf57551d901abe
+DOOM1_WAD_ZIP ?= $(basename $(DOOM1_WAD)).zip
+
+$(DOOM1_WAD):
+	curl -sSfL $(DOOM1_WAD_URL) -o $(DOOM1_WAD_ZIP)
+	python3 -c "import zipfile; zipfile.ZipFile('$(DOOM1_WAD_ZIP)').extract('DOOM1.WAD')"
+	mv -f DOOM1.WAD $@
+	rm -f $(DOOM1_WAD_ZIP)
+	echo "$(DOOM1_WAD_MD5)  $@" | md5sum -c - || (rm -f $@; exit 1)
+
+$(BIN_DIR)/DOOM1.WAD: $(DOOM1_WAD)
 	cp $< $@
 
 # DOOM binaries live on minifs, not the ramdisk (kernel must stay < 3 MB)
@@ -2242,7 +2258,7 @@ SAVES_STAGE = .minifs-saves-stage
 
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(PROGS_DIR)/baseq2/pak1.pak tools/mkfs.minifs.py Makefile tools/minifs_saves.py
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(if $(Q2G_AVAILABLE),$(PROGS_DIR)/baseq2/pak1.pak) tools/mkfs.minifs.py Makefile tools/minifs_saves.py
 	@STAGE="$(SAVES_STAGE)"; \
 	rm -rf "$$STAGE"; \
 	python3 tools/minifs_saves.py backup os.img "$$STAGE"; \
