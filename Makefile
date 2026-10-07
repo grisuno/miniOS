@@ -1294,6 +1294,20 @@ TOPOGPT3_SRC = $(PROGS_DIR)/topogpt3/topogpt3.c
 TOPOGPT3_WEIGHTS = $(abspath $(PROGS_DIR)/topogpt3/topogpt3.fp16)
 TOPOGPT3_VOCAB   = $(abspath $(PROGS_DIR)/topogpt3/vocab.bin)
 
+# Vocabulary: the GPT-2 BPE table in the MiniOS VOCB binary format. Not
+# committed; rebuilt on demand from the canonical encoder.json plus
+# tools/mkvocab.py, so fresh clones need no model files in git.
+TOPOGPT3_ENCODER_URL ?= https://openaipublic.blob.core.windows.net/gpt-2/models/124M/encoder.json
+TOPOGPT3_ENCODER = $(PROGS_DIR)/topogpt3/encoder.json
+
+$(TOPOGPT3_VOCAB): tools/mkvocab.py
+	curl -sSfL $(TOPOGPT3_ENCODER_URL) -o $(TOPOGPT3_ENCODER)
+	python3 tools/mkvocab.py $(TOPOGPT3_ENCODER) $@
+	rm -f $(TOPOGPT3_ENCODER)
+
+# Convenience alias: same file by its repo-relative name.
+$(PROGS_DIR)/topogpt3/vocab.bin: $(TOPOGPT3_VOCAB)
+
 $(BIN_DIR)/topogpt3.elf: $(TOPOGPT3_SRC)
 	$(CC) -static -no-pie -O2 -o $@ $< -lm
 	chmod +x $@
