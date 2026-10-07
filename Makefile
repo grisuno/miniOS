@@ -256,6 +256,14 @@ sources:
 	    echo "cloning  $(RAYCASTLIB_URL) -> $(RAYCASTLIB_DIR)"; \
 	    $(GIT) clone --depth 1 "$(RAYCASTLIB_URL)" "$(RAYCASTLIB_DIR)" || exit 1; \
 	fi
+	@if [ -d "$(Q2G_UPSTREAM)/.git" ]; then \
+	    echo "present  $(Q2G_UPSTREAM)"; \
+	elif [ -e "$(Q2G_UPSTREAM)" ]; then \
+	    echo "skipped  $(Q2G_UPSTREAM) exists and is not a git clone"; \
+	else \
+	    echo "cloning  $(Q2G_URL) -> $(Q2G_UPSTREAM)"; \
+	    $(GIT) clone --depth 1 "$(Q2G_URL)" "$(Q2G_UPSTREAM)" || exit 1; \
+	fi
 
 sources-update: sources
 	@for pair in $(SOURCE_REPOS); do \
@@ -804,10 +812,33 @@ Q2G_PLAYER_FILES = $(Q2G_DIR)/players/male/tris.md2 \
     $(Q2G_DIR)/players/male/weapon.md2 \
     $(Q2G_DIR)/players/male/grunt_i.pcx
 
-$(PROGS_DIR)/baseq2/pak1.pak: $(Q2G_PLAYER_FILES) tools/mkpak1.py
+# Quake 2 game data: the shareware pak0.pak is NOT committed. It is
+# extracted from the freely downloadable demo installer on demand, the
+# same way Doom1.wad is fetched above. The installer hash and the pak0
+# hash are both pinned (see Quake2-WASM docs for the reference values).
+# The shareware pak0 omits the player model, which is why pak1.pak below
+# (built from the tracked players/male files) ships alongside it.
+Q2_DEMO_URL  ?= https://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/quake2/q2-314-demo-x86.exe
+Q2_DEMO_SHA1 ?= 5b4dedc59ceee306956a3e48a8bdf6dd33bc91ed
+Q2_PAK0_SHA1 ?= b86e8878a8e8706595ceebe88b3e6b4c1ba5bcab
+Q2_DEMO_EXE  ?= $(basename $(PROGS_DIR)/baseq2/pak0.pak).exe
+
+$(PROGS_DIR)/baseq2:
+	mkdir -p $@
+
+$(PROGS_DIR)/baseq2/pak0.pak: | $(PROGS_DIR)/baseq2
+	curl -sSfL $(Q2_DEMO_URL) -o $(Q2_DEMO_EXE)
+	echo "$(Q2_DEMO_SHA1)  $(Q2_DEMO_EXE)" | sha1sum -c - || (rm -f $(Q2_DEMO_EXE); exit 1)
+	python3 -c "import zipfile; zipfile.ZipFile('$(Q2_DEMO_EXE)').extract('Install/Data/baseq2/pak0.pak')"
+	mv -f Install/Data/baseq2/pak0.pak $@
+	rm -f $(Q2_DEMO_EXE)
+	rm -rf Install
+	echo "$(Q2_PAK0_SHA1)  $@" | sha1sum -c - || (rm -f $@; exit 1)
+
+$(PROGS_DIR)/baseq2/pak1.pak: $(Q2G_PLAYER_FILES) tools/mkpak1.py | $(PROGS_DIR)/baseq2
 	python3 tools/mkpak1.py
 
-MINIFS_Q2G_FILES = $(if $(Q2G_AVAILABLE),$(BIN_DIR)/quake2generic.elf $(PROGS_DIR)/baseq2,)
+MINIFS_Q2G_FILES = $(if $(filter 1,$(Q2G_AVAILABLE)),$(BIN_DIR)/quake2generic.elf $(PROGS_DIR)/baseq2,)
 
 # ── Pokemon (GB Recompiled port, static glibc ELF) ───────────────────
 # Same contract as DOOM: host clang -static, ring-3 ET_EXEC, on MiniFS.
@@ -843,7 +874,7 @@ pokemon-fetch:
 pokemon-clean:
 	rm -rf $(POKEMON_PORT_DIR)/build
 
-MINIFS_POKEMON_FILES = $(if $(POKEMON_AVAILABLE),$(BIN_DIR)/pokemon.elf,)
+MINIFS_POKEMON_FILES = $(if $(filter 1,$(POKEMON_AVAILABLE)),$(BIN_DIR)/pokemon.elf,)
 
 # ── MicroPython (microPython unix port, static glibc ELF) ──────────
 # Same contract as DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.

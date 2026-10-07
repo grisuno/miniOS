@@ -76,6 +76,8 @@ build/
 # (from their own ROM), and local build tree. Only the port sources
 # in progs/pokemon/ (platform_minios.c, Makefile.minios, minios_stubs/,
 # fetch.sh, README.md) are tracked.
+# Quake 2 upstream engine clone (in-tree checkout filled by `make sources`).
+progs/quake2generic/quake2generic/
 progs/pokemon/upstream/
 progs/pokemon/game/
 progs/pokemon/build/
