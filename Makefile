@@ -41,7 +41,7 @@ NUKLEAR_DIR ?= ../nuklear
 # for the doomedit DDA preview (never vendored, never linked). Cloned by
 # `make sources` like every other sibling checkout so the reference is
 # reproducible from its upstream alone.
-RAYCASTLIB_URL ?= https://github.com/grisuno/raycastlib
+RAYCASTLIB_URL ?= https://gitlab.com/drummyfish/raycastlib.git
 RAYCASTLIB_DIR ?= ../raycastlib
 
 FREEDOM_URL ?= https://github.com/grisuno/FreeDom
@@ -303,10 +303,16 @@ toolchain: $(LD_TOOL) $(MINIGCC_BIN) $(CVM_BIN)
 	@echo "toolchain ready: $(MINIGCC_BIN) $(LD_TOOL) $(CVM_BIN)"
 
 # ── Programs (.o files) ──────────────────────────────────────────
-$(OBJ_DIR)/hello.o: $(SRC_DIR)/hello.c
+# OBJ_DIR is gitignored, so a fresh clone has no progs/objects until make
+# creates it. Every rule below that writes into $(OBJ_DIR) takes it as an
+# order-only prerequisite instead of assuming the directory exists.
+$(OBJ_DIR):
+	mkdir -p $@
+
+$(OBJ_DIR)/hello.o: $(SRC_DIR)/hello.c | $(OBJ_DIR)
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
-$(OBJ_DIR)/ftest.o: $(SRC_DIR)/ftest.c
+$(OBJ_DIR)/ftest.o: $(SRC_DIR)/ftest.c | $(OBJ_DIR)
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
 # ── Real Linux ELF executable (ET_EXEC, static, no libc) ─────────
@@ -394,16 +400,17 @@ $(BIN_DIR)/w1.elf: $(ASM_DIR)/w1.s $(LD_TOOL)
 $(BIN_DIR)/fib.elf: $(ASM_DIR)/fib.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
-$(OBJ_DIR)/minigcc.o: $(MINIGCC_DIR)/minigcc.c
+$(OBJ_DIR)/minigcc.o: $(MINIGCC_DIR)/minigcc.c | $(OBJ_DIR)
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
-$(OBJ_DIR)/ld.o: $(LD_DIR)/ld.c
+$(OBJ_DIR)/ld.o: $(LD_DIR)/ld.c | $(OBJ_DIR)
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -O2 -o $@ $<
 
 $(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h kernel/cvm_host.c kernel.h \
                   $(CVM_DIR)/cvm_jit.c $(CVM_DIR)/cvm_jit.h \
                   $(CVM_DIR)/cvm_jit_x86.c $(CVM_DIR)/cvm_jit_x86.h \
-                  $(CVM_DIR)/cvm_jit_help.c $(CVM_DIR)/cvm_jit_help.h
+                  $(CVM_DIR)/cvm_jit_help.c $(CVM_DIR)/cvm_jit_help.h \
+                  | $(OBJ_DIR)
 # NOTE: -Os, not -O2. These five objects are ~100 KB of the ramdisk and
 # the kernel image ends just below USER_LOAD_BASE, so bytes matter more
 # than compiler speed here (it only shapes the JIT compiler itself, not
@@ -435,16 +442,16 @@ $(OBJ_DIR)/cvm.o: $(CVM_DIR)/cvm.c $(CVM_DIR)/cvm.h kernel/cvm_host.c kernel.h \
 
 # ── Ring-0 ET_REL test objects (host-compiled, link against kernel symbols) ──
 # stb.o: self-test for the kernel's stb image API (PNG load + pixel check)
-$(OBJ_DIR)/stb.o: third_party/stb/stb_selftest.c
+$(OBJ_DIR)/stb.o: third_party/stb/stb_selftest.c | $(OBJ_DIR)
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -fno-stack-protector -O2 -o $@ $<
 
 # xxhash.o: self-test for the kernel's XXH64 symbol (3 known-answer vectors)
-$(OBJ_DIR)/xxhash.o: third_party/xxhash/xxhash_selftest.c
+$(OBJ_DIR)/xxhash.o: third_party/xxhash/xxhash_selftest.c | $(OBJ_DIR)
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -fno-stack-protector -O2 -o $@ $<
 
 # dlmalloc.o: self-test for the kernel's dlmalloc-backed allocator
 # (malloc/free/calloc/realloc burst, realloc copy, calloc zero, bounded growth).
-$(OBJ_DIR)/dlmalloc.o: third_party/dlmalloc/dlmalloc_selftest.c
+$(OBJ_DIR)/dlmalloc.o: third_party/dlmalloc/dlmalloc_selftest.c | $(OBJ_DIR)
 	$(CC) -c -ffreestanding -nostdlib -m64 -mno-red-zone -fno-pic -fno-stack-protector -O2 -o $@ $<
 
 # ── CVM modules (assembled from miniGCC output with 'ld') ────────
