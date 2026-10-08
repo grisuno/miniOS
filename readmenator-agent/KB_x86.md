@@ -1,96 +1,71 @@
 # Subsystem: x86
 
-## headers/arch/x86/hal_io.h
+## arch/x86/ap_entry.S
+- Doc: SMP application-processor bootstrap stub.
 - Layer: utility
-- Doc: Docstring: x86 port I/O hardware abstraction contract.
-- Language: h
+- Language: S
 - Symbols:
-  - `hal_mmio_write32` (function, line 123) `static inline void hal_mmio_write32(volatile unsigned *addr, unsigned val)`
-  - `hal_mmio_read64` (function, line 128) `static inline unsigned long long hal_mmio_read64(const volatile unsigned long long *addr)`
-  - `hal_mmio_write64` (function, line 133) `static inline void hal_mmio_write64(volatile unsigned long long *addr,
-                          ...`
-  - `hal_mmio_read16` (function, line 139) `static inline unsigned short hal_mmio_read16(const volatile unsigned short *addr)`
-  - `hal_mmio_write16` (function, line 144) `static inline void hal_mmio_write16(volatile unsigned short *addr,
-                              ...`
-  - `hal_mmio_read8` (function, line 150) `static inline unsigned char hal_mmio_read8(const volatile unsigned char *addr)`
-  - `hal_mmio_write8` (function, line 155) `static inline void hal_mmio_write8(volatile unsigned char *addr,
-                                ...`
-  - `hal_mmio_wmb` (function, line 161) `static inline void hal_mmio_wmb(void)`
-  - `hal_mmio_rmb` (function, line 166) `static inline void hal_mmio_rmb(void)`
-  - `hal_mmio_mb` (function, line 171) `static inline void hal_mmio_mb(void)`
-  - `hal_outb` (function, line 189) `static inline void hal_outb(unsigned short port, unsigned char val)`
-  - `hal_inb` (function, line 196) `static inline unsigned char hal_inb(unsigned short port)`
-  - `hal_outw` (function, line 202) `static inline void hal_outw(unsigned short port, unsigned short val)`
-  - `hal_inw` (function, line 209) `static inline unsigned short hal_inw(unsigned short port)`
-  - `hal_lapic_eoi` (function, line 215) `static inline void hal_lapic_eoi(void)`
-  - `hal_pic_eoi` (function, line 220) `static inline void hal_pic_eoi(int irq)`
-  - `hal_outb` (function, line 230) `static inline void hal_outb(unsigned short port, unsigned char val)`
-  - `hal_inb` (function, line 235) `static inline unsigned char hal_inb(unsigned short port)`
-  - `hal_outw` (function, line 242) `static inline void hal_outw(unsigned short port, unsigned short val)`
-  - `hal_inw` (function, line 247) `static inline unsigned short hal_inw(unsigned short port)`
-  - `hal_lapic_eoi` (function, line 254) `static inline void hal_lapic_eoi(void)`
-  - `hal_pic_eoi` (function, line 259) `static inline void hal_pic_eoi(int irq)`
-  - `hal_io_stub_writes` (variable, line 178) `extern unsigned hal_io_stub_writes;`
-  - `hal_io_stub_last_port` (variable, line 180) `extern unsigned hal_io_stub_last_port;`
-  - `hal_io_stub_last_val` (variable, line 182) `extern unsigned hal_io_stub_last_val;`
-  - `hal_io_stub_lapic_eois` (variable, line 184) `extern unsigned hal_io_stub_lapic_eois;`
-  - `hal_io_stub_read_val` (variable, line 186) `extern unsigned char hal_io_stub_read_val;`
-  - `HAL_IO_H` (macro, line 13) `#define HAL_IO_H`
-  - `HAL_PIC1_CMD` (macro, line 16) `#define HAL_PIC1_CMD`
-  - `HAL_PIC1_DATA` (macro, line 18) `#define HAL_PIC1_DATA`
-  - `HAL_PIC2_CMD` (macro, line 20) `#define HAL_PIC2_CMD`
-  - `HAL_PIC2_DATA` (macro, line 22) `#define HAL_PIC2_DATA`
-  - `HAL_PIC_EOI` (macro, line 24) `#define HAL_PIC_EOI`
-  - `HAL_PIT_CMD` (macro, line 27) `#define HAL_PIT_CMD`
-  - `HAL_PIT_CH0` (macro, line 29) `#define HAL_PIT_CH0`
-  - `HAL_PS2_STATUS` (macro, line 32) `#define HAL_PS2_STATUS`
-  - `HAL_PS2_DATA` (macro, line 34) `#define HAL_PS2_DATA`
-  - `HAL_PS2_MOUSE_OBF` (macro, line 36) `#define HAL_PS2_MOUSE_OBF`
-  - `HAL_PS2_IBF_EMPTY` (macro, line 38) `#define HAL_PS2_IBF_EMPTY`
-  - `HAL_PS2_OBF_FULL` (macro, line 40) `#define HAL_PS2_OBF_FULL`
-  - `HAL_PS2_CMD_WRITE_MOUSE` (macro, line 42) `#define HAL_PS2_CMD_WRITE_MOUSE`
-  - `HAL_PS2_CMD_ENABLE_AUX` (macro, line 44) `#define HAL_PS2_CMD_ENABLE_AUX`
-  - `HAL_PS2_CMD_DISABLE_AUX` (macro, line 46) `#define HAL_PS2_CMD_DISABLE_AUX`
-  - `HAL_PS2_CMD_ENABLE_KBD` (macro, line 48) `#define HAL_PS2_CMD_ENABLE_KBD`
-  - `HAL_PS2_CMD_DISABLE_KBD` (macro, line 50) `#define HAL_PS2_CMD_DISABLE_KBD`
-  - `HAL_PS2_CMD_READ_CONFIG` (macro, line 52) `#define HAL_PS2_CMD_READ_CONFIG`
-  - `HAL_PS2_CMD_WRITE_CONFIG` (macro, line 54) `#define HAL_PS2_CMD_WRITE_CONFIG`
-  - `HAL_PS2_CONFIG_IRQ1` (macro, line 56) `#define HAL_PS2_CONFIG_IRQ1`
-  - `HAL_PS2_CONFIG_IRQ12` (macro, line 58) `#define HAL_PS2_CONFIG_IRQ12`
-  - `HAL_PS2_CONFIG_DISABLE_KBD` (macro, line 60) `#define HAL_PS2_CONFIG_DISABLE_KBD`
-  - `HAL_PS2_CONFIG_DISABLE_AUX` (macro, line 62) `#define HAL_PS2_CONFIG_DISABLE_AUX`
-  - `HAL_PS2_CONFIG_TRANSLATE` (macro, line 64) `#define HAL_PS2_CONFIG_TRANSLATE`
-  - `HAL_MOUSE_CMD_RESET` (macro, line 66) `#define HAL_MOUSE_CMD_RESET`
-  - `HAL_MOUSE_CMD_SET_RATE` (macro, line 68) `#define HAL_MOUSE_CMD_SET_RATE`
-  - `HAL_MOUSE_CMD_GET_ID` (macro, line 70) `#define HAL_MOUSE_CMD_GET_ID`
-  - `HAL_MOUSE_CMD_DEFAULTS` (macro, line 72) `#define HAL_MOUSE_CMD_DEFAULTS`
-  - `HAL_MOUSE_CMD_ENABLE` (macro, line 74) `#define HAL_MOUSE_CMD_ENABLE`
-  - `HAL_MOUSE_CMD_DISABLE` (macro, line 76) `#define HAL_MOUSE_CMD_DISABLE`
-  - `HAL_MOUSE_RATE_KNOCK_200` (macro, line 78) `#define HAL_MOUSE_RATE_KNOCK_200`
-  - `HAL_MOUSE_RATE_KNOCK_100` (macro, line 80) `#define HAL_MOUSE_RATE_KNOCK_100`
-  - `HAL_MOUSE_RATE_KNOCK_80` (macro, line 82) `#define HAL_MOUSE_RATE_KNOCK_80`
-  - `HAL_MOUSE_ID_INTELLI` (macro, line 84) `#define HAL_MOUSE_ID_INTELLI`
-  - `HAL_MOUSE_HW_TIMEOUT` (macro, line 86) `#define HAL_MOUSE_HW_TIMEOUT`
-  - `HAL_MOUSE_SYNC_BIT` (macro, line 89) `#define HAL_MOUSE_SYNC_BIT`
-  - `HAL_MOUSE_OVF_BITS` (macro, line 91) `#define HAL_MOUSE_OVF_BITS`
-  - `HAL_MOUSE_BUTTON_MASK` (macro, line 93) `#define HAL_MOUSE_BUTTON_MASK`
-  - `HAL_MOUSE_PACKET_LEN` (macro, line 95) `#define HAL_MOUSE_PACKET_LEN`
-  - `HAL_MOUSE_SCALE` (macro, line 97) `#define HAL_MOUSE_SCALE`
-  - `HAL_LAPIC_EOI_ADDR` (macro, line 100) `#define HAL_LAPIC_EOI_ADDR`
-- Imported by: `drivers/kbd.c`, `drivers/mouse.c`, `drivers/nvme.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_hal_io.c`
+  - `ap_stub_start` (function, line 21)
+  - `ap_pm` (function, line 39)
+  - `ap_lm` (function, line 62)
+  - `ap_patch_slot` (function, line 80)
+  - `ap_gdt32` (function, line 84)
+  - `ap_gdt32_ptr` (function, line 88)
+  - `ap_gdt32_end` (function, line 91)
+  - `ap_gdt64_ptr` (function, line 93)
+  - `ap_stub_end` (function, line 98)
+- Depends on: `headers/arch/x86/boot/bootdefs.h`
 
-## headers/arch/x86/msr.h
+## arch/x86/ctx_sw.S
+- Doc: sched_park_capture: captured the rest.
 - Layer: utility
-- Doc: Model-Specific Register access for x86-64.
-- Language: h
+- Language: S
 - Symbols:
-  - `wrmsr` (function, line 8) `static inline void wrmsr(unsigned msr, unsigned long val)`
-  - `rdmsr` (function, line 13) `static inline unsigned long rdmsr(unsigned msr)`
-  - `ARCH_X86_MSR_H` (macro, line 2) `#define ARCH_X86_MSR_H`
-  - `MSR_STAR` (macro, line 19) `#define MSR_STAR`
-  - `MSR_LSTAR` (macro, line 20) `#define MSR_LSTAR`
-  - `MSR_SFMASK` (macro, line 21) `#define MSR_SFMASK`
-  - `MSR_FSBASE` (macro, line 22) `#define MSR_FSBASE`
-  - `MSR_GSBASE` (macro, line 23) `#define MSR_GSBASE`
-  - `MSR_KERNEL_GS_BASE` (macro, line 24) `#define MSR_KERNEL_GS_BASE`
-- Imported by: `kernel.c`, `kernel/exec.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `smp.c`
+  - `sched_park_capture` (function, line 70)
+  - `switch_save_only` (function, line 82)
+  - `switch_to` (function, line 91)
+  - `switch_to_notrap` (function, line 134)
+  - `user_trampoline` (function, line 221)
+  - `fork_trampoline` (function, line 233)
+  - `exec_enter` (function, line 249)
+  - `resume_iretq` (function, line 278)
+  - `k_run_on_stack` (function, line 318)
+
+## arch/x86/isr_stubs.S
+- Layer: testing
+- Language: S
+- Symbols:
+  - `tf_rax` (function, line 67)
+  - `tf_rbx` (function, line 68)
+  - `tf_rcx` (function, line 69)
+  - `tf_rdx` (function, line 70)
+  - `tf_rsi` (function, line 71)
+  - `tf_rdi` (function, line 72)
+  - `tf_rbp` (function, line 73)
+  - `tf_r8` (function, line 74)
+  - `tf_r9` (function, line 75)
+  - `tf_r10` (function, line 76)
+  - `tf_r11` (function, line 77)
+  - `tf_r12` (function, line 78)
+  - `tf_r13` (function, line 79)
+  - `tf_r14` (function, line 80)
+  - `tf_r15` (function, line 81)
+  - `tf_rip` (function, line 82)
+  - `tf_cs` (function, line 83)
+  - `tf_rflags` (function, line 84)
+  - `tf_rsp` (function, line 85)
+  - `tf_ss` (function, line 86)
+  - `tf_vector` (function, line 87)
+  - `tf_errcode` (function, line 88)
+  - `isr_common` (function, line 96)
+  - `isr_stub_table` (function, line 195)
+
+## arch/x86/syscall_entry.S
+- Layer: utility
+- Language: S
+- Symbols:
+  - `syscall_kstack` (function, line 49)
+  - `kstack_base` (function, line 52)
+  - `sc_top_save_addr` (function, line 55)
+  - `syscall_entry` (function, line 65)
+- Depends on: `headers/syscall_asm.h`

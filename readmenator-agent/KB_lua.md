@@ -11,10 +11,11 @@
   - `dofile` (function, line 51) `static int dofile(lua_State *L, const char *name)`
   - `repl` (function, line 61) `static int repl(lua_State *L)`
   - `main` (function, line 105) `int main(int argc, char **argv)`
-  - `module` (function, line 5) `* C module (minios.c) can be registered globally before any script runs: * `minios.run(...)`, `minios.time_ms()`, etc. are available as a plain global * table, exactly like `import minios` in MicroPyt`
+  - `module` (function, line 5) `* C module (minios.c) can be registered globally before any script runs: * `minios.run(...)`, `minios.time_ms()`...`
 - Depends on: `kernel/string.c`
 
 ## progs/lua/minios.c
+- Doc: msys5: /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static long...
 - Layer: utility
 - Language: c
 - Symbols:

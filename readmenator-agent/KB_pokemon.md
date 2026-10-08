@@ -1,12 +1,13 @@
 # Subsystem: pokemon
 
 ## progs/pokemon/fetch.sh
+- Doc: clone the gb-recompiled tool into progs/pokemon/upstream.
 - Layer: utility
-- Doc: fetch.sh - clone the gb-recompiled tool into progs/pokemon/upstream.  The upstream project ships the recompiler + runtim
 - Language: sh
 
 ## progs/pokemon/platform_minios.c
-- Layer: data_access
+- Doc: push_332_palette: 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index =...
+- Layer: utility
 - Language: c
 - Symbols:
   - `gb_voice_t` (struct, line 301)
@@ -106,8 +107,8 @@
   - `gb_platform_test_inject_persistence_fault` (function, line 1571) `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
-  - `audio` (function, line 218) `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies come from gb_audio_voice() * (runtime accessor over internal channel state: enabled, DA`
-  - `menu` (function, line 571) `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it starts at GB_DST_Y0 = 36). Clicking FILE (or pressing Esc) drops a * 5-item menu: S`
+  - `audio` (function, line 218) `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...`
+  - `menu` (function, line 571) `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it...`
   - `STB_IMAGE_IMPLEMENTATION` (macro, line 60) `#define STB_IMAGE_IMPLEMENTATION`
   - `STBI_ONLY_PNG` (macro, line 61) `#define STBI_ONLY_PNG`
   - `STBI_NO_STDIO` (macro, line 62) `#define STBI_NO_STDIO`

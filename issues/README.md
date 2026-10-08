@@ -4,19 +4,16 @@
 
 | Metric | Value |
 |--------|-------|
-| Stars | 1 |
-| Clones (last 14 days) | 528 |
-| Open Issues | 0 |
-| Total Issues | 0 |
-| Dependabot Open Alerts | 1 |
-| CodeScan Open Alerts | 1 |
+| Stars | 4 |
+| Clones (last 14 days) | 788 |
+| Open Issues | 2 |
+| Total Issues | 3 |
+| Dependabot Open Alerts | 0 |
+| CodeScan Open Alerts | 0 |
 
 ## Issues
+- [#22](./issue_22.md) - Isolation: full namespaces beyond seccomp/rlimit/nice (closed)
+- [#21](./issue_21.md) - SMP: per-AP LAPIC timer calibration (remove BSP tick dependency) (closed)
+- [#20](./issue_20.md) - MiniFS: crash consistency (journaling or ordered-write guarantees) (closed)
 
-## Dependabot Alerts
-- [Dependabot #0](./dependabot/alert_0.md) - unknown (N/A) - unknown
-
-## Code Scanning Alerts
-- [CodeScan #0](./codescan/alert_0.md) - N/A (N/A) - unknown
-
-Total issues downloaded: 0
+Total issues downloaded: 3

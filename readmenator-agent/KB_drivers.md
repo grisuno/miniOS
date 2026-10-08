@@ -1,301 +1,465 @@
-# Subsystem: drivers
+# Subsystem: drivers (page 1 of 2)
+Pages: [KB_drivers.md](KB_drivers.md), [KB_drivers_p2.md](KB_drivers_p2.md)
 
-## headers/drivers/kbd.h
+## drivers/block.c
+- Doc: Block device layer for MiniFS.
 - Layer: infrastructure
-- Doc: Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty. Toggled from the taskbar widget or the `kbd` shell built
-- Language: h
+- Language: c
 - Symbols:
-  - `kbd_available` (function, line 9) `int kbd_available(void);`
-  - `kbd_read` (function, line 10) `int kbd_read(void);`
-  - `kbd_feed_scancode` (function, line 11) `int kbd_feed_scancode(unsigned char sc);`
-  - `kbd_reset_for_shell` (function, line 12) `void kbd_reset_for_shell(void);`
-  - `kbd_get_layout` (function, line 15) `int kbd_get_layout(void);`
-  - `kbd_set_layout` (function, line 16) `void kbd_set_layout(int layout);`
-  - `kbd_toggle_layout` (function, line 17) `void kbd_toggle_layout(void);`
-  - `kbd_q_empty` (function, line 27) `int kbd_q_empty(void);`
-  - `kbd_q_pop` (function, line 28) `int kbd_q_pop(void);`
-  - `kbd_q_push` (function, line 29) `void kbd_q_push(unsigned char c);`
-  - `kbd_drop_counts` (function, line 32) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw);`
-  - `kbd_raw_mode_get` (function, line 35) `int kbd_raw_mode_get(void);`
-  - `kbd_raw_mode_set` (function, line 36) `void kbd_raw_mode_set(int on);`
-  - `kbd_raw_empty` (function, line 37) `int kbd_raw_empty(void);`
-  - `kbd_raw_pop` (function, line 38) `int kbd_raw_pop(void);`
-  - `kbd_raw_push_byte` (function, line 39) `void kbd_raw_push_byte(unsigned char c);`
-  - `kbd_e0_get` (function, line 40) `int kbd_e0_get(void);`
-  - `kbd_e0_set` (function, line 41) `void kbd_e0_set(int v);`
-  - `kbd_flush_all` (function, line 42) `void kbd_flush_all(void);`
-  - `kbd_raw_flush` (function, line 43) `void kbd_raw_flush(void);`
-  - `kbd_sys_raw_filter` (function, line 50) `int kbd_sys_raw_filter(unsigned char sc);`
-  - `KBD_H` (macro, line 2) `#define KBD_H`
-  - `KBD_LAYOUT_EN` (macro, line 6) `#define KBD_LAYOUT_EN`
-  - `KBD_LAYOUT_ES` (macro, line 7) `#define KBD_LAYOUT_ES`
-- Imported by: `drivers/kbd.c`, `drivers/usbhid.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`
+  - `bc_index` (function, line 64) `static unsigned int bc_index(unsigned int block_num)`
+  - `bc_invalidate_locked` (function, line 68) `static void bc_invalidate_locked(unsigned int block_num)`
+  - `bc_invalidate` (function, line 73) `static void bc_invalidate(unsigned int block_num)`
+  - `block_init` (function, line 80) `void block_init(void)`
+  - `block_set_base` (function, line 113) `void block_set_base(unsigned int lba_base)`
+  - `block_dev_read` (function, line 128) `static int block_dev_read(unsigned lba, unsigned count, void *buf)`
+  - `block_dev_write` (function, line 146) `static int block_dev_write(unsigned lba, unsigned count, const void *buf)`
+  - `block_read` (function, line 164) `int block_read(unsigned int block_num, void *buf)`
+  - `block_write` (function, line 205) `int block_write(unsigned int block_num, const void *buf)`
+  - `block_read_multi` (function, line 214) `int block_read_multi(unsigned int block_num, unsigned int count, void *buf)`
+  - `block_write_multi` (function, line 219) `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf)`
+  - `block_flush` (function, line 234) `void block_flush(void)`
+  - `block_total` (function, line 236) `unsigned int block_total(void)`
+  - `block_read_sectors` (function, line 244) `int block_read_sectors(unsigned lba, unsigned count, void *buf)`
+  - `block_disk_sectors` (function, line 255) `unsigned long block_disk_sectors(void)`
+  - `table` (function, line 122) `* ops table (dev->ops->read/write), never straight at the hardware. The * virtio queue wins when block_init...`
+  - `BC_WAYS` (macro, line 53) `#define BC_WAYS`
+  - `BC_MASK` (macro, line 54) `#define BC_MASK`
+  - `BC_LINE` (macro, line 62) `#define BC_LINE(idx)`
+- Depends on: `headers/block.h`, `headers/driver.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/virtio_blk.h`, `headers/ide.h`
 
-## headers/drivers/modifiers.h
+## drivers/driver.c
+- Doc: Device registry for the Strategy-pattern driver layer.
 - Layer: infrastructure
-- Doc: Docstring: Unified modifier tracking for cooked and raw paths.
-- Language: h
+- Language: c
 - Symbols:
-  - `modifier_state_t` (struct, line 5)
-  - `modifier_keys_t` (struct, line 19)
-  - `modifiers_init` (function, line 37) `static inline void modifiers_init(modifier_state_t *st)`
-  - `modifiers_update` (function, line 54) `static inline int modifiers_update(const modifier_keys_t *keys,
-                                 ...`
-  - `modifiers_match` (function, line 92) `static inline int modifiers_match(const modifier_state_t *st, int mask)`
-  - `MODIFIERS_H` (macro, line 2) `#define MODIFIERS_H`
-  - `MOD_SHIFT` (macro, line 30) `#define MOD_SHIFT`
-  - `MOD_CTRL` (macro, line 31) `#define MOD_CTRL`
-  - `MOD_ALT` (macro, line 32) `#define MOD_ALT`
-  - `MOD_ALTGR` (macro, line 33) `#define MOD_ALTGR`
-  - `MOD_SUPER` (macro, line 34) `#define MOD_SUPER`
-- Imported by: `drivers/kbd.c`, `drivers/usbhid.c`, `headers/wm_events.h`, `tests/test_modifiers.c`
+  - `dev_len` (function, line 14) `static unsigned dev_len(const char *s)`
+  - `dev_copy` (function, line 20) `static void dev_copy(char *dst, const char *src, unsigned cap)`
+  - `dev_eq` (function, line 27) `static int dev_eq(const char *a, const char *b)`
+  - `device_reset` (function, line 32) `void device_reset(void)`
+  - `device_register` (function, line 44) `int device_register(device_t *dev)`
+  - `device_find` (function, line 66) `device_t *device_find(const char *name)`
+  - `device_find_by_type` (function, line 76) `device_t *device_find_by_type(int type)`
+  - `device_count` (function, line 85) `int device_count(void)`
+- Depends on: `headers/driver.h`
 
-## headers/drivers/mouse.h
+## drivers/ide.c
+- Doc: IDE/ATA PIO driver for MiniOS.
 - Layer: infrastructure
-- Doc: Docstring: mouse.h -- boundary of the PS/2 mouse device driver
-- Language: h
+- Language: c
 - Symbols:
-  - `mouse_hw_init` (function, line 11) `void mouse_hw_init(void);`
-  - `mouse_disable` (function, line 14) `void mouse_disable(void);`
-  - `mouse_enable` (function, line 17) `void mouse_enable(void);`
-  - `MOUSE_H` (macro, line 2) `#define MOUSE_H`
-- Imported by: `drivers/mouse.c`, `kernel/sched.c`
+  - `ide_delay` (function, line 13) `static void ide_delay(void)`
+  - `ide_read_status` (function, line 23) `static unsigned char ide_read_status(void)`
+  - `ide_wait_not_busy` (function, line 27) `static int ide_wait_not_busy(unsigned int timeout)`
+  - `ide_wait_drq` (function, line 40) `static int ide_wait_drq(unsigned int timeout)`
+  - `ide_select_drive` (function, line 53) `static void ide_select_drive(unsigned char drive)`
+  - `ide_soft_reset` (function, line 59) `static void ide_soft_reset(void)`
+  - `ide_identify` (function, line 66) `static int ide_identify(void)`
+  - `ide_init` (function, line 91) `void ide_init(void)`
+  - `ide_present` (function, line 110) `int ide_present(void)`
+  - `ide_total_sectors` (function, line 111) `unsigned int ide_total_sectors(void)`
+  - `ide_ops_read` (function, line 113) `static int ide_ops_read(device_t *dev, unsigned lba, unsigned count, void *buf)`
+  - `ide_ops_write` (function, line 118) `static int ide_ops_write(device_t *dev, unsigned lba, unsigned count, const void *buf)`
+  - `ide_ops_total` (function, line 123) `static unsigned ide_ops_total(device_t *dev)`
+  - `ide_ops_present` (function, line 128) `static int ide_ops_present(device_t *dev)`
+  - `ide_register_device` (function, line 148) `void ide_register_device(void)`
+  - `ide_read_sectors` (function, line 152) `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf)`
+  - `ide_write_sectors` (function, line 184) `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf)`
+  - `ide_read_sector` (function, line 214) `int ide_read_sector(unsigned int lba, void *buf)`
+  - `ide_write_sector` (function, line 218) `int ide_write_sector(unsigned int lba, const void *buf)`
+- Depends on: `headers/driver.h`, `headers/ide.h`
 
-## headers/drivers/nvme.h
+## drivers/kbd.c
+- Doc: kbd_drop_counts: #define kbd_super (kbd_mods.super) #define kbd_altgr (kbd_mods.altgr) #define...
 - Layer: infrastructure
-- Language: h
+- Language: c
 - Symbols:
-  - `nvme_init` (function, line 4) `int nvme_init(void);`
-  - `nvme_present` (function, line 5) `int nvme_present(void);`
-  - `nvme_version` (function, line 6) `unsigned nvme_version(void);`
-  - `nvme_note` (function, line 7) `const char *nvme_note(void);`
-  - `nvme_sectors` (function, line 8) `unsigned long nvme_sectors(void);`
-  - `nvme_read_sectors` (function, line 9) `int nvme_read_sectors(unsigned lba, unsigned count, void *buf);`
-  - `DRIVERS_NVME_H` (macro, line 2) `#define DRIVERS_NVME_H`
-- Imported by: `drivers/block.c`, `drivers/nvme.c`, `kernel/shell.c`
+  - `kbd_get_layout` (function, line 100) `int kbd_get_layout(void)`
+  - `kbd_set_layout` (function, line 101) `void kbd_set_layout(int layout)`
+  - `kbd_toggle_layout` (function, line 105) `void kbd_toggle_layout(void)`
+  - `kbd_drop_counts` (function, line 132) `void kbd_drop_counts(unsigned long *cooked, unsigned long *raw)`
+  - `kbd_q_push` (function, line 146) `void kbd_q_push(unsigned char c)`
+  - `kbd_raw_push_internal` (function, line 156) `static void kbd_raw_push_internal(unsigned char c)`
+  - `kbd_q_empty` (function, line 166) `int kbd_q_empty(void)`
+  - `kbd_q_pop` (function, line 168) `int kbd_q_pop(void)`
+  - `kbd_available` (function, line 175) `int kbd_available(void)`
+  - `kbd_raw_mode_get` (function, line 181) `int kbd_raw_mode_get(void)`
+  - `kbd_raw_mode_set` (function, line 182) `void kbd_raw_mode_set(int on)`
+  - `kbd_raw_empty` (function, line 183) `int kbd_raw_empty(void)`
+  - `kbd_raw_pop` (function, line 184) `int kbd_raw_pop(void)`
+  - `kbd_raw_push_byte` (function, line 190) `void kbd_raw_push_byte(unsigned char c)`
+  - `kbd_e0_get` (function, line 191) `int kbd_e0_get(void)`
+  - `kbd_e0_set` (function, line 192) `void kbd_e0_set(int v)`
+  - `kbd_flush_all` (function, line 193) `void kbd_flush_all(void)`
+  - `kbd_raw_flush` (function, line 200) `void kbd_raw_flush(void)`
+  - `raw_track_mods` (function, line 221) `static int raw_track_mods(int code, int brk, int e0)`
+  - `wm_combo_dispatch` (function, line 226) `static int wm_combo_dispatch(int action, int zone)`
+  - `wm_raw_combo` (function, line 278) `static int wm_raw_combo(int code, int e0)`
+  - `bare` (function, line 297) `* second byte is not a WM combo is delivered bare (keypad alias): games map
+ * both, so play surv...`
+  - `key` (function, line 333) `* navigation key (which is pushed to the cooked queue as an escape sequence
+ * instead) or a key ...`
+  - `kbd_read` (function, line 449) `int kbd_read(void)`
+  - `kbd_reset_for_shell` (function, line 463) `void kbd_reset_for_shell(void)`
+  - `paths` (function, line 210) `* keeps the modifier state in sync on both paths (the old raw branch never * tracked Alt/Super, so a modifier held...`
+  - `too` (function, line 215) `* too (DOOM strafes with Alt+arrows);`
+  - `kbd_shift` (macro, line 115) `#define kbd_shift`
+  - `kbd_ctrl` (macro, line 116) `#define kbd_ctrl`
+  - `kbd_alt` (macro, line 117) `#define kbd_alt`
+  - `kbd_super` (macro, line 118) `#define kbd_super`
+  - `kbd_altgr` (macro, line 119) `#define kbd_altgr`
+  - `KBD_QUEUE_LEN` (macro, line 121) `#define KBD_QUEUE_LEN`
+  - `KBD_SCAN_DEL` (macro, line 122) `#define KBD_SCAN_DEL`
+  - `KBD_RAW_LEN` (macro, line 141) `#define KBD_RAW_LEN`
+- Depends on: `headers/arch/x86/hal_io.h`, `headers/drivers/kbd.h`, `headers/drivers/modifiers.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/wm_events.h`
 
-## headers/drivers/pci.h
+## drivers/mouse.c
+- Doc: Docstring: PS/2 mouse device driver (drivers/mouse.c).
 - Layer: infrastructure
-- Doc: Docstring: drivers/pci.h -- PCI configuration-space access.
-- Language: h
+- Language: c
 - Symbols:
-  - `pci_bdf_t` (struct, line 71)
-  - `pci_cfg_read` (function, line 80) `static inline unsigned pci_cfg_read(unsigned bus, unsigned dev,
-        unsigned func, unsigned r...`
-  - `pci_cfg_write` (function, line 90) `static inline void pci_cfg_write(unsigned bus, unsigned dev,
-        unsigned func, unsigned reg,...`
-  - `pci_cfg_read8` (function, line 100) `static inline unsigned char pci_cfg_read8(unsigned bus, unsigned dev,
-        unsigned func, unsi...`
-  - `pci_cfg_write8` (function, line 109) `static inline void pci_cfg_write8(unsigned bus, unsigned dev,
-        unsigned func, unsigned reg...`
-  - `pci_present` (function, line 122) `static inline int pci_present(unsigned bus, unsigned dev, unsigned func,
-        void (*outl)(uns...`
-  - `xHCI` (function, line 134) `* base class: an xHCI (0x0C/0x03/0x30) would look for class 0x03, and a PCI
- * bridge (0x06/0x04)...`
-  - `pci_is_multifunction` (function, line 152) `static inline int pci_is_multifunction(unsigned bus, unsigned dev,
-        void (*outl)(unsigned ...`
-  - `pci_find` (function, line 165) `static inline int pci_find(unsigned vendor, unsigned device,
-        unsigned (*inl)(unsigned sho...`
-  - `pci_find_class` (function, line 193) `static inline int pci_find_class(pci_bdf_t *out,
-        unsigned cls, unsigned subclass, unsigne...`
-  - `pci_bar_count` (function, line 248) `static inline unsigned pci_bar_count(unsigned bus, unsigned dev, unsigned func,
-        void (*ou...`
-  - `pci_bar_is_io` (function, line 263) `static inline int pci_bar_is_io(unsigned bus, unsigned dev, unsigned func,
-        unsigned bar,
-...`
-  - `pci_bar_is_64bit` (function, line 274) `static inline int pci_bar_is_64bit(unsigned bus, unsigned dev, unsigned func,
-        unsigned ba...`
-  - `pci_bar_ctz32` (function, line 284) `static inline unsigned pci_bar_ctz32(unsigned val)`
-  - `pci_bar_size_from_mask` (function, line 315) `static inline unsigned long long pci_bar_size_from_mask(unsigned long long mask)`
-  - `pci_bar_size` (function, line 346) `static inline unsigned long long pci_bar_size(unsigned bus, unsigned dev,
-        unsigned func, ...`
-  - `pci_bar_relocate` (function, line 382) `static inline int pci_bar_relocate(unsigned bus, unsigned dev, unsigned func,
-        unsigned ba...`
-  - `pci_bar_base` (function, line 406) `static inline unsigned long long pci_bar_base(unsigned bus, unsigned dev,
-        unsigned func, ...`
-  - `pci_bar_restore` (function, line 424) `static inline void pci_bar_restore(unsigned bus, unsigned dev,
-        unsigned func, unsigned ba...`
-  - `DRIVERS_PCI_H` (macro, line 11) `#define DRIVERS_PCI_H`
-  - `PCI_CFG_ADDR` (macro, line 13) `#define PCI_CFG_ADDR`
-  - `PCI_CFG_DATA` (macro, line 14) `#define PCI_CFG_DATA`
-  - `PCI_MAX_BUS` (macro, line 15) `#define PCI_MAX_BUS`
-  - `PCI_MAX_DEV` (macro, line 16) `#define PCI_MAX_DEV`
-  - `PCI_MAX_FUNC` (macro, line 17) `#define PCI_MAX_FUNC`
-  - `PCI_REG_VENDOR_ID` (macro, line 20) `#define PCI_REG_VENDOR_ID`
-  - `PCI_REG_COMMAND` (macro, line 21) `#define PCI_REG_COMMAND`
-  - `PCI_REG_CLASS_REV` (macro, line 22) `#define PCI_REG_CLASS_REV`
-  - `PCI_REG_CLASS_PROGIF` (macro, line 23) `#define PCI_REG_CLASS_PROGIF`
-  - `PCI_REG_HEADER_TYPE` (macro, line 24) `#define PCI_REG_HEADER_TYPE`
-  - `PCI_REG_BAR0` (macro, line 25) `#define PCI_REG_BAR0`
-  - `PCI_REG_CARD_BUS` (macro, line 26) `#define PCI_REG_CARD_BUS`
-  - `PCI_REG_BRIDGE_SECONDARY` (macro, line 27) `#define PCI_REG_BRIDGE_SECONDARY`
-  - `PCI_REG_CAP_PTR` (macro, line 28) `#define PCI_REG_CAP_PTR`
-  - `PCI_REG_BAR_COUNT` (macro, line 29) `#define PCI_REG_BAR_COUNT`
-  - `PCI_COMMAND_IO` (macro, line 32) `#define PCI_COMMAND_IO`
-  - `PCI_COMMAND_MEMORY` (macro, line 33) `#define PCI_COMMAND_MEMORY`
-  - `PCI_COMMAND_BUS_MASTER` (macro, line 34) `#define PCI_COMMAND_BUS_MASTER`
-  - `PCI_BAR_TYPE_MASK` (macro, line 37) `#define PCI_BAR_TYPE_MASK`
-  - `PCI_BAR_IO` (macro, line 38) `#define PCI_BAR_IO`
-  - `PCI_BAR_64BIT` (macro, line 39) `#define PCI_BAR_64BIT`
-  - `PCI_BAR_PREFETCH` (macro, line 40) `#define PCI_BAR_PREFETCH`
-  - `PCI_BAR_ADDR_MASK` (macro, line 41) `#define PCI_BAR_ADDR_MASK`
-  - `PCI_ABSENT_ID` (macro, line 44) `#define PCI_ABSENT_ID`
-  - `PCI_HEADER_MULTIFUNC` (macro, line 45) `#define PCI_HEADER_MULTIFUNC`
-  - `PCI_HEADER_TYPE_MASK` (macro, line 46) `#define PCI_HEADER_TYPE_MASK`
-  - `PCI_HDR_TYPE_BRIDGE` (macro, line 47) `#define PCI_HDR_TYPE_BRIDGE`
-  - `PCI_CLASS_BRIDGE` (macro, line 55) `#define PCI_CLASS_BRIDGE`
-  - `PCI_SUBCLASS_PCI_BRIDGE` (macro, line 56) `#define PCI_SUBCLASS_PCI_BRIDGE`
-  - `PCI_CLASS_XHCI` (macro, line 57) `#define PCI_CLASS_XHCI`
-  - `PCI_SUBCLASS_XHCI` (macro, line 58) `#define PCI_SUBCLASS_XHCI`
-  - `PCI_PROGIF_XHCI` (macro, line 59) `#define PCI_PROGIF_XHCI`
-  - `PCI_CLASS_ANY` (macro, line 62) `#define PCI_CLASS_ANY`
-  - `PCI_CLASS_MAX_PASSES` (macro, line 68) `#define PCI_CLASS_MAX_PASSES`
-- Imported by: `drivers/nvme.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `net/rtl8139.c`, `tests/test_pci.c`
+  - `mouse_wait_data` (function, line 20) `static void mouse_wait_data(void)`
+  - `mouse_write` (function, line 24) `static void mouse_write(unsigned char data)`
+  - `mouse_read` (function, line 31) `static unsigned char mouse_read(void)`
+  - `mouse_hw_init` (function, line 36) `void mouse_hw_init(void)`
+  - `mouse_disable` (function, line 112) `void mouse_disable(void)`
+  - `mouse_enable` (function, line 113) `void mouse_enable(void)`
+  - `wrong` (function, line 83) `* later packet is framed wrong (a left press reads back as bit 1, * motion warps), permanently. */...`
+- Depends on: `headers/arch/x86/hal_io.h`, `headers/drivers/mouse.h`
 
-## headers/drivers/usbblk.h
+## drivers/nvme.c
 - Layer: infrastructure
-- Doc: Docstring: drivers/usbblk.h -- boundary of the USB mass-storage driver.
-- Language: h
+- Language: c
 - Symbols:
-  - `ubk_counters_t` (struct, line 37)
-  - `ubk_init` (function, line 21) `int ubk_init(void);`
-  - `ubk_present` (function, line 24) `int ubk_present(void);`
-  - `ubk_sectors` (function, line 27) `unsigned long ubk_sectors(void);`
-  - `ubk_read_sectors` (function, line 32) `int ubk_read_sectors(unsigned long lba, unsigned count, void *buf);`
-  - `ubk_write_sectors` (function, line 33) `int ubk_write_sectors(unsigned long lba, unsigned count, const void *buf);`
-  - `ubk_counters` (function, line 46) `void ubk_counters(ubk_counters_t *out);`
-  - `ubk_build_cbw` (function, line 52) `void ubk_build_cbw(unsigned char *out, unsigned tag, unsigned long lba, unsigned blocks, int read, int data_len);`
-  - `ubk_check_csw` (function, line 60) `int ubk_check_csw(const unsigned char *csw, unsigned tag, unsigned expect_len);`
-  - `DRIVERS_USBBLK_H` (macro, line 11) `#define DRIVERS_USBBLK_H`
-  - `UBK_BLOCK_SIZE` (macro, line 14) `#define UBK_BLOCK_SIZE`
-  - `UBK_MAX_BLOCKS` (macro, line 15) `#define UBK_MAX_BLOCKS`
-  - `UBK_MAX_SECTORS` (macro, line 16) `#define UBK_MAX_SECTORS`
-- Imported by: `drivers/block.c`, `drivers/usbblk.c`, `kernel.c`, `kernel/shell.c`, `tests/test_usbblk.c`
+  - `xnv_outl` (function, line 48) `static void xnv_outl(unsigned short port, unsigned val)`
+  - `xnv_inl` (function, line 52) `static unsigned xnv_inl(unsigned short port)`
+  - `nvme_present` (function, line 58) `int nvme_present(void)`
+  - `nvme_version` (function, line 62) `unsigned nvme_version(void)`
+  - `nvme_note` (function, line 66) `const char *nvme_note(void)`
+  - `xnv_r32` (function, line 89) `static unsigned xnv_r32(unsigned off)`
+  - `xnv_w32` (function, line 93) `static void xnv_w32(unsigned off, unsigned val)`
+  - `xnv_r64` (function, line 97) `static unsigned long long xnv_r64(unsigned off)`
+  - `xnv_w64` (function, line 102) `static void xnv_w64(unsigned off, unsigned long long val)`
+  - `xnv_put16` (function, line 106) `static void xnv_put16(unsigned char *p, unsigned short v)`
+  - `xnv_put32` (function, line 111) `static void xnv_put32(unsigned char *p, unsigned long v)`
+  - `xnv_put64` (function, line 118) `static void xnv_put64(unsigned char *p, unsigned long long v)`
+  - `xnv_get32` (function, line 124) `static unsigned long xnv_get32(const unsigned char *p)`
+  - `xnv_wait_rdy` (function, line 129) `static int xnv_wait_rdy(unsigned want)`
+  - `xnv_next_cid` (function, line 139) `static unsigned short xnv_next_cid(void)`
+  - `xnv_poll` (function, line 145) `static int xnv_poll(unsigned char *cq, unsigned cq_db, unsigned short *head,
+        unsigned sho...`
+  - `xnv_cmd` (function, line 169) `static int xnv_cmd(unsigned char *sq, unsigned sq_db, unsigned char *cq,
+        unsigned cq_db, ...`
+  - `xnv_queues` (function, line 196) `static int xnv_queues(void)`
+  - `nvme_sectors` (function, line 286) `unsigned long nvme_sectors(void)`
+  - `nvme_read_sectors` (function, line 290) `int nvme_read_sectors(unsigned lba, unsigned count, void *buf)`
+  - `nvme_init` (function, line 310) `int nvme_init(void)`
+  - `NVME_CLASS_BASE` (macro, line 6) `#define NVME_CLASS_BASE`
+  - `NVME_CLASS_SUB` (macro, line 7) `#define NVME_CLASS_SUB`
+  - `NVME_CLASS_PI` (macro, line 8) `#define NVME_CLASS_PI`
+  - `NVME_REG_VS` (macro, line 10) `#define NVME_REG_VS`
+  - `NVME_REG_CAP` (macro, line 11) `#define NVME_REG_CAP`
+  - `NVME_REG_CC` (macro, line 12) `#define NVME_REG_CC`
+  - `NVME_REG_CSTS` (macro, line 13) `#define NVME_REG_CSTS`
+  - `NVME_REG_AQA` (macro, line 14) `#define NVME_REG_AQA`
+  - `NVME_REG_ASQ` (macro, line 15) `#define NVME_REG_ASQ`
+  - `NVME_REG_ACQ` (macro, line 16) `#define NVME_REG_ACQ`
+  - `NVME_DB_BASE` (macro, line 17) `#define NVME_DB_BASE`
+  - `NVME_CC_EN` (macro, line 19) `#define NVME_CC_EN`
+  - `NVME_CC_IOSQES` (macro, line 20) `#define NVME_CC_IOSQES`
+  - `NVME_CC_IOCQES` (macro, line 21) `#define NVME_CC_IOCQES`
+  - `NVME_CSTS_RDY` (macro, line 22) `#define NVME_CSTS_RDY`
+  - `NVME_QSIZE` (macro, line 24) `#define NVME_QSIZE`
+  - `NVME_SQE_LEN` (macro, line 25) `#define NVME_SQE_LEN`
+  - `NVME_CQE_LEN` (macro, line 26) `#define NVME_CQE_LEN`
+  - `NVME_QPAGES` (macro, line 27) `#define NVME_QPAGES`
+  - `NVME_OPC_CREATE_IOSQ` (macro, line 29) `#define NVME_OPC_CREATE_IOSQ`
+  - `NVME_OPC_READ` (macro, line 30) `#define NVME_OPC_READ`
+  - `NVME_OPC_CREATE_IOCQ` (macro, line 31) `#define NVME_OPC_CREATE_IOCQ`
+  - `NVME_OPC_IDENTIFY` (macro, line 32) `#define NVME_OPC_IDENTIFY`
+  - `NVME_NSID` (macro, line 33) `#define NVME_NSID`
+  - `NVME_CNS_NS` (macro, line 34) `#define NVME_CNS_NS`
+  - `NVME_LBADS_512` (macro, line 35) `#define NVME_LBADS_512`
+  - `NVME_MAX_SECTORS` (macro, line 37) `#define NVME_MAX_SECTORS`
+  - `NVME_SECTOR` (macro, line 38) `#define NVME_SECTOR`
+  - `NVME_TMO_MS` (macro, line 39) `#define NVME_TMO_MS`
+- Depends on: `headers/arch/x86/hal_io.h`, `headers/drivers/nvme.h`, `headers/drivers/pci.h`
 
-## headers/drivers/usbhid.h
+## drivers/pcm2.c
+- Doc: drivers/pcm2.c -- low-latency PCM audio over SB16 single-cycle DMA.
 - Layer: infrastructure
-- Doc: Docstring: drivers/usbhid.h -- boundary of the USB HID boot-protocol driver.
-- Language: h
+- Language: c
 - Symbols:
-  - `usbhid_counters_t` (struct, line 108)
-  - `usbhid_init` (function, line 60) `int usbhid_init(void);`
-  - `usbhid_poll_keyboard` (function, line 64) `int usbhid_poll_keyboard(void);`
-  - `usbhid_poll_mouse` (function, line 68) `int usbhid_poll_mouse(void);`
-  - `usbhid_poll` (function, line 71) `int usbhid_poll(void);`
-  - `usbhid_keyboard_present` (function, line 76) `int usbhid_keyboard_present(void);`
-  - `usbhid_mouse_present` (function, line 79) `int usbhid_mouse_present(void);`
-  - `usbhid_press_kbd_report` (function, line 84) `int usbhid_press_kbd_report(const unsigned char report[HID_KBD_REPORT_LEN]);`
-  - `usbhid_kbd_scancodes` (function, line 94) `int usbhid_kbd_scancodes(const unsigned char prev[HID_KBD_REPORT_LEN], const unsigned char cur[HID_KBD_REPORT_LEN], unsigned char *out, int max);`
-  - `usbhid_mouse_decode` (function, line 102) `void usbhid_mouse_decode(const unsigned char prev[HID_MOUSE_REPORT_LEN], const unsigned char cur[HID_MOUSE_REPORT_LEN], int *dx, int *dy, int *buttons, int *wheel);`
-  - `usbhid_counters` (function, line 116) `void usbhid_counters(usbhid_counters_t *out);`
-  - `usbhid_set1_from_usage` (function, line 127) `int usbhid_set1_from_usage(unsigned usage, unsigned char *sc, int *e0);`
-  - `DRIVERS_USBHID_H` (macro, line 12) `#define DRIVERS_USBHID_H`
-  - `HID_USAGE_MIN` (macro, line 15) `#define HID_USAGE_MIN`
-  - `HID_USAGE_MAX` (macro, line 16) `#define HID_USAGE_MAX`
-  - `HID_MODIFIER_BIT` (macro, line 17) `#define HID_MODIFIER_BIT(n)`
-  - `HID_MOD_LEFT_CTRL` (macro, line 18) `#define HID_MOD_LEFT_CTRL`
-  - `HID_MOD_LEFT_SHIFT` (macro, line 19) `#define HID_MOD_LEFT_SHIFT`
-  - `HID_MOD_LEFT_ALT` (macro, line 20) `#define HID_MOD_LEFT_ALT`
-  - `HID_MOD_LEFT_GUI` (macro, line 21) `#define HID_MOD_LEFT_GUI`
-  - `HID_MOD_RIGHT_CTRL` (macro, line 22) `#define HID_MOD_RIGHT_CTRL`
-  - `HID_MOD_RIGHT_SHIFT` (macro, line 23) `#define HID_MOD_RIGHT_SHIFT`
-  - `HID_MOD_RIGHT_ALT` (macro, line 24) `#define HID_MOD_RIGHT_ALT`
-  - `HID_MOD_RIGHT_GUI` (macro, line 25) `#define HID_MOD_RIGHT_GUI`
-  - `HID_KBD_REPORT_LEN` (macro, line 29) `#define HID_KBD_REPORT_LEN`
-  - `HID_KBD_SLOTS` (macro, line 30) `#define HID_KBD_SLOTS`
-  - `HID_MOUSE_REPORT_LEN` (macro, line 36) `#define HID_MOUSE_REPORT_LEN`
-  - `HID_MOUSE_BUTTON_MASK` (macro, line 37) `#define HID_MOUSE_BUTTON_MASK`
-  - `USBHID_MAX_REPORT_LEN` (macro, line 41) `#define USBHID_MAX_REPORT_LEN`
-  - `USBHID_TRUNCATED` (macro, line 46) `#define USBHID_TRUNCATED`
-  - `USBHID_PROTO_NONE` (macro, line 51) `#define USBHID_PROTO_NONE`
-  - `HID_REQ_SET_PROTOCOL` (macro, line 54) `#define HID_REQ_SET_PROTOCOL`
-  - `HID_PROTOCOL_BOOT` (macro, line 55) `#define HID_PROTOCOL_BOOT`
-- Imported by: `drivers/usbhid.c`, `kernel.c`, `kernel/console_in.c`, `kernel/shell.c`, `tests/test_usbhid.c`
+  - `pcm2_dma` (function, line 79) `static unsigned char *pcm2_dma(void)`
+  - `pcm2_wait_write` (function, line 83) `static int pcm2_wait_write(void)`
+  - `pcm2_cmd` (function, line 90) `static void pcm2_cmd(unsigned char c)`
+  - `pcm2_dma_program` (function, line 95) `static void pcm2_dma_program(void)`
+  - `pcm2_dma_stop` (function, line 108) `static void pcm2_dma_stop(void)`
+  - `pcm2_dsp_play` (function, line 112) `static void pcm2_dsp_play(void)`
+  - `pcm2_wake_owner` (function, line 122) `static void pcm2_wake_owner(void)`
+  - `pcm2_arm_block` (function, line 135) `static void pcm2_arm_block(void)`
+  - `loop` (function, line 150) `* loop (the auto-init livelock is structurally impossible here). The IRQ
+ * path rejects a stray ...`
+  - `pcm2_active` (function, line 179) `int pcm2_active(void)`
+  - `pcm2_open` (function, line 183) `int pcm2_open(unsigned flags, int owner)`
+  - `pcm2_owner_live` (function, line 221) `static int pcm2_owner_live(void)`
+  - `pcm2_release_locked` (function, line 226) `static void pcm2_release_locked(void)`
+  - `pcm2_write` (function, line 235) `int pcm2_write(const unsigned char *user, unsigned len, int owner)`
+  - `pcm2_close` (function, line 282) `void pcm2_close(int owner)`
+  - `pcm2_irq` (function, line 293) `void pcm2_irq(void)`
+  - `pcm2_poll` (function, line 306) `void pcm2_poll(void)`
+  - `pcm2_counters` (function, line 318) `void pcm2_counters(pcm2_counters_t *out)`
+  - `PCM2_BASE_PORT` (macro, line 26) `#define PCM2_BASE_PORT`
+  - `PCM2_DSP_RESET` (macro, line 27) `#define PCM2_DSP_RESET`
+  - `PCM2_DSP_WRITE_DATA` (macro, line 28) `#define PCM2_DSP_WRITE_DATA`
+  - `PCM2_DSP_STATUS` (macro, line 29) `#define PCM2_DSP_STATUS`
+  - `PCM2_IRQ_ACK` (macro, line 30) `#define PCM2_IRQ_ACK`
+  - `PCM2_CMD_SET_FREQ` (macro, line 32) `#define PCM2_CMD_SET_FREQ`
+  - `PCM2_CMD_SPK_ON` (macro, line 33) `#define PCM2_CMD_SPK_ON`
+  - `PCM2_CMD_PLAY8` (macro, line 34) `#define PCM2_CMD_PLAY8`
+  - `PCM2_CMD_STOP_NOW` (macro, line 35) `#define PCM2_CMD_STOP_NOW`
+  - `PCM2_DMA_MODE_PORT` (macro, line 42) `#define PCM2_DMA_MODE_PORT`
+  - `PCM2_DMA_CH1_SINGLE` (macro, line 43) `#define PCM2_DMA_CH1_SINGLE`
+  - `PCM2_DMA_CH1_ADDR` (macro, line 44) `#define PCM2_DMA_CH1_ADDR`
+  - `PCM2_DMA_CH1_CNT` (macro, line 45) `#define PCM2_DMA_CH1_CNT`
+  - `PCM2_DMA_CH1_PAGE` (macro, line 46) `#define PCM2_DMA_CH1_PAGE`
+  - `PCM2_DMA_MASK` (macro, line 47) `#define PCM2_DMA_MASK`
+  - `PCM2_DMA_FF_CLR` (macro, line 48) `#define PCM2_DMA_FF_CLR`
+  - `PCM2_DMA_CH1_MASK` (macro, line 49) `#define PCM2_DMA_CH1_MASK`
+  - `PCM2_DMA_CH1_UNMASK` (macro, line 50) `#define PCM2_DMA_CH1_UNMASK`
+  - `PCM2_DMA_ADDR` (macro, line 52) `#define PCM2_DMA_ADDR`
+  - `PCM2_DMA_COUNT` (macro, line 53) `#define PCM2_DMA_COUNT`
+  - `PCM2_READY_MASK` (macro, line 54) `#define PCM2_READY_MASK`
+  - `PCM2_PROBE_WAIT` (macro, line 55) `#define PCM2_PROBE_WAIT`
+  - `PCM2_SILENCE` (macro, line 56) `#define PCM2_SILENCE`
+  - `PCM2_BLOCK_MS` (macro, line 59) `#define PCM2_BLOCK_MS`
+  - `PCM2_BLOCK_SLACK_MS` (macro, line 60) `#define PCM2_BLOCK_SLACK_MS`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/pcm2.h`, `headers/pcm_ring.h`, `headers/sb16.h`, `headers/sched.h`, `headers/spinlock.h`
 
-## headers/drivers/virtio_blk.h
+## drivers/pcspk.c
+- Doc: PC speaker driver with a software master volume.
 - Layer: infrastructure
-- Doc: Docstring: drivers/virtio_blk.h -- virtio-blk boundary.
-- Language: h
+- Language: c
 - Symbols:
-  - `vblk_init` (function, line 11) `int vblk_init(void);`
-  - `vblk_present` (function, line 12) `int vblk_present(void);`
-  - `vblk_sectors` (function, line 13) `unsigned long vblk_sectors(void);`
-  - `vblk_read_sectors` (function, line 14) `int vblk_read_sectors(unsigned lba, unsigned count, void *buf);`
-  - `vblk_write_sectors` (function, line 15) `int vblk_write_sectors(unsigned lba, unsigned count, const void *buf);`
-  - `vblk_register_device` (function, line 18) `void vblk_register_device(void);`
-  - `DRIVERS_VIRTIO_BLK_H` (macro, line 9) `#define DRIVERS_VIRTIO_BLK_H`
-- Imported by: `drivers/block.c`, `drivers/virtio_blk.c`, `kernel.c`, `kernel/shell.c`
+  - `pcspk_ops_tone` (function, line 33) `static void pcspk_ops_tone(device_t *dev, unsigned freq)`
+  - `pcspk_ops_off` (function, line 38) `static void pcspk_ops_off(device_t *dev)`
+  - `pcspk_ops_set_volume` (function, line 43) `static void pcspk_ops_set_volume(device_t *dev, unsigned vol)`
+  - `pcspk_ops_get_volume` (function, line 48) `static unsigned pcspk_ops_get_volume(device_t *dev)`
+  - `pcspk_init` (function, line 72) `void pcspk_init(void)`
+  - `pcspk_set_volume` (function, line 78) `void pcspk_set_volume(unsigned volume)`
+  - `pcspk_get_volume` (function, line 82) `unsigned pcspk_get_volume(void)`
+  - `pcspk_tone` (function, line 86) `void pcspk_tone(unsigned freq)`
+  - `pcspk_off` (function, line 104) `void pcspk_off(void)`
+  - `PIT_CH2_DATA` (macro, line 14) `#define PIT_CH2_DATA`
+  - `PIT_CH2_CMD` (macro, line 15) `#define PIT_CH2_CMD`
+  - `SPEAKER_PORT` (macro, line 16) `#define SPEAKER_PORT`
+  - `PIT_FREQ` (macro, line 17) `#define PIT_FREQ`
+  - `PCSPK_MIN_FREQ` (macro, line 19) `#define PCSPK_MIN_FREQ`
+  - `PCSPK_MAX_FREQ` (macro, line 20) `#define PCSPK_MAX_FREQ`
+  - `SPEAKER_DATA_BIT` (macro, line 22) `#define SPEAKER_DATA_BIT`
+  - `SPEAKER_GATE_BIT` (macro, line 23) `#define SPEAKER_GATE_BIT`
+  - `SPEAKER_ENABLE_BITS` (macro, line 24) `#define SPEAKER_ENABLE_BITS`
+- Depends on: `headers/driver.h`, `headers/pcspk.h`
 
-## headers/drivers/virtio_net.h
+## drivers/rtc.c
+- Doc: CMOS RTC time-of-day reader.
 - Layer: infrastructure
-- Doc: Docstring: drivers/virtio_net.h -- virtio-net boundary.
-- Language: h
+- Language: c
 - Symbols:
-  - `vnet_init` (function, line 16) `int vnet_init(void);`
-  - `vnet_present` (function, line 19) `int vnet_present(void);`
-  - `failure` (function, line 22) `* 0 on failure (no device, oversize, or TX deadline expiry). Pads * short frames to 60 bytes like the rtl8139 path. */ int vnet_send(const unsigned char *frame, unsigned len);`
-  - `vnet_poll` (function, line 28) `void vnet_poll(void);`
-  - `vnet_get_mac` (function, line 31) `void vnet_get_mac(unsigned char out[6]);`
-  - `vnet_iobase` (function, line 34) `unsigned short vnet_iobase(void);`
-  - `vnet_counters` (function, line 37) `void vnet_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
-  - `vnet_link_up` (function, line 40) `int vnet_link_up(void);`
-  - `DRIVERS_VIRTIO_NET_H` (macro, line 10) `#define DRIVERS_VIRTIO_NET_H`
-- Imported by: `drivers/virtio_net.c`, `kernel/shell.c`, `net/net.c`
+  - `rtc_cmos_read` (function, line 35) `static inline unsigned char rtc_cmos_read(unsigned char reg)`
+  - `rtc_from_bcd` (function, line 40) `static int rtc_from_bcd(unsigned char v)`
+  - `rtc_read_tod` (function, line 44) `int rtc_read_tod(int *hour, int *min, int *sec)`
+  - `rtc_month_len` (function, line 68) `static int rtc_month_len(long full_year, long mon)`
+  - `rtc_read_date` (function, line 78) `int rtc_read_date(int *year, int *mon, int *day)`
+  - `rtc_wall_seconds` (function, line 102) `int rtc_wall_seconds(unsigned long *out)`
+  - `RTC_CMOS_ADDR` (macro, line 9) `#define RTC_CMOS_ADDR`
+  - `RTC_CMOS_DATA` (macro, line 10) `#define RTC_CMOS_DATA`
+  - `RTC_REG_SEC` (macro, line 12) `#define RTC_REG_SEC`
+  - `RTC_REG_MIN` (macro, line 13) `#define RTC_REG_MIN`
+  - `RTC_REG_HOUR` (macro, line 14) `#define RTC_REG_HOUR`
+  - `RTC_REG_DAY` (macro, line 15) `#define RTC_REG_DAY`
+  - `RTC_REG_MON` (macro, line 16) `#define RTC_REG_MON`
+  - `RTC_REG_YEAR` (macro, line 17) `#define RTC_REG_YEAR`
+  - `RTC_REG_STATUS_A` (macro, line 18) `#define RTC_REG_STATUS_A`
+  - `RTC_REG_STATUS_B` (macro, line 19) `#define RTC_REG_STATUS_B`
+  - `RTC_UPDATE_IN_PROGRESS` (macro, line 21) `#define RTC_UPDATE_IN_PROGRESS`
+  - `RTC_BCD_FLAG` (macro, line 22) `#define RTC_BCD_FLAG`
+  - `RTC_HOUR_MIN` (macro, line 24) `#define RTC_HOUR_MIN`
+  - `RTC_HOUR_MAX` (macro, line 25) `#define RTC_HOUR_MAX`
+  - `RTC_MIN_MIN` (macro, line 26) `#define RTC_MIN_MIN`
+  - `RTC_MIN_MAX` (macro, line 27) `#define RTC_MIN_MAX`
+  - `RTC_SEC_MIN` (macro, line 28) `#define RTC_SEC_MIN`
+  - `RTC_SEC_MAX` (macro, line 29) `#define RTC_SEC_MAX`
+  - `RTC_UPDATE_WAIT` (macro, line 33) `#define RTC_UPDATE_WAIT`
+- Depends on: `headers/rtc.h`
 
-## headers/drivers/xhci.h
+## drivers/sb16.c
+- Doc: Sound Blaster 16 DMA audio driver.
 - Layer: infrastructure
-- Doc: Docstring: drivers/xhci.h -- boundary of the xHCI host controller driver.
-- Language: h
+- Language: c
 - Symbols:
-  - `xhc_iface_t` (struct, line 94)
-  - `xhc_port_t` (struct, line 107)
-  - `xhc_dev_t` (struct, line 115)
-  - `xhc_counters_t` (struct, line 124)
-  - `xhc_init` (function, line 140) `int xhc_init(void);`
-  - `xhc_poll` (function, line 146) `int xhc_poll(void);`
-  - `xhc_port_count` (function, line 150) `int xhc_port_count(void);`
-  - `xhc_port_state` (function, line 154) `int xhc_port_state(int port, xhc_port_t *out);`
-  - `xhc_port_reset` (function, line 159) `int xhc_port_reset(int port);`
-  - `xhc_enumerate` (function, line 165) `int xhc_enumerate(int port);`
-  - `xhc_enumerate_all` (function, line 169) `int xhc_enumerate_all(void);`
-  - `xhc_device_count` (function, line 172) `int xhc_device_count(void);`
-  - `xhc_device_info` (function, line 175) `int xhc_device_info(int index, xhc_dev_t *out);`
-  - `xhc_open_interface` (function, line 186) `int xhc_open_interface(int index, unsigned cls, unsigned sub, unsigned proto, xhc_iface_t *out);`
-  - `xhc_control` (function, line 193) `int xhc_control(int index, const unsigned char setup[8], void *data, unsigned len, int host_to_device);`
-  - `xhc_configure_endpoint` (function, line 200) `int xhc_configure_endpoint(int index, int ep_index, int ep_addr, int ep_type, int max_packet, int mult, int interval, int burst);`
-  - `xhc_transfer` (function, line 211) `int xhc_transfer(int index, int ep_index, void *buf, unsigned len, int *got);`
-  - `xhc_reset_endpoint` (function, line 216) `int xhc_reset_endpoint(int index, int ep_index);`
-  - `xhc_transfer_async` (function, line 220) `int xhc_transfer_async(int index, int ep_index, void *buf, unsigned len);`
-  - `xhc_poll_token_limit` (function, line 225) `int xhc_poll_token_limit(int token, unsigned budget_ms);`
-  - `xhc_poll_token` (function, line 226) `int xhc_poll_token(int token);`
-  - `xhc_counters` (function, line 229) `void xhc_counters(xhc_counters_t *out);`
-  - `xhc_probe_note` (function, line 234) `const char *xhc_probe_note(void);`
-  - `xhc_info` (function, line 238) `int xhc_info(unsigned *version, unsigned *slots, unsigned *ports, unsigned *caplength);`
-  - `DRIVERS_XHCI_H` (macro, line 23) `#define DRIVERS_XHCI_H`
-  - `XHC_MAX_DEVICES` (macro, line 29) `#define XHC_MAX_DEVICES`
-  - `XHC_MAX_PORTS` (macro, line 34) `#define XHC_MAX_PORTS`
-  - `XHC_MAX_EPS` (macro, line 38) `#define XHC_MAX_EPS`
-  - `XHC_EP_INDEX_LIMIT` (macro, line 43) `#define XHC_EP_INDEX_LIMIT`
-  - `XHC_MAX_PENDING` (macro, line 47) `#define XHC_MAX_PENDING`
-  - `XHC_MAX_CONFIG_DESC` (macro, line 51) `#define XHC_MAX_CONFIG_DESC`
-  - `XHC_TRB_RING_TRBS` (macro, line 56) `#define XHC_TRB_RING_TRBS`
-  - `XHC_RESET_BUDGET_MS` (macro, line 61) `#define XHC_RESET_BUDGET_MS`
-  - `XHC_CMD_BUDGET_MS` (macro, line 62) `#define XHC_CMD_BUDGET_MS`
-  - `XHC_XFER_BUDGET_MS` (macro, line 63) `#define XHC_XFER_BUDGET_MS`
-  - `XHC_PORT_BUDGET_MS` (macro, line 64) `#define XHC_PORT_BUDGET_MS`
-  - `XHC_CAPLENGTH_MIN` (macro, line 68) `#define XHC_CAPLENGTH_MIN`
-  - `XHC_SPEED_FULL` (macro, line 71) `#define XHC_SPEED_FULL`
-  - `XHC_SPEED_LOW` (macro, line 72) `#define XHC_SPEED_LOW`
-  - `XHC_SPEED_HIGH` (macro, line 73) `#define XHC_SPEED_HIGH`
-  - `XHC_SPEED_SUPER` (macro, line 74) `#define XHC_SPEED_SUPER`
-  - `XHC_EP_CONTROL` (macro, line 77) `#define XHC_EP_CONTROL`
-  - `XHC_EP_ISOCHRONOUS` (macro, line 78) `#define XHC_EP_ISOCHRONOUS`
-  - `XHC_EP_BULK` (macro, line 79) `#define XHC_EP_BULK`
-  - `XHC_EP_INTERRUPT` (macro, line 80) `#define XHC_EP_INTERRUPT`
-  - `XHC_EP_DIR_IN` (macro, line 83) `#define XHC_EP_DIR_IN`
-  - `XHC_CLASS_HID` (macro, line 86) `#define XHC_CLASS_HID`
-  - `XHC_SUBCLASS_BOOT` (macro, line 87) `#define XHC_SUBCLASS_BOOT`
-  - `XHC_CLASS_MASS_STORAGE` (macro, line 88) `#define XHC_CLASS_MASS_STORAGE`
-  - `XHC_SUBCLASS_SCSI` (macro, line 89) `#define XHC_SUBCLASS_SCSI`
-  - `XHC_PROTOCOL_BULK_ONLY` (macro, line 90) `#define XHC_PROTOCOL_BULK_ONLY`
-- Imported by: `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `kernel.c`, `kernel/console_in.c`, `kernel/sched.c`, `kernel/shell.c`, `tests/test_xhci.c`
+  - `sb16_kring_reset` (function, line 118) `static void sb16_kring_reset(void)`
+  - `sb16_slot` (function, line 130) `static unsigned char *sb16_slot(unsigned i)`
+  - `sb16_stream_open` (function, line 138) `int sb16_stream_open(void)`
+  - `sb16_stream_close` (function, line 154) `void sb16_stream_close(int id)`
+  - `sb16_stream_submit` (function, line 162) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len)`
+  - `sb16_stream_volume` (function, line 177) `void sb16_stream_volume(int id, unsigned char vol)`
+  - `sb16_stream_count` (function, line 183) `int sb16_stream_count(void)`
+  - `sb16_mix_all` (function, line 194) `static void sb16_mix_all(void)`
+  - `sb16_pump` (function, line 236) `void sb16_pump(void)`
+  - `sb16_wait_write` (function, line 278) `static int sb16_wait_write(void)`
+  - `sb16_cmd` (function, line 282) `static void sb16_cmd(unsigned char c)`
+  - `sb16_read_data` (function, line 287) `static int sb16_read_data(unsigned char *out)`
+  - `sb16_reset_dsp` (function, line 297) `static int sb16_reset_dsp(void)`
+  - `sb16_dma_play` (function, line 323) `static void sb16_dma_play(unsigned addr, unsigned len)`
+  - `sb16_refill` (function, line 339) `static void sb16_refill(int slot_index)`
+  - `sb16_arm` (function, line 355) `static void sb16_arm(int from_irq)`
+  - `sb16_present` (function, line 380) `int sb16_present(void)`
+  - `sb16_tone` (function, line 382) `void sb16_tone(unsigned freq)`
+  - `sb16_pcm_open` (function, line 398) `void sb16_pcm_open(void)`
+  - `sb16_pcm_close` (function, line 422) `void sb16_pcm_close(void)`
+  - `sb16_pcm_submit` (function, line 431) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len)`
+  - `sb16_irq` (function, line 449) `void sb16_irq(void)`
+  - `sb16_poll` (function, line 457) `void sb16_poll(void)`
+  - `sb16_ring_free` (function, line 466) `unsigned sb16_ring_free(void)`
+  - `sb16_mode_active` (function, line 467) `int sb16_mode_active(void)`
+  - `sb16_legacy_busy` (function, line 472) `int sb16_legacy_busy(void)`
+  - `sb16_counters` (function, line 479) `void sb16_counters(sb16_counters_t *out)`
+  - `sb16_ops_present` (function, line 484) `static int sb16_ops_present(device_t *dev)`
+  - `sb16_ops_pcm_open` (function, line 491) `static void sb16_ops_pcm_open(device_t *dev)`
+  - `sb16_ops_pcm_close` (function, line 498) `static void sb16_ops_pcm_close(device_t *dev)`
+  - `sb16_ops_pcm_submit` (function, line 505) `static int sb16_ops_pcm_submit(device_t *dev, const unsigned char *pcm, unsigned len)`
+  - `sb16_init` (function, line 530) `int sb16_init(void)`
+  - `IRQ` (function, line 22) `* QEMU audio backends never raise the completion IRQ (they only consume once * their engine buffer drains, which a...`
+  - `pending` (function, line 535) `* reading without it eats whatever byte happens to be pending (or * times out), so the probe used to fail or misread...`
+  - `SB16_BASE_PORT` (macro, line 48) `#define SB16_BASE_PORT`
+  - `SB16_DSP_RESET` (macro, line 49) `#define SB16_DSP_RESET`
+  - `SB16_DSP_READ_DATA` (macro, line 50) `#define SB16_DSP_READ_DATA`
+  - `SB16_DSP_WRITE_DATA` (macro, line 51) `#define SB16_DSP_WRITE_DATA`
+  - `SB16_DSP_STATUS` (macro, line 52) `#define SB16_DSP_STATUS`
+  - `SB16_IRQ_ACK` (macro, line 53) `#define SB16_IRQ_ACK`
+  - `SB16_CMD_READ_VER` (macro, line 55) `#define SB16_CMD_READ_VER`
+  - `SB16_CMD_SET_FREQ` (macro, line 56) `#define SB16_CMD_SET_FREQ`
+  - `SB16_CMD_PLAY8` (macro, line 57) `#define SB16_CMD_PLAY8`
+  - `SB16_CMD_SPK_ON` (macro, line 58) `#define SB16_CMD_SPK_ON`
+  - `SB16_CMD_SPK_OFF` (macro, line 59) `#define SB16_CMD_SPK_OFF`
+  - `SB16_DSP_RDSTATUS` (macro, line 61) `#define SB16_DSP_RDSTATUS`
+  - `DMA_MODE_PORT` (macro, line 67) `#define DMA_MODE_PORT`
+  - `DMA_CH1_SINGLE_READ` (macro, line 68) `#define DMA_CH1_SINGLE_READ`
+  - `SB16_FREQ_LO` (macro, line 70) `#define SB16_FREQ_LO`
+  - `SB16_FREQ_HI` (macro, line 71) `#define SB16_FREQ_HI`
+  - `SB16_DSP_READY_MASK` (macro, line 73) `#define SB16_DSP_READY_MASK`
+  - `DMA_CH1_ADDR` (macro, line 75) `#define DMA_CH1_ADDR`
+  - `DMA_CH1_CNT` (macro, line 76) `#define DMA_CH1_CNT`
+  - `DMA_CH1_PAGE` (macro, line 77) `#define DMA_CH1_PAGE`
+  - `DMA_MASK` (macro, line 78) `#define DMA_MASK`
+  - `DMA_FF_CLR` (macro, line 79) `#define DMA_FF_CLR`
+  - `DMA_CH1_UNMASK` (macro, line 80) `#define DMA_CH1_UNMASK`
+  - `DMA_CH1_MASK` (macro, line 81) `#define DMA_CH1_MASK`
+  - `SB16_DMA_BUF0` (macro, line 83) `#define SB16_DMA_BUF0`
+  - `SB16_SILENCE_SLOT` (macro, line 84) `#define SB16_SILENCE_SLOT`
+  - `SB16_BUF` (macro, line 85) `#define SB16_BUF`
+  - `SB16_MODE_TONE` (macro, line 88) `#define SB16_MODE_TONE`
+  - `SB16_MODE_PCM` (macro, line 89) `#define SB16_MODE_PCM`
+  - `SB16_SQ_CYCLE` (macro, line 91) `#define SB16_SQ_CYCLE`
+- Depends on: `headers/driver.h`, `headers/pcm2.h`, `headers/sb16.h`, `headers/sync.h`
+
+## drivers/usbblk.c
+- Doc: USB mass storage, Bulk-Only Transport over SCSI.
+- Layer: infrastructure
+- Language: c
+- Symbols:
+  - `ubk_disk_t` (struct, line 44)
+  - `ubk_counters` (function, line 72) `void ubk_counters(ubk_counters_t *out)`
+  - `ubk_cdb10` (function, line 80) `static void ubk_cdb10(unsigned char *cdb, unsigned char opcode,
+                      unsigned lo...`
+  - `ubk_build_cbw` (function, line 92) `void ubk_build_cbw(unsigned char *out, unsigned tag, unsigned long lba,
+                   unsign...`
+  - `ubk_check_csw` (function, line 121) `int ubk_check_csw(const unsigned char *csw, unsigned tag, unsigned expect_len)`
+  - `ubk_command_raw` (function, line 187) `static int ubk_command_raw(unsigned char *cdb, unsigned cdb_len,
+                           unsig...`
+  - `ubk_sense` (function, line 262) `static void ubk_sense(void)`
+  - `ubk_command` (function, line 279) `static int ubk_command(unsigned char *cdb, unsigned cdb_len,
+                       unsigned char...`
+  - `ubk_unit_ready` (function, line 294) `static int ubk_unit_ready(void)`
+  - `ubk_read_capacity` (function, line 311) `static int ubk_read_capacity(unsigned long *sectors)`
+  - `ubk_present` (function, line 336) `int ubk_present(void)`
+  - `ubk_sectors` (function, line 340) `unsigned long ubk_sectors(void)`
+  - `ubk_xfer` (function, line 347) `static int ubk_xfer(unsigned long lba, unsigned count, void *buf, int read)`
+  - `ubk_read_sectors` (function, line 365) `int ubk_read_sectors(unsigned long lba, unsigned count, void *buf)`
+  - `ubk_write_sectors` (function, line 370) `int ubk_write_sectors(unsigned long lba, unsigned count, const void *buf)`
+  - `ubk_claim_eps` (function, line 377) `static int ubk_claim_eps(int device, const xhc_iface_t *iface)`
+  - `ubk_blk_read` (function, line 421) `static int ubk_blk_read(device_t *dev, unsigned lba, unsigned count,
+                        void...`
+  - `ubk_blk_write` (function, line 427) `static int ubk_blk_write(device_t *dev, unsigned lba, unsigned count,
+                         co...`
+  - `ubk_blk_sectors` (function, line 433) `static unsigned ubk_blk_sectors(device_t *dev)`
+  - `ubk_blk_present` (function, line 438) `static int ubk_blk_present(device_t *dev)`
+  - `ubk_init` (function, line 457) `int ubk_init(void)`
+  - `UBK_CBW_LEN` (macro, line 22) `#define UBK_CBW_LEN`
+  - `UBK_CBW_SIG` (macro, line 23) `#define UBK_CBW_SIG`
+  - `UBK_CBW_FLAG_IN` (macro, line 24) `#define UBK_CBW_FLAG_IN`
+  - `UBK_CSW_LEN` (macro, line 27) `#define UBK_CSW_LEN`
+  - `UBK_CSW_SIG` (macro, line 28) `#define UBK_CSW_SIG`
+  - `UBK_CSW_STATUS_PASSED` (macro, line 29) `#define UBK_CSW_STATUS_PASSED`
+  - `UBK_CSW_STATUS_FAILED` (macro, line 30) `#define UBK_CSW_STATUS_FAILED`
+  - `UBK_SCSI_TEST_UNIT_READY` (macro, line 33) `#define UBK_SCSI_TEST_UNIT_READY`
+  - `UBK_SCSI_REQUEST_SENSE` (macro, line 34) `#define UBK_SCSI_REQUEST_SENSE`
+  - `UBK_SCSI_INQUIRY` (macro, line 35) `#define UBK_SCSI_INQUIRY`
+  - `UBK_SCSI_READ_CAPACITY` (macro, line 36) `#define UBK_SCSI_READ_CAPACITY`
+  - `UBK_SCSI_READ10` (macro, line 37) `#define UBK_SCSI_READ10`
+  - `UBK_SCSI_WRITE10` (macro, line 38) `#define UBK_SCSI_WRITE10`
+  - `UBK_BULK_INTERVAL` (macro, line 63) `#define UBK_BULK_INTERVAL`
+  - `UBK_BULK_BURST` (macro, line 64) `#define UBK_BULK_BURST`
+  - `UBK_MAX_XFER_BLOCKS` (macro, line 70) `#define UBK_MAX_XFER_BLOCKS`
+  - `UBK_CDB_LEN` (macro, line 79) `#define UBK_CDB_LEN`
+  - `UBK_MS_RESET` (macro, line 148) `#define UBK_MS_RESET`
+  - `UBK_CLEAR_FEATURE` (macro, line 149) `#define UBK_CLEAR_FEATURE`
+  - `UBK_ENDP_HALT` (macro, line 150) `#define UBK_ENDP_HALT`
+  - `UBK_CDB6_LEN` (macro, line 181) `#define UBK_CDB6_LEN`
+  - `UBK_SENSE_LEN` (macro, line 261) `#define UBK_SENSE_LEN`
+  - `UBK_READY_TRIES` (macro, line 293) `#define UBK_READY_TRIES`
+- Depends on: `headers/driver.h`, `headers/drivers/usbblk.h`, `headers/drivers/xhci.h`
+- Imported by: `tests/test_usbblk.c`
+
+## drivers/usbhid.c
+- Doc: USB HID boot-protocol keyboard and mouse.
+- Layer: infrastructure
+- Language: c
+- Symbols:
+  - `usbhid_dev_t` (struct, line 40)
+  - `usbhid_set1_from_usage` (function, line 117) `int usbhid_set1_from_usage(unsigned usage, unsigned char *sc, int *e0)`
+  - `usbhid_usage_make` (function, line 128) `static int usbhid_usage_make(unsigned usage, unsigned char *sc, int *e0)`
+  - `usbhid_report_has` (function, line 138) `static int usbhid_report_has(const unsigned char report[HID_KBD_REPORT_LEN],
+                    ...`
+  - `usbhid_put` (function, line 153) `static int usbhid_put(unsigned char *out, int max, int n, unsigned char sc)`
+  - `usbhid_emit_mod` (function, line 165) `static int usbhid_emit_mod(unsigned char *out, int max, int n, unsigned bit,
+                    ...`
+  - `usbhid_emit_usage` (function, line 183) `static int usbhid_emit_usage(unsigned char *out, int max, int n,
+                             uns...`
+  - `usbhid_kbd_scancodes` (function, line 206) `int usbhid_kbd_scancodes(const unsigned char prev[HID_KBD_REPORT_LEN],
+                         c...`
+  - `usbhid_mouse_decode` (function, line 241) `void usbhid_mouse_decode(const unsigned char prev[HID_MOUSE_REPORT_LEN],
+                        ...`
+  - `usbhid_keyboard_present` (function, line 256) `int usbhid_keyboard_present(void)`
+  - `usbhid_mouse_present` (function, line 263) `int usbhid_mouse_present(void)`
+  - `usbhid_counters` (function, line 270) `void usbhid_counters(usbhid_counters_t *out)`
+  - `usbhid_press_kbd_report` (function, line 274) `int usbhid_press_kbd_report(const unsigned char report[HID_KBD_REPORT_LEN])`
+  - `usbhid_set_boot_protocol` (function, line 295) `static int usbhid_set_boot_protocol(int device, int iface)`
+  - `usbhid_ep_taken` (function, line 312) `static int usbhid_ep_taken(int ep_index)`
+  - `usbhid_take_ep` (function, line 325) `static int usbhid_take_ep(int device, const xhc_iface_t *iface,
+                          int *maxp)`
+  - `usbhid_claim` (function, line 353) `static int usbhid_claim(int device, const xhc_iface_t *iface, int is_mouse)`
+  - `usbhid_is_mouse_maxp` (function, line 380) `static int usbhid_is_mouse_maxp(int maxp)`
+  - `usbhid_init` (function, line 384) `int usbhid_init(void)`
+  - `usbhid_poll_one` (function, line 422) `static int usbhid_poll_one(usbhid_dev_t *d)`
+  - `usbhid_poll_keyboard` (function, line 483) `int usbhid_poll_keyboard(void)`
+  - `usbhid_poll_mouse` (function, line 491) `int usbhid_poll_mouse(void)`
+  - `usbhid_poll` (function, line 499) `int usbhid_poll(void)`
+  - `USBHID_MAX_DEVS` (macro, line 35) `#define USBHID_MAX_DEVS`
+  - `USBHID_INTERVAL` (macro, line 55) `#define USBHID_INTERVAL`
+  - `USBHID_MAX_SCANCODES` (macro, line 204) `#define USBHID_MAX_SCANCODES`
+- Depends on: `headers/arch/x86/hal_io.h`, `headers/drivers/kbd.h`, `headers/drivers/modifiers.h`, `headers/drivers/usbhid.h`, `headers/drivers/xhci.h`, `headers/vga_fb.h`
+- Imported by: `tests/test_usbhid.c`
+
+
+Next: [KB_drivers_p2.md](KB_drivers_p2.md)

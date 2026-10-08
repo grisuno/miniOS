@@ -1,8 +1,8 @@
 # Subsystem: nuklear
 
 ## progs/nuklear/cvm_emit.c
+- Doc: — node-graph to CVM bytecode compiler.
 - Layer: utility
-- Doc: cvm_emit.c — node-graph to CVM bytecode compiler.
 - Language: c
 - Symbols:
   - `codebuf` (struct, line 73)
@@ -24,7 +24,7 @@
   - `cvm_compile` (function, line 236) `int cvm_compile(const struct cvm_node *nodes, int n,
                 unsigned char **out, size_t ...`
   - `w32` (function, line 491) `void w32(void *p, unsigned v)`
-  - `module` (function, line 3) `* * Emits a cvm2 module (format v2) from a dataflow graph. Nodes are * topologically sorted (a true DAG order, so the editor can connect nodes in * any sequence);`
+  - `module` (function, line 3) `* * Emits a cvm2 module (format v2) from a dataflow graph. Nodes are * topologically sorted (a true DAG order, so...`
   - `CVM_MAGIC_0` (macro, line 29) `#define CVM_MAGIC_0`
   - `CVM_MAGIC_1` (macro, line 30) `#define CVM_MAGIC_1`
   - `CVM_MAGIC_2` (macro, line 31) `#define CVM_MAGIC_2`
@@ -68,27 +68,27 @@
 - Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
 
 ## progs/nuklear/cvm_emit.h
+- Doc: — node-graph compiler for CVM (cvm2 module format v2).
 - Layer: utility
-- Doc: cvm_emit.h — node-graph compiler for CVM (cvm2 module format v2).
 - Language: h
 - Symbols:
   - `cvm_node` (struct, line 56)
   - `cvm_node_type` (enum, line 22)
-  - `graph` (function, line 6) `* * A node graph (constants, arithmetic, bitwise, comparisons, a conditional * select, and string constants feeding PRINT/PRINTS/EXIT sinks) is compiled * into a self-contained .cvm module: a single e`
-  - `err` (function, line 67) `* err (err_cap bytes). The module is heap-allocated and owned by the caller * (free it). */ int cvm_compile(const struct cvm_node *nodes, int n, unsigned char **out, size_t *out_size, char *err, size_`
+  - `graph` (function, line 6) `* * A node graph (constants, arithmetic, bitwise, comparisons, a conditional * select, and string constants feeding...`
+  - `err` (function, line 67) `* err (err_cap bytes). The module is heap-allocated and owned by the caller * (free it). */ int cvm_compile(const...`
   - `CVM_EMIT_H` (macro, line 2) `#define CVM_EMIT_H`
   - `CVM_NODE_STR_MAX` (macro, line 19) `#define CVM_NODE_STR_MAX`
 - Imported by: `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`
 
 ## progs/nuklear/font8x8.c
-- Layer: utility
 - Doc: font8x8 - shared 8x8 bitmap font for MiniOS ring-3 graphics programs.
+- Layer: utility
 - Language: c
 - Depends on: `progs/nuklear/nuklear_minios.h`
 
 ## progs/nuklear/node_editor.c
-- Layer: infrastructure
-- Doc: node_editor.c — visual low-code editor that compiles to CVM bytecode.
+- Doc: — visual low-code editor that compiles to CVM bytecode.
+- Layer: utility
 - Language: c
 - Symbols:
   - `gnode` (struct, line 44)
@@ -129,8 +129,8 @@
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/nuklear/nuklear_minios.c
+- Doc: — MiniOS platform layer for Nuklear.
 - Layer: utility
-- Doc: nuklear_minios.c — MiniOS platform layer for Nuklear.
 - Language: c
 - Symbols:
   - `nk_sys_time_ms` (function, line 33) `long nk_sys_time_ms(void)`
@@ -192,8 +192,8 @@
 - Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
 
 ## progs/nuklear/nuklear_minios.h
+- Doc: — MiniOS platform layer for Nuklear.
 - Layer: utility
-- Doc: nuklear_minios.h — MiniOS platform layer for Nuklear.
 - Language: h
 - Symbols:
   - `nk_context` (struct, line 20)
@@ -229,8 +229,8 @@
 - Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
 
 ## progs/nuklear/nuklear_theme.c
-- Layer: utility
 - Doc: Docstring: shared Nuklear theme loader, linked by every NK app.
+- Layer: utility
 - Language: c
 - Symbols:
   - `nk_theme_slot` (struct, line 15)
@@ -244,8 +244,8 @@
 - Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/nuklear/nuklear_theme.h
-- Layer: utility
 - Doc: Docstring: shared Nuklear theme contract for every MiniOS NK app.
+- Layer: utility
 - Language: h
 - Symbols:
   - `nk_context` (struct, line 59)

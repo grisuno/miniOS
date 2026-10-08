@@ -1,8 +1,9 @@
-# Subsystem: tests
+# Subsystem: tests (page 1 of 2)
+Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
 
 ## tests/host_aes.sh
+- Doc: host-side verification for the AES-256-CTR command tools.
 - Layer: testing
-- Doc: host_aes.sh - host-side verification for the AES-256-CTR command tools.  The miniGCC-built tools are static Linux ELFs, 
 - Language: sh
 - Symbols:
   - `ok` (function, line 23)
@@ -10,8 +11,8 @@
   - `rd` (function, line 25)
 
 ## tests/host_codecs.sh
+- Doc: reusable host-side verification for the in-OS codec tools.
 - Layer: testing
-- Doc: host_codecs.sh - reusable host-side verification for the in-OS codec tools.  The miniGCC-compiled tools are static Linux
 - Language: sh
 - Symbols:
   - `ok` (function, line 22)
@@ -21,8 +22,8 @@
   - `reject` (function, line 40)
 
 ## tests/test_abi.c
-- Layer: testing
 - Doc: Docstring: tests/test_abi.c -- Host test for the ABI manifest gate.
+- Layer: testing
 - Language: c
 - Symbols:
   - `expect` (function, line 16) `static void expect(const char *name, const char *manifest, int want)`
@@ -30,8 +31,8 @@
 - Depends on: `headers/abi.h`, `progs/minios_abi.h`
 
 ## tests/test_arena.c
-- Layer: testing
 - Doc: Docstring: host test for the bump arena (make test-arena).
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 23) `int main(void)`
@@ -39,8 +40,8 @@
 - Depends on: `headers/arena.h`, `kernel/string.c`
 
 ## tests/test_batch.c
-- Layer: testing
 - Doc: Docstring: Host test for kernel/batch.c (make test-batch).
+- Layer: testing
 - Language: c
 - Symbols:
   - `stub_dispatch` (function, line 24) `static long stub_dispatch(uint32_t opcode)`
@@ -49,8 +50,8 @@
 - Depends on: `headers/batch.h`
 
 ## tests/test_doom_pwad.py
+- Doc: host contract suite for tools/doom_pwad.py.
 - Layer: testing
-- Doc: test_doom_pwad.py - host contract suite for tools/doom_pwad.py.  Runs the grid compiler and the PWAD checker against fix
 - Language: py
 - Symbols:
   - `GridValidationTests` (class, line 29) `class GridValidationTests(TestCase)`
@@ -100,8 +101,8 @@
 - Depends on: `tools/doom_pwad.py`
 
 ## tests/test_driver.c
+- Doc: Host test for the Strategy-pattern device registry.
 - Layer: testing
-- Doc: test_driver.c -- Host test for the Strategy-pattern device registry.
 - Language: c
 - Symbols:
   - `test_read` (function, line 15) `static int test_read(device_t *d, unsigned lba, unsigned count, void *buf)`
@@ -112,8 +113,8 @@
 - Depends on: `headers/driver.h`, `kernel/string.c`
 
 ## tests/test_ext4.c
-- Layer: testing
 - Doc: Docstring: Host test for the ext4 loopback driver (make test-ext4).
+- Layer: testing
 - Language: c
 - Symbols:
   - `kmalloc` (function, line 24) `void *kmalloc(unsigned long size)`
@@ -153,8 +154,8 @@
 - Depends on: `fs/ext4.c`, `fs/fsimg.c`, `headers/ext4.h`, `headers/fsimg.h`, `headers/minifs.h`, `kernel/string.c`
 
 ## tests/test_fat32.c
-- Layer: testing
 - Doc: Docstring: Host test for the FAT32 loopback driver (make test-fat).
+- Layer: testing
 - Language: c
 - Symbols:
   - `kmalloc` (function, line 24) `void *kmalloc(unsigned long size)`
@@ -189,8 +190,8 @@
 - Depends on: `fs/fat32.c`, `fs/fsimg.c`, `headers/fat32.h`, `headers/fsimg.h`, `headers/minifs.h`, `kernel/string.c`
 
 ## tests/test_fault.c
+- Doc: fault-injection suite (boyscout gap #10).
 - Layer: testing
-- Doc: test_fault.c -- fault-injection suite (boyscout gap #10).
 - Language: c
 - Symbols:
   - `range_ok` (function, line 35) `static int range_ok(unsigned long p, unsigned long len)`
@@ -208,8 +209,8 @@
 - Depends on: `headers/vma.h`, `kernel/string.c`
 
 ## tests/test_file_assoc.c
-- Layer: testing
 - Doc: Docstring: host test for the file browser assoc contract (make test-file).
+- Layer: testing
 - Language: c
 - Symbols:
   - `t_ext_of` (function, line 26) `static void t_ext_of(const char *fname, char *dst, unsigned cap)`
@@ -225,8 +226,8 @@
 - Depends on: `kernel/string.c`, `progs/file/file_assoc.h`
 
 ## tests/test_freedom_wl.c
-- Layer: testing
 - Doc: test_freedom_wl - host suite for the Wayland to MiniOS mapping.
+- Layer: testing
 - Language: c
 - Symbols:
   - `check_host` (function, line 12) `static int check_host(int cond, const char *name)`
@@ -235,8 +236,8 @@
 - Depends on: `progs/src/freedom_wl.c`
 
 ## tests/test_freedomui.c
-- Layer: testing
 - Doc: test_freedomui - host suite for the real FreeDom MiniOS backend.
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 24) `int main(void)`
@@ -244,8 +245,8 @@
 - Depends on: `kernel/string.c`, `progs/freedomui/freedomui_minios.c`
 
 ## tests/test_futex.c
-- Layer: testing
 - Doc: Docstring: Host test for kernel/futex.c (make test-futex).
+- Layer: testing
 - Language: c
 - Symbols:
   - `proc_get` (function, line 18) `proc_t *proc_get(int pid)`
@@ -257,8 +258,8 @@
 - Depends on: `headers/futex.h`
 
 ## tests/test_fx.c
-- Layer: testing
 - Doc: Docstring: Host test for headers/vga_fx.h (make test-fx).
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 23) `int main(void)`
@@ -266,8 +267,8 @@
 - Depends on: `headers/vga_fx.h`
 
 ## tests/test_hal_io.c
-- Layer: testing
 - Doc: Docstring: Host test for arch/x86/hal_io.h (make test-hal).
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 30) `int main(void)`
@@ -276,8 +277,8 @@
 - Depends on: `headers/arch/x86/hal_io.h`
 
 ## tests/test_httpd.c
-- Layer: testing
 - Doc: Docstring: Host test for headers/httpd.h (make test-httpd).
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 25) `int main(void)`
@@ -285,8 +286,8 @@
 - Depends on: `headers/httpd.h`, `kernel/string.c`
 
 ## tests/test_ktime.c
+- Doc: host test for the pure conversion math in ktime.h
 - Layer: testing
-- Doc: test_ktime.c -- host test for the pure conversion math in ktime.h
 - Language: c
 - Symbols:
   - `main` (function, line 16) `int main(void)`
@@ -294,8 +295,8 @@
 - Depends on: `headers/ktime.h`
 
 ## tests/test_ldso.c
-- Layer: testing
 - Doc: Docstring: host test for the ld.so pure parser (make test-ldso).
+- Layer: testing
 - Language: c
 - Symbols:
   - `w16` (function, line 27) `static void w16(unsigned char *p, unsigned v)`
@@ -313,8 +314,8 @@
 - Depends on: `headers/ldso.h`, `kernel/ldso_parse.c`, `kernel/string.c`
 
 ## tests/test_leakcheck.c
-- Layer: testing
 - Doc: Docstring: host test for the leak tracker (make test-leakcheck).
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 27) `int main(void)`
@@ -324,8 +325,8 @@
 - Depends on: `headers/leakcheck.h`, `kernel/string.c`, `progs/file/file_assoc.h`
 
 ## tests/test_minios_png.c
-- Layer: testing
 - Doc: Docstring: host test for the shared ring-3 PNG helpers (make test-png).
+- Layer: testing
 - Language: c
 - Symbols:
   - `t_332` (function, line 24) `static void t_332(void)`
@@ -341,8 +342,8 @@
 - Depends on: `kernel/string.c`, `progs/minios_png.h`
 
 ## tests/test_modifiers.c
-- Layer: testing
 - Doc: Docstring: Designated initializers, so adding a member cannot silently
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 24) `int main(void)`
@@ -359,8 +360,8 @@
 - Depends on: `headers/wm_notify.h`
 
 ## tests/test_paint.c
-- Layer: testing
 - Doc: Docstring: host test for the paint canvas/PNG contract (make test-paint).
+- Layer: testing
 - Language: c
 - Symbols:
   - `t_clamp` (function, line 30) `static int t_clamp(int v, int lo, int hi)`
@@ -391,8 +392,8 @@
 - Depends on: `kernel/string.c`
 
 ## tests/test_panic.c
-- Layer: testing
 - Doc: Docstring: Host test for headers/panic.h (make test-panic).
+- Layer: testing
 - Language: c
 - Symbols:
   - `always_valid` (function, line 23) `static int always_valid(unsigned long addr)`
@@ -403,8 +404,8 @@
 - Depends on: `headers/panic.h`
 
 ## tests/test_pcache.c
-- Layer: testing
 - Doc: Docstring: host test for the page cache store (make test-pcache).
+- Layer: testing
 - Language: c
 - Symbols:
   - `kmalloc` (function, line 19) `void *kmalloc(unsigned long size)`
@@ -415,8 +416,8 @@
 - Depends on: `fs/pcache.c`, `headers/pcache.h`, `kernel/string.c`
 
 ## tests/test_pci.c
-- Layer: testing
 - Doc: Docstring: Host test for headers/drivers/pci.h (make test-pci).
+- Layer: testing
 - Language: c
 - Symbols:
   - `fake_outl` (function, line 39) `static void fake_outl(unsigned short port, unsigned val)`
@@ -430,8 +431,8 @@
 - Depends on: `headers/drivers/pci.h`
 
 ## tests/test_pcm.c
-- Layer: testing
 - Doc: Host-side unit test for the PCM ring buffer (headers/pcm_ring.h).
+- Layer: testing
 - Language: c
 - Symbols:
   - `t_roundtrip` (function, line 28) `static void t_roundtrip(void)`
@@ -446,8 +447,8 @@
 - Depends on: `headers/pcm_ring.h`, `kernel/string.c`
 
 ## tests/test_percpu_rq.c
-- Layer: testing
 - Doc: Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq).
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 24) `int main(void)`
@@ -455,8 +456,8 @@
 - Depends on: `headers/percpu_rq.h`
 
 ## tests/test_pipe.c
-- Layer: testing
 - Doc: Docstring: Host test for headers/pipe.h (make test-pipe).
+- Layer: testing
 - Language: c
 - Symbols:
   - `main` (function, line 23) `int main(void)`
@@ -464,8 +465,8 @@
 - Depends on: `headers/pipe.h`
 
 ## tests/test_randmix.c
+- Doc: host test for the getrandom mixer in randmix.h
 - Layer: testing
-- Doc: test_randmix.c -- host test for the getrandom mixer in randmix.h
 - Language: c
 - Symbols:
   - `popcount64` (function, line 18) `static int popcount64(unsigned long x)`
@@ -474,8 +475,8 @@
 - Depends on: `headers/randmix.h`
 
 ## tests/test_rcu.c
-- Layer: testing
 - Doc: Docstring: Host test for kernel/rcu.c (make test-rcu).
+- Layer: testing
 - Language: c
 - Symbols:
   - `rcu_host_cpu` (function, line 19) `cpu_t *rcu_host_cpu(void)`
@@ -485,171 +486,13 @@
 - Depends on: `headers/rcu.h`
 
 ## tests/test_rtc.c
+- Doc: host test for the pure date math in drivers/rtc.c
 - Layer: testing
-- Doc: test_rtc.c -- host test for the pure date math in drivers/rtc.c
 - Language: c
 - Symbols:
   - `main` (function, line 18) `int main(void)`
   - `CHECK` (macro, line 16) `#define CHECK(c, m)`
 - Depends on: `headers/rtc.h`
 
-## tests/test_sanitize.c
-- Layer: testing
-- Doc: Docstring: Host test for sanitize.h (make test-sanitize).
-- Language: c
-- Symbols:
-  - `user_range_ok` (function, line 20) `int user_range_ok(unsigned long p, unsigned long len)`
-  - `user_str_ok` (function, line 26) `int user_str_ok(unsigned long p, unsigned long maxlen)`
-  - `kmemcpy` (function, line 32) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
-  - `range_probe` (function, line 48) `static long range_probe(unsigned long p, long len)`
-  - `str_probe` (function, line 54) `static long str_probe(unsigned long p)`
-  - `copy_probe` (function, line 61) `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)`
-  - `main` (function, line 67) `int main(void)`
-  - `EFAULT` (macro, line 13) `#define EFAULT`
-  - `CHECK` (macro, line 41) `#define CHECK(cond, msg)`
-- Depends on: `headers/sanitize.h`, `kernel/string.c`
 
-## tests/test_sync.c
-- Layer: testing
-- Doc: Host-side unit test for the blocking sync primitives (kernel/sync.c).
-- Language: c
-- Symbols:
-  - `proc_get` (function, line 24) `proc_t *proc_get(int pid)`
-  - `schedule` (function, line 30) `void schedule(void)`
-  - `fresh_proc` (function, line 44) `static void fresh_proc(int pid)`
-  - `fresh_all` (function, line 52) `static void fresh_all(void)`
-  - `main` (function, line 63) `int main(void)`
-  - `CHECK` (macro, line 37) `#define CHECK(cond, msg)`
-- Depends on: `headers/sync.h`
-
-## tests/test_theme.c
-- Layer: testing
-- Doc: Docstring: host test for the shared Nuklear theme contract.
-- Language: c
-- Symbols:
-  - `tslot` (struct, line 23)
-  - `t_name_ok` (function, line 34) `static int t_name_ok(const char *name)`
-  - `t_parse_line` (function, line 46) `static int t_parse_line(const char *line, int *idx, long v[3])`
-  - `cube_exact` (function, line 74) `static int cube_exact(long v)`
-  - `check_theme_file` (function, line 78) `static void check_theme_file(const char *path)`
-  - `main` (function, line 107) `int main(void)`
-  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
-  - `X` (macro, line 29) `#define X(k, i)`
-- Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
-
-## tests/test_tick.c
-- Layer: testing
-- Doc: Docstring: Host test for kernel/tick.c (make test-tick).
-- Language: c
-- Symbols:
-  - `rec_a` (function, line 24) `static void rec_a(void *ctx)`
-  - `rec_b` (function, line 31) `static void rec_b(void *ctx)`
-  - `rec_d` (function, line 38) `static void rec_d(void *ctx)`
-  - `dummy` (function, line 47) `static void dummy(void *ctx)`
-  - `main` (function, line 52) `int main(void)`
-  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
-- Depends on: `headers/tick.h`
-
-## tests/test_usbblk.c
-- Layer: testing
-- Doc: Docstring: Host test for the USB mass-storage driver (make test-usbblk).
-- Language: c
-- Symbols:
-  - `device_register` (function, line 20) `int device_register(device_t *dev)`
-  - `device_find` (function, line 26) `device_t *device_find(const char *name)`
-  - `main` (function, line 43) `int main(void)`
-  - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
-- Depends on: `drivers/usbblk.c`, `drivers/xhci.c`, `headers/driver.h`, `headers/drivers/usbblk.h`
-
-## tests/test_usbhid.c
-- Layer: testing
-- Doc: Docstring: Host test for the USB HID driver (make test-usbhid).
-- Language: c
-- Symbols:
-  - `kbd_feed_scancode` (function, line 22) `int kbd_feed_scancode(unsigned char sc)`
-  - `kbd_q_push` (function, line 30) `void kbd_q_push(unsigned char c)`
-  - `check_usage` (function, line 48) `static void check_usage(unsigned usage, unsigned char want_sc, int want_e0,
-                     ...`
-  - `main` (function, line 59) `int main(void)`
-  - `CHECK` (macro, line 41) `#define CHECK(cond, msg)`
-- Depends on: `drivers/usbhid.c`, `drivers/xhci.c`, `headers/drivers/usbhid.h`, `kernel/string.c`
-
-## tests/test_vedit_build.c
-- Layer: testing
-- Doc: Docstring: Host test for the vedit IDE build contract (make test-vedit).
-- Language: c
-- Symbols:
-  - `t_has_ext` (function, line 40) `static int t_has_ext(const char *fname, const char *ext)`
-  - `t_base_of` (function, line 51) `static int t_base_of(const char *fname, char *dst, size_t cap)`
-  - `t_join` (function, line 71) `static int t_join(const char *dir, const char *base, const char *ext,
-                  char *dst...`
-  - `t_link_fmt` (function, line 87) `static int t_link_fmt(const char *s)`
-  - `t_lang_of` (function, line 101) `static int t_lang_of(const char *fname)`
-  - `t_run_kind` (function, line 121) `static int t_run_kind(const char *fname)`
-  - `t_str_case` (function, line 131) `static void t_str_case(char *s, int mode)`
-  - `t_transpose` (function, line 157) `static void t_transpose(char *s, int len, int pos)`
-  - `t_mclass` (function, line 166) `static int t_mclass(int c, const char *cls)`
-  - `t_matom` (function, line 188) `static int t_matom(const char *pat, int c, int *atom_len)`
-  - `t_mhere` (function, line 211) `static int t_mhere(const char *text, const char *pat, int *mlen)`
-  - `t_magic` (function, line 268) `static int t_magic(const char *text, const char *pat, int *mlen)`
-  - `t_cmd` (function, line 299) `static int t_cmd(const char *name)`
-  - `t_parse_key` (function, line 312) `static int t_parse_key(const char *s)`
-  - `main` (function, line 345) `int main(void)`
-  - `CHECK` (macro, line 33) `#define CHECK(cond, msg)`
-- Depends on: `kernel/string.c`
-
-## tests/test_vma.c
-- Layer: testing
-- Doc: Host-side unit test for the VMA red-black tree (vma.c).
-- Language: c
-- Symbols:
-  - `black_height` (function, line 27) `static int black_height(const vma_node_t *n)`
-  - `tree_valid` (function, line 38) `static int tree_valid(const vma_node_t *root)`
-  - `count_nodes` (function, line 75) `static int count_nodes(const vma_node_t *root)`
-  - `test_insert_find_delete` (function, line 89) `static void test_insert_find_delete(void)`
-  - `test_pool_exhaustion` (function, line 136) `static void test_pool_exhaustion(void)`
-  - `test_full_drain` (function, line 153) `static void test_full_drain(void)`
-  - `test_file_tags_and_containing` (function, line 167) `static void test_file_tags_and_containing(void)`
-  - `main` (function, line 199) `int main(void)`
-  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
-- Depends on: `headers/vma.h`
-
-## tests/test_vma_bench.c
-- Layer: testing
-- Doc: test_vma_bench.c -- RB-tree vs sorted-list benchmark (boyscout gap #9).
-- Language: c
-- Symbols:
-  - `now_us` (function, line 13) `static long now_us(void)`
-  - `l_insert` (function, line 23) `static void l_insert(unsigned long b)`
-  - `l_find` (function, line 28) `static int l_find(unsigned long b)`
-  - `bench` (function, line 34) `static void bench(int n)`
-  - `main` (function, line 54) `int main(void)`
-  - `LIST_MAX` (macro, line 20) `#define LIST_MAX`
-- Depends on: `headers/vma.h`, `kernel/time.c`
-
-## tests/test_wl.c
-- Layer: testing
-- Doc: Host test for progs/wl/wl_mini.h (make test-wl).
-- Language: c
-- Symbols:
-  - `main` (function, line 27) `int main(void)`
-  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
-- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_mbox.h`, `progs/wl/wl_mini.h`, `progs/wl/wl_pixbuf.h`
-
-## tests/test_wm.c
-- Layer: testing
-- Doc: Docstring: Host test for wm_geom.h and wm_events.h (make test-wm).
-- Language: c
-- Symbols:
-  - `main` (function, line 29) `int main(void)`
-  - `CHECK` (macro, line 22) `#define CHECK(cond, msg)`
-- Depends on: `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_gfxview.h`, `headers/wm_layout.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
-
-## tests/test_xhci.c
-- Layer: testing
-- Doc: Docstring: Host test for the xHCI controller driver (make test-xhci).
-- Language: c
-- Symbols:
-  - `main` (function, line 30) `int main(void)`
-  - `CHECK` (macro, line 23) `#define CHECK(cond, msg)`
-- Depends on: `drivers/xhci.c`, `headers/drivers/xhci.h`, `kernel/string.c`
+Next: [KB_tests_p2.md](KB_tests_p2.md)

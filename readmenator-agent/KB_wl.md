@@ -1,8 +1,8 @@
 # Subsystem: wl
 
 ## progs/wl/wl_client.h
+- Doc: Thin mailbox client for Wayland-mini (ADR-0026).
 - Layer: infrastructure
-- Doc: wl_client.h - Thin mailbox client for Wayland-mini (ADR-0026).
 - Language: h
 - Symbols:
   - `wl_client_emit_file` (function, line 21) `static inline int wl_client_emit_file(const char *box, unsigned int seq,
@@ -17,8 +17,8 @@
 - Imported by: `progs/nuklear/nuklear_minios.c`, `progs/wl/wlcomp.c`
 
 ## progs/wl/wl_mbox.h
+- Doc: Mailbox file transport for Wayland-mini (ADR-0026).
 - Layer: utility
-- Doc: wl_mbox.h - Mailbox file transport for Wayland-mini (ADR-0026).
 - Language: h
 - Symbols:
   - `wl_mbox_box_t` (struct, line 30)
@@ -58,8 +58,8 @@
 - Imported by: `progs/nuklear/nuklear_minios.c`, `progs/wl/wl_client.h`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
 
 ## progs/wl/wl_mini.h
+- Doc: Wayland-mini subset contract (header-only, ADR-0024).
 - Layer: utility
-- Doc: wl_mini.h - Wayland-mini subset contract (header-only, ADR-0024).
 - Language: h
 - Symbols:
   - `wl_hdr_t` (struct, line 57)
@@ -139,7 +139,7 @@
         unsigned int pool, in...`
   - `wl_dispatch` (function, line 1245) `static inline int wl_dispatch(wl_comp_t *c, wl_client_t *cl,
         unsigned int id, unsigned in...`
-  - `coords` (function, line 959) `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw Set-1 bytes * (E0 prefixes included) the client's own translator consumes. * A slow cl`
+  - `coords` (function, line 959) `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw...`
   - `WL_MINI_H` (macro, line 18) `#define WL_MINI_H`
   - `WL_MAX_MSG` (macro, line 20) `#define WL_MAX_MSG`
   - `WL_MAX_STR` (macro, line 21) `#define WL_MAX_STR`
@@ -200,8 +200,8 @@
 - Imported by: `progs/src/freedom_wl.c`, `progs/wl/wl_mbox.h`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
 
 ## progs/wl/wl_pixbuf.h
-- Layer: utility
 - Doc: Docstring: heap pixel store for the Wayland-mini server.
+- Layer: utility
 - Language: h
 - Symbols:
   - `wpix_slot` (struct, line 48)
@@ -226,8 +226,8 @@
 - Imported by: `progs/wl/wlcomp.c`, `tests/test_wl.c`
 
 ## progs/wl/wlcomp.c
-- Layer: utility
 - Doc: wlcomp - Wayland-mini ring-3 compositor (ADR-0024, ADR-0026).
+- Layer: utility
 - Language: c
 - Symbols:
   - `wlcomp_cfg_t` (struct, line 43)

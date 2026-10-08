@@ -1,8 +1,8 @@
 # Subsystem: net
 
 ## net/net.c
-- Layer: utility
 - Doc: MiniOS network stack: virtio-net preferred, rtl8139 fallback, under
+- Layer: utility
 - Language: c
 - Symbols:
   - `net_arp_entry` (struct, line 94)
@@ -85,6 +85,7 @@ int net_accept(int fd, uns...`
 - Depends on: `headers/drivers/virtio_net.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/tls.h`
 
 ## net/rtl8139.c
+- Doc: outl_port: Byte/word port I/O comes from kernel.h (outb/inb/outw/inw, same asm). * Only the...
 - Layer: utility
 - Language: c
 - Symbols:
@@ -120,8 +121,8 @@ int net_accept(int fd, uns...`
 - Depends on: `headers/drivers/pci.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`
 
 ## net/tls.c
+- Doc: TLS 1.2 client sessions for MiniOS.
 - Layer: utility
-- Doc: tls.c - TLS 1.2 client sessions for MiniOS.
 - Language: c
 - Symbols:
   - `tls_fail` (function, line 25) `static void tls_fail(struct tls_session *s, const char *stage, const char *reason)`
@@ -161,8 +162,8 @@ int net_accept(int fd, uns...`
 - Depends on: `headers/tls.h`, `headers/tls_port.h`, `headers/tls_roots.h`
 
 ## net/tls_crypto.c
+- Doc: the crypto behind the kernel TLS 1.2 client.
 - Layer: utility
-- Doc: tls_crypto.c - the crypto behind the kernel TLS 1.2 client.
 - Language: c
 - Symbols:
   - `mont_ctx` (struct, line 655)
@@ -279,13 +280,13 @@ int net_accept(int fd, uns...`
   - `p256_pub` (function, line 1520) `int p256_pub(const unsigned char priv[32],
              unsigned char x[32], unsigned char y[32])`
   - `p256_scalar_valid` (function, line 1539) `int p256_scalar_valid(const unsigned char scalar[32])`
-  - `word` (function, line 326) `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */ r.hi = (v.hi >> 1) ^ (0xE100000000000000ULL & mask);`
+  - `word` (function, line 326) `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */...`
   - `TLS_BN_WORDS` (macro, line 535) `#define TLS_BN_WORDS`
 - Depends on: `headers/tls.h`, `headers/tls_port.h`
 
 ## net/tls_x509.c
+- Doc: minimal X.509 DER parsing and chain verification.
 - Layer: utility
-- Doc: tls_x509.c - minimal X.509 DER parsing and chain verification.
 - Language: c
 - Symbols:
   - `der_tlv` (struct, line 43)

@@ -8,8 +8,8 @@
   - `KSECTORS` (macro, line 19) `#define KSECTORS`
 
 ## kernel.c
+- Doc: Mediator: boot orchestration and the syscall trampoline.
 - Layer: utility
-- Doc: kernel.c -- Mediator: boot orchestration and the syscall trampoline.
 - Language: c
 - Symbols:
   - `syscall_init` (function, line 114) `void syscall_init(void)`
@@ -19,9 +19,9 @@
 void kmain(void)`
   - `tables` (function, line 281) `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
-  - `table` (function, line 101) `* Symbol table (for resolving program references) * ================================================================ */ #define KSYM_MAX 256 /* ---- SYSCALL/SYSRET setup ------------------------------`
+  - `table` (function, line 101) `* Symbol table (for resolving program references) * ================================================================...`
   - `ksyscall` (function, line 127) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `kstack` (function, line 143) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single process runs, fatal as * soon as two threads syscall concurrently. */ _Static_asser`
+  - `kstack` (function, line 143) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
   - `ms` (function, line 182) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
   - `EM` (function, line 218) `* CR0: clear EM (bit 2), set MP (bit 1);`
   - `size` (function, line 259) `* image size (see kernel.ld);`
@@ -33,8 +33,8 @@ void kmain(void)`
 - Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
 
 ## qga.c
-- Layer: utility
 - Doc: MiniOS QEMU guest agent (QGA).
+- Layer: utility
 - Language: c
 - Symbols:
   - `qga_pair` (struct, line 49)
@@ -64,12 +64,12 @@ void kmain(void)`
   - `qga_cmd_file_close` (function, line 384) `static void qga_cmd_file_close(const struct qga_pair *pairs, int n)`
   - `qga_dispatch` (function, line 401) `static void qga_dispatch(struct qga_pair *pairs, int n)`
   - `qga_poll` (function, line 446) `void qga_poll(void)`
-  - `channel` (function, line 10) `* * Polled channel (no interrupt controller): qga_init sets up COM2 and * qga_poll, called from raw_blocking_getc, services one complete line per * call. Every input path is bounded and fail-closed: a`
+  - `channel` (function, line 10) `* * Polled channel (no interrupt controller): qga_init sets up COM2 and * qga_poll, called from raw_blocking_getc...`
 - Depends on: `headers/qga.h`, `headers/rtc.h`
 
 ## smp.c
-- Layer: utility
 - Doc: SMP application-processor bring-up.
+- Layer: utility
 - Language: c
 - Symbols:
   - `lapic_read` (function, line 84) `static unsigned lapic_read(unsigned off)`
@@ -81,8 +81,8 @@ void kmain(void)`
   - `ap_lapic_timer_init` (function, line 190) `static void ap_lapic_timer_init(void)`
   - `smp_init` (function, line 305) `void smp_init(void)`
   - `syscall_entry` (function, line 82) `extern void syscall_entry(void);`
-  - `BSP` (function, line 238) `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed STAR (selector 0x08, * kernel code, as SS) and died with #SS. The values mirror * sys`
-  - `INIT` (function, line 323) `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status never clears), * so edge-triggered is used. Two SIPIs deliver the startup vector. */ l`
+  - `BSP` (function, line 238) `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed...`
+  - `INIT` (function, line 323) `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status...`
   - `LAPIC_BASE` (macro, line 28) `#define LAPIC_BASE`
   - `LAPIC_ID_OFF` (macro, line 29) `#define LAPIC_ID_OFF`
   - `LAPIC_SVR_OFF` (macro, line 30) `#define LAPIC_SVR_OFF`
@@ -114,8 +114,8 @@ void kmain(void)`
 - Depends on: `headers/ap_stub.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/sched.h`, `headers/smp.h`
 
 ## tls_test.c
+- Doc: host-side tests for the kernel TLS stack.
 - Layer: testing
-- Doc: tls_test.c - host-side tests for the kernel TLS stack.
 - Language: c
 - Symbols:
   - `tls_test_send` (function, line 26) `int tls_test_send(int fd, const char *buf, int len)`
@@ -144,6 +144,7 @@ void kmain(void)`
 - Depends on: `headers/tls.h`, `headers/tls_port.h`, `headers/tls_test_roots.h`, `kernel/string.c`
 
 ## vma.c
+- Doc: vma_tree_find_containing: Docstring: Find the live node containing va (base <= va < base+len)...
 - Layer: utility
 - Language: c
 - Symbols:

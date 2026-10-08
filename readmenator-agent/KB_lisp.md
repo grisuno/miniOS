@@ -1,6 +1,7 @@
 # Subsystem: lisp
 
 ## progs/lisp/lisp.c
+- Doc: Node: Runtime value node with one payload per type.
 - Layer: utility
 - Language: c
 - Symbols:
@@ -110,7 +111,7 @@
   - `print_usage` (function, line 2136) `static void print_usage(Runtime *rt)`
   - `repl` (function, line 2143) `static int repl(Runtime *rt)`
   - `main` (function, line 2190) `int main(int argc, char **argv)`
-  - `numbers` (function, line 9) `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special forms quote, if, begin, define, set!, * lambda and let. Diagnostics go to stderr, va`
+  - `numbers` (function, line 9) `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special...`
   - `arity` (function, line 1300) `* * Variable arity (0 or 1);`
 - Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
