@@ -1,0 +1,440 @@
+# Subsystem: misc (page 3 of 3)
+Previous: [KB_misc_p2.md](KB_misc_p2.md)
+
+## progs/topogpt3/topogpt3.c
+- Doc: FILE: topogpt3 -p "prompt" [-n N] [-t T]   Headless mode topogpt3 -i...
+- Layer: utility
+- Language: c
+- Symbols:
+  - `FILE` (struct, line 24)
+  - `LayerWeights` (struct, line 176)
+  - `ModelWeights` (struct, line 224)
+  - `tg_exp` (function, line 114) `static float tg_exp(float x)`
+  - `tg_tanh` (function, line 128) `static float tg_tanh(float x)`
+  - `tg_sin` (function, line 135) `static float tg_sin(float x)`
+  - `tg_cos` (function, line 144) `static float tg_cos(float x)`
+  - `tg_fabs` (function, line 148) `static float tg_fabs(float x)`
+  - `tg_log` (function, line 152) `static float tg_log(float x)`
+  - `tg_fmax` (function, line 164) `static float tg_fmax(float a, float b)`
+  - `tg_fmin` (function, line 168) `static float tg_fmin(float a, float b)`
+  - `load_vocab` (function, line 255) `static void load_vocab(const char *path)`
+  - `build_torus_graph` (function, line 296) `static void build_torus_graph(void)`
+  - `precompute_rope` (function, line 327) `static void precompute_rope(void)`
+  - `matvec` (function, line 359) `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
+  - `matvec_bias` (function, line 370) `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
+               ...`
+  - `rmsnorm` (function, line 382) `static void rmsnorm(const float *x, const float *w, float *y, int d)`
+  - `softmax` (function, line 391) `static void softmax(float *x, int n)`
+  - `gelu` (function, line 400) `static void gelu(float *x, int n)`
+  - `silu` (function, line 410) `static void silu(float *x, int n)`
+  - `swiglu` (function, line 418) `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
+                 ...`
+  - `quat_normalize` (function, line 435) `static void quat_normalize(float *q)`
+  - `quat_hamilton` (function, line 440) `static void quat_hamilton(const float *a, const float *b, float *c)`
+  - `quat_linear` (function, line 448) `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,
+     ...`
+  - `ifft_radix2` (function, line 505) `static void ifft_radix2(float *real, float *imag, int n)`
+  - `rfft` (function, line 513) `static void rfft(const float *x, float *Xr, float *Xi, int n)`
+  - `irfft` (function, line 522) `static void irfft(const float *Xr, const float *Xi, float *x, int n)`
+  - `filter1d` (function, line 537) `static void filter1d(const float *x, const float *kr, const float *ki,
+                      floa...`
+  - `ifft2d` (function, line 580) `static void ifft2d(float *data_r, float *data_i, int h, int w)`
+  - `rfft2d_real` (function, line 602) `static void rfft2d_real(const float *data, float *out_r, float *out_i,
+                         i...`
+  - `irfft2d` (function, line 629) `static void irfft2d(const float *in_r, const float *in_i, float *out,
+                     int h,...`
+  - `cmul` (function, line 664) `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)`
+  - `spectral_contract` (function, line 670) `static void spectral_contract(const float *Wr, const float *Wi,
+                               co...`
+  - `quat_spectral_layer_2d` (function, line 695) `static void quat_spectral_layer_2d(
+    const float *x, float *y,
+    const float *kr_w, const fl...`
+  - `spectral_ae_encode` (function, line 785) `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
+  - `spectral_ae_decode` (function, line 793) `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
+  - `process_torus_grid` (function, line 800) `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
+  - `torus_soft_assign` (function, line 821) `static void torus_soft_assign(const float *phi1, const float *phi2,
+                             ...`
+  - `message_passing` (function, line 843) `static void message_passing(const float *node_feat, float *out,
+                             cons...`
+  - `torus_brain_forward` (function, line 888) `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
+                  ...`
+  - `attention_forward` (function, line 978) `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
+  - `moe_forward` (function, line 1078) `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
+  - `forward` (function, line 1128) `static void forward(const int *token_ids, int seq_len, float *logits_out)`
+  - `tokenize_string` (function, line 1195) `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
+  - `apply_temperature` (function, line 1210) `static void apply_temperature(float *logits, int n, float temp)`
+  - `apply_repetition_penalty` (function, line 1216) `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
+                   ...`
+  - `apply_top_k` (function, line 1229) `static void apply_top_k(float *logits, int n, int k)`
+  - `sample` (function, line 1248) `static int sample(const float *logits, int n)`
+  - `load_weights` (function, line 1282) `static int load_weights(const char *path)`
+  - `load_weights_fp16` (function, line 1452) `static int load_weights_fp16(const char *path)`
+  - `load_weights_auto` (function, line 1583) `static int load_weights_auto(const char *path)`
+  - `time_now_ms` (function, line 1600) `static double time_now_ms(void)`
+  - `decode_token` (function, line 1614) `static void decode_token(int tid)`
+  - `load_token_file` (function, line 1629) `static int load_token_file(const char *path, int *out_ids, int max_ids)`
+  - `decode_token_tiktoken` (function, line 1652) `static void decode_token_tiktoken(int tid)`
+  - `generate_tokens` (function, line 1661) `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
+               ...`
+  - `generate` (function, line 1725) `static void generate(const char *prompt, int max_new_tokens, float temperature,
+                 ...`
+  - `interactive_mode` (function, line 1736) `static void interactive_mode(void)`
+  - `print_help` (function, line 1850) `static void print_help(void)`
+  - `main` (function, line 1885) `int main(int argc, char **argv)`
+  - `printf` (function, line 28) `extern int printf(const char *, ...);`
+  - `fprintf` (function, line 29) `extern int fprintf(FILE *, const char *, ...);`
+  - `sprintf` (function, line 30) `extern int sprintf(char *, const char *, ...);`
+  - `snprintf` (function, line 31) `extern int snprintf(char *, unsigned long, const char *, ...);`
+  - `puts` (function, line 32) `extern int puts(const char *);`
+  - `putchar` (function, line 33) `extern int putchar(int);`
+  - `fputc` (function, line 34) `extern int fputc(int, FILE *);`
+  - `fputs` (function, line 35) `extern int fputs(const char *, FILE *);`
+  - `fopen` (function, line 36) `extern FILE *fopen(const char *, const char *);`
+  - `fclose` (function, line 37) `extern int fclose(FILE *);`
+  - `fread` (function, line 38) `extern unsigned long fread(void *, unsigned long, unsigned long, FILE *);`
+  - `fwrite` (function, line 39) `extern unsigned long fwrite(const void *, unsigned long, unsigned long, FILE *);`
+  - `fseek` (function, line 40) `extern int fseek(FILE *, long, int);`
+  - `ftell` (function, line 41) `extern long ftell(FILE *);`
+  - `fflush` (function, line 42) `extern int fflush(FILE *);`
+  - `malloc` (function, line 47) `extern void *malloc(unsigned long);`
+  - `free` (function, line 48) `extern void free(void *);`
+  - `memcpy` (function, line 49) `extern void *memcpy(void *, const void *, unsigned long);`
+  - `memset` (function, line 50) `extern void *memset(void *, int, unsigned long);`
+  - `strcmp` (function, line 51) `extern int strcmp(const char *, const char *);`
+  - `strncmp` (function, line 52) `extern int strncmp(const char *, const char *, unsigned long);`
+  - `strlen` (function, line 53) `extern unsigned long strlen(const char *);`
+  - `strstr` (function, line 54) `extern char *strstr(const char *, const char *);`
+  - `stdin` (variable, line 25) `extern FILE *stdin;`
+  - `stdout` (variable, line 26) `extern FILE *stdout;`
+  - `stderr` (variable, line 27) `extern FILE *stderr;`
+  - `NULL` (macro, line 43) `#define NULL`
+  - `SEEK_SET` (macro, line 44) `#define SEEK_SET`
+  - `SEEK_CUR` (macro, line 45) `#define SEEK_CUR`
+  - `SEEK_END` (macro, line 46) `#define SEEK_END`
+  - `VOCAB_SIZE` (macro, line 65) `#define VOCAB_SIZE`
+  - `D_MODEL` (macro, line 66) `#define D_MODEL`
+  - `N_HEADS` (macro, line 67) `#define N_HEADS`
+  - `N_KV_HEADS` (macro, line 68) `#define N_KV_HEADS`
+  - `GQA_GROUPS` (macro, line 69) `#define GQA_GROUPS`
+  - `D_HEAD` (macro, line 70) `#define D_HEAD`
+  - `D_QUAT` (macro, line 71) `#define D_QUAT`
+  - `N_LAYERS` (macro, line 72) `#define N_LAYERS`
+  - `MAX_SEQ_LEN` (macro, line 73) `#define MAX_SEQ_LEN`
+  - `N_EXPERTS` (macro, line 74) `#define N_EXPERTS`
+  - `MOE_TOP_K` (macro, line 75) `#define MOE_TOP_K`
+  - `N_NODES` (macro, line 76) `#define N_NODES`
+  - `N_RADIAL` (macro, line 77) `#define N_RADIAL`
+  - `N_ANGULAR` (macro, line 78) `#define N_ANGULAR`
+  - `N_EDGE_TYPES` (macro, line 79) `#define N_EDGE_TYPES`
+  - `N_EDGES` (macro, line 80) `#define N_EDGES`
+  - `SPECTRAL_LATENT_DIM` (macro, line 81) `#define SPECTRAL_LATENT_DIM`
+  - `D_LAT_Q` (macro, line 82) `#define D_LAT_Q`
+  - `TORUS_GRID_H` (macro, line 83) `#define TORUS_GRID_H`
+  - `TORUS_GRID_W` (macro, line 84) `#define TORUS_GRID_W`
+  - `FREQ_W` (macro, line 85) `#define FREQ_W`
+  - `N_SPECTRAL_LAYERS` (macro, line 86) `#define N_SPECTRAL_LAYERS`
+  - `EXPERT_INNER` (macro, line 87) `#define EXPERT_INNER`
+  - `READOUT_INNER` (macro, line 88) `#define READOUT_INNER`
+  - `EOS_TOKEN` (macro, line 89) `#define EOS_TOKEN`
+  - `EMBED_INNER` (macro, line 90) `#define EMBED_INNER`
+  - `PI` (macro, line 91) `#define PI`
+  - `EPS_RMS` (macro, line 92) `#define EPS_RMS`
+  - `TORUS_TEMP` (macro, line 93) `#define TORUS_TEMP`
+  - `MAX_TOKENS` (macro, line 94) `#define MAX_TOKENS`
+  - `MAX_PROMPT_LEN` (macro, line 95) `#define MAX_PROMPT_LEN`
+  - `MAX_LINE` (macro, line 96) `#define MAX_LINE`
+  - `TOK_TAB_SIZE` (macro, line 97) `#define TOK_TAB_SIZE`
+  - `TOK_VOCAB_SIZE` (macro, line 98) `#define TOK_VOCAB_SIZE`
+  - `SKIP_TENSOR` (macro, line 1300) `#define SKIP_TENSOR()`
+  - `READ_TENSOR` (macro, line 1310) `#define READ_TENSOR(dest, count)`
+  - `SKIP_TENSOR16` (macro, line 1470) `#define SKIP_TENSOR16()`
+  - `READ_TENSOR16` (macro, line 1480) `#define READ_TENSOR16(dest, count)`
+- Depends on: `kernel/string.c`
+
+## progs/vedit/vedit.c
+- Doc: vedit IDE build and run contract.
+- Layer: utility
+- Language: c
+- Symbols:
+  - `vedit_getc_raw` (function, line 38) `static long vedit_getc_raw(long blocking)`
+  - `vedit_set_title` (function, line 47) `static long vedit_set_title(const char *t)`
+  - `vedit_spawn` (function, line 56) `static long vedit_spawn(const char *path, const char *redir, int argc,
+                        co...`
+  - `vedit_vga` (function, line 68) `static long vedit_vga(int on)`
+  - `vedit_kbd_raw` (function, line 80) `static long vedit_kbd_raw(int on)`
+  - `vedit_time_ms` (function, line 89) `static unsigned long vedit_time_ms(void)`
+  - `vedit_clip_set` (function, line 97) `static long vedit_clip_set(const char *s, long len)`
+  - `vedit_clip_get` (function, line 105) `static long vedit_clip_get(char *out, long cap)`
+  - `vedit_c_bg` (function, line 182) `static struct nk_color vedit_c_bg(void)`
+  - `vedit_c_gutter` (function, line 183) `static struct nk_color vedit_c_gutter(void)`
+  - `vedit_c_default` (function, line 184) `static struct nk_color vedit_c_default(void)`
+  - `vedit_c_keyword` (function, line 185) `static struct nk_color vedit_c_keyword(void)`
+  - `vedit_c_string` (function, line 186) `static struct nk_color vedit_c_string(void)`
+  - `vedit_c_comment` (function, line 187) `static struct nk_color vedit_c_comment(void)`
+  - `vedit_c_number` (function, line 188) `static struct nk_color vedit_c_number(void)`
+  - `vedit_c_preproc` (function, line 189) `static struct nk_color vedit_c_preproc(void)`
+  - `vedit_c_header` (function, line 190) `static struct nk_color vedit_c_header(void)`
+  - `vedit_c_headtxt` (function, line 191) `static struct nk_color vedit_c_headtxt(void)`
+  - `vedit_c_status` (function, line 192) `static struct nk_color vedit_c_status(void)`
+  - `vedit_c_cursor` (function, line 193) `static struct nk_color vedit_c_cursor(void)`
+  - `vedit_ink` (function, line 195) `static struct nk_color vedit_ink(int col)`
+  - `vedit_set_msg` (function, line 360) `static void vedit_set_msg(const char *s)`
+  - `vedit_is_alpha` (function, line 367) `static int vedit_is_alpha(int c)`
+  - `vedit_is_digit` (function, line 371) `static int vedit_is_digit(int c)`
+  - `vedit_is_wordc` (function, line 375) `static int vedit_is_wordc(int c)`
+  - `vedit_is_kw` (function, line 379) `static int vedit_is_kw(const char *table, const char *word, int wlen)`
+  - `separators` (function, line 402) `* allow_quote exists because C digit separators (1'000'000) are not
+ * valid in Python/Lua number...`
+  - `vedit_parse_number` (function, line 425) `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)`
+  - `vedit_parse_keyword` (function, line 440) `static int vedit_parse_keyword(const char *t, int len, int i,
+                               cons...`
+  - `vedit_lang_of` (function, line 457) `static int vedit_lang_of(const char *fname)`
+  - `vedit_lang_name` (function, line 478) `static const char *vedit_lang_name(int lang)`
+  - `vedit_scan_line` (function, line 488) `static int vedit_scan_line(const char *t, int len, int st)`
+  - `vedit_state_at` (function, line 759) `static int vedit_state_at(int row)`
+  - `vedit_row_ptr` (function, line 768) `static char *vedit_row_ptr(int idx)`
+  - `vedit_clamp` (function, line 772) `static void vedit_clamp(void)`
+  - `vedit_follow` (function, line 784) `static void vedit_follow(void)`
+  - `vedit_insert_char` (function, line 797) `static void vedit_insert_char(int c)`
+  - `vedit_delete_line_at` (function, line 835) `static void vedit_delete_line_at(int idx)`
+  - `vedit_backspace` (function, line 846) `static void vedit_backspace(void)`
+  - `vedit_delete_char` (function, line 882) `static void vedit_delete_char(void)`
+  - `vedit_split` (function, line 915) `static void vedit_split(void)`
+  - `vedit_tab` (function, line 968) `static void vedit_tab(void)`
+  - `vedit_str_case` (function, line 1004) `static void vedit_str_case(char *s, int mode)`
+  - `vedit_str_transpose` (function, line 1031) `static void vedit_str_transpose(char *s, int len, int pos)`
+  - `vedit_magic_class` (function, line 1043) `static int vedit_magic_class(int c, const char *cls)`
+  - `vedit_magic_atom` (function, line 1065) `static int vedit_magic_atom(const char *pat, int c, int *atom_len)`
+  - `vedit_magic_here` (function, line 1088) `static int vedit_magic_here(const char *text, const char *pat, int *mlen)`
+  - `vedit_magic_match` (function, line 1149) `static int vedit_magic_match(const char *text, const char *pat, int *mlen)`
+  - `vedit_buf_alloc` (function, line 1178) `static int vedit_buf_alloc(int idx)`
+  - `vedit_next_buffer` (function, line 1206) `static int vedit_next_buffer(void)`
+  - `vedit_hist_push` (function, line 1220) `static void vedit_hist_push(const char *fname)`
+  - `vedit_set_mark` (function, line 1239) `static void vedit_set_mark(void)`
+  - `vedit_region` (function, line 1247) `static int vedit_region(int *y0, int *x0, int *y1, int *x1)`
+  - `vedit_copy_region` (function, line 1268) `static int vedit_copy_region(void)`
+  - `vedit_kill_region` (function, line 1298) `static int vedit_kill_region(void)`
+  - `vedit_kill_line` (function, line 1344) `static int vedit_kill_line(void)`
+  - `vedit_yank` (function, line 1382) `static int vedit_yank(void)`
+  - `vedit_word_move` (function, line 1415) `static int vedit_word_move(int dir)`
+  - `vedit_case_word` (function, line 1450) `static int vedit_case_word(int mode)`
+  - `vedit_transpose` (function, line 1489) `static int vedit_transpose(void)`
+  - `vedit_goto_fence` (function, line 1512) `static int vedit_goto_fence(void)`
+  - `vedit_count_words` (function, line 1578) `static void vedit_count_words(void)`
+  - `vedit_match_at` (function, line 1621) `static int vedit_match_at(int row, int col, const char *needle, int magic,
+                      ...`
+  - `vedit_search_fwd` (function, line 1658) `static int vedit_search_fwd(int row, int col, const char *needle, int magic,
+                    ...`
+  - `vedit_search_rev` (function, line 1690) `static int vedit_search_rev(int row, int col, const char *needle, int magic)`
+  - `vedit_isearch_step` (function, line 1713) `static void vedit_isearch_step(void)`
+  - `vedit_replace_at` (function, line 1740) `static int vedit_replace_at(int row, int col, const char *old_s,
+                            cons...`
+  - `vedit_replace_all` (function, line 1760) `static int vedit_replace_all(const char *old_s, const char *new_s,
+                             i...`
+  - `vedit_fill_paragraph` (function, line 1813) `static int vedit_fill_paragraph(void)`
+  - `vedit_find` (function, line 1897) `static void vedit_find(const char *needle)`
+  - `vedit_save` (function, line 1987) `static int vedit_save(void)`
+  - `vedit_load` (function, line 2050) `static int vedit_load(void)`
+  - `vedit_open_in_buffer` (function, line 2121) `static int vedit_open_in_buffer(const char *fname, int ro)`
+  - `vedit_insert_buf` (function, line 2182) `static char *vedit_insert_buf(long size)`
+  - `vedit_insert_file` (function, line 2195) `static int vedit_insert_file(const char *fname)`
+  - `vedit_has_ext` (function, line 2256) `static int vedit_has_ext(const char *fname, const char *ext)`
+  - `vedit_base_of` (function, line 2268) `static int vedit_base_of(const char *fname, char *dst, size_t cap)`
+  - `vedit_join` (function, line 2289) `static int vedit_join(const char *dir, const char *base, const char *ext,
+                      c...`
+  - `vedit_link_fmt` (function, line 2306) `static int vedit_link_fmt(const char *s)`
+  - `vedit_print_log` (function, line 2319) `static void vedit_print_log(const char *path)`
+  - `vedit_spawn_visible` (function, line 2336) `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
+                  ...`
+  - `vedit_cmd_exec` (function, line 2365) `static void vedit_cmd_exec(const char *out, int kind)`
+  - `vedit_run_kind` (function, line 2378) `static int vedit_run_kind(const char *fname)`
+  - `vedit_cmd_run` (function, line 2388) `static void vedit_cmd_run(void)`
+  - `vedit_cmd_link` (function, line 2465) `static void vedit_cmd_link(const char *fmt)`
+  - `vedit_selftest_build` (function, line 2516) `static int vedit_selftest_build(void)`
+  - `vedit_selftest_leak` (function, line 2709) `static int vedit_selftest_leak(void)`
+  - `vedit_pane_save` (function, line 2769) `static void vedit_pane_save(int p)`
+  - `vedit_first_open` (function, line 2777) `static int vedit_first_open(void)`
+  - `vedit_pane_load` (function, line 2785) `static void vedit_pane_load(int p)`
+  - `vedit_count_open` (function, line 2797) `static int vedit_count_open(void)`
+  - `vedit_split_set` (function, line 2806) `static void vedit_split_set(int on)`
+  - `vedit_next_pane` (function, line 2825) `static void vedit_next_pane(void)`
+  - `vedit_cmd_lookup` (function, line 2857) `static int vedit_cmd_lookup(const char *name)`
+  - `vedit_parse_key` (function, line 2873) `static int vedit_parse_key(const char *s)`
+  - `vedit_cmd_bind` (function, line 2925) `static int vedit_cmd_bind(int key, int cmd)`
+  - `vedit_cmd_bound` (function, line 2941) `static int vedit_cmd_bound(int key)`
+  - `vedit_list_buffers` (function, line 2949) `static void vedit_list_buffers(void)`
+  - `vedit_hist_show` (function, line 2968) `static void vedit_hist_show(void)`
+  - `vedit_help_text` (function, line 2976) `static void vedit_help_text(void)`
+  - `vedit_cmd_exec_id` (function, line 2992) `static void vedit_cmd_exec_id(int id, const char *arg, int *quit,
+                              i...`
+  - `strcmp` (function, line 3180) `strcmp(name, "describe-bindings") == 0)`
+  - `vedit_run_rc` (function, line 3198) `static void vedit_run_rc(const char *path)`
+  - `vedit_sel_clear` (function, line 3276) `static void vedit_sel_clear(void)`
+  - `vedit_sel_norm` (function, line 3281) `static void vedit_sel_norm(void)`
+  - `vedit_sel_copy` (function, line 3294) `static int vedit_sel_copy(void)`
+  - `vedit_clip_paste` (function, line 3337) `static int vedit_clip_paste(void)`
+  - `vedit_region_to_clip` (function, line 3367) `static int vedit_region_to_clip(void)`
+  - `vedit_sh_split` (function, line 3412) `static int vedit_sh_split(const char *line, char *buf, const char **argv)`
+  - `vedit_shell_command` (function, line 3432) `static void vedit_shell_command(const char *line)`
+  - `vedit_write_region` (function, line 3461) `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,
+                   ...`
+  - `vedit_filter_buffer` (function, line 3505) `static void vedit_filter_buffer(const char *prog)`
+  - `vedit_grep` (function, line 3565) `static void vedit_grep(const char *pat)`
+  - `vedit_next_error` (function, line 3628) `static void vedit_next_error(void)`
+  - `vedit_read_key_poll` (function, line 3676) `static int vedit_read_key_poll(void)`
+  - `vedit_ansi_for` (function, line 3730) `static void vedit_ansi_for(int col)`
+  - `vedit_console_dump` (function, line 3738) `static void vedit_console_dump(void)`
+  - `vedit_prompt_open` (function, line 3768) `static void vedit_prompt_open(const char *label, int mode)`
+  - `vedit_prompt_find` (function, line 3779) `static void vedit_prompt_find(void)`
+  - `vedit_prompt_isearch` (function, line 3783) `static void vedit_prompt_isearch(int dir)`
+  - `vedit_qrep_next` (function, line 3793) `static void vedit_qrep_next(int r, int c)`
+  - `vedit_qrep_answer` (function, line 3805) `static void vedit_qrep_answer(int key)`
+  - `vedit_prompt_saveas` (function, line 3844) `static void vedit_prompt_saveas(void)`
+  - `vedit_draw_row` (function, line 3854) `static void vedit_draw_row(struct nk_command_buffer *canvas,
+                           struct nk...`
+  - `vedit_draw_ui` (function, line 3952) `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,
+                    ...`
+  - `vedit_prompt_key` (function, line 4232) `static void vedit_prompt_key(int key)`
+  - `vedit_key` (function, line 4406) `static void vedit_key(int key, int *quit, int *save_and_quit)`
+  - `vedit_sync_title` (function, line 4646) `static void vedit_sync_title(void)`
+  - `vedit_gui_run` (function, line 4656) `static void vedit_gui_run(void)`
+  - `vedit_selftest` (function, line 4747) `static int vedit_selftest(void)`
+  - `main` (function, line 4823) `int main(int argc, char **argv)`
+  - `definitions` (function, line 267) `* definitions (C99, one file, no headers). */ static void vedit_str_case(char *s, int mode);`
+  - `MINIOS_LEAKCHECK_IMPL` (macro, line 33) `#define MINIOS_LEAKCHECK_IMPL`
+  - `MINIOS_LK_ENABLE` (macro, line 34) `#define MINIOS_LK_ENABLE`
+  - `VEDIT_MAX_LINES` (macro, line 114) `#define VEDIT_MAX_LINES`
+  - `VEDIT_LINE_MAX` (macro, line 115) `#define VEDIT_LINE_MAX`
+  - `VEDIT_LINE_USED` (macro, line 116) `#define VEDIT_LINE_USED`
+  - `VEDIT_FILE_MAX` (macro, line 117) `#define VEDIT_FILE_MAX`
+  - `VEDIT_FNAME_MAX` (macro, line 118) `#define VEDIT_FNAME_MAX`
+  - `VEDIT_DEFAULT_FILE` (macro, line 119) `#define VEDIT_DEFAULT_FILE`
+  - `VEDIT_MSG_MAX` (macro, line 120) `#define VEDIT_MSG_MAX`
+  - `VEDIT_WORD_MAX` (macro, line 121) `#define VEDIT_WORD_MAX`
+  - `VEDIT_TAB_W` (macro, line 122) `#define VEDIT_TAB_W`
+  - `VEDIT_ESC_MS` (macro, line 123) `#define VEDIT_ESC_MS`
+  - `VEDIT_FRAME_MS` (macro, line 124) `#define VEDIT_FRAME_MS`
+  - `VEDIT_UI_MEMORY` (macro, line 125) `#define VEDIT_UI_MEMORY`
+  - `VEDIT_KEY_RUN` (macro, line 126) `#define VEDIT_KEY_RUN`
+  - `VEDIT_KEY_LINK` (macro, line 127) `#define VEDIT_KEY_LINK`
+  - `VEDIT_KEY_DUMP` (macro, line 128) `#define VEDIT_KEY_DUMP`
+  - `VEDIT_TOOL_MINIGCC` (macro, line 129) `#define VEDIT_TOOL_MINIGCC`
+  - `VEDIT_TOOL_LD` (macro, line 130) `#define VEDIT_TOOL_LD`
+  - `VEDIT_TOOL_CVM` (macro, line 131) `#define VEDIT_TOOL_CVM`
+  - `VEDIT_TOOL_LUA` (macro, line 132) `#define VEDIT_TOOL_LUA`
+  - `VEDIT_TOOL_PY` (macro, line 133) `#define VEDIT_TOOL_PY`
+  - `VEDIT_TOOL_LISP` (macro, line 134) `#define VEDIT_TOOL_LISP`
+  - `VEDIT_DIR_ASM` (macro, line 135) `#define VEDIT_DIR_ASM`
+  - `VEDIT_DIR_BIN` (macro, line 136) `#define VEDIT_DIR_BIN`
+  - `VEDIT_DIR_CVM` (macro, line 137) `#define VEDIT_DIR_CVM`
+  - `VEDIT_BUILD_LOG` (macro, line 138) `#define VEDIT_BUILD_LOG`
+  - `VEDIT_LINK_ELF` (macro, line 139) `#define VEDIT_LINK_ELF`
+  - `VEDIT_LINK_CVM` (macro, line 140) `#define VEDIT_LINK_CVM`
+  - `VEDIT_STATUS_MAX` (macro, line 141) `#define VEDIT_STATUS_MAX`
+  - `VEDIT_BASE_MAX` (macro, line 142) `#define VEDIT_BASE_MAX`
+  - `VEDIT_PATH_MAX` (macro, line 143) `#define VEDIT_PATH_MAX`
+  - `VEDIT_LOG_TAIL` (macro, line 144) `#define VEDIT_LOG_TAIL`
+  - `VEDIT_LANG_TEXT` (macro, line 147) `#define VEDIT_LANG_TEXT`
+  - `VEDIT_LANG_C` (macro, line 148) `#define VEDIT_LANG_C`
+  - `VEDIT_LANG_PY` (macro, line 149) `#define VEDIT_LANG_PY`
+  - `VEDIT_LANG_LUA` (macro, line 150) `#define VEDIT_LANG_LUA`
+  - `VEDIT_LANG_ASM` (macro, line 151) `#define VEDIT_LANG_ASM`
+  - `VEDIT_LANG_LISP` (macro, line 152) `#define VEDIT_LANG_LISP`
+  - `VEDIT_COL_DEFAULT` (macro, line 155) `#define VEDIT_COL_DEFAULT`
+  - `VEDIT_COL_KEYWORD` (macro, line 156) `#define VEDIT_COL_KEYWORD`
+  - `VEDIT_COL_STRING` (macro, line 157) `#define VEDIT_COL_STRING`
+  - `VEDIT_COL_COMMENT` (macro, line 158) `#define VEDIT_COL_COMMENT`
+  - `VEDIT_COL_NUMBER` (macro, line 159) `#define VEDIT_COL_NUMBER`
+  - `VEDIT_COL_PREPROC` (macro, line 160) `#define VEDIT_COL_PREPROC`
+  - `VEDIT_ST_BLOCK` (macro, line 163) `#define VEDIT_ST_BLOCK`
+  - `VEDIT_ST_PY3S` (macro, line 164) `#define VEDIT_ST_PY3S`
+  - `VEDIT_ST_PY3D` (macro, line 165) `#define VEDIT_ST_PY3D`
+  - `VEDIT_ST_LUABLK` (macro, line 166) `#define VEDIT_ST_LUABLK`
+  - `VEDIT_ST_LUASTR` (macro, line 167) `#define VEDIT_ST_LUASTR`
+  - `VEDIT_KEY_UP` (macro, line 170) `#define VEDIT_KEY_UP`
+  - `VEDIT_KEY_DOWN` (macro, line 171) `#define VEDIT_KEY_DOWN`
+  - `VEDIT_KEY_LEFT` (macro, line 172) `#define VEDIT_KEY_LEFT`
+  - `VEDIT_KEY_RIGHT` (macro, line 173) `#define VEDIT_KEY_RIGHT`
+  - `VEDIT_KEY_HOME` (macro, line 174) `#define VEDIT_KEY_HOME`
+  - `VEDIT_KEY_END` (macro, line 175) `#define VEDIT_KEY_END`
+  - `VEDIT_KEY_PGUP` (macro, line 176) `#define VEDIT_KEY_PGUP`
+  - `VEDIT_KEY_PGDN` (macro, line 177) `#define VEDIT_KEY_PGDN`
+  - `VEDIT_KEY_DEL` (macro, line 178) `#define VEDIT_KEY_DEL`
+  - `VEDIT_KEY_ESC` (macro, line 179) `#define VEDIT_KEY_ESC`
+  - `VEDIT_NBUF` (macro, line 250) `#define VEDIT_NBUF`
+  - `VEDIT_KILL_N` (macro, line 251) `#define VEDIT_KILL_N`
+  - `VEDIT_KILL_MAX` (macro, line 252) `#define VEDIT_KILL_MAX`
+  - `VEDIT_MACRO_MAX` (macro, line 253) `#define VEDIT_MACRO_MAX`
+  - `VEDIT_HIST_N` (macro, line 254) `#define VEDIT_HIST_N`
+  - `VEDIT_CMD_MAX` (macro, line 255) `#define VEDIT_CMD_MAX`
+  - `VEDIT_MAGIC_MAX` (macro, line 256) `#define VEDIT_MAGIC_MAX`
+  - `VEDIT_KEY_META` (macro, line 257) `#define VEDIT_KEY_META(c)`
+  - `VEDIT_KEY_ARG` (macro, line 258) `#define VEDIT_KEY_ARG`
+  - `VEDIT_KEY_MARK` (macro, line 259) `#define VEDIT_KEY_MARK`
+  - `VEDIT_KEY_KILL_LINE` (macro, line 260) `#define VEDIT_KEY_KILL_LINE`
+  - `VEDIT_KEY_YANK` (macro, line 261) `#define VEDIT_KEY_YANK`
+  - `VEDIT_KEY_TRANSPOSE` (macro, line 262) `#define VEDIT_KEY_TRANSPOSE`
+  - `VEDIT_KEY_FENCE` (macro, line 263) `#define VEDIT_KEY_FENCE`
+  - `VEDIT_KEY_BOL` (macro, line 264) `#define VEDIT_KEY_BOL`
+  - `VEDIT_KEY_EOL` (macro, line 265) `#define VEDIT_KEY_EOL`
+  - `vedit_pool` (macro, line 292) `#define vedit_pool`
+  - `vedit_used` (macro, line 293) `#define vedit_used`
+  - `vedit_count` (macro, line 294) `#define vedit_count`
+  - `vedit_cx` (macro, line 295) `#define vedit_cx`
+  - `vedit_cy` (macro, line 296) `#define vedit_cy`
+  - `vedit_top` (macro, line 297) `#define vedit_top`
+  - `vedit_hoff` (macro, line 298) `#define vedit_hoff`
+  - `vedit_dirty` (macro, line 299) `#define vedit_dirty`
+  - `vedit_trunc` (macro, line 300) `#define vedit_trunc`
+  - `vedit_lang` (macro, line 301) `#define vedit_lang`
+  - `vedit_fname` (macro, line 302) `#define vedit_fname`
+  - `vedit_msg` (macro, line 303) `#define vedit_msg`
+  - `VEDIT_PROMPT_FIND` (macro, line 312) `#define VEDIT_PROMPT_FIND`
+  - `VEDIT_PROMPT_GOTO` (macro, line 313) `#define VEDIT_PROMPT_GOTO`
+  - `VEDIT_PROMPT_NAME` (macro, line 314) `#define VEDIT_PROMPT_NAME`
+  - `VEDIT_PROMPT_LINK` (macro, line 315) `#define VEDIT_PROMPT_LINK`
+  - `VEDIT_PROMPT_CMD` (macro, line 316) `#define VEDIT_PROMPT_CMD`
+  - `VEDIT_PROMPT_ISEARCH_F` (macro, line 317) `#define VEDIT_PROMPT_ISEARCH_F`
+  - `VEDIT_PROMPT_ISEARCH_R` (macro, line 318) `#define VEDIT_PROMPT_ISEARCH_R`
+  - `VEDIT_PROMPT_REP_OLD` (macro, line 319) `#define VEDIT_PROMPT_REP_OLD`
+  - `VEDIT_PROMPT_REP_NEW` (macro, line 320) `#define VEDIT_PROMPT_REP_NEW`
+  - `VEDIT_PROMPT_QREP` (macro, line 321) `#define VEDIT_PROMPT_QREP`
+  - `VEDIT_PROMPT_SHELLCMD` (macro, line 322) `#define VEDIT_PROMPT_SHELLCMD`
+  - `VEDIT_PROMPT_FILTER` (macro, line 323) `#define VEDIT_PROMPT_FILTER`
+  - `VEDIT_PROMPT_SELECT` (macro, line 324) `#define VEDIT_PROMPT_SELECT`
+  - `VEDIT_PROMPT_GREP` (macro, line 325) `#define VEDIT_PROMPT_GREP`
+  - `VEDIT_PROMPT_BINDKEY` (macro, line 326) `#define VEDIT_PROMPT_BINDKEY`
+  - `VEDIT_PROMPT_BINDCMD` (macro, line 327) `#define VEDIT_PROMPT_BINDCMD`
+  - `VEDIT_FILL_COL` (macro, line 1611) `#define VEDIT_FILL_COL`
+  - `VEDIT_TMP_OUT` (macro, line 3257) `#define VEDIT_TMP_OUT`
+  - `VEDIT_TMP_IN` (macro, line 3258) `#define VEDIT_TMP_IN`
+  - `VEDIT_TMP_F` (macro, line 3259) `#define VEDIT_TMP_F`
+  - `VEDIT_SH_ARGS` (macro, line 3260) `#define VEDIT_SH_ARGS`
+  - `VEDIT_SH_LINE` (macro, line 3261) `#define VEDIT_SH_LINE`
+  - `VEDIT_CLIP_MAX` (macro, line 3262) `#define VEDIT_CLIP_MAX`
+- Depends on: `headers/leakcheck.h`, `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+
+## tests/stubs/kernel.h
+- Doc: Docstring: Host-test stand-in for headers/kernel.h (tests/stubs first on
+- Layer: testing
+- Language: h
+- Symbols:
+  - `irqflags_t` (type_alias, line 77) `typedef unsigned long irqflags_t;`
+  - `observe` (function, line 8) `* the tests must observe (fed scancodes, queued bytes, registered devices)
+ * is recorded in vari...`
+  - `__attribute__` (function, line 30) `static __attribute__((unused)) void kfree(void *p)`
+  - `__attribute__` (function, line 34) `static __attribute__((unused)) void *kmalloc_aligned(unsigned long size, unsigned long align)`
+  - `__attribute__` (function, line 51) `static __attribute__((unused)) int kprintf(const char *fmt, ...)`
+  - `__attribute__` (function, line 60) `static __attribute__((unused)) int kmm_make_uncached(unsigned long phys, unsigned long len)`
+  - `__attribute__` (function, line 66) `static __attribute__((unused)) unsigned long kmm_map_device(unsigned long phys,
+                 ...`
+  - `__attribute__` (function, line 74) `static __attribute__((unused)) unsigned long ktime_ms(void)`
+  - `__attribute__` (function, line 80) `static __attribute__((unused)) irqflags_t spin_save_irq(void)`
+  - `__attribute__` (function, line 84) `static __attribute__((unused)) void spin_restore_irq(irqflags_t flags)`
+  - `stub_ms_now` (variable, line 72) `extern unsigned long stub_ms_now;`
+  - `TEST_STUB_KERNEL_H` (macro, line 14) `#define TEST_STUB_KERNEL_H`
+  - `PCI_MMIO_SIZE` (macro, line 22) `#define PCI_MMIO_SIZE`
+  - `kmemset` (macro, line 48) `#define kmemset`
+  - `kmemcpy` (macro, line 49) `#define kmemcpy`
+- Depends on: `kernel/string.c`
+

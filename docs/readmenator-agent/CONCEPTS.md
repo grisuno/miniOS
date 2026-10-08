@@ -1,0 +1,120 @@
+# Concepts
+
+Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
+
+- `progs` | files=297 | mentions=312 | `headers/vga_fb.h`, `headers/vga_fx.h`, `progs/asm/aes.s`, `progs/asm/cp.s`, `progs/asm/fib.s`, `progs/asm/freedom.s`, `progs/asm/http.s`, `progs/asm/json.s`, `progs/asm/ldhello.s`, `progs/asm/lz4.s`
+- `free` | files=226 | mentions=499 | `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/minifs.c`, `fs/pcache.c`, `fs/zip.c`, `headers/arena.h`, `headers/kernel.h`, `headers/leakcheck.h`, `headers/minifs.h`
+- `any` | files=225 | mentions=449 | `arch/x86/boot/stage2.S`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/pcache.c`, `headers/block.h`, `headers/drivers/pci.h`, `headers/drivers/xhci.h`
+- `without` | files=225 | mentions=447 | `arch/x86/ctx_sw.S`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c`, `headers/arena.h`, `headers/drivers/usbblk.h`, `headers/drivers/xhci.h`, `headers/kernel.h`, `headers/kernel/console_in.h`
+- `can` | files=217 | mentions=274 | `arch/x86/boot/stage2.S`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/fat32.c`, `fs/kfile.c`, `fs/pcache.c`, `headers/drivers/usbhid.h`, `headers/kernel.h`, `headers/pcache.h`
+- `program` | files=215 | mentions=435 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `headers/drivers/pci.h`, `headers/kernel.h`, `headers/sched.h`, `headers/shell.h`, `headers/vga_fb.h`, `headers/vma.h`
+- `under` | files=202 | mentions=219 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/pcache.c`, `fs/vfs.c`, `fs/zip.c`, `headers/fat32.h`, `headers/fsimg.h`, `headers/kernel.h`, `headers/pcache.h`
+- `doomgeneric` | files=188 | mentions=211 | `headers/vga_fx.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`
+- `version` | files=186 | mentions=378 | `drivers/nvme.c`, `headers/abi.h`, `headers/drivers/nvme.h`, `headers/drivers/xhci.h`, `headers/httpd.h`, `headers/minifs.h`, `headers/tls.h`, `kernel/abi.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`
+- `see` | files=186 | mentions=194 | `drivers/xhci.c`, `fs/pcache.c`, `headers/arch/x86/hal_io.h`, `headers/ext4.h`, `headers/kernel.h`, `headers/pcache.h`, `headers/sched.h`, `kernel/console_in.c`, `kernel/sched.c`, `kernel/vga_fb.c`
+- `later` | files=183 | mentions=194 | `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/ext4.c`, `fs/kfile.c`, `headers/arch/x86/hal_io.h`, `headers/arena.h`, `headers/drivers/pci.h`, `headers/pipe.h`, `kernel/console_in.c`, `kernel/sched.c`
+- `but` | files=183 | mentions=192 | `drivers/usbhid.c`, `fs/ext4.c`, `headers/net.h`, `kernel/console.c`, `kernel/console_in.c`, `kernel/percpu_rq.c`, `kernel/shell.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`
+- `either` | files=181 | mentions=186 | `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c`, `headers/drivers/pci.h`, `headers/drivers/xhci.h`, `headers/pcache.h`, `kernel/console_in.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`
+- `more` | files=179 | mentions=193 | `drivers/usbblk.c`, `fs/pcache.c`, `headers/drivers/pci.h`, `headers/pcache.h`, `kernel/panic.c`, `kernel/vga_fb.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`
+- `public` | files=176 | mentions=351 | `headers/tls.h`, `headers/vga_fb.h`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`
+- `even` | files=175 | mentions=177 | `headers/ext4.h`, `kernel/syscalls.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`
+- `published` | files=174 | mentions=175 | `kernel/mm/cow.c`, `kernel/rcu.c`, `kernel/syscalls.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`
+- `purpose` | files=174 | mentions=174 | `kernel/mm/paging.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`
+- `software` | files=172 | mentions=499 | `drivers/pcspk.c`, `mcp/minios_mcp.py`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`
+- `terms` | files=172 | mentions=175 | `headers/wm_window.h`, `kernel/vga_fb.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`
+- `gnu` | files=171 | mentions=342 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `general` | files=171 | mentions=341 | `headers/kernel.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`
+- `option` | files=171 | mentions=174 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `foundation` | files=171 | mentions=172 | `headers/vma.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`
+- `hope` | files=171 | mentions=171 | `kernel/shell.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`
+- `implied` | files=171 | mentions=171 | `kernel/shell.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`
+- `modify` | files=171 | mentions=171 | `headers/drivers/pci.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`
+- `license` | files=170 | mentions=510 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `warranty` | files=170 | mentions=340 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `copyright` | files=170 | mentions=322 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `useful` | files=170 | mentions=171 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `details` | files=170 | mentions=170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `distributed` | files=170 | mentions=170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `fitness` | files=170 | mentions=170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `merchantability` | files=170 | mentions=170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `particular` | files=170 | mentions=170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `redistribute` | files=170 | mentions=170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `howard` | files=168 | mentions=168 | `headers/rtc.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`
+- `simon` | files=167 | mentions=167 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `description` | files=157 | mentions=162 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_loop.c`
+- `inc` | files=146 | mentions=147 | `headers/wm_events.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_items.c`, `progs/doomgeneric/d_items.h`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_loop.h`
+- `read` | files=135 | mentions=417 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/nvme.c`, `drivers/rtc.c`, `drivers/sb16.c`
+- `one` | files=132 | mentions=506 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/ext4.c`
+- `kernel` | files=132 | mentions=313 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/sb16.c`, `drivers/xhci.c`, `fs/zip.c`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/arena.h`, `headers/audio.h`, `headers/drivers/kbd.h`
+- `docstring` | files=126 | mentions=986 | `boot/uefi_stub.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c`
+- `file` | files=120 | mentions=566 | `boot/uefi_stub.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/pcache.c`, `fs/ramdisk.c`, `fs/vfs.c`, `fs/zip.c`
+- `mini` | files=120 | mentions=211 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/pcache.c`, `fs/zip.c`, `headers/arch/x86/boot/bootdefs.h`
+- `max` | files=116 | mentions=543 | `boot/uefi_stub.c`, `drivers/nvme.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_net.c`, `drivers/xhci.c`, `fs/kfile.c`, `fs/ramdisk.c`
+- `set` | files=114 | mentions=337 | `arch/x86/boot/stage2.S`, `drivers/block.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/pcspk.c`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/minifs.c`, `headers/arch/x86/boot/bootdefs.h`
+- `only` | files=112 | mentions=220 | `arch/x86/boot/stage2.S`, `arch/x86/ctx_sw.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/virtio_blk.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/fat32.c`
+
+## Verb Edges
+
+- `free` --depends_on--> `progs` (strength 1.00)
+- `free` --depends_on--> `without` (strength 0.99)
+- `progs` --depends_on--> `version` (strength 0.99)
+- `any` --depends_on--> `progs` (strength 0.98)
+- `doomgeneric` --depends_on--> `progs` (strength 0.98)
+- `free` --depends_on--> `program` (strength 0.98)
+- `program` --depends_on--> `progs` (strength 0.98)
+- `progs` --depends_on--> `program` (strength 0.98)
+- `without` --depends_on--> `progs` (strength 0.98)
+- `any` --depends_on--> `free` (strength 0.97)
+- `any` --depends_on--> `without` (strength 0.97)
+- `can` --depends_on--> `progs` (strength 0.97)
+- `free` --depends_on--> `any` (strength 0.97)
+- `free` --depends_on--> `can` (strength 0.97)
+- `free` --depends_on--> `version` (strength 0.97)
+- `program` --depends_on--> `without` (strength 0.97)
+- `progs` --depends_on--> `doomgeneric` (strength 0.97)
+- `under` --depends_on--> `free` (strength 0.97)
+- `under` --depends_on--> `progs` (strength 0.97)
+- `under` --depends_on--> `without` (strength 0.97)
+- `without` --depends_on--> `free` (strength 0.97)
+- `any` --depends_on--> `can` (strength 0.96)
+- `any` --depends_on--> `program` (strength 0.96)
+- `any` --depends_on--> `version` (strength 0.96)
+- `can` --depends_on--> `any` (strength 0.96)
+- `can` --depends_on--> `free` (strength 0.96)
+- `can` --depends_on--> `program` (strength 0.96)
+- `can` --depends_on--> `version` (strength 0.96)
+- `can` --depends_on--> `without` (strength 0.96)
+- `doomgeneric` --depends_on--> `program` (strength 0.96)
+- `doomgeneric` --depends_on--> `version` (strength 0.96)
+- `program` --depends_on--> `free` (strength 0.96)
+- `progs` --depends_on--> `can` (strength 0.96)
+- `progs` --depends_on--> `free` (strength 0.96)
+- `progs` --depends_on--> `without` (strength 0.96)
+- `under` --depends_on--> `program` (strength 0.96)
+- `without` --depends_on--> `any` (strength 0.96)
+- `without` --depends_on--> `can` (strength 0.96)
+- `without` --depends_on--> `program` (strength 0.96)
+- `without` --depends_on--> `version` (strength 0.96)
+- `but` --depends_on--> `progs` (strength 0.95)
+- `free` --depends_on--> `doomgeneric` (strength 0.95)
+- `free` --depends_on--> `see` (strength 0.95)
+- `later` --depends_on--> `progs` (strength 0.95)
+- `more` --depends_on--> `progs` (strength 0.95)
+- `program` --depends_on--> `any` (strength 0.95)
+- `program` --depends_on--> `can` (strength 0.95)
+- `program` --depends_on--> `version` (strength 0.95)
+- `progs` --depends_on--> `any` (strength 0.95)
+- `progs` --depends_on--> `but` (strength 0.95)
+
+## Dialectic
+
+- Thesis: `any` centralizes 225 files; Antithesis: `but` pulls 183 files with 178 shared (Jaccard 0.77); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `can` pulls 217 files with 193 shared (Jaccard 0.78); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `copyright` pulls 170 files with 170 shared (Jaccard 0.76); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `description` pulls 157 files with 157 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `details` pulls 170 files with 170 shared (Jaccard 0.76); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `distributed` pulls 170 files with 170 shared (Jaccard 0.76); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `doomgeneric` pulls 188 files with 170 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `either` pulls 181 files with 178 shared (Jaccard 0.78); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `even` pulls 175 files with 171 shared (Jaccard 0.75); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `any` centralizes 225 files; Antithesis: `fitness` pulls 170 files with 170 shared (Jaccard 0.76); Synthesis: should they merge, split by layer, or keep `bridges` explicit?

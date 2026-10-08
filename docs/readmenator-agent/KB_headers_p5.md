@@ -1,0 +1,405 @@
+# Subsystem: headers (page 5 of 5)
+Previous: [KB_headers_p4.md](KB_headers_p4.md)
+
+## headers/vga_fb.h
+- Doc: Framebuffer geometry.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `mouse_state_t` (struct, line 159)
+  - `fb_bytes_per_pixel` (function, line 30) `int fb_bytes_per_pixel(void);`
+  - `vga_fb_read_rgb` (function, line 34) `unsigned long vga_fb_read_rgb(int x, int y);`
+  - `vga_fb_set_gfx_palette` (function, line 38) `void vga_fb_set_gfx_palette(const unsigned char *pal);`
+  - `vga_fb_boot_config` (function, line 40) `void vga_fb_boot_config(void);`
+  - `SYS_DOOM_FRAME` (function, line 44) `* and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the * desktop at its native resolution, so the...`
+  - `SYS_NK_FRAME` (function, line 63) `* SYS_NK_FRAME (220);`
+  - `vga_fb_blit_nk_window` (function, line 75) `void vga_fb_blit_nk_window(void);`
+  - `vga_fb_blit_nk_rgb_window` (function, line 76) `void vga_fb_blit_nk_rgb_window(void);`
+  - `below` (function, line 99) `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via...`
+  - `vga_fb_init` (function, line 177) `void vga_fb_init(void);`
+  - `vga_fb_clear` (function, line 178) `void vga_fb_clear(void);`
+  - `vga_fb_pixel` (function, line 179) `void vga_fb_pixel(int x, int y, uint8_t color);`
+  - `vga_fb_rect` (function, line 180) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
+  - `vga_fb_pixel_rgb` (function, line 182) `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b);`
+  - `vga_fb_rect_rgb` (function, line 183) `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);`
+  - `vga_fb_char` (function, line 184) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
+  - `vga_fb_str` (function, line 185) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
+  - `vga_fb_putc_term` (function, line 186) `void vga_fb_putc_term(char c);`
+  - `vga_fb_puts_term` (function, line 187) `void vga_fb_puts_term(const char *s);`
+  - `term_clear` (function, line 188) `void term_clear(void);`
+  - `vga_fb_text_cursor` (function, line 189) `void vga_fb_text_cursor(int col);`
+  - `vga_fb_hide_text_cursor` (function, line 190) `void vga_fb_hide_text_cursor(void);`
+  - `fb_read_packed` (function, line 193) `unsigned long fb_read_packed(int x, int y);`
+  - `fb_write_packed` (function, line 194) `void fb_write_packed(int x, int y, unsigned long rgb);`
+  - `vga_fb_draw_desktop` (function, line 195) `void vga_fb_draw_desktop(void);`
+  - `vga_fb_toggle_fullscreen` (function, line 196) `void vga_fb_toggle_fullscreen(void);`
+  - `vga_fb_move_terminal` (function, line 197) `void vga_fb_move_terminal(int dx, int dy);`
+  - `vga_fb_snap_window` (function, line 198) `void vga_fb_snap_window(int zone);`
+  - `vga_fb_resize` (function, line 199) `void vga_fb_resize(int dcols, int drows);`
+  - `vga_fb_reset_default` (function, line 200) `void vga_fb_reset_default(void);`
+  - `vga_fb_toggle_minimize` (function, line 201) `void vga_fb_toggle_minimize(void);`
+  - `vga_fb_is_minimized` (function, line 202) `int vga_fb_is_minimized(void);`
+  - `vga_fb_is_fullscreen` (function, line 203) `int vga_fb_is_fullscreen(void);`
+  - `vga_fb_gfx_set_fullscreen` (function, line 211) `int vga_fb_gfx_set_fullscreen(int on);`
+  - `vga_fb_gfx_set_hidden` (function, line 212) `int vga_fb_gfx_set_hidden(int hide);`
+  - `vga_fb_gfx_view_name` (function, line 213) `const char *vga_fb_gfx_view_name(void);`
+  - `vga_fb_gfx_origin` (function, line 214) `void vga_fb_gfx_origin(int *x, int *y);`
+  - `vga_fb_gfx_map_mouse` (function, line 215) `void vga_fb_gfx_map_mouse(int *x, int *y);`
+  - `fb_write_row_packed` (function, line 217) `void fb_write_row_packed(int x, int y, const unsigned int *src, int n);`
+  - `fb_read_row_packed` (function, line 218) `void fb_read_row_packed(int x, int y, unsigned int *dst, int n);`
+  - `vga_fb_close_active` (function, line 219) `int vga_fb_close_active(void);`
+  - `vga_fb_focus_next` (function, line 223) `void vga_fb_focus_next(void);`
+  - `vga_fb_focus_id` (function, line 224) `int vga_fb_focus_id(int id);`
+  - `vga_fb_focus_get` (function, line 225) `int vga_fb_focus_get(void);`
+  - `vga_fb_focus_event` (function, line 228) `const wm_notify_event_t *vga_fb_focus_event(void);`
+  - `vga_fb_focus_report` (function, line 229) `void vga_fb_focus_report(int before, int source);`
+  - `vga_fb_theme_name` (function, line 230) `int vga_fb_theme_name(char *dst, int cap);`
+  - `vga_fb_ps2_owner` (function, line 236) `int vga_fb_ps2_owner(int pid);`
+  - `vga_fb_nterms_get` (function, line 237) `int vga_fb_nterms_get(void);`
+  - `vga_fb_term_split` (function, line 238) `int vga_fb_term_split(void);`
+  - `vga_fb_term_close_focused` (function, line 239) `int vga_fb_term_close_focused(void);`
+  - `vga_fb_tile_all` (function, line 240) `void vga_fb_tile_all(void);`
+  - `vga_fb_layout_set` (function, line 241) `int vga_fb_layout_set(int mode);`
+  - `vga_fb_layout_cycle` (function, line 242) `void vga_fb_layout_cycle(void);`
+  - `vga_fb_layout_get` (function, line 243) `int vga_fb_layout_get(void);`
+  - `vga_fb_layout_name` (function, line 244) `const char *vga_fb_layout_name(void);`
+  - `vga_fb_list_windows` (function, line 245) `void vga_fb_list_windows(void);`
+  - `wm_close_pending` (function, line 246) `int wm_close_pending(void);`
+  - `wm_clear_close` (function, line 247) `void wm_clear_close(void);`
+  - `wm_gfx_mode_active` (function, line 248) `int wm_gfx_mode_active(void);`
+  - `vga_fb_mouse_tick` (function, line 249) `void vga_fb_mouse_tick(void);`
+  - `vga_fb_mouse_init` (function, line 250) `void vga_fb_mouse_init(void);`
+  - `dock_bounce_counts` (function, line 253) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);`
+  - `dock_click_count` (function, line 254) `void dock_click_count(unsigned long *edges);`
+  - `dock_pending_active` (function, line 255) `int dock_pending_active(void);`
+  - `pixels` (function, line 259) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
+  - `vga_fx_enabled` (function, line 263) `int vga_fx_enabled(void);`
+  - `vga_fx_snap_rect` (function, line 264) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
+  - `vga_fx_restore_rect` (function, line 265) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
+  - `vga_fx_free` (function, line 266) `void vga_fx_free(unsigned int *buf);`
+  - `vga_fx_melt_rect` (function, line 267) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
+  - `vga_fx_melt_from_black` (function, line 269) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+  - `vga_fb_set_gfx_mode` (function, line 280) `void vga_fb_set_gfx_mode(int on);`
+  - `fb_width` (variable, line 23) `extern int fb_width;`
+  - `fb_height` (variable, line 24) `extern int fb_height;`
+  - `fb_pitch` (variable, line 25) `extern int fb_pitch;`
+  - `fb_bpp` (variable, line 26) `extern int fb_bpp;`
+  - `fb_phys_base` (variable, line 27) `extern unsigned long fb_phys_base;`
+  - `gfx_win_title` (variable, line 50) `extern const char *gfx_win_title;`
+  - `gfx_frames_composited` (variable, line 59) `extern unsigned long gfx_frames_composited;`
+  - `nk_win_y` (variable, line 79) `extern int nk_win_x, nk_win_y;`
+  - `term_rows` (variable, line 156) `extern int term_x, term_y, term_cols, term_rows;`
+  - `mouse_state` (variable, line 167) `extern mouse_state_t mouse_state;`
+  - `fx_melts_completed` (variable, line 273) `extern unsigned long fx_melts_completed;`
+  - `vga_fb_active` (variable, line 282) `extern int vga_fb_active;`
+  - `VGA_FB_H` (macro, line 2) `#define VGA_FB_H`
+  - `FB_ADDR` (macro, line 22) `#define FB_ADDR`
+  - `DOOM_W` (macro, line 46) `#define DOOM_W`
+  - `DOOM_H` (macro, line 47) `#define DOOM_H`
+  - `DOOM_BACKBUF_ADDR` (macro, line 48) `#define DOOM_BACKBUF_ADDR`
+  - `GFX_TITLE_DEFAULT` (macro, line 52) `#define GFX_TITLE_DEFAULT`
+  - `NK_W` (macro, line 67) `#define NK_W`
+  - `NK_H` (macro, line 68) `#define NK_H`
+  - `NK_BACKBUF_ADDR` (macro, line 69) `#define NK_BACKBUF_ADDR`
+  - `NK_RGB_ADDR` (macro, line 73) `#define NK_RGB_ADDR`
+  - `NK_RGB_BYTES` (macro, line 74) `#define NK_RGB_BYTES`
+  - `COL_BLACK` (macro, line 82) `#define COL_BLACK`
+  - `COL_BG` (macro, line 83) `#define COL_BG`
+  - `COL_TASKBAR` (macro, line 84) `#define COL_TASKBAR`
+  - `COL_TASKBAR_TXT` (macro, line 85) `#define COL_TASKBAR_TXT`
+  - `COL_TITLEBAR` (macro, line 86) `#define COL_TITLEBAR`
+  - `COL_TITLE_TXT` (macro, line 87) `#define COL_TITLE_TXT`
+  - `COL_TERMINAL` (macro, line 88) `#define COL_TERMINAL`
+  - `COL_TERM_TXT` (macro, line 89) `#define COL_TERM_TXT`
+  - `COL_TERM_CUR` (macro, line 90) `#define COL_TERM_CUR`
+  - `COL_BORDER` (macro, line 91) `#define COL_BORDER`
+  - `COL_WHITE` (macro, line 92) `#define COL_WHITE`
+  - `COL_SHADOW` (macro, line 93) `#define COL_SHADOW`
+  - `COL_HIGHLIGHT` (macro, line 94) `#define COL_HIGHLIGHT`
+  - `COL_SCROLLBAR` (macro, line 95) `#define COL_SCROLLBAR`
+  - `COL_SCROLL_THUMB` (macro, line 96) `#define COL_SCROLL_THUMB`
+  - `WALLPAPER_PATH` (macro, line 103) `#define WALLPAPER_PATH`
+  - `WALL_PAL_BASE` (macro, line 104) `#define WALL_PAL_BASE`
+  - `WALL_PAL_SIZE` (macro, line 105) `#define WALL_PAL_SIZE`
+  - `FONT_W` (macro, line 107) `#define FONT_W`
+  - `FONT_H` (macro, line 108) `#define FONT_H`
+  - `TERM_MAX_COLS` (macro, line 113) `#define TERM_MAX_COLS`
+  - `TERM_MAX_ROWS` (macro, line 114) `#define TERM_MAX_ROWS`
+  - `TASKBAR_H` (macro, line 117) `#define TASKBAR_H`
+  - `TASKBAR_PAD` (macro, line 118) `#define TASKBAR_PAD`
+  - `TASKBAR_CLOCK_CH` (macro, line 119) `#define TASKBAR_CLOCK_CH`
+  - `TASKBAR_VOL_CH` (macro, line 120) `#define TASKBAR_VOL_CH`
+  - `TASKBAR_VOL_STEP` (macro, line 121) `#define TASKBAR_VOL_STEP`
+  - `TASKBAR_ICON_W` (macro, line 122) `#define TASKBAR_ICON_W`
+  - `TASKBAR_BTN_W` (macro, line 123) `#define TASKBAR_BTN_W`
+  - `TASKBAR_KBD_CH` (macro, line 125) `#define TASKBAR_KBD_CH`
+  - `TASKBAR_KBD_W` (macro, line 126) `#define TASKBAR_KBD_W`
+  - `TASKBAR_THEME_CH` (macro, line 128) `#define TASKBAR_THEME_CH`
+  - `TASKBAR_THEME_W` (macro, line 129) `#define TASKBAR_THEME_W`
+  - `TILING_LEFT` (macro, line 132) `#define TILING_LEFT`
+  - `TILING_RIGHT` (macro, line 133) `#define TILING_RIGHT`
+  - `TILING_TOP` (macro, line 134) `#define TILING_TOP`
+  - `TILING_BOTTOM` (macro, line 135) `#define TILING_BOTTOM`
+  - `TILING_TOP_LEFT` (macro, line 136) `#define TILING_TOP_LEFT`
+  - `TILING_TOP_RIGHT` (macro, line 137) `#define TILING_TOP_RIGHT`
+  - `TILING_BOTTOM_LEFT` (macro, line 138) `#define TILING_BOTTOM_LEFT`
+  - `TILING_BOTTOM_RIGHT` (macro, line 139) `#define TILING_BOTTOM_RIGHT`
+  - `SCROLLBAR_W` (macro, line 142) `#define SCROLLBAR_W`
+  - `SCROLLBAR_PAD` (macro, line 143) `#define SCROLLBAR_PAD`
+  - `WM_BTN_W` (macro, line 148) `#define WM_BTN_W`
+  - `WM_BTN_H` (macro, line 149) `#define WM_BTN_H`
+  - `WM_BTN_PAD` (macro, line 150) `#define WM_BTN_PAD`
+  - `WM_BTN_MIN` (macro, line 151) `#define WM_BTN_MIN`
+  - `WM_BTN_MAX` (macro, line 152) `#define WM_BTN_MAX`
+  - `WM_BTN_CLOSE` (macro, line 153) `#define WM_BTN_CLOSE`
+  - `SB_MAX_LINES` (macro, line 173) `#define SB_MAX_LINES`
+  - `SB_LINE_MAX` (macro, line 174) `#define SB_LINE_MAX`
+  - `WM_FOCUS_GFX` (macro, line 222) `#define WM_FOCUS_GFX`
+- Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
+- Imported by: `drivers/kbd.c`, `drivers/usbhid.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/panic.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
+
+## headers/vga_fx.h
+- Doc: Docstring: DOOM-melt desktop effect contract for MiniOS.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `vga_fx_config_t` (struct, line 16)
+  - `vga_fx_rand` (function, line 30) `static inline unsigned long vga_fx_rand(unsigned long *s)`
+  - `vga_fx_init_cols` (function, line 47) `static inline int vga_fx_init_cols(const vga_fx_config_t *cfg, int *cols, int w)`
+  - `vga_fx_advance` (function, line 71) `static inline int vga_fx_advance(const vga_fx_config_t *cfg, int *cols, int w, int h)`
+  - `vga_fx_front` (function, line 97) `static inline int vga_fx_front(int col_y, int h)`
+  - `vga_fx_clamp_rect` (function, line 109) `static inline int vga_fx_clamp_rect(int *x, int *y, int *w, int *h, int fb_w, int fb_h)`
+  - `VGA_FX_H` (macro, line 13) `#define VGA_FX_H`
+  - `VGA_FX_CONFIG_DEFAULT` (macro, line 24) `#define VGA_FX_CONFIG_DEFAULT`
+  - `VGA_FX_COLS_MAX` (macro, line 27) `#define VGA_FX_COLS_MAX`
+- Imported by: `kernel/vga_fb.c`, `kernel/vga_fx.c`, `tests/test_fx.c`
+
+## headers/vma.h
+- Doc: vma_ctx_t: Per-process VMA context (multitask foundation): every non-CLONE_VM process owns its...
+- Layer: utility
+- Language: h
+- Symbols:
+  - `vma_node` (struct, line 21)
+  - `vma_ctx_t` (struct, line 44)
+  - `vma_view_t` (struct, line 74)
+  - `base` (type_alias, line 20) `typedef struct vma_node { unsigned long base;`
+  - `vma_tree_init` (function, line 62) `void vma_tree_init(void);`
+  - `vma_tree_insert` (function, line 63) `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);`
+  - `vma_tree_find` (function, line 64) `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);`
+  - `vma_tree_find_containing` (function, line 65) `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);`
+  - `vma_tree_delete` (function, line 66) `int vma_tree_delete(vma_node_t **root, unsigned long base);`
+  - `vma_ctx_init` (function, line 67) `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);`
+  - `vma_ctx_bind` (function, line 68) `void vma_ctx_bind(vma_ctx_t *c);`
+  - `vma_ctx_save` (function, line 69) `void vma_ctx_save(vma_ctx_t *c);`
+  - `vma_view_save` (function, line 83) `void vma_view_save(vma_view_t *v);`
+  - `vma_view_load` (function, line 84) `void vma_view_load(const vma_view_t *v);`
+  - `vma_ctx_alloc` (function, line 87) `vma_ctx_t *vma_ctx_alloc(void);`
+  - `vma_ctx_free` (function, line 88) `void vma_ctx_free(vma_ctx_t *c);`
+  - `VMA_NIL` (variable, line 54) `extern vma_node_t *VMA_NIL;`
+  - `vma_live_root` (variable, line 55) `extern vma_node_t *vma_live_root;`
+  - `vma_free_root` (variable, line 56) `extern vma_node_t *vma_free_root;`
+  - `vma_pool` (variable, line 57) `extern vma_node_t vma_pool[VMA_MAX];`
+  - `vma_pool_n` (variable, line 58) `extern int vma_pool_n;`
+  - `vma_pool_ptr` (variable, line 59) `extern vma_node_t *vma_pool_ptr;`
+  - `vma_legacy` (variable, line 60) `extern vma_ctx_t vma_legacy;`
+  - `VMA_H` (macro, line 2) `#define VMA_H`
+  - `VMA_MAX` (macro, line 31) `#define VMA_MAX`
+- Imported by: `headers/kernel.h`, `headers/sched.h`, `headers/spawn.h`, `kernel/spawn.c`, `tests/test_fault.c`, `tests/test_vma.c`, `tests/test_vma_bench.c`, `vma.c`
+
+## headers/wm_events.h
+- Doc: Docstring: Window event contract for the MiniOS desktop.
+- Layer: infrastructure
+- Language: h
+- Symbols:
+  - `wm_mouse_t` (struct, line 25)
+  - `wm_event_t` (struct, line 34)
+  - `wm_event_config_t` (struct, line 43)
+  - `wm_combo_t` (struct, line 158)
+  - `wm_is_click_edge` (function, line 52) `static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons)`
+  - `wm_is_release_edge` (function, line 59) `static inline int wm_is_release_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_but...`
+  - `wm_translate_event` (function, line 66) `static inline wm_event_t wm_translate_event(const wm_event_config_t *cfg, const wm_mouse_t *prev,...`
+  - `wm_event_suppresses_drag` (function, line 104) `static inline int wm_event_suppresses_drag(const wm_event_t *evt)`
+  - `wm_combo_lookup` (function, line 201) `static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zon...`
+  - `wm_combo_lookup_mods` (function, line 238) `static inline int wm_combo_lookup_mods(const modifier_state_t *st, int e0, int sc, int path, int ...`
+  - `WM_EVENTS_H` (macro, line 11) `#define WM_EVENTS_H`
+  - `WM_EVENT_CONFIG_DEFAULT` (macro, line 49) `#define WM_EVENT_CONFIG_DEFAULT`
+  - `WM_SC_TAB` (macro, line 110) `#define WM_SC_TAB`
+  - `WM_SC_ENTER` (macro, line 111) `#define WM_SC_ENTER`
+  - `WM_SC_MINUS` (macro, line 112) `#define WM_SC_MINUS`
+  - `WM_SC_EQUAL` (macro, line 113) `#define WM_SC_EQUAL`
+  - `WM_SC_ZERO` (macro, line 114) `#define WM_SC_ZERO`
+  - `WM_SC_Q` (macro, line 115) `#define WM_SC_Q`
+  - `WM_SC_LBRACKET` (macro, line 116) `#define WM_SC_LBRACKET`
+  - `WM_SC_RBRACKET` (macro, line 117) `#define WM_SC_RBRACKET`
+  - `WM_SC_M` (macro, line 118) `#define WM_SC_M`
+  - `WM_SC_X` (macro, line 119) `#define WM_SC_X`
+  - `WM_SC_UP` (macro, line 120) `#define WM_SC_UP`
+  - `WM_SC_DOWN` (macro, line 121) `#define WM_SC_DOWN`
+  - `WM_SC_LEFT` (macro, line 122) `#define WM_SC_LEFT`
+  - `WM_SC_RIGHT` (macro, line 123) `#define WM_SC_RIGHT`
+  - `WM_SC_HOME` (macro, line 124) `#define WM_SC_HOME`
+  - `WM_SC_END` (macro, line 125) `#define WM_SC_END`
+  - `WM_SNAP_LEFT` (macro, line 128) `#define WM_SNAP_LEFT`
+  - `WM_SNAP_RIGHT` (macro, line 129) `#define WM_SNAP_RIGHT`
+  - `WM_SNAP_TOP` (macro, line 130) `#define WM_SNAP_TOP`
+  - `WM_SNAP_BOTTOM` (macro, line 131) `#define WM_SNAP_BOTTOM`
+  - `WM_SNAP_TOP_LEFT` (macro, line 132) `#define WM_SNAP_TOP_LEFT`
+  - `WM_SNAP_TOP_RIGHT` (macro, line 133) `#define WM_SNAP_TOP_RIGHT`
+  - `WM_SNAP_BOTTOM_LEFT` (macro, line 134) `#define WM_SNAP_BOTTOM_LEFT`
+  - `WM_SNAP_BOTTOM_RIGHT` (macro, line 135) `#define WM_SNAP_BOTTOM_RIGHT`
+  - `WM_PATH_COOKED` (macro, line 138) `#define WM_PATH_COOKED`
+  - `WM_PATH_RAW` (macro, line 139) `#define WM_PATH_RAW`
+  - `WM_COMBOS_N` (macro, line 198) `#define WM_COMBOS_N`
+- Depends on: `headers/drivers/modifiers.h`
+- Imported by: `drivers/kbd.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_focus.h
+- Doc: Docstring: Focus manager contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_focus_state_t` (struct, line 15)
+  - `wm_focus_selectable` (function, line 23) `static inline int wm_focus_selectable(const wm_focus_state_t *st, int id)`
+  - `wm_focus_next` (function, line 38) `static inline int wm_focus_next(const wm_focus_state_t *st)`
+  - `wm_focus_set` (function, line 55) `static inline int wm_focus_set(const wm_focus_state_t *st, int id)`
+  - `WM_FOCUS_H` (macro, line 10) `#define WM_FOCUS_H`
+- Depends on: `headers/wm_window.h`
+- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_geom.h
+- Doc: Docstring: Window geometry contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_geom_config_t` (struct, line 14)
+  - `wm_rect_t` (struct, line 25)
+  - `wm_rect_valid` (function, line 33) `static inline int wm_rect_valid(const wm_rect_t *r)`
+  - `wm_rect_contains` (function, line 39) `static inline int wm_rect_contains(const wm_rect_t *r, int px, int py)`
+  - `wm_title_bar_rect` (function, line 48) `static inline wm_rect_t wm_title_bar_rect(const wm_geom_config_t *cfg, int px, int py, int w)`
+  - `wm_content_rect` (function, line 59) `static inline wm_rect_t wm_content_rect(const wm_geom_config_t *cfg, int px, int py, int w, int h)`
+  - `wm_scrollbar_rect` (function, line 71) `static inline wm_rect_t wm_scrollbar_rect(const wm_geom_config_t *cfg, int px, int py, int conten...`
+  - `wm_hit_title_bar` (function, line 84) `static inline int wm_hit_title_bar(const wm_geom_config_t *cfg, int wx, int wy, int w, int px, in...`
+  - `wm_clamp_point` (function, line 91) `static inline void wm_clamp_point(int *px, int *py, int fb_w, int fb_h)`
+  - `WM_GEOM_H` (macro, line 11) `#define WM_GEOM_H`
+  - `WM_GEOM_CONFIG_DEFAULT` (macro, line 22) `#define WM_GEOM_CONFIG_DEFAULT`
+- Imported by: `headers/wm_window.h`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_gfxview.h
+- Doc: Docstring: Graphics-window view contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_gfxview_config_t` (struct, line 31)
+  - `wm_gfxview_rect_t` (struct, line 47)
+  - `wm_gfxview_t` (struct, line 56)
+  - `wm_gfxview_mode_name` (function, line 64) `static inline const char *wm_gfxview_mode_name(int mode)`
+  - `wm_gfxview_dims_ok` (function, line 79) `static inline int wm_gfxview_dims_ok(int w, int h)`
+  - `Downscale` (function, line 88) `* Downscale (fit below 1x) always takes the exact fit. Returns 1 on
+ * success, 0 on degenerate i...`
+  - `wm_gfxview_clamp` (function, line 134) `static inline void wm_gfxview_clamp(wm_gfxview_rect_t *r, int fb_w, int fb_h)`
+  - `wm_gfxview_place_content` (function, line 160) `static inline int wm_gfxview_place_content(const wm_gfxview_config_t *cfg, int sw, int sh,
+      ...`
+  - `wm_gfxview_map_point` (function, line 255) `static inline int wm_gfxview_map_point(const wm_gfxview_t *v, int sw, int sh,
+                   ...`
+  - `wm_gfxview_ease` (function, line 291) `static inline long wm_gfxview_ease(int t, int n, long den)`
+  - `wm_gfxview_lerp_rect` (function, line 313) `static inline int wm_gfxview_lerp_rect(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b,
+  ...`
+  - `wm_gfxview_rect_same` (function, line 336) `static inline int wm_gfxview_rect_same(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b)`
+  - `WM_GFXVIEW_H` (macro, line 21) `#define WM_GFXVIEW_H`
+  - `WM_GFXVIEW_CONFIG_DEFAULT` (macro, line 41) `#define WM_GFXVIEW_CONFIG_DEFAULT`
+  - `WM_GFXVIEW_DIM_MAX` (macro, line 44) `#define WM_GFXVIEW_DIM_MAX`
+- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_layout.h
+- Doc: Docstring: Unified layout contract for the MiniOS desktop.
+- Layer: presentation
+- Language: h
+- Symbols:
+  - `wm_layout_window_t` (struct, line 27)
+  - `wm_layout_config_t` (struct, line 36)
+  - `wm_layout_cell_t` (struct, line 48)
+  - `wm_layout_mode_name` (function, line 57) `static inline const char *wm_layout_mode_name(int mode)`
+  - `wm_layout_mode_valid` (function, line 76) `static inline int wm_layout_mode_valid(int mode)`
+  - `wm_layout_clamp_cell` (function, line 82) `static inline int wm_layout_clamp_cell(wm_layout_cell_t *cell, int max_cols, int max_rows)`
+  - `wm_layout_fullscreen_cell` (function, line 118) `static inline int wm_layout_fullscreen_cell(int max_cols, int max_rows, wm_layout_cell_t *out)`
+  - `wm_layout_compute_tile` (function, line 135) `static inline int wm_layout_compute_tile(const wm_layout_window_t *wins, int nwin, int max_cols, ...`
+  - `wm_layout_compute_bsp` (function, line 182) `static inline int wm_layout_compute_bsp(const wm_layout_window_t *wins, int nwin, int max_cols, i...`
+  - `wm_layout_compute_cascade` (function, line 250) `static inline int wm_layout_compute_cascade(const wm_layout_config_t *cfg, const wm_layout_window...`
+  - `wm_layout_compute_fibonacci` (function, line 285) `static inline int wm_layout_compute_fibonacci(const wm_layout_config_t *cfg, const wm_layout_wind...`
+  - `wm_layout_compute` (function, line 361) `static inline int wm_layout_compute(const wm_layout_config_t *cfg, const wm_layout_window_t *wins...`
+  - `wm_layout_same` (function, line 443) `static inline int wm_layout_same(const wm_layout_cell_t *a, const wm_layout_cell_t *b, int n)`
+  - `WM_LAYOUT_H` (macro, line 12) `#define WM_LAYOUT_H`
+  - `WM_LAYOUT_MODE_COUNT` (macro, line 24) `#define WM_LAYOUT_MODE_COUNT`
+  - `WM_LAYOUT_CONFIG_DEFAULT` (macro, line 45) `#define WM_LAYOUT_CONFIG_DEFAULT`
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_notify.h
+- Doc: Docstring: Focus event bus for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_notify_event_t` (struct, line 30)
+  - `wm_notify_bus_t` (struct, line 43)
+  - `wm_notify_reset` (function, line 51) `static inline void wm_notify_reset(wm_notify_bus_t *bus)`
+  - `wm_notify_subscribe` (function, line 66) `static inline int wm_notify_subscribe(wm_notify_bus_t *bus,
+                                     ...`
+  - `wm_notify_emit` (function, line 76) `static inline void wm_notify_emit(wm_notify_bus_t *bus,
+                                  const w...`
+  - `wm_notify_last` (function, line 90) `static inline const wm_notify_event_t *wm_notify_last(
+    const wm_notify_bus_t *bus)`
+  - `wm_notify_src_name` (function, line 98) `static inline const char *wm_notify_src_name(int source)`
+  - `WM_NOTIFY_H` (macro, line 2) `#define WM_NOTIFY_H`
+  - `WM_NOTIFY_MAX_HANDLERS` (macro, line 41) `#define WM_NOTIFY_MAX_HANDLERS`
+- Imported by: `headers/vga_fb.h`, `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_notify.c`
+
+## headers/wm_render.h
+- Doc: Docstring: Render pipeline contract for the MiniOS desktop.
+- Layer: presentation
+- Language: h
+- Symbols:
+  - `wm_render_item_t` (struct, line 25)
+  - `wm_render_config_t` (struct, line 31)
+  - `wm_build_render_plan` (function, line 39) `static inline int wm_build_render_plan(const wm_render_config_t *cfg, const int *present, int nte...`
+  - `WM_RENDER_H` (macro, line 11) `#define WM_RENDER_H`
+  - `WM_RENDER_CONFIG_DEFAULT` (macro, line 36) `#define WM_RENDER_CONFIG_DEFAULT`
+- Depends on: `headers/wm_window.h`
+- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_tiling.h
+- Doc: Docstring: Tiling layout contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_tile_cell_t` (struct, line 13)
+  - `wm_tile_layout` (function, line 22) `static inline int wm_tile_layout(const int *present, int nterms, int gfx_active, int max_cols, in...`
+  - `WM_TILING_H` (macro, line 10) `#define WM_TILING_H`
+- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_window.h
+- Doc: Docstring: Unified window contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_window_t` (struct, line 29)
+  - `wm_window_active` (function, line 41) `static inline int wm_window_active(const wm_window_t *w)`
+  - `wm_window_rect` (function, line 47) `static inline wm_rect_t wm_window_rect(const wm_window_t *w)`
+  - `wm_window_contains` (function, line 58) `static inline int wm_window_contains(const wm_window_t *w, int px, int py)`
+  - `wm_window_title_hits` (function, line 68) `static inline int wm_window_title_hits(const wm_geom_config_t *cfg, const wm_window_t *w, int px,...`
+  - `wm_focus_next_id` (function, line 77) `static inline int wm_focus_next_id(const int *present, int nterms, int gfx_active, int focus)`
+  - `wm_paint_order` (function, line 114) `static inline int wm_paint_order(const int *present, int nterms, int focus, int *order, int cap)`
+  - `WM_WINDOW_H` (macro, line 11) `#define WM_WINDOW_H`
+  - `WM_WINDOW_GFX_ID` (macro, line 23) `#define WM_WINDOW_GFX_ID`
+  - `WM_WINDOW_MAX_TERMS` (macro, line 26) `#define WM_WINDOW_MAX_TERMS`
+- Depends on: `headers/wm_geom.h`
+- Imported by: `headers/wm_focus.h`, `headers/wm_render.h`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/zip.h
+- Doc: — MiniOS integration API for the miniz zip library.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `miniz` (function, line 6) `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the...`
+  - `shell_cmd_zip` (function, line 15) `void shell_cmd_zip(int argc, char **argv);`
+  - `ZIP_H` (macro, line 2) `#define ZIP_H`
+- Imported by: `kernel/shell.c`, `kernel/syscalls.c`
+

@@ -1,0 +1,288 @@
+# Architecture (page 4 of 4)
+Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
+
+## External Imports
+
+- `drivers/block.c` -> kernel.h
+- `drivers/ide.c` -> kernel.h
+- `drivers/kbd.c` -> kernel.h
+- `drivers/mouse.c` -> kernel.h
+- `drivers/nvme.c` -> kernel.h
+- `drivers/pcm2.c` -> kernel.h
+- `drivers/pcspk.c` -> kernel.h
+- `drivers/rtc.c` -> kernel.h
+- `drivers/sb16.c` -> kernel.h
+- `drivers/usbblk.c` -> kernel.h
+- `drivers/usbhid.c` -> kernel.h
+- `drivers/virtio_blk.c` -> kernel.h
+- `drivers/virtio_net.c` -> kernel.h
+- `drivers/xhci.c` -> kernel.h
+- `fs/ext4.c` -> kernel.h
+- `fs/fat32.c` -> kernel.h
+- `fs/fsimg.c` -> kernel.h
+- `fs/kfile.c` -> kernel.h
+- `fs/minifs.c` -> kernel.h
+- `fs/pcache.c` -> kernel.h
+- `fs/ramdisk.c` -> kernel.h, miniz.h
+- `fs/vfs.c` -> kernel.h
+- `fs/zip.c` -> kernel.h, miniz.h
+- `headers/arena.h` -> stddef.h
+- `headers/batch.h` -> stdint.h
+- `headers/desktop_icons.h` -> stdint.h
+- `headers/desktop_shortcuts.h` -> stdint.h
+- `headers/drivers/mouse.h` -> kernel.h
+- `headers/futex.h` -> stdint.h
+- `headers/kernel/console_in.h` -> kernel.h
+- `headers/kernel/vga_cursor.h` -> kernel.h
+- `headers/leakcheck.h` -> stddef.h, stdio.h, stdlib.h
+- `headers/percpu_rq.h` -> stdint.h
+- `headers/rcu.h` -> stdint.h
+- `headers/sched.h` -> stdint.h
+- `headers/sync.h` -> stdint.h
+- `headers/tls_port.h` -> fcntl.h, stdio.h, stdlib.h, unistd.h
+- `headers/vga_fb.h` -> stdint.h
+- `kernel.c` -> kernel.h
+- `kernel/abi.c` -> kernel.h
+- `kernel/clip.c` -> kernel.h
+- `kernel/console.c` -> kernel.h, stb/stb_api.h, xxhash.h
+- `kernel/console_in.c` -> kernel.h
+- `kernel/cvm_host.c` -> cvm.h, cvm_jit.h
+- `kernel/editor.c` -> kernel.h
+- `kernel/exec.c` -> kernel.h
+- `kernel/klog.c` -> kernel.h
+- `kernel/loader.c` -> kernel.h
+- `kernel/lz4_kernel.c` -> kernel.h
+- `kernel/minifetch.c` -> kernel.h, stb_api.h
+- `kernel/mm.c` -> kernel.h
+- `kernel/mm/cow.c` -> kernel.h
+- `kernel/mm/paging.c` -> kernel.h
+- `kernel/mm/swap.c` -> kernel.h
+- `kernel/panic.c` -> kernel.h
+- `kernel/printf.c` -> kernel.h
+- `kernel/redirect.c` -> kernel.h
+- `kernel/sched.c` -> kernel.h
+- `kernel/scrollback.c` -> kernel.h
+- `kernel/serial.c` -> kernel.h
+- `kernel/shell.c` -> kernel.h, xxhash.h
+- `kernel/spawn.c` -> kernel.h
+- `kernel/string.c` -> kernel.h
+- `kernel/symtab.c` -> kernel.h
+- `kernel/syscalls.c` -> kernel.h
+- `kernel/syscalls_proc.c` -> kernel.h
+- `kernel/tick.c` -> stddef.h
+- `kernel/time.c` -> kernel.h
+- `kernel/vga_cursor.c` -> kernel.h
+- `kernel/vga_fb.c` -> kernel.h, stb_api.h
+- `kernel/vga_fx.c` -> kernel.h
+- `mcp/mcp_dbg_driver.py` -> json, os, select, subprocess, sys, tempfile
+- `mcp/mcp_dogfood.py` -> json, os, select, subprocess, sys, tempfile
+- `mcp/minios_addons.py` -> json, os, re, shutil, subprocess, tempfile
+- `mcp/minios_mcp.py` -> atexit, json, os, signal, subprocess, sys, tempfile, threading, tty
+- `mcp/test_minios_mcp.py` -> importlib.util, json, os, select, shutil, subprocess, sys, tempfile, unittest
+- `net/net.c` -> kernel.h
+- `net/rtl8139.c` -> kernel.h
+- `progs/doomedit/doomedit.c` -> math.h, nuklear.h, stdio.h, stdlib.h
+- `progs/doomgeneric/am_map.c` -> stdio.h
+- `progs/doomgeneric/d_event.c` -> stdlib.h
+- `progs/doomgeneric/d_iwad.c` -> ctype.h, stdio.h, stdlib.h, windows.h
+- `progs/doomgeneric/d_loop.c` -> stdlib.h
+- `progs/doomgeneric/d_main.c` -> ctype.h, stdio.h, stdlib.h
+- `progs/doomgeneric/d_net.c` -> stdlib.h
+- `progs/doomgeneric/deh_str.h` -> stdio.h
+- `progs/doomgeneric/doomdef.h` -> stdio.h
+- `progs/doomgeneric/doomgeneric.h` -> stdint.h, stdlib.h
+- `progs/doomgeneric/doomgeneric_minios.c` -> stdint.h, stdio.h, stdlib.h
+- `progs/doomgeneric/doomgeneric_sdl.c` -> stdbool.h, stdio.h, unistd.h
+- `progs/doomgeneric/doomgeneric_soso.c` -> fcntl.h, soso.h, stdio.h, sys/ioctl.h, sys/mman.h, termios.h, unistd.h
+- `progs/doomgeneric/doomgeneric_sosox.c` -> fcntl.h, nano-X.h, soso.h, stdio.h, sys/ioctl.h, termios.h, unistd.h
+- `progs/doomgeneric/doomgeneric_win.c` -> Windows.h, stdio.h
+- `progs/doomgeneric/doomgeneric_xlib.c` -> X11/Xatom.h, X11/Xlib.h, X11/Xutil.h, ctype.h, stdio.h, unistd.h
+- `progs/doomgeneric/doomstat.c` -> stdio.h
+- `progs/doomgeneric/doomtype.h` -> inttypes.h, limits.h, strings.h
+- `progs/doomgeneric/f_finale.c` -> ctype.h, stdio.h
+- `progs/doomgeneric/g_game.c` -> math.h, stdlib.h
+- `progs/doomgeneric/gusconf.c` -> ctype.h, stdio.h, stdlib.h
+- `progs/doomgeneric/hu_lib.c` -> ctype.h
+- `progs/doomgeneric/hu_stuff.c` -> ctype.h
+- `progs/doomgeneric/i_cdmus.c` -> SDL_cdrom.h, stdio.h
+- `progs/doomgeneric/i_endoom.c` -> stdio.h, txt_main.h
+- `progs/doomgeneric/i_input.c` -> ctype.h, fcntl.h, math.h, stdio.h, stdlib.h
+- `progs/doomgeneric/i_joystick.c` -> SDL_joystick.h, stdio.h, stdlib.h
+- `progs/doomgeneric/i_main.c` -> stdio.h
+- `progs/doomgeneric/i_minios_sound.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/i_scale.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/i_sound.c` -> SDL_mixer.h, stdio.h, stdlib.h
+- `progs/doomgeneric/i_swap.h` -> SDL_endian.h
+- `progs/doomgeneric/i_system.c` -> CoreFoundation/CFUserNotification.h, stdarg.h, stdio.h, stdlib.h, unistd.h, windows.h
+- `progs/doomgeneric/i_timer.c` -> stdarg.h
+- `progs/doomgeneric/i_video.c` -> fcntl.h, stdarg.h, stdbool.h, stdlib.h, sys/types.h
+- `progs/doomgeneric/info.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/m_argv.c` -> ctype.h, stdio.h, stdlib.h
+- `progs/doomgeneric/m_bbox.h` -> limits.h
+- `progs/doomgeneric/m_config.c` -> ctype.h, errno.h, stdio.h, stdlib.h
+- `progs/doomgeneric/m_controls.c` -> stdio.h
+- `progs/doomgeneric/m_fixed.c` -> stdlib.h
+- `progs/doomgeneric/m_menu.c` -> ctype.h, stdlib.h
+- `progs/doomgeneric/m_misc.c` -> ctype.h, direct.h, errno.h, io.h, stdio.h, stdlib.h, sys/stat.h, sys/types.h, windows.h
+- `progs/doomgeneric/m_misc.h` -> stdarg.h, stdio.h
+- `progs/doomgeneric/memio.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/net_defs.h` -> stdio.h
+- `progs/doomgeneric/p_enemy.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/p_map.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/p_maputl.c` -> stdlib.h
+- `progs/doomgeneric/p_mobj.c` -> stdio.h
+- `progs/doomgeneric/p_plats.c` -> stdio.h
+- `progs/doomgeneric/p_saveg.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/p_saveg.h` -> stdio.h
+- `progs/doomgeneric/p_setup.c` -> math.h
+- `progs/doomgeneric/p_spec.c` -> stdlib.h
+- `progs/doomgeneric/p_switch.c` -> stdio.h
+- `progs/doomgeneric/r_data.c` -> stdio.h
+- `progs/doomgeneric/r_main.c` -> math.h, stdlib.h
+- `progs/doomgeneric/r_plane.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/r_segs.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/r_things.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/s_sound.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/sha1.c` -> assert.h, stdio.h, stdlib.h
+- `progs/doomgeneric/sounds.c` -> stdlib.h
+- `progs/doomgeneric/st_lib.c` -> ctype.h, stdio.h
+- `progs/doomgeneric/st_stuff.c` -> stdio.h
+- `progs/doomgeneric/statdump.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/v_video.c` -> math.h, png.h, stdio.h
+- `progs/doomgeneric/w_checksum.c` -> stdio.h, stdlib.h
+- `progs/doomgeneric/w_file.c` -> stdio.h
+- `progs/doomgeneric/w_file.h` -> stdio.h
+- `progs/doomgeneric/w_file_stdc.c` -> stdio.h
+- `progs/doomgeneric/w_wad.c` -> ctype.h, stdio.h, stdlib.h
+- `progs/doomgeneric/w_wad.h` -> stdio.h
+- `progs/doomgeneric/wi_stuff.c` -> stdio.h
+- `progs/doomgeneric/z_zone.h` -> stdio.h
+- `progs/file/file.c` -> nuklear.h, stb_image.h, stdint.h, stdio.h, stdlib.h
+- `progs/file/file_assoc.h` -> stddef.h, stdlib.h
+- `progs/freedomui/freedomui_minios.c` -> html_parse.h, link_nav.h, stdint.h, stdio.h, stdlib.h, sys/socket.h, ui.h, unistd.h, url.h
+- `progs/lisp/lisp.c` -> ctype.h, errno.h, inttypes.h, limits.h, stdbool.h, stddef.h, stdint.h, stdio.h, stdlib.h
+- `progs/lua/lua_main.c` -> lauxlib.h, lua.h, lualib.h, stdio.h, stdlib.h
+- `progs/lua/minios.c` -> lauxlib.h, lua.h, stdint.h
+- `progs/micropython/variants/minios/minios_module.c` -> py/runtime.h, stdint.h
+- `progs/minicraft/minicraft.c` -> math.h, stdint.h, stdio.h, stdlib.h, unistd.h
+- `progs/minios_png.h` -> stdio.h, stdlib.h
+- `progs/nuklear/cvm_emit.c` -> stdio.h, stdlib.h
+- `progs/nuklear/cvm_emit.h` -> stddef.h
+- `progs/nuklear/font8x8.c` -> stdint.h
+- `progs/nuklear/node_editor.c` -> fcntl.h, math.h, nuklear.h, stdio.h, stdlib.h, sys/stat.h, sys/types.h, unistd.h
+- `progs/nuklear/nuklear_minios.c` -> math.h, nuklear.h, stdio.h
+- `progs/nuklear/nuklear_minios.h` -> stdint.h
+- `progs/nuklear/nuklear_theme.c` -> nuklear.h, stdio.h
+- `progs/paint/paint.c` -> nuklear.h, stb_image.h, stdint.h, stdio.h, stdlib.h
+- `progs/piano/piano.c` -> math.h, nuklear.h, stdio.h, stdlib.h
+- `progs/pokemon/minios_stubs/SDL.h` -> stdint.h
+- `progs/pokemon/platform_minios.c` -> gbrt.h, platform_sdl.h, ppu.h, stb_image.h, stdint.h, stdio.h, stdlib.h
+- `progs/quake2generic/q2generic_minios.c` -> client/keys.h, quake2.h, quakegeneric.h, stdint.h, stdlib.h
+- `progs/quake2generic/snddma_minios.c` -> client/client.h, client/snd_loc.h, stdlib.h
+- `progs/src/fptest.c` -> stdio.h
+- `progs/src/freedom.c` -> stdio.h, sys/socket.h, unistd.h
+- `progs/src/freedom_wl.c` -> stdint.h, stdio.h, sys/socket.h, unistd.h
+- `progs/src/opl3.c` -> stdint.h, stdio.h
+- `progs/src/sbtone.c` -> math.h, stdio.h
+- `progs/src/shell.py` -> os, sys
+- `progs/src/test.py` -> sys
+- `progs/src/thdemo.c` -> stdio.h
+- `progs/tls_u/tls_u_main.c` -> arpa/inet.h, netdb.h, netinet/in.h, stdarg.h, stdio.h, stdlib.h, sys/socket.h, sys/types.h, unistd.h
+- `progs/tls_u/tls_u_port.c` -> arpa/inet.h, fcntl.h, netdb.h, netinet/in.h, poll.h, stdio.h, stdlib.h, sys/socket.h, sys/types.h, unistd.h
+- `progs/topogpt3/topogpt3.c` -> stdio.h, stdlib.h
+- `progs/vedit/vedit.c` -> nuklear.h, stdint.h, stdio.h, stdlib.h, sys/stat.h
+- `progs/wl/wl_pixbuf.h` -> stddef.h, stdlib.h
+- `progs/wl/wlcomp.c` -> stdio.h, stdlib.h, unistd.h
+- `qga.c` -> kernel.h
+- `smp.c` -> kernel.h
+- `tests/stubs/kernel.h` -> stdarg.h, stdint.h, stdio.h, stdlib.h
+- `tests/test_abi.c` -> stdio.h
+- `tests/test_arena.c` -> stdio.h
+- `tests/test_batch.c` -> stdio.h
+- `tests/test_doom_pwad.py` -> os, struct, sys, unittest
+- `tests/test_driver.c` -> assert.h, stdio.h
+- `tests/test_ext4.c` -> kernel.h, stdio.h, stdlib.h
+- `tests/test_fat32.c` -> kernel.h, stdio.h, stdlib.h
+- `tests/test_fault.c` -> stdio.h
+- `tests/test_file_assoc.c` -> stdio.h
+- `tests/test_freedom_wl.c` -> stdio.h
+- `tests/test_freedomui.c` -> stdio.h
+- `tests/test_futex.c` -> stdio.h
+- `tests/test_fx.c` -> stdio.h
+- `tests/test_hal_io.c` -> stdio.h
+- `tests/test_httpd.c` -> stdio.h
+- `tests/test_ktime.c` -> stdio.h
+- `tests/test_ldso.c` -> stdio.h
+- `tests/test_leakcheck.c` -> stdio.h
+- `tests/test_minios_png.c` -> stdio.h, stdlib.h
+- `tests/test_modifiers.c` -> stdio.h
+- `tests/test_notify.c` -> stdio.h
+- `tests/test_paint.c` -> stdio.h
+- `tests/test_panic.c` -> stdio.h
+- `tests/test_pcache.c` -> kernel.h, stdio.h, stdlib.h
+- `tests/test_pci.c` -> stdio.h
+- `tests/test_pcm.c` -> stdio.h, stdlib.h
+- `tests/test_percpu_rq.c` -> stdio.h
+- `tests/test_pipe.c` -> stdio.h
+- `tests/test_randmix.c` -> stdio.h
+- `tests/test_rcu.c` -> stdio.h
+- `tests/test_rtc.c` -> stdio.h
+- `tests/test_sanitize.c` -> stdio.h
+- `tests/test_sync.c` -> stdio.h
+- `tests/test_theme.c` -> stdio.h
+- `tests/test_tick.c` -> stdio.h
+- `tests/test_usbblk.c` -> stdio.h
+- `tests/test_usbhid.c` -> stdio.h
+- `tests/test_vedit_build.c` -> stdio.h
+- `tests/test_vma.c` -> stdio.h, stdlib.h
+- `tests/test_vma_bench.c` -> stdio.h
+- `tests/test_wl.c` -> malloc.h, stdio.h
+- `tests/test_wm.c` -> stdio.h
+- `tests/test_xhci.c` -> stdio.h, stdlib.h
+- `tls_test.c` -> arpa/inet.h, netinet/in.h, stdio.h, stdlib.h, sys/select.h, sys/socket.h, unistd.h
+- `tools/abi_stamp.c` -> stdio.h
+- `tools/boot_wl.py` -> json, os, pty, select, socket, subprocess, sys, tempfile, termios, tty
+- `tools/check_abi_numbers.py` -> os, re, sys
+- `tools/check_addons.py` -> argparse, importlib.util, os, sys
+- `tools/check_cohesion.py` -> argparse, json, os, sys
+- `tools/check_complexity.py` -> argparse, os, re, sys
+- `tools/check_fork_stubs.py` -> re, sys
+- `tools/check_kb_sync.py` -> argparse, os, subprocess, sys
+- `tools/check_mutant_anchors.py` -> pathlib, subprocess, sys, tempfile
+- `tools/check_spin_discipline.py` -> os, re, sys
+- `tools/check_surprising.py` -> argparse, collections, json, os, sys
+- `tools/check_syscall_sanitize.py` -> re, sys
+- `tools/clip_bridge.py` -> re, sys
+- `tools/doom_pwad.py` -> math, struct, sys
+- `tools/gdb_repro.py` -> importlib.util, os, pty, select, socket, subprocess
+- `tools/gen_desktop_pngs.py` -> PIL, argparse, os, sys
+- `tools/gen_icons.py` -> os, struct, sys, zlib
+- `tools/gen_minifs.py` -> os
+- `tools/gen_zip_fixtures.py` -> os, sys, zipfile
+- `tools/kernel_feature_survey.py` -> os, re, sys
+- `tools/minifs_dump.py` -> struct, sys
+- `tools/minifs_fsck.py` -> os, struct, sys
+- `tools/minifs_saves.py` -> os, struct, sys
+- `tools/minios_cli.py` -> json, os, select, subprocess, sys, tempfile
+- `tools/minios_gui.py` -> json, os, pty, select, socket, subprocess, sys, tempfile
+- `tools/minios_hyper.py` -> PIL, json, os, socket, struct, subprocess, sys, tempfile, threading
+- `tools/mkfs.minifs.py` -> os, struct, sys
+- `tools/mkpak1.py` -> os, struct, sys
+- `tools/mkramdisk.py` -> os, struct, sys, zlib
+- `tools/mkvocab.py` -> json, struct, sys
+- `tools/probe_compute_vga.py` -> PIL, json, os, socket, subprocess, sys, tempfile
+- `tools/probe_minicraft.py` -> json, os, re, socket, subprocess, sys, tempfile
+- `tools/qga_client.py` -> json, os, socket, sys
+- `tools/repro_gui.py` -> json, os, pty, select, socket, subprocess, sys, tempfile
+- `tools/test_call_align.py` -> os, shutil, subprocess, sys, tempfile
+- `tools/test_gui_fashion.py` -> PIL, json, os, socket, subprocess, sys, tempfile, threading
+- `tools/test_gui_gfxview.py` -> PIL, os, sys
+- `tools/test_gui_icon_cwd.py` -> PIL, json, os, socket, subprocess, sys, tempfile, threading
+- `tools/test_gui_menu.py` -> os, sys
+- `tools/test_gui_wm.py` -> PIL, json, os, socket, subprocess, sys, tempfile, threading
+- `tools/test_gui_zoom.py` -> PIL, os, sys
+- `tools/test_http_server.py` -> fcntl, http.server, struct, sys
+- `tools/test_lisp.py` -> argparse, os, shutil, subprocess, sys, tempfile
+- `tools/tls_test.py` -> datetime, os, re, shlex, socket, ssl, subprocess, sys, threading
+- `tools/wm_layout_sync.py` -> __future__, argparse, pathlib, re, sys
+
