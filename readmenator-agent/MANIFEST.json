@@ -1,10 +1,10 @@
 {
   "tool": "readmenator",
   "schema_version": 2,
-  "generated_at": "2026-10-09T13:03:47Z",
+  "generated_at": "2026-10-09T13:13:26Z",
   "project_root": ".",
   "project_name": "miniOS",
-  "git_commit": "db67df2f4225257ee387fefa7d191ac7fad286d9",
+  "git_commit": "620275dbc842192181f70fd5c43eabd8a04e7191",
   "git_branch": "main",
   "source_fingerprint": "d2f4b7c31bd62e0f8ce6251ab95b1850b1de43ed26cb8ce948b001de10c227df",
   "freshness_check": "readmenator . fresh  # exit 0 = docs match sources, exit 1 = run: readmenator . --rebuild",
@@ -499,7 +499,7 @@
     {
       "path": "MEMORY.md",
       "lines": 103,
-      "approx_tokens": 1778
+      "approx_tokens": 1776
     },
     {
       "path": "SECURITY.md",

@@ -147,6 +147,7 @@ This community groups 109 file(s) rooted at `tools` with dominant language c (co
 ## Connections
 
 - [INFERRED] shares_context community 0 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers: kernel) and community 9 (orphans).
+- [INFERRED] shares_context community 1 <-> 9 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 9 (orphans).
 
 ## Risks
 

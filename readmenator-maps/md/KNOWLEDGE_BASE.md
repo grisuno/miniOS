@@ -199,7 +199,7 @@ Files ranked by composite score for the current query context. The ranking combi
 | 9 | `clip_bridge.py` | 0.1200 | 0.0000 | 0.0000 | 0.00 | 1.20 |
 | 10 | `check_mutant_anchors.py` | 0.1167 | 0.0000 | 0.0000 | 0.00 | 1.17 |
 
-**Query anchors:** progs/paint/paint.c, progs/nuklear/nuklear_minios.c, progs/file/file.c, progs/pokemon/platform_minios.c
+**Query anchors:** progs/paint/paint.c, progs/file/file.c, progs/pokemon/platform_minios.c, progs/nuklear/nuklear_minios.c
 
 ---
 
@@ -509,10 +509,10 @@ Taint analysis traces how dangerous imports propagate through the codebase via t
   Path: minios_addons.py -> time.c -> ktime.h
 - `minios_mcp.py` imports `subprocess` (0 hop to `minios_mcp.py`) [high]
   Path: minios_mcp.py
-- `minios_mcp.py` imports `subprocess` (1 hop to `minios_addons.py`) [high]
-  Path: minios_mcp.py -> minios_addons.py
 - `minios_mcp.py` imports `subprocess` (1 hop to `time.c`) [high]
   Path: minios_mcp.py -> time.c
+- `minios_mcp.py` imports `subprocess` (1 hop to `minios_addons.py`) [high]
+  Path: minios_mcp.py -> minios_addons.py
 - `minios_mcp.py` imports `subprocess` (2 hops to `ktime.h`) [high]
   Path: minios_mcp.py -> time.c -> ktime.h
 - `test_minios_mcp.py` imports `subprocess` (0 hop to `test_minios_mcp.py`) [high]
@@ -723,20 +723,20 @@ Files sorted by how many other files would be affected if they changed. High-imp
 | File | Direct Dependents | Transitive Dependents | Total Impact |
 |------|------------------|----------------------|--------------|
 | `string.c` | 50 | 0 | 85 |
-| `m_fixed.h` | 9 | 50 | 59 |
+| `d_mode.h` | 6 | 50 | 56 |
 | `d_think.h` | 3 | 50 | 56 |
 | `v_patch.h` | 2 | 50 | 54 |
 | `d_ticcmd.h` | 6 | 47 | 53 |
 | `i_video.h` | 18 | 35 | 53 |
-| `p_mobj.h` | 4 | 49 | 53 |
-| `minios_abi.h` | 30 | 22 | 52 |
+| `i_timer.h` | 9 | 43 | 52 |
+| `info.h` | 4 | 48 | 52 |
+| `sha1.h` | 5 | 47 | 52 |
 | `vma.h` | 8 | 43 | 51 |
 | `d_event.h` | 13 | 38 | 51 |
 | `d_items.h` | 2 | 49 | 51 |
-| `i_timer.h` | 9 | 42 | 51 |
-| `info.h` | 4 | 47 | 51 |
+| `m_fixed.h` | 9 | 42 | 51 |
 | `net_defs.h` | 9 | 42 | 51 |
-| `d_mode.h` | 6 | 44 | 50 |
+| `p_mobj.h` | 4 | 47 | 51 |
 
 ---
 
