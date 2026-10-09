@@ -17,6 +17,7 @@ typedef struct {
     vma_node_t *free_root;
     vma_node_t *pool_copy;
     int pool_n;
+    vma_node_t *spare;
     KFILE *kfd[KFD_MAX];
 } spawn_ctx_t;
 

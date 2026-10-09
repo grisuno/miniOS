@@ -196,8 +196,42 @@ static void test_file_tags_and_containing(void) {
     CHECK(found == VMA_NIL, "containing empty tree is nil");
 }
 
+/* Deleted nodes are recycled: a process that maps and unmaps far more
+ * than VMA_MAX times never runs the pool dry. */
+static void test_node_recycling(void) {
+    int i;
+    vma_node_t *node;
+    vma_tree_init();
+    for (i = 0; i < VMA_MAX * 4; i++) {
+        unsigned long base = 0x100000UL + (unsigned long)(i % 64) * 0x1000;
+        node = vma_tree_insert(&vma_live_root, base, 0x1000);
+        CHECK(node != VMA_NIL, "insert after a delete reuses a node");
+        CHECK(vma_tree_delete(&vma_live_root, base) == 0, "delete what was inserted");
+    }
+    CHECK(vma_live_root == VMA_NIL, "every recycled node left the tree");
+    CHECK(vma_pool_n <= 1, "map/unmap churn does not grow the pool");
+}
+
+/* The one-entry cache serves a lookup only from the tree that filled it:
+ * the live and free trees share the pool and the cache, and a base present
+ * in the live tree must not be found (or deleted) through the free tree. */
+static void test_mru_respects_tree(void) {
+    vma_node_t *live;
+    vma_tree_init();
+    live = vma_tree_insert(&vma_live_root, 0x40000UL, 0x2000);
+    CHECK(vma_tree_find(vma_live_root, 0x40000UL) == live, "live lookup fills the cache");
+    CHECK(vma_tree_find(vma_free_root, 0x40000UL) == VMA_NIL,
+          "the free tree does not hand back a cached live node");
+    CHECK(vma_tree_delete(&vma_free_root, 0x40000UL) == -1,
+          "deleting through the wrong tree finds nothing");
+    CHECK(vma_tree_find(vma_live_root, 0x40000UL) == live, "the live node is intact");
+    CHECK(tree_valid(vma_live_root), "live tree still valid");
+}
+
 int main(void) {
     test_insert_find_delete();
+    test_node_recycling();
+    test_mru_respects_tree();
     test_pool_exhaustion();
     test_full_drain();
     test_file_tags_and_containing();

@@ -27,6 +27,11 @@ vma_node_t *vma_live_root;
  * Invalidated on init and on delete of the cached base. */
 static vma_node_t *vma_mru = 0;
 static unsigned long vma_mru_base = 0;
+
+/* Deleted nodes, chained through left (VMA_NIL ends it), handed out again
+ * before the pool grows: without recycling a process that maps and unmaps
+ * often exhausts VMA_MAX nodes and every later insert fails closed. */
+vma_node_t *vma_spare = 0;
 vma_node_t *vma_free_root;
 
 void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool) {
@@ -41,6 +46,7 @@ void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool) {
     c->free = &c->nil;
     c->mru = 0;
     c->mru_base = 0;
+    c->spare = 0;
 }
 
 void vma_ctx_bind(vma_ctx_t *c) {
@@ -52,6 +58,7 @@ void vma_ctx_bind(vma_ctx_t *c) {
     vma_free_root = c->free;
     vma_mru = c->mru;
     vma_mru_base = c->mru_base;
+    vma_spare = c->spare;
 }
 
 void vma_ctx_save(vma_ctx_t *c) {
@@ -61,6 +68,7 @@ void vma_ctx_save(vma_ctx_t *c) {
     c->free = vma_free_root;
     c->mru = vma_mru;
     c->mru_base = vma_mru_base;
+    c->spare = vma_spare;
 }
 
 void vma_view_save(vma_view_t *v) {
@@ -72,6 +80,7 @@ void vma_view_save(vma_view_t *v) {
     v->pool_n = vma_pool_n;
     v->mru = vma_mru;
     v->mru_base = vma_mru_base;
+    v->spare = vma_spare;
 }
 
 void vma_view_load(const vma_view_t *v) {
@@ -83,6 +92,7 @@ void vma_view_load(const vma_view_t *v) {
     vma_pool_n = v->pool_n;
     vma_mru = v->mru;
     vma_mru_base = v->mru_base;
+    vma_spare = v->spare;
 }
 
 void vma_tree_init(void) {
@@ -90,6 +100,7 @@ void vma_tree_init(void) {
     if (!VMA_NIL) return;
     vma_mru = 0;
     vma_mru_base = 0;
+    vma_spare = 0;
     VMA_NIL->red = 0;
     VMA_NIL->left = VMA_NIL->right = VMA_NIL->parent = VMA_NIL;
     VMA_NIL->base = 0;
@@ -101,6 +112,11 @@ void vma_tree_init(void) {
 
 static vma_node_t *vma_alloc_node(void) {
     vma_node_t *pool = vma_pool_ptr ? vma_pool_ptr : vma_pool;
+    if (vma_spare) {
+        vma_node_t *n = vma_spare;
+        vma_spare = (n->left == VMA_NIL) ? 0 : n->left;
+        return n;
+    }
     if (vma_pool_n >= VMA_MAX) return VMA_NIL;
     return &pool[vma_pool_n++];
 }
@@ -194,9 +210,18 @@ vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long
     return z;
 }
 
+/* 1 when node n hangs in the tree rooted at root (live and free trees
+ * share one pool and one cache, so a cached node must prove its tree). */
+static int vma_node_in_tree(vma_node_t *root, vma_node_t *n) {
+    while (n->parent != VMA_NIL) n = n->parent;
+    return n == root;
+}
+
 vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base) {
     vma_node_t *x;
-    if (vma_mru && vma_mru_base == base && vma_mru != VMA_NIL) return vma_mru;
+    if (vma_mru && vma_mru_base == base && vma_mru != VMA_NIL &&
+            vma_mru->base == base && vma_node_in_tree(root, vma_mru))
+        return vma_mru;
     x = root;
     while (x != VMA_NIL) {
         if (base == x->base) { vma_mru = x; vma_mru_base = base; return x; }
@@ -321,5 +346,13 @@ int vma_tree_delete(vma_node_t **root, unsigned long base) {
         y->red = z->red;
     }
     if (!y_orig_red) vma_delete_fixup(root, x);
+    if (vma_mru == z) { vma_mru = 0; vma_mru_base = 0; }
+    z->left = vma_spare ? vma_spare : VMA_NIL;
+    z->right = VMA_NIL;
+    z->parent = VMA_NIL;
+    z->base = 0;
+    z->len = 0;
+    z->f_file = 0;
+    vma_spare = z;
     return 0;
 }

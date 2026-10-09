@@ -426,10 +426,23 @@ expect "powering off"
 
 # Linux process, thread and descriptor ABI the full FreeDom GUI needs
 # (docs/spec/smp-sched.md): every check of progs/src/lxabi.c passes.
-scenario "lxabi probes the Linux thread, pipe and descriptor ABI" "run bin/lxabi
+scenario "lxabi probes the Linux thread, pipe and descriptor ABI" "mrun bin/lxabi
 poweroff"
 expect "lxabi: time ok"
 expect "lxabi: fork-registers ok"
+expect "lxabi: abort-kills-group ok"
+expect "lxabi: exit-group-from-thread ok"
+expect "lxabi: wild-jump-sigsegv ok"
+expect "lxabi: kill-signal-zero-probe ok"
+expect "lxabi: kill-sigterm-status ok"
+expect "lxabi: pipe-ioctl ok"
+expect "lxabi: nanosleep-waits ok"
+expect "lxabi: clock-nanosleep-abstime ok"
+expect "lxabi: nanosleep-einval ok"
+expect "lxabi: clock-getres ok"
+expect "lxabi: rlimit-stack ok"
+expect "lxabi: nprocs-affinity ok"
+expect "lxabi: fork-cow-kernel-write ok"
 expect "lxabi: pipe2-flags ok"
 expect "lxabi: pipe-nonblock-eagain ok"
 expect "lxabi: fcntl-dupfd-cloexec ok"
@@ -463,6 +476,31 @@ expect "lxabi: futex-timedwait-timeout ok"
 expect "lxabi: futex-condvar-signal ok"
 expect "lxabi: thread-detached-reaped ok"
 expect "lxabi: all ok"
+expect "exit code: 0"
+refute "FAIL"
+refute "UNIMPL"
+
+# Linux seccomp-bpf, prctl and /proc/self/exe (docs/spec/kernel.md): every
+# check of progs/src/lxsecc.c passes, filters live in forked children.
+scenario "lxsecc probes seccomp-bpf, prctl and /proc/self/exe" "mrun bin/lxsecc
+poweroff"
+expect "lxsecc: prctl-nnp-default ok"
+expect "lxsecc: prctl-dumpable ok"
+expect "lxsecc: prctl-dumpable-bad ok"
+expect "lxsecc: prctl-name ok"
+expect "lxsecc: prctl-unknown ok"
+expect "lxsecc: seccomp-needs-nnp ok"
+expect "lxsecc: readlink-proc-self-exe ok"
+expect "lxsecc: execve-proc-self-exe ok"
+expect "lxsecc: seccomp-errno-action ok"
+expect "lxsecc: seccomp-kill-action ok"
+expect "lxsecc: seccomp-wx-arg-check ok"
+expect "lxsecc: seccomp-inherited-by-fork ok"
+expect "lxsecc: seccomp-stacked-most-restrictive ok"
+expect "lxsecc: seccomp-strict-mode ok"
+expect "lxsecc: seccomp-invalid-program ok"
+expect "lxsecc: exec child ran"
+expect "lxsecc: all ok"
 expect "exit code: 0"
 refute "FAIL"
 refute "UNIMPL"
@@ -1301,7 +1339,45 @@ http_fixture_stop() {
     BDD_HTTP2_PID=""
 }
 
-trap 'http_server_stop; http_fixture_stop' EXIT
+net_fixture_start() {
+    python3 "$HERE/tools/test_net_fixture.py" "${NET_ECHO_PORT:-8901}" \
+        > /dev/null 2>&1 &
+    BDD_NET_PID=$!
+    sleep 1
+}
+
+net_fixture_stop() {
+    [ -n "${BDD_NET_PID:-}" ] && kill "$BDD_NET_PID" 2>/dev/null || true
+    BDD_NET_PID=""
+}
+
+trap 'http_server_stop; http_fixture_stop; net_fixture_stop' EXIT
+
+# Linux socket ABI (docs/spec/network.md, FreeDom readiness step 6): the
+# static glibc probe against the UDP+TCP echo fixture on the host; the port
+# after it has no listener, so the refused-connect check gets a slirp RST.
+net_fixture_start
+scenario "lxnet probes the Linux socket ABI" "run bin/lxnet 10.0.2.2 ${NET_ECHO_PORT:-8901}
+poweroff"
+expect "lxnet: udp-socket ok"
+expect "lxnet: udp-ip-options ok"
+expect "lxnet: udp-sendto-recvfrom ok"
+expect "lxnet: udp-ioctl-fionread ok"
+expect "lxnet: udp-nonblock-eagain ok"
+expect "lxnet: udp-connect-send-recv ok"
+expect "lxnet: udp-sendmmsg ok"
+expect "lxnet: tcp-nonblock-connect ok"
+expect "lxnet: tcp-setsockopt ok"
+expect "lxnet: tcp-sock-peer-names ok"
+expect "lxnet: tcp-send-nosignal ok"
+expect "lxnet: tcp-read-write ok"
+expect "lxnet: tcp-connect-refused ok"
+expect "lxnet: socket-inet6-clean ok"
+expect "lxnet: getaddrinfo-hosts ok"
+expect "lxnet: all ok"
+expect "exit code: 0"
+refute "FAIL"
+net_fixture_stop
 
 http_server_start
 scenario "tcp stack fetches a page from the host" "run bin/http.elf 10.0.2.2 8899 /src/fib.c

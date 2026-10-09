@@ -281,6 +281,26 @@ class TestLogBuffer(unittest.TestCase):
         second = buf.find(b"exit code: 7", pos + len(b"exit code: 7"))
         self.assertEqual(second, -1)
 
+    def test_wait_for_any_earliest(self):
+        buf = self.m.LogBuffer(128)
+        buf.append(b"a\nline\nedit *> b\nedit> ")
+        forms = tuple(p.encode("latin-1") for p in self.m.CFG_PROMPT_EDITOR_FORMS)
+        pos = buf.wait_for_any(forms, 0, 10)
+        self.assertEqual(pos, buf.find(b"edit *> ", 0))
+        self.assertEqual(buf.wait_for_any((b"missing",), 0, 10), -1)
+
+    def test_cat_body_drops_console_framing(self):
+        session = self.m.MiniOSSession.__new__(self.m.MiniOSSession)
+        session.cfg = {"tmo_prompt_ms": 10}
+        session.send = lambda line, tmo: {"text": "cat a.c\r\n\rint x;\r\n\r\r\n\rminiOS> "}
+        self.assertEqual(session.cat_body("a.c"), "int x;")
+
+    def test_editor_prompt_forms_cover_kernel_markers(self):
+        forms = self.m.CFG_PROMPT_EDITOR_FORMS
+        for dirty in ("", " *"):
+            for trunc in ("", " !"):
+                self.assertIn("edit%s%s> " % (dirty, trunc), forms)
+
 
 @unittest.skipUnless(have_qemu(), "QEMU or os.img not available")
 class _ConsoleBDDBase(unittest.TestCase):
@@ -791,7 +811,8 @@ install:
     - src: big.c
       dst: build/big.c
   build: []
-  verify: []
+  verify:
+    - line: run build/big
 """
                 % self.repo
             ),

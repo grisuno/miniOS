@@ -147,9 +147,35 @@ int main(void) {
         CHECK(futex_linux_cmd(128) == 0, "WAIT|PRIVATE decodes");
         CHECK(futex_linux_cmd(129) == 1, "WAKE|PRIVATE decodes");
         CHECK(futex_linux_cmd(2) == -1, "REQUEUE refused");
-        CHECK(futex_linux_cmd(9) == -1, "WAIT_BITSET refused");
-        CHECK(futex_linux_cmd(137) == -1, "WAKE|PRIVATE|extra refused");
+        CHECK(futex_linux_cmd(5) == -1, "WAKE_OP refused");
         CHECK(futex_linux_cmd(-1) == -1, "negative op refused");
+        /* Bitset ops (glibc condition variables and timed waits) decode,
+         * with PRIVATE and CLOCK_REALTIME masked (393 = 9|128|256). */
+        CHECK(futex_linux_cmd(9) == LINUX_FUTEX_WAIT_BITSET, "WAIT_BITSET decodes");
+        CHECK(futex_linux_cmd(10) == LINUX_FUTEX_WAKE_BITSET, "WAKE_BITSET decodes");
+        CHECK(futex_linux_cmd(137) == LINUX_FUTEX_WAIT_BITSET, "WAIT_BITSET|PRIVATE decodes");
+        CHECK(futex_linux_cmd(393) == LINUX_FUTEX_WAIT_BITSET, "WAIT_BITSET|PRIVATE|REALTIME decodes");
+        CHECK(futex_linux_cmd(256) == LINUX_FUTEX_WAIT, "WAIT|REALTIME decodes");
+        CHECK(futex_linux_cmd(1024 | 9) == -1, "unknown flag refused");
+    }
+    {
+        /* Timeout arithmetic: relative for WAIT, absolute for WAIT_BITSET;
+         * invalid timespecs refused; huge seconds never overflow. */
+        long r;
+        CHECK(futex_timeout_remaining_us(LINUX_FUTEX_WAIT, 0, 500000, 1000) == 500,
+              "relative 0.5 ms");
+        CHECK(futex_timeout_remaining_us(LINUX_FUTEX_WAIT, 2, 0, 99) == 2000000,
+              "relative ignores now");
+        CHECK(futex_timeout_remaining_us(LINUX_FUTEX_WAIT_BITSET, 3, 0, 1000000) == 2000000,
+              "absolute minus now");
+        r = futex_timeout_remaining_us(LINUX_FUTEX_WAIT_BITSET, 1, 0, 5000000);
+        CHECK(r <= 0 && r != FUTEX_TIMEOUT_INVALID, "past deadline expired");
+        CHECK(futex_timeout_remaining_us(LINUX_FUTEX_WAIT, 0, 1000000000L, 0) == FUTEX_TIMEOUT_INVALID,
+              "nsec out of range refused");
+        CHECK(futex_timeout_remaining_us(LINUX_FUTEX_WAIT, -1, 0, 0) == FUTEX_TIMEOUT_INVALID,
+              "negative seconds refused");
+        CHECK(futex_timeout_remaining_us(LINUX_FUTEX_WAIT, 0x7fffffffffffffffL, 0, 0) ==
+              FUTEX_TIMEOUT_FOREVER, "huge seconds clamp to forever");
     }
     if (failures == 0)
         printf("futex: ok\n");

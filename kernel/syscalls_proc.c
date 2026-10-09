@@ -12,6 +12,8 @@
 #include "kernel.h"
 #include "sched.h"
 #include "sanitize.h"
+#include "proc_sec.h"
+#include "syscalls_proc.h"
 
 long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
@@ -42,7 +44,6 @@ long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6) {
         if (pid < 0 || pid >= MAX_PROCS) return -1;
         if (procs[pid].state == PROC_FREE) return -1;
         for (n = SECCOMP_MIN; n <= SECCOMP_MAX; n++) procs[pid].seccomp_deny |= SECCOMP_BIT(n);
-        procs[pid].seccomp_deny &= ~SECCOMP_BIT(MINIOS_SYS_TIME);
         return 0;
     }
     return -22;
@@ -67,9 +68,22 @@ long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6) {
     yield(); return 0;
 }
 
+/* getpid answers the thread group: a CLONE_THREAD member reports its
+ * leader, a process its own pid. The pid-0 exec frame (a foreground `run`)
+ * and threads it created keep answering 1, the value programs saw before
+ * there were real pids. */
 long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6) {
+    proc_t *p = proc_get(current_pid);
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return 1;
+    if (p && p->autoreap) return p->tgid > 0 ? p->tgid : 1;
+    return current_pid > 0 ? current_pid : 1;
+}
+
+/* Linux clone(2): (flags, newsp, parent_tid, child_tid, tls). */
+long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a6;
+    return do_linux_clone((unsigned long)a1, (unsigned long)a2, (unsigned long)a3,
+                          (unsigned long)a4, (unsigned long)a5);
 }
 
 long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -95,7 +109,16 @@ long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6) {
      * every execve starts with an empty environment. Documented, not
      * silent: no caller-supplied pointer is dereferenced. */
     SANITIZE_STR(upath, RAMDISK_FNAME_LEN);
-    if (!fs_resolve(upath, resolved, sizeof(resolved))) return -36;
+    /* /proc/self/exe re-runs the caller's own image (FreeDom re-execs
+     * itself as a tab worker); docs/spec/kernel.md. */
+    if (kstrcmp(upath, "/proc/self/exe") == 0) {
+        const char *exe = proc_sec_exe(current_pid);
+        if (!exe[0]) return -2;
+        kstrncpy(resolved, exe, sizeof(resolved) - 1);
+        resolved[sizeof(resolved) - 1] = 0;
+    } else if (!fs_resolve(upath, resolved, sizeof(resolved))) {
+        return -36;
+    }
     if (uargv) {
         if (!user_range_ok((unsigned long)uargv, sizeof(char *)))
             return EFAULT;
@@ -163,31 +186,74 @@ long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6) {
     return do_proc_exit(a1);
 }
 
-/* wait4(pid, status, options, rusage): options bit 0 is WNOHANG (Linux
- * ABI value 1). Non-blocking returns 0 when no child exited yet (status
- * untouched); blocking reaps like before. The status word carries the raw
- * exit code (no WEXITSTATUS encoding: MiniOS reports codes directly). */
+/* Linux wait status words (docs/spec/smp-sched.md): a normal exit carries
+ * its code in bits 8..15, a death by signal the signal number in bits
+ * 0..6. MiniOS records a signal death as a negative exit code: -1 is the
+ * historic kill (SIGKILL), -N is signal N (a seccomp kill is -SIGSYS). */
+#define LINUX_WNOHANG        1
+#define LINUX_SIGKILL        9
+#define LINUX_STATUS_SHIFT   8
+#define LINUX_STATUS_CODE    0xff
+#define LINUX_ECHILD         (-10)
+#define LINUX_EINVAL         (-22)
+#define LINUX_ESRCH          (-3)
+
+static int linux_wait_status(int code) {
+    if (code < 0) {
+        int sig = (code == -1) ? LINUX_SIGKILL : -code;
+        if (sig <= 0 || sig > LINUX_SIGNAL_MAX) sig = LINUX_SIGKILL;
+        return sig;
+    }
+    return (code & LINUX_STATUS_CODE) << LINUX_STATUS_SHIFT;
+}
+
+/* wait4(pid, status, options, rusage): returns the reaped child's pid and
+ * stores the Linux status word; WNOHANG returns 0 while nothing has
+ * exited; -ECHILD with no matching child. pid -1 is any child; process
+ * groups (pid 0 and < -1) are not modelled and wait for any child. */
 long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6) {
     int *status = (int *)a2;
     int options = (int)a3;
+    int pid = (int)a1;
+    int found = 0;
+    int code;
     (void)a4; (void)a5; (void)a6;
     if (a2 && !user_range_ok((unsigned long)a2, sizeof(int))) return EFAULT;
-    if (options & 1) {
-        int code = do_waitpid_nb((int)a1);
-        if (code == WAITPID_NONE) return 0;
-        if (status) *status = code;
-        return (int)a1 >= 0 ? (int)a1 : 0;
-    }
-    {
-        int code = do_waitpid((int)a1);
-        if (status) *status = code;
-        return code;
-    }
+    if (options & ~LINUX_WNOHANG) return LINUX_EINVAL;
+    if (pid == 0 || pid < -1) pid = -1;
+    code = do_waitpid_linux(pid, (options & LINUX_WNOHANG) != 0, &found);
+    if (code == WAITPID_NOCHILD) return LINUX_ECHILD;
+    if (code == WAITPID_NONE) return 0;
+    if (status) *status = linux_wait_status(code);
+    return found;
 }
 
+/* Signals whose default action terminates the process. MiniOS installs
+ * no user handlers (rt_sigaction is accepted and recorded nowhere), so the
+ * default action is the only one: these terminate, every other signal
+ * (SIGCHLD, SIGWINCH, SIGCONT, SIGURG, real-time signals) is ignored. */
+int linux_signal_fatal(long sig) {
+    static const long fatal[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+                                  14, 15, 24, 25, 26, 27, 29, 30, 31 };
+    unsigned i;
+    for (i = 0; i < sizeof(fatal) / sizeof(fatal[0]); i++)
+        if (fatal[i] == sig) return 1;
+    return 0;
+}
+
+/* kill(pid, sig): sig 0 only probes that pid exists; a fatal signal ends
+ * the target as killed by sig (wait4 reports WTERMSIG); any other signal
+ * is delivered to its default action, ignore. Process groups (pid <= 0)
+ * are not modelled. */
 long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return do_kill((int)a1);
+    proc_t *t;
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a2 < 0 || a2 > LINUX_SIGNAL_MAX) return LINUX_EINVAL;
+    if (a1 <= 0 || a1 >= MAX_PROCS) return LINUX_ESRCH;
+    t = proc_get((int)a1);
+    if (!t || t->state == PROC_FREE || t->state == PROC_ZOMBIE) return LINUX_ESRCH;
+    if (a2 == 0 || !linux_signal_fatal(a2)) return 0;
+    return do_kill_code((int)a1, (int)-a2) == 0 ? 0 : LINUX_ESRCH;
 }
 
 long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6) {

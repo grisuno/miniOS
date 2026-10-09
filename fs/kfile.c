@@ -126,6 +126,85 @@ int kpipe_empty_wopen(KFILE *f) {
     return r;
 }
 
+/** Docstring: Snapshot a pipe's ring under fs_lock (see kernel.h). */
+int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen) {
+    irqflags_t flags;
+    if (!f || !f->is_pipe || !f->pring) return -1;
+    fs_take(&flags);
+    if (avail) *avail = pipe_ring_avail(f->pring);
+    if (space) {
+        unsigned sp = pipe_ring_space(f->pring);
+        if (sp == 0u && f->pring->cap < PIPE_CAP_MAX) sp = PIPE_CAP_MAX - f->pring->cap;
+        *space = sp;
+    }
+    if (wopen) *wopen = f->pring->wopen;
+    if (ropen) *ropen = pipe_ring_ropen(f->pring);
+    fs_drop(flags);
+    return 0;
+}
+
+/** Docstring: New eventfd description with counter initval. NULL on OOM
+ * or an initial value past KEVENT_MAX. */
+KFILE *kevent_create(unsigned long long initval, int semaphore) {
+    KFILE *f;
+    if (initval > KEVENT_MAX) return 0;
+    f = kmalloc(sizeof(KFILE));
+    if (!f) return 0;
+    kmemset(f, 0, sizeof(KFILE));
+    f->is_eventfd = 1;
+    f->efd_semaphore = semaphore ? 1 : 0;
+    f->efd_count = initval;
+    f->minifs_ino = -1;
+    f->ref = 1;
+    return f;
+}
+
+/** Docstring: Take the counter (or 1 in semaphore mode). -EAGAIN at 0. */
+long kevent_read(KFILE *f, unsigned long long *out) {
+    irqflags_t flags;
+    long rc = -11;
+    if (!f || !f->is_eventfd || !out) return -22;
+    fs_take(&flags);
+    if (f->efd_count != 0ULL) {
+        if (f->efd_semaphore) {
+            *out = 1ULL;
+            f->efd_count--;
+        } else {
+            *out = f->efd_count;
+            f->efd_count = 0ULL;
+        }
+        rc = 0;
+    }
+    fs_drop(flags);
+    return rc;
+}
+
+/** Docstring: Add v to the counter. -EINVAL for all-ones, -EAGAIN when the
+ * sum would pass KEVENT_MAX (the caller blocks or reports it). */
+long kevent_write(KFILE *f, unsigned long long v) {
+    irqflags_t flags;
+    long rc = -11;
+    if (!f || !f->is_eventfd) return -22;
+    if (v == ~0ULL) return -22;
+    fs_take(&flags);
+    if (v <= KEVENT_MAX - f->efd_count) {
+        f->efd_count += v;
+        rc = 0;
+    }
+    fs_drop(flags);
+    return rc;
+}
+
+/** Docstring: 1 when a read would not block. */
+int kevent_readable(KFILE *f) {
+    return f && f->is_eventfd && f->efd_count != 0ULL;
+}
+
+/** Docstring: 1 when a write of 1 would not block. */
+int kevent_writable(KFILE *f) {
+    return f && f->is_eventfd && f->efd_count < KEVENT_MAX;
+}
+
 /** Docstring: True when f is the write end of a pipe. */
 int kpipe_is_write_end(KFILE *f) {
     return f && f->is_pipe && f->pipe_write;
@@ -324,10 +403,15 @@ int kfclose(KFILE *f) {
         kfree(f);
         return 0;
     }
+    if (f->is_eventfd) {
+        kfree(f);
+        return 0;
+    }
     if (f->is_pipe) {
         int drop = 0;
         fs_take(&flags);
         if (f->pipe_write && f->pring) pipe_ring_close_writer(f->pring);
+        if (!f->pipe_write && f->pring) pipe_ring_close_reader(f->pring);
         if (f->pring_ref) {
             (*f->pring_ref)--;
             if (*f->pring_ref <= 0) drop = 1;

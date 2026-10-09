@@ -2,7 +2,7 @@
 #include "ktime.h"
 
 /* ================================================================
- *  PIT-calibrated TSC for SYS_TIME (syscall 204)
+ *  PIT-calibrated TSC for SYS_TIME (MINIOS_SYS_TIME)
  *  PIT channel 2 one-shot measures real TSC ticks per millisecond
  *  so the timer works regardless of the host CPU frequency.
  * ================================================================ */

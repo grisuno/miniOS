@@ -171,6 +171,71 @@ refuse (upgrading them in place would write another window's bytes
 past cow_resolve). Pin: `run bin/mprot.elf` (legs, R|X exec, faulting
 write) plus `mprotect-*` mutants under `MATCH="mprotect"`.
 
+### Anonymous memory: demand paging, `munmap`, address-space views
+Static glibc reserves big anonymous regions it may never touch: a 64 MB
+`PROT_NONE` region per thread malloc arena, opened up step by step with
+`mprotect`, and an 8 MB thread stack. Backing them eagerly from the 192 MB
+kernel heap exhausted it after a few threads (FreeDom runs many), so:
+
+- **Reservation, not allocation.** `mmap` of an anonymous range writes
+  non-present PTEs carrying `PTE_DEMAND` plus the requested protection in
+  software bits the MMU ignores while the present bit is clear
+  (`PTE_DEMAND_READ/WRITE/EXEC`, bits 8-11; bits 0-1 stay clear, so every
+  "present" test reads them as absent). `mprotect` on a reservation rewrites
+  the marker and commits nothing.
+- **First touch.** The not-present fault path resolves a reservation before
+  trying a file mapping (`mm_anon_fault`): a zeroed page with the reserved
+  protection, from ring 3 or from a kernel copy into a user buffer.
+  `PROT_NONE` and writes to read-only reservations stay faults (the thread
+  stack guard page works).
+- **Fresh mappings read zero.** A page still present in a reused range is a
+  leftover of an earlier mapping: a copy-on-write share is dropped for a
+  reservation, any other frame is zeroed in place (glibc's `calloc` skips
+  clearing fresh mmap chunks, as Linux guarantees zero).
+- **`munmap` (11)** removes the overlap with every mapping in the range, head,
+  tail, middle or whole: survivors stay live with their file offsets, only
+  the unmapped pages are released (heap frames freed, or unshared when a
+  fork sibling still maps them; fixed frames of the pid-0 window stay), and
+  the range returns to the free tree. Unmapping a hole is not an error; an
+  unaligned base, zero length or range outside the window is `-EINVAL`.
+  `mremap` releases the anonymous pages of every range it gives back.
+- **fork** copies reservations into the child (`cow_copy_demand`).
+- **Address-space views.** `g_brk`, `user_mmap_cur` and the VMA roots are
+  global and describe one address space at a time. `mm_view_enter` runs on
+  every way a task starts running (switch, timer preemption, the idle loop
+  claiming a task after the running process died): a task of the address
+  space already held keeps the view, any other saves it into its holder and
+  loads its owner's (`mm_owner`: the non-`CLONE_VM` process sharing the
+  thread's VMA context; legacy-window threads belong to pid 0). Without it
+  a thread scheduled right after an unrelated process, or a parent resumed
+  from idle after its child died, allocated from someone else's view and
+  the next fork refused to copy the corrupted tree.
+- **Heap budget.** The kernel heap backs every user page and page table;
+  pages come from `kmalloc_page` (dlmalloc `memalign`, one page plus a chunk
+  header; the old align-by-overallocation cost two pages per page) and an
+  ownership bitmap marks which heap frames the page allocator owns, so only
+  those are ever freed as pages. A failed allocation is reported on the
+  serial line (`kheap: allocation of N bytes failed`) where it happens.
+- **Copy-on-write table.** Open addressing over the frame number, 65536
+  entries (heap, created on the first fork), tombstones on delete, reset
+  when empty and rehashed when tombstones pile up. The old 512-entry table
+  made fork copy every page past the 512th eagerly, so forking a 100 MB
+  browser duplicated it before the child could exec.
+- **VMA nodes** are recycled through a spare chain (deleted nodes are handed
+  out again before the pool grows), and the one-entry lookup cache only
+  answers for the tree that filled it (live and free trees share it; a
+  free-tree delete could otherwise unlink a live node). `mmap` refuses and
+  reports any range that would overlap a live mapping or the brk heap.
+- **Flight recorder.** Each process keeps its last 32 syscalls (number,
+  three arguments, result) with no I/O; the exception dump prints the
+  faulting process's log and `sclog <pid>` prints any process's, live or
+  exited. `ps` shows exit codes of finished processes.
+- **Kernel stacks.** `alloc_kstack` never hands out a slot a live process
+  still references (its stack or its open syscall's entry stack), and
+  reports the stale reference; the exception dump lists every slot with its
+  owner and high-water mark and flags a dead canary. Each `fork` failure
+  names the exhausted resource.
+
 ### Spawn contract (`spawn.h` + `kernel/spawn.c`)
 `k_syscall_spawn` is a ~30-line thin wrapper: validate, copy argv,
 resolve, snapshot, `spawn_backup`, `spawn_execute`, release,
@@ -343,3 +408,59 @@ string arguments must be NUL-terminated inside the window; a violating call
 returns `-EFAULT`. `arch_prctl` accepts only canonical bases. Faulting user
 code still resets the machine (no IDT): interrupt delivery, fault handlers
 and a scheduler are the preemption track, not part of this contract.
+
+### Linux seccomp-bpf, prctl and `/proc/self/exe` (FreeDom readiness, step 5)
+The full FreeDom GUI re-execs itself as a tab worker
+(`execve("/proc/self/exe", ["freedom", "--tab-worker", r, w])`) and the
+worker refuses to touch content unless it can install a seccomp-bpf
+allowlist (`prctl(PR_SET_NO_NEW_PRIVS)` then `prctl(PR_SET_SECCOMP,
+SECCOMP_MODE_FILTER, &prog)`): fail closed. MiniOS answers that contract the
+Linux way. Pinned by `progs/src/lxsecc.c` (`mrun bin/lxsecc`, one `lxsecc:
+<check> ok` line per point, `lxsecc: all ok`, exit 0) and its BDD scenario,
+plus `make test-seccomp-bpf` for the interpreter.
+
+- **Classic BPF interpreter (`kernel/seccomp_bpf.c`, `headers/seccomp_bpf.h`).**
+  Pure (no kernel state), host-tested. `sbpf_check` validates a program
+  before it is ever run, exactly the classic rules Linux applies: 1..4096
+  instructions; only the classic opcodes (`LD`/`LDX` W ABS on the 64-byte
+  `seccomp_data` at 4-byte-aligned offsets, `LD`/`LDX` IMM and MEM, `ST`/`STX`
+  on the 16 scratch words, every `ALU` op with K or X except a constant zero
+  divisor or modulus, `JA`/`JEQ`/`JGT`/`JGE`/`JSET` with K or X, `RET` K or
+  A, `TAX`/`TXA`); every jump lands inside the program, forward only; the
+  last instruction is a `RET`. `sbpf_run` executes a checked program over a
+  `seccomp_data` (`nr`, `arch`, `instruction_pointer`, `args[6]`) and
+  returns the 32-bit action; a runtime division by a zero `X` returns
+  `SECCOMP_RET_KILL_PROCESS` (fail closed), every load is in bounds by
+  construction.
+- **Filters.** Installed per process, inherited by `fork`, `clone` threads
+  and kept across `execve`, stacked like Linux (a new filter runs in front of
+  the inherited ones; every filter runs and the most restrictive action
+  wins: KILL_PROCESS, KILL_THREAD, TRAP, ERRNO, USER_NOTIF, TRACE, LOG,
+  ALLOW). At most `SECCOMP_FILTERS_MAX` stacked filters and
+  `SBPF_MAX_INSNS` instructions each. Evaluated at the top of every syscall
+  of a filtered process, before any other dispatch, with `arch =
+  AUDIT_ARCH_X86_64` and the caller's rip:
+  - ALLOW and LOG run the syscall;
+  - ERRNO answers `-(data & 0xfff)` (capped at 4095) without running it;
+  - TRACE and USER_NOTIF answer `-ENOSYS` (there is no tracer or listener);
+  - KILL_THREAD kills the calling thread, KILL_PROCESS and TRAP (no signal
+    delivery) kill the whole thread group as a death by SIGSYS: exit code
+    `-31` in MiniOS terms, `WIFSIGNALED` with `WTERMSIG == SIGSYS` through
+    `wait4`.
+- **`prctl` (157).** `PR_SET_NO_NEW_PRIVS` (only `1`, unused args 0, sticky
+  and inherited), `PR_GET_NO_NEW_PRIVS`, `PR_SET_DUMPABLE` (0 or 1) and
+  `PR_GET_DUMPABLE` (MiniOS writes no core files, the flag is recorded),
+  `PR_SET_NAME`/`PR_GET_NAME` (16 bytes, the process name `schedtop` shows),
+  `PR_SET_SECCOMP` (`SECCOMP_MODE_FILTER` with a `sock_fprog`;
+  `SECCOMP_MODE_STRICT` installs the read/write/exit/sigreturn filter) and
+  `PR_GET_SECCOMP`. Installing a filter without no_new_privs is `-EACCES`
+  (MiniOS has no capabilities to waive it). Anything else `-EINVAL`.
+- **`seccomp` (317).** `SECCOMP_SET_MODE_STRICT`, `SECCOMP_SET_MODE_FILTER`
+  (flags 0) and `SECCOMP_GET_ACTION_AVAIL`, same rules as the prctl path.
+- **`/proc/self/exe`.** Every process records the resolved path of the image
+  it runs (spawn, foreground run, `execve`), inherited by fork and clone.
+  `execve` of `/proc/self/exe` runs that path; `readlink` of
+  `/proc/self/exe` answers it (no NUL, truncated to the buffer like Linux).
+- **Best-effort isolation answers.** `unshare` (272) and the Landlock calls
+  (444-446) answer `-ENOSYS` without the UNIMPL trace: FreeDom treats both as
+  defense in depth and keeps seccomp as the mandatory boundary.

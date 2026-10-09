@@ -116,7 +116,6 @@ typedef struct {
 
 void minifs_init(void);
 int  minifs_mount(void);
-int  minifs_mkfs(unsigned int total_blocks);
 int  minifs_sync(void);
 int  minifs_is_mounted(void);
 

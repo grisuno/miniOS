@@ -16,11 +16,19 @@ long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6);
 long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6);
 long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6);
 long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6);
+long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);
 long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);
 long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);
 long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);
 long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);
 long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);
+
+/* Linux signal numbers 1..LINUX_SIGNAL_MAX; a fatal one ends its target.
+ * The foreground shell reports a signal death as exit code 128 + sig. */
+#define LINUX_SIGNAL_MAX       64
+#define LINUX_SIGNAL_EXIT_BASE 128
+#define LINUX_EXIT_STATUS_MASK 0xff
+int linux_signal_fatal(long sig);
 
 /* Shared exit path for sys_linux_exit and the exit_group fall-through. */
 long do_proc_exit(long code);

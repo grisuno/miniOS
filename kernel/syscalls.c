@@ -43,6 +43,7 @@
 #include "shell.h"
 #include "ktime.h"
 #include "randmix.h"
+#include "proc_sec.h"
 
 /* ---- Per-process file-descriptor views (open/read/write/close) -------- */
 
@@ -266,11 +267,26 @@ static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)
     return net_sys_dns(a1);
 }
 static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6) {
-    /* Retired kernel-TLS numbers (201/203): the engine left ring 0 and
-     * 202 now serves Linux futex, so these always answer -ENOSYS.
+    /* Retired kernel-TLS number 203: the engine left ring 0, 202 now
+     * serves Linux futex and 201 Linux time, so this always answers
+     * -ENOSYS.
      * Fossil miniGCC binaries still trap them and fail closed. */
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     return -38;
+}
+/* time (201): the retired kernel-TLS handshake number now serves Linux
+ * time(2), exactly as 202 serves futex (ADR-0014 record in
+ * tools/check_abi_numbers.py). Static glibc calls it when there is no vDSO;
+ * -ENOSYS made OpenSSL and libcurl check certificate lifetimes against
+ * (time_t)-1. Answers RTC-anchored wall seconds, stored at a1 when set. */
+static long sys_linux_time(long a1, long a2, long a3, long a4, long a5, long a6) {
+    long t = (long)(wall_us_now() / 1000000UL);
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a1) {
+        SANITIZE_RANGE(a1, sizeof(long));
+        *(long *)a1 = t;
+    }
+    return t;
 }
 static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6) {
     /* Linux futex(2): __NR_futex is 202, the retired MINIOS_SYS_TLS_SEND
@@ -280,21 +296,41 @@ static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6
      * WAKE|PRIVATE inside getaddrinfo, which is what `freedom google.cl`
      * needs — and answering -ENOSYS aborts the process ("The futex
      * facility returned an unexpected error code", exit 134). WAIT/WAKE
-     * run on kernel/futex.c; a mismatch is -EAGAIN like Linux (the
-     * MiniOS 226/227 pair keeps its own FUTEX_NOMATCH convention
-     * untouched). No timeout support: a WAIT with a deadline sleeps
-     * until woken. Every other op (REQUEUE, BITSET, PI...) is -ENOSYS. */
+     * and their BITSET forms run on kernel/futex.c; a mismatch is -EAGAIN
+     * like Linux (the MiniOS 226/227 pair keeps its own FUTEX_NOMATCH
+     * convention untouched). Every other op (REQUEUE, WAKE_OP, PI...) is
+     * -ENOSYS. */
     unsigned long uaddr = (unsigned long)a1;
     int cmd = futex_linux_cmd(a2);
     long n;
-    (void)a4; (void)a5; (void)a6;
+    (void)a5;
     if (cmd < 0) return -38;
     SANITIZE_RANGE(uaddr, 4);
-    if (cmd == LINUX_FUTEX_WAKE) {
+    if ((cmd == LINUX_FUTEX_WAIT_BITSET || cmd == LINUX_FUTEX_WAKE_BITSET) &&
+        (unsigned long)(unsigned int)a6 != LINUX_FUTEX_BITSET_MATCH_ANY)
+        return -22;
+    if (cmd == LINUX_FUTEX_WAKE || cmd == LINUX_FUTEX_WAKE_BITSET) {
         n = a3;
         if (n < 0) n = 0;
         if (n > FUTEX_WAKE_ALL) n = FUTEX_WAKE_ALL;
         return futex_wake(uaddr, (int)n);
+    }
+    if (a4) {
+        /* Timed wait (docs/spec/smp-sched.md): past the deadline it is
+         * -ETIMEDOUT; before it, one yield and a spurious-wakeup 0 that the
+         * caller re-checks. No timer queue is needed and no waiter can
+         * oversleep its deadline by more than one scheduling round. */
+        const long *ts = (const long *)a4;
+        unsigned long now;
+        long left;
+        SANITIZE_RANGE(ts, 2 * sizeof(long));
+        now = (a2 & LINUX_FUTEX_CLOCK_REALTIME) ? wall_us_now() : ktime_us();
+        left = futex_timeout_remaining_us(cmd, ts[0], ts[1], now);
+        if (left == FUTEX_TIMEOUT_INVALID) return -22;
+        if (*(volatile int *)uaddr != (int)a3) return -11;
+        if (left <= 0) return -110; /* ETIMEDOUT */
+        yield();
+        return 0;
     }
     n = futex_wait(uaddr, (int)a3);
     if (n == FUTEX_NOMATCH) return -11; /* EAGAIN */
@@ -1010,7 +1046,7 @@ static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, lon
 
 static const minios_syscall_entry_t minios_syscall_table[MINIOS_SYSCALL_COUNT] = {
     [MINIOS_SYS_DNS - MINIOS_SYSCALL_BASE]         = { sys_minios_dns,         "dns" },
-    [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_minios_tls_retired, "tls_retired" },
+    [MINIOS_SYS_TLS_HANDSHAKE - MINIOS_SYSCALL_BASE] = { sys_linux_time, "time" },
     [MINIOS_SYS_TLS_SEND - MINIOS_SYSCALL_BASE]    = { sys_linux_futex,    "futex" },
     [MINIOS_SYS_TLS_RECV - MINIOS_SYSCALL_BASE]    = { sys_minios_tls_retired, "tls_retired" },
     [MINIOS_SYS_TIME - MINIOS_SYSCALL_BASE]        = { sys_minios_time,        "time" },
@@ -1094,12 +1130,21 @@ unsigned long syscall_trace_shown(void) { return s_trace_shown; }
  * default ENOSYS path.
  * ===================================================================== */
 
+static long kfile_user_read(KFILE *f, char *buf, long cnt);
+static long kfile_user_write(KFILE *f, const char *buf, long cnt);
+static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6);
+static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6);
+
 static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
     char *buf = (char *)a2; long cnt = a3, i = 0;
     if (cnt > 0 && !user_range_ok((unsigned long)buf, (unsigned long)cnt)) {
         kprintf("READ: EFAULT fd=%ld buf=%lx cnt=%ld\n", a1, a2, a3);
         return EFAULT;
+    }
+    if (net_sys_is_socket(a1)) {
+        if (a3 > 0) { SANITIZE_RANGE(a2, (unsigned long)a3); }
+        return net_sys_recvfrom(a1, a2, a3, 0, 0, 0);
     }
     if (a1 == 0) {
         if (!vga_fb_ps2_owner(current_pid)) return -11;
@@ -1133,7 +1178,7 @@ static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)
     {
         KFILE *f = kfd_get((int)a1);
         if (f) {
-            long r = (long)kfread(buf, 1, (unsigned long)cnt, f);
+            long r = kfile_user_read(f, buf, cnt);
             kfd_put(f);
             return r;
         }
@@ -1142,17 +1187,17 @@ static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)
     return -9;
 }
 
-static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a4; (void)a5; (void)a6;
-    const char *buf = (const char *)a2; long cnt = a3, i;
-    if (cnt > 0) { SANITIZE_RANGE(buf, (unsigned long)cnt); }
-    if (a1 == 1 || a1 == 2) {
-        /* A dup2/pipe override on fd 1/2 (pipeline stage stdout):
-         * serve it instead of the console. No override means the
-         * historical console path, byte for byte. */
-        KFILE *o = kfd_get((int)a1);
+/* Write cnt validated user bytes to fd: a dup2/pipe override on fd 1/2
+ * (pipeline stage stdout) is served instead of the console, no override
+ * means the historical console path byte for byte, and every other
+ * description goes through kfile_user_write. */
+static long fd_write(long fd, const char *buf, long cnt) {
+    long i;
+    if (net_sys_is_socket(fd)) return net_sys_sendto(fd, (long)buf, cnt, 0, 0, 0);
+    if (fd == 1 || fd == 2) {
+        KFILE *o = kfd_get((int)fd);
         if (o) {
-            long r = (long)kfwrite(buf, 1, (unsigned long)cnt, o);
+            long r = kfile_user_write(o, buf, cnt);
             kfd_put(o);
             return r;
         }
@@ -1160,14 +1205,21 @@ static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6
         return cnt;
     }
     {
-        KFILE *f = kfd_get((int)a1);
+        KFILE *f = kfd_get((int)fd);
         if (f) {
-            long r = (long)kfwrite(buf, 1, (unsigned long)cnt, f);
+            long r = kfile_user_write(f, buf, cnt);
             kfd_put(f);
             return r;
         }
     }
     return -9;
+}
+
+static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    const char *buf = (const char *)a2; long cnt = a3;
+    if (cnt > 0) { SANITIZE_RANGE(buf, (unsigned long)cnt); }
+    return fd_write(a1, buf, cnt);
 }
 
 static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -1185,15 +1237,24 @@ static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a
         kmemcpy(kc, iov, span);
     }
     for (k = 0; k < cnt; k++) {
-        unsigned long j;
         if (kc[k].iov_len > 0 &&
             !user_range_ok((unsigned long)kc[k].iov_base, kc[k].iov_len)) {
             kfree(kc);
-            return EFAULT;
+            return total > 0 ? total : EFAULT;
         }
-        if (a1 == 1 || a1 == 2)
-            for (j = 0; j < kc[k].iov_len; j++) vga_putc(kc[k].iov_base[j]);
-        total += (long)kc[k].iov_len;
+    }
+    /* Every iovec reaches the descriptor (pipes and files included, not
+     * just the console), stopping at the first short or failed write. */
+    for (k = 0; k < cnt; k++) {
+        long r;
+        if (kc[k].iov_len == 0) continue;
+        r = fd_write(a1, (const char *)kc[k].iov_base, (long)kc[k].iov_len);
+        if (r < 0) {
+            if (total == 0) total = r;
+            break;
+        }
+        total += r;
+        if ((unsigned long)r < kc[k].iov_len) break;
     }
     if (kc) kfree(kc);
     return total;
@@ -1242,28 +1303,61 @@ static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)
     return do_open_path((const char *)a1, a2);
 }
 
-/* Claim the lowest free fd slot for an already-opened KFILE (pipes,
- * dup). The slot scan and publish re-check under fd_lock like
- * do_open_path; the caller keeps ownership on failure. */
-static long kfd_claim(KFILE *f) {
+/* Linux descriptor-flag ABI values (docs/spec/smp-sched.md, Linux
+ * process, thread and descriptor ABI). Named, never bare. */
+#define LINUX_O_RDONLY          0
+#define LINUX_O_WRONLY          1
+#define LINUX_O_RDWR            2
+#define LINUX_O_APPEND          0x400
+#define LINUX_O_NONBLOCK        0x800
+#define LINUX_O_DIRECT          0x4000
+#define LINUX_O_CLOEXEC         0x80000
+#define LINUX_FD_CLOEXEC        1
+#define LINUX_F_DUPFD           0
+#define LINUX_F_GETFD           1
+#define LINUX_F_SETFD           2
+#define LINUX_F_GETFL           3
+#define LINUX_F_SETFL           4
+#define LINUX_F_DUPFD_CLOEXEC   1030
+#define LINUX_CLOSE_RANGE_UNSHARE 2
+#define LINUX_CLOSE_RANGE_CLOEXEC 4
+#define LINUX_EFD_SEMAPHORE     1
+#define LINUX_EFD_NONBLOCK      0x800
+#define LINUX_EFD_CLOEXEC       0x80000
+#define LINUX_EVENTFD_WORD      8
+#define FD_STD_COUNT            3
+
+/* Claim the lowest free fd slot >= minfd for an already-opened KFILE
+ * (pipes, dup, eventfd), arming close-on-exec when asked. The slot scan
+ * and publish re-check under fd_lock like do_open_path; the caller keeps
+ * ownership on failure. Slots 0..2 stay the console's. */
+static long kfd_claim_from(KFILE *f, long minfd, int cloexec) {
     int fd;
     irqflags_t flags_irq;
     kfd_view_t *v;
     if (!f) return -9;
+    if (minfd < FD_STD_COUNT) minfd = FD_STD_COUNT;
+    if (minfd >= KFD_MAX) return -22;
     v = kfd_view_current();
     spin_lock_irqsave(&fd_lock, &flags_irq);
-    for (fd = 3; fd < KFD_MAX; fd++) if (!v->f[fd]) break;
+    for (fd = (int)minfd; fd < KFD_MAX; fd++) if (!v->f[fd]) break;
     if (fd >= KFD_MAX) {
         spin_unlock_irqrestore(&fd_lock, flags_irq);
         return -24;
     }
     v->f[fd] = f;
+    if (cloexec) v->cloexec |= (1u << (unsigned)fd);
+    else v->cloexec &= ~(1u << (unsigned)fd);
     spin_unlock_irqrestore(&fd_lock, flags_irq);
     {
         proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
         if (op && op->open_files < KFD_MAX) op->open_files++;
     }
     return fd;
+}
+
+static long kfd_claim(KFILE *f) {
+    return kfd_claim_from(f, FD_STD_COUNT, 0);
 }
 
 /** Docstring: Install f as the live mapping for fd 0..KFD_MAX (dup2
@@ -1284,16 +1378,21 @@ KFILE *kfd_override(int fd, KFILE *f) {
     return old;
 }
 
-static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6) {
+/* pipe2 (293): O_CLOEXEC arms close-on-exec on both ends, O_NONBLOCK makes
+ * both descriptions non-blocking; O_DIRECT packet pipes are refused. */
+static long sys_linux_pipe2(long a1, long a2, long a3, long a4, long a5, long a6) {
     int *ufd = (int *)a1;
     KFILE *r = 0, *w = 0;
     long rfd, wfd;
-    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    int cloexec = (a2 & LINUX_O_CLOEXEC) ? 1 : 0;
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a2 & ~(long)(LINUX_O_CLOEXEC | LINUX_O_NONBLOCK)) return -22;
     SANITIZE_RANGE(ufd, 2u * sizeof(int));
     if (kpipe_pair(&r, &w) != 0) return -24;
-    rfd = kfd_claim(r);
+    if (a2 & LINUX_O_NONBLOCK) { r->nonblock = 1; w->nonblock = 1; }
+    rfd = kfd_claim_from(r, FD_STD_COUNT, cloexec);
     if (rfd < 0) { kfclose(r); kfclose(w); return rfd; }
-    wfd = kfd_claim(w);
+    wfd = kfd_claim_from(w, FD_STD_COUNT, cloexec);
     if (wfd < 0) {
         irqflags_t flags_irq;
         kfd_view_t *v = kfd_view_current();
@@ -1307,6 +1406,233 @@ static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)
     ufd[0] = (int)rfd;
     ufd[1] = (int)wfd;
     return 0;
+}
+
+static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2;
+    return sys_linux_pipe2(a1, 0, a3, a4, a5, a6);
+}
+
+/* close-on-exec bit of fd in the caller's view (fd < KFD_MAX). */
+static int kfd_cloexec_get(long fd) {
+    irqflags_t flags_irq;
+    kfd_view_t *v = kfd_view_current();
+    int on;
+    spin_lock_irqsave(&fd_lock, &flags_irq);
+    on = (v->cloexec & (1u << (unsigned)fd)) ? 1 : 0;
+    spin_unlock_irqrestore(&fd_lock, flags_irq);
+    return on;
+}
+
+static void kfd_cloexec_set(long fd, int on) {
+    irqflags_t flags_irq;
+    kfd_view_t *v = kfd_view_current();
+    spin_lock_irqsave(&fd_lock, &flags_irq);
+    if (on) v->cloexec |= (1u << (unsigned)fd);
+    else v->cloexec &= ~(1u << (unsigned)fd);
+    spin_unlock_irqrestore(&fd_lock, flags_irq);
+}
+
+/* Linux open-file status flags of a description: access mode from its
+ * kind plus O_APPEND and O_NONBLOCK. */
+static long kfile_status_flags(KFILE *f) {
+    long fl;
+    if (f->is_eventfd) fl = LINUX_O_RDWR;
+    else if (f->is_pipe) fl = f->pipe_write ? LINUX_O_WRONLY : LINUX_O_RDONLY;
+    else if (f->mode == 0) fl = LINUX_O_RDONLY;
+    else fl = LINUX_O_WRONLY | ((f->mode == 2) ? LINUX_O_APPEND : 0);
+    if (f->nonblock) fl |= LINUX_O_NONBLOCK;
+    return fl;
+}
+
+/* fcntl (72): DUPFD/DUPFD_CLOEXEC, GETFD/SETFD (FD_CLOEXEC), GETFL, and
+ * SETFL (O_NONBLOCK only, other bits ignored like Linux). The console
+ * descriptors 0..2 answer read-write, never close-on-exec. */
+static long sys_linux_fcntl(long a1, long a2, long a3, long a4, long a5, long a6) {
+    KFILE *f;
+    long r;
+    (void)a4; (void)a5; (void)a6;
+    if (net_sys_is_socket(a1)) return net_sys_fcntl(a1, a2, a3);
+    if (a1 < 0 || a1 >= KFD_MAX) return -9;
+    f = kfd_get((int)a1);
+    if (!f && a1 >= FD_STD_COUNT) return -9;
+    switch (a2) {
+    case LINUX_F_DUPFD:
+    case LINUX_F_DUPFD_CLOEXEC:
+        if (!f) return -22;
+        r = kfd_claim_from(f, a3, a2 == LINUX_F_DUPFD_CLOEXEC);
+        if (r < 0) kfd_put(f);
+        return r;
+    case LINUX_F_GETFD:
+        r = f ? (kfd_cloexec_get(a1) ? LINUX_FD_CLOEXEC : 0) : 0;
+        break;
+    case LINUX_F_SETFD:
+        if (f) kfd_cloexec_set(a1, (a3 & LINUX_FD_CLOEXEC) ? 1 : 0);
+        r = 0;
+        break;
+    case LINUX_F_GETFL:
+        r = f ? kfile_status_flags(f) : LINUX_O_RDWR;
+        break;
+    case LINUX_F_SETFL:
+        if (f) f->nonblock = (a3 & LINUX_O_NONBLOCK) ? 1 : 0;
+        r = 0;
+        break;
+    default:
+        r = -22;
+        break;
+    }
+    if (f) kfd_put(f);
+    return r;
+}
+
+/* dup3 (292): dup2 with O_CLOEXEC as the only flag; old == new is EINVAL. */
+static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6) {
+    long r;
+    if (a3 & ~(long)LINUX_O_CLOEXEC) return -22;
+    if (a1 == a2) return -22;
+    r = sys_linux_dup2(a1, a2, 0, a4, a5, a6);
+    if (r >= 0 && r < KFD_MAX) kfd_cloexec_set(r, (a3 & LINUX_O_CLOEXEC) ? 1 : 0);
+    return r;
+}
+
+/* close_range (436): mark [first, last] close-on-exec, or close it. */
+static long sys_linux_close_range(long a1, long a2, long a3, long a4, long a5, long a6) {
+    unsigned long lo = (unsigned long)(unsigned int)a1;
+    unsigned long hi = (unsigned long)(unsigned int)a2;
+    unsigned long fd;
+    (void)a4; (void)a5; (void)a6;
+    if (a3 & ~(long)(LINUX_CLOSE_RANGE_UNSHARE | LINUX_CLOSE_RANGE_CLOEXEC)) return -22;
+    if (lo > hi) return -22;
+    if (a3 & LINUX_CLOSE_RANGE_CLOEXEC) {
+        irqflags_t flags_irq;
+        kfd_view_t *v = kfd_view_current();
+        spin_lock_irqsave(&fd_lock, &flags_irq);
+        for (fd = lo; fd <= hi && fd < KFD_MAX; fd++)
+            if (v->f[fd]) v->cloexec |= (1u << (unsigned)fd);
+        spin_unlock_irqrestore(&fd_lock, flags_irq);
+        return 0;
+    }
+    for (fd = lo; fd <= hi && fd < KFD_MAX; fd++)
+        if (fd >= FD_STD_COUNT) sys_linux_close((long)fd, 0, 0, 0, 0, 0);
+    for (fd = NET_FD_BASE; fd < (unsigned long)(NET_UDP_FD_BASE + NET_UDP_SOCKETS); fd++)
+        if (fd >= lo && fd <= hi && net_sys_is_socket((long)fd)) net_sys_close((long)fd);
+    return 0;
+}
+
+/* eventfd2 (290) / eventfd (284): a counter description (kevent_*). */
+static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6) {
+    KFILE *f;
+    long fd;
+    (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a2 & ~(long)(LINUX_EFD_SEMAPHORE | LINUX_EFD_NONBLOCK | LINUX_EFD_CLOEXEC)) return -22;
+    f = kevent_create((unsigned long long)(unsigned int)a1, (a2 & LINUX_EFD_SEMAPHORE) != 0);
+    if (!f) return -12;
+    f->nonblock = (a2 & LINUX_EFD_NONBLOCK) ? 1 : 0;
+    fd = kfd_claim_from(f, FD_STD_COUNT, (a2 & LINUX_EFD_CLOEXEC) != 0);
+    if (fd < 0) kfclose(f);
+    return fd;
+}
+
+static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2;
+    return sys_linux_eventfd2(a1, 0, a3, a4, a5, a6);
+}
+
+/** Docstring: poll(2) readiness of a non-socket descriptor (pipes,
+ * eventfds, files, console), masked by nothing: the caller keeps the
+ * requested bits plus POLLERR/POLLHUP/POLLNVAL. POLLNVAL for a closed fd. */
+int kfd_poll_revents(int fd) {
+    KFILE *f;
+    int rev = 0;
+    if (fd < 0 || fd >= KFD_MAX) return NET_POLLNVAL;
+    f = kfd_get(fd);
+    if (!f) {
+        if (fd >= FD_STD_COUNT) return NET_POLLNVAL;
+        return fd == 0 ? 0 : NET_POLLOUT;
+    }
+    if (f->is_eventfd) {
+        if (kevent_readable(f)) rev |= NET_POLLIN;
+        if (kevent_writable(f)) rev |= NET_POLLOUT;
+    } else if (f->is_pipe) {
+        unsigned avail = 0, space = 0;
+        int wopen = 0, ropen = 0;
+        if (kpipe_state(f, &avail, &space, &wopen, &ropen) == 0) {
+            if (!f->pipe_write) {
+                if (avail > 0u) rev |= NET_POLLIN;
+                if (!wopen) rev |= NET_POLLHUP;
+            } else {
+                if (!ropen) rev |= NET_POLLERR;
+                else if (space > 0u) rev |= NET_POLLOUT;
+            }
+        }
+    } else {
+        rev = NET_POLLIN | NET_POLLOUT;
+    }
+    kfd_put(f);
+    return rev;
+}
+
+/* Linux read on a description: an eventfd takes its counter, a pipe read
+ * end blocks (yielding) while empty with the writer open unless
+ * O_NONBLOCK (-EAGAIN), and reports EOF once the writer closed; every
+ * other file reads through kfread. */
+static long kfile_user_read(KFILE *f, char *buf, long cnt) {
+    if (f->is_eventfd) {
+        unsigned long long v = 0;
+        if (cnt < LINUX_EVENTFD_WORD) return -22;
+        for (;;) {
+            if (kevent_read(f, &v) == 0) {
+                kmemcpy(buf, &v, LINUX_EVENTFD_WORD);
+                return LINUX_EVENTFD_WORD;
+            }
+            if (f->nonblock) return -11;
+            yield();
+        }
+    }
+    if (cnt <= 0) return 0;
+    if (f->is_pipe && !f->pipe_write) {
+        for (;;) {
+            long r = (long)kfread(buf, 1, (unsigned long)cnt, f);
+            if (r > 0) return r;
+            if (!kpipe_empty_wopen(f)) return 0;
+            if (f->nonblock) return -11;
+            yield();
+        }
+    }
+    return (long)kfread(buf, 1, (unsigned long)cnt, f);
+}
+
+/* Linux write on a description: an eventfd adds to its counter, a pipe
+ * write end blocks (yielding) while full unless O_NONBLOCK and answers
+ * -EPIPE once the reader closed; every other file writes through
+ * kfwrite. */
+static long kfile_user_write(KFILE *f, const char *buf, long cnt) {
+    if (f->is_eventfd) {
+        unsigned long long v = 0;
+        long rc;
+        if (cnt < LINUX_EVENTFD_WORD) return -22;
+        kmemcpy(&v, buf, LINUX_EVENTFD_WORD);
+        for (;;) {
+            rc = kevent_write(f, v);
+            if (rc == 0) return LINUX_EVENTFD_WORD;
+            if (rc != -11 || f->nonblock) return rc;
+            yield();
+        }
+    }
+    if (cnt <= 0) return 0;
+    if (f->is_pipe && f->pipe_write) {
+        long done = 0;
+        for (;;) {
+            int wopen = 0, ropen = 0;
+            if (kpipe_state(f, 0, 0, &wopen, &ropen) != 0) return -5;
+            if (!ropen) return done > 0 ? done : -32;
+            done += (long)kfwrite(buf + done, 1, (unsigned long)(cnt - done), f);
+            if (done >= cnt) return done;
+            if (f->nonblock) return done > 0 ? done : -11;
+            yield();
+        }
+    }
+    return (long)kfwrite(buf, 1, (unsigned long)cnt, f);
 }
 
 static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -1352,6 +1678,7 @@ static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)
     spin_lock_irqsave(&fd_lock, &flags_irq);
     old = v->f[(int)a2];
     v->f[(int)a2] = f;
+    v->cloexec &= ~(1u << (unsigned)a2);
     spin_unlock_irqrestore(&fd_lock, flags_irq);
     if (old) kfd_put(old);
     return a2;
@@ -1457,8 +1784,23 @@ static int mmap_tag_file(unsigned long base, int ino, unsigned long off) {
     return 0;
 }
 
+static int vma_live_overlap(unsigned long base, unsigned long len);
+
+/* Invariant guard for every range mmap hands out: it must not overlap a
+ * live mapping or reach below the brk heap. A hit means the VMA trees or
+ * the bump pointer are corrupt; handing the range out would give one page
+ * two owners, so the mapping is refused and the defect reported. */
+static int mmap_range_free(unsigned long base, unsigned long len) {
+    if (base < g_brk || vma_live_overlap(base, len)) {
+        kprintf("mmap: refusing %lx+%lx: overlaps a live mapping or the brk heap (pid %d, brk %lx)\n",
+                base, len, current_pid, g_brk);
+        return 0;
+    }
+    return 1;
+}
+
 static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a1; (void)a3;
+    (void)a1;
     unsigned long len = (unsigned long)a2;
     unsigned long n = ALIGN_UP(len ? len : 1, 0x1000);
     unsigned long mflags = (unsigned long)a4;
@@ -1511,10 +1853,17 @@ static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)
             unsigned long addr = best->base + best->len - n;
             unsigned long rem_base = best->base;
             unsigned long rem_len = best->len - n;
+            if (!mmap_range_free(addr, n)) { ret = -12; goto mmap_out; }
             vma_tree_delete(&vma_free_root, best->base);
             if (rem_len > 0)
                 vma_tree_insert(&vma_free_root, rem_base, rem_len);
             vma_tree_insert(&vma_live_root, addr, n);
+            if (!is_file && mm_anon_reserve(0, addr, n, (unsigned long)a3)) {
+                vma_tree_delete(&vma_live_root, addr);
+                vma_tree_insert(&vma_free_root, addr, n);
+                ret = -12;
+                goto mmap_out;
+            }
             if (is_file && mmap_tag_file(addr, fino, foff)) {
                 vma_tree_delete(&vma_live_root, addr);
                 vma_tree_insert(&vma_free_root, addr, n);
@@ -1526,8 +1875,9 @@ static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)
         }
     }
     if (user_mmap_cur - n < g_brk) { ret = -12; goto mmap_out; }
+    if (!mmap_range_free(user_mmap_cur - n, n)) { ret = -12; goto mmap_out; }
     user_mmap_cur -= n;
-    if (!is_file && mm_ensure_cur(user_mmap_cur, user_mmap_cur + n)) {
+    if (!is_file && mm_anon_reserve(0, user_mmap_cur, n, (unsigned long)a3)) {
         user_mmap_cur += n;
         ret = -12;
         goto mmap_out;
@@ -1545,27 +1895,78 @@ mmap_out:
     return ret;
 }
 
+/* Lowest live mapping overlapping [base, end), or VMA_NIL. Bounded
+ * explicit-stack walk like the mmap best-fit search. */
+static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end) {
+    vma_node_t *best = VMA_NIL;
+    vma_node_t *stack[64];
+    int sp = 0;
+    vma_node_t *x = vma_live_root;
+    while (x != VMA_NIL || sp > 0) {
+        while (x != VMA_NIL) { if (sp < 64) stack[sp++] = x; x = x->left; }
+        x = stack[--sp];
+        if (x->base < end && x->base + x->len > base &&
+                (best == VMA_NIL || x->base < best->base))
+            best = x;
+        x = x->right;
+    }
+    return best;
+}
+
+/* Insert a live remainder of a split mapping, keeping its file identity. */
+static int vma_live_remainder(unsigned long base, unsigned long len,
+        int file, int ino, unsigned long off) {
+    vma_node_t *r = vma_tree_insert(&vma_live_root, base, len);
+    if (r == VMA_NIL) return -1;
+    if (file) { r->f_file = 1; r->f_ino = ino; r->f_off = off; }
+    return 0;
+}
+
+/* Linux munmap(11): every mapping overlapping [base, base + len) loses
+ * the overlap, which may be its head, tail, middle or all of it; the
+ * survivors stay live (file mappings keep their offsets) and only the
+ * unmapped pages are released and returned to the free tree. Unmapping
+ * a hole is not an error. -EINVAL for an unaligned base, a zero length
+ * or a range leaving the user window; -ENOMEM when the node pool cannot
+ * hold a split (the mapping is restored untouched). */
 static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     unsigned long base = (unsigned long)a1;
     unsigned long n = ALIGN_UP((unsigned long)a2, 0x1000);
-    if (n == 0) return 0;
+    unsigned long end = base + n;
+    irqflags_t flags;
+    vma_node_t *v;
+    long ret = 0;
+    if (base & 0xFFFUL || n == 0 || end < base) return -22;
+    if (base < USER_LOAD_BASE || end > USER_LOAD_END) return -22;
     /* The shared-library region is kernel-managed (registry bases,
      * shared text): user munmap there refuses, never half-unmaps. */
-    if (base < LDSO_REGION_END && base + n > LDSO_REGION_BASE &&
-            base + n > base)
+    if (base < LDSO_REGION_END && end > LDSO_REGION_BASE)
         return -1;
-    irqflags_t flags;
     spin_lock_irqsave(&mm_lock, &flags);
-    vma_node_t *fnd = vma_tree_find(vma_live_root, base);
-    long ret = -1;
-    if (fnd != VMA_NIL && n <= fnd->len) {
-        if (fnd->f_file)
-            mm_file_range_release(0, fnd->base, fnd->len, fnd->f_ino,
-                fnd->f_off, 1);
-        vma_tree_insert(&vma_free_root, fnd->base, fnd->len);
-        vma_tree_delete(&vma_live_root, base);
-        ret = 0;
+    while ((v = vma_live_first_overlap(base, end)) != VMA_NIL) {
+        unsigned long vb = v->base, ve = v->base + v->len;
+        unsigned long lo = vb > base ? vb : base;
+        unsigned long hi = ve < end ? ve : end;
+        int file = v->f_file, ino = v->f_ino;
+        unsigned long off = v->f_off;
+        vma_tree_delete(&vma_live_root, vb);
+        if (vb < lo && vma_live_remainder(vb, lo - vb, file, ino, off)) {
+            vma_live_remainder(vb, ve - vb, file, ino, off);
+            ret = -12;
+            break;
+        }
+        if (hi < ve && vma_live_remainder(hi, ve - hi, file, ino, off + (hi - vb))) {
+            if (vb < lo) vma_tree_delete(&vma_live_root, vb);
+            vma_live_remainder(vb, ve - vb, file, ino, off);
+            ret = -12;
+            break;
+        }
+        if (file)
+            mm_file_range_release(0, lo, hi - lo, ino, off + (lo - vb), 1);
+        else
+            mm_anon_release(0, lo, hi - lo);
+        vma_tree_insert(&vma_free_root, lo, hi - lo);
     }
     spin_unlock_irqrestore(&mm_lock, flags);
     return ret;
@@ -1606,9 +2007,12 @@ static volatile unsigned long *mprotect_pte(unsigned long cr3,
  * without changing anything. -EINVAL for unaligned base or unknown
  * prot bits. A write fault on a cleared page falls through
  * cow_resolve (not a CoW page) into the kill path, exactly like nx.
- * Two documented deviations: PROT_NONE stays present (denies write
- * and exec, reads still succeed) because the reaper only frees
- * present data pages, and CoW-shared pages refuse with -ENOMEM
+ * A demand-paging reservation (never touched) just takes the new
+ * protection in its marker, committing no memory: glibc reserves thread
+ * stacks and malloc arenas PROT_NONE and opens them up this way. Two
+ * documented deviations on present pages: PROT_NONE stays present
+ * (denies write and exec, reads still succeed) because the reaper only
+ * frees present data pages, and CoW-shared pages refuse with -ENOMEM
  * (upgrading them in place would let one window write another's
  * bytes past cow_resolve). Cache-shared file pages refuse the same
  * way: touch-write them first (the fault breaks a private copy) and
@@ -1638,6 +2042,7 @@ static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long
         unsigned long phys;
         if (!pp) { spin_unlock_irqrestore(&mm_lock, flags); return -12; }
         pte = *pp;
+        if (!(pte & 1u) && (pte & PTE_DEMAND)) continue;
         if (!(pte & 1u) || !(pte & (unsigned long)PT_FLAGS_USER)) {
             spin_unlock_irqrestore(&mm_lock, flags);
             return -12;
@@ -1656,6 +2061,10 @@ static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long
     for (va = base; va < base + n; va += 0x1000) {
         volatile unsigned long *pp = mprotect_pte(cr3, va);
         unsigned long pte = *pp;
+        if (!(pte & 1u) && (pte & PTE_DEMAND)) {
+            *pp = mm_demand_pte(prot);
+            continue;
+        }
         pte &= ~((unsigned long)0x002 | (unsigned long)PT_FLAGS_NX);
         if (want_write) pte |= (unsigned long)0x002;
         if (!want_exec) pte |= (unsigned long)PT_FLAGS_NX;
@@ -1748,6 +2157,8 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
             if (fnd->f_file)
                 mm_file_range_release(0, fnd->base, fnd->len, fnd->f_ino,
                     fnd->f_off, 1);
+            else
+                mm_anon_release(0, fnd->base, fnd->len);
             vma_tree_insert(&vma_free_root, fnd->base, fnd->len);
             vma_tree_delete(&vma_live_root, old);
             ret = (long)old;
@@ -1795,6 +2206,8 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
                     fnd_off + new_len, 1);
             }
         }
+        if (tail > 0 && !fnd_file)
+            mm_anon_release(0, tail_base, tail);
         if (tail > 0)
             vma_tree_insert(&vma_free_root, tail_base, tail);
         ret = (long)old;
@@ -1854,6 +2267,7 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
             goto mremap_out;
         }
         kmemcpy((void *)fixed, (void *)old, move_n);
+        if (!fnd_file) mm_anon_release(0, fnd_base, fnd_len);
         vma_tree_insert(&vma_free_root, fnd_base, fnd_len);
         vma_tree_delete(&vma_live_root, old);
         ret = (long)fixed;
@@ -1970,6 +2384,7 @@ static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a
             goto mremap_out;
         }
         kmemcpy((void *)addr, (void *)old, move_n);
+        if (!fnd_file) mm_anon_release(0, fnd_base, fnd_len);
         vma_tree_insert(&vma_free_root, fnd_base, fnd_len);
         vma_tree_delete(&vma_live_root, old);
         ret = (long)addr;
@@ -1989,9 +2404,74 @@ static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, l
     return 0;
 }
 
-static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+#define LINUX_TCGETS     0x5401
+#define LINUX_TIOCGWINSZ 0x5413
+#define LINUX_FIONREAD   0x541B
+#define LINUX_FIONBIO    0x5421
+#define LINUX_FIONCLEX   0x5450
+#define LINUX_FIOCLEX    0x5451
+#define LINUX_TCGETS2    0x802C542AL
+#define LINUX_ENOTTY     25
+#define LINUX_WINSIZE_LEN 8
+#define LINUX_TERMIOS_LEN  36
+#define LINUX_TERMIOS2_LEN 44
+#define LINUX_IOCTL_INT  ((unsigned long)sizeof(int))
+
+/* Bytes a read of f would return now (FIONREAD). */
+static int kfile_readable_bytes(KFILE *f) {
+    unsigned avail = 0;
+    if (f->is_eventfd) return f->efd_count ? (int)sizeof(f->efd_count) : 0;
+    if (f->is_pipe) {
+        if (kpipe_state(f, &avail, 0, 0, 0) != 0) return 0;
+        return (int)avail;
+    }
+    if (f->rf) return f->pos < f->rf->size ? (int)(f->rf->size - f->pos) : 0;
+    if (f->minifs_ino >= 0) return f->pos < f->minifs_size ? (int)(f->minifs_size - f->pos) : 0;
     return 0;
+}
+
+/* Linux ioctl(16). The console (fds 0-2 with no redirection) is the one
+ * terminal: TCGETS/TCGETS2 succeed (isatty) with a zeroed attribute block
+ * of the caller's size, TIOCGWINSZ answers the console geometry, and every
+ * other request is accepted as before. Every other
+ * descriptor answers FIONREAD (bytes readable now), FIONBIO (O_NONBLOCK),
+ * FIOCLEX/FIONCLEX (FD_CLOEXEC), and ENOTTY for terminal and unknown
+ * requests, never a silent success that leaves the caller's buffer
+ * uninitialized. Sockets answer through net_sys_ioctl. */
+static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6) {
+    KFILE *f;
+    long r;
+    (void)a4; (void)a5; (void)a6;
+    if (a2 == LINUX_FIONREAD || a2 == LINUX_FIONBIO) { SANITIZE_RANGE(a3, LINUX_IOCTL_INT); }
+    if (net_sys_is_socket(a1)) return net_sys_ioctl(a1, a2, a3);
+    if (a1 < 0 || a1 >= KFD_MAX) return -9;
+    f = kfd_get((int)a1);
+    if (!f) {
+        if (a1 >= FD_STD_COUNT) return -9;
+        if (a2 == LINUX_TCGETS || a2 == LINUX_TCGETS2) {
+            unsigned long len = a2 == LINUX_TCGETS ? LINUX_TERMIOS_LEN : LINUX_TERMIOS2_LEN;
+            SANITIZE_RANGE(a3, len);
+            kmemset((void *)a3, 0, len);
+        }
+        if (a2 == LINUX_TIOCGWINSZ) {
+            unsigned short *ws = (unsigned short *)a3;
+            SANITIZE_RANGE(a3, LINUX_WINSIZE_LEN);
+            ws[0] = (unsigned short)term_rows;
+            ws[1] = (unsigned short)term_cols;
+            ws[2] = 0;
+            ws[3] = 0;
+        }
+        return 0;
+    }
+    switch (a2) {
+    case LINUX_FIONREAD: *(int *)a3 = kfile_readable_bytes(f); r = 0; break;
+    case LINUX_FIONBIO: f->nonblock = *(const int *)a3 != 0; r = 0; break;
+    case LINUX_FIOCLEX: kfd_cloexec_set(a1, 1); r = 0; break;
+    case LINUX_FIONCLEX: kfd_cloexec_set(a1, 0); r = 0; break;
+    default: r = -LINUX_ENOTTY; break;
+    }
+    kfd_put(f);
+    return r;
 }
 
 static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -2059,6 +2539,188 @@ static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long
     return net_sys_shutdown(a1, a2);
 }
 
+#define LINUX_RLIMIT_CPU      0
+#define LINUX_RLIMIT_STACK    3
+#define LINUX_RLIMIT_NOFILE   7
+#define LINUX_RLIMIT_AS       9
+#define LINUX_RLIMIT_NLIMITS  16
+#define LINUX_RLIM_INFINITY   (~0UL)
+#define LINUX_RLIMIT_PAIR     (2 * sizeof(unsigned long))
+/* RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT). */
+#define LINUX_RLIMIT_TICKS_PER_S 100UL
+#define LINUX_CPUMASK_BYTES   ((unsigned long)sizeof(unsigned long))
+
+/* One resource's limits as Linux reports them: the real main stack size
+ * for RLIMIT_STACK (glibc sizes every thread stack from it, so the old
+ * "unlimited" made each thread reserve 8 MB of a ~140 MB window), the
+ * per-process MiniOS limits for NOFILE, AS and CPU (CPU counted in ticks
+ * here, reported in seconds), infinity for the rest. */
+static void linux_rlimit_get(const proc_t *p, long res, unsigned long out[2]) {
+    unsigned long v = LINUX_RLIM_INFINITY;
+    if (res == LINUX_RLIMIT_STACK) v = MINIOS_USER_STACK_SIZE;
+    else if (res == LINUX_RLIMIT_NOFILE) v = p->rl_nofile_max ? p->rl_nofile_max : KFD_MAX;
+    else if (res == LINUX_RLIMIT_AS && p->rl_as_max) v = p->rl_as_max;
+    else if (res == LINUX_RLIMIT_CPU && p->rl_cpu_max) v = p->rl_cpu_max / LINUX_RLIMIT_TICKS_PER_S;
+    out[0] = v;
+    out[1] = v;
+}
+
+/* prlimit64(pid, resource, new, old): pid 0 or a live pid. Setting NOFILE
+ * (at most KFD_MAX), AS and CPU updates the MiniOS limit; the stack is
+ * fixed by the window layout, so only a value at or below it is accepted
+ * (and changes nothing). */
+static long sys_linux_prlimit64(long a1, long a2, long a3, long a4, long a5, long a6) {
+    proc_t *p;
+    (void)a5; (void)a6;
+    p = proc_get(a1 == 0 ? current_pid : (int)a1);
+    if (!p || a1 < 0) return -3;
+    if (a2 < 0 || a2 >= LINUX_RLIMIT_NLIMITS) return -22;
+    if (a4) {
+        SANITIZE_RANGE(a4, LINUX_RLIMIT_PAIR);
+        linux_rlimit_get(p, a2, (unsigned long *)a4);
+    }
+    if (a3) {
+        const unsigned long *nv = (const unsigned long *)a3;
+        unsigned long cur;
+        SANITIZE_RANGE(a3, LINUX_RLIMIT_PAIR);
+        cur = nv[0];
+        if (nv[0] > nv[1]) return -22;
+        if (a2 == LINUX_RLIMIT_NOFILE) {
+            if (cur != LINUX_RLIM_INFINITY && cur > KFD_MAX) return -1;
+            p->rl_nofile_max = cur == LINUX_RLIM_INFINITY ? 0 : cur;
+        } else if (a2 == LINUX_RLIMIT_AS) {
+            p->rl_as_max = cur == LINUX_RLIM_INFINITY ? 0 : cur;
+        } else if (a2 == LINUX_RLIMIT_CPU) {
+            p->rl_cpu_max = cur == LINUX_RLIM_INFINITY ? 0 : cur * LINUX_RLIMIT_TICKS_PER_S;
+        } else if (a2 == LINUX_RLIMIT_STACK) {
+            if (cur != LINUX_RLIM_INFINITY && cur > MINIOS_USER_STACK_SIZE) return -1;
+        }
+    }
+    return 0;
+}
+
+/* sched_getaffinity(pid, size, mask): every task may run on every CPU,
+ * so the mask has the low cpu_count bits set; the return value is the
+ * mask size written, as Linux reports it. */
+static long sys_linux_sched_getaffinity(long a1, long a2, long a3, long a4, long a5, long a6) {
+    unsigned long mask;
+    (void)a4; (void)a5; (void)a6;
+    if (a1 < 0 || (a1 != 0 && !proc_get((int)a1))) return -3;
+    if (a2 < (long)LINUX_CPUMASK_BYTES || (a2 & (long)(LINUX_CPUMASK_BYTES - 1))) return -22;
+    SANITIZE_RANGE(a3, LINUX_CPUMASK_BYTES);
+    mask = cpu_count >= (int)(8 * LINUX_CPUMASK_BYTES) ? ~0UL : ((1UL << cpu_count) - 1UL);
+    *(unsigned long *)a3 = mask;
+    return (long)LINUX_CPUMASK_BYTES;
+}
+
+#define LINUX_CLOCK_REALTIME  0
+#define LINUX_CLOCK_MONOTONIC 1
+#define LINUX_CLOCK_BOOTTIME  7
+#define LINUX_TIMER_ABSTIME   1
+#define LINUX_NS_PER_US       1000L
+#define LINUX_US_PER_S        1000000L
+#define LINUX_NS_PER_S        1000000000L
+#define LINUX_SLEEP_MAX_S     (0x7fffffffffffffffL / LINUX_US_PER_S - 1)
+
+/* Microseconds of a user timespec, or -EINVAL when it is malformed
+ * (negative, or tv_nsec outside [0, 1e9)); huge intervals saturate. */
+static long linux_timespec_us(long ts) {
+    long sec = ((const long *)ts)[0];
+    long nsec = ((const long *)ts)[1];
+    if (sec < 0 || nsec < 0 || nsec >= LINUX_NS_PER_S) return -22;
+    if (sec > LINUX_SLEEP_MAX_S) sec = LINUX_SLEEP_MAX_S;
+    return sec * LINUX_US_PER_S + nsec / LINUX_NS_PER_US;
+}
+
+/* Wait, yielding, until the clock read by now() reaches deadline_us. No
+ * signal handlers exist, so nothing interrupts the wait: rem is never
+ * written (Linux writes it only on EINTR). */
+static void linux_sleep_until(unsigned long (*now)(void), unsigned long deadline_us) {
+    while (now() < deadline_us) yield();
+}
+
+/* pause(34): wait for a signal. MiniOS installs no handlers, so the only
+ * signal that ends the wait is a fatal one, which ends the caller. */
+static long sys_linux_pause(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    for (;;) yield();
+    return 0;
+}
+
+/* nanosleep(35): sleep the relative interval at *req on the monotonic
+ * clock; -EINVAL for a malformed interval, -EFAULT for a bad pointer. */
+static long sys_linux_nanosleep(long a1, long a2, long a3, long a4, long a5, long a6) {
+    long us;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_RANGE(a1, 2 * sizeof(long));
+    us = linux_timespec_us(a1);
+    if (us < 0) return us;
+    linux_sleep_until(ktime_us, ktime_us() + (unsigned long)us);
+    return 0;
+}
+
+/* clock_nanosleep(230): a relative interval is elapsed time whatever the
+ * clock (the monotonic TSC clock times it, as Linux does: glibc sends
+ * every nanosleep here as a relative CLOCK_REALTIME sleep); TIMER_ABSTIME
+ * waits for the named clock to reach the deadline: CLOCK_REALTIME on the
+ * wall clock, CLOCK_MONOTONIC and CLOCK_BOOTTIME on the TSC clock that
+ * clock_gettime(1) reads. */
+static long sys_linux_clock_nanosleep(long a1, long a2, long a3, long a4, long a5, long a6) {
+    unsigned long (*now)(void);
+    long us;
+    (void)a4; (void)a5; (void)a6;
+    if (a1 == LINUX_CLOCK_REALTIME) now = wall_us_now;
+    else if (a1 == LINUX_CLOCK_MONOTONIC || a1 == LINUX_CLOCK_BOOTTIME) now = ktime_us;
+    else return -22;
+    if (a2 & ~(long)LINUX_TIMER_ABSTIME) return -22;
+    SANITIZE_RANGE(a3, 2 * sizeof(long));
+    us = linux_timespec_us(a3);
+    if (us < 0) return us;
+    if (a2 & LINUX_TIMER_ABSTIME) linux_sleep_until(now, (unsigned long)us);
+    else linux_sleep_until(ktime_us, ktime_us() + (unsigned long)us);
+    return 0;
+}
+
+static long sys_linux_setsockopt(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a6;
+    if (a5 < 0) return -22;
+    if (a5 > 0) { SANITIZE_RANGE(a4, (unsigned long)a5); }
+    return net_sys_setsockopt(a1, a2, a3, a4, a5);
+}
+
+static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a6;
+    SANITIZE_RANGE(a5, sizeof(int));
+    SANITIZE_RANGE(a4, sizeof(int));
+    return net_sys_getsockopt(a1, a2, a3, a4, a5);
+}
+
+static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    SANITIZE_RANGE(a3, sizeof(int));
+    return net_sys_getsockname(a1, a2, a3);
+}
+
+static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    SANITIZE_RANGE(a3, sizeof(int));
+    return net_sys_getpeername(a1, a2, a3);
+}
+
+static long sys_linux_sendmsg(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a4; (void)a5; (void)a6;
+    SANITIZE_RANGE(a2, NET_MSGHDR_LEN);
+    return net_sys_sendmsg(a1, a2, a3);
+}
+
+static long sys_linux_sendmmsg(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a5; (void)a6;
+    if (a3 < 0) return -22;
+    if (a3 > NET_MMSG_MAX) a3 = NET_MMSG_MAX;
+    if (a3 > 0) { SANITIZE_RANGE(a2, (unsigned long)a3 * NET_MMSGHDR_LEN); }
+    return net_sys_sendmmsg(a1, a2, a3, a4);
+}
+
 static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a4; (void)a5; (void)a6;
     if (a2 < 0 || (unsigned long)a2 > (USER_LOAD_END - USER_LOAD_BASE) / 8) return -22;
@@ -2116,9 +2778,36 @@ static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a
     }
 }
 
+#define PROC_SELF_EXE "/proc/self/exe"
+
+/* readlink of /proc/self/exe answers the caller's image path (absolute,
+ * no NUL, truncated to the buffer like Linux); MiniOS has no other links,
+ * so every other path is -EINVAL. */
+static long readlink_path(const char *path, char *buf, long bufsz) {
+    const char *exe;
+    long len, i;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+    if (kstrcmp(path, PROC_SELF_EXE) != 0) return -22;
+    if (bufsz <= 0) return -22;
+    SANITIZE_RANGE(buf, (unsigned long)bufsz);
+    exe = proc_sec_exe(current_pid);
+    if (!exe[0]) return -2;
+    len = (long)kstrlen(exe) + 1;
+    if (len > bufsz) len = bufsz;
+    buf[0] = '/';
+    for (i = 1; i < len; i++) buf[i] = exe[i - 1];
+    return len;
+}
+
 static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    return -22;
+    (void)a4; (void)a5; (void)a6;
+    return readlink_path((const char *)a1, (char *)a2, a3);
+}
+
+/* prctl (157): no_new_privs, dumpable, name and seccomp (proc_sec.c). */
+static long sys_linux_prctl(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a6;
+    return proc_sec_prctl(a1, a2, a3, a4, a5);
 }
 
 /* rename(82): same-filesystem file move through fs_rename (ramdisk
@@ -2218,6 +2907,46 @@ static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6
     return 0;
 }
 
+/* madvise (28): advice only; glibc frees thread stacks with it and
+ * ignores the result, MiniOS keeps the pages, so 0 is truthful. */
+static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return 0;
+}
+
+/* mkdir (83): a MiniFS directory. The parent must exist (-ENOENT), an
+ * existing name is -EEXIST, the mode is accepted and ignored (MiniFS has
+ * no permission bits). Runs under fs_lock like unlink. */
+static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6) {
+    const char *path = (const char *)a1;
+    char resolved[RAMDISK_FNAME_LEN];
+    char parent[RAMDISK_FNAME_LEN];
+    unsigned len, cut;
+    irqflags_t flags;
+    int r;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+    if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
+    len = (unsigned)kstrlen(resolved);
+    while (len > 0 && resolved[len - 1] == '/') resolved[--len] = 0;
+    if (len == 0) return -17;
+    if (!minifs_is_mounted()) return -30;
+    if (fs_is_dir(resolved) || ramdisk_open(resolved) || minifs_resolve_path(resolved) >= 0)
+        return -17;
+    cut = len;
+    while (cut > 0 && resolved[cut - 1] != '/') cut--;
+    if (cut > 0) {
+        kmemcpy(parent, resolved, cut);
+        parent[cut] = 0;
+        if (!fs_dir_exists(parent)) return -2;
+    }
+    spin_lock_irqsave(&fs_lock, &flags);
+    r = minifs_mkdir(resolved, 0755);
+    if (r >= 0) minifs_sync();
+    spin_unlock_irqrestore(&fs_lock, flags);
+    return r >= 0 ? 0 : -5;
+}
+
 #define LINUX_SYSCALL_COUNT 200
 
 static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
@@ -2240,6 +2969,7 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [22]  = { sys_linux_pipe,         "pipe" },
     [24]  = { sys_linux_yield,        "yield" },
     [25]  = { sys_linux_mremap,       "mremap" },
+    [28]  = { sys_linux_madvise,      "madvise" },
     [32]  = { sys_linux_dup,          "dup" },
     [33]  = { sys_linux_dup2,         "dup2" },
     [39]  = { sys_linux_getpid,       "getpid" },
@@ -2248,9 +2978,17 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [43]  = { sys_linux_accept,       "accept" },
     [44]  = { sys_linux_sendto,       "sendto" },
     [45]  = { sys_linux_recvfrom,     "recvfrom" },
+    [34]  = { sys_linux_pause,        "pause" },
+    [35]  = { sys_linux_nanosleep,    "nanosleep" },
+    [46]  = { sys_linux_sendmsg,      "sendmsg" },
     [48]  = { sys_linux_shutdown,     "shutdown" },
     [49]  = { sys_linux_bind,         "bind" },
     [50]  = { sys_linux_listen,       "listen" },
+    [51]  = { sys_linux_getsockname,  "getsockname" },
+    [52]  = { sys_linux_getpeername,  "getpeername" },
+    [54]  = { sys_linux_setsockopt,   "setsockopt" },
+    [55]  = { sys_linux_getsockopt,   "getsockopt" },
+    [56]  = { sys_linux_clone,        "clone" },
     [57]  = { sys_linux_fork,         "fork" },
     [58]  = { sys_linux_vfork,        "vfork" },
     [59]  = { sys_linux_execve,       "execve" },
@@ -2258,14 +2996,17 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [61]  = { sys_linux_wait4,        "wait4" },
     [62]  = { sys_linux_kill,         "kill" },
     [63]  = { sys_linux_uname,        "uname" },
+    [72]  = { sys_linux_fcntl,        "fcntl" },
     [73]  = { sys_linux_flock,        "flock" },
     [74]  = { sys_linux_fsync,        "fsync" },
     [75]  = { sys_linux_fdatasync,    "fdatasync" },
     [79]  = { sys_linux_getcwd,       "getcwd" },
     [82]  = { sys_linux_rename,       "rename" },
+    [83]  = { sys_linux_mkdir,        "mkdir" },
     [87]  = { sys_linux_unlink,       "unlink" },
     [89]  = { sys_linux_readlink,     "readlink" },
     [96]  = { sys_linux_gettimeofday, "gettimeofday" },
+    [157] = { sys_linux_prctl,        "prctl" },
     [158] = { sys_linux_arch_prctl,   "arch_prctl" },
     [186] = { sys_linux_gettid,       "gettid" },
 };
@@ -2288,11 +3029,10 @@ struct sc_extra_name { long n; const char *name; };
 static const struct sc_extra_name sc_extra_names[] = {
     { 4, "stat" }, { 6, "lstat" }, { 15, "rt_sigreturn" },
     { 17, "pread64" }, { 18, "pwrite64" },
-    { 23, "select" }, { 28, "madvise" },
-    { 35, "nanosleep" },
-    { 56, "clone" }, { 72, "fcntl" }, { 78, "getdents" },
+    { 23, "select" },
+ { 78, "getdents" },
     { 97, "getrlimit" }, { 102, "getuid" }, { 104, "getgid" },
-    { 107, "geteuid" }, { 108, "getegid" }, { 157, "prctl" },
+    { 107, "geteuid" }, { 108, "getegid" },
     { 159, "getcpu" }, { 218, "set_tid_address" },
     { 228, "clock_gettime" }, { 231, "exit_group" }, { 234, "tgkill" },
     { 257, "openat" }, { 262, "newfstatat" }, { 267, "readlinkat" },
@@ -2354,6 +3094,65 @@ static void trace_hint_print(long n, int kind, const char *path,
     else if (n == 62 || n == 61) kprintf(" pid=%ld", a1);
 }
 
+/* Syscall flight recorder: each process's last SC_RECORD_LEN syscalls
+ * (number, first three arguments, result), written on every call with no
+ * I/O so it never perturbs timing the way tracing does. Per process, so a
+ * busy poll loop elsewhere cannot flush a dying worker's history; kept
+ * after exit until the slot is reused. The exception dump prints the
+ * faulting process's log and `sclog <pid>` any process's. Heap-owned. */
+#define SC_RECORD_LEN 32
+struct sc_record { long n, a1, a2, a3, ret; };
+struct sc_log { unsigned long next; struct sc_record r[SC_RECORD_LEN]; };
+static struct sc_log *sc_logs;
+
+static void sc_record(long n, long a1, long a2, long a3, long ret) {
+    struct sc_log *l;
+    struct sc_record *e;
+    int pid = current_pid;
+    if (pid < 0 || pid >= MAX_PROCS) return;
+    if (!sc_logs) {
+        struct sc_log *t = (struct sc_log *)kmalloc(MAX_PROCS * sizeof(struct sc_log));
+        if (!t) return;
+        kmemset(t, 0, MAX_PROCS * sizeof(struct sc_log));
+        if (__sync_val_compare_and_swap(&sc_logs, (struct sc_log *)0, t) != 0) kfree(t);
+    }
+    l = &sc_logs[pid];
+    e = &l->r[__sync_fetch_and_add(&l->next, 1UL) % SC_RECORD_LEN];
+    e->n = n;
+    e->a1 = a1;
+    e->a2 = a2;
+    e->a3 = a3;
+    e->ret = ret;
+}
+
+static void sc_hex(unsigned long v) {
+    static const char digits[] = "0123456789abcdef";
+    char h[17];
+    int i;
+    for (i = 15; i >= 0; i--) { h[i] = digits[v & 0xF]; v >>= 4; }
+    h[16] = 0;
+    serial_puts(h);
+}
+
+/* Serial-only, safe from the exception path: pid's log, oldest first. */
+void sc_record_dump(int pid) {
+    const struct sc_log *l;
+    unsigned long start, k;
+    if (!sc_logs || pid < 0 || pid >= MAX_PROCS) return;
+    l = &sc_logs[pid];
+    start = l->next > SC_RECORD_LEN ? l->next - SC_RECORD_LEN : 0;
+    serial_puts("  last syscalls (n a1 a2 a3 = ret):\n");
+    for (k = start; k < l->next; k++) {
+        const struct sc_record *r = &l->r[k % SC_RECORD_LEN];
+        serial_puts("   ");
+        sc_hex((unsigned long)r->n); serial_puts(" ");
+        sc_hex((unsigned long)r->a1); serial_puts(" ");
+        sc_hex((unsigned long)r->a2); serial_puts(" ");
+        sc_hex((unsigned long)r->a3); serial_puts(" = ");
+        sc_hex((unsigned long)r->ret); serial_puts("\n");
+    }
+}
+
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
     long ret;
     int show = s_trace_enabled && !trace_is_noisy(n);
@@ -2366,6 +3165,7 @@ long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6) {
         if (nm) hint = trace_hint_snapshot(n, a1, a2, path_hint);
     }
     ret = ksyscall_dispatch(n, a1, a2, a3, a4, a5, a6);
+    sc_record(n, a1, a2, a3, ret);
     if (show) {
         __sync_fetch_and_add(&s_trace_shown, 1);
         /* Full 64-bit result: printing (int)ret once hid a valid DNS
@@ -2450,6 +3250,13 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         klongjmp(&exec_return, 1);
         return 0;
     }
+    /* seccomp-bpf (docs/spec/kernel.md): a filtered process's syscall is
+     * judged before any dispatch; ERRNO/TRACE answers return here, KILL
+     * never comes back. */
+    {
+        long sec_ret = 0;
+        if (proc_sec_filter(n, a1, a2, a3, a4, a5, a6, &sec_ret)) return sec_ret;
+    }
     /* Linux ABI syscalls (0-199): table-driven dispatch.  A miss falls
      * through to the switch below (default ENOSYS), exactly like an
      * unmatched case did before the migration. */
@@ -2502,28 +3309,70 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         return 0;
     /* 16, 24, 39, 57, 58, 59, 60, 61, 62, 41, 42, 44, 45, 48, 7 now
      * live in linux_syscall_table; 231 shares do_proc_exit. */
-    case 231: /* exit_group (exit/60 is table-driven) */
+    case 231: /* exit_group (exit/60 is table-driven): the rest of the
+        * thread group dies first, then the caller exits. */
+        do_group_exit((int)(a1 & LINUX_EXIT_STATUS_MASK));
         return do_proc_exit(a1);
-    case 234: { /* tgkill */
-        int sig = (int)a3;        static const int fatal[] = {1,2,3,4,5,6,7,8,9,11,13,14,15};
-        if (sig <= 0) return -22;
-        for (unsigned _i = 0; _i < sizeof(fatal)/sizeof(fatal[0]); _i++)
-            if (sig == fatal[_i]) {
-                if (proc_count > 1) {
-                    do_exit(128 + sig);
-                    return 0;
-                }
-                exec_exit_code = 128 + sig;
-                klongjmp(&exec_return, 1);
-                return 0;
-            }
+    case 435: /* clone3: -ENOSYS, which glibc treats as "use clone" (56). */
+        return -38;
+    case 284: /* eventfd */
+        return sys_linux_eventfd(a1, a2, a3, a4, a5, a6);
+    case 229: /* clock_getres: both clocks tick in microseconds */
+        if (a1 != LINUX_CLOCK_REALTIME && a1 != LINUX_CLOCK_MONOTONIC &&
+                a1 != LINUX_CLOCK_BOOTTIME)
+            return -22;
+        if (a2) {
+            SANITIZE_RANGE(a2, 2 * sizeof(long));
+            ((long *)a2)[0] = 0;
+            ((long *)a2)[1] = LINUX_NS_PER_US;
+        }
         return 0;
-    }
+    case 230: /* clock_nanosleep */
+        return sys_linux_clock_nanosleep(a1, a2, a3, a4, a5, a6);
+    case 307: /* sendmmsg: glibc's resolver sends A and AAAA together */
+        return sys_linux_sendmmsg(a1, a2, a3, a4, a5, a6);
+    case 290: /* eventfd2 */
+        return sys_linux_eventfd2(a1, a2, a3, a4, a5, a6);
+    case 292: /* dup3 */
+        return sys_linux_dup3(a1, a2, a3, a4, a5, a6);
+    case 293: /* pipe2 */
+        return sys_linux_pipe2(a1, a2, a3, a4, a5, a6);
+    case 436: /* close_range */
+        return sys_linux_close_range(a1, a2, a3, a4, a5, a6);
+    case 137: /* statfs: MiniOS has no filesystem statistics; callers
+        * (glibc, the selinux probe) fall back on ENOSYS. */
+        return -38;
+    case 138: /* fstatfs */
+        return -38;
+    case 234: /* tgkill: a fatal signal ends the whole group */
+        if (a3 < 0 || a3 > LINUX_SIGNAL_MAX) return -22;
+        if (a3 == 0 || !linux_signal_fatal(a3)) return 0;
+        if (current_pid != 0) {
+            do_group_exit((int)-a3);
+            do_exit((int)-a3);
+            return 0;
+        }
+        do_group_exit((int)-a3);
+        exec_exit_code = LINUX_SIGNAL_EXIT_BASE + (int)a3;
+        klongjmp(&exec_return, 1);
+        return 0;
     /* 87, 73, 74, 75, 21, 89, 96 now live in linux_syscall_table. */
-    case 267: /* readlinkat: MiniOS has no symlinks, so dirfd+path can
-        * never resolve to one; EINVAL like readlink (89), never a
-        * forged link length. A real readlinkat arrives in Phase 1.A. */
-        return -22;
+    case 267: /* readlinkat: MiniOS has no symlinks; the only link is
+        * /proc/self/exe (absolute, so dirfd is irrelevant), served like
+        * readlink (89). */
+        return readlink_path((const char *)a2, (char *)a3, a4);
+    case 317: /* seccomp */
+        return proc_sec_seccomp(a1, a2, a3);
+    case 272: /* unshare: no namespaces; callers treat it as best-effort
+        * defense in depth beside seccomp. */
+        return -38;
+    case 444: /* landlock_create_ruleset: no Landlock; best-effort like
+        * unshare, seccomp stays the mandatory boundary. */
+        return -38;
+    case 445: /* landlock_add_rule */
+        return -38;
+    case 446: /* landlock_restrict_self */
+        return -38;
     case 273: /* set_robust_list: recorded nowhere yet (Phase 1.B either
         * stores the per-thread list or ADRs the no-op); answering 0
         * lets thread init proceed, and robust-mutex owner-death is the
@@ -2532,10 +3381,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     case 301: /* fanotify_mark shadow: fossil set_robust_list alias kept
         * answering 0 so old binaries keep booting; new code uses 273. */
         return 0;
-    case 302: /* prlimit64: unimplemented (ENOSYS, not the old 0: the
-        * MiniOS RLIMIT custom semantics live at 240 under their own
-        * name, and 302 must not masquerade as success). */
-        return -38;
+    case 302: /* prlimit64 */
+        return sys_linux_prlimit64(a1, a2, a3, a4, a5, a6);
+    case 204: /* sched_getaffinity */
+        return sys_linux_sched_getaffinity(a1, a2, a3, a4, a5, a6);
     case 318: { /* getrandom: RDRAND when the CPU offers it, folded with
         * TSC/tick/pid jitter through splitmix64 (Phase 0.5). The old
         * TSC-XOR-index stream was predictable from boot time. */

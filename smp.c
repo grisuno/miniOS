@@ -250,6 +250,15 @@ void smp_ap_entry(void) {
      * NX page on the AP faults with a reserved-bit #PF.  Enable NXE
      * to match the BSP's stage-2 setup. */
     wrmsr(0xC0000080u, (unsigned long)(rdmsr(0xC0000080u) | EFER_NXE));
+    /* CR0.WP is per-CPU like EFER: match the BSP (mm_setup_protections)
+     * so a kernel write into a copy-on-write user page faults and
+     * privatizes on every CPU, never writes the shared frame. */
+    {
+        unsigned long cr0;
+        __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
+        cr0 |= (unsigned long)CR0_WP;
+        __asm__ volatile("mov %0, %%cr0" :: "r"(cr0) : "memory");
+    }
 
     /* Load the BSP's IDTR (same IDT, kernel memory, identity-mapped) */
     __asm__ volatile("lidt %0" :: "m"(bsp_idtr));

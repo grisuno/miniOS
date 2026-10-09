@@ -57,6 +57,13 @@ are listed in the script with justification; the REAL conflicts
 epoll_wait/232, epoll_ctl/233) are marked with their Phase 1.A/1.B/2.2
 fix schedule instead of being silently accepted.
 
+**v12 (2026-10).** clock_getres/229 and clock_nanosleep/230 are Linux
+again: static glibc implements `sleep`, `usleep` and `nanosleep` through
+230, so every timed sleep was closing an SB16 stream and returning at once.
+The SB16 stream calls moved to 252/253 (Linux ioprio_get and inotify_init,
+which no program MiniOS runs uses; recorded in the script) and the ABI
+version went to 12.
+
 ## Bugs found on the way (fixed in the same pass)
 
 - **Stale `imulq $304` in `syscall_entry`** (`kernel.c`): the exit path

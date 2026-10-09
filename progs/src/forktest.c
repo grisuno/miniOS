@@ -105,8 +105,8 @@ void _start(void) {
         fx_exit(7);
     }
     {
-        /* MiniOS wait4 reports the exit code directly (return and
-         * *status both carry it), not a pid or an encoded status. */
+        /* wait4 follows Linux: it returns the reaped pid and stores the
+         * exit code in bits 8..15 of the status word. */
         long status = 0;
         long w;
         char buf[2];
@@ -115,7 +115,7 @@ void _start(void) {
          * this (and the child's closes must survive below). */
         fx_syscall6(SYS_close, pfd[1], 0, 0, 0, 0, 0);
         w = fx_syscall6(SYS_wait4, pid, (long)&status, 0, 0, 0, 0);
-        if (w != 7 || status != 7) {
+        if (w != pid || status != (7 << 8)) {
             fx_write("fork: child code wrong\n");
             fx_exit(14);
         }

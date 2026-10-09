@@ -137,15 +137,21 @@ static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg) {
     return 0;
 }
 
+/* Join: wait4 (Linux semantics) answers the reaped pid and stores the
+ * status word; the thread always exits 0, so a join succeeds only when the
+ * pid it reaped is this thread's and the status says exit 0. Returns 0,
+ * the negative errno from wait4, or -1 for any other outcome. */
 static int mthread_join(mthread_t t, void **retval) {
+    int status = -1;
     if (t < 0 || t >= MTHREAD_MAX || !mthread_slots[t].used)
         return -1;
-    long code = m_syscall6(MINIOS_SYS_WAIT4, mthread_slots[t].pid, 0, 0);
+    long rc = m_syscall6(MINIOS_SYS_WAIT4, mthread_slots[t].pid, (long)&status, 0);
     __sync_synchronize();
     if (retval)
         *retval = mthread_slots[t].retval;
     mthread_slots[t].used = 0;
-    return (int)code;
+    if (rc < 0) return (int)rc;
+    return (rc == mthread_slots[t].pid && status == 0) ? 0 : -1;
 }
 
 #endif

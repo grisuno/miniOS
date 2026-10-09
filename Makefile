@@ -593,6 +593,10 @@ $(DOOM_DIR)/build:
 $(DOOM_DIR)/build/%.o: $(DOOM_DIR)/%.c | $(DOOM_DIR)/build
 	$(CC) $(CFLAGS_DOOM) -I$(DOOM_DIR) -I$(PROGS_DIR) -c $< -o $@
 
+# The MiniOS platform objects compile syscall numbers out of minios_abi.h:
+# an ABI renumbering must recompile them, not just relink stale objects.
+$(DOOM_DIR)/build/doomgeneric_minios.o $(DOOM_DIR)/build/i_minios_sound.o: $(PROGS_DIR)/minios_abi.h
+
 $(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS) $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -o $@ $(DOOM_OBJS) -lm
 	chmod +x $@
@@ -788,11 +792,11 @@ $(Q2G_DIR)/build/net_unix.o: $(Q2G_UPSTREAM)/net/net_unix.c | $(Q2G_DIR)/build
 
 # Sound backend: the MiniOS pcm2 DMA layer replaces upstream snddma_null.c
 # (lives beside the upstream clone, like q2generic_minios.c).
-$(Q2G_DIR)/build/snddma_minios.o: $(Q2G_DIR)/snddma_minios.c | $(Q2G_DIR)/build
+$(Q2G_DIR)/build/snddma_minios.o: $(Q2G_DIR)/snddma_minios.c $(PROGS_DIR)/minios_abi.h | $(Q2G_DIR)/build
 	$(CC) $(Q2G_CFLAGS_ALL) -I$(PROGS_DIR) -c $< -o $@
 
 # MiniOS platform layer (lives beside the upstream clone)
-$(Q2G_DIR)/build/q2generic_minios.o: $(Q2G_DIR)/q2generic_minios.c | $(Q2G_DIR)/build
+$(Q2G_DIR)/build/q2generic_minios.o: $(Q2G_DIR)/q2generic_minios.c $(PROGS_DIR)/minios_abi.h | $(Q2G_DIR)/build
 	$(CC) $(Q2G_CFLAGS_ALL) -I$(PROGS_DIR) -c $< -o $@
 
 ifeq ($(Q2G_AVAILABLE),1)
@@ -857,7 +861,7 @@ POKEMON_DIR ?= $(POKEMON_PORT_DIR)/game
 POKEMON_AVAILABLE := $(if $(wildcard $(POKEMON_DIR)/runtime/include/gbrt.h),1,0)
 
 ifeq ($(POKEMON_AVAILABLE),1)
-$(BIN_DIR)/pokemon.elf: $(POKEMON_PORT_DIR)/platform_minios.c $(POKEMON_PORT_DIR)/Makefile.minios
+$(BIN_DIR)/pokemon.elf: $(POKEMON_PORT_DIR)/platform_minios.c $(POKEMON_PORT_DIR)/Makefile.minios $(PROGS_DIR)/minios_abi.h
 	$(MAKE) -C $(POKEMON_PORT_DIR) -f Makefile.minios -j$$(nproc 2>/dev/null || echo 4) GAME_DIR=$(abspath $(POKEMON_DIR)) MINIOS_DIR=$(CURDIR)
 	cp $(POKEMON_PORT_DIR)/build/pokemon.elf $@
 	chmod +x $@
@@ -896,6 +900,7 @@ $(BIN_DIR)/micropython.elf: $(MICROPYTHON_DIR)/ports/unix/main.c \
                            $(PROGS_DIR)/micropython/variants/minios/mpconfigvariant.h \
                            $(PROGS_DIR)/micropython/variants/minios/mpconfigvariant.mk \
                            $(PROGS_DIR)/micropython/variants/minios/minios_module.c \
+                           $(PROGS_DIR)/minios_abi.h \
                            $(PROGS_DIR)/micropython/variants/minios/manifest.py \
                            $(PROGS_DIR)/micropython/variants/minios/lib/__init__.py \
                            $(PROGS_DIR)/micropython/variants/minios/lib/hello.py \
@@ -930,7 +935,7 @@ $(LUA_DIR)/lua.h:
 	@echo "run 'make sources' to clone the Lua repository"
 	@exit 1
 
-$(BIN_DIR)/lua.elf: $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) $(LUA_DIR)/lua.h
+$(BIN_DIR)/lua.elf: $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) $(LUA_DIR)/lua.h $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -std=gnu99 -O2 -Wall -DLUA_USE_LINUX -I$(LUA_DIR) \
 	      -I$(PROGS_DIR) \
 	      -o $@ $(addprefix $(LUA_DIR)/,$(LUA_LIB_SRCS)) $(LUA_APP_SRCS) -lm -ldl
@@ -1002,7 +1007,7 @@ $(NUKLEAR_DIR)/nuklear.h:
 	@echo "run 'make sources' to clone the Nuklear repository"
 	@exit 1
 
-$(BIN_DIR)/nuklear.elf: $(NUKLEAR_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h
+$(BIN_DIR)/nuklear.elf: $(NUKLEAR_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(PROGS_DIR) \
 	      -o $@ $(NUKLEAR_SRCS) -lm
@@ -1058,7 +1063,7 @@ $(BIN_DIR)/wlcomp: $(BIN_DIR)/wlcomp.elf
 PIANO_SRCS = $(PROGS_DIR)/piano/piano.c \
              $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/piano.elf: $(PIANO_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h \
+$(BIN_DIR)/piano.elf: $(PIANO_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h $(PROGS_DIR)/minios_abi.h \
                       $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear -I$(NUKED_OPL3_DIR) \
@@ -1080,7 +1085,7 @@ $(BIN_DIR)/piano: $(BIN_DIR)/piano.elf
 VEDIT_SRCS = $(PROGS_DIR)/vedit/vedit.c \
              $(NUKLEAR_PLATFORM)
 
-$(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h headers/leakcheck.h headers/arena.h
+$(BIN_DIR)/vedit.elf: $(VEDIT_SRCS) $(NUKLEAR_DIR)/nuklear.h $(PROGS_DIR)/nk_palette.h $(PROGS_DIR)/wl/wl_mbox.h headers/leakcheck.h headers/arena.h $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wno-unused-result \
 	      -I$(NUKLEAR_DIR) -I$(PROGS_DIR)/nuklear \
 	      -I$(PROGS_DIR) -Iheaders \
@@ -1158,14 +1163,14 @@ $(NUKED_OPL3_DIR)/opl3.h:
 	@echo "run 'make sources' to clone the Nuked-OPL3 repository"
 	@exit 1
 
-$(BIN_DIR)/opl3: $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h
+$(BIN_DIR)/opl3: $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.h $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall \
 	      -I$(NUKED_OPL3_DIR) -I$(PROGS_DIR) -o $@ $(SRC_DIR)/opl3.c $(NUKED_OPL3_DIR)/opl3.c
 	chmod +x $@
 
 # sbtone: headless SB16 diagnostic. Streams a clean 440 Hz sine to the SB16
 # and reports submit throughput, isolating the audio path from any GUI.
-$(BIN_DIR)/sbtone: $(SRC_DIR)/sbtone.c
+$(BIN_DIR)/sbtone: $(SRC_DIR)/sbtone.c $(PROGS_DIR)/minios_abi.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/sbtone.c -lm
 	chmod +x $@
 
@@ -1216,6 +1221,16 @@ freedom3-host: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
 # fork register probe pushes from inline assembly.
 $(BIN_DIR)/lxabi: $(SRC_DIR)/lxabi.c
 	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -mno-red-zone -pthread -o $@ $(SRC_DIR)/lxabi.c
+
+# lxsecc: Linux seccomp-bpf, prctl and /proc/self/exe probe (docs/spec/kernel.md).
+$(BIN_DIR)/lxsecc: $(SRC_DIR)/lxsecc.c
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -o $@ $(SRC_DIR)/lxsecc.c
+
+# lxnet: Linux socket ABI probe (docs/spec/network.md). The linker notes
+# that static getaddrinfo needs glibc's NSS at runtime; the probe resolves
+# through /etc/hosts, which static glibc serves itself.
+$(BIN_DIR)/lxnet: $(SRC_DIR)/lxnet.c
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -o $@ $(SRC_DIR)/lxnet.c
 
 # thdemo: producer-consumer over mthreads (10 threads on thread_spawn).
 # Headless M1 proof for roadmap Phase 1; prints PASS with exact counts.
@@ -1297,7 +1312,11 @@ test-freedomui: freedomui_test
 # FreeDom's own Makefile builds the browser so its object list and module
 # flags stay the single source of truth; MiniOS overrides only the port
 # variables (gui/platform.h seam, spec/platform.md) and the library flags
-# that point at static archives. Archives the host lacks come from
+# that point at static archives. The platform sources compile inside
+# FreeDom's final link and FreeDom's Makefile does not know they include
+# minios_abi.h, so this rule (which reruns exactly when one of those
+# changed) drops the linked binary first: a renumbered syscall can never
+# ship in a stale binary. Archives the host lacks come from
 # tools/build_freedom_deps.sh (make freedom-deps). The link wraps every
 # library in one --start-group/--end-group so static archive order cannot
 # drop a symbol. See docs/spec/network.md (freedom-gui).
@@ -1318,6 +1337,7 @@ ifeq ($(FREEDOM_GUI_AVAILABLE),1)
 $(BIN_DIR)/freedom-gui: $(FREEDOM_GUI_PLATFORM) $(FREEDOMUI_DIR)/ps2_keymap.h \
                         $(PROGS_DIR)/minios_abi.h $(FREEDOM_DIR)/gui/platform.h \
                         $(FREEDOM_DIR)/gui/browser_ui.c Makefile
+	rm -f $(FREEDOM_GUI_BUILD)/freedom
 	$(MAKE) -C $(FREEDOM_DIR) CC=gcc BUILD_DIR=$(FREEDOM_GUI_BUILD) \
 	  LDHARDEN="-static -no-pie -Wl,-z,relro,-z,now,-z,noexecstack -Wl,--start-group" \
 	  PLATFORM_SRCS="$(FREEDOM_GUI_PLATFORM)" PLATFORM_PREREQS= PLATFORM_LIBS= \
@@ -1350,9 +1370,30 @@ $(FREEDOM_GUI_FSROOT)/docs: $(FREEDOM_DIR)/docs/index.html $(FREEDOM_DIR)/docs/l
 $(FREEDOM_GUI_FSROOT)/usr: $(FREEDOM_GUI_FONTS)
 	touch $@
 
+# The Mozilla root store pinned by tools/build_freedom_deps.sh, at the path
+# libcurl is configured to read (docs/spec/network.md, Linux socket ABI).
+FREEDOM_GUI_CA = $(FREEDOM_GUI_FSROOT)/etc/ssl/certs/ca-certificates.crt
+$(FREEDOM_GUI_CA): $(FREEDOM_GUI_DEPS)/share/ca/cacert.pem
+	mkdir -p $(dir $@)
+	cp $< $@
+
+$(FREEDOM_GUI_FSROOT)/etc: $(FREEDOM_GUI_CA) $(FREEDOM_GUI_FSROOT)/etc/fonts/fonts.conf
+	touch $@
+
+# lxtls: the freedom-gui transport on its own (same static libcurl, OpenSSL,
+# CA bundle path and resolver), printing libcurl's verbose transcript and
+# the exact failure; docs/spec/network.md, Linux socket ABI.
+ifeq ($(FREEDOM_GUI_AVAILABLE),1)
+$(BIN_DIR)/lxtls: $(SRC_DIR)/lxtls.c
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -o $@ $(SRC_DIR)/lxtls.c \
+	  $$($(FREEDOM_GUI_PKG) --static --cflags --libs libcurl)
+endif
+
 # MiniFS payload (directories land at the MiniFS root under their basename:
-# etc/fonts/fonts.conf, usr/share/fonts/dejavu/*.ttf, docs/index.html).
-MINIFS_FREEDOM_GUI_FILES = $(if $(filter 1,$(FREEDOM_GUI_AVAILABLE)),$(BIN_DIR)/freedom-gui $(FREEDOM_GUI_FSROOT)/etc $(FREEDOM_GUI_FSROOT)/usr $(FREEDOM_GUI_FSROOT)/docs,)
+# etc/fonts/fonts.conf, etc/ssl/certs/ca-certificates.crt,
+# usr/share/fonts/dejavu/*.ttf, docs/index.html). Same-named directories
+# from several roots merge (mkfs.minifs.py), so netroot/etc joins this etc.
+MINIFS_FREEDOM_GUI_FILES = $(if $(filter 1,$(FREEDOM_GUI_AVAILABLE)),$(BIN_DIR)/freedom-gui $(BIN_DIR)/lxtls $(FREEDOM_GUI_FSROOT)/etc $(FREEDOM_GUI_FSROOT)/usr $(FREEDOM_GUI_FSROOT)/docs,)
 
 # ── freedom-gui host suite: the pure PS/2 set 1 translator behind the
 # full FreeDom GUI's MiniOS platform (docs/spec/network.md). Keysym values
@@ -1360,6 +1401,12 @@ MINIFS_FREEDOM_GUI_FILES = $(if $(filter 1,$(FREEDOM_GUI_AVAILABLE)),$(BIN_DIR)/
 freedom_gui_test: tests/test_ps2_keymap.c $(FREEDOMUI_DIR)/ps2_keymap.c $(FREEDOMUI_DIR)/ps2_keymap.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -std=c11 -Wall -Wextra -Werror -I$(FREEDOM_DIR)/include \
 	      -o $(TOOLS_DIR)/freedom_gui_test tests/test_ps2_keymap.c $(FREEDOMUI_DIR)/ps2_keymap.c
+
+# ── MiniFS image tools: mkfs counters match the bitmaps, fsck rejects
+# drift, same-named directories merge, duplicate names fail the build
+# (docs/spec/shell-fs.md).
+test-minifs-tools:
+	python3 tests/test_minifs_tools.py -v
 
 test-freedom-gui: freedom_gui_test
 	$(TOOLS_DIR)/freedom_gui_test
@@ -1396,7 +1443,17 @@ $(BIN_DIR)/topogpt3: $(BIN_DIR)/topogpt3.elf
 # aes/unaes live on MiniFS (ramdisk budget): bare-name commands resolved
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
-MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) $(MINIFS_FREEDOM_GUI_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+# /tmp exists on MiniFS from the first boot, like on Linux: mkdir(2)
+# needs the parent to exist (fontconfig's cache, the lxabi probe).
+# Resolver configuration for static glibc (docs/spec/network.md):
+# /etc/resolv.conf names the slirp resolver, /etc/hosts serves localhost,
+# /etc/nsswitch.conf orders files before dns.
+MINIFS_NET_ETC = $(PROGS_DIR)/netroot/etc
+MINIFS_TMP_DIR = $(TOOLS_DIR)/minifs-root/tmp
+$(MINIFS_TMP_DIR):
+	mkdir -p $@
+
+MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) $(MINIFS_FREEDOM_GUI_FILES) $(MINIFS_TMP_DIR) $(MINIFS_NET_ETC) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
                $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
                $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
                $(BIN_DIR)/lisp.elf $(BIN_DIR)/lisp \
@@ -1412,6 +1469,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/tlsget $(PROGS_DIR)/tls_u/tls_u_main.c $(PROGS_DIR)/tls_u/tls_u_port.c \
                $(BIN_DIR)/thdemo $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h \
                $(BIN_DIR)/lxabi $(SRC_DIR)/lxabi.c \
+               $(BIN_DIR)/lxsecc $(SRC_DIR)/lxsecc.c \
+               $(BIN_DIR)/lxnet $(SRC_DIR)/lxnet.c \
                $(BIN_DIR)/fptest $(SRC_DIR)/fptest.c \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                 $(BIN_DIR)/json $(SRC_DIR)/json.c \
@@ -1588,6 +1647,15 @@ futex_test: tests/test_futex.c kernel/futex.c futex.h sync.h sched.h spinlock.h 
 
 test-futex: futex_test
 	$(TOOLS_DIR)/futex_test
+
+# Classic BPF checker/interpreter behind Linux seccomp (docs/spec/kernel.md):
+# pure, so it links straight into the host test.
+seccomp_bpf_test: tests/test_seccomp_bpf.c kernel/seccomp_bpf.c seccomp_bpf.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -std=c11 -Wall -Wextra -Werror -Iheaders \
+		-o $(TOOLS_DIR)/seccomp_bpf_test tests/test_seccomp_bpf.c kernel/seccomp_bpf.c
+
+test-seccomp-bpf: seccomp_bpf_test
+	$(TOOLS_DIR)/seccomp_bpf_test
 
 # Per-CPU runqueue host test (tests/test_percpu_rq.c + kernel/percpu_rq.c).
 percpu_rq_test: tests/test_percpu_rq.c kernel/percpu_rq.c percpu_rq.h sched.h spinlock.h | $(TOOLS_DIR)
@@ -1939,7 +2007,7 @@ uefi.img: BOOTX64.EFI kernel.bin tools/uefi_part.sfdisk
 uefi: uefi.img
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h drivers/virtio_blk.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h
+kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h syscall_asm.h drivers/virtio_blk.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
@@ -1979,7 +2047,7 @@ ldso_parse.o: kernel/ldso_parse.c headers/ldso.h
 vma.o: vma.c vma.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-mm.o: kernel/mm.c kernel.h
+mm.o: kernel/mm.c kernel.h sched.h $(BOOTDEFS)
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 scrollback.o: kernel/scrollback.c kernel.h
@@ -2013,10 +2081,10 @@ printf.o: kernel/printf.c kernel.h
 klog.o: kernel/klog.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h
+exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h proc_sec.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h pipe.h ktime.h randmix.h proc_sec.h
 # NOTE: -Os, same pattern as shell.o (measured -3.5 KB vs -O1). The
 # dispatcher is a large switch, cold paths dominate; revalidate with
 # test_all.sh plus the syscall-heavy BDD scenarios after any change here.
@@ -2025,7 +2093,7 @@ syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h bl
 spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h arena.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h
+syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h proc_sec.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
@@ -2040,7 +2108,7 @@ ext4.o: fs/ext4.c kernel.h minifs.h ext4.h fsimg.h block.h
 fsimg.o: fs/fsimg.c kernel.h minifs.h fsimg.h block.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kfile.o: fs/kfile.c kernel.h
+kfile.o: fs/kfile.c kernel.h pipe.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 pcache.o: fs/pcache.c kernel.h pcache.h
@@ -2058,7 +2126,7 @@ clip.o: kernel/clip.c kernel.h
 symtab.o: kernel/symtab.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-net.o: net/net.c net.h kernel.h net/rtl8139.h drivers/virtio_net.h
+net.o: net/net.c net.h kernel.h sched.h net/rtl8139.h drivers/virtio_net.h
 # NOTE: -Os, same pattern as shell.o (measured -1.8 KB vs -O1). Revalidate
 # with the net/freedom/tls BDD scenarios after any change here.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
@@ -2235,7 +2303,7 @@ $(PROGS_DIR)/etc/ext4.img:
 # the caller's set survives every voluntary switch by construction.
 # Removing a flag reopens the lost-waitpid-pid hang; check_abi_numbers
 # does not cover it, the thdemo/fptest BDD scenarios do.
-sched.o: kernel/sched.c sched.h kernel.h $(BOOTDEFS) arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcm2.h pcspk.h futex.h percpu_rq.h rcu.h
+sched.o: kernel/sched.c sched.h kernel.h $(BOOTDEFS) arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcm2.h pcspk.h futex.h percpu_rq.h rcu.h proc_sec.h
 	$(CC) $(CFLAGS_KERN) -ffixed-rbx -ffixed-r12 -ffixed-r13 -ffixed-r14 -ffixed-r15 -c $< -o $@
 
 tick.o: kernel/tick.c tick.h drivers/xhci.h drivers/usbhid.h
@@ -2300,6 +2368,12 @@ sync.o: kernel/sync.c sync.h sched.h spinlock.h
 futex.o: kernel/futex.c futex.h sync.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
+seccomp_bpf.o: kernel/seccomp_bpf.c seccomp_bpf.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+proc_sec.o: kernel/proc_sec.c proc_sec.h seccomp_bpf.h kernel.h sched.h sanitize.h syscalls_proc.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 percpu_rq.o: kernel/percpu_rq.c percpu_rq.h sched.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
@@ -2315,11 +2389,11 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
-	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
+	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
 
 kernel.bin: kernel.elf | check-size
 	$(OBJCOPY) -O binary $< $@
@@ -2381,7 +2455,7 @@ SAVES_STAGE = .minifs-saves-stage
 
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(if $(Q2G_AVAILABLE),$(PROGS_DIR)/baseq2/pak1.pak) tools/mkfs.minifs.py Makefile tools/minifs_saves.py
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(if $(Q2G_AVAILABLE),$(PROGS_DIR)/baseq2/pak1.pak) tools/mkfs.minifs.py tools/minifs_fsck.py Makefile tools/minifs_saves.py
 	@STAGE="$(SAVES_STAGE)"; \
 	rm -rf "$$STAGE"; \
 	python3 tools/minifs_saves.py backup os.img "$$STAGE"; \
@@ -2391,7 +2465,9 @@ minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(if $(Q2G_
 	fi; \
 	EXTRA=""; \
 	if [ -d "$$STAGE/saves" ]; then EXTRA="$$STAGE/saves"; fi; \
-	python3 tools/mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES) $$EXTRA; \
+	python3 tools/mkfs.minifs.py $@ $(MINIFS_BLOCKS) $(MINIFS_FILES) $$EXTRA \
+	  && python3 tools/minifs_fsck.py $@ \
+	  || { rm -rf "$$STAGE"; rm -f $@; echo "minifs.bin: mkfs or fsck failed"; exit 1; }; \
 	rm -rf "$$STAGE"
 
 os.img: stage1.bin stage2.bin kernel.bin minifs.bin $(PROGS_DIR)/etc/fat.img $(PROGS_DIR)/etc/ext4.img

@@ -38,7 +38,7 @@
  * It is verified at build time (kernel _Static_asserts), not at load time:
  * see the ABI Version note above for why the loader cannot gate on it.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 11
+#define MINIOS_ABI_VERSION 12
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -170,7 +170,12 @@
  * Kernel heap (supervisor only)
  * ========================================================================= */
 #define MINIOS_HEAP_BASE  0x0C000000UL
-#define MINIOS_HEAP_SIZE  (192UL * 1024 * 1024)
+/* v12: 448 MB (was 192). Every user page and page table lives on this
+ * heap, so it bounds all user memory; two FreeDom processes (browser and
+ * tab worker, an 18 MB image each, plus TLS and fonts) outgrew 192 MB. The
+ * kernel clamps it to the installed RAM at boot (CMOS), and the KASLR
+ * window starts at its end (bootdefs.h). */
+#define MINIOS_HEAP_SIZE  (448UL * 1024 * 1024)
 
 /* =========================================================================
  * PCI MMIO relocation window
@@ -295,15 +300,17 @@
 
 /* --- MiniOS custom syscalls (200-299) --- */
 #define MINIOS_SYS_DNS          200
-/* 201/203: retired kernel-TLS numbers, always -ENOSYS (the engine left
- * ring 0; fossil miniGCC binaries still trap them and fail closed).
- * 202 serves Linux futex(2) instead (glibc NPTL/malloc/resolver need
- * __NR_futex; -ENOSYS there aborts the process). Values are frozen so
- * the ABI checksum never moves for this. */
+/* 201/202/203: retired kernel-TLS numbers (the engine left ring 0).
+ * 202 serves Linux futex(2) (glibc NPTL/malloc/resolver need __NR_futex;
+ * -ENOSYS there aborts the process) and 201 serves Linux time(2) (static
+ * glibc has no vDSO; OpenSSL validates certificate dates with it); 203
+ * stays -ENOSYS. Values are frozen so the ABI checksum never moves. */
 #define MINIOS_SYS_TLS_HANDSHAKE 201
 #define MINIOS_SYS_TLS_SEND     202
 #define MINIOS_SYS_TLS_RECV     203
-#define MINIOS_SYS_TIME        204
+/* v12: relocated from 204, which belongs to Linux sched_getaffinity
+ * (glibc's get_nprocs read the millisecond clock as a CPU mask). */
+#define MINIOS_SYS_TIME        254
 #define MINIOS_SYS_KBD         205
 #define MINIOS_SYS_PALETTE     206
 #define MINIOS_SYS_KBD_RAW     207
@@ -323,8 +330,10 @@
 #define MINIOS_SYS_SB16_SUBMIT 222
 #define MINIOS_SYS_GFX_SET_TITLE 223
 #define MINIOS_SYS_SB16_PUMP   224
-#define MINIOS_SYS_SB16_STREAM_OPEN   229
-#define MINIOS_SYS_SB16_STREAM_CLOSE  230
+/* v12: relocated from 229/230, which belong to Linux clock_getres and
+ * clock_nanosleep (static glibc's sleep, usleep and nanosleep). */
+#define MINIOS_SYS_SB16_STREAM_OPEN   252
+#define MINIOS_SYS_SB16_STREAM_CLOSE  253
 #define MINIOS_SYS_SB16_STREAM_SUBMIT 232
 #define MINIOS_SYS_SB16_STREAM_VOLUME 233
 #define MINIOS_SYS_THREAD_SPAWN  225

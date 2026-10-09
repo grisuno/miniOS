@@ -59,11 +59,23 @@
 
 /* Linux futex(2) op numbers. __NR_futex is 202, the retired
  * MINIOS_SYS_TLS_SEND number, so syscalls.c serves raw glibc futex traps
- * here instead of a second table. Only WAIT/WAKE are implemented, on top
- * of futex_wait/futex_wake below. */
+ * here instead of a second table. WAIT/WAKE and their BITSET forms (with
+ * FUTEX_BITSET_MATCH_ANY only, what glibc sends) run on futex_wait/
+ * futex_wake below. */
 #define LINUX_FUTEX_WAIT 0
 #define LINUX_FUTEX_WAKE 1
+#define LINUX_FUTEX_WAIT_BITSET 9
+#define LINUX_FUTEX_WAKE_BITSET 10
 #define LINUX_FUTEX_PRIVATE_FLAG 128
+#define LINUX_FUTEX_CLOCK_REALTIME 256
+#define LINUX_FUTEX_BITSET_MATCH_ANY 0xffffffffUL
+#define FUTEX_US_PER_S 1000000L
+#define FUTEX_NS_PER_US 1000L
+#define FUTEX_NS_PER_S 1000000000L
+/* futex_timeout_remaining_us results beside a microsecond count: an
+ * invalid timespec, and a deadline too far to represent (wait untimed). */
+#define FUTEX_TIMEOUT_INVALID (-0x7fffffffffffffffL - 1)
+#define FUTEX_TIMEOUT_FOREVER 0x7fffffffffffffffL
 
 typedef struct {
     spinlock_t lock;
@@ -75,12 +87,20 @@ void futex_init(void);
 long futex_wait(unsigned long uaddr, int val);
 long futex_wake(unsigned long uaddr, int n);
 
-/* Decode a Linux futex(2) op to LINUX_FUTEX_WAIT/WAKE, masking
- * FUTEX_PRIVATE_FLAG (process-private is served on the same global
- * buckets: same semantics, no isolation shortcut). Returns -1 for
- * anything unserved (REQUEUE, CMP_REQUEUE, WAKE_OP, WAIT_BITSET,
- * PI/PP...). Host-tested (tests/test_futex.c); the kernel errno mapping
- * lives in syscalls.c, which is not host-compilable. */
+/* Decode a Linux futex(2) op to LINUX_FUTEX_WAIT/WAKE/WAIT_BITSET/
+ * WAKE_BITSET, masking FUTEX_PRIVATE_FLAG (process-private is served on the
+ * same global buckets: same semantics, no isolation shortcut) and
+ * FUTEX_CLOCK_REALTIME (it only selects the clock of a BITSET deadline).
+ * Returns -1 for anything unserved (REQUEUE, CMP_REQUEUE, WAKE_OP, PI/PP,
+ * unknown flags). Host-tested (tests/test_futex.c); the kernel errno
+ * mapping lives in syscalls.c, which is not host-compilable. */
 int futex_linux_cmd(long op);
+
+/* Microseconds left before a futex timeout: relative for WAIT, absolute
+ * (against now_us on the op's clock) for WAIT_BITSET. Zero or negative
+ * means the deadline passed; FUTEX_TIMEOUT_INVALID for a negative second
+ * or a nanosecond field outside [0, 1e9); FUTEX_TIMEOUT_FOREVER when the
+ * seconds would overflow a microsecond count. Pure, host-tested. */
+long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us);
 
 #endif

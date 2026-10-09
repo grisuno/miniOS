@@ -17,6 +17,7 @@
 #include "tls.h"
 #include "net/rtl8139.h"
 #include "drivers/virtio_net.h"
+#include "sched.h"
 
 /* ================================================================
  *  Protocol state shared with the driver
@@ -423,12 +424,45 @@ struct net_tcp_sock {
     unsigned char tx_buf[NET_TX_MAX];
     unsigned int  tx_len;
     unsigned int  tx_seq;
+    /* Linux socket ABI state (docs/spec/network.md). */
+    int           nonblock;   /* O_NONBLOCK on the socket */
+    int           cloexec;    /* FD_CLOEXEC as recorded by fcntl/SOCK_CLOEXEC */
+    int           connecting; /* a non-blocking connect is in flight */
+    int           so_error;   /* pending error for SO_ERROR (positive errno) */
+    unsigned long syn_deadline;
+    unsigned long syn_retry;
+};
+
+/* One received datagram. */
+struct net_udp_dgram {
+    unsigned short len;
+    unsigned short sport;
+    unsigned char  sip[4];
+    unsigned char  data[NET_UDP_DGRAM_MAX];
+};
+
+/* Datagram socket: a bounded ring of received datagrams. */
+struct net_udp_sock {
+    int            in_use;
+    int            nonblock;
+    int            cloexec;
+    unsigned short lport;
+    int            connected;
+    unsigned char  pip[4];
+    unsigned short pport;
+    unsigned       head, count;
+    struct net_udp_dgram q[NET_UDP_QUEUE];
 };
 
 /** Docstring: Socket table, heap-owned since the .bss diet: 16 x 18 KB.
  * Null means the allocation failed and the stack stays down; every entry
  * point fails closed (alloc returns 0, fd checks refuse, the demux drops). */
 static struct net_tcp_sock *net_sockets = 0;
+static struct net_udp_sock *net_udp_sockets = 0;
+static int net_udp_deliver(const unsigned char sip[4], unsigned short sport,
+                           unsigned short dport, const unsigned char *data,
+                           unsigned len);
+static unsigned short net_udp_sport = NET_UDP_EPHEMERAL_MIN;
 static unsigned short net_tcp_sport = NET_EPHEMERAL_MIN;
 static unsigned int   net_tcp_seq = 0x6D696E69;
 
@@ -834,9 +868,11 @@ void net_rx_handle_frame(const unsigned char *frame, unsigned len) {
         else if (proto == NET_PROTO_UDP) {
             const unsigned char *udp = ip + ihl;
             unsigned udplen = net_get16(udp + 4);
-            if (udplen >= 8 && ihl + udplen <= iplen) {
-                if (net_get16(udp) == NET_DNS_PORT &&
-                    net_udp_checksum_ok(ip + 12, net_our_ip, udp, udplen))
+            if (udplen >= 8 && ihl + udplen <= iplen &&
+                net_udp_checksum_ok(ip + 12, net_our_ip, udp, udplen)) {
+                if (!net_udp_deliver(ip + 12, net_get16(udp), net_get16(udp + 2),
+                                     udp + 8, udplen - 8) &&
+                    net_get16(udp) == NET_DNS_PORT)
                     net_dns_parse(udp + 8, udplen - 8);
             }
         }
@@ -986,52 +1022,305 @@ int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport,
 }
 
 /* ================================================================
- *  Linux syscall ABI
+ *  Linux syscall ABI (docs/spec/network.md, "Linux socket ABI")
  * ================================================================ */
 
+#define LNX_AF_INET          2
+#define LNX_SOCK_STREAM      1
+#define LNX_SOCK_DGRAM       2
+#define LNX_SOCK_TYPE_MASK   0xf
+#define LNX_SOCK_NONBLOCK    0x800
+#define LNX_SOCK_CLOEXEC     0x80000
+#define LNX_IPPROTO_TCP      6
+#define LNX_IPPROTO_UDP      17
+#define LNX_MSG_PEEK         0x2
+#define LNX_MSG_DONTWAIT     0x40
+#define LNX_MSG_NOSIGNAL     0x4000
+#define LNX_SOL_SOCKET       1
+#define LNX_SO_REUSEADDR     2
+#define LNX_SO_TYPE          3
+#define LNX_SO_ERROR         4
+#define LNX_SO_SNDBUF        7
+#define LNX_SO_RCVBUF        8
+#define LNX_SO_KEEPALIVE     9
+#define LNX_SO_LINGER        13
+#define LNX_SO_RCVTIMEO      20
+#define LNX_SO_SNDTIMEO      21
+#define LNX_IPPROTO_IP       0
+#define LNX_IP_TOS           1
+#define LNX_IP_TTL           2
+#define LNX_IP_MTU_DISCOVER  10
+#define LNX_IP_RECVERR       11
+#define NET_IP_DEFAULT_TTL   64
+#define LNX_TCP_NODELAY      1
+#define LNX_TCP_KEEPIDLE     4
+#define LNX_TCP_KEEPINTVL    5
+#define LNX_TCP_KEEPCNT      6
+#define LNX_O_RDWR           2
+#define LNX_O_NONBLOCK       0x800
+#define LNX_FD_CLOEXEC       1
+#define LNX_F_GETFD          1
+#define LNX_F_SETFD          2
+#define LNX_F_GETFL          3
+#define LNX_F_SETFL          4
+#define LNX_POLLIN           0x001
+#define LNX_POLLOUT          0x004
+#define LNX_POLLERR          0x008
+#define LNX_POLLHUP          0x010
+#define LNX_POLLNVAL         0x020
+#define LNX_EBADF            9
+#define LNX_EAGAIN           11
+#define LNX_EFAULT           14
+#define LNX_EINVAL           22
+#define LNX_EPIPE            32
+#define LNX_EDESTADDRREQ     89
+#define LNX_EMSGSIZE         90
+#define LNX_ENOPROTOOPT      92
+#define LNX_EPROTONOSUPPORT  93
+#define LNX_EOPNOTSUPP       95
+#define LNX_EAFNOSUPPORT     97
+#define LNX_EISCONN          106
+#define LNX_ENOTCONN         107
+#define LNX_ETIMEDOUT        110
+#define LNX_ECONNREFUSED     111
+#define LNX_EALREADY         114
+#define LNX_EINPROGRESS      115
+#define NET_SEND_FLAGS_OK    (LNX_MSG_DONTWAIT | LNX_MSG_NOSIGNAL)
+#define NET_RECV_FLAGS_OK    (LNX_MSG_PEEK | LNX_MSG_DONTWAIT | LNX_MSG_NOSIGNAL)
+
+static int net_fd_tcp(long fd) {
+    return net_sockets && fd >= NET_FD_BASE && fd < NET_FD_BASE + NET_SOCKETS &&
+           net_sockets[fd - NET_FD_BASE].in_use;
+}
+
+static int net_fd_udp(long fd) {
+    return net_udp_sockets && fd >= NET_UDP_FD_BASE &&
+           fd < NET_UDP_FD_BASE + NET_UDP_SOCKETS &&
+           net_udp_sockets[fd - NET_UDP_FD_BASE].in_use;
+}
+
+int net_sys_is_socket(long fd) {
+    return net_fd_tcp(fd) || net_fd_udp(fd);
+}
+
+static struct net_udp_sock *net_udp_alloc(void) {
+    int i;
+    if (!net_udp_sockets) return 0;
+    for (i = 0; i < NET_UDP_SOCKETS; i++) {
+        if (!net_udp_sockets[i].in_use) {
+            kmemset(&net_udp_sockets[i], 0, sizeof(net_udp_sockets[i]));
+            net_udp_sockets[i].in_use = 1;
+            return &net_udp_sockets[i];
+        }
+    }
+    return 0;
+}
+
+/* Next free datagram port in the user ephemeral range. */
+static unsigned short net_udp_ephemeral(void) {
+    int tries;
+    for (tries = 0; tries <= NET_UDP_EPHEMERAL_MAX - NET_UDP_EPHEMERAL_MIN; tries++) {
+        unsigned short p = net_udp_sport++;
+        int i, used = 0;
+        if (net_udp_sport > NET_UDP_EPHEMERAL_MAX) net_udp_sport = NET_UDP_EPHEMERAL_MIN;
+        for (i = 0; i < NET_UDP_SOCKETS; i++)
+            if (net_udp_sockets[i].in_use && net_udp_sockets[i].lport == p) used = 1;
+        if (!used) return p;
+    }
+    return 0;
+}
+
+/* Queue a received datagram on the user socket bound to dport (and, when
+ * connected, from that peer only). 1 when a socket owned the port (full
+ * queues drop the datagram, like a full Linux receive buffer). */
+static int net_udp_deliver(const unsigned char sip[4], unsigned short sport,
+                           unsigned short dport, const unsigned char *data,
+                           unsigned len) {
+    int i;
+    if (!net_udp_sockets) return 0;
+    for (i = 0; i < NET_UDP_SOCKETS; i++) {
+        struct net_udp_sock *u = &net_udp_sockets[i];
+        struct net_udp_dgram *g;
+        if (!u->in_use || u->lport != dport) continue;
+        if (u->connected && (kmemcmp(u->pip, sip, 4) != 0 || u->pport != sport)) continue;
+        if (u->count >= NET_UDP_QUEUE || len > NET_UDP_DGRAM_MAX) return 1;
+        g = &u->q[(u->head + u->count) % NET_UDP_QUEUE];
+        g->len = (unsigned short)len;
+        g->sport = sport;
+        kmemcpy(g->sip, sip, 4);
+        kmemcpy(g->data, data, len);
+        u->count++;
+        return 1;
+    }
+    return 0;
+}
+
+static void net_put_sockaddr(unsigned char *sa, const unsigned char ip[4], unsigned short port) {
+    sa[0] = LNX_AF_INET;
+    sa[1] = 0;
+    net_put16(sa + 2, port);
+    kmemcpy(sa + 4, ip, 4);
+    kmemset(sa + 8, 0, 8);
+}
+
+/* Store a sockaddr_in at a user address with a user socklen_t length
+ * pointer, truncating like Linux and reporting the full length. */
+static long net_store_sockaddr(long addr, long lenp, const unsigned char ip[4],
+                               unsigned short port) {
+    unsigned char sa[NET_SOCKADDR_IN_LEN];
+    int len;
+    if (!addr || !lenp) return 0;
+    if (!user_range_ok((unsigned long)lenp, sizeof(int))) return -LNX_EFAULT;
+    len = *(int *)lenp;
+    if (len < 0) return -LNX_EINVAL;
+    if (len > NET_SOCKADDR_IN_LEN) len = NET_SOCKADDR_IN_LEN;
+    if (len > 0 && !user_range_ok((unsigned long)addr, (unsigned long)len)) return -LNX_EFAULT;
+    net_put_sockaddr(sa, ip, port);
+    kmemcpy((void *)addr, sa, (unsigned long)len);
+    *(int *)lenp = NET_SOCKADDR_IN_LEN;
+    return 0;
+}
+
+/* Read a user sockaddr_in (AF_INET, at least 16 bytes). */
+static long net_load_sockaddr(long addr, long len, unsigned char ip[4], unsigned short *port) {
+    const unsigned char *sa = (const unsigned char *)addr;
+    if (len < NET_SOCKADDR_IN_LEN) return -LNX_EINVAL;
+    if (!user_range_ok((unsigned long)addr, NET_SOCKADDR_IN_LEN)) return -LNX_EFAULT;
+    if (sa[0] != LNX_AF_INET || sa[1] != 0) return -LNX_EAFNOSUPPORT;
+    *port = net_get16(sa + 2);
+    kmemcpy(ip, sa + 4, 4);
+    return 0;
+}
+
+/* Drive a non-blocking connect: retransmit the SYN on schedule, fail it at
+ * the deadline (ETIMEDOUT) or on a reset (ECONNREFUSED). */
+static void net_tcp_progress(struct net_tcp_sock *s) {
+    unsigned long now;
+    if (!s->connecting) return;
+    net_drv_poll();
+    now = net_time_ms();
+    if (s->state == NET_TCP_ESTABLISHED) {
+        s->connecting = 0;
+        return;
+    }
+    if (s->state == NET_TCP_SYN_SENT) {
+        if (now >= s->syn_deadline) {
+            s->connecting = 0;
+            s->so_error = LNX_ETIMEDOUT;
+            s->state = NET_TCP_CLOSED;
+        } else if (now >= s->syn_retry) {
+            net_tcp_xmit(s, 0x02, 0, 0, 0);
+            s->syn_retry = now + NET_RETRY_MS;
+        }
+        return;
+    }
+    s->connecting = 0;
+    s->so_error = LNX_ECONNREFUSED;
+    s->state = NET_TCP_CLOSED;
+}
+
 long net_sys_socket(long a1, long a2, long a3) {
-    struct net_tcp_sock *s;
-    (void)a3;
-    if (a1 != 2 || a2 != 1) return -22;        /* AF_INET, SOCK_STREAM */
-    s = net_sock_alloc();
-    if (!s) return -12;
-    return NET_FD_BASE + net_sock_index(s);
+    long type = a2 & LNX_SOCK_TYPE_MASK;
+    int nonblock = (a2 & LNX_SOCK_NONBLOCK) != 0;
+    int cloexec = (a2 & LNX_SOCK_CLOEXEC) != 0;
+    if (a1 != LNX_AF_INET) return -LNX_EAFNOSUPPORT;
+    if (a2 & ~(long)(LNX_SOCK_TYPE_MASK | LNX_SOCK_NONBLOCK | LNX_SOCK_CLOEXEC)) return -LNX_EINVAL;
+    if (type == LNX_SOCK_STREAM) {
+        struct net_tcp_sock *s;
+        if (a3 != 0 && a3 != LNX_IPPROTO_TCP) return -LNX_EPROTONOSUPPORT;
+        s = net_sock_alloc();
+        if (!s) return -12;
+        s->nonblock = nonblock;
+        s->cloexec = cloexec;
+        return NET_FD_BASE + net_sock_index(s);
+    }
+    if (type == LNX_SOCK_DGRAM) {
+        struct net_udp_sock *u;
+        if (a3 != 0 && a3 != LNX_IPPROTO_UDP) return -LNX_EPROTONOSUPPORT;
+        u = net_udp_alloc();
+        if (!u) return -12;
+        u->nonblock = nonblock;
+        u->cloexec = cloexec;
+        return NET_UDP_FD_BASE + (long)(u - net_udp_sockets);
+    }
+    return -LNX_EPROTONOSUPPORT;
 }
 
 long net_sys_connect(long fd, long sockaddr, long addrlen) {
-    const unsigned char *sa = (const unsigned char *)sockaddr;
+    unsigned char ip[4];
     unsigned short port;
-    struct net_tcp_sock *s;
-    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS || addrlen < 16) return -22;
-    s = &net_sockets[fd - NET_FD_BASE];
-    if (!s->in_use) return -9;
-    if (sa[0] != 2 || sa[1] != 0) return -22; /* AF_INET */
-    port = net_get16(sa + 2);
-    if (!net_tcp_connect_into(s, sa + 4, port)) return -111;
-    return 0;
+    long rc;
+    if (!net_sys_is_socket(fd)) return -LNX_EBADF;
+    rc = net_load_sockaddr(sockaddr, addrlen, ip, &port);
+    if (rc) return rc;
+    if (net_fd_udp(fd)) {
+        struct net_udp_sock *u = &net_udp_sockets[fd - NET_UDP_FD_BASE];
+        if (!u->lport) u->lport = net_udp_ephemeral();
+        if (!u->lport) return -12;
+        kmemcpy(u->pip, ip, 4);
+        u->pport = port;
+        u->connected = 1;
+        return 0;
+    }
+    {
+        struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
+        if (s->connecting) {
+            net_tcp_progress(s);
+            if (s->connecting) return -LNX_EALREADY;
+        }
+        if (s->state == NET_TCP_ESTABLISHED) return -LNX_EISCONN;
+        if (!s->nonblock) {
+            if (!net_tcp_connect_into(s, ip, port)) {
+                s->in_use = 1;
+                return -LNX_ECONNREFUSED;
+            }
+            return 0;
+        }
+        kmemcpy(s->dip, ip, 4);
+        s->dport = port;
+        s->sport = net_tcp_sport++;
+        s->seq = net_tcp_seq;
+        net_tcp_seq += 0x1000;
+        s->ack = 0;
+        s->so_error = 0;
+        s->state = NET_TCP_SYN_SENT;
+        s->connecting = 1;
+        s->syn_deadline = net_time_ms() + NET_CONNECT_TMO_S * 1000UL;
+        s->syn_retry = net_time_ms() + NET_RETRY_MS;
+        net_tcp_xmit(s, 0x02, 0, 0, 1);
+        net_tcp_progress(s);
+        return s->state == NET_TCP_ESTABLISHED ? 0 : -LNX_EINPROGRESS;
+    }
 }
 
 long net_sys_bind(long fd, long sockaddr, long addrlen) {
-    const unsigned char *sa = (const unsigned char *)sockaddr;
+    unsigned char ip[4];
     unsigned short port;
-    struct net_tcp_sock *s;
-    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS || addrlen < 16) return -22;
-    s = &net_sockets[fd - NET_FD_BASE];
-    if (!s->in_use || s->state != NET_TCP_CLOSED || s->bound) return -22;
-    if (sa[0] != 2 || sa[1] != 0) return -22; /* AF_INET */
-    port = net_get16(sa + 2);
-    if (port == 0) return -22;
-    s->sport = port;
-    s->bound = 1;
-    return 0;
+    long rc;
+    if (!net_sys_is_socket(fd)) return -LNX_EBADF;
+    rc = net_load_sockaddr(sockaddr, addrlen, ip, &port);
+    if (rc) return rc;
+    if (net_fd_udp(fd)) {
+        struct net_udp_sock *u = &net_udp_sockets[fd - NET_UDP_FD_BASE];
+        if (u->lport) return -LNX_EINVAL;
+        u->lport = port ? port : net_udp_ephemeral();
+        return u->lport ? 0 : -12;
+    }
+    {
+        struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
+        if (s->state != NET_TCP_CLOSED || s->bound || port == 0) return -LNX_EINVAL;
+        s->sport = port;
+        s->bound = 1;
+        return 0;
+    }
 }
 
 long net_sys_listen(long fd, long backlog) {
     struct net_tcp_sock *s;
     (void)backlog;
-    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    if (!net_fd_tcp(fd)) return net_fd_udp(fd) ? -LNX_EOPNOTSUPP : -LNX_EBADF;
     s = &net_sockets[fd - NET_FD_BASE];
-    if (!s->in_use || !s->bound || s->state != NET_TCP_CLOSED) return -22;
+    if (!s->bound || s->state != NET_TCP_CLOSED) return -LNX_EINVAL;
     s->pending = -1;
     s->state = NET_TCP_LISTEN;
     return 0;
@@ -1040,87 +1329,436 @@ long net_sys_listen(long fd, long backlog) {
 long net_sys_accept(long fd, long sockaddr, long addrlen) {
     struct net_tcp_sock *s;
     int child;
-    unsigned char *sa = (unsigned char *)sockaddr;
-    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    if (!net_fd_tcp(fd)) return net_fd_udp(fd) ? -LNX_EOPNOTSUPP : -LNX_EBADF;
     s = &net_sockets[fd - NET_FD_BASE];
-    if (!s->in_use || s->state != NET_TCP_LISTEN) return -22;
+    if (s->state != NET_TCP_LISTEN) return -LNX_EINVAL;
     child = net_accept(fd - NET_FD_BASE, NET_ACCEPT_TMO_MS);
-    if (child < 0) return -11;
-    if (sockaddr && addrlen >= 16) {
+    if (child < 0) return -LNX_EAGAIN;
+    if (sockaddr && addrlen) {
         struct net_tcp_sock *c = &net_sockets[child];
-        sa[0] = 2; sa[1] = 0;
-        net_put16(sa + 2, c->dport);
-        kmemcpy(sa + 4, c->dip, 4);
-        kmemset(sa + 8, 0, 8);
+        long rc = net_store_sockaddr(sockaddr, addrlen, c->dip, c->dport);
+        if (rc) return rc;
     }
     return NET_FD_BASE + child;
 }
 
-long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen) {    int rc;
-    (void)to; (void)tolen;
-    if (flags) return -22;
-    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
-    if (len < 0) return -22;
-    rc = net_tcp_send(&net_sockets[fd - NET_FD_BASE], (const char *)buf, (int)len);
-    return rc;
+/* Send len validated bytes: a stream sends synchronously (stop-and-wait),
+ * a datagram goes out as one UDP datagram to `to` or the connected peer. */
+static long net_send_bytes(long fd, const unsigned char *buf, long len,
+                           const unsigned char *to_ip, unsigned short to_port) {
+    if (net_fd_udp(fd)) {
+        struct net_udp_sock *u = &net_udp_sockets[fd - NET_UDP_FD_BASE];
+        const unsigned char *ip = to_ip;
+        unsigned short port = to_port;
+        if (!ip) {
+            if (!u->connected) return -LNX_EDESTADDRREQ;
+            ip = u->pip;
+            port = u->pport;
+        }
+        if (len > NET_UDP_DGRAM_MAX) return -LNX_EMSGSIZE;
+        if (!u->lport) u->lport = net_udp_ephemeral();
+        if (!u->lport) return -12;
+        if (!net_udp_send(ip, u->lport, port, buf, (unsigned)len)) return -LNX_EAGAIN;
+        return len;
+    }
+    {
+        struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
+        int rc;
+        net_tcp_progress(s);
+        if (s->connecting) return -LNX_EAGAIN;
+        if (s->state != NET_TCP_ESTABLISHED) return s->rx_eof ? -LNX_EPIPE : -LNX_ENOTCONN;
+        rc = net_tcp_send(s, (const char *)buf, (int)len);
+        return rc < 0 ? -LNX_EPIPE : rc;
+    }
+}
+
+long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen) {
+    unsigned char ip[4];
+    unsigned short port = 0;
+    if (!net_sys_is_socket(fd)) return -LNX_EBADF;
+    if (flags & ~(long)NET_SEND_FLAGS_OK) return -LNX_EOPNOTSUPP;
+    if (len < 0) return -LNX_EINVAL;
+    if (len > 0 && !user_range_ok((unsigned long)buf, (unsigned long)len)) return -LNX_EFAULT;
+    if (to && net_fd_udp(fd)) {
+        long rc = net_load_sockaddr(to, tolen, ip, &port);
+        if (rc) return rc;
+        return net_send_bytes(fd, (const unsigned char *)buf, len, ip, port);
+    }
+    return net_send_bytes(fd, (const unsigned char *)buf, len, 0, 0);
 }
 
 long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen) {
-    int rc;
-    (void)from; (void)fromlen;
-    if (flags) return -22;
-    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
-    if (len < 0) return -22;
-    rc = net_tcp_recv(&net_sockets[fd - NET_FD_BASE], (char *)buf, (int)len);
+    int nonblock;
+    if (!net_sys_is_socket(fd)) return -LNX_EBADF;
+    if (flags & ~(long)NET_RECV_FLAGS_OK) return -LNX_EOPNOTSUPP;
+    if (len < 0) return -LNX_EINVAL;
+    if (len > 0 && !user_range_ok((unsigned long)buf, (unsigned long)len)) return -LNX_EFAULT;
+    if (net_fd_udp(fd)) {
+        struct net_udp_sock *u = &net_udp_sockets[fd - NET_UDP_FD_BASE];
+        struct net_udp_dgram *g;
+        long n;
+        nonblock = u->nonblock || (flags & LNX_MSG_DONTWAIT);
+        for (;;) {
+            net_drv_poll();
+            if (u->count) break;
+            if (nonblock) return -LNX_EAGAIN;
+            yield();
+        }
+        g = &u->q[u->head];
+        n = g->len < len ? g->len : len;
+        kmemcpy((void *)buf, g->data, (unsigned long)n);
+        if (from) {
+            long rc = net_store_sockaddr(from, fromlen, g->sip, g->sport);
+            if (rc) return rc;
+        }
+        if (!(flags & LNX_MSG_PEEK)) {
+            u->head = (u->head + 1) % NET_UDP_QUEUE;
+            u->count--;
+        }
+        return n;
+    }
+    {
+        struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
+        nonblock = s->nonblock || (flags & LNX_MSG_DONTWAIT);
+        for (;;) {
+            unsigned avail;
+            net_tcp_progress(s);
+            net_drv_poll();
+            avail = s->rx_head - s->rx_tail;
+            if (avail) {
+                unsigned take = avail > (unsigned)len ? (unsigned)len : avail;
+                kmemcpy((void *)buf, s->rx + s->rx_tail, take);
+                if (!(flags & LNX_MSG_PEEK)) {
+                    s->rx_tail += take;
+                    if (s->rx_tail == s->rx_head) { s->rx_tail = 0; s->rx_head = 0; }
+                }
+                if (from) {
+                    long rc = net_store_sockaddr(from, fromlen, s->dip, s->dport);
+                    if (rc) return rc;
+                }
+                return (long)take;
+            }
+            if (s->rx_eof || s->state == NET_TCP_DEAD) return 0;
+            if (!s->connecting && s->state != NET_TCP_ESTABLISHED) return -LNX_ENOTCONN;
+            if (nonblock) return -LNX_EAGAIN;
+            yield();
+        }
+    }
+}
+
+/* Gather one msghdr's iovecs (validated) into kbuf, at most cap bytes. */
+static long net_gather_msg(long msg, unsigned char *kbuf, long cap) {
+    long iov, iovlen, i, total = 0;
+    if (!user_range_ok((unsigned long)msg, NET_MSGHDR_LEN)) return -LNX_EFAULT;
+    iov = *(const long *)(msg + NET_MSGHDR_IOV_OFF);
+    iovlen = *(const long *)(msg + NET_MSGHDR_IOVLEN_OFF);
+    if (iovlen < 0 || iovlen > NET_IOV_MAX) return -LNX_EMSGSIZE;
+    if (iovlen && !user_range_ok((unsigned long)iov, (unsigned long)iovlen * NET_IOV_LEN))
+        return -LNX_EFAULT;
+    for (i = 0; i < iovlen; i++) {
+        long base = *(const long *)(iov + i * NET_IOV_LEN);
+        long n = *(const long *)(iov + i * NET_IOV_LEN + 8);
+        if (n < 0) return -LNX_EINVAL;
+        if (n > cap - total) return -LNX_EMSGSIZE;
+        if (n && !user_range_ok((unsigned long)base, (unsigned long)n)) return -LNX_EFAULT;
+        kmemcpy(kbuf + total, (const void *)base, (unsigned long)n);
+        total += n;
+    }
+    return total;
+}
+
+long net_sys_sendmsg(long fd, long msg, long flags) {
+    unsigned char *kbuf;
+    unsigned char ip[4];
+    unsigned short port = 0;
+    long name, namelen, n, rc;
+    long cap = net_fd_udp(fd) ? NET_UDP_DGRAM_MAX : NET_SOCK_RX_BUF;
+    if (!net_sys_is_socket(fd)) return -LNX_EBADF;
+    if (flags & ~(long)NET_SEND_FLAGS_OK) return -LNX_EOPNOTSUPP;
+    if (!user_range_ok((unsigned long)msg, NET_MSGHDR_LEN)) return -LNX_EFAULT;
+    name = *(const long *)(msg + NET_MSGHDR_NAME_OFF);
+    namelen = (long)*(const unsigned int *)(msg + NET_MSGHDR_NAMELEN_OFF);
+    kbuf = (unsigned char *)kmalloc((unsigned long)cap);
+    if (!kbuf) return -12;
+    n = net_gather_msg(msg, kbuf, cap);
+    if (n < 0) { kfree(kbuf); return n; }
+    if (name && net_fd_udp(fd)) {
+        rc = net_load_sockaddr(name, namelen, ip, &port);
+        rc = rc ? rc : net_send_bytes(fd, kbuf, n, ip, port);
+    } else {
+        rc = net_send_bytes(fd, kbuf, n, 0, 0);
+    }
+    kfree(kbuf);
     return rc;
+}
+
+/* sendmmsg (307): glibc's resolver sends its A and AAAA queries together
+ * and treats ENOSYS as a failed lookup. Returns the messages sent, storing
+ * each one's byte count in msg_len; an error on the first is returned. */
+long net_sys_sendmmsg(long fd, long vec, long vlen, long flags) {
+    long i;
+    if (!net_sys_is_socket(fd)) return -LNX_EBADF;
+    if (vlen < 0) return -LNX_EINVAL;
+    if (vlen > NET_MMSG_MAX) vlen = NET_MMSG_MAX;
+    if (vlen && !user_range_ok((unsigned long)vec, (unsigned long)vlen * NET_MMSGHDR_LEN))
+        return -LNX_EFAULT;
+    for (i = 0; i < vlen; i++) {
+        long m = vec + i * NET_MMSGHDR_LEN;
+        long rc = net_sys_sendmsg(fd, m, flags);
+        if (rc < 0) return i ? i : rc;
+        *(unsigned int *)(m + NET_MMSGHDR_LEN_OFF) = (unsigned int)rc;
+    }
+    return vlen;
 }
 
 long net_sys_shutdown(long fd, long how) {
     (void)how;
-    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    if (net_fd_udp(fd)) return 0;
+    if (!net_fd_tcp(fd)) return -LNX_EBADF;
     net_tcp_close(&net_sockets[fd - NET_FD_BASE]);
+    net_sockets[fd - NET_FD_BASE].in_use = 1;
     return 0;
 }
 
 long net_sys_close(long fd) {
-    if (!net_sockets || fd < NET_FD_BASE || fd >= NET_FD_BASE + NET_SOCKETS) return -9;
+    if (net_fd_udp(fd)) {
+        net_udp_sockets[fd - NET_UDP_FD_BASE].in_use = 0;
+        return 0;
+    }
+    if (!net_fd_tcp(fd)) return -LNX_EBADF;
     tls_free_fd((int)(fd - NET_FD_BASE));
     net_tcp_close(&net_sockets[fd - NET_FD_BASE]);
     return 0;
 }
 
+long net_sys_setsockopt(long fd, long level, long name, long val, long len) {
+    if (!net_sys_is_socket(fd)) return -LNX_EBADF;
+    if (len < 0) return -LNX_EINVAL;
+    if (len > 0 && !user_range_ok((unsigned long)val, (unsigned long)len)) return -LNX_EFAULT;
+    if (level == LNX_SOL_SOCKET) {
+        switch (name) {
+        case LNX_SO_REUSEADDR: case LNX_SO_KEEPALIVE: case LNX_SO_SNDBUF:
+        case LNX_SO_RCVBUF: case LNX_SO_LINGER: case LNX_SO_RCVTIMEO:
+        case LNX_SO_SNDTIMEO:
+            return 0;
+        default:
+            return -LNX_ENOPROTOOPT;
+        }
+    }
+    if (level == LNX_IPPROTO_TCP && net_fd_tcp(fd)) {
+        switch (name) {
+        case LNX_TCP_NODELAY: case LNX_TCP_KEEPIDLE: case LNX_TCP_KEEPINTVL:
+        case LNX_TCP_KEEPCNT:
+            return 0;
+        default:
+            return -LNX_ENOPROTOOPT;
+        }
+    }
+    if (level == LNX_IPPROTO_IP) {
+        switch (name) {
+        case LNX_IP_TOS: case LNX_IP_TTL: case LNX_IP_MTU_DISCOVER:
+        case LNX_IP_RECVERR:
+            return 0;
+        default:
+            return -LNX_ENOPROTOOPT;
+        }
+    }
+    return -LNX_ENOPROTOOPT;
+}
+
+long net_sys_getsockopt(long fd, long level, long name, long val, long lenp) {
+    int v, len;
+    if (!net_sys_is_socket(fd)) return -LNX_EBADF;
+    if (!user_range_ok((unsigned long)lenp, sizeof(int))) return -LNX_EFAULT;
+    len = *(int *)lenp;
+    if (len < (int)sizeof(int)) return -LNX_EINVAL;
+    if (!user_range_ok((unsigned long)val, sizeof(int))) return -LNX_EFAULT;
+    if (level == LNX_SOL_SOCKET) {
+        switch (name) {
+        case LNX_SO_ERROR:
+            v = 0;
+            if (net_fd_tcp(fd)) {
+                struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
+                net_tcp_progress(s);
+                v = s->so_error;
+                s->so_error = 0;
+            }
+            break;
+        case LNX_SO_TYPE:
+            v = net_fd_udp(fd) ? LNX_SOCK_DGRAM : LNX_SOCK_STREAM;
+            break;
+        case LNX_SO_RCVBUF:
+            v = net_fd_udp(fd) ? NET_UDP_QUEUE * NET_UDP_DGRAM_MAX : NET_SOCK_RX_BUF;
+            break;
+        case LNX_SO_SNDBUF:
+            v = NET_TX_MAX;
+            break;
+        case LNX_SO_KEEPALIVE: case LNX_SO_REUSEADDR:
+            v = 0;
+            break;
+        default:
+            return -LNX_ENOPROTOOPT;
+        }
+    } else if (level == LNX_IPPROTO_TCP && net_fd_tcp(fd) && name == LNX_TCP_NODELAY) {
+        v = 1;
+    } else if (level == LNX_IPPROTO_IP && (name == LNX_IP_TOS || name == LNX_IP_RECVERR)) {
+        v = 0;
+    } else if (level == LNX_IPPROTO_IP && name == LNX_IP_TTL) {
+        v = NET_IP_DEFAULT_TTL;
+    } else {
+        return -LNX_ENOPROTOOPT;
+    }
+    *(int *)val = v;
+    *(int *)lenp = (int)sizeof(int);
+    return 0;
+}
+
+long net_sys_getsockname(long fd, long addr, long lenp) {
+    if (net_fd_udp(fd)) {
+        struct net_udp_sock *u = &net_udp_sockets[fd - NET_UDP_FD_BASE];
+        return net_store_sockaddr(addr, lenp, net_our_ip, u->lport);
+    }
+    if (!net_fd_tcp(fd)) return -LNX_EBADF;
+    return net_store_sockaddr(addr, lenp, net_our_ip, net_sockets[fd - NET_FD_BASE].sport);
+}
+
+long net_sys_getpeername(long fd, long addr, long lenp) {
+    if (net_fd_udp(fd)) {
+        struct net_udp_sock *u = &net_udp_sockets[fd - NET_UDP_FD_BASE];
+        if (!u->connected) return -LNX_ENOTCONN;
+        return net_store_sockaddr(addr, lenp, u->pip, u->pport);
+    }
+    if (!net_fd_tcp(fd)) return -LNX_EBADF;
+    {
+        struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
+        net_tcp_progress(s);
+        if (s->state != NET_TCP_ESTABLISHED) return -LNX_ENOTCONN;
+        return net_store_sockaddr(addr, lenp, s->dip, s->dport);
+    }
+}
+
+/* fcntl on a socket: O_NONBLOCK through F_GETFL/F_SETFL, FD_CLOEXEC
+ * recorded through F_GETFD/F_SETFD (sockets live in one table shared by
+ * fork, so execve keeps them; docs/spec/network.md). */
+long net_sys_fcntl(long fd, long cmd, long arg) {
+    int *nb, *ce;
+    if (net_fd_udp(fd)) {
+        nb = &net_udp_sockets[fd - NET_UDP_FD_BASE].nonblock;
+        ce = &net_udp_sockets[fd - NET_UDP_FD_BASE].cloexec;
+    } else if (net_fd_tcp(fd)) {
+        nb = &net_sockets[fd - NET_FD_BASE].nonblock;
+        ce = &net_sockets[fd - NET_FD_BASE].cloexec;
+    } else {
+        return -LNX_EBADF;
+    }
+    switch (cmd) {
+    case LNX_F_GETFL: return LNX_O_RDWR | (*nb ? LNX_O_NONBLOCK : 0);
+    case LNX_F_SETFL: *nb = (arg & LNX_O_NONBLOCK) != 0; return 0;
+    case LNX_F_GETFD: return *ce ? LNX_FD_CLOEXEC : 0;
+    case LNX_F_SETFD: *ce = (arg & LNX_FD_CLOEXEC) != 0; return 0;
+    default: return -LNX_EINVAL;
+    }
+}
+
+#define LNX_FIONREAD  0x541B
+#define LNX_FIONBIO   0x5421
+#define LNX_FIONCLEX  0x5450
+#define LNX_FIOCLEX   0x5451
+#define LNX_ENOTTY    25
+
+/* ioctl on a socket: FIONREAD answers the bytes a read would return now
+ * (a stream's buffered bytes, the size of a datagram socket's next
+ * datagram), FIONBIO sets O_NONBLOCK from the int at arg, FIOCLEX and
+ * FIONCLEX record FD_CLOEXEC; terminal and every other request is ENOTTY,
+ * as Linux answers it for a socket. arg is validated by the caller. */
+long net_sys_ioctl(long fd, long req, long arg) {
+    int *nb, *ce;
+    if (net_fd_udp(fd)) {
+        struct net_udp_sock *u = &net_udp_sockets[fd - NET_UDP_FD_BASE];
+        nb = &u->nonblock;
+        ce = &u->cloexec;
+        if (req == LNX_FIONREAD) {
+            net_drv_poll();
+            *(int *)arg = u->count ? (int)u->q[u->head].len : 0;
+            return 0;
+        }
+    } else if (net_fd_tcp(fd)) {
+        struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
+        nb = &s->nonblock;
+        ce = &s->cloexec;
+        if (req == LNX_FIONREAD) {
+            net_tcp_progress(s);
+            net_drv_poll();
+            *(int *)arg = (int)(s->rx_head - s->rx_tail);
+            return 0;
+        }
+    } else {
+        return -LNX_EBADF;
+    }
+    switch (req) {
+    case LNX_FIONBIO: *nb = *(const int *)arg != 0; return 0;
+    case LNX_FIOCLEX: *ce = 1; return 0;
+    case LNX_FIONCLEX: *ce = 0; return 0;
+    default: return -LNX_ENOTTY;
+    }
+}
+
+/* poll(2) readiness of a socket descriptor. */
+static unsigned short net_socket_revents(long fd) {
+    unsigned short rev = 0;
+    if (net_fd_udp(fd)) {
+        net_drv_poll();
+        if (net_udp_sockets[fd - NET_UDP_FD_BASE].count) rev |= LNX_POLLIN;
+        return (unsigned short)(rev | LNX_POLLOUT);
+    }
+    if (!net_fd_tcp(fd)) return LNX_POLLNVAL;
+    {
+        struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
+        net_tcp_progress(s);
+        if (s->rx_tail < s->rx_head || s->rx_eof) rev |= LNX_POLLIN;
+        if (s->state == NET_TCP_LISTEN && s->pending >= 0) rev |= LNX_POLLIN;
+        if (s->state == NET_TCP_ESTABLISHED && !s->tx_pending) rev |= LNX_POLLOUT;
+        if (s->so_error) rev |= LNX_POLLERR | LNX_POLLHUP;
+        if (s->state == NET_TCP_DEAD) rev |= LNX_POLLHUP;
+        return rev;
+    }
+}
+
 long net_sys_poll(long fds, long nfds, long timeout_ms) {
-    /* Linux pollfd: int fd; short events; short revents. */
+    /* Linux pollfd: int fd; short events; short revents. Every entry's
+     * revents is written (zero when not ready), a negative fd is skipped,
+     * sockets report through net_socket_revents and every other
+     * descriptor (pipes, eventfds, files, console) through
+     * kfd_poll_revents; POLLERR, POLLHUP and POLLNVAL are reported even
+     * when not requested, like Linux. The wait yields between rounds so
+     * the writer it waits for can run. */
     unsigned long deadline = net_time_ms() + (timeout_ms > 0 ? (unsigned long)timeout_ms : 0);
-    long n, ready = 0;
+    long n, ready;
     for (;;) {
+        ready = 0;
         for (n = 0; n < nfds; n++) {
-            const char *entry = (const char *)fds + n * 8;
-            /* Host order: pollfd is a CPU struct, not a wire format.
-             * (net_get16/32 are big-endian wire readers; using them
-             * here byte-swapped every fd and mask, so poll never
-             * reported readiness. Found by the ring-3 TLS client.) */
+            /* Host order: pollfd is a CPU struct, not a wire format. */
+            char *entry = (char *)fds + n * 8;
             int fd;
             unsigned short events;
             unsigned short revents = 0;
             kmemcpy(&fd, entry, 4);
             kmemcpy(&events, entry + 4, 2);
-            if (!net_sockets) continue;
-            if (fd >= NET_FD_BASE && fd < NET_FD_BASE + NET_SOCKETS) {
-                struct net_tcp_sock *s = &net_sockets[fd - NET_FD_BASE];
-                if (s->in_use) {
-                    if (s->rx_tail < s->rx_head || s->rx_eof) revents |= 0x1; /* POLLIN */
-                }
+            if (fd >= NET_FD_BASE && fd < NET_UDP_FD_BASE + NET_UDP_SOCKETS) {
+                revents = (unsigned short)(net_socket_revents(fd) &
+                    (events | LNX_POLLERR | LNX_POLLHUP | LNX_POLLNVAL));
+            } else if (fd >= 0) {
+                revents = (unsigned short)(kfd_poll_revents(fd) &
+                    (events | LNX_POLLERR | LNX_POLLHUP | LNX_POLLNVAL));
             }
-            if (events & revents) {
-                kmemcpy((char *)entry + 6, &revents, 2);
-                ready++;
-            }
+            kmemcpy(entry + 6, &revents, 2);
+            if (revents) ready++;
         }
         if (ready > 0) return ready;
         if (timeout_ms == 0) return 0;
         net_drv_poll();
         if (timeout_ms > 0 && net_time_ms() > deadline) return 0;
+        yield();
     }
 }
 
@@ -1234,5 +1872,11 @@ void net_init(void) {
     net_sockets = (struct net_tcp_sock *)kmalloc(NET_SOCKETS *
                                                  sizeof(*net_sockets));
     if (!net_sockets) kprintf("net: no socket table (out of memory)\n");
+    net_udp_sockets = (struct net_udp_sock *)kmalloc(NET_UDP_SOCKETS *
+                                                     sizeof(*net_udp_sockets));
+    if (net_udp_sockets)
+        kmemset(net_udp_sockets, 0, NET_UDP_SOCKETS * sizeof(*net_udp_sockets));
+    else
+        kprintf("net: no datagram socket table (out of memory)\n");
     net_register_symbols();
 }

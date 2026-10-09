@@ -106,6 +106,8 @@ SOURCES="$SOURCES progs/minicraft/minicraft.c"
 # rcu/percpu/lisp predated the allowlist and their kills were vacuous
 # for a whole run; httpd.h shipped its own mutants without an entry.
 SOURCES="$SOURCES kernel/futex.c kernel/percpu_rq.c kernel/batch.c kernel/rcu.c"
+SOURCES="$SOURCES progs/src/lxabi.c tools/mkfs.minifs.py tools/minifs_fsck.py"
+SOURCES="$SOURCES kernel/proc_sec.c kernel/seccomp_bpf.c progs/src/lxsecc.c"
 SOURCES="$SOURCES progs/lisp/lisp.c headers/httpd.h"
 SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
 # gfxview-* rows (graphics view contract) target the header, the
@@ -299,8 +301,8 @@ rlimit-as-shell-ignored | s/if (kstrcmp(argv\[1\], \"as\") == 0) rp->rl_as_max =
 lapic-cal-fallback | s/lapic_cal_valid = 1;/lapic_cal_valid = 0;/ | smp.c
 futex-value-check-inverted | s/if (\\*(volatile int \\*)uaddr != val)/if (*(volatile int *)uaddr == val)/ | kernel/futex.c
 futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pid != WQ_NONE)/ | kernel/futex.c
-futex-linux-private-unmasked | s/long cmd = op & ~(long)LINUX_FUTEX_PRIVATE_FLAG;/long cmd = op;/ | kernel/futex.c
-futex-linux-wake-dropped | s/if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE)/if (cmd == LINUX_FUTEX_WAIT)/ | kernel/futex.c
+futex-linux-private-unmasked | s/    cmd = op \& ~(long)(LINUX_FUTEX_PRIVATE_FLAG | LINUX_FUTEX_CLOCK_REALTIME);/    cmd = op \& ~(long)LINUX_FUTEX_CLOCK_REALTIME;/ | kernel/futex.c
+futex-linux-wake-dropped | s/    if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE ||/    if (cmd == LINUX_FUTEX_WAIT ||/ | kernel/futex.c
 rtc-epoch-day-off-by-one | s/return era \\* 146097 + doe - 719468;/return era \\* 146097 + doe - 719467;/ | headers/rtc.h
 percpu-rq-full-drop-lost | s/if (rqueues\\[cpu\\].count >= RQ_DEPTH)/if (rqueues[cpu].count > RQ_DEPTH)/ | kernel/percpu_rq.c
 batch-completion-off-by-one | s/\\*completed = i + 1;/\\*completed = i;/ | kernel/batch.c
@@ -342,6 +344,68 @@ freedom-wl-https-port | s/*port = c->port_https;/*port = c->port_http;/ | progs/
 freedom-wl-title-bound-lost | s/if (n < 0L || n > c->title_max) {/if (n < 0L) {/ | progs/src/freedom_wl.c
 freedom-wl-keysym-enter-lost | s/if (make == 0x1CL) {/if (make == 0x1DL) {/ | progs/src/freedom_wl.c
 freedomui-omnibox-kind-flip | s/if (kind != 0) {/if (kind != 1) {/ | progs/freedomui/freedomui_minios.c
+lxabi-fork-regs-lost | s/        if (sf) ctx_from_frame(\&child->ctx, sf);/        (void)sf;/ | kernel/sched.c
+lxabi-thread-tgid-lost | s/    child->tgid = cur->autoreap ? cur->tgid : current_pid;/    child->tgid = pid;/ | kernel/sched.c
+lxabi-thread-settls-lost | s/    child->fsbase = (flags \& LINUX_CLONE_SETTLS) ? (uint64_t)tls : rdmsr(MSR_FSBASE);/    child->fsbase = rdmsr(MSR_FSBASE);/ | kernel/sched.c
+lxabi-cleartid-lost | s/        \*(volatile int \*)(unsigned long)self->clear_child_tid = 0;/        (void)0;/ | kernel/sched.c
+lxabi-kstack-free-off-by-one | s/    idx = (int)(off \/ KSTACK_SZ) - 1;/    idx = (int)(off \/ KSTACK_SZ);/ | kernel/sched.c
+lxabi-reap-sc-top-lost | s/        free_kstack((uint64_t)sc_top_save\[i\]);/        (void)0;/ | kernel/sched.c
+lxabi-cr0-wp-off | s/        cr0 |= (unsigned long)CR0_WP;/        cr0 |= 0UL;/ | kernel/mm/paging.c
+lxabi-pipe-eof-lost | s/            if (!kpipe_empty_wopen(f)) return 0;/            if (!kpipe_empty_wopen(f)) return 1;/ | kernel/syscalls.c
+lxabi-epipe-lost | s/            if (!ropen) return done > 0 ? done : -32;/            if (0) return -32;/ | kernel/syscalls.c
+lxabi-pipe2-cloexec-lost | s/    int cloexec = (a2 \& LINUX_O_CLOEXEC) ? 1 : 0;/    int cloexec = 0;/ | kernel/syscalls.c
+lxabi-poll-hup-lost | s/                if (!wopen) rev |= NET_POLLHUP;/                if (0) rev |= NET_POLLHUP;/ | kernel/syscalls.c
+lxabi-futex-timeout-never | s/        if (left <= 0) return -110; \/\* ETIMEDOUT \*\//        if (0) return -110;/ | kernel/syscalls.c
+lxabi-time-unreclaimed | s/= { sys_linux_time, /= { sys_minios_tls_retired, / | kernel/syscalls.c
+lxabi-eventfd-overwrites | s/        f->efd_count += v;/        f->efd_count = v;/ | fs/kfile.c
+lxabi-reader-close-lost | s/        if (!f->pipe_write \&\& f->pring) pipe_ring_close_reader(f->pring);/        (void)0;/ | fs/kfile.c
+lxabi-mkfs-seal-lost | s/        self.seal_inode(ino)/        pass/ | tools/mkfs.minifs.py
+futex-bitset-refused | s/        cmd == LINUX_FUTEX_WAIT_BITSET || cmd == LINUX_FUTEX_WAKE_BITSET)/        0)/ | kernel/futex.c
+lxsecc-nnp-check-lost | s/    if (!strict \&\& !sec_nnp\[pid\]) return ERR_EACCES;/    if (0) return ERR_EACCES;/ | kernel/proc_sec.c
+lxsecc-errno-data-lost | s/        \*ret = -(long)e;/        *ret = 0;/ | kernel/proc_sec.c
+lxsecc-kill-ignored | s/        sec_kill(n, 1);/        (void)0;/ | kernel/proc_sec.c
+lxsecc-rank-inverted | s/        if (r < best_rank) { best = a; best_rank = r; }/        if (r > best_rank) { best = a; best_rank = r; }/ | kernel/proc_sec.c
+lxsecc-inherit-lost | s/    sec_chain\[child\] = f;/    sec_chain[child] = 0;/ | kernel/proc_sec.c
+lxsecc-exe-substitution-lost | s/        kstrncpy(resolved, exe, sizeof(resolved) - 1);/        resolved[0] = 0;/ | kernel/syscalls_proc.c
+lxsecc-wait4-returns-code | s/    return found;/    return code;/ | kernel/syscalls_proc.c
+seccomp-bpf-final-ret-unchecked | s/    if (SBPF_CLASS(prog\[len - 1\].code) != SBPF_RET) return SBPF_ERR_INVALID;/    if (0) return SBPF_ERR_INVALID;/ | kernel/seccomp_bpf.c
+seccomp-bpf-jset-swapped | s/            case SBPF_JSET: pc += (a \& src) ? in->jt : in->jf; break;/            case SBPF_JSET: pc += (a \& src) ? in->jf : in->jt; break;/ | kernel/seccomp_bpf.c
+seccomp-bpf-scratch-flow-lost | s/            if (!(memvalid \& (1u << in->k))) return SBPF_ERR_INVALID;/            if (0) return SBPF_ERR_INVALID;/ | kernel/seccomp_bpf.c
+lxnet-udp-deliver-lost | s/        u->count++;/        (void)0;/ | net/net.c
+lxnet-nonblock-flag-lost | s/    int nonblock = (a2 \& LNX_SOCK_NONBLOCK) != 0;/    int nonblock = 0;/ | net/net.c
+lxnet-cloexec-lost | s/    case LNX_F_GETFD: return \*ce ? LNX_FD_CLOEXEC : 0;/    case LNX_F_GETFD: return 0;/ | net/net.c
+lxnet-refused-unreported | s/    s->so_error = LNX_ECONNREFUSED;/    s->so_error = 0;/ | net/net.c
+lxnet-soerror-sticky | s/^                s->so_error = 0;/                (void)0;/ | net/net.c
+lxnet-pollout-lost | s/        if (s->state == NET_TCP_ESTABLISHED \&\& !s->tx_pending) rev |= LNX_POLLOUT;/        (void)0;/ | net/net.c
+lxnet-peer-name-wrong | s/        return net_store_sockaddr(addr, lenp, s->dip, s->dport);/        return net_store_sockaddr(addr, lenp, net_our_ip, s->dport);/ | net/net.c
+lxnet-sendmmsg-len-lost | s/        \*(unsigned int \*)(m + NET_MMSGHDR_LEN_OFF) = (unsigned int)rc;/        (void)0;/ | net/net.c
+lxnet-udp-from-lost | s/            long rc = net_store_sockaddr(from, fromlen, g->sip, g->sport);/            long rc = 0;/ | net/net.c
+lxnet-inet6-wrong-errno | s/    if (a1 != LNX_AF_INET) return -LNX_EAFNOSUPPORT;/    if (a1 != LNX_AF_INET) return -LNX_EINVAL;/ | net/net.c
+lxnet-socket-read-unrouted | s/        return net_sys_recvfrom(a1, a2, a3, 0, 0, 0);/        return -9;/ | kernel/syscalls.c
+lxnet-socket-write-unrouted | s/    if (net_sys_is_socket(fd)) return net_sys_sendto(fd, (long)buf, cnt, 0, 0, 0);/    (void)0;/ | kernel/syscalls.c
+lxnet-sockopt-unrouted | s/    \[54\]  = { sys_linux_setsockopt, .*$// | kernel/syscalls.c
+lxnet-minifs-dir-merge-lost | s/^            return existing$/            pass/ | tools/mkfs.minifs.py
+minifs-free-blocks-stale | s/                         count_free(self.bbitmap, self.total_blocks),/                         self.total_blocks - self.data_start,/ | tools/mkfs.minifs.py
+minifs-free-inodes-stale | s/                         count_free(self.ibitmap, self.total_inodes),/                         self.total_inodes - ROOT_INODE,/ | tools/mkfs.minifs.py
+minifs-fsck-counters-unchecked | s/^        self.check_counters()$/        pass/ | tools/minifs_fsck.py
+lxnet-ip-recverr-refused | s/        case LNX_IP_RECVERR:/        case 0x7fe:/ | net/net.c
+lxabi-group-exit-code-lost | s/            lead->exit_code = code;/            lead->exit_code = 0;/ | kernel/sched.c
+lxabi-sigterm-not-fatal | s/14, 15, 24, 25,/14, 24, 25,/ | kernel/syscalls_proc.c
+lxabi-relative-sleep-skipped | s/    else linux_sleep_until(ktime_us, ktime_us() + (unsigned long)us);/    else (void)us;/ | kernel/syscalls.c
+lxabi-abstime-ignored | s/    if (a2 \& LINUX_TIMER_ABSTIME) linux_sleep_until(now, (unsigned long)us);/    if (a2 \& LINUX_TIMER_ABSTIME) (void)now;/ | kernel/syscalls.c
+lxabi-timespec-unchecked | s/    if (sec < 0 || nsec < 0 || nsec >= LINUX_NS_PER_S) return -22;/    if (sec < 0) return -22;/ | kernel/syscalls.c
+lxabi-getres-coarse | s/            ((long \*)a2)\[1\] = LINUX_NS_PER_US;/            ((long *)a2)[1] = LINUX_NS_PER_S;/ | kernel/syscalls.c
+lxabi-rlimit-stack-unlimited | s/    if (res == LINUX_RLIMIT_STACK) v = MINIOS_USER_STACK_SIZE;/    if (res == LINUX_RLIMIT_STACK) v = LINUX_RLIM_INFINITY;/ | kernel/syscalls.c
+lxabi-affinity-mask-empty | s/    \*(unsigned long \*)a3 = mask;/    *(unsigned long *)a3 = 0;/ | kernel/syscalls.c
+lxabi-pipe-fionread-zero | s/    case LINUX_FIONREAD: \*(int \*)a3 = kfile_readable_bytes(f); r = 0; break;/    case LINUX_FIONREAD: *(int *)a3 = 0; r = 0; break;/ | kernel/syscalls.c
+lxabi-pipe-claims-tty | s/    default: r = -LINUX_ENOTTY; break;/    default: r = 0; break;/ | kernel/syscalls.c
+lxabi-demand-fault-refused | s/    if (!(pte \& PTE_DEMAND_READ)) return -1;/    return -1;/ | kernel/mm/paging.c
+lxabi-view-never-swapped | s/    if (!no || no == ho) return;/    if (1) return;/ | kernel/sched.c
+lxabi-wild-jump-panics | s/^        if ((frame->cs \& 3) == 3) {$/        if (0) {/ | kernel/sched.c
+lxnet-udp-fionread-zero | s/            \*(int \*)arg = u->count ? (int)u->q\[u->head\].len : 0;/            *(int *)arg = 0;/ | net/net.c
+lxnet-tx-bounce-skipped | s/        kmemcpy(rtl_tx_buf\[slot\], frame, len);/        (void)frame;/ | net/rtl8139.c
+vma-spare-not-recycled | s/    if (vma_spare) {/    if (0) {/ | vma.c
+vma-mru-any-tree | s/            vma_mru->base == base \&\& vma_node_in_tree(root, vma_mru))/            vma_mru->base == base)/ | vma.c
 ps2-caps-xor-lost | s/if (is_letter(c) \&\& s->caps_lock) upper = !upper;/if (is_letter(c) \&\& !s->caps_lock) upper = !upper;/ | progs/freedomui/ps2_keymap.c
 ps2-chord-text-leak | s/if (!make || (k.mods \& (KE_MOD_CTRL | KE_MOD_ALT))) {/if (!make) {/ | progs/freedomui/ps2_keymap.c
 ps2-e0-prefix-lost | s/if (byte == PS2_PREFIX_EXTENDED) { s->extended = 1;/if (byte == PS2_PREFIX_EXTENDED) { s->extended = 0;/ | progs/freedomui/ps2_keymap.c
@@ -503,7 +567,32 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         continue
     fi
 
-    case "$file" in
+    # Mutants named lxabi-* break the Linux process, thread and descriptor
+    # ABI that progs/src/lxabi.c probes (docs/spec/smp-sched.md): its one
+    # scenario is the suite that must kill them, whatever file they touch.
+    suite_key="$file"
+    case "$name" in
+        lxabi-*) suite_key="lxabi-probe" ;;
+        lxsecc-*) suite_key="lxsecc-probe" ;;
+        lxnet-*) suite_key="lxnet-probe" ;;
+        minifs-*) suite_key="minifs-tools" ;;
+    esac
+    case "$suite_key" in
+        lxabi-probe)
+            MATCH="lxabi" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        lxsecc-probe)
+            MATCH="lxsecc" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        lxnet-probe)
+            MATCH="lxnet" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        minifs-tools)
+            make -C "$HERE" test-minifs-tools > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/seccomp_bpf.c)
+            make -C "$HERE" test-seccomp-bpf > "$BACKUP/suite.log" 2>&1
+            ;;
         net/tls.c|net/tls_x509.c|tls_crypto.c|headers/tls.h)
             make -C "$HERE" test-tls > "$BACKUP/suite.log" 2>&1
             ;;

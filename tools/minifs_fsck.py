@@ -134,16 +134,37 @@ class FSCK:
                 if ft not in (1,2,3):
                     self.err(f"dir inode {ino}: entry at {off} has bad file_type {ft}")
             off+=rl
+    def bitmap_free(self, start, count):
+        """Clear bits among the first count bits of the bitmap at block start."""
+        nbytes = (count + 7) // 8
+        raw = bytearray()
+        blk = start
+        while len(raw) < nbytes:
+            raw.extend(self.blk(blk))
+            blk += 1
+        return sum(1 for i in range(count) if not raw[i // 8] & (1 << (i % 8)))
+    def check_counters(self):
+        """The superblock free counters must match the bitmaps, or every
+        free-space report (and the kernel's own decrement) starts wrong."""
+        sb = self.sb
+        fb = self.bitmap_free(sb['block_bitmap_start'], sb['total_blocks'])
+        fi = self.bitmap_free(sb['inode_bitmap_start'], sb['total_inodes'])
+        if fb != sb['free_blocks']:
+            self.err(f"superblock free_blocks {sb['free_blocks']} != bitmap {fb}")
+        if fi != sb['free_inodes']:
+            self.err(f"superblock free_inodes {sb['free_inodes']} != bitmap {fi}")
+        for i in range(ROOT_INODE, sb['total_inodes']):
+            if self.imap[i]:
+                o = sb['inode_bitmap_start']
+                if not self.blk(o + i // (BLOCK_SIZE * 8))[(i % (BLOCK_SIZE * 8)) // 8] & (1 << (i % 8)):
+                    self.err(f"inode {i} reachable but free in the inode bitmap")
     def run(self):
         sb=self.sb
         print(f"MiniFS v{sb['version']}: {sb['total_blocks']} blocks, {sb['total_inodes']} inodes")
         if sb['magic']!=MAGIC: self.err(f"bad magic: 0x{sb['magic']:08X}"); return
         self.scan_dir(ROOT_INODE)
         err=0
-        for i in range(ROOT_INODE, sb['total_inodes']):
-            used = self.imap[i]
-            bitmap = 0  # Would need to read actual bitmap
-            if used: self.scan_inode(i)
+        self.check_counters()
         print(f"  blocks: {sb['total_blocks']-sb['free_blocks']} used, {sb['free_blocks']} free")
         print(f"  inodes: {sb['total_inodes']-sb['free_inodes']} used, {sb['free_inodes']} free")
         print(f"  errors: {self.errors}")

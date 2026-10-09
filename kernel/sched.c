@@ -10,6 +10,7 @@
 #include "futex.h"
 #include "percpu_rq.h"
 #include "rcu.h"
+#include "proc_sec.h"
 #include "bootdefs.h"
 #include "vga_fb.h"
 #include "sb16.h"
@@ -63,6 +64,10 @@ spinlock_t sched_lock = SPINLOCK_INIT;
 
 extern void user_trampoline(void);
 extern void fork_trampoline(void);
+/* Per-pid kernel-stack tops the syscall entry saves (syscall_entry.S). */
+extern unsigned long sc_top_save[];
+static int alloc_pid_locked(void);
+static void kill_group_threads_locked(int tgid, int except);
 extern void exec_enter(unsigned long frame);
 
 static inline unsigned long read_cr3(void) {
@@ -180,22 +185,110 @@ static int kstack_usage(uint64_t top, unsigned long size,
     return 0;
 }
 
+/* pid of a live process still standing on the stack slot ending at top
+ * (its kernel stack, or the stack its open syscall entered on), -1 when
+ * none: a slot is free only when nobody can resume on it. */
+/* 1 when v is the end of a kstack_pool slot (a kernel stack top). */
+static int kstack_is_slot_end(uint64_t v) {
+    unsigned long off;
+    if (v <= (uint64_t)(unsigned long)kstack_pool) return 0;
+    off = (unsigned long)((char *)v - (char *)kstack_pool);
+    return off % KSTACK_SZ == 0 && off / KSTACK_SZ <= MAX_PROCS;
+}
+
+/* The stack slot process j stands on: PCB.kstack between syscalls, the
+ * entry's saved top while a syscall is open (the entry parked the user
+ * rsp in PCB.kstack). 0 when j has no stack (a slot being created). */
+static uint64_t kstack_of(int j) {
+    uint64_t k = procs[j].kstack;
+    if (k == 0) return 0;
+    if (kstack_is_slot_end(k)) return k;
+    return (uint64_t)sc_top_save[j];
+}
+
+static int kstack_owner(uint64_t top) {
+    int j;
+    for (j = 0; j < MAX_PROCS; j++) {
+        if (procs[j].state == PROC_FREE) continue;
+        if (kstack_of(j) == top) return j;
+    }
+    return -1;
+}
+
+/* Serial-only stack census for the exception dump: every pool slot in
+ * use, its owner and high-water mark, and "CANARY DEAD" when its bottom
+ * word was overwritten (an overflow into the slot below). A kernel stack
+ * overflow corrupts the neighbouring slot's saved frames, which surface
+ * later as another process returning to user space with garbage
+ * registers; this names the overflowing slot at the moment it matters. */
+static void kstack_scan_serial(void) {
+    static const char digits[] = "0123456789abcdef";
+    int i;
+    serial_puts("  kslots:");
+    for (i = 0; i < MAX_PROCS; i++) {
+        uint64_t top = (uint64_t)&kstack_pool[i][KSTACK_SZ];
+        unsigned long used = 0;
+        char h[8];
+        int k, pid = -1, j;
+        if (!kstack_used[i]) continue;
+        for (j = 0; j < MAX_PROCS; j++)
+            if (procs[j].state != PROC_FREE && kstack_of(j) == top) { pid = j; break; }
+        serial_puts(" [");
+        h[0] = digits[(i / 10) % 10]; h[1] = digits[i % 10]; h[2] = 0;
+        serial_puts(h);
+        serial_puts(" pid ");
+        if (pid < 0) serial_puts("-");
+        else { h[0] = digits[(pid / 10) % 10]; h[1] = digits[pid % 10]; h[2] = 0; serial_puts(h); }
+        if (kstack_usage(top, KSTACK_SZ, &used) != 0) {
+            serial_puts(" CANARY DEAD]");
+            continue;
+        }
+        serial_puts(" used ");
+        for (k = 4; k >= 0; k--) { h[k] = digits[used % 10]; used /= 10; }
+        h[5] = 0;
+        serial_puts(h);
+        serial_puts("]");
+    }
+    serial_puts("\n");
+}
+
 static uint64_t alloc_kstack(void) {
     int i;
     for (i = 0; i < MAX_PROCS; i++) {
-        if (!kstack_used[i]) {
+        uint64_t top = (uint64_t)&kstack_pool[i][KSTACK_SZ];
+        int owner;
+        if (kstack_used[i]) continue;
+        owner = kstack_owner(top);
+        if (owner >= 0) {
             kstack_used[i] = 1;
-            kstack_paint((uint64_t)&kstack_pool[i][KSTACK_SZ], KSTACK_SZ);
-            return (uint64_t)&kstack_pool[i][KSTACK_SZ];
+            kprintf("kstack: slot %d freed while pid %d still uses it; kept reserved\n",
+                    i, owner);
+            continue;
         }
+        kstack_used[i] = 1;
+        kstack_paint(top, KSTACK_SZ);
+        return top;
     }
     return 0;
 }
 
-static void free_kstack(uint64_t top) {
-    if (!top) return;
-    int idx = (int)(((char *)top - (char *)kstack_pool) / (KSTACK_SZ));
-    if (idx >= 0 && idx < MAX_PROCS) kstack_used[idx] = 0;
+/* top is the END of its slot (&kstack_pool[i][KSTACK_SZ], what
+ * alloc_kstack hands out), so the slot index is one less than the
+ * quotient. The old (top - pool) / KSTACK_SZ freed slot i+1 instead of i:
+ * every reap leaked its own stack and released a neighbour that could
+ * still be live (two procs on one kernel stack). Anything that is not
+ * exactly a slot end is ignored, never freed. */
+static int free_kstack(uint64_t top) {
+    unsigned long off;
+    int idx;
+    if (!top) return 0;
+    if (top <= (uint64_t)(unsigned long)kstack_pool) return 0;
+    off = (unsigned long)((char *)top - (char *)kstack_pool);
+    if (off % KSTACK_SZ != 0) return 0;
+    idx = (int)(off / KSTACK_SZ) - 1;
+    if (idx < 0 || idx >= MAX_PROCS) return 0;
+    kstack_used[idx] = 0;
+    return 1;
 }
 
 /* ---- Per-thread FPU/SSE state (Phase 0.1, ADR-0014) ----
@@ -260,6 +353,14 @@ void vma_ctx_free(vma_ctx_t *c) {
  * shared pointer would. Node links are pool-relative in the source
  * and rebased onto the fresh pool; anything unrebasable fails the
  * copy (fail closed, fork refuses) instead of forging pointers. */
+/* Name the link a fork could not rebase: a node pointer outside the
+ * source pool means the tree was mutated through another view. */
+static void vma_copy_report(const char *field, int idx, const void *ptr,
+        const vma_ctx_t *src) {
+    kprintf("vma: fork copy refused, %s of node %d = %p outside pool %p+%d (nil %p)\n",
+            field, idx, ptr, (const void *)src->pool, VMA_MAX, (const void *)&src->nil);
+}
+
 static vma_ctx_t *vma_ctx_copy(vma_ctx_t *src) {
     vma_ctx_t *dst;
     int i;
@@ -278,29 +379,33 @@ static vma_ctx_t *vma_ctx_copy(vma_ctx_t *src) {
         if (sn->left == &src->nil) dn->left = &dst->nil;
         else if (sn->left >= src->pool && sn->left < src->pool + VMA_MAX)
             dn->left = &dst->pool[sn->left - src->pool];
-        else { vma_ctx_free(dst); return 0; }
+        else { vma_copy_report("left", i, sn->left, src); vma_ctx_free(dst); return 0; }
         if (sn->right == &src->nil) dn->right = &dst->nil;
         else if (sn->right >= src->pool && sn->right < src->pool + VMA_MAX)
             dn->right = &dst->pool[sn->right - src->pool];
-        else { vma_ctx_free(dst); return 0; }
+        else { vma_copy_report("right", i, sn->right, src); vma_ctx_free(dst); return 0; }
         if (sn->parent == &src->nil) dn->parent = &dst->nil;
         else if (sn->parent >= src->pool && sn->parent < src->pool + VMA_MAX)
             dn->parent = &dst->pool[sn->parent - src->pool];
-        else { vma_ctx_free(dst); return 0; }
+        else { vma_copy_report("parent", i, sn->parent, src); vma_ctx_free(dst); return 0; }
     }
     if (src->live == &src->nil) dst->live = &dst->nil;
     else if (src->live >= src->pool && src->live < src->pool + VMA_MAX)
         dst->live = &dst->pool[src->live - src->pool];
-    else { vma_ctx_free(dst); return 0; }
+    else { vma_copy_report("live root", -1, src->live, src); vma_ctx_free(dst); return 0; }
     if (src->free == &src->nil) dst->free = &dst->nil;
     else if (src->free >= src->pool && src->free < src->pool + VMA_MAX)
         dst->free = &dst->pool[src->free - src->pool];
-    else { vma_ctx_free(dst); return 0; }
+    else { vma_copy_report("free root", -1, src->free, src); vma_ctx_free(dst); return 0; }
     if (!src->mru) dst->mru = 0;
     else if (src->mru >= src->pool && src->mru < src->pool + VMA_MAX)
         dst->mru = &dst->pool[src->mru - src->pool];
-    else { vma_ctx_free(dst); return 0; }
+    else { vma_copy_report("mru", -1, src->mru, src); vma_ctx_free(dst); return 0; }
     dst->mru_base = src->mru_base;
+    if (!src->spare) dst->spare = 0;
+    else if (src->spare >= src->pool && src->spare < src->pool + VMA_MAX)
+        dst->spare = &dst->pool[src->spare - src->pool];
+    else { vma_copy_report("spare", -1, src->spare, src); vma_ctx_free(dst); return 0; }
     {
         vma_node_t *stack[64];
         int sp = 0;
@@ -345,6 +450,61 @@ static void vma_save_proc(proc_t *p) {
 
 static void vma_load_proc(proc_t *p) {
     if (p && p->vma) vma_ctx_bind(p->vma);
+}
+
+/* The address-space owner whose view the globals currently hold; set
+ * by mm_view_enter, cleared when that slot is reaped. */
+static proc_t *mm_view_holder;
+
+/* The process whose brk/mmap/VMA view an address space lives in: p itself
+ * unless p is a CLONE_VM thread, then the non-CLONE_VM process sharing its
+ * VMA context (the context is the address space's identity; a pid-0 run's
+ * page tables are not recorded in procs[0], so CR3 cannot tell). Threads
+ * of the legacy window belong to pid 0. A thread whose owner is gone
+ * shares the held view when it is its own, else keeps its copies. */
+static proc_t *mm_owner(proc_t *p) {
+    int i;
+    if (!p || !(p->clone_flags & CLONE_VM)) return p;
+    if (p->vma == &vma_legacy && procs[0].vma == &vma_legacy) return &procs[0];
+    for (i = 0; i < MAX_PROCS; i++) {
+        proc_t *q = &procs[i];
+        if (q == p || q->state == PROC_FREE) continue;
+        if (q->clone_flags & CLONE_VM) continue;
+        if (q->vma && q->vma == p->vma) return q;
+    }
+    if (mm_view_holder && mm_view_holder->vma == p->vma) return mm_view_holder;
+    return p;
+}
+
+/* Make the globals describe nxt's address space before nxt runs, from any
+ * entry path (a switch, the timer, or the idle loop claiming after the
+ * running process died, where there is no outgoing process to name). A
+ * task of the address space already held keeps the view; any other saves
+ * it into its holder and loads the new owner's, so a thread scheduled
+ * after an unrelated process, or a parent resumed from idle after its
+ * child died, never allocates from someone else's view. Callers hold
+ * sched_lock and mm_lock. */
+static void mm_view_enter(proc_t *nxt) {
+    proc_t *no = mm_owner(nxt);
+    proc_t *ho = mm_view_holder;
+    if (!no || no == ho) return;
+    if (ho && ho->state != PROC_FREE) {
+        ho->brk = g_brk;
+        ho->brk_limit = g_brk_limit;
+        ho->mmap_cur = user_mmap_cur;
+        vma_save_proc(ho);
+    }
+    g_brk = no->brk;
+    g_brk_limit = no->brk_limit;
+    user_mmap_cur = no->mmap_cur;
+    vma_load_proc(no);
+    mm_view_holder = no;
+}
+
+/* The running process installed a fresh view itself (execve, spawn
+ * restore): it is the holder from now on. */
+void mm_view_claim_current(void) {
+    mm_view_holder = mm_owner(proc_get(current_pid));
 }
 
 /* Serial-observable stack health: per-proc high-water marks plus the
@@ -829,8 +989,15 @@ static int smp_claim_thread_v(int vm_only) {
     }
     spin_lock_irqsave(&sched_lock, &flags);
     int next = sched_next_locked(this_cpu()->cur_pid, vm_only);
-    if (next >= 0)
+    if (next >= 0) {
+        if (!vm_only) {
+            irqflags_t mflags;
+            spin_lock_irqsave(&mm_lock, &mflags);
+            mm_view_enter(&procs[next]);
+            spin_unlock_irqrestore(&mm_lock, mflags);
+        }
         this_cpu()->cur_pid = next;
+    }
     spin_unlock_irqrestore(&sched_lock, flags);
     return next;
 }
@@ -1115,16 +1282,9 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                      * sched_lock) so a concurrent brk/mmap syscall on an
                      * AP cannot interleave it. */
                     spin_lock_irqsave(&mm_lock, &mflags);
-                    if (!(cur->clone_flags & CLONE_VM)) {
-                        cur->brk = g_brk, cur->brk_limit = g_brk_limit, cur->mmap_cur = user_mmap_cur;
-                        vma_save_proc(cur);
-                    }
+                    mm_view_enter(nxt);
                     current_pid = next;
                     nxt->state = PROC_RUNNING;
-                    if (!(nxt->clone_flags & CLONE_VM)) {
-                        g_brk = nxt->brk, g_brk_limit = nxt->brk_limit, user_mmap_cur = nxt->mmap_cur;
-                        vma_load_proc(nxt);
-                    }
                     spin_unlock_irqrestore(&mm_lock, mflags);
                     spin_unlock_irqrestore(&sched_lock, sflags);
                     /* Re-arm the swap slot before abandoning this frame:
@@ -1255,7 +1415,10 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
             __asm__ volatile("mov %%cr2, %0" : "=r"(fault_addr));
             __asm__ volatile("mov %%cr3, %0" : "=r"(cur_cr3));
             irqflags = spin_save_irq();
-            resolved = mm_file_fault(cur_cr3, fault_addr);
+            resolved = mm_anon_fault(cur_cr3, fault_addr,
+                    (frame->errcode & 2) != 0);
+            if (resolved != 0)
+                resolved = mm_file_fault(cur_cr3, fault_addr);
             spin_restore_irq(irqflags);
             if (resolved == 0) return;
         }
@@ -1580,6 +1743,8 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                 serial_puts(" <unreadable>");
             serial_puts("\n");
         }
+        kstack_scan_serial();
+        if (current_pid >= 0) sc_record_dump(current_pid);
         /* If a ring-3 user fault lands in the user window, recover:
          * pid 0 is the k_exec_user frame and longjmps back to the shell
          * with EFAULT.  A CLONE_VM thread (or any non-0 pid) must NOT
@@ -1596,7 +1761,23 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                 __builtin_unreachable();
             }
             serial_puts("  [thread faulted: killing]\n");
-            do_exit(EFAULT);
+            do_group_exit(-USER_FAULT_SIGNAL);
+            do_exit(-USER_FAULT_SIGNAL);
+            __builtin_unreachable();
+        }
+        /* A ring-3 fault outside the user window (a jump through a null
+         * or wild pointer) is still the process's fault, never the
+         * kernel's: the kernel state is intact, so the process dies with
+         * SIGSEGV and the machine keeps running. */
+        if ((frame->cs & 3) == 3) {
+            if (current_pid == 0) {
+                serial_puts("  [recovering: ring-3 wild jump, returning EFAULT]\n");
+                k_user_fault_return();
+                __builtin_unreachable();
+            }
+            serial_puts("  [wild jump: killing]\n");
+            do_group_exit(-USER_FAULT_SIGNAL);
+            do_exit(-USER_FAULT_SIGNAL);
             __builtin_unreachable();
         }
         serial_puts("  [no recovery]\n");
@@ -1807,6 +1988,13 @@ static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
             child->mmap_cur -= mp;
     }
     kstrncpy(child->name, name, sizeof(child->name) - 1);
+    /* A spawned image starts unconfined, with its own resolved path for
+     * /proc/self/exe (docs/spec/kernel.md). */
+    proc_sec_release(pid);
+    {
+        char exe[RAMDISK_FNAME_LEN];
+        if (fs_resolve(name, exe, sizeof(exe))) proc_sec_set_exe(pid, exe);
+    }
     kstack_top = alloc_kstack();
     if (!kstack_top) {
         spin_unlock_irqrestore(&sched_lock, sflags);
@@ -2002,9 +2190,8 @@ void schedule(void) {
      * brk/mmap syscall cannot interleave it. */
     irqflags_t mflags;
     spin_lock_irqsave(&mm_lock, &mflags);
-    if (cur) { if (!(cur->clone_flags & CLONE_VM)) { cur->brk = g_brk; cur->brk_limit = g_brk_limit; cur->mmap_cur = user_mmap_cur; vma_save_proc(cur); } }
+    mm_view_enter(nxt);
     current_pid = next;
-    if (!(nxt->clone_flags & CLONE_VM)) { g_brk = nxt->brk; g_brk_limit = nxt->brk_limit; user_mmap_cur = nxt->mmap_cur; vma_load_proc(nxt); }
     spin_unlock_irqrestore(&mm_lock, mflags);
     /* Capture the continuation while the thread is still PROC_SWITCHING
      * (never claimable), publish it as READY only once the ctx is
@@ -2034,6 +2221,21 @@ void yield(void) {
 }
 
 void do_exit(int code) {
+    proc_t *self = proc_get(current_pid);
+    /* Linux exit order: a CLONE_CHILD_CLEARTID thread zeroes its tid word
+     * and wakes one waiter there (pthread_join) while its window is still
+     * the live one, and every process drops its descriptors now, not at
+     * reap, so a reader blocked on a pipe sees EOF as soon as the last
+     * writer exits. Both run before sched_lock: futex_wake and kfclose
+     * take their own leaf locks. */
+    if (self && self->clear_child_tid &&
+        user_range_ok((unsigned long)self->clear_child_tid, sizeof(int)) &&
+        user_page_present(read_cr3(), (unsigned long)self->clear_child_tid)) {
+        *(volatile int *)(unsigned long)self->clear_child_tid = 0;
+        futex_wake((unsigned long)self->clear_child_tid, 1);
+        self->clear_child_tid = 0;
+    }
+    if (self) kfd_view_release(self);
     spin_lock(&sched_lock);
     proc_t *cur = proc_get(current_pid);
     if (!cur) { spin_unlock(&sched_lock); return; }
@@ -2051,6 +2253,16 @@ void do_exit(int code) {
         proc_t *parent = proc_get(cur->parent_pid);
         if (parent && parent->state == PROC_BLOCKED)
             parent->state = PROC_READY;
+    }
+    /* A dead leader stays unreaped until its last thread is gone
+     * (waitpid_scan), so a thread's exit is also news for the parent
+     * waiting on that leader. */
+    if (cur->autoreap) {
+        proc_t *lead = proc_get(cur->tgid);
+        if (lead && lead->state == PROC_ZOMBIE && lead->parent_pid >= 0) {
+            proc_t *lp = proc_get(lead->parent_pid);
+            if (lp && lp->state == PROC_BLOCKED) lp->state = PROC_READY;
+        }
     }
     spin_unlock(&sched_lock);
     schedule();
@@ -2126,6 +2338,7 @@ long do_thread_spawn(unsigned long fn, unsigned long stack,
     /* Threads share the address space and the fd view (CLONE_VM rule);
      * the view refcount, not the entries, records the new owner. */
     kfd_view_share(child);
+    proc_sec_inherit(child->pid, current_pid);
 
     /* iretq frame [rip, cs, rflags, rsp, ss]: start at fn(arg). */
     unsigned long *frame = (unsigned long *)(kstack_top - 40);
@@ -2211,6 +2424,7 @@ long do_clone(long flags, long newsp) {
             return -1;
         }
     }
+    proc_sec_inherit(child->pid, current_pid);
     if (cflags & CLONE_FILES)
         kfd_view_share(child);
     else if (!kfd_view_copy(child, cur)) {
@@ -2275,7 +2489,65 @@ long do_clone(long flags, long newsp) {
  * -ENOSYS, never a half-built child. OOM at any step releases what
  * was claimed and refuses. Runs cli like proc_spawn_elf_inner: table
  * construction plus READY publish are atomic against the preempt. */
+/* The calling pid's syscall frame (docs/spec/smp-sched.md, Linux process
+ * ABI): it ends at the kernel-stack top the entry saved, which must be a
+ * real stack slot end, and is only trusted when its user rip lies in the
+ * user window (a ring-3 syscall). */
+const syscall_frame_t *syscall_frame_current(void) {
+    int pid = current_pid;
+    unsigned long top;
+    const syscall_frame_t *f;
+    if (pid < 0 || pid >= MAX_PROCS) return 0;
+    top = sc_top_save[pid];
+    if (!kstack_is_slot_end(top)) return 0;
+    f = (const syscall_frame_t *)(top - sizeof(syscall_frame_t));
+    if (f->rip < USER_LOAD_BASE || f->rip >= USER_LOAD_END) return 0;
+    return f;
+}
+
+/* Every register Linux preserves across a syscall, copied into a child's
+ * PCB so it resumes after the syscall exactly like the caller. */
+static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f) {
+    c->rbx = f->rbx;
+    c->rbp = f->rbp;
+    c->r12 = f->r12;
+    c->r13 = f->r13;
+    c->r14 = f->r14;
+    c->r15 = f->r15;
+    c->rdi = f->rdi;
+    c->rsi = f->rsi;
+    c->rdx = f->rdx;
+    c->r10 = f->r10;
+    c->r8 = f->r8;
+    c->r9 = f->r9;
+}
+
+/* First code a fork or clone child runs (fork_trampoline, its own window
+ * live): store its tid at the CLONE_CHILD_SETTID address. A copy-on-write
+ * page privatizes through the #PF path, never touching the parent's. */
+void fork_child_settid(void) {
+    proc_t *p = proc_get(current_pid);
+    if (!p || !p->set_child_tid) return;
+    if (user_range_ok((unsigned long)p->set_child_tid, sizeof(int)) &&
+        user_page_present(read_cr3(), (unsigned long)p->set_child_tid))
+        *(volatile int *)(unsigned long)p->set_child_tid = current_pid;
+    p->set_child_tid = 0;
+}
+
 long do_fork(void) {
+    return do_fork_ex(0, 0);
+}
+
+/* A fork that fails names the resource that ran out (failure paths
+ * report): -ENOMEM alone cannot tell a heap leak from a full stack pool. */
+static void fork_report(const char *what) {
+    unsigned long used = 0, free_b = 0, arena = 0;
+    dlmalloc_usage(&used, &free_b, &arena);
+    kprintf("fork: %s exhausted (pid %d, heap used=%luK free=%luK)\n",
+            what, current_pid, used / 1024, free_b / 1024);
+}
+
+long do_fork_ex(uint64_t set_tid, uint64_t clear_tid) {
     proc_t *cur = proc_get(current_pid);
     proc_t *child;
     uint64_t new_cr3;
@@ -2290,7 +2562,7 @@ long do_fork(void) {
     if (!cur->ctx.cr3) return -38;
     irqflags_t fflags = spin_save_irq();
     new_cr3 = cow_fork_window(cur->ctx.cr3);
-    if (!new_cr3) { spin_restore_irq(fflags); return -12; }
+    if (!new_cr3) { spin_restore_irq(fflags); fork_report("page tables"); return -12; }
     urip = (unsigned long)this_cpu()->sc_rip;
     ursp = (unsigned long)cur->kstack;
     if (urip < USER_LOAD_BASE || urip >= USER_LOAD_END ||
@@ -2301,9 +2573,8 @@ long do_fork(void) {
         return -38;
     }
     spin_lock_irqsave(&sched_lock, &sflags);
-    for (pid = 1; pid < MAX_PROCS; pid++)
-        if (procs[pid].state == PROC_FREE) break;
-    if (pid >= MAX_PROCS) {
+    pid = alloc_pid_locked();
+    if (pid < 0) {
         spin_unlock_irqrestore(&sched_lock, sflags);
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
@@ -2334,10 +2605,12 @@ long do_fork(void) {
     child->fsbase = rdmsr(MSR_FSBASE);
     kstack_top = alloc_kstack();
     if (!kstack_top) {
+        child->state = PROC_FREE;
         spin_unlock_irqrestore(&sched_lock, sflags);
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
         spin_restore_irq(fflags);
+        fork_report("kernel stacks");
         return -12;
     }
     child->kstack = kstack_top;
@@ -2350,6 +2623,7 @@ long do_fork(void) {
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
         spin_restore_irq(fflags);
+        fork_report("fpu state");
         return -12;
     }
     __asm__ volatile("fxsave (%0)" :: "r"(child->fpu_save) : "memory");
@@ -2363,8 +2637,10 @@ long do_fork(void) {
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
         spin_restore_irq(fflags);
+        fork_report("vma context");
         return -12;
     }
+    proc_sec_inherit(pid, current_pid);
     /* Fork copies the fd view like the VMA context: the child closes
      * without touching the parent's handles and vice versa. */
     if (!kfd_view_copy(child, cur)) {
@@ -2378,6 +2654,7 @@ long do_fork(void) {
         cow_release_window(new_cr3);
         pt_free_user(new_cr3);
         spin_restore_irq(fflags);
+        fork_report("descriptor view");
         return -12;
     }
     {
@@ -2393,11 +2670,178 @@ long do_fork(void) {
     child->ctx.cr3 = new_cr3;
     child->ctx.rflags = 0x202;
     child->ctx.rax = 0;
+    {
+        const syscall_frame_t *sf = syscall_frame_current();
+        if (sf) ctx_from_frame(&child->ctx, sf);
+    }
+    child->tgid = pid;
+    child->set_child_tid = set_tid;
+    child->clear_child_tid = clear_tid;
     if (proc_count <= pid) proc_count = pid + 1;
     child->state = PROC_READY;
     spin_unlock_irqrestore(&sched_lock, sflags);
     spin_restore_irq(fflags);
     return pid;
+}
+
+/* NPTL thread (clone with CLONE_VM|CLONE_SIGHAND|CLONE_THREAD): same
+ * window and fd view, resumes after the syscall on newsp with the caller's
+ * registers, FSBASE = tls, joins the caller's thread group and is reaped
+ * automatically. *parent_tid is written before the child is published. */
+static long do_clone_thread(unsigned long flags, unsigned long newsp,
+                            unsigned long ptid, unsigned long ctid,
+                            unsigned long tls) {
+    proc_t *cur = proc_get(current_pid);
+    const syscall_frame_t *sf = syscall_frame_current();
+    proc_t *child;
+    irqflags_t sflags;
+    uint64_t kstack_top;
+    int pid, home;
+    if (!cur || !sf) return -38;
+    if (newsp < USER_LOAD_BASE || newsp > USER_LOAD_END) return -22;
+    if ((flags & LINUX_CLONE_SETTLS) && (tls < USER_LOAD_BASE || tls >= USER_LOAD_END))
+        return -22;
+    if ((flags & LINUX_CLONE_PARENT_SETTID) && !user_range_ok(ptid, sizeof(int)))
+        return -14;
+    if ((flags & (LINUX_CLONE_CHILD_SETTID | LINUX_CLONE_CHILD_CLEARTID)) &&
+        !user_range_ok(ctid, sizeof(int)))
+        return -14;
+    spin_lock_irqsave(&sched_lock, &sflags);
+    pid = alloc_pid_locked();
+    if (pid < 0) { spin_unlock_irqrestore(&sched_lock, sflags); return -11; }
+    child = &procs[pid];
+    kmemset(child, 0, sizeof(proc_t));
+    child->pid = pid;
+    child->state = PROC_SWITCHING;
+    child->parent_pid = current_pid;
+    child->clone_flags = CLONE_VM | CLONE_FILES;
+    child->tgid = cur->autoreap ? cur->tgid : current_pid;
+    child->autoreap = 1;
+    child->rl_as_max = cur->rl_as_max;
+    child->rl_cpu_max = cur->rl_cpu_max;
+    child->rl_nofile_max = cur->rl_nofile_max;
+    kstrncpy(child->name, cur->name, sizeof(child->name) - 1);
+    kstack_top = alloc_kstack();
+    if (!kstack_top) {
+        child->state = PROC_FREE;
+        spin_unlock_irqrestore(&sched_lock, sflags);
+        return -12;
+    }
+    child->kstack = kstack_top;
+    child->fpu_save = fpu_alloc_clean();
+    if (!child->fpu_save) {
+        free_kstack(kstack_top);
+        child->kstack = 0;
+        child->state = PROC_FREE;
+        spin_unlock_irqrestore(&sched_lock, sflags);
+        return -12;
+    }
+    child->ctx.cr3 = read_cr3();
+    child->vma = cur->vma ? cur->vma : &vma_legacy;
+    kfd_view_share(child);
+    proc_sec_inherit(child->pid, current_pid);
+    child->brk = cur->brk;
+    child->brk_limit = cur->brk_limit;
+    child->mmap_cur = cur->mmap_cur;
+    child->fsbase = (flags & LINUX_CLONE_SETTLS) ? (uint64_t)tls : rdmsr(MSR_FSBASE);
+    if (flags & LINUX_CLONE_CHILD_SETTID) child->set_child_tid = ctid;
+    if (flags & LINUX_CLONE_CHILD_CLEARTID) child->clear_child_tid = ctid;
+    {
+        unsigned long *frame = (unsigned long *)(kstack_top - 40);
+        frame[0] = (unsigned long)sf->rip;
+        frame[1] = (unsigned long)(GDT64_USER_CODE_SEL | 3);
+        frame[2] = 0x202;
+        frame[3] = newsp;
+        frame[4] = (unsigned long)(GDT64_USER_DATA_SEL | 3);
+    }
+    child->ctx.rip = (uint64_t)fork_trampoline;
+    child->ctx.rsp = kstack_top - 40;
+    child->ctx.rflags = 0x202;
+    child->ctx.rax = 0;
+    ctx_from_frame(&child->ctx, sf);
+    if (proc_count <= pid) proc_count = pid + 1;
+    spin_unlock_irqrestore(&sched_lock, sflags);
+    if (flags & LINUX_CLONE_PARENT_SETTID) *(volatile int *)ptid = pid;
+    spin_lock_irqsave(&sched_lock, &sflags);
+    child->state = PROC_READY;
+    home = this_cpu()->cpu_id;
+    spin_unlock_irqrestore(&sched_lock, sflags);
+    rq_enqueue(home, pid);
+    return pid;
+}
+
+/* Linux clone(2) (56), the two shapes glibc issues (docs/spec/smp-sched.md):
+ * fork (no CLONE_VM, exit signal 0 or SIGCHLD, no new stack) and NPTL
+ * threads. Any other combination is -EINVAL before anything is built. */
+long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid,
+                    unsigned long ctid, unsigned long tls) {
+    unsigned long sig = flags & LINUX_CLONE_SIGNAL_MASK;
+    unsigned long rest = flags & ~LINUX_CLONE_SIGNAL_MASK;
+    long pid;
+    if (rest & LINUX_CLONE_VM) {
+        unsigned long need = LINUX_CLONE_VM | LINUX_CLONE_SIGHAND |
+                             LINUX_CLONE_THREAD | LINUX_CLONE_FILES;
+        if ((rest & need) != need) return -22;
+        if (rest & ~LINUX_CLONE_THREAD_OK) return -22;
+        if (sig != 0) return -22;
+        return do_clone_thread(rest, newsp, ptid, ctid, tls);
+    }
+    if (rest & ~LINUX_CLONE_FORK_OK) return -22;
+    if (sig != 0 && sig != LINUX_SIGCHLD) return -22;
+    if (newsp != 0) return -22;
+    if ((rest & LINUX_CLONE_PARENT_SETTID) && !user_range_ok(ptid, sizeof(int)))
+        return -14;
+    if ((rest & (LINUX_CLONE_CHILD_SETTID | LINUX_CLONE_CHILD_CLEARTID)) &&
+        !user_range_ok(ctid, sizeof(int)))
+        return -14;
+    pid = do_fork_ex((rest & LINUX_CLONE_CHILD_SETTID) ? ctid : 0,
+                     (rest & LINUX_CLONE_CHILD_CLEARTID) ? ctid : 0);
+    if (pid > 0 && (rest & LINUX_CLONE_PARENT_SETTID)) *(volatile int *)ptid = (int)pid;
+    return pid;
+}
+
+/* Zombify every live CLONE_THREAD member of a group except one pid. Caller
+ * holds sched_lock; the slots are reclaimed by the auto-reap sweep. */
+static void kill_group_threads_locked(int tgid, int except) {
+    int i;
+    for (i = 1; i < MAX_PROCS; i++) {
+        proc_t *t = &procs[i];
+        if (i == except || !t->autoreap || t->tgid != tgid) continue;
+        if (t->state == PROC_FREE || t->state == PROC_ZOMBIE) continue;
+        t->exit_code = -1;
+        t->state = PROC_ZOMBIE;
+        t->exited = 1;
+    }
+}
+
+/* exit_group (231): every other thread of the caller's group dies before
+ * the caller exits, so no thread keeps running in a window being freed. */
+/* Linux exit_group(2) and fatal-signal semantics, minus the caller's own
+ * exit (the caller follows with do_exit or do_proc_exit): every other
+ * thread of the group dies, and when the caller is a worker thread the
+ * leader dies too with code, so its parent's wait reports the group's
+ * fate instead of waiting on a leader that would never end. A foreground
+ * leader (pid 0) is the shell context and cannot be zombified; its
+ * workers die and the leader keeps running, as before. */
+void do_group_exit(int code) {
+    irqflags_t sflags;
+    proc_t *self = proc_get(current_pid);
+    int tg = (self && self->autoreap) ? self->tgid : current_pid;
+    spin_lock_irqsave(&sched_lock, &sflags);
+    kill_group_threads_locked(tg, current_pid);
+    if (tg != current_pid && tg > 0) {
+        proc_t *lead = proc_get(tg);
+        if (lead && lead->state != PROC_FREE && lead->state != PROC_ZOMBIE) {
+            lead->exit_code = code;
+            lead->state = PROC_ZOMBIE;
+            lead->exited = 1;
+            if (lead->parent_pid >= 0) {
+                proc_t *par = proc_get(lead->parent_pid);
+                if (par && par->state == PROC_BLOCKED) par->state = PROC_READY;
+            }
+        }
+    }
+    spin_unlock_irqrestore(&sched_lock, sflags);
 }
 
 /* ASLR entropy: TSC low bits mixed with the 100 Hz tick count and a
@@ -2584,8 +3028,15 @@ long do_execve(char *kpath, int kargc, char **kargv) {
     g_brk = cur->brk;
     g_brk_limit = cur->brk_limit;
     user_mmap_cur = cur->mmap_cur;
+    mm_view_claim_current();
     kstrncpy(cur->name, kpath, sizeof(cur->name) - 1);
     cur->name[sizeof(cur->name) - 1] = 0;
+    proc_sec_exec(current_pid);
+    proc_sec_set_exe(current_pid, kpath);
+    /* Linux drops both tid words on exec: they point into the old image,
+     * and writing them later would land in the new one. */
+    cur->set_child_tid = 0;
+    cur->clear_child_tid = 0;
     cur->ctx.cr3 = new_cr3;
     cur->fsbase = 0;
     fpu_free_proc(cur);
@@ -2627,44 +3078,109 @@ long do_execve(char *kpath, int kargc, char **kargv) {
  * the exit code, or WAITPID_NONE when no zombie matches yet. Resources
  * free exactly once here (never in do_exit: the zombie still runs its
  * exit tail on its stack under SMP). */
+/* Free one zombie slot: file-backed mappings, window, VMA context, fd
+ * view, kernel stack and FPU image. Caller holds sched_lock and has
+ * checked the slot is a zombie nobody runs on. */
+static void proc_reap_slot_locked(int i) {
+    if (mm_view_holder == &procs[i]) mm_view_holder = 0;
+    if (vma_owned(&procs[i]) && procs[i].vma) {
+        vma_node_t *stack[64];
+        int sp = 0;
+        vma_node_t *x = procs[i].vma->live;
+        while (x != &procs[i].vma->nil || sp > 0) {
+            while (x != &procs[i].vma->nil) {
+                if (sp < 64) stack[sp++] = x;
+                x = x->left;
+            }
+            x = stack[--sp];
+            if (x->f_file && x->f_ino >= 0) {
+                unsigned long end = x->base + x->len;
+                if (end >= x->base)
+                    mm_file_range_release(procs[i].ctx.cr3,
+                        x->base, x->len, x->f_ino, x->f_off, 0);
+            }
+            x = x->right;
+        }
+    }
+    if (procs[i].ctx.cr3
+        && !(procs[i].clone_flags & CLONE_VM))
+        pt_free_user(procs[i].ctx.cr3);
+    if (vma_owned(&procs[i])) vma_ctx_free(procs[i].vma);
+    procs[i].vma = 0;
+    kfd_view_release(&procs[i]);
+    proc_sec_release(i);
+    /* A proc that died inside a syscall (exit, exit_group) still has its
+     * user rsp parked in PCB.kstack by the entry xchg; the stack top the
+     * entry saved for it is the slot end to free. */
+    if (!free_kstack(procs[i].kstack))
+        free_kstack((uint64_t)sc_top_save[i]);
+    procs[i].kstack = 0;
+    fpu_free_proc(&procs[i]);
+    procs[i].state = PROC_FREE;
+}
+
+/* A zombie may still be finishing its exit tail (schedule()'s save and
+ * switch) on its own kernel stack on some CPU; its slot is reclaimable
+ * only once no CPU runs it any more. */
+static int proc_running_anywhere(int pid) {
+    int c;
+    for (c = 0; c < MAX_CPUS; c++)
+        if (cpus[c].cur_pid == pid) return 1;
+    return 0;
+}
+
+/* Reclaim every auto-reaped (CLONE_THREAD) zombie, or only those of one
+ * thread group when tgid >= 0. Caller holds sched_lock. */
+static void reap_autoreap_locked(int tgid) {
+    int i;
+    for (i = 1; i < MAX_PROCS; i++) {
+        if (procs[i].state != PROC_ZOMBIE || !procs[i].autoreap) continue;
+        if (tgid >= 0 && procs[i].tgid != tgid) continue;
+        if (proc_running_anywhere(i)) continue;
+        proc_reap_slot_locked(i);
+    }
+}
+
+/* First free pid slot after reclaiming finished threads, or -1. Caller
+ * holds sched_lock. */
+static int alloc_pid_locked(void) {
+    int pid;
+    reap_autoreap_locked(-1);
+    for (pid = 1; pid < MAX_PROCS; pid++)
+        if (procs[pid].state == PROC_FREE) return pid;
+    return -1;
+}
+
+/* 1 while a thread of group tgid has not finished exiting: still alive,
+ * or a zombie some CPU is still running on. Its leader's page tables and
+ * VMA context are the thread's too, so the leader is not reapable yet
+ * (Linux likewise reports a group only once every thread is gone). */
+static int group_threads_live_locked(int tgid) {
+    int i;
+    for (i = 0; i < MAX_PROCS; i++) {
+        proc_t *t = &procs[i];
+        if (i == tgid || !t->autoreap || t->tgid != tgid) continue;
+        if (t->state == PROC_FREE) continue;
+        if (t->state != PROC_ZOMBIE || proc_running_anywhere(i)) return 1;
+    }
+    return 0;
+}
+
 static int waitpid_scan(int pid, int *found) {
     int i;
     for (i = 0; i < MAX_PROCS; i++) {
         if (procs[i].state != PROC_FREE
+            && !procs[i].autoreap
             && procs[i].parent_pid == current_pid
             && procs[i].state == PROC_ZOMBIE
+            && !proc_running_anywhere(i)
+            && !group_threads_live_locked(procs[i].pid)
             && (pid == -1 || pid == procs[i].pid)) {
             int code = procs[i].exit_code;
+            int leader = procs[i].pid;
             if (found) *found = procs[i].pid;
-            if (vma_owned(&procs[i]) && procs[i].vma) {
-                vma_node_t *stack[64];
-                int sp = 0;
-                vma_node_t *x = procs[i].vma->live;
-                while (x != &procs[i].vma->nil || sp > 0) {
-                    while (x != &procs[i].vma->nil) {
-                        if (sp < 64) stack[sp++] = x;
-                        x = x->left;
-                    }
-                    x = stack[--sp];
-                    if (x->f_file && x->f_ino >= 0) {
-                        unsigned long end = x->base + x->len;
-                        if (end >= x->base)
-                            mm_file_range_release(procs[i].ctx.cr3,
-                                x->base, x->len, x->f_ino, x->f_off, 0);
-                    }
-                    x = x->right;
-                }
-            }
-            if (procs[i].ctx.cr3
-                && !(procs[i].clone_flags & CLONE_VM))
-                pt_free_user(procs[i].ctx.cr3);
-            if (vma_owned(&procs[i])) vma_ctx_free(procs[i].vma);
-            procs[i].vma = 0;
-            kfd_view_release(&procs[i]);
-            free_kstack(procs[i].kstack);
-            procs[i].kstack = 0;
-            fpu_free_proc(&procs[i]);
-            procs[i].state = PROC_FREE;
+            reap_autoreap_locked(leader);
+            proc_reap_slot_locked(i);
             return code;
         }
     }
@@ -2680,6 +3196,38 @@ int do_waitpid(int pid) {
         rc = waitpid_scan(pid, 0);
         spin_unlock(&sched_lock);
         if (rc != WAITPID_NONE) return rc;
+        cur->state = PROC_BLOCKED;
+        schedule();
+    }
+}
+
+/* 1 when the caller has a waitable child matching pid (-1 = any): one that
+ * is not an auto-reaped thread, in any state but free. Caller holds
+ * sched_lock. */
+static int waitpid_has_child(int pid) {
+    int i;
+    for (i = 1; i < MAX_PROCS; i++) {
+        if (procs[i].state == PROC_FREE || procs[i].autoreap) continue;
+        if (procs[i].parent_pid != current_pid) continue;
+        if (pid == -1 || pid == procs[i].pid) return 1;
+    }
+    return 0;
+}
+
+/* Linux wait4 core (docs/spec/smp-sched.md): reap one matching child and
+ * report its pid through *found and its raw exit code as the result;
+ * WAITPID_NOCHILD when there is nothing to wait for, WAITPID_NONE when
+ * nohang and nothing has exited yet. */
+int do_waitpid_linux(int pid, int nohang, int *found) {
+    proc_t *cur = proc_get(current_pid);
+    if (!cur) return WAITPID_NOCHILD;
+    for (;;) {
+        int rc;
+        spin_lock(&sched_lock);
+        rc = waitpid_scan(pid, found);
+        if (rc == WAITPID_NONE && !waitpid_has_child(pid)) rc = WAITPID_NOCHILD;
+        spin_unlock(&sched_lock);
+        if (rc != WAITPID_NONE || nohang) return rc;
         cur->state = PROC_BLOCKED;
         schedule();
     }
@@ -2740,9 +3288,16 @@ int do_waitpid_nb(int pid) {
  * old do_exit path. A zombie on an AP is abandoned by the AP preempt
  * path, so a kill never leaves a corpse running. */
 int do_kill(int pid) {
+    return do_kill_code(pid, -1);
+}
+
+/* End pid with exit code (negative: killed by signal -code, as wait4
+ * reports it). Killing the caller is a group exit. */
+int do_kill_code(int pid, int code) {
     proc_t *tgt;
     if (pid == current_pid) {
-        do_exit(-1);
+        do_group_exit(code);
+        do_exit(code);
         return 0;
     }
     spin_lock(&sched_lock);
@@ -2752,9 +3307,10 @@ int do_kill(int pid) {
         spin_unlock(&sched_lock);
         return -1;
     }
-    tgt->exit_code = -1;
+    tgt->exit_code = code;
     tgt->state = PROC_ZOMBIE;
     tgt->exited = 1;
+    if (!tgt->autoreap) kill_group_threads_locked(pid, pid);
     if (tgt->parent_pid >= 0) {
         proc_t *par = proc_get(tgt->parent_pid);
         if (par && par->state == PROC_BLOCKED)
@@ -2834,6 +3390,7 @@ void sched_init(void) {
      * share it, so the historical path behaves exactly as before. */
     vma_ctx_init(&vma_legacy, 0);
     vma_ctx_bind(&vma_legacy);
+    mm_view_holder = &procs[0];
     procs[0].vma = &vma_legacy;
 
     /* IDT and TSS FIRST: pic_init unmasks IRQ0/1/12, and the PIT starts

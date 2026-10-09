@@ -137,6 +137,28 @@ violation instead of passing silently. Bounded (400 ops/thread), raw
 syscalls, no libc, no malloc in workers; a wedge shows up as a BDD
 timeout, never a silent pass.
 
+### Linux ABI probes and diagnostics (`progs/src/lx*.c`)
+Static glibc programs, each valid on Linux first (the host build must pass
+before the guest run counts), each printing one `lx<name>: <check> ok` line
+per point and `lx<name>: all ok`:
+
+- `bin/lxabi` (`mrun`): process, thread, descriptor, signal, sleep, limit and
+  `ioctl` ABI (docs/spec/smp-sched.md); host build:
+  `gcc -static -O2 -Wall -Wextra -Werror progs/src/lxabi.c -lpthread`.
+- `bin/lxsecc` (`mrun`): seccomp-bpf, prctl, `/proc/self/exe`
+  (docs/spec/kernel.md).
+- `bin/lxnet <ip> <port>` against `tools/test_net_fixture.py`: the socket
+  ABI (docs/spec/network.md); `lxnet --dial <host> <port>` resolves through
+  glibc and dials like libcurl.
+- `lxtls <url>` / `lxtls --rand` (built with freedom-gui): libcurl and
+  OpenSSL on their own, with the verbose transcript; run it as a job
+  (`run lxtls URL &`).
+
+When a ring-3 program misbehaves, `sclog <pid>` prints its last syscalls
+from the kernel flight recorder (live or exited) without the timing change
+`trace` causes, and `ps` shows the exit code of finished processes. A ring-3
+crash dump carries the same log plus a census of every kernel stack slot.
+
 ## Library integration assessments
 A library lands in MiniOS only when it fits the freestanding kernel's rules
 (integer-only, no POSIX, allocator and libc callbacks redirected through

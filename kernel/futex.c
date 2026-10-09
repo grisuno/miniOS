@@ -82,10 +82,25 @@ long futex_wait(unsigned long uaddr, int val) {
 
 /** Docstring: Decode a Linux futex(2) op to WAIT/WAKE. */
 int futex_linux_cmd(long op) {
-    long cmd = op & ~(long)LINUX_FUTEX_PRIVATE_FLAG;
-    if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE)
+    long cmd;
+    if (op < 0) return -1;
+    cmd = op & ~(long)(LINUX_FUTEX_PRIVATE_FLAG | LINUX_FUTEX_CLOCK_REALTIME);
+    if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE ||
+        cmd == LINUX_FUTEX_WAIT_BITSET || cmd == LINUX_FUTEX_WAKE_BITSET)
         return (int)cmd;
     return -1;
+}
+
+/** Docstring: Microseconds left before a futex timeout (see futex.h). */
+long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us) {
+    long total;
+    if (sec < 0 || nsec < 0 || nsec >= FUTEX_NS_PER_S) return FUTEX_TIMEOUT_INVALID;
+    if (sec > (FUTEX_TIMEOUT_FOREVER - FUTEX_US_PER_S) / FUTEX_US_PER_S)
+        return FUTEX_TIMEOUT_FOREVER;
+    total = sec * FUTEX_US_PER_S + nsec / FUTEX_NS_PER_US;
+    if (cmd != LINUX_FUTEX_WAIT_BITSET) return total;
+    if (now_us > (unsigned long)FUTEX_TIMEOUT_FOREVER) return 0;
+    return total - (long)now_us;
 }
 
 /** Docstring: Wake up to n sleepers waiting on uaddr.

@@ -188,6 +188,12 @@ the path relative to the shared parent of the packed files, so
 longer than the bound or a collision between two files is a build error,
 never a silent truncation that would make a lookup miss.
 
+MiniFS images follow the same rule. `tools/mkfs.minifs.py` places each
+packed path at the root under its basename. A directory packed twice under
+one name merges into a single directory, and any other duplicate name in a
+directory is a build error, never a second entry that would shadow the
+first.
+
 ### Filesystem commands
 A working directory (`cwd`) and directory-aware builtins, over a merged view
 of the ramdisk (flat namespace) and MiniFS (real directory-capable filesystem
@@ -351,7 +357,9 @@ on the IDE disk):
   off-machine backup.
 - `ps` lists the live process table (`pid ppid state name` from `procs[]`,
   snapshot under `sched_lock` then printed after release, so console I/O
-  never runs with the scheduler lock held). `jobs` lists the shell's live
+  never runs with the scheduler lock held), then the programs registered by
+  `load` (one name per line under `loaded programs`); a finished process
+  shows its exit code. `jobs` lists the shell's live
   children, `wait [pid]` reaps, `kill <pid>` terminates a real target.
 - `mem` reports heap use/free (dlmalloc), ramdisk use/cap/max, MiniFS free
   blocks/inodes and live process count: the first thing to read when a

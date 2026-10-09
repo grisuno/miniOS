@@ -50,7 +50,8 @@ unknown-tool-code | s/CFG_JSONRPC_INVALID_PARAMS, \"unknown tool/CFG_JSONRPC_INT
 registry-forgot-record | s/rebuilt.append(\"%s %s\" % (name, version))/rebuilt.append(name)/ | minios_addons.py
 state-not-saved | s/state.save(addons)/pass/ | minios_addons.py
 parts-not-cleaned | s/            session._cleanup_parts(parts)/            pass/ | minios_addons.py
-roundtrip-check-removed | s/if body.rstrip(\\\"\\\\n\\\") != expected:/if False and body.rstrip(\\\"\\\\n\\\") != expected:/ | minios_addons.py
+roundtrip-check-removed | s/            if got != expected:/            if False:/ | minios_addons.py
+editor-dirty-prompt-lost | s/(\"edit> \", \"edit \*> \", /(\"edit> \", / | $FILE
 verify-exit-code-ignored | s/if \\\"exit_code\\\" in entry and code != entry\\[\\\"exit_code\\\"\\]:/if False:/ | minios_addons.py
 build-failure-ignored | s/if code is not None and code != 0:/if code is not None and False:/ | minios_addons.py
 exit-code-parsed-as-zero | s/return int(match.group(1)) if match else None/return 0 if match else None/ | minios_addons.py

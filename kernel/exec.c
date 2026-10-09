@@ -11,6 +11,7 @@
 #include "arch/x86/msr.h"
 #include "vga_fb.h"
 #include "sched.h"
+#include "proc_sec.h"
 #include "drivers/kbd.h"
 
 /* kjmpbuf is declared in kernel.h.  ksetjmp/klongjmp are asm trampolines
@@ -195,6 +196,9 @@ int k_exec_user(void *entry, int argc, char **argv) {
         __builtin_unreachable();
     }
     user_program_active = 0;
+    /* The foreground program ran as pid 0, the shell's own context: any
+     * seccomp filter, no_new_privs or image path it set ends with it. */
+    proc_sec_release(0);
 
     if (new_cr3) {
         pt_free_user(new_cr3);

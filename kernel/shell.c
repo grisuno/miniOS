@@ -222,7 +222,7 @@ static const char *shell_builtin_names[] = {
     "echo", "edit", "ext4", "fat", "fx", "gdb", "gfx", "hash", "help", "httpd", "irqstat", "jobs", "kbd", "kill", "kstack",
     "load", "ls", "lsfs", "ltrace", "mem", "minifetch",     "mkdir", "mount", "mrun", "mv", "net",
     "nice", "panic", "perf", "poweroff", "ps", "pwd", "rlimit", "rm", "rmdir", "run",
-    "schedtop", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
+    "schedtop", "sclog", "seccomp", "sh", "sleep", "smp", "strace", "trace", "unmount", "unzip",
     "usb",
     "vfstest", "vmmap", "vol", "wait", "wm", "zip", "vblk", "vnet", "nvme",
 };
@@ -3653,7 +3653,7 @@ void shell_exec_builtin(int argc, char **argv) {
         }
     }
     else if (kstrcmp(argv[0], "ps") == 0) {
-        struct ps_row { int pid; int ppid; int state; char name[32]; };
+        struct ps_row { int pid; int ppid; int state; int code; char name[32]; };
         /* Heap snapshot like schedtop_report: 64 rows are 3 KB and must
          * not live in this frame (stack discipline, CLAUDE.md). */
         struct ps_row *snap = (struct ps_row *)kmalloc(sizeof(struct ps_row) * MAX_PROCS);
@@ -3667,6 +3667,7 @@ void shell_exec_builtin(int argc, char **argv) {
             snap[n].pid = procs[i].pid;
             snap[n].ppid = procs[i].parent_pid;
             snap[n].state = procs[i].state;
+            snap[n].code = procs[i].exit_code;
             for (k = 0; k < 31 && procs[i].name[k]; k++)
                 snap[n].name[k] = procs[i].name[k];
             snap[n].name[k] = 0;
@@ -3674,12 +3675,20 @@ void shell_exec_builtin(int argc, char **argv) {
         }
         spin_unlock(&sched_lock);
         kprintf("  pid  ppid state name\n");
-        for (i = 0; i < n; i++)
-            kprintf("  %-4d %-4d %-5s %s\n", snap[i].pid,
+        for (i = 0; i < n; i++) {
+            kprintf("  %-4d %-4d %-5s %s", snap[i].pid,
                     snap[i].ppid,
                     shell_proc_state(snap[i].state), snap[i].name);
+            if (snap[i].state == PROC_ZOMBIE) kprintf(" (exit %d)", snap[i].code);
+            kprintf("\n");
+        }
         if (!n) vga_puts("  (no processes)\n");
         kfree(snap);
+        if (kprog_count > 0) {
+            kprintf("  loaded programs\n");
+            for (i = 0; i < kprog_count; i++)
+                kprintf("  %s\n", kprog_table[i].name);
+        }
     }
     /* `panic`: paint the kernel panic screen with live registers and a
      * frame-pointer backtrace, then return (demo mode, no halt). Real
@@ -3871,6 +3880,12 @@ void shell_exec_builtin(int argc, char **argv) {
     }
     else if (kstrcmp(argv[0], "kstack") == 0) {
         kstack_report();
+    }
+    /* `sclog <pid>`: the last syscalls a process made (live or exited,
+     * until its slot is reused), from the kernel flight recorder. */
+    else if (kstrcmp(argv[0], "sclog") == 0) {
+        if (argc < 2) kprintf("usage: sclog <pid>\n");
+        else sc_record_dump((int)katol(argv[1]));
     }
     else if (kstrcmp(argv[0], "sb16") == 0) {
         sb16_counters_t c;

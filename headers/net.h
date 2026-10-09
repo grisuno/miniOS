@@ -7,6 +7,14 @@
 #define NET_GATEWAY   10, 0, 2, 2
 #define NET_DNS       10, 0, 2, 3
 
+/* Linux poll(2) event bits (struct pollfd), shared by net_sys_poll and
+ * kfd_poll_revents. */
+#define NET_POLLIN   0x001
+#define NET_POLLOUT  0x004
+#define NET_POLLERR  0x008
+#define NET_POLLHUP  0x010
+#define NET_POLLNVAL 0x020
+
 /* ========== rtl8139 ========== */
 #define NET_PCI_VENDOR    0x10EC
 #define NET_PCI_DEVICE    0x8139
@@ -17,6 +25,10 @@
  * and the tail of every frame that crosses 8192 is lost. */
 #define NET_RX_BUF_LEN    0x2000
 #define NET_RX_ALIGN      256
+/* The RTL8139 ring is 8K + 16 bytes (datasheet, RBLEN 00): the chip may
+ * write up to 16 bytes past the 8 KB the reader indexes, so the buffer
+ * carries that tail, or the NIC writes into the next heap chunk. */
+#define NET_RX_RING_PAD   16
 /* RCR: accept broadcast/multicast/phys (the ring size bits are ignored
  * by QEMU anyway). */
 #define NET_RCR           (0x000F)
@@ -59,10 +71,42 @@
 /* ========== Socket layer ========== */
 #define NET_FD_BASE       100
 
+/* Datagram sockets (docs/spec/network.md, Linux socket ABI): a second
+ * table after the stream one, its own descriptor range and ephemeral
+ * ports clear of the kernel's internal DNS client (NET_EPHEMERAL_MIN up). */
+#define NET_UDP_SOCKETS       8
+#define NET_UDP_QUEUE         8
+#define NET_UDP_DGRAM_MAX     1472
+#define NET_UDP_FD_BASE       (NET_FD_BASE + NET_SOCKETS)
+#define NET_UDP_EPHEMERAL_MIN 50000
+#define NET_UDP_EPHEMERAL_MAX 59999
+#define NET_SOCKADDR_IN_LEN   16
+/* struct msghdr / struct mmsghdr layout on x86-64. */
+#define NET_MSGHDR_LEN        56
+#define NET_MMSGHDR_LEN       64
+#define NET_MSGHDR_NAME_OFF   0
+#define NET_MSGHDR_NAMELEN_OFF 8
+#define NET_MSGHDR_IOV_OFF    16
+#define NET_MSGHDR_IOVLEN_OFF 24
+#define NET_MMSGHDR_LEN_OFF   56
+#define NET_IOV_LEN           16
+#define NET_IOV_MAX           1024
+#define NET_MMSG_MAX          1024
+
 /* net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and
  * 0..NET_SOCKETS-1 for the libc-style symbols. */
 
 void net_init(void);
+/* Linux socket ABI entry points (kernel/syscalls.c routes to them). */
+int  net_sys_is_socket(long fd);
+long net_sys_setsockopt(long fd, long level, long name, long val, long len);
+long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);
+long net_sys_getsockname(long fd, long addr, long lenp);
+long net_sys_getpeername(long fd, long addr, long lenp);
+long net_sys_sendmsg(long fd, long msg, long flags);
+long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);
+long net_sys_fcntl(long fd, long cmd, long arg);
+long net_sys_ioctl(long fd, long req, long arg);
 void net_register_symbols(void);
 
 /* Shell commands */

@@ -64,8 +64,10 @@
 _Static_assert(SYSCALL_USER_WIN_LO == MINIOS_USER_LOAD_BASE, "syscall win lo drift");
 _Static_assert(SYSCALL_USER_WIN_HI == MINIOS_USER_LOAD_END, "syscall win hi drift");
 _Static_assert(SYSCALL_PROC_T_SIZE == PROC_T_SIZE, "syscall proc size drift");
+_Static_assert(MINIOS_HEAP_BASE + MINIOS_HEAP_SIZE <= KASLR_MIN_ADDR, "kernel heap overlaps the KASLR window");
 _Static_assert(SYSCALL_PROC_KSTACK_OFF == PROC_KSTACK_OFF, "syscall kstack off drift");
 _Static_assert(SYSCALL_MAX_PROCS == MAX_PROCS, "syscall max procs drift");
+_Static_assert(sizeof(syscall_frame_t) == SYSCALL_FRAME_WORDS * 8, "syscall frame drift");
 _Static_assert(USER_LOAD_BASE == MINIOS_USER_LOAD_BASE, "USER_LOAD_BASE drift");
 _Static_assert(USER_LOAD_END == MINIOS_USER_LOAD_END, "USER_LOAD_END drift");
 _Static_assert(USER_STACK_TOP == MINIOS_USER_STACK_TOP, "USER_STACK_TOP drift");
@@ -311,7 +313,7 @@ void kmain(void) {
     vfs_register_builtins();
 
     kprintf("Heap: %d MB  Symbols: %d  (Linux ELF: syscall ABI ready)\n",
-            (int)(HEAP_SIZE >> 20), ksym_count);
+            (int)(kheap_size >> 20), ksym_count);
 
     /* Initialize the scheduler: IDT, TSS, PIC, PIT timer.
      * This enables interrupts and the 100 Hz timer tick. */

@@ -49,6 +49,7 @@ typedef struct {
     vma_node_t *free;
     vma_node_t *mru;
     unsigned long mru_base;
+    vma_node_t *spare;      /* deleted nodes, chained through left; 0 = none */
 } vma_ctx_t;
 
 extern vma_node_t *VMA_NIL;
@@ -56,6 +57,7 @@ extern vma_node_t *vma_live_root;
 extern vma_node_t *vma_free_root;
 extern vma_node_t  vma_pool[VMA_MAX];
 extern int         vma_pool_n;
+extern vma_node_t *vma_spare;
 extern vma_node_t *vma_pool_ptr;
 extern vma_ctx_t   vma_legacy;
 
@@ -79,6 +81,7 @@ typedef struct {
     int          pool_n;
     vma_node_t  *mru;
     unsigned long mru_base;
+    vma_node_t  *spare;
 } vma_view_t;
 void        vma_view_save(vma_view_t *v);
 void        vma_view_load(const vma_view_t *v);

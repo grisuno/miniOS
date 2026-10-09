@@ -128,6 +128,7 @@ char sb_get_char(int row, int col);
 void serial_init(void);
 void serial_putc(char c);
 void serial_puts(const char *s);
+void sc_record_dump(int pid);
 unsigned long serial_e_count(void);          /* E-flood tracer (serial.c) */
 extern unsigned long ser_e_ra, ser_e_cpu;    /* first 'E' writer's RA/CPU */
 int  serial_available(void);
@@ -216,12 +217,18 @@ void *kcalloc(unsigned long nmemb, unsigned long size);
 void *krealloc(void *ptr, unsigned long size);
 void  kallocator_init(void);
 void *kmalloc_aligned(unsigned long size, unsigned long align);
+#define KMALLOC_PAGE 0x1000UL
+void *kmalloc_page(void);
 void  kfree_aligned(void *ptr);
 
 /* dlmalloc backend (third_party/dlmalloc): an mspace rooted over the fixed
  * kernel heap. The kernel's allocator delegates to these. */
-void  dlmalloc_init(void);
+void  dlmalloc_init(unsigned long size);
+/* Bytes of kernel heap actually in use as the dlmalloc space: HEAP_SIZE
+ * clamped to the RAM installed above HEAP_BASE. */
+extern unsigned long kheap_size;
 void *dlmalloc_malloc(unsigned long size);
+void *dlmalloc_memalign(unsigned long align, unsigned long size);
 void  dlmalloc_free(void *ptr);
 void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);
 void *dlmalloc_realloc(void *ptr, unsigned long size);
@@ -467,6 +474,10 @@ typedef struct {
     int      pipe_write;  /* 1 = write end, 0 = read end */
     pipe_ring_t *pring;   /* shared ring, refcounted, see pipe.h */
     int      *pring_ref;  /* shared refcount, freed with the ring */
+    int      nonblock;    /* Linux O_NONBLOCK on this open description */
+    int      is_eventfd;  /* 1 = eventfd counter, see kevent_* */
+    int      efd_semaphore; /* EFD_SEMAPHORE: reads take 1, not all */
+    unsigned long long efd_count;
 } KFILE;
 
 KFILE *kfopen(const char *path, const char *mode);
@@ -761,6 +772,27 @@ unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va);
 void mm_file_range_release(unsigned long cr3, unsigned long base,
     unsigned long len, int ino, unsigned long off, int unmap);
 
+/* Anonymous demand paging (docs/spec/kernel.md): a reserved page is a
+ * non-present PTE carrying PTE_DEMAND and the protection the mapping asked
+ * for, in bits the MMU ignores while the present bit is clear (bits 0 and
+ * 1 stay clear, so every "present" test keeps reading it as absent). The
+ * first touch, from ring 3 or a kernel copy into a user buffer, maps a
+ * zeroed page with that protection; PROT_NONE never maps. */
+#define PTE_DEMAND        0x200UL
+#define PTE_DEMAND_READ   0x100UL
+#define PTE_DEMAND_WRITE  0x400UL
+#define PTE_DEMAND_EXEC   0x800UL
+#define LINUX_PROT_READ   1UL
+#define LINUX_PROT_WRITE  2UL
+#define LINUX_PROT_EXEC   4UL
+unsigned long mm_demand_pte(unsigned long prot);
+int mm_anon_reserve(unsigned long cr3, unsigned long base, unsigned long len,
+    unsigned long prot);
+int mm_anon_fault(unsigned long cr3, unsigned long va, int write);
+int pt_page_owned(unsigned long phys);
+void mm_anon_release(unsigned long cr3, unsigned long base, unsigned long len);
+int cow_drop_ref(unsigned long phys);
+
 /* Map a physical device region uncached into the kernel-owned virtual device
  * window at DEV_MMIO_VBASE and return that virtual address, so a PCI MMIO BAR
  * living in the host bridge's hole above all of RAM can be read as a register
@@ -776,6 +808,7 @@ int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3,
  * dying window's shares ahead of pt_free_user. */
 unsigned long cow_fork_window(unsigned long parent_cr3);
 int cow_resolve(unsigned long cr3, unsigned long va);
+int user_page_present(unsigned long cr3, unsigned long va);
 void cow_release_window(unsigned long cr3);
 int cow_shared(void);
 int cow_page_shared(unsigned long phys);
@@ -818,6 +851,22 @@ KFILE *kfd_override(int fd, KFILE *f);
 int kpipe_pair(KFILE **rend_out, KFILE **wend_out);
 int kpipe_empty_wopen(KFILE *f);
 int kpipe_is_write_end(KFILE *f);
+/* Pipe snapshot for poll and the blocking syscall layer: bytes waiting,
+ * free space, writer open, reader open. -1 on a non-pipe file. */
+int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen);
+/* poll(2) readiness bits of a non-socket descriptor (kernel/syscalls.c):
+ * pipes, eventfds, files and the console; POLLNVAL for a closed fd. */
+int kfd_poll_revents(int fd);
+/* eventfd(2) descriptions (docs/spec/smp-sched.md): create with an initial
+ * counter, read (0 or -EAGAIN when the counter is 0), write (0, -EAGAIN on
+ * overflow past KEVENT_MAX, -EINVAL for the all-ones value), and the
+ * readiness poll consults. */
+#define KEVENT_MAX 0xfffffffffffffffeULL
+KFILE *kevent_create(unsigned long long initval, int semaphore);
+long kevent_read(KFILE *f, unsigned long long *out);
+long kevent_write(KFILE *f, unsigned long long v);
+int kevent_readable(KFILE *f);
+int kevent_writable(KFILE *f);
 /* Big filesystem lock, defined in fs/kfile.c: serializes whole kf*
  * bodies plus unlink and dir_list against each other. Leaf like
  * fd_lock (never nested, never held across yields); heavy IO may

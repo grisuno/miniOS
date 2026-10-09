@@ -1565,79 +1565,6 @@ int minifs_mount(void) {
 }
 #pragma GCC diagnostic pop
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wframe-larger-than="
-int minifs_mkfs(unsigned int total_blocks) {
-    unsigned int ibm_blocks, bbm_blocks, it_blocks, data_start;
-    unsigned int i;
-    unsigned char buf[MINIFS_BLOCK_SIZE];
-
-    if (total_blocks < 16) return -1;
-
-    ibm_blocks = 1;
-    bbm_blocks = div_round_up(total_blocks, MINIFS_BLOCK_SIZE * 8);
-    it_blocks = 8;
-    data_start = 1 + ibm_blocks + bbm_blocks + it_blocks;
-
-    kmemset(&fs_sb, 0, sizeof(MiniFSSuper));
-    fs_sb.magic = MINIFS_MAGIC;
-    fs_sb.version = MINIFS_VERSION;
-    fs_sb.block_size = MINIFS_BLOCK_SIZE;
-    fs_sb.total_blocks = total_blocks;
-    fs_sb.free_blocks = total_blocks - data_start;
-    fs_sb.total_inodes = it_blocks * MINIFS_INODES_PER_BLOCK;
-    fs_sb.free_inodes = fs_sb.total_inodes - MINIFS_ROOT_INODE;
-    fs_sb.root_inode = MINIFS_ROOT_INODE;
-    fs_sb.inode_bitmap_start = 1;
-    fs_sb.block_bitmap_start = 1 + ibm_blocks;
-    fs_sb.inode_table_start = 1 + ibm_blocks + bbm_blocks;
-    fs_sb.data_start = data_start;
-    fs_sb.first_free_hint = data_start;
-    fs_sb.compression = 0;
-    fs_sb.dirty = 0;
-
-    kmemset(buf, 0, MINIFS_BLOCK_SIZE);
-    if (block_write(0, buf) < 0) return -1;
-
-    kmemset(buf, 0xFF, MINIFS_BLOCK_SIZE);
-    for (i = 0; i < data_start / 8 + 1 && i < MINIFS_BLOCK_SIZE; i++)
-        buf[i] = 0xFF;
-    unsigned int reserved_bits = data_start;
-    for (i = 0; i < reserved_bits; i++)
-        buf[i / 8] &= (unsigned char)~(1u << (i % 8));
-    for (i = 0; i < ibm_blocks; i++)
-        block_write(fs_sb.inode_bitmap_start + i, buf);
-    for (i = 0; i < bbm_blocks; i++)
-        block_write(fs_sb.block_bitmap_start + i, buf);
-
-    kmemset(buf, 0, MINIFS_BLOCK_SIZE);
-    for (i = 0; i < it_blocks; i++)
-        block_write(fs_sb.inode_table_start + i, buf);
-
-    MiniFSInode root;
-    kmemset(&root, 0, sizeof(MiniFSInode));
-    root.mode = MINIFS_S_IFDIR | 0755;
-    root.link_count = 2;
-    root.checksum = 0;
-    fs_write_inode(MINIFS_ROOT_INODE, &root);
-
-    fs_ibitmap = (unsigned char *)kmalloc(ibm_blocks * MINIFS_BLOCK_SIZE);
-    fs_bbitmap = (unsigned char *)kmalloc(bbm_blocks * MINIFS_BLOCK_SIZE);
-    if (!fs_ibitmap || !fs_bbitmap) return -1;
-    for (i = 0; i < ibm_blocks; i++)
-        block_read(fs_sb.inode_bitmap_start + i,
-                   fs_ibitmap + i * MINIFS_BLOCK_SIZE);
-    for (i = 0; i < bbm_blocks; i++)
-        block_read(fs_sb.block_bitmap_start + i,
-                   fs_bbitmap + i * MINIFS_BLOCK_SIZE);
-
-    fs_write_super();
-    fs_mounted = 1;
-    kprintf("minifs: mkfs done, %u blocks (%u KB)\n",
-            total_blocks, total_blocks * 4);
-    return 0;
-}
-
 int minifs_sync(void) {
     if (!fs_mounted) return -1;
     unsigned int ibm_blocks = div_round_up(fs_sb.total_inodes, MINIFS_BLOCK_SIZE * 8);
@@ -1686,4 +1613,3 @@ void minifs_usage(unsigned int *free_b, unsigned int *total_b,
     if (free_i != 0) *free_i = fs_sb.free_inodes;
     if (total_i != 0) *total_i = fs_sb.total_inodes;
 }
-#pragma GCC diagnostic pop

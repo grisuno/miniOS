@@ -231,6 +231,30 @@ user_trampoline:
  */
         .globl  fork_trampoline
 fork_trampoline:
+        /* CLONE_CHILD_SETTID is stored by the child in its own window
+         * (fork_child_settid). switch_to restored the caller's registers
+         * from the PCB, so every register a C call may clobber is saved
+         * around it; nine pushes keep the call 16-byte aligned (the
+         * iretq frame top is kstack - 40). */
+        pushq   %rax
+        pushq   %rcx
+        pushq   %rdx
+        pushq   %rsi
+        pushq   %rdi
+        pushq   %r8
+        pushq   %r9
+        pushq   %r10
+        pushq   %r11
+        call    fork_child_settid
+        popq    %r11
+        popq    %r10
+        popq    %r9
+        popq    %r8
+        popq    %rdi
+        popq    %rsi
+        popq    %rdx
+        popq    %rcx
+        popq    %rax
         xorl    %eax, %eax
         iretq
 

@@ -64,13 +64,18 @@
  * call below is a thin mspace_* pass-through. */
 static mspace kheap_mspace = 0;
 
-void dlmalloc_init(void) {
-    kheap_mspace = create_mspace_with_base((void *)HEAP_BASE, HEAP_SIZE, 0);
+void dlmalloc_init(unsigned long size) {
+    kheap_mspace = create_mspace_with_base((void *)HEAP_BASE, (size_t)size, 0);
 }
 
 void *dlmalloc_malloc(unsigned long size) {
     if (!kheap_mspace) return 0;
     return mspace_malloc(kheap_mspace, (size_t)size);
+}
+
+void *dlmalloc_memalign(unsigned long align, unsigned long size) {
+    if (!kheap_mspace) return 0;
+    return mspace_memalign(kheap_mspace, (size_t)align, (size_t)size);
 }
 
 void dlmalloc_free(void *ptr) {

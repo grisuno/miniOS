@@ -97,6 +97,22 @@ int main(void) {
         CHECK(pipe_ring_space(&rc) == 16u, "cyc space back");
     }
 
+    {
+        /* Reader side (EPIPE for Linux writers): a fresh ring has both
+         * ends open, closing the reader is idempotent and refuses null,
+         * and a write to a reader-closed ring stores nothing. */
+        unsigned char rb[8];
+        pipe_ring_t rr;
+        CHECK(pipe_ring_init(&rr, rb, sizeof(rb)) == 0, "reader init");
+        CHECK(pipe_ring_ropen(&rr) == 1, "reader open at init");
+        CHECK(pipe_ring_close_reader(&rr) == 0, "close reader");
+        CHECK(pipe_ring_close_reader(&rr) == 0, "close reader idempotent");
+        CHECK(pipe_ring_ropen(&rr) == 0, "reader closed");
+        CHECK(pipe_ring_write(&rr, (unsigned char *)"x", 1u) == 0u, "write after reader close");
+        CHECK(pipe_ring_close_reader(0) == PIPE_ERR_BOUND, "close reader null");
+        CHECK(pipe_ring_ropen(0) == 0, "ropen null");
+    }
+
     if (failures == 0)
         printf("pipe: ok\n");
     return failures != 0;

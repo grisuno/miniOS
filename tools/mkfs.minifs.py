@@ -41,9 +41,16 @@ def crc32(data):
             crc = (crc >> 1) ^ (0xEDB88320 if (crc & 1) else 0)
     return crc ^ 0xFFFFFFFF
 
+def count_free(bitmap, count):
+    """Clear bits among the first count bits of bitmap: the superblock free
+    counters must equal what the kernel allocator sees in the bitmaps."""
+    return sum(1 for i in range(count) if not bitmap[i // 8] & (1 << (i % 8)))
+
+
 class MiniFS:
     def __init__(self, total_blocks):
         self.total_blocks = total_blocks
+        self.names = {}
         self.ibm_blocks = 1
         self.bbm_blocks = div_round_up(total_blocks, BLOCK_SIZE * 8)
         self.it_blocks = 16
@@ -59,7 +66,7 @@ class MiniFS:
 
         self.blocks = [bytearray(BLOCK_SIZE) for _ in range(self.total_blocks)]
 
-        self.mark_inodes_used(0, self.data_start)
+        self.mark_inodes_used(0, ROOT_INODE)
         self.mark_blocks_used(0, self.data_start)
 
         self.create_root()
@@ -92,11 +99,16 @@ class MiniFS:
                          mode, 2, 0, 0, 0, 0, 0)
         self.inodes[ino][124:128] = struct.pack('<I', crc32(bytes(self.inodes[ino][:124])))
 
-    def create_inode(self, mode):
+    def seal_inode(self, ino):
+        """Store the inode checksum over its first 124 bytes; every
+        mutation reseals, or the kernel rejects the inode on read."""
+        self.inodes[ino][124:128] = struct.pack('<I', crc32(bytes(self.inodes[ino][:124])))
+
+    def create_inode(self, mode, links=1):
         ino = self.alloc_inode()
         struct.pack_into('<HHiIIII', self.inodes[ino], 0,
-                         mode, 1, 0, 0, 0, 0, 0)
-        self.inodes[ino][124:128] = struct.pack('<I', crc32(bytes(self.inodes[ino][:124])))
+                         mode, links, 0, 0, 0, 0, 0)
+        self.seal_inode(ino)
         return ino
 
     def inode_set_size(self, ino, size):
@@ -171,7 +183,21 @@ class MiniFS:
         self.inode_set_block(dir_ino, logblk, b)
         self.inode_set_size(dir_ino, size + BLOCK_SIZE)
 
+    def claim_name(self, parent_ino, name, is_dir):
+        """Record name in parent_ino. Returns the inode of an existing
+        directory when a directory of the same name is packed again (two
+        source trees merge, e.g. several etc/ roots); any other collision
+        is a build error, never a duplicate entry that shadows a file."""
+        key = (parent_ino, name)
+        prev = self.names.get(key)
+        if prev is None:
+            return None
+        if is_dir and prev[1]:
+            return prev[0]
+        raise SystemExit(f"mkfs.minifs: duplicate name '{name}' in directory inode {parent_ino}")
+
     def write_file(self, parent_ino, name, data):
+        self.claim_name(parent_ino, name, False)
         ino = self.create_inode(S_IFREG | 0o644)
         self.inode_set_size(ino, len(data))
 
@@ -186,12 +212,19 @@ class MiniFS:
             logblk += 1
 
         self.add_dir_entry(parent_ino, name, ino, FT_FILE)
+        self.names[(parent_ino, name)] = (ino, False)
         return ino
 
     def write_dir(self, parent_ino, name):
-        ino = self.create_inode(S_IFDIR | 0o755)
-        self.inodes[ino][2:4] = struct.pack('<H', 2)
+        # The link count is part of the sealed bytes: setting it after the
+        # seal left every directory that never got an entry (an empty
+        # /tmp) with a bad checksum, so the kernel refused to resolve it.
+        existing = self.claim_name(parent_ino, name, True)
+        if existing is not None:
+            return existing
+        ino = self.create_inode(S_IFDIR | 0o755, links=2)
         self.add_dir_entry(parent_ino, name, ino, FT_DIR)
+        self.names[(parent_ino, name)] = (ino, True)
         return ino
 
     def serialize(self):
@@ -202,15 +235,15 @@ class MiniFS:
         sb = struct.pack('<IIIIIIIIIIIIIBBH',
                          MAGIC, VERSION, BLOCK_SIZE,
                          self.total_blocks,
-                         self.total_blocks - self.data_start,
+                         count_free(self.bbitmap, self.total_blocks),
                          self.total_inodes,
-                         self.total_inodes - ROOT_INODE,
+                         count_free(self.ibitmap, self.total_inodes),
                          ROOT_INODE,
                          1,                    # inode_bitmap_start
                          1 + self.ibm_blocks,   # block_bitmap_start
                          1 + self.ibm_blocks + self.bbm_blocks,  # inode_table_start
                          self.data_start,
-                         self.data_start,       # first_free_hint
+                         self.next_block,       # first_free_hint
                          0,                     # compression
                          0,                     # dirty
                          0)                     # checksum placeholder

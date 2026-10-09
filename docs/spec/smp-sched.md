@@ -465,6 +465,16 @@ and its BDD scenario.
     `CLONE_THREAD` without `CLONE_VM|CLONE_SIGHAND`) fail `-EINVAL`, never a
     half-built child. `clone3` (435) answers `-ENOSYS`, which glibc treats as
     "use clone".
+- **`wait4` (61).** Linux semantics: the result is the reaped child's
+  pid, the status word carries a normal exit code in bits 8..15 and a death
+  by signal as the signal number (MiniOS records signal deaths as negative
+  exit codes: `-1` is the historic kill, SIGKILL; `-N` is signal N);
+  `WNOHANG` answers 0 while nothing has exited; no matching child is
+  `-ECHILD` (it used to block forever); unknown options are `-EINVAL`;
+  process groups are not modelled (pid 0 and below -1 wait for any child).
+  Auto-reaped threads are never reported. The old MiniOS shape (the raw code
+  as both result and status) broke every glibc `waitpid` caller; `forktest`
+  and `execho` now assert the Linux shape.
 - **Futex.** `FUTEX_WAIT_BITSET` (9) and `FUTEX_WAKE_BITSET` (10) with
   `FUTEX_BITSET_MATCH_ANY` map to WAIT/WAKE; any other bitset is `-EINVAL`.
   `FUTEX_CLOCK_REALTIME` is accepted. A WAIT with a timeout (relative for
@@ -512,3 +522,43 @@ and its BDD scenario.
   ADR-0014 and are not reclaimed here: `sched_getaffinity` (204, SYS_TIME),
   `fadvise64` (221, SB16 open) and `getdents64` (217, LZ4) keep their
   documented deviations until the block moves.
+- **Group exit and fatal signals.** `exit_group` (231), a fatal `tgkill`
+  (234) and a ring-3 fault end the whole thread group through
+  `do_group_exit`: every other thread dies and, when the caller is a worker
+  thread, the leader dies with the same code, so the parent's `wait4`
+  reports the group (an `exit` in a worker reaches the parent as that exit
+  status, `abort()` as `WTERMSIG == SIGABRT`). A ring-3 fault is SIGSEGV for
+  the process wherever the faulting `rip` points, a null or wild jump
+  included: kernel state is intact, so the kernel never panics on it. A
+  leader is not reaped while one of its threads is still alive or running
+  (its page tables are the thread's too); a thread's exit wakes the parent
+  waiting on that leader.
+- **`kill` (62).** Signal 0 only probes that the pid exists; the signals
+  whose default action terminates end the target as killed by that signal;
+  every other signal (SIGCHLD, SIGWINCH, SIGCONT, SIGURG, real-time) is
+  delivered to its default action, ignore. `-ESRCH` for a missing pid,
+  `-EINVAL` for a signal past 64. MiniOS installs no handlers
+  (`rt_sigaction` records nothing), so the default action is the only one.
+- **Sleeping.** `pause` (34) waits until a fatal signal ends the caller.
+  `nanosleep` (35) and `clock_nanosleep` (230) wait yielding; a relative
+  interval is elapsed time on the monotonic clock whatever clock is named
+  (glibc sends every `nanosleep` as a relative `CLOCK_REALTIME` sleep), and
+  `TIMER_ABSTIME` waits for the named clock (`CLOCK_REALTIME` on the wall
+  clock, `CLOCK_MONOTONIC`/`CLOCK_BOOTTIME` on the TSC clock) to reach the
+  deadline. A malformed timespec is `-EINVAL`. `clock_getres` (229) reports
+  1 us. ABI v12 freed 229/230 for these by moving the SB16 stream calls to
+  252/253 (ADR-0014).
+- **`ioctl` (16).** The console (fds 0-2 without redirection) is the one
+  terminal: `TCGETS`/`TCGETS2` succeed with a zeroed attribute block of the
+  caller's size and `TIOCGWINSZ` answers the console geometry. Every other
+  descriptor answers `FIONREAD` (bytes readable now: buffered stream bytes,
+  the next datagram's size, pipe and file remainders), `FIONBIO`
+  (`O_NONBLOCK`), `FIOCLEX`/`FIONCLEX`, and `-ENOTTY` for terminal and
+  unknown requests; the old blanket 0 left callers' buffers uninitialized.
+- **`prlimit64` (302)** reports `RLIMIT_STACK` as the real 1 MB main stack
+  (glibc sizes thread stacks from it), `NOFILE`, `AS` and `CPU` from the
+  per-process MiniOS limits (settable), and infinity for the rest.
+- **`sched_getaffinity` (204)** answers a mask with one bit per CPU and
+  returns its size. ABI v12 moved MiniOS `SYS_TIME` from 204 to 254: glibc's
+  `get_nprocs` read the millisecond clock as a CPU mask and allowed malloc
+  dozens of 64 MB arenas.

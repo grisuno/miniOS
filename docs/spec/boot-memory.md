@@ -111,7 +111,10 @@ disagree.
 0x0B200000       linear framebuffer (FB_ADDR)
 0x0B400000       Nuklear back-buffer (NK_BACKBUF_ADDR)
 0x0B000000       user stack base (USER_STACK_BASE, 1 MB)
-0x0C000000       kernel heap start (HEAP_BASE, 192 MB)
+0x0C000000       kernel heap start (HEAP_BASE, 448 MB max: clamped to the
+                 RAM CMOS reports, kheap_size; ends at 0x28000000)
+0x28000000       KASLR window for the kernel image (64 x 2 MB slots,
+                 [0x28000000, 0x30000000); a BIOS boot needs >= 768 MB)
 ```
 
 The user page table zone at `0x10000` is a hard contract: it sits BELOW the
@@ -132,8 +135,9 @@ base is randomized at boot when built with KASLR (the default; disable with
 `make ENABLE_KASLR=0`). Stage 2 reads the TSC and the CMOS clock
 (seconds, minutes and hours shifted into distinct bytes) and slides the
 copy destination to `KASLR_MIN_ADDR + (entropy & (KASLR_MAX_UNITS-1)) *
-KASLR_ALIGN` — 64 aligned 2 MB slots in `[0x6000000, 0xE000000)`, inside
-the 256 MB RAM the image targets. The choice is written to `BOOT_KASLR_ADDR`
+KASLR_ALIGN` — 64 aligned 2 MB slots in `[0x28000000, 0x30000000)`, right
+above the kernel heap (`kernel.c` asserts at compile time that the heap ends
+at or below `KASLR_MIN_ADDR`). The choice is written to `BOOT_KASLR_ADDR`
 so the kernel can report its own physical base.
 
 The low 4 MB stay identity mapped with a twist: `PT0` maps `[0x100000,0x200000)`

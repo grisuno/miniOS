@@ -38,6 +38,23 @@ def bash_unquote(expr):
     return "".join(out)
 
 
+def unescaped_quote(expr):
+    """True when expr holds a double quote bash would not keep.
+
+    The table is one double-quoted bash string: a bare " closes it, so sed
+    receives the expression with that quote stripped and matches nothing at
+    run time even though the raw text matches here."""
+    i = 0
+    while i < len(expr):
+        if expr[i] == "\\":
+            i += 2
+            continue
+        if expr[i] == '"':
+            return True
+        i += 1
+    return False
+
+
 def parse_mutations(text):
     """Extract (name, expression, target) triples from the MUTATIONS block.
 
@@ -69,6 +86,8 @@ def anchor_matches(repo, target, expr):
     src = repo / target
     if not src.is_file():
         return False, "missing file"
+    if unescaped_quote(expr):
+        return False, "unescaped double quote ends the MUTATIONS string"
     expr = bash_unquote(expr)
     with tempfile.NamedTemporaryFile(suffix="-anchor") as tmp:
         tmp.write(src.read_bytes())

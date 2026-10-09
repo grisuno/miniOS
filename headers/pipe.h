@@ -31,6 +31,7 @@ typedef struct {
     unsigned tail;
     unsigned count;
     int wopen;
+    int ropen;   /* read end still open; writers get EPIPE once it closes */
 } pipe_ring_t;
 
 typedef struct {
@@ -55,6 +56,7 @@ static inline int pipe_ring_init(pipe_ring_t *r, unsigned char *buf,
     r->tail = 0u;
     r->count = 0u;
     r->wopen = 1;
+    r->ropen = 1;
     return 0;
 }
 
@@ -79,7 +81,7 @@ static inline unsigned pipe_ring_write(pipe_ring_t *r,
     unsigned i;
     if (!r || !r->buf || !src)
         return 0u;
-    if (!r->wopen)
+    if (!r->wopen || !r->ropen)
         return 0u;
     for (i = 0u; i < len && r->count < r->cap; i++) {
         r->buf[r->tail] = src[i];
@@ -120,6 +122,19 @@ static inline int pipe_ring_close_writer(pipe_ring_t *r) {
     return 0;
 }
 
+/** Docstring: Mark the reader closed. Later writes store nothing (the
+ * syscall layer answers EPIPE). Idempotent; null ring is a no-op
+ * returning PIPE_ERR_BOUND. */
+static inline int pipe_ring_close_reader(pipe_ring_t *r) {
+    if (!r)
+        return PIPE_ERR_BOUND;
+    r->ropen = 0;
+    return 0;
+}
+/** Docstring: 1 while the read end is open, 0 once closed or on null. */
+static inline int pipe_ring_ropen(const pipe_ring_t *r) {
+    return (r && r->ropen) ? 1 : 0;
+}
 /** Docstring: Snapshot ring geometry into a caller struct. Fail-closed
  * on null input. */
 static inline int pipe_ring_stat(const pipe_ring_t *r, pipe_cfg_t *out) {

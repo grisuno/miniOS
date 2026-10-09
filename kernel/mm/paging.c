@@ -56,6 +56,17 @@ void mm_setup_protections(void) {
         return;
     }
     wrmsr(MSR_EFER, rdmsr(MSR_EFER) | EFER_NXE);
+    /* CR0.WP: without it a kernel write into a user page ignores the
+     * read-only bit, so a syscall copying into a copy-on-write page after
+     * fork (read(2) into a shared buffer) wrote the physical page both
+     * processes still map. With it the write faults and the #PF path
+     * privatizes through cow_resolve exactly like a ring-3 write. */
+    {
+        unsigned long cr0;
+        __asm__ volatile("mov %%cr0, %0" : "=r"(cr0));
+        cr0 |= (unsigned long)CR0_WP;
+        __asm__ volatile("mov %0, %%cr0" :: "r"(cr0) : "memory");
+    }
     pml4[0] |= (unsigned long)PT_FLAGS_USER;
     pdpt[0] |= (unsigned long)PT_FLAGS_USER;
     for (i = lo; i <= hi; i++) {
@@ -351,22 +362,58 @@ void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)
 
 /* ---- Per-process page tables (KPTI) ---- */
 
-#define PT_ALLOC_HDR  sizeof(void *)
+/* Ownership record of the page allocator: one bit per heap page, set
+ * while pt_page_alloc owns it. Teardown and unmap free a mapped frame only
+ * when its bit is set, so a heap buffer mapped into a window some other
+ * way (page-by-page kmalloc_aligned mappings) is never freed as a page.
+ * Heap-owned, created on the first allocation. */
+#define PT_OWNED_BYTES (HEAP_SIZE / 0x1000UL / 8UL)
+static unsigned char *pt_owned;
+
+static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit) {
+    unsigned long idx;
+    if (phys & 0xFFFUL) return 0;
+    if (phys < HEAP_BASE || phys >= HEAP_BASE + HEAP_SIZE) return 0;
+    idx = (phys - HEAP_BASE) / 0x1000UL;
+    *byte = idx / 8UL;
+    *bit = (unsigned)(idx % 8UL);
+    return 1;
+}
+
+/* 1 when phys is a page pt_page_alloc handed out and nobody freed. */
+int pt_page_owned(unsigned long phys) {
+    unsigned long byte;
+    unsigned bit;
+    if (!pt_owned || !pt_owned_index(phys, &byte, &bit)) return 0;
+    return (pt_owned[byte] >> bit) & 1u;
+}
 
 void *pt_page_alloc(void) {
-    void *raw = kmalloc(0x1000 + PT_ALLOC_HDR + 0xFFF);
-    if (!raw) return 0;
-    unsigned long addr = (unsigned long)raw + PT_ALLOC_HDR;
-    unsigned long aligned = (addr + 0xFFF) & ~0xFFFUL;
-    *((void **)(aligned - PT_ALLOC_HDR)) = raw;
-    kmemset((void *)aligned, 0, 0x1000);
-    return (void *)aligned;
+    void *pg;
+    unsigned long byte;
+    unsigned bit;
+    if (!pt_owned) {
+        unsigned char *map = (unsigned char *)kmalloc(PT_OWNED_BYTES);
+        if (!map) return 0;
+        kmemset(map, 0, PT_OWNED_BYTES);
+        if (__sync_val_compare_and_swap(&pt_owned, (unsigned char *)0, map) != 0)
+            kfree(map);
+    }
+    pg = kmalloc_page();
+    if (!pg) return 0;
+    kmemset(pg, 0, 0x1000);
+    if (pt_owned_index((unsigned long)pg, &byte, &bit))
+        __sync_fetch_and_or(&pt_owned[byte], (unsigned char)(1u << bit));
+    return pg;
 }
 
 void pt_page_free(void *ptr) {
+    unsigned long byte;
+    unsigned bit;
     if (!ptr) return;
-    void *raw = *((void **)((unsigned long)ptr - PT_ALLOC_HDR));
-    kfree(raw);
+    if (pt_owned && pt_owned_index((unsigned long)ptr, &byte, &bit))
+        __sync_fetch_and_and(&pt_owned[byte], (unsigned char)~(1u << bit));
+    kfree(ptr);
 }
 
 uint64_t pt_clone_user(uint64_t parent_cr3) {
@@ -652,6 +699,122 @@ extern spinlock_t mm_lock;
 static volatile unsigned long *mm_file_pte(unsigned long cr3,
         unsigned long va);
 
+/* Encode a Linux prot as a demand-paging reservation PTE. */
+unsigned long mm_demand_pte(unsigned long prot) {
+    unsigned long pte = PTE_DEMAND;
+    if (prot & LINUX_PROT_READ) pte |= PTE_DEMAND_READ;
+    if (prot & LINUX_PROT_WRITE) pte |= PTE_DEMAND_WRITE | PTE_DEMAND_READ;
+    if (prot & LINUX_PROT_EXEC) pte |= PTE_DEMAND_EXEC | PTE_DEMAND_READ;
+    return pte;
+}
+
+/* Heap-owned anonymous frame: the only kind an unmap may free (the shared
+ * pid-0 window and graphics slots map fixed frames outside the heap, and
+ * file pages belong to the page cache). */
+static int mm_anon_frame(unsigned long phys) {
+    if (pcache_owns_phys(phys)) return 0;
+    return pt_page_owned(phys);
+}
+
+/* Reserve [base, base + len) as a fresh anonymous mapping with prot.
+ * Absent pages become reservations (no memory until touched). A page
+ * still present from an earlier mapping is that mapping's leftover: a
+ * shared copy-on-write frame is dropped for a reservation, any other
+ * frame is zeroed in place and takes the new protection, so a new
+ * mapping always reads zero, as Linux guarantees (glibc's calloc skips
+ * clearing fresh mmap chunks). Returns 0, or -1 when a page lies outside
+ * the reservable window. */
+int mm_anon_reserve(unsigned long cr3, unsigned long base, unsigned long len,
+        unsigned long prot) {
+    unsigned long va;
+    unsigned long marker = mm_demand_pte(prot);
+    if (cr3 == 0)
+        __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    if (base & 0xFFFUL || base + len < base) return -1;
+    for (va = base; va < base + len; va += 0x1000) {
+        volatile unsigned long *pp;
+        unsigned long pte;
+        if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return -1;
+        if (mt_shared_slot(va >> PT_PD_INDEX_SHIFT)) return -1;
+        pp = mm_file_pte(cr3, va);
+        if (!pp) return -1;
+        pte = *pp;
+        if (!(pte & 0x001UL)) {
+            *pp = marker;
+            continue;
+        }
+        {
+            unsigned long phys = pte & PT_ADDR_MASK;
+            if (cow_drop_ref(phys)) {
+                *pp = marker;
+            } else {
+                kmemset((void *)phys, 0, 0x1000);
+                pte &= ~(0x002UL | (unsigned long)PT_FLAGS_NX);
+                if (prot & LINUX_PROT_WRITE) pte |= 0x002UL;
+                if (!(prot & LINUX_PROT_EXEC)) pte |= (unsigned long)PT_FLAGS_NX;
+                *pp = pte;
+            }
+        }
+        __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+    }
+    return 0;
+}
+
+/* Resolve a fault on a reservation: map a zeroed page with the reserved
+ * protection. Returns 0 when mapped, -1 when va is no reservation, the
+ * reservation is PROT_NONE, the access is a write to a read-only one, or
+ * the heap is exhausted (the caller kills like any unresolved fault). */
+int mm_anon_fault(unsigned long cr3, unsigned long va, int write) {
+    volatile unsigned long *pp;
+    unsigned long pte;
+    void *pg;
+    va &= ~0xFFFUL;
+    if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return -1;
+    if (mt_shared_slot(va >> PT_PD_INDEX_SHIFT)) return -1;
+    pp = mm_file_pte(cr3, va);
+    if (!pp) return -1;
+    pte = *pp;
+    if ((pte & 0x001UL) || !(pte & PTE_DEMAND)) return -1;
+    if (!(pte & PTE_DEMAND_READ)) return -1;
+    if (write && !(pte & PTE_DEMAND_WRITE)) return -1;
+    pg = pt_page_alloc();
+    if (!pg) return -1;
+    *pp = ((unsigned long)pg) | 0x001UL | PT_FLAGS_USER |
+          ((pte & PTE_DEMAND_WRITE) ? 0x002UL : 0) |
+          ((pte & PTE_DEMAND_EXEC) ? 0 : (unsigned long)PT_FLAGS_NX);
+    __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+    return 0;
+}
+
+/* Unmap the anonymous pages of [base, base + len): reservations vanish,
+ * present heap frames are freed (or just unshared when a fork sibling
+ * still maps them copy-on-write), fixed frames outside the heap stay
+ * mapped (the shared pid-0 window owns them) and are zeroed on reuse. */
+void mm_anon_release(unsigned long cr3, unsigned long base, unsigned long len) {
+    unsigned long va;
+    if (cr3 == 0)
+        __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
+    if (base & 0xFFFUL || base + len < base) return;
+    for (va = base; va < base + len; va += 0x1000) {
+        volatile unsigned long *pp;
+        unsigned long pte, phys;
+        if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return;
+        if (mt_shared_slot(va >> PT_PD_INDEX_SHIFT)) continue;
+        pp = mm_file_pte(cr3, va);
+        if (!pp) continue;
+        pte = *pp;
+        if (!(pte & 0x001UL)) {
+            *pp = 0;
+            continue;
+        }
+        phys = pte & PT_ADDR_MASK;
+        if (!mm_anon_frame(phys)) continue;
+        *pp = 0;
+        __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+        if (!cow_drop_ref(phys)) pt_page_free((void *)phys);
+    }
+}
+
 /** Docstring: Read the mapped phys for va in cr3, 0 when the PTE
  * is absent or non-present. Fork and teardown prove sharing through
  * the tables before taking or dropping cache refs. */
@@ -823,7 +986,6 @@ void mm_file_range_release(unsigned long cr3, unsigned long base,
         unsigned long pte;
         unsigned long phys;
         unsigned idx;
-        void *raw;
         if (!pp) continue;
         pte = *pp;
         if (!(pte & 0x001UL)) continue;
@@ -838,12 +1000,8 @@ void mm_file_range_release(unsigned long cr3, unsigned long base,
             __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
             continue;
         }
-        if (phys < HEAP_BASE || phys >= HEAP_BASE + HEAP_SIZE) continue;
-        raw = *((void **)(phys - PT_ALLOC_HDR));
-        if ((unsigned long)raw < HEAP_BASE ||
-            (unsigned long)raw >= HEAP_BASE + HEAP_SIZE)
-            continue;
-        kfree(raw);
+        if (!pt_page_owned(phys)) continue;
+        pt_page_free((void *)phys);
         *pp = 0;
         __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
     }
@@ -966,10 +1124,15 @@ int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned lon
     if (!(src_pte & PT_FLAGS_NX))
         dpt[(va >> 12) & 0x1FF] &= ~(unsigned long)PT_FLAGS_NX;
     __asm__ volatile("mov %%cr3, %0" : "=r"(saved_cr3));
-    __asm__ volatile("cli");
-    kmemcpy((void *)dst_phys, (void *)src_phys, 0x1000);
-    __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
-    __asm__ volatile("sti");
+    /* Interrupts off for the copy, then the caller's state back: an
+     * unconditional sti here re-enabled them inside callers that run
+     * with interrupts off on purpose. */
+    {
+        irqflags_t irq = spin_save_irq();
+        kmemcpy((void *)dst_phys, (void *)src_phys, 0x1000);
+        __asm__ volatile("mov %0, %%cr3" :: "r"(saved_cr3) : "memory");
+        spin_restore_irq(irq);
+    }
     return 0;
 }
 
@@ -1000,15 +1163,11 @@ static void pt_free_data_pages(uint64_t cr3) {
         for (k = 0; k < PT_PD_ENTRIES; k++) {
             unsigned long pte = pt[k];
             unsigned long phys;
-            void *raw;
             if (!(pte & PT_FLAGS_PRESENT_RW)) continue;
             phys = pte & PT_ADDR_MASK;
             if (pcache_owns_phys(phys)) continue;
-            if (phys < HEAP_BASE || phys >= HEAP_BASE + HEAP_SIZE) continue;
-            raw = *((void **)(phys - PT_ALLOC_HDR));
-            if ((unsigned long)raw < HEAP_BASE ||
-                (unsigned long)raw >= HEAP_BASE + HEAP_SIZE) continue;
-            kfree(raw);
+            if (!pt_page_owned(phys)) continue;
+            pt_page_free((void *)phys);
         }
     }
 }

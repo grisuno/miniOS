@@ -28,6 +28,7 @@ int spawn_backup(spawn_ctx_t *ctx)
     ctx->live_root = vma_live_root;
     ctx->free_root = vma_free_root;
     ctx->pool_n = vma_pool_n;
+    ctx->spare = vma_spare;
     for (i = 0; i < KFD_MAX; i++)
         ctx->kfd[i] = kfd_get(i);
     return 1;
@@ -48,8 +49,10 @@ void spawn_restore(spawn_ctx_t *ctx)
         ctx->pool_copy = 0;
     }
     vma_pool_n = ctx->pool_n;
+    vma_spare = ctx->spare;
     vma_live_root = ctx->live_root;
     vma_free_root = ctx->free_root;
+    mm_view_claim_current();
     wrmsr(MSR_FSBASE, ctx->fsbase);
     wrmsr(MSR_GSBASE, ctx->gsbase);
     {

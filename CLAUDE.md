@@ -112,6 +112,7 @@ make test-arena test-leakcheck test-pcache
 make test-doomedit test-theme test-wm test-fx test-pipe test-panic test-pci test-httpd
 make test-freedom-gui         # PS/2 keymap behind the full FreeDom GUI port
 make test-fat test-ext4 test-ktime test-randmix
+make test-seccomp-bpf test-minifs-tools   # seccomp-bpf checker/interpreter; mkfs counters, merge, fsck
 python3 tools/check_abi_numbers.py
 python3 -m unittest -v mcp/test_minios_mcp.py
 mcp/mutate_mcp.sh

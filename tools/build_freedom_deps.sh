@@ -17,6 +17,9 @@
 #            resolver backend and auth mechanism disabled
 #   dejavu   the DejaVu Sans, Sans Mono and Serif faces FreeDom's fontconfig
 #            aliases resolve to (local fonts only, never fetched at runtime)
+#   cacert   the Mozilla root store curl.se extracts, at the Linux-standard
+#            path libcurl is configured to read (/etc/ssl/certs/
+#            ca-certificates.crt on MiniFS)
 #
 # Every tarball is pinned by version and SHA-256; a mismatch aborts before
 # anything is extracted. A package whose stamp records the same version and
@@ -62,6 +65,14 @@ readonly CAIRO_SHA256="a62b9bb42425e844cc3d6ddde043ff39dbabedd1542eba57a2eb79f85
 readonly CURL_VERSION="8.11.1"
 readonly CURL_URL="https://curl.se/download/curl-${CURL_VERSION}.tar.xz"
 readonly CURL_SHA256="c7ca7db48b0909743eaef34250da02c19bc61d4f1dcedd6603f109409536ab56"
+# Bumped whenever the configure line below changes, so the stamp forces a
+# rebuild instead of keeping a library built with the old options.
+readonly CURL_CONFIG_REV="2"
+readonly CURL_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"
+
+readonly CACERT_VERSION="2026-09-25"
+readonly CACERT_URL="https://curl.se/ca/cacert-${CACERT_VERSION}.pem"
+readonly CACERT_SHA256="a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505"
 
 readonly DEJAVU_VERSION="2.37"
 readonly DEJAVU_URL="https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-${DEJAVU_VERSION}.tar.bz2"
@@ -191,7 +202,7 @@ build_cairo() {
 }
 
 build_curl() {
-    stamp_ok curl "${CURL_SHA256}" && return 0
+    stamp_ok curl "${CURL_SHA256}:${CURL_CONFIG_REV}" && return 0
     local src
     src="$(unpack curl "$(fetch curl "${CURL_URL}" "${CURL_SHA256}")")"
     (
@@ -211,11 +222,11 @@ build_curl() {
             --without-libidn2 --without-libssh2 --without-libssh \
             --without-nghttp2 --without-nghttp3 --without-ngtcp2 \
             --without-gssapi --without-librtmp --without-libgsasl \
-            --without-ca-bundle --without-ca-path
+            --with-ca-bundle="${CURL_CA_BUNDLE}" --without-ca-path
         make -j "${JOBS}"
         make install
     )
-    stamp_write curl "${CURL_SHA256}"
+    stamp_write curl "${CURL_SHA256}:${CURL_CONFIG_REV}"
 }
 
 build_dejavu() {
@@ -230,9 +241,19 @@ build_dejavu() {
     stamp_write dejavu "${DEJAVU_SHA256}"
 }
 
+build_cacert() {
+    stamp_ok cacert "${CACERT_SHA256}" && return 0
+    local file
+    file="$(fetch cacert "${CACERT_URL}" "${CACERT_SHA256}")"
+    mkdir -p "${PREFIX}/share/ca"
+    install -m 0644 "${file}" "${PREFIX}/share/ca/cacert.pem"
+    stamp_write cacert "${CACERT_SHA256}"
+}
+
 build_pixman
 build_harfbuzz
 build_cairo
 build_curl
 build_dejavu
+build_cacert
 echo "build_freedom_deps: ok (${PREFIX})"

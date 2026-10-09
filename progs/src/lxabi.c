@@ -25,6 +25,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/eventfd.h>
+#include <sched.h>
+#include <sys/ioctl.h>
+#include <sys/resource.h>
+#include <sys/sysinfo.h>
 #include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/time.h>
@@ -38,6 +42,9 @@
 #define LXABI_THREAD_ITERS     1000
 #define LXABI_DETACHED         80
 #define LXABI_WAIT_SPINS       5000000L
+#define LXABI_GROUP_EXIT_CODE  42
+#define LXABI_SLEEP_MS         50L
+#define LXABI_MAX_SANE_CPUS    1024
 #define LXABI_TIMEDWAIT_MS     50L
 #define LXABI_EPOCH_2023       1672531200L
 #define LXABI_CLOCK_SKEW_S     2L
@@ -49,6 +56,8 @@
 #define LXABI_MKDIR_PATH       "/tmp/lxabi_dir"
 #define LXABI_MKDIR_FILE       "/tmp/lxabi_dir/probe.txt"
 #define LXABI_CLOSE_RANGE_NR   436
+#define LXABI_PAGE             4096
+#define LXABI_COW_WORD         4
 
 static int failures;
 
@@ -140,6 +149,39 @@ static void check_fork_registers(void) {
     waitpid((pid_t)r[0], &st, 0);
     report("fork-registers", regs_match(r) && st == 0,
            regs_match(r) ? "child saw clobbered registers" : "parent registers clobbered");
+}
+
+/* A page the parent never touches from user code after the fork: the only
+ * write into it is the kernel's (read(2)), which must privatize it instead
+ * of changing the frame the child still maps. */
+static char cow_page[LXABI_PAGE] __attribute__((aligned(LXABI_PAGE)));
+
+static void check_fork_cow_kernel_write(void) {
+    int data[2], go[2];
+    memcpy(cow_page, "AAAA", LXABI_COW_WORD);
+    if (pipe(data) != 0 || pipe(go) != 0) {
+        report("fork-cow-kernel-write", 0, strerror(errno));
+        return;
+    }
+    pid_t pid = fork();
+    if (pid == 0) {
+        char c;
+        close(go[1]);
+        (void)!read(go[0], &c, 1);
+        _exit(memcmp(cow_page, "AAAA", LXABI_COW_WORD) == 0 ? 0 : LXABI_CHILD_BAD);
+    }
+    close(go[0]);
+    (void)!write(data[1], "BBBB", LXABI_COW_WORD);
+    ssize_t n = read(data[0], cow_page, LXABI_COW_WORD);
+    (void)!write(go[1], "g", 1);
+    int st = -1;
+    if (pid > 0) waitpid(pid, &st, 0);
+    report("fork-cow-kernel-write",
+           pid > 0 && n == LXABI_COW_WORD && memcmp(cow_page, "BBBB", LXABI_COW_WORD) == 0 && st == 0,
+           "a kernel write after fork leaked into the child");
+    close(data[0]);
+    close(data[1]);
+    close(go[1]);
 }
 
 /* ---------------------------------------------------------------- threads */
@@ -321,6 +363,21 @@ static void check_pipe_epipe(void) {
     close(p[1]);
 }
 
+/* ioctl on a pipe: FIONREAD counts the buffered bytes, and a pipe is not
+ * a terminal (isatty false with ENOTTY, never a silent success). */
+static void check_pipe_ioctl(void) {
+    int p[2], n = -1;
+    if (pipe(p) != 0) { report("pipe-ioctl", 0, strerror(errno)); return; }
+    int w = write(p[1], "abcde", 5) == 5;
+    int got = ioctl(p[0], FIONREAD, &n) == 0;
+    errno = 0;
+    int notty = !isatty(p[0]) && errno == ENOTTY;
+    report("pipe-ioctl", w && got && n == 5 && notty,
+           "FIONREAD on a pipe wrong or the pipe claimed to be a terminal");
+    close(p[0]);
+    close(p[1]);
+}
+
 static void check_writev_pipe(void) {
     int p[2];
     if (pipe(p) != 0) { report("writev-pipe", 0, strerror(errno)); return; }
@@ -414,14 +471,159 @@ static void check_mkdir(void) {
     report("mkdir-eexist", again, "second mkdir not EEXIST");
 }
 
+/* The answers glibc sizes memory from: a finite stack limit (thread
+ * stacks default to it) and a CPU count that matches the affinity mask
+ * (malloc allows 8 arenas per CPU, each reserving 64 MB of address space). */
+static void check_limits(void) {
+    struct rlimit rl;
+    cpu_set_t set;
+    int n = get_nprocs();
+    int got = getrlimit(RLIMIT_STACK, &rl) == 0;
+    report("rlimit-stack", got && rl.rlim_cur != RLIM_INFINITY && rl.rlim_cur > 0,
+           "RLIMIT_STACK missing or unlimited");
+    CPU_ZERO(&set);
+    int aff = sched_getaffinity(0, sizeof set, &set) == 0;
+    report("nprocs-affinity", aff && n >= 1 && n <= LXABI_MAX_SANE_CPUS && CPU_COUNT(&set) == n,
+           "CPU count garbage or not the affinity mask");
+}
+
+static long mono_us(void) {
+    struct timespec t;
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    return (long)t.tv_sec * 1000000L + t.tv_nsec / 1000L;
+}
+
+/* Sleeps really wait: nanosleep for a relative interval, clock_nanosleep
+ * until an absolute monotonic deadline, and a malformed interval is
+ * EINVAL instead of a silent zero-length sleep. */
+static void check_sleep(void) {
+    struct timespec rel = { 0, LXABI_SLEEP_MS * 1000000L };
+    struct timespec bad = { 0, 1000000000L };
+    struct timespec abs_t;
+    long t0 = mono_us();
+    int rc = nanosleep(&rel, NULL);
+    long waited = mono_us() - t0;
+    report("nanosleep-waits", rc == 0 && waited >= LXABI_SLEEP_MS * 1000L,
+           "nanosleep returned before the interval elapsed");
+    clock_gettime(CLOCK_MONOTONIC, &abs_t);
+    abs_t.tv_nsec += LXABI_SLEEP_MS * 1000000L;
+    if (abs_t.tv_nsec >= 1000000000L) { abs_t.tv_sec++; abs_t.tv_nsec -= 1000000000L; }
+    t0 = mono_us();
+    rc = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &abs_t, NULL);
+    waited = mono_us() - t0;
+    report("clock-nanosleep-abstime", rc == 0 && waited >= (LXABI_SLEEP_MS - 1) * 1000L,
+           "absolute clock_nanosleep returned before its deadline");
+    errno = 0;
+    rc = nanosleep(&bad, NULL);
+    report("nanosleep-einval", rc == -1 && errno == EINVAL, "tv_nsec of one second accepted");
+    struct timespec res = { -1, -1 };
+    rc = clock_getres(CLOCK_MONOTONIC, &res);
+    report("clock-getres", rc == 0 && res.tv_sec == 0 && res.tv_nsec > 0 &&
+           res.tv_nsec <= 1000000L, "monotonic resolution missing or coarser than 1 ms");
+}
+
+/* A worker thread that sleeps forever: only a group-wide exit ends it. */
+static void *lxabi_sleeper(void *arg) {
+    (void)arg;
+    for (;;) pause();
+    return NULL;
+}
+
+/* Fork a child that runs body, wait for it with a bounded spin and return
+ * its wait status, or -1 when it never ended (the group outlived it). */
+static int child_status(void (*body)(void)) {
+    int st = 0;
+    long spins;
+    pid_t pid = fork();
+    if (pid < 0) return -1;
+    if (pid == 0) {
+        body();
+        _exit(0);
+    }
+    for (spins = 0; spins < LXABI_WAIT_SPINS; spins++) {
+        pid_t r = waitpid(pid, &st, WNOHANG);
+        if (r == pid) return st;
+        if (r < 0) return -1;
+        sched_yield();
+    }
+    kill(pid, SIGKILL);
+    waitpid(pid, &st, 0);
+    return -1;
+}
+
+static void abort_from_worker_body(void) {
+    pthread_t t;
+    pthread_create(&t, NULL, lxabi_sleeper, NULL);
+    abort();
+}
+
+static void *lxabi_exit_group_worker(void *arg) {
+    (void)arg;
+    exit(LXABI_GROUP_EXIT_CODE);
+    return NULL;
+}
+
+static void exit_group_from_worker_body(void) {
+    pthread_t t;
+    pthread_create(&t, NULL, lxabi_exit_group_worker, NULL);
+    for (;;) pause();
+}
+
+static void wild_jump_body(void) {
+    void (*volatile nowhere)(void) = NULL;
+    nowhere();
+}
+
+/* Fatal signal and fault semantics a crashing browser relies on: abort()
+ * with a live worker ends the whole group as SIGABRT, exit() from a worker
+ * ends the leader with that code, a jump to address 0 is SIGSEGV for the
+ * process (never a kernel panic), and kill(pid, 0) or a harmless signal
+ * leaves the target alive. */
+static void check_fatal_signals(void) {
+    int st = child_status(abort_from_worker_body);
+    report("abort-kills-group", st != -1 && WIFSIGNALED(st) && WTERMSIG(st) == SIGABRT,
+           "abort() with a live thread did not end the group as SIGABRT");
+    st = child_status(exit_group_from_worker_body);
+    report("exit-group-from-thread", st != -1 && WIFEXITED(st) &&
+           WEXITSTATUS(st) == LXABI_GROUP_EXIT_CODE,
+           "exit() in a worker did not end the leader with its code");
+    st = child_status(wild_jump_body);
+    report("wild-jump-sigsegv", st != -1 && WIFSIGNALED(st) && WTERMSIG(st) == SIGSEGV,
+           "jump to address 0 not reported as SIGSEGV");
+    pid_t pid = fork();
+    if (pid == 0) {
+        for (;;) pause();
+    }
+    if (pid < 0) {
+        report("kill-signal-zero-probe", 0, strerror(errno));
+        report("kill-sigterm-status", 0, "fork failed");
+        return;
+    }
+    errno = 0;
+    int probe = pid > 0 && kill(pid, 0) == 0;
+    int probe_errno = errno;
+    int harmless = pid > 0 && kill(pid, SIGCHLD) == 0 && kill(pid, SIGWINCH) == 0;
+    int alive = pid > 0 && waitpid(pid, &st, WNOHANG) == 0;
+    int killed = pid > 0 && kill(pid, SIGTERM) == 0 && waitpid(pid, &st, 0) == pid &&
+                 WIFSIGNALED(st) && WTERMSIG(st) == SIGTERM;
+    report("kill-signal-zero-probe", probe && harmless && alive,
+           !probe ? (probe_errno == ESRCH ? "kill(pid, 0): ESRCH on a live child" :
+                     "kill(pid, 0) failed on a live child") :
+           !harmless ? "SIGCHLD or SIGWINCH refused" :
+           "a probe or harmless signal ended the target");
+    report("kill-sigterm-status", killed, "SIGTERM not reported through WTERMSIG");
+}
+
 int main(void) {
     main_pid = getpid();
     check_time();
     check_fork_registers();
+    check_fork_cow_kernel_write();
     check_pipe2_flags();
     check_pipe_blocking();
     check_pipe_epipe();
     check_writev_pipe();
+    check_pipe_ioctl();
     check_poll();
     check_eventfd();
     check_close_range();
@@ -429,6 +631,9 @@ int main(void) {
     check_threads();
     check_condvar();
     check_detached_reaped();
+    check_fatal_signals();
+    check_sleep();
+    check_limits();
     if (failures == 0) {
         printf("lxabi: all ok\n");
         return 0;

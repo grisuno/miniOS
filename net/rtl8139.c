@@ -89,6 +89,14 @@ unsigned long net_time_ms(void) {
  * ================================================================ */
 
 static unsigned char *rtl_rx_ring;      /* NET_RX_BUF_LEN bytes, aligned */
+/* One heap-owned transmit buffer per TX slot. The NIC fetches a frame by
+ * 32-bit physical address, and only the identity-mapped heap qualifies:
+ * a caller's frame on a kernel stack lives in .bss, whose virtual address
+ * is not its physical one under KASLR (the NIC would send other memory,
+ * or stall, and the send fails). Every frame is copied here first. */
+static unsigned char *rtl_tx_buf[NET_TX_SLOTS];
+/* Ethernet minimum frame without FCS: shorter frames are zero padded. */
+#define RTL_MIN_FRAME 60
 static unsigned char rtl_rx_scratch[NET_MAX_FRAME];
 static unsigned short rtl_rx_capr;
 static unsigned char rtl_mac[NET_ETH_ALEN];
@@ -119,8 +127,19 @@ void rtl_init(void) {
     rtl_reg8_w(RTL_REG_9346CR, 0xC0);
     rtl_reg8_w(RTL_REG_CONFIG1, 0x00);
 
-    rtl_rx_ring = kmalloc(NET_RX_BUF_LEN + NET_RX_ALIGN);
-    if (!rtl_rx_ring) return;
+    {
+        unsigned slot;
+        for (slot = 0; slot < NET_TX_SLOTS; slot++) {
+            rtl_tx_buf[slot] = (unsigned char *)kmalloc(NET_TX_MAX);
+            if (!rtl_tx_buf[slot]) {
+                kprintf("rtl8139: no transmit buffers (out of memory)\n");
+                rtl_iobase_val = 0;
+                return;
+            }
+        }
+    }
+    rtl_rx_ring = kmalloc(NET_RX_BUF_LEN + NET_RX_RING_PAD + NET_RX_ALIGN);
+    if (!rtl_rx_ring) { rtl_iobase_val = 0; return; }
     ptr = (unsigned long)rtl_rx_ring;
     ptr = (ptr + NET_RX_ALIGN - 1) & ~(unsigned long)(NET_RX_ALIGN - 1);
     rtl_rx_ring = (unsigned char *)ptr;
@@ -158,9 +177,10 @@ static int rtl_tx_wait(unsigned slot, unsigned long deadline) {
 int rtl_send(const unsigned char *frame, unsigned len) {
     unsigned long deadline;
     unsigned attempt;
-    if (!rtl_iobase_val) return 0;
-    if (len < 60) len = 60;
+    unsigned wire;
+    if (!rtl_iobase_val || !frame) return 0;
     if (len > NET_TX_MAX) return 0;
+    wire = len < RTL_MIN_FRAME ? RTL_MIN_FRAME : len;
     for (attempt = 0; attempt < NET_TX_SLOTS; attempt++) {
         unsigned slot = rtl_tx_slot;
         unsigned int tsd = rtl_reg32((unsigned short)(RTL_REG_TSD0 + slot * 4));
@@ -168,8 +188,11 @@ int rtl_send(const unsigned char *frame, unsigned len) {
             deadline = net_time_ms() + 2000;
             if (!rtl_tx_wait(slot, deadline)) return 0;
         }
-        rtl_reg32_w((unsigned short)(RTL_REG_TSAD0 + slot * 4), (unsigned int)(unsigned long)frame);
-        rtl_reg32_w((unsigned short)(RTL_REG_TSD0 + slot * 4), len & 0x1FFF);
+        kmemcpy(rtl_tx_buf[slot], frame, len);
+        if (wire > len) kmemset(rtl_tx_buf[slot] + len, 0, wire - len);
+        rtl_reg32_w((unsigned short)(RTL_REG_TSAD0 + slot * 4),
+                    (unsigned int)(unsigned long)rtl_tx_buf[slot]);
+        rtl_reg32_w((unsigned short)(RTL_REG_TSD0 + slot * 4), wire & 0x1FFF);
         deadline = net_time_ms() + 2000;
         if (!rtl_tx_wait(slot, deadline)) return 0;
         rtl_tx_slot = (slot + 1) % NET_TX_SLOTS;

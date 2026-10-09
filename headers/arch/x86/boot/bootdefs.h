@@ -161,6 +161,7 @@
 #define CR0_PE                    0x00000001
 #define CR0_PE_CLEAR_MASK         0xFFFFFFFE
 #define CR0_PG                    0x80000000
+#define CR0_WP                    0x00010000  /* ring 0 honours read-only user pages (COW) */
 #define CR4_PAE                   0x00000020
 
 #define MSR_EFER                  0xC0000080
@@ -275,7 +276,7 @@
  * .bss can never spill onto the identity-mapped low-memory reserved zones.
  * Keep KASLR_IMAGE_SPAN in sync with the kernel link layout: the image
  * must end below the user window at USER_LOAD_BASE (0x400000). */
-#define KASLR_MIN_ADDR            0x1A000000
+#define KASLR_MIN_ADDR            0x28000000
 #define KASLR_ALIGN_SHIFT         21
 #define KASLR_MAX_UNITS           64
 #define KASLR_IMG_OFF_1MB         0x00100000
@@ -285,6 +286,11 @@
 #define CMOS_INDEX_PORT           0x70
 #define CMOS_DATA_PORT            0x71
 #define CMOS_NMI_DISABLE          0x80
+/* RAM above 16 MB in 64 KB units (PC BIOS / QEMU convention). */
+#define CMOS_REG_EXTMEM_LO        0x34
+#define CMOS_REG_EXTMEM_HI        0x35
+#define CMOS_EXTMEM_BASE          0x01000000UL
+#define CMOS_EXTMEM_UNIT          0x00010000UL
 #define CMOS_REG_SECONDS          0x00
 #define CMOS_REG_MINUTES          0x02
 #define CMOS_REG_HOURS            0x04

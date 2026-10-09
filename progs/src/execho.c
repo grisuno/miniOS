@@ -5,8 +5,10 @@
  * reaps the REPLACED program (not a clone). First child execs
  * bin/lxhello.elf (prints Hello, exits with argc=2); second child
  * execs a ghost path (must fail -2, exits 42). The parent checks
- * both statuses and prints "execho: ok" with exit 0 only when the
- * whole chain behaves. Built as a static Linux ELF like mvrn.elf. */
+ * both wait4 results with Linux semantics (the reaped pid, the exit code
+ * in bits 8..15 of the status word) and prints "execho: ok" with exit 0
+ * only when the whole chain behaves. Built as a static Linux ELF like
+ * mvrn.elf. */
 static long ex_sc(long n, long a1, long a2, long a3, long a4) {
     long r;
     __asm__ volatile("syscall" : "=a"(r) : "a"(n), "D"(a1), "S"(a2),
@@ -47,7 +49,7 @@ int lmain(void) {
         ex_exit(99);
     }
     rc = ex_sc(61, -1, (long)&st, 0, 0);
-    if (rc != 2 || st != 2) ex_fail(2);
+    if (rc != pid || st != (2 << 8)) ex_fail(2);
     pid = ex_sc(57, 0, 0, 0, 0);
     if (pid < 0) ex_fail(3);
     if (pid == 0) {
@@ -57,7 +59,7 @@ int lmain(void) {
     }
     st = 0;
     rc = ex_sc(61, -1, (long)&st, 0, 0);
-    if (rc != 42 || st != 42) ex_fail(4);
+    if (rc != pid || st != (42 << 8)) ex_fail(4);
     ex_write("execho: ok\n", 11);
     ex_exit(0);
     return 0;

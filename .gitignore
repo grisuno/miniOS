@@ -95,4 +95,6 @@ progs/freedomui/deps/
 progs/freedomui/fsroot/usr/
 progs/freedomui/build/
 progs/bin/freedom-gui
+progs/bin/lxtls
 progs/freedomui/fsroot/docs/
+progs/freedomui/fsroot/etc/ssl/

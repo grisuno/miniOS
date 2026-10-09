@@ -407,6 +407,15 @@ void     yield(void);
 void     do_exit(int code);
 long     do_clone(long flags, long newsp);
 long     do_fork(void);
+long     do_fork_ex(uint64_t set_tid, uint64_t clear_tid);
+long     do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid,
+                        unsigned long ctid, unsigned long tls);
+void     do_group_exit(int code);
+void     mm_view_claim_current(void);
+int      do_kill_code(int pid, int code);
+/* Signal a ring-3 fault reports through wait4 (SIGSEGV). */
+#define USER_FAULT_SIGNAL 11
+void     fork_child_settid(void);
 /* execve argument bounds: at most 32 words, each at most 255 chars plus
  * NUL. Past either bound the call refuses with -E2BIG, never truncates. */
 #define EXECVE_MAX_ARGS 32
@@ -434,6 +443,9 @@ int      shell_reap_nb(int *pid_out, int *code_out);
 int      shell_reap_one(int pid, int *code_out);
 int      shell_nchildren(void);
 #define WAITPID_NONE (-0x7FFF)
+/* do_waitpid_linux: the caller has no matching child at all (-ECHILD). */
+#define WAITPID_NOCHILD (-0x7FFE)
+int do_waitpid_linux(int pid, int nohang, int *found);
 int      do_kill(int pid);
 void     timer_tick(void);
 

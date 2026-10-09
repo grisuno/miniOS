@@ -269,7 +269,7 @@ def validate_addon(addon, source):
     if not isinstance(verify, list) or len(verify) > ADDON_MAX_ITEMS:
         raise AddonError("%s: verify must be a list of at most %d lines" % (source, ADDON_MAX_ITEMS))
     if kind == "guest" and not verify:
-        raise AddonError("%s: guest addons need at least one verify line" % (source, ADDON_MAX_ITEMS))
+        raise AddonError("%s: guest addons need at least one verify line" % source)
     for line in build:
         problem = validate_shell_line(line)
         if problem:
@@ -464,8 +464,14 @@ def install_addon(session, addon, cfg):
                 )
             body = session.cat_body(entry["dst"])
             expected = source.rstrip("\n")
-            if body.rstrip("\n") != expected:
-                raise AddonError("round-trip mismatch for %s" % entry["dst"])
+            got = body.rstrip("\n")
+            if got != expected:
+                first = next((i for i, (x, y) in enumerate(zip(got, expected)) if x != y),
+                             min(len(got), len(expected)))
+                raise AddonError("round-trip mismatch for %s: %d bytes read back, %d expected, "
+                                 "first difference at %d (%r vs %r)"
+                                 % (entry["dst"], len(got), len(expected), first,
+                                    got[first:first + 8], expected[first:first + 8]))
 
         for line in install["build"]:
             out = session.send(line, timeout_ms or ADDON_TMO_SHELL_MS)["text"]

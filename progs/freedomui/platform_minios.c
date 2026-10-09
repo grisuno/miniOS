@@ -13,6 +13,7 @@
 #include "platform.h"
 
 #include <errno.h>
+#include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,6 +31,9 @@
 #define FREEDOM_GUI_TITLE_MAX 31
 /** Kernel clipboard capacity (kernel/clip.c CLIP_MAX); longer text is refused. */
 #define FREEDOM_GUI_CLIP_MAX 4096L
+/** malloc arenas: one, the main arena (see minios_malloc_single_arena). */
+#define FREEDOM_GUI_MALLOC_ARENAS 1
+
 /** SYS_MOUSE reply: x, y, buttons, wheel delta. */
 #define FREEDOM_GUI_MOUSE_WORDS 4
 #define FREEDOM_GUI_MOUSE_X 0
@@ -104,6 +108,15 @@ static void set_title(const char *title) {
 }
 
 /* ---------------------------------------------------------------- display */
+
+/* One malloc arena for every thread, set before main (and so before any
+ * thread exists, in the browser and in every exec'd tab worker). glibc
+ * gives each new thread arena a 64 MB address-space reservation; the
+ * MiniOS user window leaves brk and mmap about 140 MB together, so a
+ * single extra arena starved the browser until malloc returned NULL. */
+__attribute__((constructor)) static void minios_malloc_single_arena(void) {
+    (void)mallopt(M_ARENA_MAX, FREEDOM_GUI_MALLOC_ARENAS);
+}
 
 pf_status pf_display_open(pf_display **out) {
     if (out == NULL) return PF_ERR_NULL_ARG;

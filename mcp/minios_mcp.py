@@ -27,6 +27,9 @@ CFG_PROTOCOL_VERSION = "2024-11-05"
 
 CFG_PROMPT_SHELL = "miniOS> "
 CFG_PROMPT_EDITOR = "edit> "
+# Every prompt the kernel editor prints: "edit", then " *" while the buffer
+# is modified and " !" while it is truncated, then "> " (kernel/editor.c).
+CFG_PROMPT_EDITOR_FORMS = ("edit> ", "edit *> ", "edit !> ", "edit * !> ")
 CFG_MARK_POWEROFF = "powering off"
 CFG_MARK_BOOT = "MiniOS Kernel"
 
@@ -181,6 +184,20 @@ class LogBuffer:
                 pos = self._find_locked(marker, start)
                 if pos >= 0:
                     return pos
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    return -1
+                self.cond.wait(remaining)
+
+    def wait_for_any(self, markers, start, timeout_ms):
+        """Block until any of markers appears at or after start; return the
+        earliest position found, or -1 when the timeout expires first."""
+        deadline = time.monotonic() + timeout_ms / 1000.0
+        with self.cond:
+            while True:
+                found = [p for p in (self._find_locked(m, start) for m in markers) if p >= 0]
+                if found:
+                    return min(found)
                 remaining = deadline - time.monotonic()
                 if remaining <= 0:
                     return -1
@@ -447,14 +464,17 @@ class MiniOSSession:
     def cat_body(self, path, missing_ok=False):
         """Read a ramdisk file and return exactly its bytes.
 
-        The serial driver emits CRLF; the kernel cat appends one newline
-        after the content, so the body is extracted by stripping the echoed
-        command line, the prompt and that single trailing newline.
+        The serial console frames lines with carriage returns (CRLF, and a
+        CR before each new line while the terminal redraws); the kernel cat
+        appends one newline after the content. Content written through this
+        bridge is printable ASCII only, so every CR is framing: they are all
+        dropped first, then the echoed command line, the prompt and that
+        single trailing newline are stripped.
         """
         problem = validate_path(path)
         if problem:
             raise ToolError(problem)
-        text = self.send("cat " + path, self.cfg["tmo_prompt_ms"])["text"]
+        text = self.send("cat " + path, self.cfg["tmo_prompt_ms"])["text"].replace("\r", "")
         if ("cat: %s: no such file" % path) in text or ("or is a directory" in text):
             if missing_ok:
                 return ""
@@ -496,14 +516,14 @@ class MiniOSSession:
             raise ToolError("MiniOS is not booted")
         start = self.log.total
         self._write_line("edit " + path)
-        editor = CFG_PROMPT_EDITOR.encode("latin-1")
-        pos = self.log.wait_for(editor, start, clamp_timeout(self.cfg["tmo_prompt_ms"]))
+        editor = tuple(p.encode("latin-1") for p in CFG_PROMPT_EDITOR_FORMS)
+        pos = self.log.wait_for_any(editor, start, clamp_timeout(self.cfg["tmo_prompt_ms"]))
         if pos < 0:
             raise ToolError("editor did not open (no %r prompt)" % CFG_PROMPT_EDITOR)
         for line in lines:
             self._write_line(CFG_EDITOR_APPEND)
             self._write_editor_line(line)
-            pos = self.log.wait_for(editor, pos + 1, clamp_timeout(self.cfg["tmo_prompt_ms"]))
+            pos = self.log.wait_for_any(editor, pos + 1, clamp_timeout(self.cfg["tmo_prompt_ms"]))
             if pos < 0:
                 raise ToolError("editor append did not return")
         self._write_line(CFG_EDITOR_SAVE)

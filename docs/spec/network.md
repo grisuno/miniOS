@@ -354,3 +354,99 @@ that seam, nothing else in FreeDom changes.
   start: that needs the Linux thread, descriptor and sandbox syscalls listed
   in the FreeDom readiness plan (`clone`/`clone3`, `fcntl`, `pipe2`,
   `getdents64`, `prctl` seccomp, `/proc/self/exe`).
+
+### Linux socket ABI (FreeDom readiness, step 6)
+The full FreeDom GUI fetches through libcurl over OpenSSL (TLS 1.3, hybrid
+post-quantum key exchange, FreeDom `spec/secure_fetch.md`), resolving names
+with static glibc's resolver. Both speak the plain Linux socket ABI; MiniOS
+answers it on top of the existing TCP stack and a new datagram socket kind.
+Pinned by `progs/src/lxnet.c` against the host fixture
+`tools/test_net_fixture.py` (UDP and TCP echo on one port, `10.0.2.2` through
+slirp): `run bin/lxnet 10.0.2.2 <port>` prints one `lxnet: <check> ok` per
+point and `lxnet: all ok`.
+
+- **`socket` (41).** `AF_INET` with `SOCK_STREAM` or `SOCK_DGRAM` (protocol 0,
+  `IPPROTO_TCP` or `IPPROTO_UDP`); `SOCK_NONBLOCK` and `SOCK_CLOEXEC` in the
+  type are honoured, any other type bit is `-EINVAL`. Every other family
+  (`AF_INET6`, `AF_UNIX`, `AF_NETLINK`) is `-EAFNOSUPPORT`, which glibc and
+  libcurl treat as "use IPv4".
+- **Datagram sockets.** A bounded queue of received datagrams per socket
+  (`NET_UDP_QUEUE` entries of at most `NET_UDP_DGRAM_MAX` bytes, oldest kept,
+  newest dropped when full, like a full Linux receive buffer); an ephemeral
+  local port on first send. `sendto`/`send` (after `connect`) build one UDP
+  datagram; `recvfrom`/`recv` return one datagram (truncated to the buffer,
+  the rest discarded, like Linux) and the sender's address. `connect` fixes
+  the peer and filters what is received. Empty and non-blocking is
+  `-EAGAIN`; blocking waits yielding.
+- **Stream sockets.** A non-blocking `connect` answers `-EINPROGRESS` and
+  completes in the background; `poll` reports `POLLOUT` once established
+  (`POLLERR` and `SO_ERROR = ECONNREFUSED` when refused). A blocking connect
+  keeps its old behaviour. `recv` on an empty non-blocking stream is
+  `-EAGAIN`; `MSG_NOSIGNAL` and `MSG_DONTWAIT` are accepted on send and recv
+  (MiniOS delivers no SIGPIPE); any other flag is `-EOPNOTSUPP`.
+- **`read`/`write` (0/1) and `readv`/`writev`** on a socket descriptor map to
+  recv/send (OpenSSL's socket BIO uses them).
+- **`setsockopt` (54) / `getsockopt` (55).** `SO_ERROR` (pending connect
+  error, cleared on read), `SO_TYPE`, `SO_KEEPALIVE`, `SO_REUSEADDR`,
+  `SO_RCVBUF`, `SO_SNDBUF`, `SO_RCVTIMEO`, `SO_SNDTIMEO`, `SO_LINGER`,
+  `TCP_NODELAY`, `TCP_KEEPIDLE`/`TCP_KEEPINTVL`/`TCP_KEEPCNT`, and at
+  `IPPROTO_IP` `IP_TOS`, `IP_TTL`, `IP_MTU_DISCOVER` and `IP_RECVERR` (glibc's
+  resolver sets `IP_RECVERR` on its UDP socket and abandons the lookup when
+  it is refused) are accepted and
+  recorded (the stack sends every segment at once, so `TCP_NODELAY` is
+  already true); unknown options are `-ENOPROTOOPT`.
+- **`getsockname` (51) / `getpeername` (52)** answer the local and peer
+  `sockaddr_in`; `getpeername` on an unconnected socket is `-ENOTCONN`.
+- **`fcntl` on sockets.** `F_GETFL`/`F_SETFL` read and set `O_NONBLOCK`;
+  `F_GETFD`/`F_SETFD` record `FD_CLOEXEC` (`SOCK_CLOEXEC` sets it too).
+  Deviation: `execve` does not close marked sockets. The socket tables are
+  global, not per process, so a forked child that execs (the FreeDom tab
+  worker re-executing `/proc/self/exe`) would otherwise close its parent's
+  live connections; the flag is reported faithfully and the descriptor
+  stays usable in both.
+- **`sendmsg` (46) / `sendmmsg` (307).** The iovecs of each `msghdr` are
+  gathered (bounded, every range validated) and sent as one datagram or one
+  stream write; `msg_name` addresses a datagram. `sendmmsg` stores each
+  message's byte count in `msg_len` and returns the number sent (an error on
+  the first message is returned as the error). glibc's resolver sends its
+  `A` and `AAAA` queries through `sendmmsg` and treats `ENOSYS` as a failed
+  lookup. `recvmsg` and `accept4` stay unimplemented: neither libcurl's
+  client path nor the resolver uses them.
+- **MiniFS payload.** Committed in `progs/netroot/etc`: `etc/resolv.conf` (`nameserver 10.0.2.3`, the slirp
+  resolver), `etc/hosts` (`localhost`), `etc/nsswitch.conf` (`hosts: files
+  dns`), and `etc/ssl/certs/ca-certificates.crt`, the Mozilla root store
+  pinned by `tools/build_freedom_deps.sh` (libcurl is configured to read
+  exactly that path), copied into the freedom-gui `fsroot/etc` at build
+  time. `tools/mkfs.minifs.py` merges same-named directories from several
+  roots into one (the two `etc` trees become one `/etc`) and rejects any
+  other name collision as a build error.
+- **Transmit DMA.** The RTL8139 fetches a frame by 32-bit physical address;
+  only the identity-mapped heap qualifies (kernel stacks live in `.bss`,
+  whose virtual address is not its physical one under KASLR), so every frame
+  is copied into a per-slot heap buffer first. Before this, a send from any
+  thread but pid 0 stalled and failed (`EAGAIN`), which is how glibc's
+  threaded resolver inside libcurl lost every lookup. The receive ring keeps
+  the datasheet's 16-byte tail (8K + 16) so the NIC never writes into the
+  next heap chunk.
+- **`lxnet --dial <host> <port>`** resolves through glibc and dials with
+  libcurl's sequence (non-blocking connect, `poll`, `SO_ERROR`).
+- **`lxtls <url>`** (built and shipped with freedom-gui) runs the same static
+  libcurl, OpenSSL, CA path and resolver on their own and prints libcurl's
+  verbose transcript and the exact failure; `lxtls --rand` walks OpenSSL's
+  random generator stack. Inside MiniOS, as a job, it completes a TLS 1.3
+  handshake with the hybrid post-quantum group `X25519MLKEM768` and an HTTP
+  200 from `https://example.com`. In the pid-0 foreground window OpenSSL's
+  providers do not initialize (every algorithm fetch fails); browsers and
+  probes that fetch run as jobs.
+- **Address-space budget.** brk and mmap share about 140 MB of the user
+  window (`USER_LOAD_BASE` to `USER_HEAP_CEIL`), with the kernel heap
+  identity-mapped right above the window. glibc reserves 64 MB per thread
+  malloc arena and sizes thread stacks from `RLIMIT_STACK`, so the kernel
+  reports the true 1 MB stack limit and the true CPU count (one arena
+  budget per CPU), and the freedom-gui platform layer keeps every thread on
+  the main arena (`mallopt(M_ARENA_MAX, 1)` before `main`). Without that the
+  browser ran out of address space after its first fetch thread and died on
+  a NULL `malloc`.
+- **Live proof (needs the host's internet, outside the hermetic BDD):**
+  `freedom-gui https://example.com` resolves through the slirp resolver,
+  negotiates TLS 1.3 and paints the page.

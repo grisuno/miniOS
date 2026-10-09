@@ -106,7 +106,7 @@ static int q2_dma_push(int end) {
     while (q2_dma_written < end) {
         int idx = (int)(q2_dma_written & (Q2SND_SAMPLES - 1));
         int n = end - (int)q2_dma_written;
-        int m, k;
+        int k;
         long r;
         short *src;
         if (n > Q2SND_SAMPLES - idx) n = Q2SND_SAMPLES - idx;
