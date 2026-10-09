@@ -12,24 +12,24 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `syscall_init` (function, line 115) `void syscall_init(void)`
-  - `bootlog_mark` (function, line 190) `void bootlog_mark(const char *name)`
-  - `bootlog_report` (function, line 197) `void bootlog_report(void)`
-  - `__attribute__` (function, line 205) `__attribute__((section(".init.text")))
+  - `syscall_init` (function, line 116) `void syscall_init(void)`
+  - `bootlog_mark` (function, line 191) `void bootlog_mark(const char *name)`
+  - `bootlog_report` (function, line 198) `void bootlog_report(void)`
+  - `__attribute__` (function, line 206) `__attribute__((section(".init.text")))
 void kmain(void)`
-  - `tables` (function, line 282) `* tables (already built above) for its uncached register window and the
+  - `tables` (function, line 283) `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
-  - `table` (function, line 102) `* Symbol table (for resolving program references) * ================================================================...`
-  - `ksyscall` (function, line 128) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `kstack` (function, line 144) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
-  - `ms` (function, line 183) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-  - `EM` (function, line 219) `* CR0: clear EM (bit 2), set MP (bit 1);`
-  - `size` (function, line 260) `* image size (see kernel.ld);`
-  - `syscall_kstack` (variable, line 113) `extern unsigned long syscall_kstack;`
-  - `ramdisk_start` (variable, line 177) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 178) `extern char ramdisk_end[];`
-  - `KSYM_MAX` (macro, line 105) `#define KSYM_MAX`
-  - `BOOTLOG_MAX` (macro, line 186) `#define BOOTLOG_MAX`
+  - `table` (function, line 103) `* Symbol table (for resolving program references) * ================================================================...`
+  - `ksyscall` (function, line 129) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `kstack` (function, line 145) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
+  - `ms` (function, line 184) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+  - `EM` (function, line 220) `* CR0: clear EM (bit 2), set MP (bit 1);`
+  - `size` (function, line 261) `* image size (see kernel.ld);`
+  - `syscall_kstack` (variable, line 114) `extern unsigned long syscall_kstack;`
+  - `ramdisk_start` (variable, line 178) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 179) `extern char ramdisk_end[];`
+  - `KSYM_MAX` (macro, line 106) `#define KSYM_MAX`
+  - `BOOTLOG_MAX` (macro, line 187) `#define BOOTLOG_MAX`
 - Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
 
 ## qga.c
@@ -144,25 +144,26 @@ void kmain(void)`
 - Depends on: `headers/tls.h`, `headers/tls_port.h`, `headers/tls_test_roots.h`, `kernel/string.c`
 
 ## vma.c
-- Doc: vma_tree_find_containing: Docstring: Find the live node containing va (base <= va < base+len)...
+- Doc: vma_node_in_tree: 1 when node n hangs in the tree rooted at root (live and free trees * share...
 - Layer: utility
 - Language: c
 - Symbols:
-  - `vma_ctx_init` (function, line 32) `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)`
-  - `vma_ctx_bind` (function, line 46) `void vma_ctx_bind(vma_ctx_t *c)`
-  - `vma_ctx_save` (function, line 57) `void vma_ctx_save(vma_ctx_t *c)`
-  - `vma_view_save` (function, line 66) `void vma_view_save(vma_view_t *v)`
-  - `vma_view_load` (function, line 77) `void vma_view_load(const vma_view_t *v)`
-  - `vma_tree_init` (function, line 88) `void vma_tree_init(void)`
-  - `vma_alloc_node` (function, line 102) `static vma_node_t *vma_alloc_node(void)`
-  - `vma_rotate_left` (function, line 108) `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)`
-  - `vma_rotate_right` (function, line 120) `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)`
-  - `vma_insert_fixup` (function, line 132) `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)`
-  - `vma_tree_insert` (function, line 171) `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)`
-  - `vma_tree_find` (function, line 197) `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)`
-  - `vma_tree_find_containing` (function, line 213) `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va)`
-  - `vma_transplant` (function, line 227) `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)`
-  - `vma_tree_minimum` (function, line 234) `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
-  - `vma_delete_fixup` (function, line 239) `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
-  - `vma_tree_delete` (function, line 294) `int vma_tree_delete(vma_node_t **root, unsigned long base)`
+  - `vma_ctx_init` (function, line 37) `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)`
+  - `vma_ctx_bind` (function, line 52) `void vma_ctx_bind(vma_ctx_t *c)`
+  - `vma_ctx_save` (function, line 64) `void vma_ctx_save(vma_ctx_t *c)`
+  - `vma_view_save` (function, line 74) `void vma_view_save(vma_view_t *v)`
+  - `vma_view_load` (function, line 86) `void vma_view_load(const vma_view_t *v)`
+  - `vma_tree_init` (function, line 98) `void vma_tree_init(void)`
+  - `vma_alloc_node` (function, line 113) `static vma_node_t *vma_alloc_node(void)`
+  - `vma_rotate_left` (function, line 124) `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)`
+  - `vma_rotate_right` (function, line 136) `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)`
+  - `vma_insert_fixup` (function, line 148) `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)`
+  - `vma_tree_insert` (function, line 187) `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)`
+  - `vma_node_in_tree` (function, line 215) `static int vma_node_in_tree(vma_node_t *root, vma_node_t *n)`
+  - `vma_tree_find` (function, line 220) `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)`
+  - `vma_tree_find_containing` (function, line 238) `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va)`
+  - `vma_transplant` (function, line 252) `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)`
+  - `vma_tree_minimum` (function, line 259) `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
+  - `vma_delete_fixup` (function, line 264) `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
+  - `vma_tree_delete` (function, line 319) `int vma_tree_delete(vma_node_t **root, unsigned long base)`
 - Depends on: `headers/vma.h`

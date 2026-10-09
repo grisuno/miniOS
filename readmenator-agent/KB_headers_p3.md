@@ -141,49 +141,50 @@ Previous: [KB_headers_p2.md](KB_headers_p2.md)
 - Layer: utility
 - Language: h
 - Symbols:
-  - `ring` (function, line 54) `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...`
-  - `net_sys_is_socket` (function, line 97) `int net_sys_is_socket(long fd);`
-  - `net_sys_setsockopt` (function, line 98) `long net_sys_setsockopt(long fd, long level, long name, long val, long len);`
-  - `net_sys_getsockopt` (function, line 99) `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);`
-  - `net_sys_getsockname` (function, line 100) `long net_sys_getsockname(long fd, long addr, long lenp);`
-  - `net_sys_getpeername` (function, line 101) `long net_sys_getpeername(long fd, long addr, long lenp);`
-  - `net_sys_sendmsg` (function, line 102) `long net_sys_sendmsg(long fd, long msg, long flags);`
-  - `net_sys_sendmmsg` (function, line 103) `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);`
-  - `net_sys_fcntl` (function, line 104) `long net_sys_fcntl(long fd, long cmd, long arg);`
-  - `net_register_symbols` (function, line 105) `void net_register_symbols(void);`
-  - `net_cmd_status` (function, line 108) `void net_cmd_status(void);`
-  - `net_cmd_ping` (function, line 109) `void net_cmd_ping(const char *ip_text);`
-  - `net_get_addrs` (function, line 110) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
-  - `net_cmd_dns` (function, line 111) `void net_cmd_dns(const char *host);`
-  - `net_open` (function, line 114) `int net_open(void);`
-  - `net_connect` (function, line 115) `int net_connect(const char *host, unsigned short port);`
-  - `net_send` (function, line 116) `int net_send(int fd, const char *buf, int len);`
-  - `net_recv` (function, line 117) `int net_recv(int fd, char *buf, int len);`
-  - `net_recv_timeout` (function, line 119) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);`
-  - `net_close` (function, line 120) `void net_close(int fd);`
-  - `demux` (function, line 126) `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);`
-  - `net_accept_nb` (function, line 128) `int net_accept_nb(int fd);`
-  - `net_accept` (function, line 129) `int net_accept(int fd, unsigned long timeout_ms);`
-  - `net_sock_state` (function, line 130) `int net_sock_state(int fd);`
-  - `net_sock_seq` (function, line 131) `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);`
-  - `net_test_inject_tcp` (function, line 132) `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...`
-  - `net_sys_socket` (function, line 137) `long net_sys_socket(long a1, long a2, long a3);`
-  - `net_sys_connect` (function, line 138) `long net_sys_connect(long fd, long sockaddr, long addrlen);`
-  - `net_sys_bind` (function, line 139) `long net_sys_bind(long fd, long sockaddr, long addrlen);`
-  - `net_sys_listen` (function, line 140) `long net_sys_listen(long fd, long backlog);`
-  - `net_sys_accept` (function, line 141) `long net_sys_accept(long fd, long sockaddr, long addrlen);`
-  - `net_sys_sendto` (function, line 142) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
-  - `net_sys_recvfrom` (function, line 143) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
-  - `net_sys_shutdown` (function, line 144) `long net_sys_shutdown(long fd, long how);`
-  - `net_sys_close` (function, line 145) `long net_sys_close(long fd);`
-  - `net_sys_poll` (function, line 146) `long net_sys_poll(long fds, long nfds, long timeout_ms);`
-  - `net_sys_dns` (function, line 147) `long net_sys_dns(long host);`
-  - `net_time_ms` (function, line 150) `unsigned long net_time_ms(void);`
-  - `net_rx_handle_frame` (function, line 154) `void net_rx_handle_frame(const unsigned char *frame, unsigned len);`
-  - `stack` (function, line 157) `* the stack (dropped fragments);`
-  - `tls_free_fd` (function, line 165) `void tls_free_fd(int fd);`
-  - `net_rx_dropped` (variable, line 158) `extern unsigned int net_rx_dropped;`
-  - `net6_rx_dropped` (variable, line 159) `extern unsigned int net6_rx_dropped;`
+  - `ring` (function, line 58) `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...`
+  - `net_sys_is_socket` (function, line 101) `int net_sys_is_socket(long fd);`
+  - `net_sys_setsockopt` (function, line 102) `long net_sys_setsockopt(long fd, long level, long name, long val, long len);`
+  - `net_sys_getsockopt` (function, line 103) `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);`
+  - `net_sys_getsockname` (function, line 104) `long net_sys_getsockname(long fd, long addr, long lenp);`
+  - `net_sys_getpeername` (function, line 105) `long net_sys_getpeername(long fd, long addr, long lenp);`
+  - `net_sys_sendmsg` (function, line 106) `long net_sys_sendmsg(long fd, long msg, long flags);`
+  - `net_sys_sendmmsg` (function, line 107) `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);`
+  - `net_sys_fcntl` (function, line 108) `long net_sys_fcntl(long fd, long cmd, long arg);`
+  - `net_sys_ioctl` (function, line 109) `long net_sys_ioctl(long fd, long req, long arg);`
+  - `net_register_symbols` (function, line 110) `void net_register_symbols(void);`
+  - `net_cmd_status` (function, line 113) `void net_cmd_status(void);`
+  - `net_cmd_ping` (function, line 114) `void net_cmd_ping(const char *ip_text);`
+  - `net_get_addrs` (function, line 115) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
+  - `net_cmd_dns` (function, line 116) `void net_cmd_dns(const char *host);`
+  - `net_open` (function, line 119) `int net_open(void);`
+  - `net_connect` (function, line 120) `int net_connect(const char *host, unsigned short port);`
+  - `net_send` (function, line 121) `int net_send(int fd, const char *buf, int len);`
+  - `net_recv` (function, line 122) `int net_recv(int fd, char *buf, int len);`
+  - `net_recv_timeout` (function, line 124) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);`
+  - `net_close` (function, line 125) `void net_close(int fd);`
+  - `demux` (function, line 131) `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);`
+  - `net_accept_nb` (function, line 133) `int net_accept_nb(int fd);`
+  - `net_accept` (function, line 134) `int net_accept(int fd, unsigned long timeout_ms);`
+  - `net_sock_state` (function, line 135) `int net_sock_state(int fd);`
+  - `net_sock_seq` (function, line 136) `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);`
+  - `net_test_inject_tcp` (function, line 137) `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...`
+  - `net_sys_socket` (function, line 142) `long net_sys_socket(long a1, long a2, long a3);`
+  - `net_sys_connect` (function, line 143) `long net_sys_connect(long fd, long sockaddr, long addrlen);`
+  - `net_sys_bind` (function, line 144) `long net_sys_bind(long fd, long sockaddr, long addrlen);`
+  - `net_sys_listen` (function, line 145) `long net_sys_listen(long fd, long backlog);`
+  - `net_sys_accept` (function, line 146) `long net_sys_accept(long fd, long sockaddr, long addrlen);`
+  - `net_sys_sendto` (function, line 147) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
+  - `net_sys_recvfrom` (function, line 148) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
+  - `net_sys_shutdown` (function, line 149) `long net_sys_shutdown(long fd, long how);`
+  - `net_sys_close` (function, line 150) `long net_sys_close(long fd);`
+  - `net_sys_poll` (function, line 151) `long net_sys_poll(long fds, long nfds, long timeout_ms);`
+  - `net_sys_dns` (function, line 152) `long net_sys_dns(long host);`
+  - `net_time_ms` (function, line 155) `unsigned long net_time_ms(void);`
+  - `net_rx_handle_frame` (function, line 159) `void net_rx_handle_frame(const unsigned char *frame, unsigned len);`
+  - `stack` (function, line 162) `* the stack (dropped fragments);`
+  - `tls_free_fd` (function, line 170) `void tls_free_fd(int fd);`
+  - `net_rx_dropped` (variable, line 163) `extern unsigned int net_rx_dropped;`
+  - `net6_rx_dropped` (variable, line 164) `extern unsigned int net6_rx_dropped;`
   - `NET_H` (macro, line 2) `#define NET_H`
   - `NET_IP_ADDR` (macro, line 5) `#define NET_IP_ADDR`
   - `NET_NETMASK` (macro, line 6) `#define NET_NETMASK`
@@ -198,50 +199,51 @@ Previous: [KB_headers_p2.md](KB_headers_p2.md)
   - `NET_PCI_DEVICE` (macro, line 20) `#define NET_PCI_DEVICE`
   - `NET_RX_BUF_LEN` (macro, line 26) `#define NET_RX_BUF_LEN`
   - `NET_RX_ALIGN` (macro, line 27) `#define NET_RX_ALIGN`
-  - `NET_RCR` (macro, line 30) `#define NET_RCR`
-  - `NET_MAX_FRAME` (macro, line 31) `#define NET_MAX_FRAME`
-  - `NET_TX_SLOTS` (macro, line 32) `#define NET_TX_SLOTS`
-  - `NET_ETH_ALEN` (macro, line 35) `#define NET_ETH_ALEN`
-  - `NET_ETHERTYPE_IP` (macro, line 36) `#define NET_ETHERTYPE_IP`
-  - `NET_ETHERTYPE_ARP` (macro, line 37) `#define NET_ETHERTYPE_ARP`
-  - `NET_ETHERTYPE_IPV6` (macro, line 38) `#define NET_ETHERTYPE_IPV6`
-  - `NET_PROTO_ICMP` (macro, line 41) `#define NET_PROTO_ICMP`
-  - `NET_PROTO_TCP` (macro, line 42) `#define NET_PROTO_TCP`
-  - `NET_PROTO_UDP` (macro, line 43) `#define NET_PROTO_UDP`
-  - `NET_ARP_CACHE` (macro, line 46) `#define NET_ARP_CACHE`
-  - `NET_ARP_REQUEST` (macro, line 47) `#define NET_ARP_REQUEST`
-  - `NET_ARP_REPLY` (macro, line 48) `#define NET_ARP_REPLY`
-  - `NET_TCP_MSS` (macro, line 51) `#define NET_TCP_MSS`
-  - `NET_TCP_WINDOW` (macro, line 52) `#define NET_TCP_WINDOW`
-  - `NET_SOCK_RX_BUF` (macro, line 55) `#define NET_SOCK_RX_BUF`
-  - `NET_RX_RING_SIZE` (macro, line 56) `#define NET_RX_RING_SIZE`
-  - `NET_SOCKETS` (macro, line 57) `#define NET_SOCKETS`
-  - `NET_DNS_PORT` (macro, line 58) `#define NET_DNS_PORT`
-  - `NET_EPHEMERAL_MIN` (macro, line 59) `#define NET_EPHEMERAL_MIN`
-  - `NET_DNS_TRIES` (macro, line 60) `#define NET_DNS_TRIES`
-  - `NET_DNS_TMO_MS` (macro, line 61) `#define NET_DNS_TMO_MS`
-  - `NET_CONNECT_TMO_S` (macro, line 62) `#define NET_CONNECT_TMO_S`
-  - `NET_RETRY_MS` (macro, line 63) `#define NET_RETRY_MS`
-  - `NET_ACCEPT_TMO_MS` (macro, line 64) `#define NET_ACCEPT_TMO_MS`
-  - `NET_TX_MAX` (macro, line 65) `#define NET_TX_MAX`
-  - `NET_FD_BASE` (macro, line 68) `#define NET_FD_BASE`
-  - `NET_UDP_SOCKETS` (macro, line 73) `#define NET_UDP_SOCKETS`
-  - `NET_UDP_QUEUE` (macro, line 74) `#define NET_UDP_QUEUE`
-  - `NET_UDP_DGRAM_MAX` (macro, line 75) `#define NET_UDP_DGRAM_MAX`
-  - `NET_UDP_FD_BASE` (macro, line 76) `#define NET_UDP_FD_BASE`
-  - `NET_UDP_EPHEMERAL_MIN` (macro, line 77) `#define NET_UDP_EPHEMERAL_MIN`
-  - `NET_UDP_EPHEMERAL_MAX` (macro, line 78) `#define NET_UDP_EPHEMERAL_MAX`
-  - `NET_SOCKADDR_IN_LEN` (macro, line 79) `#define NET_SOCKADDR_IN_LEN`
-  - `NET_MSGHDR_LEN` (macro, line 81) `#define NET_MSGHDR_LEN`
-  - `NET_MMSGHDR_LEN` (macro, line 82) `#define NET_MMSGHDR_LEN`
-  - `NET_MSGHDR_NAME_OFF` (macro, line 83) `#define NET_MSGHDR_NAME_OFF`
-  - `NET_MSGHDR_NAMELEN_OFF` (macro, line 84) `#define NET_MSGHDR_NAMELEN_OFF`
-  - `NET_MSGHDR_IOV_OFF` (macro, line 85) `#define NET_MSGHDR_IOV_OFF`
-  - `NET_MSGHDR_IOVLEN_OFF` (macro, line 86) `#define NET_MSGHDR_IOVLEN_OFF`
-  - `NET_MMSGHDR_LEN_OFF` (macro, line 87) `#define NET_MMSGHDR_LEN_OFF`
-  - `NET_IOV_LEN` (macro, line 88) `#define NET_IOV_LEN`
-  - `NET_IOV_MAX` (macro, line 89) `#define NET_IOV_MAX`
-  - `NET_MMSG_MAX` (macro, line 90) `#define NET_MMSG_MAX`
+  - `NET_RX_RING_PAD` (macro, line 31) `#define NET_RX_RING_PAD`
+  - `NET_RCR` (macro, line 34) `#define NET_RCR`
+  - `NET_MAX_FRAME` (macro, line 35) `#define NET_MAX_FRAME`
+  - `NET_TX_SLOTS` (macro, line 36) `#define NET_TX_SLOTS`
+  - `NET_ETH_ALEN` (macro, line 39) `#define NET_ETH_ALEN`
+  - `NET_ETHERTYPE_IP` (macro, line 40) `#define NET_ETHERTYPE_IP`
+  - `NET_ETHERTYPE_ARP` (macro, line 41) `#define NET_ETHERTYPE_ARP`
+  - `NET_ETHERTYPE_IPV6` (macro, line 42) `#define NET_ETHERTYPE_IPV6`
+  - `NET_PROTO_ICMP` (macro, line 45) `#define NET_PROTO_ICMP`
+  - `NET_PROTO_TCP` (macro, line 46) `#define NET_PROTO_TCP`
+  - `NET_PROTO_UDP` (macro, line 47) `#define NET_PROTO_UDP`
+  - `NET_ARP_CACHE` (macro, line 50) `#define NET_ARP_CACHE`
+  - `NET_ARP_REQUEST` (macro, line 51) `#define NET_ARP_REQUEST`
+  - `NET_ARP_REPLY` (macro, line 52) `#define NET_ARP_REPLY`
+  - `NET_TCP_MSS` (macro, line 55) `#define NET_TCP_MSS`
+  - `NET_TCP_WINDOW` (macro, line 56) `#define NET_TCP_WINDOW`
+  - `NET_SOCK_RX_BUF` (macro, line 59) `#define NET_SOCK_RX_BUF`
+  - `NET_RX_RING_SIZE` (macro, line 60) `#define NET_RX_RING_SIZE`
+  - `NET_SOCKETS` (macro, line 61) `#define NET_SOCKETS`
+  - `NET_DNS_PORT` (macro, line 62) `#define NET_DNS_PORT`
+  - `NET_EPHEMERAL_MIN` (macro, line 63) `#define NET_EPHEMERAL_MIN`
+  - `NET_DNS_TRIES` (macro, line 64) `#define NET_DNS_TRIES`
+  - `NET_DNS_TMO_MS` (macro, line 65) `#define NET_DNS_TMO_MS`
+  - `NET_CONNECT_TMO_S` (macro, line 66) `#define NET_CONNECT_TMO_S`
+  - `NET_RETRY_MS` (macro, line 67) `#define NET_RETRY_MS`
+  - `NET_ACCEPT_TMO_MS` (macro, line 68) `#define NET_ACCEPT_TMO_MS`
+  - `NET_TX_MAX` (macro, line 69) `#define NET_TX_MAX`
+  - `NET_FD_BASE` (macro, line 72) `#define NET_FD_BASE`
+  - `NET_UDP_SOCKETS` (macro, line 77) `#define NET_UDP_SOCKETS`
+  - `NET_UDP_QUEUE` (macro, line 78) `#define NET_UDP_QUEUE`
+  - `NET_UDP_DGRAM_MAX` (macro, line 79) `#define NET_UDP_DGRAM_MAX`
+  - `NET_UDP_FD_BASE` (macro, line 80) `#define NET_UDP_FD_BASE`
+  - `NET_UDP_EPHEMERAL_MIN` (macro, line 81) `#define NET_UDP_EPHEMERAL_MIN`
+  - `NET_UDP_EPHEMERAL_MAX` (macro, line 82) `#define NET_UDP_EPHEMERAL_MAX`
+  - `NET_SOCKADDR_IN_LEN` (macro, line 83) `#define NET_SOCKADDR_IN_LEN`
+  - `NET_MSGHDR_LEN` (macro, line 85) `#define NET_MSGHDR_LEN`
+  - `NET_MMSGHDR_LEN` (macro, line 86) `#define NET_MMSGHDR_LEN`
+  - `NET_MSGHDR_NAME_OFF` (macro, line 87) `#define NET_MSGHDR_NAME_OFF`
+  - `NET_MSGHDR_NAMELEN_OFF` (macro, line 88) `#define NET_MSGHDR_NAMELEN_OFF`
+  - `NET_MSGHDR_IOV_OFF` (macro, line 89) `#define NET_MSGHDR_IOV_OFF`
+  - `NET_MSGHDR_IOVLEN_OFF` (macro, line 90) `#define NET_MSGHDR_IOVLEN_OFF`
+  - `NET_MMSGHDR_LEN_OFF` (macro, line 91) `#define NET_MMSGHDR_LEN_OFF`
+  - `NET_IOV_LEN` (macro, line 92) `#define NET_IOV_LEN`
+  - `NET_IOV_MAX` (macro, line 93) `#define NET_IOV_MAX`
+  - `NET_MMSG_MAX` (macro, line 94) `#define NET_MMSG_MAX`
 - Imported by: `drivers/virtio_net.c`, `headers/net/rtl8139.h`, `headers/tls_port.h`, `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`
 
 ## headers/panic.h

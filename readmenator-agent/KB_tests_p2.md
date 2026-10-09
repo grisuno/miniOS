@@ -194,7 +194,8 @@ Previous: [KB_tests.md](KB_tests.md)
   - `test_pool_exhaustion` (function, line 136) `static void test_pool_exhaustion(void)`
   - `test_full_drain` (function, line 153) `static void test_full_drain(void)`
   - `test_file_tags_and_containing` (function, line 167) `static void test_file_tags_and_containing(void)`
-  - `main` (function, line 199) `int main(void)`
+  - `test_node_recycling` (function, line 201) `static void test_node_recycling(void)`
+  - `main` (function, line 231) `int main(void)`
   - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
 - Depends on: `headers/vma.h`
 

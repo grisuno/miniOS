@@ -113,6 +113,22 @@
   },
   {
     "community_a": 0,
+    "community_b": 7,
+    "connection_type": "shares_context",
+    "explanation": "Inferred shared context (layer utility) with no import path between community 0 (headers: kernel) and community 7 (progs/doomgeneric: net_defs).",
+    "strength": 0.5,
+    "confidence": "INFERRED"
+  },
+  {
+    "community_a": 0,
+    "community_b": 8,
+    "connection_type": "shares_context",
+    "explanation": "Inferred shared context (layer utility) with no import path between community 0 (headers: kernel) and community 8 (tools: doom_pwad).",
+    "strength": 0.5,
+    "confidence": "INFERRED"
+  },
+  {
+    "community_a": 0,
     "community_b": 9,
     "connection_type": "shares_context",
     "explanation": "Inferred shared context (language c and layer utility) with no import path between community 0 (headers: kernel) and community 9 (orphans).",
@@ -137,25 +153,9 @@
   },
   {
     "community_a": 1,
-    "community_b": 9,
+    "community_b": 8,
     "connection_type": "shares_context",
-    "explanation": "Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 9 (orphans).",
-    "strength": 0.5,
-    "confidence": "INFERRED"
-  },
-  {
-    "community_a": 2,
-    "community_b": 4,
-    "connection_type": "shares_context",
-    "explanation": "Inferred shared context (layer utility) with no import path between community 2 (progs/doomgeneric: p_spec) and community 4 (tools: lxabi).",
-    "strength": 0.5,
-    "confidence": "INFERRED"
-  },
-  {
-    "community_a": 2,
-    "community_b": 5,
-    "connection_type": "shares_context",
-    "explanation": "Inferred shared context (layer utility) with no import path between community 2 (progs/doomgeneric: p_spec) and community 5 (headers: vga_fb).",
+    "explanation": "Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 8 (tools: doom_pwad).",
     "strength": 0.5,
     "confidence": "INFERRED"
   }

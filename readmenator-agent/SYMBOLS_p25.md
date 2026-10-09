@@ -3,6 +3,146 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `deny_valid` | function | `tests/test_panic.c:35` | `static int deny_valid(unsigned long addr)` |
+| `main` | function | `tests/test_panic.c:39` | `int main(void)` |
+| `never_valid` | function | `tests/test_panic.c:28` | `static int never_valid(unsigned long addr)` |
+| `CHECK` | macro | `tests/test_pcache.c:36` | `#define CHECK(cond, msg)` |
+| `kfree` | function | `tests/test_pcache.c:23` | `void kfree(void *ptr)` |
+| `kmalloc` | function | `tests/test_pcache.c:19` | `void *kmalloc(unsigned long size)` |
+| `kprintf` | function | `tests/test_pcache.c:27` | `int kprintf(const char *fmt, ...)` |
+| `main` | function | `tests/test_pcache.c:43` | `int main(void)` |
+| `CHECK` | macro | `tests/test_pci.c:26` | `#define CHECK(cond, msg)` |
+| `FAKE_BUSES` | macro | `tests/test_pci.c:33` | `#define FAKE_BUSES` |
+| `FAKE_REGS` | macro | `tests/test_pci.c:34` | `#define FAKE_REGS` |
+| `fake_inl` | function | `tests/test_pci.c:60` | `static unsigned fake_inl(unsigned short port)` |
+| `fake_outl` | function | `tests/test_pci.c:39` | `static void fake_outl(unsigned short port, unsigned val)` |
+| `main` | function | `tests/test_pci.c:79` | `int main(void)` |
+| `set_dev` | function | `tests/test_pci.c:73` | `static void set_dev(unsigned bus, unsigned dev, unsigned func,                     unsigned id, u...` |
+| `CHECK` | macro | `tests/test_pcm.c:21` | `#define CHECK(cond, msg)` |
+| `lcg_next` | function | `tests/test_pcm.c:104` | `static unsigned lcg_next(void)` |
+| `main` | function | `tests/test_pcm.c:144` | `int main(void)` |
+| `t_model` | function | `tests/test_pcm.c:109` | `static void t_model(void)` |
+| `t_overrun` | function | `tests/test_pcm.c:61` | `static void t_overrun(void)` |
+| `t_roundtrip` | function | `tests/test_pcm.c:28` | `static void t_roundtrip(void)` |
+| `t_underrun` | function | `tests/test_pcm.c:75` | `static void t_underrun(void)` |
+| `t_wrap` | function | `tests/test_pcm.c:44` | `static void t_wrap(void)` |
+| `t_zero_cap` | function | `tests/test_pcm.c:91` | `static void t_zero_cap(void)` |
+| `CHECK` | macro | `tests/test_percpu_rq.c:17` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_percpu_rq.c:24` | `int main(void)` |
+| `CHECK` | macro | `tests/test_pipe.c:16` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_pipe.c:23` | `int main(void)` |
+| `check` | function | `tests/test_ps2_keymap.c:19` | `static void check(int cond, const char *name)` |
+| `feed_seq` | function | `tests/test_ps2_keymap.c:29` | `static int feed_seq(ps2_state *s, const unsigned char *seq, int n, ps2_key *out)` |
+| `main` | function | `tests/test_ps2_keymap.c:293` | `int main(void)` |
+| `press` | function | `tests/test_ps2_keymap.c:36` | `static int press(ps2_state *s, unsigned char code, ps2_key *out)` |
+| `release` | function | `tests/test_ps2_keymap.c:41` | `static int release(ps2_state *s, unsigned char code, ps2_key *out)` |
+| `test_caps_lock` | function | `tests/test_ps2_keymap.c:69` | `static void test_caps_lock(void)` |
+| `test_chords_have_no_text` | function | `tests/test_ps2_keymap.c:128` | `static void test_chords_have_no_text(void)` |
+| `test_control_key_text` | function | `tests/test_ps2_keymap.c:111` | `static void test_control_key_text(void)` |
+| `test_extended_keys` | function | `tests/test_ps2_keymap.c:150` | `static void test_extended_keys(void)` |
+| `test_fail_closed` | function | `tests/test_ps2_keymap.c:280` | `static void test_fail_closed(void)` |
+| `test_function_keys` | function | `tests/test_ps2_keymap.c:202` | `static void test_function_keys(void)` |
+| `test_keypad_num_lock` | function | `tests/test_ps2_keymap.c:218` | `static void test_keypad_num_lock(void)` |
+| `test_letters_and_shift` | function | `tests/test_ps2_keymap.c:45` | `static void test_letters_and_shift(void)` |
+| `test_prefix_sequences` | function | `tests/test_ps2_keymap.c:263` | `static void test_prefix_sequences(void)` |
+| `test_punctuation` | function | `tests/test_ps2_keymap.c:90` | `static void test_punctuation(void)` |
+| `CHECK` | macro | `tests/test_randmix.c:16` | `#define CHECK(c, m)` |
+| `main` | function | `tests/test_randmix.c:24` | `int main(void)` |
+| `popcount64` | function | `tests/test_randmix.c:18` | `static int popcount64(unsigned long x)` |
+| `CHECK` | macro | `tests/test_rcu.c:30` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_rcu.c:37` | `int main(void)` |
+| `rcu_host_cpu` | function | `tests/test_rcu.c:19` | `cpu_t *rcu_host_cpu(void)` |
+| `test_cb` | function | `tests/test_rcu.c:23` | `static void test_cb(void *arg)` |
+| `CHECK` | macro | `tests/test_rtc.c:16` | `#define CHECK(c, m)` |
+| `main` | function | `tests/test_rtc.c:18` | `int main(void)` |
+| `CHECK` | macro | `tests/test_sanitize.c:41` | `#define CHECK(cond, msg)` |
+| `EFAULT` | macro | `tests/test_sanitize.c:13` | `#define EFAULT` |
+| `copy_probe` | function | `tests/test_sanitize.c:61` | `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)` |
+| `kmemcpy` | function | `tests/test_sanitize.c:32` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
+| `main` | function | `tests/test_sanitize.c:67` | `int main(void)` |
+| `range_probe` | function | `tests/test_sanitize.c:48` | `static long range_probe(unsigned long p, long len)` |
+| `str_probe` | function | `tests/test_sanitize.c:54` | `static long str_probe(unsigned long p)` |
+| `user_range_ok` | function | `tests/test_sanitize.c:20` | `int user_range_ok(unsigned long p, unsigned long len)` |
+| `user_str_ok` | function | `tests/test_sanitize.c:26` | `int user_str_ok(unsigned long p, unsigned long maxlen)` |
+| `ARGS2_OFF` | macro | `tests/test_seccomp_bpf.c:30` | `#define ARGS2_OFF` |
+| `CHECK` | macro | `tests/test_seccomp_bpf.c:17` | `#define CHECK(cond, msg)` |
+| `JUMP` | macro | `tests/test_seccomp_bpf.c:22` | `#define JUMP(c, k, t, f)` |
+| `NR_MMAP` | macro | `tests/test_seccomp_bpf.c:27` | `#define NR_MMAP` |
+| `NR_MPROTECT` | macro | `tests/test_seccomp_bpf.c:28` | `#define NR_MPROTECT` |
+| `NR_OPEN` | macro | `tests/test_seccomp_bpf.c:26` | `#define NR_OPEN` |
+| `NR_READ` | macro | `tests/test_seccomp_bpf.c:24` | `#define NR_READ` |
+| `NR_WRITE` | macro | `tests/test_seccomp_bpf.c:25` | `#define NR_WRITE` |
+| `PROT_EXEC` | macro | `tests/test_seccomp_bpf.c:29` | `#define PROT_EXEC` |
+| `STMT` | macro | `tests/test_seccomp_bpf.c:21` | `#define STMT(c, k)` |
+| `data_for` | function | `tests/test_seccomp_bpf.c:34` | `static sbpf_data data_for(int nr, unsigned long long a2)` |
+| `main` | function | `tests/test_seccomp_bpf.c:210` | `int main(void)` |
+| `test_action_rank` | function | `tests/test_seccomp_bpf.c:199` | `static void test_action_rank(void)` |
+| `test_alu_and_jumps` | function | `tests/test_seccomp_bpf.c:150` | `static void test_alu_and_jumps(void)` |
+| `test_check_refusals` | function | `tests/test_seccomp_bpf.c:88` | `static void test_check_refusals(void)` |
+| `test_freedom_shape` | function | `tests/test_seccomp_bpf.c:43` | `static void test_freedom_shape(void)` |
+| `test_scratch_flow` | function | `tests/test_seccomp_bpf.c:130` | `static void test_scratch_flow(void)` |
+| `CHECK` | macro | `tests/test_sync.c:37` | `#define CHECK(cond, msg)` |
+| `fresh_all` | function | `tests/test_sync.c:52` | `static void fresh_all(void)` |
+| `fresh_proc` | function | `tests/test_sync.c:44` | `static void fresh_proc(int pid)` |
+| `main` | function | `tests/test_sync.c:63` | `int main(void)` |
+| `proc_get` | function | `tests/test_sync.c:24` | `proc_t *proc_get(int pid)` |
+| `schedule` | function | `tests/test_sync.c:30` | `void schedule(void)` |
+| `CHECK` | macro | `tests/test_theme.c:16` | `#define CHECK(cond, msg)` |
+| `X` | macro | `tests/test_theme.c:29` | `#define X(k, i)` |
+| `check_theme_file` | function | `tests/test_theme.c:78` | `static void check_theme_file(const char *path)` |
+| `cube_exact` | function | `tests/test_theme.c:74` | `static int cube_exact(long v)` |
+| `main` | function | `tests/test_theme.c:107` | `int main(void)` |
+| `t_name_ok` | function | `tests/test_theme.c:34` | `static int t_name_ok(const char *name)` |
+| `t_parse_line` | function | `tests/test_theme.c:46` | `static int t_parse_line(const char *line, int *idx, long v[3])` |
+| `tslot` | struct | `tests/test_theme.c:23` | `` |
+| `CHECK` | macro | `tests/test_tick.c:17` | `#define CHECK(cond, msg)` |
+| `dummy` | function | `tests/test_tick.c:47` | `static void dummy(void *ctx)` |
+| `main` | function | `tests/test_tick.c:52` | `int main(void)` |
+| `rec_a` | function | `tests/test_tick.c:24` | `static void rec_a(void *ctx)` |
+| `rec_b` | function | `tests/test_tick.c:31` | `static void rec_b(void *ctx)` |
+| `rec_d` | function | `tests/test_tick.c:38` | `static void rec_d(void *ctx)` |
+| `CHECK` | macro | `tests/test_usbblk.c:36` | `#define CHECK(cond, msg)` |
+| `device_find` | function | `tests/test_usbblk.c:26` | `device_t *device_find(const char *name)` |
+| `device_register` | function | `tests/test_usbblk.c:20` | `int device_register(device_t *dev)` |
+| `main` | function | `tests/test_usbblk.c:43` | `int main(void)` |
+| `CHECK` | macro | `tests/test_usbhid.c:41` | `#define CHECK(cond, msg)` |
+| `check_usage` | function | `tests/test_usbhid.c:48` | `static void check_usage(unsigned usage, unsigned char want_sc, int want_e0,                      ...` |
+| `kbd_feed_scancode` | function | `tests/test_usbhid.c:22` | `int kbd_feed_scancode(unsigned char sc)` |
+| `kbd_q_push` | function | `tests/test_usbhid.c:30` | `void kbd_q_push(unsigned char c)` |
+| `main` | function | `tests/test_usbhid.c:59` | `int main(void)` |
+| `CHECK` | macro | `tests/test_vedit_build.c:33` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_vedit_build.c:345` | `int main(void)` |
+| `t_base_of` | function | `tests/test_vedit_build.c:51` | `static int t_base_of(const char *fname, char *dst, size_t cap)` |
+| `t_cmd` | function | `tests/test_vedit_build.c:299` | `static int t_cmd(const char *name)` |
+| `t_has_ext` | function | `tests/test_vedit_build.c:40` | `static int t_has_ext(const char *fname, const char *ext)` |
+| `t_join` | function | `tests/test_vedit_build.c:71` | `static int t_join(const char *dir, const char *base, const char *ext,                   char *dst...` |
+| `t_lang_of` | function | `tests/test_vedit_build.c:101` | `static int t_lang_of(const char *fname)` |
+| `t_link_fmt` | function | `tests/test_vedit_build.c:87` | `static int t_link_fmt(const char *s)` |
+| `t_magic` | function | `tests/test_vedit_build.c:268` | `static int t_magic(const char *text, const char *pat, int *mlen)` |
+| `t_matom` | function | `tests/test_vedit_build.c:188` | `static int t_matom(const char *pat, int c, int *atom_len)` |
+| `t_mclass` | function | `tests/test_vedit_build.c:166` | `static int t_mclass(int c, const char *cls)` |
+| `t_mhere` | function | `tests/test_vedit_build.c:211` | `static int t_mhere(const char *text, const char *pat, int *mlen)` |
+| `t_parse_key` | function | `tests/test_vedit_build.c:312` | `static int t_parse_key(const char *s)` |
+| `t_run_kind` | function | `tests/test_vedit_build.c:121` | `static int t_run_kind(const char *fname)` |
+| `t_str_case` | function | `tests/test_vedit_build.c:131` | `static void t_str_case(char *s, int mode)` |
+| `t_transpose` | function | `tests/test_vedit_build.c:157` | `static void t_transpose(char *s, int len, int pos)` |
+| `CHECK` | macro | `tests/test_vma.c:20` | `#define CHECK(cond, msg)` |
+| `black_height` | function | `tests/test_vma.c:27` | `static int black_height(const vma_node_t *n)` |
+| `count_nodes` | function | `tests/test_vma.c:75` | `static int count_nodes(const vma_node_t *root)` |
+| `main` | function | `tests/test_vma.c:231` | `int main(void)` |
+| `test_file_tags_and_containing` | function | `tests/test_vma.c:167` | `static void test_file_tags_and_containing(void)` |
+| `test_full_drain` | function | `tests/test_vma.c:153` | `static void test_full_drain(void)` |
+| `test_insert_find_delete` | function | `tests/test_vma.c:89` | `static void test_insert_find_delete(void)` |
+| `test_node_recycling` | function | `tests/test_vma.c:201` | `static void test_node_recycling(void)` |
+| `test_pool_exhaustion` | function | `tests/test_vma.c:136` | `static void test_pool_exhaustion(void)` |
+| `tree_valid` | function | `tests/test_vma.c:38` | `static int tree_valid(const vma_node_t *root)` |
+| `LIST_MAX` | macro | `tests/test_vma_bench.c:20` | `#define LIST_MAX` |
+| `bench` | function | `tests/test_vma_bench.c:34` | `static void bench(int n)` |
+| `l_find` | function | `tests/test_vma_bench.c:28` | `static int l_find(unsigned long b)` |
+| `l_insert` | function | `tests/test_vma_bench.c:23` | `static void l_insert(unsigned long b)` |
+| `main` | function | `tests/test_vma_bench.c:54` | `int main(void)` |
+| `now_us` | function | `tests/test_vma_bench.c:13` | `static long now_us(void)` |
+| `CHECK` | macro | `tests/test_wl.c:20` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_wl.c:27` | `int main(void)` |
 | `CHECK` | macro | `tests/test_wm.c:22` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_wm.c:29` | `int main(void)` |
@@ -292,8 +432,8 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
 | `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
 | `cleanup` | function | `tools/mutate.sh:136` | `` |
-| `find_index` | function | `tools/mutate.sh:471` | `` |
-| `record` | function | `tools/mutate.sh:465` | `` |
+| `find_index` | function | `tools/mutate.sh:488` | `` |
+| `record` | function | `tools/mutate.sh:482` | `` |
 | `restore_sources` | function | `tools/mutate.sh:129` | `` |
 | `usage` | function | `tools/mutate.sh:51` | `` |
 | `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
@@ -328,12 +468,12 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `cleanup_stale_qemu` | function | `tools/test_bdd.sh:43` | `` |
 | `expect` | function | `tools/test_bdd.sh:97` | `` |
 | `expect_count` | function | `tools/test_bdd.sh:119` | `` |
-| `http_fixture_start` | function | `tools/test_bdd.sh:1323` | `` |
-| `http_fixture_stop` | function | `tools/test_bdd.sh:1330` | `` |
-| `http_server_start` | function | `tools/test_bdd.sh:1311` | `` |
-| `http_server_stop` | function | `tools/test_bdd.sh:1318` | `` |
-| `net_fixture_start` | function | `tools/test_bdd.sh:1335` | `` |
-| `net_fixture_stop` | function | `tools/test_bdd.sh:1342` | `` |
+| `http_fixture_start` | function | `tools/test_bdd.sh:1330` | `` |
+| `http_fixture_stop` | function | `tools/test_bdd.sh:1337` | `` |
+| `http_server_start` | function | `tools/test_bdd.sh:1318` | `` |
+| `http_server_stop` | function | `tools/test_bdd.sh:1325` | `` |
+| `net_fixture_start` | function | `tools/test_bdd.sh:1342` | `` |
+| `net_fixture_stop` | function | `tools/test_bdd.sh:1349` | `` |
 | `refute` | function | `tools/test_bdd.sh:142` | `` |
 | `scenario` | function | `tools/test_bdd.sh:54` | `` |
 | `scenario_smp` | function | `tools/test_bdd.sh:74` | `` |
@@ -356,145 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `note` | function | `tools/test_gui_fashion.py:39` | `def note(ok, msg)` |
 | `qmp_cmd` | method | `tools/test_gui_fashion.py:128` | `def qmp_cmd(self, obj)` |
 | `rel` | method | `tools/test_gui_fashion.py:161` | `def rel(self, dx, dy)` |
-| `send` | method | `tools/test_gui_fashion.py:118` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_fashion.py:98` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_fashion.py:175` | `def stop(self)` |
-| `wait_for` | method | `tools/test_gui_fashion.py:110` | `def wait_for(self, marker, timeout)` |
-| `wait_prompt` | method | `tools/test_gui_fashion.py:102` | `def wait_prompt(self, timeout)` |
-| `Config` | class | `tools/test_gui_freedom.py:36` | `class Config` |
-| `Guest` | class | `tools/test_gui_freedom.py:73` | `class Guest` |
-| `__init__` | method | `tools/test_gui_freedom.py:76` | `def __init__(self, work)` |
-| `_connect` | method | `tools/test_gui_freedom.py:100` | `def _connect(self, path)` |
-| `_qmp` | method | `tools/test_gui_freedom.py:155` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_freedom.py:114` | `def _reader(self)` |
-| `_serial` | method | `tools/test_gui_freedom.py:109` | `def _serial(self)` |
-| `button` | method | `tools/test_gui_freedom.py:182` | `def button(self, down)` |
-| `chord` | method | `tools/test_gui_freedom.py:174` | `def chord(self, mod, qcode)` |
-| `content_origin` | method | `tools/test_gui_freedom.py:221` | `def content_origin(listing)` |
-| `dump` | method | `tools/test_gui_freedom.py:188` | `def dump(self, name)` |
-| `keys` | method | `tools/test_gui_freedom.py:163` | `def keys(self, events)` |
-| `main` | method | `tools/test_gui_freedom.py:247` | `def main()` |
-| `move_to` | method | `tools/test_gui_freedom.py:235` | `def move_to(g, frame_size, target)` |
-| `note` | method | `tools/test_gui_freedom.py:66` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_freedom.py:148` | `def qmp_cmd(self, obj)` |
-| `region_diff` | method | `tools/test_gui_freedom.py:213` | `def region_diff(a_path, b_path, box)` |
-| `rel` | method | `tools/test_gui_freedom.py:177` | `def rel(self, dx, dy)` |
-| `screen_box` | method | `tools/test_gui_freedom.py:230` | `def screen_box(origin, box)` |
-| `send` | method | `tools/test_gui_freedom.py:137` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_freedom.py:125` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_freedom.py:194` | `def stop(self)` |
-| `tap` | method | `tools/test_gui_freedom.py:171` | `def tap(self, qcode)` |
-| `wait_for` | method | `tools/test_gui_freedom.py:129` | `def wait_for(self, text, timeout)` |
-| `Config` | class | `tools/test_gui_gfxview.py:39` | `class Config` |
-| `dark_share` | method | `tools/test_gui_gfxview.py:84` | `def dark_share(img, box)` |
-| `gfx_row` | method | `tools/test_gui_gfxview.py:72` | `def gfx_row(g)` |
-| `last_line` | method | `tools/test_gui_gfxview.py:62` | `def last_line(g, prefix)` |
-| `main` | method | `tools/test_gui_gfxview.py:109` | `def main()` |
-| `note` | method | `tools/test_gui_gfxview.py:55` | `def note(ok, msg)` |
-| `wait_frames` | method | `tools/test_gui_gfxview.py:94` | `def wait_frames(g, want)` |
-| `Guest` | class | `tools/test_gui_icon_cwd.py:42` | `class Guest` |
-| `__init__` | method | `tools/test_gui_icon_cwd.py:43` | `def __init__(self)` |
-| `_qmp` | method | `tools/test_gui_icon_cwd.py:130` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_icon_cwd.py:79` | `def _reader(self)` |
-| `_ser` | method | `tools/test_gui_icon_cwd.py:67` | `def _ser(self)` |
-| `click` | method | `tools/test_gui_icon_cwd.py:145` | `def click(self)` |
-| `dump` | method | `tools/test_gui_icon_cwd.py:155` | `def dump(self, name)` |
-| `find_icon` | method | `tools/test_gui_icon_cwd.py:180` | `def find_icon(shot_path, icon_path)` |
-| `main` | method | `tools/test_gui_icon_cwd.py:228` | `def main()` |
-| `note` | function | `tools/test_gui_icon_cwd.py:36` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_icon_cwd.py:117` | `def qmp_cmd(self, obj)` |
-| `rel` | method | `tools/test_gui_icon_cwd.py:138` | `def rel(self, dx, dy)` |
-| `send` | method | `tools/test_gui_icon_cwd.py:107` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_icon_cwd.py:95` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_icon_cwd.py:162` | `def stop(self)` |
-| `wait_prompt` | method | `tools/test_gui_icon_cwd.py:99` | `def wait_prompt(self, timeout)` |
-| `walk` | method | `tools/test_gui_icon_cwd.py:213` | `def walk(g, tx, ty, fw, fh)` |
-| `main` | function | `tools/test_gui_menu.py:20` | `def main()` |
-| `Guest` | class | `tools/test_gui_wm.py:46` | `class Guest` |
-| `__init__` | method | `tools/test_gui_wm.py:47` | `def __init__(self)` |
-| `_qmp` | method | `tools/test_gui_wm.py:143` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_wm.py:87` | `def _reader(self)` |
-| `_ser` | method | `tools/test_gui_wm.py:75` | `def _ser(self)` |
-| `btn` | method | `tools/test_gui_wm.py:170` | `def btn(self, down)` |
-| `dump` | method | `tools/test_gui_wm.py:176` | `def dump(self, name)` |
-| `key` | method | `tools/test_gui_wm.py:151` | `def key(self, qcode, down, up)` |
-| `main` | method | `tools/test_gui_wm.py:214` | `def main()` |
-| `meandiff` | method | `tools/test_gui_wm.py:204` | `def meandiff(a_path, b_path)` |
-| `note` | function | `tools/test_gui_wm.py:40` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_wm.py:130` | `def qmp_cmd(self, obj)` |
-| `rel` | method | `tools/test_gui_wm.py:163` | `def rel(self, dx, dy)` |
-| `send` | method | `tools/test_gui_wm.py:115` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_wm.py:103` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_wm.py:183` | `def stop(self)` |
-| `wait_prompt` | method | `tools/test_gui_wm.py:107` | `def wait_prompt(self, timeout)` |
-| `main` | function | `tools/test_gui_zoom.py:22` | `def main()` |
-| `Handler` | class | `tools/test_http_server.py:21` | `class Handler(BaseHTTPRequestHandler)` |
-| `do_GET` | method | `tools/test_http_server.py:24` | `def do_GET(self)` |
-| `log_message` | method | `tools/test_http_server.py:114` | `def log_message(self, fmt)` |
-| `LispConfig` | class | `tools/test_lisp.py:28` | `class LispConfig` |
-| `LispTest` | class | `tools/test_lisp.py:37` | `class LispTest` |
-| `__init__` | method | `tools/test_lisp.py:40` | `def __init__(self, binary, suite)` |
-| `build_binary` | method | `tools/test_lisp.py:308` | `def build_binary(source, output)` |
-| `check` | method | `tools/test_lisp.py:47` | `def check(self, name, actual, expected)` |
-| `check_cli` | method | `tools/test_lisp.py:142` | `def check_cli(self)` |
-| `check_error` | method | `tools/test_lisp.py:70` | `def check_error(self, name, code, fragment)` |
-| `check_eval` | method | `tools/test_lisp.py:65` | `def check_eval(self, name, code, stdout)` |
-| `check_exit_code` | method | `tools/test_lisp.py:135` | `def check_exit_code(self)` |
-| `check_file_roundtrip` | method | `tools/test_lisp.py:121` | `def check_file_roundtrip(self)` |
-| `check_minigcc_subset` | method | `tools/test_lisp.py:177` | `def check_minigcc_subset(self)` |
-| `check_suite_language_only` | method | `tools/test_lisp.py:159` | `def check_suite_language_only(self)` |
-| `main` | method | `tools/test_lisp.py:321` | `def main()` |
-| `report` | method | `tools/test_lisp.py:300` | `def report(self)` |
-| `run_all` | method | `tools/test_lisp.py:76` | `def run_all(self)` |
-| `run_expr` | method | `tools/test_lisp.py:58` | `def run_expr(self, code)` |
-| `Config` | class | `tools/test_net_fixture.py:26` | `class Config` |
-| `echo_stream` | method | `tools/test_net_fixture.py:43` | `def echo_stream(conn)` |
-| `main` | method | `tools/test_net_fixture.py:64` | `def main()` |
-| `serve_tcp` | method | `tools/test_net_fixture.py:53` | `def serve_tcp(port)` |
-| `serve_udp` | method | `tools/test_net_fixture.py:34` | `def serve_udp(port)` |
-| `fail_msg` | function | `tools/test_sb16.sh:45` | `` |
-| `Server` | class | `tools/tls_test.py:241` | `class Server(Thread)` |
-| `__init__` | method | `tools/tls_test.py:242` | `def __init__(self, cert, key, tls13_ok)` |
-| `c_bytes` | function | `tools/tls_test.py:183` | `def c_bytes(data, name)` |
-| `check` | function | `tools/tls_test.py:30` | `def check(cmd)` |
-| `der_bytes` | function | `tools/tls_test.py:154` | `def der_bytes(pem_path)` |
-| `ec_pub` | function | `tools/tls_test.py:172` | `def ec_pub(key_path)` |
-| `expect` | method | `tools/tls_test.py:306` | `def expect(bin_path, args, want_zero, marker)` |
-| `gen_certs` | function | `tools/tls_test.py:37` | `def gen_certs()` |
-| `gen_header` | function | `tools/tls_test.py:191` | `def gen_header(p)` |
-| `main` | method | `tools/tls_test.py:319` | `def main()` |
-| `rsa_params` | function | `tools/tls_test.py:162` | `def rsa_params(key_path)` |
-| `run` | function | `tools/tls_test.py:26` | `def run(cmd)` |
-| `run` | method | `tools/tls_test.py:248` | `def run(self)` |
-| `serve` | method | `tools/tls_test.py:280` | `def serve(cert, key)` |
-| `serve_openssl` | method | `tools/tls_test.py:288` | `def serve_openssl(cert, key, chain)` |
-| `server_cert` | method | `tools/tls_test.py:61` | `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)` |
-| `die` | function | `tools/wl_scoped.sh:9` | `` |
-| `mut` | function | `tools/wl_scoped.sh:77` | `` |
-| `mutm` | function | `tools/wl_scoped.sh:84` | `` |
-| `say` | function | `tools/wl_scoped.sh:8` | `` |
-| `WmLayoutSync` | class | `tools/wm_layout_sync.py:46` | `class WmLayoutSync` |
-| `WmLayoutSyncConfig` | class | `tools/wm_layout_sync.py:17` | `class WmLayoutSyncConfig` |
-| `WmLayoutSyncResult` | class | `tools/wm_layout_sync.py:36` | `class WmLayoutSyncResult` |
-| `__init__` | method | `tools/wm_layout_sync.py:20` | `def __init__(self, root)` |
-| `__init__` | method | `tools/wm_layout_sync.py:39` | `def __init__(self, modes, symbols, checks)` |
-| `__init__` | method | `tools/wm_layout_sync.py:49` | `def __init__(self, config)` |
-| `_count_layout_checks` | method | `tools/wm_layout_sync.py:133` | `def _count_layout_checks(self, tests_text)` |
-| `_extract_modes` | method | `tools/wm_layout_sync.py:116` | `def _extract_modes(self, header_text)` |
-| `_extract_symbols` | method | `tools/wm_layout_sync.py:125` | `def _extract_symbols(self, header_text)` |
-| `_read_text` | method | `tools/wm_layout_sync.py:110` | `def _read_text(self, path)` |
-| `_require_modes` | method | `tools/wm_layout_sync.py:138` | `def _require_modes(self, modes)` |
-| `_require_symbols` | method | `tools/wm_layout_sync.py:144` | `def _require_symbols(self, symbols)` |
-| `discover` | method | `tools/wm_layout_sync.py:53` | `def discover(self)` |
-| `main` | method | `tools/wm_layout_sync.py:159` | `def main(argv)` |
-| `parse_args` | method | `tools/wm_layout_sync.py:151` | `def parse_args(argv)` |
-| `render` | method | `tools/wm_layout_sync.py:66` | `def render(self, result)` |
-| `synchronize` | method | `tools/wm_layout_sync.py:101` | `def synchronize(self, write)` |
-| `die` | function | `tools/wm_scoped.sh:9` | `` |
-| `say` | function | `tools/wm_scoped.sh:8` | `` |
-| `vma_alloc_node` | function | `vma.c:102` | `static vma_node_t *vma_alloc_node(void)` |
-| `vma_ctx_bind` | function | `vma.c:46` | `void vma_ctx_bind(vma_ctx_t *c)` |
-| `vma_ctx_init` | function | `vma.c:32` | `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)` |
-| `vma_ctx_save` | function | `vma.c:57` | `void vma_ctx_save(vma_ctx_t *c)` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

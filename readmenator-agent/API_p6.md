@@ -11,30 +11,38 @@ Depends on: `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers
 - `frame` (function) `kernel/minifetch.c:159` `* frame (stack discipline, CLAUDE.md). Fail-closed on OOM. */ char (*specs)[96] = (char (*)[96])kmalloc(20 * 96);`
 
 ## kernel/mm.c
-Depends on: `headers/sched.h`
-- `kallocator_init` (function) `kernel/mm.c:13` `void kallocator_init(void)`
-- `kmalloc` (function) `kernel/mm.c:21` `void *kmalloc(unsigned long size)`
-- `kfree` (function) `kernel/mm.c:28` `void kfree(void *ptr)`
-- `kcalloc` (function) `kernel/mm.c:49` `void *kcalloc(unsigned long nmemb, unsigned long size)`
-- `krealloc` (function) `kernel/mm.c:53` `void *krealloc(void *ptr, unsigned long size)`
-- `kmalloc_aligned` (function) `kernel/mm.c:65` `void *kmalloc_aligned(unsigned long size, unsigned long align)` -- Docstring: Aligned allocation with a recoverable raw pointer.
-- `kfree_aligned` (function) `kernel/mm.c:81` `void kfree_aligned(void *ptr)` -- Docstring: Release a kmalloc_aligned block.
+Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/sched.h`
+- `kheap_ram_top` (function) `kernel/mm.c:19` `static unsigned long kheap_ram_top(void)` -- RAM top from the CMOS extended-memory count (the identity map covers the first gigabyte; nothing else reports the...
+- `kallocator_init` (function) `kernel/mm.c:32` `void kallocator_init(void)` -- Build the heap over [HEAP_BASE, HEAP_BASE + kheap_size): the layout maximum, never past the installed RAM (a smaller...
+- `kmalloc_report_failure` (function) `kernel/mm.c:53` `static void kmalloc_report_failure(unsigned long size)`
+- `kmalloc` (function) `kernel/mm.c:66` `void *kmalloc(unsigned long size)`
+- `kmalloc_page` (function) `kernel/mm.c:81` `void *kmalloc_page(void)` -- One page-aligned heap page (the page-table and user-page allocator's backing). memalign keeps the cost at one page...
+- `kfree` (function) `kernel/mm.c:90` `void kfree(void *ptr)`
+- `kcalloc` (function) `kernel/mm.c:111` `void *kcalloc(unsigned long nmemb, unsigned long size)`
+- `krealloc` (function) `kernel/mm.c:115` `void *krealloc(void *ptr, unsigned long size)`
+- `kmalloc_aligned` (function) `kernel/mm.c:127` `void *kmalloc_aligned(unsigned long size, unsigned long align)` -- Docstring: Aligned allocation with a recoverable raw pointer.
+- `kfree_aligned` (function) `kernel/mm.c:143` `void kfree_aligned(void *ptr)` -- Docstring: Release a kmalloc_aligned block.
 
 ## kernel/mm/cow.c
 Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/sched.h`, `headers/vga_fb.h`
 - `alternative` (function) `kernel/mm/cow.c:20` `* window is one instruction wide and the alternative (no CoW) is * documented, so the trade stands. */ #include...`
-- `cow_find` (function) `kernel/mm/cow.c:53` `static int cow_find(unsigned long phys)`
-- `cow_page_shared` (function) `kernel/mm/cow.c:65` `int cow_page_shared(unsigned long phys)` -- Docstring: True when phys is still shared copy-on-write. mprotect consults this before setting a writable bit...
-- `cow_track` (function) `kernel/mm/cow.c:76` `static int cow_track(unsigned long phys)` -- Docstring: Share one phys page: bump its refcount, or install it. * Returns 0 shared, -1 when the table is full...
-- `private` (function) `kernel/mm/cow.c:94` `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...`
-- `cow_walk` (function) `kernel/mm/cow.c:98` `static void cow_walk(unsigned long cr3, cow_walk_fn fn)`
-- `cow_fork_one` (function) `kernel/mm/cow.c:132` `static void cow_fork_one(unsigned long pcr3, unsigned long va,
+- `cow_slot` (function) `kernel/mm/cow.c:67` `static unsigned long cow_slot(unsigned long phys)`
+- `cow_find` (function) `kernel/mm/cow.c:72` `static int cow_find(unsigned long phys)` -- unsigned long phys; int ref; } cow_entry_t; static cow_entry_t *cow_tab; static unsigned long cow_live; static...
+- `cow_remove` (function) `kernel/mm/cow.c:84` `static void cow_remove(int idx)` -- Retire entry idx: a tombstone keeps later probe chains intact; an empty * table drops every tombstone at once.
+- `cow_table_ensure` (function) `kernel/mm/cow.c:97` `static void cow_table_ensure(void)` -- Create the table on first use, outside cow_lock (allocation).
+- `cow_rehash` (function) `kernel/mm/cow.c:109` `static void cow_rehash(void)` -- Reinsert the live entries in place when tombstones lengthen the probe chains: lift each live entry out and insert it...
+- `cow_page_shared` (function) `kernel/mm/cow.c:131` `int cow_page_shared(unsigned long phys)` -- Docstring: True when phys is still shared copy-on-write. mprotect consults this before setting a writable bit...
+- `cow_copy_demand` (function) `kernel/mm/cow.c:165` `static void cow_copy_demand(unsigned long pcr3, unsigned long ccr3)` -- Copy the parent's demand-paging reservations (non-present PTEs carrying PTE_DEMAND) into the child: a reserved...
+- `cow_track` (function) `kernel/mm/cow.c:190` `static int cow_track(unsigned long phys)`
+- `private` (function) `kernel/mm/cow.c:216` `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...`
+- `cow_walk` (function) `kernel/mm/cow.c:220` `static void cow_walk(unsigned long cr3, cow_walk_fn fn)`
+- `cow_fork_one` (function) `kernel/mm/cow.c:254` `static void cow_fork_one(unsigned long pcr3, unsigned long va,
         volatile unsigned long *ppte)`
-- `published` (function) `kernel/mm/cow.c:162` `* with nothing published (the half-built window is freed). The caller
+- `published` (function) `kernel/mm/cow.c:284` `* with nothing published (the half-built window is freed). The caller
  * flushes the parent TLB a...`
-- `cow_resolve` (function) `kernel/mm/cow.c:228` `int cow_resolve(unsigned long cr3, unsigned long va)` -- Docstring: Resolve a write fault on a CoW page: last sharer gets a permission upgrade, otherwise the faulting window...
-- `cow_release_window` (function) `kernel/mm/cow.c:292` `void cow_release_window(unsigned long cr3)` -- Docstring: Drop one window's CoW shares before its pages are freed: multi-shared pages are unmapped here (phys...
-- `cow_shared` (function) `kernel/mm/cow.c:336` `int cow_shared(void)` -- if (idx < 0) continue; if (cow_tab[idx].ref > 1) { cow_tab[idx].ref--; pt[k] = 0; } else { cow_tab[idx].ref = 0...
+- `cow_resolve` (function) `kernel/mm/cow.c:352` `int cow_resolve(unsigned long cr3, unsigned long va)` -- Docstring: Resolve a write fault on a CoW page: last sharer gets a permission upgrade, otherwise the faulting window...
+- `cow_release_window` (function) `kernel/mm/cow.c:415` `void cow_release_window(unsigned long cr3)` -- Docstring: Drop one window's CoW shares before its pages are freed: multi-shared pages are unmapped here (phys...
+- `cow_shared` (function) `kernel/mm/cow.c:458` `int cow_shared(void)` -- idx = cow_find(phys); if (idx < 0) continue; if (cow_tab[idx].ref > 1) { cow_tab[idx].ref--; pt[k] = 0; } else {...
 
 ## kernel/mm/paging.c
 Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/ldso.h`, `headers/minifs.h`, `headers/pcache.h`, `headers/vga_fb.h`
@@ -47,24 +55,30 @@ Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `heade
 - `kmm_map_device` (function) `kernel/mm/paging.c:295` `unsigned long kmm_map_device(unsigned long phys, unsigned long len)`
 - `mm_user_pte_update` (function) `kernel/mm/paging.c:335` `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
 - `mm_user_set_exec` (function) `kernel/mm/paging.c:355` `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-- `pt_page_alloc` (function) `kernel/mm/paging.c:367` `void *pt_page_alloc(void)`
-- `pt_page_free` (function) `kernel/mm/paging.c:377` `void pt_page_free(void *ptr)`
-- `pt_clone_user` (function) `kernel/mm/paging.c:383` `uint64_t pt_clone_user(uint64_t parent_cr3)`
-- `mt_shared_slot` (function) `kernel/mm/paging.c:512` `static int mt_shared_slot(unsigned long pd_idx)` -- The legacy path identity-maps the user window (VA == PA), so every CR3 built by pt_clone_user aliases the same...
-- `pt_clone_user_empty` (function) `kernel/mm/paging.c:531` `unsigned long pt_clone_user_empty(void)` -- Fresh user window: kernel mappings copied, every user PT zeroed, graphics slots re-shared from the boot tables.
-- `mm_user_ensure_page` (function) `kernel/mm/paging.c:588` `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` -- Ensure one 4 KB user page at va inside cr3 exists (heap-owned). * Returns 0 on success, -1 on OOM or when va leaves...
-- `honest` (function) `kernel/mm/paging.c:618` `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides
+- `pt_owned_index` (function) `kernel/mm/paging.c:373` `static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit)`
+- `pt_page_owned` (function) `kernel/mm/paging.c:384` `int pt_page_owned(unsigned long phys)` -- #define PT_OWNED_BYTES (HEAP_SIZE / 0x1000UL / 8UL) static unsigned char *pt_owned; static int...
+- `pt_page_alloc` (function) `kernel/mm/paging.c:391` `void *pt_page_alloc(void)`
+- `pt_page_free` (function) `kernel/mm/paging.c:410` `void pt_page_free(void *ptr)`
+- `pt_clone_user` (function) `kernel/mm/paging.c:419` `uint64_t pt_clone_user(uint64_t parent_cr3)`
+- `mt_shared_slot` (function) `kernel/mm/paging.c:548` `static int mt_shared_slot(unsigned long pd_idx)` -- The legacy path identity-maps the user window (VA == PA), so every CR3 built by pt_clone_user aliases the same...
+- `pt_clone_user_empty` (function) `kernel/mm/paging.c:567` `unsigned long pt_clone_user_empty(void)` -- Fresh user window: kernel mappings copied, every user PT zeroed, graphics slots re-shared from the boot tables.
+- `mm_user_ensure_page` (function) `kernel/mm/paging.c:624` `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` -- Ensure one 4 KB user page at va inside cr3 exists (heap-owned). * Returns 0 on success, -1 on OOM or when va leaves...
+- `honest` (function) `kernel/mm/paging.c:654` `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides
  * the documented T5 follow-up...`
-- `mm_file_page_phys` (function) `kernel/mm/paging.c:669` `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` -- Docstring: Read the mapped phys for va in cr3, 0 when the PTE is absent or non-present.
-- `mm_file_pte` (function) `kernel/mm/paging.c:688` `static volatile unsigned long *mm_file_pte(unsigned long cr3,
+- `mm_demand_pte` (function) `kernel/mm/paging.c:703` `unsigned long mm_demand_pte(unsigned long prot)` -- Docstring: PTE walker shared by the fault, fork and teardown * paths (forward declaration; documented at the...
+- `mm_anon_frame` (function) `kernel/mm/paging.c:714` `static int mm_anon_frame(unsigned long phys)` -- Heap-owned anonymous frame: the only kind an unmap may free (the shared pid-0 window and graphics slots map fixed...
+- `exhausted` (function) `kernel/mm/paging.c:766` `* the heap is exhausted (the caller kills like any unresolved fault). */
+int mm_anon_fault(unsign...`
+- `mm_file_page_phys` (function) `kernel/mm/paging.c:821` `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` -- Docstring: Read the mapped phys for va in cr3, 0 when the PTE is absent or non-present.
+- `mm_file_pte` (function) `kernel/mm/paging.c:840` `static volatile unsigned long *mm_file_pte(unsigned long cr3,
         unsigned long va)` -- Docstring: Locate the PTE for va in cr3 without allocating.
-- `tables` (function) `kernel/mm/paging.c:818` `* tables (munmap/mremap in caller context, under their mm_lock);`
-- `explicitly` (function) `kernel/mm/paging.c:819` `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
-- `mm_file_range_release` (function) `kernel/mm/paging.c:823` `void mm_file_range_release(unsigned long cr3, unsigned long base,
+- `tables` (function) `kernel/mm/paging.c:970` `* tables (munmap/mremap in caller context, under their mm_lock);`
+- `explicitly` (function) `kernel/mm/paging.c:971` `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
+- `mm_file_range_release` (function) `kernel/mm/paging.c:975` `void mm_file_range_release(unsigned long cr3, unsigned long base,
         unsigned long len, int ...` -- Docstring: Release one freed file range precisely (fail-closed).
-- `mm_file_break` (function) `kernel/mm/paging.c:871` `int mm_file_break(unsigned long cr3, unsigned long va)` -- Docstring: Break a write fault on a cache-shared file page into a private copy (fail-closed).
-- `mm_copy_user_page` (function) `kernel/mm/paging.c:950` `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` -- Copy one present user page from src_cr3 to the same VA in dst_cr3, allocating the destination page.
-- `pt_free_user` (function) `kernel/mm/paging.c:1032` `void pt_free_user(uint64_t cr3)`
+- `mm_file_break` (function) `kernel/mm/paging.c:1018` `int mm_file_break(unsigned long cr3, unsigned long va)` -- Docstring: Break a write fault on a cache-shared file page into a private copy (fail-closed).
+- `mm_copy_user_page` (function) `kernel/mm/paging.c:1097` `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` -- Copy one present user page from src_cr3 to the same VA in dst_cr3, allocating the destination page.
+- `pt_free_user` (function) `kernel/mm/paging.c:1175` `void pt_free_user(uint64_t cr3)`
 
 ## kernel/mm/swap.c
 Depends on: `headers/ide.h`, `headers/lz4_kernel.h`
@@ -160,112 +174,123 @@ Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `he
 - `kstack_paint` (function) `kernel/sched.c:164` `static void kstack_paint(uint64_t top, unsigned long size)`
 - `kstack_usage` (function) `kernel/sched.c:173` `static int kstack_usage(uint64_t top, unsigned long size,
                         unsigned long *...` -- allocation rate only, never in the ISR path; the report is fail-closed * (a dead canary prints OVERFLOW, never a...
-- `alloc_kstack` (function) `kernel/sched.c:188` `static uint64_t alloc_kstack(void)`
-- `live` (function) `kernel/sched.c:204` `* every reap leaked its own stack and released a neighbour that could
+- `kstack_is_slot_end` (function) `kernel/sched.c:192` `static int kstack_is_slot_end(uint64_t v)` -- pid of a live process still standing on the stack slot ending at top (its kernel stack, or the stack its open...
+- `kstack_of` (function) `kernel/sched.c:202` `static uint64_t kstack_of(int j)` -- The stack slot process j stands on: PCB.kstack between syscalls, the entry's saved top while a syscall is open (the...
+- `kstack_owner` (function) `kernel/sched.c:209` `static int kstack_owner(uint64_t top)`
+- `kstack_scan_serial` (function) `kernel/sched.c:224` `static void kstack_scan_serial(void)` -- Serial-only stack census for the exception dump: every pool slot in use, its owner and high-water mark, and "CANARY...
+- `alloc_kstack` (function) `kernel/sched.c:255` `static uint64_t alloc_kstack(void)`
+- `live` (function) `kernel/sched.c:279` `* every reap leaked its own stack and released a neighbour that could
  * still be live (two procs...`
-- `MXCSR` (function) `kernel/sched.c:224` `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
+- `MXCSR` (function) `kernel/sched.c:299` `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
  * exceptions masked): fxsa...`
-- `fpu_restore_from` (function) `kernel/sched.c:232` `static inline void fpu_restore_from(void *area)`
-- `fpu_alloc_clean` (function) `kernel/sched.c:236` `static void *fpu_alloc_clean(void)`
-- `fpu_free_proc` (function) `kernel/sched.c:254` `static void fpu_free_proc(proc_t *p)`
-- `vma_ctx_alloc` (function) `kernel/sched.c:260` `vma_ctx_t *vma_ctx_alloc(void)` -- Per-process VMA contexts (vma.h contract; defined here so vma.c stays * host-testable).
-- `vma_ctx_free` (function) `kernel/sched.c:270` `void vma_ctx_free(vma_ctx_t *c)`
-- `copy` (function) `kernel/sched.c:280` `* copy (fail closed, fork refuses) instead of forging pointers. */
-static vma_ctx_t *vma_ctx_copy...`
-- `vma_owned` (function) `kernel/sched.c:352` `static int vma_owned(proc_t *p)`
-- `sched_lock` (function) `kernel/sched.c:358` `* hold sched_lock (+mm_lock at the swap sites);`
-- `vma_save_proc` (function) `kernel/sched.c:360` `static void vma_save_proc(proc_t *p)` -- Rebind the global VMA view alongside the brk/mmap view.
-- `vma_load_proc` (function) `kernel/sched.c:364` `static void vma_load_proc(proc_t *p)`
-- `kstack_report` (function) `kernel/sched.c:371` `void kstack_report(void)` -- Serial-observable stack health: per-proc high-water marks plus the legacy 32 KB syscall stack, ending in `kstack...
-- `schedtop_report` (function) `kernel/sched.c:414` `void schedtop_report(void)` -- `schedtop` -- one screenful of scheduler state: uptime from the 100 Hz tick, per-CPU current pid, then one row per...
-- `slot` (function) `kernel/sched.c:418` `* must not eat a quarter of a 16 KB slot (see the stack discipline * contract in CLAUDE.md). Fail-closed on OOM. */...`
-- `sys_ticks` (function) `kernel/sched.c:478` `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);`
-- `irqstat_report` (function) `kernel/sched.c:482` `void irqstat_report(void)` -- `irqstat` -- interrupt arrivals per source.
-- `rtl_counters` (function) `kernel/sched.c:485` `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
-- `rtl_present` (function) `kernel/sched.c:487` `extern int rtl_present(void);`
-- `stub` (function) `kernel/sched.c:501` `* gdb stub (`make gdb`, then `target remote :1234` from the host). These
+- `fpu_restore_from` (function) `kernel/sched.c:307` `static inline void fpu_restore_from(void *area)`
+- `fpu_alloc_clean` (function) `kernel/sched.c:311` `static void *fpu_alloc_clean(void)`
+- `fpu_free_proc` (function) `kernel/sched.c:329` `static void fpu_free_proc(proc_t *p)`
+- `vma_ctx_alloc` (function) `kernel/sched.c:335` `vma_ctx_t *vma_ctx_alloc(void)` -- Per-process VMA contexts (vma.h contract; defined here so vma.c stays * host-testable).
+- `vma_ctx_free` (function) `kernel/sched.c:345` `void vma_ctx_free(vma_ctx_t *c)`
+- `copy` (function) `kernel/sched.c:355` `* copy (fail closed, fork refuses) instead of forging pointers. */
+/* Name the link a fork could ...`
+- `vma_ctx_copy` (function) `kernel/sched.c:364` `static vma_ctx_t *vma_ctx_copy(vma_ctx_t *src)`
+- `vma_owned` (function) `kernel/sched.c:439` `static int vma_owned(proc_t *p)`
+- `sched_lock` (function) `kernel/sched.c:445` `* hold sched_lock (+mm_lock at the swap sites);`
+- `vma_save_proc` (function) `kernel/sched.c:447` `static void vma_save_proc(proc_t *p)` -- Rebind the global VMA view alongside the brk/mmap view.
+- `vma_load_proc` (function) `kernel/sched.c:451` `static void vma_load_proc(proc_t *p)`
+- `mm_owner` (function) `kernel/sched.c:465` `static proc_t *mm_owner(proc_t *p)` -- The process whose brk/mmap/VMA view an address space lives in: p itself unless p is a CLONE_VM thread, then the...
+- `mm_view_enter` (function) `kernel/sched.c:487` `static void mm_view_enter(proc_t *nxt)` -- Make the globals describe nxt's address space before nxt runs, from any entry path (a switch, the timer, or the idle...
+- `mm_view_claim_current` (function) `kernel/sched.c:506` `void mm_view_claim_current(void)` -- The running process installed a fresh view itself (execve, spawn * restore): it is the holder from now on.
+- `kstack_report` (function) `kernel/sched.c:513` `void kstack_report(void)` -- Serial-observable stack health: per-proc high-water marks plus the legacy 32 KB syscall stack, ending in `kstack...
+- `schedtop_report` (function) `kernel/sched.c:556` `void schedtop_report(void)` -- `schedtop` -- one screenful of scheduler state: uptime from the 100 Hz tick, per-CPU current pid, then one row per...
+- `slot` (function) `kernel/sched.c:560` `* must not eat a quarter of a 16 KB slot (see the stack discipline * contract in CLAUDE.md). Fail-closed on OOM. */...`
+- `sys_ticks` (function) `kernel/sched.c:620` `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);`
+- `irqstat_report` (function) `kernel/sched.c:624` `void irqstat_report(void)` -- `irqstat` -- interrupt arrivals per source.
+- `rtl_counters` (function) `kernel/sched.c:627` `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
+- `rtl_present` (function) `kernel/sched.c:629` `extern int rtl_present(void);`
+- `stub` (function) `kernel/sched.c:643` `* gdb stub (`make gdb`, then `target remote :1234` from the host). These
  * helpers are the seria...`
-- `gdb_dump_report` (function) `kernel/sched.c:548` `void gdb_dump_report(unsigned long addr, unsigned long len)`
-- `idt_set` (function) `kernel/sched.c:581` `static void idt_set(int vec, void (*h)(void))` -- Parked trap frames for preempted ring-3 contexts, one slot per pid.
-- `idt_init` (function) `kernel/sched.c:592` `static void idt_init(void)`
-- `pic_init` (function) `kernel/sched.c:604` `static void pic_init(void)` -- } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i])...
-- `IRQ4` (function) `kernel/sched.c:628` `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...`
-- `pit_init` (function) `kernel/sched.c:639` `static void pit_init(void)` -- Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) +...
-- `pic_eoi` (function) `kernel/sched.c:646` `static void pic_eoi(int irq)`
-- `tss_write_desc` (function) `kernel/sched.c:653` `static void tss_write_desc(int cpu)`
-- `tss_init` (function) `kernel/sched.c:670` `static void tss_init(void)`
-- `tss_init_ap` (function) `kernel/sched.c:701` `void tss_init_ap(int cpu)` -- Load this AP's task register.
-- `context` (function) `kernel/sched.c:719` `* context (anything entered via k_exec_user) is inside a syscall
+- `gdb_dump_report` (function) `kernel/sched.c:690` `void gdb_dump_report(unsigned long addr, unsigned long len)`
+- `idt_set` (function) `kernel/sched.c:723` `static void idt_set(int vec, void (*h)(void))` -- Parked trap frames for preempted ring-3 contexts, one slot per pid.
+- `idt_init` (function) `kernel/sched.c:734` `static void idt_init(void)`
+- `pic_init` (function) `kernel/sched.c:746` `static void pic_init(void)` -- } static void idt_init(void) { kmemset(idt, 0, sizeof(idt)); int i; for (i = 0; i < 256; i++) if (isr_stub_table[i])...
+- `IRQ4` (function) `kernel/sched.c:770` `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...`
+- `pit_init` (function) `kernel/sched.c:781` `static void pit_init(void)` -- Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) +...
+- `pic_eoi` (function) `kernel/sched.c:788` `static void pic_eoi(int irq)`
+- `tss_write_desc` (function) `kernel/sched.c:795` `static void tss_write_desc(int cpu)`
+- `tss_init` (function) `kernel/sched.c:812` `static void tss_init(void)`
+- `tss_init_ap` (function) `kernel/sched.c:843` `void tss_init_ap(int cpu)` -- Load this AP's task register.
+- `context` (function) `kernel/sched.c:861` `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
-- `point` (function) `kernel/sched.c:732` `* return address as the resume point ("continue the ISR"), which
+- `point` (function) `kernel/sched.c:874` `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
-- `FSBASE` (function) `kernel/sched.c:744` `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...`
-- `sched_next_locked` (function) `kernel/sched.c:761` `static int sched_next_locked(int start, int vm_only)` -- Fair-share scan with sched_lock HELD.
-- `sched_set_nice` (function) `kernel/sched.c:779` `int sched_set_nice(int pid, int nice)` -- for (t = 0; t < MAX_PROCS; t++) { int cand = (start + 1 + t) % MAX_PROCS; unsigned long key; if (procs[cand].state...
-- `seccomp_deny_one` (function) `kernel/sched.c:788` `int seccomp_deny_one(int pid, int n)` -- procs[best].state = PROC_RUNNING; procs[best].vruntime += SCHED_BASE_QUANTUM + (unsigned long)(procs[best].nice +...
-- `seccomp_allow_one` (function) `kernel/sched.c:795` `int seccomp_allow_one(int pid, int n)`
-- `seccomp_denied` (function) `kernel/sched.c:802` `int seccomp_denied(int pid, int n)`
-- `smp_try_claim_hint` (function) `kernel/sched.c:811` `static int smp_try_claim_hint(int pid, int vm_only)` -- Claim one READY thread for this CPU's idle loop (the AP only claims CLONE_VM threads): marks it RUNNING under lock...
-- `smp_claim_thread_v` (function) `kernel/sched.c:827` `static int smp_claim_thread_v(int vm_only)`
-- `smp_ap_idle_loop` (function) `kernel/sched.c:866` `void smp_ap_idle_loop(void)` -- AP idle loop: hlt until a CLONE_VM thread is ready, run it, repeat.
-- `sched_ap_preempt` (function) `kernel/sched.c:900` `static void sched_ap_preempt(trap_frame_t *frame)` -- AP timer preemption: time-slice the AP's current CLONE_VM thread with the next READY one.
-- `smp_any_ap_idle` (function) `kernel/sched.c:970` `static int smp_any_ap_idle(void)` -- True when some AP is idle.
-- `rlimit_cpu_exceeded` (function) `kernel/sched.c:1006` `int rlimit_cpu_exceeded(int pid)`
-- `isr_dispatch` (function) `kernel/sched.c:1027` `void isr_dispatch(int vector, trap_frame_t *frame)`
-- `syscall` (function) `kernel/sched.c:1151` `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid...`
-- `BSP` (function) `kernel/sched.c:1606` `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+- `FSBASE` (function) `kernel/sched.c:886` `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...`
+- `sched_next_locked` (function) `kernel/sched.c:903` `static int sched_next_locked(int start, int vm_only)` -- Fair-share scan with sched_lock HELD.
+- `sched_set_nice` (function) `kernel/sched.c:921` `int sched_set_nice(int pid, int nice)` -- for (t = 0; t < MAX_PROCS; t++) { int cand = (start + 1 + t) % MAX_PROCS; unsigned long key; if (procs[cand].state...
+- `seccomp_deny_one` (function) `kernel/sched.c:930` `int seccomp_deny_one(int pid, int n)` -- procs[best].state = PROC_RUNNING; procs[best].vruntime += SCHED_BASE_QUANTUM + (unsigned long)(procs[best].nice +...
+- `seccomp_allow_one` (function) `kernel/sched.c:937` `int seccomp_allow_one(int pid, int n)`
+- `seccomp_denied` (function) `kernel/sched.c:944` `int seccomp_denied(int pid, int n)`
+- `smp_try_claim_hint` (function) `kernel/sched.c:953` `static int smp_try_claim_hint(int pid, int vm_only)` -- Claim one READY thread for this CPU's idle loop (the AP only claims CLONE_VM threads): marks it RUNNING under lock...
+- `smp_claim_thread_v` (function) `kernel/sched.c:969` `static int smp_claim_thread_v(int vm_only)`
+- `smp_ap_idle_loop` (function) `kernel/sched.c:1015` `void smp_ap_idle_loop(void)` -- AP idle loop: hlt until a CLONE_VM thread is ready, run it, repeat.
+- `sched_ap_preempt` (function) `kernel/sched.c:1049` `static void sched_ap_preempt(trap_frame_t *frame)` -- AP timer preemption: time-slice the AP's current CLONE_VM thread with the next READY one.
+- `smp_any_ap_idle` (function) `kernel/sched.c:1119` `static int smp_any_ap_idle(void)` -- True when some AP is idle.
+- `rlimit_cpu_exceeded` (function) `kernel/sched.c:1155` `int rlimit_cpu_exceeded(int pid)`
+- `isr_dispatch` (function) `kernel/sched.c:1176` `void isr_dispatch(int vector, trap_frame_t *frame)`
+- `syscall` (function) `kernel/sched.c:1293` `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid...`
+- `BSP` (function) `kernel/sched.c:1753` `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-- `proc_get` (function) `kernel/sched.c:1631` `proc_t *proc_get(int pid)`
-- `proc_create` (function) `kernel/sched.c:1637` `int proc_create(const char *name, int parent_pid)`
-- `proc_spawn_elf_inner` (function) `kernel/sched.c:1755` `static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
+- `proc_get` (function) `kernel/sched.c:1794` `proc_t *proc_get(int pid)`
+- `proc_create` (function) `kernel/sched.c:1800` `int proc_create(const char *name, int parent_pid)`
+- `proc_spawn_elf_inner` (function) `kernel/sched.c:1918` `static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
                    i...` -- Spawn body: runs with the timer held off by the wrapper below, so page-table construction, heap allocation and the...
-- `proc_spawn_elf` (function) `kernel/sched.c:1915` `int proc_spawn_elf(const char *name, void *data, unsigned size,
+- `proc_spawn_elf` (function) `kernel/sched.c:2078` `int proc_spawn_elf(const char *name, void *data, unsigned size,
                    int argc, char...` -- Atomic spawn wrapper: the whole construction (page tables, image copy, stack, publish) runs with the timer held off...
-- `schedule` (function) `kernel/sched.c:1957` `* that keeps schedule()'s own rbp runs the caller's frame accesses
+- `schedule` (function) `kernel/sched.c:2120` `* that keeps schedule()'s own rbp runs the caller's frame accesses
  * (locals, leave/ret) on the ...`
-- `schedule` (function) `kernel/sched.c:1964` `void schedule(void)`
-- `PROC_SWITCHING` (function) `kernel/sched.c:1990` `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...`
-- `yield` (function) `kernel/sched.c:2046` `void yield(void)`
-- `returns` (function) `kernel/sched.c:2054` `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
-- `do_exit` (function) `kernel/sched.c:2061` `void do_exit(int code)`
-- `do_thread_spawn` (function) `kernel/sched.c:2115` `long do_thread_spawn(unsigned long fn, unsigned long stack,
+- `schedule` (function) `kernel/sched.c:2127` `void schedule(void)`
+- `PROC_SWITCHING` (function) `kernel/sched.c:2153` `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...`
+- `yield` (function) `kernel/sched.c:2208` `void yield(void)`
+- `returns` (function) `kernel/sched.c:2216` `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
+- `do_exit` (function) `kernel/sched.c:2223` `void do_exit(int code)`
+- `do_thread_spawn` (function) `kernel/sched.c:2287` `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)` -- frame is ambiguous, this one starts cleanly at fn(arg) on the given stack:  child RIP = fn, child RSP = stack, child...
-- `registers` (function) `kernel/sched.c:2146` `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one...`
-- `itself` (function) `kernel/sched.c:2315` `* the shell itself (use mrun first), and a CLONE_VM thread forking
+- `registers` (function) `kernel/sched.c:2318` `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one...`
+- `itself` (function) `kernel/sched.c:2487` `* the shell itself (use mrun first), and a CLONE_VM thread forking
  * would duplicate shared stat...`
-- `ctx_from_frame` (function) `kernel/sched.c:2337` `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)` -- Every register Linux preserves across a syscall, copied into a child's * PCB so it resumes after the syscall exactly...
-- `fork_child_settid` (function) `kernel/sched.c:2355` `void fork_child_settid(void)` -- First code a fork or clone child runs (fork_trampoline, its own window live): store its tid at the...
-- `do_fork` (function) `kernel/sched.c:2364` `long do_fork(void)`
-- `do_fork_ex` (function) `kernel/sched.c:2368` `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)`
-- `MSR` (function) `kernel/sched.c:2418` `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...`
-- `do_clone_thread` (function) `kernel/sched.c:2504` `static long do_clone_thread(unsigned long flags, unsigned long newsp,
+- `ctx_from_frame` (function) `kernel/sched.c:2510` `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)` -- Every register Linux preserves across a syscall, copied into a child's * PCB so it resumes after the syscall exactly...
+- `fork_child_settid` (function) `kernel/sched.c:2528` `void fork_child_settid(void)` -- First code a fork or clone child runs (fork_trampoline, its own window live): store its tid at the...
+- `do_fork` (function) `kernel/sched.c:2537` `long do_fork(void)`
+- `fork_report` (function) `kernel/sched.c:2543` `static void fork_report(const char *what)` -- A fork that fails names the resource that ran out (failure paths * report): -ENOMEM alone cannot tell a heap leak...
+- `do_fork_ex` (function) `kernel/sched.c:2550` `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)`
+- `MSR` (function) `kernel/sched.c:2600` `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...`
+- `do_clone_thread` (function) `kernel/sched.c:2691` `static long do_clone_thread(unsigned long flags, unsigned long newsp,
                            ...` -- NPTL thread (clone with CLONE_VM|CLONE_SIGHAND|CLONE_THREAD): same window and fd view, resumes after the syscall on...
-- `kill_group_threads_locked` (function) `kernel/sched.c:2618` `static void kill_group_threads_locked(int tgid, int except)` -- Zombify every live CLONE_THREAD member of a group except one pid.
-- `do_exit_group_threads` (function) `kernel/sched.c:2632` `void do_exit_group_threads(void)` -- exit_group (231): every other thread of the caller's group dies before * the caller exits, so no thread keeps...
-- `aslr_mix` (function) `kernel/sched.c:2648` `static unsigned long aslr_mix(unsigned long salt)`
-- `aslr_stack_bytes` (function) `kernel/sched.c:2657` `unsigned long aslr_stack_bytes(void)`
-- `aslr_brk_pages` (function) `kernel/sched.c:2658` `unsigned long aslr_brk_pages(void)`
-- `aslr_mmap_pages` (function) `kernel/sched.c:2659` `unsigned long aslr_mmap_pages(void)`
-- `aslr_dyn_base` (function) `kernel/sched.c:2660` `unsigned long aslr_dyn_base(void)`
-- `cli` (function) `kernel/sched.c:2669` `* cli (disk PIO must never run with the timer held off);`
-- `adopt` (function) `kernel/sched.c:2683` `* adopt (armed by Linux O_CLOEXEC on open);`
-- `do_execve` (function) `kernel/sched.c:2687` `long do_execve(char *kpath, int kargc, char **kargv)` -- Scope, fail-closed: the caller must be an isolated non-CLONE_VM ring-3 proc (pid 0 has no own window; a thread...
-- `proc_running_anywhere` (function) `kernel/sched.c:2917` `static int proc_running_anywhere(int pid)` -- A zombie may still be finishing its exit tail (schedule()'s save and switch) on its own kernel stack on some CPU...
-- `reap_autoreap_locked` (function) `kernel/sched.c:2926` `static void reap_autoreap_locked(int tgid)` -- Reclaim every auto-reaped (CLONE_THREAD) zombie, or only those of one * thread group when tgid >= 0.
-- `alloc_pid_locked` (function) `kernel/sched.c:2938` `static int alloc_pid_locked(void)` -- First free pid slot after reclaiming finished threads, or -1.
-- `waitpid_scan` (function) `kernel/sched.c:2946` `static int waitpid_scan(int pid, int *found)`
-- `do_waitpid` (function) `kernel/sched.c:2965` `int do_waitpid(int pid)`
-- `waitpid_has_child` (function) `kernel/sched.c:2982` `static int waitpid_has_child(int pid)` -- 1 when the caller has a waitable child matching pid (-1 = any): one that is not an auto-reaped thread, in any state...
-- `do_waitpid_linux` (function) `kernel/sched.c:2996` `int do_waitpid_linux(int pid, int nohang, int *found)` -- Linux wait4 core (docs/spec/smp-sched.md): reap one matching child and report its pid through *found and its raw...
-- `shell_reap_nb` (function) `kernel/sched.c:3013` `int shell_reap_nb(int *pid_out, int *code_out)` -- Reap one zombie child for `jobs`/auto-reap messages: returns 1 with * pid+code, or 0 when none is ready.
-- `shell_reap_one` (function) `kernel/sched.c:3027` `int shell_reap_one(int pid, int *code_out)` -- Reap one specific zombie child (foreground wait).
-- `shell_nchildren` (function) `kernel/sched.c:3039` `int shell_nchildren(void)` -- Reap one specific zombie child (foreground wait).
-- `do_kill` (function) `kernel/sched.c:3065` `int do_kill(int pid)` -- True kill: the TARGET becomes a zombie for its parent to reap (its stack/tables free in do_waitpid, never here).
-- `timer_tick` (function) `kernel/sched.c:3091` `void timer_tick(void)`
-- `sched_init` (function) `kernel/sched.c:3096` `void sched_init(void)`
-- `it` (function) `kernel/sched.c:3104` `* it (SPAWN/exec point proc 0 here transiently);`
-- `park` (function) `kernel/sched.c:3155` `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */...`
-- `zeroed` (function) `kernel/sched.c:3165` `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe...`
+- `kill_group_threads_locked` (function) `kernel/sched.c:2805` `static void kill_group_threads_locked(int tgid, int except)` -- Zombify every live CLONE_THREAD member of a group except one pid.
+- `do_group_exit` (function) `kernel/sched.c:2826` `void do_group_exit(int code)` -- Linux exit_group(2) and fatal-signal semantics, minus the caller's own exit (the caller follows with do_exit or...
+- `aslr_mix` (function) `kernel/sched.c:2854` `static unsigned long aslr_mix(unsigned long salt)`
+- `aslr_stack_bytes` (function) `kernel/sched.c:2863` `unsigned long aslr_stack_bytes(void)`
+- `aslr_brk_pages` (function) `kernel/sched.c:2864` `unsigned long aslr_brk_pages(void)`
+- `aslr_mmap_pages` (function) `kernel/sched.c:2865` `unsigned long aslr_mmap_pages(void)`
+- `aslr_dyn_base` (function) `kernel/sched.c:2866` `unsigned long aslr_dyn_base(void)`
+- `cli` (function) `kernel/sched.c:2875` `* cli (disk PIO must never run with the timer held off);`
+- `adopt` (function) `kernel/sched.c:2889` `* adopt (armed by Linux O_CLOEXEC on open);`
+- `do_execve` (function) `kernel/sched.c:2893` `long do_execve(char *kpath, int kargc, char **kargv)` -- Scope, fail-closed: the caller must be an isolated non-CLONE_VM ring-3 proc (pid 0 has no own window; a thread...
+- `proc_running_anywhere` (function) `kernel/sched.c:3125` `static int proc_running_anywhere(int pid)` -- A zombie may still be finishing its exit tail (schedule()'s save and switch) on its own kernel stack on some CPU...
+- `reap_autoreap_locked` (function) `kernel/sched.c:3134` `static void reap_autoreap_locked(int tgid)` -- Reclaim every auto-reaped (CLONE_THREAD) zombie, or only those of one * thread group when tgid >= 0.
+- `alloc_pid_locked` (function) `kernel/sched.c:3146` `static int alloc_pid_locked(void)` -- First free pid slot after reclaiming finished threads, or -1.
+- `group_threads_live_locked` (function) `kernel/sched.c:3158` `static int group_threads_live_locked(int tgid)` -- 1 while a thread of group tgid has not finished exiting: still alive, or a zombie some CPU is still running on.
+- `waitpid_scan` (function) `kernel/sched.c:3169` `static int waitpid_scan(int pid, int *found)`
+- `do_waitpid` (function) `kernel/sched.c:3190` `int do_waitpid(int pid)`
+- `waitpid_has_child` (function) `kernel/sched.c:3207` `static int waitpid_has_child(int pid)` -- 1 when the caller has a waitable child matching pid (-1 = any): one that is not an auto-reaped thread, in any state...
+- `do_waitpid_linux` (function) `kernel/sched.c:3221` `int do_waitpid_linux(int pid, int nohang, int *found)` -- Linux wait4 core (docs/spec/smp-sched.md): reap one matching child and report its pid through *found and its raw...
+- `shell_reap_nb` (function) `kernel/sched.c:3238` `int shell_reap_nb(int *pid_out, int *code_out)` -- Reap one zombie child for `jobs`/auto-reap messages: returns 1 with * pid+code, or 0 when none is ready.
+- `shell_reap_one` (function) `kernel/sched.c:3252` `int shell_reap_one(int pid, int *code_out)` -- Reap one specific zombie child (foreground wait).
+- `shell_nchildren` (function) `kernel/sched.c:3264` `int shell_nchildren(void)` -- Reap one specific zombie child (foreground wait).
+- `do_kill` (function) `kernel/sched.c:3290` `int do_kill(int pid)` -- True kill: the TARGET becomes a zombie for its parent to reap (its stack/tables free in do_waitpid, never here).
+- `do_kill_code` (function) `kernel/sched.c:3296` `int do_kill_code(int pid, int code)` -- End pid with exit code (negative: killed by signal -code, as wait4 * reports it).
+- `timer_tick` (function) `kernel/sched.c:3323` `void timer_tick(void)`
+- `sched_init` (function) `kernel/sched.c:3328` `void sched_init(void)`
+- `it` (function) `kernel/sched.c:3336` `* it (SPAWN/exec point proc 0 here transiently);`
+- `park` (function) `kernel/sched.c:3387` `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */...`
+- `zeroed` (function) `kernel/sched.c:3398` `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe...`
 
 ## kernel/scrollback.c
 - `vga_scroll` (function) `kernel/scrollback.c:4` `* Captured lazily from vga_scroll();`
@@ -393,28 +418,28 @@ static void shell_cmd_trac...`
 - `driver` (function) `kernel/shell.c:3264` `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
 - `frame` (function) `kernel/shell.c:3658` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-- `stdout` (function) `kernel/shell.c:4008` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
-- `shell_is_pipe_tok` (function) `kernel/shell.c:4020` `static int shell_is_pipe_tok(const char *a)`
-- `shell_run_stage` (function) `kernel/shell.c:4059` `static char *shell_run_stage(char **sargv, int sargc,
+- `stdout` (function) `kernel/shell.c:4023` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+- `shell_is_pipe_tok` (function) `kernel/shell.c:4035` `static int shell_is_pipe_tok(const char *a)`
+- `shell_run_stage` (function) `kernel/shell.c:4074` `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...` -- Run one pipeline stage with stdin/out doors installed. input may be 0 (first stage reads the live console).
 
 ## kernel/spawn.c
 Depends on: `headers/arch/x86/msr.h`, `headers/arena.h`, `headers/minifs.h`, `headers/sched.h`, `headers/spawn.h`, `headers/vga_fb.h`, `headers/vma.h`
 - `spawn_backup` (function) `kernel/spawn.c:11` `int spawn_backup(spawn_ctx_t *ctx)` -- #include "kernel.h" #include "sched.h" #include "vma.h" #include "spawn.h" #include "arena.h" #include "minifs.h"...
-- `spawn_restore` (function) `kernel/spawn.c:37` `void spawn_restore(spawn_ctx_t *ctx)` -- sizeof(vma_node_t)); if (!ctx->pool_copy) return 0; for (i = 0; i < vma_pool_n; i++) ctx->pool_copy[i] =...
-- `spawn_free_argv` (function) `kernel/spawn.c:84` `void spawn_free_argv(char **kargv, int argc)` -- Docstring: Release a copy produced by spawn_copy_argv.
-- `spawn_copy_argv` (function) `kernel/spawn.c:96` `char **spawn_copy_argv(int argc, const char **uargv)` -- Docstring: Copy user argv into kernel memory, zero terminated.
-- `spawn_validate_argv` (function) `kernel/spawn.c:140` `int spawn_validate_argv(int argc, const char **uargv)` -- slen = (unsigned long)kstrlen(uargv[i]) + 1; dst = (char *)arena_alloc(&a, (size_t)slen, 1); if (!dst) {...
-- `spawn_load_image` (function) `kernel/spawn.c:158` `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out)` -- if (!user_range_ok((unsigned long)uargv, (unsigned long)(argc + 1) * sizeof(char *))) return 0; for (i = 0; i <...
-- `spawn_run_rel` (function) `kernel/spawn.c:193` `static int spawn_run_rel(const char *resolved, const char *redirect,
+- `spawn_restore` (function) `kernel/spawn.c:38` `void spawn_restore(spawn_ctx_t *ctx)` -- if (!ctx->pool_copy) return 0; for (i = 0; i < vma_pool_n; i++) ctx->pool_copy[i] = vma_pool[i]; } ctx->live_root =...
+- `spawn_free_argv` (function) `kernel/spawn.c:87` `void spawn_free_argv(char **kargv, int argc)` -- Docstring: Release a copy produced by spawn_copy_argv.
+- `spawn_copy_argv` (function) `kernel/spawn.c:99` `char **spawn_copy_argv(int argc, const char **uargv)` -- Docstring: Copy user argv into kernel memory, zero terminated.
+- `spawn_validate_argv` (function) `kernel/spawn.c:143` `int spawn_validate_argv(int argc, const char **uargv)` -- slen = (unsigned long)kstrlen(uargv[i]) + 1; dst = (char *)arena_alloc(&a, (size_t)slen, 1); if (!dst) {...
+- `spawn_load_image` (function) `kernel/spawn.c:161` `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out)` -- if (!user_range_ok((unsigned long)uargv, (unsigned long)(argc + 1) * sizeof(char *))) return 0; for (i = 0; i <...
+- `spawn_run_rel` (function) `kernel/spawn.c:196` `static int spawn_run_rel(const char *resolved, const char *redirect,
                          uns...` -- MiniFSInode mi; if (minifs_stat(ino, &mi) >= 0 && mi.size > 0) { data_size = mi.size; data = (unsigned char...
-- `spawn_run_exec` (function) `kernel/spawn.c:219` `static int spawn_run_exec(const char *resolved, const char *redirect,
+- `spawn_run_exec` (function) `kernel/spawn.c:222` `static int spawn_run_exec(const char *resolved, const char *redirect,
                            ...` -- return EFAULT; } entry = elf_load((void *)data, data_size, &base); if (redirect && redirect[0]) did_redirect =...
-- `spawn_execute` (function) `kernel/spawn.c:264` `int spawn_execute(const char *resolved, const char *redirect,
+- `spawn_execute` (function) `kernel/spawn.c:267` `int spawn_execute(const char *resolved, const char *redirect,
                   unsigned char *da...` -- do_kill(pid); do_waitpid(pid); rc = 130; break; } yield(); } } if (did_redirect && redirect_commit(redirect, 0) !=...
 
 ## kernel/string.c
-Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
+Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
 - `kstrlen` (function) `kernel/string.c:17` `unsigned long kstrlen(const char *s)`
 - `kstrcpy` (function) `kernel/string.c:23` `char *kstrcpy(char *dst, const char *src)`
 - `kstrncpy` (function) `kernel/string.c:29` `char *kstrncpy(char *dst, const char *src, unsigned long n)`

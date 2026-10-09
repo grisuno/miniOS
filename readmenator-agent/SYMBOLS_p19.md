@@ -3,7 +3,131 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `sys_fb_info_rgb` | function | `progs/freedomui/platform_minios.c:79` | `static long sys_fb_info_rgb(int *rgb)` |
+| `file_assoc_lookup` | function | `progs/file/file.c:318` | `static const char *file_assoc_lookup(const char *ext)` |
+| `file_ext_of` | function | `progs/file/file.c:122` | `static void file_ext_of(const char *fname, char *dst, unsigned cap)` |
+| `file_gui_run` | function | `progs/file/file.c:779` | `static void file_gui_run(void)` |
+| `file_icon_decode` | function | `progs/file/file.c:165` | `static int file_icon_decode(const char *path, unsigned char *px,                             unsi...` |
+| `file_icon_kind` | function | `progs/file/file.c:146` | `static int file_icon_kind(const char *fname, int isdir)` |
+| `file_icon_sz` | function | `progs/file/file.c:158` | `static int file_icon_sz(void)` |
+| `file_icons_load` | function | `progs/file/file.c:213` | `static int file_icons_load(void)` |
+| `file_join` | function | `progs/file/file.c:245` | `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` |
+| `file_open_text` | function | `progs/file/file.c:430` | `static void file_open_text(const char *path)` |
+| `file_parent` | function | `progs/file/file.c:259` | `static void file_parent(char *path)` |
+| `file_preview_blit` | function | `progs/file/file.c:385` | `static void file_preview_blit(int ox, int oy)` |
+| `file_preview_load` | function | `progs/file/file.c:351` | `static int file_preview_load(const char *path)` |
+| `file_refresh` | function | `progs/file/file.c:336` | `static void file_refresh(void)` |
+| `file_run_shell` | function | `progs/file/file.c:441` | `static void file_run_shell(const char *path)` |
+| `file_selftest` | function | `progs/file/file.c:613` | `static int file_selftest(void)` |
+| `file_spawn_visible` | function | `progs/file/file.c:407` | `static long file_spawn_visible(const char *tool, int argc, const char **argv,                    ...` |
+| `file_sys_dir_list` | function | `progs/file/file.c:101` | `static long file_sys_dir_list(const char *path, char *buf, long cap)` |
+| `file_sys_spawn` | function | `progs/file/file.c:111` | `static long file_sys_spawn(const char *path, int argc, const char **argv)` |
+| `file_toggle_icons` | function | `progs/file/file.c:238` | `static int file_toggle_icons(void)` |
+| `file_ui_build` | function | `progs/file/file.c:511` | `static void file_ui_build(struct nk_context *ctx)` |
+| `main` | function | `progs/file/file.c:838` | `int main(int argc, char **argv)` |
+| `FASSOC_EXT_MAX` | macro | `progs/file/file_assoc.h:22` | `#define FASSOC_EXT_MAX` |
+| `FASSOC_GROW_DEN` | macro | `progs/file/file_assoc.h:42` | `#define FASSOC_GROW_DEN` |
+| `FASSOC_GROW_NUM` | macro | `progs/file/file_assoc.h:38` | `#define FASSOC_GROW_NUM` |
+| `FASSOC_HARD_MAX` | macro | `progs/file/file_assoc.h:34` | `#define FASSOC_HARD_MAX` |
+| `FASSOC_INIT_CAP` | macro | `progs/file/file_assoc.h:30` | `#define FASSOC_INIT_CAP` |
+| `FASSOC_PROG_MAX` | macro | `progs/file/file_assoc.h:26` | `#define FASSOC_PROG_MAX` |
+| `MINIOS_FILE_ASSOC_H` | macro | `progs/file/file_assoc.h:15` | `#define MINIOS_FILE_ASSOC_H` |
+| `fassoc_clear` | function | `progs/file/file_assoc.h:89` | `static void fassoc_clear(struct fassoc_table *t)` |
+| `fassoc_count` | function | `progs/file/file_assoc.h:150` | `static size_t fassoc_count(const struct fassoc_table *t)` |
+| `fassoc_entry` | struct | `progs/file/file_assoc.h:46` | `` |
+| `fassoc_ext_ok` | function | `progs/file/file_assoc.h:59` | `static int fassoc_ext_ok(const char *ext)` |
+| `fassoc_free` | function | `progs/file/file_assoc.h:95` | `static void fassoc_free(struct fassoc_table *t)` |
+| `fassoc_lookup` | function | `progs/file/file_assoc.h:140` | `static const char *fassoc_lookup(const struct fassoc_table *t, const char *ext)` |
+| `fassoc_prog_ok` | function | `progs/file/file_assoc.h:73` | `static int fassoc_prog_ok(const char *prog)` |
+| `fassoc_push` | function | `progs/file/file_assoc.h:125` | `static int fassoc_push(struct fassoc_table *t, const char *ext, const char *prog)` |
+| `fassoc_reserve` | function | `progs/file/file_assoc.h:104` | `static int fassoc_reserve(struct fassoc_table *t, size_t want)` |
+| `fassoc_table` | struct | `progs/file/file_assoc.h:52` | `` |
+| `FUI_BODY_CAP` | macro | `progs/freedomui/freedomui_minios.c:53` | `#define FUI_BODY_CAP` |
+| `FUI_COLS` | macro | `progs/freedomui/freedomui_minios.c:51` | `#define FUI_COLS` |
+| `FUI_FONT_H` | macro | `progs/freedomui/freedomui_minios.c:62` | `#define FUI_FONT_H` |
+| `FUI_FONT_W` | macro | `progs/freedomui/freedomui_minios.c:61` | `#define FUI_FONT_W` |
+| `FUI_HDR_MAX` | macro | `progs/freedomui/freedomui_minios.c:54` | `#define FUI_HDR_MAX` |
+| `FUI_HOPS_MAX` | macro | `progs/freedomui/freedomui_minios.c:60` | `#define FUI_HOPS_MAX` |
+| `FUI_HOST_MAX` | macro | `progs/freedomui/freedomui_minios.c:57` | `#define FUI_HOST_MAX` |
+| `FUI_NET_BUF` | macro | `progs/freedomui/freedomui_minios.c:55` | `#define FUI_NET_BUF` |
+| `FUI_PATH_MAX` | macro | `progs/freedomui/freedomui_minios.c:58` | `#define FUI_PATH_MAX` |
+| `FUI_REQ_MAX` | macro | `progs/freedomui/freedomui_minios.c:56` | `#define FUI_REQ_MAX` |
+| `FUI_TEXT_ROWS` | macro | `progs/freedomui/freedomui_minios.c:52` | `#define FUI_TEXT_ROWS` |
+| `FUI_TITLE_MAX` | macro | `progs/freedomui/freedomui_minios.c:63` | `#define FUI_TITLE_MAX` |
+| `FUI_URL_MAX` | macro | `progs/freedomui/freedomui_minios.c:59` | `#define FUI_URL_MAX` |
+| `FreedomUiConfig` | struct | `progs/freedomui/freedomui_minios.c:69` | `` |
+| `freedomui_build_palette` | function | `progs/freedomui/freedomui_minios.c:130` | `static long freedomui_build_palette(unsigned char *pal, long cap)` |
+| `freedomui_default` | function | `progs/freedomui/freedomui_minios.c:97` | `static FreedomUiConfig freedomui_default(void)` |
+| `freedomui_engine_text` | function | `progs/freedomui/freedomui_minios.c:145` | `static long freedomui_engine_text(char *body, long n, char **title, char **text)` |
+| `freedomui_host_entry` | function | `progs/freedomui/freedomui_minios.c:1067` | `int freedomui_host_entry(FreedomUiConfig *c)` |
+| `freedomui_host_probe` | function | `progs/freedomui/freedomui_minios.c:984` | `static long freedomui_host_probe(FreedomUiConfig *c)` |
+| `freedomui_selftest` | function | `progs/freedomui/freedomui_minios.c:896` | `static long freedomui_selftest(void)` |
+| `freedomui_sys_kbd` | function | `progs/freedomui/freedomui_minios.c:221` | `static long freedomui_sys_kbd(void)` |
+| `freedomui_sys_kbd_raw` | function | `progs/freedomui/freedomui_minios.c:235` | `static long freedomui_sys_kbd_raw(long on)` |
+| `freedomui_sys_mouse` | function | `progs/freedomui/freedomui_minios.c:214` | `static long freedomui_sys_mouse(long *m)` |
+| `freedomui_sys_palette` | function | `progs/freedomui/freedomui_minios.c:207` | `static long freedomui_sys_palette(unsigned char *pal)` |
+| `freedomui_sys_present` | function | `progs/freedomui/freedomui_minios.c:193` | `static long freedomui_sys_present(long buf, long origin)` |
+| `freedomui_sys_title` | function | `progs/freedomui/freedomui_minios.c:200` | `static long freedomui_sys_title(char *t)` |
+| `freedomui_sys_vga_mode` | function | `progs/freedomui/freedomui_minios.c:228` | `static long freedomui_sys_vga_mode(long on)` |
+| `freedomui_sys_yield` | function | `progs/freedomui/freedomui_minios.c:242` | `static long freedomui_sys_yield(void)` |
+| `fui_append` | function | `progs/freedomui/freedomui_minios.c:249` | `static long fui_append(char *dst, long pos, char *src, long cap)` |
+| `fui_browse` | function | `progs/freedomui/freedomui_minios.c:817` | `static long fui_browse(FreedomUiConfig *c)` |
+| `fui_fetch_raw` | function | `progs/freedomui/freedomui_minios.c:470` | `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)` |
+| `fui_parse_headers` | function | `progs/freedomui/freedomui_minios.c:352` | `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...` |
+| `fui_render` | function | `progs/freedomui/freedomui_minios.c:698` | `static long fui_render(FreedomUiConfig *c, size_t off)` |
+| `fui_split_url` | function | `progs/freedomui/freedomui_minios.c:283` | `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...` |
+| `fui_strlen` | function | `progs/freedomui/freedomui_minios.c:267` | `static long fui_strlen(char *s, long cap)` |
+| `main` | function | `progs/freedomui/freedomui_minios.c:1072` | `int main(int argc, char **argv)` |
+| `net_dns_resolve` | function | `progs/freedomui/freedomui_minios.c:44` | `int net_dns_resolve(const char *host);` |
+| `present_buf` | type_alias | `progs/freedomui/freedomui_minios.c:69` | `typedef struct FreedomUiConfig { long present_buf;` |
+| `tls_close` | function | `progs/freedomui/freedomui_minios.c:48` | `void tls_close(int fd);` |
+| `tls_handshake` | function | `progs/freedomui/freedomui_minios.c:45` | `int tls_handshake(int fd, char *host);` |
+| `tls_recv` | function | `progs/freedomui/freedomui_minios.c:47` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_send` | function | `progs/freedomui/freedomui_minios.c:46` | `int tls_send(int fd, char *buf, int len);` |
+| `media_decoder_run` | function | `progs/freedomui/media_unavailable.c:41` | `void media_decoder_run(int out_fd, int cmd_fd)` |
+| `write_all` | function | `progs/freedomui/media_unavailable.c:20` | `static void write_all(int fd, const void *buf, size_t len)` |
+| `FREEDOM_GUI_BUTTONS` | macro | `progs/freedomui/platform_minios.c:44` | `#define FREEDOM_GUI_BUTTONS` |
+| `FREEDOM_GUI_CLIP_MAX` | macro | `progs/freedomui/platform_minios.c:33` | `#define FREEDOM_GUI_CLIP_MAX` |
+| `FREEDOM_GUI_KBD_DRAIN_MAX` | macro | `progs/freedomui/platform_minios.c:29` | `#define FREEDOM_GUI_KBD_DRAIN_MAX` |
+| `FREEDOM_GUI_KEY_F4` | macro | `progs/freedomui/platform_minios.c:46` | `#define FREEDOM_GUI_KEY_F4` |
+| `FREEDOM_GUI_MALLOC_ARENAS` | macro | `progs/freedomui/platform_minios.c:35` | `#define FREEDOM_GUI_MALLOC_ARENAS` |
+| `FREEDOM_GUI_MOUSE_BUTTONS` | macro | `progs/freedomui/platform_minios.c:41` | `#define FREEDOM_GUI_MOUSE_BUTTONS` |
+| `FREEDOM_GUI_MOUSE_WHEEL` | macro | `progs/freedomui/platform_minios.c:42` | `#define FREEDOM_GUI_MOUSE_WHEEL` |
+| `FREEDOM_GUI_MOUSE_WORDS` | macro | `progs/freedomui/platform_minios.c:38` | `#define FREEDOM_GUI_MOUSE_WORDS` |
+| `FREEDOM_GUI_MOUSE_X` | macro | `progs/freedomui/platform_minios.c:39` | `#define FREEDOM_GUI_MOUSE_X` |
+| `FREEDOM_GUI_MOUSE_Y` | macro | `progs/freedomui/platform_minios.c:40` | `#define FREEDOM_GUI_MOUSE_Y` |
+| `FREEDOM_GUI_RGB_BPP` | macro | `progs/freedomui/platform_minios.c:48` | `#define FREEDOM_GUI_RGB_BPP` |
+| `FREEDOM_GUI_RGB_PRESENT` | macro | `progs/freedomui/platform_minios.c:50` | `#define FREEDOM_GUI_RGB_PRESENT` |
+| `FREEDOM_GUI_TICK_MS` | macro | `progs/freedomui/platform_minios.c:27` | `#define FREEDOM_GUI_TICK_MS` |
+| `FREEDOM_GUI_TITLE_MAX` | macro | `progs/freedomui/platform_minios.c:31` | `#define FREEDOM_GUI_TITLE_MAX` |
+| `_GNU_SOURCE` | macro | `progs/freedomui/platform_minios.c:11` | `#define _GNU_SOURCE` |
+| `deliver_pending` | function | `progs/freedomui/platform_minios.c:157` | `static int deliver_pending(pf_display *d)` |
+| `key_event` | function | `progs/freedomui/platform_minios.c:167` | `static void key_event(pf_display *d, const ps2_key *k, int kind)` |
+| `now_ms` | function | `progs/freedomui/platform_minios.c:94` | `static long now_ms(void)` |
+| `pf_clipboard_available` | function | `progs/freedomui/platform_minios.c:276` | `int pf_clipboard_available(const pf_display *d)` |
+| `pf_clipboard_get_text` | function | `progs/freedomui/platform_minios.c:287` | `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)` |
+| `pf_clipboard_set_text` | function | `progs/freedomui/platform_minios.c:280` | `pf_status pf_clipboard_set_text(pf_display *d, const char *text)` |
+| `pf_display` | struct | `progs/freedomui/platform_minios.c:68` | `` |
+| `pf_display_close` | function | `progs/freedomui/platform_minios.c:137` | `void pf_display_close(pf_display *d)` |
+| `pf_display_flush` | function | `progs/freedomui/platform_minios.c:146` | `void pf_display_flush(pf_display *d)` |
+| `pf_display_open` | function | `progs/freedomui/platform_minios.c:121` | `pf_status pf_display_open(pf_display **out)` |
+| `pf_display_set_cursor` | function | `progs/freedomui/platform_minios.c:150` | `void pf_display_set_cursor(pf_display *d, pf_cursor c)` |
+| `pf_display_wait` | function | `progs/freedomui/platform_minios.c:251` | `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)` |
+| `pf_window` | struct | `progs/freedomui/platform_minios.c:56` | `` |
+| `pf_window_begin_move` | function | `progs/freedomui/platform_minios.c:418` | `void pf_window_begin_move(pf_window *w)` |
+| `pf_window_begin_resize` | function | `progs/freedomui/platform_minios.c:422` | `void pf_window_begin_resize(pf_window *w, pf_edge edge)` |
+| `pf_window_close` | function | `progs/freedomui/platform_minios.c:325` | `void pf_window_close(pf_window *w)` |
+| `pf_window_minimize` | function | `progs/freedomui/platform_minios.c:414` | `void pf_window_minimize(pf_window *w)` |
+| `pf_window_open` | function | `progs/freedomui/platform_minios.c:303` | `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,                          const p...` |
+| `pf_window_present` | function | `progs/freedomui/platform_minios.c:357` | `void pf_window_present(pf_window *w)` |
+| `pf_window_set_fullscreen` | function | `progs/freedomui/platform_minios.c:410` | `void pf_window_set_fullscreen(pf_window *w, int on)` |
+| `pf_window_set_maximized` | function | `progs/freedomui/platform_minios.c:406` | `void pf_window_set_maximized(pf_window *w, int on)` |
+| `pf_window_set_title` | function | `progs/freedomui/platform_minios.c:391` | `void pf_window_set_title(pf_window *w, const char *title)` |
+| `pf_window_surface` | function | `progs/freedomui/platform_minios.c:342` | `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)` |
+| `pump_keyboard` | function | `progs/freedomui/platform_minios.c:194` | `static int pump_keyboard(pf_display *d)` |
+| `pump_mouse` | function | `progs/freedomui/platform_minios.c:208` | `static int pump_mouse(pf_display *d)` |
+| `set_title` | function | `progs/freedomui/platform_minios.c:98` | `static void set_title(const char *title)` |
+| `set_zoom_state` | function | `progs/freedomui/platform_minios.c:397` | `static void set_zoom_state(pf_window *w, unsigned bit, int on)` |
+| `sys_fb_info_rgb` | function | `progs/freedomui/platform_minios.c:83` | `static long sys_fb_info_rgb(int *rgb)` |
 | `ASCII_BS` | macro | `progs/freedomui/ps2_keymap.c:84` | `#define ASCII_BS` |
 | `ASCII_CR` | macro | `progs/freedomui/ps2_keymap.c:86` | `#define ASCII_CR` |
 | `ASCII_DEL` | macro | `progs/freedomui/ps2_keymap.c:88` | `#define ASCII_DEL` |
@@ -372,129 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `SC_0` | macro | `progs/minicraft/minicraft.c:143` | `#define SC_0` |
 | `SC_1` | macro | `progs/minicraft/minicraft.c:118` | `#define SC_1` |
 | `SC_9` | macro | `progs/minicraft/minicraft.c:119` | `#define SC_9` |
-| `SC_A` | macro | `progs/minicraft/minicraft.c:130` | `#define SC_A` |
-| `SC_B` | macro | `progs/minicraft/minicraft.c:139` | `#define SC_B` |
-| `SC_BACK` | macro | `progs/minicraft/minicraft.c:142` | `#define SC_BACK` |
-| `SC_C` | macro | `progs/minicraft/minicraft.c:137` | `#define SC_C` |
-| `SC_CTRL` | macro | `progs/minicraft/minicraft.c:149` | `#define SC_CTRL` |
-| `SC_D` | macro | `progs/minicraft/minicraft.c:132` | `#define SC_D` |
-| `SC_E` | macro | `progs/minicraft/minicraft.c:122` | `#define SC_E` |
-| `SC_ENTER` | macro | `progs/minicraft/minicraft.c:141` | `#define SC_ENTER` |
-| `SC_ESC` | macro | `progs/minicraft/minicraft.c:117` | `#define SC_ESC` |
-| `SC_F` | macro | `progs/minicraft/minicraft.c:133` | `#define SC_F` |
-| `SC_G` | macro | `progs/minicraft/minicraft.c:134` | `#define SC_G` |
-| `SC_I` | macro | `progs/minicraft/minicraft.c:126` | `#define SC_I` |
-| `SC_J` | macro | `progs/minicraft/minicraft.c:129` | `#define SC_J` |
-| `SC_K` | macro | `progs/minicraft/minicraft.c:135` | `#define SC_K` |
-| `SC_L` | macro | `progs/minicraft/minicraft.c:136` | `#define SC_L` |
-| `SC_LSHIFT` | macro | `progs/minicraft/minicraft.c:147` | `#define SC_LSHIFT` |
-| `SC_N` | macro | `progs/minicraft/minicraft.c:140` | `#define SC_N` |
-| `SC_O` | macro | `progs/minicraft/minicraft.c:127` | `#define SC_O` |
-| `SC_P` | macro | `progs/minicraft/minicraft.c:128` | `#define SC_P` |
-| `SC_Q` | macro | `progs/minicraft/minicraft.c:120` | `#define SC_Q` |
-| `SC_R` | macro | `progs/minicraft/minicraft.c:123` | `#define SC_R` |
-| `SC_RSHIFT` | macro | `progs/minicraft/minicraft.c:148` | `#define SC_RSHIFT` |
-| `SC_S` | macro | `progs/minicraft/minicraft.c:131` | `#define SC_S` |
-| `SC_SPACE` | macro | `progs/minicraft/minicraft.c:146` | `#define SC_SPACE` |
-| `SC_T` | macro | `progs/minicraft/minicraft.c:124` | `#define SC_T` |
-| `SC_U` | macro | `progs/minicraft/minicraft.c:125` | `#define SC_U` |
-| `SC_V` | macro | `progs/minicraft/minicraft.c:138` | `#define SC_V` |
-| `SC_W` | macro | `progs/minicraft/minicraft.c:121` | `#define SC_W` |
-| `SER_STASH_CAP` | macro | `progs/minicraft/minicraft.c:369` | `#define SER_STASH_CAP` |
-| `SaveHeader` | struct | `progs/minicraft/minicraft.c:2892` | `` |
-| `SaveHeaderV3` | struct | `progs/minicraft/minicraft.c:2878` | `` |
-| `__attribute__` | function | `progs/minicraft/minicraft.c:473` | `static long __attribute__((unused)) s_tone(long f)` |
-| `beep` | function | `progs/minicraft/minicraft.c:478` | `static void beep(long freq, long dur_ms)` |
-| `best_tool_for` | function | `progs/minicraft/minicraft.c:231` | `static int best_tool_for(unsigned char b)` |
-| `biome_desert` | function | `progs/minicraft/minicraft.c:893` | `static int biome_desert(int x, int y, unsigned int seed)` |
-| `biome_fdiv` | function | `progs/minicraft/minicraft.c:846` | `static int biome_fdiv(int v, int c)` |
-| `biome_snow` | function | `progs/minicraft/minicraft.c:897` | `static int biome_snow(int x, int y, unsigned int seed)` |
-| `biome_voro` | function | `progs/minicraft/minicraft.c:869` | `static int biome_voro(int x, int y, unsigned int seed, int cell,     int ox, int oy, unsigned int...` |
-| `block_intersects_player` | function | `progs/minicraft/minicraft.c:2404` | `static int block_intersects_player(int bx, int by, int bz)` |
-| `break_beep_for` | function | `progs/minicraft/minicraft.c:275` | `static long break_beep_for(unsigned char b)` |
-| `break_time_ms` | function | `progs/minicraft/minicraft.c:250` | `static long break_time_ms(unsigned char b, int tool)` |
-| `build_palette` | function | `progs/minicraft/minicraft.c:503` | `static void build_palette(void)` |
-| `cam_build` | function | `progs/minicraft/minicraft.c:1892` | `static void cam_build(void)` |
-| `carve_blob` | function | `progs/minicraft/minicraft.c:3108` | `static void carve_blob(const unsigned char *blob)` |
-| `cast_ray` | function | `progs/minicraft/minicraft.c:1659` | `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)` |
-| `census` | function | `progs/minicraft/minicraft.c:3606` | `static int census(void)` |
-| `chunk_build_meta` | function | `progs/minicraft/minicraft.c:658` | `static void chunk_build_meta(int slot)` |
-| `chunk_ensure` | function | `progs/minicraft/minicraft.c:635` | `static int chunk_ensure(int cx, int cy)` |
-| `chunk_evict_slot` | function | `progs/minicraft/minicraft.c:615` | `static int chunk_evict_slot(int cx, int cy)` |
-| `chunk_find` | function | `progs/minicraft/minicraft.c:592` | `static int chunk_find(int cx, int cy)` |
-| `chunk_lidx` | function | `progs/minicraft/minicraft.c:586` | `static int chunk_lidx(int lx, int ly, int z)` |
-| `chunk_local` | function | `progs/minicraft/minicraft.c:581` | `static int chunk_local(int v)` |
-| `chunk_of` | function | `progs/minicraft/minicraft.c:577` | `static int chunk_of(int v)` |
-| `chunk_path` | function | `progs/minicraft/minicraft.c:2938` | `static void chunk_path(int cx, int cy, char *out, size_t n)` |
-| `col_recompute` | function | `progs/minicraft/minicraft.c:703` | `static void col_recompute(int x, int y)` |
-| `col_top_at` | function | `progs/minicraft/minicraft.c:728` | `static int col_top_at(int x, int y)` |
-| `creep_has_los` | function | `progs/minicraft/minicraft.c:1337` | `static int creep_has_los(Pig *c)` |
-| `creep_sense` | function | `progs/minicraft/minicraft.c:1325` | `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)` |
-| `creep_separate` | function | `progs/minicraft/minicraft.c:1361` | `static void creep_separate(Pig *p, int id, float dt)` |
-| `creeper_explode` | function | `progs/minicraft/minicraft.c:1257` | `static void creeper_explode(Pig *c, long now)` |
-| `decorate_chunk` | function | `progs/minicraft/minicraft.c:1043` | `static void decorate_chunk(int slot)` |
-| `decorate_column` | function | `progs/minicraft/minicraft.c:995` | `static void decorate_column(int x, int y, unsigned int seed)` |
-| `dumpstats` | function | `progs/minicraft/minicraft.c:3670` | `static int dumpstats(void)` |
-| `ensure_around` | function | `progs/minicraft/minicraft.c:1090` | `static void ensure_around(void)` |
-| `ensure_around_px` | function | `progs/minicraft/minicraft.c:1056` | `static void ensure_around_px(float px, float py)` |
-| `eye_z` | function | `progs/minicraft/minicraft.c:1750` | `static float eye_z(void)` |
-| `face_color` | function | `progs/minicraft/minicraft.c:1520` | `static unsigned char face_color(unsigned char b, int face)` |
-| `gen_terrain_chunk` | function | `progs/minicraft/minicraft.c:1034` | `static void gen_terrain_chunk(int slot)` |
-| `get_b` | function | `progs/minicraft/minicraft.c:764` | `static unsigned char get_b(int x, int y, int z)` |
-| `goal_text` | function | `progs/minicraft/minicraft.c:2608` | `static const char *goal_text(void)` |
-| `ground_h_seed` | function | `progs/minicraft/minicraft.c:909` | `static int ground_h_seed(int x, int y, unsigned int seed)` |
-| `hash2` | function | `progs/minicraft/minicraft.c:823` | `static unsigned int hash2(int x, int y)` |
-| `hash2_seed` | function | `progs/minicraft/minicraft.c:830` | `static unsigned int hash2_seed(int x, int y, unsigned int seed)` |
-| `hurt` | function | `progs/minicraft/minicraft.c:2424` | `static void hurt(int dmg, const char *why)` |
-| `in_water_at` | function | `progs/minicraft/minicraft.c:814` | `static int in_water_at(float x, float y, float z)` |
-| `in_world` | function | `progs/minicraft/minicraft.c:562` | `static int in_world(int x, int y, int z)` |
-| `inv_add` | function | `progs/minicraft/minicraft.c:931` | `static int inv_add(int b, int n)` |
-| `inv_remove` | function | `progs/minicraft/minicraft.c:945` | `static int inv_remove(int b, int n)` |
-| `is_cave` | function | `progs/minicraft/minicraft.c:901` | `static int is_cave(int x, int y, int z, unsigned int seed)` |
-| `is_solid` | function | `progs/minicraft/minicraft.c:811` | `static int is_solid(unsigned char b)` |
-| `is_visible` | function | `progs/minicraft/minicraft.c:819` | `static int is_visible(unsigned char b)` |
-| `kbd_drain` | function | `progs/minicraft/minicraft.c:428` | `static void kbd_drain(void)` |
-| `light_recompute_col` | function | `progs/minicraft/minicraft.c:735` | `static void light_recompute_col(int x, int y)` |
-| `load_apply_player` | function | `progs/minicraft/minicraft.c:3175` | `static void load_apply_player(const SaveHeader *hd)` |
-| `load_chunk_file` | function | `progs/minicraft/minicraft.c:2974` | `static int load_chunk_file(int slot, int cx, int cy)` |
-| `load_reset_runtime` | function | `progs/minicraft/minicraft.c:3075` | `static void load_reset_runtime(void)` |
-| `load_world` | function | `progs/minicraft/minicraft.c:3271` | `static int load_world(void)` |
-| `load_world_legacy` | function | `progs/minicraft/minicraft.c:3137` | `static int load_world_legacy(FILE *f)` |
-| `load_world_v2` | function | `progs/minicraft/minicraft.c:3234` | `static int load_world_v2(FILE *f, SaveHeader *hd)` |
-| `load_world_v3` | function | `progs/minicraft/minicraft.c:3194` | `static int load_world_v3(FILE *f, SaveHeader *hd)` |
-| `main` | function | `progs/minicraft/minicraft.c:4095` | `int main(int argc, char **argv)` |
-| `mc_block_name` | function | `progs/minicraft/minicraft.c:1857` | `static const char *mc_block_name(unsigned char b)` |
-| `mc_crc32` | function | `progs/minicraft/minicraft.c:2919` | `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)` |
-| `mc_facing` | function | `progs/minicraft/minicraft.c:1877` | `static char mc_facing(void)` |
-| `mc_glyph` | function | `progs/minicraft/minicraft.c:1817` | `static int mc_glyph(char ch)` |
-| `mc_pixel` | function | `progs/minicraft/minicraft.c:1825` | `static void mc_pixel(int x, int y, unsigned char c)` |
-| `mc_smoothstep` | function | `progs/minicraft/minicraft.c:839` | `static float mc_smoothstep(float t)` |
-| `mc_text` | function | `progs/minicraft/minicraft.c:1831` | `static void mc_text(int x, int y, const char *s, unsigned char fg)` |
-| `mc_text_bg` | function | `progs/minicraft/minicraft.c:1844` | `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)` |
-| `mc_toggle_zoom` | function | `progs/minicraft/minicraft.c:316` | `static void mc_toggle_zoom(void)` |
-| `menu_ser_key` | function | `progs/minicraft/minicraft.c:391` | `static long menu_ser_key(long b)` |
-| `mob_pixel` | function | `progs/minicraft/minicraft.c:1945` | `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)` |
-| `mob_spawn_one` | function | `progs/minicraft/minicraft.c:1191` | `static void mob_spawn_one(Pig *m, int id, int hp, long now)` |
-| `move_x` | function | `progs/minicraft/minicraft.c:2379` | `static void move_x(float nx)` |
-| `move_y` | function | `progs/minicraft/minicraft.c:2384` | `static void move_y(float ny)` |
-| `move_z_abs` | function | `progs/minicraft/minicraft.c:2389` | `static MoveResult move_z_abs(float nz)` |
-| `new_world` | function | `progs/minicraft/minicraft.c:1095` | `static void new_world(unsigned int seed)` |
-| `pal_set` | function | `progs/minicraft/minicraft.c:497` | `static void pal_set(int i, int r, int g, int b)` |
-| `pause_menu` | function | `progs/minicraft/minicraft.c:3922` | `static int pause_menu(int *seed_io)` |
-| `pig_collides` | function | `progs/minicraft/minicraft.c:1243` | `static int pig_collides(float x, float y, float z)` |
-| `player_collides` | function | `progs/minicraft/minicraft.c:2355` | `static int player_collides(float x, float y, float z)` |
-| `poll_kbd` | function | `progs/minicraft/minicraft.c:2162` | `static void poll_kbd(void)` |
-| `render_frame` | function | `progs/minicraft/minicraft.c:2038` | `static void render_frame(void)` |
-| `render_mob_array` | function | `progs/minicraft/minicraft.c:1979` | `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,     float rx, float r...` |
-| `render_pigs` | function | `progs/minicraft/minicraft.c:2030` | `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)` |
-| `render_terrain` | function | `progs/minicraft/minicraft.c:1910` | `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,                       ...` |
-| `s_getc_raw` | function | `progs/minicraft/minicraft.c:359` | `static long s_getc_raw(void)` |
-| `s_kbd` | function | `progs/minicraft/minicraft.c:342` | `static long s_kbd(void)` |
-| `s_kbd_raw` | function | `progs/minicraft/minicraft.c:347` | `static long s_kbd_raw(long on)` |
-| `s_mouse` | function | `progs/minicraft/minicraft.c:453` | `static long s_mouse(int *m)` |
-| `s_pal` | function | `progs/minicraft/minicraft.c:438` | `static long s_pal(const unsigned char *p)` |
-| `s_pcspk_init` | function | `progs/minicraft/minicraft.c:468` | `static long s_pcspk_init(void)` |
-| `s_present` | function | `progs/minicraft/minicraft.c:443` | `static long s_present(void)` |
-| `s_time_ms` | function | `progs/minicraft/minicraft.c:337` | `static long s_time_ms(void)` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

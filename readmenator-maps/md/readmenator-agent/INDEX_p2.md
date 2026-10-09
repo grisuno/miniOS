@@ -3,13 +3,14 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_seccomp_bpf.c` | Docstring: Host test for kernel/seccomp_bpf.c (make test-seccomp-bpf). | tests | 17 | 0 |
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 | 0 |
 | `tests/test_theme.c` | Docstring: host test for the shared Nuklear theme contract. | tests | 8 | 0 |
 | `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 6 | 0 |
 | `tests/test_usbblk.c` | Docstring: Host test for the USB mass-storage driver (make test-usbblk). | tests | 4 | 0 |
 | `tests/test_usbhid.c` | Docstring: Host test for the USB HID driver (make test-usbhid). | tests | 5 | 0 |
 | `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 16 | 0 |
-| `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 9 | 0 |
+| `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 10 | 0 |
 | `tests/test_vma_bench.c` | RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 6 | 0 |
 | `tests/test_wl.c` | Host test for progs/wl/wl_mini.h (make test-wl). | tests | 2 | 0 |
 | `tests/test_wm.c` | Docstring: Host test for wm_geom.h and wm_events.h (make test-wm). | tests | 2 | 0 |
@@ -75,5 +76,5 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/wl_scoped.sh` | Docstring: Scoped Wayland-mini validation for the tiled ring-3 compositor. | tools | 4 | 0 |
 | `tools/wm_layout_sync.py` | Docstring: Synchronize the WM layout manifest from source truth. | tools | 17 | 0 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. | tools | 2 | 0 |
-| `vma.c` | vma_tree_find_containing: Docstring: Find the live node containing va (base <= va < base+len)... | root | 17 | 0 |
+| `vma.c` | vma_node_in_tree: 1 when node n hangs in the tree rooted at root (live and free trees * share... | root | 18 | 0 |
 

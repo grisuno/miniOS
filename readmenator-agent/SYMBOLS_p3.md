@@ -137,11 +137,15 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `BOOT_STAGE2_SECTORS` | macro | `headers/arch/x86/boot/bootdefs.h:75` | `#define BOOT_STAGE2_SECTORS` |
 | `BOOT_STAGE2_SEG` | macro | `headers/arch/x86/boot/bootdefs.h:77` | `#define BOOT_STAGE2_SEG` |
 | `CMOS_DATA_PORT` | macro | `headers/arch/x86/boot/bootdefs.h:287` | `#define CMOS_DATA_PORT` |
+| `CMOS_EXTMEM_BASE` | macro | `headers/arch/x86/boot/bootdefs.h:292` | `#define CMOS_EXTMEM_BASE` |
+| `CMOS_EXTMEM_UNIT` | macro | `headers/arch/x86/boot/bootdefs.h:293` | `#define CMOS_EXTMEM_UNIT` |
 | `CMOS_INDEX_PORT` | macro | `headers/arch/x86/boot/bootdefs.h:286` | `#define CMOS_INDEX_PORT` |
 | `CMOS_NMI_DISABLE` | macro | `headers/arch/x86/boot/bootdefs.h:288` | `#define CMOS_NMI_DISABLE` |
-| `CMOS_REG_HOURS` | macro | `headers/arch/x86/boot/bootdefs.h:291` | `#define CMOS_REG_HOURS` |
-| `CMOS_REG_MINUTES` | macro | `headers/arch/x86/boot/bootdefs.h:290` | `#define CMOS_REG_MINUTES` |
-| `CMOS_REG_SECONDS` | macro | `headers/arch/x86/boot/bootdefs.h:289` | `#define CMOS_REG_SECONDS` |
+| `CMOS_REG_EXTMEM_HI` | macro | `headers/arch/x86/boot/bootdefs.h:291` | `#define CMOS_REG_EXTMEM_HI` |
+| `CMOS_REG_EXTMEM_LO` | macro | `headers/arch/x86/boot/bootdefs.h:290` | `#define CMOS_REG_EXTMEM_LO` |
+| `CMOS_REG_HOURS` | macro | `headers/arch/x86/boot/bootdefs.h:296` | `#define CMOS_REG_HOURS` |
+| `CMOS_REG_MINUTES` | macro | `headers/arch/x86/boot/bootdefs.h:295` | `#define CMOS_REG_MINUTES` |
+| `CMOS_REG_SECONDS` | macro | `headers/arch/x86/boot/bootdefs.h:294` | `#define CMOS_REG_SECONDS` |
 | `CR0_PE` | macro | `headers/arch/x86/boot/bootdefs.h:161` | `#define CR0_PE` |
 | `CR0_PE_CLEAR_MASK` | macro | `headers/arch/x86/boot/bootdefs.h:162` | `#define CR0_PE_CLEAR_MASK` |
 | `CR0_PG` | macro | `headers/arch/x86/boot/bootdefs.h:163` | `#define CR0_PG` |
@@ -492,9 +496,5 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `PCI_PROGIF_XHCI` | macro | `headers/drivers/pci.h:59` | `#define PCI_PROGIF_XHCI` |
 | `PCI_REG_BAR0` | macro | `headers/drivers/pci.h:25` | `#define PCI_REG_BAR0` |
 | `PCI_REG_BAR_COUNT` | macro | `headers/drivers/pci.h:29` | `#define PCI_REG_BAR_COUNT` |
-| `PCI_REG_BRIDGE_SECONDARY` | macro | `headers/drivers/pci.h:27` | `#define PCI_REG_BRIDGE_SECONDARY` |
-| `PCI_REG_CAP_PTR` | macro | `headers/drivers/pci.h:28` | `#define PCI_REG_CAP_PTR` |
-| `PCI_REG_CARD_BUS` | macro | `headers/drivers/pci.h:26` | `#define PCI_REG_CARD_BUS` |
-| `PCI_REG_CLASS_PROGIF` | macro | `headers/drivers/pci.h:23` | `#define PCI_REG_CLASS_PROGIF` |
 
 Next: [SYMBOLS_p4.md](SYMBOLS_p4.md)

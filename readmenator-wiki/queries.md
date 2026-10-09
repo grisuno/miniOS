@@ -4,7 +4,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 ## Suggested
 
-### Q: What does string.c depend on, and what depends on it? (84 connections)
+### Q: What does string.c depend on, and what depends on it? (85 connections)
 
 - Status: unanswered
 
@@ -20,7 +20,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: Why are ap_stub.h and i_cdmus.h connected through 9 hops across 3 communities?
+### Q: Why are qga.h and d_englsh.h connected through 9 hops across 3 communities?
 
 - Status: unanswered
 

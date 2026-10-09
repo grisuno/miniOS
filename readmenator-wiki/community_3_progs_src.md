@@ -1,14 +1,14 @@
 # progs/src
 
-*Community 3 | 67 files | cohesion 0.69*
+*Community 3 | 68 files | cohesion 0.70*
 
 ## Definition
 
-This community groups 67 file(s) rooted at `progs/src` with dominant language c (cohesion 0.69). Central symbols: `ASCII_BS`, `ASCII_CR`, `ASCII_DEL`, `ASCII_ESC`, `ASCII_TAB`, `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`. Core file: `progs/vedit/vedit.c` (243 symbols). Documented purpose: Unified audio API for MiniOS..
+This community groups 68 file(s) rooted at `progs/src` with dominant language c (cohesion 0.70). Central symbols: `ASCII_BS`, `ASCII_CR`, `ASCII_DEL`, `ASCII_ESC`, `ASCII_TAB`, `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`. Core file: `progs/vedit/vedit.c` (243 symbols). Documented purpose: Unified audio API for MiniOS..
 
 ## Files
 
-### `progs/src` (13 files)
+### `progs/src` (14 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -128,7 +128,7 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 |------|----------|-------|---------|-----|
 | `progs/quake2generic/snddma_minios.c` | c | utility | 16 | yes |
 
-*... and 47 more files in this community.*
+*... and 48 more files in this community.*
 
 
 ## Key Symbols
@@ -166,7 +166,7 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 123
+- Internal resolved imports (EXTRACTED): 124
 - Cross-boundary resolved imports (EXTRACTED): 54
 
 ## Connections
@@ -191,7 +191,7 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 
 - Why do 8 file(s) lack file-level docs (e.g. `progs/lisp/lisp.c`)? What purpose do they serve?
 - What would break if the most connected file in progs/src changed?
-- Should progs/src be split, given cohesion 0.69?
+- Should progs/src be split, given cohesion 0.70?
 
 ## Sources
 
@@ -215,4 +215,4 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 - `progs/micropython/variants/minios/lib/hello.py`
 - `progs/micropython/variants/minios/minios_module.c`
 - `progs/minicraft/minicraft.c`
-- *... and 47 more*
+- *... and 48 more*

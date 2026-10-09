@@ -1,6 +1,37 @@
 # API (page 12 of 19)
 Previous: [API_p11.md](API_p11.md)
 
+## progs/doomgeneric/net_dedicated.h
+Imported by: `progs/doomgeneric/d_main.c`
+- `NET_DedicatedServer` (function) `progs/doomgeneric/net_dedicated.h:21` `void NET_DedicatedServer(void);`
+
+## progs/doomgeneric/net_gui.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/d_loop.c`
+- `NET_WaitForLaunch` (function) `progs/doomgeneric/net_gui.h:26` `extern void NET_WaitForLaunch(void);`
+
+## progs/doomgeneric/net_io.h
+Depends on: `progs/doomgeneric/net_defs.h`
+Imported by: `progs/doomgeneric/d_loop.c`
+- `NET_NewContext` (function) `progs/doomgeneric/net_io.h:25` `net_context_t *NET_NewContext(void);`
+- `NET_AddModule` (function) `progs/doomgeneric/net_io.h:26` `void NET_AddModule(net_context_t *context, net_module_t *module);`
+- `NET_SendPacket` (function) `progs/doomgeneric/net_io.h:27` `void NET_SendPacket(net_addr_t *addr, net_packet_t *packet);`
+- `NET_SendBroadcast` (function) `progs/doomgeneric/net_io.h:28` `void NET_SendBroadcast(net_context_t *context, net_packet_t *packet);`
+- `NET_AddrToString` (function) `progs/doomgeneric/net_io.h:31` `char *NET_AddrToString(net_addr_t *addr);`
+- `NET_FreeAddress` (function) `progs/doomgeneric/net_io.h:32` `void NET_FreeAddress(net_addr_t *addr);`
+- `NET_ResolveAddress` (function) `progs/doomgeneric/net_io.h:33` `net_addr_t *NET_ResolveAddress(net_context_t *context, char *address);`
+
+## progs/doomgeneric/net_packet.h
+Depends on: `progs/doomgeneric/net_defs.h`
+- `NET_NewPacket` (function) `progs/doomgeneric/net_packet.h:23` `net_packet_t *NET_NewPacket(int initial_size);`
+- `NET_PacketDup` (function) `progs/doomgeneric/net_packet.h:24` `net_packet_t *NET_PacketDup(net_packet_t *packet);`
+- `NET_FreePacket` (function) `progs/doomgeneric/net_packet.h:25` `void NET_FreePacket(net_packet_t *packet);`
+- `NET_ReadString` (function) `progs/doomgeneric/net_packet.h:35` `char *NET_ReadString(net_packet_t *packet);`
+- `NET_WriteInt8` (function) `progs/doomgeneric/net_packet.h:37` `void NET_WriteInt8(net_packet_t *packet, unsigned int i);`
+- `NET_WriteInt16` (function) `progs/doomgeneric/net_packet.h:38` `void NET_WriteInt16(net_packet_t *packet, unsigned int i);`
+- `NET_WriteInt32` (function) `progs/doomgeneric/net_packet.h:39` `void NET_WriteInt32(net_packet_t *packet, unsigned int i);`
+- `NET_WriteString` (function) `progs/doomgeneric/net_packet.h:41` `void NET_WriteString(net_packet_t *packet, char *string);`
+
 ## progs/doomgeneric/net_query.h
 Depends on: `progs/doomgeneric/net_defs.h`
 Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`

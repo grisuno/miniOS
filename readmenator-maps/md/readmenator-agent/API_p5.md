@@ -137,18 +137,18 @@ Imported by: `kernel/vga_fb.c`, `kernel/vga_fx.c`, `tests/test_fx.c`
 
 ## headers/vma.h
 Imported by: `headers/kernel.h`, `headers/sched.h`, `headers/spawn.h`, `kernel/spawn.c`, `tests/test_fault.c`, `tests/test_vma.c`, `tests/test_vma_bench.c`, `vma.c`
-- `vma_tree_init` (function) `headers/vma.h:62` `void vma_tree_init(void);`
-- `vma_tree_insert` (function) `headers/vma.h:63` `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);`
-- `vma_tree_find` (function) `headers/vma.h:64` `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);`
-- `vma_tree_find_containing` (function) `headers/vma.h:65` `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);`
-- `vma_tree_delete` (function) `headers/vma.h:66` `int vma_tree_delete(vma_node_t **root, unsigned long base);`
-- `vma_ctx_init` (function) `headers/vma.h:67` `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);`
-- `vma_ctx_bind` (function) `headers/vma.h:68` `void vma_ctx_bind(vma_ctx_t *c);`
-- `vma_ctx_save` (function) `headers/vma.h:69` `void vma_ctx_save(vma_ctx_t *c);`
-- `vma_view_save` (function) `headers/vma.h:83` `void vma_view_save(vma_view_t *v);`
-- `vma_view_load` (function) `headers/vma.h:84` `void vma_view_load(const vma_view_t *v);`
-- `vma_ctx_alloc` (function) `headers/vma.h:87` `vma_ctx_t *vma_ctx_alloc(void);` -- Heap-backed contexts live in sched.c (vma.c stays host-testable): * alloc returns a fresh context with a private...
-- `vma_ctx_free` (function) `headers/vma.h:88` `void vma_ctx_free(vma_ctx_t *c);`
+- `vma_tree_init` (function) `headers/vma.h:64` `void vma_tree_init(void);`
+- `vma_tree_insert` (function) `headers/vma.h:65` `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);`
+- `vma_tree_find` (function) `headers/vma.h:66` `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);`
+- `vma_tree_find_containing` (function) `headers/vma.h:67` `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);`
+- `vma_tree_delete` (function) `headers/vma.h:68` `int vma_tree_delete(vma_node_t **root, unsigned long base);`
+- `vma_ctx_init` (function) `headers/vma.h:69` `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);`
+- `vma_ctx_bind` (function) `headers/vma.h:70` `void vma_ctx_bind(vma_ctx_t *c);`
+- `vma_ctx_save` (function) `headers/vma.h:71` `void vma_ctx_save(vma_ctx_t *c);`
+- `vma_view_save` (function) `headers/vma.h:86` `void vma_view_save(vma_view_t *v);`
+- `vma_view_load` (function) `headers/vma.h:87` `void vma_view_load(const vma_view_t *v);`
+- `vma_ctx_alloc` (function) `headers/vma.h:90` `vma_ctx_t *vma_ctx_alloc(void);` -- Heap-backed contexts live in sched.c (vma.c stays host-testable): * alloc returns a fresh context with a private...
+- `vma_ctx_free` (function) `headers/vma.h:91` `void vma_ctx_free(vma_ctx_t *c);`
 
 ## headers/wm_events.h
 Depends on: `headers/drivers/modifiers.h`
@@ -243,16 +243,16 @@ Imported by: `kernel/shell.c`, `kernel/syscalls.c`
 
 ## kernel.c
 Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
-- `table` (function) `kernel.c:102` `* Symbol table (for resolving program references) * ================================================================...`
-- `syscall_init` (function) `kernel.c:115` `void syscall_init(void)`
-- `ksyscall` (function) `kernel.c:128` `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-- `kstack` (function) `kernel.c:144` `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
-- `ms` (function) `kernel.c:183` `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-- `bootlog_mark` (function) `kernel.c:190` `void bootlog_mark(const char *name)`
-- `bootlog_report` (function) `kernel.c:197` `void bootlog_report(void)`
-- `EM` (function) `kernel.c:219` `* CR0: clear EM (bit 2), set MP (bit 1);`
-- `size` (function) `kernel.c:260` `* image size (see kernel.ld);`
-- `tables` (function) `kernel.c:282` `* tables (already built above) for its uncached register window and the
+- `table` (function) `kernel.c:103` `* Symbol table (for resolving program references) * ================================================================...`
+- `syscall_init` (function) `kernel.c:116` `void syscall_init(void)`
+- `ksyscall` (function) `kernel.c:129` `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+- `kstack` (function) `kernel.c:145` `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
+- `ms` (function) `kernel.c:184` `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+- `bootlog_mark` (function) `kernel.c:191` `void bootlog_mark(const char *name)`
+- `bootlog_report` (function) `kernel.c:198` `void bootlog_report(void)`
+- `EM` (function) `kernel.c:220` `* CR0: clear EM (bit 2), set MP (bit 1);`
+- `size` (function) `kernel.c:261` `* image size (see kernel.ld);`
+- `tables` (function) `kernel.c:283` `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
 
 ## kernel/abi.c

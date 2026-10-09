@@ -6,60 +6,65 @@ Previous: [KB_src.md](KB_src.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `thread_result` (struct, line 188)
-  - `tls_seen` (type_alias, line 187) `typedef struct thread_result { long tls_seen;`
-  - `report` (function, line 58) `static void report(const char *name, int ok, const char *detail)`
-  - `now_ms` (function, line 68) `static long now_ms(void)`
-  - `busy_wait_ms` (function, line 74) `static void busy_wait_ms(long ms)`
-  - `fork_probe` (function, line 88) `static void fork_probe(uint64_t *out)`
-  - `regs_match` (function, line 125) `static int regs_match(const uint64_t *r)`
-  - `check_fork_registers` (function, line 131) `static void check_fork_registers(void)`
-  - `check_fork_cow_kernel_write` (function, line 153) `static void check_fork_cow_kernel_write(void)`
-  - `worker` (function, line 194) `static void *worker(void *arg)`
-  - `check_threads` (function, line 208) `static void check_threads(void)`
-  - `detached_worker` (function, line 238) `static void *detached_worker(void *arg)`
-  - `check_detached_reaped` (function, line 244) `static void check_detached_reaped(void)`
-  - `signaller` (function, line 268) `static void *signaller(void *arg)`
-  - `check_condvar` (function, line 278) `static void check_condvar(void)`
-  - `check_pipe2_flags` (function, line 300) `static void check_pipe2_flags(void)`
-  - `check_pipe_blocking` (function, line 327) `static void check_pipe_blocking(void)`
-  - `check_pipe_epipe` (function, line 349) `static void check_pipe_epipe(void)`
-  - `check_writev_pipe` (function, line 360) `static void check_writev_pipe(void)`
-  - `check_poll` (function, line 372) `static void check_poll(void)`
-  - `check_eventfd` (function, line 396) `static void check_eventfd(void)`
-  - `check_close_range` (function, line 421) `static void check_close_range(void)`
-  - `check_time` (function, line 433) `static void check_time(void)`
-  - `check_mkdir` (function, line 442) `static void check_mkdir(void)`
-  - `lxabi_sleeper` (function, line 454) `static void *lxabi_sleeper(void *arg)`
-  - `child_status` (function, line 462) `static int child_status(void (*body)(void))`
-  - `abort_from_worker_body` (function, line 482) `static void abort_from_worker_body(void)`
-  - `lxabi_exit_group_worker` (function, line 488) `static void *lxabi_exit_group_worker(void *arg)`
-  - `exit_group_from_worker_body` (function, line 494) `static void exit_group_from_worker_body(void)`
-  - `wild_jump_body` (function, line 500) `static void wild_jump_body(void)`
-  - `process` (function, line 508) `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
+  - `thread_result` (struct, line 194)
+  - `tls_seen` (type_alias, line 193) `typedef struct thread_result { long tls_seen;`
+  - `report` (function, line 64) `static void report(const char *name, int ok, const char *detail)`
+  - `now_ms` (function, line 74) `static long now_ms(void)`
+  - `busy_wait_ms` (function, line 80) `static void busy_wait_ms(long ms)`
+  - `fork_probe` (function, line 94) `static void fork_probe(uint64_t *out)`
+  - `regs_match` (function, line 131) `static int regs_match(const uint64_t *r)`
+  - `check_fork_registers` (function, line 137) `static void check_fork_registers(void)`
+  - `check_fork_cow_kernel_write` (function, line 159) `static void check_fork_cow_kernel_write(void)`
+  - `worker` (function, line 200) `static void *worker(void *arg)`
+  - `check_threads` (function, line 214) `static void check_threads(void)`
+  - `detached_worker` (function, line 244) `static void *detached_worker(void *arg)`
+  - `check_detached_reaped` (function, line 250) `static void check_detached_reaped(void)`
+  - `signaller` (function, line 274) `static void *signaller(void *arg)`
+  - `check_condvar` (function, line 284) `static void check_condvar(void)`
+  - `check_pipe2_flags` (function, line 306) `static void check_pipe2_flags(void)`
+  - `check_pipe_blocking` (function, line 333) `static void check_pipe_blocking(void)`
+  - `check_pipe_epipe` (function, line 355) `static void check_pipe_epipe(void)`
+  - `check_writev_pipe` (function, line 381) `static void check_writev_pipe(void)`
+  - `check_poll` (function, line 393) `static void check_poll(void)`
+  - `check_eventfd` (function, line 417) `static void check_eventfd(void)`
+  - `check_close_range` (function, line 442) `static void check_close_range(void)`
+  - `check_time` (function, line 454) `static void check_time(void)`
+  - `check_mkdir` (function, line 463) `static void check_mkdir(void)`
+  - `check_limits` (function, line 477) `static void check_limits(void)`
+  - `mono_us` (function, line 490) `static long mono_us(void)`
+  - `check_sleep` (function, line 499) `static void check_sleep(void)`
+  - `lxabi_sleeper` (function, line 526) `static void *lxabi_sleeper(void *arg)`
+  - `child_status` (function, line 534) `static int child_status(void (*body)(void))`
+  - `abort_from_worker_body` (function, line 554) `static void abort_from_worker_body(void)`
+  - `lxabi_exit_group_worker` (function, line 560) `static void *lxabi_exit_group_worker(void *arg)`
+  - `exit_group_from_worker_body` (function, line 566) `static void exit_group_from_worker_body(void)`
+  - `wild_jump_body` (function, line 572) `static void wild_jump_body(void)`
+  - `process` (function, line 580) `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
  * leaves the target aliv...`
-  - `main` (function, line 535) `int main(void)`
+  - `main` (function, line 617) `int main(void)`
   - `_GNU_SOURCE` (macro, line 17) `#define _GNU_SOURCE`
-  - `LXABI_CHILD_DELAY_MS` (macro, line 36) `#define LXABI_CHILD_DELAY_MS`
-  - `LXABI_THREADS` (macro, line 37) `#define LXABI_THREADS`
-  - `LXABI_THREAD_ITERS` (macro, line 38) `#define LXABI_THREAD_ITERS`
-  - `LXABI_DETACHED` (macro, line 39) `#define LXABI_DETACHED`
-  - `LXABI_WAIT_SPINS` (macro, line 40) `#define LXABI_WAIT_SPINS`
-  - `LXABI_GROUP_EXIT_CODE` (macro, line 41) `#define LXABI_GROUP_EXIT_CODE`
-  - `LXABI_TIMEDWAIT_MS` (macro, line 42) `#define LXABI_TIMEDWAIT_MS`
-  - `LXABI_EPOCH_2023` (macro, line 43) `#define LXABI_EPOCH_2023`
-  - `LXABI_CLOCK_SKEW_S` (macro, line 44) `#define LXABI_CLOCK_SKEW_S`
-  - `LXABI_REG_PROBE_WORDS` (macro, line 45) `#define LXABI_REG_PROBE_WORDS`
-  - `LXABI_CLONE_NR` (macro, line 46) `#define LXABI_CLONE_NR`
-  - `LXABI_SIGCHLD` (macro, line 47) `#define LXABI_SIGCHLD`
-  - `LXABI_A6_MAGIC` (macro, line 48) `#define LXABI_A6_MAGIC`
-  - `LXABI_CHILD_BAD` (macro, line 49) `#define LXABI_CHILD_BAD`
-  - `LXABI_MKDIR_PATH` (macro, line 50) `#define LXABI_MKDIR_PATH`
-  - `LXABI_MKDIR_FILE` (macro, line 51) `#define LXABI_MKDIR_FILE`
-  - `LXABI_CLOSE_RANGE_NR` (macro, line 52) `#define LXABI_CLOSE_RANGE_NR`
-  - `LXABI_PAGE` (macro, line 53) `#define LXABI_PAGE`
-  - `LXABI_COW_WORD` (macro, line 54) `#define LXABI_COW_WORD`
-- Depends on: `kernel/string.c`, `kernel/time.c`
+  - `LXABI_CHILD_DELAY_MS` (macro, line 40) `#define LXABI_CHILD_DELAY_MS`
+  - `LXABI_THREADS` (macro, line 41) `#define LXABI_THREADS`
+  - `LXABI_THREAD_ITERS` (macro, line 42) `#define LXABI_THREAD_ITERS`
+  - `LXABI_DETACHED` (macro, line 43) `#define LXABI_DETACHED`
+  - `LXABI_WAIT_SPINS` (macro, line 44) `#define LXABI_WAIT_SPINS`
+  - `LXABI_GROUP_EXIT_CODE` (macro, line 45) `#define LXABI_GROUP_EXIT_CODE`
+  - `LXABI_SLEEP_MS` (macro, line 46) `#define LXABI_SLEEP_MS`
+  - `LXABI_MAX_SANE_CPUS` (macro, line 47) `#define LXABI_MAX_SANE_CPUS`
+  - `LXABI_TIMEDWAIT_MS` (macro, line 48) `#define LXABI_TIMEDWAIT_MS`
+  - `LXABI_EPOCH_2023` (macro, line 49) `#define LXABI_EPOCH_2023`
+  - `LXABI_CLOCK_SKEW_S` (macro, line 50) `#define LXABI_CLOCK_SKEW_S`
+  - `LXABI_REG_PROBE_WORDS` (macro, line 51) `#define LXABI_REG_PROBE_WORDS`
+  - `LXABI_CLONE_NR` (macro, line 52) `#define LXABI_CLONE_NR`
+  - `LXABI_SIGCHLD` (macro, line 53) `#define LXABI_SIGCHLD`
+  - `LXABI_A6_MAGIC` (macro, line 54) `#define LXABI_A6_MAGIC`
+  - `LXABI_CHILD_BAD` (macro, line 55) `#define LXABI_CHILD_BAD`
+  - `LXABI_MKDIR_PATH` (macro, line 56) `#define LXABI_MKDIR_PATH`
+  - `LXABI_MKDIR_FILE` (macro, line 57) `#define LXABI_MKDIR_FILE`
+  - `LXABI_CLOSE_RANGE_NR` (macro, line 58) `#define LXABI_CLOSE_RANGE_NR`
+  - `LXABI_PAGE` (macro, line 59) `#define LXABI_PAGE`
+  - `LXABI_COW_WORD` (macro, line 60) `#define LXABI_COW_WORD`
+- Depends on: `headers/sched.h`, `kernel/string.c`, `kernel/time.c`
 
 ## progs/src/lxhello.c
 - Doc: lmain: static void lx_write_int(long v) { char buf[24]; int i = (int)sizeof(buf); int neg = 0...
@@ -79,22 +84,22 @@ Previous: [KB_src.md](KB_src.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `report` (function, line 48) `static void report(const char *name, int ok, const char *detail)`
-  - `wait_for` (function, line 54) `static int wait_for(int fd, short events)`
-  - `read_all` (function, line 61) `static int read_all(int fd, char *buf, size_t len)`
-  - `check_udp` (function, line 72) `static void check_udp(const struct sockaddr_in *peer)`
-  - `check_refused` (function, line 143) `static void check_refused(const struct sockaddr_in *peer)`
-  - `check_tcp` (function, line 167) `static void check_tcp(const struct sockaddr_in *peer)`
-  - `check_misc` (function, line 210) `static void check_misc(void)`
-  - `dial` (function, line 229) `static int dial(const char *host, const char *port)`
-  - `main` (function, line 273) `int main(int argc, char **argv)`
+  - `report` (function, line 49) `static void report(const char *name, int ok, const char *detail)`
+  - `wait_for` (function, line 55) `static int wait_for(int fd, short events)`
+  - `read_all` (function, line 62) `static int read_all(int fd, char *buf, size_t len)`
+  - `check_udp` (function, line 73) `static void check_udp(const struct sockaddr_in *peer)`
+  - `check_refused` (function, line 150) `static void check_refused(const struct sockaddr_in *peer)`
+  - `check_tcp` (function, line 174) `static void check_tcp(const struct sockaddr_in *peer)`
+  - `check_misc` (function, line 217) `static void check_misc(void)`
+  - `dial` (function, line 236) `static int dial(const char *host, const char *port)`
+  - `main` (function, line 280) `int main(int argc, char **argv)`
   - `_GNU_SOURCE` (macro, line 24) `#define _GNU_SOURCE`
-  - `LXNET_WAIT_MS` (macro, line 39) `#define LXNET_WAIT_MS`
-  - `LXNET_BUF` (macro, line 40) `#define LXNET_BUF`
-  - `LXNET_UDP_MSG` (macro, line 41) `#define LXNET_UDP_MSG`
-  - `LXNET_TCP_MSG` (macro, line 42) `#define LXNET_TCP_MSG`
-  - `LXNET_LOOPBACK` (macro, line 43) `#define LXNET_LOOPBACK`
-  - `LXNET_IP_UNKNOWN` (macro, line 44) `#define LXNET_IP_UNKNOWN`
+  - `LXNET_WAIT_MS` (macro, line 40) `#define LXNET_WAIT_MS`
+  - `LXNET_BUF` (macro, line 41) `#define LXNET_BUF`
+  - `LXNET_UDP_MSG` (macro, line 42) `#define LXNET_UDP_MSG`
+  - `LXNET_TCP_MSG` (macro, line 43) `#define LXNET_TCP_MSG`
+  - `LXNET_LOOPBACK` (macro, line 44) `#define LXNET_LOOPBACK`
+  - `LXNET_IP_UNKNOWN` (macro, line 45) `#define LXNET_IP_UNKNOWN`
 - Depends on: `kernel/string.c`
 
 ## progs/src/lxsecc.c
@@ -132,6 +137,23 @@ Previous: [KB_src.md](KB_src.md)
   - `LXSECC_STATUS_MASK` (macro, line 38) `#define LXSECC_STATUS_MASK`
   - `LXSECC_STATUS_SHIFT` (macro, line 39) `#define LXSECC_STATUS_SHIFT`
   - `LXSECC_STATUS_BYTE` (macro, line 40) `#define LXSECC_STATUS_BYTE`
+- Depends on: `kernel/string.c`
+
+## progs/src/lxtls.c
+- Doc: libcurl/OpenSSL fetch probe (FreeDom readiness step 6,
+- Layer: utility
+- Language: c
+- Symbols:
+  - `lxtls_sink` (function, line 39) `static size_t lxtls_sink(char *data, size_t size, size_t nmemb, void *user)`
+  - `lxtls_debug` (function, line 46) `static int lxtls_debug(CURL *h, curl_infotype type, char *data, size_t size, void *user)`
+  - `lxtls_step` (function, line 65) `static int lxtls_step(const char *name, int ok)`
+  - `lxtls_rand` (function, line 73) `static int lxtls_rand(void)`
+  - `main` (function, line 87) `int main(int argc, char **argv)`
+  - `LXTLS_TIMEOUT_S` (macro, line 31) `#define LXTLS_TIMEOUT_S`
+  - `LXTLS_CONNECT_S` (macro, line 32) `#define LXTLS_CONNECT_S`
+  - `LXTLS_MAX_REDIRECTS` (macro, line 33) `#define LXTLS_MAX_REDIRECTS`
+  - `LXTLS_CA_BUNDLE` (macro, line 34) `#define LXTLS_CA_BUNDLE`
+  - `LXTLS_RAND_BYTES` (macro, line 35) `#define LXTLS_RAND_BYTES`
 - Depends on: `kernel/string.c`
 
 ## progs/src/lz4.c
@@ -259,7 +281,7 @@ Previous: [KB_src.md](KB_src.md)
   - `mmutex_unlock` (function, line 90) `static inline void mmutex_unlock(mmutex_t *m)`
   - `mthread_entry` (function, line 98) `static void mthread_entry(void *p)`
   - `mthread_create` (function, line 117) `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
-  - `mthread_join` (function, line 140) `static int mthread_join(mthread_t t, void **retval)`
+  - `mthread_join` (function, line 144) `static int mthread_join(mthread_t t, void **retval)`
   - `MTHREADS_H` (macro, line 24) `#define MTHREADS_H`
   - `MTHREAD_STACK_SZ` (macro, line 28) `#define MTHREAD_STACK_SZ`
   - `MTHREAD_MAX` (macro, line 29) `#define MTHREAD_MAX`
@@ -468,13 +490,6 @@ Previous: [KB_src.md](KB_src.md)
   - `SPIN_WLH` (macro, line 57) `#define SPIN_WLH`
   - `SPIN_WLA` (macro, line 58) `#define SPIN_WLA`
   - `SPIN_WLB` (macro, line 59) `#define SPIN_WLB`
-
-## progs/src/test.c
-- Layer: testing
-- Language: c
-- Symbols:
-  - `add` (function, line 1) `int add(int a, int b)`
-  - `main` (function, line 2) `int main(void)`
 
 
 Next: [KB_src_p3.md](KB_src_p3.md)

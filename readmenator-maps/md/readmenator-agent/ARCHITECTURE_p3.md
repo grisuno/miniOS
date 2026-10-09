@@ -2,6 +2,8 @@
 Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/doomstat.h`
+- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/i_swap.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/i_system.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/r_local.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/w_wad.h`
@@ -208,10 +210,12 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/src/freedom_wl.c` -> `progs/minios_abi.h`
 - `progs/src/freedom_wl.c` -> `progs/nk_palette.h`
 - `progs/src/freedom_wl.c` -> `progs/wl/wl_mini.h`
+- `progs/src/lxabi.c` -> `headers/sched.h`
 - `progs/src/lxabi.c` -> `kernel/string.c`
 - `progs/src/lxabi.c` -> `kernel/time.c`
 - `progs/src/lxnet.c` -> `kernel/string.c`
 - `progs/src/lxsecc.c` -> `kernel/string.c`
+- `progs/src/lxtls.c` -> `kernel/string.c`
 - `progs/src/mthreads.h` -> `progs/minios_abi.h`
 - `progs/src/opl3.c` -> `kernel/string.c`
 - `progs/src/opl3.c` -> `progs/minios_abi.h`

@@ -4,7 +4,7 @@
 
 ## Definition
 
-This community groups 17 file(s) rooted at `headers` with dominant language c (cohesion 0.62). Central symbols: `CHECK`, `DRIVERS_PCI_H`, `DRIVERS_VIRTIO_NET_H`, `FAKE_BUSES`, `FAKE_REGS`, `LNX_AF_INET`, `LNX_EAFNOSUPPORT`, `LNX_EAGAIN`. Core file: `net/net.c` (151 symbols). Documented purpose: Docstring: drivers/virtio_net.c -- Polled legacy virtio-net driver..
+This community groups 17 file(s) rooted at `headers` with dominant language c (cohesion 0.62). Central symbols: `CHECK`, `DRIVERS_PCI_H`, `DRIVERS_VIRTIO_NET_H`, `FAKE_BUSES`, `FAKE_REGS`, `LNX_AF_INET`, `LNX_EAFNOSUPPORT`, `LNX_EAGAIN`. Core file: `net/net.c` (157 symbols). Documented purpose: Docstring: drivers/virtio_net.c -- Polled legacy virtio-net driver..
 
 ## Files
 
@@ -13,14 +13,14 @@ This community groups 17 file(s) rooted at `headers` with dominant language c (c
 | `drivers/virtio_net.c` | c | infrastructure | 44 | yes |
 | `headers/drivers/pci.h` | h | infrastructure | 54 | yes |
 | `headers/drivers/virtio_net.h` | h | infrastructure | 9 | yes |
-| `headers/net.h` | h | utility | 101 | yes |
+| `headers/net.h` | h | utility | 103 | yes |
 | `headers/net/rtl8139.h` | h | utility | 8 | no |
 | `headers/tls.h` | h | utility | 73 | yes |
 | `headers/tls_port.h` | h | utility | 49 | yes |
 | `headers/tls_roots.h` | h | utility | 0 | yes |
 | `headers/tls_test_roots.h` | h | testing | 0 | yes |
-| `net/net.c` | c | utility | 151 | yes |
-| `net/rtl8139.c` | c | utility | 28 | no |
+| `net/net.c` | c | utility | 157 | yes |
+| `net/rtl8139.c` | c | utility | 29 | no |
 | `net/tls.c` | c | utility | 27 | yes |
 | `net/tls_crypto.c` | c | utility | 78 | yes |
 | `net/tls_x509.c` | c | utility | 23 | yes |

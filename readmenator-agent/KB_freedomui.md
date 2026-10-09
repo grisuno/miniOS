@@ -64,49 +64,50 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `pf_window` (struct, line 52)
-  - `pf_display` (struct, line 64)
-  - `sys_fb_info_rgb` (function, line 79) `static long sys_fb_info_rgb(int *rgb)`
-  - `now_ms` (function, line 90) `static long now_ms(void)`
-  - `set_title` (function, line 94) `static void set_title(const char *title)`
-  - `pf_display_open` (function, line 108) `pf_status pf_display_open(pf_display **out)`
-  - `pf_display_close` (function, line 124) `void pf_display_close(pf_display *d)`
-  - `pf_display_flush` (function, line 133) `void pf_display_flush(pf_display *d)`
-  - `pf_display_set_cursor` (function, line 137) `void pf_display_set_cursor(pf_display *d, pf_cursor c)`
-  - `deliver_pending` (function, line 144) `static int deliver_pending(pf_display *d)`
-  - `key_event` (function, line 154) `static void key_event(pf_display *d, const ps2_key *k, int kind)`
-  - `pump_keyboard` (function, line 181) `static int pump_keyboard(pf_display *d)`
-  - `pump_mouse` (function, line 195) `static int pump_mouse(pf_display *d)`
-  - `pf_display_wait` (function, line 238) `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
-  - `pf_clipboard_available` (function, line 263) `int pf_clipboard_available(const pf_display *d)`
-  - `pf_clipboard_set_text` (function, line 267) `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
-  - `pf_clipboard_get_text` (function, line 274) `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
-  - `pf_window_open` (function, line 290) `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
+  - `pf_window` (struct, line 56)
+  - `pf_display` (struct, line 68)
+  - `sys_fb_info_rgb` (function, line 83) `static long sys_fb_info_rgb(int *rgb)`
+  - `now_ms` (function, line 94) `static long now_ms(void)`
+  - `set_title` (function, line 98) `static void set_title(const char *title)`
+  - `pf_display_open` (function, line 121) `pf_status pf_display_open(pf_display **out)`
+  - `pf_display_close` (function, line 137) `void pf_display_close(pf_display *d)`
+  - `pf_display_flush` (function, line 146) `void pf_display_flush(pf_display *d)`
+  - `pf_display_set_cursor` (function, line 150) `void pf_display_set_cursor(pf_display *d, pf_cursor c)`
+  - `deliver_pending` (function, line 157) `static int deliver_pending(pf_display *d)`
+  - `key_event` (function, line 167) `static void key_event(pf_display *d, const ps2_key *k, int kind)`
+  - `pump_keyboard` (function, line 194) `static int pump_keyboard(pf_display *d)`
+  - `pump_mouse` (function, line 208) `static int pump_mouse(pf_display *d)`
+  - `pf_display_wait` (function, line 251) `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
+  - `pf_clipboard_available` (function, line 276) `int pf_clipboard_available(const pf_display *d)`
+  - `pf_clipboard_set_text` (function, line 280) `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
+  - `pf_clipboard_get_text` (function, line 287) `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
+  - `pf_window_open` (function, line 303) `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
                          const p...`
-  - `pf_window_close` (function, line 312) `void pf_window_close(pf_window *w)`
-  - `pf_window_surface` (function, line 329) `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
-  - `pf_window_present` (function, line 344) `void pf_window_present(pf_window *w)`
-  - `pf_window_set_title` (function, line 378) `void pf_window_set_title(pf_window *w, const char *title)`
-  - `set_zoom_state` (function, line 384) `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
-  - `pf_window_set_maximized` (function, line 393) `void pf_window_set_maximized(pf_window *w, int on)`
-  - `pf_window_set_fullscreen` (function, line 397) `void pf_window_set_fullscreen(pf_window *w, int on)`
-  - `pf_window_minimize` (function, line 401) `void pf_window_minimize(pf_window *w)`
-  - `pf_window_begin_move` (function, line 405) `void pf_window_begin_move(pf_window *w)`
-  - `pf_window_begin_resize` (function, line 409) `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
+  - `pf_window_close` (function, line 325) `void pf_window_close(pf_window *w)`
+  - `pf_window_surface` (function, line 342) `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
+  - `pf_window_present` (function, line 357) `void pf_window_present(pf_window *w)`
+  - `pf_window_set_title` (function, line 391) `void pf_window_set_title(pf_window *w, const char *title)`
+  - `set_zoom_state` (function, line 397) `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
+  - `pf_window_set_maximized` (function, line 406) `void pf_window_set_maximized(pf_window *w, int on)`
+  - `pf_window_set_fullscreen` (function, line 410) `void pf_window_set_fullscreen(pf_window *w, int on)`
+  - `pf_window_minimize` (function, line 414) `void pf_window_minimize(pf_window *w)`
+  - `pf_window_begin_move` (function, line 418) `void pf_window_begin_move(pf_window *w)`
+  - `pf_window_begin_resize` (function, line 422) `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
   - `_GNU_SOURCE` (macro, line 11) `#define _GNU_SOURCE`
-  - `FREEDOM_GUI_TICK_MS` (macro, line 26) `#define FREEDOM_GUI_TICK_MS`
-  - `FREEDOM_GUI_KBD_DRAIN_MAX` (macro, line 28) `#define FREEDOM_GUI_KBD_DRAIN_MAX`
-  - `FREEDOM_GUI_TITLE_MAX` (macro, line 30) `#define FREEDOM_GUI_TITLE_MAX`
-  - `FREEDOM_GUI_CLIP_MAX` (macro, line 32) `#define FREEDOM_GUI_CLIP_MAX`
-  - `FREEDOM_GUI_MOUSE_WORDS` (macro, line 34) `#define FREEDOM_GUI_MOUSE_WORDS`
-  - `FREEDOM_GUI_MOUSE_X` (macro, line 35) `#define FREEDOM_GUI_MOUSE_X`
-  - `FREEDOM_GUI_MOUSE_Y` (macro, line 36) `#define FREEDOM_GUI_MOUSE_Y`
-  - `FREEDOM_GUI_MOUSE_BUTTONS` (macro, line 37) `#define FREEDOM_GUI_MOUSE_BUTTONS`
-  - `FREEDOM_GUI_MOUSE_WHEEL` (macro, line 38) `#define FREEDOM_GUI_MOUSE_WHEEL`
-  - `FREEDOM_GUI_BUTTONS` (macro, line 40) `#define FREEDOM_GUI_BUTTONS`
-  - `FREEDOM_GUI_KEY_F4` (macro, line 42) `#define FREEDOM_GUI_KEY_F4`
-  - `FREEDOM_GUI_RGB_BPP` (macro, line 44) `#define FREEDOM_GUI_RGB_BPP`
-  - `FREEDOM_GUI_RGB_PRESENT` (macro, line 46) `#define FREEDOM_GUI_RGB_PRESENT`
+  - `FREEDOM_GUI_TICK_MS` (macro, line 27) `#define FREEDOM_GUI_TICK_MS`
+  - `FREEDOM_GUI_KBD_DRAIN_MAX` (macro, line 29) `#define FREEDOM_GUI_KBD_DRAIN_MAX`
+  - `FREEDOM_GUI_TITLE_MAX` (macro, line 31) `#define FREEDOM_GUI_TITLE_MAX`
+  - `FREEDOM_GUI_CLIP_MAX` (macro, line 33) `#define FREEDOM_GUI_CLIP_MAX`
+  - `FREEDOM_GUI_MALLOC_ARENAS` (macro, line 35) `#define FREEDOM_GUI_MALLOC_ARENAS`
+  - `FREEDOM_GUI_MOUSE_WORDS` (macro, line 38) `#define FREEDOM_GUI_MOUSE_WORDS`
+  - `FREEDOM_GUI_MOUSE_X` (macro, line 39) `#define FREEDOM_GUI_MOUSE_X`
+  - `FREEDOM_GUI_MOUSE_Y` (macro, line 40) `#define FREEDOM_GUI_MOUSE_Y`
+  - `FREEDOM_GUI_MOUSE_BUTTONS` (macro, line 41) `#define FREEDOM_GUI_MOUSE_BUTTONS`
+  - `FREEDOM_GUI_MOUSE_WHEEL` (macro, line 42) `#define FREEDOM_GUI_MOUSE_WHEEL`
+  - `FREEDOM_GUI_BUTTONS` (macro, line 44) `#define FREEDOM_GUI_BUTTONS`
+  - `FREEDOM_GUI_KEY_F4` (macro, line 46) `#define FREEDOM_GUI_KEY_F4`
+  - `FREEDOM_GUI_RGB_BPP` (macro, line 48) `#define FREEDOM_GUI_RGB_BPP`
+  - `FREEDOM_GUI_RGB_PRESENT` (macro, line 50) `#define FREEDOM_GUI_RGB_PRESENT`
 - Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`, `progs/minios_abi.h`
 
 ## progs/freedomui/ps2_keymap.c

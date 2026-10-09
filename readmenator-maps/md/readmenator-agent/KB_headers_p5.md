@@ -330,27 +330,28 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
 - Symbols:
   - `vma_node` (struct, line 21)
   - `vma_ctx_t` (struct, line 44)
-  - `vma_view_t` (struct, line 74)
+  - `vma_view_t` (struct, line 76)
   - `base` (type_alias, line 20) `typedef struct vma_node { unsigned long base;`
-  - `vma_tree_init` (function, line 62) `void vma_tree_init(void);`
-  - `vma_tree_insert` (function, line 63) `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);`
-  - `vma_tree_find` (function, line 64) `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);`
-  - `vma_tree_find_containing` (function, line 65) `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);`
-  - `vma_tree_delete` (function, line 66) `int vma_tree_delete(vma_node_t **root, unsigned long base);`
-  - `vma_ctx_init` (function, line 67) `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);`
-  - `vma_ctx_bind` (function, line 68) `void vma_ctx_bind(vma_ctx_t *c);`
-  - `vma_ctx_save` (function, line 69) `void vma_ctx_save(vma_ctx_t *c);`
-  - `vma_view_save` (function, line 83) `void vma_view_save(vma_view_t *v);`
-  - `vma_view_load` (function, line 84) `void vma_view_load(const vma_view_t *v);`
-  - `vma_ctx_alloc` (function, line 87) `vma_ctx_t *vma_ctx_alloc(void);`
-  - `vma_ctx_free` (function, line 88) `void vma_ctx_free(vma_ctx_t *c);`
-  - `VMA_NIL` (variable, line 54) `extern vma_node_t *VMA_NIL;`
-  - `vma_live_root` (variable, line 55) `extern vma_node_t *vma_live_root;`
-  - `vma_free_root` (variable, line 56) `extern vma_node_t *vma_free_root;`
-  - `vma_pool` (variable, line 57) `extern vma_node_t vma_pool[VMA_MAX];`
-  - `vma_pool_n` (variable, line 58) `extern int vma_pool_n;`
-  - `vma_pool_ptr` (variable, line 59) `extern vma_node_t *vma_pool_ptr;`
-  - `vma_legacy` (variable, line 60) `extern vma_ctx_t vma_legacy;`
+  - `vma_tree_init` (function, line 64) `void vma_tree_init(void);`
+  - `vma_tree_insert` (function, line 65) `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);`
+  - `vma_tree_find` (function, line 66) `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);`
+  - `vma_tree_find_containing` (function, line 67) `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);`
+  - `vma_tree_delete` (function, line 68) `int vma_tree_delete(vma_node_t **root, unsigned long base);`
+  - `vma_ctx_init` (function, line 69) `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);`
+  - `vma_ctx_bind` (function, line 70) `void vma_ctx_bind(vma_ctx_t *c);`
+  - `vma_ctx_save` (function, line 71) `void vma_ctx_save(vma_ctx_t *c);`
+  - `vma_view_save` (function, line 86) `void vma_view_save(vma_view_t *v);`
+  - `vma_view_load` (function, line 87) `void vma_view_load(const vma_view_t *v);`
+  - `vma_ctx_alloc` (function, line 90) `vma_ctx_t *vma_ctx_alloc(void);`
+  - `vma_ctx_free` (function, line 91) `void vma_ctx_free(vma_ctx_t *c);`
+  - `VMA_NIL` (variable, line 55) `extern vma_node_t *VMA_NIL;`
+  - `vma_live_root` (variable, line 56) `extern vma_node_t *vma_live_root;`
+  - `vma_free_root` (variable, line 57) `extern vma_node_t *vma_free_root;`
+  - `vma_pool` (variable, line 58) `extern vma_node_t vma_pool[VMA_MAX];`
+  - `vma_pool_n` (variable, line 59) `extern int vma_pool_n;`
+  - `vma_spare` (variable, line 60) `extern vma_node_t *vma_spare;`
+  - `vma_pool_ptr` (variable, line 61) `extern vma_node_t *vma_pool_ptr;`
+  - `vma_legacy` (variable, line 62) `extern vma_ctx_t vma_legacy;`
   - `VMA_H` (macro, line 2) `#define VMA_H`
   - `VMA_MAX` (macro, line 31) `#define VMA_MAX`
 - Imported by: `headers/kernel.h`, `headers/sched.h`, `headers/spawn.h`, `kernel/spawn.c`, `tests/test_fault.c`, `tests/test_vma.c`, `tests/test_vma_bench.c`, `vma.c`

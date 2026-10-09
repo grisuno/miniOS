@@ -77,12 +77,12 @@ Previous: [KB_tools.md](KB_tools.md)
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
   - `scenario_uefi` (function, line 167)
-  - `http_server_start` (function, line 1311)
-  - `http_server_stop` (function, line 1318)
-  - `http_fixture_start` (function, line 1323)
-  - `http_fixture_stop` (function, line 1330)
-  - `net_fixture_start` (function, line 1335)
-  - `net_fixture_stop` (function, line 1342)
+  - `http_server_start` (function, line 1318)
+  - `http_server_stop` (function, line 1325)
+  - `http_fixture_start` (function, line 1330)
+  - `http_fixture_stop` (function, line 1337)
+  - `net_fixture_start` (function, line 1342)
+  - `net_fixture_stop` (function, line 1349)
 
 ## tools/test_call_align.py
 - Doc: verify stack alignment at call sites, both parities.

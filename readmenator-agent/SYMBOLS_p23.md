@@ -3,6 +3,145 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `main` | function | `progs/src/shell.py:36` | `def main()` |
+| `run_capture` | function | `progs/src/shell.py:20` | `def run_capture(cmd, args)` |
+| `SPIN_WLA` | macro | `progs/src/spin.c:58` | `#define SPIN_WLA` |
+| `SPIN_WLB` | macro | `progs/src/spin.c:59` | `#define SPIN_WLB` |
+| `SPIN_WLH` | macro | `progs/src/spin.c:57` | `#define SPIN_WLH` |
+| `SPIN_WLW` | macro | `progs/src/spin.c:56` | `#define SPIN_WLW` |
+| `lmain` | function | `progs/src/spin.c:225` | `int lmain(long argc, char **argv)` |
+| `lx_atoi` | function | `progs/src/spin.c:42` | `static long lx_atoi(const char *s)` |
+| `lx_strlen` | function | `progs/src/spin.c:20` | `static unsigned long lx_strlen(const char *s)` |
+| `lx_syscall3` | function | `progs/src/spin.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
+| `lx_write` | function | `progs/src/spin.c:26` | `static void lx_write(const char *s)` |
+| `lx_write_int` | function | `progs/src/spin.c:30` | `static void lx_write_int(long v)` |
+| `spin_box_ok` | function | `progs/src/spin.c:82` | `static int spin_box_ok(const char *box)` |
+| `spin_emit` | function | `progs/src/spin.c:114` | `static int spin_emit(const char *box, unsigned int seq,         const unsigned char *msg, long mlen)` |
+| `spin_hdr` | function | `progs/src/spin.c:73` | `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,         unsigned long ...` |
+| `spin_hex8` | function | `progs/src/spin.c:95` | `static void spin_hex8(unsigned int v, char *dst)` |
+| `spin_pixels` | function | `progs/src/spin.c:169` | `static void spin_pixels(long off)` |
+| `spin_raw_file` | function | `progs/src/spin.c:145` | `static int spin_raw_file(const char *box)` |
+| `spin_u32` | function | `progs/src/spin.c:66` | `static void spin_u32(unsigned char *d, unsigned long v)` |
+| `spin_wl` | function | `progs/src/spin.c:181` | `static int spin_wl(const char *box, const char *narg)` |
+| `spin_write_all` | function | `progs/src/spin.c:104` | `static long spin_write_all(long fd, const unsigned char *buf, long len)` |
+| `add` | function | `progs/src/test.c:1` | `int add(int a, int b)` |
+| `main` | function | `progs/src/test.c:2` | `int main(void)` |
+| `check` | function | `progs/src/test.lua:12` | `` |
+| `read_file` | function | `progs/src/test.lua:30` | `` |
+| `test_bin_aes` | function | `progs/src/test.lua:175` | `` |
+| `test_bin_cp` | function | `progs/src/test.lua:135` | `` |
+| `test_bin_freedom` | function | `progs/src/test.lua:205` | `` |
+| `test_bin_json` | function | `progs/src/test.lua:194` | `` |
+| `test_bin_lz4` | function | `progs/src/test.lua:141` | `` |
+| `test_bin_lzss` | function | `progs/src/test.lua:158` | `` |
+| `test_dlmalloc` | function | `progs/src/test.lua:80` | `` |
+| `test_filesystem` | function | `progs/src/test.lua:53` | `` |
+| `test_ftest` | function | `progs/src/test.lua:90` | `` |
+| `test_hello` | function | `progs/src/test.lua:85` | `` |
+| `test_ld` | function | `progs/src/test.lua:100` | `` |
+| `test_minigcc` | function | `progs/src/test.lua:95` | `` |
+| `test_module_bindings` | function | `progs/src/test.lua:40` | `` |
+| `test_spawn_preserves_interpreter` | function | `progs/src/test.lua:122` | `` |
+| `test_stb` | function | `progs/src/test.lua:75` | `` |
+| `test_toolchain_roundtrip` | function | `progs/src/test.lua:112` | `` |
+| `test_xxhash` | function | `progs/src/test.lua:70` | `` |
+| `write_file` | function | `progs/src/test.lua:22` | `` |
+| `check` | function | `progs/src/test.py:15` | `def check(name, cond, detail)` |
+| `main` | function | `progs/src/test.py:261` | `def main()` |
+| `safe_run` | function | `progs/src/test.py:25` | `def safe_run()` |
+| `test_bin_aes` | function | `progs/src/test.py:209` | `def test_bin_aes()` |
+| `test_bin_cp` | function | `progs/src/test.py:148` | `def test_bin_cp()` |
+| `test_bin_freedom` | function | `progs/src/test.py:253` | `def test_bin_freedom()` |
+| `test_bin_json` | function | `progs/src/test.py:239` | `def test_bin_json()` |
+| `test_bin_lz4` | function | `progs/src/test.py:153` | `def test_bin_lz4()` |
+| `test_bin_lzss` | function | `progs/src/test.py:181` | `def test_bin_lzss()` |
+| `test_dlmalloc` | function | `progs/src/test.py:82` | `def test_dlmalloc()` |
+| `test_filesystem` | function | `progs/src/test.py:56` | `def test_filesystem()` |
+| `test_ftest` | function | `progs/src/test.py:92` | `def test_ftest()` |
+| `test_hello` | function | `progs/src/test.py:87` | `def test_hello()` |
+| `test_ld` | function | `progs/src/test.py:102` | `def test_ld()` |
+| `test_minigcc` | function | `progs/src/test.py:97` | `def test_minigcc()` |
+| `test_module_bindings` | function | `progs/src/test.py:38` | `def test_module_bindings()` |
+| `test_spawn_preserves_interpreter` | function | `progs/src/test.py:134` | `def test_spawn_preserves_interpreter()` |
+| `test_stb` | function | `progs/src/test.py:77` | `def test_stb()` |
+| `test_toolchain_roundtrip` | function | `progs/src/test.py:119` | `def test_toolchain_roundtrip()` |
+| `test_xxhash` | function | `progs/src/test.py:72` | `def test_xxhash()` |
+| `BUFSZ` | macro | `progs/src/thdemo.c:24` | `#define BUFSZ` |
+| `EXPECTED_N` | macro | `progs/src/thdemo.c:26` | `#define EXPECTED_N` |
+| `EXPECTED_SUM` | macro | `progs/src/thdemo.c:27` | `#define EXPECTED_SUM` |
+| `NCONS` | macro | `progs/src/thdemo.c:22` | `#define NCONS` |
+| `NPROD` | macro | `progs/src/thdemo.c:21` | `#define NPROD` |
+| `PER_PROD` | macro | `progs/src/thdemo.c:23` | `#define PER_PROD` |
+| `consumer` | function | `progs/src/thdemo.c:57` | `static void *consumer(void *p)` |
+| `main` | function | `progs/src/thdemo.c:82` | `int main(void)` |
+| `producer` | function | `progs/src/thdemo.c:36` | `static void *producer(void *p)` |
+| `threads` | function | `progs/src/thdemo.c:3` | `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall...` |
+| `main` | function | `progs/src/w1.c:3` | `int main(void)` |
+| `write` | function | `progs/src/w1.c:1` | `int write(int fd, char *buf, int n);` |
+| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_main.c:15` | `#define _DEFAULT_SOURCE` |
+| `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_main.c:14` | `#define _POSIX_C_SOURCE` |
+| `main` | function | `progs/tls_u/tls_u_main.c:61` | `int main(int argc, char **argv)` |
+| `parse_port` | function | `progs/tls_u/tls_u_main.c:47` | `static int parse_port(const char *s)` |
+| `syscall` | function | `progs/tls_u/tls_u_main.c:10` | `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).  * The kernel keeps servi...` |
+| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_port.c:13` | `#define _DEFAULT_SOURCE` |
+| `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_port.c:12` | `#define _POSIX_C_SOURCE` |
+| `answer` | function | `progs/tls_u/tls_u_port.c:163` | `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));` |
+| `net_dns_resolve` | function | `progs/tls_u/tls_u_port.c:183` | `int net_dns_resolve(const char *host)` |
+| `parse_quad` | function | `progs/tls_u/tls_u_port.c:122` | `static int parse_quad(const char *s, unsigned *ip_out)` |
+| `sockets` | function | `progs/tls_u/tls_u_port.c:5` | `* sockets: on the host they are host sockets (used by the  * openssl-s_server interop test), insi...` |
+| `tls_close` | function | `progs/tls_u/tls_u_port.c:67` | `void tls_close(int fd)` |
+| `tls_free_fd` | function | `progs/tls_u/tls_u_port.c:66` | `void tls_free_fd(int fd);` |
+| `tls_now_days` | function | `progs/tls_u/tls_u_port.c:72` | `long tls_now_days(void)` |
+| `tls_random` | function | `progs/tls_u/tls_u_port.c:78` | `void tls_random(unsigned char *out, unsigned len)` |
+| `tls_u_close` | function | `progs/tls_u/tls_u_port.c:55` | `void tls_u_close(int fd)` |
+| `tls_u_recv` | function | `progs/tls_u/tls_u_port.c:39` | `int tls_u_recv(int fd, char *buf, int len)` |
+| `tls_u_recv_timeout` | function | `progs/tls_u/tls_u_port.c:44` | `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)` |
+| `tls_u_resolve` | function | `progs/tls_u/tls_u_port.c:147` | `int tls_u_resolve(const char *host, unsigned *ip_out)` |
+| `u_raw_syscall3` | function | `progs/tls_u/tls_u_port.c:99` | `static long u_raw_syscall3(long n, long a1, long a2, long a3)` |
+| `D_HEAD` | macro | `progs/topogpt3/topogpt3.c:70` | `#define D_HEAD` |
+| `D_LAT_Q` | macro | `progs/topogpt3/topogpt3.c:82` | `#define D_LAT_Q` |
+| `D_MODEL` | macro | `progs/topogpt3/topogpt3.c:66` | `#define D_MODEL` |
+| `D_QUAT` | macro | `progs/topogpt3/topogpt3.c:71` | `#define D_QUAT` |
+| `EMBED_INNER` | macro | `progs/topogpt3/topogpt3.c:90` | `#define EMBED_INNER` |
+| `EOS_TOKEN` | macro | `progs/topogpt3/topogpt3.c:89` | `#define EOS_TOKEN` |
+| `EPS_RMS` | macro | `progs/topogpt3/topogpt3.c:92` | `#define EPS_RMS` |
+| `EXPERT_INNER` | macro | `progs/topogpt3/topogpt3.c:87` | `#define EXPERT_INNER` |
+| `FILE` | struct | `progs/topogpt3/topogpt3.c:24` | `` |
+| `FREQ_W` | macro | `progs/topogpt3/topogpt3.c:85` | `#define FREQ_W` |
+| `GQA_GROUPS` | macro | `progs/topogpt3/topogpt3.c:69` | `#define GQA_GROUPS` |
+| `LayerWeights` | struct | `progs/topogpt3/topogpt3.c:176` | `` |
+| `MAX_LINE` | macro | `progs/topogpt3/topogpt3.c:96` | `#define MAX_LINE` |
+| `MAX_PROMPT_LEN` | macro | `progs/topogpt3/topogpt3.c:95` | `#define MAX_PROMPT_LEN` |
+| `MAX_SEQ_LEN` | macro | `progs/topogpt3/topogpt3.c:73` | `#define MAX_SEQ_LEN` |
+| `MAX_TOKENS` | macro | `progs/topogpt3/topogpt3.c:94` | `#define MAX_TOKENS` |
+| `MOE_TOP_K` | macro | `progs/topogpt3/topogpt3.c:75` | `#define MOE_TOP_K` |
+| `ModelWeights` | struct | `progs/topogpt3/topogpt3.c:224` | `` |
+| `NULL` | macro | `progs/topogpt3/topogpt3.c:43` | `#define NULL` |
+| `N_ANGULAR` | macro | `progs/topogpt3/topogpt3.c:78` | `#define N_ANGULAR` |
+| `N_EDGES` | macro | `progs/topogpt3/topogpt3.c:80` | `#define N_EDGES` |
+| `N_EDGE_TYPES` | macro | `progs/topogpt3/topogpt3.c:79` | `#define N_EDGE_TYPES` |
+| `N_EXPERTS` | macro | `progs/topogpt3/topogpt3.c:74` | `#define N_EXPERTS` |
+| `N_HEADS` | macro | `progs/topogpt3/topogpt3.c:67` | `#define N_HEADS` |
+| `N_KV_HEADS` | macro | `progs/topogpt3/topogpt3.c:68` | `#define N_KV_HEADS` |
+| `N_LAYERS` | macro | `progs/topogpt3/topogpt3.c:72` | `#define N_LAYERS` |
+| `N_NODES` | macro | `progs/topogpt3/topogpt3.c:76` | `#define N_NODES` |
+| `N_RADIAL` | macro | `progs/topogpt3/topogpt3.c:77` | `#define N_RADIAL` |
+| `N_SPECTRAL_LAYERS` | macro | `progs/topogpt3/topogpt3.c:86` | `#define N_SPECTRAL_LAYERS` |
+| `PI` | macro | `progs/topogpt3/topogpt3.c:91` | `#define PI` |
+| `READOUT_INNER` | macro | `progs/topogpt3/topogpt3.c:88` | `#define READOUT_INNER` |
+| `READ_TENSOR` | macro | `progs/topogpt3/topogpt3.c:1310` | `#define READ_TENSOR(dest, count)` |
+| `READ_TENSOR16` | macro | `progs/topogpt3/topogpt3.c:1480` | `#define READ_TENSOR16(dest, count)` |
+| `SEEK_CUR` | macro | `progs/topogpt3/topogpt3.c:45` | `#define SEEK_CUR` |
+| `SEEK_END` | macro | `progs/topogpt3/topogpt3.c:46` | `#define SEEK_END` |
+| `SEEK_SET` | macro | `progs/topogpt3/topogpt3.c:44` | `#define SEEK_SET` |
+| `SKIP_TENSOR` | macro | `progs/topogpt3/topogpt3.c:1300` | `#define SKIP_TENSOR()` |
+| `SKIP_TENSOR16` | macro | `progs/topogpt3/topogpt3.c:1470` | `#define SKIP_TENSOR16()` |
+| `SPECTRAL_LATENT_DIM` | macro | `progs/topogpt3/topogpt3.c:81` | `#define SPECTRAL_LATENT_DIM` |
+| `TOK_TAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:97` | `#define TOK_TAB_SIZE` |
+| `TOK_VOCAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:98` | `#define TOK_VOCAB_SIZE` |
+| `TORUS_GRID_H` | macro | `progs/topogpt3/topogpt3.c:83` | `#define TORUS_GRID_H` |
+| `TORUS_GRID_W` | macro | `progs/topogpt3/topogpt3.c:84` | `#define TORUS_GRID_W` |
+| `TORUS_TEMP` | macro | `progs/topogpt3/topogpt3.c:93` | `#define TORUS_TEMP` |
 | `VOCAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:65` | `#define VOCAB_SIZE` |
 | `apply_repetition_penalty` | function | `progs/topogpt3/topogpt3.c:1216` | `static void apply_repetition_penalty(float *logits, int n, const int *tokens,                    ...` |
 | `apply_temperature` | function | `progs/topogpt3/topogpt3.c:1210` | `static void apply_temperature(float *logits, int n, float temp)` |
@@ -357,144 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `wl_mbox_hex` | function | `progs/wl/wl_mbox.h:74` | `static inline int wl_mbox_hex(unsigned int v, char *dst)` |
 | `wl_mbox_init` | function | `progs/wl/wl_mbox.h:36` | `static inline void wl_mbox_init(wl_mbox_box_t *boxes)` |
 | `wl_mbox_name` | function | `progs/wl/wl_mbox.h:103` | `static inline int wl_mbox_name(char *dst, int cap, const char *box,         unsigned int seq)` |
-| `wl_mbox_parse` | function | `progs/wl/wl_mbox.h:147` | `static inline int wl_mbox_parse(const char *path, char *box, int boxcap,         unsigned int *seq)` |
-| `wl_mbox_raw_name` | function | `progs/wl/wl_mbox.h:194` | `static inline int wl_mbox_raw_name(char *dst, int cap, const char *box)` |
-| `wl_mbox_route` | function | `progs/wl/wl_mbox.h:409` | `static inline int wl_mbox_route(wl_comp_t *c, wl_mbox_box_t *boxes,         const char *box, unsi...` |
-| `wl_mbox_unhex` | function | `progs/wl/wl_mbox.h:87` | `static inline int wl_mbox_unhex(char ch, unsigned int *v)` |
-| `WLCOMP_BG` | macro | `progs/wl/wl_mini.h:509` | `#define WLCOMP_BG` |
-| `WLCOMP_BORDER` | macro | `progs/wl/wl_mini.h:510` | `#define WLCOMP_BORDER` |
-| `WL_ATTACH_SZ` | macro | `progs/wl/wl_mini.h:28` | `#define WL_ATTACH_SZ` |
-| `WL_CFG_DEFAULT` | macro | `progs/wl/wl_mini.h:69` | `#define WL_CFG_DEFAULT` |
-| `WL_CLIP_MAX` | macro | `progs/wl/wl_mini.h:905` | `#define WL_CLIP_MAX` |
-| `WL_CLOSE_INK` | macro | `progs/wl/wl_mini.h:243` | `#define WL_CLOSE_INK` |
-| `WL_CLOSE_W` | macro | `progs/wl/wl_mini.h:239` | `#define WL_CLOSE_W` |
-| `WL_COMMIT_SZ` | macro | `progs/wl/wl_mini.h:29` | `#define WL_COMMIT_SZ` |
-| `WL_ERR_BOUND` | macro | `progs/wl/wl_mini.h:32` | `#define WL_ERR_BOUND` |
-| `WL_ERR_ID` | macro | `progs/wl/wl_mini.h:35` | `#define WL_ERR_ID` |
-| `WL_ERR_MORE` | macro | `progs/wl/wl_mini.h:37` | `#define WL_ERR_MORE` |
-| `WL_ERR_OK` | macro | `progs/wl/wl_mini.h:31` | `#define WL_ERR_OK` |
-| `WL_ERR_SIZE` | macro | `progs/wl/wl_mini.h:34` | `#define WL_ERR_SIZE` |
-| `WL_ERR_STR` | macro | `progs/wl/wl_mini.h:36` | `#define WL_ERR_STR` |
-| `WL_ERR_TRUNC` | macro | `progs/wl/wl_mini.h:33` | `#define WL_ERR_TRUNC` |
-| `WL_EV_MAGIC` | macro | `progs/wl/wl_mini.h:964` | `#define WL_EV_MAGIC` |
-| `WL_EV_SC_MAX` | macro | `progs/wl/wl_mini.h:965` | `#define WL_EV_SC_MAX` |
-| `WL_EV_SZ` | macro | `progs/wl/wl_mini.h:966` | `#define WL_EV_SZ` |
-| `WL_HDR_SZ` | macro | `progs/wl/wl_mini.h:27` | `#define WL_HDR_SZ` |
-| `WL_HIT_BODY` | macro | `progs/wl/wl_mini.h:246` | `#define WL_HIT_BODY` |
-| `WL_HIT_CLOSE` | macro | `progs/wl/wl_mini.h:248` | `#define WL_HIT_CLOSE` |
-| `WL_HIT_NONE` | macro | `progs/wl/wl_mini.h:245` | `#define WL_HIT_NONE` |
-| `WL_HIT_RESIZE` | macro | `progs/wl/wl_mini.h:249` | `#define WL_HIT_RESIZE` |
-| `WL_HIT_TITLE` | macro | `progs/wl/wl_mini.h:247` | `#define WL_HIT_TITLE` |
-| `WL_ID_BUFFER_BASE` | macro | `progs/wl/wl_mini.h:46` | `#define WL_ID_BUFFER_BASE` |
-| `WL_ID_CLIPBOARD` | macro | `progs/wl/wl_mini.h:902` | `#define WL_ID_CLIPBOARD` |
-| `WL_ID_COMPOSITOR` | macro | `progs/wl/wl_mini.h:41` | `#define WL_ID_COMPOSITOR` |
-| `WL_ID_DISPLAY` | macro | `progs/wl/wl_mini.h:39` | `#define WL_ID_DISPLAY` |
-| `WL_ID_POOL_BASE` | macro | `progs/wl/wl_mini.h:45` | `#define WL_ID_POOL_BASE` |
-| `WL_ID_REGISTRY` | macro | `progs/wl/wl_mini.h:40` | `#define WL_ID_REGISTRY` |
-| `WL_ID_SHM` | macro | `progs/wl/wl_mini.h:42` | `#define WL_ID_SHM` |
-| `WL_ID_SURFACE_BASE` | macro | `progs/wl/wl_mini.h:44` | `#define WL_ID_SURFACE_BASE` |
-| `WL_ID_XDG_BASE` | macro | `progs/wl/wl_mini.h:43` | `#define WL_ID_XDG_BASE` |
-| `WL_IFACE_COUNT` | macro | `progs/wl/wl_mini.h:1185` | `#define WL_IFACE_COUNT` |
-| `WL_MAX_MSG` | macro | `progs/wl/wl_mini.h:20` | `#define WL_MAX_MSG` |
-| `WL_MAX_POOLS` | macro | `progs/wl/wl_mini.h:23` | `#define WL_MAX_POOLS` |
-| `WL_MAX_STR` | macro | `progs/wl/wl_mini.h:21` | `#define WL_MAX_STR` |
-| `WL_MAX_SURFACES` | macro | `progs/wl/wl_mini.h:22` | `#define WL_MAX_SURFACES` |
-| `WL_MINI_H` | macro | `progs/wl/wl_mini.h:18` | `#define WL_MINI_H` |
-| `WL_OP_CLIPBOARD_GET` | macro | `progs/wl/wl_mini.h:904` | `#define WL_OP_CLIPBOARD_GET` |
-| `WL_OP_CLIPBOARD_SET` | macro | `progs/wl/wl_mini.h:903` | `#define WL_OP_CLIPBOARD_SET` |
-| `WL_OP_COMPOSITOR_CREATE_SURFACE` | macro | `progs/wl/wl_mini.h:50` | `#define WL_OP_COMPOSITOR_CREATE_SURFACE` |
-| `WL_OP_DISPLAY_GET_REGISTRY` | macro | `progs/wl/wl_mini.h:48` | `#define WL_OP_DISPLAY_GET_REGISTRY` |
-| `WL_OP_POOL_CREATE_BUFFER` | macro | `progs/wl/wl_mini.h:52` | `#define WL_OP_POOL_CREATE_BUFFER` |
-| `WL_OP_REGISTRY_BIND` | macro | `progs/wl/wl_mini.h:49` | `#define WL_OP_REGISTRY_BIND` |
-| `WL_OP_SHM_CREATE_POOL` | macro | `progs/wl/wl_mini.h:51` | `#define WL_OP_SHM_CREATE_POOL` |
-| `WL_OP_SURFACE_ATTACH` | macro | `progs/wl/wl_mini.h:53` | `#define WL_OP_SURFACE_ATTACH` |
-| `WL_OP_SURFACE_COMMIT` | macro | `progs/wl/wl_mini.h:54` | `#define WL_OP_SURFACE_COMMIT` |
-| `WL_OP_XDG_GET_TOPLEVEL` | macro | `progs/wl/wl_mini.h:55` | `#define WL_OP_XDG_GET_TOPLEVEL` |
-| `WL_POOL_MAX` | macro | `progs/wl/wl_mini.h:26` | `#define WL_POOL_MAX` |
-| `WL_RESIZE_EDGE` | macro | `progs/wl/wl_mini.h:240` | `#define WL_RESIZE_EDGE` |
-| `WL_STREAM_CAP` | macro | `progs/wl/wl_mini.h:1122` | `#define WL_STREAM_CAP` |
-| `WL_SURF_MAX_H` | macro | `progs/wl/wl_mini.h:25` | `#define WL_SURF_MAX_H` |
-| `WL_SURF_MAX_W` | macro | `progs/wl/wl_mini.h:24` | `#define WL_SURF_MAX_W` |
-| `WL_TITLE_ACTIVE` | macro | `progs/wl/wl_mini.h:241` | `#define WL_TITLE_ACTIVE` |
-| `WL_TITLE_H` | macro | `progs/wl/wl_mini.h:238` | `#define WL_TITLE_H` |
-| `WL_TITLE_INACTIVE` | macro | `progs/wl/wl_mini.h:242` | `#define WL_TITLE_INACTIVE` |
-| `body` | function | `progs/wl/wl_mini.h:698` | `* resampled into the body (inside the 1 px border, below the title),  * the exact rect wl_ev_map ...` |
-| `coords` | function | `progs/wl/wl_mini.h:959` | `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw...` |
-| `wl_attach_decode` | function | `progs/wl/wl_mini.h:842` | `static inline int wl_attach_decode(const unsigned char *src, int len,         unsigned int *pool,...` |
-| `wl_attach_encode` | function | `progs/wl/wl_mini.h:823` | `static inline int wl_attach_encode(unsigned char *dst, int cap,         unsigned int pool, int w,...` |
-| `wl_cfg_t` | struct | `progs/wl/wl_mini.h:63` | `` |
-| `wl_client_init` | function | `progs/wl/wl_mini.h:1092` | `static inline void wl_client_init(wl_client_t *cl)` |
-| `wl_client_pool` | function | `progs/wl/wl_mini.h:1109` | `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)` |
-| `wl_client_surface` | function | `progs/wl/wl_mini.h:1100` | `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)` |
-| `wl_client_t` | struct | `progs/wl/wl_mini.h:1086` | `` |
-| `wl_clip_decode` | function | `progs/wl/wl_mini.h:930` | `static inline int wl_clip_decode(const unsigned char *src, int len,         unsigned char *dst, i...` |
-| `wl_clip_encode` | function | `progs/wl/wl_mini.h:907` | `static inline int wl_clip_encode(unsigned char *dst, int cap,         const unsigned char *text, ...` |
-| `wl_commit_decode` | function | `progs/wl/wl_mini.h:883` | `static inline int wl_commit_decode(const unsigned char *src, int len,         unsigned int *id)` |
-| `wl_commit_encode` | function | `progs/wl/wl_mini.h:870` | `static inline int wl_commit_encode(unsigned char *dst, int cap,         unsigned int id)` |
-| `wl_comp_add` | function | `progs/wl/wl_mini.h:309` | `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)` |
-| `wl_comp_attach_buf` | function | `progs/wl/wl_mini.h:1218` | `static inline int wl_comp_attach_buf(wl_comp_t *c, unsigned int id,         unsigned int pool, in...` |
-| `wl_comp_focus` | function | `progs/wl/wl_mini.h:372` | `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)` |
-| `wl_comp_hit` | function | `progs/wl/wl_mini.h:397` | `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)` |
-| `wl_comp_init` | function | `progs/wl/wl_mini.h:271` | `static inline void wl_comp_init(wl_comp_t *c)` |
-| `wl_comp_layout_tile` | function | `progs/wl/wl_mini.h:577` | `static inline int wl_comp_layout_tile(wl_comp_t *c, int fb_w, int fb_h)` |
-| `wl_comp_refresh_active` | function | `progs/wl/wl_mini.h:289` | `static inline void wl_comp_refresh_active(wl_comp_t *c)` |
-| `wl_comp_remove` | function | `progs/wl/wl_mini.h:345` | `static inline int wl_comp_remove(wl_comp_t *c, unsigned int id)` |
-| `wl_comp_set_color` | function | `progs/wl/wl_mini.h:487` | `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)` |
-| `wl_comp_set_minimized` | function | `progs/wl/wl_mini.h:460` | `static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,         int minimized)` |
-| `wl_comp_set_rect` | function | `progs/wl/wl_mini.h:550` | `static inline int wl_comp_set_rect(wl_comp_t *c, unsigned int id,         int x, int y, int w, in...` |
-| `wl_comp_t` | struct | `progs/wl/wl_mini.h:264` | `` |
-| `wl_comp_top_visible` | function | `progs/wl/wl_mini.h:441` | `static inline int wl_comp_top_visible(const wl_comp_t *c)` |
-| `wl_dispatch` | function | `progs/wl/wl_mini.h:1245` | `static inline int wl_dispatch(wl_comp_t *c, wl_client_t *cl,         unsigned int id, unsigned in...` |
-| `wl_ev_decode` | function | `progs/wl/wl_mini.h:1008` | `static inline int wl_ev_decode(const unsigned char *src, int len,         wl_ev_t *ev)` |
-| `wl_ev_encode` | function | `progs/wl/wl_mini.h:978` | `static inline int wl_ev_encode(unsigned char *dst, int cap,         const wl_ev_t *ev)` |
-| `wl_ev_map` | function | `progs/wl/wl_mini.h:1051` | `static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,         int sh, int rw, int r...` |
-| `wl_ev_t` | struct | `progs/wl/wl_mini.h:968` | `` |
-| `wl_hdr_decode` | function | `progs/wl/wl_mini.h:99` | `static inline int wl_hdr_decode(const unsigned char *src, int len,         wl_hdr_t *out)` |
-| `wl_hdr_encode` | function | `progs/wl/wl_mini.h:71` | `static inline int wl_hdr_encode(unsigned char *dst, int cap,         unsigned int id, unsigned in...` |
-| `wl_hdr_t` | struct | `progs/wl/wl_mini.h:57` | `` |
-| `wl_iface_find` | function | `progs/wl/wl_mini.h:1187` | `static inline int wl_iface_find(const char *name)` |
-| `wl_iface_t` | struct | `progs/wl/wl_mini.h:1179` | `` |
-| `wl_pool_fit` | function | `progs/wl/wl_mini.h:223` | `static inline int wl_pool_fit(int w, int h)` |
-| `wl_pool_id_valid` | function | `progs/wl/wl_mini.h:219` | `static inline int wl_pool_id_valid(unsigned int id)` |
-| `wl_scale_nearest` | function | `progs/wl/wl_mini.h:793` | `static inline int wl_scale_nearest(unsigned char *dst, int dw, int dh,         const unsigned cha...` |
-| `wl_str_decode` | function | `progs/wl/wl_mini.h:188` | `static inline int wl_str_decode(const unsigned char *src, int len, int off,         char *dst, in...` |
-| `wl_str_encode` | function | `progs/wl/wl_mini.h:163` | `static inline int wl_str_encode(unsigned char *dst, int cap, int off,         const char *s)` |
-| `wl_stream_consume` | function | `progs/wl/wl_mini.h:1166` | `static inline int wl_stream_consume(wl_stream_t *s, int n)` |
-| `wl_stream_feed` | function | `progs/wl/wl_mini.h:1135` | `static inline int wl_stream_feed(wl_stream_t *s, const unsigned char *src,         int n)` |
-| `wl_stream_init` | function | `progs/wl/wl_mini.h:1129` | `static inline void wl_stream_init(wl_stream_t *s)` |
-| `wl_stream_next` | function | `progs/wl/wl_mini.h:1150` | `static inline int wl_stream_next(wl_stream_t *s, int *size)` |
-| `wl_stream_t` | struct | `progs/wl/wl_mini.h:1124` | `` |
-| `wl_strlen_bounded` | function | `progs/wl/wl_mini.h:150` | `static inline int wl_strlen_bounded(const char *s)` |
-| `wl_surface_hit_zone` | function | `progs/wl/wl_mini.h:415` | `static inline int wl_surface_hit_zone(const wl_surface_t *s, int x, int y)` |
-| `wl_surface_id_valid` | function | `progs/wl/wl_mini.h:214` | `static inline int wl_surface_id_valid(unsigned int id)` |
-| `wl_surface_t` | struct | `progs/wl/wl_mini.h:251` | `` |
-| `wl_u32_decode` | function | `progs/wl/wl_mini.h:139` | `static inline int wl_u32_decode(const unsigned char *src, int len, int off,         unsigned int *v)` |
-| `wl_u32_encode` | function | `progs/wl/wl_mini.h:128` | `static inline int wl_u32_encode(unsigned char *dst, int cap, int off,         unsigned int v)` |
-| `wlcomp_blit` | function | `progs/wl/wl_mini.h:637` | `static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h, ...` |
-| `wlcomp_render` | function | `progs/wl/wl_mini.h:512` | `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h)` |
-| `MINIOS_WL_PIXBUF_H` | macro | `progs/wl/wl_pixbuf.h:17` | `#define MINIOS_WL_PIXBUF_H` |
-| `WPIX_BUDGET_MAX` | macro | `progs/wl/wl_pixbuf.h:44` | `#define WPIX_BUDGET_MAX` |
-| `WPIX_MAX_H` | macro | `progs/wl/wl_pixbuf.h:36` | `#define WPIX_MAX_H` |
-| `WPIX_MAX_SLOTS` | macro | `progs/wl/wl_pixbuf.h:28` | `#define WPIX_MAX_SLOTS` |
-| `WPIX_MAX_W` | macro | `progs/wl/wl_pixbuf.h:32` | `#define WPIX_MAX_W` |
-| `WPIX_SLOT_MAX` | macro | `progs/wl/wl_pixbuf.h:40` | `#define WPIX_SLOT_MAX` |
-| `wpix_commit` | function | `progs/wl/wl_pixbuf.h:175` | `static int wpix_commit(struct wpix_store *s, int idx, const unsigned char *src, int w, int h)` |
-| `wpix_drop` | function | `progs/wl/wl_pixbuf.h:127` | `static void wpix_drop(struct wpix_store *s, int idx)` |
-| `wpix_dst` | function | `progs/wl/wl_pixbuf.h:121` | `static unsigned char *wpix_dst(struct wpix_store *s)` |
-| `wpix_ensure` | function | `progs/wl/wl_pixbuf.h:153` | `static int wpix_ensure(struct wpix_store *s, int idx, int w, int h)` |
-| `wpix_free` | function | `progs/wl/wl_pixbuf.h:78` | `static void wpix_free(struct wpix_store *s)` |
-| `wpix_init` | function | `progs/wl/wl_pixbuf.h:63` | `static int wpix_init(struct wpix_store *s)` |
-| `wpix_ptr` | function | `progs/wl/wl_pixbuf.h:107` | `static unsigned char *wpix_ptr(struct wpix_store *s, int idx)` |
-| `wpix_raw` | function | `progs/wl/wl_pixbuf.h:115` | `static unsigned char *wpix_raw(struct wpix_store *s)` |
-| `wpix_slot` | struct | `progs/wl/wl_pixbuf.h:48` | `` |
-| `wpix_store` | struct | `progs/wl/wl_pixbuf.h:55` | `` |
-| `wpix_tmp` | function | `progs/wl/wl_pixbuf.h:136` | `static int wpix_tmp(struct wpix_store *s, size_t need)` |
-| `wpix_used` | function | `progs/wl/wl_pixbuf.h:95` | `static size_t wpix_used(const struct wpix_store *s)` |
-| `WLCOMP_CFG_DEFAULT` | macro | `progs/wl/wlcomp.c:53` | `#define WLCOMP_CFG_DEFAULT` |
-| `WLCOMP_H` | macro | `progs/wl/wlcomp.c:40` | `#define WLCOMP_H` |
-| `WLCOMP_W` | macro | `progs/wl/wlcomp.c:39` | `#define WLCOMP_W` |
-| `forever` | function | `progs/wl/wlcomp.c:844` | `* one of the WL_MAX_SURFACES slots forever (eight bad names used to lock  * every real client out...` |
-| `main` | function | `progs/wl/wlcomp.c:1467` | `int main(int argc, char **argv)` |
-| `wlclient_find` | function | `progs/wl/wlcomp.c:1005` | `static const wlclient_pat_t *wlclient_find(const char *name)` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

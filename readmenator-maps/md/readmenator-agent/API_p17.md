@@ -170,38 +170,41 @@ Imported by: `tests/test_freedom_wl.c`
 - `main` (function) `progs/src/ldhello.c:1` `int main(void)`
 
 ## progs/src/lxabi.c
-Depends on: `kernel/string.c`, `kernel/time.c`
-- `report` (function) `progs/src/lxabi.c:58` `static void report(const char *name, int ok, const char *detail)`
-- `now_ms` (function) `progs/src/lxabi.c:68` `static long now_ms(void)`
-- `busy_wait_ms` (function) `progs/src/lxabi.c:74` `static void busy_wait_ms(long ms)`
-- `fork_probe` (function) `progs/src/lxabi.c:88` `static void fork_probe(uint64_t *out)` -- Raw clone(SIGCHLD) with known values in every callee-saved register and in * the argument registers; both sides...
-- `regs_match` (function) `progs/src/lxabi.c:125` `static int regs_match(const uint64_t *r)`
-- `check_fork_registers` (function) `progs/src/lxabi.c:131` `static void check_fork_registers(void)`
-- `check_fork_cow_kernel_write` (function) `progs/src/lxabi.c:153` `static void check_fork_cow_kernel_write(void)`
-- `worker` (function) `progs/src/lxabi.c:194` `static void *worker(void *arg)`
-- `check_threads` (function) `progs/src/lxabi.c:208` `static void check_threads(void)`
-- `detached_worker` (function) `progs/src/lxabi.c:238` `static void *detached_worker(void *arg)`
-- `check_detached_reaped` (function) `progs/src/lxabi.c:244` `static void check_detached_reaped(void)`
-- `signaller` (function) `progs/src/lxabi.c:268` `static void *signaller(void *arg)`
-- `check_condvar` (function) `progs/src/lxabi.c:278` `static void check_condvar(void)`
-- `check_pipe2_flags` (function) `progs/src/lxabi.c:300` `static void check_pipe2_flags(void)`
-- `check_pipe_blocking` (function) `progs/src/lxabi.c:327` `static void check_pipe_blocking(void)`
-- `check_pipe_epipe` (function) `progs/src/lxabi.c:349` `static void check_pipe_epipe(void)`
-- `check_writev_pipe` (function) `progs/src/lxabi.c:360` `static void check_writev_pipe(void)`
-- `check_poll` (function) `progs/src/lxabi.c:372` `static void check_poll(void)`
-- `check_eventfd` (function) `progs/src/lxabi.c:396` `static void check_eventfd(void)`
-- `check_close_range` (function) `progs/src/lxabi.c:421` `static void check_close_range(void)`
-- `check_time` (function) `progs/src/lxabi.c:433` `static void check_time(void)`
-- `check_mkdir` (function) `progs/src/lxabi.c:442` `static void check_mkdir(void)`
-- `lxabi_sleeper` (function) `progs/src/lxabi.c:454` `static void *lxabi_sleeper(void *arg)` -- } static void check_mkdir(void) { int rc = mkdir(LXABI_MKDIR_PATH, 0700); int ok = rc == 0 || errno == EEXIST; FILE...
-- `child_status` (function) `progs/src/lxabi.c:462` `static int child_status(void (*body)(void))` -- Fork a child that runs body, wait for it with a bounded spin and return * its wait status, or -1 when it never ended...
-- `abort_from_worker_body` (function) `progs/src/lxabi.c:482` `static void abort_from_worker_body(void)`
-- `lxabi_exit_group_worker` (function) `progs/src/lxabi.c:488` `static void *lxabi_exit_group_worker(void *arg)`
-- `exit_group_from_worker_body` (function) `progs/src/lxabi.c:494` `static void exit_group_from_worker_body(void)`
-- `wild_jump_body` (function) `progs/src/lxabi.c:500` `static void wild_jump_body(void)`
-- `process` (function) `progs/src/lxabi.c:508` `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
+Depends on: `headers/sched.h`, `kernel/string.c`, `kernel/time.c`
+- `report` (function) `progs/src/lxabi.c:64` `static void report(const char *name, int ok, const char *detail)`
+- `now_ms` (function) `progs/src/lxabi.c:74` `static long now_ms(void)`
+- `busy_wait_ms` (function) `progs/src/lxabi.c:80` `static void busy_wait_ms(long ms)`
+- `fork_probe` (function) `progs/src/lxabi.c:94` `static void fork_probe(uint64_t *out)` -- Raw clone(SIGCHLD) with known values in every callee-saved register and in * the argument registers; both sides...
+- `regs_match` (function) `progs/src/lxabi.c:131` `static int regs_match(const uint64_t *r)`
+- `check_fork_registers` (function) `progs/src/lxabi.c:137` `static void check_fork_registers(void)`
+- `check_fork_cow_kernel_write` (function) `progs/src/lxabi.c:159` `static void check_fork_cow_kernel_write(void)`
+- `worker` (function) `progs/src/lxabi.c:200` `static void *worker(void *arg)`
+- `check_threads` (function) `progs/src/lxabi.c:214` `static void check_threads(void)`
+- `detached_worker` (function) `progs/src/lxabi.c:244` `static void *detached_worker(void *arg)`
+- `check_detached_reaped` (function) `progs/src/lxabi.c:250` `static void check_detached_reaped(void)`
+- `signaller` (function) `progs/src/lxabi.c:274` `static void *signaller(void *arg)`
+- `check_condvar` (function) `progs/src/lxabi.c:284` `static void check_condvar(void)`
+- `check_pipe2_flags` (function) `progs/src/lxabi.c:306` `static void check_pipe2_flags(void)`
+- `check_pipe_blocking` (function) `progs/src/lxabi.c:333` `static void check_pipe_blocking(void)`
+- `check_pipe_epipe` (function) `progs/src/lxabi.c:355` `static void check_pipe_epipe(void)`
+- `check_writev_pipe` (function) `progs/src/lxabi.c:381` `static void check_writev_pipe(void)`
+- `check_poll` (function) `progs/src/lxabi.c:393` `static void check_poll(void)`
+- `check_eventfd` (function) `progs/src/lxabi.c:417` `static void check_eventfd(void)`
+- `check_close_range` (function) `progs/src/lxabi.c:442` `static void check_close_range(void)`
+- `check_time` (function) `progs/src/lxabi.c:454` `static void check_time(void)`
+- `check_mkdir` (function) `progs/src/lxabi.c:463` `static void check_mkdir(void)`
+- `check_limits` (function) `progs/src/lxabi.c:477` `static void check_limits(void)` -- The answers glibc sizes memory from: a finite stack limit (thread stacks default to it) and a CPU count that matches...
+- `mono_us` (function) `progs/src/lxabi.c:490` `static long mono_us(void)`
+- `check_sleep` (function) `progs/src/lxabi.c:499` `static void check_sleep(void)` -- Sleeps really wait: nanosleep for a relative interval, clock_nanosleep until an absolute monotonic deadline, and a...
+- `lxabi_sleeper` (function) `progs/src/lxabi.c:526` `static void *lxabi_sleeper(void *arg)` -- rc = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &abs_t, NULL); waited = mono_us() - t0...
+- `child_status` (function) `progs/src/lxabi.c:534` `static int child_status(void (*body)(void))` -- Fork a child that runs body, wait for it with a bounded spin and return * its wait status, or -1 when it never ended...
+- `abort_from_worker_body` (function) `progs/src/lxabi.c:554` `static void abort_from_worker_body(void)`
+- `lxabi_exit_group_worker` (function) `progs/src/lxabi.c:560` `static void *lxabi_exit_group_worker(void *arg)`
+- `exit_group_from_worker_body` (function) `progs/src/lxabi.c:566` `static void exit_group_from_worker_body(void)`
+- `wild_jump_body` (function) `progs/src/lxabi.c:572` `static void wild_jump_body(void)`
+- `process` (function) `progs/src/lxabi.c:580` `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
  * leaves the target aliv...`
-- `main` (function) `progs/src/lxabi.c:535` `int main(void)`
+- `main` (function) `progs/src/lxabi.c:617` `int main(void)`
 
 ## progs/src/lxhello.c
 - `lx_syscall3` (function) `progs/src/lxhello.c:11` `static long lx_syscall3(long n, long a1, long a2, long a3)`
@@ -212,15 +215,15 @@ Depends on: `kernel/string.c`, `kernel/time.c`
 
 ## progs/src/lxnet.c
 Depends on: `kernel/string.c`
-- `report` (function) `progs/src/lxnet.c:48` `static void report(const char *name, int ok, const char *detail)`
-- `wait_for` (function) `progs/src/lxnet.c:54` `static int wait_for(int fd, short events)`
-- `read_all` (function) `progs/src/lxnet.c:61` `static int read_all(int fd, char *buf, size_t len)` -- static void report(const char *name, int ok, const char *detail) { if (ok) printf("lxnet: %s ok\n", name); else {...
-- `check_udp` (function) `progs/src/lxnet.c:72` `static void check_udp(const struct sockaddr_in *peer)`
-- `check_refused` (function) `progs/src/lxnet.c:143` `static void check_refused(const struct sockaddr_in *peer)` -- A non-blocking connect to a port nobody listens on fails through poll * (POLLERR) with SO_ERROR = ECONNREFUSED...
-- `check_tcp` (function) `progs/src/lxnet.c:167` `static void check_tcp(const struct sockaddr_in *peer)`
-- `check_misc` (function) `progs/src/lxnet.c:210` `static void check_misc(void)`
-- `dial` (function) `progs/src/lxnet.c:229` `static int dial(const char *host, const char *port)` -- if (fd >= 0) close(fd); struct addrinfo hints, *res = NULL; memset(&hints, 0, sizeof hints); hints.ai_family =...
-- `main` (function) `progs/src/lxnet.c:273` `int main(int argc, char **argv)`
+- `report` (function) `progs/src/lxnet.c:49` `static void report(const char *name, int ok, const char *detail)`
+- `wait_for` (function) `progs/src/lxnet.c:55` `static int wait_for(int fd, short events)`
+- `read_all` (function) `progs/src/lxnet.c:62` `static int read_all(int fd, char *buf, size_t len)` -- static void report(const char *name, int ok, const char *detail) { if (ok) printf("lxnet: %s ok\n", name); else {...
+- `check_udp` (function) `progs/src/lxnet.c:73` `static void check_udp(const struct sockaddr_in *peer)`
+- `check_refused` (function) `progs/src/lxnet.c:150` `static void check_refused(const struct sockaddr_in *peer)` -- A non-blocking connect to a port nobody listens on fails through poll * (POLLERR) with SO_ERROR = ECONNREFUSED...
+- `check_tcp` (function) `progs/src/lxnet.c:174` `static void check_tcp(const struct sockaddr_in *peer)`
+- `check_misc` (function) `progs/src/lxnet.c:217` `static void check_misc(void)`
+- `dial` (function) `progs/src/lxnet.c:236` `static int dial(const char *host, const char *port)` -- if (fd >= 0) close(fd); struct addrinfo hints, *res = NULL; memset(&hints, 0, sizeof hints); hints.ai_family =...
+- `main` (function) `progs/src/lxnet.c:280` `int main(int argc, char **argv)`
 
 ## progs/src/lxsecc.c
 Depends on: `kernel/string.c`
@@ -240,6 +243,14 @@ Depends on: `kernel/string.c`
 - `check_prctl_flags` (function) `progs/src/lxsecc.c:177` `static void check_prctl_flags(void)`
 - `check_proc_self_exe` (function) `progs/src/lxsecc.c:197` `static void check_proc_self_exe(const char *argv0)`
 - `main` (function) `progs/src/lxsecc.c:215` `int main(int argc, char **argv)`
+
+## progs/src/lxtls.c
+Depends on: `kernel/string.c`
+- `lxtls_sink` (function) `progs/src/lxtls.c:39` `static size_t lxtls_sink(char *data, size_t size, size_t nmemb, void *user)` -- Count the body without storing it: the probe proves transport, not * content.
+- `lxtls_debug` (function) `progs/src/lxtls.c:46` `static int lxtls_debug(CURL *h, curl_infotype type, char *data, size_t size, void *user)` -- Count the body without storing it: the probe proves transport, not * content. static size_t lxtls_sink(char *data...
+- `lxtls_step` (function) `progs/src/lxtls.c:65` `static int lxtls_step(const char *name, int ok)` -- return 0; for (i = 0; i <= size; i++) { if (i == size || data[i] == '\n') { size_t len = i - start; if (len > 0 &&...
+- `lxtls_rand` (function) `progs/src/lxtls.c:73` `static int lxtls_rand(void)` -- } fflush(stdout); return 0; } /* Report one RAND step and, on failure, OpenSSL's error queue. static int...
+- `main` (function) `progs/src/lxtls.c:87` `int main(int argc, char **argv)`
 
 ## progs/src/lz4.c
 - `kernel` (function) `progs/src/lz4.c:6` `* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends...`
@@ -319,7 +330,7 @@ Imported by: `progs/src/fptest.c`, `progs/src/scfuzz.c`, `progs/src/thdemo.c`
 - `mmutex_unlock` (function) `progs/src/mthreads.h:90` `static inline void mmutex_unlock(mmutex_t *m)`
 - `mthread_entry` (function) `progs/src/mthreads.h:98` `static void mthread_entry(void *p)` -- Thread entry trampoline: runs fn(arg), stores the return, exits 0. * The exit code is always 0; join reads retval...
 - `mthread_create` (function) `progs/src/mthreads.h:117` `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
-- `mthread_join` (function) `progs/src/mthreads.h:140` `static int mthread_join(mthread_t t, void **retval)`
+- `mthread_join` (function) `progs/src/mthreads.h:144` `static int mthread_join(mthread_t t, void **retval)` -- Join: wait4 (Linux semantics) answers the reaped pid and stores the status word; the thread always exits 0, so a...
 
 ## progs/src/mtop.c
 - `syscall` (function) `progs/src/mtop.c:12` `* * All system figures come from the MINFO syscall (251): heap used / * free, ramdisk used / cap, MiniFS free /...`

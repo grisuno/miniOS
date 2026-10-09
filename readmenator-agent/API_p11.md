@@ -1,6 +1,45 @@
 # API (page 11 of 19)
 Previous: [API_p10.md](API_p10.md)
 
+## progs/doomgeneric/i_sound.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/sounds.h`
+- `I_InitSound` (function) `progs/doomgeneric/i_sound.h:152` `void I_InitSound(boolean use_sfx_prefix);`
+- `I_ShutdownSound` (function) `progs/doomgeneric/i_sound.h:153` `void I_ShutdownSound(void);`
+- `I_GetSfxLumpNum` (function) `progs/doomgeneric/i_sound.h:154` `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo);`
+- `I_UpdateSound` (function) `progs/doomgeneric/i_sound.h:155` `void I_UpdateSound(void);`
+- `I_UpdateSoundParams` (function) `progs/doomgeneric/i_sound.h:156` `void I_UpdateSoundParams(int channel, int vol, int sep);`
+- `I_StartSound` (function) `progs/doomgeneric/i_sound.h:157` `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep);`
+- `I_StopSound` (function) `progs/doomgeneric/i_sound.h:158` `void I_StopSound(int channel);`
+- `I_PrecacheSounds` (function) `progs/doomgeneric/i_sound.h:160` `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);`
+- `I_InitMusic` (function) `progs/doomgeneric/i_sound.h:217` `void I_InitMusic(void);`
+- `I_ShutdownMusic` (function) `progs/doomgeneric/i_sound.h:218` `void I_ShutdownMusic(void);`
+- `I_SetMusicVolume` (function) `progs/doomgeneric/i_sound.h:219` `void I_SetMusicVolume(int volume);`
+- `I_PauseSong` (function) `progs/doomgeneric/i_sound.h:220` `void I_PauseSong(void);`
+- `I_ResumeSong` (function) `progs/doomgeneric/i_sound.h:221` `void I_ResumeSong(void);`
+- `I_RegisterSong` (function) `progs/doomgeneric/i_sound.h:222` `void *I_RegisterSong(void *data, int len);`
+- `I_UnRegisterSong` (function) `progs/doomgeneric/i_sound.h:223` `void I_UnRegisterSong(void *handle);`
+- `I_PlaySong` (function) `progs/doomgeneric/i_sound.h:224` `void I_PlaySong(void *handle, boolean looping);`
+- `I_StopSong` (function) `progs/doomgeneric/i_sound.h:225` `void I_StopSong(void);`
+- `I_BindSoundVariables` (function) `progs/doomgeneric/i_sound.h:235` `void I_BindSoundVariables(void);`
+
+## progs/doomgeneric/i_system.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
+- `I_AtExit` (function) `progs/doomgeneric/i_system.c:73` `void I_AtExit(atexit_func_t func, boolean run_on_error)`
+- `I_Tactile` (function) `progs/doomgeneric/i_system.c:87` `void I_Tactile(int on, int off, int total)`
+- `AutoAllocMemory` (function) `progs/doomgeneric/i_system.c:95` `static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)`
+- `I_ZoneBase` (function) `progs/doomgeneric/i_system.c:133` `byte *I_ZoneBase (int *size)`
+- `I_PrintBanner` (function) `progs/doomgeneric/i_system.c:166` `void I_PrintBanner(char *msg)`
+- `I_PrintDivider` (function) `progs/doomgeneric/i_system.c:177` `void I_PrintDivider(void)`
+- `I_PrintStartupBanner` (function) `progs/doomgeneric/i_system.c:189` `void I_PrintStartupBanner(char *gamedescription)`
+- `I_ConsoleStdout` (function) `progs/doomgeneric/i_system.c:210` `boolean I_ConsoleStdout(void)`
+- `I_Quit` (function) `progs/doomgeneric/i_system.c:246` `void I_Quit (void)`
+- `ZenityAvailable` (function) `progs/doomgeneric/i_system.c:272` `static int ZenityAvailable(void)`
+- `EscapeShellString` (function) `progs/doomgeneric/i_system.c:280` `static char *EscapeShellString(char *string)`
+- `ZenityErrorBox` (function) `progs/doomgeneric/i_system.c:323` `static int ZenityErrorBox(char *message)`
+- `I_Error` (function) `progs/doomgeneric/i_system.c:359` `void I_Error (char *error, ...)`
+- `I_GetMemoryValue` (function) `progs/doomgeneric/i_system.c:502` `boolean I_GetMemoryValue(unsigned int offset, void *value, int size)`
+
 ## progs/doomgeneric/i_system.h
 Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_ticcmd.h`
 Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_fixed.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_sight.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_segs.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`, `progs/doomgeneric/z_zone.c`
@@ -453,37 +492,6 @@ Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`
 - `NET_CL_SendTiccmd` (function) `progs/doomgeneric/net_client.h:31` `void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic);`
 - `NET_Init` (function) `progs/doomgeneric/net_client.h:33` `void NET_Init(void);`
 - `NET_BindVariables` (function) `progs/doomgeneric/net_client.h:35` `void NET_BindVariables(void);`
-
-## progs/doomgeneric/net_dedicated.h
-Imported by: `progs/doomgeneric/d_main.c`
-- `NET_DedicatedServer` (function) `progs/doomgeneric/net_dedicated.h:21` `void NET_DedicatedServer(void);`
-
-## progs/doomgeneric/net_gui.h
-Depends on: `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/d_loop.c`
-- `NET_WaitForLaunch` (function) `progs/doomgeneric/net_gui.h:26` `extern void NET_WaitForLaunch(void);`
-
-## progs/doomgeneric/net_io.h
-Depends on: `progs/doomgeneric/net_defs.h`
-Imported by: `progs/doomgeneric/d_loop.c`
-- `NET_NewContext` (function) `progs/doomgeneric/net_io.h:25` `net_context_t *NET_NewContext(void);`
-- `NET_AddModule` (function) `progs/doomgeneric/net_io.h:26` `void NET_AddModule(net_context_t *context, net_module_t *module);`
-- `NET_SendPacket` (function) `progs/doomgeneric/net_io.h:27` `void NET_SendPacket(net_addr_t *addr, net_packet_t *packet);`
-- `NET_SendBroadcast` (function) `progs/doomgeneric/net_io.h:28` `void NET_SendBroadcast(net_context_t *context, net_packet_t *packet);`
-- `NET_AddrToString` (function) `progs/doomgeneric/net_io.h:31` `char *NET_AddrToString(net_addr_t *addr);`
-- `NET_FreeAddress` (function) `progs/doomgeneric/net_io.h:32` `void NET_FreeAddress(net_addr_t *addr);`
-- `NET_ResolveAddress` (function) `progs/doomgeneric/net_io.h:33` `net_addr_t *NET_ResolveAddress(net_context_t *context, char *address);`
-
-## progs/doomgeneric/net_packet.h
-Depends on: `progs/doomgeneric/net_defs.h`
-- `NET_NewPacket` (function) `progs/doomgeneric/net_packet.h:23` `net_packet_t *NET_NewPacket(int initial_size);`
-- `NET_PacketDup` (function) `progs/doomgeneric/net_packet.h:24` `net_packet_t *NET_PacketDup(net_packet_t *packet);`
-- `NET_FreePacket` (function) `progs/doomgeneric/net_packet.h:25` `void NET_FreePacket(net_packet_t *packet);`
-- `NET_ReadString` (function) `progs/doomgeneric/net_packet.h:35` `char *NET_ReadString(net_packet_t *packet);`
-- `NET_WriteInt8` (function) `progs/doomgeneric/net_packet.h:37` `void NET_WriteInt8(net_packet_t *packet, unsigned int i);`
-- `NET_WriteInt16` (function) `progs/doomgeneric/net_packet.h:38` `void NET_WriteInt16(net_packet_t *packet, unsigned int i);`
-- `NET_WriteInt32` (function) `progs/doomgeneric/net_packet.h:39` `void NET_WriteInt32(net_packet_t *packet, unsigned int i);`
-- `NET_WriteString` (function) `progs/doomgeneric/net_packet.h:41` `void NET_WriteString(net_packet_t *packet, char *string);`
 
 
 Next: [API_p12.md](API_p12.md)

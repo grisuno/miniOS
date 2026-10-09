@@ -362,18 +362,22 @@ sta...`
 - Depends on: `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/rtc.h`, `headers/sched.h`, `headers/vga_fb.h`
 
 ## kernel/mm.c
-- Doc: kmalloc_aligned: Docstring: Aligned allocation with a recoverable raw pointer.
+- Doc: kheap_ram_top: RAM top from the CMOS extended-memory count (the identity map covers the first...
 - Layer: utility
 - Language: c
 - Symbols:
-  - `kallocator_init` (function, line 13) `void kallocator_init(void)`
-  - `kmalloc` (function, line 21) `void *kmalloc(unsigned long size)`
-  - `kfree` (function, line 28) `void kfree(void *ptr)`
-  - `kcalloc` (function, line 49) `void *kcalloc(unsigned long nmemb, unsigned long size)`
-  - `krealloc` (function, line 53) `void *krealloc(void *ptr, unsigned long size)`
-  - `kmalloc_aligned` (function, line 65) `void *kmalloc_aligned(unsigned long size, unsigned long align)`
-  - `kfree_aligned` (function, line 81) `void kfree_aligned(void *ptr)`
-- Depends on: `headers/sched.h`
+  - `kheap_ram_top` (function, line 19) `static unsigned long kheap_ram_top(void)`
+  - `kallocator_init` (function, line 32) `void kallocator_init(void)`
+  - `kmalloc_report_failure` (function, line 53) `static void kmalloc_report_failure(unsigned long size)`
+  - `kmalloc` (function, line 66) `void *kmalloc(unsigned long size)`
+  - `kmalloc_page` (function, line 81) `void *kmalloc_page(void)`
+  - `kfree` (function, line 90) `void kfree(void *ptr)`
+  - `kcalloc` (function, line 111) `void *kcalloc(unsigned long nmemb, unsigned long size)`
+  - `krealloc` (function, line 115) `void *krealloc(void *ptr, unsigned long size)`
+  - `kmalloc_aligned` (function, line 127) `void *kmalloc_aligned(unsigned long size, unsigned long align)`
+  - `kfree_aligned` (function, line 143) `void kfree_aligned(void *ptr)`
+  - `KMALLOC_REPORT_EVERY` (macro, line 50) `#define KMALLOC_REPORT_EVERY`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/sched.h`
 
 ## kernel/panic.c
 - Doc: Docstring: kernel/panic.c -- Kernel panic screen.
@@ -470,28 +474,6 @@ sta...`
   - `ERR_EOPNOTSUPP` (macro, line 46) `#define ERR_EOPNOTSUPP`
   - `SEC_STRICT_LEN` (macro, line 72) `#define SEC_STRICT_LEN`
 - Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`, `headers/seccomp_bpf.h`, `headers/syscalls_proc.h`
-
-## kernel/rcu.c
-- Doc: Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks.
-- Layer: utility
-- Language: c
-- Symbols:
-  - `rcu_slot_t` (struct, line 22)
-  - `rcu_state_t` (struct, line 28)
-  - `rcu_me` (function, line 13) `static cpu_t *rcu_me(void)`
-  - `rcu_me` (function, line 17) `static cpu_t *rcu_me(void)`
-  - `rcu_cpu_valid` (function, line 40) `static int rcu_cpu_valid(int cpu)`
-  - `rcu_init` (function, line 45) `void rcu_init(void)`
-  - `rcu_read_lock` (function, line 63) `void rcu_read_lock(void)`
-  - `rcu_read_unlock` (function, line 75) `void rcu_read_unlock(void)`
-  - `rcu_deref` (function, line 88) `void *rcu_deref(void *volatile *pp)`
-  - `rcu_publish` (function, line 94) `void rcu_publish(void *volatile *pp, void *v)`
-  - `rcu_note_tick` (function, line 126) `void rcu_note_tick(int cpu)`
-  - `rcu_note_idle` (function, line 137) `void rcu_note_idle(int cpu)`
-  - `rcu_poll` (function, line 152) `void rcu_poll(void)`
-  - `expires` (function, line 193) `* expires (ticks stalled, never a hang). No completion assert is
- * possible here by design: a re...`
-- Depends on: `headers/rcu.h`
 
 
 Next: [KB_kernel_p2.md](KB_kernel_p2.md)

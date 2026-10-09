@@ -3,6 +3,130 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `SC_A` | macro | `progs/minicraft/minicraft.c:130` | `#define SC_A` |
+| `SC_B` | macro | `progs/minicraft/minicraft.c:139` | `#define SC_B` |
+| `SC_BACK` | macro | `progs/minicraft/minicraft.c:142` | `#define SC_BACK` |
+| `SC_C` | macro | `progs/minicraft/minicraft.c:137` | `#define SC_C` |
+| `SC_CTRL` | macro | `progs/minicraft/minicraft.c:149` | `#define SC_CTRL` |
+| `SC_D` | macro | `progs/minicraft/minicraft.c:132` | `#define SC_D` |
+| `SC_E` | macro | `progs/minicraft/minicraft.c:122` | `#define SC_E` |
+| `SC_ENTER` | macro | `progs/minicraft/minicraft.c:141` | `#define SC_ENTER` |
+| `SC_ESC` | macro | `progs/minicraft/minicraft.c:117` | `#define SC_ESC` |
+| `SC_F` | macro | `progs/minicraft/minicraft.c:133` | `#define SC_F` |
+| `SC_G` | macro | `progs/minicraft/minicraft.c:134` | `#define SC_G` |
+| `SC_I` | macro | `progs/minicraft/minicraft.c:126` | `#define SC_I` |
+| `SC_J` | macro | `progs/minicraft/minicraft.c:129` | `#define SC_J` |
+| `SC_K` | macro | `progs/minicraft/minicraft.c:135` | `#define SC_K` |
+| `SC_L` | macro | `progs/minicraft/minicraft.c:136` | `#define SC_L` |
+| `SC_LSHIFT` | macro | `progs/minicraft/minicraft.c:147` | `#define SC_LSHIFT` |
+| `SC_N` | macro | `progs/minicraft/minicraft.c:140` | `#define SC_N` |
+| `SC_O` | macro | `progs/minicraft/minicraft.c:127` | `#define SC_O` |
+| `SC_P` | macro | `progs/minicraft/minicraft.c:128` | `#define SC_P` |
+| `SC_Q` | macro | `progs/minicraft/minicraft.c:120` | `#define SC_Q` |
+| `SC_R` | macro | `progs/minicraft/minicraft.c:123` | `#define SC_R` |
+| `SC_RSHIFT` | macro | `progs/minicraft/minicraft.c:148` | `#define SC_RSHIFT` |
+| `SC_S` | macro | `progs/minicraft/minicraft.c:131` | `#define SC_S` |
+| `SC_SPACE` | macro | `progs/minicraft/minicraft.c:146` | `#define SC_SPACE` |
+| `SC_T` | macro | `progs/minicraft/minicraft.c:124` | `#define SC_T` |
+| `SC_U` | macro | `progs/minicraft/minicraft.c:125` | `#define SC_U` |
+| `SC_V` | macro | `progs/minicraft/minicraft.c:138` | `#define SC_V` |
+| `SC_W` | macro | `progs/minicraft/minicraft.c:121` | `#define SC_W` |
+| `SER_STASH_CAP` | macro | `progs/minicraft/minicraft.c:369` | `#define SER_STASH_CAP` |
+| `SaveHeader` | struct | `progs/minicraft/minicraft.c:2892` | `` |
+| `SaveHeaderV3` | struct | `progs/minicraft/minicraft.c:2878` | `` |
+| `__attribute__` | function | `progs/minicraft/minicraft.c:473` | `static long __attribute__((unused)) s_tone(long f)` |
+| `beep` | function | `progs/minicraft/minicraft.c:478` | `static void beep(long freq, long dur_ms)` |
+| `best_tool_for` | function | `progs/minicraft/minicraft.c:231` | `static int best_tool_for(unsigned char b)` |
+| `biome_desert` | function | `progs/minicraft/minicraft.c:893` | `static int biome_desert(int x, int y, unsigned int seed)` |
+| `biome_fdiv` | function | `progs/minicraft/minicraft.c:846` | `static int biome_fdiv(int v, int c)` |
+| `biome_snow` | function | `progs/minicraft/minicraft.c:897` | `static int biome_snow(int x, int y, unsigned int seed)` |
+| `biome_voro` | function | `progs/minicraft/minicraft.c:869` | `static int biome_voro(int x, int y, unsigned int seed, int cell,     int ox, int oy, unsigned int...` |
+| `block_intersects_player` | function | `progs/minicraft/minicraft.c:2404` | `static int block_intersects_player(int bx, int by, int bz)` |
+| `break_beep_for` | function | `progs/minicraft/minicraft.c:275` | `static long break_beep_for(unsigned char b)` |
+| `break_time_ms` | function | `progs/minicraft/minicraft.c:250` | `static long break_time_ms(unsigned char b, int tool)` |
+| `build_palette` | function | `progs/minicraft/minicraft.c:503` | `static void build_palette(void)` |
+| `cam_build` | function | `progs/minicraft/minicraft.c:1892` | `static void cam_build(void)` |
+| `carve_blob` | function | `progs/minicraft/minicraft.c:3108` | `static void carve_blob(const unsigned char *blob)` |
+| `cast_ray` | function | `progs/minicraft/minicraft.c:1659` | `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)` |
+| `census` | function | `progs/minicraft/minicraft.c:3606` | `static int census(void)` |
+| `chunk_build_meta` | function | `progs/minicraft/minicraft.c:658` | `static void chunk_build_meta(int slot)` |
+| `chunk_ensure` | function | `progs/minicraft/minicraft.c:635` | `static int chunk_ensure(int cx, int cy)` |
+| `chunk_evict_slot` | function | `progs/minicraft/minicraft.c:615` | `static int chunk_evict_slot(int cx, int cy)` |
+| `chunk_find` | function | `progs/minicraft/minicraft.c:592` | `static int chunk_find(int cx, int cy)` |
+| `chunk_lidx` | function | `progs/minicraft/minicraft.c:586` | `static int chunk_lidx(int lx, int ly, int z)` |
+| `chunk_local` | function | `progs/minicraft/minicraft.c:581` | `static int chunk_local(int v)` |
+| `chunk_of` | function | `progs/minicraft/minicraft.c:577` | `static int chunk_of(int v)` |
+| `chunk_path` | function | `progs/minicraft/minicraft.c:2938` | `static void chunk_path(int cx, int cy, char *out, size_t n)` |
+| `col_recompute` | function | `progs/minicraft/minicraft.c:703` | `static void col_recompute(int x, int y)` |
+| `col_top_at` | function | `progs/minicraft/minicraft.c:728` | `static int col_top_at(int x, int y)` |
+| `creep_has_los` | function | `progs/minicraft/minicraft.c:1337` | `static int creep_has_los(Pig *c)` |
+| `creep_sense` | function | `progs/minicraft/minicraft.c:1325` | `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)` |
+| `creep_separate` | function | `progs/minicraft/minicraft.c:1361` | `static void creep_separate(Pig *p, int id, float dt)` |
+| `creeper_explode` | function | `progs/minicraft/minicraft.c:1257` | `static void creeper_explode(Pig *c, long now)` |
+| `decorate_chunk` | function | `progs/minicraft/minicraft.c:1043` | `static void decorate_chunk(int slot)` |
+| `decorate_column` | function | `progs/minicraft/minicraft.c:995` | `static void decorate_column(int x, int y, unsigned int seed)` |
+| `dumpstats` | function | `progs/minicraft/minicraft.c:3670` | `static int dumpstats(void)` |
+| `ensure_around` | function | `progs/minicraft/minicraft.c:1090` | `static void ensure_around(void)` |
+| `ensure_around_px` | function | `progs/minicraft/minicraft.c:1056` | `static void ensure_around_px(float px, float py)` |
+| `eye_z` | function | `progs/minicraft/minicraft.c:1750` | `static float eye_z(void)` |
+| `face_color` | function | `progs/minicraft/minicraft.c:1520` | `static unsigned char face_color(unsigned char b, int face)` |
+| `gen_terrain_chunk` | function | `progs/minicraft/minicraft.c:1034` | `static void gen_terrain_chunk(int slot)` |
+| `get_b` | function | `progs/minicraft/minicraft.c:764` | `static unsigned char get_b(int x, int y, int z)` |
+| `goal_text` | function | `progs/minicraft/minicraft.c:2608` | `static const char *goal_text(void)` |
+| `ground_h_seed` | function | `progs/minicraft/minicraft.c:909` | `static int ground_h_seed(int x, int y, unsigned int seed)` |
+| `hash2` | function | `progs/minicraft/minicraft.c:823` | `static unsigned int hash2(int x, int y)` |
+| `hash2_seed` | function | `progs/minicraft/minicraft.c:830` | `static unsigned int hash2_seed(int x, int y, unsigned int seed)` |
+| `hurt` | function | `progs/minicraft/minicraft.c:2424` | `static void hurt(int dmg, const char *why)` |
+| `in_water_at` | function | `progs/minicraft/minicraft.c:814` | `static int in_water_at(float x, float y, float z)` |
+| `in_world` | function | `progs/minicraft/minicraft.c:562` | `static int in_world(int x, int y, int z)` |
+| `inv_add` | function | `progs/minicraft/minicraft.c:931` | `static int inv_add(int b, int n)` |
+| `inv_remove` | function | `progs/minicraft/minicraft.c:945` | `static int inv_remove(int b, int n)` |
+| `is_cave` | function | `progs/minicraft/minicraft.c:901` | `static int is_cave(int x, int y, int z, unsigned int seed)` |
+| `is_solid` | function | `progs/minicraft/minicraft.c:811` | `static int is_solid(unsigned char b)` |
+| `is_visible` | function | `progs/minicraft/minicraft.c:819` | `static int is_visible(unsigned char b)` |
+| `kbd_drain` | function | `progs/minicraft/minicraft.c:428` | `static void kbd_drain(void)` |
+| `light_recompute_col` | function | `progs/minicraft/minicraft.c:735` | `static void light_recompute_col(int x, int y)` |
+| `load_apply_player` | function | `progs/minicraft/minicraft.c:3175` | `static void load_apply_player(const SaveHeader *hd)` |
+| `load_chunk_file` | function | `progs/minicraft/minicraft.c:2974` | `static int load_chunk_file(int slot, int cx, int cy)` |
+| `load_reset_runtime` | function | `progs/minicraft/minicraft.c:3075` | `static void load_reset_runtime(void)` |
+| `load_world` | function | `progs/minicraft/minicraft.c:3271` | `static int load_world(void)` |
+| `load_world_legacy` | function | `progs/minicraft/minicraft.c:3137` | `static int load_world_legacy(FILE *f)` |
+| `load_world_v2` | function | `progs/minicraft/minicraft.c:3234` | `static int load_world_v2(FILE *f, SaveHeader *hd)` |
+| `load_world_v3` | function | `progs/minicraft/minicraft.c:3194` | `static int load_world_v3(FILE *f, SaveHeader *hd)` |
+| `main` | function | `progs/minicraft/minicraft.c:4095` | `int main(int argc, char **argv)` |
+| `mc_block_name` | function | `progs/minicraft/minicraft.c:1857` | `static const char *mc_block_name(unsigned char b)` |
+| `mc_crc32` | function | `progs/minicraft/minicraft.c:2919` | `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)` |
+| `mc_facing` | function | `progs/minicraft/minicraft.c:1877` | `static char mc_facing(void)` |
+| `mc_glyph` | function | `progs/minicraft/minicraft.c:1817` | `static int mc_glyph(char ch)` |
+| `mc_pixel` | function | `progs/minicraft/minicraft.c:1825` | `static void mc_pixel(int x, int y, unsigned char c)` |
+| `mc_smoothstep` | function | `progs/minicraft/minicraft.c:839` | `static float mc_smoothstep(float t)` |
+| `mc_text` | function | `progs/minicraft/minicraft.c:1831` | `static void mc_text(int x, int y, const char *s, unsigned char fg)` |
+| `mc_text_bg` | function | `progs/minicraft/minicraft.c:1844` | `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)` |
+| `mc_toggle_zoom` | function | `progs/minicraft/minicraft.c:316` | `static void mc_toggle_zoom(void)` |
+| `menu_ser_key` | function | `progs/minicraft/minicraft.c:391` | `static long menu_ser_key(long b)` |
+| `mob_pixel` | function | `progs/minicraft/minicraft.c:1945` | `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)` |
+| `mob_spawn_one` | function | `progs/minicraft/minicraft.c:1191` | `static void mob_spawn_one(Pig *m, int id, int hp, long now)` |
+| `move_x` | function | `progs/minicraft/minicraft.c:2379` | `static void move_x(float nx)` |
+| `move_y` | function | `progs/minicraft/minicraft.c:2384` | `static void move_y(float ny)` |
+| `move_z_abs` | function | `progs/minicraft/minicraft.c:2389` | `static MoveResult move_z_abs(float nz)` |
+| `new_world` | function | `progs/minicraft/minicraft.c:1095` | `static void new_world(unsigned int seed)` |
+| `pal_set` | function | `progs/minicraft/minicraft.c:497` | `static void pal_set(int i, int r, int g, int b)` |
+| `pause_menu` | function | `progs/minicraft/minicraft.c:3922` | `static int pause_menu(int *seed_io)` |
+| `pig_collides` | function | `progs/minicraft/minicraft.c:1243` | `static int pig_collides(float x, float y, float z)` |
+| `player_collides` | function | `progs/minicraft/minicraft.c:2355` | `static int player_collides(float x, float y, float z)` |
+| `poll_kbd` | function | `progs/minicraft/minicraft.c:2162` | `static void poll_kbd(void)` |
+| `render_frame` | function | `progs/minicraft/minicraft.c:2038` | `static void render_frame(void)` |
+| `render_mob_array` | function | `progs/minicraft/minicraft.c:1979` | `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,     float rx, float r...` |
+| `render_pigs` | function | `progs/minicraft/minicraft.c:2030` | `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)` |
+| `render_terrain` | function | `progs/minicraft/minicraft.c:1910` | `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,                       ...` |
+| `s_getc_raw` | function | `progs/minicraft/minicraft.c:359` | `static long s_getc_raw(void)` |
+| `s_kbd` | function | `progs/minicraft/minicraft.c:342` | `static long s_kbd(void)` |
+| `s_kbd_raw` | function | `progs/minicraft/minicraft.c:347` | `static long s_kbd_raw(long on)` |
+| `s_mouse` | function | `progs/minicraft/minicraft.c:453` | `static long s_mouse(int *m)` |
+| `s_pal` | function | `progs/minicraft/minicraft.c:438` | `static long s_pal(const unsigned char *p)` |
+| `s_pcspk_init` | function | `progs/minicraft/minicraft.c:468` | `static long s_pcspk_init(void)` |
+| `s_present` | function | `progs/minicraft/minicraft.c:443` | `static long s_present(void)` |
+| `s_time_ms` | function | `progs/minicraft/minicraft.c:337` | `static long s_time_ms(void)` |
 | `s_title` | function | `progs/minicraft/minicraft.c:448` | `static long s_title(const char *t)` |
 | `s_vga` | function | `progs/minicraft/minicraft.c:433` | `static long s_vga(long on)` |
 | `s_yield` | function | `progs/minicraft/minicraft.c:463` | `static void s_yield(void)` |
@@ -36,23 +160,23 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MINIOS_ABI_CHECKSUM` | macro | `progs/minios_abi.h:45` | `#define MINIOS_ABI_CHECKSUM` |
 | `MINIOS_ABI_H` | macro | `progs/minios_abi.h:2` | `#define MINIOS_ABI_H` |
 | `MINIOS_ABI_VERSION` | macro | `progs/minios_abi.h:41` | `#define MINIOS_ABI_VERSION` |
-| `MINIOS_DEV_MMIO_VBASE` | macro | `progs/minios_abi.h:209` | `#define MINIOS_DEV_MMIO_VBASE` |
+| `MINIOS_DEV_MMIO_VBASE` | macro | `progs/minios_abi.h:214` | `#define MINIOS_DEV_MMIO_VBASE` |
 | `MINIOS_DOOM_BACKBUF_ADDR` | macro | `progs/minios_abi.h:135` | `#define MINIOS_DOOM_BACKBUF_ADDR` |
 | `MINIOS_DOOM_H` | macro | `progs/minios_abi.h:137` | `#define MINIOS_DOOM_H` |
 | `MINIOS_DOOM_W` | macro | `progs/minios_abi.h:136` | `#define MINIOS_DOOM_W` |
-| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:427` | `#define MINIOS_EABI_MISMATCH` |
+| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:436` | `#define MINIOS_EABI_MISMATCH` |
 | `MINIOS_FB_ADDR` | macro | `progs/minios_abi.h:138` | `#define MINIOS_FB_ADDR` |
-| `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:215` | `#define MINIOS_FB_HEIGHT_MAX` |
-| `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:214` | `#define MINIOS_FB_WIDTH_MAX` |
-| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:397` | `#define MINIOS_GFX_BUF_GAME` |
-| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:398` | `#define MINIOS_GFX_BUF_NK` |
-| `MINIOS_GFX_BUF_NK_RGB` | macro | `progs/minios_abi.h:399` | `#define MINIOS_GFX_BUF_NK_RGB` |
-| `MINIOS_GFX_ZOOM_2X` | macro | `progs/minios_abi.h:410` | `#define MINIOS_GFX_ZOOM_2X` |
-| `MINIOS_GFX_ZOOM_FULLSCREEN` | macro | `progs/minios_abi.h:411` | `#define MINIOS_GFX_ZOOM_FULLSCREEN` |
-| `MINIOS_GFX_ZOOM_NATIVE` | macro | `progs/minios_abi.h:409` | `#define MINIOS_GFX_ZOOM_NATIVE` |
-| `MINIOS_GFX_ZOOM_WINDOWED` | macro | `progs/minios_abi.h:412` | `#define MINIOS_GFX_ZOOM_WINDOWED` |
+| `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:220` | `#define MINIOS_FB_HEIGHT_MAX` |
+| `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:219` | `#define MINIOS_FB_WIDTH_MAX` |
+| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:406` | `#define MINIOS_GFX_BUF_GAME` |
+| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:407` | `#define MINIOS_GFX_BUF_NK` |
+| `MINIOS_GFX_BUF_NK_RGB` | macro | `progs/minios_abi.h:408` | `#define MINIOS_GFX_BUF_NK_RGB` |
+| `MINIOS_GFX_ZOOM_2X` | macro | `progs/minios_abi.h:419` | `#define MINIOS_GFX_ZOOM_2X` |
+| `MINIOS_GFX_ZOOM_FULLSCREEN` | macro | `progs/minios_abi.h:420` | `#define MINIOS_GFX_ZOOM_FULLSCREEN` |
+| `MINIOS_GFX_ZOOM_NATIVE` | macro | `progs/minios_abi.h:418` | `#define MINIOS_GFX_ZOOM_NATIVE` |
+| `MINIOS_GFX_ZOOM_WINDOWED` | macro | `progs/minios_abi.h:421` | `#define MINIOS_GFX_ZOOM_WINDOWED` |
 | `MINIOS_HEAP_BASE` | macro | `progs/minios_abi.h:172` | `#define MINIOS_HEAP_BASE` |
-| `MINIOS_HEAP_SIZE` | macro | `progs/minios_abi.h:173` | `#define MINIOS_HEAP_SIZE` |
+| `MINIOS_HEAP_SIZE` | macro | `progs/minios_abi.h:178` | `#define MINIOS_HEAP_SIZE` |
 | `MINIOS_LDSO_BASE` | macro | `progs/minios_abi.h:156` | `#define MINIOS_LDSO_BASE` |
 | `MINIOS_LDSO_END` | macro | `progs/minios_abi.h:158` | `#define MINIOS_LDSO_END` |
 | `MINIOS_LDSO_SIZE` | macro | `progs/minios_abi.h:157` | `#define MINIOS_LDSO_SIZE` |
@@ -61,130 +185,130 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MINIOS_NK_RGB_ADDR` | macro | `progs/minios_abi.h:166` | `#define MINIOS_NK_RGB_ADDR` |
 | `MINIOS_NK_RGB_BYTES` | macro | `progs/minios_abi.h:167` | `#define MINIOS_NK_RGB_BYTES` |
 | `MINIOS_NK_W` | macro | `progs/minios_abi.h:140` | `#define MINIOS_NK_W` |
-| `MINIOS_PCI_MMIO_SIZE` | macro | `progs/minios_abi.h:197` | `#define MINIOS_PCI_MMIO_SIZE` |
-| `MINIOS_PCM2_FRAG` | macro | `progs/minios_abi.h:386` | `#define MINIOS_PCM2_FRAG` |
-| `MINIOS_PCM2_NONBLOCK` | macro | `progs/minios_abi.h:381` | `#define MINIOS_PCM2_NONBLOCK` |
-| `MINIOS_PCM2_RATE` | macro | `progs/minios_abi.h:385` | `#define MINIOS_PCM2_RATE` |
-| `MINIOS_SYS_ACCESS` | macro | `progs/minios_abi.h:248` | `#define MINIOS_SYS_ACCESS` |
-| `MINIOS_SYS_ARCH_PRCTL` | macro | `progs/minios_abi.h:275` | `#define MINIOS_SYS_ARCH_PRCTL` |
-| `MINIOS_SYS_BRK` | macro | `progs/minios_abi.h:243` | `#define MINIOS_SYS_BRK` |
-| `MINIOS_SYS_CLIP_GET` | macro | `progs/minios_abi.h:363` | `#define MINIOS_SYS_CLIP_GET` |
-| `MINIOS_SYS_CLIP_SET` | macro | `progs/minios_abi.h:362` | `#define MINIOS_SYS_CLIP_SET` |
-| `MINIOS_SYS_CLOCK_GETTIME` | macro | `progs/minios_abi.h:293` | `#define MINIOS_SYS_CLOCK_GETTIME` |
-| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:388` | `#define MINIOS_SYS_CLONE` |
-| `MINIOS_SYS_CLOSE` | macro | `progs/minios_abi.h:236` | `#define MINIOS_SYS_CLOSE` |
-| `MINIOS_SYS_CONNECT` | macro | `progs/minios_abi.h:252` | `#define MINIOS_SYS_CONNECT` |
-| `MINIOS_SYS_DIR_LIST` | macro | `progs/minios_abi.h:339` | `#define MINIOS_SYS_DIR_LIST` |
-| `MINIOS_SYS_DNS` | macro | `progs/minios_abi.h:297` | `#define MINIOS_SYS_DNS` |
-| `MINIOS_SYS_DOOM_FRAME` | macro | `progs/minios_abi.h:313` | `#define MINIOS_SYS_DOOM_FRAME` |
-| `MINIOS_SYS_EXECVE` | macro | `progs/minios_abi.h:258` | `#define MINIOS_SYS_EXECVE` |
-| `MINIOS_SYS_EXIT` | macro | `progs/minios_abi.h:259` | `#define MINIOS_SYS_EXIT` |
-| `MINIOS_SYS_EXIT_GROUP` | macro | `progs/minios_abi.h:291` | `#define MINIOS_SYS_EXIT_GROUP` |
-| `MINIOS_SYS_FB_INFO` | macro | `progs/minios_abi.h:315` | `#define MINIOS_SYS_FB_INFO` |
-| `MINIOS_SYS_FDATASYNC` | macro | `progs/minios_abi.h:272` | `#define MINIOS_SYS_FDATASYNC` |
-| `MINIOS_SYS_FLOCK` | macro | `progs/minios_abi.h:270` | `#define MINIOS_SYS_FLOCK` |
-| `MINIOS_SYS_FORK` | macro | `progs/minios_abi.h:256` | `#define MINIOS_SYS_FORK` |
-| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:400` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
-| `MINIOS_SYS_FSTAT` | macro | `progs/minios_abi.h:237` | `#define MINIOS_SYS_FSTAT` |
-| `MINIOS_SYS_FSYNC` | macro | `progs/minios_abi.h:271` | `#define MINIOS_SYS_FSYNC` |
-| `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:331` | `#define MINIOS_SYS_FUTEX_WAIT` |
-| `MINIOS_SYS_FUTEX_WAKE` | macro | `progs/minios_abi.h:332` | `#define MINIOS_SYS_FUTEX_WAKE` |
-| `MINIOS_SYS_GETCWD` | macro | `progs/minios_abi.h:273` | `#define MINIOS_SYS_GETCWD` |
-| `MINIOS_SYS_GETC_RAW` | macro | `progs/minios_abi.h:334` | `#define MINIOS_SYS_GETC_RAW` |
-| `MINIOS_SYS_GETPID` | macro | `progs/minios_abi.h:250` | `#define MINIOS_SYS_GETPID` |
-| `MINIOS_SYS_GETRANDOM` | macro | `progs/minios_abi.h:289` | `#define MINIOS_SYS_GETRANDOM` |
-| `MINIOS_SYS_GETTID` | macro | `progs/minios_abi.h:266` | `#define MINIOS_SYS_GETTID` |
-| `MINIOS_SYS_GETTIMEOFDAY` | macro | `progs/minios_abi.h:274` | `#define MINIOS_SYS_GETTIMEOFDAY` |
-| `MINIOS_SYS_GFX_PRESENT` | macro | `progs/minios_abi.h:335` | `#define MINIOS_SYS_GFX_PRESENT` |
-| `MINIOS_SYS_GFX_SET_TITLE` | macro | `progs/minios_abi.h:324` | `#define MINIOS_SYS_GFX_SET_TITLE` |
-| `MINIOS_SYS_GFX_ZOOM` | macro | `progs/minios_abi.h:340` | `#define MINIOS_SYS_GFX_ZOOM` |
-| `MINIOS_SYS_IOCTL` | macro | `progs/minios_abi.h:246` | `#define MINIOS_SYS_IOCTL` |
-| `MINIOS_SYS_KBD` | macro | `progs/minios_abi.h:307` | `#define MINIOS_SYS_KBD` |
-| `MINIOS_SYS_KBD_RAW` | macro | `progs/minios_abi.h:309` | `#define MINIOS_SYS_KBD_RAW` |
-| `MINIOS_SYS_KILL` | macro | `progs/minios_abi.h:261` | `#define MINIOS_SYS_KILL` |
-| `MINIOS_SYS_LSEEK` | macro | `progs/minios_abi.h:239` | `#define MINIOS_SYS_LSEEK` |
-| `MINIOS_SYS_LZ4_COMPRESS` | macro | `progs/minios_abi.h:318` | `#define MINIOS_SYS_LZ4_COMPRESS` |
-| `MINIOS_SYS_LZ4_DECOMPRESS` | macro | `progs/minios_abi.h:319` | `#define MINIOS_SYS_LZ4_DECOMPRESS` |
-| `MINIOS_SYS_MINFO` | macro | `progs/minios_abi.h:380` | `#define MINIOS_SYS_MINFO` |
-| `MINIOS_SYS_MMAP` | macro | `progs/minios_abi.h:240` | `#define MINIOS_SYS_MMAP` |
-| `MINIOS_SYS_MOUSE` | macro | `progs/minios_abi.h:320` | `#define MINIOS_SYS_MOUSE` |
-| `MINIOS_SYS_MPROTECT` | macro | `progs/minios_abi.h:241` | `#define MINIOS_SYS_MPROTECT` |
-| `MINIOS_SYS_MUNMAP` | macro | `progs/minios_abi.h:242` | `#define MINIOS_SYS_MUNMAP` |
-| `MINIOS_SYS_NEWFSTATAT` | macro | `progs/minios_abi.h:277` | `#define MINIOS_SYS_NEWFSTATAT` |
-| `MINIOS_SYS_NICE` | macro | `progs/minios_abi.h:337` | `#define MINIOS_SYS_NICE` |
-| `MINIOS_SYS_NK_FRAME` | macro | `progs/minios_abi.h:321` | `#define MINIOS_SYS_NK_FRAME` |
-| `MINIOS_SYS_OPEN` | macro | `progs/minios_abi.h:235` | `#define MINIOS_SYS_OPEN` |
-| `MINIOS_SYS_OPENAT` | macro | `progs/minios_abi.h:276` | `#define MINIOS_SYS_OPENAT` |
-| `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:308` | `#define MINIOS_SYS_PALETTE` |
-| `MINIOS_SYS_PCM2_CLOSE` | macro | `progs/minios_abi.h:354` | `#define MINIOS_SYS_PCM2_CLOSE` |
-| `MINIOS_SYS_PCM2_OPEN` | macro | `progs/minios_abi.h:352` | `#define MINIOS_SYS_PCM2_OPEN` |
-| `MINIOS_SYS_PCM2_WRITE` | macro | `progs/minios_abi.h:353` | `#define MINIOS_SYS_PCM2_WRITE` |
-| `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:311` | `#define MINIOS_SYS_PCSPK_INIT` |
-| `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:312` | `#define MINIOS_SYS_PCSPK_TONE` |
-| `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:316` | `#define MINIOS_SYS_PCSPK_VOL` |
-| `MINIOS_SYS_POLL` | macro | `progs/minios_abi.h:238` | `#define MINIOS_SYS_POLL` |
-| `MINIOS_SYS_PRLIMIT64` | macro | `progs/minios_abi.h:288` | `#define MINIOS_SYS_PRLIMIT64` |
-| `MINIOS_SYS_READ` | macro | `progs/minios_abi.h:233` | `#define MINIOS_SYS_READ` |
-| `MINIOS_SYS_READLINK` | macro | `progs/minios_abi.h:265` | `#define MINIOS_SYS_READLINK` |
-| `MINIOS_SYS_RECVFROM` | macro | `progs/minios_abi.h:254` | `#define MINIOS_SYS_RECVFROM` |
-| `MINIOS_SYS_RENAME` | macro | `progs/minios_abi.h:264` | `#define MINIOS_SYS_RENAME` |
-| `MINIOS_SYS_RLIMIT` | macro | `progs/minios_abi.h:338` | `#define MINIOS_SYS_RLIMIT` |
-| `MINIOS_SYS_RSEQ` | macro | `progs/minios_abi.h:290` | `#define MINIOS_SYS_RSEQ` |
-| `MINIOS_SYS_RTC` | macro | `progs/minios_abi.h:314` | `#define MINIOS_SYS_RTC` |
-| `MINIOS_SYS_RT_SIGACTION` | macro | `progs/minios_abi.h:244` | `#define MINIOS_SYS_RT_SIGACTION` |
-| `MINIOS_SYS_RT_SIGPROCMASK` | macro | `progs/minios_abi.h:245` | `#define MINIOS_SYS_RT_SIGPROCMASK` |
-| `MINIOS_SYS_SB16_OPEN` | macro | `progs/minios_abi.h:322` | `#define MINIOS_SYS_SB16_OPEN` |
-| `MINIOS_SYS_SB16_PUMP` | macro | `progs/minios_abi.h:325` | `#define MINIOS_SYS_SB16_PUMP` |
-| `MINIOS_SYS_SB16_STREAM_CLOSE` | macro | `progs/minios_abi.h:327` | `#define MINIOS_SYS_SB16_STREAM_CLOSE` |
-| `MINIOS_SYS_SB16_STREAM_OPEN` | macro | `progs/minios_abi.h:326` | `#define MINIOS_SYS_SB16_STREAM_OPEN` |
-| `MINIOS_SYS_SB16_STREAM_SUBMIT` | macro | `progs/minios_abi.h:328` | `#define MINIOS_SYS_SB16_STREAM_SUBMIT` |
-| `MINIOS_SYS_SB16_STREAM_VOLUME` | macro | `progs/minios_abi.h:329` | `#define MINIOS_SYS_SB16_STREAM_VOLUME` |
-| `MINIOS_SYS_SB16_SUBMIT` | macro | `progs/minios_abi.h:323` | `#define MINIOS_SYS_SB16_SUBMIT` |
-| `MINIOS_SYS_SCHED_YIELD` | macro | `progs/minios_abi.h:249` | `#define MINIOS_SYS_SCHED_YIELD` |
-| `MINIOS_SYS_SECCOMP` | macro | `progs/minios_abi.h:336` | `#define MINIOS_SYS_SECCOMP` |
-| `MINIOS_SYS_SENDTO` | macro | `progs/minios_abi.h:253` | `#define MINIOS_SYS_SENDTO` |
-| `MINIOS_SYS_SET_ROBUST_LIST` | macro | `progs/minios_abi.h:284` | `#define MINIOS_SYS_SET_ROBUST_LIST` |
-| `MINIOS_SYS_SET_TID_ADDRESS` | macro | `progs/minios_abi.h:292` | `#define MINIOS_SYS_SET_TID_ADDRESS` |
-| `MINIOS_SYS_SHUTDOWN` | macro | `progs/minios_abi.h:255` | `#define MINIOS_SYS_SHUTDOWN` |
-| `MINIOS_SYS_SOCKET` | macro | `progs/minios_abi.h:251` | `#define MINIOS_SYS_SOCKET` |
-| `MINIOS_SYS_SPAWN` | macro | `progs/minios_abi.h:317` | `#define MINIOS_SYS_SPAWN` |
-| `MINIOS_SYS_STATX` | macro | `progs/minios_abi.h:280` | `#define MINIOS_SYS_STATX` |
-| `MINIOS_SYS_SUBMIT_BATCH` | macro | `progs/minios_abi.h:333` | `#define MINIOS_SYS_SUBMIT_BATCH` |
-| `MINIOS_SYS_TGKILL` | macro | `progs/minios_abi.h:294` | `#define MINIOS_SYS_TGKILL` |
-| `MINIOS_SYS_THREAD_SPAWN` | macro | `progs/minios_abi.h:330` | `#define MINIOS_SYS_THREAD_SPAWN` |
-| `MINIOS_SYS_TIME` | macro | `progs/minios_abi.h:306` | `#define MINIOS_SYS_TIME` |
-| `MINIOS_SYS_TLS_HANDSHAKE` | macro | `progs/minios_abi.h:303` | `#define MINIOS_SYS_TLS_HANDSHAKE` |
-| `MINIOS_SYS_TLS_RECV` | macro | `progs/minios_abi.h:305` | `#define MINIOS_SYS_TLS_RECV` |
-| `MINIOS_SYS_TLS_SEND` | macro | `progs/minios_abi.h:304` | `#define MINIOS_SYS_TLS_SEND` |
-| `MINIOS_SYS_UNAME` | macro | `progs/minios_abi.h:262` | `#define MINIOS_SYS_UNAME` |
-| `MINIOS_SYS_UNLINK` | macro | `progs/minios_abi.h:263` | `#define MINIOS_SYS_UNLINK` |
-| `MINIOS_SYS_VFORK` | macro | `progs/minios_abi.h:257` | `#define MINIOS_SYS_VFORK` |
-| `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:310` | `#define MINIOS_SYS_VGA_MODE` |
-| `MINIOS_SYS_WAIT4` | macro | `progs/minios_abi.h:260` | `#define MINIOS_SYS_WAIT4` |
-| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:401` | `#define MINIOS_SYS_WINDOW_PRESENT` |
-| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:402` | `#define MINIOS_SYS_WINDOW_TITLE` |
-| `MINIOS_SYS_WL_ATTACH` | macro | `progs/minios_abi.h:345` | `#define MINIOS_SYS_WL_ATTACH` |
-| `MINIOS_SYS_WL_COMMIT` | macro | `progs/minios_abi.h:346` | `#define MINIOS_SYS_WL_COMMIT` |
-| `MINIOS_SYS_WL_INPUT` | macro | `progs/minios_abi.h:347` | `#define MINIOS_SYS_WL_INPUT` |
-| `MINIOS_SYS_WRITE` | macro | `progs/minios_abi.h:234` | `#define MINIOS_SYS_WRITE` |
-| `MINIOS_SYS_WRITEV` | macro | `progs/minios_abi.h:247` | `#define MINIOS_SYS_WRITEV` |
+| `MINIOS_PCI_MMIO_SIZE` | macro | `progs/minios_abi.h:202` | `#define MINIOS_PCI_MMIO_SIZE` |
+| `MINIOS_PCM2_FRAG` | macro | `progs/minios_abi.h:395` | `#define MINIOS_PCM2_FRAG` |
+| `MINIOS_PCM2_NONBLOCK` | macro | `progs/minios_abi.h:390` | `#define MINIOS_PCM2_NONBLOCK` |
+| `MINIOS_PCM2_RATE` | macro | `progs/minios_abi.h:394` | `#define MINIOS_PCM2_RATE` |
+| `MINIOS_SYS_ACCESS` | macro | `progs/minios_abi.h:253` | `#define MINIOS_SYS_ACCESS` |
+| `MINIOS_SYS_ARCH_PRCTL` | macro | `progs/minios_abi.h:280` | `#define MINIOS_SYS_ARCH_PRCTL` |
+| `MINIOS_SYS_BRK` | macro | `progs/minios_abi.h:248` | `#define MINIOS_SYS_BRK` |
+| `MINIOS_SYS_CLIP_GET` | macro | `progs/minios_abi.h:372` | `#define MINIOS_SYS_CLIP_GET` |
+| `MINIOS_SYS_CLIP_SET` | macro | `progs/minios_abi.h:371` | `#define MINIOS_SYS_CLIP_SET` |
+| `MINIOS_SYS_CLOCK_GETTIME` | macro | `progs/minios_abi.h:298` | `#define MINIOS_SYS_CLOCK_GETTIME` |
+| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:397` | `#define MINIOS_SYS_CLONE` |
+| `MINIOS_SYS_CLOSE` | macro | `progs/minios_abi.h:241` | `#define MINIOS_SYS_CLOSE` |
+| `MINIOS_SYS_CONNECT` | macro | `progs/minios_abi.h:257` | `#define MINIOS_SYS_CONNECT` |
+| `MINIOS_SYS_DIR_LIST` | macro | `progs/minios_abi.h:348` | `#define MINIOS_SYS_DIR_LIST` |
+| `MINIOS_SYS_DNS` | macro | `progs/minios_abi.h:302` | `#define MINIOS_SYS_DNS` |
+| `MINIOS_SYS_DOOM_FRAME` | macro | `progs/minios_abi.h:320` | `#define MINIOS_SYS_DOOM_FRAME` |
+| `MINIOS_SYS_EXECVE` | macro | `progs/minios_abi.h:263` | `#define MINIOS_SYS_EXECVE` |
+| `MINIOS_SYS_EXIT` | macro | `progs/minios_abi.h:264` | `#define MINIOS_SYS_EXIT` |
+| `MINIOS_SYS_EXIT_GROUP` | macro | `progs/minios_abi.h:296` | `#define MINIOS_SYS_EXIT_GROUP` |
+| `MINIOS_SYS_FB_INFO` | macro | `progs/minios_abi.h:322` | `#define MINIOS_SYS_FB_INFO` |
+| `MINIOS_SYS_FDATASYNC` | macro | `progs/minios_abi.h:277` | `#define MINIOS_SYS_FDATASYNC` |
+| `MINIOS_SYS_FLOCK` | macro | `progs/minios_abi.h:275` | `#define MINIOS_SYS_FLOCK` |
+| `MINIOS_SYS_FORK` | macro | `progs/minios_abi.h:261` | `#define MINIOS_SYS_FORK` |
+| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:409` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
+| `MINIOS_SYS_FSTAT` | macro | `progs/minios_abi.h:242` | `#define MINIOS_SYS_FSTAT` |
+| `MINIOS_SYS_FSYNC` | macro | `progs/minios_abi.h:276` | `#define MINIOS_SYS_FSYNC` |
+| `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:340` | `#define MINIOS_SYS_FUTEX_WAIT` |
+| `MINIOS_SYS_FUTEX_WAKE` | macro | `progs/minios_abi.h:341` | `#define MINIOS_SYS_FUTEX_WAKE` |
+| `MINIOS_SYS_GETCWD` | macro | `progs/minios_abi.h:278` | `#define MINIOS_SYS_GETCWD` |
+| `MINIOS_SYS_GETC_RAW` | macro | `progs/minios_abi.h:343` | `#define MINIOS_SYS_GETC_RAW` |
+| `MINIOS_SYS_GETPID` | macro | `progs/minios_abi.h:255` | `#define MINIOS_SYS_GETPID` |
+| `MINIOS_SYS_GETRANDOM` | macro | `progs/minios_abi.h:294` | `#define MINIOS_SYS_GETRANDOM` |
+| `MINIOS_SYS_GETTID` | macro | `progs/minios_abi.h:271` | `#define MINIOS_SYS_GETTID` |
+| `MINIOS_SYS_GETTIMEOFDAY` | macro | `progs/minios_abi.h:279` | `#define MINIOS_SYS_GETTIMEOFDAY` |
+| `MINIOS_SYS_GFX_PRESENT` | macro | `progs/minios_abi.h:344` | `#define MINIOS_SYS_GFX_PRESENT` |
+| `MINIOS_SYS_GFX_SET_TITLE` | macro | `progs/minios_abi.h:331` | `#define MINIOS_SYS_GFX_SET_TITLE` |
+| `MINIOS_SYS_GFX_ZOOM` | macro | `progs/minios_abi.h:349` | `#define MINIOS_SYS_GFX_ZOOM` |
+| `MINIOS_SYS_IOCTL` | macro | `progs/minios_abi.h:251` | `#define MINIOS_SYS_IOCTL` |
+| `MINIOS_SYS_KBD` | macro | `progs/minios_abi.h:314` | `#define MINIOS_SYS_KBD` |
+| `MINIOS_SYS_KBD_RAW` | macro | `progs/minios_abi.h:316` | `#define MINIOS_SYS_KBD_RAW` |
+| `MINIOS_SYS_KILL` | macro | `progs/minios_abi.h:266` | `#define MINIOS_SYS_KILL` |
+| `MINIOS_SYS_LSEEK` | macro | `progs/minios_abi.h:244` | `#define MINIOS_SYS_LSEEK` |
+| `MINIOS_SYS_LZ4_COMPRESS` | macro | `progs/minios_abi.h:325` | `#define MINIOS_SYS_LZ4_COMPRESS` |
+| `MINIOS_SYS_LZ4_DECOMPRESS` | macro | `progs/minios_abi.h:326` | `#define MINIOS_SYS_LZ4_DECOMPRESS` |
+| `MINIOS_SYS_MINFO` | macro | `progs/minios_abi.h:389` | `#define MINIOS_SYS_MINFO` |
+| `MINIOS_SYS_MMAP` | macro | `progs/minios_abi.h:245` | `#define MINIOS_SYS_MMAP` |
+| `MINIOS_SYS_MOUSE` | macro | `progs/minios_abi.h:327` | `#define MINIOS_SYS_MOUSE` |
+| `MINIOS_SYS_MPROTECT` | macro | `progs/minios_abi.h:246` | `#define MINIOS_SYS_MPROTECT` |
+| `MINIOS_SYS_MUNMAP` | macro | `progs/minios_abi.h:247` | `#define MINIOS_SYS_MUNMAP` |
+| `MINIOS_SYS_NEWFSTATAT` | macro | `progs/minios_abi.h:282` | `#define MINIOS_SYS_NEWFSTATAT` |
+| `MINIOS_SYS_NICE` | macro | `progs/minios_abi.h:346` | `#define MINIOS_SYS_NICE` |
+| `MINIOS_SYS_NK_FRAME` | macro | `progs/minios_abi.h:328` | `#define MINIOS_SYS_NK_FRAME` |
+| `MINIOS_SYS_OPEN` | macro | `progs/minios_abi.h:240` | `#define MINIOS_SYS_OPEN` |
+| `MINIOS_SYS_OPENAT` | macro | `progs/minios_abi.h:281` | `#define MINIOS_SYS_OPENAT` |
+| `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:315` | `#define MINIOS_SYS_PALETTE` |
+| `MINIOS_SYS_PCM2_CLOSE` | macro | `progs/minios_abi.h:363` | `#define MINIOS_SYS_PCM2_CLOSE` |
+| `MINIOS_SYS_PCM2_OPEN` | macro | `progs/minios_abi.h:361` | `#define MINIOS_SYS_PCM2_OPEN` |
+| `MINIOS_SYS_PCM2_WRITE` | macro | `progs/minios_abi.h:362` | `#define MINIOS_SYS_PCM2_WRITE` |
+| `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:318` | `#define MINIOS_SYS_PCSPK_INIT` |
+| `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:319` | `#define MINIOS_SYS_PCSPK_TONE` |
+| `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:323` | `#define MINIOS_SYS_PCSPK_VOL` |
+| `MINIOS_SYS_POLL` | macro | `progs/minios_abi.h:243` | `#define MINIOS_SYS_POLL` |
+| `MINIOS_SYS_PRLIMIT64` | macro | `progs/minios_abi.h:293` | `#define MINIOS_SYS_PRLIMIT64` |
+| `MINIOS_SYS_READ` | macro | `progs/minios_abi.h:238` | `#define MINIOS_SYS_READ` |
+| `MINIOS_SYS_READLINK` | macro | `progs/minios_abi.h:270` | `#define MINIOS_SYS_READLINK` |
+| `MINIOS_SYS_RECVFROM` | macro | `progs/minios_abi.h:259` | `#define MINIOS_SYS_RECVFROM` |
+| `MINIOS_SYS_RENAME` | macro | `progs/minios_abi.h:269` | `#define MINIOS_SYS_RENAME` |
+| `MINIOS_SYS_RLIMIT` | macro | `progs/minios_abi.h:347` | `#define MINIOS_SYS_RLIMIT` |
+| `MINIOS_SYS_RSEQ` | macro | `progs/minios_abi.h:295` | `#define MINIOS_SYS_RSEQ` |
+| `MINIOS_SYS_RTC` | macro | `progs/minios_abi.h:321` | `#define MINIOS_SYS_RTC` |
+| `MINIOS_SYS_RT_SIGACTION` | macro | `progs/minios_abi.h:249` | `#define MINIOS_SYS_RT_SIGACTION` |
+| `MINIOS_SYS_RT_SIGPROCMASK` | macro | `progs/minios_abi.h:250` | `#define MINIOS_SYS_RT_SIGPROCMASK` |
+| `MINIOS_SYS_SB16_OPEN` | macro | `progs/minios_abi.h:329` | `#define MINIOS_SYS_SB16_OPEN` |
+| `MINIOS_SYS_SB16_PUMP` | macro | `progs/minios_abi.h:332` | `#define MINIOS_SYS_SB16_PUMP` |
+| `MINIOS_SYS_SB16_STREAM_CLOSE` | macro | `progs/minios_abi.h:336` | `#define MINIOS_SYS_SB16_STREAM_CLOSE` |
+| `MINIOS_SYS_SB16_STREAM_OPEN` | macro | `progs/minios_abi.h:335` | `#define MINIOS_SYS_SB16_STREAM_OPEN` |
+| `MINIOS_SYS_SB16_STREAM_SUBMIT` | macro | `progs/minios_abi.h:337` | `#define MINIOS_SYS_SB16_STREAM_SUBMIT` |
+| `MINIOS_SYS_SB16_STREAM_VOLUME` | macro | `progs/minios_abi.h:338` | `#define MINIOS_SYS_SB16_STREAM_VOLUME` |
+| `MINIOS_SYS_SB16_SUBMIT` | macro | `progs/minios_abi.h:330` | `#define MINIOS_SYS_SB16_SUBMIT` |
+| `MINIOS_SYS_SCHED_YIELD` | macro | `progs/minios_abi.h:254` | `#define MINIOS_SYS_SCHED_YIELD` |
+| `MINIOS_SYS_SECCOMP` | macro | `progs/minios_abi.h:345` | `#define MINIOS_SYS_SECCOMP` |
+| `MINIOS_SYS_SENDTO` | macro | `progs/minios_abi.h:258` | `#define MINIOS_SYS_SENDTO` |
+| `MINIOS_SYS_SET_ROBUST_LIST` | macro | `progs/minios_abi.h:289` | `#define MINIOS_SYS_SET_ROBUST_LIST` |
+| `MINIOS_SYS_SET_TID_ADDRESS` | macro | `progs/minios_abi.h:297` | `#define MINIOS_SYS_SET_TID_ADDRESS` |
+| `MINIOS_SYS_SHUTDOWN` | macro | `progs/minios_abi.h:260` | `#define MINIOS_SYS_SHUTDOWN` |
+| `MINIOS_SYS_SOCKET` | macro | `progs/minios_abi.h:256` | `#define MINIOS_SYS_SOCKET` |
+| `MINIOS_SYS_SPAWN` | macro | `progs/minios_abi.h:324` | `#define MINIOS_SYS_SPAWN` |
+| `MINIOS_SYS_STATX` | macro | `progs/minios_abi.h:285` | `#define MINIOS_SYS_STATX` |
+| `MINIOS_SYS_SUBMIT_BATCH` | macro | `progs/minios_abi.h:342` | `#define MINIOS_SYS_SUBMIT_BATCH` |
+| `MINIOS_SYS_TGKILL` | macro | `progs/minios_abi.h:299` | `#define MINIOS_SYS_TGKILL` |
+| `MINIOS_SYS_THREAD_SPAWN` | macro | `progs/minios_abi.h:339` | `#define MINIOS_SYS_THREAD_SPAWN` |
+| `MINIOS_SYS_TIME` | macro | `progs/minios_abi.h:313` | `#define MINIOS_SYS_TIME` |
+| `MINIOS_SYS_TLS_HANDSHAKE` | macro | `progs/minios_abi.h:308` | `#define MINIOS_SYS_TLS_HANDSHAKE` |
+| `MINIOS_SYS_TLS_RECV` | macro | `progs/minios_abi.h:310` | `#define MINIOS_SYS_TLS_RECV` |
+| `MINIOS_SYS_TLS_SEND` | macro | `progs/minios_abi.h:309` | `#define MINIOS_SYS_TLS_SEND` |
+| `MINIOS_SYS_UNAME` | macro | `progs/minios_abi.h:267` | `#define MINIOS_SYS_UNAME` |
+| `MINIOS_SYS_UNLINK` | macro | `progs/minios_abi.h:268` | `#define MINIOS_SYS_UNLINK` |
+| `MINIOS_SYS_VFORK` | macro | `progs/minios_abi.h:262` | `#define MINIOS_SYS_VFORK` |
+| `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:317` | `#define MINIOS_SYS_VGA_MODE` |
+| `MINIOS_SYS_WAIT4` | macro | `progs/minios_abi.h:265` | `#define MINIOS_SYS_WAIT4` |
+| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:410` | `#define MINIOS_SYS_WINDOW_PRESENT` |
+| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:411` | `#define MINIOS_SYS_WINDOW_TITLE` |
+| `MINIOS_SYS_WL_ATTACH` | macro | `progs/minios_abi.h:354` | `#define MINIOS_SYS_WL_ATTACH` |
+| `MINIOS_SYS_WL_COMMIT` | macro | `progs/minios_abi.h:355` | `#define MINIOS_SYS_WL_COMMIT` |
+| `MINIOS_SYS_WL_INPUT` | macro | `progs/minios_abi.h:356` | `#define MINIOS_SYS_WL_INPUT` |
+| `MINIOS_SYS_WRITE` | macro | `progs/minios_abi.h:239` | `#define MINIOS_SYS_WRITE` |
+| `MINIOS_SYS_WRITEV` | macro | `progs/minios_abi.h:252` | `#define MINIOS_SYS_WRITEV` |
 | `MINIOS_USER_BRK_END` | macro | `progs/minios_abi.h:118` | `#define MINIOS_USER_BRK_END` |
 | `MINIOS_USER_LOAD_BASE` | macro | `progs/minios_abi.h:113` | `#define MINIOS_USER_LOAD_BASE` |
 | `MINIOS_USER_LOAD_END` | macro | `progs/minios_abi.h:114` | `#define MINIOS_USER_LOAD_END` |
 | `MINIOS_USER_STACK_BASE` | macro | `progs/minios_abi.h:117` | `#define MINIOS_USER_STACK_BASE` |
 | `MINIOS_USER_STACK_SIZE` | macro | `progs/minios_abi.h:115` | `#define MINIOS_USER_STACK_SIZE` |
 | `MINIOS_USER_STACK_TOP` | macro | `progs/minios_abi.h:116` | `#define MINIOS_USER_STACK_TOP` |
-| `SYS_FB_INFO` | macro | `progs/minios_abi.h:420` | `#define SYS_FB_INFO` |
-| `SYS_PALETTE` | macro | `progs/minios_abi.h:416` | `#define SYS_PALETTE` |
-| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:417` | `#define SYS_PCSPK_INIT` |
-| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:418` | `#define SYS_PCSPK_TONE` |
-| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:421` | `#define SYS_PCSPK_VOL` |
-| `SYS_RTC` | macro | `progs/minios_abi.h:419` | `#define SYS_RTC` |
-| `SYS_SPAWN` | macro | `progs/minios_abi.h:422` | `#define SYS_SPAWN` |
-| `SYS_TIME` | macro | `progs/minios_abi.h:423` | `#define SYS_TIME` |
-| `SYS_TIME_MS` | macro | `progs/minios_abi.h:415` | `#define SYS_TIME_MS` |
-| `SYS_WRITE` | macro | `progs/minios_abi.h:424` | `#define SYS_WRITE` |
-| `in` | function | `progs/minios_abi.h:356` | `* bytes in (refused past 4096, never truncated), GET copies out up to * the caller's cap (refused when empty or...` |
+| `SYS_FB_INFO` | macro | `progs/minios_abi.h:429` | `#define SYS_FB_INFO` |
+| `SYS_PALETTE` | macro | `progs/minios_abi.h:425` | `#define SYS_PALETTE` |
+| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:426` | `#define SYS_PCSPK_INIT` |
+| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:427` | `#define SYS_PCSPK_TONE` |
+| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:430` | `#define SYS_PCSPK_VOL` |
+| `SYS_RTC` | macro | `progs/minios_abi.h:428` | `#define SYS_RTC` |
+| `SYS_SPAWN` | macro | `progs/minios_abi.h:431` | `#define SYS_SPAWN` |
+| `SYS_TIME` | macro | `progs/minios_abi.h:432` | `#define SYS_TIME` |
+| `SYS_TIME_MS` | macro | `progs/minios_abi.h:424` | `#define SYS_TIME_MS` |
+| `SYS_WRITE` | macro | `progs/minios_abi.h:433` | `#define SYS_WRITE` |
+| `clock_nanosleep` | function | `progs/minios_abi.h:334` | `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...` |
 | `MINIOS_PNG_H` | macro | `progs/minios_png.h:22` | `#define MINIOS_PNG_H` |
 | `MPNG_BIG_DIM` | macro | `progs/minios_png.h:33` | `#define MPNG_BIG_DIM` |
 | `MPNG_ERR_BOUND` | macro | `progs/minios_png.h:40` | `#define MPNG_ERR_BOUND` |
@@ -372,129 +496,5 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `SYS_NK_FRAME` | function | `progs/nuklear/nuklear_minios.h:85` | `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);` |
 | `nk_build_palette` | function | `progs/nuklear/nuklear_minios.h:57` | `void nk_build_palette(unsigned char *pal768);` |
 | `nk_command_buffer` | struct | `progs/nuklear/nuklear_minios.h:22` | `` |
-| `nk_context` | struct | `progs/nuklear/nuklear_minios.h:20` | `` |
-| `nk_idx_to_rgb` | function | `progs/nuklear/nuklear_minios.h:37` | `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g, unsigned char *b);` |
-| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.h:63` | `struct nk_user_font nk_minios_font(void);` |
-| `nk_minios_img` | struct | `progs/nuklear/nuklear_minios.h:74` | `` |
-| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.h:87` | `void nk_poll_input(struct nk_context *ctx);` |
-| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.h:92` | `int nk_quit_requested(void);` |
-| `nk_rasterize` | function | `progs/nuklear/nuklear_minios.h:66` | `void nk_rasterize(struct nk_context *ctx);` |
-| `nk_rgb_available` | function | `progs/nuklear/nuklear_minios.h:33` | `int nk_rgb_available(void);` |
-| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.h:101` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);` |
-| `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.h:46` | `long nk_sys_fb_info(int *w, int *h, int *pitch);` |
-| `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.h:53` | `long nk_sys_gfx_set_title(const char *t);` |
-| `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.h:42` | `long nk_sys_kbd(void);` |
-| `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.h:44` | `long nk_sys_kbd_raw(int on);` |
-| `nk_sys_mouse` | function | `progs/nuklear/nuklear_minios.h:47` | `long nk_sys_mouse(int *xybw);` |
-| `nk_sys_mouse_badptr` | function | `progs/nuklear/nuklear_minios.h:51` | `long nk_sys_mouse_badptr(void);` |
-| `nk_sys_nk_frame` | function | `progs/nuklear/nuklear_minios.h:52` | `long nk_sys_nk_frame(int *origin);` |
-| `nk_sys_palette` | function | `progs/nuklear/nuklear_minios.h:43` | `long nk_sys_palette(const unsigned char *pal768);` |
-| `nk_sys_time_ms` | function | `progs/nuklear/nuklear_minios.h:41` | `long nk_sys_time_ms(void);` |
-| `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.h:45` | `long nk_sys_vga_mode(int on);` |
-| `nk_user_font` | struct | `progs/nuklear/nuklear_minios.h:21` | `` |
-| `X` | macro | `progs/nuklear/nuklear_theme.c:21` | `#define X(k, i)` |
-| `nk_theme_active` | function | `progs/nuklear/nuklear_theme.c:49` | `int nk_theme_active(char *dst, int cap)` |
-| `nk_theme_apply` | function | `progs/nuklear/nuklear_theme.c:141` | `int nk_theme_apply(struct nk_context *ctx, const char *name)` |
-| `nk_theme_name_ok` | function | `progs/nuklear/nuklear_theme.c:37` | `static int nk_theme_name_ok(const char *name)` |
-| `nk_theme_parse_line` | function | `progs/nuklear/nuklear_theme.c:73` | `static int nk_theme_parse_line(const char *line,                                unsigned char rgb...` |
-| `nk_theme_probe` | function | `progs/nuklear/nuklear_theme.c:105` | `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3])` |
-| `nk_theme_slot` | struct | `progs/nuklear/nuklear_theme.c:15` | `` |
-| `NK_THEME_DEFAULT` | macro | `progs/nuklear/nuklear_theme.h:20` | `#define NK_THEME_DEFAULT` |
-| `NK_THEME_KEY_COUNT` | macro | `progs/nuklear/nuklear_theme.h:57` | `#define NK_THEME_KEY_COUNT` |
-| `NK_THEME_KEY_LIST` | macro | `progs/nuklear/nuklear_theme.h:23` | `#define NK_THEME_KEY_LIST` |
-| `NK_THEME_KEY_MAX` | macro | `progs/nuklear/nuklear_theme.h:16` | `#define NK_THEME_KEY_MAX` |
-| `NK_THEME_LINE_MAX` | macro | `progs/nuklear/nuklear_theme.h:17` | `#define NK_THEME_LINE_MAX` |
-| `NK_THEME_NAME_MAX` | macro | `progs/nuklear/nuklear_theme.h:15` | `#define NK_THEME_NAME_MAX` |
-| `NK_THEME_PATH_CURRENT` | macro | `progs/nuklear/nuklear_theme.h:19` | `#define NK_THEME_PATH_CURRENT` |
-| `NK_THEME_PATH_DIR` | macro | `progs/nuklear/nuklear_theme.h:18` | `#define NK_THEME_PATH_DIR` |
-| `NUKLEAR_THEME_H` | macro | `progs/nuklear/nuklear_theme.h:2` | `#define NUKLEAR_THEME_H` |
-| `nk_context` | struct | `progs/nuklear/nuklear_theme.h:59` | `` |
-| `nk_theme_active` | function | `progs/nuklear/nuklear_theme.h:62` | `int nk_theme_active(char *dst, int cap);` |
-| `nk_theme_apply` | function | `progs/nuklear/nuklear_theme.h:68` | `int nk_theme_apply(struct nk_context *ctx, const char *name);` |
-| `nk_theme_probe` | function | `progs/nuklear/nuklear_theme.h:65` | `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3]);` |
-| `PAINT_DEFAULT_PATH` | macro | `progs/paint/paint.c:42` | `#define PAINT_DEFAULT_PATH` |
-| `PAINT_FILE_BTN_W` | macro | `progs/paint/paint.c:44` | `#define PAINT_FILE_BTN_W` |
-| `PAINT_FILE_MAX` | macro | `progs/paint/paint.c:36` | `#define PAINT_FILE_MAX` |
-| `PAINT_FRAME_ATTEMPTS` | macro | `progs/paint/paint.c:46` | `#define PAINT_FRAME_ATTEMPTS` |
-| `PAINT_FRAME_MS` | macro | `progs/paint/paint.c:45` | `#define PAINT_FRAME_MS` |
-| `PAINT_H` | macro | `progs/paint/paint.c:33` | `#define PAINT_H` |
-| `PAINT_N` | macro | `progs/paint/paint.c:34` | `#define PAINT_N` |
-| `PAINT_NCOLORS` | macro | `progs/paint/paint.c:47` | `#define PAINT_NCOLORS` |
-| `PAINT_NSIZES` | macro | `progs/paint/paint.c:48` | `#define PAINT_NSIZES` |
-| `PAINT_NTOOLS` | macro | `progs/paint/paint.c:49` | `#define PAINT_NTOOLS` |
-| `PAINT_PANEL_TITLE` | macro | `progs/paint/paint.c:43` | `#define PAINT_PANEL_TITLE` |
-| `PAINT_PATH_MAX` | macro | `progs/paint/paint.c:35` | `#define PAINT_PATH_MAX` |
-| `PAINT_PNG_MAX` | macro | `progs/paint/paint.c:39` | `#define PAINT_PNG_MAX` |
-| `PAINT_PNG_MAX_DIM` | macro | `progs/paint/paint.c:40` | `#define PAINT_PNG_MAX_DIM` |
-| `PAINT_STATUS_MAX` | macro | `progs/paint/paint.c:37` | `#define PAINT_STATUS_MAX` |
-| `PAINT_TITLE` | macro | `progs/paint/paint.c:41` | `#define PAINT_TITLE` |
-| `PAINT_TOOL_BRUSH` | macro | `progs/paint/paint.c:52` | `#define PAINT_TOOL_BRUSH` |
-| `PAINT_TOOL_CIRCLE` | macro | `progs/paint/paint.c:55` | `#define PAINT_TOOL_CIRCLE` |
-| `PAINT_TOOL_ERASER` | macro | `progs/paint/paint.c:57` | `#define PAINT_TOOL_ERASER` |
-| `PAINT_TOOL_FILL` | macro | `progs/paint/paint.c:56` | `#define PAINT_TOOL_FILL` |
-| `PAINT_TOOL_LINE` | macro | `progs/paint/paint.c:53` | `#define PAINT_TOOL_LINE` |
-| `PAINT_TOOL_RECT` | macro | `progs/paint/paint.c:54` | `#define PAINT_TOOL_RECT` |
-| `PAINT_UI_MEMORY` | macro | `progs/paint/paint.c:38` | `#define PAINT_UI_MEMORY` |
-| `PAINT_W` | macro | `progs/paint/paint.c:32` | `#define PAINT_W` |
-| `STBI_NO_STDIO` | macro | `progs/paint/paint.c:28` | `#define STBI_NO_STDIO` |
-| `STBI_ONLY_PNG` | macro | `progs/paint/paint.c:27` | `#define STBI_ONLY_PNG` |
-| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/paint/paint.c:26` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `main` | function | `progs/paint/paint.c:992` | `int main(int argc, char **argv)` |
-| `paint_adler` | function | `progs/paint/paint.c:296` | `static unsigned long paint_adler(const unsigned char *p, unsigned long n)` |
-| `paint_blit` | function | `progs/paint/paint.c:549` | `static void paint_blit(int ox, int oy)` |
-| `paint_circle_fill` | function | `progs/paint/paint.c:161` | `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,                           ...` |
-| `paint_clamp` | function | `progs/paint/paint.c:92` | `static int paint_clamp(int v, int lo, int hi)` |
-| `paint_crc_init` | function | `progs/paint/paint.c:272` | `static void paint_crc_init(void)` |
-| `paint_crc_update` | function | `progs/paint/paint.c:285` | `static unsigned long paint_crc_update(unsigned long c,                                       cons...` |
-| `paint_dab` | function | `progs/paint/paint.c:108` | `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,                       unsig...` |
-| `paint_flood` | function | `progs/paint/paint.c:179` | `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,                        uns...` |
-| `paint_gui_run` | function | `progs/paint/paint.c:942` | `static void paint_gui_run(void)` |
-| `paint_handle_input` | function | `progs/paint/paint.c:577` | `static void paint_handle_input(struct nk_context *ctx)` |
-| `paint_ink` | function | `progs/paint/paint.c:570` | `static unsigned char paint_ink(void)` |
-| `paint_line` | function | `progs/paint/paint.c:119` | `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,                       int...` |
-| `paint_load_file` | function | `progs/paint/paint.c:461` | `static int paint_load_file(const char *path)` |
-| `paint_nearest` | function | `progs/paint/paint.c:223` | `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,                       ...` |
-| `paint_pal` | function | `progs/paint/paint.c:240` | `static const unsigned char *paint_pal(void)` |
-| `paint_path_ok` | function | `progs/paint/paint.c:251` | `static int paint_path_ok(const char *p)` |
-| `paint_pattern_present` | function | `progs/paint/paint.c:720` | `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)` |
-| `paint_plot` | function | `progs/paint/paint.c:99` | `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,                       unsig...` |
-| `paint_png_encode` | function | `progs/paint/paint.c:333` | `static long paint_png_encode(unsigned char *dst, unsigned long cap,                              ...` |
-| `paint_put_bytes` | function | `progs/paint/paint.c:320` | `static int paint_put_bytes(unsigned char *dst, unsigned long cap,                            unsi...` |
-| `paint_put_u32` | function | `progs/paint/paint.c:308` | `static int paint_put_u32(unsigned char *dst, unsigned long cap,                          unsigned...` |
-| `paint_rect_fill` | function | `progs/paint/paint.c:144` | `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,                     ...` |
-| `paint_save_file` | function | `progs/paint/paint.c:514` | `static int paint_save_file(const char *path)` |
-| `paint_selftest` | function | `progs/paint/paint.c:755` | `static int paint_selftest(void)` |
-| `paint_ui_build` | function | `progs/paint/paint.c:636` | `static void paint_ui_build(struct nk_context *ctx)` |
-| `BK_H` | macro | `progs/piano/piano.c:193` | `#define BK_H` |
-| `BK_W` | macro | `progs/piano/piano.c:192` | `#define BK_W` |
-| `BTN_GAP` | macro | `progs/piano/piano.c:548` | `#define BTN_GAP` |
-| `BTN_W` | macro | `progs/piano/piano.c:547` | `#define BTN_W` |
-| `CTRL_H` | macro | `progs/piano/piano.c:546` | `#define CTRL_H` |
-| `CTRL_Y` | macro | `progs/piano/piano.c:545` | `#define CTRL_Y` |
-| `FX_DELAY_CAP` | macro | `progs/piano/piano.c:407` | `#define FX_DELAY_CAP` |
-| `FX_DELAY_MAX_MS` | macro | `progs/piano/piano.c:408` | `#define FX_DELAY_MAX_MS` |
-| `FX_FEEDBACK` | macro | `progs/piano/piano.c:409` | `#define FX_FEEDBACK` |
-| `FX_TREM_FREQ` | macro | `progs/piano/piano.c:411` | `#define FX_TREM_FREQ` |
-| `FX_WET` | macro | `progs/piano/piano.c:410` | `#define FX_WET` |
-| `KBD_NO_NOTE` | macro | `progs/piano/piano.c:297` | `#define KBD_NO_NOTE` |
-| `KEY_H` | macro | `progs/piano/piano.c:191` | `#define KEY_H` |
-| `KEY_W` | macro | `progs/piano/piano.c:190` | `#define KEY_W` |
-| `KEY_Y` | macro | `progs/piano/piano.c:194` | `#define KEY_Y` |
-| `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:76` | `#define MAX_AUDIO_MS` |
-| `MAX_VOICES` | macro | `progs/piano/piano.c:221` | `#define MAX_VOICES` |
-| `NCTRLS` | macro | `progs/piano/piano.c:561` | `#define NCTRLS` |
-| `NKEYS` | macro | `progs/piano/piano.c:209` | `#define NKEYS` |
-| `PCM_BUF` | macro | `progs/piano/piano.c:63` | `#define PCM_BUF` |
-| `PCM_FRAG` | macro | `progs/piano/piano.c:62` | `#define PCM_FRAG` |
-| `PIANO_BASE_MIDI` | macro | `progs/piano/piano.c:195` | `#define PIANO_BASE_MIDI` |
-| `PIANO_FRAME_MS` | macro | `progs/piano/piano.c:84` | `#define PIANO_FRAME_MS` |
-| `PIANO_FRAME_PERIOD` | macro | `progs/piano/piano.c:91` | `#define PIANO_FRAME_PERIOD` |
-| `PIANO_OCTAVES` | macro | `progs/piano/piano.c:196` | `#define PIANO_OCTAVES` |
-| `RATE` | macro | `progs/piano/piano.c:61` | `#define RATE` |
-| `SYS_PCM2_CLOSE` | macro | `progs/piano/piano.c:59` | `#define SYS_PCM2_CLOSE` |
-| `SYS_PCM2_OPEN` | macro | `progs/piano/piano.c:57` | `#define SYS_PCM2_OPEN` |
-| `SYS_PCM2_WRITE` | macro | `progs/piano/piano.c:58` | `#define SYS_PCM2_WRITE` |
-| `UI_MEMORY` | macro | `progs/piano/piano.c:54` | `#define UI_MEMORY` |
-| `clamp_midi` | function | `progs/piano/piano.c:234` | `static int clamp_midi(int m)` |
 
 Next: [SYMBOLS_p21.md](SYMBOLS_p21.md)

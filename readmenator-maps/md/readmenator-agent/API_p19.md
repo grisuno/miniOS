@@ -259,8 +259,8 @@ Depends on: `kernel/time.c`
 - `usage` (function) `tools/mutate.sh:51`
 - `restore_sources` (function) `tools/mutate.sh:129`
 - `cleanup` (function) `tools/mutate.sh:136`
-- `record` (function) `tools/mutate.sh:465`
-- `find_index` (function) `tools/mutate.sh:471` -- Locate a mutant by name.
+- `record` (function) `tools/mutate.sh:482`
+- `find_index` (function) `tools/mutate.sh:488` -- Locate a mutant by name.
 
 ## tools/probe_compute_vga.py
 Depends on: `kernel/time.c`
@@ -320,21 +320,22 @@ Depends on: `kernel/time.c`
 
 ## vma.c
 Depends on: `headers/vma.h`
-- `vma_ctx_init` (function) `vma.c:32` `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)`
-- `vma_ctx_bind` (function) `vma.c:46` `void vma_ctx_bind(vma_ctx_t *c)`
-- `vma_ctx_save` (function) `vma.c:57` `void vma_ctx_save(vma_ctx_t *c)`
-- `vma_view_save` (function) `vma.c:66` `void vma_view_save(vma_view_t *v)`
-- `vma_view_load` (function) `vma.c:77` `void vma_view_load(const vma_view_t *v)`
-- `vma_tree_init` (function) `vma.c:88` `void vma_tree_init(void)`
-- `vma_alloc_node` (function) `vma.c:102` `static vma_node_t *vma_alloc_node(void)`
-- `vma_rotate_left` (function) `vma.c:108` `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)`
-- `vma_rotate_right` (function) `vma.c:120` `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)`
-- `vma_insert_fixup` (function) `vma.c:132` `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)`
-- `vma_tree_insert` (function) `vma.c:171` `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)`
-- `vma_tree_find` (function) `vma.c:197` `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)`
-- `vma_tree_find_containing` (function) `vma.c:213` `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va)` -- Docstring: Find the live node containing va (base <= va < base+len), or VMA_NIL.
-- `vma_transplant` (function) `vma.c:227` `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)`
-- `vma_tree_minimum` (function) `vma.c:234` `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
-- `vma_delete_fixup` (function) `vma.c:239` `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
-- `vma_tree_delete` (function) `vma.c:294` `int vma_tree_delete(vma_node_t **root, unsigned long base)`
+- `vma_ctx_init` (function) `vma.c:37` `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)`
+- `vma_ctx_bind` (function) `vma.c:52` `void vma_ctx_bind(vma_ctx_t *c)`
+- `vma_ctx_save` (function) `vma.c:64` `void vma_ctx_save(vma_ctx_t *c)`
+- `vma_view_save` (function) `vma.c:74` `void vma_view_save(vma_view_t *v)`
+- `vma_view_load` (function) `vma.c:86` `void vma_view_load(const vma_view_t *v)`
+- `vma_tree_init` (function) `vma.c:98` `void vma_tree_init(void)`
+- `vma_alloc_node` (function) `vma.c:113` `static vma_node_t *vma_alloc_node(void)`
+- `vma_rotate_left` (function) `vma.c:124` `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)`
+- `vma_rotate_right` (function) `vma.c:136` `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)`
+- `vma_insert_fixup` (function) `vma.c:148` `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)`
+- `vma_tree_insert` (function) `vma.c:187` `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)`
+- `vma_node_in_tree` (function) `vma.c:215` `static int vma_node_in_tree(vma_node_t *root, vma_node_t *n)` -- 1 when node n hangs in the tree rooted at root (live and free trees * share one pool and one cache, so a cached node...
+- `vma_tree_find` (function) `vma.c:220` `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)`
+- `vma_tree_find_containing` (function) `vma.c:238` `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va)` -- Docstring: Find the live node containing va (base <= va < base+len), or VMA_NIL.
+- `vma_transplant` (function) `vma.c:252` `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)`
+- `vma_tree_minimum` (function) `vma.c:259` `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
+- `vma_delete_fixup` (function) `vma.c:264` `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
+- `vma_tree_delete` (function) `vma.c:319` `int vma_tree_delete(vma_node_t **root, unsigned long base)`
 

@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `tick_reset` | function | `headers/tick.h:47` | `void tick_reset(void);` |
+| `tick_run_audio` | function | `headers/tick.h:75` | `void tick_run_audio(void);` |
+| `tick_run_desktop` | function | `headers/tick.h:78` | `void tick_run_desktop(void);` |
+| `tick_run_usb` | function | `headers/tick.h:72` | `void tick_run_usb(void);` |
+| `TLS_ALERT_LEVEL_FATAL` | macro | `headers/tls.h:47` | `#define TLS_ALERT_LEVEL_FATAL` |
+| `TLS_ALERT_LEVEL_WARNING` | macro | `headers/tls.h:46` | `#define TLS_ALERT_LEVEL_WARNING` |
+| `TLS_BN_384_WORDS` | macro | `headers/tls.h:63` | `#define TLS_BN_384_WORDS` |
+| `TLS_BN_4096_WORDS` | macro | `headers/tls.h:62` | `#define TLS_BN_4096_WORDS` |
+| `TLS_CERT_MAX` | macro | `headers/tls.h:58` | `#define TLS_CERT_MAX` |
+| `TLS_CHAIN_MAX` | macro | `headers/tls.h:57` | `#define TLS_CHAIN_MAX` |
+| `TLS_CSUITE_ECDHE_ECDSA_AES128GCM` | macro | `headers/tls.h:29` | `#define TLS_CSUITE_ECDHE_ECDSA_AES128GCM` |
+| `TLS_CSUITE_ECDHE_RSA_AES128GCM` | macro | `headers/tls.h:28` | `#define TLS_CSUITE_ECDHE_RSA_AES128GCM` |
+| `TLS_CT_ALERT` | macro | `headers/tls.h:8` | `#define TLS_CT_ALERT` |
+| `TLS_CT_APPDATA` | macro | `headers/tls.h:10` | `#define TLS_CT_APPDATA` |
+| `TLS_CT_CCS` | macro | `headers/tls.h:7` | `#define TLS_CT_CCS` |
+| `TLS_CT_HANDSHAKE` | macro | `headers/tls.h:9` | `#define TLS_CT_HANDSHAKE` |
+| `TLS_EXT_EC_POINT_FORMATS` | macro | `headers/tls.h:42` | `#define TLS_EXT_EC_POINT_FORMATS` |
+| `TLS_EXT_SERVER_NAME` | macro | `headers/tls.h:40` | `#define TLS_EXT_SERVER_NAME` |
+| `TLS_EXT_SIGNATURE_ALGS` | macro | `headers/tls.h:43` | `#define TLS_EXT_SIGNATURE_ALGS` |
+| `TLS_EXT_SUPPORTED_GROUPS` | macro | `headers/tls.h:41` | `#define TLS_EXT_SUPPORTED_GROUPS` |
+| `TLS_GROUP_SECP256R1` | macro | `headers/tls.h:37` | `#define TLS_GROUP_SECP256R1` |
+| `TLS_H` | macro | `headers/tls.h:2` | `#define TLS_H` |
+| `TLS_HOST_MAX` | macro | `headers/tls.h:54` | `#define TLS_HOST_MAX` |
+| `TLS_HS_CERTIFICATE` | macro | `headers/tls.h:21` | `#define TLS_HS_CERTIFICATE` |
+| `TLS_HS_CLIENT_HELLO` | macro | `headers/tls.h:19` | `#define TLS_HS_CLIENT_HELLO` |
+| `TLS_HS_CLIENT_KEY_EXCHANGE` | macro | `headers/tls.h:24` | `#define TLS_HS_CLIENT_KEY_EXCHANGE` |
+| `TLS_HS_FINISHED` | macro | `headers/tls.h:25` | `#define TLS_HS_FINISHED` |
+| `TLS_HS_SERVER_HELLO` | macro | `headers/tls.h:20` | `#define TLS_HS_SERVER_HELLO` |
+| `TLS_HS_SERVER_HELLO_DONE` | macro | `headers/tls.h:23` | `#define TLS_HS_SERVER_HELLO_DONE` |
+| `TLS_HS_SERVER_KEY_EXCHANGE` | macro | `headers/tls.h:22` | `#define TLS_HS_SERVER_KEY_EXCHANGE` |
+| `TLS_HS_TIMEOUT_MS` | macro | `headers/tls.h:50` | `#define TLS_HS_TIMEOUT_MS` |
 | `TLS_MSG_MAX` | macro | `headers/tls.h:13` | `#define TLS_MSG_MAX` |
 | `TLS_PLAIN_MAX` | macro | `headers/tls.h:14` | `#define TLS_PLAIN_MAX` |
 | `TLS_READ_TIMEOUT_MS` | macro | `headers/tls.h:51` | `#define TLS_READ_TIMEOUT_MS` |
@@ -258,29 +289,30 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vga_fx_rand` | function | `headers/vga_fx.h:30` | `static inline unsigned long vga_fx_rand(unsigned long *s)` |
 | `VMA_H` | macro | `headers/vma.h:2` | `#define VMA_H` |
 | `VMA_MAX` | macro | `headers/vma.h:31` | `#define VMA_MAX` |
-| `VMA_NIL` | variable | `headers/vma.h:54` | `extern vma_node_t *VMA_NIL;` |
+| `VMA_NIL` | variable | `headers/vma.h:55` | `extern vma_node_t *VMA_NIL;` |
 | `base` | type_alias | `headers/vma.h:20` | `typedef struct vma_node { unsigned long base;` |
-| `vma_ctx_alloc` | function | `headers/vma.h:87` | `vma_ctx_t *vma_ctx_alloc(void);` |
-| `vma_ctx_bind` | function | `headers/vma.h:68` | `void vma_ctx_bind(vma_ctx_t *c);` |
-| `vma_ctx_free` | function | `headers/vma.h:88` | `void vma_ctx_free(vma_ctx_t *c);` |
-| `vma_ctx_init` | function | `headers/vma.h:67` | `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);` |
-| `vma_ctx_save` | function | `headers/vma.h:69` | `void vma_ctx_save(vma_ctx_t *c);` |
+| `vma_ctx_alloc` | function | `headers/vma.h:90` | `vma_ctx_t *vma_ctx_alloc(void);` |
+| `vma_ctx_bind` | function | `headers/vma.h:70` | `void vma_ctx_bind(vma_ctx_t *c);` |
+| `vma_ctx_free` | function | `headers/vma.h:91` | `void vma_ctx_free(vma_ctx_t *c);` |
+| `vma_ctx_init` | function | `headers/vma.h:69` | `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool);` |
+| `vma_ctx_save` | function | `headers/vma.h:71` | `void vma_ctx_save(vma_ctx_t *c);` |
 | `vma_ctx_t` | struct | `headers/vma.h:44` | `` |
-| `vma_free_root` | variable | `headers/vma.h:56` | `extern vma_node_t *vma_free_root;` |
-| `vma_legacy` | variable | `headers/vma.h:60` | `extern vma_ctx_t vma_legacy;` |
-| `vma_live_root` | variable | `headers/vma.h:55` | `extern vma_node_t *vma_live_root;` |
+| `vma_free_root` | variable | `headers/vma.h:57` | `extern vma_node_t *vma_free_root;` |
+| `vma_legacy` | variable | `headers/vma.h:62` | `extern vma_ctx_t vma_legacy;` |
+| `vma_live_root` | variable | `headers/vma.h:56` | `extern vma_node_t *vma_live_root;` |
 | `vma_node` | struct | `headers/vma.h:21` | `` |
-| `vma_pool` | variable | `headers/vma.h:57` | `extern vma_node_t vma_pool[VMA_MAX];` |
-| `vma_pool_n` | variable | `headers/vma.h:58` | `extern int vma_pool_n;` |
-| `vma_pool_ptr` | variable | `headers/vma.h:59` | `extern vma_node_t *vma_pool_ptr;` |
-| `vma_tree_delete` | function | `headers/vma.h:66` | `int vma_tree_delete(vma_node_t **root, unsigned long base);` |
-| `vma_tree_find` | function | `headers/vma.h:64` | `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);` |
-| `vma_tree_find_containing` | function | `headers/vma.h:65` | `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);` |
-| `vma_tree_init` | function | `headers/vma.h:62` | `void vma_tree_init(void);` |
-| `vma_tree_insert` | function | `headers/vma.h:63` | `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);` |
-| `vma_view_load` | function | `headers/vma.h:84` | `void vma_view_load(const vma_view_t *v);` |
-| `vma_view_save` | function | `headers/vma.h:83` | `void vma_view_save(vma_view_t *v);` |
-| `vma_view_t` | struct | `headers/vma.h:74` | `` |
+| `vma_pool` | variable | `headers/vma.h:58` | `extern vma_node_t vma_pool[VMA_MAX];` |
+| `vma_pool_n` | variable | `headers/vma.h:59` | `extern int vma_pool_n;` |
+| `vma_pool_ptr` | variable | `headers/vma.h:61` | `extern vma_node_t *vma_pool_ptr;` |
+| `vma_spare` | variable | `headers/vma.h:60` | `extern vma_node_t *vma_spare;` |
+| `vma_tree_delete` | function | `headers/vma.h:68` | `int vma_tree_delete(vma_node_t **root, unsigned long base);` |
+| `vma_tree_find` | function | `headers/vma.h:66` | `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base);` |
+| `vma_tree_find_containing` | function | `headers/vma.h:67` | `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va);` |
+| `vma_tree_init` | function | `headers/vma.h:64` | `void vma_tree_init(void);` |
+| `vma_tree_insert` | function | `headers/vma.h:65` | `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len);` |
+| `vma_view_load` | function | `headers/vma.h:87` | `void vma_view_load(const vma_view_t *v);` |
+| `vma_view_save` | function | `headers/vma.h:86` | `void vma_view_save(vma_view_t *v);` |
+| `vma_view_t` | struct | `headers/vma.h:76` | `` |
 | `WM_COMBOS_N` | macro | `headers/wm_events.h:198` | `#define WM_COMBOS_N` |
 | `WM_EVENTS_H` | macro | `headers/wm_events.h:11` | `#define WM_EVENTS_H` |
 | `WM_EVENT_CONFIG_DEFAULT` | macro | `headers/wm_events.h:49` | `#define WM_EVENT_CONFIG_DEFAULT` |
@@ -397,22 +429,22 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `ZIP_H` | macro | `headers/zip.h:2` | `#define ZIP_H` |
 | `miniz` | function | `headers/zip.h:6` | `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the...` |
 | `shell_cmd_zip` | function | `headers/zip.h:15` | `void shell_cmd_zip(int argc, char **argv);` |
-| `BOOTLOG_MAX` | macro | `kernel.c:186` | `#define BOOTLOG_MAX` |
-| `EM` | function | `kernel.c:219` | `* CR0: clear EM (bit 2), set MP (bit 1);` |
-| `KSYM_MAX` | macro | `kernel.c:105` | `#define KSYM_MAX` |
-| `__attribute__` | function | `kernel.c:205` | `__attribute__((section(".init.text"))) void kmain(void)` |
-| `bootlog_mark` | function | `kernel.c:190` | `void bootlog_mark(const char *name)` |
-| `bootlog_report` | function | `kernel.c:197` | `void bootlog_report(void)` |
-| `kstack` | function | `kernel.c:144` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
-| `ksyscall` | function | `kernel.c:128` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `ms` | function | `kernel.c:183` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
-| `ramdisk_end` | variable | `kernel.c:178` | `extern char ramdisk_end[];` |
-| `ramdisk_start` | variable | `kernel.c:177` | `extern char ramdisk_start[];` |
-| `size` | function | `kernel.c:260` | `* image size (see kernel.ld);` |
-| `syscall_init` | function | `kernel.c:115` | `void syscall_init(void)` |
-| `syscall_kstack` | variable | `kernel.c:113` | `extern unsigned long syscall_kstack;` |
-| `table` | function | `kernel.c:102` | `* Symbol table (for resolving program references) * ================================================================...` |
-| `tables` | function | `kernel.c:282` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
+| `BOOTLOG_MAX` | macro | `kernel.c:187` | `#define BOOTLOG_MAX` |
+| `EM` | function | `kernel.c:220` | `* CR0: clear EM (bit 2), set MP (bit 1);` |
+| `KSYM_MAX` | macro | `kernel.c:106` | `#define KSYM_MAX` |
+| `__attribute__` | function | `kernel.c:206` | `__attribute__((section(".init.text"))) void kmain(void)` |
+| `bootlog_mark` | function | `kernel.c:191` | `void bootlog_mark(const char *name)` |
+| `bootlog_report` | function | `kernel.c:198` | `void bootlog_report(void)` |
+| `kstack` | function | `kernel.c:145` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
+| `ksyscall` | function | `kernel.c:129` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ms` | function | `kernel.c:184` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
+| `ramdisk_end` | variable | `kernel.c:179` | `extern char ramdisk_end[];` |
+| `ramdisk_start` | variable | `kernel.c:178` | `extern char ramdisk_start[];` |
+| `size` | function | `kernel.c:261` | `* image size (see kernel.ld);` |
+| `syscall_init` | function | `kernel.c:116` | `void syscall_init(void)` |
+| `syscall_kstack` | variable | `kernel.c:114` | `extern unsigned long syscall_kstack;` |
+| `table` | function | `kernel.c:103` | `* Symbol table (for resolving program references) * ================================================================...` |
+| `tables` | function | `kernel.c:283` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
 | `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
 | `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
 | `abi_verify` | function | `kernel/abi.c:38` | `int abi_verify(const char *text, long version, unsigned long checksum)` |
@@ -464,37 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `console_raw_get` | function | `kernel/console_in.c:250` | `int console_raw_get(void)` |
 | `console_raw_try` | function | `kernel/console_in.c:246` | `int console_raw_try(void)` |
 | `console_stdin_active` | function | `kernel/console_in.c:56` | `int console_stdin_active(void)` |
-| `console_stdin_clear` | function | `kernel/console_in.c:46` | `void console_stdin_clear(void)` |
-| `console_stdin_push` | function | `kernel/console_in.c:32` | `int console_stdin_push(const char *data, unsigned long len)` |
-| `console_ungetc` | function | `kernel/console_in.c:85` | `void console_ungetc(unsigned char c)` |
-| `consume_page_after_esc` | function | `kernel/console_in.c:178` | `static int consume_page_after_esc(void)` |
-| `pb_count` | function | `kernel/console_in.c:61` | `static int pb_count(void)` |
-| `pb_empty` | function | `kernel/console_in.c:60` | `static int pb_empty(void)` |
-| `pb_peek` | function | `kernel/console_in.c:78` | `static int pb_peek(void)` |
-| `pb_pop` | function | `kernel/console_in.c:72` | `static int pb_pop(void)` |
-| `pb_push_back` | function | `kernel/console_in.c:62` | `static void pb_push_back(unsigned char c)` |
-| `pb_push_front` | function | `kernel/console_in.c:67` | `static void pb_push_front(unsigned char c)` |
-| `raw_blocking_getc` | function | `kernel/console_in.c:118` | `static int raw_blocking_getc(void)` |
-| `raw_try_getc` | function | `kernel/console_in.c:139` | `static int raw_try_getc(void)` |
-| `sb_next` | function | `kernel/console_in.c:311` | `static int sb_next(void)` |
-| `scrollback_render` | function | `kernel/console_in.c:283` | `static void scrollback_render(int voff, int total, const unsigned char *saved)` |
-| `scrollback_view` | function | `kernel/console_in.c:321` | `static void scrollback_view(int initial_dir)` |
-| `cvm_main` | function | `kernel/cvm_host.c:437` | `int cvm_main(int argc, char **argv)` |
-| `kformat` | function | `kernel/cvm_host.c:296` | `static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc)` |
-| `kout_char` | function | `kernel/cvm_host.c:277` | `static void kout_char(void *ctx, char c)` |
-| `kout_uint` | function | `kernel/cvm_host.c:283` | `static void kout_uint(void *ctx, unsigned long long v, int base, int upper)` |
-| `n_atol` | function | `kernel/cvm_host.c:236` | `static int64_t n_atol(void *vm, int ac, uint64_t *av)` |
-| `n_calloc` | function | `kernel/cvm_host.c:98` | `static int64_t n_calloc(void *vm, int ac, uint64_t *av)` |
-| `n_exit` | function | `kernel/cvm_host.c:114` | `static int64_t n_exit(void *vm, int ac, uint64_t *av)` |
-| `n_fclose` | function | `kernel/cvm_host.c:128` | `static int64_t n_fclose(void *vm, int ac, uint64_t *av)` |
-| `n_fflush` | function | `kernel/cvm_host.c:191` | `static int64_t n_fflush(void *vm, int ac, uint64_t *av)` |
-| `n_fgetc` | function | `kernel/cvm_host.c:179` | `static int64_t n_fgetc(void *vm, int ac, uint64_t *av)` |
-| `n_fopen` | function | `kernel/cvm_host.c:121` | `static int64_t n_fopen(void *vm, int ac, uint64_t *av)` |
-| `n_fprintf` | function | `kernel/cvm_host.c:362` | `static int64_t n_fprintf(void *vm, int ac, uint64_t *av)` |
-| `n_fputc` | function | `kernel/cvm_host.c:173` | `static int64_t n_fputc(void *vm, int ac, uint64_t *av)` |
-| `n_fputs` | function | `kernel/cvm_host.c:167` | `static int64_t n_fputs(void *vm, int ac, uint64_t *av)` |
-| `n_fread` | function | `kernel/cvm_host.c:134` | `static int64_t n_fread(void *vm, int ac, uint64_t *av)` |
-| `n_free` | function | `kernel/cvm_host.c:93` | `static int64_t n_free(void *vm, int ac, uint64_t *av)` |
-| `n_fseek` | function | `kernel/cvm_host.c:148` | `static int64_t n_fseek(void *vm, int ac, uint64_t *av)` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

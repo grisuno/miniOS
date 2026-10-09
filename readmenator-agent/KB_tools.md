@@ -486,8 +486,8 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `usage` (function, line 51)
   - `restore_sources` (function, line 129)
   - `cleanup` (function, line 136)
-  - `record` (function, line 465)
-  - `find_index` (function, line 471)
+  - `record` (function, line 482)
+  - `find_index` (function, line 488)
 
 
 Next: [KB_tools_p2.md](KB_tools_p2.md)

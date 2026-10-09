@@ -3,6 +3,30 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `pcm2_irq` | function | `headers/pcm2.h:81` | `void pcm2_irq(void);` |
+| `pcm2_open` | function | `headers/pcm2.h:78` | `int pcm2_open(unsigned flags, int owner);` |
+| `pcm2_poll` | function | `headers/pcm2.h:82` | `void pcm2_poll(void);` |
+| `pcm2_write` | function | `headers/pcm2.h:79` | `int pcm2_write(const unsigned char *user, unsigned len, int owner);` |
+| `PCM_RING_H` | macro | `headers/pcm_ring.h:2` | `#define PCM_RING_H` |
+| `pcm_ring_free` | function | `headers/pcm_ring.h:51` | `static inline unsigned pcm_ring_free(const pcm_ring_t *r)` |
+| `pcm_ring_init` | function | `headers/pcm_ring.h:36` | `static inline void pcm_ring_init(pcm_ring_t *r, unsigned char *buf,                              ...` |
+| `pcm_ring_read` | function | `headers/pcm_ring.h:76` | `static inline unsigned pcm_ring_read(pcm_ring_t *r, unsigned char *dst,                          ...` |
+| `pcm_ring_t` | struct | `headers/pcm_ring.h:26` | `` |
+| `pcm_ring_used` | function | `headers/pcm_ring.h:47` | `static inline unsigned pcm_ring_used(const pcm_ring_t *r)` |
+| `pcm_ring_write` | function | `headers/pcm_ring.h:55` | `static inline unsigned pcm_ring_write(pcm_ring_t *r, const unsigned char *src,                   ...` |
+| `PCSPK_H` | macro | `headers/pcspk.h:2` | `#define PCSPK_H` |
+| `PCSPK_VOL_DEFAULT` | macro | `headers/pcspk.h:6` | `#define PCSPK_VOL_DEFAULT` |
+| `PCSPK_VOL_MAX` | macro | `headers/pcspk.h:5` | `#define PCSPK_VOL_MAX` |
+| `PCSPK_VOL_MIN` | macro | `headers/pcspk.h:4` | `#define PCSPK_VOL_MIN` |
+| `pcspk_get_volume` | function | `headers/pcspk.h:12` | `unsigned pcspk_get_volume(void);` |
+| `pcspk_init` | function | `headers/pcspk.h:8` | `void pcspk_init(void);` |
+| `pcspk_off` | function | `headers/pcspk.h:10` | `void pcspk_off(void);` |
+| `pcspk_set_volume` | function | `headers/pcspk.h:11` | `void pcspk_set_volume(unsigned volume);` |
+| `pcspk_tone` | function | `headers/pcspk.h:9` | `void pcspk_tone(unsigned freq);` |
+| `PERCPU_RQ_H` | macro | `headers/percpu_rq.h:2` | `#define PERCPU_RQ_H` |
+| `RQ_DEPTH` | macro | `headers/percpu_rq.h:45` | `#define RQ_DEPTH` |
+| `RQ_RESCAN_PERIOD` | macro | `headers/percpu_rq.h:46` | `#define RQ_RESCAN_PERIOD` |
+| `RQ_VALIDATE_ATTEMPTS` | macro | `headers/percpu_rq.h:47` | `#define RQ_VALIDATE_ATTEMPTS` |
 | `WQ_NONE_HINT` | macro | `headers/percpu_rq.h:48` | `#define WQ_NONE_HINT` |
 | `percpu_rq_t` | struct | `headers/percpu_rq.h:50` | `` |
 | `rq_empty` | function | `headers/percpu_rq.h:65` | `int rq_empty(int cpu);` |
@@ -137,8 +161,8 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `CTX_RIP_OFF` | macro | `headers/sched.h:45` | `#define CTX_RIP_OFF` |
 | `CTX_RSP_OFF` | macro | `headers/sched.h:46` | `#define CTX_RSP_OFF` |
 | `DESKTOP_TICK_INTERVAL` | macro | `headers/sched.h:316` | `#define DESKTOP_TICK_INTERVAL` |
-| `EXECVE_MAX_ARG` | macro | `headers/sched.h:418` | `#define EXECVE_MAX_ARG` |
-| `EXECVE_MAX_ARGS` | macro | `headers/sched.h:417` | `#define EXECVE_MAX_ARGS` |
+| `EXECVE_MAX_ARG` | macro | `headers/sched.h:422` | `#define EXECVE_MAX_ARG` |
+| `EXECVE_MAX_ARGS` | macro | `headers/sched.h:421` | `#define EXECVE_MAX_ARGS` |
 | `FPU_MXCSR_DEFAULT` | macro | `headers/sched.h:159` | `#define FPU_MXCSR_DEFAULT` |
 | `FPU_MXCSR_OFF` | macro | `headers/sched.h:158` | `#define FPU_MXCSR_OFF` |
 | `FPU_SAVE_SZ` | macro | `headers/sched.h:157` | `#define FPU_SAVE_SZ` |
@@ -200,17 +224,18 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `SECCOMP_OP_DENY_ALL` | macro | `headers/sched.h:170` | `#define SECCOMP_OP_DENY_ALL` |
 | `SECCOMP_OP_DENY_ONE` | macro | `headers/sched.h:168` | `#define SECCOMP_OP_DENY_ONE` |
 | `TSS_SEL` | macro | `headers/sched.h:369` | `#define TSS_SEL(cpu)` |
-| `WAITPID_NOCHILD` | macro | `headers/sched.h:443` | `#define WAITPID_NOCHILD` |
-| `WAITPID_NONE` | macro | `headers/sched.h:441` | `#define WAITPID_NONE` |
+| `USER_FAULT_SIGNAL` | macro | `headers/sched.h:417` | `#define USER_FAULT_SIGNAL` |
+| `WAITPID_NOCHILD` | macro | `headers/sched.h:447` | `#define WAITPID_NOCHILD` |
+| `WAITPID_NONE` | macro | `headers/sched.h:445` | `#define WAITPID_NONE` |
 | `__attribute__` | function | `headers/sched.h:372` | `typedef struct __attribute__((packed))` |
 | `ap_idle_proc` | variable | `headers/sched.h:356` | `extern proc_t ap_idle_proc[MAX_CPUS];` |
-| `aslr_brk_pages` | function | `headers/sched.h:425` | `unsigned long aslr_brk_pages(void);` |
-| `aslr_dyn_base` | function | `headers/sched.h:427` | `unsigned long aslr_dyn_base(void);` |
-| `aslr_mmap_pages` | function | `headers/sched.h:426` | `unsigned long aslr_mmap_pages(void);` |
-| `aslr_stack_bytes` | function | `headers/sched.h:424` | `unsigned long aslr_stack_bytes(void);` |
+| `aslr_brk_pages` | function | `headers/sched.h:429` | `unsigned long aslr_brk_pages(void);` |
+| `aslr_dyn_base` | function | `headers/sched.h:431` | `unsigned long aslr_dyn_base(void);` |
+| `aslr_mmap_pages` | function | `headers/sched.h:430` | `unsigned long aslr_mmap_pages(void);` |
+| `aslr_stack_bytes` | function | `headers/sched.h:428` | `unsigned long aslr_stack_bytes(void);` |
 | `bsp_idtr` | variable | `headers/sched.h:373` | `extern idtr_t bsp_idtr;` |
 | `bytes` | function | `headers/sched.h:173` | `* RLIM_AS total user bytes (brk growth + mmap) beyond the load base * RLIM_CPU timer ticks of CPU time, then...` |
-| `caller` | function | `headers/sched.h:455` | `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...` |
+| `caller` | function | `headers/sched.h:459` | `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...` |
 | `cpu` | struct | `headers/sched.h:268` | `` |
 | `cpu_count` | variable | `headers/sched.h:295` | `extern int cpu_count;` |
 | `cpu_idle_ticks` | variable | `headers/sched.h:361` | `extern volatile unsigned long cpu_idle_ticks[MAX_CPUS];` |
@@ -218,21 +243,22 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `ctx_regs_t` | struct | `headers/sched.h:33` | `` |
 | `current_pid` | macro | `headers/sched.h:312` | `#define current_pid` |
 | `do_clone` | function | `headers/sched.h:408` | `long do_clone(long flags, long newsp);` |
-| `do_execve` | function | `headers/sched.h:433` | `long do_execve(char *kpath, int kargc, char **kargv);` |
+| `do_execve` | function | `headers/sched.h:437` | `long do_execve(char *kpath, int kargc, char **kargv);` |
 | `do_exit` | function | `headers/sched.h:407` | `void do_exit(int code);` |
-| `do_exit_group_threads` | function | `headers/sched.h:413` | `void do_exit_group_threads(void);` |
 | `do_fork` | function | `headers/sched.h:409` | `long do_fork(void);` |
 | `do_fork_ex` | function | `headers/sched.h:410` | `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);` |
-| `do_kill` | function | `headers/sched.h:445` | `int do_kill(int pid);` |
+| `do_group_exit` | function | `headers/sched.h:413` | `void do_group_exit(int code);` |
+| `do_kill` | function | `headers/sched.h:449` | `int do_kill(int pid);` |
+| `do_kill_code` | function | `headers/sched.h:415` | `int do_kill_code(int pid, int code);` |
 | `do_linux_clone` | function | `headers/sched.h:411` | `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...` |
-| `do_thread_spawn` | function | `headers/sched.h:434` | `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
-| `do_waitpid` | function | `headers/sched.h:436` | `int do_waitpid(int pid);` |
-| `do_waitpid_linux` | function | `headers/sched.h:444` | `int do_waitpid_linux(int pid, int nohang, int *found);` |
-| `do_waitpid_nb` | function | `headers/sched.h:437` | `int do_waitpid_nb(int pid);` |
+| `do_thread_spawn` | function | `headers/sched.h:438` | `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
+| `do_waitpid` | function | `headers/sched.h:440` | `int do_waitpid(int pid);` |
+| `do_waitpid_linux` | function | `headers/sched.h:448` | `int do_waitpid_linux(int pid, int nohang, int *found);` |
+| `do_waitpid_nb` | function | `headers/sched.h:441` | `int do_waitpid_nb(int pid);` |
 | `entry` | function | `headers/sched.h:135` | `* private view with one KFILE ref per live entry (0 on OOM), release * drops the view at reap, cloexec closes marked...` |
-| `failure` | function | `headers/sched.h:432` | `* failure (negative errno);` |
+| `failure` | function | `headers/sched.h:436` | `* failure (negative errno);` |
 | `first` | function | `headers/sched.h:232` | `* address first (SYSCALL_FRAME_WORDS in syscall_asm.h). It ends exactly at * the saved top (sc_top_save[pid]);` |
-| `fork_child_settid` | function | `headers/sched.h:414` | `void fork_child_settid(void);` |
+| `fork_child_settid` | function | `headers/sched.h:418` | `void fork_child_settid(void);` |
 | `gdb_dump_report` | function | `headers/sched.h:381` | `void gdb_dump_report(unsigned long addr, unsigned long len);` |
 | `gdb_regs_report` | function | `headers/sched.h:380` | `void gdb_regs_report(int pid);` |
 | `group` | function | `headers/sched.h:108` | `* process is its own group (tgid == pid);` |
@@ -247,13 +273,14 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `kfd_view_t` | type_alias | `headers/sched.h:11` | `typedef struct kfd_view kfd_view_t;` |
 | `kstack_report` | function | `headers/sched.h:377` | `void kstack_report(void);` |
 | `limit` | type_alias | `headers/sched.h:372` | `typedef struct __attribute__((packed)) { uint16_t limit;` |
+| `mm_view_claim_current` | function | `headers/sched.h:414` | `void mm_view_claim_current(void);` |
 | `proc_count` | variable | `headers/sched.h:334` | `extern int proc_count;` |
 | `proc_create` | function | `headers/sched.h:387` | `int proc_create(const char *name, int parent_pid);` |
 | `proc_get` | function | `headers/sched.h:388` | `proc_t *proc_get(int pid);` |
 | `proc_t` | struct | `headers/sched.h:50` | `` |
 | `procs` | variable | `headers/sched.h:333` | `extern proc_t procs[MAX_PROCS];` |
-| `pt_clone_user` | function | `headers/sched.h:449` | `uint64_t pt_clone_user(uint64_t parent_cr3);` |
-| `pt_free_user` | function | `headers/sched.h:450` | `void pt_free_user(uint64_t cr3);` |
+| `pt_clone_user` | function | `headers/sched.h:453` | `uint64_t pt_clone_user(uint64_t parent_cr3);` |
+| `pt_free_user` | function | `headers/sched.h:454` | `void pt_free_user(uint64_t cr3);` |
 | `resume_iretq` | function | `headers/sched.h:405` | `void resume_iretq(void);` |
 | `rlimit_cpu_exceeded` | function | `headers/sched.h:394` | `int rlimit_cpu_exceeded(int pid);` |
 | `rlimit_cpu_tick` | function | `headers/sched.h:395` | `void rlimit_cpu_tick(int pid);` |
@@ -266,9 +293,9 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `seccomp_allow_one` | function | `headers/sched.h:392` | `int seccomp_allow_one(int pid, int n);` |
 | `seccomp_denied` | function | `headers/sched.h:393` | `int seccomp_denied(int pid, int n);` |
 | `seccomp_deny_one` | function | `headers/sched.h:391` | `int seccomp_deny_one(int pid, int n);` |
-| `shell_nchildren` | function | `headers/sched.h:440` | `int shell_nchildren(void);` |
-| `shell_reap_nb` | function | `headers/sched.h:438` | `int shell_reap_nb(int *pid_out, int *code_out);` |
-| `shell_reap_one` | function | `headers/sched.h:439` | `int shell_reap_one(int pid, int *code_out);` |
+| `shell_nchildren` | function | `headers/sched.h:444` | `int shell_nchildren(void);` |
+| `shell_reap_nb` | function | `headers/sched.h:442` | `int shell_reap_nb(int *pid_out, int *code_out);` |
+| `shell_reap_one` | function | `headers/sched.h:443` | `int shell_reap_one(int pid, int *code_out);` |
 | `smp_ap_idle_loop` | function | `headers/sched.h:386` | `void smp_ap_idle_loop(void);` |
 | `smp_dbg_bad_gs` | variable | `headers/sched.h:364` | `extern volatile unsigned smp_dbg_bad_gs;` |
 | `smp_dispatches` | variable | `headers/sched.h:357` | `extern volatile unsigned long smp_dispatches[MAX_CPUS];` |
@@ -279,7 +306,7 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `sys_ticks` | variable | `headers/sched.h:335` | `extern volatile uint64_t sys_ticks;` |
 | `syscall_frame_current` | function | `headers/sched.h:245` | `const syscall_frame_t *syscall_frame_current(void);` |
 | `syscall_frame_t` | struct | `headers/sched.h:235` | `` |
-| `timer_tick` | function | `headers/sched.h:446` | `void timer_tick(void);` |
+| `timer_tick` | function | `headers/sched.h:450` | `void timer_tick(void);` |
 | `tss_init_ap` | function | `headers/sched.h:385` | `void tss_init_ap(int cpu);` |
 | `user_program_active` | variable | `headers/sched.h:336` | `extern volatile int user_program_active;` |
 | `yield` | function | `headers/sched.h:406` | `void yield(void);` |
@@ -361,14 +388,14 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `smp_ipi_broadcast` | function | `headers/smp.h:43` | `void smp_ipi_broadcast(int vector);` |
 | `smp_lock` | variable | `headers/smp.h:25` | `extern spinlock_t smp_lock;` |
 | `SPAWN_H` | macro | `headers/spawn.h:2` | `#define SPAWN_H` |
-| `spawn_backup` | function | `headers/spawn.h:27` | `int spawn_backup(spawn_ctx_t *ctx);` |
-| `spawn_copy_argv` | function | `headers/spawn.h:38` | `char **spawn_copy_argv(int argc, const char **uargv);` |
+| `spawn_backup` | function | `headers/spawn.h:28` | `int spawn_backup(spawn_ctx_t *ctx);` |
+| `spawn_copy_argv` | function | `headers/spawn.h:39` | `char **spawn_copy_argv(int argc, const char **uargv);` |
 | `spawn_ctx_t` | struct | `headers/spawn.h:9` | `` |
-| `spawn_execute` | function | `headers/spawn.h:47` | `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...` |
-| `spawn_free_argv` | function | `headers/spawn.h:41` | `void spawn_free_argv(char **kargv, int argc);` |
-| `spawn_load_image` | function | `headers/spawn.h:44` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` |
-| `spawn_restore` | function | `headers/spawn.h:30` | `void spawn_restore(spawn_ctx_t *ctx);` |
-| `spawn_validate_argv` | function | `headers/spawn.h:33` | `int spawn_validate_argv(int argc, const char **uargv);` |
+| `spawn_execute` | function | `headers/spawn.h:48` | `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...` |
+| `spawn_free_argv` | function | `headers/spawn.h:42` | `void spawn_free_argv(char **kargv, int argc);` |
+| `spawn_load_image` | function | `headers/spawn.h:45` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` |
+| `spawn_restore` | function | `headers/spawn.h:31` | `void spawn_restore(spawn_ctx_t *ctx);` |
+| `spawn_validate_argv` | function | `headers/spawn.h:34` | `int spawn_validate_argv(int argc, const char **uargv);` |
 | `SPINLOCK_H` | macro | `headers/spinlock.h:2` | `#define SPINLOCK_H` |
 | `SPINLOCK_INIT` | macro | `headers/spinlock.h:44` | `#define SPINLOCK_INIT` |
 | `irqflags_t` | type_alias | `headers/spinlock.h:41` | `typedef unsigned long irqflags_t;` |
@@ -437,9 +464,13 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `SYSCALL_PROC_T_SIZE` | macro | `headers/syscall_asm.h:17` | `#define SYSCALL_PROC_T_SIZE` |
 | `SYSCALL_USER_WIN_HI` | macro | `headers/syscall_asm.h:16` | `#define SYSCALL_USER_WIN_HI` |
 | `SYSCALL_USER_WIN_LO` | macro | `headers/syscall_asm.h:15` | `#define SYSCALL_USER_WIN_LO` |
+| `LINUX_EXIT_STATUS_MASK` | macro | `headers/syscalls_proc.h:30` | `#define LINUX_EXIT_STATUS_MASK` |
+| `LINUX_SIGNAL_EXIT_BASE` | macro | `headers/syscalls_proc.h:29` | `#define LINUX_SIGNAL_EXIT_BASE` |
+| `LINUX_SIGNAL_MAX` | macro | `headers/syscalls_proc.h:28` | `#define LINUX_SIGNAL_MAX` |
 | `SYSCALLS_PROC_H` | macro | `headers/syscalls_proc.h:2` | `#define SYSCALLS_PROC_H` |
 | `dispatcher` | function | `headers/syscalls_proc.h:5` | `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...` |
-| `do_proc_exit` | function | `headers/syscalls_proc.h:27` | `long do_proc_exit(long code);` |
+| `do_proc_exit` | function | `headers/syscalls_proc.h:34` | `long do_proc_exit(long code);` |
+| `linux_signal_fatal` | function | `headers/syscalls_proc.h:31` | `int linux_signal_fatal(long sig);` |
 | `sys_linux_clone` | function | `headers/syscalls_proc.h:19` | `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `sys_linux_execve` | function | `headers/syscalls_proc.h:21` | `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `sys_linux_exit` | function | `headers/syscalls_proc.h:22` | `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `tick_register_audio` | function | `headers/tick.h:54` | `int tick_register_audio(tick_fn_t fn, void *ctx);` |
 | `tick_register_desktop` | function | `headers/tick.h:61` | `int tick_register_desktop(tick_fn_t fn, void *ctx);` |
 | `tick_register_usb` | function | `headers/tick.h:69` | `int tick_register_usb(tick_fn_t fn, void *ctx);` |
-| `tick_reset` | function | `headers/tick.h:47` | `void tick_reset(void);` |
-| `tick_run_audio` | function | `headers/tick.h:75` | `void tick_run_audio(void);` |
-| `tick_run_desktop` | function | `headers/tick.h:78` | `void tick_run_desktop(void);` |
-| `tick_run_usb` | function | `headers/tick.h:72` | `void tick_run_usb(void);` |
-| `TLS_ALERT_LEVEL_FATAL` | macro | `headers/tls.h:47` | `#define TLS_ALERT_LEVEL_FATAL` |
-| `TLS_ALERT_LEVEL_WARNING` | macro | `headers/tls.h:46` | `#define TLS_ALERT_LEVEL_WARNING` |
-| `TLS_BN_384_WORDS` | macro | `headers/tls.h:63` | `#define TLS_BN_384_WORDS` |
-| `TLS_BN_4096_WORDS` | macro | `headers/tls.h:62` | `#define TLS_BN_4096_WORDS` |
-| `TLS_CERT_MAX` | macro | `headers/tls.h:58` | `#define TLS_CERT_MAX` |
-| `TLS_CHAIN_MAX` | macro | `headers/tls.h:57` | `#define TLS_CHAIN_MAX` |
-| `TLS_CSUITE_ECDHE_ECDSA_AES128GCM` | macro | `headers/tls.h:29` | `#define TLS_CSUITE_ECDHE_ECDSA_AES128GCM` |
-| `TLS_CSUITE_ECDHE_RSA_AES128GCM` | macro | `headers/tls.h:28` | `#define TLS_CSUITE_ECDHE_RSA_AES128GCM` |
-| `TLS_CT_ALERT` | macro | `headers/tls.h:8` | `#define TLS_CT_ALERT` |
-| `TLS_CT_APPDATA` | macro | `headers/tls.h:10` | `#define TLS_CT_APPDATA` |
-| `TLS_CT_CCS` | macro | `headers/tls.h:7` | `#define TLS_CT_CCS` |
-| `TLS_CT_HANDSHAKE` | macro | `headers/tls.h:9` | `#define TLS_CT_HANDSHAKE` |
-| `TLS_EXT_EC_POINT_FORMATS` | macro | `headers/tls.h:42` | `#define TLS_EXT_EC_POINT_FORMATS` |
-| `TLS_EXT_SERVER_NAME` | macro | `headers/tls.h:40` | `#define TLS_EXT_SERVER_NAME` |
-| `TLS_EXT_SIGNATURE_ALGS` | macro | `headers/tls.h:43` | `#define TLS_EXT_SIGNATURE_ALGS` |
-| `TLS_EXT_SUPPORTED_GROUPS` | macro | `headers/tls.h:41` | `#define TLS_EXT_SUPPORTED_GROUPS` |
-| `TLS_GROUP_SECP256R1` | macro | `headers/tls.h:37` | `#define TLS_GROUP_SECP256R1` |
-| `TLS_H` | macro | `headers/tls.h:2` | `#define TLS_H` |
-| `TLS_HOST_MAX` | macro | `headers/tls.h:54` | `#define TLS_HOST_MAX` |
-| `TLS_HS_CERTIFICATE` | macro | `headers/tls.h:21` | `#define TLS_HS_CERTIFICATE` |
-| `TLS_HS_CLIENT_HELLO` | macro | `headers/tls.h:19` | `#define TLS_HS_CLIENT_HELLO` |
-| `TLS_HS_CLIENT_KEY_EXCHANGE` | macro | `headers/tls.h:24` | `#define TLS_HS_CLIENT_KEY_EXCHANGE` |
-| `TLS_HS_FINISHED` | macro | `headers/tls.h:25` | `#define TLS_HS_FINISHED` |
-| `TLS_HS_SERVER_HELLO` | macro | `headers/tls.h:20` | `#define TLS_HS_SERVER_HELLO` |
-| `TLS_HS_SERVER_HELLO_DONE` | macro | `headers/tls.h:23` | `#define TLS_HS_SERVER_HELLO_DONE` |
-| `TLS_HS_SERVER_KEY_EXCHANGE` | macro | `headers/tls.h:22` | `#define TLS_HS_SERVER_KEY_EXCHANGE` |
-| `TLS_HS_TIMEOUT_MS` | macro | `headers/tls.h:50` | `#define TLS_HS_TIMEOUT_MS` |
 
 Next: [SYMBOLS_p7.md](SYMBOLS_p7.md)

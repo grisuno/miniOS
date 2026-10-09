@@ -1,6 +1,37 @@
 # API (page 10 of 19)
 Previous: [API_p9.md](API_p9.md)
 
+## progs/doomgeneric/dummy.c
+Depends on: `progs/doomgeneric/doomtype.h`
+- `I_InitTimidityConfig` (function) `progs/doomgeneric/dummy.c:43` `void I_InitTimidityConfig(void)`
+
+## progs/doomgeneric/f_finale.c
+Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `F_StartFinale` (function) `progs/doomgeneric/f_finale.c:108` `void F_StartFinale (void)` -- F_StartFinale
+- `F_Responder` (function) `progs/doomgeneric/f_finale.c:160` `boolean F_Responder (event_t *event)`
+- `F_Ticker` (function) `progs/doomgeneric/f_finale.c:172` `void F_Ticker (void)` -- F_Ticker
+- `F_TextWrite` (function) `progs/doomgeneric/f_finale.c:227` `void F_TextWrite (void)`
+- `F_StartCast` (function) `progs/doomgeneric/f_finale.c:340` `void F_StartCast (void)` -- F_StartCast
+- `F_CastTicker` (function) `progs/doomgeneric/f_finale.c:358` `void F_CastTicker (void)` -- F_CastTicker
+- `F_CastResponder` (function) `progs/doomgeneric/f_finale.c:465` `boolean F_CastResponder (event_t* ev)`
+- `F_CastPrint` (function) `progs/doomgeneric/f_finale.c:486` `void F_CastPrint (char* text)`
+- `F_CastDrawer` (function) `progs/doomgeneric/f_finale.c:541` `void F_CastDrawer (void)`
+- `F_DrawPatchCol` (function) `progs/doomgeneric/f_finale.c:572` `void
+F_DrawPatchCol
+( int		x,
+  patch_t*	patch,
+  int		col )`
+- `F_BunnyScroll` (function) `progs/doomgeneric/f_finale.c:606` `void F_BunnyScroll (void)` -- F_BunnyScroll
+- `F_ArtScreenDrawer` (function) `progs/doomgeneric/f_finale.c:661` `static void F_ArtScreenDrawer(void)`
+- `F_Drawer` (function) `progs/doomgeneric/f_finale.c:702` `void F_Drawer (void)` -- F_Drawer
+
+## progs/doomgeneric/f_finale.h
+Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`
+- `F_Ticker` (function) `progs/doomgeneric/f_finale.h:34` `void F_Ticker (void);` -- Called by main loop.
+- `F_Drawer` (function) `progs/doomgeneric/f_finale.h:37` `void F_Drawer (void);` -- Called by main loop.
+- `F_StartFinale` (function) `progs/doomgeneric/f_finale.h:40` `void F_StartFinale (void);`
+
 ## progs/doomgeneric/f_wipe.c
 Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
 - `wipe_shittyColMajorXform` (function) `progs/doomgeneric/f_wipe.c:43` `void
@@ -445,45 +476,6 @@ Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `p
 - `I_StopSong` (function) `progs/doomgeneric/i_sound.c:420` `void I_StopSong(void)`
 - `I_MusicIsPlaying` (function) `progs/doomgeneric/i_sound.c:428` `boolean I_MusicIsPlaying(void)`
 - `I_BindSoundVariables` (function) `progs/doomgeneric/i_sound.c:440` `void I_BindSoundVariables(void)`
-
-## progs/doomgeneric/i_sound.h
-Depends on: `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/sounds.h`
-- `I_InitSound` (function) `progs/doomgeneric/i_sound.h:152` `void I_InitSound(boolean use_sfx_prefix);`
-- `I_ShutdownSound` (function) `progs/doomgeneric/i_sound.h:153` `void I_ShutdownSound(void);`
-- `I_GetSfxLumpNum` (function) `progs/doomgeneric/i_sound.h:154` `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo);`
-- `I_UpdateSound` (function) `progs/doomgeneric/i_sound.h:155` `void I_UpdateSound(void);`
-- `I_UpdateSoundParams` (function) `progs/doomgeneric/i_sound.h:156` `void I_UpdateSoundParams(int channel, int vol, int sep);`
-- `I_StartSound` (function) `progs/doomgeneric/i_sound.h:157` `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep);`
-- `I_StopSound` (function) `progs/doomgeneric/i_sound.h:158` `void I_StopSound(int channel);`
-- `I_PrecacheSounds` (function) `progs/doomgeneric/i_sound.h:160` `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);`
-- `I_InitMusic` (function) `progs/doomgeneric/i_sound.h:217` `void I_InitMusic(void);`
-- `I_ShutdownMusic` (function) `progs/doomgeneric/i_sound.h:218` `void I_ShutdownMusic(void);`
-- `I_SetMusicVolume` (function) `progs/doomgeneric/i_sound.h:219` `void I_SetMusicVolume(int volume);`
-- `I_PauseSong` (function) `progs/doomgeneric/i_sound.h:220` `void I_PauseSong(void);`
-- `I_ResumeSong` (function) `progs/doomgeneric/i_sound.h:221` `void I_ResumeSong(void);`
-- `I_RegisterSong` (function) `progs/doomgeneric/i_sound.h:222` `void *I_RegisterSong(void *data, int len);`
-- `I_UnRegisterSong` (function) `progs/doomgeneric/i_sound.h:223` `void I_UnRegisterSong(void *handle);`
-- `I_PlaySong` (function) `progs/doomgeneric/i_sound.h:224` `void I_PlaySong(void *handle, boolean looping);`
-- `I_StopSong` (function) `progs/doomgeneric/i_sound.h:225` `void I_StopSong(void);`
-- `I_BindSoundVariables` (function) `progs/doomgeneric/i_sound.h:235` `void I_BindSoundVariables(void);`
-
-## progs/doomgeneric/i_system.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/pokemon/minios_stubs/SDL.h`
-- `I_AtExit` (function) `progs/doomgeneric/i_system.c:73` `void I_AtExit(atexit_func_t func, boolean run_on_error)`
-- `I_Tactile` (function) `progs/doomgeneric/i_system.c:87` `void I_Tactile(int on, int off, int total)`
-- `AutoAllocMemory` (function) `progs/doomgeneric/i_system.c:95` `static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)`
-- `I_ZoneBase` (function) `progs/doomgeneric/i_system.c:133` `byte *I_ZoneBase (int *size)`
-- `I_PrintBanner` (function) `progs/doomgeneric/i_system.c:166` `void I_PrintBanner(char *msg)`
-- `I_PrintDivider` (function) `progs/doomgeneric/i_system.c:177` `void I_PrintDivider(void)`
-- `I_PrintStartupBanner` (function) `progs/doomgeneric/i_system.c:189` `void I_PrintStartupBanner(char *gamedescription)`
-- `I_ConsoleStdout` (function) `progs/doomgeneric/i_system.c:210` `boolean I_ConsoleStdout(void)`
-- `I_Quit` (function) `progs/doomgeneric/i_system.c:246` `void I_Quit (void)`
-- `ZenityAvailable` (function) `progs/doomgeneric/i_system.c:272` `static int ZenityAvailable(void)`
-- `EscapeShellString` (function) `progs/doomgeneric/i_system.c:280` `static char *EscapeShellString(char *string)`
-- `ZenityErrorBox` (function) `progs/doomgeneric/i_system.c:323` `static int ZenityErrorBox(char *message)`
-- `I_Error` (function) `progs/doomgeneric/i_system.c:359` `void I_Error (char *error, ...)`
-- `I_GetMemoryValue` (function) `progs/doomgeneric/i_system.c:502` `boolean I_GetMemoryValue(unsigned int offset, void *value, int size)`
 
 
 Next: [API_p11.md](API_p11.md)

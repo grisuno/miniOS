@@ -2,6 +2,8 @@
 Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/r_state.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/s_sound.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/sounds.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/v_video.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/w_wad.h`
@@ -494,7 +496,5 @@ Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 - `progs/doomgeneric/r_state.h` -> `progs/doomgeneric/r_data.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/deh_main.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/doomdef.h`
-- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/doomstat.h`
-- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/i_swap.h`
 
 Next: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)

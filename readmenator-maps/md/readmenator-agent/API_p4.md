@@ -114,47 +114,48 @@ Imported by: `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c`, `fs/minifs.c
 
 ## headers/net.h
 Imported by: `drivers/virtio_net.c`, `headers/net/rtl8139.h`, `headers/tls_port.h`, `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`
-- `ring` (function) `headers/net.h:54` `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...`
-- `net_sys_is_socket` (function) `headers/net.h:97` `int net_sys_is_socket(long fd);` -- net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and * 0..NET_SOCKETS-1 for the libc-style...
-- `net_sys_setsockopt` (function) `headers/net.h:98` `long net_sys_setsockopt(long fd, long level, long name, long val, long len);`
-- `net_sys_getsockopt` (function) `headers/net.h:99` `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);`
-- `net_sys_getsockname` (function) `headers/net.h:100` `long net_sys_getsockname(long fd, long addr, long lenp);`
-- `net_sys_getpeername` (function) `headers/net.h:101` `long net_sys_getpeername(long fd, long addr, long lenp);`
-- `net_sys_sendmsg` (function) `headers/net.h:102` `long net_sys_sendmsg(long fd, long msg, long flags);`
-- `net_sys_sendmmsg` (function) `headers/net.h:103` `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);`
-- `net_sys_fcntl` (function) `headers/net.h:104` `long net_sys_fcntl(long fd, long cmd, long arg);`
-- `net_register_symbols` (function) `headers/net.h:105` `void net_register_symbols(void);`
-- `net_cmd_status` (function) `headers/net.h:108` `void net_cmd_status(void);` -- void net_init(void); /* Linux socket ABI entry points (kernel/syscalls.c routes to them). int...
-- `net_cmd_ping` (function) `headers/net.h:109` `void net_cmd_ping(const char *ip_text);`
-- `net_get_addrs` (function) `headers/net.h:110` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
-- `net_cmd_dns` (function) `headers/net.h:111` `void net_cmd_dns(const char *host);`
-- `net_open` (function) `headers/net.h:114` `int net_open(void);` -- long net_sys_getsockname(long fd, long addr, long lenp); long net_sys_getpeername(long fd, long addr, long lenp)...
-- `net_connect` (function) `headers/net.h:115` `int net_connect(const char *host, unsigned short port);`
-- `net_send` (function) `headers/net.h:116` `int net_send(int fd, const char *buf, int len);`
-- `net_recv` (function) `headers/net.h:117` `int net_recv(int fd, char *buf, int len);`
-- `net_recv_timeout` (function) `headers/net.h:119` `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);` -- void net_register_symbols(void); /* Shell commands void net_cmd_status(void); void net_cmd_ping(const char...
-- `net_close` (function) `headers/net.h:120` `void net_close(int fd);`
-- `demux` (function) `headers/net.h:126` `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);`
-- `net_accept_nb` (function) `headers/net.h:128` `int net_accept_nb(int fd);`
-- `net_accept` (function) `headers/net.h:129` `int net_accept(int fd, unsigned long timeout_ms);`
-- `net_sock_state` (function) `headers/net.h:130` `int net_sock_state(int fd);`
-- `net_sock_seq` (function) `headers/net.h:131` `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);`
-- `net_test_inject_tcp` (function) `headers/net.h:132` `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...`
-- `net_sys_socket` (function) `headers/net.h:137` `long net_sys_socket(long a1, long a2, long a3);` -- index, or -1). net_accept_nb takes an established child without waiting; net_accept waits up to timeout_ms....
-- `net_sys_connect` (function) `headers/net.h:138` `long net_sys_connect(long fd, long sockaddr, long addrlen);`
-- `net_sys_bind` (function) `headers/net.h:139` `long net_sys_bind(long fd, long sockaddr, long addrlen);`
-- `net_sys_listen` (function) `headers/net.h:140` `long net_sys_listen(long fd, long backlog);`
-- `net_sys_accept` (function) `headers/net.h:141` `long net_sys_accept(long fd, long sockaddr, long addrlen);`
-- `net_sys_sendto` (function) `headers/net.h:142` `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
-- `net_sys_recvfrom` (function) `headers/net.h:143` `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
-- `net_sys_shutdown` (function) `headers/net.h:144` `long net_sys_shutdown(long fd, long how);`
-- `net_sys_close` (function) `headers/net.h:145` `long net_sys_close(long fd);`
-- `net_sys_poll` (function) `headers/net.h:146` `long net_sys_poll(long fds, long nfds, long timeout_ms);`
-- `net_sys_dns` (function) `headers/net.h:147` `long net_sys_dns(long host);`
-- `net_time_ms` (function) `headers/net.h:150` `unsigned long net_time_ms(void);` -- /* Linux syscall ABI (sockaddr_in layout matches Linux) long net_sys_socket(long a1, long a2, long a3); long...
-- `net_rx_handle_frame` (function) `headers/net.h:154` `void net_rx_handle_frame(const unsigned char *frame, unsigned len);` -- Demux entry point the rtl8139 driver (rtl8139.c) calls for every * frame drained from the RX ring; lives in net.c.
-- `stack` (function) `headers/net.h:157` `* the stack (dropped fragments);`
-- `tls_free_fd` (function) `headers/net.h:165` `void tls_free_fd(int fd);` -- TLS sessions attached to socket fds (tls.c); net_sys_close frees them.
+- `ring` (function) `headers/net.h:58` `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...`
+- `net_sys_is_socket` (function) `headers/net.h:101` `int net_sys_is_socket(long fd);` -- net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and * 0..NET_SOCKETS-1 for the libc-style...
+- `net_sys_setsockopt` (function) `headers/net.h:102` `long net_sys_setsockopt(long fd, long level, long name, long val, long len);`
+- `net_sys_getsockopt` (function) `headers/net.h:103` `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);`
+- `net_sys_getsockname` (function) `headers/net.h:104` `long net_sys_getsockname(long fd, long addr, long lenp);`
+- `net_sys_getpeername` (function) `headers/net.h:105` `long net_sys_getpeername(long fd, long addr, long lenp);`
+- `net_sys_sendmsg` (function) `headers/net.h:106` `long net_sys_sendmsg(long fd, long msg, long flags);`
+- `net_sys_sendmmsg` (function) `headers/net.h:107` `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);`
+- `net_sys_fcntl` (function) `headers/net.h:108` `long net_sys_fcntl(long fd, long cmd, long arg);`
+- `net_sys_ioctl` (function) `headers/net.h:109` `long net_sys_ioctl(long fd, long req, long arg);`
+- `net_register_symbols` (function) `headers/net.h:110` `void net_register_symbols(void);`
+- `net_cmd_status` (function) `headers/net.h:113` `void net_cmd_status(void);` -- void net_init(void); /* Linux socket ABI entry points (kernel/syscalls.c routes to them). int...
+- `net_cmd_ping` (function) `headers/net.h:114` `void net_cmd_ping(const char *ip_text);`
+- `net_get_addrs` (function) `headers/net.h:115` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
+- `net_cmd_dns` (function) `headers/net.h:116` `void net_cmd_dns(const char *host);`
+- `net_open` (function) `headers/net.h:119` `int net_open(void);` -- long net_sys_getpeername(long fd, long addr, long lenp); long net_sys_sendmsg(long fd, long msg, long flags); long...
+- `net_connect` (function) `headers/net.h:120` `int net_connect(const char *host, unsigned short port);`
+- `net_send` (function) `headers/net.h:121` `int net_send(int fd, const char *buf, int len);`
+- `net_recv` (function) `headers/net.h:122` `int net_recv(int fd, char *buf, int len);`
+- `net_recv_timeout` (function) `headers/net.h:124` `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);` -- void net_register_symbols(void); /* Shell commands void net_cmd_status(void); void net_cmd_ping(const char...
+- `net_close` (function) `headers/net.h:125` `void net_close(int fd);`
+- `demux` (function) `headers/net.h:131` `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);`
+- `net_accept_nb` (function) `headers/net.h:133` `int net_accept_nb(int fd);`
+- `net_accept` (function) `headers/net.h:134` `int net_accept(int fd, unsigned long timeout_ms);`
+- `net_sock_state` (function) `headers/net.h:135` `int net_sock_state(int fd);`
+- `net_sock_seq` (function) `headers/net.h:136` `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);`
+- `net_test_inject_tcp` (function) `headers/net.h:137` `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...`
+- `net_sys_socket` (function) `headers/net.h:142` `long net_sys_socket(long a1, long a2, long a3);` -- index, or -1). net_accept_nb takes an established child without waiting; net_accept waits up to timeout_ms....
+- `net_sys_connect` (function) `headers/net.h:143` `long net_sys_connect(long fd, long sockaddr, long addrlen);`
+- `net_sys_bind` (function) `headers/net.h:144` `long net_sys_bind(long fd, long sockaddr, long addrlen);`
+- `net_sys_listen` (function) `headers/net.h:145` `long net_sys_listen(long fd, long backlog);`
+- `net_sys_accept` (function) `headers/net.h:146` `long net_sys_accept(long fd, long sockaddr, long addrlen);`
+- `net_sys_sendto` (function) `headers/net.h:147` `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
+- `net_sys_recvfrom` (function) `headers/net.h:148` `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
+- `net_sys_shutdown` (function) `headers/net.h:149` `long net_sys_shutdown(long fd, long how);`
+- `net_sys_close` (function) `headers/net.h:150` `long net_sys_close(long fd);`
+- `net_sys_poll` (function) `headers/net.h:151` `long net_sys_poll(long fds, long nfds, long timeout_ms);`
+- `net_sys_dns` (function) `headers/net.h:152` `long net_sys_dns(long host);`
+- `net_time_ms` (function) `headers/net.h:155` `unsigned long net_time_ms(void);` -- /* Linux syscall ABI (sockaddr_in layout matches Linux) long net_sys_socket(long a1, long a2, long a3); long...
+- `net_rx_handle_frame` (function) `headers/net.h:159` `void net_rx_handle_frame(const unsigned char *frame, unsigned len);` -- Demux entry point the rtl8139 driver (rtl8139.c) calls for every * frame drained from the RX ring; lives in net.c.
+- `stack` (function) `headers/net.h:162` `* the stack (dropped fragments);`
+- `tls_free_fd` (function) `headers/net.h:170` `void tls_free_fd(int fd);` -- TLS sessions attached to socket fds (tls.c); net_sys_close frees them.
 
 ## headers/net/rtl8139.h
 Depends on: `headers/net.h`
@@ -312,7 +313,7 @@ Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel.c`, `kernel/sched.c`, `
 
 ## headers/sched.h
 Depends on: `headers/spinlock.h`, `headers/vma.h`
-Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `smp.c`
+Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `progs/src/lxabi.c`, `smp.c`
 - `group` (function) `headers/sched.h:108` `* process is its own group (tgid == pid);`
 - `entry` (function) `headers/sched.h:135` `* private view with one KFILE ref per live entry (0 on OOM), release * drops the view at reap, cloexec closes marked...`
 - `kfd_view_copy` (function) `headers/sched.h:138` `int kfd_view_copy(proc_t *child, proc_t *parent);`
@@ -349,26 +350,28 @@ Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/perc
 - `do_fork` (function) `headers/sched.h:409` `long do_fork(void);`
 - `do_fork_ex` (function) `headers/sched.h:410` `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);`
 - `do_linux_clone` (function) `headers/sched.h:411` `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...`
-- `do_exit_group_threads` (function) `headers/sched.h:413` `void do_exit_group_threads(void);`
-- `fork_child_settid` (function) `headers/sched.h:414` `void fork_child_settid(void);`
-- `aslr_stack_bytes` (function) `headers/sched.h:424` `unsigned long aslr_stack_bytes(void);` -- ASLR jitter, fresh per exec (TSC + ticks + per-exec counter, never zero for stack/brk so consecutive execs differ...
-- `aslr_brk_pages` (function) `headers/sched.h:425` `unsigned long aslr_brk_pages(void);`
-- `aslr_mmap_pages` (function) `headers/sched.h:426` `unsigned long aslr_mmap_pages(void);`
-- `aslr_dyn_base` (function) `headers/sched.h:427` `unsigned long aslr_dyn_base(void);`
-- `failure` (function) `headers/sched.h:432` `* failure (negative errno);`
-- `do_execve` (function) `headers/sched.h:433` `long do_execve(char *kpath, int kargc, char **kargv);` -- do_execve() - replace the caller's image with a fresh ET_EXEC/ET_DYN program (kernel/sched.c).
-- `do_thread_spawn` (function) `headers/sched.h:434` `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-- `do_waitpid` (function) `headers/sched.h:436` `int do_waitpid(int pid);`
-- `do_waitpid_nb` (function) `headers/sched.h:437` `int do_waitpid_nb(int pid);`
-- `shell_reap_nb` (function) `headers/sched.h:438` `int shell_reap_nb(int *pid_out, int *code_out);`
-- `shell_reap_one` (function) `headers/sched.h:439` `int shell_reap_one(int pid, int *code_out);`
-- `shell_nchildren` (function) `headers/sched.h:440` `int shell_nchildren(void);`
-- `do_waitpid_linux` (function) `headers/sched.h:444` `int do_waitpid_linux(int pid, int nohang, int *found);` -- kstack slot family, fd table and limits; everything else (window, VMA, brk view, stack, FPU, FSBASE, name) is rebuilt.
-- `do_kill` (function) `headers/sched.h:445` `int do_kill(int pid);`
-- `timer_tick` (function) `headers/sched.h:446` `void timer_tick(void);`
-- `pt_clone_user` (function) `headers/sched.h:449` `uint64_t pt_clone_user(uint64_t parent_cr3);` -- unsigned long arg); int      do_waitpid(int pid); int      do_waitpid_nb(int pid); int      shell_reap_nb(int...
-- `pt_free_user` (function) `headers/sched.h:450` `void pt_free_user(uint64_t cr3);`
-- `caller` (function) `headers/sched.h:455` `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
+- `do_group_exit` (function) `headers/sched.h:413` `void do_group_exit(int code);`
+- `mm_view_claim_current` (function) `headers/sched.h:414` `void mm_view_claim_current(void);`
+- `do_kill_code` (function) `headers/sched.h:415` `int do_kill_code(int pid, int code);`
+- `fork_child_settid` (function) `headers/sched.h:418` `void fork_child_settid(void);` -- void     sched_park_capture(proc_t *cur); void     resume_iretq(void); void     yield(void); void     do_exit(int...
+- `aslr_stack_bytes` (function) `headers/sched.h:428` `unsigned long aslr_stack_bytes(void);` -- ASLR jitter, fresh per exec (TSC + ticks + per-exec counter, never zero for stack/brk so consecutive execs differ...
+- `aslr_brk_pages` (function) `headers/sched.h:429` `unsigned long aslr_brk_pages(void);`
+- `aslr_mmap_pages` (function) `headers/sched.h:430` `unsigned long aslr_mmap_pages(void);`
+- `aslr_dyn_base` (function) `headers/sched.h:431` `unsigned long aslr_dyn_base(void);`
+- `failure` (function) `headers/sched.h:436` `* failure (negative errno);`
+- `do_execve` (function) `headers/sched.h:437` `long do_execve(char *kpath, int kargc, char **kargv);` -- do_execve() - replace the caller's image with a fresh ET_EXEC/ET_DYN program (kernel/sched.c).
+- `do_thread_spawn` (function) `headers/sched.h:438` `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+- `do_waitpid` (function) `headers/sched.h:440` `int do_waitpid(int pid);`
+- `do_waitpid_nb` (function) `headers/sched.h:441` `int do_waitpid_nb(int pid);`
+- `shell_reap_nb` (function) `headers/sched.h:442` `int shell_reap_nb(int *pid_out, int *code_out);`
+- `shell_reap_one` (function) `headers/sched.h:443` `int shell_reap_one(int pid, int *code_out);`
+- `shell_nchildren` (function) `headers/sched.h:444` `int shell_nchildren(void);`
+- `do_waitpid_linux` (function) `headers/sched.h:448` `int do_waitpid_linux(int pid, int nohang, int *found);` -- kstack slot family, fd table and limits; everything else (window, VMA, brk view, stack, FPU, FSBASE, name) is rebuilt.
+- `do_kill` (function) `headers/sched.h:449` `int do_kill(int pid);`
+- `timer_tick` (function) `headers/sched.h:450` `void timer_tick(void);`
+- `pt_clone_user` (function) `headers/sched.h:453` `uint64_t pt_clone_user(uint64_t parent_cr3);` -- unsigned long arg); int      do_waitpid(int pid); int      do_waitpid_nb(int pid); int      shell_reap_nb(int...
+- `pt_free_user` (function) `headers/sched.h:454` `void pt_free_user(uint64_t cr3);`
+- `caller` (function) `headers/sched.h:459` `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
 
 ## headers/seccomp_bpf.h
 Imported by: `kernel/proc_sec.c`, `kernel/seccomp_bpf.c`, `tests/test_seccomp_bpf.c`
@@ -395,13 +398,13 @@ Imported by: `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `smp.c`
 ## headers/spawn.h
 Depends on: `headers/kernel.h`, `headers/sched.h`, `headers/vma.h`
 Imported by: `kernel/sched.c`, `kernel/spawn.c`, `kernel/syscalls.c`
-- `spawn_backup` (function) `headers/spawn.h:27` `int spawn_backup(spawn_ctx_t *ctx);` -- Docstring: Save the caller shared-window view into ctx.
-- `spawn_restore` (function) `headers/spawn.h:30` `void spawn_restore(spawn_ctx_t *ctx);` -- Docstring: Save the caller shared-window view into ctx.
-- `spawn_validate_argv` (function) `headers/spawn.h:33` `int spawn_validate_argv(int argc, const char **uargv);` -- Docstring: Save the caller shared-window view into ctx.
-- `spawn_copy_argv` (function) `headers/spawn.h:38` `char **spawn_copy_argv(int argc, const char **uargv);` -- Docstring: Copy user argv into kernel memory, zero terminated.
-- `spawn_free_argv` (function) `headers/spawn.h:41` `void spawn_free_argv(char **kargv, int argc);` -- Docstring: Copy user argv into kernel memory, zero terminated.
-- `spawn_load_image` (function) `headers/spawn.h:44` `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` -- Docstring: Copy user argv into kernel memory, zero terminated.
-- `spawn_execute` (function) `headers/spawn.h:47` `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...` -- Docstring: Copy user argv into kernel memory, zero terminated.
+- `spawn_backup` (function) `headers/spawn.h:28` `int spawn_backup(spawn_ctx_t *ctx);` -- Docstring: Save the caller shared-window view into ctx.
+- `spawn_restore` (function) `headers/spawn.h:31` `void spawn_restore(spawn_ctx_t *ctx);` -- Docstring: Save the caller shared-window view into ctx.
+- `spawn_validate_argv` (function) `headers/spawn.h:34` `int spawn_validate_argv(int argc, const char **uargv);` -- Docstring: Save the caller shared-window view into ctx.
+- `spawn_copy_argv` (function) `headers/spawn.h:39` `char **spawn_copy_argv(int argc, const char **uargv);` -- Docstring: Copy user argv into kernel memory, zero terminated.
+- `spawn_free_argv` (function) `headers/spawn.h:42` `void spawn_free_argv(char **kargv, int argc);` -- Docstring: Copy user argv into kernel memory, zero terminated.
+- `spawn_load_image` (function) `headers/spawn.h:45` `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` -- Docstring: Copy user argv into kernel memory, zero terminated.
+- `spawn_execute` (function) `headers/spawn.h:48` `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...` -- Docstring: Copy user argv into kernel memory, zero terminated.
 
 ## headers/spinlock.h
 Imported by: `drivers/pcm2.c`, `headers/futex.h`, `headers/kernel.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/sched.h`, `headers/smp.h`, `headers/sync.h`
@@ -450,7 +453,7 @@ Imported by: `drivers/sb16.c`, `headers/futex.h`, `kernel/futex.c`, `kernel/sche
 - `rwlock_write_unlock` (function) `headers/sync.h:122` `void rwlock_write_unlock(rwlock_t *rw);`
 
 ## headers/syscalls_proc.h
-Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`
+Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
 - `dispatcher` (function) `headers/syscalls_proc.h:5` `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...`
 - `sys_minios_nice` (function) `headers/syscalls_proc.h:12` `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6);`
 - `sys_minios_clone` (function) `headers/syscalls_proc.h:13` `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6);`
@@ -465,7 +468,8 @@ Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`
 - `sys_linux_exit` (function) `headers/syscalls_proc.h:22` `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);`
 - `sys_linux_wait4` (function) `headers/syscalls_proc.h:23` `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);`
 - `sys_linux_kill` (function) `headers/syscalls_proc.h:24` `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `do_proc_exit` (function) `headers/syscalls_proc.h:27` `long do_proc_exit(long code);` -- long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6); long sys_minios_thread_spawn(long...
+- `linux_signal_fatal` (function) `headers/syscalls_proc.h:31` `int linux_signal_fatal(long sig);` -- Linux signal numbers 1..LINUX_SIGNAL_MAX; a fatal one ends its target. * The foreground shell reports a signal death...
+- `do_proc_exit` (function) `headers/syscalls_proc.h:34` `long do_proc_exit(long code);` -- Linux signal numbers 1..LINUX_SIGNAL_MAX; a fatal one ends its target. * The foreground shell reports a signal death...
 
 ## headers/tick.h
 Imported by: `kernel/sched.c`, `kernel/tick.c`, `tests/test_tick.c`

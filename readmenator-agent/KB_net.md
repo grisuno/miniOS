@@ -88,16 +88,17 @@ int net_accept(int fd, uns...`
   - `net_sys_getsockname` (function, line 1616) `long net_sys_getsockname(long fd, long addr, long lenp)`
   - `net_sys_getpeername` (function, line 1625) `long net_sys_getpeername(long fd, long addr, long lenp)`
   - `net_sys_fcntl` (function, line 1643) `long net_sys_fcntl(long fd, long cmd, long arg)`
-  - `net_socket_revents` (function, line 1664) `static unsigned short net_socket_revents(long fd)`
-  - `net_sys_poll` (function, line 1684) `long net_sys_poll(long fds, long nfds, long timeout_ms)`
-  - `net_sys_dns` (function, line 1724) `long net_sys_dns(long host)`
-  - `net_parse_ip` (function, line 1735) `static int net_parse_ip(const char *text, unsigned char ip[4])`
-  - `net_cmd_status` (function, line 1760) `void net_cmd_status(void)`
-  - `net_get_addrs` (function, line 1782) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])`
-  - `net_cmd_ping` (function, line 1788) `void net_cmd_ping(const char *ip_text)`
-  - `net_cmd_dns` (function, line 1799) `void net_cmd_dns(const char *host)`
-  - `net_register_symbols` (function, line 1812) `void net_register_symbols(void)`
-  - `net_init` (function, line 1820) `void net_init(void)`
+  - `net_sys_ioctl` (function, line 1674) `long net_sys_ioctl(long fd, long req, long arg)`
+  - `net_socket_revents` (function, line 1707) `static unsigned short net_socket_revents(long fd)`
+  - `net_sys_poll` (function, line 1727) `long net_sys_poll(long fds, long nfds, long timeout_ms)`
+  - `net_sys_dns` (function, line 1767) `long net_sys_dns(long host)`
+  - `net_parse_ip` (function, line 1778) `static int net_parse_ip(const char *text, unsigned char ip[4])`
+  - `net_cmd_status` (function, line 1803) `void net_cmd_status(void)`
+  - `net_get_addrs` (function, line 1825) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])`
+  - `net_cmd_ping` (function, line 1831) `void net_cmd_ping(const char *ip_text)`
+  - `net_cmd_dns` (function, line 1842) `void net_cmd_dns(const char *host)`
+  - `net_register_symbols` (function, line 1855) `void net_register_symbols(void)`
+  - `net_init` (function, line 1863) `void net_init(void)`
   - `NET_TCP_CLOSED` (macro, line 400) `#define NET_TCP_CLOSED`
   - `NET_TCP_SYN_SENT` (macro, line 401) `#define NET_TCP_SYN_SENT`
   - `NET_TCP_ESTABLISHED` (macro, line 402) `#define NET_TCP_ESTABLISHED`
@@ -167,6 +168,11 @@ int net_accept(int fd, uns...`
   - `LNX_EINPROGRESS` (macro, line 1087) `#define LNX_EINPROGRESS`
   - `NET_SEND_FLAGS_OK` (macro, line 1088) `#define NET_SEND_FLAGS_OK`
   - `NET_RECV_FLAGS_OK` (macro, line 1089) `#define NET_RECV_FLAGS_OK`
+  - `LNX_FIONREAD` (macro, line 1663) `#define LNX_FIONREAD`
+  - `LNX_FIONBIO` (macro, line 1664) `#define LNX_FIONBIO`
+  - `LNX_FIONCLEX` (macro, line 1665) `#define LNX_FIONCLEX`
+  - `LNX_FIOCLEX` (macro, line 1666) `#define LNX_FIOCLEX`
+  - `LNX_ENOTTY` (macro, line 1667) `#define LNX_ENOTTY`
 - Depends on: `headers/drivers/virtio_net.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`, `headers/tls.h`
 
 ## net/rtl8139.c
@@ -185,15 +191,15 @@ int net_accept(int fd, uns...`
   - `rtl_find` (function, line 58) `static unsigned short rtl_find(void)`
   - `deleted` (function, line 79) `* been deleted (a second base/per-ms pair beside ktime's is a second
  * clock, and drivers must n...`
-  - `rtl_present` (function, line 99) `int rtl_present(void)`
-  - `rtl_reset` (function, line 103) `static void rtl_reset(void)`
-  - `rtl_init` (function, line 112) `void rtl_init(void)`
-  - `rtl_tx_wait` (function, line 149) `static int rtl_tx_wait(unsigned slot, unsigned long deadline)`
-  - `rtl_send` (function, line 158) `int rtl_send(const unsigned char *frame, unsigned len)`
-  - `rtl_get_mac` (function, line 182) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
-  - `rtl_iobase` (function, line 187) `unsigned short rtl_iobase(void)`
-  - `rtl_counters` (function, line 191) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
-  - `rtl_poll` (function, line 215) `void rtl_poll(void)`
+  - `rtl_present` (function, line 107) `int rtl_present(void)`
+  - `rtl_reset` (function, line 111) `static void rtl_reset(void)`
+  - `rtl_init` (function, line 120) `void rtl_init(void)`
+  - `rtl_tx_wait` (function, line 168) `static int rtl_tx_wait(unsigned slot, unsigned long deadline)`
+  - `rtl_send` (function, line 177) `int rtl_send(const unsigned char *frame, unsigned len)`
+  - `rtl_get_mac` (function, line 205) `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
+  - `rtl_iobase` (function, line 210) `unsigned short rtl_iobase(void)`
+  - `rtl_counters` (function, line 214) `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
+  - `rtl_poll` (function, line 238) `void rtl_poll(void)`
   - `RTL_REG_CR` (macro, line 46) `#define RTL_REG_CR`
   - `RTL_REG_TSD0` (macro, line 47) `#define RTL_REG_TSD0`
   - `RTL_REG_TSAD0` (macro, line 48) `#define RTL_REG_TSAD0`
@@ -202,7 +208,8 @@ int net_accept(int fd, uns...`
   - `RTL_REG_CBR` (macro, line 51) `#define RTL_REG_CBR`
   - `RTL_REG_9346CR` (macro, line 52) `#define RTL_REG_9346CR`
   - `RTL_REG_CONFIG1` (macro, line 53) `#define RTL_REG_CONFIG1`
-  - `RTL_TX_YIELD_EVERY` (macro, line 147) `#define RTL_TX_YIELD_EVERY`
+  - `RTL_MIN_FRAME` (macro, line 99) `#define RTL_MIN_FRAME`
+  - `RTL_TX_YIELD_EVERY` (macro, line 166) `#define RTL_TX_YIELD_EVERY`
 - Depends on: `headers/drivers/pci.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`
 
 ## net/tls.c

@@ -3,6 +3,129 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `I_StartFrame` | function | `progs/doomgeneric/i_video.h:128` | `void I_StartFrame (void);` |
+| `I_StartTic` | function | `progs/doomgeneric/i_video.h:133` | `void I_StartTic (void);` |
+| `I_UpdateNoBlit` | function | `progs/doomgeneric/i_video.h:107` | `void I_UpdateNoBlit (void);` |
+| `I_VideoBuffer` | variable | `progs/doomgeneric/i_video.h:147` | `extern byte *I_VideoBuffer;` |
+| `MAX_MOUSE_BUTTONS` | macro | `progs/doomgeneric/i_video.h:38` | `#define MAX_MOUSE_BUTTONS` |
+| `SCREENHEIGHT` | macro | `progs/doomgeneric/i_video.h:28` | `#define SCREENHEIGHT` |
+| `SCREENHEIGHT_4_3` | macro | `progs/doomgeneric/i_video.h:36` | `#define SCREENHEIGHT_4_3` |
+| `SCREENWIDTH` | macro | `progs/doomgeneric/i_video.h:27` | `#define SCREENWIDTH` |
+| `SCREENWIDTH_4_3` | macro | `progs/doomgeneric/i_video.h:32` | `#define SCREENWIDTH_4_3` |
+| `__I_VIDEO__` | macro | `progs/doomgeneric/i_video.h:21` | `#define __I_VIDEO__` |
+| `aspect_ratio_correct` | variable | `progs/doomgeneric/i_video.h:153` | `extern int aspect_ratio_correct;` |
+| `diskicon_readbytes` | variable | `progs/doomgeneric/i_video.h:156` | `extern int diskicon_readbytes;` |
+| `fullscreen` | variable | `progs/doomgeneric/i_video.h:152` | `extern int fullscreen;` |
+| `mouse_acceleration` | variable | `progs/doomgeneric/i_video.h:142` | `extern float mouse_acceleration;` |
+| `mouse_threshold` | variable | `progs/doomgeneric/i_video.h:143` | `extern int mouse_threshold;` |
+| `screen_bpp` | variable | `progs/doomgeneric/i_video.h:151` | `extern int screen_bpp;` |
+| `screen_height` | variable | `progs/doomgeneric/i_video.h:150` | `extern int screen_height;` |
+| `screen_mode_t` | struct | `progs/doomgeneric/i_video.h:40` | `` |
+| `screen_width` | variable | `progs/doomgeneric/i_video.h:149` | `extern int screen_width;` |
+| `screensaver_mode` | variable | `progs/doomgeneric/i_video.h:145` | `extern boolean screensaver_mode;` |
+| `screenvisible` | variable | `progs/doomgeneric/i_video.h:140` | `extern boolean screenvisible;` |
+| `show_diskicon` | variable | `progs/doomgeneric/i_video.h:155` | `extern int show_diskicon;` |
+| `usegamma` | variable | `progs/doomgeneric/i_video.h:146` | `extern int usegamma;` |
+| `vanilla_keyboard_mapping` | variable | `progs/doomgeneric/i_video.h:144` | `extern int vanilla_keyboard_mapping;` |
+| `video_driver` | variable | `progs/doomgeneric/i_video.h:139` | `extern char *video_driver;` |
+| `A_BFGSpray` | function | `progs/doomgeneric/info.c:73` | `void A_BFGSpray();` |
+| `A_BFGsound` | function | `progs/doomgeneric/info.c:71` | `void A_BFGsound();` |
+| `A_BabyMetal` | function | `progs/doomgeneric/info.c:110` | `void A_BabyMetal();` |
+| `A_BossDeath` | function | `progs/doomgeneric/info.c:100` | `void A_BossDeath();` |
+| `A_BrainAwake` | function | `progs/doomgeneric/info.c:120` | `void A_BrainAwake();` |
+| `A_BrainDie` | function | `progs/doomgeneric/info.c:119` | `void A_BrainDie();` |
+| `A_BrainExplode` | function | `progs/doomgeneric/info.c:124` | `void A_BrainExplode();` |
+| `A_BrainPain` | function | `progs/doomgeneric/info.c:117` | `void A_BrainPain();` |
+| `A_BrainScream` | function | `progs/doomgeneric/info.c:118` | `void A_BrainScream();` |
+| `A_BrainSpit` | function | `progs/doomgeneric/info.c:121` | `void A_BrainSpit();` |
+| `A_BruisAttack` | function | `progs/doomgeneric/info.c:106` | `void A_BruisAttack();` |
+| `A_BspiAttack` | function | `progs/doomgeneric/info.c:111` | `void A_BspiAttack();` |
+| `A_CPosAttack` | function | `progs/doomgeneric/info.c:101` | `void A_CPosAttack();` |
+| `A_CPosRefire` | function | `progs/doomgeneric/info.c:102` | `void A_CPosRefire();` |
+| `A_Chase` | function | `progs/doomgeneric/info.c:80` | `void A_Chase();` |
+| `A_CheckReload` | function | `progs/doomgeneric/info.c:62` | `void A_CheckReload();` |
+| `A_CloseShotgun2` | function | `progs/doomgeneric/info.c:65` | `void A_CloseShotgun2();` |
+| `A_CyberAttack` | function | `progs/doomgeneric/info.c:113` | `void A_CyberAttack();` |
+| `A_Explode` | function | `progs/doomgeneric/info.c:74` | `void A_Explode();` |
+| `A_FaceTarget` | function | `progs/doomgeneric/info.c:81` | `void A_FaceTarget();` |
+| `A_Fall` | function | `progs/doomgeneric/info.c:77` | `void A_Fall();` |
+| `A_FatAttack1` | function | `progs/doomgeneric/info.c:97` | `void A_FatAttack1();` |
+| `A_FatAttack2` | function | `progs/doomgeneric/info.c:98` | `void A_FatAttack2();` |
+| `A_FatAttack3` | function | `progs/doomgeneric/info.c:99` | `void A_FatAttack3();` |
+| `A_FatRaise` | function | `progs/doomgeneric/info.c:96` | `void A_FatRaise();` |
+| `A_Fire` | function | `progs/doomgeneric/info.c:90` | `void A_Fire();` |
+| `A_FireBFG` | function | `progs/doomgeneric/info.c:72` | `void A_FireBFG();` |
+| `A_FireCGun` | function | `progs/doomgeneric/info.c:66` | `void A_FireCGun();` |
+| `A_FireCrackle` | function | `progs/doomgeneric/info.c:91` | `void A_FireCrackle();` |
+| `A_FireMissile` | function | `progs/doomgeneric/info.c:68` | `void A_FireMissile();` |
+| `A_FirePistol` | function | `progs/doomgeneric/info.c:57` | `void A_FirePistol();` |
+| `A_FirePlasma` | function | `progs/doomgeneric/info.c:70` | `void A_FirePlasma();` |
+| `A_FireShotgun` | function | `progs/doomgeneric/info.c:59` | `void A_FireShotgun();` |
+| `A_FireShotgun2` | function | `progs/doomgeneric/info.c:61` | `void A_FireShotgun2();` |
+| `A_GunFlash` | function | `progs/doomgeneric/info.c:67` | `void A_GunFlash();` |
+| `A_HeadAttack` | function | `progs/doomgeneric/info.c:105` | `void A_HeadAttack();` |
+| `A_Hoof` | function | `progs/doomgeneric/info.c:112` | `void A_Hoof();` |
+| `A_KeenDie` | function | `progs/doomgeneric/info.c:116` | `void A_KeenDie();` |
+| `A_Light0` | function | `progs/doomgeneric/info.c:51` | `void A_Light0();` |
+| `A_Light1` | function | `progs/doomgeneric/info.c:58` | `void A_Light1();` |
+| `A_Light2` | function | `progs/doomgeneric/info.c:60` | `void A_Light2();` |
+| `A_LoadShotgun2` | function | `progs/doomgeneric/info.c:64` | `void A_LoadShotgun2();` |
+| `A_Look` | function | `progs/doomgeneric/info.c:79` | `void A_Look();` |
+| `A_Lower` | function | `progs/doomgeneric/info.c:53` | `void A_Lower();` |
+| `A_Metal` | function | `progs/doomgeneric/info.c:108` | `void A_Metal();` |
+| `A_OpenShotgun2` | function | `progs/doomgeneric/info.c:63` | `void A_OpenShotgun2();` |
+| `A_Pain` | function | `progs/doomgeneric/info.c:75` | `void A_Pain();` |
+| `A_PainAttack` | function | `progs/doomgeneric/info.c:114` | `void A_PainAttack();` |
+| `A_PainDie` | function | `progs/doomgeneric/info.c:115` | `void A_PainDie();` |
+| `A_PlayerScream` | function | `progs/doomgeneric/info.c:76` | `void A_PlayerScream();` |
+| `A_PosAttack` | function | `progs/doomgeneric/info.c:82` | `void A_PosAttack();` |
+| `A_Punch` | function | `progs/doomgeneric/info.c:55` | `void A_Punch();` |
+| `A_Raise` | function | `progs/doomgeneric/info.c:54` | `void A_Raise();` |
+| `A_ReFire` | function | `progs/doomgeneric/info.c:56` | `void A_ReFire();` |
+| `A_SPosAttack` | function | `progs/doomgeneric/info.c:84` | `void A_SPosAttack();` |
+| `A_SargAttack` | function | `progs/doomgeneric/info.c:104` | `void A_SargAttack();` |
+| `A_Saw` | function | `progs/doomgeneric/info.c:69` | `void A_Saw();` |
+| `A_Scream` | function | `progs/doomgeneric/info.c:83` | `void A_Scream();` |
+| `A_SkelFist` | function | `progs/doomgeneric/info.c:94` | `void A_SkelFist();` |
+| `A_SkelMissile` | function | `progs/doomgeneric/info.c:95` | `void A_SkelMissile();` |
+| `A_SkelWhoosh` | function | `progs/doomgeneric/info.c:93` | `void A_SkelWhoosh();` |
+| `A_SkullAttack` | function | `progs/doomgeneric/info.c:107` | `void A_SkullAttack();` |
+| `A_SpawnFly` | function | `progs/doomgeneric/info.c:123` | `void A_SpawnFly();` |
+| `A_SpawnSound` | function | `progs/doomgeneric/info.c:122` | `void A_SpawnSound();` |
+| `A_SpidRefire` | function | `progs/doomgeneric/info.c:109` | `void A_SpidRefire();` |
+| `A_StartFire` | function | `progs/doomgeneric/info.c:89` | `void A_StartFire();` |
+| `A_Tracer` | function | `progs/doomgeneric/info.c:92` | `void A_Tracer();` |
+| `A_TroopAttack` | function | `progs/doomgeneric/info.c:103` | `void A_TroopAttack();` |
+| `A_VileAttack` | function | `progs/doomgeneric/info.c:88` | `void A_VileAttack();` |
+| `A_VileChase` | function | `progs/doomgeneric/info.c:85` | `void A_VileChase();` |
+| `A_VileStart` | function | `progs/doomgeneric/info.c:86` | `void A_VileStart();` |
+| `A_VileTarget` | function | `progs/doomgeneric/info.c:87` | `void A_VileTarget();` |
+| `A_WeaponReady` | function | `progs/doomgeneric/info.c:52` | `void A_WeaponReady();` |
+| `A_XScream` | function | `progs/doomgeneric/info.c:78` | `void A_XScream();` |
+| `__INFO__` | macro | `progs/doomgeneric/info.h:22` | `#define __INFO__` |
+| `mobjinfo` | variable | `progs/doomgeneric/info.h:1329` | `extern mobjinfo_t mobjinfo[NUMMOBJTYPES];` |
+| `mobjinfo_t` | struct | `progs/doomgeneric/info.h:1301` | `` |
+| `sprnames` | variable | `progs/doomgeneric/info.h:1157` | `extern char *sprnames[];` |
+| `state_t` | struct | `progs/doomgeneric/info.h:1144` | `` |
+| `states` | variable | `progs/doomgeneric/info.h:1156` | `extern state_t states[NUMSTATES];` |
+| `LoadResponseFile` | function | `progs/doomgeneric/m_argv.c:75` | `static void LoadResponseFile(int argv_index)` |
+| `MAXARGVS` | macro | `progs/doomgeneric/m_argv.c:73` | `#define MAXARGVS` |
+| `M_CheckParm` | function | `progs/doomgeneric/m_argv.c:68` | `int M_CheckParm(char *check)` |
+| `M_CheckParmWithArgs` | function | `progs/doomgeneric/m_argv.c:43` | `int M_CheckParmWithArgs(char *check, int num_args)` |
+| `M_FindResponseFile` | function | `progs/doomgeneric/m_argv.c:235` | `void M_FindResponseFile(void)` |
+| `M_GetExecutableName` | function | `progs/doomgeneric/m_argv.c:250` | `char *M_GetExecutableName(void)` |
+| `M_ParmExists` | function | `progs/doomgeneric/m_argv.c:63` | `boolean M_ParmExists(char *check)` |
+| `M_CheckParm` | function | `progs/doomgeneric/m_argv.h:33` | `int M_CheckParm (char* check);` |
+| `M_CheckParmWithArgs` | function | `progs/doomgeneric/m_argv.h:37` | `int M_CheckParmWithArgs(char *check, int num_args);` |
+| `M_FindResponseFile` | function | `progs/doomgeneric/m_argv.h:39` | `void M_FindResponseFile(void);` |
+| `M_GetExecutableName` | function | `progs/doomgeneric/m_argv.h:47` | `char *M_GetExecutableName(void);` |
+| `__M_ARGV__` | macro | `progs/doomgeneric/m_argv.h:21` | `#define __M_ARGV__` |
+| `myargc` | variable | `progs/doomgeneric/m_argv.h:28` | `extern int myargc;` |
+| `myargv` | variable | `progs/doomgeneric/m_argv.h:29` | `extern char** myargv;` |
+| `M_AddToBox` | function | `progs/doomgeneric/m_bbox.c:36` | `void M_AddToBox ( fixed_t*	box,   fixed_t	x,   fixed_t	y )` |
+| `M_ClearBox` | function | `progs/doomgeneric/m_bbox.c:29` | `void M_ClearBox (fixed_t *box)` |
+| `M_AddToBox` | function | `progs/doomgeneric/m_bbox.h:41` | `void M_AddToBox ( fixed_t* box, fixed_t x, fixed_t y );` |
+| `M_ClearBox` | function | `progs/doomgeneric/m_bbox.h:38` | `void M_ClearBox (fixed_t* box);` |
 | `__M_BBOX__` | macro | `progs/doomgeneric/m_bbox.h:21` | `#define __M_BBOX__` |
 | `cht_CheckCheat` | function | `progs/doomgeneric/m_cheat.c:35` | `int cht_CheckCheat ( cheatseq_t*	cht,   char		key )` |
 | `cht_GetParam` | function | `progs/doomgeneric/m_cheat.c:82` | `void cht_GetParam ( cheatseq_t*	cht,   char*		buffer )` |
@@ -373,128 +496,5 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 | `net_module_t` | type_alias | `progs/doomgeneric/net_defs.h:46` | `typedef struct _net_module_s net_module_t;` |
 | `net_packet_t` | type_alias | `progs/doomgeneric/net_defs.h:48` | `typedef struct _net_packet_s net_packet_t;` |
 | `net_querydata_t` | struct | `progs/doomgeneric/net_defs.h:220` | `` |
-| `net_ticdiff_t` | struct | `progs/doomgeneric/net_defs.h:202` | `` |
-| `net_waitdata_t` | struct | `progs/doomgeneric/net_defs.h:233` | `` |
-| `NET_GUI_H` | macro | `progs/doomgeneric/net_gui.h:22` | `#define NET_GUI_H` |
-| `NET_WaitForLaunch` | function | `progs/doomgeneric/net_gui.h:26` | `extern void NET_WaitForLaunch(void);` |
-| `NET_AddModule` | function | `progs/doomgeneric/net_io.h:26` | `void NET_AddModule(net_context_t *context, net_module_t *module);` |
-| `NET_AddrToString` | function | `progs/doomgeneric/net_io.h:31` | `char *NET_AddrToString(net_addr_t *addr);` |
-| `NET_FreeAddress` | function | `progs/doomgeneric/net_io.h:32` | `void NET_FreeAddress(net_addr_t *addr);` |
-| `NET_IO_H` | macro | `progs/doomgeneric/net_io.h:19` | `#define NET_IO_H` |
-| `NET_NewContext` | function | `progs/doomgeneric/net_io.h:25` | `net_context_t *NET_NewContext(void);` |
-| `NET_ResolveAddress` | function | `progs/doomgeneric/net_io.h:33` | `net_addr_t *NET_ResolveAddress(net_context_t *context, char *address);` |
-| `NET_SendBroadcast` | function | `progs/doomgeneric/net_io.h:28` | `void NET_SendBroadcast(net_context_t *context, net_packet_t *packet);` |
-| `NET_SendPacket` | function | `progs/doomgeneric/net_io.h:27` | `void NET_SendPacket(net_addr_t *addr, net_packet_t *packet);` |
-| `net_broadcast_addr` | variable | `progs/doomgeneric/net_io.h:23` | `extern net_addr_t net_broadcast_addr;` |
-| `NET_LOOP_H` | macro | `progs/doomgeneric/net_loop.h:19` | `#define NET_LOOP_H` |
-| `net_loop_client_module` | variable | `progs/doomgeneric/net_loop.h:23` | `extern net_module_t net_loop_client_module;` |
-| `net_loop_server_module` | variable | `progs/doomgeneric/net_loop.h:24` | `extern net_module_t net_loop_server_module;` |
-| `NET_FreePacket` | function | `progs/doomgeneric/net_packet.h:25` | `void NET_FreePacket(net_packet_t *packet);` |
-| `NET_NewPacket` | function | `progs/doomgeneric/net_packet.h:23` | `net_packet_t *NET_NewPacket(int initial_size);` |
-| `NET_PACKET_H` | macro | `progs/doomgeneric/net_packet.h:19` | `#define NET_PACKET_H` |
-| `NET_PacketDup` | function | `progs/doomgeneric/net_packet.h:24` | `net_packet_t *NET_PacketDup(net_packet_t *packet);` |
-| `NET_ReadString` | function | `progs/doomgeneric/net_packet.h:35` | `char *NET_ReadString(net_packet_t *packet);` |
-| `NET_WriteInt16` | function | `progs/doomgeneric/net_packet.h:38` | `void NET_WriteInt16(net_packet_t *packet, unsigned int i);` |
-| `NET_WriteInt32` | function | `progs/doomgeneric/net_packet.h:39` | `void NET_WriteInt32(net_packet_t *packet, unsigned int i);` |
-| `NET_WriteInt8` | function | `progs/doomgeneric/net_packet.h:37` | `void NET_WriteInt8(net_packet_t *packet, unsigned int i);` |
-| `NET_WriteString` | function | `progs/doomgeneric/net_packet.h:41` | `void NET_WriteString(net_packet_t *packet, char *string);` |
-| `NET_FindLANServer` | function | `progs/doomgeneric/net_query.h:34` | `extern net_addr_t *NET_FindLANServer(void);` |
-| `NET_LANQuery` | function | `progs/doomgeneric/net_query.h:31` | `extern void NET_LANQuery(void);` |
-| `NET_MasterQuery` | function | `progs/doomgeneric/net_query.h:32` | `extern void NET_MasterQuery(void);` |
-| `NET_QUERY_H` | macro | `progs/doomgeneric/net_query.h:19` | `#define NET_QUERY_H` |
-| `NET_QueryAddress` | function | `progs/doomgeneric/net_query.h:33` | `extern void NET_QueryAddress(char *addr);` |
-| `NET_Query_AddToMaster` | function | `progs/doomgeneric/net_query.h:39` | `extern void NET_Query_AddToMaster(net_addr_t *master_addr);` |
-| `NET_Query_CheckAddedToMaster` | function | `progs/doomgeneric/net_query.h:40` | `extern boolean NET_Query_CheckAddedToMaster(boolean *result);` |
-| `NET_Query_MasterResponse` | function | `progs/doomgeneric/net_query.h:41` | `extern void NET_Query_MasterResponse(net_packet_t *packet);` |
-| `NET_Query_Poll` | function | `progs/doomgeneric/net_query.h:36` | `extern int NET_Query_Poll(net_query_callback_t callback, void *user_data);` |
-| `NET_Query_ResolveMaster` | function | `progs/doomgeneric/net_query.h:38` | `extern net_addr_t *NET_Query_ResolveMaster(net_context_t *context);` |
-| `NET_StartLANQuery` | function | `progs/doomgeneric/net_query.h:28` | `extern int NET_StartLANQuery(void);` |
-| `NET_StartMasterQuery` | function | `progs/doomgeneric/net_query.h:29` | `extern int NET_StartMasterQuery(void);` |
-| `NET_SDL_H` | macro | `progs/doomgeneric/net_sdl.h:19` | `#define NET_SDL_H` |
-| `net_sdl_module` | variable | `progs/doomgeneric/net_sdl.h:23` | `extern net_module_t net_sdl_module;` |
-| `NET_SERVER_H` | macro | `progs/doomgeneric/net_server.h:18` | `#define NET_SERVER_H` |
-| `NET_SV_AddModule` | function | `progs/doomgeneric/net_server.h:35` | `void NET_SV_AddModule(net_module_t *module);` |
-| `NET_SV_Init` | function | `progs/doomgeneric/net_server.h:22` | `void NET_SV_Init(void);` |
-| `NET_SV_RegisterWithMaster` | function | `progs/doomgeneric/net_server.h:39` | `void NET_SV_RegisterWithMaster(void);` |
-| `NET_SV_Run` | function | `progs/doomgeneric/net_server.h:26` | `void NET_SV_Run(void);` |
-| `NET_SV_Shutdown` | function | `progs/doomgeneric/net_server.h:31` | `void NET_SV_Shutdown(void);` |
-| `EV_CeilingCrushStop` | function | `progs/doomgeneric/p_ceilng.c:303` | `int	EV_CeilingCrushStop(line_t	*line)` |
-| `EV_DoCeiling` | function | `progs/doomgeneric/p_ceilng.c:161` | `int EV_DoCeiling ( line_t*	line,   ceiling_e	type )` |
-| `P_ActivateInStasisCeiling` | function | `progs/doomgeneric/p_ceilng.c:280` | `void P_ActivateInStasisCeiling(line_t* line)` |
-| `P_AddActiveCeiling` | function | `progs/doomgeneric/p_ceilng.c:240` | `void P_AddActiveCeiling(ceiling_t* c)` |
-| `P_RemoveActiveCeiling` | function | `progs/doomgeneric/p_ceilng.c:259` | `void P_RemoveActiveCeiling(ceiling_t* c)` |
-| `T_MoveCeiling` | function | `progs/doomgeneric/p_ceilng.c:45` | `void T_MoveCeiling (ceiling_t* ceiling)` |
-| `EV_DoDoor` | function | `progs/doomgeneric/p_doors.c:252` | `int EV_DoDoor ( line_t*	line,   vldoor_e	type )` |
-| `EV_DoLockedDoor` | function | `progs/doomgeneric/p_doors.c:195` | `int EV_DoLockedDoor ( line_t*	line,   vldoor_e	type,   mobj_t*	thing )` |
-| `EV_SlidingDoor` | function | `progs/doomgeneric/p_doors.c:727` | `void EV_SlidingDoor ( line_t*	line,   mobj_t*	thing )` |
-| `EV_VerticalDoor` | function | `progs/doomgeneric/p_doors.c:337` | `void EV_VerticalDoor ( line_t*	line,   mobj_t*	thing )` |
-| `P_FindSlidingDoorType` | function | `progs/doomgeneric/p_doors.c:624` | `int P_FindSlidingDoorType(line_t*	line)` |
-| `P_InitSlidingDoorFrames` | function | `progs/doomgeneric/p_doors.c:580` | `void P_InitSlidingDoorFrames(void)` |
-| `P_SpawnDoorCloseIn30` | function | `progs/doomgeneric/p_doors.c:519` | `void P_SpawnDoorCloseIn30 (sector_t* sec)` |
-| `P_SpawnDoorRaiseIn5Mins` | function | `progs/doomgeneric/p_doors.c:542` | `void P_SpawnDoorRaiseIn5Mins ( sector_t*	sec,   int		secnum )` |
-| `T_SlidingDoor` | function | `progs/doomgeneric/p_doors.c:639` | `void T_SlidingDoor (slidedoor_t*	door)` |
-| `T_VerticalDoor` | function | `progs/doomgeneric/p_doors.c:57` | `void T_VerticalDoor (vldoor_t* door)` |
-| `A_BabyMetal` | function | `progs/doomgeneric/p_enemy.c:1769` | `void A_BabyMetal (mobj_t* mo)` |
-| `A_BossDeath` | function | `progs/doomgeneric/p_enemy.c:1656` | `void A_BossDeath (mobj_t* mo)` |
-| `A_BrainAwake` | function | `progs/doomgeneric/p_enemy.c:1811` | `void A_BrainAwake (mobj_t* mo)` |
-| `A_BrainDie` | function | `progs/doomgeneric/p_enemy.c:1894` | `void A_BrainDie (mobj_t*	mo)` |
-| `A_BrainExplode` | function | `progs/doomgeneric/p_enemy.c:1873` | `void A_BrainExplode (mobj_t* mo)` |
-| `A_BrainPain` | function | `progs/doomgeneric/p_enemy.c:1841` | `void A_BrainPain (mobj_t*	mo)` |
-| `A_BrainScream` | function | `progs/doomgeneric/p_enemy.c:1847` | `void A_BrainScream (mobj_t*	mo)` |
-| `A_BrainSpit` | function | `progs/doomgeneric/p_enemy.c:1899` | `void A_BrainSpit (mobj_t*	mo)` |
-| `A_BruisAttack` | function | `progs/doomgeneric/p_enemy.c:964` | `void A_BruisAttack (mobj_t* actor)` |
-| `A_BspiAttack` | function | `progs/doomgeneric/p_enemy.c:883` | `void A_BspiAttack (mobj_t *actor)` |
-| `A_CPosAttack` | function | `progs/doomgeneric/p_enemy.c:830` | `void A_CPosAttack (mobj_t* actor)` |
-| `A_CPosRefire` | function | `progs/doomgeneric/p_enemy.c:850` | `void A_CPosRefire (mobj_t* actor)` |
-| `A_Chase` | function | `progs/doomgeneric/p_enemy.c:657` | `void A_Chase (mobj_t*	actor)` |
-| `A_CloseShotgun2` | function | `progs/doomgeneric/p_enemy.c:1797` | `void A_CloseShotgun2 ( player_t*	player,   pspdef_t*	psp )` |
-| `A_CyberAttack` | function | `progs/doomgeneric/p_enemy.c:954` | `void A_CyberAttack (mobj_t* actor)` |
-| `A_Explode` | function | `progs/doomgeneric/p_enemy.c:1594` | `void A_Explode (mobj_t* thingy)` |
-| `A_FaceTarget` | function | `progs/doomgeneric/p_enemy.c:767` | `void A_FaceTarget (mobj_t* actor)` |
-| `A_Fall` | function | `progs/doomgeneric/p_enemy.c:1581` | `void A_Fall (mobj_t *actor)` |
-| `A_FatAttack1` | function | `progs/doomgeneric/p_enemy.c:1346` | `void A_FatAttack1 (mobj_t* actor)` |
-| `A_FatAttack2` | function | `progs/doomgeneric/p_enemy.c:1366` | `void A_FatAttack2 (mobj_t* actor)` |
-| `A_FatAttack3` | function | `progs/doomgeneric/p_enemy.c:1385` | `void A_FatAttack3 (mobj_t*	actor)` |
-| `A_FatRaise` | function | `progs/doomgeneric/p_enemy.c:1339` | `void A_FatRaise (mobj_t *actor)` |
-| `A_Fire` | function | `progs/doomgeneric/p_enemy.c:1242` | `void A_Fire (mobj_t* actor)` |
-| `A_FireCrackle` | function | `progs/doomgeneric/p_enemy.c:1236` | `void A_FireCrackle (mobj_t* actor)` |
-| `A_HeadAttack` | function | `progs/doomgeneric/p_enemy.c:935` | `void A_HeadAttack (mobj_t* actor)` |
-| `A_Hoof` | function | `progs/doomgeneric/p_enemy.c:1757` | `void A_Hoof (mobj_t* mo)` |
-| `A_KeenDie` | function | `progs/doomgeneric/p_enemy.c:551` | `void A_KeenDie (mobj_t* mo)` |
-| `A_LoadShotgun2` | function | `progs/doomgeneric/p_enemy.c:1784` | `void A_LoadShotgun2 ( player_t*	player,   pspdef_t*	psp )` |
-| `A_Look` | function | `progs/doomgeneric/p_enemy.c:589` | `void A_Look (mobj_t* actor)` |
-| `A_Metal` | function | `progs/doomgeneric/p_enemy.c:1763` | `void A_Metal (mobj_t* mo)` |
-| `A_OpenShotgun2` | function | `progs/doomgeneric/p_enemy.c:1776` | `void A_OpenShotgun2 ( player_t*	player,   pspdef_t*	psp )` |
-| `A_Pain` | function | `progs/doomgeneric/p_enemy.c:1573` | `void A_Pain (mobj_t* actor)` |
-| `A_PainAttack` | function | `progs/doomgeneric/p_enemy.c:1508` | `void A_PainAttack (mobj_t* actor)` |
-| `A_PainDie` | function | `progs/doomgeneric/p_enemy.c:1518` | `void A_PainDie (mobj_t* actor)` |
-| `A_PainShootSkull` | function | `progs/doomgeneric/p_enemy.c:1446` | `void A_PainShootSkull ( mobj_t*	actor,   angle_t	angle )` |
-| `A_PlayerScream` | function | `progs/doomgeneric/p_enemy.c:1992` | `void A_PlayerScream (mobj_t* mo)` |
-| `A_PosAttack` | function | `progs/doomgeneric/p_enemy.c:787` | `void A_PosAttack (mobj_t* actor)` |
-| `A_ReFire` | function | `progs/doomgeneric/p_enemy.c:1792` | `void A_ReFire ( player_t* player, pspdef_t* psp );` |
-| `A_SPosAttack` | function | `progs/doomgeneric/p_enemy.c:806` | `void A_SPosAttack (mobj_t* actor)` |
-| `A_SargAttack` | function | `progs/doomgeneric/p_enemy.c:920` | `void A_SargAttack (mobj_t* actor)` |
-| `A_Scream` | function | `progs/doomgeneric/p_enemy.c:1531` | `void A_Scream (mobj_t* actor)` |
-| `A_SkelFist` | function | `progs/doomgeneric/p_enemy.c:1086` | `void A_SkelFist (mobj_t*	actor)` |
-| `A_SkelMissile` | function | `progs/doomgeneric/p_enemy.c:987` | `void A_SkelMissile (mobj_t* actor)` |
-| `A_SkelWhoosh` | function | `progs/doomgeneric/p_enemy.c:1078` | `void A_SkelWhoosh (mobj_t*	actor)` |
-| `A_SkullAttack` | function | `progs/doomgeneric/p_enemy.c:1415` | `void A_SkullAttack (mobj_t* actor)` |
-| `A_SpawnFly` | function | `progs/doomgeneric/p_enemy.c:1934` | `void A_SpawnFly (mobj_t* mo)` |
-| `A_SpawnSound` | function | `progs/doomgeneric/p_enemy.c:1928` | `void A_SpawnSound (mobj_t* mo)` |
-| `A_SpidRefire` | function | `progs/doomgeneric/p_enemy.c:867` | `void A_SpidRefire (mobj_t* actor)` |
-| `A_StartFire` | function | `progs/doomgeneric/p_enemy.c:1230` | `void A_StartFire (mobj_t* actor)` |
-| `A_Tracer` | function | `progs/doomgeneric/p_enemy.c:1006` | `void A_Tracer (mobj_t* actor)` |
-| `A_TroopAttack` | function | `progs/doomgeneric/p_enemy.c:898` | `void A_TroopAttack (mobj_t* actor)` |
-| `A_VileAttack` | function | `progs/doomgeneric/p_enemy.c:1298` | `void A_VileAttack (mobj_t* actor)` |
-| `A_VileChase` | function | `progs/doomgeneric/p_enemy.c:1152` | `void A_VileChase (mobj_t* actor)` |
-| `A_VileStart` | function | `progs/doomgeneric/p_enemy.c:1218` | `void A_VileStart (mobj_t* actor)` |
-| `A_VileTarget` | function | `progs/doomgeneric/p_enemy.c:1273` | `void A_VileTarget (mobj_t*	actor)` |
-| `A_XScream` | function | `progs/doomgeneric/p_enemy.c:1568` | `void A_XScream (mobj_t* actor)` |
-| `CheckBossEnd` | function | `progs/doomgeneric/p_enemy.c:1605` | `static boolean CheckBossEnd(mobjtype_t motype)` |
-| `FATSPREAD` | macro | `progs/doomgeneric/p_enemy.c:1337` | `#define	FATSPREAD` |
-| `PIT_VileCheck` | function | `progs/doomgeneric/p_enemy.c:1114` | `boolean PIT_VileCheck (mobj_t*	thing)` |
-| `P_CheckMeleeRange` | function | `progs/doomgeneric/p_enemy.c:167` | `boolean P_CheckMeleeRange (mobj_t*	actor)` |
-| `P_CheckMissileRange` | function | `progs/doomgeneric/p_enemy.c:190` | `boolean P_CheckMissileRange (mobj_t* actor)` |
-| `P_LookForPlayers` | function | `progs/doomgeneric/p_enemy.c:487` | `boolean P_LookForPlayers ( mobj_t*	actor,   boolean	allaround )` |
 
 Next: [SYMBOLS_p16.md](SYMBOLS_p16.md)

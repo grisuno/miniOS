@@ -162,7 +162,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `progs/file/file_assoc.h` -> stddef.h, stdlib.h
 - `progs/freedomui/freedomui_minios.c` -> html_parse.h, link_nav.h, stdint.h, stdio.h, stdlib.h, sys/socket.h, ui.h, unistd.h, url.h
 - `progs/freedomui/media_unavailable.c` -> errno.h, media_decoder.h, stdint.h, sys/types.h, unistd.h
-- `progs/freedomui/platform_minios.c` -> errno.h, platform.h, stdio.h, stdlib.h, sys/syscall.h, unistd.h
+- `progs/freedomui/platform_minios.c` -> errno.h, malloc.h, platform.h, stdio.h, stdlib.h, sys/syscall.h, unistd.h
 - `progs/freedomui/ps2_keymap.c` -> stddef.h
 - `progs/freedomui/ps2_keymap.h` -> key_event.h, stdint.h
 - `progs/lisp/lisp.c` -> ctype.h, errno.h, inttypes.h, limits.h, stdbool.h, stddef.h, stdint.h, stdio.h, stdlib.h
@@ -187,9 +187,10 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `progs/src/fptest.c` -> stdio.h
 - `progs/src/freedom.c` -> stdio.h, sys/socket.h, unistd.h
 - `progs/src/freedom_wl.c` -> stdint.h, stdio.h, sys/socket.h, unistd.h
-- `progs/src/lxabi.c` -> errno.h, fcntl.h, poll.h, pthread.h, signal.h, stdint.h, stdio.h, stdlib.h, sys/eventfd.h, sys/stat.h, sys/syscall.h, sys/uio.h, sys/wait.h, unistd.h
-- `progs/src/lxnet.c` -> arpa/inet.h, errno.h, fcntl.h, netdb.h, netinet/in.h, netinet/tcp.h, poll.h, stdio.h, stdlib.h, sys/socket.h, sys/uio.h, unistd.h
+- `progs/src/lxabi.c` -> errno.h, fcntl.h, poll.h, pthread.h, signal.h, stdint.h, stdio.h, stdlib.h, sys/eventfd.h, sys/ioctl.h, sys/resource.h, sys/stat.h, sys/syscall.h, sys/sysinfo.h, sys/uio.h, sys/wait.h, unistd.h
+- `progs/src/lxnet.c` -> arpa/inet.h, errno.h, fcntl.h, netdb.h, netinet/in.h, netinet/tcp.h, poll.h, stdio.h, stdlib.h, sys/ioctl.h, sys/socket.h, sys/uio.h, unistd.h
 - `progs/src/lxsecc.c` -> errno.h, linux/audit.h, linux/filter.h, linux/seccomp.h, stddef.h, stdio.h, stdlib.h, sys/mman.h, sys/prctl.h, sys/syscall.h, sys/wait.h, unistd.h
+- `progs/src/lxtls.c` -> curl/curl.h, openssl/err.h, openssl/evp.h, openssl/rand.h, stdio.h
 - `progs/src/opl3.c` -> stdint.h, stdio.h
 - `progs/src/sbtone.c` -> math.h, stdio.h
 - `progs/src/shell.py` -> os, sys

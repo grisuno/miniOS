@@ -96,26 +96,28 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `do_fork` (function, line 409) `long do_fork(void);`
   - `do_fork_ex` (function, line 410) `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);`
   - `do_linux_clone` (function, line 411) `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...`
-  - `do_exit_group_threads` (function, line 413) `void do_exit_group_threads(void);`
-  - `fork_child_settid` (function, line 414) `void fork_child_settid(void);`
-  - `aslr_stack_bytes` (function, line 424) `unsigned long aslr_stack_bytes(void);`
-  - `aslr_brk_pages` (function, line 425) `unsigned long aslr_brk_pages(void);`
-  - `aslr_mmap_pages` (function, line 426) `unsigned long aslr_mmap_pages(void);`
-  - `aslr_dyn_base` (function, line 427) `unsigned long aslr_dyn_base(void);`
-  - `failure` (function, line 432) `* failure (negative errno);`
-  - `do_execve` (function, line 433) `long do_execve(char *kpath, int kargc, char **kargv);`
-  - `do_thread_spawn` (function, line 434) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-  - `do_waitpid` (function, line 436) `int do_waitpid(int pid);`
-  - `do_waitpid_nb` (function, line 437) `int do_waitpid_nb(int pid);`
-  - `shell_reap_nb` (function, line 438) `int shell_reap_nb(int *pid_out, int *code_out);`
-  - `shell_reap_one` (function, line 439) `int shell_reap_one(int pid, int *code_out);`
-  - `shell_nchildren` (function, line 440) `int shell_nchildren(void);`
-  - `do_waitpid_linux` (function, line 444) `int do_waitpid_linux(int pid, int nohang, int *found);`
-  - `do_kill` (function, line 445) `int do_kill(int pid);`
-  - `timer_tick` (function, line 446) `void timer_tick(void);`
-  - `pt_clone_user` (function, line 449) `uint64_t pt_clone_user(uint64_t parent_cr3);`
-  - `pt_free_user` (function, line 450) `void pt_free_user(uint64_t cr3);`
-  - `caller` (function, line 455) `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
+  - `do_group_exit` (function, line 413) `void do_group_exit(int code);`
+  - `mm_view_claim_current` (function, line 414) `void mm_view_claim_current(void);`
+  - `do_kill_code` (function, line 415) `int do_kill_code(int pid, int code);`
+  - `fork_child_settid` (function, line 418) `void fork_child_settid(void);`
+  - `aslr_stack_bytes` (function, line 428) `unsigned long aslr_stack_bytes(void);`
+  - `aslr_brk_pages` (function, line 429) `unsigned long aslr_brk_pages(void);`
+  - `aslr_mmap_pages` (function, line 430) `unsigned long aslr_mmap_pages(void);`
+  - `aslr_dyn_base` (function, line 431) `unsigned long aslr_dyn_base(void);`
+  - `failure` (function, line 436) `* failure (negative errno);`
+  - `do_execve` (function, line 437) `long do_execve(char *kpath, int kargc, char **kargv);`
+  - `do_thread_spawn` (function, line 438) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+  - `do_waitpid` (function, line 440) `int do_waitpid(int pid);`
+  - `do_waitpid_nb` (function, line 441) `int do_waitpid_nb(int pid);`
+  - `shell_reap_nb` (function, line 442) `int shell_reap_nb(int *pid_out, int *code_out);`
+  - `shell_reap_one` (function, line 443) `int shell_reap_one(int pid, int *code_out);`
+  - `shell_nchildren` (function, line 444) `int shell_nchildren(void);`
+  - `do_waitpid_linux` (function, line 448) `int do_waitpid_linux(int pid, int nohang, int *found);`
+  - `do_kill` (function, line 449) `int do_kill(int pid);`
+  - `timer_tick` (function, line 450) `void timer_tick(void);`
+  - `pt_clone_user` (function, line 453) `uint64_t pt_clone_user(uint64_t parent_cr3);`
+  - `pt_free_user` (function, line 454) `void pt_free_user(uint64_t cr3);`
+  - `caller` (function, line 459) `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
   - `cpus` (variable, line 294) `extern cpu_t cpus[MAX_CPUS];`
   - `cpu_count` (variable, line 295) `extern int cpu_count;`
   - `procs` (variable, line 333) `extern proc_t procs[MAX_PROCS];`
@@ -203,12 +205,13 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `current_pid` (macro, line 312) `#define current_pid`
   - `DESKTOP_TICK_INTERVAL` (macro, line 316) `#define DESKTOP_TICK_INTERVAL`
   - `TSS_SEL` (macro, line 369) `#define TSS_SEL(cpu)`
-  - `EXECVE_MAX_ARGS` (macro, line 417) `#define EXECVE_MAX_ARGS`
-  - `EXECVE_MAX_ARG` (macro, line 418) `#define EXECVE_MAX_ARG`
-  - `WAITPID_NONE` (macro, line 441) `#define WAITPID_NONE`
-  - `WAITPID_NOCHILD` (macro, line 443) `#define WAITPID_NOCHILD`
+  - `USER_FAULT_SIGNAL` (macro, line 417) `#define USER_FAULT_SIGNAL`
+  - `EXECVE_MAX_ARGS` (macro, line 421) `#define EXECVE_MAX_ARGS`
+  - `EXECVE_MAX_ARG` (macro, line 422) `#define EXECVE_MAX_ARG`
+  - `WAITPID_NONE` (macro, line 445) `#define WAITPID_NONE`
+  - `WAITPID_NOCHILD` (macro, line 447) `#define WAITPID_NOCHILD`
 - Depends on: `headers/spinlock.h`, `headers/vma.h`
-- Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `smp.c`
+- Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `progs/src/lxabi.c`, `smp.c`
 
 ## headers/seccomp_bpf.h
 - Doc: Docstring: seccomp_bpf.h -- classic BPF checker and interpreter for
@@ -316,13 +319,13 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
 - Language: h
 - Symbols:
   - `spawn_ctx_t` (struct, line 9)
-  - `spawn_backup` (function, line 27) `int spawn_backup(spawn_ctx_t *ctx);`
-  - `spawn_restore` (function, line 30) `void spawn_restore(spawn_ctx_t *ctx);`
-  - `spawn_validate_argv` (function, line 33) `int spawn_validate_argv(int argc, const char **uargv);`
-  - `spawn_copy_argv` (function, line 38) `char **spawn_copy_argv(int argc, const char **uargv);`
-  - `spawn_free_argv` (function, line 41) `void spawn_free_argv(char **kargv, int argc);`
-  - `spawn_load_image` (function, line 44) `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);`
-  - `spawn_execute` (function, line 47) `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...`
+  - `spawn_backup` (function, line 28) `int spawn_backup(spawn_ctx_t *ctx);`
+  - `spawn_restore` (function, line 31) `void spawn_restore(spawn_ctx_t *ctx);`
+  - `spawn_validate_argv` (function, line 34) `int spawn_validate_argv(int argc, const char **uargv);`
+  - `spawn_copy_argv` (function, line 39) `char **spawn_copy_argv(int argc, const char **uargv);`
+  - `spawn_free_argv` (function, line 42) `void spawn_free_argv(char **kargv, int argc);`
+  - `spawn_load_image` (function, line 45) `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);`
+  - `spawn_execute` (function, line 48) `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...`
   - `SPAWN_H` (macro, line 2) `#define SPAWN_H`
 - Depends on: `headers/kernel.h`, `headers/sched.h`, `headers/vma.h`
 - Imported by: `kernel/sched.c`, `kernel/spawn.c`, `kernel/syscalls.c`
@@ -436,9 +439,13 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `sys_linux_exit` (function, line 22) `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);`
   - `sys_linux_wait4` (function, line 23) `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);`
   - `sys_linux_kill` (function, line 24) `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `do_proc_exit` (function, line 27) `long do_proc_exit(long code);`
+  - `linux_signal_fatal` (function, line 31) `int linux_signal_fatal(long sig);`
+  - `do_proc_exit` (function, line 34) `long do_proc_exit(long code);`
   - `SYSCALLS_PROC_H` (macro, line 2) `#define SYSCALLS_PROC_H`
-- Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`
+  - `LINUX_SIGNAL_MAX` (macro, line 28) `#define LINUX_SIGNAL_MAX`
+  - `LINUX_SIGNAL_EXIT_BASE` (macro, line 29) `#define LINUX_SIGNAL_EXIT_BASE`
+  - `LINUX_EXIT_STATUS_MASK` (macro, line 30) `#define LINUX_EXIT_STATUS_MASK`
+- Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
 
 ## headers/tick.h
 - Doc: Docstring: Tick listener bus contract.

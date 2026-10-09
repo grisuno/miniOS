@@ -84,8 +84,6 @@ This community groups 69 file(s) rooted at `progs/doomgeneric` with dominant lan
 - [EXTRACTED] depends_on community 1 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/am_map.c imports progs/doomgeneric/doomdef.h.
 - [EXTRACTED] depends_on community 7 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_loop.c imports progs/doomgeneric/d_loop.h.
 - [EXTRACTED] depends_on community 2 <-> 3 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomdef.h imports kernel/string.c.
-- [INFERRED] shares_context community 2 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (progs/doomgeneric: p_spec) and community 4 (tools: lxabi).
-- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (progs/doomgeneric: p_spec) and community 5 (headers: vga_fb).
 
 ## Risks
 

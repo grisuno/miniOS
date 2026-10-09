@@ -206,10 +206,14 @@ Pages: [KB_misc.md](KB_misc.md), [KB_misc_p2.md](KB_misc_p2.md), [KB_misc_p3.md]
   - `CMOS_INDEX_PORT` (macro, line 286) `#define CMOS_INDEX_PORT`
   - `CMOS_DATA_PORT` (macro, line 287) `#define CMOS_DATA_PORT`
   - `CMOS_NMI_DISABLE` (macro, line 288) `#define CMOS_NMI_DISABLE`
-  - `CMOS_REG_SECONDS` (macro, line 289) `#define CMOS_REG_SECONDS`
-  - `CMOS_REG_MINUTES` (macro, line 290) `#define CMOS_REG_MINUTES`
-  - `CMOS_REG_HOURS` (macro, line 291) `#define CMOS_REG_HOURS`
-- Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
+  - `CMOS_REG_EXTMEM_LO` (macro, line 290) `#define CMOS_REG_EXTMEM_LO`
+  - `CMOS_REG_EXTMEM_HI` (macro, line 291) `#define CMOS_REG_EXTMEM_HI`
+  - `CMOS_EXTMEM_BASE` (macro, line 292) `#define CMOS_EXTMEM_BASE`
+  - `CMOS_EXTMEM_UNIT` (macro, line 293) `#define CMOS_EXTMEM_UNIT`
+  - `CMOS_REG_SECONDS` (macro, line 294) `#define CMOS_REG_SECONDS`
+  - `CMOS_REG_MINUTES` (macro, line 295) `#define CMOS_REG_MINUTES`
+  - `CMOS_REG_HOURS` (macro, line 296) `#define CMOS_REG_HOURS`
+- Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
 
 ## headers/net/rtl8139.h
 - Doc: rtl_present: rtl8139 NIC driver interface.

@@ -3,6 +3,145 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `wl_mbox_parse` | function | `progs/wl/wl_mbox.h:147` | `static inline int wl_mbox_parse(const char *path, char *box, int boxcap,         unsigned int *seq)` |
+| `wl_mbox_raw_name` | function | `progs/wl/wl_mbox.h:194` | `static inline int wl_mbox_raw_name(char *dst, int cap, const char *box)` |
+| `wl_mbox_route` | function | `progs/wl/wl_mbox.h:409` | `static inline int wl_mbox_route(wl_comp_t *c, wl_mbox_box_t *boxes,         const char *box, unsi...` |
+| `wl_mbox_unhex` | function | `progs/wl/wl_mbox.h:87` | `static inline int wl_mbox_unhex(char ch, unsigned int *v)` |
+| `WLCOMP_BG` | macro | `progs/wl/wl_mini.h:509` | `#define WLCOMP_BG` |
+| `WLCOMP_BORDER` | macro | `progs/wl/wl_mini.h:510` | `#define WLCOMP_BORDER` |
+| `WL_ATTACH_SZ` | macro | `progs/wl/wl_mini.h:28` | `#define WL_ATTACH_SZ` |
+| `WL_CFG_DEFAULT` | macro | `progs/wl/wl_mini.h:69` | `#define WL_CFG_DEFAULT` |
+| `WL_CLIP_MAX` | macro | `progs/wl/wl_mini.h:905` | `#define WL_CLIP_MAX` |
+| `WL_CLOSE_INK` | macro | `progs/wl/wl_mini.h:243` | `#define WL_CLOSE_INK` |
+| `WL_CLOSE_W` | macro | `progs/wl/wl_mini.h:239` | `#define WL_CLOSE_W` |
+| `WL_COMMIT_SZ` | macro | `progs/wl/wl_mini.h:29` | `#define WL_COMMIT_SZ` |
+| `WL_ERR_BOUND` | macro | `progs/wl/wl_mini.h:32` | `#define WL_ERR_BOUND` |
+| `WL_ERR_ID` | macro | `progs/wl/wl_mini.h:35` | `#define WL_ERR_ID` |
+| `WL_ERR_MORE` | macro | `progs/wl/wl_mini.h:37` | `#define WL_ERR_MORE` |
+| `WL_ERR_OK` | macro | `progs/wl/wl_mini.h:31` | `#define WL_ERR_OK` |
+| `WL_ERR_SIZE` | macro | `progs/wl/wl_mini.h:34` | `#define WL_ERR_SIZE` |
+| `WL_ERR_STR` | macro | `progs/wl/wl_mini.h:36` | `#define WL_ERR_STR` |
+| `WL_ERR_TRUNC` | macro | `progs/wl/wl_mini.h:33` | `#define WL_ERR_TRUNC` |
+| `WL_EV_MAGIC` | macro | `progs/wl/wl_mini.h:964` | `#define WL_EV_MAGIC` |
+| `WL_EV_SC_MAX` | macro | `progs/wl/wl_mini.h:965` | `#define WL_EV_SC_MAX` |
+| `WL_EV_SZ` | macro | `progs/wl/wl_mini.h:966` | `#define WL_EV_SZ` |
+| `WL_HDR_SZ` | macro | `progs/wl/wl_mini.h:27` | `#define WL_HDR_SZ` |
+| `WL_HIT_BODY` | macro | `progs/wl/wl_mini.h:246` | `#define WL_HIT_BODY` |
+| `WL_HIT_CLOSE` | macro | `progs/wl/wl_mini.h:248` | `#define WL_HIT_CLOSE` |
+| `WL_HIT_NONE` | macro | `progs/wl/wl_mini.h:245` | `#define WL_HIT_NONE` |
+| `WL_HIT_RESIZE` | macro | `progs/wl/wl_mini.h:249` | `#define WL_HIT_RESIZE` |
+| `WL_HIT_TITLE` | macro | `progs/wl/wl_mini.h:247` | `#define WL_HIT_TITLE` |
+| `WL_ID_BUFFER_BASE` | macro | `progs/wl/wl_mini.h:46` | `#define WL_ID_BUFFER_BASE` |
+| `WL_ID_CLIPBOARD` | macro | `progs/wl/wl_mini.h:902` | `#define WL_ID_CLIPBOARD` |
+| `WL_ID_COMPOSITOR` | macro | `progs/wl/wl_mini.h:41` | `#define WL_ID_COMPOSITOR` |
+| `WL_ID_DISPLAY` | macro | `progs/wl/wl_mini.h:39` | `#define WL_ID_DISPLAY` |
+| `WL_ID_POOL_BASE` | macro | `progs/wl/wl_mini.h:45` | `#define WL_ID_POOL_BASE` |
+| `WL_ID_REGISTRY` | macro | `progs/wl/wl_mini.h:40` | `#define WL_ID_REGISTRY` |
+| `WL_ID_SHM` | macro | `progs/wl/wl_mini.h:42` | `#define WL_ID_SHM` |
+| `WL_ID_SURFACE_BASE` | macro | `progs/wl/wl_mini.h:44` | `#define WL_ID_SURFACE_BASE` |
+| `WL_ID_XDG_BASE` | macro | `progs/wl/wl_mini.h:43` | `#define WL_ID_XDG_BASE` |
+| `WL_IFACE_COUNT` | macro | `progs/wl/wl_mini.h:1185` | `#define WL_IFACE_COUNT` |
+| `WL_MAX_MSG` | macro | `progs/wl/wl_mini.h:20` | `#define WL_MAX_MSG` |
+| `WL_MAX_POOLS` | macro | `progs/wl/wl_mini.h:23` | `#define WL_MAX_POOLS` |
+| `WL_MAX_STR` | macro | `progs/wl/wl_mini.h:21` | `#define WL_MAX_STR` |
+| `WL_MAX_SURFACES` | macro | `progs/wl/wl_mini.h:22` | `#define WL_MAX_SURFACES` |
+| `WL_MINI_H` | macro | `progs/wl/wl_mini.h:18` | `#define WL_MINI_H` |
+| `WL_OP_CLIPBOARD_GET` | macro | `progs/wl/wl_mini.h:904` | `#define WL_OP_CLIPBOARD_GET` |
+| `WL_OP_CLIPBOARD_SET` | macro | `progs/wl/wl_mini.h:903` | `#define WL_OP_CLIPBOARD_SET` |
+| `WL_OP_COMPOSITOR_CREATE_SURFACE` | macro | `progs/wl/wl_mini.h:50` | `#define WL_OP_COMPOSITOR_CREATE_SURFACE` |
+| `WL_OP_DISPLAY_GET_REGISTRY` | macro | `progs/wl/wl_mini.h:48` | `#define WL_OP_DISPLAY_GET_REGISTRY` |
+| `WL_OP_POOL_CREATE_BUFFER` | macro | `progs/wl/wl_mini.h:52` | `#define WL_OP_POOL_CREATE_BUFFER` |
+| `WL_OP_REGISTRY_BIND` | macro | `progs/wl/wl_mini.h:49` | `#define WL_OP_REGISTRY_BIND` |
+| `WL_OP_SHM_CREATE_POOL` | macro | `progs/wl/wl_mini.h:51` | `#define WL_OP_SHM_CREATE_POOL` |
+| `WL_OP_SURFACE_ATTACH` | macro | `progs/wl/wl_mini.h:53` | `#define WL_OP_SURFACE_ATTACH` |
+| `WL_OP_SURFACE_COMMIT` | macro | `progs/wl/wl_mini.h:54` | `#define WL_OP_SURFACE_COMMIT` |
+| `WL_OP_XDG_GET_TOPLEVEL` | macro | `progs/wl/wl_mini.h:55` | `#define WL_OP_XDG_GET_TOPLEVEL` |
+| `WL_POOL_MAX` | macro | `progs/wl/wl_mini.h:26` | `#define WL_POOL_MAX` |
+| `WL_RESIZE_EDGE` | macro | `progs/wl/wl_mini.h:240` | `#define WL_RESIZE_EDGE` |
+| `WL_STREAM_CAP` | macro | `progs/wl/wl_mini.h:1122` | `#define WL_STREAM_CAP` |
+| `WL_SURF_MAX_H` | macro | `progs/wl/wl_mini.h:25` | `#define WL_SURF_MAX_H` |
+| `WL_SURF_MAX_W` | macro | `progs/wl/wl_mini.h:24` | `#define WL_SURF_MAX_W` |
+| `WL_TITLE_ACTIVE` | macro | `progs/wl/wl_mini.h:241` | `#define WL_TITLE_ACTIVE` |
+| `WL_TITLE_H` | macro | `progs/wl/wl_mini.h:238` | `#define WL_TITLE_H` |
+| `WL_TITLE_INACTIVE` | macro | `progs/wl/wl_mini.h:242` | `#define WL_TITLE_INACTIVE` |
+| `body` | function | `progs/wl/wl_mini.h:698` | `* resampled into the body (inside the 1 px border, below the title),  * the exact rect wl_ev_map ...` |
+| `coords` | function | `progs/wl/wl_mini.h:959` | `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw...` |
+| `wl_attach_decode` | function | `progs/wl/wl_mini.h:842` | `static inline int wl_attach_decode(const unsigned char *src, int len,         unsigned int *pool,...` |
+| `wl_attach_encode` | function | `progs/wl/wl_mini.h:823` | `static inline int wl_attach_encode(unsigned char *dst, int cap,         unsigned int pool, int w,...` |
+| `wl_cfg_t` | struct | `progs/wl/wl_mini.h:63` | `` |
+| `wl_client_init` | function | `progs/wl/wl_mini.h:1092` | `static inline void wl_client_init(wl_client_t *cl)` |
+| `wl_client_pool` | function | `progs/wl/wl_mini.h:1109` | `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)` |
+| `wl_client_surface` | function | `progs/wl/wl_mini.h:1100` | `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)` |
+| `wl_client_t` | struct | `progs/wl/wl_mini.h:1086` | `` |
+| `wl_clip_decode` | function | `progs/wl/wl_mini.h:930` | `static inline int wl_clip_decode(const unsigned char *src, int len,         unsigned char *dst, i...` |
+| `wl_clip_encode` | function | `progs/wl/wl_mini.h:907` | `static inline int wl_clip_encode(unsigned char *dst, int cap,         const unsigned char *text, ...` |
+| `wl_commit_decode` | function | `progs/wl/wl_mini.h:883` | `static inline int wl_commit_decode(const unsigned char *src, int len,         unsigned int *id)` |
+| `wl_commit_encode` | function | `progs/wl/wl_mini.h:870` | `static inline int wl_commit_encode(unsigned char *dst, int cap,         unsigned int id)` |
+| `wl_comp_add` | function | `progs/wl/wl_mini.h:309` | `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)` |
+| `wl_comp_attach_buf` | function | `progs/wl/wl_mini.h:1218` | `static inline int wl_comp_attach_buf(wl_comp_t *c, unsigned int id,         unsigned int pool, in...` |
+| `wl_comp_focus` | function | `progs/wl/wl_mini.h:372` | `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)` |
+| `wl_comp_hit` | function | `progs/wl/wl_mini.h:397` | `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)` |
+| `wl_comp_init` | function | `progs/wl/wl_mini.h:271` | `static inline void wl_comp_init(wl_comp_t *c)` |
+| `wl_comp_layout_tile` | function | `progs/wl/wl_mini.h:577` | `static inline int wl_comp_layout_tile(wl_comp_t *c, int fb_w, int fb_h)` |
+| `wl_comp_refresh_active` | function | `progs/wl/wl_mini.h:289` | `static inline void wl_comp_refresh_active(wl_comp_t *c)` |
+| `wl_comp_remove` | function | `progs/wl/wl_mini.h:345` | `static inline int wl_comp_remove(wl_comp_t *c, unsigned int id)` |
+| `wl_comp_set_color` | function | `progs/wl/wl_mini.h:487` | `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)` |
+| `wl_comp_set_minimized` | function | `progs/wl/wl_mini.h:460` | `static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,         int minimized)` |
+| `wl_comp_set_rect` | function | `progs/wl/wl_mini.h:550` | `static inline int wl_comp_set_rect(wl_comp_t *c, unsigned int id,         int x, int y, int w, in...` |
+| `wl_comp_t` | struct | `progs/wl/wl_mini.h:264` | `` |
+| `wl_comp_top_visible` | function | `progs/wl/wl_mini.h:441` | `static inline int wl_comp_top_visible(const wl_comp_t *c)` |
+| `wl_dispatch` | function | `progs/wl/wl_mini.h:1245` | `static inline int wl_dispatch(wl_comp_t *c, wl_client_t *cl,         unsigned int id, unsigned in...` |
+| `wl_ev_decode` | function | `progs/wl/wl_mini.h:1008` | `static inline int wl_ev_decode(const unsigned char *src, int len,         wl_ev_t *ev)` |
+| `wl_ev_encode` | function | `progs/wl/wl_mini.h:978` | `static inline int wl_ev_encode(unsigned char *dst, int cap,         const wl_ev_t *ev)` |
+| `wl_ev_map` | function | `progs/wl/wl_mini.h:1051` | `static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,         int sh, int rw, int r...` |
+| `wl_ev_t` | struct | `progs/wl/wl_mini.h:968` | `` |
+| `wl_hdr_decode` | function | `progs/wl/wl_mini.h:99` | `static inline int wl_hdr_decode(const unsigned char *src, int len,         wl_hdr_t *out)` |
+| `wl_hdr_encode` | function | `progs/wl/wl_mini.h:71` | `static inline int wl_hdr_encode(unsigned char *dst, int cap,         unsigned int id, unsigned in...` |
+| `wl_hdr_t` | struct | `progs/wl/wl_mini.h:57` | `` |
+| `wl_iface_find` | function | `progs/wl/wl_mini.h:1187` | `static inline int wl_iface_find(const char *name)` |
+| `wl_iface_t` | struct | `progs/wl/wl_mini.h:1179` | `` |
+| `wl_pool_fit` | function | `progs/wl/wl_mini.h:223` | `static inline int wl_pool_fit(int w, int h)` |
+| `wl_pool_id_valid` | function | `progs/wl/wl_mini.h:219` | `static inline int wl_pool_id_valid(unsigned int id)` |
+| `wl_scale_nearest` | function | `progs/wl/wl_mini.h:793` | `static inline int wl_scale_nearest(unsigned char *dst, int dw, int dh,         const unsigned cha...` |
+| `wl_str_decode` | function | `progs/wl/wl_mini.h:188` | `static inline int wl_str_decode(const unsigned char *src, int len, int off,         char *dst, in...` |
+| `wl_str_encode` | function | `progs/wl/wl_mini.h:163` | `static inline int wl_str_encode(unsigned char *dst, int cap, int off,         const char *s)` |
+| `wl_stream_consume` | function | `progs/wl/wl_mini.h:1166` | `static inline int wl_stream_consume(wl_stream_t *s, int n)` |
+| `wl_stream_feed` | function | `progs/wl/wl_mini.h:1135` | `static inline int wl_stream_feed(wl_stream_t *s, const unsigned char *src,         int n)` |
+| `wl_stream_init` | function | `progs/wl/wl_mini.h:1129` | `static inline void wl_stream_init(wl_stream_t *s)` |
+| `wl_stream_next` | function | `progs/wl/wl_mini.h:1150` | `static inline int wl_stream_next(wl_stream_t *s, int *size)` |
+| `wl_stream_t` | struct | `progs/wl/wl_mini.h:1124` | `` |
+| `wl_strlen_bounded` | function | `progs/wl/wl_mini.h:150` | `static inline int wl_strlen_bounded(const char *s)` |
+| `wl_surface_hit_zone` | function | `progs/wl/wl_mini.h:415` | `static inline int wl_surface_hit_zone(const wl_surface_t *s, int x, int y)` |
+| `wl_surface_id_valid` | function | `progs/wl/wl_mini.h:214` | `static inline int wl_surface_id_valid(unsigned int id)` |
+| `wl_surface_t` | struct | `progs/wl/wl_mini.h:251` | `` |
+| `wl_u32_decode` | function | `progs/wl/wl_mini.h:139` | `static inline int wl_u32_decode(const unsigned char *src, int len, int off,         unsigned int *v)` |
+| `wl_u32_encode` | function | `progs/wl/wl_mini.h:128` | `static inline int wl_u32_encode(unsigned char *dst, int cap, int off,         unsigned int v)` |
+| `wlcomp_blit` | function | `progs/wl/wl_mini.h:637` | `static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h, ...` |
+| `wlcomp_render` | function | `progs/wl/wl_mini.h:512` | `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h)` |
+| `MINIOS_WL_PIXBUF_H` | macro | `progs/wl/wl_pixbuf.h:17` | `#define MINIOS_WL_PIXBUF_H` |
+| `WPIX_BUDGET_MAX` | macro | `progs/wl/wl_pixbuf.h:44` | `#define WPIX_BUDGET_MAX` |
+| `WPIX_MAX_H` | macro | `progs/wl/wl_pixbuf.h:36` | `#define WPIX_MAX_H` |
+| `WPIX_MAX_SLOTS` | macro | `progs/wl/wl_pixbuf.h:28` | `#define WPIX_MAX_SLOTS` |
+| `WPIX_MAX_W` | macro | `progs/wl/wl_pixbuf.h:32` | `#define WPIX_MAX_W` |
+| `WPIX_SLOT_MAX` | macro | `progs/wl/wl_pixbuf.h:40` | `#define WPIX_SLOT_MAX` |
+| `wpix_commit` | function | `progs/wl/wl_pixbuf.h:175` | `static int wpix_commit(struct wpix_store *s, int idx, const unsigned char *src, int w, int h)` |
+| `wpix_drop` | function | `progs/wl/wl_pixbuf.h:127` | `static void wpix_drop(struct wpix_store *s, int idx)` |
+| `wpix_dst` | function | `progs/wl/wl_pixbuf.h:121` | `static unsigned char *wpix_dst(struct wpix_store *s)` |
+| `wpix_ensure` | function | `progs/wl/wl_pixbuf.h:153` | `static int wpix_ensure(struct wpix_store *s, int idx, int w, int h)` |
+| `wpix_free` | function | `progs/wl/wl_pixbuf.h:78` | `static void wpix_free(struct wpix_store *s)` |
+| `wpix_init` | function | `progs/wl/wl_pixbuf.h:63` | `static int wpix_init(struct wpix_store *s)` |
+| `wpix_ptr` | function | `progs/wl/wl_pixbuf.h:107` | `static unsigned char *wpix_ptr(struct wpix_store *s, int idx)` |
+| `wpix_raw` | function | `progs/wl/wl_pixbuf.h:115` | `static unsigned char *wpix_raw(struct wpix_store *s)` |
+| `wpix_slot` | struct | `progs/wl/wl_pixbuf.h:48` | `` |
+| `wpix_store` | struct | `progs/wl/wl_pixbuf.h:55` | `` |
+| `wpix_tmp` | function | `progs/wl/wl_pixbuf.h:136` | `static int wpix_tmp(struct wpix_store *s, size_t need)` |
+| `wpix_used` | function | `progs/wl/wl_pixbuf.h:95` | `static size_t wpix_used(const struct wpix_store *s)` |
+| `WLCOMP_CFG_DEFAULT` | macro | `progs/wl/wlcomp.c:53` | `#define WLCOMP_CFG_DEFAULT` |
+| `WLCOMP_H` | macro | `progs/wl/wlcomp.c:40` | `#define WLCOMP_H` |
+| `WLCOMP_W` | macro | `progs/wl/wlcomp.c:39` | `#define WLCOMP_W` |
+| `forever` | function | `progs/wl/wlcomp.c:844` | `* one of the WL_MAX_SURFACES slots forever (eight bad names used to lock  * every real client out...` |
+| `main` | function | `progs/wl/wlcomp.c:1467` | `int main(int argc, char **argv)` |
+| `wlclient_find` | function | `progs/wl/wlcomp.c:1005` | `static const wlclient_pat_t *wlclient_find(const char *name)` |
 | `wlclient_pat_t` | struct | `progs/wl/wlcomp.c:995` | `` |
 | `wlcomp_cfg_t` | struct | `progs/wl/wlcomp.c:43` | `` |
 | `wlcomp_clean` | function | `progs/wl/wlcomp.c:1137` | `static int wlcomp_clean(void)` |
@@ -357,144 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `test_png_layout` | function | `tests/test_paint.c:259` | `static void test_png_layout(void)` |
 | `CHECK` | macro | `tests/test_panic.c:16` | `#define CHECK(cond, msg)` |
 | `always_valid` | function | `tests/test_panic.c:23` | `static int always_valid(unsigned long addr)` |
-| `deny_valid` | function | `tests/test_panic.c:35` | `static int deny_valid(unsigned long addr)` |
-| `main` | function | `tests/test_panic.c:39` | `int main(void)` |
-| `never_valid` | function | `tests/test_panic.c:28` | `static int never_valid(unsigned long addr)` |
-| `CHECK` | macro | `tests/test_pcache.c:36` | `#define CHECK(cond, msg)` |
-| `kfree` | function | `tests/test_pcache.c:23` | `void kfree(void *ptr)` |
-| `kmalloc` | function | `tests/test_pcache.c:19` | `void *kmalloc(unsigned long size)` |
-| `kprintf` | function | `tests/test_pcache.c:27` | `int kprintf(const char *fmt, ...)` |
-| `main` | function | `tests/test_pcache.c:43` | `int main(void)` |
-| `CHECK` | macro | `tests/test_pci.c:26` | `#define CHECK(cond, msg)` |
-| `FAKE_BUSES` | macro | `tests/test_pci.c:33` | `#define FAKE_BUSES` |
-| `FAKE_REGS` | macro | `tests/test_pci.c:34` | `#define FAKE_REGS` |
-| `fake_inl` | function | `tests/test_pci.c:60` | `static unsigned fake_inl(unsigned short port)` |
-| `fake_outl` | function | `tests/test_pci.c:39` | `static void fake_outl(unsigned short port, unsigned val)` |
-| `main` | function | `tests/test_pci.c:79` | `int main(void)` |
-| `set_dev` | function | `tests/test_pci.c:73` | `static void set_dev(unsigned bus, unsigned dev, unsigned func,                     unsigned id, u...` |
-| `CHECK` | macro | `tests/test_pcm.c:21` | `#define CHECK(cond, msg)` |
-| `lcg_next` | function | `tests/test_pcm.c:104` | `static unsigned lcg_next(void)` |
-| `main` | function | `tests/test_pcm.c:144` | `int main(void)` |
-| `t_model` | function | `tests/test_pcm.c:109` | `static void t_model(void)` |
-| `t_overrun` | function | `tests/test_pcm.c:61` | `static void t_overrun(void)` |
-| `t_roundtrip` | function | `tests/test_pcm.c:28` | `static void t_roundtrip(void)` |
-| `t_underrun` | function | `tests/test_pcm.c:75` | `static void t_underrun(void)` |
-| `t_wrap` | function | `tests/test_pcm.c:44` | `static void t_wrap(void)` |
-| `t_zero_cap` | function | `tests/test_pcm.c:91` | `static void t_zero_cap(void)` |
-| `CHECK` | macro | `tests/test_percpu_rq.c:17` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_percpu_rq.c:24` | `int main(void)` |
-| `CHECK` | macro | `tests/test_pipe.c:16` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_pipe.c:23` | `int main(void)` |
-| `check` | function | `tests/test_ps2_keymap.c:19` | `static void check(int cond, const char *name)` |
-| `feed_seq` | function | `tests/test_ps2_keymap.c:29` | `static int feed_seq(ps2_state *s, const unsigned char *seq, int n, ps2_key *out)` |
-| `main` | function | `tests/test_ps2_keymap.c:293` | `int main(void)` |
-| `press` | function | `tests/test_ps2_keymap.c:36` | `static int press(ps2_state *s, unsigned char code, ps2_key *out)` |
-| `release` | function | `tests/test_ps2_keymap.c:41` | `static int release(ps2_state *s, unsigned char code, ps2_key *out)` |
-| `test_caps_lock` | function | `tests/test_ps2_keymap.c:69` | `static void test_caps_lock(void)` |
-| `test_chords_have_no_text` | function | `tests/test_ps2_keymap.c:128` | `static void test_chords_have_no_text(void)` |
-| `test_control_key_text` | function | `tests/test_ps2_keymap.c:111` | `static void test_control_key_text(void)` |
-| `test_extended_keys` | function | `tests/test_ps2_keymap.c:150` | `static void test_extended_keys(void)` |
-| `test_fail_closed` | function | `tests/test_ps2_keymap.c:280` | `static void test_fail_closed(void)` |
-| `test_function_keys` | function | `tests/test_ps2_keymap.c:202` | `static void test_function_keys(void)` |
-| `test_keypad_num_lock` | function | `tests/test_ps2_keymap.c:218` | `static void test_keypad_num_lock(void)` |
-| `test_letters_and_shift` | function | `tests/test_ps2_keymap.c:45` | `static void test_letters_and_shift(void)` |
-| `test_prefix_sequences` | function | `tests/test_ps2_keymap.c:263` | `static void test_prefix_sequences(void)` |
-| `test_punctuation` | function | `tests/test_ps2_keymap.c:90` | `static void test_punctuation(void)` |
-| `CHECK` | macro | `tests/test_randmix.c:16` | `#define CHECK(c, m)` |
-| `main` | function | `tests/test_randmix.c:24` | `int main(void)` |
-| `popcount64` | function | `tests/test_randmix.c:18` | `static int popcount64(unsigned long x)` |
-| `CHECK` | macro | `tests/test_rcu.c:30` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_rcu.c:37` | `int main(void)` |
-| `rcu_host_cpu` | function | `tests/test_rcu.c:19` | `cpu_t *rcu_host_cpu(void)` |
-| `test_cb` | function | `tests/test_rcu.c:23` | `static void test_cb(void *arg)` |
-| `CHECK` | macro | `tests/test_rtc.c:16` | `#define CHECK(c, m)` |
-| `main` | function | `tests/test_rtc.c:18` | `int main(void)` |
-| `CHECK` | macro | `tests/test_sanitize.c:41` | `#define CHECK(cond, msg)` |
-| `EFAULT` | macro | `tests/test_sanitize.c:13` | `#define EFAULT` |
-| `copy_probe` | function | `tests/test_sanitize.c:61` | `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)` |
-| `kmemcpy` | function | `tests/test_sanitize.c:32` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
-| `main` | function | `tests/test_sanitize.c:67` | `int main(void)` |
-| `range_probe` | function | `tests/test_sanitize.c:48` | `static long range_probe(unsigned long p, long len)` |
-| `str_probe` | function | `tests/test_sanitize.c:54` | `static long str_probe(unsigned long p)` |
-| `user_range_ok` | function | `tests/test_sanitize.c:20` | `int user_range_ok(unsigned long p, unsigned long len)` |
-| `user_str_ok` | function | `tests/test_sanitize.c:26` | `int user_str_ok(unsigned long p, unsigned long maxlen)` |
-| `ARGS2_OFF` | macro | `tests/test_seccomp_bpf.c:30` | `#define ARGS2_OFF` |
-| `CHECK` | macro | `tests/test_seccomp_bpf.c:17` | `#define CHECK(cond, msg)` |
-| `JUMP` | macro | `tests/test_seccomp_bpf.c:22` | `#define JUMP(c, k, t, f)` |
-| `NR_MMAP` | macro | `tests/test_seccomp_bpf.c:27` | `#define NR_MMAP` |
-| `NR_MPROTECT` | macro | `tests/test_seccomp_bpf.c:28` | `#define NR_MPROTECT` |
-| `NR_OPEN` | macro | `tests/test_seccomp_bpf.c:26` | `#define NR_OPEN` |
-| `NR_READ` | macro | `tests/test_seccomp_bpf.c:24` | `#define NR_READ` |
-| `NR_WRITE` | macro | `tests/test_seccomp_bpf.c:25` | `#define NR_WRITE` |
-| `PROT_EXEC` | macro | `tests/test_seccomp_bpf.c:29` | `#define PROT_EXEC` |
-| `STMT` | macro | `tests/test_seccomp_bpf.c:21` | `#define STMT(c, k)` |
-| `data_for` | function | `tests/test_seccomp_bpf.c:34` | `static sbpf_data data_for(int nr, unsigned long long a2)` |
-| `main` | function | `tests/test_seccomp_bpf.c:210` | `int main(void)` |
-| `test_action_rank` | function | `tests/test_seccomp_bpf.c:199` | `static void test_action_rank(void)` |
-| `test_alu_and_jumps` | function | `tests/test_seccomp_bpf.c:150` | `static void test_alu_and_jumps(void)` |
-| `test_check_refusals` | function | `tests/test_seccomp_bpf.c:88` | `static void test_check_refusals(void)` |
-| `test_freedom_shape` | function | `tests/test_seccomp_bpf.c:43` | `static void test_freedom_shape(void)` |
-| `test_scratch_flow` | function | `tests/test_seccomp_bpf.c:130` | `static void test_scratch_flow(void)` |
-| `CHECK` | macro | `tests/test_sync.c:37` | `#define CHECK(cond, msg)` |
-| `fresh_all` | function | `tests/test_sync.c:52` | `static void fresh_all(void)` |
-| `fresh_proc` | function | `tests/test_sync.c:44` | `static void fresh_proc(int pid)` |
-| `main` | function | `tests/test_sync.c:63` | `int main(void)` |
-| `proc_get` | function | `tests/test_sync.c:24` | `proc_t *proc_get(int pid)` |
-| `schedule` | function | `tests/test_sync.c:30` | `void schedule(void)` |
-| `CHECK` | macro | `tests/test_theme.c:16` | `#define CHECK(cond, msg)` |
-| `X` | macro | `tests/test_theme.c:29` | `#define X(k, i)` |
-| `check_theme_file` | function | `tests/test_theme.c:78` | `static void check_theme_file(const char *path)` |
-| `cube_exact` | function | `tests/test_theme.c:74` | `static int cube_exact(long v)` |
-| `main` | function | `tests/test_theme.c:107` | `int main(void)` |
-| `t_name_ok` | function | `tests/test_theme.c:34` | `static int t_name_ok(const char *name)` |
-| `t_parse_line` | function | `tests/test_theme.c:46` | `static int t_parse_line(const char *line, int *idx, long v[3])` |
-| `tslot` | struct | `tests/test_theme.c:23` | `` |
-| `CHECK` | macro | `tests/test_tick.c:17` | `#define CHECK(cond, msg)` |
-| `dummy` | function | `tests/test_tick.c:47` | `static void dummy(void *ctx)` |
-| `main` | function | `tests/test_tick.c:52` | `int main(void)` |
-| `rec_a` | function | `tests/test_tick.c:24` | `static void rec_a(void *ctx)` |
-| `rec_b` | function | `tests/test_tick.c:31` | `static void rec_b(void *ctx)` |
-| `rec_d` | function | `tests/test_tick.c:38` | `static void rec_d(void *ctx)` |
-| `CHECK` | macro | `tests/test_usbblk.c:36` | `#define CHECK(cond, msg)` |
-| `device_find` | function | `tests/test_usbblk.c:26` | `device_t *device_find(const char *name)` |
-| `device_register` | function | `tests/test_usbblk.c:20` | `int device_register(device_t *dev)` |
-| `main` | function | `tests/test_usbblk.c:43` | `int main(void)` |
-| `CHECK` | macro | `tests/test_usbhid.c:41` | `#define CHECK(cond, msg)` |
-| `check_usage` | function | `tests/test_usbhid.c:48` | `static void check_usage(unsigned usage, unsigned char want_sc, int want_e0,                      ...` |
-| `kbd_feed_scancode` | function | `tests/test_usbhid.c:22` | `int kbd_feed_scancode(unsigned char sc)` |
-| `kbd_q_push` | function | `tests/test_usbhid.c:30` | `void kbd_q_push(unsigned char c)` |
-| `main` | function | `tests/test_usbhid.c:59` | `int main(void)` |
-| `CHECK` | macro | `tests/test_vedit_build.c:33` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_vedit_build.c:345` | `int main(void)` |
-| `t_base_of` | function | `tests/test_vedit_build.c:51` | `static int t_base_of(const char *fname, char *dst, size_t cap)` |
-| `t_cmd` | function | `tests/test_vedit_build.c:299` | `static int t_cmd(const char *name)` |
-| `t_has_ext` | function | `tests/test_vedit_build.c:40` | `static int t_has_ext(const char *fname, const char *ext)` |
-| `t_join` | function | `tests/test_vedit_build.c:71` | `static int t_join(const char *dir, const char *base, const char *ext,                   char *dst...` |
-| `t_lang_of` | function | `tests/test_vedit_build.c:101` | `static int t_lang_of(const char *fname)` |
-| `t_link_fmt` | function | `tests/test_vedit_build.c:87` | `static int t_link_fmt(const char *s)` |
-| `t_magic` | function | `tests/test_vedit_build.c:268` | `static int t_magic(const char *text, const char *pat, int *mlen)` |
-| `t_matom` | function | `tests/test_vedit_build.c:188` | `static int t_matom(const char *pat, int c, int *atom_len)` |
-| `t_mclass` | function | `tests/test_vedit_build.c:166` | `static int t_mclass(int c, const char *cls)` |
-| `t_mhere` | function | `tests/test_vedit_build.c:211` | `static int t_mhere(const char *text, const char *pat, int *mlen)` |
-| `t_parse_key` | function | `tests/test_vedit_build.c:312` | `static int t_parse_key(const char *s)` |
-| `t_run_kind` | function | `tests/test_vedit_build.c:121` | `static int t_run_kind(const char *fname)` |
-| `t_str_case` | function | `tests/test_vedit_build.c:131` | `static void t_str_case(char *s, int mode)` |
-| `t_transpose` | function | `tests/test_vedit_build.c:157` | `static void t_transpose(char *s, int len, int pos)` |
-| `CHECK` | macro | `tests/test_vma.c:20` | `#define CHECK(cond, msg)` |
-| `black_height` | function | `tests/test_vma.c:27` | `static int black_height(const vma_node_t *n)` |
-| `count_nodes` | function | `tests/test_vma.c:75` | `static int count_nodes(const vma_node_t *root)` |
-| `main` | function | `tests/test_vma.c:199` | `int main(void)` |
-| `test_file_tags_and_containing` | function | `tests/test_vma.c:167` | `static void test_file_tags_and_containing(void)` |
-| `test_full_drain` | function | `tests/test_vma.c:153` | `static void test_full_drain(void)` |
-| `test_insert_find_delete` | function | `tests/test_vma.c:89` | `static void test_insert_find_delete(void)` |
-| `test_pool_exhaustion` | function | `tests/test_vma.c:136` | `static void test_pool_exhaustion(void)` |
-| `tree_valid` | function | `tests/test_vma.c:38` | `static int tree_valid(const vma_node_t *root)` |
-| `LIST_MAX` | macro | `tests/test_vma_bench.c:20` | `#define LIST_MAX` |
-| `bench` | function | `tests/test_vma_bench.c:34` | `static void bench(int n)` |
-| `l_find` | function | `tests/test_vma_bench.c:28` | `static int l_find(unsigned long b)` |
-| `l_insert` | function | `tests/test_vma_bench.c:23` | `static void l_insert(unsigned long b)` |
-| `main` | function | `tests/test_vma_bench.c:54` | `int main(void)` |
-| `now_us` | function | `tests/test_vma_bench.c:13` | `static long now_us(void)` |
-| `CHECK` | macro | `tests/test_wl.c:20` | `#define CHECK(cond, msg)` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

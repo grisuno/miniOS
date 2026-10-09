@@ -1,6 +1,13 @@
 # Subsystem: src (page 3 of 3)
 Previous: [KB_src_p2.md](KB_src_p2.md)
 
+## progs/src/test.c
+- Layer: testing
+- Language: c
+- Symbols:
+  - `add` (function, line 1) `int add(int a, int b)`
+  - `main` (function, line 2) `int main(void)`
+
 ## progs/src/test.lua
 - Layer: testing
 - Language: lua

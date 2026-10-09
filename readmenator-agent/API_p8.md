@@ -1,6 +1,43 @@
 # API (page 8 of 19)
 Previous: [API_p7.md](API_p7.md)
 
+## mcp/minios_mcp.py
+Depends on: `kernel/time.c`, `mcp/minios_addons.py`
+- `env_config` (function) `mcp/minios_mcp.py:71` `def env_config()` -- Resolve the configuration: defaults overridden by the environment.
+- `clamp_timeout` (function) `mcp/minios_mcp.py:89` `def clamp_timeout(ms)` -- Clamp a requested wait to the bounded timeout range.
+- `validate_path` (function) `mcp/minios_mcp.py:102` `def validate_path(name)` -- Reject file names the ramdisk or the shell would mishandle.
+- `validate_content` (function) `mcp/minios_mcp.py:118` `def validate_content(text)` -- Reject lines the kernel readline cannot carry (printable ASCII).
+- `RPCError.__init__` (method) `mcp/minios_mcp.py:140` `def __init__(self, code, message)`
+- `LogBuffer.__init__` (method) `mcp/minios_mcp.py:149` `def __init__(self, cap)`
+- `LogBuffer.append` (method) `mcp/minios_mcp.py:155` `def append(self, data)`
+- `LogBuffer.bytes_from` (method) `mcp/minios_mcp.py:163` `def bytes_from(self, pos)`
+- `LogBuffer.text_from` (method) `mcp/minios_mcp.py:168` `def text_from(self, pos, end)`
+- `LogBuffer.find` (method) `mcp/minios_mcp.py:175` `def find(self, marker, start)`
+- `LogBuffer.wait_for` (method) `mcp/minios_mcp.py:179` `def wait_for(self, marker, start, timeout_ms)` -- Block until marker appears at or after start; return position.
+- `LogBuffer.wait_for_any` (method) `mcp/minios_mcp.py:192` `def wait_for_any(self, markers, start, timeout_ms)` -- Block until any of markers appears at or after start; return the earliest position found, or -1 when the timeout...
+- `MiniOSSession.__init__` (method) `mcp/minios_mcp.py:219` `def __init__(self, cfg)`
+- `MiniOSSession.booted` (method) `mcp/minios_mcp.py:230` `def booted(self)`
+- `MiniOSSession.status` (method) `mcp/minios_mcp.py:233` `def status(self)`
+- `MiniOSSession.boot` (method) `mcp/minios_mcp.py:284` `def boot(self, timeout_ms)`
+- `MiniOSSession.send` (method) `mcp/minios_mcp.py:356` `def send(self, line, timeout_ms)`
+- `MiniOSSession.expect` (method) `mcp/minios_mcp.py:367` `def expect(self, marker, timeout_ms)`
+- `MiniOSSession.snapshot` (method) `mcp/minios_mcp.py:381` `def snapshot(self, max_bytes)`
+- `MiniOSSession.run_test` (method) `mcp/minios_mcp.py:391` `def run_test(self, commands, expect, refute, timeout_ms)` -- Run a generic scenario: send a list of shell commands, then assert that each expected marker appears (and each...
+- `MiniOSSession.cat` (method) `mcp/minios_mcp.py:447` `def cat(self, path)`
+- `MiniOSSession.run_python` (method) `mcp/minios_mcp.py:453` `def run_python(self, script, args, timeout_ms)` -- Run a MicroPython script (or `-c` code) inside MiniOS and return its output, including the `exit code: N` line.
+- `MiniOSSession.cat_body` (method) `mcp/minios_mcp.py:464` `def cat_body(self, path, missing_ok)` -- Read a ramdisk file and return exactly its bytes.
+- `MiniOSSession.write` (method) `mcp/minios_mcp.py:500` `def write(self, path, content)`
+- `MiniOSSession.poweroff` (method) `mcp/minios_mcp.py:537` `def poweroff(self, timeout_ms)`
+- `MiniOSSession.terminate` (method) `mcp/minios_mcp.py:557` `def terminate(self)`
+- `MiniOSSession.close` (method) `mcp/minios_mcp.py:576` `def close(self)`
+- `MiniOSSession.subprocess_launch` (method) `mcp/minios_mcp.py:580` `def subprocess_launch(cfg, slave_fd)`
+- `MCPServer.__init__` (method) `mcp/minios_mcp.py:734` `def __init__(self, cfg)`
+- `MCPServer.run` (method) `mcp/minios_mcp.py:738` `def run(self)`
+- `MCPServer.main` (method) `mcp/minios_mcp.py:888` `def main()`
+
+## mcp/mutate_mcp.sh
+- `run_one` (function) `mcp/mutate_mcp.sh:116` -- Each mutant runs the suite in its own directory with its own pid file and addon state, so the runs are independent...
+
 ## net/net.c
 Depends on: `headers/drivers/virtio_net.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`, `headers/tls.h`
 - `net_drv_send` (function) `net/net.c:38` `static int net_drv_send(const unsigned char *frame, unsigned len)`
@@ -81,16 +118,17 @@ int net_accept(int fd, uns...`
 - `net_sys_getsockname` (function) `net/net.c:1616` `long net_sys_getsockname(long fd, long addr, long lenp)`
 - `net_sys_getpeername` (function) `net/net.c:1625` `long net_sys_getpeername(long fd, long addr, long lenp)`
 - `net_sys_fcntl` (function) `net/net.c:1643` `long net_sys_fcntl(long fd, long cmd, long arg)` -- fcntl on a socket: O_NONBLOCK through F_GETFL/F_SETFL, FD_CLOEXEC recorded through F_GETFD/F_SETFD (sockets live in...
-- `net_socket_revents` (function) `net/net.c:1664` `static unsigned short net_socket_revents(long fd)` -- ce = &net_sockets[fd - NET_FD_BASE].cloexec; } else { return -LNX_EBADF; } switch (cmd) { case LNX_F_GETFL: return...
-- `net_sys_poll` (function) `net/net.c:1684` `long net_sys_poll(long fds, long nfds, long timeout_ms)`
-- `net_sys_dns` (function) `net/net.c:1724` `long net_sys_dns(long host)` -- MiniOS syscall 200: resolve a hostname, returned as a network-order * 32-bit address (like inet_addr), or -1 on failure.
-- `net_parse_ip` (function) `net/net.c:1735` `static int net_parse_ip(const char *text, unsigned char ip[4])`
-- `net_cmd_status` (function) `net/net.c:1760` `void net_cmd_status(void)`
-- `net_get_addrs` (function) `net/net.c:1782` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])` -- kprintf("virtio-net iobase 0x%x\n", vnet_iobase()); } else { rtl_counters(&tx_frames, &rx_frames); kprintf("rtl8139...
-- `net_cmd_ping` (function) `net/net.c:1788` `void net_cmd_ping(const char *ip_text)`
-- `net_cmd_dns` (function) `net/net.c:1799` `void net_cmd_dns(const char *host)`
-- `net_register_symbols` (function) `net/net.c:1812` `void net_register_symbols(void)`
-- `net_init` (function) `net/net.c:1820` `void net_init(void)`
+- `net_sys_ioctl` (function) `net/net.c:1674` `long net_sys_ioctl(long fd, long req, long arg)` -- ioctl on a socket: FIONREAD answers the bytes a read would return now (a stream's buffered bytes, the size of a...
+- `net_socket_revents` (function) `net/net.c:1707` `static unsigned short net_socket_revents(long fd)` -- return 0; } } else { return -LNX_EBADF; } switch (req) { case LNX_FIONBIO: *nb = *(const int *)arg != 0; return 0...
+- `net_sys_poll` (function) `net/net.c:1727` `long net_sys_poll(long fds, long nfds, long timeout_ms)`
+- `net_sys_dns` (function) `net/net.c:1767` `long net_sys_dns(long host)` -- MiniOS syscall 200: resolve a hostname, returned as a network-order * 32-bit address (like inet_addr), or -1 on failure.
+- `net_parse_ip` (function) `net/net.c:1778` `static int net_parse_ip(const char *text, unsigned char ip[4])`
+- `net_cmd_status` (function) `net/net.c:1803` `void net_cmd_status(void)`
+- `net_get_addrs` (function) `net/net.c:1825` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])` -- kprintf("virtio-net iobase 0x%x\n", vnet_iobase()); } else { rtl_counters(&tx_frames, &rx_frames); kprintf("rtl8139...
+- `net_cmd_ping` (function) `net/net.c:1831` `void net_cmd_ping(const char *ip_text)`
+- `net_cmd_dns` (function) `net/net.c:1842` `void net_cmd_dns(const char *host)`
+- `net_register_symbols` (function) `net/net.c:1855` `void net_register_symbols(void)`
+- `net_init` (function) `net/net.c:1863` `void net_init(void)`
 
 ## net/rtl8139.c
 Depends on: `headers/drivers/pci.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`
@@ -105,15 +143,15 @@ Depends on: `headers/drivers/pci.h`, `headers/net.h`, `headers/net/rtl8139.h`, `
 - `rtl_find` (function) `net/rtl8139.c:58` `static unsigned short rtl_find(void)` -- PCI config space lives in drivers/pci.h now (shared with virtio-blk and future devices); only the dword port pair...
 - `deleted` (function) `net/rtl8139.c:79` `* been deleted (a second base/per-ms pair beside ktime's is a second
  * clock, and drivers must n...`
-- `rtl_present` (function) `net/rtl8139.c:99` `int rtl_present(void)`
-- `rtl_reset` (function) `net/rtl8139.c:103` `static void rtl_reset(void)`
-- `rtl_init` (function) `net/rtl8139.c:112` `void rtl_init(void)`
-- `rtl_tx_wait` (function) `net/rtl8139.c:149` `static int rtl_tx_wait(unsigned slot, unsigned long deadline)`
-- `rtl_send` (function) `net/rtl8139.c:158` `int rtl_send(const unsigned char *frame, unsigned len)`
-- `rtl_get_mac` (function) `net/rtl8139.c:182` `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
-- `rtl_iobase` (function) `net/rtl8139.c:187` `unsigned short rtl_iobase(void)`
-- `rtl_counters` (function) `net/rtl8139.c:191` `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
-- `rtl_poll` (function) `net/rtl8139.c:215` `void rtl_poll(void)`
+- `rtl_present` (function) `net/rtl8139.c:107` `int rtl_present(void)`
+- `rtl_reset` (function) `net/rtl8139.c:111` `static void rtl_reset(void)`
+- `rtl_init` (function) `net/rtl8139.c:120` `void rtl_init(void)`
+- `rtl_tx_wait` (function) `net/rtl8139.c:168` `static int rtl_tx_wait(unsigned slot, unsigned long deadline)`
+- `rtl_send` (function) `net/rtl8139.c:177` `int rtl_send(const unsigned char *frame, unsigned len)`
+- `rtl_get_mac` (function) `net/rtl8139.c:205` `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
+- `rtl_iobase` (function) `net/rtl8139.c:210` `unsigned short rtl_iobase(void)`
+- `rtl_counters` (function) `net/rtl8139.c:214` `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
+- `rtl_poll` (function) `net/rtl8139.c:238` `void rtl_poll(void)`
 
 ## net/tls.c
 Depends on: `headers/tls.h`, `headers/tls_port.h`, `headers/tls_roots.h`
@@ -430,50 +468,6 @@ Depends on: `headers/tls.h`, `headers/tls_port.h`
 ## progs/asm/http.s
 - `atoi` (function) `progs/asm/http.s:3`
 - `main` (function) `progs/asm/http.s:89`
-
-## progs/asm/json.s
-- `js_key` (function) `progs/asm/json.s:3`
-- `js_str` (function) `progs/asm/json.s:7`
-- `js_type` (function) `progs/asm/json.s:11`
-- `js_num` (function) `progs/asm/json.s:15`
-- `js_first` (function) `progs/asm/json.s:19`
-- `js_count` (function) `progs/asm/json.s:23`
-- `js_next` (function) `progs/asm/json.s:27`
-- `js_n` (function) `progs/asm/json.s:31`
-- `js_pool` (function) `progs/asm/json.s:35`
-- `js_plen` (function) `progs/asm/json.s:39`
-- `js_src` (function) `progs/asm/json.s:43`
-- `js_pos` (function) `progs/asm/json.s:47`
-- `js_len` (function) `progs/asm/json.s:51`
-- `js_err` (function) `progs/asm/json.s:55`
-- `js_read_all` (function) `progs/asm/json.s:59`
-- `js_new` (function) `progs/asm/json.s:274`
-- `js_skip_ws` (function) `progs/asm/json.s:306`
-- `js_peek` (function) `progs/asm/json.s:397`
-- `js_parse_string` (function) `progs/asm/json.s:437`
-- `js_parse_number` (function) `progs/asm/json.s:851`
-- `js_key_match` (function) `progs/asm/json.s:947`
-- `js_parse_object` (function) `progs/asm/json.s:983`
-- `js_parse_array` (function) `progs/asm/json.s:1335`
-- `js_parse_value` (function) `progs/asm/json.s:1594`
-- `js_indent` (function) `progs/asm/json.s:2481`
-- `js_print_str` (function) `progs/asm/json.s:2524`
-- `js_print_value` (function) `progs/asm/json.s:2747`
-- `js_find_member` (function) `progs/asm/json.s:3313`
-- `js_array_at` (function) `progs/asm/json.s:3391`
-- `js_query` (function) `progs/asm/json.s:3460`
-- `main` (function) `progs/asm/json.s:3772`
-
-## progs/asm/ldhello.s
-- `main` (function) `progs/asm/ldhello.s:3`
-
-## progs/asm/lz4.s
-- `lz4_has` (function) `progs/asm/lz4.s:3`
-- `lz4_read_all` (function) `progs/asm/lz4.s:156`
-- `lz4_write_all` (function) `progs/asm/lz4.s:371`
-- `lz4_compress_file` (function) `progs/asm/lz4.s:478`
-- `lz4_decompress_file` (function) `progs/asm/lz4.s:791`
-- `main` (function) `progs/asm/lz4.s:1228`
 
 
 Next: [API_p9.md](API_p9.md)

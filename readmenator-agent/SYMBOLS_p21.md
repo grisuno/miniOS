@@ -3,6 +3,130 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `nk_context` | struct | `progs/nuklear/nuklear_minios.h:20` | `` |
+| `nk_idx_to_rgb` | function | `progs/nuklear/nuklear_minios.h:37` | `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g, unsigned char *b);` |
+| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.h:63` | `struct nk_user_font nk_minios_font(void);` |
+| `nk_minios_img` | struct | `progs/nuklear/nuklear_minios.h:74` | `` |
+| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.h:87` | `void nk_poll_input(struct nk_context *ctx);` |
+| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.h:92` | `int nk_quit_requested(void);` |
+| `nk_rasterize` | function | `progs/nuklear/nuklear_minios.h:66` | `void nk_rasterize(struct nk_context *ctx);` |
+| `nk_rgb_available` | function | `progs/nuklear/nuklear_minios.h:33` | `int nk_rgb_available(void);` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.h:101` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);` |
+| `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.h:46` | `long nk_sys_fb_info(int *w, int *h, int *pitch);` |
+| `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.h:53` | `long nk_sys_gfx_set_title(const char *t);` |
+| `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.h:42` | `long nk_sys_kbd(void);` |
+| `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.h:44` | `long nk_sys_kbd_raw(int on);` |
+| `nk_sys_mouse` | function | `progs/nuklear/nuklear_minios.h:47` | `long nk_sys_mouse(int *xybw);` |
+| `nk_sys_mouse_badptr` | function | `progs/nuklear/nuklear_minios.h:51` | `long nk_sys_mouse_badptr(void);` |
+| `nk_sys_nk_frame` | function | `progs/nuklear/nuklear_minios.h:52` | `long nk_sys_nk_frame(int *origin);` |
+| `nk_sys_palette` | function | `progs/nuklear/nuklear_minios.h:43` | `long nk_sys_palette(const unsigned char *pal768);` |
+| `nk_sys_time_ms` | function | `progs/nuklear/nuklear_minios.h:41` | `long nk_sys_time_ms(void);` |
+| `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.h:45` | `long nk_sys_vga_mode(int on);` |
+| `nk_user_font` | struct | `progs/nuklear/nuklear_minios.h:21` | `` |
+| `X` | macro | `progs/nuklear/nuklear_theme.c:21` | `#define X(k, i)` |
+| `nk_theme_active` | function | `progs/nuklear/nuklear_theme.c:49` | `int nk_theme_active(char *dst, int cap)` |
+| `nk_theme_apply` | function | `progs/nuklear/nuklear_theme.c:141` | `int nk_theme_apply(struct nk_context *ctx, const char *name)` |
+| `nk_theme_name_ok` | function | `progs/nuklear/nuklear_theme.c:37` | `static int nk_theme_name_ok(const char *name)` |
+| `nk_theme_parse_line` | function | `progs/nuklear/nuklear_theme.c:73` | `static int nk_theme_parse_line(const char *line,                                unsigned char rgb...` |
+| `nk_theme_probe` | function | `progs/nuklear/nuklear_theme.c:105` | `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3])` |
+| `nk_theme_slot` | struct | `progs/nuklear/nuklear_theme.c:15` | `` |
+| `NK_THEME_DEFAULT` | macro | `progs/nuklear/nuklear_theme.h:20` | `#define NK_THEME_DEFAULT` |
+| `NK_THEME_KEY_COUNT` | macro | `progs/nuklear/nuklear_theme.h:57` | `#define NK_THEME_KEY_COUNT` |
+| `NK_THEME_KEY_LIST` | macro | `progs/nuklear/nuklear_theme.h:23` | `#define NK_THEME_KEY_LIST` |
+| `NK_THEME_KEY_MAX` | macro | `progs/nuklear/nuklear_theme.h:16` | `#define NK_THEME_KEY_MAX` |
+| `NK_THEME_LINE_MAX` | macro | `progs/nuklear/nuklear_theme.h:17` | `#define NK_THEME_LINE_MAX` |
+| `NK_THEME_NAME_MAX` | macro | `progs/nuklear/nuklear_theme.h:15` | `#define NK_THEME_NAME_MAX` |
+| `NK_THEME_PATH_CURRENT` | macro | `progs/nuklear/nuklear_theme.h:19` | `#define NK_THEME_PATH_CURRENT` |
+| `NK_THEME_PATH_DIR` | macro | `progs/nuklear/nuklear_theme.h:18` | `#define NK_THEME_PATH_DIR` |
+| `NUKLEAR_THEME_H` | macro | `progs/nuklear/nuklear_theme.h:2` | `#define NUKLEAR_THEME_H` |
+| `nk_context` | struct | `progs/nuklear/nuklear_theme.h:59` | `` |
+| `nk_theme_active` | function | `progs/nuklear/nuklear_theme.h:62` | `int nk_theme_active(char *dst, int cap);` |
+| `nk_theme_apply` | function | `progs/nuklear/nuklear_theme.h:68` | `int nk_theme_apply(struct nk_context *ctx, const char *name);` |
+| `nk_theme_probe` | function | `progs/nuklear/nuklear_theme.h:65` | `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3]);` |
+| `PAINT_DEFAULT_PATH` | macro | `progs/paint/paint.c:42` | `#define PAINT_DEFAULT_PATH` |
+| `PAINT_FILE_BTN_W` | macro | `progs/paint/paint.c:44` | `#define PAINT_FILE_BTN_W` |
+| `PAINT_FILE_MAX` | macro | `progs/paint/paint.c:36` | `#define PAINT_FILE_MAX` |
+| `PAINT_FRAME_ATTEMPTS` | macro | `progs/paint/paint.c:46` | `#define PAINT_FRAME_ATTEMPTS` |
+| `PAINT_FRAME_MS` | macro | `progs/paint/paint.c:45` | `#define PAINT_FRAME_MS` |
+| `PAINT_H` | macro | `progs/paint/paint.c:33` | `#define PAINT_H` |
+| `PAINT_N` | macro | `progs/paint/paint.c:34` | `#define PAINT_N` |
+| `PAINT_NCOLORS` | macro | `progs/paint/paint.c:47` | `#define PAINT_NCOLORS` |
+| `PAINT_NSIZES` | macro | `progs/paint/paint.c:48` | `#define PAINT_NSIZES` |
+| `PAINT_NTOOLS` | macro | `progs/paint/paint.c:49` | `#define PAINT_NTOOLS` |
+| `PAINT_PANEL_TITLE` | macro | `progs/paint/paint.c:43` | `#define PAINT_PANEL_TITLE` |
+| `PAINT_PATH_MAX` | macro | `progs/paint/paint.c:35` | `#define PAINT_PATH_MAX` |
+| `PAINT_PNG_MAX` | macro | `progs/paint/paint.c:39` | `#define PAINT_PNG_MAX` |
+| `PAINT_PNG_MAX_DIM` | macro | `progs/paint/paint.c:40` | `#define PAINT_PNG_MAX_DIM` |
+| `PAINT_STATUS_MAX` | macro | `progs/paint/paint.c:37` | `#define PAINT_STATUS_MAX` |
+| `PAINT_TITLE` | macro | `progs/paint/paint.c:41` | `#define PAINT_TITLE` |
+| `PAINT_TOOL_BRUSH` | macro | `progs/paint/paint.c:52` | `#define PAINT_TOOL_BRUSH` |
+| `PAINT_TOOL_CIRCLE` | macro | `progs/paint/paint.c:55` | `#define PAINT_TOOL_CIRCLE` |
+| `PAINT_TOOL_ERASER` | macro | `progs/paint/paint.c:57` | `#define PAINT_TOOL_ERASER` |
+| `PAINT_TOOL_FILL` | macro | `progs/paint/paint.c:56` | `#define PAINT_TOOL_FILL` |
+| `PAINT_TOOL_LINE` | macro | `progs/paint/paint.c:53` | `#define PAINT_TOOL_LINE` |
+| `PAINT_TOOL_RECT` | macro | `progs/paint/paint.c:54` | `#define PAINT_TOOL_RECT` |
+| `PAINT_UI_MEMORY` | macro | `progs/paint/paint.c:38` | `#define PAINT_UI_MEMORY` |
+| `PAINT_W` | macro | `progs/paint/paint.c:32` | `#define PAINT_W` |
+| `STBI_NO_STDIO` | macro | `progs/paint/paint.c:28` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/paint/paint.c:27` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/paint/paint.c:26` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `main` | function | `progs/paint/paint.c:992` | `int main(int argc, char **argv)` |
+| `paint_adler` | function | `progs/paint/paint.c:296` | `static unsigned long paint_adler(const unsigned char *p, unsigned long n)` |
+| `paint_blit` | function | `progs/paint/paint.c:549` | `static void paint_blit(int ox, int oy)` |
+| `paint_circle_fill` | function | `progs/paint/paint.c:161` | `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,                           ...` |
+| `paint_clamp` | function | `progs/paint/paint.c:92` | `static int paint_clamp(int v, int lo, int hi)` |
+| `paint_crc_init` | function | `progs/paint/paint.c:272` | `static void paint_crc_init(void)` |
+| `paint_crc_update` | function | `progs/paint/paint.c:285` | `static unsigned long paint_crc_update(unsigned long c,                                       cons...` |
+| `paint_dab` | function | `progs/paint/paint.c:108` | `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,                       unsig...` |
+| `paint_flood` | function | `progs/paint/paint.c:179` | `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,                        uns...` |
+| `paint_gui_run` | function | `progs/paint/paint.c:942` | `static void paint_gui_run(void)` |
+| `paint_handle_input` | function | `progs/paint/paint.c:577` | `static void paint_handle_input(struct nk_context *ctx)` |
+| `paint_ink` | function | `progs/paint/paint.c:570` | `static unsigned char paint_ink(void)` |
+| `paint_line` | function | `progs/paint/paint.c:119` | `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,                       int...` |
+| `paint_load_file` | function | `progs/paint/paint.c:461` | `static int paint_load_file(const char *path)` |
+| `paint_nearest` | function | `progs/paint/paint.c:223` | `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,                       ...` |
+| `paint_pal` | function | `progs/paint/paint.c:240` | `static const unsigned char *paint_pal(void)` |
+| `paint_path_ok` | function | `progs/paint/paint.c:251` | `static int paint_path_ok(const char *p)` |
+| `paint_pattern_present` | function | `progs/paint/paint.c:720` | `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)` |
+| `paint_plot` | function | `progs/paint/paint.c:99` | `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,                       unsig...` |
+| `paint_png_encode` | function | `progs/paint/paint.c:333` | `static long paint_png_encode(unsigned char *dst, unsigned long cap,                              ...` |
+| `paint_put_bytes` | function | `progs/paint/paint.c:320` | `static int paint_put_bytes(unsigned char *dst, unsigned long cap,                            unsi...` |
+| `paint_put_u32` | function | `progs/paint/paint.c:308` | `static int paint_put_u32(unsigned char *dst, unsigned long cap,                          unsigned...` |
+| `paint_rect_fill` | function | `progs/paint/paint.c:144` | `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,                     ...` |
+| `paint_save_file` | function | `progs/paint/paint.c:514` | `static int paint_save_file(const char *path)` |
+| `paint_selftest` | function | `progs/paint/paint.c:755` | `static int paint_selftest(void)` |
+| `paint_ui_build` | function | `progs/paint/paint.c:636` | `static void paint_ui_build(struct nk_context *ctx)` |
+| `BK_H` | macro | `progs/piano/piano.c:193` | `#define BK_H` |
+| `BK_W` | macro | `progs/piano/piano.c:192` | `#define BK_W` |
+| `BTN_GAP` | macro | `progs/piano/piano.c:548` | `#define BTN_GAP` |
+| `BTN_W` | macro | `progs/piano/piano.c:547` | `#define BTN_W` |
+| `CTRL_H` | macro | `progs/piano/piano.c:546` | `#define CTRL_H` |
+| `CTRL_Y` | macro | `progs/piano/piano.c:545` | `#define CTRL_Y` |
+| `FX_DELAY_CAP` | macro | `progs/piano/piano.c:407` | `#define FX_DELAY_CAP` |
+| `FX_DELAY_MAX_MS` | macro | `progs/piano/piano.c:408` | `#define FX_DELAY_MAX_MS` |
+| `FX_FEEDBACK` | macro | `progs/piano/piano.c:409` | `#define FX_FEEDBACK` |
+| `FX_TREM_FREQ` | macro | `progs/piano/piano.c:411` | `#define FX_TREM_FREQ` |
+| `FX_WET` | macro | `progs/piano/piano.c:410` | `#define FX_WET` |
+| `KBD_NO_NOTE` | macro | `progs/piano/piano.c:297` | `#define KBD_NO_NOTE` |
+| `KEY_H` | macro | `progs/piano/piano.c:191` | `#define KEY_H` |
+| `KEY_W` | macro | `progs/piano/piano.c:190` | `#define KEY_W` |
+| `KEY_Y` | macro | `progs/piano/piano.c:194` | `#define KEY_Y` |
+| `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:76` | `#define MAX_AUDIO_MS` |
+| `MAX_VOICES` | macro | `progs/piano/piano.c:221` | `#define MAX_VOICES` |
+| `NCTRLS` | macro | `progs/piano/piano.c:561` | `#define NCTRLS` |
+| `NKEYS` | macro | `progs/piano/piano.c:209` | `#define NKEYS` |
+| `PCM_BUF` | macro | `progs/piano/piano.c:63` | `#define PCM_BUF` |
+| `PCM_FRAG` | macro | `progs/piano/piano.c:62` | `#define PCM_FRAG` |
+| `PIANO_BASE_MIDI` | macro | `progs/piano/piano.c:195` | `#define PIANO_BASE_MIDI` |
+| `PIANO_FRAME_MS` | macro | `progs/piano/piano.c:84` | `#define PIANO_FRAME_MS` |
+| `PIANO_FRAME_PERIOD` | macro | `progs/piano/piano.c:91` | `#define PIANO_FRAME_PERIOD` |
+| `PIANO_OCTAVES` | macro | `progs/piano/piano.c:196` | `#define PIANO_OCTAVES` |
+| `RATE` | macro | `progs/piano/piano.c:61` | `#define RATE` |
+| `SYS_PCM2_CLOSE` | macro | `progs/piano/piano.c:59` | `#define SYS_PCM2_CLOSE` |
+| `SYS_PCM2_OPEN` | macro | `progs/piano/piano.c:57` | `#define SYS_PCM2_OPEN` |
+| `SYS_PCM2_WRITE` | macro | `progs/piano/piano.c:58` | `#define SYS_PCM2_WRITE` |
+| `UI_MEMORY` | macro | `progs/piano/piano.c:54` | `#define UI_MEMORY` |
+| `clamp_midi` | function | `progs/piano/piano.c:234` | `static int clamp_midi(int m)` |
 | `ctrl_active` | function | `progs/piano/piano.c:567` | `static int ctrl_active(int id)` |
 | `ctrl_hit` | function | `progs/piano/piano.c:563` | `static int ctrl_hit(int id, int mx, int my)` |
 | `ctrl_press` | function | `progs/piano/piano.c:577` | `static void ctrl_press(int id)` |
@@ -372,129 +496,5 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `has_scheme` | function | `progs/src/freedom.c:226` | `static int has_scheme(char *s)` |
 | `head_line` | function | `progs/src/freedom.c:796` | `static void head_line(char *line)` |
 | `is_void_tag` | function | `progs/src/freedom.c:534` | `static int is_void_tag(void)` |
-| `looks_like_url` | function | `progs/src/freedom.c:212` | `static int looks_like_url(char *s)` |
-| `main` | function | `progs/src/freedom.c:1129` | `int main(int argc, char **argv)` |
-| `make_search` | function | `progs/src/freedom.c:242` | `static void make_search(char *out, char *query, int cap)` |
-| `memcpy` | function | `progs/src/freedom.c:69` | `int memcpy(char *dst, char *src, int n);` |
-| `memset` | function | `progs/src/freedom.c:70` | `int memset(char *dst, int c, int n);` |
-| `net_dns_resolve` | function | `progs/src/freedom.c:41` | `int net_dns_resolve(const char *host);` |
-| `parse_head` | function | `progs/src/freedom.c:821` | `static void parse_head(void)` |
-| `print_css_dump` | function | `progs/src/freedom.c:1113` | `static void print_css_dump(void)` |
-| `print_dom_dump` | function | `progs/src/freedom.c:1122` | `static void print_dom_dump(void)` |
-| `printf` | function | `progs/src/freedom.c:63` | `int printf(char *fmt, ...);` |
-| `put_text` | function | `progs/src/freedom.c:427` | `static void put_text(int c)` |
-| `put_utf` | function | `progs/src/freedom.c:377` | `static void put_utf(int c)` |
-| `put_ws` | function | `progs/src/freedom.c:366` | `static void put_ws(void)` |
-| `putchar` | function | `progs/src/freedom.c:71` | `int putchar(int c);` |
-| `puts` | function | `progs/src/freedom.c:64` | `int puts(char *s);` |
-| `record_attr` | function | `progs/src/freedom.c:509` | `static void record_attr(void)` |
-| `recv_body` | function | `progs/src/freedom.c:843` | `static int recv_body(int fd, char *buf, int len)` |
-| `recvfrom` | function | `progs/src/freedom.c:55` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
-| `resolve_redirect` | function | `progs/src/freedom.c:313` | `static int resolve_redirect(void)` |
-| `send_all` | function | `progs/src/freedom.c:849` | `static int send_all(int fd, char *buf, int len)` |
-| `sendto` | function | `progs/src/freedom.c:54` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
-| `socket` | function | `progs/src/freedom.c:52` | `int socket(int domain, int type, int proto);` |
-| `split_url` | function | `progs/src/freedom.c:266` | `static int split_url(char *url)` |
-| `strchr` | function | `progs/src/freedom.c:66` | `char *strchr(char *s, int c);` |
-| `strcmp` | function | `progs/src/freedom.c:67` | `int strcmp(char *a, char *b);` |
-| `strlen` | function | `progs/src/freedom.c:65` | `int strlen(char *s);` |
-| `strncmp` | function | `progs/src/freedom.c:68` | `int strncmp(char *a, char *b, int n);` |
-| `tls_close` | function | `progs/src/freedom.c:58` | `static int tls_close(int fd)` |
-| `tls_handshake` | function | `progs/src/freedom.c:42` | `int tls_handshake(int fd, char *host);` |
-| `tls_recv` | function | `progs/src/freedom.c:44` | `int tls_recv(int fd, char *buf, int len);` |
-| `tls_send` | function | `progs/src/freedom.c:43` | `int tls_send(int fd, char *buf, int len);` |
-| `FreedomWlConfig` | struct | `progs/src/freedom_wl.c:76` | `` |
-| `WL_BODY_CAP` | macro | `progs/src/freedom_wl.c:54` | `#define WL_BODY_CAP` |
-| `WL_COLS` | macro | `progs/src/freedom_wl.c:49` | `#define WL_COLS` |
-| `WL_ENT_MAX` | macro | `progs/src/freedom_wl.c:65` | `#define WL_ENT_MAX` |
-| `WL_FONT_H` | macro | `progs/src/freedom_wl.c:63` | `#define WL_FONT_H` |
-| `WL_FONT_W` | macro | `progs/src/freedom_wl.c:62` | `#define WL_FONT_W` |
-| `WL_HDR_MAX` | macro | `progs/src/freedom_wl.c:55` | `#define WL_HDR_MAX` |
-| `WL_HOPS_MAX` | macro | `progs/src/freedom_wl.c:61` | `#define WL_HOPS_MAX` |
-| `WL_HOST_MAX` | macro | `progs/src/freedom_wl.c:58` | `#define WL_HOST_MAX` |
-| `WL_LINES_MAX` | macro | `progs/src/freedom_wl.c:52` | `#define WL_LINES_MAX` |
-| `WL_LINE_LEN` | macro | `progs/src/freedom_wl.c:53` | `#define WL_LINE_LEN` |
-| `WL_NET_BUF` | macro | `progs/src/freedom_wl.c:56` | `#define WL_NET_BUF` |
-| `WL_PATH_MAX` | macro | `progs/src/freedom_wl.c:59` | `#define WL_PATH_MAX` |
-| `WL_REQ_MAX` | macro | `progs/src/freedom_wl.c:57` | `#define WL_REQ_MAX` |
-| `WL_ROWS` | macro | `progs/src/freedom_wl.c:50` | `#define WL_ROWS` |
-| `WL_TAG_MAX` | macro | `progs/src/freedom_wl.c:64` | `#define WL_TAG_MAX` |
-| `WL_TEXT_ROWS` | macro | `progs/src/freedom_wl.c:51` | `#define WL_TEXT_ROWS` |
-| `WL_URL_MAX` | macro | `progs/src/freedom_wl.c:60` | `#define WL_URL_MAX` |
-| `freedom_wl_build_palette` | function | `progs/src/freedom_wl.c:1039` | `static long freedom_wl_build_palette(unsigned char *pal, long cap)` |
-| `freedom_wl_clip_rect` | function | `progs/src/freedom_wl.c:196` | `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)` |
-| `freedom_wl_default` | function | `progs/src/freedom_wl.c:158` | `static FreedomWlConfig freedom_wl_default(void)` |
-| `freedom_wl_frame_bytes` | function | `progs/src/freedom_wl.c:227` | `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)` |
-| `freedom_wl_host_probe` | function | `progs/src/freedom_wl.c:1696` | `int freedom_wl_host_probe(FreedomWlConfig *c)` |
-| `freedom_wl_keysym` | function | `progs/src/freedom_wl.c:246` | `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)` |
-| `freedom_wl_sanitize_utf8` | function | `progs/src/freedom_wl.c:286` | `static long freedom_wl_sanitize_utf8(char *s, long cap)` |
-| `freedom_wl_selftest` | function | `progs/src/freedom_wl.c:1613` | `static long freedom_wl_selftest(void)` |
-| `freedom_wl_surface_attach` | function | `progs/src/freedom_wl.c:129` | `static long freedom_wl_surface_attach(FreedomWlConfig *c)` |
-| `freedom_wl_surface_id` | function | `progs/src/freedom_wl.c:114` | `static long freedom_wl_surface_id(void)` |
-| `freedom_wl_sys_kbd` | function | `progs/src/freedom_wl.c:1090` | `static long freedom_wl_sys_kbd(void)` |
-| `freedom_wl_sys_kbd_raw` | function | `progs/src/freedom_wl.c:1104` | `static long freedom_wl_sys_kbd_raw(long on)` |
-| `freedom_wl_sys_mouse` | function | `progs/src/freedom_wl.c:1083` | `static long freedom_wl_sys_mouse(long *m)` |
-| `freedom_wl_sys_palette` | function | `progs/src/freedom_wl.c:1076` | `static long freedom_wl_sys_palette(unsigned char *pal)` |
-| `freedom_wl_sys_present` | function | `progs/src/freedom_wl.c:1062` | `static long freedom_wl_sys_present(long buf, long origin)` |
-| `freedom_wl_sys_title` | function | `progs/src/freedom_wl.c:1069` | `static long freedom_wl_sys_title(char *t)` |
-| `freedom_wl_sys_vga_mode` | function | `progs/src/freedom_wl.c:1097` | `static long freedom_wl_sys_vga_mode(long on)` |
-| `freedom_wl_sys_yield` | function | `progs/src/freedom_wl.c:1111` | `static long freedom_wl_sys_yield(void)` |
-| `freedom_wl_title_ok` | function | `progs/src/freedom_wl.c:359` | `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)` |
-| `main` | function | `progs/src/freedom_wl.c:1731` | `int main(int argc, char **argv)` |
-| `net_dns_resolve` | function | `progs/src/freedom_wl.c:42` | `int net_dns_resolve(const char *host);` |
-| `present_buf` | type_alias | `progs/src/freedom_wl.c:76` | `typedef struct FreedomWlConfig { long present_buf;` |
-| `tls_close` | function | `progs/src/freedom_wl.c:46` | `void tls_close(int fd);` |
-| `tls_handshake` | function | `progs/src/freedom_wl.c:43` | `int tls_handshake(int fd, char *host);` |
-| `tls_recv` | function | `progs/src/freedom_wl.c:45` | `int tls_recv(int fd, char *buf, int len);` |
-| `tls_send` | function | `progs/src/freedom_wl.c:44` | `int tls_send(int fd, char *buf, int len);` |
-| `wl_append` | function | `progs/src/freedom_wl.c:404` | `static long wl_append(char *dst, long pos, char *src, long cap)` |
-| `wl_browse` | function | `progs/src/freedom_wl.c:1532` | `static long wl_browse(FreedomWlConfig *c)` |
-| `wl_ci_contains` | function | `progs/src/freedom_wl.c:453` | `static long wl_ci_contains(char *s, char *needle)` |
-| `wl_ci_lower` | function | `progs/src/freedom_wl.c:427` | `static long wl_ci_lower(long ch)` |
-| `wl_ci_starts` | function | `progs/src/freedom_wl.c:435` | `static long wl_ci_starts(char *s, char *pre)` |
-| `wl_copy` | function | `progs/src/freedom_wl.c:370` | `static long wl_copy(char *dst, char *src, long cap)` |
-| `wl_fetch_raw` | function | `progs/src/freedom_wl.c:1210` | `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)` |
-| `wl_filter_wrap` | function | `progs/src/freedom_wl.c:708` | `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...` |
-| `wl_has_scheme` | function | `progs/src/freedom_wl.c:467` | `static long wl_has_scheme(char *s)` |
-| `wl_looks_like_url` | function | `progs/src/freedom_wl.c:493` | `static long wl_looks_like_url(char *s)` |
-| `wl_make_search` | function | `progs/src/freedom_wl.c:512` | `static long wl_make_search(char *out, char *query, long cap)` |
-| `wl_parse_headers` | function | `progs/src/freedom_wl.c:1118` | `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...` |
-| `wl_render` | function | `progs/src/freedom_wl.c:1445` | `static long wl_render(FreedomWlConfig *c, long off)` |
-| `wl_resolve_redirect` | function | `progs/src/freedom_wl.c:609` | `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...` |
-| `wl_scroll_clamp` | function | `progs/src/freedom_wl.c:689` | `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)` |
-| `wl_split_url` | function | `progs/src/freedom_wl.c:544` | `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...` |
-| `wl_status_text` | function | `progs/src/freedom_wl.c:951` | `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...` |
-| `wl_strlen` | function | `progs/src/freedom_wl.c:388` | `static long wl_strlen(char *s, long cap)` |
-| `errno` | variable | `progs/src/ftest.c:10` | `extern int errno;` |
-| `exit` | function | `progs/src/ftest.c:7` | `extern void exit(int code);` |
-| `fopen` | function | `progs/src/ftest.c:11` | `extern void *fopen(const char *path, const char *mode);` |
-| `fprintf` | function | `progs/src/ftest.c:4` | `extern int fprintf(void *stream, const char *fmt, ...);` |
-| `main` | function | `progs/src/ftest.c:13` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/src/ftest.c:6` | `extern int printf(const char *fmt, ...);` |
-| `snprintf` | function | `progs/src/ftest.c:5` | `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);` |
-| `stderr` | variable | `progs/src/ftest.c:9` | `extern void *stderr;` |
-| `stdout` | variable | `progs/src/ftest.c:8` | `extern void *stdout;` |
-| `main` | function | `progs/src/hello.c:4` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/src/hello.c:2` | `extern int printf(const char *fmt, ...);` |
-| `atoi` | function | `progs/src/http.c:18` | `int atoi(char *s)` |
-| `close` | function | `progs/src/http.c:10` | `int close(int fd);` |
-| `connect` | function | `progs/src/http.c:6` | `int connect(int fd, void *addr, int addrlen);` |
-| `kernel` | function | `progs/src/http.c:3` | `* Hostnames are resolved by the kernel (net_dns_resolve syscall). */ int socket(int domain, int type, int proto);` |
-| `main` | function | `progs/src/http.c:29` | `int main(int argc, char **argv)` |
-| `net_dns_resolve` | function | `progs/src/http.c:11` | `int net_dns_resolve(const char *host);` |
-| `printf` | function | `progs/src/http.c:13` | `int printf(char *fmt, ...);` |
-| `putchar` | function | `progs/src/http.c:15` | `int putchar(int c);` |
-| `puts` | function | `progs/src/http.c:12` | `int puts(char *s);` |
-| `recvfrom` | function | `progs/src/http.c:8` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
-| `sendto` | function | `progs/src/http.c:7` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
-| `shutdown` | function | `progs/src/http.c:9` | `int shutdown(int fd, int how);` |
-| `strlen` | function | `progs/src/http.c:14` | `int strlen(char *s);` |
-| `JS_ARR` | macro | `progs/src/json.c:35` | `#define JS_ARR` |
-| `JS_BOOL` | macro | `progs/src/json.c:31` | `#define JS_BOOL` |
-| `JS_EXIT_FAIL` | macro | `progs/src/json.c:39` | `#define JS_EXIT_FAIL` |
-| `JS_EXIT_OK` | macro | `progs/src/json.c:38` | `#define JS_EXIT_OK` |
-| `JS_MAX_NODES` | macro | `progs/src/json.c:27` | `#define JS_MAX_NODES` |
-| `JS_NULL` | macro | `progs/src/json.c:30` | `#define JS_NULL` |
-| `JS_NUM` | macro | `progs/src/json.c:32` | `#define JS_NUM` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

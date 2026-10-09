@@ -1,6 +1,6 @@
 # miniOS
 
-> Static analysis knowledge base for miniOS: 9 communities, 566 files, 2144 imports, 7 languages, 12338 symbols.
+> Static analysis knowledge base for miniOS: 9 communities, 567 files, 2158 imports, 7 languages, 12479 symbols.
 
 Generated offline by readmenator (zero LLM tokens). Start with the wiki index for the big picture, then the agent INDEX for file lookup.
 
@@ -9,9 +9,9 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/INDEX.md](md/readmenator-agent/INDEX.md)
 - [readmenator-agent/GOTCHAS.md](md/readmenator-agent/GOTCHAS.md): These files have the most connections. Changes here have high blast radius.
 - [readmenator-agent/API.md](md/readmenator-agent/API.md): Depends on: headers/arch/x86/boot/bootdefs.h
-- [readmenator-agent/API_p10.md](md/readmenator-agent/API_p10.md): Depends on: kernel/string.c, progs/doomgeneric/doomtype.h, progs/doomgeneric/fwipe.h, progs/doomgeneric/ivideo.h, progs/doomgeneric/mrandom.h...
-- [readmenator-agent/API_p11.md](md/readmenator-agent/API_p11.md): Depends on: progs/doomgeneric/devent.h, progs/doomgeneric/dticcmd.h
-- [readmenator-agent/API_p12.md](md/readmenator-agent/API_p12.md): Depends on: progs/doomgeneric/netdefs.h
+- [readmenator-agent/API_p10.md](md/readmenator-agent/API_p10.md): Depends on: progs/doomgeneric/doomtype.h
+- [readmenator-agent/API_p11.md](md/readmenator-agent/API_p11.md): Depends on: progs/doomgeneric/doomtype.h
+- [readmenator-agent/API_p12.md](md/readmenator-agent/API_p12.md): Imported by: progs/doomgeneric/dmain.c
 - [readmenator-agent/API_p13.md](md/readmenator-agent/API_p13.md): Depends on: progs/doomgeneric/devent.h, progs/doomgeneric/dehmisc.h, progs/doomgeneric/doomdef.h, progs/doomgeneric/doomstat.h, progs/doomgeneric/mrandom.h...
 - [readmenator-agent/API_p14.md](md/readmenator-agent/API_p14.md): Depends on: progs/doomgeneric/dehmain.h, progs/doomgeneric/doomdef.h, progs/doomgeneric/doomstat.h, progs/doomgeneric/iswap.h, progs/doomgeneric/isystem.h...
 - [readmenator-agent/API_p15.md](md/readmenator-agent/API_p15.md): Depends on: headers/leakcheck.h, kernel/string.c, progs/file/fileassoc.h, progs/miniosabi.h, progs/miniospng.h, progs/nuklear/nuklearminios.h...
@@ -25,11 +25,11 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/API_p5.md](md/readmenator-agent/API_p5.md): Imported by: net/net.c, net/tls.c, net/tlscrypto.c, net/tlsx509.c, progs/tlsu/tlsumain.c, tlstest.c
 - [readmenator-agent/API_p6.md](md/readmenator-agent/API_p6.md): Depends on: headers/minifetch.h, headers/minifs.h, headers/net.h, headers/rtc.h, headers/sched.h, headers/vgafb.h
 - [readmenator-agent/API_p7.md](md/readmenator-agent/API_p7.md): Depends on: headers/arch/x86/boot/bootdefs.h, headers/arch/x86/halio.h, headers/arch/x86/msr.h, headers/batch.h, headers/block.h, headers/driver.h...
-- [readmenator-agent/API_p8.md](md/readmenator-agent/API_p8.md): Depends on: headers/drivers/virtionet.h, headers/net.h, headers/net/rtl8139.h, headers/sched.h, headers/tls.h
-- [readmenator-agent/API_p9.md](md/readmenator-agent/API_p9.md): lzwin (function) progs/asm/lzss.s:3
+- [readmenator-agent/API_p8.md](md/readmenator-agent/API_p8.md): Depends on: kernel/time.c, mcp/miniosaddons.py
+- [readmenator-agent/API_p9.md](md/readmenator-agent/API_p9.md): jskey (function) progs/asm/json.s:3
 - [readmenator-agent/ARCHITECTURE.md](md/readmenator-agent/ARCHITECTURE.md): arch/x86/apentry.S -> headers/arch/x86/boot/bootdefs.h
-- [readmenator-agent/ARCHITECTURE_p2.md](md/readmenator-agent/ARCHITECTURE_p2.md): progs/doomgeneric/ffinale.c -> progs/doomgeneric/sounds.h
-- [readmenator-agent/ARCHITECTURE_p3.md](md/readmenator-agent/ARCHITECTURE_p3.md): progs/doomgeneric/rthings.c -> progs/doomgeneric/isystem.h
+- [readmenator-agent/ARCHITECTURE_p2.md](md/readmenator-agent/ARCHITECTURE_p2.md): progs/doomgeneric/ffinale.c -> progs/doomgeneric/rstate.h
+- [readmenator-agent/ARCHITECTURE_p3.md](md/readmenator-agent/ARCHITECTURE_p3.md): progs/doomgeneric/rthings.c -> progs/doomgeneric/doomstat.h
 - [readmenator-agent/ARCHITECTURE_p4.md](md/readmenator-agent/ARCHITECTURE_p4.md): drivers/block.c -> kernel.h
 - [readmenator-agent/CONCEPTS.md](md/readmenator-agent/CONCEPTS.md): Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
 - [readmenator-agent/INDEX_p2.md](md/readmenator-agent/INDEX_p2.md)
@@ -62,7 +62,7 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/KB_headers_p5.md](md/readmenator-agent/KB_headers_p5.md): Doc: tlsfreefd: Kernel built without the TLS engine (net/tls.c unlinked): no session can ever...
 - [readmenator-agent/KB_headers_p6.md](md/readmenator-agent/KB_headers_p6.md): Doc: Docstring: Focus event bus for the MiniOS desktop.
 - [readmenator-agent/KB_kernel.md](md/readmenator-agent/KB_kernel.md): Doc: Docstring: kernel/abi.c -- Boot-time ABI manifest gate.
-- [readmenator-agent/KB_kernel_p2.md](md/readmenator-agent/KB_kernel_p2.md): shellreportexit (function, line 11) void shellreportexit(int code)
+- [readmenator-agent/KB_kernel_p2.md](md/readmenator-agent/KB_kernel_p2.md): Doc: Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks.
 
 ## Project Docs
 

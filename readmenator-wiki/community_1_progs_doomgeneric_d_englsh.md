@@ -87,7 +87,7 @@ This community groups 99 file(s) rooted at `progs/doomgeneric` with dominant lan
 - [EXTRACTED] depends_on community 4 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports progs/doomgeneric/doomkeys.h.
 - [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language h and layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 5 (headers: vga_fb).
 - [INFERRED] shares_context community 1 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 6 (headers: net).
-- [INFERRED] shares_context community 1 <-> 9 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 9 (orphans).
+- [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 8 (tools: doom_pwad).
 
 ## Risks
 
@@ -97,8 +97,6 @@ This community groups 99 file(s) rooted at `progs/doomgeneric` with dominant lan
 - [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/d_iwad.c:764` `D_FindAllIWADs` `result`: Result of allocator stored in `result` is never checked against NULL.
 - [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/doomgeneric.c:8` `dg_Create` `DG_ScreenBuffer`: Result of allocator stored in `DG_ScreenBuffer` is never checked against NULL.
 - [dataflow UNCHECKED_ALLOC] `progs/doomgeneric/doomgeneric_soso.c:144` `DG_Init` `FrameBuffer`: Result of allocator stored in `FrameBuffer` is never checked against NULL.
-- [dataflow DEAD_STORE] `progs/doomgeneric/g_game.c:1082` `G_PlayerReborn` `killcount`: `killcount` assigned at line 1082 but never read afterwards.
-- [dataflow DEAD_STORE] `progs/doomgeneric/g_game.c:1083` `G_PlayerReborn` `itemcount`: `itemcount` assigned at line 1083 but never read afterwards.
 
 ## Open Questions
 

@@ -164,6 +164,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/minifetch.c` -> `headers/rtc.h`
 - `kernel/minifetch.c` -> `headers/sched.h`
 - `kernel/minifetch.c` -> `headers/vga_fb.h`
+- `kernel/mm.c` -> `headers/arch/x86/boot/bootdefs.h`
 - `kernel/mm.c` -> `headers/sched.h`
 - `kernel/mm/cow.c` -> `headers/arch/x86/boot/bootdefs.h`
 - `kernel/mm/cow.c` -> `headers/sched.h`
@@ -275,6 +276,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/syscalls_proc.c` -> `headers/proc_sec.h`
 - `kernel/syscalls_proc.c` -> `headers/sanitize.h`
 - `kernel/syscalls_proc.c` -> `headers/sched.h`
+- `kernel/syscalls_proc.c` -> `headers/syscalls_proc.h`
 - `kernel/tick.c` -> `headers/tick.h`
 - `kernel/time.c` -> `headers/ktime.h`
 - `kernel/vga_cursor.c` -> `headers/kernel/vga_cursor.h`
@@ -494,7 +496,5 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/hu_stuff.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/i_swap.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/i_system.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/r_state.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/s_sound.h`
 
 Next: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)

@@ -3,6 +3,129 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `D_InitNetGame` | function | `progs/doomgeneric/d_loop.c:452` | `boolean D_InitNetGame(net_connect_data_t *connect_data)` |
+| `D_QuitNetGame` | function | `progs/doomgeneric/d_loop.c:560` | `void D_QuitNetGame (void)` |
+| `D_ReceiveTic` | function | `progs/doomgeneric/d_loop.c:271` | `void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)` |
+| `D_RegisterLoopCallbacks` | function | `progs/doomgeneric/d_loop.c:822` | `void D_RegisterLoopCallbacks(loop_interface_t *i)` |
+| `D_StartGameLoop` | function | `progs/doomgeneric/d_loop.c:305` | `void D_StartGameLoop(void)` |
+| `D_StartNetGame` | function | `progs/doomgeneric/d_loop.c:340` | `void D_StartNetGame(net_gamesettings_t *settings,                     netgame_startup_callback_t ...` |
+| `GetAdjustedTime` | function | `progs/doomgeneric/d_loop.c:119` | `static int GetAdjustedTime(void)` |
+| `GetLowTic` | function | `progs/doomgeneric/d_loop.c:568` | `static int GetLowTic(void)` |
+| `NetUpdate` | function | `progs/doomgeneric/d_loop.c:203` | `void NetUpdate (void)` |
+| `OldNetSync` | function | `progs/doomgeneric/d_loop.c:591` | `static void OldNetSync(void)` |
+| `PlayersInGame` | function | `progs/doomgeneric/d_loop.c:642` | `static boolean PlayersInGame(void)` |
+| `SinglePlayerClear` | function | `progs/doomgeneric/d_loop.c:689` | `static void SinglePlayerClear(ticcmd_set_t *set)` |
+| `TicdupSquash` | function | `progs/doomgeneric/d_loop.c:672` | `static void TicdupSquash(ticcmd_set_t *set)` |
+| `TryRunTics` | function | `progs/doomgeneric/d_loop.c:706` | `void TryRunTics (void)` |
+| `ticcmd_set_t` | struct | `progs/doomgeneric/d_loop.c:45` | `` |
+| `D_QuitNetGame` | function | `progs/doomgeneric/d_loop.h:59` | `void D_QuitNetGame (void);` |
+| `D_RegisterLoopCallbacks` | function | `progs/doomgeneric/d_loop.h:52` | `void D_RegisterLoopCallbacks(loop_interface_t *i);` |
+| `D_StartGameLoop` | function | `progs/doomgeneric/d_loop.h:65` | `void D_StartGameLoop(void);` |
+| `D_StartNetGame` | function | `progs/doomgeneric/d_loop.h:74` | `void D_StartNetGame(net_gamesettings_t *settings, netgame_startup_callback_t callback);` |
+| `NetUpdate` | function | `progs/doomgeneric/d_loop.h:55` | `void NetUpdate (void);` |
+| `TryRunTics` | function | `progs/doomgeneric/d_loop.h:62` | `void TryRunTics (void);` |
+| `__D_LOOP__` | macro | `progs/doomgeneric/d_loop.h:20` | `#define __D_LOOP__` |
+| `loop_interface_t` | struct | `progs/doomgeneric/d_loop.h:31` | `` |
+| `singletics` | variable | `progs/doomgeneric/d_loop.h:77` | `extern boolean singletics;` |
+| `ticdup` | variable | `progs/doomgeneric/d_loop.h:78` | `extern int gametic, ticdup;` |
+| `D_AddFile` | function | `progs/doomgeneric/d_main.c:883` | `static boolean D_AddFile(char *filename)` |
+| `D_AdvanceDemo` | function | `progs/doomgeneric/d_main.c:511` | `void D_AdvanceDemo (void)` |
+| `D_BindVariables` | function | `progs/doomgeneric/d_main.c:335` | `void D_BindVariables(void)` |
+| `D_CheckNetGame` | function | `progs/doomgeneric/d_main.c:132` | `void D_CheckNetGame(void);` |
+| `D_ConnectNetGame` | function | `progs/doomgeneric/d_main.c:131` | `void D_ConnectNetGame(void);` |
+| `D_Display` | function | `progs/doomgeneric/d_main.c:169` | `void D_Display (void)` |
+| `D_DoAdvanceDemo` | function | `progs/doomgeneric/d_main.c:521` | `void D_DoAdvanceDemo (void)` |
+| `D_DoomLoop` | function | `progs/doomgeneric/d_main.c:408` | `void D_DoomLoop (void)` |
+| `D_DoomMain` | function | `progs/doomgeneric/d_main.c:1178` | `void D_DoomMain (void)` |
+| `D_Endoom` | function | `progs/doomgeneric/d_main.c:1082` | `static void D_Endoom(void)` |
+| `D_GrabMouseCallback` | function | `progs/doomgeneric/d_main.c:388` | `boolean D_GrabMouseCallback(void)` |
+| `D_IdentifyVersion` | function | `progs/doomgeneric/d_main.c:737` | `void D_IdentifyVersion(void)` |
+| `D_PageDrawer` | function | `progs/doomgeneric/d_main.c:501` | `void D_PageDrawer (void)` |
+| `D_PageTicker` | function | `progs/doomgeneric/d_main.c:490` | `void D_PageTicker (void)` |
+| `D_ProcessEvents` | function | `progs/doomgeneric/d_main.c:139` | `void D_ProcessEvents (void)` |
+| `D_SetGameDescription` | function | `progs/doomgeneric/d_main.c:820` | `void D_SetGameDescription(void)` |
+| `D_StartTitle` | function | `progs/doomgeneric/d_main.c:609` | `void D_StartTitle (void)` |
+| `GetGameName` | function | `progs/doomgeneric/d_main.c:658` | `static char *GetGameName(char *gamename)` |
+| `InitGameVersion` | function | `progs/doomgeneric/d_main.c:963` | `static void InitGameVersion(void)` |
+| `LoadIwadDeh` | function | `progs/doomgeneric/d_main.c:1105` | `static void LoadIwadDeh(void)` |
+| `PrintDehackedBanners` | function | `progs/doomgeneric/d_main.c:918` | `void PrintDehackedBanners(void)` |
+| `PrintGameVersion` | function | `progs/doomgeneric/d_main.c:1065` | `void PrintGameVersion(void)` |
+| `R_ExecuteSetViewSize` | function | `progs/doomgeneric/d_main.c:167` | `void R_ExecuteSetViewSize (void);` |
+| `SetMissionForPackName` | function | `progs/doomgeneric/d_main.c:701` | `static void SetMissionForPackName(char *pack_name)` |
+| `forwardmove` | variable | `progs/doomgeneric/d_main.c:1351` | `extern int forwardmove[2];` |
+| `inhelpscreens` | variable | `progs/doomgeneric/d_main.c:106` | `extern boolean inhelpscreens;` |
+| `setsizeneeded` | variable | `progs/doomgeneric/d_main.c:165` | `extern boolean setsizeneeded;` |
+| `showMessages` | variable | `progs/doomgeneric/d_main.c:166` | `extern int showMessages;` |
+| `sidemove` | variable | `progs/doomgeneric/d_main.c:1352` | `extern int sidemove[2];` |
+| `D_AdvanceDemo` | function | `progs/doomgeneric/d_main.h:38` | `void D_AdvanceDemo (void);` |
+| `D_DoAdvanceDemo` | function | `progs/doomgeneric/d_main.h:39` | `void D_DoAdvanceDemo (void);` |
+| `D_PageDrawer` | function | `progs/doomgeneric/d_main.h:37` | `void D_PageDrawer (void);` |
+| `D_PageTicker` | function | `progs/doomgeneric/d_main.h:36` | `void D_PageTicker (void);` |
+| `D_ProcessEvents` | function | `progs/doomgeneric/d_main.h:30` | `void D_ProcessEvents (void);` |
+| `D_StartTitle` | function | `progs/doomgeneric/d_main.h:40` | `void D_StartTitle (void);` |
+| `__D_MAIN__` | macro | `progs/doomgeneric/d_main.h:21` | `#define __D_MAIN__` |
+| `gameaction` | variable | `progs/doomgeneric/d_main.h:46` | `extern gameaction_t gameaction;` |
+| `D_GameMissionString` | function | `progs/doomgeneric/d_mode.c:182` | `char *D_GameMissionString(GameMission_t mission)` |
+| `D_GetNumEpisodes` | function | `progs/doomgeneric/d_mode.c:103` | `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)` |
+| `D_IsEpisodeMap` | function | `progs/doomgeneric/d_mode.c:161` | `boolean D_IsEpisodeMap(GameMission_t mission)` |
+| `D_ValidEpisodeMap` | function | `progs/doomgeneric/d_mode.c:65` | `boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,                           int e...` |
+| `D_ValidGameMode` | function | `progs/doomgeneric/d_mode.c:50` | `boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)` |
+| `D_ValidGameVersion` | function | `progs/doomgeneric/d_mode.c:135` | `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)` |
+| `D_GameMissionString` | function | `progs/doomgeneric/d_mode.h:95` | `char *D_GameMissionString(GameMission_t mission);` |
+| `D_GetNumEpisodes` | function | `progs/doomgeneric/d_mode.h:93` | `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode);` |
+| `__D_MODE__` | macro | `progs/doomgeneric/d_mode.h:21` | `#define __D_MODE__` |
+| `D_CheckNetGame` | function | `progs/doomgeneric/d_net.c:240` | `void D_CheckNetGame (void)` |
+| `D_ConnectNetGame` | function | `progs/doomgeneric/d_net.c:215` | `void D_ConnectNetGame(void)` |
+| `InitConnectData` | function | `progs/doomgeneric/d_net.c:159` | `static void InitConnectData(net_connect_data_t *connect_data)` |
+| `LoadGameSettings` | function | `progs/doomgeneric/d_net.c:108` | `static void LoadGameSettings(net_gamesettings_t *settings)` |
+| `PlayerQuitGame` | function | `progs/doomgeneric/d_net.c:45` | `static void PlayerQuitGame(player_t *player)` |
+| `RunTic` | function | `progs/doomgeneric/d_net.c:71` | `static void RunTic(ticcmd_t *cmds, boolean *ingame)` |
+| `SaveGameSettings` | function | `progs/doomgeneric/d_net.c:139` | `static void SaveGameSettings(net_gamesettings_t *settings)` |
+| `advancedemo` | variable | `progs/doomgeneric/d_net.c:73` | `extern boolean advancedemo;` |
+| `__D_PLAYER__` | macro | `progs/doomgeneric/d_player.h:21` | `#define __D_PLAYER__` |
+| `mo` | type_alias | `progs/doomgeneric/d_player.h:78` | `typedef struct player_s { mobj_t* mo;` |
+| `player_s` | struct | `progs/doomgeneric/d_player.h:78` | `` |
+| `wbplayerstruct_t` | struct | `progs/doomgeneric/d_player.h:168` | `` |
+| `wbstartstruct_t` | struct | `progs/doomgeneric/d_player.h:182` | `` |
+| `__D_TEXTUR__` | macro | `progs/doomgeneric/d_textur.h:22` | `#define __D_TEXTUR__` |
+| `pic_t` | struct | `progs/doomgeneric/d_textur.h:33` | `` |
+| `__D_THINK__` | macro | `progs/doomgeneric/d_think.h:23` | `#define __D_THINK__` |
+| `prev` | type_alias | `progs/doomgeneric/d_think.h:58` | `typedef struct thinker_s { struct thinker_s* prev;` |
+| `think_t` | type_alias | `progs/doomgeneric/d_think.h:54` | `typedef actionf_t think_t;` |
+| `thinker_s` | struct | `progs/doomgeneric/d_think.h:58` | `` |
+| `__D_TICCMD__` | macro | `progs/doomgeneric/d_ticcmd.h:22` | `#define __D_TICCMD__` |
+| `ticcmd_t` | struct | `progs/doomgeneric/d_ticcmd.h:32` | `` |
+| `DEH_Checksum` | function | `progs/doomgeneric/deh_main.h:40` | `void DEH_Checksum(sha1_digest_t digest);` |
+| `DEH_LoadFile` | function | `progs/doomgeneric/deh_main.h:34` | `int DEH_LoadFile(char *filename);` |
+| `DEH_LoadLump` | function | `progs/doomgeneric/deh_main.h:35` | `int DEH_LoadLump(int lumpnum, boolean allow_long, boolean allow_error);` |
+| `DEH_LoadLumpByName` | function | `progs/doomgeneric/deh_main.h:36` | `int DEH_LoadLumpByName(char *name, boolean allow_long, boolean allow_error);` |
+| `DEH_MAIN_H` | macro | `progs/doomgeneric/deh_main.h:19` | `#define DEH_MAIN_H` |
+| `DEH_ParseCommandLine` | function | `progs/doomgeneric/deh_main.h:33` | `void DEH_ParseCommandLine(void);` |
+| `DEH_VANILLA_NUMSFX` | macro | `progs/doomgeneric/deh_main.h:31` | `#define DEH_VANILLA_NUMSFX` |
+| `DEH_VANILLA_NUMSTATES` | macro | `progs/doomgeneric/deh_main.h:30` | `#define DEH_VANILLA_NUMSTATES` |
+| `deh_allow_extended_strings` | variable | `progs/doomgeneric/deh_main.h:42` | `extern boolean deh_allow_extended_strings;` |
+| `deh_allow_long_cheats` | variable | `progs/doomgeneric/deh_main.h:44` | `extern boolean deh_allow_long_cheats;` |
+| `deh_allow_long_strings` | variable | `progs/doomgeneric/deh_main.h:43` | `extern boolean deh_allow_long_strings;` |
+| `deh_apply_cheats` | variable | `progs/doomgeneric/deh_main.h:45` | `extern boolean deh_apply_cheats;` |
+| `DEH_DEFAULT_BFG_CELLS_PER_SHOT` | macro | `progs/doomgeneric/deh_misc.h:37` | `#define DEH_DEFAULT_BFG_CELLS_PER_SHOT` |
+| `DEH_DEFAULT_BLUE_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:28` | `#define DEH_DEFAULT_BLUE_ARMOR_CLASS` |
+| `DEH_DEFAULT_GOD_MODE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:32` | `#define DEH_DEFAULT_GOD_MODE_HEALTH` |
+| `DEH_DEFAULT_GREEN_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:27` | `#define DEH_DEFAULT_GREEN_ARMOR_CLASS` |
+| `DEH_DEFAULT_IDFA_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:33` | `#define DEH_DEFAULT_IDFA_ARMOR` |
+| `DEH_DEFAULT_IDFA_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:34` | `#define DEH_DEFAULT_IDFA_ARMOR_CLASS` |
+| `DEH_DEFAULT_IDKFA_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:35` | `#define DEH_DEFAULT_IDKFA_ARMOR` |
+| `DEH_DEFAULT_IDKFA_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:36` | `#define DEH_DEFAULT_IDKFA_ARMOR_CLASS` |
+| `DEH_DEFAULT_INITIAL_BULLETS` | macro | `progs/doomgeneric/deh_misc.h:24` | `#define DEH_DEFAULT_INITIAL_BULLETS` |
+| `DEH_DEFAULT_INITIAL_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:23` | `#define DEH_DEFAULT_INITIAL_HEALTH` |
+| `DEH_DEFAULT_MAX_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:26` | `#define DEH_DEFAULT_MAX_ARMOR` |
+| `DEH_DEFAULT_MAX_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:25` | `#define DEH_DEFAULT_MAX_HEALTH` |
+| `DEH_DEFAULT_MAX_SOULSPHERE` | macro | `progs/doomgeneric/deh_misc.h:29` | `#define DEH_DEFAULT_MAX_SOULSPHERE` |
+| `DEH_DEFAULT_MEGASPHERE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:31` | `#define DEH_DEFAULT_MEGASPHERE_HEALTH` |
+| `DEH_DEFAULT_SOULSPHERE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:30` | `#define DEH_DEFAULT_SOULSPHERE_HEALTH` |
+| `DEH_DEFAULT_SPECIES_INFIGHTING` | macro | `progs/doomgeneric/deh_misc.h:38` | `#define DEH_DEFAULT_SPECIES_INFIGHTING` |
+| `DEH_MISC_H` | macro | `progs/doomgeneric/deh_misc.h:19` | `#define DEH_MISC_H` |
+| `deh_bfg_cells_per_shot` | variable | `progs/doomgeneric/deh_misc.h:56` | `extern int deh_bfg_cells_per_shot;` |
+| `deh_bfg_cells_per_shot` | macro | `progs/doomgeneric/deh_misc.h:77` | `#define deh_bfg_cells_per_shot` |
 | `deh_blue_armor_class` | variable | `progs/doomgeneric/deh_misc.h:47` | `extern int deh_blue_armor_class;` |
 | `deh_blue_armor_class` | macro | `progs/doomgeneric/deh_misc.h:68` | `#define deh_blue_armor_class` |
 | `deh_god_mode_health` | variable | `progs/doomgeneric/deh_misc.h:51` | `extern int deh_god_mode_health;` |
@@ -373,128 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `G_PlayerFinishLevel` | function | `progs/doomgeneric/g_game.c:1051` | `void G_PlayerFinishLevel (int player)` |
 | `G_PlayerReborn` | function | `progs/doomgeneric/g_game.c:1072` | `void G_PlayerReborn (int player)` |
 | `G_ReadDemoTiccmd` | function | `progs/doomgeneric/g_game.c:1898` | `void G_ReadDemoTiccmd (ticcmd_t* cmd)` |
-| `G_RecordDemo` | function | `progs/doomgeneric/g_game.c:2010` | `void G_RecordDemo (char *name)` |
-| `G_Responder` | function | `progs/doomgeneric/g_game.c:733` | `boolean G_Responder (event_t* ev)` |
-| `G_SaveGame` | function | `progs/doomgeneric/g_game.c:1601` | `void G_SaveGame ( int	slot,   char*	description )` |
-| `G_ScreenShot` | function | `progs/doomgeneric/g_game.c:1296` | `void G_ScreenShot (void)` |
-| `G_SecretExitLevel` | function | `progs/doomgeneric/g_game.c:1335` | `void G_SecretExitLevel (void)` |
-| `G_Ticker` | function | `progs/doomgeneric/g_game.c:854` | `void G_Ticker (void)` |
-| `G_TimeDemo` | function | `progs/doomgeneric/g_game.c:2215` | `void G_TimeDemo (char* name)` |
-| `G_VanillaVersionCode` | function | `progs/doomgeneric/g_game.c:2040` | `int G_VanillaVersionCode(void)` |
-| `G_WorldDone` | function | `progs/doomgeneric/g_game.c:1494` | `void G_WorldDone (void)` |
-| `G_WriteDemoTiccmd` | function | `progs/doomgeneric/g_game.c:1956` | `void G_WriteDemoTiccmd (ticcmd_t* cmd)` |
-| `IncreaseDemoBuffer` | function | `progs/doomgeneric/g_game.c:1926` | `static void IncreaseDemoBuffer(void)` |
-| `MAXPLMOVE` | macro | `progs/doomgeneric/g_game.c:152` | `#define MAXPLMOVE` |
-| `MAX_JOY_BUTTONS` | macro | `progs/doomgeneric/g_game.c:196` | `#define MAX_JOY_BUTTONS` |
-| `NUMKEYS` | macro | `progs/doomgeneric/g_game.c:195` | `#define NUMKEYS` |
-| `P_SpawnPlayer` | function | `progs/doomgeneric/g_game.c:1113` | `void P_SpawnPlayer (mapthing_t* mthing);` |
-| `R_ExecuteSetViewSize` | function | `progs/doomgeneric/g_game.c:1535` | `void R_ExecuteSetViewSize (void);` |
-| `SAVEGAMESIZE` | macro | `progs/doomgeneric/g_game.c:76` | `#define SAVEGAMESIZE` |
-| `SLOWTURNTICS` | macro | `progs/doomgeneric/g_game.c:193` | `#define SLOWTURNTICS` |
-| `SetJoyButtons` | function | `progs/doomgeneric/g_game.c:675` | `static void SetJoyButtons(unsigned int buttons_mask)` |
-| `SetMouseButtons` | function | `progs/doomgeneric/g_game.c:703` | `static void SetMouseButtons(unsigned int buttons_mask)` |
-| `TURBOTHRESHOLD` | macro | `progs/doomgeneric/g_game.c:154` | `#define TURBOTHRESHOLD` |
-| `VERSIONSIZE` | macro | `progs/doomgeneric/g_game.c:1545` | `#define VERSIONSIZE` |
-| `WeaponSelectable` | function | `progs/doomgeneric/g_game.c:244` | `static boolean WeaponSelectable(weapontype_t weapon)` |
-| `pagename` | variable | `progs/doomgeneric/g_game.c:1326` | `extern char* pagename;` |
-| `player_names` | variable | `progs/doomgeneric/g_game.c:939` | `extern char *player_names[4];` |
-| `setsizeneeded` | variable | `progs/doomgeneric/g_game.c:1534` | `extern boolean setsizeneeded;` |
-| `G_BeginRecording` | function | `progs/doomgeneric/g_game.h:54` | `void G_BeginRecording (void);` |
-| `G_BuildTiccmd` | function | `progs/doomgeneric/g_game.h:67` | `void G_BuildTiccmd (ticcmd_t *cmd, int maketic);` |
-| `G_DeathMatchSpawnPlayer` | function | `progs/doomgeneric/g_game.h:31` | `void G_DeathMatchSpawnPlayer (int playernum);` |
-| `G_DeferedInitNew` | function | `progs/doomgeneric/g_game.h:38` | `void G_DeferedInitNew (skill_t skill, int episode, int map);` |
-| `G_DeferedPlayDemo` | function | `progs/doomgeneric/g_game.h:40` | `void G_DeferedPlayDemo (char* demo);` |
-| `G_DoLoadGame` | function | `progs/doomgeneric/g_game.h:46` | `void G_DoLoadGame (void);` |
-| `G_DrawMouseSpeedBox` | function | `progs/doomgeneric/g_game.h:74` | `void G_DrawMouseSpeedBox(void);` |
-| `G_ExitLevel` | function | `progs/doomgeneric/g_game.h:60` | `void G_ExitLevel (void);` |
-| `G_InitNew` | function | `progs/doomgeneric/g_game.h:33` | `void G_InitNew (skill_t skill, int episode, int map);` |
-| `G_LoadGame` | function | `progs/doomgeneric/g_game.h:44` | `void G_LoadGame (char* name);` |
-| `G_PlayDemo` | function | `progs/doomgeneric/g_game.h:56` | `void G_PlayDemo (char* name);` |
-| `G_RecordDemo` | function | `progs/doomgeneric/g_game.h:52` | `void G_RecordDemo (char* name);` |
-| `G_SaveGame` | function | `progs/doomgeneric/g_game.h:49` | `void G_SaveGame (int slot, char* description);` |
-| `G_ScreenShot` | function | `progs/doomgeneric/g_game.h:72` | `void G_ScreenShot (void);` |
-| `G_SecretExitLevel` | function | `progs/doomgeneric/g_game.h:61` | `void G_SecretExitLevel (void);` |
-| `G_Ticker` | function | `progs/doomgeneric/g_game.h:69` | `void G_Ticker (void);` |
-| `G_TimeDemo` | function | `progs/doomgeneric/g_game.h:57` | `void G_TimeDemo (char* name);` |
-| `G_VanillaVersionCode` | function | `progs/doomgeneric/g_game.h:75` | `int G_VanillaVersionCode(void);` |
-| `G_WorldDone` | function | `progs/doomgeneric/g_game.h:63` | `void G_WorldDone (void);` |
-| `__G_GAME__` | macro | `progs/doomgeneric/g_game.h:21` | `#define __G_GAME__` |
-| `vanilla_demo_limit` | variable | `progs/doomgeneric/g_game.h:78` | `extern int vanilla_demo_limit;` |
-| `vanilla_savegame_limit` | variable | `progs/doomgeneric/g_game.h:77` | `extern int vanilla_savegame_limit;` |
-| `FreeDMXConfig` | function | `progs/doomgeneric/gusconf.c:165` | `static void FreeDMXConfig(gus_config_t *config)` |
-| `GUS_WriteConfig` | function | `progs/doomgeneric/gusconf.c:244` | `boolean GUS_WriteConfig(char *path)` |
-| `MAX_INSTRUMENTS` | macro | `progs/doomgeneric/gusconf.c:32` | `#define MAX_INSTRUMENTS` |
-| `MappingIndex` | function | `progs/doomgeneric/gusconf.c:43` | `static unsigned int MappingIndex(void)` |
-| `ParseDMXConfig` | function | `progs/doomgeneric/gusconf.c:129` | `static void ParseDMXConfig(char *dmxconf, gus_config_t *config)` |
-| `ParseLine` | function | `progs/doomgeneric/gusconf.c:108` | `static void ParseLine(gus_config_t *config, char *line)` |
-| `ReadDMXConfig` | function | `progs/doomgeneric/gusconf.c:175` | `static char *ReadDMXConfig(void)` |
-| `SplitLine` | function | `progs/doomgeneric/gusconf.c:61` | `static int SplitLine(char *line, char **fields, unsigned int max_fields)` |
-| `WriteTimidityConfig` | function | `progs/doomgeneric/gusconf.c:197` | `static boolean WriteTimidityConfig(char *path, gus_config_t *config)` |
-| `gus_config_t` | struct | `progs/doomgeneric/gusconf.c:34` | `` |
-| `__GUSCONF_H__` | macro | `progs/doomgeneric/gusconf.h:19` | `#define __GUSCONF_H__` |
-| `gus_patch_path` | variable | `progs/doomgeneric/gusconf.h:23` | `extern char *gus_patch_path;` |
-| `gus_ram_kb` | variable | `progs/doomgeneric/gusconf.h:24` | `extern unsigned int gus_ram_kb;` |
-| `HUlib_addCharToTextLine` | function | `progs/doomgeneric/hu_lib.c:63` | `boolean HUlib_addCharToTextLine ( hu_textline_t*	t,   char			ch )` |
-| `HUlib_addLineToSText` | function | `progs/doomgeneric/hu_lib.c:192` | `void HUlib_addLineToSText(hu_stext_t* s)` |
-| `HUlib_addMessageToSText` | function | `progs/doomgeneric/hu_lib.c:209` | `void HUlib_addMessageToSText ( hu_stext_t*	s,   char*		prefix,   char*		msg )` |
-| `HUlib_addPrefixToIText` | function | `progs/doomgeneric/hu_lib.c:298` | `void HUlib_addPrefixToIText ( hu_itext_t*	it,   char*		str )` |
-| `HUlib_clearTextLine` | function | `progs/doomgeneric/hu_lib.c:40` | `void HUlib_clearTextLine(hu_textline_t* t)` |
-| `HUlib_delCharFromIText` | function | `progs/doomgeneric/hu_lib.c:278` | `void HUlib_delCharFromIText(hu_itext_t* it)` |
-| `HUlib_delCharFromTextLine` | function | `progs/doomgeneric/hu_lib.c:80` | `boolean HUlib_delCharFromTextLine(hu_textline_t* t)` |
-| `HUlib_drawIText` | function | `progs/doomgeneric/hu_lib.c:329` | `void HUlib_drawIText(hu_itext_t* it)` |
-| `HUlib_drawSText` | function | `progs/doomgeneric/hu_lib.c:223` | `void HUlib_drawSText(hu_stext_t* s)` |
-| `HUlib_drawTextLine` | function | `progs/doomgeneric/hu_lib.c:94` | `void HUlib_drawTextLine ( hu_textline_t*	l,   boolean		drawcursor )` |
-| `HUlib_eraseIText` | function | `progs/doomgeneric/hu_lib.c:340` | `void HUlib_eraseIText(hu_itext_t* it)` |
-| `HUlib_eraseLineFromIText` | function | `progs/doomgeneric/hu_lib.c:284` | `void HUlib_eraseLineFromIText(hu_itext_t* it)` |
-| `HUlib_eraseSText` | function | `progs/doomgeneric/hu_lib.c:246` | `void HUlib_eraseSText(hu_stext_t* s)` |
-| `HUlib_eraseTextLine` | function | `progs/doomgeneric/hu_lib.c:137` | `void HUlib_eraseTextLine(hu_textline_t* l)` |
-| `HUlib_init` | function | `progs/doomgeneric/hu_lib.c:36` | `void HUlib_init(void)` |
-| `HUlib_initIText` | function | `progs/doomgeneric/hu_lib.c:262` | `void HUlib_initIText ( hu_itext_t*	it,   int		x,   int		y,   patch_t**	font,   int		startchar,   ...` |
-| `HUlib_initSText` | function | `progs/doomgeneric/hu_lib.c:169` | `void HUlib_initSText ( hu_stext_t*	s,   int		x,   int		y,   int		h,   patch_t**	font,   int		star...` |
-| `HUlib_initTextLine` | function | `progs/doomgeneric/hu_lib.c:48` | `void HUlib_initTextLine ( hu_textline_t*	t,   int			x,   int			y,   patch_t**		f,   int			sc )` |
-| `HUlib_keyInIText` | function | `progs/doomgeneric/hu_lib.c:310` | `boolean HUlib_keyInIText ( hu_itext_t*	it,   unsigned char ch )` |
-| `HUlib_resetIText` | function | `progs/doomgeneric/hu_lib.c:291` | `void HUlib_resetIText(hu_itext_t* it)` |
-| `automapactive` | variable | `progs/doomgeneric/hu_lib.c:34` | `extern boolean automapactive;` |
-| `noterased` | macro | `progs/doomgeneric/hu_lib.c:32` | `#define noterased` |
-| `HU_CHARERASE` | macro | `progs/doomgeneric/hu_lib.h:25` | `#define HU_CHARERASE` |
-| `HU_MAXLINELENGTH` | macro | `progs/doomgeneric/hu_lib.h:28` | `#define HU_MAXLINELENGTH` |
-| `HU_MAXLINES` | macro | `progs/doomgeneric/hu_lib.h:27` | `#define HU_MAXLINES` |
-| `HUlib_addLineToSText` | function | `progs/doomgeneric/hu_lib.h:131` | `void HUlib_addLineToSText(hu_stext_t* s);` |
-| `HUlib_addMessageToSText` | function | `progs/doomgeneric/hu_lib.h:135` | `void HUlib_addMessageToSText ( hu_stext_t* s, char* prefix, char* msg );` |
-| `HUlib_addPrefixToIText` | function | `progs/doomgeneric/hu_lib.h:167` | `void HUlib_addPrefixToIText ( hu_itext_t* it, char* str );` |
-| `HUlib_clearTextLine` | function | `progs/doomgeneric/hu_lib.h:98` | `void HUlib_clearTextLine(hu_textline_t *t);` |
-| `HUlib_delCharFromIText` | function | `progs/doomgeneric/hu_lib.h:157` | `void HUlib_delCharFromIText(hu_itext_t* it);` |
-| `HUlib_drawIText` | function | `progs/doomgeneric/hu_lib.h:177` | `void HUlib_drawIText(hu_itext_t* it);` |
-| `HUlib_drawSText` | function | `progs/doomgeneric/hu_lib.h:141` | `void HUlib_drawSText(hu_stext_t* s);` |
-| `HUlib_drawTextLine` | function | `progs/doomgeneric/hu_lib.h:109` | `void HUlib_drawTextLine(hu_textline_t *l, boolean drawcursor);` |
-| `HUlib_eraseIText` | function | `progs/doomgeneric/hu_lib.h:180` | `void HUlib_eraseIText(hu_itext_t* it);` |
-| `HUlib_eraseLineFromIText` | function | `progs/doomgeneric/hu_lib.h:160` | `void HUlib_eraseLineFromIText(hu_itext_t* it);` |
-| `HUlib_eraseSText` | function | `progs/doomgeneric/hu_lib.h:144` | `void HUlib_eraseSText(hu_stext_t* s);` |
-| `HUlib_eraseTextLine` | function | `progs/doomgeneric/hu_lib.h:112` | `void HUlib_eraseTextLine(hu_textline_t *l);` |
-| `HUlib_init` | function | `progs/doomgeneric/hu_lib.h:91` | `void HUlib_init(void);` |
-| `HUlib_initIText` | function | `progs/doomgeneric/hu_lib.h:148` | `void HUlib_initIText ( hu_itext_t* it, int x, int y, patch_t** font, int startchar, boolean* on );` |
-| `HUlib_initSText` | function | `progs/doomgeneric/hu_lib.h:121` | `void HUlib_initSText ( hu_stext_t* s, int x, int y, int h, patch_t** font, int startchar, boolean* on );` |
-| `HUlib_initTextLine` | function | `progs/doomgeneric/hu_lib.h:100` | `void HUlib_initTextLine(hu_textline_t *t, int x, int y, patch_t **f, int sc);` |
-| `HUlib_resetIText` | function | `progs/doomgeneric/hu_lib.h:163` | `void HUlib_resetIText(hu_itext_t* it);` |
-| `__HULIB__` | macro | `progs/doomgeneric/hu_lib.h:19` | `#define __HULIB__` |
-| `hu_itext_t` | struct | `progs/doomgeneric/hu_lib.h:72` | `` |
-| `hu_stext_t` | struct | `progs/doomgeneric/hu_lib.h:56` | `` |
-| `hu_textline_t` | struct | `progs/doomgeneric/hu_lib.h:36` | `` |
-| `HU_Drawer` | function | `progs/doomgeneric/hu_stuff.c:383` | `void HU_Drawer(void)` |
-| `HU_Erase` | function | `progs/doomgeneric/hu_stuff.c:393` | `void HU_Erase(void)` |
-| `HU_INPUTHEIGHT` | macro | `progs/doomgeneric/hu_stuff.c:60` | `#define HU_INPUTHEIGHT` |
-| `HU_INPUTTOGGLE` | macro | `progs/doomgeneric/hu_stuff.c:56` | `#define HU_INPUTTOGGLE` |
-| `HU_INPUTWIDTH` | macro | `progs/doomgeneric/hu_stuff.c:59` | `#define HU_INPUTWIDTH` |
-| `HU_INPUTX` | macro | `progs/doomgeneric/hu_stuff.c:57` | `#define HU_INPUTX` |
-| `HU_INPUTY` | macro | `progs/doomgeneric/hu_stuff.c:58` | `#define HU_INPUTY` |
-| `HU_Init` | function | `progs/doomgeneric/hu_stuff.c:286` | `void HU_Init(void)` |
-| `HU_Responder` | function | `progs/doomgeneric/hu_stuff.c:512` | `boolean HU_Responder(event_t *ev)` |
-| `HU_Start` | function | `progs/doomgeneric/hu_stuff.c:308` | `void HU_Start(void)` |
-| `HU_Stop` | function | `progs/doomgeneric/hu_stuff.c:303` | `void HU_Stop(void)` |
-| `HU_TITLE` | macro | `progs/doomgeneric/hu_stuff.c:47` | `#define HU_TITLE` |
-| `HU_TITLE2` | macro | `progs/doomgeneric/hu_stuff.c:48` | `#define HU_TITLE2` |
-| `HU_TITLEHEIGHT` | macro | `progs/doomgeneric/hu_stuff.c:52` | `#define HU_TITLEHEIGHT` |
-| `HU_TITLEP` | macro | `progs/doomgeneric/hu_stuff.c:49` | `#define HU_TITLEP` |
-| `HU_TITLET` | macro | `progs/doomgeneric/hu_stuff.c:50` | `#define HU_TITLET` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

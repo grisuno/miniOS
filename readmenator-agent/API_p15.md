@@ -81,33 +81,33 @@ Depends on: `kernel/string.c`
 
 ## progs/freedomui/platform_minios.c
 Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`, `progs/minios_abi.h`
-- `sys_fb_info_rgb` (function) `progs/freedomui/platform_minios.c:79` `static long sys_fb_info_rgb(int *rgb)`
-- `now_ms` (function) `progs/freedomui/platform_minios.c:90` `static long now_ms(void)`
-- `set_title` (function) `progs/freedomui/platform_minios.c:94` `static void set_title(const char *title)`
-- `pf_display_open` (function) `progs/freedomui/platform_minios.c:108` `pf_status pf_display_open(pf_display **out)`
-- `pf_display_close` (function) `progs/freedomui/platform_minios.c:124` `void pf_display_close(pf_display *d)`
-- `pf_display_flush` (function) `progs/freedomui/platform_minios.c:133` `void pf_display_flush(pf_display *d)`
-- `pf_display_set_cursor` (function) `progs/freedomui/platform_minios.c:137` `void pf_display_set_cursor(pf_display *d, pf_cursor c)`
-- `deliver_pending` (function) `progs/freedomui/platform_minios.c:144` `static int deliver_pending(pf_display *d)`
-- `key_event` (function) `progs/freedomui/platform_minios.c:154` `static void key_event(pf_display *d, const ps2_key *k, int kind)`
-- `pump_keyboard` (function) `progs/freedomui/platform_minios.c:181` `static int pump_keyboard(pf_display *d)`
-- `pump_mouse` (function) `progs/freedomui/platform_minios.c:195` `static int pump_mouse(pf_display *d)`
-- `pf_display_wait` (function) `progs/freedomui/platform_minios.c:238` `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
-- `pf_clipboard_available` (function) `progs/freedomui/platform_minios.c:263` `int pf_clipboard_available(const pf_display *d)`
-- `pf_clipboard_set_text` (function) `progs/freedomui/platform_minios.c:267` `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
-- `pf_clipboard_get_text` (function) `progs/freedomui/platform_minios.c:274` `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
-- `pf_window_open` (function) `progs/freedomui/platform_minios.c:290` `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
+- `sys_fb_info_rgb` (function) `progs/freedomui/platform_minios.c:83` `static long sys_fb_info_rgb(int *rgb)`
+- `now_ms` (function) `progs/freedomui/platform_minios.c:94` `static long now_ms(void)`
+- `set_title` (function) `progs/freedomui/platform_minios.c:98` `static void set_title(const char *title)`
+- `pf_display_open` (function) `progs/freedomui/platform_minios.c:121` `pf_status pf_display_open(pf_display **out)`
+- `pf_display_close` (function) `progs/freedomui/platform_minios.c:137` `void pf_display_close(pf_display *d)`
+- `pf_display_flush` (function) `progs/freedomui/platform_minios.c:146` `void pf_display_flush(pf_display *d)`
+- `pf_display_set_cursor` (function) `progs/freedomui/platform_minios.c:150` `void pf_display_set_cursor(pf_display *d, pf_cursor c)`
+- `deliver_pending` (function) `progs/freedomui/platform_minios.c:157` `static int deliver_pending(pf_display *d)`
+- `key_event` (function) `progs/freedomui/platform_minios.c:167` `static void key_event(pf_display *d, const ps2_key *k, int kind)`
+- `pump_keyboard` (function) `progs/freedomui/platform_minios.c:194` `static int pump_keyboard(pf_display *d)`
+- `pump_mouse` (function) `progs/freedomui/platform_minios.c:208` `static int pump_mouse(pf_display *d)`
+- `pf_display_wait` (function) `progs/freedomui/platform_minios.c:251` `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
+- `pf_clipboard_available` (function) `progs/freedomui/platform_minios.c:276` `int pf_clipboard_available(const pf_display *d)`
+- `pf_clipboard_set_text` (function) `progs/freedomui/platform_minios.c:280` `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
+- `pf_clipboard_get_text` (function) `progs/freedomui/platform_minios.c:287` `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
+- `pf_window_open` (function) `progs/freedomui/platform_minios.c:303` `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
                          const p...`
-- `pf_window_close` (function) `progs/freedomui/platform_minios.c:312` `void pf_window_close(pf_window *w)`
-- `pf_window_surface` (function) `progs/freedomui/platform_minios.c:329` `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
-- `pf_window_present` (function) `progs/freedomui/platform_minios.c:344` `void pf_window_present(pf_window *w)`
-- `pf_window_set_title` (function) `progs/freedomui/platform_minios.c:378` `void pf_window_set_title(pf_window *w, const char *title)`
-- `set_zoom_state` (function) `progs/freedomui/platform_minios.c:384` `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
-- `pf_window_set_maximized` (function) `progs/freedomui/platform_minios.c:393` `void pf_window_set_maximized(pf_window *w, int on)`
-- `pf_window_set_fullscreen` (function) `progs/freedomui/platform_minios.c:397` `void pf_window_set_fullscreen(pf_window *w, int on)`
-- `pf_window_minimize` (function) `progs/freedomui/platform_minios.c:401` `void pf_window_minimize(pf_window *w)`
-- `pf_window_begin_move` (function) `progs/freedomui/platform_minios.c:405` `void pf_window_begin_move(pf_window *w)`
-- `pf_window_begin_resize` (function) `progs/freedomui/platform_minios.c:409` `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
+- `pf_window_close` (function) `progs/freedomui/platform_minios.c:325` `void pf_window_close(pf_window *w)`
+- `pf_window_surface` (function) `progs/freedomui/platform_minios.c:342` `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
+- `pf_window_present` (function) `progs/freedomui/platform_minios.c:357` `void pf_window_present(pf_window *w)`
+- `pf_window_set_title` (function) `progs/freedomui/platform_minios.c:391` `void pf_window_set_title(pf_window *w, const char *title)`
+- `set_zoom_state` (function) `progs/freedomui/platform_minios.c:397` `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
+- `pf_window_set_maximized` (function) `progs/freedomui/platform_minios.c:406` `void pf_window_set_maximized(pf_window *w, int on)`
+- `pf_window_set_fullscreen` (function) `progs/freedomui/platform_minios.c:410` `void pf_window_set_fullscreen(pf_window *w, int on)`
+- `pf_window_minimize` (function) `progs/freedomui/platform_minios.c:414` `void pf_window_minimize(pf_window *w)`
+- `pf_window_begin_move` (function) `progs/freedomui/platform_minios.c:418` `void pf_window_begin_move(pf_window *w)`
+- `pf_window_begin_resize` (function) `progs/freedomui/platform_minios.c:422` `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
 
 ## progs/freedomui/ps2_keymap.c
 Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`
@@ -396,7 +396,7 @@ Depends on: `kernel/string.c`, `progs/minios_abi.h`
 ## progs/minios_abi.h
 Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/platform_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
 - `DOOM_BACKBUF_ADDR` (function) `progs/minios_abi.h:128` `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...`
-- `in` (function) `progs/minios_abi.h:356` `* bytes in (refused past 4096, never truncated), GET copies out up to * the caller's cap (refused when empty or...`
+- `clock_nanosleep` (function) `progs/minios_abi.h:334` `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...`
 
 ## progs/minios_png.h
 Imported by: `progs/file/file.c`, `progs/pokemon/platform_minios.c`, `tests/test_minios_png.c`

@@ -3,6 +3,130 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `looks_like_url` | function | `progs/src/freedom.c:212` | `static int looks_like_url(char *s)` |
+| `main` | function | `progs/src/freedom.c:1129` | `int main(int argc, char **argv)` |
+| `make_search` | function | `progs/src/freedom.c:242` | `static void make_search(char *out, char *query, int cap)` |
+| `memcpy` | function | `progs/src/freedom.c:69` | `int memcpy(char *dst, char *src, int n);` |
+| `memset` | function | `progs/src/freedom.c:70` | `int memset(char *dst, int c, int n);` |
+| `net_dns_resolve` | function | `progs/src/freedom.c:41` | `int net_dns_resolve(const char *host);` |
+| `parse_head` | function | `progs/src/freedom.c:821` | `static void parse_head(void)` |
+| `print_css_dump` | function | `progs/src/freedom.c:1113` | `static void print_css_dump(void)` |
+| `print_dom_dump` | function | `progs/src/freedom.c:1122` | `static void print_dom_dump(void)` |
+| `printf` | function | `progs/src/freedom.c:63` | `int printf(char *fmt, ...);` |
+| `put_text` | function | `progs/src/freedom.c:427` | `static void put_text(int c)` |
+| `put_utf` | function | `progs/src/freedom.c:377` | `static void put_utf(int c)` |
+| `put_ws` | function | `progs/src/freedom.c:366` | `static void put_ws(void)` |
+| `putchar` | function | `progs/src/freedom.c:71` | `int putchar(int c);` |
+| `puts` | function | `progs/src/freedom.c:64` | `int puts(char *s);` |
+| `record_attr` | function | `progs/src/freedom.c:509` | `static void record_attr(void)` |
+| `recv_body` | function | `progs/src/freedom.c:843` | `static int recv_body(int fd, char *buf, int len)` |
+| `recvfrom` | function | `progs/src/freedom.c:55` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
+| `resolve_redirect` | function | `progs/src/freedom.c:313` | `static int resolve_redirect(void)` |
+| `send_all` | function | `progs/src/freedom.c:849` | `static int send_all(int fd, char *buf, int len)` |
+| `sendto` | function | `progs/src/freedom.c:54` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
+| `socket` | function | `progs/src/freedom.c:52` | `int socket(int domain, int type, int proto);` |
+| `split_url` | function | `progs/src/freedom.c:266` | `static int split_url(char *url)` |
+| `strchr` | function | `progs/src/freedom.c:66` | `char *strchr(char *s, int c);` |
+| `strcmp` | function | `progs/src/freedom.c:67` | `int strcmp(char *a, char *b);` |
+| `strlen` | function | `progs/src/freedom.c:65` | `int strlen(char *s);` |
+| `strncmp` | function | `progs/src/freedom.c:68` | `int strncmp(char *a, char *b, int n);` |
+| `tls_close` | function | `progs/src/freedom.c:58` | `static int tls_close(int fd)` |
+| `tls_handshake` | function | `progs/src/freedom.c:42` | `int tls_handshake(int fd, char *host);` |
+| `tls_recv` | function | `progs/src/freedom.c:44` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_send` | function | `progs/src/freedom.c:43` | `int tls_send(int fd, char *buf, int len);` |
+| `FreedomWlConfig` | struct | `progs/src/freedom_wl.c:76` | `` |
+| `WL_BODY_CAP` | macro | `progs/src/freedom_wl.c:54` | `#define WL_BODY_CAP` |
+| `WL_COLS` | macro | `progs/src/freedom_wl.c:49` | `#define WL_COLS` |
+| `WL_ENT_MAX` | macro | `progs/src/freedom_wl.c:65` | `#define WL_ENT_MAX` |
+| `WL_FONT_H` | macro | `progs/src/freedom_wl.c:63` | `#define WL_FONT_H` |
+| `WL_FONT_W` | macro | `progs/src/freedom_wl.c:62` | `#define WL_FONT_W` |
+| `WL_HDR_MAX` | macro | `progs/src/freedom_wl.c:55` | `#define WL_HDR_MAX` |
+| `WL_HOPS_MAX` | macro | `progs/src/freedom_wl.c:61` | `#define WL_HOPS_MAX` |
+| `WL_HOST_MAX` | macro | `progs/src/freedom_wl.c:58` | `#define WL_HOST_MAX` |
+| `WL_LINES_MAX` | macro | `progs/src/freedom_wl.c:52` | `#define WL_LINES_MAX` |
+| `WL_LINE_LEN` | macro | `progs/src/freedom_wl.c:53` | `#define WL_LINE_LEN` |
+| `WL_NET_BUF` | macro | `progs/src/freedom_wl.c:56` | `#define WL_NET_BUF` |
+| `WL_PATH_MAX` | macro | `progs/src/freedom_wl.c:59` | `#define WL_PATH_MAX` |
+| `WL_REQ_MAX` | macro | `progs/src/freedom_wl.c:57` | `#define WL_REQ_MAX` |
+| `WL_ROWS` | macro | `progs/src/freedom_wl.c:50` | `#define WL_ROWS` |
+| `WL_TAG_MAX` | macro | `progs/src/freedom_wl.c:64` | `#define WL_TAG_MAX` |
+| `WL_TEXT_ROWS` | macro | `progs/src/freedom_wl.c:51` | `#define WL_TEXT_ROWS` |
+| `WL_URL_MAX` | macro | `progs/src/freedom_wl.c:60` | `#define WL_URL_MAX` |
+| `freedom_wl_build_palette` | function | `progs/src/freedom_wl.c:1039` | `static long freedom_wl_build_palette(unsigned char *pal, long cap)` |
+| `freedom_wl_clip_rect` | function | `progs/src/freedom_wl.c:196` | `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)` |
+| `freedom_wl_default` | function | `progs/src/freedom_wl.c:158` | `static FreedomWlConfig freedom_wl_default(void)` |
+| `freedom_wl_frame_bytes` | function | `progs/src/freedom_wl.c:227` | `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)` |
+| `freedom_wl_host_probe` | function | `progs/src/freedom_wl.c:1696` | `int freedom_wl_host_probe(FreedomWlConfig *c)` |
+| `freedom_wl_keysym` | function | `progs/src/freedom_wl.c:246` | `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)` |
+| `freedom_wl_sanitize_utf8` | function | `progs/src/freedom_wl.c:286` | `static long freedom_wl_sanitize_utf8(char *s, long cap)` |
+| `freedom_wl_selftest` | function | `progs/src/freedom_wl.c:1613` | `static long freedom_wl_selftest(void)` |
+| `freedom_wl_surface_attach` | function | `progs/src/freedom_wl.c:129` | `static long freedom_wl_surface_attach(FreedomWlConfig *c)` |
+| `freedom_wl_surface_id` | function | `progs/src/freedom_wl.c:114` | `static long freedom_wl_surface_id(void)` |
+| `freedom_wl_sys_kbd` | function | `progs/src/freedom_wl.c:1090` | `static long freedom_wl_sys_kbd(void)` |
+| `freedom_wl_sys_kbd_raw` | function | `progs/src/freedom_wl.c:1104` | `static long freedom_wl_sys_kbd_raw(long on)` |
+| `freedom_wl_sys_mouse` | function | `progs/src/freedom_wl.c:1083` | `static long freedom_wl_sys_mouse(long *m)` |
+| `freedom_wl_sys_palette` | function | `progs/src/freedom_wl.c:1076` | `static long freedom_wl_sys_palette(unsigned char *pal)` |
+| `freedom_wl_sys_present` | function | `progs/src/freedom_wl.c:1062` | `static long freedom_wl_sys_present(long buf, long origin)` |
+| `freedom_wl_sys_title` | function | `progs/src/freedom_wl.c:1069` | `static long freedom_wl_sys_title(char *t)` |
+| `freedom_wl_sys_vga_mode` | function | `progs/src/freedom_wl.c:1097` | `static long freedom_wl_sys_vga_mode(long on)` |
+| `freedom_wl_sys_yield` | function | `progs/src/freedom_wl.c:1111` | `static long freedom_wl_sys_yield(void)` |
+| `freedom_wl_title_ok` | function | `progs/src/freedom_wl.c:359` | `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)` |
+| `main` | function | `progs/src/freedom_wl.c:1731` | `int main(int argc, char **argv)` |
+| `net_dns_resolve` | function | `progs/src/freedom_wl.c:42` | `int net_dns_resolve(const char *host);` |
+| `present_buf` | type_alias | `progs/src/freedom_wl.c:76` | `typedef struct FreedomWlConfig { long present_buf;` |
+| `tls_close` | function | `progs/src/freedom_wl.c:46` | `void tls_close(int fd);` |
+| `tls_handshake` | function | `progs/src/freedom_wl.c:43` | `int tls_handshake(int fd, char *host);` |
+| `tls_recv` | function | `progs/src/freedom_wl.c:45` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_send` | function | `progs/src/freedom_wl.c:44` | `int tls_send(int fd, char *buf, int len);` |
+| `wl_append` | function | `progs/src/freedom_wl.c:404` | `static long wl_append(char *dst, long pos, char *src, long cap)` |
+| `wl_browse` | function | `progs/src/freedom_wl.c:1532` | `static long wl_browse(FreedomWlConfig *c)` |
+| `wl_ci_contains` | function | `progs/src/freedom_wl.c:453` | `static long wl_ci_contains(char *s, char *needle)` |
+| `wl_ci_lower` | function | `progs/src/freedom_wl.c:427` | `static long wl_ci_lower(long ch)` |
+| `wl_ci_starts` | function | `progs/src/freedom_wl.c:435` | `static long wl_ci_starts(char *s, char *pre)` |
+| `wl_copy` | function | `progs/src/freedom_wl.c:370` | `static long wl_copy(char *dst, char *src, long cap)` |
+| `wl_fetch_raw` | function | `progs/src/freedom_wl.c:1210` | `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)` |
+| `wl_filter_wrap` | function | `progs/src/freedom_wl.c:708` | `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...` |
+| `wl_has_scheme` | function | `progs/src/freedom_wl.c:467` | `static long wl_has_scheme(char *s)` |
+| `wl_looks_like_url` | function | `progs/src/freedom_wl.c:493` | `static long wl_looks_like_url(char *s)` |
+| `wl_make_search` | function | `progs/src/freedom_wl.c:512` | `static long wl_make_search(char *out, char *query, long cap)` |
+| `wl_parse_headers` | function | `progs/src/freedom_wl.c:1118` | `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...` |
+| `wl_render` | function | `progs/src/freedom_wl.c:1445` | `static long wl_render(FreedomWlConfig *c, long off)` |
+| `wl_resolve_redirect` | function | `progs/src/freedom_wl.c:609` | `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...` |
+| `wl_scroll_clamp` | function | `progs/src/freedom_wl.c:689` | `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)` |
+| `wl_split_url` | function | `progs/src/freedom_wl.c:544` | `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...` |
+| `wl_status_text` | function | `progs/src/freedom_wl.c:951` | `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...` |
+| `wl_strlen` | function | `progs/src/freedom_wl.c:388` | `static long wl_strlen(char *s, long cap)` |
+| `errno` | variable | `progs/src/ftest.c:10` | `extern int errno;` |
+| `exit` | function | `progs/src/ftest.c:7` | `extern void exit(int code);` |
+| `fopen` | function | `progs/src/ftest.c:11` | `extern void *fopen(const char *path, const char *mode);` |
+| `fprintf` | function | `progs/src/ftest.c:4` | `extern int fprintf(void *stream, const char *fmt, ...);` |
+| `main` | function | `progs/src/ftest.c:13` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/ftest.c:6` | `extern int printf(const char *fmt, ...);` |
+| `snprintf` | function | `progs/src/ftest.c:5` | `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);` |
+| `stderr` | variable | `progs/src/ftest.c:9` | `extern void *stderr;` |
+| `stdout` | variable | `progs/src/ftest.c:8` | `extern void *stdout;` |
+| `main` | function | `progs/src/hello.c:4` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/hello.c:2` | `extern int printf(const char *fmt, ...);` |
+| `atoi` | function | `progs/src/http.c:18` | `int atoi(char *s)` |
+| `close` | function | `progs/src/http.c:10` | `int close(int fd);` |
+| `connect` | function | `progs/src/http.c:6` | `int connect(int fd, void *addr, int addrlen);` |
+| `kernel` | function | `progs/src/http.c:3` | `* Hostnames are resolved by the kernel (net_dns_resolve syscall). */ int socket(int domain, int type, int proto);` |
+| `main` | function | `progs/src/http.c:29` | `int main(int argc, char **argv)` |
+| `net_dns_resolve` | function | `progs/src/http.c:11` | `int net_dns_resolve(const char *host);` |
+| `printf` | function | `progs/src/http.c:13` | `int printf(char *fmt, ...);` |
+| `putchar` | function | `progs/src/http.c:15` | `int putchar(int c);` |
+| `puts` | function | `progs/src/http.c:12` | `int puts(char *s);` |
+| `recvfrom` | function | `progs/src/http.c:8` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
+| `sendto` | function | `progs/src/http.c:7` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
+| `shutdown` | function | `progs/src/http.c:9` | `int shutdown(int fd, int how);` |
+| `strlen` | function | `progs/src/http.c:14` | `int strlen(char *s);` |
+| `JS_ARR` | macro | `progs/src/json.c:35` | `#define JS_ARR` |
+| `JS_BOOL` | macro | `progs/src/json.c:31` | `#define JS_BOOL` |
+| `JS_EXIT_FAIL` | macro | `progs/src/json.c:39` | `#define JS_EXIT_FAIL` |
+| `JS_EXIT_OK` | macro | `progs/src/json.c:38` | `#define JS_EXIT_OK` |
+| `JS_MAX_NODES` | macro | `progs/src/json.c:27` | `#define JS_MAX_NODES` |
+| `JS_NULL` | macro | `progs/src/json.c:30` | `#define JS_NULL` |
+| `JS_NUM` | macro | `progs/src/json.c:32` | `#define JS_NUM` |
 | `JS_OBJ` | macro | `progs/src/json.c:34` | `#define JS_OBJ` |
 | `JS_POOL` | macro | `progs/src/json.c:28` | `#define JS_POOL` |
 | `JS_SEEK_END` | macro | `progs/src/json.c:37` | `#define JS_SEEK_END` |
@@ -41,58 +165,63 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `exit_now` | function | `progs/src/kmem.c:14` | `static void exit_now(long code)` |
 | `syscall3` | function | `progs/src/kmem.c:7` | `static long syscall3(long n, long a1, long a2, long a3)` |
 | `main` | function | `progs/src/ldhello.c:1` | `int main(void)` |
-| `LXABI_A6_MAGIC` | macro | `progs/src/lxabi.c:48` | `#define LXABI_A6_MAGIC` |
-| `LXABI_CHILD_BAD` | macro | `progs/src/lxabi.c:49` | `#define LXABI_CHILD_BAD` |
-| `LXABI_CHILD_DELAY_MS` | macro | `progs/src/lxabi.c:36` | `#define LXABI_CHILD_DELAY_MS` |
-| `LXABI_CLOCK_SKEW_S` | macro | `progs/src/lxabi.c:44` | `#define LXABI_CLOCK_SKEW_S` |
-| `LXABI_CLONE_NR` | macro | `progs/src/lxabi.c:46` | `#define LXABI_CLONE_NR` |
-| `LXABI_CLOSE_RANGE_NR` | macro | `progs/src/lxabi.c:52` | `#define LXABI_CLOSE_RANGE_NR` |
-| `LXABI_COW_WORD` | macro | `progs/src/lxabi.c:54` | `#define LXABI_COW_WORD` |
-| `LXABI_DETACHED` | macro | `progs/src/lxabi.c:39` | `#define LXABI_DETACHED` |
-| `LXABI_EPOCH_2023` | macro | `progs/src/lxabi.c:43` | `#define LXABI_EPOCH_2023` |
-| `LXABI_GROUP_EXIT_CODE` | macro | `progs/src/lxabi.c:41` | `#define LXABI_GROUP_EXIT_CODE` |
-| `LXABI_MKDIR_FILE` | macro | `progs/src/lxabi.c:51` | `#define LXABI_MKDIR_FILE` |
-| `LXABI_MKDIR_PATH` | macro | `progs/src/lxabi.c:50` | `#define LXABI_MKDIR_PATH` |
-| `LXABI_PAGE` | macro | `progs/src/lxabi.c:53` | `#define LXABI_PAGE` |
-| `LXABI_REG_PROBE_WORDS` | macro | `progs/src/lxabi.c:45` | `#define LXABI_REG_PROBE_WORDS` |
-| `LXABI_SIGCHLD` | macro | `progs/src/lxabi.c:47` | `#define LXABI_SIGCHLD` |
-| `LXABI_THREADS` | macro | `progs/src/lxabi.c:37` | `#define LXABI_THREADS` |
-| `LXABI_THREAD_ITERS` | macro | `progs/src/lxabi.c:38` | `#define LXABI_THREAD_ITERS` |
-| `LXABI_TIMEDWAIT_MS` | macro | `progs/src/lxabi.c:42` | `#define LXABI_TIMEDWAIT_MS` |
-| `LXABI_WAIT_SPINS` | macro | `progs/src/lxabi.c:40` | `#define LXABI_WAIT_SPINS` |
+| `LXABI_A6_MAGIC` | macro | `progs/src/lxabi.c:54` | `#define LXABI_A6_MAGIC` |
+| `LXABI_CHILD_BAD` | macro | `progs/src/lxabi.c:55` | `#define LXABI_CHILD_BAD` |
+| `LXABI_CHILD_DELAY_MS` | macro | `progs/src/lxabi.c:40` | `#define LXABI_CHILD_DELAY_MS` |
+| `LXABI_CLOCK_SKEW_S` | macro | `progs/src/lxabi.c:50` | `#define LXABI_CLOCK_SKEW_S` |
+| `LXABI_CLONE_NR` | macro | `progs/src/lxabi.c:52` | `#define LXABI_CLONE_NR` |
+| `LXABI_CLOSE_RANGE_NR` | macro | `progs/src/lxabi.c:58` | `#define LXABI_CLOSE_RANGE_NR` |
+| `LXABI_COW_WORD` | macro | `progs/src/lxabi.c:60` | `#define LXABI_COW_WORD` |
+| `LXABI_DETACHED` | macro | `progs/src/lxabi.c:43` | `#define LXABI_DETACHED` |
+| `LXABI_EPOCH_2023` | macro | `progs/src/lxabi.c:49` | `#define LXABI_EPOCH_2023` |
+| `LXABI_GROUP_EXIT_CODE` | macro | `progs/src/lxabi.c:45` | `#define LXABI_GROUP_EXIT_CODE` |
+| `LXABI_MAX_SANE_CPUS` | macro | `progs/src/lxabi.c:47` | `#define LXABI_MAX_SANE_CPUS` |
+| `LXABI_MKDIR_FILE` | macro | `progs/src/lxabi.c:57` | `#define LXABI_MKDIR_FILE` |
+| `LXABI_MKDIR_PATH` | macro | `progs/src/lxabi.c:56` | `#define LXABI_MKDIR_PATH` |
+| `LXABI_PAGE` | macro | `progs/src/lxabi.c:59` | `#define LXABI_PAGE` |
+| `LXABI_REG_PROBE_WORDS` | macro | `progs/src/lxabi.c:51` | `#define LXABI_REG_PROBE_WORDS` |
+| `LXABI_SIGCHLD` | macro | `progs/src/lxabi.c:53` | `#define LXABI_SIGCHLD` |
+| `LXABI_SLEEP_MS` | macro | `progs/src/lxabi.c:46` | `#define LXABI_SLEEP_MS` |
+| `LXABI_THREADS` | macro | `progs/src/lxabi.c:41` | `#define LXABI_THREADS` |
+| `LXABI_THREAD_ITERS` | macro | `progs/src/lxabi.c:42` | `#define LXABI_THREAD_ITERS` |
+| `LXABI_TIMEDWAIT_MS` | macro | `progs/src/lxabi.c:48` | `#define LXABI_TIMEDWAIT_MS` |
+| `LXABI_WAIT_SPINS` | macro | `progs/src/lxabi.c:44` | `#define LXABI_WAIT_SPINS` |
 | `_GNU_SOURCE` | macro | `progs/src/lxabi.c:17` | `#define _GNU_SOURCE` |
-| `abort_from_worker_body` | function | `progs/src/lxabi.c:482` | `static void abort_from_worker_body(void)` |
-| `busy_wait_ms` | function | `progs/src/lxabi.c:74` | `static void busy_wait_ms(long ms)` |
-| `check_close_range` | function | `progs/src/lxabi.c:421` | `static void check_close_range(void)` |
-| `check_condvar` | function | `progs/src/lxabi.c:278` | `static void check_condvar(void)` |
-| `check_detached_reaped` | function | `progs/src/lxabi.c:244` | `static void check_detached_reaped(void)` |
-| `check_eventfd` | function | `progs/src/lxabi.c:396` | `static void check_eventfd(void)` |
-| `check_fork_cow_kernel_write` | function | `progs/src/lxabi.c:153` | `static void check_fork_cow_kernel_write(void)` |
-| `check_fork_registers` | function | `progs/src/lxabi.c:131` | `static void check_fork_registers(void)` |
-| `check_mkdir` | function | `progs/src/lxabi.c:442` | `static void check_mkdir(void)` |
-| `check_pipe2_flags` | function | `progs/src/lxabi.c:300` | `static void check_pipe2_flags(void)` |
-| `check_pipe_blocking` | function | `progs/src/lxabi.c:327` | `static void check_pipe_blocking(void)` |
-| `check_pipe_epipe` | function | `progs/src/lxabi.c:349` | `static void check_pipe_epipe(void)` |
-| `check_poll` | function | `progs/src/lxabi.c:372` | `static void check_poll(void)` |
-| `check_threads` | function | `progs/src/lxabi.c:208` | `static void check_threads(void)` |
-| `check_time` | function | `progs/src/lxabi.c:433` | `static void check_time(void)` |
-| `check_writev_pipe` | function | `progs/src/lxabi.c:360` | `static void check_writev_pipe(void)` |
-| `child_status` | function | `progs/src/lxabi.c:462` | `static int child_status(void (*body)(void))` |
-| `detached_worker` | function | `progs/src/lxabi.c:238` | `static void *detached_worker(void *arg)` |
-| `exit_group_from_worker_body` | function | `progs/src/lxabi.c:494` | `static void exit_group_from_worker_body(void)` |
-| `fork_probe` | function | `progs/src/lxabi.c:88` | `static void fork_probe(uint64_t *out)` |
-| `lxabi_exit_group_worker` | function | `progs/src/lxabi.c:488` | `static void *lxabi_exit_group_worker(void *arg)` |
-| `lxabi_sleeper` | function | `progs/src/lxabi.c:454` | `static void *lxabi_sleeper(void *arg)` |
-| `main` | function | `progs/src/lxabi.c:535` | `int main(void)` |
-| `now_ms` | function | `progs/src/lxabi.c:68` | `static long now_ms(void)` |
-| `process` | function | `progs/src/lxabi.c:508` | `* process (never a kernel panic), and kill(pid, 0) or a harmless signal  * leaves the target aliv...` |
-| `regs_match` | function | `progs/src/lxabi.c:125` | `static int regs_match(const uint64_t *r)` |
-| `report` | function | `progs/src/lxabi.c:58` | `static void report(const char *name, int ok, const char *detail)` |
-| `signaller` | function | `progs/src/lxabi.c:268` | `static void *signaller(void *arg)` |
-| `thread_result` | struct | `progs/src/lxabi.c:188` | `` |
-| `tls_seen` | type_alias | `progs/src/lxabi.c:187` | `typedef struct thread_result { long tls_seen;` |
-| `wild_jump_body` | function | `progs/src/lxabi.c:500` | `static void wild_jump_body(void)` |
-| `worker` | function | `progs/src/lxabi.c:194` | `static void *worker(void *arg)` |
+| `abort_from_worker_body` | function | `progs/src/lxabi.c:554` | `static void abort_from_worker_body(void)` |
+| `busy_wait_ms` | function | `progs/src/lxabi.c:80` | `static void busy_wait_ms(long ms)` |
+| `check_close_range` | function | `progs/src/lxabi.c:442` | `static void check_close_range(void)` |
+| `check_condvar` | function | `progs/src/lxabi.c:284` | `static void check_condvar(void)` |
+| `check_detached_reaped` | function | `progs/src/lxabi.c:250` | `static void check_detached_reaped(void)` |
+| `check_eventfd` | function | `progs/src/lxabi.c:417` | `static void check_eventfd(void)` |
+| `check_fork_cow_kernel_write` | function | `progs/src/lxabi.c:159` | `static void check_fork_cow_kernel_write(void)` |
+| `check_fork_registers` | function | `progs/src/lxabi.c:137` | `static void check_fork_registers(void)` |
+| `check_limits` | function | `progs/src/lxabi.c:477` | `static void check_limits(void)` |
+| `check_mkdir` | function | `progs/src/lxabi.c:463` | `static void check_mkdir(void)` |
+| `check_pipe2_flags` | function | `progs/src/lxabi.c:306` | `static void check_pipe2_flags(void)` |
+| `check_pipe_blocking` | function | `progs/src/lxabi.c:333` | `static void check_pipe_blocking(void)` |
+| `check_pipe_epipe` | function | `progs/src/lxabi.c:355` | `static void check_pipe_epipe(void)` |
+| `check_poll` | function | `progs/src/lxabi.c:393` | `static void check_poll(void)` |
+| `check_sleep` | function | `progs/src/lxabi.c:499` | `static void check_sleep(void)` |
+| `check_threads` | function | `progs/src/lxabi.c:214` | `static void check_threads(void)` |
+| `check_time` | function | `progs/src/lxabi.c:454` | `static void check_time(void)` |
+| `check_writev_pipe` | function | `progs/src/lxabi.c:381` | `static void check_writev_pipe(void)` |
+| `child_status` | function | `progs/src/lxabi.c:534` | `static int child_status(void (*body)(void))` |
+| `detached_worker` | function | `progs/src/lxabi.c:244` | `static void *detached_worker(void *arg)` |
+| `exit_group_from_worker_body` | function | `progs/src/lxabi.c:566` | `static void exit_group_from_worker_body(void)` |
+| `fork_probe` | function | `progs/src/lxabi.c:94` | `static void fork_probe(uint64_t *out)` |
+| `lxabi_exit_group_worker` | function | `progs/src/lxabi.c:560` | `static void *lxabi_exit_group_worker(void *arg)` |
+| `lxabi_sleeper` | function | `progs/src/lxabi.c:526` | `static void *lxabi_sleeper(void *arg)` |
+| `main` | function | `progs/src/lxabi.c:617` | `int main(void)` |
+| `mono_us` | function | `progs/src/lxabi.c:490` | `static long mono_us(void)` |
+| `now_ms` | function | `progs/src/lxabi.c:74` | `static long now_ms(void)` |
+| `process` | function | `progs/src/lxabi.c:580` | `* process (never a kernel panic), and kill(pid, 0) or a harmless signal  * leaves the target aliv...` |
+| `regs_match` | function | `progs/src/lxabi.c:131` | `static int regs_match(const uint64_t *r)` |
+| `report` | function | `progs/src/lxabi.c:64` | `static void report(const char *name, int ok, const char *detail)` |
+| `signaller` | function | `progs/src/lxabi.c:274` | `static void *signaller(void *arg)` |
+| `thread_result` | struct | `progs/src/lxabi.c:194` | `` |
+| `tls_seen` | type_alias | `progs/src/lxabi.c:193` | `typedef struct thread_result { long tls_seen;` |
+| `wild_jump_body` | function | `progs/src/lxabi.c:572` | `static void wild_jump_body(void)` |
+| `worker` | function | `progs/src/lxabi.c:200` | `static void *worker(void *arg)` |
 | `SYS_exit` | macro | `progs/src/lxhello.c:21` | `#define SYS_exit` |
 | `SYS_write` | macro | `progs/src/lxhello.c:20` | `#define SYS_write` |
 | `lmain` | function | `progs/src/lxhello.c:46` | `int lmain(long argc, char **argv)` |
@@ -100,22 +229,22 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `lx_syscall3` | function | `progs/src/lxhello.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
 | `lx_write` | function | `progs/src/lxhello.c:29` | `static void lx_write(const char *s)` |
 | `lx_write_int` | function | `progs/src/lxhello.c:33` | `static void lx_write_int(long v)` |
-| `LXNET_BUF` | macro | `progs/src/lxnet.c:40` | `#define LXNET_BUF` |
-| `LXNET_IP_UNKNOWN` | macro | `progs/src/lxnet.c:44` | `#define LXNET_IP_UNKNOWN` |
-| `LXNET_LOOPBACK` | macro | `progs/src/lxnet.c:43` | `#define LXNET_LOOPBACK` |
-| `LXNET_TCP_MSG` | macro | `progs/src/lxnet.c:42` | `#define LXNET_TCP_MSG` |
-| `LXNET_UDP_MSG` | macro | `progs/src/lxnet.c:41` | `#define LXNET_UDP_MSG` |
-| `LXNET_WAIT_MS` | macro | `progs/src/lxnet.c:39` | `#define LXNET_WAIT_MS` |
+| `LXNET_BUF` | macro | `progs/src/lxnet.c:41` | `#define LXNET_BUF` |
+| `LXNET_IP_UNKNOWN` | macro | `progs/src/lxnet.c:45` | `#define LXNET_IP_UNKNOWN` |
+| `LXNET_LOOPBACK` | macro | `progs/src/lxnet.c:44` | `#define LXNET_LOOPBACK` |
+| `LXNET_TCP_MSG` | macro | `progs/src/lxnet.c:43` | `#define LXNET_TCP_MSG` |
+| `LXNET_UDP_MSG` | macro | `progs/src/lxnet.c:42` | `#define LXNET_UDP_MSG` |
+| `LXNET_WAIT_MS` | macro | `progs/src/lxnet.c:40` | `#define LXNET_WAIT_MS` |
 | `_GNU_SOURCE` | macro | `progs/src/lxnet.c:24` | `#define _GNU_SOURCE` |
-| `check_misc` | function | `progs/src/lxnet.c:210` | `static void check_misc(void)` |
-| `check_refused` | function | `progs/src/lxnet.c:143` | `static void check_refused(const struct sockaddr_in *peer)` |
-| `check_tcp` | function | `progs/src/lxnet.c:167` | `static void check_tcp(const struct sockaddr_in *peer)` |
-| `check_udp` | function | `progs/src/lxnet.c:72` | `static void check_udp(const struct sockaddr_in *peer)` |
-| `dial` | function | `progs/src/lxnet.c:229` | `static int dial(const char *host, const char *port)` |
-| `main` | function | `progs/src/lxnet.c:273` | `int main(int argc, char **argv)` |
-| `read_all` | function | `progs/src/lxnet.c:61` | `static int read_all(int fd, char *buf, size_t len)` |
-| `report` | function | `progs/src/lxnet.c:48` | `static void report(const char *name, int ok, const char *detail)` |
-| `wait_for` | function | `progs/src/lxnet.c:54` | `static int wait_for(int fd, short events)` |
+| `check_misc` | function | `progs/src/lxnet.c:217` | `static void check_misc(void)` |
+| `check_refused` | function | `progs/src/lxnet.c:150` | `static void check_refused(const struct sockaddr_in *peer)` |
+| `check_tcp` | function | `progs/src/lxnet.c:174` | `static void check_tcp(const struct sockaddr_in *peer)` |
+| `check_udp` | function | `progs/src/lxnet.c:73` | `static void check_udp(const struct sockaddr_in *peer)` |
+| `dial` | function | `progs/src/lxnet.c:236` | `static int dial(const char *host, const char *port)` |
+| `main` | function | `progs/src/lxnet.c:280` | `int main(int argc, char **argv)` |
+| `read_all` | function | `progs/src/lxnet.c:62` | `static int read_all(int fd, char *buf, size_t len)` |
+| `report` | function | `progs/src/lxnet.c:49` | `static void report(const char *name, int ok, const char *detail)` |
+| `wait_for` | function | `progs/src/lxnet.c:55` | `static int wait_for(int fd, short events)` |
 | `LXSECC_BAD_CODE` | macro | `progs/src/lxsecc.c:31` | `#define LXSECC_BAD_CODE` |
 | `LXSECC_ERRNO_A` | macro | `progs/src/lxsecc.c:35` | `#define LXSECC_ERRNO_A` |
 | `LXSECC_ERRNO_B` | macro | `progs/src/lxsecc.c:36` | `#define LXSECC_ERRNO_B` |
@@ -146,6 +275,16 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `main` | function | `progs/src/lxsecc.c:215` | `int main(int argc, char **argv)` |
 | `report` | function | `progs/src/lxsecc.c:44` | `static void report(const char *name, int ok, const char *detail)` |
 | `run_child` | function | `progs/src/lxsecc.c:58` | `static int run_child(void (*body)(void))` |
+| `LXTLS_CA_BUNDLE` | macro | `progs/src/lxtls.c:34` | `#define LXTLS_CA_BUNDLE` |
+| `LXTLS_CONNECT_S` | macro | `progs/src/lxtls.c:32` | `#define LXTLS_CONNECT_S` |
+| `LXTLS_MAX_REDIRECTS` | macro | `progs/src/lxtls.c:33` | `#define LXTLS_MAX_REDIRECTS` |
+| `LXTLS_RAND_BYTES` | macro | `progs/src/lxtls.c:35` | `#define LXTLS_RAND_BYTES` |
+| `LXTLS_TIMEOUT_S` | macro | `progs/src/lxtls.c:31` | `#define LXTLS_TIMEOUT_S` |
+| `lxtls_debug` | function | `progs/src/lxtls.c:46` | `static int lxtls_debug(CURL *h, curl_infotype type, char *data, size_t size, void *user)` |
+| `lxtls_rand` | function | `progs/src/lxtls.c:73` | `static int lxtls_rand(void)` |
+| `lxtls_sink` | function | `progs/src/lxtls.c:39` | `static size_t lxtls_sink(char *data, size_t size, size_t nmemb, void *user)` |
+| `lxtls_step` | function | `progs/src/lxtls.c:65` | `static int lxtls_step(const char *name, int ok)` |
+| `main` | function | `progs/src/lxtls.c:87` | `int main(int argc, char **argv)` |
 | `LZ4_BOUND_DEN` | macro | `progs/src/lz4.c:31` | `#define LZ4_BOUND_DEN` |
 | `LZ4_BOUND_SLACK` | macro | `progs/src/lz4.c:32` | `#define LZ4_BOUND_SLACK` |
 | `LZ4_EXIT_FAIL` | macro | `progs/src/lz4.c:37` | `#define LZ4_EXIT_FAIL` |
@@ -246,7 +385,7 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `mmutex_unlock` | function | `progs/src/mthreads.h:90` | `static inline void mmutex_unlock(mmutex_t *m)` |
 | `mthread_create` | function | `progs/src/mthreads.h:117` | `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)` |
 | `mthread_entry` | function | `progs/src/mthreads.h:98` | `static void mthread_entry(void *p)` |
-| `mthread_join` | function | `progs/src/mthreads.h:140` | `static int mthread_join(mthread_t t, void **retval)` |
+| `mthread_join` | function | `progs/src/mthreads.h:144` | `static int mthread_join(mthread_t t, void **retval)` |
 | `mthread_slot_t` | struct | `progs/src/mthreads.h:42` | `` |
 | `mthread_t` | type_alias | `progs/src/mthreads.h:35` | `typedef int mthread_t;` |
 | `myield` | function | `progs/src/mthreads.h:59` | `static inline void myield(void)` |
@@ -357,144 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `sc_worker` | function | `progs/src/scfuzz.c:97` | `static unsigned long sc_worker(int me, unsigned long seed)` |
 | `sc_write` | function | `progs/src/scfuzz.c:53` | `static long sc_write(long fd, const char *s, long n)` |
 | `expand` | function | `progs/src/shell.py:30` | `def expand(line, env)` |
-| `main` | function | `progs/src/shell.py:36` | `def main()` |
-| `run_capture` | function | `progs/src/shell.py:20` | `def run_capture(cmd, args)` |
-| `SPIN_WLA` | macro | `progs/src/spin.c:58` | `#define SPIN_WLA` |
-| `SPIN_WLB` | macro | `progs/src/spin.c:59` | `#define SPIN_WLB` |
-| `SPIN_WLH` | macro | `progs/src/spin.c:57` | `#define SPIN_WLH` |
-| `SPIN_WLW` | macro | `progs/src/spin.c:56` | `#define SPIN_WLW` |
-| `lmain` | function | `progs/src/spin.c:225` | `int lmain(long argc, char **argv)` |
-| `lx_atoi` | function | `progs/src/spin.c:42` | `static long lx_atoi(const char *s)` |
-| `lx_strlen` | function | `progs/src/spin.c:20` | `static unsigned long lx_strlen(const char *s)` |
-| `lx_syscall3` | function | `progs/src/spin.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
-| `lx_write` | function | `progs/src/spin.c:26` | `static void lx_write(const char *s)` |
-| `lx_write_int` | function | `progs/src/spin.c:30` | `static void lx_write_int(long v)` |
-| `spin_box_ok` | function | `progs/src/spin.c:82` | `static int spin_box_ok(const char *box)` |
-| `spin_emit` | function | `progs/src/spin.c:114` | `static int spin_emit(const char *box, unsigned int seq,         const unsigned char *msg, long mlen)` |
-| `spin_hdr` | function | `progs/src/spin.c:73` | `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,         unsigned long ...` |
-| `spin_hex8` | function | `progs/src/spin.c:95` | `static void spin_hex8(unsigned int v, char *dst)` |
-| `spin_pixels` | function | `progs/src/spin.c:169` | `static void spin_pixels(long off)` |
-| `spin_raw_file` | function | `progs/src/spin.c:145` | `static int spin_raw_file(const char *box)` |
-| `spin_u32` | function | `progs/src/spin.c:66` | `static void spin_u32(unsigned char *d, unsigned long v)` |
-| `spin_wl` | function | `progs/src/spin.c:181` | `static int spin_wl(const char *box, const char *narg)` |
-| `spin_write_all` | function | `progs/src/spin.c:104` | `static long spin_write_all(long fd, const unsigned char *buf, long len)` |
-| `add` | function | `progs/src/test.c:1` | `int add(int a, int b)` |
-| `main` | function | `progs/src/test.c:2` | `int main(void)` |
-| `check` | function | `progs/src/test.lua:12` | `` |
-| `read_file` | function | `progs/src/test.lua:30` | `` |
-| `test_bin_aes` | function | `progs/src/test.lua:175` | `` |
-| `test_bin_cp` | function | `progs/src/test.lua:135` | `` |
-| `test_bin_freedom` | function | `progs/src/test.lua:205` | `` |
-| `test_bin_json` | function | `progs/src/test.lua:194` | `` |
-| `test_bin_lz4` | function | `progs/src/test.lua:141` | `` |
-| `test_bin_lzss` | function | `progs/src/test.lua:158` | `` |
-| `test_dlmalloc` | function | `progs/src/test.lua:80` | `` |
-| `test_filesystem` | function | `progs/src/test.lua:53` | `` |
-| `test_ftest` | function | `progs/src/test.lua:90` | `` |
-| `test_hello` | function | `progs/src/test.lua:85` | `` |
-| `test_ld` | function | `progs/src/test.lua:100` | `` |
-| `test_minigcc` | function | `progs/src/test.lua:95` | `` |
-| `test_module_bindings` | function | `progs/src/test.lua:40` | `` |
-| `test_spawn_preserves_interpreter` | function | `progs/src/test.lua:122` | `` |
-| `test_stb` | function | `progs/src/test.lua:75` | `` |
-| `test_toolchain_roundtrip` | function | `progs/src/test.lua:112` | `` |
-| `test_xxhash` | function | `progs/src/test.lua:70` | `` |
-| `write_file` | function | `progs/src/test.lua:22` | `` |
-| `check` | function | `progs/src/test.py:15` | `def check(name, cond, detail)` |
-| `main` | function | `progs/src/test.py:261` | `def main()` |
-| `safe_run` | function | `progs/src/test.py:25` | `def safe_run()` |
-| `test_bin_aes` | function | `progs/src/test.py:209` | `def test_bin_aes()` |
-| `test_bin_cp` | function | `progs/src/test.py:148` | `def test_bin_cp()` |
-| `test_bin_freedom` | function | `progs/src/test.py:253` | `def test_bin_freedom()` |
-| `test_bin_json` | function | `progs/src/test.py:239` | `def test_bin_json()` |
-| `test_bin_lz4` | function | `progs/src/test.py:153` | `def test_bin_lz4()` |
-| `test_bin_lzss` | function | `progs/src/test.py:181` | `def test_bin_lzss()` |
-| `test_dlmalloc` | function | `progs/src/test.py:82` | `def test_dlmalloc()` |
-| `test_filesystem` | function | `progs/src/test.py:56` | `def test_filesystem()` |
-| `test_ftest` | function | `progs/src/test.py:92` | `def test_ftest()` |
-| `test_hello` | function | `progs/src/test.py:87` | `def test_hello()` |
-| `test_ld` | function | `progs/src/test.py:102` | `def test_ld()` |
-| `test_minigcc` | function | `progs/src/test.py:97` | `def test_minigcc()` |
-| `test_module_bindings` | function | `progs/src/test.py:38` | `def test_module_bindings()` |
-| `test_spawn_preserves_interpreter` | function | `progs/src/test.py:134` | `def test_spawn_preserves_interpreter()` |
-| `test_stb` | function | `progs/src/test.py:77` | `def test_stb()` |
-| `test_toolchain_roundtrip` | function | `progs/src/test.py:119` | `def test_toolchain_roundtrip()` |
-| `test_xxhash` | function | `progs/src/test.py:72` | `def test_xxhash()` |
-| `BUFSZ` | macro | `progs/src/thdemo.c:24` | `#define BUFSZ` |
-| `EXPECTED_N` | macro | `progs/src/thdemo.c:26` | `#define EXPECTED_N` |
-| `EXPECTED_SUM` | macro | `progs/src/thdemo.c:27` | `#define EXPECTED_SUM` |
-| `NCONS` | macro | `progs/src/thdemo.c:22` | `#define NCONS` |
-| `NPROD` | macro | `progs/src/thdemo.c:21` | `#define NPROD` |
-| `PER_PROD` | macro | `progs/src/thdemo.c:23` | `#define PER_PROD` |
-| `consumer` | function | `progs/src/thdemo.c:57` | `static void *consumer(void *p)` |
-| `main` | function | `progs/src/thdemo.c:82` | `int main(void)` |
-| `producer` | function | `progs/src/thdemo.c:36` | `static void *producer(void *p)` |
-| `threads` | function | `progs/src/thdemo.c:3` | `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall...` |
-| `main` | function | `progs/src/w1.c:3` | `int main(void)` |
-| `write` | function | `progs/src/w1.c:1` | `int write(int fd, char *buf, int n);` |
-| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_main.c:15` | `#define _DEFAULT_SOURCE` |
-| `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_main.c:14` | `#define _POSIX_C_SOURCE` |
-| `main` | function | `progs/tls_u/tls_u_main.c:61` | `int main(int argc, char **argv)` |
-| `parse_port` | function | `progs/tls_u/tls_u_main.c:47` | `static int parse_port(const char *s)` |
-| `syscall` | function | `progs/tls_u/tls_u_main.c:10` | `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).  * The kernel keeps servi...` |
-| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_port.c:13` | `#define _DEFAULT_SOURCE` |
-| `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_port.c:12` | `#define _POSIX_C_SOURCE` |
-| `answer` | function | `progs/tls_u/tls_u_port.c:163` | `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));` |
-| `net_dns_resolve` | function | `progs/tls_u/tls_u_port.c:183` | `int net_dns_resolve(const char *host)` |
-| `parse_quad` | function | `progs/tls_u/tls_u_port.c:122` | `static int parse_quad(const char *s, unsigned *ip_out)` |
-| `sockets` | function | `progs/tls_u/tls_u_port.c:5` | `* sockets: on the host they are host sockets (used by the  * openssl-s_server interop test), insi...` |
-| `tls_close` | function | `progs/tls_u/tls_u_port.c:67` | `void tls_close(int fd)` |
-| `tls_free_fd` | function | `progs/tls_u/tls_u_port.c:66` | `void tls_free_fd(int fd);` |
-| `tls_now_days` | function | `progs/tls_u/tls_u_port.c:72` | `long tls_now_days(void)` |
-| `tls_random` | function | `progs/tls_u/tls_u_port.c:78` | `void tls_random(unsigned char *out, unsigned len)` |
-| `tls_u_close` | function | `progs/tls_u/tls_u_port.c:55` | `void tls_u_close(int fd)` |
-| `tls_u_recv` | function | `progs/tls_u/tls_u_port.c:39` | `int tls_u_recv(int fd, char *buf, int len)` |
-| `tls_u_recv_timeout` | function | `progs/tls_u/tls_u_port.c:44` | `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)` |
-| `tls_u_resolve` | function | `progs/tls_u/tls_u_port.c:147` | `int tls_u_resolve(const char *host, unsigned *ip_out)` |
-| `u_raw_syscall3` | function | `progs/tls_u/tls_u_port.c:99` | `static long u_raw_syscall3(long n, long a1, long a2, long a3)` |
-| `D_HEAD` | macro | `progs/topogpt3/topogpt3.c:70` | `#define D_HEAD` |
-| `D_LAT_Q` | macro | `progs/topogpt3/topogpt3.c:82` | `#define D_LAT_Q` |
-| `D_MODEL` | macro | `progs/topogpt3/topogpt3.c:66` | `#define D_MODEL` |
-| `D_QUAT` | macro | `progs/topogpt3/topogpt3.c:71` | `#define D_QUAT` |
-| `EMBED_INNER` | macro | `progs/topogpt3/topogpt3.c:90` | `#define EMBED_INNER` |
-| `EOS_TOKEN` | macro | `progs/topogpt3/topogpt3.c:89` | `#define EOS_TOKEN` |
-| `EPS_RMS` | macro | `progs/topogpt3/topogpt3.c:92` | `#define EPS_RMS` |
-| `EXPERT_INNER` | macro | `progs/topogpt3/topogpt3.c:87` | `#define EXPERT_INNER` |
-| `FILE` | struct | `progs/topogpt3/topogpt3.c:24` | `` |
-| `FREQ_W` | macro | `progs/topogpt3/topogpt3.c:85` | `#define FREQ_W` |
-| `GQA_GROUPS` | macro | `progs/topogpt3/topogpt3.c:69` | `#define GQA_GROUPS` |
-| `LayerWeights` | struct | `progs/topogpt3/topogpt3.c:176` | `` |
-| `MAX_LINE` | macro | `progs/topogpt3/topogpt3.c:96` | `#define MAX_LINE` |
-| `MAX_PROMPT_LEN` | macro | `progs/topogpt3/topogpt3.c:95` | `#define MAX_PROMPT_LEN` |
-| `MAX_SEQ_LEN` | macro | `progs/topogpt3/topogpt3.c:73` | `#define MAX_SEQ_LEN` |
-| `MAX_TOKENS` | macro | `progs/topogpt3/topogpt3.c:94` | `#define MAX_TOKENS` |
-| `MOE_TOP_K` | macro | `progs/topogpt3/topogpt3.c:75` | `#define MOE_TOP_K` |
-| `ModelWeights` | struct | `progs/topogpt3/topogpt3.c:224` | `` |
-| `NULL` | macro | `progs/topogpt3/topogpt3.c:43` | `#define NULL` |
-| `N_ANGULAR` | macro | `progs/topogpt3/topogpt3.c:78` | `#define N_ANGULAR` |
-| `N_EDGES` | macro | `progs/topogpt3/topogpt3.c:80` | `#define N_EDGES` |
-| `N_EDGE_TYPES` | macro | `progs/topogpt3/topogpt3.c:79` | `#define N_EDGE_TYPES` |
-| `N_EXPERTS` | macro | `progs/topogpt3/topogpt3.c:74` | `#define N_EXPERTS` |
-| `N_HEADS` | macro | `progs/topogpt3/topogpt3.c:67` | `#define N_HEADS` |
-| `N_KV_HEADS` | macro | `progs/topogpt3/topogpt3.c:68` | `#define N_KV_HEADS` |
-| `N_LAYERS` | macro | `progs/topogpt3/topogpt3.c:72` | `#define N_LAYERS` |
-| `N_NODES` | macro | `progs/topogpt3/topogpt3.c:76` | `#define N_NODES` |
-| `N_RADIAL` | macro | `progs/topogpt3/topogpt3.c:77` | `#define N_RADIAL` |
-| `N_SPECTRAL_LAYERS` | macro | `progs/topogpt3/topogpt3.c:86` | `#define N_SPECTRAL_LAYERS` |
-| `PI` | macro | `progs/topogpt3/topogpt3.c:91` | `#define PI` |
-| `READOUT_INNER` | macro | `progs/topogpt3/topogpt3.c:88` | `#define READOUT_INNER` |
-| `READ_TENSOR` | macro | `progs/topogpt3/topogpt3.c:1310` | `#define READ_TENSOR(dest, count)` |
-| `READ_TENSOR16` | macro | `progs/topogpt3/topogpt3.c:1480` | `#define READ_TENSOR16(dest, count)` |
-| `SEEK_CUR` | macro | `progs/topogpt3/topogpt3.c:45` | `#define SEEK_CUR` |
-| `SEEK_END` | macro | `progs/topogpt3/topogpt3.c:46` | `#define SEEK_END` |
-| `SEEK_SET` | macro | `progs/topogpt3/topogpt3.c:44` | `#define SEEK_SET` |
-| `SKIP_TENSOR` | macro | `progs/topogpt3/topogpt3.c:1300` | `#define SKIP_TENSOR()` |
-| `SKIP_TENSOR16` | macro | `progs/topogpt3/topogpt3.c:1470` | `#define SKIP_TENSOR16()` |
-| `SPECTRAL_LATENT_DIM` | macro | `progs/topogpt3/topogpt3.c:81` | `#define SPECTRAL_LATENT_DIM` |
-| `TOK_TAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:97` | `#define TOK_TAB_SIZE` |
-| `TOK_VOCAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:98` | `#define TOK_VOCAB_SIZE` |
-| `TORUS_GRID_H` | macro | `progs/topogpt3/topogpt3.c:83` | `#define TORUS_GRID_H` |
-| `TORUS_GRID_W` | macro | `progs/topogpt3/topogpt3.c:84` | `#define TORUS_GRID_W` |
-| `TORUS_TEMP` | macro | `progs/topogpt3/topogpt3.c:93` | `#define TORUS_TEMP` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)

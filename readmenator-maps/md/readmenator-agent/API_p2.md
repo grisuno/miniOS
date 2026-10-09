@@ -396,7 +396,7 @@ Imported by: `kernel.c`, `kernel/abi.c`, `tests/test_abi.c`
 - `abi_check_manifest` (function) `headers/abi.h:28` `int abi_check_manifest(void);` -- ifndef ABI_HOST_TEST
 
 ## headers/arch/x86/boot/bootdefs.h
-Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
+Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
 - `address` (function) `headers/arch/x86/boot/bootdefs.h:191` `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and...`
 
 ## headers/arch/x86/hal_io.h

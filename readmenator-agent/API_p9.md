@@ -1,6 +1,50 @@
 # API (page 9 of 19)
 Previous: [API_p8.md](API_p8.md)
 
+## progs/asm/json.s
+- `js_key` (function) `progs/asm/json.s:3`
+- `js_str` (function) `progs/asm/json.s:7`
+- `js_type` (function) `progs/asm/json.s:11`
+- `js_num` (function) `progs/asm/json.s:15`
+- `js_first` (function) `progs/asm/json.s:19`
+- `js_count` (function) `progs/asm/json.s:23`
+- `js_next` (function) `progs/asm/json.s:27`
+- `js_n` (function) `progs/asm/json.s:31`
+- `js_pool` (function) `progs/asm/json.s:35`
+- `js_plen` (function) `progs/asm/json.s:39`
+- `js_src` (function) `progs/asm/json.s:43`
+- `js_pos` (function) `progs/asm/json.s:47`
+- `js_len` (function) `progs/asm/json.s:51`
+- `js_err` (function) `progs/asm/json.s:55`
+- `js_read_all` (function) `progs/asm/json.s:59`
+- `js_new` (function) `progs/asm/json.s:274`
+- `js_skip_ws` (function) `progs/asm/json.s:306`
+- `js_peek` (function) `progs/asm/json.s:397`
+- `js_parse_string` (function) `progs/asm/json.s:437`
+- `js_parse_number` (function) `progs/asm/json.s:851`
+- `js_key_match` (function) `progs/asm/json.s:947`
+- `js_parse_object` (function) `progs/asm/json.s:983`
+- `js_parse_array` (function) `progs/asm/json.s:1335`
+- `js_parse_value` (function) `progs/asm/json.s:1594`
+- `js_indent` (function) `progs/asm/json.s:2481`
+- `js_print_str` (function) `progs/asm/json.s:2524`
+- `js_print_value` (function) `progs/asm/json.s:2747`
+- `js_find_member` (function) `progs/asm/json.s:3313`
+- `js_array_at` (function) `progs/asm/json.s:3391`
+- `js_query` (function) `progs/asm/json.s:3460`
+- `main` (function) `progs/asm/json.s:3772`
+
+## progs/asm/ldhello.s
+- `main` (function) `progs/asm/ldhello.s:3`
+
+## progs/asm/lz4.s
+- `lz4_has` (function) `progs/asm/lz4.s:3`
+- `lz4_read_all` (function) `progs/asm/lz4.s:156`
+- `lz4_write_all` (function) `progs/asm/lz4.s:371`
+- `lz4_compress_file` (function) `progs/asm/lz4.s:478`
+- `lz4_decompress_file` (function) `progs/asm/lz4.s:791`
+- `main` (function) `progs/asm/lz4.s:1228`
+
 ## progs/asm/lzss.s
 - `lz_win` (function) `progs/asm/lzss.s:3`
 - `lz_src` (function) `progs/asm/lzss.s:7`
@@ -451,37 +495,6 @@ Depends on: `kernel/string.c`, `kernel/time.c`, `progs/doomgeneric/doomgeneric.h
 - `DG_GetTicksMs` (function) `progs/doomgeneric/doomgeneric_xlib.c:177` `uint32_t DG_GetTicksMs()`
 - `DG_GetKey` (function) `progs/doomgeneric/doomgeneric_xlib.c:187` `int DG_GetKey(int* pressed, unsigned char* doomKey)`
 - `DG_SetWindowTitle` (function) `progs/doomgeneric/doomgeneric_xlib.c:208` `void DG_SetWindowTitle(const char * title)`
-
-## progs/doomgeneric/dummy.c
-Depends on: `progs/doomgeneric/doomtype.h`
-- `I_InitTimidityConfig` (function) `progs/doomgeneric/dummy.c:43` `void I_InitTimidityConfig(void)`
-
-## progs/doomgeneric/f_finale.c
-Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `F_StartFinale` (function) `progs/doomgeneric/f_finale.c:108` `void F_StartFinale (void)` -- F_StartFinale
-- `F_Responder` (function) `progs/doomgeneric/f_finale.c:160` `boolean F_Responder (event_t *event)`
-- `F_Ticker` (function) `progs/doomgeneric/f_finale.c:172` `void F_Ticker (void)` -- F_Ticker
-- `F_TextWrite` (function) `progs/doomgeneric/f_finale.c:227` `void F_TextWrite (void)`
-- `F_StartCast` (function) `progs/doomgeneric/f_finale.c:340` `void F_StartCast (void)` -- F_StartCast
-- `F_CastTicker` (function) `progs/doomgeneric/f_finale.c:358` `void F_CastTicker (void)` -- F_CastTicker
-- `F_CastResponder` (function) `progs/doomgeneric/f_finale.c:465` `boolean F_CastResponder (event_t* ev)`
-- `F_CastPrint` (function) `progs/doomgeneric/f_finale.c:486` `void F_CastPrint (char* text)`
-- `F_CastDrawer` (function) `progs/doomgeneric/f_finale.c:541` `void F_CastDrawer (void)`
-- `F_DrawPatchCol` (function) `progs/doomgeneric/f_finale.c:572` `void
-F_DrawPatchCol
-( int		x,
-  patch_t*	patch,
-  int		col )`
-- `F_BunnyScroll` (function) `progs/doomgeneric/f_finale.c:606` `void F_BunnyScroll (void)` -- F_BunnyScroll
-- `F_ArtScreenDrawer` (function) `progs/doomgeneric/f_finale.c:661` `static void F_ArtScreenDrawer(void)`
-- `F_Drawer` (function) `progs/doomgeneric/f_finale.c:702` `void F_Drawer (void)` -- F_Drawer
-
-## progs/doomgeneric/f_finale.h
-Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`
-- `F_Ticker` (function) `progs/doomgeneric/f_finale.h:34` `void F_Ticker (void);` -- Called by main loop.
-- `F_Drawer` (function) `progs/doomgeneric/f_finale.h:37` `void F_Drawer (void);` -- Called by main loop.
-- `F_StartFinale` (function) `progs/doomgeneric/f_finale.h:40` `void F_StartFinale (void);`
 
 
 Next: [API_p10.md](API_p10.md)

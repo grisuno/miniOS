@@ -1,10 +1,10 @@
 # tools: lxabi
 
-*Community 4 | 29 files | cohesion 0.80*
+*Community 4 | 29 files | cohesion 0.78*
 
 ## Definition
 
-This community groups 29 file(s) rooted at `tools` with dominant language py (cohesion 0.80). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `DG_DrawFrame`, `DG_GetKey`, `DG_GetTicksMs`. Core file: `progs/src/lxabi.c` (52 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
+This community groups 29 file(s) rooted at `tools` with dominant language py (cohesion 0.78). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `DG_DrawFrame`, `DG_GetKey`, `DG_GetTicksMs`. Core file: `progs/src/lxabi.c` (57 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
 
 ## Files
 
@@ -29,7 +29,7 @@ This community groups 29 file(s) rooted at `tools` with dominant language py (co
 | `mcp/mcp_dbg_driver.py` | py | infrastructure | 6 | yes |
 | `mcp/mcp_dogfood.py` | py | utility | 6 | yes |
 | `mcp/minios_addons.py` | py | utility | 16 | yes |
-| `mcp/minios_mcp.py` | py | utility | 50 | yes |
+| `mcp/minios_mcp.py` | py | utility | 51 | yes |
 
 ### `tests` (2 files)
 
@@ -60,7 +60,7 @@ This community groups 29 file(s) rooted at `tools` with dominant language py (co
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/src/lxabi.c` | c | utility | 52 | yes |
+| `progs/src/lxabi.c` | c | utility | 57 | yes |
 
 ### `progs/tls_u` (1 files)
 
@@ -107,7 +107,7 @@ This community groups 29 file(s) rooted at `tools` with dominant language py (co
 ## Internal vs External Edges
 
 - Internal resolved imports (EXTRACTED): 34
-- Cross-boundary resolved imports (EXTRACTED): 8
+- Cross-boundary resolved imports (EXTRACTED): 9
 
 ## Connections
 
@@ -115,7 +115,6 @@ This community groups 29 file(s) rooted at `tools` with dominant language py (co
 - [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/ktime.h.
 - [EXTRACTED] depends_on community 4 <-> 1 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports progs/doomgeneric/doomkeys.h.
 - [EXTRACTED] depends_on community 4 <-> 3 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomgeneric_xlib.c imports kernel/string.c.
-- [INFERRED] shares_context community 2 <-> 4 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (progs/doomgeneric: p_spec) and community 4 (tools: lxabi).
 
 ## Risks
 
@@ -129,8 +128,8 @@ This community groups 29 file(s) rooted at `tools` with dominant language py (co
 - [taint high] `mcp/minios_addons.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_addons.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `mcp/minios_mcp.py` -> `mcp/minios_mcp.py` via `subprocess` (0 hops)
-- [taint high] `mcp/minios_mcp.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_mcp.py` -> `mcp/minios_addons.py` via `subprocess` (1 hops)
+- [taint high] `mcp/minios_mcp.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_mcp.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `tools/boot_wl.py` -> `tools/boot_wl.py` via `subprocess` (0 hops)
 - [taint high] `tools/boot_wl.py` -> `kernel/time.c` via `subprocess` (1 hops)
@@ -140,7 +139,7 @@ This community groups 29 file(s) rooted at `tools` with dominant language py (co
 - Why do 1 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric_xlib.c`)? What purpose do they serve?
 - Is the dangerous import `subprocess` in `mcp/mcp_dbg_driver.py` still required, or can it be isolated?
 - What would break if the most connected file in tools: lxabi changed?
-- Should tools: lxabi be split, given cohesion 0.80?
+- Should tools: lxabi be split, given cohesion 0.78?
 
 ## Sources
 
