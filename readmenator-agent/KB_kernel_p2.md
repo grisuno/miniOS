@@ -1,131 +1,155 @@
-# Subsystem: kernel (page 2 of 3)
+# Subsystem: kernel (page 2 of 4)
 Previous: [KB_kernel.md](KB_kernel.md)
+
+## kernel/redirect.c
+- Layer: utility
+- Language: c
+- Symbols:
+  - `shell_report_exit` (function, line 11) `void shell_report_exit(int code)`
+  - `shell_report` (function, line 17) `void shell_report(const char *what, const char *detail)`
+  - `shell_take_redirect` (function, line 25) `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)`
 
 ## kernel/sched.c
 - Doc: trap_frame_t: if (len == 0 || len > 256) { kprintf("gdb: dump length 1..256 (got %lu)\n", len)...
 - Layer: utility
 - Language: c
 - Symbols:
-  - `stop_row` (struct, line 397)
-  - `trap_frame_t` (struct, line 547)
-  - `res0` (type_alias, line 103) `typedef struct __attribute__((packed)) { uint32_t res0;`
-  - `off_lo` (type_alias, line 131) `typedef struct __attribute__((packed)) { uint16_t off_lo;`
-  - `sched_tick_audio` (function, line 24) `static void sched_tick_audio(void *ctx)`
-  - `sched_tick_desktop` (function, line 30) `static void sched_tick_desktop(void *ctx)`
-  - `sched_tick_usb` (function, line 41) `static void sched_tick_usb(void *ctx)`
-  - `read_cr3` (function, line 68) `static inline unsigned long read_cr3(void)`
-  - `__attribute__` (function, line 103) `typedef struct __attribute__((packed))`
-  - `__attribute__` (function, line 131) `typedef struct __attribute__((packed))`
-  - `kstack_paint` (function, line 159) `static void kstack_paint(uint64_t top, unsigned long size)`
-  - `kstack_usage` (function, line 168) `static int kstack_usage(uint64_t top, unsigned long size,
+  - `stop_row` (struct, line 415)
+  - `trap_frame_t` (struct, line 565)
+  - `res0` (type_alias, line 108) `typedef struct __attribute__((packed)) { uint32_t res0;`
+  - `off_lo` (type_alias, line 136) `typedef struct __attribute__((packed)) { uint16_t off_lo;`
+  - `sched_tick_audio` (function, line 25) `static void sched_tick_audio(void *ctx)`
+  - `sched_tick_desktop` (function, line 31) `static void sched_tick_desktop(void *ctx)`
+  - `sched_tick_usb` (function, line 42) `static void sched_tick_usb(void *ctx)`
+  - `read_cr3` (function, line 73) `static inline unsigned long read_cr3(void)`
+  - `__attribute__` (function, line 108) `typedef struct __attribute__((packed))`
+  - `__attribute__` (function, line 136) `typedef struct __attribute__((packed))`
+  - `kstack_paint` (function, line 164) `static void kstack_paint(uint64_t top, unsigned long size)`
+  - `kstack_usage` (function, line 173) `static int kstack_usage(uint64_t top, unsigned long size,
                         unsigned long *...`
-  - `alloc_kstack` (function, line 183) `static uint64_t alloc_kstack(void)`
-  - `free_kstack` (function, line 195) `static void free_kstack(uint64_t top)`
-  - `MXCSR` (function, line 206) `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
+  - `alloc_kstack` (function, line 188) `static uint64_t alloc_kstack(void)`
+  - `live` (function, line 204) `* every reap leaked its own stack and released a neighbour that could
+ * still be live (two procs...`
+  - `MXCSR` (function, line 224) `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
  * exceptions masked): fxsa...`
-  - `fpu_restore_from` (function, line 214) `static inline void fpu_restore_from(void *area)`
-  - `fpu_alloc_clean` (function, line 218) `static void *fpu_alloc_clean(void)`
-  - `fpu_free_proc` (function, line 236) `static void fpu_free_proc(proc_t *p)`
-  - `vma_ctx_alloc` (function, line 242) `vma_ctx_t *vma_ctx_alloc(void)`
-  - `vma_ctx_free` (function, line 252) `void vma_ctx_free(vma_ctx_t *c)`
-  - `copy` (function, line 262) `* copy (fail closed, fork refuses) instead of forging pointers. */
+  - `fpu_restore_from` (function, line 232) `static inline void fpu_restore_from(void *area)`
+  - `fpu_alloc_clean` (function, line 236) `static void *fpu_alloc_clean(void)`
+  - `fpu_free_proc` (function, line 254) `static void fpu_free_proc(proc_t *p)`
+  - `vma_ctx_alloc` (function, line 260) `vma_ctx_t *vma_ctx_alloc(void)`
+  - `vma_ctx_free` (function, line 270) `void vma_ctx_free(vma_ctx_t *c)`
+  - `copy` (function, line 280) `* copy (fail closed, fork refuses) instead of forging pointers. */
 static vma_ctx_t *vma_ctx_copy...`
-  - `vma_owned` (function, line 334) `static int vma_owned(proc_t *p)`
-  - `vma_save_proc` (function, line 342) `static void vma_save_proc(proc_t *p)`
-  - `vma_load_proc` (function, line 346) `static void vma_load_proc(proc_t *p)`
-  - `kstack_report` (function, line 353) `void kstack_report(void)`
-  - `schedtop_report` (function, line 396) `void schedtop_report(void)`
-  - `irqstat_report` (function, line 464) `void irqstat_report(void)`
-  - `stub` (function, line 483) `* gdb stub (`make gdb`, then `target remote :1234` from the host). These
+  - `vma_owned` (function, line 352) `static int vma_owned(proc_t *p)`
+  - `vma_save_proc` (function, line 360) `static void vma_save_proc(proc_t *p)`
+  - `vma_load_proc` (function, line 364) `static void vma_load_proc(proc_t *p)`
+  - `kstack_report` (function, line 371) `void kstack_report(void)`
+  - `schedtop_report` (function, line 414) `void schedtop_report(void)`
+  - `irqstat_report` (function, line 482) `void irqstat_report(void)`
+  - `stub` (function, line 501) `* gdb stub (`make gdb`, then `target remote :1234` from the host). These
  * helpers are the seria...`
-  - `gdb_dump_report` (function, line 530) `void gdb_dump_report(unsigned long addr, unsigned long len)`
-  - `idt_set` (function, line 563) `static void idt_set(int vec, void (*h)(void))`
-  - `idt_init` (function, line 574) `static void idt_init(void)`
-  - `pic_init` (function, line 586) `static void pic_init(void)`
-  - `pit_init` (function, line 621) `static void pit_init(void)`
-  - `pic_eoi` (function, line 628) `static void pic_eoi(int irq)`
-  - `tss_write_desc` (function, line 635) `static void tss_write_desc(int cpu)`
-  - `tss_init` (function, line 652) `static void tss_init(void)`
-  - `tss_init_ap` (function, line 683) `void tss_init_ap(int cpu)`
-  - `context` (function, line 701) `* context (anything entered via k_exec_user) is inside a syscall
+  - `gdb_dump_report` (function, line 548) `void gdb_dump_report(unsigned long addr, unsigned long len)`
+  - `idt_set` (function, line 581) `static void idt_set(int vec, void (*h)(void))`
+  - `idt_init` (function, line 592) `static void idt_init(void)`
+  - `pic_init` (function, line 604) `static void pic_init(void)`
+  - `pit_init` (function, line 639) `static void pit_init(void)`
+  - `pic_eoi` (function, line 646) `static void pic_eoi(int irq)`
+  - `tss_write_desc` (function, line 653) `static void tss_write_desc(int cpu)`
+  - `tss_init` (function, line 670) `static void tss_init(void)`
+  - `tss_init_ap` (function, line 701) `void tss_init_ap(int cpu)`
+  - `context` (function, line 719) `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
-  - `point` (function, line 714) `* return address as the resume point ("continue the ISR"), which
+  - `point` (function, line 732) `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
-  - `sched_next_locked` (function, line 743) `static int sched_next_locked(int start, int vm_only)`
-  - `sched_set_nice` (function, line 761) `int sched_set_nice(int pid, int nice)`
-  - `seccomp_deny_one` (function, line 770) `int seccomp_deny_one(int pid, int n)`
-  - `seccomp_allow_one` (function, line 777) `int seccomp_allow_one(int pid, int n)`
-  - `seccomp_denied` (function, line 784) `int seccomp_denied(int pid, int n)`
-  - `smp_try_claim_hint` (function, line 793) `static int smp_try_claim_hint(int pid, int vm_only)`
-  - `smp_claim_thread_v` (function, line 809) `static int smp_claim_thread_v(int vm_only)`
-  - `smp_ap_idle_loop` (function, line 848) `void smp_ap_idle_loop(void)`
-  - `sched_ap_preempt` (function, line 882) `static void sched_ap_preempt(trap_frame_t *frame)`
-  - `smp_any_ap_idle` (function, line 952) `static int smp_any_ap_idle(void)`
-  - `rlimit_cpu_exceeded` (function, line 988) `int rlimit_cpu_exceeded(int pid)`
-  - `isr_dispatch` (function, line 1009) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `BSP` (function, line 1588) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+  - `sched_next_locked` (function, line 761) `static int sched_next_locked(int start, int vm_only)`
+  - `sched_set_nice` (function, line 779) `int sched_set_nice(int pid, int nice)`
+  - `seccomp_deny_one` (function, line 788) `int seccomp_deny_one(int pid, int n)`
+  - `seccomp_allow_one` (function, line 795) `int seccomp_allow_one(int pid, int n)`
+  - `seccomp_denied` (function, line 802) `int seccomp_denied(int pid, int n)`
+  - `smp_try_claim_hint` (function, line 811) `static int smp_try_claim_hint(int pid, int vm_only)`
+  - `smp_claim_thread_v` (function, line 827) `static int smp_claim_thread_v(int vm_only)`
+  - `smp_ap_idle_loop` (function, line 866) `void smp_ap_idle_loop(void)`
+  - `sched_ap_preempt` (function, line 900) `static void sched_ap_preempt(trap_frame_t *frame)`
+  - `smp_any_ap_idle` (function, line 970) `static int smp_any_ap_idle(void)`
+  - `rlimit_cpu_exceeded` (function, line 1006) `int rlimit_cpu_exceeded(int pid)`
+  - `isr_dispatch` (function, line 1027) `void isr_dispatch(int vector, trap_frame_t *frame)`
+  - `BSP` (function, line 1606) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-  - `proc_get` (function, line 1613) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 1619) `int proc_create(const char *name, int parent_pid)`
-  - `proc_spawn_elf_inner` (function, line 1737) `static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
+  - `proc_get` (function, line 1631) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 1637) `int proc_create(const char *name, int parent_pid)`
+  - `proc_spawn_elf_inner` (function, line 1755) `static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
                    i...`
-  - `proc_spawn_elf` (function, line 1890) `int proc_spawn_elf(const char *name, void *data, unsigned size,
+  - `proc_spawn_elf` (function, line 1915) `int proc_spawn_elf(const char *name, void *data, unsigned size,
                    int argc, char...`
-  - `schedule` (function, line 1932) `* that keeps schedule()'s own rbp runs the caller's frame accesses
+  - `schedule` (function, line 1957) `* that keeps schedule()'s own rbp runs the caller's frame accesses
  * (locals, leave/ret) on the ...`
-  - `schedule` (function, line 1939) `void schedule(void)`
-  - `yield` (function, line 2021) `void yield(void)`
-  - `do_exit` (function, line 2036) `void do_exit(int code)`
-  - `do_thread_spawn` (function, line 2075) `long do_thread_spawn(unsigned long fn, unsigned long stack,
+  - `schedule` (function, line 1964) `void schedule(void)`
+  - `yield` (function, line 2046) `void yield(void)`
+  - `do_exit` (function, line 2061) `void do_exit(int code)`
+  - `do_thread_spawn` (function, line 2115) `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-  - `itself` (function, line 2273) `* the shell itself (use mrun first), and a CLONE_VM thread forking
+  - `itself` (function, line 2315) `* the shell itself (use mrun first), and a CLONE_VM thread forking
  * would duplicate shared stat...`
-  - `aslr_mix` (function, line 2410) `static unsigned long aslr_mix(unsigned long salt)`
-  - `aslr_stack_bytes` (function, line 2419) `unsigned long aslr_stack_bytes(void)`
-  - `aslr_brk_pages` (function, line 2420) `unsigned long aslr_brk_pages(void)`
-  - `aslr_mmap_pages` (function, line 2421) `unsigned long aslr_mmap_pages(void)`
-  - `aslr_dyn_base` (function, line 2422) `unsigned long aslr_dyn_base(void)`
-  - `do_execve` (function, line 2449) `long do_execve(char *kpath, int kargc, char **kargv)`
-  - `do_waitpid` (function, line 2674) `int do_waitpid(int pid)`
-  - `shell_reap_nb` (function, line 2690) `int shell_reap_nb(int *pid_out, int *code_out)`
-  - `shell_reap_one` (function, line 2704) `int shell_reap_one(int pid, int *code_out)`
-  - `shell_nchildren` (function, line 2716) `int shell_nchildren(void)`
-  - `do_kill` (function, line 2742) `int do_kill(int pid)`
-  - `timer_tick` (function, line 2767) `void timer_tick(void)`
-  - `sched_init` (function, line 2772) `void sched_init(void)`
-  - `user_trampoline` (function, line 64) `extern void user_trampoline(void);`
-  - `fork_trampoline` (function, line 65) `extern void fork_trampoline(void);`
-  - `exec_enter` (function, line 66) `extern void exec_enter(unsigned long frame);`
-  - `PROC_KSTACK_OFF` (function, line 76) `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...`
-  - `descriptor` (function, line 91) `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 ==...`
-  - `here` (function, line 116) `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096]...`
-  - `sched_lock` (function, line 340) `* hold sched_lock (+mm_lock at the swap sites);`
-  - `slot` (function, line 400) `* must not eat a quarter of a 16 KB slot (see the stack discipline * contract in CLAUDE.md). Fail-closed on OOM. */...`
-  - `sys_ticks` (function, line 460) `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);`
-  - `rtl_counters` (function, line 467) `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
-  - `rtl_present` (function, line 469) `extern int rtl_present(void);`
-  - `IRQ4` (function, line 610) `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...`
-  - `FSBASE` (function, line 726) `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...`
-  - `syscall` (function, line 1133) `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid...`
-  - `PROC_SWITCHING` (function, line 1965) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...`
-  - `returns` (function, line 2029) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
-  - `registers` (function, line 2106) `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one...`
-  - `MSR` (function, line 2329) `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...`
-  - `cli` (function, line 2431) `* cli (disk PIO must never run with the timer held off);`
-  - `adopt` (function, line 2445) `* adopt (armed by Linux O_CLOEXEC on open);`
-  - `it` (function, line 2780) `* it (SPAWN/exec point proc 0 here transiently);`
-  - `park` (function, line 2831) `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */...`
-  - `zeroed` (function, line 2841) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe...`
-  - `isr_stub_table` (variable, line 140) `extern void *isr_stub_table[];`
-  - `net_rx_dropped` (variable, line 468) `extern unsigned int net_rx_dropped;`
-  - `mm_lock` (variable, line 695) `extern spinlock_t mm_lock;`
-  - `MY_SYS_KSTK_TOP` (macro, line 51) `#define MY_SYS_KSTK_TOP`
-  - `MY_USER_STACK_TOP` (macro, line 52) `#define MY_USER_STACK_TOP`
-  - `MY_USER_LOAD_BASE` (macro, line 53) `#define MY_USER_LOAD_BASE`
-  - `KSTACK_SZ` (macro, line 143) `#define KSTACK_SZ`
-  - `KSTACK_PAINT` (macro, line 156) `#define KSTACK_PAINT`
-  - `KSTACK_CANARY` (macro, line 157) `#define KSTACK_CANARY`
-- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/drivers/mouse.h`, `headers/drivers/xhci.h`, `headers/futex.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/spawn.h`, `headers/sync.h`, `headers/tick.h`, `headers/vga_fb.h`
+  - `ctx_from_frame` (function, line 2337) `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)`
+  - `fork_child_settid` (function, line 2355) `void fork_child_settid(void)`
+  - `do_fork` (function, line 2364) `long do_fork(void)`
+  - `do_fork_ex` (function, line 2368) `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)`
+  - `do_clone_thread` (function, line 2504) `static long do_clone_thread(unsigned long flags, unsigned long newsp,
+                           ...`
+  - `kill_group_threads_locked` (function, line 2618) `static void kill_group_threads_locked(int tgid, int except)`
+  - `do_exit_group_threads` (function, line 2632) `void do_exit_group_threads(void)`
+  - `aslr_mix` (function, line 2648) `static unsigned long aslr_mix(unsigned long salt)`
+  - `aslr_stack_bytes` (function, line 2657) `unsigned long aslr_stack_bytes(void)`
+  - `aslr_brk_pages` (function, line 2658) `unsigned long aslr_brk_pages(void)`
+  - `aslr_mmap_pages` (function, line 2659) `unsigned long aslr_mmap_pages(void)`
+  - `aslr_dyn_base` (function, line 2660) `unsigned long aslr_dyn_base(void)`
+  - `do_execve` (function, line 2687) `long do_execve(char *kpath, int kargc, char **kargv)`
+  - `proc_running_anywhere` (function, line 2917) `static int proc_running_anywhere(int pid)`
+  - `reap_autoreap_locked` (function, line 2926) `static void reap_autoreap_locked(int tgid)`
+  - `alloc_pid_locked` (function, line 2938) `static int alloc_pid_locked(void)`
+  - `waitpid_scan` (function, line 2946) `static int waitpid_scan(int pid, int *found)`
+  - `do_waitpid` (function, line 2965) `int do_waitpid(int pid)`
+  - `waitpid_has_child` (function, line 2982) `static int waitpid_has_child(int pid)`
+  - `do_waitpid_linux` (function, line 2996) `int do_waitpid_linux(int pid, int nohang, int *found)`
+  - `shell_reap_nb` (function, line 3013) `int shell_reap_nb(int *pid_out, int *code_out)`
+  - `shell_reap_one` (function, line 3027) `int shell_reap_one(int pid, int *code_out)`
+  - `shell_nchildren` (function, line 3039) `int shell_nchildren(void)`
+  - `do_kill` (function, line 3065) `int do_kill(int pid)`
+  - `timer_tick` (function, line 3091) `void timer_tick(void)`
+  - `sched_init` (function, line 3096) `void sched_init(void)`
+  - `user_trampoline` (function, line 65) `extern void user_trampoline(void);`
+  - `fork_trampoline` (function, line 66) `extern void fork_trampoline(void);`
+  - `exec_enter` (function, line 71) `extern void exec_enter(unsigned long frame);`
+  - `PROC_KSTACK_OFF` (function, line 81) `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...`
+  - `descriptor` (function, line 96) `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 ==...`
+  - `here` (function, line 121) `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096]...`
+  - `sched_lock` (function, line 358) `* hold sched_lock (+mm_lock at the swap sites);`
+  - `slot` (function, line 418) `* must not eat a quarter of a 16 KB slot (see the stack discipline * contract in CLAUDE.md). Fail-closed on OOM. */...`
+  - `sys_ticks` (function, line 478) `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);`
+  - `rtl_counters` (function, line 485) `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
+  - `rtl_present` (function, line 487) `extern int rtl_present(void);`
+  - `IRQ4` (function, line 628) `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...`
+  - `FSBASE` (function, line 744) `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...`
+  - `syscall` (function, line 1151) `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid...`
+  - `PROC_SWITCHING` (function, line 1990) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...`
+  - `returns` (function, line 2054) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
+  - `registers` (function, line 2146) `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one...`
+  - `MSR` (function, line 2418) `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...`
+  - `cli` (function, line 2669) `* cli (disk PIO must never run with the timer held off);`
+  - `adopt` (function, line 2683) `* adopt (armed by Linux O_CLOEXEC on open);`
+  - `it` (function, line 3104) `* it (SPAWN/exec point proc 0 here transiently);`
+  - `park` (function, line 3155) `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */...`
+  - `zeroed` (function, line 3165) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe...`
+  - `sc_top_save` (variable, line 68) `extern unsigned long sc_top_save[];`
+  - `isr_stub_table` (variable, line 145) `extern void *isr_stub_table[];`
+  - `net_rx_dropped` (variable, line 486) `extern unsigned int net_rx_dropped;`
+  - `mm_lock` (variable, line 713) `extern spinlock_t mm_lock;`
+  - `MY_SYS_KSTK_TOP` (macro, line 52) `#define MY_SYS_KSTK_TOP`
+  - `MY_USER_STACK_TOP` (macro, line 53) `#define MY_USER_STACK_TOP`
+  - `MY_USER_LOAD_BASE` (macro, line 54) `#define MY_USER_LOAD_BASE`
+  - `KSTACK_SZ` (macro, line 148) `#define KSTACK_SZ`
+  - `KSTACK_PAINT` (macro, line 161) `#define KSTACK_PAINT`
+  - `KSTACK_CANARY` (macro, line 162) `#define KSTACK_CANARY`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/drivers/mouse.h`, `headers/drivers/xhci.h`, `headers/futex.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rcu.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/spawn.h`, `headers/sync.h`, `headers/tick.h`, `headers/vga_fb.h`
 
 ## kernel/scrollback.c
 - Doc: Console scrollback ring buffer.
@@ -140,6 +164,25 @@ static vma_ctx_t *vma_ctx_copy...`
   - `sb_get_char` (function, line 41) `char sb_get_char(int row, int col)`
   - `vga_scroll` (function, line 4) `* Captured lazily from vga_scroll();`
   - `SCROLLBACK_ROWS` (macro, line 12) `#define SCROLLBACK_ROWS`
+
+## kernel/seccomp_bpf.c
+- Doc: Docstring: seccomp_bpf.c -- classic BPF checker and interpreter for Linux
+- Layer: utility
+- Language: c
+- Symbols:
+  - `sbpf_opcode_ok` (function, line 17) `static int sbpf_opcode_ok(const sbpf_insn *in)`
+  - `sbpf_check` (function, line 69) `int sbpf_check(const sbpf_insn *prog, unsigned len, unsigned short *scratch)`
+  - `sbpf_load_word` (function, line 114) `static unsigned int sbpf_load_word(const sbpf_data *d, unsigned off)`
+  - `sbpf_run` (function, line 120) `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d)`
+  - `sbpf_action_rank` (function, line 194) `int sbpf_action_rank(unsigned int action)`
+  - `SBPF_OP_MASK` (macro, line 8) `#define SBPF_OP_MASK`
+  - `SBPF_SRC_MASK` (macro, line 9) `#define SBPF_SRC_MASK`
+  - `SBPF_SIZE_MASK` (macro, line 10) `#define SBPF_SIZE_MASK`
+  - `SBPF_MODE_MASK` (macro, line 11) `#define SBPF_MODE_MASK`
+  - `SBPF_RVAL_MASK` (macro, line 12) `#define SBPF_RVAL_MASK`
+  - `SBPF_MISC_MASK` (macro, line 13) `#define SBPF_MISC_MASK`
+  - `SBPF_MEM_ALL` (macro, line 14) `#define SBPF_MEM_ALL`
+- Depends on: `headers/seccomp_bpf.h`
 
 ## kernel/serial.c
 - Doc: COM1 16550 UART driver.
@@ -314,7 +357,7 @@ static void shell_cmd_trac...`
   - `kmemcmp` (function, line 81) `int kmemcmp(const void *a, const void *b, unsigned long n)`
   - `kmemmove` (function, line 87) `void *kmemmove(void *dst, const void *src, unsigned long n)`
   - `katol` (function, line 95) `long katol(const char *s)`
-- Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
+- Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
 
 ## kernel/symtab.c
 - Layer: utility

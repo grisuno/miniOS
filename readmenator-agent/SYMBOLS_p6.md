@@ -1,8 +1,75 @@
-# Symbols (page 6 of 25)
+# Symbols (page 6 of 26)
 Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `WQ_NONE_HINT` | macro | `headers/percpu_rq.h:48` | `#define WQ_NONE_HINT` |
+| `percpu_rq_t` | struct | `headers/percpu_rq.h:50` | `` |
+| `rq_empty` | function | `headers/percpu_rq.h:65` | `int rq_empty(int cpu);` |
+| `rq_enqueue` | function | `headers/percpu_rq.h:62` | `void rq_enqueue(int cpu, int pid);` |
+| `rq_init` | function | `headers/percpu_rq.h:61` | `void rq_init(void);` |
+| `rq_note_poll` | function | `headers/percpu_rq.h:67` | `void rq_note_poll(int cpu);` |
+| `rq_pop_local` | function | `headers/percpu_rq.h:63` | `int rq_pop_local(int cpu);` |
+| `rq_should_rescan` | function | `headers/percpu_rq.h:66` | `int rq_should_rescan(int cpu);` |
+| `rq_stats` | function | `headers/percpu_rq.h:68` | `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals, unsigned long *drops);` |
+| `rq_steal_once` | function | `headers/percpu_rq.h:64` | `int rq_steal_once(int self_cpu, int *from_cpu);` |
+| `PIPE_CAP_DEFAULT` | macro | `headers/pipe.h:21` | `#define PIPE_CAP_DEFAULT` |
+| `PIPE_CAP_MAX` | macro | `headers/pipe.h:22` | `#define PIPE_CAP_MAX` |
+| `PIPE_CFG_DEFAULT` | macro | `headers/pipe.h:43` | `#define PIPE_CFG_DEFAULT` |
+| `PIPE_EMPTY` | macro | `headers/pipe.h:25` | `#define PIPE_EMPTY` |
+| `PIPE_ERR_BOUND` | macro | `headers/pipe.h:24` | `#define PIPE_ERR_BOUND` |
+| `PIPE_H` | macro | `headers/pipe.h:19` | `#define PIPE_H` |
+| `ends` | function | `headers/pipe.h:4` | `* * Single source of truth for the pipe byte ring shared by the kernel * pipe ends (fs/kfile.c), the pipe/dup/dup2...` |
+| `pipe_cfg_t` | struct | `headers/pipe.h:37` | `` |
+| `pipe_ring_avail` | function | `headers/pipe.h:64` | `static inline unsigned pipe_ring_avail(const pipe_ring_t *r)` |
+| `pipe_ring_close_reader` | function | `headers/pipe.h:128` | `static inline int pipe_ring_close_reader(pipe_ring_t *r)` |
+| `pipe_ring_close_writer` | function | `headers/pipe.h:118` | `static inline int pipe_ring_close_writer(pipe_ring_t *r)` |
+| `pipe_ring_init` | function | `headers/pipe.h:47` | `static inline int pipe_ring_init(pipe_ring_t *r, unsigned char *buf,         unsigned cap)` |
+| `pipe_ring_ropen` | function | `headers/pipe.h:135` | `static inline int pipe_ring_ropen(const pipe_ring_t *r)` |
+| `pipe_ring_space` | function | `headers/pipe.h:71` | `static inline unsigned pipe_ring_space(const pipe_ring_t *r)` |
+| `pipe_ring_stat` | function | `headers/pipe.h:140` | `static inline int pipe_ring_stat(const pipe_ring_t *r, pipe_cfg_t *out)` |
+| `pipe_ring_t` | struct | `headers/pipe.h:27` | `` |
+| `pipe_ring_write` | function | `headers/pipe.h:79` | `static inline unsigned pipe_ring_write(pipe_ring_t *r,         const unsigned char *src, unsigned...` |
+| `PROC_SEC_H` | macro | `headers/proc_sec.h:13` | `#define PROC_SEC_H` |
+| `SECCOMP_FILTERS_MAX` | macro | `headers/proc_sec.h:16` | `#define SECCOMP_FILTERS_MAX` |
+| `SECCOMP_KILL_EXIT` | macro | `headers/proc_sec.h:20` | `#define SECCOMP_KILL_EXIT` |
+| `it` | function | `headers/proc_sec.h:31` | `* the syscall must answer in *ret when a filter decided it (ERRNO, TRACE, * USER_NOTIF);` |
+| `proc_sec_exe` | function | `headers/proc_sec.h:28` | `const char *proc_sec_exe(int pid);` |
+| `proc_sec_exec` | function | `headers/proc_sec.h:25` | `void proc_sec_exec(int pid);` |
+| `proc_sec_filter` | function | `headers/proc_sec.h:34` | `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret);` |
+| `proc_sec_inherit` | function | `headers/proc_sec.h:23` | `void proc_sec_inherit(int child, int parent);` |
+| `proc_sec_prctl` | function | `headers/proc_sec.h:36` | `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5);` |
+| `proc_sec_release` | function | `headers/proc_sec.h:24` | `void proc_sec_release(int pid);` |
+| `proc_sec_seccomp` | function | `headers/proc_sec.h:37` | `long proc_sec_seccomp(long op, long flags, long uargs);` |
+| `proc_sec_set_exe` | function | `headers/proc_sec.h:26` | `void proc_sec_set_exe(int pid, const char *resolved);` |
+| `QGA_BAUD_DIVISOR` | macro | `headers/qga.h:25` | `#define QGA_BAUD_DIVISOR` |
+| `QGA_COM2_BASE` | macro | `headers/qga.h:5` | `#define QGA_COM2_BASE` |
+| `QGA_COM2_IRQ` | macro | `headers/qga.h:6` | `#define QGA_COM2_IRQ` |
+| `QGA_FILE_MAX` | macro | `headers/qga.h:46` | `#define QGA_FILE_MAX` |
+| `QGA_FILE_READ_MAX` | macro | `headers/qga.h:34` | `#define QGA_FILE_READ_MAX` |
+| `QGA_H` | macro | `headers/qga.h:2` | `#define QGA_H` |
+| `QGA_KEY_MAX` | macro | `headers/qga.h:38` | `#define QGA_KEY_MAX` |
+| `QGA_LINE_MAX` | macro | `headers/qga.h:30` | `#define QGA_LINE_MAX` |
+| `QGA_MAX_DEPTH` | macro | `headers/qga.h:42` | `#define QGA_MAX_DEPTH` |
+| `QGA_MAX_PAIRS` | macro | `headers/qga.h:37` | `#define QGA_MAX_PAIRS` |
+| `QGA_RESP_MAX` | macro | `headers/qga.h:31` | `#define QGA_RESP_MAX` |
+| `QGA_STR_MAX` | macro | `headers/qga.h:39` | `#define QGA_STR_MAX` |
+| `QGA_UART_DLL` | macro | `headers/qga.h:11` | `#define QGA_UART_DLL` |
+| `QGA_UART_DLM` | macro | `headers/qga.h:12` | `#define QGA_UART_DLM` |
+| `QGA_UART_FCR` | macro | `headers/qga.h:14` | `#define QGA_UART_FCR` |
+| `QGA_UART_FCR_CFG` | macro | `headers/qga.h:22` | `#define QGA_UART_FCR_CFG` |
+| `QGA_UART_IER` | macro | `headers/qga.h:13` | `#define QGA_UART_IER` |
+| `QGA_UART_LCR` | macro | `headers/qga.h:15` | `#define QGA_UART_LCR` |
+| `QGA_UART_LCR_8N1` | macro | `headers/qga.h:21` | `#define QGA_UART_LCR_8N1` |
+| `QGA_UART_LCR_DLAB` | macro | `headers/qga.h:20` | `#define QGA_UART_LCR_DLAB` |
+| `QGA_UART_LSR` | macro | `headers/qga.h:16` | `#define QGA_UART_LSR` |
+| `QGA_UART_LSR_RX_RDY` | macro | `headers/qga.h:19` | `#define QGA_UART_LSR_RX_RDY` |
+| `QGA_UART_LSR_TX_RDY` | macro | `headers/qga.h:18` | `#define QGA_UART_LSR_TX_RDY` |
+| `QGA_UART_MCR` | macro | `headers/qga.h:17` | `#define QGA_UART_MCR` |
+| `QGA_UART_MCR_CFG` | macro | `headers/qga.h:23` | `#define QGA_UART_MCR_CFG` |
+| `QGA_UART_RBR` | macro | `headers/qga.h:10` | `#define QGA_UART_RBR` |
+| `QGA_UART_THR` | macro | `headers/qga.h:9` | `#define QGA_UART_THR` |
+| `qga_init` | function | `headers/qga.h:48` | `void qga_init(void);` |
 | `qga_poll` | function | `headers/qga.h:49` | `void qga_poll(void);` |
 | `RANDMIX_H` | macro | `headers/randmix.h:2` | `#define RANDMIX_H` |
 | `source` | function | `headers/randmix.h:11` | `* source (all-zero seed) still walks, because the increment is inside  * the mixer, not in the ca...` |
@@ -70,8 +137,8 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `CTX_RIP_OFF` | macro | `headers/sched.h:45` | `#define CTX_RIP_OFF` |
 | `CTX_RSP_OFF` | macro | `headers/sched.h:46` | `#define CTX_RSP_OFF` |
 | `DESKTOP_TICK_INTERVAL` | macro | `headers/sched.h:316` | `#define DESKTOP_TICK_INTERVAL` |
-| `EXECVE_MAX_ARG` | macro | `headers/sched.h:413` | `#define EXECVE_MAX_ARG` |
-| `EXECVE_MAX_ARGS` | macro | `headers/sched.h:412` | `#define EXECVE_MAX_ARGS` |
+| `EXECVE_MAX_ARG` | macro | `headers/sched.h:418` | `#define EXECVE_MAX_ARG` |
+| `EXECVE_MAX_ARGS` | macro | `headers/sched.h:417` | `#define EXECVE_MAX_ARGS` |
 | `FPU_MXCSR_DEFAULT` | macro | `headers/sched.h:159` | `#define FPU_MXCSR_DEFAULT` |
 | `FPU_MXCSR_OFF` | macro | `headers/sched.h:158` | `#define FPU_MXCSR_OFF` |
 | `FPU_SAVE_SZ` | macro | `headers/sched.h:157` | `#define FPU_SAVE_SZ` |
@@ -133,16 +200,17 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `SECCOMP_OP_DENY_ALL` | macro | `headers/sched.h:170` | `#define SECCOMP_OP_DENY_ALL` |
 | `SECCOMP_OP_DENY_ONE` | macro | `headers/sched.h:168` | `#define SECCOMP_OP_DENY_ONE` |
 | `TSS_SEL` | macro | `headers/sched.h:369` | `#define TSS_SEL(cpu)` |
-| `WAITPID_NONE` | macro | `headers/sched.h:436` | `#define WAITPID_NONE` |
+| `WAITPID_NOCHILD` | macro | `headers/sched.h:443` | `#define WAITPID_NOCHILD` |
+| `WAITPID_NONE` | macro | `headers/sched.h:441` | `#define WAITPID_NONE` |
 | `__attribute__` | function | `headers/sched.h:372` | `typedef struct __attribute__((packed))` |
 | `ap_idle_proc` | variable | `headers/sched.h:356` | `extern proc_t ap_idle_proc[MAX_CPUS];` |
-| `aslr_brk_pages` | function | `headers/sched.h:420` | `unsigned long aslr_brk_pages(void);` |
-| `aslr_dyn_base` | function | `headers/sched.h:422` | `unsigned long aslr_dyn_base(void);` |
-| `aslr_mmap_pages` | function | `headers/sched.h:421` | `unsigned long aslr_mmap_pages(void);` |
-| `aslr_stack_bytes` | function | `headers/sched.h:419` | `unsigned long aslr_stack_bytes(void);` |
+| `aslr_brk_pages` | function | `headers/sched.h:425` | `unsigned long aslr_brk_pages(void);` |
+| `aslr_dyn_base` | function | `headers/sched.h:427` | `unsigned long aslr_dyn_base(void);` |
+| `aslr_mmap_pages` | function | `headers/sched.h:426` | `unsigned long aslr_mmap_pages(void);` |
+| `aslr_stack_bytes` | function | `headers/sched.h:424` | `unsigned long aslr_stack_bytes(void);` |
 | `bsp_idtr` | variable | `headers/sched.h:373` | `extern idtr_t bsp_idtr;` |
 | `bytes` | function | `headers/sched.h:173` | `* RLIM_AS total user bytes (brk growth + mmap) beyond the load base * RLIM_CPU timer ticks of CPU time, then...` |
-| `caller` | function | `headers/sched.h:447` | `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...` |
+| `caller` | function | `headers/sched.h:455` | `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...` |
 | `cpu` | struct | `headers/sched.h:268` | `` |
 | `cpu_count` | variable | `headers/sched.h:295` | `extern int cpu_count;` |
 | `cpu_idle_ticks` | variable | `headers/sched.h:361` | `extern volatile unsigned long cpu_idle_ticks[MAX_CPUS];` |
@@ -150,16 +218,21 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `ctx_regs_t` | struct | `headers/sched.h:33` | `` |
 | `current_pid` | macro | `headers/sched.h:312` | `#define current_pid` |
 | `do_clone` | function | `headers/sched.h:408` | `long do_clone(long flags, long newsp);` |
-| `do_execve` | function | `headers/sched.h:428` | `long do_execve(char *kpath, int kargc, char **kargv);` |
+| `do_execve` | function | `headers/sched.h:433` | `long do_execve(char *kpath, int kargc, char **kargv);` |
 | `do_exit` | function | `headers/sched.h:407` | `void do_exit(int code);` |
+| `do_exit_group_threads` | function | `headers/sched.h:413` | `void do_exit_group_threads(void);` |
 | `do_fork` | function | `headers/sched.h:409` | `long do_fork(void);` |
-| `do_kill` | function | `headers/sched.h:437` | `int do_kill(int pid);` |
-| `do_thread_spawn` | function | `headers/sched.h:429` | `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
-| `do_waitpid` | function | `headers/sched.h:431` | `int do_waitpid(int pid);` |
-| `do_waitpid_nb` | function | `headers/sched.h:432` | `int do_waitpid_nb(int pid);` |
+| `do_fork_ex` | function | `headers/sched.h:410` | `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);` |
+| `do_kill` | function | `headers/sched.h:445` | `int do_kill(int pid);` |
+| `do_linux_clone` | function | `headers/sched.h:411` | `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...` |
+| `do_thread_spawn` | function | `headers/sched.h:434` | `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
+| `do_waitpid` | function | `headers/sched.h:436` | `int do_waitpid(int pid);` |
+| `do_waitpid_linux` | function | `headers/sched.h:444` | `int do_waitpid_linux(int pid, int nohang, int *found);` |
+| `do_waitpid_nb` | function | `headers/sched.h:437` | `int do_waitpid_nb(int pid);` |
 | `entry` | function | `headers/sched.h:135` | `* private view with one KFILE ref per live entry (0 on OOM), release * drops the view at reap, cloexec closes marked...` |
-| `failure` | function | `headers/sched.h:427` | `* failure (negative errno);` |
+| `failure` | function | `headers/sched.h:432` | `* failure (negative errno);` |
 | `first` | function | `headers/sched.h:232` | `* address first (SYSCALL_FRAME_WORDS in syscall_asm.h). It ends exactly at * the saved top (sc_top_save[pid]);` |
+| `fork_child_settid` | function | `headers/sched.h:414` | `void fork_child_settid(void);` |
 | `gdb_dump_report` | function | `headers/sched.h:381` | `void gdb_dump_report(unsigned long addr, unsigned long len);` |
 | `gdb_regs_report` | function | `headers/sched.h:380` | `void gdb_regs_report(int pid);` |
 | `group` | function | `headers/sched.h:108` | `* process is its own group (tgid == pid);` |
@@ -179,8 +252,8 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `proc_get` | function | `headers/sched.h:388` | `proc_t *proc_get(int pid);` |
 | `proc_t` | struct | `headers/sched.h:50` | `` |
 | `procs` | variable | `headers/sched.h:333` | `extern proc_t procs[MAX_PROCS];` |
-| `pt_clone_user` | function | `headers/sched.h:441` | `uint64_t pt_clone_user(uint64_t parent_cr3);` |
-| `pt_free_user` | function | `headers/sched.h:442` | `void pt_free_user(uint64_t cr3);` |
+| `pt_clone_user` | function | `headers/sched.h:449` | `uint64_t pt_clone_user(uint64_t parent_cr3);` |
+| `pt_free_user` | function | `headers/sched.h:450` | `void pt_free_user(uint64_t cr3);` |
 | `resume_iretq` | function | `headers/sched.h:405` | `void resume_iretq(void);` |
 | `rlimit_cpu_exceeded` | function | `headers/sched.h:394` | `int rlimit_cpu_exceeded(int pid);` |
 | `rlimit_cpu_tick` | function | `headers/sched.h:395` | `void rlimit_cpu_tick(int pid);` |
@@ -193,9 +266,9 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `seccomp_allow_one` | function | `headers/sched.h:392` | `int seccomp_allow_one(int pid, int n);` |
 | `seccomp_denied` | function | `headers/sched.h:393` | `int seccomp_denied(int pid, int n);` |
 | `seccomp_deny_one` | function | `headers/sched.h:391` | `int seccomp_deny_one(int pid, int n);` |
-| `shell_nchildren` | function | `headers/sched.h:435` | `int shell_nchildren(void);` |
-| `shell_reap_nb` | function | `headers/sched.h:433` | `int shell_reap_nb(int *pid_out, int *code_out);` |
-| `shell_reap_one` | function | `headers/sched.h:434` | `int shell_reap_one(int pid, int *code_out);` |
+| `shell_nchildren` | function | `headers/sched.h:440` | `int shell_nchildren(void);` |
+| `shell_reap_nb` | function | `headers/sched.h:438` | `int shell_reap_nb(int *pid_out, int *code_out);` |
+| `shell_reap_one` | function | `headers/sched.h:439` | `int shell_reap_one(int pid, int *code_out);` |
 | `smp_ap_idle_loop` | function | `headers/sched.h:386` | `void smp_ap_idle_loop(void);` |
 | `smp_dbg_bad_gs` | variable | `headers/sched.h:364` | `extern volatile unsigned smp_dbg_bad_gs;` |
 | `smp_dispatches` | variable | `headers/sched.h:357` | `extern volatile unsigned long smp_dispatches[MAX_CPUS];` |
@@ -206,10 +279,68 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `sys_ticks` | variable | `headers/sched.h:335` | `extern volatile uint64_t sys_ticks;` |
 | `syscall_frame_current` | function | `headers/sched.h:245` | `const syscall_frame_t *syscall_frame_current(void);` |
 | `syscall_frame_t` | struct | `headers/sched.h:235` | `` |
-| `timer_tick` | function | `headers/sched.h:438` | `void timer_tick(void);` |
+| `timer_tick` | function | `headers/sched.h:446` | `void timer_tick(void);` |
 | `tss_init_ap` | function | `headers/sched.h:385` | `void tss_init_ap(int cpu);` |
 | `user_program_active` | variable | `headers/sched.h:336` | `extern volatile int user_program_active;` |
 | `yield` | function | `headers/sched.h:406` | `void yield(void);` |
+| `SBPF_A` | macro | `headers/seccomp_bpf.h:84` | `#define SBPF_A` |
+| `SBPF_ABS` | macro | `headers/seccomp_bpf.h:63` | `#define SBPF_ABS` |
+| `SBPF_ADD` | macro | `headers/seccomp_bpf.h:66` | `#define SBPF_ADD` |
+| `SBPF_ALU` | macro | `headers/seccomp_bpf.h:57` | `#define SBPF_ALU` |
+| `SBPF_AND` | macro | `headers/seccomp_bpf.h:71` | `#define SBPF_AND` |
+| `SBPF_AUDIT_ARCH_X86_64` | macro | `headers/seccomp_bpf.h:49` | `#define SBPF_AUDIT_ARCH_X86_64` |
+| `SBPF_CLASS` | macro | `headers/seccomp_bpf.h:52` | `#define SBPF_CLASS(c)` |
+| `SBPF_DATA_SIZE` | macro | `headers/seccomp_bpf.h:31` | `#define SBPF_DATA_SIZE` |
+| `SBPF_DIV` | macro | `headers/seccomp_bpf.h:69` | `#define SBPF_DIV` |
+| `SBPF_ERR_INVALID` | macro | `headers/seccomp_bpf.h:35` | `#define SBPF_ERR_INVALID` |
+| `SBPF_IMM` | macro | `headers/seccomp_bpf.h:62` | `#define SBPF_IMM` |
+| `SBPF_JA` | macro | `headers/seccomp_bpf.h:77` | `#define SBPF_JA` |
+| `SBPF_JEQ` | macro | `headers/seccomp_bpf.h:78` | `#define SBPF_JEQ` |
+| `SBPF_JGE` | macro | `headers/seccomp_bpf.h:80` | `#define SBPF_JGE` |
+| `SBPF_JGT` | macro | `headers/seccomp_bpf.h:79` | `#define SBPF_JGT` |
+| `SBPF_JMP` | macro | `headers/seccomp_bpf.h:58` | `#define SBPF_JMP` |
+| `SBPF_JSET` | macro | `headers/seccomp_bpf.h:81` | `#define SBPF_JSET` |
+| `SBPF_K` | macro | `headers/seccomp_bpf.h:82` | `#define SBPF_K` |
+| `SBPF_LD` | macro | `headers/seccomp_bpf.h:53` | `#define SBPF_LD` |
+| `SBPF_LDX` | macro | `headers/seccomp_bpf.h:54` | `#define SBPF_LDX` |
+| `SBPF_LEN` | macro | `headers/seccomp_bpf.h:65` | `#define SBPF_LEN` |
+| `SBPF_LSH` | macro | `headers/seccomp_bpf.h:72` | `#define SBPF_LSH` |
+| `SBPF_MAX_INSNS` | macro | `headers/seccomp_bpf.h:30` | `#define SBPF_MAX_INSNS` |
+| `SBPF_MEM` | macro | `headers/seccomp_bpf.h:64` | `#define SBPF_MEM` |
+| `SBPF_MEMWORDS` | macro | `headers/seccomp_bpf.h:32` | `#define SBPF_MEMWORDS` |
+| `SBPF_MISC` | macro | `headers/seccomp_bpf.h:60` | `#define SBPF_MISC` |
+| `SBPF_MOD` | macro | `headers/seccomp_bpf.h:75` | `#define SBPF_MOD` |
+| `SBPF_MUL` | macro | `headers/seccomp_bpf.h:68` | `#define SBPF_MUL` |
+| `SBPF_NEG` | macro | `headers/seccomp_bpf.h:74` | `#define SBPF_NEG` |
+| `SBPF_OR` | macro | `headers/seccomp_bpf.h:70` | `#define SBPF_OR` |
+| `SBPF_RET` | macro | `headers/seccomp_bpf.h:59` | `#define SBPF_RET` |
+| `SBPF_RET_ACTION_FULL` | macro | `headers/seccomp_bpf.h:46` | `#define SBPF_RET_ACTION_FULL` |
+| `SBPF_RET_ALLOW` | macro | `headers/seccomp_bpf.h:45` | `#define SBPF_RET_ALLOW` |
+| `SBPF_RET_DATA` | macro | `headers/seccomp_bpf.h:47` | `#define SBPF_RET_DATA` |
+| `SBPF_RET_ERRNO` | macro | `headers/seccomp_bpf.h:41` | `#define SBPF_RET_ERRNO` |
+| `SBPF_RET_KILL_PROCESS` | macro | `headers/seccomp_bpf.h:38` | `#define SBPF_RET_KILL_PROCESS` |
+| `SBPF_RET_KILL_THREAD` | macro | `headers/seccomp_bpf.h:39` | `#define SBPF_RET_KILL_THREAD` |
+| `SBPF_RET_LOG` | macro | `headers/seccomp_bpf.h:44` | `#define SBPF_RET_LOG` |
+| `SBPF_RET_TRACE` | macro | `headers/seccomp_bpf.h:43` | `#define SBPF_RET_TRACE` |
+| `SBPF_RET_TRAP` | macro | `headers/seccomp_bpf.h:40` | `#define SBPF_RET_TRAP` |
+| `SBPF_RET_USER_NOTIF` | macro | `headers/seccomp_bpf.h:42` | `#define SBPF_RET_USER_NOTIF` |
+| `SBPF_RSH` | macro | `headers/seccomp_bpf.h:73` | `#define SBPF_RSH` |
+| `SBPF_SHIFT_MAX` | macro | `headers/seccomp_bpf.h:34` | `#define SBPF_SHIFT_MAX` |
+| `SBPF_ST` | macro | `headers/seccomp_bpf.h:55` | `#define SBPF_ST` |
+| `SBPF_STX` | macro | `headers/seccomp_bpf.h:56` | `#define SBPF_STX` |
+| `SBPF_SUB` | macro | `headers/seccomp_bpf.h:67` | `#define SBPF_SUB` |
+| `SBPF_TAX` | macro | `headers/seccomp_bpf.h:85` | `#define SBPF_TAX` |
+| `SBPF_TXA` | macro | `headers/seccomp_bpf.h:86` | `#define SBPF_TXA` |
+| `SBPF_W` | macro | `headers/seccomp_bpf.h:61` | `#define SBPF_W` |
+| `SBPF_WORD` | macro | `headers/seccomp_bpf.h:33` | `#define SBPF_WORD` |
+| `SBPF_X` | macro | `headers/seccomp_bpf.h:83` | `#define SBPF_X` |
+| `SBPF_XOR` | macro | `headers/seccomp_bpf.h:76` | `#define SBPF_XOR` |
+| `SECCOMP_BPF_H` | macro | `headers/seccomp_bpf.h:12` | `#define SECCOMP_BPF_H` |
+| `sbpf_action_rank` | function | `headers/seccomp_bpf.h:104` | `int sbpf_action_rank(unsigned int action);` |
+| `sbpf_check` | function | `headers/seccomp_bpf.h:95` | `int sbpf_check(const sbpf_insn *prog, unsigned len, unsigned short *scratch);` |
+| `sbpf_data` | struct | `headers/seccomp_bpf.h:23` | `` |
+| `sbpf_insn` | struct | `headers/seccomp_bpf.h:15` | `` |
+| `sbpf_run` | function | `headers/seccomp_bpf.h:100` | `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d);` |
 | `CMD_BUF_SZ` | macro | `headers/shell.h:13` | `#define CMD_BUF_SZ` |
 | `MAX_ARGS` | macro | `headers/shell.h:14` | `#define MAX_ARGS` |
 | `SHELL_H` | macro | `headers/shell.h:2` | `#define SHELL_H` |
@@ -308,15 +439,16 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `SYSCALL_USER_WIN_LO` | macro | `headers/syscall_asm.h:15` | `#define SYSCALL_USER_WIN_LO` |
 | `SYSCALLS_PROC_H` | macro | `headers/syscalls_proc.h:2` | `#define SYSCALLS_PROC_H` |
 | `dispatcher` | function | `headers/syscalls_proc.h:5` | `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...` |
-| `do_proc_exit` | function | `headers/syscalls_proc.h:26` | `long do_proc_exit(long code);` |
-| `sys_linux_execve` | function | `headers/syscalls_proc.h:20` | `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_exit` | function | `headers/syscalls_proc.h:21` | `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `do_proc_exit` | function | `headers/syscalls_proc.h:27` | `long do_proc_exit(long code);` |
+| `sys_linux_clone` | function | `headers/syscalls_proc.h:19` | `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_execve` | function | `headers/syscalls_proc.h:21` | `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_exit` | function | `headers/syscalls_proc.h:22` | `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `sys_linux_fork` | function | `headers/syscalls_proc.h:18` | `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `sys_linux_getpid` | function | `headers/syscalls_proc.h:16` | `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `sys_linux_gettid` | function | `headers/syscalls_proc.h:17` | `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_kill` | function | `headers/syscalls_proc.h:23` | `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_vfork` | function | `headers/syscalls_proc.h:19` | `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_wait4` | function | `headers/syscalls_proc.h:22` | `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_kill` | function | `headers/syscalls_proc.h:24` | `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_vfork` | function | `headers/syscalls_proc.h:20` | `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_wait4` | function | `headers/syscalls_proc.h:23` | `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `sys_linux_yield` | function | `headers/syscalls_proc.h:15` | `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `sys_minios_clone` | function | `headers/syscalls_proc.h:13` | `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6);` |
 | `sys_minios_nice` | function | `headers/syscalls_proc.h:12` | `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6);` |
@@ -364,137 +496,5 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `TLS_HS_SERVER_HELLO_DONE` | macro | `headers/tls.h:23` | `#define TLS_HS_SERVER_HELLO_DONE` |
 | `TLS_HS_SERVER_KEY_EXCHANGE` | macro | `headers/tls.h:22` | `#define TLS_HS_SERVER_KEY_EXCHANGE` |
 | `TLS_HS_TIMEOUT_MS` | macro | `headers/tls.h:50` | `#define TLS_HS_TIMEOUT_MS` |
-| `TLS_MSG_MAX` | macro | `headers/tls.h:13` | `#define TLS_MSG_MAX` |
-| `TLS_PLAIN_MAX` | macro | `headers/tls.h:14` | `#define TLS_PLAIN_MAX` |
-| `TLS_READ_TIMEOUT_MS` | macro | `headers/tls.h:51` | `#define TLS_READ_TIMEOUT_MS` |
-| `TLS_REC_HEADER` | macro | `headers/tls.h:11` | `#define TLS_REC_HEADER` |
-| `TLS_REC_MAX` | macro | `headers/tls.h:12` | `#define TLS_REC_MAX` |
-| `TLS_ROOT_COUNT` | macro | `headers/tls.h:68` | `#define TLS_ROOT_COUNT` |
-| `TLS_SIG_ECDSA_P256_SHA256` | macro | `headers/tls.h:33` | `#define TLS_SIG_ECDSA_P256_SHA256` |
-| `TLS_SIG_ECDSA_P384_SHA384` | macro | `headers/tls.h:34` | `#define TLS_SIG_ECDSA_P384_SHA384` |
-| `TLS_SIG_RSA_PKCS1_SHA256` | macro | `headers/tls.h:32` | `#define TLS_SIG_RSA_PKCS1_SHA256` |
-| `TLS_VERSION_TLS10` | macro | `headers/tls.h:16` | `#define TLS_VERSION_TLS10` |
-| `TLS_VERSION_TLS12` | macro | `headers/tls.h:15` | `#define TLS_VERSION_TLS12` |
-| `aes128_encrypt_block` | function | `headers/tls.h:184` | `void aes128_encrypt_block(const unsigned char key[16], const unsigned char in[16], unsigned char out[16]);` |
-| `aes128_gcm_open` | function | `headers/tls.h:197` | `int aes128_gcm_open(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...` |
-| `aes128_gcm_open_core` | function | `headers/tls.h:213` | `int aes128_gcm_open_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...` |
-| `aes128_gcm_seal` | function | `headers/tls.h:189` | `int aes128_gcm_seal(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...` |
-| `aes128_gcm_seal_core` | function | `headers/tls.h:208` | `int aes128_gcm_seal_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...` |
-| `ecdsa_verify` | function | `headers/tls.h:243` | `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[], const unsigned char digest[]...` |
-| `hmac_sha256` | function | `headers/tls.h:174` | `void hmac_sha256(const unsigned char *key, unsigned klen, const unsigned char *data, unsigned dlen, unsigned char...` |
-| `now` | function | `headers/tls.h:267` | `* window against now (days since epoch). Returns 0 on success. */ int tls_x509_verify_chain(const unsigned char...` |
-| `p256_ecdh` | function | `headers/tls.h:231` | `int p256_ecdh(const unsigned char priv[32], const unsigned char peer_x[32], const unsigned char peer_y[32], unsigned...` |
-| `p256_point_valid` | function | `headers/tls.h:236` | `int p256_point_valid(const unsigned char x[32], const unsigned char y[32]);` |
-| `p256_pub` | function | `headers/tls.h:237` | `int p256_pub(const unsigned char priv[32], unsigned char x[32], unsigned char y[32]);` |
-| `p256_scalar_mult` | function | `headers/tls.h:222` | `int p256_scalar_mult(const unsigned char scalar[32], const unsigned char qx[32], const unsigned char qy[32]...` |
-| `p256_scalar_valid` | function | `headers/tls.h:239` | `int p256_scalar_valid(const unsigned char scalar[32]);` |
-| `p384_scalar_mult` | function | `headers/tls.h:225` | `int p384_scalar_mult(const unsigned char scalar[48], const unsigned char qx[48], const unsigned char qy[48]...` |
-| `rsa_pkcs1_verify_sha256` | function | `headers/tls.h:249` | `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...` |
-| `rsa_pkcs1_verify_sha384` | function | `headers/tls.h:253` | `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...` |
-| `sha256` | function | `headers/tls.h:171` | `void sha256(const unsigned char *data, unsigned len, unsigned char out[32]);` |
-| `sha256_ctx` | struct | `headers/tls.h:79` | `` |
-| `sha256_final` | function | `headers/tls.h:170` | `void sha256_final(struct sha256_ctx *c, unsigned char out[32]);` |
-| `sha256_init` | function | `headers/tls.h:168` | `void sha256_init(struct sha256_ctx *c);` |
-| `sha256_update` | function | `headers/tls.h:169` | `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len);` |
-| `sha384` | function | `headers/tls.h:172` | `void sha384(const unsigned char *data, unsigned len, unsigned char out[48]);` |
-| `tls_free_fd` | function | `headers/tls.h:293` | `static inline void tls_free_fd(int fd)` |
-| `tls_handshake` | function | `headers/tls.h:277` | `int tls_handshake(int fd, const char *host);` |
-| `tls_prf` | function | `headers/tls.h:179` | `void tls_prf(const unsigned char *secret, unsigned secret_len, const char *label, const unsigned char *seed...` |
-| `tls_pubkey` | struct | `headers/tls.h:85` | `` |
-| `tls_recv` | function | `headers/tls.h:284` | `int tls_recv(int fd, char *buf, int len);` |
-| `tls_root` | struct | `headers/tls.h:70` | `` |
-| `tls_roots` | variable | `headers/tls.h:75` | `extern const struct tls_root tls_roots[TLS_ROOT_COUNT];` |
-| `tls_send` | function | `headers/tls.h:280` | `int tls_send(int fd, const char *buf, int len);` |
-| `tls_session` | struct | `headers/tls.h:95` | `` |
-| `tls_sys_handshake` | function | `headers/tls.h:297` | `long tls_sys_handshake(long fd, long host);` |
-| `tls_sys_recv` | function | `headers/tls.h:299` | `long tls_sys_recv(long fd, long buf, long len);` |
-| `tls_sys_send` | function | `headers/tls.h:298` | `long tls_sys_send(long fd, long buf, long len);` |
-| `tls_x509_parse_pubkey` | function | `headers/tls.h:261` | `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len, struct tls_pubkey *pk);` |
-| `TLS_CLOSE` | macro | `headers/tls_port.h:38` | `#define TLS_CLOSE` |
-| `TLS_CLOSE` | macro | `headers/tls_port.h:89` | `#define TLS_CLOSE` |
-| `TLS_CLOSE` | macro | `headers/tls_port.h:114` | `#define TLS_CLOSE` |
-| `TLS_FD_MAX` | macro | `headers/tls_port.h:18` | `#define TLS_FD_MAX` |
-| `TLS_FD_MAX` | macro | `headers/tls_port.h:71` | `#define TLS_FD_MAX` |
-| `TLS_FD_MAX` | macro | `headers/tls_port.h:115` | `#define TLS_FD_MAX` |
-| `TLS_FREE` | macro | `headers/tls_port.h:22` | `#define TLS_FREE(p)` |
-| `TLS_FREE` | macro | `headers/tls_port.h:75` | `#define TLS_FREE(p)` |
-| `TLS_FREE` | macro | `headers/tls_port.h:105` | `#define TLS_FREE(p)` |
-| `TLS_MALLOC` | macro | `headers/tls_port.h:21` | `#define TLS_MALLOC(n)` |
-| `TLS_MALLOC` | macro | `headers/tls_port.h:74` | `#define TLS_MALLOC(n)` |
-| `TLS_MALLOC` | macro | `headers/tls_port.h:104` | `#define TLS_MALLOC(n)` |
-| `TLS_MEMCMP` | macro | `headers/tls_port.h:25` | `#define TLS_MEMCMP` |
-| `TLS_MEMCMP` | macro | `headers/tls_port.h:78` | `#define TLS_MEMCMP` |
-| `TLS_MEMCMP` | macro | `headers/tls_port.h:108` | `#define TLS_MEMCMP` |
-| `TLS_MEMCPY` | macro | `headers/tls_port.h:23` | `#define TLS_MEMCPY` |
-| `TLS_MEMCPY` | macro | `headers/tls_port.h:76` | `#define TLS_MEMCPY` |
-| `TLS_MEMCPY` | macro | `headers/tls_port.h:106` | `#define TLS_MEMCPY` |
-| `TLS_MEMSET` | macro | `headers/tls_port.h:24` | `#define TLS_MEMSET` |
-| `TLS_MEMSET` | macro | `headers/tls_port.h:77` | `#define TLS_MEMSET` |
-| `TLS_MEMSET` | macro | `headers/tls_port.h:107` | `#define TLS_MEMSET` |
-| `TLS_PORT_H` | macro | `headers/tls_port.h:2` | `#define TLS_PORT_H` |
-| `TLS_PRINTF` | macro | `headers/tls_port.h:20` | `#define TLS_PRINTF` |
-| `TLS_PRINTF` | macro | `headers/tls_port.h:73` | `#define TLS_PRINTF` |
-| `TLS_PRINTF` | macro | `headers/tls_port.h:103` | `#define TLS_PRINTF` |
-| `TLS_RECV` | macro | `headers/tls_port.h:36` | `#define TLS_RECV` |
-| `TLS_RECV` | macro | `headers/tls_port.h:87` | `#define TLS_RECV` |
-| `TLS_RECV` | macro | `headers/tls_port.h:112` | `#define TLS_RECV` |
-| `TLS_RECV_TIMEOUT` | macro | `headers/tls_port.h:37` | `#define TLS_RECV_TIMEOUT` |
-| `TLS_RECV_TIMEOUT` | macro | `headers/tls_port.h:88` | `#define TLS_RECV_TIMEOUT` |
-| `TLS_RECV_TIMEOUT` | macro | `headers/tls_port.h:113` | `#define TLS_RECV_TIMEOUT` |
-| `TLS_SEND` | macro | `headers/tls_port.h:35` | `#define TLS_SEND` |
-| `TLS_SEND` | macro | `headers/tls_port.h:86` | `#define TLS_SEND` |
-| `TLS_SEND` | macro | `headers/tls_port.h:111` | `#define TLS_SEND` |
-| `TLS_STRLEN` | macro | `headers/tls_port.h:26` | `#define TLS_STRLEN` |
-| `TLS_STRLEN` | macro | `headers/tls_port.h:79` | `#define TLS_STRLEN` |
-| `TLS_STRLEN` | macro | `headers/tls_port.h:109` | `#define TLS_STRLEN` |
-| `gettimeofday` | function | `headers/tls_port.h:64` | `* gettimeofday(96) and entropy from /dev/urandom with a time/pid * fallback. Session slots are indexed by raw OS fd...` |
-| `sockets` | function | `headers/tls_port.h:62` | `* sockets (glibc maps socket/connect/send/recv/poll onto the MiniOS * Linux ABI numbers the kernel implements);` |
-| `syscall` | function | `headers/tls_port.h:95` | `* the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */ int tls_u_resolve(const char *host, unsigned...` |
-| `these` | function | `headers/tls_port.h:29` | `* of these (tls_test.c). */ extern int tls_test_send(int fd, const char *buf, int len);` |
-| `tls_now_days` | function | `headers/tls_port.h:40` | `static inline long tls_now_days(void)` |
-| `tls_random` | function | `headers/tls_port.h:44` | `static inline void tls_random(unsigned char *out, unsigned len)` |
-| `tls_test_close` | function | `headers/tls_port.h:33` | `extern void tls_test_close(int fd);` |
-| `tls_test_recv` | function | `headers/tls_port.h:31` | `extern int tls_test_recv(int fd, char *buf, int len);` |
-| `tls_test_recv_timeout` | function | `headers/tls_port.h:32` | `extern int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms);` |
-| `tls_u_close` | function | `headers/tls_port.h:84` | `void tls_u_close(int fd);` |
-| `tls_u_recv` | function | `headers/tls_port.h:82` | `int tls_u_recv(int fd, char *buf, int len);` |
-| `tls_u_recv_timeout` | function | `headers/tls_port.h:83` | `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms);` |
-| `COL_BG` | macro | `headers/vga_fb.h:83` | `#define COL_BG` |
-| `COL_BLACK` | macro | `headers/vga_fb.h:82` | `#define COL_BLACK` |
-| `COL_BORDER` | macro | `headers/vga_fb.h:91` | `#define COL_BORDER` |
-| `COL_HIGHLIGHT` | macro | `headers/vga_fb.h:94` | `#define COL_HIGHLIGHT` |
-| `COL_SCROLLBAR` | macro | `headers/vga_fb.h:95` | `#define COL_SCROLLBAR` |
-| `COL_SCROLL_THUMB` | macro | `headers/vga_fb.h:96` | `#define COL_SCROLL_THUMB` |
-| `COL_SHADOW` | macro | `headers/vga_fb.h:93` | `#define COL_SHADOW` |
-| `COL_TASKBAR` | macro | `headers/vga_fb.h:84` | `#define COL_TASKBAR` |
-| `COL_TASKBAR_TXT` | macro | `headers/vga_fb.h:85` | `#define COL_TASKBAR_TXT` |
-| `COL_TERMINAL` | macro | `headers/vga_fb.h:88` | `#define COL_TERMINAL` |
-| `COL_TERM_CUR` | macro | `headers/vga_fb.h:90` | `#define COL_TERM_CUR` |
-| `COL_TERM_TXT` | macro | `headers/vga_fb.h:89` | `#define COL_TERM_TXT` |
-| `COL_TITLEBAR` | macro | `headers/vga_fb.h:86` | `#define COL_TITLEBAR` |
-| `COL_TITLE_TXT` | macro | `headers/vga_fb.h:87` | `#define COL_TITLE_TXT` |
-| `COL_WHITE` | macro | `headers/vga_fb.h:92` | `#define COL_WHITE` |
-| `DOOM_BACKBUF_ADDR` | macro | `headers/vga_fb.h:48` | `#define DOOM_BACKBUF_ADDR` |
-| `DOOM_H` | macro | `headers/vga_fb.h:47` | `#define DOOM_H` |
-| `DOOM_W` | macro | `headers/vga_fb.h:46` | `#define DOOM_W` |
-| `FB_ADDR` | macro | `headers/vga_fb.h:22` | `#define FB_ADDR` |
-| `FONT_H` | macro | `headers/vga_fb.h:108` | `#define FONT_H` |
-| `FONT_W` | macro | `headers/vga_fb.h:107` | `#define FONT_W` |
-| `GFX_TITLE_DEFAULT` | macro | `headers/vga_fb.h:52` | `#define GFX_TITLE_DEFAULT` |
-| `NK_BACKBUF_ADDR` | macro | `headers/vga_fb.h:69` | `#define NK_BACKBUF_ADDR` |
-| `NK_H` | macro | `headers/vga_fb.h:68` | `#define NK_H` |
-| `NK_RGB_ADDR` | macro | `headers/vga_fb.h:73` | `#define NK_RGB_ADDR` |
-| `NK_RGB_BYTES` | macro | `headers/vga_fb.h:74` | `#define NK_RGB_BYTES` |
-| `NK_W` | macro | `headers/vga_fb.h:67` | `#define NK_W` |
-| `SB_LINE_MAX` | macro | `headers/vga_fb.h:174` | `#define SB_LINE_MAX` |
-| `SB_MAX_LINES` | macro | `headers/vga_fb.h:173` | `#define SB_MAX_LINES` |
-| `SCROLLBAR_PAD` | macro | `headers/vga_fb.h:143` | `#define SCROLLBAR_PAD` |
-| `SCROLLBAR_W` | macro | `headers/vga_fb.h:142` | `#define SCROLLBAR_W` |
-| `SYS_DOOM_FRAME` | function | `headers/vga_fb.h:44` | `* and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the * desktop at its native resolution, so the...` |
-| `SYS_NK_FRAME` | function | `headers/vga_fb.h:63` | `* SYS_NK_FRAME (220);` |
-| `TASKBAR_BTN_W` | macro | `headers/vga_fb.h:123` | `#define TASKBAR_BTN_W` |
-| `TASKBAR_CLOCK_CH` | macro | `headers/vga_fb.h:119` | `#define TASKBAR_CLOCK_CH` |
-| `TASKBAR_H` | macro | `headers/vga_fb.h:117` | `#define TASKBAR_H` |
-| `TASKBAR_ICON_W` | macro | `headers/vga_fb.h:122` | `#define TASKBAR_ICON_W` |
 
 Next: [SYMBOLS_p7.md](SYMBOLS_p7.md)

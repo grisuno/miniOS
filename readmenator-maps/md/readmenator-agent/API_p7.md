@@ -2,152 +2,182 @@
 Previous: [API_p6.md](API_p6.md)
 
 ## kernel/syscalls.c
-Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/batch.h`, `headers/block.h`, `headers/driver.h`, `headers/drivers/kbd.h`, `headers/futex.h`, `headers/ide.h`, `headers/ktime.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/randmix.h`, `headers/rcu.h`, `headers/rtc.h`, `headers/sanitize.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/spawn.h`, `headers/sync.h`, `headers/syscalls_proc.h`, `headers/vga_fb.h`, `headers/zip.h`
-- `kfd_view_current` (function) `kernel/syscalls.c:58` `static kfd_view_t *kfd_view_current(void)` -- Docstring: View owning the caller's fds: its own on isolated procs * and threads, the root on pid 0 and any pid...
-- `kfd_view_root` (function) `kernel/syscalls.c:68` `kfd_view_t *kfd_view_root(void)` -- Docstring: Static root view (shell pid 0, pids without their own): * entries are the historical shared table, never...
-- `kfd_get` (function) `kernel/syscalls.c:87` `KFILE *kfd_get(int fd)`
-- `kfd_put` (function) `kernel/syscalls.c:100` `void kfd_put(KFILE *f)`
-- `kfd_view_count` (function) `kernel/syscalls.c:112` `static int kfd_view_count(kfd_view_t *v)` -- } void kfd_put(KFILE *f) { irqflags_t flags; int drop = 0; if (!f) return; spin_lock_irqsave(&fd_lock, &flags)...
-- `untouched` (function) `kernel/syscalls.c:136` `* child untouched (caller refuses fail-closed). */
+Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/batch.h`, `headers/block.h`, `headers/driver.h`, `headers/drivers/kbd.h`, `headers/futex.h`, `headers/ide.h`, `headers/ktime.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/randmix.h`, `headers/rcu.h`, `headers/rtc.h`, `headers/sanitize.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/spawn.h`, `headers/sync.h`, `headers/syscalls_proc.h`, `headers/vga_fb.h`, `headers/zip.h`
+- `kfd_view_current` (function) `kernel/syscalls.c:59` `static kfd_view_t *kfd_view_current(void)` -- Docstring: View owning the caller's fds: its own on isolated procs * and threads, the root on pid 0 and any pid...
+- `kfd_view_root` (function) `kernel/syscalls.c:69` `kfd_view_t *kfd_view_root(void)` -- Docstring: Static root view (shell pid 0, pids without their own): * entries are the historical shared table, never...
+- `kfd_get` (function) `kernel/syscalls.c:88` `KFILE *kfd_get(int fd)`
+- `kfd_put` (function) `kernel/syscalls.c:101` `void kfd_put(KFILE *f)`
+- `kfd_view_count` (function) `kernel/syscalls.c:113` `static int kfd_view_count(kfd_view_t *v)` -- } void kfd_put(KFILE *f) { irqflags_t flags; int drop = 0; if (!f) return; spin_lock_irqsave(&fd_lock, &flags)...
+- `untouched` (function) `kernel/syscalls.c:137` `* child untouched (caller refuses fail-closed). */
 int kfd_view_copy(proc_t *child, proc_t *parent)`
-- `NULL` (function) `kernel/syscalls.c:163` `* on NULL (already released or never owned). */
+- `NULL` (function) `kernel/syscalls.c:164` `* on NULL (already released or never owned). */
 void kfd_view_release(proc_t *p)`
-- `kfd_view_cloexec` (function) `kernel/syscalls.c:194` `void kfd_view_cloexec(void)` -- Docstring: Close every CLOEXEC fd in the caller's own view (execve: the image is replaced, marked descriptors must...
-- `by` (function) `kernel/syscalls.c:222` `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to...`
-- `wall_us_now` (function) `kernel/syscalls.c:253` `unsigned long wall_us_now(void)` -- wall_us_now: RTC-anchored wall clock in microseconds (Phase 0.2/0.3).
-- `sys_minios_dns` (function) `kernel/syscalls.c:263` `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_tls_retired` (function) `kernel/syscalls.c:268` `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_futex` (function) `kernel/syscalls.c:275` `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_time` (function) `kernel/syscalls.c:304` `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_kbd` (function) `kernel/syscalls.c:308` `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_palette` (function) `kernel/syscalls.c:328` `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_kbd_raw` (function) `kernel/syscalls.c:340` `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_vga_mode` (function) `kernel/syscalls.c:346` `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcspk_init` (function) `kernel/syscalls.c:353` `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcspk_tone` (function) `kernel/syscalls.c:357` `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_doom_frame` (function) `kernel/syscalls.c:371` `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_gfx_zoom` (function) `kernel/syscalls.c:382` `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)` -- Graphics window scale request (a1): 0 native, 1 2x nearest-neighbour zoom for the 320x200 game window, 2 true...
-- `sys_minios_rtc` (function) `kernel/syscalls.c:391` `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_fb_info` (function) `kernel/syscalls.c:404` `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcspk_vol` (function) `kernel/syscalls.c:424` `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `boot` (function) `kernel/syscalls.c:441` `* boot (minfo_sleep_init from sched_init);`
-- `minfo_sleep_init` (function) `kernel/syscalls.c:448` `void minfo_sleep_init(int tick_ok)`
-- `minfo_tick_wake` (function) `kernel/syscalls.c:453` `void minfo_tick_wake(void *ctx)`
-- `view` (function) `kernel/syscalls.c:465` `* view (same as the `clear` builtin). Anything else is -EINVAL. Each
+- `kfd_view_cloexec` (function) `kernel/syscalls.c:195` `void kfd_view_cloexec(void)` -- Docstring: Close every CLOEXEC fd in the caller's own view (execve: the image is replaced, marked descriptors must...
+- `by` (function) `kernel/syscalls.c:223` `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to...`
+- `wall_us_now` (function) `kernel/syscalls.c:254` `unsigned long wall_us_now(void)` -- wall_us_now: RTC-anchored wall clock in microseconds (Phase 0.2/0.3).
+- `sys_minios_dns` (function) `kernel/syscalls.c:264` `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_tls_retired` (function) `kernel/syscalls.c:269` `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_time` (function) `kernel/syscalls.c:282` `static long sys_linux_time(long a1, long a2, long a3, long a4, long a5, long a6)` -- time (201): the retired kernel-TLS handshake number now serves Linux time(2), exactly as 202 serves futex (ADR-0014...
+- `sys_linux_futex` (function) `kernel/syscalls.c:291` `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_time` (function) `kernel/syscalls.c:340` `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_kbd` (function) `kernel/syscalls.c:344` `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_palette` (function) `kernel/syscalls.c:364` `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_kbd_raw` (function) `kernel/syscalls.c:376` `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_vga_mode` (function) `kernel/syscalls.c:382` `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcspk_init` (function) `kernel/syscalls.c:389` `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcspk_tone` (function) `kernel/syscalls.c:393` `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_doom_frame` (function) `kernel/syscalls.c:407` `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_gfx_zoom` (function) `kernel/syscalls.c:418` `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)` -- Graphics window scale request (a1): 0 native, 1 2x nearest-neighbour zoom for the 320x200 game window, 2 true...
+- `sys_minios_rtc` (function) `kernel/syscalls.c:427` `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_fb_info` (function) `kernel/syscalls.c:440` `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcspk_vol` (function) `kernel/syscalls.c:460` `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `boot` (function) `kernel/syscalls.c:477` `* boot (minfo_sleep_init from sched_init);`
+- `minfo_sleep_init` (function) `kernel/syscalls.c:484` `void minfo_sleep_init(int tick_ok)`
+- `minfo_tick_wake` (function) `kernel/syscalls.c:489` `void minfo_tick_wake(void *ctx)`
+- `view` (function) `kernel/syscalls.c:501` `* view (same as the `clear` builtin). Anything else is -EINVAL. Each
  * out-word is range-checked...`
-- `sys_minios_spawn` (function) `kernel/syscalls.c:556` `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_lz4_compress` (function) `kernel/syscalls.c:567` `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_lz4_decompress` (function) `kernel/syscalls.c:580` `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_mouse` (function) `kernel/syscalls.c:594` `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_nk_frame` (function) `kernel/syscalls.c:618` `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sb16_audio_device` (function) `kernel/syscalls.c:631` `static device_t *sb16_audio_device(void)` -- } static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6) { (void)a2; (void)a3...
-- `sys_minios_sb16_open` (function) `kernel/syscalls.c:637` `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_submit` (function) `kernel/syscalls.c:649` `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_gfx_title` (function) `kernel/syscalls.c:660` `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_pump` (function) `kernel/syscalls.c:674` `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_stream_open` (function) `kernel/syscalls.c:678` `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_stream_close` (function) `kernel/syscalls.c:682` `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_stream_submit` (function) `kernel/syscalls.c:686` `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcm2_open` (function) `kernel/syscalls.c:699` `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)` -- Low-latency PCM path (pcm2, syscalls 246-248): OPEN takes flags, WRITE returns bytes taken (blocking unless...
-- `sys_minios_pcm2_write` (function) `kernel/syscalls.c:704` `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcm2_close` (function) `kernel/syscalls.c:712` `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_clip_set` (function) `kernel/syscalls.c:722` `static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6)` -- Shared text clipboard (syscalls 249-250): SET copies len bytes in (refused past 4096, never truncated), GET copies...
-- `sys_minios_clip_get` (function) `kernel/syscalls.c:732` `static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_stream_vol` (function) `kernel/syscalls.c:748` `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_futex_wait` (function) `kernel/syscalls.c:761` `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_futex_wake` (function) `kernel/syscalls.c:767` `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `batch_kdispatch` (function) `kernel/syscalls.c:776` `static long batch_kdispatch(uint32_t opcode)`
-- `DOOM_FRAME` (function) `kernel/syscalls.c:791` `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
+- `sys_minios_spawn` (function) `kernel/syscalls.c:592` `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_lz4_compress` (function) `kernel/syscalls.c:603` `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_lz4_decompress` (function) `kernel/syscalls.c:616` `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_mouse` (function) `kernel/syscalls.c:630` `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_nk_frame` (function) `kernel/syscalls.c:654` `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sb16_audio_device` (function) `kernel/syscalls.c:667` `static device_t *sb16_audio_device(void)` -- } static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6) { (void)a2; (void)a3...
+- `sys_minios_sb16_open` (function) `kernel/syscalls.c:673` `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_submit` (function) `kernel/syscalls.c:685` `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_gfx_title` (function) `kernel/syscalls.c:696` `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_pump` (function) `kernel/syscalls.c:710` `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_stream_open` (function) `kernel/syscalls.c:714` `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_stream_close` (function) `kernel/syscalls.c:718` `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_stream_submit` (function) `kernel/syscalls.c:722` `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcm2_open` (function) `kernel/syscalls.c:735` `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)` -- Low-latency PCM path (pcm2, syscalls 246-248): OPEN takes flags, WRITE returns bytes taken (blocking unless...
+- `sys_minios_pcm2_write` (function) `kernel/syscalls.c:740` `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcm2_close` (function) `kernel/syscalls.c:748` `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_clip_set` (function) `kernel/syscalls.c:758` `static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6)` -- Shared text clipboard (syscalls 249-250): SET copies len bytes in (refused past 4096, never truncated), GET copies...
+- `sys_minios_clip_get` (function) `kernel/syscalls.c:768` `static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_stream_vol` (function) `kernel/syscalls.c:784` `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_futex_wait` (function) `kernel/syscalls.c:797` `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_futex_wake` (function) `kernel/syscalls.c:803` `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `batch_kdispatch` (function) `kernel/syscalls.c:812` `static long batch_kdispatch(uint32_t opcode)`
+- `DOOM_FRAME` (function) `kernel/syscalls.c:827` `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
 static long sys_minios_gfx_prese...`
-- `sys_minios_getc_raw` (function) `kernel/syscalls.c:825` `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` -- Raw keystroke read for fullscreen ring-3 programs (vedit): one byte from the serial + PS/2 multiplexer with no line...
-- `sys_minios_submit_batch` (function) `kernel/syscalls.c:836` `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_rlimit` (function) `kernel/syscalls.c:859` `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` -- RLIMIT/cgroups-lite (240): a1 = op (SET/GET), a2 = resource (AS/CPU/NOFILE), a3 = value for SET.
-- `sys_minios_dir_list` (function) `kernel/syscalls.c:900` `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)` -- Docstring: unified directory listing for the ring-3 file browser.  a1 = path, a2 = user buffer, a3 = buffer capacity.
-- `syscall_trace_enabled` (function) `kernel/syscalls.c:1072` `long syscall_trace_enabled(void)`
-- `syscall_trace_set` (function) `kernel/syscalls.c:1073` `void syscall_trace_set(int on)`
-- `syscall_trace_verbose_enabled` (function) `kernel/syscalls.c:1074` `long syscall_trace_verbose_enabled(void)`
-- `syscall_trace_verbose_set` (function) `kernel/syscalls.c:1075` `void syscall_trace_verbose_set(int on)`
-- `syscall_trace_shown` (function) `kernel/syscalls.c:1076` `unsigned long syscall_trace_shown(void)`
-- `EAGAIN` (function) `kernel/syscalls.c:1109` `* writer open is EAGAIN (-11, retry);`
-- `EOF` (function) `kernel/syscalls.c:1110` `* is EOF (0). */ KFILE *o = kfd_get(0);`
-- `sys_linux_write` (function) `kernel/syscalls.c:1145` `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_writev` (function) `kernel/syscalls.c:1173` `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `do_open_path` (function) `kernel/syscalls.c:1207` `static long do_open_path(const char *path, long flags)` -- Shared by sys_linux_open (2) and the openat fall-through (257).
-- `sys_linux_open` (function) `kernel/syscalls.c:1240` `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `kfd_claim` (function) `kernel/syscalls.c:1248` `static long kfd_claim(KFILE *f)` -- Claim the lowest free fd slot for an already-opened KFILE (pipes, dup).
-- `sys_linux_pipe` (function) `kernel/syscalls.c:1287` `static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_dup` (function) `kernel/syscalls.c:1312` `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_dup2` (function) `kernel/syscalls.c:1327` `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_close` (function) `kernel/syscalls.c:1360` `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_lseek` (function) `kernel/syscalls.c:1383` `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `mm_ensure_cur` (function) `kernel/syscalls.c:1401` `static int mm_ensure_cur(unsigned long start, unsigned long end)` -- Back isolated user windows (mrun/proc_spawn_elf): their page tables start with only segments + stack mapped, so...
-- `sys_linux_brk` (function) `kernel/syscalls.c:1410` `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `mmap_tag_file` (function) `kernel/syscalls.c:1451` `static int mmap_tag_file(unsigned long base, int ino, unsigned long off)` -- Docstring: Tag a freshly carved live node as file-backed.
-- `sys_linux_mmap` (function) `kernel/syscalls.c:1460` `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_munmap` (function) `kernel/syscalls.c:1548` `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `mprotect_pte` (function) `kernel/syscalls.c:1580` `static volatile unsigned long *mprotect_pte(unsigned long cr3,
+- `sys_minios_getc_raw` (function) `kernel/syscalls.c:861` `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` -- Raw keystroke read for fullscreen ring-3 programs (vedit): one byte from the serial + PS/2 multiplexer with no line...
+- `sys_minios_submit_batch` (function) `kernel/syscalls.c:872` `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_rlimit` (function) `kernel/syscalls.c:895` `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` -- RLIMIT/cgroups-lite (240): a1 = op (SET/GET), a2 = resource (AS/CPU/NOFILE), a3 = value for SET.
+- `sys_minios_dir_list` (function) `kernel/syscalls.c:936` `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)` -- Docstring: unified directory listing for the ring-3 file browser.  a1 = path, a2 = user buffer, a3 = buffer capacity.
+- `syscall_trace_enabled` (function) `kernel/syscalls.c:1108` `long syscall_trace_enabled(void)`
+- `syscall_trace_set` (function) `kernel/syscalls.c:1109` `void syscall_trace_set(int on)`
+- `syscall_trace_verbose_enabled` (function) `kernel/syscalls.c:1110` `long syscall_trace_verbose_enabled(void)`
+- `syscall_trace_verbose_set` (function) `kernel/syscalls.c:1111` `void syscall_trace_verbose_set(int on)`
+- `syscall_trace_shown` (function) `kernel/syscalls.c:1112` `unsigned long syscall_trace_shown(void)`
+- `unchanged` (function) `kernel/syscalls.c:1127` `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...`
+- `sys_linux_read` (function) `kernel/syscalls.c:1138` `static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `EAGAIN` (function) `kernel/syscalls.c:1151` `* writer open is EAGAIN (-11, retry);`
+- `EOF` (function) `kernel/syscalls.c:1152` `* is EOF (0). */ KFILE *o = kfd_get(0);`
+- `fd_write` (function) `kernel/syscalls.c:1191` `static long fd_write(long fd, const char *buf, long cnt)` -- Write cnt validated user bytes to fd: a dup2/pipe override on fd 1/2 (pipeline stage stdout) is served instead of...
+- `sys_linux_write` (function) `kernel/syscalls.c:1215` `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_writev` (function) `kernel/syscalls.c:1222` `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `do_open_path` (function) `kernel/syscalls.c:1265` `static long do_open_path(const char *path, long flags)` -- Shared by sys_linux_open (2) and the openat fall-through (257).
+- `sys_linux_open` (function) `kernel/syscalls.c:1298` `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kfd_claim_from` (function) `kernel/syscalls.c:1331` `static long kfd_claim_from(KFILE *f, long minfd, int cloexec)` -- Claim the lowest free fd slot >= minfd for an already-opened KFILE (pipes, dup, eventfd), arming close-on-exec when...
+- `kfd_claim` (function) `kernel/syscalls.c:1356` `static long kfd_claim(KFILE *f)`
+- `sys_linux_pipe2` (function) `kernel/syscalls.c:1380` `static long sys_linux_pipe2(long a1, long a2, long a3, long a4, long a5, long a6)` -- pipe2 (293): O_CLOEXEC arms close-on-exec on both ends, O_NONBLOCK makes * both descriptions non-blocking; O_DIRECT...
+- `sys_linux_pipe` (function) `kernel/syscalls.c:1408` `static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kfd_cloexec_get` (function) `kernel/syscalls.c:1414` `static int kfd_cloexec_get(long fd)` -- kfclose(w); return wfd; } ufd[0] = (int)rfd; ufd[1] = (int)wfd; return 0; } static long sys_linux_pipe(long a1, long...
+- `kfd_cloexec_set` (function) `kernel/syscalls.c:1424` `static void kfd_cloexec_set(long fd, int on)`
+- `kfile_status_flags` (function) `kernel/syscalls.c:1435` `static long kfile_status_flags(KFILE *f)` -- Linux open-file status flags of a description: access mode from its * kind plus O_APPEND and O_NONBLOCK.
+- `sys_linux_dup3` (function) `kernel/syscalls.c:1486` `static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6)` -- break; case LINUX_F_SETFL: if (f) f->nonblock = (a3 & LINUX_O_NONBLOCK) ?
+- `sys_linux_close_range` (function) `kernel/syscalls.c:1496` `static long sys_linux_close_range(long a1, long a2, long a3, long a4, long a5, long a6)` -- return r; } /* dup3 (292): dup2 with O_CLOEXEC as the only flag; old == new is EINVAL. static long...
+- `sys_linux_eventfd2` (function) `kernel/syscalls.c:1520` `static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6)` -- spin_lock_irqsave(&fd_lock, &flags_irq); for (fd = lo; fd <= hi && fd < KFD_MAX; fd++) if (v->f[fd]) v->cloexec |=...
+- `sys_linux_eventfd` (function) `kernel/syscalls.c:1533` `static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kfd_poll_revents` (function) `kernel/syscalls.c:1541` `int kfd_poll_revents(int fd)` -- Docstring: poll(2) readiness of a non-socket descriptor (pipes, eventfds, files, console), masked by nothing: the...
+- `kfile_user_read` (function) `kernel/syscalls.c:1576` `static long kfile_user_read(KFILE *f, char *buf, long cnt)` -- Linux read on a description: an eventfd takes its counter, a pipe read end blocks (yielding) while empty with the...
+- `kfile_user_write` (function) `kernel/syscalls.c:1606` `static long kfile_user_write(KFILE *f, const char *buf, long cnt)` -- Linux write on a description: an eventfd adds to its counter, a pipe write end blocks (yielding) while full unless...
+- `sys_linux_dup` (function) `kernel/syscalls.c:1635` `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_dup2` (function) `kernel/syscalls.c:1650` `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_close` (function) `kernel/syscalls.c:1684` `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_lseek` (function) `kernel/syscalls.c:1707` `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `mm_ensure_cur` (function) `kernel/syscalls.c:1725` `static int mm_ensure_cur(unsigned long start, unsigned long end)` -- Back isolated user windows (mrun/proc_spawn_elf): their page tables start with only segments + stack mapped, so...
+- `sys_linux_brk` (function) `kernel/syscalls.c:1734` `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `mmap_tag_file` (function) `kernel/syscalls.c:1775` `static int mmap_tag_file(unsigned long base, int ino, unsigned long off)` -- Docstring: Tag a freshly carved live node as file-backed.
+- `sys_linux_mmap` (function) `kernel/syscalls.c:1784` `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_munmap` (function) `kernel/syscalls.c:1872` `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `mprotect_pte` (function) `kernel/syscalls.c:1904` `static volatile unsigned long *mprotect_pte(unsigned long cr3,
         unsigned long va)` -- Docstring: Locate the PTE for a user address in the caller's live tables (syscall entry keeps the caller CR3 loaded...
-- `first` (function) `kernel/syscalls.c:1604` `* passes under mm_lock: validate every page first (present, user,
+- `first` (function) `kernel/syscalls.c:1928` `* passes under mm_lock: validate every page first (present, user,
  * private), then apply, so a h...`
-- `vma_free_cover` (function) `kernel/syscalls.c:1676` `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` -- Free-tree node covering [base, base+len) entirely, or VMA_NIL.
-- `vma_live_overlap` (function) `kernel/syscalls.c:1695` `static int vma_live_overlap(unsigned long base, unsigned long len)` -- while (x != VMA_NIL || sp > 0) { while (x != VMA_NIL) { if (sp < 64) stack[sp++] = x; x = x->left; } x =...
-- `node` (function) `kernel/syscalls.c:1717` `* mapping is one exact live VMA node (what mmap inserts);`
-- `sys_linux_mremap` (function) `kernel/syscalls.c:1722` `static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6)` -- Linux mremap(25): resize or move one mmap region. glibc's realloc calls it when growing large mmap'd chunks (the...
-- `sys_linux_sigaction` (function) `kernel/syscalls.c:1982` `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_sigprocmask` (function) `kernel/syscalls.c:1987` `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_ioctl` (function) `kernel/syscalls.c:1992` `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_access` (function) `kernel/syscalls.c:1997` `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_socket` (function) `kernel/syscalls.c:2019` `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_connect` (function) `kernel/syscalls.c:2024` `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_bind` (function) `kernel/syscalls.c:2030` `static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_listen` (function) `kernel/syscalls.c:2036` `static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_accept` (function) `kernel/syscalls.c:2041` `static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_sendto` (function) `kernel/syscalls.c:2047` `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_recvfrom` (function) `kernel/syscalls.c:2052` `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_shutdown` (function) `kernel/syscalls.c:2057` `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_poll` (function) `kernel/syscalls.c:2062` `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_flock` (function) `kernel/syscalls.c:2069` `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_fsync` (function) `kernel/syscalls.c:2078` `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` -- fsync/fdatasync: the ramdisk is memory (always durable) and MiniFS persists through kfclose/minifs_sync, so there is...
-- `sys_linux_fdatasync` (function) `kernel/syscalls.c:2083` `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_getcwd` (function) `kernel/syscalls.c:2088` `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_unlink` (function) `kernel/syscalls.c:2100` `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_readlink` (function) `kernel/syscalls.c:2119` `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_rename` (function) `kernel/syscalls.c:2128` `static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6)` -- rename(82): same-filesystem file move through fs_rename (ramdisk in-place, MiniFS entry move).
-- `sys_linux_fstat` (function) `kernel/syscalls.c:2142` `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_gettimeofday` (function) `kernel/syscalls.c:2165` `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_arch_prctl` (function) `kernel/syscalls.c:2188` `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_uname` (function) `kernel/syscalls.c:2200` `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `trace_is_noisy` (function) `kernel/syscalls.c:2275` `static int trace_is_noisy(long n)`
-- `syscall_name` (function) `kernel/syscalls.c:2303` `const char *syscall_name(long n)` -- define SC_EXTRA_COUNT (sizeof(sc_extra_names) / sizeof(sc_extra_names[0]))
-- `trace_hint_print` (function) `kernel/syscalls.c:2344` `static void trace_hint_print(long n, int kind, const char *path,
+- `vma_free_cover` (function) `kernel/syscalls.c:2000` `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` -- Free-tree node covering [base, base+len) entirely, or VMA_NIL.
+- `vma_live_overlap` (function) `kernel/syscalls.c:2019` `static int vma_live_overlap(unsigned long base, unsigned long len)` -- while (x != VMA_NIL || sp > 0) { while (x != VMA_NIL) { if (sp < 64) stack[sp++] = x; x = x->left; } x =...
+- `node` (function) `kernel/syscalls.c:2041` `* mapping is one exact live VMA node (what mmap inserts);`
+- `sys_linux_mremap` (function) `kernel/syscalls.c:2046` `static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6)` -- Linux mremap(25): resize or move one mmap region. glibc's realloc calls it when growing large mmap'd chunks (the...
+- `sys_linux_sigaction` (function) `kernel/syscalls.c:2306` `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_sigprocmask` (function) `kernel/syscalls.c:2311` `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_ioctl` (function) `kernel/syscalls.c:2316` `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_access` (function) `kernel/syscalls.c:2321` `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_socket` (function) `kernel/syscalls.c:2343` `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_connect` (function) `kernel/syscalls.c:2348` `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_bind` (function) `kernel/syscalls.c:2354` `static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_listen` (function) `kernel/syscalls.c:2360` `static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_accept` (function) `kernel/syscalls.c:2365` `static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_sendto` (function) `kernel/syscalls.c:2371` `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_recvfrom` (function) `kernel/syscalls.c:2376` `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_shutdown` (function) `kernel/syscalls.c:2381` `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_setsockopt` (function) `kernel/syscalls.c:2386` `static long sys_linux_setsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getsockopt` (function) `kernel/syscalls.c:2393` `static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getsockname` (function) `kernel/syscalls.c:2400` `static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getpeername` (function) `kernel/syscalls.c:2406` `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_sendmsg` (function) `kernel/syscalls.c:2412` `static long sys_linux_sendmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_sendmmsg` (function) `kernel/syscalls.c:2418` `static long sys_linux_sendmmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_poll` (function) `kernel/syscalls.c:2426` `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_flock` (function) `kernel/syscalls.c:2433` `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_fsync` (function) `kernel/syscalls.c:2442` `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` -- fsync/fdatasync: the ramdisk is memory (always durable) and MiniFS persists through kfclose/minifs_sync, so there is...
+- `sys_linux_fdatasync` (function) `kernel/syscalls.c:2447` `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getcwd` (function) `kernel/syscalls.c:2452` `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_unlink` (function) `kernel/syscalls.c:2464` `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `readlink_path` (function) `kernel/syscalls.c:2488` `static long readlink_path(const char *path, char *buf, long bufsz)` -- readlink of /proc/self/exe answers the caller's image path (absolute, no NUL, truncated to the buffer like Linux)...
+- `sys_linux_readlink` (function) `kernel/syscalls.c:2504` `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_prctl` (function) `kernel/syscalls.c:2510` `static long sys_linux_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` -- if (!exe[0]) return -2; len = (long)kstrlen(exe) + 1; if (len > bufsz) len = bufsz; buf[0] = '/'; for (i = 1; i <...
+- `sys_linux_rename` (function) `kernel/syscalls.c:2519` `static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6)` -- rename(82): same-filesystem file move through fs_rename (ramdisk in-place, MiniFS entry move).
+- `sys_linux_fstat` (function) `kernel/syscalls.c:2533` `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_gettimeofday` (function) `kernel/syscalls.c:2556` `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_arch_prctl` (function) `kernel/syscalls.c:2579` `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_uname` (function) `kernel/syscalls.c:2591` `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_madvise` (function) `kernel/syscalls.c:2614` `static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6)` -- madvise (28): advice only; glibc frees thread stacks with it and * ignores the result, MiniOS keeps the pages, so 0...
+- `sys_linux_mkdir` (function) `kernel/syscalls.c:2622` `static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6)` -- mkdir (83): a MiniFS directory.
+- `trace_is_noisy` (function) `kernel/syscalls.c:2716` `static int trace_is_noisy(long n)`
+- `syscall_name` (function) `kernel/syscalls.c:2744` `const char *syscall_name(long n)` -- define SC_EXTRA_COUNT (sizeof(sc_extra_names) / sizeof(sc_extra_names[0]))
+- `trace_hint_print` (function) `kernel/syscalls.c:2785` `static void trace_hint_print(long n, int kind, const char *path,
                              lon...`
-- `ksyscall` (function) `kernel/syscalls.c:2357` `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- `user_range_ok` (function) `kernel/syscalls.c:2395` `int user_range_ok(unsigned long p, unsigned long len)`
-- `Discipline` (function) `kernel/syscalls.c:2408` `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok...`
-- `products` (function) `kernel/syscalls.c:2412` `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
+- `ksyscall` (function) `kernel/syscalls.c:2798` `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+- `user_range_ok` (function) `kernel/syscalls.c:2836` `int user_range_ok(unsigned long p, unsigned long len)`
+- `Discipline` (function) `kernel/syscalls.c:2849` `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok...`
+- `products` (function) `kernel/syscalls.c:2853` `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
  * pre-bounded against (END-...`
-- `ksyscall_dispatch` (function) `kernel/syscalls.c:2425` `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- `proc_spawn_elf` (function) `kernel/syscalls.c:2622` `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is...`
-- `k_syscall_spawn` (function) `kernel/syscalls.c:2631` `static int k_syscall_spawn(const char *path, const char *redirect,
+- `ksyscall_dispatch` (function) `kernel/syscalls.c:2866` `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+- `readlink` (function) `kernel/syscalls.c:2994` `* readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);`
+- `proc_spawn_elf` (function) `kernel/syscalls.c:3103` `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is...`
+- `k_syscall_spawn` (function) `kernel/syscalls.c:3112` `static int k_syscall_spawn(const char *path, const char *redirect,
                              i...`
 
 ## kernel/syscalls_proc.c
-Depends on: `headers/sanitize.h`, `headers/sched.h`
+Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`
 - `state` (function) `kernel/syscalls_proc.c:5` `* touches only scheduler state (current_pid, procs[], do_* / * seccomp_* / yield) plus the kernel-wide user_range_ok...`
-- `sys_minios_clone` (function) `kernel/syscalls_proc.c:16` `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-- `sys_minios_thread_spawn` (function) `kernel/syscalls_proc.c:22` `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_seccomp` (function) `kernel/syscalls_proc.c:35` `long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)` -- Seccomp-basic (238): a1 = op (1 deny-one, 2 allow-one, 3 deny-all), a2 = syscall number (ops 1-2).
-- `sys_minios_nice` (function) `kernel/syscalls_proc.c:52` `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)` -- if (a1 == SECCOMP_OP_DENY_ONE) return seccomp_deny_one(pid, (int)a2); if (a1 == SECCOMP_OP_ALLOW_ONE) return...
-- `sys_linux_yield` (function) `kernel/syscalls_proc.c:65` `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_getpid` (function) `kernel/syscalls_proc.c:70` `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_fork` (function) `kernel/syscalls_proc.c:75` `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_vfork` (function) `kernel/syscalls_proc.c:80` `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_execve` (function) `kernel/syscalls_proc.c:85` `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_exit` (function) `kernel/syscalls_proc.c:161` `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `code` (function) `kernel/syscalls_proc.c:169` `* exit code (no WEXITSTATUS encoding: MiniOS reports codes directly). */
-long sys_linux_wait4(lon...`
-- `sys_linux_kill` (function) `kernel/syscalls_proc.c:188` `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_gettid` (function) `kernel/syscalls_proc.c:193` `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_clone` (function) `kernel/syscalls_proc.c:17` `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
+- `sys_minios_thread_spawn` (function) `kernel/syscalls_proc.c:23` `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_seccomp` (function) `kernel/syscalls_proc.c:36` `long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)` -- Seccomp-basic (238): a1 = op (1 deny-one, 2 allow-one, 3 deny-all), a2 = syscall number (ops 1-2).
+- `sys_minios_nice` (function) `kernel/syscalls_proc.c:53` `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)` -- if (a1 == SECCOMP_OP_DENY_ONE) return seccomp_deny_one(pid, (int)a2); if (a1 == SECCOMP_OP_ALLOW_ONE) return...
+- `sys_linux_yield` (function) `kernel/syscalls_proc.c:66` `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getpid` (function) `kernel/syscalls_proc.c:75` `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)` -- getpid answers the thread group: a CLONE_THREAD member reports its leader, a process its own pid.
+- `sys_linux_clone` (function) `kernel/syscalls_proc.c:83` `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6)` -- getpid answers the thread group: a CLONE_THREAD member reports its leader, a process its own pid.
+- `sys_linux_fork` (function) `kernel/syscalls_proc.c:89` `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_vfork` (function) `kernel/syscalls_proc.c:94` `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_execve` (function) `kernel/syscalls_proc.c:99` `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_exit` (function) `kernel/syscalls_proc.c:184` `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kill` (function) `kernel/syscalls_proc.c:192` `* historic kill (SIGKILL), -N is signal N (a seccomp kill is -SIGSYS). */
+#define LINUX_WNOHANG  ...`
+- `groups` (function) `kernel/syscalls_proc.c:213` `* groups (pid 0 and < -1) are not modelled and wait for any child. */
+long sys_linux_wait4(long a...`
+- `sys_linux_kill` (function) `kernel/syscalls_proc.c:231` `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_gettid` (function) `kernel/syscalls_proc.c:236` `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
 
 ## kernel/tick.c
 Depends on: `headers/tick.h`

@@ -2,74 +2,95 @@
 Previous: [API_p7.md](API_p7.md)
 
 ## net/net.c
-Depends on: `headers/drivers/virtio_net.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/tls.h`
-- `net_drv_send` (function) `net/net.c:37` `static int net_drv_send(const unsigned char *frame, unsigned len)`
-- `net_drv_poll` (function) `net/net.c:42` `static void net_drv_poll(void)`
-- `net_drv_present` (function) `net/net.c:47` `static int net_drv_present(void)`
-- `net_put16` (function) `net/net.c:56` `static void net_put16(unsigned char *p, unsigned short v)`
-- `net_put32` (function) `net/net.c:61` `static void net_put32(unsigned char *p, unsigned int v)`
-- `net_get16` (function) `net/net.c:68` `static unsigned short net_get16(const unsigned char *p)`
-- `net_get32` (function) `net/net.c:72` `static unsigned int net_get32(const unsigned char *p)`
-- `net_checksum` (function) `net/net.c:77` `static unsigned short net_checksum(const void *data, unsigned len)`
-- `net_arp_store` (function) `net/net.c:102` `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)`
-- `net_arp_lookup` (function) `net/net.c:117` `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)`
-- `net_arp_request` (function) `net/net.c:128` `static void net_arp_request(const unsigned char *ip)`
-- `net_arp_resolve` (function) `net/net.c:146` `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)` -- kmemcpy(frame + 6, net_mac, NET_ETH_ALEN); net_put16(frame + 12, NET_ETHERTYPE_ARP); net_put16(frame + 14, 1)...
-- `net_ip_send` (function) `net/net.c:171` `static int net_ip_send(const unsigned char *dip, unsigned char proto,
+Depends on: `headers/drivers/virtio_net.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`, `headers/tls.h`
+- `net_drv_send` (function) `net/net.c:38` `static int net_drv_send(const unsigned char *frame, unsigned len)`
+- `net_drv_poll` (function) `net/net.c:43` `static void net_drv_poll(void)`
+- `net_drv_present` (function) `net/net.c:48` `static int net_drv_present(void)`
+- `net_put16` (function) `net/net.c:57` `static void net_put16(unsigned char *p, unsigned short v)`
+- `net_put32` (function) `net/net.c:62` `static void net_put32(unsigned char *p, unsigned int v)`
+- `net_get16` (function) `net/net.c:69` `static unsigned short net_get16(const unsigned char *p)`
+- `net_get32` (function) `net/net.c:73` `static unsigned int net_get32(const unsigned char *p)`
+- `net_checksum` (function) `net/net.c:78` `static unsigned short net_checksum(const void *data, unsigned len)`
+- `net_arp_store` (function) `net/net.c:103` `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)`
+- `net_arp_lookup` (function) `net/net.c:118` `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)`
+- `net_arp_request` (function) `net/net.c:129` `static void net_arp_request(const unsigned char *ip)`
+- `net_arp_resolve` (function) `net/net.c:147` `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)` -- kmemcpy(frame + 6, net_mac, NET_ETH_ALEN); net_put16(frame + 12, NET_ETHERTYPE_ARP); net_put16(frame + 14, 1)...
+- `net_ip_send` (function) `net/net.c:172` `static int net_ip_send(const unsigned char *dip, unsigned char proto,
                        cons...`
-- `net_udp_send` (function) `net/net.c:207` `static int net_udp_send(const unsigned char *dip, unsigned short sport,
+- `net_udp_send` (function) `net/net.c:208` `static int net_udp_send(const unsigned char *dip, unsigned short sport,
                         u...`
-- `net_dns_parse` (function) `net/net.c:229` `static void net_dns_parse(const unsigned char *data, unsigned len)` -- net_put16(pkt + 6, 0);                    /* checksum optional for UDP kmemcpy(pkt + 8, data, len); return...
-- `net_dns_resolve` (function) `net/net.c:267` `static int net_dns_resolve(const char *host, unsigned char ip_out[4])` -- rtype = net_get16(data + pos); rdlen = net_get16(data + pos + 8); pos += 10; if (pos + rdlen > len) return; if...
-- `net_udp_send` (function) `net/net.c:328` `net_udp_send((const unsigned char[])`
-- `net_icmp_rx` (function) `net/net.c:347` `static void net_icmp_rx(const unsigned char *ip, unsigned len)`
-- `net_ping` (function) `net/net.c:376` `static int net_ping(const unsigned char ip[4])`
-- `net_sock_alloc` (function) `net/net.c:435` `static struct net_tcp_sock *net_sock_alloc(void)`
-- `net_sock_index` (function) `net/net.c:450` `static int net_sock_index(const struct net_tcp_sock *s)`
-- `net_tcp_checksum` (function) `net/net.c:459` `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
+- `net_dns_parse` (function) `net/net.c:230` `static void net_dns_parse(const unsigned char *data, unsigned len)` -- net_put16(pkt + 6, 0);                    /* checksum optional for UDP kmemcpy(pkt + 8, data, len); return...
+- `net_dns_resolve` (function) `net/net.c:268` `static int net_dns_resolve(const char *host, unsigned char ip_out[4])` -- rtype = net_get16(data + pos); rdlen = net_get16(data + pos + 8); pos += 10; if (pos + rdlen > len) return; if...
+- `net_udp_send` (function) `net/net.c:329` `net_udp_send((const unsigned char[])`
+- `net_icmp_rx` (function) `net/net.c:348` `static void net_icmp_rx(const unsigned char *ip, unsigned len)`
+- `net_ping` (function) `net/net.c:377` `static int net_ping(const unsigned char ip[4])`
+- `net_sock_alloc` (function) `net/net.c:469` `static struct net_tcp_sock *net_sock_alloc(void)`
+- `net_sock_index` (function) `net/net.c:484` `static int net_sock_index(const struct net_tcp_sock *s)`
+- `net_tcp_checksum` (function) `net/net.c:493` `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
       ...` -- } } return 0; } static int net_sock_index(const struct net_tcp_sock *s) { int i; if (!net_sockets) return -1; for (i...
-- `net_udp_checksum_ok` (function) `net/net.c:475` `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
+- `net_udp_checksum_ok` (function) `net/net.c:509` `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
               ...` -- const unsigned char *seg, unsigned len) { unsigned char buf[NET_TX_MAX + 12]; unsigned total = 12 + len...
-- `net_tcp_xmit` (function) `net/net.c:491` `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
+- `net_tcp_xmit` (function) `net/net.c:525` `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
                         const uns...`
-- `net_tcp_rx` (function) `net/net.c:525` `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
-- `net_tcp_passive_open` (function) `net/net.c:653` `static int net_tcp_passive_open(struct net_tcp_sock *ls,
+- `net_tcp_rx` (function) `net/net.c:559` `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
+- `net_tcp_passive_open` (function) `net/net.c:687` `static int net_tcp_passive_open(struct net_tcp_sock *ls,
         const unsigned char peer[4], uns...` -- Passive open: park a SYN_RCVD child on a LISTEN socket and answer SYN-ACK.
-- `net_tcp_connect_into` (function) `net/net.c:677` `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
+- `net_tcp_connect_into` (function) `net/net.c:711` `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
               ...` -- kmemcpy(c->dip, peer, 4); c->dport = pport; c->sport = lport; c->seq = net_tcp_seq; net_tcp_seq += 0x1000...
-- `net_tcp_send` (function) `net/net.c:704` `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)` -- unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry && s->state == NET_TCP_SYN_SENT)...
-- `net_tcp_recv` (function) `net/net.c:730` `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)` -- net_time_ms() < deadline) { unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry &&...
-- `net_tcp_close` (function) `net/net.c:768` `static void net_tcp_close(struct net_tcp_sock *s)`
-- `net_rx_handle_frame` (function) `net/net.c:788` `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
-- `net_open` (function) `net/net.c:850` `int net_open(void)`
-- `net_connect` (function) `net/net.c:856` `int net_connect(const char *host, unsigned short port)`
-- `net_send` (function) `net/net.c:865` `int net_send(int fd, const char *buf, int len)`
-- `net_recv` (function) `net/net.c:870` `int net_recv(int fd, char *buf, int len)`
-- `net_recv_timeout` (function) `net/net.c:875` `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
-- `net_close` (function) `net/net.c:880` `void net_close(int fd)`
-- `net_listen` (function) `net/net.c:891` `int net_listen(unsigned short port)` -- Docstring: Allocate a socket bound to a local port and listening. * Returns the socket index, or -1 when the table...
-- `net_accept_nb` (function) `net/net.c:906` `int net_accept_nb(int fd)` -- Docstring: Take a pending child off a LISTEN socket without waiting.
-- `polling` (function) `net/net.c:923` `* without polling (the peer's ACK arrives through the driver poll). */
+- `net_tcp_send` (function) `net/net.c:738` `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)` -- unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry && s->state == NET_TCP_SYN_SENT)...
+- `net_tcp_recv` (function) `net/net.c:764` `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)` -- net_time_ms() < deadline) { unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry &&...
+- `net_tcp_close` (function) `net/net.c:802` `static void net_tcp_close(struct net_tcp_sock *s)`
+- `net_rx_handle_frame` (function) `net/net.c:822` `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
+- `net_open` (function) `net/net.c:886` `int net_open(void)`
+- `net_connect` (function) `net/net.c:892` `int net_connect(const char *host, unsigned short port)`
+- `net_send` (function) `net/net.c:901` `int net_send(int fd, const char *buf, int len)`
+- `net_recv` (function) `net/net.c:906` `int net_recv(int fd, char *buf, int len)`
+- `net_recv_timeout` (function) `net/net.c:911` `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
+- `net_close` (function) `net/net.c:916` `void net_close(int fd)`
+- `net_listen` (function) `net/net.c:927` `int net_listen(unsigned short port)` -- Docstring: Allocate a socket bound to a local port and listening. * Returns the socket index, or -1 when the table...
+- `net_accept_nb` (function) `net/net.c:942` `int net_accept_nb(int fd)` -- Docstring: Take a pending child off a LISTEN socket without waiting.
+- `polling` (function) `net/net.c:959` `* without polling (the peer's ACK arrives through the driver poll). */
 int net_accept(int fd, uns...`
-- `net_sock_state` (function) `net/net.c:940` `int net_sock_state(int fd)` -- Docstring: Socket state for diagnostics (the `net` builtin and the * httpd selftest). -1 on a wild fd.
-- `net_sys_socket` (function) `net/net.c:992` `long net_sys_socket(long a1, long a2, long a3)`
-- `net_sys_connect` (function) `net/net.c:1001` `long net_sys_connect(long fd, long sockaddr, long addrlen)`
-- `net_sys_bind` (function) `net/net.c:1014` `long net_sys_bind(long fd, long sockaddr, long addrlen)`
-- `net_sys_listen` (function) `net/net.c:1029` `long net_sys_listen(long fd, long backlog)`
-- `net_sys_accept` (function) `net/net.c:1040` `long net_sys_accept(long fd, long sockaddr, long addrlen)`
-- `net_sys_sendto` (function) `net/net.c:1059` `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
-- `net_sys_recvfrom` (function) `net/net.c:1068` `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
-- `net_sys_shutdown` (function) `net/net.c:1078` `long net_sys_shutdown(long fd, long how)`
-- `net_sys_close` (function) `net/net.c:1085` `long net_sys_close(long fd)`
-- `net_sys_poll` (function) `net/net.c:1092` `long net_sys_poll(long fds, long nfds, long timeout_ms)`
-- `net_sys_dns` (function) `net/net.c:1129` `long net_sys_dns(long host)` -- MiniOS syscall 200: resolve a hostname, returned as a network-order * 32-bit address (like inet_addr), or -1 on failure.
-- `net_parse_ip` (function) `net/net.c:1140` `static int net_parse_ip(const char *text, unsigned char ip[4])`
-- `net_cmd_status` (function) `net/net.c:1165` `void net_cmd_status(void)`
-- `net_get_addrs` (function) `net/net.c:1187` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])` -- kprintf("virtio-net iobase 0x%x\n", vnet_iobase()); } else { rtl_counters(&tx_frames, &rx_frames); kprintf("rtl8139...
-- `net_cmd_ping` (function) `net/net.c:1193` `void net_cmd_ping(const char *ip_text)`
-- `net_cmd_dns` (function) `net/net.c:1204` `void net_cmd_dns(const char *host)`
-- `net_register_symbols` (function) `net/net.c:1217` `void net_register_symbols(void)`
-- `net_init` (function) `net/net.c:1225` `void net_init(void)`
+- `net_sock_state` (function) `net/net.c:976` `int net_sock_state(int fd)` -- Docstring: Socket state for diagnostics (the `net` builtin and the * httpd selftest). -1 on a wild fd.
+- `net_fd_udp` (function) `net/net.c:1096` `static int net_fd_udp(long fd)`
+- `net_sys_is_socket` (function) `net/net.c:1102` `int net_sys_is_socket(long fd)`
+- `net_udp_alloc` (function) `net/net.c:1106` `static struct net_udp_sock *net_udp_alloc(void)`
+- `net_udp_ephemeral` (function) `net/net.c:1120` `static unsigned short net_udp_ephemeral(void)` -- static struct net_udp_sock *net_udp_alloc(void) { int i; if (!net_udp_sockets) return 0; for (i = 0; i <...
+- `net_udp_deliver` (function) `net/net.c:1136` `static int net_udp_deliver(const unsigned char sip[4], unsigned short sport,
+                    ...` -- Queue a received datagram on the user socket bound to dport (and, when connected, from that peer only).
+- `net_put_sockaddr` (function) `net/net.c:1158` `static void net_put_sockaddr(unsigned char *sa, const unsigned char ip[4], unsigned short port)`
+- `net_store_sockaddr` (function) `net/net.c:1168` `static long net_store_sockaddr(long addr, long lenp, const unsigned char ip[4],
+                 ...` -- Store a sockaddr_in at a user address with a user socklen_t length * pointer, truncating like Linux and reporting...
+- `net_load_sockaddr` (function) `net/net.c:1185` `static long net_load_sockaddr(long addr, long len, unsigned char ip[4], unsigned short *port)` -- int len; if (!addr || !lenp) return 0; if (!user_range_ok((unsigned long)lenp, sizeof(int))) return -LNX_EFAULT; len...
+- `net_sys_socket` (function) `net/net.c:1222` `long net_sys_socket(long a1, long a2, long a3)`
+- `net_sys_connect` (function) `net/net.c:1249` `long net_sys_connect(long fd, long sockaddr, long addrlen)`
+- `net_sys_bind` (function) `net/net.c:1296` `long net_sys_bind(long fd, long sockaddr, long addrlen)`
+- `net_sys_listen` (function) `net/net.c:1318` `long net_sys_listen(long fd, long backlog)`
+- `net_sys_accept` (function) `net/net.c:1329` `long net_sys_accept(long fd, long sockaddr, long addrlen)`
+- `net_send_bytes` (function) `net/net.c:1347` `static long net_send_bytes(long fd, const unsigned char *buf, long len,
+                         ...` -- Send len validated bytes: a stream sends synchronously (stop-and-wait), * a datagram goes out as one UDP datagram to...
+- `net_sys_sendto` (function) `net/net.c:1375` `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
+- `net_sys_recvfrom` (function) `net/net.c:1390` `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
+- `net_gather_msg` (function) `net/net.c:1450` `static long net_gather_msg(long msg, unsigned char *kbuf, long cap)` -- long rc = net_store_sockaddr(from, fromlen, s->dip, s->dport); if (rc) return rc; } return (long)take; } if...
+- `net_sys_sendmsg` (function) `net/net.c:1470` `long net_sys_sendmsg(long fd, long msg, long flags)`
+- `net_sys_sendmmsg` (function) `net/net.c:1498` `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags)` -- sendmmsg (307): glibc's resolver sends its A and AAAA queries together and treats ENOSYS as a failed lookup.
+- `net_sys_shutdown` (function) `net/net.c:1514` `long net_sys_shutdown(long fd, long how)`
+- `net_sys_close` (function) `net/net.c:1523` `long net_sys_close(long fd)`
+- `net_sys_setsockopt` (function) `net/net.c:1534` `long net_sys_setsockopt(long fd, long level, long name, long val, long len)`
+- `net_sys_getsockopt` (function) `net/net.c:1569` `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp)`
+- `net_sys_getsockname` (function) `net/net.c:1616` `long net_sys_getsockname(long fd, long addr, long lenp)`
+- `net_sys_getpeername` (function) `net/net.c:1625` `long net_sys_getpeername(long fd, long addr, long lenp)`
+- `net_sys_fcntl` (function) `net/net.c:1643` `long net_sys_fcntl(long fd, long cmd, long arg)` -- fcntl on a socket: O_NONBLOCK through F_GETFL/F_SETFL, FD_CLOEXEC recorded through F_GETFD/F_SETFD (sockets live in...
+- `net_socket_revents` (function) `net/net.c:1664` `static unsigned short net_socket_revents(long fd)` -- ce = &net_sockets[fd - NET_FD_BASE].cloexec; } else { return -LNX_EBADF; } switch (cmd) { case LNX_F_GETFL: return...
+- `net_sys_poll` (function) `net/net.c:1684` `long net_sys_poll(long fds, long nfds, long timeout_ms)`
+- `net_sys_dns` (function) `net/net.c:1724` `long net_sys_dns(long host)` -- MiniOS syscall 200: resolve a hostname, returned as a network-order * 32-bit address (like inet_addr), or -1 on failure.
+- `net_parse_ip` (function) `net/net.c:1735` `static int net_parse_ip(const char *text, unsigned char ip[4])`
+- `net_cmd_status` (function) `net/net.c:1760` `void net_cmd_status(void)`
+- `net_get_addrs` (function) `net/net.c:1782` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])` -- kprintf("virtio-net iobase 0x%x\n", vnet_iobase()); } else { rtl_counters(&tx_frames, &rx_frames); kprintf("rtl8139...
+- `net_cmd_ping` (function) `net/net.c:1788` `void net_cmd_ping(const char *ip_text)`
+- `net_cmd_dns` (function) `net/net.c:1799` `void net_cmd_dns(const char *host)`
+- `net_register_symbols` (function) `net/net.c:1812` `void net_register_symbols(void)`
+- `net_init` (function) `net/net.c:1820` `void net_init(void)`
 
 ## net/rtl8139.c
 Depends on: `headers/drivers/pci.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`
@@ -453,37 +474,6 @@ Depends on: `headers/tls.h`, `headers/tls_port.h`
 - `lz4_compress_file` (function) `progs/asm/lz4.s:478`
 - `lz4_decompress_file` (function) `progs/asm/lz4.s:791`
 - `main` (function) `progs/asm/lz4.s:1228`
-
-## progs/asm/lzss.s
-- `lz_win` (function) `progs/asm/lzss.s:3`
-- `lz_src` (function) `progs/asm/lzss.s:7`
-- `lz_srclen` (function) `progs/asm/lzss.s:11`
-- `lz_srcpos` (function) `progs/asm/lzss.s:15`
-- `lz_dst` (function) `progs/asm/lzss.s:19`
-- `lz_dstcap` (function) `progs/asm/lzss.s:23`
-- `lz_dstlen` (function) `progs/asm/lzss.s:27`
-- `lz_err` (function) `progs/asm/lzss.s:31`
-- `lz_buf` (function) `progs/asm/lzss.s:35`
-- `lz_mask` (function) `progs/asm/lzss.s:39`
-- `lz_in_getc` (function) `progs/asm/lzss.s:43`
-- `lz_out_put` (function) `progs/asm/lzss.s:79`
-- `lz_putbit1` (function) `progs/asm/lzss.s:116`
-- `lz_putbit0` (function) `progs/asm/lzss.s:174`
-- `lz_flush_bits` (function) `progs/asm/lzss.s:223`
-- `lz_out_literal` (function) `progs/asm/lzss.s:251`
-- `lz_out_pair` (function) `progs/asm/lzss.s:321`
-- `lz_next_mb` (function) `progs/asm/lzss.s:447`
-- `lz_encode` (function) `progs/asm/lzss.s:451`
-- `lz_getbit` (function) `progs/asm/lzss.s:1051`
-- `lz_decode` (function) `progs/asm/lzss.s:1171`
-- `lz_hdr_put` (function) `progs/asm/lzss.s:1514`
-- `lz_hdr_get` (function) `progs/asm/lzss.s:1629`
-- `lz_has` (function) `progs/asm/lzss.s:1782`
-- `lz_read_all` (function) `progs/asm/lzss.s:1935`
-- `lz_write_all` (function) `progs/asm/lzss.s:2150`
-- `lz_compress` (function) `progs/asm/lzss.s:2257`
-- `lz_decompress` (function) `progs/asm/lzss.s:2628`
-- `main` (function) `progs/asm/lzss.s:3178`
 
 
 Next: [API_p9.md](API_p9.md)

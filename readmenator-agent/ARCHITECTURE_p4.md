@@ -59,6 +59,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `kernel/mm/swap.c` -> kernel.h
 - `kernel/panic.c` -> kernel.h
 - `kernel/printf.c` -> kernel.h
+- `kernel/proc_sec.c` -> kernel.h
 - `kernel/redirect.c` -> kernel.h
 - `kernel/sched.c` -> kernel.h
 - `kernel/scrollback.c` -> kernel.h
@@ -187,6 +188,8 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `progs/src/freedom.c` -> stdio.h, sys/socket.h, unistd.h
 - `progs/src/freedom_wl.c` -> stdint.h, stdio.h, sys/socket.h, unistd.h
 - `progs/src/lxabi.c` -> errno.h, fcntl.h, poll.h, pthread.h, signal.h, stdint.h, stdio.h, stdlib.h, sys/eventfd.h, sys/stat.h, sys/syscall.h, sys/uio.h, sys/wait.h, unistd.h
+- `progs/src/lxnet.c` -> arpa/inet.h, errno.h, fcntl.h, netdb.h, netinet/in.h, netinet/tcp.h, poll.h, stdio.h, stdlib.h, sys/socket.h, sys/uio.h, unistd.h
+- `progs/src/lxsecc.c` -> errno.h, linux/audit.h, linux/filter.h, linux/seccomp.h, stddef.h, stdio.h, stdlib.h, sys/mman.h, sys/prctl.h, sys/syscall.h, sys/wait.h, unistd.h
 - `progs/src/opl3.c` -> stdint.h, stdio.h
 - `progs/src/sbtone.c` -> math.h, stdio.h
 - `progs/src/shell.py` -> os, sys
@@ -219,6 +222,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tests/test_ktime.c` -> stdio.h
 - `tests/test_ldso.c` -> stdio.h
 - `tests/test_leakcheck.c` -> stdio.h
+- `tests/test_minifs_tools.py` -> os, struct, subprocess, sys, tempfile, unittest
 - `tests/test_minios_png.c` -> stdio.h, stdlib.h
 - `tests/test_modifiers.c` -> stdio.h
 - `tests/test_notify.c` -> stdio.h
@@ -234,6 +238,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tests/test_rcu.c` -> stdio.h
 - `tests/test_rtc.c` -> stdio.h
 - `tests/test_sanitize.c` -> stdio.h
+- `tests/test_seccomp_bpf.c` -> stddef.h, stdio.h
 - `tests/test_sync.c` -> stdio.h
 - `tests/test_theme.c` -> stdio.h
 - `tests/test_tick.c` -> stdio.h
@@ -290,6 +295,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tools/test_gui_zoom.py` -> PIL, os, sys
 - `tools/test_http_server.py` -> fcntl, http.server, struct, sys
 - `tools/test_lisp.py` -> argparse, os, shutil, subprocess, sys, tempfile
+- `tools/test_net_fixture.py` -> socket, sys, threading
 - `tools/tls_test.py` -> datetime, os, re, shlex, socket, ssl, subprocess, sys, threading
 - `tools/wm_layout_sync.py` -> __future__, argparse, pathlib, re, sys
 

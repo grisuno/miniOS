@@ -41,10 +41,10 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `normalize` (function, line 128) `def normalize(minios_name)`
-  - `parse_abi` (function, line 132) `def parse_abi(path)`
-  - `parse_dispatch` (function, line 143) `def parse_dispatch(path)`
-  - `main` (function, line 156) `def main()`
+  - `normalize` (function, line 131) `def normalize(minios_name)`
+  - `parse_abi` (function, line 135) `def parse_abi(path)`
+  - `parse_dispatch` (function, line 146) `def parse_dispatch(path)`
+  - `main` (function, line 159) `def main()`
 
 ## tools/check_addons.py
 - Doc: validate the MiniOS addon marketplace index.
@@ -98,9 +98,10 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Symbols:
   - `Config` (class, line 17) `class Config`
   - `bash_unquote` (method, line 26) `def bash_unquote(expr)`
-  - `parse_mutations` (method, line 41) `def parse_mutations(text)`
-  - `anchor_matches` (method, line 67) `def anchor_matches(repo, target, expr)`
-  - `main` (method, line 86) `def main()`
+  - `unescaped_quote` (method, line 41) `def unescaped_quote(expr)`
+  - `parse_mutations` (method, line 58) `def parse_mutations(text)`
+  - `anchor_matches` (method, line 84) `def anchor_matches(repo, target, expr)`
+  - `main` (method, line 105) `def main()`
 
 ## tools/check_spin_discipline.py
 - Doc: Check spinlock call-site discipline across kernel C sources.
@@ -290,7 +291,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `u32` (function, line 14) `def u32(d, o)`
   - `crc32` (function, line 15) `def crc32(data)`
   - `FSCK` (class, line 23) `class FSCK`
-  - `main` (method, line 152) `def main()`
+  - `main` (method, line 173) `def main()`
   - `__init__` (method, line 24) `def __init__(self, fn)`
   - `_find_base` (method, line 31) `def _find_base(self)`
   - `blk` (method, line 49) `def blk(self, n)`
@@ -302,7 +303,9 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `mark_block` (method, line 88) `def mark_block(self, n)`
   - `scan_inode` (method, line 93) `def scan_inode(self, i)`
   - `scan_dir` (method, line 105) `def scan_dir(self, ino)`
-  - `run` (method, line 137) `def run(self)`
+  - `bitmap_free` (method, line 137) `def bitmap_free(self, start, count)`
+  - `check_counters` (method, line 146) `def check_counters(self)`
+  - `run` (method, line 161) `def run(self)`
 
 ## tools/minifs_saves.py
 - Doc: preserve the guest's saves/ dir across image rebuilds.
@@ -427,22 +430,25 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `div_round_up` (function, line 25) `def div_round_up(n, d)`
   - `crc16` (function, line 28) `def crc16(data)`
   - `crc32` (function, line 36) `def crc32(data)`
-  - `MiniFS` (class, line 44) `class MiniFS`
-  - `main` (method, line 241) `def main()`
-  - `__init__` (method, line 45) `def __init__(self, total_blocks)`
-  - `mark_inodes_used` (method, line 67) `def mark_inodes_used(self, start, count)`
-  - `mark_blocks_used` (method, line 71) `def mark_blocks_used(self, start, count)`
-  - `alloc_inode` (method, line 75) `def alloc_inode(self)`
-  - `alloc_block` (method, line 81) `def alloc_block(self)`
-  - `create_root` (method, line 87) `def create_root(self)`
-  - `create_inode` (method, line 95) `def create_inode(self, mode)`
-  - `inode_set_size` (method, line 102) `def inode_set_size(self, ino, size)`
-  - `inode_set_block` (method, line 106) `def inode_set_block(self, ino, logblk, phys)`
-  - `add_dir_entry` (method, line 136) `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
-  - `write_file` (method, line 174) `def write_file(self, parent_ino, name, data)`
-  - `write_dir` (method, line 191) `def write_dir(self, parent_ino, name)`
-  - `serialize` (method, line 197) `def serialize(self)`
-  - `pack_tree` (method, line 271) `def pack_tree(parent_ino, path, rel)`
+  - `count_free` (function, line 44) `def count_free(bitmap, count)`
+  - `MiniFS` (class, line 50) `class MiniFS`
+  - `main` (method, line 274) `def main()`
+  - `__init__` (method, line 51) `def __init__(self, total_blocks)`
+  - `mark_inodes_used` (method, line 74) `def mark_inodes_used(self, start, count)`
+  - `mark_blocks_used` (method, line 78) `def mark_blocks_used(self, start, count)`
+  - `alloc_inode` (method, line 82) `def alloc_inode(self)`
+  - `alloc_block` (method, line 88) `def alloc_block(self)`
+  - `create_root` (method, line 94) `def create_root(self)`
+  - `seal_inode` (method, line 102) `def seal_inode(self, ino)`
+  - `create_inode` (method, line 107) `def create_inode(self, mode, links)`
+  - `inode_set_size` (method, line 114) `def inode_set_size(self, ino, size)`
+  - `inode_set_block` (method, line 118) `def inode_set_block(self, ino, logblk, phys)`
+  - `add_dir_entry` (method, line 148) `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
+  - `claim_name` (method, line 186) `def claim_name(self, parent_ino, name, is_dir)`
+  - `write_file` (method, line 199) `def write_file(self, parent_ino, name, data)`
+  - `write_dir` (method, line 218) `def write_dir(self, parent_ino, name)`
+  - `serialize` (method, line 230) `def serialize(self)`
+  - `pack_tree` (method, line 304) `def pack_tree(parent_ino, path, rel)`
 
 ## tools/mkpak1.py
 - Doc: Build baseq2/pak1.pak carrying the player model.
@@ -478,23 +484,10 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 127)
-  - `cleanup` (function, line 134)
-  - `record` (function, line 418)
-  - `find_index` (function, line 424)
-
-## tools/probe_compute_vga.py
-- Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute.
-- Layer: utility
-- Language: py
-- Symbols:
-  - `main` (function, line 22) `def main()`
-  - `send` (function, line 55) `def send(line)`
-  - `poll` (function, line 61) `def poll(timeout)`
-  - `qmp` (function, line 88) `def qmp(obj)`
-  - `rel` (function, line 97) `def rel(dx, dy)`
-  - `dump` (function, line 104) `def dump(name)`
-- Depends on: `kernel/time.c`
+  - `restore_sources` (function, line 129)
+  - `cleanup` (function, line 136)
+  - `record` (function, line 465)
+  - `find_index` (function, line 471)
 
 
 Next: [KB_tools_p2.md](KB_tools_p2.md)

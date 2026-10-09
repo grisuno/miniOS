@@ -4,7 +4,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 ## Suggested
 
-### Q: What does string.c depend on, and what depends on it? (81 connections)
+### Q: What does string.c depend on, and what depends on it? (84 connections)
 
 - Status: unanswered
 
@@ -16,7 +16,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: How are the 138 files in 'headers: kernel' related to each other?
+### Q: How are the 143 files in 'headers: kernel' related to each other?
 
 - Status: unanswered
 

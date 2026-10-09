@@ -1,28 +1,28 @@
 # headers: kernel
 
-*Community 0 | 138 files | cohesion 0.88*
+*Community 0 | 143 files | cohesion 0.88*
 
 ## Definition
 
-This community groups 138 file(s) rooted at `headers` with dominant language c (cohesion 0.88). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`. Core file: `headers/kernel.h` (383 symbols). Documented purpose: SMP application-processor bootstrap stub..
+This community groups 143 file(s) rooted at `headers` with dominant language c (cohesion 0.88). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`. Core file: `headers/kernel.h` (392 symbols). Documented purpose: SMP application-processor bootstrap stub..
 
 ## Files
 
-### `headers` (43 files)
+### `headers` (46 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `headers/abi.h` | h | utility | 10 | yes |
 | `headers/ap_stub.h` | h | testing | 0 | yes |
 
-### `tests` (27 files)
+### `tests` (28 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `tests/test_abi.c` | c | testing | 2 | yes |
-| `tests/test_batch.c` | c | testing | 3 | yes |
+| `tests/test_arena.c` | c | testing | 2 | yes |
 
-### `kernel` (23 files)
+### `kernel` (25 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -36,7 +36,7 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 | `drivers/block.c` | c | infrastructure | 19 | yes |
 | `drivers/driver.c` | c | infrastructure | 8 | yes |
 
-### `headers/drivers` (9 files)
+### `headers/drivers` (8 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -85,7 +85,7 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `headers/arch/x86/boot/bootdefs.h` | h | utility | 146 | yes |
+| `headers/arch/x86/boot/bootdefs.h` | h | utility | 147 | yes |
 
 ### `headers/kernel` (1 files)
 
@@ -93,7 +93,7 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 |------|----------|-------|---------|-----|
 | `headers/kernel/console_in.h` | h | utility | 11 | yes |
 
-*... and 118 more files in this community.*
+*... and 123 more files in this community.*
 
 
 ## Key Symbols
@@ -131,16 +131,15 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 290
-- Cross-boundary resolved imports (EXTRACTED): 38
+- Internal resolved imports (EXTRACTED): 299
+- Cross-boundary resolved imports (EXTRACTED): 41
 
 ## Connections
 
-- [EXTRACTED] depends_on community 6 <-> 0 (strength 0.9): Extracted import edge crosses communities: drivers/virtio_net.c imports headers/drivers/pci.h.
+- [EXTRACTED] depends_on community 0 <-> 6 (strength 0.9): Extracted import edge crosses communities: drivers/nvme.c imports headers/drivers/pci.h.
 - [EXTRACTED] depends_on community 0 <-> 3 (strength 0.9): Extracted import edge crosses communities: headers/kernel.h imports progs/minios_abi.h.
 - [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: headers/vga_fb.h imports headers/wm_notify.h.
 - [EXTRACTED] depends_on community 0 <-> 4 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/ktime.h.
-- [INFERRED] shares_context community 0 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers: kernel) and community 8 (tools: doom_pwad).
 - [INFERRED] shares_context community 0 <-> 9 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers: kernel) and community 9 (orphans).
 
 ## Risks
@@ -155,11 +154,11 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 - [dataflow DEAD_STORE] `kernel/loader.c:1074` `load_exec_elf` `base`: `base` assigned at line 1074 but never read afterwards.
 - [dataflow DEAD_STORE] `kernel/loader.c:1079` `load_exec_elf` `max_end`: `max_end` assigned at line 1079 but never read afterwards.
 - [dataflow DEAD_STORE] `kernel/mm/paging.c:43` `mm_setup_protections` `pd`: `pd` assigned at line 43 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/mm/paging.c:638` `honest` `pt`: `pt` assigned at line 638 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/sched.c:465` `irqstat_report` `txf`: `txf` assigned at line 465 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/sched.c:1212` `syscall` `wheel`: `wheel` assigned at line 1212 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/sched.c:1865` `proc_spawn_elf_inner` `frame`: `frame` assigned at line 1865 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/sched.c:1963` `schedule` `cpu`: `cpu` assigned at line 1963 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/mm/paging.c:649` `honest` `pt`: `pt` assigned at line 649 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/sched.c:483` `irqstat_report` `txf`: `txf` assigned at line 483 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/sched.c:1230` `syscall` `wheel`: `wheel` assigned at line 1230 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/sched.c:1890` `proc_spawn_elf_inner` `frame`: `frame` assigned at line 1890 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/sched.c:1988` `schedule` `cpu`: `cpu` assigned at line 1988 but never read afterwards.
 
 ## Open Questions
 
@@ -189,4 +188,4 @@ This community groups 138 file(s) rooted at `headers` with dominant language c (
 - `drivers/xhci.c`
 - `fs/ext4.c`
 - `fs/fat32.c`
-- *... and 118 more*
+- *... and 123 more*

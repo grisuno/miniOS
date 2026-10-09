@@ -417,11 +417,11 @@ Depends on: `progs/minios_abi.h`
 ## progs/src/execho.c
 - `program` (function) `progs/src/execho.c:5` `* * Proves the UNIX process composition the kernel lacked: a child * produced by fork replaces its image with execve...`
 - `path` (function) `progs/src/execho.c:7` `* execs a ghost path (must fail -2, exits 42). The parent checks
- * both statuses and prints "exe...`
-- `ex_write` (function) `progs/src/execho.c:18` `static void ex_write(const char *s, unsigned long len)`
-- `ex_exit` (function) `progs/src/execho.c:22` `static void ex_exit(long code)`
-- `ex_fail` (function) `progs/src/execho.c:27` `static void ex_fail(int step)`
-- `lmain` (function) `progs/src/execho.c:35` `int lmain(void)`
+ * both wait4 results with Linux...`
+- `ex_write` (function) `progs/src/execho.c:20` `static void ex_write(const char *s, unsigned long len)`
+- `ex_exit` (function) `progs/src/execho.c:24` `static void ex_exit(long code)`
+- `ex_fail` (function) `progs/src/execho.c:29` `static void ex_fail(int step)`
+- `lmain` (function) `progs/src/execho.c:37` `int lmain(void)`
 
 ## progs/src/execthr.c
 - `et_sc` (function) `progs/src/execthr.c:11` `static long et_sc(long n, long a1, long a2, long a3)` -- execthr -- execve kills sibling threads (Linux semantics).

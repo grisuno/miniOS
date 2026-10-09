@@ -2,6 +2,17 @@
 Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/i_system.h`
+- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/r_local.h`
+- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/w_wad.h`
+- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/z_zone.h`
+- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/deh_str.h`
+- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/doomfeatures.h`
+- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/doomstat.h`
+- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/doomtype.h`
+- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/i_sound.h`
+- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/i_system.h`
+- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/m_argv.h`
 - `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/m_misc.h`
 - `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/m_random.h`
 - `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/p_local.h`
@@ -199,6 +210,8 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/src/freedom_wl.c` -> `progs/wl/wl_mini.h`
 - `progs/src/lxabi.c` -> `kernel/string.c`
 - `progs/src/lxabi.c` -> `kernel/time.c`
+- `progs/src/lxnet.c` -> `kernel/string.c`
+- `progs/src/lxsecc.c` -> `kernel/string.c`
 - `progs/src/mthreads.h` -> `progs/minios_abi.h`
 - `progs/src/opl3.c` -> `kernel/string.c`
 - `progs/src/opl3.c` -> `progs/minios_abi.h`
@@ -296,6 +309,8 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `tests/test_rtc.c` -> `headers/rtc.h`
 - `tests/test_sanitize.c` -> `headers/sanitize.h`
 - `tests/test_sanitize.c` -> `kernel/string.c`
+- `tests/test_seccomp_bpf.c` -> `headers/seccomp_bpf.h`
+- `tests/test_seccomp_bpf.c` -> `kernel/string.c`
 - `tests/test_sync.c` -> `headers/sync.h`
 - `tests/test_theme.c` -> `kernel/string.c`
 - `tests/test_theme.c` -> `progs/nuklear/nuklear_theme.h`

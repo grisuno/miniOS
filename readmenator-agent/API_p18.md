@@ -457,8 +457,8 @@ Depends on: `headers/ap_stub.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/ar
 - `ap_lapic_timer_start` (function) `smp.c:184` `static void ap_lapic_timer_start(void)` -- ifdef MINIOS_AP_TIMER
 - `ap_lapic_timer_init` (function) `smp.c:190` `static void ap_lapic_timer_init(void)` -- endif
 - `BSP` (function) `smp.c:238` `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed...`
-- `smp_init` (function) `smp.c:305` `void smp_init(void)`
-- `INIT` (function) `smp.c:323` `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status...`
+- `smp_init` (function) `smp.c:314` `void smp_init(void)`
+- `INIT` (function) `smp.c:332` `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status...`
 
 ## tools/abi_stamp.c
 Depends on: `progs/minios_abi.h`
@@ -481,10 +481,10 @@ Depends on: `kernel/time.c`
 - `WlBoot.main` (method) `tools/boot_wl.py:226` `def main()`
 
 ## tools/check_abi_numbers.py
-- `normalize` (function) `tools/check_abi_numbers.py:128` `def normalize(minios_name)`
-- `parse_abi` (function) `tools/check_abi_numbers.py:132` `def parse_abi(path)`
-- `parse_dispatch` (function) `tools/check_abi_numbers.py:143` `def parse_dispatch(path)`
-- `main` (function) `tools/check_abi_numbers.py:156` `def main()`
+- `normalize` (function) `tools/check_abi_numbers.py:131` `def normalize(minios_name)`
+- `parse_abi` (function) `tools/check_abi_numbers.py:135` `def parse_abi(path)`
+- `parse_dispatch` (function) `tools/check_abi_numbers.py:146` `def parse_dispatch(path)`
+- `main` (function) `tools/check_abi_numbers.py:159` `def main()`
 
 ## tools/check_addons.py
 - `load_parser` (function) `tools/check_addons.py:22` `def load_parser()`

@@ -1,6 +1,38 @@
 # Subsystem: tests (page 2 of 2)
 Previous: [KB_tests.md](KB_tests.md)
 
+## tests/test_ps2_keymap.c
+- Doc: test_ps2_keymap - host suite for the PS/2 set 1 to keysym translator.
+- Layer: testing
+- Language: c
+- Symbols:
+  - `check` (function, line 19) `static void check(int cond, const char *name)`
+  - `feed_seq` (function, line 29) `static int feed_seq(ps2_state *s, const unsigned char *seq, int n, ps2_key *out)`
+  - `press` (function, line 36) `static int press(ps2_state *s, unsigned char code, ps2_key *out)`
+  - `release` (function, line 41) `static int release(ps2_state *s, unsigned char code, ps2_key *out)`
+  - `test_letters_and_shift` (function, line 45) `static void test_letters_and_shift(void)`
+  - `test_caps_lock` (function, line 69) `static void test_caps_lock(void)`
+  - `test_punctuation` (function, line 90) `static void test_punctuation(void)`
+  - `test_control_key_text` (function, line 111) `static void test_control_key_text(void)`
+  - `test_chords_have_no_text` (function, line 128) `static void test_chords_have_no_text(void)`
+  - `test_extended_keys` (function, line 150) `static void test_extended_keys(void)`
+  - `test_function_keys` (function, line 202) `static void test_function_keys(void)`
+  - `test_keypad_num_lock` (function, line 218) `static void test_keypad_num_lock(void)`
+  - `test_prefix_sequences` (function, line 263) `static void test_prefix_sequences(void)`
+  - `test_fail_closed` (function, line 280) `static void test_fail_closed(void)`
+  - `main` (function, line 293) `int main(void)`
+- Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`
+
+## tests/test_randmix.c
+- Doc: host test for the getrandom mixer in randmix.h
+- Layer: testing
+- Language: c
+- Symbols:
+  - `popcount64` (function, line 18) `static int popcount64(unsigned long x)`
+  - `main` (function, line 24) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(c, m)`
+- Depends on: `headers/randmix.h`
+
 ## tests/test_rcu.c
 - Doc: Docstring: Host test for kernel/rcu.c (make test-rcu).
 - Layer: testing
@@ -36,6 +68,30 @@ Previous: [KB_tests.md](KB_tests.md)
   - `EFAULT` (macro, line 13) `#define EFAULT`
   - `CHECK` (macro, line 41) `#define CHECK(cond, msg)`
 - Depends on: `headers/sanitize.h`, `kernel/string.c`
+
+## tests/test_seccomp_bpf.c
+- Doc: Docstring: Host test for kernel/seccomp_bpf.c (make test-seccomp-bpf).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `data_for` (function, line 34) `static sbpf_data data_for(int nr, unsigned long long a2)`
+  - `test_freedom_shape` (function, line 43) `static void test_freedom_shape(void)`
+  - `test_check_refusals` (function, line 88) `static void test_check_refusals(void)`
+  - `test_scratch_flow` (function, line 130) `static void test_scratch_flow(void)`
+  - `test_alu_and_jumps` (function, line 150) `static void test_alu_and_jumps(void)`
+  - `test_action_rank` (function, line 199) `static void test_action_rank(void)`
+  - `main` (function, line 210) `int main(void)`
+  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
+  - `STMT` (macro, line 21) `#define STMT(c, k)`
+  - `JUMP` (macro, line 22) `#define JUMP(c, k, t, f)`
+  - `NR_READ` (macro, line 24) `#define NR_READ`
+  - `NR_WRITE` (macro, line 25) `#define NR_WRITE`
+  - `NR_OPEN` (macro, line 26) `#define NR_OPEN`
+  - `NR_MMAP` (macro, line 27) `#define NR_MMAP`
+  - `NR_MPROTECT` (macro, line 28) `#define NR_MPROTECT`
+  - `PROT_EXEC` (macro, line 29) `#define PROT_EXEC`
+  - `ARGS2_OFF` (macro, line 30) `#define ARGS2_OFF`
+- Depends on: `headers/seccomp_bpf.h`, `kernel/string.c`
 
 ## tests/test_sync.c
 - Doc: Host-side unit test for the blocking sync primitives (kernel/sync.c).

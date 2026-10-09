@@ -1,8 +1,350 @@
-# Symbols (page 11 of 25)
+# Symbols (page 11 of 26)
 Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `jpt` | struct | `net/tls_crypto.c:859` | `` |
+| `jpt_add` | function | `net/tls_crypto.c:936` | `static void jpt_add(struct ec_curve *c, const struct jpt *p1, const struct jpt *p2,              ...` |
+| `jpt_copy` | function | `net/tls_crypto.c:875` | `static void jpt_copy(struct jpt *d, const struct jpt *s, int nw)` |
+| `jpt_cswap` | function | `net/tls_crypto.c:885` | `static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask, int nw)` |
+| `jpt_dbl` | function | `net/tls_crypto.c:896` | `static void jpt_dbl(struct ec_curve *c, const struct jpt *p1, struct jpt *p3)` |
+| `jpt_from_affine` | function | `net/tls_crypto.c:1032` | `static int jpt_from_affine(struct ec_curve *c, const unsigned char *x_bytes,                     ...` |
+| `jpt_is_inf` | function | `net/tls_crypto.c:865` | `static int jpt_is_inf(const struct jpt *p, int nw)` |
+| `jpt_scalar_mult` | function | `net/tls_crypto.c:980` | `static void jpt_scalar_mult(struct ec_curve *c, const struct jpt *base,                          ...` |
+| `jpt_set_inf` | function | `net/tls_crypto.c:869` | `static void jpt_set_inf(struct jpt *p, int nw)` |
+| `jpt_to_affine` | function | `net/tls_crypto.c:1007` | `static void jpt_to_affine(struct ec_curve *c, const struct jpt *p,                           unsi...` |
+| `mont_add` | function | `net/tls_crypto.c:712` | `static void mont_add(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
+| `mont_ctx` | struct | `net/tls_crypto.c:655` | `` |
+| `mont_from` | function | `net/tls_crypto.c:693` | `static void mont_from(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
+| `mont_init` | function | `net/tls_crypto.c:677` | `static void mont_init(struct mont_ctx *m, const unsigned char *p_bytes,                       uns...` |
+| `mont_inv` | function | `net/tls_crypto.c:736` | `static void mont_inv(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
+| `mont_mul` | function | `net/tls_crypto.c:700` | `static void mont_mul(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
+| `mont_sqr` | function | `net/tls_crypto.c:705` | `static void mont_sqr(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
+| `mont_sub` | function | `net/tls_crypto.c:721` | `static void mont_sub(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
+| `mont_to` | function | `net/tls_crypto.c:689` | `static void mont_to(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
+| `p256_ecdh` | function | `net/tls_crypto.c:1114` | `int p256_ecdh(const unsigned char priv[32],               const unsigned char peer_x[32], const u...` |
+| `p256_point_valid` | function | `net/tls_crypto.c:1512` | `int p256_point_valid(const unsigned char x[32], const unsigned char y[32])` |
+| `p256_pub` | function | `net/tls_crypto.c:1520` | `int p256_pub(const unsigned char priv[32],              unsigned char x[32], unsigned char y[32])` |
+| `p256_scalar_mult` | function | `net/tls_crypto.c:1088` | `int p256_scalar_mult(const unsigned char scalar[32],                      const unsigned char qx[...` |
+| `p256_scalar_valid` | function | `net/tls_crypto.c:1539` | `int p256_scalar_valid(const unsigned char scalar[32])` |
+| `p384_scalar_mult` | function | `net/tls_crypto.c:1101` | `int p384_scalar_mult(const unsigned char scalar[48],                      const unsigned char qx[...` |
+| `p_hash` | function | `net/tls_crypto.c:165` | `static void p_hash(const unsigned char *secret, unsigned secret_len,                    const uns...` |
+| `rsa_pkcs1_verify_raw` | function | `net/tls_crypto.c:1285` | `static int rsa_pkcs1_verify_raw(const unsigned char *n, unsigned n_len,                          ...` |
+| `rsa_pkcs1_verify_sha256` | function | `net/tls_crypto.c:1326` | `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len,                             c...` |
+| `rsa_pkcs1_verify_sha384` | function | `net/tls_crypto.c:1340` | `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len,                             c...` |
+| `rsa_verify_digestinfo` | function | `net/tls_crypto.c:1261` | `static int rsa_verify_digestinfo(const unsigned char *em, unsigned em_len,                       ...` |
+| `sha256` | function | `net/tls_crypto.c:126` | `void sha256(const unsigned char *data, unsigned len, unsigned char out[32])` |
+| `sha256_block` | function | `net/tls_crypto.c:50` | `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)` |
+| `sha256_final` | function | `net/tls_crypto.c:105` | `void sha256_final(struct sha256_ctx *c, unsigned char out[32])` |
+| `sha256_init` | function | `net/tls_crypto.c:37` | `void sha256_init(struct sha256_ctx *c)` |
+| `sha256_rotr` | function | `net/tls_crypto.c:33` | `static unsigned sha256_rotr(unsigned x, unsigned n)` |
+| `sha256_update` | function | `net/tls_crypto.c:80` | `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len)` |
+| `sha384` | function | `net/tls_crypto.c:1506` | `void sha384(const unsigned char *data, unsigned len, unsigned char out[48])` |
+| `sha384_raw` | function | `net/tls_crypto.c:1390` | `static void sha384_raw(const unsigned char *data, unsigned len,                        unsigned c...` |
+| `sha384_rotr` | function | `net/tls_crypto.c:1386` | `static unsigned long long sha384_rotr(unsigned long long x, unsigned n)` |
+| `tls_nonce` | function | `net/tls_crypto.c:450` | `static void tls_nonce(const unsigned char salt[4], unsigned long long seq,                       ...` |
+| `tls_prf` | function | `net/tls_crypto.c:188` | `void tls_prf(const unsigned char *secret, unsigned secret_len,              const char *label, co...` |
+| `word` | function | `net/tls_crypto.c:326` | `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */...` |
+| `TLS_SAN_MAX` | macro | `net/tls_x509.c:170` | `#define TLS_SAN_MAX` |
+| `ascii_lower` | function | `net/tls_x509.c:392` | `static int ascii_lower(int c)` |
+| `cert_parse` | function | `net/tls_x509.c:279` | `static int cert_parse(const unsigned char *der, unsigned len,                       struct x509_c...` |
+| `cert_verify_signature` | function | `net/tls_x509.c:479` | `static int cert_verify_signature(const struct x509_cert *cert,                                  c...` |
+| `days_from_civil` | function | `net/tls_x509.c:94` | `static long days_from_civil(int y, int m, int d)` |
+| `der_container` | function | `net/tls_x509.c:82` | `static int der_container(const unsigned char *p, unsigned limit, unsigned *pos,                  ...` |
+| `der_next` | function | `net/tls_x509.c:51` | `static int der_next(const unsigned char *p, unsigned limit, unsigned *pos,                     st...` |
+| `der_time_to_days` | function | `net/tls_x509.c:106` | `static long der_time_to_days(const struct der_tlv *t)` |
+| `der_tlv` | struct | `net/tls_x509.c:43` | `` |
+| `host_match_exact` | function | `net/tls_x509.c:397` | `static int host_match_exact(const char *host, const unsigned char *name,                         ...` |
+| `host_match_wildcard` | function | `net/tls_x509.c:410` | `static int host_match_wildcard(const char *host, const unsigned char *name,                      ...` |
+| `host_matches` | function | `net/tls_x509.c:431` | `static int host_matches(const char *host, const struct x509_cert *leaf)` |
+| `name_find_cn` | function | `net/tls_x509.c:135` | `static int name_find_cn(const unsigned char *p, unsigned limit,                         struct x5...` |
+| `oid_eq` | function | `net/tls_x509.c:36` | `static int oid_eq(const unsigned char *bytes, unsigned len,                   const unsigned char...` |
+| `pubkey_equal` | function | `net/tls_x509.c:468` | `static int pubkey_equal(const struct tls_pubkey *a, const struct tls_pubkey *b)` |
+| `san_add` | function | `net/tls_x509.c:178` | `static void san_add(struct x509_sans *out, const unsigned char *v, unsigned len)` |
+| `san_parse` | function | `net/tls_x509.c:186` | `static void san_parse(const unsigned char *p, unsigned limit,                       struct x509_s...` |
+| `spki_parse` | function | `net/tls_x509.c:203` | `static int spki_parse(const unsigned char *p, unsigned limit,                       struct tls_pu...` |
+| `tls_x509_parse_pubkey` | function | `net/tls_x509.c:452` | `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,                           struc...` |
+| `tls_x509_verify_chain` | function | `net/tls_x509.c:521` | `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,                        ...` |
+| `x509_cert` | struct | `net/tls_x509.c:265` | `` |
+| `x509_name` | struct | `net/tls_x509.c:129` | `` |
+| `x509_sans` | struct | `net/tls_x509.c:172` | `` |
+| `__sl_3` | function | `progs/asm/aes.s:3087` | `` |
+| `__sl_4` | function | `progs/asm/aes.s:3091` | `` |
+| `_start` | function | `progs/asm/aes.s:4113` | `` |
+| `aes_add_round_key` | function | `progs/asm/aes.s:1646` | `` |
+| `aes_cipher` | function | `progs/asm/aes.s:2466` | `` |
+| `aes_ctr_crypt` | function | `progs/asm/aes.s:2648` | `` |
+| `aes_gf_mul` | function | `progs/asm/aes.s:783` | `` |
+| `aes_has` | function | `progs/asm/aes.s:345` | `` |
+| `aes_hdr_get` | function | `progs/asm/aes.s:2906` | `` |
+| `aes_hdr_put` | function | `progs/asm/aes.s:2791` | `` |
+| `aes_init_tables` | function | `progs/asm/aes.s:970` | `` |
+| `aes_iv` | function | `progs/asm/aes.s:19` | `` |
+| `aes_iv_increment` | function | `progs/asm/aes.s:2565` | `` |
+| `aes_key_expand` | function | `progs/asm/aes.s:1197` | `` |
+| `aes_mix_columns` | function | `progs/asm/aes.s:1993` | `` |
+| `aes_parse_hex` | function | `progs/asm/aes.s:620` | `` |
+| `aes_rc` | function | `progs/asm/aes.s:11` | `` |
+| `aes_read_all` | function | `progs/asm/aes.s:23` | `` |
+| `aes_rk` | function | `progs/asm/aes.s:3` | `` |
+| `aes_rotl8` | function | `progs/asm/aes.s:933` | `` |
+| `aes_run` | function | `progs/asm/aes.s:3077` | `` |
+| `aes_sb` | function | `progs/asm/aes.s:7` | `` |
+| `aes_shift_rows` | function | `progs/asm/aes.s:1774` | `` |
+| `aes_st` | function | `progs/asm/aes.s:15` | `` |
+| `aes_sub_bytes` | function | `progs/asm/aes.s:1721` | `` |
+| `aes_tool_name` | function | `progs/asm/aes.s:3059` | `` |
+| `aes_write_all` | function | `progs/asm/aes.s:238` | `` |
+| `aes_xtime` | function | `progs/asm/aes.s:884` | `` |
+| `hex_val` | function | `progs/asm/aes.s:498` | `` |
+| `main` | function | `progs/asm/aes.s:3807` | `` |
+| `_start` | function | `progs/asm/cp.s:322` | `` |
+| `main` | function | `progs/asm/cp.s:3` | `` |
+| `_start` | function | `progs/asm/fib.s:82` | `` |
+| `fib` | function | `progs/asm/fib.s:3` | `` |
+| `main` | function | `progs/asm/fib.s:61` | `` |
+| `_start` | function | `progs/asm/freedom.s:11761` | `` |
+| `append` | function | `progs/asm/freedom.s:338` | `` |
+| `atoi` | function | `progs/asm/freedom.s:252` | `` |
+| `body_byte` | function | `progs/asm/freedom.s:5961` | `` |
+| `ci_eq` | function | `progs/asm/freedom.s:559` | `` |
+| `ci_index` | function | `progs/asm/freedom.s:656` | `` |
+| `ci_lower` | function | `progs/asm/freedom.s:437` | `` |
+| `ci_starts` | function | `progs/asm/freedom.s:486` | `` |
+| `classify_tag` | function | `progs/asm/freedom.s:4757` | `` |
+| `css_append` | function | `progs/asm/freedom.s:3849` | `` |
+| `css_line` | function | `progs/asm/freedom.s:3920` | `` |
+| `dom_append` | function | `progs/asm/freedom.s:3978` | `` |
+| `dom_nl` | function | `progs/asm/freedom.s:4083` | `` |
+| `dom_space` | function | `progs/asm/freedom.s:4049` | `` |
+| `f_attr` | function | `progs/asm/freedom.s:136` | `` |
+| `f_attr_on` | function | `progs/asm/freedom.s:120` | `` |
+| `f_attrlen` | function | `progs/asm/freedom.s:140` | `` |
+| `f_bdone` | function | `progs/asm/freedom.s:248` | `` |
+| `f_chunked` | function | `progs/asm/freedom.s:60` | `` |
+| `f_clen` | function | `progs/asm/freedom.s:52` | `` |
+| `f_cls` | function | `progs/asm/freedom.s:160` | `` |
+| `f_clslen` | function | `progs/asm/freedom.s:164` | `` |
+| `f_cmdash` | function | `progs/asm/freedom.s:84` | `` |
+| `f_comment` | function | `progs/asm/freedom.s:80` | `` |
+| `f_crem` | function | `progs/asm/freedom.s:244` | `` |
+| `f_csize` | function | `progs/asm/freedom.s:240` | `` |
+| `f_css` | function | `progs/asm/freedom.s:216` | `` |
+| `f_csslen` | function | `progs/asm/freedom.s:220` | `` |
+| `f_cstage` | function | `progs/asm/freedom.s:236` | `` |
+| `f_depth` | function | `progs/asm/freedom.s:204` | `` |
+| `f_dom` | function | `progs/asm/freedom.s:208` | `` |
+| `f_domlen` | function | `progs/asm/freedom.s:212` | `` |
+| `f_dump_css` | function | `progs/asm/freedom.s:188` | `` |
+| `f_dump_dom` | function | `progs/asm/freedom.s:192` | `` |
+| `f_ent` | function | `progs/asm/freedom.s:96` | `` |
+| `f_entlen` | function | `progs/asm/freedom.s:100` | `` |
+| `f_has_clen` | function | `progs/asm/freedom.s:56` | `` |
+| `f_hdr` | function | `progs/asm/freedom.s:64` | `` |
+| `f_hlen` | function | `progs/asm/freedom.s:68` | `` |
+| `f_host` | function | `progs/asm/freedom.s:24` | `` |
+| `f_href` | function | `progs/asm/freedom.s:168` | `` |
+| `f_hreflen` | function | `progs/asm/freedom.s:172` | `` |
+| `f_id` | function | `progs/asm/freedom.s:152` | `` |
+| `f_idlen` | function | `progs/asm/freedom.s:156` | `` |
+| `f_inval` | function | `progs/asm/freedom.s:128` | `` |
+| `f_inval2` | function | `progs/asm/freedom.s:132` | `` |
+| `f_linkhost` | function | `progs/asm/freedom.s:224` | `` |
+| `f_linkn` | function | `progs/asm/freedom.s:232` | `` |
+| `f_linkpath` | function | `progs/asm/freedom.s:228` | `` |
+| `f_loc` | function | `progs/asm/freedom.s:40` | `` |
+| `f_mode` | function | `progs/asm/freedom.s:196` | `` |
+| `f_path` | function | `progs/asm/freedom.s:28` | `` |
+| `f_port` | function | `progs/asm/freedom.s:32` | `` |
+| `f_rawcap` | function | `progs/asm/freedom.s:200` | `` |
+| `f_redir` | function | `progs/asm/freedom.s:44` | `` |
+| `f_rel_ss` | function | `progs/asm/freedom.s:176` | `` |
+| `f_secure` | function | `progs/asm/freedom.s:36` | `` |
+| `f_status` | function | `progs/asm/freedom.s:48` | `` |
+| `f_styleattr` | function | `progs/asm/freedom.s:180` | `` |
+| `f_stylelen` | function | `progs/asm/freedom.s:184` | `` |
+| `f_suppress` | function | `progs/asm/freedom.s:76` | `` |
+| `f_tag` | function | `progs/asm/freedom.s:72` | `` |
+| `f_tagn` | function | `progs/asm/freedom.s:88` | `` |
+| `f_tagnlen` | function | `progs/asm/freedom.s:92` | `` |
+| `f_utbuf` | function | `progs/asm/freedom.s:108` | `` |
+| `f_utlen` | function | `progs/asm/freedom.s:112` | `` |
+| `f_utrem` | function | `progs/asm/freedom.s:116` | `` |
+| `f_val` | function | `progs/asm/freedom.s:144` | `` |
+| `f_vallen` | function | `progs/asm/freedom.s:148` | `` |
+| `f_waitq` | function | `progs/asm/freedom.s:124` | `` |
+| `f_ws` | function | `progs/asm/freedom.s:104` | `` |
+| `fetch` | function | `progs/asm/freedom.s:7810` | `` |
+| `fetch_css` | function | `progs/asm/freedom.s:9293` | `` |
+| `has_scheme` | function | `progs/asm/freedom.s:789` | `` |
+| `head_line` | function | `progs/asm/freedom.s:7203` | `` |
+| `is_void_tag` | function | `progs/asm/freedom.s:4449` | `` |
+| `looks_like_url` | function | `progs/asm/freedom.s:715` | `` |
+| `main` | function | `progs/asm/freedom.s:10291` | `` |
+| `make_search` | function | `progs/asm/freedom.s:1064` | `` |
+| `parse_head` | function | `progs/asm/freedom.s:7460` | `` |
+| `print_css_dump` | function | `progs/asm/freedom.s:10112` | `` |
+| `print_dom_dump` | function | `progs/asm/freedom.s:10212` | `` |
+| `put_entity` | function | `progs/asm/freedom.s:3018` | `` |
+| `put_text` | function | `progs/asm/freedom.s:2915` | `` |
+| `put_utf` | function | `progs/asm/freedom.s:2379` | `` |
+| `put_ws` | function | `progs/asm/freedom.s:2333` | `` |
+| `record_attr` | function | `progs/asm/freedom.s:4117` | `` |
+| `recv_body` | function | `progs/asm/freedom.s:7676` | `` |
+| `resolve_redirect` | function | `progs/asm/freedom.s:1810` | `` |
+| `send_all` | function | `progs/asm/freedom.s:7736` | `` |
+| `split_url` | function | `progs/asm/freedom.s:1295` | `` |
+| `tls_close` | function | `progs/asm/freedom.s:3` | `` |
+| `_start` | function | `progs/asm/http.s:709` | `` |
+| `atoi` | function | `progs/asm/http.s:3` | `` |
+| `main` | function | `progs/asm/http.s:89` | `` |
+| `_start` | function | `progs/asm/json.s:4169` | `` |
+| `js_array_at` | function | `progs/asm/json.s:3391` | `` |
+| `js_count` | function | `progs/asm/json.s:23` | `` |
+| `js_err` | function | `progs/asm/json.s:55` | `` |
+| `js_find_member` | function | `progs/asm/json.s:3313` | `` |
+| `js_first` | function | `progs/asm/json.s:19` | `` |
+| `js_indent` | function | `progs/asm/json.s:2481` | `` |
+| `js_key` | function | `progs/asm/json.s:3` | `` |
+| `js_key_match` | function | `progs/asm/json.s:947` | `` |
+| `js_len` | function | `progs/asm/json.s:51` | `` |
+| `js_n` | function | `progs/asm/json.s:31` | `` |
+| `js_new` | function | `progs/asm/json.s:274` | `` |
+| `js_next` | function | `progs/asm/json.s:27` | `` |
+| `js_num` | function | `progs/asm/json.s:15` | `` |
+| `js_parse_array` | function | `progs/asm/json.s:1335` | `` |
+| `js_parse_number` | function | `progs/asm/json.s:851` | `` |
+| `js_parse_object` | function | `progs/asm/json.s:983` | `` |
+| `js_parse_string` | function | `progs/asm/json.s:437` | `` |
+| `js_parse_value` | function | `progs/asm/json.s:1594` | `` |
+| `js_peek` | function | `progs/asm/json.s:397` | `` |
+| `js_plen` | function | `progs/asm/json.s:39` | `` |
+| `js_pool` | function | `progs/asm/json.s:35` | `` |
+| `js_pos` | function | `progs/asm/json.s:47` | `` |
+| `js_print_str` | function | `progs/asm/json.s:2524` | `` |
+| `js_print_value` | function | `progs/asm/json.s:2747` | `` |
+| `js_query` | function | `progs/asm/json.s:3460` | `` |
+| `js_read_all` | function | `progs/asm/json.s:59` | `` |
+| `js_skip_ws` | function | `progs/asm/json.s:306` | `` |
+| `js_src` | function | `progs/asm/json.s:43` | `` |
+| `js_str` | function | `progs/asm/json.s:7` | `` |
+| `js_type` | function | `progs/asm/json.s:11` | `` |
+| `main` | function | `progs/asm/json.s:3772` | `` |
+| `_start` | function | `progs/asm/ldhello.s:14` | `` |
+| `main` | function | `progs/asm/ldhello.s:3` | `` |
+| `_start` | function | `progs/asm/lz4.s:1535` | `` |
+| `lz4_compress_file` | function | `progs/asm/lz4.s:478` | `` |
+| `lz4_decompress_file` | function | `progs/asm/lz4.s:791` | `` |
+| `lz4_has` | function | `progs/asm/lz4.s:3` | `` |
+| `lz4_read_all` | function | `progs/asm/lz4.s:156` | `` |
+| `lz4_write_all` | function | `progs/asm/lz4.s:371` | `` |
+| `main` | function | `progs/asm/lz4.s:1228` | `` |
+| `_start` | function | `progs/asm/lzss.s:3497` | `` |
+| `lz_buf` | function | `progs/asm/lzss.s:35` | `` |
+| `lz_compress` | function | `progs/asm/lzss.s:2257` | `` |
+| `lz_decode` | function | `progs/asm/lzss.s:1171` | `` |
+| `lz_decompress` | function | `progs/asm/lzss.s:2628` | `` |
+| `lz_dst` | function | `progs/asm/lzss.s:19` | `` |
+| `lz_dstcap` | function | `progs/asm/lzss.s:23` | `` |
+| `lz_dstlen` | function | `progs/asm/lzss.s:27` | `` |
+| `lz_encode` | function | `progs/asm/lzss.s:451` | `` |
+| `lz_err` | function | `progs/asm/lzss.s:31` | `` |
+| `lz_flush_bits` | function | `progs/asm/lzss.s:223` | `` |
+| `lz_getbit` | function | `progs/asm/lzss.s:1051` | `` |
+| `lz_has` | function | `progs/asm/lzss.s:1782` | `` |
+| `lz_hdr_get` | function | `progs/asm/lzss.s:1629` | `` |
+| `lz_hdr_put` | function | `progs/asm/lzss.s:1514` | `` |
+| `lz_in_getc` | function | `progs/asm/lzss.s:43` | `` |
+| `lz_mask` | function | `progs/asm/lzss.s:39` | `` |
+| `lz_next_mb` | function | `progs/asm/lzss.s:447` | `` |
+| `lz_out_literal` | function | `progs/asm/lzss.s:251` | `` |
+| `lz_out_pair` | function | `progs/asm/lzss.s:321` | `` |
+| `lz_out_put` | function | `progs/asm/lzss.s:79` | `` |
+| `lz_putbit0` | function | `progs/asm/lzss.s:174` | `` |
+| `lz_putbit1` | function | `progs/asm/lzss.s:116` | `` |
+| `lz_read_all` | function | `progs/asm/lzss.s:1935` | `` |
+| `lz_src` | function | `progs/asm/lzss.s:7` | `` |
+| `lz_srclen` | function | `progs/asm/lzss.s:11` | `` |
+| `lz_srcpos` | function | `progs/asm/lzss.s:15` | `` |
+| `lz_win` | function | `progs/asm/lzss.s:3` | `` |
+| `lz_write_all` | function | `progs/asm/lzss.s:2150` | `` |
+| `main` | function | `progs/asm/lzss.s:3178` | `` |
+| `_start` | function | `progs/asm/mtop.s:4781` | `` |
+| `disk_f` | function | `progs/asm/mtop.s:39` | `` |
+| `disk_path` | function | `progs/asm/mtop.s:43` | `` |
+| `emit` | function | `progs/asm/mtop.s:206` | `` |
+| `h_cpu` | function | `progs/asm/mtop.s:3` | `` |
+| `h_fill` | function | `progs/asm/mtop.s:11` | `` |
+| `h_mem` | function | `progs/asm/mtop.s:7` | `` |
+| `have_prev` | function | `progs/asm/mtop.s:35` | `` |
+| `last_dns` | function | `progs/asm/mtop.s:15` | `` |
+| `last_dns_ms` | function | `progs/asm/mtop.s:19` | `` |
+| `last_sock` | function | `progs/asm/mtop.s:23` | `` |
+| `main` | function | `progs/asm/mtop.s:3831` | `` |
+| `mtop_atoi` | function | `progs/asm/mtop.s:443` | `` |
+| `mtop_bar` | function | `progs/asm/mtop.s:887` | `` |
+| `mtop_clear` | function | `progs/asm/mtop.s:401` | `` |
+| `mtop_clear_ansi` | function | `progs/asm/mtop.s:317` | `` |
+| `mtop_cpu` | function | `progs/asm/mtop.s:1556` | `` |
+| `mtop_disk_open` | function | `progs/asm/mtop.s:1842` | `` |
+| `mtop_disk_read` | function | `progs/asm/mtop.s:1966` | `` |
+| `mtop_frame` | function | `progs/asm/mtop.s:2275` | `` |
+| `mtop_hist_max` | function | `progs/asm/mtop.s:1038` | `` |
+| `mtop_hist_push` | function | `progs/asm/mtop.s:1106` | `` |
+| `mtop_key` | function | `progs/asm/mtop.s:137` | `` |
+| `mtop_mem` | function | `progs/asm/mtop.s:1452` | `` |
+| `mtop_minfo` | function | `progs/asm/mtop.s:165` | `` |
+| `mtop_net_probe` | function | `progs/asm/mtop.s:2128` | `` |
+| `mtop_put2` | function | `progs/asm/mtop.s:725` | `` |
+| `mtop_put_kb` | function | `progs/asm/mtop.s:765` | `` |
+| `mtop_putu` | function | `progs/asm/mtop.s:569` | `` |
+| `mtop_quit_key` | function | `progs/asm/mtop.s:241` | `` |
+| `mtop_rtc` | function | `progs/asm/mtop.s:106` | `` |
+| `mtop_spark` | function | `progs/asm/mtop.s:1201` | `` |
+| `mtop_time` | function | `progs/asm/mtop.s:78` | `` |
+| `prev_idle` | function | `progs/asm/mtop.s:31` | `` |
+| `prev_total` | function | `progs/asm/mtop.s:27` | `` |
+| `sc3` | function | `progs/asm/mtop.s:47` | `` |
+| `_start` | function | `progs/asm/w1.s:37` | `` |
+| `main` | function | `progs/asm/w1.s:3` | `` |
+| `DMAP_BRUSH_COUNT` | macro | `progs/doomedit/doomedit.c:230` | `#define DMAP_BRUSH_COUNT` |
+| `DMAP_CANVAS_W` | macro | `progs/doomedit/doomedit.c:61` | `#define DMAP_CANVAS_W` |
+| `DMAP_CEIL_FLAT` | macro | `progs/doomedit/doomedit.c:97` | `#define DMAP_CEIL_FLAT` |
+| `DMAP_CEIL_H` | macro | `progs/doomedit/doomedit.c:100` | `#define DMAP_CEIL_H` |
+| `DMAP_CELL_PX` | macro | `progs/doomedit/doomedit.c:60` | `#define DMAP_CELL_PX` |
+| `DMAP_DARK_LIGHT` | macro | `progs/doomedit/doomedit.c:103` | `#define DMAP_DARK_LIGHT` |
+| `DMAP_DARK_MID` | macro | `progs/doomedit/doomedit.c:92` | `#define DMAP_DARK_MID` |
+| `DMAP_DEF_H` | macro | `progs/doomedit/doomedit.c:58` | `#define DMAP_DEF_H` |
+| `DMAP_DEF_W` | macro | `progs/doomedit/doomedit.c:57` | `#define DMAP_DEF_W` |
+| `DMAP_DOOR_CEIL` | macro | `progs/doomedit/doomedit.c:101` | `#define DMAP_DOOR_CEIL` |
+| `DMAP_DOOR_LIGHT` | macro | `progs/doomedit/doomedit.c:104` | `#define DMAP_DOOR_LIGHT` |
+| `DMAP_DOOR_SPECIAL` | macro | `progs/doomedit/doomedit.c:85` | `#define DMAP_DOOR_SPECIAL` |
+| `DMAP_DOOR_UPPER` | macro | `progs/doomedit/doomedit.c:91` | `#define DMAP_DOOR_UPPER` |
+| `DMAP_EXIT_MID` | macro | `progs/doomedit/doomedit.c:90` | `#define DMAP_EXIT_MID` |
+| `DMAP_EXIT_SPECIAL` | macro | `progs/doomedit/doomedit.c:84` | `#define DMAP_EXIT_SPECIAL` |
+| `DMAP_FLAG_BLOCKING` | macro | `progs/doomedit/doomedit.c:86` | `#define DMAP_FLAG_BLOCKING` |
+| `DMAP_FLAG_TWOSIDED` | macro | `progs/doomedit/doomedit.c:87` | `#define DMAP_FLAG_TWOSIDED` |
+| `DMAP_FLOOR_FLAT` | macro | `progs/doomedit/doomedit.c:95` | `#define DMAP_FLOOR_FLAT` |
+| `DMAP_FLOOR_H` | macro | `progs/doomedit/doomedit.c:98` | `#define DMAP_FLOOR_H` |
+| `DMAP_FNAME_MAX` | macro | `progs/doomedit/doomedit.c:67` | `#define DMAP_FNAME_MAX` |
+| `DMAP_FOV_PLANE` | macro | `progs/doomedit/doomedit.c:78` | `#define DMAP_FOV_PLANE` |
+| `DMAP_FRAME_MS` | macro | `progs/doomedit/doomedit.c:75` | `#define DMAP_FRAME_MS` |
+| `DMAP_HISTORY` | macro | `progs/doomedit/doomedit.c:111` | `#define DMAP_HISTORY` |
+| `DMAP_LEVEL_COUNT` | macro | `progs/doomedit/doomedit.c:70` | `#define DMAP_LEVEL_COUNT` |
+| `DMAP_LIGHT` | macro | `progs/doomedit/doomedit.c:102` | `#define DMAP_LIGHT` |
+| `DMAP_MAX_H` | macro | `progs/doomedit/doomedit.c:56` | `#define DMAP_MAX_H` |
+| `DMAP_MAX_LINES` | macro | `progs/doomedit/doomedit.c:79` | `#define DMAP_MAX_LINES` |
+| `DMAP_MAX_SECTORS` | macro | `progs/doomedit/doomedit.c:72` | `#define DMAP_MAX_SECTORS` |
+| `DMAP_MAX_THINGS` | macro | `progs/doomedit/doomedit.c:81` | `#define DMAP_MAX_THINGS` |
+| `DMAP_MAX_VERTS` | macro | `progs/doomedit/doomedit.c:80` | `#define DMAP_MAX_VERTS` |
+| `DMAP_MAX_W` | macro | `progs/doomedit/doomedit.c:55` | `#define DMAP_MAX_W` |
+| `DMAP_MOVE_STEP` | macro | `progs/doomedit/doomedit.c:77` | `#define DMAP_MOVE_STEP` |
+| `DMAP_NODE_LEAF` | macro | `progs/doomedit/doomedit.c:106` | `#define DMAP_NODE_LEAF` |
+| `DMAP_NO_SIDE` | macro | `progs/doomedit/doomedit.c:88` | `#define DMAP_NO_SIDE` |
+| `DMAP_NUKE_FLAT` | macro | `progs/doomedit/doomedit.c:96` | `#define DMAP_NUKE_FLAT` |
+| `DMAP_NUKE_FLOOR` | macro | `progs/doomedit/doomedit.c:99` | `#define DMAP_NUKE_FLOOR` |
+| `DMAP_NUKE_MID` | macro | `progs/doomedit/doomedit.c:93` | `#define DMAP_NUKE_MID` |
+| `DMAP_NUKE_SPECIAL` | macro | `progs/doomedit/doomedit.c:105` | `#define DMAP_NUKE_SPECIAL` |
 | `DMAP_PANEL_MIN_H` | macro | `progs/doomedit/doomedit.c:62` | `#define DMAP_PANEL_MIN_H` |
 | `DMAP_PLAYER_TYPE` | macro | `progs/doomedit/doomedit.c:82` | `#define DMAP_PLAYER_TYPE` |
 | `DMAP_PREV_H` | macro | `progs/doomedit/doomedit.c:64` | `#define DMAP_PREV_H` |
@@ -154,347 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `YELLOWRANGE` | macro | `progs/doomgeneric/am_map.c:61` | `#define YELLOWRANGE` |
 | `YELLOWS` | macro | `progs/doomgeneric/am_map.c:60` | `#define YELLOWS` |
 | `YOURCOLORS` | macro | `progs/doomgeneric/am_map.c:67` | `#define YOURCOLORS` |
-| `YOURRANGE` | macro | `progs/doomgeneric/am_map.c:68` | `#define YOURRANGE` |
-| `fline_t` | struct | `progs/doomgeneric/am_map.c:116` | `` |
-| `fpoint_t` | struct | `progs/doomgeneric/am_map.c:111` | `` |
-| `islope_t` | struct | `progs/doomgeneric/am_map.c:131` | `` |
-| `mline_t` | struct | `progs/doomgeneric/am_map.c:126` | `` |
-| `mpoint_t` | struct | `progs/doomgeneric/am_map.c:121` | `` |
-| `AM_Drawer` | function | `progs/doomgeneric/am_map.h:39` | `void AM_Drawer (void);` |
-| `AM_MSGENTERED` | macro | `progs/doomgeneric/am_map.h:27` | `#define AM_MSGENTERED` |
-| `AM_MSGEXITED` | macro | `progs/doomgeneric/am_map.h:28` | `#define AM_MSGEXITED` |
-| `AM_MSGHEADER` | macro | `progs/doomgeneric/am_map.h:26` | `#define AM_MSGHEADER` |
-| `AM_Stop` | function | `progs/doomgeneric/am_map.h:43` | `void AM_Stop (void);` |
-| `AM_Ticker` | function | `progs/doomgeneric/am_map.h:35` | `void AM_Ticker (void);` |
-| `__AMMAP_H__` | macro | `progs/doomgeneric/am_map.h:20` | `#define __AMMAP_H__` |
-| `cheat_amap` | variable | `progs/doomgeneric/am_map.h:46` | `extern cheatseq_t cheat_amap;` |
-| `FILES_DIR` | macro | `progs/doomgeneric/config.h:100` | `#define FILES_DIR` |
-| `HAVE_INTTYPES_H` | macro | `progs/doomgeneric/config.h:10` | `#define HAVE_INTTYPES_H` |
-| `HAVE_STDINT_H` | macro | `progs/doomgeneric/config.h:46` | `#define HAVE_STDINT_H` |
-| `HAVE_STDLIB_H` | macro | `progs/doomgeneric/config.h:49` | `#define HAVE_STDLIB_H` |
-| `HAVE_STRINGS_H` | macro | `progs/doomgeneric/config.h:52` | `#define HAVE_STRINGS_H` |
-| `HAVE_STRING_H` | macro | `progs/doomgeneric/config.h:55` | `#define HAVE_STRING_H` |
-| `HAVE_SYS_TYPES_H` | macro | `progs/doomgeneric/config.h:61` | `#define HAVE_SYS_TYPES_H` |
-| `PACKAGE` | macro | `progs/doomgeneric/config.h:67` | `#define PACKAGE` |
-| `PACKAGE_NAME` | macro | `progs/doomgeneric/config.h:73` | `#define PACKAGE_NAME` |
-| `PACKAGE_STRING` | macro | `progs/doomgeneric/config.h:76` | `#define PACKAGE_STRING` |
-| `PACKAGE_TARNAME` | macro | `progs/doomgeneric/config.h:79` | `#define PACKAGE_TARNAME` |
-| `PACKAGE_URL` | macro | `progs/doomgeneric/config.h:82` | `#define PACKAGE_URL` |
-| `PACKAGE_VERSION` | macro | `progs/doomgeneric/config.h:85` | `#define PACKAGE_VERSION` |
-| `PROGRAM_PREFIX` | macro | `progs/doomgeneric/config.h:88` | `#define PROGRAM_PREFIX` |
-| `STDC_HEADERS` | macro | `progs/doomgeneric/config.h:91` | `#define STDC_HEADERS` |
-| `VERSION` | macro | `progs/doomgeneric/config.h:94` | `#define VERSION` |
-| `AMSTR_FOLLOWOFF` | macro | `progs/doomgeneric/d_englsh.h:324` | `#define AMSTR_FOLLOWOFF` |
-| `AMSTR_FOLLOWON` | macro | `progs/doomgeneric/d_englsh.h:323` | `#define AMSTR_FOLLOWON` |
-| `AMSTR_GRIDOFF` | macro | `progs/doomgeneric/d_englsh.h:327` | `#define AMSTR_GRIDOFF` |
-| `AMSTR_GRIDON` | macro | `progs/doomgeneric/d_englsh.h:326` | `#define AMSTR_GRIDON` |
-| `AMSTR_MARKEDSPOT` | macro | `progs/doomgeneric/d_englsh.h:329` | `#define AMSTR_MARKEDSPOT` |
-| `AMSTR_MARKSCLEARED` | macro | `progs/doomgeneric/d_englsh.h:330` | `#define AMSTR_MARKSCLEARED` |
-| `C1TEXT` | macro | `progs/doomgeneric/d_englsh.h:435` | `#define C1TEXT` |
-| `C2TEXT` | macro | `progs/doomgeneric/d_englsh.h:451` | `#define C2TEXT` |
-| `C3TEXT` | macro | `progs/doomgeneric/d_englsh.h:473` | `#define C3TEXT` |
-| `C4TEXT` | macro | `progs/doomgeneric/d_englsh.h:487` | `#define C4TEXT` |
-| `C5TEXT` | macro | `progs/doomgeneric/d_englsh.h:508` | `#define C5TEXT` |
-| `C6TEXT` | macro | `progs/doomgeneric/d_englsh.h:518` | `#define C6TEXT` |
-| `CC_ARACH` | macro | `progs/doomgeneric/d_englsh.h:683` | `#define CC_ARACH` |
-| `CC_ARCH` | macro | `progs/doomgeneric/d_englsh.h:687` | `#define CC_ARCH` |
-| `CC_BARON` | macro | `progs/doomgeneric/d_englsh.h:682` | `#define CC_BARON` |
-| `CC_CACO` | macro | `progs/doomgeneric/d_englsh.h:680` | `#define CC_CACO` |
-| `CC_CYBER` | macro | `progs/doomgeneric/d_englsh.h:689` | `#define CC_CYBER` |
-| `CC_DEMON` | macro | `progs/doomgeneric/d_englsh.h:678` | `#define CC_DEMON` |
-| `CC_HEAVY` | macro | `progs/doomgeneric/d_englsh.h:676` | `#define CC_HEAVY` |
-| `CC_HELL` | macro | `progs/doomgeneric/d_englsh.h:681` | `#define CC_HELL` |
-| `CC_HERO` | macro | `progs/doomgeneric/d_englsh.h:690` | `#define CC_HERO` |
-| `CC_IMP` | macro | `progs/doomgeneric/d_englsh.h:677` | `#define CC_IMP` |
-| `CC_LOST` | macro | `progs/doomgeneric/d_englsh.h:679` | `#define CC_LOST` |
-| `CC_MANCU` | macro | `progs/doomgeneric/d_englsh.h:686` | `#define CC_MANCU` |
-| `CC_PAIN` | macro | `progs/doomgeneric/d_englsh.h:684` | `#define CC_PAIN` |
-| `CC_REVEN` | macro | `progs/doomgeneric/d_englsh.h:685` | `#define CC_REVEN` |
-| `CC_SHOTGUN` | macro | `progs/doomgeneric/d_englsh.h:675` | `#define CC_SHOTGUN` |
-| `CC_SPIDER` | macro | `progs/doomgeneric/d_englsh.h:688` | `#define CC_SPIDER` |
-| `CC_ZOMBIE` | macro | `progs/doomgeneric/d_englsh.h:674` | `#define CC_ZOMBIE` |
-| `DETAILHI` | macro | `progs/doomgeneric/d_englsh.h:65` | `#define DETAILHI` |
-| `DETAILLO` | macro | `progs/doomgeneric/d_englsh.h:66` | `#define DETAILLO` |
-| `DOSY` | macro | `progs/doomgeneric/d_englsh.h:63` | `#define DOSY` |
-| `D_CDROM` | macro | `progs/doomgeneric/d_englsh.h:31` | `#define D_CDROM` |
-| `D_DEVSTR` | macro | `progs/doomgeneric/d_englsh.h:30` | `#define D_DEVSTR` |
-| `E1TEXT` | macro | `progs/doomgeneric/d_englsh.h:356` | `#define E1TEXT` |
-| `E2TEXT` | macro | `progs/doomgeneric/d_englsh.h:374` | `#define E2TEXT` |
-| `E3TEXT` | macro | `progs/doomgeneric/d_englsh.h:394` | `#define E3TEXT` |
-| `E4TEXT` | macro | `progs/doomgeneric/d_englsh.h:414` | `#define E4TEXT` |
-| `EMPTYSTRING` | macro | `progs/doomgeneric/d_englsh.h:72` | `#define EMPTYSTRING` |
-| `ENDGAME` | macro | `progs/doomgeneric/d_englsh.h:61` | `#define ENDGAME` |
-| `GAMMALVL0` | macro | `progs/doomgeneric/d_englsh.h:67` | `#define GAMMALVL0` |
-| `GAMMALVL1` | macro | `progs/doomgeneric/d_englsh.h:68` | `#define GAMMALVL1` |
-| `GAMMALVL2` | macro | `progs/doomgeneric/d_englsh.h:69` | `#define GAMMALVL2` |
-| `GAMMALVL3` | macro | `progs/doomgeneric/d_englsh.h:70` | `#define GAMMALVL3` |
-| `GAMMALVL4` | macro | `progs/doomgeneric/d_englsh.h:71` | `#define GAMMALVL4` |
-| `GGSAVED` | macro | `progs/doomgeneric/d_englsh.h:132` | `#define GGSAVED` |
-| `GOTARMBONUS` | macro | `progs/doomgeneric/d_englsh.h:80` | `#define GOTARMBONUS` |
-| `GOTARMOR` | macro | `progs/doomgeneric/d_englsh.h:77` | `#define GOTARMOR` |
-| `GOTBACKPACK` | macro | `progs/doomgeneric/d_englsh.h:109` | `#define GOTBACKPACK` |
-| `GOTBERSERK` | macro | `progs/doomgeneric/d_englsh.h:94` | `#define GOTBERSERK` |
-| `GOTBFG9000` | macro | `progs/doomgeneric/d_englsh.h:111` | `#define GOTBFG9000` |
-| `GOTBLUECARD` | macro | `progs/doomgeneric/d_englsh.h:86` | `#define GOTBLUECARD` |
-| `GOTBLUESKUL` | macro | `progs/doomgeneric/d_englsh.h:89` | `#define GOTBLUESKUL` |
-| `GOTCELL` | macro | `progs/doomgeneric/d_englsh.h:105` | `#define GOTCELL` |
-| `GOTCELLBOX` | macro | `progs/doomgeneric/d_englsh.h:106` | `#define GOTCELLBOX` |
-| `GOTCHAINGUN` | macro | `progs/doomgeneric/d_englsh.h:112` | `#define GOTCHAINGUN` |
-| `GOTCHAINSAW` | macro | `progs/doomgeneric/d_englsh.h:113` | `#define GOTCHAINSAW` |
-| `GOTCLIP` | macro | `progs/doomgeneric/d_englsh.h:101` | `#define GOTCLIP` |
-| `GOTCLIPBOX` | macro | `progs/doomgeneric/d_englsh.h:102` | `#define GOTCLIPBOX` |
-| `GOTHTHBONUS` | macro | `progs/doomgeneric/d_englsh.h:79` | `#define GOTHTHBONUS` |
-| `GOTINVIS` | macro | `progs/doomgeneric/d_englsh.h:95` | `#define GOTINVIS` |
-| `GOTINVUL` | macro | `progs/doomgeneric/d_englsh.h:93` | `#define GOTINVUL` |
-| `GOTLAUNCHER` | macro | `progs/doomgeneric/d_englsh.h:114` | `#define GOTLAUNCHER` |
-| `GOTMAP` | macro | `progs/doomgeneric/d_englsh.h:97` | `#define GOTMAP` |
-| `GOTMEDIKIT` | macro | `progs/doomgeneric/d_englsh.h:83` | `#define GOTMEDIKIT` |
-| `GOTMEDINEED` | macro | `progs/doomgeneric/d_englsh.h:82` | `#define GOTMEDINEED` |
-| `GOTMEGA` | macro | `progs/doomgeneric/d_englsh.h:78` | `#define GOTMEGA` |
-| `GOTMSPHERE` | macro | `progs/doomgeneric/d_englsh.h:99` | `#define GOTMSPHERE` |
-| `GOTPLASMA` | macro | `progs/doomgeneric/d_englsh.h:115` | `#define GOTPLASMA` |
-| `GOTREDCARD` | macro | `progs/doomgeneric/d_englsh.h:88` | `#define GOTREDCARD` |
-| `GOTREDSKULL` | macro | `progs/doomgeneric/d_englsh.h:91` | `#define GOTREDSKULL` |
-| `GOTROCKBOX` | macro | `progs/doomgeneric/d_englsh.h:104` | `#define GOTROCKBOX` |
-| `GOTROCKET` | macro | `progs/doomgeneric/d_englsh.h:103` | `#define GOTROCKET` |
-| `GOTSHELLBOX` | macro | `progs/doomgeneric/d_englsh.h:108` | `#define GOTSHELLBOX` |
-| `GOTSHELLS` | macro | `progs/doomgeneric/d_englsh.h:107` | `#define GOTSHELLS` |
-| `GOTSHOTGUN` | macro | `progs/doomgeneric/d_englsh.h:116` | `#define GOTSHOTGUN` |
-| `GOTSHOTGUN2` | macro | `progs/doomgeneric/d_englsh.h:117` | `#define GOTSHOTGUN2` |
-| `GOTSTIM` | macro | `progs/doomgeneric/d_englsh.h:81` | `#define GOTSTIM` |
-| `GOTSUIT` | macro | `progs/doomgeneric/d_englsh.h:96` | `#define GOTSUIT` |
-| `GOTSUPER` | macro | `progs/doomgeneric/d_englsh.h:84` | `#define GOTSUPER` |
-| `GOTVISOR` | macro | `progs/doomgeneric/d_englsh.h:98` | `#define GOTVISOR` |
-| `GOTYELWCARD` | macro | `progs/doomgeneric/d_englsh.h:87` | `#define GOTYELWCARD` |
-| `GOTYELWSKUL` | macro | `progs/doomgeneric/d_englsh.h:90` | `#define GOTYELWSKUL` |
-| `HUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:179` | `#define HUSTR_1` |
-| `HUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:188` | `#define HUSTR_10` |
-| `HUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:189` | `#define HUSTR_11` |
-| `HUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:191` | `#define HUSTR_12` |
-| `HUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:192` | `#define HUSTR_13` |
-| `HUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:193` | `#define HUSTR_14` |
-| `HUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:194` | `#define HUSTR_15` |
-| `HUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:195` | `#define HUSTR_16` |
-| `HUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:196` | `#define HUSTR_17` |
-| `HUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:197` | `#define HUSTR_18` |
-| `HUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:198` | `#define HUSTR_19` |
-| `HUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:180` | `#define HUSTR_2` |
-| `HUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:199` | `#define HUSTR_20` |
-| `HUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:201` | `#define HUSTR_21` |
-| `HUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:202` | `#define HUSTR_22` |
-| `HUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:203` | `#define HUSTR_23` |
-| `HUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:204` | `#define HUSTR_24` |
-| `HUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:205` | `#define HUSTR_25` |
-| `HUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:206` | `#define HUSTR_26` |
-| `HUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:207` | `#define HUSTR_27` |
-| `HUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:208` | `#define HUSTR_28` |
-| `HUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:209` | `#define HUSTR_29` |
-| `HUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:181` | `#define HUSTR_3` |
-| `HUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:210` | `#define HUSTR_30` |
-| `HUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:212` | `#define HUSTR_31` |
-| `HUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:213` | `#define HUSTR_32` |
-| `HUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:182` | `#define HUSTR_4` |
-| `HUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:183` | `#define HUSTR_5` |
-| `HUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:184` | `#define HUSTR_6` |
-| `HUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:185` | `#define HUSTR_7` |
-| `HUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:186` | `#define HUSTR_8` |
-| `HUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:187` | `#define HUSTR_9` |
-| `HUSTR_CHATMACRO0` | macro | `progs/doomgeneric/d_englsh.h:296` | `#define HUSTR_CHATMACRO0` |
-| `HUSTR_CHATMACRO1` | macro | `progs/doomgeneric/d_englsh.h:287` | `#define HUSTR_CHATMACRO1` |
-| `HUSTR_CHATMACRO2` | macro | `progs/doomgeneric/d_englsh.h:288` | `#define HUSTR_CHATMACRO2` |
-| `HUSTR_CHATMACRO3` | macro | `progs/doomgeneric/d_englsh.h:289` | `#define HUSTR_CHATMACRO3` |
-| `HUSTR_CHATMACRO4` | macro | `progs/doomgeneric/d_englsh.h:290` | `#define HUSTR_CHATMACRO4` |
-| `HUSTR_CHATMACRO5` | macro | `progs/doomgeneric/d_englsh.h:291` | `#define HUSTR_CHATMACRO5` |
-| `HUSTR_CHATMACRO6` | macro | `progs/doomgeneric/d_englsh.h:292` | `#define HUSTR_CHATMACRO6` |
-| `HUSTR_CHATMACRO7` | macro | `progs/doomgeneric/d_englsh.h:293` | `#define HUSTR_CHATMACRO7` |
-| `HUSTR_CHATMACRO8` | macro | `progs/doomgeneric/d_englsh.h:294` | `#define HUSTR_CHATMACRO8` |
-| `HUSTR_CHATMACRO9` | macro | `progs/doomgeneric/d_englsh.h:295` | `#define HUSTR_CHATMACRO9` |
-| `HUSTR_E1M1` | macro | `progs/doomgeneric/d_englsh.h:139` | `#define HUSTR_E1M1` |
-| `HUSTR_E1M2` | macro | `progs/doomgeneric/d_englsh.h:140` | `#define HUSTR_E1M2` |
-| `HUSTR_E1M3` | macro | `progs/doomgeneric/d_englsh.h:141` | `#define HUSTR_E1M3` |
-| `HUSTR_E1M4` | macro | `progs/doomgeneric/d_englsh.h:142` | `#define HUSTR_E1M4` |
-| `HUSTR_E1M5` | macro | `progs/doomgeneric/d_englsh.h:143` | `#define HUSTR_E1M5` |
-| `HUSTR_E1M6` | macro | `progs/doomgeneric/d_englsh.h:144` | `#define HUSTR_E1M6` |
-| `HUSTR_E1M7` | macro | `progs/doomgeneric/d_englsh.h:145` | `#define HUSTR_E1M7` |
-| `HUSTR_E1M8` | macro | `progs/doomgeneric/d_englsh.h:146` | `#define HUSTR_E1M8` |
-| `HUSTR_E1M9` | macro | `progs/doomgeneric/d_englsh.h:147` | `#define HUSTR_E1M9` |
-| `HUSTR_E2M1` | macro | `progs/doomgeneric/d_englsh.h:149` | `#define HUSTR_E2M1` |
-| `HUSTR_E2M2` | macro | `progs/doomgeneric/d_englsh.h:150` | `#define HUSTR_E2M2` |
-| `HUSTR_E2M3` | macro | `progs/doomgeneric/d_englsh.h:151` | `#define HUSTR_E2M3` |
-| `HUSTR_E2M4` | macro | `progs/doomgeneric/d_englsh.h:152` | `#define HUSTR_E2M4` |
-| `HUSTR_E2M5` | macro | `progs/doomgeneric/d_englsh.h:153` | `#define HUSTR_E2M5` |
-| `HUSTR_E2M6` | macro | `progs/doomgeneric/d_englsh.h:154` | `#define HUSTR_E2M6` |
-| `HUSTR_E2M7` | macro | `progs/doomgeneric/d_englsh.h:155` | `#define HUSTR_E2M7` |
-| `HUSTR_E2M8` | macro | `progs/doomgeneric/d_englsh.h:156` | `#define HUSTR_E2M8` |
-| `HUSTR_E2M9` | macro | `progs/doomgeneric/d_englsh.h:157` | `#define HUSTR_E2M9` |
-| `HUSTR_E3M1` | macro | `progs/doomgeneric/d_englsh.h:159` | `#define HUSTR_E3M1` |
-| `HUSTR_E3M2` | macro | `progs/doomgeneric/d_englsh.h:160` | `#define HUSTR_E3M2` |
-| `HUSTR_E3M3` | macro | `progs/doomgeneric/d_englsh.h:161` | `#define HUSTR_E3M3` |
-| `HUSTR_E3M4` | macro | `progs/doomgeneric/d_englsh.h:162` | `#define HUSTR_E3M4` |
-| `HUSTR_E3M5` | macro | `progs/doomgeneric/d_englsh.h:163` | `#define HUSTR_E3M5` |
-| `HUSTR_E3M6` | macro | `progs/doomgeneric/d_englsh.h:164` | `#define HUSTR_E3M6` |
-| `HUSTR_E3M7` | macro | `progs/doomgeneric/d_englsh.h:165` | `#define HUSTR_E3M7` |
-| `HUSTR_E3M8` | macro | `progs/doomgeneric/d_englsh.h:166` | `#define HUSTR_E3M8` |
-| `HUSTR_E3M9` | macro | `progs/doomgeneric/d_englsh.h:167` | `#define HUSTR_E3M9` |
-| `HUSTR_E4M1` | macro | `progs/doomgeneric/d_englsh.h:169` | `#define HUSTR_E4M1` |
-| `HUSTR_E4M2` | macro | `progs/doomgeneric/d_englsh.h:170` | `#define HUSTR_E4M2` |
-| `HUSTR_E4M3` | macro | `progs/doomgeneric/d_englsh.h:171` | `#define HUSTR_E4M3` |
-| `HUSTR_E4M4` | macro | `progs/doomgeneric/d_englsh.h:172` | `#define HUSTR_E4M4` |
-| `HUSTR_E4M5` | macro | `progs/doomgeneric/d_englsh.h:173` | `#define HUSTR_E4M5` |
-| `HUSTR_E4M6` | macro | `progs/doomgeneric/d_englsh.h:174` | `#define HUSTR_E4M6` |
-| `HUSTR_E4M7` | macro | `progs/doomgeneric/d_englsh.h:175` | `#define HUSTR_E4M7` |
-| `HUSTR_E4M8` | macro | `progs/doomgeneric/d_englsh.h:176` | `#define HUSTR_E4M8` |
-| `HUSTR_E4M9` | macro | `progs/doomgeneric/d_englsh.h:177` | `#define HUSTR_E4M9` |
-| `HUSTR_KEYBROWN` | macro | `progs/doomgeneric/d_englsh.h:316` | `#define HUSTR_KEYBROWN` |
-| `HUSTR_KEYGREEN` | macro | `progs/doomgeneric/d_englsh.h:314` | `#define HUSTR_KEYGREEN` |
-| `HUSTR_KEYINDIGO` | macro | `progs/doomgeneric/d_englsh.h:315` | `#define HUSTR_KEYINDIGO` |
-| `HUSTR_KEYRED` | macro | `progs/doomgeneric/d_englsh.h:317` | `#define HUSTR_KEYRED` |
-| `HUSTR_MESSAGESENT` | macro | `progs/doomgeneric/d_englsh.h:304` | `#define HUSTR_MESSAGESENT` |
-| `HUSTR_MSGU` | macro | `progs/doomgeneric/d_englsh.h:137` | `#define HUSTR_MSGU` |
-| `HUSTR_PLRBROWN` | macro | `progs/doomgeneric/d_englsh.h:311` | `#define HUSTR_PLRBROWN` |
-| `HUSTR_PLRGREEN` | macro | `progs/doomgeneric/d_englsh.h:309` | `#define HUSTR_PLRGREEN` |
-| `HUSTR_PLRINDIGO` | macro | `progs/doomgeneric/d_englsh.h:310` | `#define HUSTR_PLRINDIGO` |
-| `HUSTR_PLRRED` | macro | `progs/doomgeneric/d_englsh.h:312` | `#define HUSTR_PLRRED` |
-| `HUSTR_TALKTOSELF1` | macro | `progs/doomgeneric/d_englsh.h:298` | `#define HUSTR_TALKTOSELF1` |
-| `HUSTR_TALKTOSELF2` | macro | `progs/doomgeneric/d_englsh.h:299` | `#define HUSTR_TALKTOSELF2` |
-| `HUSTR_TALKTOSELF3` | macro | `progs/doomgeneric/d_englsh.h:300` | `#define HUSTR_TALKTOSELF3` |
-| `HUSTR_TALKTOSELF4` | macro | `progs/doomgeneric/d_englsh.h:301` | `#define HUSTR_TALKTOSELF4` |
-| `HUSTR_TALKTOSELF5` | macro | `progs/doomgeneric/d_englsh.h:302` | `#define HUSTR_TALKTOSELF5` |
-| `LOADNET` | macro | `progs/doomgeneric/d_englsh.h:39` | `#define LOADNET` |
-| `MSGOFF` | macro | `progs/doomgeneric/d_englsh.h:58` | `#define MSGOFF` |
-| `MSGON` | macro | `progs/doomgeneric/d_englsh.h:59` | `#define MSGON` |
-| `NETEND` | macro | `progs/doomgeneric/d_englsh.h:60` | `#define NETEND` |
-| `NEWGAME` | macro | `progs/doomgeneric/d_englsh.h:46` | `#define NEWGAME` |
-| `NIGHTMARE` | macro | `progs/doomgeneric/d_englsh.h:50` | `#define NIGHTMARE` |
-| `P1TEXT` | macro | `progs/doomgeneric/d_englsh.h:526` | `#define P1TEXT` |
-| `P2TEXT` | macro | `progs/doomgeneric/d_englsh.h:543` | `#define P2TEXT` |
-| `P3TEXT` | macro | `progs/doomgeneric/d_englsh.h:554` | `#define P3TEXT` |
-| `P4TEXT` | macro | `progs/doomgeneric/d_englsh.h:568` | `#define P4TEXT` |
-| `P5TEXT` | macro | `progs/doomgeneric/d_englsh.h:584` | `#define P5TEXT` |
-| `P6TEXT` | macro | `progs/doomgeneric/d_englsh.h:592` | `#define P6TEXT` |
-| `PD_BLUEK` | macro | `progs/doomgeneric/d_englsh.h:125` | `#define PD_BLUEK` |
-| `PD_BLUEO` | macro | `progs/doomgeneric/d_englsh.h:122` | `#define PD_BLUEO` |
-| `PD_REDK` | macro | `progs/doomgeneric/d_englsh.h:126` | `#define PD_REDK` |
-| `PD_REDO` | macro | `progs/doomgeneric/d_englsh.h:123` | `#define PD_REDO` |
-| `PD_YELLOWK` | macro | `progs/doomgeneric/d_englsh.h:127` | `#define PD_YELLOWK` |
-| `PD_YELLOWO` | macro | `progs/doomgeneric/d_englsh.h:124` | `#define PD_YELLOWO` |
-| `PHUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:215` | `#define PHUSTR_1` |
-| `PHUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:224` | `#define PHUSTR_10` |
-| `PHUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:225` | `#define PHUSTR_11` |
-| `PHUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:227` | `#define PHUSTR_12` |
-| `PHUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:228` | `#define PHUSTR_13` |
-| `PHUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:229` | `#define PHUSTR_14` |
-| `PHUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:230` | `#define PHUSTR_15` |
-| `PHUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:231` | `#define PHUSTR_16` |
-| `PHUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:232` | `#define PHUSTR_17` |
-| `PHUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:233` | `#define PHUSTR_18` |
-| `PHUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:234` | `#define PHUSTR_19` |
-| `PHUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:216` | `#define PHUSTR_2` |
-| `PHUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:235` | `#define PHUSTR_20` |
-| `PHUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:237` | `#define PHUSTR_21` |
-| `PHUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:238` | `#define PHUSTR_22` |
-| `PHUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:239` | `#define PHUSTR_23` |
-| `PHUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:240` | `#define PHUSTR_24` |
-| `PHUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:241` | `#define PHUSTR_25` |
-| `PHUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:242` | `#define PHUSTR_26` |
-| `PHUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:243` | `#define PHUSTR_27` |
-| `PHUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:244` | `#define PHUSTR_28` |
-| `PHUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:245` | `#define PHUSTR_29` |
-| `PHUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:217` | `#define PHUSTR_3` |
-| `PHUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:246` | `#define PHUSTR_30` |
-| `PHUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:248` | `#define PHUSTR_31` |
-| `PHUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:249` | `#define PHUSTR_32` |
-| `PHUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:218` | `#define PHUSTR_4` |
-| `PHUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:219` | `#define PHUSTR_5` |
-| `PHUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:220` | `#define PHUSTR_6` |
-| `PHUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:221` | `#define PHUSTR_7` |
-| `PHUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:222` | `#define PHUSTR_8` |
-| `PHUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:223` | `#define PHUSTR_9` |
-| `PRESSKEY` | macro | `progs/doomgeneric/d_englsh.h:36` | `#define PRESSKEY` |
-| `PRESSYN` | macro | `progs/doomgeneric/d_englsh.h:37` | `#define PRESSYN` |
-| `QLOADNET` | macro | `progs/doomgeneric/d_englsh.h:40` | `#define QLOADNET` |
-| `QLPROMPT` | macro | `progs/doomgeneric/d_englsh.h:44` | `#define QLPROMPT` |
-| `QSAVESPOT` | macro | `progs/doomgeneric/d_englsh.h:41` | `#define QSAVESPOT` |
-| `QSPROMPT` | macro | `progs/doomgeneric/d_englsh.h:43` | `#define QSPROMPT` |
-| `QUITMSG` | macro | `progs/doomgeneric/d_englsh.h:38` | `#define QUITMSG` |
-| `SAVEDEAD` | macro | `progs/doomgeneric/d_englsh.h:42` | `#define SAVEDEAD` |
-| `STSTR_BEHOLD` | macro | `progs/doomgeneric/d_englsh.h:347` | `#define STSTR_BEHOLD` |
-| `STSTR_BEHOLDX` | macro | `progs/doomgeneric/d_englsh.h:348` | `#define STSTR_BEHOLDX` |
-| `STSTR_CHOPPERS` | macro | `progs/doomgeneric/d_englsh.h:350` | `#define STSTR_CHOPPERS` |
-| `STSTR_CLEV` | macro | `progs/doomgeneric/d_englsh.h:351` | `#define STSTR_CLEV` |
-| `STSTR_DQDOFF` | macro | `progs/doomgeneric/d_englsh.h:339` | `#define STSTR_DQDOFF` |
-| `STSTR_DQDON` | macro | `progs/doomgeneric/d_englsh.h:338` | `#define STSTR_DQDON` |
-| `STSTR_FAADDED` | macro | `progs/doomgeneric/d_englsh.h:342` | `#define STSTR_FAADDED` |
-| `STSTR_KFAADDED` | macro | `progs/doomgeneric/d_englsh.h:341` | `#define STSTR_KFAADDED` |
-| `STSTR_MUS` | macro | `progs/doomgeneric/d_englsh.h:336` | `#define STSTR_MUS` |
-| `STSTR_NCOFF` | macro | `progs/doomgeneric/d_englsh.h:345` | `#define STSTR_NCOFF` |
-| `STSTR_NCON` | macro | `progs/doomgeneric/d_englsh.h:344` | `#define STSTR_NCON` |
-| `STSTR_NOMUS` | macro | `progs/doomgeneric/d_englsh.h:337` | `#define STSTR_NOMUS` |
-| `SWSTRING` | macro | `progs/doomgeneric/d_englsh.h:54` | `#define SWSTRING` |
-| `T1TEXT` | macro | `progs/doomgeneric/d_englsh.h:598` | `#define T1TEXT` |
-| `T2TEXT` | macro | `progs/doomgeneric/d_englsh.h:613` | `#define T2TEXT` |
-| `T3TEXT` | macro | `progs/doomgeneric/d_englsh.h:625` | `#define T3TEXT` |
-| `T4TEXT` | macro | `progs/doomgeneric/d_englsh.h:635` | `#define T4TEXT` |
-| `T5TEXT` | macro | `progs/doomgeneric/d_englsh.h:649` | `#define T5TEXT` |
-| `T6TEXT` | macro | `progs/doomgeneric/d_englsh.h:657` | `#define T6TEXT` |
-| `THUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:251` | `#define THUSTR_1` |
-| `THUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:260` | `#define THUSTR_10` |
-| `THUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:261` | `#define THUSTR_11` |
-| `THUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:263` | `#define THUSTR_12` |
-| `THUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:264` | `#define THUSTR_13` |
-| `THUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:265` | `#define THUSTR_14` |
-| `THUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:266` | `#define THUSTR_15` |
-| `THUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:267` | `#define THUSTR_16` |
-| `THUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:268` | `#define THUSTR_17` |
-| `THUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:269` | `#define THUSTR_18` |
-| `THUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:270` | `#define THUSTR_19` |
-| `THUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:252` | `#define THUSTR_2` |
-| `THUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:271` | `#define THUSTR_20` |
-| `THUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:273` | `#define THUSTR_21` |
-| `THUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:274` | `#define THUSTR_22` |
-| `THUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:275` | `#define THUSTR_23` |
-| `THUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:276` | `#define THUSTR_24` |
-| `THUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:277` | `#define THUSTR_25` |
-| `THUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:278` | `#define THUSTR_26` |
-| `THUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:279` | `#define THUSTR_27` |
-| `THUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:280` | `#define THUSTR_28` |
-| `THUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:281` | `#define THUSTR_29` |
-| `THUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:253` | `#define THUSTR_3` |
-| `THUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:282` | `#define THUSTR_30` |
-| `THUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:284` | `#define THUSTR_31` |
-| `THUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:285` | `#define THUSTR_32` |
-| `THUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:254` | `#define THUSTR_4` |
-| `THUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:255` | `#define THUSTR_5` |
-| `THUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:256` | `#define THUSTR_6` |
-| `THUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:257` | `#define THUSTR_7` |
-| `THUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:258` | `#define THUSTR_8` |
-| `THUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:259` | `#define THUSTR_9` |
-| `__D_ENGLSH__` | macro | `progs/doomgeneric/d_englsh.h:21` | `#define __D_ENGLSH__` |
-| `D_PopEvent` | function | `progs/doomgeneric/d_event.c:43` | `event_t *D_PopEvent(void)` |
-| `D_PostEvent` | function | `progs/doomgeneric/d_event.c:35` | `void D_PostEvent (event_t* ev)` |
-| `MAXEVENTS` | macro | `progs/doomgeneric/d_event.c:25` | `#define MAXEVENTS` |
-| `D_PopEvent` | function | `progs/doomgeneric/d_event.h:133` | `event_t *D_PopEvent(void);` |
-| `D_PostEvent` | function | `progs/doomgeneric/d_event.h:129` | `void D_PostEvent (event_t *ev);` |
-| `__D_EVENT__` | macro | `progs/doomgeneric/d_event.h:21` | `#define __D_EVENT__` |
-| `event_t` | struct | `progs/doomgeneric/d_event.h:42` | `` |
-| `__D_ITEMS__` | macro | `progs/doomgeneric/d_items.h:21` | `#define __D_ITEMS__` |
-| `weaponinfo` | variable | `progs/doomgeneric/d_items.h:39` | `extern weaponinfo_t weaponinfo[NUMWEAPONS];` |
-| `weaponinfo_t` | struct | `progs/doomgeneric/d_items.h:28` | `` |
-| `AddDoomWadPath` | function | `progs/doomgeneric/d_iwad.c:518` | `static void AddDoomWadPath(void)` |
-| `AddIWADDir` | function | `progs/doomgeneric/d_iwad.c:64` | `static void AddIWADDir(char *dir)` |
-| `BuildIWADDirList` | function | `progs/doomgeneric/d_iwad.c:569` | `static void BuildIWADDirList(void)` |
-| `CheckCollectorsEdition` | function | `progs/doomgeneric/d_iwad.c:270` | `static void CheckCollectorsEdition(void)` |
-| `CheckDOSDefaults` | function | `progs/doomgeneric/d_iwad.c:364` | `static void CheckDOSDefaults(void)` |
-| `CheckDirectoryHasIWAD` | function | `progs/doomgeneric/d_iwad.c:408` | `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)` |
-| `CheckSteamEdition` | function | `progs/doomgeneric/d_iwad.c:297` | `static void CheckSteamEdition(void)` |
-| `CheckSteamGUSPatches` | function | `progs/doomgeneric/d_iwad.c:324` | `static void CheckSteamGUSPatches(void)` |
-| `CheckUninstallStrings` | function | `progs/doomgeneric/d_iwad.c:236` | `static void CheckUninstallStrings(void)` |
-| `D_FindAllIWADs` | function | `progs/doomgeneric/d_iwad.c:757` | `const iwad_t **D_FindAllIWADs(int mask)` |
-| `D_FindIWAD` | function | `progs/doomgeneric/d_iwad.c:704` | `char *D_FindIWAD(int mask, GameMission_t *mission)` |
-| `D_FindWADByName` | function | `progs/doomgeneric/d_iwad.c:630` | `char *D_FindWADByName(char *name)` |
-| `D_SaveGameIWADName` | function | `progs/doomgeneric/d_iwad.c:796` | `char *D_SaveGameIWADName(GameMission_t gamemission)` |
-| `D_SuggestGameName` | function | `progs/doomgeneric/d_iwad.c:835` | `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)` |
-| `D_SuggestIWADName` | function | `progs/doomgeneric/d_iwad.c:820` | `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)` |
-| `D_TryFindWADByName` | function | `progs/doomgeneric/d_iwad.c:681` | `char *D_TryFindWADByName(char *filename)` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

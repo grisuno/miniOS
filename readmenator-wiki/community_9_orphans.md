@@ -1,14 +1,14 @@
 # orphans
 
-*Community 9 | 107 files | cohesion 0.00*
+*Community 9 | 109 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 107 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
+This community groups 109 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (104 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
-### `tools` (39 files)
+### `tools` (40 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -49,6 +49,12 @@ This community groups 107 file(s) rooted at `tools` with dominant language c (co
 |------|----------|-------|---------|-----|
 | `progs/doomgeneric/doom.h` | h | utility | 2 | no |
 
+### `tests` (3 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `tests/host_aes.sh` | sh | testing | 3 | yes |
+
 ### `arch/x86` (2 files)
 
 | File | Language | Layer | Symbols | Doc |
@@ -66,12 +72,6 @@ This community groups 107 file(s) rooted at `tools` with dominant language c (co
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/micropython/variants/minios/manifest.py` | py | utility | 0 | yes |
-
-### `tests` (2 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `tests/host_aes.sh` | sh | testing | 3 | yes |
 
 ### `.` (1 files)
 
@@ -103,7 +103,7 @@ This community groups 107 file(s) rooted at `tools` with dominant language c (co
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 87 more files in this community.*
+*... and 89 more files in this community.*
 
 
 ## Key Symbols
@@ -114,9 +114,9 @@ This community groups 107 file(s) rooted at `tools` with dominant language c (co
 - `switch_to_notrap` (function, `arch/x86/ctx_sw.S:134`)
 - `user_trampoline` (function, `arch/x86/ctx_sw.S:221`)
 - `fork_trampoline` (function, `arch/x86/ctx_sw.S:233`)
-- `exec_enter` (function, `arch/x86/ctx_sw.S:249`)
-- `resume_iretq` (function, `arch/x86/ctx_sw.S:278`)
-- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:318`)
+- `exec_enter` (function, `arch/x86/ctx_sw.S:273`)
+- `resume_iretq` (function, `arch/x86/ctx_sw.S:302`)
+- `k_run_on_stack` (function, `arch/x86/ctx_sw.S:342`)
 - `tf_rax` (function, `arch/x86/isr_stubs.S:67`)
 - `tf_rbx` (function, `arch/x86/isr_stubs.S:68`)
 - `tf_rcx` (function, `arch/x86/isr_stubs.S:69`)
@@ -152,6 +152,7 @@ This community groups 107 file(s) rooted at `tools` with dominant language c (co
 ## Risks
 
 - [taint high] `mcp/test_minios_mcp.py` -> `mcp/test_minios_mcp.py` via `subprocess` (0 hops)
+- [taint high] `tests/test_minifs_tools.py` -> `tests/test_minifs_tools.py` via `subprocess` (0 hops)
 - [taint high] `tools/check_kb_sync.py` -> `tools/check_kb_sync.py` via `subprocess` (0 hops)
 - [taint high] `tools/check_mutant_anchors.py` -> `tools/check_mutant_anchors.py` via `subprocess` (0 hops)
 - [dataflow UNCHECKED_ALLOC] `boot/uefi_stub.c:518` `efi_main` `rc`: Result of allocator stored in `rc` is never checked against NULL.
@@ -185,4 +186,4 @@ This community groups 107 file(s) rooted at `tools` with dominant language c (co
 - `progs/asm/cp.s`
 - `progs/asm/fib.s`
 - `progs/asm/freedom.s`
-- *... and 87 more*
+- *... and 89 more*

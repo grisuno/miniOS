@@ -29,15 +29,15 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `fs/ext4.c` | ext_geo_t: Filesystem geometry from the superblock. | fs | 38 | 1 |
 | `fs/fat32.c` | fat_geo_t: Parsed BPB plus derived geometry. secs = total data clusters + 2 (cluster numbers 0/1... | fs | 31 | 1 |
 | `fs/fsimg.c` | fsimg_dev_read: Docstring: Sector reads off the active backend through the block layer, so a... | fs | 5 | 2 |
-| `fs/kfile.c` | kpipe_pair: Docstring: Create a connected pipe pair sharing one ring. | fs | 25 | 0 |
-| `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 67 | 0 |
+| `fs/kfile.c` | kpipe_pair: Docstring: Create a connected pipe pair sharing one ring. | fs | 30 | 0 |
+| `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 66 | 0 |
 | `fs/pcache.c` | Docstring: fs/pcache.c -- page cache store for MiniFS (T5 slice 1). | fs | 16 | 1 |
 | `fs/ramdisk.c` | ramdisk_usage: int ramdisk_list(RDFile **out, int max) { if (!rd) return 0; int n =... | fs | 25 | 0 |
 | `fs/vfs.c` | ramdisk_vfs_readdir: Docstring: List ramdisk leaves under dir ("" or "/" is root). | fs | 44 | 0 |
 | `fs/zip.c` | — the unzip/zip shell builtins over the miniz zip library. | fs | 10 | 0 |
 | `headers/abi.h` | Docstring: abi.h -- Boot-time ABI manifest gate contract. | headers | 10 | 3 |
 | `headers/ap_stub.h` | generated from ap_stub.bin - do not edit | headers | 0 | 1 |
-| `headers/arch/x86/boot/bootdefs.h` | centralized configuration for the MiniOS two-stage boot path. | misc | 146 | 12 |
+| `headers/arch/x86/boot/bootdefs.h` | centralized configuration for the MiniOS two-stage boot path. | misc | 147 | 12 |
 | `headers/arch/x86/hal_io.h` | Docstring: x86 port I/O hardware abstraction contract. | headers_arch_x86 | 69 | 8 |
 | `headers/arch/x86/msr.h` | Model-Specific Register access for x86-64. | headers_arch_x86 | 9 | 7 |
 | `headers/arena.h` | Docstring: bump arena for MiniOS, kernel and ring-3 alike. | headers | 15 | 2 |
@@ -61,10 +61,10 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `headers/ext4.h` | Read-only ext4 loopback/device driver. | headers | 15 | 4 |
 | `headers/fat32.h` | Read-only FAT32 loopback driver over ramdisk/MiniFS images. | headers | 16 | 4 |
 | `headers/fsimg.h` | One image backend for read-only filesystem drivers. | headers | 6 | 5 |
-| `headers/futex.h` | Docstring: futex.h -- Fast userspace mutex sleep/wake contract. | headers | 17 | 4 |
+| `headers/futex.h` | Docstring: futex.h -- Fast userspace mutex sleep/wake contract. | headers | 27 | 4 |
 | `headers/httpd.h` | Docstring: httpd.h -- Minimal static HTTP/1.0 server contract. | headers | 10 | 2 |
 | `headers/ide.h` | IDE/ATA PIO driver for MiniOS. | headers | 35 | 6 |
-| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 383 | 4 |
+| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 392 | 4 |
 | `headers/kernel/console_in.h` | Docstring: console_in.h -- boundary of the console input device | headers_kernel | 11 | 3 |
 | `headers/kernel/vga_cursor.h` | Docstring: vga_cursor.h -- boundary of the pointer sprite layer | headers_kernel | 9 | 2 |
 | `headers/ktime.h` | pure time-conversion helpers shared by the kernel clock | headers | 3 | 3 |
@@ -72,8 +72,8 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `headers/leakcheck.h` | Docstring: allocation tracker for MiniOS, STB leakcheck lineage. | headers | 24 | 3 |
 | `headers/lz4_kernel.h` | - | headers | 4 | 4 |
 | `headers/minifetch.h` | Docstring: minifetch.h -- neofetch-style system screen contract. | headers | 2 | 2 |
-| `headers/minifs.h` | MiniFS: a minimal Unix-like filesystem for MiniOS. | headers | 78 | 15 |
-| `headers/net.h` | net_cmd_status: net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and *... | headers | 71 | 9 |
+| `headers/minifs.h` | MiniFS: a minimal Unix-like filesystem for MiniOS. | headers | 77 | 15 |
+| `headers/net.h` | net_sys_is_socket: net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and *... | headers | 101 | 9 |
 | `headers/net/rtl8139.h` | rtl_present: rtl8139 NIC driver interface. | misc | 8 | 2 |
 | `headers/panic.h` | Docstring: panic.h -- Kernel panic backtrace contract (header-only). | headers | 3 | 2 |
 | `headers/pcache.h` | Docstring: pcache.h -- page cache for MiniFS, slice 1 (store only). | headers | 17 | 9 |
@@ -81,21 +81,23 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `headers/pcm_ring.h` | single-producer/single-consumer byte ring for PCM audio. | headers | 7 | 2 |
 | `headers/pcspk.h` | - | headers | 9 | 3 |
 | `headers/percpu_rq.h` | Docstring: percpu_rq.h -- Per-CPU runqueues with work stealing. | headers | 14 | 5 |
-| `headers/pipe.h` | Docstring: pipe.h -- Kernel pipe ring contract (header-only). | headers | 15 | 3 |
+| `headers/pipe.h` | Docstring: pipe.h -- Kernel pipe ring contract (header-only). | headers | 17 | 3 |
+| `headers/proc_sec.h` | Docstring: proc_sec.h -- per-process security state behind the Linux | headers | 12 | 5 |
 | `headers/qga.h` | - | headers | 29 | 1 |
 | `headers/randmix.h` | entropy mixer for getrandom (318). | headers | 2 | 2 |
 | `headers/rcu.h` | Docstring: rcu.h -- Read-copy-update, lite epoch edition. | headers | 17 | 4 |
 | `headers/rtc.h` | rtc_days_from_civil: Days since 1970-01-01 for a civil date (Howard Hinnant's algorithm, pure... | headers | 6 | 6 |
-| `headers/sanitize.h` | Docstring: sanitize.h -- Single choke point for syscall argument checks. | headers | 5 | 3 |
+| `headers/sanitize.h` | Docstring: sanitize.h -- Single choke point for syscall argument checks. | headers | 5 | 4 |
 | `headers/sb16.h` | Sound Blaster 16 DMA audio driver contract. | headers | 28 | 6 |
-| `headers/sched.h` | Forward: full view lives in kernel.h (needs KFILE first); the PCB | headers | 148 | 24 |
+| `headers/sched.h` | Forward: full view lives in kernel.h (needs KFILE first); the PCB | headers | 154 | 26 |
+| `headers/seccomp_bpf.h` | Docstring: seccomp_bpf.h -- classic BPF checker and interpreter for | headers | 58 | 3 |
 | `headers/shell.h` | shared shell constants and the line reader/parser reused by | headers | 8 | 3 |
 | `headers/smp.h` | SMP bring-up: wake the application processors (APs) via the LAPIC INIT/SIPI | headers | 11 | 4 |
 | `headers/spawn.h` | Docstring: Scalar shared-window view saved across a child run. | headers | 9 | 3 |
 | `headers/spinlock.h` | Lightweight spinlock for MiniOS kernel. | headers | 19 | 8 |
 | `headers/sync.h` | Blocking synchronization primitives (roadmap Phase 3.1). | headers | 36 | 7 |
 | `headers/syscall_asm.h` | numeric contract for arch/x86/syscall_entry.S. | headers | 13 | 2 |
-| `headers/syscalls_proc.h` | process-management syscall handlers shared with the | headers | 15 | 1 |
+| `headers/syscalls_proc.h` | process-management syscall handlers shared with the | headers | 16 | 2 |
 | `headers/tick.h` | Docstring: Tick listener bus contract. | headers | 16 | 3 |
 | `headers/tls.h` | tls_free_fd: Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever... | headers | 73 | 6 |
 | `headers/tls_port.h` | Portability shim between the MiniOS kernel and the host-side test | headers | 49 | 5 |
@@ -123,7 +125,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `kernel/cvm_host.c` | - | kernel | 45 | 0 |
 | `kernel/editor.c` | edit_list: List a (possibly empty) range [start, end], both 1-based inclusive. | kernel | 22 | 0 |
 | `kernel/exec.c` | Process execution: setjmp/longjmp, k_exec_user, k_run_rel, kexit. | kernel | 10 | 0 |
-| `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | kernel | 7 | 0 |
+| `kernel/futex.c` | Docstring: kernel/futex.c -- Kernel side of the futex contract. | kernel | 8 | 0 |
 | `kernel/klog.c` | Structured kernel logging with levels and subsystems. | kernel | 6 | 0 |
 | `kernel/ldso_parse.c` | Docstring: kernel/ldso_parse.c -- pure dynamic-table parsing (T8 ld.so). | kernel | 20 | 1 |
 | `kernel/loader.c` | ldso_read_file: Read a whole library file by DT_NEEDED name: exact path first, then the... | kernel | 47 | 0 |
@@ -136,18 +138,20 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `kernel/panic.c` | Docstring: kernel/panic.c -- Kernel panic screen. | kernel | 4 | 0 |
 | `kernel/percpu_rq.c` | Docstring: kernel/percpu_rq.c -- Per-CPU runqueue hints and stealing. | kernel | 9 | 0 |
 | `kernel/printf.c` | - | kernel | 10 | 0 |
+| `kernel/proc_sec.c` | Docstring: proc_sec.c -- per-process security state: the Linux seccomp | kernel | 43 | 0 |
 | `kernel/rcu.c` | Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks. | kernel | 14 | 0 |
 | `kernel/redirect.c` | - | kernel | 3 | 0 |
-| `kernel/sched.c` | trap_frame_t: if (len == 0 \|\| len > 256) { kprintf("gdb: dump length 1..256 (got %lu)\n", len)... | kernel | 107 | 0 |
+| `kernel/sched.c` | trap_frame_t: if (len == 0 \|\| len > 256) { kprintf("gdb: dump length 1..256 (got %lu)\n", len)... | kernel | 121 | 0 |
 | `kernel/scrollback.c` | Console scrollback ring buffer. | kernel | 8 | 0 |
+| `kernel/seccomp_bpf.c` | Docstring: seccomp_bpf.c -- classic BPF checker and interpreter for Linux | kernel | 12 | 0 |
 | `kernel/serial.c` | COM1 16550 UART driver. | kernel | 9 | 0 |
 | `kernel/shell.c` | ShellRunDir: Runnable-file lookup: a bare name is mapped to a toolchain directory by its suffix... | kernel | 97 | 0 |
 | `kernel/spawn.c` | Docstring: Save the caller shared-window view into ctx. | kernel | 9 | 0 |
-| `kernel/string.c` | Kernel string and memory functions. | kernel | 13 | 81 |
+| `kernel/string.c` | Kernel string and memory functions. | kernel | 13 | 84 |
 | `kernel/symtab.c` | - | kernel | 7 | 0 |
 | `kernel/sync.c` | Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 26 | 0 |
-| `kernel/syscalls.c` | Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 141 | 0 |
-| `kernel/syscalls_proc.c` | Process-management syscall handlers. | kernel | 14 | 0 |
+| `kernel/syscalls.c` | Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 190 | 0 |
+| `kernel/syscalls_proc.c` | Process-management syscall handlers. | kernel | 23 | 0 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 11 | 0 |
 | `kernel/time.c` | ktime_us: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime... | kernel | 4 | 27 |
 | `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | kernel | 13 | 0 |
@@ -160,7 +164,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `mcp/minios_mcp.py` | MiniOS MCP bridge. | mcp | 50 | 0 |
 | `mcp/mutate_mcp.sh` | Mutation testing for the MiniOS MCP bridge. | mcp | 1 | 0 |
 | `mcp/test_minios_mcp.py` | Unit and BDD suite for the MiniOS MCP bridge. | mcp | 104 | 0 |
-| `net/net.c` | MiniOS network stack: virtio-net preferred, rtl8139 fallback, under | net | 69 | 0 |
+| `net/net.c` | MiniOS network stack: virtio-net preferred, rtl8139 fallback, under | net | 151 | 0 |
 | `net/rtl8139.c` | outl_port: Byte/word port I/O comes from kernel.h (outb/inb/outw/inw, same asm). * Only the... | net | 28 | 0 |
 | `net/tls.c` | TLS 1.2 client sessions for MiniOS. | net | 27 | 0 |
 | `net/tls_crypto.c` | the crypto behind the kernel TLS 1.2 client. | net | 78 | 0 |
@@ -418,8 +422,10 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `progs/src/json.c` | command path JSON tool: validate, pretty-print and query. | src | 41 | 0 |
 | `progs/src/kmem.c` | Kernel-pointer rejection probe. | src | 3 | 0 |
 | `progs/src/ldhello.c` | - | src | 1 | 0 |
-| `progs/src/lxabi.c` | Linux process, thread and descriptor ABI probe (FreeDom | src | 41 | 0 |
+| `progs/src/lxabi.c` | Linux process, thread and descriptor ABI probe (FreeDom | src | 52 | 0 |
 | `progs/src/lxhello.c` | lmain: static void lx_write_int(long v) { char buf[24]; int i = (int)sizeof(buf); int neg = 0... | src | 7 | 0 |
+| `progs/src/lxnet.c` | Linux socket ABI probe (FreeDom readiness step 6, | src | 16 | 0 |
+| `progs/src/lxsecc.c` | Linux seccomp-bpf, prctl and /proc/self/exe probe (FreeDom | src | 30 | 0 |
 | `progs/src/lz4.c` | command path LZ4 (de)compression tools: lz4 and unlz4. | src | 26 | 0 |
 | `progs/src/lzss.c` | command path LZSS (de)compression tools: lzss and unlzss. | src | 48 | 0 |
 | `progs/src/mmreuse.c` | mmap/munmap reclaim stress test. | src | 5 | 0 |
@@ -466,13 +472,14 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `tests/test_file_assoc.c` | Docstring: host test for the file browser assoc contract (make test-file). | tests | 10 | 0 |
 | `tests/test_freedom_wl.c` | test_freedom_wl - host suite for the Wayland to MiniOS mapping. | tests | 3 | 0 |
 | `tests/test_freedomui.c` | test_freedomui - host suite for the real FreeDom MiniOS backend. | tests | 2 | 0 |
-| `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 6 | 0 |
+| `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 7 | 0 |
 | `tests/test_fx.c` | Docstring: Host test for headers/vga_fx.h (make test-fx). | tests | 2 | 0 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 3 | 0 |
 | `tests/test_httpd.c` | Docstring: Host test for headers/httpd.h (make test-httpd). | tests | 2 | 0 |
 | `tests/test_ktime.c` | host test for the pure conversion math in ktime.h | tests | 2 | 0 |
 | `tests/test_ldso.c` | Docstring: host test for the ld.so pure parser (make test-ldso). | tests | 12 | 0 |
 | `tests/test_leakcheck.c` | Docstring: host test for the leak tracker (make test-leakcheck). | tests | 4 | 0 |
+| `tests/test_minifs_tools.py` | Host suite for the MiniFS image tools (docs/spec/shell-fs.md).  tools/mkfs.minifs.py builds the... | tests | 12 | 0 |
 | `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 10 | 0 |
 | `tests/test_modifiers.c` | Docstring: Designated initializers, so adding a member cannot silently | tests | 2 | 0 |
 | `tests/test_notify.c` | - | tests | 3 | 0 |
@@ -488,13 +495,6 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 4 | 0 |
 | `tests/test_rtc.c` | host test for the pure date math in drivers/rtc.c | tests | 2 | 0 |
 | `tests/test_sanitize.c` | Docstring: Host test for sanitize.h (make test-sanitize). | tests | 9 | 0 |
-| `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 | 0 |
-| `tests/test_theme.c` | Docstring: host test for the shared Nuklear theme contract. | tests | 8 | 0 |
-| `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 6 | 0 |
-| `tests/test_usbblk.c` | Docstring: Host test for the USB mass-storage driver (make test-usbblk). | tests | 4 | 0 |
-| `tests/test_usbhid.c` | Docstring: Host test for the USB HID driver (make test-usbhid). | tests | 5 | 0 |
-| `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 16 | 0 |
-| `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 9 | 0 |
-| `tests/test_vma_bench.c` | RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 6 | 0 |
+| `tests/test_seccomp_bpf.c` | Docstring: Host test for kernel/seccomp_bpf.c (make test-seccomp-bpf). | tests | 17 | 0 |
 
 Next: [INDEX_p2.md](INDEX_p2.md)

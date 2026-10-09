@@ -1,6 +1,55 @@
 # API (page 5 of 19)
 Previous: [API_p4.md](API_p4.md)
 
+## headers/tls.h
+Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- `sha256_init` (function) `headers/tls.h:168` `void sha256_init(struct sha256_ctx *c);`
+- `sha256_update` (function) `headers/tls.h:169` `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len);`
+- `sha256_final` (function) `headers/tls.h:170` `void sha256_final(struct sha256_ctx *c, unsigned char out[32]);`
+- `sha256` (function) `headers/tls.h:171` `void sha256(const unsigned char *data, unsigned len, unsigned char out[32]);`
+- `sha384` (function) `headers/tls.h:172` `void sha384(const unsigned char *data, unsigned len, unsigned char out[48]);`
+- `hmac_sha256` (function) `headers/tls.h:174` `void hmac_sha256(const unsigned char *key, unsigned klen, const unsigned char *data, unsigned dlen, unsigned char...`
+- `tls_prf` (function) `headers/tls.h:179` `void tls_prf(const unsigned char *secret, unsigned secret_len, const char *label, const unsigned char *seed...`
+- `aes128_encrypt_block` (function) `headers/tls.h:184` `void aes128_encrypt_block(const unsigned char key[16], const unsigned char in[16], unsigned char out[16]);` -- void sha256_final(struct sha256_ctx *c, unsigned char out[32]); void sha256(const unsigned char *data, unsigned len...
+- `aes128_gcm_seal` (function) `headers/tls.h:189` `int aes128_gcm_seal(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...` -- GCM.
+- `aes128_gcm_open` (function) `headers/tls.h:197` `int aes128_gcm_open(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...` -- GCM.
+- `aes128_gcm_seal_core` (function) `headers/tls.h:208` `int aes128_gcm_seal_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...` -- Core GCM with an arbitrary 12-byte nonce (the TLS API above is the 4-byte salt + 8-byte sequence special case).
+- `aes128_gcm_open_core` (function) `headers/tls.h:213` `int aes128_gcm_open_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...`
+- `p256_scalar_mult` (function) `headers/tls.h:222` `int p256_scalar_mult(const unsigned char scalar[32], const unsigned char qx[32], const unsigned char qy[32]...` -- secp256r1 / secp384r1: shared Jacobian point arithmetic over NIST * primes. curve: 0 = P-256, 1 = P-384.
+- `p384_scalar_mult` (function) `headers/tls.h:225` `int p384_scalar_mult(const unsigned char scalar[48], const unsigned char qx[48], const unsigned char qy[48]...`
+- `p256_ecdh` (function) `headers/tls.h:231` `int p256_ecdh(const unsigned char priv[32], const unsigned char peer_x[32], const unsigned char peer_y[32], unsigned...` -- ECDH shared secret: Z = priv * peer_pub (P-256).
+- `p256_point_valid` (function) `headers/tls.h:236` `int p256_point_valid(const unsigned char x[32], const unsigned char y[32]);` -- ECDH shared secret: Z = priv * peer_pub (P-256).
+- `p256_pub` (function) `headers/tls.h:237` `int p256_pub(const unsigned char priv[32], unsigned char x[32], unsigned char y[32]);`
+- `p256_scalar_valid` (function) `headers/tls.h:239` `int p256_scalar_valid(const unsigned char scalar[32]);`
+- `ecdsa_verify` (function) `headers/tls.h:243` `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[], const unsigned char digest[]...` -- ECDSA verify over a SHA-256 or SHA-384 digest. curve: 0 = P-256, * 1 = P-384.
+- `rsa_pkcs1_verify_sha256` (function) `headers/tls.h:249` `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...` -- RSA PKCS#1 v1.5 signature verify with SHA-256. modulus up to 4096 bits. * digest is the SHA-256 of the signed data.
+- `rsa_pkcs1_verify_sha384` (function) `headers/tls.h:253` `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...`
+- `tls_x509_parse_pubkey` (function) `headers/tls.h:261` `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len, struct tls_pubkey *pk);` -- RSA PKCS#1 v1.5 signature verify with SHA-256. modulus up to 4096 bits. * digest is the SHA-256 of the signed data.
+- `now` (function) `headers/tls.h:267` `* window against now (days since epoch). Returns 0 on success. */ int tls_x509_verify_chain(const unsigned char...`
+- `tls_handshake` (function) `headers/tls.h:277` `int tls_handshake(int fd, const char *host);` -- Blocking TLS 1.2 handshake over an open TCP socket (net fd index). host is the SNI + certificate hostname.
+- `tls_send` (function) `headers/tls.h:280` `int tls_send(int fd, const char *buf, int len);` -- Blocking TLS 1.2 handshake over an open TCP socket (net fd index). host is the SNI + certificate hostname.
+- `tls_recv` (function) `headers/tls.h:284` `int tls_recv(int fd, char *buf, int len);` -- Receive decrypted application bytes.
+- `tls_free_fd` (function) `headers/tls.h:293` `static inline void tls_free_fd(int fd)` -- Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever exist, so the net.c close path needs...
+- `tls_sys_handshake` (function) `headers/tls.h:297` `long tls_sys_handshake(long fd, long host);` -- Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever exist, so the net.c close path needs...
+- `tls_sys_send` (function) `headers/tls.h:298` `long tls_sys_send(long fd, long buf, long len);`
+- `tls_sys_recv` (function) `headers/tls.h:299` `long tls_sys_recv(long fd, long buf, long len);`
+
+## headers/tls_port.h
+Depends on: `headers/kernel.h`, `headers/net.h`, `kernel/string.c`, `kernel/time.c`
+Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+- `these` (function) `headers/tls_port.h:29` `* of these (tls_test.c). */ extern int tls_test_send(int fd, const char *buf, int len);`
+- `tls_test_recv` (function) `headers/tls_port.h:31` `extern int tls_test_recv(int fd, char *buf, int len);`
+- `tls_test_recv_timeout` (function) `headers/tls_port.h:32` `extern int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms);`
+- `tls_test_close` (function) `headers/tls_port.h:33` `extern void tls_test_close(int fd);`
+- `tls_now_days` (function) `headers/tls_port.h:40` `static inline long tls_now_days(void)`
+- `tls_random` (function) `headers/tls_port.h:44` `static inline void tls_random(unsigned char *out, unsigned len)`
+- `sockets` (function) `headers/tls_port.h:62` `* sockets (glibc maps socket/connect/send/recv/poll onto the MiniOS * Linux ABI numbers the kernel implements);`
+- `gettimeofday` (function) `headers/tls_port.h:64` `* gettimeofday(96) and entropy from /dev/urandom with a time/pid * fallback. Session slots are indexed by raw OS fd...`
+- `tls_u_recv` (function) `headers/tls_port.h:82` `int tls_u_recv(int fd, char *buf, int len);`
+- `tls_u_recv_timeout` (function) `headers/tls_port.h:83` `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms);`
+- `tls_u_close` (function) `headers/tls_port.h:84` `void tls_u_close(int fd);`
+- `syscall` (function) `headers/tls_port.h:95` `* the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */ int tls_u_resolve(const char *host, unsigned...`
+
 ## headers/vga_fb.h
 Depends on: `headers/wm_notify.h`, `progs/minios_abi.h`
 Imported by: `drivers/kbd.c`, `drivers/usbhid.c`, `kernel.c`, `kernel/console.c`, `kernel/console_in.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/panic.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/vga_cursor.c`, `kernel/vga_fb.c`, `kernel/vga_fx.c`, `progs/src/freedom_wl.c`
@@ -194,16 +243,16 @@ Imported by: `kernel/shell.c`, `kernel/syscalls.c`
 
 ## kernel.c
 Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
-- `table` (function) `kernel.c:101` `* Symbol table (for resolving program references) * ================================================================...`
-- `syscall_init` (function) `kernel.c:114` `void syscall_init(void)`
-- `ksyscall` (function) `kernel.c:127` `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-- `kstack` (function) `kernel.c:143` `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
-- `ms` (function) `kernel.c:182` `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-- `bootlog_mark` (function) `kernel.c:189` `void bootlog_mark(const char *name)`
-- `bootlog_report` (function) `kernel.c:196` `void bootlog_report(void)`
-- `EM` (function) `kernel.c:218` `* CR0: clear EM (bit 2), set MP (bit 1);`
-- `size` (function) `kernel.c:259` `* image size (see kernel.ld);`
-- `tables` (function) `kernel.c:281` `* tables (already built above) for its uncached register window and the
+- `table` (function) `kernel.c:102` `* Symbol table (for resolving program references) * ================================================================...`
+- `syscall_init` (function) `kernel.c:115` `void syscall_init(void)`
+- `ksyscall` (function) `kernel.c:128` `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+- `kstack` (function) `kernel.c:144` `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
+- `ms` (function) `kernel.c:183` `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+- `bootlog_mark` (function) `kernel.c:190` `void bootlog_mark(const char *name)`
+- `bootlog_report` (function) `kernel.c:197` `void bootlog_report(void)`
+- `EM` (function) `kernel.c:219` `* CR0: clear EM (bit 2), set MP (bit 1);`
+- `size` (function) `kernel.c:260` `* image size (see kernel.ld);`
+- `tables` (function) `kernel.c:282` `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
 
 ## kernel/abi.c
@@ -348,15 +397,15 @@ Depends on: `headers/editor.h`, `headers/shell.h`
 - `shell_cmd_edit` (function) `kernel/editor.c:329` `void shell_cmd_edit(int argc, char **argv)`
 
 ## kernel/exec.c
-Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/drivers/kbd.h`, `headers/sched.h`, `headers/vga_fb.h`
-- `vga_mode_set` (function) `kernel/exec.c:60` `void vga_mode_set(int on)`
-- `vga_mode_is_active` (function) `kernel/exec.c:61` `int  vga_mode_is_active(void)`
-- `vga_gfx_ran_set` (function) `kernel/exec.c:62` `void vga_gfx_ran_set(int on)`
-- `k_user_fault_return` (function) `kernel/exec.c:65` `void k_user_fault_return(void)` -- VGA mode tracking: set/cleared by k_exec_user and k_run_rel when a * graphics program owns the display. static int...
-- `setup_user_stack` (function) `kernel/exec.c:82` `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
+Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/drivers/kbd.h`, `headers/proc_sec.h`, `headers/sched.h`, `headers/vga_fb.h`
+- `vga_mode_set` (function) `kernel/exec.c:61` `void vga_mode_set(int on)`
+- `vga_mode_is_active` (function) `kernel/exec.c:62` `int  vga_mode_is_active(void)`
+- `vga_gfx_ran_set` (function) `kernel/exec.c:63` `void vga_gfx_ran_set(int on)`
+- `k_user_fault_return` (function) `kernel/exec.c:66` `void k_user_fault_return(void)` -- VGA mode tracking: set/cleared by k_exec_user and k_run_rel when a * graphics program owns the display. static int...
+- `setup_user_stack` (function) `kernel/exec.c:83` `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
                                ...`
-- `k_run_rel` (function) `kernel/exec.c:229` `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
-- `kexit` (function) `kernel/exec.c:280` `void kexit(int code)`
+- `k_run_rel` (function) `kernel/exec.c:233` `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
+- `kexit` (function) `kernel/exec.c:284` `void kexit(int code)`
 
 ## kernel/futex.c
 Depends on: `headers/futex.h`, `headers/sync.h`
@@ -364,7 +413,8 @@ Depends on: `headers/futex.h`, `headers/sync.h`
 - `futex_bucket` (function) `kernel/futex.c:31` `static futex_bucket_t *futex_bucket(unsigned long uaddr)`
 - `futex_init` (function) `kernel/futex.c:36` `void futex_init(void)` -- static unsigned long futex_hash(unsigned long uaddr) { unsigned long word = uaddr >> 2; word ^= word >> 16; word *=...
 - `futex_linux_cmd` (function) `kernel/futex.c:84` `int futex_linux_cmd(long op)` -- futex_table.awaited[cur->pid] = uaddr; if (b->head == WQ_NONE) { b->head = cur->pid; b->tail = cur->pid; } else {...
-- `futex_wake` (function) `kernel/futex.c:97` `long futex_wake(unsigned long uaddr, int n)` -- Docstring: Wake up to n sleepers waiting on uaddr.
+- `futex_timeout_remaining_us` (function) `kernel/futex.c:95` `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us)` -- } /** Docstring: Decode a Linux futex(2) op to WAIT/WAKE. int futex_linux_cmd(long op) { long cmd; if (op < 0)...
+- `futex_wake` (function) `kernel/futex.c:112` `long futex_wake(unsigned long uaddr, int n)` -- Docstring: Wake up to n sleepers waiting on uaddr.
 
 ## kernel/klog.c
 - `klog_set_level` (function) `kernel/klog.c:29` `void klog_set_level(log_level_t level)`
@@ -443,41 +493,6 @@ Depends on: `headers/lz4_kernel.h`
 - `LZ4_compress_default` (function) `kernel/lz4_kernel.c:40` `int LZ4_compress_default(const char *src, char *dst, int srcSize, int dstCapacity)`
 - `slots` (function) `kernel/lz4_kernel.c:43` `* runs from file writes on 16 KB proc slots (stack discipline, * CLAUDE.md). OOM returns 0 and the caller stores...`
 - `LZ4_decompress_safe` (function) `kernel/lz4_kernel.c:176` `int LZ4_decompress_safe(const char *src, char *dst, int compressedSize, int dstCapacity)`
-
-## kernel/minifetch.c
-Depends on: `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/rtc.h`, `headers/sched.h`, `headers/vga_fb.h`
-- `minifetch_row` (function) `kernel/minifetch.c:57` `static void minifetch_row(const unsigned char *img, int w, int h, int row,
-                      ...` -- "       DOOM  ready.           ", "                              ", "                              ", "...
-- `minifetch_logo` (function) `kernel/minifetch.c:81` `static void minifetch_logo(char rows[16][33])` -- const unsigned char *p1 = img + ((y1 * w) + sx) * 4; unsigned lum; if (p0[3] < 128 && p1[3] < 128) { out[x] = ' '...
-- `minifetch_specs` (function) `kernel/minifetch.c:101` `static int minifetch_specs(char lines[20][96])` -- stbi_image_free(img); for (r = 0; r < mf_cfg.logo_rows; r++) { for (i = 0; i < mf_cfg.logo_cols; i++) rows[r][i] =...
-- `shell_cmd_minifetch` (function) `kernel/minifetch.c:156` `void shell_cmd_minifetch(void)` -- ksprintf(lines[n++], "Display: %dx%dx%d", fb_width, fb_height, fb_bpp); ksprintf(lines[n++], "Net...
-- `frame` (function) `kernel/minifetch.c:159` `* frame (stack discipline, CLAUDE.md). Fail-closed on OOM. */ char (*specs)[96] = (char (*)[96])kmalloc(20 * 96);`
-
-## kernel/mm.c
-Depends on: `headers/sched.h`
-- `kallocator_init` (function) `kernel/mm.c:13` `void kallocator_init(void)`
-- `kmalloc` (function) `kernel/mm.c:21` `void *kmalloc(unsigned long size)`
-- `kfree` (function) `kernel/mm.c:28` `void kfree(void *ptr)`
-- `kcalloc` (function) `kernel/mm.c:49` `void *kcalloc(unsigned long nmemb, unsigned long size)`
-- `krealloc` (function) `kernel/mm.c:53` `void *krealloc(void *ptr, unsigned long size)`
-- `kmalloc_aligned` (function) `kernel/mm.c:65` `void *kmalloc_aligned(unsigned long size, unsigned long align)` -- Docstring: Aligned allocation with a recoverable raw pointer.
-- `kfree_aligned` (function) `kernel/mm.c:81` `void kfree_aligned(void *ptr)` -- Docstring: Release a kmalloc_aligned block.
-
-## kernel/mm/cow.c
-Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/sched.h`, `headers/vga_fb.h`
-- `alternative` (function) `kernel/mm/cow.c:20` `* window is one instruction wide and the alternative (no CoW) is * documented, so the trade stands. */ #include...`
-- `cow_find` (function) `kernel/mm/cow.c:53` `static int cow_find(unsigned long phys)`
-- `cow_page_shared` (function) `kernel/mm/cow.c:65` `int cow_page_shared(unsigned long phys)` -- Docstring: True when phys is still shared copy-on-write. mprotect consults this before setting a writable bit...
-- `cow_track` (function) `kernel/mm/cow.c:75` `static int cow_track(unsigned long phys)` -- Docstring: Share one phys page: bump its refcount, or install it. * Returns 0 shared, -1 when the table is full...
-- `private` (function) `kernel/mm/cow.c:93` `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...`
-- `cow_walk` (function) `kernel/mm/cow.c:97` `static void cow_walk(unsigned long cr3, cow_walk_fn fn)`
-- `cow_fork_one` (function) `kernel/mm/cow.c:131` `static void cow_fork_one(unsigned long pcr3, unsigned long va,
-        volatile unsigned long *ppte)`
-- `published` (function) `kernel/mm/cow.c:161` `* with nothing published (the half-built window is freed). The caller
- * flushes the parent TLB a...`
-- `cow_resolve` (function) `kernel/mm/cow.c:191` `int cow_resolve(unsigned long cr3, unsigned long va)` -- Docstring: Resolve a write fault on a CoW page: last sharer gets a permission upgrade, otherwise the faulting window...
-- `cow_release_window` (function) `kernel/mm/cow.c:254` `void cow_release_window(unsigned long cr3)` -- Docstring: Drop one window's CoW shares before its pages are freed: multi-shared pages are unmapped here (phys...
-- `cow_shared` (function) `kernel/mm/cow.c:292` `int cow_shared(void)` -- idx = cow_find(phys); if (idx < 0) continue; if (cow_tab[idx].ref > 1) { cow_tab[idx].ref--; pt[k] = 0; } else {...
 
 
 Next: [API_p6.md](API_p6.md)

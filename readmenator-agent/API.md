@@ -77,9 +77,9 @@ Depends on: `headers/arch/x86/boot/bootdefs.h`
 - `switch_to_notrap` (function) `arch/x86/ctx_sw.S:134`
 - `user_trampoline` (function) `arch/x86/ctx_sw.S:221`
 - `fork_trampoline` (function) `arch/x86/ctx_sw.S:233`
-- `exec_enter` (function) `arch/x86/ctx_sw.S:249`
-- `resume_iretq` (function) `arch/x86/ctx_sw.S:278`
-- `k_run_on_stack` (function) `arch/x86/ctx_sw.S:318`
+- `exec_enter` (function) `arch/x86/ctx_sw.S:273`
+- `resume_iretq` (function) `arch/x86/ctx_sw.S:302`
+- `k_run_on_stack` (function) `arch/x86/ctx_sw.S:342`
 
 ## arch/x86/syscall_entry.S
 Depends on: `headers/syscall_asm.h`

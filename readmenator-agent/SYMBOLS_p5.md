@@ -1,21 +1,44 @@
-# Symbols (page 5 of 25)
+# Symbols (page 5 of 26)
 Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `panic_screen` | function | `headers/kernel.h:580` | `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp...` |
-| `pcspk_get_volume` | function | `headers/kernel.h:859` | `unsigned pcspk_get_volume(void);` |
-| `pcspk_init` | function | `headers/kernel.h:855` | `void pcspk_init(void);` |
-| `pcspk_off` | function | `headers/kernel.h:857` | `void pcspk_off(void);` |
-| `pcspk_set_volume` | function | `headers/kernel.h:858` | `void pcspk_set_volume(unsigned volume);` |
-| `pcspk_tone` | function | `headers/kernel.h:856` | `void pcspk_tone(unsigned freq);` |
-| `pt_clone_user_empty` | function | `headers/kernel.h:754` | `unsigned long pt_clone_user_empty(void);` |
-| `pt_page_alloc` | function | `headers/kernel.h:686` | `void *pt_page_alloc(void);` |
-| `pt_page_free` | function | `headers/kernel.h:687` | `void pt_page_free(void *ptr);` |
+| `ktime_us` | function | `headers/kernel.h:868` | `unsigned long ktime_us(void);` |
+| `ldso_bind_into` | function | `headers/kernel.h:754` | `int ldso_bind_into(void *data, unsigned size, unsigned long base, unsigned long cr3, vma_ctx_t *vma);` |
+| `ldso_pseudo_read` | function | `headers/kernel.h:757` | `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len);` |
+| `ldso_pseudo_stat` | function | `headers/kernel.h:756` | `int ldso_pseudo_stat(int ino, unsigned long *size_out);` |
+| `load_exec_elf` | function | `headers/kernel.h:744` | `void *load_exec_elf(void *data, unsigned size);` |
+| `load_exec_elf_into` | function | `headers/kernel.h:745` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out, unsigned long *base_out);` |
+| `minfo_sleep_init` | function | `headers/kernel.h:116` | `void minfo_sleep_init(int tick_ok);` |
+| `minfo_tick_wake` | function | `headers/kernel.h:117` | `void minfo_tick_wake(void *ctx);` |
+| `minifs_mkdir_p` | function | `headers/kernel.h:417` | `int minifs_mkdir_p(const char *resolved);` |
+| `mm_copy_user_page` | function | `headers/kernel.h:775` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
+| `mm_file_break` | function | `headers/kernel.h:763` | `int mm_file_break(unsigned long cr3, unsigned long va);` |
+| `mm_file_fault` | function | `headers/kernel.h:762` | `int mm_file_fault(unsigned long cr3, unsigned long va);` |
+| `mm_file_page_phys` | function | `headers/kernel.h:764` | `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va);` |
+| `mm_file_range_release` | function | `headers/kernel.h:765` | `void mm_file_range_release(unsigned long cr3, unsigned long base, unsigned long len, int ino, unsigned long off, int...` |
+| `mm_setup_protections` | function | `headers/kernel.h:689` | `void mm_setup_protections(void);` |
+| `mm_user_ensure_page` | function | `headers/kernel.h:759` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
+| `mm_user_map_page` | function | `headers/kernel.h:760` | `int mm_user_map_page(unsigned long cr3, unsigned long va, unsigned long phys, int write, int exec);` |
+| `mm_user_pte_update` | function | `headers/kernel.h:692` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
+| `mm_user_set_exec` | function | `headers/kernel.h:693` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
+| `name` | type_alias | `headers/kernel.h:367` | `typedef struct vfs_dirent { char name[VFS_NAME_MAX + 1];` |
+| `outb` | function | `headers/kernel.h:26` | `static inline void outb(unsigned short port, unsigned char val)` |
+| `outsw` | function | `headers/kernel.h:54` | `static inline void outsw(unsigned short port, const unsigned short *buf,                         ...` |
+| `outw` | function | `headers/kernel.h:34` | `static inline void outw(unsigned short port, unsigned short val)` |
+| `panic_screen` | function | `headers/kernel.h:584` | `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp...` |
+| `pcspk_get_volume` | function | `headers/kernel.h:880` | `unsigned pcspk_get_volume(void);` |
+| `pcspk_init` | function | `headers/kernel.h:876` | `void pcspk_init(void);` |
+| `pcspk_off` | function | `headers/kernel.h:878` | `void pcspk_off(void);` |
+| `pcspk_set_volume` | function | `headers/kernel.h:879` | `void pcspk_set_volume(unsigned volume);` |
+| `pcspk_tone` | function | `headers/kernel.h:877` | `void pcspk_tone(unsigned freq);` |
+| `pt_clone_user_empty` | function | `headers/kernel.h:758` | `unsigned long pt_clone_user_empty(void);` |
+| `pt_page_alloc` | function | `headers/kernel.h:690` | `void *pt_page_alloc(void);` |
+| `pt_page_free` | function | `headers/kernel.h:691` | `void pt_page_free(void *ptr);` |
 | `ramdisk_count` | function | `headers/kernel.h:284` | `int ramdisk_count(void);` |
 | `ramdisk_create` | function | `headers/kernel.h:275` | `RDFile *ramdisk_create(const char *name, unsigned size);` |
 | `ramdisk_delete` | function | `headers/kernel.h:277` | `int ramdisk_delete(RDFile *f);` |
-| `ramdisk_end` | variable | `headers/kernel.h:830` | `extern char ramdisk_end[];` |
+| `ramdisk_end` | variable | `headers/kernel.h:851` | `extern char ramdisk_end[];` |
 | `ramdisk_file_name` | function | `headers/kernel.h:285` | `const char *ramdisk_file_name(int idx);` |
 | `ramdisk_init` | function | `headers/kernel.h:271` | `void ramdisk_init(void);` |
 | `ramdisk_list` | function | `headers/kernel.h:282` | `int ramdisk_list(RDFile **out, int max);` |
@@ -24,22 +47,22 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `ramdisk_rename` | function | `headers/kernel.h:281` | `int ramdisk_rename(const char *oldname, const char *newname);` |
 | `ramdisk_resize` | function | `headers/kernel.h:276` | `int ramdisk_resize(RDFile *f, unsigned newsize);` |
 | `ramdisk_setup_from` | function | `headers/kernel.h:283` | `void ramdisk_setup_from(void *data, unsigned size);` |
-| `ramdisk_size` | variable | `headers/kernel.h:831` | `extern char ramdisk_size[];` |
-| `ramdisk_start` | variable | `headers/kernel.h:829` | `extern char ramdisk_start[];` |
+| `ramdisk_size` | variable | `headers/kernel.h:852` | `extern char ramdisk_size[];` |
+| `ramdisk_start` | variable | `headers/kernel.h:850` | `extern char ramdisk_start[];` |
 | `ramdisk_usage` | function | `headers/kernel.h:287` | `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);` |
 | `ramdisk_write` | function | `headers/kernel.h:274` | `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);` |
-| `redirect_active` | function | `headers/kernel.h:574` | `int redirect_active(void);` |
-| `redirect_begin` | function | `headers/kernel.h:567` | `int redirect_begin(void);` |
-| `redirect_commit` | function | `headers/kernel.h:568` | `int redirect_commit(const char *path, int append_mode);` |
-| `redirect_discard` | function | `headers/kernel.h:573` | `void redirect_discard(void);` |
-| `redirect_pending` | function | `headers/kernel.h:570` | `unsigned long redirect_pending(void);` |
-| `redirect_resume` | function | `headers/kernel.h:566` | `void redirect_resume(int was);` |
-| `redirect_suspend` | function | `headers/kernel.h:565` | `int redirect_suspend(void);` |
-| `redirect_take` | function | `headers/kernel.h:569` | `char *redirect_take(unsigned long *len_out);` |
-| `redirect_take_into` | function | `headers/kernel.h:571` | `unsigned long redirect_take_into(char *dst, unsigned long cap, unsigned long *len_out);` |
-| `refused` | function | `headers/kernel.h:768` | `* refused (see kernel/mm/paging.c for the fail-closed list). */ unsigned long kmm_map_device(unsigned long phys...` |
-| `register_libc_symbols` | function | `headers/kernel.h:627` | `void register_libc_symbols(void);` |
-| `rtc_read_tod` | function | `headers/kernel.h:862` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
+| `redirect_active` | function | `headers/kernel.h:578` | `int redirect_active(void);` |
+| `redirect_begin` | function | `headers/kernel.h:571` | `int redirect_begin(void);` |
+| `redirect_commit` | function | `headers/kernel.h:572` | `int redirect_commit(const char *path, int append_mode);` |
+| `redirect_discard` | function | `headers/kernel.h:577` | `void redirect_discard(void);` |
+| `redirect_pending` | function | `headers/kernel.h:574` | `unsigned long redirect_pending(void);` |
+| `redirect_resume` | function | `headers/kernel.h:570` | `void redirect_resume(int was);` |
+| `redirect_suspend` | function | `headers/kernel.h:569` | `int redirect_suspend(void);` |
+| `redirect_take` | function | `headers/kernel.h:573` | `char *redirect_take(unsigned long *len_out);` |
+| `redirect_take_into` | function | `headers/kernel.h:575` | `unsigned long redirect_take_into(char *dst, unsigned long cap, unsigned long *len_out);` |
+| `refused` | function | `headers/kernel.h:772` | `* refused (see kernel/mm/paging.c for the fail-closed list). */ unsigned long kmm_map_device(unsigned long phys...` |
+| `register_libc_symbols` | function | `headers/kernel.h:631` | `void register_libc_symbols(void);` |
+| `rtc_read_tod` | function | `headers/kernel.h:883` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
 | `sb_capture_row0` | function | `headers/kernel.h:121` | `void sb_capture_row0(void);` |
 | `sb_get_char` | function | `headers/kernel.h:125` | `char sb_get_char(int row, int col);` |
 | `sb_get_count` | function | `headers/kernel.h:123` | `int sb_get_count(void);` |
@@ -53,32 +76,33 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `serial_init` | function | `headers/kernel.h:128` | `void serial_init(void);` |
 | `serial_putc` | function | `headers/kernel.h:129` | `void serial_putc(char c);` |
 | `serial_puts` | function | `headers/kernel.h:130` | `void serial_puts(const char *s);` |
-| `setup_user_stack` | function | `headers/kernel.h:644` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
-| `shell_exec_builtin` | function | `headers/kernel.h:590` | `void shell_exec_builtin(int argc, char **argv);` |
-| `shell_fg_active` | variable | `headers/kernel.h:678` | `extern volatile int shell_fg_active;` |
-| `shell_focus_park` | function | `headers/kernel.h:675` | `void shell_focus_park(void);` |
-| `shell_focus_restore` | function | `headers/kernel.h:676` | `void shell_focus_restore(void);` |
-| `shell_init` | function | `headers/kernel.h:561` | `void shell_init(void);` |
-| `shell_queue_launch` | function | `headers/kernel.h:652` | `void shell_queue_launch(const char *cmd);` |
-| `shell_readline_active` | function | `headers/kernel.h:674` | `int shell_readline_active(void);` |
-| `shell_report` | function | `headers/kernel.h:592` | `void shell_report(const char *what, const char *detail);` |
-| `shell_report_exit` | function | `headers/kernel.h:591` | `void shell_report_exit(int code);` |
-| `shell_run` | function | `headers/kernel.h:562` | `void shell_run(void);` |
-| `shell_run_any` | function | `headers/kernel.h:589` | `int shell_run_any(const char *name, int argc, char **argv);` |
-| `shell_take_redirect` | function | `headers/kernel.h:588` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
-| `swap_in` | function | `headers/kernel.h:693` | `int swap_in(void);` |
-| `swap_out` | function | `headers/kernel.h:692` | `int swap_out(unsigned long window_sz);` |
-| `syscall_init` | function | `headers/kernel.h:784` | `void syscall_init(void);` |
-| `syscall_name` | function | `headers/kernel.h:794` | `const char *syscall_name(long n);` |
-| `syscall_trace_enabled` | function | `headers/kernel.h:789` | `long syscall_trace_enabled(void);` |
-| `syscall_trace_set` | function | `headers/kernel.h:790` | `void syscall_trace_set(int on);` |
-| `syscall_trace_shown` | function | `headers/kernel.h:793` | `unsigned long syscall_trace_shown(void);` |
-| `syscall_trace_verbose_enabled` | function | `headers/kernel.h:791` | `long syscall_trace_verbose_enabled(void);` |
-| `syscall_trace_verbose_set` | function | `headers/kernel.h:792` | `void syscall_trace_verbose_set(int on);` |
-| `today` | function | `headers/kernel.h:478` | `* cell is correct today (single shared ET_REL window, no miniGCC * threads);` |
-| `user_mmap_cur` | variable | `headers/kernel.h:698` | `extern unsigned long user_mmap_cur;` |
-| `user_range_ok` | function | `headers/kernel.h:681` | `int user_range_ok(unsigned long p, unsigned long len);` |
-| `user_str_ok` | function | `headers/kernel.h:682` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
+| `setup_user_stack` | function | `headers/kernel.h:648` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
+| `shell_exec_builtin` | function | `headers/kernel.h:594` | `void shell_exec_builtin(int argc, char **argv);` |
+| `shell_fg_active` | variable | `headers/kernel.h:682` | `extern volatile int shell_fg_active;` |
+| `shell_focus_park` | function | `headers/kernel.h:679` | `void shell_focus_park(void);` |
+| `shell_focus_restore` | function | `headers/kernel.h:680` | `void shell_focus_restore(void);` |
+| `shell_init` | function | `headers/kernel.h:565` | `void shell_init(void);` |
+| `shell_queue_launch` | function | `headers/kernel.h:656` | `void shell_queue_launch(const char *cmd);` |
+| `shell_readline_active` | function | `headers/kernel.h:678` | `int shell_readline_active(void);` |
+| `shell_report` | function | `headers/kernel.h:596` | `void shell_report(const char *what, const char *detail);` |
+| `shell_report_exit` | function | `headers/kernel.h:595` | `void shell_report_exit(int code);` |
+| `shell_run` | function | `headers/kernel.h:566` | `void shell_run(void);` |
+| `shell_run_any` | function | `headers/kernel.h:593` | `int shell_run_any(const char *name, int argc, char **argv);` |
+| `shell_take_redirect` | function | `headers/kernel.h:592` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
+| `swap_in` | function | `headers/kernel.h:697` | `int swap_in(void);` |
+| `swap_out` | function | `headers/kernel.h:696` | `int swap_out(unsigned long window_sz);` |
+| `syscall_init` | function | `headers/kernel.h:789` | `void syscall_init(void);` |
+| `syscall_name` | function | `headers/kernel.h:799` | `const char *syscall_name(long n);` |
+| `syscall_trace_enabled` | function | `headers/kernel.h:794` | `long syscall_trace_enabled(void);` |
+| `syscall_trace_set` | function | `headers/kernel.h:795` | `void syscall_trace_set(int on);` |
+| `syscall_trace_shown` | function | `headers/kernel.h:798` | `unsigned long syscall_trace_shown(void);` |
+| `syscall_trace_verbose_enabled` | function | `headers/kernel.h:796` | `long syscall_trace_verbose_enabled(void);` |
+| `syscall_trace_verbose_set` | function | `headers/kernel.h:797` | `void syscall_trace_verbose_set(int on);` |
+| `today` | function | `headers/kernel.h:482` | `* cell is correct today (single shared ET_REL window, no miniGCC * threads);` |
+| `user_mmap_cur` | variable | `headers/kernel.h:702` | `extern unsigned long user_mmap_cur;` |
+| `user_page_present` | function | `headers/kernel.h:783` | `int user_page_present(unsigned long cr3, unsigned long va);` |
+| `user_range_ok` | function | `headers/kernel.h:685` | `int user_range_ok(unsigned long p, unsigned long len);` |
+| `user_str_ok` | function | `headers/kernel.h:686` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
 | `vfs_close` | function | `headers/kernel.h:412` | `int vfs_close(vfs_file_t *f);` |
 | `vfs_dirent` | struct | `headers/kernel.h:367` | `` |
 | `vfs_file` | struct | `headers/kernel.h:382` | `` |
@@ -96,28 +120,28 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `vfs_write` | function | `headers/kernel.h:411` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
 | `vga_clear` | function | `headers/kernel.h:94` | `void vga_clear(void);` |
 | `vga_cursor_enable` | function | `headers/kernel.h:100` | `void vga_cursor_enable(int on);` |
-| `vga_fb_act_empty` | function | `headers/kernel.h:666` | `int vga_fb_act_empty(void);` |
-| `vga_fb_clear_prompt` | function | `headers/kernel.h:669` | `void vga_fb_clear_prompt(void);` |
-| `vga_fb_focus_get` | function | `headers/kernel.h:657` | `int vga_fb_focus_get(void);` |
-| `vga_fb_focus_id` | function | `headers/kernel.h:656` | `int vga_fb_focus_id(int id);` |
-| `vga_fb_focus_next` | function | `headers/kernel.h:655` | `void vga_fb_focus_next(void);` |
-| `vga_fb_list_windows` | function | `headers/kernel.h:662` | `void vga_fb_list_windows(void);` |
-| `vga_fb_note_prompt` | function | `headers/kernel.h:668` | `void vga_fb_note_prompt(void);` |
-| `vga_fb_nterms_get` | function | `headers/kernel.h:658` | `int vga_fb_nterms_get(void);` |
-| `vga_fb_park_line` | function | `headers/kernel.h:663` | `void vga_fb_park_line(const char *b, int p);` |
-| `vga_fb_prompt_live` | function | `headers/kernel.h:667` | `int vga_fb_prompt_live(void);` |
-| `vga_fb_prompted` | function | `headers/kernel.h:670` | `int vga_fb_prompted(void);` |
-| `vga_fb_set_gfx_program` | function | `headers/kernel.h:665` | `void vga_fb_set_gfx_program(const char *name);` |
-| `vga_fb_term_close_focused` | function | `headers/kernel.h:660` | `int vga_fb_term_close_focused(void);` |
-| `vga_fb_term_split` | function | `headers/kernel.h:659` | `int vga_fb_term_split(void);` |
-| `vga_fb_tile_all` | function | `headers/kernel.h:661` | `void vga_fb_tile_all(void);` |
-| `vga_fb_unpark_line` | function | `headers/kernel.h:664` | `int vga_fb_unpark_line(char *b, int *p);` |
+| `vga_fb_act_empty` | function | `headers/kernel.h:670` | `int vga_fb_act_empty(void);` |
+| `vga_fb_clear_prompt` | function | `headers/kernel.h:673` | `void vga_fb_clear_prompt(void);` |
+| `vga_fb_focus_get` | function | `headers/kernel.h:661` | `int vga_fb_focus_get(void);` |
+| `vga_fb_focus_id` | function | `headers/kernel.h:660` | `int vga_fb_focus_id(int id);` |
+| `vga_fb_focus_next` | function | `headers/kernel.h:659` | `void vga_fb_focus_next(void);` |
+| `vga_fb_list_windows` | function | `headers/kernel.h:666` | `void vga_fb_list_windows(void);` |
+| `vga_fb_note_prompt` | function | `headers/kernel.h:672` | `void vga_fb_note_prompt(void);` |
+| `vga_fb_nterms_get` | function | `headers/kernel.h:662` | `int vga_fb_nterms_get(void);` |
+| `vga_fb_park_line` | function | `headers/kernel.h:667` | `void vga_fb_park_line(const char *b, int p);` |
+| `vga_fb_prompt_live` | function | `headers/kernel.h:671` | `int vga_fb_prompt_live(void);` |
+| `vga_fb_prompted` | function | `headers/kernel.h:674` | `int vga_fb_prompted(void);` |
+| `vga_fb_set_gfx_program` | function | `headers/kernel.h:669` | `void vga_fb_set_gfx_program(const char *name);` |
+| `vga_fb_term_close_focused` | function | `headers/kernel.h:664` | `int vga_fb_term_close_focused(void);` |
+| `vga_fb_term_split` | function | `headers/kernel.h:663` | `int vga_fb_term_split(void);` |
+| `vga_fb_tile_all` | function | `headers/kernel.h:665` | `void vga_fb_tile_all(void);` |
+| `vga_fb_unpark_line` | function | `headers/kernel.h:668` | `int vga_fb_unpark_line(char *b, int *p);` |
 | `vga_get_color` | function | `headers/kernel.h:111` | `char vga_get_color(void);` |
 | `vga_get_x` | function | `headers/kernel.h:108` | `int vga_get_x(void);` |
 | `vga_get_y` | function | `headers/kernel.h:109` | `int vga_get_y(void);` |
-| `vga_gfx_ran_set` | function | `headers/kernel.h:648` | `void vga_gfx_ran_set(int on);` |
-| `vga_mode_is_active` | function | `headers/kernel.h:647` | `int vga_mode_is_active(void);` |
-| `vga_mode_set` | function | `headers/kernel.h:646` | `void vga_mode_set(int on);` |
+| `vga_gfx_ran_set` | function | `headers/kernel.h:652` | `void vga_gfx_ran_set(int on);` |
+| `vga_mode_is_active` | function | `headers/kernel.h:651` | `int vga_mode_is_active(void);` |
+| `vga_mode_set` | function | `headers/kernel.h:650` | `void vga_mode_set(int on);` |
 | `vga_newline` | function | `headers/kernel.h:99` | `void vga_newline(void);` |
 | `vga_putc` | function | `headers/kernel.h:95` | `void vga_putc(char c);` |
 | `vga_puts` | function | `headers/kernel.h:96` | `void vga_puts(const char *s);` |
@@ -126,7 +150,7 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `vga_set_xy` | function | `headers/kernel.h:110` | `void vga_set_xy(int x, int y);` |
 | `vnode_t` | type_alias | `headers/kernel.h:399` | `typedef vfs_file_t vnode_t;` |
 | `waits` | function | `headers/kernel.h:64` | `* and mouse_hw_init issues dozens of waits (measured 5 s of boot).  This  * polls the port once p...` |
-| `wall_us_now` | function | `headers/kernel.h:848` | `unsigned long wall_us_now(void);` |
+| `wall_us_now` | function | `headers/kernel.h:869` | `unsigned long wall_us_now(void);` |
 | `CONSOLE_IN_H` | macro | `headers/kernel/console_in.h:2` | `#define CONSOLE_IN_H` |
 | `Consumers` | function | `headers/kernel/console_in.h:7` | `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into...` |
 | `console_job_get` | function | `headers/kernel/console_in.h:26` | `int console_job_get(void);` |
@@ -262,118 +286,147 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `MiniFSJournalEntry` | struct | `headers/minifs.h:98` | `` |
 | `MiniFSJournalSuper` | struct | `headers/minifs.h:90` | `` |
 | `MiniFSSuper` | struct | `headers/minifs.h:33` | `` |
-| `minifs_access` | function | `headers/minifs.h:136` | `int minifs_access(const char *path);` |
-| `minifs_alloc_block` | function | `headers/minifs.h:144` | `int minifs_alloc_block(void);` |
-| `minifs_alloc_inode` | function | `headers/minifs.h:146` | `int minifs_alloc_inode(void);` |
+| `minifs_access` | function | `headers/minifs.h:135` | `int minifs_access(const char *path);` |
+| `minifs_alloc_block` | function | `headers/minifs.h:143` | `int minifs_alloc_block(void);` |
+| `minifs_alloc_inode` | function | `headers/minifs.h:145` | `int minifs_alloc_inode(void);` |
 | `minifs_compress` | function | `headers/minifs.h:30` | `unsigned int minifs_compress(const void *src, unsigned int src_len, void *dst, unsigned int dst_cap);` |
-| `minifs_create` | function | `headers/minifs.h:123` | `int minifs_create(const char *path, unsigned short mode);` |
+| `minifs_create` | function | `headers/minifs.h:122` | `int minifs_create(const char *path, unsigned short mode);` |
 | `minifs_decompress` | function | `headers/minifs.h:31` | `unsigned int minifs_decompress(const void *src, unsigned int src_len, void *dst, unsigned int dst_cap);` |
-| `minifs_dir_add_entry` | function | `headers/minifs.h:140` | `int minifs_dir_add_entry(int dir_inode, const char *name, int child_inode, unsigned char type);` |
-| `minifs_dir_lookup` | function | `headers/minifs.h:139` | `int minifs_dir_lookup(int dir_inode, const char *name);` |
-| `minifs_dir_read` | function | `headers/minifs.h:142` | `int minifs_dir_read(int dir_inode, int index, MiniFSDirEntry *out, char *name_out);` |
-| `minifs_dir_remove_entry` | function | `headers/minifs.h:141` | `int minifs_dir_remove_entry(int dir_inode, const char *name);` |
-| `minifs_file_close` | function | `headers/minifs.h:160` | `int minifs_file_close(MiniFSFile *f);` |
-| `minifs_file_open` | function | `headers/minifs.h:159` | `MiniFSFile *minifs_file_open(int inode_num, int flags);` |
-| `minifs_free_block` | function | `headers/minifs.h:145` | `void minifs_free_block(unsigned int block);` |
-| `minifs_free_inode` | function | `headers/minifs.h:147` | `void minifs_free_inode(int inode_num);` |
-| `minifs_get_lba_start` | function | `headers/minifs.h:162` | `unsigned int minifs_get_lba_start(void);` |
-| `minifs_get_total_blocks` | function | `headers/minifs.h:163` | `unsigned int minifs_get_total_blocks(void);` |
+| `minifs_dir_add_entry` | function | `headers/minifs.h:139` | `int minifs_dir_add_entry(int dir_inode, const char *name, int child_inode, unsigned char type);` |
+| `minifs_dir_lookup` | function | `headers/minifs.h:138` | `int minifs_dir_lookup(int dir_inode, const char *name);` |
+| `minifs_dir_read` | function | `headers/minifs.h:141` | `int minifs_dir_read(int dir_inode, int index, MiniFSDirEntry *out, char *name_out);` |
+| `minifs_dir_remove_entry` | function | `headers/minifs.h:140` | `int minifs_dir_remove_entry(int dir_inode, const char *name);` |
+| `minifs_file_close` | function | `headers/minifs.h:159` | `int minifs_file_close(MiniFSFile *f);` |
+| `minifs_file_open` | function | `headers/minifs.h:158` | `MiniFSFile *minifs_file_open(int inode_num, int flags);` |
+| `minifs_free_block` | function | `headers/minifs.h:144` | `void minifs_free_block(unsigned int block);` |
+| `minifs_free_inode` | function | `headers/minifs.h:146` | `void minifs_free_inode(int inode_num);` |
+| `minifs_get_lba_start` | function | `headers/minifs.h:161` | `unsigned int minifs_get_lba_start(void);` |
+| `minifs_get_total_blocks` | function | `headers/minifs.h:162` | `unsigned int minifs_get_total_blocks(void);` |
 | `minifs_init` | function | `headers/minifs.h:117` | `void minifs_init(void);` |
-| `minifs_inode_alloc_block` | function | `headers/minifs.h:149` | `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logical_block);` |
-| `minifs_inode_get_block` | function | `headers/minifs.h:148` | `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logical_block, unsigned int *phys_block);` |
-| `minifs_is_mounted` | function | `headers/minifs.h:121` | `int minifs_is_mounted(void);` |
-| `minifs_journal_abort` | function | `headers/minifs.h:156` | `void minifs_journal_abort(void);` |
-| `minifs_journal_add_block` | function | `headers/minifs.h:152` | `void minifs_journal_add_block(unsigned int block);` |
-| `minifs_journal_begin` | function | `headers/minifs.h:151` | `void minifs_journal_begin(unsigned int txn_id);` |
-| `minifs_journal_clear` | function | `headers/minifs.h:155` | `void minifs_journal_clear(void);` |
-| `minifs_journal_commit` | function | `headers/minifs.h:154` | `int minifs_journal_commit(unsigned int txn_id);` |
-| `minifs_journal_recover` | function | `headers/minifs.h:157` | `void minifs_journal_recover(void);` |
-| `minifs_journal_touch` | function | `headers/minifs.h:153` | `void minifs_journal_touch(unsigned int phys);` |
-| `minifs_mkdir` | function | `headers/minifs.h:124` | `int minifs_mkdir(const char *path, unsigned short mode);` |
-| `minifs_mkfs` | function | `headers/minifs.h:119` | `int minifs_mkfs(unsigned int total_blocks);` |
+| `minifs_inode_alloc_block` | function | `headers/minifs.h:148` | `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logical_block);` |
+| `minifs_inode_get_block` | function | `headers/minifs.h:147` | `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logical_block, unsigned int *phys_block);` |
+| `minifs_is_mounted` | function | `headers/minifs.h:120` | `int minifs_is_mounted(void);` |
+| `minifs_journal_abort` | function | `headers/minifs.h:155` | `void minifs_journal_abort(void);` |
+| `minifs_journal_add_block` | function | `headers/minifs.h:151` | `void minifs_journal_add_block(unsigned int block);` |
+| `minifs_journal_begin` | function | `headers/minifs.h:150` | `void minifs_journal_begin(unsigned int txn_id);` |
+| `minifs_journal_clear` | function | `headers/minifs.h:154` | `void minifs_journal_clear(void);` |
+| `minifs_journal_commit` | function | `headers/minifs.h:153` | `int minifs_journal_commit(unsigned int txn_id);` |
+| `minifs_journal_recover` | function | `headers/minifs.h:156` | `void minifs_journal_recover(void);` |
+| `minifs_journal_touch` | function | `headers/minifs.h:152` | `void minifs_journal_touch(unsigned int phys);` |
+| `minifs_mkdir` | function | `headers/minifs.h:123` | `int minifs_mkdir(const char *path, unsigned short mode);` |
 | `minifs_mount` | function | `headers/minifs.h:118` | `int minifs_mount(void);` |
-| `minifs_read` | function | `headers/minifs.h:132` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len);` |
-| `minifs_rename` | function | `headers/minifs.h:131` | `int minifs_rename(const char *oldpath, const char *newpath);` |
-| `minifs_resolve_path` | function | `headers/minifs.h:138` | `int minifs_resolve_path(const char *path);` |
-| `minifs_rmdir` | function | `headers/minifs.h:126` | `int minifs_rmdir(const char *path);` |
-| `minifs_stat` | function | `headers/minifs.h:135` | `int minifs_stat(int inode_num, MiniFSInode *out);` |
-| `minifs_sync` | function | `headers/minifs.h:120` | `int minifs_sync(void);` |
-| `minifs_truncate` | function | `headers/minifs.h:134` | `int minifs_truncate(int inode_num, unsigned int new_size);` |
-| `minifs_unlink` | function | `headers/minifs.h:125` | `int minifs_unlink(const char *path);` |
-| `minifs_usage` | function | `headers/minifs.h:165` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b, unsigned int *free_i, unsigned int *total_i);` |
-| `minifs_write` | function | `headers/minifs.h:133` | `int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len);` |
-| `refuses` | function | `headers/minifs.h:129` | `* An existing file dst refuses (no silent overwrite);` |
-| `NET_ACCEPT_TMO_MS` | macro | `headers/net.h:56` | `#define NET_ACCEPT_TMO_MS` |
-| `NET_ARP_CACHE` | macro | `headers/net.h:38` | `#define NET_ARP_CACHE` |
-| `NET_ARP_REPLY` | macro | `headers/net.h:40` | `#define NET_ARP_REPLY` |
-| `NET_ARP_REQUEST` | macro | `headers/net.h:39` | `#define NET_ARP_REQUEST` |
-| `NET_CONNECT_TMO_S` | macro | `headers/net.h:54` | `#define NET_CONNECT_TMO_S` |
+| `minifs_read` | function | `headers/minifs.h:131` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len);` |
+| `minifs_rename` | function | `headers/minifs.h:130` | `int minifs_rename(const char *oldpath, const char *newpath);` |
+| `minifs_resolve_path` | function | `headers/minifs.h:137` | `int minifs_resolve_path(const char *path);` |
+| `minifs_rmdir` | function | `headers/minifs.h:125` | `int minifs_rmdir(const char *path);` |
+| `minifs_stat` | function | `headers/minifs.h:134` | `int minifs_stat(int inode_num, MiniFSInode *out);` |
+| `minifs_sync` | function | `headers/minifs.h:119` | `int minifs_sync(void);` |
+| `minifs_truncate` | function | `headers/minifs.h:133` | `int minifs_truncate(int inode_num, unsigned int new_size);` |
+| `minifs_unlink` | function | `headers/minifs.h:124` | `int minifs_unlink(const char *path);` |
+| `minifs_usage` | function | `headers/minifs.h:164` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b, unsigned int *free_i, unsigned int *total_i);` |
+| `minifs_write` | function | `headers/minifs.h:132` | `int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len);` |
+| `refuses` | function | `headers/minifs.h:128` | `* An existing file dst refuses (no silent overwrite);` |
+| `NET_ACCEPT_TMO_MS` | macro | `headers/net.h:64` | `#define NET_ACCEPT_TMO_MS` |
+| `NET_ARP_CACHE` | macro | `headers/net.h:46` | `#define NET_ARP_CACHE` |
+| `NET_ARP_REPLY` | macro | `headers/net.h:48` | `#define NET_ARP_REPLY` |
+| `NET_ARP_REQUEST` | macro | `headers/net.h:47` | `#define NET_ARP_REQUEST` |
+| `NET_CONNECT_TMO_S` | macro | `headers/net.h:62` | `#define NET_CONNECT_TMO_S` |
 | `NET_DNS` | macro | `headers/net.h:8` | `#define NET_DNS` |
-| `NET_DNS_PORT` | macro | `headers/net.h:50` | `#define NET_DNS_PORT` |
-| `NET_DNS_TMO_MS` | macro | `headers/net.h:53` | `#define NET_DNS_TMO_MS` |
-| `NET_DNS_TRIES` | macro | `headers/net.h:52` | `#define NET_DNS_TRIES` |
-| `NET_EPHEMERAL_MIN` | macro | `headers/net.h:51` | `#define NET_EPHEMERAL_MIN` |
-| `NET_ETHERTYPE_ARP` | macro | `headers/net.h:29` | `#define NET_ETHERTYPE_ARP` |
-| `NET_ETHERTYPE_IP` | macro | `headers/net.h:28` | `#define NET_ETHERTYPE_IP` |
-| `NET_ETHERTYPE_IPV6` | macro | `headers/net.h:30` | `#define NET_ETHERTYPE_IPV6` |
-| `NET_ETH_ALEN` | macro | `headers/net.h:27` | `#define NET_ETH_ALEN` |
-| `NET_FD_BASE` | macro | `headers/net.h:60` | `#define NET_FD_BASE` |
+| `NET_DNS_PORT` | macro | `headers/net.h:58` | `#define NET_DNS_PORT` |
+| `NET_DNS_TMO_MS` | macro | `headers/net.h:61` | `#define NET_DNS_TMO_MS` |
+| `NET_DNS_TRIES` | macro | `headers/net.h:60` | `#define NET_DNS_TRIES` |
+| `NET_EPHEMERAL_MIN` | macro | `headers/net.h:59` | `#define NET_EPHEMERAL_MIN` |
+| `NET_ETHERTYPE_ARP` | macro | `headers/net.h:37` | `#define NET_ETHERTYPE_ARP` |
+| `NET_ETHERTYPE_IP` | macro | `headers/net.h:36` | `#define NET_ETHERTYPE_IP` |
+| `NET_ETHERTYPE_IPV6` | macro | `headers/net.h:38` | `#define NET_ETHERTYPE_IPV6` |
+| `NET_ETH_ALEN` | macro | `headers/net.h:35` | `#define NET_ETH_ALEN` |
+| `NET_FD_BASE` | macro | `headers/net.h:68` | `#define NET_FD_BASE` |
 | `NET_GATEWAY` | macro | `headers/net.h:7` | `#define NET_GATEWAY` |
 | `NET_H` | macro | `headers/net.h:2` | `#define NET_H` |
+| `NET_IOV_LEN` | macro | `headers/net.h:88` | `#define NET_IOV_LEN` |
+| `NET_IOV_MAX` | macro | `headers/net.h:89` | `#define NET_IOV_MAX` |
 | `NET_IP_ADDR` | macro | `headers/net.h:5` | `#define NET_IP_ADDR` |
-| `NET_MAX_FRAME` | macro | `headers/net.h:23` | `#define NET_MAX_FRAME` |
+| `NET_MAX_FRAME` | macro | `headers/net.h:31` | `#define NET_MAX_FRAME` |
+| `NET_MMSGHDR_LEN` | macro | `headers/net.h:82` | `#define NET_MMSGHDR_LEN` |
+| `NET_MMSGHDR_LEN_OFF` | macro | `headers/net.h:87` | `#define NET_MMSGHDR_LEN_OFF` |
+| `NET_MMSG_MAX` | macro | `headers/net.h:90` | `#define NET_MMSG_MAX` |
+| `NET_MSGHDR_IOVLEN_OFF` | macro | `headers/net.h:86` | `#define NET_MSGHDR_IOVLEN_OFF` |
+| `NET_MSGHDR_IOV_OFF` | macro | `headers/net.h:85` | `#define NET_MSGHDR_IOV_OFF` |
+| `NET_MSGHDR_LEN` | macro | `headers/net.h:81` | `#define NET_MSGHDR_LEN` |
+| `NET_MSGHDR_NAMELEN_OFF` | macro | `headers/net.h:84` | `#define NET_MSGHDR_NAMELEN_OFF` |
+| `NET_MSGHDR_NAME_OFF` | macro | `headers/net.h:83` | `#define NET_MSGHDR_NAME_OFF` |
 | `NET_NETMASK` | macro | `headers/net.h:6` | `#define NET_NETMASK` |
-| `NET_PCI_DEVICE` | macro | `headers/net.h:12` | `#define NET_PCI_DEVICE` |
-| `NET_PCI_VENDOR` | macro | `headers/net.h:11` | `#define NET_PCI_VENDOR` |
-| `NET_PROTO_ICMP` | macro | `headers/net.h:33` | `#define NET_PROTO_ICMP` |
-| `NET_PROTO_TCP` | macro | `headers/net.h:34` | `#define NET_PROTO_TCP` |
-| `NET_PROTO_UDP` | macro | `headers/net.h:35` | `#define NET_PROTO_UDP` |
-| `NET_RCR` | macro | `headers/net.h:22` | `#define NET_RCR` |
-| `NET_RETRY_MS` | macro | `headers/net.h:55` | `#define NET_RETRY_MS` |
-| `NET_RX_ALIGN` | macro | `headers/net.h:19` | `#define NET_RX_ALIGN` |
-| `NET_RX_BUF_LEN` | macro | `headers/net.h:18` | `#define NET_RX_BUF_LEN` |
-| `NET_RX_RING_SIZE` | macro | `headers/net.h:48` | `#define NET_RX_RING_SIZE` |
-| `NET_SOCKETS` | macro | `headers/net.h:49` | `#define NET_SOCKETS` |
-| `NET_SOCK_RX_BUF` | macro | `headers/net.h:47` | `#define NET_SOCK_RX_BUF` |
-| `NET_TCP_MSS` | macro | `headers/net.h:43` | `#define NET_TCP_MSS` |
-| `NET_TCP_WINDOW` | macro | `headers/net.h:44` | `#define NET_TCP_WINDOW` |
-| `NET_TX_MAX` | macro | `headers/net.h:57` | `#define NET_TX_MAX` |
-| `NET_TX_SLOTS` | macro | `headers/net.h:24` | `#define NET_TX_SLOTS` |
-| `demux` | function | `headers/net.h:87` | `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);` |
-| `net6_rx_dropped` | variable | `headers/net.h:120` | `extern unsigned int net6_rx_dropped;` |
-| `net_accept` | function | `headers/net.h:90` | `int net_accept(int fd, unsigned long timeout_ms);` |
-| `net_accept_nb` | function | `headers/net.h:89` | `int net_accept_nb(int fd);` |
-| `net_close` | function | `headers/net.h:81` | `void net_close(int fd);` |
-| `net_cmd_dns` | function | `headers/net.h:72` | `void net_cmd_dns(const char *host);` |
-| `net_cmd_ping` | function | `headers/net.h:70` | `void net_cmd_ping(const char *ip_text);` |
-| `net_cmd_status` | function | `headers/net.h:69` | `void net_cmd_status(void);` |
-| `net_connect` | function | `headers/net.h:76` | `int net_connect(const char *host, unsigned short port);` |
-| `net_get_addrs` | function | `headers/net.h:71` | `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);` |
-| `net_open` | function | `headers/net.h:75` | `int net_open(void);` |
-| `net_recv` | function | `headers/net.h:78` | `int net_recv(int fd, char *buf, int len);` |
-| `net_recv_timeout` | function | `headers/net.h:80` | `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);` |
-| `net_register_symbols` | function | `headers/net.h:66` | `void net_register_symbols(void);` |
-| `net_rx_dropped` | variable | `headers/net.h:119` | `extern unsigned int net_rx_dropped;` |
-| `net_rx_handle_frame` | function | `headers/net.h:115` | `void net_rx_handle_frame(const unsigned char *frame, unsigned len);` |
-| `net_send` | function | `headers/net.h:77` | `int net_send(int fd, const char *buf, int len);` |
-| `net_sock_seq` | function | `headers/net.h:92` | `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);` |
-| `net_sock_state` | function | `headers/net.h:91` | `int net_sock_state(int fd);` |
-| `net_sys_accept` | function | `headers/net.h:102` | `long net_sys_accept(long fd, long sockaddr, long addrlen);` |
-| `net_sys_bind` | function | `headers/net.h:100` | `long net_sys_bind(long fd, long sockaddr, long addrlen);` |
-| `net_sys_close` | function | `headers/net.h:106` | `long net_sys_close(long fd);` |
-| `net_sys_connect` | function | `headers/net.h:99` | `long net_sys_connect(long fd, long sockaddr, long addrlen);` |
-| `net_sys_dns` | function | `headers/net.h:108` | `long net_sys_dns(long host);` |
-| `net_sys_listen` | function | `headers/net.h:101` | `long net_sys_listen(long fd, long backlog);` |
-| `net_sys_poll` | function | `headers/net.h:107` | `long net_sys_poll(long fds, long nfds, long timeout_ms);` |
-| `net_sys_recvfrom` | function | `headers/net.h:104` | `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);` |
-| `net_sys_sendto` | function | `headers/net.h:103` | `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);` |
-| `net_sys_shutdown` | function | `headers/net.h:105` | `long net_sys_shutdown(long fd, long how);` |
-| `net_sys_socket` | function | `headers/net.h:98` | `long net_sys_socket(long a1, long a2, long a3);` |
-| `net_test_inject_tcp` | function | `headers/net.h:93` | `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...` |
-| `net_time_ms` | function | `headers/net.h:111` | `unsigned long net_time_ms(void);` |
-| `ring` | function | `headers/net.h:46` | `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...` |
-| `stack` | function | `headers/net.h:118` | `* the stack (dropped fragments);` |
-| `tls_free_fd` | function | `headers/net.h:126` | `void tls_free_fd(int fd);` |
+| `NET_PCI_DEVICE` | macro | `headers/net.h:20` | `#define NET_PCI_DEVICE` |
+| `NET_PCI_VENDOR` | macro | `headers/net.h:19` | `#define NET_PCI_VENDOR` |
+| `NET_POLLERR` | macro | `headers/net.h:14` | `#define NET_POLLERR` |
+| `NET_POLLHUP` | macro | `headers/net.h:15` | `#define NET_POLLHUP` |
+| `NET_POLLIN` | macro | `headers/net.h:12` | `#define NET_POLLIN` |
+| `NET_POLLNVAL` | macro | `headers/net.h:16` | `#define NET_POLLNVAL` |
+| `NET_POLLOUT` | macro | `headers/net.h:13` | `#define NET_POLLOUT` |
+| `NET_PROTO_ICMP` | macro | `headers/net.h:41` | `#define NET_PROTO_ICMP` |
+| `NET_PROTO_TCP` | macro | `headers/net.h:42` | `#define NET_PROTO_TCP` |
+| `NET_PROTO_UDP` | macro | `headers/net.h:43` | `#define NET_PROTO_UDP` |
+| `NET_RCR` | macro | `headers/net.h:30` | `#define NET_RCR` |
+| `NET_RETRY_MS` | macro | `headers/net.h:63` | `#define NET_RETRY_MS` |
+| `NET_RX_ALIGN` | macro | `headers/net.h:27` | `#define NET_RX_ALIGN` |
+| `NET_RX_BUF_LEN` | macro | `headers/net.h:26` | `#define NET_RX_BUF_LEN` |
+| `NET_RX_RING_SIZE` | macro | `headers/net.h:56` | `#define NET_RX_RING_SIZE` |
+| `NET_SOCKADDR_IN_LEN` | macro | `headers/net.h:79` | `#define NET_SOCKADDR_IN_LEN` |
+| `NET_SOCKETS` | macro | `headers/net.h:57` | `#define NET_SOCKETS` |
+| `NET_SOCK_RX_BUF` | macro | `headers/net.h:55` | `#define NET_SOCK_RX_BUF` |
+| `NET_TCP_MSS` | macro | `headers/net.h:51` | `#define NET_TCP_MSS` |
+| `NET_TCP_WINDOW` | macro | `headers/net.h:52` | `#define NET_TCP_WINDOW` |
+| `NET_TX_MAX` | macro | `headers/net.h:65` | `#define NET_TX_MAX` |
+| `NET_TX_SLOTS` | macro | `headers/net.h:32` | `#define NET_TX_SLOTS` |
+| `NET_UDP_DGRAM_MAX` | macro | `headers/net.h:75` | `#define NET_UDP_DGRAM_MAX` |
+| `NET_UDP_EPHEMERAL_MAX` | macro | `headers/net.h:78` | `#define NET_UDP_EPHEMERAL_MAX` |
+| `NET_UDP_EPHEMERAL_MIN` | macro | `headers/net.h:77` | `#define NET_UDP_EPHEMERAL_MIN` |
+| `NET_UDP_FD_BASE` | macro | `headers/net.h:76` | `#define NET_UDP_FD_BASE` |
+| `NET_UDP_QUEUE` | macro | `headers/net.h:74` | `#define NET_UDP_QUEUE` |
+| `NET_UDP_SOCKETS` | macro | `headers/net.h:73` | `#define NET_UDP_SOCKETS` |
+| `demux` | function | `headers/net.h:126` | `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);` |
+| `net6_rx_dropped` | variable | `headers/net.h:159` | `extern unsigned int net6_rx_dropped;` |
+| `net_accept` | function | `headers/net.h:129` | `int net_accept(int fd, unsigned long timeout_ms);` |
+| `net_accept_nb` | function | `headers/net.h:128` | `int net_accept_nb(int fd);` |
+| `net_close` | function | `headers/net.h:120` | `void net_close(int fd);` |
+| `net_cmd_dns` | function | `headers/net.h:111` | `void net_cmd_dns(const char *host);` |
+| `net_cmd_ping` | function | `headers/net.h:109` | `void net_cmd_ping(const char *ip_text);` |
+| `net_cmd_status` | function | `headers/net.h:108` | `void net_cmd_status(void);` |
+| `net_connect` | function | `headers/net.h:115` | `int net_connect(const char *host, unsigned short port);` |
+| `net_get_addrs` | function | `headers/net.h:110` | `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);` |
+| `net_open` | function | `headers/net.h:114` | `int net_open(void);` |
+| `net_recv` | function | `headers/net.h:117` | `int net_recv(int fd, char *buf, int len);` |
+| `net_recv_timeout` | function | `headers/net.h:119` | `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);` |
+| `net_register_symbols` | function | `headers/net.h:105` | `void net_register_symbols(void);` |
+| `net_rx_dropped` | variable | `headers/net.h:158` | `extern unsigned int net_rx_dropped;` |
+| `net_rx_handle_frame` | function | `headers/net.h:154` | `void net_rx_handle_frame(const unsigned char *frame, unsigned len);` |
+| `net_send` | function | `headers/net.h:116` | `int net_send(int fd, const char *buf, int len);` |
+| `net_sock_seq` | function | `headers/net.h:131` | `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);` |
+| `net_sock_state` | function | `headers/net.h:130` | `int net_sock_state(int fd);` |
+| `net_sys_accept` | function | `headers/net.h:141` | `long net_sys_accept(long fd, long sockaddr, long addrlen);` |
+| `net_sys_bind` | function | `headers/net.h:139` | `long net_sys_bind(long fd, long sockaddr, long addrlen);` |
+| `net_sys_close` | function | `headers/net.h:145` | `long net_sys_close(long fd);` |
+| `net_sys_connect` | function | `headers/net.h:138` | `long net_sys_connect(long fd, long sockaddr, long addrlen);` |
+| `net_sys_dns` | function | `headers/net.h:147` | `long net_sys_dns(long host);` |
+| `net_sys_fcntl` | function | `headers/net.h:104` | `long net_sys_fcntl(long fd, long cmd, long arg);` |
+| `net_sys_getpeername` | function | `headers/net.h:101` | `long net_sys_getpeername(long fd, long addr, long lenp);` |
+| `net_sys_getsockname` | function | `headers/net.h:100` | `long net_sys_getsockname(long fd, long addr, long lenp);` |
+| `net_sys_getsockopt` | function | `headers/net.h:99` | `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);` |
+| `net_sys_is_socket` | function | `headers/net.h:97` | `int net_sys_is_socket(long fd);` |
+| `net_sys_listen` | function | `headers/net.h:140` | `long net_sys_listen(long fd, long backlog);` |
+| `net_sys_poll` | function | `headers/net.h:146` | `long net_sys_poll(long fds, long nfds, long timeout_ms);` |
+| `net_sys_recvfrom` | function | `headers/net.h:143` | `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);` |
+| `net_sys_sendmmsg` | function | `headers/net.h:103` | `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);` |
+| `net_sys_sendmsg` | function | `headers/net.h:102` | `long net_sys_sendmsg(long fd, long msg, long flags);` |
+| `net_sys_sendto` | function | `headers/net.h:142` | `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);` |
+| `net_sys_setsockopt` | function | `headers/net.h:98` | `long net_sys_setsockopt(long fd, long level, long name, long val, long len);` |
+| `net_sys_shutdown` | function | `headers/net.h:144` | `long net_sys_shutdown(long fd, long how);` |
+| `net_sys_socket` | function | `headers/net.h:137` | `long net_sys_socket(long a1, long a2, long a3);` |
+| `net_test_inject_tcp` | function | `headers/net.h:132` | `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...` |
+| `net_time_ms` | function | `headers/net.h:150` | `unsigned long net_time_ms(void);` |
+| `ring` | function | `headers/net.h:54` | `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...` |
+| `stack` | function | `headers/net.h:157` | `* the stack (dropped fragments);` |
+| `tls_free_fd` | function | `headers/net.h:165` | `void tls_free_fd(int fd);` |
 | `RTL8139_H` | macro | `headers/net/rtl8139.h:2` | `#define RTL8139_H` |
 | `net_rx_handle_frame` | function | `headers/net/rtl8139.h:28` | `* net_rx_handle_frame (the protocol demux in net.c). */ void rtl_poll(void);` |
 | `rtl_counters` | function | `headers/net/rtl8139.h:38` | `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);` |
@@ -443,58 +496,5 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `RQ_DEPTH` | macro | `headers/percpu_rq.h:45` | `#define RQ_DEPTH` |
 | `RQ_RESCAN_PERIOD` | macro | `headers/percpu_rq.h:46` | `#define RQ_RESCAN_PERIOD` |
 | `RQ_VALIDATE_ATTEMPTS` | macro | `headers/percpu_rq.h:47` | `#define RQ_VALIDATE_ATTEMPTS` |
-| `WQ_NONE_HINT` | macro | `headers/percpu_rq.h:48` | `#define WQ_NONE_HINT` |
-| `percpu_rq_t` | struct | `headers/percpu_rq.h:50` | `` |
-| `rq_empty` | function | `headers/percpu_rq.h:65` | `int rq_empty(int cpu);` |
-| `rq_enqueue` | function | `headers/percpu_rq.h:62` | `void rq_enqueue(int cpu, int pid);` |
-| `rq_init` | function | `headers/percpu_rq.h:61` | `void rq_init(void);` |
-| `rq_note_poll` | function | `headers/percpu_rq.h:67` | `void rq_note_poll(int cpu);` |
-| `rq_pop_local` | function | `headers/percpu_rq.h:63` | `int rq_pop_local(int cpu);` |
-| `rq_should_rescan` | function | `headers/percpu_rq.h:66` | `int rq_should_rescan(int cpu);` |
-| `rq_stats` | function | `headers/percpu_rq.h:68` | `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals, unsigned long *drops);` |
-| `rq_steal_once` | function | `headers/percpu_rq.h:64` | `int rq_steal_once(int self_cpu, int *from_cpu);` |
-| `PIPE_CAP_DEFAULT` | macro | `headers/pipe.h:21` | `#define PIPE_CAP_DEFAULT` |
-| `PIPE_CAP_MAX` | macro | `headers/pipe.h:22` | `#define PIPE_CAP_MAX` |
-| `PIPE_CFG_DEFAULT` | macro | `headers/pipe.h:42` | `#define PIPE_CFG_DEFAULT` |
-| `PIPE_EMPTY` | macro | `headers/pipe.h:25` | `#define PIPE_EMPTY` |
-| `PIPE_ERR_BOUND` | macro | `headers/pipe.h:24` | `#define PIPE_ERR_BOUND` |
-| `PIPE_H` | macro | `headers/pipe.h:19` | `#define PIPE_H` |
-| `ends` | function | `headers/pipe.h:4` | `* * Single source of truth for the pipe byte ring shared by the kernel * pipe ends (fs/kfile.c), the pipe/dup/dup2...` |
-| `pipe_cfg_t` | struct | `headers/pipe.h:36` | `` |
-| `pipe_ring_avail` | function | `headers/pipe.h:62` | `static inline unsigned pipe_ring_avail(const pipe_ring_t *r)` |
-| `pipe_ring_close_writer` | function | `headers/pipe.h:116` | `static inline int pipe_ring_close_writer(pipe_ring_t *r)` |
-| `pipe_ring_init` | function | `headers/pipe.h:46` | `static inline int pipe_ring_init(pipe_ring_t *r, unsigned char *buf,         unsigned cap)` |
-| `pipe_ring_space` | function | `headers/pipe.h:69` | `static inline unsigned pipe_ring_space(const pipe_ring_t *r)` |
-| `pipe_ring_stat` | function | `headers/pipe.h:125` | `static inline int pipe_ring_stat(const pipe_ring_t *r, pipe_cfg_t *out)` |
-| `pipe_ring_t` | struct | `headers/pipe.h:27` | `` |
-| `pipe_ring_write` | function | `headers/pipe.h:77` | `static inline unsigned pipe_ring_write(pipe_ring_t *r,         const unsigned char *src, unsigned...` |
-| `QGA_BAUD_DIVISOR` | macro | `headers/qga.h:25` | `#define QGA_BAUD_DIVISOR` |
-| `QGA_COM2_BASE` | macro | `headers/qga.h:5` | `#define QGA_COM2_BASE` |
-| `QGA_COM2_IRQ` | macro | `headers/qga.h:6` | `#define QGA_COM2_IRQ` |
-| `QGA_FILE_MAX` | macro | `headers/qga.h:46` | `#define QGA_FILE_MAX` |
-| `QGA_FILE_READ_MAX` | macro | `headers/qga.h:34` | `#define QGA_FILE_READ_MAX` |
-| `QGA_H` | macro | `headers/qga.h:2` | `#define QGA_H` |
-| `QGA_KEY_MAX` | macro | `headers/qga.h:38` | `#define QGA_KEY_MAX` |
-| `QGA_LINE_MAX` | macro | `headers/qga.h:30` | `#define QGA_LINE_MAX` |
-| `QGA_MAX_DEPTH` | macro | `headers/qga.h:42` | `#define QGA_MAX_DEPTH` |
-| `QGA_MAX_PAIRS` | macro | `headers/qga.h:37` | `#define QGA_MAX_PAIRS` |
-| `QGA_RESP_MAX` | macro | `headers/qga.h:31` | `#define QGA_RESP_MAX` |
-| `QGA_STR_MAX` | macro | `headers/qga.h:39` | `#define QGA_STR_MAX` |
-| `QGA_UART_DLL` | macro | `headers/qga.h:11` | `#define QGA_UART_DLL` |
-| `QGA_UART_DLM` | macro | `headers/qga.h:12` | `#define QGA_UART_DLM` |
-| `QGA_UART_FCR` | macro | `headers/qga.h:14` | `#define QGA_UART_FCR` |
-| `QGA_UART_FCR_CFG` | macro | `headers/qga.h:22` | `#define QGA_UART_FCR_CFG` |
-| `QGA_UART_IER` | macro | `headers/qga.h:13` | `#define QGA_UART_IER` |
-| `QGA_UART_LCR` | macro | `headers/qga.h:15` | `#define QGA_UART_LCR` |
-| `QGA_UART_LCR_8N1` | macro | `headers/qga.h:21` | `#define QGA_UART_LCR_8N1` |
-| `QGA_UART_LCR_DLAB` | macro | `headers/qga.h:20` | `#define QGA_UART_LCR_DLAB` |
-| `QGA_UART_LSR` | macro | `headers/qga.h:16` | `#define QGA_UART_LSR` |
-| `QGA_UART_LSR_RX_RDY` | macro | `headers/qga.h:19` | `#define QGA_UART_LSR_RX_RDY` |
-| `QGA_UART_LSR_TX_RDY` | macro | `headers/qga.h:18` | `#define QGA_UART_LSR_TX_RDY` |
-| `QGA_UART_MCR` | macro | `headers/qga.h:17` | `#define QGA_UART_MCR` |
-| `QGA_UART_MCR_CFG` | macro | `headers/qga.h:23` | `#define QGA_UART_MCR_CFG` |
-| `QGA_UART_RBR` | macro | `headers/qga.h:10` | `#define QGA_UART_RBR` |
-| `QGA_UART_THR` | macro | `headers/qga.h:9` | `#define QGA_UART_THR` |
-| `qga_init` | function | `headers/qga.h:48` | `void qga_init(void);` |
 
 Next: [SYMBOLS_p6.md](SYMBOLS_p6.md)

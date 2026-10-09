@@ -1,5 +1,5 @@
-# Subsystem: kernel (page 1 of 3)
-Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_kernel_p3.md](KB_kernel_p3.md)
+# Subsystem: kernel (page 1 of 4)
+Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_kernel_p3.md](KB_kernel_p3.md), [KB_kernel_p4.md](KB_kernel_p4.md)
 
 ## kernel/abi.c
 - Doc: Docstring: kernel/abi.c -- Boot-time ABI manifest gate.
@@ -189,18 +189,18 @@ Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_ker
 - Layer: utility
 - Language: c
 - Symbols:
-  - `vga_mode_set` (function, line 60) `void vga_mode_set(int on)`
-  - `vga_mode_is_active` (function, line 61) `int  vga_mode_is_active(void)`
-  - `vga_gfx_ran_set` (function, line 62) `void vga_gfx_ran_set(int on)`
-  - `k_user_fault_return` (function, line 65) `void k_user_fault_return(void)`
-  - `setup_user_stack` (function, line 82) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
+  - `vga_mode_set` (function, line 61) `void vga_mode_set(int on)`
+  - `vga_mode_is_active` (function, line 62) `int  vga_mode_is_active(void)`
+  - `vga_gfx_ran_set` (function, line 63) `void vga_gfx_ran_set(int on)`
+  - `k_user_fault_return` (function, line 66) `void k_user_fault_return(void)`
+  - `setup_user_stack` (function, line 83) `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,
                                ...`
-  - `k_run_rel` (function, line 229) `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
-  - `kexit` (function, line 280) `void kexit(int code)`
-  - `syscall_kstack` (variable, line 115) `extern unsigned long syscall_kstack;`
-  - `EXEC_KSTACK_SZ` (macro, line 123) `#define EXEC_KSTACK_SZ`
-  - `ETREL_CHILD_STACK_SZ` (macro, line 132) `#define ETREL_CHILD_STACK_SZ`
-- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/drivers/kbd.h`, `headers/sched.h`, `headers/vga_fb.h`
+  - `k_run_rel` (function, line 233) `int k_run_rel(prog_entry_t entry, int argc, char **argv)`
+  - `kexit` (function, line 284) `void kexit(int code)`
+  - `syscall_kstack` (variable, line 116) `extern unsigned long syscall_kstack;`
+  - `EXEC_KSTACK_SZ` (macro, line 124) `#define EXEC_KSTACK_SZ`
+  - `ETREL_CHILD_STACK_SZ` (macro, line 133) `#define ETREL_CHILD_STACK_SZ`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/drivers/kbd.h`, `headers/proc_sec.h`, `headers/sched.h`, `headers/vga_fb.h`
 
 ## kernel/futex.c
 - Doc: Docstring: kernel/futex.c -- Kernel side of the futex contract.
@@ -212,7 +212,8 @@ Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_ker
   - `futex_bucket` (function, line 31) `static futex_bucket_t *futex_bucket(unsigned long uaddr)`
   - `futex_init` (function, line 36) `void futex_init(void)`
   - `futex_linux_cmd` (function, line 84) `int futex_linux_cmd(long op)`
-  - `futex_wake` (function, line 97) `long futex_wake(unsigned long uaddr, int n)`
+  - `futex_timeout_remaining_us` (function, line 95) `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us)`
+  - `futex_wake` (function, line 112) `long futex_wake(unsigned long uaddr, int n)`
   - `t_cur_pid` (variable, line 13) `extern int t_cur_pid;`
 - Depends on: `headers/futex.h`, `headers/sync.h`
 
@@ -420,6 +421,56 @@ sta...`
   - `putc_snbuf` (function, line 178) `static void putc_snbuf(char c, void *ctx, int *written)`
   - `ksnprintf` (function, line 184) `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...)`
 
+## kernel/proc_sec.c
+- Doc: Docstring: proc_sec.c -- per-process security state: the Linux seccomp
+- Layer: utility
+- Language: c
+- Symbols:
+  - `sec_filter` (struct, line 48)
+  - `ref` (type_alias, line 47) `typedef struct sec_filter { int ref;`
+  - `pid_ok` (function, line 74) `static int pid_ok(int pid)`
+  - `chain_put` (function, line 78) `static void chain_put(sec_filter_t *f)`
+  - `proc_sec_inherit` (function, line 87) `void proc_sec_inherit(int child, int parent)`
+  - `proc_sec_release` (function, line 101) `void proc_sec_release(int pid)`
+  - `proc_sec_exec` (function, line 115) `void proc_sec_exec(int pid)`
+  - `proc_sec_set_exe` (function, line 119) `void proc_sec_set_exe(int pid, const char *resolved)`
+  - `proc_sec_exe` (function, line 125) `const char *proc_sec_exe(int pid)`
+  - `sec_kill` (function, line 130) `static void sec_kill(long n, int whole_group)`
+  - `proc_sec_filter` (function, line 136) `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret)`
+  - `sec_install` (function, line 191) `static long sec_install(const sbpf_insn *prog, unsigned len, int strict)`
+  - `sec_install_user` (function, line 224) `static long sec_install_user(long ufprog)`
+  - `proc_sec_prctl` (function, line 235) `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5)`
+  - `proc_sec_seccomp` (function, line 290) `long proc_sec_seccomp(long op, long flags, long uargs)`
+  - `LINUX_PR_GET_DUMPABLE` (macro, line 18) `#define LINUX_PR_GET_DUMPABLE`
+  - `LINUX_PR_SET_DUMPABLE` (macro, line 19) `#define LINUX_PR_SET_DUMPABLE`
+  - `LINUX_PR_SET_NAME` (macro, line 20) `#define LINUX_PR_SET_NAME`
+  - `LINUX_PR_GET_NAME` (macro, line 21) `#define LINUX_PR_GET_NAME`
+  - `LINUX_PR_GET_SECCOMP` (macro, line 22) `#define LINUX_PR_GET_SECCOMP`
+  - `LINUX_PR_SET_SECCOMP` (macro, line 23) `#define LINUX_PR_SET_SECCOMP`
+  - `LINUX_PR_SET_NO_NEW_PRIVS` (macro, line 24) `#define LINUX_PR_SET_NO_NEW_PRIVS`
+  - `LINUX_PR_GET_NO_NEW_PRIVS` (macro, line 25) `#define LINUX_PR_GET_NO_NEW_PRIVS`
+  - `LINUX_SECCOMP_MODE_DISABLED` (macro, line 26) `#define LINUX_SECCOMP_MODE_DISABLED`
+  - `LINUX_SECCOMP_MODE_STRICT` (macro, line 27) `#define LINUX_SECCOMP_MODE_STRICT`
+  - `LINUX_SECCOMP_MODE_FILTER` (macro, line 28) `#define LINUX_SECCOMP_MODE_FILTER`
+  - `LINUX_SECCOMP_SET_MODE_STRICT` (macro, line 29) `#define LINUX_SECCOMP_SET_MODE_STRICT`
+  - `LINUX_SECCOMP_SET_MODE_FILTER` (macro, line 30) `#define LINUX_SECCOMP_SET_MODE_FILTER`
+  - `LINUX_SECCOMP_GET_ACTION_AVAIL` (macro, line 31) `#define LINUX_SECCOMP_GET_ACTION_AVAIL`
+  - `LINUX_NR_READ` (macro, line 32) `#define LINUX_NR_READ`
+  - `LINUX_NR_WRITE` (macro, line 33) `#define LINUX_NR_WRITE`
+  - `LINUX_NR_RT_SIGRETURN` (macro, line 34) `#define LINUX_NR_RT_SIGRETURN`
+  - `LINUX_NR_EXIT` (macro, line 35) `#define LINUX_NR_EXIT`
+  - `LINUX_ERRNO_MAX` (macro, line 36) `#define LINUX_ERRNO_MAX`
+  - `LINUX_TASK_COMM_LEN` (macro, line 37) `#define LINUX_TASK_COMM_LEN`
+  - `SOCK_FPROG_SIZE` (macro, line 39) `#define SOCK_FPROG_SIZE`
+  - `SOCK_FPROG_FILTER_OFF` (macro, line 40) `#define SOCK_FPROG_FILTER_OFF`
+  - `ERR_ENOMEM` (macro, line 42) `#define ERR_ENOMEM`
+  - `ERR_EACCES` (macro, line 43) `#define ERR_EACCES`
+  - `ERR_EINVAL` (macro, line 44) `#define ERR_EINVAL`
+  - `ERR_ENOSYS` (macro, line 45) `#define ERR_ENOSYS`
+  - `ERR_EOPNOTSUPP` (macro, line 46) `#define ERR_EOPNOTSUPP`
+  - `SEC_STRICT_LEN` (macro, line 72) `#define SEC_STRICT_LEN`
+- Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`, `headers/seccomp_bpf.h`, `headers/syscalls_proc.h`
+
 ## kernel/rcu.c
 - Doc: Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks.
 - Layer: utility
@@ -441,14 +492,6 @@ sta...`
   - `expires` (function, line 193) `* expires (ticks stalled, never a hang). No completion assert is
  * possible here by design: a re...`
 - Depends on: `headers/rcu.h`
-
-## kernel/redirect.c
-- Layer: utility
-- Language: c
-- Symbols:
-  - `shell_report_exit` (function, line 11) `void shell_report_exit(int code)`
-  - `shell_report` (function, line 17) `void shell_report(const char *what, const char *detail)`
-  - `shell_take_redirect` (function, line 25) `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)`
 
 
 Next: [KB_kernel_p2.md](KB_kernel_p2.md)

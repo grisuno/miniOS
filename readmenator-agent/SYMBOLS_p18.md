@@ -1,8 +1,350 @@
-# Symbols (page 18 of 25)
+# Symbols (page 18 of 26)
 Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ST_STRAIGHTFACECOUNT` | macro | `progs/doomgeneric/st_stuff.c:118` | `#define ST_STRAIGHTFACECOUNT` |
+| `ST_Start` | function | `progs/doomgeneric/st_stuff.c:1389` | `void ST_Start (void)` |
+| `ST_Stop` | function | `progs/doomgeneric/st_stuff.c:1401` | `void ST_Stop (void)` |
+| `ST_TALLNUMWIDTH` | macro | `progs/doomgeneric/st_stuff.c:91` | `#define ST_TALLNUMWIDTH` |
+| `ST_TOGGLECHAT` | macro | `progs/doomgeneric/st_stuff.c:80` | `#define ST_TOGGLECHAT` |
+| `ST_TURNCOUNT` | macro | `progs/doomgeneric/st_stuff.c:119` | `#define ST_TURNCOUNT` |
+| `ST_TURNOFFSET` | macro | `progs/doomgeneric/st_stuff.c:107` | `#define ST_TURNOFFSET` |
+| `ST_Ticker` | function | `progs/doomgeneric/st_stuff.c:924` | `void ST_Ticker (void)` |
+| `ST_WEAPON0X` | macro | `progs/doomgeneric/st_stuff.c:206` | `#define ST_WEAPON0X` |
+| `ST_WEAPON0Y` | macro | `progs/doomgeneric/st_stuff.c:207` | `#define ST_WEAPON0Y` |
+| `ST_WEAPON1X` | macro | `progs/doomgeneric/st_stuff.c:210` | `#define ST_WEAPON1X` |
+| `ST_WEAPON1Y` | macro | `progs/doomgeneric/st_stuff.c:211` | `#define ST_WEAPON1Y` |
+| `ST_WEAPON2X` | macro | `progs/doomgeneric/st_stuff.c:214` | `#define ST_WEAPON2X` |
+| `ST_WEAPON2Y` | macro | `progs/doomgeneric/st_stuff.c:215` | `#define ST_WEAPON2Y` |
+| `ST_WEAPON3X` | macro | `progs/doomgeneric/st_stuff.c:218` | `#define ST_WEAPON3X` |
+| `ST_WEAPON3Y` | macro | `progs/doomgeneric/st_stuff.c:219` | `#define ST_WEAPON3Y` |
+| `ST_WEAPON4X` | macro | `progs/doomgeneric/st_stuff.c:222` | `#define ST_WEAPON4X` |
+| `ST_WEAPON4Y` | macro | `progs/doomgeneric/st_stuff.c:223` | `#define ST_WEAPON4Y` |
+| `ST_WEAPON5X` | macro | `progs/doomgeneric/st_stuff.c:226` | `#define ST_WEAPON5X` |
+| `ST_WEAPON5Y` | macro | `progs/doomgeneric/st_stuff.c:227` | `#define ST_WEAPON5Y` |
+| `ST_WPNSX` | macro | `progs/doomgeneric/st_stuff.c:230` | `#define ST_WPNSX` |
+| `ST_WPNSY` | macro | `progs/doomgeneric/st_stuff.c:231` | `#define ST_WPNSY` |
+| `ST_X` | macro | `progs/doomgeneric/st_stuff.c:83` | `#define ST_X` |
+| `ST_X2` | macro | `progs/doomgeneric/st_stuff.c:84` | `#define ST_X2` |
+| `ST_calcPainOffset` | function | `progs/doomgeneric/st_stuff.c:665` | `int ST_calcPainOffset(void)` |
+| `ST_createWidgets` | function | `progs/doomgeneric/st_stuff.c:1227` | `void ST_createWidgets(void)` |
+| `ST_diffDraw` | function | `progs/doomgeneric/st_stuff.c:1049` | `void ST_diffDraw(void)` |
+| `ST_doPaletteStuff` | function | `progs/doomgeneric/st_stuff.c:936` | `void ST_doPaletteStuff(void)` |
+| `ST_doRefresh` | function | `progs/doomgeneric/st_stuff.c:1036` | `void ST_doRefresh(void)` |
+| `ST_drawWidgets` | function | `progs/doomgeneric/st_stuff.c:1001` | `void ST_drawWidgets(boolean refresh)` |
+| `ST_initData` | function | `progs/doomgeneric/st_stuff.c:1194` | `void ST_initData(void)` |
+| `ST_loadCallback` | function | `progs/doomgeneric/st_stuff.c:1162` | `static void ST_loadCallback(char *lumpname, patch_t **variable)` |
+| `ST_loadData` | function | `progs/doomgeneric/st_stuff.c:1172` | `void ST_loadData(void)` |
+| `ST_loadGraphics` | function | `progs/doomgeneric/st_stuff.c:1167` | `void ST_loadGraphics(void)` |
+| `ST_loadUnloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1076` | `static void ST_loadUnloadGraphics(load_callback_t callback)` |
+| `ST_refreshBackground` | function | `progs/doomgeneric/st_stuff.c:416` | `void ST_refreshBackground(void)` |
+| `ST_unloadCallback` | function | `progs/doomgeneric/st_stuff.c:1178` | `static void ST_unloadCallback(char *lumpname, patch_t **variable)` |
+| `ST_unloadData` | function | `progs/doomgeneric/st_stuff.c:1189` | `void ST_unloadData(void)` |
+| `ST_unloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1184` | `void ST_unloadGraphics(void)` |
+| `ST_updateFaceWidget` | function | `progs/doomgeneric/st_stuff.c:688` | `void ST_updateFaceWidget(void)` |
+| `ST_updateWidgets` | function | `progs/doomgeneric/st_stuff.c:860` | `void ST_updateWidgets(void)` |
+| `ST_Drawer` | function | `progs/doomgeneric/st_stuff.h:46` | `void ST_Drawer (boolean fullscreen, boolean refresh);` |
+| `ST_HEIGHT` | macro | `progs/doomgeneric/st_stuff.h:30` | `#define ST_HEIGHT` |
+| `ST_Init` | function | `progs/doomgeneric/st_stuff.h:52` | `void ST_Init (void);` |
+| `ST_Start` | function | `progs/doomgeneric/st_stuff.h:49` | `void ST_Start (void);` |
+| `ST_Ticker` | function | `progs/doomgeneric/st_stuff.h:43` | `void ST_Ticker (void);` |
+| `ST_WIDTH` | macro | `progs/doomgeneric/st_stuff.h:31` | `#define ST_WIDTH` |
+| `ST_Y` | macro | `progs/doomgeneric/st_stuff.h:32` | `#define ST_Y` |
+| `__STSTUFF_H__` | macro | `progs/doomgeneric/st_stuff.h:22` | `#define __STSTUFF_H__` |
+| `cheat_ammo` | variable | `progs/doomgeneric/st_stuff.h:79` | `extern cheatseq_t cheat_ammo;` |
+| `cheat_ammonokey` | variable | `progs/doomgeneric/st_stuff.h:80` | `extern cheatseq_t cheat_ammonokey;` |
+| `cheat_choppers` | variable | `progs/doomgeneric/st_stuff.h:84` | `extern cheatseq_t cheat_choppers;` |
+| `cheat_clev` | variable | `progs/doomgeneric/st_stuff.h:85` | `extern cheatseq_t cheat_clev;` |
+| `cheat_commercial_noclip` | variable | `progs/doomgeneric/st_stuff.h:82` | `extern cheatseq_t cheat_commercial_noclip;` |
+| `cheat_god` | variable | `progs/doomgeneric/st_stuff.h:78` | `extern cheatseq_t cheat_god;` |
+| `cheat_mus` | variable | `progs/doomgeneric/st_stuff.h:77` | `extern cheatseq_t cheat_mus;` |
+| `cheat_mypos` | variable | `progs/doomgeneric/st_stuff.h:86` | `extern cheatseq_t cheat_mypos;` |
+| `cheat_noclip` | variable | `progs/doomgeneric/st_stuff.h:81` | `extern cheatseq_t cheat_noclip;` |
+| `cheat_powerup` | variable | `progs/doomgeneric/st_stuff.h:83` | `extern cheatseq_t cheat_powerup[7];` |
+| `st_backing_screen` | variable | `progs/doomgeneric/st_stuff.h:76` | `extern byte *st_backing_screen;` |
+| `DiscoverGamemode` | function | `progs/doomgeneric/statdump.c:71` | `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)` |
+| `GetNumPlayers` | function | `progs/doomgeneric/statdump.c:130` | `static int GetNumPlayers(wbstartstruct_t *stats)` |
+| `MAX_CAPTURES` | macro | `progs/doomgeneric/statdump.c:56` | `#define MAX_CAPTURES` |
+| `PrintBanner` | function | `progs/doomgeneric/statdump.c:150` | `static void PrintBanner(FILE *stream)` |
+| `PrintFragsTable` | function | `progs/doomgeneric/statdump.c:213` | `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)` |
+| `PrintLevelName` | function | `progs/doomgeneric/statdump.c:272` | `static void PrintLevelName(FILE *stream, int episode, int level)` |
+| `PrintPercentage` | function | `progs/doomgeneric/statdump.c:155` | `static void PrintPercentage(FILE *stream, int amount, int total)` |
+| `PrintPlayerStats` | function | `progs/doomgeneric/statdump.c:180` | `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,         int player_num)` |
+| `PrintStats` | function | `progs/doomgeneric/statdump.c:301` | `static void PrintStats(FILE *stream, wbstartstruct_t *stats)` |
+| `StatCopy` | function | `progs/doomgeneric/statdump.c:333` | `void StatCopy(wbstartstruct_t *stats)` |
+| `StatDump` | function | `progs/doomgeneric/statdump.c:343` | `void StatDump(void)` |
+| `DOOM_STATDUMP_H` | macro | `progs/doomgeneric/statdump.h:18` | `#define DOOM_STATDUMP_H` |
+| `StatCopy` | function | `progs/doomgeneric/statdump.h:20` | `void StatCopy(wbstartstruct_t *stats);` |
+| `StatDump` | function | `progs/doomgeneric/statdump.h:21` | `void StatDump(void);` |
+| `SlopeDiv` | function | `progs/doomgeneric/tables.c:41` | `int SlopeDiv(unsigned int num, unsigned int den)` |
+| `ANG1` | macro | `progs/doomgeneric/tables.h:69` | `#define ANG1` |
+| `ANG180` | macro | `progs/doomgeneric/tables.h:65` | `#define ANG180` |
+| `ANG1_X` | macro | `progs/doomgeneric/tables.h:75` | `#define ANG1_X` |
+| `ANG270` | macro | `progs/doomgeneric/tables.h:66` | `#define ANG270` |
+| `ANG45` | macro | `progs/doomgeneric/tables.h:63` | `#define ANG45` |
+| `ANG60` | macro | `progs/doomgeneric/tables.h:70` | `#define ANG60` |
+| `ANG90` | macro | `progs/doomgeneric/tables.h:64` | `#define ANG90` |
+| `ANGLETOFINESHIFT` | macro | `progs/doomgeneric/tables.h:46` | `#define ANGLETOFINESHIFT` |
+| `ANG_MAX` | macro | `progs/doomgeneric/tables.h:67` | `#define ANG_MAX` |
+| `DBITS` | macro | `progs/doomgeneric/tables.h:79` | `#define DBITS` |
+| `FINEANGLES` | macro | `progs/doomgeneric/tables.h:41` | `#define FINEANGLES` |
+| `FINEMASK` | macro | `progs/doomgeneric/tables.h:42` | `#define FINEMASK` |
+| `SLOPEBITS` | macro | `progs/doomgeneric/tables.h:78` | `#define SLOPEBITS` |
+| `SLOPERANGE` | macro | `progs/doomgeneric/tables.h:77` | `#define SLOPERANGE` |
+| `SlopeDiv` | function | `progs/doomgeneric/tables.h:92` | `int SlopeDiv(unsigned int num, unsigned int den);` |
+| `__TABLES__` | macro | `progs/doomgeneric/tables.h:35` | `#define __TABLES__` |
+| `angle_t` | type_alias | `progs/doomgeneric/tables.h:80` | `typedef unsigned angle_t;` |
+| `finecosine` | variable | `progs/doomgeneric/tables.h:52` | `extern const fixed_t *finecosine;` |
+| `finesine` | variable | `progs/doomgeneric/tables.h:49` | `extern const fixed_t finesine[5*FINEANGLES/4];` |
+| `finetangent` | variable | `progs/doomgeneric/tables.h:56` | `extern const fixed_t finetangent[FINEANGLES/2];` |
+| `tantoangle` | variable | `progs/doomgeneric/tables.h:87` | `extern const angle_t tantoangle[SLOPERANGE+1];` |
+| `V_PATCH_H` | macro | `progs/doomgeneric/v_patch.h:21` | `#define V_PATCH_H` |
+| `column_t` | type_alias | `progs/doomgeneric/v_patch.h:47` | `typedef post_t column_t;` |
+| `MOUSE_SPEED_BOX_HEIGHT` | macro | `progs/doomgeneric/v_video.c:844` | `#define MOUSE_SPEED_BOX_HEIGHT` |
+| `MOUSE_SPEED_BOX_WIDTH` | macro | `progs/doomgeneric/v_video.c:843` | `#define MOUSE_SPEED_BOX_WIDTH` |
+| `RANGECHECK` | macro | `progs/doomgeneric/v_video.c:46` | `#define RANGECHECK` |
+| `V_CopyRect` | function | `progs/doomgeneric/v_video.c:85` | `void V_CopyRect(int srcx, int srcy, byte *source,                 int width, int height,         ...` |
+| `V_DrawAltTLPatch` | function | `progs/doomgeneric/v_video.c:378` | `void V_DrawAltTLPatch(int x, int y, patch_t * patch)` |
+| `V_DrawBlock` | function | `progs/doomgeneric/v_video.c:503` | `void V_DrawBlock(int x, int y, int width, int height, byte *src)` |
+| `V_DrawBox` | function | `progs/doomgeneric/v_video.c:576` | `void V_DrawBox(int x, int y, int w, int h, int c)` |
+| `V_DrawFilledBox` | function | `progs/doomgeneric/v_video.c:529` | `void V_DrawFilledBox(int x, int y, int w, int h, int c)` |
+| `V_DrawHorizLine` | function | `progs/doomgeneric/v_video.c:549` | `void V_DrawHorizLine(int x, int y, int w, int c)` |
+| `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.c:846` | `void V_DrawMouseSpeedBox(int speed)` |
+| `V_DrawPatch` | function | `progs/doomgeneric/v_video.c:139` | `void V_DrawPatch(int x, int y, patch_t *patch)` |
+| `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.c:268` | `void V_DrawPatchDirect(int x, int y, patch_t *patch)` |
+| `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.c:203` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch)` |
+| `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.c:589` | `void V_DrawRawScreen(byte *raw)` |
+| `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.c:428` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch)` |
+| `V_DrawTLPatch` | function | `progs/doomgeneric/v_video.c:279` | `void V_DrawTLPatch(int x, int y, patch_t * patch)` |
+| `V_DrawVertLine` | function | `progs/doomgeneric/v_video.c:562` | `void V_DrawVertLine(int x, int y, int h, int c)` |
+| `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.c:329` | `void V_DrawXlaPatch(int x, int y, patch_t * patch)` |
+| `V_Init` | function | `progs/doomgeneric/v_video.c:597` | `void V_Init (void)` |
+| `V_LoadTintTable` | function | `progs/doomgeneric/v_video.c:482` | `void V_LoadTintTable(void)` |
+| `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.c:493` | `void V_LoadXlaTable(void)` |
+| `V_MarkRect` | function | `progs/doomgeneric/v_video.c:69` | `void V_MarkRect(int x, int y, int width, int height)` |
+| `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.c:613` | `void V_RestoreBuffer(void)` |
+| `V_ScreenShot` | function | `progs/doomgeneric/v_video.c:791` | `void V_ScreenShot(char *format)` |
+| `V_SetPatchClipCallback` | function | `progs/doomgeneric/v_video.c:129` | `void V_SetPatchClipCallback(vpatchclipfunc_t func)` |
+| `V_UseBuffer` | function | `progs/doomgeneric/v_video.c:606` | `void V_UseBuffer(byte *buffer)` |
+| `WritePCXfile` | function | `progs/doomgeneric/v_video.c:653` | `void WritePCXfile(char *filename, byte *data,                   int width, int height,           ...` |
+| `WritePNGfile` | function | `progs/doomgeneric/v_video.c:721` | `void WritePNGfile(char *filename, byte *data,                   int width, int height,           ...` |
+| `error_fn` | function | `progs/doomgeneric/v_video.c:711` | `static void error_fn(png_structp p, png_const_charp s)` |
+| `png_screenshots` | variable | `progs/doomgeneric/v_video.c:800` | `extern int png_screenshots;` |
+| `usemouse` | variable | `progs/doomgeneric/v_video.c:848` | `extern int usemouse;` |
+| `warning_fn` | function | `progs/doomgeneric/v_video.c:716` | `static void warning_fn(png_structp p, png_const_charp s)` |
+| `CENTERY` | macro | `progs/doomgeneric/v_video.h:34` | `#define CENTERY` |
+| `V_CopyRect` | function | `progs/doomgeneric/v_video.h:53` | `void V_CopyRect(int srcx, int srcy, byte *source, int width, int height, int destx, int desty);` |
+| `V_DrawAltTLPatch` | function | `progs/doomgeneric/v_video.h:60` | `void V_DrawAltTLPatch(int x, int y, patch_t * patch);` |
+| `V_DrawBlock` | function | `progs/doomgeneric/v_video.h:67` | `void V_DrawBlock(int x, int y, int width, int height, byte *src);` |
+| `V_DrawBox` | function | `progs/doomgeneric/v_video.h:74` | `void V_DrawBox(int x, int y, int w, int h, int c);` |
+| `V_DrawFilledBox` | function | `progs/doomgeneric/v_video.h:71` | `void V_DrawFilledBox(int x, int y, int w, int h, int c);` |
+| `V_DrawHorizLine` | function | `progs/doomgeneric/v_video.h:72` | `void V_DrawHorizLine(int x, int y, int w, int c);` |
+| `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.h:105` | `void V_DrawMouseSpeedBox(int speed);` |
+| `V_DrawPatch` | function | `progs/doomgeneric/v_video.h:57` | `void V_DrawPatch(int x, int y, patch_t *patch);` |
+| `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.h:63` | `void V_DrawPatchDirect(int x, int y, patch_t *patch);` |
+| `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.h:58` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch);` |
+| `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.h:78` | `void V_DrawRawScreen(byte *raw);` |
+| `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.h:61` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch);` |
+| `V_DrawTLPatch` | function | `progs/doomgeneric/v_video.h:59` | `void V_DrawTLPatch(int x, int y, patch_t *patch);` |
+| `V_DrawVertLine` | function | `progs/doomgeneric/v_video.h:73` | `void V_DrawVertLine(int x, int y, int h, int c);` |
+| `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.h:62` | `void V_DrawXlaPatch(int x, int y, patch_t * patch);` |
+| `V_Init` | function | `progs/doomgeneric/v_video.h:49` | `void V_Init (void);` |
+| `V_LoadTintTable` | function | `progs/doomgeneric/v_video.h:97` | `void V_LoadTintTable(void);` |
+| `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.h:103` | `void V_LoadXlaTable(void);` |
+| `V_MarkRect` | function | `progs/doomgeneric/v_video.h:69` | `void V_MarkRect(int x, int y, int width, int height);` |
+| `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.h:86` | `void V_RestoreBuffer(void);` |
+| `V_ScreenShot` | function | `progs/doomgeneric/v_video.h:92` | `void V_ScreenShot(char *format);` |
+| `V_SetPatchClipCallback` | function | `progs/doomgeneric/v_video.h:45` | `void V_SetPatchClipCallback(vpatchclipfunc_t func);` |
+| `V_UseBuffer` | function | `progs/doomgeneric/v_video.h:82` | `void V_UseBuffer(byte *buffer);` |
+| `__V_VIDEO__` | macro | `progs/doomgeneric/v_video.h:23` | `#define __V_VIDEO__` |
+| `dirtybox` | variable | `progs/doomgeneric/v_video.h:37` | `extern int dirtybox[4];` |
+| `tinttable` | variable | `progs/doomgeneric/v_video.h:39` | `extern byte *tinttable;` |
+| `ChecksumAddLump` | function | `progs/doomgeneric/w_checksum.c:57` | `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)` |
+| `GetFileNumber` | function | `progs/doomgeneric/w_checksum.c:31` | `static int GetFileNumber(wad_file_t *handle)` |
+| `W_Checksum` | function | `progs/doomgeneric/w_checksum.c:68` | `void W_Checksum(sha1_digest_t digest)` |
+| `W_CHECKSUM_H` | macro | `progs/doomgeneric/w_checksum.h:20` | `#define W_CHECKSUM_H` |
+| `W_Checksum` | function | `progs/doomgeneric/w_checksum.h:24` | `extern void W_Checksum(sha1_digest_t digest);` |
+| `W_CloseFile` | function | `progs/doomgeneric/w_file.c:85` | `void W_CloseFile(wad_file_t *wad)` |
+| `W_OpenFile` | function | `progs/doomgeneric/w_file.c:53` | `wad_file_t *W_OpenFile(char *path)` |
+| `W_Read` | function | `progs/doomgeneric/w_file.c:90` | `size_t W_Read(wad_file_t *wad, unsigned int offset,               void *buffer, size_t buffer_len)` |
+| `posix_wad_file` | variable | `progs/doomgeneric/w_file.c:37` | `extern wad_file_class_t posix_wad_file;` |
+| `stdc_wad_file` | variable | `progs/doomgeneric/w_file.c:28` | `extern wad_file_class_t stdc_wad_file;` |
+| `win32_wad_file` | variable | `progs/doomgeneric/w_file.c:32` | `extern wad_file_class_t win32_wad_file;` |
+| `W_CloseFile` | function | `progs/doomgeneric/w_file.h:69` | `void W_CloseFile(wad_file_t *wad);` |
+| `W_OpenFile` | function | `progs/doomgeneric/w_file.h:65` | `wad_file_t *W_OpenFile(char *path);` |
+| `W_Read` | function | `progs/doomgeneric/w_file.h:75` | `size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len);` |
+| `__W_FILE__` | macro | `progs/doomgeneric/w_file.h:21` | `#define __W_FILE__` |
+| `_wad_file_s` | struct | `progs/doomgeneric/w_file.h:46` | `` |
+| `wad_file_class_t` | struct | `progs/doomgeneric/w_file.h:28` | `` |
+| `wad_file_t` | type_alias | `progs/doomgeneric/w_file.h:25` | `typedef struct _wad_file_s wad_file_t;` |
+| `W_StdC_CloseFile` | function | `progs/doomgeneric/w_file_stdc.c:56` | `static void W_StdC_CloseFile(wad_file_t *wad)` |
+| `W_StdC_OpenFile` | function | `progs/doomgeneric/w_file_stdc.c:33` | `static wad_file_t *W_StdC_OpenFile(char *path)` |
+| `W_StdC_Read` | function | `progs/doomgeneric/w_file_stdc.c:69` | `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,                    void *buffer, size_t ...` |
+| `stdc_wad_file` | variable | `progs/doomgeneric/w_file_stdc.c:31` | `extern wad_file_class_t stdc_wad_file;` |
+| `stdc_wad_file_t` | struct | `progs/doomgeneric/w_file_stdc.c:25` | `` |
+| `W_ParseCommandLine` | function | `progs/doomgeneric/w_main.c:30` | `boolean W_ParseCommandLine(void)` |
+| `W_MAIN_H` | macro | `progs/doomgeneric/w_main.h:19` | `#define W_MAIN_H` |
+| `W_MERGE_H` | macro | `progs/doomgeneric/w_merge.h:22` | `#define W_MERGE_H` |
+| `W_MergeFile` | function | `progs/doomgeneric/w_merge.h:29` | `void W_MergeFile(char *filename);` |
+| `W_NWTDashMerge` | function | `progs/doomgeneric/w_merge.h:37` | `void W_NWTDashMerge(char *filename);` |
+| `W_NWTMergeFile` | function | `progs/doomgeneric/w_merge.h:33` | `void W_NWTMergeFile(char *filename, int flags);` |
+| `W_NWT_MERGE_FLATS` | macro | `progs/doomgeneric/w_merge.h:25` | `#define W_NWT_MERGE_FLATS` |
+| `W_NWT_MERGE_SPRITES` | macro | `progs/doomgeneric/w_merge.h:24` | `#define W_NWT_MERGE_SPRITES` |
+| `W_PrintDirectory` | function | `progs/doomgeneric/w_merge.h:41` | `void W_PrintDirectory(void);` |
+| `ExtendLumpInfo` | function | `progs/doomgeneric/w_wad.c:89` | `static void ExtendLumpInfo(int newnumlumps)` |
+| `I_EndRead` | function | `progs/doomgeneric/w_wad.c:39` | `void I_EndRead (void);` |
+| `W_AddFile` | function | `progs/doomgeneric/w_wad.c:141` | `wad_file_t *W_AddFile (char *filename)` |
+| `W_CacheLumpName` | function | `progs/doomgeneric/w_wad.c:431` | `void *W_CacheLumpName(char *name, int tag)` |
+| `W_CacheLumpNum` | function | `progs/doomgeneric/w_wad.c:384` | `void *W_CacheLumpNum(int lumpnum, int tag)` |
+| `W_CheckCorrectIWAD` | function | `progs/doomgeneric/w_wad.c:588` | `void W_CheckCorrectIWAD(GameMission_t mission)` |
+| `W_CheckNumForName` | function | `progs/doomgeneric/w_wad.c:258` | `int W_CheckNumForName (char* name)` |
+| `W_GenerateHashTable` | function | `progs/doomgeneric/w_wad.c:541` | `void W_GenerateHashTable(void)` |
+| `W_GetNumForName` | function | `progs/doomgeneric/w_wad.c:308` | `int W_GetNumForName (char* name)` |
+| `W_LumpLength` | function | `progs/doomgeneric/w_wad.c:327` | `int W_LumpLength (unsigned int lump)` |
+| `W_LumpNameHash` | function | `progs/doomgeneric/w_wad.c:72` | `unsigned int W_LumpNameHash(const char *s)` |
+| `W_NumLumps` | function | `progs/doomgeneric/w_wad.c:246` | `int W_NumLumps (void)` |
+| `W_Profile` | function | `progs/doomgeneric/w_wad.c:480` | `void W_Profile (void)` |
+| `W_ReadLump` | function | `progs/doomgeneric/w_wad.c:344` | `void W_ReadLump(unsigned int lump, void *dest)` |
+| `W_ReleaseLumpName` | function | `progs/doomgeneric/w_wad.c:467` | `void W_ReleaseLumpName(char *name)` |
+| `W_ReleaseLumpNum` | function | `progs/doomgeneric/w_wad.c:446` | `void W_ReleaseLumpNum(int lumpnum)` |
+| `W_AddFile` | function | `progs/doomgeneric/w_wad.h:58` | `wad_file_t *W_AddFile (char *filename);` |
+| `W_CacheLumpName` | function | `progs/doomgeneric/w_wad.h:67` | `void* W_CacheLumpName (char* name, int tag);` |
+| `W_CacheLumpNum` | function | `progs/doomgeneric/w_wad.h:66` | `void* W_CacheLumpNum (int lump, int tag);` |
+| `W_CheckCorrectIWAD` | function | `progs/doomgeneric/w_wad.h:76` | `void W_CheckCorrectIWAD(GameMission_t mission);` |
+| `W_CheckNumForName` | function | `progs/doomgeneric/w_wad.h:60` | `int W_CheckNumForName (char* name);` |
+| `W_GenerateHashTable` | function | `progs/doomgeneric/w_wad.h:69` | `void W_GenerateHashTable(void);` |
+| `W_GetNumForName` | function | `progs/doomgeneric/w_wad.h:61` | `int W_GetNumForName (char* name);` |
+| `W_LumpLength` | function | `progs/doomgeneric/w_wad.h:63` | `int W_LumpLength (unsigned int lump);` |
+| `W_LumpNameHash` | function | `progs/doomgeneric/w_wad.h:71` | `extern unsigned int W_LumpNameHash(const char *s);` |
+| `W_ReadLump` | function | `progs/doomgeneric/w_wad.h:64` | `void W_ReadLump (unsigned int lump, void *dest);` |
+| `W_ReleaseLumpName` | function | `progs/doomgeneric/w_wad.h:74` | `void W_ReleaseLumpName(char *name);` |
+| `W_ReleaseLumpNum` | function | `progs/doomgeneric/w_wad.h:73` | `void W_ReleaseLumpNum(int lump);` |
+| `__W_WAD__` | macro | `progs/doomgeneric/w_wad.h:21` | `#define __W_WAD__` |
+| `lumpinfo` | variable | `progs/doomgeneric/w_wad.h:55` | `extern lumpinfo_t *lumpinfo;` |
+| `lumpinfo_s` | struct | `progs/doomgeneric/w_wad.h:41` | `` |
+| `lumpinfo_t` | type_alias | `progs/doomgeneric/w_wad.h:38` | `typedef struct lumpinfo_s lumpinfo_t;` |
+| `numlumps` | variable | `progs/doomgeneric/w_wad.h:56` | `extern unsigned int numlumps;` |
+| `ANIM` | macro | `progs/doomgeneric/wi_stuff.c:222` | `#define ANIM(type, period, nanims, x, y, nexttic)` |
+| `DM_KILLERSX` | macro | `progs/doomgeneric/wi_stuff.c:101` | `#define DM_KILLERSX` |
+| `DM_KILLERSY` | macro | `progs/doomgeneric/wi_stuff.c:102` | `#define DM_KILLERSY` |
+| `DM_MATRIXX` | macro | `progs/doomgeneric/wi_stuff.c:94` | `#define DM_MATRIXX` |
+| `DM_MATRIXY` | macro | `progs/doomgeneric/wi_stuff.c:95` | `#define DM_MATRIXY` |
+| `DM_SPACINGX` | macro | `progs/doomgeneric/wi_stuff.c:97` | `#define DM_SPACINGX` |
+| `DM_TOTALSX` | macro | `progs/doomgeneric/wi_stuff.c:99` | `#define DM_TOTALSX` |
+| `DM_VICTIMSX` | macro | `progs/doomgeneric/wi_stuff.c:103` | `#define DM_VICTIMSX` |
+| `DM_VICTIMSY` | macro | `progs/doomgeneric/wi_stuff.c:104` | `#define DM_VICTIMSY` |
+| `NG_SPACINGX` | macro | `progs/doomgeneric/wi_stuff.c:90` | `#define NG_SPACINGX` |
+| `NG_STATSX` | macro | `progs/doomgeneric/wi_stuff.c:88` | `#define NG_STATSX` |
+| `NG_STATSY` | macro | `progs/doomgeneric/wi_stuff.c:87` | `#define NG_STATSY` |
+| `NUMEPISODES` | macro | `progs/doomgeneric/wi_stuff.c:61` | `#define NUMEPISODES` |
+| `NUMMAPS` | macro | `progs/doomgeneric/wi_stuff.c:62` | `#define NUMMAPS` |
+| `SHOWNEXTLOCDELAY` | macro | `progs/doomgeneric/wi_stuff.c:298` | `#define SHOWNEXTLOCDELAY` |
+| `SP_FRAGS` | macro | `progs/doomgeneric/wi_stuff.c:291` | `#define SP_FRAGS` |
+| `SP_ITEMS` | macro | `progs/doomgeneric/wi_stuff.c:289` | `#define SP_ITEMS` |
+| `SP_KILLS` | macro | `progs/doomgeneric/wi_stuff.c:288` | `#define SP_KILLS` |
+| `SP_PAR` | macro | `progs/doomgeneric/wi_stuff.c:293` | `#define SP_PAR` |
+| `SP_PAUSE` | macro | `progs/doomgeneric/wi_stuff.c:295` | `#define SP_PAUSE` |
+| `SP_SECRET` | macro | `progs/doomgeneric/wi_stuff.c:290` | `#define SP_SECRET` |
+| `SP_STATSX` | macro | `progs/doomgeneric/wi_stuff.c:79` | `#define SP_STATSX` |
+| `SP_STATSY` | macro | `progs/doomgeneric/wi_stuff.c:80` | `#define SP_STATSY` |
+| `SP_TIME` | macro | `progs/doomgeneric/wi_stuff.c:292` | `#define SP_TIME` |
+| `SP_TIMEX` | macro | `progs/doomgeneric/wi_stuff.c:82` | `#define SP_TIMEX` |
+| `SP_TIMEY` | macro | `progs/doomgeneric/wi_stuff.c:83` | `#define SP_TIMEY` |
+| `WI_Drawer` | function | `progs/doomgeneric/wi_stuff.c:1752` | `void WI_Drawer (void)` |
+| `WI_End` | function | `progs/doomgeneric/wi_stuff.c:740` | `void WI_End(void)` |
+| `WI_Responder` | function | `progs/doomgeneric/wi_stuff.c:409` | `boolean WI_Responder(event_t* ev)` |
+| `WI_SPACINGY` | macro | `progs/doomgeneric/wi_stuff.c:76` | `#define WI_SPACINGY` |
+| `WI_Start` | function | `progs/doomgeneric/wi_stuff.c:1818` | `void WI_Start(wbstartstruct_t* wbstartstruct)` |
+| `WI_TITLEY` | macro | `progs/doomgeneric/wi_stuff.c:75` | `#define WI_TITLEY` |
+| `WI_Ticker` | function | `progs/doomgeneric/wi_stuff.c:1514` | `void WI_Ticker(void)` |
+| `WI_checkForAccelerate` | function | `progs/doomgeneric/wi_stuff.c:1481` | `void WI_checkForAccelerate(void)` |
+| `WI_drawAnimatedBack` | function | `progs/doomgeneric/wi_stuff.c:599` | `void WI_drawAnimatedBack(void)` |
+| `WI_drawDeathmatchStats` | function | `progs/doomgeneric/wi_stuff.c:1001` | `void WI_drawDeathmatchStats(void)` |
+| `WI_drawEL` | function | `progs/doomgeneric/wi_stuff.c:452` | `void WI_drawEL(void)` |
+| `WI_drawLF` | function | `progs/doomgeneric/wi_stuff.c:416` | `void WI_drawLF(void)` |
+| `WI_drawNetgameStats` | function | `progs/doomgeneric/wi_stuff.c:1272` | `void WI_drawNetgameStats(void)` |
+| `WI_drawNoState` | function | `progs/doomgeneric/wi_stuff.c:832` | `void WI_drawNoState(void)` |
+| `WI_drawNum` | function | `progs/doomgeneric/wi_stuff.c:628` | `int WI_drawNum ( int		x,   int		y,   int		n,   int		digits )` |
+| `WI_drawOnLnode` | function | `progs/doomgeneric/wi_stuff.c:471` | `void WI_drawOnLnode ( int		n,   patch_t*	c[] )` |
+| `WI_drawPercent` | function | `progs/doomgeneric/wi_stuff.c:685` | `void WI_drawPercent ( int		x,   int		y,   int		p )` |
+| `WI_drawShowNextLoc` | function | `progs/doomgeneric/wi_stuff.c:791` | `void WI_drawShowNextLoc(void)` |
+| `WI_drawStats` | function | `progs/doomgeneric/wi_stuff.c:1447` | `void WI_drawStats(void)` |
+| `WI_drawTime` | function | `progs/doomgeneric/wi_stuff.c:704` | `void WI_drawTime ( int		x,   int		y,   int		t )` |
+| `WI_fragSum` | function | `progs/doomgeneric/wi_stuff.c:838` | `int WI_fragSum(int playernum)` |
+| `WI_initAnimatedBack` | function | `progs/doomgeneric/wi_stuff.c:519` | `void WI_initAnimatedBack(void)` |
+| `WI_initDeathmatchStats` | function | `progs/doomgeneric/wi_stuff.c:869` | `void WI_initDeathmatchStats(void)` |
+| `WI_initNetgameStats` | function | `progs/doomgeneric/wi_stuff.c:1089` | `void WI_initNetgameStats(void)` |
+| `WI_initNoState` | function | `progs/doomgeneric/wi_stuff.c:746` | `void WI_initNoState(void)` |
+| `WI_initShowNextLoc` | function | `progs/doomgeneric/wi_stuff.c:772` | `void WI_initShowNextLoc(void)` |
+| `WI_initStats` | function | `progs/doomgeneric/wi_stuff.c:1329` | `void WI_initStats(void)` |
+| `WI_initVariables` | function | `progs/doomgeneric/wi_stuff.c:1776` | `void WI_initVariables(wbstartstruct_t* wbstartstruct)` |
+| `WI_loadCallback` | function | `progs/doomgeneric/wi_stuff.c:1704` | `static void WI_loadCallback(char *name, patch_t **variable)` |
+| `WI_loadData` | function | `progs/doomgeneric/wi_stuff.c:1709` | `void WI_loadData(void)` |
+| `WI_loadUnloadData` | function | `progs/doomgeneric/wi_stuff.c:1554` | `static void WI_loadUnloadData(load_callback_t callback)` |
+| `WI_slamBackground` | function | `progs/doomgeneric/wi_stuff.c:402` | `void WI_slamBackground(void)` |
+| `WI_unloadCallback` | function | `progs/doomgeneric/wi_stuff.c:1735` | `static void WI_unloadCallback(char *name, patch_t **variable)` |
+| `WI_unloadData` | function | `progs/doomgeneric/wi_stuff.c:1741` | `void WI_unloadData(void)` |
+| `WI_updateAnimatedBack` | function | `progs/doomgeneric/wi_stuff.c:548` | `void WI_updateAnimatedBack(void)` |
+| `WI_updateDeathmatchStats` | function | `progs/doomgeneric/wi_stuff.c:898` | `void WI_updateDeathmatchStats(void)` |
+| `WI_updateNetgameStats` | function | `progs/doomgeneric/wi_stuff.c:1117` | `void WI_updateNetgameStats(void)` |
+| `WI_updateNoState` | function | `progs/doomgeneric/wi_stuff.c:753` | `void WI_updateNoState(void)` |
+| `WI_updateShowNextLoc` | function | `progs/doomgeneric/wi_stuff.c:781` | `void WI_updateShowNextLoc(void)` |
+| `WI_updateStats` | function | `progs/doomgeneric/wi_stuff.c:1341` | `void WI_updateStats(void)` |
+| `anim_t` | struct | `progs/doomgeneric/wi_stuff.c:129` | `` |
+| `point_t` | struct | `progs/doomgeneric/wi_stuff.c:117` | `` |
+| `WI_Drawer` | function | `progs/doomgeneric/wi_stuff.h:40` | `void WI_Drawer (void);` |
+| `WI_End` | function | `progs/doomgeneric/wi_stuff.h:46` | `void WI_End(void);` |
+| `WI_Start` | function | `progs/doomgeneric/wi_stuff.h:43` | `void WI_Start(wbstartstruct_t* wbstartstruct);` |
+| `WI_Ticker` | function | `progs/doomgeneric/wi_stuff.h:36` | `void WI_Ticker (void);` |
+| `__WI_STUFF__` | macro | `progs/doomgeneric/wi_stuff.h:20` | `#define __WI_STUFF__` |
+| `MEM_ALIGN` | macro | `progs/doomgeneric/z_zone.c:36` | `#define MEM_ALIGN` |
+| `MINFRAGMENT` | macro | `progs/doomgeneric/z_zone.c:181` | `#define MINFRAGMENT` |
+| `ZONEID` | macro | `progs/doomgeneric/z_zone.c:37` | `#define ZONEID` |
+| `Z_ChangeTag2` | function | `progs/doomgeneric/z_zone.c:429` | `void Z_ChangeTag2(void *ptr, int tag, char *file, int line)` |
+| `Z_ChangeUser` | function | `progs/doomgeneric/z_zone.c:446` | `void Z_ChangeUser(void *ptr, void **user)` |
+| `Z_CheckHeap` | function | `progs/doomgeneric/z_zone.c:400` | `void Z_CheckHeap (void)` |
+| `Z_ClearZone` | function | `progs/doomgeneric/z_zone.c:71` | `void Z_ClearZone (memzone_t* zone)` |
+| `Z_DumpHeap` | function | `progs/doomgeneric/z_zone.c:328` | `void Z_DumpHeap ( int		lowtag,   int		hightag )` |
+| `Z_FileDumpHeap` | function | `progs/doomgeneric/z_zone.c:367` | `void Z_FileDumpHeap (FILE* f)` |
+| `Z_Free` | function | `progs/doomgeneric/z_zone.c:126` | `void Z_Free (void* ptr)` |
+| `Z_FreeMemory` | function | `progs/doomgeneric/z_zone.c:466` | `int Z_FreeMemory (void)` |
+| `Z_FreeTags` | function | `progs/doomgeneric/z_zone.c:298` | `void Z_FreeTags ( int		lowtag,   int		hightag )` |
+| `Z_Init` | function | `progs/doomgeneric/z_zone.c:97` | `void Z_Init (void)` |
+| `Z_Malloc` | function | `progs/doomgeneric/z_zone.c:185` | `void* Z_Malloc ( int		size,   int		tag,   void*		user )` |
+| `Z_ZoneSize` | function | `progs/doomgeneric/z_zone.c:484` | `unsigned int Z_ZoneSize(void)` |
+| `memblock_s` | struct | `progs/doomgeneric/z_zone.c:39` | `` |
+| `memzone_t` | struct | `progs/doomgeneric/z_zone.c:50` | `` |
+| `size` | type_alias | `progs/doomgeneric/z_zone.c:38` | `typedef struct memblock_s { int size;` |
+| `Z_ChangeTag` | macro | `progs/doomgeneric/z_zone.h:69` | `#define Z_ChangeTag(p,t)` |
+| `Z_ChangeTag2` | function | `progs/doomgeneric/z_zone.h:60` | `void Z_ChangeTag2 (void *ptr, int tag, char *file, int line);` |
+| `Z_ChangeUser` | function | `progs/doomgeneric/z_zone.h:61` | `void Z_ChangeUser(void *ptr, void **user);` |
+| `Z_CheckHeap` | function | `progs/doomgeneric/z_zone.h:59` | `void Z_CheckHeap (void);` |
+| `Z_DumpHeap` | function | `progs/doomgeneric/z_zone.h:57` | `void Z_DumpHeap (int lowtag, int hightag);` |
+| `Z_FileDumpHeap` | function | `progs/doomgeneric/z_zone.h:58` | `void Z_FileDumpHeap (FILE *f);` |
+| `Z_Free` | function | `progs/doomgeneric/z_zone.h:55` | `void Z_Free (void *ptr);` |
+| `Z_FreeMemory` | function | `progs/doomgeneric/z_zone.h:62` | `int Z_FreeMemory (void);` |
+| `Z_FreeTags` | function | `progs/doomgeneric/z_zone.h:56` | `void Z_FreeTags (int lowtag, int hightag);` |
+| `Z_Init` | function | `progs/doomgeneric/z_zone.h:53` | `void Z_Init (void);` |
+| `Z_Malloc` | function | `progs/doomgeneric/z_zone.h:54` | `void* Z_Malloc (int size, int tag, void *ptr);` |
+| `Z_ZoneSize` | function | `progs/doomgeneric/z_zone.h:63` | `unsigned int Z_ZoneSize(void);` |
+| `__Z_ZONE__` | macro | `progs/doomgeneric/z_zone.h:25` | `#define __Z_ZONE__` |
+| `FILE_ACTION_INTERNAL` | macro | `progs/file/file.c:49` | `#define FILE_ACTION_INTERNAL` |
+| `FILE_ACTION_SHELL` | macro | `progs/file/file.c:48` | `#define FILE_ACTION_SHELL` |
+| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:73` | `#define FILE_ACT_INTERNAL` |
+| `FILE_ACT_SHELL` | macro | `progs/file/file.c:72` | `#define FILE_ACT_SHELL` |
+| `FILE_ACT_TEXT` | macro | `progs/file/file.c:71` | `#define FILE_ACT_TEXT` |
+| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:74` | `#define FILE_ACT_UNKNOWN` |
+| `FILE_ASSOC_PATH` | macro | `progs/file/file.c:37` | `#define FILE_ASSOC_PATH` |
+| `FILE_EXT_MAX` | macro | `progs/file/file.c:38` | `#define FILE_EXT_MAX` |
+| `FILE_ICON_BIG` | macro | `progs/file/file.c:58` | `#define FILE_ICON_BIG` |
+| `FILE_ICON_FILES` | macro | `progs/file/file.c:62` | `#define FILE_ICON_FILES` |
+| `FILE_ICON_FOLDER` | macro | `progs/file/file.c:61` | `#define FILE_ICON_FOLDER` |
+| `FILE_ICON_IMAGE` | macro | `progs/file/file.c:63` | `#define FILE_ICON_IMAGE` |
+| `FILE_ICON_MAX` | macro | `progs/file/file.c:59` | `#define FILE_ICON_MAX` |
+| `FILE_ICON_N` | macro | `progs/file/file.c:60` | `#define FILE_ICON_N` |
+| `FILE_ICON_OBJECT` | macro | `progs/file/file.c:64` | `#define FILE_ICON_OBJECT` |
+| `FILE_ICON_PATH_FILES` | macro | `progs/file/file.c:66` | `#define FILE_ICON_PATH_FILES` |
 | `FILE_ICON_PATH_FOLDER` | macro | `progs/file/file.c:65` | `#define FILE_ICON_PATH_FOLDER` |
 | `FILE_ICON_PATH_IMAGE` | macro | `progs/file/file.c:67` | `#define FILE_ICON_PATH_IMAGE` |
 | `FILE_ICON_PATH_OBJECT` | macro | `progs/file/file.c:68` | `#define FILE_ICON_PATH_OBJECT` |
@@ -154,347 +496,5 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 | `pump_mouse` | function | `progs/freedomui/platform_minios.c:195` | `static int pump_mouse(pf_display *d)` |
 | `set_title` | function | `progs/freedomui/platform_minios.c:94` | `static void set_title(const char *title)` |
 | `set_zoom_state` | function | `progs/freedomui/platform_minios.c:384` | `static void set_zoom_state(pf_window *w, unsigned bit, int on)` |
-| `sys_fb_info_rgb` | function | `progs/freedomui/platform_minios.c:79` | `static long sys_fb_info_rgb(int *rgb)` |
-| `ASCII_BS` | macro | `progs/freedomui/ps2_keymap.c:84` | `#define ASCII_BS` |
-| `ASCII_CR` | macro | `progs/freedomui/ps2_keymap.c:86` | `#define ASCII_CR` |
-| `ASCII_DEL` | macro | `progs/freedomui/ps2_keymap.c:88` | `#define ASCII_DEL` |
-| `ASCII_ESC` | macro | `progs/freedomui/ps2_keymap.c:87` | `#define ASCII_ESC` |
-| `ASCII_TAB` | macro | `progs/freedomui/ps2_keymap.c:85` | `#define ASCII_TAB` |
-| `KS_F1` | macro | `progs/freedomui/ps2_keymap.c:61` | `#define KS_F1` |
-| `KS_F11` | macro | `progs/freedomui/ps2_keymap.c:62` | `#define KS_F11` |
-| `KS_INSERT` | macro | `progs/freedomui/ps2_keymap.c:63` | `#define KS_INSERT` |
-| `KS_KP_BEGIN` | macro | `progs/freedomui/ps2_keymap.c:78` | `#define KS_KP_BEGIN` |
-| `KS_KP_DECIMAL` | macro | `progs/freedomui/ps2_keymap.c:81` | `#define KS_KP_DECIMAL` |
-| `KS_KP_DIVIDE` | macro | `progs/freedomui/ps2_keymap.c:82` | `#define KS_KP_DIVIDE` |
-| `KS_KP_DOWN` | macro | `progs/freedomui/ps2_keymap.c:74` | `#define KS_KP_DOWN` |
-| `KS_KP_END` | macro | `progs/freedomui/ps2_keymap.c:77` | `#define KS_KP_END` |
-| `KS_KP_HOME` | macro | `progs/freedomui/ps2_keymap.c:70` | `#define KS_KP_HOME` |
-| `KS_KP_INSERT` | macro | `progs/freedomui/ps2_keymap.c:79` | `#define KS_KP_INSERT` |
-| `KS_KP_LEFT` | macro | `progs/freedomui/ps2_keymap.c:71` | `#define KS_KP_LEFT` |
-| `KS_KP_MULTIPLY` | macro | `progs/freedomui/ps2_keymap.c:80` | `#define KS_KP_MULTIPLY` |
-| `KS_KP_NEXT` | macro | `progs/freedomui/ps2_keymap.c:76` | `#define KS_KP_NEXT` |
-| `KS_KP_PRIOR` | macro | `progs/freedomui/ps2_keymap.c:75` | `#define KS_KP_PRIOR` |
-| `KS_KP_RIGHT` | macro | `progs/freedomui/ps2_keymap.c:73` | `#define KS_KP_RIGHT` |
-| `KS_KP_UP` | macro | `progs/freedomui/ps2_keymap.c:72` | `#define KS_KP_UP` |
-| `KS_MENU` | macro | `progs/freedomui/ps2_keymap.c:65` | `#define KS_MENU` |
-| `KS_NUM_LOCK` | macro | `progs/freedomui/ps2_keymap.c:67` | `#define KS_NUM_LOCK` |
-| `KS_PRINT` | macro | `progs/freedomui/ps2_keymap.c:64` | `#define KS_PRINT` |
-| `KS_SCROLL_LOCK` | macro | `progs/freedomui/ps2_keymap.c:66` | `#define KS_SCROLL_LOCK` |
-| `KS_SUPER_L` | macro | `progs/freedomui/ps2_keymap.c:68` | `#define KS_SUPER_L` |
-| `KS_SUPER_R` | macro | `progs/freedomui/ps2_keymap.c:69` | `#define KS_SUPER_R` |
-| `PS2_BREAK_BIT` | macro | `progs/freedomui/ps2_keymap.c:16` | `#define PS2_BREAK_BIT` |
-| `PS2_CODE_MASK` | macro | `progs/freedomui/ps2_keymap.c:17` | `#define PS2_CODE_MASK` |
-| `PS2_HELD_LALT` | macro | `progs/freedomui/ps2_keymap.c:24` | `#define PS2_HELD_LALT` |
-| `PS2_HELD_LCTRL` | macro | `progs/freedomui/ps2_keymap.c:22` | `#define PS2_HELD_LCTRL` |
-| `PS2_HELD_LSHIFT` | macro | `progs/freedomui/ps2_keymap.c:20` | `#define PS2_HELD_LSHIFT` |
-| `PS2_HELD_RALT` | macro | `progs/freedomui/ps2_keymap.c:25` | `#define PS2_HELD_RALT` |
-| `PS2_HELD_RCTRL` | macro | `progs/freedomui/ps2_keymap.c:23` | `#define PS2_HELD_RCTRL` |
-| `PS2_HELD_RSHIFT` | macro | `progs/freedomui/ps2_keymap.c:21` | `#define PS2_HELD_RSHIFT` |
-| `PS2_PAUSE_TAIL` | macro | `progs/freedomui/ps2_keymap.c:15` | `#define PS2_PAUSE_TAIL` |
-| `PS2_PREFIX_EXTENDED` | macro | `progs/freedomui/ps2_keymap.c:13` | `#define PS2_PREFIX_EXTENDED` |
-| `PS2_PREFIX_PAUSE` | macro | `progs/freedomui/ps2_keymap.c:14` | `#define PS2_PREFIX_PAUSE` |
-| `PS2_TABLE_SIZE` | macro | `progs/freedomui/ps2_keymap.c:18` | `#define PS2_TABLE_SIZE` |
-| `SC_ALT` | macro | `progs/freedomui/ps2_keymap.c:35` | `#define SC_ALT` |
-| `SC_BACKSPACE` | macro | `progs/freedomui/ps2_keymap.c:28` | `#define SC_BACKSPACE` |
-| `SC_CAPS` | macro | `progs/freedomui/ps2_keymap.c:36` | `#define SC_CAPS` |
-| `SC_CTRL` | macro | `progs/freedomui/ps2_keymap.c:31` | `#define SC_CTRL` |
-| `SC_E0_DELETE` | macro | `progs/freedomui/ps2_keymap.c:56` | `#define SC_E0_DELETE` |
-| `SC_E0_DOWN` | macro | `progs/freedomui/ps2_keymap.c:53` | `#define SC_E0_DOWN` |
-| `SC_E0_END` | macro | `progs/freedomui/ps2_keymap.c:52` | `#define SC_E0_END` |
-| `SC_E0_HOME` | macro | `progs/freedomui/ps2_keymap.c:47` | `#define SC_E0_HOME` |
-| `SC_E0_INSERT` | macro | `progs/freedomui/ps2_keymap.c:55` | `#define SC_E0_INSERT` |
-| `SC_E0_KP_DIV` | macro | `progs/freedomui/ps2_keymap.c:45` | `#define SC_E0_KP_DIV` |
-| `SC_E0_LEFT` | macro | `progs/freedomui/ps2_keymap.c:50` | `#define SC_E0_LEFT` |
-| `SC_E0_MENU` | macro | `progs/freedomui/ps2_keymap.c:59` | `#define SC_E0_MENU` |
-| `SC_E0_NEXT` | macro | `progs/freedomui/ps2_keymap.c:54` | `#define SC_E0_NEXT` |
-| `SC_E0_PRINT` | macro | `progs/freedomui/ps2_keymap.c:46` | `#define SC_E0_PRINT` |
-| `SC_E0_PRIOR` | macro | `progs/freedomui/ps2_keymap.c:49` | `#define SC_E0_PRIOR` |
-| `SC_E0_RIGHT` | macro | `progs/freedomui/ps2_keymap.c:51` | `#define SC_E0_RIGHT` |
-| `SC_E0_SUPERL` | macro | `progs/freedomui/ps2_keymap.c:57` | `#define SC_E0_SUPERL` |
-| `SC_E0_SUPERR` | macro | `progs/freedomui/ps2_keymap.c:58` | `#define SC_E0_SUPERR` |
-| `SC_E0_UP` | macro | `progs/freedomui/ps2_keymap.c:48` | `#define SC_E0_UP` |
-| `SC_ESCAPE` | macro | `progs/freedomui/ps2_keymap.c:27` | `#define SC_ESCAPE` |
-| `SC_F1` | macro | `progs/freedomui/ps2_keymap.c:37` | `#define SC_F1` |
-| `SC_F10` | macro | `progs/freedomui/ps2_keymap.c:38` | `#define SC_F10` |
-| `SC_F11` | macro | `progs/freedomui/ps2_keymap.c:43` | `#define SC_F11` |
-| `SC_F12` | macro | `progs/freedomui/ps2_keymap.c:44` | `#define SC_F12` |
-| `SC_KP_FIRST` | macro | `progs/freedomui/ps2_keymap.c:41` | `#define SC_KP_FIRST` |
-| `SC_KP_LAST` | macro | `progs/freedomui/ps2_keymap.c:42` | `#define SC_KP_LAST` |
-| `SC_KP_MUL` | macro | `progs/freedomui/ps2_keymap.c:34` | `#define SC_KP_MUL` |
-| `SC_LSHIFT` | macro | `progs/freedomui/ps2_keymap.c:32` | `#define SC_LSHIFT` |
-| `SC_NUMLOCK` | macro | `progs/freedomui/ps2_keymap.c:39` | `#define SC_NUMLOCK` |
-| `SC_RETURN` | macro | `progs/freedomui/ps2_keymap.c:30` | `#define SC_RETURN` |
-| `SC_RSHIFT` | macro | `progs/freedomui/ps2_keymap.c:33` | `#define SC_RSHIFT` |
-| `SC_SCROLL` | macro | `progs/freedomui/ps2_keymap.c:40` | `#define SC_SCROLL` |
-| `SC_TAB` | macro | `progs/freedomui/ps2_keymap.c:29` | `#define SC_TAB` |
-| `extended_key` | function | `progs/freedomui/ps2_keymap.c:195` | `static uint32_t extended_key(unsigned code, ps2_key *k)` |
-| `held_mods` | function | `progs/freedomui/ps2_keymap.c:150` | `static unsigned held_mods(const ps2_state *s)` |
-| `is_letter` | function | `progs/freedomui/ps2_keymap.c:164` | `static int is_letter(char c)` |
-| `modifier_key` | function | `progs/freedomui/ps2_keymap.c:169` | `static uint32_t modifier_key(ps2_state *s, unsigned code, int extended, int make)` |
-| `num_sym` | type_alias | `progs/freedomui/ps2_keymap.c:122` | `typedef struct ps2_keypad { uint32_t num_sym;` |
-| `plain_key` | function | `progs/freedomui/ps2_keymap.c:218` | `static uint32_t plain_key(const ps2_state *s, unsigned code, ps2_key *k)` |
-| `ps2_feed` | function | `progs/freedomui/ps2_keymap.c:253` | `int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out)` |
-| `ps2_init` | function | `progs/freedomui/ps2_keymap.c:144` | `void ps2_init(ps2_state *s)` |
-| `ps2_keypad` | struct | `progs/freedomui/ps2_keymap.c:122` | `` |
-| `set_text` | function | `progs/freedomui/ps2_keymap.c:158` | `static void set_text(ps2_key *k, char c)` |
-| `MINIOS_PS2_KEYMAP_H` | macro | `progs/freedomui/ps2_keymap.h:10` | `#define MINIOS_PS2_KEYMAP_H` |
-| `PS2_CODE_EXTENDED` | macro | `progs/freedomui/ps2_keymap.h:21` | `#define PS2_CODE_EXTENDED` |
-| `PS2_CODE_LIMIT` | macro | `progs/freedomui/ps2_keymap.h:24` | `#define PS2_CODE_LIMIT` |
-| `PS2_EV_NONE` | macro | `progs/freedomui/ps2_keymap.h:16` | `#define PS2_EV_NONE` |
-| `PS2_EV_PRESS` | macro | `progs/freedomui/ps2_keymap.h:17` | `#define PS2_EV_PRESS` |
-| `PS2_EV_RELEASE` | macro | `progs/freedomui/ps2_keymap.h:18` | `#define PS2_EV_RELEASE` |
-| `PS2_TEXT_MAX` | macro | `progs/freedomui/ps2_keymap.h:26` | `#define PS2_TEXT_MAX` |
-| `arguments` | function | `progs/freedomui/ps2_keymap.h:51` | `* arguments (out is then left untouched). */ int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out);` |
-| `held` | type_alias | `progs/freedomui/ps2_keymap.h:29` | `typedef struct ps2_state { unsigned held;` |
-| `ps2_init` | function | `progs/freedomui/ps2_keymap.h:47` | `void ps2_init(ps2_state *s);` |
-| `ps2_key` | struct | `progs/freedomui/ps2_keymap.h:38` | `` |
-| `ps2_state` | struct | `progs/freedomui/ps2_keymap.h:29` | `` |
-| `sym` | type_alias | `progs/freedomui/ps2_keymap.h:38` | `typedef struct ps2_key { uint32_t sym;` |
-| `AllocTracker` | type_alias | `progs/lisp/lisp.c:70` | `typedef struct AllocTracker AllocTracker;` |
-| `AllocTracker` | struct | `progs/lisp/lisp.c:157` | `` |
-| `Binding` | type_alias | `progs/lisp/lisp.c:69` | `typedef struct Binding Binding;` |
-| `Binding` | struct | `progs/lisp/lisp.c:140` | `` |
-| `Env` | type_alias | `progs/lisp/lisp.c:68` | `typedef struct Env Env;` |
-| `Env` | struct | `progs/lisp/lisp.c:149` | `` |
-| `LispConfig` | enum | `progs/lisp/lisp.c:41` | `` |
-| `Node` | type_alias | `progs/lisp/lisp.c:67` | `typedef struct Node Node;` |
-| `Node` | struct | `progs/lisp/lisp.c:113` | `` |
-| `ParseResult` | struct | `progs/lisp/lisp.c:104` | `` |
-| `PrimEntry` | struct | `progs/lisp/lisp.c:1960` | `` |
-| `Reader` | struct | `progs/lisp/lisp.c:181` | `` |
-| `Runtime` | type_alias | `progs/lisp/lisp.c:65` | `typedef struct Runtime Runtime;` |
-| `Runtime` | struct | `progs/lisp/lisp.c:165` | `` |
-| `StringBuilder` | struct | `progs/lisp/lisp.c:192` | `` |
-| `arg_at` | function | `progs/lisp/lisp.c:775` | `static Node *arg_at(Runtime *rt, Node *args, size_t index)` |
-| `arg_matches` | function | `progs/lisp/lisp.c:815` | `static bool arg_matches(const Node *value, ArgKind kind)` |
-| `arity` | function | `progs/lisp/lisp.c:1300` | `* * Variable arity (0 or 1);` |
-| `arity0` | function | `progs/lisp/lisp.c:861` | `static bool arity0(Runtime *rt, Node *args)` |
-| `bind_argv` | function | `progs/lisp/lisp.c:2017` | `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` |
-| `bind_primitive` | function | `progs/lisp/lisp.c:1948` | `static void bind_primitive(Runtime *rt, Env *env, const char *name,     PrimFn function)` |
-| `check_args` | function | `progs/lisp/lisp.c:841` | `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,     size_t n, Node **out)` |
-| `cleanup` | function | `progs/lisp/lisp.c:377` | `static void cleanup(Runtime *rt)` |
-| `cons` | function | `progs/lisp/lisp.c:338` | `static Node *cons(Runtime *rt, Node *car, Node *cdr)` |
-| `env_bind` | function | `progs/lisp/lisp.c:421` | `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)` |
-| `env_lookup` | function | `progs/lisp/lisp.c:454` | `static Node *env_lookup(Env *env, Node *symbol)` |
-| `env_new` | function | `progs/lisp/lisp.c:411` | `static Env *env_new(Runtime *rt, Env *parent)` |
-| `env_set` | function | `progs/lisp/lisp.c:432` | `static bool env_set(Env *env, Node *symbol, Node *value)` |
-| `eval` | function | `progs/lisp/lisp.c:1583` | `static Node *eval(Runtime *rt, Node *expression, Env *env)` |
-| `eval_list` | function | `progs/lisp/lisp.c:1527` | `static Node *eval_list(Runtime *rt, Node *list, Env *env)` |
-| `eval_sequence` | function | `progs/lisp/lisp.c:1551` | `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)` |
-| `fatal` | function | `progs/lisp/lisp.c:233` | `static void fatal(Runtime *rt, const char *message)` |
-| `file_mode_allowed` | function | `progs/lisp/lisp.c:1123` | `static bool file_mode_allowed(const char *mode)` |
-| `has_arity` | function | `progs/lisp/lisp.c:767` | `static bool has_arity(Runtime *rt, Node *args, size_t expected)` |
-| `init_env` | function | `progs/lisp/lisp.c:2004` | `static Env *init_env(Runtime *rt)` |
-| `is_nil` | function | `progs/lisp/lisp.c:348` | `static bool is_nil(Runtime *rt, const Node *node)` |
-| `lisp_version` | function | `progs/lisp/lisp.c:62` | `static const char *lisp_version(void)` |
-| `list_count` | function | `progs/lisp/lisp.c:750` | `static size_t list_count(Runtime *rt, Node *list, bool *proper)` |
-| `main` | function | `progs/lisp/lisp.c:2190` | `int main(int argc, char **argv)` |
-| `make_error` | function | `progs/lisp/lisp.c:293` | `static Node *make_error(Runtime *rt, const char *message)` |
-| `make_file` | function | `progs/lisp/lisp.c:355` | `static Node *make_file(Runtime *rt, FILE *handle)` |
-| `make_node` | function | `progs/lisp/lisp.c:284` | `static Node *make_node(Runtime *rt, NodeType type)` |
-| `make_num` | function | `progs/lisp/lisp.c:302` | `static Node *make_num(Runtime *rt, int64_t value)` |
-| `make_prim` | function | `progs/lisp/lisp.c:329` | `static Node *make_prim(Runtime *rt, PrimFn function)` |
-| `make_str` | function | `progs/lisp/lisp.c:311` | `static Node *make_str(Runtime *rt, const char *value)` |
-| `make_sym` | function | `progs/lisp/lisp.c:320` | `static Node *make_sym(Runtime *rt, const char *value)` |
-| `msys` | function | `progs/lisp/lisp.c:205` | `static long msys(long n, long a1, long a2, long a3)` |
-| `msys5` | function | `progs/lisp/lisp.c:218` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
-| `numbers` | function | `progs/lisp/lisp.c:9` | `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special...` |
-| `parse_eof` | function | `progs/lisp/lisp.c:573` | `static ParseResult parse_eof(void)` |
-| `parse_error` | function | `progs/lisp/lisp.c:584` | `static ParseResult parse_error(const char *message)` |
-| `parse_ok` | function | `progs/lisp/lisp.c:562` | `static ParseResult parse_ok(Node *value)` |
-| `prim_add` | function | `progs/lisp/lisp.c:869` | `static Node *prim_add(Runtime *rt, Node *args)` |
-| `prim_car` | function | `progs/lisp/lisp.c:963` | `static Node *prim_car(Runtime *rt, Node *args)` |
-| `prim_cdr` | function | `progs/lisp/lisp.c:975` | `static Node *prim_cdr(Runtime *rt, Node *args)` |
-| `prim_char_code` | function | `progs/lisp/lisp.c:1072` | `static Node *prim_char_code(Runtime *rt, Node *args)` |
-| `prim_close_file` | function | `progs/lisp/lisp.c:1224` | `static Node *prim_close_file(Runtime *rt, Node *args)` |
-| `prim_cons` | function | `progs/lisp/lisp.c:987` | `static Node *prim_cons(Runtime *rt, Node *args)` |
-| `prim_div` | function | `progs/lisp/lisp.c:917` | `static Node *prim_div(Runtime *rt, Node *args)` |
-| `prim_eq` | function | `progs/lisp/lisp.c:939` | `static Node *prim_eq(Runtime *rt, Node *args)` |
-| `prim_error_message` | function | `progs/lisp/lisp.c:1285` | `static Node *prim_error_message(Runtime *rt, Node *args)` |
-| `prim_exit` | function | `progs/lisp/lisp.c:1303` | `static Node *prim_exit(Runtime *rt, Node *args)` |
-| `prim_fb_info` | function | `progs/lisp/lisp.c:1357` | `static Node *prim_fb_info(Runtime *rt, Node *args)` |
-| `prim_lt` | function | `progs/lisp/lisp.c:951` | `static Node *prim_lt(Runtime *rt, Node *args)` |
-| `prim_minios_run` | function | `progs/lisp/lisp.c:1465` | `static Node *prim_minios_run(Runtime *rt, Node *args)` |
-| `prim_mul` | function | `progs/lisp/lisp.c:901` | `static Node *prim_mul(Runtime *rt, Node *args)` |
-| `prim_null_p` | function | `progs/lisp/lisp.c:1249` | `static Node *prim_null_p(Runtime *rt, Node *args)` |
-| `prim_number_p` | function | `progs/lisp/lisp.c:1261` | `static Node *prim_number_p(Runtime *rt, Node *args)` |
-| `prim_pal` | function | `progs/lisp/lisp.c:1405` | `static Node *prim_pal(Runtime *rt, Node *args)` |
-| `prim_pcspeaker` | function | `progs/lisp/lisp.c:1421` | `static Node *prim_pcspeaker(Runtime *rt, Node *args)` |
-| `prim_print` | function | `progs/lisp/lisp.c:1094` | `static Node *prim_print(Runtime *rt, Node *args)` |
-| `prim_println` | function | `progs/lisp/lisp.c:1108` | `static Node *prim_println(Runtime *rt, Node *args)` |
-| `prim_read_char` | function | `progs/lisp/lisp.c:1183` | `static Node *prim_read_char(Runtime *rt, Node *args)` |
-| `prim_rtc` | function | `progs/lisp/lisp.c:1340` | `static Node *prim_rtc(Runtime *rt, Node *args)` |
-| `prim_string_at` | function | `progs/lisp/lisp.c:1050` | `static Node *prim_string_at(Runtime *rt, Node *args)` |
-| `prim_string_concat` | function | `progs/lisp/lisp.c:999` | `static Node *prim_string_concat(Runtime *rt, Node *args)` |
-| `prim_string_eq` | function | `progs/lisp/lisp.c:1026` | `static Node *prim_string_eq(Runtime *rt, Node *args)` |
-| `prim_string_length` | function | `progs/lisp/lisp.c:1038` | `static Node *prim_string_length(Runtime *rt, Node *args)` |
-| `prim_string_p` | function | `progs/lisp/lisp.c:1273` | `static Node *prim_string_p(Runtime *rt, Node *args)` |
-| `prim_sub` | function | `progs/lisp/lisp.c:885` | `static Node *prim_sub(Runtime *rt, Node *args)` |
-| `prim_time_ms` | function | `progs/lisp/lisp.c:1330` | `static Node *prim_time_ms(Runtime *rt, Node *args)` |
-| `prim_vol` | function | `progs/lisp/lisp.c:1377` | `static Node *prim_vol(Runtime *rt, Node *args)` |
-| `prim_write` | function | `progs/lisp/lisp.c:1200` | `static Node *prim_write(Runtime *rt, Node *args)` |
-| `print_escaped_string` | function | `progs/lisp/lisp.c:1846` | `static void print_escaped_string(FILE *out, const char *value)` |
-| `print_node` | function | `progs/lisp/lisp.c:1877` | `static void print_node(Runtime *rt, Node *node, bool readable)` |
-| `print_usage` | function | `progs/lisp/lisp.c:2136` | `static void print_usage(Runtime *rt)` |
-| `process_inline` | function | `progs/lisp/lisp.c:2129` | `static int process_inline(Runtime *rt, const char *code)` |
-| `process_source` | function | `progs/lisp/lisp.c:2087` | `static int process_source(Runtime *rt, const char *source,     const char *source_name, bool echo)` |
-| `read_all_file` | function | `progs/lisp/lisp.c:2029` | `static char *read_all_file(const char *filename, size_t max_bytes)` |
-| `read_atom` | function | `progs/lisp/lisp.c:685` | `static ParseResult read_atom(Runtime *rt, Reader *reader)` |
-| `read_expr` | function | `progs/lisp/lisp.c:721` | `static ParseResult read_expr(Runtime *rt, Reader *reader)` |
-| `read_list` | function | `progs/lisp/lisp.c:596` | `static ParseResult read_list(Runtime *rt, Reader *reader)` |
-| `read_string` | function | `progs/lisp/lisp.c:626` | `static ParseResult read_string(Runtime *rt, Reader *reader)` |
-| `reader_at_end` | function | `progs/lisp/lisp.c:500` | `static bool reader_at_end(const Reader *reader)` |
-| `reader_next` | function | `progs/lisp/lisp.c:482` | `static char reader_next(Reader *reader)` |
-| `reader_peek` | function | `progs/lisp/lisp.c:475` | `static char reader_peek(const Reader *reader)` |
-| `repl` | function | `progs/lisp/lisp.c:2143` | `static int repl(Runtime *rt)` |
-| `runtime_init` | function | `progs/lisp/lisp.c:399` | `static void runtime_init(Runtime *rt)` |
-| `sb_init` | function | `progs/lisp/lisp.c:523` | `static void sb_init(StringBuilder *builder)` |
-| `sb_push` | function | `progs/lisp/lisp.c:536` | `static void sb_push(StringBuilder *builder, char value)` |
-| `skip_space_and_comments` | function | `progs/lisp/lisp.c:507` | `static void skip_space_and_comments(Reader *reader)` |
-| `token_delimiter` | function | `progs/lisp/lisp.c:677` | `static bool token_delimiter(char c)` |
-| `valid_params` | function | `progs/lisp/lisp.c:1569` | `static bool valid_params(Runtime *rt, Node *params)` |
-| `xalloc` | function | `progs/lisp/lisp.c:242` | `static void *xalloc(Runtime *rt, size_t size)` |
-| `xstrdup` | function | `progs/lisp/lisp.c:266` | `static char *xstrdup(Runtime *rt, const char *source)` |
-| `main` | function | `progs/lisp/tin.c:1` | `int main()` |
-| `docode` | function | `progs/lua/lua_main.c:41` | `static int docode(lua_State *L, const char *code)` |
-| `dofile` | function | `progs/lua/lua_main.c:51` | `static int dofile(lua_State *L, const char *name)` |
-| `luaL_require_global` | function | `progs/lua/lua_main.c:22` | `static void luaL_require_global(lua_State *L, const char *name,                                 l...` |
-| `main` | function | `progs/lua/lua_main.c:105` | `int main(int argc, char **argv)` |
-| `module` | function | `progs/lua/lua_main.c:5` | `* C module (minios.c) can be registered globally before any script runs: * `minios.run(...)`, `minios.time_ms()`...` |
-| `repl` | function | `progs/lua/lua_main.c:61` | `static int repl(lua_State *L)` |
-| `set_arg_table` | function | `progs/lua/lua_main.c:28` | `static void set_arg_table(lua_State *L, int argc, char **argv, int first)` |
-| `SYS_FB_INFO` | macro | `progs/lua/minios.c:57` | `#define SYS_FB_INFO` |
-| `SYS_PALETTE` | macro | `progs/lua/minios.c:53` | `#define SYS_PALETTE` |
-| `SYS_PCSPK_INIT` | macro | `progs/lua/minios.c:54` | `#define SYS_PCSPK_INIT` |
-| `SYS_PCSPK_TONE` | macro | `progs/lua/minios.c:55` | `#define SYS_PCSPK_TONE` |
-| `SYS_PCSPK_VOL` | macro | `progs/lua/minios.c:58` | `#define SYS_PCSPK_VOL` |
-| `SYS_RTC` | macro | `progs/lua/minios.c:56` | `#define SYS_RTC` |
-| `SYS_SPAWN` | macro | `progs/lua/minios.c:59` | `#define SYS_SPAWN` |
-| `SYS_TIME_MS` | macro | `progs/lua/minios.c:52` | `#define SYS_TIME_MS` |
-| `luaopen_minios` | function | `progs/lua/minios.c:192` | `int luaopen_minios(lua_State *L)` |
-| `minios_fb_info` | function | `progs/lua/minios.c:82` | `static int minios_fb_info(lua_State *L)` |
-| `minios_pal` | function | `progs/lua/minios.c:109` | `static int minios_pal(lua_State *L)` |
-| `minios_pcspeaker` | function | `progs/lua/minios.c:119` | `static int minios_pcspeaker(lua_State *L)` |
-| `minios_rtc` | function | `progs/lua/minios.c:68` | `static int minios_rtc(lua_State *L)` |
-| `minios_run` | function | `progs/lua/minios.c:136` | `static int minios_run(lua_State *L)` |
-| `minios_time_ms` | function | `progs/lua/minios.c:62` | `static int minios_time_ms(lua_State *L)` |
-| `minios_vol` | function | `progs/lua/minios.c:96` | `static int minios_vol(lua_State *L)` |
-| `msys5` | function | `progs/lua/minios.c:37` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
-| `MP_DEFINE_CONST_DICT` | function | `progs/micropython/variants/minios/minios_module.c:207` | `static MP_DEFINE_CONST_DICT(minios_module_globals, minios_module_globals_table);` |
-| `MP_DEFINE_CONST_FUN_OBJ_0` | function | `progs/micropython/variants/minios/minios_module.c:55` | `static MP_DEFINE_CONST_FUN_OBJ_0(minios_time_ms_obj, minios_time_ms);` |
-| `MP_DEFINE_CONST_FUN_OBJ_1` | function | `progs/micropython/variants/minios/minios_module.c:123` | `static MP_DEFINE_CONST_FUN_OBJ_1(minios_pal_obj, minios_pal);` |
-| `MP_DEFINE_CONST_FUN_OBJ_2` | function | `progs/micropython/variants/minios/minios_module.c:140` | `static MP_DEFINE_CONST_FUN_OBJ_2(minios_pcspeaker_obj, minios_pcspeaker);` |
-| `MP_DEFINE_CONST_FUN_OBJ_KW` | function | `progs/micropython/variants/minios/minios_module.c:193` | `static MP_DEFINE_CONST_FUN_OBJ_KW(minios_run_obj, 1, minios_run);` |
-| `MP_DEFINE_CONST_FUN_OBJ_VAR` | function | `progs/micropython/variants/minios/minios_module.c:107` | `static MP_DEFINE_CONST_FUN_OBJ_VAR(minios_vol_obj, 0, minios_vol);` |
-| `SYS_FB_INFO` | macro | `progs/micropython/variants/minios/minios_module.c:46` | `#define SYS_FB_INFO` |
-| `SYS_PALETTE` | macro | `progs/micropython/variants/minios/minios_module.c:42` | `#define SYS_PALETTE` |
-| `SYS_PCSPK_INIT` | macro | `progs/micropython/variants/minios/minios_module.c:43` | `#define SYS_PCSPK_INIT` |
-| `SYS_PCSPK_TONE` | macro | `progs/micropython/variants/minios/minios_module.c:44` | `#define SYS_PCSPK_TONE` |
-| `SYS_PCSPK_VOL` | macro | `progs/micropython/variants/minios/minios_module.c:47` | `#define SYS_PCSPK_VOL` |
-| `SYS_RTC` | macro | `progs/micropython/variants/minios/minios_module.c:45` | `#define SYS_RTC` |
-| `SYS_SPAWN` | macro | `progs/micropython/variants/minios/minios_module.c:48` | `#define SYS_SPAWN` |
-| `SYS_TIME_MS` | macro | `progs/micropython/variants/minios/minios_module.c:41` | `#define SYS_TIME_MS` |
-| `minios_fb_info` | function | `progs/micropython/variants/minios/minios_module.c:76` | `static mp_obj_t minios_fb_info(void)` |
-| `minios_pal` | function | `progs/micropython/variants/minios/minios_module.c:111` | `static mp_obj_t minios_pal(mp_obj_t buf_in)` |
-| `minios_pcspeaker` | function | `progs/micropython/variants/minios/minios_module.c:127` | `static mp_obj_t minios_pcspeaker(mp_obj_t freq_in, mp_obj_t ms_in)` |
-| `minios_rtc` | function | `progs/micropython/variants/minios/minios_module.c:59` | `static mp_obj_t minios_rtc(void)` |
-| `minios_run` | function | `progs/micropython/variants/minios/minios_module.c:149` | `static mp_obj_t minios_run(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)` |
-| `minios_time_ms` | function | `progs/micropython/variants/minios/minios_module.c:52` | `static mp_obj_t minios_time_ms(void)` |
-| `msys5` | function | `progs/micropython/variants/minios/minios_module.c:26` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
-| `MICROPY_ASYNC_KBD_INTR` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:31` | `#define MICROPY_ASYNC_KBD_INTR` |
-| `MICROPY_CONFIG_ROM_LEVEL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:11` | `#define MICROPY_CONFIG_ROM_LEVEL` |
-| `MICROPY_DEBUG_PRINTERS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:20` | `#define MICROPY_DEBUG_PRINTERS` |
-| `MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:75` | `#define MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE` |
-| `MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:74` | `#define MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF` |
-| `MICROPY_ERROR_REPORTING` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:18` | `#define MICROPY_ERROR_REPORTING` |
-| `MICROPY_FLOAT_IMPL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:14` | `#define MICROPY_FLOAT_IMPL` |
-| `MICROPY_HELPER_REPL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:34` | `#define MICROPY_HELPER_REPL` |
-| `MICROPY_KBD_EXCEPTION` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:30` | `#define MICROPY_KBD_EXCEPTION` |
-| `MICROPY_LONGINT_IMPL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:15` | `#define MICROPY_LONGINT_IMPL` |
-| `MICROPY_OPT_COMPUTED_GOTO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:71` | `#define MICROPY_OPT_COMPUTED_GOTO` |
-| `MICROPY_PERSISTENT_CODE_LOAD` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:61` | `#define MICROPY_PERSISTENT_CODE_LOAD` |
-| `MICROPY_PY_FFI` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:55` | `#define MICROPY_PY_FFI` |
-| `MICROPY_PY_GC_COLLECT_RETVAL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:78` | `#define MICROPY_PY_GC_COLLECT_RETVAL` |
-| `MICROPY_PY_MACHINE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:57` | `#define MICROPY_PY_MACHINE` |
-| `MICROPY_PY_OS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:42` | `#define MICROPY_PY_OS` |
-| `MICROPY_PY_OS_ERRNO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:44` | `#define MICROPY_PY_OS_ERRNO` |
-| `MICROPY_PY_OS_GETENV_PUTENV_UNSETENV` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:45` | `#define MICROPY_PY_OS_GETENV_PUTENV_UNSETENV` |
-| `MICROPY_PY_OS_INCLUDEFILE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:43` | `#define MICROPY_PY_OS_INCLUDEFILE` |
-| `MICROPY_PY_OS_SYSTEM` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:46` | `#define MICROPY_PY_OS_SYSTEM` |
-| `MICROPY_PY_OS_URANDOM` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:47` | `#define MICROPY_PY_OS_URANDOM` |
-| `MICROPY_PY_SOCKET` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:53` | `#define MICROPY_PY_SOCKET` |
-| `MICROPY_PY_SSL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:54` | `#define MICROPY_PY_SSL` |
-| `MICROPY_PY_SYS_ATEXIT` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:37` | `#define MICROPY_PY_SYS_ATEXIT` |
-| `MICROPY_PY_SYS_EXC_INFO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:38` | `#define MICROPY_PY_SYS_EXC_INFO` |
-| `MICROPY_PY_SYS_PS1` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:35` | `#define MICROPY_PY_SYS_PS1` |
-| `MICROPY_PY_SYS_PS2` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:36` | `#define MICROPY_PY_SYS_PS2` |
-| `MICROPY_PY_SYS_STDFILES` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:39` | `#define MICROPY_PY_SYS_STDFILES` |
-| `MICROPY_PY_THREAD` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:56` | `#define MICROPY_PY_THREAD` |
-| `MICROPY_PY_TIME` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:50` | `#define MICROPY_PY_TIME` |
-| `MICROPY_PY_WEBSOCKET` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:58` | `#define MICROPY_PY_WEBSOCKET` |
-| `MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:65` | `#define MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE` |
-| `MICROPY_REPL_EMACS_WORDS_MOVE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:64` | `#define MICROPY_REPL_EMACS_WORDS_MOVE` |
-| `MICROPY_USE_READLINE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:23` | `#define MICROPY_USE_READLINE` |
-| `MICROPY_USE_READLINE_HISTORY` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:66` | `#define MICROPY_USE_READLINE_HISTORY` |
-| `MICROPY_VFS_ROM` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:81` | `#define MICROPY_VFS_ROM` |
-| `MICROPY_VFS_ROM_IOCTL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:82` | `#define MICROPY_VFS_ROM_IOCTL` |
-| `MICROPY_WARNINGS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:19` | `#define MICROPY_WARNINGS` |
-| `BACKBUF` | macro | `progs/minicraft/minicraft.c:45` | `#define BACKBUF` |
-| `BACKBUF` | macro | `progs/minicraft/minicraft.c:47` | `#define BACKBUF` |
-| `ChunkHeader` | struct | `progs/minicraft/minicraft.c:2907` | `` |
-| `EXT_DOWN` | macro | `progs/minicraft/minicraft.c:151` | `#define EXT_DOWN` |
-| `EXT_F11` | macro | `progs/minicraft/minicraft.c:154` | `#define EXT_F11` |
-| `EXT_LEFT` | macro | `progs/minicraft/minicraft.c:152` | `#define EXT_LEFT` |
-| `EXT_RIGHT` | macro | `progs/minicraft/minicraft.c:153` | `#define EXT_RIGHT` |
-| `EXT_UP` | macro | `progs/minicraft/minicraft.c:150` | `#define EXT_UP` |
-| `FB_H` | macro | `progs/minicraft/minicraft.c:42` | `#define FB_H` |
-| `FB_W` | macro | `progs/minicraft/minicraft.c:41` | `#define FB_W` |
-| `MC_AUTOSTEP` | macro | `progs/minicraft/minicraft.c:78` | `#define MC_AUTOSTEP` |
-| `MC_BAYER_N` | macro | `progs/minicraft/minicraft.c:110` | `#define MC_BAYER_N` |
-| `MC_BOOM_R` | macro | `progs/minicraft/minicraft.c:85` | `#define MC_BOOM_R` |
-| `MC_BREAK_GRACE_MS` | macro | `progs/minicraft/minicraft.c:71` | `#define MC_BREAK_GRACE_MS` |
-| `MC_BREAK_MS` | macro | `progs/minicraft/minicraft.c:70` | `#define MC_BREAK_MS` |
-| `MC_CHUNK` | macro | `progs/minicraft/minicraft.c:35` | `#define MC_CHUNK` |
-| `MC_CHUNKS` | macro | `progs/minicraft/minicraft.c:37` | `#define MC_CHUNKS` |
-| `MC_CHUNK_MAGIC` | macro | `progs/minicraft/minicraft.c:55` | `#define MC_CHUNK_MAGIC` |
-| `MC_CHUNK_VERSION` | macro | `progs/minicraft/minicraft.c:56` | `#define MC_CHUNK_VERSION` |
-| `MC_COLS` | macro | `progs/minicraft/minicraft.c:39` | `#define MC_COLS` |
-| `MC_CREEPS_DEF` | macro | `progs/minicraft/minicraft.c:82` | `#define MC_CREEPS_DEF` |
-| `MC_CREEPS_MAX` | macro | `progs/minicraft/minicraft.c:81` | `#define MC_CREEPS_MAX` |
-| `MC_CREEP_DEFUSE_D` | macro | `progs/minicraft/minicraft.c:91` | `#define MC_CREEP_DEFUSE_D` |
-| `MC_CREEP_DZ_MAX` | macro | `progs/minicraft/minicraft.c:89` | `#define MC_CREEP_DZ_MAX` |
-| `MC_CREEP_FUSE_D` | macro | `progs/minicraft/minicraft.c:90` | `#define MC_CREEP_FUSE_D` |
-| `MC_CREEP_HP` | macro | `progs/minicraft/minicraft.c:83` | `#define MC_CREEP_HP` |
-| `MC_CREEP_NIGHT_MS` | macro | `progs/minicraft/minicraft.c:99` | `#define MC_CREEP_NIGHT_MS` |
-| `MC_CREEP_SENSE` | macro | `progs/minicraft/minicraft.c:88` | `#define MC_CREEP_SENSE` |
-| `MC_CREEP_SEP_D` | macro | `progs/minicraft/minicraft.c:102` | `#define MC_CREEP_SEP_D` |
-| `MC_CVOL` | macro | `progs/minicraft/minicraft.c:38` | `#define MC_CVOL` |
-| `MC_DAY_MS` | macro | `progs/minicraft/minicraft.c:108` | `#define MC_DAY_MS` |
-| `MC_DDA_STEPS` | macro | `progs/minicraft/minicraft.c:69` | `#define MC_DDA_STEPS` |
-| `MC_EYE` | macro | `progs/minicraft/minicraft.c:59` | `#define MC_EYE` |
-| `MC_FLY_SPEED` | macro | `progs/minicraft/minicraft.c:64` | `#define MC_FLY_SPEED` |
-| `MC_FUSE_MS` | macro | `progs/minicraft/minicraft.c:84` | `#define MC_FUSE_MS` |
-| `MC_GRAV` | macro | `progs/minicraft/minicraft.c:60` | `#define MC_GRAV` |
-| `MC_H` | macro | `progs/minicraft/minicraft.c:34` | `#define MC_H` |
-| `MC_HP_MAX` | macro | `progs/minicraft/minicraft.c:79` | `#define MC_HP_MAX` |
-| `MC_HUNGER_MAX` | macro | `progs/minicraft/minicraft.c:104` | `#define MC_HUNGER_MAX` |
-| `MC_HUNGER_MS` | macro | `progs/minicraft/minicraft.c:105` | `#define MC_HUNGER_MS` |
-| `MC_H_BASE` | macro | `progs/minicraft/minicraft.c:111` | `#define MC_H_BASE` |
-| `MC_H_WT_COARSE` | macro | `progs/minicraft/minicraft.c:114` | `#define MC_H_WT_COARSE` |
-| `MC_H_WT_DET` | macro | `progs/minicraft/minicraft.c:112` | `#define MC_H_WT_DET` |
-| `MC_H_WT_MID` | macro | `progs/minicraft/minicraft.c:113` | `#define MC_H_WT_MID` |
-| `MC_INV_MAX` | macro | `progs/minicraft/minicraft.c:76` | `#define MC_INV_MAX` |
-| `MC_JUMP` | macro | `progs/minicraft/minicraft.c:61` | `#define MC_JUMP` |
-| `MC_KBD_SEQ_SPINS` | macro | `progs/minicraft/minicraft.c:145` | `#define MC_KBD_SEQ_SPINS` |
-| `MC_LEGACY_WORLD` | macro | `progs/minicraft/minicraft.c:2916` | `#define MC_LEGACY_WORLD` |
-| `MC_LOAD_R` | macro | `progs/minicraft/minicraft.c:36` | `#define MC_LOAD_R` |
-| `MC_MAXFALL` | macro | `progs/minicraft/minicraft.c:62` | `#define MC_MAXFALL` |
-| `MC_MOUSE` | macro | `progs/minicraft/minicraft.c:66` | `#define MC_MOUSE` |
-| `MC_NIGHT_LIGHT` | macro | `progs/minicraft/minicraft.c:101` | `#define MC_NIGHT_LIGHT` |
-| `MC_PIGS` | macro | `progs/minicraft/minicraft.c:80` | `#define MC_PIGS` |
-| `MC_PIG_DAY_MS` | macro | `progs/minicraft/minicraft.c:100` | `#define MC_PIG_DAY_MS` |
-| `MC_PIG_HP` | macro | `progs/minicraft/minicraft.c:106` | `#define MC_PIG_HP` |
-| `MC_PIG_HURT_MS` | macro | `progs/minicraft/minicraft.c:107` | `#define MC_PIG_HURT_MS` |
-| `MC_PITCH_MAX` | macro | `progs/minicraft/minicraft.c:77` | `#define MC_PITCH_MAX` |
 
 Next: [SYMBOLS_p19.md](SYMBOLS_p19.md)

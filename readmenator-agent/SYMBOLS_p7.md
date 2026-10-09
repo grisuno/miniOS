@@ -1,8 +1,140 @@
-# Symbols (page 7 of 25)
+# Symbols (page 7 of 26)
 Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `TLS_MSG_MAX` | macro | `headers/tls.h:13` | `#define TLS_MSG_MAX` |
+| `TLS_PLAIN_MAX` | macro | `headers/tls.h:14` | `#define TLS_PLAIN_MAX` |
+| `TLS_READ_TIMEOUT_MS` | macro | `headers/tls.h:51` | `#define TLS_READ_TIMEOUT_MS` |
+| `TLS_REC_HEADER` | macro | `headers/tls.h:11` | `#define TLS_REC_HEADER` |
+| `TLS_REC_MAX` | macro | `headers/tls.h:12` | `#define TLS_REC_MAX` |
+| `TLS_ROOT_COUNT` | macro | `headers/tls.h:68` | `#define TLS_ROOT_COUNT` |
+| `TLS_SIG_ECDSA_P256_SHA256` | macro | `headers/tls.h:33` | `#define TLS_SIG_ECDSA_P256_SHA256` |
+| `TLS_SIG_ECDSA_P384_SHA384` | macro | `headers/tls.h:34` | `#define TLS_SIG_ECDSA_P384_SHA384` |
+| `TLS_SIG_RSA_PKCS1_SHA256` | macro | `headers/tls.h:32` | `#define TLS_SIG_RSA_PKCS1_SHA256` |
+| `TLS_VERSION_TLS10` | macro | `headers/tls.h:16` | `#define TLS_VERSION_TLS10` |
+| `TLS_VERSION_TLS12` | macro | `headers/tls.h:15` | `#define TLS_VERSION_TLS12` |
+| `aes128_encrypt_block` | function | `headers/tls.h:184` | `void aes128_encrypt_block(const unsigned char key[16], const unsigned char in[16], unsigned char out[16]);` |
+| `aes128_gcm_open` | function | `headers/tls.h:197` | `int aes128_gcm_open(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...` |
+| `aes128_gcm_open_core` | function | `headers/tls.h:213` | `int aes128_gcm_open_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...` |
+| `aes128_gcm_seal` | function | `headers/tls.h:189` | `int aes128_gcm_seal(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...` |
+| `aes128_gcm_seal_core` | function | `headers/tls.h:208` | `int aes128_gcm_seal_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...` |
+| `ecdsa_verify` | function | `headers/tls.h:243` | `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[], const unsigned char digest[]...` |
+| `hmac_sha256` | function | `headers/tls.h:174` | `void hmac_sha256(const unsigned char *key, unsigned klen, const unsigned char *data, unsigned dlen, unsigned char...` |
+| `now` | function | `headers/tls.h:267` | `* window against now (days since epoch). Returns 0 on success. */ int tls_x509_verify_chain(const unsigned char...` |
+| `p256_ecdh` | function | `headers/tls.h:231` | `int p256_ecdh(const unsigned char priv[32], const unsigned char peer_x[32], const unsigned char peer_y[32], unsigned...` |
+| `p256_point_valid` | function | `headers/tls.h:236` | `int p256_point_valid(const unsigned char x[32], const unsigned char y[32]);` |
+| `p256_pub` | function | `headers/tls.h:237` | `int p256_pub(const unsigned char priv[32], unsigned char x[32], unsigned char y[32]);` |
+| `p256_scalar_mult` | function | `headers/tls.h:222` | `int p256_scalar_mult(const unsigned char scalar[32], const unsigned char qx[32], const unsigned char qy[32]...` |
+| `p256_scalar_valid` | function | `headers/tls.h:239` | `int p256_scalar_valid(const unsigned char scalar[32]);` |
+| `p384_scalar_mult` | function | `headers/tls.h:225` | `int p384_scalar_mult(const unsigned char scalar[48], const unsigned char qx[48], const unsigned char qy[48]...` |
+| `rsa_pkcs1_verify_sha256` | function | `headers/tls.h:249` | `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...` |
+| `rsa_pkcs1_verify_sha384` | function | `headers/tls.h:253` | `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...` |
+| `sha256` | function | `headers/tls.h:171` | `void sha256(const unsigned char *data, unsigned len, unsigned char out[32]);` |
+| `sha256_ctx` | struct | `headers/tls.h:79` | `` |
+| `sha256_final` | function | `headers/tls.h:170` | `void sha256_final(struct sha256_ctx *c, unsigned char out[32]);` |
+| `sha256_init` | function | `headers/tls.h:168` | `void sha256_init(struct sha256_ctx *c);` |
+| `sha256_update` | function | `headers/tls.h:169` | `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len);` |
+| `sha384` | function | `headers/tls.h:172` | `void sha384(const unsigned char *data, unsigned len, unsigned char out[48]);` |
+| `tls_free_fd` | function | `headers/tls.h:293` | `static inline void tls_free_fd(int fd)` |
+| `tls_handshake` | function | `headers/tls.h:277` | `int tls_handshake(int fd, const char *host);` |
+| `tls_prf` | function | `headers/tls.h:179` | `void tls_prf(const unsigned char *secret, unsigned secret_len, const char *label, const unsigned char *seed...` |
+| `tls_pubkey` | struct | `headers/tls.h:85` | `` |
+| `tls_recv` | function | `headers/tls.h:284` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_root` | struct | `headers/tls.h:70` | `` |
+| `tls_roots` | variable | `headers/tls.h:75` | `extern const struct tls_root tls_roots[TLS_ROOT_COUNT];` |
+| `tls_send` | function | `headers/tls.h:280` | `int tls_send(int fd, const char *buf, int len);` |
+| `tls_session` | struct | `headers/tls.h:95` | `` |
+| `tls_sys_handshake` | function | `headers/tls.h:297` | `long tls_sys_handshake(long fd, long host);` |
+| `tls_sys_recv` | function | `headers/tls.h:299` | `long tls_sys_recv(long fd, long buf, long len);` |
+| `tls_sys_send` | function | `headers/tls.h:298` | `long tls_sys_send(long fd, long buf, long len);` |
+| `tls_x509_parse_pubkey` | function | `headers/tls.h:261` | `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len, struct tls_pubkey *pk);` |
+| `TLS_CLOSE` | macro | `headers/tls_port.h:38` | `#define TLS_CLOSE` |
+| `TLS_CLOSE` | macro | `headers/tls_port.h:89` | `#define TLS_CLOSE` |
+| `TLS_CLOSE` | macro | `headers/tls_port.h:114` | `#define TLS_CLOSE` |
+| `TLS_FD_MAX` | macro | `headers/tls_port.h:18` | `#define TLS_FD_MAX` |
+| `TLS_FD_MAX` | macro | `headers/tls_port.h:71` | `#define TLS_FD_MAX` |
+| `TLS_FD_MAX` | macro | `headers/tls_port.h:115` | `#define TLS_FD_MAX` |
+| `TLS_FREE` | macro | `headers/tls_port.h:22` | `#define TLS_FREE(p)` |
+| `TLS_FREE` | macro | `headers/tls_port.h:75` | `#define TLS_FREE(p)` |
+| `TLS_FREE` | macro | `headers/tls_port.h:105` | `#define TLS_FREE(p)` |
+| `TLS_MALLOC` | macro | `headers/tls_port.h:21` | `#define TLS_MALLOC(n)` |
+| `TLS_MALLOC` | macro | `headers/tls_port.h:74` | `#define TLS_MALLOC(n)` |
+| `TLS_MALLOC` | macro | `headers/tls_port.h:104` | `#define TLS_MALLOC(n)` |
+| `TLS_MEMCMP` | macro | `headers/tls_port.h:25` | `#define TLS_MEMCMP` |
+| `TLS_MEMCMP` | macro | `headers/tls_port.h:78` | `#define TLS_MEMCMP` |
+| `TLS_MEMCMP` | macro | `headers/tls_port.h:108` | `#define TLS_MEMCMP` |
+| `TLS_MEMCPY` | macro | `headers/tls_port.h:23` | `#define TLS_MEMCPY` |
+| `TLS_MEMCPY` | macro | `headers/tls_port.h:76` | `#define TLS_MEMCPY` |
+| `TLS_MEMCPY` | macro | `headers/tls_port.h:106` | `#define TLS_MEMCPY` |
+| `TLS_MEMSET` | macro | `headers/tls_port.h:24` | `#define TLS_MEMSET` |
+| `TLS_MEMSET` | macro | `headers/tls_port.h:77` | `#define TLS_MEMSET` |
+| `TLS_MEMSET` | macro | `headers/tls_port.h:107` | `#define TLS_MEMSET` |
+| `TLS_PORT_H` | macro | `headers/tls_port.h:2` | `#define TLS_PORT_H` |
+| `TLS_PRINTF` | macro | `headers/tls_port.h:20` | `#define TLS_PRINTF` |
+| `TLS_PRINTF` | macro | `headers/tls_port.h:73` | `#define TLS_PRINTF` |
+| `TLS_PRINTF` | macro | `headers/tls_port.h:103` | `#define TLS_PRINTF` |
+| `TLS_RECV` | macro | `headers/tls_port.h:36` | `#define TLS_RECV` |
+| `TLS_RECV` | macro | `headers/tls_port.h:87` | `#define TLS_RECV` |
+| `TLS_RECV` | macro | `headers/tls_port.h:112` | `#define TLS_RECV` |
+| `TLS_RECV_TIMEOUT` | macro | `headers/tls_port.h:37` | `#define TLS_RECV_TIMEOUT` |
+| `TLS_RECV_TIMEOUT` | macro | `headers/tls_port.h:88` | `#define TLS_RECV_TIMEOUT` |
+| `TLS_RECV_TIMEOUT` | macro | `headers/tls_port.h:113` | `#define TLS_RECV_TIMEOUT` |
+| `TLS_SEND` | macro | `headers/tls_port.h:35` | `#define TLS_SEND` |
+| `TLS_SEND` | macro | `headers/tls_port.h:86` | `#define TLS_SEND` |
+| `TLS_SEND` | macro | `headers/tls_port.h:111` | `#define TLS_SEND` |
+| `TLS_STRLEN` | macro | `headers/tls_port.h:26` | `#define TLS_STRLEN` |
+| `TLS_STRLEN` | macro | `headers/tls_port.h:79` | `#define TLS_STRLEN` |
+| `TLS_STRLEN` | macro | `headers/tls_port.h:109` | `#define TLS_STRLEN` |
+| `gettimeofday` | function | `headers/tls_port.h:64` | `* gettimeofday(96) and entropy from /dev/urandom with a time/pid * fallback. Session slots are indexed by raw OS fd...` |
+| `sockets` | function | `headers/tls_port.h:62` | `* sockets (glibc maps socket/connect/send/recv/poll onto the MiniOS * Linux ABI numbers the kernel implements);` |
+| `syscall` | function | `headers/tls_port.h:95` | `* the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */ int tls_u_resolve(const char *host, unsigned...` |
+| `these` | function | `headers/tls_port.h:29` | `* of these (tls_test.c). */ extern int tls_test_send(int fd, const char *buf, int len);` |
+| `tls_now_days` | function | `headers/tls_port.h:40` | `static inline long tls_now_days(void)` |
+| `tls_random` | function | `headers/tls_port.h:44` | `static inline void tls_random(unsigned char *out, unsigned len)` |
+| `tls_test_close` | function | `headers/tls_port.h:33` | `extern void tls_test_close(int fd);` |
+| `tls_test_recv` | function | `headers/tls_port.h:31` | `extern int tls_test_recv(int fd, char *buf, int len);` |
+| `tls_test_recv_timeout` | function | `headers/tls_port.h:32` | `extern int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms);` |
+| `tls_u_close` | function | `headers/tls_port.h:84` | `void tls_u_close(int fd);` |
+| `tls_u_recv` | function | `headers/tls_port.h:82` | `int tls_u_recv(int fd, char *buf, int len);` |
+| `tls_u_recv_timeout` | function | `headers/tls_port.h:83` | `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms);` |
+| `COL_BG` | macro | `headers/vga_fb.h:83` | `#define COL_BG` |
+| `COL_BLACK` | macro | `headers/vga_fb.h:82` | `#define COL_BLACK` |
+| `COL_BORDER` | macro | `headers/vga_fb.h:91` | `#define COL_BORDER` |
+| `COL_HIGHLIGHT` | macro | `headers/vga_fb.h:94` | `#define COL_HIGHLIGHT` |
+| `COL_SCROLLBAR` | macro | `headers/vga_fb.h:95` | `#define COL_SCROLLBAR` |
+| `COL_SCROLL_THUMB` | macro | `headers/vga_fb.h:96` | `#define COL_SCROLL_THUMB` |
+| `COL_SHADOW` | macro | `headers/vga_fb.h:93` | `#define COL_SHADOW` |
+| `COL_TASKBAR` | macro | `headers/vga_fb.h:84` | `#define COL_TASKBAR` |
+| `COL_TASKBAR_TXT` | macro | `headers/vga_fb.h:85` | `#define COL_TASKBAR_TXT` |
+| `COL_TERMINAL` | macro | `headers/vga_fb.h:88` | `#define COL_TERMINAL` |
+| `COL_TERM_CUR` | macro | `headers/vga_fb.h:90` | `#define COL_TERM_CUR` |
+| `COL_TERM_TXT` | macro | `headers/vga_fb.h:89` | `#define COL_TERM_TXT` |
+| `COL_TITLEBAR` | macro | `headers/vga_fb.h:86` | `#define COL_TITLEBAR` |
+| `COL_TITLE_TXT` | macro | `headers/vga_fb.h:87` | `#define COL_TITLE_TXT` |
+| `COL_WHITE` | macro | `headers/vga_fb.h:92` | `#define COL_WHITE` |
+| `DOOM_BACKBUF_ADDR` | macro | `headers/vga_fb.h:48` | `#define DOOM_BACKBUF_ADDR` |
+| `DOOM_H` | macro | `headers/vga_fb.h:47` | `#define DOOM_H` |
+| `DOOM_W` | macro | `headers/vga_fb.h:46` | `#define DOOM_W` |
+| `FB_ADDR` | macro | `headers/vga_fb.h:22` | `#define FB_ADDR` |
+| `FONT_H` | macro | `headers/vga_fb.h:108` | `#define FONT_H` |
+| `FONT_W` | macro | `headers/vga_fb.h:107` | `#define FONT_W` |
+| `GFX_TITLE_DEFAULT` | macro | `headers/vga_fb.h:52` | `#define GFX_TITLE_DEFAULT` |
+| `NK_BACKBUF_ADDR` | macro | `headers/vga_fb.h:69` | `#define NK_BACKBUF_ADDR` |
+| `NK_H` | macro | `headers/vga_fb.h:68` | `#define NK_H` |
+| `NK_RGB_ADDR` | macro | `headers/vga_fb.h:73` | `#define NK_RGB_ADDR` |
+| `NK_RGB_BYTES` | macro | `headers/vga_fb.h:74` | `#define NK_RGB_BYTES` |
+| `NK_W` | macro | `headers/vga_fb.h:67` | `#define NK_W` |
+| `SB_LINE_MAX` | macro | `headers/vga_fb.h:174` | `#define SB_LINE_MAX` |
+| `SB_MAX_LINES` | macro | `headers/vga_fb.h:173` | `#define SB_MAX_LINES` |
+| `SCROLLBAR_PAD` | macro | `headers/vga_fb.h:143` | `#define SCROLLBAR_PAD` |
+| `SCROLLBAR_W` | macro | `headers/vga_fb.h:142` | `#define SCROLLBAR_W` |
+| `SYS_DOOM_FRAME` | function | `headers/vga_fb.h:44` | `* and calls SYS_DOOM_FRAME (211) to have the kernel composite it onto the * desktop at its native resolution, so the...` |
+| `SYS_NK_FRAME` | function | `headers/vga_fb.h:63` | `* SYS_NK_FRAME (220);` |
+| `TASKBAR_BTN_W` | macro | `headers/vga_fb.h:123` | `#define TASKBAR_BTN_W` |
+| `TASKBAR_CLOCK_CH` | macro | `headers/vga_fb.h:119` | `#define TASKBAR_CLOCK_CH` |
+| `TASKBAR_H` | macro | `headers/vga_fb.h:117` | `#define TASKBAR_H` |
+| `TASKBAR_ICON_W` | macro | `headers/vga_fb.h:122` | `#define TASKBAR_ICON_W` |
 | `TASKBAR_KBD_CH` | macro | `headers/vga_fb.h:125` | `#define TASKBAR_KBD_CH` |
 | `TASKBAR_KBD_W` | macro | `headers/vga_fb.h:126` | `#define TASKBAR_KBD_W` |
 | `TASKBAR_PAD` | macro | `headers/vga_fb.h:118` | `#define TASKBAR_PAD` |
@@ -265,22 +397,22 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `ZIP_H` | macro | `headers/zip.h:2` | `#define ZIP_H` |
 | `miniz` | function | `headers/zip.h:6` | `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the...` |
 | `shell_cmd_zip` | function | `headers/zip.h:15` | `void shell_cmd_zip(int argc, char **argv);` |
-| `BOOTLOG_MAX` | macro | `kernel.c:185` | `#define BOOTLOG_MAX` |
-| `EM` | function | `kernel.c:218` | `* CR0: clear EM (bit 2), set MP (bit 1);` |
-| `KSYM_MAX` | macro | `kernel.c:104` | `#define KSYM_MAX` |
-| `__attribute__` | function | `kernel.c:204` | `__attribute__((section(".init.text"))) void kmain(void)` |
-| `bootlog_mark` | function | `kernel.c:189` | `void bootlog_mark(const char *name)` |
-| `bootlog_report` | function | `kernel.c:196` | `void bootlog_report(void)` |
-| `kstack` | function | `kernel.c:143` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
-| `ksyscall` | function | `kernel.c:127` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `ms` | function | `kernel.c:182` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
-| `ramdisk_end` | variable | `kernel.c:177` | `extern char ramdisk_end[];` |
-| `ramdisk_start` | variable | `kernel.c:176` | `extern char ramdisk_start[];` |
-| `size` | function | `kernel.c:259` | `* image size (see kernel.ld);` |
-| `syscall_init` | function | `kernel.c:114` | `void syscall_init(void)` |
-| `syscall_kstack` | variable | `kernel.c:112` | `extern unsigned long syscall_kstack;` |
-| `table` | function | `kernel.c:101` | `* Symbol table (for resolving program references) * ================================================================...` |
-| `tables` | function | `kernel.c:281` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
+| `BOOTLOG_MAX` | macro | `kernel.c:186` | `#define BOOTLOG_MAX` |
+| `EM` | function | `kernel.c:219` | `* CR0: clear EM (bit 2), set MP (bit 1);` |
+| `KSYM_MAX` | macro | `kernel.c:105` | `#define KSYM_MAX` |
+| `__attribute__` | function | `kernel.c:205` | `__attribute__((section(".init.text"))) void kmain(void)` |
+| `bootlog_mark` | function | `kernel.c:190` | `void bootlog_mark(const char *name)` |
+| `bootlog_report` | function | `kernel.c:197` | `void bootlog_report(void)` |
+| `kstack` | function | `kernel.c:144` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
+| `ksyscall` | function | `kernel.c:128` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ms` | function | `kernel.c:183` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
+| `ramdisk_end` | variable | `kernel.c:178` | `extern char ramdisk_end[];` |
+| `ramdisk_start` | variable | `kernel.c:177` | `extern char ramdisk_start[];` |
+| `size` | function | `kernel.c:260` | `* image size (see kernel.ld);` |
+| `syscall_init` | function | `kernel.c:115` | `void syscall_init(void)` |
+| `syscall_kstack` | variable | `kernel.c:113` | `extern unsigned long syscall_kstack;` |
+| `table` | function | `kernel.c:102` | `* Symbol table (for resolving program references) * ================================================================...` |
+| `tables` | function | `kernel.c:282` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
 | `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
 | `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
 | `abi_verify` | function | `kernel/abi.c:38` | `int abi_verify(const char *text, long version, unsigned long checksum)` |
@@ -364,137 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `n_fread` | function | `kernel/cvm_host.c:134` | `static int64_t n_fread(void *vm, int ac, uint64_t *av)` |
 | `n_free` | function | `kernel/cvm_host.c:93` | `static int64_t n_free(void *vm, int ac, uint64_t *av)` |
 | `n_fseek` | function | `kernel/cvm_host.c:148` | `static int64_t n_fseek(void *vm, int ac, uint64_t *av)` |
-| `n_ftell` | function | `kernel/cvm_host.c:154` | `static int64_t n_ftell(void *vm, int ac, uint64_t *av)` |
-| `n_fwrite` | function | `kernel/cvm_host.c:141` | `static int64_t n_fwrite(void *vm, int ac, uint64_t *av)` |
-| `n_malloc` | function | `kernel/cvm_host.c:88` | `static int64_t n_malloc(void *vm, int ac, uint64_t *av)` |
-| `n_memcmp` | function | `kernel/cvm_host.c:68` | `static int64_t n_memcmp(void *vm, int ac, uint64_t *av)` |
-| `n_memcpy` | function | `kernel/cvm_host.c:48` | `static int64_t n_memcpy(void *vm, int ac, uint64_t *av)` |
-| `n_memmove` | function | `kernel/cvm_host.c:61` | `static int64_t n_memmove(void *vm, int ac, uint64_t *av)` |
-| `n_memset` | function | `kernel/cvm_host.c:55` | `static int64_t n_memset(void *vm, int ac, uint64_t *av)` |
-| `n_printf` | function | `kernel/cvm_host.c:369` | `static int64_t n_printf(void *vm, int ac, uint64_t *av)` |
-| `n_putchar` | function | `kernel/cvm_host.c:197` | `static int64_t n_putchar(void *vm, int ac, uint64_t *av)` |
-| `n_puts` | function | `kernel/cvm_host.c:228` | `static int64_t n_puts(void *vm, int ac, uint64_t *av)` |
-| `n_read` | function | `kernel/cvm_host.c:213` | `static int64_t n_read(void *vm, int ac, uint64_t *av)` |
-| `n_realloc` | function | `kernel/cvm_host.c:106` | `static int64_t n_realloc(void *vm, int ac, uint64_t *av)` |
-| `n_rewind` | function | `kernel/cvm_host.c:160` | `static int64_t n_rewind(void *vm, int ac, uint64_t *av)` |
-| `n_snprintf` | function | `kernel/cvm_host.c:384` | `static int64_t n_snprintf(void *vm, int ac, uint64_t *av)` |
-| `n_sprintf` | function | `kernel/cvm_host.c:376` | `static int64_t n_sprintf(void *vm, int ac, uint64_t *av)` |
-| `n_stderr_addr` | function | `kernel/cvm_host.c:262` | `static int64_t n_stderr_addr(void *vm, int ac, uint64_t *av)` |
-| `n_stdin_addr` | function | `kernel/cvm_host.c:272` | `static int64_t n_stdin_addr(void *vm, int ac, uint64_t *av)` |
-| `n_stdout_addr` | function | `kernel/cvm_host.c:267` | `static int64_t n_stdout_addr(void *vm, int ac, uint64_t *av)` |
-| `n_strchr` | function | `kernel/cvm_host.c:75` | `static int64_t n_strchr(void *vm, int ac, uint64_t *av)` |
-| `n_strcmp` | function | `kernel/cvm_host.c:22` | `static int64_t n_strcmp(void *vm, int ac, uint64_t *av)` |
-| `n_strcpy` | function | `kernel/cvm_host.c:35` | `static int64_t n_strcpy(void *vm, int ac, uint64_t *av)` |
-| `n_strncmp` | function | `kernel/cvm_host.c:28` | `static int64_t n_strncmp(void *vm, int ac, uint64_t *av)` |
-| `n_strncpy` | function | `kernel/cvm_host.c:41` | `static int64_t n_strncpy(void *vm, int ac, uint64_t *av)` |
-| `n_strstr` | function | `kernel/cvm_host.c:81` | `static int64_t n_strstr(void *vm, int ac, uint64_t *av)` |
-| `n_strtol` | function | `kernel/cvm_host.c:249` | `static int64_t n_strtol(void *vm, int ac, uint64_t *av)` |
-| `n_ungetc` | function | `kernel/cvm_host.c:185` | `static int64_t n_ungetc(void *vm, int ac, uint64_t *av)` |
-| `n_write` | function | `kernel/cvm_host.c:204` | `static int64_t n_write(void *vm, int ac, uint64_t *av)` |
-| `register_host_natives` | function | `kernel/cvm_host.c:392` | `static void register_host_natives(CvmState *vm)` |
-| `EDIT_FILE_MAX` | macro | `kernel/editor.c:22` | `#define EDIT_FILE_MAX` |
-| `EDIT_LINE_MAX` | macro | `kernel/editor.c:21` | `#define EDIT_LINE_MAX` |
-| `EDIT_MAX_LINES` | macro | `kernel/editor.c:20` | `#define EDIT_MAX_LINES` |
-| `EditBuf` | struct | `kernel/editor.c:29` | `` |
-| `EditLine` | struct | `kernel/editor.c:24` | `` |
-| `edit_alloc` | function | `kernel/editor.c:38` | `static EditBuf *edit_alloc(const char *fname)` |
-| `edit_arg_line` | function | `kernel/editor.c:213` | `static int edit_arg_line(int argc, char **argv, EditBuf *e, int *out)` |
-| `edit_delete` | function | `kernel/editor.c:154` | `static int edit_delete(EditBuf *e, int idx)` |
-| `edit_free` | function | `kernel/editor.c:55` | `static void edit_free(EditBuf *e)` |
-| `edit_insert` | function | `kernel/editor.c:144` | `static int edit_insert(EditBuf *e, int idx, const char *text)` |
-| `edit_line_cstr` | function | `kernel/editor.c:166` | `static void edit_line_cstr(EditLine *l, char *out)` |
-| `edit_list` | function | `kernel/editor.c:123` | `static void edit_list(EditBuf *e, int start, int end)` |
-| `edit_load` | function | `kernel/editor.c:61` | `static int edit_load(EditBuf *e)` |
-| `edit_loop` | function | `kernel/editor.c:224` | `static void edit_loop(EditBuf *e)` |
-| `edit_print` | function | `kernel/editor.c:113` | `static void edit_print(EditBuf *e, int idx)` |
-| `edit_refuse_save` | function | `kernel/editor.c:207` | `static int edit_refuse_save(EditBuf *e)` |
-| `edit_save` | function | `kernel/editor.c:99` | `static int edit_save(EditBuf *e)` |
-| `edit_search` | function | `kernel/editor.c:171` | `static void edit_search(EditBuf *e, const char *needle)` |
-| `edit_set_line` | function | `kernel/editor.c:135` | `static int edit_set_line(EditBuf *e, int idx, const char *text)` |
-| `edit_status` | function | `kernel/editor.c:188` | `static void edit_status(EditBuf *e)` |
-| `edit_usage` | function | `kernel/editor.c:196` | `static void edit_usage(void)` |
-| `shell_cmd_edit` | function | `kernel/editor.c:329` | `void shell_cmd_edit(int argc, char **argv)` |
-| `ETREL_CHILD_STACK_SZ` | macro | `kernel/exec.c:132` | `#define ETREL_CHILD_STACK_SZ` |
-| `EXEC_KSTACK_SZ` | macro | `kernel/exec.c:123` | `#define EXEC_KSTACK_SZ` |
-| `k_run_rel` | function | `kernel/exec.c:229` | `int k_run_rel(prog_entry_t entry, int argc, char **argv)` |
-| `k_user_fault_return` | function | `kernel/exec.c:65` | `void k_user_fault_return(void)` |
-| `kexit` | function | `kernel/exec.c:280` | `void kexit(int code)` |
-| `setup_user_stack` | function | `kernel/exec.c:82` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize,                                ...` |
-| `syscall_kstack` | variable | `kernel/exec.c:115` | `extern unsigned long syscall_kstack;` |
-| `vga_gfx_ran_set` | function | `kernel/exec.c:62` | `void vga_gfx_ran_set(int on)` |
-| `vga_mode_is_active` | function | `kernel/exec.c:61` | `int  vga_mode_is_active(void)` |
-| `vga_mode_set` | function | `kernel/exec.c:60` | `void vga_mode_set(int on)` |
-| `futex_bucket` | function | `kernel/futex.c:31` | `static futex_bucket_t *futex_bucket(unsigned long uaddr)` |
-| `futex_hash` | function | `kernel/futex.c:23` | `static unsigned long futex_hash(unsigned long uaddr)` |
-| `futex_init` | function | `kernel/futex.c:36` | `void futex_init(void)` |
-| `futex_linux_cmd` | function | `kernel/futex.c:84` | `int futex_linux_cmd(long op)` |
-| `futex_table_t` | struct | `kernel/futex.c:16` | `` |
-| `futex_wake` | function | `kernel/futex.c:97` | `long futex_wake(unsigned long uaddr, int n)` |
-| `t_cur_pid` | variable | `kernel/futex.c:13` | `extern int t_cur_pid;` |
-| `klog` | function | `kernel/klog.c:41` | `void klog(log_level_t level, log_subsystem_t subsys,           const char *fmt, ...)` |
-| `klog_disable` | function | `kernel/klog.c:38` | `void klog_disable(void)` |
-| `klog_enable` | function | `kernel/klog.c:39` | `void klog_enable(void)` |
-| `klog_hexdump` | function | `kernel/klog.c:119` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys,                   const void *data, ...` |
-| `klog_set_level` | function | `kernel/klog.c:29` | `void klog_set_level(log_level_t level)` |
-| `klog_set_subsys_level` | function | `kernel/klog.c:33` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level)` |
-| `LDSO_DYN_ENT` | macro | `kernel/ldso_parse.c:15` | `#define LDSO_DYN_ENT` |
-| `LDSO_EHSIZE` | macro | `kernel/ldso_parse.c:13` | `#define LDSO_EHSIZE` |
-| `LDSO_HASH_HDR` | macro | `kernel/ldso_parse.c:16` | `#define LDSO_HASH_HDR` |
-| `LDSO_PHENTSZ` | macro | `kernel/ldso_parse.c:14` | `#define LDSO_PHENTSZ` |
-| `ldso_basename` | function | `kernel/ldso_parse.c:331` | `void ldso_basename(char *out, const char *src)` |
-| `ldso_copy_str` | function | `kernel/ldso_parse.c:227` | `int ldso_copy_str(const unsigned char *file, unsigned long long fsize,         unsigned long long...` |
-| `ldso_find_dynamic` | function | `kernel/ldso_parse.c:120` | `int ldso_find_dynamic(const unsigned char *file, unsigned long long fsize,         unsigned long ...` |
-| `ldso_name_eq` | function | `kernel/ldso_parse.c:250` | `static int ldso_name_eq(const unsigned char *tab, unsigned long long strsz,         unsigned long...` |
-| `ldso_rd16` | function | `kernel/ldso_parse.c:18` | `static unsigned ldso_rd16(const unsigned char *p)` |
-| `ldso_rd32` | function | `kernel/ldso_parse.c:22` | `static unsigned long ldso_rd32(const unsigned char *p)` |
-| `ldso_rd64` | function | `kernel/ldso_parse.c:27` | `static unsigned long long ldso_rd64(const unsigned char *p)` |
-| `ldso_read_rela` | function | `kernel/ldso_parse.c:309` | `int ldso_read_rela(const unsigned char *file, unsigned long long fsize,         unsigned long lon...` |
-| `ldso_rela_count` | function | `kernel/ldso_parse.c:296` | `int ldso_rela_count(const LdsoDynInfo *info, unsigned *nrela)` |
-| `ldso_scan_dynamic` | function | `kernel/ldso_parse.c:150` | `int ldso_scan_dynamic(const unsigned char *file, unsigned long long fsize,         unsigned long ...` |
-| `ldso_segments` | function | `kernel/ldso_parse.c:86` | `int ldso_segments(const unsigned char *file, unsigned long long fsize,         LdsoSeg *segs, uns...` |
-| `ldso_slice` | function | `kernel/ldso_parse.c:32` | `static int ldso_slice(const unsigned char *file, unsigned long long fsize,         unsigned long ...` |
-| `ldso_sym_count` | function | `kernel/ldso_parse.c:213` | `int ldso_sym_count(const unsigned char *file, unsigned long long fsize,         unsigned long lon...` |
-| `ldso_sym_lookup` | function | `kernel/ldso_parse.c:263` | `int ldso_sym_lookup(const unsigned char *file, unsigned long long fsize,         unsigned long lo...` |
-| `ldso_vaddr_to_offset` | function | `kernel/ldso_parse.c:54` | `int ldso_vaddr_to_offset(const unsigned char *file,         unsigned long long fsize, unsigned lo...` |
-| `ldso_valid_ehdr` | function | `kernel/ldso_parse.c:40` | `static int ldso_valid_ehdr(const unsigned char *file,         unsigned long long fsize)` |
-| `ELF64_R_SYM` | macro | `kernel/loader.c:61` | `#define ELF64_R_SYM(i)` |
-| `ELF64_R_TYPE` | macro | `kernel/loader.c:62` | `#define ELF64_R_TYPE(i)` |
-| `ELF_MAX_SEGMENTS` | macro | `kernel/loader.c:94` | `#define ELF_MAX_SEGMENTS` |
-| `ELF_NAME_MAX` | macro | `kernel/loader.c:95` | `#define ELF_NAME_MAX` |
-| `EM_X86_64` | macro | `kernel/loader.c:80` | `#define EM_X86_64` |
-| `ETREL_IMAGE_MAX` | macro | `kernel/loader.c:70` | `#define ETREL_IMAGE_MAX` |
-| `Elf64_Phdr` | struct | `kernel/loader.c:50` | `` |
-| `Elf64_Rela` | struct | `kernel/loader.c:44` | `` |
-| `Elf64_Shdr` | struct | `kernel/loader.c:22` | `` |
-| `Elf64_Sym` | struct | `kernel/loader.c:35` | `` |
-| `LdsoLibEnt` | struct | `kernel/loader.c:381` | `` |
-| `PF_X` | macro | `kernel/loader.c:93` | `#define PF_X` |
-| `PT_LOAD` | macro | `kernel/loader.c:81` | `#define PT_LOAD` |
-| `R_X86_64_32` | macro | `kernel/loader.c:89` | `#define R_X86_64_32` |
-| `R_X86_64_32S` | macro | `kernel/loader.c:90` | `#define R_X86_64_32S` |
-| `R_X86_64_64` | macro | `kernel/loader.c:83` | `#define R_X86_64_64` |
-| `R_X86_64_GLOB_DAT` | macro | `kernel/loader.c:86` | `#define R_X86_64_GLOB_DAT` |
-| `R_X86_64_IRELATIVE` | macro | `kernel/loader.c:91` | `#define R_X86_64_IRELATIVE` |
-| `R_X86_64_JUMP_SLOT` | macro | `kernel/loader.c:87` | `#define R_X86_64_JUMP_SLOT` |
-| `R_X86_64_PC32` | macro | `kernel/loader.c:84` | `#define R_X86_64_PC32` |
-| `R_X86_64_PLT32` | macro | `kernel/loader.c:85` | `#define R_X86_64_PLT32` |
-| `R_X86_64_RELATIVE` | macro | `kernel/loader.c:88` | `#define R_X86_64_RELATIVE` |
-| `SHF_ALLOC` | macro | `kernel/loader.c:77` | `#define SHF_ALLOC` |
-| `SHF_EXECINSTR` | macro | `kernel/loader.c:78` | `#define SHF_EXECINSTR` |
-| `SHN_UNDEF` | macro | `kernel/loader.c:63` | `#define SHN_UNDEF` |
-| `SHT_NOBITS` | macro | `kernel/loader.c:76` | `#define SHT_NOBITS` |
-| `SHT_PROGBITS` | macro | `kernel/loader.c:75` | `#define SHT_PROGBITS` |
-| `SHT_RELA` | macro | `kernel/loader.c:74` | `#define SHT_RELA` |
-| `SHT_STRTAB` | macro | `kernel/loader.c:73` | `#define SHT_STRTAB` |
-| `SHT_SYMTAB` | macro | `kernel/loader.c:72` | `#define SHT_SYMTAB` |
-| `apply_exec_relocs` | function | `kernel/loader.c:977` | `static void apply_exec_relocs(void *data, unsigned size, unsigned long base,                     ...` |
-| `base_out` | function | `kernel/loader.c:1191` | `* the link base via base_out (0 when the caller runs static images  * only: the dynamic binder ne...` |
-| `consistent` | function | `kernel/loader.c:572` | `* consistent (the next exec forgets them, a dying window frees them),  * and only reports. */ sta...` |
-| `elf_load` | function | `kernel/loader.c:129` | `void *elf_load(void *data, unsigned size, void **base_out)` |
-| `elf_load_fail` | function | `kernel/loader.c:121` | `static void elf_load_fail(void *base, void **sec_addrs, const char *why)` |
-| `elf_name_copy` | function | `kernel/loader.c:107` | `static void elf_name_copy(char *out, unsigned out_cap, const char *tab,                          ...` |
-| `exec_range` | struct | `kernel/loader.c:97` | `` |
-| `images` | function | `kernel/loader.c:783` | `* Static images (no dynamic section, or none needed) return 0 at * once, so the legacy paths never observe a...` |
-| `inodes` | function | `kernel/loader.c:374` | `* Pseudo inodes (LDSO_INO_BASE + slot) keep registry pages apart from * MiniFS inodes in the shared cache. No unload...` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

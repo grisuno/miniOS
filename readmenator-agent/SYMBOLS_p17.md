@@ -1,8 +1,350 @@
-# Symbols (page 17 of 25)
+# Symbols (page 17 of 26)
 Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `R_RenderBSPNode` | function | `progs/doomgeneric/r_bsp.h:58` | `void R_RenderBSPNode (int bspnum);` |
+| `__R_BSP__` | macro | `progs/doomgeneric/r_bsp.h:21` | `#define __R_BSP__` |
+| `backsector` | variable | `progs/doomgeneric/r_bsp.h:29` | `extern sector_t* backsector;` |
+| `curline` | variable | `progs/doomgeneric/r_bsp.h:25` | `extern seg_t* curline;` |
+| `drawsegs` | variable | `progs/doomgeneric/r_bsp.h:42` | `extern drawseg_t drawsegs[MAXDRAWSEGS];` |
+| `ds_p` | variable | `progs/doomgeneric/r_bsp.h:43` | `extern drawseg_t* ds_p;` |
+| `dscalelight` | variable | `progs/doomgeneric/r_bsp.h:47` | `extern lighttable_t** dscalelight;` |
+| `frontsector` | variable | `progs/doomgeneric/r_bsp.h:28` | `extern sector_t* frontsector;` |
+| `hscalelight` | variable | `progs/doomgeneric/r_bsp.h:45` | `extern lighttable_t** hscalelight;` |
+| `linedef` | variable | `progs/doomgeneric/r_bsp.h:27` | `extern line_t* linedef;` |
+| `markceiling` | variable | `progs/doomgeneric/r_bsp.h:38` | `extern boolean markceiling;` |
+| `markfloor` | variable | `progs/doomgeneric/r_bsp.h:37` | `extern boolean markfloor;` |
+| `rw_stopx` | variable | `progs/doomgeneric/r_bsp.h:32` | `extern int rw_stopx;` |
+| `rw_x` | variable | `progs/doomgeneric/r_bsp.h:31` | `extern int rw_x;` |
+| `segtextured` | variable | `progs/doomgeneric/r_bsp.h:34` | `extern boolean segtextured;` |
+| `sidedef` | variable | `progs/doomgeneric/r_bsp.h:26` | `extern side_t* sidedef;` |
+| `skymap` | variable | `progs/doomgeneric/r_bsp.h:40` | `extern boolean skymap;` |
+| `vscalelight` | variable | `progs/doomgeneric/r_bsp.h:46` | `extern lighttable_t** vscalelight;` |
+| `GenerateTextureHashTable` | function | `progs/doomgeneric/r_data.c:404` | `static void GenerateTextureHashTable(void)` |
+| `R_CheckTextureNumForName` | function | `progs/doomgeneric/r_data.c:744` | `int	R_CheckTextureNumForName (char *name)` |
+| `R_DrawColumnInCache` | function | `progs/doomgeneric/r_data.c:186` | `void R_DrawColumnInCache ( column_t*	patch,   byte*		cache,   int		originy,   int		cacheheight )` |
+| `R_FlatNumForName` | function | `progs/doomgeneric/r_data.c:720` | `int R_FlatNumForName (char* name)` |
+| `R_GenerateComposite` | function | `progs/doomgeneric/r_data.c:226` | `void R_GenerateComposite (int texnum)` |
+| `R_GenerateLookup` | function | `progs/doomgeneric/r_data.c:294` | `void R_GenerateLookup (int texnum)` |
+| `R_GetColumn` | function | `progs/doomgeneric/r_data.c:383` | `byte* R_GetColumn ( int		tex,   int		col )` |
+| `R_InitColormaps` | function | `progs/doomgeneric/r_data.c:685` | `void R_InitColormaps (void)` |
+| `R_InitData` | function | `progs/doomgeneric/r_data.c:703` | `void R_InitData (void)` |
+| `R_InitFlats` | function | `progs/doomgeneric/r_data.c:633` | `void R_InitFlats (void)` |
+| `R_InitSpriteLumps` | function | `progs/doomgeneric/r_data.c:655` | `void R_InitSpriteLumps (void)` |
+| `R_InitTextures` | function | `progs/doomgeneric/r_data.c:451` | `void R_InitTextures (void)` |
+| `R_PrecacheLevel` | function | `progs/doomgeneric/r_data.c:800` | `void R_PrecacheLevel (void)` |
+| `R_TextureNumForName` | function | `progs/doomgeneric/r_data.c:775` | `int	R_TextureNumForName (char* name)` |
+| `texpatch_t` | struct | `progs/doomgeneric/r_data.c:89` | `` |
+| `texture_s` | struct | `progs/doomgeneric/r_data.c:106` | `` |
+| `texture_t` | type_alias | `progs/doomgeneric/r_data.c:103` | `typedef struct texture_s texture_t;` |
+| `R_CheckTextureNumForName` | function | `progs/doomgeneric/r_data.h:49` | `int R_CheckTextureNumForName (char *name);` |
+| `R_FlatNumForName` | function | `progs/doomgeneric/r_data.h:43` | `int R_FlatNumForName (char* name);` |
+| `R_GetColumn` | function | `progs/doomgeneric/r_data.h:30` | `byte* R_GetColumn ( int tex, int col );` |
+| `R_InitData` | function | `progs/doomgeneric/r_data.h:36` | `void R_InitData (void);` |
+| `R_PrecacheLevel` | function | `progs/doomgeneric/r_data.h:37` | `void R_PrecacheLevel (void);` |
+| `R_TextureNumForName` | function | `progs/doomgeneric/r_data.h:48` | `int R_TextureNumForName (char *name);` |
+| `__R_DATA__` | macro | `progs/doomgeneric/r_data.h:22` | `#define __R_DATA__` |
+| `MAXDRAWSEGS` | macro | `progs/doomgeneric/r_defs.h:51` | `#define MAXDRAWSEGS` |
+| `SIL_BOTH` | macro | `progs/doomgeneric/r_defs.h:49` | `#define SIL_BOTH` |
+| `SIL_BOTTOM` | macro | `progs/doomgeneric/r_defs.h:47` | `#define SIL_BOTTOM` |
+| `SIL_NONE` | macro | `progs/doomgeneric/r_defs.h:46` | `#define SIL_NONE` |
+| `SIL_TOP` | macro | `progs/doomgeneric/r_defs.h:48` | `#define SIL_TOP` |
+| `__R_DEFS__` | macro | `progs/doomgeneric/r_defs.h:21` | `#define __R_DEFS__` |
+| `curline` | type_alias | `progs/doomgeneric/r_defs.h:306` | `typedef struct drawseg_s { seg_t* curline;` |
+| `degenmobj_t` | struct | `progs/doomgeneric/r_defs.h:84` | `` |
+| `drawseg_s` | struct | `progs/doomgeneric/r_defs.h:306` | `` |
+| `lighttable_t` | type_alias | `progs/doomgeneric/r_defs.h:298` | `typedef byte lighttable_t;` |
+| `line_s` | struct | `progs/doomgeneric/r_defs.h:76` | `` |
+| `line_s` | struct | `progs/doomgeneric/r_defs.h:175` | `` |
+| `node_t` | struct | `progs/doomgeneric/r_defs.h:261` | `` |
+| `prev` | type_alias | `progs/doomgeneric/r_defs.h:338` | `typedef struct vissprite_s { // Doubly linked list. struct vissprite_s* prev;` |
+| `sector` | type_alias | `progs/doomgeneric/r_defs.h:223` | `typedef struct subsector_s { sector_t* sector;` |
+| `sector_t` | struct | `progs/doomgeneric/r_defs.h:97` | `` |
+| `seg_t` | struct | `progs/doomgeneric/r_defs.h:236` | `` |
+| `side_t` | struct | `progs/doomgeneric/r_defs.h:140` | `` |
+| `spritedef_t` | struct | `progs/doomgeneric/r_defs.h:411` | `` |
+| `spriteframe_t` | struct | `progs/doomgeneric/r_defs.h:390` | `` |
+| `subsector_s` | struct | `progs/doomgeneric/r_defs.h:223` | `` |
+| `v1` | type_alias | `progs/doomgeneric/r_defs.h:172` | `typedef struct line_s { // Vertices, from v1 to v2. vertex_t* v1;` |
+| `vertex_t` | struct | `progs/doomgeneric/r_defs.h:67` | `` |
+| `visplane_t` | struct | `progs/doomgeneric/r_defs.h:423` | `` |
+| `vissprite_s` | struct | `progs/doomgeneric/r_defs.h:338` | `` |
+| `FUZZOFF` | macro | `progs/doomgeneric/r_draw.c:258` | `#define FUZZOFF` |
+| `FUZZTABLE` | macro | `progs/doomgeneric/r_draw.c:257` | `#define FUZZTABLE` |
+| `MAXHEIGHT` | macro | `progs/doomgeneric/r_draw.c:42` | `#define MAXHEIGHT` |
+| `MAXWIDTH` | macro | `progs/doomgeneric/r_draw.c:41` | `#define MAXWIDTH` |
+| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.c:102` | `void R_DrawColumn (void)` |
+| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.c:152` | `void R_DrawColumn (void)` |
+| `R_DrawColumnLow` | function | `progs/doomgeneric/r_draw.c:208` | `void R_DrawColumnLow (void)` |
+| `R_DrawFuzzColumn` | function | `progs/doomgeneric/r_draw.c:283` | `void R_DrawFuzzColumn (void)` |
+| `R_DrawFuzzColumnLow` | function | `progs/doomgeneric/r_draw.c:342` | `void R_DrawFuzzColumnLow (void)` |
+| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.c:590` | `void R_DrawSpan (void)` |
+| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.c:646` | `void R_DrawSpan (void)` |
+| `R_DrawSpanLow` | function | `progs/doomgeneric/r_draw.c:719` | `void R_DrawSpanLow (void)` |
+| `R_DrawTranslatedColumn` | function | `progs/doomgeneric/r_draw.c:424` | `void R_DrawTranslatedColumn (void)` |
+| `R_DrawTranslatedColumnLow` | function | `progs/doomgeneric/r_draw.c:468` | `void R_DrawTranslatedColumnLow (void)` |
+| `R_DrawViewBorder` | function | `progs/doomgeneric/r_draw.c:941` | `void R_DrawViewBorder (void)` |
+| `R_FillBackScreen` | function | `progs/doomgeneric/r_draw.c:812` | `void R_FillBackScreen (void)` |
+| `R_InitBuffer` | function | `progs/doomgeneric/r_draw.c:777` | `void R_InitBuffer ( int		width,   int		height )` |
+| `R_InitTranslationTables` | function | `progs/doomgeneric/r_draw.c:530` | `void R_InitTranslationTables (void)` |
+| `R_VideoErase` | function | `progs/doomgeneric/r_draw.c:919` | `void R_VideoErase ( unsigned	ofs,   int		count )` |
+| `SBARHEIGHT` | macro | `progs/doomgeneric/r_draw.c:45` | `#define SBARHEIGHT` |
+| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.h:40` | `void R_DrawColumn (void);` |
+| `R_DrawColumnLow` | function | `progs/doomgeneric/r_draw.h:41` | `void R_DrawColumnLow (void);` |
+| `R_DrawFuzzColumn` | function | `progs/doomgeneric/r_draw.h:44` | `void R_DrawFuzzColumn (void);` |
+| `R_DrawFuzzColumnLow` | function | `progs/doomgeneric/r_draw.h:45` | `void R_DrawFuzzColumnLow (void);` |
+| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.h:78` | `void R_DrawSpan (void);` |
+| `R_DrawSpanLow` | function | `progs/doomgeneric/r_draw.h:81` | `void R_DrawSpanLow (void);` |
+| `R_DrawTranslatedColumn` | function | `progs/doomgeneric/r_draw.h:50` | `void R_DrawTranslatedColumn (void);` |
+| `R_DrawTranslatedColumnLow` | function | `progs/doomgeneric/r_draw.h:51` | `void R_DrawTranslatedColumnLow (void);` |
+| `R_DrawViewBorder` | function | `progs/doomgeneric/r_draw.h:100` | `void R_DrawViewBorder (void);` |
+| `R_FillBackScreen` | function | `progs/doomgeneric/r_draw.h:97` | `void R_FillBackScreen (void);` |
+| `R_InitBuffer` | function | `progs/doomgeneric/r_draw.h:85` | `void R_InitBuffer ( int width, int height );` |
+| `R_InitTranslationTables` | function | `progs/doomgeneric/r_draw.h:92` | `void R_InitTranslationTables (void);` |
+| `R_VideoErase` | function | `progs/doomgeneric/r_draw.h:54` | `void R_VideoErase ( unsigned ofs, int count );` |
+| `__R_DRAW__` | macro | `progs/doomgeneric/r_draw.h:21` | `#define __R_DRAW__` |
+| `dc_colormap` | variable | `progs/doomgeneric/r_draw.h:26` | `extern lighttable_t* dc_colormap;` |
+| `dc_iscale` | variable | `progs/doomgeneric/r_draw.h:30` | `extern fixed_t dc_iscale;` |
+| `dc_source` | variable | `progs/doomgeneric/r_draw.h:34` | `extern byte* dc_source;` |
+| `dc_texturemid` | variable | `progs/doomgeneric/r_draw.h:31` | `extern fixed_t dc_texturemid;` |
+| `dc_translation` | variable | `progs/doomgeneric/r_draw.h:73` | `extern byte* dc_translation;` |
+| `dc_x` | variable | `progs/doomgeneric/r_draw.h:27` | `extern int dc_x;` |
+| `dc_yh` | variable | `progs/doomgeneric/r_draw.h:29` | `extern int dc_yh;` |
+| `dc_yl` | variable | `progs/doomgeneric/r_draw.h:28` | `extern int dc_yl;` |
+| `ds_colormap` | variable | `progs/doomgeneric/r_draw.h:62` | `extern lighttable_t* ds_colormap;` |
+| `ds_source` | variable | `progs/doomgeneric/r_draw.h:70` | `extern byte* ds_source;` |
+| `ds_x1` | variable | `progs/doomgeneric/r_draw.h:59` | `extern int ds_x1;` |
+| `ds_x2` | variable | `progs/doomgeneric/r_draw.h:60` | `extern int ds_x2;` |
+| `ds_xfrac` | variable | `progs/doomgeneric/r_draw.h:64` | `extern fixed_t ds_xfrac;` |
+| `ds_xstep` | variable | `progs/doomgeneric/r_draw.h:66` | `extern fixed_t ds_xstep;` |
+| `ds_y` | variable | `progs/doomgeneric/r_draw.h:58` | `extern int ds_y;` |
+| `ds_yfrac` | variable | `progs/doomgeneric/r_draw.h:65` | `extern fixed_t ds_yfrac;` |
+| `ds_ystep` | variable | `progs/doomgeneric/r_draw.h:67` | `extern fixed_t ds_ystep;` |
+| `translationtables` | variable | `progs/doomgeneric/r_draw.h:72` | `extern byte* translationtables;` |
+| `__R_LOCAL__` | macro | `progs/doomgeneric/r_local.h:21` | `#define __R_LOCAL__` |
+| `DISTMAP` | macro | `progs/doomgeneric/r_main.c:608` | `#define DISTMAP` |
+| `FIELDOFVIEW` | macro | `progs/doomgeneric/r_main.c:43` | `#define FIELDOFVIEW` |
+| `R_AddPointToBox` | function | `progs/doomgeneric/r_main.c:123` | `void R_AddPointToBox ( int		x,   int		y,   fixed_t*	box )` |
+| `R_ExecuteSetViewSize` | function | `progs/doomgeneric/r_main.c:667` | `void R_ExecuteSetViewSize (void)` |
+| `R_Init` | function | `progs/doomgeneric/r_main.c:767` | `void R_Init (void)` |
+| `R_InitLightTables` | function | `progs/doomgeneric/r_main.c:610` | `void R_InitLightTables (void)` |
+| `R_InitPointToAngle` | function | `progs/doomgeneric/r_main.c:422` | `void R_InitPointToAngle (void)` |
+| `R_InitTables` | function | `progs/doomgeneric/r_main.c:505` | `void R_InitTables (void)` |
+| `R_InitTextureMapping` | function | `progs/doomgeneric/r_main.c:540` | `void R_InitTextureMapping (void)` |
+| `R_PointInSubsector` | function | `progs/doomgeneric/r_main.c:794` | `subsector_t* R_PointInSubsector ( fixed_t	x,   fixed_t	y )` |
+| `R_PointOnSegSide` | function | `progs/doomgeneric/r_main.c:199` | `int R_PointOnSegSide ( fixed_t	x,   fixed_t	y,   seg_t*	line )` |
+| `R_PointOnSide` | function | `progs/doomgeneric/r_main.c:146` | `int R_PointOnSide ( fixed_t	x,   fixed_t	y,   node_t*	node )` |
+| `R_PointToAngle` | function | `progs/doomgeneric/r_main.c:276` | `angle_t R_PointToAngle ( fixed_t	x,   fixed_t	y )` |
+| `R_PointToAngle2` | function | `progs/doomgeneric/r_main.c:362` | `angle_t R_PointToAngle2 ( fixed_t	x1,   fixed_t	y1,   fixed_t	x2,   fixed_t	y2 )` |
+| `R_PointToDist` | function | `progs/doomgeneric/r_main.c:376` | `fixed_t R_PointToDist ( fixed_t	x,   fixed_t	y )` |
+| `R_RenderPlayerView` | function | `progs/doomgeneric/r_main.c:863` | `void R_RenderPlayerView (player_t* player)` |
+| `R_ScaleFromGlobalAngle` | function | `progs/doomgeneric/r_main.c:449` | `fixed_t R_ScaleFromGlobalAngle (angle_t visangle)` |
+| `R_SetViewSize` | function | `progs/doomgeneric/r_main.c:654` | `void R_SetViewSize ( int		blocks,   int		detail )` |
+| `R_SetupFrame` | function | `progs/doomgeneric/r_main.c:823` | `void R_SetupFrame (player_t* player)` |
+| `walllights` | variable | `progs/doomgeneric/r_main.c:54` | `extern lighttable_t** walllights;` |
+| `LIGHTLEVELS` | macro | `progs/doomgeneric/r_main.h:61` | `#define LIGHTLEVELS` |
+| `LIGHTSCALESHIFT` | macro | `progs/doomgeneric/r_main.h:65` | `#define LIGHTSCALESHIFT` |
+| `LIGHTSEGSHIFT` | macro | `progs/doomgeneric/r_main.h:62` | `#define LIGHTSEGSHIFT` |
+| `LIGHTZSHIFT` | macro | `progs/doomgeneric/r_main.h:67` | `#define LIGHTZSHIFT` |
+| `MAXLIGHTSCALE` | macro | `progs/doomgeneric/r_main.h:64` | `#define MAXLIGHTSCALE` |
+| `MAXLIGHTZ` | macro | `progs/doomgeneric/r_main.h:66` | `#define MAXLIGHTZ` |
+| `NUMCOLORMAPS` | macro | `progs/doomgeneric/r_main.h:79` | `#define NUMCOLORMAPS` |
+| `R_AddPointToBox` | function | `progs/doomgeneric/r_main.h:140` | `void R_AddPointToBox ( int x, int y, fixed_t* box );` |
+| `R_Init` | function | `progs/doomgeneric/r_main.h:155` | `void R_Init (void);` |
+| `R_PointInSubsector` | function | `progs/doomgeneric/r_main.h:135` | `subsector_t* R_PointInSubsector ( fixed_t x, fixed_t y );` |
+| `R_PointOnSegSide` | function | `progs/doomgeneric/r_main.h:109` | `int R_PointOnSegSide ( fixed_t x, fixed_t y, seg_t* line );` |
+| `R_PointOnSide` | function | `progs/doomgeneric/r_main.h:103` | `int R_PointOnSide ( fixed_t x, fixed_t y, node_t* node );` |
+| `R_PointToAngle` | function | `progs/doomgeneric/r_main.h:115` | `angle_t R_PointToAngle ( fixed_t x, fixed_t y );` |
+| `R_PointToAngle2` | function | `progs/doomgeneric/r_main.h:120` | `angle_t R_PointToAngle2 ( fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2 );` |
+| `R_PointToDist` | function | `progs/doomgeneric/r_main.h:127` | `fixed_t R_PointToDist ( fixed_t x, fixed_t y );` |
+| `R_RenderPlayerView` | function | `progs/doomgeneric/r_main.h:152` | `void R_RenderPlayerView (player_t *player);` |
+| `R_ScaleFromGlobalAngle` | function | `progs/doomgeneric/r_main.h:132` | `fixed_t R_ScaleFromGlobalAngle (angle_t visangle);` |
+| `R_SetViewSize` | function | `progs/doomgeneric/r_main.h:158` | `void R_SetViewSize (int blocks, int detail);` |
+| `__R_MAIN__` | macro | `progs/doomgeneric/r_main.h:21` | `#define __R_MAIN__` |
+| `centerx` | variable | `progs/doomgeneric/r_main.h:40` | `extern int centerx;` |
+| `centerxfrac` | variable | `progs/doomgeneric/r_main.h:43` | `extern fixed_t centerxfrac;` |
+| `centery` | variable | `progs/doomgeneric/r_main.h:41` | `extern int centery;` |
+| `centeryfrac` | variable | `progs/doomgeneric/r_main.h:44` | `extern fixed_t centeryfrac;` |
+| `detailshift` | variable | `progs/doomgeneric/r_main.h:85` | `extern int detailshift;` |
+| `extralight` | variable | `progs/doomgeneric/r_main.h:73` | `extern int extralight;` |
+| `fixedcolormap` | variable | `progs/doomgeneric/r_main.h:74` | `extern lighttable_t* fixedcolormap;` |
+| `linecount` | variable | `progs/doomgeneric/r_main.h:49` | `extern int linecount;` |
+| `loopcount` | variable | `progs/doomgeneric/r_main.h:50` | `extern int loopcount;` |
+| `projection` | variable | `progs/doomgeneric/r_main.h:45` | `extern fixed_t projection;` |
+| `scalelightfixed` | variable | `progs/doomgeneric/r_main.h:70` | `extern lighttable_t* scalelightfixed[MAXLIGHTSCALE];` |
+| `validcount` | variable | `progs/doomgeneric/r_main.h:47` | `extern int validcount;` |
+| `viewcos` | variable | `progs/doomgeneric/r_main.h:32` | `extern fixed_t viewcos;` |
+| `viewsin` | variable | `progs/doomgeneric/r_main.h:33` | `extern fixed_t viewsin;` |
+| `viewwindowx` | variable | `progs/doomgeneric/r_main.h:35` | `extern int viewwindowx;` |
+| `viewwindowy` | variable | `progs/doomgeneric/r_main.h:36` | `extern int viewwindowy;` |
+| `void` | function | `progs/doomgeneric/r_main.h:92` | `extern void (*colfunc) (void);` |
+| `MAXOPENINGS` | macro | `progs/doomgeneric/r_plane.c:52` | `#define MAXOPENINGS` |
+| `MAXVISPLANES` | macro | `progs/doomgeneric/r_plane.c:45` | `#define MAXVISPLANES` |
+| `R_CheckPlane` | function | `progs/doomgeneric/r_plane.c:259` | `visplane_t* R_CheckPlane ( visplane_t*	pl,   int		start,   int		stop )` |
+| `R_ClearPlanes` | function | `progs/doomgeneric/r_plane.c:178` | `void R_ClearPlanes (void)` |
+| `R_DrawPlanes` | function | `progs/doomgeneric/r_plane.c:360` | `void R_DrawPlanes (void)` |
+| `R_FindPlane` | function | `progs/doomgeneric/r_plane.c:211` | `visplane_t* R_FindPlane ( fixed_t	height,   int		picnum,   int		lightlevel )` |
+| `R_InitPlanes` | function | `progs/doomgeneric/r_plane.c:94` | `void R_InitPlanes (void)` |
+| `R_MakeSpans` | function | `progs/doomgeneric/r_plane.c:324` | `void R_MakeSpans ( int		x,   int		t1,   int		b1,   int		t2,   int		b2 )` |
+| `R_MapPlane` | function | `progs/doomgeneric/r_plane.c:114` | `void R_MapPlane ( int		y,   int		x1,   int		x2 )` |
+| `R_CheckPlane` | function | `progs/doomgeneric/r_plane.h:69` | `visplane_t* R_CheckPlane ( visplane_t* pl, int start, int stop );` |
+| `R_ClearPlanes` | function | `progs/doomgeneric/r_plane.h:44` | `void R_ClearPlanes (void);` |
+| `R_DrawPlanes` | function | `progs/doomgeneric/r_plane.h:60` | `void R_DrawPlanes (void);` |
+| `R_FindPlane` | function | `progs/doomgeneric/r_plane.h:63` | `visplane_t* R_FindPlane ( fixed_t height, int picnum, int lightlevel );` |
+| `R_InitPlanes` | function | `progs/doomgeneric/r_plane.h:43` | `void R_InitPlanes (void);` |
+| `R_MakeSpans` | function | `progs/doomgeneric/r_plane.h:53` | `void R_MakeSpans ( int x, int t1, int b1, int t2, int b2 );` |
+| `R_MapPlane` | function | `progs/doomgeneric/r_plane.h:47` | `void R_MapPlane ( int y, int x1, int x2 );` |
+| `__R_PLANE__` | macro | `progs/doomgeneric/r_plane.h:21` | `#define __R_PLANE__` |
+| `ceilingclip` | variable | `progs/doomgeneric/r_plane.h:38` | `extern short ceilingclip[SCREENWIDTH];` |
+| `ceilingfunc_t` | variable | `progs/doomgeneric/r_plane.h:35` | `extern planefunction_t ceilingfunc_t;` |
+| `distscale` | variable | `progs/doomgeneric/r_plane.h:41` | `extern fixed_t distscale[SCREENWIDTH];` |
+| `floorclip` | variable | `progs/doomgeneric/r_plane.h:37` | `extern short floorclip[SCREENWIDTH];` |
+| `floorfunc` | variable | `progs/doomgeneric/r_plane.h:34` | `extern planefunction_t floorfunc;` |
+| `lastopening` | variable | `progs/doomgeneric/r_plane.h:29` | `extern short* lastopening;` |
+| `yslope` | variable | `progs/doomgeneric/r_plane.h:40` | `extern fixed_t yslope[SCREENHEIGHT];` |
+| `HEIGHTBITS` | macro | `progs/doomgeneric/r_segs.c:196` | `#define HEIGHTBITS` |
+| `HEIGHTUNIT` | macro | `progs/doomgeneric/r_segs.c:197` | `#define HEIGHTUNIT` |
+| `R_RenderMaskedSegRange` | function | `progs/doomgeneric/r_segs.c:96` | `void R_RenderMaskedSegRange ( drawseg_t*	ds,   int		x1,   int		x2 )` |
+| `R_RenderSegLoop` | function | `progs/doomgeneric/r_segs.c:199` | `void R_RenderSegLoop (void)` |
+| `R_StoreWallRange` | function | `progs/doomgeneric/r_segs.c:372` | `void R_StoreWallRange ( int	start,   int	stop )` |
+| `R_RenderMaskedSegRange` | function | `progs/doomgeneric/r_segs.h:27` | `void R_RenderMaskedSegRange ( drawseg_t* ds, int x1, int x2 );` |
+| `__R_SEGS__` | macro | `progs/doomgeneric/r_segs.h:21` | `#define __R_SEGS__` |
+| `R_InitSkyMap` | function | `progs/doomgeneric/r_sky.c:47` | `void R_InitSkyMap (void)` |
+| `ANGLETOSKYSHIFT` | macro | `progs/doomgeneric/r_sky.h:29` | `#define ANGLETOSKYSHIFT` |
+| `R_InitSkyMap` | function | `progs/doomgeneric/r_sky.h:35` | `void R_InitSkyMap (void);` |
+| `SKYFLATNAME` | macro | `progs/doomgeneric/r_sky.h:26` | `#define			SKYFLATNAME` |
+| `__R_SKY__` | macro | `progs/doomgeneric/r_sky.h:21` | `#define __R_SKY__` |
+| `skytexture` | variable | `progs/doomgeneric/r_sky.h:31` | `extern int skytexture;` |
+| `skytexturemid` | variable | `progs/doomgeneric/r_sky.h:32` | `extern int skytexturemid;` |
+| `__R_STATE__` | macro | `progs/doomgeneric/r_state.h:21` | `#define __R_STATE__` |
+| `ceilingplane` | variable | `progs/doomgeneric/r_state.h:124` | `extern visplane_t* ceilingplane;` |
+| `clipangle` | variable | `progs/doomgeneric/r_state.h:106` | `extern angle_t clipangle;` |
+| `colormaps` | variable | `progs/doomgeneric/r_state.h:46` | `extern lighttable_t* colormaps;` |
+| `firstflat` | variable | `progs/doomgeneric/r_state.h:52` | `extern int firstflat;` |
+| `firstspritelump` | variable | `progs/doomgeneric/r_state.h:60` | `extern int firstspritelump;` |
+| `flattranslation` | variable | `progs/doomgeneric/r_state.h:55` | `extern int* flattranslation;` |
+| `floorplane` | variable | `progs/doomgeneric/r_state.h:123` | `extern visplane_t* floorplane;` |
+| `lastspritelump` | variable | `progs/doomgeneric/r_state.h:61` | `extern int lastspritelump;` |
+| `lines` | variable | `progs/doomgeneric/r_state.h:88` | `extern line_t* lines;` |
+| `nodes` | variable | `progs/doomgeneric/r_state.h:85` | `extern node_t* nodes;` |
+| `numlines` | variable | `progs/doomgeneric/r_state.h:87` | `extern int numlines;` |
+| `numnodes` | variable | `progs/doomgeneric/r_state.h:84` | `extern int numnodes;` |
+| `numsectors` | variable | `progs/doomgeneric/r_state.h:78` | `extern int numsectors;` |
+| `numsegs` | variable | `progs/doomgeneric/r_state.h:75` | `extern int numsegs;` |
+| `numsides` | variable | `progs/doomgeneric/r_state.h:90` | `extern int numsides;` |
+| `numspritelumps` | variable | `progs/doomgeneric/r_state.h:62` | `extern int numspritelumps;` |
+| `numsprites` | variable | `progs/doomgeneric/r_state.h:69` | `extern int numsprites;` |
+| `numsubsectors` | variable | `progs/doomgeneric/r_state.h:81` | `extern int numsubsectors;` |
+| `numvertexes` | variable | `progs/doomgeneric/r_state.h:72` | `extern int numvertexes;` |
+| `rw_angle1` | variable | `progs/doomgeneric/r_state.h:118` | `extern int rw_angle1;` |
+| `rw_distance` | variable | `progs/doomgeneric/r_state.h:112` | `extern fixed_t rw_distance;` |
+| `rw_normalangle` | variable | `progs/doomgeneric/r_state.h:113` | `extern angle_t rw_normalangle;` |
+| `scaledviewwidth` | variable | `progs/doomgeneric/r_state.h:49` | `extern int scaledviewwidth;` |
+| `sectors` | variable | `progs/doomgeneric/r_state.h:79` | `extern sector_t* sectors;` |
+| `segs` | variable | `progs/doomgeneric/r_state.h:76` | `extern seg_t* segs;` |
+| `sides` | variable | `progs/doomgeneric/r_state.h:91` | `extern side_t* sides;` |
+| `spriteoffset` | variable | `progs/doomgeneric/r_state.h:43` | `extern fixed_t* spriteoffset;` |
+| `sprites` | variable | `progs/doomgeneric/r_state.h:70` | `extern spritedef_t* sprites;` |
+| `spritetopoffset` | variable | `progs/doomgeneric/r_state.h:44` | `extern fixed_t* spritetopoffset;` |
+| `spritewidth` | variable | `progs/doomgeneric/r_state.h:41` | `extern fixed_t* spritewidth;` |
+| `sscount` | variable | `progs/doomgeneric/r_state.h:121` | `extern int sscount;` |
+| `subsectors` | variable | `progs/doomgeneric/r_state.h:82` | `extern subsector_t* subsectors;` |
+| `textureheight` | variable | `progs/doomgeneric/r_state.h:38` | `extern fixed_t* textureheight;` |
+| `texturetranslation` | variable | `progs/doomgeneric/r_state.h:56` | `extern int* texturetranslation;` |
+| `vertexes` | variable | `progs/doomgeneric/r_state.h:73` | `extern vertex_t* vertexes;` |
+| `viewangle` | variable | `progs/doomgeneric/r_state.h:101` | `extern angle_t viewangle;` |
+| `viewangletox` | variable | `progs/doomgeneric/r_state.h:108` | `extern int viewangletox[FINEANGLES/2];` |
+| `viewheight` | variable | `progs/doomgeneric/r_state.h:50` | `extern int viewheight;` |
+| `viewplayer` | variable | `progs/doomgeneric/r_state.h:102` | `extern player_t* viewplayer;` |
+| `viewwidth` | variable | `progs/doomgeneric/r_state.h:48` | `extern int viewwidth;` |
+| `viewx` | variable | `progs/doomgeneric/r_state.h:97` | `extern fixed_t viewx;` |
+| `viewy` | variable | `progs/doomgeneric/r_state.h:98` | `extern fixed_t viewy;` |
+| `viewz` | variable | `progs/doomgeneric/r_state.h:99` | `extern fixed_t viewz;` |
+| `xtoviewangle` | variable | `progs/doomgeneric/r_state.h:109` | `extern angle_t xtoviewangle[SCREENWIDTH+1];` |
+| `BASEYCENTER` | macro | `progs/doomgeneric/r_things.c:41` | `#define BASEYCENTER` |
+| `MINZ` | macro | `progs/doomgeneric/r_things.c:40` | `#define MINZ` |
+| `R_AddSprites` | function | `progs/doomgeneric/r_things.c:605` | `void R_AddSprites (sector_t* sec)` |
+| `R_ClearSprites` | function | `progs/doomgeneric/r_things.c:309` | `void R_ClearSprites (void)` |
+| `R_DrawMasked` | function | `progs/doomgeneric/r_things.c:951` | `void R_DrawMasked (void)` |
+| `R_DrawMaskedColumn` | function | `progs/doomgeneric/r_things.c:343` | `void R_DrawMaskedColumn (column_t* column)` |
+| `R_DrawPSprite` | function | `progs/doomgeneric/r_things.c:638` | `void R_DrawPSprite (pspdef_t* psp)` |
+| `R_DrawPlayerSprites` | function | `progs/doomgeneric/r_things.c:738` | `void R_DrawPlayerSprites (void)` |
+| `R_DrawSprite` | function | `progs/doomgeneric/r_things.c:837` | `void R_DrawSprite (vissprite_t* spr)` |
+| `R_DrawVisSprite` | function | `progs/doomgeneric/r_things.c:389` | `void R_DrawVisSprite ( vissprite_t*		vis,   int			x1,   int			x2 )` |
+| `R_InitSpriteDefs` | function | `progs/doomgeneric/r_things.c:171` | `void R_InitSpriteDefs (char** namelist)` |
+| `R_InitSprites` | function | `progs/doomgeneric/r_things.c:291` | `void R_InitSprites (char** namelist)` |
+| `R_InstallSpriteLump` | function | `progs/doomgeneric/r_things.c:100` | `void R_InstallSpriteLump ( int		lump,   unsigned	frame,   unsigned	rotation,   boolean	flipped )` |
+| `R_NewVisSprite` | function | `progs/doomgeneric/r_things.c:320` | `vissprite_t* R_NewVisSprite (void)` |
+| `R_ProjectSprite` | function | `progs/doomgeneric/r_things.c:444` | `void R_ProjectSprite (mobj_t* thing)` |
+| `R_SortVisSprites` | function | `progs/doomgeneric/r_things.c:779` | `void R_SortVisSprites (void)` |
+| `maskdraw_t` | struct | `progs/doomgeneric/r_things.c:48` | `` |
+| `MAXVISSPRITES` | macro | `progs/doomgeneric/r_things.h:25` | `#define MAXVISSPRITES` |
+| `R_AddPSprites` | function | `progs/doomgeneric/r_things.h:52` | `void R_AddPSprites (void);` |
+| `R_AddSprites` | function | `progs/doomgeneric/r_things.h:51` | `void R_AddSprites (sector_t* sec);` |
+| `R_ClearSprites` | function | `progs/doomgeneric/r_things.h:55` | `void R_ClearSprites (void);` |
+| `R_ClipVisSprite` | function | `progs/doomgeneric/r_things.h:59` | `void R_ClipVisSprite ( vissprite_t* vis, int xl, int xh );` |
+| `R_DrawMasked` | function | `progs/doomgeneric/r_things.h:56` | `void R_DrawMasked (void);` |
+| `R_DrawMaskedColumn` | function | `progs/doomgeneric/r_things.h:46` | `void R_DrawMaskedColumn (column_t* column);` |
+| `R_DrawSprites` | function | `progs/doomgeneric/r_things.h:53` | `void R_DrawSprites (void);` |
+| `R_InitSprites` | function | `progs/doomgeneric/r_things.h:54` | `void R_InitSprites (char** namelist);` |
+| `R_SortVisSprites` | function | `progs/doomgeneric/r_things.h:49` | `void R_SortVisSprites (void);` |
+| `__R_THINGS__` | macro | `progs/doomgeneric/r_things.h:21` | `#define __R_THINGS__` |
+| `mceilingclip` | variable | `progs/doomgeneric/r_things.h:38` | `extern short* mceilingclip;` |
+| `mfloorclip` | variable | `progs/doomgeneric/r_things.h:37` | `extern short* mfloorclip;` |
+| `negonearray` | variable | `progs/doomgeneric/r_things.h:33` | `extern short negonearray[SCREENWIDTH];` |
+| `pspriteiscale` | variable | `progs/doomgeneric/r_things.h:43` | `extern fixed_t pspriteiscale;` |
+| `pspritescale` | variable | `progs/doomgeneric/r_things.h:42` | `extern fixed_t pspritescale;` |
+| `screenheightarray` | variable | `progs/doomgeneric/r_things.h:34` | `extern short screenheightarray[SCREENWIDTH];` |
+| `sprtopscreen` | variable | `progs/doomgeneric/r_things.h:40` | `extern fixed_t sprtopscreen;` |
+| `spryscale` | variable | `progs/doomgeneric/r_things.h:39` | `extern fixed_t spryscale;` |
+| `vissprite_p` | variable | `progs/doomgeneric/r_things.h:28` | `extern vissprite_t* vissprite_p;` |
+| `vissprites` | variable | `progs/doomgeneric/r_things.h:27` | `extern vissprite_t vissprites[MAXVISSPRITES];` |
+| `vsprsortedhead` | variable | `progs/doomgeneric/r_things.h:29` | `extern vissprite_t vsprsortedhead;` |
+| `NORM_PITCH` | macro | `progs/doomgeneric/s_sound.c:62` | `#define NORM_PITCH` |
+| `NORM_PRIORITY` | macro | `progs/doomgeneric/s_sound.c:63` | `#define NORM_PRIORITY` |
+| `NORM_SEP` | macro | `progs/doomgeneric/s_sound.c:64` | `#define NORM_SEP` |
+| `S_ATTENUATOR` | macro | `progs/doomgeneric/s_sound.c:56` | `#define S_ATTENUATOR` |
+| `S_AdjustSoundParams` | function | `progs/doomgeneric/s_sound.c:323` | `static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,                                i...` |
+| `S_CLIPPING_DIST` | macro | `progs/doomgeneric/s_sound.c:44` | `#define S_CLIPPING_DIST` |
+| `S_CLOSE_DIST` | macro | `progs/doomgeneric/s_sound.c:52` | `#define S_CLOSE_DIST` |
+| `S_ChangeMusic` | function | `progs/doomgeneric/s_sound.c:601` | `void S_ChangeMusic(int musicnum, int looping)` |
+| `S_GetChannel` | function | `progs/doomgeneric/s_sound.c:262` | `static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)` |
+| `S_Init` | function | `progs/doomgeneric/s_sound.c:114` | `void S_Init(int sfxVolume, int musicVolume)` |
+| `S_MusicPlaying` | function | `progs/doomgeneric/s_sound.c:649` | `boolean S_MusicPlaying(void)` |
+| `S_PauseSound` | function | `progs/doomgeneric/s_sound.c:482` | `void S_PauseSound(void)` |
+| `S_ResumeSound` | function | `progs/doomgeneric/s_sound.c:491` | `void S_ResumeSound(void)` |
+| `S_STEREO_SWING` | macro | `progs/doomgeneric/s_sound.c:60` | `#define S_STEREO_SWING` |
+| `S_SetMusicVolume` | function | `progs/doomgeneric/s_sound.c:571` | `void S_SetMusicVolume(int volume)` |
+| `S_SetSfxVolume` | function | `progs/doomgeneric/s_sound.c:582` | `void S_SetSfxVolume(int volume)` |
+| `S_Shutdown` | function | `progs/doomgeneric/s_sound.c:146` | `void S_Shutdown(void)` |
+| `S_Start` | function | `progs/doomgeneric/s_sound.c:191` | `void S_Start(void)` |
+| `S_StartMusic` | function | `progs/doomgeneric/s_sound.c:596` | `void S_StartMusic(int m_id)` |
+| `S_StartSound` | function | `progs/doomgeneric/s_sound.c:391` | `void S_StartSound(void *origin_p, int sfx_id)` |
+| `S_StopChannel` | function | `progs/doomgeneric/s_sound.c:152` | `static void S_StopChannel(int cnum)` |
+| `S_StopMusic` | function | `progs/doomgeneric/s_sound.c:654` | `void S_StopMusic(void)` |
+| `S_StopSound` | function | `progs/doomgeneric/s_sound.c:243` | `void S_StopSound(mobj_t *origin)` |
+| `S_UpdateSounds` | function | `progs/doomgeneric/s_sound.c:504` | `void S_UpdateSounds(mobj_t *listener)` |
+| `channel_t` | struct | `progs/doomgeneric/s_sound.c:66` | `` |
+| `S_ChangeMusic` | function | `progs/doomgeneric/s_sound.h:65` | `void S_ChangeMusic(int music_id, int looping);` |
+| `S_Init` | function | `progs/doomgeneric/s_sound.h:32` | `void S_Init(int sfxVolume, int musicVolume);` |
+| `S_PauseSound` | function | `progs/doomgeneric/s_sound.h:74` | `void S_PauseSound(void);` |
+| `S_ResumeSound` | function | `progs/doomgeneric/s_sound.h:75` | `void S_ResumeSound(void);` |
+| `S_SetMusicVolume` | function | `progs/doomgeneric/s_sound.h:83` | `void S_SetMusicVolume(int volume);` |
+| `S_SetSfxVolume` | function | `progs/doomgeneric/s_sound.h:84` | `void S_SetSfxVolume(int volume);` |
+| `S_Shutdown` | function | `progs/doomgeneric/s_sound.h:37` | `void S_Shutdown(void);` |
+| `S_Start` | function | `progs/doomgeneric/s_sound.h:47` | `void S_Start(void);` |
+| `S_StartMusic` | function | `progs/doomgeneric/s_sound.h:61` | `void S_StartMusic(int music_id);` |
+| `S_StartSound` | function | `progs/doomgeneric/s_sound.h:54` | `void S_StartSound(void *origin, int sound_id);` |
+| `S_StopMusic` | function | `progs/doomgeneric/s_sound.h:71` | `void S_StopMusic(void);` |
+| `S_StopSound` | function | `progs/doomgeneric/s_sound.h:57` | `void S_StopSound(mobj_t *origin);` |
+| `S_UpdateSounds` | function | `progs/doomgeneric/s_sound.h:81` | `void S_UpdateSounds(mobj_t *listener);` |
+| `__S_SOUND__` | macro | `progs/doomgeneric/s_sound.h:21` | `#define __S_SOUND__` |
+| `snd_channels` | variable | `progs/doomgeneric/s_sound.h:86` | `extern int snd_channels;` |
+| `F1` | macro | `progs/doomgeneric/sha1.c:88` | `#define F1(x,y,z)` |
+| `F2` | macro | `progs/doomgeneric/sha1.c:89` | `#define F2(x,y,z)` |
+| `F3` | macro | `progs/doomgeneric/sha1.c:90` | `#define F3(x,y,z)` |
+| `F4` | macro | `progs/doomgeneric/sha1.c:91` | `#define F4(x,y,z)` |
 | `K1` | macro | `progs/doomgeneric/sha1.c:84` | `#define K1` |
 | `K2` | macro | `progs/doomgeneric/sha1.c:85` | `#define K2` |
 | `K3` | macro | `progs/doomgeneric/sha1.c:86` | `#define K3` |
@@ -154,347 +496,5 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 | `ST_RAMPAGEDELAY` | macro | `progs/doomgeneric/st_stuff.c:121` | `#define ST_RAMPAGEDELAY` |
 | `ST_RAMPAGEOFFSET` | macro | `progs/doomgeneric/st_stuff.c:110` | `#define ST_RAMPAGEOFFSET` |
 | `ST_Responder` | function | `progs/doomgeneric/st_stuff.c:439` | `boolean ST_Responder (event_t* ev)` |
-| `ST_STRAIGHTFACECOUNT` | macro | `progs/doomgeneric/st_stuff.c:118` | `#define ST_STRAIGHTFACECOUNT` |
-| `ST_Start` | function | `progs/doomgeneric/st_stuff.c:1389` | `void ST_Start (void)` |
-| `ST_Stop` | function | `progs/doomgeneric/st_stuff.c:1401` | `void ST_Stop (void)` |
-| `ST_TALLNUMWIDTH` | macro | `progs/doomgeneric/st_stuff.c:91` | `#define ST_TALLNUMWIDTH` |
-| `ST_TOGGLECHAT` | macro | `progs/doomgeneric/st_stuff.c:80` | `#define ST_TOGGLECHAT` |
-| `ST_TURNCOUNT` | macro | `progs/doomgeneric/st_stuff.c:119` | `#define ST_TURNCOUNT` |
-| `ST_TURNOFFSET` | macro | `progs/doomgeneric/st_stuff.c:107` | `#define ST_TURNOFFSET` |
-| `ST_Ticker` | function | `progs/doomgeneric/st_stuff.c:924` | `void ST_Ticker (void)` |
-| `ST_WEAPON0X` | macro | `progs/doomgeneric/st_stuff.c:206` | `#define ST_WEAPON0X` |
-| `ST_WEAPON0Y` | macro | `progs/doomgeneric/st_stuff.c:207` | `#define ST_WEAPON0Y` |
-| `ST_WEAPON1X` | macro | `progs/doomgeneric/st_stuff.c:210` | `#define ST_WEAPON1X` |
-| `ST_WEAPON1Y` | macro | `progs/doomgeneric/st_stuff.c:211` | `#define ST_WEAPON1Y` |
-| `ST_WEAPON2X` | macro | `progs/doomgeneric/st_stuff.c:214` | `#define ST_WEAPON2X` |
-| `ST_WEAPON2Y` | macro | `progs/doomgeneric/st_stuff.c:215` | `#define ST_WEAPON2Y` |
-| `ST_WEAPON3X` | macro | `progs/doomgeneric/st_stuff.c:218` | `#define ST_WEAPON3X` |
-| `ST_WEAPON3Y` | macro | `progs/doomgeneric/st_stuff.c:219` | `#define ST_WEAPON3Y` |
-| `ST_WEAPON4X` | macro | `progs/doomgeneric/st_stuff.c:222` | `#define ST_WEAPON4X` |
-| `ST_WEAPON4Y` | macro | `progs/doomgeneric/st_stuff.c:223` | `#define ST_WEAPON4Y` |
-| `ST_WEAPON5X` | macro | `progs/doomgeneric/st_stuff.c:226` | `#define ST_WEAPON5X` |
-| `ST_WEAPON5Y` | macro | `progs/doomgeneric/st_stuff.c:227` | `#define ST_WEAPON5Y` |
-| `ST_WPNSX` | macro | `progs/doomgeneric/st_stuff.c:230` | `#define ST_WPNSX` |
-| `ST_WPNSY` | macro | `progs/doomgeneric/st_stuff.c:231` | `#define ST_WPNSY` |
-| `ST_X` | macro | `progs/doomgeneric/st_stuff.c:83` | `#define ST_X` |
-| `ST_X2` | macro | `progs/doomgeneric/st_stuff.c:84` | `#define ST_X2` |
-| `ST_calcPainOffset` | function | `progs/doomgeneric/st_stuff.c:665` | `int ST_calcPainOffset(void)` |
-| `ST_createWidgets` | function | `progs/doomgeneric/st_stuff.c:1227` | `void ST_createWidgets(void)` |
-| `ST_diffDraw` | function | `progs/doomgeneric/st_stuff.c:1049` | `void ST_diffDraw(void)` |
-| `ST_doPaletteStuff` | function | `progs/doomgeneric/st_stuff.c:936` | `void ST_doPaletteStuff(void)` |
-| `ST_doRefresh` | function | `progs/doomgeneric/st_stuff.c:1036` | `void ST_doRefresh(void)` |
-| `ST_drawWidgets` | function | `progs/doomgeneric/st_stuff.c:1001` | `void ST_drawWidgets(boolean refresh)` |
-| `ST_initData` | function | `progs/doomgeneric/st_stuff.c:1194` | `void ST_initData(void)` |
-| `ST_loadCallback` | function | `progs/doomgeneric/st_stuff.c:1162` | `static void ST_loadCallback(char *lumpname, patch_t **variable)` |
-| `ST_loadData` | function | `progs/doomgeneric/st_stuff.c:1172` | `void ST_loadData(void)` |
-| `ST_loadGraphics` | function | `progs/doomgeneric/st_stuff.c:1167` | `void ST_loadGraphics(void)` |
-| `ST_loadUnloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1076` | `static void ST_loadUnloadGraphics(load_callback_t callback)` |
-| `ST_refreshBackground` | function | `progs/doomgeneric/st_stuff.c:416` | `void ST_refreshBackground(void)` |
-| `ST_unloadCallback` | function | `progs/doomgeneric/st_stuff.c:1178` | `static void ST_unloadCallback(char *lumpname, patch_t **variable)` |
-| `ST_unloadData` | function | `progs/doomgeneric/st_stuff.c:1189` | `void ST_unloadData(void)` |
-| `ST_unloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1184` | `void ST_unloadGraphics(void)` |
-| `ST_updateFaceWidget` | function | `progs/doomgeneric/st_stuff.c:688` | `void ST_updateFaceWidget(void)` |
-| `ST_updateWidgets` | function | `progs/doomgeneric/st_stuff.c:860` | `void ST_updateWidgets(void)` |
-| `ST_Drawer` | function | `progs/doomgeneric/st_stuff.h:46` | `void ST_Drawer (boolean fullscreen, boolean refresh);` |
-| `ST_HEIGHT` | macro | `progs/doomgeneric/st_stuff.h:30` | `#define ST_HEIGHT` |
-| `ST_Init` | function | `progs/doomgeneric/st_stuff.h:52` | `void ST_Init (void);` |
-| `ST_Start` | function | `progs/doomgeneric/st_stuff.h:49` | `void ST_Start (void);` |
-| `ST_Ticker` | function | `progs/doomgeneric/st_stuff.h:43` | `void ST_Ticker (void);` |
-| `ST_WIDTH` | macro | `progs/doomgeneric/st_stuff.h:31` | `#define ST_WIDTH` |
-| `ST_Y` | macro | `progs/doomgeneric/st_stuff.h:32` | `#define ST_Y` |
-| `__STSTUFF_H__` | macro | `progs/doomgeneric/st_stuff.h:22` | `#define __STSTUFF_H__` |
-| `cheat_ammo` | variable | `progs/doomgeneric/st_stuff.h:79` | `extern cheatseq_t cheat_ammo;` |
-| `cheat_ammonokey` | variable | `progs/doomgeneric/st_stuff.h:80` | `extern cheatseq_t cheat_ammonokey;` |
-| `cheat_choppers` | variable | `progs/doomgeneric/st_stuff.h:84` | `extern cheatseq_t cheat_choppers;` |
-| `cheat_clev` | variable | `progs/doomgeneric/st_stuff.h:85` | `extern cheatseq_t cheat_clev;` |
-| `cheat_commercial_noclip` | variable | `progs/doomgeneric/st_stuff.h:82` | `extern cheatseq_t cheat_commercial_noclip;` |
-| `cheat_god` | variable | `progs/doomgeneric/st_stuff.h:78` | `extern cheatseq_t cheat_god;` |
-| `cheat_mus` | variable | `progs/doomgeneric/st_stuff.h:77` | `extern cheatseq_t cheat_mus;` |
-| `cheat_mypos` | variable | `progs/doomgeneric/st_stuff.h:86` | `extern cheatseq_t cheat_mypos;` |
-| `cheat_noclip` | variable | `progs/doomgeneric/st_stuff.h:81` | `extern cheatseq_t cheat_noclip;` |
-| `cheat_powerup` | variable | `progs/doomgeneric/st_stuff.h:83` | `extern cheatseq_t cheat_powerup[7];` |
-| `st_backing_screen` | variable | `progs/doomgeneric/st_stuff.h:76` | `extern byte *st_backing_screen;` |
-| `DiscoverGamemode` | function | `progs/doomgeneric/statdump.c:71` | `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)` |
-| `GetNumPlayers` | function | `progs/doomgeneric/statdump.c:130` | `static int GetNumPlayers(wbstartstruct_t *stats)` |
-| `MAX_CAPTURES` | macro | `progs/doomgeneric/statdump.c:56` | `#define MAX_CAPTURES` |
-| `PrintBanner` | function | `progs/doomgeneric/statdump.c:150` | `static void PrintBanner(FILE *stream)` |
-| `PrintFragsTable` | function | `progs/doomgeneric/statdump.c:213` | `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)` |
-| `PrintLevelName` | function | `progs/doomgeneric/statdump.c:272` | `static void PrintLevelName(FILE *stream, int episode, int level)` |
-| `PrintPercentage` | function | `progs/doomgeneric/statdump.c:155` | `static void PrintPercentage(FILE *stream, int amount, int total)` |
-| `PrintPlayerStats` | function | `progs/doomgeneric/statdump.c:180` | `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,         int player_num)` |
-| `PrintStats` | function | `progs/doomgeneric/statdump.c:301` | `static void PrintStats(FILE *stream, wbstartstruct_t *stats)` |
-| `StatCopy` | function | `progs/doomgeneric/statdump.c:333` | `void StatCopy(wbstartstruct_t *stats)` |
-| `StatDump` | function | `progs/doomgeneric/statdump.c:343` | `void StatDump(void)` |
-| `DOOM_STATDUMP_H` | macro | `progs/doomgeneric/statdump.h:18` | `#define DOOM_STATDUMP_H` |
-| `StatCopy` | function | `progs/doomgeneric/statdump.h:20` | `void StatCopy(wbstartstruct_t *stats);` |
-| `StatDump` | function | `progs/doomgeneric/statdump.h:21` | `void StatDump(void);` |
-| `SlopeDiv` | function | `progs/doomgeneric/tables.c:41` | `int SlopeDiv(unsigned int num, unsigned int den)` |
-| `ANG1` | macro | `progs/doomgeneric/tables.h:69` | `#define ANG1` |
-| `ANG180` | macro | `progs/doomgeneric/tables.h:65` | `#define ANG180` |
-| `ANG1_X` | macro | `progs/doomgeneric/tables.h:75` | `#define ANG1_X` |
-| `ANG270` | macro | `progs/doomgeneric/tables.h:66` | `#define ANG270` |
-| `ANG45` | macro | `progs/doomgeneric/tables.h:63` | `#define ANG45` |
-| `ANG60` | macro | `progs/doomgeneric/tables.h:70` | `#define ANG60` |
-| `ANG90` | macro | `progs/doomgeneric/tables.h:64` | `#define ANG90` |
-| `ANGLETOFINESHIFT` | macro | `progs/doomgeneric/tables.h:46` | `#define ANGLETOFINESHIFT` |
-| `ANG_MAX` | macro | `progs/doomgeneric/tables.h:67` | `#define ANG_MAX` |
-| `DBITS` | macro | `progs/doomgeneric/tables.h:79` | `#define DBITS` |
-| `FINEANGLES` | macro | `progs/doomgeneric/tables.h:41` | `#define FINEANGLES` |
-| `FINEMASK` | macro | `progs/doomgeneric/tables.h:42` | `#define FINEMASK` |
-| `SLOPEBITS` | macro | `progs/doomgeneric/tables.h:78` | `#define SLOPEBITS` |
-| `SLOPERANGE` | macro | `progs/doomgeneric/tables.h:77` | `#define SLOPERANGE` |
-| `SlopeDiv` | function | `progs/doomgeneric/tables.h:92` | `int SlopeDiv(unsigned int num, unsigned int den);` |
-| `__TABLES__` | macro | `progs/doomgeneric/tables.h:35` | `#define __TABLES__` |
-| `angle_t` | type_alias | `progs/doomgeneric/tables.h:80` | `typedef unsigned angle_t;` |
-| `finecosine` | variable | `progs/doomgeneric/tables.h:52` | `extern const fixed_t *finecosine;` |
-| `finesine` | variable | `progs/doomgeneric/tables.h:49` | `extern const fixed_t finesine[5*FINEANGLES/4];` |
-| `finetangent` | variable | `progs/doomgeneric/tables.h:56` | `extern const fixed_t finetangent[FINEANGLES/2];` |
-| `tantoangle` | variable | `progs/doomgeneric/tables.h:87` | `extern const angle_t tantoangle[SLOPERANGE+1];` |
-| `V_PATCH_H` | macro | `progs/doomgeneric/v_patch.h:21` | `#define V_PATCH_H` |
-| `column_t` | type_alias | `progs/doomgeneric/v_patch.h:47` | `typedef post_t column_t;` |
-| `MOUSE_SPEED_BOX_HEIGHT` | macro | `progs/doomgeneric/v_video.c:844` | `#define MOUSE_SPEED_BOX_HEIGHT` |
-| `MOUSE_SPEED_BOX_WIDTH` | macro | `progs/doomgeneric/v_video.c:843` | `#define MOUSE_SPEED_BOX_WIDTH` |
-| `RANGECHECK` | macro | `progs/doomgeneric/v_video.c:46` | `#define RANGECHECK` |
-| `V_CopyRect` | function | `progs/doomgeneric/v_video.c:85` | `void V_CopyRect(int srcx, int srcy, byte *source,                 int width, int height,         ...` |
-| `V_DrawAltTLPatch` | function | `progs/doomgeneric/v_video.c:378` | `void V_DrawAltTLPatch(int x, int y, patch_t * patch)` |
-| `V_DrawBlock` | function | `progs/doomgeneric/v_video.c:503` | `void V_DrawBlock(int x, int y, int width, int height, byte *src)` |
-| `V_DrawBox` | function | `progs/doomgeneric/v_video.c:576` | `void V_DrawBox(int x, int y, int w, int h, int c)` |
-| `V_DrawFilledBox` | function | `progs/doomgeneric/v_video.c:529` | `void V_DrawFilledBox(int x, int y, int w, int h, int c)` |
-| `V_DrawHorizLine` | function | `progs/doomgeneric/v_video.c:549` | `void V_DrawHorizLine(int x, int y, int w, int c)` |
-| `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.c:846` | `void V_DrawMouseSpeedBox(int speed)` |
-| `V_DrawPatch` | function | `progs/doomgeneric/v_video.c:139` | `void V_DrawPatch(int x, int y, patch_t *patch)` |
-| `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.c:268` | `void V_DrawPatchDirect(int x, int y, patch_t *patch)` |
-| `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.c:203` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch)` |
-| `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.c:589` | `void V_DrawRawScreen(byte *raw)` |
-| `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.c:428` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch)` |
-| `V_DrawTLPatch` | function | `progs/doomgeneric/v_video.c:279` | `void V_DrawTLPatch(int x, int y, patch_t * patch)` |
-| `V_DrawVertLine` | function | `progs/doomgeneric/v_video.c:562` | `void V_DrawVertLine(int x, int y, int h, int c)` |
-| `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.c:329` | `void V_DrawXlaPatch(int x, int y, patch_t * patch)` |
-| `V_Init` | function | `progs/doomgeneric/v_video.c:597` | `void V_Init (void)` |
-| `V_LoadTintTable` | function | `progs/doomgeneric/v_video.c:482` | `void V_LoadTintTable(void)` |
-| `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.c:493` | `void V_LoadXlaTable(void)` |
-| `V_MarkRect` | function | `progs/doomgeneric/v_video.c:69` | `void V_MarkRect(int x, int y, int width, int height)` |
-| `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.c:613` | `void V_RestoreBuffer(void)` |
-| `V_ScreenShot` | function | `progs/doomgeneric/v_video.c:791` | `void V_ScreenShot(char *format)` |
-| `V_SetPatchClipCallback` | function | `progs/doomgeneric/v_video.c:129` | `void V_SetPatchClipCallback(vpatchclipfunc_t func)` |
-| `V_UseBuffer` | function | `progs/doomgeneric/v_video.c:606` | `void V_UseBuffer(byte *buffer)` |
-| `WritePCXfile` | function | `progs/doomgeneric/v_video.c:653` | `void WritePCXfile(char *filename, byte *data,                   int width, int height,           ...` |
-| `WritePNGfile` | function | `progs/doomgeneric/v_video.c:721` | `void WritePNGfile(char *filename, byte *data,                   int width, int height,           ...` |
-| `error_fn` | function | `progs/doomgeneric/v_video.c:711` | `static void error_fn(png_structp p, png_const_charp s)` |
-| `png_screenshots` | variable | `progs/doomgeneric/v_video.c:800` | `extern int png_screenshots;` |
-| `usemouse` | variable | `progs/doomgeneric/v_video.c:848` | `extern int usemouse;` |
-| `warning_fn` | function | `progs/doomgeneric/v_video.c:716` | `static void warning_fn(png_structp p, png_const_charp s)` |
-| `CENTERY` | macro | `progs/doomgeneric/v_video.h:34` | `#define CENTERY` |
-| `V_CopyRect` | function | `progs/doomgeneric/v_video.h:53` | `void V_CopyRect(int srcx, int srcy, byte *source, int width, int height, int destx, int desty);` |
-| `V_DrawAltTLPatch` | function | `progs/doomgeneric/v_video.h:60` | `void V_DrawAltTLPatch(int x, int y, patch_t * patch);` |
-| `V_DrawBlock` | function | `progs/doomgeneric/v_video.h:67` | `void V_DrawBlock(int x, int y, int width, int height, byte *src);` |
-| `V_DrawBox` | function | `progs/doomgeneric/v_video.h:74` | `void V_DrawBox(int x, int y, int w, int h, int c);` |
-| `V_DrawFilledBox` | function | `progs/doomgeneric/v_video.h:71` | `void V_DrawFilledBox(int x, int y, int w, int h, int c);` |
-| `V_DrawHorizLine` | function | `progs/doomgeneric/v_video.h:72` | `void V_DrawHorizLine(int x, int y, int w, int c);` |
-| `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.h:105` | `void V_DrawMouseSpeedBox(int speed);` |
-| `V_DrawPatch` | function | `progs/doomgeneric/v_video.h:57` | `void V_DrawPatch(int x, int y, patch_t *patch);` |
-| `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.h:63` | `void V_DrawPatchDirect(int x, int y, patch_t *patch);` |
-| `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.h:58` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch);` |
-| `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.h:78` | `void V_DrawRawScreen(byte *raw);` |
-| `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.h:61` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch);` |
-| `V_DrawTLPatch` | function | `progs/doomgeneric/v_video.h:59` | `void V_DrawTLPatch(int x, int y, patch_t *patch);` |
-| `V_DrawVertLine` | function | `progs/doomgeneric/v_video.h:73` | `void V_DrawVertLine(int x, int y, int h, int c);` |
-| `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.h:62` | `void V_DrawXlaPatch(int x, int y, patch_t * patch);` |
-| `V_Init` | function | `progs/doomgeneric/v_video.h:49` | `void V_Init (void);` |
-| `V_LoadTintTable` | function | `progs/doomgeneric/v_video.h:97` | `void V_LoadTintTable(void);` |
-| `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.h:103` | `void V_LoadXlaTable(void);` |
-| `V_MarkRect` | function | `progs/doomgeneric/v_video.h:69` | `void V_MarkRect(int x, int y, int width, int height);` |
-| `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.h:86` | `void V_RestoreBuffer(void);` |
-| `V_ScreenShot` | function | `progs/doomgeneric/v_video.h:92` | `void V_ScreenShot(char *format);` |
-| `V_SetPatchClipCallback` | function | `progs/doomgeneric/v_video.h:45` | `void V_SetPatchClipCallback(vpatchclipfunc_t func);` |
-| `V_UseBuffer` | function | `progs/doomgeneric/v_video.h:82` | `void V_UseBuffer(byte *buffer);` |
-| `__V_VIDEO__` | macro | `progs/doomgeneric/v_video.h:23` | `#define __V_VIDEO__` |
-| `dirtybox` | variable | `progs/doomgeneric/v_video.h:37` | `extern int dirtybox[4];` |
-| `tinttable` | variable | `progs/doomgeneric/v_video.h:39` | `extern byte *tinttable;` |
-| `ChecksumAddLump` | function | `progs/doomgeneric/w_checksum.c:57` | `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)` |
-| `GetFileNumber` | function | `progs/doomgeneric/w_checksum.c:31` | `static int GetFileNumber(wad_file_t *handle)` |
-| `W_Checksum` | function | `progs/doomgeneric/w_checksum.c:68` | `void W_Checksum(sha1_digest_t digest)` |
-| `W_CHECKSUM_H` | macro | `progs/doomgeneric/w_checksum.h:20` | `#define W_CHECKSUM_H` |
-| `W_Checksum` | function | `progs/doomgeneric/w_checksum.h:24` | `extern void W_Checksum(sha1_digest_t digest);` |
-| `W_CloseFile` | function | `progs/doomgeneric/w_file.c:85` | `void W_CloseFile(wad_file_t *wad)` |
-| `W_OpenFile` | function | `progs/doomgeneric/w_file.c:53` | `wad_file_t *W_OpenFile(char *path)` |
-| `W_Read` | function | `progs/doomgeneric/w_file.c:90` | `size_t W_Read(wad_file_t *wad, unsigned int offset,               void *buffer, size_t buffer_len)` |
-| `posix_wad_file` | variable | `progs/doomgeneric/w_file.c:37` | `extern wad_file_class_t posix_wad_file;` |
-| `stdc_wad_file` | variable | `progs/doomgeneric/w_file.c:28` | `extern wad_file_class_t stdc_wad_file;` |
-| `win32_wad_file` | variable | `progs/doomgeneric/w_file.c:32` | `extern wad_file_class_t win32_wad_file;` |
-| `W_CloseFile` | function | `progs/doomgeneric/w_file.h:69` | `void W_CloseFile(wad_file_t *wad);` |
-| `W_OpenFile` | function | `progs/doomgeneric/w_file.h:65` | `wad_file_t *W_OpenFile(char *path);` |
-| `W_Read` | function | `progs/doomgeneric/w_file.h:75` | `size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len);` |
-| `__W_FILE__` | macro | `progs/doomgeneric/w_file.h:21` | `#define __W_FILE__` |
-| `_wad_file_s` | struct | `progs/doomgeneric/w_file.h:46` | `` |
-| `wad_file_class_t` | struct | `progs/doomgeneric/w_file.h:28` | `` |
-| `wad_file_t` | type_alias | `progs/doomgeneric/w_file.h:25` | `typedef struct _wad_file_s wad_file_t;` |
-| `W_StdC_CloseFile` | function | `progs/doomgeneric/w_file_stdc.c:56` | `static void W_StdC_CloseFile(wad_file_t *wad)` |
-| `W_StdC_OpenFile` | function | `progs/doomgeneric/w_file_stdc.c:33` | `static wad_file_t *W_StdC_OpenFile(char *path)` |
-| `W_StdC_Read` | function | `progs/doomgeneric/w_file_stdc.c:69` | `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,                    void *buffer, size_t ...` |
-| `stdc_wad_file` | variable | `progs/doomgeneric/w_file_stdc.c:31` | `extern wad_file_class_t stdc_wad_file;` |
-| `stdc_wad_file_t` | struct | `progs/doomgeneric/w_file_stdc.c:25` | `` |
-| `W_ParseCommandLine` | function | `progs/doomgeneric/w_main.c:30` | `boolean W_ParseCommandLine(void)` |
-| `W_MAIN_H` | macro | `progs/doomgeneric/w_main.h:19` | `#define W_MAIN_H` |
-| `W_MERGE_H` | macro | `progs/doomgeneric/w_merge.h:22` | `#define W_MERGE_H` |
-| `W_MergeFile` | function | `progs/doomgeneric/w_merge.h:29` | `void W_MergeFile(char *filename);` |
-| `W_NWTDashMerge` | function | `progs/doomgeneric/w_merge.h:37` | `void W_NWTDashMerge(char *filename);` |
-| `W_NWTMergeFile` | function | `progs/doomgeneric/w_merge.h:33` | `void W_NWTMergeFile(char *filename, int flags);` |
-| `W_NWT_MERGE_FLATS` | macro | `progs/doomgeneric/w_merge.h:25` | `#define W_NWT_MERGE_FLATS` |
-| `W_NWT_MERGE_SPRITES` | macro | `progs/doomgeneric/w_merge.h:24` | `#define W_NWT_MERGE_SPRITES` |
-| `W_PrintDirectory` | function | `progs/doomgeneric/w_merge.h:41` | `void W_PrintDirectory(void);` |
-| `ExtendLumpInfo` | function | `progs/doomgeneric/w_wad.c:89` | `static void ExtendLumpInfo(int newnumlumps)` |
-| `I_EndRead` | function | `progs/doomgeneric/w_wad.c:39` | `void I_EndRead (void);` |
-| `W_AddFile` | function | `progs/doomgeneric/w_wad.c:141` | `wad_file_t *W_AddFile (char *filename)` |
-| `W_CacheLumpName` | function | `progs/doomgeneric/w_wad.c:431` | `void *W_CacheLumpName(char *name, int tag)` |
-| `W_CacheLumpNum` | function | `progs/doomgeneric/w_wad.c:384` | `void *W_CacheLumpNum(int lumpnum, int tag)` |
-| `W_CheckCorrectIWAD` | function | `progs/doomgeneric/w_wad.c:588` | `void W_CheckCorrectIWAD(GameMission_t mission)` |
-| `W_CheckNumForName` | function | `progs/doomgeneric/w_wad.c:258` | `int W_CheckNumForName (char* name)` |
-| `W_GenerateHashTable` | function | `progs/doomgeneric/w_wad.c:541` | `void W_GenerateHashTable(void)` |
-| `W_GetNumForName` | function | `progs/doomgeneric/w_wad.c:308` | `int W_GetNumForName (char* name)` |
-| `W_LumpLength` | function | `progs/doomgeneric/w_wad.c:327` | `int W_LumpLength (unsigned int lump)` |
-| `W_LumpNameHash` | function | `progs/doomgeneric/w_wad.c:72` | `unsigned int W_LumpNameHash(const char *s)` |
-| `W_NumLumps` | function | `progs/doomgeneric/w_wad.c:246` | `int W_NumLumps (void)` |
-| `W_Profile` | function | `progs/doomgeneric/w_wad.c:480` | `void W_Profile (void)` |
-| `W_ReadLump` | function | `progs/doomgeneric/w_wad.c:344` | `void W_ReadLump(unsigned int lump, void *dest)` |
-| `W_ReleaseLumpName` | function | `progs/doomgeneric/w_wad.c:467` | `void W_ReleaseLumpName(char *name)` |
-| `W_ReleaseLumpNum` | function | `progs/doomgeneric/w_wad.c:446` | `void W_ReleaseLumpNum(int lumpnum)` |
-| `W_AddFile` | function | `progs/doomgeneric/w_wad.h:58` | `wad_file_t *W_AddFile (char *filename);` |
-| `W_CacheLumpName` | function | `progs/doomgeneric/w_wad.h:67` | `void* W_CacheLumpName (char* name, int tag);` |
-| `W_CacheLumpNum` | function | `progs/doomgeneric/w_wad.h:66` | `void* W_CacheLumpNum (int lump, int tag);` |
-| `W_CheckCorrectIWAD` | function | `progs/doomgeneric/w_wad.h:76` | `void W_CheckCorrectIWAD(GameMission_t mission);` |
-| `W_CheckNumForName` | function | `progs/doomgeneric/w_wad.h:60` | `int W_CheckNumForName (char* name);` |
-| `W_GenerateHashTable` | function | `progs/doomgeneric/w_wad.h:69` | `void W_GenerateHashTable(void);` |
-| `W_GetNumForName` | function | `progs/doomgeneric/w_wad.h:61` | `int W_GetNumForName (char* name);` |
-| `W_LumpLength` | function | `progs/doomgeneric/w_wad.h:63` | `int W_LumpLength (unsigned int lump);` |
-| `W_LumpNameHash` | function | `progs/doomgeneric/w_wad.h:71` | `extern unsigned int W_LumpNameHash(const char *s);` |
-| `W_ReadLump` | function | `progs/doomgeneric/w_wad.h:64` | `void W_ReadLump (unsigned int lump, void *dest);` |
-| `W_ReleaseLumpName` | function | `progs/doomgeneric/w_wad.h:74` | `void W_ReleaseLumpName(char *name);` |
-| `W_ReleaseLumpNum` | function | `progs/doomgeneric/w_wad.h:73` | `void W_ReleaseLumpNum(int lump);` |
-| `__W_WAD__` | macro | `progs/doomgeneric/w_wad.h:21` | `#define __W_WAD__` |
-| `lumpinfo` | variable | `progs/doomgeneric/w_wad.h:55` | `extern lumpinfo_t *lumpinfo;` |
-| `lumpinfo_s` | struct | `progs/doomgeneric/w_wad.h:41` | `` |
-| `lumpinfo_t` | type_alias | `progs/doomgeneric/w_wad.h:38` | `typedef struct lumpinfo_s lumpinfo_t;` |
-| `numlumps` | variable | `progs/doomgeneric/w_wad.h:56` | `extern unsigned int numlumps;` |
-| `ANIM` | macro | `progs/doomgeneric/wi_stuff.c:222` | `#define ANIM(type, period, nanims, x, y, nexttic)` |
-| `DM_KILLERSX` | macro | `progs/doomgeneric/wi_stuff.c:101` | `#define DM_KILLERSX` |
-| `DM_KILLERSY` | macro | `progs/doomgeneric/wi_stuff.c:102` | `#define DM_KILLERSY` |
-| `DM_MATRIXX` | macro | `progs/doomgeneric/wi_stuff.c:94` | `#define DM_MATRIXX` |
-| `DM_MATRIXY` | macro | `progs/doomgeneric/wi_stuff.c:95` | `#define DM_MATRIXY` |
-| `DM_SPACINGX` | macro | `progs/doomgeneric/wi_stuff.c:97` | `#define DM_SPACINGX` |
-| `DM_TOTALSX` | macro | `progs/doomgeneric/wi_stuff.c:99` | `#define DM_TOTALSX` |
-| `DM_VICTIMSX` | macro | `progs/doomgeneric/wi_stuff.c:103` | `#define DM_VICTIMSX` |
-| `DM_VICTIMSY` | macro | `progs/doomgeneric/wi_stuff.c:104` | `#define DM_VICTIMSY` |
-| `NG_SPACINGX` | macro | `progs/doomgeneric/wi_stuff.c:90` | `#define NG_SPACINGX` |
-| `NG_STATSX` | macro | `progs/doomgeneric/wi_stuff.c:88` | `#define NG_STATSX` |
-| `NG_STATSY` | macro | `progs/doomgeneric/wi_stuff.c:87` | `#define NG_STATSY` |
-| `NUMEPISODES` | macro | `progs/doomgeneric/wi_stuff.c:61` | `#define NUMEPISODES` |
-| `NUMMAPS` | macro | `progs/doomgeneric/wi_stuff.c:62` | `#define NUMMAPS` |
-| `SHOWNEXTLOCDELAY` | macro | `progs/doomgeneric/wi_stuff.c:298` | `#define SHOWNEXTLOCDELAY` |
-| `SP_FRAGS` | macro | `progs/doomgeneric/wi_stuff.c:291` | `#define SP_FRAGS` |
-| `SP_ITEMS` | macro | `progs/doomgeneric/wi_stuff.c:289` | `#define SP_ITEMS` |
-| `SP_KILLS` | macro | `progs/doomgeneric/wi_stuff.c:288` | `#define SP_KILLS` |
-| `SP_PAR` | macro | `progs/doomgeneric/wi_stuff.c:293` | `#define SP_PAR` |
-| `SP_PAUSE` | macro | `progs/doomgeneric/wi_stuff.c:295` | `#define SP_PAUSE` |
-| `SP_SECRET` | macro | `progs/doomgeneric/wi_stuff.c:290` | `#define SP_SECRET` |
-| `SP_STATSX` | macro | `progs/doomgeneric/wi_stuff.c:79` | `#define SP_STATSX` |
-| `SP_STATSY` | macro | `progs/doomgeneric/wi_stuff.c:80` | `#define SP_STATSY` |
-| `SP_TIME` | macro | `progs/doomgeneric/wi_stuff.c:292` | `#define SP_TIME` |
-| `SP_TIMEX` | macro | `progs/doomgeneric/wi_stuff.c:82` | `#define SP_TIMEX` |
-| `SP_TIMEY` | macro | `progs/doomgeneric/wi_stuff.c:83` | `#define SP_TIMEY` |
-| `WI_Drawer` | function | `progs/doomgeneric/wi_stuff.c:1752` | `void WI_Drawer (void)` |
-| `WI_End` | function | `progs/doomgeneric/wi_stuff.c:740` | `void WI_End(void)` |
-| `WI_Responder` | function | `progs/doomgeneric/wi_stuff.c:409` | `boolean WI_Responder(event_t* ev)` |
-| `WI_SPACINGY` | macro | `progs/doomgeneric/wi_stuff.c:76` | `#define WI_SPACINGY` |
-| `WI_Start` | function | `progs/doomgeneric/wi_stuff.c:1818` | `void WI_Start(wbstartstruct_t* wbstartstruct)` |
-| `WI_TITLEY` | macro | `progs/doomgeneric/wi_stuff.c:75` | `#define WI_TITLEY` |
-| `WI_Ticker` | function | `progs/doomgeneric/wi_stuff.c:1514` | `void WI_Ticker(void)` |
-| `WI_checkForAccelerate` | function | `progs/doomgeneric/wi_stuff.c:1481` | `void WI_checkForAccelerate(void)` |
-| `WI_drawAnimatedBack` | function | `progs/doomgeneric/wi_stuff.c:599` | `void WI_drawAnimatedBack(void)` |
-| `WI_drawDeathmatchStats` | function | `progs/doomgeneric/wi_stuff.c:1001` | `void WI_drawDeathmatchStats(void)` |
-| `WI_drawEL` | function | `progs/doomgeneric/wi_stuff.c:452` | `void WI_drawEL(void)` |
-| `WI_drawLF` | function | `progs/doomgeneric/wi_stuff.c:416` | `void WI_drawLF(void)` |
-| `WI_drawNetgameStats` | function | `progs/doomgeneric/wi_stuff.c:1272` | `void WI_drawNetgameStats(void)` |
-| `WI_drawNoState` | function | `progs/doomgeneric/wi_stuff.c:832` | `void WI_drawNoState(void)` |
-| `WI_drawNum` | function | `progs/doomgeneric/wi_stuff.c:628` | `int WI_drawNum ( int		x,   int		y,   int		n,   int		digits )` |
-| `WI_drawOnLnode` | function | `progs/doomgeneric/wi_stuff.c:471` | `void WI_drawOnLnode ( int		n,   patch_t*	c[] )` |
-| `WI_drawPercent` | function | `progs/doomgeneric/wi_stuff.c:685` | `void WI_drawPercent ( int		x,   int		y,   int		p )` |
-| `WI_drawShowNextLoc` | function | `progs/doomgeneric/wi_stuff.c:791` | `void WI_drawShowNextLoc(void)` |
-| `WI_drawStats` | function | `progs/doomgeneric/wi_stuff.c:1447` | `void WI_drawStats(void)` |
-| `WI_drawTime` | function | `progs/doomgeneric/wi_stuff.c:704` | `void WI_drawTime ( int		x,   int		y,   int		t )` |
-| `WI_fragSum` | function | `progs/doomgeneric/wi_stuff.c:838` | `int WI_fragSum(int playernum)` |
-| `WI_initAnimatedBack` | function | `progs/doomgeneric/wi_stuff.c:519` | `void WI_initAnimatedBack(void)` |
-| `WI_initDeathmatchStats` | function | `progs/doomgeneric/wi_stuff.c:869` | `void WI_initDeathmatchStats(void)` |
-| `WI_initNetgameStats` | function | `progs/doomgeneric/wi_stuff.c:1089` | `void WI_initNetgameStats(void)` |
-| `WI_initNoState` | function | `progs/doomgeneric/wi_stuff.c:746` | `void WI_initNoState(void)` |
-| `WI_initShowNextLoc` | function | `progs/doomgeneric/wi_stuff.c:772` | `void WI_initShowNextLoc(void)` |
-| `WI_initStats` | function | `progs/doomgeneric/wi_stuff.c:1329` | `void WI_initStats(void)` |
-| `WI_initVariables` | function | `progs/doomgeneric/wi_stuff.c:1776` | `void WI_initVariables(wbstartstruct_t* wbstartstruct)` |
-| `WI_loadCallback` | function | `progs/doomgeneric/wi_stuff.c:1704` | `static void WI_loadCallback(char *name, patch_t **variable)` |
-| `WI_loadData` | function | `progs/doomgeneric/wi_stuff.c:1709` | `void WI_loadData(void)` |
-| `WI_loadUnloadData` | function | `progs/doomgeneric/wi_stuff.c:1554` | `static void WI_loadUnloadData(load_callback_t callback)` |
-| `WI_slamBackground` | function | `progs/doomgeneric/wi_stuff.c:402` | `void WI_slamBackground(void)` |
-| `WI_unloadCallback` | function | `progs/doomgeneric/wi_stuff.c:1735` | `static void WI_unloadCallback(char *name, patch_t **variable)` |
-| `WI_unloadData` | function | `progs/doomgeneric/wi_stuff.c:1741` | `void WI_unloadData(void)` |
-| `WI_updateAnimatedBack` | function | `progs/doomgeneric/wi_stuff.c:548` | `void WI_updateAnimatedBack(void)` |
-| `WI_updateDeathmatchStats` | function | `progs/doomgeneric/wi_stuff.c:898` | `void WI_updateDeathmatchStats(void)` |
-| `WI_updateNetgameStats` | function | `progs/doomgeneric/wi_stuff.c:1117` | `void WI_updateNetgameStats(void)` |
-| `WI_updateNoState` | function | `progs/doomgeneric/wi_stuff.c:753` | `void WI_updateNoState(void)` |
-| `WI_updateShowNextLoc` | function | `progs/doomgeneric/wi_stuff.c:781` | `void WI_updateShowNextLoc(void)` |
-| `WI_updateStats` | function | `progs/doomgeneric/wi_stuff.c:1341` | `void WI_updateStats(void)` |
-| `anim_t` | struct | `progs/doomgeneric/wi_stuff.c:129` | `` |
-| `point_t` | struct | `progs/doomgeneric/wi_stuff.c:117` | `` |
-| `WI_Drawer` | function | `progs/doomgeneric/wi_stuff.h:40` | `void WI_Drawer (void);` |
-| `WI_End` | function | `progs/doomgeneric/wi_stuff.h:46` | `void WI_End(void);` |
-| `WI_Start` | function | `progs/doomgeneric/wi_stuff.h:43` | `void WI_Start(wbstartstruct_t* wbstartstruct);` |
-| `WI_Ticker` | function | `progs/doomgeneric/wi_stuff.h:36` | `void WI_Ticker (void);` |
-| `__WI_STUFF__` | macro | `progs/doomgeneric/wi_stuff.h:20` | `#define __WI_STUFF__` |
-| `MEM_ALIGN` | macro | `progs/doomgeneric/z_zone.c:36` | `#define MEM_ALIGN` |
-| `MINFRAGMENT` | macro | `progs/doomgeneric/z_zone.c:181` | `#define MINFRAGMENT` |
-| `ZONEID` | macro | `progs/doomgeneric/z_zone.c:37` | `#define ZONEID` |
-| `Z_ChangeTag2` | function | `progs/doomgeneric/z_zone.c:429` | `void Z_ChangeTag2(void *ptr, int tag, char *file, int line)` |
-| `Z_ChangeUser` | function | `progs/doomgeneric/z_zone.c:446` | `void Z_ChangeUser(void *ptr, void **user)` |
-| `Z_CheckHeap` | function | `progs/doomgeneric/z_zone.c:400` | `void Z_CheckHeap (void)` |
-| `Z_ClearZone` | function | `progs/doomgeneric/z_zone.c:71` | `void Z_ClearZone (memzone_t* zone)` |
-| `Z_DumpHeap` | function | `progs/doomgeneric/z_zone.c:328` | `void Z_DumpHeap ( int		lowtag,   int		hightag )` |
-| `Z_FileDumpHeap` | function | `progs/doomgeneric/z_zone.c:367` | `void Z_FileDumpHeap (FILE* f)` |
-| `Z_Free` | function | `progs/doomgeneric/z_zone.c:126` | `void Z_Free (void* ptr)` |
-| `Z_FreeMemory` | function | `progs/doomgeneric/z_zone.c:466` | `int Z_FreeMemory (void)` |
-| `Z_FreeTags` | function | `progs/doomgeneric/z_zone.c:298` | `void Z_FreeTags ( int		lowtag,   int		hightag )` |
-| `Z_Init` | function | `progs/doomgeneric/z_zone.c:97` | `void Z_Init (void)` |
-| `Z_Malloc` | function | `progs/doomgeneric/z_zone.c:185` | `void* Z_Malloc ( int		size,   int		tag,   void*		user )` |
-| `Z_ZoneSize` | function | `progs/doomgeneric/z_zone.c:484` | `unsigned int Z_ZoneSize(void)` |
-| `memblock_s` | struct | `progs/doomgeneric/z_zone.c:39` | `` |
-| `memzone_t` | struct | `progs/doomgeneric/z_zone.c:50` | `` |
-| `size` | type_alias | `progs/doomgeneric/z_zone.c:38` | `typedef struct memblock_s { int size;` |
-| `Z_ChangeTag` | macro | `progs/doomgeneric/z_zone.h:69` | `#define Z_ChangeTag(p,t)` |
-| `Z_ChangeTag2` | function | `progs/doomgeneric/z_zone.h:60` | `void Z_ChangeTag2 (void *ptr, int tag, char *file, int line);` |
-| `Z_ChangeUser` | function | `progs/doomgeneric/z_zone.h:61` | `void Z_ChangeUser(void *ptr, void **user);` |
-| `Z_CheckHeap` | function | `progs/doomgeneric/z_zone.h:59` | `void Z_CheckHeap (void);` |
-| `Z_DumpHeap` | function | `progs/doomgeneric/z_zone.h:57` | `void Z_DumpHeap (int lowtag, int hightag);` |
-| `Z_FileDumpHeap` | function | `progs/doomgeneric/z_zone.h:58` | `void Z_FileDumpHeap (FILE *f);` |
-| `Z_Free` | function | `progs/doomgeneric/z_zone.h:55` | `void Z_Free (void *ptr);` |
-| `Z_FreeMemory` | function | `progs/doomgeneric/z_zone.h:62` | `int Z_FreeMemory (void);` |
-| `Z_FreeTags` | function | `progs/doomgeneric/z_zone.h:56` | `void Z_FreeTags (int lowtag, int hightag);` |
-| `Z_Init` | function | `progs/doomgeneric/z_zone.h:53` | `void Z_Init (void);` |
-| `Z_Malloc` | function | `progs/doomgeneric/z_zone.h:54` | `void* Z_Malloc (int size, int tag, void *ptr);` |
-| `Z_ZoneSize` | function | `progs/doomgeneric/z_zone.h:63` | `unsigned int Z_ZoneSize(void);` |
-| `__Z_ZONE__` | macro | `progs/doomgeneric/z_zone.h:25` | `#define __Z_ZONE__` |
-| `FILE_ACTION_INTERNAL` | macro | `progs/file/file.c:49` | `#define FILE_ACTION_INTERNAL` |
-| `FILE_ACTION_SHELL` | macro | `progs/file/file.c:48` | `#define FILE_ACTION_SHELL` |
-| `FILE_ACT_INTERNAL` | macro | `progs/file/file.c:73` | `#define FILE_ACT_INTERNAL` |
-| `FILE_ACT_SHELL` | macro | `progs/file/file.c:72` | `#define FILE_ACT_SHELL` |
-| `FILE_ACT_TEXT` | macro | `progs/file/file.c:71` | `#define FILE_ACT_TEXT` |
-| `FILE_ACT_UNKNOWN` | macro | `progs/file/file.c:74` | `#define FILE_ACT_UNKNOWN` |
-| `FILE_ASSOC_PATH` | macro | `progs/file/file.c:37` | `#define FILE_ASSOC_PATH` |
-| `FILE_EXT_MAX` | macro | `progs/file/file.c:38` | `#define FILE_EXT_MAX` |
-| `FILE_ICON_BIG` | macro | `progs/file/file.c:58` | `#define FILE_ICON_BIG` |
-| `FILE_ICON_FILES` | macro | `progs/file/file.c:62` | `#define FILE_ICON_FILES` |
-| `FILE_ICON_FOLDER` | macro | `progs/file/file.c:61` | `#define FILE_ICON_FOLDER` |
-| `FILE_ICON_IMAGE` | macro | `progs/file/file.c:63` | `#define FILE_ICON_IMAGE` |
-| `FILE_ICON_MAX` | macro | `progs/file/file.c:59` | `#define FILE_ICON_MAX` |
-| `FILE_ICON_N` | macro | `progs/file/file.c:60` | `#define FILE_ICON_N` |
-| `FILE_ICON_OBJECT` | macro | `progs/file/file.c:64` | `#define FILE_ICON_OBJECT` |
-| `FILE_ICON_PATH_FILES` | macro | `progs/file/file.c:66` | `#define FILE_ICON_PATH_FILES` |
 
 Next: [SYMBOLS_p18.md](SYMBOLS_p18.md)

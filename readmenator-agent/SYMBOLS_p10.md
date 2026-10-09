@@ -1,68 +1,410 @@
-# Symbols (page 10 of 25)
+# Symbols (page 10 of 26)
 Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `net_arp_lookup` | function | `net/net.c:117` | `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)` |
-| `net_arp_request` | function | `net/net.c:128` | `static void net_arp_request(const unsigned char *ip)` |
-| `net_arp_resolve` | function | `net/net.c:146` | `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)` |
-| `net_arp_store` | function | `net/net.c:102` | `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)` |
-| `net_checksum` | function | `net/net.c:77` | `static unsigned short net_checksum(const void *data, unsigned len)` |
-| `net_close` | function | `net/net.c:880` | `void net_close(int fd)` |
-| `net_cmd_dns` | function | `net/net.c:1204` | `void net_cmd_dns(const char *host)` |
-| `net_cmd_ping` | function | `net/net.c:1193` | `void net_cmd_ping(const char *ip_text)` |
-| `net_cmd_status` | function | `net/net.c:1165` | `void net_cmd_status(void)` |
-| `net_connect` | function | `net/net.c:856` | `int net_connect(const char *host, unsigned short port)` |
-| `net_dns_parse` | function | `net/net.c:229` | `static void net_dns_parse(const unsigned char *data, unsigned len)` |
-| `net_dns_resolve` | function | `net/net.c:267` | `static int net_dns_resolve(const char *host, unsigned char ip_out[4])` |
-| `net_dns_state` | struct | `net/net.c:220` | `` |
-| `net_drv_poll` | function | `net/net.c:42` | `static void net_drv_poll(void)` |
-| `net_drv_present` | function | `net/net.c:47` | `static int net_drv_present(void)` |
-| `net_drv_send` | function | `net/net.c:37` | `static int net_drv_send(const unsigned char *frame, unsigned len)` |
-| `net_get16` | function | `net/net.c:68` | `static unsigned short net_get16(const unsigned char *p)` |
-| `net_get32` | function | `net/net.c:72` | `static unsigned int net_get32(const unsigned char *p)` |
-| `net_get_addrs` | function | `net/net.c:1187` | `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])` |
-| `net_icmp_rx` | function | `net/net.c:347` | `static void net_icmp_rx(const unsigned char *ip, unsigned len)` |
-| `net_init` | function | `net/net.c:1225` | `void net_init(void)` |
-| `net_ip_send` | function | `net/net.c:171` | `static int net_ip_send(const unsigned char *dip, unsigned char proto,                        cons...` |
-| `net_listen` | function | `net/net.c:891` | `int net_listen(unsigned short port)` |
-| `net_open` | function | `net/net.c:850` | `int net_open(void)` |
-| `net_parse_ip` | function | `net/net.c:1140` | `static int net_parse_ip(const char *text, unsigned char ip[4])` |
-| `net_ping` | function | `net/net.c:376` | `static int net_ping(const unsigned char ip[4])` |
-| `net_put16` | function | `net/net.c:56` | `static void net_put16(unsigned char *p, unsigned short v)` |
-| `net_put32` | function | `net/net.c:61` | `static void net_put32(unsigned char *p, unsigned int v)` |
-| `net_recv` | function | `net/net.c:870` | `int net_recv(int fd, char *buf, int len)` |
-| `net_recv_timeout` | function | `net/net.c:875` | `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)` |
-| `net_register_symbols` | function | `net/net.c:1217` | `void net_register_symbols(void)` |
-| `net_rx_handle_frame` | function | `net/net.c:788` | `void net_rx_handle_frame(const unsigned char *frame, unsigned len)` |
-| `net_send` | function | `net/net.c:865` | `int net_send(int fd, const char *buf, int len)` |
-| `net_sock_alloc` | function | `net/net.c:435` | `static struct net_tcp_sock *net_sock_alloc(void)` |
-| `net_sock_index` | function | `net/net.c:450` | `static int net_sock_index(const struct net_tcp_sock *s)` |
-| `net_sock_state` | function | `net/net.c:940` | `int net_sock_state(int fd)` |
-| `net_sys_accept` | function | `net/net.c:1040` | `long net_sys_accept(long fd, long sockaddr, long addrlen)` |
-| `net_sys_bind` | function | `net/net.c:1014` | `long net_sys_bind(long fd, long sockaddr, long addrlen)` |
-| `net_sys_close` | function | `net/net.c:1085` | `long net_sys_close(long fd)` |
-| `net_sys_connect` | function | `net/net.c:1001` | `long net_sys_connect(long fd, long sockaddr, long addrlen)` |
-| `net_sys_dns` | function | `net/net.c:1129` | `long net_sys_dns(long host)` |
-| `net_sys_listen` | function | `net/net.c:1029` | `long net_sys_listen(long fd, long backlog)` |
-| `net_sys_poll` | function | `net/net.c:1092` | `long net_sys_poll(long fds, long nfds, long timeout_ms)` |
-| `net_sys_recvfrom` | function | `net/net.c:1068` | `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)` |
-| `net_sys_sendto` | function | `net/net.c:1059` | `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)` |
-| `net_sys_shutdown` | function | `net/net.c:1078` | `long net_sys_shutdown(long fd, long how)` |
-| `net_sys_socket` | function | `net/net.c:992` | `long net_sys_socket(long a1, long a2, long a3)` |
-| `net_tcp_checksum` | function | `net/net.c:459` | `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,       ...` |
-| `net_tcp_close` | function | `net/net.c:768` | `static void net_tcp_close(struct net_tcp_sock *s)` |
-| `net_tcp_connect_into` | function | `net/net.c:677` | `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],               ...` |
-| `net_tcp_passive_open` | function | `net/net.c:653` | `static int net_tcp_passive_open(struct net_tcp_sock *ls,         const unsigned char peer[4], uns...` |
-| `net_tcp_recv` | function | `net/net.c:730` | `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)` |
-| `net_tcp_rx` | function | `net/net.c:525` | `static void net_tcp_rx(const unsigned char *ip, unsigned len)` |
-| `net_tcp_send` | function | `net/net.c:704` | `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)` |
-| `net_tcp_sock` | struct | `net/net.c:407` | `` |
-| `net_tcp_xmit` | function | `net/net.c:491` | `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,                         const uns...` |
-| `net_udp_checksum_ok` | function | `net/net.c:475` | `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,               ...` |
-| `net_udp_send` | function | `net/net.c:207` | `static int net_udp_send(const unsigned char *dip, unsigned short sport,                         u...` |
-| `net_udp_send` | function | `net/net.c:328` | `net_udp_send((const unsigned char[])` |
-| `polling` | function | `net/net.c:923` | `* without polling (the peer's ACK arrives through the driver poll). */ int net_accept(int fd, uns...` |
+| `vga_fb_gfx_map_mouse` | function | `kernel/vga_fb.c:726` | `void vga_fb_gfx_map_mouse(int *x, int *y)` |
+| `vga_fb_gfx_origin` | function | `kernel/vga_fb.c:709` | `void vga_fb_gfx_origin(int *x, int *y)` |
+| `vga_fb_gfx_set_hidden` | function | `kernel/vga_fb.c:3168` | `int vga_fb_gfx_set_hidden(int hide)` |
+| `vga_fb_gfx_view_name` | function | `kernel/vga_fb.c:3196` | `const char *vga_fb_gfx_view_name(void)` |
+| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:2898` | `void vga_fb_hide_text_cursor(void)` |
+| `vga_fb_init` | function | `kernel/vga_fb.c:4445` | `void vga_fb_init(void)` |
+| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:3250` | `int vga_fb_is_fullscreen(void)` |
+| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:3249` | `int vga_fb_is_minimized(void)` |
+| `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:1285` | `void vga_fb_layout_cycle(void)` |
+| `vga_fb_layout_get` | function | `kernel/vga_fb.c:1301` | `int vga_fb_layout_get(void)` |
+| `vga_fb_layout_name` | function | `kernel/vga_fb.c:1307` | `const char *vga_fb_layout_name(void)` |
+| `vga_fb_layout_set` | function | `kernel/vga_fb.c:1274` | `int vga_fb_layout_set(int mode)` |
+| `vga_fb_list_windows` | function | `kernel/vga_fb.c:1446` | `void vga_fb_list_windows(void)` |
+| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:4417` | `void vga_fb_mouse_init(void)` |
+| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:4216` | `void vga_fb_mouse_tick(void)` |
+| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:3318` | `void vga_fb_move_terminal(int dx, int dy)` |
+| `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1508` | `void vga_fb_note_prompt(void)` |
+| `vga_fb_nterms_get` | function | `kernel/vga_fb.c:1079` | `int vga_fb_nterms_get(void)` |
+| `vga_fb_park_line` | function | `kernel/vga_fb.c:1534` | `void vga_fb_park_line(const char *b, int p)` |
+| `vga_fb_pixel` | function | `kernel/vga_fb.c:1911` | `void vga_fb_pixel(int x, int y, uint8_t color)` |
+| `vga_fb_pixel_rgb` | function | `kernel/vga_fb.c:1946` | `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` |
+| `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1527` | `int vga_fb_prompt_live(void)` |
+| `vga_fb_prompted` | function | `kernel/vga_fb.c:1518` | `int vga_fb_prompted(void)` |
+| `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:2059` | `int vga_fb_ps2_owner(int pid)` |
+| `vga_fb_puts_term` | function | `kernel/vga_fb.c:2884` | `void vga_fb_puts_term(const char *s)` |
+| `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1745` | `unsigned long vga_fb_read_rgb(int x, int y)` |
+| `vga_fb_rect` | function | `kernel/vga_fb.c:1931` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
+| `vga_fb_rect_rgb` | function | `kernel/vga_fb.c:1955` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)` |
+| `vga_fb_reset_default` | function | `kernel/vga_fb.c:3426` | `void vga_fb_reset_default(void)` |
+| `vga_fb_resize` | function | `kernel/vga_fb.c:3406` | `void vga_fb_resize(int dcols, int drows)` |
+| `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:621` | `void vga_fb_set_gfx_mode(int on)` |
+| `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1670` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
+| `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:559` | `void vga_fb_set_gfx_program(const char *name)` |
+| `vga_fb_set_palette` | function | `kernel/vga_fb.c:1837` | `static void vga_fb_set_palette(void)` |
+| `vga_fb_snap_window` | function | `kernel/vga_fb.c:3378` | `void vga_fb_snap_window(int zone)` |
+| `vga_fb_str` | function | `kernel/vga_fb.c:1976` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
+| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:2890` | `void vga_fb_text_cursor(int col)` |
+| `vga_fb_theme_name` | function | `kernel/vga_fb.c:2542` | `int vga_fb_theme_name(char *dst, int cap)` |
+| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:3220` | `void vga_fb_toggle_fullscreen(void)` |
+| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:3241` | `void vga_fb_toggle_minimize(void)` |
+| `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1549` | `int vga_fb_unpark_line(char *b, int *p)` |
+| `wall_level` | function | `kernel/vga_fb.c:1828` | `static int wall_level(int v)` |
+| `wallpaper_draw` | function | `kernel/vga_fb.c:3537` | `static void wallpaper_draw(void)` |
+| `wallpaper_ensure` | function | `kernel/vga_fb.c:3480` | `static void wallpaper_ensure(void)` |
+| `wallpaper_rect` | function | `kernel/vga_fb.c:3966` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
+| `wallpaper_usable` | function | `kernel/vga_fb.c:3532` | `static int wallpaper_usable(void)` |
+| `wm_buttons_hit` | function | `kernel/vga_fb.c:2039` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
+| `wm_clear_close` | function | `kernel/vga_fb.c:2055` | `void wm_clear_close(void)` |
+| `wm_close_pending` | function | `kernel/vga_fb.c:2054` | `int wm_close_pending(void)` |
+| `wm_drag_reset` | function | `kernel/vga_fb.c:69` | `static void wm_drag_reset(void)` |
+| `wm_draw_buttons` | function | `kernel/vga_fb.c:2013` | `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` |
+| `wm_emit_focus_moved` | function | `kernel/vga_fb.c:949` | `static void wm_emit_focus_moved(int before, int source)` |
+| `wm_event_cfg` | function | `kernel/vga_fb.c:60` | `static wm_event_config_t wm_event_cfg(void)` |
+| `wm_focus_cursor_sync` | function | `kernel/vga_fb.c:942` | `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` |
+| `wm_geom_cfg` | function | `kernel/vga_fb.c:49` | `static wm_geom_config_t wm_geom_cfg(void)` |
+| `wm_gfx_focus_sync` | function | `kernel/vga_fb.c:1141` | `static void wm_gfx_focus_sync(int on)` |
+| `wm_gfx_mode_active` | function | `kernel/vga_fb.c:2056` | `int wm_gfx_mode_active(void)` |
+| `wm_init_once` | function | `kernel/vga_fb.c:1041` | `static void wm_init_once(void)` |
+| `wm_snapshot_state` | function | `kernel/vga_fb.c:1082` | `static void wm_snapshot_state(wm_focus_state_t *st)` |
+| `fx_wait_until` | function | `kernel/vga_fx.c:35` | `static void fx_wait_until(unsigned long deadline)` |
+| `once` | function | `kernel/vga_fx.c:90` | `* once (prev[] tracks the revealed frontier per column), then the final  * restore guarantees the...` |
+| `vga_fx_enabled` | function | `kernel/vga_fx.c:27` | `int vga_fx_enabled(void)` |
+| `vga_fx_free` | function | `kernel/vga_fx.c:77` | `void vga_fx_free(unsigned int *buf)` |
+| `vga_fx_melt_from_black` | function | `kernel/vga_fx.c:159` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` |
+| `vga_fx_melt_rect` | function | `kernel/vga_fx.c:150` | `void vga_fx_melt_rect(int x, int y, int w, int h,     const unsigned int *oldb, const unsigned in...` |
+| `vga_fx_restore_rect` | function | `kernel/vga_fx.c:63` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)` |
+| `vga_fx_set_enabled` | function | `kernel/vga_fx.c:22` | `void vga_fx_set_enabled(int on)` |
+| `vga_fx_snap_rect` | function | `kernel/vga_fx.c:41` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)` |
+| `Client` | class | `mcp/mcp_dbg_driver.py:15` | `class Client` |
+| `__init__` | method | `mcp/mcp_dbg_driver.py:16` | `def __init__(self)` |
+| `close` | method | `mcp/mcp_dbg_driver.py:54` | `def close(self)` |
+| `main` | method | `mcp/mcp_dbg_driver.py:64` | `def main()` |
+| `request` | method | `mcp/mcp_dbg_driver.py:28` | `def request(self, method, params)` |
+| `tool` | method | `mcp/mcp_dbg_driver.py:46` | `def tool(self, name, params)` |
+| `Client` | class | `mcp/mcp_dogfood.py:19` | `class Client` |
+| `__init__` | method | `mcp/mcp_dogfood.py:20` | `def __init__(self, addons_dir)` |
+| `close` | method | `mcp/mcp_dogfood.py:68` | `def close(self)` |
+| `main` | method | `mcp/mcp_dogfood.py:78` | `def main()` |
+| `request` | method | `mcp/mcp_dogfood.py:40` | `def request(self, method, params)` |
+| `tool` | method | `mcp/mcp_dogfood.py:58` | `def tool(self, name, params)` |
+| `AddonError` | class | `mcp/minios_addons.py:56` | `class AddonError(Exception)` |
+| `AddonState` | class | `mcp/minios_addons.py:377` | `class AddonState` |
+| `__init__` | method | `mcp/minios_addons.py:380` | `def __init__(self, path)` |
+| `_clean` | method | `mcp/minios_addons.py:62` | `def _clean(s)` |
+| `_unquote` | method | `mcp/minios_addons.py:66` | `def _unquote(v)` |
+| `exit_code_of` | method | `mcp/minios_addons.py:372` | `def exit_code_of(text)` |
+| `fail` | method | `mcp/minios_addons.py:85` | `def fail(lineno, why)` |
+| `install_addon` | method | `mcp/minios_addons.py:401` | `def install_addon(session, addon, cfg)` |
+| `load` | method | `mcp/minios_addons.py:383` | `def load(self)` |
+| `load_addons_dir` | method | `mcp/minios_addons.py:323` | `def load_addons_dir(addons_dir)` |
+| `parse_addon_yaml` | method | `mcp/minios_addons.py:73` | `def parse_addon_yaml(text)` |
+| `save` | method | `mcp/minios_addons.py:393` | `def save(self, addons)` |
+| `split_for_editor` | method | `mcp/minios_addons.py:347` | `def split_for_editor(text)` |
+| `validate_addon` | method | `mcp/minios_addons.py:205` | `def validate_addon(addon, source)` |
+| `validate_addon_path` | method | `mcp/minios_addons.py:295` | `def validate_addon_path(path)` |
+| `validate_shell_line` | method | `mcp/minios_addons.py:309` | `def validate_shell_line(line)` |
+| `LogBuffer` | class | `mcp/minios_mcp.py:143` | `class LogBuffer` |
+| `MCPServer` | class | `mcp/minios_mcp.py:711` | `class MCPServer` |
+| `MiniOSSession` | class | `mcp/minios_mcp.py:199` | `class MiniOSSession` |
+| `RPCError` | class | `mcp/minios_mcp.py:134` | `class RPCError(Exception)` |
+| `ToolError` | class | `mcp/minios_mcp.py:128` | `class ToolError(Exception)` |
+| `__init__` | method | `mcp/minios_mcp.py:137` | `def __init__(self, code, message)` |
+| `__init__` | method | `mcp/minios_mcp.py:146` | `def __init__(self, cap)` |
+| `__init__` | method | `mcp/minios_mcp.py:202` | `def __init__(self, cfg)` |
+| `__init__` | method | `mcp/minios_mcp.py:714` | `def __init__(self, cfg)` |
+| `_addon_install` | method | `mcp/minios_mcp.py:843` | `def _addon_install(self, args)` |
+| `_addons_list` | method | `mcp/minios_mcp.py:822` | `def _addons_list(self)` |
+| `_call` | method | `mcp/minios_mcp.py:759` | `def _call(self, params)` |
+| `_cleanup_parts` | method | `mcp/minios_mcp.py:473` | `def _cleanup_parts(self, parts)` |
+| `_close_pty` | method | `mcp/minios_mcp.py:312` | `def _close_pty(self)` |
+| `_dispatch` | method | `mcp/minios_mcp.py:776` | `def _dispatch(self, name, args)` |
+| `_drop_pidfile` | method | `mcp/minios_mcp.py:261` | `def _drop_pidfile(self)` |
+| `_find_locked` | method | `mcp/minios_mcp.py:189` | `def _find_locked(self, marker, start)` |
+| `_handle` | method | `mcp/minios_mcp.py:726` | `def _handle(self, line)` |
+| `_initialize` | method | `mcp/minios_mcp.py:752` | `def _initialize(self, params)` |
+| `_read_loop` | method | `mcp/minios_mcp.py:302` | `def _read_loop(self)` |
+| `_reap_stale` | method | `mcp/minios_mcp.py:225` | `def _reap_stale(self)` |
+| `_reply` | method | `mcp/minios_mcp.py:864` | `def _reply(self, msg)` |
+| `_write_editor_line` | method | `mcp/minios_mcp.py:331` | `def _write_editor_line(self, line)` |
+| `_write_line` | method | `mcp/minios_mcp.py:322` | `def _write_line(self, line)` |
+| `append` | method | `mcp/minios_mcp.py:152` | `def append(self, data)` |
+| `boot` | method | `mcp/minios_mcp.py:267` | `def boot(self, timeout_ms)` |
+| `booted` | method | `mcp/minios_mcp.py:213` | `def booted(self)` |
+| `bytes_from` | method | `mcp/minios_mcp.py:160` | `def bytes_from(self, pos)` |
+| `cat` | method | `mcp/minios_mcp.py:430` | `def cat(self, path)` |
+| `cat_body` | method | `mcp/minios_mcp.py:447` | `def cat_body(self, path, missing_ok)` |
+| `clamp_timeout` | function | `mcp/minios_mcp.py:86` | `def clamp_timeout(ms)` |
+| `close` | method | `mcp/minios_mcp.py:556` | `def close(self)` |
+| `env_config` | function | `mcp/minios_mcp.py:68` | `def env_config()` |
+| `expect` | method | `mcp/minios_mcp.py:350` | `def expect(self, marker, timeout_ms)` |
+| `find` | method | `mcp/minios_mcp.py:172` | `def find(self, marker, start)` |
+| `main` | method | `mcp/minios_mcp.py:868` | `def main()` |
+| `poweroff` | method | `mcp/minios_mcp.py:517` | `def poweroff(self, timeout_ms)` |
+| `run` | method | `mcp/minios_mcp.py:718` | `def run(self)` |
+| `run_python` | method | `mcp/minios_mcp.py:436` | `def run_python(self, script, args, timeout_ms)` |
+| `run_test` | method | `mcp/minios_mcp.py:374` | `def run_test(self, commands, expect, refute, timeout_ms)` |
+| `send` | method | `mcp/minios_mcp.py:339` | `def send(self, line, timeout_ms)` |
+| `snapshot` | method | `mcp/minios_mcp.py:364` | `def snapshot(self, max_bytes)` |
+| `status` | method | `mcp/minios_mcp.py:216` | `def status(self)` |
+| `subprocess_launch` | method | `mcp/minios_mcp.py:560` | `def subprocess_launch(cfg, slave_fd)` |
+| `terminate` | method | `mcp/minios_mcp.py:537` | `def terminate(self)` |
+| `text_from` | method | `mcp/minios_mcp.py:165` | `def text_from(self, pos, end)` |
+| `validate_content` | function | `mcp/minios_mcp.py:115` | `def validate_content(text)` |
+| `validate_path` | function | `mcp/minios_mcp.py:99` | `def validate_path(name)` |
+| `wait_for` | method | `mcp/minios_mcp.py:176` | `def wait_for(self, marker, start, timeout_ms)` |
+| `write` | method | `mcp/minios_mcp.py:480` | `def write(self, path, content)` |
+| `run_one` | function | `mcp/mutate_mcp.sh:115` | `` |
+| `FakeOS` | class | `mcp/test_minios_mcp.py:619` | `class FakeOS` |
+| `MCPServer` | class | `mcp/test_minios_mcp.py:58` | `class MCPServer` |
+| `TestAddonBDD` | class | `mcp/test_minios_mcp.py:820` | `class TestAddonBDD(_ConsoleBDDBase)` |
+| `TestAddonHelpers` | class | `mcp/test_minios_mcp.py:579` | `class TestAddonHelpers(TestCase)` |
+| `TestAddonInstall` | class | `mcp/test_minios_mcp.py:685` | `class TestAddonInstall(TestCase)` |
+| `TestAddonYaml` | class | `mcp/test_minios_mcp.py:457` | `class TestAddonYaml(TestCase)` |
+| `TestLogBuffer` | class | `mcp/test_minios_mcp.py:254` | `class TestLogBuffer(TestCase)` |
+| `TestMiniOSBDD` | class | `mcp/test_minios_mcp.py:322` | `class TestMiniOSBDD(_ConsoleBDDBase)` |
+| `TestProtocol` | class | `mcp/test_minios_mcp.py:141` | `class TestProtocol(TestCase)` |
+| `TestValidation` | class | `mcp/test_minios_mcp.py:205` | `class TestValidation(TestCase)` |
+| `_ConsoleBDDBase` | class | `mcp/test_minios_mcp.py:286` | `class _ConsoleBDDBase(TestCase)` |
+| `__init__` | method | `mcp/test_minios_mcp.py:61` | `def __init__(self, env_extra)` |
+| `__init__` | method | `mcp/test_minios_mcp.py:622` | `def __init__(self, exit_codes)` |
+| `_cleanup_parts` | method | `mcp/test_minios_mcp.py:679` | `def _cleanup_parts(self, parts)` |
+| `_read_response` | method | `mcp/test_minios_mcp.py:96` | `def _read_response(self)` |
+| `_roundtrip` | method | `mcp/test_minios_mcp.py:102` | `def _roundtrip(self, msg)` |
+| `_toolerror` | class | `mcp/test_minios_mcp.py:674` | `class _toolerror(Exception)` |
+| `boot` | method | `mcp/test_minios_mcp.py:632` | `def boot(self, timeout_ms)` |
+| `booted` | method | `mcp/test_minios_mcp.py:629` | `def booted(self)` |
+| `broken_cat` | method | `mcp/test_minios_mcp.py:763` | `def broken_cat(path, missing_ok)` |
+| `cat_body` | method | `mcp/test_minios_mcp.py:667` | `def cat_body(self, path, missing_ok)` |
+| `close` | method | `mcp/test_minios_mcp.py:120` | `def close(self)` |
+| `guard_server` | method | `mcp/test_minios_mcp.py:295` | `def guard_server(cls)` |
+| `guarded` | method | `mcp/test_minios_mcp.py:298` | `def guarded(name, params)` |
+| `have_qemu` | function | `mcp/test_minios_mcp.py:52` | `def have_qemu()` |
+| `initialize` | method | `mcp/test_minios_mcp.py:80` | `def initialize(self)` |
+| `load_module` | function | `mcp/test_minios_mcp.py:29` | `def load_module()` |
+| `make_addon` | method | `mcp/test_minios_mcp.py:724` | `def make_addon(self)` |
+| `raw` | method | `mcp/test_minios_mcp.py:91` | `def raw(self, line)` |
+| `request` | method | `mcp/test_minios_mcp.py:84` | `def request(self, method, params)` |
+| `send` | method | `mcp/test_minios_mcp.py:643` | `def send(self, line, timeout_ms)` |
+| `setUp` | method | `mcp/test_minios_mcp.py:316` | `def setUp(self)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:143` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:207` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:256` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:324` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:459` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:581` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:687` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:824` | `def setUpClass(cls)` |
+| `tearDownClass` | method | `mcp/test_minios_mcp.py:149` | `def tearDownClass(cls)` |
+| `tearDownClass` | method | `mcp/test_minios_mcp.py:331` | `def tearDownClass(cls)` |
+| `tearDownClass` | method | `mcp/test_minios_mcp.py:719` | `def tearDownClass(cls)` |
+| `tearDownClass` | method | `mcp/test_minios_mcp.py:861` | `def tearDownClass(cls)` |
+| `test_addons_list` | method | `mcp/test_minios_mcp.py:869` | `def test_addons_list(self)` |
+| `test_bad_indent_rejected` | method | `mcp/test_minios_mcp.py:487` | `def test_bad_indent_rejected(self)` |
+| `test_bad_kind_rejected` | method | `mcp/test_minios_mcp.py:541` | `def test_bad_kind_rejected(self)` |
+| `test_bounds` | method | `mcp/test_minios_mcp.py:261` | `def test_bounds(self)` |
+| `test_content_accepts_ascii` | method | `mcp/test_minios_mcp.py:223` | `def test_content_accepts_ascii(self)` |
+| `test_content_rejects_non_printable` | method | `mcp/test_minios_mcp.py:226` | `def test_content_rejects_non_printable(self)` |
+| `test_cursor_prevents_stale_match` | method | `mcp/test_minios_mcp.py:275` | `def test_cursor_prevents_stale_match(self)` |
+| `test_exit_code_of` | method | `mcp/test_minios_mcp.py:606` | `def test_exit_code_of(self)` |
+| `test_find_and_total` | method | `mcp/test_minios_mcp.py:268` | `def test_find_and_total(self)` |
+| `test_host_kind_accepts_empty_files` | method | `mcp/test_minios_mcp.py:518` | `def test_host_kind_accepts_empty_files(self)` |
+| `test_host_kind_requires_artifact` | method | `mcp/test_minios_mcp.py:549` | `def test_host_kind_requires_artifact(self)` |
+| `test_initialize` | method | `mcp/test_minios_mcp.py:152` | `def test_initialize(self)` |
+| `test_install_build_failure_aborts` | method | `mcp/test_minios_mcp.py:811` | `def test_install_build_failure_aborts(self)` |
+| `test_install_fixture` | method | `mcp/test_minios_mcp.py:875` | `def test_install_fixture(self)` |
+| `test_install_mismatch_aborts_and_cleans` | method | `mcp/test_minios_mcp.py:759` | `def test_install_mismatch_aborts_and_cleans(self)` |
+| `test_install_multi_chunk_reassembly` | method | `mcp/test_minios_mcp.py:773` | `def test_install_multi_chunk_reassembly(self)` |
+| `test_install_refuses_host_before_touching_session` | method | `mcp/test_minios_mcp.py:563` | `def test_install_refuses_host_before_touching_session(self)` |
+| `test_install_success` | method | `mcp/test_minios_mcp.py:746` | `def test_install_success(self)` |
+| `test_install_unknown_addon_fails` | method | `mcp/test_minios_mcp.py:884` | `def test_install_unknown_addon_fails(self)` |
+| `test_install_verify_failure_aborts` | method | `mcp/test_minios_mcp.py:804` | `def test_install_verify_failure_aborts(self)` |
+| `test_malformed_json` | method | `mcp/test_minios_mcp.py:174` | `def test_malformed_json(self)` |
+| `test_parse_valid` | method | `mcp/test_minios_mcp.py:469` | `def test_parse_valid(self)` |
+| `test_path_accepts_plain_names` | method | `mcp/test_minios_mcp.py:212` | `def test_path_accepts_plain_names(self)` |
+| `test_path_rejects_long` | method | `mcp/test_minios_mcp.py:220` | `def test_path_rejects_long(self)` |
+| `test_path_rejects_unsafe` | method | `mcp/test_minios_mcp.py:216` | `def test_path_rejects_unsafe(self)` |
+| `test_ping` | method | `mcp/test_minios_mcp.py:166` | `def test_ping(self)` |
+| `test_reference_kind_carries_nothing` | method | `mcp/test_minios_mcp.py:533` | `def test_reference_kind_carries_nothing(self)` |
+| `test_send_empty_line_rejected` | method | `mcp/test_minios_mcp.py:189` | `def test_send_empty_line_rejected(self)` |
+| `test_send_not_booted` | method | `mcp/test_minios_mcp.py:183` | `def test_send_not_booted(self)` |
+| `test_split_for_editor_chunks` | method | `mcp/test_minios_mcp.py:591` | `def test_split_for_editor_chunks(self)` |
+| `test_split_rejects_long_line` | method | `mcp/test_minios_mcp.py:598` | `def test_split_rejects_long_line(self)` |
+| `test_split_rejects_non_ascii` | method | `mcp/test_minios_mcp.py:602` | `def test_split_rejects_non_ascii(self)` |
+| `test_state_roundtrip` | method | `mcp/test_minios_mcp.py:611` | `def test_state_roundtrip(self)` |
+| `test_t01_boot` | method | `mcp/test_minios_mcp.py:335` | `def test_t01_boot(self)` |
+| `test_t02_expect` | method | `mcp/test_minios_mcp.py:345` | `def test_t02_expect(self)` |
+| `test_t03_write_and_cat` | method | `mcp/test_minios_mcp.py:352` | `def test_t03_write_and_cat(self)` |
+| `test_t04_toolchain_elf` | method | `mcp/test_minios_mcp.py:362` | `def test_t04_toolchain_elf(self)` |
+| `test_t05_toolchain_cvm` | method | `mcp/test_minios_mcp.py:373` | `def test_t05_toolchain_cvm(self)` |
+| `test_t06_selfhosted_compiler` | method | `mcp/test_minios_mcp.py:383` | `def test_t06_selfhosted_compiler(self)` |
+| `test_t07_bin_command_path` | method | `mcp/test_minios_mcp.py:389` | `def test_t07_bin_command_path(self)` |
+| `test_t08_python_script` | method | `mcp/test_minios_mcp.py:397` | `def test_t08_python_script(self)` |
+| `test_t09_py_eval` | method | `mcp/test_minios_mcp.py:404` | `def test_t09_py_eval(self)` |
+| `test_t10_minios_test` | method | `mcp/test_minios_mcp.py:409` | `def test_t10_minios_test(self)` |
+| `test_t11_poweroff_and_reboot` | method | `mcp/test_minios_mcp.py:430` | `def test_t11_poweroff_and_reboot(self)` |
+| `test_test_not_booted` | method | `mcp/test_minios_mcp.py:195` | `def test_test_not_booted(self)` |
+| `test_timeout_clamped` | method | `mcp/test_minios_mcp.py:230` | `def test_timeout_clamped(self)` |
+| `test_tools_list` | method | `mcp/test_minios_mcp.py:158` | `def test_tools_list(self)` |
+| `test_unknown_key_rejected` | method | `mcp/test_minios_mcp.py:483` | `def test_unknown_key_rejected(self)` |
+| `test_unknown_method` | method | `mcp/test_minios_mcp.py:170` | `def test_unknown_method(self)` |
+| `test_unknown_tool` | method | `mcp/test_minios_mcp.py:178` | `def test_unknown_tool(self)` |
+| `test_validate_accepts_valid` | method | `mcp/test_minios_mcp.py:479` | `def test_validate_accepts_valid(self)` |
+| `test_validate_rejects_bad_dst` | method | `mcp/test_minios_mcp.py:491` | `def test_validate_rejects_bad_dst(self)` |
+| `test_validate_rejects_control_chars` | method | `mcp/test_minios_mcp.py:508` | `def test_validate_rejects_control_chars(self)` |
+| `test_validate_rejects_empty_files` | method | `mcp/test_minios_mcp.py:513` | `def test_validate_rejects_empty_files(self)` |
+| `test_validate_rejects_long_build_line` | method | `mcp/test_minios_mcp.py:500` | `def test_validate_rejects_long_build_line(self)` |
+| `test_validate_rejects_missing_name` | method | `mcp/test_minios_mcp.py:496` | `def test_validate_rejects_missing_name(self)` |
+| `test_write_rejects_line_too_long` | method | `mcp/test_minios_mcp.py:234` | `def test_write_rejects_line_too_long(self)` |
+| `test_write_rejects_too_many_lines` | method | `mcp/test_minios_mcp.py:243` | `def test_write_rejects_too_many_lines(self)` |
+| `tool` | method | `mcp/test_minios_mcp.py:110` | `def tool(self, name, params)` |
+| `write` | method | `mcp/test_minios_mcp.py:636` | `def write(self, path, content)` |
+| `LNX_AF_INET` | macro | `net/net.c:1028` | `#define LNX_AF_INET` |
+| `LNX_EAFNOSUPPORT` | macro | `net/net.c:1081` | `#define LNX_EAFNOSUPPORT` |
+| `LNX_EAGAIN` | macro | `net/net.c:1072` | `#define LNX_EAGAIN` |
+| `LNX_EALREADY` | macro | `net/net.c:1086` | `#define LNX_EALREADY` |
+| `LNX_EBADF` | macro | `net/net.c:1071` | `#define LNX_EBADF` |
+| `LNX_ECONNREFUSED` | macro | `net/net.c:1085` | `#define LNX_ECONNREFUSED` |
+| `LNX_EDESTADDRREQ` | macro | `net/net.c:1076` | `#define LNX_EDESTADDRREQ` |
+| `LNX_EFAULT` | macro | `net/net.c:1073` | `#define LNX_EFAULT` |
+| `LNX_EINPROGRESS` | macro | `net/net.c:1087` | `#define LNX_EINPROGRESS` |
+| `LNX_EINVAL` | macro | `net/net.c:1074` | `#define LNX_EINVAL` |
+| `LNX_EISCONN` | macro | `net/net.c:1082` | `#define LNX_EISCONN` |
+| `LNX_EMSGSIZE` | macro | `net/net.c:1077` | `#define LNX_EMSGSIZE` |
+| `LNX_ENOPROTOOPT` | macro | `net/net.c:1078` | `#define LNX_ENOPROTOOPT` |
+| `LNX_ENOTCONN` | macro | `net/net.c:1083` | `#define LNX_ENOTCONN` |
+| `LNX_EOPNOTSUPP` | macro | `net/net.c:1080` | `#define LNX_EOPNOTSUPP` |
+| `LNX_EPIPE` | macro | `net/net.c:1075` | `#define LNX_EPIPE` |
+| `LNX_EPROTONOSUPPORT` | macro | `net/net.c:1079` | `#define LNX_EPROTONOSUPPORT` |
+| `LNX_ETIMEDOUT` | macro | `net/net.c:1084` | `#define LNX_ETIMEDOUT` |
+| `LNX_FD_CLOEXEC` | macro | `net/net.c:1061` | `#define LNX_FD_CLOEXEC` |
+| `LNX_F_GETFD` | macro | `net/net.c:1062` | `#define LNX_F_GETFD` |
+| `LNX_F_GETFL` | macro | `net/net.c:1064` | `#define LNX_F_GETFL` |
+| `LNX_F_SETFD` | macro | `net/net.c:1063` | `#define LNX_F_SETFD` |
+| `LNX_F_SETFL` | macro | `net/net.c:1065` | `#define LNX_F_SETFL` |
+| `LNX_IPPROTO_IP` | macro | `net/net.c:1049` | `#define LNX_IPPROTO_IP` |
+| `LNX_IPPROTO_TCP` | macro | `net/net.c:1034` | `#define LNX_IPPROTO_TCP` |
+| `LNX_IPPROTO_UDP` | macro | `net/net.c:1035` | `#define LNX_IPPROTO_UDP` |
+| `LNX_IP_MTU_DISCOVER` | macro | `net/net.c:1052` | `#define LNX_IP_MTU_DISCOVER` |
+| `LNX_IP_RECVERR` | macro | `net/net.c:1053` | `#define LNX_IP_RECVERR` |
+| `LNX_IP_TOS` | macro | `net/net.c:1050` | `#define LNX_IP_TOS` |
+| `LNX_IP_TTL` | macro | `net/net.c:1051` | `#define LNX_IP_TTL` |
+| `LNX_MSG_DONTWAIT` | macro | `net/net.c:1037` | `#define LNX_MSG_DONTWAIT` |
+| `LNX_MSG_NOSIGNAL` | macro | `net/net.c:1038` | `#define LNX_MSG_NOSIGNAL` |
+| `LNX_MSG_PEEK` | macro | `net/net.c:1036` | `#define LNX_MSG_PEEK` |
+| `LNX_O_NONBLOCK` | macro | `net/net.c:1060` | `#define LNX_O_NONBLOCK` |
+| `LNX_O_RDWR` | macro | `net/net.c:1059` | `#define LNX_O_RDWR` |
+| `LNX_POLLERR` | macro | `net/net.c:1068` | `#define LNX_POLLERR` |
+| `LNX_POLLHUP` | macro | `net/net.c:1069` | `#define LNX_POLLHUP` |
+| `LNX_POLLIN` | macro | `net/net.c:1066` | `#define LNX_POLLIN` |
+| `LNX_POLLNVAL` | macro | `net/net.c:1070` | `#define LNX_POLLNVAL` |
+| `LNX_POLLOUT` | macro | `net/net.c:1067` | `#define LNX_POLLOUT` |
+| `LNX_SOCK_CLOEXEC` | macro | `net/net.c:1033` | `#define LNX_SOCK_CLOEXEC` |
+| `LNX_SOCK_DGRAM` | macro | `net/net.c:1030` | `#define LNX_SOCK_DGRAM` |
+| `LNX_SOCK_NONBLOCK` | macro | `net/net.c:1032` | `#define LNX_SOCK_NONBLOCK` |
+| `LNX_SOCK_STREAM` | macro | `net/net.c:1029` | `#define LNX_SOCK_STREAM` |
+| `LNX_SOCK_TYPE_MASK` | macro | `net/net.c:1031` | `#define LNX_SOCK_TYPE_MASK` |
+| `LNX_SOL_SOCKET` | macro | `net/net.c:1039` | `#define LNX_SOL_SOCKET` |
+| `LNX_SO_ERROR` | macro | `net/net.c:1042` | `#define LNX_SO_ERROR` |
+| `LNX_SO_KEEPALIVE` | macro | `net/net.c:1045` | `#define LNX_SO_KEEPALIVE` |
+| `LNX_SO_LINGER` | macro | `net/net.c:1046` | `#define LNX_SO_LINGER` |
+| `LNX_SO_RCVBUF` | macro | `net/net.c:1044` | `#define LNX_SO_RCVBUF` |
+| `LNX_SO_RCVTIMEO` | macro | `net/net.c:1047` | `#define LNX_SO_RCVTIMEO` |
+| `LNX_SO_REUSEADDR` | macro | `net/net.c:1040` | `#define LNX_SO_REUSEADDR` |
+| `LNX_SO_SNDBUF` | macro | `net/net.c:1043` | `#define LNX_SO_SNDBUF` |
+| `LNX_SO_SNDTIMEO` | macro | `net/net.c:1048` | `#define LNX_SO_SNDTIMEO` |
+| `LNX_SO_TYPE` | macro | `net/net.c:1041` | `#define LNX_SO_TYPE` |
+| `LNX_TCP_KEEPCNT` | macro | `net/net.c:1058` | `#define LNX_TCP_KEEPCNT` |
+| `LNX_TCP_KEEPIDLE` | macro | `net/net.c:1056` | `#define LNX_TCP_KEEPIDLE` |
+| `LNX_TCP_KEEPINTVL` | macro | `net/net.c:1057` | `#define LNX_TCP_KEEPINTVL` |
+| `LNX_TCP_NODELAY` | macro | `net/net.c:1055` | `#define LNX_TCP_NODELAY` |
+| `NET_IP_DEFAULT_TTL` | macro | `net/net.c:1054` | `#define NET_IP_DEFAULT_TTL` |
+| `NET_RECV_FLAGS_OK` | macro | `net/net.c:1089` | `#define NET_RECV_FLAGS_OK` |
+| `NET_SEND_FLAGS_OK` | macro | `net/net.c:1088` | `#define NET_SEND_FLAGS_OK` |
+| `NET_TCP_CLOSED` | macro | `net/net.c:400` | `#define NET_TCP_CLOSED` |
+| `NET_TCP_DEAD` | macro | `net/net.c:404` | `#define NET_TCP_DEAD` |
+| `NET_TCP_ESTABLISHED` | macro | `net/net.c:402` | `#define NET_TCP_ESTABLISHED` |
+| `NET_TCP_FIN_SENT` | macro | `net/net.c:403` | `#define NET_TCP_FIN_SENT` |
+| `NET_TCP_LISTEN` | macro | `net/net.c:405` | `#define NET_TCP_LISTEN` |
+| `NET_TCP_SYN_RCVD` | macro | `net/net.c:406` | `#define NET_TCP_SYN_RCVD` |
+| `NET_TCP_SYN_SENT` | macro | `net/net.c:401` | `#define NET_TCP_SYN_SENT` |
+| `net_accept_nb` | function | `net/net.c:942` | `int net_accept_nb(int fd)` |
+| `net_arp_entry` | struct | `net/net.c:95` | `` |
+| `net_arp_lookup` | function | `net/net.c:118` | `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)` |
+| `net_arp_request` | function | `net/net.c:129` | `static void net_arp_request(const unsigned char *ip)` |
+| `net_arp_resolve` | function | `net/net.c:147` | `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)` |
+| `net_arp_store` | function | `net/net.c:103` | `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)` |
+| `net_checksum` | function | `net/net.c:78` | `static unsigned short net_checksum(const void *data, unsigned len)` |
+| `net_close` | function | `net/net.c:916` | `void net_close(int fd)` |
+| `net_cmd_dns` | function | `net/net.c:1799` | `void net_cmd_dns(const char *host)` |
+| `net_cmd_ping` | function | `net/net.c:1788` | `void net_cmd_ping(const char *ip_text)` |
+| `net_cmd_status` | function | `net/net.c:1760` | `void net_cmd_status(void)` |
+| `net_connect` | function | `net/net.c:892` | `int net_connect(const char *host, unsigned short port)` |
+| `net_dns_parse` | function | `net/net.c:230` | `static void net_dns_parse(const unsigned char *data, unsigned len)` |
+| `net_dns_resolve` | function | `net/net.c:268` | `static int net_dns_resolve(const char *host, unsigned char ip_out[4])` |
+| `net_dns_state` | struct | `net/net.c:221` | `` |
+| `net_drv_poll` | function | `net/net.c:43` | `static void net_drv_poll(void)` |
+| `net_drv_present` | function | `net/net.c:48` | `static int net_drv_present(void)` |
+| `net_drv_send` | function | `net/net.c:38` | `static int net_drv_send(const unsigned char *frame, unsigned len)` |
+| `net_fd_udp` | function | `net/net.c:1096` | `static int net_fd_udp(long fd)` |
+| `net_gather_msg` | function | `net/net.c:1450` | `static long net_gather_msg(long msg, unsigned char *kbuf, long cap)` |
+| `net_get16` | function | `net/net.c:69` | `static unsigned short net_get16(const unsigned char *p)` |
+| `net_get32` | function | `net/net.c:73` | `static unsigned int net_get32(const unsigned char *p)` |
+| `net_get_addrs` | function | `net/net.c:1782` | `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])` |
+| `net_icmp_rx` | function | `net/net.c:348` | `static void net_icmp_rx(const unsigned char *ip, unsigned len)` |
+| `net_init` | function | `net/net.c:1820` | `void net_init(void)` |
+| `net_ip_send` | function | `net/net.c:172` | `static int net_ip_send(const unsigned char *dip, unsigned char proto,                        cons...` |
+| `net_listen` | function | `net/net.c:927` | `int net_listen(unsigned short port)` |
+| `net_load_sockaddr` | function | `net/net.c:1185` | `static long net_load_sockaddr(long addr, long len, unsigned char ip[4], unsigned short *port)` |
+| `net_open` | function | `net/net.c:886` | `int net_open(void)` |
+| `net_parse_ip` | function | `net/net.c:1735` | `static int net_parse_ip(const char *text, unsigned char ip[4])` |
+| `net_ping` | function | `net/net.c:377` | `static int net_ping(const unsigned char ip[4])` |
+| `net_put16` | function | `net/net.c:57` | `static void net_put16(unsigned char *p, unsigned short v)` |
+| `net_put32` | function | `net/net.c:62` | `static void net_put32(unsigned char *p, unsigned int v)` |
+| `net_put_sockaddr` | function | `net/net.c:1158` | `static void net_put_sockaddr(unsigned char *sa, const unsigned char ip[4], unsigned short port)` |
+| `net_recv` | function | `net/net.c:906` | `int net_recv(int fd, char *buf, int len)` |
+| `net_recv_timeout` | function | `net/net.c:911` | `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)` |
+| `net_register_symbols` | function | `net/net.c:1812` | `void net_register_symbols(void)` |
+| `net_rx_handle_frame` | function | `net/net.c:822` | `void net_rx_handle_frame(const unsigned char *frame, unsigned len)` |
+| `net_send` | function | `net/net.c:901` | `int net_send(int fd, const char *buf, int len)` |
+| `net_send_bytes` | function | `net/net.c:1347` | `static long net_send_bytes(long fd, const unsigned char *buf, long len,                          ...` |
+| `net_sock_alloc` | function | `net/net.c:469` | `static struct net_tcp_sock *net_sock_alloc(void)` |
+| `net_sock_index` | function | `net/net.c:484` | `static int net_sock_index(const struct net_tcp_sock *s)` |
+| `net_sock_state` | function | `net/net.c:976` | `int net_sock_state(int fd)` |
+| `net_socket_revents` | function | `net/net.c:1664` | `static unsigned short net_socket_revents(long fd)` |
+| `net_store_sockaddr` | function | `net/net.c:1168` | `static long net_store_sockaddr(long addr, long lenp, const unsigned char ip[4],                  ...` |
+| `net_sys_accept` | function | `net/net.c:1329` | `long net_sys_accept(long fd, long sockaddr, long addrlen)` |
+| `net_sys_bind` | function | `net/net.c:1296` | `long net_sys_bind(long fd, long sockaddr, long addrlen)` |
+| `net_sys_close` | function | `net/net.c:1523` | `long net_sys_close(long fd)` |
+| `net_sys_connect` | function | `net/net.c:1249` | `long net_sys_connect(long fd, long sockaddr, long addrlen)` |
+| `net_sys_dns` | function | `net/net.c:1724` | `long net_sys_dns(long host)` |
+| `net_sys_fcntl` | function | `net/net.c:1643` | `long net_sys_fcntl(long fd, long cmd, long arg)` |
+| `net_sys_getpeername` | function | `net/net.c:1625` | `long net_sys_getpeername(long fd, long addr, long lenp)` |
+| `net_sys_getsockname` | function | `net/net.c:1616` | `long net_sys_getsockname(long fd, long addr, long lenp)` |
+| `net_sys_getsockopt` | function | `net/net.c:1569` | `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp)` |
+| `net_sys_is_socket` | function | `net/net.c:1102` | `int net_sys_is_socket(long fd)` |
+| `net_sys_listen` | function | `net/net.c:1318` | `long net_sys_listen(long fd, long backlog)` |
+| `net_sys_poll` | function | `net/net.c:1684` | `long net_sys_poll(long fds, long nfds, long timeout_ms)` |
+| `net_sys_recvfrom` | function | `net/net.c:1390` | `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)` |
+| `net_sys_sendmmsg` | function | `net/net.c:1498` | `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags)` |
+| `net_sys_sendmsg` | function | `net/net.c:1470` | `long net_sys_sendmsg(long fd, long msg, long flags)` |
+| `net_sys_sendto` | function | `net/net.c:1375` | `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)` |
+| `net_sys_setsockopt` | function | `net/net.c:1534` | `long net_sys_setsockopt(long fd, long level, long name, long val, long len)` |
+| `net_sys_shutdown` | function | `net/net.c:1514` | `long net_sys_shutdown(long fd, long how)` |
+| `net_sys_socket` | function | `net/net.c:1222` | `long net_sys_socket(long a1, long a2, long a3)` |
+| `net_tcp_checksum` | function | `net/net.c:493` | `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,       ...` |
+| `net_tcp_close` | function | `net/net.c:802` | `static void net_tcp_close(struct net_tcp_sock *s)` |
+| `net_tcp_connect_into` | function | `net/net.c:711` | `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],               ...` |
+| `net_tcp_passive_open` | function | `net/net.c:687` | `static int net_tcp_passive_open(struct net_tcp_sock *ls,         const unsigned char peer[4], uns...` |
+| `net_tcp_recv` | function | `net/net.c:764` | `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)` |
+| `net_tcp_rx` | function | `net/net.c:559` | `static void net_tcp_rx(const unsigned char *ip, unsigned len)` |
+| `net_tcp_send` | function | `net/net.c:738` | `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)` |
+| `net_tcp_sock` | struct | `net/net.c:408` | `` |
+| `net_tcp_xmit` | function | `net/net.c:525` | `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,                         const uns...` |
+| `net_udp_alloc` | function | `net/net.c:1106` | `static struct net_udp_sock *net_udp_alloc(void)` |
+| `net_udp_checksum_ok` | function | `net/net.c:509` | `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,               ...` |
+| `net_udp_deliver` | function | `net/net.c:1136` | `static int net_udp_deliver(const unsigned char sip[4], unsigned short sport,                     ...` |
+| `net_udp_dgram` | struct | `net/net.c:437` | `` |
+| `net_udp_ephemeral` | function | `net/net.c:1120` | `static unsigned short net_udp_ephemeral(void)` |
+| `net_udp_send` | function | `net/net.c:208` | `static int net_udp_send(const unsigned char *dip, unsigned short sport,                         u...` |
+| `net_udp_send` | function | `net/net.c:329` | `net_udp_send((const unsigned char[])` |
+| `net_udp_sock` | struct | `net/net.c:445` | `` |
+| `polling` | function | `net/net.c:959` | `* without polling (the peer's ACK arrives through the driver poll). */ int net_accept(int fd, uns...` |
 | `RTL_REG_9346CR` | macro | `net/rtl8139.c:52` | `#define RTL_REG_9346CR` |
 | `RTL_REG_CAPR` | macro | `net/rtl8139.c:50` | `#define RTL_REG_CAPR` |
 | `RTL_REG_CBR` | macro | `net/rtl8139.c:51` | `#define RTL_REG_CBR` |
@@ -154,347 +496,5 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 | `gf_shift_right` | function | `net/tls_crypto.c:321` | `static gf128 gf_shift_right(gf128 v)` |
 | `ghash_blocks` | function | `net/tls_crypto.c:361` | `static gf128 ghash_blocks(gf128 z, gf128 h, const unsigned char *data, unsigned len)` |
 | `hmac_sha256` | function | `net/tls_crypto.c:135` | `void hmac_sha256(const unsigned char *key, unsigned klen,                  const unsigned char *d...` |
-| `jpt` | struct | `net/tls_crypto.c:859` | `` |
-| `jpt_add` | function | `net/tls_crypto.c:936` | `static void jpt_add(struct ec_curve *c, const struct jpt *p1, const struct jpt *p2,              ...` |
-| `jpt_copy` | function | `net/tls_crypto.c:875` | `static void jpt_copy(struct jpt *d, const struct jpt *s, int nw)` |
-| `jpt_cswap` | function | `net/tls_crypto.c:885` | `static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask, int nw)` |
-| `jpt_dbl` | function | `net/tls_crypto.c:896` | `static void jpt_dbl(struct ec_curve *c, const struct jpt *p1, struct jpt *p3)` |
-| `jpt_from_affine` | function | `net/tls_crypto.c:1032` | `static int jpt_from_affine(struct ec_curve *c, const unsigned char *x_bytes,                     ...` |
-| `jpt_is_inf` | function | `net/tls_crypto.c:865` | `static int jpt_is_inf(const struct jpt *p, int nw)` |
-| `jpt_scalar_mult` | function | `net/tls_crypto.c:980` | `static void jpt_scalar_mult(struct ec_curve *c, const struct jpt *base,                          ...` |
-| `jpt_set_inf` | function | `net/tls_crypto.c:869` | `static void jpt_set_inf(struct jpt *p, int nw)` |
-| `jpt_to_affine` | function | `net/tls_crypto.c:1007` | `static void jpt_to_affine(struct ec_curve *c, const struct jpt *p,                           unsi...` |
-| `mont_add` | function | `net/tls_crypto.c:712` | `static void mont_add(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
-| `mont_ctx` | struct | `net/tls_crypto.c:655` | `` |
-| `mont_from` | function | `net/tls_crypto.c:693` | `static void mont_from(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
-| `mont_init` | function | `net/tls_crypto.c:677` | `static void mont_init(struct mont_ctx *m, const unsigned char *p_bytes,                       uns...` |
-| `mont_inv` | function | `net/tls_crypto.c:736` | `static void mont_inv(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
-| `mont_mul` | function | `net/tls_crypto.c:700` | `static void mont_mul(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
-| `mont_sqr` | function | `net/tls_crypto.c:705` | `static void mont_sqr(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
-| `mont_sub` | function | `net/tls_crypto.c:721` | `static void mont_sub(struct mont_ctx *m, const unsigned *a, const unsigned *b,                   ...` |
-| `mont_to` | function | `net/tls_crypto.c:689` | `static void mont_to(struct mont_ctx *m, const unsigned *a, unsigned *r)` |
-| `p256_ecdh` | function | `net/tls_crypto.c:1114` | `int p256_ecdh(const unsigned char priv[32],               const unsigned char peer_x[32], const u...` |
-| `p256_point_valid` | function | `net/tls_crypto.c:1512` | `int p256_point_valid(const unsigned char x[32], const unsigned char y[32])` |
-| `p256_pub` | function | `net/tls_crypto.c:1520` | `int p256_pub(const unsigned char priv[32],              unsigned char x[32], unsigned char y[32])` |
-| `p256_scalar_mult` | function | `net/tls_crypto.c:1088` | `int p256_scalar_mult(const unsigned char scalar[32],                      const unsigned char qx[...` |
-| `p256_scalar_valid` | function | `net/tls_crypto.c:1539` | `int p256_scalar_valid(const unsigned char scalar[32])` |
-| `p384_scalar_mult` | function | `net/tls_crypto.c:1101` | `int p384_scalar_mult(const unsigned char scalar[48],                      const unsigned char qx[...` |
-| `p_hash` | function | `net/tls_crypto.c:165` | `static void p_hash(const unsigned char *secret, unsigned secret_len,                    const uns...` |
-| `rsa_pkcs1_verify_raw` | function | `net/tls_crypto.c:1285` | `static int rsa_pkcs1_verify_raw(const unsigned char *n, unsigned n_len,                          ...` |
-| `rsa_pkcs1_verify_sha256` | function | `net/tls_crypto.c:1326` | `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len,                             c...` |
-| `rsa_pkcs1_verify_sha384` | function | `net/tls_crypto.c:1340` | `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len,                             c...` |
-| `rsa_verify_digestinfo` | function | `net/tls_crypto.c:1261` | `static int rsa_verify_digestinfo(const unsigned char *em, unsigned em_len,                       ...` |
-| `sha256` | function | `net/tls_crypto.c:126` | `void sha256(const unsigned char *data, unsigned len, unsigned char out[32])` |
-| `sha256_block` | function | `net/tls_crypto.c:50` | `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)` |
-| `sha256_final` | function | `net/tls_crypto.c:105` | `void sha256_final(struct sha256_ctx *c, unsigned char out[32])` |
-| `sha256_init` | function | `net/tls_crypto.c:37` | `void sha256_init(struct sha256_ctx *c)` |
-| `sha256_rotr` | function | `net/tls_crypto.c:33` | `static unsigned sha256_rotr(unsigned x, unsigned n)` |
-| `sha256_update` | function | `net/tls_crypto.c:80` | `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len)` |
-| `sha384` | function | `net/tls_crypto.c:1506` | `void sha384(const unsigned char *data, unsigned len, unsigned char out[48])` |
-| `sha384_raw` | function | `net/tls_crypto.c:1390` | `static void sha384_raw(const unsigned char *data, unsigned len,                        unsigned c...` |
-| `sha384_rotr` | function | `net/tls_crypto.c:1386` | `static unsigned long long sha384_rotr(unsigned long long x, unsigned n)` |
-| `tls_nonce` | function | `net/tls_crypto.c:450` | `static void tls_nonce(const unsigned char salt[4], unsigned long long seq,                       ...` |
-| `tls_prf` | function | `net/tls_crypto.c:188` | `void tls_prf(const unsigned char *secret, unsigned secret_len,              const char *label, co...` |
-| `word` | function | `net/tls_crypto.c:326` | `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */...` |
-| `TLS_SAN_MAX` | macro | `net/tls_x509.c:170` | `#define TLS_SAN_MAX` |
-| `ascii_lower` | function | `net/tls_x509.c:392` | `static int ascii_lower(int c)` |
-| `cert_parse` | function | `net/tls_x509.c:279` | `static int cert_parse(const unsigned char *der, unsigned len,                       struct x509_c...` |
-| `cert_verify_signature` | function | `net/tls_x509.c:479` | `static int cert_verify_signature(const struct x509_cert *cert,                                  c...` |
-| `days_from_civil` | function | `net/tls_x509.c:94` | `static long days_from_civil(int y, int m, int d)` |
-| `der_container` | function | `net/tls_x509.c:82` | `static int der_container(const unsigned char *p, unsigned limit, unsigned *pos,                  ...` |
-| `der_next` | function | `net/tls_x509.c:51` | `static int der_next(const unsigned char *p, unsigned limit, unsigned *pos,                     st...` |
-| `der_time_to_days` | function | `net/tls_x509.c:106` | `static long der_time_to_days(const struct der_tlv *t)` |
-| `der_tlv` | struct | `net/tls_x509.c:43` | `` |
-| `host_match_exact` | function | `net/tls_x509.c:397` | `static int host_match_exact(const char *host, const unsigned char *name,                         ...` |
-| `host_match_wildcard` | function | `net/tls_x509.c:410` | `static int host_match_wildcard(const char *host, const unsigned char *name,                      ...` |
-| `host_matches` | function | `net/tls_x509.c:431` | `static int host_matches(const char *host, const struct x509_cert *leaf)` |
-| `name_find_cn` | function | `net/tls_x509.c:135` | `static int name_find_cn(const unsigned char *p, unsigned limit,                         struct x5...` |
-| `oid_eq` | function | `net/tls_x509.c:36` | `static int oid_eq(const unsigned char *bytes, unsigned len,                   const unsigned char...` |
-| `pubkey_equal` | function | `net/tls_x509.c:468` | `static int pubkey_equal(const struct tls_pubkey *a, const struct tls_pubkey *b)` |
-| `san_add` | function | `net/tls_x509.c:178` | `static void san_add(struct x509_sans *out, const unsigned char *v, unsigned len)` |
-| `san_parse` | function | `net/tls_x509.c:186` | `static void san_parse(const unsigned char *p, unsigned limit,                       struct x509_s...` |
-| `spki_parse` | function | `net/tls_x509.c:203` | `static int spki_parse(const unsigned char *p, unsigned limit,                       struct tls_pu...` |
-| `tls_x509_parse_pubkey` | function | `net/tls_x509.c:452` | `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,                           struc...` |
-| `tls_x509_verify_chain` | function | `net/tls_x509.c:521` | `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,                        ...` |
-| `x509_cert` | struct | `net/tls_x509.c:265` | `` |
-| `x509_name` | struct | `net/tls_x509.c:129` | `` |
-| `x509_sans` | struct | `net/tls_x509.c:172` | `` |
-| `__sl_3` | function | `progs/asm/aes.s:3087` | `` |
-| `__sl_4` | function | `progs/asm/aes.s:3091` | `` |
-| `_start` | function | `progs/asm/aes.s:4113` | `` |
-| `aes_add_round_key` | function | `progs/asm/aes.s:1646` | `` |
-| `aes_cipher` | function | `progs/asm/aes.s:2466` | `` |
-| `aes_ctr_crypt` | function | `progs/asm/aes.s:2648` | `` |
-| `aes_gf_mul` | function | `progs/asm/aes.s:783` | `` |
-| `aes_has` | function | `progs/asm/aes.s:345` | `` |
-| `aes_hdr_get` | function | `progs/asm/aes.s:2906` | `` |
-| `aes_hdr_put` | function | `progs/asm/aes.s:2791` | `` |
-| `aes_init_tables` | function | `progs/asm/aes.s:970` | `` |
-| `aes_iv` | function | `progs/asm/aes.s:19` | `` |
-| `aes_iv_increment` | function | `progs/asm/aes.s:2565` | `` |
-| `aes_key_expand` | function | `progs/asm/aes.s:1197` | `` |
-| `aes_mix_columns` | function | `progs/asm/aes.s:1993` | `` |
-| `aes_parse_hex` | function | `progs/asm/aes.s:620` | `` |
-| `aes_rc` | function | `progs/asm/aes.s:11` | `` |
-| `aes_read_all` | function | `progs/asm/aes.s:23` | `` |
-| `aes_rk` | function | `progs/asm/aes.s:3` | `` |
-| `aes_rotl8` | function | `progs/asm/aes.s:933` | `` |
-| `aes_run` | function | `progs/asm/aes.s:3077` | `` |
-| `aes_sb` | function | `progs/asm/aes.s:7` | `` |
-| `aes_shift_rows` | function | `progs/asm/aes.s:1774` | `` |
-| `aes_st` | function | `progs/asm/aes.s:15` | `` |
-| `aes_sub_bytes` | function | `progs/asm/aes.s:1721` | `` |
-| `aes_tool_name` | function | `progs/asm/aes.s:3059` | `` |
-| `aes_write_all` | function | `progs/asm/aes.s:238` | `` |
-| `aes_xtime` | function | `progs/asm/aes.s:884` | `` |
-| `hex_val` | function | `progs/asm/aes.s:498` | `` |
-| `main` | function | `progs/asm/aes.s:3807` | `` |
-| `_start` | function | `progs/asm/cp.s:322` | `` |
-| `main` | function | `progs/asm/cp.s:3` | `` |
-| `_start` | function | `progs/asm/fib.s:82` | `` |
-| `fib` | function | `progs/asm/fib.s:3` | `` |
-| `main` | function | `progs/asm/fib.s:61` | `` |
-| `_start` | function | `progs/asm/freedom.s:11761` | `` |
-| `append` | function | `progs/asm/freedom.s:338` | `` |
-| `atoi` | function | `progs/asm/freedom.s:252` | `` |
-| `body_byte` | function | `progs/asm/freedom.s:5961` | `` |
-| `ci_eq` | function | `progs/asm/freedom.s:559` | `` |
-| `ci_index` | function | `progs/asm/freedom.s:656` | `` |
-| `ci_lower` | function | `progs/asm/freedom.s:437` | `` |
-| `ci_starts` | function | `progs/asm/freedom.s:486` | `` |
-| `classify_tag` | function | `progs/asm/freedom.s:4757` | `` |
-| `css_append` | function | `progs/asm/freedom.s:3849` | `` |
-| `css_line` | function | `progs/asm/freedom.s:3920` | `` |
-| `dom_append` | function | `progs/asm/freedom.s:3978` | `` |
-| `dom_nl` | function | `progs/asm/freedom.s:4083` | `` |
-| `dom_space` | function | `progs/asm/freedom.s:4049` | `` |
-| `f_attr` | function | `progs/asm/freedom.s:136` | `` |
-| `f_attr_on` | function | `progs/asm/freedom.s:120` | `` |
-| `f_attrlen` | function | `progs/asm/freedom.s:140` | `` |
-| `f_bdone` | function | `progs/asm/freedom.s:248` | `` |
-| `f_chunked` | function | `progs/asm/freedom.s:60` | `` |
-| `f_clen` | function | `progs/asm/freedom.s:52` | `` |
-| `f_cls` | function | `progs/asm/freedom.s:160` | `` |
-| `f_clslen` | function | `progs/asm/freedom.s:164` | `` |
-| `f_cmdash` | function | `progs/asm/freedom.s:84` | `` |
-| `f_comment` | function | `progs/asm/freedom.s:80` | `` |
-| `f_crem` | function | `progs/asm/freedom.s:244` | `` |
-| `f_csize` | function | `progs/asm/freedom.s:240` | `` |
-| `f_css` | function | `progs/asm/freedom.s:216` | `` |
-| `f_csslen` | function | `progs/asm/freedom.s:220` | `` |
-| `f_cstage` | function | `progs/asm/freedom.s:236` | `` |
-| `f_depth` | function | `progs/asm/freedom.s:204` | `` |
-| `f_dom` | function | `progs/asm/freedom.s:208` | `` |
-| `f_domlen` | function | `progs/asm/freedom.s:212` | `` |
-| `f_dump_css` | function | `progs/asm/freedom.s:188` | `` |
-| `f_dump_dom` | function | `progs/asm/freedom.s:192` | `` |
-| `f_ent` | function | `progs/asm/freedom.s:96` | `` |
-| `f_entlen` | function | `progs/asm/freedom.s:100` | `` |
-| `f_has_clen` | function | `progs/asm/freedom.s:56` | `` |
-| `f_hdr` | function | `progs/asm/freedom.s:64` | `` |
-| `f_hlen` | function | `progs/asm/freedom.s:68` | `` |
-| `f_host` | function | `progs/asm/freedom.s:24` | `` |
-| `f_href` | function | `progs/asm/freedom.s:168` | `` |
-| `f_hreflen` | function | `progs/asm/freedom.s:172` | `` |
-| `f_id` | function | `progs/asm/freedom.s:152` | `` |
-| `f_idlen` | function | `progs/asm/freedom.s:156` | `` |
-| `f_inval` | function | `progs/asm/freedom.s:128` | `` |
-| `f_inval2` | function | `progs/asm/freedom.s:132` | `` |
-| `f_linkhost` | function | `progs/asm/freedom.s:224` | `` |
-| `f_linkn` | function | `progs/asm/freedom.s:232` | `` |
-| `f_linkpath` | function | `progs/asm/freedom.s:228` | `` |
-| `f_loc` | function | `progs/asm/freedom.s:40` | `` |
-| `f_mode` | function | `progs/asm/freedom.s:196` | `` |
-| `f_path` | function | `progs/asm/freedom.s:28` | `` |
-| `f_port` | function | `progs/asm/freedom.s:32` | `` |
-| `f_rawcap` | function | `progs/asm/freedom.s:200` | `` |
-| `f_redir` | function | `progs/asm/freedom.s:44` | `` |
-| `f_rel_ss` | function | `progs/asm/freedom.s:176` | `` |
-| `f_secure` | function | `progs/asm/freedom.s:36` | `` |
-| `f_status` | function | `progs/asm/freedom.s:48` | `` |
-| `f_styleattr` | function | `progs/asm/freedom.s:180` | `` |
-| `f_stylelen` | function | `progs/asm/freedom.s:184` | `` |
-| `f_suppress` | function | `progs/asm/freedom.s:76` | `` |
-| `f_tag` | function | `progs/asm/freedom.s:72` | `` |
-| `f_tagn` | function | `progs/asm/freedom.s:88` | `` |
-| `f_tagnlen` | function | `progs/asm/freedom.s:92` | `` |
-| `f_utbuf` | function | `progs/asm/freedom.s:108` | `` |
-| `f_utlen` | function | `progs/asm/freedom.s:112` | `` |
-| `f_utrem` | function | `progs/asm/freedom.s:116` | `` |
-| `f_val` | function | `progs/asm/freedom.s:144` | `` |
-| `f_vallen` | function | `progs/asm/freedom.s:148` | `` |
-| `f_waitq` | function | `progs/asm/freedom.s:124` | `` |
-| `f_ws` | function | `progs/asm/freedom.s:104` | `` |
-| `fetch` | function | `progs/asm/freedom.s:7810` | `` |
-| `fetch_css` | function | `progs/asm/freedom.s:9293` | `` |
-| `has_scheme` | function | `progs/asm/freedom.s:789` | `` |
-| `head_line` | function | `progs/asm/freedom.s:7203` | `` |
-| `is_void_tag` | function | `progs/asm/freedom.s:4449` | `` |
-| `looks_like_url` | function | `progs/asm/freedom.s:715` | `` |
-| `main` | function | `progs/asm/freedom.s:10291` | `` |
-| `make_search` | function | `progs/asm/freedom.s:1064` | `` |
-| `parse_head` | function | `progs/asm/freedom.s:7460` | `` |
-| `print_css_dump` | function | `progs/asm/freedom.s:10112` | `` |
-| `print_dom_dump` | function | `progs/asm/freedom.s:10212` | `` |
-| `put_entity` | function | `progs/asm/freedom.s:3018` | `` |
-| `put_text` | function | `progs/asm/freedom.s:2915` | `` |
-| `put_utf` | function | `progs/asm/freedom.s:2379` | `` |
-| `put_ws` | function | `progs/asm/freedom.s:2333` | `` |
-| `record_attr` | function | `progs/asm/freedom.s:4117` | `` |
-| `recv_body` | function | `progs/asm/freedom.s:7676` | `` |
-| `resolve_redirect` | function | `progs/asm/freedom.s:1810` | `` |
-| `send_all` | function | `progs/asm/freedom.s:7736` | `` |
-| `split_url` | function | `progs/asm/freedom.s:1295` | `` |
-| `tls_close` | function | `progs/asm/freedom.s:3` | `` |
-| `_start` | function | `progs/asm/http.s:709` | `` |
-| `atoi` | function | `progs/asm/http.s:3` | `` |
-| `main` | function | `progs/asm/http.s:89` | `` |
-| `_start` | function | `progs/asm/json.s:4169` | `` |
-| `js_array_at` | function | `progs/asm/json.s:3391` | `` |
-| `js_count` | function | `progs/asm/json.s:23` | `` |
-| `js_err` | function | `progs/asm/json.s:55` | `` |
-| `js_find_member` | function | `progs/asm/json.s:3313` | `` |
-| `js_first` | function | `progs/asm/json.s:19` | `` |
-| `js_indent` | function | `progs/asm/json.s:2481` | `` |
-| `js_key` | function | `progs/asm/json.s:3` | `` |
-| `js_key_match` | function | `progs/asm/json.s:947` | `` |
-| `js_len` | function | `progs/asm/json.s:51` | `` |
-| `js_n` | function | `progs/asm/json.s:31` | `` |
-| `js_new` | function | `progs/asm/json.s:274` | `` |
-| `js_next` | function | `progs/asm/json.s:27` | `` |
-| `js_num` | function | `progs/asm/json.s:15` | `` |
-| `js_parse_array` | function | `progs/asm/json.s:1335` | `` |
-| `js_parse_number` | function | `progs/asm/json.s:851` | `` |
-| `js_parse_object` | function | `progs/asm/json.s:983` | `` |
-| `js_parse_string` | function | `progs/asm/json.s:437` | `` |
-| `js_parse_value` | function | `progs/asm/json.s:1594` | `` |
-| `js_peek` | function | `progs/asm/json.s:397` | `` |
-| `js_plen` | function | `progs/asm/json.s:39` | `` |
-| `js_pool` | function | `progs/asm/json.s:35` | `` |
-| `js_pos` | function | `progs/asm/json.s:47` | `` |
-| `js_print_str` | function | `progs/asm/json.s:2524` | `` |
-| `js_print_value` | function | `progs/asm/json.s:2747` | `` |
-| `js_query` | function | `progs/asm/json.s:3460` | `` |
-| `js_read_all` | function | `progs/asm/json.s:59` | `` |
-| `js_skip_ws` | function | `progs/asm/json.s:306` | `` |
-| `js_src` | function | `progs/asm/json.s:43` | `` |
-| `js_str` | function | `progs/asm/json.s:7` | `` |
-| `js_type` | function | `progs/asm/json.s:11` | `` |
-| `main` | function | `progs/asm/json.s:3772` | `` |
-| `_start` | function | `progs/asm/ldhello.s:14` | `` |
-| `main` | function | `progs/asm/ldhello.s:3` | `` |
-| `_start` | function | `progs/asm/lz4.s:1535` | `` |
-| `lz4_compress_file` | function | `progs/asm/lz4.s:478` | `` |
-| `lz4_decompress_file` | function | `progs/asm/lz4.s:791` | `` |
-| `lz4_has` | function | `progs/asm/lz4.s:3` | `` |
-| `lz4_read_all` | function | `progs/asm/lz4.s:156` | `` |
-| `lz4_write_all` | function | `progs/asm/lz4.s:371` | `` |
-| `main` | function | `progs/asm/lz4.s:1228` | `` |
-| `_start` | function | `progs/asm/lzss.s:3497` | `` |
-| `lz_buf` | function | `progs/asm/lzss.s:35` | `` |
-| `lz_compress` | function | `progs/asm/lzss.s:2257` | `` |
-| `lz_decode` | function | `progs/asm/lzss.s:1171` | `` |
-| `lz_decompress` | function | `progs/asm/lzss.s:2628` | `` |
-| `lz_dst` | function | `progs/asm/lzss.s:19` | `` |
-| `lz_dstcap` | function | `progs/asm/lzss.s:23` | `` |
-| `lz_dstlen` | function | `progs/asm/lzss.s:27` | `` |
-| `lz_encode` | function | `progs/asm/lzss.s:451` | `` |
-| `lz_err` | function | `progs/asm/lzss.s:31` | `` |
-| `lz_flush_bits` | function | `progs/asm/lzss.s:223` | `` |
-| `lz_getbit` | function | `progs/asm/lzss.s:1051` | `` |
-| `lz_has` | function | `progs/asm/lzss.s:1782` | `` |
-| `lz_hdr_get` | function | `progs/asm/lzss.s:1629` | `` |
-| `lz_hdr_put` | function | `progs/asm/lzss.s:1514` | `` |
-| `lz_in_getc` | function | `progs/asm/lzss.s:43` | `` |
-| `lz_mask` | function | `progs/asm/lzss.s:39` | `` |
-| `lz_next_mb` | function | `progs/asm/lzss.s:447` | `` |
-| `lz_out_literal` | function | `progs/asm/lzss.s:251` | `` |
-| `lz_out_pair` | function | `progs/asm/lzss.s:321` | `` |
-| `lz_out_put` | function | `progs/asm/lzss.s:79` | `` |
-| `lz_putbit0` | function | `progs/asm/lzss.s:174` | `` |
-| `lz_putbit1` | function | `progs/asm/lzss.s:116` | `` |
-| `lz_read_all` | function | `progs/asm/lzss.s:1935` | `` |
-| `lz_src` | function | `progs/asm/lzss.s:7` | `` |
-| `lz_srclen` | function | `progs/asm/lzss.s:11` | `` |
-| `lz_srcpos` | function | `progs/asm/lzss.s:15` | `` |
-| `lz_win` | function | `progs/asm/lzss.s:3` | `` |
-| `lz_write_all` | function | `progs/asm/lzss.s:2150` | `` |
-| `main` | function | `progs/asm/lzss.s:3178` | `` |
-| `_start` | function | `progs/asm/mtop.s:4781` | `` |
-| `disk_f` | function | `progs/asm/mtop.s:39` | `` |
-| `disk_path` | function | `progs/asm/mtop.s:43` | `` |
-| `emit` | function | `progs/asm/mtop.s:206` | `` |
-| `h_cpu` | function | `progs/asm/mtop.s:3` | `` |
-| `h_fill` | function | `progs/asm/mtop.s:11` | `` |
-| `h_mem` | function | `progs/asm/mtop.s:7` | `` |
-| `have_prev` | function | `progs/asm/mtop.s:35` | `` |
-| `last_dns` | function | `progs/asm/mtop.s:15` | `` |
-| `last_dns_ms` | function | `progs/asm/mtop.s:19` | `` |
-| `last_sock` | function | `progs/asm/mtop.s:23` | `` |
-| `main` | function | `progs/asm/mtop.s:3831` | `` |
-| `mtop_atoi` | function | `progs/asm/mtop.s:443` | `` |
-| `mtop_bar` | function | `progs/asm/mtop.s:887` | `` |
-| `mtop_clear` | function | `progs/asm/mtop.s:401` | `` |
-| `mtop_clear_ansi` | function | `progs/asm/mtop.s:317` | `` |
-| `mtop_cpu` | function | `progs/asm/mtop.s:1556` | `` |
-| `mtop_disk_open` | function | `progs/asm/mtop.s:1842` | `` |
-| `mtop_disk_read` | function | `progs/asm/mtop.s:1966` | `` |
-| `mtop_frame` | function | `progs/asm/mtop.s:2275` | `` |
-| `mtop_hist_max` | function | `progs/asm/mtop.s:1038` | `` |
-| `mtop_hist_push` | function | `progs/asm/mtop.s:1106` | `` |
-| `mtop_key` | function | `progs/asm/mtop.s:137` | `` |
-| `mtop_mem` | function | `progs/asm/mtop.s:1452` | `` |
-| `mtop_minfo` | function | `progs/asm/mtop.s:165` | `` |
-| `mtop_net_probe` | function | `progs/asm/mtop.s:2128` | `` |
-| `mtop_put2` | function | `progs/asm/mtop.s:725` | `` |
-| `mtop_put_kb` | function | `progs/asm/mtop.s:765` | `` |
-| `mtop_putu` | function | `progs/asm/mtop.s:569` | `` |
-| `mtop_quit_key` | function | `progs/asm/mtop.s:241` | `` |
-| `mtop_rtc` | function | `progs/asm/mtop.s:106` | `` |
-| `mtop_spark` | function | `progs/asm/mtop.s:1201` | `` |
-| `mtop_time` | function | `progs/asm/mtop.s:78` | `` |
-| `prev_idle` | function | `progs/asm/mtop.s:31` | `` |
-| `prev_total` | function | `progs/asm/mtop.s:27` | `` |
-| `sc3` | function | `progs/asm/mtop.s:47` | `` |
-| `_start` | function | `progs/asm/w1.s:37` | `` |
-| `main` | function | `progs/asm/w1.s:3` | `` |
-| `DMAP_BRUSH_COUNT` | macro | `progs/doomedit/doomedit.c:230` | `#define DMAP_BRUSH_COUNT` |
-| `DMAP_CANVAS_W` | macro | `progs/doomedit/doomedit.c:61` | `#define DMAP_CANVAS_W` |
-| `DMAP_CEIL_FLAT` | macro | `progs/doomedit/doomedit.c:97` | `#define DMAP_CEIL_FLAT` |
-| `DMAP_CEIL_H` | macro | `progs/doomedit/doomedit.c:100` | `#define DMAP_CEIL_H` |
-| `DMAP_CELL_PX` | macro | `progs/doomedit/doomedit.c:60` | `#define DMAP_CELL_PX` |
-| `DMAP_DARK_LIGHT` | macro | `progs/doomedit/doomedit.c:103` | `#define DMAP_DARK_LIGHT` |
-| `DMAP_DARK_MID` | macro | `progs/doomedit/doomedit.c:92` | `#define DMAP_DARK_MID` |
-| `DMAP_DEF_H` | macro | `progs/doomedit/doomedit.c:58` | `#define DMAP_DEF_H` |
-| `DMAP_DEF_W` | macro | `progs/doomedit/doomedit.c:57` | `#define DMAP_DEF_W` |
-| `DMAP_DOOR_CEIL` | macro | `progs/doomedit/doomedit.c:101` | `#define DMAP_DOOR_CEIL` |
-| `DMAP_DOOR_LIGHT` | macro | `progs/doomedit/doomedit.c:104` | `#define DMAP_DOOR_LIGHT` |
-| `DMAP_DOOR_SPECIAL` | macro | `progs/doomedit/doomedit.c:85` | `#define DMAP_DOOR_SPECIAL` |
-| `DMAP_DOOR_UPPER` | macro | `progs/doomedit/doomedit.c:91` | `#define DMAP_DOOR_UPPER` |
-| `DMAP_EXIT_MID` | macro | `progs/doomedit/doomedit.c:90` | `#define DMAP_EXIT_MID` |
-| `DMAP_EXIT_SPECIAL` | macro | `progs/doomedit/doomedit.c:84` | `#define DMAP_EXIT_SPECIAL` |
-| `DMAP_FLAG_BLOCKING` | macro | `progs/doomedit/doomedit.c:86` | `#define DMAP_FLAG_BLOCKING` |
-| `DMAP_FLAG_TWOSIDED` | macro | `progs/doomedit/doomedit.c:87` | `#define DMAP_FLAG_TWOSIDED` |
-| `DMAP_FLOOR_FLAT` | macro | `progs/doomedit/doomedit.c:95` | `#define DMAP_FLOOR_FLAT` |
-| `DMAP_FLOOR_H` | macro | `progs/doomedit/doomedit.c:98` | `#define DMAP_FLOOR_H` |
-| `DMAP_FNAME_MAX` | macro | `progs/doomedit/doomedit.c:67` | `#define DMAP_FNAME_MAX` |
-| `DMAP_FOV_PLANE` | macro | `progs/doomedit/doomedit.c:78` | `#define DMAP_FOV_PLANE` |
-| `DMAP_FRAME_MS` | macro | `progs/doomedit/doomedit.c:75` | `#define DMAP_FRAME_MS` |
-| `DMAP_HISTORY` | macro | `progs/doomedit/doomedit.c:111` | `#define DMAP_HISTORY` |
-| `DMAP_LEVEL_COUNT` | macro | `progs/doomedit/doomedit.c:70` | `#define DMAP_LEVEL_COUNT` |
-| `DMAP_LIGHT` | macro | `progs/doomedit/doomedit.c:102` | `#define DMAP_LIGHT` |
-| `DMAP_MAX_H` | macro | `progs/doomedit/doomedit.c:56` | `#define DMAP_MAX_H` |
-| `DMAP_MAX_LINES` | macro | `progs/doomedit/doomedit.c:79` | `#define DMAP_MAX_LINES` |
-| `DMAP_MAX_SECTORS` | macro | `progs/doomedit/doomedit.c:72` | `#define DMAP_MAX_SECTORS` |
-| `DMAP_MAX_THINGS` | macro | `progs/doomedit/doomedit.c:81` | `#define DMAP_MAX_THINGS` |
-| `DMAP_MAX_VERTS` | macro | `progs/doomedit/doomedit.c:80` | `#define DMAP_MAX_VERTS` |
-| `DMAP_MAX_W` | macro | `progs/doomedit/doomedit.c:55` | `#define DMAP_MAX_W` |
-| `DMAP_MOVE_STEP` | macro | `progs/doomedit/doomedit.c:77` | `#define DMAP_MOVE_STEP` |
-| `DMAP_NODE_LEAF` | macro | `progs/doomedit/doomedit.c:106` | `#define DMAP_NODE_LEAF` |
-| `DMAP_NO_SIDE` | macro | `progs/doomedit/doomedit.c:88` | `#define DMAP_NO_SIDE` |
-| `DMAP_NUKE_FLAT` | macro | `progs/doomedit/doomedit.c:96` | `#define DMAP_NUKE_FLAT` |
-| `DMAP_NUKE_FLOOR` | macro | `progs/doomedit/doomedit.c:99` | `#define DMAP_NUKE_FLOOR` |
-| `DMAP_NUKE_MID` | macro | `progs/doomedit/doomedit.c:93` | `#define DMAP_NUKE_MID` |
-| `DMAP_NUKE_SPECIAL` | macro | `progs/doomedit/doomedit.c:105` | `#define DMAP_NUKE_SPECIAL` |
 
 Next: [SYMBOLS_p11.md](SYMBOLS_p11.md)

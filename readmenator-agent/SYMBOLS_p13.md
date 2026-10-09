@@ -1,8 +1,350 @@
-# Symbols (page 13 of 25)
+# Symbols (page 13 of 26)
 Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `deh_blue_armor_class` | variable | `progs/doomgeneric/deh_misc.h:47` | `extern int deh_blue_armor_class;` |
+| `deh_blue_armor_class` | macro | `progs/doomgeneric/deh_misc.h:68` | `#define deh_blue_armor_class` |
+| `deh_god_mode_health` | variable | `progs/doomgeneric/deh_misc.h:51` | `extern int deh_god_mode_health;` |
+| `deh_god_mode_health` | macro | `progs/doomgeneric/deh_misc.h:72` | `#define deh_god_mode_health` |
+| `deh_green_armor_class` | variable | `progs/doomgeneric/deh_misc.h:46` | `extern int deh_green_armor_class;` |
+| `deh_green_armor_class` | macro | `progs/doomgeneric/deh_misc.h:67` | `#define deh_green_armor_class` |
+| `deh_idfa_armor` | variable | `progs/doomgeneric/deh_misc.h:52` | `extern int deh_idfa_armor;` |
+| `deh_idfa_armor` | macro | `progs/doomgeneric/deh_misc.h:73` | `#define deh_idfa_armor` |
+| `deh_idfa_armor_class` | variable | `progs/doomgeneric/deh_misc.h:53` | `extern int deh_idfa_armor_class;` |
+| `deh_idfa_armor_class` | macro | `progs/doomgeneric/deh_misc.h:74` | `#define deh_idfa_armor_class` |
+| `deh_idkfa_armor` | variable | `progs/doomgeneric/deh_misc.h:54` | `extern int deh_idkfa_armor;` |
+| `deh_idkfa_armor` | macro | `progs/doomgeneric/deh_misc.h:75` | `#define deh_idkfa_armor` |
+| `deh_idkfa_armor_class` | variable | `progs/doomgeneric/deh_misc.h:55` | `extern int deh_idkfa_armor_class;` |
+| `deh_idkfa_armor_class` | macro | `progs/doomgeneric/deh_misc.h:76` | `#define deh_idkfa_armor_class` |
+| `deh_initial_bullets` | variable | `progs/doomgeneric/deh_misc.h:43` | `extern int deh_initial_bullets;` |
+| `deh_initial_bullets` | macro | `progs/doomgeneric/deh_misc.h:64` | `#define deh_initial_bullets` |
+| `deh_initial_health` | variable | `progs/doomgeneric/deh_misc.h:42` | `extern int deh_initial_health;` |
+| `deh_initial_health` | macro | `progs/doomgeneric/deh_misc.h:63` | `#define deh_initial_health` |
+| `deh_max_armor` | variable | `progs/doomgeneric/deh_misc.h:45` | `extern int deh_max_armor;` |
+| `deh_max_armor` | macro | `progs/doomgeneric/deh_misc.h:66` | `#define deh_max_armor` |
+| `deh_max_health` | variable | `progs/doomgeneric/deh_misc.h:44` | `extern int deh_max_health;` |
+| `deh_max_health` | macro | `progs/doomgeneric/deh_misc.h:65` | `#define deh_max_health` |
+| `deh_max_soulsphere` | variable | `progs/doomgeneric/deh_misc.h:48` | `extern int deh_max_soulsphere;` |
+| `deh_max_soulsphere` | macro | `progs/doomgeneric/deh_misc.h:69` | `#define deh_max_soulsphere` |
+| `deh_megasphere_health` | variable | `progs/doomgeneric/deh_misc.h:50` | `extern int deh_megasphere_health;` |
+| `deh_megasphere_health` | macro | `progs/doomgeneric/deh_misc.h:71` | `#define deh_megasphere_health` |
+| `deh_soulsphere_health` | variable | `progs/doomgeneric/deh_misc.h:49` | `extern int deh_soulsphere_health;` |
+| `deh_soulsphere_health` | macro | `progs/doomgeneric/deh_misc.h:70` | `#define deh_soulsphere_health` |
+| `deh_species_infighting` | variable | `progs/doomgeneric/deh_misc.h:57` | `extern int deh_species_infighting;` |
+| `deh_species_infighting` | macro | `progs/doomgeneric/deh_misc.h:78` | `#define deh_species_infighting` |
+| `DEH_AddStringReplacement` | function | `progs/doomgeneric/deh_str.h:33` | `void DEH_AddStringReplacement(char *from_text, char *to_text);` |
+| `DEH_AddStringReplacement` | macro | `progs/doomgeneric/deh_str.h:42` | `#define DEH_AddStringReplacement(x, y)` |
+| `DEH_STR_H` | macro | `progs/doomgeneric/deh_str.h:19` | `#define DEH_STR_H` |
+| `DEH_String` | function | `progs/doomgeneric/deh_str.h:29` | `char *DEH_String(char *s);` |
+| `DEH_String` | macro | `progs/doomgeneric/deh_str.h:38` | `#define DEH_String(x)` |
+| `DEH_fprintf` | function | `progs/doomgeneric/deh_str.h:31` | `void DEH_fprintf(FILE *fstream, char *fmt, ...);` |
+| `DEH_fprintf` | macro | `progs/doomgeneric/deh_str.h:40` | `#define DEH_fprintf` |
+| `DEH_printf` | function | `progs/doomgeneric/deh_str.h:30` | `void DEH_printf(char *fmt, ...);` |
+| `DEH_printf` | macro | `progs/doomgeneric/deh_str.h:39` | `#define DEH_printf` |
+| `DEH_snprintf` | function | `progs/doomgeneric/deh_str.h:32` | `void DEH_snprintf(char *buffer, size_t len, char *fmt, ...);` |
+| `DEH_snprintf` | macro | `progs/doomgeneric/deh_str.h:41` | `#define DEH_snprintf` |
+| `D_DoomMain` | function | `progs/doomgeneric/doom.h:28` | `void D_DoomMain (void);` |
+| `SRC_CHOCDOOM_DOOM_H_` | macro | `progs/doomgeneric/doom.h:10` | `#define SRC_CHOCDOOM_DOOM_H_` |
+| `ML_BLOCKING` | macro | `progs/doomgeneric/doomdata.h:98` | `#define ML_BLOCKING` |
+| `ML_BLOCKMONSTERS` | macro | `progs/doomgeneric/doomdata.h:101` | `#define ML_BLOCKMONSTERS` |
+| `ML_DONTDRAW` | macro | `progs/doomgeneric/doomdata.h:129` | `#define ML_DONTDRAW` |
+| `ML_DONTPEGBOTTOM` | macro | `progs/doomgeneric/doomdata.h:120` | `#define ML_DONTPEGBOTTOM` |
+| `ML_DONTPEGTOP` | macro | `progs/doomgeneric/doomdata.h:117` | `#define ML_DONTPEGTOP` |
+| `ML_MAPPED` | macro | `progs/doomgeneric/doomdata.h:132` | `#define ML_MAPPED` |
+| `ML_SECRET` | macro | `progs/doomgeneric/doomdata.h:123` | `#define ML_SECRET` |
+| `ML_SOUNDBLOCK` | macro | `progs/doomgeneric/doomdata.h:126` | `#define ML_SOUNDBLOCK` |
+| `ML_TWOSIDED` | macro | `progs/doomgeneric/doomdata.h:105` | `#define ML_TWOSIDED` |
+| `NF_SUBSECTOR` | macro | `progs/doomgeneric/doomdata.h:175` | `#define	NF_SUBSECTOR` |
+| `__DOOMDATA__` | macro | `progs/doomgeneric/doomdata.h:22` | `#define __DOOMDATA__` |
+| `DOOM_191_VERSION` | macro | `progs/doomgeneric/doomdef.h:37` | `#define DOOM_191_VERSION` |
+| `DOOM_VERSION` | macro | `progs/doomgeneric/doomdef.h:34` | `#define DOOM_VERSION` |
+| `MAXPLAYERS` | macro | `progs/doomgeneric/doomdef.h:45` | `#define MAXPLAYERS` |
+| `MTF_AMBUSH` | macro | `progs/doomgeneric/doomdef.h:82` | `#define	MTF_AMBUSH` |
+| `MTF_EASY` | macro | `progs/doomgeneric/doomdef.h:77` | `#define	MTF_EASY` |
+| `MTF_HARD` | macro | `progs/doomgeneric/doomdef.h:79` | `#define	MTF_HARD` |
+| `MTF_NORMAL` | macro | `progs/doomgeneric/doomdef.h:78` | `#define	MTF_NORMAL` |
+| `RANGECHECK` | macro | `progs/doomgeneric/doomdef.h:42` | `#define RANGECHECK` |
+| `__DOOMDEF__` | macro | `progs/doomgeneric/doomdef.h:21` | `#define __DOOMDEF__` |
+| `DOOM_FEATURES_H` | macro | `progs/doomgeneric/doomfeatures.h:20` | `#define DOOM_FEATURES_H` |
+| `FEATURE_SOUND` | macro | `progs/doomgeneric/doomfeatures.h:36` | `#define FEATURE_SOUND` |
+| `dg_Create` | function | `progs/doomgeneric/doomgeneric.c:6` | `void dg_Create()` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric.h:15` | `void DG_DrawFrame();` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric.h:18` | `int DG_GetKey(int* pressed, unsigned char* key);` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric.h:17` | `uint32_t DG_GetTicksMs();` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric.h:14` | `void DG_Init();` |
+| `DG_ScreenBuffer` | variable | `progs/doomgeneric/doomgeneric.h:11` | `extern uint32_t* DG_ScreenBuffer;` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric.h:19` | `void DG_SetWindowTitle(const char * title);` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric.h:16` | `void DG_SleepMs(uint32_t ms);` |
+| `DOOMGENERIC_RESX` | macro | `progs/doomgeneric/doomgeneric.h:7` | `#define DOOMGENERIC_RESX` |
+| `DOOMGENERIC_RESY` | macro | `progs/doomgeneric/doomgeneric.h:8` | `#define DOOMGENERIC_RESY` |
+| `DOOM_GENERIC` | macro | `progs/doomgeneric/doomgeneric.h:2` | `#define DOOM_GENERIC` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_minios.c:243` | `void DG_DrawFrame(void)` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_minios.c:284` | `int DG_GetKey(int *pressed, unsigned char *key)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_minios.c:280` | `uint32_t DG_GetTicksMs(void)` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_minios.c:232` | `void DG_Init(void)` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_minios.c:295` | `void DG_SetWindowTitle(const char *title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_minios.c:274` | `void DG_SleepMs(uint32_t ms)` |
+| `FB_ADDR` | macro | `progs/doomgeneric/doomgeneric_minios.c:96` | `#define FB_ADDR` |
+| `FB_HEIGHT` | macro | `progs/doomgeneric/doomgeneric_minios.c:98` | `#define FB_HEIGHT` |
+| `FB_WIDTH` | macro | `progs/doomgeneric/doomgeneric_minios.c:97` | `#define FB_WIDTH` |
+| `I_VideoBuffer` | variable | `progs/doomgeneric/doomgeneric_minios.c:230` | `extern unsigned char *I_VideoBuffer;` |
+| `KBD_QUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_minios.c:178` | `#define KBD_QUEUE_SIZE` |
+| `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/doomgeneric/doomgeneric_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
+| `color` | struct | `progs/doomgeneric/doomgeneric_minios.c:103` | `` |
+| `colors` | variable | `progs/doomgeneric/doomgeneric_minios.c:104` | `extern struct color colors[256];` |
+| `kbd_enqueue` | function | `progs/doomgeneric/doomgeneric_minios.c:182` | `static void kbd_enqueue(unsigned char doom_key, int pressed)` |
+| `kbd_poll` | function | `progs/doomgeneric/doomgeneric_minios.c:189` | `static void kbd_poll(void)` |
+| `load_vga_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:110` | `static void load_vga_palette(void)` |
+| `mini_parse_autoframes` | function | `progs/doomgeneric/doomgeneric_minios.c:24` | `static void mini_parse_autoframes(int argc, char **argv)` |
+| `mini_parse_windowed` | function | `progs/doomgeneric/doomgeneric_minios.c:43` | `static void mini_parse_windowed(int argc, char **argv)` |
+| `myargc` | variable | `progs/doomgeneric/doomgeneric_minios.c:233` | `extern int myargc;` |
+| `myargv` | variable | `progs/doomgeneric/doomgeneric_minios.c:234` | `extern char **myargv;` |
+| `scancode_to_doom` | function | `progs/doomgeneric/doomgeneric_minios.c:123` | `static unsigned char scancode_to_doom(unsigned char raw)` |
+| `sys_doom_frame` | function | `progs/doomgeneric/doomgeneric_minios.c:86` | `static long sys_doom_frame(void)` |
+| `sys_gfx_zoom` | function | `progs/doomgeneric/doomgeneric_minios.c:81` | `static long sys_gfx_zoom(long mode)` |
+| `sys_kbd` | function | `progs/doomgeneric/doomgeneric_minios.c:61` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/doomgeneric/doomgeneric_minios.c:71` | `static long sys_kbd_raw(int on)` |
+| `sys_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:66` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_time_ms` | function | `progs/doomgeneric/doomgeneric_minios.c:56` | `static long sys_time_ms(void)` |
+| `sys_vga_mode` | function | `progs/doomgeneric/doomgeneric_minios.c:76` | `static long sys_vga_mode(int on)` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_sdl.c:112` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_sdl.c:133` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_sdl.c:128` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_sdl.c:93` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_sdl.c:152` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_sdl.c:123` | `void DG_SleepMs(uint32_t ms)` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_sdl.c:17` | `#define KEYQUEUE_SIZE` |
+| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_sdl.c:63` | `static void addKeyToQueue(int pressed, unsigned int keyCode)` |
+| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_sdl.c:23` | `static unsigned char convertToDoomKey(unsigned int key)` |
+| `handleKeyInput` | function | `progs/doomgeneric/doomgeneric_sdl.c:72` | `static void handleKeyInput()` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_soso.c:214` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_soso.c:237` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_soso.c:232` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_soso.c:124` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_soso.c:258` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_soso.c:227` | `void DG_SleepMs(uint32_t ms)` |
+| `EnFrameBuferIoctl` | enum | `progs/doomgeneric/doomgeneric_soso.c:36` | `` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_soso.c:24` | `#define KEYQUEUE_SIZE` |
+| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_soso.c:92` | `static void addKeyToQueue(int pressed, unsigned char keyCode)` |
+| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_soso.c:43` | `static unsigned char convertToDoomKey(unsigned char scancode)` |
+| `disableRawMode` | function | `progs/doomgeneric/doomgeneric_soso.c:108` | `void disableRawMode()` |
+| `enableRawMode` | function | `progs/doomgeneric/doomgeneric_soso.c:114` | `void enableRawMode()` |
+| `handleKeyInput` | function | `progs/doomgeneric/doomgeneric_soso.c:186` | `static void handleKeyInput()` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_sosox.c:187` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_sosox.c:235` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_sosox.c:230` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_sosox.c:117` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_sosox.c:256` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_sosox.c:225` | `void DG_SleepMs(uint32_t ms)` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_sosox.c:24` | `#define KEYQUEUE_SIZE` |
+| `add_key_to_queue` | function | `progs/doomgeneric/doomgeneric_sosox.c:88` | `static void add_key_to_queue(int pressed, unsigned char key_code)` |
+| `convert_to_doom_key` | function | `progs/doomgeneric/doomgeneric_sosox.c:39` | `static unsigned char convert_to_doom_key(unsigned char scancode)` |
+| `disable_raw_mode` | function | `progs/doomgeneric/doomgeneric_sosox.c:102` | `void disable_raw_mode()` |
+| `enable_raw_mode` | function | `progs/doomgeneric/doomgeneric_sosox.c:107` | `void enable_raw_mode()` |
+| `handle_key_input` | function | `progs/doomgeneric/doomgeneric_sosox.c:159` | `static void handle_key_input()` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_win.c:146` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_win.c:172` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_win.c:167` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_win.c:95` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_win.c:193` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_win.c:162` | `void DG_SleepMs(uint32_t ms)` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_win.c:14` | `#define KEYQUEUE_SIZE` |
+| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_win.c:59` | `static void addKeyToQueue(int pressed, unsigned char keyCode)` |
+| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_win.c:20` | `static unsigned char convertToDoomKey(unsigned char key)` |
+| `wndProc` | function | `progs/doomgeneric/doomgeneric_win.c:70` | `static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_xlib.c:127` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_xlib.c:187` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_xlib.c:177` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_xlib.c:79` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_xlib.c:208` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_xlib.c:172` | `void DG_SleepMs(uint32_t ms)` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_xlib.c:21` | `#define KEYQUEUE_SIZE` |
+| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_xlib.c:68` | `static void addKeyToQueue(int pressed, unsigned int keyCode)` |
+| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_xlib.c:27` | `static unsigned char convertToDoomKey(unsigned int key)` |
+| `KEYP_0` | macro | `progs/doomgeneric/doomkeys.h:77` | `#define KEYP_0` |
+| `KEYP_1` | macro | `progs/doomgeneric/doomkeys.h:78` | `#define KEYP_1` |
+| `KEYP_2` | macro | `progs/doomgeneric/doomkeys.h:79` | `#define KEYP_2` |
+| `KEYP_3` | macro | `progs/doomgeneric/doomkeys.h:80` | `#define KEYP_3` |
+| `KEYP_4` | macro | `progs/doomgeneric/doomkeys.h:81` | `#define KEYP_4` |
+| `KEYP_5` | macro | `progs/doomgeneric/doomkeys.h:82` | `#define KEYP_5` |
+| `KEYP_6` | macro | `progs/doomgeneric/doomkeys.h:83` | `#define KEYP_6` |
+| `KEYP_7` | macro | `progs/doomgeneric/doomkeys.h:84` | `#define KEYP_7` |
+| `KEYP_8` | macro | `progs/doomgeneric/doomkeys.h:85` | `#define KEYP_8` |
+| `KEYP_9` | macro | `progs/doomgeneric/doomkeys.h:86` | `#define KEYP_9` |
+| `KEYP_DIVIDE` | macro | `progs/doomgeneric/doomkeys.h:88` | `#define KEYP_DIVIDE` |
+| `KEYP_ENTER` | macro | `progs/doomgeneric/doomkeys.h:94` | `#define KEYP_ENTER` |
+| `KEYP_EQUALS` | macro | `progs/doomgeneric/doomkeys.h:93` | `#define KEYP_EQUALS` |
+| `KEYP_MINUS` | macro | `progs/doomgeneric/doomkeys.h:90` | `#define KEYP_MINUS` |
+| `KEYP_MULTIPLY` | macro | `progs/doomgeneric/doomkeys.h:91` | `#define KEYP_MULTIPLY` |
+| `KEYP_PERIOD` | macro | `progs/doomgeneric/doomkeys.h:92` | `#define KEYP_PERIOD` |
+| `KEYP_PLUS` | macro | `progs/doomgeneric/doomkeys.h:89` | `#define KEYP_PLUS` |
+| `KEY_BACKSPACE` | macro | `progs/doomgeneric/doomkeys.h:51` | `#define KEY_BACKSPACE` |
+| `KEY_CAPSLOCK` | macro | `progs/doomgeneric/doomkeys.h:65` | `#define KEY_CAPSLOCK` |
+| `KEY_DEL` | macro | `progs/doomgeneric/doomkeys.h:75` | `#define KEY_DEL` |
+| `KEY_DOWNARROW` | macro | `progs/doomgeneric/doomkeys.h:30` | `#define KEY_DOWNARROW` |
+| `KEY_END` | macro | `progs/doomgeneric/doomkeys.h:71` | `#define KEY_END` |
+| `KEY_ENTER` | macro | `progs/doomgeneric/doomkeys.h:36` | `#define KEY_ENTER` |
+| `KEY_EQUALS` | macro | `progs/doomgeneric/doomkeys.h:54` | `#define KEY_EQUALS` |
+| `KEY_ESCAPE` | macro | `progs/doomgeneric/doomkeys.h:35` | `#define KEY_ESCAPE` |
+| `KEY_F1` | macro | `progs/doomgeneric/doomkeys.h:38` | `#define KEY_F1` |
+| `KEY_F10` | macro | `progs/doomgeneric/doomkeys.h:47` | `#define KEY_F10` |
+| `KEY_F11` | macro | `progs/doomgeneric/doomkeys.h:48` | `#define KEY_F11` |
+| `KEY_F12` | macro | `progs/doomgeneric/doomkeys.h:49` | `#define KEY_F12` |
+| `KEY_F2` | macro | `progs/doomgeneric/doomkeys.h:39` | `#define KEY_F2` |
+| `KEY_F3` | macro | `progs/doomgeneric/doomkeys.h:40` | `#define KEY_F3` |
+| `KEY_F4` | macro | `progs/doomgeneric/doomkeys.h:41` | `#define KEY_F4` |
+| `KEY_F5` | macro | `progs/doomgeneric/doomkeys.h:42` | `#define KEY_F5` |
+| `KEY_F6` | macro | `progs/doomgeneric/doomkeys.h:43` | `#define KEY_F6` |
+| `KEY_F7` | macro | `progs/doomgeneric/doomkeys.h:44` | `#define KEY_F7` |
+| `KEY_F8` | macro | `progs/doomgeneric/doomkeys.h:45` | `#define KEY_F8` |
+| `KEY_F9` | macro | `progs/doomgeneric/doomkeys.h:46` | `#define KEY_F9` |
+| `KEY_FIRE` | macro | `progs/doomgeneric/doomkeys.h:34` | `#define KEY_FIRE` |
+| `KEY_HOME` | macro | `progs/doomgeneric/doomkeys.h:70` | `#define KEY_HOME` |
+| `KEY_INS` | macro | `progs/doomgeneric/doomkeys.h:74` | `#define KEY_INS` |
+| `KEY_LALT` | macro | `progs/doomgeneric/doomkeys.h:61` | `#define KEY_LALT` |
+| `KEY_LEFTARROW` | macro | `progs/doomgeneric/doomkeys.h:28` | `#define KEY_LEFTARROW` |
+| `KEY_MINUS` | macro | `progs/doomgeneric/doomkeys.h:55` | `#define KEY_MINUS` |
+| `KEY_NUMLOCK` | macro | `progs/doomgeneric/doomkeys.h:66` | `#define KEY_NUMLOCK` |
+| `KEY_PAUSE` | macro | `progs/doomgeneric/doomkeys.h:52` | `#define KEY_PAUSE` |
+| `KEY_PGDN` | macro | `progs/doomgeneric/doomkeys.h:73` | `#define KEY_PGDN` |
+| `KEY_PGUP` | macro | `progs/doomgeneric/doomkeys.h:72` | `#define KEY_PGUP` |
+| `KEY_PRTSCR` | macro | `progs/doomgeneric/doomkeys.h:68` | `#define KEY_PRTSCR` |
+| `KEY_RALT` | macro | `progs/doomgeneric/doomkeys.h:59` | `#define KEY_RALT` |
+| `KEY_RCTRL` | macro | `progs/doomgeneric/doomkeys.h:58` | `#define KEY_RCTRL` |
+| `KEY_RIGHTARROW` | macro | `progs/doomgeneric/doomkeys.h:27` | `#define KEY_RIGHTARROW` |
+| `KEY_RSHIFT` | macro | `progs/doomgeneric/doomkeys.h:57` | `#define KEY_RSHIFT` |
+| `KEY_SCRLCK` | macro | `progs/doomgeneric/doomkeys.h:67` | `#define KEY_SCRLCK` |
+| `KEY_STRAFE_L` | macro | `progs/doomgeneric/doomkeys.h:31` | `#define KEY_STRAFE_L` |
+| `KEY_STRAFE_R` | macro | `progs/doomgeneric/doomkeys.h:32` | `#define KEY_STRAFE_R` |
+| `KEY_TAB` | macro | `progs/doomgeneric/doomkeys.h:37` | `#define KEY_TAB` |
+| `KEY_UPARROW` | macro | `progs/doomgeneric/doomkeys.h:29` | `#define KEY_UPARROW` |
+| `KEY_USE` | macro | `progs/doomgeneric/doomkeys.h:33` | `#define KEY_USE` |
+| `__DOOMKEYS__` | macro | `progs/doomgeneric/doomkeys.h:20` | `#define __DOOMKEYS__` |
+| `MAX_DM_STARTS` | macro | `progs/doomgeneric/doomstat.h:227` | `#define MAX_DM_STARTS` |
+| `__D_STATE__` | macro | `progs/doomgeneric/doomstat.h:26` | `#define __D_STATE__` |
+| `automapactive` | variable | `progs/doomgeneric/doomstat.h:143` | `extern boolean automapactive;` |
+| `autostart` | variable | `progs/doomgeneric/doomstat.h:91` | `extern boolean autostart;` |
+| `basedefault` | variable | `progs/doomgeneric/doomstat.h:250` | `extern char basedefault[1024];` |
+| `bfgedition` | variable | `progs/doomgeneric/doomstat.h:62` | `extern boolean bfgedition;` |
+| `bodyqueslot` | variable | `progs/doomgeneric/doomstat.h:262` | `extern int bodyqueslot;` |
+| `consoleplayer` | variable | `progs/doomgeneric/doomstat.h:164` | `extern int consoleplayer;` |
+| `deathmatch` | variable | `progs/doomgeneric/doomstat.h:108` | `extern int deathmatch;` |
+| `deathmatch_p` | variable | `progs/doomgeneric/doomstat.h:229` | `extern mapthing_t* deathmatch_p;` |
+| `deathmatchstarts` | variable | `progs/doomgeneric/doomstat.h:228` | `extern mapthing_t deathmatchstarts[MAX_DM_STARTS];` |
+| `demoplayback` | variable | `progs/doomgeneric/doomstat.h:189` | `extern boolean demoplayback;` |
+| `demorecording` | variable | `progs/doomgeneric/doomstat.h:190` | `extern boolean demorecording;` |
+| `devparm` | variable | `progs/doomgeneric/doomstat.h:50` | `extern boolean devparm;` |
+| `displayplayer` | variable | `progs/doomgeneric/doomstat.h:165` | `extern int displayplayer;` |
+| `fastparm` | variable | `progs/doomgeneric/doomstat.h:48` | `extern boolean fastparm;` |
+| `gamedescription` | variable | `progs/doomgeneric/doomstat.h:59` | `extern char *gamedescription;` |
+| `gameepisode` | variable | `progs/doomgeneric/doomstat.h:95` | `extern int gameepisode;` |
+| `gamemap` | variable | `progs/doomgeneric/doomstat.h:96` | `extern int gamemap;` |
+| `gamemission` | variable | `progs/doomgeneric/doomstat.h:57` | `extern GameMission_t gamemission;` |
+| `gamemode` | variable | `progs/doomgeneric/doomstat.h:56` | `extern GameMode_t gamemode;` |
+| `gameskill` | variable | `progs/doomgeneric/doomstat.h:94` | `extern skill_t gameskill;` |
+| `gamestate` | variable | `progs/doomgeneric/doomstat.h:204` | `extern gamestate_t gamestate;` |
+| `gameversion` | variable | `progs/doomgeneric/doomstat.h:58` | `extern GameVersion_t gameversion;` |
+| `levelstarttic` | variable | `progs/doomgeneric/doomstat.h:177` | `extern int levelstarttic;` |
+| `leveltime` | variable | `progs/doomgeneric/doomstat.h:178` | `extern int leveltime;` |
+| `logical_gamemission` | macro | `progs/doomgeneric/doomstat.h:69` | `#define logical_gamemission` |
+| `lowres_turn` | variable | `progs/doomgeneric/doomstat.h:195` | `extern boolean lowres_turn;` |
+| `menuactive` | variable | `progs/doomgeneric/doomstat.h:144` | `extern boolean menuactive;` |
+| `modifiedgame` | variable | `progs/doomgeneric/doomstat.h:74` | `extern boolean modifiedgame;` |
+| `mouseSensitivity` | variable | `progs/doomgeneric/doomstat.h:260` | `extern int mouseSensitivity;` |
+| `musicVolume` | variable | `progs/doomgeneric/doomstat.h:121` | `extern int musicVolume;` |
+| `netcmds` | variable | `progs/doomgeneric/doomstat.h:278` | `extern ticcmd_t *netcmds;` |
+| `netgame` | variable | `progs/doomgeneric/doomstat.h:105` | `extern boolean netgame;` |
+| `nodrawers` | variable | `progs/doomgeneric/doomstat.h:150` | `extern boolean nodrawers;` |
+| `nomonsters` | variable | `progs/doomgeneric/doomstat.h:46` | `extern boolean nomonsters;` |
+| `paused` | variable | `progs/doomgeneric/doomstat.h:145` | `extern boolean paused;` |
+| `playeringame` | variable | `progs/doomgeneric/doomstat.h:223` | `extern boolean playeringame[MAXPLAYERS];` |
+| `players` | variable | `progs/doomgeneric/doomstat.h:220` | `extern player_t players[MAXPLAYERS];` |
+| `playerstarts` | variable | `progs/doomgeneric/doomstat.h:232` | `extern mapthing_t playerstarts[MAXPLAYERS];` |
+| `precache` | variable | `progs/doomgeneric/doomstat.h:253` | `extern boolean precache;` |
+| `respawnmonsters` | variable | `progs/doomgeneric/doomstat.h:102` | `extern boolean respawnmonsters;` |
+| `respawnparm` | variable | `progs/doomgeneric/doomstat.h:47` | `extern boolean respawnparm;` |
+| `rndindex` | variable | `progs/doomgeneric/doomstat.h:276` | `extern int rndindex;` |
+| `savegamedir` | variable | `progs/doomgeneric/doomstat.h:249` | `extern char * savegamedir;` |
+| `sfxVolume` | variable | `progs/doomgeneric/doomstat.h:120` | `extern int sfxVolume;` |
+| `singledemo` | variable | `progs/doomgeneric/doomstat.h:198` | `extern boolean singledemo;` |
+| `skyflatnum` | variable | `progs/doomgeneric/doomstat.h:269` | `extern int skyflatnum;` |
+| `snd_DesiredMusicDevice` | variable | `progs/doomgeneric/doomstat.h:130` | `extern int snd_DesiredMusicDevice;` |
+| `snd_DesiredSfxDevice` | variable | `progs/doomgeneric/doomstat.h:131` | `extern int snd_DesiredSfxDevice;` |
+| `snd_MusicDevice` | variable | `progs/doomgeneric/doomstat.h:127` | `extern int snd_MusicDevice;` |
+| `snd_SfxDevice` | variable | `progs/doomgeneric/doomstat.h:128` | `extern int snd_SfxDevice;` |
+| `startepisode` | variable | `progs/doomgeneric/doomstat.h:83` | `extern int startepisode;` |
+| `startloadgame` | variable | `progs/doomgeneric/doomstat.h:89` | `extern int startloadgame;` |
+| `startmap` | variable | `progs/doomgeneric/doomstat.h:84` | `extern int startmap;` |
+| `startskill` | variable | `progs/doomgeneric/doomstat.h:82` | `extern skill_t startskill;` |
+| `statusbaractive` | variable | `progs/doomgeneric/doomstat.h:141` | `extern boolean statusbaractive;` |
+| `testcontrols` | variable | `progs/doomgeneric/doomstat.h:153` | `extern boolean testcontrols;` |
+| `testcontrols_mousespeed` | variable | `progs/doomgeneric/doomstat.h:154` | `extern int testcontrols_mousespeed;` |
+| `timelimit` | variable | `progs/doomgeneric/doomstat.h:99` | `extern int timelimit;` |
+| `totalitems` | variable | `progs/doomgeneric/doomstat.h:173` | `extern int totalitems;` |
+| `totalkills` | variable | `progs/doomgeneric/doomstat.h:172` | `extern int totalkills;` |
+| `totalsecret` | variable | `progs/doomgeneric/doomstat.h:174` | `extern int totalsecret;` |
+| `usergame` | variable | `progs/doomgeneric/doomstat.h:186` | `extern boolean usergame;` |
+| `viewactive` | variable | `progs/doomgeneric/doomstat.h:148` | `extern boolean viewactive;` |
+| `viewangleoffset` | variable | `progs/doomgeneric/doomstat.h:161` | `extern int viewangleoffset;` |
+| `wipegamestate` | variable | `progs/doomgeneric/doomstat.h:258` | `extern gamestate_t wipegamestate;` |
+| `wminfo` | variable | `progs/doomgeneric/doomstat.h:236` | `extern wbstartstruct_t wminfo;` |
+| `DIR_SEPARATOR` | macro | `progs/doomgeneric/doomtype.h:88` | `#define DIR_SEPARATOR` |
+| `DIR_SEPARATOR` | macro | `progs/doomgeneric/doomtype.h:94` | `#define DIR_SEPARATOR` |
+| `DIR_SEPARATOR_S` | macro | `progs/doomgeneric/doomtype.h:89` | `#define DIR_SEPARATOR_S` |
+| `DIR_SEPARATOR_S` | macro | `progs/doomgeneric/doomtype.h:95` | `#define DIR_SEPARATOR_S` |
+| `PACKEDATTR` | macro | `progs/doomgeneric/doomtype.h:50` | `#define PACKEDATTR` |
+| `PACKEDATTR` | macro | `progs/doomgeneric/doomtype.h:52` | `#define PACKEDATTR` |
+| `PATH_SEPARATOR` | macro | `progs/doomgeneric/doomtype.h:90` | `#define PATH_SEPARATOR` |
+| `PATH_SEPARATOR` | macro | `progs/doomgeneric/doomtype.h:96` | `#define PATH_SEPARATOR` |
+| `__DOOMTYPE__` | macro | `progs/doomgeneric/doomtype.h:22` | `#define __DOOMTYPE__` |
+| `arrlen` | macro | `progs/doomgeneric/doomtype.h:100` | `#define arrlen(array)` |
+| `boolean` | type_alias | `progs/doomgeneric/doomtype.h:68` | `typedef bool boolean;` |
+| `byte` | type_alias | `progs/doomgeneric/doomtype.h:81` | `typedef uint8_t byte;` |
+| `strcasecmp` | macro | `progs/doomgeneric/doomtype.h:30` | `#define strcasecmp` |
+| `strncasecmp` | macro | `progs/doomgeneric/doomtype.h:31` | `#define strncasecmp` |
+| `NUM_QUITMESSAGES` | macro | `progs/doomgeneric/dstrings.h:35` | `#define NUM_QUITMESSAGES` |
+| `SAVEGAMENAME` | macro | `progs/doomgeneric/dstrings.h:30` | `#define SAVEGAMENAME` |
+| `__DSTRINGS__` | macro | `progs/doomgeneric/dstrings.h:22` | `#define __DSTRINGS__` |
+| `doom1_endmsg` | variable | `progs/doomgeneric/dstrings.h:37` | `extern char *doom1_endmsg[];` |
+| `doom2_endmsg` | variable | `progs/doomgeneric/dstrings.h:38` | `extern char *doom2_endmsg[];` |
+| `I_InitTimidityConfig` | function | `progs/doomgeneric/dummy.c:43` | `void I_InitTimidityConfig(void)` |
+| `F_ArtScreenDrawer` | function | `progs/doomgeneric/f_finale.c:661` | `static void F_ArtScreenDrawer(void)` |
+| `F_BunnyScroll` | function | `progs/doomgeneric/f_finale.c:606` | `void F_BunnyScroll (void)` |
+| `F_CastDrawer` | function | `progs/doomgeneric/f_finale.c:541` | `void F_CastDrawer (void)` |
+| `F_CastPrint` | function | `progs/doomgeneric/f_finale.c:486` | `void F_CastPrint (char* text)` |
+| `F_CastResponder` | function | `progs/doomgeneric/f_finale.c:465` | `boolean F_CastResponder (event_t* ev)` |
+| `F_CastTicker` | function | `progs/doomgeneric/f_finale.c:358` | `void F_CastTicker (void)` |
+| `F_DrawPatchCol` | function | `progs/doomgeneric/f_finale.c:572` | `void F_DrawPatchCol ( int		x,   patch_t*	patch,   int		col )` |
+| `F_Drawer` | function | `progs/doomgeneric/f_finale.c:702` | `void F_Drawer (void)` |
+| `F_Responder` | function | `progs/doomgeneric/f_finale.c:160` | `boolean F_Responder (event_t *event)` |
+| `F_StartCast` | function | `progs/doomgeneric/f_finale.c:340` | `void F_StartCast (void)` |
+| `F_StartFinale` | function | `progs/doomgeneric/f_finale.c:108` | `void F_StartFinale (void)` |
+| `F_TextWrite` | function | `progs/doomgeneric/f_finale.c:227` | `void F_TextWrite (void)` |
+| `F_Ticker` | function | `progs/doomgeneric/f_finale.c:172` | `void F_Ticker (void)` |
+| `TEXTSPEED` | macro | `progs/doomgeneric/f_finale.c:57` | `#define	TEXTSPEED` |
+| `TEXTWAIT` | macro | `progs/doomgeneric/f_finale.c:58` | `#define	TEXTWAIT` |
+| `castinfo_t` | struct | `progs/doomgeneric/f_finale.c:300` | `` |
+| `hu_font` | variable | `progs/doomgeneric/f_finale.c:224` | `extern patch_t *hu_font[HU_FONTSIZE];` |
+| `textscreen_t` | struct | `progs/doomgeneric/f_finale.c:60` | `` |
+| `F_Drawer` | function | `progs/doomgeneric/f_finale.h:37` | `void F_Drawer (void);` |
+| `F_StartFinale` | function | `progs/doomgeneric/f_finale.h:40` | `void F_StartFinale (void);` |
+| `F_Ticker` | function | `progs/doomgeneric/f_finale.h:34` | `void F_Ticker (void);` |
+| `__F_FINALE__` | macro | `progs/doomgeneric/f_finale.h:21` | `#define __F_FINALE__` |
+| `wipe_EndScreen` | function | `progs/doomgeneric/f_wipe.c:243` | `int wipe_EndScreen ( int	x,   int	y,   int	width,   int	height )` |
+| `wipe_ScreenWipe` | function | `progs/doomgeneric/f_wipe.c:256` | `int wipe_ScreenWipe ( int	wipeno,   int	x,   int	y,   int	width,   int	height,   int	ticks )` |
+| `wipe_StartScreen` | function | `progs/doomgeneric/f_wipe.c:231` | `int wipe_StartScreen ( int	x,   int	y,   int	width,   int	height )` |
+| `wipe_doColorXForm` | function | `progs/doomgeneric/f_wipe.c:75` | `int wipe_doColorXForm ( int	width,   int	height,   int	ticks )` |
+| `wipe_doMelt` | function | `progs/doomgeneric/f_wipe.c:164` | `int wipe_doMelt ( int	width,   int	height,   int	ticks )` |
+| `wipe_exitColorXForm` | function | `progs/doomgeneric/f_wipe.c:121` | `int wipe_exitColorXForm ( int	width,   int	height,   int	ticks )` |
+| `wipe_exitMelt` | function | `progs/doomgeneric/f_wipe.c:219` | `int wipe_exitMelt ( int	width,   int	height,   int	ticks )` |
+| `wipe_initColorXForm` | function | `progs/doomgeneric/f_wipe.c:65` | `int wipe_initColorXForm ( int	width,   int	height,   int	ticks )` |
+| `wipe_initMelt` | function | `progs/doomgeneric/f_wipe.c:133` | `int wipe_initMelt ( int	width,   int	height,   int	ticks )` |
+| `wipe_shittyColMajorXform` | function | `progs/doomgeneric/f_wipe.c:43` | `void wipe_shittyColMajorXform ( short*	array,   int		width,   int		height )` |
+| `__F_WIPE_H__` | macro | `progs/doomgeneric/f_wipe.h:21` | `#define __F_WIPE_H__` |
+| `wipe_EndScreen` | function | `progs/doomgeneric/f_wipe.h:47` | `int wipe_EndScreen ( int x, int y, int width, int height );` |
+| `wipe_ScreenWipe` | function | `progs/doomgeneric/f_wipe.h:55` | `int wipe_ScreenWipe ( int wipeno, int x, int y, int width, int height, int ticks );` |
+| `wipe_StartScreen` | function | `progs/doomgeneric/f_wipe.h:39` | `int wipe_StartScreen ( int x, int y, int width, int height );` |
 | `BODYQUESIZE` | macro | `progs/doomgeneric/g_game.c:225` | `#define	BODYQUESIZE` |
 | `DEMOMARKER` | macro | `progs/doomgeneric/g_game.c:1895` | `#define DEMOMARKER` |
 | `DemoVersionDescription` | function | `progs/doomgeneric/g_game.c:2115` | `static char *DemoVersionDescription(int version)` |
@@ -154,347 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `HU_TITLEHEIGHT` | macro | `progs/doomgeneric/hu_stuff.c:52` | `#define HU_TITLEHEIGHT` |
 | `HU_TITLEP` | macro | `progs/doomgeneric/hu_stuff.c:49` | `#define HU_TITLEP` |
 | `HU_TITLET` | macro | `progs/doomgeneric/hu_stuff.c:50` | `#define HU_TITLET` |
-| `HU_TITLEX` | macro | `progs/doomgeneric/hu_stuff.c:53` | `#define HU_TITLEX` |
-| `HU_TITLEY` | macro | `progs/doomgeneric/hu_stuff.c:54` | `#define HU_TITLEY` |
-| `HU_TITLE_CHEX` | macro | `progs/doomgeneric/hu_stuff.c:51` | `#define HU_TITLE_CHEX` |
-| `HU_Ticker` | function | `progs/doomgeneric/hu_stuff.c:402` | `void HU_Ticker(void)` |
-| `HU_dequeueChatChar` | function | `progs/doomgeneric/hu_stuff.c:495` | `char HU_dequeueChatChar(void)` |
-| `HU_queueChatChar` | function | `progs/doomgeneric/hu_stuff.c:482` | `void HU_queueChatChar(char c)` |
-| `QUEUESIZE` | macro | `progs/doomgeneric/hu_stuff.c:475` | `#define QUEUESIZE` |
-| `showMessages` | variable | `progs/doomgeneric/hu_stuff.c:103` | `extern int showMessages;` |
-| `HU_BROADCAST` | macro | `progs/doomgeneric/hu_stuff.h:33` | `#define HU_BROADCAST` |
-| `HU_Drawer` | function | `progs/doomgeneric/hu_stuff.h:52` | `void HU_Drawer(void);` |
-| `HU_Erase` | function | `progs/doomgeneric/hu_stuff.h:54` | `void HU_Erase(void);` |
-| `HU_FONTEND` | macro | `progs/doomgeneric/hu_stuff.h:28` | `#define HU_FONTEND` |
-| `HU_FONTSIZE` | macro | `progs/doomgeneric/hu_stuff.h:31` | `#define HU_FONTSIZE` |
-| `HU_FONTSTART` | macro | `progs/doomgeneric/hu_stuff.h:27` | `#define HU_FONTSTART` |
-| `HU_Init` | function | `progs/doomgeneric/hu_stuff.h:46` | `void HU_Init(void);` |
-| `HU_MSGHEIGHT` | macro | `progs/doomgeneric/hu_stuff.h:38` | `#define HU_MSGHEIGHT` |
-| `HU_MSGTIMEOUT` | macro | `progs/doomgeneric/hu_stuff.h:40` | `#define HU_MSGTIMEOUT` |
-| `HU_MSGWIDTH` | macro | `progs/doomgeneric/hu_stuff.h:37` | `#define HU_MSGWIDTH` |
-| `HU_MSGX` | macro | `progs/doomgeneric/hu_stuff.h:35` | `#define HU_MSGX` |
-| `HU_MSGY` | macro | `progs/doomgeneric/hu_stuff.h:36` | `#define HU_MSGY` |
-| `HU_Start` | function | `progs/doomgeneric/hu_stuff.h:47` | `void HU_Start(void);` |
-| `HU_Ticker` | function | `progs/doomgeneric/hu_stuff.h:51` | `void HU_Ticker(void);` |
-| `HU_dequeueChatChar` | function | `progs/doomgeneric/hu_stuff.h:53` | `char HU_dequeueChatChar(void);` |
-| `__HU_STUFF_H__` | macro | `progs/doomgeneric/hu_stuff.h:19` | `#define __HU_STUFF_H__` |
-| `chat_macros` | variable | `progs/doomgeneric/hu_stuff.h:56` | `extern char *chat_macros[10];` |
-| `I_CDMusFirstTrack` | function | `progs/doomgeneric/i_cdmus.c:169` | `int I_CDMusFirstTrack(void)` |
-| `I_CDMusInit` | function | `progs/doomgeneric/i_cdmus.c:38` | `int I_CDMusInit(void)` |
-| `I_CDMusLastTrack` | function | `progs/doomgeneric/i_cdmus.c:202` | `int I_CDMusLastTrack(void)` |
-| `I_CDMusPlay` | function | `progs/doomgeneric/i_cdmus.c:107` | `int I_CDMusPlay(int track)` |
-| `I_CDMusPrintStartup` | function | `progs/doomgeneric/i_cdmus.c:92` | `void I_CDMusPrintStartup(void)` |
-| `I_CDMusResume` | function | `progs/doomgeneric/i_cdmus.c:145` | `int I_CDMusResume(void)` |
-| `I_CDMusSetVolume` | function | `progs/doomgeneric/i_cdmus.c:160` | `int I_CDMusSetVolume(int volume)` |
-| `I_CDMusStop` | function | `progs/doomgeneric/i_cdmus.c:130` | `int I_CDMusStop(void)` |
-| `I_CDMusTrackLength` | function | `progs/doomgeneric/i_cdmus.c:219` | `int I_CDMusTrackLength(int track_num)` |
-| `CDERR_BADDRIVE` | macro | `progs/doomgeneric/i_cdmus.h:24` | `#define CDERR_BADDRIVE` |
-| `CDERR_BADTRACK` | macro | `progs/doomgeneric/i_cdmus.h:25` | `#define CDERR_BADTRACK` |
-| `CDERR_DEVREQBASE` | macro | `progs/doomgeneric/i_cdmus.h:27` | `#define CDERR_DEVREQBASE` |
-| `CDERR_IOCTLBUFFMEM` | macro | `progs/doomgeneric/i_cdmus.h:26` | `#define CDERR_IOCTLBUFFMEM` |
-| `CDERR_NOAUDIOSUPPORT` | macro | `progs/doomgeneric/i_cdmus.h:22` | `#define CDERR_NOAUDIOSUPPORT` |
-| `CDERR_NOAUDIOTRACKS` | macro | `progs/doomgeneric/i_cdmus.h:23` | `#define CDERR_NOAUDIOTRACKS` |
-| `CDERR_NOTINSTALLED` | macro | `progs/doomgeneric/i_cdmus.h:21` | `#define CDERR_NOTINSTALLED` |
-| `I_CDMusFirstTrack` | function | `progs/doomgeneric/i_cdmus.h:37` | `int I_CDMusFirstTrack(void);` |
-| `I_CDMusInit` | function | `progs/doomgeneric/i_cdmus.h:31` | `int I_CDMusInit(void);` |
-| `I_CDMusLastTrack` | function | `progs/doomgeneric/i_cdmus.h:38` | `int I_CDMusLastTrack(void);` |
-| `I_CDMusPlay` | function | `progs/doomgeneric/i_cdmus.h:33` | `int I_CDMusPlay(int track);` |
-| `I_CDMusPrintStartup` | function | `progs/doomgeneric/i_cdmus.h:32` | `void I_CDMusPrintStartup(void);` |
-| `I_CDMusResume` | function | `progs/doomgeneric/i_cdmus.h:35` | `int I_CDMusResume(void);` |
-| `I_CDMusSetVolume` | function | `progs/doomgeneric/i_cdmus.h:36` | `int I_CDMusSetVolume(int volume);` |
-| `I_CDMusStop` | function | `progs/doomgeneric/i_cdmus.h:34` | `int I_CDMusStop(void);` |
-| `I_CDMusTrackLength` | function | `progs/doomgeneric/i_cdmus.h:39` | `int I_CDMusTrackLength(int track);` |
-| `__ICDMUS__` | macro | `progs/doomgeneric/i_cdmus.h:19` | `#define __ICDMUS__` |
-| `cd_Error` | variable | `progs/doomgeneric/i_cdmus.h:29` | `extern int cd_Error;` |
-| `ENDOOM_H` | macro | `progs/doomgeneric/i_endoom.c:30` | `#define ENDOOM_H` |
-| `ENDOOM_W` | macro | `progs/doomgeneric/i_endoom.c:29` | `#define ENDOOM_W` |
-| `I_Endoom` | function | `progs/doomgeneric/i_endoom.c:36` | `void I_Endoom(byte *endoom_data)` |
-| `I_Endoom` | function | `progs/doomgeneric/i_endoom.h:26` | `void I_Endoom(byte *data);` |
-| `__I_ENDOOM__` | macro | `progs/doomgeneric/i_endoom.h:21` | `#define __I_ENDOOM__` |
-| `GetTypedChar` | function | `progs/doomgeneric/i_input.c:242` | `static unsigned char GetTypedChar(unsigned char key)` |
-| `I_GetEvent` | function | `progs/doomgeneric/i_input.c:279` | `void I_GetEvent(void)` |
-| `I_InitInput` | function | `progs/doomgeneric/i_input.c:338` | `void I_InitInput(void)` |
-| `TranslateKey` | function | `progs/doomgeneric/i_input.c:225` | `static unsigned char TranslateKey(unsigned char key)` |
-| `UpdateShiftStatus` | function | `progs/doomgeneric/i_input.c:263` | `static void UpdateShiftStatus(int pressed, unsigned char key)` |
-| `DEAD_ZONE` | macro | `progs/doomgeneric/i_joystick.c:38` | `#define DEAD_ZONE` |
-| `GetAxisState` | function | `progs/doomgeneric/i_joystick.c:248` | `static int GetAxisState(int axis, int invert)` |
-| `GetButtonsState` | function | `progs/doomgeneric/i_joystick.c:228` | `static int GetButtonsState(void)` |
-| `I_BindJoystickVariables` | function | `progs/doomgeneric/i_joystick.c:339` | `void I_BindJoystickVariables(void)` |
-| `I_InitJoystick` | function | `progs/doomgeneric/i_joystick.c:115` | `void I_InitJoystick(void)` |
-| `I_ShutdownJoystick` | function | `progs/doomgeneric/i_joystick.c:77` | `void I_ShutdownJoystick(void)` |
-| `I_UpdateJoystick` | function | `progs/doomgeneric/i_joystick.c:321` | `void I_UpdateJoystick(void)` |
-| `IsAxisButton` | function | `progs/doomgeneric/i_joystick.c:171` | `static boolean IsAxisButton(int physbutton)` |
-| `IsValidAxis` | function | `progs/doomgeneric/i_joystick.c:90` | `static boolean IsValidAxis(int axis)` |
-| `ReadButtonState` | function | `progs/doomgeneric/i_joystick.c:203` | `static int ReadButtonState(int vbutton)` |
-| `BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:33` | `#define BUTTON_AXIS` |
-| `BUTTON_AXIS_NEG` | macro | `progs/doomgeneric/i_joystick.h:39` | `#define BUTTON_AXIS_NEG(axis)` |
-| `BUTTON_AXIS_POS` | macro | `progs/doomgeneric/i_joystick.h:40` | `#define BUTTON_AXIS_POS(axis)` |
-| `CREATE_BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:43` | `#define CREATE_BUTTON_AXIS(neg, pos)` |
-| `CREATE_HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:57` | `#define CREATE_HAT_AXIS(hat, direction)` |
-| `HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:48` | `#define HAT_AXIS` |
-| `HAT_AXIS_DIRECTION` | macro | `progs/doomgeneric/i_joystick.h:55` | `#define HAT_AXIS_DIRECTION(axis)` |
-| `HAT_AXIS_HAT` | macro | `progs/doomgeneric/i_joystick.h:53` | `#define HAT_AXIS_HAT(axis)` |
-| `HAT_AXIS_HORIZONTAL` | macro | `progs/doomgeneric/i_joystick.h:60` | `#define HAT_AXIS_HORIZONTAL` |
-| `HAT_AXIS_VERTICAL` | macro | `progs/doomgeneric/i_joystick.h:61` | `#define HAT_AXIS_VERTICAL` |
-| `IS_BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:36` | `#define IS_BUTTON_AXIS(axis)` |
-| `IS_HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:50` | `#define IS_HAT_AXIS(axis)` |
-| `I_BindJoystickVariables` | function | `progs/doomgeneric/i_joystick.h:67` | `void I_BindJoystickVariables(void);` |
-| `I_InitJoystick` | function | `progs/doomgeneric/i_joystick.h:63` | `void I_InitJoystick(void);` |
-| `I_ShutdownJoystick` | function | `progs/doomgeneric/i_joystick.h:64` | `void I_ShutdownJoystick(void);` |
-| `I_UpdateJoystick` | function | `progs/doomgeneric/i_joystick.h:65` | `void I_UpdateJoystick(void);` |
-| `NUM_VIRTUAL_BUTTONS` | macro | `progs/doomgeneric/i_joystick.h:25` | `#define NUM_VIRTUAL_BUTTONS` |
-| `__I_JOYSTICK__` | macro | `progs/doomgeneric/i_joystick.h:20` | `#define __I_JOYSTICK__` |
-| `D_DoomMain` | function | `progs/doomgeneric/i_main.c:33` | `void D_DoomMain (void);` |
-| `M_FindResponseFile` | function | `progs/doomgeneric/i_main.c:35` | `void M_FindResponseFile(void);` |
-| `dg_Create` | function | `progs/doomgeneric/i_main.c:37` | `void dg_Create();` |
-| `main` | function | `progs/doomgeneric/i_main.c:40` | `int main(int argc, char **argv)` |
-| `DOOM_PCM_DRUM_SMP` | macro | `progs/doomgeneric/i_minios_sound.c:125` | `#define DOOM_PCM_DRUM_SMP` |
-| `DOOM_PCM_RATE` | macro | `progs/doomgeneric/i_minios_sound.c:55` | `#define DOOM_PCM_RATE` |
-| `DOOM_PCM_VOL` | macro | `progs/doomgeneric/i_minios_sound.c:56` | `#define DOOM_PCM_VOL` |
-| `MUS_ARP_MAX` | macro | `progs/doomgeneric/i_minios_sound.c:123` | `#define MUS_ARP_MAX` |
-| `MUS_ARP_SLOT_MS` | macro | `progs/doomgeneric/i_minios_sound.c:120` | `#define MUS_ARP_SLOT_MS` |
-| `MUS_BASS_HOLD_MS` | macro | `progs/doomgeneric/i_minios_sound.c:121` | `#define MUS_BASS_HOLD_MS` |
-| `MUS_BASS_LINE_MIDI` | macro | `progs/doomgeneric/i_minios_sound.c:122` | `#define MUS_BASS_LINE_MIDI` |
-| `MUS_Init` | function | `progs/doomgeneric/i_minios_sound.c:410` | `static boolean MUS_Init(void)` |
-| `MUS_MusicIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:474` | `static boolean MUS_MusicIsPlaying(void)` |
-| `MUS_PERCUSSION_CHAN` | macro | `progs/doomgeneric/i_minios_sound.c:119` | `#define MUS_PERCUSSION_CHAN` |
-| `MUS_Pause` | function | `progs/doomgeneric/i_minios_sound.c:424` | `static void MUS_Pause(void)` |
-| `MUS_PlaySong` | function | `progs/doomgeneric/i_minios_sound.c:448` | `static void MUS_PlaySong(void *handle, boolean looping)` |
-| `MUS_Poll` | function | `progs/doomgeneric/i_minios_sound.c:478` | `static void MUS_Poll(void)` |
-| `MUS_RegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:427` | `static void *MUS_RegisterSong(void *data, int len)` |
-| `MUS_Resume` | function | `progs/doomgeneric/i_minios_sound.c:425` | `static void MUS_Resume(void)` |
-| `MUS_SetMusicVolume` | function | `progs/doomgeneric/i_minios_sound.c:422` | `static void MUS_SetMusicVolume(int volume)` |
-| `MUS_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:415` | `static void MUS_Shutdown(void)` |
-| `MUS_StopSong` | function | `progs/doomgeneric/i_minios_sound.c:469` | `static void MUS_StopSong(void)` |
-| `MUS_TICKS_PER_SEC` | macro | `progs/doomgeneric/i_minios_sound.c:118` | `#define MUS_TICKS_PER_SEC` |
-| `MUS_UnRegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:442` | `static void MUS_UnRegisterSong(void *handle)` |
-| `PCSPK_CHANNELS` | macro | `progs/doomgeneric/i_minios_sound.c:12` | `#define PCSPK_CHANNELS` |
-| `PCSPK_CacheSounds` | function | `progs/doomgeneric/i_minios_sound.c:653` | `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)` |
-| `PCSPK_GetSfxLumpNum` | function | `progs/doomgeneric/i_minios_sound.c:529` | `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)` |
-| `PCSPK_Init` | function | `progs/doomgeneric/i_minios_sound.c:512` | `static boolean PCSPK_Init(boolean use_sfx_prefix)` |
-| `PCSPK_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:519` | `static void PCSPK_Shutdown(void)` |
-| `PCSPK_SoundIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:647` | `static boolean PCSPK_SoundIsPlaying(int channel)` |
-| `PCSPK_StartSound` | function | `progs/doomgeneric/i_minios_sound.c:591` | `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)` |
-| `PCSPK_StopSound` | function | `progs/doomgeneric/i_minios_sound.c:641` | `static void PCSPK_StopSound(int channel)` |
-| `PCSPK_TICK_MS` | macro | `progs/doomgeneric/i_minios_sound.c:13` | `#define PCSPK_TICK_MS` |
-| `PCSPK_Update` | function | `progs/doomgeneric/i_minios_sound.c:549` | `static void PCSPK_Update(void)` |
-| `PCSPK_UpdateSoundParams` | function | `progs/doomgeneric/i_minios_sound.c:587` | `static void PCSPK_UpdateSoundParams(int ch, int v, int s)` |
-| `audio_close` | function | `progs/doomgeneric/i_minios_sound.c:92` | `static void audio_close(void)` |
-| `audio_ensure` | function | `progs/doomgeneric/i_minios_sound.c:68` | `static void audio_ensure(void)` |
-| `audio_pump` | function | `progs/doomgeneric/i_minios_sound.c:77` | `static void audio_pump(void)` |
-| `audio_tone` | function | `progs/doomgeneric/i_minios_sound.c:85` | `static void audio_tone(unsigned freq)` |
-| `free_channel` | function | `progs/doomgeneric/i_minios_sound.c:540` | `static void free_channel(int i)` |
-| `mus_advance` | function | `progs/doomgeneric/i_minios_sound.c:288` | `static void mus_advance(mus_player_t *m, unsigned long ms)` |
-| `mus_advance_pcm` | function | `progs/doomgeneric/i_minios_sound.c:369` | `static void mus_advance_pcm(mus_player_t *m)` |
-| `mus_build_chord` | function | `progs/doomgeneric/i_minios_sound.c:236` | `static void mus_build_chord(mus_player_t *m)` |
-| `mus_hold_tone` | function | `progs/doomgeneric/i_minios_sound.c:261` | `static void mus_hold_tone(unsigned freq, unsigned long ms)` |
-| `mus_next_block` | function | `progs/doomgeneric/i_minios_sound.c:183` | `static int mus_next_block(mus_player_t *m, unsigned long *out)` |
-| `mus_note_cmp` | function | `progs/doomgeneric/i_minios_sound.c:228` | `static int mus_note_cmp(const void *a, const void *b)` |
-| `mus_play_chord` | function | `progs/doomgeneric/i_minios_sound.c:274` | `static void mus_play_chord(mus_player_t *m)` |
-| `mus_player_t` | struct | `progs/doomgeneric/i_minios_sound.c:146` | `` |
-| `mus_read_varlen` | function | `progs/doomgeneric/i_minios_sound.c:169` | `static int mus_read_varlen(mus_player_t *m, unsigned long *out)` |
-| `mus_render_pcm` | function | `progs/doomgeneric/i_minios_sound.c:320` | `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)` |
-| `mus_render_push` | function | `progs/doomgeneric/i_minios_sound.c:359` | `static void mus_render_push(mus_player_t *m, unsigned n)` |
-| `muted` | function | `progs/doomgeneric/i_minios_sound.c:51` | `* pcm2 while sfx stay muted (effect tones ruined the melody);` |
-| `pcspk_channel_t` | struct | `progs/doomgeneric/i_minios_sound.c:17` | `` |
-| `sys_pcm2_close` | function | `progs/doomgeneric/i_minios_sound.c:44` | `static void sys_pcm2_close(void)` |
-| `sys_pcm2_open` | function | `progs/doomgeneric/i_minios_sound.c:38` | `static long sys_pcm2_open(long flags)` |
-| `sys_pcm2_write` | function | `progs/doomgeneric/i_minios_sound.c:41` | `static long sys_pcm2_write(const void *buf, long len)` |
-| `sys_time` | function | `progs/doomgeneric/i_minios_sound.c:35` | `static long sys_time(void)` |
-| `sys_tone_hw` | function | `progs/doomgeneric/i_minios_sound.c:32` | `static long sys_tone_hw(unsigned f)` |
-| `DRAW_PIXEL2` | macro | `progs/doomgeneric/i_scale.c:1099` | `#define DRAW_PIXEL2` |
-| `DRAW_PIXEL3` | macro | `progs/doomgeneric/i_scale.c:1194` | `#define DRAW_PIXEL3` |
-| `DRAW_PIXEL4` | macro | `progs/doomgeneric/i_scale.c:1276` | `#define DRAW_PIXEL4` |
-| `DRAW_PIXEL5` | macro | `progs/doomgeneric/i_scale.c:1387` | `#define DRAW_PIXEL5` |
-| `FindNearestColor` | function | `progs/doomgeneric/i_scale.c:295` | `static int FindNearestColor(byte *palette, int r, int g, int b)` |
-| `GenerateStretchTable` | function | `progs/doomgeneric/i_scale.c:332` | `static byte *GenerateStretchTable(byte *palette, int pct)` |
-| `I_InitScale` | function | `progs/doomgeneric/i_scale.c:61` | `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch)` |
-| `I_InitSquashTable` | function | `progs/doomgeneric/i_scale.c:387` | `static void I_InitSquashTable(byte *palette)` |
-| `I_InitStretchTables` | function | `progs/doomgeneric/i_scale.c:361` | `static void I_InitStretchTables(byte *palette)` |
-| `I_ResetScaleTables` | function | `progs/doomgeneric/i_scale.c:404` | `void I_ResetScaleTables(byte *palette)` |
-| `I_Scale1x` | function | `progs/doomgeneric/i_scale.c:75` | `static boolean I_Scale1x(int x1, int y1, int x2, int y2)` |
-| `I_Scale2x` | function | `progs/doomgeneric/i_scale.c:105` | `static boolean I_Scale2x(int x1, int y1, int x2, int y2)` |
-| `I_Scale3x` | function | `progs/doomgeneric/i_scale.c:146` | `static boolean I_Scale3x(int x1, int y1, int x2, int y2)` |
-| `I_Scale4x` | function | `progs/doomgeneric/i_scale.c:191` | `static boolean I_Scale4x(int x1, int y1, int x2, int y2)` |
-| `I_Scale5x` | function | `progs/doomgeneric/i_scale.c:240` | `static boolean I_Scale5x(int x1, int y1, int x2, int y2)` |
-| `I_Squash1x` | function | `progs/doomgeneric/i_scale.c:1061` | `static boolean I_Squash1x(int x1, int y1, int x2, int y2)` |
-| `I_Squash2x` | function | `progs/doomgeneric/i_scale.c:1160` | `static boolean I_Squash2x(int x1, int y1, int x2, int y2)` |
-| `I_Squash3x` | function | `progs/doomgeneric/i_scale.c:1243` | `static boolean I_Squash3x(int x1, int y1, int x2, int y2)` |
-| `I_Squash4x` | function | `progs/doomgeneric/i_scale.c:1354` | `static boolean I_Squash4x(int x1, int y1, int x2, int y2)` |
-| `I_Squash5x` | function | `progs/doomgeneric/i_scale.c:1419` | `static boolean I_Squash5x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch1x` | function | `progs/doomgeneric/i_scale.c:450` | `static boolean I_Stretch1x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch2x` | function | `progs/doomgeneric/i_scale.c:539` | `static boolean I_Stretch2x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch3x` | function | `progs/doomgeneric/i_scale.c:654` | `static boolean I_Stretch3x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch4x` | function | `progs/doomgeneric/i_scale.c:795` | `static boolean I_Stretch4x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch5x` | function | `progs/doomgeneric/i_scale.c:942` | `static boolean I_Stretch5x(int x1, int y1, int x2, int y2)` |
-| `WriteBlendedLine1x` | function | `progs/doomgeneric/i_scale.c:434` | `static inline void WriteBlendedLine1x(byte *dest, byte *src1, byte *src2,                        ...` |
-| `WriteBlendedLine2x` | function | `progs/doomgeneric/i_scale.c:520` | `static inline void WriteBlendedLine2x(byte *dest, byte *src1, byte *src2,                        ...` |
-| `WriteBlendedLine3x` | function | `progs/doomgeneric/i_scale.c:634` | `static inline void WriteBlendedLine3x(byte *dest, byte *src1, byte *src2,                        ...` |
-| `WriteBlendedLine4x` | function | `progs/doomgeneric/i_scale.c:774` | `static inline void WriteBlendedLine4x(byte *dest, byte *src1, byte *src2,                        ...` |
-| `WriteLine2x` | function | `progs/doomgeneric/i_scale.c:507` | `static inline void WriteLine2x(byte *dest, byte *src)` |
-| `WriteLine3x` | function | `progs/doomgeneric/i_scale.c:620` | `static inline void WriteLine3x(byte *dest, byte *src)` |
-| `WriteLine4x` | function | `progs/doomgeneric/i_scale.c:759` | `static inline void WriteLine4x(byte *dest, byte *src)` |
-| `WriteLine5x` | function | `progs/doomgeneric/i_scale.c:924` | `static inline void WriteLine5x(byte *dest, byte *src)` |
-| `WriteSquashedLine1x` | function | `progs/doomgeneric/i_scale.c:1030` | `static inline void WriteSquashedLine1x(byte *dest, byte *src)` |
-| `WriteSquashedLine2x` | function | `progs/doomgeneric/i_scale.c:1102` | `static inline void WriteSquashedLine2x(byte *dest, byte *src)` |
-| `WriteSquashedLine3x` | function | `progs/doomgeneric/i_scale.c:1197` | `static inline void WriteSquashedLine3x(byte *dest, byte *src)` |
-| `WriteSquashedLine4x` | function | `progs/doomgeneric/i_scale.c:1279` | `static inline void WriteSquashedLine4x(byte *dest, byte *src)` |
-| `WriteSquashedLine5x` | function | `progs/doomgeneric/i_scale.c:1390` | `static inline void WriteSquashedLine5x(byte *dest, byte *src)` |
-| `inline` | macro | `progs/doomgeneric/i_scale.c:32` | `#define inline` |
-| `I_InitScale` | function | `progs/doomgeneric/i_scale.h:25` | `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch);` |
-| `I_ResetScaleTables` | function | `progs/doomgeneric/i_scale.h:26` | `void I_ResetScaleTables(byte *palette);` |
-| `__I_SCALE__` | macro | `progs/doomgeneric/i_scale.h:21` | `#define __I_SCALE__` |
-| `mode_scale_1x` | variable | `progs/doomgeneric/i_scale.h:30` | `extern screen_mode_t mode_scale_1x;` |
-| `mode_scale_2x` | variable | `progs/doomgeneric/i_scale.h:31` | `extern screen_mode_t mode_scale_2x;` |
-| `mode_scale_3x` | variable | `progs/doomgeneric/i_scale.h:32` | `extern screen_mode_t mode_scale_3x;` |
-| `mode_scale_4x` | variable | `progs/doomgeneric/i_scale.h:33` | `extern screen_mode_t mode_scale_4x;` |
-| `mode_scale_5x` | variable | `progs/doomgeneric/i_scale.h:34` | `extern screen_mode_t mode_scale_5x;` |
-| `mode_squash_1x` | variable | `progs/doomgeneric/i_scale.h:46` | `extern screen_mode_t mode_squash_1x;` |
-| `mode_squash_2x` | variable | `progs/doomgeneric/i_scale.h:47` | `extern screen_mode_t mode_squash_2x;` |
-| `mode_squash_3x` | variable | `progs/doomgeneric/i_scale.h:48` | `extern screen_mode_t mode_squash_3x;` |
-| `mode_squash_4x` | variable | `progs/doomgeneric/i_scale.h:49` | `extern screen_mode_t mode_squash_4x;` |
-| `mode_squash_5x` | variable | `progs/doomgeneric/i_scale.h:50` | `extern screen_mode_t mode_squash_5x;` |
-| `mode_stretch_1x` | variable | `progs/doomgeneric/i_scale.h:38` | `extern screen_mode_t mode_stretch_1x;` |
-| `mode_stretch_2x` | variable | `progs/doomgeneric/i_scale.h:39` | `extern screen_mode_t mode_stretch_2x;` |
-| `mode_stretch_3x` | variable | `progs/doomgeneric/i_scale.h:40` | `extern screen_mode_t mode_stretch_3x;` |
-| `mode_stretch_4x` | variable | `progs/doomgeneric/i_scale.h:41` | `extern screen_mode_t mode_stretch_4x;` |
-| `mode_stretch_5x` | variable | `progs/doomgeneric/i_scale.h:42` | `extern screen_mode_t mode_stretch_5x;` |
-| `CheckVolumeSeparation` | function | `progs/doomgeneric/i_sound.c:288` | `static void CheckVolumeSeparation(int *vol, int *sep)` |
-| `I_BindSoundVariables` | function | `progs/doomgeneric/i_sound.c:440` | `void I_BindSoundVariables(void)` |
-| `I_GetSfxLumpNum` | function | `progs/doomgeneric/i_sound.c:263` | `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo)` |
-| `I_InitMusic` | function | `progs/doomgeneric/i_sound.c:359` | `void I_InitMusic(void)` |
-| `I_InitSound` | function | `progs/doomgeneric/i_sound.c:195` | `void I_InitSound(boolean use_sfx_prefix)` |
-| `I_InitTimidityConfig` | function | `progs/doomgeneric/i_sound.c:65` | `extern void I_InitTimidityConfig(void);` |
-| `I_MusicIsPlaying` | function | `progs/doomgeneric/i_sound.c:428` | `boolean I_MusicIsPlaying(void)` |
-| `I_PauseSong` | function | `progs/doomgeneric/i_sound.c:376` | `void I_PauseSong(void)` |
-| `I_PlaySong` | function | `progs/doomgeneric/i_sound.c:412` | `void I_PlaySong(void *handle, boolean looping)` |
-| `I_PrecacheSounds` | function | `progs/doomgeneric/i_sound.c:351` | `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)` |
-| `I_RegisterSong` | function | `progs/doomgeneric/i_sound.c:392` | `void *I_RegisterSong(void *data, int len)` |
-| `I_ResumeSong` | function | `progs/doomgeneric/i_sound.c:384` | `void I_ResumeSong(void)` |
-| `I_SetMusicVolume` | function | `progs/doomgeneric/i_sound.c:368` | `void I_SetMusicVolume(int volume)` |
-| `I_ShutdownMusic` | function | `progs/doomgeneric/i_sound.c:363` | `void I_ShutdownMusic(void)` |
-| `I_ShutdownSound` | function | `progs/doomgeneric/i_sound.c:250` | `void I_ShutdownSound(void)` |
-| `I_SoundIsPlaying` | function | `progs/doomgeneric/i_sound.c:339` | `boolean I_SoundIsPlaying(int channel)` |
-| `I_StartSound` | function | `progs/doomgeneric/i_sound.c:318` | `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep)` |
-| `I_StopSong` | function | `progs/doomgeneric/i_sound.c:420` | `void I_StopSong(void)` |
-| `I_StopSound` | function | `progs/doomgeneric/i_sound.c:331` | `void I_StopSound(int channel)` |
-| `I_UnRegisterSong` | function | `progs/doomgeneric/i_sound.c:404` | `void I_UnRegisterSong(void *handle)` |
-| `I_UpdateSound` | function | `progs/doomgeneric/i_sound.c:275` | `void I_UpdateSound(void)` |
-| `I_UpdateSoundParams` | function | `progs/doomgeneric/i_sound.c:309` | `void I_UpdateSoundParams(int channel, int vol, int sep)` |
-| `InitMusicModule` | function | `progs/doomgeneric/i_sound.c:163` | `static void InitMusicModule(void)` |
-| `InitSfxModule` | function | `progs/doomgeneric/i_sound.c:135` | `static void InitSfxModule(boolean use_sfx_prefix)` |
-| `SndDeviceInList` | function | `progs/doomgeneric/i_sound.c:116` | `static boolean SndDeviceInList(snddevice_t device, snddevice_t *list,                            ...` |
-| `libsamplerate_scale` | variable | `progs/doomgeneric/i_sound.c:444` | `extern float libsamplerate_scale;` |
-| `music_opl_module` | variable | `progs/doomgeneric/i_sound.c:69` | `extern music_module_t music_opl_module;` |
-| `music_pcspeaker_module` | variable | `progs/doomgeneric/i_sound.c:70` | `extern music_module_t music_pcspeaker_module;` |
-| `music_sdl_module` | variable | `progs/doomgeneric/i_sound.c:68` | `extern music_module_t music_sdl_module;` |
-| `opl_io_port` | variable | `progs/doomgeneric/i_sound.c:74` | `extern int opl_io_port;` |
-| `sound_pcsound_module` | variable | `progs/doomgeneric/i_sound.c:67` | `extern sound_module_t sound_pcsound_module;` |
-| `sound_sdl_module` | variable | `progs/doomgeneric/i_sound.c:66` | `extern sound_module_t sound_sdl_module;` |
-| `timidity_cfg_path` | variable | `progs/doomgeneric/i_sound.c:78` | `extern char *timidity_cfg_path;` |
-| `use_libsamplerate` | variable | `progs/doomgeneric/i_sound.c:443` | `extern int use_libsamplerate;` |
-| `I_BindSoundVariables` | function | `progs/doomgeneric/i_sound.h:235` | `void I_BindSoundVariables(void);` |
-| `I_GetSfxLumpNum` | function | `progs/doomgeneric/i_sound.h:154` | `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo);` |
-| `I_InitMusic` | function | `progs/doomgeneric/i_sound.h:217` | `void I_InitMusic(void);` |
-| `I_InitSound` | function | `progs/doomgeneric/i_sound.h:152` | `void I_InitSound(boolean use_sfx_prefix);` |
-| `I_PauseSong` | function | `progs/doomgeneric/i_sound.h:220` | `void I_PauseSong(void);` |
-| `I_PlaySong` | function | `progs/doomgeneric/i_sound.h:224` | `void I_PlaySong(void *handle, boolean looping);` |
-| `I_PrecacheSounds` | function | `progs/doomgeneric/i_sound.h:160` | `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds);` |
-| `I_RegisterSong` | function | `progs/doomgeneric/i_sound.h:222` | `void *I_RegisterSong(void *data, int len);` |
-| `I_ResumeSong` | function | `progs/doomgeneric/i_sound.h:221` | `void I_ResumeSong(void);` |
-| `I_SetMusicVolume` | function | `progs/doomgeneric/i_sound.h:219` | `void I_SetMusicVolume(int volume);` |
-| `I_ShutdownMusic` | function | `progs/doomgeneric/i_sound.h:218` | `void I_ShutdownMusic(void);` |
-| `I_ShutdownSound` | function | `progs/doomgeneric/i_sound.h:153` | `void I_ShutdownSound(void);` |
-| `I_StartSound` | function | `progs/doomgeneric/i_sound.h:157` | `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep);` |
-| `I_StopSong` | function | `progs/doomgeneric/i_sound.h:225` | `void I_StopSong(void);` |
-| `I_StopSound` | function | `progs/doomgeneric/i_sound.h:158` | `void I_StopSound(int channel);` |
-| `I_UnRegisterSong` | function | `progs/doomgeneric/i_sound.h:223` | `void I_UnRegisterSong(void *handle);` |
-| `I_UpdateSound` | function | `progs/doomgeneric/i_sound.h:155` | `void I_UpdateSound(void);` |
-| `I_UpdateSoundParams` | function | `progs/doomgeneric/i_sound.h:156` | `void I_UpdateSoundParams(int channel, int vol, int sep);` |
-| `__I_SOUND__` | macro | `progs/doomgeneric/i_sound.h:21` | `#define __I_SOUND__` |
-| `music_module_t` | struct | `progs/doomgeneric/i_sound.h:164` | `` |
-| `musicinfo_t` | struct | `progs/doomgeneric/i_sound.h:72` | `` |
-| `sfxinfo_struct` | struct | `progs/doomgeneric/i_sound.h:31` | `` |
-| `sfxinfo_t` | type_alias | `progs/doomgeneric/i_sound.h:29` | `typedef struct sfxinfo_struct sfxinfo_t;` |
-| `snd_cachesize` | variable | `progs/doomgeneric/i_sound.h:231` | `extern int snd_cachesize;` |
-| `snd_maxslicetime_ms` | variable | `progs/doomgeneric/i_sound.h:232` | `extern int snd_maxslicetime_ms;` |
-| `snd_musiccmd` | variable | `progs/doomgeneric/i_sound.h:233` | `extern char *snd_musiccmd;` |
-| `snd_musicdevice` | variable | `progs/doomgeneric/i_sound.h:229` | `extern int snd_musicdevice;` |
-| `snd_samplerate` | variable | `progs/doomgeneric/i_sound.h:230` | `extern int snd_samplerate;` |
-| `snd_sfxdevice` | variable | `progs/doomgeneric/i_sound.h:228` | `extern int snd_sfxdevice;` |
-| `sound_module_t` | struct | `progs/doomgeneric/i_sound.h:105` | `` |
-| `LONG` | macro | `progs/doomgeneric/i_swap.h:35` | `#define LONG(x)` |
-| `LONG` | macro | `progs/doomgeneric/i_swap.h:48` | `#define LONG(x)` |
-| `SHORT` | macro | `progs/doomgeneric/i_swap.h:34` | `#define SHORT(x)` |
-| `SHORT` | macro | `progs/doomgeneric/i_swap.h:47` | `#define SHORT(x)` |
-| `SYS_BIG_ENDIAN` | macro | `progs/doomgeneric/i_swap.h:42` | `#define SYS_BIG_ENDIAN` |
-| `SYS_LITTLE_ENDIAN` | macro | `progs/doomgeneric/i_swap.h:40` | `#define SYS_LITTLE_ENDIAN` |
-| `SYS_LITTLE_ENDIAN` | macro | `progs/doomgeneric/i_swap.h:50` | `#define SYS_LITTLE_ENDIAN` |
-| `__I_SWAP__` | macro | `progs/doomgeneric/i_swap.h:21` | `#define __I_SWAP__` |
-| `AutoAllocMemory` | function | `progs/doomgeneric/i_system.c:95` | `static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)` |
-| `DEFAULT_RAM` | macro | `progs/doomgeneric/i_system.c:58` | `#define DEFAULT_RAM` |
-| `DOS_MEM_DUMP_SIZE` | macro | `progs/doomgeneric/i_system.c:490` | `#define DOS_MEM_DUMP_SIZE` |
-| `EscapeShellString` | function | `progs/doomgeneric/i_system.c:280` | `static char *EscapeShellString(char *string)` |
-| `I_AtExit` | function | `progs/doomgeneric/i_system.c:73` | `void I_AtExit(atexit_func_t func, boolean run_on_error)` |
-| `I_ConsoleStdout` | function | `progs/doomgeneric/i_system.c:210` | `boolean I_ConsoleStdout(void)` |
-| `I_Error` | function | `progs/doomgeneric/i_system.c:359` | `void I_Error (char *error, ...)` |
-| `I_GetMemoryValue` | function | `progs/doomgeneric/i_system.c:502` | `boolean I_GetMemoryValue(unsigned int offset, void *value, int size)` |
-| `I_PrintBanner` | function | `progs/doomgeneric/i_system.c:166` | `void I_PrintBanner(char *msg)` |
-| `I_PrintDivider` | function | `progs/doomgeneric/i_system.c:177` | `void I_PrintDivider(void)` |
-| `I_PrintStartupBanner` | function | `progs/doomgeneric/i_system.c:189` | `void I_PrintStartupBanner(char *gamedescription)` |
-| `I_Quit` | function | `progs/doomgeneric/i_system.c:246` | `void I_Quit (void)` |
-| `I_Tactile` | function | `progs/doomgeneric/i_system.c:87` | `void I_Tactile(int on, int off, int total)` |
-| `I_ZoneBase` | function | `progs/doomgeneric/i_system.c:133` | `byte *I_ZoneBase (int *size)` |
-| `MIN_RAM` | macro | `progs/doomgeneric/i_system.c:59` | `#define MIN_RAM` |
-| `WIN32_LEAN_AND_MEAN` | macro | `progs/doomgeneric/i_system.c:27` | `#define WIN32_LEAN_AND_MEAN` |
-| `ZENITY_BINARY` | macro | `progs/doomgeneric/i_system.c:268` | `#define ZENITY_BINARY` |
-| `ZenityAvailable` | function | `progs/doomgeneric/i_system.c:272` | `static int ZenityAvailable(void)` |
-| `ZenityErrorBox` | function | `progs/doomgeneric/i_system.c:323` | `static int ZenityErrorBox(char *message)` |
-| `atexit_listentry_s` | struct | `progs/doomgeneric/i_system.c:64` | `` |
-| `atexit_listentry_t` | type_alias | `progs/doomgeneric/i_system.c:60` | `typedef struct atexit_listentry_s atexit_listentry_t;` |
-| `I_AtExit` | function | `progs/doomgeneric/i_system.h:65` | `void I_AtExit(atexit_func_t func, boolean run_if_error);` |
-| `I_BaseTiccmd` | function | `progs/doomgeneric/i_system.h:48` | `ticcmd_t* I_BaseTiccmd (void);` |
-| `I_BindVariables` | function | `progs/doomgeneric/i_system.h:69` | `void I_BindVariables(void);` |
-| `I_Error` | function | `progs/doomgeneric/i_system.h:55` | `void I_Error (char *error, ...);` |
-| `I_Init` | function | `progs/doomgeneric/i_system.h:30` | `void I_Init (void);` |
-| `I_PrintBanner` | function | `progs/doomgeneric/i_system.h:77` | `void I_PrintBanner(char *text);` |
-| `I_PrintDivider` | function | `progs/doomgeneric/i_system.h:81` | `void I_PrintDivider(void);` |
-| `I_PrintStartupBanner` | function | `progs/doomgeneric/i_system.h:73` | `void I_PrintStartupBanner(char *gamedescription);` |
-| `I_Quit` | function | `progs/doomgeneric/i_system.h:53` | `void I_Quit (void);` |
-| `I_Tactile` | function | `progs/doomgeneric/i_system.h:57` | `void I_Tactile (int on, int off, int total);` |
-| `I_ZoneBase` | function | `progs/doomgeneric/i_system.h:35` | `byte* I_ZoneBase (int *size);` |
-| `__I_SYSTEM__` | macro | `progs/doomgeneric/i_system.h:21` | `#define __I_SYSTEM__` |
-| `I_GetTicks` | function | `progs/doomgeneric/i_timer.c:37` | `int I_GetTicks(void)` |
-| `I_GetTime` | function | `progs/doomgeneric/i_timer.c:42` | `int  I_GetTime (void)` |
-| `I_GetTimeMS` | function | `progs/doomgeneric/i_timer.c:61` | `int I_GetTimeMS(void)` |
-| `I_InitTimer` | function | `progs/doomgeneric/i_timer.c:89` | `void I_InitTimer(void)` |
-| `I_Sleep` | function | `progs/doomgeneric/i_timer.c:75` | `void I_Sleep(int ms)` |
-| `I_WaitVBL` | function | `progs/doomgeneric/i_timer.c:83` | `void I_WaitVBL(int count)` |
-| `I_GetTime` | function | `progs/doomgeneric/i_timer.h:27` | `int I_GetTime (void);` |
-| `I_GetTimeMS` | function | `progs/doomgeneric/i_timer.h:30` | `int I_GetTimeMS (void);` |
-| `I_InitTimer` | function | `progs/doomgeneric/i_timer.h:36` | `void I_InitTimer(void);` |
-| `I_Sleep` | function | `progs/doomgeneric/i_timer.h:33` | `void I_Sleep(int ms);` |
-| `I_WaitVBL` | function | `progs/doomgeneric/i_timer.h:39` | `void I_WaitVBL(int count);` |
-| `TICRATE` | macro | `progs/doomgeneric/i_timer.h:23` | `#define TICRATE` |
-| `__I_TIMER__` | macro | `progs/doomgeneric/i_timer.h:21` | `#define __I_TIMER__` |
-| `FB_BitField` | struct | `progs/doomgeneric/i_video.c:54` | `` |
-| `FB_ScreenInfo` | struct | `progs/doomgeneric/i_video.c:60` | `` |
-| `GFX_RGB565` | macro | `progs/doomgeneric/i_video.c:310` | `#define GFX_RGB565(r, g, b)` |
-| `GFX_RGB565_B` | macro | `progs/doomgeneric/i_video.c:313` | `#define GFX_RGB565_B(color)` |
-| `GFX_RGB565_G` | macro | `progs/doomgeneric/i_video.c:312` | `#define GFX_RGB565_G(color)` |
-| `GFX_RGB565_R` | macro | `progs/doomgeneric/i_video.c:311` | `#define GFX_RGB565_R(color)` |
-| `I_BeginRead` | function | `progs/doomgeneric/i_video.c:369` | `void I_BeginRead (void)` |
-| `I_BindVideoVariables` | function | `progs/doomgeneric/i_video.c:394` | `void I_BindVideoVariables (void)` |
-| `I_CheckIsScreensaver` | function | `progs/doomgeneric/i_video.c:402` | `void I_CheckIsScreensaver (void)` |
-| `I_DisplayFPSDots` | function | `progs/doomgeneric/i_video.c:398` | `void I_DisplayFPSDots (boolean dots_on)` |
-| `I_EnableLoadingDisk` | function | `progs/doomgeneric/i_video.c:390` | `void I_EnableLoadingDisk(void)` |
-| `I_EndRead` | function | `progs/doomgeneric/i_video.c:373` | `void I_EndRead (void)` |
-| `I_FinishUpdate` | function | `progs/doomgeneric/i_video.c:255` | `void I_FinishUpdate (void)` |
-| `I_GetEvent` | function | `progs/doomgeneric/i_video.c:89` | `void I_GetEvent(void);` |
-| `I_GetPaletteIndex` | function | `progs/doomgeneric/i_video.c:333` | `int I_GetPaletteIndex (int r, int g, int b)` |
-| `I_GraphicsCheckCommandLine` | function | `progs/doomgeneric/i_video.c:382` | `void I_GraphicsCheckCommandLine (void)` |
-| `I_InitGraphics` | function | `progs/doomgeneric/i_video.c:179` | `void I_InitGraphics (void)` |
-| `I_InitInput` | function | `progs/doomgeneric/i_video.c:228` | `extern int I_InitInput(void);` |
-| `I_ReadScreen` | function | `progs/doomgeneric/i_video.c:302` | `void I_ReadScreen (byte* scr)` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

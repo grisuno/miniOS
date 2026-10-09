@@ -8,17 +8,17 @@
   - `cow_entry_t` (struct, line 45)
   - `cow_find` (function, line 53) `static int cow_find(unsigned long phys)`
   - `cow_page_shared` (function, line 65) `int cow_page_shared(unsigned long phys)`
-  - `cow_track` (function, line 75) `static int cow_track(unsigned long phys)`
-  - `cow_walk` (function, line 97) `static void cow_walk(unsigned long cr3, cow_walk_fn fn)`
-  - `cow_fork_one` (function, line 131) `static void cow_fork_one(unsigned long pcr3, unsigned long va,
+  - `cow_track` (function, line 76) `static int cow_track(unsigned long phys)`
+  - `cow_walk` (function, line 98) `static void cow_walk(unsigned long cr3, cow_walk_fn fn)`
+  - `cow_fork_one` (function, line 132) `static void cow_fork_one(unsigned long pcr3, unsigned long va,
         volatile unsigned long *ppte)`
-  - `published` (function, line 161) `* with nothing published (the half-built window is freed). The caller
+  - `published` (function, line 162) `* with nothing published (the half-built window is freed). The caller
  * flushes the parent TLB a...`
-  - `cow_resolve` (function, line 191) `int cow_resolve(unsigned long cr3, unsigned long va)`
-  - `cow_release_window` (function, line 254) `void cow_release_window(unsigned long cr3)`
-  - `cow_shared` (function, line 292) `int cow_shared(void)`
+  - `cow_resolve` (function, line 228) `int cow_resolve(unsigned long cr3, unsigned long va)`
+  - `cow_release_window` (function, line 292) `void cow_release_window(unsigned long cr3)`
+  - `cow_shared` (function, line 336) `int cow_shared(void)`
   - `alternative` (function, line 20) `* window is one instruction wide and the alternative (no CoW) is * documented, so the trade stands. */ #include...`
-  - `private` (function, line 93) `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...`
+  - `private` (function, line 94) `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...`
   - `COW_MAX` (macro, line 28) `#define COW_MAX`
   - `PT_USER_RO` (macro, line 33) `#define PT_USER_RO`
   - `PT_USER_RW_ENTRY` (macro, line 34) `#define PT_USER_RW_ENTRY`
@@ -33,36 +33,36 @@
   - `mm_page_aligned_alloc` (function, line 31) `static unsigned char *mm_page_aligned_alloc(unsigned size,
                                       ...`
   - `mm_setup_protections` (function, line 40) `void mm_setup_protections(void)`
-  - `kmm_ensure_pt` (function, line 223) `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)`
-  - `coherent` (function, line 247) `* for memory a device reads and writes by DMA: a controller that is not cache
+  - `kmm_ensure_pt` (function, line 234) `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)`
+  - `coherent` (function, line 258) `* for memory a device reads and writes by DMA: a controller that is not cache
  * coherent (and an...`
-  - `kmm_map_device` (function, line 284) `unsigned long kmm_map_device(unsigned long phys, unsigned long len)`
-  - `mm_user_pte_update` (function, line 324) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
-  - `mm_user_set_exec` (function, line 344) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-  - `pt_page_alloc` (function, line 356) `void *pt_page_alloc(void)`
-  - `pt_page_free` (function, line 366) `void pt_page_free(void *ptr)`
-  - `pt_clone_user` (function, line 372) `uint64_t pt_clone_user(uint64_t parent_cr3)`
-  - `mt_shared_slot` (function, line 501) `static int mt_shared_slot(unsigned long pd_idx)`
-  - `pt_clone_user_empty` (function, line 520) `unsigned long pt_clone_user_empty(void)`
-  - `mm_user_ensure_page` (function, line 577) `int mm_user_ensure_page(unsigned long cr3, unsigned long va)`
-  - `honest` (function, line 607) `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides
+  - `kmm_map_device` (function, line 295) `unsigned long kmm_map_device(unsigned long phys, unsigned long len)`
+  - `mm_user_pte_update` (function, line 335) `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
+  - `mm_user_set_exec` (function, line 355) `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
+  - `pt_page_alloc` (function, line 367) `void *pt_page_alloc(void)`
+  - `pt_page_free` (function, line 377) `void pt_page_free(void *ptr)`
+  - `pt_clone_user` (function, line 383) `uint64_t pt_clone_user(uint64_t parent_cr3)`
+  - `mt_shared_slot` (function, line 512) `static int mt_shared_slot(unsigned long pd_idx)`
+  - `pt_clone_user_empty` (function, line 531) `unsigned long pt_clone_user_empty(void)`
+  - `mm_user_ensure_page` (function, line 588) `int mm_user_ensure_page(unsigned long cr3, unsigned long va)`
+  - `honest` (function, line 618) `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides
  * the documented T5 follow-up...`
-  - `mm_file_page_phys` (function, line 658) `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)`
-  - `mm_file_pte` (function, line 677) `static volatile unsigned long *mm_file_pte(unsigned long cr3,
+  - `mm_file_page_phys` (function, line 669) `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)`
+  - `mm_file_pte` (function, line 688) `static volatile unsigned long *mm_file_pte(unsigned long cr3,
         unsigned long va)`
-  - `mm_file_range_release` (function, line 812) `void mm_file_range_release(unsigned long cr3, unsigned long base,
+  - `mm_file_range_release` (function, line 823) `void mm_file_range_release(unsigned long cr3, unsigned long base,
         unsigned long len, int ...`
-  - `mm_file_break` (function, line 860) `int mm_file_break(unsigned long cr3, unsigned long va)`
-  - `mm_copy_user_page` (function, line 939) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)`
-  - `pt_free_user` (function, line 1016) `void pt_free_user(uint64_t cr3)`
-  - `tables` (function, line 807) `* tables (munmap/mremap in caller context, under their mm_lock);`
-  - `explicitly` (function, line 808) `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
+  - `mm_file_break` (function, line 871) `int mm_file_break(unsigned long cr3, unsigned long va)`
+  - `mm_copy_user_page` (function, line 950) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)`
+  - `pt_free_user` (function, line 1032) `void pt_free_user(uint64_t cr3)`
+  - `tables` (function, line 818) `* tables (munmap/mremap in caller context, under their mm_lock);`
+  - `explicitly` (function, line 819) `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
   - `_kernel_end` (variable, line 48) `extern char _kernel_end[];`
-  - `mm_lock` (variable, line 648) `extern spinlock_t mm_lock;`
-  - `KMM_DEVICE_MAX` (macro, line 188) `#define KMM_DEVICE_MAX`
-  - `KMM_MAX_IDENTITY` (macro, line 192) `#define KMM_MAX_IDENTITY`
-  - `KMM_DEVICE_FLAGS` (macro, line 199) `#define KMM_DEVICE_FLAGS`
-  - `PT_ALLOC_HDR` (macro, line 354) `#define PT_ALLOC_HDR`
+  - `mm_lock` (variable, line 659) `extern spinlock_t mm_lock;`
+  - `KMM_DEVICE_MAX` (macro, line 199) `#define KMM_DEVICE_MAX`
+  - `KMM_MAX_IDENTITY` (macro, line 203) `#define KMM_MAX_IDENTITY`
+  - `KMM_DEVICE_FLAGS` (macro, line 210) `#define KMM_DEVICE_FLAGS`
+  - `PT_ALLOC_HDR` (macro, line 365) `#define PT_ALLOC_HDR`
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/ldso.h`, `headers/minifs.h`, `headers/pcache.h`, `headers/vga_fb.h`
 
 ## kernel/mm/swap.c

@@ -3,6 +3,14 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 | 0 |
+| `tests/test_theme.c` | Docstring: host test for the shared Nuklear theme contract. | tests | 8 | 0 |
+| `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 6 | 0 |
+| `tests/test_usbblk.c` | Docstring: Host test for the USB mass-storage driver (make test-usbblk). | tests | 4 | 0 |
+| `tests/test_usbhid.c` | Docstring: Host test for the USB HID driver (make test-usbhid). | tests | 5 | 0 |
+| `tests/test_vedit_build.c` | Docstring: Host test for the vedit IDE build contract (make test-vedit). | tests | 16 | 0 |
+| `tests/test_vma.c` | Host-side unit test for the VMA red-black tree (vma.c). | tests | 9 | 0 |
+| `tests/test_vma_bench.c` | RB-tree vs sorted-list benchmark (boyscout gap #9). | tests | 6 | 0 |
 | `tests/test_wl.c` | Host test for progs/wl/wl_mini.h (make test-wl). | tests | 2 | 0 |
 | `tests/test_wm.c` | Docstring: Host test for wm_geom.h and wm_events.h (make test-wm). | tests | 2 | 0 |
 | `tests/test_xhci.c` | Docstring: Host test for the xHCI controller driver (make test-xhci). | tests | 2 | 0 |
@@ -16,7 +24,7 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/check_complexity.py` | Kernel complexity gate for MiniOS CI. | tools | 3 | 0 |
 | `tools/check_fork_stubs.py` | Fail-closed stub gate for unimplemented process syscalls.  vfork has no implementation in this... | tools | 4 | 0 |
 | `tools/check_kb_sync.py` | Verify KNOWLEDGE_BASE.md is in sync with code. | tools | 2 | 0 |
-| `tools/check_mutant_anchors.py` | Verify every mutate.sh mutant anchor matches its target file. | tools | 5 | 0 |
+| `tools/check_mutant_anchors.py` | Verify every mutate.sh mutant anchor matches its target file. | tools | 6 | 0 |
 | `tools/check_spin_discipline.py` | Check spinlock call-site discipline across kernel C sources. | tools | 4 | 0 |
 | `tools/check_surprising.py` | Detect surprising architectural connections. | tools | 5 | 0 |
 | `tools/check_syscall_sanitize.py` | Scoped audit gate for syscall user-pointer sanitization. | tools | 8 | 0 |
@@ -33,12 +41,12 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/lisp_scoped.sh` | Docstring: Scoped Lisp validation for the MiniOS interpreter contract. | tools | 5 | 0 |
 | `tools/make_usb.sh` | Build the MiniOS bootable USB image and optionally write it to a device. | tools | 2 | 0 |
 | `tools/minifs_dump.py` | Dump/inspect a MiniFS filesystem image. | tools | 12 | 0 |
-| `tools/minifs_fsck.py` | Check MiniFS filesystem consistency. | tools | 17 | 0 |
+| `tools/minifs_fsck.py` | Check MiniFS filesystem consistency. | tools | 19 | 0 |
 | `tools/minifs_saves.py` | preserve the guest's saves/ dir across image rebuilds. | tools | 21 | 0 |
 | `tools/minios_cli.py` | — drive MiniOS through the MCP bridge, not by hand. | tools | 6 | 0 |
 | `tools/minios_gui.py` | — inject VGA-mode input and capture the framebuffer. | tools | 9 | 0 |
 | `tools/minios_hyper.py` | host-side ring-minus-one debugger for MiniOS. | tools | 51 | 0 |
-| `tools/mkfs.minifs.py` | Create a MiniFS filesystem image for MiniOS. | tools | 20 | 0 |
+| `tools/mkfs.minifs.py` | Create a MiniFS filesystem image for MiniOS. | tools | 23 | 0 |
 | `tools/mkpak1.py` | Build baseq2/pak1.pak carrying the player model. | tools | 1 | 0 |
 | `tools/mkramdisk.py` | Build a MiniOS ramdisk image from files in a directory tree. | tools | 2 | 0 |
 | `tools/mkroots.sh` | regenerate tls_roots.h from the DER files in tls_roots_src/. | tools | 0 | 0 |
@@ -49,7 +57,7 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/qga_client.py` | Minimal QEMU guest agent client for MiniOS. | tools | 4 | 0 |
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the agent socket... | tools | 3 | 0 |
 | `tools/repro_gui.py` | — reproduce the VGA/mouse state bug after ring-3 programs. | tools | 10 | 0 |
-| `tools/test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the serial console... | tools | 12 | 0 |
+| `tools/test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the serial console... | tools | 14 | 0 |
 | `tools/test_call_align.py` | verify stack alignment at call sites, both parities. | tools | 4 | 0 |
 | `tools/test_codecs.sh` | exercise the lzss/lz4/aes command-pair tools inside the OS. | tools | 0 | 0 |
 | `tools/test_gui_fashion.py` | GUI proof for the cursor/flicker/quit fixes. | tools | 18 | 0 |
@@ -61,6 +69,7 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/test_gui_zoom.py` | pixel proof that GFX_ZOOM doubles the game window. | tools | 1 | 0 |
 | `tools/test_http_server.py` | - | tools | 3 | 0 |
 | `tools/test_lisp.py` | Host test suite for the MiniOS Lisp interpreter. | tools | 16 | 0 |
+| `tools/test_net_fixture.py` | host-side UDP and TCP echo fixture for lxnet. | tools | 5 | 0 |
 | `tools/test_sb16.sh` | — targeted BDD harness for the SB16 audio path. | tools | 1 | 0 |
 | `tools/tls_test.py` | Host-side TLS test driver for the MiniOS kernel TLS client. | tools | 16 | 0 |
 | `tools/wl_scoped.sh` | Docstring: Scoped Wayland-mini validation for the tiled ring-3 compositor. | tools | 4 | 0 |

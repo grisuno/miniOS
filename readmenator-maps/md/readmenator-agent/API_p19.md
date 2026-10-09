@@ -12,9 +12,10 @@ Previous: [API_p18.md](API_p18.md)
 
 ## tools/check_mutant_anchors.py
 - `Config.bash_unquote` (method) `tools/check_mutant_anchors.py:26` `def bash_unquote(expr)` -- Collapse the escapes bash applies inside the MUTATIONS string.
-- `Config.parse_mutations` (method) `tools/check_mutant_anchors.py:41` `def parse_mutations(text)` -- Extract (name, expression, target) triples from the MUTATIONS block.
-- `Config.anchor_matches` (method) `tools/check_mutant_anchors.py:67` `def anchor_matches(repo, target, expr)` -- Apply the sed expression to a scratch copy; True when it changes it.
-- `Config.main` (method) `tools/check_mutant_anchors.py:86` `def main()` -- Entry point: report anchors that change nothing and exit nonzero.
+- `Config.unescaped_quote` (method) `tools/check_mutant_anchors.py:41` `def unescaped_quote(expr)` -- True when expr holds a double quote bash would not keep.
+- `Config.parse_mutations` (method) `tools/check_mutant_anchors.py:58` `def parse_mutations(text)` -- Extract (name, expression, target) triples from the MUTATIONS block.
+- `Config.anchor_matches` (method) `tools/check_mutant_anchors.py:84` `def anchor_matches(repo, target, expr)` -- Apply the sed expression to a scratch copy; True when it changes it.
+- `Config.main` (method) `tools/check_mutant_anchors.py:105` `def main()` -- Entry point: report anchors that change nothing and exit nonzero.
 
 ## tools/check_spin_discipline.py
 - `Config.iter_functions` (method) `tools/check_spin_discipline.py:38` `def iter_functions(path)` -- Yield (name, first_line, body_lines) with a brace-depth split.
@@ -134,8 +135,10 @@ Depends on: `kernel/time.c`
 - `FSCK.mark_block` (method) `tools/minifs_fsck.py:88` `def mark_block(self, n)`
 - `FSCK.scan_inode` (method) `tools/minifs_fsck.py:93` `def scan_inode(self, i)`
 - `FSCK.scan_dir` (method) `tools/minifs_fsck.py:105` `def scan_dir(self, ino)`
-- `FSCK.run` (method) `tools/minifs_fsck.py:137` `def run(self)`
-- `FSCK.main` (method) `tools/minifs_fsck.py:152` `def main()`
+- `FSCK.bitmap_free` (method) `tools/minifs_fsck.py:137` `def bitmap_free(self, start, count)` -- Clear bits among the first count bits of the bitmap at block start.
+- `FSCK.check_counters` (method) `tools/minifs_fsck.py:146` `def check_counters(self)` -- The superblock free counters must match the bitmaps, or every free-space report (and the kernel's own decrement)...
+- `FSCK.run` (method) `tools/minifs_fsck.py:161` `def run(self)`
+- `FSCK.main` (method) `tools/minifs_fsck.py:173` `def main()`
 
 ## tools/minifs_saves.py
 - `u16` (function) `tools/minifs_saves.py:53` `def u16(d, o)`
@@ -222,21 +225,24 @@ Depends on: `kernel/time.c`
 - `div_round_up` (function) `tools/mkfs.minifs.py:25` `def div_round_up(n, d)`
 - `crc16` (function) `tools/mkfs.minifs.py:28` `def crc16(data)`
 - `crc32` (function) `tools/mkfs.minifs.py:36` `def crc32(data)`
-- `MiniFS.__init__` (method) `tools/mkfs.minifs.py:45` `def __init__(self, total_blocks)`
-- `MiniFS.mark_inodes_used` (method) `tools/mkfs.minifs.py:67` `def mark_inodes_used(self, start, count)`
-- `MiniFS.mark_blocks_used` (method) `tools/mkfs.minifs.py:71` `def mark_blocks_used(self, start, count)`
-- `MiniFS.alloc_inode` (method) `tools/mkfs.minifs.py:75` `def alloc_inode(self)`
-- `MiniFS.alloc_block` (method) `tools/mkfs.minifs.py:81` `def alloc_block(self)`
-- `MiniFS.create_root` (method) `tools/mkfs.minifs.py:87` `def create_root(self)`
-- `MiniFS.create_inode` (method) `tools/mkfs.minifs.py:95` `def create_inode(self, mode)`
-- `MiniFS.inode_set_size` (method) `tools/mkfs.minifs.py:102` `def inode_set_size(self, ino, size)`
-- `MiniFS.inode_set_block` (method) `tools/mkfs.minifs.py:106` `def inode_set_block(self, ino, logblk, phys)`
-- `MiniFS.add_dir_entry` (method) `tools/mkfs.minifs.py:136` `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
-- `MiniFS.write_file` (method) `tools/mkfs.minifs.py:174` `def write_file(self, parent_ino, name, data)`
-- `MiniFS.write_dir` (method) `tools/mkfs.minifs.py:191` `def write_dir(self, parent_ino, name)`
-- `MiniFS.serialize` (method) `tools/mkfs.minifs.py:197` `def serialize(self)`
-- `MiniFS.main` (method) `tools/mkfs.minifs.py:241` `def main()`
-- `MiniFS.pack_tree` (method) `tools/mkfs.minifs.py:271` `def pack_tree(parent_ino, path, rel)`
+- `count_free` (function) `tools/mkfs.minifs.py:44` `def count_free(bitmap, count)` -- Clear bits among the first count bits of bitmap: the superblock free counters must equal what the kernel allocator...
+- `MiniFS.__init__` (method) `tools/mkfs.minifs.py:51` `def __init__(self, total_blocks)`
+- `MiniFS.mark_inodes_used` (method) `tools/mkfs.minifs.py:74` `def mark_inodes_used(self, start, count)`
+- `MiniFS.mark_blocks_used` (method) `tools/mkfs.minifs.py:78` `def mark_blocks_used(self, start, count)`
+- `MiniFS.alloc_inode` (method) `tools/mkfs.minifs.py:82` `def alloc_inode(self)`
+- `MiniFS.alloc_block` (method) `tools/mkfs.minifs.py:88` `def alloc_block(self)`
+- `MiniFS.create_root` (method) `tools/mkfs.minifs.py:94` `def create_root(self)`
+- `MiniFS.seal_inode` (method) `tools/mkfs.minifs.py:102` `def seal_inode(self, ino)` -- Store the inode checksum over its first 124 bytes; every mutation reseals, or the kernel rejects the inode on read.
+- `MiniFS.create_inode` (method) `tools/mkfs.minifs.py:107` `def create_inode(self, mode, links)`
+- `MiniFS.inode_set_size` (method) `tools/mkfs.minifs.py:114` `def inode_set_size(self, ino, size)`
+- `MiniFS.inode_set_block` (method) `tools/mkfs.minifs.py:118` `def inode_set_block(self, ino, logblk, phys)`
+- `MiniFS.add_dir_entry` (method) `tools/mkfs.minifs.py:148` `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
+- `MiniFS.claim_name` (method) `tools/mkfs.minifs.py:186` `def claim_name(self, parent_ino, name, is_dir)` -- Record name in parent_ino.
+- `MiniFS.write_file` (method) `tools/mkfs.minifs.py:199` `def write_file(self, parent_ino, name, data)`
+- `MiniFS.write_dir` (method) `tools/mkfs.minifs.py:218` `def write_dir(self, parent_ino, name)`
+- `MiniFS.serialize` (method) `tools/mkfs.minifs.py:230` `def serialize(self)`
+- `MiniFS.main` (method) `tools/mkfs.minifs.py:274` `def main()`
+- `MiniFS.pack_tree` (method) `tools/mkfs.minifs.py:304` `def pack_tree(parent_ino, path, rel)`
 
 ## tools/mkpak1.py
 - `main` (function) `tools/mkpak1.py:29` `def main()`
@@ -251,10 +257,10 @@ Depends on: `kernel/time.c`
 
 ## tools/mutate.sh
 - `usage` (function) `tools/mutate.sh:51`
-- `restore_sources` (function) `tools/mutate.sh:127`
-- `cleanup` (function) `tools/mutate.sh:134`
-- `record` (function) `tools/mutate.sh:418`
-- `find_index` (function) `tools/mutate.sh:424` -- Locate a mutant by name.
+- `restore_sources` (function) `tools/mutate.sh:129`
+- `cleanup` (function) `tools/mutate.sh:136`
+- `record` (function) `tools/mutate.sh:465`
+- `find_index` (function) `tools/mutate.sh:471` -- Locate a mutant by name.
 
 ## tools/probe_compute_vga.py
 Depends on: `kernel/time.c`

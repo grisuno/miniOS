@@ -1,5 +1,154 @@
-# Subsystem: headers (page 5 of 5)
+# Subsystem: headers (page 5 of 6)
 Previous: [KB_headers_p4.md](KB_headers_p4.md)
+
+## headers/tls.h
+- Doc: tls_free_fd: Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever...
+- Layer: utility
+- Language: h
+- Symbols:
+  - `tls_root` (struct, line 70)
+  - `sha256_ctx` (struct, line 79)
+  - `tls_pubkey` (struct, line 85)
+  - `tls_session` (struct, line 95)
+  - `tls_free_fd` (function, line 293) `static inline void tls_free_fd(int fd)`
+  - `sha256_init` (function, line 168) `void sha256_init(struct sha256_ctx *c);`
+  - `sha256_update` (function, line 169) `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len);`
+  - `sha256_final` (function, line 170) `void sha256_final(struct sha256_ctx *c, unsigned char out[32]);`
+  - `sha256` (function, line 171) `void sha256(const unsigned char *data, unsigned len, unsigned char out[32]);`
+  - `sha384` (function, line 172) `void sha384(const unsigned char *data, unsigned len, unsigned char out[48]);`
+  - `hmac_sha256` (function, line 174) `void hmac_sha256(const unsigned char *key, unsigned klen, const unsigned char *data, unsigned dlen, unsigned char...`
+  - `tls_prf` (function, line 179) `void tls_prf(const unsigned char *secret, unsigned secret_len, const char *label, const unsigned char *seed...`
+  - `aes128_encrypt_block` (function, line 184) `void aes128_encrypt_block(const unsigned char key[16], const unsigned char in[16], unsigned char out[16]);`
+  - `aes128_gcm_seal` (function, line 189) `int aes128_gcm_seal(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...`
+  - `aes128_gcm_open` (function, line 197) `int aes128_gcm_open(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...`
+  - `aes128_gcm_seal_core` (function, line 208) `int aes128_gcm_seal_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...`
+  - `aes128_gcm_open_core` (function, line 213) `int aes128_gcm_open_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...`
+  - `p256_scalar_mult` (function, line 222) `int p256_scalar_mult(const unsigned char scalar[32], const unsigned char qx[32], const unsigned char qy[32]...`
+  - `p384_scalar_mult` (function, line 225) `int p384_scalar_mult(const unsigned char scalar[48], const unsigned char qx[48], const unsigned char qy[48]...`
+  - `p256_ecdh` (function, line 231) `int p256_ecdh(const unsigned char priv[32], const unsigned char peer_x[32], const unsigned char peer_y[32], unsigned...`
+  - `p256_point_valid` (function, line 236) `int p256_point_valid(const unsigned char x[32], const unsigned char y[32]);`
+  - `p256_pub` (function, line 237) `int p256_pub(const unsigned char priv[32], unsigned char x[32], unsigned char y[32]);`
+  - `p256_scalar_valid` (function, line 239) `int p256_scalar_valid(const unsigned char scalar[32]);`
+  - `ecdsa_verify` (function, line 243) `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[], const unsigned char digest[]...`
+  - `rsa_pkcs1_verify_sha256` (function, line 249) `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...`
+  - `rsa_pkcs1_verify_sha384` (function, line 253) `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...`
+  - `tls_x509_parse_pubkey` (function, line 261) `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len, struct tls_pubkey *pk);`
+  - `now` (function, line 267) `* window against now (days since epoch). Returns 0 on success. */ int tls_x509_verify_chain(const unsigned char...`
+  - `tls_handshake` (function, line 277) `int tls_handshake(int fd, const char *host);`
+  - `tls_send` (function, line 280) `int tls_send(int fd, const char *buf, int len);`
+  - `tls_recv` (function, line 284) `int tls_recv(int fd, char *buf, int len);`
+  - `tls_sys_handshake` (function, line 297) `long tls_sys_handshake(long fd, long host);`
+  - `tls_sys_send` (function, line 298) `long tls_sys_send(long fd, long buf, long len);`
+  - `tls_sys_recv` (function, line 299) `long tls_sys_recv(long fd, long buf, long len);`
+  - `tls_roots` (variable, line 75) `extern const struct tls_root tls_roots[TLS_ROOT_COUNT];`
+  - `TLS_H` (macro, line 2) `#define TLS_H`
+  - `TLS_CT_CCS` (macro, line 7) `#define TLS_CT_CCS`
+  - `TLS_CT_ALERT` (macro, line 8) `#define TLS_CT_ALERT`
+  - `TLS_CT_HANDSHAKE` (macro, line 9) `#define TLS_CT_HANDSHAKE`
+  - `TLS_CT_APPDATA` (macro, line 10) `#define TLS_CT_APPDATA`
+  - `TLS_REC_HEADER` (macro, line 11) `#define TLS_REC_HEADER`
+  - `TLS_REC_MAX` (macro, line 12) `#define TLS_REC_MAX`
+  - `TLS_MSG_MAX` (macro, line 13) `#define TLS_MSG_MAX`
+  - `TLS_PLAIN_MAX` (macro, line 14) `#define TLS_PLAIN_MAX`
+  - `TLS_VERSION_TLS12` (macro, line 15) `#define TLS_VERSION_TLS12`
+  - `TLS_VERSION_TLS10` (macro, line 16) `#define TLS_VERSION_TLS10`
+  - `TLS_HS_CLIENT_HELLO` (macro, line 19) `#define TLS_HS_CLIENT_HELLO`
+  - `TLS_HS_SERVER_HELLO` (macro, line 20) `#define TLS_HS_SERVER_HELLO`
+  - `TLS_HS_CERTIFICATE` (macro, line 21) `#define TLS_HS_CERTIFICATE`
+  - `TLS_HS_SERVER_KEY_EXCHANGE` (macro, line 22) `#define TLS_HS_SERVER_KEY_EXCHANGE`
+  - `TLS_HS_SERVER_HELLO_DONE` (macro, line 23) `#define TLS_HS_SERVER_HELLO_DONE`
+  - `TLS_HS_CLIENT_KEY_EXCHANGE` (macro, line 24) `#define TLS_HS_CLIENT_KEY_EXCHANGE`
+  - `TLS_HS_FINISHED` (macro, line 25) `#define TLS_HS_FINISHED`
+  - `TLS_CSUITE_ECDHE_RSA_AES128GCM` (macro, line 28) `#define TLS_CSUITE_ECDHE_RSA_AES128GCM`
+  - `TLS_CSUITE_ECDHE_ECDSA_AES128GCM` (macro, line 29) `#define TLS_CSUITE_ECDHE_ECDSA_AES128GCM`
+  - `TLS_SIG_RSA_PKCS1_SHA256` (macro, line 32) `#define TLS_SIG_RSA_PKCS1_SHA256`
+  - `TLS_SIG_ECDSA_P256_SHA256` (macro, line 33) `#define TLS_SIG_ECDSA_P256_SHA256`
+  - `TLS_SIG_ECDSA_P384_SHA384` (macro, line 34) `#define TLS_SIG_ECDSA_P384_SHA384`
+  - `TLS_GROUP_SECP256R1` (macro, line 37) `#define TLS_GROUP_SECP256R1`
+  - `TLS_EXT_SERVER_NAME` (macro, line 40) `#define TLS_EXT_SERVER_NAME`
+  - `TLS_EXT_SUPPORTED_GROUPS` (macro, line 41) `#define TLS_EXT_SUPPORTED_GROUPS`
+  - `TLS_EXT_EC_POINT_FORMATS` (macro, line 42) `#define TLS_EXT_EC_POINT_FORMATS`
+  - `TLS_EXT_SIGNATURE_ALGS` (macro, line 43) `#define TLS_EXT_SIGNATURE_ALGS`
+  - `TLS_ALERT_LEVEL_WARNING` (macro, line 46) `#define TLS_ALERT_LEVEL_WARNING`
+  - `TLS_ALERT_LEVEL_FATAL` (macro, line 47) `#define TLS_ALERT_LEVEL_FATAL`
+  - `TLS_HS_TIMEOUT_MS` (macro, line 50) `#define TLS_HS_TIMEOUT_MS`
+  - `TLS_READ_TIMEOUT_MS` (macro, line 51) `#define TLS_READ_TIMEOUT_MS`
+  - `TLS_HOST_MAX` (macro, line 54) `#define TLS_HOST_MAX`
+  - `TLS_CHAIN_MAX` (macro, line 57) `#define TLS_CHAIN_MAX`
+  - `TLS_CERT_MAX` (macro, line 58) `#define TLS_CERT_MAX`
+  - `TLS_BN_4096_WORDS` (macro, line 62) `#define TLS_BN_4096_WORDS`
+  - `TLS_BN_384_WORDS` (macro, line 63) `#define TLS_BN_384_WORDS`
+  - `TLS_ROOT_COUNT` (macro, line 68) `#define TLS_ROOT_COUNT`
+- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+
+## headers/tls_port.h
+- Doc: Portability shim between the MiniOS kernel and the host-side test
+- Layer: utility
+- Language: h
+- Symbols:
+  - `tls_now_days` (function, line 40) `static inline long tls_now_days(void)`
+  - `tls_random` (function, line 44) `static inline void tls_random(unsigned char *out, unsigned len)`
+  - `these` (function, line 29) `* of these (tls_test.c). */ extern int tls_test_send(int fd, const char *buf, int len);`
+  - `tls_test_recv` (function, line 31) `extern int tls_test_recv(int fd, char *buf, int len);`
+  - `tls_test_recv_timeout` (function, line 32) `extern int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms);`
+  - `tls_test_close` (function, line 33) `extern void tls_test_close(int fd);`
+  - `sockets` (function, line 62) `* sockets (glibc maps socket/connect/send/recv/poll onto the MiniOS * Linux ABI numbers the kernel implements);`
+  - `gettimeofday` (function, line 64) `* gettimeofday(96) and entropy from /dev/urandom with a time/pid * fallback. Session slots are indexed by raw OS fd...`
+  - `tls_u_recv` (function, line 82) `int tls_u_recv(int fd, char *buf, int len);`
+  - `tls_u_recv_timeout` (function, line 83) `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms);`
+  - `tls_u_close` (function, line 84) `void tls_u_close(int fd);`
+  - `syscall` (function, line 95) `* the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */ int tls_u_resolve(const char *host, unsigned...`
+  - `TLS_PORT_H` (macro, line 2) `#define TLS_PORT_H`
+  - `TLS_FD_MAX` (macro, line 18) `#define TLS_FD_MAX`
+  - `TLS_PRINTF` (macro, line 20) `#define TLS_PRINTF`
+  - `TLS_MALLOC` (macro, line 21) `#define TLS_MALLOC(n)`
+  - `TLS_FREE` (macro, line 22) `#define TLS_FREE(p)`
+  - `TLS_MEMCPY` (macro, line 23) `#define TLS_MEMCPY`
+  - `TLS_MEMSET` (macro, line 24) `#define TLS_MEMSET`
+  - `TLS_MEMCMP` (macro, line 25) `#define TLS_MEMCMP`
+  - `TLS_STRLEN` (macro, line 26) `#define TLS_STRLEN`
+  - `TLS_SEND` (macro, line 35) `#define TLS_SEND`
+  - `TLS_RECV` (macro, line 36) `#define TLS_RECV`
+  - `TLS_RECV_TIMEOUT` (macro, line 37) `#define TLS_RECV_TIMEOUT`
+  - `TLS_CLOSE` (macro, line 38) `#define TLS_CLOSE`
+  - `TLS_FD_MAX` (macro, line 71) `#define TLS_FD_MAX`
+  - `TLS_PRINTF` (macro, line 73) `#define TLS_PRINTF`
+  - `TLS_MALLOC` (macro, line 74) `#define TLS_MALLOC(n)`
+  - `TLS_FREE` (macro, line 75) `#define TLS_FREE(p)`
+  - `TLS_MEMCPY` (macro, line 76) `#define TLS_MEMCPY`
+  - `TLS_MEMSET` (macro, line 77) `#define TLS_MEMSET`
+  - `TLS_MEMCMP` (macro, line 78) `#define TLS_MEMCMP`
+  - `TLS_STRLEN` (macro, line 79) `#define TLS_STRLEN`
+  - `TLS_SEND` (macro, line 86) `#define TLS_SEND`
+  - `TLS_RECV` (macro, line 87) `#define TLS_RECV`
+  - `TLS_RECV_TIMEOUT` (macro, line 88) `#define TLS_RECV_TIMEOUT`
+  - `TLS_CLOSE` (macro, line 89) `#define TLS_CLOSE`
+  - `TLS_PRINTF` (macro, line 103) `#define TLS_PRINTF`
+  - `TLS_MALLOC` (macro, line 104) `#define TLS_MALLOC(n)`
+  - `TLS_FREE` (macro, line 105) `#define TLS_FREE(p)`
+  - `TLS_MEMCPY` (macro, line 106) `#define TLS_MEMCPY`
+  - `TLS_MEMSET` (macro, line 107) `#define TLS_MEMSET`
+  - `TLS_MEMCMP` (macro, line 108) `#define TLS_MEMCMP`
+  - `TLS_STRLEN` (macro, line 109) `#define TLS_STRLEN`
+  - `TLS_SEND` (macro, line 111) `#define TLS_SEND`
+  - `TLS_RECV` (macro, line 112) `#define TLS_RECV`
+  - `TLS_RECV_TIMEOUT` (macro, line 113) `#define TLS_RECV_TIMEOUT`
+  - `TLS_CLOSE` (macro, line 114) `#define TLS_CLOSE`
+  - `TLS_FD_MAX` (macro, line 115) `#define TLS_FD_MAX`
+- Depends on: `headers/kernel.h`, `headers/net.h`, `kernel/string.c`, `kernel/time.c`
+- Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
+
+## headers/tls_roots.h
+- Doc: embedded CA roots (DER), generated by mkroots.sh.
+- Layer: utility
+- Language: h
+- Imported by: `net/tls.c`
+
+## headers/tls_test_roots.h
+- Doc: generated by tls_test.py; never built into the kernel.
+- Layer: testing
+- Language: h
+- Imported by: `tls_test.c`
 
 ## headers/vga_fb.h
 - Doc: Framebuffer geometry.
@@ -333,73 +482,5 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `WM_LAYOUT_CONFIG_DEFAULT` (macro, line 45) `#define WM_LAYOUT_CONFIG_DEFAULT`
 - Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
 
-## headers/wm_notify.h
-- Doc: Docstring: Focus event bus for the MiniOS desktop.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `wm_notify_event_t` (struct, line 30)
-  - `wm_notify_bus_t` (struct, line 43)
-  - `wm_notify_reset` (function, line 51) `static inline void wm_notify_reset(wm_notify_bus_t *bus)`
-  - `wm_notify_subscribe` (function, line 66) `static inline int wm_notify_subscribe(wm_notify_bus_t *bus,
-                                     ...`
-  - `wm_notify_emit` (function, line 76) `static inline void wm_notify_emit(wm_notify_bus_t *bus,
-                                  const w...`
-  - `wm_notify_last` (function, line 90) `static inline const wm_notify_event_t *wm_notify_last(
-    const wm_notify_bus_t *bus)`
-  - `wm_notify_src_name` (function, line 98) `static inline const char *wm_notify_src_name(int source)`
-  - `WM_NOTIFY_H` (macro, line 2) `#define WM_NOTIFY_H`
-  - `WM_NOTIFY_MAX_HANDLERS` (macro, line 41) `#define WM_NOTIFY_MAX_HANDLERS`
-- Imported by: `headers/vga_fb.h`, `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_notify.c`
 
-## headers/wm_render.h
-- Doc: Docstring: Render pipeline contract for the MiniOS desktop.
-- Layer: presentation
-- Language: h
-- Symbols:
-  - `wm_render_item_t` (struct, line 25)
-  - `wm_render_config_t` (struct, line 31)
-  - `wm_build_render_plan` (function, line 39) `static inline int wm_build_render_plan(const wm_render_config_t *cfg, const int *present, int nte...`
-  - `WM_RENDER_H` (macro, line 11) `#define WM_RENDER_H`
-  - `WM_RENDER_CONFIG_DEFAULT` (macro, line 36) `#define WM_RENDER_CONFIG_DEFAULT`
-- Depends on: `headers/wm_window.h`
-- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
-
-## headers/wm_tiling.h
-- Doc: Docstring: Tiling layout contract for the MiniOS desktop.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `wm_tile_cell_t` (struct, line 13)
-  - `wm_tile_layout` (function, line 22) `static inline int wm_tile_layout(const int *present, int nterms, int gfx_active, int max_cols, in...`
-  - `WM_TILING_H` (macro, line 10) `#define WM_TILING_H`
-- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
-
-## headers/wm_window.h
-- Doc: Docstring: Unified window contract for the MiniOS desktop.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `wm_window_t` (struct, line 29)
-  - `wm_window_active` (function, line 41) `static inline int wm_window_active(const wm_window_t *w)`
-  - `wm_window_rect` (function, line 47) `static inline wm_rect_t wm_window_rect(const wm_window_t *w)`
-  - `wm_window_contains` (function, line 58) `static inline int wm_window_contains(const wm_window_t *w, int px, int py)`
-  - `wm_window_title_hits` (function, line 68) `static inline int wm_window_title_hits(const wm_geom_config_t *cfg, const wm_window_t *w, int px,...`
-  - `wm_focus_next_id` (function, line 77) `static inline int wm_focus_next_id(const int *present, int nterms, int gfx_active, int focus)`
-  - `wm_paint_order` (function, line 114) `static inline int wm_paint_order(const int *present, int nterms, int focus, int *order, int cap)`
-  - `WM_WINDOW_H` (macro, line 11) `#define WM_WINDOW_H`
-  - `WM_WINDOW_GFX_ID` (macro, line 23) `#define WM_WINDOW_GFX_ID`
-  - `WM_WINDOW_MAX_TERMS` (macro, line 26) `#define WM_WINDOW_MAX_TERMS`
-- Depends on: `headers/wm_geom.h`
-- Imported by: `headers/wm_focus.h`, `headers/wm_render.h`, `kernel/vga_fb.c`, `tests/test_wm.c`
-
-## headers/zip.h
-- Doc: — MiniOS integration API for the miniz zip library.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `miniz` (function, line 6) `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the...`
-  - `shell_cmd_zip` (function, line 15) `void shell_cmd_zip(int argc, char **argv);`
-  - `ZIP_H` (macro, line 2) `#define ZIP_H`
-- Imported by: `kernel/shell.c`, `kernel/syscalls.c`
-
+Next: [KB_headers_p6.md](KB_headers_p6.md)

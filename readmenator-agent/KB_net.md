@@ -5,84 +5,169 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `net_arp_entry` (struct, line 94)
-  - `net_dns_state` (struct, line 220)
-  - `net_tcp_sock` (struct, line 407)
-  - `net_drv_send` (function, line 37) `static int net_drv_send(const unsigned char *frame, unsigned len)`
-  - `net_drv_poll` (function, line 42) `static void net_drv_poll(void)`
-  - `net_drv_present` (function, line 47) `static int net_drv_present(void)`
-  - `net_put16` (function, line 56) `static void net_put16(unsigned char *p, unsigned short v)`
-  - `net_put32` (function, line 61) `static void net_put32(unsigned char *p, unsigned int v)`
-  - `net_get16` (function, line 68) `static unsigned short net_get16(const unsigned char *p)`
-  - `net_get32` (function, line 72) `static unsigned int net_get32(const unsigned char *p)`
-  - `net_checksum` (function, line 77) `static unsigned short net_checksum(const void *data, unsigned len)`
-  - `net_arp_store` (function, line 102) `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)`
-  - `net_arp_lookup` (function, line 117) `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)`
-  - `net_arp_request` (function, line 128) `static void net_arp_request(const unsigned char *ip)`
-  - `net_arp_resolve` (function, line 146) `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)`
-  - `net_ip_send` (function, line 171) `static int net_ip_send(const unsigned char *dip, unsigned char proto,
+  - `net_arp_entry` (struct, line 95)
+  - `net_dns_state` (struct, line 221)
+  - `net_tcp_sock` (struct, line 408)
+  - `net_udp_dgram` (struct, line 437)
+  - `net_udp_sock` (struct, line 445)
+  - `net_drv_send` (function, line 38) `static int net_drv_send(const unsigned char *frame, unsigned len)`
+  - `net_drv_poll` (function, line 43) `static void net_drv_poll(void)`
+  - `net_drv_present` (function, line 48) `static int net_drv_present(void)`
+  - `net_put16` (function, line 57) `static void net_put16(unsigned char *p, unsigned short v)`
+  - `net_put32` (function, line 62) `static void net_put32(unsigned char *p, unsigned int v)`
+  - `net_get16` (function, line 69) `static unsigned short net_get16(const unsigned char *p)`
+  - `net_get32` (function, line 73) `static unsigned int net_get32(const unsigned char *p)`
+  - `net_checksum` (function, line 78) `static unsigned short net_checksum(const void *data, unsigned len)`
+  - `net_arp_store` (function, line 103) `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)`
+  - `net_arp_lookup` (function, line 118) `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)`
+  - `net_arp_request` (function, line 129) `static void net_arp_request(const unsigned char *ip)`
+  - `net_arp_resolve` (function, line 147) `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)`
+  - `net_ip_send` (function, line 172) `static int net_ip_send(const unsigned char *dip, unsigned char proto,
                        cons...`
-  - `net_udp_send` (function, line 207) `static int net_udp_send(const unsigned char *dip, unsigned short sport,
+  - `net_udp_send` (function, line 208) `static int net_udp_send(const unsigned char *dip, unsigned short sport,
                         u...`
-  - `net_dns_parse` (function, line 229) `static void net_dns_parse(const unsigned char *data, unsigned len)`
-  - `net_dns_resolve` (function, line 267) `static int net_dns_resolve(const char *host, unsigned char ip_out[4])`
-  - `net_udp_send` (function, line 328) `net_udp_send((const unsigned char[])`
-  - `net_icmp_rx` (function, line 347) `static void net_icmp_rx(const unsigned char *ip, unsigned len)`
-  - `net_ping` (function, line 376) `static int net_ping(const unsigned char ip[4])`
-  - `net_sock_alloc` (function, line 435) `static struct net_tcp_sock *net_sock_alloc(void)`
-  - `net_sock_index` (function, line 450) `static int net_sock_index(const struct net_tcp_sock *s)`
-  - `net_tcp_checksum` (function, line 459) `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
+  - `net_dns_parse` (function, line 230) `static void net_dns_parse(const unsigned char *data, unsigned len)`
+  - `net_dns_resolve` (function, line 268) `static int net_dns_resolve(const char *host, unsigned char ip_out[4])`
+  - `net_udp_send` (function, line 329) `net_udp_send((const unsigned char[])`
+  - `net_icmp_rx` (function, line 348) `static void net_icmp_rx(const unsigned char *ip, unsigned len)`
+  - `net_ping` (function, line 377) `static int net_ping(const unsigned char ip[4])`
+  - `net_sock_alloc` (function, line 469) `static struct net_tcp_sock *net_sock_alloc(void)`
+  - `net_sock_index` (function, line 484) `static int net_sock_index(const struct net_tcp_sock *s)`
+  - `net_tcp_checksum` (function, line 493) `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
       ...`
-  - `net_udp_checksum_ok` (function, line 475) `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
+  - `net_udp_checksum_ok` (function, line 509) `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
               ...`
-  - `net_tcp_xmit` (function, line 491) `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
+  - `net_tcp_xmit` (function, line 525) `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
                         const uns...`
-  - `net_tcp_rx` (function, line 525) `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
-  - `net_tcp_passive_open` (function, line 653) `static int net_tcp_passive_open(struct net_tcp_sock *ls,
+  - `net_tcp_rx` (function, line 559) `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
+  - `net_tcp_passive_open` (function, line 687) `static int net_tcp_passive_open(struct net_tcp_sock *ls,
         const unsigned char peer[4], uns...`
-  - `net_tcp_connect_into` (function, line 677) `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
+  - `net_tcp_connect_into` (function, line 711) `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
               ...`
-  - `net_tcp_send` (function, line 704) `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)`
-  - `net_tcp_recv` (function, line 730) `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)`
-  - `net_tcp_close` (function, line 768) `static void net_tcp_close(struct net_tcp_sock *s)`
-  - `net_rx_handle_frame` (function, line 788) `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
-  - `net_open` (function, line 850) `int net_open(void)`
-  - `net_connect` (function, line 856) `int net_connect(const char *host, unsigned short port)`
-  - `net_send` (function, line 865) `int net_send(int fd, const char *buf, int len)`
-  - `net_recv` (function, line 870) `int net_recv(int fd, char *buf, int len)`
-  - `net_recv_timeout` (function, line 875) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
-  - `net_close` (function, line 880) `void net_close(int fd)`
-  - `net_listen` (function, line 891) `int net_listen(unsigned short port)`
-  - `net_accept_nb` (function, line 906) `int net_accept_nb(int fd)`
-  - `polling` (function, line 923) `* without polling (the peer's ACK arrives through the driver poll). */
+  - `net_tcp_send` (function, line 738) `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)`
+  - `net_tcp_recv` (function, line 764) `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)`
+  - `net_tcp_close` (function, line 802) `static void net_tcp_close(struct net_tcp_sock *s)`
+  - `net_rx_handle_frame` (function, line 822) `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
+  - `net_open` (function, line 886) `int net_open(void)`
+  - `net_connect` (function, line 892) `int net_connect(const char *host, unsigned short port)`
+  - `net_send` (function, line 901) `int net_send(int fd, const char *buf, int len)`
+  - `net_recv` (function, line 906) `int net_recv(int fd, char *buf, int len)`
+  - `net_recv_timeout` (function, line 911) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
+  - `net_close` (function, line 916) `void net_close(int fd)`
+  - `net_listen` (function, line 927) `int net_listen(unsigned short port)`
+  - `net_accept_nb` (function, line 942) `int net_accept_nb(int fd)`
+  - `polling` (function, line 959) `* without polling (the peer's ACK arrives through the driver poll). */
 int net_accept(int fd, uns...`
-  - `net_sock_state` (function, line 940) `int net_sock_state(int fd)`
-  - `net_sys_socket` (function, line 992) `long net_sys_socket(long a1, long a2, long a3)`
-  - `net_sys_connect` (function, line 1001) `long net_sys_connect(long fd, long sockaddr, long addrlen)`
-  - `net_sys_bind` (function, line 1014) `long net_sys_bind(long fd, long sockaddr, long addrlen)`
-  - `net_sys_listen` (function, line 1029) `long net_sys_listen(long fd, long backlog)`
-  - `net_sys_accept` (function, line 1040) `long net_sys_accept(long fd, long sockaddr, long addrlen)`
-  - `net_sys_sendto` (function, line 1059) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
-  - `net_sys_recvfrom` (function, line 1068) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
-  - `net_sys_shutdown` (function, line 1078) `long net_sys_shutdown(long fd, long how)`
-  - `net_sys_close` (function, line 1085) `long net_sys_close(long fd)`
-  - `net_sys_poll` (function, line 1092) `long net_sys_poll(long fds, long nfds, long timeout_ms)`
-  - `net_sys_dns` (function, line 1129) `long net_sys_dns(long host)`
-  - `net_parse_ip` (function, line 1140) `static int net_parse_ip(const char *text, unsigned char ip[4])`
-  - `net_cmd_status` (function, line 1165) `void net_cmd_status(void)`
-  - `net_get_addrs` (function, line 1187) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])`
-  - `net_cmd_ping` (function, line 1193) `void net_cmd_ping(const char *ip_text)`
-  - `net_cmd_dns` (function, line 1204) `void net_cmd_dns(const char *host)`
-  - `net_register_symbols` (function, line 1217) `void net_register_symbols(void)`
-  - `net_init` (function, line 1225) `void net_init(void)`
-  - `NET_TCP_CLOSED` (macro, line 399) `#define NET_TCP_CLOSED`
-  - `NET_TCP_SYN_SENT` (macro, line 400) `#define NET_TCP_SYN_SENT`
-  - `NET_TCP_ESTABLISHED` (macro, line 401) `#define NET_TCP_ESTABLISHED`
-  - `NET_TCP_FIN_SENT` (macro, line 402) `#define NET_TCP_FIN_SENT`
-  - `NET_TCP_DEAD` (macro, line 403) `#define NET_TCP_DEAD`
-  - `NET_TCP_LISTEN` (macro, line 404) `#define NET_TCP_LISTEN`
-  - `NET_TCP_SYN_RCVD` (macro, line 405) `#define NET_TCP_SYN_RCVD`
-- Depends on: `headers/drivers/virtio_net.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/tls.h`
+  - `net_sock_state` (function, line 976) `int net_sock_state(int fd)`
+  - `net_fd_udp` (function, line 1096) `static int net_fd_udp(long fd)`
+  - `net_sys_is_socket` (function, line 1102) `int net_sys_is_socket(long fd)`
+  - `net_udp_alloc` (function, line 1106) `static struct net_udp_sock *net_udp_alloc(void)`
+  - `net_udp_ephemeral` (function, line 1120) `static unsigned short net_udp_ephemeral(void)`
+  - `net_udp_deliver` (function, line 1136) `static int net_udp_deliver(const unsigned char sip[4], unsigned short sport,
+                    ...`
+  - `net_put_sockaddr` (function, line 1158) `static void net_put_sockaddr(unsigned char *sa, const unsigned char ip[4], unsigned short port)`
+  - `net_store_sockaddr` (function, line 1168) `static long net_store_sockaddr(long addr, long lenp, const unsigned char ip[4],
+                 ...`
+  - `net_load_sockaddr` (function, line 1185) `static long net_load_sockaddr(long addr, long len, unsigned char ip[4], unsigned short *port)`
+  - `net_sys_socket` (function, line 1222) `long net_sys_socket(long a1, long a2, long a3)`
+  - `net_sys_connect` (function, line 1249) `long net_sys_connect(long fd, long sockaddr, long addrlen)`
+  - `net_sys_bind` (function, line 1296) `long net_sys_bind(long fd, long sockaddr, long addrlen)`
+  - `net_sys_listen` (function, line 1318) `long net_sys_listen(long fd, long backlog)`
+  - `net_sys_accept` (function, line 1329) `long net_sys_accept(long fd, long sockaddr, long addrlen)`
+  - `net_send_bytes` (function, line 1347) `static long net_send_bytes(long fd, const unsigned char *buf, long len,
+                         ...`
+  - `net_sys_sendto` (function, line 1375) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
+  - `net_sys_recvfrom` (function, line 1390) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
+  - `net_gather_msg` (function, line 1450) `static long net_gather_msg(long msg, unsigned char *kbuf, long cap)`
+  - `net_sys_sendmsg` (function, line 1470) `long net_sys_sendmsg(long fd, long msg, long flags)`
+  - `net_sys_sendmmsg` (function, line 1498) `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags)`
+  - `net_sys_shutdown` (function, line 1514) `long net_sys_shutdown(long fd, long how)`
+  - `net_sys_close` (function, line 1523) `long net_sys_close(long fd)`
+  - `net_sys_setsockopt` (function, line 1534) `long net_sys_setsockopt(long fd, long level, long name, long val, long len)`
+  - `net_sys_getsockopt` (function, line 1569) `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp)`
+  - `net_sys_getsockname` (function, line 1616) `long net_sys_getsockname(long fd, long addr, long lenp)`
+  - `net_sys_getpeername` (function, line 1625) `long net_sys_getpeername(long fd, long addr, long lenp)`
+  - `net_sys_fcntl` (function, line 1643) `long net_sys_fcntl(long fd, long cmd, long arg)`
+  - `net_socket_revents` (function, line 1664) `static unsigned short net_socket_revents(long fd)`
+  - `net_sys_poll` (function, line 1684) `long net_sys_poll(long fds, long nfds, long timeout_ms)`
+  - `net_sys_dns` (function, line 1724) `long net_sys_dns(long host)`
+  - `net_parse_ip` (function, line 1735) `static int net_parse_ip(const char *text, unsigned char ip[4])`
+  - `net_cmd_status` (function, line 1760) `void net_cmd_status(void)`
+  - `net_get_addrs` (function, line 1782) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])`
+  - `net_cmd_ping` (function, line 1788) `void net_cmd_ping(const char *ip_text)`
+  - `net_cmd_dns` (function, line 1799) `void net_cmd_dns(const char *host)`
+  - `net_register_symbols` (function, line 1812) `void net_register_symbols(void)`
+  - `net_init` (function, line 1820) `void net_init(void)`
+  - `NET_TCP_CLOSED` (macro, line 400) `#define NET_TCP_CLOSED`
+  - `NET_TCP_SYN_SENT` (macro, line 401) `#define NET_TCP_SYN_SENT`
+  - `NET_TCP_ESTABLISHED` (macro, line 402) `#define NET_TCP_ESTABLISHED`
+  - `NET_TCP_FIN_SENT` (macro, line 403) `#define NET_TCP_FIN_SENT`
+  - `NET_TCP_DEAD` (macro, line 404) `#define NET_TCP_DEAD`
+  - `NET_TCP_LISTEN` (macro, line 405) `#define NET_TCP_LISTEN`
+  - `NET_TCP_SYN_RCVD` (macro, line 406) `#define NET_TCP_SYN_RCVD`
+  - `LNX_AF_INET` (macro, line 1028) `#define LNX_AF_INET`
+  - `LNX_SOCK_STREAM` (macro, line 1029) `#define LNX_SOCK_STREAM`
+  - `LNX_SOCK_DGRAM` (macro, line 1030) `#define LNX_SOCK_DGRAM`
+  - `LNX_SOCK_TYPE_MASK` (macro, line 1031) `#define LNX_SOCK_TYPE_MASK`
+  - `LNX_SOCK_NONBLOCK` (macro, line 1032) `#define LNX_SOCK_NONBLOCK`
+  - `LNX_SOCK_CLOEXEC` (macro, line 1033) `#define LNX_SOCK_CLOEXEC`
+  - `LNX_IPPROTO_TCP` (macro, line 1034) `#define LNX_IPPROTO_TCP`
+  - `LNX_IPPROTO_UDP` (macro, line 1035) `#define LNX_IPPROTO_UDP`
+  - `LNX_MSG_PEEK` (macro, line 1036) `#define LNX_MSG_PEEK`
+  - `LNX_MSG_DONTWAIT` (macro, line 1037) `#define LNX_MSG_DONTWAIT`
+  - `LNX_MSG_NOSIGNAL` (macro, line 1038) `#define LNX_MSG_NOSIGNAL`
+  - `LNX_SOL_SOCKET` (macro, line 1039) `#define LNX_SOL_SOCKET`
+  - `LNX_SO_REUSEADDR` (macro, line 1040) `#define LNX_SO_REUSEADDR`
+  - `LNX_SO_TYPE` (macro, line 1041) `#define LNX_SO_TYPE`
+  - `LNX_SO_ERROR` (macro, line 1042) `#define LNX_SO_ERROR`
+  - `LNX_SO_SNDBUF` (macro, line 1043) `#define LNX_SO_SNDBUF`
+  - `LNX_SO_RCVBUF` (macro, line 1044) `#define LNX_SO_RCVBUF`
+  - `LNX_SO_KEEPALIVE` (macro, line 1045) `#define LNX_SO_KEEPALIVE`
+  - `LNX_SO_LINGER` (macro, line 1046) `#define LNX_SO_LINGER`
+  - `LNX_SO_RCVTIMEO` (macro, line 1047) `#define LNX_SO_RCVTIMEO`
+  - `LNX_SO_SNDTIMEO` (macro, line 1048) `#define LNX_SO_SNDTIMEO`
+  - `LNX_IPPROTO_IP` (macro, line 1049) `#define LNX_IPPROTO_IP`
+  - `LNX_IP_TOS` (macro, line 1050) `#define LNX_IP_TOS`
+  - `LNX_IP_TTL` (macro, line 1051) `#define LNX_IP_TTL`
+  - `LNX_IP_MTU_DISCOVER` (macro, line 1052) `#define LNX_IP_MTU_DISCOVER`
+  - `LNX_IP_RECVERR` (macro, line 1053) `#define LNX_IP_RECVERR`
+  - `NET_IP_DEFAULT_TTL` (macro, line 1054) `#define NET_IP_DEFAULT_TTL`
+  - `LNX_TCP_NODELAY` (macro, line 1055) `#define LNX_TCP_NODELAY`
+  - `LNX_TCP_KEEPIDLE` (macro, line 1056) `#define LNX_TCP_KEEPIDLE`
+  - `LNX_TCP_KEEPINTVL` (macro, line 1057) `#define LNX_TCP_KEEPINTVL`
+  - `LNX_TCP_KEEPCNT` (macro, line 1058) `#define LNX_TCP_KEEPCNT`
+  - `LNX_O_RDWR` (macro, line 1059) `#define LNX_O_RDWR`
+  - `LNX_O_NONBLOCK` (macro, line 1060) `#define LNX_O_NONBLOCK`
+  - `LNX_FD_CLOEXEC` (macro, line 1061) `#define LNX_FD_CLOEXEC`
+  - `LNX_F_GETFD` (macro, line 1062) `#define LNX_F_GETFD`
+  - `LNX_F_SETFD` (macro, line 1063) `#define LNX_F_SETFD`
+  - `LNX_F_GETFL` (macro, line 1064) `#define LNX_F_GETFL`
+  - `LNX_F_SETFL` (macro, line 1065) `#define LNX_F_SETFL`
+  - `LNX_POLLIN` (macro, line 1066) `#define LNX_POLLIN`
+  - `LNX_POLLOUT` (macro, line 1067) `#define LNX_POLLOUT`
+  - `LNX_POLLERR` (macro, line 1068) `#define LNX_POLLERR`
+  - `LNX_POLLHUP` (macro, line 1069) `#define LNX_POLLHUP`
+  - `LNX_POLLNVAL` (macro, line 1070) `#define LNX_POLLNVAL`
+  - `LNX_EBADF` (macro, line 1071) `#define LNX_EBADF`
+  - `LNX_EAGAIN` (macro, line 1072) `#define LNX_EAGAIN`
+  - `LNX_EFAULT` (macro, line 1073) `#define LNX_EFAULT`
+  - `LNX_EINVAL` (macro, line 1074) `#define LNX_EINVAL`
+  - `LNX_EPIPE` (macro, line 1075) `#define LNX_EPIPE`
+  - `LNX_EDESTADDRREQ` (macro, line 1076) `#define LNX_EDESTADDRREQ`
+  - `LNX_EMSGSIZE` (macro, line 1077) `#define LNX_EMSGSIZE`
+  - `LNX_ENOPROTOOPT` (macro, line 1078) `#define LNX_ENOPROTOOPT`
+  - `LNX_EPROTONOSUPPORT` (macro, line 1079) `#define LNX_EPROTONOSUPPORT`
+  - `LNX_EOPNOTSUPP` (macro, line 1080) `#define LNX_EOPNOTSUPP`
+  - `LNX_EAFNOSUPPORT` (macro, line 1081) `#define LNX_EAFNOSUPPORT`
+  - `LNX_EISCONN` (macro, line 1082) `#define LNX_EISCONN`
+  - `LNX_ENOTCONN` (macro, line 1083) `#define LNX_ENOTCONN`
+  - `LNX_ETIMEDOUT` (macro, line 1084) `#define LNX_ETIMEDOUT`
+  - `LNX_ECONNREFUSED` (macro, line 1085) `#define LNX_ECONNREFUSED`
+  - `LNX_EALREADY` (macro, line 1086) `#define LNX_EALREADY`
+  - `LNX_EINPROGRESS` (macro, line 1087) `#define LNX_EINPROGRESS`
+  - `NET_SEND_FLAGS_OK` (macro, line 1088) `#define NET_SEND_FLAGS_OK`
+  - `NET_RECV_FLAGS_OK` (macro, line 1089) `#define NET_RECV_FLAGS_OK`
+- Depends on: `headers/drivers/virtio_net.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`, `headers/tls.h`
 
 ## net/rtl8139.c
 - Doc: outl_port: Byte/word port I/O comes from kernel.h (outb/inb/outw/inw, same asm). * Only the...

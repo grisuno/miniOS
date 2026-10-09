@@ -1,5 +1,5 @@
-# Symbols (page 1 of 25)
-Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md](SYMBOLS_p3.md), [SYMBOLS_p4.md](SYMBOLS_p4.md), [SYMBOLS_p5.md](SYMBOLS_p5.md), [SYMBOLS_p6.md](SYMBOLS_p6.md), [SYMBOLS_p7.md](SYMBOLS_p7.md), [SYMBOLS_p8.md](SYMBOLS_p8.md), [SYMBOLS_p9.md](SYMBOLS_p9.md), [SYMBOLS_p10.md](SYMBOLS_p10.md), [SYMBOLS_p11.md](SYMBOLS_p11.md), [SYMBOLS_p12.md](SYMBOLS_p12.md), [SYMBOLS_p13.md](SYMBOLS_p13.md), [SYMBOLS_p14.md](SYMBOLS_p14.md), [SYMBOLS_p15.md](SYMBOLS_p15.md), [SYMBOLS_p16.md](SYMBOLS_p16.md), [SYMBOLS_p17.md](SYMBOLS_p17.md), [SYMBOLS_p18.md](SYMBOLS_p18.md), [SYMBOLS_p19.md](SYMBOLS_p19.md), [SYMBOLS_p20.md](SYMBOLS_p20.md), [SYMBOLS_p21.md](SYMBOLS_p21.md), [SYMBOLS_p22.md](SYMBOLS_p22.md), [SYMBOLS_p23.md](SYMBOLS_p23.md), [SYMBOLS_p24.md](SYMBOLS_p24.md), [SYMBOLS_p25.md](SYMBOLS_p25.md)
+# Symbols (page 1 of 26)
+Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md](SYMBOLS_p3.md), [SYMBOLS_p4.md](SYMBOLS_p4.md), [SYMBOLS_p5.md](SYMBOLS_p5.md), [SYMBOLS_p6.md](SYMBOLS_p6.md), [SYMBOLS_p7.md](SYMBOLS_p7.md), [SYMBOLS_p8.md](SYMBOLS_p8.md), [SYMBOLS_p9.md](SYMBOLS_p9.md), [SYMBOLS_p10.md](SYMBOLS_p10.md), [SYMBOLS_p11.md](SYMBOLS_p11.md), [SYMBOLS_p12.md](SYMBOLS_p12.md), [SYMBOLS_p13.md](SYMBOLS_p13.md), [SYMBOLS_p14.md](SYMBOLS_p14.md), [SYMBOLS_p15.md](SYMBOLS_p15.md), [SYMBOLS_p16.md](SYMBOLS_p16.md), [SYMBOLS_p17.md](SYMBOLS_p17.md), [SYMBOLS_p18.md](SYMBOLS_p18.md), [SYMBOLS_p19.md](SYMBOLS_p19.md), [SYMBOLS_p20.md](SYMBOLS_p20.md), [SYMBOLS_p21.md](SYMBOLS_p21.md), [SYMBOLS_p22.md](SYMBOLS_p22.md), [SYMBOLS_p23.md](SYMBOLS_p23.md), [SYMBOLS_p24.md](SYMBOLS_p24.md), [SYMBOLS_p25.md](SYMBOLS_p25.md), [SYMBOLS_p26.md](SYMBOLS_p26.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
@@ -63,10 +63,10 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md]
 | `vbe_try_bpp_ok` | function | `arch/x86/boot/stage2.S:395` | `` |
 | `vbe_try_fail` | function | `arch/x86/boot/stage2.S:423` | `` |
 | `vbe_try_mode` | function | `arch/x86/boot/stage2.S:364` | `` |
-| `exec_enter` | function | `arch/x86/ctx_sw.S:249` | `` |
+| `exec_enter` | function | `arch/x86/ctx_sw.S:273` | `` |
 | `fork_trampoline` | function | `arch/x86/ctx_sw.S:233` | `` |
-| `k_run_on_stack` | function | `arch/x86/ctx_sw.S:318` | `` |
-| `resume_iretq` | function | `arch/x86/ctx_sw.S:278` | `` |
+| `k_run_on_stack` | function | `arch/x86/ctx_sw.S:342` | `` |
+| `resume_iretq` | function | `arch/x86/ctx_sw.S:302` | `` |
 | `sched_park_capture` | function | `arch/x86/ctx_sw.S:70` | `` |
 | `switch_save_only` | function | `arch/x86/ctx_sw.S:82` | `` |
 | `switch_to` | function | `arch/x86/ctx_sw.S:91` | `` |

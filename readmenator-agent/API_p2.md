@@ -194,24 +194,29 @@ Depends on: `headers/minifs.h`
 - `fs_take` (function) `fs/kfile.c:66` `static inline void fs_take(irqflags_t *flags)`
 - `fs_drop` (function) `fs/kfile.c:70` `static inline void fs_drop(irqflags_t flags)`
 - `kpipe_pair` (function) `fs/kfile.c:78` `int kpipe_pair(KFILE **rend_out, KFILE **wend_out)` -- Docstring: Create a connected pipe pair sharing one ring.
-- `kpipe_is_write_end` (function) `fs/kfile.c:130` `int kpipe_is_write_end(KFILE *f)` -- open (retry later, EAGAIN-style), false on EOF, on the write end, or on any non-pipe file.
-- `kpipe_grow` (function) `fs/kfile.c:137` `static int kpipe_grow(pipe_ring_t *ring)` -- Docstring: Grow a pipe ring buffer, linearizing wrapped bytes first.
-- `kfopen` (function) `fs/kfile.c:160` `KFILE *kfopen(const char *path, const char *mode)`
-- `fs_rename_on_minifs` (function) `fs/kfile.c:257` `static int fs_rename_on_minifs(const char *dst)` -- True when `dst` can live on MiniFS: no directory part (root), or its * parent resolves there.
-- `entry` (function) `fs/kfile.c:276` `* directory with a volatile ramdisk entry (the kfopen misroute class) or
+- `kpipe_state` (function) `fs/kfile.c:130` `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen)` -- open (retry later, EAGAIN-style), false on EOF, on the write end, or on any non-pipe file.
+- `kevent_create` (function) `fs/kfile.c:148` `KFILE *kevent_create(unsigned long long initval, int semaphore)` -- Docstring: New eventfd description with counter initval.
+- `kevent_read` (function) `fs/kfile.c:163` `long kevent_read(KFILE *f, unsigned long long *out)` -- KFILE *f; if (initval > KEVENT_MAX) return 0; f = kmalloc(sizeof(KFILE)); if (!f) return 0; kmemset(f, 0...
+- `kevent_readable` (function) `fs/kfile.c:199` `int kevent_readable(KFILE *f)` -- irqflags_t flags; long rc = -11; if (!f || !f->is_eventfd) return -22; if (v == ~0ULL) return -22; fs_take(&flags)...
+- `kevent_writable` (function) `fs/kfile.c:204` `int kevent_writable(KFILE *f)` -- if (v <= KEVENT_MAX - f->efd_count) { f->efd_count += v; rc = 0; } fs_drop(flags); return rc; } /** Docstring: 1...
+- `kpipe_is_write_end` (function) `fs/kfile.c:209` `int kpipe_is_write_end(KFILE *f)` -- return rc; } /** Docstring: 1 when a read would not block. int kevent_readable(KFILE *f) { return f && f->is_eventfd...
+- `kpipe_grow` (function) `fs/kfile.c:216` `static int kpipe_grow(pipe_ring_t *ring)` -- Docstring: Grow a pipe ring buffer, linearizing wrapped bytes first.
+- `kfopen` (function) `fs/kfile.c:239` `KFILE *kfopen(const char *path, const char *mode)`
+- `fs_rename_on_minifs` (function) `fs/kfile.c:336` `static int fs_rename_on_minifs(const char *dst)` -- True when `dst` can live on MiniFS: no directory part (root), or its * parent resolves there.
+- `entry` (function) `fs/kfile.c:355` `* directory with a volatile ramdisk entry (the kfopen misroute class) or
  * need a copy+delete th...`
-- `kfclose` (function) `fs/kfile.c:318` `int kfclose(KFILE *f)`
-- `kfgetc` (function) `fs/kfile.c:358` `int kfgetc(KFILE *f)`
-- `kfgets` (function) `fs/kfile.c:399` `char *kfgets(char *buf, int size, KFILE *f)`
-- `kfungetc` (function) `fs/kfile.c:413` `int kfungetc(int c, KFILE *f)`
-- `kfread` (function) `fs/kfile.c:420` `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-- `kfwrite` (function) `fs/kfile.c:466` `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-- `kfseek` (function) `fs/kfile.c:532` `int kfseek(KFILE *f, long offset, int whence)`
-- `kftell` (function) `fs/kfile.c:553` `long kftell(KFILE *f)`
-- `kfflush` (function) `fs/kfile.c:557` `int kfflush(KFILE *f)`
-- `kfputs` (function) `fs/kfile.c:583` `int kfputs(const char *s, KFILE *f)`
-- `kfputc` (function) `fs/kfile.c:589` `int kfputc(int c, KFILE *f)`
-- `krewind` (function) `fs/kfile.c:594` `void krewind(KFILE *f)`
+- `kfclose` (function) `fs/kfile.c:397` `int kfclose(KFILE *f)`
+- `kfgetc` (function) `fs/kfile.c:442` `int kfgetc(KFILE *f)`
+- `kfgets` (function) `fs/kfile.c:483` `char *kfgets(char *buf, int size, KFILE *f)`
+- `kfungetc` (function) `fs/kfile.c:497` `int kfungetc(int c, KFILE *f)`
+- `kfread` (function) `fs/kfile.c:504` `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+- `kfwrite` (function) `fs/kfile.c:550` `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+- `kfseek` (function) `fs/kfile.c:616` `int kfseek(KFILE *f, long offset, int whence)`
+- `kftell` (function) `fs/kfile.c:637` `long kftell(KFILE *f)`
+- `kfflush` (function) `fs/kfile.c:641` `int kfflush(KFILE *f)`
+- `kfputs` (function) `fs/kfile.c:667` `int kfputs(const char *s, KFILE *f)`
+- `kfputc` (function) `fs/kfile.c:673` `int kfputc(int c, KFILE *f)`
+- `krewind` (function) `fs/kfile.c:678` `void krewind(KFILE *f)`
 
 ## fs/minifs.c
 Depends on: `headers/block.h`, `headers/ide.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/pcache.h`
@@ -283,12 +288,11 @@ void minifs_journal_touch(unsigned int phys)`
 - `minifs_get_lba_start` (function) `fs/minifs.c:1409` `unsigned int minifs_get_lba_start(void)`
 - `minifs_is_mounted` (function) `fs/minifs.c:1410` `int minifs_is_mounted(void)`
 - `minifs_mount` (function) `fs/minifs.c:1418` `int minifs_mount(void)` -- Boot-time exemption from the -Wframe-larger-than=2048 gate: mount and mkfs run once on deep boot stacks, never on 16...
-- `minifs_mkfs` (function) `fs/minifs.c:1570` `int minifs_mkfs(unsigned int total_blocks)` -- pragma GCC diagnostic push pragma GCC diagnostic ignored "-Wframe-larger-than="
-- `minifs_sync` (function) `fs/minifs.c:1641` `int minifs_sync(void)`
-- `minifs_file_open` (function) `fs/minifs.c:1656` `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-- `minifs_file_close` (function) `fs/minifs.c:1670` `int minifs_file_close(MiniFSFile *f)`
-- `minifs_get_total_blocks` (function) `fs/minifs.c:1677` `unsigned int minifs_get_total_blocks(void)`
-- `minifs_usage` (function) `fs/minifs.c:1682` `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+- `minifs_sync` (function) `fs/minifs.c:1568` `int minifs_sync(void)`
+- `minifs_file_open` (function) `fs/minifs.c:1583` `MiniFSFile *minifs_file_open(int inode_num, int flags)`
+- `minifs_file_close` (function) `fs/minifs.c:1597` `int minifs_file_close(MiniFSFile *f)`
+- `minifs_get_total_blocks` (function) `fs/minifs.c:1604` `unsigned int minifs_get_total_blocks(void)`
+- `minifs_usage` (function) `fs/minifs.c:1609` `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
                   unsigned int *fr...` -- } int minifs_file_close(MiniFSFile *f) { if (!f) return 0; if (f->inode_cache) kfree(f->inode_cache); kfree(f)...
 
 ## fs/pcache.c
@@ -393,7 +397,7 @@ Imported by: `kernel.c`, `kernel/abi.c`, `tests/test_abi.c`
 
 ## headers/arch/x86/boot/bootdefs.h
 Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
-- `address` (function) `headers/arch/x86/boot/bootdefs.h:190` `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and...`
+- `address` (function) `headers/arch/x86/boot/bootdefs.h:191` `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and...`
 
 ## headers/arch/x86/hal_io.h
 Imported by: `drivers/kbd.c`, `drivers/mouse.c`, `drivers/nvme.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_hal_io.c`

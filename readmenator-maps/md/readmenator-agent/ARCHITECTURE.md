@@ -146,6 +146,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/exec.c` -> `headers/arch/x86/boot/bootdefs.h`
 - `kernel/exec.c` -> `headers/arch/x86/msr.h`
 - `kernel/exec.c` -> `headers/drivers/kbd.h`
+- `kernel/exec.c` -> `headers/proc_sec.h`
 - `kernel/exec.c` -> `headers/sched.h`
 - `kernel/exec.c` -> `headers/vga_fb.h`
 - `kernel/futex.c` -> `headers/futex.h`
@@ -179,6 +180,11 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/panic.c` -> `headers/sched.h`
 - `kernel/panic.c` -> `headers/vga_fb.h`
 - `kernel/percpu_rq.c` -> `headers/percpu_rq.h`
+- `kernel/proc_sec.c` -> `headers/proc_sec.h`
+- `kernel/proc_sec.c` -> `headers/sanitize.h`
+- `kernel/proc_sec.c` -> `headers/sched.h`
+- `kernel/proc_sec.c` -> `headers/seccomp_bpf.h`
+- `kernel/proc_sec.c` -> `headers/syscalls_proc.h`
 - `kernel/rcu.c` -> `headers/rcu.h`
 - `kernel/sched.c` -> `headers/arch/x86/boot/bootdefs.h`
 - `kernel/sched.c` -> `headers/arch/x86/hal_io.h`
@@ -189,6 +195,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/sched.c` -> `headers/pcache.h`
 - `kernel/sched.c` -> `headers/pcm2.h`
 - `kernel/sched.c` -> `headers/percpu_rq.h`
+- `kernel/sched.c` -> `headers/proc_sec.h`
 - `kernel/sched.c` -> `headers/rcu.h`
 - `kernel/sched.c` -> `headers/sb16.h`
 - `kernel/sched.c` -> `headers/sched.h`
@@ -197,6 +204,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/sched.c` -> `headers/sync.h`
 - `kernel/sched.c` -> `headers/tick.h`
 - `kernel/sched.c` -> `headers/vga_fb.h`
+- `kernel/seccomp_bpf.c` -> `headers/seccomp_bpf.h`
 - `kernel/serial.c` -> `headers/sched.h`
 - `kernel/shell.c` -> `headers/drivers/kbd.h`
 - `kernel/shell.c` -> `headers/drivers/nvme.h`
@@ -251,6 +259,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/syscalls.c` -> `headers/pcm2.h`
 - `kernel/syscalls.c` -> `headers/pcspk.h`
 - `kernel/syscalls.c` -> `headers/percpu_rq.h`
+- `kernel/syscalls.c` -> `headers/proc_sec.h`
 - `kernel/syscalls.c` -> `headers/randmix.h`
 - `kernel/syscalls.c` -> `headers/rcu.h`
 - `kernel/syscalls.c` -> `headers/rtc.h`
@@ -263,6 +272,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/syscalls.c` -> `headers/syscalls_proc.h`
 - `kernel/syscalls.c` -> `headers/vga_fb.h`
 - `kernel/syscalls.c` -> `headers/zip.h`
+- `kernel/syscalls_proc.c` -> `headers/proc_sec.h`
 - `kernel/syscalls_proc.c` -> `headers/sanitize.h`
 - `kernel/syscalls_proc.c` -> `headers/sched.h`
 - `kernel/tick.c` -> `headers/tick.h`
@@ -296,6 +306,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `net/net.c` -> `headers/drivers/virtio_net.h`
 - `net/net.c` -> `headers/net.h`
 - `net/net.c` -> `headers/net/rtl8139.h`
+- `net/net.c` -> `headers/sched.h`
 - `net/net.c` -> `headers/tls.h`
 - `net/rtl8139.c` -> `headers/drivers/pci.h`
 - `net/rtl8139.c` -> `headers/net.h`
@@ -485,16 +496,5 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/i_system.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/r_state.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/s_sound.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/sounds.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/v_video.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/w_wad.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/z_zone.h`
-- `progs/doomgeneric/f_finale.h` -> `progs/doomgeneric/d_event.h`
-- `progs/doomgeneric/f_finale.h` -> `progs/doomgeneric/doomtype.h`
-- `progs/doomgeneric/f_wipe.c` -> `kernel/string.c`
-- `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/doomtype.h`
-- `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/f_wipe.h`
-- `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/i_video.h`
-- `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/m_random.h`
 
 Next: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)

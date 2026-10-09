@@ -1,5 +1,5 @@
-# Subsystem: src (page 1 of 2)
-Pages: [KB_src.md](KB_src.md), [KB_src_p2.md](KB_src_p2.md)
+# Subsystem: src (page 1 of 3)
+Pages: [KB_src.md](KB_src.md), [KB_src_p2.md](KB_src_p2.md), [KB_src_p3.md](KB_src_p3.md)
 
 ## progs/src/aes.c
 - Doc: command path AES-256-CTR encryption tools: aes and unaes.
@@ -142,11 +142,11 @@ Pages: [KB_src.md](KB_src.md), [KB_src_p2.md](KB_src_p2.md)
 - Language: c
 - Symbols:
   - `path` (function, line 7) `* execs a ghost path (must fail -2, exits 42). The parent checks
- * both statuses and prints "exe...`
-  - `ex_write` (function, line 18) `static void ex_write(const char *s, unsigned long len)`
-  - `ex_exit` (function, line 22) `static void ex_exit(long code)`
-  - `ex_fail` (function, line 27) `static void ex_fail(int step)`
-  - `lmain` (function, line 35) `int lmain(void)`
+ * both wait4 results with Linux...`
+  - `ex_write` (function, line 20) `static void ex_write(const char *s, unsigned long len)`
+  - `ex_exit` (function, line 24) `static void ex_exit(long code)`
+  - `ex_fail` (function, line 29) `static void ex_fail(int step)`
+  - `lmain` (function, line 37) `int lmain(void)`
   - `program` (function, line 5) `* * Proves the UNIX process composition the kernel lacked: a child * produced by fork replaces its image with execve...`
 
 ## progs/src/execthr.c
@@ -446,54 +446,6 @@ Pages: [KB_src.md](KB_src.md), [KB_src_p2.md](KB_src_p2.md)
 - Language: c
 - Symbols:
   - `main` (function, line 1) `int main(void)`
-
-## progs/src/lxabi.c
-- Doc: Linux process, thread and descriptor ABI probe (FreeDom
-- Layer: utility
-- Language: c
-- Symbols:
-  - `thread_result` (struct, line 152)
-  - `tls_seen` (type_alias, line 151) `typedef struct thread_result { long tls_seen;`
-  - `report` (function, line 55) `static void report(const char *name, int ok, const char *detail)`
-  - `now_ms` (function, line 65) `static long now_ms(void)`
-  - `busy_wait_ms` (function, line 71) `static void busy_wait_ms(long ms)`
-  - `fork_probe` (function, line 85) `static void fork_probe(uint64_t *out)`
-  - `regs_match` (function, line 122) `static int regs_match(const uint64_t *r)`
-  - `check_fork_registers` (function, line 128) `static void check_fork_registers(void)`
-  - `worker` (function, line 158) `static void *worker(void *arg)`
-  - `check_threads` (function, line 172) `static void check_threads(void)`
-  - `detached_worker` (function, line 202) `static void *detached_worker(void *arg)`
-  - `check_detached_reaped` (function, line 208) `static void check_detached_reaped(void)`
-  - `signaller` (function, line 232) `static void *signaller(void *arg)`
-  - `check_condvar` (function, line 242) `static void check_condvar(void)`
-  - `check_pipe2_flags` (function, line 264) `static void check_pipe2_flags(void)`
-  - `check_pipe_blocking` (function, line 291) `static void check_pipe_blocking(void)`
-  - `check_pipe_epipe` (function, line 313) `static void check_pipe_epipe(void)`
-  - `check_writev_pipe` (function, line 324) `static void check_writev_pipe(void)`
-  - `check_poll` (function, line 336) `static void check_poll(void)`
-  - `check_eventfd` (function, line 360) `static void check_eventfd(void)`
-  - `check_close_range` (function, line 385) `static void check_close_range(void)`
-  - `check_time` (function, line 397) `static void check_time(void)`
-  - `check_mkdir` (function, line 406) `static void check_mkdir(void)`
-  - `main` (function, line 417) `int main(void)`
-  - `_GNU_SOURCE` (macro, line 17) `#define _GNU_SOURCE`
-  - `LXABI_CHILD_DELAY_MS` (macro, line 36) `#define LXABI_CHILD_DELAY_MS`
-  - `LXABI_THREADS` (macro, line 37) `#define LXABI_THREADS`
-  - `LXABI_THREAD_ITERS` (macro, line 38) `#define LXABI_THREAD_ITERS`
-  - `LXABI_DETACHED` (macro, line 39) `#define LXABI_DETACHED`
-  - `LXABI_WAIT_SPINS` (macro, line 40) `#define LXABI_WAIT_SPINS`
-  - `LXABI_TIMEDWAIT_MS` (macro, line 41) `#define LXABI_TIMEDWAIT_MS`
-  - `LXABI_EPOCH_2023` (macro, line 42) `#define LXABI_EPOCH_2023`
-  - `LXABI_CLOCK_SKEW_S` (macro, line 43) `#define LXABI_CLOCK_SKEW_S`
-  - `LXABI_REG_PROBE_WORDS` (macro, line 44) `#define LXABI_REG_PROBE_WORDS`
-  - `LXABI_CLONE_NR` (macro, line 45) `#define LXABI_CLONE_NR`
-  - `LXABI_SIGCHLD` (macro, line 46) `#define LXABI_SIGCHLD`
-  - `LXABI_A6_MAGIC` (macro, line 47) `#define LXABI_A6_MAGIC`
-  - `LXABI_CHILD_BAD` (macro, line 48) `#define LXABI_CHILD_BAD`
-  - `LXABI_MKDIR_PATH` (macro, line 49) `#define LXABI_MKDIR_PATH`
-  - `LXABI_MKDIR_FILE` (macro, line 50) `#define LXABI_MKDIR_FILE`
-  - `LXABI_CLOSE_RANGE_NR` (macro, line 51) `#define LXABI_CLOSE_RANGE_NR`
-- Depends on: `kernel/string.c`, `kernel/time.c`
 
 
 Next: [KB_src_p2.md](KB_src_p2.md)

@@ -1,72 +1,332 @@
-# Symbols (page 9 of 25)
+# Symbols (page 9 of 26)
 Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `sys_minios_dir_list` | function | `kernel/syscalls.c:900` | `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_dns` | function | `kernel/syscalls.c:263` | `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_doom_frame` | function | `kernel/syscalls.c:371` | `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_fb_info` | function | `kernel/syscalls.c:404` | `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_futex_wait` | function | `kernel/syscalls.c:761` | `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_futex_wake` | function | `kernel/syscalls.c:767` | `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_getc_raw` | function | `kernel/syscalls.c:825` | `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_gfx_title` | function | `kernel/syscalls.c:660` | `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_gfx_zoom` | function | `kernel/syscalls.c:382` | `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_kbd` | function | `kernel/syscalls.c:308` | `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_kbd_raw` | function | `kernel/syscalls.c:340` | `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_lz4_compress` | function | `kernel/syscalls.c:567` | `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_lz4_decompress` | function | `kernel/syscalls.c:580` | `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_mouse` | function | `kernel/syscalls.c:594` | `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_nk_frame` | function | `kernel/syscalls.c:618` | `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_palette` | function | `kernel/syscalls.c:328` | `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcm2_close` | function | `kernel/syscalls.c:712` | `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcm2_open` | function | `kernel/syscalls.c:699` | `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcm2_write` | function | `kernel/syscalls.c:704` | `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcspk_init` | function | `kernel/syscalls.c:353` | `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcspk_tone` | function | `kernel/syscalls.c:357` | `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_pcspk_vol` | function | `kernel/syscalls.c:424` | `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_rlimit` | function | `kernel/syscalls.c:859` | `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_rtc` | function | `kernel/syscalls.c:391` | `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_open` | function | `kernel/syscalls.c:637` | `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_pump` | function | `kernel/syscalls.c:674` | `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_stream_close` | function | `kernel/syscalls.c:682` | `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_stream_open` | function | `kernel/syscalls.c:678` | `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_stream_submit` | function | `kernel/syscalls.c:686` | `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_stream_vol` | function | `kernel/syscalls.c:748` | `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_sb16_submit` | function | `kernel/syscalls.c:649` | `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_spawn` | function | `kernel/syscalls.c:556` | `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_submit_batch` | function | `kernel/syscalls.c:836` | `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_time` | function | `kernel/syscalls.c:304` | `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_tls_retired` | function | `kernel/syscalls.c:268` | `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_vga_mode` | function | `kernel/syscalls.c:346` | `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `syscall_name` | function | `kernel/syscalls.c:2303` | `const char *syscall_name(long n)` |
-| `syscall_trace_enabled` | function | `kernel/syscalls.c:1072` | `long syscall_trace_enabled(void)` |
-| `syscall_trace_set` | function | `kernel/syscalls.c:1073` | `void syscall_trace_set(int on)` |
-| `syscall_trace_shown` | function | `kernel/syscalls.c:1076` | `unsigned long syscall_trace_shown(void)` |
-| `syscall_trace_verbose_enabled` | function | `kernel/syscalls.c:1074` | `long syscall_trace_verbose_enabled(void)` |
-| `syscall_trace_verbose_set` | function | `kernel/syscalls.c:1075` | `void syscall_trace_verbose_set(int on)` |
-| `trace_hint_print` | function | `kernel/syscalls.c:2344` | `static void trace_hint_print(long n, int kind, const char *path,                              lon...` |
-| `trace_is_noisy` | function | `kernel/syscalls.c:2275` | `static int trace_is_noisy(long n)` |
-| `untouched` | function | `kernel/syscalls.c:136` | `* child untouched (caller refuses fail-closed). */ int kfd_view_copy(proc_t *child, proc_t *parent)` |
-| `user_range_ok` | function | `kernel/syscalls.c:2395` | `int user_range_ok(unsigned long p, unsigned long len)` |
-| `view` | function | `kernel/syscalls.c:465` | `* view (same as the `clear` builtin). Anything else is -EINVAL. Each  * out-word is range-checked...` |
-| `vma_free_cover` | function | `kernel/syscalls.c:1676` | `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` |
-| `vma_live_overlap` | function | `kernel/syscalls.c:1695` | `static int vma_live_overlap(unsigned long base, unsigned long len)` |
-| `wall_us_now` | function | `kernel/syscalls.c:253` | `unsigned long wall_us_now(void)` |
-| `code` | function | `kernel/syscalls_proc.c:169` | `* exit code (no WEXITSTATUS encoding: MiniOS reports codes directly). */ long sys_linux_wait4(lon...` |
+| `shell_complete_minifs_arg` | function | `kernel/shell.c:268` | `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,                      ...` |
+| `shell_complete_replace` | function | `kernel/shell.c:247` | `static void shell_complete_replace(char *buf, int size, int *pos,                                ...` |
+| `shell_complete_tier` | function | `kernel/shell.c:235` | `static int shell_complete_tier(const char *nm)` |
+| `shell_cross_cat` | function | `kernel/shell.c:2804` | `static void shell_cross_cat(const char *drv, const char *imgarg,                             cons...` |
+| `shell_cross_ls` | function | `kernel/shell.c:2763` | `static void shell_cross_ls(const char *drv, const char *imgarg,                            const ...` |
+| `shell_exec_builtin` | function | `kernel/shell.c:2846` | `void shell_exec_builtin(int argc, char **argv)` |
+| `shell_file_is_real` | function | `kernel/shell.c:1049` | `static int shell_file_is_real(const char *resolved)` |
+| `shell_focus_park` | function | `kernel/shell.c:113` | `void shell_focus_park(void)` |
+| `shell_focus_restore` | function | `kernel/shell.c:118` | `void shell_focus_restore(void)` |
+| `shell_has_child` | function | `kernel/shell.c:2048` | `static int shell_has_child(int pid)` |
+| `shell_hist_newest_match` | function | `kernel/shell.c:426` | `static int shell_hist_newest_match(const char *prefix, unsigned long plen)` |
+| `shell_hist_show` | function | `kernel/shell.c:343` | `static void shell_hist_show(char *buf, int size, int *pos, const char *text)` |
+| `shell_httpd_one` | function | `kernel/shell.c:2511` | `static void shell_httpd_one(int child, const char *root)` |
+| `shell_httpd_serve` | function | `kernel/shell.c:2596` | `static void shell_httpd_serve(unsigned short port, const char *root,         int max_conn)` |
+| `shell_is_pipe_tok` | function | `kernel/shell.c:4020` | `static int shell_is_pipe_tok(const char *a)` |
+| `shell_line_backspace` | function | `kernel/shell.c:387` | `static void shell_line_backspace(char *buf, int size, int *pos)` |
+| `shell_line_delete` | function | `kernel/shell.c:395` | `static void shell_line_delete(char *buf, int size, int *pos)` |
+| `shell_line_insert` | function | `kernel/shell.c:378` | `static void shell_line_insert(char *buf, int size, int *pos, char c)` |
+| `shell_line_kill_front` | function | `kernel/shell.c:402` | `static void shell_line_kill_front(char *buf, int size, int *pos)` |
+| `shell_line_kill_tail` | function | `kernel/shell.c:409` | `static void shell_line_kill_tail(char *buf, int size, int *pos)` |
+| `shell_line_kill_word` | function | `kernel/shell.c:414` | `static void shell_line_kill_word(char *buf, int size, int *pos)` |
+| `shell_line_repaint` | function | `kernel/shell.c:365` | `static void shell_line_repaint(char *buf, int size, int pos)` |
+| `shell_load` | function | `kernel/shell.c:946` | `static int shell_load(const char *fname, char *progname_out, void **entry_out)` |
+| `shell_name_base` | function | `kernel/shell.c:210` | `static const char *shell_name_base(const char *path)` |
+| `shell_parse` | function | `kernel/shell.c:808` | `int shell_parse(char *line, char **argv, int max_args)` |
+| `shell_parse_long` | function | `kernel/shell.c:2307` | `int shell_parse_long(const char *s, long *out)` |
+| `shell_parse_pid` | function | `kernel/shell.c:2328` | `int shell_parse_pid(const char *s, int min_pid, int *out)` |
+| `shell_parse_u64` | function | `kernel/shell.c:2291` | `static int shell_parse_u64(const char *s, unsigned long *out)` |
+| `shell_parse_vol` | function | `kernel/shell.c:155` | `static int shell_parse_vol(const char *s, unsigned *out)` |
+| `shell_prompt` | function | `kernel/shell.c:145` | `static void shell_prompt(void)` |
+| `shell_queue_launch` | function | `kernel/shell.c:84` | `void shell_queue_launch(const char *cmd)` |
+| `shell_read_elf_bytes` | function | `kernel/shell.c:1290` | `static int shell_read_elf_bytes(const char *name, unsigned char **out,                           ...` |
+| `shell_readline` | function | `kernel/shell.c:335` | `static void shell_readline(void)` |
+| `shell_readline_active` | function | `kernel/shell.c:112` | `int shell_readline_active(void)` |
+| `shell_readline_buf` | function | `kernel/shell.c:181` | `void shell_readline_buf(char *buf, int size)` |
+| `shell_readline_hist` | function | `kernel/shell.c:488` | `static void shell_readline_hist(char *buf, int size)` |
+| `shell_resolve_arg` | function | `kernel/shell.c:2405` | `static int shell_resolve_arg(const char *cmd, const char *arg,                              const...` |
+| `shell_resolve_run` | function | `kernel/shell.c:1061` | `static int shell_resolve_run(const char *name, char *out, unsigned cap)` |
+| `shell_run` | function | `kernel/shell.c:876` | `void shell_run(void)` |
+| `shell_run_any` | function | `kernel/shell.c:1621` | `int shell_run_any(const char *name, int argc, char **argv)` |
+| `shell_run_bg` | function | `kernel/shell.c:1457` | `static void shell_run_bg(const char *name, int argc, char **argv)` |
+| `shell_run_cvm` | function | `kernel/shell.c:1210` | `static int shell_run_cvm(const char *full, int argc, char **argv)` |
+| `shell_run_dir_for` | function | `kernel/shell.c:1031` | `static const ShellRunDir *shell_run_dir_for(const char *name)` |
+| `shell_run_elf_buf_path` | function | `kernel/shell.c:1117` | `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,                     ...` |
+| `shell_run_elf_file` | function | `kernel/shell.c:1147` | `static int shell_run_elf_file(const char *full, int argc, char **argv)` |
+| `shell_run_elf_minifs` | function | `kernel/shell.c:1160` | `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` |
+| `shell_run_file` | function | `kernel/shell.c:1246` | `static int shell_run_file(const char *name, int argc, char **argv)` |
+| `shell_run_init` | function | `kernel/shell.c:837` | `static void shell_run_init(void)` |
+| `shell_run_pipeline` | function | `kernel/shell.c:148` | `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);` |
+| `shell_run_stage` | function | `kernel/shell.c:4059` | `static char *shell_run_stage(char **sargv, int sargc,         const char *input, unsigned long in...` |
+| `stdout` | function | `kernel/shell.c:4008` | `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...` |
+| `terminal` | function | `kernel/shell.c:2921` | `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...` |
+| `this` | function | `kernel/shell.c:1487` | `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...` |
+| `to` | function | `kernel/shell.c:2222` | `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */ static void shell_cmd_trac...` |
+| `tree` | function | `kernel/shell.c:2006` | `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores  * Ctrl+C (it never poll...` |
+| `window` | function | `kernel/shell.c:1283` | `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...` |
+| `spawn_backup` | function | `kernel/spawn.c:11` | `int spawn_backup(spawn_ctx_t *ctx)` |
+| `spawn_copy_argv` | function | `kernel/spawn.c:96` | `char **spawn_copy_argv(int argc, const char **uargv)` |
+| `spawn_execute` | function | `kernel/spawn.c:264` | `int spawn_execute(const char *resolved, const char *redirect,                   unsigned char *da...` |
+| `spawn_free_argv` | function | `kernel/spawn.c:84` | `void spawn_free_argv(char **kargv, int argc)` |
+| `spawn_load_image` | function | `kernel/spawn.c:158` | `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out)` |
+| `spawn_restore` | function | `kernel/spawn.c:37` | `void spawn_restore(spawn_ctx_t *ctx)` |
+| `spawn_run_exec` | function | `kernel/spawn.c:219` | `static int spawn_run_exec(const char *resolved, const char *redirect,                            ...` |
+| `spawn_run_rel` | function | `kernel/spawn.c:193` | `static int spawn_run_rel(const char *resolved, const char *redirect,                          uns...` |
+| `spawn_validate_argv` | function | `kernel/spawn.c:140` | `int spawn_validate_argv(int argc, const char **uargv)` |
+| `katol` | function | `kernel/string.c:95` | `long katol(const char *s)` |
+| `kmemcmp` | function | `kernel/string.c:81` | `int kmemcmp(const void *a, const void *b, unsigned long n)` |
+| `kmemcpy` | function | `kernel/string.c:68` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
+| `kmemmove` | function | `kernel/string.c:87` | `void *kmemmove(void *dst, const void *src, unsigned long n)` |
+| `kmemset` | function | `kernel/string.c:75` | `void *kmemset(void *dst, int c, unsigned long n)` |
+| `kstrchr` | function | `kernel/string.c:53` | `char *kstrchr(const char *s, int c)` |
+| `kstrcmp` | function | `kernel/string.c:43` | `int kstrcmp(const char *a, const char *b)` |
+| `kstrcpy` | function | `kernel/string.c:23` | `char *kstrcpy(char *dst, const char *src)` |
+| `kstrlen` | function | `kernel/string.c:17` | `unsigned long kstrlen(const char *s)` |
+| `kstrncat` | function | `kernel/string.c:35` | `char *kstrncat(char *dst, const char *src, unsigned long n)` |
+| `kstrncmp` | function | `kernel/string.c:48` | `int kstrncmp(const char *a, const char *b, unsigned long n)` |
+| `kstrncpy` | function | `kernel/string.c:29` | `char *kstrncpy(char *dst, const char *src, unsigned long n)` |
+| `kstrstr` | function | `kernel/string.c:58` | `char *kstrstr(const char *hay, const char *ndl)` |
+| `k_register_process` | function | `kernel/symtab.c:57` | `void k_register_process(const char *name, void *proc_entry)` |
+| `k_register_program` | function | `kernel/symtab.c:49` | `void k_register_program(const char *name, prog_entry_t entry)` |
+| `k_register_symbol` | function | `kernel/symtab.c:10` | `void k_register_symbol(const char *name, void *addr)` |
+| `k_spawn` | function | `kernel/symtab.c:65` | `int k_spawn(const char *name, int argc, char **argv)` |
+| `kprog_lookup` | function | `kernel/symtab.c:42` | `KProg *kprog_lookup(const char *name)` |
+| `kprog_slot` | function | `kernel/symtab.c:34` | `KProg *kprog_slot(const char *name)` |
+| `ksym_resolve` | function | `kernel/symtab.c:18` | `void *ksym_resolve(const char *name)` |
+| `cond_broadcast` | function | `kernel/sync.c:249` | `void cond_broadcast(cond_t *c)` |
+| `cond_init` | function | `kernel/sync.c:235` | `void cond_init(cond_t *c)` |
+| `cond_signal` | function | `kernel/sync.c:245` | `void cond_signal(cond_t *c)` |
+| `cond_wait` | function | `kernel/sync.c:239` | `void cond_wait(cond_t *c, mutex_t *m)` |
+| `mutex_init` | function | `kernel/sync.c:76` | `void mutex_init(mutex_t *m)` |
+| `mutex_lock` | function | `kernel/sync.c:150` | `void mutex_lock(mutex_t *m)` |
+| `mutex_trylock` | function | `kernel/sync.c:170` | `int mutex_trylock(mutex_t *m)` |
+| `mutex_unlock` | function | `kernel/sync.c:186` | `void mutex_unlock(mutex_t *m)` |
+| `pi_boost` | function | `kernel/sync.c:124` | `static void pi_boost(int waiter, int owner)` |
+| `pi_get_eff` | function | `kernel/sync.c:108` | `int pi_get_eff(int pid)` |
+| `pi_recompute` | function | `kernel/sync.c:113` | `static void pi_recompute(int pid)` |
+| `pi_set_base` | function | `kernel/sync.c:99` | `void pi_set_base(int pid, int prio)` |
+| `pi_valid` | function | `kernel/sync.c:93` | `static int pi_valid(int pid)` |
+| `rwlock_init` | function | `kernel/sync.c:253` | `void rwlock_init(rwlock_t *rw)` |
+| `rwlock_read_lock` | function | `kernel/sync.c:260` | `void rwlock_read_lock(rwlock_t *rw)` |
+| `rwlock_read_unlock` | function | `kernel/sync.c:274` | `void rwlock_read_unlock(rwlock_t *rw)` |
+| `rwlock_write_lock` | function | `kernel/sync.c:283` | `void rwlock_write_lock(rwlock_t *rw)` |
+| `rwlock_write_unlock` | function | `kernel/sync.c:297` | `void rwlock_write_unlock(rwlock_t *rw)` |
+| `sem_init` | function | `kernel/sync.c:207` | `void sem_init(sem_t *s, int value)` |
+| `sem_post` | function | `kernel/sync.c:227` | `void sem_post(sem_t *s)` |
+| `sem_wait` | function | `kernel/sync.c:213` | `void sem_wait(sem_t *s)` |
+| `sleep_on` | function | `kernel/sync.c:33` | `void sleep_on(wait_queue_t *q)` |
+| `t_cur_pid` | variable | `kernel/sync.c:24` | `extern int t_cur_pid;` |
+| `wake_up` | function | `kernel/sync.c:54` | `int wake_up(wait_queue_t *q)` |
+| `wake_up_all` | function | `kernel/sync.c:70` | `int wake_up_all(wait_queue_t *q)` |
+| `wq_init` | function | `kernel/sync.c:27` | `void wq_init(wait_queue_t *q)` |
+| `DOOM_FRAME` | function | `kernel/syscalls.c:827` | `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */ static long sys_minios_gfx_prese...` |
+| `Discipline` | function | `kernel/syscalls.c:2849` | `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok...` |
+| `EAGAIN` | function | `kernel/syscalls.c:1151` | `* writer open is EAGAIN (-11, retry);` |
+| `EOF` | function | `kernel/syscalls.c:1152` | `* is EOF (0). */ KFILE *o = kfd_get(0);` |
+| `FD_STD_COUNT` | macro | `kernel/syscalls.c:1325` | `#define FD_STD_COUNT` |
+| `KFD_MAX` | macro | `kernel/syscalls.c:50` | `#define KFD_MAX` |
+| `LINUX_CLOSE_RANGE_CLOEXEC` | macro | `kernel/syscalls.c:1320` | `#define LINUX_CLOSE_RANGE_CLOEXEC` |
+| `LINUX_CLOSE_RANGE_UNSHARE` | macro | `kernel/syscalls.c:1319` | `#define LINUX_CLOSE_RANGE_UNSHARE` |
+| `LINUX_EFD_CLOEXEC` | macro | `kernel/syscalls.c:1323` | `#define LINUX_EFD_CLOEXEC` |
+| `LINUX_EFD_NONBLOCK` | macro | `kernel/syscalls.c:1322` | `#define LINUX_EFD_NONBLOCK` |
+| `LINUX_EFD_SEMAPHORE` | macro | `kernel/syscalls.c:1321` | `#define LINUX_EFD_SEMAPHORE` |
+| `LINUX_EVENTFD_WORD` | macro | `kernel/syscalls.c:1324` | `#define LINUX_EVENTFD_WORD` |
+| `LINUX_FD_CLOEXEC` | macro | `kernel/syscalls.c:1312` | `#define LINUX_FD_CLOEXEC` |
+| `LINUX_F_DUPFD` | macro | `kernel/syscalls.c:1313` | `#define LINUX_F_DUPFD` |
+| `LINUX_F_DUPFD_CLOEXEC` | macro | `kernel/syscalls.c:1318` | `#define LINUX_F_DUPFD_CLOEXEC` |
+| `LINUX_F_GETFD` | macro | `kernel/syscalls.c:1314` | `#define LINUX_F_GETFD` |
+| `LINUX_F_GETFL` | macro | `kernel/syscalls.c:1316` | `#define LINUX_F_GETFL` |
+| `LINUX_F_SETFD` | macro | `kernel/syscalls.c:1315` | `#define LINUX_F_SETFD` |
+| `LINUX_F_SETFL` | macro | `kernel/syscalls.c:1317` | `#define LINUX_F_SETFL` |
+| `LINUX_MAP_ANONYMOUS` | macro | `kernel/syscalls.c:1770` | `#define LINUX_MAP_ANONYMOUS` |
+| `LINUX_MAP_FIXED` | macro | `kernel/syscalls.c:1769` | `#define LINUX_MAP_FIXED` |
+| `LINUX_MAP_PRIVATE` | macro | `kernel/syscalls.c:1768` | `#define LINUX_MAP_PRIVATE` |
+| `LINUX_MAP_SHARED` | macro | `kernel/syscalls.c:1767` | `#define LINUX_MAP_SHARED` |
+| `LINUX_MREMAP_FIXED` | macro | `kernel/syscalls.c:1996` | `#define LINUX_MREMAP_FIXED` |
+| `LINUX_MREMAP_MAYMOVE` | macro | `kernel/syscalls.c:1995` | `#define LINUX_MREMAP_MAYMOVE` |
+| `LINUX_O_APPEND` | macro | `kernel/syscalls.c:1308` | `#define LINUX_O_APPEND` |
+| `LINUX_O_CLOEXEC` | macro | `kernel/syscalls.c:1311` | `#define LINUX_O_CLOEXEC` |
+| `LINUX_O_DIRECT` | macro | `kernel/syscalls.c:1310` | `#define LINUX_O_DIRECT` |
+| `LINUX_O_NONBLOCK` | macro | `kernel/syscalls.c:1309` | `#define LINUX_O_NONBLOCK` |
+| `LINUX_O_RDONLY` | macro | `kernel/syscalls.c:1305` | `#define LINUX_O_RDONLY` |
+| `LINUX_O_RDWR` | macro | `kernel/syscalls.c:1307` | `#define LINUX_O_RDWR` |
+| `LINUX_O_WRONLY` | macro | `kernel/syscalls.c:1306` | `#define LINUX_O_WRONLY` |
+| `LINUX_SYSCALL_COUNT` | macro | `kernel/syscalls.c:2652` | `#define LINUX_SYSCALL_COUNT` |
+| `MINIOS_SYSCALL_BASE` | macro | `kernel/syscalls.c:241` | `#define MINIOS_SYSCALL_BASE` |
+| `MINIOS_SYSCALL_COUNT` | macro | `kernel/syscalls.c:242` | `#define MINIOS_SYSCALL_COUNT` |
+| `NULL` | function | `kernel/syscalls.c:164` | `* on NULL (already released or never owned). */ void kfd_view_release(proc_t *p)` |
+| `PROC_SELF_EXE` | macro | `kernel/syscalls.c:2483` | `#define PROC_SELF_EXE` |
+| `SC_EXTRA_COUNT` | macro | `kernel/syscalls.c:2743` | `#define SC_EXTRA_COUNT` |
+| `SYSCALL_TRACE` | macro | `kernel/syscalls.c:1098` | `#define SYSCALL_TRACE` |
+| `SYS_NOISY_GETC_RAW` | macro | `kernel/syscalls.c:1121` | `#define SYS_NOISY_GETC_RAW` |
+| `SYS_NOISY_KBD` | macro | `kernel/syscalls.c:1119` | `#define SYS_NOISY_KBD` |
+| `SYS_NOISY_MOUSE` | macro | `kernel/syscalls.c:1120` | `#define SYS_NOISY_MOUSE` |
+| `SYS_NOISY_TIME` | macro | `kernel/syscalls.c:1118` | `#define SYS_NOISY_TIME` |
+| `TRACE_HINT_NONE` | macro | `kernel/syscalls.c:2765` | `#define TRACE_HINT_NONE` |
+| `TRACE_HINT_PATH` | macro | `kernel/syscalls.c:2766` | `#define TRACE_HINT_PATH` |
+| `batch_kdispatch` | function | `kernel/syscalls.c:812` | `static long batch_kdispatch(uint32_t opcode)` |
+| `boot` | function | `kernel/syscalls.c:477` | `* boot (minfo_sleep_init from sched_init);` |
+| `by` | function | `kernel/syscalls.c:223` | `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to...` |
+| `do_open_path` | function | `kernel/syscalls.c:1265` | `static long do_open_path(const char *path, long flags)` |
+| `fd_write` | function | `kernel/syscalls.c:1191` | `static long fd_write(long fd, const char *buf, long cnt)` |
+| `first` | function | `kernel/syscalls.c:1928` | `* passes under mm_lock: validate every page first (present, user,  * private), then apply, so a h...` |
+| `gfx_win_title` | variable | `kernel/syscalls.c:701` | `extern const char *gfx_win_title;` |
+| `gfx_zoom_2x` | variable | `kernel/syscalls.c:420` | `extern int gfx_zoom_2x;` |
+| `k_syscall_spawn` | function | `kernel/syscalls.c:3112` | `static int k_syscall_spawn(const char *path, const char *redirect,                              i...` |
+| `kfd_claim` | function | `kernel/syscalls.c:1356` | `static long kfd_claim(KFILE *f)` |
+| `kfd_claim_from` | function | `kernel/syscalls.c:1331` | `static long kfd_claim_from(KFILE *f, long minfd, int cloexec)` |
+| `kfd_cloexec_get` | function | `kernel/syscalls.c:1414` | `static int kfd_cloexec_get(long fd)` |
+| `kfd_cloexec_set` | function | `kernel/syscalls.c:1424` | `static void kfd_cloexec_set(long fd, int on)` |
+| `kfd_get` | function | `kernel/syscalls.c:88` | `KFILE *kfd_get(int fd)` |
+| `kfd_poll_revents` | function | `kernel/syscalls.c:1541` | `int kfd_poll_revents(int fd)` |
+| `kfd_put` | function | `kernel/syscalls.c:101` | `void kfd_put(KFILE *f)` |
+| `kfd_view_cloexec` | function | `kernel/syscalls.c:195` | `void kfd_view_cloexec(void)` |
+| `kfd_view_count` | function | `kernel/syscalls.c:113` | `static int kfd_view_count(kfd_view_t *v)` |
+| `kfd_view_current` | function | `kernel/syscalls.c:59` | `static kfd_view_t *kfd_view_current(void)` |
+| `kfd_view_root` | function | `kernel/syscalls.c:69` | `kfd_view_t *kfd_view_root(void)` |
+| `kfile_status_flags` | function | `kernel/syscalls.c:1435` | `static long kfile_status_flags(KFILE *f)` |
+| `kfile_user_read` | function | `kernel/syscalls.c:1576` | `static long kfile_user_read(KFILE *f, char *buf, long cnt)` |
+| `kfile_user_write` | function | `kernel/syscalls.c:1606` | `static long kfile_user_write(KFILE *f, const char *buf, long cnt)` |
+| `kiovec` | struct | `kernel/syscalls.c:1096` | `` |
+| `ksyscall` | function | `kernel/syscalls.c:2798` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `ksyscall_dispatch` | function | `kernel/syscalls.c:2866` | `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `minfo_sleep_init` | function | `kernel/syscalls.c:484` | `void minfo_sleep_init(int tick_ok)` |
+| `minfo_tick_wake` | function | `kernel/syscalls.c:489` | `void minfo_tick_wake(void *ctx)` |
+| `minios_syscall_entry_t` | struct | `kernel/syscalls.c:236` | `` |
+| `mm_ensure_cur` | function | `kernel/syscalls.c:1725` | `static int mm_ensure_cur(unsigned long start, unsigned long end)` |
+| `mmap_tag_file` | function | `kernel/syscalls.c:1775` | `static int mmap_tag_file(unsigned long base, int ino, unsigned long off)` |
+| `mprotect_pte` | function | `kernel/syscalls.c:1904` | `static volatile unsigned long *mprotect_pte(unsigned long cr3,         unsigned long va)` |
+| `node` | function | `kernel/syscalls.c:2041` | `* mapping is one exact live VMA node (what mmap inserts);` |
+| `proc_spawn_elf` | function | `kernel/syscalls.c:3103` | `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is...` |
+| `products` | function | `kernel/syscalls.c:2853` | `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are  * pre-bounded against (END-...` |
+| `readlink` | function | `kernel/syscalls.c:2994` | `* readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);` |
+| `readlink_path` | function | `kernel/syscalls.c:2488` | `static long readlink_path(const char *path, char *buf, long bufsz)` |
+| `sb16_audio_device` | function | `kernel/syscalls.c:667` | `static device_t *sb16_audio_device(void)` |
+| `sc_extra_name` | struct | `kernel/syscalls.c:2728` | `` |
+| `sys_linux_accept` | function | `kernel/syscalls.c:2365` | `static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_access` | function | `kernel/syscalls.c:2321` | `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_arch_prctl` | function | `kernel/syscalls.c:2579` | `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_bind` | function | `kernel/syscalls.c:2354` | `static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_brk` | function | `kernel/syscalls.c:1734` | `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_close` | function | `kernel/syscalls.c:1684` | `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_close_range` | function | `kernel/syscalls.c:1496` | `static long sys_linux_close_range(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_connect` | function | `kernel/syscalls.c:2348` | `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_dup` | function | `kernel/syscalls.c:1635` | `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_dup2` | function | `kernel/syscalls.c:1650` | `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_dup3` | function | `kernel/syscalls.c:1486` | `static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_eventfd` | function | `kernel/syscalls.c:1533` | `static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_eventfd2` | function | `kernel/syscalls.c:1520` | `static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fdatasync` | function | `kernel/syscalls.c:2447` | `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_flock` | function | `kernel/syscalls.c:2433` | `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fstat` | function | `kernel/syscalls.c:2533` | `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fsync` | function | `kernel/syscalls.c:2442` | `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_futex` | function | `kernel/syscalls.c:291` | `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getcwd` | function | `kernel/syscalls.c:2452` | `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getpeername` | function | `kernel/syscalls.c:2406` | `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getsockname` | function | `kernel/syscalls.c:2400` | `static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getsockopt` | function | `kernel/syscalls.c:2393` | `static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_gettimeofday` | function | `kernel/syscalls.c:2556` | `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_ioctl` | function | `kernel/syscalls.c:2316` | `static long sys_linux_ioctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_listen` | function | `kernel/syscalls.c:2360` | `static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_lseek` | function | `kernel/syscalls.c:1707` | `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_madvise` | function | `kernel/syscalls.c:2614` | `static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_mkdir` | function | `kernel/syscalls.c:2622` | `static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_mmap` | function | `kernel/syscalls.c:1784` | `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_mremap` | function | `kernel/syscalls.c:2046` | `static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_munmap` | function | `kernel/syscalls.c:1872` | `static long sys_linux_munmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_open` | function | `kernel/syscalls.c:1298` | `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_pipe` | function | `kernel/syscalls.c:1408` | `static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_pipe2` | function | `kernel/syscalls.c:1380` | `static long sys_linux_pipe2(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_poll` | function | `kernel/syscalls.c:2426` | `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_prctl` | function | `kernel/syscalls.c:2510` | `static long sys_linux_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_read` | function | `kernel/syscalls.c:1138` | `static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_readlink` | function | `kernel/syscalls.c:2504` | `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_recvfrom` | function | `kernel/syscalls.c:2376` | `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_rename` | function | `kernel/syscalls.c:2519` | `static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sendmmsg` | function | `kernel/syscalls.c:2418` | `static long sys_linux_sendmmsg(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sendmsg` | function | `kernel/syscalls.c:2412` | `static long sys_linux_sendmsg(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sendto` | function | `kernel/syscalls.c:2371` | `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_setsockopt` | function | `kernel/syscalls.c:2386` | `static long sys_linux_setsockopt(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_shutdown` | function | `kernel/syscalls.c:2381` | `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sigaction` | function | `kernel/syscalls.c:2306` | `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_sigprocmask` | function | `kernel/syscalls.c:2311` | `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_socket` | function | `kernel/syscalls.c:2343` | `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_time` | function | `kernel/syscalls.c:282` | `static long sys_linux_time(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_uname` | function | `kernel/syscalls.c:2591` | `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_unlink` | function | `kernel/syscalls.c:2464` | `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_write` | function | `kernel/syscalls.c:1215` | `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_writev` | function | `kernel/syscalls.c:1222` | `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_clip_get` | function | `kernel/syscalls.c:768` | `static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_clip_set` | function | `kernel/syscalls.c:758` | `static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_dir_list` | function | `kernel/syscalls.c:936` | `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_dns` | function | `kernel/syscalls.c:264` | `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_doom_frame` | function | `kernel/syscalls.c:407` | `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_fb_info` | function | `kernel/syscalls.c:440` | `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_futex_wait` | function | `kernel/syscalls.c:797` | `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_futex_wake` | function | `kernel/syscalls.c:803` | `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_getc_raw` | function | `kernel/syscalls.c:861` | `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_gfx_title` | function | `kernel/syscalls.c:696` | `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_gfx_zoom` | function | `kernel/syscalls.c:418` | `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_kbd` | function | `kernel/syscalls.c:344` | `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_kbd_raw` | function | `kernel/syscalls.c:376` | `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_lz4_compress` | function | `kernel/syscalls.c:603` | `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_lz4_decompress` | function | `kernel/syscalls.c:616` | `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_mouse` | function | `kernel/syscalls.c:630` | `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_nk_frame` | function | `kernel/syscalls.c:654` | `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_palette` | function | `kernel/syscalls.c:364` | `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcm2_close` | function | `kernel/syscalls.c:748` | `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcm2_open` | function | `kernel/syscalls.c:735` | `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcm2_write` | function | `kernel/syscalls.c:740` | `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_init` | function | `kernel/syscalls.c:389` | `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_tone` | function | `kernel/syscalls.c:393` | `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_vol` | function | `kernel/syscalls.c:460` | `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_rlimit` | function | `kernel/syscalls.c:895` | `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_rtc` | function | `kernel/syscalls.c:427` | `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_open` | function | `kernel/syscalls.c:673` | `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_pump` | function | `kernel/syscalls.c:710` | `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_close` | function | `kernel/syscalls.c:718` | `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_open` | function | `kernel/syscalls.c:714` | `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_submit` | function | `kernel/syscalls.c:722` | `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_vol` | function | `kernel/syscalls.c:784` | `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_submit` | function | `kernel/syscalls.c:685` | `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_spawn` | function | `kernel/syscalls.c:592` | `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_submit_batch` | function | `kernel/syscalls.c:872` | `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_time` | function | `kernel/syscalls.c:340` | `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_tls_retired` | function | `kernel/syscalls.c:269` | `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_vga_mode` | function | `kernel/syscalls.c:382` | `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `syscall_name` | function | `kernel/syscalls.c:2744` | `const char *syscall_name(long n)` |
+| `syscall_trace_enabled` | function | `kernel/syscalls.c:1108` | `long syscall_trace_enabled(void)` |
+| `syscall_trace_set` | function | `kernel/syscalls.c:1109` | `void syscall_trace_set(int on)` |
+| `syscall_trace_shown` | function | `kernel/syscalls.c:1112` | `unsigned long syscall_trace_shown(void)` |
+| `syscall_trace_verbose_enabled` | function | `kernel/syscalls.c:1110` | `long syscall_trace_verbose_enabled(void)` |
+| `syscall_trace_verbose_set` | function | `kernel/syscalls.c:1111` | `void syscall_trace_verbose_set(int on)` |
+| `trace_hint_print` | function | `kernel/syscalls.c:2785` | `static void trace_hint_print(long n, int kind, const char *path,                              lon...` |
+| `trace_is_noisy` | function | `kernel/syscalls.c:2716` | `static int trace_is_noisy(long n)` |
+| `unchanged` | function | `kernel/syscalls.c:1127` | `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...` |
+| `untouched` | function | `kernel/syscalls.c:137` | `* child untouched (caller refuses fail-closed). */ int kfd_view_copy(proc_t *child, proc_t *parent)` |
+| `user_range_ok` | function | `kernel/syscalls.c:2836` | `int user_range_ok(unsigned long p, unsigned long len)` |
+| `view` | function | `kernel/syscalls.c:501` | `* view (same as the `clear` builtin). Anything else is -EINVAL. Each  * out-word is range-checked...` |
+| `vma_free_cover` | function | `kernel/syscalls.c:2000` | `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` |
+| `vma_live_overlap` | function | `kernel/syscalls.c:2019` | `static int vma_live_overlap(unsigned long base, unsigned long len)` |
+| `wall_us_now` | function | `kernel/syscalls.c:254` | `unsigned long wall_us_now(void)` |
+| `LINUX_ECHILD` | macro | `kernel/syscalls_proc.c:198` | `#define LINUX_ECHILD` |
+| `LINUX_EINVAL` | macro | `kernel/syscalls_proc.c:199` | `#define LINUX_EINVAL` |
+| `LINUX_SIGKILL` | macro | `kernel/syscalls_proc.c:194` | `#define LINUX_SIGKILL` |
+| `LINUX_SIG_MAX` | macro | `kernel/syscalls_proc.c:195` | `#define LINUX_SIG_MAX` |
+| `LINUX_STATUS_CODE` | macro | `kernel/syscalls_proc.c:197` | `#define LINUX_STATUS_CODE` |
+| `LINUX_STATUS_SHIFT` | macro | `kernel/syscalls_proc.c:196` | `#define LINUX_STATUS_SHIFT` |
+| `LINUX_WNOHANG` | macro | `kernel/syscalls_proc.c:193` | `#define LINUX_WNOHANG` |
+| `groups` | function | `kernel/syscalls_proc.c:213` | `* groups (pid 0 and < -1) are not modelled and wait for any child. */ long sys_linux_wait4(long a...` |
+| `kill` | function | `kernel/syscalls_proc.c:192` | `* historic kill (SIGKILL), -N is signal N (a seccomp kill is -SIGSYS). */ #define LINUX_WNOHANG  ...` |
 | `state` | function | `kernel/syscalls_proc.c:5` | `* touches only scheduler state (current_pid, procs[], do_* / * seccomp_* / yield) plus the kernel-wide user_range_ok...` |
-| `sys_linux_execve` | function | `kernel/syscalls_proc.c:85` | `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_exit` | function | `kernel/syscalls_proc.c:161` | `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fork` | function | `kernel/syscalls_proc.c:75` | `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getpid` | function | `kernel/syscalls_proc.c:70` | `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_gettid` | function | `kernel/syscalls_proc.c:193` | `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_kill` | function | `kernel/syscalls_proc.c:188` | `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_vfork` | function | `kernel/syscalls_proc.c:80` | `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_yield` | function | `kernel/syscalls_proc.c:65` | `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_clone` | function | `kernel/syscalls_proc.c:16` | `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)` |
-| `sys_minios_nice` | function | `kernel/syscalls_proc.c:52` | `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_seccomp` | function | `kernel/syscalls_proc.c:35` | `long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_minios_thread_spawn` | function | `kernel/syscalls_proc.c:22` | `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_clone` | function | `kernel/syscalls_proc.c:83` | `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_execve` | function | `kernel/syscalls_proc.c:99` | `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_exit` | function | `kernel/syscalls_proc.c:184` | `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fork` | function | `kernel/syscalls_proc.c:89` | `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getpid` | function | `kernel/syscalls_proc.c:75` | `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_gettid` | function | `kernel/syscalls_proc.c:236` | `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_kill` | function | `kernel/syscalls_proc.c:231` | `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_vfork` | function | `kernel/syscalls_proc.c:94` | `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_yield` | function | `kernel/syscalls_proc.c:66` | `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_clone` | function | `kernel/syscalls_proc.c:17` | `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)` |
+| `sys_minios_nice` | function | `kernel/syscalls_proc.c:53` | `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_seccomp` | function | `kernel/syscalls_proc.c:36` | `long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_thread_spawn` | function | `kernel/syscalls_proc.c:23` | `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `tick_audio_count` | function | `kernel/tick.c:133` | `int tick_audio_count(void)` |
 | `tick_desktop_count` | function | `kernel/tick.c:144` | `int tick_desktop_count(void)` |
 | `tick_desktop_due` | function | `kernel/tick.c:160` | `int tick_desktop_due(unsigned long long ticks, unsigned interval)` |
@@ -236,265 +496,5 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `vga_fb_focus_report` | function | `kernel/vga_fb.c:967` | `void vga_fb_focus_report(int before, int source)` |
 | `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:751` | `static void vga_fb_gfx_cursor_draw(void)` |
 | `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:741` | `static void vga_fb_gfx_cursor_erase(void)` |
-| `vga_fb_gfx_map_mouse` | function | `kernel/vga_fb.c:726` | `void vga_fb_gfx_map_mouse(int *x, int *y)` |
-| `vga_fb_gfx_origin` | function | `kernel/vga_fb.c:709` | `void vga_fb_gfx_origin(int *x, int *y)` |
-| `vga_fb_gfx_set_hidden` | function | `kernel/vga_fb.c:3168` | `int vga_fb_gfx_set_hidden(int hide)` |
-| `vga_fb_gfx_view_name` | function | `kernel/vga_fb.c:3196` | `const char *vga_fb_gfx_view_name(void)` |
-| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:2898` | `void vga_fb_hide_text_cursor(void)` |
-| `vga_fb_init` | function | `kernel/vga_fb.c:4445` | `void vga_fb_init(void)` |
-| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:3250` | `int vga_fb_is_fullscreen(void)` |
-| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:3249` | `int vga_fb_is_minimized(void)` |
-| `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:1285` | `void vga_fb_layout_cycle(void)` |
-| `vga_fb_layout_get` | function | `kernel/vga_fb.c:1301` | `int vga_fb_layout_get(void)` |
-| `vga_fb_layout_name` | function | `kernel/vga_fb.c:1307` | `const char *vga_fb_layout_name(void)` |
-| `vga_fb_layout_set` | function | `kernel/vga_fb.c:1274` | `int vga_fb_layout_set(int mode)` |
-| `vga_fb_list_windows` | function | `kernel/vga_fb.c:1446` | `void vga_fb_list_windows(void)` |
-| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:4417` | `void vga_fb_mouse_init(void)` |
-| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:4216` | `void vga_fb_mouse_tick(void)` |
-| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:3318` | `void vga_fb_move_terminal(int dx, int dy)` |
-| `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1508` | `void vga_fb_note_prompt(void)` |
-| `vga_fb_nterms_get` | function | `kernel/vga_fb.c:1079` | `int vga_fb_nterms_get(void)` |
-| `vga_fb_park_line` | function | `kernel/vga_fb.c:1534` | `void vga_fb_park_line(const char *b, int p)` |
-| `vga_fb_pixel` | function | `kernel/vga_fb.c:1911` | `void vga_fb_pixel(int x, int y, uint8_t color)` |
-| `vga_fb_pixel_rgb` | function | `kernel/vga_fb.c:1946` | `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` |
-| `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1527` | `int vga_fb_prompt_live(void)` |
-| `vga_fb_prompted` | function | `kernel/vga_fb.c:1518` | `int vga_fb_prompted(void)` |
-| `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:2059` | `int vga_fb_ps2_owner(int pid)` |
-| `vga_fb_puts_term` | function | `kernel/vga_fb.c:2884` | `void vga_fb_puts_term(const char *s)` |
-| `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1745` | `unsigned long vga_fb_read_rgb(int x, int y)` |
-| `vga_fb_rect` | function | `kernel/vga_fb.c:1931` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
-| `vga_fb_rect_rgb` | function | `kernel/vga_fb.c:1955` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)` |
-| `vga_fb_reset_default` | function | `kernel/vga_fb.c:3426` | `void vga_fb_reset_default(void)` |
-| `vga_fb_resize` | function | `kernel/vga_fb.c:3406` | `void vga_fb_resize(int dcols, int drows)` |
-| `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:621` | `void vga_fb_set_gfx_mode(int on)` |
-| `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1670` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
-| `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:559` | `void vga_fb_set_gfx_program(const char *name)` |
-| `vga_fb_set_palette` | function | `kernel/vga_fb.c:1837` | `static void vga_fb_set_palette(void)` |
-| `vga_fb_snap_window` | function | `kernel/vga_fb.c:3378` | `void vga_fb_snap_window(int zone)` |
-| `vga_fb_str` | function | `kernel/vga_fb.c:1976` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
-| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:2890` | `void vga_fb_text_cursor(int col)` |
-| `vga_fb_theme_name` | function | `kernel/vga_fb.c:2542` | `int vga_fb_theme_name(char *dst, int cap)` |
-| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:3220` | `void vga_fb_toggle_fullscreen(void)` |
-| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:3241` | `void vga_fb_toggle_minimize(void)` |
-| `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1549` | `int vga_fb_unpark_line(char *b, int *p)` |
-| `wall_level` | function | `kernel/vga_fb.c:1828` | `static int wall_level(int v)` |
-| `wallpaper_draw` | function | `kernel/vga_fb.c:3537` | `static void wallpaper_draw(void)` |
-| `wallpaper_ensure` | function | `kernel/vga_fb.c:3480` | `static void wallpaper_ensure(void)` |
-| `wallpaper_rect` | function | `kernel/vga_fb.c:3966` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
-| `wallpaper_usable` | function | `kernel/vga_fb.c:3532` | `static int wallpaper_usable(void)` |
-| `wm_buttons_hit` | function | `kernel/vga_fb.c:2039` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
-| `wm_clear_close` | function | `kernel/vga_fb.c:2055` | `void wm_clear_close(void)` |
-| `wm_close_pending` | function | `kernel/vga_fb.c:2054` | `int wm_close_pending(void)` |
-| `wm_drag_reset` | function | `kernel/vga_fb.c:69` | `static void wm_drag_reset(void)` |
-| `wm_draw_buttons` | function | `kernel/vga_fb.c:2013` | `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` |
-| `wm_emit_focus_moved` | function | `kernel/vga_fb.c:949` | `static void wm_emit_focus_moved(int before, int source)` |
-| `wm_event_cfg` | function | `kernel/vga_fb.c:60` | `static wm_event_config_t wm_event_cfg(void)` |
-| `wm_focus_cursor_sync` | function | `kernel/vga_fb.c:942` | `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` |
-| `wm_geom_cfg` | function | `kernel/vga_fb.c:49` | `static wm_geom_config_t wm_geom_cfg(void)` |
-| `wm_gfx_focus_sync` | function | `kernel/vga_fb.c:1141` | `static void wm_gfx_focus_sync(int on)` |
-| `wm_gfx_mode_active` | function | `kernel/vga_fb.c:2056` | `int wm_gfx_mode_active(void)` |
-| `wm_init_once` | function | `kernel/vga_fb.c:1041` | `static void wm_init_once(void)` |
-| `wm_snapshot_state` | function | `kernel/vga_fb.c:1082` | `static void wm_snapshot_state(wm_focus_state_t *st)` |
-| `fx_wait_until` | function | `kernel/vga_fx.c:35` | `static void fx_wait_until(unsigned long deadline)` |
-| `once` | function | `kernel/vga_fx.c:90` | `* once (prev[] tracks the revealed frontier per column), then the final  * restore guarantees the...` |
-| `vga_fx_enabled` | function | `kernel/vga_fx.c:27` | `int vga_fx_enabled(void)` |
-| `vga_fx_free` | function | `kernel/vga_fx.c:77` | `void vga_fx_free(unsigned int *buf)` |
-| `vga_fx_melt_from_black` | function | `kernel/vga_fx.c:159` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` |
-| `vga_fx_melt_rect` | function | `kernel/vga_fx.c:150` | `void vga_fx_melt_rect(int x, int y, int w, int h,     const unsigned int *oldb, const unsigned in...` |
-| `vga_fx_restore_rect` | function | `kernel/vga_fx.c:63` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)` |
-| `vga_fx_set_enabled` | function | `kernel/vga_fx.c:22` | `void vga_fx_set_enabled(int on)` |
-| `vga_fx_snap_rect` | function | `kernel/vga_fx.c:41` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)` |
-| `Client` | class | `mcp/mcp_dbg_driver.py:15` | `class Client` |
-| `__init__` | method | `mcp/mcp_dbg_driver.py:16` | `def __init__(self)` |
-| `close` | method | `mcp/mcp_dbg_driver.py:54` | `def close(self)` |
-| `main` | method | `mcp/mcp_dbg_driver.py:64` | `def main()` |
-| `request` | method | `mcp/mcp_dbg_driver.py:28` | `def request(self, method, params)` |
-| `tool` | method | `mcp/mcp_dbg_driver.py:46` | `def tool(self, name, params)` |
-| `Client` | class | `mcp/mcp_dogfood.py:19` | `class Client` |
-| `__init__` | method | `mcp/mcp_dogfood.py:20` | `def __init__(self, addons_dir)` |
-| `close` | method | `mcp/mcp_dogfood.py:68` | `def close(self)` |
-| `main` | method | `mcp/mcp_dogfood.py:78` | `def main()` |
-| `request` | method | `mcp/mcp_dogfood.py:40` | `def request(self, method, params)` |
-| `tool` | method | `mcp/mcp_dogfood.py:58` | `def tool(self, name, params)` |
-| `AddonError` | class | `mcp/minios_addons.py:56` | `class AddonError(Exception)` |
-| `AddonState` | class | `mcp/minios_addons.py:377` | `class AddonState` |
-| `__init__` | method | `mcp/minios_addons.py:380` | `def __init__(self, path)` |
-| `_clean` | method | `mcp/minios_addons.py:62` | `def _clean(s)` |
-| `_unquote` | method | `mcp/minios_addons.py:66` | `def _unquote(v)` |
-| `exit_code_of` | method | `mcp/minios_addons.py:372` | `def exit_code_of(text)` |
-| `fail` | method | `mcp/minios_addons.py:85` | `def fail(lineno, why)` |
-| `install_addon` | method | `mcp/minios_addons.py:401` | `def install_addon(session, addon, cfg)` |
-| `load` | method | `mcp/minios_addons.py:383` | `def load(self)` |
-| `load_addons_dir` | method | `mcp/minios_addons.py:323` | `def load_addons_dir(addons_dir)` |
-| `parse_addon_yaml` | method | `mcp/minios_addons.py:73` | `def parse_addon_yaml(text)` |
-| `save` | method | `mcp/minios_addons.py:393` | `def save(self, addons)` |
-| `split_for_editor` | method | `mcp/minios_addons.py:347` | `def split_for_editor(text)` |
-| `validate_addon` | method | `mcp/minios_addons.py:205` | `def validate_addon(addon, source)` |
-| `validate_addon_path` | method | `mcp/minios_addons.py:295` | `def validate_addon_path(path)` |
-| `validate_shell_line` | method | `mcp/minios_addons.py:309` | `def validate_shell_line(line)` |
-| `LogBuffer` | class | `mcp/minios_mcp.py:143` | `class LogBuffer` |
-| `MCPServer` | class | `mcp/minios_mcp.py:711` | `class MCPServer` |
-| `MiniOSSession` | class | `mcp/minios_mcp.py:199` | `class MiniOSSession` |
-| `RPCError` | class | `mcp/minios_mcp.py:134` | `class RPCError(Exception)` |
-| `ToolError` | class | `mcp/minios_mcp.py:128` | `class ToolError(Exception)` |
-| `__init__` | method | `mcp/minios_mcp.py:137` | `def __init__(self, code, message)` |
-| `__init__` | method | `mcp/minios_mcp.py:146` | `def __init__(self, cap)` |
-| `__init__` | method | `mcp/minios_mcp.py:202` | `def __init__(self, cfg)` |
-| `__init__` | method | `mcp/minios_mcp.py:714` | `def __init__(self, cfg)` |
-| `_addon_install` | method | `mcp/minios_mcp.py:843` | `def _addon_install(self, args)` |
-| `_addons_list` | method | `mcp/minios_mcp.py:822` | `def _addons_list(self)` |
-| `_call` | method | `mcp/minios_mcp.py:759` | `def _call(self, params)` |
-| `_cleanup_parts` | method | `mcp/minios_mcp.py:473` | `def _cleanup_parts(self, parts)` |
-| `_close_pty` | method | `mcp/minios_mcp.py:312` | `def _close_pty(self)` |
-| `_dispatch` | method | `mcp/minios_mcp.py:776` | `def _dispatch(self, name, args)` |
-| `_drop_pidfile` | method | `mcp/minios_mcp.py:261` | `def _drop_pidfile(self)` |
-| `_find_locked` | method | `mcp/minios_mcp.py:189` | `def _find_locked(self, marker, start)` |
-| `_handle` | method | `mcp/minios_mcp.py:726` | `def _handle(self, line)` |
-| `_initialize` | method | `mcp/minios_mcp.py:752` | `def _initialize(self, params)` |
-| `_read_loop` | method | `mcp/minios_mcp.py:302` | `def _read_loop(self)` |
-| `_reap_stale` | method | `mcp/minios_mcp.py:225` | `def _reap_stale(self)` |
-| `_reply` | method | `mcp/minios_mcp.py:864` | `def _reply(self, msg)` |
-| `_write_editor_line` | method | `mcp/minios_mcp.py:331` | `def _write_editor_line(self, line)` |
-| `_write_line` | method | `mcp/minios_mcp.py:322` | `def _write_line(self, line)` |
-| `append` | method | `mcp/minios_mcp.py:152` | `def append(self, data)` |
-| `boot` | method | `mcp/minios_mcp.py:267` | `def boot(self, timeout_ms)` |
-| `booted` | method | `mcp/minios_mcp.py:213` | `def booted(self)` |
-| `bytes_from` | method | `mcp/minios_mcp.py:160` | `def bytes_from(self, pos)` |
-| `cat` | method | `mcp/minios_mcp.py:430` | `def cat(self, path)` |
-| `cat_body` | method | `mcp/minios_mcp.py:447` | `def cat_body(self, path, missing_ok)` |
-| `clamp_timeout` | function | `mcp/minios_mcp.py:86` | `def clamp_timeout(ms)` |
-| `close` | method | `mcp/minios_mcp.py:556` | `def close(self)` |
-| `env_config` | function | `mcp/minios_mcp.py:68` | `def env_config()` |
-| `expect` | method | `mcp/minios_mcp.py:350` | `def expect(self, marker, timeout_ms)` |
-| `find` | method | `mcp/minios_mcp.py:172` | `def find(self, marker, start)` |
-| `main` | method | `mcp/minios_mcp.py:868` | `def main()` |
-| `poweroff` | method | `mcp/minios_mcp.py:517` | `def poweroff(self, timeout_ms)` |
-| `run` | method | `mcp/minios_mcp.py:718` | `def run(self)` |
-| `run_python` | method | `mcp/minios_mcp.py:436` | `def run_python(self, script, args, timeout_ms)` |
-| `run_test` | method | `mcp/minios_mcp.py:374` | `def run_test(self, commands, expect, refute, timeout_ms)` |
-| `send` | method | `mcp/minios_mcp.py:339` | `def send(self, line, timeout_ms)` |
-| `snapshot` | method | `mcp/minios_mcp.py:364` | `def snapshot(self, max_bytes)` |
-| `status` | method | `mcp/minios_mcp.py:216` | `def status(self)` |
-| `subprocess_launch` | method | `mcp/minios_mcp.py:560` | `def subprocess_launch(cfg, slave_fd)` |
-| `terminate` | method | `mcp/minios_mcp.py:537` | `def terminate(self)` |
-| `text_from` | method | `mcp/minios_mcp.py:165` | `def text_from(self, pos, end)` |
-| `validate_content` | function | `mcp/minios_mcp.py:115` | `def validate_content(text)` |
-| `validate_path` | function | `mcp/minios_mcp.py:99` | `def validate_path(name)` |
-| `wait_for` | method | `mcp/minios_mcp.py:176` | `def wait_for(self, marker, start, timeout_ms)` |
-| `write` | method | `mcp/minios_mcp.py:480` | `def write(self, path, content)` |
-| `run_one` | function | `mcp/mutate_mcp.sh:115` | `` |
-| `FakeOS` | class | `mcp/test_minios_mcp.py:619` | `class FakeOS` |
-| `MCPServer` | class | `mcp/test_minios_mcp.py:58` | `class MCPServer` |
-| `TestAddonBDD` | class | `mcp/test_minios_mcp.py:820` | `class TestAddonBDD(_ConsoleBDDBase)` |
-| `TestAddonHelpers` | class | `mcp/test_minios_mcp.py:579` | `class TestAddonHelpers(TestCase)` |
-| `TestAddonInstall` | class | `mcp/test_minios_mcp.py:685` | `class TestAddonInstall(TestCase)` |
-| `TestAddonYaml` | class | `mcp/test_minios_mcp.py:457` | `class TestAddonYaml(TestCase)` |
-| `TestLogBuffer` | class | `mcp/test_minios_mcp.py:254` | `class TestLogBuffer(TestCase)` |
-| `TestMiniOSBDD` | class | `mcp/test_minios_mcp.py:322` | `class TestMiniOSBDD(_ConsoleBDDBase)` |
-| `TestProtocol` | class | `mcp/test_minios_mcp.py:141` | `class TestProtocol(TestCase)` |
-| `TestValidation` | class | `mcp/test_minios_mcp.py:205` | `class TestValidation(TestCase)` |
-| `_ConsoleBDDBase` | class | `mcp/test_minios_mcp.py:286` | `class _ConsoleBDDBase(TestCase)` |
-| `__init__` | method | `mcp/test_minios_mcp.py:61` | `def __init__(self, env_extra)` |
-| `__init__` | method | `mcp/test_minios_mcp.py:622` | `def __init__(self, exit_codes)` |
-| `_cleanup_parts` | method | `mcp/test_minios_mcp.py:679` | `def _cleanup_parts(self, parts)` |
-| `_read_response` | method | `mcp/test_minios_mcp.py:96` | `def _read_response(self)` |
-| `_roundtrip` | method | `mcp/test_minios_mcp.py:102` | `def _roundtrip(self, msg)` |
-| `_toolerror` | class | `mcp/test_minios_mcp.py:674` | `class _toolerror(Exception)` |
-| `boot` | method | `mcp/test_minios_mcp.py:632` | `def boot(self, timeout_ms)` |
-| `booted` | method | `mcp/test_minios_mcp.py:629` | `def booted(self)` |
-| `broken_cat` | method | `mcp/test_minios_mcp.py:763` | `def broken_cat(path, missing_ok)` |
-| `cat_body` | method | `mcp/test_minios_mcp.py:667` | `def cat_body(self, path, missing_ok)` |
-| `close` | method | `mcp/test_minios_mcp.py:120` | `def close(self)` |
-| `guard_server` | method | `mcp/test_minios_mcp.py:295` | `def guard_server(cls)` |
-| `guarded` | method | `mcp/test_minios_mcp.py:298` | `def guarded(name, params)` |
-| `have_qemu` | function | `mcp/test_minios_mcp.py:52` | `def have_qemu()` |
-| `initialize` | method | `mcp/test_minios_mcp.py:80` | `def initialize(self)` |
-| `load_module` | function | `mcp/test_minios_mcp.py:29` | `def load_module()` |
-| `make_addon` | method | `mcp/test_minios_mcp.py:724` | `def make_addon(self)` |
-| `raw` | method | `mcp/test_minios_mcp.py:91` | `def raw(self, line)` |
-| `request` | method | `mcp/test_minios_mcp.py:84` | `def request(self, method, params)` |
-| `send` | method | `mcp/test_minios_mcp.py:643` | `def send(self, line, timeout_ms)` |
-| `setUp` | method | `mcp/test_minios_mcp.py:316` | `def setUp(self)` |
-| `setUpClass` | method | `mcp/test_minios_mcp.py:143` | `def setUpClass(cls)` |
-| `setUpClass` | method | `mcp/test_minios_mcp.py:207` | `def setUpClass(cls)` |
-| `setUpClass` | method | `mcp/test_minios_mcp.py:256` | `def setUpClass(cls)` |
-| `setUpClass` | method | `mcp/test_minios_mcp.py:324` | `def setUpClass(cls)` |
-| `setUpClass` | method | `mcp/test_minios_mcp.py:459` | `def setUpClass(cls)` |
-| `setUpClass` | method | `mcp/test_minios_mcp.py:581` | `def setUpClass(cls)` |
-| `setUpClass` | method | `mcp/test_minios_mcp.py:687` | `def setUpClass(cls)` |
-| `setUpClass` | method | `mcp/test_minios_mcp.py:824` | `def setUpClass(cls)` |
-| `tearDownClass` | method | `mcp/test_minios_mcp.py:149` | `def tearDownClass(cls)` |
-| `tearDownClass` | method | `mcp/test_minios_mcp.py:331` | `def tearDownClass(cls)` |
-| `tearDownClass` | method | `mcp/test_minios_mcp.py:719` | `def tearDownClass(cls)` |
-| `tearDownClass` | method | `mcp/test_minios_mcp.py:861` | `def tearDownClass(cls)` |
-| `test_addons_list` | method | `mcp/test_minios_mcp.py:869` | `def test_addons_list(self)` |
-| `test_bad_indent_rejected` | method | `mcp/test_minios_mcp.py:487` | `def test_bad_indent_rejected(self)` |
-| `test_bad_kind_rejected` | method | `mcp/test_minios_mcp.py:541` | `def test_bad_kind_rejected(self)` |
-| `test_bounds` | method | `mcp/test_minios_mcp.py:261` | `def test_bounds(self)` |
-| `test_content_accepts_ascii` | method | `mcp/test_minios_mcp.py:223` | `def test_content_accepts_ascii(self)` |
-| `test_content_rejects_non_printable` | method | `mcp/test_minios_mcp.py:226` | `def test_content_rejects_non_printable(self)` |
-| `test_cursor_prevents_stale_match` | method | `mcp/test_minios_mcp.py:275` | `def test_cursor_prevents_stale_match(self)` |
-| `test_exit_code_of` | method | `mcp/test_minios_mcp.py:606` | `def test_exit_code_of(self)` |
-| `test_find_and_total` | method | `mcp/test_minios_mcp.py:268` | `def test_find_and_total(self)` |
-| `test_host_kind_accepts_empty_files` | method | `mcp/test_minios_mcp.py:518` | `def test_host_kind_accepts_empty_files(self)` |
-| `test_host_kind_requires_artifact` | method | `mcp/test_minios_mcp.py:549` | `def test_host_kind_requires_artifact(self)` |
-| `test_initialize` | method | `mcp/test_minios_mcp.py:152` | `def test_initialize(self)` |
-| `test_install_build_failure_aborts` | method | `mcp/test_minios_mcp.py:811` | `def test_install_build_failure_aborts(self)` |
-| `test_install_fixture` | method | `mcp/test_minios_mcp.py:875` | `def test_install_fixture(self)` |
-| `test_install_mismatch_aborts_and_cleans` | method | `mcp/test_minios_mcp.py:759` | `def test_install_mismatch_aborts_and_cleans(self)` |
-| `test_install_multi_chunk_reassembly` | method | `mcp/test_minios_mcp.py:773` | `def test_install_multi_chunk_reassembly(self)` |
-| `test_install_refuses_host_before_touching_session` | method | `mcp/test_minios_mcp.py:563` | `def test_install_refuses_host_before_touching_session(self)` |
-| `test_install_success` | method | `mcp/test_minios_mcp.py:746` | `def test_install_success(self)` |
-| `test_install_unknown_addon_fails` | method | `mcp/test_minios_mcp.py:884` | `def test_install_unknown_addon_fails(self)` |
-| `test_install_verify_failure_aborts` | method | `mcp/test_minios_mcp.py:804` | `def test_install_verify_failure_aborts(self)` |
-| `test_malformed_json` | method | `mcp/test_minios_mcp.py:174` | `def test_malformed_json(self)` |
-| `test_parse_valid` | method | `mcp/test_minios_mcp.py:469` | `def test_parse_valid(self)` |
-| `test_path_accepts_plain_names` | method | `mcp/test_minios_mcp.py:212` | `def test_path_accepts_plain_names(self)` |
-| `test_path_rejects_long` | method | `mcp/test_minios_mcp.py:220` | `def test_path_rejects_long(self)` |
-| `test_path_rejects_unsafe` | method | `mcp/test_minios_mcp.py:216` | `def test_path_rejects_unsafe(self)` |
-| `test_ping` | method | `mcp/test_minios_mcp.py:166` | `def test_ping(self)` |
-| `test_reference_kind_carries_nothing` | method | `mcp/test_minios_mcp.py:533` | `def test_reference_kind_carries_nothing(self)` |
-| `test_send_empty_line_rejected` | method | `mcp/test_minios_mcp.py:189` | `def test_send_empty_line_rejected(self)` |
-| `test_send_not_booted` | method | `mcp/test_minios_mcp.py:183` | `def test_send_not_booted(self)` |
-| `test_split_for_editor_chunks` | method | `mcp/test_minios_mcp.py:591` | `def test_split_for_editor_chunks(self)` |
-| `test_split_rejects_long_line` | method | `mcp/test_minios_mcp.py:598` | `def test_split_rejects_long_line(self)` |
-| `test_split_rejects_non_ascii` | method | `mcp/test_minios_mcp.py:602` | `def test_split_rejects_non_ascii(self)` |
-| `test_state_roundtrip` | method | `mcp/test_minios_mcp.py:611` | `def test_state_roundtrip(self)` |
-| `test_t01_boot` | method | `mcp/test_minios_mcp.py:335` | `def test_t01_boot(self)` |
-| `test_t02_expect` | method | `mcp/test_minios_mcp.py:345` | `def test_t02_expect(self)` |
-| `test_t03_write_and_cat` | method | `mcp/test_minios_mcp.py:352` | `def test_t03_write_and_cat(self)` |
-| `test_t04_toolchain_elf` | method | `mcp/test_minios_mcp.py:362` | `def test_t04_toolchain_elf(self)` |
-| `test_t05_toolchain_cvm` | method | `mcp/test_minios_mcp.py:373` | `def test_t05_toolchain_cvm(self)` |
-| `test_t06_selfhosted_compiler` | method | `mcp/test_minios_mcp.py:383` | `def test_t06_selfhosted_compiler(self)` |
-| `test_t07_bin_command_path` | method | `mcp/test_minios_mcp.py:389` | `def test_t07_bin_command_path(self)` |
-| `test_t08_python_script` | method | `mcp/test_minios_mcp.py:397` | `def test_t08_python_script(self)` |
-| `test_t09_py_eval` | method | `mcp/test_minios_mcp.py:404` | `def test_t09_py_eval(self)` |
-| `test_t10_minios_test` | method | `mcp/test_minios_mcp.py:409` | `def test_t10_minios_test(self)` |
-| `test_t11_poweroff_and_reboot` | method | `mcp/test_minios_mcp.py:430` | `def test_t11_poweroff_and_reboot(self)` |
-| `test_test_not_booted` | method | `mcp/test_minios_mcp.py:195` | `def test_test_not_booted(self)` |
-| `test_timeout_clamped` | method | `mcp/test_minios_mcp.py:230` | `def test_timeout_clamped(self)` |
-| `test_tools_list` | method | `mcp/test_minios_mcp.py:158` | `def test_tools_list(self)` |
-| `test_unknown_key_rejected` | method | `mcp/test_minios_mcp.py:483` | `def test_unknown_key_rejected(self)` |
-| `test_unknown_method` | method | `mcp/test_minios_mcp.py:170` | `def test_unknown_method(self)` |
-| `test_unknown_tool` | method | `mcp/test_minios_mcp.py:178` | `def test_unknown_tool(self)` |
-| `test_validate_accepts_valid` | method | `mcp/test_minios_mcp.py:479` | `def test_validate_accepts_valid(self)` |
-| `test_validate_rejects_bad_dst` | method | `mcp/test_minios_mcp.py:491` | `def test_validate_rejects_bad_dst(self)` |
-| `test_validate_rejects_control_chars` | method | `mcp/test_minios_mcp.py:508` | `def test_validate_rejects_control_chars(self)` |
-| `test_validate_rejects_empty_files` | method | `mcp/test_minios_mcp.py:513` | `def test_validate_rejects_empty_files(self)` |
-| `test_validate_rejects_long_build_line` | method | `mcp/test_minios_mcp.py:500` | `def test_validate_rejects_long_build_line(self)` |
-| `test_validate_rejects_missing_name` | method | `mcp/test_minios_mcp.py:496` | `def test_validate_rejects_missing_name(self)` |
-| `test_write_rejects_line_too_long` | method | `mcp/test_minios_mcp.py:234` | `def test_write_rejects_line_too_long(self)` |
-| `test_write_rejects_too_many_lines` | method | `mcp/test_minios_mcp.py:243` | `def test_write_rejects_too_many_lines(self)` |
-| `tool` | method | `mcp/test_minios_mcp.py:110` | `def tool(self, name, params)` |
-| `write` | method | `mcp/test_minios_mcp.py:636` | `def write(self, path, content)` |
-| `NET_TCP_CLOSED` | macro | `net/net.c:399` | `#define NET_TCP_CLOSED` |
-| `NET_TCP_DEAD` | macro | `net/net.c:403` | `#define NET_TCP_DEAD` |
-| `NET_TCP_ESTABLISHED` | macro | `net/net.c:401` | `#define NET_TCP_ESTABLISHED` |
-| `NET_TCP_FIN_SENT` | macro | `net/net.c:402` | `#define NET_TCP_FIN_SENT` |
-| `NET_TCP_LISTEN` | macro | `net/net.c:404` | `#define NET_TCP_LISTEN` |
-| `NET_TCP_SYN_RCVD` | macro | `net/net.c:405` | `#define NET_TCP_SYN_RCVD` |
-| `NET_TCP_SYN_SENT` | macro | `net/net.c:400` | `#define NET_TCP_SYN_SENT` |
-| `net_accept_nb` | function | `net/net.c:906` | `int net_accept_nb(int fd)` |
-| `net_arp_entry` | struct | `net/net.c:94` | `` |
 
 Next: [SYMBOLS_p10.md](SYMBOLS_p10.md)

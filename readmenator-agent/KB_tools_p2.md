@@ -1,6 +1,19 @@
 # Subsystem: tools (page 2 of 2)
 Previous: [KB_tools.md](KB_tools.md)
 
+## tools/probe_compute_vga.py
+- Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `main` (function, line 22) `def main()`
+  - `send` (function, line 55) `def send(line)`
+  - `poll` (function, line 61) `def poll(timeout)`
+  - `qmp` (function, line 88) `def qmp(obj)`
+  - `rel` (function, line 97) `def rel(dx, dy)`
+  - `dump` (function, line 104) `def dump(name)`
+- Depends on: `kernel/time.c`
+
 ## tools/probe_minicraft.py
 - Doc: numeric minicraft probe without any PNG.
 - Layer: utility
@@ -64,10 +77,12 @@ Previous: [KB_tools.md](KB_tools.md)
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
   - `scenario_uefi` (function, line 167)
-  - `http_server_start` (function, line 1280)
-  - `http_server_stop` (function, line 1287)
-  - `http_fixture_start` (function, line 1292)
-  - `http_fixture_stop` (function, line 1299)
+  - `http_server_start` (function, line 1311)
+  - `http_server_stop` (function, line 1318)
+  - `http_fixture_start` (function, line 1323)
+  - `http_fixture_stop` (function, line 1330)
+  - `net_fixture_start` (function, line 1335)
+  - `net_fixture_stop` (function, line 1342)
 
 ## tools/test_call_align.py
 - Doc: verify stack alignment at call sites, both parities.
@@ -249,6 +264,17 @@ Previous: [KB_tools.md](KB_tools.md)
   - `check_suite_language_only` (method, line 159) `def check_suite_language_only(self)`
   - `check_minigcc_subset` (method, line 177) `def check_minigcc_subset(self)`
   - `report` (method, line 300) `def report(self)`
+
+## tools/test_net_fixture.py
+- Doc: host-side UDP and TCP echo fixture for lxnet.
+- Layer: testing
+- Language: py
+- Symbols:
+  - `Config` (class, line 26) `class Config`
+  - `serve_udp` (method, line 34) `def serve_udp(port)`
+  - `echo_stream` (method, line 43) `def echo_stream(conn)`
+  - `serve_tcp` (method, line 53) `def serve_tcp(port)`
+  - `main` (method, line 64) `def main()`
 
 ## tools/test_sb16.sh
 - Doc: — targeted BDD harness for the SB16 audio path.

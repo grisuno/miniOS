@@ -254,6 +254,7 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `fresh_proc` (function, line 39) `static void fresh_proc(int pid)`
   - `fresh_all` (function, line 48) `static void fresh_all(void)`
   - `main` (function, line 60) `int main(void)`
+  - `masked` (function, line 153) `* with PRIVATE and CLOCK_REALTIME masked (393 = 9|128|256). */ CHECK(futex_linux_cmd(9) == LINUX_FUTEX_WAIT_BITSET...`
   - `CHECK` (macro, line 32) `#define CHECK(cond, msg)`
 - Depends on: `headers/futex.h`
 
@@ -323,6 +324,24 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `MINIOS_LK_ENABLE` (macro, line 11) `#define MINIOS_LK_ENABLE`
   - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
 - Depends on: `headers/leakcheck.h`, `kernel/string.c`, `progs/file/file_assoc.h`
+
+## tests/test_minifs_tools.py
+- Doc: Host suite for the MiniFS image tools (docs/spec/shell-fs.md).  tools/mkfs.minifs.py builds the...
+- Layer: testing
+- Language: py
+- Symbols:
+  - `Config` (class, line 23) `class Config`
+  - `run` (method, line 35) `def run(args)`
+  - `MiniFSToolsTest` (class, line 40) `class MiniFSToolsTest(TestCase)`
+  - `setUp` (method, line 43) `def setUp(self)`
+  - `tearDown` (method, line 47) `def tearDown(self)`
+  - `tree` (method, line 50) `def tree(self, root, rel, data)`
+  - `mkfs` (method, line 58) `def mkfs(self)`
+  - `superblock_word` (method, line 64) `def superblock_word(self, image, off)`
+  - `test_counters_match_bitmaps` (method, line 69) `def test_counters_match_bitmaps(self)`
+  - `test_fsck_rejects_drifted_counters` (method, line 79) `def test_fsck_rejects_drifted_counters(self)`
+  - `test_same_named_directories_merge` (method, line 93) `def test_same_named_directories_merge(self)`
+  - `test_duplicate_file_is_an_error` (method, line 107) `def test_duplicate_file_is_an_error(self)`
 
 ## tests/test_minios_png.c
 - Doc: Docstring: host test for the shared ring-3 PNG helpers (make test-png).
@@ -463,38 +482,6 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `main` (function, line 23) `int main(void)`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `headers/pipe.h`
-
-## tests/test_ps2_keymap.c
-- Doc: test_ps2_keymap - host suite for the PS/2 set 1 to keysym translator.
-- Layer: testing
-- Language: c
-- Symbols:
-  - `check` (function, line 19) `static void check(int cond, const char *name)`
-  - `feed_seq` (function, line 29) `static int feed_seq(ps2_state *s, const unsigned char *seq, int n, ps2_key *out)`
-  - `press` (function, line 36) `static int press(ps2_state *s, unsigned char code, ps2_key *out)`
-  - `release` (function, line 41) `static int release(ps2_state *s, unsigned char code, ps2_key *out)`
-  - `test_letters_and_shift` (function, line 45) `static void test_letters_and_shift(void)`
-  - `test_caps_lock` (function, line 69) `static void test_caps_lock(void)`
-  - `test_punctuation` (function, line 90) `static void test_punctuation(void)`
-  - `test_control_key_text` (function, line 111) `static void test_control_key_text(void)`
-  - `test_chords_have_no_text` (function, line 128) `static void test_chords_have_no_text(void)`
-  - `test_extended_keys` (function, line 150) `static void test_extended_keys(void)`
-  - `test_function_keys` (function, line 202) `static void test_function_keys(void)`
-  - `test_keypad_num_lock` (function, line 218) `static void test_keypad_num_lock(void)`
-  - `test_prefix_sequences` (function, line 263) `static void test_prefix_sequences(void)`
-  - `test_fail_closed` (function, line 280) `static void test_fail_closed(void)`
-  - `main` (function, line 293) `int main(void)`
-- Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`
-
-## tests/test_randmix.c
-- Doc: host test for the getrandom mixer in randmix.h
-- Layer: testing
-- Language: c
-- Symbols:
-  - `popcount64` (function, line 18) `static int popcount64(unsigned long x)`
-  - `main` (function, line 24) `int main(void)`
-  - `CHECK` (macro, line 16) `#define CHECK(c, m)`
-- Depends on: `headers/randmix.h`
 
 
 Next: [KB_tests_p2.md](KB_tests_p2.md)

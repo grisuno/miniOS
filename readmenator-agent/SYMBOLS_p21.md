@@ -1,8 +1,350 @@
-# Symbols (page 21 of 25)
+# Symbols (page 21 of 26)
 Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ctrl_active` | function | `progs/piano/piano.c:567` | `static int ctrl_active(int id)` |
+| `ctrl_hit` | function | `progs/piano/piano.c:563` | `static int ctrl_hit(int id, int mx, int my)` |
+| `ctrl_press` | function | `progs/piano/piano.c:577` | `static void ctrl_press(int id)` |
+| `fx_configure` | function | `progs/piano/piano.c:421` | `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` |
+| `fx_process` | function | `progs/piano/piano.c:440` | `static float fx_process(float x)` |
+| `hit_key` | function | `progs/piano/piano.c:518` | `static int hit_key(int mx, int my)` |
+| `hit_velocity` | function | `progs/piano/piano.c:535` | `static int hit_velocity(int key, int my)` |
+| `kbd_all_off` | function | `progs/piano/piano.c:333` | `static void kbd_all_off(void)` |
+| `kbd_semitone` | function | `progs/piano/piano.c:298` | `static int kbd_semitone(int code)` |
+| `key_rect` | function | `progs/piano/piano.c:511` | `static void key_rect(int key, int *x, int *y, int *w, int *h)` |
+| `main` | function | `progs/piano/piano.c:1042` | `int main(int argc, char **argv)` |
+| `midi_to_key` | function | `progs/piano/piano.c:211` | `static int midi_to_key(int midi)` |
+| `note_off_key` | function | `progs/piano/piano.c:268` | `static void note_off_key(int key)` |
+| `note_off_sc` | function | `progs/piano/piano.c:353` | `static void note_off_sc(int code)` |
+| `note_on_key` | function | `progs/piano/piano.c:281` | `static void note_on_key(int key, int midi, int vel)` |
+| `note_on_sc` | function | `progs/piano/piano.c:339` | `static void note_on_sc(int code, int vel)` |
+| `o3_chreg` | function | `progs/piano/piano.c:135` | `static void o3_chreg(int ch, int regbase, int val)` |
+| `o3_note` | function | `progs/piano/piano.c:173` | `static void o3_note(int ch, int midi, int on)` |
+| `o3_op` | function | `progs/piano/piano.c:127` | `static int o3_op(int ch, int is_car)` |
+| `o3_opreg` | function | `progs/piano/piano.c:131` | `static void o3_opreg(int ch, int is_car, int regbase, int val)` |
+| `pedal_set` | function | `progs/piano/piano.c:241` | `static void pedal_set(int on)` |
+| `piano_scancode` | function | `progs/piano/piano.c:369` | `static void piano_scancode(int code, int make, int e0, void *ud)` |
+| `rate` | function | `progs/piano/piano.c:818` | `* wait below caps the frame rate (bench mode skips it so the          * benchmark still measures ...` |
+| `render_audio` | function | `progs/piano/piano.c:484` | `static void render_audio(long ms)` |
+| `run_pcm2_probe` | function | `progs/piano/piano.c:1015` | `static int run_pcm2_probe(void)` |
+| `run_selftest` | function | `progs/piano/piano.c:836` | `static int run_selftest(void)` |
+| `sb_flush` | function | `progs/piano/piano.c:469` | `static void sb_flush(void)` |
+| `sys_pcm_close` | function | `progs/piano/piano.c:101` | `static void sys_pcm_close(void)` |
+| `sys_pcm_open` | function | `progs/piano/piano.c:93` | `static long sys_pcm_open(long flags)` |
+| `sys_pcm_write` | function | `progs/piano/piano.c:98` | `static long sys_pcm_write(const void *buf, long len)` |
+| `sys_present_idx` | function | `progs/piano/piano.c:112` | `static long sys_present_idx(int *origin)` |
+| `sys_yield` | function | `progs/piano/piano.c:104` | `static void sys_yield(void)` |
+| `ui_run` | function | `progs/piano/piano.c:594` | `static void ui_run(int bench_ms)` |
+| `voice_alloc` | function | `progs/piano/piano.c:255` | `static int voice_alloc(void)` |
+| `SDL_Delay` | function | `progs/pokemon/minios_stubs/SDL.h:14` | `static inline void SDL_Delay(Uint32 ms)` |
+| `SDL_GetPerformanceCounter` | function | `progs/pokemon/minios_stubs/SDL.h:11` | `static inline Uint64 SDL_GetPerformanceCounter(void)` |
+| `SDL_GetPerformanceFrequency` | function | `progs/pokemon/minios_stubs/SDL.h:12` | `static inline Uint64 SDL_GetPerformanceFrequency(void)` |
+| `SDL_GetTicks` | function | `progs/pokemon/minios_stubs/SDL.h:13` | `static inline Uint32 SDL_GetTicks(void)` |
+| `SDL_H_STUB_MINIOS` | macro | `progs/pokemon/minios_stubs/SDL.h:3` | `#define SDL_H_STUB_MINIOS` |
+| `Sint16` | type_alias | `progs/pokemon/minios_stubs/SDL.h:8` | `typedef int16_t Sint16;` |
+| `Sint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:7` | `typedef int32_t Sint32;` |
+| `Uint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:6` | `typedef uint32_t Uint32;` |
+| `Uint64` | type_alias | `progs/pokemon/minios_stubs/SDL.h:5` | `typedef uint64_t Uint64;` |
+| `Uint8` | type_alias | `progs/pokemon/minios_stubs/SDL.h:9` | `typedef uint8_t Uint8;` |
+| `FB_ADDR` | macro | `progs/pokemon/platform_minios.c:160` | `#define FB_ADDR` |
+| `FB_H` | macro | `progs/pokemon/platform_minios.c:162` | `#define FB_H` |
+| `FB_W` | macro | `progs/pokemon/platform_minios.c:161` | `#define FB_W` |
+| `GB_DST_H` | macro | `progs/pokemon/platform_minios.c:166` | `#define GB_DST_H` |
+| `GB_DST_W` | macro | `progs/pokemon/platform_minios.c:165` | `#define GB_DST_W` |
+| `GB_DST_X0` | macro | `progs/pokemon/platform_minios.c:167` | `#define GB_DST_X0` |
+| `GB_DST_Y0` | macro | `progs/pokemon/platform_minios.c:168` | `#define GB_DST_Y0` |
+| `GB_SCALE` | macro | `progs/pokemon/platform_minios.c:164` | `#define GB_SCALE` |
+| `MENU_BAR_H` | macro | `progs/pokemon/platform_minios.c:586` | `#define MENU_BAR_H` |
+| `MENU_BG` | macro | `progs/pokemon/platform_minios.c:595` | `#define MENU_BG` |
+| `MENU_DROP_W` | macro | `progs/pokemon/platform_minios.c:590` | `#define MENU_DROP_W` |
+| `MENU_DROP_X0` | macro | `progs/pokemon/platform_minios.c:589` | `#define MENU_DROP_X0` |
+| `MENU_FG` | macro | `progs/pokemon/platform_minios.c:596` | `#define MENU_FG` |
+| `MENU_FILE_X0` | macro | `progs/pokemon/platform_minios.c:587` | `#define MENU_FILE_X0` |
+| `MENU_FILE_X1` | macro | `progs/pokemon/platform_minios.c:588` | `#define MENU_FILE_X1` |
+| `MENU_HOVER` | macro | `progs/pokemon/platform_minios.c:597` | `#define MENU_HOVER` |
+| `MENU_ITEM_H` | macro | `progs/pokemon/platform_minios.c:591` | `#define MENU_ITEM_H` |
+| `MENU_NITEMS` | macro | `progs/pokemon/platform_minios.c:592` | `#define MENU_NITEMS` |
+| `MENU_OSD_BG` | macro | `progs/pokemon/platform_minios.c:598` | `#define MENU_OSD_BG` |
+| `MINIOS_ARP_BASS_MS` | macro | `progs/pokemon/platform_minios.c:237` | `#define MINIOS_ARP_BASS_MS` |
+| `MINIOS_ARP_MEL_MS` | macro | `progs/pokemon/platform_minios.c:238` | `#define MINIOS_ARP_MEL_MS` |
+| `MINIOS_AUDIO_MAX_HZ` | macro | `progs/pokemon/platform_minios.c:236` | `#define MINIOS_AUDIO_MAX_HZ` |
+| `MINIOS_AUDIO_MIN_HZ` | macro | `progs/pokemon/platform_minios.c:235` | `#define MINIOS_AUDIO_MIN_HZ` |
+| `MINIOS_AUDIO_RATE` | macro | `progs/pokemon/platform_minios.c:233` | `#define MINIOS_AUDIO_RATE` |
+| `MINIOS_AUDIO_SILENCE_E` | macro | `progs/pokemon/platform_minios.c:234` | `#define MINIOS_AUDIO_SILENCE_E` |
+| `MINIOS_AUTOSAVE_MS` | macro | `progs/pokemon/platform_minios.c:1193` | `#define MINIOS_AUTOSAVE_MS` |
+| `MINIOS_FF_FRAMESKIP` | macro | `progs/pokemon/platform_minios.c:1205` | `#define MINIOS_FF_FRAMESKIP` |
+| `STBI_NO_STDIO` | macro | `progs/pokemon/platform_minios.c:62` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/pokemon/platform_minios.c:61` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/pokemon/platform_minios.c:60` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `_dl_argv` | function | `progs/pokemon/platform_minios.c:197` | `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).  * DO NOT reintroduce argv ...` |
+| `audible` | function | `progs/pokemon/platform_minios.c:36` | `* voice is audible (noise SFX, sweep zaps), the raw mix estimate plays.  *  * Debug: heartbeat to...` |
+| `audio` | function | `progs/pokemon/platform_minios.c:218` | `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...` |
+| `frames` | function | `progs/pokemon/platform_minios.c:1366` | `* frames (menu bar not on screen yet) and any frame after the          * LCD-off path zeroed the ...` |
+| `gain` | function | `progs/pokemon/platform_minios.c:142` | `* timing gain (overshoot is microseconds against millisecond waits).  * Difference-based, so it s...` |
+| `gb_platform_get_exit_action` | function | `progs/pokemon/platform_minios.c:1552` | `GBPlatformExitAction gb_platform_get_exit_action(void)` |
+| `gb_platform_get_joypad` | function | `progs/pokemon/platform_minios.c:1530` | `uint8_t gb_platform_get_joypad(void)` |
+| `gb_platform_get_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1540` | `bool gb_platform_get_smooth_lcd_transitions(void)` |
+| `gb_platform_get_timing_info` | function | `progs/pokemon/platform_minios.c:1523` | `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)` |
+| `gb_platform_init` | function | `progs/pokemon/platform_minios.c:1056` | `bool gb_platform_init(int scale)` |
+| `gb_platform_poll_events` | function | `progs/pokemon/platform_minios.c:1321` | `bool gb_platform_poll_events(GBContext *ctx)` |
+| `gb_platform_present_framebuffer` | function | `progs/pokemon/platform_minios.c:1399` | `void gb_platform_present_framebuffer(const uint32_t *framebuffer)` |
+| `gb_platform_register_context` | function | `progs/pokemon/platform_minios.c:1288` | `void gb_platform_register_context(GBContext *ctx)` |
+| `gb_platform_render_frame` | function | `progs/pokemon/platform_minios.c:1330` | `void gb_platform_render_frame(const uint32_t *framebuffer)` |
+| `gb_platform_render_lcd_off_frame` | function | `progs/pokemon/platform_minios.c:1411` | `void gb_platform_render_lcd_off_frame(void)` |
+| `gb_platform_set_benchmark_mode` | function | `progs/pokemon/platform_minios.c:1450` | `void gb_platform_set_benchmark_mode(bool enabled)` |
+| `gb_platform_set_debug` | function | `progs/pokemon/platform_minios.c:190` | `void gb_platform_set_debug(bool enabled)` |
+| `gb_platform_set_dump_frames` | function | `progs/pokemon/platform_minios.c:1474` | `void gb_platform_set_dump_frames(const char *frames)` |
+| `gb_platform_set_dump_present_frames` | function | `progs/pokemon/platform_minios.c:1496` | `void gb_platform_set_dump_present_frames(const char *frames)` |
+| `gb_platform_set_input_record_file` | function | `progs/pokemon/platform_minios.c:1460` | `void gb_platform_set_input_record_file(const char *path)` |
+| `gb_platform_set_input_script` | function | `progs/pokemon/platform_minios.c:1454` | `bool gb_platform_set_input_script(const char *script)` |
+| `gb_platform_set_launcher_return_enabled` | function | `progs/pokemon/platform_minios.c:1548` | `void gb_platform_set_launcher_return_enabled(bool enabled)` |
+| `gb_platform_set_persistence_dir` | function | `progs/pokemon/platform_minios.c:1465` | `bool gb_platform_set_persistence_dir(const char *path)` |
+| `gb_platform_set_screenshot_prefix` | function | `progs/pokemon/platform_minios.c:1517` | `void gb_platform_set_screenshot_prefix(const char *prefix)` |
+| `gb_platform_set_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1544` | `void gb_platform_set_smooth_lcd_transitions(bool enabled)` |
+| `gb_platform_set_title` | function | `progs/pokemon/platform_minios.c:1534` | `void gb_platform_set_title(const char *title)` |
+| `gb_platform_shutdown` | function | `progs/pokemon/platform_minios.c:1310` | `void gb_platform_shutdown(void)` |
+| `gb_platform_submit_port_frame` | function | `progs/pokemon/platform_minios.c:1556` | `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)` |
+| `gb_platform_test_audio_concurrency` | function | `progs/pokemon/platform_minios.c:1562` | `bool gb_platform_test_audio_concurrency(uint32_t frames,                                         ...` |
+| `gb_platform_test_inject_persistence_fault` | function | `progs/pokemon/platform_minios.c:1571` | `void gb_platform_test_inject_persistence_fault(     GBPersistenceTestTarget target,     GBPersist...` |
+| `gb_platform_vsync` | function | `progs/pokemon/platform_minios.c:1433` | `void gb_platform_vsync(uint32_t frame_cycles)` |
+| `gb_voice_in_range` | function | `progs/pokemon/platform_minios.c:306` | `static bool gb_voice_in_range(unsigned f)` |
+| `gb_voice_t` | struct | `progs/pokemon/platform_minios.c:301` | `` |
+| `menu` | function | `progs/pokemon/platform_minios.c:571` | `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it...` |
+| `menu_activate` | function | `progs/pokemon/platform_minios.c:742` | `static void menu_activate(int it)` |
+| `menu_do_load` | function | `progs/pokemon/platform_minios.c:723` | `static void menu_do_load(void)` |
+| `menu_do_save` | function | `progs/pokemon/platform_minios.c:707` | `static void menu_do_save(void)` |
+| `menu_draw` | function | `progs/pokemon/platform_minios.c:670` | `static void menu_draw(void)` |
+| `menu_fill` | function | `progs/pokemon/platform_minios.c:632` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
+| `menu_item_at` | function | `progs/pokemon/platform_minios.c:700` | `static int menu_item_at(int lx, int ly)` |
+| `menu_osd` | function | `progs/pokemon/platform_minios.c:664` | `static void menu_osd(const char *s)` |
+| `menu_text` | function | `progs/pokemon/platform_minios.c:645` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
+| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:330` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,                             ...` |
+| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:262` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
+| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1222` | `static void minios_autosave(uint32_t now)` |
+| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1208` | `static inline bool minios_fast_forward(void)` |
+| `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:1097` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,                        ...` |
+| `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1217` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:1132` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
+| `minios_load_helper` | function | `progs/pokemon/platform_minios.c:1103` | `static bool minios_load_helper(const char *path, void *data, size_t size,                        ...` |
+| `minios_load_rtc_data` | function | `progs/pokemon/platform_minios.c:1157` | `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,                           ...` |
+| `minios_persist_path` | function | `progs/pokemon/platform_minios.c:1088` | `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,                       ...` |
+| `minios_save_battery_ram` | function | `progs/pokemon/platform_minios.c:1147` | `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
+| `minios_save_helper` | function | `progs/pokemon/platform_minios.c:1121` | `static bool minios_save_helper(const char *path, const void *data, size_t size)` |
+| `minios_save_rtc_data` | function | `progs/pokemon/platform_minios.c:1170` | `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,                           ...` |
+| `minios_state_path` | function | `progs/pokemon/platform_minios.c:1212` | `static void minios_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `pokemon_art_draw` | function | `progs/pokemon/platform_minios.c:925` | `static void pokemon_art_draw(void)` |
+| `pokemon_art_draw_one` | function | `progs/pokemon/platform_minios.c:887` | `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,                       ...` |
+| `pokemon_art_load` | function | `progs/pokemon/platform_minios.c:869` | `static void pokemon_art_load(void)` |
+| `pokemon_art_load_one` | function | `progs/pokemon/platform_minios.c:844` | `static int pokemon_art_load_one(const char *path, unsigned char **rgb,                           ...` |
+| `poll_hotkeys` | function | `progs/pokemon/platform_minios.c:1236` | `static void poll_hotkeys(void)` |
+| `poll_keyboard` | function | `progs/pokemon/platform_minios.c:416` | `static void poll_keyboard(void)` |
+| `poll_menu` | function | `progs/pokemon/platform_minios.c:776` | `static void poll_menu(void)` |
+| `push_332_palette` | function | `progs/pokemon/platform_minios.c:455` | `static void push_332_palette(void)` |
+| `px_to_idx` | function | `progs/pokemon/platform_minios.c:956` | `static uint8_t px_to_idx(uint32_t pixel)` |
+| `rebuild_joypad` | function | `progs/pokemon/platform_minios.c:402` | `static void rebuild_joypad(void)` |
+| `sample_apu_voices` | function | `progs/pokemon/platform_minios.c:310` | `static void sample_apu_voices(gb_voice_t *v)` |
+| `sys_gfx_title` | function | `progs/pokemon/platform_minios.c:111` | `static long sys_gfx_title(const char *t)` |
+| `sys_kbd` | function | `progs/pokemon/platform_minios.c:75` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/pokemon/platform_minios.c:99` | `static long sys_kbd_raw(int on)` |
+| `sys_mouse` | function | `progs/pokemon/platform_minios.c:87` | `static long sys_mouse(int *xybw)` |
+| `sys_nk_frame` | function | `progs/pokemon/platform_minios.c:81` | `static long sys_nk_frame(int *origin)` |
+| `sys_palette` | function | `progs/pokemon/platform_minios.c:105` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_pcm2_close` | function | `progs/pokemon/platform_minios.c:135` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/pokemon/platform_minios.c:123` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/pokemon/platform_minios.c:129` | `static long sys_pcm2_write(const void *buf, long len)` |
+| `sys_tone` | function | `progs/pokemon/platform_minios.c:117` | `static long sys_tone(unsigned f)` |
+| `sys_vga_mode` | function | `progs/pokemon/platform_minios.c:93` | `static long sys_vga_mode(int on)` |
+| `ui_fringe_dirty` | function | `progs/pokemon/platform_minios.c:620` | `static bool ui_fringe_dirty(uint32_t now)` |
+| `ui_fringe_sync` | function | `progs/pokemon/platform_minios.c:626` | `static void ui_fringe_sync(uint32_t now)` |
+| `upload_frame` | function | `progs/pokemon/platform_minios.c:975` | `static void upload_frame(const uint32_t *framebuffer)` |
+| `Cbuf_AddText` | function | `progs/quake2generic/q2generic_minios.c:102` | `extern void Cbuf_AddText(char *text);` |
+| `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/quake2generic/q2generic_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
+| `MINIOS_GFX_BUF_GAME` | function | `progs/quake2generic/q2generic_minios.c:5` | `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel  * compat alias) and the...` |
+| `Q2G_BACKBUF` | macro | `progs/quake2generic/q2generic_minios.c:78` | `#define Q2G_BACKBUF` |
+| `Q2G_FB_H` | macro | `progs/quake2generic/q2generic_minios.c:22` | `#define Q2G_FB_H` |
+| `Q2G_FB_W` | macro | `progs/quake2generic/q2generic_minios.c:21` | `#define Q2G_FB_W` |
+| `QG_CaptureMouse` | function | `progs/quake2generic/q2generic_minios.c:168` | `void QG_CaptureMouse(void)` |
+| `QG_GetMouseDiff` | function | `progs/quake2generic/q2generic_minios.c:154` | `void QG_GetMouseDiff(int *dx, int *dy)` |
+| `QG_Milliseconds` | function | `progs/quake2generic/q2generic_minios.c:385` | `int QG_Milliseconds(void)` |
+| `QG_Mkdir` | function | `progs/quake2generic/q2generic_minios.c:175` | `void QG_Mkdir(const char *path)` |
+| `QG_ReleaseMouse` | function | `progs/quake2generic/q2generic_minios.c:172` | `void QG_ReleaseMouse(void)` |
+| `SWimp_AppActivate` | function | `progs/quake2generic/q2generic_minios.c:381` | `void SWimp_AppActivate(qboolean active)` |
+| `SWimp_BeginFrame` | function | `progs/quake2generic/q2generic_minios.c:349` | `void SWimp_BeginFrame(float camera_separation)` |
+| `SWimp_EndFrame` | function | `progs/quake2generic/q2generic_minios.c:352` | `void SWimp_EndFrame(void)` |
+| `SWimp_Init` | function | `progs/quake2generic/q2generic_minios.c:337` | `int SWimp_Init(void *hInstance, void *wndProc)` |
+| `SWimp_SetMode` | function | `progs/quake2generic/q2generic_minios.c:320` | `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)` |
+| `SWimp_SetPalette` | function | `progs/quake2generic/q2generic_minios.c:310` | `void SWimp_SetPalette(const unsigned char *palette)` |
+| `SWimp_Shutdown` | function | `progs/quake2generic/q2generic_minios.c:346` | `void SWimp_Shutdown(void)` |
+| `Sys_Quit` | function | `progs/quake2generic/q2generic_minios.c:99` | `extern void Sys_Quit(void);` |
+| `extended_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:262` | `static unsigned char extended_to_q2key(unsigned char sc)` |
+| `kbd_poll` | function | `progs/quake2generic/q2generic_minios.c:280` | `static void kbd_poll(void)` |
+| `main` | function | `progs/quake2generic/q2generic_minios.c:389` | `int main(int argc, char **argv)` |
+| `q2g_parse_autoframes` | function | `progs/quake2generic/q2generic_minios.c:121` | `static void q2g_parse_autoframes(int argc, char **argv)` |
+| `q2g_parse_windowed` | function | `progs/quake2generic/q2generic_minios.c:86` | `static void q2g_parse_windowed(int argc, char **argv)` |
+| `q2snd_probe` | function | `progs/quake2generic/q2generic_minios.c:106` | `extern int q2snd_probe(void);` |
+| `scancode_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:179` | `static unsigned char scancode_to_q2key(unsigned char raw)` |
+| `sys_doom_frame` | function | `progs/quake2generic/q2generic_minios.c:54` | `static long sys_doom_frame(void)` |
+| `sys_gfx_zoom` | function | `progs/quake2generic/q2generic_minios.c:72` | `static long sys_gfx_zoom(long mode)` |
+| `sys_kbd` | function | `progs/quake2generic/q2generic_minios.c:30` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/quake2generic/q2generic_minios.c:42` | `static long sys_kbd_raw(int on)` |
+| `sys_mouse` | function | `progs/quake2generic/q2generic_minios.c:60` | `static long sys_mouse(int *buf)` |
+| `sys_palette` | function | `progs/quake2generic/q2generic_minios.c:36` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_set_title` | function | `progs/quake2generic/q2generic_minios.c:66` | `static long sys_set_title(const char *t)` |
+| `sys_vga_mode` | function | `progs/quake2generic/q2generic_minios.c:48` | `static long sys_vga_mode(int on)` |
+| `Q2SND_AHEAD` | macro | `progs/quake2generic/snddma_minios.c:54` | `#define Q2SND_AHEAD` |
+| `Q2SND_BUF_BYTES` | macro | `progs/quake2generic/snddma_minios.c:56` | `#define Q2SND_BUF_BYTES` |
+| `Q2SND_RATE` | macro | `progs/quake2generic/snddma_minios.c:48` | `#define Q2SND_RATE` |
+| `Q2SND_SAMPLES` | macro | `progs/quake2generic/snddma_minios.c:49` | `#define Q2SND_SAMPLES` |
+| `Q2SND_SILENCE` | macro | `progs/quake2generic/snddma_minios.c:50` | `#define Q2SND_SILENCE` |
+| `SNDDMA_BeginPainting` | function | `progs/quake2generic/snddma_minios.c:202` | `void SNDDMA_BeginPainting(void)` |
+| `SNDDMA_GetDMAPos` | function | `progs/quake2generic/snddma_minios.c:182` | `int SNDDMA_GetDMAPos(void)` |
+| `SNDDMA_Init` | function | `progs/quake2generic/snddma_minios.c:138` | `qboolean SNDDMA_Init(void)` |
+| `SNDDMA_Shutdown` | function | `progs/quake2generic/snddma_minios.c:190` | `void SNDDMA_Shutdown(void)` |
+| `SNDDMA_Submit` | function | `progs/quake2generic/snddma_minios.c:205` | `void SNDDMA_Submit(void)` |
+| `q2_dma_push` | function | `progs/quake2generic/snddma_minios.c:104` | `static int q2_dma_push(int end)` |
+| `q2snd_probe` | function | `progs/quake2generic/snddma_minios.c:222` | `int q2snd_probe(void)` |
+| `sys_pcm2_close` | function | `progs/quake2generic/snddma_minios.c:83` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/quake2generic/snddma_minios.c:67` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/quake2generic/snddma_minios.c:75` | `static long sys_pcm2_write(const void *buf, long len)` |
+| `sys_time_ms` | function | `progs/quake2generic/snddma_minios.c:89` | `static long sys_time_ms(void)` |
+| `AES_AFFINE_C` | macro | `progs/src/aes.c:53` | `#define AES_AFFINE_C` |
+| `AES_BLOCK` | macro | `progs/src/aes.c:44` | `#define AES_BLOCK` |
+| `AES_EXIT_FAIL` | macro | `progs/src/aes.c:61` | `#define AES_EXIT_FAIL` |
+| `AES_HDR_SIZE` | macro | `progs/src/aes.c:42` | `#define AES_HDR_SIZE` |
+| `AES_KEY_BYTES` | macro | `progs/src/aes.c:45` | `#define AES_KEY_BYTES` |
+| `AES_MAGIC0` | macro | `progs/src/aes.c:38` | `#define AES_MAGIC0` |
+| `AES_MAGIC1` | macro | `progs/src/aes.c:39` | `#define AES_MAGIC1` |
+| `AES_MAGIC2` | macro | `progs/src/aes.c:40` | `#define AES_MAGIC2` |
+| `AES_MAGIC3` | macro | `progs/src/aes.c:41` | `#define AES_MAGIC3` |
+| `AES_NONCE_BYTES` | macro | `progs/src/aes.c:46` | `#define AES_NONCE_BYTES` |
+| `AES_POLY` | macro | `progs/src/aes.c:52` | `#define AES_POLY` |
+| `AES_RCON_PAD` | macro | `progs/src/aes.c:54` | `#define AES_RCON_PAD` |
+| `AES_RCON_SIZE` | macro | `progs/src/aes.c:50` | `#define AES_RCON_SIZE` |
+| `AES_RK_LEN` | macro | `progs/src/aes.c:48` | `#define AES_RK_LEN` |
+| `AES_ROUNDS` | macro | `progs/src/aes.c:47` | `#define AES_ROUNDS` |
+| `AES_SBOX_SIZE` | macro | `progs/src/aes.c:49` | `#define AES_SBOX_SIZE` |
+| `AES_SEEK_END` | macro | `progs/src/aes.c:59` | `#define AES_SEEK_END` |
+| `GF` | function | `progs/src/aes.c:8` | `* generated procedurally from the GF(2^8) multiplicative inverse plus the * FIPS-197 affine transform, so the file...` |
+| `HEX_KEY_LEN` | macro | `progs/src/aes.c:56` | `#define HEX_KEY_LEN` |
+| `HEX_NONCE_LEN` | macro | `progs/src/aes.c:57` | `#define HEX_NONCE_LEN` |
+| `aes_add_round_key` | function | `progs/src/aes.c:209` | `static void aes_add_round_key(int round)` |
+| `aes_cipher` | function | `progs/src/aes.c:248` | `static void aes_cipher(void)` |
+| `aes_ctr_crypt` | function | `progs/src/aes.c:273` | `static void aes_ctr_crypt(char *data, int len)` |
+| `aes_gf_mul` | function | `progs/src/aes.c:130` | `static int aes_gf_mul(int a, int b)` |
+| `aes_has` | function | `progs/src/aes.c:96` | `static int aes_has(const char *s, const char *needle)` |
+| `aes_hdr_get` | function | `progs/src/aes.c:299` | `static int aes_hdr_get(char *h)` |
+| `aes_hdr_put` | function | `progs/src/aes.c:288` | `static void aes_hdr_put(char *h, int size)` |
+| `aes_init_tables` | function | `progs/src/aes.c:155` | `static void aes_init_tables(void)` |
+| `aes_iv_increment` | function | `progs/src/aes.c:263` | `static void aes_iv_increment(void)` |
+| `aes_key_expand` | function | `progs/src/aes.c:174` | `static void aes_key_expand(const int *key)` |
+| `aes_mix_columns` | function | `progs/src/aes.c:228` | `static void aes_mix_columns(void)` |
+| `aes_parse_hex` | function | `progs/src/aes.c:117` | `static int aes_parse_hex(const char *s, int want, int *out)` |
+| `aes_read_all` | function | `progs/src/aes.c:69` | `static char *aes_read_all(const char *name, int *len)` |
+| `aes_rotl8` | function | `progs/src/aes.c:148` | `static int aes_rotl8(int x, int n)` |
+| `aes_run` | function | `progs/src/aes.c:312` | `static int aes_run(int decode, const char *keyhex, const char *noncehex,                    const...` |
+| `aes_shift_rows` | function | `progs/src/aes.c:220` | `static void aes_shift_rows(void)` |
+| `aes_sub_bytes` | function | `progs/src/aes.c:215` | `static void aes_sub_bytes(void)` |
+| `aes_tool_name` | function | `progs/src/aes.c:307` | `static const char *aes_tool_name(int decode)` |
+| `aes_write_all` | function | `progs/src/aes.c:86` | `static int aes_write_all(const char *name, char *data, int len)` |
+| `aes_xtime` | function | `progs/src/aes.c:142` | `static int aes_xtime(int x)` |
+| `fclose` | function | `progs/src/aes.c:29` | `int fclose();` |
+| `fopen` | function | `progs/src/aes.c:28` | `void *fopen();` |
+| `fread` | function | `progs/src/aes.c:30` | `int fread();` |
+| `free` | function | `progs/src/aes.c:36` | `void free();` |
+| `fseek` | function | `progs/src/aes.c:32` | `int fseek();` |
+| `ftell` | function | `progs/src/aes.c:33` | `int ftell();` |
+| `fwrite` | function | `progs/src/aes.c:31` | `int fwrite();` |
+| `hex_val` | function | `progs/src/aes.c:110` | `static int hex_val(int c)` |
+| `main` | function | `progs/src/aes.c:384` | `int main(int argc, char **argv)` |
+| `malloc` | function | `progs/src/aes.c:35` | `void *malloc();` |
+| `putchar` | function | `progs/src/aes.c:25` | `int putchar();` |
+| `rewind` | function | `progs/src/aes.c:34` | `void rewind();` |
+| `strcmp` | function | `progs/src/aes.c:26` | `int strcmp();` |
+| `strlen` | function | `progs/src/aes.c:27` | `int strlen();` |
+| `as_atou` | function | `progs/src/aslr.c:59` | `static unsigned long as_atou(const char *s)` |
+| `as_execve` | function | `progs/src/aslr.c:40` | `static void as_execve(const char *path, const char **argv)` |
+| `as_exit` | function | `progs/src/aslr.c:35` | `static void as_exit(long code)` |
+| `as_fail` | function | `progs/src/aslr.c:74` | `static void as_fail(int step)` |
+| `as_mmap` | function | `progs/src/aslr.c:18` | `static long as_mmap(void)` |
+| `as_putu` | function | `progs/src/aslr.c:47` | `static void as_putu(unsigned long v)` |
+| `as_rsp` | function | `progs/src/aslr.c:68` | `static unsigned long as_rsp(void)` |
+| `as_sc` | function | `progs/src/aslr.c:10` | `static long as_sc(long n, long a1, long a2, long a3)` |
+| `as_write` | function | `progs/src/aslr.c:31` | `static void as_write(const char *s, unsigned long len)` |
+| `lmain` | function | `progs/src/aslr.c:82` | `int lmain(long argc, char **argv)` |
+| `audio_get_volume` | function | `progs/src/audio.c:56` | `unsigned audio_get_volume(void)` |
+| `audio_init` | function | `progs/src/audio.c:27` | `int audio_init(void)` |
+| `audio_pcm_close` | function | `progs/src/audio.c:48` | `void audio_pcm_close(void)` |
+| `audio_pcm_open` | function | `progs/src/audio.c:35` | `int audio_pcm_open(unsigned rate, unsigned channels, unsigned format)` |
+| `audio_pcm_pump` | function | `progs/src/audio.c:44` | `void audio_pcm_pump(void)` |
+| `audio_pcm_submit` | function | `progs/src/audio.c:40` | `int audio_pcm_submit(const void *buf, unsigned len)` |
+| `audio_sb16_present` | function | `progs/src/audio.c:60` | `int audio_sb16_present(void)` |
+| `audio_set_volume` | function | `progs/src/audio.c:52` | `void audio_set_volume(unsigned volume)` |
+| `audio_stream_close` | function | `progs/src/audio.c:68` | `void audio_stream_close(int id)` |
+| `audio_stream_open` | function | `progs/src/audio.c:64` | `int audio_stream_open(void)` |
+| `audio_stream_submit` | function | `progs/src/audio.c:72` | `int audio_stream_submit(int id, const void *buf, unsigned len)` |
+| `audio_stream_volume` | function | `progs/src/audio.c:76` | `void audio_stream_volume(int id, unsigned char vol)` |
+| `audio_tone` | function | `progs/src/audio.c:31` | `void audio_tone(unsigned freq)` |
+| `syscall0` | function | `progs/src/audio.c:21` | `static long syscall0(long n)` |
+| `syscall1` | function | `progs/src/audio.c:3` | `static long syscall1(long n, long a1)` |
+| `syscall2` | function | `progs/src/audio.c:9` | `static long syscall2(long n, long a1, long a2)` |
+| `syscall3` | function | `progs/src/audio.c:15` | `static long syscall3(long n, long a1, long a2, long a3)` |
+| `bn_exit` | function | `progs/src/burn.c:31` | `static void bn_exit(long code)` |
+| `bn_fail` | function | `progs/src/burn.c:48` | `static void bn_fail(void)` |
+| `bn_mmap` | function | `progs/src/burn.c:14` | `static long bn_mmap(unsigned long len)` |
+| `bn_putu` | function | `progs/src/burn.c:36` | `static void bn_putu(unsigned long v)` |
+| `bn_sc` | function | `progs/src/burn.c:6` | `static long bn_sc(long n, long a1, long a2, long a3)` |
+| `bn_write` | function | `progs/src/burn.c:27` | `static void bn_write(const char *s, unsigned long len)` |
+| `lmain` | function | `progs/src/burn.c:53` | `int lmain(void)` |
+| `CP_BUF_SIZE` | macro | `progs/src/cp.c:7` | `#define CP_BUF_SIZE` |
+| `CP_EXIT_FAIL` | macro | `progs/src/cp.c:8` | `#define CP_EXIT_FAIL` |
+| `fclose` | function | `progs/src/cp.c:3` | `int fclose();` |
+| `fopen` | function | `progs/src/cp.c:2` | `void *fopen();` |
+| `fread` | function | `progs/src/cp.c:4` | `int fread();` |
+| `fwrite` | function | `progs/src/cp.c:5` | `int fwrite();` |
+| `main` | function | `progs/src/cp.c:10` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/cp.c:1` | `int printf();` |
+| `_start` | function | `progs/src/cpl.c:16` | `void _start(void)` |
+| `exit_now` | function | `progs/src/cpl.c:12` | `static void exit_now(long code)` |
+| `read_cpl` | function | `progs/src/cpl.c:6` | `static long read_cpl(void)` |
+| `ex_exit` | function | `progs/src/execho.c:24` | `static void ex_exit(long code)` |
+| `ex_fail` | function | `progs/src/execho.c:29` | `static void ex_fail(int step)` |
+| `ex_write` | function | `progs/src/execho.c:20` | `static void ex_write(const char *s, unsigned long len)` |
+| `lmain` | function | `progs/src/execho.c:37` | `int lmain(void)` |
+| `path` | function | `progs/src/execho.c:7` | `* execs a ghost path (must fail -2, exits 42). The parent checks  * both wait4 results with Linux...` |
+| `program` | function | `progs/src/execho.c:5` | `* * Proves the UNIX process composition the kernel lacked: a child * produced by fork replaces its image with execve...` |
+| `et_exit` | function | `progs/src/execthr.c:19` | `static void et_exit(long code)` |
+| `et_sc` | function | `progs/src/execthr.c:11` | `static long et_sc(long n, long a1, long a2, long a3)` |
+| `et_thread` | function | `progs/src/execthr.c:27` | `static void et_thread(void)` |
+| `lmain` | function | `progs/src/execthr.c:33` | `int lmain(void)` |
+| `fib` | function | `progs/src/fib.c:1` | `int fib(int n)` |
+| `main` | function | `progs/src/fib.c:6` | `int main(void)` |
+| `SYS_close` | macro | `progs/src/forktest.c:32` | `#define SYS_close` |
+| `SYS_exit` | macro | `progs/src/forktest.c:36` | `#define SYS_exit` |
+| `SYS_fork` | macro | `progs/src/forktest.c:35` | `#define SYS_fork` |
+| `SYS_pipe` | macro | `progs/src/forktest.c:33` | `#define SYS_pipe` |
+| `SYS_read` | macro | `progs/src/forktest.c:30` | `#define SYS_read` |
+| `SYS_wait4` | macro | `progs/src/forktest.c:37` | `#define SYS_wait4` |
+| `SYS_write` | macro | `progs/src/forktest.c:31` | `#define SYS_write` |
+| `SYS_yield` | macro | `progs/src/forktest.c:34` | `#define SYS_yield` |
+| `_start` | function | `progs/src/forktest.c:56` | `void _start(void)` |
+| `fx_exit` | function | `progs/src/forktest.c:51` | `static void fx_exit(long code)` |
+| `fx_strlen` | function | `progs/src/forktest.c:41` | `static unsigned long fx_strlen(const char *s)` |
+| `fx_syscall6` | function | `progs/src/forktest.c:17` | `static long fx_syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `fx_write` | function | `progs/src/forktest.c:47` | `static void fx_write(const char *s)` |
+| `this` | function | `progs/src/forktest.c:115` | `* this (and the child's closes must survive below). */ fx_syscall6(SYS_close, pfd[1], 0, 0, 0, 0, 0);` |
+| `FP_ITERS` | macro | `progs/src/fptest.c:38` | `#define FP_ITERS` |
+| `fp_slot_t` | struct | `progs/src/fptest.c:56` | `` |
+| `gettid` | function | `progs/src/fptest.c:21` | `* * The same run smokes gettid (Phase 0.4: the two workers must observe * distinct tids, never the constant 1) and...` |
+| `main` | function | `progs/src/fptest.c:148` | `int main(void)` |
+| `raw_getrandom` | function | `progs/src/fptest.c:52` | `static long raw_getrandom(void *buf, unsigned long n)` |
+| `raw_gettid` | function | `progs/src/fptest.c:48` | `static long raw_gettid(void)` |
+| `read_mxcsr` | function | `progs/src/fptest.c:42` | `static unsigned int read_mxcsr(void)` |
+| `stack_align_canary` | function | `progs/src/fptest.c:78` | `static void stack_align_canary(void)` |
+| `worker` | function | `progs/src/fptest.c:84` | `static void *worker(void *p)` |
+| `FREEDOM_ATTR_MAX` | macro | `progs/src/freedom.c:81` | `#define FREEDOM_ATTR_MAX` |
+| `FREEDOM_BUF` | macro | `progs/src/freedom.c:76` | `#define FREEDOM_BUF` |
+| `FREEDOM_CHUNK_MAX` | macro | `progs/src/freedom.c:77` | `#define FREEDOM_CHUNK_MAX` |
 | `FREEDOM_CSS_BUF` | macro | `progs/src/freedom.c:79` | `#define FREEDOM_CSS_BUF` |
 | `FREEDOM_CSS_MAX` | macro | `progs/src/freedom.c:78` | `#define FREEDOM_CSS_MAX` |
 | `FREEDOM_DOM_BUF` | macro | `progs/src/freedom.c:80` | `#define FREEDOM_DOM_BUF` |
@@ -154,347 +496,5 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `JS_MAX_NODES` | macro | `progs/src/json.c:27` | `#define JS_MAX_NODES` |
 | `JS_NULL` | macro | `progs/src/json.c:30` | `#define JS_NULL` |
 | `JS_NUM` | macro | `progs/src/json.c:32` | `#define JS_NUM` |
-| `JS_OBJ` | macro | `progs/src/json.c:34` | `#define JS_OBJ` |
-| `JS_POOL` | macro | `progs/src/json.c:28` | `#define JS_POOL` |
-| `JS_SEEK_END` | macro | `progs/src/json.c:37` | `#define JS_SEEK_END` |
-| `JS_STR` | macro | `progs/src/json.c:33` | `#define JS_STR` |
-| `fclose` | function | `progs/src/json.c:21` | `int fclose();` |
-| `fopen` | function | `progs/src/json.c:20` | `void *fopen();` |
-| `fread` | function | `progs/src/json.c:22` | `int fread();` |
-| `free` | function | `progs/src/json.c:14` | `void free();` |
-| `fseek` | function | `progs/src/json.c:23` | `int fseek();` |
-| `ftell` | function | `progs/src/json.c:24` | `int ftell();` |
-| `js_array_at` | function | `progs/src/json.c:357` | `static int js_array_at(int arr, int idx)` |
-| `js_find_member` | function | `progs/src/json.c:347` | `static int js_find_member(int obj, const char *key)` |
-| `js_indent` | function | `progs/src/json.c:281` | `static void js_indent(int n)` |
-| `js_key_match` | function | `progs/src/json.c:143` | `static int js_key_match(int child, const char *key)` |
-| `js_new` | function | `progs/src/json.c:76` | `static int js_new(void)` |
-| `js_parse_array` | function | `progs/src/json.c:182` | `static int js_parse_array(void)` |
-| `js_parse_number` | function | `progs/src/json.c:133` | `static int js_parse_number(void)` |
-| `js_parse_object` | function | `progs/src/json.c:147` | `static int js_parse_object(void)` |
-| `js_parse_string` | function | `progs/src/json.c:97` | `static int js_parse_string(void)` |
-| `js_parse_value` | function | `progs/src/json.c:211` | `static int js_parse_value(void)` |
-| `js_peek` | function | `progs/src/json.c:89` | `static int js_peek(void)` |
-| `js_print_str` | function | `progs/src/json.c:286` | `static void js_print_str(const char *s)` |
-| `js_print_value` | function | `progs/src/json.c:303` | `static void js_print_value(int node, int depth)` |
-| `js_query` | function | `progs/src/json.c:369` | `static int js_query(int root, const char *path)` |
-| `js_read_all` | function | `progs/src/json.c:58` | `static char *js_read_all(const char *name, int *len)` |
-| `js_skip_ws` | function | `progs/src/json.c:81` | `static void js_skip_ws(void)` |
-| `js_str` | function | `progs/src/json.c:5` | `* members keep their key in js_str (the member value node) and their value * in the node itself, and object members...` |
-| `main` | function | `progs/src/json.c:401` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/src/json.c:15` | `int printf();` |
-| `putchar` | function | `progs/src/json.c:16` | `int putchar();` |
-| `puts` | function | `progs/src/json.c:17` | `int puts();` |
-| `rewind` | function | `progs/src/json.c:25` | `void rewind();` |
-| `strcmp` | function | `progs/src/json.c:19` | `int strcmp();` |
-| `strlen` | function | `progs/src/json.c:18` | `int strlen();` |
-| `_start` | function | `progs/src/kmem.c:18` | `void _start(void)` |
-| `exit_now` | function | `progs/src/kmem.c:14` | `static void exit_now(long code)` |
-| `syscall3` | function | `progs/src/kmem.c:7` | `static long syscall3(long n, long a1, long a2, long a3)` |
-| `main` | function | `progs/src/ldhello.c:1` | `int main(void)` |
-| `LXABI_A6_MAGIC` | macro | `progs/src/lxabi.c:47` | `#define LXABI_A6_MAGIC` |
-| `LXABI_CHILD_BAD` | macro | `progs/src/lxabi.c:48` | `#define LXABI_CHILD_BAD` |
-| `LXABI_CHILD_DELAY_MS` | macro | `progs/src/lxabi.c:36` | `#define LXABI_CHILD_DELAY_MS` |
-| `LXABI_CLOCK_SKEW_S` | macro | `progs/src/lxabi.c:43` | `#define LXABI_CLOCK_SKEW_S` |
-| `LXABI_CLONE_NR` | macro | `progs/src/lxabi.c:45` | `#define LXABI_CLONE_NR` |
-| `LXABI_CLOSE_RANGE_NR` | macro | `progs/src/lxabi.c:51` | `#define LXABI_CLOSE_RANGE_NR` |
-| `LXABI_DETACHED` | macro | `progs/src/lxabi.c:39` | `#define LXABI_DETACHED` |
-| `LXABI_EPOCH_2023` | macro | `progs/src/lxabi.c:42` | `#define LXABI_EPOCH_2023` |
-| `LXABI_MKDIR_FILE` | macro | `progs/src/lxabi.c:50` | `#define LXABI_MKDIR_FILE` |
-| `LXABI_MKDIR_PATH` | macro | `progs/src/lxabi.c:49` | `#define LXABI_MKDIR_PATH` |
-| `LXABI_REG_PROBE_WORDS` | macro | `progs/src/lxabi.c:44` | `#define LXABI_REG_PROBE_WORDS` |
-| `LXABI_SIGCHLD` | macro | `progs/src/lxabi.c:46` | `#define LXABI_SIGCHLD` |
-| `LXABI_THREADS` | macro | `progs/src/lxabi.c:37` | `#define LXABI_THREADS` |
-| `LXABI_THREAD_ITERS` | macro | `progs/src/lxabi.c:38` | `#define LXABI_THREAD_ITERS` |
-| `LXABI_TIMEDWAIT_MS` | macro | `progs/src/lxabi.c:41` | `#define LXABI_TIMEDWAIT_MS` |
-| `LXABI_WAIT_SPINS` | macro | `progs/src/lxabi.c:40` | `#define LXABI_WAIT_SPINS` |
-| `_GNU_SOURCE` | macro | `progs/src/lxabi.c:17` | `#define _GNU_SOURCE` |
-| `busy_wait_ms` | function | `progs/src/lxabi.c:71` | `static void busy_wait_ms(long ms)` |
-| `check_close_range` | function | `progs/src/lxabi.c:385` | `static void check_close_range(void)` |
-| `check_condvar` | function | `progs/src/lxabi.c:242` | `static void check_condvar(void)` |
-| `check_detached_reaped` | function | `progs/src/lxabi.c:208` | `static void check_detached_reaped(void)` |
-| `check_eventfd` | function | `progs/src/lxabi.c:360` | `static void check_eventfd(void)` |
-| `check_fork_registers` | function | `progs/src/lxabi.c:128` | `static void check_fork_registers(void)` |
-| `check_mkdir` | function | `progs/src/lxabi.c:406` | `static void check_mkdir(void)` |
-| `check_pipe2_flags` | function | `progs/src/lxabi.c:264` | `static void check_pipe2_flags(void)` |
-| `check_pipe_blocking` | function | `progs/src/lxabi.c:291` | `static void check_pipe_blocking(void)` |
-| `check_pipe_epipe` | function | `progs/src/lxabi.c:313` | `static void check_pipe_epipe(void)` |
-| `check_poll` | function | `progs/src/lxabi.c:336` | `static void check_poll(void)` |
-| `check_threads` | function | `progs/src/lxabi.c:172` | `static void check_threads(void)` |
-| `check_time` | function | `progs/src/lxabi.c:397` | `static void check_time(void)` |
-| `check_writev_pipe` | function | `progs/src/lxabi.c:324` | `static void check_writev_pipe(void)` |
-| `detached_worker` | function | `progs/src/lxabi.c:202` | `static void *detached_worker(void *arg)` |
-| `fork_probe` | function | `progs/src/lxabi.c:85` | `static void fork_probe(uint64_t *out)` |
-| `main` | function | `progs/src/lxabi.c:417` | `int main(void)` |
-| `now_ms` | function | `progs/src/lxabi.c:65` | `static long now_ms(void)` |
-| `regs_match` | function | `progs/src/lxabi.c:122` | `static int regs_match(const uint64_t *r)` |
-| `report` | function | `progs/src/lxabi.c:55` | `static void report(const char *name, int ok, const char *detail)` |
-| `signaller` | function | `progs/src/lxabi.c:232` | `static void *signaller(void *arg)` |
-| `thread_result` | struct | `progs/src/lxabi.c:152` | `` |
-| `tls_seen` | type_alias | `progs/src/lxabi.c:151` | `typedef struct thread_result { long tls_seen;` |
-| `worker` | function | `progs/src/lxabi.c:158` | `static void *worker(void *arg)` |
-| `SYS_exit` | macro | `progs/src/lxhello.c:21` | `#define SYS_exit` |
-| `SYS_write` | macro | `progs/src/lxhello.c:20` | `#define SYS_write` |
-| `lmain` | function | `progs/src/lxhello.c:46` | `int lmain(long argc, char **argv)` |
-| `lx_strlen` | function | `progs/src/lxhello.c:23` | `static unsigned long lx_strlen(const char *s)` |
-| `lx_syscall3` | function | `progs/src/lxhello.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
-| `lx_write` | function | `progs/src/lxhello.c:29` | `static void lx_write(const char *s)` |
-| `lx_write_int` | function | `progs/src/lxhello.c:33` | `static void lx_write_int(long v)` |
-| `LZ4_BOUND_DEN` | macro | `progs/src/lz4.c:31` | `#define LZ4_BOUND_DEN` |
-| `LZ4_BOUND_SLACK` | macro | `progs/src/lz4.c:32` | `#define LZ4_BOUND_SLACK` |
-| `LZ4_EXIT_FAIL` | macro | `progs/src/lz4.c:37` | `#define LZ4_EXIT_FAIL` |
-| `LZ4_HDR_SIZE` | macro | `progs/src/lz4.c:30` | `#define LZ4_HDR_SIZE` |
-| `LZ4_MAX_BLOCK` | macro | `progs/src/lz4.c:33` | `#define LZ4_MAX_BLOCK` |
-| `LZ4_SEEK_END` | macro | `progs/src/lz4.c:35` | `#define LZ4_SEEK_END` |
-| `fclose` | function | `progs/src/lz4.c:20` | `int fclose();` |
-| `fopen` | function | `progs/src/lz4.c:19` | `void *fopen();` |
-| `fread` | function | `progs/src/lz4.c:21` | `int fread();` |
-| `free` | function | `progs/src/lz4.c:15` | `void free();` |
-| `fseek` | function | `progs/src/lz4.c:23` | `int fseek();` |
-| `ftell` | function | `progs/src/lz4.c:24` | `int ftell();` |
-| `fwrite` | function | `progs/src/lz4.c:22` | `int fwrite();` |
-| `kernel` | function | `progs/src/lz4.c:6` | `* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends...` |
-| `lz4_compress` | function | `progs/src/lz4.c:27` | `int lz4_compress(char *src, int srclen, char *dst, int dstcap);` |
-| `lz4_compress_file` | function | `progs/src/lz4.c:80` | `static int lz4_compress_file(const char *src, const char *dst)` |
-| `lz4_decompress` | function | `progs/src/lz4.c:28` | `int lz4_decompress(char *src, int srclen, char *dst, int dstcap);` |
-| `lz4_decompress_file` | function | `progs/src/lz4.c:117` | `static int lz4_decompress_file(const char *src, const char *dst)` |
-| `lz4_has` | function | `progs/src/lz4.c:39` | `static int lz4_has(const char *s, const char *needle)` |
-| `lz4_read_all` | function | `progs/src/lz4.c:53` | `static char *lz4_read_all(const char *name, int *len)` |
-| `lz4_write_all` | function | `progs/src/lz4.c:70` | `static int lz4_write_all(const char *name, char *data, int len)` |
-| `main` | function | `progs/src/lz4.c:164` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/src/lz4.c:16` | `int printf();` |
-| `rewind` | function | `progs/src/lz4.c:25` | `void rewind();` |
-| `strcmp` | function | `progs/src/lz4.c:17` | `int strcmp();` |
-| `strlen` | function | `progs/src/lz4.c:18` | `int strlen();` |
-| `LZSS_EI` | macro | `progs/src/lzss.c:26` | `#define LZSS_EI` |
-| `LZSS_EJ` | macro | `progs/src/lzss.c:27` | `#define LZSS_EJ` |
-| `LZSS_ENC_SLACK` | macro | `progs/src/lzss.c:39` | `#define LZSS_ENC_SLACK` |
-| `LZSS_ERR_NONE` | macro | `progs/src/lzss.c:45` | `#define LZSS_ERR_NONE` |
-| `LZSS_ERR_OVERFLOW` | macro | `progs/src/lzss.c:46` | `#define LZSS_ERR_OVERFLOW` |
-| `LZSS_EXIT_FAIL` | macro | `progs/src/lzss.c:48` | `#define LZSS_EXIT_FAIL` |
-| `LZSS_EXPAND_DEN` | macro | `progs/src/lzss.c:41` | `#define LZSS_EXPAND_DEN` |
-| `LZSS_EXPAND_NUM` | macro | `progs/src/lzss.c:40` | `#define LZSS_EXPAND_NUM` |
-| `LZSS_F` | macro | `progs/src/lzss.c:30` | `#define LZSS_F` |
-| `LZSS_HDR_SIZE` | macro | `progs/src/lzss.c:37` | `#define LZSS_HDR_SIZE` |
-| `LZSS_MAGIC0` | macro | `progs/src/lzss.c:33` | `#define LZSS_MAGIC0` |
-| `LZSS_MAGIC1` | macro | `progs/src/lzss.c:34` | `#define LZSS_MAGIC1` |
-| `LZSS_MAGIC2` | macro | `progs/src/lzss.c:35` | `#define LZSS_MAGIC2` |
-| `LZSS_MAGIC3` | macro | `progs/src/lzss.c:36` | `#define LZSS_MAGIC3` |
-| `LZSS_N` | macro | `progs/src/lzss.c:29` | `#define LZSS_N` |
-| `LZSS_P` | macro | `progs/src/lzss.c:28` | `#define LZSS_P` |
-| `LZSS_SEEK_END` | macro | `progs/src/lzss.c:43` | `#define LZSS_SEEK_END` |
-| `LZSS_WIN` | macro | `progs/src/lzss.c:31` | `#define LZSS_WIN` |
-| `fclose` | function | `progs/src/lzss.c:19` | `int fclose();` |
-| `fopen` | function | `progs/src/lzss.c:18` | `void *fopen();` |
-| `fread` | function | `progs/src/lzss.c:20` | `int fread();` |
-| `free` | function | `progs/src/lzss.c:14` | `void free();` |
-| `fseek` | function | `progs/src/lzss.c:22` | `int fseek();` |
-| `ftell` | function | `progs/src/lzss.c:23` | `int ftell();` |
-| `fwrite` | function | `progs/src/lzss.c:21` | `int fwrite();` |
-| `lz_compress` | function | `progs/src/lzss.c:278` | `static int lz_compress(const char *src, const char *dst)` |
-| `lz_decode` | function | `progs/src/lzss.c:189` | `static int lz_decode(void)` |
-| `lz_decompress` | function | `progs/src/lzss.c:325` | `static int lz_decompress(const char *src, const char *dst)` |
-| `lz_encode` | function | `progs/src/lzss.c:118` | `static int lz_encode(void)` |
-| `lz_flush_bits` | function | `progs/src/lzss.c:93` | `static void lz_flush_bits(void)` |
-| `lz_getbit` | function | `progs/src/lzss.c:173` | `static int lz_getbit(int n)` |
-| `lz_has` | function | `progs/src/lzss.c:237` | `static int lz_has(const char *s, const char *needle)` |
-| `lz_hdr_get` | function | `progs/src/lzss.c:229` | `static int lz_hdr_get(char *h)` |
-| `lz_hdr_put` | function | `progs/src/lzss.c:218` | `static void lz_hdr_put(char *h, int size)` |
-| `lz_in_getc` | function | `progs/src/lzss.c:64` | `static int lz_in_getc(void)` |
-| `lz_out_literal` | function | `progs/src/lzss.c:97` | `static void lz_out_literal(int c)` |
-| `lz_out_pair` | function | `progs/src/lzss.c:105` | `static void lz_out_pair(int x, int y)` |
-| `lz_out_put` | function | `progs/src/lzss.c:69` | `static void lz_out_put(int c)` |
-| `lz_putbit0` | function | `progs/src/lzss.c:84` | `static void lz_putbit0(void)` |
-| `lz_putbit1` | function | `progs/src/lzss.c:74` | `static void lz_putbit1(void)` |
-| `lz_read_all` | function | `progs/src/lzss.c:251` | `static char *lz_read_all(const char *name, int *len)` |
-| `lz_write_all` | function | `progs/src/lzss.c:268` | `static int lz_write_all(const char *name, char *data, int len)` |
-| `main` | function | `progs/src/lzss.c:397` | `int main(int argc, char **argv)` |
-| `malloc` | function | `progs/src/lzss.c:13` | `void *malloc();` |
-| `printf` | function | `progs/src/lzss.c:15` | `int printf();` |
-| `rewind` | function | `progs/src/lzss.c:24` | `void rewind();` |
-| `strcmp` | function | `progs/src/lzss.c:16` | `int strcmp();` |
-| `strlen` | function | `progs/src/lzss.c:17` | `int strlen();` |
-| `ENOMEM` | function | `progs/src/mmreuse.c:3` | `* downward mmap cursor drains until a map fails with ENOMEM (-12);` |
-| `_start` | function | `progs/src/mmreuse.c:35` | `void _start(void)` |
-| `exit_now` | function | `progs/src/mmreuse.c:31` | `static void exit_now(long code)` |
-| `mmap_anon` | function | `progs/src/mmreuse.c:7` | `static long mmap_anon(long len)` |
-| `munmap` | function | `progs/src/mmreuse.c:21` | `static long munmap(long addr, long len)` |
-| `_start` | function | `progs/src/mprot.c:48` | `void _start(void)` |
-| `exit_now` | function | `progs/src/mprot.c:44` | `static void exit_now(long code)` |
-| `mmap_anon` | function | `progs/src/mprot.c:11` | `static long mmap_anon(long len)` |
-| `mprotect_sys` | function | `progs/src/mprot.c:25` | `static long mprotect_sys(long addr, long len, long prot)` |
-| `write_str` | function | `progs/src/mprot.c:36` | `static long write_str(const char *s, long n)` |
-| `MMUTEX_CONTENDED` | macro | `progs/src/mthreads.h:33` | `#define MMUTEX_CONTENDED` |
-| `MMUTEX_FREE` | macro | `progs/src/mthreads.h:31` | `#define MMUTEX_FREE` |
-| `MMUTEX_HELD` | macro | `progs/src/mthreads.h:32` | `#define MMUTEX_HELD` |
-| `MMUTEX_SPINS` | macro | `progs/src/mthreads.h:34` | `#define MMUTEX_SPINS` |
-| `MTHREADS_H` | macro | `progs/src/mthreads.h:24` | `#define MTHREADS_H` |
-| `MTHREAD_MAX` | macro | `progs/src/mthreads.h:29` | `#define MTHREAD_MAX` |
-| `MTHREAD_STACK_SZ` | macro | `progs/src/mthreads.h:28` | `#define MTHREAD_STACK_SZ` |
-| `m_syscall6` | function | `progs/src/mthreads.h:50` | `static inline long m_syscall6(long n, long a, long b, long c)` |
-| `mfutex_wait` | function | `progs/src/mthreads.h:63` | `static inline long mfutex_wait(volatile int *addr, int val)` |
-| `mfutex_wake` | function | `progs/src/mthreads.h:67` | `static inline long mfutex_wake(volatile int *addr, int n)` |
-| `mmutex_init` | function | `progs/src/mthreads.h:71` | `static inline void mmutex_init(mmutex_t *m)` |
-| `mmutex_lock` | function | `progs/src/mthreads.h:75` | `static inline void mmutex_lock(mmutex_t *m)` |
-| `mmutex_t` | struct | `progs/src/mthreads.h:38` | `` |
-| `mmutex_unlock` | function | `progs/src/mthreads.h:90` | `static inline void mmutex_unlock(mmutex_t *m)` |
-| `mthread_create` | function | `progs/src/mthreads.h:117` | `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)` |
-| `mthread_entry` | function | `progs/src/mthreads.h:98` | `static void mthread_entry(void *p)` |
-| `mthread_join` | function | `progs/src/mthreads.h:140` | `static int mthread_join(mthread_t t, void **retval)` |
-| `mthread_slot_t` | struct | `progs/src/mthreads.h:42` | `` |
-| `mthread_t` | type_alias | `progs/src/mthreads.h:35` | `typedef int mthread_t;` |
-| `myield` | function | `progs/src/mthreads.h:59` | `static inline void myield(void)` |
-| `MTOP_DISK_BUF` | macro | `progs/src/mtop.c:47` | `#define MTOP_DISK_BUF` |
-| `MTOP_DISK_MAX` | macro | `progs/src/mtop.c:48` | `#define MTOP_DISK_MAX` |
-| `MTOP_HIST` | macro | `progs/src/mtop.c:46` | `#define MTOP_HIST` |
-| `MTOP_MINFO` | macro | `progs/src/mtop.c:49` | `#define MTOP_MINFO` |
-| `close` | function | `progs/src/mtop.c:43` | `int close();` |
-| `emit` | function | `progs/src/mtop.c:90` | `static void emit(char *s)` |
-| `fclose` | function | `progs/src/mtop.c:39` | `int fclose();` |
-| `fopen` | function | `progs/src/mtop.c:38` | `void *fopen();` |
-| `fread` | function | `progs/src/mtop.c:40` | `int fread();` |
-| `main` | function | `progs/src/mtop.c:531` | `int main(int argc, char **argv)` |
-| `mtop_atoi` | function | `progs/src/mtop.c:117` | `static int mtop_atoi(char *s)` |
-| `mtop_bar` | function | `progs/src/mtop.c:179` | `static void mtop_bar(long v, long max, int w)` |
-| `mtop_clear` | function | `progs/src/mtop.c:113` | `static void mtop_clear(void)` |
-| `mtop_clear_ansi` | function | `progs/src/mtop.c:103` | `static void mtop_clear_ansi(void)` |
-| `mtop_cpu` | function | `progs/src/mtop.c:253` | `static long mtop_cpu(long *count, long *busy)` |
-| `mtop_disk_open` | function | `progs/src/mtop.c:289` | `static void mtop_disk_open(void)` |
-| `mtop_disk_read` | function | `progs/src/mtop.c:313` | `static long mtop_disk_read(long *bytes)` |
-| `mtop_frame` | function | `progs/src/mtop.c:355` | `static void mtop_frame(int n)` |
-| `mtop_hist_max` | function | `progs/src/mtop.c:194` | `static long mtop_hist_max(long *h, int n)` |
-| `mtop_hist_push` | function | `progs/src/mtop.c:204` | `static void mtop_hist_push(long *h, long v)` |
-| `mtop_key` | function | `progs/src/mtop.c:80` | `static long mtop_key(void)` |
-| `mtop_mem` | function | `progs/src/mtop.c:242` | `static long mtop_mem(long *used, long *freeb, long *total)` |
-| `mtop_minfo` | function | `progs/src/mtop.c:84` | `static long mtop_minfo(long sel, long *o1, long *o2)` |
-| `mtop_net_probe` | function | `progs/src/mtop.c:337` | `static long mtop_net_probe(long *dns_ms, long *sock_ok)` |
-| `mtop_put2` | function | `progs/src/mtop.c:158` | `static void mtop_put2(int v)` |
-| `mtop_put_kb` | function | `progs/src/mtop.c:163` | `static void mtop_put_kb(long kb)` |
-| `mtop_putu` | function | `progs/src/mtop.c:136` | `static void mtop_putu(long v)` |
-| `mtop_quit_key` | function | `progs/src/mtop.c:94` | `static int mtop_quit_key(long k)` |
-| `mtop_rtc` | function | `progs/src/mtop.c:76` | `static long mtop_rtc(int *h, int *m, int *s)` |
-| `mtop_spark` | function | `progs/src/mtop.c:214` | `static void mtop_spark(long *h, int n)` |
-| `mtop_time` | function | `progs/src/mtop.c:72` | `static long mtop_time(void)` |
-| `net_dns_resolve` | function | `progs/src/mtop.c:44` | `int net_dns_resolve();` |
-| `putchar` | function | `progs/src/mtop.c:35` | `int putchar();` |
-| `rewind` | function | `progs/src/mtop.c:41` | `void rewind();` |
-| `sc3` | function | `progs/src/mtop.c:63` | `static long sc3(long n, long a1, long a2, long a3)` |
-| `socket` | function | `progs/src/mtop.c:42` | `int socket();` |
-| `strcmp` | function | `progs/src/mtop.c:37` | `int strcmp();` |
-| `strlen` | function | `progs/src/mtop.c:36` | `int strlen();` |
-| `syscall` | function | `progs/src/mtop.c:12` | `* * All system figures come from the MINFO syscall (251): heap used / * free, ramdisk used / cap, MiniFS free /...` |
-| `lmain` | function | `progs/src/mvrn.c:32` | `int lmain(void)` |
-| `mvrn_exit` | function | `progs/src/mvrn.c:20` | `static void mvrn_exit(long code)` |
-| `mvrn_fail` | function | `progs/src/mvrn.c:24` | `static void mvrn_fail(int step)` |
-| `mvrn_sc3` | function | `progs/src/mvrn.c:9` | `static long mvrn_sc3(long n, long a1, long a2, long a3)` |
-| `mvrn_write` | function | `progs/src/mvrn.c:16` | `static void mvrn_write(const char *s, unsigned long len)` |
-| `_start` | function | `progs/src/nx.c:23` | `void _start(void)` |
-| `exit_now` | function | `progs/src/nx.c:19` | `static void exit_now(long code)` |
-| `write_str` | function | `progs/src/nx.c:11` | `static long write_str(const char *s, long n)` |
-| `BUF_MS` | macro | `progs/src/opl3.c:32` | `#define BUF_MS` |
-| `F_NUM_FACTOR` | macro | `progs/src/opl3.c:34` | `#define F_NUM_FACTOR` |
-| `MONO_BYTES` | macro | `progs/src/opl3.c:30` | `#define MONO_BYTES` |
-| `SAMPLE_RATE` | macro | `progs/src/opl3.c:28` | `#define SAMPLE_RATE` |
-| `STEREO_FRAMES` | macro | `progs/src/opl3.c:29` | `#define STEREO_FRAMES` |
-| `SYS_SB16_OPEN` | macro | `progs/src/opl3.c:22` | `#define SYS_SB16_OPEN` |
-| `SYS_SB16_SUBMIT` | macro | `progs/src/opl3.c:23` | `#define SYS_SB16_SUBMIT` |
-| `SYS_TIME` | macro | `progs/src/opl3.c:21` | `#define SYS_TIME` |
-| `SYS_WRITE` | macro | `progs/src/opl3.c:24` | `#define SYS_WRITE` |
-| `busy_ms` | function | `progs/src/opl3.c:46` | `static void busy_ms(long ms)` |
-| `main` | function | `progs/src/opl3.c:107` | `int main(void)` |
-| `note_t` | struct | `progs/src/opl3.c:102` | `` |
-| `opl3_note` | function | `progs/src/opl3.c:69` | `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)` |
-| `opl3_set_instrument` | function | `progs/src/opl3.c:52` | `static void opl3_set_instrument(opl3_chip *chip)` |
-| `render` | function | `progs/src/opl3.c:77` | `static void render(opl3_chip *chip, long ms, long *fail)` |
-| `sys_open` | function | `progs/src/opl3.c:39` | `static long sys_open(long on)` |
-| `sys_submit` | function | `progs/src/opl3.c:42` | `static long sys_submit(const void *buf, long len)` |
-| `sys_time` | function | `progs/src/opl3.c:36` | `static long sys_time(void)` |
-| `_start` | function | `progs/src/pcmap.c:75` | `void _start(void)` |
-| `sc_exit` | function | `progs/src/pcmap.c:42` | `static void sc_exit(long code)` |
-| `sc_fnv` | function | `progs/src/pcmap.c:46` | `static unsigned long sc_fnv(const char *p, long n)` |
-| `sc_hex8` | function | `progs/src/pcmap.c:56` | `static void sc_hex8(unsigned long v, char *out)` |
-| `sc_mmap` | function | `progs/src/pcmap.c:21` | `static long sc_mmap(long len, long prot, long flags, long fd, long off)` |
-| `sc_munmap` | function | `progs/src/pcmap.c:65` | `static long sc_munmap(long addr, long len)` |
-| `sc_open` | function | `progs/src/pcmap.c:12` | `static long sc_open(const char *p)` |
-| `sc_write` | function | `progs/src/pcmap.c:34` | `static long sc_write(long fd, const char *s, long n)` |
-| `lmain` | function | `progs/src/pollready.c:63` | `int lmain(long argc, char **argv)` |
-| `p_atoi` | function | `progs/src/pollready.c:40` | `static int p_atoi(const char *s)` |
-| `p_parse_ip` | function | `progs/src/pollready.c:46` | `static int p_parse_ip(const char *s, unsigned char out[4])` |
-| `p_puts` | function | `progs/src/pollready.c:36` | `static void p_puts(long fd, const char *s)` |
-| `p_strlen` | function | `progs/src/pollready.c:30` | `static unsigned long p_strlen(const char *s)` |
-| `p_write` | function | `progs/src/pollready.c:26` | `static long p_write(long fd, const char *s, long n)` |
-| `BUF` | macro | `progs/src/sbtone.c:26` | `#define BUF` |
-| `RATE` | macro | `progs/src/sbtone.c:25` | `#define RATE` |
-| `SYS_SB16_OPEN` | macro | `progs/src/sbtone.c:21` | `#define SYS_SB16_OPEN` |
-| `SYS_SB16_SUBMIT` | macro | `progs/src/sbtone.c:22` | `#define SYS_SB16_SUBMIT` |
-| `SYS_TIME` | macro | `progs/src/sbtone.c:23` | `#define SYS_TIME` |
-| `WINDOW_MS` | macro | `progs/src/sbtone.c:27` | `#define WINDOW_MS` |
-| `buffers` | function | `progs/src/sbtone.c:14` | `*  * Exit code is the number of submitted buffers (0 on failure to open).  */  #include <stdio.h>...` |
-| `main` | function | `progs/src/sbtone.c:36` | `int main(void)` |
-| `SC_ARENA` | macro | `progs/src/scfuzz.c:16` | `#define SC_ARENA` |
-| `SC_OPS` | macro | `progs/src/scfuzz.c:15` | `#define SC_OPS` |
-| `SC_PAGE` | macro | `progs/src/scfuzz.c:17` | `#define SC_PAGE` |
-| `SC_PAGES` | macro | `progs/src/scfuzz.c:18` | `#define SC_PAGES` |
-| `SC_T0_BASE` | macro | `progs/src/scfuzz.c:19` | `#define SC_T0_BASE` |
-| `SC_T0_N` | macro | `progs/src/scfuzz.c:20` | `#define SC_T0_N` |
-| `SC_T1_BASE` | macro | `progs/src/scfuzz.c:21` | `#define SC_T1_BASE` |
-| `SC_T1_N` | macro | `progs/src/scfuzz.c:22` | `#define SC_T1_N` |
-| `_start` | function | `progs/src/scfuzz.c:160` | `void _start(void)` |
-| `guest` | function | `progs/src/scfuzz.c:7` | `* the guest (the BDD timeout then talks). All fuzz maps stay inside  * one private 4 MB arena (pa...` |
-| `sc_exit` | function | `progs/src/scfuzz.c:61` | `static void sc_exit(long code)` |
-| `sc_fold` | function | `progs/src/scfuzz.c:76` | `static unsigned long sc_fold(unsigned long h, unsigned long v)` |
-| `sc_hex8` | function | `progs/src/scfuzz.c:88` | `static void sc_hex8(unsigned long v, char *out)` |
-| `sc_mprotect` | function | `progs/src/scfuzz.c:38` | `static long sc_mprotect(long addr, long len, long prot)` |
-| `sc_munmap` | function | `progs/src/scfuzz.c:49` | `static long sc_munmap(long addr, long len)` |
-| `sc_rng` | function | `progs/src/scfuzz.c:67` | `static unsigned long sc_rng(unsigned long *s)` |
-| `sc_thread1` | function | `progs/src/scfuzz.c:154` | `static void *sc_thread1(void *arg)` |
-| `sc_worker` | function | `progs/src/scfuzz.c:97` | `static unsigned long sc_worker(int me, unsigned long seed)` |
-| `sc_write` | function | `progs/src/scfuzz.c:53` | `static long sc_write(long fd, const char *s, long n)` |
-| `expand` | function | `progs/src/shell.py:30` | `def expand(line, env)` |
-| `main` | function | `progs/src/shell.py:36` | `def main()` |
-| `run_capture` | function | `progs/src/shell.py:20` | `def run_capture(cmd, args)` |
-| `SPIN_WLA` | macro | `progs/src/spin.c:58` | `#define SPIN_WLA` |
-| `SPIN_WLB` | macro | `progs/src/spin.c:59` | `#define SPIN_WLB` |
-| `SPIN_WLH` | macro | `progs/src/spin.c:57` | `#define SPIN_WLH` |
-| `SPIN_WLW` | macro | `progs/src/spin.c:56` | `#define SPIN_WLW` |
-| `lmain` | function | `progs/src/spin.c:225` | `int lmain(long argc, char **argv)` |
-| `lx_atoi` | function | `progs/src/spin.c:42` | `static long lx_atoi(const char *s)` |
-| `lx_strlen` | function | `progs/src/spin.c:20` | `static unsigned long lx_strlen(const char *s)` |
-| `lx_syscall3` | function | `progs/src/spin.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
-| `lx_write` | function | `progs/src/spin.c:26` | `static void lx_write(const char *s)` |
-| `lx_write_int` | function | `progs/src/spin.c:30` | `static void lx_write_int(long v)` |
-| `spin_box_ok` | function | `progs/src/spin.c:82` | `static int spin_box_ok(const char *box)` |
-| `spin_emit` | function | `progs/src/spin.c:114` | `static int spin_emit(const char *box, unsigned int seq,         const unsigned char *msg, long mlen)` |
-| `spin_hdr` | function | `progs/src/spin.c:73` | `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,         unsigned long ...` |
-| `spin_hex8` | function | `progs/src/spin.c:95` | `static void spin_hex8(unsigned int v, char *dst)` |
-| `spin_pixels` | function | `progs/src/spin.c:169` | `static void spin_pixels(long off)` |
-| `spin_raw_file` | function | `progs/src/spin.c:145` | `static int spin_raw_file(const char *box)` |
-| `spin_u32` | function | `progs/src/spin.c:66` | `static void spin_u32(unsigned char *d, unsigned long v)` |
-| `spin_wl` | function | `progs/src/spin.c:181` | `static int spin_wl(const char *box, const char *narg)` |
-| `spin_write_all` | function | `progs/src/spin.c:104` | `static long spin_write_all(long fd, const unsigned char *buf, long len)` |
-| `add` | function | `progs/src/test.c:1` | `int add(int a, int b)` |
-| `main` | function | `progs/src/test.c:2` | `int main(void)` |
-| `check` | function | `progs/src/test.lua:12` | `` |
-| `read_file` | function | `progs/src/test.lua:30` | `` |
-| `test_bin_aes` | function | `progs/src/test.lua:175` | `` |
-| `test_bin_cp` | function | `progs/src/test.lua:135` | `` |
-| `test_bin_freedom` | function | `progs/src/test.lua:205` | `` |
-| `test_bin_json` | function | `progs/src/test.lua:194` | `` |
-| `test_bin_lz4` | function | `progs/src/test.lua:141` | `` |
-| `test_bin_lzss` | function | `progs/src/test.lua:158` | `` |
-| `test_dlmalloc` | function | `progs/src/test.lua:80` | `` |
-| `test_filesystem` | function | `progs/src/test.lua:53` | `` |
-| `test_ftest` | function | `progs/src/test.lua:90` | `` |
-| `test_hello` | function | `progs/src/test.lua:85` | `` |
-| `test_ld` | function | `progs/src/test.lua:100` | `` |
-| `test_minigcc` | function | `progs/src/test.lua:95` | `` |
-| `test_module_bindings` | function | `progs/src/test.lua:40` | `` |
-| `test_spawn_preserves_interpreter` | function | `progs/src/test.lua:122` | `` |
-| `test_stb` | function | `progs/src/test.lua:75` | `` |
-| `test_toolchain_roundtrip` | function | `progs/src/test.lua:112` | `` |
-| `test_xxhash` | function | `progs/src/test.lua:70` | `` |
-| `write_file` | function | `progs/src/test.lua:22` | `` |
-| `check` | function | `progs/src/test.py:15` | `def check(name, cond, detail)` |
-| `main` | function | `progs/src/test.py:261` | `def main()` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

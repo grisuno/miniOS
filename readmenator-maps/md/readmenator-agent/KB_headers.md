@@ -1,5 +1,5 @@
-# Subsystem: headers (page 1 of 5)
-Pages: [KB_headers.md](KB_headers.md), [KB_headers_p2.md](KB_headers_p2.md), [KB_headers_p3.md](KB_headers_p3.md), [KB_headers_p4.md](KB_headers_p4.md), [KB_headers_p5.md](KB_headers_p5.md)
+# Subsystem: headers (page 1 of 6)
+Pages: [KB_headers.md](KB_headers.md), [KB_headers_p2.md](KB_headers_p2.md), [KB_headers_p3.md](KB_headers_p3.md), [KB_headers_p4.md](KB_headers_p4.md), [KB_headers_p5.md](KB_headers_p5.md), [KB_headers_p6.md](KB_headers_p6.md)
 
 ## headers/abi.h
 - Doc: Docstring: abi.h -- Boot-time ABI manifest gate contract.
@@ -251,12 +251,13 @@ Pages: [KB_headers.md](KB_headers.md), [KB_headers_p2.md](KB_headers_p2.md), [KB
 - Layer: utility
 - Language: h
 - Symbols:
-  - `futex_bucket_t` (struct, line 68)
-  - `futex_init` (function, line 74) `void futex_init(void);`
-  - `futex_wait` (function, line 75) `long futex_wait(unsigned long uaddr, int val);`
-  - `futex_wake` (function, line 76) `long futex_wake(unsigned long uaddr, int n);`
-  - `FUTEX_PRIVATE_FLAG` (function, line 79) `* FUTEX_PRIVATE_FLAG (process-private is served on the same global * buckets: same semantics, no isolation...`
-  - `futex_linux_cmd` (function, line 84) `int futex_linux_cmd(long op);`
+  - `futex_bucket_t` (struct, line 80)
+  - `futex_init` (function, line 86) `void futex_init(void);`
+  - `futex_wait` (function, line 87) `long futex_wait(unsigned long uaddr, int val);`
+  - `futex_wake` (function, line 88) `long futex_wake(unsigned long uaddr, int n);`
+  - `FUTEX_CLOCK_REALTIME` (function, line 93) `* FUTEX_CLOCK_REALTIME (it only selects the clock of a BITSET deadline). * Returns -1 for anything unserved...`
+  - `futex_linux_cmd` (function, line 97) `int futex_linux_cmd(long op);`
+  - `futex_timeout_remaining_us` (function, line 104) `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us);`
   - `FUTEX_H` (macro, line 2) `#define FUTEX_H`
   - `FUTEX_BUCKETS` (macro, line 51) `#define FUTEX_BUCKETS`
   - `FUTEX_BUCKET_MASK` (macro, line 52) `#define FUTEX_BUCKET_MASK`
@@ -265,9 +266,18 @@ Pages: [KB_headers.md](KB_headers.md), [KB_headers_p2.md](KB_headers_p2.md), [KB
   - `FUTEX_NOMATCH` (macro, line 56) `#define FUTEX_NOMATCH`
   - `FUTEX_NOPROC` (macro, line 57) `#define FUTEX_NOPROC`
   - `FUTEX_WAKE_ALL` (macro, line 58) `#define FUTEX_WAKE_ALL`
-  - `LINUX_FUTEX_WAIT` (macro, line 64) `#define LINUX_FUTEX_WAIT`
-  - `LINUX_FUTEX_WAKE` (macro, line 65) `#define LINUX_FUTEX_WAKE`
-  - `LINUX_FUTEX_PRIVATE_FLAG` (macro, line 66) `#define LINUX_FUTEX_PRIVATE_FLAG`
+  - `LINUX_FUTEX_WAIT` (macro, line 65) `#define LINUX_FUTEX_WAIT`
+  - `LINUX_FUTEX_WAKE` (macro, line 66) `#define LINUX_FUTEX_WAKE`
+  - `LINUX_FUTEX_WAIT_BITSET` (macro, line 67) `#define LINUX_FUTEX_WAIT_BITSET`
+  - `LINUX_FUTEX_WAKE_BITSET` (macro, line 68) `#define LINUX_FUTEX_WAKE_BITSET`
+  - `LINUX_FUTEX_PRIVATE_FLAG` (macro, line 69) `#define LINUX_FUTEX_PRIVATE_FLAG`
+  - `LINUX_FUTEX_CLOCK_REALTIME` (macro, line 70) `#define LINUX_FUTEX_CLOCK_REALTIME`
+  - `LINUX_FUTEX_BITSET_MATCH_ANY` (macro, line 71) `#define LINUX_FUTEX_BITSET_MATCH_ANY`
+  - `FUTEX_US_PER_S` (macro, line 72) `#define FUTEX_US_PER_S`
+  - `FUTEX_NS_PER_US` (macro, line 73) `#define FUTEX_NS_PER_US`
+  - `FUTEX_NS_PER_S` (macro, line 74) `#define FUTEX_NS_PER_S`
+  - `FUTEX_TIMEOUT_INVALID` (macro, line 77) `#define FUTEX_TIMEOUT_INVALID`
+  - `FUTEX_TIMEOUT_FOREVER` (macro, line 78) `#define FUTEX_TIMEOUT_FOREVER`
 - Depends on: `headers/sched.h`, `headers/spinlock.h`, `headers/sync.h`
 - Imported by: `kernel/futex.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_futex.c`
 

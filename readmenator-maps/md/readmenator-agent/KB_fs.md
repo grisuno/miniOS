@@ -137,24 +137,29 @@
   - `fs_take` (function, line 66) `static inline void fs_take(irqflags_t *flags)`
   - `fs_drop` (function, line 70) `static inline void fs_drop(irqflags_t flags)`
   - `kpipe_pair` (function, line 78) `int kpipe_pair(KFILE **rend_out, KFILE **wend_out)`
-  - `kpipe_is_write_end` (function, line 130) `int kpipe_is_write_end(KFILE *f)`
-  - `kpipe_grow` (function, line 137) `static int kpipe_grow(pipe_ring_t *ring)`
-  - `kfopen` (function, line 160) `KFILE *kfopen(const char *path, const char *mode)`
-  - `fs_rename_on_minifs` (function, line 257) `static int fs_rename_on_minifs(const char *dst)`
-  - `entry` (function, line 276) `* directory with a volatile ramdisk entry (the kfopen misroute class) or
+  - `kpipe_state` (function, line 130) `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen)`
+  - `kevent_create` (function, line 148) `KFILE *kevent_create(unsigned long long initval, int semaphore)`
+  - `kevent_read` (function, line 163) `long kevent_read(KFILE *f, unsigned long long *out)`
+  - `kevent_readable` (function, line 199) `int kevent_readable(KFILE *f)`
+  - `kevent_writable` (function, line 204) `int kevent_writable(KFILE *f)`
+  - `kpipe_is_write_end` (function, line 209) `int kpipe_is_write_end(KFILE *f)`
+  - `kpipe_grow` (function, line 216) `static int kpipe_grow(pipe_ring_t *ring)`
+  - `kfopen` (function, line 239) `KFILE *kfopen(const char *path, const char *mode)`
+  - `fs_rename_on_minifs` (function, line 336) `static int fs_rename_on_minifs(const char *dst)`
+  - `entry` (function, line 355) `* directory with a volatile ramdisk entry (the kfopen misroute class) or
  * need a copy+delete th...`
-  - `kfclose` (function, line 318) `int kfclose(KFILE *f)`
-  - `kfgetc` (function, line 358) `int kfgetc(KFILE *f)`
-  - `kfgets` (function, line 399) `char *kfgets(char *buf, int size, KFILE *f)`
-  - `kfungetc` (function, line 413) `int kfungetc(int c, KFILE *f)`
-  - `kfread` (function, line 420) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfwrite` (function, line 466) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfseek` (function, line 532) `int kfseek(KFILE *f, long offset, int whence)`
-  - `kftell` (function, line 553) `long kftell(KFILE *f)`
-  - `kfflush` (function, line 557) `int kfflush(KFILE *f)`
-  - `kfputs` (function, line 583) `int kfputs(const char *s, KFILE *f)`
-  - `kfputc` (function, line 589) `int kfputc(int c, KFILE *f)`
-  - `krewind` (function, line 594) `void krewind(KFILE *f)`
+  - `kfclose` (function, line 397) `int kfclose(KFILE *f)`
+  - `kfgetc` (function, line 442) `int kfgetc(KFILE *f)`
+  - `kfgets` (function, line 483) `char *kfgets(char *buf, int size, KFILE *f)`
+  - `kfungetc` (function, line 497) `int kfungetc(int c, KFILE *f)`
+  - `kfread` (function, line 504) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfwrite` (function, line 550) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfseek` (function, line 616) `int kfseek(KFILE *f, long offset, int whence)`
+  - `kftell` (function, line 637) `long kftell(KFILE *f)`
+  - `kfflush` (function, line 641) `int kfflush(KFILE *f)`
+  - `kfputs` (function, line 667) `int kfputs(const char *s, KFILE *f)`
+  - `kfputc` (function, line 673) `int kfputc(int c, KFILE *f)`
+  - `krewind` (function, line 678) `void krewind(KFILE *f)`
 - Depends on: `headers/minifs.h`
 
 ## fs/minifs.c
@@ -227,12 +232,11 @@ void minifs_journal_touch(unsigned int phys)`
   - `minifs_get_lba_start` (function, line 1409) `unsigned int minifs_get_lba_start(void)`
   - `minifs_is_mounted` (function, line 1410) `int minifs_is_mounted(void)`
   - `minifs_mount` (function, line 1418) `int minifs_mount(void)`
-  - `minifs_mkfs` (function, line 1570) `int minifs_mkfs(unsigned int total_blocks)`
-  - `minifs_sync` (function, line 1641) `int minifs_sync(void)`
-  - `minifs_file_open` (function, line 1656) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-  - `minifs_file_close` (function, line 1670) `int minifs_file_close(MiniFSFile *f)`
-  - `minifs_get_total_blocks` (function, line 1677) `unsigned int minifs_get_total_blocks(void)`
-  - `minifs_usage` (function, line 1682) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+  - `minifs_sync` (function, line 1568) `int minifs_sync(void)`
+  - `minifs_file_open` (function, line 1583) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
+  - `minifs_file_close` (function, line 1597) `int minifs_file_close(MiniFSFile *f)`
+  - `minifs_get_total_blocks` (function, line 1604) `unsigned int minifs_get_total_blocks(void)`
+  - `minifs_usage` (function, line 1609) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
                   unsigned int *fr...`
   - `minifs_journal_touch` (function, line 16) `void minifs_journal_touch(unsigned int phys);`
   - `blk_new` (function, line 22) `static unsigned char *blk_new(void);`

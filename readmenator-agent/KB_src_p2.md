@@ -1,5 +1,65 @@
-# Subsystem: src (page 2 of 2)
+# Subsystem: src (page 2 of 3)
 Previous: [KB_src.md](KB_src.md)
+
+## progs/src/lxabi.c
+- Doc: Linux process, thread and descriptor ABI probe (FreeDom
+- Layer: utility
+- Language: c
+- Symbols:
+  - `thread_result` (struct, line 188)
+  - `tls_seen` (type_alias, line 187) `typedef struct thread_result { long tls_seen;`
+  - `report` (function, line 58) `static void report(const char *name, int ok, const char *detail)`
+  - `now_ms` (function, line 68) `static long now_ms(void)`
+  - `busy_wait_ms` (function, line 74) `static void busy_wait_ms(long ms)`
+  - `fork_probe` (function, line 88) `static void fork_probe(uint64_t *out)`
+  - `regs_match` (function, line 125) `static int regs_match(const uint64_t *r)`
+  - `check_fork_registers` (function, line 131) `static void check_fork_registers(void)`
+  - `check_fork_cow_kernel_write` (function, line 153) `static void check_fork_cow_kernel_write(void)`
+  - `worker` (function, line 194) `static void *worker(void *arg)`
+  - `check_threads` (function, line 208) `static void check_threads(void)`
+  - `detached_worker` (function, line 238) `static void *detached_worker(void *arg)`
+  - `check_detached_reaped` (function, line 244) `static void check_detached_reaped(void)`
+  - `signaller` (function, line 268) `static void *signaller(void *arg)`
+  - `check_condvar` (function, line 278) `static void check_condvar(void)`
+  - `check_pipe2_flags` (function, line 300) `static void check_pipe2_flags(void)`
+  - `check_pipe_blocking` (function, line 327) `static void check_pipe_blocking(void)`
+  - `check_pipe_epipe` (function, line 349) `static void check_pipe_epipe(void)`
+  - `check_writev_pipe` (function, line 360) `static void check_writev_pipe(void)`
+  - `check_poll` (function, line 372) `static void check_poll(void)`
+  - `check_eventfd` (function, line 396) `static void check_eventfd(void)`
+  - `check_close_range` (function, line 421) `static void check_close_range(void)`
+  - `check_time` (function, line 433) `static void check_time(void)`
+  - `check_mkdir` (function, line 442) `static void check_mkdir(void)`
+  - `lxabi_sleeper` (function, line 454) `static void *lxabi_sleeper(void *arg)`
+  - `child_status` (function, line 462) `static int child_status(void (*body)(void))`
+  - `abort_from_worker_body` (function, line 482) `static void abort_from_worker_body(void)`
+  - `lxabi_exit_group_worker` (function, line 488) `static void *lxabi_exit_group_worker(void *arg)`
+  - `exit_group_from_worker_body` (function, line 494) `static void exit_group_from_worker_body(void)`
+  - `wild_jump_body` (function, line 500) `static void wild_jump_body(void)`
+  - `process` (function, line 508) `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
+ * leaves the target aliv...`
+  - `main` (function, line 535) `int main(void)`
+  - `_GNU_SOURCE` (macro, line 17) `#define _GNU_SOURCE`
+  - `LXABI_CHILD_DELAY_MS` (macro, line 36) `#define LXABI_CHILD_DELAY_MS`
+  - `LXABI_THREADS` (macro, line 37) `#define LXABI_THREADS`
+  - `LXABI_THREAD_ITERS` (macro, line 38) `#define LXABI_THREAD_ITERS`
+  - `LXABI_DETACHED` (macro, line 39) `#define LXABI_DETACHED`
+  - `LXABI_WAIT_SPINS` (macro, line 40) `#define LXABI_WAIT_SPINS`
+  - `LXABI_GROUP_EXIT_CODE` (macro, line 41) `#define LXABI_GROUP_EXIT_CODE`
+  - `LXABI_TIMEDWAIT_MS` (macro, line 42) `#define LXABI_TIMEDWAIT_MS`
+  - `LXABI_EPOCH_2023` (macro, line 43) `#define LXABI_EPOCH_2023`
+  - `LXABI_CLOCK_SKEW_S` (macro, line 44) `#define LXABI_CLOCK_SKEW_S`
+  - `LXABI_REG_PROBE_WORDS` (macro, line 45) `#define LXABI_REG_PROBE_WORDS`
+  - `LXABI_CLONE_NR` (macro, line 46) `#define LXABI_CLONE_NR`
+  - `LXABI_SIGCHLD` (macro, line 47) `#define LXABI_SIGCHLD`
+  - `LXABI_A6_MAGIC` (macro, line 48) `#define LXABI_A6_MAGIC`
+  - `LXABI_CHILD_BAD` (macro, line 49) `#define LXABI_CHILD_BAD`
+  - `LXABI_MKDIR_PATH` (macro, line 50) `#define LXABI_MKDIR_PATH`
+  - `LXABI_MKDIR_FILE` (macro, line 51) `#define LXABI_MKDIR_FILE`
+  - `LXABI_CLOSE_RANGE_NR` (macro, line 52) `#define LXABI_CLOSE_RANGE_NR`
+  - `LXABI_PAGE` (macro, line 53) `#define LXABI_PAGE`
+  - `LXABI_COW_WORD` (macro, line 54) `#define LXABI_COW_WORD`
+- Depends on: `kernel/string.c`, `kernel/time.c`
 
 ## progs/src/lxhello.c
 - Doc: lmain: static void lx_write_int(long v) { char buf[24]; int i = (int)sizeof(buf); int neg = 0...
@@ -13,6 +73,66 @@ Previous: [KB_src.md](KB_src.md)
   - `lmain` (function, line 46) `int lmain(long argc, char **argv)`
   - `SYS_write` (macro, line 20) `#define SYS_write`
   - `SYS_exit` (macro, line 21) `#define SYS_exit`
+
+## progs/src/lxnet.c
+- Doc: Linux socket ABI probe (FreeDom readiness step 6,
+- Layer: utility
+- Language: c
+- Symbols:
+  - `report` (function, line 48) `static void report(const char *name, int ok, const char *detail)`
+  - `wait_for` (function, line 54) `static int wait_for(int fd, short events)`
+  - `read_all` (function, line 61) `static int read_all(int fd, char *buf, size_t len)`
+  - `check_udp` (function, line 72) `static void check_udp(const struct sockaddr_in *peer)`
+  - `check_refused` (function, line 143) `static void check_refused(const struct sockaddr_in *peer)`
+  - `check_tcp` (function, line 167) `static void check_tcp(const struct sockaddr_in *peer)`
+  - `check_misc` (function, line 210) `static void check_misc(void)`
+  - `dial` (function, line 229) `static int dial(const char *host, const char *port)`
+  - `main` (function, line 273) `int main(int argc, char **argv)`
+  - `_GNU_SOURCE` (macro, line 24) `#define _GNU_SOURCE`
+  - `LXNET_WAIT_MS` (macro, line 39) `#define LXNET_WAIT_MS`
+  - `LXNET_BUF` (macro, line 40) `#define LXNET_BUF`
+  - `LXNET_UDP_MSG` (macro, line 41) `#define LXNET_UDP_MSG`
+  - `LXNET_TCP_MSG` (macro, line 42) `#define LXNET_TCP_MSG`
+  - `LXNET_LOOPBACK` (macro, line 43) `#define LXNET_LOOPBACK`
+  - `LXNET_IP_UNKNOWN` (macro, line 44) `#define LXNET_IP_UNKNOWN`
+- Depends on: `kernel/string.c`
+
+## progs/src/lxsecc.c
+- Doc: Linux seccomp-bpf, prctl and /proc/self/exe probe (FreeDom
+- Layer: utility
+- Language: c
+- Symbols:
+  - `report` (function, line 44) `static void report(const char *name, int ok, const char *detail)`
+  - `exit_code_of` (function, line 53) `static int exit_code_of(int st)`
+  - `run_child` (function, line 58) `static int run_child(void (*body)(void))`
+  - `install_filter` (function, line 72) `static int install_filter(unsigned getpid_action)`
+  - `child_errno_action` (function, line 100) `static void child_errno_action(void)`
+  - `child_kill_action` (function, line 107) `static void child_kill_action(void)`
+  - `child_wx` (function, line 116) `static void child_wx(void)`
+  - `grandchild_inherits` (function, line 127) `static void grandchild_inherits(void)`
+  - `child_inherit` (function, line 133) `static void child_inherit(void)`
+  - `child_stacked` (function, line 142) `static void child_stacked(void)`
+  - `child_strict` (function, line 150) `static void child_strict(void)`
+  - `child_no_nnp` (function, line 157) `static void child_no_nnp(void)`
+  - `child_bad_program` (function, line 165) `static void child_bad_program(void)`
+  - `check_prctl_flags` (function, line 177) `static void check_prctl_flags(void)`
+  - `check_proc_self_exe` (function, line 197) `static void check_proc_self_exe(const char *argv0)`
+  - `main` (function, line 215) `int main(int argc, char **argv)`
+  - `_GNU_SOURCE` (macro, line 13) `#define _GNU_SOURCE`
+  - `LXSECC_EXEC_FLAG` (macro, line 28) `#define LXSECC_EXEC_FLAG`
+  - `LXSECC_EXEC_CODE` (macro, line 29) `#define LXSECC_EXEC_CODE`
+  - `LXSECC_OK_CODE` (macro, line 30) `#define LXSECC_OK_CODE`
+  - `LXSECC_BAD_CODE` (macro, line 31) `#define LXSECC_BAD_CODE`
+  - `LXSECC_EXE_MAX` (macro, line 32) `#define LXSECC_EXE_MAX`
+  - `LXSECC_NAME` (macro, line 33) `#define LXSECC_NAME`
+  - `LXSECC_NAME_MAX` (macro, line 34) `#define LXSECC_NAME_MAX`
+  - `LXSECC_ERRNO_A` (macro, line 35) `#define LXSECC_ERRNO_A`
+  - `LXSECC_ERRNO_B` (macro, line 36) `#define LXSECC_ERRNO_B`
+  - `LXSECC_PAGE` (macro, line 37) `#define LXSECC_PAGE`
+  - `LXSECC_STATUS_MASK` (macro, line 38) `#define LXSECC_STATUS_MASK`
+  - `LXSECC_STATUS_SHIFT` (macro, line 39) `#define LXSECC_STATUS_SHIFT`
+  - `LXSECC_STATUS_BYTE` (macro, line 40) `#define LXSECC_STATUS_BYTE`
+- Depends on: `kernel/string.c`
 
 ## progs/src/lz4.c
 - Doc: command path LZ4 (de)compression tools: lz4 and unlz4.
@@ -356,84 +476,5 @@ Previous: [KB_src.md](KB_src.md)
   - `add` (function, line 1) `int add(int a, int b)`
   - `main` (function, line 2) `int main(void)`
 
-## progs/src/test.lua
-- Layer: testing
-- Language: lua
-- Symbols:
-  - `check` (function, line 12)
-  - `write_file` (function, line 22)
-  - `read_file` (function, line 30)
-  - `test_module_bindings` (function, line 40)
-  - `test_filesystem` (function, line 53)
-  - `test_xxhash` (function, line 70)
-  - `test_stb` (function, line 75)
-  - `test_dlmalloc` (function, line 80)
-  - `test_hello` (function, line 85)
-  - `test_ftest` (function, line 90)
-  - `test_minigcc` (function, line 95)
-  - `test_ld` (function, line 100)
-  - `test_toolchain_roundtrip` (function, line 112)
-  - `test_spawn_preserves_interpreter` (function, line 122)
-  - `test_bin_cp` (function, line 135)
-  - `test_bin_lz4` (function, line 141)
-  - `test_bin_lzss` (function, line 158)
-  - `test_bin_aes` (function, line 175)
-  - `test_bin_json` (function, line 194)
-  - `test_bin_freedom` (function, line 205)
 
-## progs/src/test.py
-- Doc: in-OS test suite for MiniOS, driven by MicroPython.
-- Layer: testing
-- Language: py
-- Symbols:
-  - `check` (function, line 15) `def check(name, cond, detail)`
-  - `safe_run` (function, line 25) `def safe_run()`
-  - `test_module_bindings` (function, line 38) `def test_module_bindings()`
-  - `test_filesystem` (function, line 56) `def test_filesystem()`
-  - `test_xxhash` (function, line 72) `def test_xxhash()`
-  - `test_stb` (function, line 77) `def test_stb()`
-  - `test_dlmalloc` (function, line 82) `def test_dlmalloc()`
-  - `test_hello` (function, line 87) `def test_hello()`
-  - `test_ftest` (function, line 92) `def test_ftest()`
-  - `test_minigcc` (function, line 97) `def test_minigcc()`
-  - `test_ld` (function, line 102) `def test_ld()`
-  - `test_toolchain_roundtrip` (function, line 119) `def test_toolchain_roundtrip()`
-  - `test_spawn_preserves_interpreter` (function, line 134) `def test_spawn_preserves_interpreter()`
-  - `test_bin_cp` (function, line 148) `def test_bin_cp()`
-  - `test_bin_lz4` (function, line 153) `def test_bin_lz4()`
-  - `test_bin_lzss` (function, line 181) `def test_bin_lzss()`
-  - `test_bin_aes` (function, line 209) `def test_bin_aes()`
-  - `test_bin_json` (function, line 239) `def test_bin_json()`
-  - `test_bin_freedom` (function, line 253) `def test_bin_freedom()`
-  - `main` (function, line 261) `def main()`
-- Depends on: `progs/lua/minios.c`
-
-## progs/src/test_all.sh
-- Doc: comprehensive non-interactive test suite for MiniOS.
-- Layer: testing
-- Language: sh
-
-## progs/src/thdemo.c
-- Doc: Producer-consumer over mthreads (roadmap Phase 1, M1).
-- Layer: utility
-- Language: c
-- Symbols:
-  - `producer` (function, line 36) `static void *producer(void *p)`
-  - `consumer` (function, line 57) `static void *consumer(void *p)`
-  - `main` (function, line 82) `int main(void)`
-  - `threads` (function, line 3) `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall...`
-  - `NPROD` (macro, line 21) `#define NPROD`
-  - `NCONS` (macro, line 22) `#define NCONS`
-  - `PER_PROD` (macro, line 23) `#define PER_PROD`
-  - `BUFSZ` (macro, line 24) `#define BUFSZ`
-  - `EXPECTED_N` (macro, line 26) `#define EXPECTED_N`
-  - `EXPECTED_SUM` (macro, line 27) `#define EXPECTED_SUM`
-- Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
-
-## progs/src/w1.c
-- Layer: utility
-- Language: c
-- Symbols:
-  - `main` (function, line 3) `int main(void)`
-  - `write` (function, line 1) `int write(int fd, char *buf, int n);`
-
+Next: [KB_src_p3.md](KB_src_p3.md)

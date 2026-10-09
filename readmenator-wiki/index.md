@@ -1,13 +1,13 @@
 # Second Brain
 
-*Last synthesized: 2026-10-08 | 557 files | 10 concept pages | offline, zero tokens*
+*Last synthesized: 2026-10-09 | 566 files | 10 concept pages | offline, zero tokens*
 
 > Raw sources -> readmenator wiki -> links (Karpathy LLM Wiki Pattern, deterministic).
 > Start here, then open one community page. Prefer grep over full reads.
 
 ## Vault Overview
 
-The codebase centres on `string.c`, `doomtype.h`, `doomdef.h`. Architecturally it is 5 layers, dominant utility (433 files) across 10 import-based communities. Recorded risk surface: 0 security findings and 1 dependency cycles.
+The codebase centres on `string.c`, `doomtype.h`, `doomdef.h`. Architecturally it is 5 layers, dominant utility (439 files) across 10 import-based communities. Recorded risk surface: 0 security findings and 1 dependency cycles.
 
 Surprising tissue lives between headers: kernel, progs/doomgeneric: d_englsh, progs/doomgeneric: p_spec: 14 extracted cross-community imports and 6 inferred bridges. Follow `connections.json` sorted by strength before refactoring.
 
@@ -17,14 +17,14 @@ Open work clusters around documentation (89% file coverage), 0 security findings
 
 | Metric | Value |
 |--------|-------|
-| Files | 557 |
-| Symbols | 11896 |
-| Resolved imports | 1345 |
+| Files | 566 |
+| Symbols | 12338 |
+| Resolved imports | 1360 |
 | Languages | S, c, h, lua, py, s, sh |
 | Communities | 10 |
-| Doc coverage | 89% (494/557 files) |
+| Doc coverage | 89% (503/566 files) |
 | Security findings | 0 |
-| Estimated read cost | ~210322 tokens (chars/4, offline so $0) |
+| Estimated read cost | ~218079 tokens (chars/4, offline so $0) |
 
 ## Reading Order
 
@@ -39,22 +39,22 @@ readmenator query "<question>" --target miniOS
 
 ## Concept Wiki
 
-- [headers: kernel (138 files, cohesion 0.88)](./community_0_headers_kernel.md)
+- [headers: kernel (143 files, cohesion 0.88)](./community_0_headers_kernel.md)
 - [progs/doomgeneric: d_englsh (99 files, cohesion 0.66)](./community_1_progs_doomgeneric_d_englsh.md)
 - [progs/doomgeneric: p_spec (69 files, cohesion 0.56)](./community_2_progs_doomgeneric_p_spec.md)
-- [progs/src (67 files, cohesion 0.70)](./community_3_progs_src.md)
-- [tools: minios_hyper (29 files, cohesion 0.80)](./community_4_tools_minios_hyper.md)
+- [progs/src (67 files, cohesion 0.69)](./community_3_progs_src.md)
+- [tools: lxabi (29 files, cohesion 0.80)](./community_4_tools_lxabi.md)
 - [headers: vga_fb (18 files, cohesion 0.70)](./community_5_headers_vga_fb.md)
-- [headers: tls_crypto (15 files, cohesion 0.63)](./community_6_headers_tls_crypto.md)
+- [headers: net (17 files, cohesion 0.62)](./community_6_headers_net.md)
 - [progs/doomgeneric: net_defs (13 files, cohesion 0.42)](./community_7_progs_doomgeneric_net_defs.md)
 - [tools: doom_pwad (2 files, cohesion 1.00)](./community_8_tools_doom_pwad.md)
-- [orphans (107 files, cohesion 0.00)](./community_9_orphans.md)
+- [orphans (109 files, cohesion 0.00)](./community_9_orphans.md)
 
 ## God Nodes
 
 | File | Score |
 |------|-------|
-| `kernel/string.c` | 163.3 |
+| `kernel/string.c` | 169.3 |
 | `progs/doomgeneric/doomtype.h` | 101.4 |
 | `progs/doomgeneric/doomdef.h` | 90.9 |
 | `progs/doomgeneric/doomstat.h` | 84.8 |
@@ -62,7 +62,7 @@ readmenator query "<question>" --target miniOS
 
 ## Strongest Connections
 
-- 6 -> 0: depends_on (strength 0.9, EXTRACTED)
+- 0 -> 6: depends_on (strength 0.9, EXTRACTED)
 - 0 -> 3: depends_on (strength 0.9, EXTRACTED)
 - 6 -> 3: depends_on (strength 0.9, EXTRACTED)
 - 6 -> 4: depends_on (strength 0.9, EXTRACTED)

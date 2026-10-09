@@ -1,6 +1,37 @@
 # API (page 9 of 19)
 Previous: [API_p8.md](API_p8.md)
 
+## progs/asm/lzss.s
+- `lz_win` (function) `progs/asm/lzss.s:3`
+- `lz_src` (function) `progs/asm/lzss.s:7`
+- `lz_srclen` (function) `progs/asm/lzss.s:11`
+- `lz_srcpos` (function) `progs/asm/lzss.s:15`
+- `lz_dst` (function) `progs/asm/lzss.s:19`
+- `lz_dstcap` (function) `progs/asm/lzss.s:23`
+- `lz_dstlen` (function) `progs/asm/lzss.s:27`
+- `lz_err` (function) `progs/asm/lzss.s:31`
+- `lz_buf` (function) `progs/asm/lzss.s:35`
+- `lz_mask` (function) `progs/asm/lzss.s:39`
+- `lz_in_getc` (function) `progs/asm/lzss.s:43`
+- `lz_out_put` (function) `progs/asm/lzss.s:79`
+- `lz_putbit1` (function) `progs/asm/lzss.s:116`
+- `lz_putbit0` (function) `progs/asm/lzss.s:174`
+- `lz_flush_bits` (function) `progs/asm/lzss.s:223`
+- `lz_out_literal` (function) `progs/asm/lzss.s:251`
+- `lz_out_pair` (function) `progs/asm/lzss.s:321`
+- `lz_next_mb` (function) `progs/asm/lzss.s:447`
+- `lz_encode` (function) `progs/asm/lzss.s:451`
+- `lz_getbit` (function) `progs/asm/lzss.s:1051`
+- `lz_decode` (function) `progs/asm/lzss.s:1171`
+- `lz_hdr_put` (function) `progs/asm/lzss.s:1514`
+- `lz_hdr_get` (function) `progs/asm/lzss.s:1629`
+- `lz_has` (function) `progs/asm/lzss.s:1782`
+- `lz_read_all` (function) `progs/asm/lzss.s:1935`
+- `lz_write_all` (function) `progs/asm/lzss.s:2150`
+- `lz_compress` (function) `progs/asm/lzss.s:2257`
+- `lz_decompress` (function) `progs/asm/lzss.s:2628`
+- `main` (function) `progs/asm/lzss.s:3178`
+
 ## progs/asm/mtop.s
 - `h_cpu` (function) `progs/asm/mtop.s:3`
 - `h_mem` (function) `progs/asm/mtop.s:7`

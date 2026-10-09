@@ -12,24 +12,24 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `syscall_init` (function, line 114) `void syscall_init(void)`
-  - `bootlog_mark` (function, line 189) `void bootlog_mark(const char *name)`
-  - `bootlog_report` (function, line 196) `void bootlog_report(void)`
-  - `__attribute__` (function, line 204) `__attribute__((section(".init.text")))
+  - `syscall_init` (function, line 115) `void syscall_init(void)`
+  - `bootlog_mark` (function, line 190) `void bootlog_mark(const char *name)`
+  - `bootlog_report` (function, line 197) `void bootlog_report(void)`
+  - `__attribute__` (function, line 205) `__attribute__((section(".init.text")))
 void kmain(void)`
-  - `tables` (function, line 281) `* tables (already built above) for its uncached register window and the
+  - `tables` (function, line 282) `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
-  - `table` (function, line 101) `* Symbol table (for resolving program references) * ================================================================...`
-  - `ksyscall` (function, line 127) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `kstack` (function, line 143) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
-  - `ms` (function, line 182) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-  - `EM` (function, line 218) `* CR0: clear EM (bit 2), set MP (bit 1);`
-  - `size` (function, line 259) `* image size (see kernel.ld);`
-  - `syscall_kstack` (variable, line 112) `extern unsigned long syscall_kstack;`
-  - `ramdisk_start` (variable, line 176) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 177) `extern char ramdisk_end[];`
-  - `KSYM_MAX` (macro, line 104) `#define KSYM_MAX`
-  - `BOOTLOG_MAX` (macro, line 185) `#define BOOTLOG_MAX`
+  - `table` (function, line 102) `* Symbol table (for resolving program references) * ================================================================...`
+  - `ksyscall` (function, line 128) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `kstack` (function, line 144) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
+  - `ms` (function, line 183) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+  - `EM` (function, line 219) `* CR0: clear EM (bit 2), set MP (bit 1);`
+  - `size` (function, line 260) `* image size (see kernel.ld);`
+  - `syscall_kstack` (variable, line 113) `extern unsigned long syscall_kstack;`
+  - `ramdisk_start` (variable, line 177) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 178) `extern char ramdisk_end[];`
+  - `KSYM_MAX` (macro, line 105) `#define KSYM_MAX`
+  - `BOOTLOG_MAX` (macro, line 186) `#define BOOTLOG_MAX`
 - Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
 
 ## qga.c
@@ -79,10 +79,10 @@ void kmain(void)`
   - `lapic_calibrate` (function, line 150) `static void lapic_calibrate(void)`
   - `ap_lapic_timer_start` (function, line 184) `static void ap_lapic_timer_start(void)`
   - `ap_lapic_timer_init` (function, line 190) `static void ap_lapic_timer_init(void)`
-  - `smp_init` (function, line 305) `void smp_init(void)`
+  - `smp_init` (function, line 314) `void smp_init(void)`
   - `syscall_entry` (function, line 82) `extern void syscall_entry(void);`
   - `BSP` (function, line 238) `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed...`
-  - `INIT` (function, line 323) `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status...`
+  - `INIT` (function, line 332) `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status...`
   - `LAPIC_BASE` (macro, line 28) `#define LAPIC_BASE`
   - `LAPIC_ID_OFF` (macro, line 29) `#define LAPIC_ID_OFF`
   - `LAPIC_SVR_OFF` (macro, line 30) `#define LAPIC_SVR_OFF`

@@ -27,9 +27,9 @@
   - `switch_to_notrap` (function, line 134)
   - `user_trampoline` (function, line 221)
   - `fork_trampoline` (function, line 233)
-  - `exec_enter` (function, line 249)
-  - `resume_iretq` (function, line 278)
-  - `k_run_on_stack` (function, line 318)
+  - `exec_enter` (function, line 273)
+  - `resume_iretq` (function, line 302)
+  - `k_run_on_stack` (function, line 342)
 
 ## arch/x86/isr_stubs.S
 - Layer: testing

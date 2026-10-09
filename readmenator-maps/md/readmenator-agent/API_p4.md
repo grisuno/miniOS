@@ -1,6 +1,19 @@
 # API (page 4 of 19)
 Previous: [API_p3.md](API_p3.md)
 
+## headers/kernel/console_in.h
+Imported by: `headers/shell.h`, `kernel/console_in.c`, `kernel/shell.c`
+- `Consumers` (function) `headers/kernel/console_in.h:7` `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into...`
+- `console_peek` (function) `headers/kernel/console_in.h:17` `int console_peek(void);` -- Docstring: Blocking read from PS/2 or COM1 with PageUp/PageDown * scrollback detour. int console_getc(void); /**...
+- `console_raw_try` (function) `headers/kernel/console_in.h:21` `int console_raw_try(void);` -- Docstring: Raw console multiplexer backing GETC_RAW: same sources, * no line buffering, echo or scrollback. try...
+- `console_raw_get` (function) `headers/kernel/console_in.h:22` `int console_raw_get(void);`
+- `console_job_try` (function) `headers/kernel/console_in.h:25` `int console_job_try(void);` -- Docstring: Raw console multiplexer backing GETC_RAW: same sources, * no line buffering, echo or scrollback. try...
+- `console_job_get` (function) `headers/kernel/console_in.h:26` `int console_job_get(void);`
+- `console_ungetc` (function) `headers/kernel/console_in.h:30` `void console_ungetc(unsigned char c);` -- Docstring: Push one byte back into the console FIFO; the next * console_getc/console_peek serves it first.
+- `console_stdin_push` (function) `headers/kernel/console_in.h:37` `int console_stdin_push(const char *data, unsigned long len);` -- Docstring: Pipeline stdin override: the next console_getc calls serve len bytes from data, then report EOF (-1)...
+- `console_stdin_clear` (function) `headers/kernel/console_in.h:38` `void console_stdin_clear(void);`
+- `console_stdin_active` (function) `headers/kernel/console_in.h:39` `int console_stdin_active(void);`
+
 ## headers/kernel/vga_cursor.h
 Imported by: `kernel/vga_cursor.c`, `kernel/vga_fb.c`
 - `cursor_over` (function) `headers/kernel/vga_cursor.h:16` `int cursor_over(int x0, int y0, int w, int h);` -- Docstring: vga_cursor.h -- boundary of the pointer sprite layer (kernel/vga_cursor.c).
@@ -62,79 +75,86 @@ Imported by: `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c`, `fs/minifs.c
 - `minifs_decompress` (function) `headers/minifs.h:31` `unsigned int minifs_decompress(const void *src, unsigned int src_len, void *dst, unsigned int dst_cap);`
 - `minifs_init` (function) `headers/minifs.h:117` `void minifs_init(void);`
 - `minifs_mount` (function) `headers/minifs.h:118` `int minifs_mount(void);`
-- `minifs_mkfs` (function) `headers/minifs.h:119` `int minifs_mkfs(unsigned int total_blocks);`
-- `minifs_sync` (function) `headers/minifs.h:120` `int minifs_sync(void);`
-- `minifs_is_mounted` (function) `headers/minifs.h:121` `int minifs_is_mounted(void);`
-- `minifs_create` (function) `headers/minifs.h:123` `int minifs_create(const char *path, unsigned short mode);`
-- `minifs_mkdir` (function) `headers/minifs.h:124` `int minifs_mkdir(const char *path, unsigned short mode);`
-- `minifs_unlink` (function) `headers/minifs.h:125` `int minifs_unlink(const char *path);`
-- `minifs_rmdir` (function) `headers/minifs.h:126` `int minifs_rmdir(const char *path);`
-- `refuses` (function) `headers/minifs.h:129` `* An existing file dst refuses (no silent overwrite);`
-- `minifs_rename` (function) `headers/minifs.h:131` `int minifs_rename(const char *oldpath, const char *newpath);` -- Docstring: Move one MiniFS directory entry to a new parent/name, keeping its inode (no data moves).
-- `minifs_read` (function) `headers/minifs.h:132` `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len);`
-- `minifs_write` (function) `headers/minifs.h:133` `int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len);`
-- `minifs_truncate` (function) `headers/minifs.h:134` `int minifs_truncate(int inode_num, unsigned int new_size);`
-- `minifs_stat` (function) `headers/minifs.h:135` `int minifs_stat(int inode_num, MiniFSInode *out);`
-- `minifs_access` (function) `headers/minifs.h:136` `int minifs_access(const char *path);`
-- `minifs_resolve_path` (function) `headers/minifs.h:138` `int minifs_resolve_path(const char *path);`
-- `minifs_dir_lookup` (function) `headers/minifs.h:139` `int minifs_dir_lookup(int dir_inode, const char *name);`
-- `minifs_dir_add_entry` (function) `headers/minifs.h:140` `int minifs_dir_add_entry(int dir_inode, const char *name, int child_inode, unsigned char type);`
-- `minifs_dir_remove_entry` (function) `headers/minifs.h:141` `int minifs_dir_remove_entry(int dir_inode, const char *name);`
-- `minifs_dir_read` (function) `headers/minifs.h:142` `int minifs_dir_read(int dir_inode, int index, MiniFSDirEntry *out, char *name_out);`
-- `minifs_alloc_block` (function) `headers/minifs.h:144` `int minifs_alloc_block(void);`
-- `minifs_free_block` (function) `headers/minifs.h:145` `void minifs_free_block(unsigned int block);`
-- `minifs_alloc_inode` (function) `headers/minifs.h:146` `int minifs_alloc_inode(void);`
-- `minifs_free_inode` (function) `headers/minifs.h:147` `void minifs_free_inode(int inode_num);`
-- `minifs_inode_get_block` (function) `headers/minifs.h:148` `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logical_block, unsigned int *phys_block);`
-- `minifs_inode_alloc_block` (function) `headers/minifs.h:149` `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logical_block);`
-- `minifs_journal_begin` (function) `headers/minifs.h:151` `void minifs_journal_begin(unsigned int txn_id);`
-- `minifs_journal_add_block` (function) `headers/minifs.h:152` `void minifs_journal_add_block(unsigned int block);`
-- `minifs_journal_touch` (function) `headers/minifs.h:153` `void minifs_journal_touch(unsigned int phys);`
-- `minifs_journal_commit` (function) `headers/minifs.h:154` `int minifs_journal_commit(unsigned int txn_id);`
-- `minifs_journal_clear` (function) `headers/minifs.h:155` `void minifs_journal_clear(void);`
-- `minifs_journal_abort` (function) `headers/minifs.h:156` `void minifs_journal_abort(void);`
-- `minifs_journal_recover` (function) `headers/minifs.h:157` `void minifs_journal_recover(void);`
-- `minifs_file_open` (function) `headers/minifs.h:159` `MiniFSFile *minifs_file_open(int inode_num, int flags);`
-- `minifs_file_close` (function) `headers/minifs.h:160` `int minifs_file_close(MiniFSFile *f);`
-- `minifs_get_lba_start` (function) `headers/minifs.h:162` `unsigned int minifs_get_lba_start(void);`
-- `minifs_get_total_blocks` (function) `headers/minifs.h:163` `unsigned int minifs_get_total_blocks(void);`
-- `minifs_usage` (function) `headers/minifs.h:165` `void minifs_usage(unsigned int *free_b, unsigned int *total_b, unsigned int *free_i, unsigned int *total_i);` -- void minifs_journal_begin(unsigned int txn_id); void minifs_journal_add_block(unsigned int block); void...
+- `minifs_sync` (function) `headers/minifs.h:119` `int minifs_sync(void);`
+- `minifs_is_mounted` (function) `headers/minifs.h:120` `int minifs_is_mounted(void);`
+- `minifs_create` (function) `headers/minifs.h:122` `int minifs_create(const char *path, unsigned short mode);`
+- `minifs_mkdir` (function) `headers/minifs.h:123` `int minifs_mkdir(const char *path, unsigned short mode);`
+- `minifs_unlink` (function) `headers/minifs.h:124` `int minifs_unlink(const char *path);`
+- `minifs_rmdir` (function) `headers/minifs.h:125` `int minifs_rmdir(const char *path);`
+- `refuses` (function) `headers/minifs.h:128` `* An existing file dst refuses (no silent overwrite);`
+- `minifs_rename` (function) `headers/minifs.h:130` `int minifs_rename(const char *oldpath, const char *newpath);` -- Docstring: Move one MiniFS directory entry to a new parent/name, keeping its inode (no data moves).
+- `minifs_read` (function) `headers/minifs.h:131` `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len);`
+- `minifs_write` (function) `headers/minifs.h:132` `int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len);`
+- `minifs_truncate` (function) `headers/minifs.h:133` `int minifs_truncate(int inode_num, unsigned int new_size);`
+- `minifs_stat` (function) `headers/minifs.h:134` `int minifs_stat(int inode_num, MiniFSInode *out);`
+- `minifs_access` (function) `headers/minifs.h:135` `int minifs_access(const char *path);`
+- `minifs_resolve_path` (function) `headers/minifs.h:137` `int minifs_resolve_path(const char *path);`
+- `minifs_dir_lookup` (function) `headers/minifs.h:138` `int minifs_dir_lookup(int dir_inode, const char *name);`
+- `minifs_dir_add_entry` (function) `headers/minifs.h:139` `int minifs_dir_add_entry(int dir_inode, const char *name, int child_inode, unsigned char type);`
+- `minifs_dir_remove_entry` (function) `headers/minifs.h:140` `int minifs_dir_remove_entry(int dir_inode, const char *name);`
+- `minifs_dir_read` (function) `headers/minifs.h:141` `int minifs_dir_read(int dir_inode, int index, MiniFSDirEntry *out, char *name_out);`
+- `minifs_alloc_block` (function) `headers/minifs.h:143` `int minifs_alloc_block(void);`
+- `minifs_free_block` (function) `headers/minifs.h:144` `void minifs_free_block(unsigned int block);`
+- `minifs_alloc_inode` (function) `headers/minifs.h:145` `int minifs_alloc_inode(void);`
+- `minifs_free_inode` (function) `headers/minifs.h:146` `void minifs_free_inode(int inode_num);`
+- `minifs_inode_get_block` (function) `headers/minifs.h:147` `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logical_block, unsigned int *phys_block);`
+- `minifs_inode_alloc_block` (function) `headers/minifs.h:148` `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logical_block);`
+- `minifs_journal_begin` (function) `headers/minifs.h:150` `void minifs_journal_begin(unsigned int txn_id);`
+- `minifs_journal_add_block` (function) `headers/minifs.h:151` `void minifs_journal_add_block(unsigned int block);`
+- `minifs_journal_touch` (function) `headers/minifs.h:152` `void minifs_journal_touch(unsigned int phys);`
+- `minifs_journal_commit` (function) `headers/minifs.h:153` `int minifs_journal_commit(unsigned int txn_id);`
+- `minifs_journal_clear` (function) `headers/minifs.h:154` `void minifs_journal_clear(void);`
+- `minifs_journal_abort` (function) `headers/minifs.h:155` `void minifs_journal_abort(void);`
+- `minifs_journal_recover` (function) `headers/minifs.h:156` `void minifs_journal_recover(void);`
+- `minifs_file_open` (function) `headers/minifs.h:158` `MiniFSFile *minifs_file_open(int inode_num, int flags);`
+- `minifs_file_close` (function) `headers/minifs.h:159` `int minifs_file_close(MiniFSFile *f);`
+- `minifs_get_lba_start` (function) `headers/minifs.h:161` `unsigned int minifs_get_lba_start(void);`
+- `minifs_get_total_blocks` (function) `headers/minifs.h:162` `unsigned int minifs_get_total_blocks(void);`
+- `minifs_usage` (function) `headers/minifs.h:164` `void minifs_usage(unsigned int *free_b, unsigned int *total_b, unsigned int *free_i, unsigned int *total_i);` -- void minifs_journal_begin(unsigned int txn_id); void minifs_journal_add_block(unsigned int block); void...
 
 ## headers/net.h
 Imported by: `drivers/virtio_net.c`, `headers/net/rtl8139.h`, `headers/tls_port.h`, `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`
-- `ring` (function) `headers/net.h:46` `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...`
-- `net_register_symbols` (function) `headers/net.h:66` `void net_register_symbols(void);`
-- `net_cmd_status` (function) `headers/net.h:69` `void net_cmd_status(void);` -- net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and * 0..NET_SOCKETS-1 for the libc-style...
-- `net_cmd_ping` (function) `headers/net.h:70` `void net_cmd_ping(const char *ip_text);`
-- `net_get_addrs` (function) `headers/net.h:71` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
-- `net_cmd_dns` (function) `headers/net.h:72` `void net_cmd_dns(const char *host);`
-- `net_open` (function) `headers/net.h:75` `int net_open(void);` -- net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and * 0..NET_SOCKETS-1 for the libc-style...
-- `net_connect` (function) `headers/net.h:76` `int net_connect(const char *host, unsigned short port);`
-- `net_send` (function) `headers/net.h:77` `int net_send(int fd, const char *buf, int len);`
-- `net_recv` (function) `headers/net.h:78` `int net_recv(int fd, char *buf, int len);`
-- `net_recv_timeout` (function) `headers/net.h:80` `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);` -- void net_register_symbols(void); /* Shell commands void net_cmd_status(void); void net_cmd_ping(const char...
-- `net_close` (function) `headers/net.h:81` `void net_close(int fd);`
-- `demux` (function) `headers/net.h:87` `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);`
-- `net_accept_nb` (function) `headers/net.h:89` `int net_accept_nb(int fd);`
-- `net_accept` (function) `headers/net.h:90` `int net_accept(int fd, unsigned long timeout_ms);`
-- `net_sock_state` (function) `headers/net.h:91` `int net_sock_state(int fd);`
-- `net_sock_seq` (function) `headers/net.h:92` `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);`
-- `net_test_inject_tcp` (function) `headers/net.h:93` `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...`
-- `net_sys_socket` (function) `headers/net.h:98` `long net_sys_socket(long a1, long a2, long a3);` -- index, or -1). net_accept_nb takes an established child without waiting; net_accept waits up to timeout_ms....
-- `net_sys_connect` (function) `headers/net.h:99` `long net_sys_connect(long fd, long sockaddr, long addrlen);`
-- `net_sys_bind` (function) `headers/net.h:100` `long net_sys_bind(long fd, long sockaddr, long addrlen);`
-- `net_sys_listen` (function) `headers/net.h:101` `long net_sys_listen(long fd, long backlog);`
-- `net_sys_accept` (function) `headers/net.h:102` `long net_sys_accept(long fd, long sockaddr, long addrlen);`
-- `net_sys_sendto` (function) `headers/net.h:103` `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
-- `net_sys_recvfrom` (function) `headers/net.h:104` `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
-- `net_sys_shutdown` (function) `headers/net.h:105` `long net_sys_shutdown(long fd, long how);`
-- `net_sys_close` (function) `headers/net.h:106` `long net_sys_close(long fd);`
-- `net_sys_poll` (function) `headers/net.h:107` `long net_sys_poll(long fds, long nfds, long timeout_ms);`
-- `net_sys_dns` (function) `headers/net.h:108` `long net_sys_dns(long host);`
-- `net_time_ms` (function) `headers/net.h:111` `unsigned long net_time_ms(void);` -- /* Linux syscall ABI (sockaddr_in layout matches Linux) long net_sys_socket(long a1, long a2, long a3); long...
-- `net_rx_handle_frame` (function) `headers/net.h:115` `void net_rx_handle_frame(const unsigned char *frame, unsigned len);` -- Demux entry point the rtl8139 driver (rtl8139.c) calls for every * frame drained from the RX ring; lives in net.c.
-- `stack` (function) `headers/net.h:118` `* the stack (dropped fragments);`
-- `tls_free_fd` (function) `headers/net.h:126` `void tls_free_fd(int fd);` -- TLS sessions attached to socket fds (tls.c); net_sys_close frees them.
+- `ring` (function) `headers/net.h:54` `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...`
+- `net_sys_is_socket` (function) `headers/net.h:97` `int net_sys_is_socket(long fd);` -- net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and * 0..NET_SOCKETS-1 for the libc-style...
+- `net_sys_setsockopt` (function) `headers/net.h:98` `long net_sys_setsockopt(long fd, long level, long name, long val, long len);`
+- `net_sys_getsockopt` (function) `headers/net.h:99` `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);`
+- `net_sys_getsockname` (function) `headers/net.h:100` `long net_sys_getsockname(long fd, long addr, long lenp);`
+- `net_sys_getpeername` (function) `headers/net.h:101` `long net_sys_getpeername(long fd, long addr, long lenp);`
+- `net_sys_sendmsg` (function) `headers/net.h:102` `long net_sys_sendmsg(long fd, long msg, long flags);`
+- `net_sys_sendmmsg` (function) `headers/net.h:103` `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);`
+- `net_sys_fcntl` (function) `headers/net.h:104` `long net_sys_fcntl(long fd, long cmd, long arg);`
+- `net_register_symbols` (function) `headers/net.h:105` `void net_register_symbols(void);`
+- `net_cmd_status` (function) `headers/net.h:108` `void net_cmd_status(void);` -- void net_init(void); /* Linux socket ABI entry points (kernel/syscalls.c routes to them). int...
+- `net_cmd_ping` (function) `headers/net.h:109` `void net_cmd_ping(const char *ip_text);`
+- `net_get_addrs` (function) `headers/net.h:110` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
+- `net_cmd_dns` (function) `headers/net.h:111` `void net_cmd_dns(const char *host);`
+- `net_open` (function) `headers/net.h:114` `int net_open(void);` -- long net_sys_getsockname(long fd, long addr, long lenp); long net_sys_getpeername(long fd, long addr, long lenp)...
+- `net_connect` (function) `headers/net.h:115` `int net_connect(const char *host, unsigned short port);`
+- `net_send` (function) `headers/net.h:116` `int net_send(int fd, const char *buf, int len);`
+- `net_recv` (function) `headers/net.h:117` `int net_recv(int fd, char *buf, int len);`
+- `net_recv_timeout` (function) `headers/net.h:119` `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);` -- void net_register_symbols(void); /* Shell commands void net_cmd_status(void); void net_cmd_ping(const char...
+- `net_close` (function) `headers/net.h:120` `void net_close(int fd);`
+- `demux` (function) `headers/net.h:126` `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);`
+- `net_accept_nb` (function) `headers/net.h:128` `int net_accept_nb(int fd);`
+- `net_accept` (function) `headers/net.h:129` `int net_accept(int fd, unsigned long timeout_ms);`
+- `net_sock_state` (function) `headers/net.h:130` `int net_sock_state(int fd);`
+- `net_sock_seq` (function) `headers/net.h:131` `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);`
+- `net_test_inject_tcp` (function) `headers/net.h:132` `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...`
+- `net_sys_socket` (function) `headers/net.h:137` `long net_sys_socket(long a1, long a2, long a3);` -- index, or -1). net_accept_nb takes an established child without waiting; net_accept waits up to timeout_ms....
+- `net_sys_connect` (function) `headers/net.h:138` `long net_sys_connect(long fd, long sockaddr, long addrlen);`
+- `net_sys_bind` (function) `headers/net.h:139` `long net_sys_bind(long fd, long sockaddr, long addrlen);`
+- `net_sys_listen` (function) `headers/net.h:140` `long net_sys_listen(long fd, long backlog);`
+- `net_sys_accept` (function) `headers/net.h:141` `long net_sys_accept(long fd, long sockaddr, long addrlen);`
+- `net_sys_sendto` (function) `headers/net.h:142` `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
+- `net_sys_recvfrom` (function) `headers/net.h:143` `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
+- `net_sys_shutdown` (function) `headers/net.h:144` `long net_sys_shutdown(long fd, long how);`
+- `net_sys_close` (function) `headers/net.h:145` `long net_sys_close(long fd);`
+- `net_sys_poll` (function) `headers/net.h:146` `long net_sys_poll(long fds, long nfds, long timeout_ms);`
+- `net_sys_dns` (function) `headers/net.h:147` `long net_sys_dns(long host);`
+- `net_time_ms` (function) `headers/net.h:150` `unsigned long net_time_ms(void);` -- /* Linux syscall ABI (sockaddr_in layout matches Linux) long net_sys_socket(long a1, long a2, long a3); long...
+- `net_rx_handle_frame` (function) `headers/net.h:154` `void net_rx_handle_frame(const unsigned char *frame, unsigned len);` -- Demux entry point the rtl8139 driver (rtl8139.c) calls for every * frame drained from the RX ring; lives in net.c.
+- `stack` (function) `headers/net.h:157` `* the stack (dropped fragments);`
+- `tls_free_fd` (function) `headers/net.h:165` `void tls_free_fd(int fd);` -- TLS sessions attached to socket fds (tls.c); net_sys_close frees them.
 
 ## headers/net/rtl8139.h
 Depends on: `headers/net.h`
@@ -213,14 +233,28 @@ Imported by: `kernel/percpu_rq.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/s
 ## headers/pipe.h
 Imported by: `headers/kernel.h`, `kernel/console_in.c`, `tests/test_pipe.c`
 - `ends` (function) `headers/pipe.h:4` `* * Single source of truth for the pipe byte ring shared by the kernel * pipe ends (fs/kfile.c), the pipe/dup/dup2...`
-- `pipe_ring_init` (function) `headers/pipe.h:46` `static inline int pipe_ring_init(pipe_ring_t *r, unsigned char *buf,
+- `pipe_ring_init` (function) `headers/pipe.h:47` `static inline int pipe_ring_init(pipe_ring_t *r, unsigned char *buf,
         unsigned cap)` -- Docstring: Bind a caller-owned buffer to a ring.
-- `pipe_ring_avail` (function) `headers/pipe.h:62` `static inline unsigned pipe_ring_avail(const pipe_ring_t *r)` -- if (!r || !buf) return PIPE_ERR_BOUND; if (cap == 0u || cap > PIPE_CAP_MAX) return PIPE_ERR_BOUND; r->buf = buf...
-- `pipe_ring_space` (function) `headers/pipe.h:69` `static inline unsigned pipe_ring_space(const pipe_ring_t *r)` -- r->tail = 0u; r->count = 0u; r->wopen = 1; return 0; } /** Docstring: Bytes available to read.
-- `pipe_ring_write` (function) `headers/pipe.h:77` `static inline unsigned pipe_ring_write(pipe_ring_t *r,
+- `pipe_ring_avail` (function) `headers/pipe.h:64` `static inline unsigned pipe_ring_avail(const pipe_ring_t *r)` -- return PIPE_ERR_BOUND; if (cap == 0u || cap > PIPE_CAP_MAX) return PIPE_ERR_BOUND; r->buf = buf; r->cap = cap...
+- `pipe_ring_space` (function) `headers/pipe.h:71` `static inline unsigned pipe_ring_space(const pipe_ring_t *r)` -- r->count = 0u; r->wopen = 1; r->ropen = 1; return 0; } /** Docstring: Bytes available to read.
+- `pipe_ring_write` (function) `headers/pipe.h:79` `static inline unsigned pipe_ring_write(pipe_ring_t *r,
         const unsigned char *src, unsigned...` -- Docstring: Append up to len bytes, return bytes stored.
-- `pipe_ring_close_writer` (function) `headers/pipe.h:116` `static inline int pipe_ring_close_writer(pipe_ring_t *r)` -- Docstring: Mark the writer closed.
-- `pipe_ring_stat` (function) `headers/pipe.h:125` `static inline int pipe_ring_stat(const pipe_ring_t *r, pipe_cfg_t *out)` -- Docstring: Snapshot ring geometry into a caller struct.
+- `pipe_ring_close_writer` (function) `headers/pipe.h:118` `static inline int pipe_ring_close_writer(pipe_ring_t *r)` -- Docstring: Mark the writer closed.
+- `pipe_ring_close_reader` (function) `headers/pipe.h:128` `static inline int pipe_ring_close_reader(pipe_ring_t *r)` -- Docstring: Mark the reader closed.
+- `pipe_ring_ropen` (function) `headers/pipe.h:135` `static inline int pipe_ring_ropen(const pipe_ring_t *r)` -- Docstring: Mark the reader closed.
+- `pipe_ring_stat` (function) `headers/pipe.h:140` `static inline int pipe_ring_stat(const pipe_ring_t *r, pipe_cfg_t *out)` -- Docstring: Snapshot ring geometry into a caller struct.
+
+## headers/proc_sec.h
+Imported by: `kernel/exec.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
+- `proc_sec_inherit` (function) `headers/proc_sec.h:23` `void proc_sec_inherit(int child, int parent);` -- Exit code of a process or thread a filter kills: a death by SIGSYS (31), recorded negative like every MiniOS signal...
+- `proc_sec_release` (function) `headers/proc_sec.h:24` `void proc_sec_release(int pid);`
+- `proc_sec_exec` (function) `headers/proc_sec.h:25` `void proc_sec_exec(int pid);`
+- `proc_sec_set_exe` (function) `headers/proc_sec.h:26` `void proc_sec_set_exe(int pid, const char *resolved);`
+- `proc_sec_exe` (function) `headers/proc_sec.h:28` `const char *proc_sec_exe(int pid);` -- Exit code of a process or thread a filter kills: a death by SIGSYS (31), recorded negative like every MiniOS signal...
+- `it` (function) `headers/proc_sec.h:31` `* the syscall must answer in *ret when a filter decided it (ERRNO, TRACE, * USER_NOTIF);`
+- `proc_sec_filter` (function) `headers/proc_sec.h:34` `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret);` -- Run the caller's filters for syscall n.
+- `proc_sec_prctl` (function) `headers/proc_sec.h:36` `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5);`
+- `proc_sec_seccomp` (function) `headers/proc_sec.h:37` `long proc_sec_seccomp(long op, long flags, long uargs);`
 
 ## headers/qga.h
 Imported by: `qga.c`
@@ -278,7 +312,7 @@ Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel.c`, `kernel/sched.c`, `
 
 ## headers/sched.h
 Depends on: `headers/spinlock.h`, `headers/vma.h`
-Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/rtl8139.c`, `smp.c`
+Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `smp.c`
 - `group` (function) `headers/sched.h:108` `* process is its own group (tgid == pid);`
 - `entry` (function) `headers/sched.h:135` `* private view with one KFILE ref per live entry (0 on OOM), release * drops the view at reap, cloexec closes marked...`
 - `kfd_view_copy` (function) `headers/sched.h:138` `int kfd_view_copy(proc_t *child, proc_t *parent);`
@@ -313,23 +347,34 @@ Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/perc
 - `do_exit` (function) `headers/sched.h:407` `void do_exit(int code);`
 - `do_clone` (function) `headers/sched.h:408` `long do_clone(long flags, long newsp);`
 - `do_fork` (function) `headers/sched.h:409` `long do_fork(void);`
-- `aslr_stack_bytes` (function) `headers/sched.h:419` `unsigned long aslr_stack_bytes(void);` -- ASLR jitter, fresh per exec (TSC + ticks + per-exec counter, never zero for stack/brk so consecutive execs differ...
-- `aslr_brk_pages` (function) `headers/sched.h:420` `unsigned long aslr_brk_pages(void);`
-- `aslr_mmap_pages` (function) `headers/sched.h:421` `unsigned long aslr_mmap_pages(void);`
-- `aslr_dyn_base` (function) `headers/sched.h:422` `unsigned long aslr_dyn_base(void);`
-- `failure` (function) `headers/sched.h:427` `* failure (negative errno);`
-- `do_execve` (function) `headers/sched.h:428` `long do_execve(char *kpath, int kargc, char **kargv);` -- do_execve() - replace the caller's image with a fresh ET_EXEC/ET_DYN program (kernel/sched.c).
-- `do_thread_spawn` (function) `headers/sched.h:429` `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-- `do_waitpid` (function) `headers/sched.h:431` `int do_waitpid(int pid);`
-- `do_waitpid_nb` (function) `headers/sched.h:432` `int do_waitpid_nb(int pid);`
-- `shell_reap_nb` (function) `headers/sched.h:433` `int shell_reap_nb(int *pid_out, int *code_out);`
-- `shell_reap_one` (function) `headers/sched.h:434` `int shell_reap_one(int pid, int *code_out);`
-- `shell_nchildren` (function) `headers/sched.h:435` `int shell_nchildren(void);`
-- `do_kill` (function) `headers/sched.h:437` `int do_kill(int pid);` -- define WAITPID_NONE (-0x7FFF)
-- `timer_tick` (function) `headers/sched.h:438` `void timer_tick(void);`
-- `pt_clone_user` (function) `headers/sched.h:441` `uint64_t pt_clone_user(uint64_t parent_cr3);` -- failure (negative errno); success enters ring 3 and never returns. long     do_execve(char *kpath, int kargc, char...
-- `pt_free_user` (function) `headers/sched.h:442` `void pt_free_user(uint64_t cr3);`
-- `caller` (function) `headers/sched.h:447` `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
+- `do_fork_ex` (function) `headers/sched.h:410` `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);`
+- `do_linux_clone` (function) `headers/sched.h:411` `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...`
+- `do_exit_group_threads` (function) `headers/sched.h:413` `void do_exit_group_threads(void);`
+- `fork_child_settid` (function) `headers/sched.h:414` `void fork_child_settid(void);`
+- `aslr_stack_bytes` (function) `headers/sched.h:424` `unsigned long aslr_stack_bytes(void);` -- ASLR jitter, fresh per exec (TSC + ticks + per-exec counter, never zero for stack/brk so consecutive execs differ...
+- `aslr_brk_pages` (function) `headers/sched.h:425` `unsigned long aslr_brk_pages(void);`
+- `aslr_mmap_pages` (function) `headers/sched.h:426` `unsigned long aslr_mmap_pages(void);`
+- `aslr_dyn_base` (function) `headers/sched.h:427` `unsigned long aslr_dyn_base(void);`
+- `failure` (function) `headers/sched.h:432` `* failure (negative errno);`
+- `do_execve` (function) `headers/sched.h:433` `long do_execve(char *kpath, int kargc, char **kargv);` -- do_execve() - replace the caller's image with a fresh ET_EXEC/ET_DYN program (kernel/sched.c).
+- `do_thread_spawn` (function) `headers/sched.h:434` `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+- `do_waitpid` (function) `headers/sched.h:436` `int do_waitpid(int pid);`
+- `do_waitpid_nb` (function) `headers/sched.h:437` `int do_waitpid_nb(int pid);`
+- `shell_reap_nb` (function) `headers/sched.h:438` `int shell_reap_nb(int *pid_out, int *code_out);`
+- `shell_reap_one` (function) `headers/sched.h:439` `int shell_reap_one(int pid, int *code_out);`
+- `shell_nchildren` (function) `headers/sched.h:440` `int shell_nchildren(void);`
+- `do_waitpid_linux` (function) `headers/sched.h:444` `int do_waitpid_linux(int pid, int nohang, int *found);` -- kstack slot family, fd table and limits; everything else (window, VMA, brk view, stack, FPU, FSBASE, name) is rebuilt.
+- `do_kill` (function) `headers/sched.h:445` `int do_kill(int pid);`
+- `timer_tick` (function) `headers/sched.h:446` `void timer_tick(void);`
+- `pt_clone_user` (function) `headers/sched.h:449` `uint64_t pt_clone_user(uint64_t parent_cr3);` -- unsigned long arg); int      do_waitpid(int pid); int      do_waitpid_nb(int pid); int      shell_reap_nb(int...
+- `pt_free_user` (function) `headers/sched.h:450` `void pt_free_user(uint64_t cr3);`
+- `caller` (function) `headers/sched.h:455` `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
+
+## headers/seccomp_bpf.h
+Imported by: `kernel/proc_sec.c`, `kernel/seccomp_bpf.c`, `tests/test_seccomp_bpf.c`
+- `sbpf_check` (function) `headers/seccomp_bpf.h:95` `int sbpf_check(const sbpf_insn *prog, unsigned len, unsigned short *scratch);` -- Validate a program before it ever runs: 1..SBPF_MAX_INSNS instructions, only the opcodes Linux accepts for seccomp...
+- `sbpf_run` (function) `headers/seccomp_bpf.h:100` `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d);` -- Run a program sbpf_check accepted over one syscall's data; returns the 32-bit action.
+- `sbpf_action_rank` (function) `headers/seccomp_bpf.h:104` `int sbpf_action_rank(unsigned int action);` -- Restrictiveness rank of an action (0 = most restrictive): the order * stacked filters are combined in.
 
 ## headers/shell.h
 Depends on: `headers/kernel.h`, `headers/kernel/console_in.h`
@@ -405,7 +450,7 @@ Imported by: `drivers/sb16.c`, `headers/futex.h`, `kernel/futex.c`, `kernel/sche
 - `rwlock_write_unlock` (function) `headers/sync.h:122` `void rwlock_write_unlock(rwlock_t *rw);`
 
 ## headers/syscalls_proc.h
-Imported by: `kernel/syscalls.c`
+Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`
 - `dispatcher` (function) `headers/syscalls_proc.h:5` `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...`
 - `sys_minios_nice` (function) `headers/syscalls_proc.h:12` `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6);`
 - `sys_minios_clone` (function) `headers/syscalls_proc.h:13` `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6);`
@@ -414,12 +459,13 @@ Imported by: `kernel/syscalls.c`
 - `sys_linux_getpid` (function) `headers/syscalls_proc.h:16` `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6);`
 - `sys_linux_gettid` (function) `headers/syscalls_proc.h:17` `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6);`
 - `sys_linux_fork` (function) `headers/syscalls_proc.h:18` `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_vfork` (function) `headers/syscalls_proc.h:19` `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_execve` (function) `headers/syscalls_proc.h:20` `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_exit` (function) `headers/syscalls_proc.h:21` `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_wait4` (function) `headers/syscalls_proc.h:22` `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_kill` (function) `headers/syscalls_proc.h:23` `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `do_proc_exit` (function) `headers/syscalls_proc.h:26` `long do_proc_exit(long code);` -- long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6); long sys_minios_clone(long flags, long...
+- `sys_linux_clone` (function) `headers/syscalls_proc.h:19` `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);`
+- `sys_linux_vfork` (function) `headers/syscalls_proc.h:20` `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);`
+- `sys_linux_execve` (function) `headers/syscalls_proc.h:21` `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);`
+- `sys_linux_exit` (function) `headers/syscalls_proc.h:22` `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);`
+- `sys_linux_wait4` (function) `headers/syscalls_proc.h:23` `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);`
+- `sys_linux_kill` (function) `headers/syscalls_proc.h:24` `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);`
+- `do_proc_exit` (function) `headers/syscalls_proc.h:27` `long do_proc_exit(long code);` -- long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6); long sys_minios_thread_spawn(long...
 
 ## headers/tick.h
 Imported by: `kernel/sched.c`, `kernel/tick.c`, `tests/test_tick.c`
@@ -433,55 +479,6 @@ Imported by: `kernel/sched.c`, `kernel/tick.c`, `tests/test_tick.c`
 - `tick_audio_count` (function) `headers/tick.h:81` `int tick_audio_count(void);` -- handler is null or the USB table is full.
 - `tick_desktop_count` (function) `headers/tick.h:84` `int tick_desktop_count(void);` -- /** Docstring: Run USB listeners in registration order. void tick_run_usb(void); /** Docstring: Run audio listeners...
 - `tick_desktop_due` (function) `headers/tick.h:92` `int tick_desktop_due(unsigned long long ticks, unsigned interval);` -- Docstring: Pure desktop gating predicate.
-
-## headers/tls.h
-Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
-- `sha256_init` (function) `headers/tls.h:168` `void sha256_init(struct sha256_ctx *c);`
-- `sha256_update` (function) `headers/tls.h:169` `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len);`
-- `sha256_final` (function) `headers/tls.h:170` `void sha256_final(struct sha256_ctx *c, unsigned char out[32]);`
-- `sha256` (function) `headers/tls.h:171` `void sha256(const unsigned char *data, unsigned len, unsigned char out[32]);`
-- `sha384` (function) `headers/tls.h:172` `void sha384(const unsigned char *data, unsigned len, unsigned char out[48]);`
-- `hmac_sha256` (function) `headers/tls.h:174` `void hmac_sha256(const unsigned char *key, unsigned klen, const unsigned char *data, unsigned dlen, unsigned char...`
-- `tls_prf` (function) `headers/tls.h:179` `void tls_prf(const unsigned char *secret, unsigned secret_len, const char *label, const unsigned char *seed...`
-- `aes128_encrypt_block` (function) `headers/tls.h:184` `void aes128_encrypt_block(const unsigned char key[16], const unsigned char in[16], unsigned char out[16]);` -- void sha256_final(struct sha256_ctx *c, unsigned char out[32]); void sha256(const unsigned char *data, unsigned len...
-- `aes128_gcm_seal` (function) `headers/tls.h:189` `int aes128_gcm_seal(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...` -- GCM.
-- `aes128_gcm_open` (function) `headers/tls.h:197` `int aes128_gcm_open(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...` -- GCM.
-- `aes128_gcm_seal_core` (function) `headers/tls.h:208` `int aes128_gcm_seal_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...` -- Core GCM with an arbitrary 12-byte nonce (the TLS API above is the 4-byte salt + 8-byte sequence special case).
-- `aes128_gcm_open_core` (function) `headers/tls.h:213` `int aes128_gcm_open_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...`
-- `p256_scalar_mult` (function) `headers/tls.h:222` `int p256_scalar_mult(const unsigned char scalar[32], const unsigned char qx[32], const unsigned char qy[32]...` -- secp256r1 / secp384r1: shared Jacobian point arithmetic over NIST * primes. curve: 0 = P-256, 1 = P-384.
-- `p384_scalar_mult` (function) `headers/tls.h:225` `int p384_scalar_mult(const unsigned char scalar[48], const unsigned char qx[48], const unsigned char qy[48]...`
-- `p256_ecdh` (function) `headers/tls.h:231` `int p256_ecdh(const unsigned char priv[32], const unsigned char peer_x[32], const unsigned char peer_y[32], unsigned...` -- ECDH shared secret: Z = priv * peer_pub (P-256).
-- `p256_point_valid` (function) `headers/tls.h:236` `int p256_point_valid(const unsigned char x[32], const unsigned char y[32]);` -- ECDH shared secret: Z = priv * peer_pub (P-256).
-- `p256_pub` (function) `headers/tls.h:237` `int p256_pub(const unsigned char priv[32], unsigned char x[32], unsigned char y[32]);`
-- `p256_scalar_valid` (function) `headers/tls.h:239` `int p256_scalar_valid(const unsigned char scalar[32]);`
-- `ecdsa_verify` (function) `headers/tls.h:243` `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[], const unsigned char digest[]...` -- ECDSA verify over a SHA-256 or SHA-384 digest. curve: 0 = P-256, * 1 = P-384.
-- `rsa_pkcs1_verify_sha256` (function) `headers/tls.h:249` `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...` -- RSA PKCS#1 v1.5 signature verify with SHA-256. modulus up to 4096 bits. * digest is the SHA-256 of the signed data.
-- `rsa_pkcs1_verify_sha384` (function) `headers/tls.h:253` `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...`
-- `tls_x509_parse_pubkey` (function) `headers/tls.h:261` `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len, struct tls_pubkey *pk);` -- RSA PKCS#1 v1.5 signature verify with SHA-256. modulus up to 4096 bits. * digest is the SHA-256 of the signed data.
-- `now` (function) `headers/tls.h:267` `* window against now (days since epoch). Returns 0 on success. */ int tls_x509_verify_chain(const unsigned char...`
-- `tls_handshake` (function) `headers/tls.h:277` `int tls_handshake(int fd, const char *host);` -- Blocking TLS 1.2 handshake over an open TCP socket (net fd index). host is the SNI + certificate hostname.
-- `tls_send` (function) `headers/tls.h:280` `int tls_send(int fd, const char *buf, int len);` -- Blocking TLS 1.2 handshake over an open TCP socket (net fd index). host is the SNI + certificate hostname.
-- `tls_recv` (function) `headers/tls.h:284` `int tls_recv(int fd, char *buf, int len);` -- Receive decrypted application bytes.
-- `tls_free_fd` (function) `headers/tls.h:293` `static inline void tls_free_fd(int fd)` -- Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever exist, so the net.c close path needs...
-- `tls_sys_handshake` (function) `headers/tls.h:297` `long tls_sys_handshake(long fd, long host);` -- Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever exist, so the net.c close path needs...
-- `tls_sys_send` (function) `headers/tls.h:298` `long tls_sys_send(long fd, long buf, long len);`
-- `tls_sys_recv` (function) `headers/tls.h:299` `long tls_sys_recv(long fd, long buf, long len);`
-
-## headers/tls_port.h
-Depends on: `headers/kernel.h`, `headers/net.h`, `kernel/string.c`, `kernel/time.c`
-Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
-- `these` (function) `headers/tls_port.h:29` `* of these (tls_test.c). */ extern int tls_test_send(int fd, const char *buf, int len);`
-- `tls_test_recv` (function) `headers/tls_port.h:31` `extern int tls_test_recv(int fd, char *buf, int len);`
-- `tls_test_recv_timeout` (function) `headers/tls_port.h:32` `extern int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms);`
-- `tls_test_close` (function) `headers/tls_port.h:33` `extern void tls_test_close(int fd);`
-- `tls_now_days` (function) `headers/tls_port.h:40` `static inline long tls_now_days(void)`
-- `tls_random` (function) `headers/tls_port.h:44` `static inline void tls_random(unsigned char *out, unsigned len)`
-- `sockets` (function) `headers/tls_port.h:62` `* sockets (glibc maps socket/connect/send/recv/poll onto the MiniOS * Linux ABI numbers the kernel implements);`
-- `gettimeofday` (function) `headers/tls_port.h:64` `* gettimeofday(96) and entropy from /dev/urandom with a time/pid * fallback. Session slots are indexed by raw OS fd...`
-- `tls_u_recv` (function) `headers/tls_port.h:82` `int tls_u_recv(int fd, char *buf, int len);`
-- `tls_u_recv_timeout` (function) `headers/tls_port.h:83` `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms);`
-- `tls_u_close` (function) `headers/tls_port.h:84` `void tls_u_close(int fd);`
-- `syscall` (function) `headers/tls_port.h:95` `* the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */ int tls_u_resolve(const char *host, unsigned...`
 
 
 Next: [API_p5.md](API_p5.md)

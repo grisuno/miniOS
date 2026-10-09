@@ -1,5 +1,37 @@
-# Subsystem: headers (page 3 of 5)
+# Subsystem: headers (page 3 of 6)
 Previous: [KB_headers_p2.md](KB_headers_p2.md)
+
+## headers/leakcheck.h
+- Doc: Docstring: allocation tracker for MiniOS, STB leakcheck lineage.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `lk_block` (struct, line 50)
+  - `lk_block_t` (type_alias, line 49) `typedef struct lk_block lk_block_t;`
+  - `lk_malloc` (function, line 96) `void *lk_malloc(size_t size, const char *file, int line)`
+  - `lk_unlink` (function, line 110) `static void lk_unlink(lk_block_t *b)`
+  - `lk_find` (function, line 120) `static lk_block_t *lk_find(void *ptr)`
+  - `lk_free` (function, line 130) `void lk_free(void *ptr)`
+  - `lk_realloc` (function, line 143) `void *lk_realloc(void *ptr, size_t size, const char *file, int line)`
+  - `lk_print` (function, line 186) `static void lk_print(const char *reason, const lk_block_t *b)`
+  - `lk_dumpmem` (function, line 197) `void lk_dumpmem(void)`
+  - `lk_live_count` (function, line 206) `unsigned long lk_live_count(void)`
+  - `lk_live_bytes` (function, line 217) `unsigned long lk_live_bytes(void)`
+  - `kmalloc` (function, line 79) `extern void *kmalloc(unsigned long size);`
+  - `kfree` (function, line 80) `extern void kfree(void *ptr);`
+  - `kprintf` (function, line 81) `extern int kprintf(const char *fmt, ...);`
+  - `MINIOS_LEAKCHECK_H` (macro, line 28) `#define MINIOS_LEAKCHECK_H`
+  - `MINIOS_LK_PIPE` (macro, line 42) `#define MINIOS_LK_PIPE`
+  - `MINIOS_LK_PIPE` (macro, line 44) `#define MINIOS_LK_PIPE`
+  - `MINIOS_LK_RAW_ALLOC` (macro, line 82) `#define MINIOS_LK_RAW_ALLOC(sz)`
+  - `MINIOS_LK_RAW_FREE` (macro, line 83) `#define MINIOS_LK_RAW_FREE(p)`
+  - `MINIOS_LK_RAW_ALLOC` (macro, line 88) `#define MINIOS_LK_RAW_ALLOC(sz)`
+  - `MINIOS_LK_RAW_FREE` (macro, line 89) `#define MINIOS_LK_RAW_FREE(p)`
+  - `malloc` (macro, line 235) `#define malloc(sz)`
+  - `free` (macro, line 236) `#define free(p)`
+  - `realloc` (macro, line 237) `#define realloc(p, sz)`
+- Depends on: `kernel/string.c`
+- Imported by: `progs/file/file.c`, `progs/vedit/vedit.c`, `tests/test_leakcheck.c`
 
 ## headers/lz4_kernel.h
 - Layer: utility
@@ -35,43 +67,42 @@ Previous: [KB_headers_p2.md](KB_headers_p2.md)
   - `minifs_decompress` (function, line 31) `unsigned int minifs_decompress(const void *src, unsigned int src_len, void *dst, unsigned int dst_cap);`
   - `minifs_init` (function, line 117) `void minifs_init(void);`
   - `minifs_mount` (function, line 118) `int minifs_mount(void);`
-  - `minifs_mkfs` (function, line 119) `int minifs_mkfs(unsigned int total_blocks);`
-  - `minifs_sync` (function, line 120) `int minifs_sync(void);`
-  - `minifs_is_mounted` (function, line 121) `int minifs_is_mounted(void);`
-  - `minifs_create` (function, line 123) `int minifs_create(const char *path, unsigned short mode);`
-  - `minifs_mkdir` (function, line 124) `int minifs_mkdir(const char *path, unsigned short mode);`
-  - `minifs_unlink` (function, line 125) `int minifs_unlink(const char *path);`
-  - `minifs_rmdir` (function, line 126) `int minifs_rmdir(const char *path);`
-  - `refuses` (function, line 129) `* An existing file dst refuses (no silent overwrite);`
-  - `minifs_rename` (function, line 131) `int minifs_rename(const char *oldpath, const char *newpath);`
-  - `minifs_read` (function, line 132) `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len);`
-  - `minifs_write` (function, line 133) `int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len);`
-  - `minifs_truncate` (function, line 134) `int minifs_truncate(int inode_num, unsigned int new_size);`
-  - `minifs_stat` (function, line 135) `int minifs_stat(int inode_num, MiniFSInode *out);`
-  - `minifs_access` (function, line 136) `int minifs_access(const char *path);`
-  - `minifs_resolve_path` (function, line 138) `int minifs_resolve_path(const char *path);`
-  - `minifs_dir_lookup` (function, line 139) `int minifs_dir_lookup(int dir_inode, const char *name);`
-  - `minifs_dir_add_entry` (function, line 140) `int minifs_dir_add_entry(int dir_inode, const char *name, int child_inode, unsigned char type);`
-  - `minifs_dir_remove_entry` (function, line 141) `int minifs_dir_remove_entry(int dir_inode, const char *name);`
-  - `minifs_dir_read` (function, line 142) `int minifs_dir_read(int dir_inode, int index, MiniFSDirEntry *out, char *name_out);`
-  - `minifs_alloc_block` (function, line 144) `int minifs_alloc_block(void);`
-  - `minifs_free_block` (function, line 145) `void minifs_free_block(unsigned int block);`
-  - `minifs_alloc_inode` (function, line 146) `int minifs_alloc_inode(void);`
-  - `minifs_free_inode` (function, line 147) `void minifs_free_inode(int inode_num);`
-  - `minifs_inode_get_block` (function, line 148) `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logical_block, unsigned int *phys_block);`
-  - `minifs_inode_alloc_block` (function, line 149) `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logical_block);`
-  - `minifs_journal_begin` (function, line 151) `void minifs_journal_begin(unsigned int txn_id);`
-  - `minifs_journal_add_block` (function, line 152) `void minifs_journal_add_block(unsigned int block);`
-  - `minifs_journal_touch` (function, line 153) `void minifs_journal_touch(unsigned int phys);`
-  - `minifs_journal_commit` (function, line 154) `int minifs_journal_commit(unsigned int txn_id);`
-  - `minifs_journal_clear` (function, line 155) `void minifs_journal_clear(void);`
-  - `minifs_journal_abort` (function, line 156) `void minifs_journal_abort(void);`
-  - `minifs_journal_recover` (function, line 157) `void minifs_journal_recover(void);`
-  - `minifs_file_open` (function, line 159) `MiniFSFile *minifs_file_open(int inode_num, int flags);`
-  - `minifs_file_close` (function, line 160) `int minifs_file_close(MiniFSFile *f);`
-  - `minifs_get_lba_start` (function, line 162) `unsigned int minifs_get_lba_start(void);`
-  - `minifs_get_total_blocks` (function, line 163) `unsigned int minifs_get_total_blocks(void);`
-  - `minifs_usage` (function, line 165) `void minifs_usage(unsigned int *free_b, unsigned int *total_b, unsigned int *free_i, unsigned int *total_i);`
+  - `minifs_sync` (function, line 119) `int minifs_sync(void);`
+  - `minifs_is_mounted` (function, line 120) `int minifs_is_mounted(void);`
+  - `minifs_create` (function, line 122) `int minifs_create(const char *path, unsigned short mode);`
+  - `minifs_mkdir` (function, line 123) `int minifs_mkdir(const char *path, unsigned short mode);`
+  - `minifs_unlink` (function, line 124) `int minifs_unlink(const char *path);`
+  - `minifs_rmdir` (function, line 125) `int minifs_rmdir(const char *path);`
+  - `refuses` (function, line 128) `* An existing file dst refuses (no silent overwrite);`
+  - `minifs_rename` (function, line 130) `int minifs_rename(const char *oldpath, const char *newpath);`
+  - `minifs_read` (function, line 131) `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len);`
+  - `minifs_write` (function, line 132) `int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len);`
+  - `minifs_truncate` (function, line 133) `int minifs_truncate(int inode_num, unsigned int new_size);`
+  - `minifs_stat` (function, line 134) `int minifs_stat(int inode_num, MiniFSInode *out);`
+  - `minifs_access` (function, line 135) `int minifs_access(const char *path);`
+  - `minifs_resolve_path` (function, line 137) `int minifs_resolve_path(const char *path);`
+  - `minifs_dir_lookup` (function, line 138) `int minifs_dir_lookup(int dir_inode, const char *name);`
+  - `minifs_dir_add_entry` (function, line 139) `int minifs_dir_add_entry(int dir_inode, const char *name, int child_inode, unsigned char type);`
+  - `minifs_dir_remove_entry` (function, line 140) `int minifs_dir_remove_entry(int dir_inode, const char *name);`
+  - `minifs_dir_read` (function, line 141) `int minifs_dir_read(int dir_inode, int index, MiniFSDirEntry *out, char *name_out);`
+  - `minifs_alloc_block` (function, line 143) `int minifs_alloc_block(void);`
+  - `minifs_free_block` (function, line 144) `void minifs_free_block(unsigned int block);`
+  - `minifs_alloc_inode` (function, line 145) `int minifs_alloc_inode(void);`
+  - `minifs_free_inode` (function, line 146) `void minifs_free_inode(int inode_num);`
+  - `minifs_inode_get_block` (function, line 147) `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logical_block, unsigned int *phys_block);`
+  - `minifs_inode_alloc_block` (function, line 148) `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logical_block);`
+  - `minifs_journal_begin` (function, line 150) `void minifs_journal_begin(unsigned int txn_id);`
+  - `minifs_journal_add_block` (function, line 151) `void minifs_journal_add_block(unsigned int block);`
+  - `minifs_journal_touch` (function, line 152) `void minifs_journal_touch(unsigned int phys);`
+  - `minifs_journal_commit` (function, line 153) `int minifs_journal_commit(unsigned int txn_id);`
+  - `minifs_journal_clear` (function, line 154) `void minifs_journal_clear(void);`
+  - `minifs_journal_abort` (function, line 155) `void minifs_journal_abort(void);`
+  - `minifs_journal_recover` (function, line 156) `void minifs_journal_recover(void);`
+  - `minifs_file_open` (function, line 158) `MiniFSFile *minifs_file_open(int inode_num, int flags);`
+  - `minifs_file_close` (function, line 159) `int minifs_file_close(MiniFSFile *f);`
+  - `minifs_get_lba_start` (function, line 161) `unsigned int minifs_get_lba_start(void);`
+  - `minifs_get_total_blocks` (function, line 162) `unsigned int minifs_get_total_blocks(void);`
+  - `minifs_usage` (function, line 164) `void minifs_usage(unsigned int *free_b, unsigned int *total_b, unsigned int *free_i, unsigned int *total_i);`
   - `MINIFS_H` (macro, line 2) `#define MINIFS_H`
   - `MINIFS_MAGIC` (macro, line 8) `#define MINIFS_MAGIC`
   - `MINIFS_VERSION` (macro, line 9) `#define MINIFS_VERSION`
@@ -106,81 +137,111 @@ Previous: [KB_headers_p2.md](KB_headers_p2.md)
 - Imported by: `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c`, `fs/minifs.c`, `fs/vfs.c`, `kernel.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm/paging.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `tests/test_ext4.c`, `tests/test_fat32.c`
 
 ## headers/net.h
-- Doc: net_cmd_status: net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and *...
+- Doc: net_sys_is_socket: net_connect / socket fds are NET_FD_BASE + index for Linux syscalls and *...
 - Layer: utility
 - Language: h
 - Symbols:
-  - `ring` (function, line 46) `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...`
-  - `net_register_symbols` (function, line 66) `void net_register_symbols(void);`
-  - `net_cmd_status` (function, line 69) `void net_cmd_status(void);`
-  - `net_cmd_ping` (function, line 70) `void net_cmd_ping(const char *ip_text);`
-  - `net_get_addrs` (function, line 71) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
-  - `net_cmd_dns` (function, line 72) `void net_cmd_dns(const char *host);`
-  - `net_open` (function, line 75) `int net_open(void);`
-  - `net_connect` (function, line 76) `int net_connect(const char *host, unsigned short port);`
-  - `net_send` (function, line 77) `int net_send(int fd, const char *buf, int len);`
-  - `net_recv` (function, line 78) `int net_recv(int fd, char *buf, int len);`
-  - `net_recv_timeout` (function, line 80) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);`
-  - `net_close` (function, line 81) `void net_close(int fd);`
-  - `demux` (function, line 87) `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);`
-  - `net_accept_nb` (function, line 89) `int net_accept_nb(int fd);`
-  - `net_accept` (function, line 90) `int net_accept(int fd, unsigned long timeout_ms);`
-  - `net_sock_state` (function, line 91) `int net_sock_state(int fd);`
-  - `net_sock_seq` (function, line 92) `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);`
-  - `net_test_inject_tcp` (function, line 93) `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...`
-  - `net_sys_socket` (function, line 98) `long net_sys_socket(long a1, long a2, long a3);`
-  - `net_sys_connect` (function, line 99) `long net_sys_connect(long fd, long sockaddr, long addrlen);`
-  - `net_sys_bind` (function, line 100) `long net_sys_bind(long fd, long sockaddr, long addrlen);`
-  - `net_sys_listen` (function, line 101) `long net_sys_listen(long fd, long backlog);`
-  - `net_sys_accept` (function, line 102) `long net_sys_accept(long fd, long sockaddr, long addrlen);`
-  - `net_sys_sendto` (function, line 103) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
-  - `net_sys_recvfrom` (function, line 104) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
-  - `net_sys_shutdown` (function, line 105) `long net_sys_shutdown(long fd, long how);`
-  - `net_sys_close` (function, line 106) `long net_sys_close(long fd);`
-  - `net_sys_poll` (function, line 107) `long net_sys_poll(long fds, long nfds, long timeout_ms);`
-  - `net_sys_dns` (function, line 108) `long net_sys_dns(long host);`
-  - `net_time_ms` (function, line 111) `unsigned long net_time_ms(void);`
-  - `net_rx_handle_frame` (function, line 115) `void net_rx_handle_frame(const unsigned char *frame, unsigned len);`
-  - `stack` (function, line 118) `* the stack (dropped fragments);`
-  - `tls_free_fd` (function, line 126) `void tls_free_fd(int fd);`
-  - `net_rx_dropped` (variable, line 119) `extern unsigned int net_rx_dropped;`
-  - `net6_rx_dropped` (variable, line 120) `extern unsigned int net6_rx_dropped;`
+  - `ring` (function, line 54) `* ring (below) is the rtl8139's 8 KB hardware ring, unrelated. */ #define NET_SOCK_RX_BUF 16384 #define...`
+  - `net_sys_is_socket` (function, line 97) `int net_sys_is_socket(long fd);`
+  - `net_sys_setsockopt` (function, line 98) `long net_sys_setsockopt(long fd, long level, long name, long val, long len);`
+  - `net_sys_getsockopt` (function, line 99) `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp);`
+  - `net_sys_getsockname` (function, line 100) `long net_sys_getsockname(long fd, long addr, long lenp);`
+  - `net_sys_getpeername` (function, line 101) `long net_sys_getpeername(long fd, long addr, long lenp);`
+  - `net_sys_sendmsg` (function, line 102) `long net_sys_sendmsg(long fd, long msg, long flags);`
+  - `net_sys_sendmmsg` (function, line 103) `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags);`
+  - `net_sys_fcntl` (function, line 104) `long net_sys_fcntl(long fd, long cmd, long arg);`
+  - `net_register_symbols` (function, line 105) `void net_register_symbols(void);`
+  - `net_cmd_status` (function, line 108) `void net_cmd_status(void);`
+  - `net_cmd_ping` (function, line 109) `void net_cmd_ping(const char *ip_text);`
+  - `net_get_addrs` (function, line 110) `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4]);`
+  - `net_cmd_dns` (function, line 111) `void net_cmd_dns(const char *host);`
+  - `net_open` (function, line 114) `int net_open(void);`
+  - `net_connect` (function, line 115) `int net_connect(const char *host, unsigned short port);`
+  - `net_send` (function, line 116) `int net_send(int fd, const char *buf, int len);`
+  - `net_recv` (function, line 117) `int net_recv(int fd, char *buf, int len);`
+  - `net_recv_timeout` (function, line 119) `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms);`
+  - `net_close` (function, line 120) `void net_close(int fd);`
+  - `demux` (function, line 126) `* segment through the production demux (httpd selftest). */ int net_listen(unsigned short port);`
+  - `net_accept_nb` (function, line 128) `int net_accept_nb(int fd);`
+  - `net_accept` (function, line 129) `int net_accept(int fd, unsigned long timeout_ms);`
+  - `net_sock_state` (function, line 130) `int net_sock_state(int fd);`
+  - `net_sock_seq` (function, line 131) `int net_sock_seq(int fd, unsigned *seq_out, unsigned *ack_out);`
+  - `net_test_inject_tcp` (function, line 132) `int net_test_inject_tcp(const unsigned char peer[4], unsigned short pport, unsigned short lport, unsigned char...`
+  - `net_sys_socket` (function, line 137) `long net_sys_socket(long a1, long a2, long a3);`
+  - `net_sys_connect` (function, line 138) `long net_sys_connect(long fd, long sockaddr, long addrlen);`
+  - `net_sys_bind` (function, line 139) `long net_sys_bind(long fd, long sockaddr, long addrlen);`
+  - `net_sys_listen` (function, line 140) `long net_sys_listen(long fd, long backlog);`
+  - `net_sys_accept` (function, line 141) `long net_sys_accept(long fd, long sockaddr, long addrlen);`
+  - `net_sys_sendto` (function, line 142) `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen);`
+  - `net_sys_recvfrom` (function, line 143) `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen);`
+  - `net_sys_shutdown` (function, line 144) `long net_sys_shutdown(long fd, long how);`
+  - `net_sys_close` (function, line 145) `long net_sys_close(long fd);`
+  - `net_sys_poll` (function, line 146) `long net_sys_poll(long fds, long nfds, long timeout_ms);`
+  - `net_sys_dns` (function, line 147) `long net_sys_dns(long host);`
+  - `net_time_ms` (function, line 150) `unsigned long net_time_ms(void);`
+  - `net_rx_handle_frame` (function, line 154) `void net_rx_handle_frame(const unsigned char *frame, unsigned len);`
+  - `stack` (function, line 157) `* the stack (dropped fragments);`
+  - `tls_free_fd` (function, line 165) `void tls_free_fd(int fd);`
+  - `net_rx_dropped` (variable, line 158) `extern unsigned int net_rx_dropped;`
+  - `net6_rx_dropped` (variable, line 159) `extern unsigned int net6_rx_dropped;`
   - `NET_H` (macro, line 2) `#define NET_H`
   - `NET_IP_ADDR` (macro, line 5) `#define NET_IP_ADDR`
   - `NET_NETMASK` (macro, line 6) `#define NET_NETMASK`
   - `NET_GATEWAY` (macro, line 7) `#define NET_GATEWAY`
   - `NET_DNS` (macro, line 8) `#define NET_DNS`
-  - `NET_PCI_VENDOR` (macro, line 11) `#define NET_PCI_VENDOR`
-  - `NET_PCI_DEVICE` (macro, line 12) `#define NET_PCI_DEVICE`
-  - `NET_RX_BUF_LEN` (macro, line 18) `#define NET_RX_BUF_LEN`
-  - `NET_RX_ALIGN` (macro, line 19) `#define NET_RX_ALIGN`
-  - `NET_RCR` (macro, line 22) `#define NET_RCR`
-  - `NET_MAX_FRAME` (macro, line 23) `#define NET_MAX_FRAME`
-  - `NET_TX_SLOTS` (macro, line 24) `#define NET_TX_SLOTS`
-  - `NET_ETH_ALEN` (macro, line 27) `#define NET_ETH_ALEN`
-  - `NET_ETHERTYPE_IP` (macro, line 28) `#define NET_ETHERTYPE_IP`
-  - `NET_ETHERTYPE_ARP` (macro, line 29) `#define NET_ETHERTYPE_ARP`
-  - `NET_ETHERTYPE_IPV6` (macro, line 30) `#define NET_ETHERTYPE_IPV6`
-  - `NET_PROTO_ICMP` (macro, line 33) `#define NET_PROTO_ICMP`
-  - `NET_PROTO_TCP` (macro, line 34) `#define NET_PROTO_TCP`
-  - `NET_PROTO_UDP` (macro, line 35) `#define NET_PROTO_UDP`
-  - `NET_ARP_CACHE` (macro, line 38) `#define NET_ARP_CACHE`
-  - `NET_ARP_REQUEST` (macro, line 39) `#define NET_ARP_REQUEST`
-  - `NET_ARP_REPLY` (macro, line 40) `#define NET_ARP_REPLY`
-  - `NET_TCP_MSS` (macro, line 43) `#define NET_TCP_MSS`
-  - `NET_TCP_WINDOW` (macro, line 44) `#define NET_TCP_WINDOW`
-  - `NET_SOCK_RX_BUF` (macro, line 47) `#define NET_SOCK_RX_BUF`
-  - `NET_RX_RING_SIZE` (macro, line 48) `#define NET_RX_RING_SIZE`
-  - `NET_SOCKETS` (macro, line 49) `#define NET_SOCKETS`
-  - `NET_DNS_PORT` (macro, line 50) `#define NET_DNS_PORT`
-  - `NET_EPHEMERAL_MIN` (macro, line 51) `#define NET_EPHEMERAL_MIN`
-  - `NET_DNS_TRIES` (macro, line 52) `#define NET_DNS_TRIES`
-  - `NET_DNS_TMO_MS` (macro, line 53) `#define NET_DNS_TMO_MS`
-  - `NET_CONNECT_TMO_S` (macro, line 54) `#define NET_CONNECT_TMO_S`
-  - `NET_RETRY_MS` (macro, line 55) `#define NET_RETRY_MS`
-  - `NET_ACCEPT_TMO_MS` (macro, line 56) `#define NET_ACCEPT_TMO_MS`
-  - `NET_TX_MAX` (macro, line 57) `#define NET_TX_MAX`
-  - `NET_FD_BASE` (macro, line 60) `#define NET_FD_BASE`
+  - `NET_POLLIN` (macro, line 12) `#define NET_POLLIN`
+  - `NET_POLLOUT` (macro, line 13) `#define NET_POLLOUT`
+  - `NET_POLLERR` (macro, line 14) `#define NET_POLLERR`
+  - `NET_POLLHUP` (macro, line 15) `#define NET_POLLHUP`
+  - `NET_POLLNVAL` (macro, line 16) `#define NET_POLLNVAL`
+  - `NET_PCI_VENDOR` (macro, line 19) `#define NET_PCI_VENDOR`
+  - `NET_PCI_DEVICE` (macro, line 20) `#define NET_PCI_DEVICE`
+  - `NET_RX_BUF_LEN` (macro, line 26) `#define NET_RX_BUF_LEN`
+  - `NET_RX_ALIGN` (macro, line 27) `#define NET_RX_ALIGN`
+  - `NET_RCR` (macro, line 30) `#define NET_RCR`
+  - `NET_MAX_FRAME` (macro, line 31) `#define NET_MAX_FRAME`
+  - `NET_TX_SLOTS` (macro, line 32) `#define NET_TX_SLOTS`
+  - `NET_ETH_ALEN` (macro, line 35) `#define NET_ETH_ALEN`
+  - `NET_ETHERTYPE_IP` (macro, line 36) `#define NET_ETHERTYPE_IP`
+  - `NET_ETHERTYPE_ARP` (macro, line 37) `#define NET_ETHERTYPE_ARP`
+  - `NET_ETHERTYPE_IPV6` (macro, line 38) `#define NET_ETHERTYPE_IPV6`
+  - `NET_PROTO_ICMP` (macro, line 41) `#define NET_PROTO_ICMP`
+  - `NET_PROTO_TCP` (macro, line 42) `#define NET_PROTO_TCP`
+  - `NET_PROTO_UDP` (macro, line 43) `#define NET_PROTO_UDP`
+  - `NET_ARP_CACHE` (macro, line 46) `#define NET_ARP_CACHE`
+  - `NET_ARP_REQUEST` (macro, line 47) `#define NET_ARP_REQUEST`
+  - `NET_ARP_REPLY` (macro, line 48) `#define NET_ARP_REPLY`
+  - `NET_TCP_MSS` (macro, line 51) `#define NET_TCP_MSS`
+  - `NET_TCP_WINDOW` (macro, line 52) `#define NET_TCP_WINDOW`
+  - `NET_SOCK_RX_BUF` (macro, line 55) `#define NET_SOCK_RX_BUF`
+  - `NET_RX_RING_SIZE` (macro, line 56) `#define NET_RX_RING_SIZE`
+  - `NET_SOCKETS` (macro, line 57) `#define NET_SOCKETS`
+  - `NET_DNS_PORT` (macro, line 58) `#define NET_DNS_PORT`
+  - `NET_EPHEMERAL_MIN` (macro, line 59) `#define NET_EPHEMERAL_MIN`
+  - `NET_DNS_TRIES` (macro, line 60) `#define NET_DNS_TRIES`
+  - `NET_DNS_TMO_MS` (macro, line 61) `#define NET_DNS_TMO_MS`
+  - `NET_CONNECT_TMO_S` (macro, line 62) `#define NET_CONNECT_TMO_S`
+  - `NET_RETRY_MS` (macro, line 63) `#define NET_RETRY_MS`
+  - `NET_ACCEPT_TMO_MS` (macro, line 64) `#define NET_ACCEPT_TMO_MS`
+  - `NET_TX_MAX` (macro, line 65) `#define NET_TX_MAX`
+  - `NET_FD_BASE` (macro, line 68) `#define NET_FD_BASE`
+  - `NET_UDP_SOCKETS` (macro, line 73) `#define NET_UDP_SOCKETS`
+  - `NET_UDP_QUEUE` (macro, line 74) `#define NET_UDP_QUEUE`
+  - `NET_UDP_DGRAM_MAX` (macro, line 75) `#define NET_UDP_DGRAM_MAX`
+  - `NET_UDP_FD_BASE` (macro, line 76) `#define NET_UDP_FD_BASE`
+  - `NET_UDP_EPHEMERAL_MIN` (macro, line 77) `#define NET_UDP_EPHEMERAL_MIN`
+  - `NET_UDP_EPHEMERAL_MAX` (macro, line 78) `#define NET_UDP_EPHEMERAL_MAX`
+  - `NET_SOCKADDR_IN_LEN` (macro, line 79) `#define NET_SOCKADDR_IN_LEN`
+  - `NET_MSGHDR_LEN` (macro, line 81) `#define NET_MSGHDR_LEN`
+  - `NET_MMSGHDR_LEN` (macro, line 82) `#define NET_MMSGHDR_LEN`
+  - `NET_MSGHDR_NAME_OFF` (macro, line 83) `#define NET_MSGHDR_NAME_OFF`
+  - `NET_MSGHDR_NAMELEN_OFF` (macro, line 84) `#define NET_MSGHDR_NAMELEN_OFF`
+  - `NET_MSGHDR_IOV_OFF` (macro, line 85) `#define NET_MSGHDR_IOV_OFF`
+  - `NET_MSGHDR_IOVLEN_OFF` (macro, line 86) `#define NET_MSGHDR_IOVLEN_OFF`
+  - `NET_MMSGHDR_LEN_OFF` (macro, line 87) `#define NET_MMSGHDR_LEN_OFF`
+  - `NET_IOV_LEN` (macro, line 88) `#define NET_IOV_LEN`
+  - `NET_IOV_MAX` (macro, line 89) `#define NET_IOV_MAX`
+  - `NET_MMSG_MAX` (macro, line 90) `#define NET_MMSG_MAX`
 - Imported by: `drivers/virtio_net.c`, `headers/net/rtl8139.h`, `headers/tls_port.h`, `kernel.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `net/net.c`, `net/rtl8139.c`
 
 ## headers/panic.h
@@ -306,23 +367,44 @@ Previous: [KB_headers_p2.md](KB_headers_p2.md)
 - Language: h
 - Symbols:
   - `pipe_ring_t` (struct, line 27)
-  - `pipe_cfg_t` (struct, line 36)
-  - `pipe_ring_init` (function, line 46) `static inline int pipe_ring_init(pipe_ring_t *r, unsigned char *buf,
+  - `pipe_cfg_t` (struct, line 37)
+  - `pipe_ring_init` (function, line 47) `static inline int pipe_ring_init(pipe_ring_t *r, unsigned char *buf,
         unsigned cap)`
-  - `pipe_ring_avail` (function, line 62) `static inline unsigned pipe_ring_avail(const pipe_ring_t *r)`
-  - `pipe_ring_space` (function, line 69) `static inline unsigned pipe_ring_space(const pipe_ring_t *r)`
-  - `pipe_ring_write` (function, line 77) `static inline unsigned pipe_ring_write(pipe_ring_t *r,
+  - `pipe_ring_avail` (function, line 64) `static inline unsigned pipe_ring_avail(const pipe_ring_t *r)`
+  - `pipe_ring_space` (function, line 71) `static inline unsigned pipe_ring_space(const pipe_ring_t *r)`
+  - `pipe_ring_write` (function, line 79) `static inline unsigned pipe_ring_write(pipe_ring_t *r,
         const unsigned char *src, unsigned...`
-  - `pipe_ring_close_writer` (function, line 116) `static inline int pipe_ring_close_writer(pipe_ring_t *r)`
-  - `pipe_ring_stat` (function, line 125) `static inline int pipe_ring_stat(const pipe_ring_t *r, pipe_cfg_t *out)`
+  - `pipe_ring_close_writer` (function, line 118) `static inline int pipe_ring_close_writer(pipe_ring_t *r)`
+  - `pipe_ring_close_reader` (function, line 128) `static inline int pipe_ring_close_reader(pipe_ring_t *r)`
+  - `pipe_ring_ropen` (function, line 135) `static inline int pipe_ring_ropen(const pipe_ring_t *r)`
+  - `pipe_ring_stat` (function, line 140) `static inline int pipe_ring_stat(const pipe_ring_t *r, pipe_cfg_t *out)`
   - `ends` (function, line 4) `* * Single source of truth for the pipe byte ring shared by the kernel * pipe ends (fs/kfile.c), the pipe/dup/dup2...`
   - `PIPE_H` (macro, line 19) `#define PIPE_H`
   - `PIPE_CAP_DEFAULT` (macro, line 21) `#define PIPE_CAP_DEFAULT`
   - `PIPE_CAP_MAX` (macro, line 22) `#define PIPE_CAP_MAX`
   - `PIPE_ERR_BOUND` (macro, line 24) `#define PIPE_ERR_BOUND`
   - `PIPE_EMPTY` (macro, line 25) `#define PIPE_EMPTY`
-  - `PIPE_CFG_DEFAULT` (macro, line 42) `#define PIPE_CFG_DEFAULT`
+  - `PIPE_CFG_DEFAULT` (macro, line 43) `#define PIPE_CFG_DEFAULT`
 - Imported by: `headers/kernel.h`, `kernel/console_in.c`, `tests/test_pipe.c`
+
+## headers/proc_sec.h
+- Doc: Docstring: proc_sec.h -- per-process security state behind the Linux
+- Layer: utility
+- Language: h
+- Symbols:
+  - `proc_sec_inherit` (function, line 23) `void proc_sec_inherit(int child, int parent);`
+  - `proc_sec_release` (function, line 24) `void proc_sec_release(int pid);`
+  - `proc_sec_exec` (function, line 25) `void proc_sec_exec(int pid);`
+  - `proc_sec_set_exe` (function, line 26) `void proc_sec_set_exe(int pid, const char *resolved);`
+  - `proc_sec_exe` (function, line 28) `const char *proc_sec_exe(int pid);`
+  - `it` (function, line 31) `* the syscall must answer in *ret when a filter decided it (ERRNO, TRACE, * USER_NOTIF);`
+  - `proc_sec_filter` (function, line 34) `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret);`
+  - `proc_sec_prctl` (function, line 36) `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5);`
+  - `proc_sec_seccomp` (function, line 37) `long proc_sec_seccomp(long op, long flags, long uargs);`
+  - `PROC_SEC_H` (macro, line 13) `#define PROC_SEC_H`
+  - `SECCOMP_FILTERS_MAX` (macro, line 16) `#define SECCOMP_FILTERS_MAX`
+  - `SECCOMP_KILL_EXIT` (macro, line 20) `#define SECCOMP_KILL_EXIT`
+- Imported by: `kernel/exec.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
 
 ## headers/qga.h
 - Layer: utility
@@ -406,53 +488,6 @@ Previous: [KB_headers_p2.md](KB_headers_p2.md)
   - `rtc_wall_seconds` (function, line 33) `int rtc_wall_seconds(unsigned long *out);`
   - `RTC_H` (macro, line 2) `#define RTC_H`
 - Imported by: `drivers/rtc.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
-
-## headers/sanitize.h
-- Doc: Docstring: sanitize.h -- Single choke point for syscall argument checks.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `SANITIZE_H` (macro, line 2) `#define SANITIZE_H`
-  - `SANITIZE_LEN_NEG` (macro, line 32) `#define SANITIZE_LEN_NEG(var)`
-  - `SANITIZE_RANGE` (macro, line 37) `#define SANITIZE_RANGE(ptr, len)`
-  - `SANITIZE_STR` (macro, line 43) `#define SANITIZE_STR(ptr, maxlen)`
-  - `SANITIZE_COPY_IN` (macro, line 49) `#define SANITIZE_COPY_IN(kbuf, uptr, count, elemsz)`
-- Imported by: `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `tests/test_sanitize.c`
-
-## headers/sb16.h
-- Doc: Sound Blaster 16 DMA audio driver contract.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `sb16_stream_t` (struct, line 46)
-  - `sb16_counters_t` (struct, line 55)
-  - `sb16_init` (function, line 65) `int sb16_init(void);`
-  - `sb16_present` (function, line 66) `int sb16_present(void);`
-  - `sb16_tone` (function, line 67) `void sb16_tone(unsigned freq);`
-  - `sb16_irq` (function, line 68) `void sb16_irq(void);`
-  - `sb16_poll` (function, line 69) `void sb16_poll(void);`
-  - `sb16_pcm_open` (function, line 73) `void sb16_pcm_open(void);`
-  - `sb16_pcm_submit` (function, line 74) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len);`
-  - `sb16_pcm_close` (function, line 75) `void sb16_pcm_close(void);`
-  - `sb16_pump` (function, line 76) `void sb16_pump(void);`
-  - `sb16_stream_open` (function, line 79) `int sb16_stream_open(void);`
-  - `sb16_stream_close` (function, line 80) `void sb16_stream_close(int id);`
-  - `sb16_stream_submit` (function, line 81) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len);`
-  - `sb16_stream_volume` (function, line 82) `void sb16_stream_volume(int id, unsigned char vol);`
-  - `sb16_stream_count` (function, line 83) `int sb16_stream_count(void);`
-  - `sb16_ring_free` (function, line 85) `unsigned sb16_ring_free(void);`
-  - `sb16_mode_active` (function, line 86) `int sb16_mode_active(void);`
-  - `sb16_legacy_busy` (function, line 91) `int sb16_legacy_busy(void);`
-  - `sb16_counters` (function, line 93) `void sb16_counters(sb16_counters_t *out);`
-  - `SB16_H` (macro, line 2) `#define SB16_H`
-  - `SB16_PCM_BUF` (macro, line 32) `#define SB16_PCM_BUF`
-  - `SB16_PCM_RATE` (macro, line 33) `#define SB16_PCM_RATE`
-  - `SB16_SLOTS` (macro, line 34) `#define SB16_SLOTS`
-  - `SB16_RING_CAP` (macro, line 35) `#define SB16_RING_CAP`
-  - `SB16_ARM_PERIOD_MS` (macro, line 36) `#define SB16_ARM_PERIOD_MS`
-  - `SB16_STREAMS` (macro, line 42) `#define SB16_STREAMS`
-  - `SB16_STREAM_BUF` (macro, line 43) `#define SB16_STREAM_BUF`
-- Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 
 Next: [KB_headers_p4.md](KB_headers_p4.md)

@@ -2,6 +2,17 @@
 Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/sounds.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/v_video.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/w_wad.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/z_zone.h`
+- `progs/doomgeneric/f_finale.h` -> `progs/doomgeneric/d_event.h`
+- `progs/doomgeneric/f_finale.h` -> `progs/doomgeneric/doomtype.h`
+- `progs/doomgeneric/f_wipe.c` -> `kernel/string.c`
+- `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/doomtype.h`
+- `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/f_wipe.h`
+- `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/i_video.h`
+- `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/m_random.h`
 - `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/v_video.h`
 - `progs/doomgeneric/f_wipe.c` -> `progs/doomgeneric/z_zone.h`
 - `progs/doomgeneric/g_game.c` -> `kernel/string.c`
@@ -485,16 +496,5 @@ Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/doomdef.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/doomstat.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/i_swap.h`
-- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/i_system.h`
-- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/r_local.h`
-- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/w_wad.h`
-- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/z_zone.h`
-- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/deh_str.h`
-- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/doomfeatures.h`
-- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/doomstat.h`
-- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/doomtype.h`
-- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/i_sound.h`
-- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/i_system.h`
-- `progs/doomgeneric/s_sound.c` -> `progs/doomgeneric/m_argv.h`
 
 Next: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)

@@ -171,28 +171,37 @@ Imported by: `tests/test_freedom_wl.c`
 
 ## progs/src/lxabi.c
 Depends on: `kernel/string.c`, `kernel/time.c`
-- `report` (function) `progs/src/lxabi.c:55` `static void report(const char *name, int ok, const char *detail)`
-- `now_ms` (function) `progs/src/lxabi.c:65` `static long now_ms(void)`
-- `busy_wait_ms` (function) `progs/src/lxabi.c:71` `static void busy_wait_ms(long ms)`
-- `fork_probe` (function) `progs/src/lxabi.c:85` `static void fork_probe(uint64_t *out)` -- Raw clone(SIGCHLD) with known values in every callee-saved register and in * the argument registers; both sides...
-- `regs_match` (function) `progs/src/lxabi.c:122` `static int regs_match(const uint64_t *r)`
-- `check_fork_registers` (function) `progs/src/lxabi.c:128` `static void check_fork_registers(void)`
-- `worker` (function) `progs/src/lxabi.c:158` `static void *worker(void *arg)`
-- `check_threads` (function) `progs/src/lxabi.c:172` `static void check_threads(void)`
-- `detached_worker` (function) `progs/src/lxabi.c:202` `static void *detached_worker(void *arg)`
-- `check_detached_reaped` (function) `progs/src/lxabi.c:208` `static void check_detached_reaped(void)`
-- `signaller` (function) `progs/src/lxabi.c:232` `static void *signaller(void *arg)`
-- `check_condvar` (function) `progs/src/lxabi.c:242` `static void check_condvar(void)`
-- `check_pipe2_flags` (function) `progs/src/lxabi.c:264` `static void check_pipe2_flags(void)`
-- `check_pipe_blocking` (function) `progs/src/lxabi.c:291` `static void check_pipe_blocking(void)`
-- `check_pipe_epipe` (function) `progs/src/lxabi.c:313` `static void check_pipe_epipe(void)`
-- `check_writev_pipe` (function) `progs/src/lxabi.c:324` `static void check_writev_pipe(void)`
-- `check_poll` (function) `progs/src/lxabi.c:336` `static void check_poll(void)`
-- `check_eventfd` (function) `progs/src/lxabi.c:360` `static void check_eventfd(void)`
-- `check_close_range` (function) `progs/src/lxabi.c:385` `static void check_close_range(void)`
-- `check_time` (function) `progs/src/lxabi.c:397` `static void check_time(void)`
-- `check_mkdir` (function) `progs/src/lxabi.c:406` `static void check_mkdir(void)`
-- `main` (function) `progs/src/lxabi.c:417` `int main(void)`
+- `report` (function) `progs/src/lxabi.c:58` `static void report(const char *name, int ok, const char *detail)`
+- `now_ms` (function) `progs/src/lxabi.c:68` `static long now_ms(void)`
+- `busy_wait_ms` (function) `progs/src/lxabi.c:74` `static void busy_wait_ms(long ms)`
+- `fork_probe` (function) `progs/src/lxabi.c:88` `static void fork_probe(uint64_t *out)` -- Raw clone(SIGCHLD) with known values in every callee-saved register and in * the argument registers; both sides...
+- `regs_match` (function) `progs/src/lxabi.c:125` `static int regs_match(const uint64_t *r)`
+- `check_fork_registers` (function) `progs/src/lxabi.c:131` `static void check_fork_registers(void)`
+- `check_fork_cow_kernel_write` (function) `progs/src/lxabi.c:153` `static void check_fork_cow_kernel_write(void)`
+- `worker` (function) `progs/src/lxabi.c:194` `static void *worker(void *arg)`
+- `check_threads` (function) `progs/src/lxabi.c:208` `static void check_threads(void)`
+- `detached_worker` (function) `progs/src/lxabi.c:238` `static void *detached_worker(void *arg)`
+- `check_detached_reaped` (function) `progs/src/lxabi.c:244` `static void check_detached_reaped(void)`
+- `signaller` (function) `progs/src/lxabi.c:268` `static void *signaller(void *arg)`
+- `check_condvar` (function) `progs/src/lxabi.c:278` `static void check_condvar(void)`
+- `check_pipe2_flags` (function) `progs/src/lxabi.c:300` `static void check_pipe2_flags(void)`
+- `check_pipe_blocking` (function) `progs/src/lxabi.c:327` `static void check_pipe_blocking(void)`
+- `check_pipe_epipe` (function) `progs/src/lxabi.c:349` `static void check_pipe_epipe(void)`
+- `check_writev_pipe` (function) `progs/src/lxabi.c:360` `static void check_writev_pipe(void)`
+- `check_poll` (function) `progs/src/lxabi.c:372` `static void check_poll(void)`
+- `check_eventfd` (function) `progs/src/lxabi.c:396` `static void check_eventfd(void)`
+- `check_close_range` (function) `progs/src/lxabi.c:421` `static void check_close_range(void)`
+- `check_time` (function) `progs/src/lxabi.c:433` `static void check_time(void)`
+- `check_mkdir` (function) `progs/src/lxabi.c:442` `static void check_mkdir(void)`
+- `lxabi_sleeper` (function) `progs/src/lxabi.c:454` `static void *lxabi_sleeper(void *arg)` -- } static void check_mkdir(void) { int rc = mkdir(LXABI_MKDIR_PATH, 0700); int ok = rc == 0 || errno == EEXIST; FILE...
+- `child_status` (function) `progs/src/lxabi.c:462` `static int child_status(void (*body)(void))` -- Fork a child that runs body, wait for it with a bounded spin and return * its wait status, or -1 when it never ended...
+- `abort_from_worker_body` (function) `progs/src/lxabi.c:482` `static void abort_from_worker_body(void)`
+- `lxabi_exit_group_worker` (function) `progs/src/lxabi.c:488` `static void *lxabi_exit_group_worker(void *arg)`
+- `exit_group_from_worker_body` (function) `progs/src/lxabi.c:494` `static void exit_group_from_worker_body(void)`
+- `wild_jump_body` (function) `progs/src/lxabi.c:500` `static void wild_jump_body(void)`
+- `process` (function) `progs/src/lxabi.c:508` `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
+ * leaves the target aliv...`
+- `main` (function) `progs/src/lxabi.c:535` `int main(void)`
 
 ## progs/src/lxhello.c
 - `lx_syscall3` (function) `progs/src/lxhello.c:11` `static long lx_syscall3(long n, long a1, long a2, long a3)`
@@ -200,6 +209,37 @@ Depends on: `kernel/string.c`, `kernel/time.c`
 - `lx_write` (function) `progs/src/lxhello.c:29` `static void lx_write(const char *s)`
 - `lx_write_int` (function) `progs/src/lxhello.c:33` `static void lx_write_int(long v)`
 - `lmain` (function) `progs/src/lxhello.c:46` `int lmain(long argc, char **argv)` -- static void lx_write_int(long v) { char buf[24]; int i = (int)sizeof(buf); int neg = 0; buf[--i] = 0; if (v < 0) {...
+
+## progs/src/lxnet.c
+Depends on: `kernel/string.c`
+- `report` (function) `progs/src/lxnet.c:48` `static void report(const char *name, int ok, const char *detail)`
+- `wait_for` (function) `progs/src/lxnet.c:54` `static int wait_for(int fd, short events)`
+- `read_all` (function) `progs/src/lxnet.c:61` `static int read_all(int fd, char *buf, size_t len)` -- static void report(const char *name, int ok, const char *detail) { if (ok) printf("lxnet: %s ok\n", name); else {...
+- `check_udp` (function) `progs/src/lxnet.c:72` `static void check_udp(const struct sockaddr_in *peer)`
+- `check_refused` (function) `progs/src/lxnet.c:143` `static void check_refused(const struct sockaddr_in *peer)` -- A non-blocking connect to a port nobody listens on fails through poll * (POLLERR) with SO_ERROR = ECONNREFUSED...
+- `check_tcp` (function) `progs/src/lxnet.c:167` `static void check_tcp(const struct sockaddr_in *peer)`
+- `check_misc` (function) `progs/src/lxnet.c:210` `static void check_misc(void)`
+- `dial` (function) `progs/src/lxnet.c:229` `static int dial(const char *host, const char *port)` -- if (fd >= 0) close(fd); struct addrinfo hints, *res = NULL; memset(&hints, 0, sizeof hints); hints.ai_family =...
+- `main` (function) `progs/src/lxnet.c:273` `int main(int argc, char **argv)`
+
+## progs/src/lxsecc.c
+Depends on: `kernel/string.c`
+- `report` (function) `progs/src/lxsecc.c:44` `static void report(const char *name, int ok, const char *detail)`
+- `exit_code_of` (function) `progs/src/lxsecc.c:53` `static int exit_code_of(int st)` -- Exit code of a reaped child under both encodings: Linux's status word (code << 8, signal in the low bits) and...
+- `run_child` (function) `progs/src/lxsecc.c:58` `static int run_child(void (*body)(void))`
+- `install_filter` (function) `progs/src/lxsecc.c:72` `static int install_filter(unsigned getpid_action)` -- Filter: arch guard, getpid -> ERRNO(err_getpid), write/exit/exit_group/ * rt_sigreturn/mprotect(no PROT_EXEC)/fork...
+- `child_errno_action` (function) `progs/src/lxsecc.c:100` `static void child_errno_action(void)`
+- `child_kill_action` (function) `progs/src/lxsecc.c:107` `static void child_kill_action(void)`
+- `child_wx` (function) `progs/src/lxsecc.c:116` `static void child_wx(void)` -- The page is the child's own anonymous mapping, made before the filter (which forbids mmap): a copy-on-write page...
+- `grandchild_inherits` (function) `progs/src/lxsecc.c:127` `static void grandchild_inherits(void)`
+- `child_inherit` (function) `progs/src/lxsecc.c:133` `static void child_inherit(void)`
+- `child_stacked` (function) `progs/src/lxsecc.c:142` `static void child_stacked(void)`
+- `child_strict` (function) `progs/src/lxsecc.c:150` `static void child_strict(void)`
+- `child_no_nnp` (function) `progs/src/lxsecc.c:157` `static void child_no_nnp(void)`
+- `child_bad_program` (function) `progs/src/lxsecc.c:165` `static void child_bad_program(void)`
+- `check_prctl_flags` (function) `progs/src/lxsecc.c:177` `static void check_prctl_flags(void)`
+- `check_proc_self_exe` (function) `progs/src/lxsecc.c:197` `static void check_proc_self_exe(const char *argv0)`
+- `main` (function) `progs/src/lxsecc.c:215` `int main(int argc, char **argv)`
 
 ## progs/src/lz4.c
 - `kernel` (function) `progs/src/lz4.c:6` `* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends...`

@@ -1,24 +1,24 @@
 # progs/src
 
-*Community 3 | 67 files | cohesion 0.70*
+*Community 3 | 67 files | cohesion 0.69*
 
 ## Definition
 
-This community groups 67 file(s) rooted at `progs/src` with dominant language c (cohesion 0.70). Central symbols: `ARENA_DEFAULT_ALIGN`, `ASCII_BS`, `ASCII_CR`, `ASCII_DEL`, `ASCII_ESC`, `ASCII_TAB`, `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`. Core file: `progs/vedit/vedit.c` (243 symbols). Documented purpose: Docstring: bump arena for MiniOS, kernel and ring-3 alike..
+This community groups 67 file(s) rooted at `progs/src` with dominant language c (cohesion 0.69). Central symbols: `ASCII_BS`, `ASCII_CR`, `ASCII_DEL`, `ASCII_ESC`, `ASCII_TAB`, `AUDIO_CHANNELS_MONO`, `AUDIO_FORMAT_S16`, `AUDIO_FORMAT_U8`. Core file: `progs/vedit/vedit.c` (243 symbols). Documented purpose: Unified audio API for MiniOS..
 
 ## Files
 
-### `progs/src` (11 files)
+### `progs/src` (13 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/src/audio.c` | c | utility | 17 | no |
 
-### `tests` (11 files)
+### `tests` (10 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `tests/test_arena.c` | c | testing | 2 | yes |
+| `tests/test_file_assoc.c` | c | testing | 10 | yes |
 
 ### `progs/nuklear` (8 files)
 
@@ -38,12 +38,6 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 |------|----------|-------|---------|-----|
 | `progs/wl/wl_client.h` | h | infrastructure | 5 | yes |
 
-### `headers` (3 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `headers/arena.h` | h | utility | 15 | yes |
-
 ### `progs` (3 files)
 
 | File | Language | Layer | Symbols | Doc |
@@ -55,6 +49,12 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/doomgeneric/doomgeneric_minios.c` | c | utility | 29 | yes |
+
+### `headers` (2 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `headers/audio.h` | h | utility | 18 | yes |
 
 ### `progs/file` (2 files)
 
@@ -133,21 +133,6 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 
 ## Key Symbols
 
-- `kmalloc` (function, `headers/arena.h:3`) `* * A bump arena serves one kmalloc (kernel) or malloc (ring-3) with pointer * b`
-- `kfree` (function, `headers/arena.h:25`) `* kfree(back);`
-- `MINIOS_ARENA_H` (macro, `headers/arena.h:33`) `#define MINIOS_ARENA_H`
-- `ARENA_DEFAULT_ALIGN` (macro, `headers/arena.h:38`) `#define ARENA_DEFAULT_ALIGN`
-- `minios_arena` (struct, `headers/arena.h:41`) - Alignment defaults to 8 bytes when the caller passes 0. Every size sum is overflow checked and fails
-- `arena_init` (function, `headers/arena.h:48`) `static inline void arena_init(arena_t *a, void *block, size_t size)` - #include <stddef.h> /** Docstring: default borrow alignment when the caller passes align 0. #define
-- `arena_align_up` (function, `headers/arena.h:62`) `static inline size_t arena_align_up(size_t n, size_t align)` - static inline void arena_init(arena_t *a, void *block, size_t size) { if (!a) return; if (!block \|\|
-- `arena_bytes_for` (function, `headers/arena.h:74`) `static inline size_t arena_bytes_for(size_t count, size_t elem_size)` - /** Docstring: round n up to align, 0 on overflow or non-power-of-two align. static inline size_t ar
-- `arena_alloc` (function, `headers/arena.h:81`) `static inline void *arena_alloc(arena_t *a, size_t size, size_t align)` - mask = align - 1; if (n > (size_t)-1 - mask) return 0; up = (n + mask) & ~mask; return up; } /** Doc
-- `arena_used` (function, `headers/arena.h:95`) `static inline size_t arena_used(const arena_t *a)` - static inline void *arena_alloc(arena_t *a, size_t size, size_t align) { size_t off; size_t up; if (
-- `arena_free_bytes` (function, `headers/arena.h:101`) `static inline size_t arena_free_bytes(const arena_t *a)` - if (up == 0 && off != 0) return 0; if (up > (size_t)(a->end - a->base)) return 0; if (size > (size_t
-- `arena_reset` (function, `headers/arena.h:107`) `static inline void arena_reset(arena_t *a)` - /** Docstring: bytes borrowed so far, 0 for a null or empty arena. static inline size_t arena_used(c
-- `arena_checkpoint` (function, `headers/arena.h:113`) `static inline size_t arena_checkpoint(const arena_t *a)` - /** Docstring: bytes still borrowable, 0 for a null or empty arena. static inline size_t arena_free_
-- `arena_rewind` (function, `headers/arena.h:119`) `static inline int arena_rewind(arena_t *a, size_t checkpoint)` - /** Docstring: rewind the scope to empty without releasing the backing block. static inline void are
-- `arena_contains` (function, `headers/arena.h:128`) `static inline int arena_contains(const arena_t *a, const void *ptr)` - if (!a \|\| !a->base) return 0; return (size_t)(a->cur - a->base); } /** Docstring: rewind to a checkp
 - `AUDIO_H` (macro, `headers/audio.h:2`) `#define AUDIO_H`
 - `AUDIO_RATE_DEFAULT` (macro, `headers/audio.h:15`) `#define AUDIO_RATE_DEFAULT`
 - `AUDIO_CHANNELS_MONO` (macro, `headers/audio.h:16`) `#define AUDIO_CHANNELS_MONO`
@@ -163,11 +148,26 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 - `audio_get_volume` (function, `headers/audio.h:34`) `unsigned audio_get_volume(void);`
 - `audio_sb16_present` (function, `headers/audio.h:37`) `int audio_sb16_present(void);` - /* Tone mode: play a square wave at `freq` Hz.  0 = silence. void audio_tone(unsigned freq); /* PCM
 - `audio_stream_open` (function, `headers/audio.h:40`) `int audio_stream_open(void);` - /* PCM streaming mode (SB16). int  audio_pcm_open(unsigned rate, unsigned channels, unsigned format)
+- `audio_stream_close` (function, `headers/audio.h:41`) `void audio_stream_close(int id);`
+- `audio_stream_submit` (function, `headers/audio.h:42`) `int audio_stream_submit(int id, const void *buf, unsigned len);`
+- `audio_stream_volume` (function, `headers/audio.h:43`) `void audio_stream_volume(int id, unsigned char vol);`
+- `MINIOS_LEAKCHECK_H` (macro, `headers/leakcheck.h:28`) `#define MINIOS_LEAKCHECK_H`
+- `MINIOS_LK_PIPE` (macro, `headers/leakcheck.h:42`) `#define MINIOS_LK_PIPE`
+- `MINIOS_LK_PIPE` (macro, `headers/leakcheck.h:44`) `#define MINIOS_LK_PIPE`
+- `lk_block_t` (type_alias, `headers/leakcheck.h:49`) `typedef struct lk_block lk_block_t;` - #ifndef MINIOS_LK_KERNEL #include <stdlib.h> #include <stdio.h> #endif #ifndef MINIOS_LK_PIPE #ifdef
+- `lk_block` (struct, `headers/leakcheck.h:50`)
+- `kmalloc` (function, `headers/leakcheck.h:79`) `extern void *kmalloc(unsigned long size);` - ifdef MINIOS_LK_KERNEL
+- `kfree` (function, `headers/leakcheck.h:80`) `extern void kfree(void *ptr);`
+- `kprintf` (function, `headers/leakcheck.h:81`) `extern int kprintf(const char *fmt, ...);`
+- `MINIOS_LK_RAW_ALLOC` (macro, `headers/leakcheck.h:82`) `#define MINIOS_LK_RAW_ALLOC(sz)`
+- `MINIOS_LK_RAW_FREE` (macro, `headers/leakcheck.h:83`) `#define MINIOS_LK_RAW_FREE(p)`
+- `MINIOS_LK_RAW_ALLOC` (macro, `headers/leakcheck.h:88`) `#define MINIOS_LK_RAW_ALLOC(sz)`
+- `MINIOS_LK_RAW_FREE` (macro, `headers/leakcheck.h:89`) `#define MINIOS_LK_RAW_FREE(p)`
 
 ## Internal vs External Edges
 
 - Internal resolved imports (EXTRACTED): 123
-- Cross-boundary resolved imports (EXTRACTED): 53
+- Cross-boundary resolved imports (EXTRACTED): 54
 
 ## Connections
 
@@ -191,11 +191,10 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 
 - Why do 8 file(s) lack file-level docs (e.g. `progs/lisp/lisp.c`)? What purpose do they serve?
 - What would break if the most connected file in progs/src changed?
-- Should progs/src be split, given cohesion 0.70?
+- Should progs/src be split, given cohesion 0.69?
 
 ## Sources
 
-- `headers/arena.h`
 - `headers/audio.h`
 - `headers/leakcheck.h`
 - `kernel/string.c`
@@ -215,4 +214,5 @@ This community groups 67 file(s) rooted at `progs/src` with dominant language c 
 - `progs/lua/minios.c`
 - `progs/micropython/variants/minios/lib/hello.py`
 - `progs/micropython/variants/minios/minios_module.c`
+- `progs/minicraft/minicraft.c`
 - *... and 47 more*

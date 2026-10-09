@@ -1,5 +1,52 @@
-# Subsystem: headers (page 4 of 5)
+# Subsystem: headers (page 4 of 6)
 Previous: [KB_headers_p3.md](KB_headers_p3.md)
+
+## headers/sanitize.h
+- Doc: Docstring: sanitize.h -- Single choke point for syscall argument checks.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `SANITIZE_H` (macro, line 2) `#define SANITIZE_H`
+  - `SANITIZE_LEN_NEG` (macro, line 32) `#define SANITIZE_LEN_NEG(var)`
+  - `SANITIZE_RANGE` (macro, line 37) `#define SANITIZE_RANGE(ptr, len)`
+  - `SANITIZE_STR` (macro, line 43) `#define SANITIZE_STR(ptr, maxlen)`
+  - `SANITIZE_COPY_IN` (macro, line 49) `#define SANITIZE_COPY_IN(kbuf, uptr, count, elemsz)`
+- Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `tests/test_sanitize.c`
+
+## headers/sb16.h
+- Doc: Sound Blaster 16 DMA audio driver contract.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `sb16_stream_t` (struct, line 46)
+  - `sb16_counters_t` (struct, line 55)
+  - `sb16_init` (function, line 65) `int sb16_init(void);`
+  - `sb16_present` (function, line 66) `int sb16_present(void);`
+  - `sb16_tone` (function, line 67) `void sb16_tone(unsigned freq);`
+  - `sb16_irq` (function, line 68) `void sb16_irq(void);`
+  - `sb16_poll` (function, line 69) `void sb16_poll(void);`
+  - `sb16_pcm_open` (function, line 73) `void sb16_pcm_open(void);`
+  - `sb16_pcm_submit` (function, line 74) `int sb16_pcm_submit(const unsigned char *pcm, unsigned len);`
+  - `sb16_pcm_close` (function, line 75) `void sb16_pcm_close(void);`
+  - `sb16_pump` (function, line 76) `void sb16_pump(void);`
+  - `sb16_stream_open` (function, line 79) `int sb16_stream_open(void);`
+  - `sb16_stream_close` (function, line 80) `void sb16_stream_close(int id);`
+  - `sb16_stream_submit` (function, line 81) `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len);`
+  - `sb16_stream_volume` (function, line 82) `void sb16_stream_volume(int id, unsigned char vol);`
+  - `sb16_stream_count` (function, line 83) `int sb16_stream_count(void);`
+  - `sb16_ring_free` (function, line 85) `unsigned sb16_ring_free(void);`
+  - `sb16_mode_active` (function, line 86) `int sb16_mode_active(void);`
+  - `sb16_legacy_busy` (function, line 91) `int sb16_legacy_busy(void);`
+  - `sb16_counters` (function, line 93) `void sb16_counters(sb16_counters_t *out);`
+  - `SB16_H` (macro, line 2) `#define SB16_H`
+  - `SB16_PCM_BUF` (macro, line 32) `#define SB16_PCM_BUF`
+  - `SB16_PCM_RATE` (macro, line 33) `#define SB16_PCM_RATE`
+  - `SB16_SLOTS` (macro, line 34) `#define SB16_SLOTS`
+  - `SB16_RING_CAP` (macro, line 35) `#define SB16_RING_CAP`
+  - `SB16_ARM_PERIOD_MS` (macro, line 36) `#define SB16_ARM_PERIOD_MS`
+  - `SB16_STREAMS` (macro, line 42) `#define SB16_STREAMS`
+  - `SB16_STREAM_BUF` (macro, line 43) `#define SB16_STREAM_BUF`
+- Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
 ## headers/sched.h
 - Doc: Forward: full view lives in kernel.h (needs KFILE first); the PCB
@@ -47,23 +94,28 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `do_exit` (function, line 407) `void do_exit(int code);`
   - `do_clone` (function, line 408) `long do_clone(long flags, long newsp);`
   - `do_fork` (function, line 409) `long do_fork(void);`
-  - `aslr_stack_bytes` (function, line 419) `unsigned long aslr_stack_bytes(void);`
-  - `aslr_brk_pages` (function, line 420) `unsigned long aslr_brk_pages(void);`
-  - `aslr_mmap_pages` (function, line 421) `unsigned long aslr_mmap_pages(void);`
-  - `aslr_dyn_base` (function, line 422) `unsigned long aslr_dyn_base(void);`
-  - `failure` (function, line 427) `* failure (negative errno);`
-  - `do_execve` (function, line 428) `long do_execve(char *kpath, int kargc, char **kargv);`
-  - `do_thread_spawn` (function, line 429) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-  - `do_waitpid` (function, line 431) `int do_waitpid(int pid);`
-  - `do_waitpid_nb` (function, line 432) `int do_waitpid_nb(int pid);`
-  - `shell_reap_nb` (function, line 433) `int shell_reap_nb(int *pid_out, int *code_out);`
-  - `shell_reap_one` (function, line 434) `int shell_reap_one(int pid, int *code_out);`
-  - `shell_nchildren` (function, line 435) `int shell_nchildren(void);`
-  - `do_kill` (function, line 437) `int do_kill(int pid);`
-  - `timer_tick` (function, line 438) `void timer_tick(void);`
-  - `pt_clone_user` (function, line 441) `uint64_t pt_clone_user(uint64_t parent_cr3);`
-  - `pt_free_user` (function, line 442) `void pt_free_user(uint64_t cr3);`
-  - `caller` (function, line 447) `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
+  - `do_fork_ex` (function, line 410) `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);`
+  - `do_linux_clone` (function, line 411) `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...`
+  - `do_exit_group_threads` (function, line 413) `void do_exit_group_threads(void);`
+  - `fork_child_settid` (function, line 414) `void fork_child_settid(void);`
+  - `aslr_stack_bytes` (function, line 424) `unsigned long aslr_stack_bytes(void);`
+  - `aslr_brk_pages` (function, line 425) `unsigned long aslr_brk_pages(void);`
+  - `aslr_mmap_pages` (function, line 426) `unsigned long aslr_mmap_pages(void);`
+  - `aslr_dyn_base` (function, line 427) `unsigned long aslr_dyn_base(void);`
+  - `failure` (function, line 432) `* failure (negative errno);`
+  - `do_execve` (function, line 433) `long do_execve(char *kpath, int kargc, char **kargv);`
+  - `do_thread_spawn` (function, line 434) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+  - `do_waitpid` (function, line 436) `int do_waitpid(int pid);`
+  - `do_waitpid_nb` (function, line 437) `int do_waitpid_nb(int pid);`
+  - `shell_reap_nb` (function, line 438) `int shell_reap_nb(int *pid_out, int *code_out);`
+  - `shell_reap_one` (function, line 439) `int shell_reap_one(int pid, int *code_out);`
+  - `shell_nchildren` (function, line 440) `int shell_nchildren(void);`
+  - `do_waitpid_linux` (function, line 444) `int do_waitpid_linux(int pid, int nohang, int *found);`
+  - `do_kill` (function, line 445) `int do_kill(int pid);`
+  - `timer_tick` (function, line 446) `void timer_tick(void);`
+  - `pt_clone_user` (function, line 449) `uint64_t pt_clone_user(uint64_t parent_cr3);`
+  - `pt_free_user` (function, line 450) `void pt_free_user(uint64_t cr3);`
+  - `caller` (function, line 455) `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
   - `cpus` (variable, line 294) `extern cpu_t cpus[MAX_CPUS];`
   - `cpu_count` (variable, line 295) `extern int cpu_count;`
   - `procs` (variable, line 333) `extern proc_t procs[MAX_PROCS];`
@@ -151,11 +203,77 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `current_pid` (macro, line 312) `#define current_pid`
   - `DESKTOP_TICK_INTERVAL` (macro, line 316) `#define DESKTOP_TICK_INTERVAL`
   - `TSS_SEL` (macro, line 369) `#define TSS_SEL(cpu)`
-  - `EXECVE_MAX_ARGS` (macro, line 412) `#define EXECVE_MAX_ARGS`
-  - `EXECVE_MAX_ARG` (macro, line 413) `#define EXECVE_MAX_ARG`
-  - `WAITPID_NONE` (macro, line 436) `#define WAITPID_NONE`
+  - `EXECVE_MAX_ARGS` (macro, line 417) `#define EXECVE_MAX_ARGS`
+  - `EXECVE_MAX_ARG` (macro, line 418) `#define EXECVE_MAX_ARG`
+  - `WAITPID_NONE` (macro, line 441) `#define WAITPID_NONE`
+  - `WAITPID_NOCHILD` (macro, line 443) `#define WAITPID_NOCHILD`
 - Depends on: `headers/spinlock.h`, `headers/vma.h`
-- Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/rtl8139.c`, `smp.c`
+- Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `smp.c`
+
+## headers/seccomp_bpf.h
+- Doc: Docstring: seccomp_bpf.h -- classic BPF checker and interpreter for
+- Layer: utility
+- Language: h
+- Symbols:
+  - `sbpf_insn` (struct, line 15)
+  - `sbpf_data` (struct, line 23)
+  - `sbpf_check` (function, line 95) `int sbpf_check(const sbpf_insn *prog, unsigned len, unsigned short *scratch);`
+  - `sbpf_run` (function, line 100) `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d);`
+  - `sbpf_action_rank` (function, line 104) `int sbpf_action_rank(unsigned int action);`
+  - `SECCOMP_BPF_H` (macro, line 12) `#define SECCOMP_BPF_H`
+  - `SBPF_MAX_INSNS` (macro, line 30) `#define SBPF_MAX_INSNS`
+  - `SBPF_DATA_SIZE` (macro, line 31) `#define SBPF_DATA_SIZE`
+  - `SBPF_MEMWORDS` (macro, line 32) `#define SBPF_MEMWORDS`
+  - `SBPF_WORD` (macro, line 33) `#define SBPF_WORD`
+  - `SBPF_SHIFT_MAX` (macro, line 34) `#define SBPF_SHIFT_MAX`
+  - `SBPF_ERR_INVALID` (macro, line 35) `#define SBPF_ERR_INVALID`
+  - `SBPF_RET_KILL_PROCESS` (macro, line 38) `#define SBPF_RET_KILL_PROCESS`
+  - `SBPF_RET_KILL_THREAD` (macro, line 39) `#define SBPF_RET_KILL_THREAD`
+  - `SBPF_RET_TRAP` (macro, line 40) `#define SBPF_RET_TRAP`
+  - `SBPF_RET_ERRNO` (macro, line 41) `#define SBPF_RET_ERRNO`
+  - `SBPF_RET_USER_NOTIF` (macro, line 42) `#define SBPF_RET_USER_NOTIF`
+  - `SBPF_RET_TRACE` (macro, line 43) `#define SBPF_RET_TRACE`
+  - `SBPF_RET_LOG` (macro, line 44) `#define SBPF_RET_LOG`
+  - `SBPF_RET_ALLOW` (macro, line 45) `#define SBPF_RET_ALLOW`
+  - `SBPF_RET_ACTION_FULL` (macro, line 46) `#define SBPF_RET_ACTION_FULL`
+  - `SBPF_RET_DATA` (macro, line 47) `#define SBPF_RET_DATA`
+  - `SBPF_AUDIT_ARCH_X86_64` (macro, line 49) `#define SBPF_AUDIT_ARCH_X86_64`
+  - `SBPF_CLASS` (macro, line 52) `#define SBPF_CLASS(c)`
+  - `SBPF_LD` (macro, line 53) `#define SBPF_LD`
+  - `SBPF_LDX` (macro, line 54) `#define SBPF_LDX`
+  - `SBPF_ST` (macro, line 55) `#define SBPF_ST`
+  - `SBPF_STX` (macro, line 56) `#define SBPF_STX`
+  - `SBPF_ALU` (macro, line 57) `#define SBPF_ALU`
+  - `SBPF_JMP` (macro, line 58) `#define SBPF_JMP`
+  - `SBPF_RET` (macro, line 59) `#define SBPF_RET`
+  - `SBPF_MISC` (macro, line 60) `#define SBPF_MISC`
+  - `SBPF_W` (macro, line 61) `#define SBPF_W`
+  - `SBPF_IMM` (macro, line 62) `#define SBPF_IMM`
+  - `SBPF_ABS` (macro, line 63) `#define SBPF_ABS`
+  - `SBPF_MEM` (macro, line 64) `#define SBPF_MEM`
+  - `SBPF_LEN` (macro, line 65) `#define SBPF_LEN`
+  - `SBPF_ADD` (macro, line 66) `#define SBPF_ADD`
+  - `SBPF_SUB` (macro, line 67) `#define SBPF_SUB`
+  - `SBPF_MUL` (macro, line 68) `#define SBPF_MUL`
+  - `SBPF_DIV` (macro, line 69) `#define SBPF_DIV`
+  - `SBPF_OR` (macro, line 70) `#define SBPF_OR`
+  - `SBPF_AND` (macro, line 71) `#define SBPF_AND`
+  - `SBPF_LSH` (macro, line 72) `#define SBPF_LSH`
+  - `SBPF_RSH` (macro, line 73) `#define SBPF_RSH`
+  - `SBPF_NEG` (macro, line 74) `#define SBPF_NEG`
+  - `SBPF_MOD` (macro, line 75) `#define SBPF_MOD`
+  - `SBPF_XOR` (macro, line 76) `#define SBPF_XOR`
+  - `SBPF_JA` (macro, line 77) `#define SBPF_JA`
+  - `SBPF_JEQ` (macro, line 78) `#define SBPF_JEQ`
+  - `SBPF_JGT` (macro, line 79) `#define SBPF_JGT`
+  - `SBPF_JGE` (macro, line 80) `#define SBPF_JGE`
+  - `SBPF_JSET` (macro, line 81) `#define SBPF_JSET`
+  - `SBPF_K` (macro, line 82) `#define SBPF_K`
+  - `SBPF_X` (macro, line 83) `#define SBPF_X`
+  - `SBPF_A` (macro, line 84) `#define SBPF_A`
+  - `SBPF_TAX` (macro, line 85) `#define SBPF_TAX`
+  - `SBPF_TXA` (macro, line 86) `#define SBPF_TXA`
+- Imported by: `kernel/proc_sec.c`, `kernel/seccomp_bpf.c`, `tests/test_seccomp_bpf.c`
 
 ## headers/shell.h
 - Doc: shared shell constants and the line reader/parser reused by
@@ -312,14 +430,15 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `sys_linux_getpid` (function, line 16) `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6);`
   - `sys_linux_gettid` (function, line 17) `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6);`
   - `sys_linux_fork` (function, line 18) `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_vfork` (function, line 19) `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_execve` (function, line 20) `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_exit` (function, line 21) `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_wait4` (function, line 22) `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_kill` (function, line 23) `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `do_proc_exit` (function, line 26) `long do_proc_exit(long code);`
+  - `sys_linux_clone` (function, line 19) `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `sys_linux_vfork` (function, line 20) `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `sys_linux_execve` (function, line 21) `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `sys_linux_exit` (function, line 22) `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `sys_linux_wait4` (function, line 23) `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `sys_linux_kill` (function, line 24) `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `do_proc_exit` (function, line 27) `long do_proc_exit(long code);`
   - `SYSCALLS_PROC_H` (macro, line 2) `#define SYSCALLS_PROC_H`
-- Imported by: `kernel/syscalls.c`
+- Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`
 
 ## headers/tick.h
 - Doc: Docstring: Tick listener bus contract.
@@ -343,155 +462,6 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `TICK_MAX_USB_LISTENERS` (macro, line 34) `#define TICK_MAX_USB_LISTENERS`
   - `TICK_CONFIG_DEFAULT` (macro, line 37) `#define TICK_CONFIG_DEFAULT`
 - Imported by: `kernel/sched.c`, `kernel/tick.c`, `tests/test_tick.c`
-
-## headers/tls.h
-- Doc: tls_free_fd: Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever...
-- Layer: utility
-- Language: h
-- Symbols:
-  - `tls_root` (struct, line 70)
-  - `sha256_ctx` (struct, line 79)
-  - `tls_pubkey` (struct, line 85)
-  - `tls_session` (struct, line 95)
-  - `tls_free_fd` (function, line 293) `static inline void tls_free_fd(int fd)`
-  - `sha256_init` (function, line 168) `void sha256_init(struct sha256_ctx *c);`
-  - `sha256_update` (function, line 169) `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len);`
-  - `sha256_final` (function, line 170) `void sha256_final(struct sha256_ctx *c, unsigned char out[32]);`
-  - `sha256` (function, line 171) `void sha256(const unsigned char *data, unsigned len, unsigned char out[32]);`
-  - `sha384` (function, line 172) `void sha384(const unsigned char *data, unsigned len, unsigned char out[48]);`
-  - `hmac_sha256` (function, line 174) `void hmac_sha256(const unsigned char *key, unsigned klen, const unsigned char *data, unsigned dlen, unsigned char...`
-  - `tls_prf` (function, line 179) `void tls_prf(const unsigned char *secret, unsigned secret_len, const char *label, const unsigned char *seed...`
-  - `aes128_encrypt_block` (function, line 184) `void aes128_encrypt_block(const unsigned char key[16], const unsigned char in[16], unsigned char out[16]);`
-  - `aes128_gcm_seal` (function, line 189) `int aes128_gcm_seal(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...`
-  - `aes128_gcm_open` (function, line 197) `int aes128_gcm_open(const unsigned char key[16], const unsigned char salt[4], unsigned long long seq, const unsigned...`
-  - `aes128_gcm_seal_core` (function, line 208) `int aes128_gcm_seal_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...`
-  - `aes128_gcm_open_core` (function, line 213) `int aes128_gcm_open_core(const unsigned char key[16], const unsigned char nonce[12], const unsigned char *aad...`
-  - `p256_scalar_mult` (function, line 222) `int p256_scalar_mult(const unsigned char scalar[32], const unsigned char qx[32], const unsigned char qy[32]...`
-  - `p384_scalar_mult` (function, line 225) `int p384_scalar_mult(const unsigned char scalar[48], const unsigned char qx[48], const unsigned char qy[48]...`
-  - `p256_ecdh` (function, line 231) `int p256_ecdh(const unsigned char priv[32], const unsigned char peer_x[32], const unsigned char peer_y[32], unsigned...`
-  - `p256_point_valid` (function, line 236) `int p256_point_valid(const unsigned char x[32], const unsigned char y[32]);`
-  - `p256_pub` (function, line 237) `int p256_pub(const unsigned char priv[32], unsigned char x[32], unsigned char y[32]);`
-  - `p256_scalar_valid` (function, line 239) `int p256_scalar_valid(const unsigned char scalar[32]);`
-  - `ecdsa_verify` (function, line 243) `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[], const unsigned char digest[]...`
-  - `rsa_pkcs1_verify_sha256` (function, line 249) `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...`
-  - `rsa_pkcs1_verify_sha384` (function, line 253) `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len, const unsigned char *e, unsigned e_len, const...`
-  - `tls_x509_parse_pubkey` (function, line 261) `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len, struct tls_pubkey *pk);`
-  - `now` (function, line 267) `* window against now (days since epoch). Returns 0 on success. */ int tls_x509_verify_chain(const unsigned char...`
-  - `tls_handshake` (function, line 277) `int tls_handshake(int fd, const char *host);`
-  - `tls_send` (function, line 280) `int tls_send(int fd, const char *buf, int len);`
-  - `tls_recv` (function, line 284) `int tls_recv(int fd, char *buf, int len);`
-  - `tls_sys_handshake` (function, line 297) `long tls_sys_handshake(long fd, long host);`
-  - `tls_sys_send` (function, line 298) `long tls_sys_send(long fd, long buf, long len);`
-  - `tls_sys_recv` (function, line 299) `long tls_sys_recv(long fd, long buf, long len);`
-  - `tls_roots` (variable, line 75) `extern const struct tls_root tls_roots[TLS_ROOT_COUNT];`
-  - `TLS_H` (macro, line 2) `#define TLS_H`
-  - `TLS_CT_CCS` (macro, line 7) `#define TLS_CT_CCS`
-  - `TLS_CT_ALERT` (macro, line 8) `#define TLS_CT_ALERT`
-  - `TLS_CT_HANDSHAKE` (macro, line 9) `#define TLS_CT_HANDSHAKE`
-  - `TLS_CT_APPDATA` (macro, line 10) `#define TLS_CT_APPDATA`
-  - `TLS_REC_HEADER` (macro, line 11) `#define TLS_REC_HEADER`
-  - `TLS_REC_MAX` (macro, line 12) `#define TLS_REC_MAX`
-  - `TLS_MSG_MAX` (macro, line 13) `#define TLS_MSG_MAX`
-  - `TLS_PLAIN_MAX` (macro, line 14) `#define TLS_PLAIN_MAX`
-  - `TLS_VERSION_TLS12` (macro, line 15) `#define TLS_VERSION_TLS12`
-  - `TLS_VERSION_TLS10` (macro, line 16) `#define TLS_VERSION_TLS10`
-  - `TLS_HS_CLIENT_HELLO` (macro, line 19) `#define TLS_HS_CLIENT_HELLO`
-  - `TLS_HS_SERVER_HELLO` (macro, line 20) `#define TLS_HS_SERVER_HELLO`
-  - `TLS_HS_CERTIFICATE` (macro, line 21) `#define TLS_HS_CERTIFICATE`
-  - `TLS_HS_SERVER_KEY_EXCHANGE` (macro, line 22) `#define TLS_HS_SERVER_KEY_EXCHANGE`
-  - `TLS_HS_SERVER_HELLO_DONE` (macro, line 23) `#define TLS_HS_SERVER_HELLO_DONE`
-  - `TLS_HS_CLIENT_KEY_EXCHANGE` (macro, line 24) `#define TLS_HS_CLIENT_KEY_EXCHANGE`
-  - `TLS_HS_FINISHED` (macro, line 25) `#define TLS_HS_FINISHED`
-  - `TLS_CSUITE_ECDHE_RSA_AES128GCM` (macro, line 28) `#define TLS_CSUITE_ECDHE_RSA_AES128GCM`
-  - `TLS_CSUITE_ECDHE_ECDSA_AES128GCM` (macro, line 29) `#define TLS_CSUITE_ECDHE_ECDSA_AES128GCM`
-  - `TLS_SIG_RSA_PKCS1_SHA256` (macro, line 32) `#define TLS_SIG_RSA_PKCS1_SHA256`
-  - `TLS_SIG_ECDSA_P256_SHA256` (macro, line 33) `#define TLS_SIG_ECDSA_P256_SHA256`
-  - `TLS_SIG_ECDSA_P384_SHA384` (macro, line 34) `#define TLS_SIG_ECDSA_P384_SHA384`
-  - `TLS_GROUP_SECP256R1` (macro, line 37) `#define TLS_GROUP_SECP256R1`
-  - `TLS_EXT_SERVER_NAME` (macro, line 40) `#define TLS_EXT_SERVER_NAME`
-  - `TLS_EXT_SUPPORTED_GROUPS` (macro, line 41) `#define TLS_EXT_SUPPORTED_GROUPS`
-  - `TLS_EXT_EC_POINT_FORMATS` (macro, line 42) `#define TLS_EXT_EC_POINT_FORMATS`
-  - `TLS_EXT_SIGNATURE_ALGS` (macro, line 43) `#define TLS_EXT_SIGNATURE_ALGS`
-  - `TLS_ALERT_LEVEL_WARNING` (macro, line 46) `#define TLS_ALERT_LEVEL_WARNING`
-  - `TLS_ALERT_LEVEL_FATAL` (macro, line 47) `#define TLS_ALERT_LEVEL_FATAL`
-  - `TLS_HS_TIMEOUT_MS` (macro, line 50) `#define TLS_HS_TIMEOUT_MS`
-  - `TLS_READ_TIMEOUT_MS` (macro, line 51) `#define TLS_READ_TIMEOUT_MS`
-  - `TLS_HOST_MAX` (macro, line 54) `#define TLS_HOST_MAX`
-  - `TLS_CHAIN_MAX` (macro, line 57) `#define TLS_CHAIN_MAX`
-  - `TLS_CERT_MAX` (macro, line 58) `#define TLS_CERT_MAX`
-  - `TLS_BN_4096_WORDS` (macro, line 62) `#define TLS_BN_4096_WORDS`
-  - `TLS_BN_384_WORDS` (macro, line 63) `#define TLS_BN_384_WORDS`
-  - `TLS_ROOT_COUNT` (macro, line 68) `#define TLS_ROOT_COUNT`
-- Imported by: `net/net.c`, `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
-
-## headers/tls_port.h
-- Doc: Portability shim between the MiniOS kernel and the host-side test
-- Layer: utility
-- Language: h
-- Symbols:
-  - `tls_now_days` (function, line 40) `static inline long tls_now_days(void)`
-  - `tls_random` (function, line 44) `static inline void tls_random(unsigned char *out, unsigned len)`
-  - `these` (function, line 29) `* of these (tls_test.c). */ extern int tls_test_send(int fd, const char *buf, int len);`
-  - `tls_test_recv` (function, line 31) `extern int tls_test_recv(int fd, char *buf, int len);`
-  - `tls_test_recv_timeout` (function, line 32) `extern int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms);`
-  - `tls_test_close` (function, line 33) `extern void tls_test_close(int fd);`
-  - `sockets` (function, line 62) `* sockets (glibc maps socket/connect/send/recv/poll onto the MiniOS * Linux ABI numbers the kernel implements);`
-  - `gettimeofday` (function, line 64) `* gettimeofday(96) and entropy from /dev/urandom with a time/pid * fallback. Session slots are indexed by raw OS fd...`
-  - `tls_u_recv` (function, line 82) `int tls_u_recv(int fd, char *buf, int len);`
-  - `tls_u_recv_timeout` (function, line 83) `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms);`
-  - `tls_u_close` (function, line 84) `void tls_u_close(int fd);`
-  - `syscall` (function, line 95) `* the MiniOS DNS syscall (200, invoked sig-0-safe). 0 on success. */ int tls_u_resolve(const char *host, unsigned...`
-  - `TLS_PORT_H` (macro, line 2) `#define TLS_PORT_H`
-  - `TLS_FD_MAX` (macro, line 18) `#define TLS_FD_MAX`
-  - `TLS_PRINTF` (macro, line 20) `#define TLS_PRINTF`
-  - `TLS_MALLOC` (macro, line 21) `#define TLS_MALLOC(n)`
-  - `TLS_FREE` (macro, line 22) `#define TLS_FREE(p)`
-  - `TLS_MEMCPY` (macro, line 23) `#define TLS_MEMCPY`
-  - `TLS_MEMSET` (macro, line 24) `#define TLS_MEMSET`
-  - `TLS_MEMCMP` (macro, line 25) `#define TLS_MEMCMP`
-  - `TLS_STRLEN` (macro, line 26) `#define TLS_STRLEN`
-  - `TLS_SEND` (macro, line 35) `#define TLS_SEND`
-  - `TLS_RECV` (macro, line 36) `#define TLS_RECV`
-  - `TLS_RECV_TIMEOUT` (macro, line 37) `#define TLS_RECV_TIMEOUT`
-  - `TLS_CLOSE` (macro, line 38) `#define TLS_CLOSE`
-  - `TLS_FD_MAX` (macro, line 71) `#define TLS_FD_MAX`
-  - `TLS_PRINTF` (macro, line 73) `#define TLS_PRINTF`
-  - `TLS_MALLOC` (macro, line 74) `#define TLS_MALLOC(n)`
-  - `TLS_FREE` (macro, line 75) `#define TLS_FREE(p)`
-  - `TLS_MEMCPY` (macro, line 76) `#define TLS_MEMCPY`
-  - `TLS_MEMSET` (macro, line 77) `#define TLS_MEMSET`
-  - `TLS_MEMCMP` (macro, line 78) `#define TLS_MEMCMP`
-  - `TLS_STRLEN` (macro, line 79) `#define TLS_STRLEN`
-  - `TLS_SEND` (macro, line 86) `#define TLS_SEND`
-  - `TLS_RECV` (macro, line 87) `#define TLS_RECV`
-  - `TLS_RECV_TIMEOUT` (macro, line 88) `#define TLS_RECV_TIMEOUT`
-  - `TLS_CLOSE` (macro, line 89) `#define TLS_CLOSE`
-  - `TLS_PRINTF` (macro, line 103) `#define TLS_PRINTF`
-  - `TLS_MALLOC` (macro, line 104) `#define TLS_MALLOC(n)`
-  - `TLS_FREE` (macro, line 105) `#define TLS_FREE(p)`
-  - `TLS_MEMCPY` (macro, line 106) `#define TLS_MEMCPY`
-  - `TLS_MEMSET` (macro, line 107) `#define TLS_MEMSET`
-  - `TLS_MEMCMP` (macro, line 108) `#define TLS_MEMCMP`
-  - `TLS_STRLEN` (macro, line 109) `#define TLS_STRLEN`
-  - `TLS_SEND` (macro, line 111) `#define TLS_SEND`
-  - `TLS_RECV` (macro, line 112) `#define TLS_RECV`
-  - `TLS_RECV_TIMEOUT` (macro, line 113) `#define TLS_RECV_TIMEOUT`
-  - `TLS_CLOSE` (macro, line 114) `#define TLS_CLOSE`
-  - `TLS_FD_MAX` (macro, line 115) `#define TLS_FD_MAX`
-- Depends on: `headers/kernel.h`, `headers/net.h`, `kernel/string.c`, `kernel/time.c`
-- Imported by: `net/tls.c`, `net/tls_crypto.c`, `net/tls_x509.c`, `progs/tls_u/tls_u_main.c`, `tls_test.c`
-
-## headers/tls_roots.h
-- Doc: embedded CA roots (DER), generated by mkroots.sh.
-- Layer: utility
-- Language: h
-- Imported by: `net/tls.c`
-
-## headers/tls_test_roots.h
-- Doc: generated by tls_test.py; never built into the kernel.
-- Layer: testing
-- Language: h
-- Imported by: `tls_test.c`
 
 
 Next: [KB_headers_p5.md](KB_headers_p5.md)

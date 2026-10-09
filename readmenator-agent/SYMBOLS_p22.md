@@ -1,8 +1,407 @@
-# Symbols (page 22 of 25)
+# Symbols (page 22 of 26)
 Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `JS_OBJ` | macro | `progs/src/json.c:34` | `#define JS_OBJ` |
+| `JS_POOL` | macro | `progs/src/json.c:28` | `#define JS_POOL` |
+| `JS_SEEK_END` | macro | `progs/src/json.c:37` | `#define JS_SEEK_END` |
+| `JS_STR` | macro | `progs/src/json.c:33` | `#define JS_STR` |
+| `fclose` | function | `progs/src/json.c:21` | `int fclose();` |
+| `fopen` | function | `progs/src/json.c:20` | `void *fopen();` |
+| `fread` | function | `progs/src/json.c:22` | `int fread();` |
+| `free` | function | `progs/src/json.c:14` | `void free();` |
+| `fseek` | function | `progs/src/json.c:23` | `int fseek();` |
+| `ftell` | function | `progs/src/json.c:24` | `int ftell();` |
+| `js_array_at` | function | `progs/src/json.c:357` | `static int js_array_at(int arr, int idx)` |
+| `js_find_member` | function | `progs/src/json.c:347` | `static int js_find_member(int obj, const char *key)` |
+| `js_indent` | function | `progs/src/json.c:281` | `static void js_indent(int n)` |
+| `js_key_match` | function | `progs/src/json.c:143` | `static int js_key_match(int child, const char *key)` |
+| `js_new` | function | `progs/src/json.c:76` | `static int js_new(void)` |
+| `js_parse_array` | function | `progs/src/json.c:182` | `static int js_parse_array(void)` |
+| `js_parse_number` | function | `progs/src/json.c:133` | `static int js_parse_number(void)` |
+| `js_parse_object` | function | `progs/src/json.c:147` | `static int js_parse_object(void)` |
+| `js_parse_string` | function | `progs/src/json.c:97` | `static int js_parse_string(void)` |
+| `js_parse_value` | function | `progs/src/json.c:211` | `static int js_parse_value(void)` |
+| `js_peek` | function | `progs/src/json.c:89` | `static int js_peek(void)` |
+| `js_print_str` | function | `progs/src/json.c:286` | `static void js_print_str(const char *s)` |
+| `js_print_value` | function | `progs/src/json.c:303` | `static void js_print_value(int node, int depth)` |
+| `js_query` | function | `progs/src/json.c:369` | `static int js_query(int root, const char *path)` |
+| `js_read_all` | function | `progs/src/json.c:58` | `static char *js_read_all(const char *name, int *len)` |
+| `js_skip_ws` | function | `progs/src/json.c:81` | `static void js_skip_ws(void)` |
+| `js_str` | function | `progs/src/json.c:5` | `* members keep their key in js_str (the member value node) and their value * in the node itself, and object members...` |
+| `main` | function | `progs/src/json.c:401` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/json.c:15` | `int printf();` |
+| `putchar` | function | `progs/src/json.c:16` | `int putchar();` |
+| `puts` | function | `progs/src/json.c:17` | `int puts();` |
+| `rewind` | function | `progs/src/json.c:25` | `void rewind();` |
+| `strcmp` | function | `progs/src/json.c:19` | `int strcmp();` |
+| `strlen` | function | `progs/src/json.c:18` | `int strlen();` |
+| `_start` | function | `progs/src/kmem.c:18` | `void _start(void)` |
+| `exit_now` | function | `progs/src/kmem.c:14` | `static void exit_now(long code)` |
+| `syscall3` | function | `progs/src/kmem.c:7` | `static long syscall3(long n, long a1, long a2, long a3)` |
+| `main` | function | `progs/src/ldhello.c:1` | `int main(void)` |
+| `LXABI_A6_MAGIC` | macro | `progs/src/lxabi.c:48` | `#define LXABI_A6_MAGIC` |
+| `LXABI_CHILD_BAD` | macro | `progs/src/lxabi.c:49` | `#define LXABI_CHILD_BAD` |
+| `LXABI_CHILD_DELAY_MS` | macro | `progs/src/lxabi.c:36` | `#define LXABI_CHILD_DELAY_MS` |
+| `LXABI_CLOCK_SKEW_S` | macro | `progs/src/lxabi.c:44` | `#define LXABI_CLOCK_SKEW_S` |
+| `LXABI_CLONE_NR` | macro | `progs/src/lxabi.c:46` | `#define LXABI_CLONE_NR` |
+| `LXABI_CLOSE_RANGE_NR` | macro | `progs/src/lxabi.c:52` | `#define LXABI_CLOSE_RANGE_NR` |
+| `LXABI_COW_WORD` | macro | `progs/src/lxabi.c:54` | `#define LXABI_COW_WORD` |
+| `LXABI_DETACHED` | macro | `progs/src/lxabi.c:39` | `#define LXABI_DETACHED` |
+| `LXABI_EPOCH_2023` | macro | `progs/src/lxabi.c:43` | `#define LXABI_EPOCH_2023` |
+| `LXABI_GROUP_EXIT_CODE` | macro | `progs/src/lxabi.c:41` | `#define LXABI_GROUP_EXIT_CODE` |
+| `LXABI_MKDIR_FILE` | macro | `progs/src/lxabi.c:51` | `#define LXABI_MKDIR_FILE` |
+| `LXABI_MKDIR_PATH` | macro | `progs/src/lxabi.c:50` | `#define LXABI_MKDIR_PATH` |
+| `LXABI_PAGE` | macro | `progs/src/lxabi.c:53` | `#define LXABI_PAGE` |
+| `LXABI_REG_PROBE_WORDS` | macro | `progs/src/lxabi.c:45` | `#define LXABI_REG_PROBE_WORDS` |
+| `LXABI_SIGCHLD` | macro | `progs/src/lxabi.c:47` | `#define LXABI_SIGCHLD` |
+| `LXABI_THREADS` | macro | `progs/src/lxabi.c:37` | `#define LXABI_THREADS` |
+| `LXABI_THREAD_ITERS` | macro | `progs/src/lxabi.c:38` | `#define LXABI_THREAD_ITERS` |
+| `LXABI_TIMEDWAIT_MS` | macro | `progs/src/lxabi.c:42` | `#define LXABI_TIMEDWAIT_MS` |
+| `LXABI_WAIT_SPINS` | macro | `progs/src/lxabi.c:40` | `#define LXABI_WAIT_SPINS` |
+| `_GNU_SOURCE` | macro | `progs/src/lxabi.c:17` | `#define _GNU_SOURCE` |
+| `abort_from_worker_body` | function | `progs/src/lxabi.c:482` | `static void abort_from_worker_body(void)` |
+| `busy_wait_ms` | function | `progs/src/lxabi.c:74` | `static void busy_wait_ms(long ms)` |
+| `check_close_range` | function | `progs/src/lxabi.c:421` | `static void check_close_range(void)` |
+| `check_condvar` | function | `progs/src/lxabi.c:278` | `static void check_condvar(void)` |
+| `check_detached_reaped` | function | `progs/src/lxabi.c:244` | `static void check_detached_reaped(void)` |
+| `check_eventfd` | function | `progs/src/lxabi.c:396` | `static void check_eventfd(void)` |
+| `check_fork_cow_kernel_write` | function | `progs/src/lxabi.c:153` | `static void check_fork_cow_kernel_write(void)` |
+| `check_fork_registers` | function | `progs/src/lxabi.c:131` | `static void check_fork_registers(void)` |
+| `check_mkdir` | function | `progs/src/lxabi.c:442` | `static void check_mkdir(void)` |
+| `check_pipe2_flags` | function | `progs/src/lxabi.c:300` | `static void check_pipe2_flags(void)` |
+| `check_pipe_blocking` | function | `progs/src/lxabi.c:327` | `static void check_pipe_blocking(void)` |
+| `check_pipe_epipe` | function | `progs/src/lxabi.c:349` | `static void check_pipe_epipe(void)` |
+| `check_poll` | function | `progs/src/lxabi.c:372` | `static void check_poll(void)` |
+| `check_threads` | function | `progs/src/lxabi.c:208` | `static void check_threads(void)` |
+| `check_time` | function | `progs/src/lxabi.c:433` | `static void check_time(void)` |
+| `check_writev_pipe` | function | `progs/src/lxabi.c:360` | `static void check_writev_pipe(void)` |
+| `child_status` | function | `progs/src/lxabi.c:462` | `static int child_status(void (*body)(void))` |
+| `detached_worker` | function | `progs/src/lxabi.c:238` | `static void *detached_worker(void *arg)` |
+| `exit_group_from_worker_body` | function | `progs/src/lxabi.c:494` | `static void exit_group_from_worker_body(void)` |
+| `fork_probe` | function | `progs/src/lxabi.c:88` | `static void fork_probe(uint64_t *out)` |
+| `lxabi_exit_group_worker` | function | `progs/src/lxabi.c:488` | `static void *lxabi_exit_group_worker(void *arg)` |
+| `lxabi_sleeper` | function | `progs/src/lxabi.c:454` | `static void *lxabi_sleeper(void *arg)` |
+| `main` | function | `progs/src/lxabi.c:535` | `int main(void)` |
+| `now_ms` | function | `progs/src/lxabi.c:68` | `static long now_ms(void)` |
+| `process` | function | `progs/src/lxabi.c:508` | `* process (never a kernel panic), and kill(pid, 0) or a harmless signal  * leaves the target aliv...` |
+| `regs_match` | function | `progs/src/lxabi.c:125` | `static int regs_match(const uint64_t *r)` |
+| `report` | function | `progs/src/lxabi.c:58` | `static void report(const char *name, int ok, const char *detail)` |
+| `signaller` | function | `progs/src/lxabi.c:268` | `static void *signaller(void *arg)` |
+| `thread_result` | struct | `progs/src/lxabi.c:188` | `` |
+| `tls_seen` | type_alias | `progs/src/lxabi.c:187` | `typedef struct thread_result { long tls_seen;` |
+| `wild_jump_body` | function | `progs/src/lxabi.c:500` | `static void wild_jump_body(void)` |
+| `worker` | function | `progs/src/lxabi.c:194` | `static void *worker(void *arg)` |
+| `SYS_exit` | macro | `progs/src/lxhello.c:21` | `#define SYS_exit` |
+| `SYS_write` | macro | `progs/src/lxhello.c:20` | `#define SYS_write` |
+| `lmain` | function | `progs/src/lxhello.c:46` | `int lmain(long argc, char **argv)` |
+| `lx_strlen` | function | `progs/src/lxhello.c:23` | `static unsigned long lx_strlen(const char *s)` |
+| `lx_syscall3` | function | `progs/src/lxhello.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
+| `lx_write` | function | `progs/src/lxhello.c:29` | `static void lx_write(const char *s)` |
+| `lx_write_int` | function | `progs/src/lxhello.c:33` | `static void lx_write_int(long v)` |
+| `LXNET_BUF` | macro | `progs/src/lxnet.c:40` | `#define LXNET_BUF` |
+| `LXNET_IP_UNKNOWN` | macro | `progs/src/lxnet.c:44` | `#define LXNET_IP_UNKNOWN` |
+| `LXNET_LOOPBACK` | macro | `progs/src/lxnet.c:43` | `#define LXNET_LOOPBACK` |
+| `LXNET_TCP_MSG` | macro | `progs/src/lxnet.c:42` | `#define LXNET_TCP_MSG` |
+| `LXNET_UDP_MSG` | macro | `progs/src/lxnet.c:41` | `#define LXNET_UDP_MSG` |
+| `LXNET_WAIT_MS` | macro | `progs/src/lxnet.c:39` | `#define LXNET_WAIT_MS` |
+| `_GNU_SOURCE` | macro | `progs/src/lxnet.c:24` | `#define _GNU_SOURCE` |
+| `check_misc` | function | `progs/src/lxnet.c:210` | `static void check_misc(void)` |
+| `check_refused` | function | `progs/src/lxnet.c:143` | `static void check_refused(const struct sockaddr_in *peer)` |
+| `check_tcp` | function | `progs/src/lxnet.c:167` | `static void check_tcp(const struct sockaddr_in *peer)` |
+| `check_udp` | function | `progs/src/lxnet.c:72` | `static void check_udp(const struct sockaddr_in *peer)` |
+| `dial` | function | `progs/src/lxnet.c:229` | `static int dial(const char *host, const char *port)` |
+| `main` | function | `progs/src/lxnet.c:273` | `int main(int argc, char **argv)` |
+| `read_all` | function | `progs/src/lxnet.c:61` | `static int read_all(int fd, char *buf, size_t len)` |
+| `report` | function | `progs/src/lxnet.c:48` | `static void report(const char *name, int ok, const char *detail)` |
+| `wait_for` | function | `progs/src/lxnet.c:54` | `static int wait_for(int fd, short events)` |
+| `LXSECC_BAD_CODE` | macro | `progs/src/lxsecc.c:31` | `#define LXSECC_BAD_CODE` |
+| `LXSECC_ERRNO_A` | macro | `progs/src/lxsecc.c:35` | `#define LXSECC_ERRNO_A` |
+| `LXSECC_ERRNO_B` | macro | `progs/src/lxsecc.c:36` | `#define LXSECC_ERRNO_B` |
+| `LXSECC_EXEC_CODE` | macro | `progs/src/lxsecc.c:29` | `#define LXSECC_EXEC_CODE` |
+| `LXSECC_EXEC_FLAG` | macro | `progs/src/lxsecc.c:28` | `#define LXSECC_EXEC_FLAG` |
+| `LXSECC_EXE_MAX` | macro | `progs/src/lxsecc.c:32` | `#define LXSECC_EXE_MAX` |
+| `LXSECC_NAME` | macro | `progs/src/lxsecc.c:33` | `#define LXSECC_NAME` |
+| `LXSECC_NAME_MAX` | macro | `progs/src/lxsecc.c:34` | `#define LXSECC_NAME_MAX` |
+| `LXSECC_OK_CODE` | macro | `progs/src/lxsecc.c:30` | `#define LXSECC_OK_CODE` |
+| `LXSECC_PAGE` | macro | `progs/src/lxsecc.c:37` | `#define LXSECC_PAGE` |
+| `LXSECC_STATUS_BYTE` | macro | `progs/src/lxsecc.c:40` | `#define LXSECC_STATUS_BYTE` |
+| `LXSECC_STATUS_MASK` | macro | `progs/src/lxsecc.c:38` | `#define LXSECC_STATUS_MASK` |
+| `LXSECC_STATUS_SHIFT` | macro | `progs/src/lxsecc.c:39` | `#define LXSECC_STATUS_SHIFT` |
+| `_GNU_SOURCE` | macro | `progs/src/lxsecc.c:13` | `#define _GNU_SOURCE` |
+| `check_prctl_flags` | function | `progs/src/lxsecc.c:177` | `static void check_prctl_flags(void)` |
+| `check_proc_self_exe` | function | `progs/src/lxsecc.c:197` | `static void check_proc_self_exe(const char *argv0)` |
+| `child_bad_program` | function | `progs/src/lxsecc.c:165` | `static void child_bad_program(void)` |
+| `child_errno_action` | function | `progs/src/lxsecc.c:100` | `static void child_errno_action(void)` |
+| `child_inherit` | function | `progs/src/lxsecc.c:133` | `static void child_inherit(void)` |
+| `child_kill_action` | function | `progs/src/lxsecc.c:107` | `static void child_kill_action(void)` |
+| `child_no_nnp` | function | `progs/src/lxsecc.c:157` | `static void child_no_nnp(void)` |
+| `child_stacked` | function | `progs/src/lxsecc.c:142` | `static void child_stacked(void)` |
+| `child_strict` | function | `progs/src/lxsecc.c:150` | `static void child_strict(void)` |
+| `child_wx` | function | `progs/src/lxsecc.c:116` | `static void child_wx(void)` |
+| `exit_code_of` | function | `progs/src/lxsecc.c:53` | `static int exit_code_of(int st)` |
+| `grandchild_inherits` | function | `progs/src/lxsecc.c:127` | `static void grandchild_inherits(void)` |
+| `install_filter` | function | `progs/src/lxsecc.c:72` | `static int install_filter(unsigned getpid_action)` |
+| `main` | function | `progs/src/lxsecc.c:215` | `int main(int argc, char **argv)` |
+| `report` | function | `progs/src/lxsecc.c:44` | `static void report(const char *name, int ok, const char *detail)` |
+| `run_child` | function | `progs/src/lxsecc.c:58` | `static int run_child(void (*body)(void))` |
+| `LZ4_BOUND_DEN` | macro | `progs/src/lz4.c:31` | `#define LZ4_BOUND_DEN` |
+| `LZ4_BOUND_SLACK` | macro | `progs/src/lz4.c:32` | `#define LZ4_BOUND_SLACK` |
+| `LZ4_EXIT_FAIL` | macro | `progs/src/lz4.c:37` | `#define LZ4_EXIT_FAIL` |
+| `LZ4_HDR_SIZE` | macro | `progs/src/lz4.c:30` | `#define LZ4_HDR_SIZE` |
+| `LZ4_MAX_BLOCK` | macro | `progs/src/lz4.c:33` | `#define LZ4_MAX_BLOCK` |
+| `LZ4_SEEK_END` | macro | `progs/src/lz4.c:35` | `#define LZ4_SEEK_END` |
+| `fclose` | function | `progs/src/lz4.c:20` | `int fclose();` |
+| `fopen` | function | `progs/src/lz4.c:19` | `void *fopen();` |
+| `fread` | function | `progs/src/lz4.c:21` | `int fread();` |
+| `free` | function | `progs/src/lz4.c:15` | `void free();` |
+| `fseek` | function | `progs/src/lz4.c:23` | `int fseek();` |
+| `ftell` | function | `progs/src/lz4.c:24` | `int ftell();` |
+| `fwrite` | function | `progs/src/lz4.c:22` | `int fwrite();` |
+| `kernel` | function | `progs/src/lz4.c:6` | `* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends...` |
+| `lz4_compress` | function | `progs/src/lz4.c:27` | `int lz4_compress(char *src, int srclen, char *dst, int dstcap);` |
+| `lz4_compress_file` | function | `progs/src/lz4.c:80` | `static int lz4_compress_file(const char *src, const char *dst)` |
+| `lz4_decompress` | function | `progs/src/lz4.c:28` | `int lz4_decompress(char *src, int srclen, char *dst, int dstcap);` |
+| `lz4_decompress_file` | function | `progs/src/lz4.c:117` | `static int lz4_decompress_file(const char *src, const char *dst)` |
+| `lz4_has` | function | `progs/src/lz4.c:39` | `static int lz4_has(const char *s, const char *needle)` |
+| `lz4_read_all` | function | `progs/src/lz4.c:53` | `static char *lz4_read_all(const char *name, int *len)` |
+| `lz4_write_all` | function | `progs/src/lz4.c:70` | `static int lz4_write_all(const char *name, char *data, int len)` |
+| `main` | function | `progs/src/lz4.c:164` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/lz4.c:16` | `int printf();` |
+| `rewind` | function | `progs/src/lz4.c:25` | `void rewind();` |
+| `strcmp` | function | `progs/src/lz4.c:17` | `int strcmp();` |
+| `strlen` | function | `progs/src/lz4.c:18` | `int strlen();` |
+| `LZSS_EI` | macro | `progs/src/lzss.c:26` | `#define LZSS_EI` |
+| `LZSS_EJ` | macro | `progs/src/lzss.c:27` | `#define LZSS_EJ` |
+| `LZSS_ENC_SLACK` | macro | `progs/src/lzss.c:39` | `#define LZSS_ENC_SLACK` |
+| `LZSS_ERR_NONE` | macro | `progs/src/lzss.c:45` | `#define LZSS_ERR_NONE` |
+| `LZSS_ERR_OVERFLOW` | macro | `progs/src/lzss.c:46` | `#define LZSS_ERR_OVERFLOW` |
+| `LZSS_EXIT_FAIL` | macro | `progs/src/lzss.c:48` | `#define LZSS_EXIT_FAIL` |
+| `LZSS_EXPAND_DEN` | macro | `progs/src/lzss.c:41` | `#define LZSS_EXPAND_DEN` |
+| `LZSS_EXPAND_NUM` | macro | `progs/src/lzss.c:40` | `#define LZSS_EXPAND_NUM` |
+| `LZSS_F` | macro | `progs/src/lzss.c:30` | `#define LZSS_F` |
+| `LZSS_HDR_SIZE` | macro | `progs/src/lzss.c:37` | `#define LZSS_HDR_SIZE` |
+| `LZSS_MAGIC0` | macro | `progs/src/lzss.c:33` | `#define LZSS_MAGIC0` |
+| `LZSS_MAGIC1` | macro | `progs/src/lzss.c:34` | `#define LZSS_MAGIC1` |
+| `LZSS_MAGIC2` | macro | `progs/src/lzss.c:35` | `#define LZSS_MAGIC2` |
+| `LZSS_MAGIC3` | macro | `progs/src/lzss.c:36` | `#define LZSS_MAGIC3` |
+| `LZSS_N` | macro | `progs/src/lzss.c:29` | `#define LZSS_N` |
+| `LZSS_P` | macro | `progs/src/lzss.c:28` | `#define LZSS_P` |
+| `LZSS_SEEK_END` | macro | `progs/src/lzss.c:43` | `#define LZSS_SEEK_END` |
+| `LZSS_WIN` | macro | `progs/src/lzss.c:31` | `#define LZSS_WIN` |
+| `fclose` | function | `progs/src/lzss.c:19` | `int fclose();` |
+| `fopen` | function | `progs/src/lzss.c:18` | `void *fopen();` |
+| `fread` | function | `progs/src/lzss.c:20` | `int fread();` |
+| `free` | function | `progs/src/lzss.c:14` | `void free();` |
+| `fseek` | function | `progs/src/lzss.c:22` | `int fseek();` |
+| `ftell` | function | `progs/src/lzss.c:23` | `int ftell();` |
+| `fwrite` | function | `progs/src/lzss.c:21` | `int fwrite();` |
+| `lz_compress` | function | `progs/src/lzss.c:278` | `static int lz_compress(const char *src, const char *dst)` |
+| `lz_decode` | function | `progs/src/lzss.c:189` | `static int lz_decode(void)` |
+| `lz_decompress` | function | `progs/src/lzss.c:325` | `static int lz_decompress(const char *src, const char *dst)` |
+| `lz_encode` | function | `progs/src/lzss.c:118` | `static int lz_encode(void)` |
+| `lz_flush_bits` | function | `progs/src/lzss.c:93` | `static void lz_flush_bits(void)` |
+| `lz_getbit` | function | `progs/src/lzss.c:173` | `static int lz_getbit(int n)` |
+| `lz_has` | function | `progs/src/lzss.c:237` | `static int lz_has(const char *s, const char *needle)` |
+| `lz_hdr_get` | function | `progs/src/lzss.c:229` | `static int lz_hdr_get(char *h)` |
+| `lz_hdr_put` | function | `progs/src/lzss.c:218` | `static void lz_hdr_put(char *h, int size)` |
+| `lz_in_getc` | function | `progs/src/lzss.c:64` | `static int lz_in_getc(void)` |
+| `lz_out_literal` | function | `progs/src/lzss.c:97` | `static void lz_out_literal(int c)` |
+| `lz_out_pair` | function | `progs/src/lzss.c:105` | `static void lz_out_pair(int x, int y)` |
+| `lz_out_put` | function | `progs/src/lzss.c:69` | `static void lz_out_put(int c)` |
+| `lz_putbit0` | function | `progs/src/lzss.c:84` | `static void lz_putbit0(void)` |
+| `lz_putbit1` | function | `progs/src/lzss.c:74` | `static void lz_putbit1(void)` |
+| `lz_read_all` | function | `progs/src/lzss.c:251` | `static char *lz_read_all(const char *name, int *len)` |
+| `lz_write_all` | function | `progs/src/lzss.c:268` | `static int lz_write_all(const char *name, char *data, int len)` |
+| `main` | function | `progs/src/lzss.c:397` | `int main(int argc, char **argv)` |
+| `malloc` | function | `progs/src/lzss.c:13` | `void *malloc();` |
+| `printf` | function | `progs/src/lzss.c:15` | `int printf();` |
+| `rewind` | function | `progs/src/lzss.c:24` | `void rewind();` |
+| `strcmp` | function | `progs/src/lzss.c:16` | `int strcmp();` |
+| `strlen` | function | `progs/src/lzss.c:17` | `int strlen();` |
+| `ENOMEM` | function | `progs/src/mmreuse.c:3` | `* downward mmap cursor drains until a map fails with ENOMEM (-12);` |
+| `_start` | function | `progs/src/mmreuse.c:35` | `void _start(void)` |
+| `exit_now` | function | `progs/src/mmreuse.c:31` | `static void exit_now(long code)` |
+| `mmap_anon` | function | `progs/src/mmreuse.c:7` | `static long mmap_anon(long len)` |
+| `munmap` | function | `progs/src/mmreuse.c:21` | `static long munmap(long addr, long len)` |
+| `_start` | function | `progs/src/mprot.c:48` | `void _start(void)` |
+| `exit_now` | function | `progs/src/mprot.c:44` | `static void exit_now(long code)` |
+| `mmap_anon` | function | `progs/src/mprot.c:11` | `static long mmap_anon(long len)` |
+| `mprotect_sys` | function | `progs/src/mprot.c:25` | `static long mprotect_sys(long addr, long len, long prot)` |
+| `write_str` | function | `progs/src/mprot.c:36` | `static long write_str(const char *s, long n)` |
+| `MMUTEX_CONTENDED` | macro | `progs/src/mthreads.h:33` | `#define MMUTEX_CONTENDED` |
+| `MMUTEX_FREE` | macro | `progs/src/mthreads.h:31` | `#define MMUTEX_FREE` |
+| `MMUTEX_HELD` | macro | `progs/src/mthreads.h:32` | `#define MMUTEX_HELD` |
+| `MMUTEX_SPINS` | macro | `progs/src/mthreads.h:34` | `#define MMUTEX_SPINS` |
+| `MTHREADS_H` | macro | `progs/src/mthreads.h:24` | `#define MTHREADS_H` |
+| `MTHREAD_MAX` | macro | `progs/src/mthreads.h:29` | `#define MTHREAD_MAX` |
+| `MTHREAD_STACK_SZ` | macro | `progs/src/mthreads.h:28` | `#define MTHREAD_STACK_SZ` |
+| `m_syscall6` | function | `progs/src/mthreads.h:50` | `static inline long m_syscall6(long n, long a, long b, long c)` |
+| `mfutex_wait` | function | `progs/src/mthreads.h:63` | `static inline long mfutex_wait(volatile int *addr, int val)` |
+| `mfutex_wake` | function | `progs/src/mthreads.h:67` | `static inline long mfutex_wake(volatile int *addr, int n)` |
+| `mmutex_init` | function | `progs/src/mthreads.h:71` | `static inline void mmutex_init(mmutex_t *m)` |
+| `mmutex_lock` | function | `progs/src/mthreads.h:75` | `static inline void mmutex_lock(mmutex_t *m)` |
+| `mmutex_t` | struct | `progs/src/mthreads.h:38` | `` |
+| `mmutex_unlock` | function | `progs/src/mthreads.h:90` | `static inline void mmutex_unlock(mmutex_t *m)` |
+| `mthread_create` | function | `progs/src/mthreads.h:117` | `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)` |
+| `mthread_entry` | function | `progs/src/mthreads.h:98` | `static void mthread_entry(void *p)` |
+| `mthread_join` | function | `progs/src/mthreads.h:140` | `static int mthread_join(mthread_t t, void **retval)` |
+| `mthread_slot_t` | struct | `progs/src/mthreads.h:42` | `` |
+| `mthread_t` | type_alias | `progs/src/mthreads.h:35` | `typedef int mthread_t;` |
+| `myield` | function | `progs/src/mthreads.h:59` | `static inline void myield(void)` |
+| `MTOP_DISK_BUF` | macro | `progs/src/mtop.c:47` | `#define MTOP_DISK_BUF` |
+| `MTOP_DISK_MAX` | macro | `progs/src/mtop.c:48` | `#define MTOP_DISK_MAX` |
+| `MTOP_HIST` | macro | `progs/src/mtop.c:46` | `#define MTOP_HIST` |
+| `MTOP_MINFO` | macro | `progs/src/mtop.c:49` | `#define MTOP_MINFO` |
+| `close` | function | `progs/src/mtop.c:43` | `int close();` |
+| `emit` | function | `progs/src/mtop.c:90` | `static void emit(char *s)` |
+| `fclose` | function | `progs/src/mtop.c:39` | `int fclose();` |
+| `fopen` | function | `progs/src/mtop.c:38` | `void *fopen();` |
+| `fread` | function | `progs/src/mtop.c:40` | `int fread();` |
+| `main` | function | `progs/src/mtop.c:531` | `int main(int argc, char **argv)` |
+| `mtop_atoi` | function | `progs/src/mtop.c:117` | `static int mtop_atoi(char *s)` |
+| `mtop_bar` | function | `progs/src/mtop.c:179` | `static void mtop_bar(long v, long max, int w)` |
+| `mtop_clear` | function | `progs/src/mtop.c:113` | `static void mtop_clear(void)` |
+| `mtop_clear_ansi` | function | `progs/src/mtop.c:103` | `static void mtop_clear_ansi(void)` |
+| `mtop_cpu` | function | `progs/src/mtop.c:253` | `static long mtop_cpu(long *count, long *busy)` |
+| `mtop_disk_open` | function | `progs/src/mtop.c:289` | `static void mtop_disk_open(void)` |
+| `mtop_disk_read` | function | `progs/src/mtop.c:313` | `static long mtop_disk_read(long *bytes)` |
+| `mtop_frame` | function | `progs/src/mtop.c:355` | `static void mtop_frame(int n)` |
+| `mtop_hist_max` | function | `progs/src/mtop.c:194` | `static long mtop_hist_max(long *h, int n)` |
+| `mtop_hist_push` | function | `progs/src/mtop.c:204` | `static void mtop_hist_push(long *h, long v)` |
+| `mtop_key` | function | `progs/src/mtop.c:80` | `static long mtop_key(void)` |
+| `mtop_mem` | function | `progs/src/mtop.c:242` | `static long mtop_mem(long *used, long *freeb, long *total)` |
+| `mtop_minfo` | function | `progs/src/mtop.c:84` | `static long mtop_minfo(long sel, long *o1, long *o2)` |
+| `mtop_net_probe` | function | `progs/src/mtop.c:337` | `static long mtop_net_probe(long *dns_ms, long *sock_ok)` |
+| `mtop_put2` | function | `progs/src/mtop.c:158` | `static void mtop_put2(int v)` |
+| `mtop_put_kb` | function | `progs/src/mtop.c:163` | `static void mtop_put_kb(long kb)` |
+| `mtop_putu` | function | `progs/src/mtop.c:136` | `static void mtop_putu(long v)` |
+| `mtop_quit_key` | function | `progs/src/mtop.c:94` | `static int mtop_quit_key(long k)` |
+| `mtop_rtc` | function | `progs/src/mtop.c:76` | `static long mtop_rtc(int *h, int *m, int *s)` |
+| `mtop_spark` | function | `progs/src/mtop.c:214` | `static void mtop_spark(long *h, int n)` |
+| `mtop_time` | function | `progs/src/mtop.c:72` | `static long mtop_time(void)` |
+| `net_dns_resolve` | function | `progs/src/mtop.c:44` | `int net_dns_resolve();` |
+| `putchar` | function | `progs/src/mtop.c:35` | `int putchar();` |
+| `rewind` | function | `progs/src/mtop.c:41` | `void rewind();` |
+| `sc3` | function | `progs/src/mtop.c:63` | `static long sc3(long n, long a1, long a2, long a3)` |
+| `socket` | function | `progs/src/mtop.c:42` | `int socket();` |
+| `strcmp` | function | `progs/src/mtop.c:37` | `int strcmp();` |
+| `strlen` | function | `progs/src/mtop.c:36` | `int strlen();` |
+| `syscall` | function | `progs/src/mtop.c:12` | `* * All system figures come from the MINFO syscall (251): heap used / * free, ramdisk used / cap, MiniFS free /...` |
+| `lmain` | function | `progs/src/mvrn.c:32` | `int lmain(void)` |
+| `mvrn_exit` | function | `progs/src/mvrn.c:20` | `static void mvrn_exit(long code)` |
+| `mvrn_fail` | function | `progs/src/mvrn.c:24` | `static void mvrn_fail(int step)` |
+| `mvrn_sc3` | function | `progs/src/mvrn.c:9` | `static long mvrn_sc3(long n, long a1, long a2, long a3)` |
+| `mvrn_write` | function | `progs/src/mvrn.c:16` | `static void mvrn_write(const char *s, unsigned long len)` |
+| `_start` | function | `progs/src/nx.c:23` | `void _start(void)` |
+| `exit_now` | function | `progs/src/nx.c:19` | `static void exit_now(long code)` |
+| `write_str` | function | `progs/src/nx.c:11` | `static long write_str(const char *s, long n)` |
+| `BUF_MS` | macro | `progs/src/opl3.c:32` | `#define BUF_MS` |
+| `F_NUM_FACTOR` | macro | `progs/src/opl3.c:34` | `#define F_NUM_FACTOR` |
+| `MONO_BYTES` | macro | `progs/src/opl3.c:30` | `#define MONO_BYTES` |
+| `SAMPLE_RATE` | macro | `progs/src/opl3.c:28` | `#define SAMPLE_RATE` |
+| `STEREO_FRAMES` | macro | `progs/src/opl3.c:29` | `#define STEREO_FRAMES` |
+| `SYS_SB16_OPEN` | macro | `progs/src/opl3.c:22` | `#define SYS_SB16_OPEN` |
+| `SYS_SB16_SUBMIT` | macro | `progs/src/opl3.c:23` | `#define SYS_SB16_SUBMIT` |
+| `SYS_TIME` | macro | `progs/src/opl3.c:21` | `#define SYS_TIME` |
+| `SYS_WRITE` | macro | `progs/src/opl3.c:24` | `#define SYS_WRITE` |
+| `busy_ms` | function | `progs/src/opl3.c:46` | `static void busy_ms(long ms)` |
+| `main` | function | `progs/src/opl3.c:107` | `int main(void)` |
+| `note_t` | struct | `progs/src/opl3.c:102` | `` |
+| `opl3_note` | function | `progs/src/opl3.c:69` | `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)` |
+| `opl3_set_instrument` | function | `progs/src/opl3.c:52` | `static void opl3_set_instrument(opl3_chip *chip)` |
+| `render` | function | `progs/src/opl3.c:77` | `static void render(opl3_chip *chip, long ms, long *fail)` |
+| `sys_open` | function | `progs/src/opl3.c:39` | `static long sys_open(long on)` |
+| `sys_submit` | function | `progs/src/opl3.c:42` | `static long sys_submit(const void *buf, long len)` |
+| `sys_time` | function | `progs/src/opl3.c:36` | `static long sys_time(void)` |
+| `_start` | function | `progs/src/pcmap.c:75` | `void _start(void)` |
+| `sc_exit` | function | `progs/src/pcmap.c:42` | `static void sc_exit(long code)` |
+| `sc_fnv` | function | `progs/src/pcmap.c:46` | `static unsigned long sc_fnv(const char *p, long n)` |
+| `sc_hex8` | function | `progs/src/pcmap.c:56` | `static void sc_hex8(unsigned long v, char *out)` |
+| `sc_mmap` | function | `progs/src/pcmap.c:21` | `static long sc_mmap(long len, long prot, long flags, long fd, long off)` |
+| `sc_munmap` | function | `progs/src/pcmap.c:65` | `static long sc_munmap(long addr, long len)` |
+| `sc_open` | function | `progs/src/pcmap.c:12` | `static long sc_open(const char *p)` |
+| `sc_write` | function | `progs/src/pcmap.c:34` | `static long sc_write(long fd, const char *s, long n)` |
+| `lmain` | function | `progs/src/pollready.c:63` | `int lmain(long argc, char **argv)` |
+| `p_atoi` | function | `progs/src/pollready.c:40` | `static int p_atoi(const char *s)` |
+| `p_parse_ip` | function | `progs/src/pollready.c:46` | `static int p_parse_ip(const char *s, unsigned char out[4])` |
+| `p_puts` | function | `progs/src/pollready.c:36` | `static void p_puts(long fd, const char *s)` |
+| `p_strlen` | function | `progs/src/pollready.c:30` | `static unsigned long p_strlen(const char *s)` |
+| `p_write` | function | `progs/src/pollready.c:26` | `static long p_write(long fd, const char *s, long n)` |
+| `BUF` | macro | `progs/src/sbtone.c:26` | `#define BUF` |
+| `RATE` | macro | `progs/src/sbtone.c:25` | `#define RATE` |
+| `SYS_SB16_OPEN` | macro | `progs/src/sbtone.c:21` | `#define SYS_SB16_OPEN` |
+| `SYS_SB16_SUBMIT` | macro | `progs/src/sbtone.c:22` | `#define SYS_SB16_SUBMIT` |
+| `SYS_TIME` | macro | `progs/src/sbtone.c:23` | `#define SYS_TIME` |
+| `WINDOW_MS` | macro | `progs/src/sbtone.c:27` | `#define WINDOW_MS` |
+| `buffers` | function | `progs/src/sbtone.c:14` | `*  * Exit code is the number of submitted buffers (0 on failure to open).  */  #include <stdio.h>...` |
+| `main` | function | `progs/src/sbtone.c:36` | `int main(void)` |
+| `SC_ARENA` | macro | `progs/src/scfuzz.c:16` | `#define SC_ARENA` |
+| `SC_OPS` | macro | `progs/src/scfuzz.c:15` | `#define SC_OPS` |
+| `SC_PAGE` | macro | `progs/src/scfuzz.c:17` | `#define SC_PAGE` |
+| `SC_PAGES` | macro | `progs/src/scfuzz.c:18` | `#define SC_PAGES` |
+| `SC_T0_BASE` | macro | `progs/src/scfuzz.c:19` | `#define SC_T0_BASE` |
+| `SC_T0_N` | macro | `progs/src/scfuzz.c:20` | `#define SC_T0_N` |
+| `SC_T1_BASE` | macro | `progs/src/scfuzz.c:21` | `#define SC_T1_BASE` |
+| `SC_T1_N` | macro | `progs/src/scfuzz.c:22` | `#define SC_T1_N` |
+| `_start` | function | `progs/src/scfuzz.c:160` | `void _start(void)` |
+| `guest` | function | `progs/src/scfuzz.c:7` | `* the guest (the BDD timeout then talks). All fuzz maps stay inside  * one private 4 MB arena (pa...` |
+| `sc_exit` | function | `progs/src/scfuzz.c:61` | `static void sc_exit(long code)` |
+| `sc_fold` | function | `progs/src/scfuzz.c:76` | `static unsigned long sc_fold(unsigned long h, unsigned long v)` |
+| `sc_hex8` | function | `progs/src/scfuzz.c:88` | `static void sc_hex8(unsigned long v, char *out)` |
+| `sc_mprotect` | function | `progs/src/scfuzz.c:38` | `static long sc_mprotect(long addr, long len, long prot)` |
+| `sc_munmap` | function | `progs/src/scfuzz.c:49` | `static long sc_munmap(long addr, long len)` |
+| `sc_rng` | function | `progs/src/scfuzz.c:67` | `static unsigned long sc_rng(unsigned long *s)` |
+| `sc_thread1` | function | `progs/src/scfuzz.c:154` | `static void *sc_thread1(void *arg)` |
+| `sc_worker` | function | `progs/src/scfuzz.c:97` | `static unsigned long sc_worker(int me, unsigned long seed)` |
+| `sc_write` | function | `progs/src/scfuzz.c:53` | `static long sc_write(long fd, const char *s, long n)` |
+| `expand` | function | `progs/src/shell.py:30` | `def expand(line, env)` |
+| `main` | function | `progs/src/shell.py:36` | `def main()` |
+| `run_capture` | function | `progs/src/shell.py:20` | `def run_capture(cmd, args)` |
+| `SPIN_WLA` | macro | `progs/src/spin.c:58` | `#define SPIN_WLA` |
+| `SPIN_WLB` | macro | `progs/src/spin.c:59` | `#define SPIN_WLB` |
+| `SPIN_WLH` | macro | `progs/src/spin.c:57` | `#define SPIN_WLH` |
+| `SPIN_WLW` | macro | `progs/src/spin.c:56` | `#define SPIN_WLW` |
+| `lmain` | function | `progs/src/spin.c:225` | `int lmain(long argc, char **argv)` |
+| `lx_atoi` | function | `progs/src/spin.c:42` | `static long lx_atoi(const char *s)` |
+| `lx_strlen` | function | `progs/src/spin.c:20` | `static unsigned long lx_strlen(const char *s)` |
+| `lx_syscall3` | function | `progs/src/spin.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
+| `lx_write` | function | `progs/src/spin.c:26` | `static void lx_write(const char *s)` |
+| `lx_write_int` | function | `progs/src/spin.c:30` | `static void lx_write_int(long v)` |
+| `spin_box_ok` | function | `progs/src/spin.c:82` | `static int spin_box_ok(const char *box)` |
+| `spin_emit` | function | `progs/src/spin.c:114` | `static int spin_emit(const char *box, unsigned int seq,         const unsigned char *msg, long mlen)` |
+| `spin_hdr` | function | `progs/src/spin.c:73` | `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,         unsigned long ...` |
+| `spin_hex8` | function | `progs/src/spin.c:95` | `static void spin_hex8(unsigned int v, char *dst)` |
+| `spin_pixels` | function | `progs/src/spin.c:169` | `static void spin_pixels(long off)` |
+| `spin_raw_file` | function | `progs/src/spin.c:145` | `static int spin_raw_file(const char *box)` |
+| `spin_u32` | function | `progs/src/spin.c:66` | `static void spin_u32(unsigned char *d, unsigned long v)` |
+| `spin_wl` | function | `progs/src/spin.c:181` | `static int spin_wl(const char *box, const char *narg)` |
+| `spin_write_all` | function | `progs/src/spin.c:104` | `static long spin_write_all(long fd, const unsigned char *buf, long len)` |
+| `add` | function | `progs/src/test.c:1` | `int add(int a, int b)` |
+| `main` | function | `progs/src/test.c:2` | `int main(void)` |
+| `check` | function | `progs/src/test.lua:12` | `` |
+| `read_file` | function | `progs/src/test.lua:30` | `` |
+| `test_bin_aes` | function | `progs/src/test.lua:175` | `` |
+| `test_bin_cp` | function | `progs/src/test.lua:135` | `` |
+| `test_bin_freedom` | function | `progs/src/test.lua:205` | `` |
+| `test_bin_json` | function | `progs/src/test.lua:194` | `` |
+| `test_bin_lz4` | function | `progs/src/test.lua:141` | `` |
+| `test_bin_lzss` | function | `progs/src/test.lua:158` | `` |
+| `test_dlmalloc` | function | `progs/src/test.lua:80` | `` |
+| `test_filesystem` | function | `progs/src/test.lua:53` | `` |
+| `test_ftest` | function | `progs/src/test.lua:90` | `` |
+| `test_hello` | function | `progs/src/test.lua:85` | `` |
+| `test_ld` | function | `progs/src/test.lua:100` | `` |
+| `test_minigcc` | function | `progs/src/test.lua:95` | `` |
+| `test_module_bindings` | function | `progs/src/test.lua:40` | `` |
+| `test_spawn_preserves_interpreter` | function | `progs/src/test.lua:122` | `` |
+| `test_stb` | function | `progs/src/test.lua:75` | `` |
+| `test_toolchain_roundtrip` | function | `progs/src/test.lua:112` | `` |
+| `test_xxhash` | function | `progs/src/test.lua:70` | `` |
+| `write_file` | function | `progs/src/test.lua:22` | `` |
+| `check` | function | `progs/src/test.py:15` | `def check(name, cond, detail)` |
+| `main` | function | `progs/src/test.py:261` | `def main()` |
 | `safe_run` | function | `progs/src/test.py:25` | `def safe_run()` |
 | `test_bin_aes` | function | `progs/src/test.py:209` | `def test_bin_aes()` |
 | `test_bin_cp` | function | `progs/src/test.py:148` | `def test_bin_cp()` |
@@ -97,404 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `TORUS_GRID_H` | macro | `progs/topogpt3/topogpt3.c:83` | `#define TORUS_GRID_H` |
 | `TORUS_GRID_W` | macro | `progs/topogpt3/topogpt3.c:84` | `#define TORUS_GRID_W` |
 | `TORUS_TEMP` | macro | `progs/topogpt3/topogpt3.c:93` | `#define TORUS_TEMP` |
-| `VOCAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:65` | `#define VOCAB_SIZE` |
-| `apply_repetition_penalty` | function | `progs/topogpt3/topogpt3.c:1216` | `static void apply_repetition_penalty(float *logits, int n, const int *tokens,                    ...` |
-| `apply_temperature` | function | `progs/topogpt3/topogpt3.c:1210` | `static void apply_temperature(float *logits, int n, float temp)` |
-| `apply_top_k` | function | `progs/topogpt3/topogpt3.c:1229` | `static void apply_top_k(float *logits, int n, int k)` |
-| `attention_forward` | function | `progs/topogpt3/topogpt3.c:978` | `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...` |
-| `build_torus_graph` | function | `progs/topogpt3/topogpt3.c:296` | `static void build_torus_graph(void)` |
-| `cmul` | function | `progs/topogpt3/topogpt3.c:664` | `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)` |
-| `decode_token` | function | `progs/topogpt3/topogpt3.c:1614` | `static void decode_token(int tid)` |
-| `decode_token_tiktoken` | function | `progs/topogpt3/topogpt3.c:1652` | `static void decode_token_tiktoken(int tid)` |
-| `fclose` | function | `progs/topogpt3/topogpt3.c:37` | `extern int fclose(FILE *);` |
-| `fflush` | function | `progs/topogpt3/topogpt3.c:42` | `extern int fflush(FILE *);` |
-| `filter1d` | function | `progs/topogpt3/topogpt3.c:537` | `static void filter1d(const float *x, const float *kr, const float *ki,                       floa...` |
-| `fopen` | function | `progs/topogpt3/topogpt3.c:36` | `extern FILE *fopen(const char *, const char *);` |
-| `forward` | function | `progs/topogpt3/topogpt3.c:1128` | `static void forward(const int *token_ids, int seq_len, float *logits_out)` |
-| `fprintf` | function | `progs/topogpt3/topogpt3.c:29` | `extern int fprintf(FILE *, const char *, ...);` |
-| `fputc` | function | `progs/topogpt3/topogpt3.c:34` | `extern int fputc(int, FILE *);` |
-| `fputs` | function | `progs/topogpt3/topogpt3.c:35` | `extern int fputs(const char *, FILE *);` |
-| `fread` | function | `progs/topogpt3/topogpt3.c:38` | `extern unsigned long fread(void *, unsigned long, unsigned long, FILE *);` |
-| `free` | function | `progs/topogpt3/topogpt3.c:48` | `extern void free(void *);` |
-| `fseek` | function | `progs/topogpt3/topogpt3.c:40` | `extern int fseek(FILE *, long, int);` |
-| `ftell` | function | `progs/topogpt3/topogpt3.c:41` | `extern long ftell(FILE *);` |
-| `fwrite` | function | `progs/topogpt3/topogpt3.c:39` | `extern unsigned long fwrite(const void *, unsigned long, unsigned long, FILE *);` |
-| `gelu` | function | `progs/topogpt3/topogpt3.c:400` | `static void gelu(float *x, int n)` |
-| `generate` | function | `progs/topogpt3/topogpt3.c:1725` | `static void generate(const char *prompt, int max_new_tokens, float temperature,                  ...` |
-| `generate_tokens` | function | `progs/topogpt3/topogpt3.c:1661` | `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,                ...` |
-| `ifft2d` | function | `progs/topogpt3/topogpt3.c:580` | `static void ifft2d(float *data_r, float *data_i, int h, int w)` |
-| `ifft_radix2` | function | `progs/topogpt3/topogpt3.c:505` | `static void ifft_radix2(float *real, float *imag, int n)` |
-| `interactive_mode` | function | `progs/topogpt3/topogpt3.c:1736` | `static void interactive_mode(void)` |
-| `irfft` | function | `progs/topogpt3/topogpt3.c:522` | `static void irfft(const float *Xr, const float *Xi, float *x, int n)` |
-| `irfft2d` | function | `progs/topogpt3/topogpt3.c:629` | `static void irfft2d(const float *in_r, const float *in_i, float *out,                      int h,...` |
-| `load_token_file` | function | `progs/topogpt3/topogpt3.c:1629` | `static int load_token_file(const char *path, int *out_ids, int max_ids)` |
-| `load_vocab` | function | `progs/topogpt3/topogpt3.c:255` | `static void load_vocab(const char *path)` |
-| `load_weights` | function | `progs/topogpt3/topogpt3.c:1282` | `static int load_weights(const char *path)` |
-| `load_weights_auto` | function | `progs/topogpt3/topogpt3.c:1583` | `static int load_weights_auto(const char *path)` |
-| `load_weights_fp16` | function | `progs/topogpt3/topogpt3.c:1452` | `static int load_weights_fp16(const char *path)` |
-| `main` | function | `progs/topogpt3/topogpt3.c:1885` | `int main(int argc, char **argv)` |
-| `malloc` | function | `progs/topogpt3/topogpt3.c:47` | `extern void *malloc(unsigned long);` |
-| `matvec` | function | `progs/topogpt3/topogpt3.c:359` | `static void matvec(const float *W, const float *x, float *y, int rows, int cols)` |
-| `matvec_bias` | function | `progs/topogpt3/topogpt3.c:370` | `static void matvec_bias(const float *W, const float *b, const float *x, float *y,                ...` |
-| `memcpy` | function | `progs/topogpt3/topogpt3.c:49` | `extern void *memcpy(void *, const void *, unsigned long);` |
-| `memset` | function | `progs/topogpt3/topogpt3.c:50` | `extern void *memset(void *, int, unsigned long);` |
-| `message_passing` | function | `progs/topogpt3/topogpt3.c:843` | `static void message_passing(const float *node_feat, float *out,                              cons...` |
-| `moe_forward` | function | `progs/topogpt3/topogpt3.c:1078` | `static void moe_forward(const float *x, float *out, const LayerWeights *lw)` |
-| `precompute_rope` | function | `progs/topogpt3/topogpt3.c:327` | `static void precompute_rope(void)` |
-| `print_help` | function | `progs/topogpt3/topogpt3.c:1850` | `static void print_help(void)` |
-| `printf` | function | `progs/topogpt3/topogpt3.c:28` | `extern int printf(const char *, ...);` |
-| `process_torus_grid` | function | `progs/topogpt3/topogpt3.c:800` | `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)` |
-| `putchar` | function | `progs/topogpt3/topogpt3.c:33` | `extern int putchar(int);` |
-| `puts` | function | `progs/topogpt3/topogpt3.c:32` | `extern int puts(const char *);` |
-| `quat_hamilton` | function | `progs/topogpt3/topogpt3.c:440` | `static void quat_hamilton(const float *a, const float *b, float *c)` |
-| `quat_linear` | function | `progs/topogpt3/topogpt3.c:448` | `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,      ...` |
-| `quat_normalize` | function | `progs/topogpt3/topogpt3.c:435` | `static void quat_normalize(float *q)` |
-| `quat_spectral_layer_2d` | function | `progs/topogpt3/topogpt3.c:695` | `static void quat_spectral_layer_2d(     const float *x, float *y,     const float *kr_w, const fl...` |
-| `rfft` | function | `progs/topogpt3/topogpt3.c:513` | `static void rfft(const float *x, float *Xr, float *Xi, int n)` |
-| `rfft2d_real` | function | `progs/topogpt3/topogpt3.c:602` | `static void rfft2d_real(const float *data, float *out_r, float *out_i,                          i...` |
-| `rmsnorm` | function | `progs/topogpt3/topogpt3.c:382` | `static void rmsnorm(const float *x, const float *w, float *y, int d)` |
-| `sample` | function | `progs/topogpt3/topogpt3.c:1248` | `static int sample(const float *logits, int n)` |
-| `silu` | function | `progs/topogpt3/topogpt3.c:410` | `static void silu(float *x, int n)` |
-| `snprintf` | function | `progs/topogpt3/topogpt3.c:31` | `extern int snprintf(char *, unsigned long, const char *, ...);` |
-| `softmax` | function | `progs/topogpt3/topogpt3.c:391` | `static void softmax(float *x, int n)` |
-| `spectral_ae_decode` | function | `progs/topogpt3/topogpt3.c:793` | `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)` |
-| `spectral_ae_encode` | function | `progs/topogpt3/topogpt3.c:785` | `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)` |
-| `spectral_contract` | function | `progs/topogpt3/topogpt3.c:670` | `static void spectral_contract(const float *Wr, const float *Wi,                                co...` |
-| `sprintf` | function | `progs/topogpt3/topogpt3.c:30` | `extern int sprintf(char *, const char *, ...);` |
-| `stderr` | variable | `progs/topogpt3/topogpt3.c:27` | `extern FILE *stderr;` |
-| `stdin` | variable | `progs/topogpt3/topogpt3.c:25` | `extern FILE *stdin;` |
-| `stdout` | variable | `progs/topogpt3/topogpt3.c:26` | `extern FILE *stdout;` |
-| `strcmp` | function | `progs/topogpt3/topogpt3.c:51` | `extern int strcmp(const char *, const char *);` |
-| `strlen` | function | `progs/topogpt3/topogpt3.c:53` | `extern unsigned long strlen(const char *);` |
-| `strncmp` | function | `progs/topogpt3/topogpt3.c:52` | `extern int strncmp(const char *, const char *, unsigned long);` |
-| `strstr` | function | `progs/topogpt3/topogpt3.c:54` | `extern char *strstr(const char *, const char *);` |
-| `swiglu` | function | `progs/topogpt3/topogpt3.c:418` | `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,                  ...` |
-| `tg_cos` | function | `progs/topogpt3/topogpt3.c:144` | `static float tg_cos(float x)` |
-| `tg_exp` | function | `progs/topogpt3/topogpt3.c:114` | `static float tg_exp(float x)` |
-| `tg_fabs` | function | `progs/topogpt3/topogpt3.c:148` | `static float tg_fabs(float x)` |
-| `tg_fmax` | function | `progs/topogpt3/topogpt3.c:164` | `static float tg_fmax(float a, float b)` |
-| `tg_fmin` | function | `progs/topogpt3/topogpt3.c:168` | `static float tg_fmin(float a, float b)` |
-| `tg_log` | function | `progs/topogpt3/topogpt3.c:152` | `static float tg_log(float x)` |
-| `tg_sin` | function | `progs/topogpt3/topogpt3.c:135` | `static float tg_sin(float x)` |
-| `tg_tanh` | function | `progs/topogpt3/topogpt3.c:128` | `static float tg_tanh(float x)` |
-| `time_now_ms` | function | `progs/topogpt3/topogpt3.c:1600` | `static double time_now_ms(void)` |
-| `tokenize_string` | function | `progs/topogpt3/topogpt3.c:1195` | `static int tokenize_string(const char *text, int *tokens, int max_tokens)` |
-| `torus_brain_forward` | function | `progs/topogpt3/topogpt3.c:888` | `static void torus_brain_forward(const float *x, float *out, float *recon_loss,                   ...` |
-| `torus_soft_assign` | function | `progs/topogpt3/topogpt3.c:821` | `static void torus_soft_assign(const float *phi1, const float *phi2,                              ...` |
-| `MINIOS_LEAKCHECK_IMPL` | macro | `progs/vedit/vedit.c:33` | `#define MINIOS_LEAKCHECK_IMPL` |
-| `MINIOS_LK_ENABLE` | macro | `progs/vedit/vedit.c:34` | `#define MINIOS_LK_ENABLE` |
-| `VEDIT_BASE_MAX` | macro | `progs/vedit/vedit.c:142` | `#define VEDIT_BASE_MAX` |
-| `VEDIT_BUILD_LOG` | macro | `progs/vedit/vedit.c:138` | `#define VEDIT_BUILD_LOG` |
-| `VEDIT_CLIP_MAX` | macro | `progs/vedit/vedit.c:3262` | `#define VEDIT_CLIP_MAX` |
-| `VEDIT_CMD_MAX` | macro | `progs/vedit/vedit.c:255` | `#define VEDIT_CMD_MAX` |
-| `VEDIT_COL_COMMENT` | macro | `progs/vedit/vedit.c:158` | `#define VEDIT_COL_COMMENT` |
-| `VEDIT_COL_DEFAULT` | macro | `progs/vedit/vedit.c:155` | `#define VEDIT_COL_DEFAULT` |
-| `VEDIT_COL_KEYWORD` | macro | `progs/vedit/vedit.c:156` | `#define VEDIT_COL_KEYWORD` |
-| `VEDIT_COL_NUMBER` | macro | `progs/vedit/vedit.c:159` | `#define VEDIT_COL_NUMBER` |
-| `VEDIT_COL_PREPROC` | macro | `progs/vedit/vedit.c:160` | `#define VEDIT_COL_PREPROC` |
-| `VEDIT_COL_STRING` | macro | `progs/vedit/vedit.c:157` | `#define VEDIT_COL_STRING` |
-| `VEDIT_DEFAULT_FILE` | macro | `progs/vedit/vedit.c:119` | `#define VEDIT_DEFAULT_FILE` |
-| `VEDIT_DIR_ASM` | macro | `progs/vedit/vedit.c:135` | `#define VEDIT_DIR_ASM` |
-| `VEDIT_DIR_BIN` | macro | `progs/vedit/vedit.c:136` | `#define VEDIT_DIR_BIN` |
-| `VEDIT_DIR_CVM` | macro | `progs/vedit/vedit.c:137` | `#define VEDIT_DIR_CVM` |
-| `VEDIT_ESC_MS` | macro | `progs/vedit/vedit.c:123` | `#define VEDIT_ESC_MS` |
-| `VEDIT_FILE_MAX` | macro | `progs/vedit/vedit.c:117` | `#define VEDIT_FILE_MAX` |
-| `VEDIT_FILL_COL` | macro | `progs/vedit/vedit.c:1611` | `#define VEDIT_FILL_COL` |
-| `VEDIT_FNAME_MAX` | macro | `progs/vedit/vedit.c:118` | `#define VEDIT_FNAME_MAX` |
-| `VEDIT_FRAME_MS` | macro | `progs/vedit/vedit.c:124` | `#define VEDIT_FRAME_MS` |
-| `VEDIT_HIST_N` | macro | `progs/vedit/vedit.c:254` | `#define VEDIT_HIST_N` |
-| `VEDIT_KEY_ARG` | macro | `progs/vedit/vedit.c:258` | `#define VEDIT_KEY_ARG` |
-| `VEDIT_KEY_BOL` | macro | `progs/vedit/vedit.c:264` | `#define VEDIT_KEY_BOL` |
-| `VEDIT_KEY_DEL` | macro | `progs/vedit/vedit.c:178` | `#define VEDIT_KEY_DEL` |
-| `VEDIT_KEY_DOWN` | macro | `progs/vedit/vedit.c:171` | `#define VEDIT_KEY_DOWN` |
-| `VEDIT_KEY_DUMP` | macro | `progs/vedit/vedit.c:128` | `#define VEDIT_KEY_DUMP` |
-| `VEDIT_KEY_END` | macro | `progs/vedit/vedit.c:175` | `#define VEDIT_KEY_END` |
-| `VEDIT_KEY_EOL` | macro | `progs/vedit/vedit.c:265` | `#define VEDIT_KEY_EOL` |
-| `VEDIT_KEY_ESC` | macro | `progs/vedit/vedit.c:179` | `#define VEDIT_KEY_ESC` |
-| `VEDIT_KEY_FENCE` | macro | `progs/vedit/vedit.c:263` | `#define VEDIT_KEY_FENCE` |
-| `VEDIT_KEY_HOME` | macro | `progs/vedit/vedit.c:174` | `#define VEDIT_KEY_HOME` |
-| `VEDIT_KEY_KILL_LINE` | macro | `progs/vedit/vedit.c:260` | `#define VEDIT_KEY_KILL_LINE` |
-| `VEDIT_KEY_LEFT` | macro | `progs/vedit/vedit.c:172` | `#define VEDIT_KEY_LEFT` |
-| `VEDIT_KEY_LINK` | macro | `progs/vedit/vedit.c:127` | `#define VEDIT_KEY_LINK` |
-| `VEDIT_KEY_MARK` | macro | `progs/vedit/vedit.c:259` | `#define VEDIT_KEY_MARK` |
-| `VEDIT_KEY_META` | macro | `progs/vedit/vedit.c:257` | `#define VEDIT_KEY_META(c)` |
-| `VEDIT_KEY_PGDN` | macro | `progs/vedit/vedit.c:177` | `#define VEDIT_KEY_PGDN` |
-| `VEDIT_KEY_PGUP` | macro | `progs/vedit/vedit.c:176` | `#define VEDIT_KEY_PGUP` |
-| `VEDIT_KEY_RIGHT` | macro | `progs/vedit/vedit.c:173` | `#define VEDIT_KEY_RIGHT` |
-| `VEDIT_KEY_RUN` | macro | `progs/vedit/vedit.c:126` | `#define VEDIT_KEY_RUN` |
-| `VEDIT_KEY_TRANSPOSE` | macro | `progs/vedit/vedit.c:262` | `#define VEDIT_KEY_TRANSPOSE` |
-| `VEDIT_KEY_UP` | macro | `progs/vedit/vedit.c:170` | `#define VEDIT_KEY_UP` |
-| `VEDIT_KEY_YANK` | macro | `progs/vedit/vedit.c:261` | `#define VEDIT_KEY_YANK` |
-| `VEDIT_KILL_MAX` | macro | `progs/vedit/vedit.c:252` | `#define VEDIT_KILL_MAX` |
-| `VEDIT_KILL_N` | macro | `progs/vedit/vedit.c:251` | `#define VEDIT_KILL_N` |
-| `VEDIT_LANG_ASM` | macro | `progs/vedit/vedit.c:151` | `#define VEDIT_LANG_ASM` |
-| `VEDIT_LANG_C` | macro | `progs/vedit/vedit.c:148` | `#define VEDIT_LANG_C` |
-| `VEDIT_LANG_LISP` | macro | `progs/vedit/vedit.c:152` | `#define VEDIT_LANG_LISP` |
-| `VEDIT_LANG_LUA` | macro | `progs/vedit/vedit.c:150` | `#define VEDIT_LANG_LUA` |
-| `VEDIT_LANG_PY` | macro | `progs/vedit/vedit.c:149` | `#define VEDIT_LANG_PY` |
-| `VEDIT_LANG_TEXT` | macro | `progs/vedit/vedit.c:147` | `#define VEDIT_LANG_TEXT` |
-| `VEDIT_LINE_MAX` | macro | `progs/vedit/vedit.c:115` | `#define VEDIT_LINE_MAX` |
-| `VEDIT_LINE_USED` | macro | `progs/vedit/vedit.c:116` | `#define VEDIT_LINE_USED` |
-| `VEDIT_LINK_CVM` | macro | `progs/vedit/vedit.c:140` | `#define VEDIT_LINK_CVM` |
-| `VEDIT_LINK_ELF` | macro | `progs/vedit/vedit.c:139` | `#define VEDIT_LINK_ELF` |
-| `VEDIT_LOG_TAIL` | macro | `progs/vedit/vedit.c:144` | `#define VEDIT_LOG_TAIL` |
-| `VEDIT_MACRO_MAX` | macro | `progs/vedit/vedit.c:253` | `#define VEDIT_MACRO_MAX` |
-| `VEDIT_MAGIC_MAX` | macro | `progs/vedit/vedit.c:256` | `#define VEDIT_MAGIC_MAX` |
-| `VEDIT_MAX_LINES` | macro | `progs/vedit/vedit.c:114` | `#define VEDIT_MAX_LINES` |
-| `VEDIT_MSG_MAX` | macro | `progs/vedit/vedit.c:120` | `#define VEDIT_MSG_MAX` |
-| `VEDIT_NBUF` | macro | `progs/vedit/vedit.c:250` | `#define VEDIT_NBUF` |
-| `VEDIT_PATH_MAX` | macro | `progs/vedit/vedit.c:143` | `#define VEDIT_PATH_MAX` |
-| `VEDIT_PROMPT_BINDCMD` | macro | `progs/vedit/vedit.c:327` | `#define VEDIT_PROMPT_BINDCMD` |
-| `VEDIT_PROMPT_BINDKEY` | macro | `progs/vedit/vedit.c:326` | `#define VEDIT_PROMPT_BINDKEY` |
-| `VEDIT_PROMPT_CMD` | macro | `progs/vedit/vedit.c:316` | `#define VEDIT_PROMPT_CMD` |
-| `VEDIT_PROMPT_FILTER` | macro | `progs/vedit/vedit.c:323` | `#define VEDIT_PROMPT_FILTER` |
-| `VEDIT_PROMPT_FIND` | macro | `progs/vedit/vedit.c:312` | `#define VEDIT_PROMPT_FIND` |
-| `VEDIT_PROMPT_GOTO` | macro | `progs/vedit/vedit.c:313` | `#define VEDIT_PROMPT_GOTO` |
-| `VEDIT_PROMPT_GREP` | macro | `progs/vedit/vedit.c:325` | `#define VEDIT_PROMPT_GREP` |
-| `VEDIT_PROMPT_ISEARCH_F` | macro | `progs/vedit/vedit.c:317` | `#define VEDIT_PROMPT_ISEARCH_F` |
-| `VEDIT_PROMPT_ISEARCH_R` | macro | `progs/vedit/vedit.c:318` | `#define VEDIT_PROMPT_ISEARCH_R` |
-| `VEDIT_PROMPT_LINK` | macro | `progs/vedit/vedit.c:315` | `#define VEDIT_PROMPT_LINK` |
-| `VEDIT_PROMPT_NAME` | macro | `progs/vedit/vedit.c:314` | `#define VEDIT_PROMPT_NAME` |
-| `VEDIT_PROMPT_QREP` | macro | `progs/vedit/vedit.c:321` | `#define VEDIT_PROMPT_QREP` |
-| `VEDIT_PROMPT_REP_NEW` | macro | `progs/vedit/vedit.c:320` | `#define VEDIT_PROMPT_REP_NEW` |
-| `VEDIT_PROMPT_REP_OLD` | macro | `progs/vedit/vedit.c:319` | `#define VEDIT_PROMPT_REP_OLD` |
-| `VEDIT_PROMPT_SELECT` | macro | `progs/vedit/vedit.c:324` | `#define VEDIT_PROMPT_SELECT` |
-| `VEDIT_PROMPT_SHELLCMD` | macro | `progs/vedit/vedit.c:322` | `#define VEDIT_PROMPT_SHELLCMD` |
-| `VEDIT_SH_ARGS` | macro | `progs/vedit/vedit.c:3260` | `#define VEDIT_SH_ARGS` |
-| `VEDIT_SH_LINE` | macro | `progs/vedit/vedit.c:3261` | `#define VEDIT_SH_LINE` |
-| `VEDIT_STATUS_MAX` | macro | `progs/vedit/vedit.c:141` | `#define VEDIT_STATUS_MAX` |
-| `VEDIT_ST_BLOCK` | macro | `progs/vedit/vedit.c:163` | `#define VEDIT_ST_BLOCK` |
-| `VEDIT_ST_LUABLK` | macro | `progs/vedit/vedit.c:166` | `#define VEDIT_ST_LUABLK` |
-| `VEDIT_ST_LUASTR` | macro | `progs/vedit/vedit.c:167` | `#define VEDIT_ST_LUASTR` |
-| `VEDIT_ST_PY3D` | macro | `progs/vedit/vedit.c:165` | `#define VEDIT_ST_PY3D` |
-| `VEDIT_ST_PY3S` | macro | `progs/vedit/vedit.c:164` | `#define VEDIT_ST_PY3S` |
-| `VEDIT_TAB_W` | macro | `progs/vedit/vedit.c:122` | `#define VEDIT_TAB_W` |
-| `VEDIT_TMP_F` | macro | `progs/vedit/vedit.c:3259` | `#define VEDIT_TMP_F` |
-| `VEDIT_TMP_IN` | macro | `progs/vedit/vedit.c:3258` | `#define VEDIT_TMP_IN` |
-| `VEDIT_TMP_OUT` | macro | `progs/vedit/vedit.c:3257` | `#define VEDIT_TMP_OUT` |
-| `VEDIT_TOOL_CVM` | macro | `progs/vedit/vedit.c:131` | `#define VEDIT_TOOL_CVM` |
-| `VEDIT_TOOL_LD` | macro | `progs/vedit/vedit.c:130` | `#define VEDIT_TOOL_LD` |
-| `VEDIT_TOOL_LISP` | macro | `progs/vedit/vedit.c:134` | `#define VEDIT_TOOL_LISP` |
-| `VEDIT_TOOL_LUA` | macro | `progs/vedit/vedit.c:132` | `#define VEDIT_TOOL_LUA` |
-| `VEDIT_TOOL_MINIGCC` | macro | `progs/vedit/vedit.c:129` | `#define VEDIT_TOOL_MINIGCC` |
-| `VEDIT_TOOL_PY` | macro | `progs/vedit/vedit.c:133` | `#define VEDIT_TOOL_PY` |
-| `VEDIT_UI_MEMORY` | macro | `progs/vedit/vedit.c:125` | `#define VEDIT_UI_MEMORY` |
-| `VEDIT_WORD_MAX` | macro | `progs/vedit/vedit.c:121` | `#define VEDIT_WORD_MAX` |
-| `definitions` | function | `progs/vedit/vedit.c:267` | `* definitions (C99, one file, no headers). */ static void vedit_str_case(char *s, int mode);` |
-| `main` | function | `progs/vedit/vedit.c:4823` | `int main(int argc, char **argv)` |
-| `separators` | function | `progs/vedit/vedit.c:402` | `* allow_quote exists because C digit separators (1'000'000) are not  * valid in Python/Lua number...` |
-| `strcmp` | function | `progs/vedit/vedit.c:3180` | `strcmp(name, "describe-bindings") == 0)` |
-| `vedit_ansi_for` | function | `progs/vedit/vedit.c:3730` | `static void vedit_ansi_for(int col)` |
-| `vedit_backspace` | function | `progs/vedit/vedit.c:846` | `static void vedit_backspace(void)` |
-| `vedit_base_of` | function | `progs/vedit/vedit.c:2268` | `static int vedit_base_of(const char *fname, char *dst, size_t cap)` |
-| `vedit_buf_alloc` | function | `progs/vedit/vedit.c:1178` | `static int vedit_buf_alloc(int idx)` |
-| `vedit_c_bg` | function | `progs/vedit/vedit.c:182` | `static struct nk_color vedit_c_bg(void)` |
-| `vedit_c_comment` | function | `progs/vedit/vedit.c:187` | `static struct nk_color vedit_c_comment(void)` |
-| `vedit_c_cursor` | function | `progs/vedit/vedit.c:193` | `static struct nk_color vedit_c_cursor(void)` |
-| `vedit_c_default` | function | `progs/vedit/vedit.c:184` | `static struct nk_color vedit_c_default(void)` |
-| `vedit_c_gutter` | function | `progs/vedit/vedit.c:183` | `static struct nk_color vedit_c_gutter(void)` |
-| `vedit_c_header` | function | `progs/vedit/vedit.c:190` | `static struct nk_color vedit_c_header(void)` |
-| `vedit_c_headtxt` | function | `progs/vedit/vedit.c:191` | `static struct nk_color vedit_c_headtxt(void)` |
-| `vedit_c_keyword` | function | `progs/vedit/vedit.c:185` | `static struct nk_color vedit_c_keyword(void)` |
-| `vedit_c_number` | function | `progs/vedit/vedit.c:188` | `static struct nk_color vedit_c_number(void)` |
-| `vedit_c_preproc` | function | `progs/vedit/vedit.c:189` | `static struct nk_color vedit_c_preproc(void)` |
-| `vedit_c_status` | function | `progs/vedit/vedit.c:192` | `static struct nk_color vedit_c_status(void)` |
-| `vedit_c_string` | function | `progs/vedit/vedit.c:186` | `static struct nk_color vedit_c_string(void)` |
-| `vedit_case_word` | function | `progs/vedit/vedit.c:1450` | `static int vedit_case_word(int mode)` |
-| `vedit_clamp` | function | `progs/vedit/vedit.c:772` | `static void vedit_clamp(void)` |
-| `vedit_clip_get` | function | `progs/vedit/vedit.c:105` | `static long vedit_clip_get(char *out, long cap)` |
-| `vedit_clip_paste` | function | `progs/vedit/vedit.c:3337` | `static int vedit_clip_paste(void)` |
-| `vedit_clip_set` | function | `progs/vedit/vedit.c:97` | `static long vedit_clip_set(const char *s, long len)` |
-| `vedit_cmd_bind` | function | `progs/vedit/vedit.c:2925` | `static int vedit_cmd_bind(int key, int cmd)` |
-| `vedit_cmd_bound` | function | `progs/vedit/vedit.c:2941` | `static int vedit_cmd_bound(int key)` |
-| `vedit_cmd_exec` | function | `progs/vedit/vedit.c:2365` | `static void vedit_cmd_exec(const char *out, int kind)` |
-| `vedit_cmd_exec_id` | function | `progs/vedit/vedit.c:2992` | `static void vedit_cmd_exec_id(int id, const char *arg, int *quit,                               i...` |
-| `vedit_cmd_link` | function | `progs/vedit/vedit.c:2465` | `static void vedit_cmd_link(const char *fmt)` |
-| `vedit_cmd_lookup` | function | `progs/vedit/vedit.c:2857` | `static int vedit_cmd_lookup(const char *name)` |
-| `vedit_cmd_run` | function | `progs/vedit/vedit.c:2388` | `static void vedit_cmd_run(void)` |
-| `vedit_console_dump` | function | `progs/vedit/vedit.c:3738` | `static void vedit_console_dump(void)` |
-| `vedit_copy_region` | function | `progs/vedit/vedit.c:1268` | `static int vedit_copy_region(void)` |
-| `vedit_count` | macro | `progs/vedit/vedit.c:294` | `#define vedit_count` |
-| `vedit_count_open` | function | `progs/vedit/vedit.c:2797` | `static int vedit_count_open(void)` |
-| `vedit_count_words` | function | `progs/vedit/vedit.c:1578` | `static void vedit_count_words(void)` |
-| `vedit_cx` | macro | `progs/vedit/vedit.c:295` | `#define vedit_cx` |
-| `vedit_cy` | macro | `progs/vedit/vedit.c:296` | `#define vedit_cy` |
-| `vedit_delete_char` | function | `progs/vedit/vedit.c:882` | `static void vedit_delete_char(void)` |
-| `vedit_delete_line_at` | function | `progs/vedit/vedit.c:835` | `static void vedit_delete_line_at(int idx)` |
-| `vedit_dirty` | macro | `progs/vedit/vedit.c:299` | `#define vedit_dirty` |
-| `vedit_draw_row` | function | `progs/vedit/vedit.c:3854` | `static void vedit_draw_row(struct nk_command_buffer *canvas,                            struct nk...` |
-| `vedit_draw_ui` | function | `progs/vedit/vedit.c:3952` | `static void vedit_draw_ui(struct nk_context *ctx, struct nk_user_font *font,                     ...` |
-| `vedit_fill_paragraph` | function | `progs/vedit/vedit.c:1813` | `static int vedit_fill_paragraph(void)` |
-| `vedit_filter_buffer` | function | `progs/vedit/vedit.c:3505` | `static void vedit_filter_buffer(const char *prog)` |
-| `vedit_find` | function | `progs/vedit/vedit.c:1897` | `static void vedit_find(const char *needle)` |
-| `vedit_first_open` | function | `progs/vedit/vedit.c:2777` | `static int vedit_first_open(void)` |
-| `vedit_fname` | macro | `progs/vedit/vedit.c:302` | `#define vedit_fname` |
-| `vedit_follow` | function | `progs/vedit/vedit.c:784` | `static void vedit_follow(void)` |
-| `vedit_getc_raw` | function | `progs/vedit/vedit.c:38` | `static long vedit_getc_raw(long blocking)` |
-| `vedit_goto_fence` | function | `progs/vedit/vedit.c:1512` | `static int vedit_goto_fence(void)` |
-| `vedit_grep` | function | `progs/vedit/vedit.c:3565` | `static void vedit_grep(const char *pat)` |
-| `vedit_gui_run` | function | `progs/vedit/vedit.c:4656` | `static void vedit_gui_run(void)` |
-| `vedit_has_ext` | function | `progs/vedit/vedit.c:2256` | `static int vedit_has_ext(const char *fname, const char *ext)` |
-| `vedit_help_text` | function | `progs/vedit/vedit.c:2976` | `static void vedit_help_text(void)` |
-| `vedit_hist_push` | function | `progs/vedit/vedit.c:1220` | `static void vedit_hist_push(const char *fname)` |
-| `vedit_hist_show` | function | `progs/vedit/vedit.c:2968` | `static void vedit_hist_show(void)` |
-| `vedit_hoff` | macro | `progs/vedit/vedit.c:298` | `#define vedit_hoff` |
-| `vedit_ink` | function | `progs/vedit/vedit.c:195` | `static struct nk_color vedit_ink(int col)` |
-| `vedit_insert_buf` | function | `progs/vedit/vedit.c:2182` | `static char *vedit_insert_buf(long size)` |
-| `vedit_insert_char` | function | `progs/vedit/vedit.c:797` | `static void vedit_insert_char(int c)` |
-| `vedit_insert_file` | function | `progs/vedit/vedit.c:2195` | `static int vedit_insert_file(const char *fname)` |
-| `vedit_is_alpha` | function | `progs/vedit/vedit.c:367` | `static int vedit_is_alpha(int c)` |
-| `vedit_is_digit` | function | `progs/vedit/vedit.c:371` | `static int vedit_is_digit(int c)` |
-| `vedit_is_kw` | function | `progs/vedit/vedit.c:379` | `static int vedit_is_kw(const char *table, const char *word, int wlen)` |
-| `vedit_is_wordc` | function | `progs/vedit/vedit.c:375` | `static int vedit_is_wordc(int c)` |
-| `vedit_isearch_step` | function | `progs/vedit/vedit.c:1713` | `static void vedit_isearch_step(void)` |
-| `vedit_join` | function | `progs/vedit/vedit.c:2289` | `static int vedit_join(const char *dir, const char *base, const char *ext,                       c...` |
-| `vedit_kbd_raw` | function | `progs/vedit/vedit.c:80` | `static long vedit_kbd_raw(int on)` |
-| `vedit_key` | function | `progs/vedit/vedit.c:4406` | `static void vedit_key(int key, int *quit, int *save_and_quit)` |
-| `vedit_kill_line` | function | `progs/vedit/vedit.c:1344` | `static int vedit_kill_line(void)` |
-| `vedit_kill_region` | function | `progs/vedit/vedit.c:1298` | `static int vedit_kill_region(void)` |
-| `vedit_lang` | macro | `progs/vedit/vedit.c:301` | `#define vedit_lang` |
-| `vedit_lang_name` | function | `progs/vedit/vedit.c:478` | `static const char *vedit_lang_name(int lang)` |
-| `vedit_lang_of` | function | `progs/vedit/vedit.c:457` | `static int vedit_lang_of(const char *fname)` |
-| `vedit_link_fmt` | function | `progs/vedit/vedit.c:2306` | `static int vedit_link_fmt(const char *s)` |
-| `vedit_list_buffers` | function | `progs/vedit/vedit.c:2949` | `static void vedit_list_buffers(void)` |
-| `vedit_load` | function | `progs/vedit/vedit.c:2050` | `static int vedit_load(void)` |
-| `vedit_magic_atom` | function | `progs/vedit/vedit.c:1065` | `static int vedit_magic_atom(const char *pat, int c, int *atom_len)` |
-| `vedit_magic_class` | function | `progs/vedit/vedit.c:1043` | `static int vedit_magic_class(int c, const char *cls)` |
-| `vedit_magic_here` | function | `progs/vedit/vedit.c:1088` | `static int vedit_magic_here(const char *text, const char *pat, int *mlen)` |
-| `vedit_magic_match` | function | `progs/vedit/vedit.c:1149` | `static int vedit_magic_match(const char *text, const char *pat, int *mlen)` |
-| `vedit_match_at` | function | `progs/vedit/vedit.c:1621` | `static int vedit_match_at(int row, int col, const char *needle, int magic,                       ...` |
-| `vedit_msg` | macro | `progs/vedit/vedit.c:303` | `#define vedit_msg` |
-| `vedit_next_buffer` | function | `progs/vedit/vedit.c:1206` | `static int vedit_next_buffer(void)` |
-| `vedit_next_error` | function | `progs/vedit/vedit.c:3628` | `static void vedit_next_error(void)` |
-| `vedit_next_pane` | function | `progs/vedit/vedit.c:2825` | `static void vedit_next_pane(void)` |
-| `vedit_open_in_buffer` | function | `progs/vedit/vedit.c:2121` | `static int vedit_open_in_buffer(const char *fname, int ro)` |
-| `vedit_pane_load` | function | `progs/vedit/vedit.c:2785` | `static void vedit_pane_load(int p)` |
-| `vedit_pane_save` | function | `progs/vedit/vedit.c:2769` | `static void vedit_pane_save(int p)` |
-| `vedit_parse_key` | function | `progs/vedit/vedit.c:2873` | `static int vedit_parse_key(const char *s)` |
-| `vedit_parse_keyword` | function | `progs/vedit/vedit.c:440` | `static int vedit_parse_keyword(const char *t, int len, int i,                                cons...` |
-| `vedit_parse_number` | function | `progs/vedit/vedit.c:425` | `static int vedit_parse_number(const char *t, int len, int i, int allow_quote)` |
-| `vedit_pool` | macro | `progs/vedit/vedit.c:292` | `#define vedit_pool` |
-| `vedit_print_log` | function | `progs/vedit/vedit.c:2319` | `static void vedit_print_log(const char *path)` |
-| `vedit_prompt_find` | function | `progs/vedit/vedit.c:3779` | `static void vedit_prompt_find(void)` |
-| `vedit_prompt_isearch` | function | `progs/vedit/vedit.c:3783` | `static void vedit_prompt_isearch(int dir)` |
-| `vedit_prompt_key` | function | `progs/vedit/vedit.c:4232` | `static void vedit_prompt_key(int key)` |
-| `vedit_prompt_open` | function | `progs/vedit/vedit.c:3768` | `static void vedit_prompt_open(const char *label, int mode)` |
-| `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:3844` | `static void vedit_prompt_saveas(void)` |
-| `vedit_qrep_answer` | function | `progs/vedit/vedit.c:3805` | `static void vedit_qrep_answer(int key)` |
-| `vedit_qrep_next` | function | `progs/vedit/vedit.c:3793` | `static void vedit_qrep_next(int r, int c)` |
-| `vedit_read_key_poll` | function | `progs/vedit/vedit.c:3676` | `static int vedit_read_key_poll(void)` |
-| `vedit_region` | function | `progs/vedit/vedit.c:1247` | `static int vedit_region(int *y0, int *x0, int *y1, int *x1)` |
-| `vedit_region_to_clip` | function | `progs/vedit/vedit.c:3367` | `static int vedit_region_to_clip(void)` |
-| `vedit_replace_all` | function | `progs/vedit/vedit.c:1760` | `static int vedit_replace_all(const char *old_s, const char *new_s,                              i...` |
-| `vedit_replace_at` | function | `progs/vedit/vedit.c:1740` | `static int vedit_replace_at(int row, int col, const char *old_s,                             cons...` |
-| `vedit_row_ptr` | function | `progs/vedit/vedit.c:768` | `static char *vedit_row_ptr(int idx)` |
-| `vedit_run_kind` | function | `progs/vedit/vedit.c:2378` | `static int vedit_run_kind(const char *fname)` |
-| `vedit_run_rc` | function | `progs/vedit/vedit.c:3198` | `static void vedit_run_rc(const char *path)` |
-| `vedit_save` | function | `progs/vedit/vedit.c:1987` | `static int vedit_save(void)` |
-| `vedit_scan_line` | function | `progs/vedit/vedit.c:488` | `static int vedit_scan_line(const char *t, int len, int st)` |
-| `vedit_search_fwd` | function | `progs/vedit/vedit.c:1658` | `static int vedit_search_fwd(int row, int col, const char *needle, int magic,                     ...` |
-| `vedit_search_rev` | function | `progs/vedit/vedit.c:1690` | `static int vedit_search_rev(int row, int col, const char *needle, int magic)` |
-| `vedit_sel_clear` | function | `progs/vedit/vedit.c:3276` | `static void vedit_sel_clear(void)` |
-| `vedit_sel_copy` | function | `progs/vedit/vedit.c:3294` | `static int vedit_sel_copy(void)` |
-| `vedit_sel_norm` | function | `progs/vedit/vedit.c:3281` | `static void vedit_sel_norm(void)` |
-| `vedit_selftest` | function | `progs/vedit/vedit.c:4747` | `static int vedit_selftest(void)` |
-| `vedit_selftest_build` | function | `progs/vedit/vedit.c:2516` | `static int vedit_selftest_build(void)` |
-| `vedit_selftest_leak` | function | `progs/vedit/vedit.c:2709` | `static int vedit_selftest_leak(void)` |
-| `vedit_set_mark` | function | `progs/vedit/vedit.c:1239` | `static void vedit_set_mark(void)` |
-| `vedit_set_msg` | function | `progs/vedit/vedit.c:360` | `static void vedit_set_msg(const char *s)` |
-| `vedit_set_title` | function | `progs/vedit/vedit.c:47` | `static long vedit_set_title(const char *t)` |
-| `vedit_sh_split` | function | `progs/vedit/vedit.c:3412` | `static int vedit_sh_split(const char *line, char *buf, const char **argv)` |
-| `vedit_shell_command` | function | `progs/vedit/vedit.c:3432` | `static void vedit_shell_command(const char *line)` |
-| `vedit_spawn` | function | `progs/vedit/vedit.c:56` | `static long vedit_spawn(const char *path, const char *redir, int argc,                         co...` |
-| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:2336` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,                   ...` |
-| `vedit_split` | function | `progs/vedit/vedit.c:915` | `static void vedit_split(void)` |
-| `vedit_split_set` | function | `progs/vedit/vedit.c:2806` | `static void vedit_split_set(int on)` |
-| `vedit_state_at` | function | `progs/vedit/vedit.c:759` | `static int vedit_state_at(int row)` |
-| `vedit_str_case` | function | `progs/vedit/vedit.c:1004` | `static void vedit_str_case(char *s, int mode)` |
-| `vedit_str_transpose` | function | `progs/vedit/vedit.c:1031` | `static void vedit_str_transpose(char *s, int len, int pos)` |
-| `vedit_sync_title` | function | `progs/vedit/vedit.c:4646` | `static void vedit_sync_title(void)` |
-| `vedit_tab` | function | `progs/vedit/vedit.c:968` | `static void vedit_tab(void)` |
-| `vedit_time_ms` | function | `progs/vedit/vedit.c:89` | `static unsigned long vedit_time_ms(void)` |
-| `vedit_top` | macro | `progs/vedit/vedit.c:297` | `#define vedit_top` |
-| `vedit_transpose` | function | `progs/vedit/vedit.c:1489` | `static int vedit_transpose(void)` |
-| `vedit_trunc` | macro | `progs/vedit/vedit.c:300` | `#define vedit_trunc` |
-| `vedit_used` | macro | `progs/vedit/vedit.c:293` | `#define vedit_used` |
-| `vedit_vga` | function | `progs/vedit/vedit.c:68` | `static long vedit_vga(int on)` |
-| `vedit_word_move` | function | `progs/vedit/vedit.c:1415` | `static int vedit_word_move(int dir)` |
-| `vedit_write_region` | function | `progs/vedit/vedit.c:3461` | `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,                    ...` |
-| `vedit_yank` | function | `progs/vedit/vedit.c:1382` | `static int vedit_yank(void)` |
-| `WL_CLIENT_H` | macro | `progs/wl/wl_client.h:14` | `#define WL_CLIENT_H` |
-| `WL_CLIENT_MSGS` | macro | `progs/wl/wl_client.h:18` | `#define WL_CLIENT_MSGS` |
-| `wl_client_attach` | function | `progs/wl/wl_client.h:75` | `static inline int wl_client_attach(const char *box, unsigned int seq0,         const unsigned cha...` |
-| `wl_client_emit_file` | function | `progs/wl/wl_client.h:21` | `static inline int wl_client_emit_file(const char *box, unsigned int seq,         const unsigned c...` |
-| `wl_client_raw_file` | function | `progs/wl/wl_client.h:48` | `static inline int wl_client_raw_file(const char *box,         const unsigned char *px, int w, int h)` |
-| `WL_MBOX_BOX_MAX` | macro | `progs/wl/wl_mbox.h:23` | `#define WL_MBOX_BOX_MAX` |
-| `WL_MBOX_DIR` | macro | `progs/wl/wl_mbox.h:19` | `#define WL_MBOX_DIR` |
-| `WL_MBOX_EV_SUFFIX` | macro | `progs/wl/wl_mbox.h:22` | `#define WL_MBOX_EV_SUFFIX` |
-| `WL_MBOX_FRAME_HEAD` | macro | `progs/wl/wl_mbox.h:26` | `#define WL_MBOX_FRAME_HEAD` |
-| `WL_MBOX_H` | macro | `progs/wl/wl_mbox.h:15` | `#define WL_MBOX_H` |
-| `WL_MBOX_MAGIC` | macro | `progs/wl/wl_mbox.h:25` | `#define WL_MBOX_MAGIC` |
-| `WL_MBOX_NAME_MAX` | macro | `progs/wl/wl_mbox.h:24` | `#define WL_MBOX_NAME_MAX` |
-| `WL_MBOX_POLL_MAX` | macro | `progs/wl/wl_mbox.h:27` | `#define WL_MBOX_POLL_MAX` |
-| `WL_MBOX_RAW_SUFFIX` | macro | `progs/wl/wl_mbox.h:21` | `#define WL_MBOX_RAW_SUFFIX` |
-| `WL_MBOX_SEQ_HEX` | macro | `progs/wl/wl_mbox.h:28` | `#define WL_MBOX_SEQ_HEX` |
-| `WL_MBOX_SUFFIX` | macro | `progs/wl/wl_mbox.h:20` | `#define WL_MBOX_SUFFIX` |
-| `wl_client_box` | function | `progs/wl/wl_mbox.h:257` | `static inline int wl_client_box(const char *prog, long pid, char *dst,         int cap)` |
-| `wl_mbox_assign` | function | `progs/wl/wl_mbox.h:358` | `static inline int wl_mbox_assign(wl_mbox_box_t *boxes, const char *box)` |
-| `wl_mbox_box_ok` | function | `progs/wl/wl_mbox.h:51` | `static inline int wl_mbox_box_ok(const char *box)` |
-| `wl_mbox_box_t` | struct | `progs/wl/wl_mbox.h:30` | `` |
-| `wl_mbox_ev_name` | function | `progs/wl/wl_mbox.h:225` | `static inline int wl_mbox_ev_name(char *dst, int cap, const char *box)` |
-| `wl_mbox_frame_decode` | function | `progs/wl/wl_mbox.h:332` | `static inline int wl_mbox_frame_decode(const unsigned char *src, int len,         unsigned int *s...` |
-| `wl_mbox_frame_encode` | function | `progs/wl/wl_mbox.h:310` | `static inline int wl_mbox_frame_encode(unsigned char *dst, int cap,         unsigned int seq, con...` |
-| `wl_mbox_fresh` | function | `progs/wl/wl_mbox.h:394` | `static inline int wl_mbox_fresh(const wl_mbox_box_t *boxes, int slot,         unsigned int seq)` |
-| `wl_mbox_hex` | function | `progs/wl/wl_mbox.h:74` | `static inline int wl_mbox_hex(unsigned int v, char *dst)` |
-| `wl_mbox_init` | function | `progs/wl/wl_mbox.h:36` | `static inline void wl_mbox_init(wl_mbox_box_t *boxes)` |
-| `wl_mbox_name` | function | `progs/wl/wl_mbox.h:103` | `static inline int wl_mbox_name(char *dst, int cap, const char *box,         unsigned int seq)` |
-| `wl_mbox_parse` | function | `progs/wl/wl_mbox.h:147` | `static inline int wl_mbox_parse(const char *path, char *box, int boxcap,         unsigned int *seq)` |
-| `wl_mbox_raw_name` | function | `progs/wl/wl_mbox.h:194` | `static inline int wl_mbox_raw_name(char *dst, int cap, const char *box)` |
-| `wl_mbox_route` | function | `progs/wl/wl_mbox.h:409` | `static inline int wl_mbox_route(wl_comp_t *c, wl_mbox_box_t *boxes,         const char *box, unsi...` |
-| `wl_mbox_unhex` | function | `progs/wl/wl_mbox.h:87` | `static inline int wl_mbox_unhex(char ch, unsigned int *v)` |
-| `WLCOMP_BG` | macro | `progs/wl/wl_mini.h:509` | `#define WLCOMP_BG` |
-| `WLCOMP_BORDER` | macro | `progs/wl/wl_mini.h:510` | `#define WLCOMP_BORDER` |
-| `WL_ATTACH_SZ` | macro | `progs/wl/wl_mini.h:28` | `#define WL_ATTACH_SZ` |
-| `WL_CFG_DEFAULT` | macro | `progs/wl/wl_mini.h:69` | `#define WL_CFG_DEFAULT` |
-| `WL_CLIP_MAX` | macro | `progs/wl/wl_mini.h:905` | `#define WL_CLIP_MAX` |
-| `WL_CLOSE_INK` | macro | `progs/wl/wl_mini.h:243` | `#define WL_CLOSE_INK` |
-| `WL_CLOSE_W` | macro | `progs/wl/wl_mini.h:239` | `#define WL_CLOSE_W` |
-| `WL_COMMIT_SZ` | macro | `progs/wl/wl_mini.h:29` | `#define WL_COMMIT_SZ` |
-| `WL_ERR_BOUND` | macro | `progs/wl/wl_mini.h:32` | `#define WL_ERR_BOUND` |
-| `WL_ERR_ID` | macro | `progs/wl/wl_mini.h:35` | `#define WL_ERR_ID` |
-| `WL_ERR_MORE` | macro | `progs/wl/wl_mini.h:37` | `#define WL_ERR_MORE` |
-| `WL_ERR_OK` | macro | `progs/wl/wl_mini.h:31` | `#define WL_ERR_OK` |
-| `WL_ERR_SIZE` | macro | `progs/wl/wl_mini.h:34` | `#define WL_ERR_SIZE` |
-| `WL_ERR_STR` | macro | `progs/wl/wl_mini.h:36` | `#define WL_ERR_STR` |
-| `WL_ERR_TRUNC` | macro | `progs/wl/wl_mini.h:33` | `#define WL_ERR_TRUNC` |
-| `WL_EV_MAGIC` | macro | `progs/wl/wl_mini.h:964` | `#define WL_EV_MAGIC` |
-| `WL_EV_SC_MAX` | macro | `progs/wl/wl_mini.h:965` | `#define WL_EV_SC_MAX` |
-| `WL_EV_SZ` | macro | `progs/wl/wl_mini.h:966` | `#define WL_EV_SZ` |
-| `WL_HDR_SZ` | macro | `progs/wl/wl_mini.h:27` | `#define WL_HDR_SZ` |
-| `WL_HIT_BODY` | macro | `progs/wl/wl_mini.h:246` | `#define WL_HIT_BODY` |
-| `WL_HIT_CLOSE` | macro | `progs/wl/wl_mini.h:248` | `#define WL_HIT_CLOSE` |
-| `WL_HIT_NONE` | macro | `progs/wl/wl_mini.h:245` | `#define WL_HIT_NONE` |
-| `WL_HIT_RESIZE` | macro | `progs/wl/wl_mini.h:249` | `#define WL_HIT_RESIZE` |
-| `WL_HIT_TITLE` | macro | `progs/wl/wl_mini.h:247` | `#define WL_HIT_TITLE` |
-| `WL_ID_BUFFER_BASE` | macro | `progs/wl/wl_mini.h:46` | `#define WL_ID_BUFFER_BASE` |
-| `WL_ID_CLIPBOARD` | macro | `progs/wl/wl_mini.h:902` | `#define WL_ID_CLIPBOARD` |
-| `WL_ID_COMPOSITOR` | macro | `progs/wl/wl_mini.h:41` | `#define WL_ID_COMPOSITOR` |
-| `WL_ID_DISPLAY` | macro | `progs/wl/wl_mini.h:39` | `#define WL_ID_DISPLAY` |
-| `WL_ID_POOL_BASE` | macro | `progs/wl/wl_mini.h:45` | `#define WL_ID_POOL_BASE` |
-| `WL_ID_REGISTRY` | macro | `progs/wl/wl_mini.h:40` | `#define WL_ID_REGISTRY` |
-| `WL_ID_SHM` | macro | `progs/wl/wl_mini.h:42` | `#define WL_ID_SHM` |
-| `WL_ID_SURFACE_BASE` | macro | `progs/wl/wl_mini.h:44` | `#define WL_ID_SURFACE_BASE` |
-| `WL_ID_XDG_BASE` | macro | `progs/wl/wl_mini.h:43` | `#define WL_ID_XDG_BASE` |
-| `WL_IFACE_COUNT` | macro | `progs/wl/wl_mini.h:1185` | `#define WL_IFACE_COUNT` |
-| `WL_MAX_MSG` | macro | `progs/wl/wl_mini.h:20` | `#define WL_MAX_MSG` |
-| `WL_MAX_POOLS` | macro | `progs/wl/wl_mini.h:23` | `#define WL_MAX_POOLS` |
-| `WL_MAX_STR` | macro | `progs/wl/wl_mini.h:21` | `#define WL_MAX_STR` |
-| `WL_MAX_SURFACES` | macro | `progs/wl/wl_mini.h:22` | `#define WL_MAX_SURFACES` |
-| `WL_MINI_H` | macro | `progs/wl/wl_mini.h:18` | `#define WL_MINI_H` |
-| `WL_OP_CLIPBOARD_GET` | macro | `progs/wl/wl_mini.h:904` | `#define WL_OP_CLIPBOARD_GET` |
-| `WL_OP_CLIPBOARD_SET` | macro | `progs/wl/wl_mini.h:903` | `#define WL_OP_CLIPBOARD_SET` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)
