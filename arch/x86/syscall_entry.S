@@ -118,6 +118,18 @@ syscall_entry:
         popq %rcx                       /* pid */
         popq %rax                       /* &PCB.kstack (rsp = top again) */
 12:
+        /* User callee-saved registers, above the frame so every offset
+         * below is unchanged: a fork/clone child copies them (with the
+         * argument registers of the frame) into its PCB and resumes after
+         * the syscall with the parent's full register state. The exit
+         * never pops them: the C bodies preserve these registers by ABI
+         * and the top is restored from sc_top_save. */
+        pushq %rbx                      /* top-8   user rbx */
+        pushq %rbp                      /* top-16  user rbp */
+        pushq %r12                      /* top-24  user r12 */
+        pushq %r13                      /* top-32  user r13 */
+        pushq %r14                      /* top-40  user r14 */
+        pushq %r15                      /* top-48  user r15 */
         pushq %rax                      /* 80(%rsp) &PCB.kstack */
         pushq %rcx                      /* 72(%rsp) pid */
         pushq %r9                       /* 64(%rsp) a6 */

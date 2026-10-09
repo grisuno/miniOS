@@ -1,8 +1,8 @@
 # Subsystem: quake2generic
 
 ## progs/quake2generic/q2generic_minios.c
+- Doc: MiniOS platform layer for quake2generic.
 - Layer: utility
-- Doc: q2generic_minios.c - MiniOS platform layer for quake2generic.
 - Language: c
 - Symbols:
   - `MINIOS_GFX_BUF_GAME` (function, line 5) `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel
@@ -43,8 +43,8 @@
 - Depends on: `kernel/string.c`, `progs/doomgeneric/r_local.h`, `progs/minios_abi.h`
 
 ## progs/quake2generic/snddma_minios.c
+- Doc: Quake 2 DMA sound backend over the MiniOS pcm2 path.
 - Layer: utility
-- Doc: snddma_minios.c - Quake 2 DMA sound backend over the MiniOS pcm2 path.
 - Language: c
 - Symbols:
   - `sys_pcm2_open` (function, line 67) `static long sys_pcm2_open(long flags)`

@@ -104,6 +104,21 @@ typedef struct {
      * one KFILE ref per live entry, execve keeps it minus CLOEXEC fds.
      * A close in one process therefore never drops another's handle. */
     kfd_view_t *kfd;
+    /* Linux thread group (docs/spec/smp-sched.md, Linux process ABI): a
+     * process is its own group (tgid == pid); a CLONE_THREAD child joins
+     * its creator's group, so getpid answers the leader for every thread. */
+    int         tgid;
+    /* CLONE_THREAD children are never waited for: the slot is reclaimed
+     * by the next clone that needs one, or when the group leader is
+     * reaped, never left as a zombie nobody collects. */
+    int         autoreap;
+    /* CLONE_CHILD_SETTID: user address the child stores its own tid at on
+     * its first return to user mode (its own window, never the parent's
+     * copy-on-write page). 0 = none. */
+    uint64_t    set_child_tid;
+    /* CLONE_CHILD_CLEARTID: user address zeroed and futex-woken when the
+     * thread exits (pthread_join sleeps on it). 0 = none. */
+    uint64_t    clear_child_tid;
 } proc_t;
 /* Single source of truth for the PCB footprint (review fix for the
  * 0a92118 imulq drift): the syscall_entry trampoline in
@@ -114,7 +129,7 @@ typedef struct {
  * macros' values automatically on rebuild -- no asm hunt. procs[] itself
  * is a static 64-entry .bss array (~21 KB at 336 B/entry), far below the
  * USER_LOAD_BASE budget enforced by `make check-size`. */
-#define PROC_T_SIZE 336
+#define PROC_T_SIZE 360
 /* Per-process fd-view lifecycle (owned by kernel/syscalls.c, where
  * fd_lock lives): share bumps the view ref for a thread, copy forks a
  * private view with one KFILE ref per live entry (0 on OOM), release
@@ -181,6 +196,53 @@ kfd_view_t *kfd_view_root(void);
 /* clone() flags */
 #define CLONE_VM    0x00000100  /* share address space (same CR3) */
 #define CLONE_FILES 0x00000400  /* share fd table */
+/* Linux clone(2) flags beyond the MiniOS pair (docs/spec/smp-sched.md). */
+#define LINUX_CLONE_SIGNAL_MASK    0x000000ffUL /* exit signal in the low byte */
+#define LINUX_CLONE_VM             0x00000100UL
+#define LINUX_CLONE_FS             0x00000200UL
+#define LINUX_CLONE_FILES          0x00000400UL
+#define LINUX_CLONE_SIGHAND        0x00000800UL
+#define LINUX_CLONE_PIDFD          0x00001000UL
+#define LINUX_CLONE_PTRACE         0x00002000UL
+#define LINUX_CLONE_VFORK          0x00004000UL
+#define LINUX_CLONE_PARENT         0x00008000UL
+#define LINUX_CLONE_THREAD         0x00010000UL
+#define LINUX_CLONE_NEWNS          0x00020000UL
+#define LINUX_CLONE_SYSVSEM        0x00040000UL
+#define LINUX_CLONE_SETTLS         0x00080000UL
+#define LINUX_CLONE_PARENT_SETTID  0x00100000UL
+#define LINUX_CLONE_CHILD_CLEARTID 0x00200000UL
+#define LINUX_CLONE_DETACHED       0x00400000UL
+#define LINUX_CLONE_UNTRACED       0x00800000UL
+#define LINUX_CLONE_CHILD_SETTID   0x01000000UL
+#define LINUX_CLONE_NEWNS_MASK     0x7e020000UL /* every CLONE_NEW* namespace bit */
+#define LINUX_CLONE_IO             0x80000000UL
+#define LINUX_SIGCHLD              17
+/* Flags a thread-shaped clone may carry (glibc NPTL sends exactly these
+ * plus CLONE_DETACHED on old ABIs); anything else is -EINVAL. */
+#define LINUX_CLONE_THREAD_OK (LINUX_CLONE_VM | LINUX_CLONE_FS | LINUX_CLONE_FILES | \
+    LINUX_CLONE_SIGHAND | LINUX_CLONE_THREAD | LINUX_CLONE_SYSVSEM | LINUX_CLONE_SETTLS | \
+    LINUX_CLONE_PARENT_SETTID | LINUX_CLONE_CHILD_CLEARTID | LINUX_CLONE_CHILD_SETTID | \
+    LINUX_CLONE_DETACHED | LINUX_CLONE_IO)
+/* Flags a fork-shaped clone may carry besides the exit signal. */
+#define LINUX_CLONE_FORK_OK (LINUX_CLONE_CHILD_SETTID | LINUX_CLONE_CHILD_CLEARTID | \
+    LINUX_CLONE_PARENT_SETTID | LINUX_CLONE_IO)
+
+/* The frame syscall_entry.S builds on the per-proc kernel stack, lowest
+ * address first (SYSCALL_FRAME_WORDS in syscall_asm.h). It ends exactly at
+ * the saved top (sc_top_save[pid]); a fork or clone child copies the user
+ * registers from here so it resumes with the caller's full state. */
+typedef struct {
+    uint64_t rflags;            /* user r11 */
+    uint64_t rip;               /* user rcx */
+    uint64_t nr;
+    uint64_t rdi, rsi, rdx, r10, r8, r9;
+    uint64_t pid;
+    uint64_t pcb_kstack;
+    uint64_t r15, r14, r13, r12, rbp, rbx;
+} syscall_frame_t;
+/* The current pid's frame, or 0 outside a ring-3 syscall. */
+const syscall_frame_t *syscall_frame_current(void);
 
 /* ---- Per-CPU state ----
  *

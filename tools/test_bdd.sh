@@ -424,6 +424,49 @@ expect "mrun: pid 1 exit code: 55"
 expect "Hello"
 expect "powering off"
 
+# Linux process, thread and descriptor ABI the full FreeDom GUI needs
+# (docs/spec/smp-sched.md): every check of progs/src/lxabi.c passes.
+scenario "lxabi probes the Linux thread, pipe and descriptor ABI" "run bin/lxabi
+poweroff"
+expect "lxabi: time ok"
+expect "lxabi: fork-registers ok"
+expect "lxabi: pipe2-flags ok"
+expect "lxabi: pipe-nonblock-eagain ok"
+expect "lxabi: fcntl-dupfd-cloexec ok"
+expect "lxabi: fcntl-setfd-setfl ok"
+expect "lxabi: fcntl-bad-fd ok"
+expect "lxabi: pipe-blocking-read ok"
+expect "lxabi: pipe-eof-after-child-exit ok"
+expect "lxabi: fork-child-exit ok"
+expect "lxabi: pipe-epipe ok"
+expect "lxabi: writev-pipe ok"
+expect "lxabi: poll-pipe-idle ok"
+expect "lxabi: poll-pipe-pollout ok"
+expect "lxabi: poll-pipe-pollin ok"
+expect "lxabi: poll-pipe-pollhup ok"
+expect "lxabi: poll-negative-fd ok"
+expect "lxabi: eventfd-counter ok"
+expect "lxabi: eventfd-poll ok"
+expect "lxabi: eventfd-eagain ok"
+expect "lxabi: eventfd-short-read ok"
+expect "lxabi: eventfd-cloexec ok"
+expect "lxabi: close-range-cloexec ok"
+expect "lxabi: close-range-close ok"
+expect "lxabi: mkdir ok"
+expect "lxabi: mkdir-eexist ok"
+expect "lxabi: thread-create-join ok"
+expect "lxabi: thread-mutex ok"
+expect "lxabi: thread-tls ok"
+expect "lxabi: thread-getpid ok"
+expect "lxabi: thread-gettid ok"
+expect "lxabi: futex-timedwait-timeout ok"
+expect "lxabi: futex-condvar-signal ok"
+expect "lxabi: thread-detached-reaped ok"
+expect "lxabi: all ok"
+expect "exit code: 0"
+refute "FAIL"
+refute "UNIMPL"
+
 scenario "background jobs return the prompt and auto-reap" "mrun bin/fib.elf &
 wait
 jobs
@@ -1757,10 +1800,14 @@ scenario "freedom_wl selftest presents through the nk window" "freedom_wl --self
 poweroff"
 expect "freedom_wl: frame ok (800x360)"
 
+# The network section stops the host fixture server before this point, so
+# this fetch starts its own and stops it again.
+http_server_start
 scenario "freedom_wl fetches a page and presents it" "freedom_wl --once http://10.0.2.2:8899/README.txt
 poweroff"
 expect "freedom_wl: 10.0.2.2 ("
 refute "UNIMPL"
+http_server_stop
 
 scenario "wlcomp presents two surfaces on the desktop" "wlcomp --selftest
 wlcomp
@@ -1786,10 +1833,31 @@ scenario "freedomui selftest parses through the real engine and presents" "freed
 poweroff"
 expect "freedomui: frame ok (800x360)"
 
+# The network section stops the host fixture server before this point, so
+# this fetch starts its own and stops it again.
+http_server_start
 scenario "freedomui fetches a page and presents it" "freedomui --once http://10.0.2.2:8899/README.txt
 poweroff"
 expect "freedomui: 10.0.2.2 ("
 refute "UNIMPL"
+http_server_stop
+
+# The full FreeDom GUI (docs/spec/network.md, freedom-gui): the unmodified
+# browser over FreeDom's platform seam presents its first frame through the
+# NK RGB buffer, runs as a background job and dies cleanly on kill.
+scenario "freedom-gui presents the real FreeDom GUI and is killable" "run freedom-gui &
+sleep 15
+gfx frames
+kill 1
+wait
+jobs
+poweroff"
+expect "run: freedom-gui started as job pid 1"
+expect "freedom: frame ok (800x360)"
+expect "gfx: frames composited 1"
+expect "kill: pid 1 terminated"
+expect "jobs: none"
+refute "EXCEPTION"
 
 scenario "nuklear compiles a demo graph to cvm and runs it" "nuklear --demo cvm/demo.cvm
 run cvm/demo.cvm

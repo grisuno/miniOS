@@ -1,8 +1,8 @@
 # Subsystem: mm
 
 ## kernel/mm/cow.c
-- Layer: utility
 - Doc: Docstring: kernel/mm/cow.c -- Copy-on-write fork support.
+- Layer: utility
 - Language: c
 - Symbols:
   - `cow_entry_t` (struct, line 45)
@@ -17,8 +17,8 @@
   - `cow_resolve` (function, line 191) `int cow_resolve(unsigned long cr3, unsigned long va)`
   - `cow_release_window` (function, line 254) `void cow_release_window(unsigned long cr3)`
   - `cow_shared` (function, line 292) `int cow_shared(void)`
-  - `alternative` (function, line 20) `* window is one instruction wide and the alternative (no CoW) is * documented, so the trade stands. */ #include "kernel.h" #include "bootdefs.h" #include "vga_fb.h" #include "sched.h" #define COW_MAX `
-  - `private` (function, line 93) `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor owns them. */ typedef void (*cow_walk_fn)(unsigned long cr3, unsigned long va, volatile`
+  - `alternative` (function, line 20) `* window is one instruction wide and the alternative (no CoW) is * documented, so the trade stands. */ #include...`
+  - `private` (function, line 93) `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...`
   - `COW_MAX` (macro, line 28) `#define COW_MAX`
   - `PT_USER_RO` (macro, line 33) `#define PT_USER_RO`
   - `PT_USER_RW_ENTRY` (macro, line 34) `#define PT_USER_RW_ENTRY`
@@ -26,8 +26,8 @@
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/sched.h`, `headers/vga_fb.h`
 
 ## kernel/mm/paging.c
+- Doc: Page table management for the user window and per-process KPTI.
 - Layer: utility
-- Doc: paging.c - Page table management for the user window and per-process KPTI.
 - Language: c
 - Symbols:
   - `mm_page_aligned_alloc` (function, line 31) `static unsigned char *mm_page_aligned_alloc(unsigned size,
@@ -56,7 +56,7 @@
   - `mm_copy_user_page` (function, line 939) `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)`
   - `pt_free_user` (function, line 1016) `void pt_free_user(uint64_t cr3)`
   - `tables` (function, line 807) `* tables (munmap/mremap in caller context, under their mm_lock);`
-  - `explicitly` (function, line 808) `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only (teardown, whose tables * die next);`
+  - `explicitly` (function, line 808) `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
   - `_kernel_end` (variable, line 48) `extern char _kernel_end[];`
   - `mm_lock` (variable, line 648) `extern spinlock_t mm_lock;`
   - `KMM_DEVICE_MAX` (macro, line 188) `#define KMM_DEVICE_MAX`
@@ -66,8 +66,8 @@
 - Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/ldso.h`, `headers/minifs.h`, `headers/pcache.h`, `headers/vga_fb.h`
 
 ## kernel/mm/swap.c
+- Doc: Swap-out/swap-in for the user window (LZ4-compressed disk swap).
 - Layer: utility
-- Doc: swap.c - Swap-out/swap-in for the user window (LZ4-compressed disk swap).
 - Language: c
 - Symbols:
   - `swap_ensure` (function, line 28) `static int swap_ensure(void)`

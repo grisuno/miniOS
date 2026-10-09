@@ -14,7 +14,7 @@
 
 #define SYSCALL_USER_WIN_LO     0x00400000  /* == MINIOS_USER_LOAD_BASE */
 #define SYSCALL_USER_WIN_HI     0x0C000000  /* == MINIOS_USER_LOAD_END */
-#define SYSCALL_PROC_T_SIZE     336         /* == PROC_T_SIZE (sched.h) */
+#define SYSCALL_PROC_T_SIZE     360         /* == PROC_T_SIZE (sched.h) */
 #define SYSCALL_PROC_KSTACK_OFF 168         /* == PROC_KSTACK_OFF */
 #define SYSCALL_MAX_PROCS       64          /* == MAX_PROCS */
 #define SYSCALL_CPU_CUR_PID_OFF 12          /* offsetof(cpu_t, cur_pid) */
@@ -23,5 +23,9 @@
 #define SYSCALL_CPU_SC_PID_OFF  88          /* offsetof(cpu_t, sc_pid) */
 #define SYSCALL_CPU_SC_RET_OFF  96          /* offsetof(cpu_t, sc_ret) */
 #define SYSCALL_CPU_SC_TMP_OFF  112         /* offsetof(cpu_t, sc_tmp) */
+/* Words the entry pushes per syscall, top down: the six user callee-saved
+ * registers, then &PCB.kstack, pid, a6..a1, n, user rip, user rflags.
+ * == sizeof(syscall_frame_t) / 8 (sched.h). */
+#define SYSCALL_FRAME_WORDS     17
 
 #endif

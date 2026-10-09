@@ -91,6 +91,7 @@ SOURCES="$SOURCES smp.c kernel/sched.c fs/minifs.c kernel/console.c headers/rtc.
 SOURCES="$SOURCES arch/x86/ctx_sw.S arch/x86/syscall_entry.S progs/minios_abi.h headers/ktime.h headers/randmix.h headers/sched.h progs/src/mthreads.h"
 SOURCES="$SOURCES progs/src/freedom_wl.c progs/vedit/vedit.c"
 SOURCES="$SOURCES progs/freedomui/freedomui_minios.c tests/test_freedomui.c"
+SOURCES="$SOURCES progs/freedomui/ps2_keymap.c tests/test_ps2_keymap.c progs/freedomui/platform_minios.c"
 # Mechanism: SOURCES is the backup/restore allowlist, not documentation.
 # Every file named by the mutation table MUST appear here, or a mutant
 # applied to it is never restored and leaks into the tree (and stacks
@@ -341,6 +342,13 @@ freedom-wl-https-port | s/*port = c->port_https;/*port = c->port_http;/ | progs/
 freedom-wl-title-bound-lost | s/if (n < 0L || n > c->title_max) {/if (n < 0L) {/ | progs/src/freedom_wl.c
 freedom-wl-keysym-enter-lost | s/if (make == 0x1CL) {/if (make == 0x1DL) {/ | progs/src/freedom_wl.c
 freedomui-omnibox-kind-flip | s/if (kind != 0) {/if (kind != 1) {/ | progs/freedomui/freedomui_minios.c
+ps2-caps-xor-lost | s/if (is_letter(c) \&\& s->caps_lock) upper = !upper;/if (is_letter(c) \&\& !s->caps_lock) upper = !upper;/ | progs/freedomui/ps2_keymap.c
+ps2-chord-text-leak | s/if (!make || (k.mods \& (KE_MOD_CTRL | KE_MOD_ALT))) {/if (!make) {/ | progs/freedomui/ps2_keymap.c
+ps2-e0-prefix-lost | s/if (byte == PS2_PREFIX_EXTENDED) { s->extended = 1;/if (byte == PS2_PREFIX_EXTENDED) { s->extended = 0;/ | progs/freedomui/ps2_keymap.c
+ps2-num-lock-starts-off | s/    s->num_lock = 1;/    s->num_lock = 0;/ | progs/freedomui/ps2_keymap.c
+ps2-pause-tail-short | s/#define PS2_PAUSE_TAIL      5/#define PS2_PAUSE_TAIL      4/ | progs/freedomui/ps2_keymap.c
+ps2-release-keeps-mod | s/    else      s->held \&= ~bit;/    else      s->held \&= bit;/ | progs/freedomui/ps2_keymap.c
+freedom-gui-frame-proof-lost | s/    if (!d->frame_reported) {/    if (0) {/ | progs/freedomui/platform_minios.c
 nk-palette-bg-black | s/{15, 15, 15}, {0, 220, 0},/{0, 0, 0}, {0, 0, 0},/ | progs/nk_palette.h
 spawn-nested-parent-zeroed | s/child->clone_flags = 0;/child->parent_pid = 0; child->clone_flags = 0;/ | kernel/sched.c
 minicraft-ser-enter-lost | s/if (b == 13L || b == 10L)/if (0) {/ | progs/minicraft/minicraft.c
@@ -543,6 +551,12 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/freedomui/freedomui_minios.c|tests/test_freedomui.c)
             make -C "$HERE" test-freedomui > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/freedomui/ps2_keymap.c|tests/test_ps2_keymap.c)
+            make -C "$HERE" test-freedom-gui > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/freedomui/platform_minios.c)
+            MATCH="freedom-gui" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         progs/nk_palette.h|progs/wl/wl_mini.h|progs/wl/wl_mbox.h|progs/wl/wlcomp.c)
             make -C "$HERE" test-wl > "$BACKUP/suite.log" 2>&1

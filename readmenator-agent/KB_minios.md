@@ -1,11 +1,12 @@
 # Subsystem: minios
 
 ## progs/micropython/variants/minios/manifest.py
+- Doc: frozen modules for the MiniOS MicroPython variant.
 - Layer: utility
-- Doc: manifest.py -- frozen modules for the MiniOS MicroPython variant. Scripts listed here are compiled to .mpy by mpy-cross 
 - Language: py
 
 ## progs/micropython/variants/minios/minios_module.c
+- Doc: msys5: /* ── raw syscall helper (x86-64 Linux ABI) ─────────────────────────── static long...
 - Layer: utility
 - Language: c
 - Symbols:
@@ -33,7 +34,7 @@
 - Depends on: `progs/minios_abi.h`
 
 ## progs/micropython/variants/minios/mpconfigvariant.h
-- Layer: infrastructure
+- Layer: utility
 - Language: h
 - Symbols:
   - `MICROPY_CONFIG_ROM_LEVEL` (macro, line 11) `#define MICROPY_CONFIG_ROM_LEVEL`

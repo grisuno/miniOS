@@ -1,8 +1,8 @@
 # Subsystem: tls_u
 
 ## progs/tls_u/tls_u_main.c
-- Layer: utility
 - Doc: tlsget - minimal HTTPS GET over the ring-3 TLS stack.
+- Layer: utility
 - Language: c
 - Symbols:
   - `syscall` (function, line 10) `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).
@@ -14,8 +14,8 @@
 - Depends on: `headers/tls.h`, `headers/tls_port.h`, `kernel/string.c`
 
 ## progs/tls_u/tls_u_port.c
+- Doc: ring-3 transport for the shared TLS stack (TLS_RING3).
 - Layer: utility
-- Doc: tls_u_port.c - ring-3 transport for the shared TLS stack (TLS_RING3).
 - Language: c
 - Symbols:
   - `sockets` (function, line 5) `* sockets: on the host they are host sockets (used by the

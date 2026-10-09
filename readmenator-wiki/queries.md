@@ -4,7 +4,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 ## Suggested
 
-### Q: What does string.c depend on, and what depends on it? (76 connections)
+### Q: What does string.c depend on, and what depends on it? (81 connections)
 
 - Status: unanswered
 
@@ -16,11 +16,11 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 - Status: unanswered
 
-### Q: How are the 40 files in 'headers' related to each other?
+### Q: How are the 138 files in 'headers: kernel' related to each other?
 
 - Status: unanswered
 
-### Q: Why are ap_stub.h and i_cdmus.h connected through 9 hops across 2 communities?
+### Q: Why are ap_stub.h and i_cdmus.h connected through 9 hops across 3 communities?
 
 - Status: unanswered
 

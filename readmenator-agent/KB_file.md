@@ -1,8 +1,8 @@
 # Subsystem: file
 
 ## progs/file/file.c
-- Layer: utility
 - Doc: Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf).
+- Layer: utility
 - Language: c
 - Symbols:
   - `file_assoc` (struct, line 76)
@@ -75,8 +75,8 @@
 - Depends on: `headers/leakcheck.h`, `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 
 ## progs/file/file_assoc.h
-- Layer: utility
 - Doc: Docstring: dynamic association table for the MiniOS file browser.
+- Layer: utility
 - Language: h
 - Symbols:
   - `fassoc_entry` (struct, line 46)

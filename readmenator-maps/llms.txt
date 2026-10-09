@@ -1,0 +1,79 @@
+# miniOS
+
+> Static analysis knowledge base for miniOS: 9 communities, 557 files, 2093 imports, 7 languages, 11896 symbols.
+
+Generated offline by readmenator (zero LLM tokens). Start with the wiki index for the big picture, then the agent INDEX for file lookup.
+
+## Agent Docs
+
+- [readmenator-agent/INDEX.md](md/readmenator-agent/INDEX.md)
+- [readmenator-agent/GOTCHAS.md](md/readmenator-agent/GOTCHAS.md): These files have the most connections. Changes here have high blast radius.
+- [readmenator-agent/API.md](md/readmenator-agent/API.md): Depends on: headers/arch/x86/boot/bootdefs.h
+- [readmenator-agent/API_p10.md](md/readmenator-agent/API_p10.md): Depends on: kernel/string.c, progs/doomgeneric/doomtype.h, progs/doomgeneric/fwipe.h, progs/doomgeneric/ivideo.h, progs/doomgeneric/mrandom.h...
+- [readmenator-agent/API_p11.md](md/readmenator-agent/API_p11.md): Depends on: progs/doomgeneric/devent.h, progs/doomgeneric/dticcmd.h
+- [readmenator-agent/API_p12.md](md/readmenator-agent/API_p12.md): Depends on: progs/doomgeneric/netdefs.h
+- [readmenator-agent/API_p13.md](md/readmenator-agent/API_p13.md): Depends on: progs/doomgeneric/devent.h, progs/doomgeneric/dehmisc.h, progs/doomgeneric/doomdef.h, progs/doomgeneric/doomstat.h, progs/doomgeneric/mrandom.h...
+- [readmenator-agent/API_p14.md](md/readmenator-agent/API_p14.md): Depends on: progs/doomgeneric/dehmain.h, progs/doomgeneric/doomdef.h, progs/doomgeneric/doomstat.h, progs/doomgeneric/iswap.h, progs/doomgeneric/isystem.h...
+- [readmenator-agent/API_p15.md](md/readmenator-agent/API_p15.md): Depends on: headers/leakcheck.h, kernel/string.c, progs/file/fileassoc.h, progs/miniosabi.h, progs/miniospng.h, progs/nuklear/nuklearminios.h...
+- [readmenator-agent/API_p16.md](md/readmenator-agent/API_p16.md): Depends on: kernel/string.c, progs/nkpalette.h, progs/nuklear/nuklearminios.h, progs/wl/wlclient.h, progs/wl/wlmbox.h
+- [readmenator-agent/API_p17.md](md/readmenator-agent/API_p17.md): Depends on: kernel/string.c
+- [readmenator-agent/API_p18.md](md/readmenator-agent/API_p18.md): Depends on: kernel/string.c
+- [readmenator-agent/API_p19.md](md/readmenator-agent/API_p19.md): countsymbols (function) tools/checkcomplexity.py:24 def countsymbols(filepath) -- Count top-level function and global variable definitions.
+- [readmenator-agent/API_p2.md](md/readmenator-agent/API_p2.md): Depends on: headers/arch/x86/halio.h, headers/drivers/pci.h, headers/drivers/xhci.h
+- [readmenator-agent/API_p3.md](md/readmenator-agent/API_p3.md): Imported by: drivers/kbd.c, drivers/usbhid.c, kernel/consolein.c, kernel/exec.c, kernel/shell.c, kernel/syscalls.c, kernel/vgafb.c
+- [readmenator-agent/API_p4.md](md/readmenator-agent/API_p4.md): Imported by: kernel/vgacursor.c, kernel/vgafb.c
+- [readmenator-agent/API_p5.md](md/readmenator-agent/API_p5.md): Depends on: headers/wmnotify.h, progs/miniosabi.h
+- [readmenator-agent/API_p6.md](md/readmenator-agent/API_p6.md): Depends on: headers/arch/x86/boot/bootdefs.h, headers/arch/x86/msr.h, headers/ldso.h, headers/minifs.h, headers/pcache.h, headers/vgafb.h
+- [readmenator-agent/API_p7.md](md/readmenator-agent/API_p7.md): Depends on: headers/arch/x86/boot/bootdefs.h, headers/arch/x86/halio.h, headers/arch/x86/msr.h, headers/batch.h, headers/block.h, headers/driver.h...
+- [readmenator-agent/API_p8.md](md/readmenator-agent/API_p8.md): Depends on: headers/drivers/virtionet.h, headers/net.h, headers/net/rtl8139.h, headers/tls.h
+- [readmenator-agent/API_p9.md](md/readmenator-agent/API_p9.md): hcpu (function) progs/asm/mtop.s:3
+- [readmenator-agent/ARCHITECTURE.md](md/readmenator-agent/ARCHITECTURE.md): arch/x86/apentry.S -> headers/arch/x86/boot/bootdefs.h
+- [readmenator-agent/ARCHITECTURE_p2.md](md/readmenator-agent/ARCHITECTURE_p2.md): progs/doomgeneric/fwipe.c -> progs/doomgeneric/vvideo.h
+- [readmenator-agent/ARCHITECTURE_p3.md](md/readmenator-agent/ARCHITECTURE_p3.md): progs/doomgeneric/ssound.c -> progs/doomgeneric/mmisc.h
+- [readmenator-agent/ARCHITECTURE_p4.md](md/readmenator-agent/ARCHITECTURE_p4.md): drivers/block.c -> kernel.h
+- [readmenator-agent/CONCEPTS.md](md/readmenator-agent/CONCEPTS.md): Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
+- [readmenator-agent/INDEX_p2.md](md/readmenator-agent/INDEX_p2.md)
+- [readmenator-agent/KB_asm.md](md/readmenator-agent/KB_asm.md): aesrk (function, line 3)
+- [readmenator-agent/KB_boot.md](md/readmenator-agent/KB_boot.md): Doc: MiniOS boot sector.
+- [readmenator-agent/KB_doomgeneric.md](md/readmenator-agent/KB_doomgeneric.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_doomgeneric_p10.md](md/readmenator-agent/KB_doomgeneric_p10.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_doomgeneric_p11.md](md/readmenator-agent/KB_doomgeneric_p11.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_doomgeneric_p12.md](md/readmenator-agent/KB_doomgeneric_p12.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_doomgeneric_p2.md](md/readmenator-agent/KB_doomgeneric_p2.md): Doc: Copyright(C) 2005-2014 Simon Howard This program is free software; you can redistribute it...
+- [readmenator-agent/KB_doomgeneric_p3.md](md/readmenator-agent/KB_doomgeneric_p3.md): Doc: doomgeneric for soso os (nano-x version) TODO: get keys from X, not using direct keyboard access!
+- [readmenator-agent/KB_doomgeneric_p4.md](md/readmenator-agent/KB_doomgeneric_p4.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_doomgeneric_p5.md](md/readmenator-agent/KB_doomgeneric_p5.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_doomgeneric_p6.md](md/readmenator-agent/KB_doomgeneric_p6.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_doomgeneric_p7.md](md/readmenator-agent/KB_doomgeneric_p7.md): Doc: Copyright(C) 2005-2014 Simon Howard This program is free software; you can redistribute it...
+- [readmenator-agent/KB_doomgeneric_p8.md](md/readmenator-agent/KB_doomgeneric_p8.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_doomgeneric_p9.md](md/readmenator-agent/KB_doomgeneric_p9.md): Doc: Copyright(C) 1993-1996 Id Software, Inc.
+- [readmenator-agent/KB_drivers.md](md/readmenator-agent/KB_drivers.md): Doc: Block device layer for MiniFS.
+- [readmenator-agent/KB_drivers_p2.md](md/readmenator-agent/KB_drivers_p2.md): Doc: Docstring: drivers/virtioblk.c -- Polled legacy virtio-blk driver.
+- [readmenator-agent/KB_file.md](md/readmenator-agent/KB_file.md): Doc: Docstring: MiniOS file browser (Nuklear ring-3 app, MiniFS: file/file.elf).
+- [readmenator-agent/KB_freedomui.md](md/readmenator-agent/KB_freedomui.md): Doc: freedomuiminios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern.
+- [readmenator-agent/KB_fs.md](md/readmenator-agent/KB_fs.md): Doc: extgeot: Filesystem geometry from the superblock.
+- [readmenator-agent/KB_headers.md](md/readmenator-agent/KB_headers.md): Doc: Docstring: abi.h -- Boot-time ABI manifest gate contract.
+- [readmenator-agent/KB_headers_arch_x86.md](md/readmenator-agent/KB_headers_arch_x86.md): Doc: Docstring: x86 port I/O hardware abstraction contract.
+- [readmenator-agent/KB_headers_drivers.md](md/readmenator-agent/KB_headers_drivers.md): Doc: Keyboard layout: US qwerty (default) or Spanish (Spain) qwerty.
+- [readmenator-agent/KB_headers_kernel.md](md/readmenator-agent/KB_headers_kernel.md): Doc: Docstring: consolein.h -- boundary of the console input device
+- [readmenator-agent/KB_headers_p2.md](md/readmenator-agent/KB_headers_p2.md): Doc: The user-window memory layout (load base, stack, brk cap, graphics
+- [readmenator-agent/KB_headers_p3.md](md/readmenator-agent/KB_headers_p3.md): LZ4compressdefault (function, line 4) int LZ4compressdefault(const char src, char dst, int srcSize, int dstCapacity);
+- [readmenator-agent/KB_headers_p4.md](md/readmenator-agent/KB_headers_p4.md): Doc: Forward: full view lives in kernel.h (needs KFILE first); the PCB
+- [readmenator-agent/KB_headers_p5.md](md/readmenator-agent/KB_headers_p5.md): Doc: Framebuffer geometry.
+- [readmenator-agent/KB_kernel.md](md/readmenator-agent/KB_kernel.md): Doc: Docstring: kernel/abi.c -- Boot-time ABI manifest gate.
+- [readmenator-agent/KB_kernel_p2.md](md/readmenator-agent/KB_kernel_p2.md): Doc: trapframet: if (len == 0 || len > 256) { kprintf("gdb: dump length 1..256 (got %lu)\n", len)...
+- [readmenator-agent/KB_kernel_p3.md](md/readmenator-agent/KB_kernel_p3.md): Doc: Linux x86-64 syscall dispatcher and SYSSPAWN.
+
+## Project Docs
+
+- [KNOWLEDGE_BASE.md](md/KNOWLEDGE_BASE.md): Start here: Statistics Dashboard for scope, God Nodes for blast radius, Architecture Reference for per-file API. Agents: prefer readmenator-agent/INDEX.md +...
+- [README.md](md/README.md): ![GitHub stars](https://github.com/grisuno/miniOS)
+- [SECURITY.md](md/SECURITY.md): Use this section to tell people about which versions of your project are
+
+## Optional
+
+- [Runtime Architecture](architecture.html): Components, services, storage, and boundaries across layers. (interactive HTML)
+- [Data Flow](dataflow.html): Movement of data from sources through transforms to stores. (interactive HTML)
+- [Change Lifecycle](lifecycle.html): States, transitions, waits, and retry paths of change. (interactive HTML)
+- [Request Sequence](sequence.html): Ordered interaction between top participants over time. (interactive HTML)
+- [Delivery Workflow](workflow.html): Delivery path across lanes from entry to terminal outcomes. (interactive HTML)

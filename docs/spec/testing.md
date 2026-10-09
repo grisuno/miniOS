@@ -241,6 +241,7 @@ python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, task
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
 python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames, ESC quit
 python3 tools/test_gui_gfxview.py  # QMP pixel proof: fullscreen DOOM, Alt+Enter, tile, minimize, close
+python3 tools/test_gui_freedom.py  # QMP pixel proof: freedom-gui typing, clipboard round trip, menu click
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
 ./tools/mutate.sh    # every mutant killed (BDD + host TLS + host VMA + host Lisp suites)
 make test-tls       # host-side crypto + full-handshake suite green
@@ -249,6 +250,7 @@ make test-lisp      # host-side Lisp interpreter suite green
 make test-wl        # host-side Wayland-mini wire suite green (ADR-0024)
 make test-freedom-wl  # Wayland-to-MiniOS mapping suite green (ADR-0019)
 make test-freedomui   # real FreeDom engine backend suite green (ADR-0021)
+make test-freedom-gui # full FreeDom GUI port: PS/2 set 1 keymap vectors green
 make test-futex test-percpu-rq test-batch test-rcu  # SMP scaling contracts green
 make test-sanitize  # syscall sanitize-macro suite green
 make test-tick test-hal  # tick bus + HAL port-mapping suites green

@@ -89,3 +89,10 @@ config.mk
 doc.sh
 
 
+
+# FreeDom static dependencies (tools/build_freedom_deps.sh)
+progs/freedomui/deps/
+progs/freedomui/fsroot/usr/
+progs/freedomui/build/
+progs/bin/freedom-gui
+progs/freedomui/fsroot/docs/

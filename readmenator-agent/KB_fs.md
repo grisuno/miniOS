@@ -1,8 +1,8 @@
 # Subsystem: fs
 
 ## fs/ext4.c
+- Doc: ext_geo_t: Filesystem geometry from the superblock.
 - Layer: utility
-- Doc: ================================================================
 - Language: c
 - Symbols:
   - `ext_geo_t` (struct, line 44)
@@ -40,8 +40,8 @@
   - `ext_scan_dev` (function, line 770) `static int ext_scan_dev(unsigned long total_sec,
                         unsigned long *base_out)`
   - `ext_dev_base` (function, line 791) `long ext_dev_base(void)`
-  - `ext_map_down` (function, line 168) `static int ext_map_down(const fsimg_t *img, const ext_geo_t *g, const unsigned char *root, unsigned nent, unsigned long lblk, unsigned char *node);`
-  - `only` (function, line 352) `* listings only ('.' skipped, '..' refused). "" or "/" is root (2). */ static int ext_file_block(const fsimg_t *img, const ext_geo_t *g, const ext_ino_t *st, unsigned long lblk, unsigned char *blk, un`
+  - `ext_map_down` (function, line 168) `static int ext_map_down(const fsimg_t *img, const ext_geo_t *g, const unsigned char *root, unsigned nent, unsigned...`
+  - `only` (function, line 352) `* listings only ('.' skipped, '..' refused). "" or "/" is root (2). */ static int ext_file_block(const fsimg_t *img...`
   - `EXT4_SUPER_OFF` (macro, line 18) `#define EXT4_SUPER_OFF`
   - `EXT4_MAGIC` (macro, line 19) `#define EXT4_MAGIC`
   - `EXT4_EXT_MAGIC` (macro, line 20) `#define EXT4_EXT_MAGIC`
@@ -59,8 +59,8 @@
 - Imported by: `tests/test_ext4.c`
 
 ## fs/fat32.c
+- Doc: fat_geo_t: Parsed BPB plus derived geometry. secs = total data clusters + 2 (cluster numbers 0/1...
 - Layer: utility
-- Doc: ================================================================
 - Language: c
 - Symbols:
   - `fat_geo_t` (struct, line 51)
@@ -107,8 +107,8 @@
 - Imported by: `tests/test_fat32.c`
 
 ## fs/fsimg.c
+- Doc: fsimg_dev_read: Docstring: Sector reads off the active backend through the block layer, so a...
 - Layer: utility
-- Doc: ================================================================
 - Language: c
 - Symbols:
   - `fsimg_open_file` (function, line 15) `int fsimg_open_file(const char *resolved, fsimg_t *img)`
@@ -124,8 +124,8 @@
 - Imported by: `tests/test_ext4.c`, `tests/test_fat32.c`
 
 ## fs/kfile.c
+- Doc: kpipe_pair: Docstring: Create a connected pipe pair sharing one ring.
 - Layer: utility
-- Doc: ================================================================
 - Language: c
 - Symbols:
   - `kfile_stdin` (function, line 15) `KFILE *kfile_stdin(void)`
@@ -158,8 +158,8 @@
 - Depends on: `headers/minifs.h`
 
 ## fs/minifs.c
-- Layer: utility
 - Doc: MiniFS: minimal Unix-like filesystem for MiniOS.
+- Layer: utility
 - Language: c
 - Symbols:
   - `minifs_compress` (function, line 35) `unsigned int minifs_compress(const void *src, unsigned int src_len,
@@ -243,8 +243,8 @@ void minifs_journal_touch(unsigned int phys)`
 - Depends on: `headers/block.h`, `headers/ide.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/pcache.h`
 
 ## fs/pcache.c
-- Layer: infrastructure
 - Doc: Docstring: fs/pcache.c -- page cache store for MiniFS (T5 slice 1).
+- Layer: utility
 - Language: c
 - Symbols:
   - `pcache_slot_t` (struct, line 17)
@@ -270,8 +270,8 @@ int pcache_put_if(int...`
 - Imported by: `tests/test_pcache.c`
 
 ## fs/ramdisk.c
-- Layer: infrastructure
-- Doc: ================================================================
+- Doc: ramdisk_usage: int ramdisk_list(RDFile **out, int max) { if (!rd) return 0; int n =...
+- Layer: utility
 - Language: c
 - Symbols:
   - `RDSuper` (struct, line 26)
@@ -301,8 +301,8 @@ int pcache_put_if(int...`
   - `RD_FLAG_DEFLATE` (macro, line 24) `#define RD_FLAG_DEFLATE`
 
 ## fs/vfs.c
+- Doc: ramdisk_vfs_readdir: Docstring: List ramdisk leaves under dir ("" or "/" is root).
 - Layer: utility
-- Doc: ================================================================
 - Language: c
 - Symbols:
   - `vfs_mount_t` (struct, line 10)
@@ -356,8 +356,8 @@ in...`
 - Depends on: `headers/ext4.h`, `headers/fat32.h`, `headers/minifs.h`
 
 ## fs/zip.c
+- Doc: — the unzip/zip shell builtins over the miniz zip library.
 - Layer: utility
-- Doc: zip.c — the unzip/zip shell builtins over the miniz zip library.
 - Language: c
 - Symbols:
   - `zip_read_whole` (function, line 25) `static unsigned char *zip_read_whole(const char *path, unsigned long *size)`
@@ -368,6 +368,6 @@ static int zip_sanitize_name(con...`
   - `zip_do_entry` (function, line 117) `static int zip_do_entry(mz_zip_archive *zip, mz_uint idx, const char *destdir)`
   - `shell_cmd_unzip` (function, line 176) `void shell_cmd_unzip(int argc, char **argv)`
   - `shell_cmd_zip` (function, line 254) `void shell_cmd_zip(int argc, char **argv)`
-  - `root` (function, line 8) `* names are hostile data: each is normalized to forward slashes and rejected * when it escapes the extraction root (absolute paths, '.'/'..' components, * empty names), so a crafted archive can never `
+  - `root` (function, line 8) `* names are hostile data: each is normalized to forward slashes and rejected * when it escapes the extraction root...`
   - `mz_zip_writer_mem_ptr` (function, line 18) `void *mz_zip_writer_mem_ptr(mz_zip_archive *pZip);`
   - `mz_zip_writer_mem_size` (function, line 19) `size_t mz_zip_writer_mem_size(mz_zip_archive *pZip);`

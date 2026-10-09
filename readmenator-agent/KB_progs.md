@@ -1,12 +1,12 @@
 # Subsystem: progs
 
 ## progs/minios_abi.h
+- Doc: Single source of truth for the MiniOS user-kernel ABI.
 - Layer: utility
-- Doc: minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
 - Language: h
 - Symbols:
-  - `DOOM_BACKBUF_ADDR` (function, line 128) `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can never reach them. NK_BACKBUF sits * HIGHER than the framebuffer's maximum span: at `
-  - `in` (function, line 356) `* bytes in (refused past 4096, never truncated), GET copies out up to * the caller's cap (refused when empty or undersize). Linux x86-64 * owns 249 (request_key) and 250 (keyctl);`
+  - `DOOM_BACKBUF_ADDR` (function, line 128) `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...`
+  - `in` (function, line 356) `* bytes in (refused past 4096, never truncated), GET copies out up to * the caller's cap (refused when empty or...`
   - `MINIOS_ABI_H` (macro, line 2) `#define MINIOS_ABI_H`
   - `MINIOS_ABI_VERSION` (macro, line 41) `#define MINIOS_ABI_VERSION`
   - `MINIOS_ABI_CHECKSUM` (macro, line 45) `#define MINIOS_ABI_CHECKSUM`
@@ -158,11 +158,11 @@
   - `SYS_TIME` (macro, line 423) `#define SYS_TIME`
   - `SYS_WRITE` (macro, line 424) `#define SYS_WRITE`
   - `MINIOS_EABI_MISMATCH` (macro, line 427) `#define MINIOS_EABI_MISMATCH`
-- Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
+- Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/platform_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
 
 ## progs/minios_png.h
-- Layer: utility
 - Doc: Docstring: shared ring-3 PNG helpers for MiniOS apps (progs/minios_png.h).
+- Layer: utility
 - Language: h
 - Symbols:
   - `mpng_332_idx` (function, line 58) `static int mpng_332_idx(unsigned r, unsigned g, unsigned b)`
@@ -195,8 +195,8 @@
 - Imported by: `progs/file/file.c`, `progs/pokemon/platform_minios.c`, `tests/test_minios_png.c`
 
 ## progs/nk_palette.h
+- Doc: one shared hybrid palette for every NK-window app.
 - Layer: utility
-- Doc: nk_palette.h - one shared hybrid palette for every NK-window app.
 - Language: h
 - Symbols:
   - `nk_palette_build` (function, line 22) `static int nk_palette_build(unsigned char *pal, long cap)`

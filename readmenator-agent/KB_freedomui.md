@@ -1,0 +1,219 @@
+# Subsystem: freedomui
+
+## progs/freedomui/freedomui_minios.c
+- Doc: freedomui_minios - Real FreeDom browser on MiniOS, DOOM/Q2G pattern.
+- Layer: utility
+- Language: c
+- Symbols:
+  - `FreedomUiConfig` (struct, line 69)
+  - `present_buf` (type_alias, line 69) `typedef struct FreedomUiConfig { long present_buf;`
+  - `freedomui_default` (function, line 97) `static FreedomUiConfig freedomui_default(void)`
+  - `freedomui_build_palette` (function, line 130) `static long freedomui_build_palette(unsigned char *pal, long cap)`
+  - `freedomui_engine_text` (function, line 145) `static long freedomui_engine_text(char *body, long n, char **title, char **text)`
+  - `freedomui_sys_present` (function, line 193) `static long freedomui_sys_present(long buf, long origin)`
+  - `freedomui_sys_title` (function, line 200) `static long freedomui_sys_title(char *t)`
+  - `freedomui_sys_palette` (function, line 207) `static long freedomui_sys_palette(unsigned char *pal)`
+  - `freedomui_sys_mouse` (function, line 214) `static long freedomui_sys_mouse(long *m)`
+  - `freedomui_sys_kbd` (function, line 221) `static long freedomui_sys_kbd(void)`
+  - `freedomui_sys_vga_mode` (function, line 228) `static long freedomui_sys_vga_mode(long on)`
+  - `freedomui_sys_kbd_raw` (function, line 235) `static long freedomui_sys_kbd_raw(long on)`
+  - `freedomui_sys_yield` (function, line 242) `static long freedomui_sys_yield(void)`
+  - `fui_append` (function, line 249) `static long fui_append(char *dst, long pos, char *src, long cap)`
+  - `fui_strlen` (function, line 267) `static long fui_strlen(char *s, long cap)`
+  - `fui_split_url` (function, line 283) `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...`
+  - `fui_parse_headers` (function, line 352) `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...`
+  - `fui_fetch_raw` (function, line 470) `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)`
+  - `fui_render` (function, line 698) `static long fui_render(FreedomUiConfig *c, size_t off)`
+  - `fui_browse` (function, line 817) `static long fui_browse(FreedomUiConfig *c)`
+  - `freedomui_selftest` (function, line 896) `static long freedomui_selftest(void)`
+  - `freedomui_host_probe` (function, line 984) `static long freedomui_host_probe(FreedomUiConfig *c)`
+  - `freedomui_host_entry` (function, line 1067) `int freedomui_host_entry(FreedomUiConfig *c)`
+  - `main` (function, line 1072) `int main(int argc, char **argv)`
+  - `net_dns_resolve` (function, line 44) `int net_dns_resolve(const char *host);`
+  - `tls_handshake` (function, line 45) `int tls_handshake(int fd, char *host);`
+  - `tls_send` (function, line 46) `int tls_send(int fd, char *buf, int len);`
+  - `tls_recv` (function, line 47) `int tls_recv(int fd, char *buf, int len);`
+  - `tls_close` (function, line 48) `void tls_close(int fd);`
+  - `FUI_COLS` (macro, line 51) `#define FUI_COLS`
+  - `FUI_TEXT_ROWS` (macro, line 52) `#define FUI_TEXT_ROWS`
+  - `FUI_BODY_CAP` (macro, line 53) `#define FUI_BODY_CAP`
+  - `FUI_HDR_MAX` (macro, line 54) `#define FUI_HDR_MAX`
+  - `FUI_NET_BUF` (macro, line 55) `#define FUI_NET_BUF`
+  - `FUI_REQ_MAX` (macro, line 56) `#define FUI_REQ_MAX`
+  - `FUI_HOST_MAX` (macro, line 57) `#define FUI_HOST_MAX`
+  - `FUI_PATH_MAX` (macro, line 58) `#define FUI_PATH_MAX`
+  - `FUI_URL_MAX` (macro, line 59) `#define FUI_URL_MAX`
+  - `FUI_HOPS_MAX` (macro, line 60) `#define FUI_HOPS_MAX`
+  - `FUI_FONT_W` (macro, line 61) `#define FUI_FONT_W`
+  - `FUI_FONT_H` (macro, line 62) `#define FUI_FONT_H`
+  - `FUI_TITLE_MAX` (macro, line 63) `#define FUI_TITLE_MAX`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`
+- Imported by: `tests/test_freedomui.c`
+
+## progs/freedomui/media_unavailable.c
+- Doc: FreeDom media decoder entry points for a build
+- Layer: utility
+- Language: c
+- Symbols:
+  - `write_all` (function, line 20) `static void write_all(int fd, const void *buf, size_t len)`
+  - `media_decoder_run` (function, line 41) `void media_decoder_run(int out_fd, int cmd_fd)`
+- Depends on: `kernel/string.c`
+
+## progs/freedomui/platform_minios.c
+- Doc: MiniOS implementation of FreeDom's gui/platform.h.
+- Layer: utility
+- Language: c
+- Symbols:
+  - `pf_window` (struct, line 52)
+  - `pf_display` (struct, line 64)
+  - `sys_fb_info_rgb` (function, line 79) `static long sys_fb_info_rgb(int *rgb)`
+  - `now_ms` (function, line 90) `static long now_ms(void)`
+  - `set_title` (function, line 94) `static void set_title(const char *title)`
+  - `pf_display_open` (function, line 108) `pf_status pf_display_open(pf_display **out)`
+  - `pf_display_close` (function, line 124) `void pf_display_close(pf_display *d)`
+  - `pf_display_flush` (function, line 133) `void pf_display_flush(pf_display *d)`
+  - `pf_display_set_cursor` (function, line 137) `void pf_display_set_cursor(pf_display *d, pf_cursor c)`
+  - `deliver_pending` (function, line 144) `static int deliver_pending(pf_display *d)`
+  - `key_event` (function, line 154) `static void key_event(pf_display *d, const ps2_key *k, int kind)`
+  - `pump_keyboard` (function, line 181) `static int pump_keyboard(pf_display *d)`
+  - `pump_mouse` (function, line 195) `static int pump_mouse(pf_display *d)`
+  - `pf_display_wait` (function, line 238) `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
+  - `pf_clipboard_available` (function, line 263) `int pf_clipboard_available(const pf_display *d)`
+  - `pf_clipboard_set_text` (function, line 267) `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
+  - `pf_clipboard_get_text` (function, line 274) `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
+  - `pf_window_open` (function, line 290) `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
+                         const p...`
+  - `pf_window_close` (function, line 312) `void pf_window_close(pf_window *w)`
+  - `pf_window_surface` (function, line 329) `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
+  - `pf_window_present` (function, line 344) `void pf_window_present(pf_window *w)`
+  - `pf_window_set_title` (function, line 378) `void pf_window_set_title(pf_window *w, const char *title)`
+  - `set_zoom_state` (function, line 384) `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
+  - `pf_window_set_maximized` (function, line 393) `void pf_window_set_maximized(pf_window *w, int on)`
+  - `pf_window_set_fullscreen` (function, line 397) `void pf_window_set_fullscreen(pf_window *w, int on)`
+  - `pf_window_minimize` (function, line 401) `void pf_window_minimize(pf_window *w)`
+  - `pf_window_begin_move` (function, line 405) `void pf_window_begin_move(pf_window *w)`
+  - `pf_window_begin_resize` (function, line 409) `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
+  - `_GNU_SOURCE` (macro, line 11) `#define _GNU_SOURCE`
+  - `FREEDOM_GUI_TICK_MS` (macro, line 26) `#define FREEDOM_GUI_TICK_MS`
+  - `FREEDOM_GUI_KBD_DRAIN_MAX` (macro, line 28) `#define FREEDOM_GUI_KBD_DRAIN_MAX`
+  - `FREEDOM_GUI_TITLE_MAX` (macro, line 30) `#define FREEDOM_GUI_TITLE_MAX`
+  - `FREEDOM_GUI_CLIP_MAX` (macro, line 32) `#define FREEDOM_GUI_CLIP_MAX`
+  - `FREEDOM_GUI_MOUSE_WORDS` (macro, line 34) `#define FREEDOM_GUI_MOUSE_WORDS`
+  - `FREEDOM_GUI_MOUSE_X` (macro, line 35) `#define FREEDOM_GUI_MOUSE_X`
+  - `FREEDOM_GUI_MOUSE_Y` (macro, line 36) `#define FREEDOM_GUI_MOUSE_Y`
+  - `FREEDOM_GUI_MOUSE_BUTTONS` (macro, line 37) `#define FREEDOM_GUI_MOUSE_BUTTONS`
+  - `FREEDOM_GUI_MOUSE_WHEEL` (macro, line 38) `#define FREEDOM_GUI_MOUSE_WHEEL`
+  - `FREEDOM_GUI_BUTTONS` (macro, line 40) `#define FREEDOM_GUI_BUTTONS`
+  - `FREEDOM_GUI_KEY_F4` (macro, line 42) `#define FREEDOM_GUI_KEY_F4`
+  - `FREEDOM_GUI_RGB_BPP` (macro, line 44) `#define FREEDOM_GUI_RGB_BPP`
+  - `FREEDOM_GUI_RGB_PRESENT` (macro, line 46) `#define FREEDOM_GUI_RGB_PRESENT`
+- Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`, `progs/minios_abi.h`
+
+## progs/freedomui/ps2_keymap.c
+- Doc: pure PS/2 set 1 scancode to keysym translator (US layout).
+- Layer: utility
+- Language: c
+- Symbols:
+  - `ps2_keypad` (struct, line 122)
+  - `num_sym` (type_alias, line 122) `typedef struct ps2_keypad { uint32_t num_sym;`
+  - `ps2_init` (function, line 144) `void ps2_init(ps2_state *s)`
+  - `held_mods` (function, line 150) `static unsigned held_mods(const ps2_state *s)`
+  - `set_text` (function, line 158) `static void set_text(ps2_key *k, char c)`
+  - `is_letter` (function, line 164) `static int is_letter(char c)`
+  - `modifier_key` (function, line 169) `static uint32_t modifier_key(ps2_state *s, unsigned code, int extended, int make)`
+  - `extended_key` (function, line 195) `static uint32_t extended_key(unsigned code, ps2_key *k)`
+  - `plain_key` (function, line 218) `static uint32_t plain_key(const ps2_state *s, unsigned code, ps2_key *k)`
+  - `ps2_feed` (function, line 253) `int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out)`
+  - `PS2_PREFIX_EXTENDED` (macro, line 13) `#define PS2_PREFIX_EXTENDED`
+  - `PS2_PREFIX_PAUSE` (macro, line 14) `#define PS2_PREFIX_PAUSE`
+  - `PS2_PAUSE_TAIL` (macro, line 15) `#define PS2_PAUSE_TAIL`
+  - `PS2_BREAK_BIT` (macro, line 16) `#define PS2_BREAK_BIT`
+  - `PS2_CODE_MASK` (macro, line 17) `#define PS2_CODE_MASK`
+  - `PS2_TABLE_SIZE` (macro, line 18) `#define PS2_TABLE_SIZE`
+  - `PS2_HELD_LSHIFT` (macro, line 20) `#define PS2_HELD_LSHIFT`
+  - `PS2_HELD_RSHIFT` (macro, line 21) `#define PS2_HELD_RSHIFT`
+  - `PS2_HELD_LCTRL` (macro, line 22) `#define PS2_HELD_LCTRL`
+  - `PS2_HELD_RCTRL` (macro, line 23) `#define PS2_HELD_RCTRL`
+  - `PS2_HELD_LALT` (macro, line 24) `#define PS2_HELD_LALT`
+  - `PS2_HELD_RALT` (macro, line 25) `#define PS2_HELD_RALT`
+  - `SC_ESCAPE` (macro, line 27) `#define SC_ESCAPE`
+  - `SC_BACKSPACE` (macro, line 28) `#define SC_BACKSPACE`
+  - `SC_TAB` (macro, line 29) `#define SC_TAB`
+  - `SC_RETURN` (macro, line 30) `#define SC_RETURN`
+  - `SC_CTRL` (macro, line 31) `#define SC_CTRL`
+  - `SC_LSHIFT` (macro, line 32) `#define SC_LSHIFT`
+  - `SC_RSHIFT` (macro, line 33) `#define SC_RSHIFT`
+  - `SC_KP_MUL` (macro, line 34) `#define SC_KP_MUL`
+  - `SC_ALT` (macro, line 35) `#define SC_ALT`
+  - `SC_CAPS` (macro, line 36) `#define SC_CAPS`
+  - `SC_F1` (macro, line 37) `#define SC_F1`
+  - `SC_F10` (macro, line 38) `#define SC_F10`
+  - `SC_NUMLOCK` (macro, line 39) `#define SC_NUMLOCK`
+  - `SC_SCROLL` (macro, line 40) `#define SC_SCROLL`
+  - `SC_KP_FIRST` (macro, line 41) `#define SC_KP_FIRST`
+  - `SC_KP_LAST` (macro, line 42) `#define SC_KP_LAST`
+  - `SC_F11` (macro, line 43) `#define SC_F11`
+  - `SC_F12` (macro, line 44) `#define SC_F12`
+  - `SC_E0_KP_DIV` (macro, line 45) `#define SC_E0_KP_DIV`
+  - `SC_E0_PRINT` (macro, line 46) `#define SC_E0_PRINT`
+  - `SC_E0_HOME` (macro, line 47) `#define SC_E0_HOME`
+  - `SC_E0_UP` (macro, line 48) `#define SC_E0_UP`
+  - `SC_E0_PRIOR` (macro, line 49) `#define SC_E0_PRIOR`
+  - `SC_E0_LEFT` (macro, line 50) `#define SC_E0_LEFT`
+  - `SC_E0_RIGHT` (macro, line 51) `#define SC_E0_RIGHT`
+  - `SC_E0_END` (macro, line 52) `#define SC_E0_END`
+  - `SC_E0_DOWN` (macro, line 53) `#define SC_E0_DOWN`
+  - `SC_E0_NEXT` (macro, line 54) `#define SC_E0_NEXT`
+  - `SC_E0_INSERT` (macro, line 55) `#define SC_E0_INSERT`
+  - `SC_E0_DELETE` (macro, line 56) `#define SC_E0_DELETE`
+  - `SC_E0_SUPERL` (macro, line 57) `#define SC_E0_SUPERL`
+  - `SC_E0_SUPERR` (macro, line 58) `#define SC_E0_SUPERR`
+  - `SC_E0_MENU` (macro, line 59) `#define SC_E0_MENU`
+  - `KS_F1` (macro, line 61) `#define KS_F1`
+  - `KS_F11` (macro, line 62) `#define KS_F11`
+  - `KS_INSERT` (macro, line 63) `#define KS_INSERT`
+  - `KS_PRINT` (macro, line 64) `#define KS_PRINT`
+  - `KS_MENU` (macro, line 65) `#define KS_MENU`
+  - `KS_SCROLL_LOCK` (macro, line 66) `#define KS_SCROLL_LOCK`
+  - `KS_NUM_LOCK` (macro, line 67) `#define KS_NUM_LOCK`
+  - `KS_SUPER_L` (macro, line 68) `#define KS_SUPER_L`
+  - `KS_SUPER_R` (macro, line 69) `#define KS_SUPER_R`
+  - `KS_KP_HOME` (macro, line 70) `#define KS_KP_HOME`
+  - `KS_KP_LEFT` (macro, line 71) `#define KS_KP_LEFT`
+  - `KS_KP_UP` (macro, line 72) `#define KS_KP_UP`
+  - `KS_KP_RIGHT` (macro, line 73) `#define KS_KP_RIGHT`
+  - `KS_KP_DOWN` (macro, line 74) `#define KS_KP_DOWN`
+  - `KS_KP_PRIOR` (macro, line 75) `#define KS_KP_PRIOR`
+  - `KS_KP_NEXT` (macro, line 76) `#define KS_KP_NEXT`
+  - `KS_KP_END` (macro, line 77) `#define KS_KP_END`
+  - `KS_KP_BEGIN` (macro, line 78) `#define KS_KP_BEGIN`
+  - `KS_KP_INSERT` (macro, line 79) `#define KS_KP_INSERT`
+  - `KS_KP_MULTIPLY` (macro, line 80) `#define KS_KP_MULTIPLY`
+  - `KS_KP_DECIMAL` (macro, line 81) `#define KS_KP_DECIMAL`
+  - `KS_KP_DIVIDE` (macro, line 82) `#define KS_KP_DIVIDE`
+  - `ASCII_BS` (macro, line 84) `#define ASCII_BS`
+  - `ASCII_TAB` (macro, line 85) `#define ASCII_TAB`
+  - `ASCII_CR` (macro, line 86) `#define ASCII_CR`
+  - `ASCII_ESC` (macro, line 87) `#define ASCII_ESC`
+  - `ASCII_DEL` (macro, line 88) `#define ASCII_DEL`
+- Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`
+
+## progs/freedomui/ps2_keymap.h
+- Doc: pure PS/2 set 1 scancode to keysym translator (US layout).
+- Layer: utility
+- Language: h
+- Symbols:
+  - `ps2_state` (struct, line 29)
+  - `ps2_key` (struct, line 38)
+  - `held` (type_alias, line 29) `typedef struct ps2_state { unsigned held;`
+  - `sym` (type_alias, line 38) `typedef struct ps2_key { uint32_t sym;`
+  - `ps2_init` (function, line 47) `void ps2_init(ps2_state *s);`
+  - `arguments` (function, line 51) `* arguments (out is then left untouched). */ int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out);`
+  - `MINIOS_PS2_KEYMAP_H` (macro, line 10) `#define MINIOS_PS2_KEYMAP_H`
+  - `PS2_EV_NONE` (macro, line 16) `#define PS2_EV_NONE`
+  - `PS2_EV_PRESS` (macro, line 17) `#define PS2_EV_PRESS`
+  - `PS2_EV_RELEASE` (macro, line 18) `#define PS2_EV_RELEASE`
+  - `PS2_CODE_EXTENDED` (macro, line 21) `#define PS2_CODE_EXTENDED`
+  - `PS2_CODE_LIMIT` (macro, line 24) `#define PS2_CODE_LIMIT`
+  - `PS2_TEXT_MAX` (macro, line 26) `#define PS2_TEXT_MAX`
+- Imported by: `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `tests/test_ps2_keymap.c`

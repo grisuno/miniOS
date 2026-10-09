@@ -424,3 +424,91 @@ cooperative and preemption is the backstop, not the norm.
   dies before the merge. Proven by `progs/src/execho.c`
   (`mrun bin/execho.elf`: fork, exec lxhello with argc=2, reap 2 then
   a ghost-exec 42, `execho: ok` exit 0).
+
+### Linux process, thread and descriptor ABI (FreeDom readiness, step 4)
+The full FreeDom GUI (`freedom-gui`, docs/spec/network.md) is a static
+glibc program that forks a re-exec'd tab worker over two pipes, runs fetch
+and prefetch work on NPTL threads and waits on condition variables. glibc
+reaches the kernel through numbers MiniOS did not answer (`pipe()` is
+`pipe2`, `fork()` is `clone`, `pthread_create` is `clone3` then `clone`,
+condition variables are `FUTEX_WAIT_BITSET`) and relies on Linux pipe
+semantics. Each point below is pinned by `progs/src/lxabi.c` (`run
+bin/lxabi`, one `lxabi: <check> ok` line per point, `lxabi: all ok`, exit 0)
+and its BDD scenario.
+
+- **Full user register state at syscall entry.** `syscall_entry.S` pushes
+  the callee-saved user registers (`rbx`, `rbp`, `r12`-`r15`) at the top of
+  the per-proc kernel stack before the existing frame, so every frame offset
+  is unchanged and the exit (which restores the top from `sc_top_save`)
+  needs no pops. A fork or clone child copies them, plus the argument
+  registers already in the frame (`rdi`, `rsi`, `rdx`, `r10`, `r8`, `r9`),
+  into its PCB, so it resumes after the `syscall` instruction with every
+  register Linux preserves (only `rax` = 0, `rcx` and `r11` differ).
+- **`clone` (56).** Two shapes, decided by `CLONE_VM`:
+  - Without it (glibc `fork`): `do_fork` copy-on-write, `SIGCHLD` accepted
+    as the exit signal, `CLONE_CHILD_SETTID` / `CLONE_CHILD_CLEARTID`
+    recorded for the child. `CLONE_CHILD_SETTID` is written by the child
+    itself on its first return to user mode (its own window, never the
+    parent's COW page).
+  - With it (NPTL threads, `CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|
+    CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|
+    CLONE_CHILD_CLEARTID`): same window, shared fd view, `rsp` = the new
+    stack, FSBASE = `tls`, `*parent_tid` = child tid before the parent
+    returns. A `CLONE_THREAD` child carries the leader's `tgid` (`getpid`
+    answers it, `gettid` answers the thread's own pid), exits alone on
+    `exit` (60), writes 0 to `clear_child_tid` and wakes one futex waiter
+    there (what `pthread_join` sleeps on), and is reaped automatically: its
+    slot is freed by the next clone that needs one and when its group leader
+    is reaped, never left for a `waitpid` nobody issues. `exit_group` (231)
+    zombifies every thread of the group before the caller exits.
+  - Unsupported flag combinations (`CLONE_VFORK`, namespaces, `CLONE_PIDFD`,
+    `CLONE_THREAD` without `CLONE_VM|CLONE_SIGHAND`) fail `-EINVAL`, never a
+    half-built child. `clone3` (435) answers `-ENOSYS`, which glibc treats as
+    "use clone".
+- **Futex.** `FUTEX_WAIT_BITSET` (9) and `FUTEX_WAKE_BITSET` (10) with
+  `FUTEX_BITSET_MATCH_ANY` map to WAIT/WAKE; any other bitset is `-EINVAL`.
+  `FUTEX_CLOCK_REALTIME` is accepted. A WAIT with a timeout (relative for
+  op 0, absolute on the requested clock for op 9) that passes its deadline
+  returns `-ETIMEDOUT`; before the deadline it yields and returns 0, which
+  futex callers already treat as a spurious wakeup to recheck.
+- **Pipes.** A user `read` on an empty pipe whose writer is open blocks
+  (yielding) unless the description is `O_NONBLOCK`, which answers
+  `-EAGAIN`; empty with the writer closed is 0 (EOF). A user `write` to a
+  full pipe blocks until space or until the reader closes; a pipe whose
+  read end is closed answers `-EPIPE`. The kernel `kfread`/`kfwrite`
+  contract (never blocks, used by the shell pipeline runner) is unchanged:
+  the blocking lives in the syscall layer. `pipe2` (293) honours
+  `O_CLOEXEC` and `O_NONBLOCK`; `pipe` (22) is `pipe2` with no flags.
+  `O_NONBLOCK` belongs to the open file description (`KFILE`), so `dup`
+  copies share it, like Linux.
+- **`fcntl` (72).** `F_DUPFD`, `F_DUPFD_CLOEXEC`, `F_GETFD`, `F_SETFD`
+  (`FD_CLOEXEC`), `F_GETFL` (access mode plus `O_NONBLOCK`), `F_SETFL`
+  (`O_NONBLOCK` only; other bits ignored like Linux). Anything else
+  `-EINVAL`; a bad fd `-EBADF`. `dup3` (292) and `close_range` (436, with
+  `CLOSE_RANGE_CLOEXEC` or plain close) complete the set.
+- **`eventfd2` (290) / `eventfd` (284).** A 64-bit counter description:
+  `write` adds (overflow past `2^64-2` blocks or `-EAGAIN`), `read` of 8
+  bytes returns and clears it (`EFD_SEMAPHORE` returns 1 and decrements),
+  empty blocks or `-EAGAIN` with `EFD_NONBLOCK`; `EFD_CLOEXEC` arms the
+  close-on-exec bit. Reads or writes shorter than 8 bytes are `-EINVAL`.
+- **`poll` (7).** Pipes and eventfds report readiness beside sockets:
+  `POLLIN` when bytes (or a nonzero counter) wait, `POLLOUT` when space,
+  `POLLHUP` on a pipe whose writer closed, `POLLERR` on a write end whose
+  reader closed. A negative fd is skipped and every other entry's
+  `revents` is written (zero when not ready), as Linux does.
+- **`writev` (20)** writes every iovec to the descriptor (pipes and files,
+  not just the console), stopping at the first short write.
+- **`time` (201).** Retired kernel-TLS number reclaimed for Linux `time(2)`,
+  exactly as 202 was for `futex`: it answers the RTC-anchored wall clock in
+  seconds (what static glibc calls when there is no vDSO), so OpenSSL and
+  libcurl validate certificate lifetimes against a real date. 203 stays
+  retired.
+- **`mkdir` (83)** creates a MiniFS directory (parent must exist, `-EEXIST`
+  when present); `mode` is accepted and ignored (MiniFS has no permission
+  bits).
+- **Cheap answers.** `madvise` (28) answers 0 (advice only); `statfs` (137)
+  / `fstatfs` (138) answer `-ENOSYS` (callers fall back); `prlimit64` keeps
+  `-ENOSYS`. Linux numbers inside the MiniOS 200-block stay shadowed per
+  ADR-0014 and are not reclaimed here: `sched_getaffinity` (204, SYS_TIME),
+  `fadvise64` (221, SB16 open) and `getdents64` (217, LZ4) keep their
+  documented deviations until the block moves.

@@ -271,3 +271,86 @@ presents with `freedomui: <host> (<n> bytes, <m> elems)` (live boot proves
 `gfx frames` climbs 0 to 1), two mutants (palette-bg, omnibox-kind) die in
 `mutate.sh`.
 See ADR-0021.
+
+### Full FreeDom GUI (`freedom-gui`)
+`bin/freedom-gui` is the unmodified FreeDom browser (`../FreeDom`, the same
+`browser_ui.c`, Cairo painter, HarfBuzz shaper, QuickJS sandbox and tab
+pipeline the Linux build runs) linked as one static glibc ELF. FreeDom draws
+into a Cairo ARGB32 image surface and talks to the display only through its
+windowing seam `gui/platform.h` (FreeDom `spec/platform.md`); MiniOS supplies
+that seam, nothing else in FreeDom changes.
+
+- **Build.** FreeDom's own Makefile builds the binary (`make -C $(FREEDOM_DIR)
+  BUILD_DIR=progs/freedomui/build ...`), so its object list and per-module
+  flags stay the single source of truth. MiniOS overrides only the port
+  variables: `PLATFORM_SRCS` (the three files below), `PLATFORM_CFLAGS`,
+  `PLATFORM_LIBS` (empty), `PLATFORM_PREREQS` (empty), `MEDIA_OBJ` (empty), the
+  library variables pointing at static archives, and `LDHARDEN` for
+  `-static -no-pie`. Archives the host lacks (pixman, HarfBuzz, Cairo with
+  image/PDF/FreeType/fontconfig only, libcurl over OpenSSL and zlib only) come
+  from `tools/build_freedom_deps.sh` (`make freedom-deps`), pinned by version
+  and SHA-256 into `progs/freedomui/deps/prefix`. The build is conditional
+  (`FREEDOM_GUI_AVAILABLE`: sibling checkout plus the deps prefix) like
+  `Q2G_AVAILABLE`.
+- **`progs/freedomui/platform_minios.c`** implements `gui/platform.h`:
+  - Surface: the NK RGB back-buffer (`MINIOS_NK_RGB_ADDR`, `MINIOS_NK_W` x
+    `MINIOS_NK_H`, 3 bytes per pixel). The window paints into a heap ARGB32
+    Cairo surface of exactly that size; `pf_window_present` converts it to RGB
+    and presents with `GFX_PRESENT(MINIOS_GFX_BUF_NK_RGB)`. A kernel that does
+    not report the RGB buffer (`SYS_FB_INFO` fourth word) fails
+    `pf_display_open` with `PF_ERR_UNSUPPORTED`; the indexed buffer is never
+    written. The first successful present prints `freedom: frame ok (800x360)`
+    once, the proof line the BDD scenario pins.
+  - Windows: one process owns one NK surface, so the most recently opened
+    window is the visible one; closing it hands the surface back to the
+    previous window, which receives `configure` plus `ready` and repaints.
+    Every window is told `decoration(0)`: the MiniOS window manager draws the
+    chrome, so FreeDom never spends rows on a client-side titlebar.
+  - Lifecycle: `SYS_VGA_MODE(1)`, then the title (`GFX_SET_TITLE`, at most 31
+    bytes), then `SYS_KBD_RAW(1)`; `pf_display_close` restores both.
+    Fullscreen and maximize map to `GFX_ZOOM` fullscreen/windowed; minimize,
+    interactive move and resize have no ring-3 call (the WM owns the chrome)
+    and are ignored; cursor shapes are ignored (the WM draws the pointer).
+  - Input: `SYS_KBD` raw PS/2 set 1 bytes go through `ps2_keymap`; `SYS_MOUSE`
+    desktop coordinates minus the content origin `GFX_PRESENT` returned give
+    surface-local pointer events, buttons bit 0/1/2 map to left/right/middle,
+    and the wheel delta maps to `pointer_axis` with the content-down sign.
+    PS/2 typematic repeat produces repeated make codes; a make of a key that is
+    already held is delivered with `repeat = 1` only while the key handler
+    asked for repeat on the press. Alt+F4 fires the window's `close` handler.
+  - Wait: `pf_display_wait` polls the caller's descriptors with a zero timeout
+    and the keyboard and mouse in `FREEDOM_GUI_TICK_MS` slices, yielding the CPU
+    between slices, until input arrives, a descriptor is ready or the timeout
+    expires.
+  - Clipboard: the kernel clipboard (`CLIP_SET`/`CLIP_GET`), bounded by
+    `PF_CLIPBOARD_MAX`.
+- **`progs/freedomui/ps2_keymap.c`** is the pure PS/2 set 1 to keysym
+  translator (US layout): `E0` extended prefix, Shift/Ctrl/Alt held state,
+  Caps Lock and Num Lock toggles (Num Lock starts on), and the text a press
+  produces with xkb semantics (Tab `\t`, BackSpace `\b`, Return `\r`, Escape
+  `\x1b`, Delete `\x7f`; letters follow Shift XOR Caps Lock). A Ctrl or Alt
+  chord produces no text. Keysym values are the X11 values FreeDom's
+  `key_event` vocabulary pins; the host suite pins them to
+  `xkbcommon-keysyms.h` too.
+- **`progs/freedomui/media_unavailable.c`** replaces FreeDom's FFmpeg decoder
+  entry points for a build without FFmpeg: `media_decoder_spawn` fails closed
+  (`-1`, `ENOSYS`), which `video_play` already reports and unwinds, so no
+  decoder process ever starts; a direct `--media-decoder` invocation answers one
+  `MD_ERROR` ("media decoding is not available on MiniOS") and exits.
+- **MiniFS payload**: the binary, `etc/fonts/fonts.conf` pointing fontconfig
+  at `usr/share/fonts`, and the DejaVu Sans / Sans Mono faces.
+- Proof: `make test-freedom-gui` (host: `ps2_keymap` vectors, keysym values,
+  modifier and lock state, extended keys, text rules), BDD
+  `freedom-gui presents the real FreeDom GUI and is killable` (`run
+  freedom-gui &` prints `freedom: frame ok (800x360)`, `gfx frames` climbs 0
+  to 1, `kill 1` reaps it), and seven mutants in `mutate.sh` (caps xor, chord
+  text leak, lost E0 prefix, Num Lock default, short Pause tail, sticky
+  modifier, lost frame proof) all killed by the suites. `python3
+  tools/test_gui_freedom.py` is the input proof over QMP: a typed key changes
+  the URL bar, Ctrl+V pastes the kernel clipboard (`clip abc`) after it and
+  Ctrl+C copies the bar back (`clip` prints `xabc`), and a click on the toolbar
+  menu button paints the options panel, with the pointer walked to the
+  content origin `wm list` reports. Pages render once the tab worker can
+  start: that needs the Linux thread, descriptor and sandbox syscalls listed
+  in the FreeDom readiness plan (`clone`/`clone3`, `fcntl`, `pipe2`,
+  `getdents64`, `prctl` seccomp, `/proc/self/exe`).

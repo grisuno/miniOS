@@ -1211,6 +1211,12 @@ freedom3-host: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
 	$(CC) -std=c99 -O2 -Wall -DFREEDOM_RING3_LIBC -DTLS_RING3 -I. -Iheaders -I$(PROGS_DIR) \
 	      -o $(TOOLS_DIR)/freedom3 $(FREEDOM3_SRCS)
 
+# lxabi: Linux process/thread/descriptor ABI probe for the full FreeDom GUI
+# (docs/spec/smp-sched.md). Static glibc + NPTL; -mno-red-zone because the
+# fork register probe pushes from inline assembly.
+$(BIN_DIR)/lxabi: $(SRC_DIR)/lxabi.c
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -mno-red-zone -pthread -o $@ $(SRC_DIR)/lxabi.c
+
 # thdemo: producer-consumer over mthreads (10 threads on thread_spawn).
 # Headless M1 proof for roadmap Phase 1; prints PASS with exact counts.
 $(BIN_DIR)/thdemo: $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h
@@ -1287,6 +1293,77 @@ freedomui_test: tests/test_freedomui.c $(FREEDOMUI_DIR)/freedomui_minios.c | $(T
 test-freedomui: freedomui_test
 	$(TOOLS_DIR)/freedomui_test
 
+# ── freedom-gui (the full FreeDom GUI, static glibc ELF) ──────────────
+# FreeDom's own Makefile builds the browser so its object list and module
+# flags stay the single source of truth; MiniOS overrides only the port
+# variables (gui/platform.h seam, spec/platform.md) and the library flags
+# that point at static archives. Archives the host lacks come from
+# tools/build_freedom_deps.sh (make freedom-deps). The link wraps every
+# library in one --start-group/--end-group so static archive order cannot
+# drop a symbol. See docs/spec/network.md (freedom-gui).
+FREEDOM_GUI_DEPS     = $(FREEDOMUI_DIR)/deps/prefix
+FREEDOM_GUI_BUILD    = $(CURDIR)/$(FREEDOMUI_DIR)/build
+FREEDOM_GUI_FSROOT   = $(FREEDOMUI_DIR)/fsroot
+FREEDOM_GUI_FONTS    = $(FREEDOM_GUI_FSROOT)/usr/share/fonts/dejavu
+FREEDOM_GUI_PLATFORM = $(CURDIR)/$(FREEDOMUI_DIR)/platform_minios.c \
+                       $(CURDIR)/$(FREEDOMUI_DIR)/ps2_keymap.c \
+                       $(CURDIR)/$(FREEDOMUI_DIR)/media_unavailable.c
+FREEDOM_GUI_AVAILABLE := $(if $(wildcard $(FREEDOM_DIR)/gui/platform.h),$(if $(wildcard $(FREEDOM_GUI_DEPS)/lib/libcairo.a),$(if $(wildcard $(FREEDOMUI_LEXBOR)),1,0),0),0)
+FREEDOM_GUI_PKG      = PKG_CONFIG_PATH=$(CURDIR)/$(FREEDOM_GUI_DEPS)/lib/pkgconfig pkg-config
+
+freedom-deps:
+	tools/build_freedom_deps.sh
+
+ifeq ($(FREEDOM_GUI_AVAILABLE),1)
+$(BIN_DIR)/freedom-gui: $(FREEDOM_GUI_PLATFORM) $(FREEDOMUI_DIR)/ps2_keymap.h \
+                        $(PROGS_DIR)/minios_abi.h $(FREEDOM_DIR)/gui/platform.h \
+                        $(FREEDOM_DIR)/gui/browser_ui.c Makefile
+	$(MAKE) -C $(FREEDOM_DIR) CC=gcc BUILD_DIR=$(FREEDOM_GUI_BUILD) \
+	  LDHARDEN="-static -no-pie -Wl,-z,relro,-z,now,-z,noexecstack -Wl,--start-group" \
+	  PLATFORM_SRCS="$(FREEDOM_GUI_PLATFORM)" PLATFORM_PREREQS= PLATFORM_LIBS= \
+	  PLATFORM_CFLAGS="-Igui -I$(CURDIR)/$(PROGS_DIR) -I$(CURDIR)/$(FREEDOMUI_DIR)" \
+	  MEDIA_OBJ= AV_CFLAGS= AV_LIBS= \
+	  LEXBOR_LIBS="$(FREEDOMUI_LEXBOR)" \
+	  SF_LIBS="$$($(FREEDOM_GUI_PKG) --static --libs libcurl)" \
+	  IMG_LIBS="$$($(FREEDOM_GUI_PKG) --static --libs libpng libjpeg libwebp)" \
+	  TSH_CFLAGS="-I$(CURDIR)/$(FREEDOM_GUI_DEPS)/include $$($(FREEDOM_GUI_PKG) --cflags cairo harfbuzz freetype2 fontconfig)" \
+	  TSH_LIBS="$$($(FREEDOM_GUI_PKG) --static --libs cairo harfbuzz freetype2 fontconfig) -lstdc++ -Wl,--end-group" \
+	  $(FREEDOM_GUI_BUILD)/freedom
+	cp $(FREEDOM_GUI_BUILD)/freedom $@
+else
+$(BIN_DIR)/freedom-gui:
+	@echo "SKIP $@ (need $(FREEDOM_DIR)/gui/platform.h, make freedom-deps and $(FREEDOMUI_LEXBOR))"
+endif
+
+$(FREEDOM_GUI_FONTS): $(wildcard $(FREEDOM_GUI_DEPS)/share/fonts/dejavu/*.ttf)
+	mkdir -p $@
+	$(if $(wildcard $(FREEDOM_GUI_DEPS)/share/fonts/dejavu/*.ttf),cp $(FREEDOM_GUI_DEPS)/share/fonts/dejavu/*.ttf $@/)
+	touch $@
+
+# FreeDom opens docs/index.html when started without a URL; the page and its
+# logo ship from the sibling checkout so the start page is never a copy here.
+$(FREEDOM_GUI_FSROOT)/docs: $(FREEDOM_DIR)/docs/index.html $(FREEDOM_DIR)/docs/logo.png
+	mkdir -p $@
+	cp $(FREEDOM_DIR)/docs/index.html $(FREEDOM_DIR)/docs/logo.png $@/
+	touch $@
+
+$(FREEDOM_GUI_FSROOT)/usr: $(FREEDOM_GUI_FONTS)
+	touch $@
+
+# MiniFS payload (directories land at the MiniFS root under their basename:
+# etc/fonts/fonts.conf, usr/share/fonts/dejavu/*.ttf, docs/index.html).
+MINIFS_FREEDOM_GUI_FILES = $(if $(filter 1,$(FREEDOM_GUI_AVAILABLE)),$(BIN_DIR)/freedom-gui $(FREEDOM_GUI_FSROOT)/etc $(FREEDOM_GUI_FSROOT)/usr $(FREEDOM_GUI_FSROOT)/docs,)
+
+# ── freedom-gui host suite: the pure PS/2 set 1 translator behind the
+# full FreeDom GUI's MiniOS platform (docs/spec/network.md). Keysym values
+# are pinned to the header-only xkbcommon-keysyms.h; no library is linked.
+freedom_gui_test: tests/test_ps2_keymap.c $(FREEDOMUI_DIR)/ps2_keymap.c $(FREEDOMUI_DIR)/ps2_keymap.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -std=c11 -Wall -Wextra -Werror -I$(FREEDOM_DIR)/include \
+	      -o $(TOOLS_DIR)/freedom_gui_test tests/test_ps2_keymap.c $(FREEDOMUI_DIR)/ps2_keymap.c
+
+test-freedom-gui: freedom_gui_test
+	$(TOOLS_DIR)/freedom_gui_test
+
 # ── topogpt3 (TopoGPT3 transformer inference, static ring-3 ELF) ──
 # Self-contained single-file C engine.  Loads fp16 weights from MiniFS.
 # Built like Lua/DOOM: host gcc -static, ring-3 ET_EXEC, on MiniFS.
@@ -1319,7 +1396,7 @@ $(BIN_DIR)/topogpt3: $(BIN_DIR)/topogpt3.elf
 # aes/unaes live on MiniFS (ramdisk budget): bare-name commands resolved
 # against the MiniFS root by shell_run_elf_minifs; src/aes.c rides along so
 # the OS can rebuild them without leaving the machine.
-MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) $(MINIFS_FREEDOM_GUI_FILES) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
                $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
                $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
                $(BIN_DIR)/lisp.elf $(BIN_DIR)/lisp \
@@ -1334,6 +1411,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/sbtone $(SRC_DIR)/sbtone.c \
                $(BIN_DIR)/tlsget $(PROGS_DIR)/tls_u/tls_u_main.c $(PROGS_DIR)/tls_u/tls_u_port.c \
                $(BIN_DIR)/thdemo $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h \
+               $(BIN_DIR)/lxabi $(SRC_DIR)/lxabi.c \
                $(BIN_DIR)/fptest $(SRC_DIR)/fptest.c \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
                 $(BIN_DIR)/json $(SRC_DIR)/json.c \

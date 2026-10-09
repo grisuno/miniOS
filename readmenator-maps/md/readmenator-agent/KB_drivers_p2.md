@@ -1,0 +1,337 @@
+# Subsystem: drivers (page 2 of 2)
+Previous: [KB_drivers.md](KB_drivers.md)
+
+## drivers/virtio_blk.c
+- Doc: Docstring: drivers/virtio_blk.c -- Polled legacy virtio-blk driver.
+- Layer: infrastructure
+- Language: c
+- Symbols:
+  - `vblk_req_t` (struct, line 56)
+  - `vblk_outl` (function, line 71) `static void vblk_outl(unsigned short port, unsigned val)`
+  - `vblk_inl` (function, line 75) `static unsigned vblk_inl(unsigned short port)`
+  - `vblk_outb` (function, line 81) `static void vblk_outb(unsigned short port, unsigned char val)`
+  - `vblk_inb` (function, line 85) `static unsigned char vblk_inb(unsigned short port)`
+  - `vblk_inw` (function, line 89) `static unsigned short vblk_inw(unsigned short port)`
+  - `vblk_outw` (function, line 93) `static void vblk_outw(unsigned short port, unsigned short val)`
+  - `vblk_init` (function, line 100) `int vblk_init(void)`
+  - `vblk_present` (function, line 158) `int vblk_present(void)`
+  - `vblk_sectors` (function, line 163) `unsigned long vblk_sectors(void)`
+  - `vblk_desc` (function, line 167) `static void vblk_desc(unsigned idx, unsigned long addr, unsigned len,
+        unsigned short flag...`
+  - `vblk_avail_idx` (function, line 183) `static unsigned short vblk_avail_idx(void)`
+  - `vblk_avail_push` (function, line 188) `static void vblk_avail_push(unsigned short head)`
+  - `vblk_used_idx` (function, line 199) `static unsigned short vblk_used_idx(void)`
+  - `vblk_request` (function, line 212) `static int vblk_request(unsigned dir, unsigned long sector,
+        unsigned char *buf, unsigned ...`
+  - `vblk_write_sectors` (function, line 266) `int vblk_write_sectors(unsigned lba, unsigned count, const void *buf)`
+  - `vblk_ops_read` (function, line 282) `static int vblk_ops_read(device_t *dev, unsigned lba, unsigned count,
+        void *buf)`
+  - `vblk_ops_write` (function, line 289) `static int vblk_ops_write(device_t *dev, unsigned lba, unsigned count,
+        const void *buf)`
+  - `vblk_ops_total` (function, line 296) `static unsigned vblk_ops_total(device_t *dev)`
+  - `vblk_ops_present` (function, line 302) `static int vblk_ops_present(device_t *dev)`
+  - `vblk_register_device` (function, line 327) `void vblk_register_device(void)`
+  - `VBLK_VENDOR` (macro, line 28) `#define VBLK_VENDOR`
+  - `VBLK_DEV_LEGACY` (macro, line 29) `#define VBLK_DEV_LEGACY`
+  - `VBLK_DEV_TRANS` (macro, line 30) `#define VBLK_DEV_TRANS`
+  - `VBLK_F_ACK` (macro, line 32) `#define VBLK_F_ACK`
+  - `VBLK_F_DRIVER` (macro, line 33) `#define VBLK_F_DRIVER`
+  - `VBLK_F_OK` (macro, line 34) `#define VBLK_F_OK`
+  - `VBLK_F_DRIVER_OK` (macro, line 35) `#define VBLK_F_DRIVER_OK`
+  - `VBLK_QNUM` (macro, line 37) `#define VBLK_QNUM`
+  - `VBLK_DESC_SZ` (macro, line 38) `#define VBLK_DESC_SZ`
+  - `VBLK_AVAIL_OFF` (macro, line 43) `#define VBLK_AVAIL_OFF`
+  - `VBLK_USED_OFF` (macro, line 44) `#define VBLK_USED_OFF`
+  - `VBLK_QAREA` (macro, line 45) `#define VBLK_QAREA`
+  - `VBLK_DESC_NEXT` (macro, line 47) `#define VBLK_DESC_NEXT`
+  - `VBLK_DESC_WRITE` (macro, line 48) `#define VBLK_DESC_WRITE`
+  - `VBLK_REQ_IN` (macro, line 50) `#define VBLK_REQ_IN`
+  - `VBLK_REQ_OUT` (macro, line 51) `#define VBLK_REQ_OUT`
+  - `VBLK_TMO_MS` (macro, line 53) `#define VBLK_TMO_MS`
+  - `VBLK_SECTOR` (macro, line 54) `#define VBLK_SECTOR`
+- Depends on: `headers/driver.h`, `headers/drivers/pci.h`, `headers/drivers/virtio_blk.h`
+
+## drivers/virtio_net.c
+- Doc: Docstring: drivers/virtio_net.c -- Polled legacy virtio-net driver.
+- Layer: infrastructure
+- Language: c
+- Symbols:
+  - `vnet_outb` (function, line 81) `static void vnet_outb(unsigned short port, unsigned char v)`
+  - `vnet_outw` (function, line 85) `static void vnet_outw(unsigned short port, unsigned short v)`
+  - `vnet_outl` (function, line 89) `static void vnet_outl(unsigned short port, unsigned v)`
+  - `vnet_inb` (function, line 93) `static unsigned char vnet_inb(unsigned short port)`
+  - `vnet_inw` (function, line 99) `static unsigned short vnet_inw(unsigned short port)`
+  - `vnet_inl` (function, line 105) `static unsigned vnet_inl(unsigned short port)`
+  - `vnet_queue_up` (function, line 114) `static unsigned vnet_queue_up(unsigned qsel)`
+  - `vnet_desc` (function, line 144) `static void vnet_desc(unsigned char *page, unsigned idx, unsigned long addr,
+        unsigned len...`
+  - `vnet_avail_push` (function, line 161) `static void vnet_avail_push(unsigned char *page, unsigned qnum,
+        unsigned short head)`
+  - `vnet_used_idx` (function, line 174) `static unsigned short vnet_used_idx(unsigned char *used)`
+  - `unusable` (function, line 181) `* unusable (fail-closed, rtl8139 stays). */
+int vnet_init(void)`
+  - `vnet_present` (function, line 223) `int vnet_present(void)`
+  - `vnet_get_mac` (function, line 228) `void vnet_get_mac(unsigned char out[6])`
+  - `vnet_iobase` (function, line 234) `unsigned short vnet_iobase(void)`
+  - `vnet_counters` (function, line 239) `void vnet_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
+  - `vnet_link_up` (function, line 277) `int vnet_link_up(void)`
+  - `vnet_poll` (function, line 287) `void vnet_poll(void)`
+  - `VNET_VENDOR` (macro, line 29) `#define VNET_VENDOR`
+  - `VNET_DEV_LEGACY` (macro, line 30) `#define VNET_DEV_LEGACY`
+  - `VNET_DEV_TRANS` (macro, line 31) `#define VNET_DEV_TRANS`
+  - `VNET_F_ACK` (macro, line 33) `#define VNET_F_ACK`
+  - `VNET_F_DRIVER` (macro, line 34) `#define VNET_F_DRIVER`
+  - `VNET_F_OK` (macro, line 35) `#define VNET_F_OK`
+  - `VNET_F_DRIVER_OK` (macro, line 36) `#define VNET_F_DRIVER_OK`
+  - `VNET_QNUM` (macro, line 38) `#define VNET_QNUM`
+  - `VNET_DESC_SZ` (macro, line 39) `#define VNET_DESC_SZ`
+  - `VNET_AVAIL_OFF` (macro, line 40) `#define VNET_AVAIL_OFF`
+  - `VNET_USED_OFF` (macro, line 41) `#define VNET_USED_OFF`
+  - `VNET_QAREA` (macro, line 42) `#define VNET_QAREA`
+  - `VNET_DESC_NEXT` (macro, line 44) `#define VNET_DESC_NEXT`
+  - `VNET_DESC_WRITE` (macro, line 45) `#define VNET_DESC_WRITE`
+  - `VNET_Q_RX` (macro, line 47) `#define VNET_Q_RX`
+  - `VNET_Q_TX` (macro, line 48) `#define VNET_Q_TX`
+  - `VNET_HDR_LEN` (macro, line 50) `#define VNET_HDR_LEN`
+  - `VNET_RX_BUFS` (macro, line 51) `#define VNET_RX_BUFS`
+  - `VNET_RX_SIZE` (macro, line 52) `#define VNET_RX_SIZE`
+  - `VNET_TX_SIZE` (macro, line 53) `#define VNET_TX_SIZE`
+  - `VNET_MIN_FRAME` (macro, line 54) `#define VNET_MIN_FRAME`
+  - `VNET_MAX_FRAME` (macro, line 55) `#define VNET_MAX_FRAME`
+  - `VNET_TMO_MS` (macro, line 56) `#define VNET_TMO_MS`
+  - `VNET_POLL_MAX` (macro, line 57) `#define VNET_POLL_MAX`
+  - `VNET_CFG_MAC` (macro, line 59) `#define VNET_CFG_MAC`
+  - `VNET_CFG_STATUS` (macro, line 60) `#define VNET_CFG_STATUS`
+  - `VNET_ST_LINK_UP` (macro, line 61) `#define VNET_ST_LINK_UP`
+- Depends on: `headers/drivers/pci.h`, `headers/drivers/virtio_net.h`, `headers/net.h`
+
+## drivers/xhci.c
+- Doc: xHCI host controller driver, polled event ring.
+- Layer: infrastructure
+- Language: c
+- Symbols:
+  - `xhc_trb_t` (struct, line 239)
+  - `xhc_ring_t` (struct, line 250)
+  - `xhc_pending_t` (struct, line 264)
+  - `xhc_devrec_t` (struct, line 276)
+  - `xhc_ep_b` (function, line 296) `static unsigned xhc_ep_b(void)`
+  - `xhc_stride` (function, line 300) `static unsigned xhc_stride(void)`
+  - `xhc_put32` (function, line 327) `static void xhc_put32(unsigned char *base, unsigned off, unsigned val)`
+  - `xhc_get32` (function, line 334) `static unsigned xhc_get32(const unsigned char *base, unsigned off)`
+  - `xhc_put64` (function, line 339) `static void xhc_put64(unsigned char *base, unsigned off,
+                      unsigned long long...`
+  - `xhc_put16` (function, line 345) `static void xhc_put16(unsigned char *base, unsigned off, unsigned val)`
+  - `xhc_puttrb` (function, line 350) `static void xhc_puttrb(xhc_trb_t *trb, unsigned long long param,
+                       unsigned ...`
+  - `xhc_op_read32` (function, line 359) `static unsigned xhc_op_read32(unsigned off)`
+  - `xhc_op_write32` (function, line 363) `static void xhc_op_write32(unsigned off, unsigned val)`
+  - `xhc_run_write32` (function, line 367) `static void xhc_run_write32(unsigned off, unsigned val)`
+  - `xhc_run_read32` (function, line 371) `static unsigned xhc_run_read32(unsigned off)`
+  - `xhc_now_ms` (function, line 375) `static unsigned long xhc_now_ms(void)`
+  - `xhc_flush` (function, line 386) `static void xhc_flush(const void *p, unsigned long len)`
+  - `xhc_idle` (function, line 393) `static void xhc_idle(unsigned spin)`
+  - `xhc_slot_ctx` (function, line 400) `static unsigned char *xhc_slot_ctx(int slot)`
+  - `xhc_ep_ctx` (function, line 404) `static unsigned char *xhc_ep_ctx(int slot, int ep)`
+  - `xhc_in_slot` (function, line 409) `static unsigned char *xhc_in_slot(void)`
+  - `xhc_in_ep` (function, line 413) `static unsigned char *xhc_in_ep(int ci)`
+  - `xhc_ep_ctx_build` (function, line 418) `static void xhc_ep_ctx_build(unsigned char *ep, unsigned type,
+                             unsig...`
+  - `xhc_slot_ctx_build` (function, line 439) `static void xhc_slot_ctx_build(unsigned char *sc, unsigned speed,
+                               ...`
+  - `xhc_arm_link_trb` (function, line 458) `static void xhc_arm_link_trb(xhc_trb_t *ring, unsigned gen)`
+  - `xhc_arm_link` (function, line 465) `static void xhc_arm_link(void)`
+  - `xhc_cmd_wrap` (function, line 477) `static void xhc_cmd_wrap(void)`
+  - `xhc_cmd_maybe_arm` (function, line 483) `static void xhc_cmd_maybe_arm(void)`
+  - `xhc_cmd_slot` (function, line 494) `static xhc_trb_t *xhc_cmd_slot(void)`
+  - `xhc_cmd_ring_doorbell` (function, line 506) `static void xhc_cmd_ring_doorbell(void)`
+  - `xhc_slot_doorbell` (function, line 519) `static void xhc_slot_doorbell(int slot, int ep)`
+  - `xhc_evt_next` (function, line 535) `static xhc_trb_t *xhc_evt_next(void)`
+  - `xhc_evt_trb_ptr` (function, line 552) `static xhc_trb_t *xhc_evt_trb_ptr(xhc_trb_t *ev)`
+  - `xhc_evt_advance` (function, line 559) `static void xhc_evt_advance(void)`
+  - `xhc_pending_claim_len` (function, line 570) `static int xhc_pending_claim_len(xhc_trb_t *trb, unsigned len)`
+  - `xhc_pending_claim` (function, line 586) `static int xhc_pending_claim(xhc_trb_t *trb)`
+  - `xhc_pending_drop` (function, line 590) `static void xhc_pending_drop(int token)`
+  - `xhc_poll` (function, line 595) `int xhc_poll(void)`
+  - `xhc_wait` (function, line 638) `static int xhc_wait(int token, unsigned budget_ms)`
+  - `xhc_status` (function, line 654) `static int xhc_status(int token)`
+  - `xhc_cmd_run_ep` (function, line 663) `static int xhc_cmd_run_ep(unsigned type, unsigned long long param,
+                            un...`
+  - `xhc_cmd_run` (function, line 709) `static int xhc_cmd_run(unsigned type, unsigned long long param, unsigned slot,
+                  ...`
+  - `xhc_ep_command` (function, line 719) `static int xhc_ep_command(unsigned type, int slot, int dci)`
+  - `xhc_reset_endpoint` (function, line 723) `int xhc_reset_endpoint(int index, int ep_index)`
+  - `xhc_port_count` (function, line 749) `int xhc_port_count(void)`
+  - `xhc_port_state` (function, line 753) `int xhc_port_state(int port, xhc_port_t *out)`
+  - `xhc_port_reset` (function, line 776) `int xhc_port_reset(int port)`
+  - `xhc_device_count` (function, line 806) `int xhc_device_count(void)`
+  - `xhc_device_info` (function, line 814) `int xhc_device_info(int index, xhc_dev_t *out)`
+  - `xhc_dev_alloc` (function, line 833) `static int xhc_dev_alloc(void)`
+  - `xhc_dev_release` (function, line 843) `static void xhc_dev_release(int index)`
+  - `xhc_open_interface` (function, line 863) `int xhc_open_interface(int index, unsigned cls, unsigned sub, unsigned proto,
+                   ...`
+  - `xhc_ring_wrap` (function, line 936) `static void xhc_ring_wrap(int index, xhc_ring_t *ring, int ep)`
+  - `xhc_ring_maybe_arm` (function, line 949) `static void xhc_ring_maybe_arm(xhc_ring_t *ring)`
+  - `xhc_ep0_slot` (function, line 959) `static xhc_trb_t *xhc_ep0_slot(int index)`
+  - `xhc_ep0_bump` (function, line 971) `static void xhc_ep0_bump(int index)`
+  - `xhc_control_stage` (function, line 979) `static int xhc_control_stage(int index, const unsigned char setup[8],
+                           ...`
+  - `xhc_control` (function, line 1048) `int xhc_control(int index, const unsigned char setup[8], void *data,
+                unsigned len...`
+  - `xhc_setup_nodata` (function, line 1069) `static void xhc_setup_nodata(unsigned char *setup, unsigned char type,
+                          ...`
+  - `xhc_setup_data` (function, line 1082) `static void xhc_setup_data(unsigned char *setup, unsigned char type,
+                           u...`
+  - `xhc_dci` (function, line 1093) `static int xhc_dci(int ep_addr)`
+  - `xhc_configure_endpoint` (function, line 1100) `int xhc_configure_endpoint(int index, int ep_index, int ep_addr, int ep_type,
+                   ...`
+  - `xhc_ep_post` (function, line 1162) `static int xhc_ep_post(int index, int ep_index, void *buf, unsigned len)`
+  - `xhc_got` (function, line 1197) `static int xhc_got(int token)`
+  - `xhc_transfer` (function, line 1202) `int xhc_transfer(int index, int ep_index, void *buf, unsigned len, int *got)`
+  - `xhc_transfer_async` (function, line 1222) `int xhc_transfer_async(int index, int ep_index, void *buf, unsigned len)`
+  - `xhc_poll_token_limit` (function, line 1233) `int xhc_poll_token_limit(int token, unsigned budget_ms)`
+  - `xhc_poll_token` (function, line 1252) `int xhc_poll_token(int token)`
+  - `xhc_address` (function, line 1261) `static int xhc_address(int index, int slot, int port, int speed)`
+  - `xhc_get_device_desc` (function, line 1316) `static int xhc_get_device_desc(int index, unsigned char *buf)`
+  - `xhc_get_config_desc` (function, line 1333) `static int xhc_get_config_desc(int index, unsigned char *buf, unsigned *len)`
+  - `xhc_enumerate` (function, line 1358) `int xhc_enumerate(int port)`
+  - `xhc_enumerate_all` (function, line 1444) `int xhc_enumerate_all(void)`
+  - `xhc_outl` (function, line 1454) `static void xhc_outl(unsigned short port, unsigned val)`
+  - `xhc_inl` (function, line 1458) `static unsigned xhc_inl(unsigned short port)`
+  - `xhc_free_all` (function, line 1464) `static void xhc_free_all(void)`
+  - `xhc_alloc_all` (function, line 1494) `static int xhc_alloc_all(unsigned max_slots)`
+  - `xhc_start` (function, line 1593) `static int xhc_start(unsigned contexts)`
+  - `xhc_init` (function, line 1658) `int xhc_init(void)`
+  - `xhc_counters` (function, line 1790) `void xhc_counters(xhc_counters_t *out)`
+  - `xhc_probe_note` (function, line 1794) `const char *xhc_probe_note(void)`
+  - `xhc_info` (function, line 1798) `int xhc_info(unsigned *version, unsigned *slots, unsigned *ports,
+             unsigned *caplength)`
+  - `XHC_CAP_OFF` (macro, line 55) `#define XHC_CAP_OFF`
+  - `XHC_OP_USBCMD` (macro, line 58) `#define XHC_OP_USBCMD`
+  - `XHC_OP_USBSTS` (macro, line 59) `#define XHC_OP_USBSTS`
+  - `XHC_OP_PAGESIZE` (macro, line 60) `#define XHC_OP_PAGESIZE`
+  - `XHC_OP_CRCR` (macro, line 61) `#define XHC_OP_CRCR`
+  - `XHC_OP_DCBAAP` (macro, line 62) `#define XHC_OP_DCBAAP`
+  - `XHC_OP_CONFIG` (macro, line 63) `#define XHC_OP_CONFIG`
+  - `XHC_OP_PORTSC` (macro, line 64) `#define XHC_OP_PORTSC`
+  - `XHC_PORT_STRIDE` (macro, line 65) `#define XHC_PORT_STRIDE`
+  - `XHC_RUN_INTR0` (macro, line 71) `#define XHC_RUN_INTR0`
+  - `XHC_RUN_IMAN` (macro, line 72) `#define XHC_RUN_IMAN`
+  - `XHC_RUN_IMOD` (macro, line 73) `#define XHC_RUN_IMOD`
+  - `XHC_RUN_ERSTSZ` (macro, line 74) `#define XHC_RUN_ERSTSZ`
+  - `XHC_RUN_ERSTBA` (macro, line 75) `#define XHC_RUN_ERSTBA`
+  - `XHC_RUN_ERDP` (macro, line 76) `#define XHC_RUN_ERDP`
+  - `XHC_IMAN_IP` (macro, line 77) `#define XHC_IMAN_IP`
+  - `XHC_IMAN_IE` (macro, line 78) `#define XHC_IMAN_IE`
+  - `XHC_ERDP_EHB` (macro, line 79) `#define XHC_ERDP_EHB`
+  - `XHC_CAP_HCSP1` (macro, line 82) `#define XHC_CAP_HCSP1`
+  - `XHC_CAP_HCSP2` (macro, line 83) `#define XHC_CAP_HCSP2`
+  - `XHC_CAP_HCSP3` (macro, line 84) `#define XHC_CAP_HCSP3`
+  - `XHC_CAP_HCCP1` (macro, line 85) `#define XHC_CAP_HCCP1`
+  - `XHC_CAP_DBOFF` (macro, line 86) `#define XHC_CAP_DBOFF`
+  - `XHC_CAP_RTSOFF` (macro, line 87) `#define XHC_CAP_RTSOFF`
+  - `XHC_HCC_AC64` (macro, line 88) `#define XHC_HCC_AC64`
+  - `XHC_HCC_CSZ` (macro, line 89) `#define XHC_HCC_CSZ`
+  - `XHC_CMD_RUN` (macro, line 92) `#define XHC_CMD_RUN`
+  - `XHC_CMD_RESET` (macro, line 93) `#define XHC_CMD_RESET`
+  - `XHC_STS_HALTED` (macro, line 96) `#define XHC_STS_HALTED`
+  - `XHC_STS_ATE` (macro, line 97) `#define XHC_STS_ATE`
+  - `XHC_PORT_CCS` (macro, line 100) `#define XHC_PORT_CCS`
+  - `XHC_PORT_PED` (macro, line 101) `#define XHC_PORT_PED`
+  - `XHC_PORT_PR` (macro, line 102) `#define XHC_PORT_PR`
+  - `XHC_PORT_PP` (macro, line 103) `#define XHC_PORT_PP`
+  - `XHC_PORT_SPEED_SHIFT` (macro, line 104) `#define XHC_PORT_SPEED_SHIFT`
+  - `XHC_PORT_SPEED_MASK` (macro, line 105) `#define XHC_PORT_SPEED_MASK`
+  - `XHC_PORT_CHG_MASK` (macro, line 106) `#define XHC_PORT_CHG_MASK`
+  - `XHC_TRB_TYPE` (macro, line 109) `#define XHC_TRB_TYPE(t)`
+  - `XHC_TRB_CYCLE` (macro, line 110) `#define XHC_TRB_CYCLE(t)`
+  - `XHC_TRB_MAKE_TYPE` (macro, line 111) `#define XHC_TRB_MAKE_TYPE(v)`
+  - `XHC_TRB_TYPE_NORMAL` (macro, line 113) `#define XHC_TRB_TYPE_NORMAL`
+  - `XHC_TRB_TYPE_SETUP` (macro, line 114) `#define XHC_TRB_TYPE_SETUP`
+  - `XHC_TRB_TYPE_DATA` (macro, line 115) `#define XHC_TRB_TYPE_DATA`
+  - `XHC_TRB_TYPE_STATUS` (macro, line 116) `#define XHC_TRB_TYPE_STATUS`
+  - `XHC_TRB_TYPE_LINK` (macro, line 117) `#define XHC_TRB_TYPE_LINK`
+  - `XHC_TRB_TYPE_NOOP_TRB` (macro, line 118) `#define XHC_TRB_TYPE_NOOP_TRB`
+  - `XHC_TRB_TYPE_ENABLE_SLOT` (macro, line 119) `#define XHC_TRB_TYPE_ENABLE_SLOT`
+  - `XHC_TRB_TYPE_ADDRESS_DEVICE` (macro, line 120) `#define XHC_TRB_TYPE_ADDRESS_DEVICE`
+  - `XHC_TRB_TYPE_CONFIGURE_ENDPOINT` (macro, line 121) `#define XHC_TRB_TYPE_CONFIGURE_ENDPOINT`
+  - `XHC_TRB_TYPE_RESET_ENDPOINT` (macro, line 122) `#define XHC_TRB_TYPE_RESET_ENDPOINT`
+  - `XHC_TRB_TYPE_STOP_ENDPOINT` (macro, line 123) `#define XHC_TRB_TYPE_STOP_ENDPOINT`
+  - `XHC_TRB_TYPE_SET_DEQUEUE` (macro, line 124) `#define XHC_TRB_TYPE_SET_DEQUEUE`
+  - `XHC_TRB_TYPE_NOOP_CMD` (macro, line 125) `#define XHC_TRB_TYPE_NOOP_CMD`
+  - `XHC_TRB_TYPE_TRANSFER_EVENT` (macro, line 126) `#define XHC_TRB_TYPE_TRANSFER_EVENT`
+  - `XHC_TRB_TYPE_CMD_COMPLETION` (macro, line 127) `#define XHC_TRB_TYPE_CMD_COMPLETION`
+  - `XHC_TRB_TYPE_PORT_STATUS` (macro, line 128) `#define XHC_TRB_TYPE_PORT_STATUS`
+  - `XHC_CC_SUCCESS` (macro, line 131) `#define XHC_CC_SUCCESS`
+  - `XHC_CC_SHORT_PACKET` (macro, line 132) `#define XHC_CC_SHORT_PACKET`
+  - `XHC_EVT_TYPE` (macro, line 135) `#define XHC_EVT_TYPE(e)`
+  - `XHC_EVT_CC` (macro, line 136) `#define XHC_EVT_CC(e)`
+  - `XHC_EVT_SLOT` (macro, line 137) `#define XHC_EVT_SLOT(e)`
+  - `XHC_EVT_LEN` (macro, line 138) `#define XHC_EVT_LEN(e)`
+  - `XHC_EVT_TRANSFER` (macro, line 139) `#define XHC_EVT_TRANSFER`
+  - `XHC_EVT_CMD_COMPLETION` (macro, line 140) `#define XHC_EVT_CMD_COMPLETION`
+  - `XHC_EP_DW0_OFF` (macro, line 150) `#define XHC_EP_DW0_OFF`
+  - `XHC_EP_DW1_OFF` (macro, line 151) `#define XHC_EP_DW1_OFF`
+  - `XHC_EP_DEQ_OFF` (macro, line 152) `#define XHC_EP_DEQ_OFF`
+  - `XHC_EP_AVG_OFF` (macro, line 153) `#define XHC_EP_AVG_OFF`
+  - `XHC_EP_MULT_SHIFT` (macro, line 154) `#define XHC_EP_MULT_SHIFT`
+  - `XHC_EP_INTERVAL_SHIFT` (macro, line 155) `#define XHC_EP_INTERVAL_SHIFT`
+  - `XHC_EP_TYPE_SHIFT` (macro, line 156) `#define XHC_EP_TYPE_SHIFT`
+  - `XHC_EP_BURST_SHIFT` (macro, line 157) `#define XHC_EP_BURST_SHIFT`
+  - `XHC_EP_MAXP_SHIFT` (macro, line 158) `#define XHC_EP_MAXP_SHIFT`
+  - `XHC_EP_DCS_BIT` (macro, line 159) `#define XHC_EP_DCS_BIT`
+  - `XHC_EPT_CONTROL` (macro, line 162) `#define XHC_EPT_CONTROL`
+  - `XHC_EPT_ISO_OUT` (macro, line 163) `#define XHC_EPT_ISO_OUT`
+  - `XHC_EPT_BULK_OUT` (macro, line 164) `#define XHC_EPT_BULK_OUT`
+  - `XHC_EPT_INT_OUT` (macro, line 165) `#define XHC_EPT_INT_OUT`
+  - `XHC_EPT_ISO_IN` (macro, line 166) `#define XHC_EPT_ISO_IN`
+  - `XHC_EPT_BULK_IN` (macro, line 167) `#define XHC_EPT_BULK_IN`
+  - `XHC_EPT_INT_IN` (macro, line 168) `#define XHC_EPT_INT_IN`
+  - `XHC_EP_CERR` (macro, line 169) `#define XHC_EP_CERR`
+  - `XHC_CTX_SLOT_STRIDE` (macro, line 173) `#define XHC_CTX_SLOT_STRIDE`
+  - `XHC_CTX_SLOT_STRIDE64` (macro, line 174) `#define XHC_CTX_SLOT_STRIDE64`
+  - `XHC_CTX_DEVICE_BYTES` (macro, line 175) `#define XHC_CTX_DEVICE_BYTES`
+  - `XHC_CTX_EP_BYTES` (macro, line 176) `#define XHC_CTX_EP_BYTES`
+  - `XHC_ICTX_BYTES` (macro, line 177) `#define XHC_ICTX_BYTES`
+  - `XHC_SLOT_DW0_OFF` (macro, line 181) `#define XHC_SLOT_DW0_OFF`
+  - `XHC_SLOT_DW1_OFF` (macro, line 182) `#define XHC_SLOT_DW1_OFF`
+  - `XHC_SLOT_ADDR_OFF` (macro, line 183) `#define XHC_SLOT_ADDR_OFF`
+  - `XHC_SLOT_SPEED_SHIFT` (macro, line 184) `#define XHC_SLOT_SPEED_SHIFT`
+  - `XHC_SLOT_ENTRIES_SHIFT` (macro, line 185) `#define XHC_SLOT_ENTRIES_SHIFT`
+  - `XHC_SLOT_RHPORT_SHIFT` (macro, line 186) `#define XHC_SLOT_RHPORT_SHIFT`
+  - `XHC_ICTX_DROP_OFF` (macro, line 189) `#define XHC_ICTX_DROP_OFF`
+  - `XHC_ICTX_ADD_OFF` (macro, line 190) `#define XHC_ICTX_ADD_OFF`
+  - `XHC_DCBAA_ENTRIES` (macro, line 193) `#define XHC_DCBAA_ENTRIES`
+  - `XHC_ERST_RING_LO` (macro, line 196) `#define XHC_ERST_RING_LO`
+  - `XHC_ERST_RING_HI` (macro, line 197) `#define XHC_ERST_RING_HI`
+  - `XHC_ERST_SIZE` (macro, line 198) `#define XHC_ERST_SIZE`
+  - `XHC_ERST_CYCLE` (macro, line 199) `#define XHC_ERST_CYCLE`
+  - `XHC_ERST_BYTES` (macro, line 200) `#define XHC_ERST_BYTES`
+  - `XHC_DMA_ALIGN` (macro, line 212) `#define XHC_DMA_ALIGN`
+  - `XHC_RING_USABLE` (macro, line 215) `#define XHC_RING_USABLE`
+  - `XHC_DT_DEVICE` (macro, line 218) `#define XHC_DT_DEVICE`
+  - `XHC_DT_CONFIG` (macro, line 219) `#define XHC_DT_CONFIG`
+  - `XHC_DT_INTERFACE` (macro, line 220) `#define XHC_DT_INTERFACE`
+  - `XHC_DT_ENDPOINT` (macro, line 221) `#define XHC_DT_ENDPOINT`
+  - `XHC_DEV_DESC_LEN_OFF` (macro, line 224) `#define XHC_DEV_DESC_LEN_OFF`
+  - `XHC_DEV_DESC_TYPE_OFF` (macro, line 225) `#define XHC_DEV_DESC_TYPE_OFF`
+  - `XHC_DEV_DESC_NUM_CFG_OFF` (macro, line 226) `#define XHC_DEV_DESC_NUM_CFG_OFF`
+  - `XHC_CFG_TOTAL_LEN_OFF` (macro, line 227) `#define XHC_CFG_TOTAL_LEN_OFF`
+  - `XHC_IFACE_OFF` (macro, line 228) `#define XHC_IFACE_OFF`
+  - `XHC_IFACE_CLASS_OFF` (macro, line 229) `#define XHC_IFACE_CLASS_OFF`
+  - `XHC_IFACE_SUBCLASS_OFF` (macro, line 230) `#define XHC_IFACE_SUBCLASS_OFF`
+  - `XHC_IFACE_PROTO_OFF` (macro, line 231) `#define XHC_IFACE_PROTO_OFF`
+  - `XHC_EP_DESC_ADDR_OFF` (macro, line 232) `#define XHC_EP_DESC_ADDR_OFF`
+  - `XHC_EP_DESC_TYPE_OFF` (macro, line 233) `#define XHC_EP_DESC_TYPE_OFF`
+  - `XHC_EP_DESC_MAXP_OFF` (macro, line 234) `#define XHC_EP_DESC_MAXP_OFF`
+  - `XF_LINK_TC` (macro, line 455) `#define XF_LINK_TC`
+  - `XHC_DB_STRIDE` (macro, line 514) `#define XHC_DB_STRIDE`
+  - `XHC_DB_COMMAND` (macro, line 515) `#define XHC_DB_COMMAND`
+  - `XHC_TRB_IOC` (macro, line 924) `#define XHC_TRB_IOC`
+  - `XHC_TRB_IDT` (macro, line 925) `#define XHC_TRB_IDT`
+  - `XHC_TRB_DIR` (macro, line 926) `#define XHC_TRB_DIR`
+  - `XHC_TRT_OUT` (macro, line 927) `#define XHC_TRT_OUT`
+  - `XHC_TRT_IN` (macro, line 928) `#define XHC_TRT_IN`
+  - `XHC_CONTROL_TRIES` (macro, line 1047) `#define XHC_CONTROL_TRIES`
+- Depends on: `headers/arch/x86/hal_io.h`, `headers/drivers/pci.h`, `headers/drivers/xhci.h`
+- Imported by: `tests/test_usbblk.c`, `tests/test_usbhid.c`, `tests/test_xhci.c`
+

@@ -15,6 +15,11 @@ desktop and captures what the guest drew.
 Usage:
   python3 tools/minios_gui.py [actions...]
 
+Environment:
+  MEM       guest RAM (default 1G, like boot_run.sh: the kernel heap alone
+            ends at 384 MB, so a smaller guest never reaches the prompt)
+  DISPLAY   X display for the SDL window (run under xvfb-run to stay headless)
+
 Actions:
   send  LINE         send a shell line, wait for prompt
   mouse DX DY        inject relative mouse motion
@@ -39,6 +44,7 @@ WORK = tempfile.mkdtemp(prefix="gui_")
 QMP_SOCK = os.path.join(WORK, "qmp.sock")
 DUMPS = WORK
 DISPLAY = os.environ.get("DISPLAY", ":0")
+MEM = os.environ.get("MEM", "1G")
 
 
 def read_serial(master, timeout=1.0):
@@ -116,7 +122,7 @@ def main():
         return 1
     master, slave = pty.openpty()
     qemu = ["qemu-system-x86_64", "-drive", f"file={IMAGE},format=raw,if=ide",
-            "-m", "256M", "-nic", "user,model=rtl8139", "-vga", "std",
+            "-m", MEM, "-nic", "user,model=rtl8139", "-vga", "std",
             "-display", "sdl", "-serial", os.ttyname(slave),
             "-qmp", f"unix:{QMP_SOCK},server=on,wait=off", "-no-reboot"]
     env = dict(os.environ)

@@ -1,8 +1,8 @@
 # Subsystem: boot
 
 ## arch/x86/boot/stage1.S
+- Doc: MiniOS boot sector.
 - Layer: utility
-- Doc: stage1.S - MiniOS boot sector.
 - Language: S
 - Symbols:
   - `main` (function, line 28)
@@ -19,8 +19,8 @@
 - Depends on: `headers/arch/x86/boot/bootdefs.h`
 
 ## arch/x86/boot/stage2.S
+- Doc: MiniOS second-stage loader.
 - Layer: utility
-- Doc: stage2.S - MiniOS second-stage loader.
 - Language: S
 - Symbols:
   - `stage2_main` (function, line 39)
