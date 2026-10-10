@@ -4,6 +4,7 @@
 #include "sched.h"
 #include "ap_stub.h"
 #include "arch/x86/msr.h"
+#include "arch/x86/cpu_setup.h"
 
 /* SMP application-processor bring-up.
  *
@@ -47,6 +48,9 @@
 #define LAPIC_ICR_ALL_EXC 0xC0000u  /* destination shorthand: all excl. self (bits 19:18) */
 #define LAPIC_ICR_LEVEL   0x4000u   /* level-assert (bit 14) */
 #define LAPIC_ICR_TRIGGER 0x8000u   /* level-trigger mode (bit 15) */
+#define LAPIC_ICR_NMI     0x400u    /* delivery mode 4: NMI, vector ignored (bits 10:8) */
+/* Polls of the ICR delivery-status bit before a send proceeds anyway. */
+#define LAPIC_ICR_IDLE_SPINS 100000u
 
 #define SIPI_VECTOR       (AP_STUB_ADDR >> 12)
 
@@ -100,6 +104,22 @@ void smp_ipi_broadcast(int vector) {
      * IPI is a deassert and QEMU drops it. */
     lapic_write(LAPIC_ICR_LO, LAPIC_ICR_ALL_EXC | LAPIC_ICR_LEVEL
                               | (unsigned)vector);
+}
+
+/* Broadcast an NMI to every other CPU (TLB shootdown, kernel/mm/tlb.c).
+ * Any CPU may call it: interrupts stay off across the two ICR writes so a
+ * tick on this CPU cannot interleave its own broadcast between them, and a
+ * previous send still in flight is waited out first. */
+void smp_nmi_broadcast(void) {
+    irqflags_t flags = spin_save_irq();
+    unsigned spins = 0;
+    while ((lapic_read(LAPIC_ICR_LO) & LAPIC_ICR_BUSY) && spins < LAPIC_ICR_IDLE_SPINS) {
+        spins++;
+        __asm__ volatile("pause" ::: "memory");
+    }
+    lapic_write(LAPIC_ICR_HI, 0);
+    lapic_write(LAPIC_ICR_LO, LAPIC_ICR_ALL_EXC | LAPIC_ICR_LEVEL | LAPIC_ICR_NMI);
+    spin_restore_irq(flags);
 }
 
 /* Map the LAPIC so the BSP can program the ICR, and the APs can read their id
@@ -259,6 +279,13 @@ void smp_ap_entry(void) {
         cr0 |= (unsigned long)CR0_WP;
         __asm__ volatile("mov %0, %%cr0" :: "r"(cr0) : "memory");
     }
+
+    /* CR0.CD/NW and the SSE enables are per-CPU too. An AP leaves INIT
+     * with caching disabled and CR4.OSFXSR clear, so the first glibc
+     * thread the scheduler handed it died with #UD on an SSE string
+     * routine (FreeDom's fetch threads, under -smp 2). */
+    cpu_enable_caches();
+    cpu_enable_sse();
 
     /* Load the BSP's IDTR (same IDT, kernel memory, identity-mapped) */
     __asm__ volatile("lidt %0" :: "m"(bsp_idtr));

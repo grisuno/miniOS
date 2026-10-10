@@ -435,4 +435,18 @@
 /* --- Error codes --- */
 #define MINIOS_EABI_MISMATCH (-100)
 
+/* =========================================================================
+ * Process note (ELF PT_NOTE)
+ * =========================================================================
+ * A foreground run normally executes in the shell's pid-0 exec frame, which
+ * is not a process: fork, execve and anything built on them fail there. A
+ * program that needs process semantics (threads plus fork/exec, like the
+ * FreeDom browser) carries one ELF note with name MINIOS_NOTE_NAME, type
+ * MINIOS_NOTE_PROCESS and a 4-byte descriptor; the shell then runs it as an
+ * isolated process and waits for it in the foreground. Kernels that do not
+ * know the note ignore it, so it needs no ABI bump.
+ * ========================================================================= */
+#define MINIOS_NOTE_NAME          "MiniOS"
+#define MINIOS_NOTE_PROCESS       1U
+
 #endif

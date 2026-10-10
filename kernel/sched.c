@@ -20,6 +20,7 @@
 #include "arch/x86/msr.h"
 #include "drivers/mouse.h"
 #include "drivers/xhci.h"
+#include "tlb.h"
 
 /** Docstring: Audio tick adapter, forwards the bus dispatch to sb16_poll. */
 static void sched_tick_audio(void *ctx) {
@@ -117,6 +118,12 @@ typedef struct __attribute__((packed)) {
 static tss_t the_tss[MAX_CPUS] __attribute__((aligned(16)));
 /* Private ring-3 preempt stacks, one per CPU (8 KB each). */
 static char tss_kstack[MAX_CPUS][8192] __attribute__((aligned(16)));
+/* Private NMI stacks (TSS.ist1), one per CPU: the TLB shootdown NMI may
+ * land in the syscall entry window, still on the user stack. */
+#define NMI_IST_STACK_SZ 1024
+#define NMI_VECTOR       2
+#define NMI_IST_SLOT     1
+static char nmi_ist_stack[MAX_CPUS][NMI_IST_STACK_SZ] __attribute__((aligned(16)));
 /* Per-CPU idle stacks: a park into the idle context re-enters
  * smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */
 static char ap_idle_stack[MAX_CPUS][4096] __attribute__((aligned(16)));
@@ -703,6 +710,21 @@ void gdb_dump_report(unsigned long addr, unsigned long len) {
     }
 }
 
+/* Kernel page tables every idle context runs on, captured in sched_init.
+ * A park into the idle context must never keep the outgoing thread's CR3:
+ * when that thread's process dies its tables are freed and reused, and a
+ * CPU idling on them fetched kernel code through garbage until it
+ * double-faulted and the machine reset (an AP after a FreeDom crash, the
+ * next launch rebooted with no panic screen). */
+static uint64_t sched_idle_cr3;
+
+/* 1 when cpu's idle context runs on the kernel tables (the `smp` builtin
+ * reports it as idle_cr3=kernel|stale). */
+int sched_idle_on_kernel_cr3(int cpu) {
+    if (cpu < 0 || cpu >= MAX_CPUS) return 0;
+    return ap_idle_proc[cpu].ctx.cr3 == sched_idle_cr3;
+}
+
 /* ---- Trap frame (must match isr_stubs.S) ---- */
 typedef struct {
     uint64_t rax, rbx, rcx, rdx, rsi, rdi, rbp;
@@ -737,6 +759,10 @@ static void idt_init(void) {
     for (i = 0; i < 256; i++)
         if (isr_stub_table[i])
             idt_set(i, (void(*)(void))isr_stub_table[i]);
+    /* NMI is the TLB shootdown (kernel/mm/tlb.c): its own gate, its own
+     * IST stack, never the trap-frame path. */
+    idt_set(NMI_VECTOR, tlb_nmi_entry);
+    idt[NMI_VECTOR].ist = NMI_IST_SLOT;
     bsp_idtr.limit = sizeof(idt) - 1;
     bsp_idtr.base = (uint64_t)&idt;
     __asm__ volatile("lidt %0" :: "m"(bsp_idtr));
@@ -814,6 +840,7 @@ static void tss_init(void) {
     for (cpu = 0; cpu < MAX_CPUS; cpu++) {
         kmemset(&the_tss[cpu], 0, sizeof(the_tss[cpu]));
         the_tss[cpu].rsp0 = (uint64_t)&tss_kstack[cpu][8192];
+        the_tss[cpu].ist1 = (uint64_t)&nmi_ist_stack[cpu][NMI_IST_STACK_SZ];
         the_tss[cpu].iopb = sizeof(the_tss[cpu]);
         tss_write_desc(cpu);
     }
@@ -1061,7 +1088,7 @@ static void sched_ap_preempt(trap_frame_t *frame) {
             ap_idle_proc[me].ctx.rip = (uint64_t)smp_ap_idle_loop;
             ap_idle_proc[me].ctx.rsp =
                 (uint64_t)&ap_idle_stack[me][sizeof(ap_idle_stack[0])];
-            ap_idle_proc[me].ctx.cr3 = read_cr3();
+            ap_idle_proc[me].ctx.cr3 = sched_idle_cr3;
             switch_to_notrap(cur, &ap_idle_proc[me]);
         }
         return;
@@ -1096,7 +1123,7 @@ static void sched_ap_preempt(trap_frame_t *frame) {
             ap_idle_proc[me].ctx.rip = (uint64_t)smp_ap_idle_loop;
             ap_idle_proc[me].ctx.rsp =
                 (uint64_t)&ap_idle_stack[me][sizeof(ap_idle_stack[0])];
-            ap_idle_proc[me].ctx.cr3 = read_cr3();
+            ap_idle_proc[me].ctx.cr3 = sched_idle_cr3;
             switch_to_notrap(cur, &ap_idle_proc[me]);
             return;
         }
@@ -1231,7 +1258,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                 ap_idle_proc[me].ctx.rip = (uint64_t)smp_ap_idle_loop;
                 ap_idle_proc[me].ctx.rsp =
                     (uint64_t)&ap_idle_stack[me][sizeof(ap_idle_stack[0])];
-                ap_idle_proc[me].ctx.cr3 = read_cr3();
+                ap_idle_proc[me].ctx.cr3 = sched_idle_cr3;
                 switch_to_notrap(cur, &ap_idle_proc[me]);
             } else if (cur && cur->state == PROC_RUNNING) {
                 rlimit_cpu_tick(current_pid);
@@ -1309,7 +1336,7 @@ void isr_dispatch(int vector, trap_frame_t *frame) {
                     ap_idle_proc[me].ctx.rip = (uint64_t)smp_ap_idle_loop;
                     ap_idle_proc[me].ctx.rsp =
                         (uint64_t)&ap_idle_stack[me][sizeof(ap_idle_stack[0])];
-                    ap_idle_proc[me].ctx.cr3 = read_cr3();
+                    ap_idle_proc[me].ctx.cr3 = sched_idle_cr3;
                     switch_to_notrap(cur, &ap_idle_proc[me]);
                 } else {
                     cur->state = PROC_RUNNING;
@@ -2167,7 +2194,7 @@ void schedule(void) {
         ap_idle_proc[cpu].ctx.rip = (uint64_t)smp_ap_idle_loop;
         ap_idle_proc[cpu].ctx.rsp =
             (uint64_t)&ap_idle_stack[cpu][sizeof(ap_idle_stack[0])];
-        ap_idle_proc[cpu].ctx.cr3 = read_cr3();
+        ap_idle_proc[cpu].ctx.cr3 = sched_idle_cr3;
         switch_to_notrap(cur, &ap_idle_proc[cpu]);
         return;
     }
@@ -2563,6 +2590,12 @@ long do_fork_ex(uint64_t set_tid, uint64_t clear_tid) {
     irqflags_t fflags = spin_save_irq();
     new_cr3 = cow_fork_window(cur->ctx.cr3);
     if (!new_cr3) { spin_restore_irq(fflags); fork_report("page tables"); return -12; }
+    /* The parent's data pages just became read-only CoW shares. A sibling
+     * thread on another CPU kept its writable translation and wrote straight
+     * into frames the child now shares (the forked FreeDom renderer read the
+     * parent's later pointers as garbage), so its TLB is shot down before
+     * the child exists. */
+    tlb_shootdown(cur->ctx.cr3);
     urip = (unsigned long)this_cpu()->sc_rip;
     ursp = (unsigned long)cur->kstack;
     if (urip < USER_LOAD_BASE || urip >= USER_LOAD_END ||
@@ -3116,6 +3149,7 @@ static void proc_reap_slot_locked(int i) {
         free_kstack((uint64_t)sc_top_save[i]);
     procs[i].kstack = 0;
     fpu_free_proc(&procs[i]);
+    futex_forget(i);
     procs[i].state = PROC_FREE;
 }
 
@@ -3347,6 +3381,7 @@ void sched_init(void) {
      * idle context re-enters the idle loop instead of jumping to 0. */
     {
         unsigned long cr3 = read_cr3();
+        sched_idle_cr3 = cr3;
         for (c = 0; c < MAX_CPUS; c++) {
             ap_idle_proc[c].pid = -1;
             ap_idle_proc[c].state = PROC_BLOCKED;

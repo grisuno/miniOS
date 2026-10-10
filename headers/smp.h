@@ -41,5 +41,6 @@ extern int lapic_cal_valid;
 void smp_init(void);
 void smp_ap_entry(void);   /* entry point each AP jumps to from ap_entry.S */
 void smp_ipi_broadcast(int vector);  /* fixed-delivery IPI, all except self */
+void smp_nmi_broadcast(void);        /* NMI to all except self (TLB shootdown) */
 
 #endif

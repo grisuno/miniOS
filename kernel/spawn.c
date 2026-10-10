@@ -240,6 +240,7 @@ static int spawn_run_exec(const char *resolved, const char *redirect,
         for (;;) {
             rc = do_waitpid_nb(pid);
             if (rc != WAITPID_NONE) break;
+            vga_fb_wait_tick();
             if (wm_close_pending()) {
                 wm_clear_close();
                 do_kill(pid);

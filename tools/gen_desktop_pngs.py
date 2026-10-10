@@ -11,11 +11,12 @@ Sources (images/ by default, overridable with --src-dir):
   nuklear.png            Nuklear icon source
   vedit.png              vedit editor icon source
   pokemon.png            Pokemon icon source (Pikachu art, not pixel art)
+  freedom.png            FreeDom browser icon source
 
 Outputs (under the MiniOS repo):
   progs/icons/doom.png, doomedit.png, quake2.png, piano.png, nuklear.png,
   vedit.png, pokemon.png, file.png, shell.png, paint.png, minicraft.png,
-  folder.png, files.png, image.png, object.png  32x32 RGBA
+  freedom.png, folder.png, files.png, image.png, object.png  32x32 RGBA
   (folder/files/image/object are the file-browser kind icons).
   progs/wall/wallpaper.png                                   800x600 RGB
 
@@ -59,6 +60,7 @@ ICON_JOBS = (
     ("shell.png", "shell.png"),
     ("paint.png", "paint.png"),
     ("minicraft.png", "minicraft.png"),
+    ("freedom.png", "freedom.png"),
     ("folder.png", "folder.png"),
     ("files.png", "files.png"),
     ("image.png", "image.png"),

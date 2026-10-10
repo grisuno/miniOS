@@ -44,6 +44,7 @@
 #include "ktime.h"
 #include "randmix.h"
 #include "proc_sec.h"
+#include "tlb.h"
 
 /* ---- Per-process file-descriptor views (open/read/write/close) -------- */
 
@@ -2000,8 +2001,8 @@ static volatile unsigned long *mprotect_pte(unsigned long cr3,
 }
 
 /** Docstring: Linux mprotect(10), enforced for real. Toggles the RW
- * and NX bits page by page with a local invlpg each (the cow_resolve
- * precedent; no cross-CPU shootdown yet, noted in kernel.md). Two
+ * and NX bits page by page with a local invlpg each, then one
+ * tlb_shootdown so a sibling thread on another CPU loses the old rights. Two
  * passes under mm_lock: validate every page first (present, user,
  * private), then apply, so a half-mapped range reports -ENOMEM
  * without changing anything. -EINVAL for unaligned base or unknown
@@ -2071,6 +2072,7 @@ static long sys_linux_mprotect(long a1, long a2, long a3, long a4, long a5, long
         *pp = pte;
         __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
     }
+    tlb_shootdown(cr3);
     spin_unlock_irqrestore(&mm_lock, flags);
     return 0;
 }

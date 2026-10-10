@@ -119,6 +119,7 @@ SOURCES="$SOURCES headers/wm_gfxview.h tests/test_wm.c"
 # entry leaked execve-never-replaces into the tree (rc = -38 shipped
 # in os.img), caught by the anchor checker, never by review.
 SOURCES="$SOURCES kernel/syscalls_proc.c kernel/loader.c kernel/exec.c kernel/ldso_parse.c"
+SOURCES="$SOURCES kernel/spawn.c kernel/mm/tlb.c arch/x86/tlb_nmi.S"
 # ldso-* rows target the pure dynamic-table parser (kernel/ldso_parse.c,
 # host-pinned by make test-ldso) and its kernel glue (kernel/loader.c);
 # the BDD dynamic scenarios are the guest kill. headers/ldso.h and
@@ -299,8 +300,14 @@ smp-gs-base-not-set | s/wrmsr(MSR_GSBASE, (unsigned long)\\&cpus\\[cpu\\]);/\\/*
 poll-host-order | s/kmemcpy(\&events, entry + 4, 2);/events = net_get16((const unsigned char *)entry + 4);/ | net/net.c
 rlimit-as-shell-ignored | s/if (kstrcmp(argv\[1\], \"as\") == 0) rp->rl_as_max = v;/if (kstrcmp(argv[1], \"as\") == 0) rp->rl_as_max = 0;/ | kernel/shell.c
 lapic-cal-fallback | s/lapic_cal_valid = 1;/lapic_cal_valid = 0;/ | smp.c
+ap-sse-disabled | s/^    cpu_enable_sse();$/    (void)0;/ | smp.c
+idle-cr3-stale | s/ctx.cr3 = sched_idle_cr3;/ctx.cr3 = read_cr3();/ | kernel/sched.c
+tlb-shootdown-skipped | s/    if (!tlb_others_on(cr3)) return;/    return;/ | kernel/mm/tlb.c
+tlb-nmi-no-ack | s/        lock incl tlb_shoot_acks(%rip)/        nop/ | arch/x86/tlb_nmi.S
+futex-wait-no-forget | s/    futex_forget(current_pid);/    (void)0;/ | kernel/futex.c
+futex-wake-keeps-dead | s/        if (procs\[pid\].state != PROC_BLOCKED) {/        if (0) {/ | kernel/futex.c
 futex-value-check-inverted | s/if (\\*(volatile int \\*)uaddr != val)/if (*(volatile int *)uaddr == val)/ | kernel/futex.c
-futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n)/while (pid != WQ_NONE)/ | kernel/futex.c
+futex-wake-count-unbounded | s/while (pid != WQ_NONE \\&\\& woken < n \\&\\& steps++ < MAX_PROCS)/while (pid != WQ_NONE \\&\\& steps++ < MAX_PROCS)/ | kernel/futex.c
 futex-linux-private-unmasked | s/    cmd = op \& ~(long)(LINUX_FUTEX_PRIVATE_FLAG | LINUX_FUTEX_CLOCK_REALTIME);/    cmd = op \& ~(long)LINUX_FUTEX_CLOCK_REALTIME;/ | kernel/futex.c
 futex-linux-wake-dropped | s/    if (cmd == LINUX_FUTEX_WAIT || cmd == LINUX_FUTEX_WAKE ||/    if (cmd == LINUX_FUTEX_WAIT ||/ | kernel/futex.c
 rtc-epoch-day-off-by-one | s/return era \\* 146097 + doe - 719468;/return era \\* 146097 + doe - 719467;/ | headers/rtc.h
@@ -399,7 +406,7 @@ lxabi-rlimit-stack-unlimited | s/    if (res == LINUX_RLIMIT_STACK) v = MINIOS_U
 lxabi-affinity-mask-empty | s/    \*(unsigned long \*)a3 = mask;/    *(unsigned long *)a3 = 0;/ | kernel/syscalls.c
 lxabi-pipe-fionread-zero | s/    case LINUX_FIONREAD: \*(int \*)a3 = kfile_readable_bytes(f); r = 0; break;/    case LINUX_FIONREAD: *(int *)a3 = 0; r = 0; break;/ | kernel/syscalls.c
 lxabi-pipe-claims-tty | s/    default: r = -LINUX_ENOTTY; break;/    default: r = 0; break;/ | kernel/syscalls.c
-lxabi-demand-fault-refused | s/    if (!(pte \& PTE_DEMAND_READ)) return -1;/    return -1;/ | kernel/mm/paging.c
+lxabi-demand-fault-refused | s/(pte \& PTE_DEMAND) \&\& (pte \& PTE_DEMAND_READ) \&\&/0 \&\&/ | kernel/mm/paging.c
 lxabi-view-never-swapped | s/    if (!no || no == ho) return;/    if (1) return;/ | kernel/sched.c
 lxabi-wild-jump-panics | s/^        if ((frame->cs \& 3) == 3) {$/        if (0) {/ | kernel/sched.c
 lxnet-udp-fionread-zero | s/            \*(int \*)arg = u->count ? (int)u->q\[u->head\].len : 0;/            *(int *)arg = 0;/ | net/net.c
@@ -413,6 +420,13 @@ ps2-num-lock-starts-off | s/    s->num_lock = 1;/    s->num_lock = 0;/ | progs/f
 ps2-pause-tail-short | s/#define PS2_PAUSE_TAIL      5/#define PS2_PAUSE_TAIL      4/ | progs/freedomui/ps2_keymap.c
 ps2-release-keeps-mod | s/    else      s->held \&= ~bit;/    else      s->held \&= bit;/ | progs/freedomui/ps2_keymap.c
 freedom-gui-frame-proof-lost | s/    if (!d->frame_reported) {/    if (0) {/ | progs/freedomui/platform_minios.c
+process-note-ignored | s/        if (srcpath \&\& elf_wants_process(data, size))/        if (0 \&\& srcpath \&\& elf_wants_process(data, size))/ | kernel/shell.c
+process-note-frame-exe-lost | s/        if (srcpath) proc_sec_set_exe(0, srcpath);/        (void)srcpath;/ | kernel/shell.c
+process-note-type-flip | s/namesz == namesz_want \&\& type == MINIOS_NOTE_PROCESS \&\&/namesz == namesz_want \&\& type != MINIOS_NOTE_PROCESS \&\&/ | kernel/loader.c
+process-note-name-flip | s/MINIOS_NOTE_NAME, namesz_want) == 0 \&\&/MINIOS_NOTE_NAME, namesz_want) != 0 \&\&/ | kernel/loader.c
+gfx-cursor-follow-lost | s/^    gfx_cursor_follow_idle();/    ;/ | kernel/vga_fb.c
+gfx-cursor-stale-arrow | /Lift the desktop pointer/,/cursor_erase/s/cursor_erase();/(void)0;/ | kernel/vga_fb.c
+fg-wait-tick-lost | s/^            vga_fb_wait_tick();/            ;/ | kernel/spawn.c
 nk-palette-bg-black | s/{15, 15, 15}, {0, 220, 0},/{0, 0, 0}, {0, 0, 0},/ | progs/nk_palette.h
 spawn-nested-parent-zeroed | s/child->clone_flags = 0;/child->parent_pid = 0; child->clone_flags = 0;/ | kernel/sched.c
 minicraft-ser-enter-lost | s/if (b == 13L || b == 10L)/if (0) {/ | progs/minicraft/minicraft.c
@@ -758,6 +772,11 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # melt-counter slice.
             if [[ "$name" == gfxview-* ]]; then
                 MATCH="gfxview" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [[ "$name" == gfx-cursor-* ]]; then
+                # The graphics-mode pointer (idle follow, desktop sprite
+                # lifted on entry) is observable only on pixels: the
+                # foreground phase of the FreeDom GUI proof judges both.
+                python3 "$HERE/tools/test_gui_freedom.py" > "$BACKUP/suite.log" 2>&1
             else
             # No non-fx mutant touches these files yet, so the fx-filtered
             # BDD (3 scenarios, melts-counter pins) is the targeted suite;
@@ -790,6 +809,10 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # kills it; every other sched.c mutant keeps the full suite.
             if [ "$name" = "fd-fork-shares-view" ]; then
                 MATCH="fork" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [[ "$name" == idle-cr3-* ]]; then
+                # The smp builtin reports each idle context's tables; the
+                # AP SSE scenario parks the AP after six threaded runs.
+                MATCH="SSE in threads" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             elif [[ "$name" == pcache-* ]]; then
                 MATCH="pcache" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             else
@@ -833,7 +856,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # table mutants without a boot), then the two BDD dynamic
             # scenarios (live window and isolated window) kill the
             # loader-glue mutants.
-            if [[ "$name" == ldso-static-rejected ]]; then
+            if [[ "$name" == process-note-* ]]; then
+                MATCH="process note" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            elif [[ "$name" == ldso-static-rejected ]]; then
                 # Breaks loading of every no-dynamic image, ET_EXEC
                 # included: the MiniFS lisp ELF is the kill.
                 MATCH="lisp evaluates" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
@@ -843,6 +868,37 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             else
                 FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             fi
+            ;;
+        kernel/shell.c)
+            # process-note-* rows break the foreground process path or the
+            # exec frame's /proc/self/exe; the lxproc/lxframe scenario pins
+            # both. Every other shell row keeps the full suite.
+            if [[ "$name" == process-note-* ]]; then
+                MATCH="process note" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
+            ;;
+        smp.c)
+            # ap-sse-* rows break the AP's per-CPU SSE enable: glibc
+            # threads doing SSE2 on the AP (the apsse scenario) die with
+            # #UD. Every other smp.c row keeps the full suite.
+            if [[ "$name" == ap-sse-* ]]; then
+                MATCH="SSE in threads" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            else
+                FAIL_FAST=1 MATCH="" "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            fi
+            ;;
+        kernel/mm/tlb.c|arch/x86/tlb_nmi.S)
+            # TLB shootdown: the AP SSE scenario's munmap churn counts
+            # tlb_shootdowns and pins tlb_timeouts=0.
+            MATCH="SSE in threads" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/spawn.c)
+            # The foreground process wait drives the desktop tick: without
+            # it the pointer freezes over the waiting program, which the
+            # foreground phase of the FreeDom GUI proof judges on pixels.
+            python3 "$HERE/tools/test_gui_freedom.py" > "$BACKUP/suite.log" 2>&1
             ;;
         fs/ramdisk.c)
             # ramdisk-* rows break the boot image decoder, so anything

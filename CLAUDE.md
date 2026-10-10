@@ -65,6 +65,11 @@ copying it onto the ramdisk, with no translation.
   the event ring is polled by decision, so no vector, IDT arm or PIC mask may
   be added by a USB driver; HID input goes through `kbd_feed_scancode()`,
   never straight into `kbd_q_push()`.
+- **Foreground processes**: the shell's pid-0 exec frame has no fork/execve;
+  a binary that needs them carries the `MINIOS_NOTE_PROCESS` ELF note
+  (`minios_abi.h`) and the shell runs it as a process it waits for. Never
+  relaunch from inside the frame through `SYS_SPAWN` (its child faults under
+  an active desktop tick).
 - **Heavy ring-3 overlap** (two big glibc processes) is known-red until
   per-CPU views land; run heavyweights sequentially.
 

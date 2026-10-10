@@ -86,6 +86,9 @@ typedef struct {
 void futex_init(void);
 long futex_wait(unsigned long uaddr, int val);
 long futex_wake(unsigned long uaddr, int n);
+/* Unlink pid from whatever futex queue still holds it and clear its
+ * recorded address; a no-op for a pid that is not waiting. */
+void futex_forget(int pid);
 
 /* Decode a Linux futex(2) op to LINUX_FUTEX_WAIT/WAKE/WAIT_BITSET/
  * WAKE_BITSET, masking FUTEX_PRIVATE_FLAG (process-private is served on the

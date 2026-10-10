@@ -1222,6 +1222,15 @@ freedom3-host: $(FREEDOM3_SRCS) tls_port.h tls.h tls_roots.h | $(TOOLS_DIR)
 $(BIN_DIR)/lxabi: $(SRC_DIR)/lxabi.c
 	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -mno-red-zone -pthread -o $@ $(SRC_DIR)/lxabi.c
 
+# lxproc/lxframe: one probe built with and without the MiniOS process note
+# (progs/minios_abi.h, docs/spec/shell-fs.md): run bare, lxframe stays in
+# the shell's pid-0 exec frame and lxproc becomes an isolated process.
+$(BIN_DIR)/lxproc: $(SRC_DIR)/lxproc.c $(PROGS_DIR)/minios_abi.h
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -I$(PROGS_DIR) -DLXPROC_PROCESS_NOTE -o $@ $(SRC_DIR)/lxproc.c
+
+$(BIN_DIR)/lxframe: $(SRC_DIR)/lxproc.c $(PROGS_DIR)/minios_abi.h
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -I$(PROGS_DIR) -o $@ $(SRC_DIR)/lxproc.c
+
 # lxsecc: Linux seccomp-bpf, prctl and /proc/self/exe probe (docs/spec/kernel.md).
 $(BIN_DIR)/lxsecc: $(SRC_DIR)/lxsecc.c
 	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -o $@ $(SRC_DIR)/lxsecc.c
@@ -1237,6 +1246,11 @@ $(BIN_DIR)/lxnet: $(SRC_DIR)/lxnet.c
 $(BIN_DIR)/thdemo: $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h
 	$(CC) -static -no-pie -std=c99 -O2 -Wall -I$(PROGS_DIR) -o $@ $(SRC_DIR)/thdemo.c
 	chmod +x $@
+
+# apsse: SSE2 in glibc threads on every CPU (docs/spec/smp-sched.md); with
+# -smp 2 the workers run on the AP, whose CR0/CR4 are its own.
+$(BIN_DIR)/apsse: $(SRC_DIR)/apsse.c
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -msse2 -pthread -o $@ $(SRC_DIR)/apsse.c
 
 # fptest: FPU/SSE context-switch probe (Phase 0.1, ADR-0014). Two threads
 # grind distinct FP constants across voluntary yields plus timer/AP
@@ -1470,6 +1484,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/thdemo $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h \
                $(BIN_DIR)/lxabi $(SRC_DIR)/lxabi.c \
                $(BIN_DIR)/lxsecc $(SRC_DIR)/lxsecc.c \
+               $(BIN_DIR)/lxproc $(BIN_DIR)/lxframe $(SRC_DIR)/lxproc.c \
+               $(BIN_DIR)/apsse $(SRC_DIR)/apsse.c \
                $(BIN_DIR)/lxnet $(SRC_DIR)/lxnet.c \
                $(BIN_DIR)/fptest $(SRC_DIR)/fptest.c \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
@@ -2007,14 +2023,14 @@ uefi.img: BOOTX64.EFI kernel.bin tools/uefi_part.sfdisk
 uefi: uefi.img
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h syscall_asm.h drivers/virtio_blk.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h
+kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h syscall_asm.h drivers/virtio_blk.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h arch/x86/cpu_setup.h arch/x86/boot/bootdefs.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_blk.h drivers/virtio_net.h drivers/nvme.h pcache.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h
+         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_blk.h drivers/virtio_net.h drivers/nvme.h pcache.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h proc_sec.h spawn.h tlb.h
 # NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
 # and the image ends just below USER_LOAD_BASE, so the check-size gate
 # is binding: bytes matter more than compiler speed in the prompt,
@@ -2036,7 +2052,7 @@ serial.o: kernel/serial.c kernel.h
 string.o: kernel/string.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-loader.o: kernel/loader.c kernel.h headers/ldso.h headers/pcache.h headers/minifs.h
+loader.o: kernel/loader.c kernel.h headers/ldso.h headers/pcache.h headers/minifs.h vga_fb.h sched.h $(PROGS_DIR)/minios_abi.h
 # NOTE: -Os, same pattern as shell.o (measured -2.2 KB vs -O1). Revalidate
 # with the ELF/CVM load scenarios (cpl/kmem/nx/mmreuse/fib/w1) after change.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
@@ -2053,10 +2069,10 @@ mm.o: kernel/mm.c kernel.h sched.h $(BOOTDEFS)
 scrollback.o: kernel/scrollback.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-paging.o: kernel/mm/paging.c kernel.h headers/ldso.h $(BOOTDEFS) vga_fb.h arch/x86/msr.h
+paging.o: kernel/mm/paging.c kernel.h headers/ldso.h $(BOOTDEFS) vga_fb.h arch/x86/msr.h tlb.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-cow.o: kernel/mm/cow.c kernel.h $(BOOTDEFS) vga_fb.h
+cow.o: kernel/mm/cow.c kernel.h $(BOOTDEFS) vga_fb.h tlb.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 swap.o: kernel/mm/swap.c kernel.h ide.h lz4_kernel.h
@@ -2084,13 +2100,13 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h proc_sec.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h pipe.h ktime.h randmix.h proc_sec.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h pipe.h ktime.h randmix.h proc_sec.h tlb.h
 # NOTE: -Os, same pattern as shell.o (measured -3.5 KB vs -O1). The
 # dispatcher is a large switch, cold paths dominate; revalidate with
 # test_all.sh plus the syscall-heavy BDD scenarios after any change here.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
-spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h arena.h
+spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h arena.h minifs.h vga_fb.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h proc_sec.h
@@ -2220,7 +2236,9 @@ dlmalloc_impl.o: third_party/dlmalloc/dlmalloc_impl.c third_party/dlmalloc/mallo
 # tools/gen_icons.py; doom/quake2/nuklear/piano/vedit/pokemon are custom art
 # converted from user-supplied sources (cgoblin.png wallpaper + icon PNGs in
 # DESKTOP_SRC_DIR) by tools/gen_desktop_pngs.py. The two generators own
-# disjoint target sets so neither ever clobbers the other's output.
+# disjoint target sets so neither ever clobbers the other's output. The
+# art rule is a grouped target (&:): one generator run writes every file, so
+# a parallel make never starts it once per target racing on its .tmp files.
 $(PROGS_DIR)/icons/terminal.png: tools/gen_icons.py
 	python3 tools/gen_icons.py $(PROGS_DIR)/icons/ terminal
 
@@ -2234,6 +2252,7 @@ DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/pokemon.png \
                $(DESKTOP_SRC_DIR)/file.png $(DESKTOP_SRC_DIR)/shell.png \
                $(DESKTOP_SRC_DIR)/paint.png $(DESKTOP_SRC_DIR)/minicraft.png \
+               $(DESKTOP_SRC_DIR)/freedom.png \
                $(DESKTOP_SRC_DIR)/folder.png $(DESKTOP_SRC_DIR)/files.png \
                $(DESKTOP_SRC_DIR)/image.png $(DESKTOP_SRC_DIR)/object.png
 DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/doomedit.png \
@@ -2242,10 +2261,11 @@ DESKTOP_ART = $(PROGS_DIR)/icons/doom.png $(PROGS_DIR)/icons/doomedit.png \
               $(PROGS_DIR)/icons/vedit.png $(PROGS_DIR)/icons/pokemon.png \
               $(PROGS_DIR)/icons/file.png $(PROGS_DIR)/icons/shell.png \
               $(PROGS_DIR)/icons/paint.png $(PROGS_DIR)/icons/minicraft.png \
+              $(PROGS_DIR)/icons/freedom.png \
               $(PROGS_DIR)/icons/folder.png $(PROGS_DIR)/icons/files.png \
               $(PROGS_DIR)/icons/image.png $(PROGS_DIR)/icons/object.png \
               $(PROGS_DIR)/wall/wallpaper.png
-$(DESKTOP_ART): tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
+$(DESKTOP_ART) &: tools/gen_desktop_pngs.py $(DESKTOP_SRCS)
 	python3 tools/gen_desktop_pngs.py --src-dir $(DESKTOP_SRC_DIR) --repo .
 
 # Explicit entry point so a first build after `make clean` never boots
@@ -2303,7 +2323,7 @@ $(PROGS_DIR)/etc/ext4.img:
 # the caller's set survives every voluntary switch by construction.
 # Removing a flag reopens the lost-waitpid-pid hang; check_abi_numbers
 # does not cover it, the thdemo/fptest BDD scenarios do.
-sched.o: kernel/sched.c sched.h kernel.h $(BOOTDEFS) arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcm2.h pcspk.h futex.h percpu_rq.h rcu.h proc_sec.h
+sched.o: kernel/sched.c sched.h kernel.h $(BOOTDEFS) arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcm2.h pcspk.h futex.h percpu_rq.h rcu.h proc_sec.h tlb.h
 	$(CC) $(CFLAGS_KERN) -ffixed-rbx -ffixed-r12 -ffixed-r13 -ffixed-r14 -ffixed-r15 -c $< -o $@
 
 tick.o: kernel/tick.c tick.h drivers/xhci.h drivers/usbhid.h
@@ -2336,6 +2356,13 @@ isr_stubs.o: arch/x86/isr_stubs.S
 ctx_sw.o: arch/x86/ctx_sw.S
 	$(CC) -c -m64 $< -o $@
 
+# TLB shootdown (docs/spec/smp-sched.md): the NMI receiver and the issuer.
+tlb_nmi.o: arch/x86/tlb_nmi.S
+	$(CC) -c -m64 $< -o $@
+
+tlb.o: kernel/mm/tlb.c tlb.h kernel.h sched.h smp.h spinlock.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
 # SYSCALL trampoline (was inline asm in kernel.c): dedicated assembly so
 # it gets .cfi unwind info and no optimizer interaction. Needs -Iheaders
 # for syscall_asm.h, the numeric contract it shares with kernel.c.
@@ -2359,7 +2386,7 @@ headers/ap_stub.h: ap_stub.bin
 	@echo "static const unsigned int ap_stub_len = $$(stat -c%s ap_stub.bin);" >> $@
 	@echo "static const unsigned long ap_patch_off = $$(( 0x$$(nm ap_entry.elf | awk '/ap_patch_slot/{print $$1}') - 0x6000 ));" >> $@
 
-smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h headers/ap_stub.h
+smp.o: smp.c smp.h kernel.h arch/x86/boot/bootdefs.h headers/ap_stub.h arch/x86/cpu_setup.h spinlock.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 sync.o: kernel/sync.c sync.h sched.h spinlock.h
@@ -2389,8 +2416,8 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
-	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o tlb.o tlb_nmi.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o tlb.o tlb_nmi.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
 	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@

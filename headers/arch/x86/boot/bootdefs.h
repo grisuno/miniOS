@@ -163,6 +163,12 @@
 #define CR0_PG                    0x80000000
 #define CR0_WP                    0x00010000  /* ring 0 honours read-only user pages (COW) */
 #define CR4_PAE                   0x00000020
+#define CR0_MP                    0x00000002  /* WAIT/FWAIT honour TS (SSE contract) */
+#define CR0_EM                    0x00000004  /* x87/SSE emulation: must be clear for SSE */
+#define CR0_NW                    0x20000000  /* not write-through (power-on value on an AP) */
+#define CR0_CD                    0x40000000  /* cache disable (power-on value on an AP) */
+#define CR4_OSFXSR                0x00000200  /* FXSAVE/FXRSTOR and SSE instructions enabled */
+#define CR4_OSXMMEXCPT            0x00000400  /* unmasked SIMD FP exceptions raise #XM */
 
 #define MSR_EFER                  0xC0000080
 #define EFER_LME                  0x00000100

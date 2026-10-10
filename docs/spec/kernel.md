@@ -159,8 +159,8 @@ mutant in this file was caught and reverted; never commit with a red
 The old stub returned 0 without touching a bit, so every caller believed
 its pages were protected. The handler toggles RW/NX per page in the
 caller's live tables (syscall entry keeps the caller CR3 loaded) with a
-local invlpg each, the cow_resolve precedent, no cross-CPU shootdown
-yet. Two passes under mm_lock (validate all, then apply): unaligned
+local invlpg each, then one `tlb_shootdown` so a sibling thread on
+another CPU loses the old rights (docs/spec/smp-sched.md, TLB shootdown). Two passes under mm_lock (validate all, then apply): unaligned
 base and unknown prot bits are -EINVAL, anything outside the user
 window, unmapped, non-user, phys-less or CoW-shared is -ENOMEM with
 nothing applied. A write to a cleared page falls through cow_resolve
@@ -459,6 +459,9 @@ plus `make test-seccomp-bpf` for the interpreter.
   (flags 0) and `SECCOMP_GET_ACTION_AVAIL`, same rules as the prctl path.
 - **`/proc/self/exe`.** Every process records the resolved path of the image
   it runs (spawn, foreground run, `execve`), inherited by fork and clone.
+  The foreground exec frame records it in `shell_run_elf_buf_path` from the
+  path the resolver matched (ramdisk or MiniFS); before, only spawn and
+  `execve` did, and a foreground `readlink` answered `-ENOENT`.
   `execve` of `/proc/self/exe` runs that path; `readlink` of
   `/proc/self/exe` answers it (no NUL, truncated to the buffer like Linux).
 - **Best-effort isolation answers.** `unshare` (272) and the Landlock calls

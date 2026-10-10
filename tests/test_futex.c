@@ -177,6 +177,56 @@ int main(void) {
         CHECK(futex_timeout_remaining_us(LINUX_FUTEX_WAIT, 0x7fffffffffffffffL, 0, 0) ==
               FUTEX_TIMEOUT_FOREVER, "huge seconds clamp to forever");
     }
+    {
+        /* A waiter killed in the queue whose slot is reused and waits
+         * again on the same word: the stale node is the tail, and the
+         * old enqueue linked tail -> tail, a cycle wake spun on forever. */
+        fresh_all();
+        fresh_proc(2);
+        t_cur_pid = 2;
+        word_a = 9;
+        CHECK(futex_wait((unsigned long)&word_a, 9) == FUTEX_OK, "first wait sleeps");
+        procs[2].state = PROC_ZOMBIE;
+        fresh_proc(2);
+        t_cur_pid = 2;
+        CHECK(futex_wait((unsigned long)&word_a, 9) == FUTEX_OK, "reused slot waits again");
+        CHECK(procs[2].wq_next == WQ_NONE, "reused slot never links to itself");
+        CHECK(futex_wake((unsigned long)&word_a, FUTEX_WAKE_ALL) == 1,
+              "wake reaches the reused waiter exactly once");
+        CHECK(procs[2].state == PROC_READY, "reused waiter woken");
+    }
+    {
+        /* A dead entry ahead of a live waiter is unlinked by wake, and the
+         * live one behind it still wakes. */
+        fresh_all();
+        fresh_proc(3);
+        fresh_proc(4);
+        word_a = 1;
+        t_cur_pid = 3;
+        CHECK(futex_wait((unsigned long)&word_a, 1) == FUTEX_OK, "dead-to-be waits");
+        t_cur_pid = 4;
+        CHECK(futex_wait((unsigned long)&word_a, 1) == FUTEX_OK, "live waits");
+        procs[3].state = PROC_ZOMBIE;
+        CHECK(futex_wake((unsigned long)&word_a, 1) == 1, "live waiter behind a dead one wakes");
+        CHECK(procs[4].state == PROC_READY, "live waiter READY");
+        CHECK(futex_wake((unsigned long)&word_a, 1) == 0, "dead entry was pruned, nothing left");
+    }
+    {
+        /* futex_forget unlinks a reaped slot so a later waiter in the
+         * bucket never walks through it. */
+        fresh_all();
+        fresh_proc(5);
+        fresh_proc(6);
+        word_a = 2;
+        t_cur_pid = 5;
+        CHECK(futex_wait((unsigned long)&word_a, 2) == FUTEX_OK, "reaped-to-be waits");
+        futex_forget(5);
+        procs[5].state = PROC_FREE;
+        t_cur_pid = 6;
+        CHECK(futex_wait((unsigned long)&word_a, 2) == FUTEX_OK, "next waiter queues");
+        CHECK(futex_wake((unsigned long)&word_a, FUTEX_WAKE_ALL) == 1, "only the live waiter wakes");
+        CHECK(procs[6].state == PROC_READY, "live waiter READY after forget");
+    }
     if (failures == 0)
         printf("futex: ok\n");
     else

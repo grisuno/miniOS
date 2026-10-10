@@ -8,6 +8,15 @@ ps2_keymap.c, docs/spec/network.md). This boots the real image headless
 (-display none), drives the shell over a unix-socket serial, injects PS/2
 through QMP and judges pixels with PIL plus the kernel clipboard:
 
+  0. foreground run, the way a user (or the dock) starts it: the pointer
+     parks on the wallpaper, bare `freedom-gui` runs as a process (process
+     note), then the pointer moves over the idle browser
+                                            -> the arrow follows (the
+                                               desktop tick moves it while
+                                               the app presents nothing)
+                                            -> no dead arrow stays where it
+                                               was parked
+     serial Ctrl+C                          -> `exit code: 130`, prompt back
   1. `clip abc`, then `run freedom-gui &` until `freedom: frame ok`
   2. type `x` into the focused URL bar      -> URL bar pixels change
   3. Ctrl+V pastes the kernel clipboard     -> bar holds `xabc`
@@ -58,6 +67,15 @@ class Config:
     URLBAR_BOX = (150, 36, 700, 58)
     MENU_BUTTON = (776, 47)
     MENU_PANEL_BOX = (520, 64, 800, 300)
+    # Foreground phase, screen pixels: the pointer parks on bare wallpaper
+    # outside the centred browser window, the terminal and the dock, then
+    # returns to the screen centre, which lies on the browser's page area.
+    PARK_POINT = (60, 600)
+    POINTER_BOX = 12
+    POINTER_MOVED_MIN = 8
+    STALE_ARROW_MAX = 0
+    FG_SETTLE_S = 6.0
+    FG_EXIT_CODE = "exit code: 130"
 
 
 FAIL = []
@@ -126,10 +144,11 @@ class Guest:
         with self.lock:
             return self.out.decode("utf-8", "replace")
 
-    def wait_for(self, text, timeout):
+    def wait_for(self, text, timeout, since=0):
+        """Wait for text in the console output past offset `since`."""
         end = time.time() + timeout
         while time.time() < end:
-            if text in self.snapshot():
+            if text in self.snapshot()[since:]:
                 return True
             time.sleep(0.5)
         return False
@@ -227,6 +246,65 @@ def content_origin(listing):
     return None
 
 
+def changed_pixels(a_path, b_path, box):
+    """Pixels of one region that differ between two dumps."""
+    from PIL import Image, ImageChops
+    a = Image.open(a_path).convert("RGB").crop(box)
+    b = Image.open(b_path).convert("RGB").crop(box)
+    r, g, bl = ImageChops.difference(a, b).split()
+    peak = ImageChops.lighter(ImageChops.lighter(r, g), bl)
+    return peak.size[0] * peak.size[1] - peak.histogram()[0]
+
+
+def around(point):
+    """Square region of Config.POINTER_BOX pixels from a pointer's tip."""
+    x, y = point
+    return (x, y, x + Config.POINTER_BOX, y + Config.POINTER_BOX)
+
+
+def walk(g, delta):
+    """Move the pointer by a screen-pixel delta in MOUSE_STEPS slices."""
+    hx = delta[0] // Config.MOUSE_UNIT_PX
+    hy = delta[1] // Config.MOUSE_UNIT_PX
+    for _ in range(Config.MOUSE_STEPS):
+        g.rel(hx // Config.MOUSE_STEPS, hy // Config.MOUSE_STEPS)
+    g.rel(hx - Config.MOUSE_STEPS * (hx // Config.MOUSE_STEPS),
+          hy - Config.MOUSE_STEPS * (hy // Config.MOUSE_STEPS))
+    time.sleep(Config.INPUT_SETTLE_S)
+
+
+def foreground_phase(g):
+    """Bare `freedom-gui` in the foreground with the pointer in use: the
+    arrow follows over the idle window, leaves no dead sprite on the
+    wallpaper, and serial Ctrl+C ends the run with the prompt back. The
+    pointer ends at the screen centre, where move_to expects it."""
+    from PIL import Image
+    desk = g.dump("fg_desk")
+    fw, fh = Image.open(desk).size
+    centre = (fw // 2, fh // 2)
+    park = Config.PARK_POINT
+    walk(g, (park[0] - centre[0], park[1] - centre[1]))
+    mark = len(g.snapshot())
+    g.send("freedom-gui", settle=1.0)
+    note(g.wait_for("freedom: frame ok", Config.FRAME_TIMEOUT_S, mark),
+         "foreground freedom-gui presented its first frame")
+    time.sleep(Config.FG_SETTLE_S)
+    idle = g.dump("fg_idle")
+    walk(g, (centre[0] - park[0], centre[1] - park[1]))
+    moved = g.dump("fg_moved")
+    n = changed_pixels(idle, moved, around(centre))
+    note(n >= Config.POINTER_MOVED_MIN,
+         "pointer follows over the idle foreground window (%d px)" % n)
+    n = changed_pixels(desk, moved, around(park))
+    note(n <= Config.STALE_ARROW_MAX,
+         "no dead arrow left where the pointer was parked (%d px)" % n)
+    mark = len(g.snapshot())
+    g._serial().sendall(b"\x03")
+    note(g.wait_for(Config.FG_EXIT_CODE, Config.FRAME_TIMEOUT_S, mark),
+         "serial Ctrl+C ends the foreground run (%s)" % Config.FG_EXIT_CODE)
+    time.sleep(Config.INPUT_SETTLE_S)
+
+
 def screen_box(origin, box):
     ox, oy = origin
     return (ox + box[0], oy + box[1], ox + box[2], oy + box[3])
@@ -235,13 +313,7 @@ def screen_box(origin, box):
 def move_to(g, frame_size, target):
     """Walk the pointer from the screen centre (where it starts) to target."""
     fw, fh = frame_size
-    hx = (target[0] - fw // 2) // Config.MOUSE_UNIT_PX
-    hy = (target[1] - fh // 2) // Config.MOUSE_UNIT_PX
-    for _ in range(Config.MOUSE_STEPS):
-        g.rel(hx // Config.MOUSE_STEPS, hy // Config.MOUSE_STEPS)
-    g.rel(hx - Config.MOUSE_STEPS * (hx // Config.MOUSE_STEPS),
-          hy - Config.MOUSE_STEPS * (hy // Config.MOUSE_STEPS))
-    time.sleep(Config.INPUT_SETTLE_S)
+    walk(g, (target[0] - fw // 2, target[1] - fh // 2))
 
 
 def main():
@@ -251,9 +323,11 @@ def main():
     g = Guest(work)
     try:
         note(g.wait_for("miniOS> ", Config.BOOT_TIMEOUT_S), "guest booted to prompt")
+        foreground_phase(g)
         g.send("clip %s" % Config.CLIP_SEED)
+        mark = len(g.snapshot())
         g.send("run freedom-gui &", settle=1.0)
-        note(g.wait_for("freedom: frame ok", Config.FRAME_TIMEOUT_S),
+        note(g.wait_for("freedom: frame ok", Config.FRAME_TIMEOUT_S, mark),
              "freedom-gui presented its first frame")
         time.sleep(Config.INPUT_SETTLE_S)
         mark = len(g.snapshot())

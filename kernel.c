@@ -24,6 +24,7 @@
 #include "sb16.h"
 #include "smp.h"
 #include "arch/x86/msr.h"
+#include "arch/x86/cpu_setup.h"
 
 /* Text console, output capture and libc names: kernel/console.c. */
 /* Scrollback ring: kernel/scrollback.c. */
@@ -217,17 +218,8 @@ void kmain(void) {
     );
 
     /* Enable SSE so loaded programs (and Linux binaries) may use XMM/SSE2.
-     * CR0: clear EM (bit 2), set MP (bit 1); CR4: set OSFXSR|OSXMMEXCPT. */
-    __asm__ volatile(
-        "mov %%cr0, %%rax\n"
-        "and $0xFFFFFFFFFFFFFFFB, %%rax\n"
-        "or  $0x2, %%rax\n"
-        "mov %%rax, %%cr0\n"
-        "mov %%cr4, %%rax\n"
-        "or  $0x600, %%rax\n"
-        "mov %%rax, %%cr4\n"
-        ::: "rax"
-    );
+     * smp_ap_entry does the same on every AP: the bits are per-CPU. */
+    cpu_enable_sse();
 
     serial_init();
     vga_clear();

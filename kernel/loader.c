@@ -79,6 +79,12 @@ typedef struct {
 
 #define EM_X86_64  62
 #define PT_LOAD     1
+#define PT_NOTE     4
+
+/* ELF note header (namesz, descsz, type); name and descriptor follow, each
+ * padded to ELF_NOTE_ALIGN bytes. */
+#define ELF_NOTE_HDR   12UL
+#define ELF_NOTE_ALIGN 4UL
 
 #define R_X86_64_64        1
 #define R_X86_64_PC32      2
@@ -1196,6 +1202,63 @@ fail:
  * images bind through ldso_bind_into once their VMA context exists.
  * No function symbol is ever resolved to a null address:
  * unresolvable imports stay zero and fault only if called. */
+/* Size of one note field rounded up to ELF_NOTE_ALIGN. */
+static unsigned long elf_note_pad(unsigned long n) {
+    return (n + ELF_NOTE_ALIGN - 1UL) & ~(ELF_NOTE_ALIGN - 1UL);
+}
+
+/* 1 when one PT_NOTE segment [off, off + len) of the image carries the
+ * MiniOS process note with a nonzero descriptor. Every field is checked
+ * against the segment before it is read. */
+static int elf_note_segment_wants_process(const unsigned char *img,
+                                          unsigned long off, unsigned long len) {
+    const unsigned long namesz_want = (unsigned long)sizeof(MINIOS_NOTE_NAME);
+    unsigned long pos = 0;
+    while (len - pos >= ELF_NOTE_HDR) {
+        const unsigned char *n = img + off + pos;
+        unsigned long namesz = *(const Elf64_Word *)(n + 0);
+        unsigned long descsz = *(const Elf64_Word *)(n + 4);
+        unsigned long type = *(const Elf64_Word *)(n + 8);
+        unsigned long body = elf_note_pad(namesz) + elf_note_pad(descsz);
+        if (body > len - pos - ELF_NOTE_HDR) return 0;
+        if (namesz == namesz_want && type == MINIOS_NOTE_PROCESS &&
+            descsz >= sizeof(Elf64_Word) &&
+            kmemcmp(n + ELF_NOTE_HDR, MINIOS_NOTE_NAME, namesz_want) == 0 &&
+            *(const Elf64_Word *)(n + ELF_NOTE_HDR + elf_note_pad(namesz)) != 0)
+            return 1;
+        pos += ELF_NOTE_HDR + body;
+    }
+    return 0;
+}
+
+/* Does an ET_EXEC/ET_DYN image ask to run as a process (minios_abi.h,
+ * process note)? Header and program-header table are bounds checked like
+ * load_exec_elf_into; any malformed table answers 0 and leaves the load
+ * itself to report it. */
+int elf_wants_process(const void *data, unsigned size) {
+    const Elf64_Ehdr *e = (const Elf64_Ehdr *)data;
+    const Elf64_Phdr *ph;
+    unsigned i;
+    if (!data || size < sizeof(Elf64_Ehdr)) return 0;
+    if (e->e_ident[0] != 0x7F || e->e_ident[1] != 'E' ||
+        e->e_ident[2] != 'L'  || e->e_ident[3] != 'F') return 0;
+    if (e->e_type != ET_EXEC && e->e_type != ET_DYN) return 0;
+    if (e->e_phentsize < sizeof(Elf64_Phdr)) return 0;
+    if (e->e_phoff > size) return 0;
+    if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize) return 0;
+    for (i = 0; i < e->e_phnum; i++) {
+        ph = (const Elf64_Phdr *)((const unsigned char *)data + e->e_phoff +
+                                  (unsigned long)i * e->e_phentsize);
+        if (ph->p_type != PT_NOTE) continue;
+        if (ph->p_offset > size || ph->p_filesz > size - ph->p_offset) continue;
+        if (elf_note_segment_wants_process((const unsigned char *)data,
+                                           (unsigned long)ph->p_offset,
+                                           (unsigned long)ph->p_filesz))
+            return 1;
+    }
+    return 0;
+}
+
 void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
                          unsigned long *brk_out, unsigned long *base_out) {
     Elf64_Ehdr *e = (Elf64_Ehdr *)data;

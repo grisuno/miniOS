@@ -44,6 +44,49 @@ void futex_init(void) {
         futex_table.awaited[i] = 0;
 }
 
+/* Unlink pid from bucket b's queue (bucket lock held). The walk is
+ * bounded by MAX_PROCS: a queue longer than the process table is corrupt,
+ * and walking it forever with interrupts off froze the machine. */
+static void futex_unlink_locked(futex_bucket_t *b, int pid) {
+    int prev = WQ_NONE;
+    int cur = b->head;
+    int steps = 0;
+    while (cur != WQ_NONE && steps++ < MAX_PROCS) {
+        int next = procs[cur].wq_next;
+        if (cur == pid) {
+            if (prev == WQ_NONE)
+                b->head = next;
+            else
+                procs[prev].wq_next = next;
+            if (b->tail == pid)
+                b->tail = prev;
+            procs[pid].wq_next = WQ_NONE;
+            return;
+        }
+        prev = cur;
+        cur = next;
+    }
+}
+
+/** Docstring: Drop pid from the futex queues (see futex.h). A thread that
+ * dies or is killed while waiting stays queued; once its slot is reused
+ * the stale node aliases the new thread, and the new thread queueing
+ * behind itself linked tail -> tail, a cycle futex_wake spun on forever.
+ * Called before every wait and when a slot is reaped. */
+void futex_forget(int pid) {
+    unsigned long uaddr;
+    futex_bucket_t *b;
+    irqflags_t flags;
+    if (pid < 0 || pid >= MAX_PROCS) return;
+    uaddr = futex_table.awaited[pid];
+    if (uaddr == 0) return;
+    b = futex_bucket(uaddr);
+    spin_lock_irqsave(&b->lock, &flags);
+    futex_unlink_locked(b, pid);
+    futex_table.awaited[pid] = 0;
+    spin_unlock_irqrestore(&b->lock, flags);
+}
+
 /** Docstring: Sleep while the word at uaddr still equals val.
  *
  * Returns FUTEX_OK after sleeping (caller re-checks its predicate),
@@ -55,6 +98,7 @@ void futex_init(void) {
 long futex_wait(unsigned long uaddr, int val) {
     futex_bucket_t *b = futex_bucket(uaddr);
     irqflags_t flags;
+    futex_forget(current_pid);
     spin_lock_irqsave(&b->lock, &flags);
     proc_t *cur = proc_get(current_pid);
     if (!cur) {
@@ -106,8 +150,10 @@ long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_
 /** Docstring: Wake up to n sleepers waiting on uaddr.
  *
  * Only entries whose recorded address equals uaddr change state; hash
- * collisions sleep through. Returns the number of threads woken, zero
- * when the bucket holds no waiter for this address. Never sleeps.
+ * collisions sleep through. Entries that no longer sleep (a waiter that
+ * died or was killed in the queue) are unlinked on the way. The walk is
+ * bounded by MAX_PROCS. Returns the number of threads woken, zero when
+ * the bucket holds no waiter for this address. Never sleeps.
  */
 long futex_wake(unsigned long uaddr, int n) {
     futex_bucket_t *b = futex_bucket(uaddr);
@@ -115,14 +161,23 @@ long futex_wake(unsigned long uaddr, int n) {
     long woken = 0;
     int prev = WQ_NONE;
     int pid;
+    int steps = 0;
     if (n <= 0)
         return 0;
     spin_lock_irqsave(&b->lock, &flags);
     pid = b->head;
-    while (pid != WQ_NONE && woken < n) {
+    while (pid != WQ_NONE && woken < n && steps++ < MAX_PROCS) {
         int next = procs[pid].wq_next;
-        if (futex_table.awaited[pid] == uaddr &&
-            procs[pid].state == PROC_BLOCKED) {
+        if (procs[pid].state != PROC_BLOCKED) {
+            if (prev == WQ_NONE)
+                b->head = next;
+            else
+                procs[prev].wq_next = next;
+            if (b->tail == pid)
+                b->tail = prev;
+            procs[pid].wq_next = WQ_NONE;
+            futex_table.awaited[pid] = 0;
+        } else if (futex_table.awaited[pid] == uaddr) {
             if (prev == WQ_NONE)
                 b->head = next;
             else

@@ -24,6 +24,7 @@
 #include "bootdefs.h"
 #include "vga_fb.h"
 #include "sched.h"
+#include "tlb.h"
 
 /* Share table: open addressing over the frame number, sized for every
  * user page the heap can back (HEAP_SIZE / 4 KB frames at most 3/4 full).
@@ -281,8 +282,9 @@ static void cow_fork_one(unsigned long pcr3, unsigned long va,
 /** Docstring: Build a CoW child window from a parent window. Present
  * data pages are shared read-only (both sides); a full table or OOM
  * degrades that page to an eager copy. Returns the child CR3, or 0
- * with nothing published (the half-built window is freed). The caller
- * flushes the parent TLB after (its PTEs changed under it). */
+ * with nothing published (the half-built window is freed). The CR3
+ * reload at the end flushes this CPU; the caller shoots the parent's
+ * address space down on every other CPU (tlb_shootdown in do_fork_ex). */
 unsigned long cow_fork_window(unsigned long parent_cr3) {
     irqflags_t cow_irq;
     unsigned long child;
@@ -347,7 +349,9 @@ int user_page_present(unsigned long cr3, unsigned long va) {
 
 /** Docstring: Resolve a write fault on a CoW page: last sharer gets a
  * permission upgrade, otherwise the faulting window gets a private
- * copy. invlpg keeps the TLB honest. Returns 0 resolved (resume),
+ * copy. invlpg keeps the local TLB honest and, once the PTE names the
+ * private copy, tlb_shootdown drops the shared frame from every sibling
+ * thread's TLB on other CPUs (they would keep reading the old bytes). Returns 0 resolved (resume),
  * -1 not a CoW page (existing fault handling runs). */
 int cow_resolve(unsigned long cr3, unsigned long va) {
     irqflags_t cow_irq;
@@ -399,12 +403,14 @@ int cow_resolve(unsigned long cr3, unsigned long va) {
         pt[(va >> 12) & 0x1FF] = ((unsigned long)pg) | PT_USER_RW_ENTRY | nx;
         __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
         spin_unlock_irqrestore(&cow_lock, cow_irq);
+        tlb_shootdown(cr3);
         return 0;
     }
     pt[(va >> 12) & 0x1FF] = ((unsigned long)pg) | PT_USER_RW_ENTRY | nx;
     cow_tab[idx].ref--;
     __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
     spin_unlock_irqrestore(&cow_lock, cow_irq);
+    tlb_shootdown(cr3);
     return 0;
 }
 

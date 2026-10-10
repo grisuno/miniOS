@@ -514,6 +514,23 @@ static unsigned long gfx_cursor_moved;
  * idle timer ticks (100 Hz), so a game plays without a stray arrow. */
 #define GFX_CURSOR_IDLE_TICKS 150
 
+/** Docstring: Timer ticks (100 Hz) without a present after which the
+ * desktop tick moves the pointer itself in graphics mode. An app that
+ * presents only on damage (the FreeDom browser idles on a static page)
+ * would otherwise freeze the arrow wherever its last frame left it. */
+#define GFX_CURSOR_FOLLOW_TICKS 5
+
+/* Handshake between the present path and the desktop tick, the two
+ * painters of the graphics-mode pointer. A present announces itself and
+ * waits out a tick that is mid-paint; the tick announces itself and backs
+ * off when a present is running. Both sides are sequentially consistent,
+ * so at most one of them ever touches the sprite. The tick runs in the
+ * timer interrupt and never waits, so a present interrupted on its own
+ * CPU cannot deadlock it. */
+static volatile int gfx_presenting;
+static volatile int gfx_cursor_following;
+static volatile unsigned long gfx_last_present;
+
 /** Docstring: View configuration shared by every graphics path. */
 static wm_gfxview_config_t gfx_view_cfg(void)
 {
@@ -641,6 +658,11 @@ void vga_fb_set_gfx_mode(int on) {
         gfx_view_valid = 0;
         gfx_keep_valid = 0;
     } else {
+        /* Lift the desktop pointer while its saved background is still
+         * exact: the focus sync below repaints chrome and invalidates the
+         * sprite without restoring it, which stranded a dead arrow on the
+         * wallpaper once the graphics pointer moved away. */
+        cursor_erase();
         gfx_keep_valid = 0;
         gfx_view_valid = 0;
         gfx_hidden = 0;
@@ -2288,7 +2310,7 @@ static void gfx_keep_restore(void) {
  * the persistent layer and the pointer ownership are identical for every
  * app. A minimized window still counts and keeps its frame (the program
  * runs on) but paints nothing. */
-static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)
+static void gfx_present_locked(const volatile uint8_t *bb, int kind, int sw, int sh)
 {
     wm_gfxview_t v;
     unsigned int *fx_old = 0;
@@ -2321,6 +2343,38 @@ static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)
         vga_fx_free(fx_old);
     }
     vga_fb_gfx_cursor_draw();
+}
+
+/** Docstring: Present under the pointer handshake: wait out a desktop tick
+ * that is moving the sprite, composite, then stamp the present time the
+ * tick's idle follow measures against. */
+static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)
+{
+    __atomic_add_fetch(&gfx_presenting, 1, __ATOMIC_SEQ_CST);
+    while (__atomic_load_n(&gfx_cursor_following, __ATOMIC_SEQ_CST))
+        __asm__ volatile("pause" ::: "memory");
+    gfx_present_locked(bb, kind, sw, sh);
+    gfx_last_present = (unsigned long)sys_ticks;
+    __atomic_sub_fetch(&gfx_presenting, 1, __ATOMIC_SEQ_CST);
+}
+
+/** Docstring: Move the graphics-mode pointer from the desktop tick while the
+ * app is idle. The present path stays the pointer's painter whenever frames
+ * flow; only after GFX_CURSOR_FOLLOW_TICKS without one, with the pointer
+ * moved and no present or desktop composite in flight, does the tick
+ * restore the old sprite and draw it at the new position with the same
+ * save/restore helpers the present uses. */
+static void gfx_cursor_follow_idle(void)
+{
+    if (!vga_fb_gfx_mode || fb_compose_depth > 0) return;
+    if ((unsigned long)sys_ticks - gfx_last_present < GFX_CURSOR_FOLLOW_TICKS) return;
+    if (mouse_state.x == gfx_cursor_lx && mouse_state.y == gfx_cursor_ly) return;
+    __atomic_store_n(&gfx_cursor_following, 1, __ATOMIC_SEQ_CST);
+    if (__atomic_load_n(&gfx_presenting, __ATOMIC_SEQ_CST) == 0) {
+        vga_fb_gfx_cursor_erase();
+        vga_fb_gfx_cursor_draw();
+    }
+    __atomic_store_n(&gfx_cursor_following, 0, __ATOMIC_SEQ_CST);
 }
 
 void vga_fb_blit_gfx_window(void) {
@@ -4212,6 +4266,21 @@ static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)
         cursor_invalidate();
 }
 
+/** Docstring: Drive the desktop from a kernel wait loop. While the shell
+ * waits for a foreground process nothing else runs vga_fb_mouse_tick: the
+ * timer ISR drives it only for the pid-0 exec frame (user_program_active)
+ * and the shell's input loop is not running, so the pointer, taskbar and
+ * window controls froze for the whole run. The loop calls this between
+ * yields; it ticks at the ISR's cadence and stands down whenever the ISR
+ * owns the desktop, so the two never run the tick concurrently. */
+void vga_fb_wait_tick(void) {
+    static unsigned long last;
+    if (!vga_fb_active || user_program_active) return;
+    if ((unsigned long)sys_ticks - last < DESKTOP_TICK_INTERVAL) return;
+    last = (unsigned long)sys_ticks;
+    vga_fb_mouse_tick();
+}
+
 /** Docstring: Per-tick mouse dispatch over unified geometry and events. */
 void vga_fb_mouse_tick(void) {
     static unsigned tb_prev_buttons;
@@ -4233,6 +4302,7 @@ void vga_fb_mouse_tick(void) {
      * across real repaints (draw_desktop/taskbar_render clear it
      * themselves); anywhere else the invalidation is gated off. */
     gfx_cursor = vga_fb_gfx_mode;
+    gfx_cursor_follow_idle();
 
     /* A fullscreen graphics window owns every pixel and every click: no
      * taskbar widget, dock icon, terminal title or scrollbar lies under

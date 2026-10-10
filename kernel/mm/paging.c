@@ -16,6 +16,7 @@
 #include "arch/x86/msr.h"
 #include "minifs.h"
 #include "pcache.h"
+#include "tlb.h"
 
 /* ---- Page table helpers (from kernel.c, now shared via bootdefs.h) ---- */
 
@@ -760,45 +761,80 @@ int mm_anon_reserve(unsigned long cr3, unsigned long base, unsigned long len,
     return 0;
 }
 
+/* Serializes demand resolution against itself and against the release
+ * paths. CLONE_VM threads on two CPUs fault the same page (glibc's parent
+ * writes a new thread's descriptor and TLS while the thread already runs
+ * on the AP): unserialized, each CPU installed its own zeroed page, the
+ * second PTE replaced the first and the bytes written through it vanished
+ * (a thread returned through a zeroed stack slot to address 0). Lock order
+ * is mm_lock -> mm_fault_lock; the fault path takes only this one. */
+static spinlock_t mm_fault_lock = SPINLOCK_INIT;
+
 /* Resolve a fault on a reservation: map a zeroed page with the reserved
- * protection. Returns 0 when mapped, -1 when va is no reservation, the
- * reservation is PROT_NONE, the access is a write to a read-only one, or
- * the heap is exhausted (the caller kills like any unresolved fault). */
+ * protection. Returns 0 when mapped or when another CPU mapped it first
+ * (the faulting access retries through the fresh PTE), -1 when va is no
+ * reservation, the reservation is PROT_NONE, the access is a write to a
+ * read-only one, or the heap is exhausted (the caller kills like any
+ * unresolved fault). */
 int mm_anon_fault(unsigned long cr3, unsigned long va, int write) {
     volatile unsigned long *pp;
     unsigned long pte;
+    irqflags_t flags;
     void *pg;
+    int rc = -1;
     va &= ~0xFFFUL;
     if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return -1;
     if (mt_shared_slot(va >> PT_PD_INDEX_SHIFT)) return -1;
     pp = mm_file_pte(cr3, va);
     if (!pp) return -1;
+    spin_lock_irqsave(&mm_fault_lock, &flags);
     pte = *pp;
-    if ((pte & 0x001UL) || !(pte & PTE_DEMAND)) return -1;
-    if (!(pte & PTE_DEMAND_READ)) return -1;
-    if (write && !(pte & PTE_DEMAND_WRITE)) return -1;
-    pg = pt_page_alloc();
-    if (!pg) return -1;
-    *pp = ((unsigned long)pg) | 0x001UL | PT_FLAGS_USER |
-          ((pte & PTE_DEMAND_WRITE) ? 0x002UL : 0) |
-          ((pte & PTE_DEMAND_EXEC) ? 0 : (unsigned long)PT_FLAGS_NX);
-    __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
-    return 0;
+    if ((pte & 0x001UL) && (pte & PT_FLAGS_USER) && (!write || (pte & 0x002UL))) {
+        __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+        rc = 0;
+    } else if (!(pte & 0x001UL) && (pte & PTE_DEMAND) && (pte & PTE_DEMAND_READ) &&
+               (!write || (pte & PTE_DEMAND_WRITE))) {
+        pg = pt_page_alloc();
+        if (pg) {
+            *pp = ((unsigned long)pg) | 0x001UL | PT_FLAGS_USER |
+                  ((pte & PTE_DEMAND_WRITE) ? 0x002UL : 0) |
+                  ((pte & PTE_DEMAND_EXEC) ? 0 : (unsigned long)PT_FLAGS_NX);
+            __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+            rc = 0;
+        }
+    }
+    spin_unlock_irqrestore(&mm_fault_lock, flags);
+    return rc;
+}
+
+/* Free a batch of frames whose PTEs this CPU already cleared, once every
+ * other CPU running cr3 has dropped them from its TLB (kernel/mm/tlb.c). */
+static void mm_release_batch(unsigned long cr3, unsigned long *frames, int *n) {
+    int i;
+    tlb_shootdown(cr3);
+    for (i = 0; i < *n; i++) pt_page_free((void *)frames[i]);
+    *n = 0;
 }
 
 /* Unmap the anonymous pages of [base, base + len): reservations vanish,
  * present heap frames are freed (or just unshared when a fork sibling
  * still maps them copy-on-write), fixed frames outside the heap stay
- * mapped (the shared pid-0 window owns them) and are zeroed on reuse. */
+ * mapped (the shared pid-0 window owns them) and are zeroed on reuse.
+ * Frames are freed in TLB_RELEASE_BATCH batches after a shootdown, never
+ * while a sibling thread on another CPU may still translate to them. */
 void mm_anon_release(unsigned long cr3, unsigned long base, unsigned long len) {
+    unsigned long frames[TLB_RELEASE_BATCH];
+    int nframes = 0;
+    irqflags_t flags;
     unsigned long va;
     if (cr3 == 0)
         __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
     if (base & 0xFFFUL || base + len < base) return;
+    spin_lock_irqsave(&mm_fault_lock, &flags);
     for (va = base; va < base + len; va += 0x1000) {
         volatile unsigned long *pp;
         unsigned long pte, phys;
-        if (va < USER_LOAD_BASE || va >= USER_LOAD_END) return;
+        if (va < USER_LOAD_BASE || va >= USER_LOAD_END) break;
         if (mt_shared_slot(va >> PT_PD_INDEX_SHIFT)) continue;
         pp = mm_file_pte(cr3, va);
         if (!pp) continue;
@@ -811,8 +847,12 @@ void mm_anon_release(unsigned long cr3, unsigned long base, unsigned long len) {
         if (!mm_anon_frame(phys)) continue;
         *pp = 0;
         __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
-        if (!cow_drop_ref(phys)) pt_page_free((void *)phys);
+        if (cow_drop_ref(phys)) continue;
+        frames[nframes++] = phys;
+        if (nframes == TLB_RELEASE_BATCH) mm_release_batch(cr3, frames, &nframes);
     }
+    if (nframes > 0) mm_release_batch(cr3, frames, &nframes);
+    spin_unlock_irqrestore(&mm_fault_lock, flags);
 }
 
 /** Docstring: Read the mapped phys for va in cr3, 0 when the PTE
@@ -971,16 +1011,23 @@ int mm_file_fault(unsigned long cr3, unsigned long va) {
  * teardown passes the dying window explicitly (zombie-exclusive, no
  * lock needed). unmap == 0 drops refs only (teardown, whose tables
  * die next); unmap == 1 also clears and frees (munmap, whose range
- * is immediately reusable). Never allocates. */
+ * is immediately reusable), after a TLB shootdown covers every cleared
+ * PTE (a cache page stays cached, but no stale writer may reach it).
+ * Never allocates. */
 void mm_file_range_release(unsigned long cr3, unsigned long base,
         unsigned long len, int ino, unsigned long off, int unmap) {
     unsigned long va;
     unsigned long end;
     if (ino < 0 || len == 0 || base + len < base) return;
     if (base < USER_LOAD_BASE || base + len > USER_LOAD_END + 1) return;
+    unsigned long frames[TLB_RELEASE_BATCH];
+    int nframes = 0;
+    int cleared = 0;
+    irqflags_t flags;
     if (cr3 == 0)
         __asm__ volatile("mov %%cr3, %0" : "=r"(cr3));
     end = base + len;
+    spin_lock_irqsave(&mm_fault_lock, &flags);
     for (va = base; va < end; va += 0x1000) {
         volatile unsigned long *pp = mm_file_pte(cr3, va);
         unsigned long pte;
@@ -998,13 +1045,18 @@ void mm_file_range_release(unsigned long cr3, unsigned long base,
         if (pcache_owns_phys(phys)) {
             *pp = 0;
             __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+            cleared = 1;
             continue;
         }
         if (!pt_page_owned(phys)) continue;
-        pt_page_free((void *)phys);
         *pp = 0;
         __asm__ volatile("invlpg (%0)" :: "r"(va) : "memory");
+        cleared = 1;
+        frames[nframes++] = phys;
+        if (nframes == TLB_RELEASE_BATCH) mm_release_batch(cr3, frames, &nframes);
     }
+    if (nframes > 0 || cleared) mm_release_batch(cr3, frames, &nframes);
+    spin_unlock_irqrestore(&mm_fault_lock, flags);
 }
 
 /** Docstring: Break a write fault on a cache-shared file page into

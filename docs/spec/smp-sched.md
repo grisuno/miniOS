@@ -85,6 +85,65 @@ position), `smp-init-missing` (no INIT before SIPI), `smp-sipi-vector-zero`
 (zero vector), `smp-ap-no-lapic-eoi` (missing AP EOI), `smp-bsp-ctx-switch-not-guarded`
 (AP corrupts process table), `smp-gs-base-not-set` (missing GS base).
 
+### Per-CPU state and cross-CPU memory coherence
+With `-smp 2` the APs run CLONE_VM threads, so every glibc program with
+threads (the FreeDom browser's fetch threads first) runs code on an AP.
+Five contracts make that safe; all are pinned by `scenario_smp "SMP SSE in
+threads on the AP across runs"` (`progs/src/apsse.c` six times back to
+back, then `smp`).
+
+- **Per-CPU control registers.** CR0 and CR4 are per-CPU: an AP leaves
+  INIT with caching disabled (CR0.CD|NW) and SSE off (CR4.OSFXSR clear),
+  and a glibc string routine on the AP died with #UD (FreeDom crashed on
+  the first page that ran a fetch thread there). `cpu_enable_caches` and
+  `cpu_enable_sse` (`arch/x86/cpu_setup.h`, bit names in `bootdefs.h`) run
+  in `smp_ap_entry`; the BSP's kmain uses the same `cpu_enable_sse`.
+  Mutant `ap-sse-disabled`.
+- **Idle contexts run on the kernel tables.** Every park into a CPU's
+  idle context sets its CR3 to `sched_idle_cr3` (captured in `sched_init`),
+  never the outgoing thread's: when that thread's process died, its tables
+  were freed and reused while the AP idled on them, fetched kernel code
+  through garbage, double-faulted and reset the machine (the reboot on
+  reopening the browser). `smp` prints `idle_cr3=kernel|stale` per CPU.
+  Mutant `idle-cr3-stale`.
+- **TLB shootdown** (`kernel/mm/tlb.c`, `arch/x86/tlb_nmi.S`). munmap,
+  mremap and file-range release free heap frames once their PTEs are
+  cleared; a sibling on another CPU kept translating to a frame the heap
+  had already reused. Release paths clear up to `TLB_RELEASE_BATCH` PTEs,
+  call `tlb_shootdown(cr3)`, then free the batch; mprotect and the CoW
+  break call it after their PTE change. The shootdown fires only when
+  another CPU's current process runs that CR3 (a CPU that loads it later
+  starts flushed). The request is an NMI (`smp_nmi_broadcast`, delivery
+  mode 4, all-excluding-self) because the issuer usually holds mm_lock and
+  a CPU waiting for it spins with IF clear, so a fixed IPI would deadlock.
+  The receiver runs on its own IST stack (TSS.ist1, `NMI_IST_STACK_SZ`, so
+  an NMI in the syscall entry window never writes below the user stack),
+  touches no GS, lock or C code, reloads CR3 and increments
+  `tlb_shoot_acks`; the issuer waits for `cpu_count - 1` acks within
+  `TLB_SHOOT_SPIN_MAX` and reports a lost one on serial. LINT1 stays
+  masked, so every NMI is a shootdown. `smp` prints `tlb_shootdowns=N
+  tlb_timeouts=N`. Mutants `tlb-shootdown-skipped`, `tlb-nmi-no-ack`.
+- **Demand faults are serialized** (`mm_fault_lock`, lock order mm_lock ->
+  mm_fault_lock). Two CPUs faulting the same reservation (glibc's parent
+  writes a new thread's descriptor while the thread already runs on the
+  AP) each installed a zeroed page; the second PTE replaced the first and
+  the bytes written through it vanished (a thread returned to address 0).
+  A PTE another CPU already installed now resolves the fault (flush and
+  retry) instead of killing the process. The release paths take the same
+  lock.
+- **Futex queues forget dead waiters** (`futex_forget`). A thread that
+  died or was killed while queued stayed linked; once its slot was reused
+  and waited again, the enqueue linked tail -> tail and `futex_wake` spun
+  forever with interrupts off. The waiter's own entry is dropped before
+  every wait and at reap, `futex_wake` unlinks entries that no longer
+  sleep, and every walk is bounded by `MAX_PROCS`. Host suite `make
+  test-futex` pins slot reuse, dead-entry pruning and forget; mutants
+  `futex-wait-no-forget`, `futex-wake-keeps-dead`.
+- **Known open issue.** A ring-3 fault in a thread on the AP that kills
+  its group could leave the BSP in the kernel with GS base 0 (`switch_to`
+  #GP reading `current_pid` from the real-mode IVT); seen only while the
+  SSE #UD above was the trigger, not reproduced since.
+
 ### SMP Beyond Threads: Per-CPU Memory Views (SDD spec, not yet built)
 APs run `CLONE_VM` threads only; isolated processes never leave the
 BSP. Lifting that needs no new IPI and no CR3/TLB machinery
@@ -110,10 +169,9 @@ take threads only; post-views the same scenario with an
 `ap_nonvm=[1-9]` expect proves APs ran isolated procs). Mutants:
 `smp-ap-vm-only` (APs refuse non-VM, counter stays 0) and
 `smp-ap-no-view` (AP skips the brk restore, burn checksum breaks).
-`munmap` needs no shootdown (it only edits the VMA tree, never
-clears a PTE), and CoW needs none either once the upgrade path is
-idempotent (an RW PTE means another CPU already upgraded: flush
-local and resume instead of killing). Until views land, treat
+`munmap` once needed no shootdown because it only edited the VMA tree;
+since it releases pages it does, see "Per-CPU state and cross-CPU memory
+coherence" below. Until views land, treat
 overlapping heavyweight ring-3 processes as the known-red
 configuration (characterized under Shell, same section).
 

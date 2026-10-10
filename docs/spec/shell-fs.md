@@ -70,9 +70,11 @@ never truncated.
 
 A resolved file is then classified by content and run by the matching
 loader (`shell_run_elf_buf`): `ET_REL` `.o` objects run at ring 0 through
-`k_run_rel`, `ET_EXEC`/`ET_DYN` binaries run as ring-3 processes through
-`k_exec_user`, and `.cvm` modules run on the `objects/cvm.o` interpreter
-loaded on demand (`shell_run_cvm`). Because the file is reloaded and
+`k_run_rel`, `ET_EXEC`/`ET_DYN` binaries run in ring 3 through
+`k_exec_user` (the shell's pid-0 exec frame), and `.cvm` modules run on the
+`objects/cvm.o` interpreter loaded on demand (`shell_run_cvm`). The exec
+frame records the resolved image path, so `/proc/self/exe` answers it there
+too (`proc_sec_set_exe(0, ...)`). Because the file is reloaded and
 relocated fresh on every invocation, running a toolchain object does not
 grow the registered-program table. The relocated image is freed when the
 run returns (`elf_load` reports its base, `run`/`SPAWN` release it), and the
@@ -90,6 +92,33 @@ and `cvm/` are never on the bare command path — only registered programs,
 the current directory, and the suffix-driven `bin/` lookup answer a bare
 name, so the command path stays root-anchored and an attacker can never
 run an arbitrary `.o` as a command by name alone.
+
+**Process note.** The exec frame is not a process: `fork`, `execve` and
+everything built on them answer `-ENOSYS` there. A binary that needs
+process semantics says so with one ELF note (`PT_NOTE`, name
+`MINIOS_NOTE_NAME` "MiniOS", type `MINIOS_NOTE_PROCESS`, nonzero 4-byte
+descriptor; `progs/minios_abi.h`). `elf_wants_process` (`kernel/loader.c`)
+finds it with every header, program-header and note field bounds checked
+before it is read; a malformed table answers "no" and leaves the load to
+report it. A foreground run (`run p`, a bare name, a dock icon) of such a
+binary goes through `shell_run_process`: `spawn_execute` builds an isolated
+process exactly like `SYS_SPAWN` and waits for it interruptibly (Ctrl+C and
+the title-bar X kill it, exit 130), with `shell_fg_active` set so input
+routing is the foreground multiplexer. The wait drives the desktop tick
+(`vga_fb_wait_tick`, `DESKTOP_TICK_INTERVAL`, standing down whenever the
+exec frame's timer ISR owns it), so pointer, taskbar and window controls
+stay live; a dock click during the wait is queued like one during an exec
+frame run, never nested. A program that dies in graphics or raw keyboard
+mode is restored to the desktop like `k_exec_user` does. The exit code is
+reported as for any run. Kernels without the note ignore it (no ABI bump).
+`SYS_SPAWN` from inside a large exec frame was not used for this: with the
+desktop tick active its child faulted on its first instructions under
+timing that logging hid, so the shell, not the program, makes the process.
+Proof: BDD `process note runs a foreground program as a process` runs one
+probe source built twice (`bin/lxframe` without the note: `fork
+unavailable` and its `/proc/self/exe`; `bin/lxproc` with it: `fork ok`),
+and the mutants `process-note-ignored`, `process-note-frame-exe-lost`,
+`process-note-type-flip`, `process-note-name-flip` and `fg-wait-tick-lost`.
 
 TAB completes the current word from history, builtins, registered programs
 and ramdisk file names: one TAB fills the longest unambiguous prefix, a

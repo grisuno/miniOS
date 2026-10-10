@@ -354,6 +354,9 @@ extern volatile int sched_ready;
  * `smp` shell builtin reports it, so parallel execution is observable
  * over the serial console without a framebuffer. */
 extern proc_t ap_idle_proc[MAX_CPUS];
+/* 1 when cpu's idle context is parked on the kernel page tables, never on
+ * a process's (whose tables are freed when it dies). */
+int sched_idle_on_kernel_cr3(int cpu);
 extern volatile unsigned long smp_dispatches[MAX_CPUS];
 extern volatile unsigned long smp_idle_polls[MAX_CPUS];
 /* Per-CPU idle ticks at 100 Hz for the MINFO cpu selector (see the

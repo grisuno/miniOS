@@ -263,7 +263,7 @@ python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, task
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
 python3 tools/test_gui_fashion.py  # QMP pixel proof: one cursor, stable frames, ESC quit
 python3 tools/test_gui_gfxview.py  # QMP pixel proof: fullscreen DOOM, Alt+Enter, tile, minimize, close
-python3 tools/test_gui_freedom.py  # QMP pixel proof: freedom-gui typing, clipboard round trip, menu click
+python3 tools/test_gui_freedom.py  # QMP pixel proof: foreground run (pointer follows, no dead arrow, Ctrl+C), typing, clipboard, menu click
 ./tools/test_codecs.sh   # lzss/lz4/aes roundtrips (pass=3)
 ./tools/mutate.sh    # every mutant killed (BDD + host TLS + host VMA + host Lisp suites)
 make test-tls       # host-side crypto + full-handshake suite green

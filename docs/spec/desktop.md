@@ -172,6 +172,9 @@ framebuffer is not.
   to default like the historical X button). An empty submit (Enter /
   Ctrl+D on a blank line) clears the window's live-prompt flag, or every
   refocus stacked another `miniOS> `.
+  The dock's FreeDom icon (`icons/freedom.png` from `images/freedom.png`)
+  runs `freedom-gui`, a process-note binary, so the click starts a real
+  process the shell waits for (docs/spec/shell-fs.md, process note).
   The dock's Terminal icon runs `wm split` (`progs/etc/shortcuts`), so a
   click opens/focuses the second shell with no typing — verified over QMP
   with separated button down/up (a joint down+up can land inside one tick
@@ -207,6 +210,19 @@ framebuffer is not.
   in gfx mode the tick never draws or restores and only invalidates
   across real repaints. `tools/test_gui_fashion.py` proves it over QMP
   (one arrow sprite after motion, stable idle frames, ESC quits).
+  An app that presents only on damage (the FreeDom browser idling on a
+  static page) would freeze the arrow, so the tick takes over when frames
+  stop: after `GFX_CURSOR_FOLLOW_TICKS` without a present, with the pointer
+  moved, it restores and redraws the sprite through the same helpers
+  (`gfx_cursor_follow_idle`). The two painters never overlap: a present
+  announces itself (`gfx_presenting`) and waits out a tick mid-paint
+  (`gfx_cursor_following`); the tick backs off while a present runs and
+  never waits, so an interrupted present cannot deadlock it. Entering
+  graphics mode lifts the desktop sprite while its saved background is
+  still exact; the focus sync that follows used to invalidate it unrestored
+  and strand a dead arrow on the wallpaper. `tools/test_gui_freedom.py`
+  judges both on pixels (mutants `gfx-cursor-follow-lost`,
+  `gfx-cursor-stale-arrow`).
   Taking the display also takes focus (`wm_gfx_focus_sync` inside
   `vga_fb_set_gfx_mode`): enabling graphics mode parks the shell line
   and focuses the graphics window with stale raw bytes flushed, so a

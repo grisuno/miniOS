@@ -749,6 +749,7 @@ typedef struct {
 
 void *elf_load(void *data, unsigned size, void **base_out);       /* ET_REL relocatable .o */
 void *load_exec_elf(void *data, unsigned size);  /* ET_EXEC / ET_DYN */
+int elf_wants_process(const void *data, unsigned size);  /* process note */
 void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
                          unsigned long *brk_out, unsigned long *base_out);
 

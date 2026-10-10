@@ -27,6 +27,9 @@
 #include "zip.h"
 #include "minifetch.h"
 #include "shell.h"
+#include "proc_sec.h"
+#include "spawn.h"
+#include "tlb.h"
 #include "editor.h"
 #include "kernel/console_in.h"
 
@@ -1110,6 +1113,32 @@ static int etrel_path_trusted(const char *full) {
     if (kstrncmp(p, ETREL_TRUSTED_DIR, ETREL_TRUSTED_LEN) == 0) return 1;
     return 0;
 }
+/* Foreground run of an image that carries the process note (minios_abi.h):
+ * it becomes an isolated process through the same spawn and interruptible
+ * wait SYS_SPAWN uses (Ctrl+C and the title-bar X kill it), with the shell
+ * in foreground state so input routing matches a legacy run. A program that
+ * dies still in graphics mode or raw keyboard mode is cleaned up here, as
+ * k_exec_user does for the exec frame. Returns the exit code, or -1 when
+ * the image could not be spawned. */
+static int shell_run_process(const char *srcpath, const char *data, unsigned size,
+                             int argc, char **argv) {
+    int rc;
+    shell_fg_active = 1;
+    rc = spawn_execute(srcpath, 0, (unsigned char *)data, size, argc, argv,
+                       (const char **)argv);
+    shell_fg_active = 0;
+    if (rc == EFAULT) {
+        kprintf("run: cannot start '%s' as a process\n", srcpath);
+        rc = -1;
+    }
+    if (wm_gfx_mode_active()) {
+        vga_fb_set_gfx_mode(0);
+        vga_fb_draw_desktop();
+    }
+    kbd_reset_for_shell();
+    return rc;
+}
+
 /* Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`.
  * argv[0] is the program name the program sees. Returns the exit code, or -1
  * when the buffer is not a loadable ELF. The image is not registered; it is
@@ -1135,8 +1164,11 @@ static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
         return rc;
     }
     if (etype == ET_EXEC || etype == ET_DYN) {
+        if (srcpath && elf_wants_process(data, size))
+            return shell_run_process(srcpath, data, size, argc, argv);
         void *entry = load_exec_elf((void *)data, size);
         if (!entry) return -1;
+        if (srcpath) proc_sec_set_exe(0, srcpath);
         return k_exec_user(entry, argc, argv);
     }
     return -1;
@@ -1161,21 +1193,27 @@ static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
     if (!minifs_is_mounted()) return -1;
     char cand[RAMDISK_FNAME_LEN];
     char resolved[RAMDISK_FNAME_LEN];
+    const char *hit = 0;
     int ino = -1;
-    if (fs_resolve(name, resolved, sizeof(resolved)))
+    if (fs_resolve(name, resolved, sizeof(resolved))) {
         ino = minifs_resolve_path(resolved);
+        if (ino >= 0) hit = resolved;
+    }
     if (ino < 0 && kstrchr(name, '/')) {
         ino = minifs_resolve_path(name);
+        hit = name;
         if (ino < 0) {
             const char *base = name;
             const char *p;
             for (p = name; *p; p++)
                 if (*p == '/') base = p + 1;
             ino = minifs_resolve_path(base);
+            hit = base;
         }
     }
     if (ino < 0 && !kstrchr(name, '/')) {
         ino = minifs_resolve_path(name);
+        hit = name;
         if (ino < 0) {
             const ShellRunDir *pref = shell_run_dir_for(name);
             unsigned long pref_off = (unsigned long)(pref - shell_run_dirs);
@@ -1188,6 +1226,7 @@ static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
                 kmemcpy(cand, d->dir, dl);
                 kmemcpy(cand + dl, name, nl + 1);
                 ino = minifs_resolve_path(cand);
+                hit = cand;
                 if (ino >= 0) break;
             }
         }
@@ -1198,7 +1237,7 @@ static int shell_run_elf_minifs(const char *name, int argc, char **argv) {
     unsigned char *buf = (unsigned char *)kmalloc(st.size);
     if (!buf) return -1;
     minifs_read(ino, buf, 0, st.size);
-    int ret = shell_run_elf_buf_path((const char *)buf, st.size, argc, argv, name);
+    int ret = shell_run_elf_buf_path((const char *)buf, st.size, argc, argv, hit);
     kfree(buf);
     return ret;
 }
@@ -1402,6 +1441,7 @@ static int shell_wait_fg(int *pids, int n, int kill_on_int) {
             }
             continue;
         }
+        vga_fb_wait_tick();
         yield();
     }
 }
@@ -1641,10 +1681,12 @@ int shell_run_any(const char *name, int argc, char **argv) {
  * is special: it activates the terminal. */
 void desktop_launch(const char *cmd) {
     if (!cmd || !*cmd) return;
-    if (user_program_active) {
-        /* The tick runs from the ISR while a program owns the CPU; defer the
-         * launch until the program exits instead of re-entering k_exec_user
-         * from ISR context (which corrupts the running program's state). */
+    if (user_program_active || shell_fg_active) {
+        /* The tick runs from the ISR while a program owns the CPU, or from
+         * the shell's foreground wait (vga_fb_wait_tick); defer the launch
+         * until the program exits instead of re-entering k_exec_user from
+         * ISR context (which corrupts the running program's state) or
+         * nesting a second foreground run inside the wait. */
         shell_queue_launch(cmd);
         return;
     }
@@ -3708,13 +3750,16 @@ void shell_exec_builtin(int argc, char **argv) {
             unsigned long steals = 0;
             unsigned long drops = 0;
             rq_stats(c, &hits, &steals, &drops);
-            kprintf("  cpu%d lapic=%d %s cur=%d dispatched=%lu polls=%lu rq_hits=%lu rq_steals=%lu rq_drops=%lu\n",
+            kprintf("  cpu%d lapic=%d %s cur=%d dispatched=%lu polls=%lu rq_hits=%lu rq_steals=%lu rq_drops=%lu idle_cr3=%s\n",
                     cpus[c].cpu_id, cpus[c].lapic_id,
                     cpus[c].is_bsp ? "BSP" : "AP ",
                     cpus[c].cur_pid, smp_dispatches[c], smp_idle_polls[c],
-                    hits, steals, drops);
+                    hits, steals, drops,
+                    sched_idle_on_kernel_cr3(c) ? "kernel" : "stale");
         }
         kprintf("  bad_gs=%u\n", smp_dbg_bad_gs);
+        kprintf("  tlb_shootdowns=%lu tlb_timeouts=%lu\n",
+                tlb_shootdown_count(), tlb_shootdown_timeouts());
         kprintf("  lapic_cal=%u %s\n", lapic_cal_10ms,
                 lapic_cal_valid ? "measured" : "fallback");
     }

@@ -247,6 +247,10 @@ int      wm_close_pending(void);
 void     wm_clear_close(void);
 int      wm_gfx_mode_active(void);
 void vga_fb_mouse_tick(void);
+/* Desktop tick for a kernel wait loop (foreground process wait, mrun):
+ * runs vga_fb_mouse_tick at DESKTOP_TICK_INTERVAL unless the exec frame's
+ * timer ISR already owns it. */
+void vga_fb_wait_tick(void);
 void vga_fb_mouse_init(void);
 /* Dock click bounce (Mac style): arm count and strip repaints while live,
  * for the serial-observable proof (`wm state` reports both). */

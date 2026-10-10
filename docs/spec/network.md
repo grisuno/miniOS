@@ -332,6 +332,11 @@ that seam, nothing else in FreeDom changes.
   chord produces no text. Keysym values are the X11 values FreeDom's
   `key_event` vocabulary pins; the host suite pins them to
   `xkbcommon-keysyms.h` too.
+  - Process: the binary carries the MiniOS process note (minios_abi.h), so
+    a foreground `freedom-gui`, a bare name or the dock icon runs it as an
+    isolated process the shell waits for. In the pid-0 exec frame `fork`
+    is `-ENOSYS`, OpenSSL's providers do not initialize and every fetch
+    ended in "Could not start the request (out of resources)".
 - **`progs/freedomui/media_unavailable.c`** replaces FreeDom's FFmpeg decoder
   entry points for a build without FFmpeg: `media_decoder_spawn` fails closed
   (`-1`, `ENOSYS`), which `video_play` already reports and unwinds, so no
@@ -436,8 +441,9 @@ point and `lxnet: all ok`.
   random generator stack. Inside MiniOS, as a job, it completes a TLS 1.3
   handshake with the hybrid post-quantum group `X25519MLKEM768` and an HTTP
   200 from `https://example.com`. In the pid-0 foreground window OpenSSL's
-  providers do not initialize (every algorithm fetch fails); browsers and
-  probes that fetch run as jobs.
+  providers do not initialize (every algorithm fetch fails); probes that
+  fetch run as jobs, and `freedom-gui` carries the process note so its
+  foreground run is a process (docs/spec/shell-fs.md).
 - **Address-space budget.** brk and mmap share about 140 MB of the user
   window (`USER_LOAD_BASE` to `USER_HEAP_CEIL`), with the kernel heap
   identity-mapped right above the window. glibc reserves 64 MB per thread
@@ -448,5 +454,6 @@ point and `lxnet: all ok`.
   browser ran out of address space after its first fetch thread and died on
   a NULL `malloc`.
 - **Live proof (needs the host's internet, outside the hermetic BDD):**
-  `freedom-gui https://example.com` resolves through the slirp resolver,
-  negotiates TLS 1.3 and paints the page.
+  `freedom-gui https://example.com`, in the foreground or as a job,
+  resolves through the slirp resolver, negotiates TLS 1.3 and paints the
+  page.

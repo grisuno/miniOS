@@ -118,6 +118,22 @@ __attribute__((constructor)) static void minios_malloc_single_arena(void) {
     (void)mallopt(M_ARENA_MAX, FREEDOM_GUI_MALLOC_ARENAS);
 }
 
+/* Run as a process, never in the shell's pid-0 exec frame: the browser's
+ * fetch threads, renderer fork and /proc/self/exe tab workers need real
+ * process semantics (minios_abi.h, process note). */
+struct minios_process_note {
+    uint32_t namesz;
+    uint32_t descsz;
+    uint32_t type;
+    char     name[sizeof MINIOS_NOTE_NAME];
+    uint32_t desc;
+};
+
+__attribute__((section(".note.minios.process"), used, aligned(4)))
+static const struct minios_process_note freedom_gui_process_note = {
+    sizeof MINIOS_NOTE_NAME, sizeof(uint32_t), MINIOS_NOTE_PROCESS, MINIOS_NOTE_NAME, 1u
+};
+
 pf_status pf_display_open(pf_display **out) {
     if (out == NULL) return PF_ERR_NULL_ARG;
     *out = NULL;

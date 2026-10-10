@@ -258,6 +258,30 @@ expect "rq_hits=[0-9]"
 expect "rq_steals=[0-9]"
 expect "bad_gs=0"
 
+# Per-CPU control registers (docs/spec/smp-sched.md): glibc threads doing
+# SSE2 land on the AP, so an AP without CR4.OSFXSR dies with #UD. Six runs
+# back to back: each run's freed page tables are reused by the next, so an
+# idle CPU still parked on a dead process's CR3 faults and resets the machine
+# (smp pins idle_cr3=kernel), and the main thread's munmap churn while the
+# workers run on the AP is the TLB shootdown path (tlb_shootdowns, every one
+# acknowledged). Before the futex queue fix a reused thread slot hung here.
+scenario_smp "SMP SSE in threads on the AP across runs" "mrun bin/apsse
+mrun bin/apsse
+mrun bin/apsse
+mrun bin/apsse
+mrun bin/apsse
+mrun bin/apsse
+smp
+poweroff"
+expect_count 6 "apsse: ok threads=8"
+expect "cpu1 lapic=1 AP"
+expect_count 2 "idle_cr3=kernel"
+refute "idle_cr3=stale"
+expect "tlb_shootdowns=[1-9]"
+expect "tlb_timeouts=0"
+expect "powering off"
+refute "EXCEPTION"
+
 scenario "SMP single CPU fallback without -smp" "poweroff"
 expect "SMP: 1 CPU"
 expect "powering off"
@@ -1933,6 +1957,22 @@ expect "freedom: frame ok (800x360)"
 expect "gfx: frames composited 1"
 expect "kill: pid 1 terminated"
 expect "jobs: none"
+refute "EXCEPTION"
+
+# Process note (docs/spec/shell-fs.md, progs/minios_abi.h): run bare, the
+# probe without the note stays in the pid-0 exec frame (fork is ENOSYS there,
+# /proc/self/exe still names its image) and the one with the note runs as an
+# isolated process the shell waits for (fork works). Same source, two builds.
+scenario "process note runs a foreground program as a process" "lxframe
+lxproc
+poweroff"
+expect "lxproc: exe /.*lxframe$"
+expect "lxproc: fork unavailable"
+expect "lxproc: exe /.*lxproc$"
+expect "lxproc: fork ok"
+expect_count 2 "exit code: 0"
+refute "lxproc: fork FAIL"
+refute "lxproc: exe FAIL"
 refute "EXCEPTION"
 
 scenario "nuklear compiles a demo graph to cvm and runs it" "nuklear --demo cvm/demo.cvm
