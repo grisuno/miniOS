@@ -387,6 +387,7 @@ class TestMiniOSBDD(_ConsoleBDDBase):
         r = self.server.tool("minios_send", {"line": "run objects/minigcc.o src/p.c > asm/p.s"})
         self.assertIn("miniOS> ", r["text"])
         r = self.server.tool("minios_send", {"line": "run objects/ld.o -f elf -o bin/p.elf asm/p.s"})
+        r = self.server.tool("minios_send", {"line": "run sign bin/p.elf"})
         r = self.server.tool("minios_send", {"line": "run bin/p.elf"})
         self.assertIn("exit code: 7", r["text"])
 
@@ -403,6 +404,7 @@ class TestMiniOSBDD(_ConsoleBDDBase):
     def test_t06_selfhosted_compiler(self):
         self.server.tool("minios_send", {"line": "run bin/minigcc.elf src/test.c > asm/t.s", "timeout_ms": 60000})
         self.server.tool("minios_send", {"line": "run objects/ld.o -f elf -o bin/t.elf asm/t.s"})
+        self.server.tool("minios_send", {"line": "run sign bin/t.elf"})
         r = self.server.tool("minios_send", {"line": "run bin/t.elf"})
         self.assertIn("exit code: 12", r["text"])
 
@@ -468,6 +470,7 @@ install:
   build:
     - run objects/minigcc.o build/cp.c > build/cp.s
     - run objects/ld.o -f elf -o bin/cp build/cp.s
+    - run sign bin/cp
   verify:
     - line: cp src/cp.c build/cp2.c
       exit_code: 0
@@ -492,7 +495,7 @@ class TestAddonYaml(unittest.TestCase):
         self.assertEqual(addon["install"]["repo_url"], "https://github.com/grisuno/miniOS.git")
         files = addon["install"]["files"]
         self.assertEqual(files, [{"src": "progs/src/cp.c", "dst": "build/cp.c"}])
-        self.assertEqual(len(addon["install"]["build"]), 2)
+        self.assertEqual(len(addon["install"]["build"]), 3)
         verify = addon["install"]["verify"]
         self.assertEqual(verify, [{"line": "cp src/cp.c build/cp2.c", "exit_code": "0"}])
 
@@ -543,7 +546,7 @@ class TestAddonYaml(unittest.TestCase):
             "  files:\n    - src: progs/src/cp.c\n      dst: build/cp.c\n",
             "  files: []\n",
         ).replace(
-            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n",
+            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n    - run sign bin/cp\n",
             "  host_build:\n    - make progs/bin/lua.elf\n",
         )
         addon = self.ma.validate_addon(self.ma.parse_addon_yaml(text), "lua.yaml")
@@ -574,7 +577,7 @@ class TestAddonYaml(unittest.TestCase):
             "  files:\n    - src: progs/src/cp.c\n      dst: build/cp.c\n",
             "  files: []\n",
         ).replace(
-            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n",
+            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n    - run sign bin/cp\n",
             "  host_build:\n    - make progs/bin/lua.elf\n",
         )
         with self.assertRaises(self.ma.AddonError):
@@ -588,7 +591,7 @@ class TestAddonYaml(unittest.TestCase):
             "  files:\n    - src: progs/src/cp.c\n      dst: build/cp.c\n",
             "  files: []\n",
         ).replace(
-            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n",
+            "  build:\n    - run objects/minigcc.o build/cp.c > build/cp.s\n    - run objects/ld.o -f elf -o bin/cp build/cp.s\n    - run sign bin/cp\n",
             "  host_build:\n    - make progs/bin/lua.elf\n",
         )
         addon = self.ma.validate_addon(self.ma.parse_addon_yaml(text), "lua.yaml")
@@ -869,6 +872,7 @@ install:
   build:
     - run objects/minigcc.o build/src.c > build/src.s
     - run objects/ld.o -f elf -o build/fixture build/src.s
+    - run sign build/fixture
   verify:
     - line: run build/fixture
       exit_code: 42

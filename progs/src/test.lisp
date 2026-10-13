@@ -84,6 +84,7 @@
 (check-spawn "dlmalloc-selftest" (minios-run "/objects/dlmalloc.o") 0)
 (check-spawn "minigcc-compiles" (minios-run "/objects/minigcc.o" '("/src/fib.c") "/asm/_t_lisp.s") 0)
 (check-spawn "ld-links" (minios-run "/objects/ld.o" '("-f" "elf" "-o" "/bin/_t_lisp.elf" "/asm/_t_lisp.s")) 0)
+(check-spawn "sign-links" (minios-run "/sign" '("/bin/_t_lisp.elf")) 0)
 (check-spawn "toolchain-roundtrip" (minios-run "/bin/_t_lisp.elf") 55)
 
 (print "TOTAL pass=")

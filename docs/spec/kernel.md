@@ -43,6 +43,31 @@ registered with a null address. Section header arithmetic uses the
 overflow-safe pattern `sh_offset > size || sh_size > size - sh_offset` to
 prevent unsigned wrap from bypassing the bounds check.
 
+### Signed binaries (Ed25519, ELF NOTE, enforce)
+Every `ET_EXEC`/`ET_DYN` image carries one `PT_NOTE` note with name
+`MINIOS_NOTE_NAME`, type `MINIOS_NOTE_SIGN` and a descriptor of one key-id
+byte followed by the 64-byte Ed25519 signature, zero-padded to 4-byte
+note alignment on disk. Post-link signing appends the same note as a
+non-allocated `.note.minios.sign` section instead; both sources feed
+one verification. The signature covers a
+canonical SHA-512 digest built as `e_entry` (little-endian u64) followed by
+each `PT_LOAD` segment in program-header order as `p_vaddr` (u64),
+`p_flags` (u32), `p_filesz` (u64) and the `p_filesz` file bytes, so the
+mapping, the entry and the content are all bound and the note itself stays
+outside the digest. File bytes below 64 (the ELF header) are excluded
+from the segment feeds while `e_entry` stays bound as a value: appending
+the signature section rewrites the section index there, and a digest
+covering it would invalidate its own signature. The kernel trust store (`headers/sign.h`) holds the
+production and development public keys indexed by key id; the private keys
+never enter the image. `load_exec_elf` and `load_exec_elf_into` verify
+before mapping any page: a missing note, an unknown key id or a bad
+signature refuses the load with a diagnostic and leaves no partial state.
+Host signing lives in `tools/sign_elf.py` (pure python, no extra
+dependencies) and the images are resigned at build time; inside the OS the
+ring-3 `sign` program re-signs locally built binaries with the embedded
+development key, which is documented dev-only. Out of scope
+for v1: `ET_REL` objects and `.cvm` modules stay unsigned.
+
 ### CVM modules (`.cvm`) argv contract
 A CVM v2 module runs with a Linux-style argv: `run <file>.cvm [args...]`
 passes the module path as `argv[0]` and the remaining words as `argv[1..]`,

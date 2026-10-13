@@ -448,5 +448,6 @@
  * ========================================================================= */
 #define MINIOS_NOTE_NAME          "MiniOS"
 #define MINIOS_NOTE_PROCESS       1U
+#define MINIOS_NOTE_SIGN          2U
 
 #endif

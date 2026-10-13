@@ -119,6 +119,8 @@ SOURCES="$SOURCES headers/wm_gfxview.h tests/test_wm.c"
 # entry leaked execve-never-replaces into the tree (rc = -38 shipped
 # in os.img), caught by the anchor checker, never by review.
 SOURCES="$SOURCES kernel/syscalls_proc.c kernel/loader.c kernel/exec.c kernel/ldso_parse.c"
+SOURCES="$SOURCES kernel/ed25519.c headers/sign.h tools/sign_elf.py tests/test_sign.c"
+SOURCES="$SOURCES progs/src/sign.c"
 SOURCES="$SOURCES kernel/spawn.c kernel/mm/tlb.c arch/x86/tlb_nmi.S"
 # ldso-* rows target the pure dynamic-table parser (kernel/ldso_parse.c,
 # host-pinned by make test-ldso) and its kernel glue (kernel/loader.c);
@@ -424,6 +426,14 @@ process-note-ignored | s/        if (srcpath \&\& elf_wants_process(data, size))
 process-note-frame-exe-lost | s/        if (srcpath) proc_sec_set_exe(0, srcpath);/        (void)srcpath;/ | kernel/shell.c
 process-note-type-flip | s/namesz == namesz_want \&\& type == MINIOS_NOTE_PROCESS \&\&/namesz == namesz_want \&\& type != MINIOS_NOTE_PROCESS \&\&/ | kernel/loader.c
 process-note-name-flip | s/MINIOS_NOTE_NAME, namesz_want) == 0 \&\&/MINIOS_NOTE_NAME, namesz_want) != 0 \&\&/ | kernel/loader.c
+sign-gate-unsigned-accepted | s/if (!elf_verify_signature(data, size)) return 0;/;/ | kernel/loader.c
+sign-gate-badsig-accepted | s/if (ed25519_verify(desc + 1, digest, sizeof(digest), pub) != 1) {/if (0) {/ | kernel/loader.c
+sign-gate-devkey-flip | s/if (id == SIGN_KEY_DEV)/if (id != SIGN_KEY_DEV)/ | headers/sign.h
+sign-verify-s-lost | s/if (!ed_scalar_lt_l(sbytes))/if (0)/ | kernel/ed25519.c
+sign-sha-init-lost | s/c->h\[0\] = 0x6a09e667f3bcc908ULL;/c->h[0] = 0;/ | kernel/ed25519.c
+sign-keyid-unknown | s/desc\[0\] = (char)SIGN_KEY_ID;/desc[0] = 9;/ | progs/src/sign.c
+sign-entry-unbound | s/sign_feed32((unsigned int)entry);/(void)entry;/ | progs/src/sign.c
+sign-rotr-dirty | s/unsigned int a = ((\*lo << 32) >> 32);/unsigned int a = \*lo;/ | progs/src/sign.c
 gfx-cursor-follow-lost | s/^    gfx_cursor_follow_idle();/    ;/ | kernel/vga_fb.c
 gfx-cursor-stale-arrow | /Lift the desktop pointer/,/cursor_erase/s/cursor_erase();/(void)0;/ | kernel/vga_fb.c
 fg-wait-tick-lost | s/^            vga_fb_wait_tick();/            ;/ | kernel/spawn.c
@@ -651,6 +661,11 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         progs/src/freedom_wl.c)
             make -C "$HERE" test-freedom-wl > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/src/sign.c)
+            # The in-OS signer is pinned by the sign BDD slice
+            # (selftest vectors plus the full sign-and-run loop).
+            MATCH="sign" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         progs/freedomui/freedomui_minios.c|tests/test_freedomui.c)
             make -C "$HERE" test-freedomui > "$BACKUP/suite.log" 2>&1

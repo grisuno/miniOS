@@ -9,6 +9,7 @@ linked and run without leaving the machine:
 edit src/p.c
 run objects/minigcc.o src/p.c > asm/p.s
 run objects/ld.o -f elf -o bin/p.elf asm/p.s
+run sign bin/p.elf
 run bin/p.elf
 ```
 

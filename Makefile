@@ -550,6 +550,16 @@ $(BIN_DIR)/aes: $(ASM_DIR)/aes.s $(LD_TOOL)
 $(BIN_DIR)/unaes: $(ASM_DIR)/aes.s $(LD_TOOL)
 	$(LD_TOOL) -f elf -o $@ $<
 
+# ── sign: in-OS Ed25519 code signer (miniGCC-subset C, 32-bit field
+# arithmetic, embedded development seed). The shipped binary is the
+# miniGCC-built one, so the toolchain proves it compiles the crypto
+# it then uses to close the edit-compile-run loop. See progs/src/sign.c.
+$(ASM_DIR)/sign.s: $(SRC_DIR)/sign.c $(MINIGCC_BIN)
+	$(MINIGCC_BIN) $< > $@.tmp && mv $@.tmp $@
+
+$(BIN_DIR)/sign: $(ASM_DIR)/sign.s $(LD_TOOL)
+	$(LD_TOOL) -f elf -o $@ $<
+
 # ── freedom: the headless text browser (curlfree-style engine,
 #    FreeDom-style omnibox). The shipped `freedom` is the ring-3 build
 #    (host gcc + the shared ring-3 TLS engine), so https works with no
@@ -1489,6 +1499,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/lxnet $(SRC_DIR)/lxnet.c \
                $(BIN_DIR)/fptest $(SRC_DIR)/fptest.c \
                $(BIN_DIR)/aes $(BIN_DIR)/unaes $(SRC_DIR)/aes.c \
+               $(BIN_DIR)/sign $(SRC_DIR)/sign.c $(ASM_DIR)/sign.s \
                 $(BIN_DIR)/json $(SRC_DIR)/json.c \
                  $(BIN_DIR)/freedom $(SRC_DIR)/freedom.c $(ASM_DIR)/freedom.s \
                  $(BIN_DIR)/freedom3 $(BIN_DIR)/freedom-mini \
@@ -1737,6 +1748,13 @@ httpd_test: tests/test_httpd.c headers/httpd.h | $(TOOLS_DIR)
 test-httpd: httpd_test
 	$(TOOLS_DIR)/httpd_test
 
+# Ed25519 host test (tests/test_sign.c + kernel/ed25519.c + headers/sign.h).
+sign_test: tests/test_sign.c kernel/ed25519.c headers/sign.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/sign_test tests/test_sign.c kernel/ed25519.c
+
+test-sign: sign_test
+	$(TOOLS_DIR)/sign_test
+
 # HAL I/O host test (tests/test_hal_io.c + arch/x86/hal_io.h).
 hal_test: tests/test_hal_io.c arch/x86/hal_io.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/hal_test tests/test_hal_io.c
@@ -1910,7 +1928,7 @@ wl: os.img
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test fat_test ext4_test lisp-host
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test sign_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test fat_test ext4_test lisp-host
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -1970,7 +1988,7 @@ $(PROGS_DIR)/etc/abi: tools/abi_stamp.c progs/minios_abi.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/abi_stamp tools/abi_stamp.c
 	$(TOOLS_DIR)/abi_stamp > $@
 
-ramdisk.bin: $(PROGS) $(DESKTOP_ART) tools/mkramdisk.py Makefile
+ramdisk.bin: $(PROGS) $(DESKTOP_ART) $(SIGNED_STAMP) tools/mkramdisk.py Makefile
 	python3 tools/mkramdisk.py $@ $(PROGS)
 
 ramdisk_data.c: ramdisk.bin
@@ -2052,7 +2070,10 @@ serial.o: kernel/serial.c kernel.h
 string.o: kernel/string.c kernel.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-loader.o: kernel/loader.c kernel.h headers/ldso.h headers/pcache.h headers/minifs.h vga_fb.h sched.h $(PROGS_DIR)/minios_abi.h
+ed25519.o: kernel/ed25519.c headers/sign.h
+	$(CC) $(CFLAGS_KERN) -c $< -o $@
+
+loader.o: kernel/loader.c kernel.h headers/ldso.h headers/pcache.h headers/minifs.h vga_fb.h sched.h headers/sign.h $(PROGS_DIR)/minios_abi.h
 # NOTE: -Os, same pattern as shell.o (measured -2.2 KB vs -O1). Revalidate
 # with the ELF/CVM load scenarios (cpl/kmem/nx/mmreuse/fib/w1) after change.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
@@ -2416,11 +2437,11 @@ abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o tlb.o tlb_nmi.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o kernel.ld
+kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o tlb.o tlb_nmi.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o ed25519.o kernel.ld
 	$(LD) -m elf_x86_64 -T kernel.ld kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o tlb.o tlb_nmi.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) \
 	      ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o \
 	      sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o \
-	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o -o $@
+	      stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o ed25519.o -o $@
 
 kernel.bin: kernel.elf | check-size
 	$(OBJCOPY) -O binary $< $@
@@ -2482,7 +2503,15 @@ SAVES_STAGE = .minifs-saves-stage
 
 # MiniFS content list lives in this Makefile too, so editing it must
 # invalidate the filesystem image exactly like ramdisk.bin.
-minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(MINIFS_FILES) $(DESKTOP_ART) $(if $(Q2G_AVAILABLE),$(PROGS_DIR)/baseq2/pak1.pak) tools/mkfs.minifs.py tools/minifs_fsck.py Makefile tools/minifs_saves.py
+# The stamp also covers the ramdisk payload: its user ELFs (cp, mtop)
+# execute under the same gate, and ramdisk.bin is ordered after the
+# stamp so it embeds the signed bytes, never stale unsigned ones.
+SIGNED_STAMP = $(TOOLS_DIR)/signed-stamp
+$(SIGNED_STAMP): $(MINIFS_FILES) $(PROGS) tools/sign_elf.py | $(TOOLS_DIR)
+	python3 tools/sign_elf.py $(MINIFS_FILES) $(PROGS)
+	python3 tools/sign_elf.py --check $(MINIFS_FILES) $(PROGS)
+	touch $@
+minifs.bin: $(MINIGCC_BIN) $(LD_TOOL) $(SIGNED_STAMP) $(MINIFS_FILES) $(DESKTOP_ART) $(if $(Q2G_AVAILABLE),$(PROGS_DIR)/baseq2/pak1.pak) tools/mkfs.minifs.py tools/minifs_fsck.py Makefile tools/minifs_saves.py
 	@STAGE="$(SAVES_STAGE)"; \
 	rm -rf "$$STAGE"; \
 	python3 tools/minifs_saves.py backup os.img "$$STAGE"; \

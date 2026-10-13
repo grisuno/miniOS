@@ -10,6 +10,7 @@ install:
   build:
     - run objects/minigcc.o build/cp.c > build/cp.s
     - run objects/ld.o -f elf -o bin/cp build/cp.s
+    - run sign bin/cp
   verify:
     - line: cp src/cp.c build/cp2.c
       exit_code: 0

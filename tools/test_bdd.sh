@@ -713,6 +713,21 @@ direct.elf
 poweroff"
 expect "exit code: 55"
 
+scenario "sign selftest vectors match the python oracles" "run sign --selftest
+poweroff"
+expect "SHA-ABC ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f"
+expect "SIG-ZERO 7c317fe2118b5e74abe1cff4ede06a8d32343fe559931a000b636419a668ecd88b7351a120208e63d2bc558a3faaea1594e765419fca200aaca8813104e7f301"
+
+scenario "in-OS toolchain output runs after sign" "run bin/minigcc.elf src/fib.c > /tmp/s.s
+run objects/ld.o -f elf -o /tmp/s.elf /tmp/s.s
+run /tmp/s.elf
+run sign /tmp/s.elf
+run /tmp/s.elf
+poweroff"
+expect "exec: unsigned image, refusing"
+expect "signed (key 0)"
+expect "exit code: 55"
+
 scenario "dynamic executable binds a shared library and runs" "echo \"int dynadd(int a, int b) { return a + b; }\" > src/dyn.c
 run objects/minigcc.o src/dyn.c > asm/dyn.s
 run objects/ld.o -shared -o dyn.so asm/dyn.s

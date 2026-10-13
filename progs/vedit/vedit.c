@@ -128,6 +128,7 @@ static long vedit_clip_get(char *out, long cap) {
 #define VEDIT_KEY_DUMP 4
 #define VEDIT_TOOL_MINIGCC "/objects/minigcc.o"
 #define VEDIT_TOOL_LD "/objects/ld.o"
+#define VEDIT_TOOL_SIGN "/sign"
 #define VEDIT_TOOL_CVM "/objects/cvm.o"
 #define VEDIT_TOOL_LUA "/lua"
 #define VEDIT_TOOL_PY "/micropython"
@@ -2361,6 +2362,17 @@ static long vedit_spawn_visible(const char *tool, const char *redir, int argc,
     return rc;
 }
 
+/** Sign a freshly linked ELF so the kernel signature gate runs it. */
+static void vedit_sign_elf(const char *out) {
+    const char *args[3];
+    char label[VEDIT_MSG_MAX];
+    snprintf(label, sizeof(label), "sign %s", out);
+    args[0] = VEDIT_TOOL_SIGN;
+    args[1] = out;
+    args[2] = 0;
+    vedit_spawn_visible(VEDIT_TOOL_SIGN, 0, 2, args, label);
+}
+
 /** Run a freshly linked artifact so its output lands on the console. */
 static void vedit_cmd_exec(const char *out, int kind) {
     const char *args[2];
@@ -2441,6 +2453,7 @@ static void vedit_cmd_run(void) {
         label[k] = 0;
         if (vedit_spawn_visible(tool, VEDIT_BUILD_LOG, 6, args, label) != 0)
             return;
+        vedit_sign_elf(out);
         vedit_cmd_exec(out, 1);
         return;
     }
@@ -2506,8 +2519,11 @@ static void vedit_cmd_link(const char *fmt) {
     args[5] = in;
     args[6] = 0;
     snprintf(label, sizeof(label), "link %s", out);
-    if (vedit_spawn_visible(tool, VEDIT_BUILD_LOG, 6, args, label) == 0)
+    if (vedit_spawn_visible(tool, VEDIT_BUILD_LOG, 6, args, label) == 0) {
+        if (kind == 1)
+            vedit_sign_elf(out);
         vedit_cmd_exec(out, kind);
+    }
 }
 
 /** Headless build contract check: no display, no syscalls, exit status only.

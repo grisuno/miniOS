@@ -75,6 +75,7 @@ install:
   build:
     - run objects/minigcc.o build/cp.c > build/cp.s
     - run objects/ld.o -f elf -o bin/cp build/cp.s
+    - run sign bin/cp
   verify:
     - line: cp src/cp.c build/cp2.c
       exit_code: 0
@@ -179,7 +180,8 @@ derived from the script's own directory, never from a host assumption.
 ### Skill
 `skills/minios/SKILL.md` documents the workflow an agent follows: boot once,
 write sources with `minios_write`, compile with `run objects/minigcc.o f.c > asm/f.s`,
-link with `run objects/ld.o -f elf -o bin/f.elf asm/f.s`, run and read `exit code: N`,
+link with `run objects/ld.o -f elf -o bin/f.elf asm/f.s`, sign with
+`run sign bin/f.elf`, run and read `exit code: N`,
 power off when done. It also documents the headless browser (`freedom`,
 plain command path, http only) and the addon marketplace
 (`minios_addons` / `minios_install`, dogfooded by `mcp/mcp_dogfood.py`).

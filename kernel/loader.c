@@ -4,6 +4,7 @@
 #include "pcache.h"
 #include "vga_fb.h"
 #include "sched.h"
+#include "sign.h"
 
 /* ================================================================
  *  ELF loader
@@ -1063,6 +1064,201 @@ static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
     }
 }
 
+#define SHT_NOTE    7
+
+#define SIGN_NOTE_NAME ".note.minios.sign"
+
+/* Size of one note field rounded up to ELF_NOTE_ALIGN. */
+static unsigned long elf_note_pad(unsigned long n) {
+    return (n + ELF_NOTE_ALIGN - 1UL) & ~(ELF_NOTE_ALIGN - 1UL);
+}
+
+/** Docstring: Pull the signature descriptor out of one PT_NOTE span.
+ *
+ * Walks notes with the same pad math as the process-note probe. A
+ * candidate carries name MINIOS_NOTE_NAME, type MINIOS_NOTE_SIGN and
+ * a SIGN_DESC_BYTES descriptor holding one key id byte plus the
+ * 64-byte Ed25519 signature. Reports 1 with the descriptor address,
+ * else 0. */
+static int elf_sign_note_span(const unsigned char *img, unsigned long off,
+                              unsigned long len, const unsigned char **desc_out) {
+    unsigned long namesz_want = (unsigned long)sizeof(MINIOS_NOTE_NAME);
+    unsigned long pos = 0;
+    while (len - pos >= ELF_NOTE_HDR) {
+        const unsigned char *n = img + off + pos;
+        unsigned long namesz = *(const Elf64_Word *)(n + 0);
+        unsigned long descsz = *(const Elf64_Word *)(n + 4);
+        unsigned long type = *(const Elf64_Word *)(n + 8);
+        unsigned long rest = len - pos - ELF_NOTE_HDR;
+        if (elf_note_pad(namesz) + descsz > rest)
+            return 0;
+        if (namesz == namesz_want && type == MINIOS_NOTE_SIGN &&
+            descsz == SIGN_DESC_BYTES &&
+            kmemcmp(n + ELF_NOTE_HDR, MINIOS_NOTE_NAME, namesz_want) == 0) {
+            *desc_out = n + ELF_NOTE_HDR + elf_note_pad(namesz);
+            return 1;
+        }
+        pos += ELF_NOTE_HDR + elf_note_pad(namesz) + elf_note_pad(descsz);
+    }
+    return 0;
+}
+
+/** Docstring: Find a signature note across the PT_NOTE segments.
+ * Reports 1 with the first descriptor found, else 0. */
+static int elf_sign_note_find(const unsigned char *img, unsigned size,
+                              const Elf64_Phdr *ph, unsigned phnum,
+                              const unsigned char **desc_out) {
+    unsigned i;
+    for (i = 0; i < phnum; i++) {
+        if (ph[i].p_type != PT_NOTE)
+            continue;
+        if (ph[i].p_offset > size || ph[i].p_filesz > size - ph[i].p_offset)
+            continue;
+        if (elf_sign_note_span(img, (unsigned long)ph[i].p_offset,
+                               (unsigned long)ph[i].p_filesz, desc_out))
+            return 1;
+    }
+    return 0;
+}
+
+/** Docstring: Find a signature note in the SHT_NOTE section table.
+ *
+ * Post-link signing (tools/sign_elf.py) appends a non-allocated
+ * .note.minios.sign section, so binaries whose link never carried
+ * the note still verify. Bounds discipline mirrors the ET_REL
+ * loader: table extent, per-section ranges and the string table are
+ * all checked before any byte is read. Reports 1 with the
+ * descriptor address, else 0. */
+static int elf_sign_section_find(const unsigned char *img, unsigned size,
+                                 const Elf64_Ehdr *e, const unsigned char **desc_out) {
+    Elf64_Shdr *shdrs;
+    Elf64_Shdr *shstr;
+    const char *shstrtab;
+    char secname[ELF_NAME_MAX];
+    unsigned i;
+    if (e->e_shentsize < sizeof(Elf64_Shdr))
+        return 0;
+    if (e->e_shoff > size ||
+        (Elf64_Xword)e->e_shnum * e->e_shentsize > size - e->e_shoff)
+        return 0;
+    if (e->e_shnum == 0 || e->e_shstrndx >= e->e_shnum)
+        return 0;
+    shdrs = (Elf64_Shdr *)(img + e->e_shoff);
+    shstr = &shdrs[e->e_shstrndx];
+    if (shstr->sh_offset > size || shstr->sh_size > size - shstr->sh_offset)
+        return 0;
+    shstrtab = (const char *)img + shstr->sh_offset;
+    for (i = 0; i < e->e_shnum; i++) {
+        if (shdrs[i].sh_type != SHT_NOTE)
+            continue;
+        if (shdrs[i].sh_offset > size ||
+            shdrs[i].sh_size > size - shdrs[i].sh_offset)
+            continue;
+        if (shdrs[i].sh_size != ELF_NOTE_HDR + elf_note_pad(sizeof(MINIOS_NOTE_NAME)) +
+                                elf_note_pad(SIGN_DESC_BYTES))
+            continue;
+        elf_name_copy(secname, sizeof(secname), shstrtab, shstr->sh_size,
+                      shdrs[i].sh_name);
+        if (kstrcmp(secname, SIGN_NOTE_NAME) != 0)
+            continue;
+        *desc_out = img + shdrs[i].sh_offset + ELF_NOTE_HDR +
+                    elf_note_pad(sizeof(MINIOS_NOTE_NAME));
+        return 1;
+    }
+    return 0;
+}
+
+/** Docstring: Feed one little-endian u64 into the image digest. */
+static void elf_sign_u64(ed_sha *c, unsigned long v) {
+    unsigned char b[8];
+    unsigned k;
+    for (k = 0; k < 8u; k++)
+        b[k] = (unsigned char)(v >> (8u * k));
+    ed_sha512_update(c, b, 8ul);
+}
+
+/** Docstring: Feed one little-endian u32 into the image digest. */
+static void elf_sign_u32(ed_sha *c, unsigned v) {
+    unsigned char b[4];
+    unsigned k;
+    for (k = 0; k < 4u; k++)
+        b[k] = (unsigned char)(v >> (8u * k));
+    ed_sha512_update(c, b, 4ul);
+}
+
+/** Docstring: Verify an ET_EXEC/ET_DYN image against the trust store.
+ *
+ * Builds the canonical digest (entry plus every PT_LOAD segment in
+ * program-header order as vaddr, flags, filesz and file bytes) and
+ * checks the signature note from PT_NOTE, else from the SHT_NOTE
+ * section table. Any failure refuses with a diagnostic: missing
+ * note, unknown or unprovisioned key id, bad signature. Reports 1
+ * when the image may execute, else 0. Reads the file only, maps
+ * nothing, allocates nothing. */
+static int elf_verify_signature(void *data, unsigned size) {
+    Elf64_Ehdr *e = (Elf64_Ehdr *)data;
+    Elf64_Phdr *ph;
+    const unsigned char *desc = 0;
+    const unsigned char *pub;
+    ed_sha c;
+    unsigned char digest[64];
+    unsigned i;
+    if (!data || size < sizeof(Elf64_Ehdr))
+        return 0;
+    if (e->e_phentsize < sizeof(Elf64_Phdr))
+        return 0;
+    if (e->e_phoff > size)
+        return 0;
+    if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize)
+        return 0;
+    if (e->e_phnum > ELF_MAX_SEGMENTS)
+        return 0;
+    ph = (Elf64_Phdr *)((char *)data + e->e_phoff);
+    if (!elf_sign_note_find((const unsigned char *)data, size, ph, e->e_phnum, &desc) &&
+        !elf_sign_section_find((const unsigned char *)data, size, e, &desc)) {
+        kprintf("exec: unsigned image, refusing\n");
+        return 0;
+    }
+    pub = sign_pubkey(desc[0]);
+    if (!pub) {
+        kprintf("exec: untrusted signing key %u, refusing\n", desc[0]);
+        return 0;
+    }
+    for (i = 0; i < e->e_phnum; i++) {
+        if (ph[i].p_type != PT_LOAD)
+            continue;
+        if (ph[i].p_offset > size || ph[i].p_filesz > size - ph[i].p_offset) {
+            kprintf("exec: segment beyond file during verify\n");
+            return 0;
+        }
+    }
+    ed_sha512_init(&c);
+    elf_sign_u64(&c, (unsigned long)e->e_entry);
+    for (i = 0; i < e->e_phnum; i++) {
+        unsigned long start;
+        unsigned long end;
+        if (ph[i].p_type != PT_LOAD)
+            continue;
+        elf_sign_u64(&c, (unsigned long)ph[i].p_vaddr);
+        elf_sign_u32(&c, (unsigned)ph[i].p_flags);
+        elf_sign_u64(&c, (unsigned long)ph[i].p_filesz);
+        if (ph[i].p_filesz == 0)
+            continue;
+        start = (unsigned long)ph[i].p_offset;
+        end = start + (unsigned long)ph[i].p_filesz;
+        if (start < sizeof(Elf64_Ehdr))
+            start = sizeof(Elf64_Ehdr);
+        if (start < end)
+            ed_sha512_update(&c, (const unsigned char *)data + start, end - start);
+    }
+    ed_sha512_final(&c, digest);
+    if (ed25519_verify(desc + 1, digest, sizeof(digest), pub) != 1) {
+        kprintf("exec: bad signature (key %u), refusing\n", desc[0]);
+        return 0;
+    }
+    return 1;
+}
+
 void *load_exec_elf(void *data, unsigned size) {
     Elf64_Ehdr *e = (Elf64_Ehdr *)data;
     if (size < sizeof(Elf64_Ehdr)) { kprintf("exec: too small %u\n", size); return 0; }
@@ -1075,6 +1271,8 @@ void *load_exec_elf(void *data, unsigned size) {
     if (e->e_phoff > size) { kprintf("exec: phoff too big %lu > %u\n", e->e_phoff, size); return 0; }
     if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize) { kprintf("exec: phnum overflow\n"); return 0; }
     if (e->e_phnum > ELF_MAX_SEGMENTS) { kprintf("exec: too many segments %d\n", e->e_phnum); return 0; }
+
+    if (!elf_verify_signature(data, size)) return 0;
 
     unsigned long base = (e->e_type == ET_DYN) ? USER_LOAD_BASE : 0;
     if (e->e_type == ET_DYN) base += aslr_dyn_base();
@@ -1202,10 +1400,6 @@ fail:
  * images bind through ldso_bind_into once their VMA context exists.
  * No function symbol is ever resolved to a null address:
  * unresolvable imports stay zero and fault only if called. */
-/* Size of one note field rounded up to ELF_NOTE_ALIGN. */
-static unsigned long elf_note_pad(unsigned long n) {
-    return (n + ELF_NOTE_ALIGN - 1UL) & ~(ELF_NOTE_ALIGN - 1UL);
-}
 
 /* 1 when one PT_NOTE segment [off, off + len) of the image carries the
  * MiniOS process note with a nonzero descriptor. Every field is checked
@@ -1280,6 +1474,7 @@ void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
     if (e->e_phoff > size) { kprintf("exec_into: phoff\n"); return 0; }
     if (e->e_phnum > (size - e->e_phoff) / e->e_phentsize) { kprintf("exec_into: phnum\n"); return 0; }
     if (e->e_phnum > ELF_MAX_SEGMENTS) { kprintf("exec_into: too many segs\n"); return 0; }
+    if (!elf_verify_signature(data, size)) return 0;
     base = (e->e_type == ET_DYN) ? USER_LOAD_BASE : 0;
     if (e->e_type == ET_DYN) base += aslr_dyn_base();
     ph = (Elf64_Phdr *)((char *)data + e->e_phoff);

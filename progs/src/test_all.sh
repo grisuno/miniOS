@@ -166,6 +166,8 @@ minigcc.o src/fib.c > asm/test_all_fib.s
 echo PASS: compile-ok
 ld.o -f elf -o bin/test_all_fib.elf asm/test_all_fib.s
 echo PASS: link-ok
+run sign bin/test_all_fib.elf
+echo PASS: sign-ok
 run bin/test_all_fib.elf
 echo PASS: run-elf-ok
 
@@ -180,6 +182,8 @@ echo PASS: run-cvm-ok
 # === TOOLCHAIN: bare names (no run prefix) ===
 ld.o -f elf -o bin/test_all_bare.elf asm/test_all_fib.s
 echo PASS: bare-ld-ok
+run sign bin/test_all_bare.elf
+echo PASS: bare-sign-ok
 bin/test_all_fib.elf
 echo PASS: bare-elf-ok
 w1.cvm
@@ -190,6 +194,8 @@ run bin/minigcc.elf src/fib.c > asm/test_all_sh.s
 echo PASS: selfhost-compile-ok
 run objects/ld.o -f elf -o bin/test_all_sh.elf asm/test_all_sh.s
 echo PASS: selfhost-link-ok
+run sign bin/test_all_sh.elf
+echo PASS: selfhost-sign-ok
 run bin/test_all_sh.elf
 echo PASS: selfhost-run-ok
 

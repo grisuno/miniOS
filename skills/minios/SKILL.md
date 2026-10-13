@@ -52,6 +52,7 @@ Compile, link and run inside the OS:
 minios_write {path: "p.c", content: "int main(void) { return 7; }\n"}
 minios_send {line: "run minigcc.o p.c > p.s"}    redirect captures the asm
 minios_send {line: "run ld.o -f elf -o p.elf p.s"}
+minios_send {line: "run sign p.elf"}              the gate refuses unsigned ELFs
 minios_send {line: "run p.elf"}                   output ends with exit code: 7
 ```
 

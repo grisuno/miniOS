@@ -10,6 +10,7 @@ install:
   build:
     - run objects/minigcc.o build/freedom.c > build/freedom.s
     - run objects/ld.o -f elf -o bin/freedom-mini build/freedom.s
+    - run sign bin/freedom-mini
   verify:
     - line: freedom-mini
       exit_code: 1

@@ -60,14 +60,16 @@ beside it).
   `^R` saves then routes by extension through `SYS_SPAWN` (215) so the
   IDE survives the child: `.c`/`.h` compile with
   `objects/minigcc.o <file>` redirected to `asm/<base>.s`, `.s` links
-  with `objects/ld.o -f elf -o bin/<base>.elf` and runs the result
+  with `objects/ld.o -f elf -o bin/<base>.elf`, signs with `sign` and
+  runs the result
   (same as `^L` answering `elf`, without prompting), `.lua` runs
   with `lua <file>`, `.py` runs with `micropython <file>`, `.lisp` runs
   with `lisp <file>`; the routing
   lives in `vedit_run_kind` (mirrored by `t_run_kind` in
   `tests/test_vedit_build.c`, so drift fails `make test-vedit`). `^L`
   prompts `link elf/cvm: ` and links `asm/<base>.s` with
-  `objects/ld.o -f <fmt> -o bin/<base>.elf|cvm/<base>.cvm`, then runs
+  `objects/ld.o -f <fmt> -o bin/<base>.elf|cvm/<base>.cvm`, signs an
+  ELF with `sign`, then runs
   the freshly linked artifact (`cvm.o` for a `.cvm`, the ELF directly)
   so its output lands on the console without leaving the IDE. A
   redirect whose commit fails is loud, never a silent drop: the spawn
