@@ -21,14 +21,14 @@ Editing these files can break the listed number of dependents. Run their tests a
 
 - `kernel/string.c` -- 50 direct, 87 total dependents
 - `progs/doomgeneric/d_mode.h` -- 6 direct, 60 total dependents
-- `progs/minios_abi.h` -- 31 direct, 60 total dependents
 - `progs/doomgeneric/d_think.h` -- 3 direct, 57 total dependents
-- `progs/doomgeneric/info.h` -- 4 direct, 56 total dependents
-- `progs/doomgeneric/tables.h` -- 6 direct, 56 total dependents
+- `progs/doomgeneric/m_fixed.h` -- 9 direct, 54 total dependents
 - `progs/doomgeneric/v_patch.h` -- 2 direct, 54 total dependents
 - `progs/doomgeneric/i_video.h` -- 18 direct, 53 total dependents
-- `progs/doomgeneric/m_fixed.h` -- 9 direct, 53 total dependents
-- `progs/doomgeneric/p_mobj.h` -- 4 direct, 53 total dependents
+- `progs/doomgeneric/sha1.h` -- 5 direct, 53 total dependents
+- `progs/doomgeneric/tables.h` -- 6 direct, 53 total dependents
+- `progs/minios_abi.h` -- 31 direct, 53 total dependents
+- `progs/doomgeneric/info.h` -- 4 direct, 52 total dependents
 
 ## Hotspots (complexity + centrality)
 

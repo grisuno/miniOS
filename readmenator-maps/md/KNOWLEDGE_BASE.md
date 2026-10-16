@@ -12,7 +12,7 @@
 **Total Files Parsed:** 579 | **Total Symbols Extracted:** 12812 | **Total Imports:** 2197
  | **Resolved Imports:** 1384
 
-<!-- ranking_model: v1.0 | weights: {ppr:0.45,auth:0.2,test:0.15,doc:0.1,fresh:0.1} | alpha:0.85 | commit:6329f2b | date:2026-07-18 -->
+<!-- ranking_model: v1.0 | weights: {ppr:0.45,auth:0.2,test:0.15,doc:0.1,fresh:0.1} | alpha:0.85 | commit:38764ab | date:2026-07-18 -->
 
 
 ## Table of Contents
@@ -406,7 +406,7 @@ Files ranked by composite score for the current query context. The ranking combi
 | 9 | `clip_bridge.py` | 0.1200 | 0.0000 | 0.0000 | 0.00 | 1.20 |
 | 10 | `check_mutant_anchors.py` | 0.1167 | 0.0000 | 0.0000 | 0.00 | 1.17 |
 
-**Query anchors:** progs/file/file.c, progs/nuklear/nuklear_minios.c, progs/paint/paint.c, progs/pokemon/platform_minios.c
+**Query anchors:** progs/pokemon/platform_minios.c, progs/file/file.c, progs/paint/paint.c, progs/nuklear/nuklear_minios.c
 
 ---
 
@@ -709,10 +709,10 @@ Taint analysis traces how dangerous imports propagate through the codebase via t
   Path: minios_addons.py -> time.c -> ktime.h
 - `minios_mcp.py` imports `subprocess` (0 hop to `minios_mcp.py`) [high]
   Path: minios_mcp.py
-- `minios_mcp.py` imports `subprocess` (1 hop to `time.c`) [high]
-  Path: minios_mcp.py -> time.c
 - `minios_mcp.py` imports `subprocess` (1 hop to `minios_addons.py`) [high]
   Path: minios_mcp.py -> minios_addons.py
+- `minios_mcp.py` imports `subprocess` (1 hop to `time.c`) [high]
+  Path: minios_mcp.py -> time.c
 - `minios_mcp.py` imports `subprocess` (2 hops to `ktime.h`) [high]
   Path: minios_mcp.py -> time.c -> ktime.h
 - `test_minios_mcp.py` imports `subprocess` (0 hop to `test_minios_mcp.py`) [high]
@@ -924,19 +924,19 @@ Files sorted by how many other files would be affected if they changed. High-imp
 |------|------------------|----------------------|--------------|
 | `string.c` | 50 | 0 | 87 |
 | `d_mode.h` | 6 | 50 | 60 |
-| `minios_abi.h` | 31 | 29 | 60 |
 | `d_think.h` | 3 | 50 | 57 |
-| `info.h` | 4 | 50 | 56 |
-| `tables.h` | 6 | 50 | 56 |
+| `m_fixed.h` | 9 | 45 | 54 |
 | `v_patch.h` | 2 | 50 | 54 |
 | `i_video.h` | 18 | 35 | 53 |
-| `m_fixed.h` | 9 | 44 | 53 |
-| `p_mobj.h` | 4 | 49 | 53 |
 | `sha1.h` | 5 | 48 | 53 |
-| `doomdata.h` | 2 | 50 | 52 |
-| `doomdef.h` | 41 | 11 | 52 |
-| `net_defs.h` | 9 | 43 | 52 |
+| `tables.h` | 6 | 47 | 53 |
+| `minios_abi.h` | 31 | 22 | 53 |
+| `info.h` | 4 | 48 | 52 |
 | `d_items.h` | 2 | 49 | 51 |
+| `doomdef.h` | 41 | 10 | 51 |
+| `net_defs.h` | 9 | 42 | 51 |
+| `vma.h` | 8 | 42 | 50 |
+| `d_event.h` | 13 | 37 | 50 |
 
 ---
 
