@@ -1,10 +1,10 @@
 # headers: vga_fb
 
-*Community 5 | 18 files | cohesion 0.70*
+*Community 5 | 17 files | cohesion 0.72*
 
 ## Definition
 
-This community groups 18 file(s) rooted at `headers` with dominant language h (cohesion 0.70). Central symbols: `CHECK`, `CURSOR_H`, `CURSOR_TIP_X`, `CURSOR_TIP_Y`, `CURSOR_W`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`. Core file: `kernel/vga_fb.c` (200 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
+This community groups 17 file(s) rooted at `headers` with dominant language h (cohesion 0.72). Central symbols: `CHECK`, `CURSOR_H`, `CURSOR_TIP_X`, `CURSOR_TIP_Y`, `CURSOR_W`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`. Core file: `kernel/vga_fb.c` (205 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
 
 ## Files
 
@@ -14,19 +14,18 @@ This community groups 18 file(s) rooted at `headers` with dominant language h (c
 | `headers/desktop_shortcuts.h` | h | utility | 27 | yes |
 | `headers/kernel/vga_cursor.h` | h | utility | 9 | yes |
 | `headers/vga_fx.h` | h | utility | 9 | yes |
+| `headers/wm_events.h` | h | infrastructure | 39 | yes |
 | `headers/wm_focus.h` | h | utility | 5 | yes |
 | `headers/wm_geom.h` | h | utility | 11 | yes |
 | `headers/wm_gfxview.h` | h | utility | 15 | yes |
 | `headers/wm_layout.h` | h | presentation | 16 | yes |
-| `headers/wm_notify.h` | h | utility | 9 | yes |
 | `headers/wm_render.h` | h | presentation | 5 | yes |
 | `headers/wm_tiling.h` | h | utility | 3 | yes |
 | `headers/wm_window.h` | h | utility | 10 | yes |
 | `kernel/vga_cursor.c` | c | utility | 13 | yes |
-| `kernel/vga_fb.c` | c | utility | 200 | no |
+| `kernel/vga_fb.c` | c | utility | 205 | no |
 | `kernel/vga_fx.c` | c | utility | 9 | yes |
 | `tests/test_fx.c` | c | testing | 2 | yes |
-| `tests/test_notify.c` | c | testing | 3 | no |
 | `tests/test_wm.c` | c | testing | 2 | yes |
 
 ## Key Symbols
@@ -65,31 +64,32 @@ This community groups 18 file(s) rooted at `headers` with dominant language h (c
 ## Internal vs External Edges
 
 - Internal resolved imports (EXTRACTED): 26
-- Cross-boundary resolved imports (EXTRACTED): 11
+- Cross-boundary resolved imports (EXTRACTED): 10
 
 ## Connections
 
-- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: headers/vga_fb.h imports headers/wm_notify.h.
+- [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/wm_events.h.
 - [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language h and layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 5 (headers: vga_fb).
+- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (progs/src) and community 5 (headers: vga_fb).
 
 ## Risks
 
 - [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_render.h` (presentation)
 - [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_layout.h` (presentation)
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2452` `taskbar_render` `lx`: `lx` assigned at line 2452 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2822` `line` `rows_before`: `rows_before` assigned at line 2822 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3515` `wallpaper_ensure` `d`: `d` assigned at line 3515 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3640` `icon_decode` `dst`: `dst` assigned at line 3640 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3659` `icon_embedded_rgba` `dst`: `dst` assigned at line 3659 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4218` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 4218 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4219` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 4219 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4221` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 4221 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2506` `taskbar_render` `lx`: `lx` assigned at line 2506 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2876` `line` `rows_before`: `rows_before` assigned at line 2876 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3569` `wallpaper_ensure` `d`: `d` assigned at line 3569 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3694` `icon_decode` `dst`: `dst` assigned at line 3694 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3713` `icon_embedded_rgba` `dst`: `dst` assigned at line 3713 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4287` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 4287 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4288` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 4288 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4290` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 4290 but never read afterwards.
 
 ## Open Questions
 
-- Why do 2 file(s) lack file-level docs (e.g. `kernel/vga_fb.c`)? What purpose do they serve?
+- Why do 1 file(s) lack file-level docs (e.g. `kernel/vga_fb.c`)? What purpose do they serve?
 - What would break if the most connected file in headers: vga_fb changed?
-- Should headers: vga_fb be split, given cohesion 0.70?
+- Should headers: vga_fb be split, given cohesion 0.72?
 
 ## Sources
 
@@ -97,11 +97,11 @@ This community groups 18 file(s) rooted at `headers` with dominant language h (c
 - `headers/desktop_shortcuts.h`
 - `headers/kernel/vga_cursor.h`
 - `headers/vga_fx.h`
+- `headers/wm_events.h`
 - `headers/wm_focus.h`
 - `headers/wm_geom.h`
 - `headers/wm_gfxview.h`
 - `headers/wm_layout.h`
-- `headers/wm_notify.h`
 - `headers/wm_render.h`
 - `headers/wm_tiling.h`
 - `headers/wm_window.h`
@@ -109,5 +109,4 @@ This community groups 18 file(s) rooted at `headers` with dominant language h (c
 - `kernel/vga_fb.c`
 - `kernel/vga_fx.c`
 - `tests/test_fx.c`
-- `tests/test_notify.c`
 - `tests/test_wm.c`

@@ -406,7 +406,7 @@ Previous: [KB_headers_p2.md](KB_headers_p2.md)
   - `PROC_SEC_H` (macro, line 13) `#define PROC_SEC_H`
   - `SECCOMP_FILTERS_MAX` (macro, line 16) `#define SECCOMP_FILTERS_MAX`
   - `SECCOMP_KILL_EXIT` (macro, line 20) `#define SECCOMP_KILL_EXIT`
-- Imported by: `kernel/exec.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
+- Imported by: `kernel/exec.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
 
 ## headers/qga.h
 - Layer: utility

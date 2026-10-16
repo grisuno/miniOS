@@ -3,6 +3,195 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `SYS_WRITE` | macro | `progs/minios_abi.h:433` | `#define SYS_WRITE` |
+| `clock_nanosleep` | function | `progs/minios_abi.h:334` | `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...` |
+| `MINIOS_PNG_H` | macro | `progs/minios_png.h:22` | `#define MINIOS_PNG_H` |
+| `MPNG_BIG_DIM` | macro | `progs/minios_png.h:33` | `#define MPNG_BIG_DIM` |
+| `MPNG_ERR_BOUND` | macro | `progs/minios_png.h:40` | `#define MPNG_ERR_BOUND` |
+| `MPNG_ERR_EMPTY` | macro | `progs/minios_png.h:41` | `#define MPNG_ERR_EMPTY` |
+| `MPNG_ERR_OK` | macro | `progs/minios_png.h:39` | `#define MPNG_ERR_OK` |
+| `MPNG_FILE_MAX` | macro | `progs/minios_png.h:28` | `#define MPNG_FILE_MAX` |
+| `MPNG_LEFT_N` | macro | `progs/minios_png.h:38` | `#define MPNG_LEFT_N` |
+| `MPNG_MAX_DIM` | macro | `progs/minios_png.h:29` | `#define MPNG_MAX_DIM` |
+| `MPNG_PAL_BYTES` | macro | `progs/minios_png.h:35` | `#define MPNG_PAL_BYTES` |
+| `MPNG_PAL_N` | macro | `progs/minios_png.h:34` | `#define MPNG_PAL_N` |
+| `MPNG_PATH_MAX` | macro | `progs/minios_png.h:36` | `#define MPNG_PATH_MAX` |
+| `MPNG_RIGHT_PATH` | macro | `progs/minios_png.h:37` | `#define MPNG_RIGHT_PATH` |
+| `bound` | function | `progs/minios_png.h:140` | `* its 512 source bound (pinned by the host suite), so icon and policy  * art never grow through t...` |
+| `mpng_332_idx` | function | `progs/minios_png.h:58` | `static int mpng_332_idx(unsigned r, unsigned g, unsigned b)` |
+| `mpng_blit_idx` | function | `progs/minios_png.h:196` | `static int mpng_blit_idx(unsigned char *fb, int fw, int fh,                          const unsign...` |
+| `mpng_center` | function | `progs/minios_png.h:84` | `static int mpng_center(int outer, int inner)` |
+| `mpng_fit_scale` | function | `progs/minios_png.h:93` | `static int mpng_fit_scale(int sw, int sh, int boxw, int boxh)` |
+| `mpng_load_file` | function | `progs/minios_png.h:222` | `static int mpng_load_file(const char *path, unsigned char **out, long *out_n,                    ...` |
+| `mpng_nearest` | function | `progs/minios_png.h:63` | `static int mpng_nearest(const unsigned char *pal, long pal_n, unsigned r,                        ...` |
+| `mpng_rgb_to_332_scaled` | function | `progs/minios_png.h:172` | `static int mpng_rgb_to_332_scaled(const unsigned char *rgb, int sw, int sh,                      ...` |
+| `mpng_rgb_to_idx_scaled` | function | `progs/minios_png.h:108` | `static int mpng_rgb_to_idx_scaled(const unsigned char *rgb, int sw, int sh,                      ...` |
+| `NK_PALETTE_H` | macro | `progs/nk_palette.h:12` | `#define NK_PALETTE_H` |
+| `NK_PAL_ACCENTS` | macro | `progs/nk_palette.h:18` | `#define NK_PAL_ACCENTS` |
+| `NK_PAL_BYTES` | macro | `progs/nk_palette.h:14` | `#define NK_PAL_BYTES` |
+| `NK_PAL_CUBE` | macro | `progs/nk_palette.h:16` | `#define NK_PAL_CUBE` |
+| `NK_PAL_DESK` | macro | `progs/nk_palette.h:15` | `#define NK_PAL_DESK` |
+| `NK_PAL_ERR_BOUND` | macro | `progs/nk_palette.h:20` | `#define NK_PAL_ERR_BOUND` |
+| `NK_PAL_ERR_OK` | macro | `progs/nk_palette.h:19` | `#define NK_PAL_ERR_OK` |
+| `NK_PAL_GRAYS` | macro | `progs/nk_palette.h:17` | `#define NK_PAL_GRAYS` |
+| `nk_palette_build` | function | `progs/nk_palette.h:22` | `static int nk_palette_build(unsigned char *pal, long cap)` |
+| `CVM_FUNC_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:35` | `#define CVM_FUNC_ENTRY_SIZE` |
+| `CVM_GLOBAL_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:36` | `#define CVM_GLOBAL_ENTRY_SIZE` |
+| `CVM_MAGIC_0` | macro | `progs/nuklear/cvm_emit.c:29` | `#define CVM_MAGIC_0` |
+| `CVM_MAGIC_1` | macro | `progs/nuklear/cvm_emit.c:30` | `#define CVM_MAGIC_1` |
+| `CVM_MAGIC_2` | macro | `progs/nuklear/cvm_emit.c:31` | `#define CVM_MAGIC_2` |
+| `CVM_MAGIC_3` | macro | `progs/nuklear/cvm_emit.c:32` | `#define CVM_MAGIC_3` |
+| `CVM_MAX_NODES` | macro | `progs/nuklear/cvm_emit.c:71` | `#define CVM_MAX_NODES` |
+| `CVM_MODULE_HEADER_SIZE` | macro | `progs/nuklear/cvm_emit.c:34` | `#define CVM_MODULE_HEADER_SIZE` |
+| `CVM_NATIVE_ENTRY_SIZE` | macro | `progs/nuklear/cvm_emit.c:37` | `#define CVM_NATIVE_ENTRY_SIZE` |
+| `CVM_VERSION_MAJOR` | macro | `progs/nuklear/cvm_emit.c:33` | `#define CVM_VERSION_MAJOR` |
+| `OP_ADD` | macro | `progs/nuklear/cvm_emit.c:46` | `#define OP_ADD` |
+| `OP_AND` | macro | `progs/nuklear/cvm_emit.c:52` | `#define OP_AND` |
+| `OP_CALL_NATIVE` | macro | `progs/nuklear/cvm_emit.c:67` | `#define OP_CALL_NATIVE` |
+| `OP_CMP_EQ` | macro | `progs/nuklear/cvm_emit.c:58` | `#define OP_CMP_EQ` |
+| `OP_CMP_GE` | macro | `progs/nuklear/cvm_emit.c:63` | `#define OP_CMP_GE` |
+| `OP_CMP_GT` | macro | `progs/nuklear/cvm_emit.c:62` | `#define OP_CMP_GT` |
+| `OP_CMP_LE` | macro | `progs/nuklear/cvm_emit.c:61` | `#define OP_CMP_LE` |
+| `OP_CMP_LT` | macro | `progs/nuklear/cvm_emit.c:60` | `#define OP_CMP_LT` |
+| `OP_CMP_NE` | macro | `progs/nuklear/cvm_emit.c:59` | `#define OP_CMP_NE` |
+| `OP_DIV` | macro | `progs/nuklear/cvm_emit.c:49` | `#define OP_DIV` |
+| `OP_HALT` | macro | `progs/nuklear/cvm_emit.c:69` | `#define OP_HALT` |
+| `OP_JMP` | macro | `progs/nuklear/cvm_emit.c:65` | `#define OP_JMP` |
+| `OP_JZ` | macro | `progs/nuklear/cvm_emit.c:66` | `#define OP_JZ` |
+| `OP_LEA_DATA` | macro | `progs/nuklear/cvm_emit.c:68` | `#define OP_LEA_DATA` |
+| `OP_LNOT` | macro | `progs/nuklear/cvm_emit.c:64` | `#define OP_LNOT` |
+| `OP_MOD` | macro | `progs/nuklear/cvm_emit.c:50` | `#define OP_MOD` |
+| `OP_MUL` | macro | `progs/nuklear/cvm_emit.c:48` | `#define OP_MUL` |
+| `OP_NEG` | macro | `progs/nuklear/cvm_emit.c:51` | `#define OP_NEG` |
+| `OP_NOT` | macro | `progs/nuklear/cvm_emit.c:55` | `#define OP_NOT` |
+| `OP_OR` | macro | `progs/nuklear/cvm_emit.c:53` | `#define OP_OR` |
+| `OP_PUSH_IMM32` | macro | `progs/nuklear/cvm_emit.c:41` | `#define OP_PUSH_IMM32` |
+| `OP_PUSH_IMM64` | macro | `progs/nuklear/cvm_emit.c:40` | `#define OP_PUSH_IMM64` |
+| `OP_PUSH_IMM8` | macro | `progs/nuklear/cvm_emit.c:42` | `#define OP_PUSH_IMM8` |
+| `OP_PUSH_LOCAL` | macro | `progs/nuklear/cvm_emit.c:44` | `#define OP_PUSH_LOCAL` |
+| `OP_PUSH_ZERO` | macro | `progs/nuklear/cvm_emit.c:43` | `#define OP_PUSH_ZERO` |
+| `OP_SHL` | macro | `progs/nuklear/cvm_emit.c:56` | `#define OP_SHL` |
+| `OP_SHR` | macro | `progs/nuklear/cvm_emit.c:57` | `#define OP_SHR` |
+| `OP_STORE_LOCAL` | macro | `progs/nuklear/cvm_emit.c:45` | `#define OP_STORE_LOCAL` |
+| `OP_SUB` | macro | `progs/nuklear/cvm_emit.c:47` | `#define OP_SUB` |
+| `OP_XOR` | macro | `progs/nuklear/cvm_emit.c:54` | `#define OP_XOR` |
+| `cb_i64` | function | `progs/nuklear/cvm_emit.c:97` | `static int cb_i64(struct codebuf *cb, long long v)` |
+| `cb_imm` | function | `progs/nuklear/cvm_emit.c:111` | `static int cb_imm(struct codebuf *cb, long long v)` |
+| `cb_patch_u32` | function | `progs/nuklear/cvm_emit.c:103` | `static void cb_patch_u32(struct codebuf *cb, size_t pos, unsigned long v)` |
+| `cb_push` | function | `progs/nuklear/cvm_emit.c:79` | `static int cb_push(struct codebuf *cb, unsigned char c)` |
+| `cb_u32` | function | `progs/nuklear/cvm_emit.c:91` | `static int cb_u32(struct codebuf *cb, unsigned long v)` |
+| `code` | function | `progs/nuklear/cvm_emit.c:8` | `* exit code (OP_HALT leaves the operand-stack top as the exit status, which  * the shell reports ...` |
+| `codebuf` | struct | `progs/nuklear/cvm_emit.c:73` | `` |
+| `cvm_compile` | function | `progs/nuklear/cvm_emit.c:236` | `int cvm_compile(const struct cvm_node *nodes, int n,                 unsigned char **out, size_t ...` |
+| `emit_jmp` | function | `progs/nuklear/cvm_emit.c:230` | `static int emit_jmp(struct codebuf *code, size_t *rel_pos)` |
+| `emit_jz` | function | `progs/nuklear/cvm_emit.c:224` | `static int emit_jz(struct codebuf *code, size_t *rel_pos)` |
+| `emit_operand` | function | `progs/nuklear/cvm_emit.c:213` | `static int emit_operand(struct codebuf *code, const struct cvm_node *nodes,                      ...` |
+| `is_sink` | function | `progs/nuklear/cvm_emit.c:145` | `static int is_sink(enum cvm_node_type t)` |
+| `module` | function | `progs/nuklear/cvm_emit.c:3` | `* * Emits a cvm2 module (format v2) from a dataflow graph. Nodes are * topologically sorted (a true DAG order, so...` |
+| `req_inputs` | function | `progs/nuklear/cvm_emit.c:126` | `static int req_inputs(enum cvm_node_type t)` |
+| `topo_sort` | function | `progs/nuklear/cvm_emit.c:150` | `static int topo_sort(const struct cvm_node *nodes, int n,                      int *order, char *...` |
+| `w32` | function | `progs/nuklear/cvm_emit.c:491` | `void w32(void *p, unsigned v)` |
+| `CVM_EMIT_H` | macro | `progs/nuklear/cvm_emit.h:2` | `#define CVM_EMIT_H` |
+| `CVM_NODE_STR_MAX` | macro | `progs/nuklear/cvm_emit.h:19` | `#define CVM_NODE_STR_MAX` |
+| `cvm_node` | struct | `progs/nuklear/cvm_emit.h:56` | `` |
+| `cvm_node_type` | enum | `progs/nuklear/cvm_emit.h:22` | `` |
+| `err` | function | `progs/nuklear/cvm_emit.h:67` | `* err (err_cap bytes). The module is heap-allocated and owned by the caller * (free it). */ int cvm_compile(const...` |
+| `graph` | function | `progs/nuklear/cvm_emit.h:6` | `* * A node graph (constants, arithmetic, bitwise, comparisons, a conditional * select, and string constants feeding...` |
+| `BEZIER_PAD` | macro | `progs/nuklear/node_editor.c:518` | `#define BEZIER_PAD` |
+| `GRID_SIZE` | macro | `progs/nuklear/node_editor.c:519` | `#define GRID_SIZE` |
+| `MAX_NODES` | macro | `progs/nuklear/node_editor.c:33` | `#define MAX_NODES` |
+| `NODE_W` | macro | `progs/nuklear/node_editor.c:514` | `#define NODE_W` |
+| `PIN_DIAM` | macro | `progs/nuklear/node_editor.c:517` | `#define PIN_DIAM` |
+| `PIN_R` | macro | `progs/nuklear/node_editor.c:516` | `#define PIN_R` |
+| `STR_MAX` | macro | `progs/nuklear/node_editor.c:34` | `#define STR_MAX` |
+| `TITLE_H` | macro | `progs/nuklear/node_editor.c:515` | `#define TITLE_H` |
+| `UI_MEMORY` | macro | `progs/nuklear/node_editor.c:500` | `#define UI_MEMORY` |
+| `adderr` | function | `progs/nuklear/node_editor.c:193` | `void adderr(const char *s)` |
+| `addrep` | function | `progs/nuklear/node_editor.c:183` | `void addrep(const char *s)` |
+| `compile_to` | function | `progs/nuklear/node_editor.c:283` | `static int compile_to(const char *path)` |
+| `gnode` | struct | `progs/nuklear/node_editor.c:44` | `` |
+| `graph_add` | function | `progs/nuklear/node_editor.c:122` | `static int graph_add(int kind)` |
+| `graph_clear` | function | `progs/nuklear/node_editor.c:116` | `static void graph_clear(void)` |
+| `graph_del` | function | `progs/nuklear/node_editor.c:136` | `static void graph_del(int idx)` |
+| `graph_to_compiler` | function | `progs/nuklear/node_editor.c:154` | `static int graph_to_compiler(struct cvm_node *out, int cap)` |
+| `gui_run` | function | `progs/nuklear/node_editor.c:931` | `static void gui_run(void)` |
+| `kind_color` | function | `progs/nuklear/node_editor.c:111` | `static struct nk_color kind_color(int k)` |
+| `kind_name` | function | `progs/nuklear/node_editor.c:106` | `static const char *kind_name(int k)` |
+| `main` | function | `progs/nuklear/node_editor.c:983` | `int main(int argc, char **argv)` |
+| `node_h` | function | `progs/nuklear/node_editor.c:534` | `static float node_h(struct gnode *n)` |
+| `node_inputs` | function | `progs/nuklear/node_editor.c:96` | `static int node_inputs(int k)` |
+| `node_outputs` | function | `progs/nuklear/node_editor.c:101` | `static int node_outputs(int k)` |
+| `nodedef` | struct | `progs/nuklear/node_editor.c:55` | `` |
+| `parse_graph_file` | function | `progs/nuklear/node_editor.c:430` | `static int parse_graph_file(const char *path)` |
+| `parse_input` | function | `progs/nuklear/node_editor.c:443` | `int parse_input(const char *tok, int idx, int k)` |
+| `pin_y` | function | `progs/nuklear/node_editor.c:522` | `static float pin_y(struct gnode *n, int slot, int is_output)` |
+| `repair_graph` | function | `progs/nuklear/node_editor.c:176` | `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,                    ...` |
+| `resolve` | function | `progs/nuklear/node_editor.c:437` | `int resolve(const char *nme, int upto)` |
+| `save_graph_file` | function | `progs/nuklear/node_editor.c:392` | `static int save_graph_file(const char *path)` |
+| `ui_build` | function | `progs/nuklear/node_editor.c:622` | `static void ui_build(struct nk_context *ctx, float win_w, float win_h)` |
+| `ui_inspector` | function | `progs/nuklear/node_editor.c:542` | `static void ui_inspector(struct nk_context *ctx)` |
+| `write_quoted` | function | `progs/nuklear/node_editor.c:339` | `static void write_quoted(FILE *f, const char *s)` |
+| `NK_IMPLEMENTATION` | macro | `progs/nuklear/nuklear_minios.c:17` | `#define NK_IMPLEMENTATION` |
+| `col_to_idx` | function | `progs/nuklear/nuklear_minios.c:438` | `static int col_to_idx(struct nk_color c)` |
+| `cur_bg_set` | function | `progs/nuklear/nuklear_minios.c:190` | `static void cur_bg_set(struct nk_color c)` |
+| `cur_set` | function | `progs/nuklear/nuklear_minios.c:186` | `static void cur_set(struct nk_color c)` |
+| `draw_arc` | function | `progs/nuklear/nuklear_minios.c:615` | `static void draw_arc(int cx, int cy, int r, float a0, float a1,                      int filled, ...` |
+| `draw_line` | function | `progs/nuklear/nuklear_minios.c:529` | `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)` |
+| `draw_text` | function | `progs/nuklear/nuklear_minios.c:601` | `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)` |
+| `feed_key` | function | `progs/nuklear/nuklear_minios.c:854` | `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)` |
+| `fill_circle` | function | `progs/nuklear/nuklear_minios.c:547` | `static void fill_circle(int cx, int cy, int r, int c)` |
+| `fill_poly` | function | `progs/nuklear/nuklear_minios.c:571` | `static void fill_poly(int *xs, int *ys, int n, int c)` |
+| `fill_rect` | function | `progs/nuklear/nuklear_minios.c:522` | `static void fill_rect(int x, int y, int w, int h, int c)` |
+| `handle_scancode` | function | `progs/nuklear/nuklear_minios.c:866` | `static void handle_scancode(struct nk_context *ctx, unsigned char sc)` |
+| `list` | function | `progs/nuklear/nuklear_minios.c:4` | `* abstract draw command list (nk__begin/nk__next);` |
+| `nk_build_palette` | function | `progs/nuklear/nuklear_minios.c:418` | `void nk_build_palette(unsigned char *pal768)` |
+| `nk_client_hash` | function | `progs/nuklear/nuklear_minios.c:216` | `static unsigned nk_client_hash(const unsigned char *p, unsigned n)` |
+| `nk_client_poll` | function | `progs/nuklear/nuklear_minios.c:914` | `static void nk_client_poll(struct nk_context *ctx)` |
+| `nk_client_probe` | function | `progs/nuklear/nuklear_minios.c:72` | `static int nk_client_probe(void)` |
+| `nk_client_publish` | function | `progs/nuklear/nuklear_minios.c:227` | `static int nk_client_publish(void)` |
+| `nk_foreach` | function | `progs/nuklear/nuklear_minios.c:641` | `nk_foreach(cmd, ctx)` |
+| `nk_idx_to_rgb` | function | `progs/nuklear/nuklear_minios.c:170` | `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g,                    unsigned char *b)` |
+| `nk_minios_font` | function | `progs/nuklear/nuklear_minios.c:819` | `struct nk_user_font nk_minios_font(void)` |
+| `nk_minios_font_width` | function | `progs/nuklear/nuklear_minios.c:813` | `static float nk_minios_font_width(nk_handle handle, float height,                                ...` |
+| `nk_mirror_box` | function | `progs/nuklear/nuklear_minios.c:314` | `static void nk_mirror_box(char *dst, int cap)` |
+| `nk_mirror_emit` | function | `progs/nuklear/nuklear_minios.c:335` | `static int nk_mirror_emit(const char *box, unsigned seq,         const unsigned char *msg, int mlen)` |
+| `nk_mirror_tick` | function | `progs/nuklear/nuklear_minios.c:352` | `static void nk_mirror_tick(void)` |
+| `nk_poll_input` | function | `progs/nuklear/nuklear_minios.c:961` | `void nk_poll_input(struct nk_context *ctx)` |
+| `nk_quit_requested` | function | `progs/nuklear/nuklear_minios.c:1008` | `int nk_quit_requested(void)` |
+| `nk_rasterize` | function | `progs/nuklear/nuklear_minios.c:636` | `void nk_rasterize(struct nk_context *ctx)` |
+| `nk_rgb_available` | function | `progs/nuklear/nuklear_minios.c:147` | `int nk_rgb_available(void)` |
+| `nk_set_scancode_hook` | function | `progs/nuklear/nuklear_minios.c:861` | `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)` |
+| `nk_set_window_origin` | function | `progs/nuklear/nuklear_minios.c:1000` | `void nk_set_window_origin(int x, int y)` |
+| `nk_sys_fb_info` | function | `progs/nuklear/nuklear_minios.c:121` | `long nk_sys_fb_info(int *w, int *h, int *pitch)` |
+| `nk_sys_fb_info_rgb` | function | `progs/nuklear/nuklear_minios.c:137` | `static long nk_sys_fb_info_rgb(int *w, int *h, int *pitch, int *rgb)` |
+| `nk_sys_getpid` | function | `progs/nuklear/nuklear_minios.c:53` | `long nk_sys_getpid(void)` |
+| `nk_sys_gfx_set_title` | function | `progs/nuklear/nuklear_minios.c:409` | `long nk_sys_gfx_set_title(const char *t)` |
+| `nk_sys_kbd` | function | `progs/nuklear/nuklear_minios.c:38` | `long nk_sys_kbd(void)` |
+| `nk_sys_kbd_raw` | function | `progs/nuklear/nuklear_minios.c:48` | `long nk_sys_kbd_raw(int on)` |
+| `nk_sys_mouse` | function | `progs/nuklear/nuklear_minios.c:193` | `long nk_sys_mouse(int *xybw)` |
+| `nk_sys_mouse_badptr` | function | `progs/nuklear/nuklear_minios.c:198` | `long nk_sys_mouse_badptr(void)` |
+| `nk_sys_nk_frame` | function | `progs/nuklear/nuklear_minios.c:280` | `long nk_sys_nk_frame(int *origin)` |
+| `nk_sys_palette` | function | `progs/nuklear/nuklear_minios.c:43` | `long nk_sys_palette(const unsigned char *pal)` |
+| `nk_sys_time_ms` | function | `progs/nuklear/nuklear_minios.c:33` | `long nk_sys_time_ms(void)` |
+| `nk_sys_vga_mode` | function | `progs/nuklear/nuklear_minios.c:114` | `long nk_sys_vga_mode(int on)` |
+| `pal_prepare` | function | `progs/nuklear/nuklear_minios.c:427` | `static void pal_prepare(void)` |
+| `program_invocation_short_name` | variable | `progs/nuklear/nuklear_minios.c:27` | `extern char *program_invocation_short_name;` |
+| `px` | function | `progs/nuklear/nuklear_minios.c:479` | `static void px(int x, int y, int c)` |
+| `px_bg` | function | `progs/nuklear/nuklear_minios.c:492` | `static void px_bg(int x, int y, int c)` |
+| `px_idx` | function | `progs/nuklear/nuklear_minios.c:506` | `static void px_idx(int x, int y, int c)` |
+| `rgb256_prepare` | function | `progs/nuklear/nuklear_minios.c:162` | `static void rgb256_prepare(void)` |
+| `set_clip` | function | `progs/nuklear/nuklear_minios.c:469` | `static void set_clip(int x, int y, int w, int h)` |
+| `stroke_circle` | function | `progs/nuklear/nuklear_minios.c:553` | `static void stroke_circle(int cx, int cy, int r, int th, int c)` |
+| `stroke_poly` | function | `progs/nuklear/nuklear_minios.c:594` | `static void stroke_poly(int *xs, int *ys, int n, int th, int c)` |
+| `NK_BACKBUF` | macro | `progs/nuklear/nuklear_minios.h:26` | `#define NK_BACKBUF` |
+| `NK_H` | macro | `progs/nuklear/nuklear_minios.h:25` | `#define NK_H` |
+| `NK_MINIOS_IMG_MAX` | macro | `progs/nuklear/nuklear_minios.h:73` | `#define NK_MINIOS_IMG_MAX` |
+| `NK_RGB_BUF` | macro | `progs/nuklear/nuklear_minios.h:30` | `#define NK_RGB_BUF` |
+| `NK_W` | macro | `progs/nuklear/nuklear_minios.h:24` | `#define NK_W` |
+| `NUKLEAR_MINIOS_H` | macro | `progs/nuklear/nuklear_minios.h:2` | `#define NUKLEAR_MINIOS_H` |
+| `SYS_NK_FRAME` | function | `progs/nuklear/nuklear_minios.h:85` | `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);` |
+| `nk_build_palette` | function | `progs/nuklear/nuklear_minios.h:57` | `void nk_build_palette(unsigned char *pal768);` |
+| `nk_command_buffer` | struct | `progs/nuklear/nuklear_minios.h:22` | `` |
 | `nk_context` | struct | `progs/nuklear/nuklear_minios.h:20` | `` |
 | `nk_idx_to_rgb` | function | `progs/nuklear/nuklear_minios.h:37` | `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g, unsigned char *b);` |
 | `nk_minios_font` | function | `progs/nuklear/nuklear_minios.h:63` | `struct nk_user_font nk_minios_font(void);` |
@@ -307,194 +496,5 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `q2g_parse_autoframes` | function | `progs/quake2generic/q2generic_minios.c:121` | `static void q2g_parse_autoframes(int argc, char **argv)` |
 | `q2g_parse_windowed` | function | `progs/quake2generic/q2generic_minios.c:86` | `static void q2g_parse_windowed(int argc, char **argv)` |
 | `q2snd_probe` | function | `progs/quake2generic/q2generic_minios.c:106` | `extern int q2snd_probe(void);` |
-| `scancode_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:179` | `static unsigned char scancode_to_q2key(unsigned char raw)` |
-| `sys_doom_frame` | function | `progs/quake2generic/q2generic_minios.c:54` | `static long sys_doom_frame(void)` |
-| `sys_gfx_zoom` | function | `progs/quake2generic/q2generic_minios.c:72` | `static long sys_gfx_zoom(long mode)` |
-| `sys_kbd` | function | `progs/quake2generic/q2generic_minios.c:30` | `static long sys_kbd(void)` |
-| `sys_kbd_raw` | function | `progs/quake2generic/q2generic_minios.c:42` | `static long sys_kbd_raw(int on)` |
-| `sys_mouse` | function | `progs/quake2generic/q2generic_minios.c:60` | `static long sys_mouse(int *buf)` |
-| `sys_palette` | function | `progs/quake2generic/q2generic_minios.c:36` | `static long sys_palette(const unsigned char *pal)` |
-| `sys_set_title` | function | `progs/quake2generic/q2generic_minios.c:66` | `static long sys_set_title(const char *t)` |
-| `sys_vga_mode` | function | `progs/quake2generic/q2generic_minios.c:48` | `static long sys_vga_mode(int on)` |
-| `Q2SND_AHEAD` | macro | `progs/quake2generic/snddma_minios.c:54` | `#define Q2SND_AHEAD` |
-| `Q2SND_BUF_BYTES` | macro | `progs/quake2generic/snddma_minios.c:56` | `#define Q2SND_BUF_BYTES` |
-| `Q2SND_RATE` | macro | `progs/quake2generic/snddma_minios.c:48` | `#define Q2SND_RATE` |
-| `Q2SND_SAMPLES` | macro | `progs/quake2generic/snddma_minios.c:49` | `#define Q2SND_SAMPLES` |
-| `Q2SND_SILENCE` | macro | `progs/quake2generic/snddma_minios.c:50` | `#define Q2SND_SILENCE` |
-| `SNDDMA_BeginPainting` | function | `progs/quake2generic/snddma_minios.c:202` | `void SNDDMA_BeginPainting(void)` |
-| `SNDDMA_GetDMAPos` | function | `progs/quake2generic/snddma_minios.c:182` | `int SNDDMA_GetDMAPos(void)` |
-| `SNDDMA_Init` | function | `progs/quake2generic/snddma_minios.c:138` | `qboolean SNDDMA_Init(void)` |
-| `SNDDMA_Shutdown` | function | `progs/quake2generic/snddma_minios.c:190` | `void SNDDMA_Shutdown(void)` |
-| `SNDDMA_Submit` | function | `progs/quake2generic/snddma_minios.c:205` | `void SNDDMA_Submit(void)` |
-| `q2_dma_push` | function | `progs/quake2generic/snddma_minios.c:104` | `static int q2_dma_push(int end)` |
-| `q2snd_probe` | function | `progs/quake2generic/snddma_minios.c:222` | `int q2snd_probe(void)` |
-| `sys_pcm2_close` | function | `progs/quake2generic/snddma_minios.c:83` | `static void sys_pcm2_close(void)` |
-| `sys_pcm2_open` | function | `progs/quake2generic/snddma_minios.c:67` | `static long sys_pcm2_open(long flags)` |
-| `sys_pcm2_write` | function | `progs/quake2generic/snddma_minios.c:75` | `static long sys_pcm2_write(const void *buf, long len)` |
-| `sys_time_ms` | function | `progs/quake2generic/snddma_minios.c:89` | `static long sys_time_ms(void)` |
-| `AES_AFFINE_C` | macro | `progs/src/aes.c:53` | `#define AES_AFFINE_C` |
-| `AES_BLOCK` | macro | `progs/src/aes.c:44` | `#define AES_BLOCK` |
-| `AES_EXIT_FAIL` | macro | `progs/src/aes.c:61` | `#define AES_EXIT_FAIL` |
-| `AES_HDR_SIZE` | macro | `progs/src/aes.c:42` | `#define AES_HDR_SIZE` |
-| `AES_KEY_BYTES` | macro | `progs/src/aes.c:45` | `#define AES_KEY_BYTES` |
-| `AES_MAGIC0` | macro | `progs/src/aes.c:38` | `#define AES_MAGIC0` |
-| `AES_MAGIC1` | macro | `progs/src/aes.c:39` | `#define AES_MAGIC1` |
-| `AES_MAGIC2` | macro | `progs/src/aes.c:40` | `#define AES_MAGIC2` |
-| `AES_MAGIC3` | macro | `progs/src/aes.c:41` | `#define AES_MAGIC3` |
-| `AES_NONCE_BYTES` | macro | `progs/src/aes.c:46` | `#define AES_NONCE_BYTES` |
-| `AES_POLY` | macro | `progs/src/aes.c:52` | `#define AES_POLY` |
-| `AES_RCON_PAD` | macro | `progs/src/aes.c:54` | `#define AES_RCON_PAD` |
-| `AES_RCON_SIZE` | macro | `progs/src/aes.c:50` | `#define AES_RCON_SIZE` |
-| `AES_RK_LEN` | macro | `progs/src/aes.c:48` | `#define AES_RK_LEN` |
-| `AES_ROUNDS` | macro | `progs/src/aes.c:47` | `#define AES_ROUNDS` |
-| `AES_SBOX_SIZE` | macro | `progs/src/aes.c:49` | `#define AES_SBOX_SIZE` |
-| `AES_SEEK_END` | macro | `progs/src/aes.c:59` | `#define AES_SEEK_END` |
-| `GF` | function | `progs/src/aes.c:8` | `* generated procedurally from the GF(2^8) multiplicative inverse plus the * FIPS-197 affine transform, so the file...` |
-| `HEX_KEY_LEN` | macro | `progs/src/aes.c:56` | `#define HEX_KEY_LEN` |
-| `HEX_NONCE_LEN` | macro | `progs/src/aes.c:57` | `#define HEX_NONCE_LEN` |
-| `aes_add_round_key` | function | `progs/src/aes.c:209` | `static void aes_add_round_key(int round)` |
-| `aes_cipher` | function | `progs/src/aes.c:248` | `static void aes_cipher(void)` |
-| `aes_ctr_crypt` | function | `progs/src/aes.c:273` | `static void aes_ctr_crypt(char *data, int len)` |
-| `aes_gf_mul` | function | `progs/src/aes.c:130` | `static int aes_gf_mul(int a, int b)` |
-| `aes_has` | function | `progs/src/aes.c:96` | `static int aes_has(const char *s, const char *needle)` |
-| `aes_hdr_get` | function | `progs/src/aes.c:299` | `static int aes_hdr_get(char *h)` |
-| `aes_hdr_put` | function | `progs/src/aes.c:288` | `static void aes_hdr_put(char *h, int size)` |
-| `aes_init_tables` | function | `progs/src/aes.c:155` | `static void aes_init_tables(void)` |
-| `aes_iv_increment` | function | `progs/src/aes.c:263` | `static void aes_iv_increment(void)` |
-| `aes_key_expand` | function | `progs/src/aes.c:174` | `static void aes_key_expand(const int *key)` |
-| `aes_mix_columns` | function | `progs/src/aes.c:228` | `static void aes_mix_columns(void)` |
-| `aes_parse_hex` | function | `progs/src/aes.c:117` | `static int aes_parse_hex(const char *s, int want, int *out)` |
-| `aes_read_all` | function | `progs/src/aes.c:69` | `static char *aes_read_all(const char *name, int *len)` |
-| `aes_rotl8` | function | `progs/src/aes.c:148` | `static int aes_rotl8(int x, int n)` |
-| `aes_run` | function | `progs/src/aes.c:312` | `static int aes_run(int decode, const char *keyhex, const char *noncehex,                    const...` |
-| `aes_shift_rows` | function | `progs/src/aes.c:220` | `static void aes_shift_rows(void)` |
-| `aes_sub_bytes` | function | `progs/src/aes.c:215` | `static void aes_sub_bytes(void)` |
-| `aes_tool_name` | function | `progs/src/aes.c:307` | `static const char *aes_tool_name(int decode)` |
-| `aes_write_all` | function | `progs/src/aes.c:86` | `static int aes_write_all(const char *name, char *data, int len)` |
-| `aes_xtime` | function | `progs/src/aes.c:142` | `static int aes_xtime(int x)` |
-| `fclose` | function | `progs/src/aes.c:29` | `int fclose();` |
-| `fopen` | function | `progs/src/aes.c:28` | `void *fopen();` |
-| `fread` | function | `progs/src/aes.c:30` | `int fread();` |
-| `free` | function | `progs/src/aes.c:36` | `void free();` |
-| `fseek` | function | `progs/src/aes.c:32` | `int fseek();` |
-| `ftell` | function | `progs/src/aes.c:33` | `int ftell();` |
-| `fwrite` | function | `progs/src/aes.c:31` | `int fwrite();` |
-| `hex_val` | function | `progs/src/aes.c:110` | `static int hex_val(int c)` |
-| `main` | function | `progs/src/aes.c:384` | `int main(int argc, char **argv)` |
-| `malloc` | function | `progs/src/aes.c:35` | `void *malloc();` |
-| `putchar` | function | `progs/src/aes.c:25` | `int putchar();` |
-| `rewind` | function | `progs/src/aes.c:34` | `void rewind();` |
-| `strcmp` | function | `progs/src/aes.c:26` | `int strcmp();` |
-| `strlen` | function | `progs/src/aes.c:27` | `int strlen();` |
-| `as_atou` | function | `progs/src/aslr.c:59` | `static unsigned long as_atou(const char *s)` |
-| `as_execve` | function | `progs/src/aslr.c:40` | `static void as_execve(const char *path, const char **argv)` |
-| `as_exit` | function | `progs/src/aslr.c:35` | `static void as_exit(long code)` |
-| `as_fail` | function | `progs/src/aslr.c:74` | `static void as_fail(int step)` |
-| `as_mmap` | function | `progs/src/aslr.c:18` | `static long as_mmap(void)` |
-| `as_putu` | function | `progs/src/aslr.c:47` | `static void as_putu(unsigned long v)` |
-| `as_rsp` | function | `progs/src/aslr.c:68` | `static unsigned long as_rsp(void)` |
-| `as_sc` | function | `progs/src/aslr.c:10` | `static long as_sc(long n, long a1, long a2, long a3)` |
-| `as_write` | function | `progs/src/aslr.c:31` | `static void as_write(const char *s, unsigned long len)` |
-| `lmain` | function | `progs/src/aslr.c:82` | `int lmain(long argc, char **argv)` |
-| `audio_get_volume` | function | `progs/src/audio.c:56` | `unsigned audio_get_volume(void)` |
-| `audio_init` | function | `progs/src/audio.c:27` | `int audio_init(void)` |
-| `audio_pcm_close` | function | `progs/src/audio.c:48` | `void audio_pcm_close(void)` |
-| `audio_pcm_open` | function | `progs/src/audio.c:35` | `int audio_pcm_open(unsigned rate, unsigned channels, unsigned format)` |
-| `audio_pcm_pump` | function | `progs/src/audio.c:44` | `void audio_pcm_pump(void)` |
-| `audio_pcm_submit` | function | `progs/src/audio.c:40` | `int audio_pcm_submit(const void *buf, unsigned len)` |
-| `audio_sb16_present` | function | `progs/src/audio.c:60` | `int audio_sb16_present(void)` |
-| `audio_set_volume` | function | `progs/src/audio.c:52` | `void audio_set_volume(unsigned volume)` |
-| `audio_stream_close` | function | `progs/src/audio.c:68` | `void audio_stream_close(int id)` |
-| `audio_stream_open` | function | `progs/src/audio.c:64` | `int audio_stream_open(void)` |
-| `audio_stream_submit` | function | `progs/src/audio.c:72` | `int audio_stream_submit(int id, const void *buf, unsigned len)` |
-| `audio_stream_volume` | function | `progs/src/audio.c:76` | `void audio_stream_volume(int id, unsigned char vol)` |
-| `audio_tone` | function | `progs/src/audio.c:31` | `void audio_tone(unsigned freq)` |
-| `syscall0` | function | `progs/src/audio.c:21` | `static long syscall0(long n)` |
-| `syscall1` | function | `progs/src/audio.c:3` | `static long syscall1(long n, long a1)` |
-| `syscall2` | function | `progs/src/audio.c:9` | `static long syscall2(long n, long a1, long a2)` |
-| `syscall3` | function | `progs/src/audio.c:15` | `static long syscall3(long n, long a1, long a2, long a3)` |
-| `bn_exit` | function | `progs/src/burn.c:31` | `static void bn_exit(long code)` |
-| `bn_fail` | function | `progs/src/burn.c:48` | `static void bn_fail(void)` |
-| `bn_mmap` | function | `progs/src/burn.c:14` | `static long bn_mmap(unsigned long len)` |
-| `bn_putu` | function | `progs/src/burn.c:36` | `static void bn_putu(unsigned long v)` |
-| `bn_sc` | function | `progs/src/burn.c:6` | `static long bn_sc(long n, long a1, long a2, long a3)` |
-| `bn_write` | function | `progs/src/burn.c:27` | `static void bn_write(const char *s, unsigned long len)` |
-| `lmain` | function | `progs/src/burn.c:53` | `int lmain(void)` |
-| `CP_BUF_SIZE` | macro | `progs/src/cp.c:7` | `#define CP_BUF_SIZE` |
-| `CP_EXIT_FAIL` | macro | `progs/src/cp.c:8` | `#define CP_EXIT_FAIL` |
-| `fclose` | function | `progs/src/cp.c:3` | `int fclose();` |
-| `fopen` | function | `progs/src/cp.c:2` | `void *fopen();` |
-| `fread` | function | `progs/src/cp.c:4` | `int fread();` |
-| `fwrite` | function | `progs/src/cp.c:5` | `int fwrite();` |
-| `main` | function | `progs/src/cp.c:10` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/src/cp.c:1` | `int printf();` |
-| `_start` | function | `progs/src/cpl.c:16` | `void _start(void)` |
-| `exit_now` | function | `progs/src/cpl.c:12` | `static void exit_now(long code)` |
-| `read_cpl` | function | `progs/src/cpl.c:6` | `static long read_cpl(void)` |
-| `ex_exit` | function | `progs/src/execho.c:24` | `static void ex_exit(long code)` |
-| `ex_fail` | function | `progs/src/execho.c:29` | `static void ex_fail(int step)` |
-| `ex_write` | function | `progs/src/execho.c:20` | `static void ex_write(const char *s, unsigned long len)` |
-| `lmain` | function | `progs/src/execho.c:37` | `int lmain(void)` |
-| `path` | function | `progs/src/execho.c:7` | `* execs a ghost path (must fail -2, exits 42). The parent checks  * both wait4 results with Linux...` |
-| `program` | function | `progs/src/execho.c:5` | `* * Proves the UNIX process composition the kernel lacked: a child * produced by fork replaces its image with execve...` |
-| `et_exit` | function | `progs/src/execthr.c:19` | `static void et_exit(long code)` |
-| `et_sc` | function | `progs/src/execthr.c:11` | `static long et_sc(long n, long a1, long a2, long a3)` |
-| `et_thread` | function | `progs/src/execthr.c:27` | `static void et_thread(void)` |
-| `lmain` | function | `progs/src/execthr.c:33` | `int lmain(void)` |
-| `fib` | function | `progs/src/fib.c:1` | `int fib(int n)` |
-| `main` | function | `progs/src/fib.c:6` | `int main(void)` |
-| `SYS_close` | macro | `progs/src/forktest.c:32` | `#define SYS_close` |
-| `SYS_exit` | macro | `progs/src/forktest.c:36` | `#define SYS_exit` |
-| `SYS_fork` | macro | `progs/src/forktest.c:35` | `#define SYS_fork` |
-| `SYS_pipe` | macro | `progs/src/forktest.c:33` | `#define SYS_pipe` |
-| `SYS_read` | macro | `progs/src/forktest.c:30` | `#define SYS_read` |
-| `SYS_wait4` | macro | `progs/src/forktest.c:37` | `#define SYS_wait4` |
-| `SYS_write` | macro | `progs/src/forktest.c:31` | `#define SYS_write` |
-| `SYS_yield` | macro | `progs/src/forktest.c:34` | `#define SYS_yield` |
-| `_start` | function | `progs/src/forktest.c:56` | `void _start(void)` |
-| `fx_exit` | function | `progs/src/forktest.c:51` | `static void fx_exit(long code)` |
-| `fx_strlen` | function | `progs/src/forktest.c:41` | `static unsigned long fx_strlen(const char *s)` |
-| `fx_syscall6` | function | `progs/src/forktest.c:17` | `static long fx_syscall6(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `fx_write` | function | `progs/src/forktest.c:47` | `static void fx_write(const char *s)` |
-| `this` | function | `progs/src/forktest.c:115` | `* this (and the child's closes must survive below). */ fx_syscall6(SYS_close, pfd[1], 0, 0, 0, 0, 0);` |
-| `FP_ITERS` | macro | `progs/src/fptest.c:38` | `#define FP_ITERS` |
-| `fp_slot_t` | struct | `progs/src/fptest.c:56` | `` |
-| `gettid` | function | `progs/src/fptest.c:21` | `* * The same run smokes gettid (Phase 0.4: the two workers must observe * distinct tids, never the constant 1) and...` |
-| `main` | function | `progs/src/fptest.c:148` | `int main(void)` |
-| `raw_getrandom` | function | `progs/src/fptest.c:52` | `static long raw_getrandom(void *buf, unsigned long n)` |
-| `raw_gettid` | function | `progs/src/fptest.c:48` | `static long raw_gettid(void)` |
-| `read_mxcsr` | function | `progs/src/fptest.c:42` | `static unsigned int read_mxcsr(void)` |
-| `stack_align_canary` | function | `progs/src/fptest.c:78` | `static void stack_align_canary(void)` |
-| `worker` | function | `progs/src/fptest.c:84` | `static void *worker(void *p)` |
-| `FREEDOM_ATTR_MAX` | macro | `progs/src/freedom.c:81` | `#define FREEDOM_ATTR_MAX` |
-| `FREEDOM_BUF` | macro | `progs/src/freedom.c:76` | `#define FREEDOM_BUF` |
-| `FREEDOM_CHUNK_MAX` | macro | `progs/src/freedom.c:77` | `#define FREEDOM_CHUNK_MAX` |
-| `FREEDOM_CSS_BUF` | macro | `progs/src/freedom.c:79` | `#define FREEDOM_CSS_BUF` |
-| `FREEDOM_CSS_MAX` | macro | `progs/src/freedom.c:78` | `#define FREEDOM_CSS_MAX` |
-| `FREEDOM_DOM_BUF` | macro | `progs/src/freedom.c:80` | `#define FREEDOM_DOM_BUF` |
-| `FREEDOM_HDR_MAX` | macro | `progs/src/freedom.c:75` | `#define FREEDOM_HDR_MAX` |
-| `FREEDOM_HOPS_MAX` | macro | `progs/src/freedom.c:74` | `#define FREEDOM_HOPS_MAX` |
-| `FREEDOM_LINE_MAX` | macro | `progs/src/freedom.c:82` | `#define FREEDOM_LINE_MAX` |
-| `append` | function | `progs/src/freedom.c:166` | `static int append(char *dst, int pos, char *src, int cap)` |
-| `atoi` | function | `progs/src/freedom.c:151` | `static int atoi(char *s)` |
-| `body_byte` | function | `progs/src/freedom.c:631` | `static void body_byte(int c)` |
-| `ci_eq` | function | `progs/src/freedom.c:193` | `static int ci_eq(char *a, char *b)` |
-| `ci_index` | function | `progs/src/freedom.c:203` | `static int ci_index(char *s, char *needle)` |
-| `ci_lower` | function | `progs/src/freedom.c:176` | `static int ci_lower(int c)` |
-| `ci_starts` | function | `progs/src/freedom.c:182` | `static int ci_starts(char *s, char *pre)` |
-| `classify_tag` | function | `progs/src/freedom.c:546` | `static void classify_tag(void)` |
-| `close` | function | `progs/src/freedom.c:56` | `int close(int fd);` |
-| `connect` | function | `progs/src/freedom.c:53` | `int connect(int fd, void *addr, int addrlen);` |
-| `css_append` | function | `progs/src/freedom.c:483` | `static void css_append(char *s, int n)` |
-| `css_line` | function | `progs/src/freedom.c:489` | `static void css_line(char *s)` |
-| `curlfree` | function | `progs/src/freedom.c:4` | `* spirit of curlfree (http.c + htmlfilter.c): a bounded header phase, * Content-Length or EOF body reading...` |
-| `dom_append` | function | `progs/src/freedom.c:494` | `static void dom_append(char *s, int n)` |
-| `dom_nl` | function | `progs/src/freedom.c:504` | `static void dom_nl(void)` |
-| `dom_space` | function | `progs/src/freedom.c:500` | `static void dom_space(void)` |
-| `fetch` | function | `progs/src/freedom.c:860` | `static int fetch(char *host, char *path, int port)` |
-| `fetch_css` | function | `progs/src/freedom.c:1031` | `static void fetch_css(char *host, char *path)` |
-| `has_scheme` | function | `progs/src/freedom.c:226` | `static int has_scheme(char *s)` |
-| `head_line` | function | `progs/src/freedom.c:796` | `static void head_line(char *line)` |
-| `is_void_tag` | function | `progs/src/freedom.c:534` | `static int is_void_tag(void)` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

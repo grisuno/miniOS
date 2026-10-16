@@ -2,20 +2,20 @@
 
 > Cross-session context for agents. Sections 1-6 are regenerated from the source tree with zero LLM tokens: declared rules are quoted verbatim with `file:line`, measured baselines come from the scan. Section 7 is written by agents and humans and is preserved across rebuilds.
 
-Generated from 567 files at commit `620275dbc842`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
+Generated from 579 files at commit `6329f2bdfc80`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
 
 ## 1. Purpose and domain
 
 - What it is: I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [compiler/linker](https://github.com/grisuno/ld), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). (`README.md:10`)
-- Domain vocabulary (term, files): `progs` (308), `free` (238), `any` (232), `without` (228), `program` (219), `can` (218), `under` (208), `see` (190), `doomgeneric` (188), `version` (186), `later` (184), `but` (184), `either` (182), `more` (181), `public` (176)
-- Subsystem `headers: kernel`: 143 files, core `headers/kernel.h`: The user-window memory layout (load base, stack, brk cap, graphics
+- Domain vocabulary (term, files): `progs` (312), `free` (240), `any` (236), `without` (230), `program` (221), `can` (218), `under` (209), `see` (192), `doomgeneric` (188), `version` (186), `but` (185), `later` (184), `either` (183), `more` (181), `public` (179)
+- Subsystem `headers: kernel`: 137 files, core `headers/kernel.h`: The user-window memory layout (load base, stack, brk cap, graphics
 - Subsystem `progs/doomgeneric: d_englsh`: 99 files, core `progs/doomgeneric/d_englsh.h`: Copyright(C) 1993-1996 Id Software, Inc.
+- Subsystem `progs/src`: 86 files, core `progs/vedit/vedit.c`: vedit IDE build and run contract.
 - Subsystem `progs/doomgeneric: p_spec`: 69 files, core `progs/doomgeneric/p_spec.h`: Copyright(C) 1993-1996 Id Software, Inc.
-- Subsystem `progs/src`: 68 files, core `progs/vedit/vedit.c`: vedit IDE build and run contract.
-- Subsystem `tools: lxabi`: 29 files, core `progs/src/lxabi.c`: Linux process, thread and descriptor ABI probe (FreeDom
-- Subsystem `headers: vga_fb`: 18 files, core `kernel/vga_fb.c`: wm_geom_cfg: /** Docstring: Focus ids share one space across terminals and graphics....
-- Subsystem `headers: net`: 17 files, core `net/net.c`: MiniOS network stack: virtio-net preferred, rtl8139 fallback, under
+- Subsystem `tools: tls_crypto`: 37 files, core `net/tls_crypto.c`: the crypto behind the kernel TLS 1.2 client.
+- Subsystem `headers: vga_fb`: 17 files, core `kernel/vga_fb.c`: wm_geom_cfg: /** Docstring: Focus ids share one space across terminals and graphics....
 - Subsystem `progs/doomgeneric: net_defs`: 13 files, core `progs/doomgeneric/net_defs.h`: Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redistribute it...
+- Subsystem `headers: batch`: 3 files, core `headers/batch.h`: Docstring: batch.h -- Batched synchronous syscall submission.
 - Business rules that the code cannot show live in section 7: record them there.
 
 ## 2. Workflow
@@ -44,20 +44,21 @@ Session protocol:
 ## 3. Rules and constraints
 
 Declared:
-- **Layout addresses** live once in `progs/minios_abi.h`; never hardcode one in (`CLAUDE.md:43`)
-- **Low 4 MB**: user page-table zone stays at `0x10000`; kernel image + `.bss` (`CLAUDE.md:45`)
-- **Kernel stacks**: 16 KB per proc, `-Werror=frame-larger-than=2048`; (`CLAUDE.md:49`)
-- **Syscalls** take user pointers only through `SANITIZE_*` (`-EFAULT` on (`CLAUDE.md:51`)
-- **SB16/DMA**: never auto-init DMA; one single-cycle block per terminal-count (`CLAUDE.md:53`)
-- **Build**: per-object header deps live in the Makefile; a new `#include` (`CLAUDE.md:55`)
-- **Graphics apps**: present through `GFX_PRESENT`; mouse via the origin the (`CLAUDE.md:57`)
-- **USB**: PCI MMIO is mapped only through `kmm_map_uncached()` (write-back (`CLAUDE.md:60`)
-- **Heavy ring-3 overlap** (two big glibc processes) is known-red until (`CLAUDE.md:68`)
-- Every loader input is validated before use: ELF headers, section and (`CLAUDE.md:146`)
-- Size arithmetic is overflow checked before allocation (`size * n` included). (`CLAUDE.md:148`)
-- Failure paths report and release; no silent partial state. (`CLAUDE.md:149`)
-- No function symbol is ever resolved to a null address. (`CLAUDE.md:150`)
-- User stack setup validates that argv writes stay within bounds. (`CLAUDE.md:151`)
+- **Layout addresses** live once in `progs/minios_abi.h`; never hardcode one in (`CLAUDE.md:44`)
+- **Low 4 MB**: user page-table zone stays at `0x10000`; kernel image + `.bss` (`CLAUDE.md:46`)
+- **Kernel stacks**: 16 KB per proc, `-Werror=frame-larger-than=2048`; (`CLAUDE.md:50`)
+- **Syscalls** take user pointers only through `SANITIZE_*` (`-EFAULT` on (`CLAUDE.md:52`)
+- **SB16/DMA**: never auto-init DMA; one single-cycle block per terminal-count (`CLAUDE.md:54`)
+- **Build**: per-object header deps live in the Makefile; a new `#include` (`CLAUDE.md:56`)
+- **Graphics apps**: present through `GFX_PRESENT`; mouse via the origin the (`CLAUDE.md:58`)
+- **USB**: PCI MMIO is mapped only through `kmm_map_uncached()` (write-back (`CLAUDE.md:61`)
+- **Foreground processes**: the shell's pid-0 exec frame has no fork/execve; (`CLAUDE.md:69`)
+- **Heavy ring-3 overlap** (two big glibc processes) is known-red until (`CLAUDE.md:74`)
+- Every loader input is validated before use: ELF headers, section and (`CLAUDE.md:152`)
+- Size arithmetic is overflow checked before allocation (`size * n` included). (`CLAUDE.md:154`)
+- Failure paths report and release; no silent partial state. (`CLAUDE.md:155`)
+- No function symbol is ever resolved to a null address. (`CLAUDE.md:156`)
+- User stack setup validates that argv writes stay within bounds. (`CLAUDE.md:157`)
 
 Measured baseline:
 - Security findings at medium or above: 0 (see `readmenator-agent/SECURITY.md`); do not add new ones.
@@ -69,11 +70,11 @@ Declared:
 - none declared in instruction files (add them to AGENTS.md or record them in section 7)
 
 Measured baseline:
-- c: 278 files, 6841 symbols; docstrings on 21% of symbols; functions snake_case (75%); types PascalCase (19%); median file 262 lines, max 4886.
-- h: 193 files, 4548 symbols; docstrings on 17% of symbols; functions snake_case (70%); types PascalCase (7%); median file 69 lines, max 1331.
-- py: 61 files, 689 symbols; docstrings on 35% of symbols; functions snake_case (97%); types PascalCase (99%); median file 130 lines, max 957.
-- sh: 17 files, 45 symbols; docstrings on 18% of symbols; functions snake_case (100%); median file 80 lines, max 2215.
-- Tests: 66 files under mcp, progs/src, tests; follow the existing naming (e.g. `test_minios_mcp.py`).
+- c: 284 files, 7024 symbols; docstrings on 22% of symbols; functions snake_case (75%); types PascalCase (19%); median file 261 lines, max 4902.
+- h: 196 files, 4585 symbols; docstrings on 17% of symbols; functions snake_case (70%); types PascalCase (7%); median file 69 lines, max 1331.
+- py: 62 files, 716 symbols; docstrings on 38% of symbols; functions snake_case (97%); types PascalCase (99%); median file 135 lines, max 957.
+- sh: 17 files, 45 symbols; docstrings on 18% of symbols; functions snake_case (100%); median file 80 lines, max 2270.
+- Tests: 67 files under mcp, progs/src, tests; follow the existing naming (e.g. `test_minios_mcp.py`).
 
 ## 5. Minimum deliverables
 
@@ -90,8 +91,8 @@ Measured baseline:
 
 ## 6. Risks to respect
 
-- God nodes (changes ripple widely): `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `kernel/syscalls.c`
-- Hotspots (complex and central): `kernel/syscalls.c`, `kernel/string.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `kernel/shell.c`
+- God nodes (changes ripple widely): `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/doomdef.h`, `kernel/syscalls.c`, `progs/doomgeneric/doomstat.h`
+- Hotspots (complex and central): `kernel/syscalls.c`, `kernel/string.c`, `progs/doomgeneric/d_main.c`, `kernel/shell.c`, `progs/doomgeneric/g_game.c`
 - Cycle: `progs/doomgeneric/r_data.h` -> `progs/doomgeneric/r_state.h` -> `progs/doomgeneric/r_data.h`
 - Full blast radius: `readmenator-agent/GOTCHAS.md`; findings: `readmenator-agent/SECURITY.md`.
 

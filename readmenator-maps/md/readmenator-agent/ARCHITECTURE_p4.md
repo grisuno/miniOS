@@ -57,6 +57,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `kernel/mm/cow.c` -> kernel.h
 - `kernel/mm/paging.c` -> kernel.h
 - `kernel/mm/swap.c` -> kernel.h
+- `kernel/mm/tlb.c` -> kernel.h
 - `kernel/panic.c` -> kernel.h
 - `kernel/printf.c` -> kernel.h
 - `kernel/proc_sec.c` -> kernel.h
@@ -184,11 +185,13 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `progs/pokemon/platform_minios.c` -> gbrt.h, platform_sdl.h, ppu.h, stb_image.h, stdint.h, stdio.h, stdlib.h
 - `progs/quake2generic/q2generic_minios.c` -> client/keys.h, quake2.h, quakegeneric.h, stdint.h, stdlib.h
 - `progs/quake2generic/snddma_minios.c` -> client/client.h, client/snd_loc.h, stdlib.h
+- `progs/src/apsse.c` -> emmintrin.h, pthread.h, stdint.h, stdio.h, sys/mman.h
 - `progs/src/fptest.c` -> stdio.h
 - `progs/src/freedom.c` -> stdio.h, sys/socket.h, unistd.h
 - `progs/src/freedom_wl.c` -> stdint.h, stdio.h, sys/socket.h, unistd.h
 - `progs/src/lxabi.c` -> errno.h, fcntl.h, poll.h, pthread.h, signal.h, stdint.h, stdio.h, stdlib.h, sys/eventfd.h, sys/ioctl.h, sys/resource.h, sys/stat.h, sys/syscall.h, sys/sysinfo.h, sys/uio.h, sys/wait.h, unistd.h
 - `progs/src/lxnet.c` -> arpa/inet.h, errno.h, fcntl.h, netdb.h, netinet/in.h, netinet/tcp.h, poll.h, stdio.h, stdlib.h, sys/ioctl.h, sys/socket.h, sys/uio.h, unistd.h
+- `progs/src/lxproc.c` -> errno.h, stdint.h, stdio.h, sys/wait.h, unistd.h
 - `progs/src/lxsecc.c` -> errno.h, linux/audit.h, linux/filter.h, linux/seccomp.h, stddef.h, stdio.h, stdlib.h, sys/mman.h, sys/prctl.h, sys/syscall.h, sys/wait.h, unistd.h
 - `progs/src/lxtls.c` -> curl/curl.h, openssl/err.h, openssl/evp.h, openssl/rand.h, stdio.h
 - `progs/src/opl3.c` -> stdint.h, stdio.h
@@ -240,6 +243,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tests/test_rtc.c` -> stdio.h
 - `tests/test_sanitize.c` -> stdio.h
 - `tests/test_seccomp_bpf.c` -> stddef.h, stdio.h
+- `tests/test_sign.c` -> stdio.h
 - `tests/test_sync.c` -> stdio.h
 - `tests/test_theme.c` -> stdio.h
 - `tests/test_tick.c` -> stdio.h
@@ -286,6 +290,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tools/probe_minicraft.py` -> json, os, re, socket, subprocess, sys, tempfile
 - `tools/qga_client.py` -> json, os, socket, sys
 - `tools/repro_gui.py` -> json, os, pty, select, socket, subprocess, sys, tempfile
+- `tools/sign_elf.py` -> hashlib, nacl.bindings, os, struct, sys
 - `tools/test_call_align.py` -> os, shutil, subprocess, sys, tempfile
 - `tools/test_gui_fashion.py` -> PIL, json, os, socket, subprocess, sys, tempfile, threading
 - `tools/test_gui_freedom.py` -> PIL, json, os, socket, subprocess, sys, tempfile, threading

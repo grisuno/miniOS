@@ -1,473 +1,488 @@
-# API (page 8 of 19)
+# API (page 8 of 21)
 Previous: [API_p7.md](API_p7.md)
 
-## mcp/minios_mcp.py
-Depends on: `kernel/time.c`, `mcp/minios_addons.py`
-- `env_config` (function) `mcp/minios_mcp.py:71` `def env_config()` -- Resolve the configuration: defaults overridden by the environment.
-- `clamp_timeout` (function) `mcp/minios_mcp.py:89` `def clamp_timeout(ms)` -- Clamp a requested wait to the bounded timeout range.
-- `validate_path` (function) `mcp/minios_mcp.py:102` `def validate_path(name)` -- Reject file names the ramdisk or the shell would mishandle.
-- `validate_content` (function) `mcp/minios_mcp.py:118` `def validate_content(text)` -- Reject lines the kernel readline cannot carry (printable ASCII).
-- `RPCError.__init__` (method) `mcp/minios_mcp.py:140` `def __init__(self, code, message)`
-- `LogBuffer.__init__` (method) `mcp/minios_mcp.py:149` `def __init__(self, cap)`
-- `LogBuffer.append` (method) `mcp/minios_mcp.py:155` `def append(self, data)`
-- `LogBuffer.bytes_from` (method) `mcp/minios_mcp.py:163` `def bytes_from(self, pos)`
-- `LogBuffer.text_from` (method) `mcp/minios_mcp.py:168` `def text_from(self, pos, end)`
-- `LogBuffer.find` (method) `mcp/minios_mcp.py:175` `def find(self, marker, start)`
-- `LogBuffer.wait_for` (method) `mcp/minios_mcp.py:179` `def wait_for(self, marker, start, timeout_ms)` -- Block until marker appears at or after start; return position.
-- `LogBuffer.wait_for_any` (method) `mcp/minios_mcp.py:192` `def wait_for_any(self, markers, start, timeout_ms)` -- Block until any of markers appears at or after start; return the earliest position found, or -1 when the timeout...
-- `MiniOSSession.__init__` (method) `mcp/minios_mcp.py:219` `def __init__(self, cfg)`
-- `MiniOSSession.booted` (method) `mcp/minios_mcp.py:230` `def booted(self)`
-- `MiniOSSession.status` (method) `mcp/minios_mcp.py:233` `def status(self)`
-- `MiniOSSession.boot` (method) `mcp/minios_mcp.py:284` `def boot(self, timeout_ms)`
-- `MiniOSSession.send` (method) `mcp/minios_mcp.py:356` `def send(self, line, timeout_ms)`
-- `MiniOSSession.expect` (method) `mcp/minios_mcp.py:367` `def expect(self, marker, timeout_ms)`
-- `MiniOSSession.snapshot` (method) `mcp/minios_mcp.py:381` `def snapshot(self, max_bytes)`
-- `MiniOSSession.run_test` (method) `mcp/minios_mcp.py:391` `def run_test(self, commands, expect, refute, timeout_ms)` -- Run a generic scenario: send a list of shell commands, then assert that each expected marker appears (and each...
-- `MiniOSSession.cat` (method) `mcp/minios_mcp.py:447` `def cat(self, path)`
-- `MiniOSSession.run_python` (method) `mcp/minios_mcp.py:453` `def run_python(self, script, args, timeout_ms)` -- Run a MicroPython script (or `-c` code) inside MiniOS and return its output, including the `exit code: N` line.
-- `MiniOSSession.cat_body` (method) `mcp/minios_mcp.py:464` `def cat_body(self, path, missing_ok)` -- Read a ramdisk file and return exactly its bytes.
-- `MiniOSSession.write` (method) `mcp/minios_mcp.py:500` `def write(self, path, content)`
-- `MiniOSSession.poweroff` (method) `mcp/minios_mcp.py:537` `def poweroff(self, timeout_ms)`
-- `MiniOSSession.terminate` (method) `mcp/minios_mcp.py:557` `def terminate(self)`
-- `MiniOSSession.close` (method) `mcp/minios_mcp.py:576` `def close(self)`
-- `MiniOSSession.subprocess_launch` (method) `mcp/minios_mcp.py:580` `def subprocess_launch(cfg, slave_fd)`
-- `MCPServer.__init__` (method) `mcp/minios_mcp.py:734` `def __init__(self, cfg)`
-- `MCPServer.run` (method) `mcp/minios_mcp.py:738` `def run(self)`
-- `MCPServer.main` (method) `mcp/minios_mcp.py:888` `def main()`
+## kernel/syscalls.c
+Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/batch.h`, `headers/block.h`, `headers/driver.h`, `headers/drivers/kbd.h`, `headers/futex.h`, `headers/ide.h`, `headers/ktime.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/randmix.h`, `headers/rcu.h`, `headers/rtc.h`, `headers/sanitize.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/spawn.h`, `headers/sync.h`, `headers/syscalls_proc.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/zip.h`
+- `kfd_view_current` (function) `kernel/syscalls.c:60` `static kfd_view_t *kfd_view_current(void)` -- Docstring: View owning the caller's fds: its own on isolated procs * and threads, the root on pid 0 and any pid...
+- `kfd_view_root` (function) `kernel/syscalls.c:70` `kfd_view_t *kfd_view_root(void)` -- Docstring: Static root view (shell pid 0, pids without their own): * entries are the historical shared table, never...
+- `kfd_get` (function) `kernel/syscalls.c:89` `KFILE *kfd_get(int fd)`
+- `kfd_put` (function) `kernel/syscalls.c:102` `void kfd_put(KFILE *f)`
+- `kfd_view_count` (function) `kernel/syscalls.c:114` `static int kfd_view_count(kfd_view_t *v)` -- } void kfd_put(KFILE *f) { irqflags_t flags; int drop = 0; if (!f) return; spin_lock_irqsave(&fd_lock, &flags)...
+- `untouched` (function) `kernel/syscalls.c:138` `* child untouched (caller refuses fail-closed). */
+int kfd_view_copy(proc_t *child, proc_t *parent)`
+- `NULL` (function) `kernel/syscalls.c:165` `* on NULL (already released or never owned). */
+void kfd_view_release(proc_t *p)`
+- `kfd_view_cloexec` (function) `kernel/syscalls.c:196` `void kfd_view_cloexec(void)` -- Docstring: Close every CLOEXEC fd in the caller's own view (execve: the image is replaced, marked descriptors must...
+- `by` (function) `kernel/syscalls.c:224` `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to...`
+- `wall_us_now` (function) `kernel/syscalls.c:255` `unsigned long wall_us_now(void)` -- wall_us_now: RTC-anchored wall clock in microseconds (Phase 0.2/0.3).
+- `sys_minios_dns` (function) `kernel/syscalls.c:265` `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_tls_retired` (function) `kernel/syscalls.c:270` `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_time` (function) `kernel/syscalls.c:283` `static long sys_linux_time(long a1, long a2, long a3, long a4, long a5, long a6)` -- time (201): the retired kernel-TLS handshake number now serves Linux time(2), exactly as 202 serves futex (ADR-0014...
+- `sys_linux_futex` (function) `kernel/syscalls.c:292` `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_time` (function) `kernel/syscalls.c:341` `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_kbd` (function) `kernel/syscalls.c:345` `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_palette` (function) `kernel/syscalls.c:365` `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_kbd_raw` (function) `kernel/syscalls.c:377` `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_vga_mode` (function) `kernel/syscalls.c:383` `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcspk_init` (function) `kernel/syscalls.c:390` `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcspk_tone` (function) `kernel/syscalls.c:394` `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_doom_frame` (function) `kernel/syscalls.c:408` `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_gfx_zoom` (function) `kernel/syscalls.c:419` `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)` -- Graphics window scale request (a1): 0 native, 1 2x nearest-neighbour zoom for the 320x200 game window, 2 true...
+- `sys_minios_rtc` (function) `kernel/syscalls.c:428` `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_fb_info` (function) `kernel/syscalls.c:441` `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcspk_vol` (function) `kernel/syscalls.c:461` `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `boot` (function) `kernel/syscalls.c:478` `* boot (minfo_sleep_init from sched_init);`
+- `minfo_sleep_init` (function) `kernel/syscalls.c:485` `void minfo_sleep_init(int tick_ok)`
+- `minfo_tick_wake` (function) `kernel/syscalls.c:490` `void minfo_tick_wake(void *ctx)`
+- `view` (function) `kernel/syscalls.c:502` `* view (same as the `clear` builtin). Anything else is -EINVAL. Each
+ * out-word is range-checked...`
+- `sys_minios_spawn` (function) `kernel/syscalls.c:593` `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_lz4_compress` (function) `kernel/syscalls.c:604` `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_lz4_decompress` (function) `kernel/syscalls.c:617` `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_mouse` (function) `kernel/syscalls.c:631` `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_nk_frame` (function) `kernel/syscalls.c:655` `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sb16_audio_device` (function) `kernel/syscalls.c:668` `static device_t *sb16_audio_device(void)` -- } static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6) { (void)a2; (void)a3...
+- `sys_minios_sb16_open` (function) `kernel/syscalls.c:674` `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_submit` (function) `kernel/syscalls.c:686` `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_gfx_title` (function) `kernel/syscalls.c:697` `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_pump` (function) `kernel/syscalls.c:711` `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_stream_open` (function) `kernel/syscalls.c:715` `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_stream_close` (function) `kernel/syscalls.c:719` `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_stream_submit` (function) `kernel/syscalls.c:723` `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcm2_open` (function) `kernel/syscalls.c:736` `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)` -- Low-latency PCM path (pcm2, syscalls 246-248): OPEN takes flags, WRITE returns bytes taken (blocking unless...
+- `sys_minios_pcm2_write` (function) `kernel/syscalls.c:741` `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_pcm2_close` (function) `kernel/syscalls.c:749` `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_clip_set` (function) `kernel/syscalls.c:759` `static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6)` -- Shared text clipboard (syscalls 249-250): SET copies len bytes in (refused past 4096, never truncated), GET copies...
+- `sys_minios_clip_get` (function) `kernel/syscalls.c:769` `static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_sb16_stream_vol` (function) `kernel/syscalls.c:785` `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_futex_wait` (function) `kernel/syscalls.c:798` `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_futex_wake` (function) `kernel/syscalls.c:804` `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `batch_kdispatch` (function) `kernel/syscalls.c:813` `static long batch_kdispatch(uint32_t opcode)`
+- `DOOM_FRAME` (function) `kernel/syscalls.c:828` `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
+static long sys_minios_gfx_prese...`
+- `sys_minios_getc_raw` (function) `kernel/syscalls.c:862` `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` -- Raw keystroke read for fullscreen ring-3 programs (vedit): one byte from the serial + PS/2 multiplexer with no line...
+- `sys_minios_submit_batch` (function) `kernel/syscalls.c:873` `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_rlimit` (function) `kernel/syscalls.c:896` `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` -- RLIMIT/cgroups-lite (240): a1 = op (SET/GET), a2 = resource (AS/CPU/NOFILE), a3 = value for SET.
+- `sys_minios_dir_list` (function) `kernel/syscalls.c:937` `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)` -- Docstring: unified directory listing for the ring-3 file browser.  a1 = path, a2 = user buffer, a3 = buffer capacity.
+- `syscall_trace_enabled` (function) `kernel/syscalls.c:1109` `long syscall_trace_enabled(void)`
+- `syscall_trace_set` (function) `kernel/syscalls.c:1110` `void syscall_trace_set(int on)`
+- `syscall_trace_verbose_enabled` (function) `kernel/syscalls.c:1111` `long syscall_trace_verbose_enabled(void)`
+- `syscall_trace_verbose_set` (function) `kernel/syscalls.c:1112` `void syscall_trace_verbose_set(int on)`
+- `syscall_trace_shown` (function) `kernel/syscalls.c:1113` `unsigned long syscall_trace_shown(void)`
+- `unchanged` (function) `kernel/syscalls.c:1128` `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...`
+- `sys_linux_read` (function) `kernel/syscalls.c:1139` `static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `EAGAIN` (function) `kernel/syscalls.c:1155` `* writer open is EAGAIN (-11, retry);`
+- `EOF` (function) `kernel/syscalls.c:1156` `* is EOF (0). */ KFILE *o = kfd_get(0);`
+- `fd_write` (function) `kernel/syscalls.c:1195` `static long fd_write(long fd, const char *buf, long cnt)` -- Write cnt validated user bytes to fd: a dup2/pipe override on fd 1/2 (pipeline stage stdout) is served instead of...
+- `sys_linux_write` (function) `kernel/syscalls.c:1219` `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_writev` (function) `kernel/syscalls.c:1226` `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `do_open_path` (function) `kernel/syscalls.c:1269` `static long do_open_path(const char *path, long flags)` -- Shared by sys_linux_open (2) and the openat fall-through (257).
+- `sys_linux_open` (function) `kernel/syscalls.c:1302` `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kfd_claim_from` (function) `kernel/syscalls.c:1335` `static long kfd_claim_from(KFILE *f, long minfd, int cloexec)` -- Claim the lowest free fd slot >= minfd for an already-opened KFILE (pipes, dup, eventfd), arming close-on-exec when...
+- `kfd_claim` (function) `kernel/syscalls.c:1360` `static long kfd_claim(KFILE *f)`
+- `sys_linux_pipe2` (function) `kernel/syscalls.c:1384` `static long sys_linux_pipe2(long a1, long a2, long a3, long a4, long a5, long a6)` -- pipe2 (293): O_CLOEXEC arms close-on-exec on both ends, O_NONBLOCK makes * both descriptions non-blocking; O_DIRECT...
+- `sys_linux_pipe` (function) `kernel/syscalls.c:1412` `static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kfd_cloexec_get` (function) `kernel/syscalls.c:1418` `static int kfd_cloexec_get(long fd)` -- kfclose(w); return wfd; } ufd[0] = (int)rfd; ufd[1] = (int)wfd; return 0; } static long sys_linux_pipe(long a1, long...
+- `kfd_cloexec_set` (function) `kernel/syscalls.c:1428` `static void kfd_cloexec_set(long fd, int on)`
+- `kfile_status_flags` (function) `kernel/syscalls.c:1439` `static long kfile_status_flags(KFILE *f)` -- Linux open-file status flags of a description: access mode from its * kind plus O_APPEND and O_NONBLOCK.
+- `sys_linux_dup3` (function) `kernel/syscalls.c:1490` `static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6)` -- break; case LINUX_F_SETFL: if (f) f->nonblock = (a3 & LINUX_O_NONBLOCK) ?
+- `sys_linux_close_range` (function) `kernel/syscalls.c:1500` `static long sys_linux_close_range(long a1, long a2, long a3, long a4, long a5, long a6)` -- return r; } /* dup3 (292): dup2 with O_CLOEXEC as the only flag; old == new is EINVAL. static long...
+- `sys_linux_eventfd2` (function) `kernel/syscalls.c:1524` `static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6)` -- spin_lock_irqsave(&fd_lock, &flags_irq); for (fd = lo; fd <= hi && fd < KFD_MAX; fd++) if (v->f[fd]) v->cloexec |=...
+- `sys_linux_eventfd` (function) `kernel/syscalls.c:1537` `static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kfd_poll_revents` (function) `kernel/syscalls.c:1545` `int kfd_poll_revents(int fd)` -- Docstring: poll(2) readiness of a non-socket descriptor (pipes, eventfds, files, console), masked by nothing: the...
+- `kfile_user_read` (function) `kernel/syscalls.c:1580` `static long kfile_user_read(KFILE *f, char *buf, long cnt)` -- Linux read on a description: an eventfd takes its counter, a pipe read end blocks (yielding) while empty with the...
+- `kfile_user_write` (function) `kernel/syscalls.c:1610` `static long kfile_user_write(KFILE *f, const char *buf, long cnt)` -- Linux write on a description: an eventfd adds to its counter, a pipe write end blocks (yielding) while full unless...
+- `sys_linux_dup` (function) `kernel/syscalls.c:1639` `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_dup2` (function) `kernel/syscalls.c:1654` `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_close` (function) `kernel/syscalls.c:1688` `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_lseek` (function) `kernel/syscalls.c:1711` `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `mm_ensure_cur` (function) `kernel/syscalls.c:1729` `static int mm_ensure_cur(unsigned long start, unsigned long end)` -- Back isolated user windows (mrun/proc_spawn_elf): their page tables start with only segments + stack mapped, so...
+- `sys_linux_brk` (function) `kernel/syscalls.c:1738` `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `mmap_tag_file` (function) `kernel/syscalls.c:1779` `static int mmap_tag_file(unsigned long base, int ino, unsigned long off)` -- Docstring: Tag a freshly carved live node as file-backed.
+- `mmap_range_free` (function) `kernel/syscalls.c:1794` `static int mmap_range_free(unsigned long base, unsigned long len)` -- Invariant guard for every range mmap hands out: it must not overlap a live mapping or reach below the brk heap.
+- `sys_linux_mmap` (function) `kernel/syscalls.c:1803` `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `vma_live_first_overlap` (function) `kernel/syscalls.c:1901` `static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end)` -- Lowest live mapping overlapping [base, end), or VMA_NIL.
+- `vma_live_remainder` (function) `kernel/syscalls.c:1918` `static int vma_live_remainder(unsigned long base, unsigned long len,
+        int file, int ino, u...` -- int sp = 0; vma_node_t *x = vma_live_root; while (x != VMA_NIL || sp > 0) { while (x != VMA_NIL) { if (sp < 64)...
+- `split` (function) `kernel/syscalls.c:1932` `* hold a split (the mapping is restored untouched). */
+static long sys_linux_munmap(long a1, long...`
+- `mprotect_pte` (function) `kernel/syscalls.c:1982` `static volatile unsigned long *mprotect_pte(unsigned long cr3,
+        unsigned long va)` -- Docstring: Locate the PTE for a user address in the caller's live tables (syscall entry keeps the caller CR3 loaded...
+- `first` (function) `kernel/syscalls.c:2006` `* passes under mm_lock: validate every page first (present, user,
+ * private), then apply, so a h...`
+- `vma_free_cover` (function) `kernel/syscalls.c:2087` `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` -- Free-tree node covering [base, base+len) entirely, or VMA_NIL.
+- `vma_live_overlap` (function) `kernel/syscalls.c:2106` `static int vma_live_overlap(unsigned long base, unsigned long len)` -- while (x != VMA_NIL || sp > 0) { while (x != VMA_NIL) { if (sp < 64) stack[sp++] = x; x = x->left; } x =...
+- `node` (function) `kernel/syscalls.c:2128` `* mapping is one exact live VMA node (what mmap inserts);`
+- `sys_linux_mremap` (function) `kernel/syscalls.c:2133` `static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6)` -- Linux mremap(25): resize or move one mmap region. glibc's realloc calls it when growing large mmap'd chunks (the...
+- `sys_linux_sigaction` (function) `kernel/syscalls.c:2399` `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_sigprocmask` (function) `kernel/syscalls.c:2404` `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kfile_readable_bytes` (function) `kernel/syscalls.c:2423` `static int kfile_readable_bytes(KFILE *f)` -- #define LINUX_TCGETS     0x5401 #define LINUX_TIOCGWINSZ 0x5413 #define LINUX_FIONREAD   0x541B #define...
+- `FIONREAD` (function) `kernel/syscalls.c:2439` `* descriptor answers FIONREAD (bytes readable now), FIONBIO (O_NONBLOCK),
+ * FIOCLEX/FIONCLEX (FD...`
+- `sys_linux_access` (function) `kernel/syscalls.c:2479` `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_socket` (function) `kernel/syscalls.c:2501` `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_connect` (function) `kernel/syscalls.c:2506` `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_bind` (function) `kernel/syscalls.c:2512` `static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_listen` (function) `kernel/syscalls.c:2518` `static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_accept` (function) `kernel/syscalls.c:2523` `static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_sendto` (function) `kernel/syscalls.c:2529` `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_recvfrom` (function) `kernel/syscalls.c:2534` `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_shutdown` (function) `kernel/syscalls.c:2539` `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_prlimit64` (function) `kernel/syscalls.c:2574` `static long sys_linux_prlimit64(long a1, long a2, long a3, long a4, long a5, long a6)` -- prlimit64(pid, resource, new, old): pid 0 or a live pid.
+- `sys_linux_sched_getaffinity` (function) `kernel/syscalls.c:2607` `static long sys_linux_sched_getaffinity(long a1, long a2, long a3, long a4, long a5, long a6)` -- sched_getaffinity(pid, size, mask): every task may run on every CPU, so the mask has the low cpu_count bits set; the...
+- `linux_timespec_us` (function) `kernel/syscalls.c:2629` `static long linux_timespec_us(long ts)` -- Microseconds of a user timespec, or -EINVAL when it is malformed * (negative, or tv_nsec outside [0, 1e9)); huge...
+- `sys_linux_pause` (function) `kernel/syscalls.c:2646` `static long sys_linux_pause(long a1, long a2, long a3, long a4, long a5, long a6)` -- pause(34): wait for a signal.
+- `sys_linux_nanosleep` (function) `kernel/syscalls.c:2654` `static long sys_linux_nanosleep(long a1, long a2, long a3, long a4, long a5, long a6)` -- nanosleep(35): sleep the relative interval at *req on the monotonic * clock; -EINVAL for a malformed interval...
+- `clock` (function) `kernel/syscalls.c:2665` `* clock (the monotonic TSC clock times it, as Linux does: glibc sends * every nanosleep here as a relative...`
+- `clock_gettime` (function) `kernel/syscalls.c:2669` `* clock_gettime(1) reads. */
+static long sys_linux_clock_nanosleep(long a1, long a2, long a3, lon...`
+- `long` (function) `kernel/syscalls.c:2671` `unsigned long (*now)(void);`
+- `sys_linux_setsockopt` (function) `kernel/syscalls.c:2686` `static long sys_linux_setsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getsockopt` (function) `kernel/syscalls.c:2693` `static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getsockname` (function) `kernel/syscalls.c:2700` `static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getpeername` (function) `kernel/syscalls.c:2706` `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_sendmsg` (function) `kernel/syscalls.c:2712` `static long sys_linux_sendmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_sendmmsg` (function) `kernel/syscalls.c:2718` `static long sys_linux_sendmmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_poll` (function) `kernel/syscalls.c:2726` `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_flock` (function) `kernel/syscalls.c:2733` `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_fsync` (function) `kernel/syscalls.c:2742` `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` -- fsync/fdatasync: the ramdisk is memory (always durable) and MiniFS persists through kfclose/minifs_sync, so there is...
+- `sys_linux_fdatasync` (function) `kernel/syscalls.c:2747` `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getcwd` (function) `kernel/syscalls.c:2752` `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_unlink` (function) `kernel/syscalls.c:2764` `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `readlink_path` (function) `kernel/syscalls.c:2788` `static long readlink_path(const char *path, char *buf, long bufsz)` -- readlink of /proc/self/exe answers the caller's image path (absolute, no NUL, truncated to the buffer like Linux)...
+- `sys_linux_readlink` (function) `kernel/syscalls.c:2804` `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_prctl` (function) `kernel/syscalls.c:2810` `static long sys_linux_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` -- if (!exe[0]) return -2; len = (long)kstrlen(exe) + 1; if (len > bufsz) len = bufsz; buf[0] = '/'; for (i = 1; i <...
+- `sys_linux_rename` (function) `kernel/syscalls.c:2819` `static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6)` -- rename(82): same-filesystem file move through fs_rename (ramdisk in-place, MiniFS entry move).
+- `sys_linux_fstat` (function) `kernel/syscalls.c:2833` `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_gettimeofday` (function) `kernel/syscalls.c:2856` `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_arch_prctl` (function) `kernel/syscalls.c:2879` `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_uname` (function) `kernel/syscalls.c:2891` `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_madvise` (function) `kernel/syscalls.c:2914` `static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6)` -- madvise (28): advice only; glibc frees thread stacks with it and * ignores the result, MiniOS keeps the pages, so 0...
+- `sys_linux_mkdir` (function) `kernel/syscalls.c:2922` `static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6)` -- mkdir (83): a MiniFS directory.
+- `trace_is_noisy` (function) `kernel/syscalls.c:3018` `static int trace_is_noisy(long n)`
+- `syscall_name` (function) `kernel/syscalls.c:3045` `const char *syscall_name(long n)` -- define SC_EXTRA_COUNT (sizeof(sc_extra_names) / sizeof(sc_extra_names[0]))
+- `trace_hint_print` (function) `kernel/syscalls.c:3086` `static void trace_hint_print(long n, int kind, const char *path,
+                             lon...`
+- `sc_record` (function) `kernel/syscalls.c:3110` `static void sc_record(long n, long a1, long a2, long a3, long ret)`
+- `sc_hex` (function) `kernel/syscalls.c:3130` `static void sc_hex(unsigned long v)`
+- `sc_record_dump` (function) `kernel/syscalls.c:3140` `void sc_record_dump(int pid)` -- e->a3 = a3; e->ret = ret; } static void sc_hex(unsigned long v) { static const char digits[] = "0123456789abcdef"...
+- `ksyscall` (function) `kernel/syscalls.c:3158` `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+- `user_range_ok` (function) `kernel/syscalls.c:3197` `int user_range_ok(unsigned long p, unsigned long len)`
+- `Discipline` (function) `kernel/syscalls.c:3210` `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok...`
+- `products` (function) `kernel/syscalls.c:3214` `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
+ * pre-bounded against (END-...`
+- `ksyscall_dispatch` (function) `kernel/syscalls.c:3227` `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+- `readlink` (function) `kernel/syscalls.c:3364` `* readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);`
+- `proc_spawn_elf` (function) `kernel/syscalls.c:3473` `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is...`
+- `k_syscall_spawn` (function) `kernel/syscalls.c:3482` `static int k_syscall_spawn(const char *path, const char *redirect,
+                             i...`
 
-## mcp/mutate_mcp.sh
-- `run_one` (function) `mcp/mutate_mcp.sh:116` -- Each mutant runs the suite in its own directory with its own pid file and addon state, so the runs are independent...
+## kernel/syscalls_proc.c
+Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`, `headers/syscalls_proc.h`
+- `state` (function) `kernel/syscalls_proc.c:5` `* touches only scheduler state (current_pid, procs[], do_* / * seccomp_* / yield) plus the kernel-wide user_range_ok...`
+- `sys_minios_clone` (function) `kernel/syscalls_proc.c:18` `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
+- `sys_minios_thread_spawn` (function) `kernel/syscalls_proc.c:24` `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_minios_seccomp` (function) `kernel/syscalls_proc.c:37` `long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)` -- Seccomp-basic (238): a1 = op (1 deny-one, 2 allow-one, 3 deny-all), a2 = syscall number (ops 1-2).
+- `sys_minios_nice` (function) `kernel/syscalls_proc.c:53` `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)` -- int pid = current_pid; if (a1 == SECCOMP_OP_DENY_ONE) return seccomp_deny_one(pid, (int)a2); if (a1 ==...
+- `sys_linux_yield` (function) `kernel/syscalls_proc.c:66` `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_getpid` (function) `kernel/syscalls_proc.c:75` `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)` -- getpid answers the thread group: a CLONE_THREAD member reports its leader, a process its own pid.
+- `sys_linux_clone` (function) `kernel/syscalls_proc.c:83` `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6)` -- getpid answers the thread group: a CLONE_THREAD member reports its leader, a process its own pid.
+- `sys_linux_fork` (function) `kernel/syscalls_proc.c:89` `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_vfork` (function) `kernel/syscalls_proc.c:94` `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_execve` (function) `kernel/syscalls_proc.c:99` `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `sys_linux_exit` (function) `kernel/syscalls_proc.c:184` `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
+- `kill` (function) `kernel/syscalls_proc.c:192` `* historic kill (SIGKILL), -N is signal N (a seccomp kill is -SIGSYS). */
+#define LINUX_WNOHANG  ...`
+- `groups` (function) `kernel/syscalls_proc.c:213` `* groups (pid 0 and < -1) are not modelled and wait for any child. */
+long sys_linux_wait4(long a...`
+- `sig` (function) `kernel/syscalls_proc.c:245` `* the target as killed by sig (wait4 reports WTERMSIG);`
+- `sys_linux_kill` (function) `kernel/syscalls_proc.c:248` `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)` -- kill(pid, sig): sig 0 only probes that pid exists; a fatal signal ends the target as killed by sig (wait4 reports...
+- `sys_linux_gettid` (function) `kernel/syscalls_proc.c:259` `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
 
-## net/net.c
-Depends on: `headers/drivers/virtio_net.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`, `headers/tls.h`
-- `net_drv_send` (function) `net/net.c:38` `static int net_drv_send(const unsigned char *frame, unsigned len)`
-- `net_drv_poll` (function) `net/net.c:43` `static void net_drv_poll(void)`
-- `net_drv_present` (function) `net/net.c:48` `static int net_drv_present(void)`
-- `net_put16` (function) `net/net.c:57` `static void net_put16(unsigned char *p, unsigned short v)`
-- `net_put32` (function) `net/net.c:62` `static void net_put32(unsigned char *p, unsigned int v)`
-- `net_get16` (function) `net/net.c:69` `static unsigned short net_get16(const unsigned char *p)`
-- `net_get32` (function) `net/net.c:73` `static unsigned int net_get32(const unsigned char *p)`
-- `net_checksum` (function) `net/net.c:78` `static unsigned short net_checksum(const void *data, unsigned len)`
-- `net_arp_store` (function) `net/net.c:103` `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)`
-- `net_arp_lookup` (function) `net/net.c:118` `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)`
-- `net_arp_request` (function) `net/net.c:129` `static void net_arp_request(const unsigned char *ip)`
-- `net_arp_resolve` (function) `net/net.c:147` `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)` -- kmemcpy(frame + 6, net_mac, NET_ETH_ALEN); net_put16(frame + 12, NET_ETHERTYPE_ARP); net_put16(frame + 14, 1)...
-- `net_ip_send` (function) `net/net.c:172` `static int net_ip_send(const unsigned char *dip, unsigned char proto,
-                       cons...`
-- `net_udp_send` (function) `net/net.c:208` `static int net_udp_send(const unsigned char *dip, unsigned short sport,
-                        u...`
-- `net_dns_parse` (function) `net/net.c:230` `static void net_dns_parse(const unsigned char *data, unsigned len)` -- net_put16(pkt + 6, 0);                    /* checksum optional for UDP kmemcpy(pkt + 8, data, len); return...
-- `net_dns_resolve` (function) `net/net.c:268` `static int net_dns_resolve(const char *host, unsigned char ip_out[4])` -- rtype = net_get16(data + pos); rdlen = net_get16(data + pos + 8); pos += 10; if (pos + rdlen > len) return; if...
-- `net_udp_send` (function) `net/net.c:329` `net_udp_send((const unsigned char[])`
-- `net_icmp_rx` (function) `net/net.c:348` `static void net_icmp_rx(const unsigned char *ip, unsigned len)`
-- `net_ping` (function) `net/net.c:377` `static int net_ping(const unsigned char ip[4])`
-- `net_sock_alloc` (function) `net/net.c:469` `static struct net_tcp_sock *net_sock_alloc(void)`
-- `net_sock_index` (function) `net/net.c:484` `static int net_sock_index(const struct net_tcp_sock *s)`
-- `net_tcp_checksum` (function) `net/net.c:493` `static unsigned short net_tcp_checksum(const unsigned char *src, const unsigned char *dst,
-      ...` -- } } return 0; } static int net_sock_index(const struct net_tcp_sock *s) { int i; if (!net_sockets) return -1; for (i...
-- `net_udp_checksum_ok` (function) `net/net.c:509` `static int net_udp_checksum_ok(const unsigned char *src, const unsigned char *dst,
-              ...` -- const unsigned char *seg, unsigned len) { unsigned char buf[NET_TX_MAX + 12]; unsigned total = 12 + len...
-- `net_tcp_xmit` (function) `net/net.c:525` `static int net_tcp_xmit(struct net_tcp_sock *s, unsigned flags,
-                        const uns...`
-- `net_tcp_rx` (function) `net/net.c:559` `static void net_tcp_rx(const unsigned char *ip, unsigned len)`
-- `net_tcp_passive_open` (function) `net/net.c:687` `static int net_tcp_passive_open(struct net_tcp_sock *ls,
-        const unsigned char peer[4], uns...` -- Passive open: park a SYN_RCVD child on a LISTEN socket and answer SYN-ACK.
-- `net_tcp_connect_into` (function) `net/net.c:711` `static int net_tcp_connect_into(struct net_tcp_sock *s, const unsigned char ip[4],
-              ...` -- kmemcpy(c->dip, peer, 4); c->dport = pport; c->sport = lport; c->seq = net_tcp_seq; net_tcp_seq += 0x1000...
-- `net_tcp_send` (function) `net/net.c:738` `static int net_tcp_send(struct net_tcp_sock *s, const char *buf, int len)` -- unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry && s->state == NET_TCP_SYN_SENT)...
-- `net_tcp_recv` (function) `net/net.c:764` `static int net_tcp_recv(struct net_tcp_sock *s, char *buf, int len)` -- net_time_ms() < deadline) { unsigned long retry = net_time_ms() + NET_RETRY_MS; while (net_time_ms() < retry &&...
-- `net_tcp_close` (function) `net/net.c:802` `static void net_tcp_close(struct net_tcp_sock *s)`
-- `net_rx_handle_frame` (function) `net/net.c:822` `void net_rx_handle_frame(const unsigned char *frame, unsigned len)`
-- `net_open` (function) `net/net.c:886` `int net_open(void)`
-- `net_connect` (function) `net/net.c:892` `int net_connect(const char *host, unsigned short port)`
-- `net_send` (function) `net/net.c:901` `int net_send(int fd, const char *buf, int len)`
-- `net_recv` (function) `net/net.c:906` `int net_recv(int fd, char *buf, int len)`
-- `net_recv_timeout` (function) `net/net.c:911` `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)`
-- `net_close` (function) `net/net.c:916` `void net_close(int fd)`
-- `net_listen` (function) `net/net.c:927` `int net_listen(unsigned short port)` -- Docstring: Allocate a socket bound to a local port and listening. * Returns the socket index, or -1 when the table...
-- `net_accept_nb` (function) `net/net.c:942` `int net_accept_nb(int fd)` -- Docstring: Take a pending child off a LISTEN socket without waiting.
-- `polling` (function) `net/net.c:959` `* without polling (the peer's ACK arrives through the driver poll). */
-int net_accept(int fd, uns...`
-- `net_sock_state` (function) `net/net.c:976` `int net_sock_state(int fd)` -- Docstring: Socket state for diagnostics (the `net` builtin and the * httpd selftest). -1 on a wild fd.
-- `net_fd_udp` (function) `net/net.c:1096` `static int net_fd_udp(long fd)`
-- `net_sys_is_socket` (function) `net/net.c:1102` `int net_sys_is_socket(long fd)`
-- `net_udp_alloc` (function) `net/net.c:1106` `static struct net_udp_sock *net_udp_alloc(void)`
-- `net_udp_ephemeral` (function) `net/net.c:1120` `static unsigned short net_udp_ephemeral(void)` -- static struct net_udp_sock *net_udp_alloc(void) { int i; if (!net_udp_sockets) return 0; for (i = 0; i <...
-- `net_udp_deliver` (function) `net/net.c:1136` `static int net_udp_deliver(const unsigned char sip[4], unsigned short sport,
-                    ...` -- Queue a received datagram on the user socket bound to dport (and, when connected, from that peer only).
-- `net_put_sockaddr` (function) `net/net.c:1158` `static void net_put_sockaddr(unsigned char *sa, const unsigned char ip[4], unsigned short port)`
-- `net_store_sockaddr` (function) `net/net.c:1168` `static long net_store_sockaddr(long addr, long lenp, const unsigned char ip[4],
-                 ...` -- Store a sockaddr_in at a user address with a user socklen_t length * pointer, truncating like Linux and reporting...
-- `net_load_sockaddr` (function) `net/net.c:1185` `static long net_load_sockaddr(long addr, long len, unsigned char ip[4], unsigned short *port)` -- int len; if (!addr || !lenp) return 0; if (!user_range_ok((unsigned long)lenp, sizeof(int))) return -LNX_EFAULT; len...
-- `net_sys_socket` (function) `net/net.c:1222` `long net_sys_socket(long a1, long a2, long a3)`
-- `net_sys_connect` (function) `net/net.c:1249` `long net_sys_connect(long fd, long sockaddr, long addrlen)`
-- `net_sys_bind` (function) `net/net.c:1296` `long net_sys_bind(long fd, long sockaddr, long addrlen)`
-- `net_sys_listen` (function) `net/net.c:1318` `long net_sys_listen(long fd, long backlog)`
-- `net_sys_accept` (function) `net/net.c:1329` `long net_sys_accept(long fd, long sockaddr, long addrlen)`
-- `net_send_bytes` (function) `net/net.c:1347` `static long net_send_bytes(long fd, const unsigned char *buf, long len,
-                         ...` -- Send len validated bytes: a stream sends synchronously (stop-and-wait), * a datagram goes out as one UDP datagram to...
-- `net_sys_sendto` (function) `net/net.c:1375` `long net_sys_sendto(long fd, long buf, long len, long flags, long to, long tolen)`
-- `net_sys_recvfrom` (function) `net/net.c:1390` `long net_sys_recvfrom(long fd, long buf, long len, long flags, long from, long fromlen)`
-- `net_gather_msg` (function) `net/net.c:1450` `static long net_gather_msg(long msg, unsigned char *kbuf, long cap)` -- long rc = net_store_sockaddr(from, fromlen, s->dip, s->dport); if (rc) return rc; } return (long)take; } if...
-- `net_sys_sendmsg` (function) `net/net.c:1470` `long net_sys_sendmsg(long fd, long msg, long flags)`
-- `net_sys_sendmmsg` (function) `net/net.c:1498` `long net_sys_sendmmsg(long fd, long vec, long vlen, long flags)` -- sendmmsg (307): glibc's resolver sends its A and AAAA queries together and treats ENOSYS as a failed lookup.
-- `net_sys_shutdown` (function) `net/net.c:1514` `long net_sys_shutdown(long fd, long how)`
-- `net_sys_close` (function) `net/net.c:1523` `long net_sys_close(long fd)`
-- `net_sys_setsockopt` (function) `net/net.c:1534` `long net_sys_setsockopt(long fd, long level, long name, long val, long len)`
-- `net_sys_getsockopt` (function) `net/net.c:1569` `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp)`
-- `net_sys_getsockname` (function) `net/net.c:1616` `long net_sys_getsockname(long fd, long addr, long lenp)`
-- `net_sys_getpeername` (function) `net/net.c:1625` `long net_sys_getpeername(long fd, long addr, long lenp)`
-- `net_sys_fcntl` (function) `net/net.c:1643` `long net_sys_fcntl(long fd, long cmd, long arg)` -- fcntl on a socket: O_NONBLOCK through F_GETFL/F_SETFL, FD_CLOEXEC recorded through F_GETFD/F_SETFD (sockets live in...
-- `net_sys_ioctl` (function) `net/net.c:1674` `long net_sys_ioctl(long fd, long req, long arg)` -- ioctl on a socket: FIONREAD answers the bytes a read would return now (a stream's buffered bytes, the size of a...
-- `net_socket_revents` (function) `net/net.c:1707` `static unsigned short net_socket_revents(long fd)` -- return 0; } } else { return -LNX_EBADF; } switch (req) { case LNX_FIONBIO: *nb = *(const int *)arg != 0; return 0...
-- `net_sys_poll` (function) `net/net.c:1727` `long net_sys_poll(long fds, long nfds, long timeout_ms)`
-- `net_sys_dns` (function) `net/net.c:1767` `long net_sys_dns(long host)` -- MiniOS syscall 200: resolve a hostname, returned as a network-order * 32-bit address (like inet_addr), or -1 on failure.
-- `net_parse_ip` (function) `net/net.c:1778` `static int net_parse_ip(const char *text, unsigned char ip[4])`
-- `net_cmd_status` (function) `net/net.c:1803` `void net_cmd_status(void)`
-- `net_get_addrs` (function) `net/net.c:1825` `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])` -- kprintf("virtio-net iobase 0x%x\n", vnet_iobase()); } else { rtl_counters(&tx_frames, &rx_frames); kprintf("rtl8139...
-- `net_cmd_ping` (function) `net/net.c:1831` `void net_cmd_ping(const char *ip_text)`
-- `net_cmd_dns` (function) `net/net.c:1842` `void net_cmd_dns(const char *host)`
-- `net_register_symbols` (function) `net/net.c:1855` `void net_register_symbols(void)`
-- `net_init` (function) `net/net.c:1863` `void net_init(void)`
+## kernel/tick.c
+Depends on: `headers/tick.h`
+- `tick_reset` (function) `kernel/tick.c:34` `void tick_reset(void)` -- /** Docstring: Audio listener table. static tick_slot_t tick_audio_slots[TICK_MAX_AUDIO_LISTENERS]; /** Docstring...
+- `tick_register_audio` (function) `kernel/tick.c:58` `int tick_register_audio(tick_fn_t fn, void *ctx)` -- Docstring: Register an unconditional BSP audio effect.
+- `tick_register_desktop` (function) `kernel/tick.c:76` `int tick_register_desktop(tick_fn_t fn, void *ctx)` -- Docstring: Register a gated desktop effect.
+- `tick_register_usb` (function) `kernel/tick.c:89` `int tick_register_usb(tick_fn_t fn, void *ctx)`
+- `tick_run_usb` (function) `kernel/tick.c:103` `void tick_run_usb(void)` -- int tick_register_usb(tick_fn_t fn, void *ctx) { if (fn == NULL) { return -1; } if (tick_usb_used < 0 ||...
+- `tick_run_audio` (function) `kernel/tick.c:113` `void tick_run_audio(void)` -- return 0; } /** Docstring: Run USB listeners in registration order. void tick_run_usb(void) { int i; for (i = 0; i <...
+- `tick_run_desktop` (function) `kernel/tick.c:123` `void tick_run_desktop(void)` -- } } /** Docstring: Run audio listeners in registration order. void tick_run_audio(void) { int i; for (i = 0; i <...
+- `tick_audio_count` (function) `kernel/tick.c:133` `int tick_audio_count(void)` -- } } /** Docstring: Run desktop listeners in registration order. void tick_run_desktop(void) { int i; for (i = 0; i <...
+- `tick_desktop_count` (function) `kernel/tick.c:144` `int tick_desktop_count(void)` -- } /** Docstring: Count registered audio listeners. int tick_audio_count(void) { if (tick_audio_used < 0) { return 0...
+- `tick_desktop_due` (function) `kernel/tick.c:160` `int tick_desktop_due(unsigned long long ticks, unsigned interval)` -- Docstring: Pure desktop gating predicate.
 
-## net/rtl8139.c
-Depends on: `headers/drivers/pci.h`, `headers/net.h`, `headers/net/rtl8139.h`, `headers/sched.h`
-- `outl_port` (function) `net/rtl8139.c:29` `static void outl_port(unsigned short port, unsigned int val)` -- Byte/word port I/O comes from kernel.h (outb/inb/outw/inw, same asm). * Only the dword pair stays local: the shared...
-- `inl_port` (function) `net/rtl8139.c:33` `static unsigned int inl_port(unsigned short port)`
-- `rtl_reg8` (function) `net/rtl8139.c:39` `static unsigned char rtl_reg8(unsigned short off)`
-- `rtl_reg8_w` (function) `net/rtl8139.c:40` `static void rtl_reg8_w(unsigned short off, unsigned char v)`
-- `rtl_reg16` (function) `net/rtl8139.c:41` `static unsigned short rtl_reg16(unsigned short off)`
-- `rtl_reg16_w` (function) `net/rtl8139.c:42` `static void rtl_reg16_w(unsigned short off, unsigned short v)`
-- `rtl_reg32` (function) `net/rtl8139.c:43` `static unsigned int rtl_reg32(unsigned short off)`
-- `rtl_reg32_w` (function) `net/rtl8139.c:44` `static void rtl_reg32_w(unsigned short off, unsigned int v)`
-- `rtl_find` (function) `net/rtl8139.c:58` `static unsigned short rtl_find(void)` -- PCI config space lives in drivers/pci.h now (shared with virtio-blk and future devices); only the dword port pair...
-- `deleted` (function) `net/rtl8139.c:79` `* been deleted (a second base/per-ms pair beside ktime's is a second
- * clock, and drivers must n...`
-- `rtl_present` (function) `net/rtl8139.c:107` `int rtl_present(void)`
-- `rtl_reset` (function) `net/rtl8139.c:111` `static void rtl_reset(void)`
-- `rtl_init` (function) `net/rtl8139.c:120` `void rtl_init(void)`
-- `rtl_tx_wait` (function) `net/rtl8139.c:168` `static int rtl_tx_wait(unsigned slot, unsigned long deadline)`
-- `rtl_send` (function) `net/rtl8139.c:177` `int rtl_send(const unsigned char *frame, unsigned len)`
-- `rtl_get_mac` (function) `net/rtl8139.c:205` `void rtl_get_mac(unsigned char out[NET_ETH_ALEN])`
-- `rtl_iobase` (function) `net/rtl8139.c:210` `unsigned short rtl_iobase(void)`
-- `rtl_counters` (function) `net/rtl8139.c:214` `void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames)`
-- `rtl_poll` (function) `net/rtl8139.c:238` `void rtl_poll(void)`
+## kernel/time.c
+Depends on: `headers/ktime.h`
+Imported by: `headers/tls_port.h`, `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/src/lxabi.c`, `progs/tls_u/tls_u_port.c`, `tests/test_vma_bench.c`, `tools/boot_wl.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/minios_hyper.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_freedom.py`, `tools/test_gui_gfxview.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_menu.py`, `tools/test_gui_wm.py`, `tools/test_gui_zoom.py`, `tools/test_http_server.py`, `tools/tls_test.py`
+- `ktime_rdtsc` (function) `kernel/time.c:13` `static unsigned long ktime_rdtsc(void)`
+- `ktime_init` (function) `kernel/time.c:19` `static void ktime_init(void)`
+- `ktime_ms` (function) `kernel/time.c:33` `unsigned long ktime_ms(void)`
+- `ktime_us` (function) `kernel/time.c:41` `unsigned long ktime_us(void)` -- Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime nsec and gettimeofday usec both...
 
-## net/tls.c
-Depends on: `headers/tls.h`, `headers/tls_port.h`, `headers/tls_roots.h`
-- `tls_fail` (function) `net/tls.c:25` `static void tls_fail(struct tls_session *s, const char *stage, const char *reason)`
-- `tls_fd_of` (function) `net/tls.c:33` `static int tls_fd_of(const struct tls_session *s)`
-- `tls_free_fd` (function) `net/tls.c:40` `void tls_free_fd(int fd)`
-- `tls_aad` (function) `net/tls.c:52` `static void tls_aad(unsigned char aad[13], int type, unsigned long long seq,
-                    ...` -- Build the TLS 1.2 AEAD additional data: seq(8) || type || 0303 || * TLSCompressed.length (the plaintext length, RFC...
-- `number` (function) `net/tls.c:64` `* The nonce_explicit is the sequence number (RFC 5288 allows it and * OpenSSL uses it);`
-- `tls_send_record` (function) `net/tls.c:66` `static int tls_send_record(struct tls_session *s, int type,
-                           const unsi...` -- Send one record: header || nonce_explicit(8) || ciphertext || tag.
-- `tls_send_raw_record` (function) `net/tls.c:95` `static int tls_send_raw_record(struct tls_session *s, int type,
-                               co...` -- for (i = 0; i < 8; i++) buf[5 + i] = (unsigned char)(s->cli_seq >> (56 - i * 8)); TLS_MEMCPY(nonce, s->cli_salt, 4)...
-- `tls_read_record` (function) `net/tls.c:114` `static int tls_read_record(struct tls_session *s, int fd, int deadline_ms)` -- Read one record: header into s->rec_hdr, payload into s->rec.
-- `exchange` (function) `net/tls.c:173` `* key exchange (ClientHello, ClientKeyExchange) go out in plaintext
- * records, as TLS 1.2 requir...`
-- `build_client_hello` (function) `net/tls.c:190` `static int build_client_hello(struct tls_session *s, unsigned char *out)` -- const unsigned char *body, int len) { if (len < 0 || len > 1024) return -1; s->pt[0] = (unsigned char)type; s->pt[1]...
-- `client_finish_flight` (function) `net/tls.c:244` `static int client_finish_flight(struct tls_session *s)` -- out[pos++] = 0x00; out[pos++] = 0x06; out[pos++] = 0x04; out[pos++] = 0x01;   /* rsa_pkcs1_sha256 out[pos++] = 0x04...
-- `parse_server_hello` (function) `net/tls.c:340` `static int parse_server_hello(struct tls_session *s,
-                              const unsigned...`
-- `parse_certificate` (function) `net/tls.c:370` `static int parse_certificate(struct tls_session *s,
-                             const unsigned c...`
-- `parse_server_key_exchange` (function) `net/tls.c:401` `static int parse_server_key_exchange(struct tls_session *s,
-                                     ...`
-- `tls_handshake` (function) `net/tls.c:466` `int tls_handshake(int fd, const char *host)`
-- `tls_send` (function) `net/tls.c:687` `int tls_send(int fd, const char *buf, int len)`
-- `tls_recv` (function) `net/tls.c:696` `int tls_recv(int fd, char *buf, int len)`
-- `tls_sys_handshake` (function) `net/tls.c:772` `long tls_sys_handshake(long fd, long host)` -- if !defined(TLS_TEST) && !defined(TLS_RING3)
-- `tls_sys_send` (function) `net/tls.c:777` `long tls_sys_send(long fd, long buf, long len)`
-- `tls_sys_recv` (function) `net/tls.c:782` `long tls_sys_recv(long fd, long buf, long len)`
-- `tls_rdtsc` (function) `net/tls.c:789` `static inline unsigned long long tls_rdtsc(void)`
-- `tls_random` (function) `net/tls.c:795` `void tls_random(unsigned char *out, unsigned len)`
-- `outb` (function) `net/tls.c:810` `static inline void outb(unsigned short port, unsigned char v)` -- unsigned long long seed = tls_rdtsc() ^ ((unsigned long long)net_time_ms() << 33); unsigned i; static unsigned long...
-- `inb` (function) `net/tls.c:813` `static inline unsigned char inb(unsigned short port)`
-- `cmos_read` (function) `net/tls.c:821` `static inline unsigned char cmos_read(unsigned char reg)` -- /* The port helpers in net.c are static; these live here for the RTC. #ifndef PORT_IO_DEFINED #define...
-- `tls_now_days` (function) `net/tls.c:826` `long tls_now_days(void)`
+## kernel/vga_cursor.c
+Depends on: `headers/kernel/vga_cursor.h`, `headers/vga_fb.h`
+- `cursor_save_bg` (function) `kernel/vga_cursor.c:40` `static void cursor_save_bg(int mx, int my)` -- The cursor is drawn with its top-left corner at (mx, my), so the sprite spans down-right of the pointer.
+- `cursor_is_set` (function) `kernel/vga_cursor.c:50` `static int cursor_is_set(int i, int j)` -- spans down-right of the pointer.
+- `cursor_has_set_neighbour` (function) `kernel/vga_cursor.c:57` `static int cursor_has_set_neighbour(int i, int j)` -- int y0 = my - CURSOR_TIP_Y; for (j = 0; j < 8; j++) for (i = 0; i < 8; i++) cursor_save[j][i] = fb_read_packed(x0 +...
+- `cursor_draw` (function) `kernel/vga_cursor.c:68` `static void cursor_draw(int mx, int my)`
+- `cursor_restore` (function) `kernel/vga_cursor.c:81` `static void cursor_restore(int mx, int my)`
+- `cursor_over` (function) `kernel/vga_cursor.c:96` `int cursor_over(int x0, int y0, int w, int h)` -- Docstring: True when the cursor sprite overlaps the given screen rectangle.
+- `cursor_place` (function) `kernel/vga_cursor.c:106` `void cursor_place(int mx, int my)` -- Docstring: Paint the pointer at mx/my unconditionally: save the * background, draw the sprite, record the position.
+- `cursor_move` (function) `kernel/vga_cursor.c:116` `void cursor_move(int mx, int my)` -- Docstring: Desktop-tick pointer update: repaint only when the position * moved since the last paint, otherwise keep...
+- `cursor_erase` (function) `kernel/vga_cursor.c:133` `void cursor_erase(void)` -- Docstring: Restore the saved background when the pointer is up, then mark it hidden.
+- `cursor_invalidate` (function) `kernel/vga_cursor.c:141` `void cursor_invalidate(void)` -- Docstring: Mark the pointer hidden without touching the framebuffer. * Used after any repaint that may have covered...
+- `cursor_note_repaint` (function) `kernel/vga_cursor.c:147` `void cursor_note_repaint(int x0, int y0, int w, int h)` -- Docstring: Invalidate the pointer when it overlaps a repainted screen * rectangle, so the next move re-saves a fresh...
 
-## net/tls_crypto.c
-Depends on: `headers/tls.h`, `headers/tls_port.h`
-- `sha256_rotr` (function) `net/tls_crypto.c:33` `static unsigned sha256_rotr(unsigned x, unsigned n)`
-- `sha256_init` (function) `net/tls_crypto.c:37` `void sha256_init(struct sha256_ctx *c)`
-- `sha256_block` (function) `net/tls_crypto.c:50` `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)`
-- `sha256_update` (function) `net/tls_crypto.c:80` `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len)`
-- `sha256_final` (function) `net/tls_crypto.c:105` `void sha256_final(struct sha256_ctx *c, unsigned char out[32])`
-- `sha256` (function) `net/tls_crypto.c:126` `void sha256(const unsigned char *data, unsigned len, unsigned char out[32])`
-- `hmac_sha256` (function) `net/tls_crypto.c:135` `void hmac_sha256(const unsigned char *key, unsigned klen,
-                 const unsigned char *d...`
-- `p_hash` (function) `net/tls_crypto.c:165` `static void p_hash(const unsigned char *secret, unsigned secret_len,
-                   const uns...`
-- `tls_prf` (function) `net/tls_crypto.c:188` `void tls_prf(const unsigned char *secret, unsigned secret_len,
-             const char *label, co...`
-- `aes_xtime` (function) `net/tls_crypto.c:230` `static unsigned aes_xtime(unsigned x)`
-- `aes_key_expand` (function) `net/tls_crypto.c:235` `static void aes_key_expand(const unsigned char key[16], unsigned rk[44])`
-- `aes_mixcol` (function) `net/tls_crypto.c:253` `static void aes_mixcol(unsigned a0, unsigned a1, unsigned a2, unsigned a3,
-                      ...`
-- `aes128_encrypt_block` (function) `net/tls_crypto.c:263` `void aes128_encrypt_block(const unsigned char key[16],
-                          const unsigned c...`
-- `gf_shift_right` (function) `net/tls_crypto.c:321` `static gf128 gf_shift_right(gf128 v)`
-- `word` (function) `net/tls_crypto.c:326` `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */...`
-- `gf_mul` (function) `net/tls_crypto.c:334` `static gf128 gf_mul(gf128 z, gf128 h)` -- z = z * h, in GF(2^128), MSB-first.
-- `gf_put` (function) `net/tls_crypto.c:351` `static gf128 gf_put(const unsigned char *p)`
-- `ghash_blocks` (function) `net/tls_crypto.c:361` `static gf128 ghash_blocks(gf128 z, gf128 h, const unsigned char *data, unsigned len)`
-- `gcm_tag_core` (function) `net/tls_crypto.c:384` `static void gcm_tag_core(const unsigned char key[16],
-                         const unsigned cha...` -- if (len > 0) { unsigned char pad[16]; gf128 b; TLS_MEMSET(pad, 0, 16); TLS_MEMCPY(pad, data, len); b = gf_put(pad)...
-- `gcm_ctr_core` (function) `net/tls_crypto.c:427` `static void gcm_ctr_core(const unsigned char key[16],
-                         const unsigned cha...`
-- `tls_nonce` (function) `net/tls_crypto.c:450` `static void tls_nonce(const unsigned char salt[4], unsigned long long seq,
-                      ...` -- TLS_MEMCPY(blk, nonce, 12); blk[12] = (unsigned char)(ctr >> 24); blk[13] = (unsigned char)(ctr >> 16); blk[14] =...
-- `gcm_tag` (function) `net/tls_crypto.c:457` `static void gcm_tag(const unsigned char key[16], const unsigned char salt[4],
-                   ...`
-- `gcm_ctr` (function) `net/tls_crypto.c:467` `static void gcm_ctr(const unsigned char key[16], const unsigned char salt[4],
-                   ...`
-- `aes128_gcm_seal` (function) `net/tls_crypto.c:475` `int aes128_gcm_seal(const unsigned char key[16],
-                    const unsigned char salt[4],...`
-- `aes128_gcm_open` (function) `net/tls_crypto.c:487` `int aes128_gcm_open(const unsigned char key[16],
-                    const unsigned char salt[4],...`
-- `aes128_gcm_seal_core` (function) `net/tls_crypto.c:505` `int aes128_gcm_seal_core(const unsigned char key[16],
-                         const unsigned cha...`
-- `aes128_gcm_open_core` (function) `net/tls_crypto.c:516` `int aes128_gcm_open_core(const unsigned char key[16],
-                         const unsigned cha...`
-- `bn_zero` (function) `net/tls_crypto.c:537` `static void bn_zero(unsigned *a, int nw)`
-- `bn_is_zero` (function) `net/tls_crypto.c:542` `static int bn_is_zero(const unsigned *a, int nw)`
-- `bn_cmp` (function) `net/tls_crypto.c:549` `static int bn_cmp(const unsigned *a, const unsigned *b, int nw)`
-- `bn_add` (function) `net/tls_crypto.c:559` `static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw)` -- for (i = 0; i < nw; i++) v |= a[i]; return v == 0; } static int bn_cmp(const unsigned *a, const unsigned *b, int nw)...
-- `bn_sub` (function) `net/tls_crypto.c:571` `static unsigned bn_sub(const unsigned *a, const unsigned *b, unsigned *r, int nw)` -- /* r = a + b; returns carry out. static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw) {...
-- `bn_dbl_mod` (function) `net/tls_crypto.c:584` `static void bn_dbl_mod(const unsigned *a, const unsigned *n, const unsigned *v,
-                 ...` -- r = 2a mod n, for a < n. v = 2^(32nw) mod n = 2^(32nw) - n (the * Montgomery "one"): 2a + carry means 2a - 2^(32nw)...
-- `bn_mont_mul` (function) `net/tls_crypto.c:596` `static void bn_mont_mul(const unsigned *a, const unsigned *b, const unsigned *n,
-                ...` -- Montgomery multiplication. n is odd, n0inv = -n^(-1) mod 2^32. r = a*b*R^-1 mod n, R = 2^(32nw). * a, b < n.
-- `bn_mont_n0inv` (function) `net/tls_crypto.c:635` `static unsigned bn_mont_n0inv(unsigned n0)` -- carry = v >> 32; } s = (unsigned long long)t[nw] + carry; t[nw - 1] = (unsigned)s; t[nw] = t[nw + 1] + (unsigned)(s...
-- `bn_mont_r2` (function) `net/tls_crypto.c:643` `static void bn_mont_r2(const unsigned *n, const unsigned *v, int nw,
-                       unsig...` -- } else { for (i = 0; i < nw; i++) r[i] = t[i]; } } /* -n^(-1) mod 2^32 via Newton iteration (n0 must be odd). static...
-- `bn_from_be` (function) `net/tls_crypto.c:663` `static void bn_from_be(const unsigned char *bytes, unsigned len,
-                       unsigned ...`
-- `bn_to_be` (function) `net/tls_crypto.c:671` `static void bn_to_be(const unsigned *a, unsigned char *out, unsigned len)`
-- `mont_init` (function) `net/tls_crypto.c:677` `static void mont_init(struct mont_ctx *m, const unsigned char *p_bytes,
-                      uns...`
-- `mont_to` (function) `net/tls_crypto.c:689` `static void mont_to(struct mont_ctx *m, const unsigned *a, unsigned *r)`
-- `mont_from` (function) `net/tls_crypto.c:693` `static void mont_from(struct mont_ctx *m, const unsigned *a, unsigned *r)`
-- `mont_mul` (function) `net/tls_crypto.c:700` `static void mont_mul(struct mont_ctx *m, const unsigned *a, const unsigned *b,
-                  ...`
-- `mont_sqr` (function) `net/tls_crypto.c:705` `static void mont_sqr(struct mont_ctx *m, const unsigned *a, unsigned *r)`
-- `mont_add` (function) `net/tls_crypto.c:712` `static void mont_add(struct mont_ctx *m, const unsigned *a, const unsigned *b,
-                  ...` -- Field add/sub over the mont modulus (in Montgomery domain).
-- `mont_sub` (function) `net/tls_crypto.c:721` `static void mont_sub(struct mont_ctx *m, const unsigned *a, const unsigned *b,
-                  ...`
-- `mont_inv` (function) `net/tls_crypto.c:736` `static void mont_inv(struct mont_ctx *m, const unsigned *a, unsigned *r)` -- Field inverse via Fermat: a^(p-2) mod p (a in Montgomery domain; * the result stays in Montgomery domain).
-- `ec_init` (function) `net/tls_crypto.c:848` `static void ec_init(struct ec_curve *c, const unsigned char *p,
-                    const unsigne...`
-- `jpt_is_inf` (function) `net/tls_crypto.c:865` `static int jpt_is_inf(const struct jpt *p, int nw)`
-- `jpt_set_inf` (function) `net/tls_crypto.c:869` `static void jpt_set_inf(struct jpt *p, int nw)`
-- `jpt_copy` (function) `net/tls_crypto.c:875` `static void jpt_copy(struct jpt *d, const struct jpt *s, int nw)`
-- `jpt_cswap` (function) `net/tls_crypto.c:885` `static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask, int nw)` -- bn_zero(p->y, nw); bn_zero(p->z, nw); } static void jpt_copy(struct jpt *d, const struct jpt *s, int nw) { int i...
-- `jpt_dbl` (function) `net/tls_crypto.c:896` `static void jpt_dbl(struct ec_curve *c, const struct jpt *p1, struct jpt *p3)` -- } /* Constant-time swap of two points on a 0/~0 mask. static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned...
-- `jpt_add` (function) `net/tls_crypto.c:936` `static void jpt_add(struct ec_curve *c, const struct jpt *p1, const struct jpt *p2,
-             ...` -- mont_sqr(m, E, F); mont_add(m, D, D, t);          /* 2D mont_sub(m, F, t, p3->x);      /* X3 = F - 2D mont_sub(m, D...
-- `jpt_scalar_mult` (function) `net/tls_crypto.c:980` `static void jpt_scalar_mult(struct ec_curve *c, const struct jpt *base,
-                         ...` -- Constant-iteration scalar multiplication: the classic ladder. * Fixed iteration count, no table lookups indexed by...
-- `jpt_to_affine` (function) `net/tls_crypto.c:1007` `static void jpt_to_affine(struct ec_curve *c, const struct jpt *p,
-                          unsi...` -- Affine from Jacobian: x = X/Z^2, y = Y/Z^3.
-- `jpt_from_affine` (function) `net/tls_crypto.c:1032` `static int jpt_from_affine(struct ec_curve *c, const unsigned char *x_bytes,
-                    ...` -- Affine from bytes with on-curve validation.
-- `ec_curve_by_id` (function) `net/tls_crypto.c:1076` `static struct ec_curve *ec_curve_by_id(int curve)`
-- `ec_boot` (function) `net/tls_crypto.c:1080` `static void ec_boot(void)`
-- `p256_scalar_mult` (function) `net/tls_crypto.c:1088` `int p256_scalar_mult(const unsigned char scalar[32],
-                     const unsigned char qx[...`
-- `p384_scalar_mult` (function) `net/tls_crypto.c:1101` `int p384_scalar_mult(const unsigned char scalar[48],
-                     const unsigned char qx[...`
-- `p256_ecdh` (function) `net/tls_crypto.c:1114` `int p256_ecdh(const unsigned char priv[32],
-              const unsigned char peer_x[32], const u...`
-- `der_parse_sig` (function) `net/tls_crypto.c:1129` `static int der_parse_sig(const unsigned char *sig, unsigned sig_len,
-                         con...`
-- `ecdsa_verify` (function) `net/tls_crypto.c:1163` `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[],
-           ...`
-- `rsa_verify_digestinfo` (function) `net/tls_crypto.c:1261` `static int rsa_verify_digestinfo(const unsigned char *em, unsigned em_len,
-                      ...` -- EMSA-PKCS1-v1_5 DigestInfo check for an arbitrary hash: the encoding is 00 01 FF..
-- `rsa_pkcs1_verify_raw` (function) `net/tls_crypto.c:1285` `static int rsa_pkcs1_verify_raw(const unsigned char *n, unsigned n_len,
-                         ...` -- diff |= em[i] ^ 0xff; } if (i >= em_len) return -1;         /* no separator if (i < 10) return -1;              /*...
-- `rsa_pkcs1_verify_sha256` (function) `net/tls_crypto.c:1326` `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len,
-                            c...`
-- `rsa_pkcs1_verify_sha384` (function) `net/tls_crypto.c:1340` `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len,
-                            c...`
-- `sha384_rotr` (function) `net/tls_crypto.c:1386` `static unsigned long long sha384_rotr(unsigned long long x, unsigned n)`
-- `sha384_raw` (function) `net/tls_crypto.c:1390` `static void sha384_raw(const unsigned char *data, unsigned len,
-                       unsigned c...`
-- `sha384` (function) `net/tls_crypto.c:1506` `void sha384(const unsigned char *data, unsigned len, unsigned char out[48])`
-- `p256_point_valid` (function) `net/tls_crypto.c:1512` `int p256_point_valid(const unsigned char x[32], const unsigned char y[32])`
-- `p256_pub` (function) `net/tls_crypto.c:1520` `int p256_pub(const unsigned char priv[32],
-             unsigned char x[32], unsigned char y[32])`
-- `p256_scalar_valid` (function) `net/tls_crypto.c:1539` `int p256_scalar_valid(const unsigned char scalar[32])`
+## kernel/vga_fb.c
+Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_gfxview.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+- `wm_geom_cfg` (function) `kernel/vga_fb.c:49` `static wm_geom_config_t wm_geom_cfg(void)` -- /** Docstring: Focus ids share one space across terminals and graphics. _Static_assert(WM_FOCUS_GFX ==...
+- `wm_event_cfg` (function) `kernel/vga_fb.c:60` `static wm_event_config_t wm_event_cfg(void)` -- static int wm_ggy; /** Docstring: Geometry config derived once from the font layout. static wm_geom_config_t...
+- `wm_drag_reset` (function) `kernel/vga_fb.c:69` `static void wm_drag_reset(void)` -- cfg.title_h = FONT_H; return cfg; } /** Docstring: Event config for the PS/2 mouse button mask. static...
+- `vga_fb_boot_config` (function) `kernel/vga_fb.c:90` `void vga_fb_boot_config(void)`
+- `fb_bytes_per_pixel` (function) `kernel/vga_fb.c:117` `int fb_bytes_per_pixel(void)`
+- `compositions` (function) `kernel/vga_fb.c:133` `* compositions (an ISR tick composing inside a syscall composition) draw * into the same shadow and leave the...`
+- `fb_copy_bytes` (function) `kernel/vga_fb.c:151` `static void fb_copy_bytes(volatile void *dst, const volatile void *src, unsigned long n)` -- Docstring: Bulk copy through the string engine: quadwords first (rep movsq, an eighth of the iterations, which is...
+- `fb_fill_u32` (function) `kernel/vga_fb.c:169` `static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n)` -- Docstring: Fill n 32-bit words with one value: pairs as quadwords * (rep stosq), then the odd word.
+- `fb_frame_bytes` (function) `kernel/vga_fb.c:183` `static unsigned long fb_frame_bytes(void)` -- static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n) { void *d = (void *)dst; unsigned long...
+- `fb_shadow_ready` (function) `kernel/vga_fb.c:189` `static int fb_shadow_ready(void)` -- : "+D"(d), "+c"(q) : "a"(pat) : "memory"); if (n & 1UL) (volatile unsigned int *)d = v; } /** Docstring: Bytes one...
+- `fb_present_shadow` (function) `kernel/vga_fb.c:210` `static void fb_present_shadow(void)` -- return 1; } if (fb_shadow) { return 0; } fb_shadow = (uint8_t *)kmalloc(need); if (!fb_shadow) { return 0; }...
+- `fb_compose_begin` (function) `kernel/vga_fb.c:221` `static int fb_compose_begin(void)` -- Docstring: Enter a composition.
+- `fb_compose_end` (function) `kernel/vga_fb.c:234` `static void fb_compose_end(int owner)` -- entry that must not present. static int fb_compose_begin(void) { if (fb_compose_depth++ > 0) { return 0; } if...
+- `lg_get` (function) `kernel/vga_fb.c:305` `static const char *lg_get(int i)` -- Docstring: Completed-logical-lines ring, heap-owned since the .bss diet (256 x TERM_MAX_COLS).
+- `lg_push` (function) `kernel/vga_fb.c:312` `static void lg_push(const char *line, int len)` -- Append a completed logical line to the ring.
+- `line_nrows` (function) `kernel/vga_fb.c:327` `static int line_nrows(int len)` -- int k, idx; char *dst; if (!lg) return; if (len >= SB_LINE_MAX) len = SB_LINE_MAX - 1; idx = lg_tail; dst =...
+- `act_nrows` (function) `kernel/vga_fb.c:334` `static int act_nrows(void)`
+- `total_rows` (function) `kernel/vga_fb.c:337` `static int total_rows(void)` -- else lg_head = (lg_head + 1) % SB_MAX_LINES; } /* Display rows a logical line of `len` characters occupies at...
+- `disp_clamp` (function) `kernel/vga_fb.c:345` `static void disp_clamp(void)` -- return n; } static int act_nrows(void) { return line_nrows(act_len); } /* Total display rows of the whole history...
+- `line_at` (function) `kernel/vga_fb.c:363` `static const char *line_at(int abs, int *off)` -- Locate the logical line contributing the display row `abs`, and set *off to the character offset where that display...
+- `first` (function) `kernel/vga_fb.c:419` `* screen ever showing it whole first (the old flash-then-melt). */
+static unsigned int *fx_start_...`
+- `flag` (function) `kernel/vga_fb.c:496` `* is the minimized flag (the program keeps running, nothing composites);`
+- `letterbox` (function) `kernel/vga_fb.c:500` `* present to repaint chrome plus letterbox (after a desktop redraw or a * view change);`
+- `gfx_view_cfg` (function) `kernel/vga_fb.c:535` `static wm_gfxview_config_t gfx_view_cfg(void)` -- Handshake between the present path and the desktop tick, the two painters of the graphics-mode pointer.
+- `gfx_covers_screen` (function) `kernel/vga_fb.c:544` `static int gfx_covers_screen(void)` -- Docstring: 1 while a visible fullscreen graphics window owns every * pixel: the terminals, taskbar and dock must not...
+- `gfx_keep_save` (function) `kernel/vga_fb.c:550` `static void gfx_keep_save(const volatile uint8_t *src, int kind, int sw, int sh)` -- Docstring: 1 while a visible fullscreen graphics window owns every * pixel: the terminals, taskbar and dock must not...
+- `vga_fb_set_gfx_program` (function) `kernel/vga_fb.c:576` `void vga_fb_set_gfx_program(const char *name)`
+- `shcmd_base` (function) `kernel/vga_fb.c:595` `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` -- Basename of a shortcut command's program: first token after an optional `run`, then past the last '/'. "run...
+- `ci_eq` (function) `kernel/vga_fb.c:612` `static int ci_eq(const char *a, const char *b)`
+- `gfx_prog_icon` (function) `kernel/vga_fb.c:625` `static const uint8_t *gfx_prog_icon(void)` -- Icon of the running program via the shortcuts config: whoever composited * last, resolved through its launch command.
+- `vga_fb_set_gfx_mode` (function) `kernel/vga_fb.c:638` `void vga_fb_set_gfx_mode(int on)`
+- `gfx_view_for` (function) `kernel/vga_fb.c:689` `static int gfx_view_for(int sw, int sh, wm_gfxview_t *v)` -- Docstring: Compute the view for a sw x sh source under the current mode.
+- `gfx_view_publish` (function) `kernel/vga_fb.c:701` `static void gfx_view_publish(const wm_gfxview_t *v)` -- mode.
+- `gfx_float_frame` (function) `kernel/vga_fb.c:715` `static int gfx_float_frame(wm_gfxview_rect_t *out)` -- Docstring: Floating-mode frame of the current source, used by the * snap and drag math, which move the native...
+- `vga_fb_gfx_origin` (function) `kernel/vga_fb.c:731` `void vga_fb_gfx_origin(int *x, int *y)` -- Docstring: Content origin of the graphics window (the point an app * subtracts from SYS_MOUSE coordinates), for the...
+- `coordinates` (function) `kernel/vga_fb.c:745` `* windows keep the exact historical coordinates (including outside the * window);`
+- `vga_fb_gfx_map_mouse` (function) `kernel/vga_fb.c:748` `void vga_fb_gfx_map_mouse(int *x, int *y)` -- Docstring: Map a desktop pointer into the graphics app's back-buffer space when its view is scaled.
+- `vga_fb_gfx_cursor_erase` (function) `kernel/vga_fb.c:763` `static void vga_fb_gfx_cursor_erase(void)` -- Restore the last composite's pointer before the new frame covers it.
+- `vga_fb_gfx_cursor_draw` (function) `kernel/vga_fb.c:773` `static void vga_fb_gfx_cursor_draw(void)` -- Clamp the mouse into the framebuffer (the idle loop that normally clamps never runs in graphics mode) and draw the...
+- `gfx_transition` (function) `kernel/vga_fb.c:939` `static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled);`
+- `wm_focus_cursor_sync` (function) `kernel/vga_fb.c:964` `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` -- char eline[WM_ELINE_SZ]; int epos, has_line; int prompted; } termwin_t; static termwin_t twins[WM_MAX_TERMS]; static...
+- `wm_emit_focus_moved` (function) `kernel/vga_fb.c:971` `static void wm_emit_focus_moved(int before, int source)` -- static int wm_term; static int wm_inited; /** Docstring: Single focus event bus owned by the desktop. static...
+- `vga_fb_focus_event` (function) `kernel/vga_fb.c:983` `const wm_notify_event_t *vga_fb_focus_event(void)` -- /** Docstring: Emit one focus event when the id actually moved. static void wm_emit_focus_moved(int before, int...
+- `vga_fb_focus_report` (function) `kernel/vga_fb.c:989` `void vga_fb_focus_report(int before, int source)` -- e.type = WM_NOTIFY_FOCUS; e.old_focus = before; e.new_focus = wm_focus; e.source = source; wm_notify_emit(&wm_bus...
+- `tw_park` (function) `kernel/vga_fb.c:998` `static void tw_park(int i)`
+- `tw_unpark` (function) `kernel/vga_fb.c:1028` `static void tw_unpark(int i)`
+- `wm_init_once` (function) `kernel/vga_fb.c:1063` `static void wm_init_once(void)`
+- `tw_select` (function) `kernel/vga_fb.c:1088` `static void tw_select(int i)` -- twins[k].has_line = 0; twins[k].eline[0] = '\0'; twins[k].epos = 0; twins[k].prompted = 0; } twins[0].lg = lg; if...
+- `vga_fb_focus_get` (function) `kernel/vga_fb.c:1100` `int vga_fb_focus_get(void)`
+- `vga_fb_nterms_get` (function) `kernel/vga_fb.c:1101` `int vga_fb_nterms_get(void)`
+- `wm_snapshot_state` (function) `kernel/vga_fb.c:1104` `static void wm_snapshot_state(wm_focus_state_t *st)` -- if (!twins[i].present) return; if (shell_readline_active()) shell_focus_park(); tw_park(wm_term); wm_focus = i...
+- `vga_fb_focus_next` (function) `kernel/vga_fb.c:1117` `void vga_fb_focus_next(void)` -- /** Docstring: Single snapshot of every window for focus decisions. static void wm_snapshot_state(wm_focus_state_t...
+- `app` (function) `kernel/vga_fb.c:1158` `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep...`
+- `wm_gfx_focus_sync` (function) `kernel/vga_fb.c:1163` `static void wm_gfx_focus_sync(int on)` -- Docstring: Route WM focus with the graphics mode switch.
+- `vga_fb_focus_id` (function) `kernel/vga_fb.c:1182` `int vga_fb_focus_id(int id)` -- tw_park(wm_term); wm_focus = WM_FOCUS_GFX; kbd_raw_flush(); wm_emit_focus_moved(before, WM_FOCUS_SRC_MODE); } } else...
+- `content` (function) `kernel/vga_fb.c:1215` `* windows would share content (same prompt/output on both) and a park
+ * would alias src == dst. ...`
+- `vga_fb_layout_set` (function) `kernel/vga_fb.c:1296` `int vga_fb_layout_set(int mode)` -- twins[1].lg = 0; twins[1].present = 0; twins[1].has_line = 0; twins[1].eline[0] = '\0'; twins[1].epos = 0...
+- `vga_fb_layout_cycle` (function) `kernel/vga_fb.c:1307` `void vga_fb_layout_cycle(void)` -- /** Docstring: Tile terminals through the tiling contract, graphics right. /** Docstring: Set active layout mode...
+- `vga_fb_layout_get` (function) `kernel/vga_fb.c:1323` `int vga_fb_layout_get(void)` -- if (wm_layout_mode == WM_LAYOUT_TILE) { wm_layout_mode = WM_LAYOUT_BSP; } else if (wm_layout_mode == WM_LAYOUT_BSP)...
+- `vga_fb_layout_name` (function) `kernel/vga_fb.c:1329` `const char *vga_fb_layout_name(void)` -- } else { wm_layout_mode = WM_LAYOUT_TILE; } wm_last_n = -1; vga_fb_tile_all(); } /** Docstring: Active layout mode...
+- `alone` (function) `kernel/vga_fb.c:1341` `* window alone (an unfocused graphics window minimizes to the taskbar,
+ * exactly like the hidden...`
+- `vga_fb_list_windows` (function) `kernel/vga_fb.c:1468` `void vga_fb_list_windows(void)`
+- `vga_fb_act_empty` (function) `kernel/vga_fb.c:1526` `int vga_fb_act_empty(void)` -- vn ? vn : "floating", gfx_view_valid ? gfx_view.content.x : gfx_win_x, gfx_view_valid ? gfx_view.content.y...
+- `vga_fb_note_prompt` (function) `kernel/vga_fb.c:1530` `void vga_fb_note_prompt(void)` -- The shell loop calls note after printing a prompt (it is live in the * focused window) and clear once the line is...
+- `vga_fb_clear_prompt` (function) `kernel/vga_fb.c:1535` `void vga_fb_clear_prompt(void)`
+- `vga_fb_prompted` (function) `kernel/vga_fb.c:1540` `int vga_fb_prompted(void)`
+- `vga_fb_prompt_live` (function) `kernel/vga_fb.c:1549` `int vga_fb_prompt_live(void)` -- 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate...
+- `vga_fb_park_line` (function) `kernel/vga_fb.c:1556` `void vga_fb_park_line(const char *b, int p)` -- 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate...
+- `vga_fb_unpark_line` (function) `kernel/vga_fb.c:1571` `int vga_fb_unpark_line(char *b, int *p)` -- A fresh prompt parks empty: record no line, so `wm list` does not * claim a half-typed command that never existed....
+- `tw_hit` (function) `kernel/vga_fb.c:1586` `static int tw_hit(int i, int mx, int my)` -- termwin_t *t; int k; wm_init_once(); if (wm_focus < 0 || wm_focus >= WM_MAX_TERMS) return 0; t = &twins[wm_focus]...
+- `vga_fb_set_gfx_palette` (function) `kernel/vga_fb.c:1692` `void vga_fb_set_gfx_palette(const unsigned char *pal)`
+- `fb_pack_idx` (function) `kernel/vga_fb.c:1707` `static unsigned long fb_pack_idx(unsigned idx)` -- --- True-color pixel layer ---- VBE true-color framebuffers store pixels natively as B,G,R(,X) bytes, so the DAC is...
+- `fb_write_packed` (function) `kernel/vga_fb.c:1723` `void fb_write_packed(int x, int y, unsigned long rgb)`
+- `fb_read_packed` (function) `kernel/vga_fb.c:1743` `unsigned long fb_read_packed(int x, int y)`
+- `vga_fb_read_rgb` (function) `kernel/vga_fb.c:1767` `unsigned long vga_fb_read_rgb(int x, int y)`
+- `fb_write_row_packed` (function) `kernel/vga_fb.c:1772` `void fb_write_row_packed(int x, int y, const unsigned int *src, int n)` -- Docstring: Write n packed pixels (0x00RRGGBB, or raw indices in 8-bit mode) to row y from column x, clipped once.
+- `fb_read_row_packed` (function) `kernel/vga_fb.c:1802` `void fb_read_row_packed(int x, int y, unsigned int *dst, int n)` -- Docstring: Read n packed pixels of row y from column x into dst, * clipped once; pixels outside the screen read as 0.
+- `fb_fill_run` (function) `kernel/vga_fb.c:1824` `static void fb_fill_run(int x, int y, int n, unsigned long px)` -- int xx = x + i; if (xx < 0 || xx >= fb_width) continue; if (fb_bpp == 32) { dst[i] = *(volatile unsigned int *)(p +...
+- `wall_level` (function) `kernel/vga_fb.c:1850` `static int wall_level(int v)` -- for (i = 0; i < n; i++) { q[0] = (uint8_t)(px & 0xFF); q[1] = (uint8_t)((px >> 8) & 0xFF); q[2] = (uint8_t)((px >>...
+- `vga_fb_set_palette` (function) `kernel/vga_fb.c:1859` `static void vga_fb_set_palette(void)`
+- `fb_glyph` (function) `kernel/vga_fb.c:1912` `static const uint8_t *fb_glyph(unsigned char c)` -- Resolve one byte to its 8-row glyph: ASCII through font8x8, Spanish Latin-1 through the table above, anything else...
+- `vga_fb_pixel` (function) `kernel/vga_fb.c:1933` `void vga_fb_pixel(int x, int y, uint8_t color)` -- case 0xAC: return glyph_notsign; case 0xB4: return glyph_acute; case 0xB7: return glyph_middot; case 0xBA: return...
+- `vga_fb_clear` (function) `kernel/vga_fb.c:1943` `void vga_fb_clear(void)` -- } } /* ---- Drawing primitives ---- void vga_fb_pixel(int x, int y, uint8_t color) { if (fb_bpp == 8) { if (x >= 0...
+- `vga_fb_rect` (function) `kernel/vga_fb.c:1953` `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` -- Docstring: Solid rectangle: the color resolves once, every row is one * clipped run fill instead of a per-pixel...
+- `vga_fb_pixel_rgb` (function) `kernel/vga_fb.c:1968` `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` -- Direct RGB pixel: full color depth in true-color modes, best-effort quantization in 8-bit mode.
+- `vga_fb_rect_rgb` (function) `kernel/vga_fb.c:1977` `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)`
+- `vga_fb_char` (function) `kernel/vga_fb.c:1984` `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
+- `vga_fb_str` (function) `kernel/vga_fb.c:1998` `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
+- `text_px` (function) `kernel/vga_fb.c:2009` `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` -- Blit a text string at an absolute pixel position.
+- `wm_draw_buttons` (function) `kernel/vga_fb.c:2035` `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` -- --- Window controls ---- Three glyph buttons at the right end of a window's title bar: minimize (_), maximize...
+- `wm_buttons_hit` (function) `kernel/vga_fb.c:2061` `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` -- } for (i = 1; i < WM_BTN_H - 1; i++) { vga_fb_pixel(bx + 1, by + i, fg); vga_fb_pixel(bx + WM_BTN_W - 2, by + i...
+- `wm_close_pending` (function) `kernel/vga_fb.c:2076` `int wm_close_pending(void)` -- Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the...
+- `wm_clear_close` (function) `kernel/vga_fb.c:2077` `void wm_clear_close(void)`
+- `wm_gfx_mode_active` (function) `kernel/vga_fb.c:2078` `int wm_gfx_mode_active(void)`
+- `vga_fb_ps2_owner` (function) `kernel/vga_fb.c:2081` `int vga_fb_ps2_owner(int pid)` -- Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the...
+- `taskbar` (function) `kernel/vga_fb.c:2101` `* minimize hides the app to the taskbar (it never closes it), maximize
+ * toggles true fullscreen...`
+- `directly` (function) `kernel/vga_fb.c:2149` `* RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */
+static void gfx_scale_...`
+- `gfx_letterbox` (function) `kernel/vga_fb.c:2254` `static void gfx_letterbox(const wm_gfxview_t *v)` -- Docstring: Clear the frame area the content does not cover (the * letterbox bars of a tiled or fullscreen view) to...
+- `gfx_title` (function) `kernel/vga_fb.c:2273` `static void gfx_title(const wm_gfxview_t *v)` -- int ah = v->frame.h - v->title_h; const wm_gfxview_rect_t *c = &v->content; if (aw <= 0 || ah <= 0) return; if (c->y...
+- `gfx_compose` (function) `kernel/vga_fb.c:2285` `static void gfx_compose(const volatile uint8_t *src, int kind, int sw, int sh,
+                  ...` -- Docstring: Compose one graphics frame at a view into the render target: * title, letterbox (when full is set) and...
+- `gfx_present` (function) `kernel/vga_fb.c:2351` `static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)` -- Docstring: Present under the pointer handshake: wait out a desktop tick that is moving the sprite, composite, then...
+- `gfx_cursor_follow_idle` (function) `kernel/vga_fb.c:2367` `static void gfx_cursor_follow_idle(void)` -- Docstring: Move the graphics-mode pointer from the desktop tick while the app is idle.
+- `vga_fb_blit_gfx_window` (function) `kernel/vga_fb.c:2380` `void vga_fb_blit_gfx_window(void)`
+- `vga_fb_blit_nk_window` (function) `kernel/vga_fb.c:2389` `void vga_fb_blit_nk_window(void)`
+- `vga_fb_blit_nk_rgb_window` (function) `kernel/vga_fb.c:2395` `void vga_fb_blit_nk_rgb_window(void)` -- Composite the Nuklear RGB back-buffer (NK_RGB_ADDR, NK_W x NK_H x 3 bytes) * through the same present path as the...
+- `term_recalc` (function) `kernel/vga_fb.c:2404` `static void term_recalc(void)`
+- `draw_title_win` (function) `kernel/vga_fb.c:2430` `static void draw_title_win(int idx, int focused)` -- Preserve the current window position, clamping it into range so a * drag or Ctrl+arrow move is not undone by the...
+- `taskbar_layout` (function) `kernel/vga_fb.c:2461` `static void taskbar_layout(void)`
+- `draw_speaker_icon` (function) `kernel/vga_fb.c:2492` `static void draw_speaker_icon(int x, int y, uint8_t color)` -- Running-app button right after it: mini icon + title while a graphics program owns the display.
+- `taskbar_render` (function) `kernel/vga_fb.c:2501` `static void taskbar_render(void)`
+- `title` (function) `kernel/vga_fb.c:2511` `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...`
+- `taskbar_tick` (function) `kernel/vga_fb.c:2580` `static void taskbar_tick(void)` -- Redraw the clock only when the wall-clock second changes.
+- `vga_fb_theme_name` (function) `kernel/vga_fb.c:2596` `int vga_fb_theme_name(char *dst, int cap)` -- Docstring: Active Nuklear theme name for the taskbar widget.
+- `taskbar_theme_cycle` (function) `kernel/vga_fb.c:2617` `static void taskbar_theme_cycle(void)` -- Cycle the active theme to the next etc/themes/ entry (ramdisk).
+- `taskbar_handle_click` (function) `kernel/vga_fb.c:2657` `static void taskbar_handle_click(int mx, int my)` -- Click handling for the keyboard widget, the speaker icon and -/+ buttons, plus the restore button that reappears...
+- `draw_scrollbar` (function) `kernel/vga_fb.c:2717` `static void draw_scrollbar(void)` -- return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v >...
+- `render_blank_row` (function) `kernel/vga_fb.c:2752` `static void render_blank_row(int vrow)` -- Blank one viewport row: every cell is repainted with the terminal background. vga_fb_str with an empty string would...
+- `render_row` (function) `kernel/vga_fb.c:2762` `static void render_row(int vrow, int abs)` -- Render one display row at viewport row `vrow` for the absolute display row `abs`.
+- `term_render` (function) `kernel/vga_fb.c:2797` `static void term_render(void)`
+- `buffer` (function) `kernel/vga_fb.c:2812` `* owns the buffer (indices reset, render reads an empty ring). */
+void term_clear(void)`
+- `term_render_active` (function) `kernel/vga_fb.c:2829` `static void term_render_active(void)` -- Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the...
+- `line` (function) `kernel/vga_fb.c:2872` `* display stale bytes left over from a longer previous line (e.g. the prompt
+ * would show the ta...`
+- `escapes` (function) `kernel/vga_fb.c:2881` `* swallowing them here keeps the escapes (which the serial side needs)
+     * from printing as li...`
+- `vga_fb_puts_term` (function) `kernel/vga_fb.c:2938` `void vga_fb_puts_term(const char *s)`
+- `vga_fb_text_cursor` (function) `kernel/vga_fb.c:2944` `void vga_fb_text_cursor(int col)` -- Show the text cursor at character column `col` of the active line, or hide * it with a negative column.
+- `vga_fb_hide_text_cursor` (function) `kernel/vga_fb.c:2952` `void vga_fb_hide_text_cursor(void)` -- Show the text cursor at character column `col` of the active line, or hide * it with a negative column.
+- `vga_fb_draw_desktop` (function) `kernel/vga_fb.c:2976` `void vga_fb_draw_desktop(void)` -- Docstring: Repaint the desktop through the shared render plan.
+- `gfx_view_in_rect` (function) `kernel/vga_fb.c:3071` `static void gfx_view_in_rect(const wm_gfxview_rect_t *r, int titled, wm_gfxview_t *v)` -- Docstring: View of the persistent source inside an arbitrary frame, * titled when the frame is tall enough to carry...
+- `gfx_animate` (function) `kernel/vga_fb.c:3090` `static void gfx_animate(const wm_gfxview_rect_t *from, const wm_gfxview_rect_t *to,
+             ...` -- Docstring: Glide the persistent source frame from one rect to * another over the desktop, then settle with a plain...
+- `gfx_taskbar_rect` (function) `kernel/vga_fb.c:3140` `static void gfx_taskbar_rect(wm_gfxview_rect_t *r)` -- fb_tgt = fb_shadow; gfx_compose(gfx_keep, gfx_keep_kind, gfx_keep_sw, gfx_keep_sh, &v, 0); fb_tgt = 0...
+- `gfx_drop_focus` (function) `kernel/vga_fb.c:3177` `static void gfx_drop_focus(int source)` -- Docstring: Hand keyboard focus to the graphics window without a * redraw (callers repaint once afterwards). static...
+- `from` (function) `kernel/vga_fb.c:3188` `* leaving returns to the view it came from (floating or tiled). Returns
+ * 0 on success, -1 witho...`
+- `vga_fb_gfx_set_hidden` (function) `kernel/vga_fb.c:3222` `int vga_fb_gfx_set_hidden(int hide)` -- Docstring: Minimize (hide) or restore the graphics window.
+- `vga_fb_gfx_view_name` (function) `kernel/vga_fb.c:3250` `const char *vga_fb_gfx_view_name(void)` -- if (gfx_view_valid) gfx_animate(&from, &btn, titled, 0); else vga_fb_draw_desktop(); return 0; } gfx_hidden = 0...
+- `term_toggle_fullscreen` (function) `kernel/vga_fb.c:3262` `static void term_toggle_fullscreen(void)` -- /** Docstring: Graphics view state for `wm state`/`wm list`. const char *vga_fb_gfx_view_name(void) { const char *n...
+- `vga_fb_toggle_fullscreen` (function) `kernel/vga_fb.c:3274` `void vga_fb_toggle_fullscreen(void)` -- Docstring: Toggle fullscreen on the focused window: the graphics * window scales to the whole display, a terminal...
+- `term_toggle_minimize` (function) `kernel/vga_fb.c:3285` `static void term_toggle_minimize(void)` -- Minimize/restore the terminal window.
+- `vga_fb_toggle_minimize` (function) `kernel/vga_fb.c:3295` `void vga_fb_toggle_minimize(void)` -- Minimize/restore the terminal window.
+- `vga_fb_is_minimized` (function) `kernel/vga_fb.c:3303` `int vga_fb_is_minimized(void)`
+- `vga_fb_is_fullscreen` (function) `kernel/vga_fb.c:3304` `int vga_fb_is_fullscreen(void)`
+- `gfx_snap` (function) `kernel/vga_fb.c:3309` `static void gfx_snap(int zone)` -- Snap the focused graphics window into a screen region (halves place it against that edge, quadrants into that...
+- `term_close_default` (function) `kernel/vga_fb.c:3342` `static void term_close_default(void)` -- Docstring: Terminal close button: restore the default geometry (the * shell cannot be closed).
+- `vga_fb_close_active` (function) `kernel/vga_fb.c:3358` `int vga_fb_close_active(void)` -- Close the focused window.
+- `vga_fb_move_terminal` (function) `kernel/vga_fb.c:3372` `void vga_fb_move_terminal(int dx, int dy)`
+- `term_max_cols` (function) `kernel/vga_fb.c:3417` `static int term_max_cols(void)` -- --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes...
+- `term_max_rows` (function) `kernel/vga_fb.c:3421` `static int term_max_rows(void)`
+- `term_finish_layout` (function) `kernel/vga_fb.c:3426` `static void term_finish_layout(void)`
+- `vga_fb_snap_window` (function) `kernel/vga_fb.c:3432` `void vga_fb_snap_window(int zone)`
+- `vga_fb_resize` (function) `kernel/vga_fb.c:3460` `void vga_fb_resize(int dcols, int drows)`
+- `vga_fb_reset_default` (function) `kernel/vga_fb.c:3480` `void vga_fb_reset_default(void)` -- int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if...
+- `wallpaper_ensure` (function) `kernel/vga_fb.c:3534` `static void wallpaper_ensure(void)`
+- `wallpaper_usable` (function) `kernel/vga_fb.c:3586` `static int wallpaper_usable(void)` -- d[2] = px[0]; if (bpx == 4) d[3] = 0; } } } stbi_image_free(img); wall_native = cache; wall_cw = fb_width; wall_ch =...
+- `wallpaper_draw` (function) `kernel/vga_fb.c:3591` `static void wallpaper_draw(void)`
+- `pipe_field` (function) `kernel/vga_fb.c:3617` `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` -- --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line...
+- `icon_nearest` (function) `kernel/vga_fb.c:3635` `static int icon_nearest(int r, int g, int b)` -- Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far...
+- `icon_embedded` (function) `kernel/vga_fb.c:3651` `static const uint8_t *icon_embedded(const char *name)` -- for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b...
+- `icon_decode` (function) `kernel/vga_fb.c:3671` `static const uint8_t *icon_decode(const char *path)` -- Decode a shortcut's PNG to raw 32x32 RGBA pixels.
+- `icon_embedded_rgba` (function) `kernel/vga_fb.c:3705` `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` -- Expand an embedded index icon (desktop_icons.h, transparent 0) to RGBA through the icon palette, so fallback art...
+- `dock_label_px` (function) `kernel/vga_fb.c:3733` `static int dock_label_px(const struct desktop_shortcut *sc)` -- Width of the longest shortcut label in pixels (cached after load).
+- `shortcuts_layout` (function) `kernel/vga_fb.c:3742` `static void shortcuts_layout(void)` -- Dock layout: one centred row just above the taskbar.
+- `shortcut_cell_left` (function) `kernel/vga_fb.c:3760` `static int shortcut_cell_left(int i)` -- dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y; x0 = (fb_width - dock_w) / 2; if (x0 < 0) x0 = 0...
+- `desktop_shortcuts_load` (function) `kernel/vga_fb.c:3767` `void desktop_shortcuts_load(void)`
+- `shortcut_draw_scaled` (function) `kernel/vga_fb.c:3823` `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
+                             ...` -- Blit one shortcut icon scaled to dw x dh at (dx, dy), nearest neighbour from the cached 32x32 RGBA source.
+- `dock_hover_index` (function) `kernel/vga_fb.c:3848` `static int dock_hover_index(int mx, int my)` -- Index of the shortcut column under (mx, my), or -1.
+- `dock_bounce_counts` (function) `kernel/vga_fb.c:3875` `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)`
+- `dock_click_count` (function) `kernel/vga_fb.c:3885` `void dock_click_count(unsigned long *edges)`
+- `dock_bounce_elapsed` (function) `kernel/vga_fb.c:3891` `static unsigned long dock_bounce_elapsed(void)` -- Ticks elapsed since the bounce click, capped so the subtraction can * never wrap on a late read.
+- `dock_bounce_live` (function) `kernel/vga_fb.c:3899` `static int dock_bounce_live(void)` -- Ticks elapsed since the bounce click, capped so the subtraction can * never wrap on a late read. static unsigned...
+- `dock_pending_active` (function) `kernel/vga_fb.c:3949` `int dock_pending_active(void)`
+- `dock_paint_icons` (function) `kernel/vga_fb.c:3957` `static void dock_paint_icons(int hover)` -- Paint every shortcut icon and label at the given hover sizes.
+- `desktop_shortcuts_draw` (function) `kernel/vga_fb.c:3993` `void desktop_shortcuts_draw(void)`
+- `wallpaper_rect` (function) `kernel/vga_fb.c:4020` `static void wallpaper_rect(int x0, int y0, int w, int h)` -- Paint one wallpaper rectangle from the cache (solid fill when the cache * is absent or stale): the strip-erase...
+- `dock_paint_hover` (function) `kernel/vga_fb.c:4051` `static void dock_paint_hover(int hover)` -- Hover repaint without the fullscreen flash: erase only the dock strip (bar plus the overflow the magnified icons...
+- `command` (function) `kernel/vga_fb.c:4082` `* its launch command (config-driven, covers apps that never set a window * title);`
+- `gfx_task_icon` (function) `kernel/vga_fb.c:4087` `static const uint8_t *gfx_task_icon(void)` -- Icon for the taskbar running-app button.
+- `desktop_shortcuts_hit_test` (function) `kernel/vga_fb.c:4108` `const char *desktop_shortcuts_hit_test(int mx, int my)`
+- `mouse_focus_topmost` (function) `kernel/vga_fb.c:4122` `static int mouse_focus_topmost(int mx, int my)` -- const char *desktop_shortcuts_hit_test(int mx, int my) { shortcuts_layout(); for (int i = 0; i < shortcut_count...
+- `mouse_apply_wheel` (function) `kernel/vga_fb.c:4148` `static void mouse_apply_wheel(int wheel, int step)` -- if (!twins[f].present) continue; if (tw_hit(f, mx, my)) { if (f == wm_focus) return 0; before = wm_focus...
+- `pointer` (function) `kernel/vga_fb.c:4169` `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...`
+- `mouse_drag_gfx` (function) `kernel/vga_fb.c:4172` `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` -- Docstring: Title-bar drag of the graphics window.
+- `mouse_drag_term` (function) `kernel/vga_fb.c:4224` `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` -- Docstring: Title-bar drag of the focused terminal window.
+- `mouse_scrollbar` (function) `kernel/vga_fb.c:4247` `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` -- wm_grab_cx = (mx - term_px_x) / FONT_W; } } else { wm_dragging = 0; } if (wm_dragging) { vga_fb_drag_terminal(mx...
+- `vga_fb_wait_tick` (function) `kernel/vga_fb.c:4276` `void vga_fb_wait_tick(void)` -- Docstring: Drive the desktop from a kernel wait loop.
+- `vga_fb_mouse_tick` (function) `kernel/vga_fb.c:4285` `void vga_fb_mouse_tick(void)` -- timer ISR drives it only for the pid-0 exec frame (user_program_active) and the shell's input loop is not running...
+- `path` (function) `kernel/vga_fb.c:4296` `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...`
+- `state` (function) `kernel/vga_fb.c:4409` `* ignores the button state (the arming press is consumed) and settles
+     * once on expiry, so t...`
+- `vga_fb_mouse_init` (function) `kernel/vga_fb.c:4487` `void vga_fb_mouse_init(void)`
+- `vga_fb_init` (function) `kernel/vga_fb.c:4515` `void vga_fb_init(void)`
 
-## net/tls_x509.c
-Depends on: `headers/tls.h`, `headers/tls_port.h`
-- `oid_eq` (function) `net/tls_x509.c:36` `static int oid_eq(const unsigned char *bytes, unsigned len,
-                  const unsigned char...`
-- `der_next` (function) `net/tls_x509.c:51` `static int der_next(const unsigned char *p, unsigned limit, unsigned *pos,
-                    st...` -- Parse the TLV at p[pos]; advances pos to the first byte after it. * Returns 0 on success, -1 on any bound violation.
-- `der_container` (function) `net/tls_x509.c:82` `static int der_container(const unsigned char *p, unsigned limit, unsigned *pos,
-                 ...` -- len = (len << 8) | p[(*pos)++]; } } else { len = p[(*pos)++]; } if (len > limit - *pos) return -1; out->val = p +...
-- `days_from_civil` (function) `net/tls_x509.c:94` `static long days_from_civil(int y, int m, int d)`
-- `der_time_to_days` (function) `net/tls_x509.c:106` `static long der_time_to_days(const struct der_tlv *t)` -- /* ---- Time ---- static long days_from_civil(int y, int m, int d) { long era, doe, yoe; int doy; y -= m <= 2 ?
-- `name_find_cn` (function) `net/tls_x509.c:135` `static int name_find_cn(const unsigned char *p, unsigned limit,
-                        struct x5...` -- } if (mon < 1 || mon > 12 || day < 1 || day > 31 || year < 1970 || year > 2100) return -1; return...
-- `san_add` (function) `net/tls_x509.c:178` `static void san_add(struct x509_sans *out, const unsigned char *v, unsigned len)`
-- `san_parse` (function) `net/tls_x509.c:186` `static void san_parse(const unsigned char *p, unsigned limit,
-                      struct x509_s...` -- struct x509_sans { unsigned char dns[TLS_SAN_MAX][64]; unsigned      len[TLS_SAN_MAX]; int           count; }...
-- `spki_parse` (function) `net/tls_x509.c:203` `static int spki_parse(const unsigned char *p, unsigned limit,
-                      struct tls_pu...` -- unsigned seq_len, pos = 0; out->count = 0; if (der_container(p, limit, &pos, &seq, &seq_len) != 0) return; pos = 0...
-- `cert_parse` (function) `net/tls_x509.c:279` `static int cert_parse(const unsigned char *der, unsigned len,
-                      struct x509_c...`
-- `ascii_lower` (function) `net/tls_x509.c:392` `static int ascii_lower(int c)`
-- `host_match_exact` (function) `net/tls_x509.c:397` `static int host_match_exact(const char *host, const unsigned char *name,
-                        ...` -- } } } } return 0; } /* ---- Hostname matching ---- static int ascii_lower(int c) { return (c >= 'A' && c <= 'Z') ? c...
-- `host_match_wildcard` (function) `net/tls_x509.c:410` `static int host_match_wildcard(const char *host, const unsigned char *name,
-                     ...` -- Wildcard: "*.example.com" matches exactly one label ("a.example.com", * never "a.b.example.com" nor "example.com").
-- `host_matches` (function) `net/tls_x509.c:431` `static int host_matches(const char *host, const struct x509_cert *leaf)`
-- `tls_x509_parse_pubkey` (function) `net/tls_x509.c:452` `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,
-                          struc...`
-- `pubkey_equal` (function) `net/tls_x509.c:468` `static int pubkey_equal(const struct tls_pubkey *a, const struct tls_pubkey *b)` -- Trust anchors are matched by public key, not by self-signature: a presented root is often a cross-signed copy...
-- `cert_verify_signature` (function) `net/tls_x509.c:479` `static int cert_verify_signature(const struct x509_cert *cert,
-                                 c...` -- signature-verified: an attacker cannot present a top cert carrying an embedded root's public key unless the chain...
-- `tls_x509_verify_chain` (function) `net/tls_x509.c:521` `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,
-                       ...`
+## kernel/vga_fx.c
+Depends on: `headers/vga_fb.h`, `headers/vga_fx.h`
+- `vga_fx_set_enabled` (function) `kernel/vga_fx.c:22` `void vga_fx_set_enabled(int on)`
+- `vga_fx_enabled` (function) `kernel/vga_fx.c:27` `int vga_fx_enabled(void)`
+- `fx_wait_until` (function) `kernel/vga_fx.c:35` `static void fx_wait_until(unsigned long deadline)` -- Deadline pacing over the PIT-calibrated TSC clock.
+- `vga_fx_snap_rect` (function) `kernel/vga_fx.c:41` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)`
+- `vga_fx_restore_rect` (function) `kernel/vga_fx.c:63` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)`
+- `vga_fx_free` (function) `kernel/vga_fx.c:77` `void vga_fx_free(unsigned int *buf)`
+- `once` (function) `kernel/vga_fx.c:90` `* once (prev[] tracks the revealed frontier per column), then the final
+ * restore guarantees the...`
+- `vga_fx_melt_rect` (function) `kernel/vga_fx.c:150` `void vga_fx_melt_rect(int x, int y, int w, int h,
+    const unsigned int *oldb, const unsigned in...` -- Drive one old->new melt.
+- `vga_fx_melt_from_black` (function) `kernel/vga_fx.c:159` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` -- Boot melt: the framebuffer is already cleared to black on entry, so no * old snapshot is needed; the new frame...
 
-## progs/asm/aes.s
-- `aes_rk` (function) `progs/asm/aes.s:3`
-- `aes_sb` (function) `progs/asm/aes.s:7`
-- `aes_rc` (function) `progs/asm/aes.s:11`
-- `aes_st` (function) `progs/asm/aes.s:15`
-- `aes_iv` (function) `progs/asm/aes.s:19`
-- `aes_read_all` (function) `progs/asm/aes.s:23`
-- `aes_write_all` (function) `progs/asm/aes.s:238`
-- `aes_has` (function) `progs/asm/aes.s:345`
-- `hex_val` (function) `progs/asm/aes.s:498`
-- `aes_parse_hex` (function) `progs/asm/aes.s:620`
-- `aes_gf_mul` (function) `progs/asm/aes.s:783`
-- `aes_xtime` (function) `progs/asm/aes.s:884`
-- `aes_rotl8` (function) `progs/asm/aes.s:933`
-- `aes_init_tables` (function) `progs/asm/aes.s:970`
-- `aes_key_expand` (function) `progs/asm/aes.s:1197`
-- `aes_add_round_key` (function) `progs/asm/aes.s:1646`
-- `aes_sub_bytes` (function) `progs/asm/aes.s:1721`
-- `aes_shift_rows` (function) `progs/asm/aes.s:1774`
-- `aes_mix_columns` (function) `progs/asm/aes.s:1993`
-- `aes_cipher` (function) `progs/asm/aes.s:2466`
-- `aes_iv_increment` (function) `progs/asm/aes.s:2565`
-- `aes_ctr_crypt` (function) `progs/asm/aes.s:2648`
-- `aes_hdr_put` (function) `progs/asm/aes.s:2791`
-- `aes_hdr_get` (function) `progs/asm/aes.s:2906`
-- `aes_tool_name` (function) `progs/asm/aes.s:3059`
-- `aes_run` (function) `progs/asm/aes.s:3077`
-- `main` (function) `progs/asm/aes.s:3807`
+## mcp/mcp_dbg_driver.py
+Depends on: `kernel/time.c`
+- `Client.__init__` (method) `mcp/mcp_dbg_driver.py:16` `def __init__(self)`
+- `Client.request` (method) `mcp/mcp_dbg_driver.py:28` `def request(self, method, params)`
+- `Client.tool` (method) `mcp/mcp_dbg_driver.py:46` `def tool(self, name, params)`
+- `Client.close` (method) `mcp/mcp_dbg_driver.py:54` `def close(self)`
+- `main` (function) `mcp/mcp_dbg_driver.py:64` `def main()`
 
-## progs/asm/cp.s
-- `main` (function) `progs/asm/cp.s:3`
+## mcp/mcp_dogfood.py
+Depends on: `kernel/time.c`
+- `Client.__init__` (method) `mcp/mcp_dogfood.py:20` `def __init__(self, addons_dir)`
+- `Client.request` (method) `mcp/mcp_dogfood.py:40` `def request(self, method, params)`
+- `Client.tool` (method) `mcp/mcp_dogfood.py:58` `def tool(self, name, params)`
+- `Client.close` (method) `mcp/mcp_dogfood.py:68` `def close(self)`
+- `main` (function) `mcp/mcp_dogfood.py:78` `def main()`
 
-## progs/asm/fib.s
-- `fib` (function) `progs/asm/fib.s:3`
-- `main` (function) `progs/asm/fib.s:61`
-
-## progs/asm/freedom.s
-- `tls_close` (function) `progs/asm/freedom.s:3`
-- `f_host` (function) `progs/asm/freedom.s:24`
-- `f_path` (function) `progs/asm/freedom.s:28`
-- `f_port` (function) `progs/asm/freedom.s:32`
-- `f_secure` (function) `progs/asm/freedom.s:36`
-- `f_loc` (function) `progs/asm/freedom.s:40`
-- `f_redir` (function) `progs/asm/freedom.s:44`
-- `f_status` (function) `progs/asm/freedom.s:48`
-- `f_clen` (function) `progs/asm/freedom.s:52`
-- `f_has_clen` (function) `progs/asm/freedom.s:56`
-- `f_chunked` (function) `progs/asm/freedom.s:60`
-- `f_hdr` (function) `progs/asm/freedom.s:64`
-- `f_hlen` (function) `progs/asm/freedom.s:68`
-- `f_tag` (function) `progs/asm/freedom.s:72`
-- `f_suppress` (function) `progs/asm/freedom.s:76`
-- `f_comment` (function) `progs/asm/freedom.s:80`
-- `f_cmdash` (function) `progs/asm/freedom.s:84`
-- `f_tagn` (function) `progs/asm/freedom.s:88`
-- `f_tagnlen` (function) `progs/asm/freedom.s:92`
-- `f_ent` (function) `progs/asm/freedom.s:96`
-- `f_entlen` (function) `progs/asm/freedom.s:100`
-- `f_ws` (function) `progs/asm/freedom.s:104`
-- `f_utbuf` (function) `progs/asm/freedom.s:108`
-- `f_utlen` (function) `progs/asm/freedom.s:112`
-- `f_utrem` (function) `progs/asm/freedom.s:116`
-- `f_attr_on` (function) `progs/asm/freedom.s:120`
-- `f_waitq` (function) `progs/asm/freedom.s:124`
-- `f_inval` (function) `progs/asm/freedom.s:128`
-- `f_inval2` (function) `progs/asm/freedom.s:132`
-- `f_attr` (function) `progs/asm/freedom.s:136`
-- `f_attrlen` (function) `progs/asm/freedom.s:140`
-- `f_val` (function) `progs/asm/freedom.s:144`
-- `f_vallen` (function) `progs/asm/freedom.s:148`
-- `f_id` (function) `progs/asm/freedom.s:152`
-- `f_idlen` (function) `progs/asm/freedom.s:156`
-- `f_cls` (function) `progs/asm/freedom.s:160`
-- `f_clslen` (function) `progs/asm/freedom.s:164`
-- `f_href` (function) `progs/asm/freedom.s:168`
-- `f_hreflen` (function) `progs/asm/freedom.s:172`
-- `f_rel_ss` (function) `progs/asm/freedom.s:176`
-- `f_styleattr` (function) `progs/asm/freedom.s:180`
-- `f_stylelen` (function) `progs/asm/freedom.s:184`
-- `f_dump_css` (function) `progs/asm/freedom.s:188`
-- `f_dump_dom` (function) `progs/asm/freedom.s:192`
-- `f_mode` (function) `progs/asm/freedom.s:196`
-- `f_rawcap` (function) `progs/asm/freedom.s:200`
-- `f_depth` (function) `progs/asm/freedom.s:204`
-- `f_dom` (function) `progs/asm/freedom.s:208`
-- `f_domlen` (function) `progs/asm/freedom.s:212`
-- `f_css` (function) `progs/asm/freedom.s:216`
-- `f_csslen` (function) `progs/asm/freedom.s:220`
-- `f_linkhost` (function) `progs/asm/freedom.s:224`
-- `f_linkpath` (function) `progs/asm/freedom.s:228`
-- `f_linkn` (function) `progs/asm/freedom.s:232`
-- `f_cstage` (function) `progs/asm/freedom.s:236`
-- `f_csize` (function) `progs/asm/freedom.s:240`
-- `f_crem` (function) `progs/asm/freedom.s:244`
-- `f_bdone` (function) `progs/asm/freedom.s:248`
-- `atoi` (function) `progs/asm/freedom.s:252`
-- `append` (function) `progs/asm/freedom.s:338`
-- `ci_lower` (function) `progs/asm/freedom.s:437`
-- `ci_starts` (function) `progs/asm/freedom.s:486`
-- `ci_eq` (function) `progs/asm/freedom.s:559`
-- `ci_index` (function) `progs/asm/freedom.s:656`
-- `looks_like_url` (function) `progs/asm/freedom.s:715`
-- `has_scheme` (function) `progs/asm/freedom.s:789`
-- `make_search` (function) `progs/asm/freedom.s:1064`
-- `split_url` (function) `progs/asm/freedom.s:1295`
-- `resolve_redirect` (function) `progs/asm/freedom.s:1810`
-- `put_ws` (function) `progs/asm/freedom.s:2333`
-- `put_utf` (function) `progs/asm/freedom.s:2379`
-- `put_text` (function) `progs/asm/freedom.s:2915`
-- `put_entity` (function) `progs/asm/freedom.s:3018`
-- `css_append` (function) `progs/asm/freedom.s:3849`
-- `css_line` (function) `progs/asm/freedom.s:3920`
-- `dom_append` (function) `progs/asm/freedom.s:3978`
-- `dom_space` (function) `progs/asm/freedom.s:4049`
-- `dom_nl` (function) `progs/asm/freedom.s:4083`
-- `record_attr` (function) `progs/asm/freedom.s:4117`
-- `is_void_tag` (function) `progs/asm/freedom.s:4449`
-- `classify_tag` (function) `progs/asm/freedom.s:4757`
-- `body_byte` (function) `progs/asm/freedom.s:5961`
-- `head_line` (function) `progs/asm/freedom.s:7203`
-- `parse_head` (function) `progs/asm/freedom.s:7460`
-- `recv_body` (function) `progs/asm/freedom.s:7676`
-- `send_all` (function) `progs/asm/freedom.s:7736`
-- `fetch` (function) `progs/asm/freedom.s:7810`
-- `fetch_css` (function) `progs/asm/freedom.s:9293`
-- `print_css_dump` (function) `progs/asm/freedom.s:10112`
-- `print_dom_dump` (function) `progs/asm/freedom.s:10212`
-- `main` (function) `progs/asm/freedom.s:10291`
-
-## progs/asm/http.s
-- `atoi` (function) `progs/asm/http.s:3`
-- `main` (function) `progs/asm/http.s:89`
+## mcp/minios_addons.py
+Depends on: `kernel/time.c`
+Imported by: `mcp/minios_mcp.py`
+- `parse_addon_yaml` (function) `mcp/minios_addons.py:73` `def parse_addon_yaml(text)` -- Parse the strict YAML subset.
+- `fail` (function) `mcp/minios_addons.py:85` `def fail(lineno, why)`
+- `validate_addon` (function) `mcp/minios_addons.py:205` `def validate_addon(addon, source)` -- Check bounds and character sets.
+- `validate_addon_path` (function) `mcp/minios_addons.py:295` `def validate_addon_path(path)` -- dst paths live on the ramdisk: relative, no '..', bounded charset.
+- `validate_shell_line` (function) `mcp/minios_addons.py:309` `def validate_shell_line(line)` -- Build/verify lines are single printable-ASCII shell commands.
+- `load_addons_dir` (function) `mcp/minios_addons.py:323` `def load_addons_dir(addons_dir)` -- Load every addon yaml; each entry is a dict or an error string.
+- `split_for_editor` (function) `mcp/minios_addons.py:347` `def split_for_editor(text)` -- Split a source into editor-sized chunks.
+- `exit_code_of` (function) `mcp/minios_addons.py:372` `def exit_code_of(text)`
+- `AddonState.__init__` (method) `mcp/minios_addons.py:380` `def __init__(self, path)`
+- `AddonState.load` (method) `mcp/minios_addons.py:383` `def load(self)`
+- `AddonState.save` (method) `mcp/minios_addons.py:393` `def save(self, addons)`
+- `install_addon` (function) `mcp/minios_addons.py:401` `def install_addon(session, addon, cfg)` -- Install one validated addon into the booted MiniOS session.
 
 
 Next: [API_p9.md](API_p9.md)

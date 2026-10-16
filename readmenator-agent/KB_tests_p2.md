@@ -93,6 +93,17 @@ Previous: [KB_tests.md](KB_tests.md)
   - `ARGS2_OFF` (macro, line 30) `#define ARGS2_OFF`
 - Depends on: `headers/seccomp_bpf.h`, `kernel/string.c`
 
+## tests/test_sign.c
+- Doc: Docstring: Host test for kernel/ed25519.c plus headers/sign.h.
+- Layer: testing
+- Language: c
+- Symbols:
+  - `hexval` (function, line 27) `static unsigned hexval(char c)`
+  - `unhex` (function, line 33) `static void unhex(unsigned char *out, const char *in, unsigned n)`
+  - `main` (function, line 51) `int main(void)`
+  - `CHECK` (macro, line 20) `#define CHECK(cond, msg)`
+- Depends on: `headers/sign.h`, `kernel/string.c`
+
 ## tests/test_sync.c
 - Doc: Host-side unit test for the blocking sync primitives (kernel/sync.c).
 - Layer: testing

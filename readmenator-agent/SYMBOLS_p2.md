@@ -3,6 +3,7 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `usbhid_kbd_scancodes` | function | `drivers/usbhid.c:206` | `int usbhid_kbd_scancodes(const unsigned char prev[HID_KBD_REPORT_LEN],                          c...` |
 | `usbhid_keyboard_present` | function | `drivers/usbhid.c:256` | `int usbhid_keyboard_present(void)` |
 | `usbhid_mouse_decode` | function | `drivers/usbhid.c:241` | `void usbhid_mouse_decode(const unsigned char prev[HID_MOUSE_REPORT_LEN],                         ...` |
 | `usbhid_mouse_present` | function | `drivers/usbhid.c:263` | `int usbhid_mouse_present(void)` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `pcache_slot_t` | struct | `fs/pcache.c:17` | `` |
 | `pcache_stats` | function | `fs/pcache.c:314` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out,         unsigned long *miss_...` |
 | `pcache_unmap` | function | `fs/pcache.c:216` | `void pcache_unmap(int ino, unsigned index)` |
-| `RDSuper` | struct | `fs/ramdisk.c:26` | `` |
 
 Next: [SYMBOLS_p3.md](SYMBOLS_p3.md)

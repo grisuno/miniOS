@@ -3,6 +3,40 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `redirect_putc` | function | `kernel/console.c:122` | `static int redirect_putc(char c)` |
+| `redirect_resume` | function | `kernel/console.c:135` | `void redirect_resume(int was)` |
+| `redirect_suspend` | function | `kernel/console.c:129` | `int redirect_suspend(void)` |
+| `redirect_take_into` | function | `kernel/console.c:196` | `unsigned long redirect_take_into(char *dst, unsigned long cap,         unsigned long *len_out)` |
+| `register_libc_symbols` | function | `kernel/console.c:271` | `void register_libc_symbols(void)` |
+| `vga_clear` | function | `kernel/console.c:25` | `void vga_clear(void)` |
+| `vga_cursor_enable` | function | `kernel/console.c:81` | `void vga_cursor_enable(int on)` |
+| `vga_get_color` | function | `kernel/console.c:21` | `char vga_get_color(void)` |
+| `vga_get_x` | function | `kernel/console.c:18` | `int vga_get_x(void)` |
+| `vga_get_y` | function | `kernel/console.c:19` | `int vga_get_y(void)` |
+| `vga_newline` | function | `kernel/console.c:75` | `void vga_newline(void)` |
+| `vga_offset` | function | `kernel/console.c:23` | `static inline unsigned vga_offset(int x, int y)` |
+| `vga_putc` | function | `kernel/console.c:223` | `void vga_putc(char c)` |
+| `vga_puts` | function | `kernel/console.c:267` | `void vga_puts(const char *s)` |
+| `vga_raw_space` | function | `kernel/console.c:88` | `static void vga_raw_space(void)` |
+| `vga_scroll` | function | `kernel/console.c:56` | `void vga_scroll(void)` |
+| `vga_set_cursor` | function | `kernel/console.c:36` | `void vga_set_cursor(int x, int y)` |
+| `vga_set_xy` | function | `kernel/console.c:20` | `void vga_set_xy(int x, int y)` |
+| `ESC` | function | `kernel/console_in.c:157` | `* The bound keeps a bare ESC (never completed into a sequence) from  * hanging the reader. */ #de...` |
+| `MAX_SEQ_POLL` | macro | `kernel/console_in.c:159` | `#define MAX_SEQ_POLL` |
+| `PB_LEN` | macro | `kernel/console_in.c:18` | `#define PB_LEN` |
+| `SB_EXIT` | macro | `kernel/console_in.c:306` | `#define SB_EXIT` |
+| `SB_LEN` | macro | `kernel/console_in.c:281` | `#define SB_LEN` |
+| `SB_PGDN` | macro | `kernel/console_in.c:305` | `#define SB_PGDN` |
+| `SB_PGUP` | macro | `kernel/console_in.c:304` | `#define SB_PGUP` |
+| `console_getc` | function | `kernel/console_in.c:205` | `int console_getc(void)` |
+| `console_job_get` | function | `kernel/console_in.c:267` | `int console_job_get(void)` |
+| `console_job_try` | function | `kernel/console_in.c:257` | `int console_job_try(void)` |
+| `console_peek` | function | `kernel/console_in.c:233` | `int console_peek(void)` |
+| `console_poll_usb` | function | `kernel/console_in.c:93` | `static void console_poll_usb(void)` |
+| `console_ps2_live` | function | `kernel/console_in.c:106` | `static int console_ps2_live(void)` |
+| `console_raw_get` | function | `kernel/console_in.c:250` | `int console_raw_get(void)` |
+| `console_raw_try` | function | `kernel/console_in.c:246` | `int console_raw_try(void)` |
+| `console_stdin_active` | function | `kernel/console_in.c:56` | `int console_stdin_active(void)` |
 | `console_stdin_clear` | function | `kernel/console_in.c:46` | `void console_stdin_clear(void)` |
 | `console_stdin_push` | function | `kernel/console_in.c:32` | `int console_stdin_push(const char *data, unsigned long len)` |
 | `console_ungetc` | function | `kernel/console_in.c:85` | `void console_ungetc(unsigned char c)` |
@@ -63,6 +97,42 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `n_ungetc` | function | `kernel/cvm_host.c:185` | `static int64_t n_ungetc(void *vm, int ac, uint64_t *av)` |
 | `n_write` | function | `kernel/cvm_host.c:204` | `static int64_t n_write(void *vm, int ac, uint64_t *av)` |
 | `register_host_natives` | function | `kernel/cvm_host.c:392` | `static void register_host_natives(CvmState *vm)` |
+| `ed25519_verify` | function | `kernel/ed25519.c:810` | `int ed25519_verify(const unsigned char sig[64], const unsigned char *msg,                    unsi...` |
+| `ed_bytes_lt_q` | function | `kernel/ed25519.c:477` | `static unsigned ed_bytes_lt_q(const unsigned char b[32])` |
+| `ed_curve_d` | function | `kernel/ed25519.c:706` | `static void ed_curve_d(ed_fe *d)` |
+| `ed_fe` | struct | `kernel/ed25519.c:28` | `` |
+| `ed_fe_add` | function | `kernel/ed25519.c:280` | `static void ed_fe_add(ed_fe *r, const ed_fe *a, const ed_fe *b)` |
+| `ed_fe_cmov` | function | `kernel/ed25519.c:238` | `static void ed_fe_cmov(ed_fe *r, const ed_fe *b, unsigned flag)` |
+| `ed_fe_copy` | function | `kernel/ed25519.c:214` | `static void ed_fe_copy(ed_fe *r, const ed_fe *a)` |
+| `ed_fe_eq` | function | `kernel/ed25519.c:470` | `static unsigned ed_fe_eq(const ed_fe *a, const ed_fe *b)` |
+| `ed_fe_fold` | function | `kernel/ed25519.c:344` | `static void ed_fe_fold(ed_fe *r, ed_u64 w[8])` |
+| `ed_fe_frombytes` | function | `kernel/ed25519.c:449` | `static void ed_fe_frombytes(ed_fe *r, const unsigned char b[32])` |
+| `ed_fe_ge` | function | `kernel/ed25519.c:247` | `static unsigned ed_fe_ge(const ed_fe *a, const ed_fe *b)` |
+| `ed_fe_inv` | function | `kernel/ed25519.c:438` | `static void ed_fe_inv(ed_fe *r, const ed_fe *a)` |
+| `ed_fe_mul` | function | `kernel/ed25519.c:387` | `static void ed_fe_mul(ed_fe *r, const ed_fe *a, const ed_fe *b)` |
+| `ed_fe_one` | function | `kernel/ed25519.c:230` | `static void ed_fe_one(ed_fe *r)` |
+| `ed_fe_pow` | function | `kernel/ed25519.c:421` | `static void ed_fe_pow(ed_fe *r, const ed_fe *a, const unsigned char *bits, unsigned nbits)` |
+| `ed_fe_rawsub` | function | `kernel/ed25519.c:258` | `static void ed_fe_rawsub(ed_fe *r, const ed_fe *a, const ed_fe *b)` |
+| `ed_fe_sq` | function | `kernel/ed25519.c:416` | `static void ed_fe_sq(ed_fe *r, const ed_fe *a)` |
+| `ed_fe_sub` | function | `kernel/ed25519.c:302` | `static void ed_fe_sub(ed_fe *r, const ed_fe *a, const ed_fe *b)` |
+| `ed_fe_tobytes` | function | `kernel/ed25519.c:461` | `static void ed_fe_tobytes(unsigned char b[32], const ed_fe *a)` |
+| `ed_fe_zero` | function | `kernel/ed25519.c:222` | `static void ed_fe_zero(ed_fe *r)` |
+| `ed_ge` | struct | `kernel/ed25519.c:32` | `` |
+| `ed_ge_add` | function | `kernel/ed25519.c:612` | `static void ed_ge_add(ed_ge *r, const ed_ge *p, const ed_ge *q, const ed_fe *d2)` |
+| `ed_ge_cmov` | function | `kernel/ed25519.c:604` | `static void ed_ge_cmov(ed_ge *r, const ed_ge *b, unsigned flag)` |
+| `ed_ge_copy` | function | `kernel/ed25519.c:596` | `static void ed_ge_copy(ed_ge *r, const ed_ge *a)` |
+| `ed_ge_double` | function | `kernel/ed25519.c:644` | `static void ed_ge_double(ed_ge *r, const ed_ge *p)` |
+| `ed_ge_scalarmult` | function | `kernel/ed25519.c:686` | `static void ed_ge_scalarmult(ed_ge *r, const ed_ge *p, const unsigned char s[32],                ...` |
+| `ed_mod_l` | function | `kernel/ed25519.c:557` | `static void ed_mod_l(ed_fe *r, const unsigned char h[64])` |
+| `ed_rem_ge` | function | `kernel/ed25519.c:545` | `static unsigned ed_rem_ge(const ed_u64 a[5], const ed_u64 b[5])` |
+| `ed_rem_sub` | function | `kernel/ed25519.c:517` | `static void ed_rem_sub(ed_u64 r[5], const ed_u64 a[5], const ed_u64 b[5])` |
+| `ed_rotr` | function | `kernel/ed25519.c:84` | `static ed_u64 ed_rotr(ed_u64 x, unsigned n)` |
+| `ed_scalar_lt_l` | function | `kernel/ed25519.c:495` | `static unsigned ed_scalar_lt_l(const unsigned char b[32])` |
+| `ed_sha512_final` | function | `kernel/ed25519.c:188` | `void ed_sha512_final(ed_sha *c, unsigned char out[64])` |
+| `ed_sha512_init` | function | `kernel/ed25519.c:147` | `void ed_sha512_init(ed_sha *c)` |
+| `ed_sha512_update` | function | `kernel/ed25519.c:162` | `void ed_sha512_update(ed_sha *c, const unsigned char *data, unsigned long len)` |
+| `ed_sha_block` | function | `kernel/ed25519.c:89` | `static void ed_sha_block(ed_sha *c, const unsigned char *p)` |
+| `ed_u64` | type_alias | `kernel/ed25519.c:23` | `typedef unsigned long long ed_u64;` |
 | `EDIT_FILE_MAX` | macro | `kernel/editor.c:22` | `#define EDIT_FILE_MAX` |
 | `EDIT_LINE_MAX` | macro | `kernel/editor.c:21` | `#define EDIT_LINE_MAX` |
 | `EDIT_MAX_LINES` | macro | `kernel/editor.c:20` | `#define EDIT_MAX_LINES` |
@@ -96,12 +166,14 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `vga_mode_is_active` | function | `kernel/exec.c:62` | `int  vga_mode_is_active(void)` |
 | `vga_mode_set` | function | `kernel/exec.c:61` | `void vga_mode_set(int on)` |
 | `futex_bucket` | function | `kernel/futex.c:31` | `static futex_bucket_t *futex_bucket(unsigned long uaddr)` |
+| `futex_forget` | function | `kernel/futex.c:76` | `void futex_forget(int pid)` |
 | `futex_hash` | function | `kernel/futex.c:23` | `static unsigned long futex_hash(unsigned long uaddr)` |
 | `futex_init` | function | `kernel/futex.c:36` | `void futex_init(void)` |
-| `futex_linux_cmd` | function | `kernel/futex.c:84` | `int futex_linux_cmd(long op)` |
+| `futex_linux_cmd` | function | `kernel/futex.c:128` | `int futex_linux_cmd(long op)` |
 | `futex_table_t` | struct | `kernel/futex.c:16` | `` |
-| `futex_timeout_remaining_us` | function | `kernel/futex.c:95` | `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us)` |
-| `futex_wake` | function | `kernel/futex.c:112` | `long futex_wake(unsigned long uaddr, int n)` |
+| `futex_timeout_remaining_us` | function | `kernel/futex.c:139` | `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us)` |
+| `futex_unlink_locked` | function | `kernel/futex.c:50` | `static void futex_unlink_locked(futex_bucket_t *b, int pid)` |
+| `futex_wake` | function | `kernel/futex.c:158` | `long futex_wake(unsigned long uaddr, int n)` |
 | `t_cur_pid` | variable | `kernel/futex.c:13` | `extern int t_cur_pid;` |
 | `klog` | function | `kernel/klog.c:41` | `void klog(log_level_t level, log_subsystem_t subsys,           const char *fmt, ...)` |
 | `klog_disable` | function | `kernel/klog.c:38` | `void klog_disable(void)` |
@@ -129,53 +201,66 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `ldso_sym_lookup` | function | `kernel/ldso_parse.c:263` | `int ldso_sym_lookup(const unsigned char *file, unsigned long long fsize,         unsigned long lo...` |
 | `ldso_vaddr_to_offset` | function | `kernel/ldso_parse.c:54` | `int ldso_vaddr_to_offset(const unsigned char *file,         unsigned long long fsize, unsigned lo...` |
 | `ldso_valid_ehdr` | function | `kernel/ldso_parse.c:40` | `static int ldso_valid_ehdr(const unsigned char *file,         unsigned long long fsize)` |
-| `ELF64_R_SYM` | macro | `kernel/loader.c:61` | `#define ELF64_R_SYM(i)` |
-| `ELF64_R_TYPE` | macro | `kernel/loader.c:62` | `#define ELF64_R_TYPE(i)` |
-| `ELF_MAX_SEGMENTS` | macro | `kernel/loader.c:94` | `#define ELF_MAX_SEGMENTS` |
-| `ELF_NAME_MAX` | macro | `kernel/loader.c:95` | `#define ELF_NAME_MAX` |
-| `EM_X86_64` | macro | `kernel/loader.c:80` | `#define EM_X86_64` |
-| `ETREL_IMAGE_MAX` | macro | `kernel/loader.c:70` | `#define ETREL_IMAGE_MAX` |
-| `Elf64_Phdr` | struct | `kernel/loader.c:50` | `` |
-| `Elf64_Rela` | struct | `kernel/loader.c:44` | `` |
-| `Elf64_Shdr` | struct | `kernel/loader.c:22` | `` |
-| `Elf64_Sym` | struct | `kernel/loader.c:35` | `` |
-| `LdsoLibEnt` | struct | `kernel/loader.c:381` | `` |
-| `PF_X` | macro | `kernel/loader.c:93` | `#define PF_X` |
-| `PT_LOAD` | macro | `kernel/loader.c:81` | `#define PT_LOAD` |
-| `R_X86_64_32` | macro | `kernel/loader.c:89` | `#define R_X86_64_32` |
-| `R_X86_64_32S` | macro | `kernel/loader.c:90` | `#define R_X86_64_32S` |
-| `R_X86_64_64` | macro | `kernel/loader.c:83` | `#define R_X86_64_64` |
-| `R_X86_64_GLOB_DAT` | macro | `kernel/loader.c:86` | `#define R_X86_64_GLOB_DAT` |
-| `R_X86_64_IRELATIVE` | macro | `kernel/loader.c:91` | `#define R_X86_64_IRELATIVE` |
-| `R_X86_64_JUMP_SLOT` | macro | `kernel/loader.c:87` | `#define R_X86_64_JUMP_SLOT` |
-| `R_X86_64_PC32` | macro | `kernel/loader.c:84` | `#define R_X86_64_PC32` |
-| `R_X86_64_PLT32` | macro | `kernel/loader.c:85` | `#define R_X86_64_PLT32` |
-| `R_X86_64_RELATIVE` | macro | `kernel/loader.c:88` | `#define R_X86_64_RELATIVE` |
-| `SHF_ALLOC` | macro | `kernel/loader.c:77` | `#define SHF_ALLOC` |
-| `SHF_EXECINSTR` | macro | `kernel/loader.c:78` | `#define SHF_EXECINSTR` |
-| `SHN_UNDEF` | macro | `kernel/loader.c:63` | `#define SHN_UNDEF` |
-| `SHT_NOBITS` | macro | `kernel/loader.c:76` | `#define SHT_NOBITS` |
-| `SHT_PROGBITS` | macro | `kernel/loader.c:75` | `#define SHT_PROGBITS` |
-| `SHT_RELA` | macro | `kernel/loader.c:74` | `#define SHT_RELA` |
-| `SHT_STRTAB` | macro | `kernel/loader.c:73` | `#define SHT_STRTAB` |
-| `SHT_SYMTAB` | macro | `kernel/loader.c:72` | `#define SHT_SYMTAB` |
-| `apply_exec_relocs` | function | `kernel/loader.c:977` | `static void apply_exec_relocs(void *data, unsigned size, unsigned long base,                     ...` |
-| `base_out` | function | `kernel/loader.c:1191` | `* the link base via base_out (0 when the caller runs static images  * only: the dynamic binder ne...` |
-| `consistent` | function | `kernel/loader.c:572` | `* consistent (the next exec forgets them, a dying window frees them),  * and only reports. */ sta...` |
-| `elf_load` | function | `kernel/loader.c:129` | `void *elf_load(void *data, unsigned size, void **base_out)` |
-| `elf_load_fail` | function | `kernel/loader.c:121` | `static void elf_load_fail(void *base, void **sec_addrs, const char *why)` |
-| `elf_name_copy` | function | `kernel/loader.c:107` | `static void elf_name_copy(char *out, unsigned out_cap, const char *tab,                          ...` |
-| `exec_range` | struct | `kernel/loader.c:97` | `` |
-| `images` | function | `kernel/loader.c:783` | `* Static images (no dynamic section, or none needed) return 0 at * once, so the legacy paths never observe a...` |
-| `inodes` | function | `kernel/loader.c:374` | `* Pseudo inodes (LDSO_INO_BASE + slot) keep registry pages apart from * MiniFS inodes in the shared cache. No unload...` |
-| `ldso_bind_into` | function | `kernel/loader.c:787` | `int ldso_bind_into(void *data, unsigned size, unsigned long base,         unsigned long cr3, vma_...` |
-| `ldso_ensure_slot` | function | `kernel/loader.c:476` | `static int ldso_ensure_slot(const char *needed, int *slot_out)` |
-| `ldso_pseudo_read` | function | `kernel/loader.c:409` | `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len)` |
-| `ldso_pseudo_stat` | function | `kernel/loader.c:395` | `int ldso_pseudo_stat(int ino, unsigned long *size_out)` |
-| `ldso_read_file` | function | `kernel/loader.c:434` | `static int ldso_read_file(const char *name, unsigned char **out,         unsigned *size_out)` |
-| `load_exec_elf` | function | `kernel/loader.c:1060` | `void *load_exec_elf(void *data, unsigned size)` |
-| `process` | function | `kernel/loader.c:1084` | `* atomic section: a 100 Hz tick between two segments would switch * CR3 into another process (copies landing in its...` |
-| `time` | function | `kernel/loader.c:1262` | `* time (with the failing offset);` |
+| `ELF64_R_SYM` | macro | `kernel/loader.c:62` | `#define ELF64_R_SYM(i)` |
+| `ELF64_R_TYPE` | macro | `kernel/loader.c:63` | `#define ELF64_R_TYPE(i)` |
+| `ELF_MAX_SEGMENTS` | macro | `kernel/loader.c:101` | `#define ELF_MAX_SEGMENTS` |
+| `ELF_NAME_MAX` | macro | `kernel/loader.c:102` | `#define ELF_NAME_MAX` |
+| `ELF_NOTE_ALIGN` | macro | `kernel/loader.c:88` | `#define ELF_NOTE_ALIGN` |
+| `ELF_NOTE_HDR` | macro | `kernel/loader.c:87` | `#define ELF_NOTE_HDR` |
+| `EM_X86_64` | macro | `kernel/loader.c:81` | `#define EM_X86_64` |
+| `ETREL_IMAGE_MAX` | macro | `kernel/loader.c:71` | `#define ETREL_IMAGE_MAX` |
+| `Elf64_Phdr` | struct | `kernel/loader.c:51` | `` |
+| `Elf64_Rela` | struct | `kernel/loader.c:45` | `` |
+| `Elf64_Shdr` | struct | `kernel/loader.c:23` | `` |
+| `Elf64_Sym` | struct | `kernel/loader.c:36` | `` |
+| `LdsoLibEnt` | struct | `kernel/loader.c:388` | `` |
+| `PF_X` | macro | `kernel/loader.c:100` | `#define PF_X` |
+| `PT_LOAD` | macro | `kernel/loader.c:82` | `#define PT_LOAD` |
+| `PT_NOTE` | macro | `kernel/loader.c:83` | `#define PT_NOTE` |
+| `R_X86_64_32` | macro | `kernel/loader.c:96` | `#define R_X86_64_32` |
+| `R_X86_64_32S` | macro | `kernel/loader.c:97` | `#define R_X86_64_32S` |
+| `R_X86_64_64` | macro | `kernel/loader.c:90` | `#define R_X86_64_64` |
+| `R_X86_64_GLOB_DAT` | macro | `kernel/loader.c:93` | `#define R_X86_64_GLOB_DAT` |
+| `R_X86_64_IRELATIVE` | macro | `kernel/loader.c:98` | `#define R_X86_64_IRELATIVE` |
+| `R_X86_64_JUMP_SLOT` | macro | `kernel/loader.c:94` | `#define R_X86_64_JUMP_SLOT` |
+| `R_X86_64_PC32` | macro | `kernel/loader.c:91` | `#define R_X86_64_PC32` |
+| `R_X86_64_PLT32` | macro | `kernel/loader.c:92` | `#define R_X86_64_PLT32` |
+| `R_X86_64_RELATIVE` | macro | `kernel/loader.c:95` | `#define R_X86_64_RELATIVE` |
+| `SHF_ALLOC` | macro | `kernel/loader.c:78` | `#define SHF_ALLOC` |
+| `SHF_EXECINSTR` | macro | `kernel/loader.c:79` | `#define SHF_EXECINSTR` |
+| `SHN_UNDEF` | macro | `kernel/loader.c:64` | `#define SHN_UNDEF` |
+| `SHT_NOBITS` | macro | `kernel/loader.c:77` | `#define SHT_NOBITS` |
+| `SHT_NOTE` | macro | `kernel/loader.c:1067` | `#define SHT_NOTE` |
+| `SHT_PROGBITS` | macro | `kernel/loader.c:76` | `#define SHT_PROGBITS` |
+| `SHT_RELA` | macro | `kernel/loader.c:75` | `#define SHT_RELA` |
+| `SHT_STRTAB` | macro | `kernel/loader.c:74` | `#define SHT_STRTAB` |
+| `SHT_SYMTAB` | macro | `kernel/loader.c:73` | `#define SHT_SYMTAB` |
+| `SIGN_NOTE_NAME` | macro | `kernel/loader.c:1069` | `#define SIGN_NOTE_NAME` |
+| `apply_exec_relocs` | function | `kernel/loader.c:984` | `static void apply_exec_relocs(void *data, unsigned size, unsigned long base,                     ...` |
+| `base_out` | function | `kernel/loader.c:1395` | `* the link base via base_out (0 when the caller runs static images  * only: the dynamic binder ne...` |
+| `consistent` | function | `kernel/loader.c:579` | `* consistent (the next exec forgets them, a dying window frees them),  * and only reports. */ sta...` |
+| `elf_load` | function | `kernel/loader.c:136` | `void *elf_load(void *data, unsigned size, void **base_out)` |
+| `elf_load_fail` | function | `kernel/loader.c:128` | `static void elf_load_fail(void *base, void **sec_addrs, const char *why)` |
+| `elf_name_copy` | function | `kernel/loader.c:114` | `static void elf_name_copy(char *out, unsigned out_cap, const char *tab,                          ...` |
+| `elf_note_pad` | function | `kernel/loader.c:1072` | `static unsigned long elf_note_pad(unsigned long n)` |
+| `elf_sign_note_find` | function | `kernel/loader.c:1108` | `static int elf_sign_note_find(const unsigned char *img, unsigned size,                           ...` |
+| `elf_sign_note_span` | function | `kernel/loader.c:1083` | `static int elf_sign_note_span(const unsigned char *img, unsigned long off,                       ...` |
+| `elf_sign_section_find` | function | `kernel/loader.c:1132` | `static int elf_sign_section_find(const unsigned char *img, unsigned size,                        ...` |
+| `elf_sign_u32` | function | `kernel/loader.c:1181` | `static void elf_sign_u32(ed_sha *c, unsigned v)` |
+| `elf_sign_u64` | function | `kernel/loader.c:1172` | `static void elf_sign_u64(ed_sha *c, unsigned long v)` |
+| `elf_wants_process` | function | `kernel/loader.c:1432` | `int elf_wants_process(const void *data, unsigned size)` |
+| `exec_range` | struct | `kernel/loader.c:104` | `` |
+| `images` | function | `kernel/loader.c:790` | `* Static images (no dynamic section, or none needed) return 0 at * once, so the legacy paths never observe a...` |
+| `inodes` | function | `kernel/loader.c:381` | `* Pseudo inodes (LDSO_INO_BASE + slot) keep registry pages apart from * MiniFS inodes in the shared cache. No unload...` |
+| `ldso_bind_into` | function | `kernel/loader.c:794` | `int ldso_bind_into(void *data, unsigned size, unsigned long base,         unsigned long cr3, vma_...` |
+| `ldso_ensure_slot` | function | `kernel/loader.c:483` | `static int ldso_ensure_slot(const char *needed, int *slot_out)` |
+| `ldso_pseudo_read` | function | `kernel/loader.c:416` | `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len)` |
+| `ldso_pseudo_stat` | function | `kernel/loader.c:402` | `int ldso_pseudo_stat(int ino, unsigned long *size_out)` |
+| `ldso_read_file` | function | `kernel/loader.c:441` | `static int ldso_read_file(const char *name, unsigned char **out,         unsigned *size_out)` |
+| `load_exec_elf` | function | `kernel/loader.c:1262` | `void *load_exec_elf(void *data, unsigned size)` |
+| `load_exec_elf_into` | function | `kernel/loader.c:1456` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,                          u...` |
+| `process` | function | `kernel/loader.c:1288` | `* atomic section: a 100 Hz tick between two segments would switch * CR3 into another process (copies landing in its...` |
+| `time` | function | `kernel/loader.c:1520` | `* time (with the failing offset);` |
 | `HASH_BITS` | macro | `kernel/lz4_kernel.c:4` | `#define HASH_BITS` |
 | `HASH_SIZE` | macro | `kernel/lz4_kernel.c:5` | `#define HASH_SIZE` |
 | `LZ4_compressBound` | function | `kernel/lz4_kernel.c:33` | `int LZ4_compressBound(int inputSize)` |
@@ -203,67 +288,67 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `kmalloc_page` | function | `kernel/mm.c:81` | `void *kmalloc_page(void)` |
 | `kmalloc_report_failure` | function | `kernel/mm.c:53` | `static void kmalloc_report_failure(unsigned long size)` |
 | `krealloc` | function | `kernel/mm.c:115` | `void *krealloc(void *ptr, unsigned long size)` |
-| `COW_BITS` | macro | `kernel/mm/cow.c:33` | `#define COW_BITS` |
-| `COW_CAP` | macro | `kernel/mm/cow.c:34` | `#define COW_CAP` |
-| `COW_EMPTY` | macro | `kernel/mm/cow.c:38` | `#define COW_EMPTY` |
-| `COW_HASH_MUL` | macro | `kernel/mm/cow.c:40` | `#define COW_HASH_MUL` |
-| `COW_LOAD_MAX` | macro | `kernel/mm/cow.c:36` | `#define COW_LOAD_MAX` |
-| `COW_MASK` | macro | `kernel/mm/cow.c:35` | `#define COW_MASK` |
-| `COW_TOMB` | macro | `kernel/mm/cow.c:39` | `#define COW_TOMB` |
-| `COW_TOMB_MAX` | macro | `kernel/mm/cow.c:37` | `#define COW_TOMB_MAX` |
-| `PT_PTE_RW` | macro | `kernel/mm/cow.c:47` | `#define PT_PTE_RW` |
-| `PT_USER_RO` | macro | `kernel/mm/cow.c:45` | `#define PT_USER_RO` |
-| `PT_USER_RW_ENTRY` | macro | `kernel/mm/cow.c:46` | `#define PT_USER_RW_ENTRY` |
+| `COW_BITS` | macro | `kernel/mm/cow.c:34` | `#define COW_BITS` |
+| `COW_CAP` | macro | `kernel/mm/cow.c:35` | `#define COW_CAP` |
+| `COW_EMPTY` | macro | `kernel/mm/cow.c:39` | `#define COW_EMPTY` |
+| `COW_HASH_MUL` | macro | `kernel/mm/cow.c:41` | `#define COW_HASH_MUL` |
+| `COW_LOAD_MAX` | macro | `kernel/mm/cow.c:37` | `#define COW_LOAD_MAX` |
+| `COW_MASK` | macro | `kernel/mm/cow.c:36` | `#define COW_MASK` |
+| `COW_TOMB` | macro | `kernel/mm/cow.c:40` | `#define COW_TOMB` |
+| `COW_TOMB_MAX` | macro | `kernel/mm/cow.c:38` | `#define COW_TOMB_MAX` |
+| `CPU` | function | `kernel/mm/cow.c:287` | `* address space down on every other CPU (tlb_shootdown in do_fork_ex). */ unsigned long cow_fork_...` |
+| `PT_PTE_RW` | macro | `kernel/mm/cow.c:48` | `#define PT_PTE_RW` |
+| `PT_USER_RO` | macro | `kernel/mm/cow.c:46` | `#define PT_USER_RO` |
+| `PT_USER_RW_ENTRY` | macro | `kernel/mm/cow.c:47` | `#define PT_USER_RW_ENTRY` |
 | `alternative` | function | `kernel/mm/cow.c:20` | `* window is one instruction wide and the alternative (no CoW) is * documented, so the trade stands. */ #include...` |
-| `cow_copy_demand` | function | `kernel/mm/cow.c:165` | `static void cow_copy_demand(unsigned long pcr3, unsigned long ccr3)` |
-| `cow_entry_t` | struct | `kernel/mm/cow.c:57` | `` |
-| `cow_find` | function | `kernel/mm/cow.c:72` | `static int cow_find(unsigned long phys)` |
-| `cow_fork_one` | function | `kernel/mm/cow.c:254` | `static void cow_fork_one(unsigned long pcr3, unsigned long va,         volatile unsigned long *ppte)` |
-| `cow_page_shared` | function | `kernel/mm/cow.c:131` | `int cow_page_shared(unsigned long phys)` |
-| `cow_rehash` | function | `kernel/mm/cow.c:109` | `static void cow_rehash(void)` |
-| `cow_release_window` | function | `kernel/mm/cow.c:415` | `void cow_release_window(unsigned long cr3)` |
-| `cow_remove` | function | `kernel/mm/cow.c:84` | `static void cow_remove(int idx)` |
-| `cow_resolve` | function | `kernel/mm/cow.c:352` | `int cow_resolve(unsigned long cr3, unsigned long va)` |
-| `cow_shared` | function | `kernel/mm/cow.c:458` | `int cow_shared(void)` |
-| `cow_slot` | function | `kernel/mm/cow.c:67` | `static unsigned long cow_slot(unsigned long phys)` |
-| `cow_table_ensure` | function | `kernel/mm/cow.c:97` | `static void cow_table_ensure(void)` |
-| `cow_track` | function | `kernel/mm/cow.c:190` | `static int cow_track(unsigned long phys)` |
-| `cow_walk` | function | `kernel/mm/cow.c:220` | `static void cow_walk(unsigned long cr3, cow_walk_fn fn)` |
-| `private` | function | `kernel/mm/cow.c:216` | `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...` |
-| `published` | function | `kernel/mm/cow.c:284` | `* with nothing published (the half-built window is freed). The caller  * flushes the parent TLB a...` |
-| `KMM_DEVICE_FLAGS` | macro | `kernel/mm/paging.c:210` | `#define KMM_DEVICE_FLAGS` |
-| `KMM_DEVICE_MAX` | macro | `kernel/mm/paging.c:199` | `#define KMM_DEVICE_MAX` |
-| `KMM_MAX_IDENTITY` | macro | `kernel/mm/paging.c:203` | `#define KMM_MAX_IDENTITY` |
-| `PT_OWNED_BYTES` | macro | `kernel/mm/paging.c:370` | `#define PT_OWNED_BYTES` |
-| `_kernel_end` | variable | `kernel/mm/paging.c:48` | `extern char _kernel_end[];` |
-| `coherent` | function | `kernel/mm/paging.c:258` | `* for memory a device reads and writes by DMA: a controller that is not cache  * coherent (and an...` |
-| `exhausted` | function | `kernel/mm/paging.c:766` | `* the heap is exhausted (the caller kills like any unresolved fault). */ int mm_anon_fault(unsign...` |
-| `explicitly` | function | `kernel/mm/paging.c:971` | `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...` |
-| `honest` | function | `kernel/mm/paging.c:654` | `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides  * the documented T5 follow-up...` |
-| `kmm_ensure_pt` | function | `kernel/mm/paging.c:234` | `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)` |
-| `kmm_map_device` | function | `kernel/mm/paging.c:295` | `unsigned long kmm_map_device(unsigned long phys, unsigned long len)` |
-| `mm_anon_frame` | function | `kernel/mm/paging.c:714` | `static int mm_anon_frame(unsigned long phys)` |
-| `mm_copy_user_page` | function | `kernel/mm/paging.c:1097` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` |
-| `mm_demand_pte` | function | `kernel/mm/paging.c:703` | `unsigned long mm_demand_pte(unsigned long prot)` |
-| `mm_file_break` | function | `kernel/mm/paging.c:1018` | `int mm_file_break(unsigned long cr3, unsigned long va)` |
-| `mm_file_page_phys` | function | `kernel/mm/paging.c:821` | `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` |
-| `mm_file_pte` | function | `kernel/mm/paging.c:840` | `static volatile unsigned long *mm_file_pte(unsigned long cr3,         unsigned long va)` |
-| `mm_file_range_release` | function | `kernel/mm/paging.c:975` | `void mm_file_range_release(unsigned long cr3, unsigned long base,         unsigned long len, int ...` |
-| `mm_lock` | variable | `kernel/mm/paging.c:695` | `extern spinlock_t mm_lock;` |
-| `mm_page_aligned_alloc` | function | `kernel/mm/paging.c:31` | `static unsigned char *mm_page_aligned_alloc(unsigned size,                                       ...` |
-| `mm_setup_protections` | function | `kernel/mm/paging.c:40` | `void mm_setup_protections(void)` |
-| `mm_user_ensure_page` | function | `kernel/mm/paging.c:624` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` |
-| `mm_user_pte_update` | function | `kernel/mm/paging.c:335` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)` |
-| `mm_user_set_exec` | function | `kernel/mm/paging.c:355` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)` |
-| `mt_shared_slot` | function | `kernel/mm/paging.c:548` | `static int mt_shared_slot(unsigned long pd_idx)` |
-| `pt_clone_user` | function | `kernel/mm/paging.c:419` | `uint64_t pt_clone_user(uint64_t parent_cr3)` |
-| `pt_clone_user_empty` | function | `kernel/mm/paging.c:567` | `unsigned long pt_clone_user_empty(void)` |
-| `pt_free_user` | function | `kernel/mm/paging.c:1175` | `void pt_free_user(uint64_t cr3)` |
-| `pt_owned_index` | function | `kernel/mm/paging.c:373` | `static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit)` |
-| `pt_page_alloc` | function | `kernel/mm/paging.c:391` | `void *pt_page_alloc(void)` |
-| `pt_page_free` | function | `kernel/mm/paging.c:410` | `void pt_page_free(void *ptr)` |
-| `pt_page_owned` | function | `kernel/mm/paging.c:384` | `int pt_page_owned(unsigned long phys)` |
-| `tables` | function | `kernel/mm/paging.c:970` | `* tables (munmap/mremap in caller context, under their mm_lock);` |
+| `cow_copy_demand` | function | `kernel/mm/cow.c:166` | `static void cow_copy_demand(unsigned long pcr3, unsigned long ccr3)` |
+| `cow_entry_t` | struct | `kernel/mm/cow.c:58` | `` |
+| `cow_find` | function | `kernel/mm/cow.c:73` | `static int cow_find(unsigned long phys)` |
+| `cow_fork_one` | function | `kernel/mm/cow.c:255` | `static void cow_fork_one(unsigned long pcr3, unsigned long va,         volatile unsigned long *ppte)` |
+| `cow_page_shared` | function | `kernel/mm/cow.c:132` | `int cow_page_shared(unsigned long phys)` |
+| `cow_rehash` | function | `kernel/mm/cow.c:110` | `static void cow_rehash(void)` |
+| `cow_release_window` | function | `kernel/mm/cow.c:421` | `void cow_release_window(unsigned long cr3)` |
+| `cow_remove` | function | `kernel/mm/cow.c:85` | `static void cow_remove(int idx)` |
+| `cow_resolve` | function | `kernel/mm/cow.c:356` | `int cow_resolve(unsigned long cr3, unsigned long va)` |
+| `cow_shared` | function | `kernel/mm/cow.c:464` | `int cow_shared(void)` |
+| `cow_slot` | function | `kernel/mm/cow.c:68` | `static unsigned long cow_slot(unsigned long phys)` |
+| `cow_table_ensure` | function | `kernel/mm/cow.c:98` | `static void cow_table_ensure(void)` |
+| `cow_track` | function | `kernel/mm/cow.c:191` | `static int cow_track(unsigned long phys)` |
+| `cow_walk` | function | `kernel/mm/cow.c:221` | `static void cow_walk(unsigned long cr3, cow_walk_fn fn)` |
+| `private` | function | `kernel/mm/cow.c:217` | `* for every present page in a private (non-graphics) slot. Shared * graphics slots are never CoW: the compositor...` |
+| `KMM_DEVICE_FLAGS` | macro | `kernel/mm/paging.c:211` | `#define KMM_DEVICE_FLAGS` |
+| `KMM_DEVICE_MAX` | macro | `kernel/mm/paging.c:200` | `#define KMM_DEVICE_MAX` |
+| `KMM_MAX_IDENTITY` | macro | `kernel/mm/paging.c:204` | `#define KMM_MAX_IDENTITY` |
+| `PTE` | function | `kernel/mm/paging.c:1015` | `* PTE (a cache page stays cached, but no stale writer may reach it).  * Never allocates. */ void ...` |
+| `PT_OWNED_BYTES` | macro | `kernel/mm/paging.c:371` | `#define PT_OWNED_BYTES` |
+| `_kernel_end` | variable | `kernel/mm/paging.c:49` | `extern char _kernel_end[];` |
+| `coherent` | function | `kernel/mm/paging.c:259` | `* for memory a device reads and writes by DMA: a controller that is not cache  * coherent (and an...` |
+| `explicitly` | function | `kernel/mm/paging.c:1011` | `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...` |
+| `honest` | function | `kernel/mm/paging.c:655` | `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides  * the documented T5 follow-up...` |
+| `kmm_ensure_pt` | function | `kernel/mm/paging.c:235` | `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)` |
+| `kmm_map_device` | function | `kernel/mm/paging.c:296` | `unsigned long kmm_map_device(unsigned long phys, unsigned long len)` |
+| `mm_anon_fault` | function | `kernel/mm/paging.c:779` | `int mm_anon_fault(unsigned long cr3, unsigned long va, int write)` |
+| `mm_anon_frame` | function | `kernel/mm/paging.c:715` | `static int mm_anon_frame(unsigned long phys)` |
+| `mm_copy_user_page` | function | `kernel/mm/paging.c:1149` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` |
+| `mm_demand_pte` | function | `kernel/mm/paging.c:704` | `unsigned long mm_demand_pte(unsigned long prot)` |
+| `mm_file_break` | function | `kernel/mm/paging.c:1070` | `int mm_file_break(unsigned long cr3, unsigned long va)` |
+| `mm_file_page_phys` | function | `kernel/mm/paging.c:861` | `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` |
+| `mm_file_pte` | function | `kernel/mm/paging.c:880` | `static volatile unsigned long *mm_file_pte(unsigned long cr3,         unsigned long va)` |
+| `mm_lock` | variable | `kernel/mm/paging.c:696` | `extern spinlock_t mm_lock;` |
+| `mm_page_aligned_alloc` | function | `kernel/mm/paging.c:32` | `static unsigned char *mm_page_aligned_alloc(unsigned size,                                       ...` |
+| `mm_setup_protections` | function | `kernel/mm/paging.c:41` | `void mm_setup_protections(void)` |
+| `mm_user_ensure_page` | function | `kernel/mm/paging.c:625` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` |
+| `mm_user_pte_update` | function | `kernel/mm/paging.c:336` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)` |
+| `mm_user_set_exec` | function | `kernel/mm/paging.c:356` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)` |
+| `mt_shared_slot` | function | `kernel/mm/paging.c:549` | `static int mt_shared_slot(unsigned long pd_idx)` |
+| `pt_clone_user` | function | `kernel/mm/paging.c:420` | `uint64_t pt_clone_user(uint64_t parent_cr3)` |
+| `pt_clone_user_empty` | function | `kernel/mm/paging.c:568` | `unsigned long pt_clone_user_empty(void)` |
+| `pt_free_user` | function | `kernel/mm/paging.c:1227` | `void pt_free_user(uint64_t cr3)` |
+| `pt_owned_index` | function | `kernel/mm/paging.c:374` | `static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit)` |
+| `pt_page_alloc` | function | `kernel/mm/paging.c:392` | `void *pt_page_alloc(void)` |
+| `pt_page_free` | function | `kernel/mm/paging.c:411` | `void pt_page_free(void *ptr)` |
+| `pt_page_owned` | function | `kernel/mm/paging.c:385` | `int pt_page_owned(unsigned long phys)` |
+| `tables` | function | `kernel/mm/paging.c:1010` | `* tables (munmap/mremap in caller context, under their mm_lock);` |
 | `SWAP_CHUNK_CMP` | macro | `kernel/mm/swap.c:18` | `#define SWAP_CHUNK_CMP` |
 | `SWAP_CHUNK_RAW` | macro | `kernel/mm/swap.c:17` | `#define SWAP_CHUNK_RAW` |
 | `SWAP_CHUNK_SECTORS` | macro | `kernel/mm/swap.c:19` | `#define SWAP_CHUNK_SECTORS` |
@@ -275,6 +360,11 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `swap_lba` | function | `kernel/mm/swap.c:41` | `static unsigned long swap_lba(void)` |
 | `swap_out` | function | `kernel/mm/swap.c:47` | `int swap_out(unsigned long window_sz)` |
 | `unwired` | function | `kernel/mm/swap.c:7` | `* * Currently unwired (the isolated-window spawn path superseded the * swap-out design);` |
+| `TLB_SHOOT_SPIN_MAX` | macro | `kernel/mm/tlb.c:24` | `#define TLB_SHOOT_SPIN_MAX` |
+| `tlb_others_on` | function | `kernel/mm/tlb.c:36` | `static int tlb_others_on(unsigned long cr3)` |
+| `tlb_shootdown` | function | `kernel/mm/tlb.c:49` | `void tlb_shootdown(unsigned long cr3)` |
+| `tlb_shootdown_count` | function | `kernel/mm/tlb.c:71` | `unsigned long tlb_shootdown_count(void)` |
+| `tlb_shootdown_timeouts` | function | `kernel/mm/tlb.c:75` | `unsigned long tlb_shootdown_timeouts(void)` |
 | `panic_fb_hex` | function | `kernel/panic.c:61` | `static void panic_fb_hex(unsigned long v, int digits)` |
 | `panic_fb_puts` | function | `kernel/panic.c:30` | `static void panic_fb_puts(const char *s)` |
 | `panic_hex` | function | `kernel/panic.c:23` | `static void panic_hex(unsigned long v, int digits)` |
@@ -358,143 +448,53 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `shell_report` | function | `kernel/redirect.c:17` | `void shell_report(const char *what, const char *detail)` |
 | `shell_report_exit` | function | `kernel/redirect.c:11` | `void shell_report_exit(int code)` |
 | `shell_take_redirect` | function | `kernel/redirect.c:25` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)` |
-| `BSP` | function | `kernel/sched.c:1753` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs          * running the shell contex...` |
-| `FSBASE` | function | `kernel/sched.c:886` | `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...` |
-| `IRQ4` | function | `kernel/sched.c:770` | `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...` |
-| `KSTACK_CANARY` | macro | `kernel/sched.c:162` | `#define KSTACK_CANARY` |
-| `KSTACK_PAINT` | macro | `kernel/sched.c:161` | `#define KSTACK_PAINT` |
-| `KSTACK_SZ` | macro | `kernel/sched.c:148` | `#define KSTACK_SZ` |
-| `MSR` | function | `kernel/sched.c:2600` | `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...` |
-| `MXCSR` | function | `kernel/sched.c:299` | `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all  * exceptions masked): fxsa...` |
-| `MY_SYS_KSTK_TOP` | macro | `kernel/sched.c:52` | `#define MY_SYS_KSTK_TOP` |
-| `MY_USER_LOAD_BASE` | macro | `kernel/sched.c:54` | `#define MY_USER_LOAD_BASE` |
-| `MY_USER_STACK_TOP` | macro | `kernel/sched.c:53` | `#define MY_USER_STACK_TOP` |
-| `PROC_KSTACK_OFF` | function | `kernel/sched.c:81` | `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...` |
-| `PROC_SWITCHING` | function | `kernel/sched.c:2153` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...` |
-| `__attribute__` | function | `kernel/sched.c:108` | `typedef struct __attribute__((packed))` |
-| `__attribute__` | function | `kernel/sched.c:136` | `typedef struct __attribute__((packed))` |
-| `adopt` | function | `kernel/sched.c:2889` | `* adopt (armed by Linux O_CLOEXEC on open);` |
-| `alloc_kstack` | function | `kernel/sched.c:255` | `static uint64_t alloc_kstack(void)` |
-| `alloc_pid_locked` | function | `kernel/sched.c:3146` | `static int alloc_pid_locked(void)` |
-| `aslr_brk_pages` | function | `kernel/sched.c:2864` | `unsigned long aslr_brk_pages(void)` |
-| `aslr_dyn_base` | function | `kernel/sched.c:2866` | `unsigned long aslr_dyn_base(void)` |
-| `aslr_mix` | function | `kernel/sched.c:2854` | `static unsigned long aslr_mix(unsigned long salt)` |
-| `aslr_mmap_pages` | function | `kernel/sched.c:2865` | `unsigned long aslr_mmap_pages(void)` |
-| `aslr_stack_bytes` | function | `kernel/sched.c:2863` | `unsigned long aslr_stack_bytes(void)` |
-| `cli` | function | `kernel/sched.c:2875` | `* cli (disk PIO must never run with the timer held off);` |
-| `context` | function | `kernel/sched.c:861` | `* context (anything entered via k_exec_user) is inside a syscall  * (entry swapped 0 in), and a c...` |
-| `copy` | function | `kernel/sched.c:355` | `* copy (fail closed, fork refuses) instead of forging pointers. */ /* Name the link a fork could ...` |
-| `ctx_from_frame` | function | `kernel/sched.c:2510` | `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)` |
-| `descriptor` | function | `kernel/sched.c:96` | `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 ==...` |
-| `do_clone_thread` | function | `kernel/sched.c:2691` | `static long do_clone_thread(unsigned long flags, unsigned long newsp,                            ...` |
-| `do_execve` | function | `kernel/sched.c:2893` | `long do_execve(char *kpath, int kargc, char **kargv)` |
-| `do_exit` | function | `kernel/sched.c:2223` | `void do_exit(int code)` |
-| `do_fork` | function | `kernel/sched.c:2537` | `long do_fork(void)` |
-| `do_fork_ex` | function | `kernel/sched.c:2550` | `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)` |
-| `do_group_exit` | function | `kernel/sched.c:2826` | `void do_group_exit(int code)` |
-| `do_kill` | function | `kernel/sched.c:3290` | `int do_kill(int pid)` |
-| `do_kill_code` | function | `kernel/sched.c:3296` | `int do_kill_code(int pid, int code)` |
-| `do_thread_spawn` | function | `kernel/sched.c:2287` | `long do_thread_spawn(unsigned long fn, unsigned long stack,                      unsigned long arg)` |
-| `do_waitpid` | function | `kernel/sched.c:3190` | `int do_waitpid(int pid)` |
-| `do_waitpid_linux` | function | `kernel/sched.c:3221` | `int do_waitpid_linux(int pid, int nohang, int *found)` |
-| `exec_enter` | function | `kernel/sched.c:71` | `extern void exec_enter(unsigned long frame);` |
-| `fork_child_settid` | function | `kernel/sched.c:2528` | `void fork_child_settid(void)` |
-| `fork_report` | function | `kernel/sched.c:2543` | `static void fork_report(const char *what)` |
-| `fork_trampoline` | function | `kernel/sched.c:66` | `extern void fork_trampoline(void);` |
-| `fpu_alloc_clean` | function | `kernel/sched.c:311` | `static void *fpu_alloc_clean(void)` |
-| `fpu_free_proc` | function | `kernel/sched.c:329` | `static void fpu_free_proc(proc_t *p)` |
-| `fpu_restore_from` | function | `kernel/sched.c:307` | `static inline void fpu_restore_from(void *area)` |
-| `gdb_dump_report` | function | `kernel/sched.c:690` | `void gdb_dump_report(unsigned long addr, unsigned long len)` |
-| `group_threads_live_locked` | function | `kernel/sched.c:3158` | `static int group_threads_live_locked(int tgid)` |
-| `here` | function | `kernel/sched.c:121` | `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096]...` |
-| `idt_init` | function | `kernel/sched.c:734` | `static void idt_init(void)` |
-| `idt_set` | function | `kernel/sched.c:723` | `static void idt_set(int vec, void (*h)(void))` |
-| `irqstat_report` | function | `kernel/sched.c:624` | `void irqstat_report(void)` |
-| `isr_dispatch` | function | `kernel/sched.c:1176` | `void isr_dispatch(int vector, trap_frame_t *frame)` |
-| `isr_stub_table` | variable | `kernel/sched.c:145` | `extern void *isr_stub_table[];` |
-| `it` | function | `kernel/sched.c:3336` | `* it (SPAWN/exec point proc 0 here transiently);` |
-| `itself` | function | `kernel/sched.c:2487` | `* the shell itself (use mrun first), and a CLONE_VM thread forking  * would duplicate shared stat...` |
-| `kill_group_threads_locked` | function | `kernel/sched.c:2805` | `static void kill_group_threads_locked(int tgid, int except)` |
-| `kstack_is_slot_end` | function | `kernel/sched.c:192` | `static int kstack_is_slot_end(uint64_t v)` |
-| `kstack_of` | function | `kernel/sched.c:202` | `static uint64_t kstack_of(int j)` |
-| `kstack_owner` | function | `kernel/sched.c:209` | `static int kstack_owner(uint64_t top)` |
-| `kstack_paint` | function | `kernel/sched.c:164` | `static void kstack_paint(uint64_t top, unsigned long size)` |
-| `kstack_report` | function | `kernel/sched.c:513` | `void kstack_report(void)` |
-| `kstack_scan_serial` | function | `kernel/sched.c:224` | `static void kstack_scan_serial(void)` |
-| `kstack_usage` | function | `kernel/sched.c:173` | `static int kstack_usage(uint64_t top, unsigned long size,                         unsigned long *...` |
-| `live` | function | `kernel/sched.c:279` | `* every reap leaked its own stack and released a neighbour that could  * still be live (two procs...` |
-| `mm_lock` | variable | `kernel/sched.c:855` | `extern spinlock_t mm_lock;` |
-| `mm_owner` | function | `kernel/sched.c:465` | `static proc_t *mm_owner(proc_t *p)` |
-| `mm_view_claim_current` | function | `kernel/sched.c:506` | `void mm_view_claim_current(void)` |
-| `mm_view_enter` | function | `kernel/sched.c:487` | `static void mm_view_enter(proc_t *nxt)` |
-| `net_rx_dropped` | variable | `kernel/sched.c:628` | `extern unsigned int net_rx_dropped;` |
-| `off_lo` | type_alias | `kernel/sched.c:136` | `typedef struct __attribute__((packed)) { uint16_t off_lo;` |
-| `park` | function | `kernel/sched.c:3387` | `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */...` |
-| `pic_eoi` | function | `kernel/sched.c:788` | `static void pic_eoi(int irq)` |
-| `pic_init` | function | `kernel/sched.c:746` | `static void pic_init(void)` |
-| `pit_init` | function | `kernel/sched.c:781` | `static void pit_init(void)` |
-| `point` | function | `kernel/sched.c:874` | `* return address as the resume point ("continue the ISR"), which  * required the stranded ISR fra...` |
-| `proc_create` | function | `kernel/sched.c:1800` | `int proc_create(const char *name, int parent_pid)` |
-| `proc_get` | function | `kernel/sched.c:1794` | `proc_t *proc_get(int pid)` |
-| `proc_running_anywhere` | function | `kernel/sched.c:3125` | `static int proc_running_anywhere(int pid)` |
-| `proc_spawn_elf` | function | `kernel/sched.c:2078` | `int proc_spawn_elf(const char *name, void *data, unsigned size,                    int argc, char...` |
-| `proc_spawn_elf_inner` | function | `kernel/sched.c:1918` | `static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,                    i...` |
-| `read_cr3` | function | `kernel/sched.c:73` | `static inline unsigned long read_cr3(void)` |
-| `reap_autoreap_locked` | function | `kernel/sched.c:3134` | `static void reap_autoreap_locked(int tgid)` |
-| `registers` | function | `kernel/sched.c:2318` | `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one...` |
-| `res0` | type_alias | `kernel/sched.c:108` | `typedef struct __attribute__((packed)) { uint32_t res0;` |
-| `returns` | function | `kernel/sched.c:2216` | `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");` |
-| `rlimit_cpu_exceeded` | function | `kernel/sched.c:1155` | `int rlimit_cpu_exceeded(int pid)` |
-| `rtl_counters` | function | `kernel/sched.c:627` | `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);` |
-| `rtl_present` | function | `kernel/sched.c:629` | `extern int rtl_present(void);` |
-| `sc_top_save` | variable | `kernel/sched.c:68` | `extern unsigned long sc_top_save[];` |
-| `sched_ap_preempt` | function | `kernel/sched.c:1049` | `static void sched_ap_preempt(trap_frame_t *frame)` |
-| `sched_init` | function | `kernel/sched.c:3328` | `void sched_init(void)` |
-| `sched_lock` | function | `kernel/sched.c:445` | `* hold sched_lock (+mm_lock at the swap sites);` |
-| `sched_next_locked` | function | `kernel/sched.c:903` | `static int sched_next_locked(int start, int vm_only)` |
-| `sched_set_nice` | function | `kernel/sched.c:921` | `int sched_set_nice(int pid, int nice)` |
-| `sched_tick_audio` | function | `kernel/sched.c:25` | `static void sched_tick_audio(void *ctx)` |
-| `sched_tick_desktop` | function | `kernel/sched.c:31` | `static void sched_tick_desktop(void *ctx)` |
-| `sched_tick_usb` | function | `kernel/sched.c:42` | `static void sched_tick_usb(void *ctx)` |
-| `schedtop_report` | function | `kernel/sched.c:556` | `void schedtop_report(void)` |
-| `schedule` | function | `kernel/sched.c:2120` | `* that keeps schedule()'s own rbp runs the caller's frame accesses  * (locals, leave/ret) on the ...` |
-| `schedule` | function | `kernel/sched.c:2127` | `void schedule(void)` |
-| `seccomp_allow_one` | function | `kernel/sched.c:937` | `int seccomp_allow_one(int pid, int n)` |
-| `seccomp_denied` | function | `kernel/sched.c:944` | `int seccomp_denied(int pid, int n)` |
-| `seccomp_deny_one` | function | `kernel/sched.c:930` | `int seccomp_deny_one(int pid, int n)` |
-| `shell_nchildren` | function | `kernel/sched.c:3264` | `int shell_nchildren(void)` |
-| `shell_reap_nb` | function | `kernel/sched.c:3238` | `int shell_reap_nb(int *pid_out, int *code_out)` |
-| `shell_reap_one` | function | `kernel/sched.c:3252` | `int shell_reap_one(int pid, int *code_out)` |
-| `slot` | function | `kernel/sched.c:560` | `* must not eat a quarter of a 16 KB slot (see the stack discipline * contract in CLAUDE.md). Fail-closed on OOM. */...` |
-| `smp_any_ap_idle` | function | `kernel/sched.c:1119` | `static int smp_any_ap_idle(void)` |
-| `smp_ap_idle_loop` | function | `kernel/sched.c:1015` | `void smp_ap_idle_loop(void)` |
-| `smp_claim_thread_v` | function | `kernel/sched.c:969` | `static int smp_claim_thread_v(int vm_only)` |
-| `smp_try_claim_hint` | function | `kernel/sched.c:953` | `static int smp_try_claim_hint(int pid, int vm_only)` |
-| `stop_row` | struct | `kernel/sched.c:557` | `` |
-| `stub` | function | `kernel/sched.c:643` | `* gdb stub (`make gdb`, then `target remote :1234` from the host). These  * helpers are the seria...` |
-| `sys_ticks` | function | `kernel/sched.c:620` | `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);` |
-| `syscall` | function | `kernel/sched.c:1293` | `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid...` |
-| `timer_tick` | function | `kernel/sched.c:3323` | `void timer_tick(void)` |
-| `trap_frame_t` | struct | `kernel/sched.c:707` | `` |
-| `tss_init` | function | `kernel/sched.c:812` | `static void tss_init(void)` |
-| `tss_init_ap` | function | `kernel/sched.c:843` | `void tss_init_ap(int cpu)` |
-| `tss_write_desc` | function | `kernel/sched.c:795` | `static void tss_write_desc(int cpu)` |
-| `user_trampoline` | function | `kernel/sched.c:65` | `extern void user_trampoline(void);` |
-| `vma_ctx_alloc` | function | `kernel/sched.c:335` | `vma_ctx_t *vma_ctx_alloc(void)` |
-| `vma_ctx_copy` | function | `kernel/sched.c:364` | `static vma_ctx_t *vma_ctx_copy(vma_ctx_t *src)` |
-| `vma_ctx_free` | function | `kernel/sched.c:345` | `void vma_ctx_free(vma_ctx_t *c)` |
-| `vma_load_proc` | function | `kernel/sched.c:451` | `static void vma_load_proc(proc_t *p)` |
-| `vma_owned` | function | `kernel/sched.c:439` | `static int vma_owned(proc_t *p)` |
-| `vma_save_proc` | function | `kernel/sched.c:447` | `static void vma_save_proc(proc_t *p)` |
-| `waitpid_has_child` | function | `kernel/sched.c:3207` | `static int waitpid_has_child(int pid)` |
-| `waitpid_scan` | function | `kernel/sched.c:3169` | `static int waitpid_scan(int pid, int *found)` |
-| `yield` | function | `kernel/sched.c:2208` | `void yield(void)` |
-| `zeroed` | function | `kernel/sched.c:3398` | `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe...` |
-| `SCROLLBACK_ROWS` | macro | `kernel/scrollback.c:12` | `#define SCROLLBACK_ROWS` |
-| `sb_capture_row0` | function | `kernel/scrollback.c:23` | `void sb_capture_row0(void)` |
-| `sb_get_char` | function | `kernel/scrollback.c:41` | `char sb_get_char(int row, int col)` |
-| `sb_get_count` | function | `kernel/scrollback.c:38` | `int sb_get_count(void)` |
-| `sb_get_head` | function | `kernel/scrollback.c:39` | `int sb_get_head(void)` |
-| `sb_init` | function | `kernel/scrollback.c:17` | `void sb_init(void)` |
+| `BSP` | function | `kernel/sched.c:1780` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs          * running the shell contex...` |
+| `FSBASE` | function | `kernel/sched.c:913` | `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...` |
+| `IRQ4` | function | `kernel/sched.c:796` | `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...` |
+| `KSTACK_CANARY` | macro | `kernel/sched.c:169` | `#define KSTACK_CANARY` |
+| `KSTACK_PAINT` | macro | `kernel/sched.c:168` | `#define KSTACK_PAINT` |
+| `KSTACK_SZ` | macro | `kernel/sched.c:155` | `#define KSTACK_SZ` |
+| `MSR` | function | `kernel/sched.c:2633` | `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...` |
+| `MXCSR` | function | `kernel/sched.c:306` | `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all  * exceptions masked): fxsa...` |
+| `MY_SYS_KSTK_TOP` | macro | `kernel/sched.c:53` | `#define MY_SYS_KSTK_TOP` |
+| `MY_USER_LOAD_BASE` | macro | `kernel/sched.c:55` | `#define MY_USER_LOAD_BASE` |
+| `MY_USER_STACK_TOP` | macro | `kernel/sched.c:54` | `#define MY_USER_STACK_TOP` |
+| `NMI_IST_SLOT` | macro | `kernel/sched.c:125` | `#define NMI_IST_SLOT` |
+| `NMI_IST_STACK_SZ` | macro | `kernel/sched.c:123` | `#define NMI_IST_STACK_SZ` |
+| `NMI_VECTOR` | macro | `kernel/sched.c:124` | `#define NMI_VECTOR` |
+| `PROC_KSTACK_OFF` | function | `kernel/sched.c:82` | `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...` |
+| `PROC_SWITCHING` | function | `kernel/sched.c:2180` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...` |
+| `__attribute__` | function | `kernel/sched.c:109` | `typedef struct __attribute__((packed))` |
+| `__attribute__` | function | `kernel/sched.c:143` | `typedef struct __attribute__((packed))` |
+| `adopt` | function | `kernel/sched.c:2922` | `* adopt (armed by Linux O_CLOEXEC on open);` |
+| `alloc_kstack` | function | `kernel/sched.c:262` | `static uint64_t alloc_kstack(void)` |
+| `alloc_pid_locked` | function | `kernel/sched.c:3180` | `static int alloc_pid_locked(void)` |
+| `aslr_brk_pages` | function | `kernel/sched.c:2897` | `unsigned long aslr_brk_pages(void)` |
+| `aslr_dyn_base` | function | `kernel/sched.c:2899` | `unsigned long aslr_dyn_base(void)` |
+| `aslr_mix` | function | `kernel/sched.c:2887` | `static unsigned long aslr_mix(unsigned long salt)` |
+| `aslr_mmap_pages` | function | `kernel/sched.c:2898` | `unsigned long aslr_mmap_pages(void)` |
+| `aslr_stack_bytes` | function | `kernel/sched.c:2896` | `unsigned long aslr_stack_bytes(void)` |
+| `cli` | function | `kernel/sched.c:2908` | `* cli (disk PIO must never run with the timer held off);` |
+| `context` | function | `kernel/sched.c:888` | `* context (anything entered via k_exec_user) is inside a syscall  * (entry swapped 0 in), and a c...` |
+| `copy` | function | `kernel/sched.c:362` | `* copy (fail closed, fork refuses) instead of forging pointers. */ /* Name the link a fork could ...` |
+| `ctx_from_frame` | function | `kernel/sched.c:2537` | `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)` |
+| `descriptor` | function | `kernel/sched.c:97` | `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 ==...` |
+| `do_clone_thread` | function | `kernel/sched.c:2724` | `static long do_clone_thread(unsigned long flags, unsigned long newsp,                            ...` |
+| `do_execve` | function | `kernel/sched.c:2926` | `long do_execve(char *kpath, int kargc, char **kargv)` |
+| `do_exit` | function | `kernel/sched.c:2250` | `void do_exit(int code)` |
+| `do_fork` | function | `kernel/sched.c:2564` | `long do_fork(void)` |
+| `do_fork_ex` | function | `kernel/sched.c:2577` | `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)` |
+| `do_group_exit` | function | `kernel/sched.c:2859` | `void do_group_exit(int code)` |
+| `do_kill` | function | `kernel/sched.c:3324` | `int do_kill(int pid)` |
+| `do_kill_code` | function | `kernel/sched.c:3330` | `int do_kill_code(int pid, int code)` |
+| `do_thread_spawn` | function | `kernel/sched.c:2314` | `long do_thread_spawn(unsigned long fn, unsigned long stack,                      unsigned long arg)` |
+| `do_waitpid` | function | `kernel/sched.c:3224` | `int do_waitpid(int pid)` |
+| `do_waitpid_linux` | function | `kernel/sched.c:3255` | `int do_waitpid_linux(int pid, int nohang, int *found)` |
+| `exec_enter` | function | `kernel/sched.c:72` | `extern void exec_enter(unsigned long frame);` |
+| `fork_child_settid` | function | `kernel/sched.c:2555` | `void fork_child_settid(void)` |
+| `fork_report` | function | `kernel/sched.c:2570` | `static void fork_report(const char *what)` |
+| `fork_trampoline` | function | `kernel/sched.c:67` | `extern void fork_trampoline(void);` |
+| `fpu_alloc_clean` | function | `kernel/sched.c:318` | `static void *fpu_alloc_clean(void)` |
+| `fpu_free_proc` | function | `kernel/sched.c:336` | `static void fpu_free_proc(proc_t *p)` |
 
 Next: [SYMBOLS_p9.md](SYMBOLS_p9.md)

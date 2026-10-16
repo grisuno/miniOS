@@ -1,478 +1,500 @@
-# API (page 15 of 19)
+# API (page 15 of 21)
 Previous: [API_p14.md](API_p14.md)
 
-## progs/file/file.c
-Depends on: `headers/leakcheck.h`, `kernel/string.c`, `progs/file/file_assoc.h`, `progs/minios_abi.h`, `progs/minios_png.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-- `file_sys_dir_list` (function) `progs/file/file.c:101` `static long file_sys_dir_list(const char *path, char *buf, long cap)` -- static unsigned char file_icon_mask[FILE_ICON_N][FILE_ICON_MAX * FILE_ICON_MAX]; static struct nk_minios_img...
-- `file_sys_spawn` (function) `progs/file/file.c:111` `static long file_sys_spawn(const char *path, int argc, const char **argv)` -- static int file_preview_h; static int file_preview_on; /** Raw DIR_LIST syscall (241): names land NUL-separated in...
-- `file_ext_of` (function) `progs/file/file.c:122` `static void file_ext_of(const char *fname, char *dst, unsigned cap)` -- } /** Raw SPAWN syscall (215) preserving this app across the child. static long file_sys_spawn(const char *path, int...
-- `file_icon_kind` (function) `progs/file/file.c:146` `static int file_icon_kind(const char *fname, int isdir)` -- Icon kind for an entry: folder for dirs, image for .png, object for .o/.elf/.cvm, files for the text kinds...
-- `file_icon_sz` (function) `progs/file/file.c:158` `static int file_icon_sz(void)` -- and for anything else.
-- `file_icon_decode` (function) `progs/file/file.c:165` `static int file_icon_decode(const char *path, unsigned char *px,
-                            unsi...` -- Decode one RGBA icon into indexed pixels plus an alpha mask, scaled to the live size.
-- `file_icons_load` (function) `progs/file/file.c:213` `static int file_icons_load(void)` -- Load the four kind icons; all-or-nothing so the UI never mixes icon * and text rows.
-- `file_toggle_icons` (function) `progs/file/file.c:238` `static int file_toggle_icons(void)` -- Flip the icon size and reload the four kind icons.
-- `file_join` (function) `progs/file/file.c:245` `static int file_join(const char *dir, const char *name, char *dst, unsigned cap)` -- Flip the icon size and reload the four kind icons.
-- `file_parent` (function) `progs/file/file.c:259` `static void file_parent(char *path)` -- static int file_join(const char *dir, const char *name, char *dst, unsigned cap) { unsigned a = 0; unsigned b = 0...
-- `file_assoc_line` (function) `progs/file/file.c:269` `static int file_assoc_line(const char *line, char *ext, char *prog)` -- return 0; } /** Parent of an absolute path, root stays root. static void file_parent(char *path) { unsigned n = 0...
-- `file_assoc_load` (function) `progs/file/file.c:302` `static void file_assoc_load(void)` -- } if (line[p + k] && line[p + k] != '\n' && line[p + k] != '\r') return -1; while (p > 0 && (prog[p - 1] == ' ' ||...
-- `file_assoc_lookup` (function) `progs/file/file.c:318` `static const char *file_assoc_lookup(const char *ext)` -- char line[FILE_LOG_LINE]; char ext[FILE_EXT_MAX + 1]; char prog[FILE_PROG_MAX + 1]; fassoc_clear(&file_assocs); f =...
-- `file_action_of` (function) `progs/file/file.c:323` `static int file_action_of(const char *fname, const char **prog_out)` -- if (!f) return; while (fgets(line, sizeof(line), f)) { if (file_assoc_line(line, ext, prog) != 0) continue; if...
-- `file_refresh` (function) `progs/file/file.c:336` `static void file_refresh(void)` -- /** Dispatch kind for a file name through the association table. static int file_action_of(const char *fname, const...
-- `file_preview_load` (function) `progs/file/file.c:351` `static int file_preview_load(const char *path)` -- long rc = file_sys_dir_list(file_cwd, file_entries, FILE_LIST_CAP); if (rc < 0) { file_entry_count = 0...
-- `file_preview_blit` (function) `progs/file/file.c:385` `static void file_preview_blit(int ox, int oy)` -- Blit the preview buffer into the NK back-buffer after rasterize (and its * RGB twin when the kernel maps it).
-- `file_spawn_visible` (function) `progs/file/file.c:407` `static long file_spawn_visible(const char *tool, int argc, const char **argv,
-                   ...` -- int dx = ox + x; int dy = oy + y; unsigned char r, g, b; volatile uint8_t *d; if (dx < 0 || dx >= NK_W || dy < 0 ||...
-- `file_open_text` (function) `progs/file/file.c:430` `static void file_open_text(const char *path)` -- printf("file: %s exit code: %ld\n", label, rc); fflush(stdout); nk_sys_vga_mode(1); nk_build_palette(pal768)...
-- `file_run_shell` (function) `progs/file/file.c:441` `static void file_run_shell(const char *path)` -- } /** Open a text file in vedit, preserving this browser. static void file_open_text(const char *path) { const char...
-- `file_activate` (function) `progs/file/file.c:480` `static void file_activate(const char *dir, const char *name)` -- if (strcmp(ext, "cvm") == 0) { args[0] = path; args[1] = 0; snprintf(label, sizeof(label), "run %s", path)...
-- `file_ui_build` (function) `progs/file/file.c:511` `static void file_ui_build(struct nk_context *ctx)` -- snprintf(file_preview_path, sizeof(file_preview_path), "%s", path); snprintf(file_status, sizeof(file_status)...
-- `file_selftest` (function) `progs/file/file.c:613` `static int file_selftest(void)` -- Headless selftest for BDD: assoc vectors plus a live listing.
-- `file_gui_run` (function) `progs/file/file.c:779` `static void file_gui_run(void)`
-- `main` (function) `progs/file/file.c:838` `int main(int argc, char **argv)`
+## progs/doomgeneric/r_main.c
+Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
+- `R_AddPointToBox` (function) `progs/doomgeneric/r_main.c:123` `void
+R_AddPointToBox
+( int		x,
+  int		y,
+  fixed_t*	box )`
+- `R_PointOnSide` (function) `progs/doomgeneric/r_main.c:146` `int
+R_PointOnSide
+( fixed_t	x,
+  fixed_t	y,
+  node_t*	node )`
+- `R_PointOnSegSide` (function) `progs/doomgeneric/r_main.c:199` `int
+R_PointOnSegSide
+( fixed_t	x,
+  fixed_t	y,
+  seg_t*	line )`
+- `R_PointToAngle` (function) `progs/doomgeneric/r_main.c:276` `angle_t
+R_PointToAngle
+( fixed_t	x,
+  fixed_t	y )`
+- `R_PointToAngle2` (function) `progs/doomgeneric/r_main.c:362` `angle_t
+R_PointToAngle2
+( fixed_t	x1,
+  fixed_t	y1,
+  fixed_t	x2,
+  fixed_t	y2 )`
+- `R_PointToDist` (function) `progs/doomgeneric/r_main.c:376` `fixed_t
+R_PointToDist
+( fixed_t	x,
+  fixed_t	y )`
+- `R_InitPointToAngle` (function) `progs/doomgeneric/r_main.c:422` `void R_InitPointToAngle (void)` -- R_InitPointToAngle
+- `R_ScaleFromGlobalAngle` (function) `progs/doomgeneric/r_main.c:449` `fixed_t R_ScaleFromGlobalAngle (angle_t visangle)` -- R_ScaleFromGlobalAngle Returns the texture mapping scale for the current line (horizontal span) at the given angle....
+- `R_InitTables` (function) `progs/doomgeneric/r_main.c:505` `void R_InitTables (void)` -- R_InitTables
+- `R_InitTextureMapping` (function) `progs/doomgeneric/r_main.c:540` `void R_InitTextureMapping (void)` -- R_InitTextureMapping
+- `R_InitLightTables` (function) `progs/doomgeneric/r_main.c:610` `void R_InitLightTables (void)`
+- `R_SetViewSize` (function) `progs/doomgeneric/r_main.c:654` `void
+R_SetViewSize
+( int		blocks,
+  int		detail )`
+- `R_ExecuteSetViewSize` (function) `progs/doomgeneric/r_main.c:667` `void R_ExecuteSetViewSize (void)` -- R_ExecuteSetViewSize
+- `R_Init` (function) `progs/doomgeneric/r_main.c:767` `void R_Init (void)`
+- `R_PointInSubsector` (function) `progs/doomgeneric/r_main.c:794` `subsector_t*
+R_PointInSubsector
+( fixed_t	x,
+  fixed_t	y )`
+- `R_SetupFrame` (function) `progs/doomgeneric/r_main.c:823` `void R_SetupFrame (player_t* player)` -- R_SetupFrame
+- `R_RenderPlayerView` (function) `progs/doomgeneric/r_main.c:863` `void R_RenderPlayerView (player_t* player)` -- R_RenderView
 
-## progs/file/file_assoc.h
-Depends on: `kernel/string.c`
-Imported by: `progs/file/file.c`, `tests/test_file_assoc.c`, `tests/test_leakcheck.c`
-- `fassoc_ext_ok` (function) `progs/file/file_assoc.h:59` `static int fassoc_ext_ok(const char *ext)` -- /** Docstring: one validated association entry, ext without dot. struct fassoc_entry { char ext[FASSOC_EXT_MAX + 1]...
-- `fassoc_prog_ok` (function) `progs/file/file_assoc.h:73` `static int fassoc_prog_ok(const char *prog)` -- static int fassoc_ext_ok(const char *ext) { size_t n = 0; size_t k = 0; if (ext == NULL) return 0; while (ext[n] !=...
-- `fassoc_clear` (function) `progs/file/file_assoc.h:89` `static void fassoc_clear(struct fassoc_table *t)` -- size_t k = 0; if (prog == NULL) return 0; while (prog[n] != 0) n++; if (n == 0 || n > (size_t)FASSOC_PROG_MAX)...
-- `fassoc_free` (function) `progs/file/file_assoc.h:95` `static void fassoc_free(struct fassoc_table *t)` -- if (prog[0] != '/') return 0; for (k = 0; k < n; k++) { if (prog[k] == '|') return 0; } return 1; } /** Docstring...
-- `fassoc_reserve` (function) `progs/file/file_assoc.h:104` `static int fassoc_reserve(struct fassoc_table *t, size_t want)` -- if (t == NULL) return; t->cnt = 0; } /** Docstring: release backing store and reset to zero init state. static void...
-- `fassoc_push` (function) `progs/file/file_assoc.h:125` `static int fassoc_push(struct fassoc_table *t, const char *ext, const char *prog)` -- while (ncap < want) { size_t nxt = ncap * (size_t)FASSOC_GROW_NUM / (size_t)FASSOC_GROW_DEN + 1; if (nxt <= ncap)...
-- `fassoc_lookup` (function) `progs/file/file_assoc.h:140` `static const char *fassoc_lookup(const struct fassoc_table *t, const char *ext)` -- if (t == NULL) return -1; if (!fassoc_ext_ok(ext)) return -1; if (!fassoc_prog_ok(prog)) return -1; if (t->cnt >=...
-- `fassoc_count` (function) `progs/file/file_assoc.h:150` `static size_t fassoc_count(const struct fassoc_table *t)` -- return 0; } /** Docstring: program for ext in file order, empty string when unmapped. static const char...
+## progs/doomgeneric/r_main.h
+Depends on: `progs/doomgeneric/d_player.h`, `progs/doomgeneric/r_data.h`
+Imported by: `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_local.h`
+- `void` (function) `progs/doomgeneric/r_main.h:92` `extern void (*colfunc) (void);` -- Function pointers to switch refresh/drawing functions.
+- `R_PointOnSide` (function) `progs/doomgeneric/r_main.h:103` `int R_PointOnSide ( fixed_t x, fixed_t y, node_t* node );`
+- `R_PointOnSegSide` (function) `progs/doomgeneric/r_main.h:109` `int R_PointOnSegSide ( fixed_t x, fixed_t y, seg_t* line );`
+- `R_PointToAngle` (function) `progs/doomgeneric/r_main.h:115` `angle_t R_PointToAngle ( fixed_t x, fixed_t y );`
+- `R_PointToAngle2` (function) `progs/doomgeneric/r_main.h:120` `angle_t R_PointToAngle2 ( fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2 );`
+- `R_PointToDist` (function) `progs/doomgeneric/r_main.h:127` `fixed_t R_PointToDist ( fixed_t x, fixed_t y );`
+- `R_ScaleFromGlobalAngle` (function) `progs/doomgeneric/r_main.h:132` `fixed_t R_ScaleFromGlobalAngle (angle_t visangle);`
+- `R_PointInSubsector` (function) `progs/doomgeneric/r_main.h:135` `subsector_t* R_PointInSubsector ( fixed_t x, fixed_t y );`
+- `R_AddPointToBox` (function) `progs/doomgeneric/r_main.h:140` `void R_AddPointToBox ( int x, int y, fixed_t* box );`
+- `R_RenderPlayerView` (function) `progs/doomgeneric/r_main.h:152` `void R_RenderPlayerView (player_t *player);` -- Called by G_Drawer.
+- `R_Init` (function) `progs/doomgeneric/r_main.h:155` `void R_Init (void);` -- Called by startup code.
+- `R_SetViewSize` (function) `progs/doomgeneric/r_main.h:158` `void R_SetViewSize (int blocks, int detail);` -- Called by M_Responder.
 
-## progs/freedomui/freedomui_minios.c
-Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`
-Imported by: `tests/test_freedomui.c`
-- `net_dns_resolve` (function) `progs/freedomui/freedomui_minios.c:44` `int net_dns_resolve(const char *host);`
-- `tls_handshake` (function) `progs/freedomui/freedomui_minios.c:45` `int tls_handshake(int fd, char *host);`
-- `tls_send` (function) `progs/freedomui/freedomui_minios.c:46` `int tls_send(int fd, char *buf, int len);`
-- `tls_recv` (function) `progs/freedomui/freedomui_minios.c:47` `int tls_recv(int fd, char *buf, int len);`
-- `tls_close` (function) `progs/freedomui/freedomui_minios.c:48` `void tls_close(int fd);`
-- `freedomui_default` (function) `progs/freedomui/freedomui_minios.c:97` `static FreedomUiConfig freedomui_default(void)` -- long path_max; long url_max; long hops_max; long font_w; long font_h; long port_http; long port_https; long ink_bg...
-- `freedomui_build_palette` (function) `progs/freedomui/freedomui_minios.c:130` `static long freedomui_build_palette(unsigned char *pal, long cap)` -- Shared hybrid palette, one table for every NK-window app (progs/nk_palette.h); this wrapper keeps the historic name...
-- `freedomui_engine_text` (function) `progs/freedomui/freedomui_minios.c:145` `static long freedomui_engine_text(char *body, long n, char **title, char **text)` -- Parse a fetched body through the real engine into owned title and text.
-- `freedomui_sys_present` (function) `progs/freedomui/freedomui_minios.c:193` `static long freedomui_sys_present(long buf, long origin)` -- static char f_path[FUI_PATH_MAX]; static char f_loc[FUI_URL_MAX]; static char f_hdr[FUI_HDR_MAX]; static char...
-- `freedomui_sys_title` (function) `progs/freedomui/freedomui_minios.c:200` `static long freedomui_sys_title(char *t)` -- static long f_nbytes; static long f_secure; static long f_port; static long f_status; static long f_truncated; /**...
-- `freedomui_sys_palette` (function) `progs/freedomui/freedomui_minios.c:207` `static long freedomui_sys_palette(unsigned char *pal)` -- static long freedomui_sys_present(long buf, long origin) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `freedomui_sys_mouse` (function) `progs/freedomui/freedomui_minios.c:214` `static long freedomui_sys_mouse(long *m)` -- static long freedomui_sys_title(char *t) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `freedomui_sys_kbd` (function) `progs/freedomui/freedomui_minios.c:221` `static long freedomui_sys_kbd(void)` -- static long freedomui_sys_palette(unsigned char *pal) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `freedomui_sys_vga_mode` (function) `progs/freedomui/freedomui_minios.c:228` `static long freedomui_sys_vga_mode(long on)` -- static long freedomui_sys_mouse(long *m) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_MOUSE)...
-- `freedomui_sys_kbd_raw` (function) `progs/freedomui/freedomui_minios.c:235` `static long freedomui_sys_kbd_raw(long on)` -- static long freedomui_sys_kbd(void) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD), "D"(0)...
-- `freedomui_sys_yield` (function) `progs/freedomui/freedomui_minios.c:242` `static long freedomui_sys_yield(void)` -- static long freedomui_sys_vga_mode(long on) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `fui_append` (function) `progs/freedomui/freedomui_minios.c:249` `static long fui_append(char *dst, long pos, char *src, long cap)` -- static long freedomui_sys_kbd_raw(long on) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `fui_strlen` (function) `progs/freedomui/freedomui_minios.c:267` `static long fui_strlen(char *s, long cap)` -- } i = 0L; while (src[i] != 0) { if (pos + i + 1L >= cap) { return -1L; } dst[pos + i] = src[i]; i++; } dst[pos + i]...
-- `fui_split_url` (function) `progs/freedomui/freedomui_minios.c:283` `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...` -- if (!s || cap <= 0L) { return -1L; } i = 0L; while (i < cap && s[i] != 0) { i++; } if (i >= cap) { return -1L; }...
-- `fui_parse_headers` (function) `progs/freedomui/freedomui_minios.c:352` `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...` -- return 0L; } path[k] = p[hl + k]; k++; } path[k] = 0; } else { path[0] = '/'; path[1] = 0; } return 1L; } /** Parse...
-- `fui_fetch_raw` (function) `progs/freedomui/freedomui_minios.c:470` `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)` -- } k++; } } } line++; while (hdr[i] == '\r' || hdr[i] == '\n') { i++; } } return 0L; } /** Fetch one response body...
-- `fui_render` (function) `progs/freedomui/freedomui_minios.c:698` `static long fui_render(FreedomUiConfig *c, size_t off)` -- if (got < c->body_cap) { f_body[got] = (char)ch; got++; } else { f_truncated = 1L; } } } } tls_close((int)fd)...
-- `fui_browse` (function) `progs/freedomui/freedomui_minios.c:817` `static long fui_browse(FreedomUiConfig *c)` -- long ink; if (bits & (0x80 >> px)) { ink = c->bar_fg; } else { ink = c->bar_bg; } fb[((size_t)c->text_rows *...
-- `freedomui_selftest` (function) `progs/freedomui/freedomui_minios.c:896` `static long freedomui_selftest(void)` -- } off = ui_clamp_scroll((size_t)want, f_lay.count, (size_t)c->text_rows); changed = 1L; } if (changed) { if...
-- `freedomui_host_probe` (function) `progs/freedomui/freedomui_minios.c:984` `static long freedomui_host_probe(FreedomUiConfig *c)` -- return 1L; } if (freedomui_sys_kbd() > 0x7FFFFFFFL) { printf("freedomui: kbd out of range\n"); return 1L; }...
-- `freedomui_host_entry` (function) `progs/freedomui/freedomui_minios.c:1067` `int freedomui_host_entry(FreedomUiConfig *c)` -- if (title) { hp_free(title); } return -1L; } ui_layout_free(&lay); hp_free(text); if (title) { hp_free(title); }...
-- `main` (function) `progs/freedomui/freedomui_minios.c:1072` `int main(int argc, char **argv)` -- ui_layout_free(&lay); hp_free(text); if (title) { hp_free(title); } return 0L; } /** Host harness entry for pure...
+## progs/doomgeneric/r_plane.c
+Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `R_InitPlanes` (function) `progs/doomgeneric/r_plane.c:94` `void R_InitPlanes (void)` -- R_InitPlanes Only at game startup.
+- `R_MapPlane` (function) `progs/doomgeneric/r_plane.c:114` `void
+R_MapPlane
+( int		y,
+  int		x1,
+  int		x2 )`
+- `R_ClearPlanes` (function) `progs/doomgeneric/r_plane.c:178` `void R_ClearPlanes (void)` -- R_ClearPlanes At begining of frame.
+- `R_FindPlane` (function) `progs/doomgeneric/r_plane.c:211` `visplane_t*
+R_FindPlane
+( fixed_t	height,
+  int		picnum,
+  int		lightlevel )`
+- `R_CheckPlane` (function) `progs/doomgeneric/r_plane.c:259` `visplane_t*
+R_CheckPlane
+( visplane_t*	pl,
+  int		start,
+  int		stop )`
+- `R_MakeSpans` (function) `progs/doomgeneric/r_plane.c:324` `void
+R_MakeSpans
+( int		x,
+  int		t1,
+  int		b1,
+  int		t2,
+  int		b2 )`
+- `R_DrawPlanes` (function) `progs/doomgeneric/r_plane.c:360` `void R_DrawPlanes (void)` -- R_DrawPlanes At the end of each frame.
 
-## progs/freedomui/media_unavailable.c
-Depends on: `kernel/string.c`
-- `write_all` (function) `progs/freedomui/media_unavailable.c:20` `static void write_all(int fd, const void *buf, size_t len)` -- closed: no decoder process is ever started, and a direct --media-decoder invocation answers with one MD_ERROR and...
-- `media_decoder_run` (function) `progs/freedomui/media_unavailable.c:41` `void media_decoder_run(int out_fd, int cmd_fd)` -- Refuses to start a decoder: the caller reports the failure and stays * responsive (browser_ui video_play already...
+## progs/doomgeneric/r_plane.h
+Depends on: `progs/doomgeneric/r_data.h`
+Imported by: `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_local.h`
+- `R_InitPlanes` (function) `progs/doomgeneric/r_plane.h:43` `void R_InitPlanes (void);`
+- `R_ClearPlanes` (function) `progs/doomgeneric/r_plane.h:44` `void R_ClearPlanes (void);`
+- `R_MapPlane` (function) `progs/doomgeneric/r_plane.h:47` `void R_MapPlane ( int y, int x1, int x2 );`
+- `R_MakeSpans` (function) `progs/doomgeneric/r_plane.h:53` `void R_MakeSpans ( int x, int t1, int b1, int t2, int b2 );`
+- `R_DrawPlanes` (function) `progs/doomgeneric/r_plane.h:60` `void R_DrawPlanes (void);`
+- `R_FindPlane` (function) `progs/doomgeneric/r_plane.h:63` `visplane_t* R_FindPlane ( fixed_t height, int picnum, int lightlevel );`
+- `R_CheckPlane` (function) `progs/doomgeneric/r_plane.h:69` `visplane_t* R_CheckPlane ( visplane_t* pl, int start, int stop );`
 
-## progs/freedomui/platform_minios.c
-Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`, `progs/minios_abi.h`
-- `sys_fb_info_rgb` (function) `progs/freedomui/platform_minios.c:83` `static long sys_fb_info_rgb(int *rgb)`
-- `now_ms` (function) `progs/freedomui/platform_minios.c:94` `static long now_ms(void)`
-- `set_title` (function) `progs/freedomui/platform_minios.c:98` `static void set_title(const char *title)`
-- `pf_display_open` (function) `progs/freedomui/platform_minios.c:121` `pf_status pf_display_open(pf_display **out)`
-- `pf_display_close` (function) `progs/freedomui/platform_minios.c:137` `void pf_display_close(pf_display *d)`
-- `pf_display_flush` (function) `progs/freedomui/platform_minios.c:146` `void pf_display_flush(pf_display *d)`
-- `pf_display_set_cursor` (function) `progs/freedomui/platform_minios.c:150` `void pf_display_set_cursor(pf_display *d, pf_cursor c)`
-- `deliver_pending` (function) `progs/freedomui/platform_minios.c:157` `static int deliver_pending(pf_display *d)`
-- `key_event` (function) `progs/freedomui/platform_minios.c:167` `static void key_event(pf_display *d, const ps2_key *k, int kind)`
-- `pump_keyboard` (function) `progs/freedomui/platform_minios.c:194` `static int pump_keyboard(pf_display *d)`
-- `pump_mouse` (function) `progs/freedomui/platform_minios.c:208` `static int pump_mouse(pf_display *d)`
-- `pf_display_wait` (function) `progs/freedomui/platform_minios.c:251` `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
-- `pf_clipboard_available` (function) `progs/freedomui/platform_minios.c:276` `int pf_clipboard_available(const pf_display *d)`
-- `pf_clipboard_set_text` (function) `progs/freedomui/platform_minios.c:280` `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
-- `pf_clipboard_get_text` (function) `progs/freedomui/platform_minios.c:287` `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
-- `pf_window_open` (function) `progs/freedomui/platform_minios.c:303` `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
-                         const p...`
-- `pf_window_close` (function) `progs/freedomui/platform_minios.c:325` `void pf_window_close(pf_window *w)`
-- `pf_window_surface` (function) `progs/freedomui/platform_minios.c:342` `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
-- `pf_window_present` (function) `progs/freedomui/platform_minios.c:357` `void pf_window_present(pf_window *w)`
-- `pf_window_set_title` (function) `progs/freedomui/platform_minios.c:391` `void pf_window_set_title(pf_window *w, const char *title)`
-- `set_zoom_state` (function) `progs/freedomui/platform_minios.c:397` `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
-- `pf_window_set_maximized` (function) `progs/freedomui/platform_minios.c:406` `void pf_window_set_maximized(pf_window *w, int on)`
-- `pf_window_set_fullscreen` (function) `progs/freedomui/platform_minios.c:410` `void pf_window_set_fullscreen(pf_window *w, int on)`
-- `pf_window_minimize` (function) `progs/freedomui/platform_minios.c:414` `void pf_window_minimize(pf_window *w)`
-- `pf_window_begin_move` (function) `progs/freedomui/platform_minios.c:418` `void pf_window_begin_move(pf_window *w)`
-- `pf_window_begin_resize` (function) `progs/freedomui/platform_minios.c:422` `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
+## progs/doomgeneric/r_segs.c
+Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`
+- `R_RenderMaskedSegRange` (function) `progs/doomgeneric/r_segs.c:96` `void
+R_RenderMaskedSegRange
+( drawseg_t*	ds,
+  int		x1,
+  int		x2 )`
+- `R_RenderSegLoop` (function) `progs/doomgeneric/r_segs.c:199` `void R_RenderSegLoop (void)`
+- `R_StoreWallRange` (function) `progs/doomgeneric/r_segs.c:372` `void
+R_StoreWallRange
+( int	start,
+  int	stop )`
 
-## progs/freedomui/ps2_keymap.c
-Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`
-- `ps2_init` (function) `progs/freedomui/ps2_keymap.c:144` `void ps2_init(ps2_state *s)`
-- `held_mods` (function) `progs/freedomui/ps2_keymap.c:150` `static unsigned held_mods(const ps2_state *s)`
-- `set_text` (function) `progs/freedomui/ps2_keymap.c:158` `static void set_text(ps2_key *k, char c)`
-- `is_letter` (function) `progs/freedomui/ps2_keymap.c:164` `static int is_letter(char c)`
-- `modifier_key` (function) `progs/freedomui/ps2_keymap.c:169` `static uint32_t modifier_key(ps2_state *s, unsigned code, int extended, int make)` -- return m; } static void set_text(ps2_key *k, char c) { k->text[0] = c; k->text[1] = '\0'; k->text_len = 1; } static...
-- `extended_key` (function) `progs/freedomui/ps2_keymap.c:195` `static uint32_t extended_key(unsigned code, ps2_key *k)` -- if (make) s->caps_lock = !s->caps_lock; return KE_KEY_Caps_Lock; } else if (!extended && code == SC_NUMLOCK) { if...
-- `plain_key` (function) `progs/freedomui/ps2_keymap.c:218` `static uint32_t plain_key(const ps2_state *s, unsigned code, ps2_key *k)` -- case SC_E0_RIGHT:  return KE_KEY_Right; case SC_E0_END:    return KE_KEY_End; case SC_E0_DOWN:   return KE_KEY_Down...
-- `ps2_feed` (function) `progs/freedomui/ps2_keymap.c:253` `int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out)`
+## progs/doomgeneric/r_segs.h
+Imported by: `progs/doomgeneric/r_local.h`
+- `R_RenderMaskedSegRange` (function) `progs/doomgeneric/r_segs.h:27` `void R_RenderMaskedSegRange ( drawseg_t* ds, int x1, int x2 );`
 
-## progs/freedomui/ps2_keymap.h
-Imported by: `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `tests/test_ps2_keymap.c`
-- `ps2_init` (function) `progs/freedomui/ps2_keymap.h:47` `void ps2_init(ps2_state *s);` -- int      extended;  /* an E0 prefix is pending int      skip;      /* bytes of an E1 sequence still to swallow }...
-- `arguments` (function) `progs/freedomui/ps2_keymap.h:51` `* arguments (out is then left untouched). */ int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out);`
+## progs/doomgeneric/r_sky.c
+Depends on: `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`
+- `R_InitSkyMap` (function) `progs/doomgeneric/r_sky.c:47` `void R_InitSkyMap (void)` -- R_InitSkyMap Called whenever the view size changes.
 
-## progs/lisp/lisp.c
-Depends on: `kernel/string.c`, `progs/minios_abi.h`
-- `numbers` (function) `progs/lisp/lisp.c:9` `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special...`
-- `lisp_version` (function) `progs/lisp/lisp.c:62` `static const char *lisp_version(void)` -- Version string printed by --version and the REPL banner.
-- `msys` (function) `progs/lisp/lisp.c:205` `static long msys(long n, long a1, long a2, long a3)` -- Raw 3-argument syscall through the x86-64 Linux ABI.
-- `msys5` (function) `progs/lisp/lisp.c:218` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- Raw 5-argument syscall for SYS_SPAWN with path, redirect, argc, argv.
-- `fatal` (function) `progs/lisp/lisp.c:233` `static void fatal(Runtime *rt, const char *message)` -- Report a fatal internal failure and terminate the process.
-- `xalloc` (function) `progs/lisp/lisp.c:242` `static void *xalloc(Runtime *rt, size_t size)` -- Allocate zeroed tracked memory that frees with the runtime.
-- `xstrdup` (function) `progs/lisp/lisp.c:266` `static char *xstrdup(Runtime *rt, const char *source)` -- Duplicate a string into tracked memory.
-- `make_node` (function) `progs/lisp/lisp.c:284` `static Node *make_node(Runtime *rt, NodeType type)` -- Allocate a node of the given type in tracked memory.
-- `make_error` (function) `progs/lisp/lisp.c:293` `static Node *make_error(Runtime *rt, const char *message)` -- Build an error value carrying a diagnostic message.
-- `make_num` (function) `progs/lisp/lisp.c:302` `static Node *make_num(Runtime *rt, int64_t value)` -- Build a numeric value node.
-- `make_str` (function) `progs/lisp/lisp.c:311` `static Node *make_str(Runtime *rt, const char *value)` -- Build a string value node from a NUL-terminated source.
-- `make_sym` (function) `progs/lisp/lisp.c:320` `static Node *make_sym(Runtime *rt, const char *value)` -- Build a symbol value node from a NUL-terminated name.
-- `make_prim` (function) `progs/lisp/lisp.c:329` `static Node *make_prim(Runtime *rt, PrimFn function)` -- Build a primitive function value node.
-- `cons` (function) `progs/lisp/lisp.c:338` `static Node *cons(Runtime *rt, Node *car, Node *cdr)` -- Build a cons cell from two values.
-- `is_nil` (function) `progs/lisp/lisp.c:348` `static bool is_nil(Runtime *rt, const Node *node)` -- Test whether a node is the empty list in any of its spellings.
-- `make_file` (function) `progs/lisp/lisp.c:355` `static Node *make_file(Runtime *rt, FILE *handle)` -- Register an open FILE handle and wrap it in a file value node.
-- `cleanup` (function) `progs/lisp/lisp.c:377` `static void cleanup(Runtime *rt)` -- Close every tracked file and release every tracked allocation.
-- `runtime_init` (function) `progs/lisp/lisp.c:399` `static void runtime_init(Runtime *rt)` -- Initialize a runtime with streams, constants and empty tables.
-- `env_new` (function) `progs/lisp/lisp.c:411` `static Env *env_new(Runtime *rt, Env *parent)` -- Allocate a new environment frame with an optional parent.
-- `env_bind` (function) `progs/lisp/lisp.c:421` `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)` -- Bind a symbol to a value in the innermost frame.
-- `env_set` (function) `progs/lisp/lisp.c:432` `static bool env_set(Env *env, Node *symbol, Node *value)` -- Update the nearest visible binding of a symbol.
-- `env_lookup` (function) `progs/lisp/lisp.c:454` `static Node *env_lookup(Env *env, Node *symbol)` -- Resolve the nearest visible binding of a symbol.
-- `reader_peek` (function) `progs/lisp/lisp.c:475` `static char reader_peek(const Reader *reader)` -- Peek at the current reader character without consuming it.
-- `reader_next` (function) `progs/lisp/lisp.c:482` `static char reader_next(Reader *reader)` -- Consume one reader character and track line and column.
-- `reader_at_end` (function) `progs/lisp/lisp.c:500` `static bool reader_at_end(const Reader *reader)` -- Test whether the reader reached the end of its buffer.
-- `skip_space_and_comments` (function) `progs/lisp/lisp.c:507` `static void skip_space_and_comments(Reader *reader)` -- Skip whitespace and line comments starting with a semicolon.
-- `sb_init` (function) `progs/lisp/lisp.c:523` `static void sb_init(StringBuilder *builder)` -- Initialize a string builder with a bounded initial capacity.
-- `sb_push` (function) `progs/lisp/lisp.c:536` `static void sb_push(StringBuilder *builder, char value)` -- Append one byte to a string builder with overflow-checked growth.
-- `parse_ok` (function) `progs/lisp/lisp.c:562` `static ParseResult parse_ok(Node *value)` -- Build a successful parse result.
-- `parse_eof` (function) `progs/lisp/lisp.c:573` `static ParseResult parse_eof(void)` -- Build an end-of-input parse result.
-- `parse_error` (function) `progs/lisp/lisp.c:584` `static ParseResult parse_error(const char *message)` -- Build a parse error result with a bounded message.
-- `read_list` (function) `progs/lisp/lisp.c:596` `static ParseResult read_list(Runtime *rt, Reader *reader)` -- Read a parenthesized list terminated by a closing paren.
-- `read_string` (function) `progs/lisp/lisp.c:626` `static ParseResult read_string(Runtime *rt, Reader *reader)` -- Read a double-quoted string with backslash escapes.
-- `token_delimiter` (function) `progs/lisp/lisp.c:677` `static bool token_delimiter(char c)` -- Test whether a character terminates an atom token.
-- `read_atom` (function) `progs/lisp/lisp.c:685` `static ParseResult read_atom(Runtime *rt, Reader *reader)` -- Read a number, nil, t or symbol token.
-- `read_expr` (function) `progs/lisp/lisp.c:721` `static ParseResult read_expr(Runtime *rt, Reader *reader)` -- Read one expression, skipping whitespace and comments first.
-- `list_count` (function) `progs/lisp/lisp.c:750` `static size_t list_count(Runtime *rt, Node *list, bool *proper)` -- Count proper list elements and report whether the spine is proper.
-- `has_arity` (function) `progs/lisp/lisp.c:767` `static bool has_arity(Runtime *rt, Node *args, size_t expected)` -- Test whether an argument list has exactly the expected length.
-- `arg_at` (function) `progs/lisp/lisp.c:775` `static Node *arg_at(Runtime *rt, Node *args, size_t index)` -- Fetch the positional argument at an index or NULL when absent.
-- `arg_matches` (function) `progs/lisp/lisp.c:815` `static bool arg_matches(const Node *value, ArgKind kind)` -- Test whether an already-fetched argument matches one ArgKind.
-- `check_args` (function) `progs/lisp/lisp.c:841` `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
-    size_t n, Node **out)` -- Validate that args is a proper list of exactly n elements whose types match kinds[0..n), writing each fetched...
-- `arity0` (function) `progs/lisp/lisp.c:861` `static bool arity0(Runtime *rt, Node *args)` -- Validate that args is the empty argument list.
-- `prim_add` (function) `progs/lisp/lisp.c:869` `static Node *prim_add(Runtime *rt, Node *args)` -- Add two numbers with overflow reported as an error value.
-- `prim_sub` (function) `progs/lisp/lisp.c:885` `static Node *prim_sub(Runtime *rt, Node *args)` -- Subtract two numbers with overflow reported as an error value.
-- `prim_mul` (function) `progs/lisp/lisp.c:901` `static Node *prim_mul(Runtime *rt, Node *args)` -- Multiply two numbers with overflow reported as an error value.
-- `prim_div` (function) `progs/lisp/lisp.c:917` `static Node *prim_div(Runtime *rt, Node *args)` -- Divide two numbers with zero and overflow reported as errors.
-- `prim_eq` (function) `progs/lisp/lisp.c:939` `static Node *prim_eq(Runtime *rt, Node *args)` -- Compare two numbers for equality.
-- `prim_lt` (function) `progs/lisp/lisp.c:951` `static Node *prim_lt(Runtime *rt, Node *args)` -- Compare two numbers with less-than.
-- `prim_car` (function) `progs/lisp/lisp.c:963` `static Node *prim_car(Runtime *rt, Node *args)` -- Return the first element of a cons cell or nil.
-- `prim_cdr` (function) `progs/lisp/lisp.c:975` `static Node *prim_cdr(Runtime *rt, Node *args)` -- Return the rest of a cons cell or nil.
-- `prim_cons` (function) `progs/lisp/lisp.c:987` `static Node *prim_cons(Runtime *rt, Node *args)` -- Build a cons cell from two values.
-- `prim_string_concat` (function) `progs/lisp/lisp.c:999` `static Node *prim_string_concat(Runtime *rt, Node *args)` -- Concatenate two strings with an overflow-checked allocation.
-- `prim_string_eq` (function) `progs/lisp/lisp.c:1026` `static Node *prim_string_eq(Runtime *rt, Node *args)` -- Compare two strings for equality.
-- `prim_string_length` (function) `progs/lisp/lisp.c:1038` `static Node *prim_string_length(Runtime *rt, Node *args)` -- Return the byte length of a string.
-- `prim_string_at` (function) `progs/lisp/lisp.c:1050` `static Node *prim_string_at(Runtime *rt, Node *args)` -- Return the one-character string at a byte index or nil when out of range.
-- `prim_char_code` (function) `progs/lisp/lisp.c:1072` `static Node *prim_char_code(Runtime *rt, Node *args)` -- Convert between a one-character string and its byte value.
-- `prim_print` (function) `progs/lisp/lisp.c:1094` `static Node *prim_print(Runtime *rt, Node *args)` -- Print a value without a trailing newline.
-- `prim_println` (function) `progs/lisp/lisp.c:1108` `static Node *prim_println(Runtime *rt, Node *args)` -- Print a value with a trailing newline.
-- `file_mode_allowed` (function) `progs/lisp/lisp.c:1123` `static bool file_mode_allowed(const char *mode)` -- Test whether a file mode string belongs to the safe whitelist.
-- `prim_read_char` (function) `progs/lisp/lisp.c:1183` `static Node *prim_read_char(Runtime *rt, Node *args)` -- Read one byte from a file or nil at end of file.
-- `prim_write` (function) `progs/lisp/lisp.c:1200` `static Node *prim_write(Runtime *rt, Node *args)` -- Write a string or byte value to an open file.
-- `prim_close_file` (function) `progs/lisp/lisp.c:1224` `static Node *prim_close_file(Runtime *rt, Node *args)` -- Close an open file and release its runtime slot.
-- `prim_null_p` (function) `progs/lisp/lisp.c:1249` `static Node *prim_null_p(Runtime *rt, Node *args)` -- Test whether a value is nil.
-- `prim_number_p` (function) `progs/lisp/lisp.c:1261` `static Node *prim_number_p(Runtime *rt, Node *args)` -- Test whether a value is a number.
-- `prim_string_p` (function) `progs/lisp/lisp.c:1273` `static Node *prim_string_p(Runtime *rt, Node *args)` -- Test whether a value is a string.
-- `prim_error_message` (function) `progs/lisp/lisp.c:1285` `static Node *prim_error_message(Runtime *rt, Node *args)` -- Return the message of an error value or nil for other values.
-- `arity` (function) `progs/lisp/lisp.c:1300` `* * Variable arity (0 or 1);`
-- `prim_exit` (function) `progs/lisp/lisp.c:1303` `static Node *prim_exit(Runtime *rt, Node *args)` -- Terminate the process with a numeric exit status.
-- `prim_time_ms` (function) `progs/lisp/lisp.c:1330` `static Node *prim_time_ms(Runtime *rt, Node *args)` -- Return milliseconds since boot through the kernel time service.
-- `prim_rtc` (function) `progs/lisp/lisp.c:1340` `static Node *prim_rtc(Runtime *rt, Node *args)` -- Return the clock time as a three-element list or nil when unavailable.
-- `prim_fb_info` (function) `progs/lisp/lisp.c:1357` `static Node *prim_fb_info(Runtime *rt, Node *args)` -- Return framebuffer width, height and pitch or nil when unavailable.
-- `prim_vol` (function) `progs/lisp/lisp.c:1377` `static Node *prim_vol(Runtime *rt, Node *args)` -- Read or set the speaker volume, clamped to the valid range.
-- `prim_pal` (function) `progs/lisp/lisp.c:1405` `static Node *prim_pal(Runtime *rt, Node *args)` -- Load a 768-byte VGA palette from a string value.
-- `prim_pcspeaker` (function) `progs/lisp/lisp.c:1421` `static Node *prim_pcspeaker(Runtime *rt, Node *args)` -- Play a speaker tone for a bounded millisecond duration.
-- `prim_minios_run` (function) `progs/lisp/lisp.c:1465` `static Node *prim_minios_run(Runtime *rt, Node *args)` -- Run a program through SYS_SPAWN and return its exit code.
-- `eval_list` (function) `progs/lisp/lisp.c:1527` `static Node *eval_list(Runtime *rt, Node *list, Env *env)` -- Evaluate every element of a list into a fresh proper list.
-- `eval_sequence` (function) `progs/lisp/lisp.c:1551` `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)` -- Evaluate a body sequence and return the last value.
-- `valid_params` (function) `progs/lisp/lisp.c:1569` `static bool valid_params(Runtime *rt, Node *params)` -- Test whether a parameter list holds only symbols.
-- `eval` (function) `progs/lisp/lisp.c:1583` `static Node *eval(Runtime *rt, Node *expression, Env *env)` -- Evaluate an expression with tail-call reuse and a bounded depth.
-- `print_escaped_string` (function) `progs/lisp/lisp.c:1846` `static void print_escaped_string(FILE *out, const char *value)` -- Write a string with escape sequences for readable output.
-- `print_node` (function) `progs/lisp/lisp.c:1877` `static void print_node(Runtime *rt, Node *node, bool readable)` -- Print a value in readable or display form with a bounded depth.
-- `bind_primitive` (function) `progs/lisp/lisp.c:1948` `static void bind_primitive(Runtime *rt, Env *env, const char *name,
-    PrimFn function)` -- Register one named primitive in an environment frame.
-- `init_env` (function) `progs/lisp/lisp.c:2004` `static Env *init_env(Runtime *rt)` -- Build the global environment with arithmetic, strings, files and MiniOS.
-- `bind_argv` (function) `progs/lisp/lisp.c:2017` `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` -- Expose the script argument vector as a proper list of strings.
-- `read_all_file` (function) `progs/lisp/lisp.c:2029` `static char *read_all_file(const char *filename, size_t max_bytes)` -- Read a whole file into memory with a hard size cap.
-- `process_source` (function) `progs/lisp/lisp.c:2087` `static int process_source(Runtime *rt, const char *source,
-    const char *source_name, bool echo)` -- Evaluate every form in a source buffer and report the first failure.
-- `process_inline` (function) `progs/lisp/lisp.c:2129` `static int process_inline(Runtime *rt, const char *code)` -- Evaluate one inline expression from the -e flag.
-- `print_usage` (function) `progs/lisp/lisp.c:2136` `static void print_usage(Runtime *rt)` -- Print usage for the command line interface.
-- `repl` (function) `progs/lisp/lisp.c:2143` `static int repl(Runtime *rt)` -- Run the interactive read-eval loop on the runtime input stream.
-- `main` (function) `progs/lisp/lisp.c:2190` `int main(int argc, char **argv)` -- Entry point with -e, script and REPL modes plus bounded arguments.
+## progs/doomgeneric/r_sky.h
+Imported by: `progs/doomgeneric/g_game.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_main.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_segs.c`, `progs/doomgeneric/r_sky.c`
+- `R_InitSkyMap` (function) `progs/doomgeneric/r_sky.h:35` `void R_InitSkyMap (void);` -- Called whenever the view size changes.
 
-## progs/lisp/tin.c
-- `main` (function) `progs/lisp/tin.c:1` `int main()`
+## progs/doomgeneric/r_things.c
+Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `R_InstallSpriteLump` (function) `progs/doomgeneric/r_things.c:100` `void
+R_InstallSpriteLump
+( int		lump,
+  unsigned	frame,
+  unsigned	rotation,
+  boolean	flipped )`
+- `R_InitSpriteDefs` (function) `progs/doomgeneric/r_things.c:171` `void R_InitSpriteDefs (char** namelist)` -- R_InitSpriteDefs Pass a null terminated list of sprite names (4 chars exactly) to be used.
+- `R_InitSprites` (function) `progs/doomgeneric/r_things.c:291` `void R_InitSprites (char** namelist)` -- R_InitSprites Called at program start.
+- `R_ClearSprites` (function) `progs/doomgeneric/r_things.c:309` `void R_ClearSprites (void)` -- R_ClearSprites Called at frame start.
+- `R_NewVisSprite` (function) `progs/doomgeneric/r_things.c:320` `vissprite_t* R_NewVisSprite (void)`
+- `R_DrawMaskedColumn` (function) `progs/doomgeneric/r_things.c:343` `void R_DrawMaskedColumn (column_t* column)`
+- `R_DrawVisSprite` (function) `progs/doomgeneric/r_things.c:389` `void
+R_DrawVisSprite
+( vissprite_t*		vis,
+  int			x1,
+  int			x2 )`
+- `R_ProjectSprite` (function) `progs/doomgeneric/r_things.c:444` `void R_ProjectSprite (mobj_t* thing)` -- R_ProjectSprite Generates a vissprite for a thing if it might be visible.
+- `R_AddSprites` (function) `progs/doomgeneric/r_things.c:605` `void R_AddSprites (sector_t* sec)` -- R_AddSprites During BSP traversal, this adds sprites by sector.
+- `R_DrawPSprite` (function) `progs/doomgeneric/r_things.c:638` `void R_DrawPSprite (pspdef_t* psp)` -- R_DrawPSprite
+- `R_DrawPlayerSprites` (function) `progs/doomgeneric/r_things.c:738` `void R_DrawPlayerSprites (void)` -- R_DrawPlayerSprites
+- `R_SortVisSprites` (function) `progs/doomgeneric/r_things.c:779` `void R_SortVisSprites (void)`
+- `R_DrawSprite` (function) `progs/doomgeneric/r_things.c:837` `void R_DrawSprite (vissprite_t* spr)`
+- `R_DrawMasked` (function) `progs/doomgeneric/r_things.c:951` `void R_DrawMasked (void)` -- R_DrawMasked
 
-## progs/lua/lua_main.c
-Depends on: `kernel/string.c`
-- `module` (function) `progs/lua/lua_main.c:5` `* C module (minios.c) can be registered globally before any script runs: * `minios.run(...)`, `minios.time_ms()`...`
-- `luaL_require_global` (function) `progs/lua/lua_main.c:22` `static void luaL_require_global(lua_State *L, const char *name,
-                                l...`
-- `set_arg_table` (function) `progs/lua/lua_main.c:28` `static void set_arg_table(lua_State *L, int argc, char **argv, int first)`
-- `docode` (function) `progs/lua/lua_main.c:41` `static int docode(lua_State *L, const char *code)`
-- `dofile` (function) `progs/lua/lua_main.c:51` `static int dofile(lua_State *L, const char *name)`
-- `repl` (function) `progs/lua/lua_main.c:61` `static int repl(lua_State *L)`
-- `main` (function) `progs/lua/lua_main.c:105` `int main(int argc, char **argv)`
+## progs/doomgeneric/r_things.h
+Imported by: `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_local.h`
+- `R_DrawMaskedColumn` (function) `progs/doomgeneric/r_things.h:46` `void R_DrawMaskedColumn (column_t* column);`
+- `R_SortVisSprites` (function) `progs/doomgeneric/r_things.h:49` `void R_SortVisSprites (void);`
+- `R_AddSprites` (function) `progs/doomgeneric/r_things.h:51` `void R_AddSprites (sector_t* sec);`
+- `R_AddPSprites` (function) `progs/doomgeneric/r_things.h:52` `void R_AddPSprites (void);`
+- `R_DrawSprites` (function) `progs/doomgeneric/r_things.h:53` `void R_DrawSprites (void);`
+- `R_InitSprites` (function) `progs/doomgeneric/r_things.h:54` `void R_InitSprites (char** namelist);`
+- `R_ClearSprites` (function) `progs/doomgeneric/r_things.h:55` `void R_ClearSprites (void);`
+- `R_DrawMasked` (function) `progs/doomgeneric/r_things.h:56` `void R_DrawMasked (void);`
+- `R_ClipVisSprite` (function) `progs/doomgeneric/r_things.h:59` `void R_ClipVisSprite ( vissprite_t* vis, int xl, int xh );`
 
-## progs/lua/minios.c
-Depends on: `progs/minios_abi.h`
-Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
-- `msys5` (function) `progs/lua/minios.c:37` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2...
-- `minios_time_ms` (function) `progs/lua/minios.c:62` `static int minios_time_ms(lua_State *L)` -- } /* ── MiniOS syscall numbers (canonical table from minios_abi.h) ─────── #include "minios_abi.h" #define...
-- `minios_rtc` (function) `progs/lua/minios.c:68` `static int minios_rtc(lua_State *L)` -- #define SYS_PCSPK_INIT  MINIOS_SYS_PCSPK_INIT #define SYS_PCSPK_TONE  MINIOS_SYS_PCSPK_TONE #define SYS_RTC...
-- `minios_fb_info` (function) `progs/lua/minios.c:82` `static int minios_fb_info(lua_State *L)` -- static int minios_rtc(lua_State *L) { int h, m, s; if (msys(SYS_RTC, (long)&h, (long)&m, (long)&s) < 0) {...
-- `minios_vol` (function) `progs/lua/minios.c:96` `static int minios_vol(lua_State *L)` -- static int minios_fb_info(lua_State *L) { int w, h, p; if (msys(SYS_FB_INFO, (long)&w, (long)&h, (long)&p) < 0) {...
-- `minios_pal` (function) `progs/lua/minios.c:109` `static int minios_pal(lua_State *L)` -- /* ── minios.vol([v]) -> current volume ─────────────────────────────── static int minios_vol(lua_State *L) { if...
-- `minios_pcspeaker` (function) `progs/lua/minios.c:119` `static int minios_pcspeaker(lua_State *L)` -- return 1; } /* ── minios.pal(buf) -- load a 768-byte VGA DAC palette ────────────── static int minios_pal(lua_State...
-- `minios_run` (function) `progs/lua/minios.c:136` `static int minios_run(lua_State *L)` -- ── minios.run(path[, args][, redirect]) -> exit code ─────────────── Runs a program through SYS_SPAWN (215)...
-- `luaopen_minios` (function) `progs/lua/minios.c:192` `int luaopen_minios(lua_State *L)`
+## progs/doomgeneric/s_sound.c
+Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `S_Init` (function) `progs/doomgeneric/s_sound.c:114` `void S_Init(int sfxVolume, int musicVolume)`
+- `S_Shutdown` (function) `progs/doomgeneric/s_sound.c:146` `void S_Shutdown(void)`
+- `S_StopChannel` (function) `progs/doomgeneric/s_sound.c:152` `static void S_StopChannel(int cnum)`
+- `S_Start` (function) `progs/doomgeneric/s_sound.c:191` `void S_Start(void)`
+- `S_StopSound` (function) `progs/doomgeneric/s_sound.c:243` `void S_StopSound(mobj_t *origin)`
+- `S_GetChannel` (function) `progs/doomgeneric/s_sound.c:262` `static int S_GetChannel(mobj_t *origin, sfxinfo_t *sfxinfo)`
+- `S_AdjustSoundParams` (function) `progs/doomgeneric/s_sound.c:323` `static int S_AdjustSoundParams(mobj_t *listener, mobj_t *source,
+                               i...`
+- `S_StartSound` (function) `progs/doomgeneric/s_sound.c:391` `void S_StartSound(void *origin_p, int sfx_id)`
+- `S_PauseSound` (function) `progs/doomgeneric/s_sound.c:482` `void S_PauseSound(void)`
+- `S_ResumeSound` (function) `progs/doomgeneric/s_sound.c:491` `void S_ResumeSound(void)`
+- `S_UpdateSounds` (function) `progs/doomgeneric/s_sound.c:504` `void S_UpdateSounds(mobj_t *listener)`
+- `S_SetMusicVolume` (function) `progs/doomgeneric/s_sound.c:571` `void S_SetMusicVolume(int volume)`
+- `S_SetSfxVolume` (function) `progs/doomgeneric/s_sound.c:582` `void S_SetSfxVolume(int volume)`
+- `S_StartMusic` (function) `progs/doomgeneric/s_sound.c:596` `void S_StartMusic(int m_id)`
+- `S_ChangeMusic` (function) `progs/doomgeneric/s_sound.c:601` `void S_ChangeMusic(int musicnum, int looping)`
+- `S_MusicPlaying` (function) `progs/doomgeneric/s_sound.c:649` `boolean S_MusicPlaying(void)`
+- `S_StopMusic` (function) `progs/doomgeneric/s_sound.c:654` `void S_StopMusic(void)`
 
-## progs/micropython/variants/minios/minios_module.c
-Depends on: `progs/minios_abi.h`
-- `msys5` (function) `progs/micropython/variants/minios/minios_module.c:26` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- /* ── raw syscall helper (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2...
-- `minios_time_ms` (function) `progs/micropython/variants/minios/minios_module.c:52` `static mp_obj_t minios_time_ms(void)`
-- `MP_DEFINE_CONST_FUN_OBJ_0` (function) `progs/micropython/variants/minios/minios_module.c:55` `static MP_DEFINE_CONST_FUN_OBJ_0(minios_time_ms_obj, minios_time_ms);`
-- `minios_rtc` (function) `progs/micropython/variants/minios/minios_module.c:59` `static mp_obj_t minios_rtc(void)`
-- `minios_fb_info` (function) `progs/micropython/variants/minios/minios_module.c:76` `static mp_obj_t minios_fb_info(void)`
-- `MP_DEFINE_CONST_FUN_OBJ_VAR` (function) `progs/micropython/variants/minios/minios_module.c:107` `static MP_DEFINE_CONST_FUN_OBJ_VAR(minios_vol_obj, 0, minios_vol);`
-- `minios_pal` (function) `progs/micropython/variants/minios/minios_module.c:111` `static mp_obj_t minios_pal(mp_obj_t buf_in)`
-- `MP_DEFINE_CONST_FUN_OBJ_1` (function) `progs/micropython/variants/minios/minios_module.c:123` `static MP_DEFINE_CONST_FUN_OBJ_1(minios_pal_obj, minios_pal);`
-- `minios_pcspeaker` (function) `progs/micropython/variants/minios/minios_module.c:127` `static mp_obj_t minios_pcspeaker(mp_obj_t freq_in, mp_obj_t ms_in)`
-- `MP_DEFINE_CONST_FUN_OBJ_2` (function) `progs/micropython/variants/minios/minios_module.c:140` `static MP_DEFINE_CONST_FUN_OBJ_2(minios_pcspeaker_obj, minios_pcspeaker);`
-- `minios_run` (function) `progs/micropython/variants/minios/minios_module.c:149` `static mp_obj_t minios_run(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)`
-- `MP_DEFINE_CONST_FUN_OBJ_KW` (function) `progs/micropython/variants/minios/minios_module.c:193` `static MP_DEFINE_CONST_FUN_OBJ_KW(minios_run_obj, 1, minios_run);`
-- `MP_DEFINE_CONST_DICT` (function) `progs/micropython/variants/minios/minios_module.c:207` `static MP_DEFINE_CONST_DICT(minios_module_globals, minios_module_globals_table);`
+## progs/doomgeneric/s_sound.h
+Depends on: `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- `S_Init` (function) `progs/doomgeneric/s_sound.h:32` `void S_Init(int sfxVolume, int musicVolume);`
+- `S_Shutdown` (function) `progs/doomgeneric/s_sound.h:37` `void S_Shutdown(void);`
+- `S_Start` (function) `progs/doomgeneric/s_sound.h:47` `void S_Start(void);`
+- `S_StartSound` (function) `progs/doomgeneric/s_sound.h:54` `void S_StartSound(void *origin, int sound_id);`
+- `S_StopSound` (function) `progs/doomgeneric/s_sound.h:57` `void S_StopSound(mobj_t *origin);` -- Stop sound for thing at <origin>
+- `S_StartMusic` (function) `progs/doomgeneric/s_sound.h:61` `void S_StartMusic(int music_id);` -- Start music using <music_id> from sounds.h
+- `S_ChangeMusic` (function) `progs/doomgeneric/s_sound.h:65` `void S_ChangeMusic(int music_id, int looping);` -- Start music using <music_id> from sounds.h, and set whether looping
+- `S_StopMusic` (function) `progs/doomgeneric/s_sound.h:71` `void S_StopMusic(void);` -- Stops the music fer sure.
+- `S_PauseSound` (function) `progs/doomgeneric/s_sound.h:74` `void S_PauseSound(void);` -- Stop and resume music, during game PAUSE.
+- `S_ResumeSound` (function) `progs/doomgeneric/s_sound.h:75` `void S_ResumeSound(void);`
+- `S_UpdateSounds` (function) `progs/doomgeneric/s_sound.h:81` `void S_UpdateSounds(mobj_t *listener);` -- Updates music & sounds
+- `S_SetMusicVolume` (function) `progs/doomgeneric/s_sound.h:83` `void S_SetMusicVolume(int volume);`
+- `S_SetSfxVolume` (function) `progs/doomgeneric/s_sound.h:84` `void S_SetSfxVolume(int volume);`
 
-## progs/minicraft/minicraft.c
-Depends on: `kernel/string.c`, `progs/minios_abi.h`
-- `best_tool_for` (function) `progs/minicraft/minicraft.c:231` `static int best_tool_for(unsigned char b)`
-- `break_time_ms` (function) `progs/minicraft/minicraft.c:250` `static long break_time_ms(unsigned char b, int tool)`
-- `break_beep_for` (function) `progs/minicraft/minicraft.c:275` `static long break_beep_for(unsigned char b)`
-- `mc_toggle_zoom` (function) `progs/minicraft/minicraft.c:316` `static void mc_toggle_zoom(void)`
-- `save_world` (function) `progs/minicraft/minicraft.c:330` `static int save_world(void);`
-- `s_time_ms` (function) `progs/minicraft/minicraft.c:337` `static long s_time_ms(void)`
-- `s_kbd` (function) `progs/minicraft/minicraft.c:342` `static long s_kbd(void)`
-- `s_kbd_raw` (function) `progs/minicraft/minicraft.c:347` `static long s_kbd_raw(long on)`
-- `s_getc_raw` (function) `progs/minicraft/minicraft.c:359` `static long s_getc_raw(void)` -- Serial fallback for menus: SYS_KBD in raw mode carries PS/2 only, so a serial console can never drive a scancode...
-- `ser_get` (function) `progs/minicraft/minicraft.c:373` `static long ser_get(void)`
-- `ser_unget` (function) `progs/minicraft/minicraft.c:386` `static void ser_unget(unsigned char b)`
-- `menu_ser_key` (function) `progs/minicraft/minicraft.c:391` `static long menu_ser_key(long b)`
-- `kbd_drain` (function) `progs/minicraft/minicraft.c:428` `static void kbd_drain(void)` -- Drain stale scancodes (typematic repeats, a release that arrived with * its press) before leaving a menu, so they...
-- `s_vga` (function) `progs/minicraft/minicraft.c:433` `static long s_vga(long on)`
-- `s_pal` (function) `progs/minicraft/minicraft.c:438` `static long s_pal(const unsigned char *p)`
-- `s_present` (function) `progs/minicraft/minicraft.c:443` `static long s_present(void)`
-- `s_title` (function) `progs/minicraft/minicraft.c:448` `static long s_title(const char *t)`
-- `s_mouse` (function) `progs/minicraft/minicraft.c:453` `static long s_mouse(int *m)`
-- `s_zoom` (function) `progs/minicraft/minicraft.c:458` `static long s_zoom(long on)`
-- `s_yield` (function) `progs/minicraft/minicraft.c:463` `static void s_yield(void)`
-- `s_pcspk_init` (function) `progs/minicraft/minicraft.c:468` `static long s_pcspk_init(void)`
-- `beep` (function) `progs/minicraft/minicraft.c:478` `static void beep(long freq, long dur_ms)`
-- `pal_set` (function) `progs/minicraft/minicraft.c:497` `static void pal_set(int i, int r, int g, int b)`
-- `build_palette` (function) `progs/minicraft/minicraft.c:503` `static void build_palette(void)`
-- `in_world` (function) `progs/minicraft/minicraft.c:562` `static int in_world(int x, int y, int z)`
-- `chunk_of` (function) `progs/minicraft/minicraft.c:577` `static int chunk_of(int v)` -- (void)x; (void)y; return z >= 0 && z < MC_H; } static unsigned int hash2(int x, int y); static unsigned int...
-- `chunk_local` (function) `progs/minicraft/minicraft.c:581` `static int chunk_local(int v)`
-- `chunk_lidx` (function) `progs/minicraft/minicraft.c:586` `static int chunk_lidx(int lx, int ly, int z)`
-- `chunk_find` (function) `progs/minicraft/minicraft.c:592` `static int chunk_find(int cx, int cy)` -- O(1) fast path: DDA walks neighbours, so the last chunk almost always * hits; the 49-slot scan is the rare slow...
-- `world_max_recompute` (function) `progs/minicraft/minicraft.c:606` `static void world_max_recompute(void)`
-- `chunk_evict_slot` (function) `progs/minicraft/minicraft.c:615` `static int chunk_evict_slot(int cx, int cy)`
-- `chunk_ensure` (function) `progs/minicraft/minicraft.c:635` `static int chunk_ensure(int cx, int cy)`
-- `chunk_build_meta` (function) `progs/minicraft/minicraft.c:658` `static void chunk_build_meta(int slot)`
-- `col_recompute` (function) `progs/minicraft/minicraft.c:703` `static void col_recompute(int x, int y)`
-- `col_top_at` (function) `progs/minicraft/minicraft.c:728` `static int col_top_at(int x, int y)`
-- `light_recompute_col` (function) `progs/minicraft/minicraft.c:735` `static void light_recompute_col(int x, int y)`
-- `get_b` (function) `progs/minicraft/minicraft.c:764` `static unsigned char get_b(int x, int y, int z)`
-- `set_b` (function) `progs/minicraft/minicraft.c:774` `static void set_b(int x, int y, int z, unsigned char b)`
-- `set_b_raw` (function) `progs/minicraft/minicraft.c:790` `static void set_b_raw(int x, int y, int z, unsigned char b)`
-- `sky_light` (function) `progs/minicraft/minicraft.c:801` `static float sky_light(int x, int y, int z)` -- world_dirty = 1; } static void set_b_raw(int x, int y, int z, unsigned char b) { int s; if (z < 0 || z >= MC_H)...
-- `is_solid` (function) `progs/minicraft/minicraft.c:811` `static int is_solid(unsigned char b)`
-- `in_water_at` (function) `progs/minicraft/minicraft.c:814` `static int in_water_at(float x, float y, float z)`
-- `is_visible` (function) `progs/minicraft/minicraft.c:819` `static int is_visible(unsigned char b)`
-- `hash2` (function) `progs/minicraft/minicraft.c:823` `static unsigned int hash2(int x, int y)`
-- `hash2_seed` (function) `progs/minicraft/minicraft.c:830` `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
-- `mc_smoothstep` (function) `progs/minicraft/minicraft.c:839` `static float mc_smoothstep(float t)`
-- `biome_fdiv` (function) `progs/minicraft/minicraft.c:846` `static int biome_fdiv(int v, int c)` -- Voronoi biome lattice: floor division so negatives land right.
-- `voro_site` (function) `progs/minicraft/minicraft.c:861` `static void voro_site(int cx, int cy, unsigned int seed, int cell,
-    int *sx, int *sy)`
-- `biome_voro` (function) `progs/minicraft/minicraft.c:869` `static int biome_voro(int x, int y, unsigned int seed, int cell,
-    int ox, int oy, unsigned int...`
-- `biome_desert` (function) `progs/minicraft/minicraft.c:893` `static int biome_desert(int x, int y, unsigned int seed)`
-- `biome_snow` (function) `progs/minicraft/minicraft.c:897` `static int biome_snow(int x, int y, unsigned int seed)`
-- `is_cave` (function) `progs/minicraft/minicraft.c:901` `static int is_cave(int x, int y, int z, unsigned int seed)`
-- `ground_h_seed` (function) `progs/minicraft/minicraft.c:909` `static int ground_h_seed(int x, int y, unsigned int seed)`
-- `inv_add` (function) `progs/minicraft/minicraft.c:931` `static int inv_add(int b, int n)`
-- `inv_remove` (function) `progs/minicraft/minicraft.c:945` `static int inv_remove(int b, int n)`
-- `decorate_column` (function) `progs/minicraft/minicraft.c:995` `static void decorate_column(int x, int y, unsigned int seed)`
-- `gen_terrain_chunk` (function) `progs/minicraft/minicraft.c:1034` `static void gen_terrain_chunk(int slot)`
-- `decorate_chunk` (function) `progs/minicraft/minicraft.c:1043` `static void decorate_chunk(int slot)`
-- `ensure_around_px` (function) `progs/minicraft/minicraft.c:1056` `static void ensure_around_px(float px, float py)` -- Keep a (2R+1)^2 ring of terrain around the player, an inner ring decorated, drop the rest (dirty chunks hit disk first).
-- `ensure_around` (function) `progs/minicraft/minicraft.c:1090` `static void ensure_around(void)`
-- `new_world` (function) `progs/minicraft/minicraft.c:1095` `static void new_world(unsigned int seed)` -- save_chunk_file(i); ch_used[i] = 0; if (ch_cache == i) ch_cache = -1; } } world_max_recompute(); } static void...
-- `mob_spawn_one` (function) `progs/minicraft/minicraft.c:1191` `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
-- `pig_collides` (function) `progs/minicraft/minicraft.c:1243` `static int pig_collides(float x, float y, float z)`
-- `creeper_explode` (function) `progs/minicraft/minicraft.c:1257` `static void creeper_explode(Pig *c, long now)`
-- `creep_sense` (function) `progs/minicraft/minicraft.c:1325` `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)` -- Creeper perception in 3D: planar delta, eye-height delta and full distance.
-- `creep_has_los` (function) `progs/minicraft/minicraft.c:1337` `static int creep_has_los(Pig *c)` -- Voxel line of sight between creeper eyes and player eyes, sampled every half block.
-- `creep_separate` (function) `progs/minicraft/minicraft.c:1361` `static void creep_separate(Pig *p, int id, float dt)` -- Herd separation: creepers inside MC_CREEP_SEP_D push apart so the pack * never stacks on one tile and every one of...
-- `tick_mob` (function) `progs/minicraft/minicraft.c:1386` `static void tick_mob(Pig *p, int id, float dt, long now)`
-- `tick_pigs` (function) `progs/minicraft/minicraft.c:1512` `static void tick_pigs(float dt, long now)`
-- `face_color` (function) `progs/minicraft/minicraft.c:1520` `static unsigned char face_color(unsigned char b, int face)`
-- `sky_color` (function) `progs/minicraft/minicraft.c:1569` `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
-- `shade_block` (function) `progs/minicraft/minicraft.c:1602` `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
-             ...`
-- `cast_ray` (function) `progs/minicraft/minicraft.c:1659` `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
-- `eye_z` (function) `progs/minicraft/minicraft.c:1750` `static float eye_z(void)`
-- `mc_glyph` (function) `progs/minicraft/minicraft.c:1817` `static int mc_glyph(char ch)`
-- `mc_pixel` (function) `progs/minicraft/minicraft.c:1825` `static void mc_pixel(int x, int y, unsigned char c)`
-- `mc_text` (function) `progs/minicraft/minicraft.c:1831` `static void mc_text(int x, int y, const char *s, unsigned char fg)`
-- `mc_text_bg` (function) `progs/minicraft/minicraft.c:1844` `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
-- `mc_block_name` (function) `progs/minicraft/minicraft.c:1857` `static const char *mc_block_name(unsigned char b)`
-- `mc_facing` (function) `progs/minicraft/minicraft.c:1877` `static char mc_facing(void)`
-- `cam_build` (function) `progs/minicraft/minicraft.c:1892` `static void cam_build(void)`
-- `render_terrain` (function) `progs/minicraft/minicraft.c:1910` `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
-                      ...`
-- `mob_pixel` (function) `progs/minicraft/minicraft.c:1945` `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
-- `render_mob_array` (function) `progs/minicraft/minicraft.c:1979` `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
-    float rx, float r...`
-- `render_pigs` (function) `progs/minicraft/minicraft.c:2030` `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
-- `render_frame` (function) `progs/minicraft/minicraft.c:2038` `static void render_frame(void)`
-- `sc_hist_push` (function) `progs/minicraft/minicraft.c:2151` `static void sc_hist_push(unsigned char b)`
-- `poll_kbd` (function) `progs/minicraft/minicraft.c:2162` `static void poll_kbd(void)`
-- `player_collides` (function) `progs/minicraft/minicraft.c:2355` `static int player_collides(float x, float y, float z)`
-- `move_x` (function) `progs/minicraft/minicraft.c:2379` `static void move_x(float nx)`
-- `move_y` (function) `progs/minicraft/minicraft.c:2384` `static void move_y(float ny)`
-- `move_z_abs` (function) `progs/minicraft/minicraft.c:2389` `static MoveResult move_z_abs(float nz)`
-- `block_intersects_player` (function) `progs/minicraft/minicraft.c:2404` `static int block_intersects_player(int bx, int by, int bz)`
-- `try_autostep` (function) `progs/minicraft/minicraft.c:2413` `static void try_autostep(float tx, float ty)`
-- `hurt` (function) `progs/minicraft/minicraft.c:2424` `static void hurt(int dmg, const char *why)`
-- `tick_player` (function) `progs/minicraft/minicraft.c:2449` `static void tick_player(float dt)`
-- `tick_water` (function) `progs/minicraft/minicraft.c:2548` `static void tick_water(long now)`
-- `tick_hunger` (function) `progs/minicraft/minicraft.c:2596` `static void tick_hunger(long now)`
-- `goal_text` (function) `progs/minicraft/minicraft.c:2608` `static const char *goal_text(void)`
-- `tick_goals` (function) `progs/minicraft/minicraft.c:2619` `static void tick_goals(void)`
-- `tick_discover` (function) `progs/minicraft/minicraft.c:2630` `static void tick_discover(long now)`
-- `tick_interact` (function) `progs/minicraft/minicraft.c:2668` `static void tick_interact(void)`
-- `mc_crc32` (function) `progs/minicraft/minicraft.c:2919` `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
-- `save_compute_crc` (function) `progs/minicraft/minicraft.c:2932` `static uint32_t save_compute_crc(const SaveHeader *hd)`
-- `chunk_path` (function) `progs/minicraft/minicraft.c:2938` `static void chunk_path(int cx, int cy, char *out, size_t n)`
-- `save_chunk_file` (function) `progs/minicraft/minicraft.c:2942` `static int save_chunk_file(int slot)`
-- `load_chunk_file` (function) `progs/minicraft/minicraft.c:2974` `static int load_chunk_file(int slot, int cx, int cy)`
-- `save_validate_loaded` (function) `progs/minicraft/minicraft.c:3056` `static int save_validate_loaded(void)`
-- `load_reset_runtime` (function) `progs/minicraft/minicraft.c:3075` `static void load_reset_runtime(void)`
-- `carve_blob` (function) `progs/minicraft/minicraft.c:3108` `static void carve_blob(const unsigned char *blob)` -- Import a 64x64x32 legacy blob into chunks (0..3, 0..3), then dirty so * region files persist it.
-- `load_world_legacy` (function) `progs/minicraft/minicraft.c:3137` `static int load_world_legacy(FILE *f)` -- Legacy raw save: fixed old_inv[12] layout is fragile if B_COUNT grows; * kept read-only for ancient saves, never...
-- `load_apply_player` (function) `progs/minicraft/minicraft.c:3175` `static void load_apply_player(const SaveHeader *hd)`
-- `load_world_v3` (function) `progs/minicraft/minicraft.c:3194` `static int load_world_v3(FILE *f, SaveHeader *hd)`
-- `load_world_v2` (function) `progs/minicraft/minicraft.c:3234` `static int load_world_v2(FILE *f, SaveHeader *hd)`
-- `load_world` (function) `progs/minicraft/minicraft.c:3271` `static int load_world(void)`
-- `selftest` (function) `progs/minicraft/minicraft.c:3345` `static int selftest(void)`
-- `census` (function) `progs/minicraft/minicraft.c:3606` `static int census(void)` -- 128x128 columns (64 biome cells): a 64-wide patch covers too few * 16-block biome cells and the desert rate...
-- `dumpstats` (function) `progs/minicraft/minicraft.c:3670` `static int dumpstats(void)`
-- `title_menu` (function) `progs/minicraft/minicraft.c:3754` `static int title_menu(int have_save, int *seed_io)`
-- `pause_menu` (function) `progs/minicraft/minicraft.c:3922` `static int pause_menu(int *seed_io)` -- Pause menu on ESC (Alt+F4 still kills the process kernel-side): * 0 = resume, 1 = new world with *seed_io, 2 = save...
-- `main` (function) `progs/minicraft/minicraft.c:4095` `int main(int argc, char **argv)`
+## progs/doomgeneric/sha1.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/sha1.h`
+- `SHA1_Init` (function) `progs/doomgeneric/sha1.c:40` `void SHA1_Init(sha1_context_t *hd)`
+- `Transform` (function) `progs/doomgeneric/sha1.c:55` `static void Transform(sha1_context_t *hd, byte *data)` -- Transform the message X which consists of 16 32-bit-words
+- `SHA1_Update` (function) `progs/doomgeneric/sha1.c:198` `void SHA1_Update(sha1_context_t *hd, byte *inbuf, size_t inlen)` -- Update the message digest with the contents of INBUF with length INLEN.
+- `SHA1_Final` (function) `progs/doomgeneric/sha1.c:238` `void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)`
+- `SHA1_UpdateInt32` (function) `progs/doomgeneric/sha1.c:303` `void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val)`
+- `SHA1_UpdateString` (function) `progs/doomgeneric/sha1.c:315` `void SHA1_UpdateString(sha1_context_t *context, char *str)`
 
-## progs/minios_abi.h
-Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/platform_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
-- `DOOM_BACKBUF_ADDR` (function) `progs/minios_abi.h:128` `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...`
-- `clock_nanosleep` (function) `progs/minios_abi.h:334` `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...`
+## progs/doomgeneric/sha1.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_defs.h`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/w_checksum.c`
+- `SHA1_Init` (function) `progs/doomgeneric/sha1.h:33` `void SHA1_Init(sha1_context_t *context);`
+- `SHA1_Update` (function) `progs/doomgeneric/sha1.h:34` `void SHA1_Update(sha1_context_t *context, byte *buf, size_t len);`
+- `SHA1_Final` (function) `progs/doomgeneric/sha1.h:35` `void SHA1_Final(sha1_digest_t digest, sha1_context_t *context);`
+- `SHA1_UpdateInt32` (function) `progs/doomgeneric/sha1.h:36` `void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val);`
+- `SHA1_UpdateString` (function) `progs/doomgeneric/sha1.h:37` `void SHA1_UpdateString(sha1_context_t *context, char *str);`
 
-## progs/minios_png.h
-Imported by: `progs/file/file.c`, `progs/pokemon/platform_minios.c`, `tests/test_minios_png.c`
-- `mpng_332_idx` (function) `progs/minios_png.h:58` `static int mpng_332_idx(unsigned r, unsigned g, unsigned b)` -- static const char *mpng_left_candidates[MPNG_LEFT_N] = { "/icons/doom.png", "/icons/doomedit.png"...
-- `mpng_nearest` (function) `progs/minios_png.h:63` `static int mpng_nearest(const unsigned char *pal, long pal_n, unsigned r,
-                       ...` -- "/icons/nuklear.png", "/icons/vedit.png", "/icons/file.png", "/icons/shell.png", "/icons/paint.png"...
-- `mpng_center` (function) `progs/minios_png.h:84` `static int mpng_center(int outer, int inner)` -- for (k = 0; k < pal_n; k++) { long dr = (long)pal[k * 3] - (long)r; long dg = (long)pal[k * 3 + 1] - (long)g; long...
-- `mpng_fit_scale` (function) `progs/minios_png.h:93` `static int mpng_fit_scale(int sw, int sh, int boxw, int boxh)` -- } return (int)best; } /** Docstring: centered offset of inner inside outer, negative when unfit. static int...
-- `mpng_rgb_to_idx_scaled` (function) `progs/minios_png.h:108` `static int mpng_rgb_to_idx_scaled(const unsigned char *rgb, int sw, int sh,
-                     ...` -- int s = 1; int best = 1; if (sw <= 0 || sh <= 0 || boxw <= 0 || boxh <= 0) return -1; for (s = 1; s <= boxw && s <=...
-- `bound` (function) `progs/minios_png.h:140` `* its 512 source bound (pinned by the host suite), so icon and policy
- * art never grow through t...`
-- `mpng_rgb_to_332_scaled` (function) `progs/minios_png.h:172` `static int mpng_rgb_to_332_scaled(const unsigned char *rgb, int sw, int sh,
-                     ...` -- int sy = y * sh / dh; for (x = 0; x < dw; x++) { int sx = x * sw / dw; const unsigned char *p = rgb + (sy * sw + sx)...
-- `mpng_blit_idx` (function) `progs/minios_png.h:196` `static int mpng_blit_idx(unsigned char *fb, int fw, int fh,
-                         const unsign...` -- if (dw > MPNG_MAX_DIM || dh > MPNG_MAX_DIM) return MPNG_ERR_BOUND; for (y = 0; y < dh; y++) { int sy = y * sh / dh...
-- `mpng_load_file` (function) `progs/minios_png.h:222` `static int mpng_load_file(const char *path, unsigned char **out, long *out_n,
-                   ...` -- int dy = oy + y; if (dy < 0 || dy >= fh) continue; for (x = 0; x < tw; x++) { int dx = ox + x; if (dx < 0 || dx >=...
+## progs/doomgeneric/st_lib.c
+Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `STlib_init` (function) `progs/doomgeneric/st_lib.c:51` `void STlib_init(void)`
+- `STlib_initNum` (function) `progs/doomgeneric/st_lib.c:59` `void
+STlib_initNum
+( st_number_t*		n,
+  int			x,
+  int			y,
+  patch_t**		pl,
+  int*			num,
+  bool...`
+- `STlib_drawNum` (function) `progs/doomgeneric/st_lib.c:84` `void
+STlib_drawNum
+( st_number_t*	n,
+  boolean	refresh )`
+- `STlib_updateNum` (function) `progs/doomgeneric/st_lib.c:146` `void
+STlib_updateNum
+( st_number_t*		n,
+  boolean		refresh )`
+- `STlib_initPercent` (function) `progs/doomgeneric/st_lib.c:156` `void
+STlib_initPercent
+( st_percent_t*		p,
+  int			x,
+  int			y,
+  patch_t**		pl,
+  int*			num,
+ ...`
+- `STlib_updatePercent` (function) `progs/doomgeneric/st_lib.c:173` `void
+STlib_updatePercent
+( st_percent_t*		per,
+  int			refresh )`
+- `STlib_initMultIcon` (function) `progs/doomgeneric/st_lib.c:186` `void
+STlib_initMultIcon
+( st_multicon_t*	i,
+  int			x,
+  int			y,
+  patch_t**		il,
+  int*			inum,...`
+- `STlib_updateMultIcon` (function) `progs/doomgeneric/st_lib.c:205` `void
+STlib_updateMultIcon
+( st_multicon_t*	mi,
+  boolean		refresh )`
+- `STlib_initBinIcon` (function) `progs/doomgeneric/st_lib.c:236` `void
+STlib_initBinIcon
+( st_binicon_t*		b,
+  int			x,
+  int			y,
+  patch_t*		i,
+  boolean*		val,
+...`
+- `STlib_updateBinIcon` (function) `progs/doomgeneric/st_lib.c:255` `void
+STlib_updateBinIcon
+( st_binicon_t*		bi,
+  boolean		refresh )`
 
-## progs/nk_palette.h
-Imported by: `progs/freedomui/freedomui_minios.c`, `progs/nuklear/nuklear_minios.c`, `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
-- `nk_palette_build` (function) `progs/nk_palette.h:22` `static int nk_palette_build(unsigned char *pal, long cap)`
+## progs/doomgeneric/st_lib.h
+Depends on: `progs/doomgeneric/r_defs.h`
+Imported by: `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`
+- `STlib_init` (function) `progs/doomgeneric/st_lib.h:138` `void STlib_init(void);` -- Initializes widget library.
+- `STlib_initNum` (function) `progs/doomgeneric/st_lib.h:144` `void STlib_initNum ( st_number_t* n, int x, int y, patch_t** pl, int* num, boolean* on, int width );`
+- `STlib_updateNum` (function) `progs/doomgeneric/st_lib.h:154` `void STlib_updateNum ( st_number_t* n, boolean refresh );`
+- `STlib_initPercent` (function) `progs/doomgeneric/st_lib.h:161` `void STlib_initPercent ( st_percent_t* p, int x, int y, patch_t** pl, int* num, boolean* on, patch_t* percent );`
+- `STlib_updatePercent` (function) `progs/doomgeneric/st_lib.h:172` `void STlib_updatePercent ( st_percent_t* per, int refresh );`
+- `STlib_initMultIcon` (function) `progs/doomgeneric/st_lib.h:179` `void STlib_initMultIcon ( st_multicon_t* mi, int x, int y, patch_t** il, int* inum, boolean* on );`
+- `STlib_updateMultIcon` (function) `progs/doomgeneric/st_lib.h:189` `void STlib_updateMultIcon ( st_multicon_t* mi, boolean refresh );`
+- `STlib_initBinIcon` (function) `progs/doomgeneric/st_lib.h:196` `void STlib_initBinIcon ( st_binicon_t* b, int x, int y, patch_t* i, boolean* val, boolean* on );`
+- `STlib_updateBinIcon` (function) `progs/doomgeneric/st_lib.h:205` `void STlib_updateBinIcon ( st_binicon_t* bi, boolean refresh );`
 
-## progs/nuklear/cvm_emit.c
-Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
-- `module` (function) `progs/nuklear/cvm_emit.c:3` `* * Emits a cvm2 module (format v2) from a dataflow graph. Nodes are * topologically sorted (a true DAG order, so...`
-- `code` (function) `progs/nuklear/cvm_emit.c:8` `* exit code (OP_HALT leaves the operand-stack top as the exit status, which
- * the shell reports ...`
-- `cb_push` (function) `progs/nuklear/cvm_emit.c:79` `static int cb_push(struct codebuf *cb, unsigned char c)`
-- `cb_u32` (function) `progs/nuklear/cvm_emit.c:91` `static int cb_u32(struct codebuf *cb, unsigned long v)`
-- `cb_i64` (function) `progs/nuklear/cvm_emit.c:97` `static int cb_i64(struct codebuf *cb, long long v)`
-- `cb_patch_u32` (function) `progs/nuklear/cvm_emit.c:103` `static void cb_patch_u32(struct codebuf *cb, size_t pos, unsigned long v)`
-- `cb_imm` (function) `progs/nuklear/cvm_emit.c:111` `static int cb_imm(struct codebuf *cb, long long v)` -- static int cb_i64(struct codebuf *cb, long long v) { for (int i = 0; i < 8; i++) if (cb_push(cb, (unsigned char)(v...
-- `req_inputs` (function) `progs/nuklear/cvm_emit.c:126` `static int req_inputs(enum cvm_node_type t)` -- if (v >= -128 && v <= 127) { if (cb_push(cb, OP_PUSH_IMM8) < 0) return -1; if (cb_push(cb, (unsigned char)(v &...
-- `is_sink` (function) `progs/nuklear/cvm_emit.c:145` `static int is_sink(enum cvm_node_type t)`
-- `topo_sort` (function) `progs/nuklear/cvm_emit.c:150` `static int topo_sort(const struct cvm_node *nodes, int n,
-                     int *order, char *...` -- case NODE_EXIT: return 1; case NODE_IF: return 3; default: return 2; } } static int is_sink(enum cvm_node_type t) {...
-- `emit_operand` (function) `progs/nuklear/cvm_emit.c:213` `static int emit_operand(struct codebuf *code, const struct cvm_node *nodes,
-                     ...` -- Emit one operand: the wired local slot or the fallback literal.
-- `emit_jz` (function) `progs/nuklear/cvm_emit.c:224` `static int emit_jz(struct codebuf *code, size_t *rel_pos)`
-- `emit_jmp` (function) `progs/nuklear/cvm_emit.c:230` `static int emit_jmp(struct codebuf *code, size_t *rel_pos)`
-- `cvm_compile` (function) `progs/nuklear/cvm_emit.c:236` `int cvm_compile(const struct cvm_node *nodes, int n,
-                unsigned char **out, size_t ...`
-- `w32` (function) `progs/nuklear/cvm_emit.c:491` `void w32(void *p, unsigned v)` -- size_t ft = (size_t)nf * CVM_FUNC_ENTRY_SIZE; size_t gt = (size_t)ng * CVM_GLOBAL_ENTRY_SIZE; size_t nt = (size_t)nn...
+## progs/doomgeneric/st_stuff.c
+Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `ST_refreshBackground` (function) `progs/doomgeneric/st_stuff.c:416` `void ST_refreshBackground(void)`
+- `ST_Responder` (function) `progs/doomgeneric/st_stuff.c:439` `boolean
+ST_Responder (event_t* ev)`
+- `ST_calcPainOffset` (function) `progs/doomgeneric/st_stuff.c:665` `int ST_calcPainOffset(void)`
+- `ST_updateFaceWidget` (function) `progs/doomgeneric/st_stuff.c:688` `void ST_updateFaceWidget(void)` -- This is a not-very-pretty routine which handles the face states and their timing. the precedence of expressions is...
+- `ST_updateWidgets` (function) `progs/doomgeneric/st_stuff.c:860` `void ST_updateWidgets(void)`
+- `ST_Ticker` (function) `progs/doomgeneric/st_stuff.c:924` `void ST_Ticker (void)`
+- `ST_doPaletteStuff` (function) `progs/doomgeneric/st_stuff.c:936` `void ST_doPaletteStuff(void)`
+- `ST_drawWidgets` (function) `progs/doomgeneric/st_stuff.c:1001` `void ST_drawWidgets(boolean refresh)`
+- `ST_doRefresh` (function) `progs/doomgeneric/st_stuff.c:1036` `void ST_doRefresh(void)`
+- `ST_diffDraw` (function) `progs/doomgeneric/st_stuff.c:1049` `void ST_diffDraw(void)`
+- `ST_Drawer` (function) `progs/doomgeneric/st_stuff.c:1055` `void ST_Drawer (boolean fullscreen, boolean refresh)`
+- `ST_loadUnloadGraphics` (function) `progs/doomgeneric/st_stuff.c:1076` `static void ST_loadUnloadGraphics(load_callback_t callback)`
+- `ST_loadCallback` (function) `progs/doomgeneric/st_stuff.c:1162` `static void ST_loadCallback(char *lumpname, patch_t **variable)`
+- `ST_loadGraphics` (function) `progs/doomgeneric/st_stuff.c:1167` `void ST_loadGraphics(void)`
+- `ST_loadData` (function) `progs/doomgeneric/st_stuff.c:1172` `void ST_loadData(void)`
+- `ST_unloadCallback` (function) `progs/doomgeneric/st_stuff.c:1178` `static void ST_unloadCallback(char *lumpname, patch_t **variable)`
+- `ST_unloadGraphics` (function) `progs/doomgeneric/st_stuff.c:1184` `void ST_unloadGraphics(void)`
+- `ST_unloadData` (function) `progs/doomgeneric/st_stuff.c:1189` `void ST_unloadData(void)`
+- `ST_initData` (function) `progs/doomgeneric/st_stuff.c:1194` `void ST_initData(void)`
+- `ST_createWidgets` (function) `progs/doomgeneric/st_stuff.c:1227` `void ST_createWidgets(void)`
+- `ST_Start` (function) `progs/doomgeneric/st_stuff.c:1389` `void ST_Start (void)`
+- `ST_Stop` (function) `progs/doomgeneric/st_stuff.c:1401` `void ST_Stop (void)`
+- `ST_Init` (function) `progs/doomgeneric/st_stuff.c:1411` `void ST_Init (void)`
 
-## progs/nuklear/cvm_emit.h
-Imported by: `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`
-- `graph` (function) `progs/nuklear/cvm_emit.h:6` `* * A node graph (constants, arithmetic, bitwise, comparisons, a conditional * select, and string constants feeding...`
-- `err` (function) `progs/nuklear/cvm_emit.h:67` `* err (err_cap bytes). The module is heap-allocated and owned by the caller * (free it). */ int cvm_compile(const...`
+## progs/doomgeneric/st_stuff.h
+Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`
+- `ST_Ticker` (function) `progs/doomgeneric/st_stuff.h:43` `void ST_Ticker (void);` -- Called by main loop.
+- `ST_Drawer` (function) `progs/doomgeneric/st_stuff.h:46` `void ST_Drawer (boolean fullscreen, boolean refresh);` -- Called by main loop.
+- `ST_Start` (function) `progs/doomgeneric/st_stuff.h:49` `void ST_Start (void);` -- Called when the console player is spawned on each level.
+- `ST_Init` (function) `progs/doomgeneric/st_stuff.h:52` `void ST_Init (void);` -- Called by startup code.
 
-## progs/nuklear/node_editor.c
-Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-- `node_inputs` (function) `progs/nuklear/node_editor.c:96` `static int node_inputs(int k)`
-- `node_outputs` (function) `progs/nuklear/node_editor.c:101` `static int node_outputs(int k)`
-- `kind_name` (function) `progs/nuklear/node_editor.c:106` `static const char *kind_name(int k)`
-- `kind_color` (function) `progs/nuklear/node_editor.c:111` `static struct nk_color kind_color(int k)`
-- `graph_clear` (function) `progs/nuklear/node_editor.c:116` `static void graph_clear(void)`
-- `graph_add` (function) `progs/nuklear/node_editor.c:122` `static int graph_add(int kind)`
-- `graph_del` (function) `progs/nuklear/node_editor.c:136` `static void graph_del(int idx)`
-- `graph_to_compiler` (function) `progs/nuklear/node_editor.c:154` `static int graph_to_compiler(struct cvm_node *out, int cap)` -- g_count--; for (int i = 0; i < g_count; i++) for (int k = 0; k < 3; k++) { if (g_nodes[i].in[k] == idx) {...
-- `repair_graph` (function) `progs/nuklear/node_editor.c:176` `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
-                   ...` -- Pre-compile pass: repair every open data input with a const 0 fallback (an open PrStr prints an empty line), so...
-- `addrep` (function) `progs/nuklear/node_editor.c:183` `void addrep(const char *s)`
-- `adderr` (function) `progs/nuklear/node_editor.c:193` `void adderr(const char *s)`
-- `compile_to` (function) `progs/nuklear/node_editor.c:283` `static int compile_to(const char *path)` -- Compile the current graph to a file.
-- `write_quoted` (function) `progs/nuklear/node_editor.c:339` `static void write_quoted(FILE *f, const char *s)` -- --- Headless graph text format (v2, backward compatible) ---- num a 5          str s "hi"       add b a c      add c...
-- `save_graph_file` (function) `progs/nuklear/node_editor.c:392` `static int save_graph_file(const char *path)`
-- `parse_graph_file` (function) `progs/nuklear/node_editor.c:430` `static int parse_graph_file(const char *path)`
-- `resolve` (function) `progs/nuklear/node_editor.c:437` `int resolve(const char *nme, int upto)`
-- `parse_input` (function) `progs/nuklear/node_editor.c:443` `int parse_input(const char *tok, int idx, int k)` -- static int parse_graph_file(const char *path) { FILE *f = fopen(path, "r"); if (!f) return -1; graph_clear(); static...
-- `pin_y` (function) `progs/nuklear/node_editor.c:522` `static float pin_y(struct gnode *n, int slot, int is_output)` -- /* Link-drag state: click an output pin, drag to an input pin. static int linking_active; static int...
-- `node_h` (function) `progs/nuklear/node_editor.c:534` `static float node_h(struct gnode *n)`
-- `ui_inspector` (function) `progs/nuklear/node_editor.c:542` `static void ui_inspector(struct nk_context *ctx)`
-- `ui_build` (function) `progs/nuklear/node_editor.c:622` `static void ui_build(struct nk_context *ctx, float win_w, float win_h)`
-- `gui_run` (function) `progs/nuklear/node_editor.c:931` `static void gui_run(void)` -- circle.y = pin_y(n, k, 0) - PIN_R + oy; circle.w = PIN_DIAM; circle.h = PIN_DIAM; nk_fill_circle(canvas, circle...
-- `main` (function) `progs/nuklear/node_editor.c:983` `int main(int argc, char **argv)`
+## progs/doomgeneric/statdump.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
+- `DiscoverGamemode` (function) `progs/doomgeneric/statdump.c:71` `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)`
+- `GetNumPlayers` (function) `progs/doomgeneric/statdump.c:130` `static int GetNumPlayers(wbstartstruct_t *stats)`
+- `PrintBanner` (function) `progs/doomgeneric/statdump.c:150` `static void PrintBanner(FILE *stream)`
+- `PrintPercentage` (function) `progs/doomgeneric/statdump.c:155` `static void PrintPercentage(FILE *stream, int amount, int total)`
+- `PrintPlayerStats` (function) `progs/doomgeneric/statdump.c:180` `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,
+        int player_num)`
+- `PrintFragsTable` (function) `progs/doomgeneric/statdump.c:213` `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)`
+- `PrintLevelName` (function) `progs/doomgeneric/statdump.c:272` `static void PrintLevelName(FILE *stream, int episode, int level)`
+- `PrintStats` (function) `progs/doomgeneric/statdump.c:301` `static void PrintStats(FILE *stream, wbstartstruct_t *stats)`
+- `StatCopy` (function) `progs/doomgeneric/statdump.c:333` `void StatCopy(wbstartstruct_t *stats)`
+- `StatDump` (function) `progs/doomgeneric/statdump.c:343` `void StatDump(void)`
+
+## progs/doomgeneric/statdump.h
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/statdump.c`
+- `StatCopy` (function) `progs/doomgeneric/statdump.h:20` `void StatCopy(wbstartstruct_t *stats);`
+- `StatDump` (function) `progs/doomgeneric/statdump.h:21` `void StatDump(void);`
+
+## progs/doomgeneric/tables.c
+Depends on: `progs/doomgeneric/tables.h`
+- `SlopeDiv` (function) `progs/doomgeneric/tables.c:41` `int SlopeDiv(unsigned int num, unsigned int den)`
+
+## progs/doomgeneric/tables.h
+Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_fixed.h`
+Imported by: `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/tables.c`
+- `SlopeDiv` (function) `progs/doomgeneric/tables.h:92` `int SlopeDiv(unsigned int num, unsigned int den);` -- Utility function, called by R_PointToAngle.
+
+## progs/doomgeneric/v_video.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `V_MarkRect` (function) `progs/doomgeneric/v_video.c:69` `void V_MarkRect(int x, int y, int width, int height)` -- V_MarkRect
+- `V_CopyRect` (function) `progs/doomgeneric/v_video.c:85` `void V_CopyRect(int srcx, int srcy, byte *source,
+                int width, int height,
+        ...` -- V_CopyRect
+- `V_SetPatchClipCallback` (function) `progs/doomgeneric/v_video.c:129` `void V_SetPatchClipCallback(vpatchclipfunc_t func)` -- V_SetPatchClipCallback  haleyjd 08/28/10: Added for Strife support.
+- `V_DrawPatch` (function) `progs/doomgeneric/v_video.c:139` `void V_DrawPatch(int x, int y, patch_t *patch)`
+- `V_DrawPatchFlipped` (function) `progs/doomgeneric/v_video.c:203` `void V_DrawPatchFlipped(int x, int y, patch_t *patch)`
+- `V_DrawPatchDirect` (function) `progs/doomgeneric/v_video.c:268` `void V_DrawPatchDirect(int x, int y, patch_t *patch)`
+- `V_DrawTLPatch` (function) `progs/doomgeneric/v_video.c:279` `void V_DrawTLPatch(int x, int y, patch_t * patch)`
+- `V_DrawXlaPatch` (function) `progs/doomgeneric/v_video.c:329` `void V_DrawXlaPatch(int x, int y, patch_t * patch)`
+- `V_DrawAltTLPatch` (function) `progs/doomgeneric/v_video.c:378` `void V_DrawAltTLPatch(int x, int y, patch_t * patch)`
+- `V_DrawShadowedPatch` (function) `progs/doomgeneric/v_video.c:428` `void V_DrawShadowedPatch(int x, int y, patch_t *patch)`
+- `V_LoadTintTable` (function) `progs/doomgeneric/v_video.c:482` `void V_LoadTintTable(void)`
+- `V_LoadXlaTable` (function) `progs/doomgeneric/v_video.c:493` `void V_LoadXlaTable(void)`
+- `V_DrawBlock` (function) `progs/doomgeneric/v_video.c:503` `void V_DrawBlock(int x, int y, int width, int height, byte *src)`
+- `V_DrawFilledBox` (function) `progs/doomgeneric/v_video.c:529` `void V_DrawFilledBox(int x, int y, int w, int h, int c)`
+- `V_DrawHorizLine` (function) `progs/doomgeneric/v_video.c:549` `void V_DrawHorizLine(int x, int y, int w, int c)`
+- `V_DrawVertLine` (function) `progs/doomgeneric/v_video.c:562` `void V_DrawVertLine(int x, int y, int h, int c)`
+- `V_DrawBox` (function) `progs/doomgeneric/v_video.c:576` `void V_DrawBox(int x, int y, int w, int h, int c)`
+- `V_DrawRawScreen` (function) `progs/doomgeneric/v_video.c:589` `void V_DrawRawScreen(byte *raw)`
+- `V_Init` (function) `progs/doomgeneric/v_video.c:597` `void V_Init (void)` -- V_Init
+- `V_UseBuffer` (function) `progs/doomgeneric/v_video.c:606` `void V_UseBuffer(byte *buffer)`
+- `V_RestoreBuffer` (function) `progs/doomgeneric/v_video.c:613` `void V_RestoreBuffer(void)`
+- `WritePCXfile` (function) `progs/doomgeneric/v_video.c:653` `void WritePCXfile(char *filename, byte *data,
+                  int width, int height,
+          ...`
+- `error_fn` (function) `progs/doomgeneric/v_video.c:711` `static void error_fn(png_structp p, png_const_charp s)`
+- `warning_fn` (function) `progs/doomgeneric/v_video.c:716` `static void warning_fn(png_structp p, png_const_charp s)`
+- `WritePNGfile` (function) `progs/doomgeneric/v_video.c:721` `void WritePNGfile(char *filename, byte *data,
+                  int width, int height,
+          ...`
+- `V_ScreenShot` (function) `progs/doomgeneric/v_video.c:791` `void V_ScreenShot(char *format)`
+- `V_DrawMouseSpeedBox` (function) `progs/doomgeneric/v_video.c:846` `void V_DrawMouseSpeedBox(int speed)`
+
+## progs/doomgeneric/v_video.h
+Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/v_patch.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/wi_stuff.c`
+- `V_SetPatchClipCallback` (function) `progs/doomgeneric/v_video.h:45` `void V_SetPatchClipCallback(vpatchclipfunc_t func);`
+- `V_Init` (function) `progs/doomgeneric/v_video.h:49` `void V_Init (void);` -- Allocates buffer screens, call before R_Init.
+- `V_CopyRect` (function) `progs/doomgeneric/v_video.h:53` `void V_CopyRect(int srcx, int srcy, byte *source, int width, int height, int destx, int desty);`
+- `V_DrawPatch` (function) `progs/doomgeneric/v_video.h:57` `void V_DrawPatch(int x, int y, patch_t *patch);`
+- `V_DrawPatchFlipped` (function) `progs/doomgeneric/v_video.h:58` `void V_DrawPatchFlipped(int x, int y, patch_t *patch);`
+- `V_DrawTLPatch` (function) `progs/doomgeneric/v_video.h:59` `void V_DrawTLPatch(int x, int y, patch_t *patch);`
+- `V_DrawAltTLPatch` (function) `progs/doomgeneric/v_video.h:60` `void V_DrawAltTLPatch(int x, int y, patch_t * patch);`
+- `V_DrawShadowedPatch` (function) `progs/doomgeneric/v_video.h:61` `void V_DrawShadowedPatch(int x, int y, patch_t *patch);`
+- `V_DrawXlaPatch` (function) `progs/doomgeneric/v_video.h:62` `void V_DrawXlaPatch(int x, int y, patch_t * patch);`
+- `V_DrawPatchDirect` (function) `progs/doomgeneric/v_video.h:63` `void V_DrawPatchDirect(int x, int y, patch_t *patch);`
+- `V_DrawBlock` (function) `progs/doomgeneric/v_video.h:67` `void V_DrawBlock(int x, int y, int width, int height, byte *src);`
+- `V_MarkRect` (function) `progs/doomgeneric/v_video.h:69` `void V_MarkRect(int x, int y, int width, int height);`
+- `V_DrawFilledBox` (function) `progs/doomgeneric/v_video.h:71` `void V_DrawFilledBox(int x, int y, int w, int h, int c);`
+- `V_DrawHorizLine` (function) `progs/doomgeneric/v_video.h:72` `void V_DrawHorizLine(int x, int y, int w, int c);`
+- `V_DrawVertLine` (function) `progs/doomgeneric/v_video.h:73` `void V_DrawVertLine(int x, int y, int h, int c);`
+- `V_DrawBox` (function) `progs/doomgeneric/v_video.h:74` `void V_DrawBox(int x, int y, int w, int h, int c);`
+- `V_DrawRawScreen` (function) `progs/doomgeneric/v_video.h:78` `void V_DrawRawScreen(byte *raw);`
+- `V_UseBuffer` (function) `progs/doomgeneric/v_video.h:82` `void V_UseBuffer(byte *buffer);`
+- `V_RestoreBuffer` (function) `progs/doomgeneric/v_video.h:86` `void V_RestoreBuffer(void);`
+- `V_ScreenShot` (function) `progs/doomgeneric/v_video.h:92` `void V_ScreenShot(char *format);`
+- `V_LoadTintTable` (function) `progs/doomgeneric/v_video.h:97` `void V_LoadTintTable(void);`
+- `V_LoadXlaTable` (function) `progs/doomgeneric/v_video.h:103` `void V_LoadXlaTable(void);`
+- `V_DrawMouseSpeedBox` (function) `progs/doomgeneric/v_video.h:105` `void V_DrawMouseSpeedBox(int speed);`
+
+## progs/doomgeneric/w_checksum.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
+- `GetFileNumber` (function) `progs/doomgeneric/w_checksum.c:31` `static int GetFileNumber(wad_file_t *handle)`
+- `ChecksumAddLump` (function) `progs/doomgeneric/w_checksum.c:57` `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)`
+- `W_Checksum` (function) `progs/doomgeneric/w_checksum.c:68` `void W_Checksum(sha1_digest_t digest)`
+
+## progs/doomgeneric/w_checksum.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/d_net.c`, `progs/doomgeneric/w_checksum.c`
+- `W_Checksum` (function) `progs/doomgeneric/w_checksum.h:24` `extern void W_Checksum(sha1_digest_t digest);`
+
+## progs/doomgeneric/w_file.c
+Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_file.h`
+- `W_OpenFile` (function) `progs/doomgeneric/w_file.c:53` `wad_file_t *W_OpenFile(char *path)`
+- `W_CloseFile` (function) `progs/doomgeneric/w_file.c:85` `void W_CloseFile(wad_file_t *wad)`
+- `W_Read` (function) `progs/doomgeneric/w_file.c:90` `size_t W_Read(wad_file_t *wad, unsigned int offset,
+              void *buffer, size_t buffer_len)`
+
+## progs/doomgeneric/w_file.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/w_file.c`, `progs/doomgeneric/w_file_stdc.c`, `progs/doomgeneric/w_wad.h`
+- `W_OpenFile` (function) `progs/doomgeneric/w_file.h:65` `wad_file_t *W_OpenFile(char *path);`
+- `W_CloseFile` (function) `progs/doomgeneric/w_file.h:69` `void W_CloseFile(wad_file_t *wad);`
+- `W_Read` (function) `progs/doomgeneric/w_file.h:75` `size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len);`
+
+## progs/doomgeneric/w_file_stdc.c
+Depends on: `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/z_zone.h`
+- `W_StdC_OpenFile` (function) `progs/doomgeneric/w_file_stdc.c:33` `static wad_file_t *W_StdC_OpenFile(char *path)`
+- `W_StdC_CloseFile` (function) `progs/doomgeneric/w_file_stdc.c:56` `static void W_StdC_CloseFile(wad_file_t *wad)`
+- `W_StdC_Read` (function) `progs/doomgeneric/w_file_stdc.c:69` `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
+                   void *buffer, size_t ...`
+
+## progs/doomgeneric/w_main.c
+Depends on: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_merge.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `W_ParseCommandLine` (function) `progs/doomgeneric/w_main.c:30` `boolean W_ParseCommandLine(void)`
+
+## progs/doomgeneric/w_merge.h
+Imported by: `progs/doomgeneric/w_main.c`
+- `W_MergeFile` (function) `progs/doomgeneric/w_merge.h:29` `void W_MergeFile(char *filename);`
+- `W_NWTMergeFile` (function) `progs/doomgeneric/w_merge.h:33` `void W_NWTMergeFile(char *filename, int flags);`
+- `W_NWTDashMerge` (function) `progs/doomgeneric/w_merge.h:37` `void W_NWTDashMerge(char *filename);`
+- `W_PrintDirectory` (function) `progs/doomgeneric/w_merge.h:41` `void W_PrintDirectory(void);`
+
+## progs/doomgeneric/w_wad.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `I_EndRead` (function) `progs/doomgeneric/w_wad.c:39` `void I_EndRead (void);`
+- `W_LumpNameHash` (function) `progs/doomgeneric/w_wad.c:72` `unsigned int W_LumpNameHash(const char *s)`
+- `ExtendLumpInfo` (function) `progs/doomgeneric/w_wad.c:89` `static void ExtendLumpInfo(int newnumlumps)` -- Increase the size of the lumpinfo[] array to the specified size.
+- `W_AddFile` (function) `progs/doomgeneric/w_wad.c:141` `wad_file_t *W_AddFile (char *filename)`
+- `W_NumLumps` (function) `progs/doomgeneric/w_wad.c:246` `int W_NumLumps (void)` -- W_NumLumps
+- `W_CheckNumForName` (function) `progs/doomgeneric/w_wad.c:258` `int W_CheckNumForName (char* name)`
+- `W_GetNumForName` (function) `progs/doomgeneric/w_wad.c:308` `int W_GetNumForName (char* name)` -- W_GetNumForName Calls W_CheckNumForName, but bombs out if not found.
+- `W_LumpLength` (function) `progs/doomgeneric/w_wad.c:327` `int W_LumpLength (unsigned int lump)` -- W_LumpLength Returns the buffer size needed to load the given lump.
+- `W_ReadLump` (function) `progs/doomgeneric/w_wad.c:344` `void W_ReadLump(unsigned int lump, void *dest)` -- W_ReadLump Loads the lump into the given buffer, which must be >= W_LumpLength().
+- `W_CacheLumpNum` (function) `progs/doomgeneric/w_wad.c:384` `void *W_CacheLumpNum(int lumpnum, int tag)`
+- `W_CacheLumpName` (function) `progs/doomgeneric/w_wad.c:431` `void *W_CacheLumpName(char *name, int tag)` -- W_CacheLumpName
+- `W_ReleaseLumpNum` (function) `progs/doomgeneric/w_wad.c:446` `void W_ReleaseLumpNum(int lumpnum)`
+- `W_ReleaseLumpName` (function) `progs/doomgeneric/w_wad.c:467` `void W_ReleaseLumpName(char *name)`
+- `W_Profile` (function) `progs/doomgeneric/w_wad.c:480` `void W_Profile (void)`
+- `W_GenerateHashTable` (function) `progs/doomgeneric/w_wad.c:541` `void W_GenerateHashTable(void)`
+- `W_CheckCorrectIWAD` (function) `progs/doomgeneric/w_wad.c:588` `void W_CheckCorrectIWAD(GameMission_t mission)`
+
+## progs/doomgeneric/w_wad.h
+Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/w_file.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_main.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`
+- `W_AddFile` (function) `progs/doomgeneric/w_wad.h:58` `wad_file_t *W_AddFile (char *filename);`
+- `W_CheckNumForName` (function) `progs/doomgeneric/w_wad.h:60` `int W_CheckNumForName (char* name);`
+- `W_GetNumForName` (function) `progs/doomgeneric/w_wad.h:61` `int W_GetNumForName (char* name);`
+- `W_LumpLength` (function) `progs/doomgeneric/w_wad.h:63` `int W_LumpLength (unsigned int lump);`
+- `W_ReadLump` (function) `progs/doomgeneric/w_wad.h:64` `void W_ReadLump (unsigned int lump, void *dest);`
+- `W_CacheLumpNum` (function) `progs/doomgeneric/w_wad.h:66` `void* W_CacheLumpNum (int lump, int tag);`
+- `W_CacheLumpName` (function) `progs/doomgeneric/w_wad.h:67` `void* W_CacheLumpName (char* name, int tag);`
+- `W_GenerateHashTable` (function) `progs/doomgeneric/w_wad.h:69` `void W_GenerateHashTable(void);`
+- `W_LumpNameHash` (function) `progs/doomgeneric/w_wad.h:71` `extern unsigned int W_LumpNameHash(const char *s);`
+- `W_ReleaseLumpNum` (function) `progs/doomgeneric/w_wad.h:73` `void W_ReleaseLumpNum(int lump);`
+- `W_ReleaseLumpName` (function) `progs/doomgeneric/w_wad.h:74` `void W_ReleaseLumpName(char *name);`
+- `W_CheckCorrectIWAD` (function) `progs/doomgeneric/w_wad.h:76` `void W_CheckCorrectIWAD(GameMission_t mission);`
 
 
 Next: [API_p16.md](API_p16.md)

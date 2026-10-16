@@ -79,6 +79,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `fs/vfs.c` -> `headers/ext4.h`
 - `fs/vfs.c` -> `headers/fat32.h`
 - `fs/vfs.c` -> `headers/minifs.h`
+- `headers/arch/x86/cpu_setup.h` -> `headers/arch/x86/boot/bootdefs.h`
 - `headers/editor.h` -> `headers/kernel.h`
 - `headers/futex.h` -> `headers/sched.h`
 - `headers/futex.h` -> `headers/spinlock.h`
@@ -116,6 +117,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `headers/wm_window.h` -> `headers/wm_geom.h`
 - `kernel.c` -> `headers/abi.h`
 - `kernel.c` -> `headers/arch/x86/boot/bootdefs.h`
+- `kernel.c` -> `headers/arch/x86/cpu_setup.h`
 - `kernel.c` -> `headers/arch/x86/msr.h`
 - `kernel.c` -> `headers/block.h`
 - `kernel.c` -> `headers/drivers/usbblk.h`
@@ -141,6 +143,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/console_in.c` -> `headers/kernel/console_in.h`
 - `kernel/console_in.c` -> `headers/pipe.h`
 - `kernel/console_in.c` -> `headers/vga_fb.h`
+- `kernel/ed25519.c` -> `headers/sign.h`
 - `kernel/editor.c` -> `headers/editor.h`
 - `kernel/editor.c` -> `headers/shell.h`
 - `kernel/exec.c` -> `headers/arch/x86/boot/bootdefs.h`
@@ -156,6 +159,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/loader.c` -> `headers/minifs.h`
 - `kernel/loader.c` -> `headers/pcache.h`
 - `kernel/loader.c` -> `headers/sched.h`
+- `kernel/loader.c` -> `headers/sign.h`
 - `kernel/loader.c` -> `headers/vga_fb.h`
 - `kernel/lz4_kernel.c` -> `headers/lz4_kernel.h`
 - `kernel/minifetch.c` -> `headers/minifetch.h`
@@ -168,15 +172,21 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/mm.c` -> `headers/sched.h`
 - `kernel/mm/cow.c` -> `headers/arch/x86/boot/bootdefs.h`
 - `kernel/mm/cow.c` -> `headers/sched.h`
+- `kernel/mm/cow.c` -> `headers/tlb.h`
 - `kernel/mm/cow.c` -> `headers/vga_fb.h`
 - `kernel/mm/paging.c` -> `headers/arch/x86/boot/bootdefs.h`
 - `kernel/mm/paging.c` -> `headers/arch/x86/msr.h`
 - `kernel/mm/paging.c` -> `headers/ldso.h`
 - `kernel/mm/paging.c` -> `headers/minifs.h`
 - `kernel/mm/paging.c` -> `headers/pcache.h`
+- `kernel/mm/paging.c` -> `headers/tlb.h`
 - `kernel/mm/paging.c` -> `headers/vga_fb.h`
 - `kernel/mm/swap.c` -> `headers/ide.h`
 - `kernel/mm/swap.c` -> `headers/lz4_kernel.h`
+- `kernel/mm/tlb.c` -> `headers/sched.h`
+- `kernel/mm/tlb.c` -> `headers/smp.h`
+- `kernel/mm/tlb.c` -> `headers/spinlock.h`
+- `kernel/mm/tlb.c` -> `headers/tlb.h`
 - `kernel/panic.c` -> `headers/panic.h`
 - `kernel/panic.c` -> `headers/sched.h`
 - `kernel/panic.c` -> `headers/vga_fb.h`
@@ -204,6 +214,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/sched.c` -> `headers/spawn.h`
 - `kernel/sched.c` -> `headers/sync.h`
 - `kernel/sched.c` -> `headers/tick.h`
+- `kernel/sched.c` -> `headers/tlb.h`
 - `kernel/sched.c` -> `headers/vga_fb.h`
 - `kernel/seccomp_bpf.c` -> `headers/seccomp_bpf.h`
 - `kernel/serial.c` -> `headers/sched.h`
@@ -226,11 +237,14 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/shell.c` -> `headers/pcm2.h`
 - `kernel/shell.c` -> `headers/pcspk.h`
 - `kernel/shell.c` -> `headers/percpu_rq.h`
+- `kernel/shell.c` -> `headers/proc_sec.h`
 - `kernel/shell.c` -> `headers/rtc.h`
 - `kernel/shell.c` -> `headers/sb16.h`
 - `kernel/shell.c` -> `headers/sched.h`
 - `kernel/shell.c` -> `headers/shell.h`
 - `kernel/shell.c` -> `headers/smp.h`
+- `kernel/shell.c` -> `headers/spawn.h`
+- `kernel/shell.c` -> `headers/tlb.h`
 - `kernel/shell.c` -> `headers/vga_fb.h`
 - `kernel/shell.c` -> `headers/wm_layout.h`
 - `kernel/shell.c` -> `headers/wm_notify.h`
@@ -271,6 +285,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/syscalls.c` -> `headers/spawn.h`
 - `kernel/syscalls.c` -> `headers/sync.h`
 - `kernel/syscalls.c` -> `headers/syscalls_proc.h`
+- `kernel/syscalls.c` -> `headers/tlb.h`
 - `kernel/syscalls.c` -> `headers/vga_fb.h`
 - `kernel/syscalls.c` -> `headers/zip.h`
 - `kernel/syscalls_proc.c` -> `headers/proc_sec.h`
@@ -481,20 +496,5 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `progs/doomgeneric/doomgeneric.h`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `progs/doomgeneric/doomkeys.h`
 - `progs/doomgeneric/doomstat.c` -> `progs/doomgeneric/doomstat.h`
-- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_loop.h`
-- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_mode.h`
-- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_player.h`
-- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/doomdata.h`
-- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/net_defs.h`
-- `progs/doomgeneric/dstrings.c` -> `progs/doomgeneric/dstrings.h`
-- `progs/doomgeneric/dstrings.h` -> `progs/doomgeneric/d_englsh.h`
-- `progs/doomgeneric/dummy.c` -> `progs/doomgeneric/doomtype.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/d_main.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/deh_main.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/doomstat.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/dstrings.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/hu_stuff.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/i_swap.h`
-- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/i_system.h`
 
 Next: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)

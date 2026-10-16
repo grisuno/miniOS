@@ -100,6 +100,7 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md]
 | `sc_top_save_addr` | function | `arch/x86/syscall_entry.S:55` | `` |
 | `syscall_entry` | function | `arch/x86/syscall_entry.S:65` | `` |
 | `syscall_kstack` | function | `arch/x86/syscall_entry.S:49` | `` |
+| `tlb_nmi_entry` | function | `arch/x86/tlb_nmi.S:21` | `` |
 | `EFIABI` | macro | `boot/uefi_stub.c:41` | `#define EFIABI` |
 | `EFI_BUFFER_TOO_SMALL` | macro | `boot/uefi_stub.c:269` | `#define EFI_BUFFER_TOO_SMALL` |
 | `EFI_FILE_MODE_READ` | macro | `boot/uefi_stub.c:268` | `#define EFI_FILE_MODE_READ` |
@@ -495,6 +496,5 @@ Pages: [SYMBOLS.md](SYMBOLS.md), [SYMBOLS_p2.md](SYMBOLS_p2.md), [SYMBOLS_p3.md]
 | `usbhid_ep_taken` | function | `drivers/usbhid.c:312` | `static int usbhid_ep_taken(int ep_index)` |
 | `usbhid_init` | function | `drivers/usbhid.c:384` | `int usbhid_init(void)` |
 | `usbhid_is_mouse_maxp` | function | `drivers/usbhid.c:380` | `static int usbhid_is_mouse_maxp(int maxp)` |
-| `usbhid_kbd_scancodes` | function | `drivers/usbhid.c:206` | `int usbhid_kbd_scancodes(const unsigned char prev[HID_KBD_REPORT_LEN],                          c...` |
 
 Next: [SYMBOLS_p2.md](SYMBOLS_p2.md)

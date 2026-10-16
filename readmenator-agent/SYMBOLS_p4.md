@@ -3,6 +3,15 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCI_HDR_TYPE_BRIDGE` | macro | `headers/drivers/pci.h:47` | `#define PCI_HDR_TYPE_BRIDGE` |
+| `PCI_HEADER_MULTIFUNC` | macro | `headers/drivers/pci.h:45` | `#define PCI_HEADER_MULTIFUNC` |
+| `PCI_HEADER_TYPE_MASK` | macro | `headers/drivers/pci.h:46` | `#define PCI_HEADER_TYPE_MASK` |
+| `PCI_MAX_BUS` | macro | `headers/drivers/pci.h:15` | `#define PCI_MAX_BUS` |
+| `PCI_MAX_DEV` | macro | `headers/drivers/pci.h:16` | `#define PCI_MAX_DEV` |
+| `PCI_MAX_FUNC` | macro | `headers/drivers/pci.h:17` | `#define PCI_MAX_FUNC` |
+| `PCI_PROGIF_XHCI` | macro | `headers/drivers/pci.h:59` | `#define PCI_PROGIF_XHCI` |
+| `PCI_REG_BAR0` | macro | `headers/drivers/pci.h:25` | `#define PCI_REG_BAR0` |
+| `PCI_REG_BAR_COUNT` | macro | `headers/drivers/pci.h:29` | `#define PCI_REG_BAR_COUNT` |
 | `PCI_REG_BRIDGE_SECONDARY` | macro | `headers/drivers/pci.h:27` | `#define PCI_REG_BRIDGE_SECONDARY` |
 | `PCI_REG_CAP_PTR` | macro | `headers/drivers/pci.h:28` | `#define PCI_REG_CAP_PTR` |
 | `PCI_REG_CARD_BUS` | macro | `headers/drivers/pci.h:26` | `#define PCI_REG_CARD_BUS` |
@@ -186,7 +195,7 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `fsimg_t` | struct | `headers/fsimg.h:13` | `` |
 | `FUTEX_BUCKETS` | macro | `headers/futex.h:51` | `#define FUTEX_BUCKETS` |
 | `FUTEX_BUCKET_MASK` | macro | `headers/futex.h:52` | `#define FUTEX_BUCKET_MASK` |
-| `FUTEX_CLOCK_REALTIME` | function | `headers/futex.h:93` | `* FUTEX_CLOCK_REALTIME (it only selects the clock of a BITSET deadline). * Returns -1 for anything unserved...` |
+| `FUTEX_CLOCK_REALTIME` | function | `headers/futex.h:96` | `* FUTEX_CLOCK_REALTIME (it only selects the clock of a BITSET deadline). * Returns -1 for anything unserved...` |
 | `FUTEX_H` | macro | `headers/futex.h:2` | `#define FUTEX_H` |
 | `FUTEX_HASH_GOLDEN` | macro | `headers/futex.h:53` | `#define FUTEX_HASH_GOLDEN` |
 | `FUTEX_NOMATCH` | macro | `headers/futex.h:56` | `#define FUTEX_NOMATCH` |
@@ -206,9 +215,10 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `LINUX_FUTEX_WAKE` | macro | `headers/futex.h:66` | `#define LINUX_FUTEX_WAKE` |
 | `LINUX_FUTEX_WAKE_BITSET` | macro | `headers/futex.h:68` | `#define LINUX_FUTEX_WAKE_BITSET` |
 | `futex_bucket_t` | struct | `headers/futex.h:80` | `` |
+| `futex_forget` | function | `headers/futex.h:91` | `void futex_forget(int pid);` |
 | `futex_init` | function | `headers/futex.h:86` | `void futex_init(void);` |
-| `futex_linux_cmd` | function | `headers/futex.h:97` | `int futex_linux_cmd(long op);` |
-| `futex_timeout_remaining_us` | function | `headers/futex.h:104` | `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us);` |
+| `futex_linux_cmd` | function | `headers/futex.h:100` | `int futex_linux_cmd(long op);` |
+| `futex_timeout_remaining_us` | function | `headers/futex.h:107` | `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us);` |
 | `futex_wait` | function | `headers/futex.h:87` | `long futex_wait(unsigned long uaddr, int val);` |
 | `futex_wake` | function | `headers/futex.h:88` | `long futex_wake(unsigned long uaddr, int n);` |
 | `HTTPD_ERR_BOUND` | macro | `headers/httpd.h:21` | `#define HTTPD_ERR_BOUND` |
@@ -257,7 +267,7 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `ide_write_sector` | function | `headers/ide.h:58` | `int ide_write_sector(unsigned int lba, const void *buf);` |
 | `ide_write_sectors` | function | `headers/ide.h:54` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `ALIGN_UP` | macro | `headers/kernel.h:20` | `#define ALIGN_UP(x, a)` |
-| `C` | function | `headers/kernel.h:886` | `* it with pointer subtraction in C (undefined behaviour). The value is  * a link-time difference,...` |
+| `C` | function | `headers/kernel.h:887` | `* it with pointer subtraction in C (undefined behaviour). The value is  * a link-time difference,...` |
 | `DEV_MMIO_VBASE` | macro | `headers/kernel.h:210` | `#define DEV_MMIO_VBASE` |
 | `EBADF` | macro | `headers/kernel.h:495` | `#define EBADF` |
 | `EFAULT` | macro | `headers/kernel.h:4` | `#define EFAULT` |
@@ -288,7 +298,7 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `HEAP_BASE` | macro | `headers/kernel.h:204` | `#define HEAP_BASE` |
 | `HEAP_SIZE` | macro | `headers/kernel.h:205` | `#define HEAP_SIZE` |
 | `KERNEL_H` | macro | `headers/kernel.h:2` | `#define KERNEL_H` |
-| `KEVENT_MAX` | macro | `headers/kernel.h:864` | `#define KEVENT_MAX` |
+| `KEVENT_MAX` | macro | `headers/kernel.h:865` | `#define KEVENT_MAX` |
 | `KEY_ARR_DOWN` | macro | `headers/kernel.h:151` | `#define KEY_ARR_DOWN` |
 | `KEY_ARR_LEFT` | macro | `headers/kernel.h:153` | `#define KEY_ARR_LEFT` |
 | `KEY_ARR_RIGHT` | macro | `headers/kernel.h:152` | `#define KEY_ARR_RIGHT` |
@@ -323,7 +333,7 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `KEY_TAB` | macro | `headers/kernel.h:169` | `#define KEY_TAB` |
 | `KEY_TILDE` | macro | `headers/kernel.h:164` | `#define KEY_TILDE` |
 | `KEY_UP` | macro | `headers/kernel.h:144` | `#define KEY_UP` |
-| `KFD_MAX` | macro | `headers/kernel.h:828` | `#define KFD_MAX` |
+| `KFD_MAX` | macro | `headers/kernel.h:829` | `#define KFD_MAX` |
 | `KFILE` | struct | `headers/kernel.h:461` | `` |
 | `KMALLOC_PAGE` | macro | `headers/kernel.h:220` | `#define KMALLOC_PAGE` |
 | `KPROG_MAX` | macro | `headers/kernel.h:609` | `#define KPROG_MAX` |
@@ -333,15 +343,15 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `LDSO_REGION_BASE` | macro | `headers/kernel.h:194` | `#define LDSO_REGION_BASE` |
 | `LDSO_REGION_END` | macro | `headers/kernel.h:196` | `#define LDSO_REGION_END` |
 | `LDSO_REGION_SIZE` | macro | `headers/kernel.h:195` | `#define LDSO_REGION_SIZE` |
-| `LINUX_PROT_EXEC` | macro | `headers/kernel.h:787` | `#define LINUX_PROT_EXEC` |
-| `LINUX_PROT_READ` | macro | `headers/kernel.h:785` | `#define LINUX_PROT_READ` |
-| `LINUX_PROT_WRITE` | macro | `headers/kernel.h:786` | `#define LINUX_PROT_WRITE` |
+| `LINUX_PROT_EXEC` | macro | `headers/kernel.h:788` | `#define LINUX_PROT_EXEC` |
+| `LINUX_PROT_READ` | macro | `headers/kernel.h:786` | `#define LINUX_PROT_READ` |
+| `LINUX_PROT_WRITE` | macro | `headers/kernel.h:787` | `#define LINUX_PROT_WRITE` |
 | `PCI_MMIO_SIZE` | macro | `headers/kernel.h:211` | `#define PCI_MMIO_SIZE` |
 | `PORT_IO_DEFINED` | macro | `headers/kernel.h:22` | `#define PORT_IO_DEFINED` |
-| `PTE_DEMAND` | macro | `headers/kernel.h:781` | `#define PTE_DEMAND` |
-| `PTE_DEMAND_EXEC` | macro | `headers/kernel.h:784` | `#define PTE_DEMAND_EXEC` |
-| `PTE_DEMAND_READ` | macro | `headers/kernel.h:782` | `#define PTE_DEMAND_READ` |
-| `PTE_DEMAND_WRITE` | macro | `headers/kernel.h:783` | `#define PTE_DEMAND_WRITE` |
+| `PTE_DEMAND` | macro | `headers/kernel.h:782` | `#define PTE_DEMAND` |
+| `PTE_DEMAND_EXEC` | macro | `headers/kernel.h:785` | `#define PTE_DEMAND_EXEC` |
+| `PTE_DEMAND_READ` | macro | `headers/kernel.h:783` | `#define PTE_DEMAND_READ` |
+| `PTE_DEMAND_WRITE` | macro | `headers/kernel.h:784` | `#define PTE_DEMAND_WRITE` |
 | `RAMDISK_FNAME_LEN` | macro | `headers/kernel.h:270` | `#define RAMDISK_FNAME_LEN` |
 | `RAMDISK_FNAME_LEN` | function | `headers/kernel.h:286` | `* RAMDISK_FNAME_LEN (fs_resolve guarantees it);` |
 | `RAMDISK_MAX_FILES` | macro | `headers/kernel.h:269` | `#define RAMDISK_MAX_FILES` |
@@ -363,14 +373,14 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `VGA_BASE` | macro | `headers/kernel.h:90` | `#define VGA_BASE` |
 | `VGA_COLS` | macro | `headers/kernel.h:91` | `#define VGA_COLS` |
 | `VGA_ROWS` | macro | `headers/kernel.h:92` | `#define VGA_ROWS` |
-| `block_init` | function | `headers/kernel.h:923` | `void block_init(void);` |
-| `block_read` | function | `headers/kernel.h:924` | `int block_read(unsigned int block_num, void *buf);` |
-| `block_read_multi` | function | `headers/kernel.h:926` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
-| `block_total` | function | `headers/kernel.h:928` | `unsigned int block_total(void);` |
-| `block_write` | function | `headers/kernel.h:925` | `int block_write(unsigned int block_num, const void *buf);` |
-| `block_write_multi` | function | `headers/kernel.h:927` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
-| `bootlog_mark` | function | `headers/kernel.h:900` | `void bootlog_mark(const char *name);` |
-| `bootlog_report` | function | `headers/kernel.h:901` | `void bootlog_report(void);` |
+| `block_init` | function | `headers/kernel.h:924` | `void block_init(void);` |
+| `block_read` | function | `headers/kernel.h:925` | `int block_read(unsigned int block_num, void *buf);` |
+| `block_read_multi` | function | `headers/kernel.h:927` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
+| `block_total` | function | `headers/kernel.h:929` | `unsigned int block_total(void);` |
+| `block_write` | function | `headers/kernel.h:926` | `int block_write(unsigned int block_num, const void *buf);` |
+| `block_write_multi` | function | `headers/kernel.h:928` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
+| `bootlog_mark` | function | `headers/kernel.h:901` | `void bootlog_mark(const char *name);` |
+| `bootlog_report` | function | `headers/kernel.h:902` | `void bootlog_report(void);` |
 | `clip_clear` | function | `headers/kernel.h:597` | `void clip_clear(void);` |
 | `clip_get` | function | `headers/kernel.h:596` | `int clip_get(char *out, unsigned long cap);` |
 | `clip_len_get` | function | `headers/kernel.h:598` | `int clip_len_get(void);` |
@@ -381,11 +391,11 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `console_stdin_active` | function | `headers/kernel.h:588` | `int console_stdin_active(void);` |
 | `console_stdin_clear` | function | `headers/kernel.h:587` | `void console_stdin_clear(void);` |
 | `console_stdin_push` | function | `headers/kernel.h:586` | `int console_stdin_push(const char *data, unsigned long len);` |
-| `cow_drop_ref` | function | `headers/kernel.h:794` | `int cow_drop_ref(unsigned long phys);` |
-| `cow_page_shared` | function | `headers/kernel.h:814` | `int cow_page_shared(unsigned long phys);` |
-| `cow_release_window` | function | `headers/kernel.h:812` | `void cow_release_window(unsigned long cr3);` |
-| `cow_resolve` | function | `headers/kernel.h:810` | `int cow_resolve(unsigned long cr3, unsigned long va);` |
-| `cow_shared` | function | `headers/kernel.h:813` | `int cow_shared(void);` |
+| `cow_drop_ref` | function | `headers/kernel.h:795` | `int cow_drop_ref(unsigned long phys);` |
+| `cow_page_shared` | function | `headers/kernel.h:815` | `int cow_page_shared(unsigned long phys);` |
+| `cow_release_window` | function | `headers/kernel.h:813` | `void cow_release_window(unsigned long cr3);` |
+| `cow_resolve` | function | `headers/kernel.h:811` | `int cow_resolve(unsigned long cr3, unsigned long va);` |
+| `cow_shared` | function | `headers/kernel.h:814` | `int cow_shared(void);` |
 | `desktop_launch` | function | `headers/kernel.h:662` | `void desktop_launch(const char *cmd);` |
 | `dlmalloc_calloc` | function | `headers/kernel.h:233` | `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);` |
 | `dlmalloc_free` | function | `headers/kernel.h:232` | `void dlmalloc_free(void *ptr);` |
@@ -395,27 +405,28 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `dlmalloc_realloc` | function | `headers/kernel.h:234` | `void *dlmalloc_realloc(void *ptr, unsigned long size);` |
 | `dlmalloc_usage` | function | `headers/kernel.h:236` | `void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);` |
 | `elf_load` | function | `headers/kernel.h:750` | `void *elf_load(void *data, unsigned size, void **base_out);` |
+| `elf_wants_process` | function | `headers/kernel.h:752` | `int elf_wants_process(const void *data, unsigned size);` |
 | `exec_exit_code` | variable | `headers/kernel.h:654` | `extern int exec_exit_code;` |
 | `exec_return` | variable | `headers/kernel.h:653` | `extern kjmpbuf exec_return;` |
-| `fault` | function | `headers/kernel.h:807` | `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */...` |
-| `fd_lock` | variable | `headers/kernel.h:847` | `extern spinlock_t fd_lock;` |
-| `fd_lock` | function | `headers/kernel.h:872` | `* fd_lock (never nested, never held across yields);` |
+| `fault` | function | `headers/kernel.h:808` | `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */...` |
+| `fd_lock` | variable | `headers/kernel.h:848` | `extern spinlock_t fd_lock;` |
+| `fd_lock` | function | `headers/kernel.h:873` | `* fd_lock (never nested, never held across yields);` |
 | `file_operations` | type_alias | `headers/kernel.h:405` | `typedef vfs_ops_t file_operations;` |
 | `fs_cwd` | variable | `headers/kernel.h:425` | `extern char fs_cwd[];` |
 | `fs_dir_exists` | function | `headers/kernel.h:303` | `int fs_dir_exists(const char *dir);` |
 | `fs_is_dir` | function | `headers/kernel.h:304` | `int fs_is_dir(const char *resolved);` |
-| `fs_lock` | variable | `headers/kernel.h:874` | `extern spinlock_t fs_lock;` |
+| `fs_lock` | variable | `headers/kernel.h:875` | `extern spinlock_t fs_lock;` |
 | `fs_rename` | function | `headers/kernel.h:508` | `int fs_rename(const char *oldr, const char *newr);` |
 | `fs_resolve` | function | `headers/kernel.h:302` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
 | `g_brk` | variable | `headers/kernel.h:707` | `extern unsigned long g_brk;` |
 | `g_brk_limit` | variable | `headers/kernel.h:708` | `extern unsigned long g_brk_limit;` |
-| `ide_init` | function | `headers/kernel.h:914` | `void ide_init(void);` |
-| `ide_present` | function | `headers/kernel.h:920` | `int ide_present(void);` |
-| `ide_read_sector` | function | `headers/kernel.h:917` | `int ide_read_sector(unsigned int lba, void *buf);` |
-| `ide_read_sectors` | function | `headers/kernel.h:915` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
-| `ide_total_sectors` | function | `headers/kernel.h:919` | `unsigned int ide_total_sectors(void);` |
-| `ide_write_sector` | function | `headers/kernel.h:918` | `int ide_write_sector(unsigned int lba, const void *buf);` |
-| `ide_write_sectors` | function | `headers/kernel.h:916` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
+| `ide_init` | function | `headers/kernel.h:915` | `void ide_init(void);` |
+| `ide_present` | function | `headers/kernel.h:921` | `int ide_present(void);` |
+| `ide_read_sector` | function | `headers/kernel.h:918` | `int ide_read_sector(unsigned int lba, void *buf);` |
+| `ide_read_sectors` | function | `headers/kernel.h:916` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
+| `ide_total_sectors` | function | `headers/kernel.h:920` | `unsigned int ide_total_sectors(void);` |
+| `ide_write_sector` | function | `headers/kernel.h:919` | `int ide_write_sector(unsigned int lba, const void *buf);` |
+| `ide_write_sectors` | function | `headers/kernel.h:917` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `inb` | function | `headers/kernel.h:29` | `static inline unsigned char inb(unsigned short port)` |
 | `insw` | function | `headers/kernel.h:47` | `static inline void insw(unsigned short port, unsigned short *buf,                         unsigne...` |
 | `inw` | function | `headers/kernel.h:37` | `static inline unsigned short inw(unsigned short port)` |
@@ -426,27 +437,27 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `k_run_on_stack` | function | `headers/kernel.h:646` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
 | `k_run_rel` | function | `headers/kernel.h:642` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
 | `k_spawn` | function | `headers/kernel.h:631` | `int k_spawn(const char *name, int argc, char **argv);` |
-| `k_user_fault_return` | function | `headers/kernel.h:931` | `void k_user_fault_return(void);` |
+| `k_user_fault_return` | function | `headers/kernel.h:932` | `void k_user_fault_return(void);` |
 | `kallocator_init` | function | `headers/kernel.h:218` | `void kallocator_init(void);` |
 | `katol` | function | `headers/kernel.h:541` | `long katol(const char *s);` |
 | `kbd_available` | function | `headers/kernel.h:174` | `int kbd_available(void);` |
 | `kbd_read` | function | `headers/kernel.h:173` | `int kbd_read(void);` |
 | `kbd_reset_for_shell` | function | `headers/kernel.h:175` | `void kbd_reset_for_shell(void);` |
 | `kcalloc` | function | `headers/kernel.h:216` | `void *kcalloc(unsigned long nmemb, unsigned long size);` |
-| `kernel_end` | variable | `headers/kernel.h:877` | `extern unsigned long kernel_end;` |
+| `kernel_end` | variable | `headers/kernel.h:878` | `extern unsigned long kernel_end;` |
 | `kerrno` | variable | `headers/kernel.h:505` | `extern int kerrno;` |
-| `kevent_create` | function | `headers/kernel.h:865` | `KFILE *kevent_create(unsigned long long initval, int semaphore);` |
-| `kevent_read` | function | `headers/kernel.h:866` | `long kevent_read(KFILE *f, unsigned long long *out);` |
-| `kevent_readable` | function | `headers/kernel.h:868` | `int kevent_readable(KFILE *f);` |
-| `kevent_writable` | function | `headers/kernel.h:869` | `int kevent_writable(KFILE *f);` |
-| `kevent_write` | function | `headers/kernel.h:867` | `long kevent_write(KFILE *f, unsigned long long v);` |
+| `kevent_create` | function | `headers/kernel.h:866` | `KFILE *kevent_create(unsigned long long initval, int semaphore);` |
+| `kevent_read` | function | `headers/kernel.h:867` | `long kevent_read(KFILE *f, unsigned long long *out);` |
+| `kevent_readable` | function | `headers/kernel.h:869` | `int kevent_readable(KFILE *f);` |
+| `kevent_writable` | function | `headers/kernel.h:870` | `int kevent_writable(KFILE *f);` |
+| `kevent_write` | function | `headers/kernel.h:868` | `long kevent_write(KFILE *f, unsigned long long v);` |
 | `kexit` | function | `headers/kernel.h:643` | `void kexit(int code);` |
 | `kfclose` | function | `headers/kernel.h:484` | `int kfclose(KFILE *f);` |
-| `kfd_get` | function | `headers/kernel.h:848` | `KFILE *kfd_get(int fd);` |
-| `kfd_override` | function | `headers/kernel.h:850` | `KFILE *kfd_override(int fd, KFILE *f);` |
-| `kfd_poll_revents` | function | `headers/kernel.h:859` | `int kfd_poll_revents(int fd);` |
-| `kfd_put` | function | `headers/kernel.h:849` | `void kfd_put(KFILE *f);` |
-| `kfd_view` | struct | `headers/kernel.h:838` | `` |
+| `kfd_get` | function | `headers/kernel.h:849` | `KFILE *kfd_get(int fd);` |
+| `kfd_override` | function | `headers/kernel.h:851` | `KFILE *kfd_override(int fd, KFILE *f);` |
+| `kfd_poll_revents` | function | `headers/kernel.h:860` | `int kfd_poll_revents(int fd);` |
+| `kfd_put` | function | `headers/kernel.h:850` | `void kfd_put(KFILE *f);` |
+| `kfd_view` | struct | `headers/kernel.h:839` | `` |
 | `kfflush` | function | `headers/kernel.h:518` | `int kfflush(KFILE *f);` |
 | `kfgetc` | function | `headers/kernel.h:509` | `int kfgetc(KFILE *f);` |
 | `kfgets` | function | `headers/kernel.h:510` | `char *kfgets(char *buf, int size, KFILE *f);` |
@@ -481,20 +492,9 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `kmemcpy` | function | `headers/kernel.h:537` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
 | `kmemmove` | function | `headers/kernel.h:540` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
 | `kmemset` | function | `headers/kernel.h:538` | `void *kmemset(void *dst, int c, unsigned long n);` |
-| `kmm_make_uncached` | function | `headers/kernel.h:802` | `int kmm_make_uncached(unsigned long phys, unsigned long len);` |
-| `kpipe_empty_wopen` | function | `headers/kernel.h:852` | `int kpipe_empty_wopen(KFILE *f);` |
-| `kpipe_is_write_end` | function | `headers/kernel.h:853` | `int kpipe_is_write_end(KFILE *f);` |
-| `kpipe_pair` | function | `headers/kernel.h:851` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);` |
-| `kpipe_state` | function | `headers/kernel.h:856` | `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen);` |
-| `kprintf` | function | `headers/kernel.h:544` | `int kprintf(const char *fmt, ...);` |
-| `kprog_count` | variable | `headers/kernel.h:626` | `extern int kprog_count;` |
-| `kprog_lookup` | function | `headers/kernel.h:629` | `KProg *kprog_lookup(const char *name);` |
-| `kprog_slot` | function | `headers/kernel.h:628` | `KProg *kprog_slot(const char *name);` |
-| `kprog_table` | variable | `headers/kernel.h:625` | `extern KProg kprog_table[];` |
-| `krealloc` | function | `headers/kernel.h:217` | `void *krealloc(void *ptr, unsigned long size);` |
-| `krewind` | function | `headers/kernel.h:519` | `void krewind(KFILE *f);` |
-| `ksetjmp` | function | `headers/kernel.h:651` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
-| `ksnprintf` | function | `headers/kernel.h:547` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
-| `ksprintf` | function | `headers/kernel.h:546` | `int ksprintf(char *buf, const char *fmt, ...);` |
+| `kmm_make_uncached` | function | `headers/kernel.h:803` | `int kmm_make_uncached(unsigned long phys, unsigned long len);` |
+| `kpipe_empty_wopen` | function | `headers/kernel.h:853` | `int kpipe_empty_wopen(KFILE *f);` |
+| `kpipe_is_write_end` | function | `headers/kernel.h:854` | `int kpipe_is_write_end(KFILE *f);` |
+| `kpipe_pair` | function | `headers/kernel.h:852` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);` |
 
 Next: [SYMBOLS_p5.md](SYMBOLS_p5.md)

@@ -71,6 +71,7 @@ edit> x
 miniOS> run objects/minigcc.o src/p.c > asm/p.s
 miniOS> run objects/ld.o -f elf -o bin/p.elf asm/p.s
 miniOS> run objects/ld.o -f cvm -o cvm/p.cvm asm/p.s
+miniOS> run sign bin/p.elf
 miniOS> run bin/p.elf
 exit code: 7
 miniOS> run cvm/p.cvm

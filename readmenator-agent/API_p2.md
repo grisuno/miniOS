@@ -1,4 +1,4 @@
-# API (page 2 of 19)
+# API (page 2 of 21)
 Previous: [API.md](API.md)
 
 ## drivers/xhci.c
@@ -396,8 +396,13 @@ Imported by: `kernel.c`, `kernel/abi.c`, `tests/test_abi.c`
 - `abi_check_manifest` (function) `headers/abi.h:28` `int abi_check_manifest(void);` -- ifndef ABI_HOST_TEST
 
 ## headers/arch/x86/boot/bootdefs.h
-Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `kernel.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
-- `address` (function) `headers/arch/x86/boot/bootdefs.h:191` `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and...`
+Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `headers/arch/x86/cpu_setup.h`, `kernel.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
+- `address` (function) `headers/arch/x86/boot/bootdefs.h:197` `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and...`
+
+## headers/arch/x86/cpu_setup.h
+Depends on: `headers/arch/x86/boot/bootdefs.h`
+Imported by: `kernel.c`, `smp.c`
+- `cpu_enable_caches` (function) `headers/arch/x86/cpu_setup.h:30` `static inline void cpu_enable_caches(void)` -- Turn caching on (CR0.CD and CR0.NW clear), then write back and * invalidate so no line filled under the reset policy...
 
 ## headers/arch/x86/hal_io.h
 Imported by: `drivers/kbd.c`, `drivers/mouse.c`, `drivers/nvme.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_hal_io.c`
@@ -485,14 +490,6 @@ Imported by: `kernel/vga_fb.c`
 - `desktop_shortcuts_load` (function) `headers/desktop_shortcuts.h:82` `void desktop_shortcuts_load(void);` -- Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first draw.
 - `desktop_shortcuts_draw` (function) `headers/desktop_shortcuts.h:85` `void desktop_shortcuts_draw(void);` -- Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first...
 - `desktop_shortcuts_hit_test` (function) `headers/desktop_shortcuts.h:89` `const char *desktop_shortcuts_hit_test(int mx, int my);` -- Handle a left-click at (mx, my).
-
-## headers/driver.h
-Imported by: `drivers/block.c`, `drivers/driver.c`, `drivers/ide.c`, `drivers/pcspk.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/virtio_blk.c`, `kernel/syscalls.c`, `tests/test_driver.c`, `tests/test_usbblk.c`
-- `device_register` (function) `headers/driver.h:56` `int device_register(device_t *dev);`
-- `device_find` (function) `headers/driver.h:57` `device_t *device_find(const char *name);`
-- `device_find_by_type` (function) `headers/driver.h:58` `device_t *device_find_by_type(int type);`
-- `device_count` (function) `headers/driver.h:59` `int device_count(void);`
-- `device_reset` (function) `headers/driver.h:60` `void device_reset(void);`
 
 
 Next: [API_p3.md](API_p3.md)

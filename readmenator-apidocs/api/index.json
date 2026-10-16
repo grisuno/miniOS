@@ -1,0 +1,5153 @@
+{
+ "schema_version": 1,
+ "format": "jsonl",
+ "meta": {
+  "modules": 504,
+  "entities": 10237,
+  "languages": {
+   "S": 7,
+   "c": 236,
+   "h": 193,
+   "py": 46,
+   "s": 12,
+   "sh": 10
+  },
+  "kinds": {
+   "attribute": 158,
+   "class": 34,
+   "constant": 146,
+   "constructor": 23,
+   "enum": 3,
+   "exception": 4,
+   "function": 4442,
+   "macro": 3835,
+   "method": 116,
+   "module": 504,
+   "staticmethod": 6,
+   "struct": 314,
+   "type_alias": 74,
+   "variable": 578
+  },
+  "truncated": false,
+  "skipped_files": 75,
+  "privacy_mode": false
+ },
+ "coverage": {
+  "overall": {
+   "documented": 2714,
+   "total": 9355,
+   "percent": 29.0
+  },
+  "by_kind": {
+   "class": {
+    "documented": 22,
+    "total": 34,
+    "percent": 64.7
+   },
+   "constructor": {
+    "documented": 3,
+    "total": 23,
+    "percent": 13.0
+   },
+   "enum": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "exception": {
+    "documented": 4,
+    "total": 4,
+    "percent": 100.0
+   },
+   "function": {
+    "documented": 1417,
+    "total": 4442,
+    "percent": 31.9
+   },
+   "macro": {
+    "documented": 646,
+    "total": 3835,
+    "percent": 16.8
+   },
+   "method": {
+    "documented": 24,
+    "total": 116,
+    "percent": 20.7
+   },
+   "module": {
+    "documented": 417,
+    "total": 504,
+    "percent": 82.7
+   },
+   "staticmethod": {
+    "documented": 6,
+    "total": 6,
+    "percent": 100.0
+   },
+   "struct": {
+    "documented": 131,
+    "total": 314,
+    "percent": 41.7
+   },
+   "type_alias": {
+    "documented": 42,
+    "total": 74,
+    "percent": 56.8
+   }
+  },
+  "by_module": {
+   "arch/x86/ap_entry.S": {
+    "documented": 2,
+    "total": 10,
+    "percent": 20.0
+   },
+   "arch/x86/boot/stage1.S": {
+    "documented": 1,
+    "total": 12,
+    "percent": 8.3
+   },
+   "arch/x86/boot/stage2.S": {
+    "documented": 5,
+    "total": 41,
+    "percent": 12.2
+   },
+   "arch/x86/ctx_sw.S": {
+    "documented": 2,
+    "total": 10,
+    "percent": 20.0
+   },
+   "arch/x86/isr_stubs.S": {
+    "documented": 0,
+    "total": 25,
+    "percent": 0.0
+   },
+   "arch/x86/syscall_entry.S": {
+    "documented": 0,
+    "total": 5,
+    "percent": 0.0
+   },
+   "arch/x86/tlb_nmi.S": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "boot/uefi_stub.c": {
+    "documented": 3,
+    "total": 42,
+    "percent": 7.1
+   },
+   "bootloader.c": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "drivers/block.c": {
+    "documented": 9,
+    "total": 15,
+    "percent": 60.0
+   },
+   "drivers/driver.c": {
+    "documented": 1,
+    "total": 6,
+    "percent": 16.7
+   },
+   "drivers/ide.c": {
+    "documented": 7,
+    "total": 9,
+    "percent": 77.8
+   },
+   "drivers/kbd.c": {
+    "documented": 6,
+    "total": 32,
+    "percent": 18.8
+   },
+   "drivers/mouse.c": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "drivers/nvme.c": {
+    "documented": 0,
+    "total": 36,
+    "percent": 0.0
+   },
+   "drivers/pcm2.c": {
+    "documented": 3,
+    "total": 34,
+    "percent": 8.8
+   },
+   "drivers/pcspk.c": {
+    "documented": 2,
+    "total": 15,
+    "percent": 13.3
+   },
+   "drivers/rtc.c": {
+    "documented": 5,
+    "total": 23,
+    "percent": 21.7
+   },
+   "drivers/sb16.c": {
+    "documented": 5,
+    "total": 51,
+    "percent": 9.8
+   },
+   "drivers/usbblk.c": {
+    "documented": 19,
+    "total": 33,
+    "percent": 57.6
+   },
+   "drivers/usbhid.c": {
+    "documented": 16,
+    "total": 16,
+    "percent": 100.0
+   },
+   "drivers/virtio_blk.c": {
+    "documented": 7,
+    "total": 25,
+    "percent": 28.0
+   },
+   "drivers/virtio_net.c": {
+    "documented": 7,
+    "total": 35,
+    "percent": 20.0
+   },
+   "drivers/xhci.c": {
+    "documented": 49,
+    "total": 152,
+    "percent": 32.2
+   },
+   "fs/ext4.c": {
+    "documented": 5,
+    "total": 25,
+    "percent": 20.0
+   },
+   "fs/fat32.c": {
+    "documented": 6,
+    "total": 18,
+    "percent": 33.3
+   },
+   "fs/fsimg.c": {
+    "documented": 5,
+    "total": 5,
+    "percent": 100.0
+   },
+   "fs/kfile.c": {
+    "documented": 8,
+    "total": 26,
+    "percent": 30.8
+   },
+   "fs/minifs.c": {
+    "documented": 11,
+    "total": 47,
+    "percent": 23.4
+   },
+   "fs/pcache.c": {
+    "documented": 14,
+    "total": 16,
+    "percent": 87.5
+   },
+   "fs/ramdisk.c": {
+    "documented": 3,
+    "total": 25,
+    "percent": 12.0
+   },
+   "fs/vfs.c": {
+    "documented": 2,
+    "total": 23,
+    "percent": 8.7
+   },
+   "fs/zip.c": {
+    "documented": 3,
+    "total": 7,
+    "percent": 42.9
+   },
+   "headers/abi.h": {
+    "documented": 2,
+    "total": 10,
+    "percent": 20.0
+   },
+   "headers/ap_stub.h": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "headers/arch/x86/boot/bootdefs.h": {
+    "documented": 24,
+    "total": 157,
+    "percent": 15.3
+   },
+   "headers/arch/x86/cpu_setup.h": {
+    "documented": 2,
+    "total": 2,
+    "percent": 100.0
+   },
+   "headers/arch/x86/hal_io.h": {
+    "documented": 64,
+    "total": 64,
+    "percent": 100.0
+   },
+   "headers/arch/x86/msr.h": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "headers/arena.h": {
+    "documented": 14,
+    "total": 15,
+    "percent": 93.3
+   },
+   "headers/audio.h": {
+    "documented": 7,
+    "total": 18,
+    "percent": 38.9
+   },
+   "headers/batch.h": {
+    "documented": 1,
+    "total": 12,
+    "percent": 8.3
+   },
+   "headers/block.h": {
+    "documented": 9,
+    "total": 14,
+    "percent": 64.3
+   },
+   "headers/desktop_icons.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "headers/desktop_shortcuts.h": {
+    "documented": 16,
+    "total": 22,
+    "percent": 72.7
+   },
+   "headers/driver.h": {
+    "documented": 2,
+    "total": 16,
+    "percent": 12.5
+   },
+   "headers/drivers/kbd.h": {
+    "documented": 6,
+    "total": 24,
+    "percent": 25.0
+   },
+   "headers/drivers/modifiers.h": {
+    "documented": 5,
+    "total": 11,
+    "percent": 45.5
+   },
+   "headers/drivers/mouse.h": {
+    "documented": 4,
+    "total": 4,
+    "percent": 100.0
+   },
+   "headers/drivers/nvme.h": {
+    "documented": 0,
+    "total": 7,
+    "percent": 0.0
+   },
+   "headers/drivers/pci.h": {
+    "documented": 26,
+    "total": 54,
+    "percent": 48.1
+   },
+   "headers/drivers/usbblk.h": {
+    "documented": 10,
+    "total": 13,
+    "percent": 76.9
+   },
+   "headers/drivers/usbhid.h": {
+    "documented": 20,
+    "total": 33,
+    "percent": 60.6
+   },
+   "headers/drivers/virtio_blk.h": {
+    "documented": 2,
+    "total": 7,
+    "percent": 28.6
+   },
+   "headers/drivers/virtio_net.h": {
+    "documented": 8,
+    "total": 9,
+    "percent": 88.9
+   },
+   "headers/drivers/xhci.h": {
+    "documented": 37,
+    "total": 51,
+    "percent": 72.5
+   },
+   "headers/editor.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "headers/ext4.h": {
+    "documented": 4,
+    "total": 14,
+    "percent": 28.6
+   },
+   "headers/fat32.h": {
+    "documented": 5,
+    "total": 15,
+    "percent": 33.3
+   },
+   "headers/fsimg.h": {
+    "documented": 5,
+    "total": 6,
+    "percent": 83.3
+   },
+   "headers/futex.h": {
+    "documented": 6,
+    "total": 28,
+    "percent": 21.4
+   },
+   "headers/httpd.h": {
+    "documented": 3,
+    "total": 10,
+    "percent": 30.0
+   },
+   "headers/ide.h": {
+    "documented": 27,
+    "total": 35,
+    "percent": 77.1
+   },
+   "headers/kernel.h": {
+    "documented": 76,
+    "total": 385,
+    "percent": 19.7
+   },
+   "headers/kernel/console_in.h": {
+    "documented": 6,
+    "total": 11,
+    "percent": 54.5
+   },
+   "headers/kernel/vga_cursor.h": {
+    "documented": 8,
+    "total": 8,
+    "percent": 100.0
+   },
+   "headers/ktime.h": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "headers/ldso.h": {
+    "documented": 11,
+    "total": 45,
+    "percent": 24.4
+   },
+   "headers/leakcheck.h": {
+    "documented": 13,
+    "total": 24,
+    "percent": 54.2
+   },
+   "headers/lz4_kernel.h": {
+    "documented": 0,
+    "total": 4,
+    "percent": 0.0
+   },
+   "headers/minifetch.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "headers/minifs.h": {
+    "documented": 3,
+    "total": 77,
+    "percent": 3.9
+   },
+   "headers/net.h": {
+    "documented": 22,
+    "total": 101,
+    "percent": 21.8
+   },
+   "headers/net/rtl8139.h": {
+    "documented": 7,
+    "total": 8,
+    "percent": 87.5
+   },
+   "headers/panic.h": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "headers/pcache.h": {
+    "documented": 16,
+    "total": 17,
+    "percent": 94.1
+   },
+   "headers/pcm2.h": {
+    "documented": 1,
+    "total": 21,
+    "percent": 4.8
+   },
+   "headers/pcm_ring.h": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "headers/pcspk.h": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "headers/percpu_rq.h": {
+    "documented": 1,
+    "total": 14,
+    "percent": 7.1
+   },
+   "headers/pipe.h": {
+    "documented": 9,
+    "total": 17,
+    "percent": 52.9
+   },
+   "headers/proc_sec.h": {
+    "documented": 6,
+    "total": 12,
+    "percent": 50.0
+   },
+   "headers/qga.h": {
+    "documented": 21,
+    "total": 29,
+    "percent": 72.4
+   },
+   "headers/randmix.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "headers/rcu.h": {
+    "documented": 1,
+    "total": 17,
+    "percent": 5.9
+   },
+   "headers/rtc.h": {
+    "documented": 4,
+    "total": 6,
+    "percent": 66.7
+   },
+   "headers/sanitize.h": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "headers/sb16.h": {
+    "documented": 10,
+    "total": 28,
+    "percent": 35.7
+   },
+   "headers/sched.h": {
+    "documented": 41,
+    "total": 140,
+    "percent": 29.3
+   },
+   "headers/seccomp_bpf.h": {
+    "documented": 8,
+    "total": 58,
+    "percent": 13.8
+   },
+   "headers/shell.h": {
+    "documented": 6,
+    "total": 8,
+    "percent": 75.0
+   },
+   "headers/sign.h": {
+    "documented": 3,
+    "total": 14,
+    "percent": 21.4
+   },
+   "headers/smp.h": {
+    "documented": 3,
+    "total": 5,
+    "percent": 60.0
+   },
+   "headers/spawn.h": {
+    "documented": 8,
+    "total": 9,
+    "percent": 88.9
+   },
+   "headers/spinlock.h": {
+    "documented": 13,
+    "total": 19,
+    "percent": 68.4
+   },
+   "headers/sync.h": {
+    "documented": 7,
+    "total": 36,
+    "percent": 19.4
+   },
+   "headers/syscall_asm.h": {
+    "documented": 12,
+    "total": 13,
+    "percent": 92.3
+   },
+   "headers/syscalls_proc.h": {
+    "documented": 4,
+    "total": 20,
+    "percent": 20.0
+   },
+   "headers/tick.h": {
+    "documented": 16,
+    "total": 16,
+    "percent": 100.0
+   },
+   "headers/tlb.h": {
+    "documented": 4,
+    "total": 6,
+    "percent": 66.7
+   },
+   "headers/tls.h": {
+    "documented": 29,
+    "total": 72,
+    "percent": 40.3
+   },
+   "headers/tls_port.h": {
+    "documented": 1,
+    "total": 49,
+    "percent": 2.0
+   },
+   "headers/tls_roots.h": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "headers/vga_fb.h": {
+    "documented": 34,
+    "total": 133,
+    "percent": 25.6
+   },
+   "headers/vga_fx.h": {
+    "documented": 9,
+    "total": 9,
+    "percent": 100.0
+   },
+   "headers/vma.h": {
+    "documented": 4,
+    "total": 18,
+    "percent": 22.2
+   },
+   "headers/wm_events.h": {
+    "documented": 16,
+    "total": 39,
+    "percent": 41.0
+   },
+   "headers/wm_focus.h": {
+    "documented": 5,
+    "total": 5,
+    "percent": 100.0
+   },
+   "headers/wm_geom.h": {
+    "documented": 11,
+    "total": 11,
+    "percent": 100.0
+   },
+   "headers/wm_gfxview.h": {
+    "documented": 14,
+    "total": 15,
+    "percent": 93.3
+   },
+   "headers/wm_layout.h": {
+    "documented": 16,
+    "total": 16,
+    "percent": 100.0
+   },
+   "headers/wm_notify.h": {
+    "documented": 8,
+    "total": 9,
+    "percent": 88.9
+   },
+   "headers/wm_render.h": {
+    "documented": 5,
+    "total": 5,
+    "percent": 100.0
+   },
+   "headers/wm_tiling.h": {
+    "documented": 3,
+    "total": 3,
+    "percent": 100.0
+   },
+   "headers/wm_window.h": {
+    "documented": 10,
+    "total": 10,
+    "percent": 100.0
+   },
+   "headers/zip.h": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "kernel.c": {
+    "documented": 5,
+    "total": 13,
+    "percent": 38.5
+   },
+   "kernel/abi.c": {
+    "documented": 3,
+    "total": 3,
+    "percent": 100.0
+   },
+   "kernel/batch.c": {
+    "documented": 2,
+    "total": 2,
+    "percent": 100.0
+   },
+   "kernel/clip.c": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "kernel/console.c": {
+    "documented": 6,
+    "total": 24,
+    "percent": 25.0
+   },
+   "kernel/console_in.c": {
+    "documented": 12,
+    "total": 18,
+    "percent": 66.7
+   },
+   "kernel/cvm_host.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "kernel/ed25519.c": {
+    "documented": 5,
+    "total": 8,
+    "percent": 62.5
+   },
+   "kernel/editor.c": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "kernel/exec.c": {
+    "documented": 4,
+    "total": 10,
+    "percent": 40.0
+   },
+   "kernel/futex.c": {
+    "documented": 6,
+    "total": 7,
+    "percent": 85.7
+   },
+   "kernel/klog.c": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "kernel/ldso_parse.c": {
+    "documented": 11,
+    "total": 15,
+    "percent": 73.3
+   },
+   "kernel/loader.c": {
+    "documented": 7,
+    "total": 50,
+    "percent": 14.0
+   },
+   "kernel/lz4_kernel.c": {
+    "documented": 0,
+    "total": 7,
+    "percent": 0.0
+   },
+   "kernel/minifetch.c": {
+    "documented": 2,
+    "total": 4,
+    "percent": 50.0
+   },
+   "kernel/mm.c": {
+    "documented": 7,
+    "total": 10,
+    "percent": 70.0
+   },
+   "kernel/mm/cow.c": {
+    "documented": 7,
+    "total": 19,
+    "percent": 36.8
+   },
+   "kernel/mm/paging.c": {
+    "documented": 15,
+    "total": 26,
+    "percent": 57.7
+   },
+   "kernel/mm/swap.c": {
+    "documented": 2,
+    "total": 10,
+    "percent": 20.0
+   },
+   "kernel/mm/tlb.c": {
+    "documented": 3,
+    "total": 5,
+    "percent": 60.0
+   },
+   "kernel/panic.c": {
+    "documented": 2,
+    "total": 2,
+    "percent": 100.0
+   },
+   "kernel/percpu_rq.c": {
+    "documented": 9,
+    "total": 9,
+    "percent": 100.0
+   },
+   "kernel/printf.c": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "kernel/proc_sec.c": {
+    "documented": 7,
+    "total": 39,
+    "percent": 17.9
+   },
+   "kernel/rcu.c": {
+    "documented": 9,
+    "total": 12,
+    "percent": 75.0
+   },
+   "kernel/redirect.c": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "kernel/sched.c": {
+    "documented": 35,
+    "total": 90,
+    "percent": 38.9
+   },
+   "kernel/scrollback.c": {
+    "documented": 2,
+    "total": 9,
+    "percent": 22.2
+   },
+   "kernel/seccomp_bpf.c": {
+    "documented": 4,
+    "total": 11,
+    "percent": 36.4
+   },
+   "kernel/serial.c": {
+    "documented": 3,
+    "total": 8,
+    "percent": 37.5
+   },
+   "kernel/shell.c": {
+    "documented": 10,
+    "total": 39,
+    "percent": 25.6
+   },
+   "kernel/spawn.c": {
+    "documented": 7,
+    "total": 8,
+    "percent": 87.5
+   },
+   "kernel/string.c": {
+    "documented": 2,
+    "total": 14,
+    "percent": 14.3
+   },
+   "kernel/symtab.c": {
+    "documented": 1,
+    "total": 8,
+    "percent": 12.5
+   },
+   "kernel/sync.c": {
+    "documented": 1,
+    "total": 23,
+    "percent": 4.3
+   },
+   "kernel/syscalls.c": {
+    "documented": 19,
+    "total": 113,
+    "percent": 16.8
+   },
+   "kernel/syscalls_proc.c": {
+    "documented": 7,
+    "total": 25,
+    "percent": 28.0
+   },
+   "kernel/tick.c": {
+    "documented": 12,
+    "total": 12,
+    "percent": 100.0
+   },
+   "kernel/time.c": {
+    "documented": 3,
+    "total": 3,
+    "percent": 100.0
+   },
+   "kernel/vga_cursor.c": {
+    "documented": 8,
+    "total": 9,
+    "percent": 88.9
+   },
+   "kernel/vga_fb.c": {
+    "documented": 54,
+    "total": 107,
+    "percent": 50.5
+   },
+   "kernel/vga_fx.c": {
+    "documented": 3,
+    "total": 9,
+    "percent": 33.3
+   },
+   "mcp/__init__.py": {
+    "documented": 0,
+    "total": 1,
+    "percent": 0.0
+   },
+   "mcp/mcp_dbg_driver.py": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "mcp/mcp_dogfood.py": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "mcp/minios_addons.py": {
+    "documented": 10,
+    "total": 14,
+    "percent": 71.4
+   },
+   "mcp/minios_mcp.py": {
+    "documented": 15,
+    "total": 37,
+    "percent": 40.5
+   },
+   "mcp/mutate_mcp.sh": {
+    "documented": 2,
+    "total": 2,
+    "percent": 100.0
+   },
+   "net/net.c": {
+    "documented": 17,
+    "total": 118,
+    "percent": 14.4
+   },
+   "net/rtl8139.c": {
+    "documented": 8,
+    "total": 19,
+    "percent": 42.1
+   },
+   "net/tls.c": {
+    "documented": 6,
+    "total": 12,
+    "percent": 50.0
+   },
+   "net/tls_crypto.c": {
+    "documented": 12,
+    "total": 28,
+    "percent": 42.9
+   },
+   "net/tls_x509.c": {
+    "documented": 3,
+    "total": 8,
+    "percent": 37.5
+   },
+   "progs/asm/aes.s": {
+    "documented": 0,
+    "total": 31,
+    "percent": 0.0
+   },
+   "progs/asm/cp.s": {
+    "documented": 0,
+    "total": 3,
+    "percent": 0.0
+   },
+   "progs/asm/fib.s": {
+    "documented": 0,
+    "total": 4,
+    "percent": 0.0
+   },
+   "progs/asm/freedom.s": {
+    "documented": 0,
+    "total": 93,
+    "percent": 0.0
+   },
+   "progs/asm/http.s": {
+    "documented": 0,
+    "total": 4,
+    "percent": 0.0
+   },
+   "progs/asm/json.s": {
+    "documented": 0,
+    "total": 33,
+    "percent": 0.0
+   },
+   "progs/asm/ldhello.s": {
+    "documented": 0,
+    "total": 3,
+    "percent": 0.0
+   },
+   "progs/asm/lz4.s": {
+    "documented": 0,
+    "total": 8,
+    "percent": 0.0
+   },
+   "progs/asm/lzss.s": {
+    "documented": 0,
+    "total": 31,
+    "percent": 0.0
+   },
+   "progs/asm/mtop.s": {
+    "documented": 0,
+    "total": 37,
+    "percent": 0.0
+   },
+   "progs/asm/sign.s": {
+    "documented": 0,
+    "total": 86,
+    "percent": 0.0
+   },
+   "progs/asm/w1.s": {
+    "documented": 0,
+    "total": 3,
+    "percent": 0.0
+   },
+   "progs/doomedit/doomedit.c": {
+    "documented": 2,
+    "total": 59,
+    "percent": 3.4
+   },
+   "progs/doomgeneric/am_map.c": {
+    "documented": 23,
+    "total": 88,
+    "percent": 26.1
+   },
+   "progs/doomgeneric/am_map.h": {
+    "documented": 5,
+    "total": 7,
+    "percent": 71.4
+   },
+   "progs/doomgeneric/config.h": {
+    "documented": 11,
+    "total": 11,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/d_englsh.h": {
+    "documented": 9,
+    "total": 287,
+    "percent": 3.1
+   },
+   "progs/doomgeneric/d_event.c": {
+    "documented": 2,
+    "total": 4,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/d_event.h": {
+    "documented": 3,
+    "total": 5,
+    "percent": 60.0
+   },
+   "progs/doomgeneric/d_items.c": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/d_items.h": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/d_iwad.c": {
+    "documented": 1,
+    "total": 15,
+    "percent": 6.7
+   },
+   "progs/doomgeneric/d_iwad.h": {
+    "documented": 1,
+    "total": 15,
+    "percent": 6.7
+   },
+   "progs/doomgeneric/d_loop.c": {
+    "documented": 6,
+    "total": 10,
+    "percent": 60.0
+   },
+   "progs/doomgeneric/d_loop.h": {
+    "documented": 6,
+    "total": 9,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/d_main.c": {
+    "documented": 9,
+    "total": 19,
+    "percent": 47.4
+   },
+   "progs/doomgeneric/d_main.h": {
+    "documented": 2,
+    "total": 8,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/d_mode.c": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "progs/doomgeneric/d_mode.h": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/d_net.c": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/d_player.h": {
+    "documented": 4,
+    "total": 6,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/d_textur.h": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/d_think.h": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "progs/doomgeneric/d_ticcmd.h": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/deh_main.h": {
+    "documented": 1,
+    "total": 8,
+    "percent": 12.5
+   },
+   "progs/doomgeneric/deh_misc.h": {
+    "documented": 1,
+    "total": 33,
+    "percent": 3.0
+   },
+   "progs/doomgeneric/deh_str.h": {
+    "documented": 1,
+    "total": 11,
+    "percent": 9.1
+   },
+   "progs/doomgeneric/doom.h": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/doomdata.h": {
+    "documented": 11,
+    "total": 12,
+    "percent": 91.7
+   },
+   "progs/doomgeneric/doomdef.c": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/doomdef.h": {
+    "documented": 7,
+    "total": 10,
+    "percent": 70.0
+   },
+   "progs/doomgeneric/doomfeatures.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/doomgeneric.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/doomgeneric.h": {
+    "documented": 0,
+    "total": 10,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/doomgeneric_minios.c": {
+    "documented": 4,
+    "total": 13,
+    "percent": 30.8
+   },
+   "progs/doomgeneric/doomgeneric_sdl.c": {
+    "documented": 1,
+    "total": 8,
+    "percent": 12.5
+   },
+   "progs/doomgeneric/doomgeneric_soso.c": {
+    "documented": 1,
+    "total": 11,
+    "percent": 9.1
+   },
+   "progs/doomgeneric/doomgeneric_sosox.c": {
+    "documented": 1,
+    "total": 10,
+    "percent": 10.0
+   },
+   "progs/doomgeneric/doomgeneric_win.c": {
+    "documented": 0,
+    "total": 8,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/doomgeneric_xlib.c": {
+    "documented": 0,
+    "total": 8,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/doomkeys.h": {
+    "documented": 3,
+    "total": 60,
+    "percent": 5.0
+   },
+   "progs/doomgeneric/doomstat.c": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/doomstat.h": {
+    "documented": 2,
+    "total": 4,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/doomtype.h": {
+    "documented": 3,
+    "total": 15,
+    "percent": 20.0
+   },
+   "progs/doomgeneric/dstrings.c": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/dstrings.h": {
+    "documented": 3,
+    "total": 4,
+    "percent": 75.0
+   },
+   "progs/doomgeneric/dummy.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/f_finale.c": {
+    "documented": 8,
+    "total": 17,
+    "percent": 47.1
+   },
+   "progs/doomgeneric/f_finale.h": {
+    "documented": 3,
+    "total": 5,
+    "percent": 60.0
+   },
+   "progs/doomgeneric/f_wipe.c": {
+    "documented": 1,
+    "total": 11,
+    "percent": 9.1
+   },
+   "progs/doomgeneric/f_wipe.h": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/g_game.c": {
+    "documented": 20,
+    "total": 46,
+    "percent": 43.5
+   },
+   "progs/doomgeneric/g_game.h": {
+    "documented": 6,
+    "total": 21,
+    "percent": 28.6
+   },
+   "progs/doomgeneric/gusconf.c": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/gusconf.h": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/hu_lib.c": {
+    "documented": 13,
+    "total": 22,
+    "percent": 59.1
+   },
+   "progs/doomgeneric/hu_lib.h": {
+    "documented": 16,
+    "total": 25,
+    "percent": 64.0
+   },
+   "progs/doomgeneric/hu_stuff.c": {
+    "documented": 2,
+    "total": 24,
+    "percent": 8.3
+   },
+   "progs/doomgeneric/hu_stuff.h": {
+    "documented": 3,
+    "total": 16,
+    "percent": 18.8
+   },
+   "progs/doomgeneric/i_cdmus.c": {
+    "documented": 1,
+    "total": 10,
+    "percent": 10.0
+   },
+   "progs/doomgeneric/i_cdmus.h": {
+    "documented": 1,
+    "total": 18,
+    "percent": 5.6
+   },
+   "progs/doomgeneric/i_endoom.c": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/i_endoom.h": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/i_input.c": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/i_joystick.c": {
+    "documented": 2,
+    "total": 6,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/i_joystick.h": {
+    "documented": 9,
+    "total": 19,
+    "percent": 47.4
+   },
+   "progs/doomgeneric/i_main.c": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "progs/doomgeneric/i_minios_sound.c": {
+    "documented": 2,
+    "total": 15,
+    "percent": 13.3
+   },
+   "progs/doomgeneric/i_scale.c": {
+    "documented": 1,
+    "total": 8,
+    "percent": 12.5
+   },
+   "progs/doomgeneric/i_scale.h": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/i_sound.c": {
+    "documented": 1,
+    "total": 22,
+    "percent": 4.5
+   },
+   "progs/doomgeneric/i_sound.h": {
+    "documented": 3,
+    "total": 25,
+    "percent": 12.0
+   },
+   "progs/doomgeneric/i_swap.h": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/doomgeneric/i_system.c": {
+    "documented": 5,
+    "total": 18,
+    "percent": 27.8
+   },
+   "progs/doomgeneric/i_system.h": {
+    "documented": 5,
+    "total": 13,
+    "percent": 38.5
+   },
+   "progs/doomgeneric/i_timer.c": {
+    "documented": 6,
+    "total": 7,
+    "percent": 85.7
+   },
+   "progs/doomgeneric/i_timer.h": {
+    "documented": 6,
+    "total": 8,
+    "percent": 75.0
+   },
+   "progs/doomgeneric/i_video.c": {
+    "documented": 5,
+    "total": 31,
+    "percent": 16.1
+   },
+   "progs/doomgeneric/i_video.h": {
+    "documented": 3,
+    "total": 27,
+    "percent": 11.1
+   },
+   "progs/doomgeneric/icon.c": {
+    "documented": 0,
+    "total": 1,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/info.c": {
+    "documented": 2,
+    "total": 75,
+    "percent": 2.7
+   },
+   "progs/doomgeneric/info.h": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/m_argv.c": {
+    "documented": 3,
+    "total": 7,
+    "percent": 42.9
+   },
+   "progs/doomgeneric/m_argv.h": {
+    "documented": 3,
+    "total": 6,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/m_bbox.c": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/m_bbox.h": {
+    "documented": 2,
+    "total": 4,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/m_cheat.c": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/m_cheat.h": {
+    "documented": 1,
+    "total": 8,
+    "percent": 12.5
+   },
+   "progs/doomgeneric/m_config.c": {
+    "documented": 1,
+    "total": 20,
+    "percent": 5.0
+   },
+   "progs/doomgeneric/m_config.h": {
+    "documented": 1,
+    "total": 12,
+    "percent": 8.3
+   },
+   "progs/doomgeneric/m_controls.c": {
+    "documented": 1,
+    "total": 10,
+    "percent": 10.0
+   },
+   "progs/doomgeneric/m_controls.h": {
+    "documented": 1,
+    "total": 10,
+    "percent": 10.0
+   },
+   "progs/doomgeneric/m_fixed.c": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/m_fixed.h": {
+    "documented": 3,
+    "total": 7,
+    "percent": 42.9
+   },
+   "progs/doomgeneric/m_menu.c": {
+    "documented": 29,
+    "total": 62,
+    "percent": 46.8
+   },
+   "progs/doomgeneric/m_menu.h": {
+    "documented": 5,
+    "total": 6,
+    "percent": 83.3
+   },
+   "progs/doomgeneric/m_misc.c": {
+    "documented": 4,
+    "total": 23,
+    "percent": 17.4
+   },
+   "progs/doomgeneric/m_misc.h": {
+    "documented": 1,
+    "total": 15,
+    "percent": 6.7
+   },
+   "progs/doomgeneric/m_random.c": {
+    "documented": 4,
+    "total": 4,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/m_random.h": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "progs/doomgeneric/memio.c": {
+    "documented": 1,
+    "total": 10,
+    "percent": 10.0
+   },
+   "progs/doomgeneric/memio.h": {
+    "documented": 2,
+    "total": 10,
+    "percent": 20.0
+   },
+   "progs/doomgeneric/net_client.h": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/doomgeneric/net_dedicated.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/net_defs.h": {
+    "documented": 2,
+    "total": 28,
+    "percent": 7.1
+   },
+   "progs/doomgeneric/net_gui.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/net_io.h": {
+    "documented": 1,
+    "total": 8,
+    "percent": 12.5
+   },
+   "progs/doomgeneric/net_loop.h": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/net_packet.h": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/doomgeneric/net_query.h": {
+    "documented": 1,
+    "total": 12,
+    "percent": 8.3
+   },
+   "progs/doomgeneric/net_sdl.h": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/net_server.h": {
+    "documented": 1,
+    "total": 6,
+    "percent": 16.7
+   },
+   "progs/doomgeneric/p_ceilng.c": {
+    "documented": 5,
+    "total": 7,
+    "percent": 71.4
+   },
+   "progs/doomgeneric/p_doors.c": {
+    "documented": 4,
+    "total": 11,
+    "percent": 36.4
+   },
+   "progs/doomgeneric/p_enemy.c": {
+    "documented": 22,
+    "total": 68,
+    "percent": 32.4
+   },
+   "progs/doomgeneric/p_floor.c": {
+    "documented": 2,
+    "total": 5,
+    "percent": 40.0
+   },
+   "progs/doomgeneric/p_inter.c": {
+    "documented": 1,
+    "total": 11,
+    "percent": 9.1
+   },
+   "progs/doomgeneric/p_inter.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/p_lights.c": {
+    "documented": 8,
+    "total": 12,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/p_local.h": {
+    "documented": 11,
+    "total": 63,
+    "percent": 17.5
+   },
+   "progs/doomgeneric/p_map.c": {
+    "documented": 12,
+    "total": 22,
+    "percent": 54.5
+   },
+   "progs/doomgeneric/p_maputl.c": {
+    "documented": 3,
+    "total": 17,
+    "percent": 17.6
+   },
+   "progs/doomgeneric/p_mobj.c": {
+    "documented": 9,
+    "total": 21,
+    "percent": 42.9
+   },
+   "progs/doomgeneric/p_mobj.h": {
+    "documented": 3,
+    "total": 4,
+    "percent": 75.0
+   },
+   "progs/doomgeneric/p_plats.c": {
+    "documented": 2,
+    "total": 7,
+    "percent": 28.6
+   },
+   "progs/doomgeneric/p_pspr.c": {
+    "documented": 10,
+    "total": 35,
+    "percent": 28.6
+   },
+   "progs/doomgeneric/p_pspr.h": {
+    "documented": 2,
+    "total": 5,
+    "percent": 40.0
+   },
+   "progs/doomgeneric/p_saveg.c": {
+    "documented": 9,
+    "total": 21,
+    "percent": 42.9
+   },
+   "progs/doomgeneric/p_saveg.h": {
+    "documented": 2,
+    "total": 15,
+    "percent": 13.3
+   },
+   "progs/doomgeneric/p_setup.c": {
+    "documented": 14,
+    "total": 16,
+    "percent": 87.5
+   },
+   "progs/doomgeneric/p_setup.h": {
+    "documented": 2,
+    "total": 4,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/p_sight.c": {
+    "documented": 3,
+    "total": 6,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/p_switch.c": {
+    "documented": 2,
+    "total": 5,
+    "percent": 40.0
+   },
+   "progs/doomgeneric/p_telept.c": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/p_tick.c": {
+    "documented": 7,
+    "total": 7,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/p_tick.h": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/p_user.c": {
+    "documented": 7,
+    "total": 9,
+    "percent": 77.8
+   },
+   "progs/doomgeneric/r_bsp.c": {
+    "documented": 7,
+    "total": 12,
+    "percent": 58.3
+   },
+   "progs/doomgeneric/r_bsp.h": {
+    "documented": 2,
+    "total": 5,
+    "percent": 40.0
+   },
+   "progs/doomgeneric/r_data.c": {
+    "documented": 13,
+    "total": 17,
+    "percent": 76.5
+   },
+   "progs/doomgeneric/r_data.h": {
+    "documented": 4,
+    "total": 8,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/r_defs.h": {
+    "documented": 18,
+    "total": 26,
+    "percent": 69.2
+   },
+   "progs/doomgeneric/r_draw.c": {
+    "documented": 14,
+    "total": 21,
+    "percent": 66.7
+   },
+   "progs/doomgeneric/r_draw.h": {
+    "documented": 9,
+    "total": 15,
+    "percent": 60.0
+   },
+   "progs/doomgeneric/r_local.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/r_main.c": {
+    "documented": 12,
+    "total": 20,
+    "percent": 60.0
+   },
+   "progs/doomgeneric/r_main.h": {
+    "documented": 7,
+    "total": 21,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/r_plane.c": {
+    "documented": 6,
+    "total": 10,
+    "percent": 60.0
+   },
+   "progs/doomgeneric/r_plane.h": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/doomgeneric/r_segs.c": {
+    "documented": 2,
+    "total": 6,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/r_segs.h": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/r_sky.c": {
+    "documented": 2,
+    "total": 2,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/r_sky.h": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "progs/doomgeneric/r_state.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/r_things.c": {
+    "documented": 9,
+    "total": 18,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/r_things.h": {
+    "documented": 1,
+    "total": 12,
+    "percent": 8.3
+   },
+   "progs/doomgeneric/s_sound.c": {
+    "documented": 7,
+    "total": 23,
+    "percent": 30.4
+   },
+   "progs/doomgeneric/s_sound.h": {
+    "documented": 7,
+    "total": 15,
+    "percent": 46.7
+   },
+   "progs/doomgeneric/sha1.c": {
+    "documented": 3,
+    "total": 19,
+    "percent": 15.8
+   },
+   "progs/doomgeneric/sha1.h": {
+    "documented": 2,
+    "total": 9,
+    "percent": 22.2
+   },
+   "progs/doomgeneric/sounds.c": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/sounds.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/st_lib.c": {
+    "documented": 2,
+    "total": 11,
+    "percent": 18.2
+   },
+   "progs/doomgeneric/st_lib.h": {
+    "documented": 4,
+    "total": 15,
+    "percent": 26.7
+   },
+   "progs/doomgeneric/st_stuff.c": {
+    "documented": 34,
+    "total": 135,
+    "percent": 25.2
+   },
+   "progs/doomgeneric/st_stuff.h": {
+    "documented": 6,
+    "total": 8,
+    "percent": 75.0
+   },
+   "progs/doomgeneric/statdump.c": {
+    "documented": 0,
+    "total": 4,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/statdump.h": {
+    "documented": 0,
+    "total": 3,
+    "percent": 0.0
+   },
+   "progs/doomgeneric/tables.c": {
+    "documented": 2,
+    "total": 2,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/tables.h": {
+    "documented": 4,
+    "total": 18,
+    "percent": 22.2
+   },
+   "progs/doomgeneric/v_patch.h": {
+    "documented": 2,
+    "total": 2,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/v_video.c": {
+    "documented": 6,
+    "total": 29,
+    "percent": 20.7
+   },
+   "progs/doomgeneric/v_video.h": {
+    "documented": 2,
+    "total": 26,
+    "percent": 7.7
+   },
+   "progs/doomgeneric/w_checksum.c": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/w_checksum.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/w_file.c": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/w_file.h": {
+    "documented": 2,
+    "total": 8,
+    "percent": 25.0
+   },
+   "progs/doomgeneric/w_file_stdc.c": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/doomgeneric/w_main.c": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/doomgeneric/w_main.h": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/doomgeneric/w_merge.h": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "progs/doomgeneric/w_wad.c": {
+    "documented": 6,
+    "total": 16,
+    "percent": 37.5
+   },
+   "progs/doomgeneric/w_wad.h": {
+    "documented": 2,
+    "total": 16,
+    "percent": 12.5
+   },
+   "progs/doomgeneric/wi_stuff.c": {
+    "documented": 17,
+    "total": 66,
+    "percent": 25.8
+   },
+   "progs/doomgeneric/wi_stuff.h": {
+    "documented": 5,
+    "total": 6,
+    "percent": 83.3
+   },
+   "progs/doomgeneric/z_zone.c": {
+    "documented": 10,
+    "total": 19,
+    "percent": 52.6
+   },
+   "progs/doomgeneric/z_zone.h": {
+    "documented": 2,
+    "total": 14,
+    "percent": 14.3
+   },
+   "progs/file/file.c": {
+    "documented": 4,
+    "total": 40,
+    "percent": 10.0
+   },
+   "progs/file/file_assoc.h": {
+    "documented": 11,
+    "total": 17,
+    "percent": 64.7
+   },
+   "progs/freedomui/freedomui_minios.c": {
+    "documented": 9,
+    "total": 22,
+    "percent": 40.9
+   },
+   "progs/freedomui/media_unavailable.c": {
+    "documented": 2,
+    "total": 2,
+    "percent": 100.0
+   },
+   "progs/freedomui/platform_minios.c": {
+    "documented": 12,
+    "total": 37,
+    "percent": 32.4
+   },
+   "progs/freedomui/ps2_keymap.c": {
+    "documented": 4,
+    "total": 77,
+    "percent": 5.2
+   },
+   "progs/freedomui/ps2_keymap.h": {
+    "documented": 8,
+    "total": 13,
+    "percent": 61.5
+   },
+   "progs/lisp/lisp.c": {
+    "documented": 11,
+    "total": 19,
+    "percent": 57.9
+   },
+   "progs/lisp/tin.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/lua/lua_main.c": {
+    "documented": 0,
+    "total": 3,
+    "percent": 0.0
+   },
+   "progs/lua/minios.c": {
+    "documented": 1,
+    "total": 10,
+    "percent": 10.0
+   },
+   "progs/micropython/variants/minios/lib/__init__.py": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/micropython/variants/minios/lib/hello.py": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/micropython/variants/minios/manifest.py": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/micropython/variants/minios/minios_module.c": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/micropython/variants/minios/mpconfigvariant.h": {
+    "documented": 15,
+    "total": 39,
+    "percent": 38.5
+   },
+   "progs/minicraft/minicraft.c": {
+    "documented": 8,
+    "total": 115,
+    "percent": 7.0
+   },
+   "progs/minios_abi.h": {
+    "documented": 31,
+    "total": 154,
+    "percent": 20.1
+   },
+   "progs/minios_png.h": {
+    "documented": 11,
+    "total": 21,
+    "percent": 52.4
+   },
+   "progs/nk_palette.h": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/nuklear/cvm_emit.c": {
+    "documented": 4,
+    "total": 46,
+    "percent": 8.7
+   },
+   "progs/nuklear/cvm_emit.h": {
+    "documented": 4,
+    "total": 6,
+    "percent": 66.7
+   },
+   "progs/nuklear/font8x8.c": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/nuklear/node_editor.c": {
+    "documented": 6,
+    "total": 16,
+    "percent": 37.5
+   },
+   "progs/nuklear/nuklear_minios.c": {
+    "documented": 10,
+    "total": 24,
+    "percent": 41.7
+   },
+   "progs/nuklear/nuklear_minios.h": {
+    "documented": 15,
+    "total": 28,
+    "percent": 53.6
+   },
+   "progs/nuklear/nuklear_theme.c": {
+    "documented": 4,
+    "total": 6,
+    "percent": 66.7
+   },
+   "progs/nuklear/nuklear_theme.h": {
+    "documented": 5,
+    "total": 13,
+    "percent": 38.5
+   },
+   "progs/paint/paint.c": {
+    "documented": 3,
+    "total": 28,
+    "percent": 10.7
+   },
+   "progs/piano/piano.c": {
+    "documented": 9,
+    "total": 30,
+    "percent": 30.0
+   },
+   "progs/pokemon/fetch.sh": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "progs/pokemon/minios_stubs/SDL.h": {
+    "documented": 2,
+    "total": 11,
+    "percent": 18.2
+   },
+   "progs/pokemon/platform_minios.c": {
+    "documented": 7,
+    "total": 60,
+    "percent": 11.7
+   },
+   "progs/quake2generic/q2generic_minios.c": {
+    "documented": 6,
+    "total": 21,
+    "percent": 28.6
+   },
+   "progs/quake2generic/snddma_minios.c": {
+    "documented": 5,
+    "total": 12,
+    "percent": 41.7
+   },
+   "progs/src/aes.c": {
+    "documented": 1,
+    "total": 34,
+    "percent": 2.9
+   },
+   "progs/src/apsse.c": {
+    "documented": 1,
+    "total": 14,
+    "percent": 7.1
+   },
+   "progs/src/aslr.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/src/audio.c": {
+    "documented": 6,
+    "total": 14,
+    "percent": 42.9
+   },
+   "progs/src/burn.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/src/cp.c": {
+    "documented": 0,
+    "total": 9,
+    "percent": 0.0
+   },
+   "progs/src/cpl.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/src/execho.c": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/src/execthr.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/src/fib.c": {
+    "documented": 0,
+    "total": 3,
+    "percent": 0.0
+   },
+   "progs/src/forktest.c": {
+    "documented": 0,
+    "total": 11,
+    "percent": 0.0
+   },
+   "progs/src/fptest.c": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "progs/src/freedom.c": {
+    "documented": 6,
+    "total": 30,
+    "percent": 20.0
+   },
+   "progs/src/freedom_wl.c": {
+    "documented": 9,
+    "total": 26,
+    "percent": 34.6
+   },
+   "progs/src/ftest.c": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "progs/src/hello.c": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/src/hello.py": {
+    "documented": 0,
+    "total": 1,
+    "percent": 0.0
+   },
+   "progs/src/http.c": {
+    "documented": 2,
+    "total": 14,
+    "percent": 14.3
+   },
+   "progs/src/json.c": {
+    "documented": 1,
+    "total": 26,
+    "percent": 3.8
+   },
+   "progs/src/kmem.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/src/ldhello.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/src/lxabi.c": {
+    "documented": 1,
+    "total": 27,
+    "percent": 3.7
+   },
+   "progs/src/lxhello.c": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/src/lxnet.c": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/src/lxproc.c": {
+    "documented": 4,
+    "total": 8,
+    "percent": 50.0
+   },
+   "progs/src/lxsecc.c": {
+    "documented": 1,
+    "total": 16,
+    "percent": 6.2
+   },
+   "progs/src/lxtls.c": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "progs/src/lz4.c": {
+    "documented": 1,
+    "total": 22,
+    "percent": 4.5
+   },
+   "progs/src/lzss.c": {
+    "documented": 1,
+    "total": 32,
+    "percent": 3.1
+   },
+   "progs/src/mmreuse.c": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "progs/src/mprot.c": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/src/mthreads.h": {
+    "documented": 4,
+    "total": 20,
+    "percent": 20.0
+   },
+   "progs/src/mtop.c": {
+    "documented": 1,
+    "total": 17,
+    "percent": 5.9
+   },
+   "progs/src/mvrn.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/src/nx.c": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/src/opl3.c": {
+    "documented": 1,
+    "total": 12,
+    "percent": 8.3
+   },
+   "progs/src/pcmap.c": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
+   },
+   "progs/src/pollready.c": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "progs/src/sbtone.c": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/src/scfuzz.c": {
+    "documented": 1,
+    "total": 11,
+    "percent": 9.1
+   },
+   "progs/src/shell.py": {
+    "documented": 1,
+    "total": 4,
+    "percent": 25.0
+   },
+   "progs/src/sign.c": {
+    "documented": 1,
+    "total": 32,
+    "percent": 3.1
+   },
+   "progs/src/spin.c": {
+    "documented": 1,
+    "total": 6,
+    "percent": 16.7
+   },
+   "progs/src/thdemo.c": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "progs/src/w1.c": {
+    "documented": 0,
+    "total": 3,
+    "percent": 0.0
+   },
+   "progs/tls_u/tls_u_main.c": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "progs/tls_u/tls_u_port.c": {
+    "documented": 4,
+    "total": 14,
+    "percent": 28.6
+   },
+   "progs/topogpt3/topogpt3.c": {
+    "documented": 6,
+    "total": 69,
+    "percent": 8.7
+   },
+   "progs/vedit/vedit.c": {
+    "documented": 9,
+    "total": 117,
+    "percent": 7.7
+   },
+   "progs/wl/wl_client.h": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "progs/wl/wl_mbox.h": {
+    "documented": 12,
+    "total": 26,
+    "percent": 46.2
+   },
+   "progs/wl/wl_mini.h": {
+    "documented": 20,
+    "total": 109,
+    "percent": 18.3
+   },
+   "progs/wl/wl_pixbuf.h": {
+    "documented": 13,
+    "total": 17,
+    "percent": 76.5
+   },
+   "progs/wl/wlcomp.c": {
+    "documented": 3,
+    "total": 8,
+    "percent": 37.5
+   },
+   "qga.c": {
+    "documented": 2,
+    "total": 5,
+    "percent": 40.0
+   },
+   "smp.c": {
+    "documented": 15,
+    "total": 37,
+    "percent": 40.5
+   },
+   "tools/abi_stamp.c": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "tools/boot_run.sh": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "tools/boot_wl.py": {
+    "documented": 1,
+    "total": 16,
+    "percent": 6.2
+   },
+   "tools/check_abi_numbers.py": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "tools/check_addons.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "tools/check_cohesion.py": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "tools/check_complexity.py": {
+    "documented": 3,
+    "total": 4,
+    "percent": 75.0
+   },
+   "tools/check_fork_stubs.py": {
+    "documented": 5,
+    "total": 5,
+    "percent": 100.0
+   },
+   "tools/check_kb_sync.py": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "tools/check_mutant_anchors.py": {
+    "documented": 7,
+    "total": 7,
+    "percent": 100.0
+   },
+   "tools/check_spin_discipline.py": {
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
+   },
+   "tools/check_surprising.py": {
+    "documented": 5,
+    "total": 6,
+    "percent": 83.3
+   },
+   "tools/check_syscall_sanitize.py": {
+    "documented": 9,
+    "total": 9,
+    "percent": 100.0
+   },
+   "tools/clip_bridge.py": {
+    "documented": 6,
+    "total": 6,
+    "percent": 100.0
+   },
+   "tools/doom_pwad.py": {
+    "documented": 23,
+    "total": 23,
+    "percent": 100.0
+   },
+   "tools/extract_shell.py": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "tools/gdb_repro.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "tools/gen_desktop_pngs.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "tools/gen_icons.py": {
+    "documented": 2,
+    "total": 4,
+    "percent": 50.0
+   },
+   "tools/gen_minifs.py": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "tools/gen_zip_fixtures.py": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
+   "tools/install.sh": {
+    "documented": 0,
+    "total": 1,
+    "percent": 0.0
+   },
+   "tools/kernel_feature_survey.py": {
+    "documented": 9,
+    "total": 9,
+    "percent": 100.0
+   },
+   "tools/lisp_scoped.sh": {
+    "documented": 1,
+    "total": 6,
+    "percent": 16.7
+   },
+   "tools/make_usb.sh": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "tools/minifs_dump.py": {
+    "documented": 1,
+    "total": 12,
+    "percent": 8.3
+   },
+   "tools/minifs_fsck.py": {
+    "documented": 3,
+    "total": 18,
+    "percent": 16.7
+   },
+   "tools/minifs_saves.py": {
+    "documented": 3,
+    "total": 21,
+    "percent": 14.3
+   },
+   "tools/minios_cli.py": {
+    "documented": 1,
+    "total": 7,
+    "percent": 14.3
+   },
+   "tools/minios_gui.py": {
+    "documented": 1,
+    "total": 9,
+    "percent": 11.1
+   },
+   "tools/minios_hyper.py": {
+    "documented": 30,
+    "total": 45,
+    "percent": 66.7
+   },
+   "tools/mkfs.minifs.py": {
+    "documented": 4,
+    "total": 23,
+    "percent": 17.4
+   },
+   "tools/mkpak1.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "tools/mkramdisk.py": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "tools/mkroots.sh": {
+    "documented": 1,
+    "total": 1,
+    "percent": 100.0
+   },
+   "tools/mkvocab.py": {
+    "documented": 3,
+    "total": 3,
+    "percent": 100.0
+   },
+   "tools/mutate.sh": {
+    "documented": 2,
+    "total": 6,
+    "percent": 33.3
+   },
+   "tools/probe_compute_vga.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "tools/probe_minicraft.py": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
+   },
+   "tools/qga_client.py": {
+    "documented": 2,
+    "total": 5,
+    "percent": 40.0
+   },
+   "tools/repro_gui.py": {
+    "documented": 1,
+    "total": 8,
+    "percent": 12.5
+   },
+   "tools/sign_elf.py": {
+    "documented": 24,
+    "total": 24,
+    "percent": 100.0
+   },
+   "tools/wl_scoped.sh": {
+    "documented": 1,
+    "total": 5,
+    "percent": 20.0
+   },
+   "tools/wm_layout_sync.py": {
+    "documented": 12,
+    "total": 12,
+    "percent": 100.0
+   },
+   "tools/wm_scoped.sh": {
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
+   },
+   "vma.c": {
+    "documented": 1,
+    "total": 11,
+    "percent": 9.1
+   }
+  }
+ },
+ "modules": [
+  {
+   "uid": "arch/x86/ap_entry.S",
+   "path": "modules/arch.x86.ap_entry.S.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "arch/x86/boot/stage1.S",
+   "path": "modules/arch.x86.boot.stage1.S.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "arch/x86/boot/stage2.S",
+   "path": "modules/arch.x86.boot.stage2.S.jsonl",
+   "entities": 41
+  },
+  {
+   "uid": "arch/x86/ctx_sw.S",
+   "path": "modules/arch.x86.ctx_sw.S.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "arch/x86/isr_stubs.S",
+   "path": "modules/arch.x86.isr_stubs.S.jsonl",
+   "entities": 25
+  },
+  {
+   "uid": "arch/x86/syscall_entry.S",
+   "path": "modules/arch.x86.syscall_entry.S.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "arch/x86/tlb_nmi.S",
+   "path": "modules/arch.x86.tlb_nmi.S.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "boot/uefi_stub.c",
+   "path": "modules/boot.uefi_stub.c.jsonl",
+   "entities": 42
+  },
+  {
+   "uid": "bootloader.c",
+   "path": "modules/bootloader.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "drivers/block.c",
+   "path": "modules/drivers.block.c.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "drivers/driver.c",
+   "path": "modules/drivers.driver.c.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "drivers/ide.c",
+   "path": "modules/drivers.ide.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "drivers/kbd.c",
+   "path": "modules/drivers.kbd.c.jsonl",
+   "entities": 32
+  },
+  {
+   "uid": "drivers/mouse.c",
+   "path": "modules/drivers.mouse.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "drivers/nvme.c",
+   "path": "modules/drivers.nvme.c.jsonl",
+   "entities": 36
+  },
+  {
+   "uid": "drivers/pcm2.c",
+   "path": "modules/drivers.pcm2.c.jsonl",
+   "entities": 34
+  },
+  {
+   "uid": "drivers/pcspk.c",
+   "path": "modules/drivers.pcspk.c.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "drivers/rtc.c",
+   "path": "modules/drivers.rtc.c.jsonl",
+   "entities": 23
+  },
+  {
+   "uid": "drivers/sb16.c",
+   "path": "modules/drivers.sb16.c.jsonl",
+   "entities": 51
+  },
+  {
+   "uid": "drivers/usbblk.c",
+   "path": "modules/drivers.usbblk.c.jsonl",
+   "entities": 33
+  },
+  {
+   "uid": "drivers/usbhid.c",
+   "path": "modules/drivers.usbhid.c.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "drivers/virtio_blk.c",
+   "path": "modules/drivers.virtio_blk.c.jsonl",
+   "entities": 25
+  },
+  {
+   "uid": "drivers/virtio_net.c",
+   "path": "modules/drivers.virtio_net.c.jsonl",
+   "entities": 35
+  },
+  {
+   "uid": "drivers/xhci.c",
+   "path": "modules/drivers.xhci.c.jsonl",
+   "entities": 152
+  },
+  {
+   "uid": "fs/ext4.c",
+   "path": "modules/fs.ext4.c.jsonl",
+   "entities": 25
+  },
+  {
+   "uid": "fs/fat32.c",
+   "path": "modules/fs.fat32.c.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "fs/fsimg.c",
+   "path": "modules/fs.fsimg.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "fs/kfile.c",
+   "path": "modules/fs.kfile.c.jsonl",
+   "entities": 26
+  },
+  {
+   "uid": "fs/minifs.c",
+   "path": "modules/fs.minifs.c.jsonl",
+   "entities": 47
+  },
+  {
+   "uid": "fs/pcache.c",
+   "path": "modules/fs.pcache.c.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "fs/ramdisk.c",
+   "path": "modules/fs.ramdisk.c.jsonl",
+   "entities": 25
+  },
+  {
+   "uid": "fs/vfs.c",
+   "path": "modules/fs.vfs.c.jsonl",
+   "entities": 23
+  },
+  {
+   "uid": "fs/zip.c",
+   "path": "modules/fs.zip.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "headers/abi.h",
+   "path": "modules/headers.abi.h.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "headers/ap_stub.h",
+   "path": "modules/headers.ap_stub.h.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "headers/arch/x86/boot/bootdefs.h",
+   "path": "modules/headers.arch.x86.boot.bootdefs.h.jsonl",
+   "entities": 157
+  },
+  {
+   "uid": "headers/arch/x86/cpu_setup.h",
+   "path": "modules/headers.arch.x86.cpu_setup.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "headers/arch/x86/hal_io.h",
+   "path": "modules/headers.arch.x86.hal_io.h.jsonl",
+   "entities": 69
+  },
+  {
+   "uid": "headers/arch/x86/msr.h",
+   "path": "modules/headers.arch.x86.msr.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "headers/arena.h",
+   "path": "modules/headers.arena.h.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "headers/audio.h",
+   "path": "modules/headers.audio.h.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "headers/batch.h",
+   "path": "modules/headers.batch.h.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "headers/block.h",
+   "path": "modules/headers.block.h.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "headers/desktop_icons.h",
+   "path": "modules/headers.desktop_icons.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "headers/desktop_shortcuts.h",
+   "path": "modules/headers.desktop_shortcuts.h.jsonl",
+   "entities": 22
+  },
+  {
+   "uid": "headers/driver.h",
+   "path": "modules/headers.driver.h.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "headers/drivers/kbd.h",
+   "path": "modules/headers.drivers.kbd.h.jsonl",
+   "entities": 24
+  },
+  {
+   "uid": "headers/drivers/modifiers.h",
+   "path": "modules/headers.drivers.modifiers.h.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "headers/drivers/mouse.h",
+   "path": "modules/headers.drivers.mouse.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "headers/drivers/nvme.h",
+   "path": "modules/headers.drivers.nvme.h.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "headers/drivers/pci.h",
+   "path": "modules/headers.drivers.pci.h.jsonl",
+   "entities": 54
+  },
+  {
+   "uid": "headers/drivers/usbblk.h",
+   "path": "modules/headers.drivers.usbblk.h.jsonl",
+   "entities": 13
+  },
+  {
+   "uid": "headers/drivers/usbhid.h",
+   "path": "modules/headers.drivers.usbhid.h.jsonl",
+   "entities": 33
+  },
+  {
+   "uid": "headers/drivers/virtio_blk.h",
+   "path": "modules/headers.drivers.virtio_blk.h.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "headers/drivers/virtio_net.h",
+   "path": "modules/headers.drivers.virtio_net.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "headers/drivers/xhci.h",
+   "path": "modules/headers.drivers.xhci.h.jsonl",
+   "entities": 51
+  },
+  {
+   "uid": "headers/editor.h",
+   "path": "modules/headers.editor.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "headers/ext4.h",
+   "path": "modules/headers.ext4.h.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "headers/fat32.h",
+   "path": "modules/headers.fat32.h.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "headers/fsimg.h",
+   "path": "modules/headers.fsimg.h.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "headers/futex.h",
+   "path": "modules/headers.futex.h.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "headers/httpd.h",
+   "path": "modules/headers.httpd.h.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "headers/ide.h",
+   "path": "modules/headers.ide.h.jsonl",
+   "entities": 35
+  },
+  {
+   "uid": "headers/kernel.h",
+   "path": "modules/headers.kernel.h.jsonl",
+   "entities": 410
+  },
+  {
+   "uid": "headers/kernel/console_in.h",
+   "path": "modules/headers.kernel.console_in.h.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "headers/kernel/vga_cursor.h",
+   "path": "modules/headers.kernel.vga_cursor.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "headers/ktime.h",
+   "path": "modules/headers.ktime.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "headers/ldso.h",
+   "path": "modules/headers.ldso.h.jsonl",
+   "entities": 45
+  },
+  {
+   "uid": "headers/leakcheck.h",
+   "path": "modules/headers.leakcheck.h.jsonl",
+   "entities": 24
+  },
+  {
+   "uid": "headers/lz4_kernel.h",
+   "path": "modules/headers.lz4_kernel.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "headers/minifetch.h",
+   "path": "modules/headers.minifetch.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "headers/minifs.h",
+   "path": "modules/headers.minifs.h.jsonl",
+   "entities": 77
+  },
+  {
+   "uid": "headers/net.h",
+   "path": "modules/headers.net.h.jsonl",
+   "entities": 103
+  },
+  {
+   "uid": "headers/net/rtl8139.h",
+   "path": "modules/headers.net.rtl8139.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "headers/panic.h",
+   "path": "modules/headers.panic.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "headers/pcache.h",
+   "path": "modules/headers.pcache.h.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "headers/pcm2.h",
+   "path": "modules/headers.pcm2.h.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "headers/pcm_ring.h",
+   "path": "modules/headers.pcm_ring.h.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "headers/pcspk.h",
+   "path": "modules/headers.pcspk.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "headers/percpu_rq.h",
+   "path": "modules/headers.percpu_rq.h.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "headers/pipe.h",
+   "path": "modules/headers.pipe.h.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "headers/proc_sec.h",
+   "path": "modules/headers.proc_sec.h.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "headers/qga.h",
+   "path": "modules/headers.qga.h.jsonl",
+   "entities": 29
+  },
+  {
+   "uid": "headers/randmix.h",
+   "path": "modules/headers.randmix.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "headers/rcu.h",
+   "path": "modules/headers.rcu.h.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "headers/rtc.h",
+   "path": "modules/headers.rtc.h.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "headers/sanitize.h",
+   "path": "modules/headers.sanitize.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "headers/sb16.h",
+   "path": "modules/headers.sb16.h.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "headers/sched.h",
+   "path": "modules/headers.sched.h.jsonl",
+   "entities": 157
+  },
+  {
+   "uid": "headers/seccomp_bpf.h",
+   "path": "modules/headers.seccomp_bpf.h.jsonl",
+   "entities": 58
+  },
+  {
+   "uid": "headers/shell.h",
+   "path": "modules/headers.shell.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "headers/sign.h",
+   "path": "modules/headers.sign.h.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "headers/smp.h",
+   "path": "modules/headers.smp.h.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "headers/spawn.h",
+   "path": "modules/headers.spawn.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "headers/spinlock.h",
+   "path": "modules/headers.spinlock.h.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "headers/sync.h",
+   "path": "modules/headers.sync.h.jsonl",
+   "entities": 36
+  },
+  {
+   "uid": "headers/syscall_asm.h",
+   "path": "modules/headers.syscall_asm.h.jsonl",
+   "entities": 13
+  },
+  {
+   "uid": "headers/syscalls_proc.h",
+   "path": "modules/headers.syscalls_proc.h.jsonl",
+   "entities": 20
+  },
+  {
+   "uid": "headers/tick.h",
+   "path": "modules/headers.tick.h.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "headers/tlb.h",
+   "path": "modules/headers.tlb.h.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "headers/tls.h",
+   "path": "modules/headers.tls.h.jsonl",
+   "entities": 73
+  },
+  {
+   "uid": "headers/tls_port.h",
+   "path": "modules/headers.tls_port.h.jsonl",
+   "entities": 49
+  },
+  {
+   "uid": "headers/tls_roots.h",
+   "path": "modules/headers.tls_roots.h.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "headers/vga_fb.h",
+   "path": "modules/headers.vga_fb.h.jsonl",
+   "entities": 145
+  },
+  {
+   "uid": "headers/vga_fx.h",
+   "path": "modules/headers.vga_fx.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "headers/vma.h",
+   "path": "modules/headers.vma.h.jsonl",
+   "entities": 26
+  },
+  {
+   "uid": "headers/wm_events.h",
+   "path": "modules/headers.wm_events.h.jsonl",
+   "entities": 39
+  },
+  {
+   "uid": "headers/wm_focus.h",
+   "path": "modules/headers.wm_focus.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "headers/wm_geom.h",
+   "path": "modules/headers.wm_geom.h.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "headers/wm_gfxview.h",
+   "path": "modules/headers.wm_gfxview.h.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "headers/wm_layout.h",
+   "path": "modules/headers.wm_layout.h.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "headers/wm_notify.h",
+   "path": "modules/headers.wm_notify.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "headers/wm_render.h",
+   "path": "modules/headers.wm_render.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "headers/wm_tiling.h",
+   "path": "modules/headers.wm_tiling.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "headers/wm_window.h",
+   "path": "modules/headers.wm_window.h.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "headers/zip.h",
+   "path": "modules/headers.zip.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "kernel.c",
+   "path": "modules/kernel.c.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "kernel/abi.c",
+   "path": "modules/kernel.abi.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "kernel/batch.c",
+   "path": "modules/kernel.batch.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "kernel/clip.c",
+   "path": "modules/kernel.clip.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "kernel/console.c",
+   "path": "modules/kernel.console.c.jsonl",
+   "entities": 24
+  },
+  {
+   "uid": "kernel/console_in.c",
+   "path": "modules/kernel.console_in.c.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "kernel/cvm_host.c",
+   "path": "modules/kernel.cvm_host.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "kernel/ed25519.c",
+   "path": "modules/kernel.ed25519.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "kernel/editor.c",
+   "path": "modules/kernel.editor.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "kernel/exec.c",
+   "path": "modules/kernel.exec.c.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "kernel/futex.c",
+   "path": "modules/kernel.futex.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "kernel/klog.c",
+   "path": "modules/kernel.klog.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "kernel/ldso_parse.c",
+   "path": "modules/kernel.ldso_parse.c.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "kernel/loader.c",
+   "path": "modules/kernel.loader.c.jsonl",
+   "entities": 50
+  },
+  {
+   "uid": "kernel/lz4_kernel.c",
+   "path": "modules/kernel.lz4_kernel.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "kernel/minifetch.c",
+   "path": "modules/kernel.minifetch.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "kernel/mm.c",
+   "path": "modules/kernel.mm.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "kernel/mm/cow.c",
+   "path": "modules/kernel.mm.cow.c.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "kernel/mm/paging.c",
+   "path": "modules/kernel.mm.paging.c.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "kernel/mm/swap.c",
+   "path": "modules/kernel.mm.swap.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "kernel/mm/tlb.c",
+   "path": "modules/kernel.mm.tlb.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "kernel/panic.c",
+   "path": "modules/kernel.panic.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "kernel/percpu_rq.c",
+   "path": "modules/kernel.percpu_rq.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "kernel/printf.c",
+   "path": "modules/kernel.printf.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "kernel/proc_sec.c",
+   "path": "modules/kernel.proc_sec.c.jsonl",
+   "entities": 39
+  },
+  {
+   "uid": "kernel/rcu.c",
+   "path": "modules/kernel.rcu.c.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "kernel/redirect.c",
+   "path": "modules/kernel.redirect.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "kernel/sched.c",
+   "path": "modules/kernel.sched.c.jsonl",
+   "entities": 94
+  },
+  {
+   "uid": "kernel/scrollback.c",
+   "path": "modules/kernel.scrollback.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "kernel/seccomp_bpf.c",
+   "path": "modules/kernel.seccomp_bpf.c.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "kernel/serial.c",
+   "path": "modules/kernel.serial.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "kernel/shell.c",
+   "path": "modules/kernel.shell.c.jsonl",
+   "entities": 39
+  },
+  {
+   "uid": "kernel/spawn.c",
+   "path": "modules/kernel.spawn.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "kernel/string.c",
+   "path": "modules/kernel.string.c.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "kernel/symtab.c",
+   "path": "modules/kernel.symtab.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "kernel/sync.c",
+   "path": "modules/kernel.sync.c.jsonl",
+   "entities": 24
+  },
+  {
+   "uid": "kernel/syscalls.c",
+   "path": "modules/kernel.syscalls.c.jsonl",
+   "entities": 115
+  },
+  {
+   "uid": "kernel/syscalls_proc.c",
+   "path": "modules/kernel.syscalls_proc.c.jsonl",
+   "entities": 25
+  },
+  {
+   "uid": "kernel/tick.c",
+   "path": "modules/kernel.tick.c.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "kernel/time.c",
+   "path": "modules/kernel.time.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "kernel/vga_cursor.c",
+   "path": "modules/kernel.vga_cursor.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "kernel/vga_fb.c",
+   "path": "modules/kernel.vga_fb.c.jsonl",
+   "entities": 107
+  },
+  {
+   "uid": "kernel/vga_fx.c",
+   "path": "modules/kernel.vga_fx.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "mcp/__init__.py",
+   "path": "modules/mcp.__init__.py.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "mcp/mcp_dbg_driver.py",
+   "path": "modules/mcp.mcp_dbg_driver.py.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "mcp/mcp_dogfood.py",
+   "path": "modules/mcp.mcp_dogfood.py.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "mcp/minios_addons.py",
+   "path": "modules/mcp.minios_addons.py.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "mcp/minios_mcp.py",
+   "path": "modules/mcp.minios_mcp.py.jsonl",
+   "entities": 68
+  },
+  {
+   "uid": "mcp/mutate_mcp.sh",
+   "path": "modules/mcp.mutate_mcp.sh.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "net/net.c",
+   "path": "modules/net.net.c.jsonl",
+   "entities": 118
+  },
+  {
+   "uid": "net/rtl8139.c",
+   "path": "modules/net.rtl8139.c.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "net/tls.c",
+   "path": "modules/net.tls.c.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "net/tls_crypto.c",
+   "path": "modules/net.tls_crypto.c.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "net/tls_x509.c",
+   "path": "modules/net.tls_x509.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/asm/aes.s",
+   "path": "modules/progs.asm.aes.s.jsonl",
+   "entities": 31
+  },
+  {
+   "uid": "progs/asm/cp.s",
+   "path": "modules/progs.asm.cp.s.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/asm/fib.s",
+   "path": "modules/progs.asm.fib.s.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/asm/freedom.s",
+   "path": "modules/progs.asm.freedom.s.jsonl",
+   "entities": 93
+  },
+  {
+   "uid": "progs/asm/http.s",
+   "path": "modules/progs.asm.http.s.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/asm/json.s",
+   "path": "modules/progs.asm.json.s.jsonl",
+   "entities": 33
+  },
+  {
+   "uid": "progs/asm/ldhello.s",
+   "path": "modules/progs.asm.ldhello.s.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/asm/lz4.s",
+   "path": "modules/progs.asm.lz4.s.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/asm/lzss.s",
+   "path": "modules/progs.asm.lzss.s.jsonl",
+   "entities": 31
+  },
+  {
+   "uid": "progs/asm/mtop.s",
+   "path": "modules/progs.asm.mtop.s.jsonl",
+   "entities": 37
+  },
+  {
+   "uid": "progs/asm/sign.s",
+   "path": "modules/progs.asm.sign.s.jsonl",
+   "entities": 86
+  },
+  {
+   "uid": "progs/asm/w1.s",
+   "path": "modules/progs.asm.w1.s.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomedit/doomedit.c",
+   "path": "modules/progs.doomedit.doomedit.c.jsonl",
+   "entities": 59
+  },
+  {
+   "uid": "progs/doomgeneric/am_map.c",
+   "path": "modules/progs.doomgeneric.am_map.c.jsonl",
+   "entities": 88
+  },
+  {
+   "uid": "progs/doomgeneric/am_map.h",
+   "path": "modules/progs.doomgeneric.am_map.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/config.h",
+   "path": "modules/progs.doomgeneric.config.h.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/doomgeneric/d_englsh.h",
+   "path": "modules/progs.doomgeneric.d_englsh.h.jsonl",
+   "entities": 287
+  },
+  {
+   "uid": "progs/doomgeneric/d_event.c",
+   "path": "modules/progs.doomgeneric.d_event.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/d_event.h",
+   "path": "modules/progs.doomgeneric.d_event.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/doomgeneric/d_items.c",
+   "path": "modules/progs.doomgeneric.d_items.c.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/doomgeneric/d_items.h",
+   "path": "modules/progs.doomgeneric.d_items.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/d_iwad.c",
+   "path": "modules/progs.doomgeneric.d_iwad.c.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "progs/doomgeneric/d_iwad.h",
+   "path": "modules/progs.doomgeneric.d_iwad.h.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "progs/doomgeneric/d_loop.c",
+   "path": "modules/progs.doomgeneric.d_loop.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/doomgeneric/d_loop.h",
+   "path": "modules/progs.doomgeneric.d_loop.h.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/doomgeneric/d_main.c",
+   "path": "modules/progs.doomgeneric.d_main.c.jsonl",
+   "entities": 24
+  },
+  {
+   "uid": "progs/doomgeneric/d_main.h",
+   "path": "modules/progs.doomgeneric.d_main.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/doomgeneric/d_mode.c",
+   "path": "modules/progs.doomgeneric.d_mode.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/d_mode.h",
+   "path": "modules/progs.doomgeneric.d_mode.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/d_net.c",
+   "path": "modules/progs.doomgeneric.d_net.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/d_player.h",
+   "path": "modules/progs.doomgeneric.d_player.h.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/doomgeneric/d_textur.h",
+   "path": "modules/progs.doomgeneric.d_textur.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/d_think.h",
+   "path": "modules/progs.doomgeneric.d_think.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/doomgeneric/d_ticcmd.h",
+   "path": "modules/progs.doomgeneric.d_ticcmd.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/deh_main.h",
+   "path": "modules/progs.doomgeneric.deh_main.h.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "progs/doomgeneric/deh_misc.h",
+   "path": "modules/progs.doomgeneric.deh_misc.h.jsonl",
+   "entities": 49
+  },
+  {
+   "uid": "progs/doomgeneric/deh_str.h",
+   "path": "modules/progs.doomgeneric.deh_str.h.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/doomgeneric/doom.h",
+   "path": "modules/progs.doomgeneric.doom.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/doomdata.h",
+   "path": "modules/progs.doomgeneric.doomdata.h.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "progs/doomgeneric/doomdef.c",
+   "path": "modules/progs.doomgeneric.doomdef.c.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/doomgeneric/doomdef.h",
+   "path": "modules/progs.doomgeneric.doomdef.h.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/doomgeneric/doomfeatures.h",
+   "path": "modules/progs.doomgeneric.doomfeatures.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/doomgeneric.c",
+   "path": "modules/progs.doomgeneric.doomgeneric.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/doomgeneric.h",
+   "path": "modules/progs.doomgeneric.doomgeneric.h.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/doomgeneric/doomgeneric_minios.c",
+   "path": "modules/progs.doomgeneric.doomgeneric_minios.c.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "progs/doomgeneric/doomgeneric_sdl.c",
+   "path": "modules/progs.doomgeneric.doomgeneric_sdl.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/doomgeneric_soso.c",
+   "path": "modules/progs.doomgeneric.doomgeneric_soso.c.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/doomgeneric/doomgeneric_sosox.c",
+   "path": "modules/progs.doomgeneric.doomgeneric_sosox.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/doomgeneric/doomgeneric_win.c",
+   "path": "modules/progs.doomgeneric.doomgeneric_win.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/doomgeneric_xlib.c",
+   "path": "modules/progs.doomgeneric.doomgeneric_xlib.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/doomkeys.h",
+   "path": "modules/progs.doomgeneric.doomkeys.h.jsonl",
+   "entities": 60
+  },
+  {
+   "uid": "progs/doomgeneric/doomstat.c",
+   "path": "modules/progs.doomgeneric.doomstat.c.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/doomgeneric/doomstat.h",
+   "path": "modules/progs.doomgeneric.doomstat.h.jsonl",
+   "entities": 69
+  },
+  {
+   "uid": "progs/doomgeneric/doomtype.h",
+   "path": "modules/progs.doomgeneric.doomtype.h.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "progs/doomgeneric/dstrings.c",
+   "path": "modules/progs.doomgeneric.dstrings.c.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/doomgeneric/dstrings.h",
+   "path": "modules/progs.doomgeneric.dstrings.h.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/doomgeneric/dummy.c",
+   "path": "modules/progs.doomgeneric.dummy.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/f_finale.c",
+   "path": "modules/progs.doomgeneric.f_finale.c.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "progs/doomgeneric/f_finale.h",
+   "path": "modules/progs.doomgeneric.f_finale.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/doomgeneric/f_wipe.c",
+   "path": "modules/progs.doomgeneric.f_wipe.c.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/doomgeneric/f_wipe.h",
+   "path": "modules/progs.doomgeneric.f_wipe.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/g_game.c",
+   "path": "modules/progs.doomgeneric.g_game.c.jsonl",
+   "entities": 49
+  },
+  {
+   "uid": "progs/doomgeneric/g_game.h",
+   "path": "modules/progs.doomgeneric.g_game.h.jsonl",
+   "entities": 23
+  },
+  {
+   "uid": "progs/doomgeneric/gusconf.c",
+   "path": "modules/progs.doomgeneric.gusconf.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/gusconf.h",
+   "path": "modules/progs.doomgeneric.gusconf.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/hu_lib.c",
+   "path": "modules/progs.doomgeneric.hu_lib.c.jsonl",
+   "entities": 23
+  },
+  {
+   "uid": "progs/doomgeneric/hu_lib.h",
+   "path": "modules/progs.doomgeneric.hu_lib.h.jsonl",
+   "entities": 25
+  },
+  {
+   "uid": "progs/doomgeneric/hu_stuff.c",
+   "path": "modules/progs.doomgeneric.hu_stuff.c.jsonl",
+   "entities": 25
+  },
+  {
+   "uid": "progs/doomgeneric/hu_stuff.h",
+   "path": "modules/progs.doomgeneric.hu_stuff.h.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "progs/doomgeneric/i_cdmus.c",
+   "path": "modules/progs.doomgeneric.i_cdmus.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/doomgeneric/i_cdmus.h",
+   "path": "modules/progs.doomgeneric.i_cdmus.h.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "progs/doomgeneric/i_endoom.c",
+   "path": "modules/progs.doomgeneric.i_endoom.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/i_endoom.h",
+   "path": "modules/progs.doomgeneric.i_endoom.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/i_input.c",
+   "path": "modules/progs.doomgeneric.i_input.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/i_joystick.c",
+   "path": "modules/progs.doomgeneric.i_joystick.c.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/doomgeneric/i_joystick.h",
+   "path": "modules/progs.doomgeneric.i_joystick.h.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "progs/doomgeneric/i_main.c",
+   "path": "modules/progs.doomgeneric.i_main.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/doomgeneric/i_minios_sound.c",
+   "path": "modules/progs.doomgeneric.i_minios_sound.c.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "progs/doomgeneric/i_scale.c",
+   "path": "modules/progs.doomgeneric.i_scale.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/i_scale.h",
+   "path": "modules/progs.doomgeneric.i_scale.h.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "progs/doomgeneric/i_sound.c",
+   "path": "modules/progs.doomgeneric.i_sound.c.jsonl",
+   "entities": 31
+  },
+  {
+   "uid": "progs/doomgeneric/i_sound.h",
+   "path": "modules/progs.doomgeneric.i_sound.h.jsonl",
+   "entities": 31
+  },
+  {
+   "uid": "progs/doomgeneric/i_swap.h",
+   "path": "modules/progs.doomgeneric.i_swap.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/doomgeneric/i_system.c",
+   "path": "modules/progs.doomgeneric.i_system.c.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "progs/doomgeneric/i_system.h",
+   "path": "modules/progs.doomgeneric.i_system.h.jsonl",
+   "entities": 13
+  },
+  {
+   "uid": "progs/doomgeneric/i_timer.c",
+   "path": "modules/progs.doomgeneric.i_timer.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/i_timer.h",
+   "path": "modules/progs.doomgeneric.i_timer.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/i_video.c",
+   "path": "modules/progs.doomgeneric.i_video.c.jsonl",
+   "entities": 32
+  },
+  {
+   "uid": "progs/doomgeneric/i_video.h",
+   "path": "modules/progs.doomgeneric.i_video.h.jsonl",
+   "entities": 42
+  },
+  {
+   "uid": "progs/doomgeneric/icon.c",
+   "path": "modules/progs.doomgeneric.icon.c.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/doomgeneric/info.c",
+   "path": "modules/progs.doomgeneric.info.c.jsonl",
+   "entities": 75
+  },
+  {
+   "uid": "progs/doomgeneric/info.h",
+   "path": "modules/progs.doomgeneric.info.h.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/m_argv.c",
+   "path": "modules/progs.doomgeneric.m_argv.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/m_argv.h",
+   "path": "modules/progs.doomgeneric.m_argv.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/m_bbox.c",
+   "path": "modules/progs.doomgeneric.m_bbox.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/m_bbox.h",
+   "path": "modules/progs.doomgeneric.m_bbox.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/m_cheat.c",
+   "path": "modules/progs.doomgeneric.m_cheat.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/m_cheat.h",
+   "path": "modules/progs.doomgeneric.m_cheat.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/m_config.c",
+   "path": "modules/progs.doomgeneric.m_config.c.jsonl",
+   "entities": 20
+  },
+  {
+   "uid": "progs/doomgeneric/m_config.h",
+   "path": "modules/progs.doomgeneric.m_config.h.jsonl",
+   "entities": 13
+  },
+  {
+   "uid": "progs/doomgeneric/m_controls.c",
+   "path": "modules/progs.doomgeneric.m_controls.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/doomgeneric/m_controls.h",
+   "path": "modules/progs.doomgeneric.m_controls.h.jsonl",
+   "entities": 119
+  },
+  {
+   "uid": "progs/doomgeneric/m_fixed.c",
+   "path": "modules/progs.doomgeneric.m_fixed.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/m_fixed.h",
+   "path": "modules/progs.doomgeneric.m_fixed.h.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/m_menu.c",
+   "path": "modules/progs.doomgeneric.m_menu.c.jsonl",
+   "entities": 66
+  },
+  {
+   "uid": "progs/doomgeneric/m_menu.h",
+   "path": "modules/progs.doomgeneric.m_menu.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/m_misc.c",
+   "path": "modules/progs.doomgeneric.m_misc.c.jsonl",
+   "entities": 23
+  },
+  {
+   "uid": "progs/doomgeneric/m_misc.h",
+   "path": "modules/progs.doomgeneric.m_misc.h.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "progs/doomgeneric/m_random.c",
+   "path": "modules/progs.doomgeneric.m_random.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/m_random.h",
+   "path": "modules/progs.doomgeneric.m_random.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/doomgeneric/memio.c",
+   "path": "modules/progs.doomgeneric.memio.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/doomgeneric/memio.h",
+   "path": "modules/progs.doomgeneric.memio.h.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/doomgeneric/net_client.h",
+   "path": "modules/progs.doomgeneric.net_client.h.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "progs/doomgeneric/net_dedicated.h",
+   "path": "modules/progs.doomgeneric.net_dedicated.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/net_defs.h",
+   "path": "modules/progs.doomgeneric.net_defs.h.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "progs/doomgeneric/net_gui.h",
+   "path": "modules/progs.doomgeneric.net_gui.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/net_io.h",
+   "path": "modules/progs.doomgeneric.net_io.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/doomgeneric/net_loop.h",
+   "path": "modules/progs.doomgeneric.net_loop.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/net_packet.h",
+   "path": "modules/progs.doomgeneric.net_packet.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/doomgeneric/net_query.h",
+   "path": "modules/progs.doomgeneric.net_query.h.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "progs/doomgeneric/net_sdl.h",
+   "path": "modules/progs.doomgeneric.net_sdl.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/net_server.h",
+   "path": "modules/progs.doomgeneric.net_server.h.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/doomgeneric/p_ceilng.c",
+   "path": "modules/progs.doomgeneric.p_ceilng.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/p_doors.c",
+   "path": "modules/progs.doomgeneric.p_doors.c.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/doomgeneric/p_enemy.c",
+   "path": "modules/progs.doomgeneric.p_enemy.c.jsonl",
+   "entities": 68
+  },
+  {
+   "uid": "progs/doomgeneric/p_floor.c",
+   "path": "modules/progs.doomgeneric.p_floor.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/doomgeneric/p_inter.c",
+   "path": "modules/progs.doomgeneric.p_inter.c.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/doomgeneric/p_inter.h",
+   "path": "modules/progs.doomgeneric.p_inter.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/p_lights.c",
+   "path": "modules/progs.doomgeneric.p_lights.c.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "progs/doomgeneric/p_local.h",
+   "path": "modules/progs.doomgeneric.p_local.h.jsonl",
+   "entities": 92
+  },
+  {
+   "uid": "progs/doomgeneric/p_map.c",
+   "path": "modules/progs.doomgeneric.p_map.c.jsonl",
+   "entities": 24
+  },
+  {
+   "uid": "progs/doomgeneric/p_maputl.c",
+   "path": "modules/progs.doomgeneric.p_maputl.c.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "progs/doomgeneric/p_mobj.c",
+   "path": "modules/progs.doomgeneric.p_mobj.c.jsonl",
+   "entities": 22
+  },
+  {
+   "uid": "progs/doomgeneric/p_mobj.h",
+   "path": "modules/progs.doomgeneric.p_mobj.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/p_plats.c",
+   "path": "modules/progs.doomgeneric.p_plats.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/p_pspr.c",
+   "path": "modules/progs.doomgeneric.p_pspr.c.jsonl",
+   "entities": 35
+  },
+  {
+   "uid": "progs/doomgeneric/p_pspr.h",
+   "path": "modules/progs.doomgeneric.p_pspr.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/doomgeneric/p_saveg.c",
+   "path": "modules/progs.doomgeneric.p_saveg.c.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "progs/doomgeneric/p_saveg.h",
+   "path": "modules/progs.doomgeneric.p_saveg.h.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "progs/doomgeneric/p_setup.c",
+   "path": "modules/progs.doomgeneric.p_setup.c.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "progs/doomgeneric/p_setup.h",
+   "path": "modules/progs.doomgeneric.p_setup.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/p_sight.c",
+   "path": "modules/progs.doomgeneric.p_sight.c.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/doomgeneric/p_switch.c",
+   "path": "modules/progs.doomgeneric.p_switch.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/doomgeneric/p_telept.c",
+   "path": "modules/progs.doomgeneric.p_telept.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/p_tick.c",
+   "path": "modules/progs.doomgeneric.p_tick.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/p_tick.h",
+   "path": "modules/progs.doomgeneric.p_tick.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/p_user.c",
+   "path": "modules/progs.doomgeneric.p_user.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/doomgeneric/r_bsp.c",
+   "path": "modules/progs.doomgeneric.r_bsp.c.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "progs/doomgeneric/r_bsp.h",
+   "path": "modules/progs.doomgeneric.r_bsp.h.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "progs/doomgeneric/r_data.c",
+   "path": "modules/progs.doomgeneric.r_data.c.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "progs/doomgeneric/r_data.h",
+   "path": "modules/progs.doomgeneric.r_data.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/r_defs.h",
+   "path": "modules/progs.doomgeneric.r_defs.h.jsonl",
+   "entities": 26
+  },
+  {
+   "uid": "progs/doomgeneric/r_draw.c",
+   "path": "modules/progs.doomgeneric.r_draw.c.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "progs/doomgeneric/r_draw.h",
+   "path": "modules/progs.doomgeneric.r_draw.h.jsonl",
+   "entities": 33
+  },
+  {
+   "uid": "progs/doomgeneric/r_local.h",
+   "path": "modules/progs.doomgeneric.r_local.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/r_main.c",
+   "path": "modules/progs.doomgeneric.r_main.c.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "progs/doomgeneric/r_main.h",
+   "path": "modules/progs.doomgeneric.r_main.h.jsonl",
+   "entities": 37
+  },
+  {
+   "uid": "progs/doomgeneric/r_plane.c",
+   "path": "modules/progs.doomgeneric.r_plane.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/doomgeneric/r_plane.h",
+   "path": "modules/progs.doomgeneric.r_plane.h.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "progs/doomgeneric/r_segs.c",
+   "path": "modules/progs.doomgeneric.r_segs.c.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/doomgeneric/r_segs.h",
+   "path": "modules/progs.doomgeneric.r_segs.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/r_sky.c",
+   "path": "modules/progs.doomgeneric.r_sky.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/r_sky.h",
+   "path": "modules/progs.doomgeneric.r_sky.h.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/r_state.h",
+   "path": "modules/progs.doomgeneric.r_state.h.jsonl",
+   "entities": 46
+  },
+  {
+   "uid": "progs/doomgeneric/r_things.c",
+   "path": "modules/progs.doomgeneric.r_things.c.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "progs/doomgeneric/r_things.h",
+   "path": "modules/progs.doomgeneric.r_things.h.jsonl",
+   "entities": 23
+  },
+  {
+   "uid": "progs/doomgeneric/s_sound.c",
+   "path": "modules/progs.doomgeneric.s_sound.c.jsonl",
+   "entities": 23
+  },
+  {
+   "uid": "progs/doomgeneric/s_sound.h",
+   "path": "modules/progs.doomgeneric.s_sound.h.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "progs/doomgeneric/sha1.c",
+   "path": "modules/progs.doomgeneric.sha1.c.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "progs/doomgeneric/sha1.h",
+   "path": "modules/progs.doomgeneric.sha1.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/doomgeneric/sounds.c",
+   "path": "modules/progs.doomgeneric.sounds.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/sounds.h",
+   "path": "modules/progs.doomgeneric.sounds.h.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/st_lib.c",
+   "path": "modules/progs.doomgeneric.st_lib.c.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "progs/doomgeneric/st_lib.h",
+   "path": "modules/progs.doomgeneric.st_lib.h.jsonl",
+   "entities": 15
+  },
+  {
+   "uid": "progs/doomgeneric/st_stuff.c",
+   "path": "modules/progs.doomgeneric.st_stuff.c.jsonl",
+   "entities": 135
+  },
+  {
+   "uid": "progs/doomgeneric/st_stuff.h",
+   "path": "modules/progs.doomgeneric.st_stuff.h.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "progs/doomgeneric/statdump.c",
+   "path": "modules/progs.doomgeneric.statdump.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/statdump.h",
+   "path": "modules/progs.doomgeneric.statdump.h.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/doomgeneric/tables.c",
+   "path": "modules/progs.doomgeneric.tables.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/tables.h",
+   "path": "modules/progs.doomgeneric.tables.h.jsonl",
+   "entities": 22
+  },
+  {
+   "uid": "progs/doomgeneric/v_patch.h",
+   "path": "modules/progs.doomgeneric.v_patch.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/v_video.c",
+   "path": "modules/progs.doomgeneric.v_video.c.jsonl",
+   "entities": 31
+  },
+  {
+   "uid": "progs/doomgeneric/v_video.h",
+   "path": "modules/progs.doomgeneric.v_video.h.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "progs/doomgeneric/w_checksum.c",
+   "path": "modules/progs.doomgeneric.w_checksum.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/w_checksum.h",
+   "path": "modules/progs.doomgeneric.w_checksum.h.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/w_file.c",
+   "path": "modules/progs.doomgeneric.w_file.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/w_file.h",
+   "path": "modules/progs.doomgeneric.w_file.h.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/doomgeneric/w_file_stdc.c",
+   "path": "modules/progs.doomgeneric.w_file_stdc.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/doomgeneric/w_main.c",
+   "path": "modules/progs.doomgeneric.w_main.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/doomgeneric/w_main.h",
+   "path": "modules/progs.doomgeneric.w_main.h.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/doomgeneric/w_merge.h",
+   "path": "modules/progs.doomgeneric.w_merge.h.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/doomgeneric/w_wad.c",
+   "path": "modules/progs.doomgeneric.w_wad.c.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "progs/doomgeneric/w_wad.h",
+   "path": "modules/progs.doomgeneric.w_wad.h.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "progs/doomgeneric/wi_stuff.c",
+   "path": "modules/progs.doomgeneric.wi_stuff.c.jsonl",
+   "entities": 66
+  },
+  {
+   "uid": "progs/doomgeneric/wi_stuff.h",
+   "path": "modules/progs.doomgeneric.wi_stuff.h.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/doomgeneric/z_zone.c",
+   "path": "modules/progs.doomgeneric.z_zone.c.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "progs/doomgeneric/z_zone.h",
+   "path": "modules/progs.doomgeneric.z_zone.h.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "progs/file/file.c",
+   "path": "modules/progs.file.file.c.jsonl",
+   "entities": 40
+  },
+  {
+   "uid": "progs/file/file_assoc.h",
+   "path": "modules/progs.file.file_assoc.h.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "progs/freedomui/freedomui_minios.c",
+   "path": "modules/progs.freedomui.freedomui_minios.c.jsonl",
+   "entities": 22
+  },
+  {
+   "uid": "progs/freedomui/media_unavailable.c",
+   "path": "modules/progs.freedomui.media_unavailable.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/freedomui/platform_minios.c",
+   "path": "modules/progs.freedomui.platform_minios.c.jsonl",
+   "entities": 37
+  },
+  {
+   "uid": "progs/freedomui/ps2_keymap.c",
+   "path": "modules/progs.freedomui.ps2_keymap.c.jsonl",
+   "entities": 77
+  },
+  {
+   "uid": "progs/freedomui/ps2_keymap.h",
+   "path": "modules/progs.freedomui.ps2_keymap.h.jsonl",
+   "entities": 13
+  },
+  {
+   "uid": "progs/lisp/lisp.c",
+   "path": "modules/progs.lisp.lisp.c.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "progs/lisp/tin.c",
+   "path": "modules/progs.lisp.tin.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/lua/lua_main.c",
+   "path": "modules/progs.lua.lua_main.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/lua/minios.c",
+   "path": "modules/progs.lua.minios.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/micropython/variants/minios/lib/__init__.py",
+   "path": "modules/progs.micropython.variants.minios.lib.__init__.py.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/micropython/variants/minios/lib/hello.py",
+   "path": "modules/progs.micropython.variants.minios.lib.hello.py.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/micropython/variants/minios/manifest.py",
+   "path": "modules/progs.micropython.variants.minios.manifest.py.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/micropython/variants/minios/minios_module.c",
+   "path": "modules/progs.micropython.variants.minios.minios_module.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/micropython/variants/minios/mpconfigvariant.h",
+   "path": "modules/progs.micropython.variants.minios.mpconfigvariant.h.jsonl",
+   "entities": 39
+  },
+  {
+   "uid": "progs/minicraft/minicraft.c",
+   "path": "modules/progs.minicraft.minicraft.c.jsonl",
+   "entities": 115
+  },
+  {
+   "uid": "progs/minios_abi.h",
+   "path": "modules/progs.minios_abi.h.jsonl",
+   "entities": 154
+  },
+  {
+   "uid": "progs/minios_png.h",
+   "path": "modules/progs.minios_png.h.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "progs/nk_palette.h",
+   "path": "modules/progs.nk_palette.h.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/nuklear/cvm_emit.c",
+   "path": "modules/progs.nuklear.cvm_emit.c.jsonl",
+   "entities": 46
+  },
+  {
+   "uid": "progs/nuklear/cvm_emit.h",
+   "path": "modules/progs.nuklear.cvm_emit.h.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/nuklear/font8x8.c",
+   "path": "modules/progs.nuklear.font8x8.c.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/nuklear/node_editor.c",
+   "path": "modules/progs.nuklear.node_editor.c.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "progs/nuklear/nuklear_minios.c",
+   "path": "modules/progs.nuklear.nuklear_minios.c.jsonl",
+   "entities": 25
+  },
+  {
+   "uid": "progs/nuklear/nuklear_minios.h",
+   "path": "modules/progs.nuklear.nuklear_minios.h.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "progs/nuklear/nuklear_theme.c",
+   "path": "modules/progs.nuklear.nuklear_theme.c.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/nuklear/nuklear_theme.h",
+   "path": "modules/progs.nuklear.nuklear_theme.h.jsonl",
+   "entities": 13
+  },
+  {
+   "uid": "progs/paint/paint.c",
+   "path": "modules/progs.paint.paint.c.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "progs/piano/piano.c",
+   "path": "modules/progs.piano.piano.c.jsonl",
+   "entities": 30
+  },
+  {
+   "uid": "progs/pokemon/fetch.sh",
+   "path": "modules/progs.pokemon.fetch.sh.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/pokemon/minios_stubs/SDL.h",
+   "path": "modules/progs.pokemon.minios_stubs.SDL.h.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/pokemon/platform_minios.c",
+   "path": "modules/progs.pokemon.platform_minios.c.jsonl",
+   "entities": 60
+  },
+  {
+   "uid": "progs/quake2generic/q2generic_minios.c",
+   "path": "modules/progs.quake2generic.q2generic_minios.c.jsonl",
+   "entities": 21
+  },
+  {
+   "uid": "progs/quake2generic/snddma_minios.c",
+   "path": "modules/progs.quake2generic.snddma_minios.c.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "progs/src/aes.c",
+   "path": "modules/progs.src.aes.c.jsonl",
+   "entities": 34
+  },
+  {
+   "uid": "progs/src/apsse.c",
+   "path": "modules/progs.src.apsse.c.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "progs/src/aslr.c",
+   "path": "modules/progs.src.aslr.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/audio.c",
+   "path": "modules/progs.src.audio.c.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "progs/src/burn.c",
+   "path": "modules/progs.src.burn.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/cp.c",
+   "path": "modules/progs.src.cp.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/src/cpl.c",
+   "path": "modules/progs.src.cpl.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/execho.c",
+   "path": "modules/progs.src.execho.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/src/execthr.c",
+   "path": "modules/progs.src.execthr.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/fib.c",
+   "path": "modules/progs.src.fib.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/src/forktest.c",
+   "path": "modules/progs.src.forktest.c.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/src/fptest.c",
+   "path": "modules/progs.src.fptest.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/src/freedom.c",
+   "path": "modules/progs.src.freedom.c.jsonl",
+   "entities": 30
+  },
+  {
+   "uid": "progs/src/freedom_wl.c",
+   "path": "modules/progs.src.freedom_wl.c.jsonl",
+   "entities": 26
+  },
+  {
+   "uid": "progs/src/ftest.c",
+   "path": "modules/progs.src.ftest.c.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "progs/src/hello.c",
+   "path": "modules/progs.src.hello.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/src/hello.py",
+   "path": "modules/progs.src.hello.py.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "progs/src/http.c",
+   "path": "modules/progs.src.http.c.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "progs/src/json.c",
+   "path": "modules/progs.src.json.c.jsonl",
+   "entities": 26
+  },
+  {
+   "uid": "progs/src/kmem.c",
+   "path": "modules/progs.src.kmem.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/ldhello.c",
+   "path": "modules/progs.src.ldhello.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/lxabi.c",
+   "path": "modules/progs.src.lxabi.c.jsonl",
+   "entities": 27
+  },
+  {
+   "uid": "progs/src/lxhello.c",
+   "path": "modules/progs.src.lxhello.c.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "progs/src/lxnet.c",
+   "path": "modules/progs.src.lxnet.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/src/lxproc.c",
+   "path": "modules/progs.src.lxproc.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "progs/src/lxsecc.c",
+   "path": "modules/progs.src.lxsecc.c.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "progs/src/lxtls.c",
+   "path": "modules/progs.src.lxtls.c.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "progs/src/lz4.c",
+   "path": "modules/progs.src.lz4.c.jsonl",
+   "entities": 22
+  },
+  {
+   "uid": "progs/src/lzss.c",
+   "path": "modules/progs.src.lzss.c.jsonl",
+   "entities": 32
+  },
+  {
+   "uid": "progs/src/mmreuse.c",
+   "path": "modules/progs.src.mmreuse.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/src/mprot.c",
+   "path": "modules/progs.src.mprot.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/mthreads.h",
+   "path": "modules/progs.src.mthreads.h.jsonl",
+   "entities": 20
+  },
+  {
+   "uid": "progs/src/mtop.c",
+   "path": "modules/progs.src.mtop.c.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "progs/src/mvrn.c",
+   "path": "modules/progs.src.mvrn.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/nx.c",
+   "path": "modules/progs.src.nx.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/opl3.c",
+   "path": "modules/progs.src.opl3.c.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "progs/src/pcmap.c",
+   "path": "modules/progs.src.pcmap.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/pollready.c",
+   "path": "modules/progs.src.pollready.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/sbtone.c",
+   "path": "modules/progs.src.sbtone.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/src/scfuzz.c",
+   "path": "modules/progs.src.scfuzz.c.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "progs/src/shell.py",
+   "path": "modules/progs.src.shell.py.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/src/sign.c",
+   "path": "modules/progs.src.sign.c.jsonl",
+   "entities": 32
+  },
+  {
+   "uid": "progs/src/spin.c",
+   "path": "modules/progs.src.spin.c.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "progs/src/thdemo.c",
+   "path": "modules/progs.src.thdemo.c.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "progs/src/w1.c",
+   "path": "modules/progs.src.w1.c.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "progs/tls_u/tls_u_main.c",
+   "path": "modules/progs.tls_u.tls_u_main.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/tls_u/tls_u_port.c",
+   "path": "modules/progs.tls_u.tls_u_port.c.jsonl",
+   "entities": 14
+  },
+  {
+   "uid": "progs/topogpt3/topogpt3.c",
+   "path": "modules/progs.topogpt3.topogpt3.c.jsonl",
+   "entities": 72
+  },
+  {
+   "uid": "progs/vedit/vedit.c",
+   "path": "modules/progs.vedit.vedit.c.jsonl",
+   "entities": 117
+  },
+  {
+   "uid": "progs/wl/wl_client.h",
+   "path": "modules/progs.wl.wl_client.h.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "progs/wl/wl_mbox.h",
+   "path": "modules/progs.wl.wl_mbox.h.jsonl",
+   "entities": 26
+  },
+  {
+   "uid": "progs/wl/wl_mini.h",
+   "path": "modules/progs.wl.wl_mini.h.jsonl",
+   "entities": 109
+  },
+  {
+   "uid": "progs/wl/wl_pixbuf.h",
+   "path": "modules/progs.wl.wl_pixbuf.h.jsonl",
+   "entities": 17
+  },
+  {
+   "uid": "progs/wl/wlcomp.c",
+   "path": "modules/progs.wl.wlcomp.c.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "qga.c",
+   "path": "modules/qga.c.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "smp.c",
+   "path": "modules/smp.c.jsonl",
+   "entities": 37
+  },
+  {
+   "uid": "tools/abi_stamp.c",
+   "path": "modules/tools.abi_stamp.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "tools/boot_run.sh",
+   "path": "modules/tools.boot_run.sh.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "tools/boot_wl.py",
+   "path": "modules/tools.boot_wl.py.jsonl",
+   "entities": 28
+  },
+  {
+   "uid": "tools/check_abi_numbers.py",
+   "path": "modules/tools.check_abi_numbers.py.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "tools/check_addons.py",
+   "path": "modules/tools.check_addons.py.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "tools/check_cohesion.py",
+   "path": "modules/tools.check_cohesion.py.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "tools/check_complexity.py",
+   "path": "modules/tools.check_complexity.py.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "tools/check_fork_stubs.py",
+   "path": "modules/tools.check_fork_stubs.py.jsonl",
+   "entities": 9
+  },
+  {
+   "uid": "tools/check_kb_sync.py",
+   "path": "modules/tools.check_kb_sync.py.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "tools/check_mutant_anchors.py",
+   "path": "modules/tools.check_mutant_anchors.py.jsonl",
+   "entities": 11
+  },
+  {
+   "uid": "tools/check_spin_discipline.py",
+   "path": "modules/tools.check_spin_discipline.py.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "tools/check_surprising.py",
+   "path": "modules/tools.check_surprising.py.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "tools/check_syscall_sanitize.py",
+   "path": "modules/tools.check_syscall_sanitize.py.jsonl",
+   "entities": 19
+  },
+  {
+   "uid": "tools/clip_bridge.py",
+   "path": "modules/tools.clip_bridge.py.jsonl",
+   "entities": 13
+  },
+  {
+   "uid": "tools/doom_pwad.py",
+   "path": "modules/tools.doom_pwad.py.jsonl",
+   "entities": 80
+  },
+  {
+   "uid": "tools/extract_shell.py",
+   "path": "modules/tools.extract_shell.py.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "tools/gdb_repro.py",
+   "path": "modules/tools.gdb_repro.py.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "tools/gen_desktop_pngs.py",
+   "path": "modules/tools.gen_desktop_pngs.py.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "tools/gen_icons.py",
+   "path": "modules/tools.gen_icons.py.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "tools/gen_minifs.py",
+   "path": "modules/tools.gen_minifs.py.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "tools/gen_zip_fixtures.py",
+   "path": "modules/tools.gen_zip_fixtures.py.jsonl",
+   "entities": 4
+  },
+  {
+   "uid": "tools/install.sh",
+   "path": "modules/tools.install.sh.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "tools/kernel_feature_survey.py",
+   "path": "modules/tools.kernel_feature_survey.py.jsonl",
+   "entities": 20
+  },
+  {
+   "uid": "tools/lisp_scoped.sh",
+   "path": "modules/tools.lisp_scoped.sh.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "tools/make_usb.sh",
+   "path": "modules/tools.make_usb.sh.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "tools/minifs_dump.py",
+   "path": "modules/tools.minifs_dump.py.jsonl",
+   "entities": 18
+  },
+  {
+   "uid": "tools/minifs_fsck.py",
+   "path": "modules/tools.minifs_fsck.py.jsonl",
+   "entities": 24
+  },
+  {
+   "uid": "tools/minifs_saves.py",
+   "path": "modules/tools.minifs_saves.py.jsonl",
+   "entities": 35
+  },
+  {
+   "uid": "tools/minios_cli.py",
+   "path": "modules/tools.minios_cli.py.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "tools/minios_gui.py",
+   "path": "modules/tools.minios_gui.py.jsonl",
+   "entities": 16
+  },
+  {
+   "uid": "tools/minios_hyper.py",
+   "path": "modules/tools.minios_hyper.py.jsonl",
+   "entities": 63
+  },
+  {
+   "uid": "tools/mkfs.minifs.py",
+   "path": "modules/tools.mkfs.minifs.py.jsonl",
+   "entities": 32
+  },
+  {
+   "uid": "tools/mkpak1.py",
+   "path": "modules/tools.mkpak1.py.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "tools/mkramdisk.py",
+   "path": "modules/tools.mkramdisk.py.jsonl",
+   "entities": 10
+  },
+  {
+   "uid": "tools/mkroots.sh",
+   "path": "modules/tools.mkroots.sh.jsonl",
+   "entities": 1
+  },
+  {
+   "uid": "tools/mkvocab.py",
+   "path": "modules/tools.mkvocab.py.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "tools/mutate.sh",
+   "path": "modules/tools.mutate.sh.jsonl",
+   "entities": 6
+  },
+  {
+   "uid": "tools/probe_compute_vga.py",
+   "path": "modules/tools.probe_compute_vga.py.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "tools/probe_minicraft.py",
+   "path": "modules/tools.probe_minicraft.py.jsonl",
+   "entities": 7
+  },
+  {
+   "uid": "tools/qga_client.py",
+   "path": "modules/tools.qga_client.py.jsonl",
+   "entities": 8
+  },
+  {
+   "uid": "tools/repro_gui.py",
+   "path": "modules/tools.repro_gui.py.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "tools/sign_elf.py",
+   "path": "modules/tools.sign_elf.py.jsonl",
+   "entities": 49
+  },
+  {
+   "uid": "tools/wl_scoped.sh",
+   "path": "modules/tools.wl_scoped.sh.jsonl",
+   "entities": 5
+  },
+  {
+   "uid": "tools/wm_layout_sync.py",
+   "path": "modules/tools.wm_layout_sync.py.jsonl",
+   "entities": 12
+  },
+  {
+   "uid": "tools/wm_scoped.sh",
+   "path": "modules/tools.wm_scoped.sh.jsonl",
+   "entities": 3
+  },
+  {
+   "uid": "vma.c",
+   "path": "modules/vma.c.jsonl",
+   "entities": 11
+  }
+ ],
+ "warnings": {
+  "path": "warnings.jsonl",
+  "total": 6632
+ },
+ "usage": [
+  "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",
+  "grep -h '\"qualname\":\"<Owner.method>\"' readmenator-apidocs/api/modules/*.jsonl",
+  "cat readmenator-apidocs/api/modules/<module-slug>.jsonl",
+  "grep -h '\"code\":\"DOC001\"' readmenator-apidocs/api/warnings.jsonl"
+ ]
+}

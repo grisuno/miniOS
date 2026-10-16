@@ -1,6 +1,56 @@
 # Subsystem: kernel (page 2 of 4)
 Previous: [KB_kernel.md](KB_kernel.md)
 
+## kernel/proc_sec.c
+- Doc: Docstring: proc_sec.c -- per-process security state: the Linux seccomp
+- Layer: utility
+- Language: c
+- Symbols:
+  - `sec_filter` (struct, line 48)
+  - `ref` (type_alias, line 47) `typedef struct sec_filter { int ref;`
+  - `pid_ok` (function, line 74) `static int pid_ok(int pid)`
+  - `chain_put` (function, line 78) `static void chain_put(sec_filter_t *f)`
+  - `proc_sec_inherit` (function, line 87) `void proc_sec_inherit(int child, int parent)`
+  - `proc_sec_release` (function, line 101) `void proc_sec_release(int pid)`
+  - `proc_sec_exec` (function, line 115) `void proc_sec_exec(int pid)`
+  - `proc_sec_set_exe` (function, line 119) `void proc_sec_set_exe(int pid, const char *resolved)`
+  - `proc_sec_exe` (function, line 125) `const char *proc_sec_exe(int pid)`
+  - `sec_kill` (function, line 130) `static void sec_kill(long n, int whole_group)`
+  - `proc_sec_filter` (function, line 136) `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret)`
+  - `sec_install` (function, line 191) `static long sec_install(const sbpf_insn *prog, unsigned len, int strict)`
+  - `sec_install_user` (function, line 224) `static long sec_install_user(long ufprog)`
+  - `proc_sec_prctl` (function, line 235) `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5)`
+  - `proc_sec_seccomp` (function, line 290) `long proc_sec_seccomp(long op, long flags, long uargs)`
+  - `LINUX_PR_GET_DUMPABLE` (macro, line 18) `#define LINUX_PR_GET_DUMPABLE`
+  - `LINUX_PR_SET_DUMPABLE` (macro, line 19) `#define LINUX_PR_SET_DUMPABLE`
+  - `LINUX_PR_SET_NAME` (macro, line 20) `#define LINUX_PR_SET_NAME`
+  - `LINUX_PR_GET_NAME` (macro, line 21) `#define LINUX_PR_GET_NAME`
+  - `LINUX_PR_GET_SECCOMP` (macro, line 22) `#define LINUX_PR_GET_SECCOMP`
+  - `LINUX_PR_SET_SECCOMP` (macro, line 23) `#define LINUX_PR_SET_SECCOMP`
+  - `LINUX_PR_SET_NO_NEW_PRIVS` (macro, line 24) `#define LINUX_PR_SET_NO_NEW_PRIVS`
+  - `LINUX_PR_GET_NO_NEW_PRIVS` (macro, line 25) `#define LINUX_PR_GET_NO_NEW_PRIVS`
+  - `LINUX_SECCOMP_MODE_DISABLED` (macro, line 26) `#define LINUX_SECCOMP_MODE_DISABLED`
+  - `LINUX_SECCOMP_MODE_STRICT` (macro, line 27) `#define LINUX_SECCOMP_MODE_STRICT`
+  - `LINUX_SECCOMP_MODE_FILTER` (macro, line 28) `#define LINUX_SECCOMP_MODE_FILTER`
+  - `LINUX_SECCOMP_SET_MODE_STRICT` (macro, line 29) `#define LINUX_SECCOMP_SET_MODE_STRICT`
+  - `LINUX_SECCOMP_SET_MODE_FILTER` (macro, line 30) `#define LINUX_SECCOMP_SET_MODE_FILTER`
+  - `LINUX_SECCOMP_GET_ACTION_AVAIL` (macro, line 31) `#define LINUX_SECCOMP_GET_ACTION_AVAIL`
+  - `LINUX_NR_READ` (macro, line 32) `#define LINUX_NR_READ`
+  - `LINUX_NR_WRITE` (macro, line 33) `#define LINUX_NR_WRITE`
+  - `LINUX_NR_RT_SIGRETURN` (macro, line 34) `#define LINUX_NR_RT_SIGRETURN`
+  - `LINUX_NR_EXIT` (macro, line 35) `#define LINUX_NR_EXIT`
+  - `LINUX_ERRNO_MAX` (macro, line 36) `#define LINUX_ERRNO_MAX`
+  - `LINUX_TASK_COMM_LEN` (macro, line 37) `#define LINUX_TASK_COMM_LEN`
+  - `SOCK_FPROG_SIZE` (macro, line 39) `#define SOCK_FPROG_SIZE`
+  - `SOCK_FPROG_FILTER_OFF` (macro, line 40) `#define SOCK_FPROG_FILTER_OFF`
+  - `ERR_ENOMEM` (macro, line 42) `#define ERR_ENOMEM`
+  - `ERR_EACCES` (macro, line 43) `#define ERR_EACCES`
+  - `ERR_EINVAL` (macro, line 44) `#define ERR_EINVAL`
+  - `ERR_ENOSYS` (macro, line 45) `#define ERR_ENOSYS`
+  - `ERR_EOPNOTSUPP` (macro, line 46) `#define ERR_EOPNOTSUPP`
+  - `SEC_STRICT_LEN` (macro, line 72) `#define SEC_STRICT_LEN`
+- Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`, `headers/seccomp_bpf.h`, `headers/syscalls_proc.h`
+
 ## kernel/rcu.c
 - Doc: Docstring: kernel/rcu.c -- Epoch grace periods over scheduler ticks.
 - Layer: utility
@@ -32,157 +82,162 @@ Previous: [KB_kernel.md](KB_kernel.md)
   - `shell_take_redirect` (function, line 25) `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)`
 
 ## kernel/sched.c
-- Doc: trap_frame_t: if (len == 0 || len > 256) { kprintf("gdb: dump length 1..256 (got %lu)\n", len)...
+- Doc: trap_frame_t: 1 when cpu's idle context runs on the kernel tables (the `smp` builtin * reports...
 - Layer: utility
 - Language: c
 - Symbols:
-  - `stop_row` (struct, line 557)
-  - `trap_frame_t` (struct, line 707)
-  - `res0` (type_alias, line 108) `typedef struct __attribute__((packed)) { uint32_t res0;`
-  - `off_lo` (type_alias, line 136) `typedef struct __attribute__((packed)) { uint16_t off_lo;`
-  - `sched_tick_audio` (function, line 25) `static void sched_tick_audio(void *ctx)`
-  - `sched_tick_desktop` (function, line 31) `static void sched_tick_desktop(void *ctx)`
-  - `sched_tick_usb` (function, line 42) `static void sched_tick_usb(void *ctx)`
-  - `read_cr3` (function, line 73) `static inline unsigned long read_cr3(void)`
-  - `__attribute__` (function, line 108) `typedef struct __attribute__((packed))`
-  - `__attribute__` (function, line 136) `typedef struct __attribute__((packed))`
-  - `kstack_paint` (function, line 164) `static void kstack_paint(uint64_t top, unsigned long size)`
-  - `kstack_usage` (function, line 173) `static int kstack_usage(uint64_t top, unsigned long size,
+  - `stop_row` (struct, line 564)
+  - `trap_frame_t` (struct, line 729)
+  - `res0` (type_alias, line 109) `typedef struct __attribute__((packed)) { uint32_t res0;`
+  - `off_lo` (type_alias, line 143) `typedef struct __attribute__((packed)) { uint16_t off_lo;`
+  - `sched_tick_audio` (function, line 26) `static void sched_tick_audio(void *ctx)`
+  - `sched_tick_desktop` (function, line 32) `static void sched_tick_desktop(void *ctx)`
+  - `sched_tick_usb` (function, line 43) `static void sched_tick_usb(void *ctx)`
+  - `read_cr3` (function, line 74) `static inline unsigned long read_cr3(void)`
+  - `__attribute__` (function, line 109) `typedef struct __attribute__((packed))`
+  - `__attribute__` (function, line 143) `typedef struct __attribute__((packed))`
+  - `kstack_paint` (function, line 171) `static void kstack_paint(uint64_t top, unsigned long size)`
+  - `kstack_usage` (function, line 180) `static int kstack_usage(uint64_t top, unsigned long size,
                         unsigned long *...`
-  - `kstack_is_slot_end` (function, line 192) `static int kstack_is_slot_end(uint64_t v)`
-  - `kstack_of` (function, line 202) `static uint64_t kstack_of(int j)`
-  - `kstack_owner` (function, line 209) `static int kstack_owner(uint64_t top)`
-  - `kstack_scan_serial` (function, line 224) `static void kstack_scan_serial(void)`
-  - `alloc_kstack` (function, line 255) `static uint64_t alloc_kstack(void)`
-  - `live` (function, line 279) `* every reap leaked its own stack and released a neighbour that could
+  - `kstack_is_slot_end` (function, line 199) `static int kstack_is_slot_end(uint64_t v)`
+  - `kstack_of` (function, line 209) `static uint64_t kstack_of(int j)`
+  - `kstack_owner` (function, line 216) `static int kstack_owner(uint64_t top)`
+  - `kstack_scan_serial` (function, line 231) `static void kstack_scan_serial(void)`
+  - `alloc_kstack` (function, line 262) `static uint64_t alloc_kstack(void)`
+  - `live` (function, line 286) `* every reap leaked its own stack and released a neighbour that could
  * still be live (two procs...`
-  - `MXCSR` (function, line 299) `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
+  - `MXCSR` (function, line 306) `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
  * exceptions masked): fxsa...`
-  - `fpu_restore_from` (function, line 307) `static inline void fpu_restore_from(void *area)`
-  - `fpu_alloc_clean` (function, line 311) `static void *fpu_alloc_clean(void)`
-  - `fpu_free_proc` (function, line 329) `static void fpu_free_proc(proc_t *p)`
-  - `vma_ctx_alloc` (function, line 335) `vma_ctx_t *vma_ctx_alloc(void)`
-  - `vma_ctx_free` (function, line 345) `void vma_ctx_free(vma_ctx_t *c)`
-  - `copy` (function, line 355) `* copy (fail closed, fork refuses) instead of forging pointers. */
+  - `fpu_restore_from` (function, line 314) `static inline void fpu_restore_from(void *area)`
+  - `fpu_alloc_clean` (function, line 318) `static void *fpu_alloc_clean(void)`
+  - `fpu_free_proc` (function, line 336) `static void fpu_free_proc(proc_t *p)`
+  - `vma_ctx_alloc` (function, line 342) `vma_ctx_t *vma_ctx_alloc(void)`
+  - `vma_ctx_free` (function, line 352) `void vma_ctx_free(vma_ctx_t *c)`
+  - `copy` (function, line 362) `* copy (fail closed, fork refuses) instead of forging pointers. */
 /* Name the link a fork could ...`
-  - `vma_ctx_copy` (function, line 364) `static vma_ctx_t *vma_ctx_copy(vma_ctx_t *src)`
-  - `vma_owned` (function, line 439) `static int vma_owned(proc_t *p)`
-  - `vma_save_proc` (function, line 447) `static void vma_save_proc(proc_t *p)`
-  - `vma_load_proc` (function, line 451) `static void vma_load_proc(proc_t *p)`
-  - `mm_owner` (function, line 465) `static proc_t *mm_owner(proc_t *p)`
-  - `mm_view_enter` (function, line 487) `static void mm_view_enter(proc_t *nxt)`
-  - `mm_view_claim_current` (function, line 506) `void mm_view_claim_current(void)`
-  - `kstack_report` (function, line 513) `void kstack_report(void)`
-  - `schedtop_report` (function, line 556) `void schedtop_report(void)`
-  - `irqstat_report` (function, line 624) `void irqstat_report(void)`
-  - `stub` (function, line 643) `* gdb stub (`make gdb`, then `target remote :1234` from the host). These
+  - `vma_ctx_copy` (function, line 371) `static vma_ctx_t *vma_ctx_copy(vma_ctx_t *src)`
+  - `vma_owned` (function, line 446) `static int vma_owned(proc_t *p)`
+  - `vma_save_proc` (function, line 454) `static void vma_save_proc(proc_t *p)`
+  - `vma_load_proc` (function, line 458) `static void vma_load_proc(proc_t *p)`
+  - `mm_owner` (function, line 472) `static proc_t *mm_owner(proc_t *p)`
+  - `mm_view_enter` (function, line 494) `static void mm_view_enter(proc_t *nxt)`
+  - `mm_view_claim_current` (function, line 513) `void mm_view_claim_current(void)`
+  - `kstack_report` (function, line 520) `void kstack_report(void)`
+  - `schedtop_report` (function, line 563) `void schedtop_report(void)`
+  - `irqstat_report` (function, line 631) `void irqstat_report(void)`
+  - `stub` (function, line 650) `* gdb stub (`make gdb`, then `target remote :1234` from the host). These
  * helpers are the seria...`
-  - `gdb_dump_report` (function, line 690) `void gdb_dump_report(unsigned long addr, unsigned long len)`
-  - `idt_set` (function, line 723) `static void idt_set(int vec, void (*h)(void))`
-  - `idt_init` (function, line 734) `static void idt_init(void)`
-  - `pic_init` (function, line 746) `static void pic_init(void)`
-  - `pit_init` (function, line 781) `static void pit_init(void)`
-  - `pic_eoi` (function, line 788) `static void pic_eoi(int irq)`
-  - `tss_write_desc` (function, line 795) `static void tss_write_desc(int cpu)`
-  - `tss_init` (function, line 812) `static void tss_init(void)`
-  - `tss_init_ap` (function, line 843) `void tss_init_ap(int cpu)`
-  - `context` (function, line 861) `* context (anything entered via k_exec_user) is inside a syscall
+  - `gdb_dump_report` (function, line 697) `void gdb_dump_report(unsigned long addr, unsigned long len)`
+  - `sched_idle_on_kernel_cr3` (function, line 723) `int sched_idle_on_kernel_cr3(int cpu)`
+  - `idt_set` (function, line 745) `static void idt_set(int vec, void (*h)(void))`
+  - `idt_init` (function, line 756) `static void idt_init(void)`
+  - `pic_init` (function, line 772) `static void pic_init(void)`
+  - `pit_init` (function, line 807) `static void pit_init(void)`
+  - `pic_eoi` (function, line 814) `static void pic_eoi(int irq)`
+  - `tss_write_desc` (function, line 821) `static void tss_write_desc(int cpu)`
+  - `tss_init` (function, line 838) `static void tss_init(void)`
+  - `tss_init_ap` (function, line 870) `void tss_init_ap(int cpu)`
+  - `context` (function, line 888) `* context (anything entered via k_exec_user) is inside a syscall
  * (entry swapped 0 in), and a c...`
-  - `point` (function, line 874) `* return address as the resume point ("continue the ISR"), which
+  - `point` (function, line 901) `* return address as the resume point ("continue the ISR"), which
  * required the stranded ISR fra...`
-  - `sched_next_locked` (function, line 903) `static int sched_next_locked(int start, int vm_only)`
-  - `sched_set_nice` (function, line 921) `int sched_set_nice(int pid, int nice)`
-  - `seccomp_deny_one` (function, line 930) `int seccomp_deny_one(int pid, int n)`
-  - `seccomp_allow_one` (function, line 937) `int seccomp_allow_one(int pid, int n)`
-  - `seccomp_denied` (function, line 944) `int seccomp_denied(int pid, int n)`
-  - `smp_try_claim_hint` (function, line 953) `static int smp_try_claim_hint(int pid, int vm_only)`
-  - `smp_claim_thread_v` (function, line 969) `static int smp_claim_thread_v(int vm_only)`
-  - `smp_ap_idle_loop` (function, line 1015) `void smp_ap_idle_loop(void)`
-  - `sched_ap_preempt` (function, line 1049) `static void sched_ap_preempt(trap_frame_t *frame)`
-  - `smp_any_ap_idle` (function, line 1119) `static int smp_any_ap_idle(void)`
-  - `rlimit_cpu_exceeded` (function, line 1155) `int rlimit_cpu_exceeded(int pid)`
-  - `isr_dispatch` (function, line 1176) `void isr_dispatch(int vector, trap_frame_t *frame)`
-  - `BSP` (function, line 1753) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+  - `sched_next_locked` (function, line 930) `static int sched_next_locked(int start, int vm_only)`
+  - `sched_set_nice` (function, line 948) `int sched_set_nice(int pid, int nice)`
+  - `seccomp_deny_one` (function, line 957) `int seccomp_deny_one(int pid, int n)`
+  - `seccomp_allow_one` (function, line 964) `int seccomp_allow_one(int pid, int n)`
+  - `seccomp_denied` (function, line 971) `int seccomp_denied(int pid, int n)`
+  - `smp_try_claim_hint` (function, line 980) `static int smp_try_claim_hint(int pid, int vm_only)`
+  - `smp_claim_thread_v` (function, line 996) `static int smp_claim_thread_v(int vm_only)`
+  - `smp_ap_idle_loop` (function, line 1042) `void smp_ap_idle_loop(void)`
+  - `sched_ap_preempt` (function, line 1076) `static void sched_ap_preempt(trap_frame_t *frame)`
+  - `smp_any_ap_idle` (function, line 1146) `static int smp_any_ap_idle(void)`
+  - `rlimit_cpu_exceeded` (function, line 1182) `int rlimit_cpu_exceeded(int pid)`
+  - `isr_dispatch` (function, line 1203) `void isr_dispatch(int vector, trap_frame_t *frame)`
+  - `BSP` (function, line 1780) `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
          * running the shell contex...`
-  - `proc_get` (function, line 1794) `proc_t *proc_get(int pid)`
-  - `proc_create` (function, line 1800) `int proc_create(const char *name, int parent_pid)`
-  - `proc_spawn_elf_inner` (function, line 1918) `static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
+  - `proc_get` (function, line 1821) `proc_t *proc_get(int pid)`
+  - `proc_create` (function, line 1827) `int proc_create(const char *name, int parent_pid)`
+  - `proc_spawn_elf_inner` (function, line 1945) `static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
                    i...`
-  - `proc_spawn_elf` (function, line 2078) `int proc_spawn_elf(const char *name, void *data, unsigned size,
+  - `proc_spawn_elf` (function, line 2105) `int proc_spawn_elf(const char *name, void *data, unsigned size,
                    int argc, char...`
-  - `schedule` (function, line 2120) `* that keeps schedule()'s own rbp runs the caller's frame accesses
+  - `schedule` (function, line 2147) `* that keeps schedule()'s own rbp runs the caller's frame accesses
  * (locals, leave/ret) on the ...`
-  - `schedule` (function, line 2127) `void schedule(void)`
-  - `yield` (function, line 2208) `void yield(void)`
-  - `do_exit` (function, line 2223) `void do_exit(int code)`
-  - `do_thread_spawn` (function, line 2287) `long do_thread_spawn(unsigned long fn, unsigned long stack,
+  - `schedule` (function, line 2154) `void schedule(void)`
+  - `yield` (function, line 2235) `void yield(void)`
+  - `do_exit` (function, line 2250) `void do_exit(int code)`
+  - `do_thread_spawn` (function, line 2314) `long do_thread_spawn(unsigned long fn, unsigned long stack,
                      unsigned long arg)`
-  - `itself` (function, line 2487) `* the shell itself (use mrun first), and a CLONE_VM thread forking
+  - `itself` (function, line 2514) `* the shell itself (use mrun first), and a CLONE_VM thread forking
  * would duplicate shared stat...`
-  - `ctx_from_frame` (function, line 2510) `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)`
-  - `fork_child_settid` (function, line 2528) `void fork_child_settid(void)`
-  - `do_fork` (function, line 2537) `long do_fork(void)`
-  - `fork_report` (function, line 2543) `static void fork_report(const char *what)`
-  - `do_fork_ex` (function, line 2550) `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)`
-  - `do_clone_thread` (function, line 2691) `static long do_clone_thread(unsigned long flags, unsigned long newsp,
+  - `ctx_from_frame` (function, line 2537) `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)`
+  - `fork_child_settid` (function, line 2555) `void fork_child_settid(void)`
+  - `do_fork` (function, line 2564) `long do_fork(void)`
+  - `fork_report` (function, line 2570) `static void fork_report(const char *what)`
+  - `do_fork_ex` (function, line 2577) `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)`
+  - `do_clone_thread` (function, line 2724) `static long do_clone_thread(unsigned long flags, unsigned long newsp,
                            ...`
-  - `kill_group_threads_locked` (function, line 2805) `static void kill_group_threads_locked(int tgid, int except)`
-  - `do_group_exit` (function, line 2826) `void do_group_exit(int code)`
-  - `aslr_mix` (function, line 2854) `static unsigned long aslr_mix(unsigned long salt)`
-  - `aslr_stack_bytes` (function, line 2863) `unsigned long aslr_stack_bytes(void)`
-  - `aslr_brk_pages` (function, line 2864) `unsigned long aslr_brk_pages(void)`
-  - `aslr_mmap_pages` (function, line 2865) `unsigned long aslr_mmap_pages(void)`
-  - `aslr_dyn_base` (function, line 2866) `unsigned long aslr_dyn_base(void)`
-  - `do_execve` (function, line 2893) `long do_execve(char *kpath, int kargc, char **kargv)`
-  - `proc_running_anywhere` (function, line 3125) `static int proc_running_anywhere(int pid)`
-  - `reap_autoreap_locked` (function, line 3134) `static void reap_autoreap_locked(int tgid)`
-  - `alloc_pid_locked` (function, line 3146) `static int alloc_pid_locked(void)`
-  - `group_threads_live_locked` (function, line 3158) `static int group_threads_live_locked(int tgid)`
-  - `waitpid_scan` (function, line 3169) `static int waitpid_scan(int pid, int *found)`
-  - `do_waitpid` (function, line 3190) `int do_waitpid(int pid)`
-  - `waitpid_has_child` (function, line 3207) `static int waitpid_has_child(int pid)`
-  - `do_waitpid_linux` (function, line 3221) `int do_waitpid_linux(int pid, int nohang, int *found)`
-  - `shell_reap_nb` (function, line 3238) `int shell_reap_nb(int *pid_out, int *code_out)`
-  - `shell_reap_one` (function, line 3252) `int shell_reap_one(int pid, int *code_out)`
-  - `shell_nchildren` (function, line 3264) `int shell_nchildren(void)`
-  - `do_kill` (function, line 3290) `int do_kill(int pid)`
-  - `do_kill_code` (function, line 3296) `int do_kill_code(int pid, int code)`
-  - `timer_tick` (function, line 3323) `void timer_tick(void)`
-  - `sched_init` (function, line 3328) `void sched_init(void)`
-  - `user_trampoline` (function, line 65) `extern void user_trampoline(void);`
-  - `fork_trampoline` (function, line 66) `extern void fork_trampoline(void);`
-  - `exec_enter` (function, line 71) `extern void exec_enter(unsigned long frame);`
-  - `PROC_KSTACK_OFF` (function, line 81) `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...`
-  - `descriptor` (function, line 96) `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 ==...`
-  - `here` (function, line 121) `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096]...`
-  - `sched_lock` (function, line 445) `* hold sched_lock (+mm_lock at the swap sites);`
-  - `slot` (function, line 560) `* must not eat a quarter of a 16 KB slot (see the stack discipline * contract in CLAUDE.md). Fail-closed on OOM. */...`
-  - `sys_ticks` (function, line 620) `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);`
-  - `rtl_counters` (function, line 627) `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
-  - `rtl_present` (function, line 629) `extern int rtl_present(void);`
-  - `IRQ4` (function, line 770) `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...`
-  - `FSBASE` (function, line 886) `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...`
-  - `syscall` (function, line 1293) `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid...`
-  - `PROC_SWITCHING` (function, line 2153) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...`
-  - `returns` (function, line 2216) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
-  - `registers` (function, line 2318) `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one...`
-  - `MSR` (function, line 2600) `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...`
-  - `cli` (function, line 2875) `* cli (disk PIO must never run with the timer held off);`
-  - `adopt` (function, line 2889) `* adopt (armed by Linux O_CLOEXEC on open);`
-  - `it` (function, line 3336) `* it (SPAWN/exec point proc 0 here transiently);`
-  - `park` (function, line 3387) `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */...`
-  - `zeroed` (function, line 3398) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe...`
-  - `sc_top_save` (variable, line 68) `extern unsigned long sc_top_save[];`
-  - `isr_stub_table` (variable, line 145) `extern void *isr_stub_table[];`
-  - `net_rx_dropped` (variable, line 628) `extern unsigned int net_rx_dropped;`
-  - `mm_lock` (variable, line 855) `extern spinlock_t mm_lock;`
-  - `MY_SYS_KSTK_TOP` (macro, line 52) `#define MY_SYS_KSTK_TOP`
-  - `MY_USER_STACK_TOP` (macro, line 53) `#define MY_USER_STACK_TOP`
-  - `MY_USER_LOAD_BASE` (macro, line 54) `#define MY_USER_LOAD_BASE`
-  - `KSTACK_SZ` (macro, line 148) `#define KSTACK_SZ`
-  - `KSTACK_PAINT` (macro, line 161) `#define KSTACK_PAINT`
-  - `KSTACK_CANARY` (macro, line 162) `#define KSTACK_CANARY`
-- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/drivers/mouse.h`, `headers/drivers/xhci.h`, `headers/futex.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rcu.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/spawn.h`, `headers/sync.h`, `headers/tick.h`, `headers/vga_fb.h`
+  - `kill_group_threads_locked` (function, line 2838) `static void kill_group_threads_locked(int tgid, int except)`
+  - `do_group_exit` (function, line 2859) `void do_group_exit(int code)`
+  - `aslr_mix` (function, line 2887) `static unsigned long aslr_mix(unsigned long salt)`
+  - `aslr_stack_bytes` (function, line 2896) `unsigned long aslr_stack_bytes(void)`
+  - `aslr_brk_pages` (function, line 2897) `unsigned long aslr_brk_pages(void)`
+  - `aslr_mmap_pages` (function, line 2898) `unsigned long aslr_mmap_pages(void)`
+  - `aslr_dyn_base` (function, line 2899) `unsigned long aslr_dyn_base(void)`
+  - `do_execve` (function, line 2926) `long do_execve(char *kpath, int kargc, char **kargv)`
+  - `proc_running_anywhere` (function, line 3159) `static int proc_running_anywhere(int pid)`
+  - `reap_autoreap_locked` (function, line 3168) `static void reap_autoreap_locked(int tgid)`
+  - `alloc_pid_locked` (function, line 3180) `static int alloc_pid_locked(void)`
+  - `group_threads_live_locked` (function, line 3192) `static int group_threads_live_locked(int tgid)`
+  - `waitpid_scan` (function, line 3203) `static int waitpid_scan(int pid, int *found)`
+  - `do_waitpid` (function, line 3224) `int do_waitpid(int pid)`
+  - `waitpid_has_child` (function, line 3241) `static int waitpid_has_child(int pid)`
+  - `do_waitpid_linux` (function, line 3255) `int do_waitpid_linux(int pid, int nohang, int *found)`
+  - `shell_reap_nb` (function, line 3272) `int shell_reap_nb(int *pid_out, int *code_out)`
+  - `shell_reap_one` (function, line 3286) `int shell_reap_one(int pid, int *code_out)`
+  - `shell_nchildren` (function, line 3298) `int shell_nchildren(void)`
+  - `do_kill` (function, line 3324) `int do_kill(int pid)`
+  - `do_kill_code` (function, line 3330) `int do_kill_code(int pid, int code)`
+  - `timer_tick` (function, line 3357) `void timer_tick(void)`
+  - `sched_init` (function, line 3362) `void sched_init(void)`
+  - `user_trampoline` (function, line 66) `extern void user_trampoline(void);`
+  - `fork_trampoline` (function, line 67) `extern void fork_trampoline(void);`
+  - `exec_enter` (function, line 72) `extern void exec_enter(unsigned long frame);`
+  - `PROC_KSTACK_OFF` (function, line 82) `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...`
+  - `descriptor` (function, line 97) `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 ==...`
+  - `here` (function, line 128) `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096]...`
+  - `sched_lock` (function, line 452) `* hold sched_lock (+mm_lock at the swap sites);`
+  - `slot` (function, line 567) `* must not eat a quarter of a 16 KB slot (see the stack discipline * contract in CLAUDE.md). Fail-closed on OOM. */...`
+  - `sys_ticks` (function, line 627) `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);`
+  - `rtl_counters` (function, line 634) `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
+  - `rtl_present` (function, line 636) `extern int rtl_present(void);`
+  - `IRQ4` (function, line 796) `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...`
+  - `FSBASE` (function, line 913) `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...`
+  - `syscall` (function, line 1320) `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid...`
+  - `PROC_SWITCHING` (function, line 2180) `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...`
+  - `returns` (function, line 2243) `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
+  - `registers` (function, line 2345) `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one...`
+  - `shares` (function, line 2595) `* thread on another CPU kept its writable translation and wrote straight * into frames the child now shares (the...`
+  - `MSR` (function, line 2633) `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...`
+  - `cli` (function, line 2908) `* cli (disk PIO must never run with the timer held off);`
+  - `adopt` (function, line 2922) `* adopt (armed by Linux O_CLOEXEC on open);`
+  - `it` (function, line 3370) `* it (SPAWN/exec point proc 0 here transiently);`
+  - `park` (function, line 3422) `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */...`
+  - `zeroed` (function, line 3433) `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe...`
+  - `sc_top_save` (variable, line 69) `extern unsigned long sc_top_save[];`
+  - `isr_stub_table` (variable, line 152) `extern void *isr_stub_table[];`
+  - `net_rx_dropped` (variable, line 635) `extern unsigned int net_rx_dropped;`
+  - `mm_lock` (variable, line 882) `extern spinlock_t mm_lock;`
+  - `MY_SYS_KSTK_TOP` (macro, line 53) `#define MY_SYS_KSTK_TOP`
+  - `MY_USER_STACK_TOP` (macro, line 54) `#define MY_USER_STACK_TOP`
+  - `MY_USER_LOAD_BASE` (macro, line 55) `#define MY_USER_LOAD_BASE`
+  - `NMI_IST_STACK_SZ` (macro, line 123) `#define NMI_IST_STACK_SZ`
+  - `NMI_VECTOR` (macro, line 124) `#define NMI_VECTOR`
+  - `NMI_IST_SLOT` (macro, line 125) `#define NMI_IST_SLOT`
+  - `KSTACK_SZ` (macro, line 155) `#define KSTACK_SZ`
+  - `KSTACK_PAINT` (macro, line 168) `#define KSTACK_PAINT`
+  - `KSTACK_CANARY` (macro, line 169) `#define KSTACK_CANARY`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/drivers/mouse.h`, `headers/drivers/xhci.h`, `headers/futex.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rcu.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/spawn.h`, `headers/sync.h`, `headers/tick.h`, `headers/tlb.h`, `headers/vga_fb.h`
 
 ## kernel/scrollback.c
 - Doc: Console scrollback ring buffer.
@@ -238,120 +293,120 @@ Previous: [KB_kernel.md](KB_kernel.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `job_row` (struct, line 2020)
-  - `ps_row` (struct, line 3656)
-  - `ShellRunDir` (struct, line 58)
-  - `shell_queue_launch` (function, line 84) `void shell_queue_launch(const char *cmd)`
-  - `shell_readline_active` (function, line 112) `int shell_readline_active(void)`
-  - `shell_focus_park` (function, line 113) `void shell_focus_park(void)`
-  - `shell_focus_restore` (function, line 118) `void shell_focus_restore(void)`
-  - `shell_prompt` (function, line 145) `static void shell_prompt(void)`
-  - `shell_parse_vol` (function, line 155) `static int shell_parse_vol(const char *s, unsigned *out)`
-  - `shell_readline_buf` (function, line 181) `void shell_readline_buf(char *buf, int size)`
-  - `shell_name_base` (function, line 210) `static const char *shell_name_base(const char *path)`
-  - `shell_complete_tier` (function, line 235) `static int shell_complete_tier(const char *nm)`
-  - `shell_complete_replace` (function, line 247) `static void shell_complete_replace(char *buf, int size, int *pos,
+  - `job_row` (struct, line 2062)
+  - `ps_row` (struct, line 3698)
+  - `ShellRunDir` (struct, line 61)
+  - `shell_queue_launch` (function, line 87) `void shell_queue_launch(const char *cmd)`
+  - `shell_readline_active` (function, line 115) `int shell_readline_active(void)`
+  - `shell_focus_park` (function, line 116) `void shell_focus_park(void)`
+  - `shell_focus_restore` (function, line 121) `void shell_focus_restore(void)`
+  - `shell_prompt` (function, line 148) `static void shell_prompt(void)`
+  - `shell_parse_vol` (function, line 158) `static int shell_parse_vol(const char *s, unsigned *out)`
+  - `shell_readline_buf` (function, line 184) `void shell_readline_buf(char *buf, int size)`
+  - `shell_name_base` (function, line 213) `static const char *shell_name_base(const char *path)`
+  - `shell_complete_tier` (function, line 238) `static int shell_complete_tier(const char *nm)`
+  - `shell_complete_replace` (function, line 250) `static void shell_complete_replace(char *buf, int size, int *pos,
                                ...`
-  - `shell_complete_minifs_arg` (function, line 268) `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,
+  - `shell_complete_minifs_arg` (function, line 271) `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,
                      ...`
-  - `shell_readline` (function, line 335) `static void shell_readline(void)`
-  - `shell_hist_show` (function, line 343) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
-  - `shell_line_repaint` (function, line 365) `static void shell_line_repaint(char *buf, int size, int pos)`
-  - `shell_line_insert` (function, line 378) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
-  - `shell_line_backspace` (function, line 387) `static void shell_line_backspace(char *buf, int size, int *pos)`
-  - `shell_line_delete` (function, line 395) `static void shell_line_delete(char *buf, int size, int *pos)`
-  - `shell_line_kill_front` (function, line 402) `static void shell_line_kill_front(char *buf, int size, int *pos)`
-  - `shell_line_kill_tail` (function, line 409) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
-  - `shell_line_kill_word` (function, line 414) `static void shell_line_kill_word(char *buf, int size, int *pos)`
-  - `shell_hist_newest_match` (function, line 426) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
-  - `line` (function, line 443) `* to the live line (handled by the caller resetting shell_hist_idx). */
+  - `shell_readline` (function, line 338) `static void shell_readline(void)`
+  - `shell_hist_show` (function, line 346) `static void shell_hist_show(char *buf, int size, int *pos, const char *text)`
+  - `shell_line_repaint` (function, line 368) `static void shell_line_repaint(char *buf, int size, int pos)`
+  - `shell_line_insert` (function, line 381) `static void shell_line_insert(char *buf, int size, int *pos, char c)`
+  - `shell_line_backspace` (function, line 390) `static void shell_line_backspace(char *buf, int size, int *pos)`
+  - `shell_line_delete` (function, line 398) `static void shell_line_delete(char *buf, int size, int *pos)`
+  - `shell_line_kill_front` (function, line 405) `static void shell_line_kill_front(char *buf, int size, int *pos)`
+  - `shell_line_kill_tail` (function, line 412) `static void shell_line_kill_tail(char *buf, int size, int *pos)`
+  - `shell_line_kill_word` (function, line 417) `static void shell_line_kill_word(char *buf, int size, int *pos)`
+  - `shell_hist_newest_match` (function, line 429) `static int shell_hist_newest_match(const char *prefix, unsigned long plen)`
+  - `line` (function, line 446) `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
-  - `shell_readline_hist` (function, line 488) `static void shell_readline_hist(char *buf, int size)`
-  - `shell_parse` (function, line 808) `int shell_parse(char *line, char **argv, int max_args)`
-  - `shell_run_init` (function, line 837) `static void shell_run_init(void)`
-  - `shell_run` (function, line 876) `void shell_run(void)`
-  - `shell_load` (function, line 946) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-  - `outw_port` (function, line 1009) `static inline void outw_port(unsigned short port, unsigned short val)`
-  - `shell_cmd_poweroff` (function, line 1015) `static void shell_cmd_poweroff(void)`
-  - `shell_run_dir_for` (function, line 1031) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-  - `shell_file_is_real` (function, line 1049) `static int shell_file_is_real(const char *resolved)`
-  - `shell_resolve_run` (function, line 1061) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-  - `etrel_path_trusted` (function, line 1103) `static int etrel_path_trusted(const char *full)`
-  - `shell_run_elf_buf_path` (function, line 1117) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+  - `shell_readline_hist` (function, line 491) `static void shell_readline_hist(char *buf, int size)`
+  - `shell_parse` (function, line 811) `int shell_parse(char *line, char **argv, int max_args)`
+  - `shell_run_init` (function, line 840) `static void shell_run_init(void)`
+  - `shell_run` (function, line 879) `void shell_run(void)`
+  - `shell_load` (function, line 949) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+  - `outw_port` (function, line 1012) `static inline void outw_port(unsigned short port, unsigned short val)`
+  - `shell_cmd_poweroff` (function, line 1018) `static void shell_cmd_poweroff(void)`
+  - `shell_run_dir_for` (function, line 1034) `static const ShellRunDir *shell_run_dir_for(const char *name)`
+  - `shell_file_is_real` (function, line 1052) `static int shell_file_is_real(const char *resolved)`
+  - `shell_resolve_run` (function, line 1064) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
+  - `etrel_path_trusted` (function, line 1106) `static int etrel_path_trusted(const char *full)`
+  - `shell_run_elf_buf_path` (function, line 1146) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...`
-  - `shell_run_elf_file` (function, line 1147) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-  - `shell_run_elf_minifs` (function, line 1160) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-  - `shell_run_cvm` (function, line 1210) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-  - `shell_run_file` (function, line 1246) `static int shell_run_file(const char *name, int argc, char **argv)`
-  - `shell_read_elf_bytes` (function, line 1290) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+  - `shell_run_elf_file` (function, line 1179) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
+  - `shell_run_elf_minifs` (function, line 1192) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
+  - `shell_run_cvm` (function, line 1249) `static int shell_run_cvm(const char *full, int argc, char **argv)`
+  - `shell_run_file` (function, line 1285) `static int shell_run_file(const char *name, int argc, char **argv)`
+  - `shell_read_elf_bytes` (function, line 1329) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...`
-  - `code` (function, line 1356) `* the last exit code (130 when interrupted). */
+  - `code` (function, line 1395) `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-  - `shell_cmd_mrun` (function, line 1409) `static void shell_cmd_mrun(int argc, char **argv)`
-  - `shell_run_bg` (function, line 1457) `static void shell_run_bg(const char *name, int argc, char **argv)`
-  - `desktop_path` (function, line 1500) `static void desktop_path(const char *name, char *dst, unsigned cap)`
-  - `desktop_flag` (function, line 1509) `static void desktop_flag(const char *name)`
-  - `desktop_flag_on` (function, line 1519) `static int desktop_flag_on(const char *name)`
-  - `flows` (function, line 1533) `* and external flows (make wl) set it themselves. */
+  - `shell_cmd_mrun` (function, line 1449) `static void shell_cmd_mrun(int argc, char **argv)`
+  - `shell_run_bg` (function, line 1497) `static void shell_run_bg(const char *name, int argc, char **argv)`
+  - `desktop_path` (function, line 1540) `static void desktop_path(const char *name, char *dst, unsigned cap)`
+  - `desktop_flag` (function, line 1549) `static void desktop_flag(const char *name)`
+  - `desktop_flag_on` (function, line 1559) `static int desktop_flag_on(const char *name)`
+  - `flows` (function, line 1573) `* and external flows (make wl) set it themselves. */
 static void desktop_unflag(const char *name)`
-  - `desktop_srv_alive` (function, line 1541) `static int desktop_srv_alive(void)`
-  - `shell_cmd_desktop` (function, line 1557) `static void shell_cmd_desktop(int argc, char **argv)`
-  - `shell_run_any` (function, line 1621) `int shell_run_any(const char *name, int argc, char **argv)`
-  - `gfx_parse_int` (function, line 1692) `static int gfx_parse_int(const char *s, int *out)`
-  - `gfx_read_palette` (function, line 1712) `static void gfx_read_palette(unsigned char pal[768])`
-  - `shell_cmd_gfx` (function, line 1719) `static void shell_cmd_gfx(int argc, char **argv)`
-  - `shell_cmd_wm` (function, line 1871) `static void shell_cmd_wm(int argc, char **argv)`
-  - `tree` (function, line 2006) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+  - `desktop_srv_alive` (function, line 1581) `static int desktop_srv_alive(void)`
+  - `shell_cmd_desktop` (function, line 1597) `static void shell_cmd_desktop(int argc, char **argv)`
+  - `shell_run_any` (function, line 1661) `int shell_run_any(const char *name, int argc, char **argv)`
+  - `gfx_parse_int` (function, line 1734) `static int gfx_parse_int(const char *s, int *out)`
+  - `gfx_read_palette` (function, line 1754) `static void gfx_read_palette(unsigned char pal[768])`
+  - `shell_cmd_gfx` (function, line 1761) `static void shell_cmd_gfx(int argc, char **argv)`
+  - `shell_cmd_wm` (function, line 1913) `static void shell_cmd_wm(int argc, char **argv)`
+  - `tree` (function, line 2048) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-  - `shell_cmd_jobs` (function, line 2019) `static void shell_cmd_jobs(void)`
-  - `shell_has_child` (function, line 2048) `static int shell_has_child(int pid)`
-  - `shell_cmd_wait` (function, line 2058) `static void shell_cmd_wait(int argc, char **argv)`
-  - `shell_cmd_kill` (function, line 2093) `static void shell_cmd_kill(int argc, char **argv)`
-  - `shell_cmd_mem` (function, line 2116) `static void shell_cmd_mem(void)`
-  - `VMA` (function, line 2149) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+  - `shell_cmd_jobs` (function, line 2061) `static void shell_cmd_jobs(void)`
+  - `shell_has_child` (function, line 2090) `static int shell_has_child(int pid)`
+  - `shell_cmd_wait` (function, line 2100) `static void shell_cmd_wait(int argc, char **argv)`
+  - `shell_cmd_kill` (function, line 2135) `static void shell_cmd_kill(int argc, char **argv)`
+  - `shell_cmd_mem` (function, line 2158) `static void shell_cmd_mem(void)`
+  - `VMA` (function, line 2191) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-  - `to` (function, line 2222) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+  - `to` (function, line 2264) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-  - `shell_parse_u64` (function, line 2291) `static int shell_parse_u64(const char *s, unsigned long *out)`
-  - `shell_parse_long` (function, line 2307) `int shell_parse_long(const char *s, long *out)`
-  - `shell_parse_pid` (function, line 2328) `int shell_parse_pid(const char *s, int min_pid, int *out)`
-  - `shell_cmd_gdb` (function, line 2343) `static void shell_cmd_gdb(int argc, char **argv)`
-  - `shell_cmd_hash` (function, line 2386) `static void shell_cmd_hash(int argc, char **argv)`
-  - `shell_resolve_arg` (function, line 2405) `static int shell_resolve_arg(const char *cmd, const char *arg,
+  - `shell_parse_u64` (function, line 2333) `static int shell_parse_u64(const char *s, unsigned long *out)`
+  - `shell_parse_long` (function, line 2349) `int shell_parse_long(const char *s, long *out)`
+  - `shell_parse_pid` (function, line 2370) `int shell_parse_pid(const char *s, int min_pid, int *out)`
+  - `shell_cmd_gdb` (function, line 2385) `static void shell_cmd_gdb(int argc, char **argv)`
+  - `shell_cmd_hash` (function, line 2428) `static void shell_cmd_hash(int argc, char **argv)`
+  - `shell_resolve_arg` (function, line 2447) `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...`
-  - `shell_httpd_one` (function, line 2511) `static void shell_httpd_one(int child, const char *root)`
-  - `shell_httpd_serve` (function, line 2596) `static void shell_httpd_serve(unsigned short port, const char *root,
+  - `shell_httpd_one` (function, line 2553) `static void shell_httpd_one(int child, const char *root)`
+  - `shell_httpd_serve` (function, line 2638) `static void shell_httpd_serve(unsigned short port, const char *root,
         int max_conn)`
-  - `shell_cross_ls` (function, line 2763) `static void shell_cross_ls(const char *drv, const char *imgarg,
+  - `shell_cross_ls` (function, line 2805) `static void shell_cross_ls(const char *drv, const char *imgarg,
                            const ...`
-  - `shell_cross_cat` (function, line 2804) `static void shell_cross_cat(const char *drv, const char *imgarg,
+  - `shell_cross_cat` (function, line 2846) `static void shell_cross_cat(const char *drv, const char *imgarg,
                             cons...`
-  - `shell_exec_builtin` (function, line 2846) `void shell_exec_builtin(int argc, char **argv)`
-  - `driver` (function, line 3264) `* stream through the fat: VFS driver ("img:fatpath" per open,
+  - `shell_exec_builtin` (function, line 2888) `void shell_exec_builtin(int argc, char **argv)`
+  - `driver` (function, line 3306) `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
-  - `shell_is_pipe_tok` (function, line 4035) `static int shell_is_pipe_tok(const char *a)`
-  - `shell_run_stage` (function, line 4074) `static char *shell_run_stage(char **sargv, int sargc,
+  - `shell_is_pipe_tok` (function, line 4080) `static int shell_is_pipe_tok(const char *a)`
+  - `shell_run_stage` (function, line 4119) `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...`
-  - `shell_run_pipeline` (function, line 148) `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
-  - `root` (function, line 648) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
-  - `desktop_unflag` (function, line 830) `static void desktop_unflag(const char *name);`
-  - `window` (function, line 1283) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
-  - `this` (function, line 1487) `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
-  - `context` (function, line 1647) `* from ISR context (which corrupts the running program's state). */ shell_queue_launch(cmd);`
-  - `terminal` (function, line 2921) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
-  - `frame` (function, line 3658) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-  - `stdout` (function, line 4023) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+  - `shell_run_pipeline` (function, line 151) `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
+  - `root` (function, line 651) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
+  - `desktop_unflag` (function, line 833) `static void desktop_unflag(const char *name);`
+  - `window` (function, line 1322) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
+  - `this` (function, line 1527) `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
+  - `context` (function, line 1688) `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
+  - `terminal` (function, line 2963) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
+  - `frame` (function, line 3700) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
+  - `stdout` (function, line 4068) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 25) `#define XXH_STATIC_LINKING_ONLY`
-  - `SHELL_CVM_INTERP` (macro, line 50) `#define SHELL_CVM_INTERP`
-  - `SHELL_RUN_DIRS` (macro, line 69) `#define SHELL_RUN_DIRS`
-  - `SHELL_HIST_MAX` (macro, line 95) `#define SHELL_HIST_MAX`
-  - `SHELL_BUILTIN_COUNT` (macro, line 229) `#define SHELL_BUILTIN_COUNT`
-  - `QEMU_PM_PORT` (macro, line 1013) `#define QEMU_PM_PORT`
-  - `HTTPD_REQ_CAP` (macro, line 2504) `#define HTTPD_REQ_CAP`
-  - `HTTPD_IO_CHUNK` (macro, line 2505) `#define HTTPD_IO_CHUNK`
-  - `SHELL_LS_CAP` (macro, line 2762) `#define SHELL_LS_CAP`
-  - `PIPE_HOP_MAX` (macro, line 4033) `#define PIPE_HOP_MAX`
-- Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
+  - `SHELL_CVM_INTERP` (macro, line 53) `#define SHELL_CVM_INTERP`
+  - `SHELL_RUN_DIRS` (macro, line 72) `#define SHELL_RUN_DIRS`
+  - `SHELL_HIST_MAX` (macro, line 98) `#define SHELL_HIST_MAX`
+  - `SHELL_BUILTIN_COUNT` (macro, line 232) `#define SHELL_BUILTIN_COUNT`
+  - `QEMU_PM_PORT` (macro, line 1016) `#define QEMU_PM_PORT`
+  - `HTTPD_REQ_CAP` (macro, line 2546) `#define HTTPD_REQ_CAP`
+  - `HTTPD_IO_CHUNK` (macro, line 2547) `#define HTTPD_IO_CHUNK`
+  - `SHELL_LS_CAP` (macro, line 2804) `#define SHELL_LS_CAP`
+  - `PIPE_HOP_MAX` (macro, line 4078) `#define PIPE_HOP_MAX`
+- Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ## kernel/spawn.c
 - Doc: Docstring: Save the caller shared-window view into ctx.
@@ -368,7 +423,7 @@ static void shell_cmd_trac...`
                          uns...`
   - `spawn_run_exec` (function, line 222) `static int spawn_run_exec(const char *resolved, const char *redirect,
                            ...`
-  - `spawn_execute` (function, line 267) `int spawn_execute(const char *resolved, const char *redirect,
+  - `spawn_execute` (function, line 268) `int spawn_execute(const char *resolved, const char *redirect,
                   unsigned char *da...`
 - Depends on: `headers/arch/x86/msr.h`, `headers/arena.h`, `headers/minifs.h`, `headers/sched.h`, `headers/spawn.h`, `headers/vga_fb.h`, `headers/vma.h`
 
@@ -390,7 +445,7 @@ static void shell_cmd_trac...`
   - `kmemcmp` (function, line 81) `int kmemcmp(const void *a, const void *b, unsigned long n)`
   - `kmemmove` (function, line 87) `void *kmemmove(void *dst, const void *src, unsigned long n)`
   - `katol` (function, line 95) `long katol(const char *s)`
-- Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
+- Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
 
 ## kernel/symtab.c
 - Layer: utility

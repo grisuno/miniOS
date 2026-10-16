@@ -2,6 +2,21 @@
 Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/w_wad.h`
+- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/z_zone.h`
+- `progs/doomgeneric/r_plane.h` -> `progs/doomgeneric/r_data.h`
+- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/doomdef.h`
+- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/doomstat.h`
+- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/i_system.h`
+- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/r_local.h`
+- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/r_sky.h`
+- `progs/doomgeneric/r_sky.c` -> `progs/doomgeneric/m_fixed.h`
+- `progs/doomgeneric/r_sky.c` -> `progs/doomgeneric/r_data.h`
+- `progs/doomgeneric/r_sky.c` -> `progs/doomgeneric/r_sky.h`
+- `progs/doomgeneric/r_state.h` -> `progs/doomgeneric/d_player.h`
+- `progs/doomgeneric/r_state.h` -> `progs/doomgeneric/r_data.h`
+- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/deh_main.h`
+- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/doomdef.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/doomstat.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/i_swap.h`
 - `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/i_system.h`
@@ -201,6 +216,7 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/quake2generic/q2generic_minios.c` -> `progs/minios_abi.h`
 - `progs/quake2generic/snddma_minios.c` -> `kernel/string.c`
 - `progs/quake2generic/snddma_minios.c` -> `progs/minios_abi.h`
+- `progs/src/apsse.c` -> `kernel/string.c`
 - `progs/src/audio.c` -> `progs/minios_abi.h`
 - `progs/src/fptest.c` -> `progs/minios_abi.h`
 - `progs/src/fptest.c` -> `progs/src/mthreads.h`
@@ -214,6 +230,7 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/src/lxabi.c` -> `kernel/string.c`
 - `progs/src/lxabi.c` -> `kernel/time.c`
 - `progs/src/lxnet.c` -> `kernel/string.c`
+- `progs/src/lxproc.c` -> `progs/minios_abi.h`
 - `progs/src/lxsecc.c` -> `kernel/string.c`
 - `progs/src/lxtls.c` -> `kernel/string.c`
 - `progs/src/mthreads.h` -> `progs/minios_abi.h`
@@ -249,6 +266,7 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `qga.c` -> `headers/rtc.h`
 - `smp.c` -> `headers/ap_stub.h`
 - `smp.c` -> `headers/arch/x86/boot/bootdefs.h`
+- `smp.c` -> `headers/arch/x86/cpu_setup.h`
 - `smp.c` -> `headers/arch/x86/msr.h`
 - `smp.c` -> `headers/sched.h`
 - `smp.c` -> `headers/smp.h`
@@ -315,6 +333,8 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `tests/test_sanitize.c` -> `kernel/string.c`
 - `tests/test_seccomp_bpf.c` -> `headers/seccomp_bpf.h`
 - `tests/test_seccomp_bpf.c` -> `kernel/string.c`
+- `tests/test_sign.c` -> `headers/sign.h`
+- `tests/test_sign.c` -> `kernel/string.c`
 - `tests/test_sync.c` -> `headers/sync.h`
 - `tests/test_theme.c` -> `kernel/string.c`
 - `tests/test_theme.c` -> `progs/nuklear/nuklear_theme.h`

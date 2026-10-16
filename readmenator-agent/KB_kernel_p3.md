@@ -6,257 +6,257 @@ Previous: [KB_kernel_p2.md](KB_kernel_p2.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `kiovec` (struct, line 1096)
-  - `sc_extra_name` (struct, line 3028)
-  - `sc_record` (struct, line 3104)
-  - `sc_log` (struct, line 3105)
-  - `minios_syscall_entry_t` (struct, line 236)
-  - `kfd_view_current` (function, line 59) `static kfd_view_t *kfd_view_current(void)`
-  - `kfd_view_root` (function, line 69) `kfd_view_t *kfd_view_root(void)`
-  - `kfd_get` (function, line 88) `KFILE *kfd_get(int fd)`
-  - `kfd_put` (function, line 101) `void kfd_put(KFILE *f)`
-  - `kfd_view_count` (function, line 113) `static int kfd_view_count(kfd_view_t *v)`
-  - `untouched` (function, line 137) `* child untouched (caller refuses fail-closed). */
+  - `kiovec` (struct, line 1097)
+  - `sc_extra_name` (struct, line 3030)
+  - `sc_record` (struct, line 3106)
+  - `sc_log` (struct, line 3107)
+  - `minios_syscall_entry_t` (struct, line 237)
+  - `kfd_view_current` (function, line 60) `static kfd_view_t *kfd_view_current(void)`
+  - `kfd_view_root` (function, line 70) `kfd_view_t *kfd_view_root(void)`
+  - `kfd_get` (function, line 89) `KFILE *kfd_get(int fd)`
+  - `kfd_put` (function, line 102) `void kfd_put(KFILE *f)`
+  - `kfd_view_count` (function, line 114) `static int kfd_view_count(kfd_view_t *v)`
+  - `untouched` (function, line 138) `* child untouched (caller refuses fail-closed). */
 int kfd_view_copy(proc_t *child, proc_t *parent)`
-  - `NULL` (function, line 164) `* on NULL (already released or never owned). */
+  - `NULL` (function, line 165) `* on NULL (already released or never owned). */
 void kfd_view_release(proc_t *p)`
-  - `kfd_view_cloexec` (function, line 195) `void kfd_view_cloexec(void)`
-  - `wall_us_now` (function, line 254) `unsigned long wall_us_now(void)`
-  - `sys_minios_dns` (function, line 264) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_tls_retired` (function, line 269) `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_time` (function, line 282) `static long sys_linux_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_futex` (function, line 291) `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_time` (function, line 340) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_kbd` (function, line 344) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_palette` (function, line 364) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_kbd_raw` (function, line 376) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_vga_mode` (function, line 382) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_init` (function, line 389) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_tone` (function, line 393) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_doom_frame` (function, line 407) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_gfx_zoom` (function, line 418) `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_rtc` (function, line 427) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_fb_info` (function, line 440) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcspk_vol` (function, line 460) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `minfo_sleep_init` (function, line 484) `void minfo_sleep_init(int tick_ok)`
-  - `minfo_tick_wake` (function, line 489) `void minfo_tick_wake(void *ctx)`
-  - `view` (function, line 501) `* view (same as the `clear` builtin). Anything else is -EINVAL. Each
+  - `kfd_view_cloexec` (function, line 196) `void kfd_view_cloexec(void)`
+  - `wall_us_now` (function, line 255) `unsigned long wall_us_now(void)`
+  - `sys_minios_dns` (function, line 265) `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_tls_retired` (function, line 270) `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_time` (function, line 283) `static long sys_linux_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_futex` (function, line 292) `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_time` (function, line 341) `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd` (function, line 345) `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_palette` (function, line 365) `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_kbd_raw` (function, line 377) `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_vga_mode` (function, line 383) `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_init` (function, line 390) `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_tone` (function, line 394) `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_doom_frame` (function, line 408) `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_gfx_zoom` (function, line 419) `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_rtc` (function, line 428) `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_fb_info` (function, line 441) `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcspk_vol` (function, line 461) `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `minfo_sleep_init` (function, line 485) `void minfo_sleep_init(int tick_ok)`
+  - `minfo_tick_wake` (function, line 490) `void minfo_tick_wake(void *ctx)`
+  - `view` (function, line 502) `* view (same as the `clear` builtin). Anything else is -EINVAL. Each
  * out-word is range-checked...`
-  - `sys_minios_spawn` (function, line 592) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_lz4_compress` (function, line 603) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_lz4_decompress` (function, line 616) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_mouse` (function, line 630) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_nk_frame` (function, line 654) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sb16_audio_device` (function, line 667) `static device_t *sb16_audio_device(void)`
-  - `sys_minios_sb16_open` (function, line 673) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_submit` (function, line 685) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_gfx_title` (function, line 696) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_pump` (function, line 710) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_open` (function, line 714) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_close` (function, line 718) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_submit` (function, line 722) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcm2_open` (function, line 735) `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcm2_write` (function, line 740) `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_pcm2_close` (function, line 748) `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_clip_set` (function, line 758) `static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_clip_get` (function, line 768) `static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_sb16_stream_vol` (function, line 784) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_futex_wait` (function, line 797) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_futex_wake` (function, line 803) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `batch_kdispatch` (function, line 812) `static long batch_kdispatch(uint32_t opcode)`
-  - `DOOM_FRAME` (function, line 827) `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
+  - `sys_minios_spawn` (function, line 593) `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_compress` (function, line 604) `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_lz4_decompress` (function, line 617) `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_mouse` (function, line 631) `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_nk_frame` (function, line 655) `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sb16_audio_device` (function, line 668) `static device_t *sb16_audio_device(void)`
+  - `sys_minios_sb16_open` (function, line 674) `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_submit` (function, line 686) `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_gfx_title` (function, line 697) `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_pump` (function, line 711) `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_open` (function, line 715) `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_close` (function, line 719) `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_submit` (function, line 723) `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcm2_open` (function, line 736) `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcm2_write` (function, line 741) `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_pcm2_close` (function, line 749) `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_clip_set` (function, line 759) `static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_clip_get` (function, line 769) `static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_sb16_stream_vol` (function, line 785) `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_futex_wait` (function, line 798) `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_futex_wake` (function, line 804) `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `batch_kdispatch` (function, line 813) `static long batch_kdispatch(uint32_t opcode)`
+  - `DOOM_FRAME` (function, line 828) `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
 static long sys_minios_gfx_prese...`
-  - `sys_minios_getc_raw` (function, line 861) `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_submit_batch` (function, line 872) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_rlimit` (function, line 895) `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_minios_dir_list` (function, line 936) `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `syscall_trace_enabled` (function, line 1108) `long syscall_trace_enabled(void)`
-  - `syscall_trace_set` (function, line 1109) `void syscall_trace_set(int on)`
-  - `syscall_trace_verbose_enabled` (function, line 1110) `long syscall_trace_verbose_enabled(void)`
-  - `syscall_trace_verbose_set` (function, line 1111) `void syscall_trace_verbose_set(int on)`
-  - `syscall_trace_shown` (function, line 1112) `unsigned long syscall_trace_shown(void)`
-  - `sys_linux_read` (function, line 1138) `static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `fd_write` (function, line 1194) `static long fd_write(long fd, const char *buf, long cnt)`
-  - `sys_linux_write` (function, line 1218) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_writev` (function, line 1225) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `do_open_path` (function, line 1268) `static long do_open_path(const char *path, long flags)`
-  - `sys_linux_open` (function, line 1301) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `kfd_claim_from` (function, line 1334) `static long kfd_claim_from(KFILE *f, long minfd, int cloexec)`
-  - `kfd_claim` (function, line 1359) `static long kfd_claim(KFILE *f)`
-  - `sys_linux_pipe2` (function, line 1383) `static long sys_linux_pipe2(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_pipe` (function, line 1411) `static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `kfd_cloexec_get` (function, line 1417) `static int kfd_cloexec_get(long fd)`
-  - `kfd_cloexec_set` (function, line 1427) `static void kfd_cloexec_set(long fd, int on)`
-  - `kfile_status_flags` (function, line 1438) `static long kfile_status_flags(KFILE *f)`
-  - `sys_linux_dup3` (function, line 1489) `static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_close_range` (function, line 1499) `static long sys_linux_close_range(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_eventfd2` (function, line 1523) `static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_eventfd` (function, line 1536) `static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `kfd_poll_revents` (function, line 1544) `int kfd_poll_revents(int fd)`
-  - `kfile_user_read` (function, line 1579) `static long kfile_user_read(KFILE *f, char *buf, long cnt)`
-  - `kfile_user_write` (function, line 1609) `static long kfile_user_write(KFILE *f, const char *buf, long cnt)`
-  - `sys_linux_dup` (function, line 1638) `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_dup2` (function, line 1653) `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_close` (function, line 1687) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_lseek` (function, line 1710) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `mm_ensure_cur` (function, line 1728) `static int mm_ensure_cur(unsigned long start, unsigned long end)`
-  - `sys_linux_brk` (function, line 1737) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `mmap_tag_file` (function, line 1778) `static int mmap_tag_file(unsigned long base, int ino, unsigned long off)`
-  - `mmap_range_free` (function, line 1793) `static int mmap_range_free(unsigned long base, unsigned long len)`
-  - `sys_linux_mmap` (function, line 1802) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `vma_live_first_overlap` (function, line 1900) `static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end)`
-  - `vma_live_remainder` (function, line 1917) `static int vma_live_remainder(unsigned long base, unsigned long len,
+  - `sys_minios_getc_raw` (function, line 862) `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_submit_batch` (function, line 873) `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_rlimit` (function, line 896) `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_minios_dir_list` (function, line 937) `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `syscall_trace_enabled` (function, line 1109) `long syscall_trace_enabled(void)`
+  - `syscall_trace_set` (function, line 1110) `void syscall_trace_set(int on)`
+  - `syscall_trace_verbose_enabled` (function, line 1111) `long syscall_trace_verbose_enabled(void)`
+  - `syscall_trace_verbose_set` (function, line 1112) `void syscall_trace_verbose_set(int on)`
+  - `syscall_trace_shown` (function, line 1113) `unsigned long syscall_trace_shown(void)`
+  - `sys_linux_read` (function, line 1139) `static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `fd_write` (function, line 1195) `static long fd_write(long fd, const char *buf, long cnt)`
+  - `sys_linux_write` (function, line 1219) `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_writev` (function, line 1226) `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `do_open_path` (function, line 1269) `static long do_open_path(const char *path, long flags)`
+  - `sys_linux_open` (function, line 1302) `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `kfd_claim_from` (function, line 1335) `static long kfd_claim_from(KFILE *f, long minfd, int cloexec)`
+  - `kfd_claim` (function, line 1360) `static long kfd_claim(KFILE *f)`
+  - `sys_linux_pipe2` (function, line 1384) `static long sys_linux_pipe2(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_pipe` (function, line 1412) `static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `kfd_cloexec_get` (function, line 1418) `static int kfd_cloexec_get(long fd)`
+  - `kfd_cloexec_set` (function, line 1428) `static void kfd_cloexec_set(long fd, int on)`
+  - `kfile_status_flags` (function, line 1439) `static long kfile_status_flags(KFILE *f)`
+  - `sys_linux_dup3` (function, line 1490) `static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_close_range` (function, line 1500) `static long sys_linux_close_range(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_eventfd2` (function, line 1524) `static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_eventfd` (function, line 1537) `static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `kfd_poll_revents` (function, line 1545) `int kfd_poll_revents(int fd)`
+  - `kfile_user_read` (function, line 1580) `static long kfile_user_read(KFILE *f, char *buf, long cnt)`
+  - `kfile_user_write` (function, line 1610) `static long kfile_user_write(KFILE *f, const char *buf, long cnt)`
+  - `sys_linux_dup` (function, line 1639) `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_dup2` (function, line 1654) `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_close` (function, line 1688) `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_lseek` (function, line 1711) `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `mm_ensure_cur` (function, line 1729) `static int mm_ensure_cur(unsigned long start, unsigned long end)`
+  - `sys_linux_brk` (function, line 1738) `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `mmap_tag_file` (function, line 1779) `static int mmap_tag_file(unsigned long base, int ino, unsigned long off)`
+  - `mmap_range_free` (function, line 1794) `static int mmap_range_free(unsigned long base, unsigned long len)`
+  - `sys_linux_mmap` (function, line 1803) `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `vma_live_first_overlap` (function, line 1901) `static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end)`
+  - `vma_live_remainder` (function, line 1918) `static int vma_live_remainder(unsigned long base, unsigned long len,
         int file, int ino, u...`
-  - `split` (function, line 1931) `* hold a split (the mapping is restored untouched). */
+  - `split` (function, line 1932) `* hold a split (the mapping is restored untouched). */
 static long sys_linux_munmap(long a1, long...`
-  - `mprotect_pte` (function, line 1981) `static volatile unsigned long *mprotect_pte(unsigned long cr3,
+  - `mprotect_pte` (function, line 1982) `static volatile unsigned long *mprotect_pte(unsigned long cr3,
         unsigned long va)`
-  - `first` (function, line 2005) `* passes under mm_lock: validate every page first (present, user,
+  - `first` (function, line 2006) `* passes under mm_lock: validate every page first (present, user,
  * private), then apply, so a h...`
-  - `vma_free_cover` (function, line 2085) `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)`
-  - `vma_live_overlap` (function, line 2104) `static int vma_live_overlap(unsigned long base, unsigned long len)`
-  - `sys_linux_mremap` (function, line 2131) `static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sigaction` (function, line 2397) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sigprocmask` (function, line 2402) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `kfile_readable_bytes` (function, line 2421) `static int kfile_readable_bytes(KFILE *f)`
-  - `FIONREAD` (function, line 2437) `* descriptor answers FIONREAD (bytes readable now), FIONBIO (O_NONBLOCK),
+  - `vma_free_cover` (function, line 2087) `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)`
+  - `vma_live_overlap` (function, line 2106) `static int vma_live_overlap(unsigned long base, unsigned long len)`
+  - `sys_linux_mremap` (function, line 2133) `static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sigaction` (function, line 2399) `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sigprocmask` (function, line 2404) `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `kfile_readable_bytes` (function, line 2423) `static int kfile_readable_bytes(KFILE *f)`
+  - `FIONREAD` (function, line 2439) `* descriptor answers FIONREAD (bytes readable now), FIONBIO (O_NONBLOCK),
  * FIOCLEX/FIONCLEX (FD...`
-  - `sys_linux_access` (function, line 2477) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_socket` (function, line 2499) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_connect` (function, line 2504) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_bind` (function, line 2510) `static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_listen` (function, line 2516) `static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_accept` (function, line 2521) `static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sendto` (function, line 2527) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_recvfrom` (function, line 2532) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_shutdown` (function, line 2537) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_prlimit64` (function, line 2572) `static long sys_linux_prlimit64(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sched_getaffinity` (function, line 2605) `static long sys_linux_sched_getaffinity(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `linux_timespec_us` (function, line 2627) `static long linux_timespec_us(long ts)`
-  - `sys_linux_pause` (function, line 2644) `static long sys_linux_pause(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_nanosleep` (function, line 2652) `static long sys_linux_nanosleep(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `clock_gettime` (function, line 2667) `* clock_gettime(1) reads. */
+  - `sys_linux_access` (function, line 2479) `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_socket` (function, line 2501) `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_connect` (function, line 2506) `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_bind` (function, line 2512) `static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_listen` (function, line 2518) `static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_accept` (function, line 2523) `static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sendto` (function, line 2529) `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_recvfrom` (function, line 2534) `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_shutdown` (function, line 2539) `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_prlimit64` (function, line 2574) `static long sys_linux_prlimit64(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sched_getaffinity` (function, line 2607) `static long sys_linux_sched_getaffinity(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `linux_timespec_us` (function, line 2629) `static long linux_timespec_us(long ts)`
+  - `sys_linux_pause` (function, line 2646) `static long sys_linux_pause(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_nanosleep` (function, line 2654) `static long sys_linux_nanosleep(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `clock_gettime` (function, line 2669) `* clock_gettime(1) reads. */
 static long sys_linux_clock_nanosleep(long a1, long a2, long a3, lon...`
-  - `sys_linux_setsockopt` (function, line 2684) `static long sys_linux_setsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getsockopt` (function, line 2691) `static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getsockname` (function, line 2698) `static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getpeername` (function, line 2704) `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sendmsg` (function, line 2710) `static long sys_linux_sendmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_sendmmsg` (function, line 2716) `static long sys_linux_sendmmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_poll` (function, line 2724) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_flock` (function, line 2731) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fsync` (function, line 2740) `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fdatasync` (function, line 2745) `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_getcwd` (function, line 2750) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_unlink` (function, line 2762) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `readlink_path` (function, line 2786) `static long readlink_path(const char *path, char *buf, long bufsz)`
-  - `sys_linux_readlink` (function, line 2802) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_prctl` (function, line 2808) `static long sys_linux_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_rename` (function, line 2817) `static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_fstat` (function, line 2831) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_gettimeofday` (function, line 2854) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_arch_prctl` (function, line 2877) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_uname` (function, line 2889) `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_madvise` (function, line 2912) `static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `sys_linux_mkdir` (function, line 2920) `static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `trace_is_noisy` (function, line 3016) `static int trace_is_noisy(long n)`
-  - `syscall_name` (function, line 3043) `const char *syscall_name(long n)`
-  - `trace_hint_print` (function, line 3084) `static void trace_hint_print(long n, int kind, const char *path,
+  - `sys_linux_setsockopt` (function, line 2686) `static long sys_linux_setsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getsockopt` (function, line 2693) `static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getsockname` (function, line 2700) `static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getpeername` (function, line 2706) `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sendmsg` (function, line 2712) `static long sys_linux_sendmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_sendmmsg` (function, line 2718) `static long sys_linux_sendmmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_poll` (function, line 2726) `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_flock` (function, line 2733) `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fsync` (function, line 2742) `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fdatasync` (function, line 2747) `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_getcwd` (function, line 2752) `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_unlink` (function, line 2764) `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `readlink_path` (function, line 2788) `static long readlink_path(const char *path, char *buf, long bufsz)`
+  - `sys_linux_readlink` (function, line 2804) `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_prctl` (function, line 2810) `static long sys_linux_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_rename` (function, line 2819) `static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_fstat` (function, line 2833) `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_gettimeofday` (function, line 2856) `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_arch_prctl` (function, line 2879) `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_uname` (function, line 2891) `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_madvise` (function, line 2914) `static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `sys_linux_mkdir` (function, line 2922) `static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `trace_is_noisy` (function, line 3018) `static int trace_is_noisy(long n)`
+  - `syscall_name` (function, line 3045) `const char *syscall_name(long n)`
+  - `trace_hint_print` (function, line 3086) `static void trace_hint_print(long n, int kind, const char *path,
                              lon...`
-  - `sc_record` (function, line 3108) `static void sc_record(long n, long a1, long a2, long a3, long ret)`
-  - `sc_hex` (function, line 3128) `static void sc_hex(unsigned long v)`
-  - `sc_record_dump` (function, line 3138) `void sc_record_dump(int pid)`
-  - `ksyscall` (function, line 3156) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `user_range_ok` (function, line 3195) `int user_range_ok(unsigned long p, unsigned long len)`
-  - `products` (function, line 3212) `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
+  - `sc_record` (function, line 3110) `static void sc_record(long n, long a1, long a2, long a3, long ret)`
+  - `sc_hex` (function, line 3130) `static void sc_hex(unsigned long v)`
+  - `sc_record_dump` (function, line 3140) `void sc_record_dump(int pid)`
+  - `ksyscall` (function, line 3158) `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `user_range_ok` (function, line 3197) `int user_range_ok(unsigned long p, unsigned long len)`
+  - `products` (function, line 3214) `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
  * pre-bounded against (END-...`
-  - `ksyscall_dispatch` (function, line 3225) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-  - `k_syscall_spawn` (function, line 3480) `static int k_syscall_spawn(const char *path, const char *redirect,
+  - `ksyscall_dispatch` (function, line 3227) `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
+  - `k_syscall_spawn` (function, line 3482) `static int k_syscall_spawn(const char *path, const char *redirect,
                              i...`
-  - `by` (function, line 223) `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to...`
-  - `boot` (function, line 477) `* boot (minfo_sleep_init from sched_init);`
-  - `unchanged` (function, line 1127) `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...`
-  - `EAGAIN` (function, line 1154) `* writer open is EAGAIN (-11, retry);`
-  - `EOF` (function, line 1155) `* is EOF (0). */ KFILE *o = kfd_get(0);`
-  - `node` (function, line 2126) `* mapping is one exact live VMA node (what mmap inserts);`
-  - `clock` (function, line 2663) `* clock (the monotonic TSC clock times it, as Linux does: glibc sends * every nanosleep here as a relative...`
-  - `long` (function, line 2669) `unsigned long (*now)(void);`
-  - `Discipline` (function, line 3208) `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok...`
-  - `readlink` (function, line 3362) `* readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);`
-  - `proc_spawn_elf` (function, line 3471) `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is...`
-  - `gfx_zoom_2x` (variable, line 420) `extern int gfx_zoom_2x;`
-  - `gfx_win_title` (variable, line 701) `extern const char *gfx_win_title;`
-  - `KFD_MAX` (macro, line 50) `#define KFD_MAX`
-  - `MINIOS_SYSCALL_BASE` (macro, line 241) `#define MINIOS_SYSCALL_BASE`
-  - `MINIOS_SYSCALL_COUNT` (macro, line 242) `#define MINIOS_SYSCALL_COUNT`
-  - `SYSCALL_TRACE` (macro, line 1098) `#define SYSCALL_TRACE`
-  - `SYS_NOISY_TIME` (macro, line 1118) `#define SYS_NOISY_TIME`
-  - `SYS_NOISY_KBD` (macro, line 1119) `#define SYS_NOISY_KBD`
-  - `SYS_NOISY_MOUSE` (macro, line 1120) `#define SYS_NOISY_MOUSE`
-  - `SYS_NOISY_GETC_RAW` (macro, line 1121) `#define SYS_NOISY_GETC_RAW`
-  - `LINUX_O_RDONLY` (macro, line 1308) `#define LINUX_O_RDONLY`
-  - `LINUX_O_WRONLY` (macro, line 1309) `#define LINUX_O_WRONLY`
-  - `LINUX_O_RDWR` (macro, line 1310) `#define LINUX_O_RDWR`
-  - `LINUX_O_APPEND` (macro, line 1311) `#define LINUX_O_APPEND`
-  - `LINUX_O_NONBLOCK` (macro, line 1312) `#define LINUX_O_NONBLOCK`
-  - `LINUX_O_DIRECT` (macro, line 1313) `#define LINUX_O_DIRECT`
-  - `LINUX_O_CLOEXEC` (macro, line 1314) `#define LINUX_O_CLOEXEC`
-  - `LINUX_FD_CLOEXEC` (macro, line 1315) `#define LINUX_FD_CLOEXEC`
-  - `LINUX_F_DUPFD` (macro, line 1316) `#define LINUX_F_DUPFD`
-  - `LINUX_F_GETFD` (macro, line 1317) `#define LINUX_F_GETFD`
-  - `LINUX_F_SETFD` (macro, line 1318) `#define LINUX_F_SETFD`
-  - `LINUX_F_GETFL` (macro, line 1319) `#define LINUX_F_GETFL`
-  - `LINUX_F_SETFL` (macro, line 1320) `#define LINUX_F_SETFL`
-  - `LINUX_F_DUPFD_CLOEXEC` (macro, line 1321) `#define LINUX_F_DUPFD_CLOEXEC`
-  - `LINUX_CLOSE_RANGE_UNSHARE` (macro, line 1322) `#define LINUX_CLOSE_RANGE_UNSHARE`
-  - `LINUX_CLOSE_RANGE_CLOEXEC` (macro, line 1323) `#define LINUX_CLOSE_RANGE_CLOEXEC`
-  - `LINUX_EFD_SEMAPHORE` (macro, line 1324) `#define LINUX_EFD_SEMAPHORE`
-  - `LINUX_EFD_NONBLOCK` (macro, line 1325) `#define LINUX_EFD_NONBLOCK`
-  - `LINUX_EFD_CLOEXEC` (macro, line 1326) `#define LINUX_EFD_CLOEXEC`
-  - `LINUX_EVENTFD_WORD` (macro, line 1327) `#define LINUX_EVENTFD_WORD`
-  - `FD_STD_COUNT` (macro, line 1328) `#define FD_STD_COUNT`
-  - `LINUX_MAP_SHARED` (macro, line 1770) `#define LINUX_MAP_SHARED`
-  - `LINUX_MAP_PRIVATE` (macro, line 1771) `#define LINUX_MAP_PRIVATE`
-  - `LINUX_MAP_FIXED` (macro, line 1772) `#define LINUX_MAP_FIXED`
-  - `LINUX_MAP_ANONYMOUS` (macro, line 1773) `#define LINUX_MAP_ANONYMOUS`
-  - `LINUX_MREMAP_MAYMOVE` (macro, line 2080) `#define LINUX_MREMAP_MAYMOVE`
-  - `LINUX_MREMAP_FIXED` (macro, line 2081) `#define LINUX_MREMAP_FIXED`
-  - `LINUX_TCGETS` (macro, line 2407) `#define LINUX_TCGETS`
-  - `LINUX_TIOCGWINSZ` (macro, line 2408) `#define LINUX_TIOCGWINSZ`
-  - `LINUX_FIONREAD` (macro, line 2409) `#define LINUX_FIONREAD`
-  - `LINUX_FIONBIO` (macro, line 2410) `#define LINUX_FIONBIO`
-  - `LINUX_FIONCLEX` (macro, line 2411) `#define LINUX_FIONCLEX`
-  - `LINUX_FIOCLEX` (macro, line 2412) `#define LINUX_FIOCLEX`
-  - `LINUX_TCGETS2` (macro, line 2413) `#define LINUX_TCGETS2`
-  - `LINUX_ENOTTY` (macro, line 2414) `#define LINUX_ENOTTY`
-  - `LINUX_WINSIZE_LEN` (macro, line 2415) `#define LINUX_WINSIZE_LEN`
-  - `LINUX_TERMIOS_LEN` (macro, line 2416) `#define LINUX_TERMIOS_LEN`
-  - `LINUX_TERMIOS2_LEN` (macro, line 2417) `#define LINUX_TERMIOS2_LEN`
-  - `LINUX_IOCTL_INT` (macro, line 2418) `#define LINUX_IOCTL_INT`
-  - `LINUX_RLIMIT_CPU` (macro, line 2542) `#define LINUX_RLIMIT_CPU`
-  - `LINUX_RLIMIT_STACK` (macro, line 2543) `#define LINUX_RLIMIT_STACK`
-  - `LINUX_RLIMIT_NOFILE` (macro, line 2544) `#define LINUX_RLIMIT_NOFILE`
-  - `LINUX_RLIMIT_AS` (macro, line 2545) `#define LINUX_RLIMIT_AS`
-  - `LINUX_RLIMIT_NLIMITS` (macro, line 2546) `#define LINUX_RLIMIT_NLIMITS`
-  - `LINUX_RLIM_INFINITY` (macro, line 2547) `#define LINUX_RLIM_INFINITY`
-  - `LINUX_RLIMIT_PAIR` (macro, line 2548) `#define LINUX_RLIMIT_PAIR`
-  - `LINUX_RLIMIT_TICKS_PER_S` (macro, line 2550) `#define LINUX_RLIMIT_TICKS_PER_S`
-  - `LINUX_CPUMASK_BYTES` (macro, line 2551) `#define LINUX_CPUMASK_BYTES`
-  - `LINUX_CLOCK_REALTIME` (macro, line 2616) `#define LINUX_CLOCK_REALTIME`
-  - `LINUX_CLOCK_MONOTONIC` (macro, line 2617) `#define LINUX_CLOCK_MONOTONIC`
-  - `LINUX_CLOCK_BOOTTIME` (macro, line 2618) `#define LINUX_CLOCK_BOOTTIME`
-  - `LINUX_TIMER_ABSTIME` (macro, line 2619) `#define LINUX_TIMER_ABSTIME`
-  - `LINUX_NS_PER_US` (macro, line 2620) `#define LINUX_NS_PER_US`
-  - `LINUX_US_PER_S` (macro, line 2621) `#define LINUX_US_PER_S`
-  - `LINUX_NS_PER_S` (macro, line 2622) `#define LINUX_NS_PER_S`
-  - `LINUX_SLEEP_MAX_S` (macro, line 2623) `#define LINUX_SLEEP_MAX_S`
-  - `PROC_SELF_EXE` (macro, line 2781) `#define PROC_SELF_EXE`
-  - `LINUX_SYSCALL_COUNT` (macro, line 2950) `#define LINUX_SYSCALL_COUNT`
-  - `SC_EXTRA_COUNT` (macro, line 3042) `#define SC_EXTRA_COUNT`
-  - `TRACE_HINT_NONE` (macro, line 3064) `#define TRACE_HINT_NONE`
-  - `TRACE_HINT_PATH` (macro, line 3065) `#define TRACE_HINT_PATH`
-  - `SC_RECORD_LEN` (macro, line 3103) `#define SC_RECORD_LEN`
-- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/batch.h`, `headers/block.h`, `headers/driver.h`, `headers/drivers/kbd.h`, `headers/futex.h`, `headers/ide.h`, `headers/ktime.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/randmix.h`, `headers/rcu.h`, `headers/rtc.h`, `headers/sanitize.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/spawn.h`, `headers/sync.h`, `headers/syscalls_proc.h`, `headers/vga_fb.h`, `headers/zip.h`
+  - `by` (function, line 224) `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to...`
+  - `boot` (function, line 478) `* boot (minfo_sleep_init from sched_init);`
+  - `unchanged` (function, line 1128) `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...`
+  - `EAGAIN` (function, line 1155) `* writer open is EAGAIN (-11, retry);`
+  - `EOF` (function, line 1156) `* is EOF (0). */ KFILE *o = kfd_get(0);`
+  - `node` (function, line 2128) `* mapping is one exact live VMA node (what mmap inserts);`
+  - `clock` (function, line 2665) `* clock (the monotonic TSC clock times it, as Linux does: glibc sends * every nanosleep here as a relative...`
+  - `long` (function, line 2671) `unsigned long (*now)(void);`
+  - `Discipline` (function, line 3210) `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok...`
+  - `readlink` (function, line 3364) `* readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);`
+  - `proc_spawn_elf` (function, line 3473) `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is...`
+  - `gfx_zoom_2x` (variable, line 421) `extern int gfx_zoom_2x;`
+  - `gfx_win_title` (variable, line 702) `extern const char *gfx_win_title;`
+  - `KFD_MAX` (macro, line 51) `#define KFD_MAX`
+  - `MINIOS_SYSCALL_BASE` (macro, line 242) `#define MINIOS_SYSCALL_BASE`
+  - `MINIOS_SYSCALL_COUNT` (macro, line 243) `#define MINIOS_SYSCALL_COUNT`
+  - `SYSCALL_TRACE` (macro, line 1099) `#define SYSCALL_TRACE`
+  - `SYS_NOISY_TIME` (macro, line 1119) `#define SYS_NOISY_TIME`
+  - `SYS_NOISY_KBD` (macro, line 1120) `#define SYS_NOISY_KBD`
+  - `SYS_NOISY_MOUSE` (macro, line 1121) `#define SYS_NOISY_MOUSE`
+  - `SYS_NOISY_GETC_RAW` (macro, line 1122) `#define SYS_NOISY_GETC_RAW`
+  - `LINUX_O_RDONLY` (macro, line 1309) `#define LINUX_O_RDONLY`
+  - `LINUX_O_WRONLY` (macro, line 1310) `#define LINUX_O_WRONLY`
+  - `LINUX_O_RDWR` (macro, line 1311) `#define LINUX_O_RDWR`
+  - `LINUX_O_APPEND` (macro, line 1312) `#define LINUX_O_APPEND`
+  - `LINUX_O_NONBLOCK` (macro, line 1313) `#define LINUX_O_NONBLOCK`
+  - `LINUX_O_DIRECT` (macro, line 1314) `#define LINUX_O_DIRECT`
+  - `LINUX_O_CLOEXEC` (macro, line 1315) `#define LINUX_O_CLOEXEC`
+  - `LINUX_FD_CLOEXEC` (macro, line 1316) `#define LINUX_FD_CLOEXEC`
+  - `LINUX_F_DUPFD` (macro, line 1317) `#define LINUX_F_DUPFD`
+  - `LINUX_F_GETFD` (macro, line 1318) `#define LINUX_F_GETFD`
+  - `LINUX_F_SETFD` (macro, line 1319) `#define LINUX_F_SETFD`
+  - `LINUX_F_GETFL` (macro, line 1320) `#define LINUX_F_GETFL`
+  - `LINUX_F_SETFL` (macro, line 1321) `#define LINUX_F_SETFL`
+  - `LINUX_F_DUPFD_CLOEXEC` (macro, line 1322) `#define LINUX_F_DUPFD_CLOEXEC`
+  - `LINUX_CLOSE_RANGE_UNSHARE` (macro, line 1323) `#define LINUX_CLOSE_RANGE_UNSHARE`
+  - `LINUX_CLOSE_RANGE_CLOEXEC` (macro, line 1324) `#define LINUX_CLOSE_RANGE_CLOEXEC`
+  - `LINUX_EFD_SEMAPHORE` (macro, line 1325) `#define LINUX_EFD_SEMAPHORE`
+  - `LINUX_EFD_NONBLOCK` (macro, line 1326) `#define LINUX_EFD_NONBLOCK`
+  - `LINUX_EFD_CLOEXEC` (macro, line 1327) `#define LINUX_EFD_CLOEXEC`
+  - `LINUX_EVENTFD_WORD` (macro, line 1328) `#define LINUX_EVENTFD_WORD`
+  - `FD_STD_COUNT` (macro, line 1329) `#define FD_STD_COUNT`
+  - `LINUX_MAP_SHARED` (macro, line 1771) `#define LINUX_MAP_SHARED`
+  - `LINUX_MAP_PRIVATE` (macro, line 1772) `#define LINUX_MAP_PRIVATE`
+  - `LINUX_MAP_FIXED` (macro, line 1773) `#define LINUX_MAP_FIXED`
+  - `LINUX_MAP_ANONYMOUS` (macro, line 1774) `#define LINUX_MAP_ANONYMOUS`
+  - `LINUX_MREMAP_MAYMOVE` (macro, line 2082) `#define LINUX_MREMAP_MAYMOVE`
+  - `LINUX_MREMAP_FIXED` (macro, line 2083) `#define LINUX_MREMAP_FIXED`
+  - `LINUX_TCGETS` (macro, line 2409) `#define LINUX_TCGETS`
+  - `LINUX_TIOCGWINSZ` (macro, line 2410) `#define LINUX_TIOCGWINSZ`
+  - `LINUX_FIONREAD` (macro, line 2411) `#define LINUX_FIONREAD`
+  - `LINUX_FIONBIO` (macro, line 2412) `#define LINUX_FIONBIO`
+  - `LINUX_FIONCLEX` (macro, line 2413) `#define LINUX_FIONCLEX`
+  - `LINUX_FIOCLEX` (macro, line 2414) `#define LINUX_FIOCLEX`
+  - `LINUX_TCGETS2` (macro, line 2415) `#define LINUX_TCGETS2`
+  - `LINUX_ENOTTY` (macro, line 2416) `#define LINUX_ENOTTY`
+  - `LINUX_WINSIZE_LEN` (macro, line 2417) `#define LINUX_WINSIZE_LEN`
+  - `LINUX_TERMIOS_LEN` (macro, line 2418) `#define LINUX_TERMIOS_LEN`
+  - `LINUX_TERMIOS2_LEN` (macro, line 2419) `#define LINUX_TERMIOS2_LEN`
+  - `LINUX_IOCTL_INT` (macro, line 2420) `#define LINUX_IOCTL_INT`
+  - `LINUX_RLIMIT_CPU` (macro, line 2544) `#define LINUX_RLIMIT_CPU`
+  - `LINUX_RLIMIT_STACK` (macro, line 2545) `#define LINUX_RLIMIT_STACK`
+  - `LINUX_RLIMIT_NOFILE` (macro, line 2546) `#define LINUX_RLIMIT_NOFILE`
+  - `LINUX_RLIMIT_AS` (macro, line 2547) `#define LINUX_RLIMIT_AS`
+  - `LINUX_RLIMIT_NLIMITS` (macro, line 2548) `#define LINUX_RLIMIT_NLIMITS`
+  - `LINUX_RLIM_INFINITY` (macro, line 2549) `#define LINUX_RLIM_INFINITY`
+  - `LINUX_RLIMIT_PAIR` (macro, line 2550) `#define LINUX_RLIMIT_PAIR`
+  - `LINUX_RLIMIT_TICKS_PER_S` (macro, line 2552) `#define LINUX_RLIMIT_TICKS_PER_S`
+  - `LINUX_CPUMASK_BYTES` (macro, line 2553) `#define LINUX_CPUMASK_BYTES`
+  - `LINUX_CLOCK_REALTIME` (macro, line 2618) `#define LINUX_CLOCK_REALTIME`
+  - `LINUX_CLOCK_MONOTONIC` (macro, line 2619) `#define LINUX_CLOCK_MONOTONIC`
+  - `LINUX_CLOCK_BOOTTIME` (macro, line 2620) `#define LINUX_CLOCK_BOOTTIME`
+  - `LINUX_TIMER_ABSTIME` (macro, line 2621) `#define LINUX_TIMER_ABSTIME`
+  - `LINUX_NS_PER_US` (macro, line 2622) `#define LINUX_NS_PER_US`
+  - `LINUX_US_PER_S` (macro, line 2623) `#define LINUX_US_PER_S`
+  - `LINUX_NS_PER_S` (macro, line 2624) `#define LINUX_NS_PER_S`
+  - `LINUX_SLEEP_MAX_S` (macro, line 2625) `#define LINUX_SLEEP_MAX_S`
+  - `PROC_SELF_EXE` (macro, line 2783) `#define PROC_SELF_EXE`
+  - `LINUX_SYSCALL_COUNT` (macro, line 2952) `#define LINUX_SYSCALL_COUNT`
+  - `SC_EXTRA_COUNT` (macro, line 3044) `#define SC_EXTRA_COUNT`
+  - `TRACE_HINT_NONE` (macro, line 3066) `#define TRACE_HINT_NONE`
+  - `TRACE_HINT_PATH` (macro, line 3067) `#define TRACE_HINT_PATH`
+  - `SC_RECORD_LEN` (macro, line 3105) `#define SC_RECORD_LEN`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/batch.h`, `headers/block.h`, `headers/driver.h`, `headers/drivers/kbd.h`, `headers/futex.h`, `headers/ide.h`, `headers/ktime.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/randmix.h`, `headers/rcu.h`, `headers/rtc.h`, `headers/sanitize.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/spawn.h`, `headers/sync.h`, `headers/syscalls_proc.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/zip.h`
 
 ## kernel/syscalls_proc.c
 - Doc: Process-management syscall handlers.

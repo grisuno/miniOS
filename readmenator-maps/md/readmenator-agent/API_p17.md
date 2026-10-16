@@ -1,496 +1,488 @@
-# API (page 17 of 19)
+# API (page 17 of 21)
 Previous: [API_p16.md](API_p16.md)
 
-## progs/src/freedom.c
-Depends on: `kernel/string.c`
-- `curlfree` (function) `progs/src/freedom.c:4` `* spirit of curlfree (http.c + htmlfilter.c): a bounded header phase, * Content-Length or EOF body reading...`
-- `net_dns_resolve` (function) `progs/src/freedom.c:41` `int net_dns_resolve(const char *host);` -- Ring-3 TLS build (phase 2 of docs/TLS_MIGRATION.md): host libc for sockets/stdio/strings (identical ABI numbers...
-- `tls_handshake` (function) `progs/src/freedom.c:42` `int tls_handshake(int fd, char *host);`
-- `tls_send` (function) `progs/src/freedom.c:43` `int tls_send(int fd, char *buf, int len);`
-- `tls_recv` (function) `progs/src/freedom.c:44` `int tls_recv(int fd, char *buf, int len);`
-- `socket` (function) `progs/src/freedom.c:52` `int socket(int domain, int type, int proto);` -- else
-- `connect` (function) `progs/src/freedom.c:53` `int connect(int fd, void *addr, int addrlen);`
-- `sendto` (function) `progs/src/freedom.c:54` `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
-- `recvfrom` (function) `progs/src/freedom.c:55` `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
-- `close` (function) `progs/src/freedom.c:56` `int close(int fd);`
-- `tls_close` (function) `progs/src/freedom.c:58` `static int tls_close(int fd)` -- Session-aware close (frees the TLS session for fd, no-op when none): every fetch path must use this, never raw...
-- `printf` (function) `progs/src/freedom.c:63` `int printf(char *fmt, ...);`
-- `puts` (function) `progs/src/freedom.c:64` `int puts(char *s);`
-- `strlen` (function) `progs/src/freedom.c:65` `int strlen(char *s);`
-- `strchr` (function) `progs/src/freedom.c:66` `char *strchr(char *s, int c);`
-- `strcmp` (function) `progs/src/freedom.c:67` `int strcmp(char *a, char *b);`
-- `strncmp` (function) `progs/src/freedom.c:68` `int strncmp(char *a, char *b, int n);`
-- `memcpy` (function) `progs/src/freedom.c:69` `int memcpy(char *dst, char *src, int n);`
-- `memset` (function) `progs/src/freedom.c:70` `int memset(char *dst, int c, int n);`
-- `putchar` (function) `progs/src/freedom.c:71` `int putchar(int c);`
-- `atoi` (function) `progs/src/freedom.c:151` `static int atoi(char *s)` -- static char f_dom[FREEDOM_DOM_BUF]; static int  f_domlen; static char f_css[FREEDOM_CSS_BUF]; static int  f_csslen...
-- `append` (function) `progs/src/freedom.c:166` `static int append(char *dst, int pos, char *src, int cap)` -- Append src to dst at pos; returns the new length or -1 when it does not fit.
-- `ci_lower` (function) `progs/src/freedom.c:176` `static int ci_lower(int c)`
-- `ci_starts` (function) `progs/src/freedom.c:182` `static int ci_starts(char *s, char *pre)` -- if (pos < 0) return -1; n = strlen(src); if (pos + n >= cap) return -1; memcpy(dst + pos, src, n); dst[pos + n] = 0...
-- `ci_eq` (function) `progs/src/freedom.c:193` `static int ci_eq(char *a, char *b)` -- } /* Case-insensitive starts-with. static int ci_starts(char *s, char *pre) { while (*pre) { if (!*s) return 0; if...
-- `ci_index` (function) `progs/src/freedom.c:203` `static int ci_index(char *s, char *needle)` -- return 1; } /* Case-insensitive equality. static int ci_eq(char *a, char *b) { while (*a && *b) { if (ci_lower(*a)...
-- `looks_like_url` (function) `progs/src/freedom.c:212` `static int looks_like_url(char *s)` -- } return *a == 0 && *b == 0; } /* Case-insensitive index of needle in haystack, or -1. static int ci_index(char *s...
-- `has_scheme` (function) `progs/src/freedom.c:226` `static int has_scheme(char *s)` -- Does s begin with "<scheme>:" per RFC 3986 (ALPHA *(ALPHA/DIGIT/+/-/.) ":")?
-- `make_search` (function) `progs/src/freedom.c:242` `static void make_search(char *out, char *query, int cap)` -- char c; c = s[0]; if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))) return 0; for (i = 1; s[i]; i++) { c =...
-- `split_url` (function) `progs/src/freedom.c:266` `static int split_url(char *url)` -- Split an http:// or https:// URL into f_host, f_path, f_port and f_secure.
-- `resolve_redirect` (function) `progs/src/freedom.c:313` `static int resolve_redirect(void)` -- Recompute f_host/f_path/f_port/f_secure from the last Location value.
-- `put_ws` (function) `progs/src/freedom.c:366` `static void put_ws(void)`
-- `put_utf` (function) `progs/src/freedom.c:377` `static void put_utf(int c)` -- Print one text byte through the UTF-8 gate.
-- `put_text` (function) `progs/src/freedom.c:427` `static void put_text(int c)` -- Print one text byte: whitespace collapses, everything else goes * through the UTF-8 gate.
-- `css_append` (function) `progs/src/freedom.c:483` `static void css_append(char *s, int n)`
-- `css_line` (function) `progs/src/freedom.c:489` `static void css_line(char *s)`
-- `dom_append` (function) `progs/src/freedom.c:494` `static void dom_append(char *s, int n)`
-- `dom_space` (function) `progs/src/freedom.c:500` `static void dom_space(void)`
-- `dom_nl` (function) `progs/src/freedom.c:504` `static void dom_nl(void)`
-- `record_attr` (function) `progs/src/freedom.c:509` `static void record_attr(void)` -- int i; for (i = 0; i < n && f_domlen < FREEDOM_DOM_BUF - 1; i++) f_dom[f_domlen++] = s[i]; } static void...
-- `is_void_tag` (function) `progs/src/freedom.c:534` `static int is_void_tag(void)` -- f_hreflen = f_vallen < 127 ? f_vallen : 127; memcpy(f_href, f_val, f_hreflen); f_href[f_hreflen] = 0; } else if...
-- `classify_tag` (function) `progs/src/freedom.c:546` `static void classify_tag(void)` -- A tag was fully collected into f_tagn (+ attributes).
-- `body_byte` (function) `progs/src/freedom.c:631` `static void body_byte(int c)` -- } dom_nl(); if (!is_void_tag()) f_depth++; } if (ci_eq(f_tagn, "br") || ci_eq(f_tagn, "p") || ci_eq(f_tagn, "div")...
-- `head_line` (function) `progs/src/freedom.c:796` `static void head_line(char *line)` -- f_rel_ss = 0; return; } if (c == '&') { f_entlen = 1; f_ent[0] = 0; return; } put_text(c); } /* --- HTTP
-- `parse_head` (function) `progs/src/freedom.c:821` `static void parse_head(void)` -- Parse the collected header block f_hdr[0..f_hlen-1] (the last four * bytes are the terminating CRLF CRLF).
-- `recv_body` (function) `progs/src/freedom.c:843` `static int recv_body(int fd, char *buf, int len)` -- f_hdr[lend] = 0; if (i == 0) { char *sp; sp = strchr(f_hdr, ' '); if (sp) f_status = atoi(sp + 1); } else if (lend >...
-- `send_all` (function) `progs/src/freedom.c:849` `static int send_all(int fd, char *buf, int len)` -- head_line(f_hdr + i); } f_hdr[lend] = '\r'; i = lend + 2; } } /* Receive body bytes: TLS for f_secure, plain TCP...
-- `fetch` (function) `progs/src/freedom.c:860` `static int fetch(char *host, char *path, int port)` -- Send one HTTP request and process the response body.
-- `fetch_css` (function) `progs/src/freedom.c:1031` `static void fetch_css(char *host, char *path)` -- Fetch a linked stylesheet and print its raw body (through the UTF-8 * gate).
-- `print_css_dump` (function) `progs/src/freedom.c:1113` `static void print_css_dump(void)` -- } continue; } f_ws = 0; put_utf(c); got++; } } tls_close(fd); putchar('\n'); printf("freedom: %s (%d bytes)\n"...
-- `print_dom_dump` (function) `progs/src/freedom.c:1122` `static void print_dom_dump(void)` -- putchar('\n'); printf("freedom: %s (%d bytes)\n", host, got); } /* Print the collected CSS dump. static void...
-- `main` (function) `progs/src/freedom.c:1129` `int main(int argc, char **argv)`
-
-## progs/src/freedom_wl.c
-Depends on: `headers/vga_fb.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/nk_palette.h`, `progs/wl/wl_mini.h`
-Imported by: `tests/test_freedom_wl.c`
-- `net_dns_resolve` (function) `progs/src/freedom_wl.c:42` `int net_dns_resolve(const char *host);`
-- `tls_handshake` (function) `progs/src/freedom_wl.c:43` `int tls_handshake(int fd, char *host);`
-- `tls_send` (function) `progs/src/freedom_wl.c:44` `int tls_send(int fd, char *buf, int len);`
-- `tls_recv` (function) `progs/src/freedom_wl.c:45` `int tls_recv(int fd, char *buf, int len);`
-- `tls_close` (function) `progs/src/freedom_wl.c:46` `void tls_close(int fd);`
-- `freedom_wl_surface_id` (function) `progs/src/freedom_wl.c:114` `static long freedom_wl_surface_id(void)` -- Logical Wayland-mini surface id for this client (ADR-0024).
-- `freedom_wl_surface_attach` (function) `progs/src/freedom_wl.c:129` `static long freedom_wl_surface_attach(FreedomWlConfig *c)` -- Attach this client to the wlcomp mapping: encode an attach message for the first pool and a commit for our surface...
-- `freedom_wl_default` (function) `progs/src/freedom_wl.c:158` `static FreedomWlConfig freedom_wl_default(void)` -- if (pool != WL_ID_POOL_BASE || w != (int)c->surface_w || h != (int)c->surface_h) return -1L; n =...
-- `freedom_wl_clip_rect` (function) `progs/src/freedom_wl.c:196` `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)` -- c.hops_max = WL_HOPS_MAX; c.font_w = WL_FONT_W; c.font_h = WL_FONT_H; c.port_http = 80L; c.port_https = 443L...
-- `freedom_wl_frame_bytes` (function) `progs/src/freedom_wl.c:227` `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)` -- } if (*x + *w > c->surface_w) { w = c->surface_w - *x; } if (*y + *h > c->surface_h) { h = c->surface_h - *y; } if...
-- `freedom_wl_keysym` (function) `progs/src/freedom_wl.c:246` `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)` -- if (w <= 0L || h <= 0L) { return -1L; } if (w > c->surface_w || h > c->surface_h) { return -1L; } bytes_per_pixel =...
-- `freedom_wl_sanitize_utf8` (function) `progs/src/freedom_wl.c:286` `static long freedom_wl_sanitize_utf8(char *s, long cap)` -- } if (make == 0x39L) { return 32L; } if (make == 0x0EL) { return 8L; } if (make == 0x0FL) { return 9L; } return -1L...
-- `freedom_wl_title_ok` (function) `progs/src/freedom_wl.c:359` `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)` -- i++; } if (o >= cap - 1L) { break; } } if (o >= cap) { return -1L; } s[o] = 0; return o; } /** Validate a window...
-- `wl_copy` (function) `progs/src/freedom_wl.c:370` `static long wl_copy(char *dst, char *src, long cap)` -- } /** Validate a window title against the kernel title bound. static long freedom_wl_title_ok(FreedomWlConfig *c...
-- `wl_strlen` (function) `progs/src/freedom_wl.c:388` `static long wl_strlen(char *s, long cap)` -- } i = 0L; while (src[i] != 0) { if (i + 1L >= cap) { return -1L; } dst[i] = src[i]; i++; } dst[i] = 0; return 0L; }...
-- `wl_append` (function) `progs/src/freedom_wl.c:404` `static long wl_append(char *dst, long pos, char *src, long cap)` -- if (!s || cap <= 0L) { return -1L; } i = 0L; while (i < cap && s[i] != 0) { i++; } if (i >= cap) { return -1L; }...
-- `wl_ci_lower` (function) `progs/src/freedom_wl.c:427` `static long wl_ci_lower(long ch)` -- } if (pos + n >= cap) { return -1L; } i = 0L; while (i < n) { dst[pos + i] = src[i]; i++; } dst[pos + n] = 0; return...
-- `wl_ci_starts` (function) `progs/src/freedom_wl.c:435` `static long wl_ci_starts(char *s, char *pre)` -- } dst[pos + n] = 0; return pos + n; } /** ASCII lowercase fold. static long wl_ci_lower(long ch) { if (ch >= 'A' &&...
-- `wl_ci_contains` (function) `progs/src/freedom_wl.c:453` `static long wl_ci_contains(char *s, char *needle)` -- while (*pre) { if (*s == 0) { return 0L; } if (wl_ci_lower(*s) != wl_ci_lower(*pre)) { return 0L; } s++; pre++; }...
-- `wl_has_scheme` (function) `progs/src/freedom_wl.c:467` `static long wl_has_scheme(char *s)` -- static long wl_ci_contains(char *s, char *needle) { if (!s || !needle) { return 0L; } while (*s) { if...
-- `wl_looks_like_url` (function) `progs/src/freedom_wl.c:493` `static long wl_looks_like_url(char *s)` -- ch = s[i]; if (ch == ':') { return 1L; } if (!((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' &&...
-- `wl_make_search` (function) `progs/src/freedom_wl.c:512` `static long wl_make_search(char *out, char *query, long cap)` -- dot = 0L; while (*s) { if (*s == ' ' || *s == '\t') { return 0L; } if (*s == '.') { dot = 1L; } s++; } return dot; }...
-- `wl_split_url` (function) `progs/src/freedom_wl.c:544` `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...` -- } else { out[pos] = *query; pos++; out[pos] = 0; } if (pos < 0L) { return -1L; } query++; } return pos; } /** Split...
-- `wl_resolve_redirect` (function) `progs/src/freedom_wl.c:609` `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...` -- if (plen < 0L) { return 0L; } if (wl_copy(path, p + hl, c->path_max) < 0L) { return 0L; } } else { path[0] = '/'...
-- `wl_scroll_clamp` (function) `progs/src/freedom_wl.c:689` `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)` -- if (last + 1L + l >= c->path_max) { return 0L; } i = 0L; while (i < l) { path[last + 1L + i] = loc[i]; i++; }...
-- `wl_filter_wrap` (function) `progs/src/freedom_wl.c:708` `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...` -- if (nlines <= c->text_rows) { return 0L; } maxoff = nlines - c->text_rows; if (off < 0L) { return 0L; } if (off >...
-- `wl_status_text` (function) `progs/src/freedom_wl.c:951` `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...` -- lines[li * linelen + co] = (char)ch; co++; lines[li * linelen + co] = 0; } if (co > 0L) { return li + 1L; } if (li...
-- `freedom_wl_build_palette` (function) `progs/src/freedom_wl.c:1039` `static long freedom_wl_build_palette(unsigned char *pal, long cap)` -- Shared hybrid palette, one table for every NK-window app (progs/nk_palette.h); this wrapper keeps the historic name...
-- `freedom_wl_sys_present` (function) `progs/src/freedom_wl.c:1062` `static long freedom_wl_sys_present(long buf, long origin)` -- static char w_host[WL_HOST_MAX]; static char w_path[WL_PATH_MAX]; static char w_loc[WL_URL_MAX]; static char...
-- `freedom_wl_sys_title` (function) `progs/src/freedom_wl.c:1069` `static long freedom_wl_sys_title(char *t)` -- static long w_nbytes; static long w_secure; static long w_port; static long w_status; static long w_truncated; /**...
-- `freedom_wl_sys_palette` (function) `progs/src/freedom_wl.c:1076` `static long freedom_wl_sys_palette(unsigned char *pal)` -- static long freedom_wl_sys_present(long buf, long origin) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `freedom_wl_sys_mouse` (function) `progs/src/freedom_wl.c:1083` `static long freedom_wl_sys_mouse(long *m)` -- static long freedom_wl_sys_title(char *t) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `freedom_wl_sys_kbd` (function) `progs/src/freedom_wl.c:1090` `static long freedom_wl_sys_kbd(void)` -- static long freedom_wl_sys_palette(unsigned char *pal) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `freedom_wl_sys_vga_mode` (function) `progs/src/freedom_wl.c:1097` `static long freedom_wl_sys_vga_mode(long on)` -- static long freedom_wl_sys_mouse(long *m) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `freedom_wl_sys_kbd_raw` (function) `progs/src/freedom_wl.c:1104` `static long freedom_wl_sys_kbd_raw(long on)` -- static long freedom_wl_sys_kbd(void) { long ret; __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_KBD)...
-- `freedom_wl_sys_yield` (function) `progs/src/freedom_wl.c:1111` `static long freedom_wl_sys_yield(void)` -- static long freedom_wl_sys_vga_mode(long on) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `wl_parse_headers` (function) `progs/src/freedom_wl.c:1118` `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...` -- static long freedom_wl_sys_kbd_raw(long on) { long ret; __asm__ volatile("syscall" : "=a"(ret)...
-- `wl_fetch_raw` (function) `progs/src/freedom_wl.c:1210` `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)` -- if (!wl_ci_starts(hdr + k, "text")) { istext = 0L; } } } line++; while (hdr[i] == '\r' || hdr[i] == '\n') { i++; } }...
-- `wl_render` (function) `progs/src/freedom_wl.c:1445` `static long wl_render(FreedomWlConfig *c, long off)` -- if (got < c->body_cap) { w_body[got] = (char)ch; got++; } else { w_truncated = 1L; } } } } tls_close((int)fd)...
-- `wl_browse` (function) `progs/src/freedom_wl.c:1532` `static long wl_browse(FreedomWlConfig *c)` -- long ink; if (bits & (0x80 >> px)) { ink = c->bar_fg; } else { ink = c->bar_bg; } fb[(c->text_rows * c->font_h +...
-- `freedom_wl_selftest` (function) `progs/src/freedom_wl.c:1613` `static long freedom_wl_selftest(void)` -- off = off + (long)m[3] * c->scroll_step; changed = 1L; } if (changed) { off = wl_scroll_clamp(c, off, w_nlines); if...
-- `freedom_wl_host_probe` (function) `progs/src/freedom_wl.c:1696` `int freedom_wl_host_probe(FreedomWlConfig *c)` -- return 1L; } if (freedom_wl_sys_kbd() > 0x7FFFFFFFL) { printf("freedom_wl: kbd out of range\n"); return 1L; }...
-- `main` (function) `progs/src/freedom_wl.c:1731` `int main(int argc, char **argv)` -- } buf[0] = 'h'; buf[1] = 'i'; buf[2] = 0; if (freedom_wl_sanitize_utf8(buf, 16L) != 2L) { return 1; } if...
-
-## progs/src/ftest.c
-- `fprintf` (function) `progs/src/ftest.c:4` `extern int fprintf(void *stream, const char *fmt, ...);` -- Exercises the kernel libc surface used by loaded .o programs: fprintf to stdout/stderr, snprintf into a buffer...
-- `snprintf` (function) `progs/src/ftest.c:5` `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);`
-- `printf` (function) `progs/src/ftest.c:6` `extern int printf(const char *fmt, ...);`
-- `exit` (function) `progs/src/ftest.c:7` `extern void exit(int code);`
-- `fopen` (function) `progs/src/ftest.c:11` `extern void *fopen(const char *path, const char *mode);`
-- `main` (function) `progs/src/ftest.c:13` `int main(int argc, char **argv)`
-
-## progs/src/hello.c
-- `printf` (function) `progs/src/hello.c:2` `extern int printf(const char *fmt, ...);` -- /* MiniOS test program — compiled as relocatable .o, loaded by kernel ELF loader
-- `main` (function) `progs/src/hello.c:4` `int main(int argc, char **argv)`
-
-## progs/src/http.c
-- `kernel` (function) `progs/src/http.c:3` `* Hostnames are resolved by the kernel (net_dns_resolve syscall). */ int socket(int domain, int type, int proto);`
-- `connect` (function) `progs/src/http.c:6` `int connect(int fd, void *addr, int addrlen);`
-- `sendto` (function) `progs/src/http.c:7` `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);`
-- `recvfrom` (function) `progs/src/http.c:8` `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);`
-- `shutdown` (function) `progs/src/http.c:9` `int shutdown(int fd, int how);`
-- `close` (function) `progs/src/http.c:10` `int close(int fd);`
-- `net_dns_resolve` (function) `progs/src/http.c:11` `int net_dns_resolve(const char *host);`
-- `puts` (function) `progs/src/http.c:12` `int puts(char *s);`
-- `printf` (function) `progs/src/http.c:13` `int printf(char *fmt, ...);`
-- `strlen` (function) `progs/src/http.c:14` `int strlen(char *s);`
-- `putchar` (function) `progs/src/http.c:15` `int putchar(int c);`
-- `atoi` (function) `progs/src/http.c:18` `int atoi(char *s)` -- int socket(int domain, int type, int proto); int connect(int fd, void *addr, int addrlen); int sendto(int fd, char...
-- `main` (function) `progs/src/http.c:29` `int main(int argc, char **argv)`
-
-## progs/src/json.c
-- `js_str` (function) `progs/src/json.c:5` `* members keep their key in js_str (the member value node) and their value * in the node itself, and object members...`
-- `free` (function) `progs/src/json.c:14` `void free();`
-- `printf` (function) `progs/src/json.c:15` `int printf();`
-- `putchar` (function) `progs/src/json.c:16` `int putchar();`
-- `puts` (function) `progs/src/json.c:17` `int puts();`
-- `strlen` (function) `progs/src/json.c:18` `int strlen();`
-- `strcmp` (function) `progs/src/json.c:19` `int strcmp();`
-- `fopen` (function) `progs/src/json.c:20` `void *fopen();`
-- `fclose` (function) `progs/src/json.c:21` `int fclose();`
-- `fread` (function) `progs/src/json.c:22` `int fread();`
-- `fseek` (function) `progs/src/json.c:23` `int fseek();`
-- `ftell` (function) `progs/src/json.c:24` `int ftell();`
-- `rewind` (function) `progs/src/json.c:25` `void rewind();`
-- `js_read_all` (function) `progs/src/json.c:58` `static char *js_read_all(const char *name, int *len)`
-- `js_new` (function) `progs/src/json.c:76` `static int js_new(void)`
-- `js_skip_ws` (function) `progs/src/json.c:81` `static void js_skip_ws(void)`
-- `js_peek` (function) `progs/src/json.c:89` `static int js_peek(void)`
-- `js_parse_string` (function) `progs/src/json.c:97` `static int js_parse_string(void)`
-- `js_parse_number` (function) `progs/src/json.c:133` `static int js_parse_number(void)`
-- `js_key_match` (function) `progs/src/json.c:143` `static int js_key_match(int child, const char *key)`
-- `js_parse_object` (function) `progs/src/json.c:147` `static int js_parse_object(void)`
-- `js_parse_array` (function) `progs/src/json.c:182` `static int js_parse_array(void)`
-- `js_parse_value` (function) `progs/src/json.c:211` `static int js_parse_value(void)`
-- `js_indent` (function) `progs/src/json.c:281` `static void js_indent(int n)`
-- `js_print_str` (function) `progs/src/json.c:286` `static void js_print_str(const char *s)`
-- `js_print_value` (function) `progs/src/json.c:303` `static void js_print_value(int node, int depth)`
-- `js_find_member` (function) `progs/src/json.c:347` `static int js_find_member(int obj, const char *key)`
-- `js_array_at` (function) `progs/src/json.c:357` `static int js_array_at(int arr, int idx)`
-- `js_query` (function) `progs/src/json.c:369` `static int js_query(int root, const char *path)`
-- `main` (function) `progs/src/json.c:401` `int main(int argc, char **argv)`
-
-## progs/src/kmem.c
-- `syscall3` (function) `progs/src/kmem.c:7` `static long syscall3(long n, long a1, long a2, long a3)` -- Kernel-pointer rejection probe.
-- `exit_now` (function) `progs/src/kmem.c:14` `static void exit_now(long code)`
-
-## progs/src/ldhello.c
-- `main` (function) `progs/src/ldhello.c:1` `int main(void)`
-
-## progs/src/lxabi.c
-Depends on: `headers/sched.h`, `kernel/string.c`, `kernel/time.c`
-- `report` (function) `progs/src/lxabi.c:64` `static void report(const char *name, int ok, const char *detail)`
-- `now_ms` (function) `progs/src/lxabi.c:74` `static long now_ms(void)`
-- `busy_wait_ms` (function) `progs/src/lxabi.c:80` `static void busy_wait_ms(long ms)`
-- `fork_probe` (function) `progs/src/lxabi.c:94` `static void fork_probe(uint64_t *out)` -- Raw clone(SIGCHLD) with known values in every callee-saved register and in * the argument registers; both sides...
-- `regs_match` (function) `progs/src/lxabi.c:131` `static int regs_match(const uint64_t *r)`
-- `check_fork_registers` (function) `progs/src/lxabi.c:137` `static void check_fork_registers(void)`
-- `check_fork_cow_kernel_write` (function) `progs/src/lxabi.c:159` `static void check_fork_cow_kernel_write(void)`
-- `worker` (function) `progs/src/lxabi.c:200` `static void *worker(void *arg)`
-- `check_threads` (function) `progs/src/lxabi.c:214` `static void check_threads(void)`
-- `detached_worker` (function) `progs/src/lxabi.c:244` `static void *detached_worker(void *arg)`
-- `check_detached_reaped` (function) `progs/src/lxabi.c:250` `static void check_detached_reaped(void)`
-- `signaller` (function) `progs/src/lxabi.c:274` `static void *signaller(void *arg)`
-- `check_condvar` (function) `progs/src/lxabi.c:284` `static void check_condvar(void)`
-- `check_pipe2_flags` (function) `progs/src/lxabi.c:306` `static void check_pipe2_flags(void)`
-- `check_pipe_blocking` (function) `progs/src/lxabi.c:333` `static void check_pipe_blocking(void)`
-- `check_pipe_epipe` (function) `progs/src/lxabi.c:355` `static void check_pipe_epipe(void)`
-- `check_writev_pipe` (function) `progs/src/lxabi.c:381` `static void check_writev_pipe(void)`
-- `check_poll` (function) `progs/src/lxabi.c:393` `static void check_poll(void)`
-- `check_eventfd` (function) `progs/src/lxabi.c:417` `static void check_eventfd(void)`
-- `check_close_range` (function) `progs/src/lxabi.c:442` `static void check_close_range(void)`
-- `check_time` (function) `progs/src/lxabi.c:454` `static void check_time(void)`
-- `check_mkdir` (function) `progs/src/lxabi.c:463` `static void check_mkdir(void)`
-- `check_limits` (function) `progs/src/lxabi.c:477` `static void check_limits(void)` -- The answers glibc sizes memory from: a finite stack limit (thread stacks default to it) and a CPU count that matches...
-- `mono_us` (function) `progs/src/lxabi.c:490` `static long mono_us(void)`
-- `check_sleep` (function) `progs/src/lxabi.c:499` `static void check_sleep(void)` -- Sleeps really wait: nanosleep for a relative interval, clock_nanosleep until an absolute monotonic deadline, and a...
-- `lxabi_sleeper` (function) `progs/src/lxabi.c:526` `static void *lxabi_sleeper(void *arg)` -- rc = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &abs_t, NULL); waited = mono_us() - t0...
-- `child_status` (function) `progs/src/lxabi.c:534` `static int child_status(void (*body)(void))` -- Fork a child that runs body, wait for it with a bounded spin and return * its wait status, or -1 when it never ended...
-- `abort_from_worker_body` (function) `progs/src/lxabi.c:554` `static void abort_from_worker_body(void)`
-- `lxabi_exit_group_worker` (function) `progs/src/lxabi.c:560` `static void *lxabi_exit_group_worker(void *arg)`
-- `exit_group_from_worker_body` (function) `progs/src/lxabi.c:566` `static void exit_group_from_worker_body(void)`
-- `wild_jump_body` (function) `progs/src/lxabi.c:572` `static void wild_jump_body(void)`
-- `process` (function) `progs/src/lxabi.c:580` `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
- * leaves the target aliv...`
-- `main` (function) `progs/src/lxabi.c:617` `int main(void)`
-
-## progs/src/lxhello.c
-- `lx_syscall3` (function) `progs/src/lxhello.c:11` `static long lx_syscall3(long n, long a1, long a2, long a3)`
-- `lx_strlen` (function) `progs/src/lxhello.c:23` `static unsigned long lx_strlen(const char *s)`
-- `lx_write` (function) `progs/src/lxhello.c:29` `static void lx_write(const char *s)`
-- `lx_write_int` (function) `progs/src/lxhello.c:33` `static void lx_write_int(long v)`
-- `lmain` (function) `progs/src/lxhello.c:46` `int lmain(long argc, char **argv)` -- static void lx_write_int(long v) { char buf[24]; int i = (int)sizeof(buf); int neg = 0; buf[--i] = 0; if (v < 0) {...
-
-## progs/src/lxnet.c
-Depends on: `kernel/string.c`
-- `report` (function) `progs/src/lxnet.c:49` `static void report(const char *name, int ok, const char *detail)`
-- `wait_for` (function) `progs/src/lxnet.c:55` `static int wait_for(int fd, short events)`
-- `read_all` (function) `progs/src/lxnet.c:62` `static int read_all(int fd, char *buf, size_t len)` -- static void report(const char *name, int ok, const char *detail) { if (ok) printf("lxnet: %s ok\n", name); else {...
-- `check_udp` (function) `progs/src/lxnet.c:73` `static void check_udp(const struct sockaddr_in *peer)`
-- `check_refused` (function) `progs/src/lxnet.c:150` `static void check_refused(const struct sockaddr_in *peer)` -- A non-blocking connect to a port nobody listens on fails through poll * (POLLERR) with SO_ERROR = ECONNREFUSED...
-- `check_tcp` (function) `progs/src/lxnet.c:174` `static void check_tcp(const struct sockaddr_in *peer)`
-- `check_misc` (function) `progs/src/lxnet.c:217` `static void check_misc(void)`
-- `dial` (function) `progs/src/lxnet.c:236` `static int dial(const char *host, const char *port)` -- if (fd >= 0) close(fd); struct addrinfo hints, *res = NULL; memset(&hints, 0, sizeof hints); hints.ai_family =...
-- `main` (function) `progs/src/lxnet.c:280` `int main(int argc, char **argv)`
-
-## progs/src/lxsecc.c
-Depends on: `kernel/string.c`
-- `report` (function) `progs/src/lxsecc.c:44` `static void report(const char *name, int ok, const char *detail)`
-- `exit_code_of` (function) `progs/src/lxsecc.c:53` `static int exit_code_of(int st)` -- Exit code of a reaped child under both encodings: Linux's status word (code << 8, signal in the low bits) and...
-- `run_child` (function) `progs/src/lxsecc.c:58` `static int run_child(void (*body)(void))`
-- `install_filter` (function) `progs/src/lxsecc.c:72` `static int install_filter(unsigned getpid_action)` -- Filter: arch guard, getpid -> ERRNO(err_getpid), write/exit/exit_group/ * rt_sigreturn/mprotect(no PROT_EXEC)/fork...
-- `child_errno_action` (function) `progs/src/lxsecc.c:100` `static void child_errno_action(void)`
-- `child_kill_action` (function) `progs/src/lxsecc.c:107` `static void child_kill_action(void)`
-- `child_wx` (function) `progs/src/lxsecc.c:116` `static void child_wx(void)` -- The page is the child's own anonymous mapping, made before the filter (which forbids mmap): a copy-on-write page...
-- `grandchild_inherits` (function) `progs/src/lxsecc.c:127` `static void grandchild_inherits(void)`
-- `child_inherit` (function) `progs/src/lxsecc.c:133` `static void child_inherit(void)`
-- `child_stacked` (function) `progs/src/lxsecc.c:142` `static void child_stacked(void)`
-- `child_strict` (function) `progs/src/lxsecc.c:150` `static void child_strict(void)`
-- `child_no_nnp` (function) `progs/src/lxsecc.c:157` `static void child_no_nnp(void)`
-- `child_bad_program` (function) `progs/src/lxsecc.c:165` `static void child_bad_program(void)`
-- `check_prctl_flags` (function) `progs/src/lxsecc.c:177` `static void check_prctl_flags(void)`
-- `check_proc_self_exe` (function) `progs/src/lxsecc.c:197` `static void check_proc_self_exe(const char *argv0)`
-- `main` (function) `progs/src/lxsecc.c:215` `int main(int argc, char **argv)`
-
-## progs/src/lxtls.c
-Depends on: `kernel/string.c`
-- `lxtls_sink` (function) `progs/src/lxtls.c:39` `static size_t lxtls_sink(char *data, size_t size, size_t nmemb, void *user)` -- Count the body without storing it: the probe proves transport, not * content.
-- `lxtls_debug` (function) `progs/src/lxtls.c:46` `static int lxtls_debug(CURL *h, curl_infotype type, char *data, size_t size, void *user)` -- Count the body without storing it: the probe proves transport, not * content. static size_t lxtls_sink(char *data...
-- `lxtls_step` (function) `progs/src/lxtls.c:65` `static int lxtls_step(const char *name, int ok)` -- return 0; for (i = 0; i <= size; i++) { if (i == size || data[i] == '\n') { size_t len = i - start; if (len > 0 &&...
-- `lxtls_rand` (function) `progs/src/lxtls.c:73` `static int lxtls_rand(void)` -- } fflush(stdout); return 0; } /* Report one RAND step and, on failure, OpenSSL's error queue. static int...
-- `main` (function) `progs/src/lxtls.c:87` `int main(int argc, char **argv)`
-
-## progs/src/lz4.c
-- `kernel` (function) `progs/src/lz4.c:6` `* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends...`
-- `free` (function) `progs/src/lz4.c:15` `void free();`
-- `printf` (function) `progs/src/lz4.c:16` `int printf();`
-- `strcmp` (function) `progs/src/lz4.c:17` `int strcmp();`
-- `strlen` (function) `progs/src/lz4.c:18` `int strlen();`
-- `fopen` (function) `progs/src/lz4.c:19` `void *fopen();`
-- `fclose` (function) `progs/src/lz4.c:20` `int fclose();`
-- `fread` (function) `progs/src/lz4.c:21` `int fread();`
-- `fwrite` (function) `progs/src/lz4.c:22` `int fwrite();`
-- `fseek` (function) `progs/src/lz4.c:23` `int fseek();`
-- `ftell` (function) `progs/src/lz4.c:24` `int ftell();`
-- `rewind` (function) `progs/src/lz4.c:25` `void rewind();`
-- `lz4_compress` (function) `progs/src/lz4.c:27` `int lz4_compress(char *src, int srclen, char *dst, int dstcap);`
-- `lz4_decompress` (function) `progs/src/lz4.c:28` `int lz4_decompress(char *src, int srclen, char *dst, int dstcap);`
-- `lz4_has` (function) `progs/src/lz4.c:39` `static int lz4_has(const char *s, const char *needle)`
-- `lz4_read_all` (function) `progs/src/lz4.c:53` `static char *lz4_read_all(const char *name, int *len)`
-- `lz4_write_all` (function) `progs/src/lz4.c:70` `static int lz4_write_all(const char *name, char *data, int len)`
-- `lz4_compress_file` (function) `progs/src/lz4.c:80` `static int lz4_compress_file(const char *src, const char *dst)`
-- `lz4_decompress_file` (function) `progs/src/lz4.c:117` `static int lz4_decompress_file(const char *src, const char *dst)`
-- `main` (function) `progs/src/lz4.c:164` `int main(int argc, char **argv)`
-
-## progs/src/lzss.c
-- `malloc` (function) `progs/src/lzss.c:13` `void *malloc();`
-- `free` (function) `progs/src/lzss.c:14` `void free();`
-- `printf` (function) `progs/src/lzss.c:15` `int printf();`
-- `strcmp` (function) `progs/src/lzss.c:16` `int strcmp();`
-- `strlen` (function) `progs/src/lzss.c:17` `int strlen();`
-- `fopen` (function) `progs/src/lzss.c:18` `void *fopen();`
-- `fclose` (function) `progs/src/lzss.c:19` `int fclose();`
-- `fread` (function) `progs/src/lzss.c:20` `int fread();`
-- `fwrite` (function) `progs/src/lzss.c:21` `int fwrite();`
-- `fseek` (function) `progs/src/lzss.c:22` `int fseek();`
-- `ftell` (function) `progs/src/lzss.c:23` `int ftell();`
-- `rewind` (function) `progs/src/lzss.c:24` `void rewind();`
-- `lz_in_getc` (function) `progs/src/lzss.c:64` `static int lz_in_getc(void)`
-- `lz_out_put` (function) `progs/src/lzss.c:69` `static void lz_out_put(int c)`
-- `lz_putbit1` (function) `progs/src/lzss.c:74` `static void lz_putbit1(void)`
-- `lz_putbit0` (function) `progs/src/lzss.c:84` `static void lz_putbit0(void)`
-- `lz_flush_bits` (function) `progs/src/lzss.c:93` `static void lz_flush_bits(void)`
-- `lz_out_literal` (function) `progs/src/lzss.c:97` `static void lz_out_literal(int c)`
-- `lz_out_pair` (function) `progs/src/lzss.c:105` `static void lz_out_pair(int x, int y)`
-- `lz_encode` (function) `progs/src/lzss.c:118` `static int lz_encode(void)`
-- `lz_getbit` (function) `progs/src/lzss.c:173` `static int lz_getbit(int n)`
-- `lz_decode` (function) `progs/src/lzss.c:189` `static int lz_decode(void)`
-- `lz_hdr_put` (function) `progs/src/lzss.c:218` `static void lz_hdr_put(char *h, int size)`
-- `lz_hdr_get` (function) `progs/src/lzss.c:229` `static int lz_hdr_get(char *h)`
-- `lz_has` (function) `progs/src/lzss.c:237` `static int lz_has(const char *s, const char *needle)`
-- `lz_read_all` (function) `progs/src/lzss.c:251` `static char *lz_read_all(const char *name, int *len)`
-- `lz_write_all` (function) `progs/src/lzss.c:268` `static int lz_write_all(const char *name, char *data, int len)`
-- `lz_compress` (function) `progs/src/lzss.c:278` `static int lz_compress(const char *src, const char *dst)`
-- `lz_decompress` (function) `progs/src/lzss.c:325` `static int lz_decompress(const char *src, const char *dst)`
-- `main` (function) `progs/src/lzss.c:397` `int main(int argc, char **argv)`
-
-## progs/src/mmreuse.c
-- `ENOMEM` (function) `progs/src/mmreuse.c:3` `* downward mmap cursor drains until a map fails with ENOMEM (-12);`
-- `mmap_anon` (function) `progs/src/mmreuse.c:7` `static long mmap_anon(long len)` -- mmap/munmap reclaim stress test.
-- `munmap` (function) `progs/src/mmreuse.c:21` `static long munmap(long addr, long len)`
-- `exit_now` (function) `progs/src/mmreuse.c:31` `static void exit_now(long code)`
-
-## progs/src/mprot.c
-- `mmap_anon` (function) `progs/src/mprot.c:11` `static long mmap_anon(long len)`
-- `mprotect_sys` (function) `progs/src/mprot.c:25` `static long mprotect_sys(long addr, long len, long prot)`
-- `write_str` (function) `progs/src/mprot.c:36` `static long write_str(const char *s, long n)`
-- `exit_now` (function) `progs/src/mprot.c:44` `static void exit_now(long code)`
-
-## progs/src/mthreads.h
-Depends on: `progs/minios_abi.h`
-Imported by: `progs/src/fptest.c`, `progs/src/scfuzz.c`, `progs/src/thdemo.c`
-- `m_syscall6` (function) `progs/src/mthreads.h:50` `static inline long m_syscall6(long n, long a, long b, long c)`
-- `myield` (function) `progs/src/mthreads.h:59` `static inline void myield(void)`
-- `mfutex_wait` (function) `progs/src/mthreads.h:63` `static inline long mfutex_wait(volatile int *addr, int val)`
-- `mfutex_wake` (function) `progs/src/mthreads.h:67` `static inline long mfutex_wake(volatile int *addr, int n)`
-- `mmutex_init` (function) `progs/src/mthreads.h:71` `static inline void mmutex_init(mmutex_t *m)`
-- `mmutex_lock` (function) `progs/src/mthreads.h:75` `static inline void mmutex_lock(mmutex_t *m)`
-- `mmutex_unlock` (function) `progs/src/mthreads.h:90` `static inline void mmutex_unlock(mmutex_t *m)`
-- `mthread_entry` (function) `progs/src/mthreads.h:98` `static void mthread_entry(void *p)` -- Thread entry trampoline: runs fn(arg), stores the return, exits 0. * The exit code is always 0; join reads retval...
-- `mthread_create` (function) `progs/src/mthreads.h:117` `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
-- `mthread_join` (function) `progs/src/mthreads.h:144` `static int mthread_join(mthread_t t, void **retval)` -- Join: wait4 (Linux semantics) answers the reaped pid and stores the status word; the thread always exits 0, so a...
-
-## progs/src/mtop.c
-- `syscall` (function) `progs/src/mtop.c:12` `* * All system figures come from the MINFO syscall (251): heap used / * free, ramdisk used / cap, MiniFS free /...`
-- `putchar` (function) `progs/src/mtop.c:35` `int putchar();`
-- `strlen` (function) `progs/src/mtop.c:36` `int strlen();`
-- `strcmp` (function) `progs/src/mtop.c:37` `int strcmp();`
-- `fopen` (function) `progs/src/mtop.c:38` `void *fopen();`
-- `fclose` (function) `progs/src/mtop.c:39` `int fclose();`
-- `fread` (function) `progs/src/mtop.c:40` `int fread();`
-- `rewind` (function) `progs/src/mtop.c:41` `void rewind();`
-- `socket` (function) `progs/src/mtop.c:42` `int socket();`
-- `close` (function) `progs/src/mtop.c:43` `int close();`
-- `net_dns_resolve` (function) `progs/src/mtop.c:44` `int net_dns_resolve();`
-- `sc3` (function) `progs/src/mtop.c:63` `static long sc3(long n, long a1, long a2, long a3)`
-- `mtop_time` (function) `progs/src/mtop.c:72` `static long mtop_time(void)`
-- `mtop_rtc` (function) `progs/src/mtop.c:76` `static long mtop_rtc(int *h, int *m, int *s)`
-- `mtop_key` (function) `progs/src/mtop.c:80` `static long mtop_key(void)`
-- `mtop_minfo` (function) `progs/src/mtop.c:84` `static long mtop_minfo(long sel, long *o1, long *o2)`
-- `emit` (function) `progs/src/mtop.c:90` `static void emit(char *s)`
-- `mtop_quit_key` (function) `progs/src/mtop.c:94` `static int mtop_quit_key(long k)`
-- `mtop_clear_ansi` (function) `progs/src/mtop.c:103` `static void mtop_clear_ansi(void)`
-- `mtop_clear` (function) `progs/src/mtop.c:113` `static void mtop_clear(void)`
-- `mtop_atoi` (function) `progs/src/mtop.c:117` `static int mtop_atoi(char *s)`
-- `mtop_putu` (function) `progs/src/mtop.c:136` `static void mtop_putu(long v)`
-- `mtop_put2` (function) `progs/src/mtop.c:158` `static void mtop_put2(int v)`
-- `mtop_put_kb` (function) `progs/src/mtop.c:163` `static void mtop_put_kb(long kb)`
-- `mtop_bar` (function) `progs/src/mtop.c:179` `static void mtop_bar(long v, long max, int w)`
-- `mtop_hist_max` (function) `progs/src/mtop.c:194` `static long mtop_hist_max(long *h, int n)`
-- `mtop_hist_push` (function) `progs/src/mtop.c:204` `static void mtop_hist_push(long *h, long v)`
-- `mtop_spark` (function) `progs/src/mtop.c:214` `static void mtop_spark(long *h, int n)`
-- `mtop_mem` (function) `progs/src/mtop.c:242` `static long mtop_mem(long *used, long *freeb, long *total)`
-- `mtop_cpu` (function) `progs/src/mtop.c:253` `static long mtop_cpu(long *count, long *busy)`
-- `mtop_disk_open` (function) `progs/src/mtop.c:289` `static void mtop_disk_open(void)`
-- `mtop_disk_read` (function) `progs/src/mtop.c:313` `static long mtop_disk_read(long *bytes)`
-- `mtop_net_probe` (function) `progs/src/mtop.c:337` `static long mtop_net_probe(long *dns_ms, long *sock_ok)`
-- `mtop_frame` (function) `progs/src/mtop.c:355` `static void mtop_frame(int n)`
-- `main` (function) `progs/src/mtop.c:531` `int main(int argc, char **argv)`
-
-## progs/src/mvrn.c
-- `mvrn_sc3` (function) `progs/src/mvrn.c:9` `static long mvrn_sc3(long n, long a1, long a2, long a3)` -- mvrn -- rename(82) syscall probe.
-- `mvrn_write` (function) `progs/src/mvrn.c:16` `static void mvrn_write(const char *s, unsigned long len)`
-- `mvrn_exit` (function) `progs/src/mvrn.c:20` `static void mvrn_exit(long code)`
-- `mvrn_fail` (function) `progs/src/mvrn.c:24` `static void mvrn_fail(int step)`
-- `lmain` (function) `progs/src/mvrn.c:32` `int lmain(void)`
-
-## progs/src/nx.c
-- `write_str` (function) `progs/src/nx.c:11` `static long write_str(const char *s, long n)`
-- `exit_now` (function) `progs/src/nx.c:19` `static void exit_now(long code)`
-
-## progs/src/opl3.c
+## progs/minicraft/minicraft.c
 Depends on: `kernel/string.c`, `progs/minios_abi.h`
-Imported by: `progs/piano/piano.c`
-- `sys_time` (function) `progs/src/opl3.c:36` `static long sys_time(void)`
-- `sys_open` (function) `progs/src/opl3.c:39` `static long sys_open(long on)`
-- `sys_submit` (function) `progs/src/opl3.c:42` `static long sys_submit(const void *buf, long len)`
-- `busy_ms` (function) `progs/src/opl3.c:46` `static void busy_ms(long ms)`
-- `opl3_set_instrument` (function) `progs/src/opl3.c:52` `static void opl3_set_instrument(opl3_chip *chip)` -- } static long sys_open(long on) { long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_OPEN),"D"(on):"rcx","r11","...
-- `opl3_note` (function) `progs/src/opl3.c:69` `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)`
-- `render` (function) `progs/src/opl3.c:77` `static void render(opl3_chip *chip, long ms, long *fail)` -- Render `ms` of the current note and stream it to the SB16.
-- `main` (function) `progs/src/opl3.c:107` `int main(void)`
+- `best_tool_for` (function) `progs/minicraft/minicraft.c:231` `static int best_tool_for(unsigned char b)`
+- `break_time_ms` (function) `progs/minicraft/minicraft.c:250` `static long break_time_ms(unsigned char b, int tool)`
+- `break_beep_for` (function) `progs/minicraft/minicraft.c:275` `static long break_beep_for(unsigned char b)`
+- `mc_toggle_zoom` (function) `progs/minicraft/minicraft.c:316` `static void mc_toggle_zoom(void)`
+- `save_world` (function) `progs/minicraft/minicraft.c:330` `static int save_world(void);`
+- `s_time_ms` (function) `progs/minicraft/minicraft.c:337` `static long s_time_ms(void)`
+- `s_kbd` (function) `progs/minicraft/minicraft.c:342` `static long s_kbd(void)`
+- `s_kbd_raw` (function) `progs/minicraft/minicraft.c:347` `static long s_kbd_raw(long on)`
+- `s_getc_raw` (function) `progs/minicraft/minicraft.c:359` `static long s_getc_raw(void)` -- Serial fallback for menus: SYS_KBD in raw mode carries PS/2 only, so a serial console can never drive a scancode...
+- `ser_get` (function) `progs/minicraft/minicraft.c:373` `static long ser_get(void)`
+- `ser_unget` (function) `progs/minicraft/minicraft.c:386` `static void ser_unget(unsigned char b)`
+- `menu_ser_key` (function) `progs/minicraft/minicraft.c:391` `static long menu_ser_key(long b)`
+- `kbd_drain` (function) `progs/minicraft/minicraft.c:428` `static void kbd_drain(void)` -- Drain stale scancodes (typematic repeats, a release that arrived with * its press) before leaving a menu, so they...
+- `s_vga` (function) `progs/minicraft/minicraft.c:433` `static long s_vga(long on)`
+- `s_pal` (function) `progs/minicraft/minicraft.c:438` `static long s_pal(const unsigned char *p)`
+- `s_present` (function) `progs/minicraft/minicraft.c:443` `static long s_present(void)`
+- `s_title` (function) `progs/minicraft/minicraft.c:448` `static long s_title(const char *t)`
+- `s_mouse` (function) `progs/minicraft/minicraft.c:453` `static long s_mouse(int *m)`
+- `s_zoom` (function) `progs/minicraft/minicraft.c:458` `static long s_zoom(long on)`
+- `s_yield` (function) `progs/minicraft/minicraft.c:463` `static void s_yield(void)`
+- `s_pcspk_init` (function) `progs/minicraft/minicraft.c:468` `static long s_pcspk_init(void)`
+- `beep` (function) `progs/minicraft/minicraft.c:478` `static void beep(long freq, long dur_ms)`
+- `pal_set` (function) `progs/minicraft/minicraft.c:497` `static void pal_set(int i, int r, int g, int b)`
+- `build_palette` (function) `progs/minicraft/minicraft.c:503` `static void build_palette(void)`
+- `in_world` (function) `progs/minicraft/minicraft.c:562` `static int in_world(int x, int y, int z)`
+- `chunk_of` (function) `progs/minicraft/minicraft.c:577` `static int chunk_of(int v)` -- (void)x; (void)y; return z >= 0 && z < MC_H; } static unsigned int hash2(int x, int y); static unsigned int...
+- `chunk_local` (function) `progs/minicraft/minicraft.c:581` `static int chunk_local(int v)`
+- `chunk_lidx` (function) `progs/minicraft/minicraft.c:586` `static int chunk_lidx(int lx, int ly, int z)`
+- `chunk_find` (function) `progs/minicraft/minicraft.c:592` `static int chunk_find(int cx, int cy)` -- O(1) fast path: DDA walks neighbours, so the last chunk almost always * hits; the 49-slot scan is the rare slow...
+- `world_max_recompute` (function) `progs/minicraft/minicraft.c:606` `static void world_max_recompute(void)`
+- `chunk_evict_slot` (function) `progs/minicraft/minicraft.c:615` `static int chunk_evict_slot(int cx, int cy)`
+- `chunk_ensure` (function) `progs/minicraft/minicraft.c:635` `static int chunk_ensure(int cx, int cy)`
+- `chunk_build_meta` (function) `progs/minicraft/minicraft.c:658` `static void chunk_build_meta(int slot)`
+- `col_recompute` (function) `progs/minicraft/minicraft.c:703` `static void col_recompute(int x, int y)`
+- `col_top_at` (function) `progs/minicraft/minicraft.c:728` `static int col_top_at(int x, int y)`
+- `light_recompute_col` (function) `progs/minicraft/minicraft.c:735` `static void light_recompute_col(int x, int y)`
+- `get_b` (function) `progs/minicraft/minicraft.c:764` `static unsigned char get_b(int x, int y, int z)`
+- `set_b` (function) `progs/minicraft/minicraft.c:774` `static void set_b(int x, int y, int z, unsigned char b)`
+- `set_b_raw` (function) `progs/minicraft/minicraft.c:790` `static void set_b_raw(int x, int y, int z, unsigned char b)`
+- `sky_light` (function) `progs/minicraft/minicraft.c:801` `static float sky_light(int x, int y, int z)` -- world_dirty = 1; } static void set_b_raw(int x, int y, int z, unsigned char b) { int s; if (z < 0 || z >= MC_H)...
+- `is_solid` (function) `progs/minicraft/minicraft.c:811` `static int is_solid(unsigned char b)`
+- `in_water_at` (function) `progs/minicraft/minicraft.c:814` `static int in_water_at(float x, float y, float z)`
+- `is_visible` (function) `progs/minicraft/minicraft.c:819` `static int is_visible(unsigned char b)`
+- `hash2` (function) `progs/minicraft/minicraft.c:823` `static unsigned int hash2(int x, int y)`
+- `hash2_seed` (function) `progs/minicraft/minicraft.c:830` `static unsigned int hash2_seed(int x, int y, unsigned int seed)`
+- `mc_smoothstep` (function) `progs/minicraft/minicraft.c:839` `static float mc_smoothstep(float t)`
+- `biome_fdiv` (function) `progs/minicraft/minicraft.c:846` `static int biome_fdiv(int v, int c)` -- Voronoi biome lattice: floor division so negatives land right.
+- `voro_site` (function) `progs/minicraft/minicraft.c:861` `static void voro_site(int cx, int cy, unsigned int seed, int cell,
+    int *sx, int *sy)`
+- `biome_voro` (function) `progs/minicraft/minicraft.c:869` `static int biome_voro(int x, int y, unsigned int seed, int cell,
+    int ox, int oy, unsigned int...`
+- `biome_desert` (function) `progs/minicraft/minicraft.c:893` `static int biome_desert(int x, int y, unsigned int seed)`
+- `biome_snow` (function) `progs/minicraft/minicraft.c:897` `static int biome_snow(int x, int y, unsigned int seed)`
+- `is_cave` (function) `progs/minicraft/minicraft.c:901` `static int is_cave(int x, int y, int z, unsigned int seed)`
+- `ground_h_seed` (function) `progs/minicraft/minicraft.c:909` `static int ground_h_seed(int x, int y, unsigned int seed)`
+- `inv_add` (function) `progs/minicraft/minicraft.c:931` `static int inv_add(int b, int n)`
+- `inv_remove` (function) `progs/minicraft/minicraft.c:945` `static int inv_remove(int b, int n)`
+- `decorate_column` (function) `progs/minicraft/minicraft.c:995` `static void decorate_column(int x, int y, unsigned int seed)`
+- `gen_terrain_chunk` (function) `progs/minicraft/minicraft.c:1034` `static void gen_terrain_chunk(int slot)`
+- `decorate_chunk` (function) `progs/minicraft/minicraft.c:1043` `static void decorate_chunk(int slot)`
+- `ensure_around_px` (function) `progs/minicraft/minicraft.c:1056` `static void ensure_around_px(float px, float py)` -- Keep a (2R+1)^2 ring of terrain around the player, an inner ring decorated, drop the rest (dirty chunks hit disk first).
+- `ensure_around` (function) `progs/minicraft/minicraft.c:1090` `static void ensure_around(void)`
+- `new_world` (function) `progs/minicraft/minicraft.c:1095` `static void new_world(unsigned int seed)` -- save_chunk_file(i); ch_used[i] = 0; if (ch_cache == i) ch_cache = -1; } } world_max_recompute(); } static void...
+- `mob_spawn_one` (function) `progs/minicraft/minicraft.c:1191` `static void mob_spawn_one(Pig *m, int id, int hp, long now)`
+- `pig_collides` (function) `progs/minicraft/minicraft.c:1243` `static int pig_collides(float x, float y, float z)`
+- `creeper_explode` (function) `progs/minicraft/minicraft.c:1257` `static void creeper_explode(Pig *c, long now)`
+- `creep_sense` (function) `progs/minicraft/minicraft.c:1325` `static void creep_sense(Pig *c, float *pdx, float *pdy, float *pdz, float *pd3)` -- Creeper perception in 3D: planar delta, eye-height delta and full distance.
+- `creep_has_los` (function) `progs/minicraft/minicraft.c:1337` `static int creep_has_los(Pig *c)` -- Voxel line of sight between creeper eyes and player eyes, sampled every half block.
+- `creep_separate` (function) `progs/minicraft/minicraft.c:1361` `static void creep_separate(Pig *p, int id, float dt)` -- Herd separation: creepers inside MC_CREEP_SEP_D push apart so the pack * never stacks on one tile and every one of...
+- `tick_mob` (function) `progs/minicraft/minicraft.c:1386` `static void tick_mob(Pig *p, int id, float dt, long now)`
+- `tick_pigs` (function) `progs/minicraft/minicraft.c:1512` `static void tick_pigs(float dt, long now)`
+- `face_color` (function) `progs/minicraft/minicraft.c:1520` `static unsigned char face_color(unsigned char b, int face)`
+- `sky_color` (function) `progs/minicraft/minicraft.c:1569` `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)`
+- `shade_block` (function) `progs/minicraft/minicraft.c:1602` `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,
+             ...`
+- `cast_ray` (function) `progs/minicraft/minicraft.c:1659` `static RayHit cast_ray(float ox, float oy, float oz, float dx, float dy, float dz, float maxd)`
+- `eye_z` (function) `progs/minicraft/minicraft.c:1750` `static float eye_z(void)`
+- `mc_glyph` (function) `progs/minicraft/minicraft.c:1817` `static int mc_glyph(char ch)`
+- `mc_pixel` (function) `progs/minicraft/minicraft.c:1825` `static void mc_pixel(int x, int y, unsigned char c)`
+- `mc_text` (function) `progs/minicraft/minicraft.c:1831` `static void mc_text(int x, int y, const char *s, unsigned char fg)`
+- `mc_text_bg` (function) `progs/minicraft/minicraft.c:1844` `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)`
+- `mc_block_name` (function) `progs/minicraft/minicraft.c:1857` `static const char *mc_block_name(unsigned char b)`
+- `mc_facing` (function) `progs/minicraft/minicraft.c:1877` `static char mc_facing(void)`
+- `cam_build` (function) `progs/minicraft/minicraft.c:1892` `static void cam_build(void)`
+- `render_terrain` (function) `progs/minicraft/minicraft.c:1910` `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,
+                      ...`
+- `mob_pixel` (function) `progs/minicraft/minicraft.c:1945` `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)`
+- `render_mob_array` (function) `progs/minicraft/minicraft.c:1979` `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,
+    float rx, float r...`
+- `render_pigs` (function) `progs/minicraft/minicraft.c:2030` `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)`
+- `render_frame` (function) `progs/minicraft/minicraft.c:2038` `static void render_frame(void)`
+- `sc_hist_push` (function) `progs/minicraft/minicraft.c:2151` `static void sc_hist_push(unsigned char b)`
+- `poll_kbd` (function) `progs/minicraft/minicraft.c:2162` `static void poll_kbd(void)`
+- `player_collides` (function) `progs/minicraft/minicraft.c:2355` `static int player_collides(float x, float y, float z)`
+- `move_x` (function) `progs/minicraft/minicraft.c:2379` `static void move_x(float nx)`
+- `move_y` (function) `progs/minicraft/minicraft.c:2384` `static void move_y(float ny)`
+- `move_z_abs` (function) `progs/minicraft/minicraft.c:2389` `static MoveResult move_z_abs(float nz)`
+- `block_intersects_player` (function) `progs/minicraft/minicraft.c:2404` `static int block_intersects_player(int bx, int by, int bz)`
+- `try_autostep` (function) `progs/minicraft/minicraft.c:2413` `static void try_autostep(float tx, float ty)`
+- `hurt` (function) `progs/minicraft/minicraft.c:2424` `static void hurt(int dmg, const char *why)`
+- `tick_player` (function) `progs/minicraft/minicraft.c:2449` `static void tick_player(float dt)`
+- `tick_water` (function) `progs/minicraft/minicraft.c:2548` `static void tick_water(long now)`
+- `tick_hunger` (function) `progs/minicraft/minicraft.c:2596` `static void tick_hunger(long now)`
+- `goal_text` (function) `progs/minicraft/minicraft.c:2608` `static const char *goal_text(void)`
+- `tick_goals` (function) `progs/minicraft/minicraft.c:2619` `static void tick_goals(void)`
+- `tick_discover` (function) `progs/minicraft/minicraft.c:2630` `static void tick_discover(long now)`
+- `tick_interact` (function) `progs/minicraft/minicraft.c:2668` `static void tick_interact(void)`
+- `mc_crc32` (function) `progs/minicraft/minicraft.c:2919` `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)`
+- `save_compute_crc` (function) `progs/minicraft/minicraft.c:2932` `static uint32_t save_compute_crc(const SaveHeader *hd)`
+- `chunk_path` (function) `progs/minicraft/minicraft.c:2938` `static void chunk_path(int cx, int cy, char *out, size_t n)`
+- `save_chunk_file` (function) `progs/minicraft/minicraft.c:2942` `static int save_chunk_file(int slot)`
+- `load_chunk_file` (function) `progs/minicraft/minicraft.c:2974` `static int load_chunk_file(int slot, int cx, int cy)`
+- `save_validate_loaded` (function) `progs/minicraft/minicraft.c:3056` `static int save_validate_loaded(void)`
+- `load_reset_runtime` (function) `progs/minicraft/minicraft.c:3075` `static void load_reset_runtime(void)`
+- `carve_blob` (function) `progs/minicraft/minicraft.c:3108` `static void carve_blob(const unsigned char *blob)` -- Import a 64x64x32 legacy blob into chunks (0..3, 0..3), then dirty so * region files persist it.
+- `load_world_legacy` (function) `progs/minicraft/minicraft.c:3137` `static int load_world_legacy(FILE *f)` -- Legacy raw save: fixed old_inv[12] layout is fragile if B_COUNT grows; * kept read-only for ancient saves, never...
+- `load_apply_player` (function) `progs/minicraft/minicraft.c:3175` `static void load_apply_player(const SaveHeader *hd)`
+- `load_world_v3` (function) `progs/minicraft/minicraft.c:3194` `static int load_world_v3(FILE *f, SaveHeader *hd)`
+- `load_world_v2` (function) `progs/minicraft/minicraft.c:3234` `static int load_world_v2(FILE *f, SaveHeader *hd)`
+- `load_world` (function) `progs/minicraft/minicraft.c:3271` `static int load_world(void)`
+- `selftest` (function) `progs/minicraft/minicraft.c:3345` `static int selftest(void)`
+- `census` (function) `progs/minicraft/minicraft.c:3606` `static int census(void)` -- 128x128 columns (64 biome cells): a 64-wide patch covers too few * 16-block biome cells and the desert rate...
+- `dumpstats` (function) `progs/minicraft/minicraft.c:3670` `static int dumpstats(void)`
+- `title_menu` (function) `progs/minicraft/minicraft.c:3754` `static int title_menu(int have_save, int *seed_io)`
+- `pause_menu` (function) `progs/minicraft/minicraft.c:3922` `static int pause_menu(int *seed_io)` -- Pause menu on ESC (Alt+F4 still kills the process kernel-side): * 0 = resume, 1 = new world with *seed_io, 2 = save...
+- `main` (function) `progs/minicraft/minicraft.c:4095` `int main(int argc, char **argv)`
 
-## progs/src/pcmap.c
-- `sc_open` (function) `progs/src/pcmap.c:12` `static long sc_open(const char *p)` -- pcmap probe: file-backed MAP_PRIVATE mmap shares text.
-- `sc_mmap` (function) `progs/src/pcmap.c:21` `static long sc_mmap(long len, long prot, long flags, long fd, long off)`
-- `sc_write` (function) `progs/src/pcmap.c:34` `static long sc_write(long fd, const char *s, long n)`
-- `sc_exit` (function) `progs/src/pcmap.c:42` `static void sc_exit(long code)`
-- `sc_fnv` (function) `progs/src/pcmap.c:46` `static unsigned long sc_fnv(const char *p, long n)`
-- `sc_hex8` (function) `progs/src/pcmap.c:56` `static void sc_hex8(unsigned long v, char *out)`
-- `sc_munmap` (function) `progs/src/pcmap.c:65` `static long sc_munmap(long addr, long len)`
+## progs/minios_abi.h
+Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/platform_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/lxproc.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
+- `DOOM_BACKBUF_ADDR` (function) `progs/minios_abi.h:128` `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...`
+- `clock_nanosleep` (function) `progs/minios_abi.h:334` `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...`
 
-## progs/src/pollready.c
-- `p_write` (function) `progs/src/pollready.c:26` `static long p_write(long fd, const char *s, long n)`
-- `p_strlen` (function) `progs/src/pollready.c:30` `static unsigned long p_strlen(const char *s)`
-- `p_puts` (function) `progs/src/pollready.c:36` `static void p_puts(long fd, const char *s)`
-- `p_atoi` (function) `progs/src/pollready.c:40` `static int p_atoi(const char *s)`
-- `p_parse_ip` (function) `progs/src/pollready.c:46` `static int p_parse_ip(const char *s, unsigned char out[4])`
-- `lmain` (function) `progs/src/pollready.c:63` `int lmain(long argc, char **argv)` -- int v = 0; int digits = 0; while (*s >= '0' && *s <= '9') { v = v * 10 + (*s - '0'); s++; digits++; } if (!digits ||...
+## progs/minios_png.h
+Imported by: `progs/file/file.c`, `progs/pokemon/platform_minios.c`, `tests/test_minios_png.c`
+- `mpng_332_idx` (function) `progs/minios_png.h:58` `static int mpng_332_idx(unsigned r, unsigned g, unsigned b)` -- static const char *mpng_left_candidates[MPNG_LEFT_N] = { "/icons/doom.png", "/icons/doomedit.png"...
+- `mpng_nearest` (function) `progs/minios_png.h:63` `static int mpng_nearest(const unsigned char *pal, long pal_n, unsigned r,
+                       ...` -- "/icons/nuklear.png", "/icons/vedit.png", "/icons/file.png", "/icons/shell.png", "/icons/paint.png"...
+- `mpng_center` (function) `progs/minios_png.h:84` `static int mpng_center(int outer, int inner)` -- for (k = 0; k < pal_n; k++) { long dr = (long)pal[k * 3] - (long)r; long dg = (long)pal[k * 3 + 1] - (long)g; long...
+- `mpng_fit_scale` (function) `progs/minios_png.h:93` `static int mpng_fit_scale(int sw, int sh, int boxw, int boxh)` -- } return (int)best; } /** Docstring: centered offset of inner inside outer, negative when unfit. static int...
+- `mpng_rgb_to_idx_scaled` (function) `progs/minios_png.h:108` `static int mpng_rgb_to_idx_scaled(const unsigned char *rgb, int sw, int sh,
+                     ...` -- int s = 1; int best = 1; if (sw <= 0 || sh <= 0 || boxw <= 0 || boxh <= 0) return -1; for (s = 1; s <= boxw && s <=...
+- `bound` (function) `progs/minios_png.h:140` `* its 512 source bound (pinned by the host suite), so icon and policy
+ * art never grow through t...`
+- `mpng_rgb_to_332_scaled` (function) `progs/minios_png.h:172` `static int mpng_rgb_to_332_scaled(const unsigned char *rgb, int sw, int sh,
+                     ...` -- int sy = y * sh / dh; for (x = 0; x < dw; x++) { int sx = x * sw / dw; const unsigned char *p = rgb + (sy * sw + sx)...
+- `mpng_blit_idx` (function) `progs/minios_png.h:196` `static int mpng_blit_idx(unsigned char *fb, int fw, int fh,
+                         const unsign...` -- if (dw > MPNG_MAX_DIM || dh > MPNG_MAX_DIM) return MPNG_ERR_BOUND; for (y = 0; y < dh; y++) { int sy = y * sh / dh...
+- `mpng_load_file` (function) `progs/minios_png.h:222` `static int mpng_load_file(const char *path, unsigned char **out, long *out_n,
+                   ...` -- int dy = oy + y; if (dy < 0 || dy >= fh) continue; for (x = 0; x < tw; x++) { int dx = ox + x; if (dx < 0 || dx >=...
 
-## progs/src/sbtone.c
+## progs/nk_palette.h
+Imported by: `progs/freedomui/freedomui_minios.c`, `progs/nuklear/nuklear_minios.c`, `progs/src/freedom_wl.c`, `progs/wl/wlcomp.c`, `tests/test_wl.c`
+- `nk_palette_build` (function) `progs/nk_palette.h:22` `static int nk_palette_build(unsigned char *pal, long cap)`
+
+## progs/nuklear/cvm_emit.c
+Depends on: `kernel/string.c`, `progs/nuklear/cvm_emit.h`
+- `module` (function) `progs/nuklear/cvm_emit.c:3` `* * Emits a cvm2 module (format v2) from a dataflow graph. Nodes are * topologically sorted (a true DAG order, so...`
+- `code` (function) `progs/nuklear/cvm_emit.c:8` `* exit code (OP_HALT leaves the operand-stack top as the exit status, which
+ * the shell reports ...`
+- `cb_push` (function) `progs/nuklear/cvm_emit.c:79` `static int cb_push(struct codebuf *cb, unsigned char c)`
+- `cb_u32` (function) `progs/nuklear/cvm_emit.c:91` `static int cb_u32(struct codebuf *cb, unsigned long v)`
+- `cb_i64` (function) `progs/nuklear/cvm_emit.c:97` `static int cb_i64(struct codebuf *cb, long long v)`
+- `cb_patch_u32` (function) `progs/nuklear/cvm_emit.c:103` `static void cb_patch_u32(struct codebuf *cb, size_t pos, unsigned long v)`
+- `cb_imm` (function) `progs/nuklear/cvm_emit.c:111` `static int cb_imm(struct codebuf *cb, long long v)` -- static int cb_i64(struct codebuf *cb, long long v) { for (int i = 0; i < 8; i++) if (cb_push(cb, (unsigned char)(v...
+- `req_inputs` (function) `progs/nuklear/cvm_emit.c:126` `static int req_inputs(enum cvm_node_type t)` -- if (v >= -128 && v <= 127) { if (cb_push(cb, OP_PUSH_IMM8) < 0) return -1; if (cb_push(cb, (unsigned char)(v &...
+- `is_sink` (function) `progs/nuklear/cvm_emit.c:145` `static int is_sink(enum cvm_node_type t)`
+- `topo_sort` (function) `progs/nuklear/cvm_emit.c:150` `static int topo_sort(const struct cvm_node *nodes, int n,
+                     int *order, char *...` -- case NODE_EXIT: return 1; case NODE_IF: return 3; default: return 2; } } static int is_sink(enum cvm_node_type t) {...
+- `emit_operand` (function) `progs/nuklear/cvm_emit.c:213` `static int emit_operand(struct codebuf *code, const struct cvm_node *nodes,
+                     ...` -- Emit one operand: the wired local slot or the fallback literal.
+- `emit_jz` (function) `progs/nuklear/cvm_emit.c:224` `static int emit_jz(struct codebuf *code, size_t *rel_pos)`
+- `emit_jmp` (function) `progs/nuklear/cvm_emit.c:230` `static int emit_jmp(struct codebuf *code, size_t *rel_pos)`
+- `cvm_compile` (function) `progs/nuklear/cvm_emit.c:236` `int cvm_compile(const struct cvm_node *nodes, int n,
+                unsigned char **out, size_t ...`
+- `w32` (function) `progs/nuklear/cvm_emit.c:491` `void w32(void *p, unsigned v)` -- size_t ft = (size_t)nf * CVM_FUNC_ENTRY_SIZE; size_t gt = (size_t)ng * CVM_GLOBAL_ENTRY_SIZE; size_t nt = (size_t)nn...
+
+## progs/nuklear/cvm_emit.h
+Imported by: `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`
+- `graph` (function) `progs/nuklear/cvm_emit.h:6` `* * A node graph (constants, arithmetic, bitwise, comparisons, a conditional * select, and string constants feeding...`
+- `err` (function) `progs/nuklear/cvm_emit.h:67` `* err (err_cap bytes). The module is heap-allocated and owned by the caller * (free it). */ int cvm_compile(const...`
+
+## progs/nuklear/node_editor.c
+Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/cvm_emit.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+- `node_inputs` (function) `progs/nuklear/node_editor.c:96` `static int node_inputs(int k)`
+- `node_outputs` (function) `progs/nuklear/node_editor.c:101` `static int node_outputs(int k)`
+- `kind_name` (function) `progs/nuklear/node_editor.c:106` `static const char *kind_name(int k)`
+- `kind_color` (function) `progs/nuklear/node_editor.c:111` `static struct nk_color kind_color(int k)`
+- `graph_clear` (function) `progs/nuklear/node_editor.c:116` `static void graph_clear(void)`
+- `graph_add` (function) `progs/nuklear/node_editor.c:122` `static int graph_add(int kind)`
+- `graph_del` (function) `progs/nuklear/node_editor.c:136` `static void graph_del(int idx)`
+- `graph_to_compiler` (function) `progs/nuklear/node_editor.c:154` `static int graph_to_compiler(struct cvm_node *out, int cap)` -- g_count--; for (int i = 0; i < g_count; i++) for (int k = 0; k < 3; k++) { if (g_nodes[i].in[k] == idx) {...
+- `repair_graph` (function) `progs/nuklear/node_editor.c:176` `static int repair_graph(char *rep, size_t repcap, char *herr, size_t herrcap,
+                   ...` -- Pre-compile pass: repair every open data input with a const 0 fallback (an open PrStr prints an empty line), so...
+- `addrep` (function) `progs/nuklear/node_editor.c:183` `void addrep(const char *s)`
+- `adderr` (function) `progs/nuklear/node_editor.c:193` `void adderr(const char *s)`
+- `compile_to` (function) `progs/nuklear/node_editor.c:283` `static int compile_to(const char *path)` -- Compile the current graph to a file.
+- `write_quoted` (function) `progs/nuklear/node_editor.c:339` `static void write_quoted(FILE *f, const char *s)` -- --- Headless graph text format (v2, backward compatible) ---- num a 5          str s "hi"       add b a c      add c...
+- `save_graph_file` (function) `progs/nuklear/node_editor.c:392` `static int save_graph_file(const char *path)`
+- `parse_graph_file` (function) `progs/nuklear/node_editor.c:430` `static int parse_graph_file(const char *path)`
+- `resolve` (function) `progs/nuklear/node_editor.c:437` `int resolve(const char *nme, int upto)`
+- `parse_input` (function) `progs/nuklear/node_editor.c:443` `int parse_input(const char *tok, int idx, int k)` -- static int parse_graph_file(const char *path) { FILE *f = fopen(path, "r"); if (!f) return -1; graph_clear(); static...
+- `pin_y` (function) `progs/nuklear/node_editor.c:522` `static float pin_y(struct gnode *n, int slot, int is_output)` -- /* Link-drag state: click an output pin, drag to an input pin. static int linking_active; static int...
+- `node_h` (function) `progs/nuklear/node_editor.c:534` `static float node_h(struct gnode *n)`
+- `ui_inspector` (function) `progs/nuklear/node_editor.c:542` `static void ui_inspector(struct nk_context *ctx)`
+- `ui_build` (function) `progs/nuklear/node_editor.c:622` `static void ui_build(struct nk_context *ctx, float win_w, float win_h)`
+- `gui_run` (function) `progs/nuklear/node_editor.c:931` `static void gui_run(void)` -- circle.y = pin_y(n, k, 0) - PIN_R + oy; circle.w = PIN_DIAM; circle.h = PIN_DIAM; nk_fill_circle(canvas, circle...
+- `main` (function) `progs/nuklear/node_editor.c:983` `int main(int argc, char **argv)`
+
+## progs/nuklear/nuklear_minios.c
+Depends on: `kernel/string.c`, `progs/nk_palette.h`, `progs/nuklear/nuklear_minios.h`, `progs/wl/wl_client.h`, `progs/wl/wl_mbox.h`
+- `list` (function) `progs/nuklear/nuklear_minios.c:4` `* abstract draw command list (nk__begin/nk__next);`
+- `nk_sys_time_ms` (function) `progs/nuklear/nuklear_minios.c:33` `long nk_sys_time_ms(void)` -- #include <string.h> #include <stdio.h> #include <math.h> #include "nuklear_minios.h" /* glibc program name for the...
+- `nk_sys_kbd` (function) `progs/nuklear/nuklear_minios.c:38` `long nk_sys_kbd(void)`
+- `nk_sys_palette` (function) `progs/nuklear/nuklear_minios.c:43` `long nk_sys_palette(const unsigned char *pal)`
+- `nk_sys_kbd_raw` (function) `progs/nuklear/nuklear_minios.c:48` `long nk_sys_kbd_raw(int on)`
+- `nk_sys_getpid` (function) `progs/nuklear/nuklear_minios.c:53` `long nk_sys_getpid(void)`
+- `nk_client_probe` (function) `progs/nuklear/nuklear_minios.c:72` `static int nk_client_probe(void)`
+- `nk_sys_vga_mode` (function) `progs/nuklear/nuklear_minios.c:114` `long nk_sys_vga_mode(int on)`
+- `nk_sys_fb_info` (function) `progs/nuklear/nuklear_minios.c:121` `long nk_sys_fb_info(int *w, int *h, int *pitch)`
+- `nk_sys_fb_info_rgb` (function) `progs/nuklear/nuklear_minios.c:137` `static long nk_sys_fb_info_rgb(int *w, int *h, int *pitch, int *rgb)`
+- `nk_rgb_available` (function) `progs/nuklear/nuklear_minios.c:147` `int nk_rgb_available(void)`
+- `rgb256_prepare` (function) `progs/nuklear/nuklear_minios.c:162` `static void rgb256_prepare(void)`
+- `nk_idx_to_rgb` (function) `progs/nuklear/nuklear_minios.c:170` `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g,
+                   unsigned char *b)`
+- `cur_set` (function) `progs/nuklear/nuklear_minios.c:186` `static void cur_set(struct nk_color c)`
+- `cur_bg_set` (function) `progs/nuklear/nuklear_minios.c:190` `static void cur_bg_set(struct nk_color c)`
+- `nk_sys_mouse` (function) `progs/nuklear/nuklear_minios.c:193` `long nk_sys_mouse(int *xybw)`
+- `nk_sys_mouse_badptr` (function) `progs/nuklear/nuklear_minios.c:198` `long nk_sys_mouse_badptr(void)`
+- `nk_client_hash` (function) `progs/nuklear/nuklear_minios.c:216` `static unsigned nk_client_hash(const unsigned char *p, unsigned n)`
+- `nk_client_publish` (function) `progs/nuklear/nuklear_minios.c:227` `static int nk_client_publish(void)`
+- `nk_sys_nk_frame` (function) `progs/nuklear/nuklear_minios.c:280` `long nk_sys_nk_frame(int *origin)`
+- `nk_mirror_box` (function) `progs/nuklear/nuklear_minios.c:314` `static void nk_mirror_box(char *dst, int cap)`
+- `nk_mirror_emit` (function) `progs/nuklear/nuklear_minios.c:335` `static int nk_mirror_emit(const char *box, unsigned seq,
+        const unsigned char *msg, int mlen)`
+- `nk_mirror_tick` (function) `progs/nuklear/nuklear_minios.c:352` `static void nk_mirror_tick(void)`
+- `nk_sys_gfx_set_title` (function) `progs/nuklear/nuklear_minios.c:409` `long nk_sys_gfx_set_title(const char *t)`
+- `nk_build_palette` (function) `progs/nuklear/nuklear_minios.c:418` `void nk_build_palette(unsigned char *pal768)` -- The desktop-exact hybrid palette lives once in progs/nk_palette.h; * this wrapper keeps the platform signature while...
+- `pal_prepare` (function) `progs/nuklear/nuklear_minios.c:427` `static void pal_prepare(void)`
+- `col_to_idx` (function) `progs/nuklear/nuklear_minios.c:438` `static int col_to_idx(struct nk_color c)`
+- `set_clip` (function) `progs/nuklear/nuklear_minios.c:469` `static void set_clip(int x, int y, int w, int h)`
+- `px` (function) `progs/nuklear/nuklear_minios.c:479` `static void px(int x, int y, int c)`
+- `px_bg` (function) `progs/nuklear/nuklear_minios.c:492` `static void px_bg(int x, int y, int c)` -- static void px(int x, int y, int c) { volatile uint8_t *d; if (x < clip_x || x >= clip_x + clip_w) return; if (y <...
+- `px_idx` (function) `progs/nuklear/nuklear_minios.c:506` `static void px_idx(int x, int y, int c)` -- Index-owned pixels (IMAGE commands): RGB resolves through the exact * rgb256 table, so both buffers agree without a...
+- `fill_rect` (function) `progs/nuklear/nuklear_minios.c:522` `static void fill_rect(int x, int y, int w, int h, int c)`
+- `draw_line` (function) `progs/nuklear/nuklear_minios.c:529` `static void draw_line(int x0, int y0, int x1, int y1, int th, int c)`
+- `fill_circle` (function) `progs/nuklear/nuklear_minios.c:547` `static void fill_circle(int cx, int cy, int r, int c)`
+- `stroke_circle` (function) `progs/nuklear/nuklear_minios.c:553` `static void stroke_circle(int cx, int cy, int r, int th, int c)`
+- `fill_poly` (function) `progs/nuklear/nuklear_minios.c:571` `static void fill_poly(int *xs, int *ys, int n, int c)` -- draw_line(cx + x, cy - y, cx - x, cy - y, th, c); draw_line(cx - x, cy + y, cx - x, cy - y, th, c); draw_line(cx +...
+- `stroke_poly` (function) `progs/nuklear/nuklear_minios.c:594` `static void stroke_poly(int *xs, int *ys, int n, int th, int c)`
+- `draw_text` (function) `progs/nuklear/nuklear_minios.c:601` `static void draw_text(int x, int y, const char *s, int len, int fg, int bg)`
+- `draw_arc` (function) `progs/nuklear/nuklear_minios.c:615` `static void draw_arc(int cx, int cy, int r, float a0, float a1,
+                     int filled, ...`
+- `nk_rasterize` (function) `progs/nuklear/nuklear_minios.c:636` `void nk_rasterize(struct nk_context *ctx)`
+- `nk_foreach` (function) `progs/nuklear/nuklear_minios.c:641` `nk_foreach(cmd, ctx)`
+- `nk_minios_font_width` (function) `progs/nuklear/nuklear_minios.c:813` `static float nk_minios_font_width(nk_handle handle, float height,
+                               ...` -- im->px[iy * im->w + ix]); } } break; } case NK_COMMAND_CUSTOM: break; default: break; } } } /* ---- Font (8x8...
+- `nk_minios_font` (function) `progs/nuklear/nuklear_minios.c:819` `struct nk_user_font nk_minios_font(void)`
+- `feed_key` (function) `progs/nuklear/nuklear_minios.c:854` `static void feed_key(struct nk_context *ctx, enum nk_keys key, int down)`
+- `nk_set_scancode_hook` (function) `progs/nuklear/nuklear_minios.c:861` `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud)`
+- `handle_scancode` (function) `progs/nuklear/nuklear_minios.c:866` `static void handle_scancode(struct nk_context *ctx, unsigned char sc)`
+- `nk_client_poll` (function) `progs/nuklear/nuklear_minios.c:914` `static void nk_client_poll(struct nk_context *ctx)` -- Client input pump: feed the pending .ev batch when its seq advanced, else hold the last state.
+- `nk_poll_input` (function) `progs/nuklear/nuklear_minios.c:961` `void nk_poll_input(struct nk_context *ctx)`
+- `nk_set_window_origin` (function) `progs/nuklear/nuklear_minios.c:1000` `void nk_set_window_origin(int x, int y)`
+- `nk_quit_requested` (function) `progs/nuklear/nuklear_minios.c:1008` `int nk_quit_requested(void)` -- WM quit gesture latch: ESC or Alt+F4 pressed since the last poll.
+
+## progs/nuklear/nuklear_minios.h
 Depends on: `progs/minios_abi.h`
-- `buffers` (function) `progs/src/sbtone.c:14` `*
- * Exit code is the number of submitted buffers (0 on failure to open).
- */
+Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/font8x8.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`
+- `nk_rgb_available` (function) `progs/nuklear/nuklear_minios.h:33` `int nk_rgb_available(void);` -- RGB companion buffer (R,G,B byte order, NK_W x NK_H).
+- `nk_idx_to_rgb` (function) `progs/nuklear/nuklear_minios.h:37` `void nk_idx_to_rgb(int idx, unsigned char *r, unsigned char *g, unsigned char *b);` -- Resolve one hybrid palette index to its exact RGB triple (canvas and preview mirrors that own indexed pixels reuse...
+- `nk_sys_time_ms` (function) `progs/nuklear/nuklear_minios.h:41` `long nk_sys_time_ms(void);` -- Resolve one hybrid palette index to its exact RGB triple (canvas and preview mirrors that own indexed pixels reuse...
+- `nk_sys_kbd` (function) `progs/nuklear/nuklear_minios.h:42` `long nk_sys_kbd(void);`
+- `nk_sys_palette` (function) `progs/nuklear/nuklear_minios.h:43` `long nk_sys_palette(const unsigned char *pal768);`
+- `nk_sys_kbd_raw` (function) `progs/nuklear/nuklear_minios.h:44` `long nk_sys_kbd_raw(int on);`
+- `nk_sys_vga_mode` (function) `progs/nuklear/nuklear_minios.h:45` `long nk_sys_vga_mode(int on);`
+- `nk_sys_fb_info` (function) `progs/nuklear/nuklear_minios.h:46` `long nk_sys_fb_info(int *w, int *h, int *pitch);`
+- `nk_sys_mouse` (function) `progs/nuklear/nuklear_minios.h:47` `long nk_sys_mouse(int *xybw);`
+- `nk_sys_mouse_badptr` (function) `progs/nuklear/nuklear_minios.h:51` `long nk_sys_mouse_badptr(void);` -- Call SYS_MOUSE with a pointer that is NOT in the user window; the kernel must reject it with -EFAULT.
+- `nk_sys_nk_frame` (function) `progs/nuklear/nuklear_minios.h:52` `long nk_sys_nk_frame(int *origin);`
+- `nk_sys_gfx_set_title` (function) `progs/nuklear/nuklear_minios.h:53` `long nk_sys_gfx_set_title(const char *t);` -- Call SYS_MOUSE with a pointer that is NOT in the user window; the kernel must reject it with -EFAULT.
+- `nk_build_palette` (function) `progs/nuklear/nuklear_minios.h:57` `void nk_build_palette(unsigned char *pal768);` -- Hybrid palette: indices 0-14 are the desktop colors (kept so the desktop * behind the window never recolors); 15-255...
+- `nk_minios_font` (function) `progs/nuklear/nuklear_minios.h:63` `struct nk_user_font nk_minios_font(void);` -- Hybrid palette: indices 0-14 are the desktop colors (kept so the desktop * behind the window never recolors); 15-255...
+- `nk_rasterize` (function) `progs/nuklear/nuklear_minios.h:66` `void nk_rasterize(struct nk_context *ctx);` -- Hybrid palette: indices 0-14 are the desktop colors (kept so the desktop * behind the window never recolors); 15-255...
+- `SYS_NK_FRAME` (function) `progs/nuklear/nuklear_minios.h:85` `* SYS_NK_FRAME (nk_set_window_origin). */ void nk_set_window_origin(int x, int y);`
+- `nk_poll_input` (function) `progs/nuklear/nuklear_minios.h:87` `void nk_poll_input(struct nk_context *ctx);`
+- `nk_quit_requested` (function) `progs/nuklear/nuklear_minios.h:92` `int nk_quit_requested(void);` -- WM quit gesture: ESC or Alt+F4 since the last poll (1 once, then clears).
+- `nk_set_scancode_hook` (function) `progs/nuklear/nuklear_minios.h:101` `void nk_set_scancode_hook(nk_scancode_cb cb, void *ud);`
 
-#include <stdio.h>...`
-- `main` (function) `progs/src/sbtone.c:36` `int main(void)`
+## progs/nuklear/nuklear_theme.c
+Depends on: `kernel/string.c`, `progs/nuklear/nuklear_theme.h`
+- `nk_theme_name_ok` (function) `progs/nuklear/nuklear_theme.c:37` `static int nk_theme_name_ok(const char *name)`
+- `nk_theme_active` (function) `progs/nuklear/nuklear_theme.c:49` `int nk_theme_active(char *dst, int cap)`
+- `nk_theme_parse_line` (function) `progs/nuklear/nuklear_theme.c:73` `static int nk_theme_parse_line(const char *line,
+                               unsigned char rgb...`
+- `nk_theme_probe` (function) `progs/nuklear/nuklear_theme.c:105` `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3])`
+- `nk_theme_apply` (function) `progs/nuklear/nuklear_theme.c:141` `int nk_theme_apply(struct nk_context *ctx, const char *name)`
 
-## progs/src/scfuzz.c
-Depends on: `progs/src/mthreads.h`
-- `guest` (function) `progs/src/scfuzz.c:7` `* the guest (the BDD timeout then talks). All fuzz maps stay inside
- * one private 4 MB arena (pa...`
-- `sc_mprotect` (function) `progs/src/scfuzz.c:38` `static long sc_mprotect(long addr, long len, long prot)`
-- `sc_munmap` (function) `progs/src/scfuzz.c:49` `static long sc_munmap(long addr, long len)`
-- `sc_write` (function) `progs/src/scfuzz.c:53` `static long sc_write(long fd, const char *s, long n)`
-- `sc_exit` (function) `progs/src/scfuzz.c:61` `static void sc_exit(long code)`
-- `sc_rng` (function) `progs/src/scfuzz.c:67` `static unsigned long sc_rng(unsigned long *s)`
-- `sc_fold` (function) `progs/src/scfuzz.c:76` `static unsigned long sc_fold(unsigned long h, unsigned long v)`
-- `sc_hex8` (function) `progs/src/scfuzz.c:88` `static void sc_hex8(unsigned long v, char *out)`
-- `sc_worker` (function) `progs/src/scfuzz.c:97` `static unsigned long sc_worker(int me, unsigned long seed)`
-- `sc_thread1` (function) `progs/src/scfuzz.c:154` `static void *sc_thread1(void *arg)`
+## progs/nuklear/nuklear_theme.h
+Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/vedit/vedit.c`, `tests/test_theme.c`
+- `nk_theme_active` (function) `progs/nuklear/nuklear_theme.h:62` `int nk_theme_active(char *dst, int cap);` -- X(scrollbar_cursor, 24) \ X(scrollbar_cursor_hover, 25) \ X(scrollbar_cursor_active, 26) \ X(tab_header, 27) \...
+- `nk_theme_probe` (function) `progs/nuklear/nuklear_theme.h:65` `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3]);` -- X(tab_header, 27) \ X(knob, 28) \ X(knob_cursor, 29) \ X(knob_cursor_hover, 30) \ X(knob_cursor_active, 31) #define...
+- `nk_theme_apply` (function) `progs/nuklear/nuklear_theme.h:68` `int nk_theme_apply(struct nk_context *ctx, const char *name);` -- X(knob_cursor_hover, 30) \ X(knob_cursor_active, 31) #define NK_THEME_KEY_COUNT 32 struct nk_context; /** Resolve...
 
-## progs/src/shell.py
-Depends on: `progs/lua/minios.c`
-- `run_capture` (function) `progs/src/shell.py:20` `def run_capture(cmd, args)`
-- `expand` (function) `progs/src/shell.py:30` `def expand(line, env)`
-- `main` (function) `progs/src/shell.py:36` `def main()`
+## progs/paint/paint.c
+Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+- `paint_clamp` (function) `progs/paint/paint.c:92` `static int paint_clamp(int v, int lo, int hi)` -- static int paint_size = 0; static int paint_down = 0; static int paint_lastx; static int paint_lasty; static int...
+- `paint_plot` (function) `progs/paint/paint.c:99` `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,
+                      unsig...` -- static float paint_recty; static char paint_path[PAINT_PATH_MAX] = PAINT_DEFAULT_PATH; static char...
+- `paint_dab` (function) `progs/paint/paint.c:108` `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,
+                      unsig...` -- if (v > hi) return hi; return v; } /** Bound-checked pixel plot, fail closed outside the canvas. static int...
+- `paint_line` (function) `progs/paint/paint.c:119` `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,
+                      int...` -- } /** Filled square dab of side s centered on (x, y). static void paint_dab(unsigned char *buf, int w, int h, int x...
+- `paint_rect_fill` (function) `progs/paint/paint.c:144` `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,
+                    ...` -- paint_dab(buf, w, h, x0, y0, c, s); n++; } if (x0 == x1 && y0 == y1) break; { int e2 = 2 * err; if (e2 > -dy) { err...
+- `paint_circle_fill` (function) `progs/paint/paint.c:161` `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,
+                          ...` -- int xb = x0 < x1 ? x1 : x0; int ya = y0 < y1 ? y0 : y1; int yb = y0 < y1 ? y1 : y0; int x; int y; int n = 0; if...
+- `paint_flood` (function) `progs/paint/paint.c:179` `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,
+                       uns...` -- Bounded flood fill with mark-on-push: every cell is marked once, so * the explicit stack never exceeds the canvas size.
+- `paint_nearest` (function) `progs/paint/paint.c:223` `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,
+                      ...` -- } if (cy + 1 < h && buf[(cy + 1) * w + cx] == oc) { buf[(cy + 1) * w + cx] = nc; sx[top] = cx; sy[top] = cy + 1...
+- `paint_pal` (function) `progs/paint/paint.c:240` `static const unsigned char *paint_pal(void)` -- unsigned long bd = 0xFFFFFFFFUL; unsigned k; if (!pal) return -1; for (k = 0; k < 256; k++) { long dr = (long)pal[k...
+- `paint_path_ok` (function) `progs/paint/paint.c:251` `static int paint_path_ok(const char *p)` -- } /** Cached hybrid palette: built once, shared by picker, save and load. static const unsigned char...
+- `paint_crc_init` (function) `progs/paint/paint.c:272` `static void paint_crc_init(void)`
+- `paint_crc_update` (function) `progs/paint/paint.c:285` `static unsigned long paint_crc_update(unsigned long c,
+                                      cons...`
+- `paint_adler` (function) `progs/paint/paint.c:296` `static unsigned long paint_adler(const unsigned char *p, unsigned long n)` -- paint_crc_ready = 1; } static unsigned long paint_crc_update(unsigned long c, const unsigned char *p, unsigned long...
+- `paint_put_u32` (function) `progs/paint/paint.c:308` `static int paint_put_u32(unsigned char *dst, unsigned long cap,
+                         unsigned...` -- /** Adler-32 over one buffer (the zlib trailer of a single IDAT). static unsigned long paint_adler(const unsigned...
+- `paint_put_bytes` (function) `progs/paint/paint.c:320` `static int paint_put_bytes(unsigned char *dst, unsigned long cap,
+                           unsi...` -- /** Bound-checked big-endian u32 store for the PNG writer. static int paint_put_u32(unsigned char *dst, unsigned...
+- `paint_png_encode` (function) `progs/paint/paint.c:333` `static long paint_png_encode(unsigned char *dst, unsigned long cap,
+                             ...` -- Encode indexed pixels as 8-bit truecolor PNG (stored deflate blocks). * Returns the byte count or a negative code on...
+- `paint_load_file` (function) `progs/paint/paint.c:461` `static int paint_load_file(const char *path)` -- Decode a PNG file into the canvas (top-left, clamped, nearest-mapped). * Reports through the status line, never a...
+- `paint_save_file` (function) `progs/paint/paint.c:514` `static int paint_save_file(const char *path)` -- for (x = 0; x < cw; x++) { int v = paint_nearest(pal768, px[(y * w + x) * 3], px[(y * w + x) * 3 + 1], px[(y * w +...
+- `paint_blit` (function) `progs/paint/paint.c:549` `static void paint_blit(int ox, int oy)` -- Blit the canvas into the NK back-buffer after rasterize (and its RGB * twin when the kernel maps it, so the canvas...
+- `paint_ink` (function) `progs/paint/paint.c:570` `static unsigned char paint_ink(void)` -- int dx = ox + x; int dy = oy + y; unsigned char r, g, b; volatile uint8_t *d; if (dx < 0 || dx >= NK_W || dy < 0 ||...
+- `paint_handle_input` (function) `progs/paint/paint.c:577` `static void paint_handle_input(struct nk_context *ctx)` -- nk_idx_to_rgb(paint_px[y * PAINT_W + x], &r, &g, &b); d = NK_RGB_BUF + ((dy * NK_W) + dx) * 3; d[0] = r; d[1] = g...
+- `paint_ui_build` (function) `progs/paint/paint.c:636` `static void paint_ui_build(struct nk_context *ctx)` -- Build the file row, the exact-size canvas beside the tool panel, and the status row.
+- `paint_pattern_present` (function) `progs/paint/paint.c:720` `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)` -- Scan the whole framebuffer for the canvas marker run (first four swatches consecutive).
+- `paint_selftest` (function) `progs/paint/paint.c:755` `static int paint_selftest(void)` -- break; } } if (hit) { ox = x; oy = y; return 1; } } } return 0; } /** Headless selftest for BDD: core vectors, PNG...
+- `paint_gui_run` (function) `progs/paint/paint.c:942` `static void paint_gui_run(void)` -- printf("paint: composite did not land (canvas %d,%d origin %d,%d)\n", (int)paint_rectx, (int)paint_recty, origin[0]...
+- `main` (function) `progs/paint/paint.c:992` `int main(int argc, char **argv)`
 
-## progs/src/spin.c
-- `lx_syscall3` (function) `progs/src/spin.c:11` `static long lx_syscall3(long n, long a1, long a2, long a3)`
-- `lx_strlen` (function) `progs/src/spin.c:20` `static unsigned long lx_strlen(const char *s)`
-- `lx_write` (function) `progs/src/spin.c:26` `static void lx_write(const char *s)`
-- `lx_write_int` (function) `progs/src/spin.c:30` `static void lx_write_int(long v)`
-- `lx_atoi` (function) `progs/src/spin.c:42` `static long lx_atoi(const char *s)`
-- `spin_u32` (function) `progs/src/spin.c:66` `static void spin_u32(unsigned char *d, unsigned long v)`
-- `spin_hdr` (function) `progs/src/spin.c:73` `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,
-        unsigned long ...`
-- `spin_box_ok` (function) `progs/src/spin.c:82` `static int spin_box_ok(const char *box)`
-- `spin_hex8` (function) `progs/src/spin.c:95` `static void spin_hex8(unsigned int v, char *dst)`
-- `spin_write_all` (function) `progs/src/spin.c:104` `static long spin_write_all(long fd, const unsigned char *buf, long len)`
-- `spin_emit` (function) `progs/src/spin.c:114` `static int spin_emit(const char *box, unsigned int seq,
-        const unsigned char *msg, long mlen)`
-- `spin_raw_file` (function) `progs/src/spin.c:145` `static int spin_raw_file(const char *box)`
-- `spin_pixels` (function) `progs/src/spin.c:169` `static void spin_pixels(long off)`
-- `spin_wl` (function) `progs/src/spin.c:181` `static int spin_wl(const char *box, const char *narg)`
-- `lmain` (function) `progs/src/spin.c:225` `int lmain(long argc, char **argv)`
+## progs/piano/piano.c
+Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
+- `sys_pcm_open` (function) `progs/piano/piano.c:93` `static long sys_pcm_open(long flags)`
+- `sys_pcm_write` (function) `progs/piano/piano.c:98` `static long sys_pcm_write(const void *buf, long len)` -- Returns bytes taken (NONBLOCK short count on backpressure, never a * stall), or negative on a dead path.
+- `sys_pcm_close` (function) `progs/piano/piano.c:101` `static void sys_pcm_close(void)`
+- `sys_yield` (function) `progs/piano/piano.c:104` `static void sys_yield(void)`
+- `sys_present_idx` (function) `progs/piano/piano.c:112` `static long sys_present_idx(int *origin)` -- Indexed present (buffer id 1): the 288 KB indexed copy instead of the 864 KB RGB twin.
+- `o3_op` (function) `progs/piano/piano.c:127` `static int o3_op(int ch, int is_car)`
+- `o3_opreg` (function) `progs/piano/piano.c:131` `static void o3_opreg(int ch, int is_car, int regbase, int val)`
+- `o3_chreg` (function) `progs/piano/piano.c:135` `static void o3_chreg(int ch, int regbase, int val)`
+- `o3_note` (function) `progs/piano/piano.c:173` `static void o3_note(int ch, int midi, int on)`
+- `midi_to_key` (function) `progs/piano/piano.c:211` `static int midi_to_key(int midi)`
+- `clamp_midi` (function) `progs/piano/piano.c:234` `static int clamp_midi(int m)`
+- `pedal_set` (function) `progs/piano/piano.c:241` `static void pedal_set(int on)` -- pressed scancode owns its channel until release.
+- `voice_alloc` (function) `progs/piano/piano.c:255` `static int voice_alloc(void)`
+- `note_off_key` (function) `progs/piano/piano.c:268` `static void note_off_key(int key)`
+- `note_on_key` (function) `progs/piano/piano.c:281` `static void note_on_key(int key, int midi, int vel)`
+- `kbd_semitone` (function) `progs/piano/piano.c:298` `static int kbd_semitone(int code)` -- ── PC-keyboard MIDI map (Fruity Loops style) ───────────────────────── PS/2 set-1 scancodes (7-bit code, E0 clear)...
+- `kbd_all_off` (function) `progs/piano/piano.c:333` `static void kbd_all_off(void)`
+- `note_on_sc` (function) `progs/piano/piano.c:339` `static void note_on_sc(int code, int vel)`
+- `note_off_sc` (function) `progs/piano/piano.c:353` `static void note_off_sc(int code)`
+- `piano_scancode` (function) `progs/piano/piano.c:369` `static void piano_scancode(int code, int make, int e0, void *ud)` -- Raw scancode hook (registered with nk_set_scancode_hook): note on/off * plus comma/period octave shift.
+- `fx_configure` (function) `progs/piano/piano.c:421` `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` -- #define FX_DELAY_CAP (RATE)           /* 1 s of delay at 22050 Hz #define FX_DELAY_MAX_MS 800 #define FX_FEEDBACK...
+- `fx_process` (function) `progs/piano/piano.c:440` `static float fx_process(float x)`
+- `sb_flush` (function) `progs/piano/piano.c:469` `static void sb_flush(void)` -- Flush held bytes to the low-latency ring.
+- `render_audio` (function) `progs/piano/piano.c:484` `static void render_audio(long ms)`
+- `key_rect` (function) `progs/piano/piano.c:511` `static void key_rect(int key, int *x, int *y, int *w, int *h)`
+- `hit_key` (function) `progs/piano/piano.c:518` `static int hit_key(int mx, int my)`
+- `hit_velocity` (function) `progs/piano/piano.c:535` `static int hit_velocity(int key, int my)` -- Velocity 1..100 from the click's vertical position inside a key: the very * top is soft, the bottom is loud.
+- `ctrl_hit` (function) `progs/piano/piano.c:563` `static int ctrl_hit(int id, int mx, int my)`
+- `ctrl_active` (function) `progs/piano/piano.c:567` `static int ctrl_active(int id)`
+- `ctrl_press` (function) `progs/piano/piano.c:577` `static void ctrl_press(int id)`
+- `ui_run` (function) `progs/piano/piano.c:594` `static void ui_run(int bench_ms)` -- case 1: if (octave < 2) octave++; break; case 2: if (volume > 0) volume -= 5; break; case 3: if (volume < 100)...
+- `rate` (function) `progs/piano/piano.c:818` `* wait below caps the frame rate (bench mode skips it so the
+         * benchmark still measures ...`
+- `run_selftest` (function) `progs/piano/piano.c:836` `static int run_selftest(void)` -- sys_yield(); } else { sys_yield(); } } nk_set_scancode_hook(0, 0); nk_free(&ctx); nk_sys_kbd_raw(0)...
+- `run_pcm2_probe` (function) `progs/piano/piano.c:1015` `static int run_pcm2_probe(void)` -- Headless pcm2 plumbing probe (BDD hook): open NONBLOCK, stream one 2048-byte pattern, close, reopen (release...
+- `main` (function) `progs/piano/piano.c:1042` `int main(int argc, char **argv)`
 
-## progs/src/thdemo.c
-Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
-- `threads` (function) `progs/src/thdemo.c:3` `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall...`
-- `producer` (function) `progs/src/thdemo.c:36` `static void *producer(void *p)`
-- `consumer` (function) `progs/src/thdemo.c:57` `static void *consumer(void *p)`
-- `main` (function) `progs/src/thdemo.c:82` `int main(void)`
-
-## progs/src/w1.c
-- `write` (function) `progs/src/w1.c:1` `int write(int fd, char *buf, int n);`
-- `main` (function) `progs/src/w1.c:3` `int main(void)`
-
-## progs/tls_u/tls_u_main.c
-Depends on: `headers/tls.h`, `headers/tls_port.h`, `kernel/string.c`
-- `syscall` (function) `progs/tls_u/tls_u_main.c:10` `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).
- * The kernel keeps servi...`
-- `parse_port` (function) `progs/tls_u/tls_u_main.c:47` `static int parse_port(const char *s)` -- Strict port parser (clang-tidy cert-err34-c: atoi reports no errors, so "abc" and overflow both become 0 and fail...
-- `main` (function) `progs/tls_u/tls_u_main.c:61` `int main(int argc, char **argv)`
-
-## progs/tls_u/tls_u_port.c
-Depends on: `kernel/string.c`, `kernel/time.c`
-- `sockets` (function) `progs/tls_u/tls_u_port.c:5` `* sockets: on the host they are host sockets (used by the
- * openssl-s_server interop test), insi...`
-- `tls_u_recv` (function) `progs/tls_u/tls_u_port.c:39` `int tls_u_recv(int fd, char *buf, int len)`
-- `tls_u_recv_timeout` (function) `progs/tls_u/tls_u_port.c:44` `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)`
-- `tls_u_close` (function) `progs/tls_u/tls_u_port.c:55` `void tls_u_close(int fd)`
-- `tls_free_fd` (function) `progs/tls_u/tls_u_port.c:66` `void tls_free_fd(int fd);` -- Session-aware close for multi-fetch processes (freedom follows redirects and linked stylesheets, reusing the lowest...
-- `tls_close` (function) `progs/tls_u/tls_u_port.c:67` `void tls_close(int fd)` -- Session-aware close for multi-fetch processes (freedom follows redirects and linked stylesheets, reusing the lowest...
-- `tls_now_days` (function) `progs/tls_u/tls_u_port.c:72` `long tls_now_days(void)`
-- `tls_random` (function) `progs/tls_u/tls_u_port.c:78` `void tls_random(unsigned char *out, unsigned len)`
-- `u_raw_syscall3` (function) `progs/tls_u/tls_u_port.c:99` `static long u_raw_syscall3(long n, long a1, long a2, long a3)`
-- `parse_quad` (function) `progs/tls_u/tls_u_port.c:122` `static int parse_quad(const char *s, unsigned *ip_out)` -- Strict dotted-quad parser (clang-tidy cert-err34-c: sscanf %u has undefined overflow and accepts whitespace/sign, so...
-- `tls_u_resolve` (function) `progs/tls_u/tls_u_port.c:147` `int tls_u_resolve(const char *host, unsigned *ip_out)`
-- `answer` (function) `progs/tls_u/tls_u_port.c:163` `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));`
-- `net_dns_resolve` (function) `progs/tls_u/tls_u_port.c:183` `int net_dns_resolve(const char *host)` -- freedom's resolver name: kernel DNS value semantics (u32 host order, * -1 on failure).
+## progs/pokemon/platform_minios.c
+Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
+- `audible` (function) `progs/pokemon/platform_minios.c:36` `* voice is audible (noise SFX, sweep zaps), the raw mix estimate plays.
+ *
+ * Debug: heartbeat to...`
+- `sys_kbd` (function) `progs/pokemon/platform_minios.c:75` `static long sys_kbd(void)`
+- `sys_nk_frame` (function) `progs/pokemon/platform_minios.c:81` `static long sys_nk_frame(int *origin)`
+- `sys_mouse` (function) `progs/pokemon/platform_minios.c:87` `static long sys_mouse(int *xybw)`
+- `sys_vga_mode` (function) `progs/pokemon/platform_minios.c:93` `static long sys_vga_mode(int on)`
+- `sys_kbd_raw` (function) `progs/pokemon/platform_minios.c:99` `static long sys_kbd_raw(int on)`
+- `sys_palette` (function) `progs/pokemon/platform_minios.c:105` `static long sys_palette(const unsigned char *pal)`
+- `sys_gfx_title` (function) `progs/pokemon/platform_minios.c:111` `static long sys_gfx_title(const char *t)`
+- `sys_tone` (function) `progs/pokemon/platform_minios.c:117` `static long sys_tone(unsigned f)`
+- `sys_pcm2_open` (function) `progs/pokemon/platform_minios.c:123` `static long sys_pcm2_open(long flags)`
+- `sys_pcm2_write` (function) `progs/pokemon/platform_minios.c:129` `static long sys_pcm2_write(const void *buf, long len)`
+- `sys_pcm2_close` (function) `progs/pokemon/platform_minios.c:135` `static void sys_pcm2_close(void)`
+- `gain` (function) `progs/pokemon/platform_minios.c:142` `* timing gain (overshoot is microseconds against millisecond waits).
+ * Difference-based, so it s...`
+- `gb_platform_set_debug` (function) `progs/pokemon/platform_minios.c:190` `void gb_platform_set_debug(bool enabled)`
+- `audio` (function) `progs/pokemon/platform_minios.c:218` `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...`
+- `minios_audio_sample` (function) `progs/pokemon/platform_minios.c:262` `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
+- `gb_voice_in_range` (function) `progs/pokemon/platform_minios.c:306` `static bool gb_voice_in_range(unsigned f)`
+- `sample_apu_voices` (function) `progs/pokemon/platform_minios.c:310` `static void sample_apu_voices(gb_voice_t *v)`
+- `minios_audio_play` (function) `progs/pokemon/platform_minios.c:330` `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
+                            ...`
+- `rebuild_joypad` (function) `progs/pokemon/platform_minios.c:402` `static void rebuild_joypad(void)`
+- `poll_keyboard` (function) `progs/pokemon/platform_minios.c:416` `static void poll_keyboard(void)`
+- `push_332_palette` (function) `progs/pokemon/platform_minios.c:455` `static void push_332_palette(void)` -- 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B &...
+- `menu` (function) `progs/pokemon/platform_minios.c:571` `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it...`
+- `ui_fringe_dirty` (function) `progs/pokemon/platform_minios.c:620` `static bool ui_fringe_dirty(uint32_t now)`
+- `ui_fringe_sync` (function) `progs/pokemon/platform_minios.c:626` `static void ui_fringe_sync(uint32_t now)`
+- `menu_fill` (function) `progs/pokemon/platform_minios.c:632` `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)`
+- `menu_text` (function) `progs/pokemon/platform_minios.c:645` `static void menu_text(int x, int y, const char *s, uint8_t fg)`
+- `menu_osd` (function) `progs/pokemon/platform_minios.c:664` `static void menu_osd(const char *s)`
+- `menu_draw` (function) `progs/pokemon/platform_minios.c:670` `static void menu_draw(void)`
+- `menu_item_at` (function) `progs/pokemon/platform_minios.c:700` `static int menu_item_at(int lx, int ly)`
+- `menu_do_save` (function) `progs/pokemon/platform_minios.c:707` `static void menu_do_save(void)`
+- `menu_do_load` (function) `progs/pokemon/platform_minios.c:723` `static void menu_do_load(void)`
+- `menu_activate` (function) `progs/pokemon/platform_minios.c:742` `static void menu_activate(int it)`
+- `poll_menu` (function) `progs/pokemon/platform_minios.c:776` `static void poll_menu(void)` -- Esc toggles, Up/Down move, Enter activates; the mouse is a bonus. * PS/2 Set 1: Esc = 0x01, Up = 0x48, Down = 0x50...
+- `pokemon_art_load_one` (function) `progs/pokemon/platform_minios.c:844` `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
+                          ...`
+- `pokemon_art_load` (function) `progs/pokemon/platform_minios.c:869` `static void pokemon_art_load(void)`
+- `pokemon_art_draw_one` (function) `progs/pokemon/platform_minios.c:887` `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
+                      ...`
+- `pokemon_art_draw` (function) `progs/pokemon/platform_minios.c:925` `static void pokemon_art_draw(void)`
+- `px_to_idx` (function) `progs/pokemon/platform_minios.c:956` `static uint8_t px_to_idx(uint32_t pixel)`
+- `upload_frame` (function) `progs/pokemon/platform_minios.c:975` `static void upload_frame(const uint32_t *framebuffer)`
+- `gb_platform_init` (function) `progs/pokemon/platform_minios.c:1056` `bool gb_platform_init(int scale)`
+- `minios_persist_path` (function) `progs/pokemon/platform_minios.c:1088` `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
+                      ...`
+- `minios_legacy_path` (function) `progs/pokemon/platform_minios.c:1097` `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
+                       ...` -- Legacy ramdisk path (pre-MiniFS fix wrote bin/<id>.* onto volatile ramdisk).
+- `minios_load_helper` (function) `progs/pokemon/platform_minios.c:1103` `static bool minios_load_helper(const char *path, void *data, size_t size,
+                       ...`
+- `minios_save_helper` (function) `progs/pokemon/platform_minios.c:1121` `static bool minios_save_helper(const char *path, const void *data, size_t size)`
+- `minios_load_battery_ram` (function) `progs/pokemon/platform_minios.c:1132` `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
+                       ...`
+- `minios_save_battery_ram` (function) `progs/pokemon/platform_minios.c:1147` `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
+                       ...`
+- `minios_load_rtc_data` (function) `progs/pokemon/platform_minios.c:1157` `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
+                          ...`
+- `minios_save_rtc_data` (function) `progs/pokemon/platform_minios.c:1170` `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
+                          ...`
+- `minios_fast_forward` (function) `progs/pokemon/platform_minios.c:1208` `static inline bool minios_fast_forward(void)`
+- `minios_state_path` (function) `progs/pokemon/platform_minios.c:1212` `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
+- `minios_legacy_state_path` (function) `progs/pokemon/platform_minios.c:1217` `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
+- `minios_autosave` (function) `progs/pokemon/platform_minios.c:1222` `static void minios_autosave(uint32_t now)`
+- `poll_hotkeys` (function) `progs/pokemon/platform_minios.c:1236` `static void poll_hotkeys(void)` -- PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, SPACE = 0x39, Shift = 0x2A/0x36.
+- `gb_platform_register_context` (function) `progs/pokemon/platform_minios.c:1288` `void gb_platform_register_context(GBContext *ctx)`
+- `gb_platform_shutdown` (function) `progs/pokemon/platform_minios.c:1310` `void gb_platform_shutdown(void)`
+- `gb_platform_poll_events` (function) `progs/pokemon/platform_minios.c:1321` `bool gb_platform_poll_events(GBContext *ctx)`
+- `gb_platform_render_frame` (function) `progs/pokemon/platform_minios.c:1330` `void gb_platform_render_frame(const uint32_t *framebuffer)`
+- `frames` (function) `progs/pokemon/platform_minios.c:1366` `* frames (menu bar not on screen yet) and any frame after the
+         * LCD-off path zeroed the ...`
+- `gb_platform_present_framebuffer` (function) `progs/pokemon/platform_minios.c:1399` `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
+- `gb_platform_render_lcd_off_frame` (function) `progs/pokemon/platform_minios.c:1411` `void gb_platform_render_lcd_off_frame(void)`
+- `gb_platform_vsync` (function) `progs/pokemon/platform_minios.c:1433` `void gb_platform_vsync(uint32_t frame_cycles)`
+- `gb_platform_set_benchmark_mode` (function) `progs/pokemon/platform_minios.c:1450` `void gb_platform_set_benchmark_mode(bool enabled)`
+- `gb_platform_set_input_script` (function) `progs/pokemon/platform_minios.c:1454` `bool gb_platform_set_input_script(const char *script)`
+- `gb_platform_set_input_record_file` (function) `progs/pokemon/platform_minios.c:1460` `void gb_platform_set_input_record_file(const char *path)`
+- `gb_platform_set_persistence_dir` (function) `progs/pokemon/platform_minios.c:1465` `bool gb_platform_set_persistence_dir(const char *path)`
+- `gb_platform_set_dump_frames` (function) `progs/pokemon/platform_minios.c:1474` `void gb_platform_set_dump_frames(const char *frames)`
+- `gb_platform_set_dump_present_frames` (function) `progs/pokemon/platform_minios.c:1496` `void gb_platform_set_dump_present_frames(const char *frames)`
+- `gb_platform_set_screenshot_prefix` (function) `progs/pokemon/platform_minios.c:1517` `void gb_platform_set_screenshot_prefix(const char *prefix)`
+- `gb_platform_get_timing_info` (function) `progs/pokemon/platform_minios.c:1523` `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
+- `gb_platform_get_joypad` (function) `progs/pokemon/platform_minios.c:1530` `uint8_t gb_platform_get_joypad(void)`
+- `gb_platform_set_title` (function) `progs/pokemon/platform_minios.c:1534` `void gb_platform_set_title(const char *title)`
+- `gb_platform_get_smooth_lcd_transitions` (function) `progs/pokemon/platform_minios.c:1540` `bool gb_platform_get_smooth_lcd_transitions(void)`
+- `gb_platform_set_smooth_lcd_transitions` (function) `progs/pokemon/platform_minios.c:1544` `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
+- `gb_platform_set_launcher_return_enabled` (function) `progs/pokemon/platform_minios.c:1548` `void gb_platform_set_launcher_return_enabled(bool enabled)`
+- `gb_platform_get_exit_action` (function) `progs/pokemon/platform_minios.c:1552` `GBPlatformExitAction gb_platform_get_exit_action(void)`
+- `gb_platform_submit_port_frame` (function) `progs/pokemon/platform_minios.c:1556` `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
+- `gb_platform_test_audio_concurrency` (function) `progs/pokemon/platform_minios.c:1562` `bool gb_platform_test_audio_concurrency(uint32_t frames,
+                                        ...` -- void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction...
+- `gb_platform_test_inject_persistence_fault` (function) `progs/pokemon/platform_minios.c:1571` `void gb_platform_test_inject_persistence_fault(
+    GBPersistenceTestTarget target,
+    GBPersist...`
 
 
 Next: [API_p18.md](API_p18.md)

@@ -58,7 +58,7 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `PwadLayoutTests` (class, line 82) `class PwadLayoutTests(TestCase)`
   - `PwadMutationTests` (class, line 181) `class PwadMutationTests(TestCase)`
   - `ExtendedLegendTests` (class, line 255) `class ExtendedLegendTests(TestCase)`
-  - `lump_blob` (method, line 310) `def lump_blob(blob, idx)`
+  - `lump_blob` (function, line 310) `def lump_blob(blob, idx)`
   - `MultiSectorTests` (class, line 317) `class MultiSectorTests(TestCase)`
   - `MultiSectorMutationTests` (class, line 388) `class MultiSectorMutationTests(TestCase)`
   - `test_valid_room_parses` (method, line 32) `def test_valid_room_parses(self)`
@@ -331,7 +331,7 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 23) `class Config`
-  - `run` (method, line 35) `def run(args)`
+  - `run` (function, line 35) `def run(args)`
   - `MiniFSToolsTest` (class, line 40) `class MiniFSToolsTest(TestCase)`
   - `setUp` (method, line 43) `def setUp(self)`
   - `tearDown` (method, line 47) `def tearDown(self)`

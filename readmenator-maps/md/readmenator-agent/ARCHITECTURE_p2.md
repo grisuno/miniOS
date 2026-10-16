@@ -2,6 +2,21 @@
 Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_loop.h`
+- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_mode.h`
+- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_player.h`
+- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/doomdata.h`
+- `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/net_defs.h`
+- `progs/doomgeneric/dstrings.c` -> `progs/doomgeneric/dstrings.h`
+- `progs/doomgeneric/dstrings.h` -> `progs/doomgeneric/d_englsh.h`
+- `progs/doomgeneric/dummy.c` -> `progs/doomgeneric/doomtype.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/d_main.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/deh_main.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/doomstat.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/dstrings.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/hu_stuff.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/i_swap.h`
+- `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/i_system.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/r_state.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/s_sound.h`
 - `progs/doomgeneric/f_finale.c` -> `progs/doomgeneric/sounds.h`
@@ -481,20 +496,5 @@ Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/i_system.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_local.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_sky.h`
-- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/w_wad.h`
-- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/z_zone.h`
-- `progs/doomgeneric/r_plane.h` -> `progs/doomgeneric/r_data.h`
-- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/doomdef.h`
-- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/doomstat.h`
-- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/i_system.h`
-- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/r_local.h`
-- `progs/doomgeneric/r_segs.c` -> `progs/doomgeneric/r_sky.h`
-- `progs/doomgeneric/r_sky.c` -> `progs/doomgeneric/m_fixed.h`
-- `progs/doomgeneric/r_sky.c` -> `progs/doomgeneric/r_data.h`
-- `progs/doomgeneric/r_sky.c` -> `progs/doomgeneric/r_sky.h`
-- `progs/doomgeneric/r_state.h` -> `progs/doomgeneric/d_player.h`
-- `progs/doomgeneric/r_state.h` -> `progs/doomgeneric/r_data.h`
-- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/deh_main.h`
-- `progs/doomgeneric/r_things.c` -> `progs/doomgeneric/doomdef.h`
 
 Next: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)

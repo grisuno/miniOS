@@ -255,9 +255,10 @@ Pages: [KB_headers.md](KB_headers.md), [KB_headers_p2.md](KB_headers_p2.md), [KB
   - `futex_init` (function, line 86) `void futex_init(void);`
   - `futex_wait` (function, line 87) `long futex_wait(unsigned long uaddr, int val);`
   - `futex_wake` (function, line 88) `long futex_wake(unsigned long uaddr, int n);`
-  - `FUTEX_CLOCK_REALTIME` (function, line 93) `* FUTEX_CLOCK_REALTIME (it only selects the clock of a BITSET deadline). * Returns -1 for anything unserved...`
-  - `futex_linux_cmd` (function, line 97) `int futex_linux_cmd(long op);`
-  - `futex_timeout_remaining_us` (function, line 104) `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us);`
+  - `futex_forget` (function, line 91) `void futex_forget(int pid);`
+  - `FUTEX_CLOCK_REALTIME` (function, line 96) `* FUTEX_CLOCK_REALTIME (it only selects the clock of a BITSET deadline). * Returns -1 for anything unserved...`
+  - `futex_linux_cmd` (function, line 100) `int futex_linux_cmd(long op);`
+  - `futex_timeout_remaining_us` (function, line 107) `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us);`
   - `FUTEX_H` (macro, line 2) `#define FUTEX_H`
   - `FUTEX_BUCKETS` (macro, line 51) `#define FUTEX_BUCKETS`
   - `FUTEX_BUCKET_MASK` (macro, line 52) `#define FUTEX_BUCKET_MASK`

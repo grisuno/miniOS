@@ -1,6 +1,29 @@
 # Subsystem: headers (page 6 of 6)
 Previous: [KB_headers_p5.md](KB_headers_p5.md)
 
+## headers/wm_layout.h
+- Doc: Docstring: Unified layout contract for the MiniOS desktop.
+- Layer: presentation
+- Language: h
+- Symbols:
+  - `wm_layout_window_t` (struct, line 27)
+  - `wm_layout_config_t` (struct, line 36)
+  - `wm_layout_cell_t` (struct, line 48)
+  - `wm_layout_mode_name` (function, line 57) `static inline const char *wm_layout_mode_name(int mode)`
+  - `wm_layout_mode_valid` (function, line 76) `static inline int wm_layout_mode_valid(int mode)`
+  - `wm_layout_clamp_cell` (function, line 82) `static inline int wm_layout_clamp_cell(wm_layout_cell_t *cell, int max_cols, int max_rows)`
+  - `wm_layout_fullscreen_cell` (function, line 118) `static inline int wm_layout_fullscreen_cell(int max_cols, int max_rows, wm_layout_cell_t *out)`
+  - `wm_layout_compute_tile` (function, line 135) `static inline int wm_layout_compute_tile(const wm_layout_window_t *wins, int nwin, int max_cols, ...`
+  - `wm_layout_compute_bsp` (function, line 182) `static inline int wm_layout_compute_bsp(const wm_layout_window_t *wins, int nwin, int max_cols, i...`
+  - `wm_layout_compute_cascade` (function, line 250) `static inline int wm_layout_compute_cascade(const wm_layout_config_t *cfg, const wm_layout_window...`
+  - `wm_layout_compute_fibonacci` (function, line 285) `static inline int wm_layout_compute_fibonacci(const wm_layout_config_t *cfg, const wm_layout_wind...`
+  - `wm_layout_compute` (function, line 361) `static inline int wm_layout_compute(const wm_layout_config_t *cfg, const wm_layout_window_t *wins...`
+  - `wm_layout_same` (function, line 443) `static inline int wm_layout_same(const wm_layout_cell_t *a, const wm_layout_cell_t *b, int n)`
+  - `WM_LAYOUT_H` (macro, line 12) `#define WM_LAYOUT_H`
+  - `WM_LAYOUT_MODE_COUNT` (macro, line 24) `#define WM_LAYOUT_MODE_COUNT`
+  - `WM_LAYOUT_CONFIG_DEFAULT` (macro, line 45) `#define WM_LAYOUT_CONFIG_DEFAULT`
+- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
 ## headers/wm_notify.h
 - Doc: Docstring: Focus event bus for the MiniOS desktop.
 - Layer: utility

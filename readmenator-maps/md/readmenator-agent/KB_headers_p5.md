@@ -1,6 +1,20 @@
 # Subsystem: headers (page 5 of 6)
 Previous: [KB_headers_p4.md](KB_headers_p4.md)
 
+## headers/tlb.h
+- Doc: cross-CPU TLB shootdown (docs/spec/smp-sched.md, "TLB shootdown").
+- Layer: utility
+- Language: h
+- Symbols:
+  - `space` (function, line 4) `* while that CPU keeps running the same address space (CLONE_VM threads on * an AP). Callers clear the PTEs, flush...`
+  - `tlb_shootdown_count` (function, line 22) `unsigned long tlb_shootdown_count(void);`
+  - `tlb_shootdown_timeouts` (function, line 23) `unsigned long tlb_shootdown_timeouts(void);`
+  - `tlb_nmi_entry` (function, line 26) `void tlb_nmi_entry(void);`
+  - `tlb_shoot_acks` (variable, line 27) `extern volatile unsigned int tlb_shoot_acks;`
+  - `TLB_H` (macro, line 10) `#define TLB_H`
+  - `TLB_RELEASE_BATCH` (macro, line 13) `#define TLB_RELEASE_BATCH`
+- Imported by: `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/mm/tlb.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
+
 ## headers/tls.h
 - Doc: tls_free_fd: Kernel built without the TLS engine (net/tls*.c unlinked): no session can ever...
 - Layer: utility
@@ -217,18 +231,19 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `wm_clear_close` (function, line 247) `void wm_clear_close(void);`
   - `wm_gfx_mode_active` (function, line 248) `int wm_gfx_mode_active(void);`
   - `vga_fb_mouse_tick` (function, line 249) `void vga_fb_mouse_tick(void);`
-  - `vga_fb_mouse_init` (function, line 250) `void vga_fb_mouse_init(void);`
-  - `dock_bounce_counts` (function, line 253) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);`
-  - `dock_click_count` (function, line 254) `void dock_click_count(unsigned long *edges);`
-  - `dock_pending_active` (function, line 255) `int dock_pending_active(void);`
-  - `pixels` (function, line 259) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
-  - `vga_fx_enabled` (function, line 263) `int vga_fx_enabled(void);`
-  - `vga_fx_snap_rect` (function, line 264) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
-  - `vga_fx_restore_rect` (function, line 265) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
-  - `vga_fx_free` (function, line 266) `void vga_fx_free(unsigned int *buf);`
-  - `vga_fx_melt_rect` (function, line 267) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
-  - `vga_fx_melt_from_black` (function, line 269) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
-  - `vga_fb_set_gfx_mode` (function, line 280) `void vga_fb_set_gfx_mode(int on);`
+  - `vga_fb_wait_tick` (function, line 253) `void vga_fb_wait_tick(void);`
+  - `vga_fb_mouse_init` (function, line 254) `void vga_fb_mouse_init(void);`
+  - `dock_bounce_counts` (function, line 257) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);`
+  - `dock_click_count` (function, line 258) `void dock_click_count(unsigned long *edges);`
+  - `dock_pending_active` (function, line 259) `int dock_pending_active(void);`
+  - `pixels` (function, line 263) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
+  - `vga_fx_enabled` (function, line 267) `int vga_fx_enabled(void);`
+  - `vga_fx_snap_rect` (function, line 268) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
+  - `vga_fx_restore_rect` (function, line 269) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
+  - `vga_fx_free` (function, line 270) `void vga_fx_free(unsigned int *buf);`
+  - `vga_fx_melt_rect` (function, line 271) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
+  - `vga_fx_melt_from_black` (function, line 273) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+  - `vga_fb_set_gfx_mode` (function, line 284) `void vga_fb_set_gfx_mode(int on);`
   - `fb_width` (variable, line 23) `extern int fb_width;`
   - `fb_height` (variable, line 24) `extern int fb_height;`
   - `fb_pitch` (variable, line 25) `extern int fb_pitch;`
@@ -239,8 +254,8 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `nk_win_y` (variable, line 79) `extern int nk_win_x, nk_win_y;`
   - `term_rows` (variable, line 156) `extern int term_x, term_y, term_cols, term_rows;`
   - `mouse_state` (variable, line 167) `extern mouse_state_t mouse_state;`
-  - `fx_melts_completed` (variable, line 273) `extern unsigned long fx_melts_completed;`
-  - `vga_fb_active` (variable, line 282) `extern int vga_fb_active;`
+  - `fx_melts_completed` (variable, line 277) `extern unsigned long fx_melts_completed;`
+  - `vga_fb_active` (variable, line 286) `extern int vga_fb_active;`
   - `VGA_FB_H` (macro, line 2) `#define VGA_FB_H`
   - `FB_ADDR` (macro, line 22) `#define FB_ADDR`
   - `DOOM_W` (macro, line 46) `#define DOOM_W`
@@ -459,29 +474,6 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `WM_GFXVIEW_CONFIG_DEFAULT` (macro, line 41) `#define WM_GFXVIEW_CONFIG_DEFAULT`
   - `WM_GFXVIEW_DIM_MAX` (macro, line 44) `#define WM_GFXVIEW_DIM_MAX`
 - Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
-
-## headers/wm_layout.h
-- Doc: Docstring: Unified layout contract for the MiniOS desktop.
-- Layer: presentation
-- Language: h
-- Symbols:
-  - `wm_layout_window_t` (struct, line 27)
-  - `wm_layout_config_t` (struct, line 36)
-  - `wm_layout_cell_t` (struct, line 48)
-  - `wm_layout_mode_name` (function, line 57) `static inline const char *wm_layout_mode_name(int mode)`
-  - `wm_layout_mode_valid` (function, line 76) `static inline int wm_layout_mode_valid(int mode)`
-  - `wm_layout_clamp_cell` (function, line 82) `static inline int wm_layout_clamp_cell(wm_layout_cell_t *cell, int max_cols, int max_rows)`
-  - `wm_layout_fullscreen_cell` (function, line 118) `static inline int wm_layout_fullscreen_cell(int max_cols, int max_rows, wm_layout_cell_t *out)`
-  - `wm_layout_compute_tile` (function, line 135) `static inline int wm_layout_compute_tile(const wm_layout_window_t *wins, int nwin, int max_cols, ...`
-  - `wm_layout_compute_bsp` (function, line 182) `static inline int wm_layout_compute_bsp(const wm_layout_window_t *wins, int nwin, int max_cols, i...`
-  - `wm_layout_compute_cascade` (function, line 250) `static inline int wm_layout_compute_cascade(const wm_layout_config_t *cfg, const wm_layout_window...`
-  - `wm_layout_compute_fibonacci` (function, line 285) `static inline int wm_layout_compute_fibonacci(const wm_layout_config_t *cfg, const wm_layout_wind...`
-  - `wm_layout_compute` (function, line 361) `static inline int wm_layout_compute(const wm_layout_config_t *cfg, const wm_layout_window_t *wins...`
-  - `wm_layout_same` (function, line 443) `static inline int wm_layout_same(const wm_layout_cell_t *a, const wm_layout_cell_t *b, int n)`
-  - `WM_LAYOUT_H` (macro, line 12) `#define WM_LAYOUT_H`
-  - `WM_LAYOUT_MODE_COUNT` (macro, line 24) `#define WM_LAYOUT_MODE_COUNT`
-  - `WM_LAYOUT_CONFIG_DEFAULT` (macro, line 45) `#define WM_LAYOUT_CONFIG_DEFAULT`
-- Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
 
 
 Next: [KB_headers_p6.md](KB_headers_p6.md)

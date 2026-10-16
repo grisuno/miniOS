@@ -102,6 +102,22 @@ Previous: [KB_src.md](KB_src.md)
   - `LXNET_IP_UNKNOWN` (macro, line 45) `#define LXNET_IP_UNKNOWN`
 - Depends on: `kernel/string.c`
 
+## progs/src/lxproc.c
+- Doc: foreground process-note probe (docs/spec/shell-fs.md, "Process
+- Layer: utility
+- Language: c
+- Symbols:
+  - `lxproc_note` (struct, line 35)
+  - `report_exe` (function, line 50) `static int report_exe(void)`
+  - `report_fork` (function, line 64) `static int report_fork(void)`
+  - `main` (function, line 91) `int main(void)`
+  - `_GNU_SOURCE` (macro, line 17) `#define _GNU_SOURCE`
+  - `LXPROC_EXE_MAX` (macro, line 27) `#define LXPROC_EXE_MAX`
+  - `LXPROC_CHILD_CODE` (macro, line 29) `#define LXPROC_CHILD_CODE`
+  - `LXPROC_OK` (macro, line 30) `#define LXPROC_OK`
+  - `LXPROC_BAD` (macro, line 31) `#define LXPROC_BAD`
+- Depends on: `progs/minios_abi.h`
+
 ## progs/src/lxsecc.c
 - Doc: Linux seccomp-bpf, prctl and /proc/self/exe probe (FreeDom
 - Layer: utility
@@ -464,32 +480,6 @@ Previous: [KB_src.md](KB_src.md)
   - `expand` (function, line 30) `def expand(line, env)`
   - `main` (function, line 36) `def main()`
 - Depends on: `progs/lua/minios.c`
-
-## progs/src/spin.c
-- Layer: utility
-- Language: c
-- Symbols:
-  - `lx_syscall3` (function, line 11) `static long lx_syscall3(long n, long a1, long a2, long a3)`
-  - `lx_strlen` (function, line 20) `static unsigned long lx_strlen(const char *s)`
-  - `lx_write` (function, line 26) `static void lx_write(const char *s)`
-  - `lx_write_int` (function, line 30) `static void lx_write_int(long v)`
-  - `lx_atoi` (function, line 42) `static long lx_atoi(const char *s)`
-  - `spin_u32` (function, line 66) `static void spin_u32(unsigned char *d, unsigned long v)`
-  - `spin_hdr` (function, line 73) `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,
-        unsigned long ...`
-  - `spin_box_ok` (function, line 82) `static int spin_box_ok(const char *box)`
-  - `spin_hex8` (function, line 95) `static void spin_hex8(unsigned int v, char *dst)`
-  - `spin_write_all` (function, line 104) `static long spin_write_all(long fd, const unsigned char *buf, long len)`
-  - `spin_emit` (function, line 114) `static int spin_emit(const char *box, unsigned int seq,
-        const unsigned char *msg, long mlen)`
-  - `spin_raw_file` (function, line 145) `static int spin_raw_file(const char *box)`
-  - `spin_pixels` (function, line 169) `static void spin_pixels(long off)`
-  - `spin_wl` (function, line 181) `static int spin_wl(const char *box, const char *narg)`
-  - `lmain` (function, line 225) `int lmain(long argc, char **argv)`
-  - `SPIN_WLW` (macro, line 56) `#define SPIN_WLW`
-  - `SPIN_WLH` (macro, line 57) `#define SPIN_WLH`
-  - `SPIN_WLA` (macro, line 58) `#define SPIN_WLA`
-  - `SPIN_WLB` (macro, line 59) `#define SPIN_WLB`
 
 
 Next: [KB_src_p3.md](KB_src_p3.md)

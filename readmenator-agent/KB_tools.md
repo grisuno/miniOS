@@ -21,7 +21,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Symbols:
   - `WlBootConfig` (class, line 40) `class WlBootConfig`
   - `WlBoot` (class, line 67) `class WlBoot`
-  - `main` (method, line 226) `def main()`
+  - `main` (function, line 226) `def main()`
   - `__init__` (method, line 68) `def __init__(self, cfg)`
   - `fail` (method, line 75) `def fail(self, msg)`
   - `close` (method, line 80) `def close(self)`
@@ -79,9 +79,9 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 18) `class Config`
-  - `handler_body` (method, line 27) `def handler_body(text, name)`
-  - `check_stubs` (method, line 37) `def check_stubs(text, cfg)`
-  - `main` (method, line 52) `def main()`
+  - `handler_body` (function, line 27) `def handler_body(text, name)`
+  - `check_stubs` (function, line 37) `def check_stubs(text, cfg)`
+  - `main` (function, line 52) `def main()`
 
 ## tools/check_kb_sync.py
 - Doc: Verify KNOWLEDGE_BASE.md is in sync with code.
@@ -97,11 +97,11 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 17) `class Config`
-  - `bash_unquote` (method, line 26) `def bash_unquote(expr)`
-  - `unescaped_quote` (method, line 41) `def unescaped_quote(expr)`
-  - `parse_mutations` (method, line 58) `def parse_mutations(text)`
-  - `anchor_matches` (method, line 84) `def anchor_matches(repo, target, expr)`
-  - `main` (method, line 105) `def main()`
+  - `bash_unquote` (function, line 26) `def bash_unquote(expr)`
+  - `unescaped_quote` (function, line 41) `def unescaped_quote(expr)`
+  - `parse_mutations` (function, line 58) `def parse_mutations(text)`
+  - `anchor_matches` (function, line 84) `def anchor_matches(repo, target, expr)`
+  - `main` (function, line 105) `def main()`
 
 ## tools/check_spin_discipline.py
 - Doc: Check spinlock call-site discipline across kernel C sources.
@@ -109,9 +109,9 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 23) `class Config`
-  - `iter_functions` (method, line 38) `def iter_functions(path)`
-  - `check_file` (method, line 64) `def check_file(path)`
-  - `main` (method, line 99) `def main(argv)`
+  - `iter_functions` (function, line 38) `def iter_functions(path)`
+  - `check_file` (function, line 64) `def check_file(path)`
+  - `main` (function, line 99) `def main(argv)`
 
 ## tools/check_surprising.py
 - Doc: Detect surprising architectural connections.
@@ -130,13 +130,13 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 18) `class Config`
-  - `split_functions` (method, line 69) `def split_functions(lines)`
-  - `checked_names` (method, line 112) `def checked_names(body)`
-  - `delegated_only` (method, line 122) `def delegated_only(body, alias)`
-  - `split_top_args` (method, line 143) `def split_top_args(argtext)`
-  - `audit_body` (method, line 162) `def audit_body(name, body)`
-  - `audit_file` (method, line 217) `def audit_file(path)`
-  - `main` (method, line 228) `def main()`
+  - `split_functions` (function, line 69) `def split_functions(lines)`
+  - `checked_names` (function, line 112) `def checked_names(body)`
+  - `delegated_only` (function, line 122) `def delegated_only(body, alias)`
+  - `split_top_args` (function, line 143) `def split_top_args(argtext)`
+  - `audit_body` (function, line 162) `def audit_body(name, body)`
+  - `audit_file` (function, line 217) `def audit_file(path)`
+  - `main` (function, line 228) `def main()`
 
 ## tools/clip_bridge.py
 - Doc: Host to MiniOS clipboard bridge plan builder.
@@ -144,10 +144,10 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `ClipBridgeConfig` (class, line 30) `class ClipBridgeConfig`
-  - `valid_dst` (method, line 41) `def valid_dst(name, cfg)`
-  - `printable_line` (method, line 52) `def printable_line(line, cfg)`
-  - `build_plan` (method, line 59) `def build_plan(text, dst, cfg)`
-  - `main` (method, line 84) `def main(argv)`
+  - `valid_dst` (function, line 41) `def valid_dst(name, cfg)`
+  - `printable_line` (function, line 52) `def printable_line(line, cfg)`
+  - `build_plan` (function, line 59) `def build_plan(text, dst, cfg)`
+  - `main` (function, line 84) `def main(argv)`
 
 ## tools/doom_pwad.py
 - Doc: grid map to vanilla Doom PWAD writer and checker.
@@ -156,29 +156,29 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Symbols:
   - `DoomPwadConfig` (class, line 52) `class DoomPwadConfig`
   - `PwadError` (class, line 161) `class PwadError(Exception)`
-  - `pad_tex` (method, line 165) `def pad_tex(raw)`
-  - `parse_grid` (method, line 172) `def parse_grid(text)`
-  - `grid_extents` (method, line 195) `def grid_extents(rows)`
-  - `is_wall` (method, line 203) `def is_wall(rows, row, col)`
-  - `flood_reachable` (method, line 210) `def flood_reachable(rows)`
-  - `validate_grid` (method, line 240) `def validate_grid(rows)`
-  - `cell_corners` (method, line 269) `def cell_corners(row, col)`
-  - `cell_class` (method, line 279) `def cell_class(cell)`
-  - `label_regions` (method, line 291) `def label_regions(rows)`
-  - `region_sector` (method, line 326) `def region_sector(region, door_tag)`
-  - `compile_geometry` (method, line 371) `def compile_geometry(rows, exit_pos, wall_side)`
-  - `compile_things` (method, line 485) `def compile_things(rows)`
-  - `seg_angle` (method, line 506) `def seg_angle(dx, dy)`
-  - `build_lumps` (method, line 516) `def build_lumps(rows)`
-  - `build_pwad` (method, line 597) `def build_pwad(rows)`
-  - `read_pwad` (method, line 616) `def read_pwad(data)`
-  - `check_pwad` (method, line 639) `def check_pwad(data)`
-  - `cmd_build` (method, line 816) `def cmd_build(grid_path, out_path)`
-  - `cmd_check` (method, line 826) `def cmd_check(path)`
-  - `main` (method, line 834) `def main(argv)`
-  - `vertex` (method, line 386) `def vertex(x, y)`
-  - `payload` (method, line 650) `def payload(name)`
-  - `check_multiple` (method, line 655) `def check_multiple(name, fmt)`
+  - `pad_tex` (function, line 165) `def pad_tex(raw)`
+  - `parse_grid` (function, line 172) `def parse_grid(text)`
+  - `grid_extents` (function, line 195) `def grid_extents(rows)`
+  - `is_wall` (function, line 203) `def is_wall(rows, row, col)`
+  - `flood_reachable` (function, line 210) `def flood_reachable(rows)`
+  - `validate_grid` (function, line 240) `def validate_grid(rows)`
+  - `cell_corners` (function, line 269) `def cell_corners(row, col)`
+  - `cell_class` (function, line 279) `def cell_class(cell)`
+  - `label_regions` (function, line 291) `def label_regions(rows)`
+  - `region_sector` (function, line 326) `def region_sector(region, door_tag)`
+  - `compile_geometry` (function, line 371) `def compile_geometry(rows, exit_pos, wall_side)`
+  - `compile_things` (function, line 485) `def compile_things(rows)`
+  - `seg_angle` (function, line 506) `def seg_angle(dx, dy)`
+  - `build_lumps` (function, line 516) `def build_lumps(rows)`
+  - `build_pwad` (function, line 597) `def build_pwad(rows)`
+  - `read_pwad` (function, line 616) `def read_pwad(data)`
+  - `check_pwad` (function, line 639) `def check_pwad(data)`
+  - `cmd_build` (function, line 816) `def cmd_build(grid_path, out_path)`
+  - `cmd_check` (function, line 826) `def cmd_check(path)`
+  - `main` (function, line 834) `def main(argv)`
+  - `vertex` (function, line 386) `def vertex(x, y)`
+  - `payload` (function, line 650) `def payload(name)`
+  - `check_multiple` (function, line 655) `def check_multiple(name, fmt)`
 - Imported by: `tests/test_doom_pwad.py`
 
 ## tools/extract_shell.py
@@ -202,8 +202,8 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 69) `def write_atomic(img, path)`
-  - `main` (function, line 75) `def main()`
+  - `write_atomic` (function, line 71) `def write_atomic(img, path)`
+  - `main` (function, line 77) `def main()`
 
 ## tools/gen_icons.py
 - Doc: generate 32x32 RGBA PNG icon files for the MiniOS desktop.
@@ -237,13 +237,13 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `SurveyConfig` (class, line 18) `class SurveyConfig`
-  - `iter_sources` (method, line 34) `def iter_sources(root)`
-  - `find_fnptr_hits` (method, line 43) `def find_fnptr_hits(path, text)`
-  - `find_asm_constraints` (method, line 49) `def find_asm_constraints(path, text)`
-  - `count_params` (method, line 59) `def count_params(params)`
-  - `survey` (method, line 67) `def survey(root)`
-  - `render_text` (method, line 103) `def render_text(findings)`
-  - `main` (method, line 122) `def main(argv)`
+  - `iter_sources` (function, line 34) `def iter_sources(root)`
+  - `find_fnptr_hits` (function, line 43) `def find_fnptr_hits(path, text)`
+  - `find_asm_constraints` (function, line 49) `def find_asm_constraints(path, text)`
+  - `count_params` (function, line 59) `def count_params(params)`
+  - `survey` (function, line 67) `def survey(root)`
+  - `render_text` (function, line 103) `def render_text(findings)`
+  - `main` (function, line 122) `def main(argv)`
 
 ## tools/lisp_scoped.sh
 - Doc: Docstring: Scoped Lisp validation for the MiniOS interpreter contract.
@@ -273,7 +273,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `u32` (function, line 14) `def u32(d, o)`
   - `mode_str` (function, line 16) `def mode_str(m)`
   - `FS` (class, line 25) `class FS`
-  - `main` (method, line 105) `def main()`
+  - `main` (function, line 105) `def main()`
   - `__init__` (method, line 26) `def __init__(self, fn)`
   - `blk` (method, line 29) `def blk(self, n)`
   - `_sb` (method, line 30) `def _sb(self)`
@@ -291,7 +291,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `u32` (function, line 14) `def u32(d, o)`
   - `crc32` (function, line 15) `def crc32(data)`
   - `FSCK` (class, line 23) `class FSCK`
-  - `main` (method, line 173) `def main()`
+  - `main` (function, line 173) `def main()`
   - `__init__` (method, line 24) `def __init__(self, fn)`
   - `_find_base` (method, line 31) `def _find_base(self)`
   - `blk` (method, line 49) `def blk(self, n)`
@@ -316,11 +316,11 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `u32` (function, line 57) `def u32(d, o)`
   - `Image` (class, line 61) `class Image`
   - `FS` (class, line 85) `class FS`
-  - `valid_name` (method, line 216) `def valid_name(nm)`
-  - `strict_name` (method, line 224) `def strict_name(nm)`
-  - `find_partition_base` (method, line 233) `def find_partition_base(fn)`
-  - `cmd_backup` (method, line 271) `def cmd_backup(img_path, stage)`
-  - `main` (method, line 343) `def main(argv)`
+  - `valid_name` (function, line 216) `def valid_name(nm)`
+  - `strict_name` (function, line 224) `def strict_name(nm)`
+  - `find_partition_base` (function, line 233) `def find_partition_base(fn)`
+  - `cmd_backup` (function, line 271) `def cmd_backup(img_path, stage)`
+  - `main` (function, line 343) `def main(argv)`
   - `__init__` (method, line 64) `def __init__(self, fn, base)`
   - `close` (method, line 72) `def close(self)`
   - `blk` (method, line 75) `def blk(self, n)`
@@ -332,7 +332,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `read_file_dir` (method, line 165) `def read_file_dir(self, ino)`
   - `read_file_raw` (method, line 173) `def read_file_raw(self, st)`
   - `resolve` (method, line 197) `def resolve(self, path)`
-  - `walk` (method, line 293) `def walk(dir_ino, rel)`
+  - `walk` (function, line 293) `def walk(dir_ino, rel)`
 
 ## tools/minios_cli.py
 - Doc: — drive MiniOS through the MCP bridge, not by hand.
@@ -340,7 +340,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `Client` (class, line 38) `class Client`
-  - `main` (method, line 100) `def main()`
+  - `main` (function, line 100) `def main()`
   - `__init__` (method, line 39) `def __init__(self)`
   - `request` (method, line 56) `def request(self, method, params)`
   - `tool` (method, line 77) `def tool(self, name, params)`
@@ -354,7 +354,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Symbols:
   - `read_serial` (function, line 50) `def read_serial(master, timeout)`
   - `QMP` (class, line 66) `class QMP`
-  - `main` (method, line 118) `def main()`
+  - `main` (function, line 118) `def main()`
   - `__init__` (method, line 67) `def __init__(self, path)`
   - `cmd` (method, line 79) `def cmd(self, obj)`
   - `_recv` (method, line 83) `def _recv(self)`
@@ -375,10 +375,10 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `Guest` (class, line 211) `class Guest`
   - `FrameDiff` (class, line 339) `class FrameDiff`
   - `HyperChecks` (class, line 409) `class HyperChecks`
-  - `run_selftest` (method, line 491) `def run_selftest()`
-  - `run_boot` (method, line 523) `def run_boot(checks, extra_shell, interactive)`
-  - `repl` (method, line 561) `def repl(guest)`
-  - `main` (method, line 591) `def main(argv)`
+  - `run_selftest` (function, line 491) `def run_selftest()`
+  - `run_boot` (function, line 523) `def run_boot(checks, extra_shell, interactive)`
+  - `repl` (function, line 561) `def repl(guest)`
+  - `main` (function, line 591) `def main(argv)`
   - `encode` (method, line 77) `def encode(payload)`
   - `decode` (method, line 85) `def decode(frame)`
   - `__init__` (method, line 99) `def __init__(self, path)`
@@ -418,7 +418,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `pixel_oob` (method, line 452) `def pixel_oob(self)`
   - `sys_trace` (method, line 465) `def sys_trace(self)`
   - `_last_frames` (method, line 476) `def _last_frames(self)`
-  - `check` (method, line 495) `def check(ok, msg)`
+  - `check` (function, line 495) `def check(ok, msg)`
 - Depends on: `kernel/time.c`
 
 ## tools/mkfs.minifs.py
@@ -432,7 +432,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `crc32` (function, line 36) `def crc32(data)`
   - `count_free` (function, line 44) `def count_free(bitmap, count)`
   - `MiniFS` (class, line 50) `class MiniFS`
-  - `main` (method, line 274) `def main()`
+  - `main` (function, line 274) `def main()`
   - `__init__` (method, line 51) `def __init__(self, total_blocks)`
   - `mark_inodes_used` (method, line 74) `def mark_inodes_used(self, start, count)`
   - `mark_blocks_used` (method, line 78) `def mark_blocks_used(self, start, count)`
@@ -448,7 +448,7 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `write_file` (method, line 199) `def write_file(self, parent_ino, name, data)`
   - `write_dir` (method, line 218) `def write_dir(self, parent_ino, name)`
   - `serialize` (method, line 230) `def serialize(self)`
-  - `pack_tree` (method, line 304) `def pack_tree(parent_ino, path, rel)`
+  - `pack_tree` (function, line 304) `def pack_tree(parent_ino, path, rel)`
 
 ## tools/mkpak1.py
 - Doc: Build baseq2/pak1.pak carrying the player model.
@@ -484,10 +484,10 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 129)
-  - `cleanup` (function, line 136)
-  - `record` (function, line 482)
-  - `find_index` (function, line 488)
+  - `restore_sources` (function, line 132)
+  - `cleanup` (function, line 139)
+  - `record` (function, line 506)
+  - `find_index` (function, line 512)
 
 
 Next: [KB_tools_p2.md](KB_tools_p2.md)

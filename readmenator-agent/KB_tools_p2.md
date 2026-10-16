@@ -54,15 +54,44 @@ Previous: [KB_tools.md](KB_tools.md)
 - Symbols:
   - `read_serial` (function, line 30) `def read_serial(master, timeout)`
   - `QMP` (class, line 46) `class QMP`
-  - `main` (method, line 92) `def main()`
+  - `main` (function, line 92) `def main()`
   - `__init__` (method, line 47) `def __init__(self, path)`
   - `cmd` (method, line 59) `def cmd(self, obj)`
   - `_recv` (method, line 63) `def _recv(self)`
   - `mouse` (method, line 78) `def mouse(self, dx, dy, left)`
   - `key` (method, line 87) `def key(self, qcode, down)`
-  - `send` (method, line 113) `def send(line)`
-  - `mouse_state` (method, line 118) `def mouse_state()`
+  - `send` (function, line 113) `def send(line)`
+  - `mouse_state` (function, line 118) `def mouse_state()`
 - Depends on: `kernel/time.c`
+
+## tools/sign_elf.py
+- Doc: Sign MiniOS user binaries with Ed25519 (development key). .
+- Layer: utility
+- Language: py
+- Symbols:
+  - `Config` (class, line 31) `class Config`
+  - `sha512` (function, line 61) `def sha512(data)`
+  - `encodepoint_raw` (function, line 66) `def encodepoint_raw(x, y)`
+  - `edwards_add` (function, line 71) `def edwards_add(p, q)`
+  - `scalarmult` (function, line 88) `def scalarmult(p, e)`
+  - `base_point` (function, line 99) `def base_point()`
+  - `publickey` (function, line 112) `def publickey(seed)`
+  - `sign_digest` (function, line 121) `def sign_digest(digest, seed)`
+  - `pad_to` (function, line 135) `def pad_to(blob, alignment)`
+  - `parse_ehdr` (function, line 143) `def parse_ehdr(data)`
+  - `parse_phdrs` (function, line 158) `def parse_phdrs(data, ehdr)`
+  - `canonical_digest` (function, line 172) `def canonical_digest(data, ehdr, phdrs)`
+  - `find_note_slots` (function, line 199) `def find_note_slots(data, ehdr, phdrs)`
+  - `find_section_slot` (function, line 222) `def find_section_slot(data, ehdr)`
+  - `append_section` (function, line 257) `def append_section(data, ehdr, desc)`
+  - `pub_for_key` (function, line 305) `def pub_for_key(key_id)`
+  - `key_material` (function, line 321) `def key_material(key_id)`
+  - `process` (function, line 341) `def process(path, key_id, check_only)`
+  - `verify_external` (function, line 395) `def verify_external(sig, digest, pub)`
+  - `fallback_verify` (function, line 408) `def fallback_verify(sig, digest, pub)`
+  - `decode_point` (function, line 429) `def decode_point(raw)`
+  - `points_equal` (function, line 447) `def points_equal(p, q)`
+  - `main` (function, line 454) `def main(argv)`
 
 ## tools/test_bdd.sh
 - Doc: BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the serial console...
@@ -77,12 +106,12 @@ Previous: [KB_tools.md](KB_tools.md)
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
   - `scenario_uefi` (function, line 167)
-  - `http_server_start` (function, line 1318)
-  - `http_server_stop` (function, line 1325)
-  - `http_fixture_start` (function, line 1330)
-  - `http_fixture_stop` (function, line 1337)
-  - `net_fixture_start` (function, line 1342)
-  - `net_fixture_stop` (function, line 1349)
+  - `http_server_start` (function, line 1357)
+  - `http_server_stop` (function, line 1364)
+  - `http_fixture_start` (function, line 1369)
+  - `http_fixture_stop` (function, line 1376)
+  - `net_fixture_start` (function, line 1381)
+  - `net_fixture_stop` (function, line 1388)
 
 ## tools/test_call_align.py
 - Doc: verify stack alignment at call sites, both parities.
@@ -90,9 +119,9 @@ Previous: [KB_tools.md](KB_tools.md)
 - Language: py
 - Symbols:
   - `AlignConfig` (class, line 24) `class AlignConfig`
-  - `find_minigcc` (method, line 59) `def find_minigcc(explicit)`
-  - `run` (method, line 74) `def run(argv)`
-  - `main` (method, line 79) `def main(argv)`
+  - `find_minigcc` (function, line 59) `def find_minigcc(explicit)`
+  - `run` (function, line 74) `def run(argv)`
+  - `main` (function, line 79) `def main(argv)`
 
 ## tools/test_codecs.sh
 - Doc: exercise the lzss/lz4/aes command-pair tools inside the OS.
@@ -106,9 +135,9 @@ Previous: [KB_tools.md](KB_tools.md)
 - Symbols:
   - `note` (function, line 39) `def note(ok, msg)`
   - `Guest` (class, line 45) `class Guest`
-  - `meandiff` (method, line 190) `def meandiff(a_path, b_path)`
-  - `count_arrows` (method, line 206) `def count_arrows(shot_path)`
-  - `main` (method, line 239) `def main()`
+  - `meandiff` (function, line 190) `def meandiff(a_path, b_path)`
+  - `count_arrows` (function, line 206) `def count_arrows(shot_path)`
+  - `main` (function, line 239) `def main()`
   - `__init__` (method, line 46) `def __init__(self)`
   - `_ser` (method, line 70) `def _ser(self)`
   - `_reader` (method, line 82) `def _reader(self)`
@@ -129,30 +158,34 @@ Previous: [KB_tools.md](KB_tools.md)
 - Layer: testing
 - Language: py
 - Symbols:
-  - `Config` (class, line 36) `class Config`
-  - `note` (method, line 66) `def note(ok, msg)`
-  - `Guest` (class, line 73) `class Guest`
-  - `region_diff` (method, line 213) `def region_diff(a_path, b_path, box)`
-  - `content_origin` (method, line 221) `def content_origin(listing)`
-  - `screen_box` (method, line 230) `def screen_box(origin, box)`
-  - `move_to` (method, line 235) `def move_to(g, frame_size, target)`
-  - `main` (method, line 247) `def main()`
-  - `__init__` (method, line 76) `def __init__(self, work)`
-  - `_connect` (method, line 100) `def _connect(self, path)`
-  - `_serial` (method, line 109) `def _serial(self)`
-  - `_reader` (method, line 114) `def _reader(self)`
-  - `snapshot` (method, line 125) `def snapshot(self)`
-  - `wait_for` (method, line 129) `def wait_for(self, text, timeout)`
-  - `send` (method, line 137) `def send(self, line, settle)`
-  - `qmp_cmd` (method, line 148) `def qmp_cmd(self, obj)`
-  - `_qmp` (method, line 155) `def _qmp(self, obj)`
-  - `keys` (method, line 163) `def keys(self, events)`
-  - `tap` (method, line 171) `def tap(self, qcode)`
-  - `chord` (method, line 174) `def chord(self, mod, qcode)`
-  - `rel` (method, line 177) `def rel(self, dx, dy)`
-  - `button` (method, line 182) `def button(self, down)`
-  - `dump` (method, line 188) `def dump(self, name)`
-  - `stop` (method, line 194) `def stop(self)`
+  - `Config` (class, line 45) `class Config`
+  - `note` (function, line 84) `def note(ok, msg)`
+  - `Guest` (class, line 91) `class Guest`
+  - `region_diff` (function, line 232) `def region_diff(a_path, b_path, box)`
+  - `content_origin` (function, line 240) `def content_origin(listing)`
+  - `changed_pixels` (function, line 249) `def changed_pixels(a_path, b_path, box)`
+  - `around` (function, line 259) `def around(point)`
+  - `walk` (function, line 265) `def walk(g, delta)`
+  - `foreground_phase` (function, line 276) `def foreground_phase(g)`
+  - `screen_box` (function, line 308) `def screen_box(origin, box)`
+  - `move_to` (function, line 313) `def move_to(g, frame_size, target)`
+  - `main` (function, line 319) `def main()`
+  - `__init__` (method, line 94) `def __init__(self, work)`
+  - `_connect` (method, line 118) `def _connect(self, path)`
+  - `_serial` (method, line 127) `def _serial(self)`
+  - `_reader` (method, line 132) `def _reader(self)`
+  - `snapshot` (method, line 143) `def snapshot(self)`
+  - `wait_for` (method, line 147) `def wait_for(self, text, timeout, since)`
+  - `send` (method, line 156) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 167) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 174) `def _qmp(self, obj)`
+  - `keys` (method, line 182) `def keys(self, events)`
+  - `tap` (method, line 190) `def tap(self, qcode)`
+  - `chord` (method, line 193) `def chord(self, mod, qcode)`
+  - `rel` (method, line 196) `def rel(self, dx, dy)`
+  - `button` (method, line 201) `def button(self, down)`
+  - `dump` (method, line 207) `def dump(self, name)`
+  - `stop` (method, line 213) `def stop(self)`
 - Depends on: `kernel/time.c`
 
 ## tools/test_gui_gfxview.py
@@ -161,12 +194,12 @@ Previous: [KB_tools.md](KB_tools.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 39) `class Config`
-  - `note` (method, line 55) `def note(ok, msg)`
-  - `last_line` (method, line 62) `def last_line(g, prefix)`
-  - `gfx_row` (method, line 72) `def gfx_row(g)`
-  - `dark_share` (method, line 84) `def dark_share(img, box)`
-  - `wait_frames` (method, line 94) `def wait_frames(g, want)`
-  - `main` (method, line 109) `def main()`
+  - `note` (function, line 55) `def note(ok, msg)`
+  - `last_line` (function, line 62) `def last_line(g, prefix)`
+  - `gfx_row` (function, line 72) `def gfx_row(g)`
+  - `dark_share` (function, line 84) `def dark_share(img, box)`
+  - `wait_frames` (function, line 94) `def wait_frames(g, want)`
+  - `main` (function, line 109) `def main()`
 - Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
 
 ## tools/test_gui_icon_cwd.py
@@ -176,9 +209,9 @@ Previous: [KB_tools.md](KB_tools.md)
 - Symbols:
   - `note` (function, line 36) `def note(ok, msg)`
   - `Guest` (class, line 42) `class Guest`
-  - `find_icon` (method, line 180) `def find_icon(shot_path, icon_path)`
-  - `walk` (method, line 213) `def walk(g, tx, ty, fw, fh)`
-  - `main` (method, line 228) `def main()`
+  - `find_icon` (function, line 180) `def find_icon(shot_path, icon_path)`
+  - `walk` (function, line 213) `def walk(g, tx, ty, fw, fh)`
+  - `main` (function, line 228) `def main()`
   - `__init__` (method, line 43) `def __init__(self)`
   - `_ser` (method, line 67) `def _ser(self)`
   - `_reader` (method, line 79) `def _reader(self)`
@@ -208,8 +241,8 @@ Previous: [KB_tools.md](KB_tools.md)
 - Symbols:
   - `note` (function, line 40) `def note(ok, msg)`
   - `Guest` (class, line 46) `class Guest`
-  - `meandiff` (method, line 204) `def meandiff(a_path, b_path)`
-  - `main` (method, line 214) `def main()`
+  - `meandiff` (function, line 204) `def meandiff(a_path, b_path)`
+  - `main` (function, line 214) `def main()`
   - `__init__` (method, line 47) `def __init__(self)`
   - `_ser` (method, line 75) `def _ser(self)`
   - `_reader` (method, line 87) `def _reader(self)`
@@ -250,8 +283,8 @@ Previous: [KB_tools.md](KB_tools.md)
 - Symbols:
   - `LispConfig` (class, line 28) `class LispConfig`
   - `LispTest` (class, line 37) `class LispTest`
-  - `build_binary` (method, line 308) `def build_binary(source, output)`
-  - `main` (method, line 321) `def main()`
+  - `build_binary` (function, line 308) `def build_binary(source, output)`
+  - `main` (function, line 321) `def main()`
   - `__init__` (method, line 40) `def __init__(self, binary, suite)`
   - `check` (method, line 47) `def check(self, name, actual, expected)`
   - `run_expr` (method, line 58) `def run_expr(self, code)`
@@ -271,10 +304,10 @@ Previous: [KB_tools.md](KB_tools.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 26) `class Config`
-  - `serve_udp` (method, line 34) `def serve_udp(port)`
-  - `echo_stream` (method, line 43) `def echo_stream(conn)`
-  - `serve_tcp` (method, line 53) `def serve_tcp(port)`
-  - `main` (method, line 64) `def main()`
+  - `serve_udp` (function, line 34) `def serve_udp(port)`
+  - `echo_stream` (function, line 43) `def echo_stream(conn)`
+  - `serve_tcp` (function, line 53) `def serve_tcp(port)`
+  - `main` (function, line 64) `def main()`
 
 ## tools/test_sb16.sh
 - Doc: — targeted BDD harness for the SB16 audio path.
@@ -297,11 +330,11 @@ Previous: [KB_tools.md](KB_tools.md)
   - `c_bytes` (function, line 183) `def c_bytes(data, name)`
   - `gen_header` (function, line 191) `def gen_header(p)`
   - `Server` (class, line 241) `class Server(Thread)`
-  - `serve` (method, line 280) `def serve(cert, key)`
-  - `serve_openssl` (method, line 288) `def serve_openssl(cert, key, chain)`
-  - `expect` (method, line 306) `def expect(bin_path, args, want_zero, marker)`
-  - `main` (method, line 319) `def main()`
-  - `server_cert` (method, line 61) `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)`
+  - `serve` (function, line 280) `def serve(cert, key)`
+  - `serve_openssl` (function, line 288) `def serve_openssl(cert, key, chain)`
+  - `expect` (function, line 306) `def expect(bin_path, args, want_zero, marker)`
+  - `main` (function, line 319) `def main()`
+  - `server_cert` (function, line 61) `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)`
   - `__init__` (method, line 242) `def __init__(self, cert, key, tls13_ok)`
   - `run` (method, line 248) `def run(self)`
 - Depends on: `kernel/time.c`
@@ -324,8 +357,8 @@ Previous: [KB_tools.md](KB_tools.md)
   - `WmLayoutSyncConfig` (class, line 17) `class WmLayoutSyncConfig`
   - `WmLayoutSyncResult` (class, line 36) `class WmLayoutSyncResult`
   - `WmLayoutSync` (class, line 46) `class WmLayoutSync`
-  - `parse_args` (method, line 151) `def parse_args(argv)`
-  - `main` (method, line 159) `def main(argv)`
+  - `parse_args` (function, line 151) `def parse_args(argv)`
+  - `main` (function, line 159) `def main(argv)`
   - `__init__` (method, line 20) `def __init__(self, root)`
   - `__init__` (method, line 39) `def __init__(self, modes, symbols, checks)`
   - `__init__` (method, line 49) `def __init__(self, config)`

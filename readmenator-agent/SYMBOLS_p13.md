@@ -3,6 +3,191 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `HUSTR_E4M4` | macro | `progs/doomgeneric/d_englsh.h:172` | `#define HUSTR_E4M4` |
+| `HUSTR_E4M5` | macro | `progs/doomgeneric/d_englsh.h:173` | `#define HUSTR_E4M5` |
+| `HUSTR_E4M6` | macro | `progs/doomgeneric/d_englsh.h:174` | `#define HUSTR_E4M6` |
+| `HUSTR_E4M7` | macro | `progs/doomgeneric/d_englsh.h:175` | `#define HUSTR_E4M7` |
+| `HUSTR_E4M8` | macro | `progs/doomgeneric/d_englsh.h:176` | `#define HUSTR_E4M8` |
+| `HUSTR_E4M9` | macro | `progs/doomgeneric/d_englsh.h:177` | `#define HUSTR_E4M9` |
+| `HUSTR_KEYBROWN` | macro | `progs/doomgeneric/d_englsh.h:316` | `#define HUSTR_KEYBROWN` |
+| `HUSTR_KEYGREEN` | macro | `progs/doomgeneric/d_englsh.h:314` | `#define HUSTR_KEYGREEN` |
+| `HUSTR_KEYINDIGO` | macro | `progs/doomgeneric/d_englsh.h:315` | `#define HUSTR_KEYINDIGO` |
+| `HUSTR_KEYRED` | macro | `progs/doomgeneric/d_englsh.h:317` | `#define HUSTR_KEYRED` |
+| `HUSTR_MESSAGESENT` | macro | `progs/doomgeneric/d_englsh.h:304` | `#define HUSTR_MESSAGESENT` |
+| `HUSTR_MSGU` | macro | `progs/doomgeneric/d_englsh.h:137` | `#define HUSTR_MSGU` |
+| `HUSTR_PLRBROWN` | macro | `progs/doomgeneric/d_englsh.h:311` | `#define HUSTR_PLRBROWN` |
+| `HUSTR_PLRGREEN` | macro | `progs/doomgeneric/d_englsh.h:309` | `#define HUSTR_PLRGREEN` |
+| `HUSTR_PLRINDIGO` | macro | `progs/doomgeneric/d_englsh.h:310` | `#define HUSTR_PLRINDIGO` |
+| `HUSTR_PLRRED` | macro | `progs/doomgeneric/d_englsh.h:312` | `#define HUSTR_PLRRED` |
+| `HUSTR_TALKTOSELF1` | macro | `progs/doomgeneric/d_englsh.h:298` | `#define HUSTR_TALKTOSELF1` |
+| `HUSTR_TALKTOSELF2` | macro | `progs/doomgeneric/d_englsh.h:299` | `#define HUSTR_TALKTOSELF2` |
+| `HUSTR_TALKTOSELF3` | macro | `progs/doomgeneric/d_englsh.h:300` | `#define HUSTR_TALKTOSELF3` |
+| `HUSTR_TALKTOSELF4` | macro | `progs/doomgeneric/d_englsh.h:301` | `#define HUSTR_TALKTOSELF4` |
+| `HUSTR_TALKTOSELF5` | macro | `progs/doomgeneric/d_englsh.h:302` | `#define HUSTR_TALKTOSELF5` |
+| `LOADNET` | macro | `progs/doomgeneric/d_englsh.h:39` | `#define LOADNET` |
+| `MSGOFF` | macro | `progs/doomgeneric/d_englsh.h:58` | `#define MSGOFF` |
+| `MSGON` | macro | `progs/doomgeneric/d_englsh.h:59` | `#define MSGON` |
+| `NETEND` | macro | `progs/doomgeneric/d_englsh.h:60` | `#define NETEND` |
+| `NEWGAME` | macro | `progs/doomgeneric/d_englsh.h:46` | `#define NEWGAME` |
+| `NIGHTMARE` | macro | `progs/doomgeneric/d_englsh.h:50` | `#define NIGHTMARE` |
+| `P1TEXT` | macro | `progs/doomgeneric/d_englsh.h:526` | `#define P1TEXT` |
+| `P2TEXT` | macro | `progs/doomgeneric/d_englsh.h:543` | `#define P2TEXT` |
+| `P3TEXT` | macro | `progs/doomgeneric/d_englsh.h:554` | `#define P3TEXT` |
+| `P4TEXT` | macro | `progs/doomgeneric/d_englsh.h:568` | `#define P4TEXT` |
+| `P5TEXT` | macro | `progs/doomgeneric/d_englsh.h:584` | `#define P5TEXT` |
+| `P6TEXT` | macro | `progs/doomgeneric/d_englsh.h:592` | `#define P6TEXT` |
+| `PD_BLUEK` | macro | `progs/doomgeneric/d_englsh.h:125` | `#define PD_BLUEK` |
+| `PD_BLUEO` | macro | `progs/doomgeneric/d_englsh.h:122` | `#define PD_BLUEO` |
+| `PD_REDK` | macro | `progs/doomgeneric/d_englsh.h:126` | `#define PD_REDK` |
+| `PD_REDO` | macro | `progs/doomgeneric/d_englsh.h:123` | `#define PD_REDO` |
+| `PD_YELLOWK` | macro | `progs/doomgeneric/d_englsh.h:127` | `#define PD_YELLOWK` |
+| `PD_YELLOWO` | macro | `progs/doomgeneric/d_englsh.h:124` | `#define PD_YELLOWO` |
+| `PHUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:215` | `#define PHUSTR_1` |
+| `PHUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:224` | `#define PHUSTR_10` |
+| `PHUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:225` | `#define PHUSTR_11` |
+| `PHUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:227` | `#define PHUSTR_12` |
+| `PHUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:228` | `#define PHUSTR_13` |
+| `PHUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:229` | `#define PHUSTR_14` |
+| `PHUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:230` | `#define PHUSTR_15` |
+| `PHUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:231` | `#define PHUSTR_16` |
+| `PHUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:232` | `#define PHUSTR_17` |
+| `PHUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:233` | `#define PHUSTR_18` |
+| `PHUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:234` | `#define PHUSTR_19` |
+| `PHUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:216` | `#define PHUSTR_2` |
+| `PHUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:235` | `#define PHUSTR_20` |
+| `PHUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:237` | `#define PHUSTR_21` |
+| `PHUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:238` | `#define PHUSTR_22` |
+| `PHUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:239` | `#define PHUSTR_23` |
+| `PHUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:240` | `#define PHUSTR_24` |
+| `PHUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:241` | `#define PHUSTR_25` |
+| `PHUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:242` | `#define PHUSTR_26` |
+| `PHUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:243` | `#define PHUSTR_27` |
+| `PHUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:244` | `#define PHUSTR_28` |
+| `PHUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:245` | `#define PHUSTR_29` |
+| `PHUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:217` | `#define PHUSTR_3` |
+| `PHUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:246` | `#define PHUSTR_30` |
+| `PHUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:248` | `#define PHUSTR_31` |
+| `PHUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:249` | `#define PHUSTR_32` |
+| `PHUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:218` | `#define PHUSTR_4` |
+| `PHUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:219` | `#define PHUSTR_5` |
+| `PHUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:220` | `#define PHUSTR_6` |
+| `PHUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:221` | `#define PHUSTR_7` |
+| `PHUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:222` | `#define PHUSTR_8` |
+| `PHUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:223` | `#define PHUSTR_9` |
+| `PRESSKEY` | macro | `progs/doomgeneric/d_englsh.h:36` | `#define PRESSKEY` |
+| `PRESSYN` | macro | `progs/doomgeneric/d_englsh.h:37` | `#define PRESSYN` |
+| `QLOADNET` | macro | `progs/doomgeneric/d_englsh.h:40` | `#define QLOADNET` |
+| `QLPROMPT` | macro | `progs/doomgeneric/d_englsh.h:44` | `#define QLPROMPT` |
+| `QSAVESPOT` | macro | `progs/doomgeneric/d_englsh.h:41` | `#define QSAVESPOT` |
+| `QSPROMPT` | macro | `progs/doomgeneric/d_englsh.h:43` | `#define QSPROMPT` |
+| `QUITMSG` | macro | `progs/doomgeneric/d_englsh.h:38` | `#define QUITMSG` |
+| `SAVEDEAD` | macro | `progs/doomgeneric/d_englsh.h:42` | `#define SAVEDEAD` |
+| `STSTR_BEHOLD` | macro | `progs/doomgeneric/d_englsh.h:347` | `#define STSTR_BEHOLD` |
+| `STSTR_BEHOLDX` | macro | `progs/doomgeneric/d_englsh.h:348` | `#define STSTR_BEHOLDX` |
+| `STSTR_CHOPPERS` | macro | `progs/doomgeneric/d_englsh.h:350` | `#define STSTR_CHOPPERS` |
+| `STSTR_CLEV` | macro | `progs/doomgeneric/d_englsh.h:351` | `#define STSTR_CLEV` |
+| `STSTR_DQDOFF` | macro | `progs/doomgeneric/d_englsh.h:339` | `#define STSTR_DQDOFF` |
+| `STSTR_DQDON` | macro | `progs/doomgeneric/d_englsh.h:338` | `#define STSTR_DQDON` |
+| `STSTR_FAADDED` | macro | `progs/doomgeneric/d_englsh.h:342` | `#define STSTR_FAADDED` |
+| `STSTR_KFAADDED` | macro | `progs/doomgeneric/d_englsh.h:341` | `#define STSTR_KFAADDED` |
+| `STSTR_MUS` | macro | `progs/doomgeneric/d_englsh.h:336` | `#define STSTR_MUS` |
+| `STSTR_NCOFF` | macro | `progs/doomgeneric/d_englsh.h:345` | `#define STSTR_NCOFF` |
+| `STSTR_NCON` | macro | `progs/doomgeneric/d_englsh.h:344` | `#define STSTR_NCON` |
+| `STSTR_NOMUS` | macro | `progs/doomgeneric/d_englsh.h:337` | `#define STSTR_NOMUS` |
+| `SWSTRING` | macro | `progs/doomgeneric/d_englsh.h:54` | `#define SWSTRING` |
+| `T1TEXT` | macro | `progs/doomgeneric/d_englsh.h:598` | `#define T1TEXT` |
+| `T2TEXT` | macro | `progs/doomgeneric/d_englsh.h:613` | `#define T2TEXT` |
+| `T3TEXT` | macro | `progs/doomgeneric/d_englsh.h:625` | `#define T3TEXT` |
+| `T4TEXT` | macro | `progs/doomgeneric/d_englsh.h:635` | `#define T4TEXT` |
+| `T5TEXT` | macro | `progs/doomgeneric/d_englsh.h:649` | `#define T5TEXT` |
+| `T6TEXT` | macro | `progs/doomgeneric/d_englsh.h:657` | `#define T6TEXT` |
+| `THUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:251` | `#define THUSTR_1` |
+| `THUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:260` | `#define THUSTR_10` |
+| `THUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:261` | `#define THUSTR_11` |
+| `THUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:263` | `#define THUSTR_12` |
+| `THUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:264` | `#define THUSTR_13` |
+| `THUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:265` | `#define THUSTR_14` |
+| `THUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:266` | `#define THUSTR_15` |
+| `THUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:267` | `#define THUSTR_16` |
+| `THUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:268` | `#define THUSTR_17` |
+| `THUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:269` | `#define THUSTR_18` |
+| `THUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:270` | `#define THUSTR_19` |
+| `THUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:252` | `#define THUSTR_2` |
+| `THUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:271` | `#define THUSTR_20` |
+| `THUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:273` | `#define THUSTR_21` |
+| `THUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:274` | `#define THUSTR_22` |
+| `THUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:275` | `#define THUSTR_23` |
+| `THUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:276` | `#define THUSTR_24` |
+| `THUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:277` | `#define THUSTR_25` |
+| `THUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:278` | `#define THUSTR_26` |
+| `THUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:279` | `#define THUSTR_27` |
+| `THUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:280` | `#define THUSTR_28` |
+| `THUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:281` | `#define THUSTR_29` |
+| `THUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:253` | `#define THUSTR_3` |
+| `THUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:282` | `#define THUSTR_30` |
+| `THUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:284` | `#define THUSTR_31` |
+| `THUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:285` | `#define THUSTR_32` |
+| `THUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:254` | `#define THUSTR_4` |
+| `THUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:255` | `#define THUSTR_5` |
+| `THUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:256` | `#define THUSTR_6` |
+| `THUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:257` | `#define THUSTR_7` |
+| `THUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:258` | `#define THUSTR_8` |
+| `THUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:259` | `#define THUSTR_9` |
+| `__D_ENGLSH__` | macro | `progs/doomgeneric/d_englsh.h:21` | `#define __D_ENGLSH__` |
+| `D_PopEvent` | function | `progs/doomgeneric/d_event.c:43` | `event_t *D_PopEvent(void)` |
+| `D_PostEvent` | function | `progs/doomgeneric/d_event.c:35` | `void D_PostEvent (event_t* ev)` |
+| `MAXEVENTS` | macro | `progs/doomgeneric/d_event.c:25` | `#define MAXEVENTS` |
+| `D_PopEvent` | function | `progs/doomgeneric/d_event.h:133` | `event_t *D_PopEvent(void);` |
+| `D_PostEvent` | function | `progs/doomgeneric/d_event.h:129` | `void D_PostEvent (event_t *ev);` |
+| `__D_EVENT__` | macro | `progs/doomgeneric/d_event.h:21` | `#define __D_EVENT__` |
+| `event_t` | struct | `progs/doomgeneric/d_event.h:42` | `` |
+| `__D_ITEMS__` | macro | `progs/doomgeneric/d_items.h:21` | `#define __D_ITEMS__` |
+| `weaponinfo` | variable | `progs/doomgeneric/d_items.h:39` | `extern weaponinfo_t weaponinfo[NUMWEAPONS];` |
+| `weaponinfo_t` | struct | `progs/doomgeneric/d_items.h:28` | `` |
+| `AddDoomWadPath` | function | `progs/doomgeneric/d_iwad.c:518` | `static void AddDoomWadPath(void)` |
+| `AddIWADDir` | function | `progs/doomgeneric/d_iwad.c:64` | `static void AddIWADDir(char *dir)` |
+| `BuildIWADDirList` | function | `progs/doomgeneric/d_iwad.c:569` | `static void BuildIWADDirList(void)` |
+| `CheckCollectorsEdition` | function | `progs/doomgeneric/d_iwad.c:270` | `static void CheckCollectorsEdition(void)` |
+| `CheckDOSDefaults` | function | `progs/doomgeneric/d_iwad.c:364` | `static void CheckDOSDefaults(void)` |
+| `CheckDirectoryHasIWAD` | function | `progs/doomgeneric/d_iwad.c:408` | `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)` |
+| `CheckSteamEdition` | function | `progs/doomgeneric/d_iwad.c:297` | `static void CheckSteamEdition(void)` |
+| `CheckSteamGUSPatches` | function | `progs/doomgeneric/d_iwad.c:324` | `static void CheckSteamGUSPatches(void)` |
+| `CheckUninstallStrings` | function | `progs/doomgeneric/d_iwad.c:236` | `static void CheckUninstallStrings(void)` |
+| `D_FindAllIWADs` | function | `progs/doomgeneric/d_iwad.c:757` | `const iwad_t **D_FindAllIWADs(int mask)` |
+| `D_FindIWAD` | function | `progs/doomgeneric/d_iwad.c:704` | `char *D_FindIWAD(int mask, GameMission_t *mission)` |
+| `D_FindWADByName` | function | `progs/doomgeneric/d_iwad.c:630` | `char *D_FindWADByName(char *name)` |
+| `D_SaveGameIWADName` | function | `progs/doomgeneric/d_iwad.c:796` | `char *D_SaveGameIWADName(GameMission_t gamemission)` |
+| `D_SuggestGameName` | function | `progs/doomgeneric/d_iwad.c:835` | `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)` |
+| `D_SuggestIWADName` | function | `progs/doomgeneric/d_iwad.c:820` | `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)` |
+| `D_TryFindWADByName` | function | `progs/doomgeneric/d_iwad.c:681` | `char *D_TryFindWADByName(char *filename)` |
+| `DirIsFile` | function | `progs/doomgeneric/d_iwad.c:391` | `static boolean DirIsFile(char *path, char *filename)` |
+| `GetRegistryString` | function | `progs/doomgeneric/d_iwad.c:192` | `static char *GetRegistryString(registry_value_t *reg_val)` |
+| `IdentifyIWADByName` | function | `progs/doomgeneric/d_iwad.c:477` | `static GameMission_t IdentifyIWADByName(char *name, int mask)` |
+| `MAX_IWAD_DIRS` | macro | `progs/doomgeneric/d_iwad.c:58` | `#define MAX_IWAD_DIRS` |
+| `SOFTWARE_KEY` | macro | `progs/doomgeneric/d_iwad.c:102` | `#define SOFTWARE_KEY` |
+| `SOFTWARE_KEY` | macro | `progs/doomgeneric/d_iwad.c:104` | `#define SOFTWARE_KEY` |
+| `STEAM_BFG_GUS_PATCHES` | macro | `progs/doomgeneric/d_iwad.c:189` | `#define STEAM_BFG_GUS_PATCHES` |
+| `SearchDirectoryForIWAD` | function | `progs/doomgeneric/d_iwad.c:449` | `static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)` |
+| `UNINSTALLER_STRING` | macro | `progs/doomgeneric/d_iwad.c:90` | `#define UNINSTALLER_STRING` |
+| `WIN32_LEAN_AND_MEAN` | macro | `progs/doomgeneric/d_iwad.c:80` | `#define WIN32_LEAN_AND_MEAN` |
+| `registry_value_t` | struct | `progs/doomgeneric/d_iwad.c:83` | `` |
+| `D_CheckCorrectIWAD` | function | `progs/doomgeneric/d_iwad.h:49` | `void D_CheckCorrectIWAD(GameMission_t mission);` |
+| `D_FindAllIWADs` | function | `progs/doomgeneric/d_iwad.h:45` | `const iwad_t **D_FindAllIWADs(int mask);` |
+| `D_FindIWAD` | function | `progs/doomgeneric/d_iwad.h:44` | `char *D_FindIWAD(int mask, GameMission_t *mission);` |
+| `D_FindWADByName` | function | `progs/doomgeneric/d_iwad.h:42` | `char *D_FindWADByName(char *filename);` |
+| `D_SaveGameIWADName` | function | `progs/doomgeneric/d_iwad.h:46` | `char *D_SaveGameIWADName(GameMission_t gamemission);` |
+| `D_SuggestGameName` | function | `progs/doomgeneric/d_iwad.h:48` | `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode);` |
+| `D_SuggestIWADName` | function | `progs/doomgeneric/d_iwad.h:47` | `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode);` |
+| `D_TryFindWADByName` | function | `progs/doomgeneric/d_iwad.h:43` | `char *D_TryFindWADByName(char *filename);` |
+| `IWAD_MASK_DOOM` | macro | `progs/doomgeneric/d_iwad.h:24` | `#define IWAD_MASK_DOOM` |
+| `IWAD_MASK_HERETIC` | macro | `progs/doomgeneric/d_iwad.h:30` | `#define IWAD_MASK_HERETIC` |
+| `IWAD_MASK_HEXEN` | macro | `progs/doomgeneric/d_iwad.h:31` | `#define IWAD_MASK_HEXEN` |
+| `IWAD_MASK_STRIFE` | macro | `progs/doomgeneric/d_iwad.h:32` | `#define IWAD_MASK_STRIFE` |
+| `__D_IWAD__` | macro | `progs/doomgeneric/d_iwad.h:20` | `#define __D_IWAD__` |
+| `iwad_t` | struct | `progs/doomgeneric/d_iwad.h:34` | `` |
+| `BlockUntilStart` | function | `progs/doomgeneric/d_loop.c:315` | `static void BlockUntilStart(net_gamesettings_t *settings,                             netgame_sta...` |
+| `BuildNewTic` | function | `progs/doomgeneric/d_loop.c:136` | `static boolean BuildNewTic(void)` |
+| `D_Disconnected` | function | `progs/doomgeneric/d_loop.c:252` | `static void D_Disconnected(void)` |
 | `D_InitNetGame` | function | `progs/doomgeneric/d_loop.c:452` | `boolean D_InitNetGame(net_connect_data_t *connect_data)` |
 | `D_QuitNetGame` | function | `progs/doomgeneric/d_loop.c:560` | `void D_QuitNetGame (void)` |
 | `D_ReceiveTic` | function | `progs/doomgeneric/d_loop.c:271` | `void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)` |
@@ -311,190 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `KEY_EQUALS` | macro | `progs/doomgeneric/doomkeys.h:54` | `#define KEY_EQUALS` |
 | `KEY_ESCAPE` | macro | `progs/doomgeneric/doomkeys.h:35` | `#define KEY_ESCAPE` |
 | `KEY_F1` | macro | `progs/doomgeneric/doomkeys.h:38` | `#define KEY_F1` |
-| `KEY_F10` | macro | `progs/doomgeneric/doomkeys.h:47` | `#define KEY_F10` |
-| `KEY_F11` | macro | `progs/doomgeneric/doomkeys.h:48` | `#define KEY_F11` |
-| `KEY_F12` | macro | `progs/doomgeneric/doomkeys.h:49` | `#define KEY_F12` |
-| `KEY_F2` | macro | `progs/doomgeneric/doomkeys.h:39` | `#define KEY_F2` |
-| `KEY_F3` | macro | `progs/doomgeneric/doomkeys.h:40` | `#define KEY_F3` |
-| `KEY_F4` | macro | `progs/doomgeneric/doomkeys.h:41` | `#define KEY_F4` |
-| `KEY_F5` | macro | `progs/doomgeneric/doomkeys.h:42` | `#define KEY_F5` |
-| `KEY_F6` | macro | `progs/doomgeneric/doomkeys.h:43` | `#define KEY_F6` |
-| `KEY_F7` | macro | `progs/doomgeneric/doomkeys.h:44` | `#define KEY_F7` |
-| `KEY_F8` | macro | `progs/doomgeneric/doomkeys.h:45` | `#define KEY_F8` |
-| `KEY_F9` | macro | `progs/doomgeneric/doomkeys.h:46` | `#define KEY_F9` |
-| `KEY_FIRE` | macro | `progs/doomgeneric/doomkeys.h:34` | `#define KEY_FIRE` |
-| `KEY_HOME` | macro | `progs/doomgeneric/doomkeys.h:70` | `#define KEY_HOME` |
-| `KEY_INS` | macro | `progs/doomgeneric/doomkeys.h:74` | `#define KEY_INS` |
-| `KEY_LALT` | macro | `progs/doomgeneric/doomkeys.h:61` | `#define KEY_LALT` |
-| `KEY_LEFTARROW` | macro | `progs/doomgeneric/doomkeys.h:28` | `#define KEY_LEFTARROW` |
-| `KEY_MINUS` | macro | `progs/doomgeneric/doomkeys.h:55` | `#define KEY_MINUS` |
-| `KEY_NUMLOCK` | macro | `progs/doomgeneric/doomkeys.h:66` | `#define KEY_NUMLOCK` |
-| `KEY_PAUSE` | macro | `progs/doomgeneric/doomkeys.h:52` | `#define KEY_PAUSE` |
-| `KEY_PGDN` | macro | `progs/doomgeneric/doomkeys.h:73` | `#define KEY_PGDN` |
-| `KEY_PGUP` | macro | `progs/doomgeneric/doomkeys.h:72` | `#define KEY_PGUP` |
-| `KEY_PRTSCR` | macro | `progs/doomgeneric/doomkeys.h:68` | `#define KEY_PRTSCR` |
-| `KEY_RALT` | macro | `progs/doomgeneric/doomkeys.h:59` | `#define KEY_RALT` |
-| `KEY_RCTRL` | macro | `progs/doomgeneric/doomkeys.h:58` | `#define KEY_RCTRL` |
-| `KEY_RIGHTARROW` | macro | `progs/doomgeneric/doomkeys.h:27` | `#define KEY_RIGHTARROW` |
-| `KEY_RSHIFT` | macro | `progs/doomgeneric/doomkeys.h:57` | `#define KEY_RSHIFT` |
-| `KEY_SCRLCK` | macro | `progs/doomgeneric/doomkeys.h:67` | `#define KEY_SCRLCK` |
-| `KEY_STRAFE_L` | macro | `progs/doomgeneric/doomkeys.h:31` | `#define KEY_STRAFE_L` |
-| `KEY_STRAFE_R` | macro | `progs/doomgeneric/doomkeys.h:32` | `#define KEY_STRAFE_R` |
-| `KEY_TAB` | macro | `progs/doomgeneric/doomkeys.h:37` | `#define KEY_TAB` |
-| `KEY_UPARROW` | macro | `progs/doomgeneric/doomkeys.h:29` | `#define KEY_UPARROW` |
-| `KEY_USE` | macro | `progs/doomgeneric/doomkeys.h:33` | `#define KEY_USE` |
-| `__DOOMKEYS__` | macro | `progs/doomgeneric/doomkeys.h:20` | `#define __DOOMKEYS__` |
-| `MAX_DM_STARTS` | macro | `progs/doomgeneric/doomstat.h:227` | `#define MAX_DM_STARTS` |
-| `__D_STATE__` | macro | `progs/doomgeneric/doomstat.h:26` | `#define __D_STATE__` |
-| `automapactive` | variable | `progs/doomgeneric/doomstat.h:143` | `extern boolean automapactive;` |
-| `autostart` | variable | `progs/doomgeneric/doomstat.h:91` | `extern boolean autostart;` |
-| `basedefault` | variable | `progs/doomgeneric/doomstat.h:250` | `extern char basedefault[1024];` |
-| `bfgedition` | variable | `progs/doomgeneric/doomstat.h:62` | `extern boolean bfgedition;` |
-| `bodyqueslot` | variable | `progs/doomgeneric/doomstat.h:262` | `extern int bodyqueslot;` |
-| `consoleplayer` | variable | `progs/doomgeneric/doomstat.h:164` | `extern int consoleplayer;` |
-| `deathmatch` | variable | `progs/doomgeneric/doomstat.h:108` | `extern int deathmatch;` |
-| `deathmatch_p` | variable | `progs/doomgeneric/doomstat.h:229` | `extern mapthing_t* deathmatch_p;` |
-| `deathmatchstarts` | variable | `progs/doomgeneric/doomstat.h:228` | `extern mapthing_t deathmatchstarts[MAX_DM_STARTS];` |
-| `demoplayback` | variable | `progs/doomgeneric/doomstat.h:189` | `extern boolean demoplayback;` |
-| `demorecording` | variable | `progs/doomgeneric/doomstat.h:190` | `extern boolean demorecording;` |
-| `devparm` | variable | `progs/doomgeneric/doomstat.h:50` | `extern boolean devparm;` |
-| `displayplayer` | variable | `progs/doomgeneric/doomstat.h:165` | `extern int displayplayer;` |
-| `fastparm` | variable | `progs/doomgeneric/doomstat.h:48` | `extern boolean fastparm;` |
-| `gamedescription` | variable | `progs/doomgeneric/doomstat.h:59` | `extern char *gamedescription;` |
-| `gameepisode` | variable | `progs/doomgeneric/doomstat.h:95` | `extern int gameepisode;` |
-| `gamemap` | variable | `progs/doomgeneric/doomstat.h:96` | `extern int gamemap;` |
-| `gamemission` | variable | `progs/doomgeneric/doomstat.h:57` | `extern GameMission_t gamemission;` |
-| `gamemode` | variable | `progs/doomgeneric/doomstat.h:56` | `extern GameMode_t gamemode;` |
-| `gameskill` | variable | `progs/doomgeneric/doomstat.h:94` | `extern skill_t gameskill;` |
-| `gamestate` | variable | `progs/doomgeneric/doomstat.h:204` | `extern gamestate_t gamestate;` |
-| `gameversion` | variable | `progs/doomgeneric/doomstat.h:58` | `extern GameVersion_t gameversion;` |
-| `levelstarttic` | variable | `progs/doomgeneric/doomstat.h:177` | `extern int levelstarttic;` |
-| `leveltime` | variable | `progs/doomgeneric/doomstat.h:178` | `extern int leveltime;` |
-| `logical_gamemission` | macro | `progs/doomgeneric/doomstat.h:69` | `#define logical_gamemission` |
-| `lowres_turn` | variable | `progs/doomgeneric/doomstat.h:195` | `extern boolean lowres_turn;` |
-| `menuactive` | variable | `progs/doomgeneric/doomstat.h:144` | `extern boolean menuactive;` |
-| `modifiedgame` | variable | `progs/doomgeneric/doomstat.h:74` | `extern boolean modifiedgame;` |
-| `mouseSensitivity` | variable | `progs/doomgeneric/doomstat.h:260` | `extern int mouseSensitivity;` |
-| `musicVolume` | variable | `progs/doomgeneric/doomstat.h:121` | `extern int musicVolume;` |
-| `netcmds` | variable | `progs/doomgeneric/doomstat.h:278` | `extern ticcmd_t *netcmds;` |
-| `netgame` | variable | `progs/doomgeneric/doomstat.h:105` | `extern boolean netgame;` |
-| `nodrawers` | variable | `progs/doomgeneric/doomstat.h:150` | `extern boolean nodrawers;` |
-| `nomonsters` | variable | `progs/doomgeneric/doomstat.h:46` | `extern boolean nomonsters;` |
-| `paused` | variable | `progs/doomgeneric/doomstat.h:145` | `extern boolean paused;` |
-| `playeringame` | variable | `progs/doomgeneric/doomstat.h:223` | `extern boolean playeringame[MAXPLAYERS];` |
-| `players` | variable | `progs/doomgeneric/doomstat.h:220` | `extern player_t players[MAXPLAYERS];` |
-| `playerstarts` | variable | `progs/doomgeneric/doomstat.h:232` | `extern mapthing_t playerstarts[MAXPLAYERS];` |
-| `precache` | variable | `progs/doomgeneric/doomstat.h:253` | `extern boolean precache;` |
-| `respawnmonsters` | variable | `progs/doomgeneric/doomstat.h:102` | `extern boolean respawnmonsters;` |
-| `respawnparm` | variable | `progs/doomgeneric/doomstat.h:47` | `extern boolean respawnparm;` |
-| `rndindex` | variable | `progs/doomgeneric/doomstat.h:276` | `extern int rndindex;` |
-| `savegamedir` | variable | `progs/doomgeneric/doomstat.h:249` | `extern char * savegamedir;` |
-| `sfxVolume` | variable | `progs/doomgeneric/doomstat.h:120` | `extern int sfxVolume;` |
-| `singledemo` | variable | `progs/doomgeneric/doomstat.h:198` | `extern boolean singledemo;` |
-| `skyflatnum` | variable | `progs/doomgeneric/doomstat.h:269` | `extern int skyflatnum;` |
-| `snd_DesiredMusicDevice` | variable | `progs/doomgeneric/doomstat.h:130` | `extern int snd_DesiredMusicDevice;` |
-| `snd_DesiredSfxDevice` | variable | `progs/doomgeneric/doomstat.h:131` | `extern int snd_DesiredSfxDevice;` |
-| `snd_MusicDevice` | variable | `progs/doomgeneric/doomstat.h:127` | `extern int snd_MusicDevice;` |
-| `snd_SfxDevice` | variable | `progs/doomgeneric/doomstat.h:128` | `extern int snd_SfxDevice;` |
-| `startepisode` | variable | `progs/doomgeneric/doomstat.h:83` | `extern int startepisode;` |
-| `startloadgame` | variable | `progs/doomgeneric/doomstat.h:89` | `extern int startloadgame;` |
-| `startmap` | variable | `progs/doomgeneric/doomstat.h:84` | `extern int startmap;` |
-| `startskill` | variable | `progs/doomgeneric/doomstat.h:82` | `extern skill_t startskill;` |
-| `statusbaractive` | variable | `progs/doomgeneric/doomstat.h:141` | `extern boolean statusbaractive;` |
-| `testcontrols` | variable | `progs/doomgeneric/doomstat.h:153` | `extern boolean testcontrols;` |
-| `testcontrols_mousespeed` | variable | `progs/doomgeneric/doomstat.h:154` | `extern int testcontrols_mousespeed;` |
-| `timelimit` | variable | `progs/doomgeneric/doomstat.h:99` | `extern int timelimit;` |
-| `totalitems` | variable | `progs/doomgeneric/doomstat.h:173` | `extern int totalitems;` |
-| `totalkills` | variable | `progs/doomgeneric/doomstat.h:172` | `extern int totalkills;` |
-| `totalsecret` | variable | `progs/doomgeneric/doomstat.h:174` | `extern int totalsecret;` |
-| `usergame` | variable | `progs/doomgeneric/doomstat.h:186` | `extern boolean usergame;` |
-| `viewactive` | variable | `progs/doomgeneric/doomstat.h:148` | `extern boolean viewactive;` |
-| `viewangleoffset` | variable | `progs/doomgeneric/doomstat.h:161` | `extern int viewangleoffset;` |
-| `wipegamestate` | variable | `progs/doomgeneric/doomstat.h:258` | `extern gamestate_t wipegamestate;` |
-| `wminfo` | variable | `progs/doomgeneric/doomstat.h:236` | `extern wbstartstruct_t wminfo;` |
-| `DIR_SEPARATOR` | macro | `progs/doomgeneric/doomtype.h:88` | `#define DIR_SEPARATOR` |
-| `DIR_SEPARATOR` | macro | `progs/doomgeneric/doomtype.h:94` | `#define DIR_SEPARATOR` |
-| `DIR_SEPARATOR_S` | macro | `progs/doomgeneric/doomtype.h:89` | `#define DIR_SEPARATOR_S` |
-| `DIR_SEPARATOR_S` | macro | `progs/doomgeneric/doomtype.h:95` | `#define DIR_SEPARATOR_S` |
-| `PACKEDATTR` | macro | `progs/doomgeneric/doomtype.h:50` | `#define PACKEDATTR` |
-| `PACKEDATTR` | macro | `progs/doomgeneric/doomtype.h:52` | `#define PACKEDATTR` |
-| `PATH_SEPARATOR` | macro | `progs/doomgeneric/doomtype.h:90` | `#define PATH_SEPARATOR` |
-| `PATH_SEPARATOR` | macro | `progs/doomgeneric/doomtype.h:96` | `#define PATH_SEPARATOR` |
-| `__DOOMTYPE__` | macro | `progs/doomgeneric/doomtype.h:22` | `#define __DOOMTYPE__` |
-| `arrlen` | macro | `progs/doomgeneric/doomtype.h:100` | `#define arrlen(array)` |
-| `boolean` | type_alias | `progs/doomgeneric/doomtype.h:68` | `typedef bool boolean;` |
-| `byte` | type_alias | `progs/doomgeneric/doomtype.h:81` | `typedef uint8_t byte;` |
-| `strcasecmp` | macro | `progs/doomgeneric/doomtype.h:30` | `#define strcasecmp` |
-| `strncasecmp` | macro | `progs/doomgeneric/doomtype.h:31` | `#define strncasecmp` |
-| `NUM_QUITMESSAGES` | macro | `progs/doomgeneric/dstrings.h:35` | `#define NUM_QUITMESSAGES` |
-| `SAVEGAMENAME` | macro | `progs/doomgeneric/dstrings.h:30` | `#define SAVEGAMENAME` |
-| `__DSTRINGS__` | macro | `progs/doomgeneric/dstrings.h:22` | `#define __DSTRINGS__` |
-| `doom1_endmsg` | variable | `progs/doomgeneric/dstrings.h:37` | `extern char *doom1_endmsg[];` |
-| `doom2_endmsg` | variable | `progs/doomgeneric/dstrings.h:38` | `extern char *doom2_endmsg[];` |
-| `I_InitTimidityConfig` | function | `progs/doomgeneric/dummy.c:43` | `void I_InitTimidityConfig(void)` |
-| `F_ArtScreenDrawer` | function | `progs/doomgeneric/f_finale.c:661` | `static void F_ArtScreenDrawer(void)` |
-| `F_BunnyScroll` | function | `progs/doomgeneric/f_finale.c:606` | `void F_BunnyScroll (void)` |
-| `F_CastDrawer` | function | `progs/doomgeneric/f_finale.c:541` | `void F_CastDrawer (void)` |
-| `F_CastPrint` | function | `progs/doomgeneric/f_finale.c:486` | `void F_CastPrint (char* text)` |
-| `F_CastResponder` | function | `progs/doomgeneric/f_finale.c:465` | `boolean F_CastResponder (event_t* ev)` |
-| `F_CastTicker` | function | `progs/doomgeneric/f_finale.c:358` | `void F_CastTicker (void)` |
-| `F_DrawPatchCol` | function | `progs/doomgeneric/f_finale.c:572` | `void F_DrawPatchCol ( int		x,   patch_t*	patch,   int		col )` |
-| `F_Drawer` | function | `progs/doomgeneric/f_finale.c:702` | `void F_Drawer (void)` |
-| `F_Responder` | function | `progs/doomgeneric/f_finale.c:160` | `boolean F_Responder (event_t *event)` |
-| `F_StartCast` | function | `progs/doomgeneric/f_finale.c:340` | `void F_StartCast (void)` |
-| `F_StartFinale` | function | `progs/doomgeneric/f_finale.c:108` | `void F_StartFinale (void)` |
-| `F_TextWrite` | function | `progs/doomgeneric/f_finale.c:227` | `void F_TextWrite (void)` |
-| `F_Ticker` | function | `progs/doomgeneric/f_finale.c:172` | `void F_Ticker (void)` |
-| `TEXTSPEED` | macro | `progs/doomgeneric/f_finale.c:57` | `#define	TEXTSPEED` |
-| `TEXTWAIT` | macro | `progs/doomgeneric/f_finale.c:58` | `#define	TEXTWAIT` |
-| `castinfo_t` | struct | `progs/doomgeneric/f_finale.c:300` | `` |
-| `hu_font` | variable | `progs/doomgeneric/f_finale.c:224` | `extern patch_t *hu_font[HU_FONTSIZE];` |
-| `textscreen_t` | struct | `progs/doomgeneric/f_finale.c:60` | `` |
-| `F_Drawer` | function | `progs/doomgeneric/f_finale.h:37` | `void F_Drawer (void);` |
-| `F_StartFinale` | function | `progs/doomgeneric/f_finale.h:40` | `void F_StartFinale (void);` |
-| `F_Ticker` | function | `progs/doomgeneric/f_finale.h:34` | `void F_Ticker (void);` |
-| `__F_FINALE__` | macro | `progs/doomgeneric/f_finale.h:21` | `#define __F_FINALE__` |
-| `wipe_EndScreen` | function | `progs/doomgeneric/f_wipe.c:243` | `int wipe_EndScreen ( int	x,   int	y,   int	width,   int	height )` |
-| `wipe_ScreenWipe` | function | `progs/doomgeneric/f_wipe.c:256` | `int wipe_ScreenWipe ( int	wipeno,   int	x,   int	y,   int	width,   int	height,   int	ticks )` |
-| `wipe_StartScreen` | function | `progs/doomgeneric/f_wipe.c:231` | `int wipe_StartScreen ( int	x,   int	y,   int	width,   int	height )` |
-| `wipe_doColorXForm` | function | `progs/doomgeneric/f_wipe.c:75` | `int wipe_doColorXForm ( int	width,   int	height,   int	ticks )` |
-| `wipe_doMelt` | function | `progs/doomgeneric/f_wipe.c:164` | `int wipe_doMelt ( int	width,   int	height,   int	ticks )` |
-| `wipe_exitColorXForm` | function | `progs/doomgeneric/f_wipe.c:121` | `int wipe_exitColorXForm ( int	width,   int	height,   int	ticks )` |
-| `wipe_exitMelt` | function | `progs/doomgeneric/f_wipe.c:219` | `int wipe_exitMelt ( int	width,   int	height,   int	ticks )` |
-| `wipe_initColorXForm` | function | `progs/doomgeneric/f_wipe.c:65` | `int wipe_initColorXForm ( int	width,   int	height,   int	ticks )` |
-| `wipe_initMelt` | function | `progs/doomgeneric/f_wipe.c:133` | `int wipe_initMelt ( int	width,   int	height,   int	ticks )` |
-| `wipe_shittyColMajorXform` | function | `progs/doomgeneric/f_wipe.c:43` | `void wipe_shittyColMajorXform ( short*	array,   int		width,   int		height )` |
-| `__F_WIPE_H__` | macro | `progs/doomgeneric/f_wipe.h:21` | `#define __F_WIPE_H__` |
-| `wipe_EndScreen` | function | `progs/doomgeneric/f_wipe.h:47` | `int wipe_EndScreen ( int x, int y, int width, int height );` |
-| `wipe_ScreenWipe` | function | `progs/doomgeneric/f_wipe.h:55` | `int wipe_ScreenWipe ( int wipeno, int x, int y, int width, int height, int ticks );` |
-| `wipe_StartScreen` | function | `progs/doomgeneric/f_wipe.h:39` | `int wipe_StartScreen ( int x, int y, int width, int height );` |
-| `BODYQUESIZE` | macro | `progs/doomgeneric/g_game.c:225` | `#define	BODYQUESIZE` |
-| `DEMOMARKER` | macro | `progs/doomgeneric/g_game.c:1895` | `#define DEMOMARKER` |
-| `DemoVersionDescription` | function | `progs/doomgeneric/g_game.c:2115` | `static char *DemoVersionDescription(int version)` |
-| `G_BeginRecording` | function | `progs/doomgeneric/g_game.c:2058` | `void G_BeginRecording (void)` |
-| `G_BuildTiccmd` | function | `progs/doomgeneric/g_game.c:322` | `void G_BuildTiccmd (ticcmd_t* cmd, int maketic)` |
-| `G_CheckDemoStatus` | function | `progs/doomgeneric/g_game.c:2243` | `boolean G_CheckDemoStatus (void)` |
-| `G_CheckSpot` | function | `progs/doomgeneric/g_game.c:1116` | `boolean G_CheckSpot ( int		playernum,   mapthing_t*	mthing )` |
-| `G_CmdChecksum` | function | `progs/doomgeneric/g_game.c:233` | `int G_CmdChecksum (ticcmd_t* cmd)` |
-| `G_DeathMatchSpawnPlayer` | function | `progs/doomgeneric/g_game.c:1223` | `void G_DeathMatchSpawnPlayer (int playernum)` |
-| `G_DeferedInitNew` | function | `progs/doomgeneric/g_game.c:1698` | `void G_DeferedInitNew ( skill_t	skill,   int		episode,   int		map)` |
-| `G_DeferedPlayDemo` | function | `progs/doomgeneric/g_game.c:2107` | `void G_DeferedPlayDemo (char* name)` |
-| `G_DoCompleted` | function | `progs/doomgeneric/g_game.c:1346` | `void G_DoCompleted (void)` |
-| `G_DoLoadGame` | function | `progs/doomgeneric/g_game.c:1548` | `void G_DoLoadGame (void)` |
-| `G_DoLoadLevel` | function | `progs/doomgeneric/g_game.c:603` | `void G_DoLoadLevel (void)` |
-| `G_DoNewGame` | function | `progs/doomgeneric/g_game.c:1710` | `void G_DoNewGame (void)` |
-| `G_DoPlayDemo` | function | `progs/doomgeneric/g_game.c:2152` | `void G_DoPlayDemo (void)` |
-| `G_DoReborn` | function | `progs/doomgeneric/g_game.c:1250` | `void G_DoReborn (int playernum)` |
-| `G_DoSaveGame` | function | `progs/doomgeneric/g_game.c:1610` | `void G_DoSaveGame (void)` |
-| `G_DoVictory` | function | `progs/doomgeneric/g_game.c:88` | `void G_DoVictory (void);` |
-| `G_DoWorldDone` | function | `progs/doomgeneric/g_game.c:1519` | `void G_DoWorldDone (void)` |
-| `G_ExitLevel` | function | `progs/doomgeneric/g_game.c:1328` | `void G_ExitLevel (void)` |
-| `G_InitNew` | function | `progs/doomgeneric/g_game.c:1727` | `void G_InitNew ( skill_t	skill,   int		episode,   int		map )` |
-| `G_InitPlayer` | function | `progs/doomgeneric/g_game.c:1039` | `void G_InitPlayer (int player)` |
-| `G_LoadGame` | function | `progs/doomgeneric/g_game.c:1539` | `void G_LoadGame (char* name)` |
-| `G_NextWeapon` | function | `progs/doomgeneric/g_game.c:281` | `static int G_NextWeapon(int direction)` |
-| `G_PlayerFinishLevel` | function | `progs/doomgeneric/g_game.c:1051` | `void G_PlayerFinishLevel (int player)` |
-| `G_PlayerReborn` | function | `progs/doomgeneric/g_game.c:1072` | `void G_PlayerReborn (int player)` |
-| `G_ReadDemoTiccmd` | function | `progs/doomgeneric/g_game.c:1898` | `void G_ReadDemoTiccmd (ticcmd_t* cmd)` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

@@ -1,481 +1,500 @@
-# API (page 10 of 19)
+# API (page 10 of 21)
 Previous: [API_p9.md](API_p9.md)
 
-## progs/doomgeneric/dummy.c
-Depends on: `progs/doomgeneric/doomtype.h`
-- `I_InitTimidityConfig` (function) `progs/doomgeneric/dummy.c:43` `void I_InitTimidityConfig(void)`
+## progs/asm/json.s
+- `js_key` (function) `progs/asm/json.s:3`
+- `js_str` (function) `progs/asm/json.s:7`
+- `js_type` (function) `progs/asm/json.s:11`
+- `js_num` (function) `progs/asm/json.s:15`
+- `js_first` (function) `progs/asm/json.s:19`
+- `js_count` (function) `progs/asm/json.s:23`
+- `js_next` (function) `progs/asm/json.s:27`
+- `js_n` (function) `progs/asm/json.s:31`
+- `js_pool` (function) `progs/asm/json.s:35`
+- `js_plen` (function) `progs/asm/json.s:39`
+- `js_src` (function) `progs/asm/json.s:43`
+- `js_pos` (function) `progs/asm/json.s:47`
+- `js_len` (function) `progs/asm/json.s:51`
+- `js_err` (function) `progs/asm/json.s:55`
+- `js_read_all` (function) `progs/asm/json.s:59`
+- `js_new` (function) `progs/asm/json.s:274`
+- `js_skip_ws` (function) `progs/asm/json.s:306`
+- `js_peek` (function) `progs/asm/json.s:397`
+- `js_parse_string` (function) `progs/asm/json.s:437`
+- `js_parse_number` (function) `progs/asm/json.s:851`
+- `js_key_match` (function) `progs/asm/json.s:947`
+- `js_parse_object` (function) `progs/asm/json.s:983`
+- `js_parse_array` (function) `progs/asm/json.s:1335`
+- `js_parse_value` (function) `progs/asm/json.s:1594`
+- `js_indent` (function) `progs/asm/json.s:2481`
+- `js_print_str` (function) `progs/asm/json.s:2524`
+- `js_print_value` (function) `progs/asm/json.s:2747`
+- `js_find_member` (function) `progs/asm/json.s:3313`
+- `js_array_at` (function) `progs/asm/json.s:3391`
+- `js_query` (function) `progs/asm/json.s:3460`
+- `main` (function) `progs/asm/json.s:3772`
 
-## progs/doomgeneric/f_finale.c
-Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `F_StartFinale` (function) `progs/doomgeneric/f_finale.c:108` `void F_StartFinale (void)` -- F_StartFinale
-- `F_Responder` (function) `progs/doomgeneric/f_finale.c:160` `boolean F_Responder (event_t *event)`
-- `F_Ticker` (function) `progs/doomgeneric/f_finale.c:172` `void F_Ticker (void)` -- F_Ticker
-- `F_TextWrite` (function) `progs/doomgeneric/f_finale.c:227` `void F_TextWrite (void)`
-- `F_StartCast` (function) `progs/doomgeneric/f_finale.c:340` `void F_StartCast (void)` -- F_StartCast
-- `F_CastTicker` (function) `progs/doomgeneric/f_finale.c:358` `void F_CastTicker (void)` -- F_CastTicker
-- `F_CastResponder` (function) `progs/doomgeneric/f_finale.c:465` `boolean F_CastResponder (event_t* ev)`
-- `F_CastPrint` (function) `progs/doomgeneric/f_finale.c:486` `void F_CastPrint (char* text)`
-- `F_CastDrawer` (function) `progs/doomgeneric/f_finale.c:541` `void F_CastDrawer (void)`
-- `F_DrawPatchCol` (function) `progs/doomgeneric/f_finale.c:572` `void
-F_DrawPatchCol
-( int		x,
-  patch_t*	patch,
-  int		col )`
-- `F_BunnyScroll` (function) `progs/doomgeneric/f_finale.c:606` `void F_BunnyScroll (void)` -- F_BunnyScroll
-- `F_ArtScreenDrawer` (function) `progs/doomgeneric/f_finale.c:661` `static void F_ArtScreenDrawer(void)`
-- `F_Drawer` (function) `progs/doomgeneric/f_finale.c:702` `void F_Drawer (void)` -- F_Drawer
+## progs/asm/ldhello.s
+- `main` (function) `progs/asm/ldhello.s:3`
 
-## progs/doomgeneric/f_finale.h
-Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`
-- `F_Ticker` (function) `progs/doomgeneric/f_finale.h:34` `void F_Ticker (void);` -- Called by main loop.
-- `F_Drawer` (function) `progs/doomgeneric/f_finale.h:37` `void F_Drawer (void);` -- Called by main loop.
-- `F_StartFinale` (function) `progs/doomgeneric/f_finale.h:40` `void F_StartFinale (void);`
+## progs/asm/lz4.s
+- `lz4_has` (function) `progs/asm/lz4.s:3`
+- `lz4_read_all` (function) `progs/asm/lz4.s:156`
+- `lz4_write_all` (function) `progs/asm/lz4.s:371`
+- `lz4_compress_file` (function) `progs/asm/lz4.s:478`
+- `lz4_decompress_file` (function) `progs/asm/lz4.s:791`
+- `main` (function) `progs/asm/lz4.s:1228`
 
-## progs/doomgeneric/f_wipe.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/z_zone.h`
-- `wipe_shittyColMajorXform` (function) `progs/doomgeneric/f_wipe.c:43` `void
-wipe_shittyColMajorXform
-( short*	array,
-  int		width,
-  int		height )`
-- `wipe_initColorXForm` (function) `progs/doomgeneric/f_wipe.c:65` `int
-wipe_initColorXForm
-( int	width,
-  int	height,
-  int	ticks )`
-- `wipe_doColorXForm` (function) `progs/doomgeneric/f_wipe.c:75` `int
-wipe_doColorXForm
-( int	width,
-  int	height,
-  int	ticks )`
-- `wipe_exitColorXForm` (function) `progs/doomgeneric/f_wipe.c:121` `int
-wipe_exitColorXForm
-( int	width,
-  int	height,
-  int	ticks )`
-- `wipe_initMelt` (function) `progs/doomgeneric/f_wipe.c:133` `int
-wipe_initMelt
-( int	width,
-  int	height,
-  int	ticks )`
-- `wipe_doMelt` (function) `progs/doomgeneric/f_wipe.c:164` `int
-wipe_doMelt
-( int	width,
-  int	height,
-  int	ticks )`
-- `wipe_exitMelt` (function) `progs/doomgeneric/f_wipe.c:219` `int
-wipe_exitMelt
-( int	width,
-  int	height,
-  int	ticks )`
-- `wipe_StartScreen` (function) `progs/doomgeneric/f_wipe.c:231` `int
-wipe_StartScreen
-( int	x,
-  int	y,
-  int	width,
-  int	height )`
-- `wipe_EndScreen` (function) `progs/doomgeneric/f_wipe.c:243` `int
-wipe_EndScreen
-( int	x,
-  int	y,
-  int	width,
-  int	height )`
-- `wipe_ScreenWipe` (function) `progs/doomgeneric/f_wipe.c:256` `int
-wipe_ScreenWipe
-( int	wipeno,
-  int	x,
-  int	y,
-  int	width,
-  int	height,
-  int	ticks )`
+## progs/asm/lzss.s
+- `lz_win` (function) `progs/asm/lzss.s:3`
+- `lz_src` (function) `progs/asm/lzss.s:7`
+- `lz_srclen` (function) `progs/asm/lzss.s:11`
+- `lz_srcpos` (function) `progs/asm/lzss.s:15`
+- `lz_dst` (function) `progs/asm/lzss.s:19`
+- `lz_dstcap` (function) `progs/asm/lzss.s:23`
+- `lz_dstlen` (function) `progs/asm/lzss.s:27`
+- `lz_err` (function) `progs/asm/lzss.s:31`
+- `lz_buf` (function) `progs/asm/lzss.s:35`
+- `lz_mask` (function) `progs/asm/lzss.s:39`
+- `lz_in_getc` (function) `progs/asm/lzss.s:43`
+- `lz_out_put` (function) `progs/asm/lzss.s:79`
+- `lz_putbit1` (function) `progs/asm/lzss.s:116`
+- `lz_putbit0` (function) `progs/asm/lzss.s:174`
+- `lz_flush_bits` (function) `progs/asm/lzss.s:223`
+- `lz_out_literal` (function) `progs/asm/lzss.s:251`
+- `lz_out_pair` (function) `progs/asm/lzss.s:321`
+- `lz_next_mb` (function) `progs/asm/lzss.s:447`
+- `lz_encode` (function) `progs/asm/lzss.s:451`
+- `lz_getbit` (function) `progs/asm/lzss.s:1051`
+- `lz_decode` (function) `progs/asm/lzss.s:1171`
+- `lz_hdr_put` (function) `progs/asm/lzss.s:1514`
+- `lz_hdr_get` (function) `progs/asm/lzss.s:1629`
+- `lz_has` (function) `progs/asm/lzss.s:1782`
+- `lz_read_all` (function) `progs/asm/lzss.s:1935`
+- `lz_write_all` (function) `progs/asm/lzss.s:2150`
+- `lz_compress` (function) `progs/asm/lzss.s:2257`
+- `lz_decompress` (function) `progs/asm/lzss.s:2628`
+- `main` (function) `progs/asm/lzss.s:3178`
 
-## progs/doomgeneric/f_wipe.h
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_wipe.c`
-- `wipe_StartScreen` (function) `progs/doomgeneric/f_wipe.h:39` `int wipe_StartScreen ( int x, int y, int width, int height );`
-- `wipe_EndScreen` (function) `progs/doomgeneric/f_wipe.h:47` `int wipe_EndScreen ( int x, int y, int width, int height );`
-- `wipe_ScreenWipe` (function) `progs/doomgeneric/f_wipe.h:55` `int wipe_ScreenWipe ( int wipeno, int x, int y, int width, int height, int ticks );`
+## progs/asm/mtop.s
+- `h_cpu` (function) `progs/asm/mtop.s:3`
+- `h_mem` (function) `progs/asm/mtop.s:7`
+- `h_fill` (function) `progs/asm/mtop.s:11`
+- `last_dns` (function) `progs/asm/mtop.s:15`
+- `last_dns_ms` (function) `progs/asm/mtop.s:19`
+- `last_sock` (function) `progs/asm/mtop.s:23`
+- `prev_total` (function) `progs/asm/mtop.s:27`
+- `prev_idle` (function) `progs/asm/mtop.s:31`
+- `have_prev` (function) `progs/asm/mtop.s:35`
+- `disk_f` (function) `progs/asm/mtop.s:39`
+- `disk_path` (function) `progs/asm/mtop.s:43`
+- `sc3` (function) `progs/asm/mtop.s:47`
+- `mtop_time` (function) `progs/asm/mtop.s:78`
+- `mtop_rtc` (function) `progs/asm/mtop.s:106`
+- `mtop_key` (function) `progs/asm/mtop.s:137`
+- `mtop_minfo` (function) `progs/asm/mtop.s:165`
+- `emit` (function) `progs/asm/mtop.s:206`
+- `mtop_quit_key` (function) `progs/asm/mtop.s:241`
+- `mtop_clear_ansi` (function) `progs/asm/mtop.s:317`
+- `mtop_clear` (function) `progs/asm/mtop.s:401`
+- `mtop_atoi` (function) `progs/asm/mtop.s:443`
+- `mtop_putu` (function) `progs/asm/mtop.s:569`
+- `mtop_put2` (function) `progs/asm/mtop.s:725`
+- `mtop_put_kb` (function) `progs/asm/mtop.s:765`
+- `mtop_bar` (function) `progs/asm/mtop.s:887`
+- `mtop_hist_max` (function) `progs/asm/mtop.s:1038`
+- `mtop_hist_push` (function) `progs/asm/mtop.s:1106`
+- `mtop_spark` (function) `progs/asm/mtop.s:1201`
+- `mtop_mem` (function) `progs/asm/mtop.s:1452`
+- `mtop_cpu` (function) `progs/asm/mtop.s:1556`
+- `mtop_disk_open` (function) `progs/asm/mtop.s:1842`
+- `mtop_disk_read` (function) `progs/asm/mtop.s:1966`
+- `mtop_net_probe` (function) `progs/asm/mtop.s:2128`
+- `mtop_frame` (function) `progs/asm/mtop.s:2275`
+- `main` (function) `progs/asm/mtop.s:3831`
 
-## progs/doomgeneric/g_game.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/p_tick.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
-- `G_DoVictory` (function) `progs/doomgeneric/g_game.c:88` `void G_DoVictory (void);`
-- `G_CmdChecksum` (function) `progs/doomgeneric/g_game.c:233` `int G_CmdChecksum (ticcmd_t* cmd)`
-- `WeaponSelectable` (function) `progs/doomgeneric/g_game.c:244` `static boolean WeaponSelectable(weapontype_t weapon)`
-- `G_NextWeapon` (function) `progs/doomgeneric/g_game.c:281` `static int G_NextWeapon(int direction)`
-- `G_BuildTiccmd` (function) `progs/doomgeneric/g_game.c:322` `void G_BuildTiccmd (ticcmd_t* cmd, int maketic)` -- G_BuildTiccmd Builds a ticcmd from all of the available inputs or reads it from the demo buffer.
-- `G_DoLoadLevel` (function) `progs/doomgeneric/g_game.c:603` `void G_DoLoadLevel (void)` -- G_DoLoadLevel
-- `SetJoyButtons` (function) `progs/doomgeneric/g_game.c:675` `static void SetJoyButtons(unsigned int buttons_mask)`
-- `SetMouseButtons` (function) `progs/doomgeneric/g_game.c:703` `static void SetMouseButtons(unsigned int buttons_mask)`
-- `G_Responder` (function) `progs/doomgeneric/g_game.c:733` `boolean G_Responder (event_t* ev)` -- G_Responder Get info needed to make ticcmd_ts for the players.
-- `G_Ticker` (function) `progs/doomgeneric/g_game.c:854` `void G_Ticker (void)` -- G_Ticker Make ticcmd_ts for the players.
-- `G_InitPlayer` (function) `progs/doomgeneric/g_game.c:1039` `void G_InitPlayer (int player)` -- G_InitPlayer Called at the start.
-- `G_PlayerFinishLevel` (function) `progs/doomgeneric/g_game.c:1051` `void G_PlayerFinishLevel (int player)` -- G_PlayerFinishLevel Can when a player completes a level.
-- `G_PlayerReborn` (function) `progs/doomgeneric/g_game.c:1072` `void G_PlayerReborn (int player)` -- G_PlayerReborn Called after a player dies almost everything is cleared and initialized
-- `P_SpawnPlayer` (function) `progs/doomgeneric/g_game.c:1113` `void P_SpawnPlayer (mapthing_t* mthing);` -- G_CheckSpot Returns false if the player cannot be respawned at the given mapthing_t spot because something is...
-- `G_CheckSpot` (function) `progs/doomgeneric/g_game.c:1116` `boolean
-G_CheckSpot
-( int		playernum,
-  mapthing_t*	mthing )`
-- `G_DeathMatchSpawnPlayer` (function) `progs/doomgeneric/g_game.c:1223` `void G_DeathMatchSpawnPlayer (int playernum)` -- G_DeathMatchSpawnPlayer Spawns a player at one of the random death match spots called at level load and each death
-- `G_DoReborn` (function) `progs/doomgeneric/g_game.c:1250` `void G_DoReborn (int playernum)` -- G_DoReborn
-- `G_ScreenShot` (function) `progs/doomgeneric/g_game.c:1296` `void G_ScreenShot (void)`
-- `G_ExitLevel` (function) `progs/doomgeneric/g_game.c:1328` `void G_ExitLevel (void)`
-- `G_SecretExitLevel` (function) `progs/doomgeneric/g_game.c:1335` `void G_SecretExitLevel (void)` -- Here's for the german edition.
-- `G_DoCompleted` (function) `progs/doomgeneric/g_game.c:1346` `void G_DoCompleted (void)`
-- `G_WorldDone` (function) `progs/doomgeneric/g_game.c:1494` `void G_WorldDone (void)` -- G_WorldDone
-- `G_DoWorldDone` (function) `progs/doomgeneric/g_game.c:1519` `void G_DoWorldDone (void)`
-- `R_ExecuteSetViewSize` (function) `progs/doomgeneric/g_game.c:1535` `void R_ExecuteSetViewSize (void);`
-- `G_LoadGame` (function) `progs/doomgeneric/g_game.c:1539` `void G_LoadGame (char* name)`
-- `G_DoLoadGame` (function) `progs/doomgeneric/g_game.c:1548` `void G_DoLoadGame (void)`
-- `G_SaveGame` (function) `progs/doomgeneric/g_game.c:1601` `void
-G_SaveGame
-( int	slot,
-  char*	description )`
-- `G_DoSaveGame` (function) `progs/doomgeneric/g_game.c:1610` `void G_DoSaveGame (void)`
-- `G_DeferedInitNew` (function) `progs/doomgeneric/g_game.c:1698` `void
-G_DeferedInitNew
-( skill_t	skill,
-  int		episode,
-  int		map)`
-- `G_DoNewGame` (function) `progs/doomgeneric/g_game.c:1710` `void G_DoNewGame (void)`
-- `G_InitNew` (function) `progs/doomgeneric/g_game.c:1727` `void
-G_InitNew
-( skill_t	skill,
-  int		episode,
-  int		map )`
-- `G_ReadDemoTiccmd` (function) `progs/doomgeneric/g_game.c:1898` `void G_ReadDemoTiccmd (ticcmd_t* cmd)`
-- `IncreaseDemoBuffer` (function) `progs/doomgeneric/g_game.c:1926` `static void IncreaseDemoBuffer(void)`
-- `G_WriteDemoTiccmd` (function) `progs/doomgeneric/g_game.c:1956` `void G_WriteDemoTiccmd (ticcmd_t* cmd)`
-- `G_RecordDemo` (function) `progs/doomgeneric/g_game.c:2010` `void G_RecordDemo (char *name)` -- G_RecordDemo
-- `G_VanillaVersionCode` (function) `progs/doomgeneric/g_game.c:2040` `int G_VanillaVersionCode(void)` -- Get the demo version code appropriate for the version set in gameversion.
-- `G_BeginRecording` (function) `progs/doomgeneric/g_game.c:2058` `void G_BeginRecording (void)`
-- `G_DeferedPlayDemo` (function) `progs/doomgeneric/g_game.c:2107` `void G_DeferedPlayDemo (char* name)`
-- `DemoVersionDescription` (function) `progs/doomgeneric/g_game.c:2115` `static char *DemoVersionDescription(int version)`
-- `G_DoPlayDemo` (function) `progs/doomgeneric/g_game.c:2152` `void G_DoPlayDemo (void)`
-- `G_TimeDemo` (function) `progs/doomgeneric/g_game.c:2215` `void G_TimeDemo (char* name)` -- G_TimeDemo
-- `G_CheckDemoStatus` (function) `progs/doomgeneric/g_game.c:2243` `boolean G_CheckDemoStatus (void)`
+## progs/asm/sign.s
+- `sign_k0` (function) `progs/asm/sign.s:3`
+- `sign_k1` (function) `progs/asm/sign.s:7`
+- `sign_k2` (function) `progs/asm/sign.s:11`
+- `sign_k3` (function) `progs/asm/sign.s:15`
+- `sign_k4` (function) `progs/asm/sign.s:19`
+- `sign_k5` (function) `progs/asm/sign.s:23`
+- `sign_k6` (function) `progs/asm/sign.s:27`
+- `sign_k7` (function) `progs/asm/sign.s:31`
+- `sign_seed_hex` (function) `progs/asm/sign.s:35`
+- `sign_bx_hex` (function) `progs/asm/sign.s:39`
+- `sign_by_hex` (function) `progs/asm/sign.s:43`
+- `sign_ax_hex` (function) `progs/asm/sign.s:47`
+- `sign_ay_hex` (function) `progs/asm/sign.s:51`
+- `sign_pub_hex` (function) `progs/asm/sign.s:55`
+- `sign_note_name` (function) `progs/asm/sign.s:59`
+- `sign_section_name` (function) `progs/asm/sign.s:63`
+- `sign_k` (function) `progs/asm/sign.s:67`
+- `sign_h` (function) `progs/asm/sign.s:71`
+- `sign_w` (function) `progs/asm/sign.s:75`
+- `sign_buf` (function) `progs/asm/sign.s:79`
+- `sign_used` (function) `progs/asm/sign.s:83`
+- `sign_nlo` (function) `progs/asm/sign.s:87`
+- `sign_nhi` (function) `progs/asm/sign.s:91`
+- `sign_q4` (function) `progs/asm/sign.s:95`
+- `sign_l8` (function) `progs/asm/sign.s:99`
+- `sign_gb` (function) `progs/asm/sign.s:103`
+- `sign_ga` (function) `progs/asm/sign.s:107`
+- `sign_hexval` (function) `progs/asm/sign.s:111`
+- `sign_unhex` (function) `progs/asm/sign.s:232`
+- `sign_byte` (function) `progs/asm/sign.s:325`
+- `sign_copy` (function) `progs/asm/sign.s:363`
+- `sign_strlen` (function) `progs/asm/sign.s:405`
+- `sign_le16` (function) `progs/asm/sign.s:444`
+- `sign_le32` (function) `progs/asm/sign.s:494`
+- `sign_put32` (function) `progs/asm/sign.s:596`
+- `sign_hexout` (function) `progs/asm/sign.s:688`
+- `sign_offok` (function) `progs/asm/sign.s:866`
+- `sign_rotr` (function) `progs/asm/sign.s:927`
+- `sign_carry2` (function) `progs/asm/sign.s:1099`
+- `sign_borrow2` (function) `progs/asm/sign.s:1158`
+- `sign_add3` (function) `progs/asm/sign.s:1218`
+- `sign_be32` (function) `progs/asm/sign.s:1292`
+- `sign_block` (function) `progs/asm/sign.s:1394`
+- `sign_sha_init` (function) `progs/asm/sign.s:3105`
+- `sign_sha_update` (function) `progs/asm/sign.s:3287`
+- `sign_sha_final` (function) `progs/asm/sign.s:3477`
+- `sign_feed32` (function) `progs/asm/sign.s:3871`
+- `sign_key_init` (function) `progs/asm/sign.s:3962`
+- `fe_copy` (function) `progs/asm/sign.s:4387`
+- `fe_zero` (function) `progs/asm/sign.s:4435`
+- `fe_one` (function) `progs/asm/sign.s:4476`
+- `fe_cmov` (function) `progs/asm/sign.s:4505`
+- `fe_ge` (function) `progs/asm/sign.s:4589`
+- `fe_rawsub` (function) `progs/asm/sign.s:4713`
+- `fe_add` (function) `progs/asm/sign.s:4837`
+- `fe_sub` (function) `progs/asm/sign.s:5031`
+- `fe_rowadd` (function) `progs/asm/sign.s:5297`
+- `fe_foldadd` (function) `progs/asm/sign.s:5426`
+- `fe_mul` (function) `progs/asm/sign.s:5481`
+- `fe_sq` (function) `progs/asm/sign.s:6109`
+- `fe_inv` (function) `progs/asm/sign.s:6135`
+- `fe_frombytes` (function) `progs/asm/sign.s:6284`
+- `fe_tobytes` (function) `progs/asm/sign.s:6432`
+- `fe_curved` (function) `progs/asm/sign.s:6586`
+- `ge_copy` (function) `progs/asm/sign.s:6712`
+- `fe_off` (function) `progs/asm/sign.s:6760`
+- `ge_cmov` (function) `progs/asm/sign.s:6780`
+- `ge_add` (function) `progs/asm/sign.s:6864`
+- `ge_double` (function) `progs/asm/sign.s:7325`
+- `ge_scalarmult` (function) `progs/asm/sign.s:7701`
+- `sc_mod_l` (function) `progs/asm/sign.s:7916`
+- `sc_mul_add` (function) `progs/asm/sign.s:8461`
+- `sign_rev32` (function) `progs/asm/sign.s:9013`
+- `sign_points_init` (function) `progs/asm/sign.s:9084`
+- `sign_digest` (function) `progs/asm/sign.s:9485`
+- `sign_read` (function) `progs/asm/sign.s:10733`
+- `sign_write` (function) `progs/asm/sign.s:10972`
+- `sign_note_span` (function) `progs/asm/sign.s:11061`
+- `sign_digest_of` (function) `progs/asm/sign.s:11374`
+- `sign_patch_notes` (function) `progs/asm/sign.s:11834`
+- `sign_append` (function) `progs/asm/sign.s:12154`
+- `sign_file` (function) `progs/asm/sign.s:13433`
+- `sign_selftest` (function) `progs/asm/sign.s:14501`
+- `main` (function) `progs/asm/sign.s:14647`
 
-## progs/doomgeneric/g_game.h
-Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomdef.h`
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
-- `G_DeathMatchSpawnPlayer` (function) `progs/doomgeneric/g_game.h:31` `void G_DeathMatchSpawnPlayer (int playernum);` -- GAME
-- `G_InitNew` (function) `progs/doomgeneric/g_game.h:33` `void G_InitNew (skill_t skill, int episode, int map);`
-- `G_DeferedInitNew` (function) `progs/doomgeneric/g_game.h:38` `void G_DeferedInitNew (skill_t skill, int episode, int map);` -- Can be called by the startup code or M_Responder.
-- `G_DeferedPlayDemo` (function) `progs/doomgeneric/g_game.h:40` `void G_DeferedPlayDemo (char* demo);`
-- `G_LoadGame` (function) `progs/doomgeneric/g_game.h:44` `void G_LoadGame (char* name);` -- Can be called by the startup code or M_Responder, calls P_SetupLevel or W_EnterWorld.
-- `G_DoLoadGame` (function) `progs/doomgeneric/g_game.h:46` `void G_DoLoadGame (void);`
-- `G_SaveGame` (function) `progs/doomgeneric/g_game.h:49` `void G_SaveGame (int slot, char* description);` -- Called by M_Responder.
-- `G_RecordDemo` (function) `progs/doomgeneric/g_game.h:52` `void G_RecordDemo (char* name);` -- Only called by startup code.
-- `G_BeginRecording` (function) `progs/doomgeneric/g_game.h:54` `void G_BeginRecording (void);`
-- `G_PlayDemo` (function) `progs/doomgeneric/g_game.h:56` `void G_PlayDemo (char* name);`
-- `G_TimeDemo` (function) `progs/doomgeneric/g_game.h:57` `void G_TimeDemo (char* name);`
-- `G_ExitLevel` (function) `progs/doomgeneric/g_game.h:60` `void G_ExitLevel (void);`
-- `G_SecretExitLevel` (function) `progs/doomgeneric/g_game.h:61` `void G_SecretExitLevel (void);`
-- `G_WorldDone` (function) `progs/doomgeneric/g_game.h:63` `void G_WorldDone (void);`
-- `G_BuildTiccmd` (function) `progs/doomgeneric/g_game.h:67` `void G_BuildTiccmd (ticcmd_t *cmd, int maketic);`
-- `G_Ticker` (function) `progs/doomgeneric/g_game.h:69` `void G_Ticker (void);`
-- `G_ScreenShot` (function) `progs/doomgeneric/g_game.h:72` `void G_ScreenShot (void);`
-- `G_DrawMouseSpeedBox` (function) `progs/doomgeneric/g_game.h:74` `void G_DrawMouseSpeedBox(void);`
-- `G_VanillaVersionCode` (function) `progs/doomgeneric/g_game.h:75` `int G_VanillaVersionCode(void);`
+## progs/asm/w1.s
+- `main` (function) `progs/asm/w1.s:3`
 
-## progs/doomgeneric/gusconf.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `MappingIndex` (function) `progs/doomgeneric/gusconf.c:43` `static unsigned int MappingIndex(void)`
-- `SplitLine` (function) `progs/doomgeneric/gusconf.c:61` `static int SplitLine(char *line, char **fields, unsigned int max_fields)`
-- `ParseLine` (function) `progs/doomgeneric/gusconf.c:108` `static void ParseLine(gus_config_t *config, char *line)`
-- `ParseDMXConfig` (function) `progs/doomgeneric/gusconf.c:129` `static void ParseDMXConfig(char *dmxconf, gus_config_t *config)`
-- `FreeDMXConfig` (function) `progs/doomgeneric/gusconf.c:165` `static void FreeDMXConfig(gus_config_t *config)`
-- `ReadDMXConfig` (function) `progs/doomgeneric/gusconf.c:175` `static char *ReadDMXConfig(void)`
-- `WriteTimidityConfig` (function) `progs/doomgeneric/gusconf.c:197` `static boolean WriteTimidityConfig(char *path, gus_config_t *config)`
-- `GUS_WriteConfig` (function) `progs/doomgeneric/gusconf.c:244` `boolean GUS_WriteConfig(char *path)`
+## progs/doomedit/doomedit.c
+Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
+- `dmap_thing_type` (function) `progs/doomedit/doomedit.c:165` `static int dmap_thing_type(int cell)` -- Thing type ids from the engine mobjinfo table, each with its sprite * verified present in the shareware IWAD.
+- `dmap_push_history` (function) `progs/doomedit/doomedit.c:272` `static void dmap_push_history(void)`
+- `dmap_undo` (function) `progs/doomedit/doomedit.c:289` `static int dmap_undo(void)`
+- `dmap_redo` (function) `progs/doomedit/doomedit.c:307` `static int dmap_redo(void)`
+- `dmap_apply_cell` (function) `progs/doomedit/doomedit.c:326` `static void dmap_apply_cell(int r, int c, int brush)` -- dmap_undo_h[dmap_undo_top] = dmap_h; memcpy(dmap_undo_g[dmap_undo_top], dmap_grid, sizeof(dmap_grid))...
+- `dmap_flood_fill` (function) `progs/doomedit/doomedit.c:344` `static void dmap_flood_fill(int sr, int sc, int new_cell)` -- if (brush == DMAP_PLAYER || brush == DMAP_EXIT) { for (rr = 0; rr < dmap_h; rr++) for (cc = 0; cc < dmap_w; cc++) if...
+- `dmap_draw_line` (function) `progs/doomedit/doomedit.c:383` `static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell)` -- if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if (dmap_grid[nr][nc] != old_cell) continue...
+- `dmap_draw_rect` (function) `progs/doomedit/doomedit.c:411` `static void dmap_draw_rect(int r0, int c0, int r1, int c1, int cell)` -- e2 = err; if (e2 > -dr) { err -= dc; r0 += sr; } if (e2 < dc) { err += dr; c0 += sc; } } dmap_level_sel = 0; } /**...
+- `dmap_reach_map` (function) `progs/doomedit/doomedit.c:440` `static void dmap_reach_map(int seen[DMAP_MAX_H][DMAP_MAX_W])` -- for (r = rt; r <= rb; r++) { if (r >= 0 && r < dmap_h && cl >= 0 && cl < dmap_w) { if (dmap_grid[r][cl] !=...
+- `dmap_path_len` (function) `progs/doomedit/doomedit.c:480` `static int dmap_path_len(void)` -- int nr = cr + dirs[k][0], nc = cc + dirs[k][1]; if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if...
+- `dmap_stats` (function) `progs/doomedit/doomedit.c:522` `static void dmap_stats(char *out, int max)` -- if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if (dist[nr][nc] >= 0 ||...
+- `dmap_spawn` (function) `progs/doomedit/doomedit.c:550` `static long dmap_spawn(const char *path, int argc, const char **argv)` -- } path = dmap_path_len(); if (dmap_validate(msg, sizeof(msg)) == 0) snprintf(out, (size_t)max, "%dx%d %d sect path...
+- `dmap_vga` (function) `progs/doomedit/doomedit.c:561` `static long dmap_vga(int on)` -- static int dmap_validate(char *msg, int max); /** Run a program through SYS_SPAWN, preserving the editor. static...
+- `dmap_is_wall` (function) `progs/doomedit/doomedit.c:570` `static int dmap_is_wall(int row, int col)` -- : "rcx", "r11", "memory"); return ret; } /** Release or reclaim the display around a spawned child. static long...
+- `dmap_walkable` (function) `progs/doomedit/doomedit.c:577` `static int dmap_walkable(int cell)` -- __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on) : "rcx", "r11", "memory"); return...
+- `dmap_cell_class` (function) `progs/doomedit/doomedit.c:583` `static int dmap_cell_class(int cell)` -- /** True for solid cells; out of bounds counts as wall to stay closed. static int dmap_is_wall(int row, int col) {...
+- `dmap_cell_color` (function) `progs/doomedit/doomedit.c:594` `static struct nk_color dmap_cell_color(int cell)` -- } /** Sector class of a walkable cell: doors stand alone, styles never merge. static int dmap_cell_class(int cell) {...
+- `dmap_new` (function) `progs/doomedit/doomedit.c:639` `static void dmap_new(void)` -- case DMAP_RSUIT: case DMAP_CMAP: case DMAP_LAMP: return nk_rgb(200, 90, 200); case DMAP_KEYB: case DMAP_KEYR: case...
+- `dmap_recenter` (function) `progs/doomedit/doomedit.c:804` `static void dmap_recenter(void)`
+- `dmap_load_preset` (function) `progs/doomedit/doomedit.c:816` `static int dmap_load_preset(int idx)` -- /** Move the preview camera onto the player start tile. static void dmap_recenter(void) { int r, c; for (r = 0; r <...
+- `dmap_rand` (function) `progs/doomedit/doomedit.c:849` `static unsigned dmap_rand(void)` -- int ch = dmap_levels[idx][row][k]; if (!dmap_walkable(ch) && ch != DMAP_WALL) return -1; dmap_grid[row][k] =...
+- `dmap_free_cell` (function) `progs/doomedit/doomedit.c:857` `static int dmap_free_cell(int *r, int *c)` -- dmap_level_sel = idx + 1; snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]); return 0...
+- `dmap_random_map` (function) `progs/doomedit/doomedit.c:871` `static void dmap_random_map(unsigned seed)` -- Procedural map of connected rooms: several non-overlapping rect rooms carved out of solid rock, joined in sequence...
+- `dmap_load` (function) `progs/doomedit/doomedit.c:1077` `static int dmap_load(const char *path)` -- } if (dmap_validate(msg, sizeof(msg)) == 0) { dmap_recenter(); snprintf(dmap_status, sizeof(dmap_status), "random...
+- `dmap_save_txt` (function) `progs/doomedit/doomedit.c:1129` `static int dmap_save_txt(const char *path)` -- if (row < 3 || w < 3 || w > DMAP_MAX_W) return -1; dmap_push_history(); dmap_anchor_active = 0; dmap_w = w; dmap_h =...
+- `areas` (function) `progs/doomedit/doomedit.c:1150` `* floor areas (doors stand alone, dark and nukage never merge);`
+- `dmap_label_regions` (function) `progs/doomedit/doomedit.c:1163` `static int dmap_label_regions(void)` -- Sector table backing the multi-sector exporter.
+- `dmap_validate` (function) `progs/doomedit/doomedit.c:1244` `static int dmap_validate(char *msg, int max)` -- dmap_sec_floor[nsec] = DMAP_FLOOR_H; dmap_sec_ceil[nsec] = DMAP_CEIL_H; dmap_sec_flat[nsec] = DMAP_FLOOR_FLAT...
+- `dmap_w8` (function) `progs/doomedit/doomedit.c:1317` `static void dmap_w8(unsigned v)`
+- `dmap_w16` (function) `progs/doomedit/doomedit.c:1318` `static void dmap_w16(int v)`
+- `dmap_w32` (function) `progs/doomedit/doomedit.c:1322` `static void dmap_w32(int v)`
+- `dmap_wtex` (function) `progs/doomedit/doomedit.c:1326` `static void dmap_wtex(const char *name)`
+- `dmap_seg_angle` (function) `progs/doomedit/doomedit.c:1333` `static int dmap_seg_angle(int dx, int dy)` -- dmap_wp++ = (unsigned char)(v & 0xFF); dmap_wp++ = (unsigned char)((v >> 8) & 0xFF); } static void dmap_w32(int v) {...
+- `dmap_build_wad` (function) `progs/doomedit/doomedit.c:1343` `static int dmap_build_wad(int *size_out)` -- Compile the grid into a vanilla multi-sector E1M1 PWAD image.
+- `dmap_export_wad` (function) `progs/doomedit/doomedit.c:1660` `static int dmap_export_wad(const char *path)` -- dmap_wp = dmap_wad; dmap_w8('P'); dmap_w8('W'); dmap_w8('A'); dmap_w8('D'); dmap_w32(11); dmap_w32(table_off)...
+- `dmap_check_wad` (function) `progs/doomedit/doomedit.c:1675` `static int dmap_check_wad(const char *path)` -- int size = 0; FILE *fp; size_t wrote; if (dmap_build_wad(&size) != 0) return -1; fp = fopen(path, "wb"); if (!fp)...
+- `dmap_preview` (function) `progs/doomedit/doomedit.c:1693` `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)` -- if (!fp) return -1; if (fread(head, 1, 12, fp) != 12) { fclose(fp); return -1; } fclose(fp); magic_ok = head[0] ==...
+- `dmap_brush_combo` (function) `progs/doomedit/doomedit.c:1760` `static void dmap_brush_combo(struct nk_context *ctx)` -- dist = 0.05f; line_h = (int)(area.h / dist); if (line_h > (int)area.h) line_h = (int)area.h; y0 = (int)(area.y +...
+- `dmap_canvas` (function) `progs/doomedit/doomedit.c:1773` `static void dmap_canvas(struct nk_context *ctx)` -- Paintable tile canvas with per-category colors.
+- `dmap_preview_row` (function) `progs/doomedit/doomedit.c:1863` `static void dmap_preview_row(struct nk_context *ctx)` -- dmap_draw_rect(dmap_anchor_r, dmap_anchor_c, r, c, dmap_brush); dmap_anchor_active = 0; dmap_level_sel = 0; } } else...
+- `dmap_run_map` (function) `progs/doomedit/doomedit.c:1898` `static void dmap_run_map(void)` -- } if (nk_button_label(ctx, "Reset")) { int r, c; for (r = 0; r < dmap_h; r++) for (c = 0; c < dmap_w; c++) if...
+- `dmap_scancode` (function) `progs/doomedit/doomedit.c:2037` `static void dmap_scancode(int code, int make, int e0, void *ud)`
+- `dmap_gui_run` (function) `progs/doomedit/doomedit.c:2056` `static void dmap_gui_run(void)` -- dmap_ctrl_held = make; return; } if (!make || !dmap_ctrl_held) return; if (code == 0x13) dmap_run_requested = 1...
+- `dmap_demo_room` (function) `progs/doomedit/doomedit.c:2110` `static void dmap_demo_room(void)` -- nk_set_window_origin(origin[0], origin[1]); nk_clear(&ctx); { unsigned t0 = (unsigned)nk_sys_time_ms(); while...
+- `dmap_selftest` (function) `progs/doomedit/doomedit.c:2122` `static int dmap_selftest(void)` -- /** Headless demo room shared by --demo and the selftest build check. static void dmap_demo_room(void) { dmap_w = 9...
+- `main` (function) `progs/doomedit/doomedit.c:2246` `int main(int argc, char **argv)`
 
-## progs/doomgeneric/hu_lib.c
-Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/r_draw.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`
-- `HUlib_init` (function) `progs/doomgeneric/hu_lib.c:36` `void HUlib_init(void)`
-- `HUlib_clearTextLine` (function) `progs/doomgeneric/hu_lib.c:40` `void HUlib_clearTextLine(hu_textline_t* t)`
-- `HUlib_initTextLine` (function) `progs/doomgeneric/hu_lib.c:48` `void
-HUlib_initTextLine
-( hu_textline_t*	t,
-  int			x,
-  int			y,
-  patch_t**		f,
-  int			sc )`
-- `HUlib_addCharToTextLine` (function) `progs/doomgeneric/hu_lib.c:63` `boolean
-HUlib_addCharToTextLine
-( hu_textline_t*	t,
-  char			ch )`
-- `HUlib_delCharFromTextLine` (function) `progs/doomgeneric/hu_lib.c:80` `boolean HUlib_delCharFromTextLine(hu_textline_t* t)`
-- `HUlib_drawTextLine` (function) `progs/doomgeneric/hu_lib.c:94` `void
-HUlib_drawTextLine
-( hu_textline_t*	l,
-  boolean		drawcursor )`
-- `HUlib_eraseTextLine` (function) `progs/doomgeneric/hu_lib.c:137` `void HUlib_eraseTextLine(hu_textline_t* l)` -- sorta called by HU_Erase and just better darn get things straight
-- `HUlib_initSText` (function) `progs/doomgeneric/hu_lib.c:169` `void
-HUlib_initSText
-( hu_stext_t*	s,
-  int		x,
-  int		y,
-  int		h,
-  patch_t**	font,
-  int		star...`
-- `HUlib_addLineToSText` (function) `progs/doomgeneric/hu_lib.c:192` `void HUlib_addLineToSText(hu_stext_t* s)`
-- `HUlib_addMessageToSText` (function) `progs/doomgeneric/hu_lib.c:209` `void
-HUlib_addMessageToSText
-( hu_stext_t*	s,
-  char*		prefix,
-  char*		msg )`
-- `HUlib_drawSText` (function) `progs/doomgeneric/hu_lib.c:223` `void HUlib_drawSText(hu_stext_t* s)`
-- `HUlib_eraseSText` (function) `progs/doomgeneric/hu_lib.c:246` `void HUlib_eraseSText(hu_stext_t* s)`
-- `HUlib_initIText` (function) `progs/doomgeneric/hu_lib.c:262` `void
-HUlib_initIText
-( hu_itext_t*	it,
-  int		x,
-  int		y,
-  patch_t**	font,
-  int		startchar,
-  ...`
-- `HUlib_delCharFromIText` (function) `progs/doomgeneric/hu_lib.c:278` `void HUlib_delCharFromIText(hu_itext_t* it)` -- The following deletion routines adhere to the left margin restriction
-- `HUlib_eraseLineFromIText` (function) `progs/doomgeneric/hu_lib.c:284` `void HUlib_eraseLineFromIText(hu_itext_t* it)`
-- `HUlib_resetIText` (function) `progs/doomgeneric/hu_lib.c:291` `void HUlib_resetIText(hu_itext_t* it)` -- Resets left margin as well
-- `HUlib_addPrefixToIText` (function) `progs/doomgeneric/hu_lib.c:298` `void
-HUlib_addPrefixToIText
-( hu_itext_t*	it,
-  char*		str )`
-- `HUlib_keyInIText` (function) `progs/doomgeneric/hu_lib.c:310` `boolean
-HUlib_keyInIText
-( hu_itext_t*	it,
-  unsigned char ch )`
-- `HUlib_drawIText` (function) `progs/doomgeneric/hu_lib.c:329` `void HUlib_drawIText(hu_itext_t* it)`
-- `HUlib_eraseIText` (function) `progs/doomgeneric/hu_lib.c:340` `void HUlib_eraseIText(hu_itext_t* it)`
+## progs/doomgeneric/am_map.c
+Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `AM_getIslope` (function) `progs/doomgeneric/am_map.c:275` `void
+AM_getIslope
+( mline_t*	ml,
+  islope_t*	is )`
+- `AM_activateNewScale` (function) `progs/doomgeneric/am_map.c:293` `void AM_activateNewScale(void)`
+- `AM_saveScaleAndLoc` (function) `progs/doomgeneric/am_map.c:308` `void AM_saveScaleAndLoc(void)`
+- `AM_restoreScaleAndLoc` (function) `progs/doomgeneric/am_map.c:319` `void AM_restoreScaleAndLoc(void)`
+- `AM_addMark` (function) `progs/doomgeneric/am_map.c:343` `void AM_addMark(void)` -- adds a marker at the current location
+- `AM_findMinMaxBoundaries` (function) `progs/doomgeneric/am_map.c:355` `void AM_findMinMaxBoundaries(void)` -- Determines bounding box of all vertices, sets global variables controlling zoom range.
+- `AM_changeWindowLoc` (function) `progs/doomgeneric/am_map.c:395` `void AM_changeWindowLoc(void)`
+- `AM_initVariables` (function) `progs/doomgeneric/am_map.c:424` `void AM_initVariables(void)`
+- `AM_loadPics` (function) `progs/doomgeneric/am_map.c:480` `void AM_loadPics(void)`
+- `AM_unloadPics` (function) `progs/doomgeneric/am_map.c:493` `void AM_unloadPics(void)`
+- `AM_clearMarks` (function) `progs/doomgeneric/am_map.c:505` `void AM_clearMarks(void)`
+- `AM_LevelInit` (function) `progs/doomgeneric/am_map.c:518` `void AM_LevelInit(void)` -- should be called at the start of every level right now, i figure it out myself
+- `AM_Stop` (function) `progs/doomgeneric/am_map.c:541` `void AM_Stop (void)`
+- `AM_Start` (function) `progs/doomgeneric/am_map.c:554` `void AM_Start (void)`
+- `AM_minOutWindowScale` (function) `progs/doomgeneric/am_map.c:573` `void AM_minOutWindowScale(void)` -- set the window scale to the maximum size
+- `AM_maxOutWindowScale` (function) `progs/doomgeneric/am_map.c:583` `void AM_maxOutWindowScale(void)` -- set the window scale to the minimum size
+- `AM_Responder` (function) `progs/doomgeneric/am_map.c:595` `boolean
+AM_Responder
+( event_t*	ev )`
+- `AM_changeWindowScale` (function) `progs/doomgeneric/am_map.c:742` `void AM_changeWindowScale(void)` -- Zooming
+- `AM_doFollowPlayer` (function) `progs/doomgeneric/am_map.c:761` `void AM_doFollowPlayer(void)`
+- `AM_updateLightLev` (function) `progs/doomgeneric/am_map.c:785` `void AM_updateLightLev(void)`
+- `AM_Ticker` (function) `progs/doomgeneric/am_map.c:806` `void AM_Ticker (void)` -- Updates on Game Tick
+- `AM_clearFB` (function) `progs/doomgeneric/am_map.c:834` `void AM_clearFB(int color)` -- Clear automap frame buffer.
+- `AM_clipMline` (function) `progs/doomgeneric/am_map.c:848` `boolean
+AM_clipMline
+( mline_t*	ml,
+  fline_t*	fl )`
+- `AM_drawFline` (function) `progs/doomgeneric/am_map.c:984` `void
+AM_drawFline
+( fline_t*	fl,
+  int		color )`
+- `AM_drawMline` (function) `progs/doomgeneric/am_map.c:1062` `void
+AM_drawMline
+( mline_t*	ml,
+  int		color )`
+- `AM_drawGrid` (function) `progs/doomgeneric/am_map.c:1077` `void AM_drawGrid(int color)` -- Draws flat (floor/ceiling tile) aligned grid lines.
+- `AM_drawWalls` (function) `progs/doomgeneric/am_map.c:1123` `void AM_drawWalls(void)` -- Determines visible lines, draws them.
+- `AM_rotate` (function) `progs/doomgeneric/am_map.c:1179` `void
+AM_rotate
+( fixed_t*	x,
+  fixed_t*	y,
+  angle_t	a )`
+- `AM_drawLineCharacter` (function) `progs/doomgeneric/am_map.c:1198` `void
+AM_drawLineCharacter
+( mline_t*	lineguy,
+  int		lineguylines,
+  fixed_t	scale,
+  angle_t	ang...`
+- `AM_drawPlayers` (function) `progs/doomgeneric/am_map.c:1246` `void AM_drawPlayers(void)`
+- `AM_drawThings` (function) `progs/doomgeneric/am_map.c:1291` `void
+AM_drawThings
+( int	colors,
+  int 	colorrange)`
+- `AM_drawMarks` (function) `progs/doomgeneric/am_map.c:1311` `void AM_drawMarks(void)`
+- `AM_drawCrosshair` (function) `progs/doomgeneric/am_map.c:1332` `void AM_drawCrosshair(int color)`
+- `AM_Drawer` (function) `progs/doomgeneric/am_map.c:1338` `void AM_Drawer (void)`
 
-## progs/doomgeneric/hu_lib.h
-Depends on: `progs/doomgeneric/r_defs.h`
-Imported by: `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/hu_stuff.c`
-- `HUlib_init` (function) `progs/doomgeneric/hu_lib.h:91` `void HUlib_init(void);` -- initializes heads-up widget library
-- `HUlib_clearTextLine` (function) `progs/doomgeneric/hu_lib.h:98` `void HUlib_clearTextLine(hu_textline_t *t);` -- clear a line of text
-- `HUlib_initTextLine` (function) `progs/doomgeneric/hu_lib.h:100` `void HUlib_initTextLine(hu_textline_t *t, int x, int y, patch_t **f, int sc);`
-- `HUlib_drawTextLine` (function) `progs/doomgeneric/hu_lib.h:109` `void HUlib_drawTextLine(hu_textline_t *l, boolean drawcursor);` -- draws tline
-- `HUlib_eraseTextLine` (function) `progs/doomgeneric/hu_lib.h:112` `void HUlib_eraseTextLine(hu_textline_t *l);` -- erases text line
-- `HUlib_initSText` (function) `progs/doomgeneric/hu_lib.h:121` `void HUlib_initSText ( hu_stext_t* s, int x, int y, int h, patch_t** font, int startchar, boolean* on );`
-- `HUlib_addLineToSText` (function) `progs/doomgeneric/hu_lib.h:131` `void HUlib_addLineToSText(hu_stext_t* s);` -- add a new line
-- `HUlib_addMessageToSText` (function) `progs/doomgeneric/hu_lib.h:135` `void HUlib_addMessageToSText ( hu_stext_t* s, char* prefix, char* msg );`
-- `HUlib_drawSText` (function) `progs/doomgeneric/hu_lib.h:141` `void HUlib_drawSText(hu_stext_t* s);` -- draws stext
-- `HUlib_eraseSText` (function) `progs/doomgeneric/hu_lib.h:144` `void HUlib_eraseSText(hu_stext_t* s);` -- erases all stext lines
-- `HUlib_initIText` (function) `progs/doomgeneric/hu_lib.h:148` `void HUlib_initIText ( hu_itext_t* it, int x, int y, patch_t** font, int startchar, boolean* on );`
-- `HUlib_delCharFromIText` (function) `progs/doomgeneric/hu_lib.h:157` `void HUlib_delCharFromIText(hu_itext_t* it);` -- enforces left margin
-- `HUlib_eraseLineFromIText` (function) `progs/doomgeneric/hu_lib.h:160` `void HUlib_eraseLineFromIText(hu_itext_t* it);` -- enforces left margin
-- `HUlib_resetIText` (function) `progs/doomgeneric/hu_lib.h:163` `void HUlib_resetIText(hu_itext_t* it);` -- resets line and left margin
-- `HUlib_addPrefixToIText` (function) `progs/doomgeneric/hu_lib.h:167` `void HUlib_addPrefixToIText ( hu_itext_t* it, char* str );`
-- `HUlib_drawIText` (function) `progs/doomgeneric/hu_lib.h:177` `void HUlib_drawIText(hu_itext_t* it);`
-- `HUlib_eraseIText` (function) `progs/doomgeneric/hu_lib.h:180` `void HUlib_eraseIText(hu_itext_t* it);` -- erases all itext lines
+## progs/doomgeneric/am_map.h
+Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/m_cheat.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/st_stuff.c`
+- `AM_Ticker` (function) `progs/doomgeneric/am_map.h:35` `void AM_Ticker (void);` -- Called by main loop.
+- `AM_Drawer` (function) `progs/doomgeneric/am_map.h:39` `void AM_Drawer (void);` -- Called by main loop, called instead of view drawer if automap active.
+- `AM_Stop` (function) `progs/doomgeneric/am_map.h:43` `void AM_Stop (void);` -- Called to force the automap to quit if the level is completed while it is up.
 
-## progs/doomgeneric/hu_stuff.c
-Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/hu_lib.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `HU_Init` (function) `progs/doomgeneric/hu_stuff.c:286` `void HU_Init(void)`
-- `HU_Stop` (function) `progs/doomgeneric/hu_stuff.c:303` `void HU_Stop(void)`
-- `HU_Start` (function) `progs/doomgeneric/hu_stuff.c:308` `void HU_Start(void)`
-- `HU_Drawer` (function) `progs/doomgeneric/hu_stuff.c:383` `void HU_Drawer(void)`
-- `HU_Erase` (function) `progs/doomgeneric/hu_stuff.c:393` `void HU_Erase(void)`
-- `HU_Ticker` (function) `progs/doomgeneric/hu_stuff.c:402` `void HU_Ticker(void)`
-- `HU_queueChatChar` (function) `progs/doomgeneric/hu_stuff.c:482` `void HU_queueChatChar(char c)`
-- `HU_dequeueChatChar` (function) `progs/doomgeneric/hu_stuff.c:495` `char HU_dequeueChatChar(void)`
-- `HU_Responder` (function) `progs/doomgeneric/hu_stuff.c:512` `boolean HU_Responder(event_t *ev)`
-
-## progs/doomgeneric/hu_stuff.h
+## progs/doomgeneric/d_event.c
 Depends on: `progs/doomgeneric/d_event.h`
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_mobj.c`
-- `HU_Init` (function) `progs/doomgeneric/hu_stuff.h:46` `void HU_Init(void);`
-- `HU_Start` (function) `progs/doomgeneric/hu_stuff.h:47` `void HU_Start(void);`
-- `HU_Ticker` (function) `progs/doomgeneric/hu_stuff.h:51` `void HU_Ticker(void);`
-- `HU_Drawer` (function) `progs/doomgeneric/hu_stuff.h:52` `void HU_Drawer(void);`
-- `HU_dequeueChatChar` (function) `progs/doomgeneric/hu_stuff.h:53` `char HU_dequeueChatChar(void);`
-- `HU_Erase` (function) `progs/doomgeneric/hu_stuff.h:54` `void HU_Erase(void);`
+- `D_PostEvent` (function) `progs/doomgeneric/d_event.c:35` `void D_PostEvent (event_t* ev)` -- D_PostEvent Called by the I/O functions when input is detected
+- `D_PopEvent` (function) `progs/doomgeneric/d_event.c:43` `event_t *D_PopEvent(void)`
 
-## progs/doomgeneric/i_cdmus.c
-Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_cdmus.h`, `progs/pokemon/minios_stubs/SDL.h`
-- `I_CDMusInit` (function) `progs/doomgeneric/i_cdmus.c:38` `int I_CDMusInit(void)`
-- `I_CDMusPrintStartup` (function) `progs/doomgeneric/i_cdmus.c:92` `void I_CDMusPrintStartup(void)`
-- `I_CDMusPlay` (function) `progs/doomgeneric/i_cdmus.c:107` `int I_CDMusPlay(int track)`
-- `I_CDMusStop` (function) `progs/doomgeneric/i_cdmus.c:130` `int I_CDMusStop(void)`
-- `I_CDMusResume` (function) `progs/doomgeneric/i_cdmus.c:145` `int I_CDMusResume(void)`
-- `I_CDMusSetVolume` (function) `progs/doomgeneric/i_cdmus.c:160` `int I_CDMusSetVolume(int volume)`
-- `I_CDMusFirstTrack` (function) `progs/doomgeneric/i_cdmus.c:169` `int I_CDMusFirstTrack(void)`
-- `I_CDMusLastTrack` (function) `progs/doomgeneric/i_cdmus.c:202` `int I_CDMusLastTrack(void)`
-- `I_CDMusTrackLength` (function) `progs/doomgeneric/i_cdmus.c:219` `int I_CDMusTrackLength(int track_num)`
-
-## progs/doomgeneric/i_cdmus.h
-Imported by: `progs/doomgeneric/i_cdmus.c`
-- `I_CDMusInit` (function) `progs/doomgeneric/i_cdmus.h:31` `int I_CDMusInit(void);`
-- `I_CDMusPrintStartup` (function) `progs/doomgeneric/i_cdmus.h:32` `void I_CDMusPrintStartup(void);`
-- `I_CDMusPlay` (function) `progs/doomgeneric/i_cdmus.h:33` `int I_CDMusPlay(int track);`
-- `I_CDMusStop` (function) `progs/doomgeneric/i_cdmus.h:34` `int I_CDMusStop(void);`
-- `I_CDMusResume` (function) `progs/doomgeneric/i_cdmus.h:35` `int I_CDMusResume(void);`
-- `I_CDMusSetVolume` (function) `progs/doomgeneric/i_cdmus.h:36` `int I_CDMusSetVolume(int volume);`
-- `I_CDMusFirstTrack` (function) `progs/doomgeneric/i_cdmus.h:37` `int I_CDMusFirstTrack(void);`
-- `I_CDMusLastTrack` (function) `progs/doomgeneric/i_cdmus.h:38` `int I_CDMusLastTrack(void);`
-- `I_CDMusTrackLength` (function) `progs/doomgeneric/i_cdmus.h:39` `int I_CDMusTrackLength(int track);`
-
-## progs/doomgeneric/i_endoom.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`
-- `I_Endoom` (function) `progs/doomgeneric/i_endoom.c:36` `void I_Endoom(byte *endoom_data)`
-
-## progs/doomgeneric/i_endoom.h
-Imported by: `progs/doomgeneric/d_main.c`
-- `I_Endoom` (function) `progs/doomgeneric/i_endoom.h:26` `void I_Endoom(byte *data);`
-
-## progs/doomgeneric/i_input.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `TranslateKey` (function) `progs/doomgeneric/i_input.c:225` `static unsigned char TranslateKey(unsigned char key)`
-- `GetTypedChar` (function) `progs/doomgeneric/i_input.c:242` `static unsigned char GetTypedChar(unsigned char key)`
-- `UpdateShiftStatus` (function) `progs/doomgeneric/i_input.c:263` `static void UpdateShiftStatus(int pressed, unsigned char key)`
-- `I_GetEvent` (function) `progs/doomgeneric/i_input.c:279` `void I_GetEvent(void)`
-- `I_InitInput` (function) `progs/doomgeneric/i_input.c:338` `void I_InitInput(void)`
-
-## progs/doomgeneric/i_joystick.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
-- `I_ShutdownJoystick` (function) `progs/doomgeneric/i_joystick.c:77` `void I_ShutdownJoystick(void)`
-- `IsValidAxis` (function) `progs/doomgeneric/i_joystick.c:90` `static boolean IsValidAxis(int axis)` -- ifdef ORIGCODE
-- `I_InitJoystick` (function) `progs/doomgeneric/i_joystick.c:115` `void I_InitJoystick(void)`
-- `IsAxisButton` (function) `progs/doomgeneric/i_joystick.c:171` `static boolean IsAxisButton(int physbutton)` -- ifdef ORIGCODE
-- `ReadButtonState` (function) `progs/doomgeneric/i_joystick.c:203` `static int ReadButtonState(int vbutton)`
-- `GetButtonsState` (function) `progs/doomgeneric/i_joystick.c:228` `static int GetButtonsState(void)`
-- `GetAxisState` (function) `progs/doomgeneric/i_joystick.c:248` `static int GetAxisState(int axis, int invert)`
-- `I_UpdateJoystick` (function) `progs/doomgeneric/i_joystick.c:321` `void I_UpdateJoystick(void)` -- endif
-- `I_BindJoystickVariables` (function) `progs/doomgeneric/i_joystick.c:339` `void I_BindJoystickVariables(void)`
-
-## progs/doomgeneric/i_joystick.h
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`
-- `I_InitJoystick` (function) `progs/doomgeneric/i_joystick.h:63` `void I_InitJoystick(void);`
-- `I_ShutdownJoystick` (function) `progs/doomgeneric/i_joystick.h:64` `void I_ShutdownJoystick(void);`
-- `I_UpdateJoystick` (function) `progs/doomgeneric/i_joystick.h:65` `void I_UpdateJoystick(void);`
-- `I_BindJoystickVariables` (function) `progs/doomgeneric/i_joystick.h:67` `void I_BindJoystickVariables(void);`
-
-## progs/doomgeneric/i_main.c
-Depends on: `progs/doomgeneric/m_argv.h`
-- `D_DoomMain` (function) `progs/doomgeneric/i_main.c:33` `void D_DoomMain (void);`
-- `M_FindResponseFile` (function) `progs/doomgeneric/i_main.c:35` `void M_FindResponseFile(void);`
-- `dg_Create` (function) `progs/doomgeneric/i_main.c:37` `void dg_Create();`
-- `main` (function) `progs/doomgeneric/i_main.c:40` `int main(int argc, char **argv)`
-
-## progs/doomgeneric/i_minios_sound.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
-- `sys_tone_hw` (function) `progs/doomgeneric/i_minios_sound.c:32` `static long sys_tone_hw(unsigned f)`
-- `sys_time` (function) `progs/doomgeneric/i_minios_sound.c:35` `static long sys_time(void)`
-- `sys_pcm2_open` (function) `progs/doomgeneric/i_minios_sound.c:38` `static long sys_pcm2_open(long flags)`
-- `sys_pcm2_write` (function) `progs/doomgeneric/i_minios_sound.c:41` `static long sys_pcm2_write(const void *buf, long len)`
-- `sys_pcm2_close` (function) `progs/doomgeneric/i_minios_sound.c:44` `static void sys_pcm2_close(void)`
-- `muted` (function) `progs/doomgeneric/i_minios_sound.c:51` `* pcm2 while sfx stay muted (effect tones ruined the melody);`
-- `audio_ensure` (function) `progs/doomgeneric/i_minios_sound.c:68` `static void audio_ensure(void)`
-- `audio_pump` (function) `progs/doomgeneric/i_minios_sound.c:77` `static void audio_pump(void)` -- SFX are muted on pcm2 (music only): effect tones ruined the melody, so audio_pump below only advances the shared...
-- `audio_tone` (function) `progs/doomgeneric/i_minios_sound.c:85` `static void audio_tone(unsigned freq)`
-- `audio_close` (function) `progs/doomgeneric/i_minios_sound.c:92` `static void audio_close(void)`
-- `mus_read_varlen` (function) `progs/doomgeneric/i_minios_sound.c:169` `static int mus_read_varlen(mus_player_t *m, unsigned long *out)`
-- `mus_next_block` (function) `progs/doomgeneric/i_minios_sound.c:183` `static int mus_next_block(mus_player_t *m, unsigned long *out)` -- Process one full block of events at the current tick and advance pos past * its delta.
-- `mus_note_cmp` (function) `progs/doomgeneric/i_minios_sound.c:228` `static int mus_note_cmp(const void *a, const void *b)`
-- `mus_build_chord` (function) `progs/doomgeneric/i_minios_sound.c:236` `static void mus_build_chord(mus_player_t *m)` -- Split the sounding notes into a bass pedal (the lowest note below the bass line) and the melody arpeggio (the...
-- `mus_hold_tone` (function) `progs/doomgeneric/i_minios_sound.c:261` `static void mus_hold_tone(unsigned freq, unsigned long ms)` -- Hold a tone for the given number of milliseconds.
-- `mus_play_chord` (function) `progs/doomgeneric/i_minios_sound.c:274` `static void mus_play_chord(mus_player_t *m)` -- Play one full cycle of the pseudo-polyphony: the bass pedal first, held long like the NES triangle voice, then the...
-- `mus_advance` (function) `progs/doomgeneric/i_minios_sound.c:288` `static void mus_advance(mus_player_t *m, unsigned long ms)`
-- `mus_render_pcm` (function) `progs/doomgeneric/i_minios_sound.c:320` `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)` -- Polyphonic pcm2 music: every sounding voice at once, as the score has it.
-- `mus_render_push` (function) `progs/doomgeneric/i_minios_sound.c:359` `static void mus_render_push(mus_player_t *m, unsigned n)`
-- `mus_advance_pcm` (function) `progs/doomgeneric/i_minios_sound.c:369` `static void mus_advance_pcm(mus_player_t *m)`
-- `MUS_Init` (function) `progs/doomgeneric/i_minios_sound.c:410` `static boolean MUS_Init(void)`
-- `MUS_Shutdown` (function) `progs/doomgeneric/i_minios_sound.c:415` `static void MUS_Shutdown(void)`
-- `MUS_SetMusicVolume` (function) `progs/doomgeneric/i_minios_sound.c:422` `static void MUS_SetMusicVolume(int volume)`
-- `MUS_Pause` (function) `progs/doomgeneric/i_minios_sound.c:424` `static void MUS_Pause(void)`
-- `MUS_Resume` (function) `progs/doomgeneric/i_minios_sound.c:425` `static void MUS_Resume(void)`
-- `MUS_RegisterSong` (function) `progs/doomgeneric/i_minios_sound.c:427` `static void *MUS_RegisterSong(void *data, int len)`
-- `MUS_UnRegisterSong` (function) `progs/doomgeneric/i_minios_sound.c:442` `static void MUS_UnRegisterSong(void *handle)`
-- `MUS_PlaySong` (function) `progs/doomgeneric/i_minios_sound.c:448` `static void MUS_PlaySong(void *handle, boolean looping)`
-- `MUS_StopSong` (function) `progs/doomgeneric/i_minios_sound.c:469` `static void MUS_StopSong(void)`
-- `MUS_MusicIsPlaying` (function) `progs/doomgeneric/i_minios_sound.c:474` `static boolean MUS_MusicIsPlaying(void)`
-- `MUS_Poll` (function) `progs/doomgeneric/i_minios_sound.c:478` `static void MUS_Poll(void)`
-- `PCSPK_Init` (function) `progs/doomgeneric/i_minios_sound.c:512` `static boolean PCSPK_Init(boolean use_sfx_prefix)`
-- `PCSPK_Shutdown` (function) `progs/doomgeneric/i_minios_sound.c:519` `static void PCSPK_Shutdown(void)`
-- `PCSPK_GetSfxLumpNum` (function) `progs/doomgeneric/i_minios_sound.c:529` `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
-- `free_channel` (function) `progs/doomgeneric/i_minios_sound.c:540` `static void free_channel(int i)`
-- `PCSPK_Update` (function) `progs/doomgeneric/i_minios_sound.c:549` `static void PCSPK_Update(void)`
-- `PCSPK_UpdateSoundParams` (function) `progs/doomgeneric/i_minios_sound.c:587` `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
-- `PCSPK_StartSound` (function) `progs/doomgeneric/i_minios_sound.c:591` `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
-- `PCSPK_StopSound` (function) `progs/doomgeneric/i_minios_sound.c:641` `static void PCSPK_StopSound(int channel)`
-- `PCSPK_SoundIsPlaying` (function) `progs/doomgeneric/i_minios_sound.c:647` `static boolean PCSPK_SoundIsPlaying(int channel)`
-- `PCSPK_CacheSounds` (function) `progs/doomgeneric/i_minios_sound.c:653` `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
-
-## progs/doomgeneric/i_scale.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
-- `I_InitScale` (function) `progs/doomgeneric/i_scale.c:61` `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch)`
-- `I_Scale1x` (function) `progs/doomgeneric/i_scale.c:75` `static boolean I_Scale1x(int x1, int y1, int x2, int y2)`
-- `I_Scale2x` (function) `progs/doomgeneric/i_scale.c:105` `static boolean I_Scale2x(int x1, int y1, int x2, int y2)`
-- `I_Scale3x` (function) `progs/doomgeneric/i_scale.c:146` `static boolean I_Scale3x(int x1, int y1, int x2, int y2)`
-- `I_Scale4x` (function) `progs/doomgeneric/i_scale.c:191` `static boolean I_Scale4x(int x1, int y1, int x2, int y2)`
-- `I_Scale5x` (function) `progs/doomgeneric/i_scale.c:240` `static boolean I_Scale5x(int x1, int y1, int x2, int y2)`
-- `FindNearestColor` (function) `progs/doomgeneric/i_scale.c:295` `static int FindNearestColor(byte *palette, int r, int g, int b)`
-- `GenerateStretchTable` (function) `progs/doomgeneric/i_scale.c:332` `static byte *GenerateStretchTable(byte *palette, int pct)`
-- `I_InitStretchTables` (function) `progs/doomgeneric/i_scale.c:361` `static void I_InitStretchTables(byte *palette)`
-- `I_InitSquashTable` (function) `progs/doomgeneric/i_scale.c:387` `static void I_InitSquashTable(byte *palette)`
-- `I_ResetScaleTables` (function) `progs/doomgeneric/i_scale.c:404` `void I_ResetScaleTables(byte *palette)`
-- `WriteBlendedLine1x` (function) `progs/doomgeneric/i_scale.c:434` `static inline void WriteBlendedLine1x(byte *dest, byte *src1, byte *src2, 
-                      ...`
-- `I_Stretch1x` (function) `progs/doomgeneric/i_scale.c:450` `static boolean I_Stretch1x(int x1, int y1, int x2, int y2)`
-- `WriteLine2x` (function) `progs/doomgeneric/i_scale.c:507` `static inline void WriteLine2x(byte *dest, byte *src)`
-- `WriteBlendedLine2x` (function) `progs/doomgeneric/i_scale.c:520` `static inline void WriteBlendedLine2x(byte *dest, byte *src1, byte *src2, 
-                      ...`
-- `I_Stretch2x` (function) `progs/doomgeneric/i_scale.c:539` `static boolean I_Stretch2x(int x1, int y1, int x2, int y2)`
-- `WriteLine3x` (function) `progs/doomgeneric/i_scale.c:620` `static inline void WriteLine3x(byte *dest, byte *src)`
-- `WriteBlendedLine3x` (function) `progs/doomgeneric/i_scale.c:634` `static inline void WriteBlendedLine3x(byte *dest, byte *src1, byte *src2, 
-                      ...`
-- `I_Stretch3x` (function) `progs/doomgeneric/i_scale.c:654` `static boolean I_Stretch3x(int x1, int y1, int x2, int y2)`
-- `WriteLine4x` (function) `progs/doomgeneric/i_scale.c:759` `static inline void WriteLine4x(byte *dest, byte *src)`
-- `WriteBlendedLine4x` (function) `progs/doomgeneric/i_scale.c:774` `static inline void WriteBlendedLine4x(byte *dest, byte *src1, byte *src2, 
-                      ...`
-- `I_Stretch4x` (function) `progs/doomgeneric/i_scale.c:795` `static boolean I_Stretch4x(int x1, int y1, int x2, int y2)`
-- `WriteLine5x` (function) `progs/doomgeneric/i_scale.c:924` `static inline void WriteLine5x(byte *dest, byte *src)`
-- `I_Stretch5x` (function) `progs/doomgeneric/i_scale.c:942` `static boolean I_Stretch5x(int x1, int y1, int x2, int y2)`
-- `WriteSquashedLine1x` (function) `progs/doomgeneric/i_scale.c:1030` `static inline void WriteSquashedLine1x(byte *dest, byte *src)`
-- `I_Squash1x` (function) `progs/doomgeneric/i_scale.c:1061` `static boolean I_Squash1x(int x1, int y1, int x2, int y2)`
-- `WriteSquashedLine2x` (function) `progs/doomgeneric/i_scale.c:1102` `static inline void WriteSquashedLine2x(byte *dest, byte *src)`
-- `I_Squash2x` (function) `progs/doomgeneric/i_scale.c:1160` `static boolean I_Squash2x(int x1, int y1, int x2, int y2)`
-- `WriteSquashedLine3x` (function) `progs/doomgeneric/i_scale.c:1197` `static inline void WriteSquashedLine3x(byte *dest, byte *src)`
-- `I_Squash3x` (function) `progs/doomgeneric/i_scale.c:1243` `static boolean I_Squash3x(int x1, int y1, int x2, int y2)`
-- `WriteSquashedLine4x` (function) `progs/doomgeneric/i_scale.c:1279` `static inline void WriteSquashedLine4x(byte *dest, byte *src)`
-- `I_Squash4x` (function) `progs/doomgeneric/i_scale.c:1354` `static boolean I_Squash4x(int x1, int y1, int x2, int y2)`
-- `WriteSquashedLine5x` (function) `progs/doomgeneric/i_scale.c:1390` `static inline void WriteSquashedLine5x(byte *dest, byte *src)`
-- `I_Squash5x` (function) `progs/doomgeneric/i_scale.c:1419` `static boolean I_Squash5x(int x1, int y1, int x2, int y2)`
-
-## progs/doomgeneric/i_scale.h
+## progs/doomgeneric/d_event.h
 Depends on: `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/i_input.c`
-- `I_InitScale` (function) `progs/doomgeneric/i_scale.h:25` `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch);`
-- `I_ResetScaleTables` (function) `progs/doomgeneric/i_scale.h:26` `void I_ResetScaleTables(byte *palette);`
+Imported by: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_user.c`, `progs/doomgeneric/st_stuff.h`
+- `D_PostEvent` (function) `progs/doomgeneric/d_event.h:129` `void D_PostEvent (event_t *ev);` -- Called by IO functions when input is detected.
+- `D_PopEvent` (function) `progs/doomgeneric/d_event.h:133` `event_t *D_PopEvent(void);`
 
-## progs/doomgeneric/i_sound.c
-Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/gusconf.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`
-- `I_InitTimidityConfig` (function) `progs/doomgeneric/i_sound.c:65` `extern void I_InitTimidityConfig(void);`
-- `SndDeviceInList` (function) `progs/doomgeneric/i_sound.c:116` `static boolean SndDeviceInList(snddevice_t device, snddevice_t *list,
-                           ...`
-- `InitSfxModule` (function) `progs/doomgeneric/i_sound.c:135` `static void InitSfxModule(boolean use_sfx_prefix)`
-- `InitMusicModule` (function) `progs/doomgeneric/i_sound.c:163` `static void InitMusicModule(void)`
-- `I_InitSound` (function) `progs/doomgeneric/i_sound.c:195` `void I_InitSound(boolean use_sfx_prefix)`
-- `I_ShutdownSound` (function) `progs/doomgeneric/i_sound.c:250` `void I_ShutdownSound(void)`
-- `I_GetSfxLumpNum` (function) `progs/doomgeneric/i_sound.c:263` `int I_GetSfxLumpNum(sfxinfo_t *sfxinfo)`
-- `I_UpdateSound` (function) `progs/doomgeneric/i_sound.c:275` `void I_UpdateSound(void)`
-- `CheckVolumeSeparation` (function) `progs/doomgeneric/i_sound.c:288` `static void CheckVolumeSeparation(int *vol, int *sep)`
-- `I_UpdateSoundParams` (function) `progs/doomgeneric/i_sound.c:309` `void I_UpdateSoundParams(int channel, int vol, int sep)`
-- `I_StartSound` (function) `progs/doomgeneric/i_sound.c:318` `int I_StartSound(sfxinfo_t *sfxinfo, int channel, int vol, int sep)`
-- `I_StopSound` (function) `progs/doomgeneric/i_sound.c:331` `void I_StopSound(int channel)`
-- `I_SoundIsPlaying` (function) `progs/doomgeneric/i_sound.c:339` `boolean I_SoundIsPlaying(int channel)`
-- `I_PrecacheSounds` (function) `progs/doomgeneric/i_sound.c:351` `void I_PrecacheSounds(sfxinfo_t *sounds, int num_sounds)`
-- `I_InitMusic` (function) `progs/doomgeneric/i_sound.c:359` `void I_InitMusic(void)`
-- `I_ShutdownMusic` (function) `progs/doomgeneric/i_sound.c:363` `void I_ShutdownMusic(void)`
-- `I_SetMusicVolume` (function) `progs/doomgeneric/i_sound.c:368` `void I_SetMusicVolume(int volume)`
-- `I_PauseSong` (function) `progs/doomgeneric/i_sound.c:376` `void I_PauseSong(void)`
-- `I_ResumeSong` (function) `progs/doomgeneric/i_sound.c:384` `void I_ResumeSong(void)`
-- `I_RegisterSong` (function) `progs/doomgeneric/i_sound.c:392` `void *I_RegisterSong(void *data, int len)`
-- `I_UnRegisterSong` (function) `progs/doomgeneric/i_sound.c:404` `void I_UnRegisterSong(void *handle)`
-- `I_PlaySong` (function) `progs/doomgeneric/i_sound.c:412` `void I_PlaySong(void *handle, boolean looping)`
-- `I_StopSong` (function) `progs/doomgeneric/i_sound.c:420` `void I_StopSong(void)`
-- `I_MusicIsPlaying` (function) `progs/doomgeneric/i_sound.c:428` `boolean I_MusicIsPlaying(void)`
-- `I_BindSoundVariables` (function) `progs/doomgeneric/i_sound.c:440` `void I_BindSoundVariables(void)`
+## progs/doomgeneric/d_iwad.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `AddIWADDir` (function) `progs/doomgeneric/d_iwad.c:64` `static void AddIWADDir(char *dir)`
+- `GetRegistryString` (function) `progs/doomgeneric/d_iwad.c:192` `static char *GetRegistryString(registry_value_t *reg_val)`
+- `CheckUninstallStrings` (function) `progs/doomgeneric/d_iwad.c:236` `static void CheckUninstallStrings(void)`
+- `CheckCollectorsEdition` (function) `progs/doomgeneric/d_iwad.c:270` `static void CheckCollectorsEdition(void)`
+- `CheckSteamEdition` (function) `progs/doomgeneric/d_iwad.c:297` `static void CheckSteamEdition(void)`
+- `CheckSteamGUSPatches` (function) `progs/doomgeneric/d_iwad.c:324` `static void CheckSteamGUSPatches(void)`
+- `CheckDOSDefaults` (function) `progs/doomgeneric/d_iwad.c:364` `static void CheckDOSDefaults(void)`
+- `DirIsFile` (function) `progs/doomgeneric/d_iwad.c:391` `static boolean DirIsFile(char *path, char *filename)`
+- `CheckDirectoryHasIWAD` (function) `progs/doomgeneric/d_iwad.c:408` `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)`
+- `SearchDirectoryForIWAD` (function) `progs/doomgeneric/d_iwad.c:449` `static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)`
+- `IdentifyIWADByName` (function) `progs/doomgeneric/d_iwad.c:477` `static GameMission_t IdentifyIWADByName(char *name, int mask)`
+- `AddDoomWadPath` (function) `progs/doomgeneric/d_iwad.c:518` `static void AddDoomWadPath(void)`
+- `BuildIWADDirList` (function) `progs/doomgeneric/d_iwad.c:569` `static void BuildIWADDirList(void)`
+- `D_FindWADByName` (function) `progs/doomgeneric/d_iwad.c:630` `char *D_FindWADByName(char *name)`
+- `D_TryFindWADByName` (function) `progs/doomgeneric/d_iwad.c:681` `char *D_TryFindWADByName(char *filename)`
+- `D_FindIWAD` (function) `progs/doomgeneric/d_iwad.c:704` `char *D_FindIWAD(int mask, GameMission_t *mission)`
+- `D_FindAllIWADs` (function) `progs/doomgeneric/d_iwad.c:757` `const iwad_t **D_FindAllIWADs(int mask)`
+- `D_SaveGameIWADName` (function) `progs/doomgeneric/d_iwad.c:796` `char *D_SaveGameIWADName(GameMission_t gamemission)`
+- `D_SuggestIWADName` (function) `progs/doomgeneric/d_iwad.c:820` `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)`
+- `D_SuggestGameName` (function) `progs/doomgeneric/d_iwad.c:835` `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)`
+
+## progs/doomgeneric/d_iwad.h
+Depends on: `progs/doomgeneric/d_mode.h`
+Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/w_main.c`, `progs/doomgeneric/w_wad.c`
+- `D_FindWADByName` (function) `progs/doomgeneric/d_iwad.h:42` `char *D_FindWADByName(char *filename);`
+- `D_TryFindWADByName` (function) `progs/doomgeneric/d_iwad.h:43` `char *D_TryFindWADByName(char *filename);`
+- `D_FindIWAD` (function) `progs/doomgeneric/d_iwad.h:44` `char *D_FindIWAD(int mask, GameMission_t *mission);`
+- `D_FindAllIWADs` (function) `progs/doomgeneric/d_iwad.h:45` `const iwad_t **D_FindAllIWADs(int mask);`
+- `D_SaveGameIWADName` (function) `progs/doomgeneric/d_iwad.h:46` `char *D_SaveGameIWADName(GameMission_t gamemission);`
+- `D_SuggestIWADName` (function) `progs/doomgeneric/d_iwad.h:47` `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode);`
+- `D_SuggestGameName` (function) `progs/doomgeneric/d_iwad.h:48` `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode);`
+- `D_CheckCorrectIWAD` (function) `progs/doomgeneric/d_iwad.h:49` `void D_CheckCorrectIWAD(GameMission_t mission);`
+
+## progs/doomgeneric/d_loop.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
+- `GetAdjustedTime` (function) `progs/doomgeneric/d_loop.c:119` `static int GetAdjustedTime(void)`
+- `BuildNewTic` (function) `progs/doomgeneric/d_loop.c:136` `static boolean BuildNewTic(void)`
+- `NetUpdate` (function) `progs/doomgeneric/d_loop.c:203` `void NetUpdate (void)`
+- `D_Disconnected` (function) `progs/doomgeneric/d_loop.c:252` `static void D_Disconnected(void)`
+- `D_ReceiveTic` (function) `progs/doomgeneric/d_loop.c:271` `void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)`
+- `D_StartGameLoop` (function) `progs/doomgeneric/d_loop.c:305` `void D_StartGameLoop(void)`
+- `BlockUntilStart` (function) `progs/doomgeneric/d_loop.c:315` `static void BlockUntilStart(net_gamesettings_t *settings,
+                            netgame_sta...`
+- `D_StartNetGame` (function) `progs/doomgeneric/d_loop.c:340` `void D_StartNetGame(net_gamesettings_t *settings,
+                    netgame_startup_callback_t ...`
+- `D_InitNetGame` (function) `progs/doomgeneric/d_loop.c:452` `boolean D_InitNetGame(net_connect_data_t *connect_data)`
+- `D_QuitNetGame` (function) `progs/doomgeneric/d_loop.c:560` `void D_QuitNetGame (void)` -- D_QuitNetGame Called before quitting to leave a net game without hanging the other players
+- `GetLowTic` (function) `progs/doomgeneric/d_loop.c:568` `static int GetLowTic(void)`
+- `OldNetSync` (function) `progs/doomgeneric/d_loop.c:591` `static void OldNetSync(void)`
+- `PlayersInGame` (function) `progs/doomgeneric/d_loop.c:642` `static boolean PlayersInGame(void)`
+- `TicdupSquash` (function) `progs/doomgeneric/d_loop.c:672` `static void TicdupSquash(ticcmd_set_t *set)`
+- `SinglePlayerClear` (function) `progs/doomgeneric/d_loop.c:689` `static void SinglePlayerClear(ticcmd_set_t *set)`
+- `TryRunTics` (function) `progs/doomgeneric/d_loop.c:706` `void TryRunTics (void)`
+- `D_RegisterLoopCallbacks` (function) `progs/doomgeneric/d_loop.c:822` `void D_RegisterLoopCallbacks(loop_interface_t *i)`
+
+## progs/doomgeneric/d_loop.h
+Depends on: `progs/doomgeneric/net_defs.h`
+Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/r_main.c`
+- `D_RegisterLoopCallbacks` (function) `progs/doomgeneric/d_loop.h:52` `void D_RegisterLoopCallbacks(loop_interface_t *i);` -- Register callback functions for the main loop code to use.
+- `NetUpdate` (function) `progs/doomgeneric/d_loop.h:55` `void NetUpdate (void);` -- Create any new ticcmds and broadcast to other players.
+- `D_QuitNetGame` (function) `progs/doomgeneric/d_loop.h:59` `void D_QuitNetGame (void);` -- Broadcasts special packets to other players to notify of game exit
+- `TryRunTics` (function) `progs/doomgeneric/d_loop.h:62` `void TryRunTics (void);` -- ? how many ticks to run?
+- `D_StartGameLoop` (function) `progs/doomgeneric/d_loop.h:65` `void D_StartGameLoop(void);` -- Called at start of game loop to initialize timers
+- `D_StartNetGame` (function) `progs/doomgeneric/d_loop.h:74` `void D_StartNetGame(net_gamesettings_t *settings, netgame_startup_callback_t callback);`
+
+## progs/doomgeneric/d_main.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
+- `D_ConnectNetGame` (function) `progs/doomgeneric/d_main.c:131` `void D_ConnectNetGame(void);`
+- `D_CheckNetGame` (function) `progs/doomgeneric/d_main.c:132` `void D_CheckNetGame(void);`
+- `D_ProcessEvents` (function) `progs/doomgeneric/d_main.c:139` `void D_ProcessEvents (void)` -- D_ProcessEvents Send all the events of the given timestamp down the responder chain
+- `R_ExecuteSetViewSize` (function) `progs/doomgeneric/d_main.c:167` `void R_ExecuteSetViewSize (void);`
+- `D_Display` (function) `progs/doomgeneric/d_main.c:169` `void D_Display (void)`
+- `D_BindVariables` (function) `progs/doomgeneric/d_main.c:335` `void D_BindVariables(void)`
+- `D_GrabMouseCallback` (function) `progs/doomgeneric/d_main.c:388` `boolean D_GrabMouseCallback(void)`
+- `D_DoomLoop` (function) `progs/doomgeneric/d_main.c:408` `void D_DoomLoop (void)` -- D_DoomLoop
+- `D_PageTicker` (function) `progs/doomgeneric/d_main.c:490` `void D_PageTicker (void)` -- D_PageTicker Handles timing for warped projection
+- `D_PageDrawer` (function) `progs/doomgeneric/d_main.c:501` `void D_PageDrawer (void)` -- D_PageDrawer
+- `D_AdvanceDemo` (function) `progs/doomgeneric/d_main.c:511` `void D_AdvanceDemo (void)` -- D_AdvanceDemo Called after each demo or intro demosequence finishes
+- `D_DoAdvanceDemo` (function) `progs/doomgeneric/d_main.c:521` `void D_DoAdvanceDemo (void)` -- This cycles through the demo sequences.
+- `D_StartTitle` (function) `progs/doomgeneric/d_main.c:609` `void D_StartTitle (void)` -- D_StartTitle
+- `GetGameName` (function) `progs/doomgeneric/d_main.c:658` `static char *GetGameName(char *gamename)`
+- `SetMissionForPackName` (function) `progs/doomgeneric/d_main.c:701` `static void SetMissionForPackName(char *pack_name)`
+- `D_IdentifyVersion` (function) `progs/doomgeneric/d_main.c:737` `void D_IdentifyVersion(void)`
+- `D_SetGameDescription` (function) `progs/doomgeneric/d_main.c:820` `void D_SetGameDescription(void)`
+- `D_AddFile` (function) `progs/doomgeneric/d_main.c:883` `static boolean D_AddFile(char *filename)`
+- `PrintDehackedBanners` (function) `progs/doomgeneric/d_main.c:918` `void PrintDehackedBanners(void)`
+- `InitGameVersion` (function) `progs/doomgeneric/d_main.c:963` `static void InitGameVersion(void)`
+- `PrintGameVersion` (function) `progs/doomgeneric/d_main.c:1065` `void PrintGameVersion(void)`
+- `D_Endoom` (function) `progs/doomgeneric/d_main.c:1082` `static void D_Endoom(void)`
+- `LoadIwadDeh` (function) `progs/doomgeneric/d_main.c:1105` `static void LoadIwadDeh(void)` -- if ORIGCODE Load dehacked patches needed for certain IWADs.
+- `D_DoomMain` (function) `progs/doomgeneric/d_main.c:1178` `void D_DoomMain (void)` -- D_DoomMain
+
+## progs/doomgeneric/d_main.h
+Depends on: `progs/doomgeneric/doomdef.h`
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`
+- `D_ProcessEvents` (function) `progs/doomgeneric/d_main.h:30` `void D_ProcessEvents (void);`
+- `D_PageTicker` (function) `progs/doomgeneric/d_main.h:36` `void D_PageTicker (void);` -- BASE LEVEL
+- `D_PageDrawer` (function) `progs/doomgeneric/d_main.h:37` `void D_PageDrawer (void);`
+- `D_AdvanceDemo` (function) `progs/doomgeneric/d_main.h:38` `void D_AdvanceDemo (void);`
+- `D_DoAdvanceDemo` (function) `progs/doomgeneric/d_main.h:39` `void D_DoAdvanceDemo (void);`
+- `D_StartTitle` (function) `progs/doomgeneric/d_main.h:40` `void D_StartTitle (void);`
+
+## progs/doomgeneric/d_mode.c
+Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
+- `D_ValidGameMode` (function) `progs/doomgeneric/d_mode.c:50` `boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)`
+- `D_ValidEpisodeMap` (function) `progs/doomgeneric/d_mode.c:65` `boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
+                          int e...`
+- `D_GetNumEpisodes` (function) `progs/doomgeneric/d_mode.c:103` `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)`
+- `D_ValidGameVersion` (function) `progs/doomgeneric/d_mode.c:135` `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)`
+- `D_IsEpisodeMap` (function) `progs/doomgeneric/d_mode.c:161` `boolean D_IsEpisodeMap(GameMission_t mission)`
+- `D_GameMissionString` (function) `progs/doomgeneric/d_mode.c:182` `char *D_GameMissionString(GameMission_t mission)`
+
+## progs/doomgeneric/d_mode.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_mode.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/w_wad.h`
+- `D_GetNumEpisodes` (function) `progs/doomgeneric/d_mode.h:93` `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode);`
+- `D_GameMissionString` (function) `progs/doomgeneric/d_mode.h:95` `char *D_GameMissionString(GameMission_t mission);`
+
+## progs/doomgeneric/d_net.c
+Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
+- `PlayerQuitGame` (function) `progs/doomgeneric/d_net.c:45` `static void PlayerQuitGame(player_t *player)`
+- `RunTic` (function) `progs/doomgeneric/d_net.c:71` `static void RunTic(ticcmd_t *cmds, boolean *ingame)`
+- `LoadGameSettings` (function) `progs/doomgeneric/d_net.c:108` `static void LoadGameSettings(net_gamesettings_t *settings)`
+- `SaveGameSettings` (function) `progs/doomgeneric/d_net.c:139` `static void SaveGameSettings(net_gamesettings_t *settings)`
+- `InitConnectData` (function) `progs/doomgeneric/d_net.c:159` `static void InitConnectData(net_connect_data_t *connect_data)`
+- `D_ConnectNetGame` (function) `progs/doomgeneric/d_net.c:215` `void D_ConnectNetGame(void)`
+- `D_CheckNetGame` (function) `progs/doomgeneric/d_net.c:240` `void D_CheckNetGame (void)` -- D_CheckNetGame Works out player numbers among the net participants
+
+## progs/doomgeneric/deh_main.h
+Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/sha1.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
+- `DEH_ParseCommandLine` (function) `progs/doomgeneric/deh_main.h:33` `void DEH_ParseCommandLine(void);`
+- `DEH_LoadFile` (function) `progs/doomgeneric/deh_main.h:34` `int DEH_LoadFile(char *filename);`
+- `DEH_LoadLump` (function) `progs/doomgeneric/deh_main.h:35` `int DEH_LoadLump(int lumpnum, boolean allow_long, boolean allow_error);`
+- `DEH_LoadLumpByName` (function) `progs/doomgeneric/deh_main.h:36` `int DEH_LoadLumpByName(char *name, boolean allow_long, boolean allow_error);`
+- `DEH_Checksum` (function) `progs/doomgeneric/deh_main.h:40` `void DEH_Checksum(sha1_digest_t digest);`
+
+## progs/doomgeneric/deh_str.h
+Depends on: `progs/doomgeneric/doomfeatures.h`
+Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/v_video.c`
+- `DEH_String` (function) `progs/doomgeneric/deh_str.h:29` `char *DEH_String(char *s);`
+- `DEH_printf` (function) `progs/doomgeneric/deh_str.h:30` `void DEH_printf(char *fmt, ...);`
+- `DEH_fprintf` (function) `progs/doomgeneric/deh_str.h:31` `void DEH_fprintf(FILE *fstream, char *fmt, ...);`
+- `DEH_snprintf` (function) `progs/doomgeneric/deh_str.h:32` `void DEH_snprintf(char *buffer, size_t len, char *fmt, ...);`
+- `DEH_AddStringReplacement` (function) `progs/doomgeneric/deh_str.h:33` `void DEH_AddStringReplacement(char *from_text, char *to_text);`
+
+## progs/doomgeneric/doom.h
+- `D_DoomMain` (function) `progs/doomgeneric/doom.h:28` `void D_DoomMain (void);`
+
+## progs/doomgeneric/doomgeneric.c
+Depends on: `progs/doomgeneric/doomgeneric.h`
+- `dg_Create` (function) `progs/doomgeneric/doomgeneric.c:6` `void dg_Create()`
+
+## progs/doomgeneric/doomgeneric.h
+Imported by: `progs/doomgeneric/doomgeneric.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_win.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_timer.c`, `progs/doomgeneric/i_video.c`
+- `DG_Init` (function) `progs/doomgeneric/doomgeneric.h:14` `void DG_Init();`
+- `DG_DrawFrame` (function) `progs/doomgeneric/doomgeneric.h:15` `void DG_DrawFrame();`
+- `DG_SleepMs` (function) `progs/doomgeneric/doomgeneric.h:16` `void DG_SleepMs(uint32_t ms);`
+- `DG_GetTicksMs` (function) `progs/doomgeneric/doomgeneric.h:17` `uint32_t DG_GetTicksMs();`
+- `DG_GetKey` (function) `progs/doomgeneric/doomgeneric.h:18` `int DG_GetKey(int* pressed, unsigned char* key);`
+- `DG_SetWindowTitle` (function) `progs/doomgeneric/doomgeneric.h:19` `void DG_SetWindowTitle(const char * title);`
 
 
 Next: [API_p11.md](API_p11.md)

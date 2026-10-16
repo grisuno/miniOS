@@ -3,7 +3,18 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_pcache.c` | Docstring: host test for the page cache store (make test-pcache). | tests | 5 | 0 |
+| `tests/test_pci.c` | Docstring: Host test for headers/drivers/pci.h (make test-pci). | tests | 7 | 0 |
+| `tests/test_pcm.c` | Host-side unit test for the PCM ring buffer (headers/pcm_ring.h). | tests | 9 | 0 |
+| `tests/test_percpu_rq.c` | Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq). | tests | 2 | 0 |
+| `tests/test_pipe.c` | Docstring: Host test for headers/pipe.h (make test-pipe). | tests | 2 | 0 |
+| `tests/test_ps2_keymap.c` | test_ps2_keymap - host suite for the PS/2 set 1 to keysym translator. | tests | 15 | 0 |
+| `tests/test_randmix.c` | host test for the getrandom mixer in randmix.h | tests | 3 | 0 |
+| `tests/test_rcu.c` | Docstring: Host test for kernel/rcu.c (make test-rcu). | tests | 4 | 0 |
+| `tests/test_rtc.c` | host test for the pure date math in drivers/rtc.c | tests | 2 | 0 |
+| `tests/test_sanitize.c` | Docstring: Host test for sanitize.h (make test-sanitize). | tests | 9 | 0 |
 | `tests/test_seccomp_bpf.c` | Docstring: Host test for kernel/seccomp_bpf.c (make test-seccomp-bpf). | tests | 17 | 0 |
+| `tests/test_sign.c` | Docstring: Host test for kernel/ed25519.c plus headers/sign.h. | tests | 4 | 0 |
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 | 0 |
 | `tests/test_theme.c` | Docstring: host test for the shared Nuklear theme contract. | tests | 8 | 0 |
 | `tests/test_tick.c` | Docstring: Host test for kernel/tick.c (make test-tick). | tests | 6 | 0 |
@@ -58,11 +69,12 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/qga_client.py` | Minimal QEMU guest agent client for MiniOS. | tools | 4 | 0 |
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the agent socket... | tools | 3 | 0 |
 | `tools/repro_gui.py` | — reproduce the VGA/mouse state bug after ring-3 programs. | tools | 10 | 0 |
+| `tools/sign_elf.py` | Sign MiniOS user binaries with Ed25519 (development key). . | tools | 23 | 0 |
 | `tools/test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the serial console... | tools | 14 | 0 |
 | `tools/test_call_align.py` | verify stack alignment at call sites, both parities. | tools | 4 | 0 |
 | `tools/test_codecs.sh` | exercise the lzss/lz4/aes command-pair tools inside the OS. | tools | 0 | 0 |
 | `tools/test_gui_fashion.py` | GUI proof for the cursor/flicker/quit fixes. | tools | 18 | 0 |
-| `tools/test_gui_freedom.py` | GUI proof that freedom-gui takes real input. | tools | 24 | 0 |
+| `tools/test_gui_freedom.py` | GUI proof that freedom-gui takes real input. | tools | 28 | 0 |
 | `tools/test_gui_gfxview.py` | pixel + serial proof of the graphics view contract. | tools | 7 | 0 |
 | `tools/test_gui_icon_cwd.py` | GUI proof that dock launches ignore shell cwd. | tools | 17 | 0 |
 | `tools/test_gui_menu.py` | serial proof that the minicraft pause menu works. | tools | 1 | 0 |

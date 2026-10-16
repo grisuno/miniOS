@@ -3,6 +3,17 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCM2_ERR_PIPE` | macro | `headers/pcm2.h:64` | `#define PCM2_ERR_PIPE` |
+| `PCM2_FLAG_NONBLOCK` | macro | `headers/pcm2.h:58` | `#define PCM2_FLAG_NONBLOCK` |
+| `PCM2_FRAG` | macro | `headers/pcm2.h:53` | `#define PCM2_FRAG` |
+| `PCM2_FRAGS` | macro | `headers/pcm2.h:54` | `#define PCM2_FRAGS` |
+| `PCM2_H` | macro | `headers/pcm2.h:2` | `#define PCM2_H` |
+| `PCM2_RATE` | macro | `headers/pcm2.h:52` | `#define PCM2_RATE` |
+| `PCM2_RING` | macro | `headers/pcm2.h:56` | `#define PCM2_RING` |
+| `pcm2_active` | function | `headers/pcm2.h:77` | `int pcm2_active(void);` |
+| `pcm2_close` | function | `headers/pcm2.h:80` | `void pcm2_close(int owner);` |
+| `pcm2_counters` | function | `headers/pcm2.h:83` | `void pcm2_counters(pcm2_counters_t *out);` |
+| `pcm2_counters_t` | struct | `headers/pcm2.h:67` | `` |
 | `pcm2_irq` | function | `headers/pcm2.h:81` | `void pcm2_irq(void);` |
 | `pcm2_open` | function | `headers/pcm2.h:78` | `int pcm2_open(unsigned flags, int owner);` |
 | `pcm2_poll` | function | `headers/pcm2.h:82` | `void pcm2_poll(void);` |
@@ -161,8 +172,8 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `CTX_RIP_OFF` | macro | `headers/sched.h:45` | `#define CTX_RIP_OFF` |
 | `CTX_RSP_OFF` | macro | `headers/sched.h:46` | `#define CTX_RSP_OFF` |
 | `DESKTOP_TICK_INTERVAL` | macro | `headers/sched.h:316` | `#define DESKTOP_TICK_INTERVAL` |
-| `EXECVE_MAX_ARG` | macro | `headers/sched.h:422` | `#define EXECVE_MAX_ARG` |
-| `EXECVE_MAX_ARGS` | macro | `headers/sched.h:421` | `#define EXECVE_MAX_ARGS` |
+| `EXECVE_MAX_ARG` | macro | `headers/sched.h:425` | `#define EXECVE_MAX_ARG` |
+| `EXECVE_MAX_ARGS` | macro | `headers/sched.h:424` | `#define EXECVE_MAX_ARGS` |
 | `FPU_MXCSR_DEFAULT` | macro | `headers/sched.h:159` | `#define FPU_MXCSR_DEFAULT` |
 | `FPU_MXCSR_OFF` | macro | `headers/sched.h:158` | `#define FPU_MXCSR_OFF` |
 | `FPU_SAVE_SZ` | macro | `headers/sched.h:157` | `#define FPU_SAVE_SZ` |
@@ -223,93 +234,94 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `SECCOMP_OP_ALLOW_ONE` | macro | `headers/sched.h:169` | `#define SECCOMP_OP_ALLOW_ONE` |
 | `SECCOMP_OP_DENY_ALL` | macro | `headers/sched.h:170` | `#define SECCOMP_OP_DENY_ALL` |
 | `SECCOMP_OP_DENY_ONE` | macro | `headers/sched.h:168` | `#define SECCOMP_OP_DENY_ONE` |
-| `TSS_SEL` | macro | `headers/sched.h:369` | `#define TSS_SEL(cpu)` |
-| `USER_FAULT_SIGNAL` | macro | `headers/sched.h:417` | `#define USER_FAULT_SIGNAL` |
-| `WAITPID_NOCHILD` | macro | `headers/sched.h:447` | `#define WAITPID_NOCHILD` |
-| `WAITPID_NONE` | macro | `headers/sched.h:445` | `#define WAITPID_NONE` |
-| `__attribute__` | function | `headers/sched.h:372` | `typedef struct __attribute__((packed))` |
+| `TSS_SEL` | macro | `headers/sched.h:372` | `#define TSS_SEL(cpu)` |
+| `USER_FAULT_SIGNAL` | macro | `headers/sched.h:420` | `#define USER_FAULT_SIGNAL` |
+| `WAITPID_NOCHILD` | macro | `headers/sched.h:450` | `#define WAITPID_NOCHILD` |
+| `WAITPID_NONE` | macro | `headers/sched.h:448` | `#define WAITPID_NONE` |
+| `__attribute__` | function | `headers/sched.h:375` | `typedef struct __attribute__((packed))` |
 | `ap_idle_proc` | variable | `headers/sched.h:356` | `extern proc_t ap_idle_proc[MAX_CPUS];` |
-| `aslr_brk_pages` | function | `headers/sched.h:429` | `unsigned long aslr_brk_pages(void);` |
-| `aslr_dyn_base` | function | `headers/sched.h:431` | `unsigned long aslr_dyn_base(void);` |
-| `aslr_mmap_pages` | function | `headers/sched.h:430` | `unsigned long aslr_mmap_pages(void);` |
-| `aslr_stack_bytes` | function | `headers/sched.h:428` | `unsigned long aslr_stack_bytes(void);` |
-| `bsp_idtr` | variable | `headers/sched.h:373` | `extern idtr_t bsp_idtr;` |
+| `aslr_brk_pages` | function | `headers/sched.h:432` | `unsigned long aslr_brk_pages(void);` |
+| `aslr_dyn_base` | function | `headers/sched.h:434` | `unsigned long aslr_dyn_base(void);` |
+| `aslr_mmap_pages` | function | `headers/sched.h:433` | `unsigned long aslr_mmap_pages(void);` |
+| `aslr_stack_bytes` | function | `headers/sched.h:431` | `unsigned long aslr_stack_bytes(void);` |
+| `bsp_idtr` | variable | `headers/sched.h:376` | `extern idtr_t bsp_idtr;` |
 | `bytes` | function | `headers/sched.h:173` | `* RLIM_AS total user bytes (brk growth + mmap) beyond the load base * RLIM_CPU timer ticks of CPU time, then...` |
-| `caller` | function | `headers/sched.h:459` | `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...` |
+| `caller` | function | `headers/sched.h:462` | `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...` |
 | `cpu` | struct | `headers/sched.h:268` | `` |
 | `cpu_count` | variable | `headers/sched.h:295` | `extern int cpu_count;` |
-| `cpu_idle_ticks` | variable | `headers/sched.h:361` | `extern volatile unsigned long cpu_idle_ticks[MAX_CPUS];` |
+| `cpu_idle_ticks` | variable | `headers/sched.h:364` | `extern volatile unsigned long cpu_idle_ticks[MAX_CPUS];` |
 | `cpus` | variable | `headers/sched.h:294` | `extern cpu_t cpus[MAX_CPUS];` |
 | `ctx_regs_t` | struct | `headers/sched.h:33` | `` |
 | `current_pid` | macro | `headers/sched.h:312` | `#define current_pid` |
-| `do_clone` | function | `headers/sched.h:408` | `long do_clone(long flags, long newsp);` |
-| `do_execve` | function | `headers/sched.h:437` | `long do_execve(char *kpath, int kargc, char **kargv);` |
-| `do_exit` | function | `headers/sched.h:407` | `void do_exit(int code);` |
-| `do_fork` | function | `headers/sched.h:409` | `long do_fork(void);` |
-| `do_fork_ex` | function | `headers/sched.h:410` | `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);` |
-| `do_group_exit` | function | `headers/sched.h:413` | `void do_group_exit(int code);` |
-| `do_kill` | function | `headers/sched.h:449` | `int do_kill(int pid);` |
-| `do_kill_code` | function | `headers/sched.h:415` | `int do_kill_code(int pid, int code);` |
-| `do_linux_clone` | function | `headers/sched.h:411` | `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...` |
-| `do_thread_spawn` | function | `headers/sched.h:438` | `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
-| `do_waitpid` | function | `headers/sched.h:440` | `int do_waitpid(int pid);` |
-| `do_waitpid_linux` | function | `headers/sched.h:448` | `int do_waitpid_linux(int pid, int nohang, int *found);` |
-| `do_waitpid_nb` | function | `headers/sched.h:441` | `int do_waitpid_nb(int pid);` |
+| `do_clone` | function | `headers/sched.h:411` | `long do_clone(long flags, long newsp);` |
+| `do_execve` | function | `headers/sched.h:440` | `long do_execve(char *kpath, int kargc, char **kargv);` |
+| `do_exit` | function | `headers/sched.h:410` | `void do_exit(int code);` |
+| `do_fork` | function | `headers/sched.h:412` | `long do_fork(void);` |
+| `do_fork_ex` | function | `headers/sched.h:413` | `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);` |
+| `do_group_exit` | function | `headers/sched.h:416` | `void do_group_exit(int code);` |
+| `do_kill` | function | `headers/sched.h:452` | `int do_kill(int pid);` |
+| `do_kill_code` | function | `headers/sched.h:418` | `int do_kill_code(int pid, int code);` |
+| `do_linux_clone` | function | `headers/sched.h:414` | `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...` |
+| `do_thread_spawn` | function | `headers/sched.h:441` | `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);` |
+| `do_waitpid` | function | `headers/sched.h:443` | `int do_waitpid(int pid);` |
+| `do_waitpid_linux` | function | `headers/sched.h:451` | `int do_waitpid_linux(int pid, int nohang, int *found);` |
+| `do_waitpid_nb` | function | `headers/sched.h:444` | `int do_waitpid_nb(int pid);` |
 | `entry` | function | `headers/sched.h:135` | `* private view with one KFILE ref per live entry (0 on OOM), release * drops the view at reap, cloexec closes marked...` |
-| `failure` | function | `headers/sched.h:436` | `* failure (negative errno);` |
+| `failure` | function | `headers/sched.h:439` | `* failure (negative errno);` |
 | `first` | function | `headers/sched.h:232` | `* address first (SYSCALL_FRAME_WORDS in syscall_asm.h). It ends exactly at * the saved top (sc_top_save[pid]);` |
-| `fork_child_settid` | function | `headers/sched.h:418` | `void fork_child_settid(void);` |
-| `gdb_dump_report` | function | `headers/sched.h:381` | `void gdb_dump_report(unsigned long addr, unsigned long len);` |
-| `gdb_regs_report` | function | `headers/sched.h:380` | `void gdb_regs_report(int pid);` |
+| `fork_child_settid` | function | `headers/sched.h:421` | `void fork_child_settid(void);` |
+| `gdb_dump_report` | function | `headers/sched.h:384` | `void gdb_dump_report(unsigned long addr, unsigned long len);` |
+| `gdb_regs_report` | function | `headers/sched.h:383` | `void gdb_regs_report(int pid);` |
 | `group` | function | `headers/sched.h:108` | `* process is its own group (tgid == pid);` |
-| `irqstat_report` | function | `headers/sched.h:379` | `void irqstat_report(void);` |
-| `isr_cnt_kbd` | variable | `headers/sched.h:382` | `extern volatile unsigned long isr_cnt_kbd;` |
-| `isr_cnt_mouse` | variable | `headers/sched.h:383` | `extern volatile unsigned long isr_cnt_mouse;` |
-| `isr_cnt_sb16` | variable | `headers/sched.h:384` | `extern volatile unsigned long isr_cnt_sb16;` |
+| `irqstat_report` | function | `headers/sched.h:382` | `void irqstat_report(void);` |
+| `isr_cnt_kbd` | variable | `headers/sched.h:385` | `extern volatile unsigned long isr_cnt_kbd;` |
+| `isr_cnt_mouse` | variable | `headers/sched.h:386` | `extern volatile unsigned long isr_cnt_mouse;` |
+| `isr_cnt_sb16` | variable | `headers/sched.h:387` | `extern volatile unsigned long isr_cnt_sb16;` |
 | `kfd_view_cloexec` | function | `headers/sched.h:140` | `void kfd_view_cloexec(void);` |
 | `kfd_view_copy` | function | `headers/sched.h:138` | `int kfd_view_copy(proc_t *child, proc_t *parent);` |
 | `kfd_view_release` | function | `headers/sched.h:139` | `void kfd_view_release(proc_t *p);` |
 | `kfd_view_root` | function | `headers/sched.h:141` | `kfd_view_t *kfd_view_root(void);` |
 | `kfd_view_t` | type_alias | `headers/sched.h:11` | `typedef struct kfd_view kfd_view_t;` |
-| `kstack_report` | function | `headers/sched.h:377` | `void kstack_report(void);` |
-| `limit` | type_alias | `headers/sched.h:372` | `typedef struct __attribute__((packed)) { uint16_t limit;` |
-| `mm_view_claim_current` | function | `headers/sched.h:414` | `void mm_view_claim_current(void);` |
+| `kstack_report` | function | `headers/sched.h:380` | `void kstack_report(void);` |
+| `limit` | type_alias | `headers/sched.h:375` | `typedef struct __attribute__((packed)) { uint16_t limit;` |
+| `mm_view_claim_current` | function | `headers/sched.h:417` | `void mm_view_claim_current(void);` |
 | `proc_count` | variable | `headers/sched.h:334` | `extern int proc_count;` |
-| `proc_create` | function | `headers/sched.h:387` | `int proc_create(const char *name, int parent_pid);` |
-| `proc_get` | function | `headers/sched.h:388` | `proc_t *proc_get(int pid);` |
+| `proc_create` | function | `headers/sched.h:390` | `int proc_create(const char *name, int parent_pid);` |
+| `proc_get` | function | `headers/sched.h:391` | `proc_t *proc_get(int pid);` |
 | `proc_t` | struct | `headers/sched.h:50` | `` |
 | `procs` | variable | `headers/sched.h:333` | `extern proc_t procs[MAX_PROCS];` |
-| `pt_clone_user` | function | `headers/sched.h:453` | `uint64_t pt_clone_user(uint64_t parent_cr3);` |
-| `pt_free_user` | function | `headers/sched.h:454` | `void pt_free_user(uint64_t cr3);` |
-| `resume_iretq` | function | `headers/sched.h:405` | `void resume_iretq(void);` |
-| `rlimit_cpu_exceeded` | function | `headers/sched.h:394` | `int rlimit_cpu_exceeded(int pid);` |
-| `rlimit_cpu_tick` | function | `headers/sched.h:395` | `void rlimit_cpu_tick(int pid);` |
-| `sched_init` | function | `headers/sched.h:376` | `void sched_init(void);` |
+| `pt_clone_user` | function | `headers/sched.h:456` | `uint64_t pt_clone_user(uint64_t parent_cr3);` |
+| `pt_free_user` | function | `headers/sched.h:457` | `void pt_free_user(uint64_t cr3);` |
+| `resume_iretq` | function | `headers/sched.h:408` | `void resume_iretq(void);` |
+| `rlimit_cpu_exceeded` | function | `headers/sched.h:397` | `int rlimit_cpu_exceeded(int pid);` |
+| `rlimit_cpu_tick` | function | `headers/sched.h:398` | `void rlimit_cpu_tick(int pid);` |
+| `sched_idle_on_kernel_cr3` | function | `headers/sched.h:359` | `int sched_idle_on_kernel_cr3(int cpu);` |
+| `sched_init` | function | `headers/sched.h:379` | `void sched_init(void);` |
 | `sched_lock` | variable | `headers/sched.h:337` | `extern spinlock_t sched_lock;` |
 | `sched_ready` | variable | `headers/sched.h:338` | `extern volatile int sched_ready;` |
-| `sched_set_nice` | function | `headers/sched.h:390` | `int sched_set_nice(int pid, int nice);` |
-| `schedtop_report` | function | `headers/sched.h:378` | `void schedtop_report(void);` |
-| `schedule` | function | `headers/sched.h:389` | `void schedule(void);` |
-| `seccomp_allow_one` | function | `headers/sched.h:392` | `int seccomp_allow_one(int pid, int n);` |
-| `seccomp_denied` | function | `headers/sched.h:393` | `int seccomp_denied(int pid, int n);` |
-| `seccomp_deny_one` | function | `headers/sched.h:391` | `int seccomp_deny_one(int pid, int n);` |
-| `shell_nchildren` | function | `headers/sched.h:444` | `int shell_nchildren(void);` |
-| `shell_reap_nb` | function | `headers/sched.h:442` | `int shell_reap_nb(int *pid_out, int *code_out);` |
-| `shell_reap_one` | function | `headers/sched.h:443` | `int shell_reap_one(int pid, int *code_out);` |
-| `smp_ap_idle_loop` | function | `headers/sched.h:386` | `void smp_ap_idle_loop(void);` |
-| `smp_dbg_bad_gs` | variable | `headers/sched.h:364` | `extern volatile unsigned smp_dbg_bad_gs;` |
-| `smp_dispatches` | variable | `headers/sched.h:357` | `extern volatile unsigned long smp_dispatches[MAX_CPUS];` |
-| `smp_idle_polls` | variable | `headers/sched.h:358` | `extern volatile unsigned long smp_idle_polls[MAX_CPUS];` |
-| `switch_save_only` | function | `headers/sched.h:398` | `void switch_save_only(proc_t *prev);` |
-| `switch_to` | function | `headers/sched.h:396` | `void switch_to(proc_t *prev, proc_t *next);` |
-| `switch_to_notrap` | function | `headers/sched.h:397` | `void switch_to_notrap(proc_t *prev, proc_t *next);` |
+| `sched_set_nice` | function | `headers/sched.h:393` | `int sched_set_nice(int pid, int nice);` |
+| `schedtop_report` | function | `headers/sched.h:381` | `void schedtop_report(void);` |
+| `schedule` | function | `headers/sched.h:392` | `void schedule(void);` |
+| `seccomp_allow_one` | function | `headers/sched.h:395` | `int seccomp_allow_one(int pid, int n);` |
+| `seccomp_denied` | function | `headers/sched.h:396` | `int seccomp_denied(int pid, int n);` |
+| `seccomp_deny_one` | function | `headers/sched.h:394` | `int seccomp_deny_one(int pid, int n);` |
+| `shell_nchildren` | function | `headers/sched.h:447` | `int shell_nchildren(void);` |
+| `shell_reap_nb` | function | `headers/sched.h:445` | `int shell_reap_nb(int *pid_out, int *code_out);` |
+| `shell_reap_one` | function | `headers/sched.h:446` | `int shell_reap_one(int pid, int *code_out);` |
+| `smp_ap_idle_loop` | function | `headers/sched.h:389` | `void smp_ap_idle_loop(void);` |
+| `smp_dbg_bad_gs` | variable | `headers/sched.h:367` | `extern volatile unsigned smp_dbg_bad_gs;` |
+| `smp_dispatches` | variable | `headers/sched.h:360` | `extern volatile unsigned long smp_dispatches[MAX_CPUS];` |
+| `smp_idle_polls` | variable | `headers/sched.h:361` | `extern volatile unsigned long smp_idle_polls[MAX_CPUS];` |
+| `switch_save_only` | function | `headers/sched.h:401` | `void switch_save_only(proc_t *prev);` |
+| `switch_to` | function | `headers/sched.h:399` | `void switch_to(proc_t *prev, proc_t *next);` |
+| `switch_to_notrap` | function | `headers/sched.h:400` | `void switch_to_notrap(proc_t *prev, proc_t *next);` |
 | `sys_ticks` | variable | `headers/sched.h:335` | `extern volatile uint64_t sys_ticks;` |
 | `syscall_frame_current` | function | `headers/sched.h:245` | `const syscall_frame_t *syscall_frame_current(void);` |
 | `syscall_frame_t` | struct | `headers/sched.h:235` | `` |
-| `timer_tick` | function | `headers/sched.h:450` | `void timer_tick(void);` |
-| `tss_init_ap` | function | `headers/sched.h:385` | `void tss_init_ap(int cpu);` |
+| `timer_tick` | function | `headers/sched.h:453` | `void timer_tick(void);` |
+| `tss_init_ap` | function | `headers/sched.h:388` | `void tss_init_ap(int cpu);` |
 | `user_program_active` | variable | `headers/sched.h:336` | `extern volatile int user_program_active;` |
-| `yield` | function | `headers/sched.h:406` | `void yield(void);` |
+| `yield` | function | `headers/sched.h:409` | `void yield(void);` |
 | `SBPF_A` | macro | `headers/seccomp_bpf.h:84` | `#define SBPF_A` |
 | `SBPF_ABS` | macro | `headers/seccomp_bpf.h:63` | `#define SBPF_ABS` |
 | `SBPF_ADD` | macro | `headers/seccomp_bpf.h:66` | `#define SBPF_ADD` |
@@ -376,6 +388,20 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `shell_parse_long` | function | `headers/shell.h:29` | `int shell_parse_long(const char *s, long *out);` |
 | `shell_parse_pid` | function | `headers/shell.h:34` | `int shell_parse_pid(const char *s, int min_pid, int *out);` |
 | `shell_readline_buf` | function | `headers/shell.h:18` | `void shell_readline_buf(char *buf, int size);` |
+| `SIGN_DESC_BYTES` | macro | `headers/sign.h:24` | `#define SIGN_DESC_BYTES` |
+| `SIGN_H` | macro | `headers/sign.h:17` | `#define SIGN_H` |
+| `SIGN_KEYS` | macro | `headers/sign.h:21` | `#define SIGN_KEYS` |
+| `SIGN_KEY_DEV` | macro | `headers/sign.h:19` | `#define SIGN_KEY_DEV` |
+| `SIGN_KEY_PROD` | macro | `headers/sign.h:20` | `#define SIGN_KEY_PROD` |
+| `SIGN_NOTE_TYPE` | macro | `headers/sign.h:25` | `#define SIGN_NOTE_TYPE` |
+| `SIGN_PUB_BYTES` | macro | `headers/sign.h:22` | `#define SIGN_PUB_BYTES` |
+| `SIGN_SIG_BYTES` | macro | `headers/sign.h:23` | `#define SIGN_SIG_BYTES` |
+| `ed25519_verify` | function | `headers/sign.h:75` | `int ed25519_verify(const unsigned char sig[64], const unsigned char *msg, unsigned long msglen, const unsigned char...` |
+| `ed_sha` | struct | `headers/sign.h:61` | `` |
+| `ed_sha512_final` | function | `headers/sign.h:71` | `void ed_sha512_final(ed_sha *c, unsigned char out[64]);` |
+| `ed_sha512_init` | function | `headers/sign.h:69` | `void ed_sha512_init(ed_sha *c);` |
+| `ed_sha512_update` | function | `headers/sign.h:70` | `void ed_sha512_update(ed_sha *c, const unsigned char *data, unsigned long len);` |
+| `sign_pubkey` | function | `headers/sign.h:47` | `static inline const unsigned char *sign_pubkey(unsigned id)` |
 | `SMP_H` | macro | `headers/smp.h:2` | `#define SMP_H` |
 | `lapic_cal_10ms` | variable | `headers/smp.h:38` | `extern unsigned lapic_cal_10ms;` |
 | `lapic_cal_valid` | variable | `headers/smp.h:39` | `extern int lapic_cal_valid;` |
@@ -387,6 +413,7 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `smp_init` | function | `headers/smp.h:41` | `void smp_init(void);` |
 | `smp_ipi_broadcast` | function | `headers/smp.h:43` | `void smp_ipi_broadcast(int vector);` |
 | `smp_lock` | variable | `headers/smp.h:25` | `extern spinlock_t smp_lock;` |
+| `smp_nmi_broadcast` | function | `headers/smp.h:44` | `void smp_nmi_broadcast(void);` |
 | `SPAWN_H` | macro | `headers/spawn.h:2` | `#define SPAWN_H` |
 | `spawn_backup` | function | `headers/spawn.h:28` | `int spawn_backup(spawn_ctx_t *ctx);` |
 | `spawn_copy_argv` | function | `headers/spawn.h:39` | `char **spawn_copy_argv(int argc, const char **uargv);` |
@@ -469,32 +496,5 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `LINUX_SIGNAL_MAX` | macro | `headers/syscalls_proc.h:28` | `#define LINUX_SIGNAL_MAX` |
 | `SYSCALLS_PROC_H` | macro | `headers/syscalls_proc.h:2` | `#define SYSCALLS_PROC_H` |
 | `dispatcher` | function | `headers/syscalls_proc.h:5` | `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...` |
-| `do_proc_exit` | function | `headers/syscalls_proc.h:34` | `long do_proc_exit(long code);` |
-| `linux_signal_fatal` | function | `headers/syscalls_proc.h:31` | `int linux_signal_fatal(long sig);` |
-| `sys_linux_clone` | function | `headers/syscalls_proc.h:19` | `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_execve` | function | `headers/syscalls_proc.h:21` | `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_exit` | function | `headers/syscalls_proc.h:22` | `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_fork` | function | `headers/syscalls_proc.h:18` | `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_getpid` | function | `headers/syscalls_proc.h:16` | `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_gettid` | function | `headers/syscalls_proc.h:17` | `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_kill` | function | `headers/syscalls_proc.h:24` | `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_vfork` | function | `headers/syscalls_proc.h:20` | `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_wait4` | function | `headers/syscalls_proc.h:23` | `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_linux_yield` | function | `headers/syscalls_proc.h:15` | `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_minios_clone` | function | `headers/syscalls_proc.h:13` | `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6);` |
-| `sys_minios_nice` | function | `headers/syscalls_proc.h:12` | `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `sys_minios_thread_spawn` | function | `headers/syscalls_proc.h:14` | `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `TICK_CONFIG_DEFAULT` | macro | `headers/tick.h:37` | `#define TICK_CONFIG_DEFAULT` |
-| `TICK_H` | macro | `headers/tick.h:19` | `#define TICK_H` |
-| `TICK_MAX_AUDIO_LISTENERS` | macro | `headers/tick.h:29` | `#define TICK_MAX_AUDIO_LISTENERS` |
-| `TICK_MAX_DESKTOP_LISTENERS` | macro | `headers/tick.h:31` | `#define TICK_MAX_DESKTOP_LISTENERS` |
-| `TICK_MAX_USB_LISTENERS` | macro | `headers/tick.h:34` | `#define TICK_MAX_USB_LISTENERS` |
-| `tick_audio_count` | function | `headers/tick.h:81` | `int tick_audio_count(void);` |
-| `tick_config_t` | struct | `headers/tick.h:22` | `` |
-| `tick_desktop_count` | function | `headers/tick.h:84` | `int tick_desktop_count(void);` |
-| `tick_desktop_due` | function | `headers/tick.h:92` | `int tick_desktop_due(unsigned long long ticks, unsigned interval);` |
-| `tick_register_audio` | function | `headers/tick.h:54` | `int tick_register_audio(tick_fn_t fn, void *ctx);` |
-| `tick_register_desktop` | function | `headers/tick.h:61` | `int tick_register_desktop(tick_fn_t fn, void *ctx);` |
-| `tick_register_usb` | function | `headers/tick.h:69` | `int tick_register_usb(tick_fn_t fn, void *ctx);` |
 
 Next: [SYMBOLS_p7.md](SYMBOLS_p7.md)

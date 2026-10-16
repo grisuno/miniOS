@@ -1,484 +1,376 @@
-# API (page 7 of 19)
+# API (page 7 of 21)
 Previous: [API_p6.md](API_p6.md)
 
-## kernel/syscalls.c
-Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/batch.h`, `headers/block.h`, `headers/driver.h`, `headers/drivers/kbd.h`, `headers/futex.h`, `headers/ide.h`, `headers/ktime.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/randmix.h`, `headers/rcu.h`, `headers/rtc.h`, `headers/sanitize.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/spawn.h`, `headers/sync.h`, `headers/syscalls_proc.h`, `headers/vga_fb.h`, `headers/zip.h`
-- `kfd_view_current` (function) `kernel/syscalls.c:59` `static kfd_view_t *kfd_view_current(void)` -- Docstring: View owning the caller's fds: its own on isolated procs * and threads, the root on pid 0 and any pid...
-- `kfd_view_root` (function) `kernel/syscalls.c:69` `kfd_view_t *kfd_view_root(void)` -- Docstring: Static root view (shell pid 0, pids without their own): * entries are the historical shared table, never...
-- `kfd_get` (function) `kernel/syscalls.c:88` `KFILE *kfd_get(int fd)`
-- `kfd_put` (function) `kernel/syscalls.c:101` `void kfd_put(KFILE *f)`
-- `kfd_view_count` (function) `kernel/syscalls.c:113` `static int kfd_view_count(kfd_view_t *v)` -- } void kfd_put(KFILE *f) { irqflags_t flags; int drop = 0; if (!f) return; spin_lock_irqsave(&fd_lock, &flags)...
-- `untouched` (function) `kernel/syscalls.c:137` `* child untouched (caller refuses fail-closed). */
-int kfd_view_copy(proc_t *child, proc_t *parent)`
-- `NULL` (function) `kernel/syscalls.c:164` `* on NULL (already released or never owned). */
-void kfd_view_release(proc_t *p)`
-- `kfd_view_cloexec` (function) `kernel/syscalls.c:195` `void kfd_view_cloexec(void)` -- Docstring: Close every CLOEXEC fd in the caller's own view (execve: the image is replaced, marked descriptors must...
-- `by` (function) `kernel/syscalls.c:223` `* is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to...`
-- `wall_us_now` (function) `kernel/syscalls.c:254` `unsigned long wall_us_now(void)` -- wall_us_now: RTC-anchored wall clock in microseconds (Phase 0.2/0.3).
-- `sys_minios_dns` (function) `kernel/syscalls.c:264` `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_tls_retired` (function) `kernel/syscalls.c:269` `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_time` (function) `kernel/syscalls.c:282` `static long sys_linux_time(long a1, long a2, long a3, long a4, long a5, long a6)` -- time (201): the retired kernel-TLS handshake number now serves Linux time(2), exactly as 202 serves futex (ADR-0014...
-- `sys_linux_futex` (function) `kernel/syscalls.c:291` `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_time` (function) `kernel/syscalls.c:340` `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_kbd` (function) `kernel/syscalls.c:344` `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_palette` (function) `kernel/syscalls.c:364` `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_kbd_raw` (function) `kernel/syscalls.c:376` `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_vga_mode` (function) `kernel/syscalls.c:382` `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcspk_init` (function) `kernel/syscalls.c:389` `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcspk_tone` (function) `kernel/syscalls.c:393` `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_doom_frame` (function) `kernel/syscalls.c:407` `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_gfx_zoom` (function) `kernel/syscalls.c:418` `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)` -- Graphics window scale request (a1): 0 native, 1 2x nearest-neighbour zoom for the 320x200 game window, 2 true...
-- `sys_minios_rtc` (function) `kernel/syscalls.c:427` `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_fb_info` (function) `kernel/syscalls.c:440` `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcspk_vol` (function) `kernel/syscalls.c:460` `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `boot` (function) `kernel/syscalls.c:477` `* boot (minfo_sleep_init from sched_init);`
-- `minfo_sleep_init` (function) `kernel/syscalls.c:484` `void minfo_sleep_init(int tick_ok)`
-- `minfo_tick_wake` (function) `kernel/syscalls.c:489` `void minfo_tick_wake(void *ctx)`
-- `view` (function) `kernel/syscalls.c:501` `* view (same as the `clear` builtin). Anything else is -EINVAL. Each
- * out-word is range-checked...`
-- `sys_minios_spawn` (function) `kernel/syscalls.c:592` `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_lz4_compress` (function) `kernel/syscalls.c:603` `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_lz4_decompress` (function) `kernel/syscalls.c:616` `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_mouse` (function) `kernel/syscalls.c:630` `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_nk_frame` (function) `kernel/syscalls.c:654` `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sb16_audio_device` (function) `kernel/syscalls.c:667` `static device_t *sb16_audio_device(void)` -- } static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6) { (void)a2; (void)a3...
-- `sys_minios_sb16_open` (function) `kernel/syscalls.c:673` `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_submit` (function) `kernel/syscalls.c:685` `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_gfx_title` (function) `kernel/syscalls.c:696` `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_pump` (function) `kernel/syscalls.c:710` `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_stream_open` (function) `kernel/syscalls.c:714` `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_stream_close` (function) `kernel/syscalls.c:718` `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_stream_submit` (function) `kernel/syscalls.c:722` `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcm2_open` (function) `kernel/syscalls.c:735` `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)` -- Low-latency PCM path (pcm2, syscalls 246-248): OPEN takes flags, WRITE returns bytes taken (blocking unless...
-- `sys_minios_pcm2_write` (function) `kernel/syscalls.c:740` `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_pcm2_close` (function) `kernel/syscalls.c:748` `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_clip_set` (function) `kernel/syscalls.c:758` `static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6)` -- Shared text clipboard (syscalls 249-250): SET copies len bytes in (refused past 4096, never truncated), GET copies...
-- `sys_minios_clip_get` (function) `kernel/syscalls.c:768` `static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_sb16_stream_vol` (function) `kernel/syscalls.c:784` `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_futex_wait` (function) `kernel/syscalls.c:797` `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_futex_wake` (function) `kernel/syscalls.c:803` `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `batch_kdispatch` (function) `kernel/syscalls.c:812` `static long batch_kdispatch(uint32_t opcode)`
-- `DOOM_FRAME` (function) `kernel/syscalls.c:827` `* DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */
-static long sys_minios_gfx_prese...`
-- `sys_minios_getc_raw` (function) `kernel/syscalls.c:861` `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` -- Raw keystroke read for fullscreen ring-3 programs (vedit): one byte from the serial + PS/2 multiplexer with no line...
-- `sys_minios_submit_batch` (function) `kernel/syscalls.c:872` `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_rlimit` (function) `kernel/syscalls.c:895` `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` -- RLIMIT/cgroups-lite (240): a1 = op (SET/GET), a2 = resource (AS/CPU/NOFILE), a3 = value for SET.
-- `sys_minios_dir_list` (function) `kernel/syscalls.c:936` `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)` -- Docstring: unified directory listing for the ring-3 file browser.  a1 = path, a2 = user buffer, a3 = buffer capacity.
-- `syscall_trace_enabled` (function) `kernel/syscalls.c:1108` `long syscall_trace_enabled(void)`
-- `syscall_trace_set` (function) `kernel/syscalls.c:1109` `void syscall_trace_set(int on)`
-- `syscall_trace_verbose_enabled` (function) `kernel/syscalls.c:1110` `long syscall_trace_verbose_enabled(void)`
-- `syscall_trace_verbose_set` (function) `kernel/syscalls.c:1111` `void syscall_trace_verbose_set(int on)`
-- `syscall_trace_shown` (function) `kernel/syscalls.c:1112` `unsigned long syscall_trace_shown(void)`
-- `unchanged` (function) `kernel/syscalls.c:1127` `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...`
-- `sys_linux_read` (function) `kernel/syscalls.c:1138` `static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `EAGAIN` (function) `kernel/syscalls.c:1154` `* writer open is EAGAIN (-11, retry);`
-- `EOF` (function) `kernel/syscalls.c:1155` `* is EOF (0). */ KFILE *o = kfd_get(0);`
-- `fd_write` (function) `kernel/syscalls.c:1194` `static long fd_write(long fd, const char *buf, long cnt)` -- Write cnt validated user bytes to fd: a dup2/pipe override on fd 1/2 (pipeline stage stdout) is served instead of...
-- `sys_linux_write` (function) `kernel/syscalls.c:1218` `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_writev` (function) `kernel/syscalls.c:1225` `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `do_open_path` (function) `kernel/syscalls.c:1268` `static long do_open_path(const char *path, long flags)` -- Shared by sys_linux_open (2) and the openat fall-through (257).
-- `sys_linux_open` (function) `kernel/syscalls.c:1301` `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `kfd_claim_from` (function) `kernel/syscalls.c:1334` `static long kfd_claim_from(KFILE *f, long minfd, int cloexec)` -- Claim the lowest free fd slot >= minfd for an already-opened KFILE (pipes, dup, eventfd), arming close-on-exec when...
-- `kfd_claim` (function) `kernel/syscalls.c:1359` `static long kfd_claim(KFILE *f)`
-- `sys_linux_pipe2` (function) `kernel/syscalls.c:1383` `static long sys_linux_pipe2(long a1, long a2, long a3, long a4, long a5, long a6)` -- pipe2 (293): O_CLOEXEC arms close-on-exec on both ends, O_NONBLOCK makes * both descriptions non-blocking; O_DIRECT...
-- `sys_linux_pipe` (function) `kernel/syscalls.c:1411` `static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `kfd_cloexec_get` (function) `kernel/syscalls.c:1417` `static int kfd_cloexec_get(long fd)` -- kfclose(w); return wfd; } ufd[0] = (int)rfd; ufd[1] = (int)wfd; return 0; } static long sys_linux_pipe(long a1, long...
-- `kfd_cloexec_set` (function) `kernel/syscalls.c:1427` `static void kfd_cloexec_set(long fd, int on)`
-- `kfile_status_flags` (function) `kernel/syscalls.c:1438` `static long kfile_status_flags(KFILE *f)` -- Linux open-file status flags of a description: access mode from its * kind plus O_APPEND and O_NONBLOCK.
-- `sys_linux_dup3` (function) `kernel/syscalls.c:1489` `static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6)` -- break; case LINUX_F_SETFL: if (f) f->nonblock = (a3 & LINUX_O_NONBLOCK) ?
-- `sys_linux_close_range` (function) `kernel/syscalls.c:1499` `static long sys_linux_close_range(long a1, long a2, long a3, long a4, long a5, long a6)` -- return r; } /* dup3 (292): dup2 with O_CLOEXEC as the only flag; old == new is EINVAL. static long...
-- `sys_linux_eventfd2` (function) `kernel/syscalls.c:1523` `static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6)` -- spin_lock_irqsave(&fd_lock, &flags_irq); for (fd = lo; fd <= hi && fd < KFD_MAX; fd++) if (v->f[fd]) v->cloexec |=...
-- `sys_linux_eventfd` (function) `kernel/syscalls.c:1536` `static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `kfd_poll_revents` (function) `kernel/syscalls.c:1544` `int kfd_poll_revents(int fd)` -- Docstring: poll(2) readiness of a non-socket descriptor (pipes, eventfds, files, console), masked by nothing: the...
-- `kfile_user_read` (function) `kernel/syscalls.c:1579` `static long kfile_user_read(KFILE *f, char *buf, long cnt)` -- Linux read on a description: an eventfd takes its counter, a pipe read end blocks (yielding) while empty with the...
-- `kfile_user_write` (function) `kernel/syscalls.c:1609` `static long kfile_user_write(KFILE *f, const char *buf, long cnt)` -- Linux write on a description: an eventfd adds to its counter, a pipe write end blocks (yielding) while full unless...
-- `sys_linux_dup` (function) `kernel/syscalls.c:1638` `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_dup2` (function) `kernel/syscalls.c:1653` `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_close` (function) `kernel/syscalls.c:1687` `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_lseek` (function) `kernel/syscalls.c:1710` `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `mm_ensure_cur` (function) `kernel/syscalls.c:1728` `static int mm_ensure_cur(unsigned long start, unsigned long end)` -- Back isolated user windows (mrun/proc_spawn_elf): their page tables start with only segments + stack mapped, so...
-- `sys_linux_brk` (function) `kernel/syscalls.c:1737` `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `mmap_tag_file` (function) `kernel/syscalls.c:1778` `static int mmap_tag_file(unsigned long base, int ino, unsigned long off)` -- Docstring: Tag a freshly carved live node as file-backed.
-- `mmap_range_free` (function) `kernel/syscalls.c:1793` `static int mmap_range_free(unsigned long base, unsigned long len)` -- Invariant guard for every range mmap hands out: it must not overlap a live mapping or reach below the brk heap.
-- `sys_linux_mmap` (function) `kernel/syscalls.c:1802` `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `vma_live_first_overlap` (function) `kernel/syscalls.c:1900` `static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end)` -- Lowest live mapping overlapping [base, end), or VMA_NIL.
-- `vma_live_remainder` (function) `kernel/syscalls.c:1917` `static int vma_live_remainder(unsigned long base, unsigned long len,
-        int file, int ino, u...` -- int sp = 0; vma_node_t *x = vma_live_root; while (x != VMA_NIL || sp > 0) { while (x != VMA_NIL) { if (sp < 64)...
-- `split` (function) `kernel/syscalls.c:1931` `* hold a split (the mapping is restored untouched). */
-static long sys_linux_munmap(long a1, long...`
-- `mprotect_pte` (function) `kernel/syscalls.c:1981` `static volatile unsigned long *mprotect_pte(unsigned long cr3,
-        unsigned long va)` -- Docstring: Locate the PTE for a user address in the caller's live tables (syscall entry keeps the caller CR3 loaded...
-- `first` (function) `kernel/syscalls.c:2005` `* passes under mm_lock: validate every page first (present, user,
- * private), then apply, so a h...`
-- `vma_free_cover` (function) `kernel/syscalls.c:2085` `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` -- Free-tree node covering [base, base+len) entirely, or VMA_NIL.
-- `vma_live_overlap` (function) `kernel/syscalls.c:2104` `static int vma_live_overlap(unsigned long base, unsigned long len)` -- while (x != VMA_NIL || sp > 0) { while (x != VMA_NIL) { if (sp < 64) stack[sp++] = x; x = x->left; } x =...
-- `node` (function) `kernel/syscalls.c:2126` `* mapping is one exact live VMA node (what mmap inserts);`
-- `sys_linux_mremap` (function) `kernel/syscalls.c:2131` `static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6)` -- Linux mremap(25): resize or move one mmap region. glibc's realloc calls it when growing large mmap'd chunks (the...
-- `sys_linux_sigaction` (function) `kernel/syscalls.c:2397` `static long sys_linux_sigaction(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_sigprocmask` (function) `kernel/syscalls.c:2402` `static long sys_linux_sigprocmask(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `kfile_readable_bytes` (function) `kernel/syscalls.c:2421` `static int kfile_readable_bytes(KFILE *f)` -- #define LINUX_TCGETS     0x5401 #define LINUX_TIOCGWINSZ 0x5413 #define LINUX_FIONREAD   0x541B #define...
-- `FIONREAD` (function) `kernel/syscalls.c:2437` `* descriptor answers FIONREAD (bytes readable now), FIONBIO (O_NONBLOCK),
- * FIOCLEX/FIONCLEX (FD...`
-- `sys_linux_access` (function) `kernel/syscalls.c:2477` `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_socket` (function) `kernel/syscalls.c:2499` `static long sys_linux_socket(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_connect` (function) `kernel/syscalls.c:2504` `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_bind` (function) `kernel/syscalls.c:2510` `static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_listen` (function) `kernel/syscalls.c:2516` `static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_accept` (function) `kernel/syscalls.c:2521` `static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_sendto` (function) `kernel/syscalls.c:2527` `static long sys_linux_sendto(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_recvfrom` (function) `kernel/syscalls.c:2532` `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_shutdown` (function) `kernel/syscalls.c:2537` `static long sys_linux_shutdown(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_prlimit64` (function) `kernel/syscalls.c:2572` `static long sys_linux_prlimit64(long a1, long a2, long a3, long a4, long a5, long a6)` -- prlimit64(pid, resource, new, old): pid 0 or a live pid.
-- `sys_linux_sched_getaffinity` (function) `kernel/syscalls.c:2605` `static long sys_linux_sched_getaffinity(long a1, long a2, long a3, long a4, long a5, long a6)` -- sched_getaffinity(pid, size, mask): every task may run on every CPU, so the mask has the low cpu_count bits set; the...
-- `linux_timespec_us` (function) `kernel/syscalls.c:2627` `static long linux_timespec_us(long ts)` -- Microseconds of a user timespec, or -EINVAL when it is malformed * (negative, or tv_nsec outside [0, 1e9)); huge...
-- `sys_linux_pause` (function) `kernel/syscalls.c:2644` `static long sys_linux_pause(long a1, long a2, long a3, long a4, long a5, long a6)` -- pause(34): wait for a signal.
-- `sys_linux_nanosleep` (function) `kernel/syscalls.c:2652` `static long sys_linux_nanosleep(long a1, long a2, long a3, long a4, long a5, long a6)` -- nanosleep(35): sleep the relative interval at *req on the monotonic * clock; -EINVAL for a malformed interval...
-- `clock` (function) `kernel/syscalls.c:2663` `* clock (the monotonic TSC clock times it, as Linux does: glibc sends * every nanosleep here as a relative...`
-- `clock_gettime` (function) `kernel/syscalls.c:2667` `* clock_gettime(1) reads. */
-static long sys_linux_clock_nanosleep(long a1, long a2, long a3, lon...`
-- `long` (function) `kernel/syscalls.c:2669` `unsigned long (*now)(void);`
-- `sys_linux_setsockopt` (function) `kernel/syscalls.c:2684` `static long sys_linux_setsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_getsockopt` (function) `kernel/syscalls.c:2691` `static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_getsockname` (function) `kernel/syscalls.c:2698` `static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_getpeername` (function) `kernel/syscalls.c:2704` `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_sendmsg` (function) `kernel/syscalls.c:2710` `static long sys_linux_sendmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_sendmmsg` (function) `kernel/syscalls.c:2716` `static long sys_linux_sendmmsg(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_poll` (function) `kernel/syscalls.c:2724` `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_flock` (function) `kernel/syscalls.c:2731` `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_fsync` (function) `kernel/syscalls.c:2740` `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` -- fsync/fdatasync: the ramdisk is memory (always durable) and MiniFS persists through kfclose/minifs_sync, so there is...
-- `sys_linux_fdatasync` (function) `kernel/syscalls.c:2745` `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_getcwd` (function) `kernel/syscalls.c:2750` `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_unlink` (function) `kernel/syscalls.c:2762` `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `readlink_path` (function) `kernel/syscalls.c:2786` `static long readlink_path(const char *path, char *buf, long bufsz)` -- readlink of /proc/self/exe answers the caller's image path (absolute, no NUL, truncated to the buffer like Linux)...
-- `sys_linux_readlink` (function) `kernel/syscalls.c:2802` `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_prctl` (function) `kernel/syscalls.c:2808` `static long sys_linux_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` -- if (!exe[0]) return -2; len = (long)kstrlen(exe) + 1; if (len > bufsz) len = bufsz; buf[0] = '/'; for (i = 1; i <...
-- `sys_linux_rename` (function) `kernel/syscalls.c:2817` `static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6)` -- rename(82): same-filesystem file move through fs_rename (ramdisk in-place, MiniFS entry move).
-- `sys_linux_fstat` (function) `kernel/syscalls.c:2831` `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_gettimeofday` (function) `kernel/syscalls.c:2854` `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_arch_prctl` (function) `kernel/syscalls.c:2877` `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_uname` (function) `kernel/syscalls.c:2889` `static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_madvise` (function) `kernel/syscalls.c:2912` `static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6)` -- madvise (28): advice only; glibc frees thread stacks with it and * ignores the result, MiniOS keeps the pages, so 0...
-- `sys_linux_mkdir` (function) `kernel/syscalls.c:2920` `static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6)` -- mkdir (83): a MiniFS directory.
-- `trace_is_noisy` (function) `kernel/syscalls.c:3016` `static int trace_is_noisy(long n)`
-- `syscall_name` (function) `kernel/syscalls.c:3043` `const char *syscall_name(long n)` -- define SC_EXTRA_COUNT (sizeof(sc_extra_names) / sizeof(sc_extra_names[0]))
-- `trace_hint_print` (function) `kernel/syscalls.c:3084` `static void trace_hint_print(long n, int kind, const char *path,
-                             lon...`
-- `sc_record` (function) `kernel/syscalls.c:3108` `static void sc_record(long n, long a1, long a2, long a3, long ret)`
-- `sc_hex` (function) `kernel/syscalls.c:3128` `static void sc_hex(unsigned long v)`
-- `sc_record_dump` (function) `kernel/syscalls.c:3138` `void sc_record_dump(int pid)` -- e->a3 = a3; e->ret = ret; } static void sc_hex(unsigned long v) { static const char digits[] = "0123456789abcdef"...
-- `ksyscall` (function) `kernel/syscalls.c:3156` `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- `user_range_ok` (function) `kernel/syscalls.c:3195` `int user_range_ok(unsigned long p, unsigned long len)`
-- `Discipline` (function) `kernel/syscalls.c:3208` `* * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok...`
-- `products` (function) `kernel/syscalls.c:3212` `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are
- * pre-bounded against (END-...`
-- `ksyscall_dispatch` (function) `kernel/syscalls.c:3225` `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)`
-- `readlink` (function) `kernel/syscalls.c:3362` `* readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);`
-- `proc_spawn_elf` (function) `kernel/syscalls.c:3471` `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is...`
-- `k_syscall_spawn` (function) `kernel/syscalls.c:3480` `static int k_syscall_spawn(const char *path, const char *redirect,
-                             i...`
+## kernel/proc_sec.c
+Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`, `headers/seccomp_bpf.h`, `headers/syscalls_proc.h`
+- `pid_ok` (function) `kernel/proc_sec.c:74` `static int pid_ok(int pid)`
+- `chain_put` (function) `kernel/proc_sec.c:78` `static void chain_put(sec_filter_t *f)`
+- `proc_sec_inherit` (function) `kernel/proc_sec.c:87` `void proc_sec_inherit(int child, int parent)`
+- `proc_sec_release` (function) `kernel/proc_sec.c:101` `void proc_sec_release(int pid)`
+- `proc_sec_exec` (function) `kernel/proc_sec.c:115` `void proc_sec_exec(int pid)` -- execve keeps the filters and no_new_privs (Linux) and makes the fresh * image dumpable again.
+- `proc_sec_set_exe` (function) `kernel/proc_sec.c:119` `void proc_sec_set_exe(int pid, const char *resolved)`
+- `proc_sec_exe` (function) `kernel/proc_sec.c:125` `const char *proc_sec_exe(int pid)`
+- `sec_kill` (function) `kernel/proc_sec.c:130` `static void sec_kill(long n, int whole_group)` -- if (pid_ok(pid)) sec_undumpable[pid] = 0; } void proc_sec_set_exe(int pid, const char *resolved) { if (!pid_ok(pid)...
+- `proc_sec_filter` (function) `kernel/proc_sec.c:136` `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret)`
+- `sec_install` (function) `kernel/proc_sec.c:191` `static long sec_install(const sbpf_insn *prog, unsigned len, int strict)` -- Validate and push one program onto the caller's chain. strict skips the * no_new_privs requirement, as Linux strict...
+- `sec_install_user` (function) `kernel/proc_sec.c:224` `static long sec_install_user(long ufprog)` -- return ERR_EINVAL; } kfree(scratch); node->ref = 1; node->len = len; node->depth = depth; node->prev = head...
+- `proc_sec_prctl` (function) `kernel/proc_sec.c:235` `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5)`
+- `proc_sec_seccomp` (function) `kernel/proc_sec.c:290` `long proc_sec_seccomp(long op, long flags, long uargs)`
 
-## kernel/syscalls_proc.c
-Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`, `headers/syscalls_proc.h`
-- `state` (function) `kernel/syscalls_proc.c:5` `* touches only scheduler state (current_pid, procs[], do_* / * seccomp_* / yield) plus the kernel-wide user_range_ok...`
-- `sys_minios_clone` (function) `kernel/syscalls_proc.c:18` `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6)`
-- `sys_minios_thread_spawn` (function) `kernel/syscalls_proc.c:24` `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_minios_seccomp` (function) `kernel/syscalls_proc.c:37` `long sys_minios_seccomp(long a1, long a2, long a3, long a4, long a5, long a6)` -- Seccomp-basic (238): a1 = op (1 deny-one, 2 allow-one, 3 deny-all), a2 = syscall number (ops 1-2).
-- `sys_minios_nice` (function) `kernel/syscalls_proc.c:53` `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6)` -- int pid = current_pid; if (a1 == SECCOMP_OP_DENY_ONE) return seccomp_deny_one(pid, (int)a2); if (a1 ==...
-- `sys_linux_yield` (function) `kernel/syscalls_proc.c:66` `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_getpid` (function) `kernel/syscalls_proc.c:75` `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6)` -- getpid answers the thread group: a CLONE_THREAD member reports its leader, a process its own pid.
-- `sys_linux_clone` (function) `kernel/syscalls_proc.c:83` `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6)` -- getpid answers the thread group: a CLONE_THREAD member reports its leader, a process its own pid.
-- `sys_linux_fork` (function) `kernel/syscalls_proc.c:89` `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_vfork` (function) `kernel/syscalls_proc.c:94` `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_execve` (function) `kernel/syscalls_proc.c:99` `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `sys_linux_exit` (function) `kernel/syscalls_proc.c:184` `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6)`
-- `kill` (function) `kernel/syscalls_proc.c:192` `* historic kill (SIGKILL), -N is signal N (a seccomp kill is -SIGSYS). */
-#define LINUX_WNOHANG  ...`
-- `groups` (function) `kernel/syscalls_proc.c:213` `* groups (pid 0 and < -1) are not modelled and wait for any child. */
-long sys_linux_wait4(long a...`
-- `sig` (function) `kernel/syscalls_proc.c:245` `* the target as killed by sig (wait4 reports WTERMSIG);`
-- `sys_linux_kill` (function) `kernel/syscalls_proc.c:248` `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6)` -- kill(pid, sig): sig 0 only probes that pid exists; a fatal signal ends the target as killed by sig (wait4 reports...
-- `sys_linux_gettid` (function) `kernel/syscalls_proc.c:259` `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6)`
+## kernel/rcu.c
+Depends on: `headers/rcu.h`
+- `rcu_me` (function) `kernel/rcu.c:13` `static cpu_t *rcu_me(void)`
+- `rcu_me` (function) `kernel/rcu.c:17` `static cpu_t *rcu_me(void)` -- else
+- `rcu_cpu_valid` (function) `kernel/rcu.c:40` `static int rcu_cpu_valid(int cpu)`
+- `rcu_init` (function) `kernel/rcu.c:45` `void rcu_init(void)` -- unsigned long qs[MAX_CPUS]; unsigned long depth[MAX_CPUS]; rcu_slot_t pending[RCU_CB_MAX]; int pending_count...
+- `rcu_read_lock` (function) `kernel/rcu.c:63` `void rcu_read_lock(void)` -- for (i = 0; i < MAX_CPUS; i++) { rcu_state.qs[i] = 0; rcu_state.depth[i] = 0; } for (i = 0; i < RCU_CB_MAX; i++) {...
+- `rcu_read_unlock` (function) `kernel/rcu.c:75` `void rcu_read_unlock(void)` -- /** Docstring: Enter a read section on the current CPU.
+- `rcu_deref` (function) `kernel/rcu.c:88` `void *rcu_deref(void *volatile *pp)` -- /** Docstring: Leave a read section.
+- `rcu_publish` (function) `kernel/rcu.c:94` `void rcu_publish(void *volatile *pp, void *v)` -- return; spin_lock_irqsave(&rcu_state.lock, &flags); if (rcu_state.depth[cpu] > 0) rcu_state.depth[cpu]...
+- `rcu_note_tick` (function) `kernel/rcu.c:126` `void rcu_note_tick(int cpu)` -- if (rcu_state.pending_count >= RCU_CB_MAX) { r = RCU_ERR_FULL; } else { rcu_slot_t *s =...
+- `rcu_note_idle` (function) `kernel/rcu.c:137` `void rcu_note_idle(int cpu)` -- } /** Docstring: Record a quiescent state for cpu at the current epoch. void rcu_note_tick(int cpu) { irqflags_t...
+- `rcu_poll` (function) `kernel/rcu.c:152` `void rcu_poll(void)` -- Docstring: Advance the epoch and run due callbacks.
+- `expires` (function) `kernel/rcu.c:193` `* expires (ticks stalled, never a hang). No completion assert is
+ * possible here by design: a re...`
 
-## kernel/tick.c
-Depends on: `headers/tick.h`
-- `tick_reset` (function) `kernel/tick.c:34` `void tick_reset(void)` -- /** Docstring: Audio listener table. static tick_slot_t tick_audio_slots[TICK_MAX_AUDIO_LISTENERS]; /** Docstring...
-- `tick_register_audio` (function) `kernel/tick.c:58` `int tick_register_audio(tick_fn_t fn, void *ctx)` -- Docstring: Register an unconditional BSP audio effect.
-- `tick_register_desktop` (function) `kernel/tick.c:76` `int tick_register_desktop(tick_fn_t fn, void *ctx)` -- Docstring: Register a gated desktop effect.
-- `tick_register_usb` (function) `kernel/tick.c:89` `int tick_register_usb(tick_fn_t fn, void *ctx)`
-- `tick_run_usb` (function) `kernel/tick.c:103` `void tick_run_usb(void)` -- int tick_register_usb(tick_fn_t fn, void *ctx) { if (fn == NULL) { return -1; } if (tick_usb_used < 0 ||...
-- `tick_run_audio` (function) `kernel/tick.c:113` `void tick_run_audio(void)` -- return 0; } /** Docstring: Run USB listeners in registration order. void tick_run_usb(void) { int i; for (i = 0; i <...
-- `tick_run_desktop` (function) `kernel/tick.c:123` `void tick_run_desktop(void)` -- } } /** Docstring: Run audio listeners in registration order. void tick_run_audio(void) { int i; for (i = 0; i <...
-- `tick_audio_count` (function) `kernel/tick.c:133` `int tick_audio_count(void)` -- } } /** Docstring: Run desktop listeners in registration order. void tick_run_desktop(void) { int i; for (i = 0; i <...
-- `tick_desktop_count` (function) `kernel/tick.c:144` `int tick_desktop_count(void)` -- } /** Docstring: Count registered audio listeners. int tick_audio_count(void) { if (tick_audio_used < 0) { return 0...
-- `tick_desktop_due` (function) `kernel/tick.c:160` `int tick_desktop_due(unsigned long long ticks, unsigned interval)` -- Docstring: Pure desktop gating predicate.
+## kernel/redirect.c
+- `shell_report_exit` (function) `kernel/redirect.c:11` `void shell_report_exit(int code)`
+- `shell_report` (function) `kernel/redirect.c:17` `void shell_report(const char *what, const char *detail)`
+- `shell_take_redirect` (function) `kernel/redirect.c:25` `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)`
 
-## kernel/time.c
-Depends on: `headers/ktime.h`
-Imported by: `headers/tls_port.h`, `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/src/lxabi.c`, `progs/tls_u/tls_u_port.c`, `tests/test_vma_bench.c`, `tools/boot_wl.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/minios_hyper.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_freedom.py`, `tools/test_gui_gfxview.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_menu.py`, `tools/test_gui_wm.py`, `tools/test_gui_zoom.py`, `tools/test_http_server.py`, `tools/tls_test.py`
-- `ktime_rdtsc` (function) `kernel/time.c:13` `static unsigned long ktime_rdtsc(void)`
-- `ktime_init` (function) `kernel/time.c:19` `static void ktime_init(void)`
-- `ktime_ms` (function) `kernel/time.c:33` `unsigned long ktime_ms(void)`
-- `ktime_us` (function) `kernel/time.c:41` `unsigned long ktime_us(void)` -- Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime nsec and gettimeofday usec both...
+## kernel/sched.c
+Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/hal_io.h`, `headers/arch/x86/msr.h`, `headers/drivers/mouse.h`, `headers/drivers/xhci.h`, `headers/futex.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rcu.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/spawn.h`, `headers/sync.h`, `headers/tick.h`, `headers/tlb.h`, `headers/vga_fb.h`
+- `sched_tick_audio` (function) `kernel/sched.c:26` `static void sched_tick_audio(void *ctx)` -- #include "rcu.h" #include "proc_sec.h" #include "bootdefs.h" #include "vga_fb.h" #include "sb16.h" #include "pcm2.h"...
+- `sched_tick_desktop` (function) `kernel/sched.c:32` `static void sched_tick_desktop(void *ctx)` -- #include "tick.h" #include "arch/x86/hal_io.h" #include "arch/x86/msr.h" #include "drivers/mouse.h" #include...
+- `sched_tick_usb` (function) `kernel/sched.c:43` `static void sched_tick_usb(void *ctx)` -- Docstring: USB tick adapter.
+- `user_trampoline` (function) `kernel/sched.c:66` `extern void user_trampoline(void);`
+- `fork_trampoline` (function) `kernel/sched.c:67` `extern void fork_trampoline(void);`
+- `exec_enter` (function) `kernel/sched.c:72` `extern void exec_enter(unsigned long frame);`
+- `read_cr3` (function) `kernel/sched.c:74` `static inline unsigned long read_cr3(void)`
+- `PROC_KSTACK_OFF` (function) `kernel/sched.c:82` `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...`
+- `descriptor` (function) `kernel/sched.c:97` `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 ==...`
+- `here` (function) `kernel/sched.c:128` `* smp_ap_idle_loop here (idle_proc ctx.rsp points at the top). */ static char ap_idle_stack[MAX_CPUS][4096]...`
+- `kstack_paint` (function) `kernel/sched.c:171` `static void kstack_paint(uint64_t top, unsigned long size)`
+- `kstack_usage` (function) `kernel/sched.c:180` `static int kstack_usage(uint64_t top, unsigned long size,
+                        unsigned long *...` -- allocation rate only, never in the ISR path; the report is fail-closed * (a dead canary prints OVERFLOW, never a...
+- `kstack_is_slot_end` (function) `kernel/sched.c:199` `static int kstack_is_slot_end(uint64_t v)` -- pid of a live process still standing on the stack slot ending at top (its kernel stack, or the stack its open...
+- `kstack_of` (function) `kernel/sched.c:209` `static uint64_t kstack_of(int j)` -- The stack slot process j stands on: PCB.kstack between syscalls, the entry's saved top while a syscall is open (the...
+- `kstack_owner` (function) `kernel/sched.c:216` `static int kstack_owner(uint64_t top)`
+- `kstack_scan_serial` (function) `kernel/sched.c:231` `static void kstack_scan_serial(void)` -- Serial-only stack census for the exception dump: every pool slot in use, its owner and high-water mark, and "CANARY...
+- `alloc_kstack` (function) `kernel/sched.c:262` `static uint64_t alloc_kstack(void)`
+- `live` (function) `kernel/sched.c:286` `* every reap leaked its own stack and released a neighbour that could
+ * still be live (two procs...`
+- `MXCSR` (function) `kernel/sched.c:306` `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all
+ * exceptions masked): fxsa...`
+- `fpu_restore_from` (function) `kernel/sched.c:314` `static inline void fpu_restore_from(void *area)`
+- `fpu_alloc_clean` (function) `kernel/sched.c:318` `static void *fpu_alloc_clean(void)`
+- `fpu_free_proc` (function) `kernel/sched.c:336` `static void fpu_free_proc(proc_t *p)`
+- `vma_ctx_alloc` (function) `kernel/sched.c:342` `vma_ctx_t *vma_ctx_alloc(void)` -- Per-process VMA contexts (vma.h contract; defined here so vma.c stays * host-testable).
+- `vma_ctx_free` (function) `kernel/sched.c:352` `void vma_ctx_free(vma_ctx_t *c)`
+- `copy` (function) `kernel/sched.c:362` `* copy (fail closed, fork refuses) instead of forging pointers. */
+/* Name the link a fork could ...`
+- `vma_ctx_copy` (function) `kernel/sched.c:371` `static vma_ctx_t *vma_ctx_copy(vma_ctx_t *src)`
+- `vma_owned` (function) `kernel/sched.c:446` `static int vma_owned(proc_t *p)`
+- `sched_lock` (function) `kernel/sched.c:452` `* hold sched_lock (+mm_lock at the swap sites);`
+- `vma_save_proc` (function) `kernel/sched.c:454` `static void vma_save_proc(proc_t *p)` -- Rebind the global VMA view alongside the brk/mmap view.
+- `vma_load_proc` (function) `kernel/sched.c:458` `static void vma_load_proc(proc_t *p)`
+- `mm_owner` (function) `kernel/sched.c:472` `static proc_t *mm_owner(proc_t *p)` -- The process whose brk/mmap/VMA view an address space lives in: p itself unless p is a CLONE_VM thread, then the...
+- `mm_view_enter` (function) `kernel/sched.c:494` `static void mm_view_enter(proc_t *nxt)` -- Make the globals describe nxt's address space before nxt runs, from any entry path (a switch, the timer, or the idle...
+- `mm_view_claim_current` (function) `kernel/sched.c:513` `void mm_view_claim_current(void)` -- The running process installed a fresh view itself (execve, spawn * restore): it is the holder from now on.
+- `kstack_report` (function) `kernel/sched.c:520` `void kstack_report(void)` -- Serial-observable stack health: per-proc high-water marks plus the legacy 32 KB syscall stack, ending in `kstack...
+- `schedtop_report` (function) `kernel/sched.c:563` `void schedtop_report(void)` -- `schedtop` -- one screenful of scheduler state: uptime from the 100 Hz tick, per-CPU current pid, then one row per...
+- `slot` (function) `kernel/sched.c:567` `* must not eat a quarter of a 16 KB slot (see the stack discipline * contract in CLAUDE.md). Fail-closed on OOM. */...`
+- `sys_ticks` (function) `kernel/sched.c:627` `* sys_ticks (PIT 100 Hz on the BSP, broadcast as IPIs to APs);`
+- `irqstat_report` (function) `kernel/sched.c:631` `void irqstat_report(void)` -- `irqstat` -- interrupt arrivals per source.
+- `rtl_counters` (function) `kernel/sched.c:634` `extern void rtl_counters(unsigned int *tx_frames, unsigned int *rx_frames);`
+- `rtl_present` (function) `kernel/sched.c:636` `extern int rtl_present(void);`
+- `stub` (function) `kernel/sched.c:650` `* gdb stub (`make gdb`, then `target remote :1234` from the host). These
+ * helpers are the seria...`
+- `gdb_dump_report` (function) `kernel/sched.c:697` `void gdb_dump_report(unsigned long addr, unsigned long len)`
+- `sched_idle_on_kernel_cr3` (function) `kernel/sched.c:723` `int sched_idle_on_kernel_cr3(int cpu)` -- 1 when cpu's idle context runs on the kernel tables (the `smp` builtin * reports it as idle_cr3=kernel|stale).
+- `idt_set` (function) `kernel/sched.c:745` `static void idt_set(int vec, void (*h)(void))` -- Parked trap frames for preempted ring-3 contexts, one slot per pid.
+- `idt_init` (function) `kernel/sched.c:756` `static void idt_init(void)`
+- `pic_init` (function) `kernel/sched.c:772` `static void pic_init(void)` -- NMI is the TLB shootdown (kernel/mm/tlb.c): its own gate, its own * IST stack, never the trap-frame path....
+- `IRQ4` (function) `kernel/sched.c:796` `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...`
+- `pit_init` (function) `kernel/sched.c:807` `static void pit_init(void)` -- Master: unmask IRQ0 (timer) + IRQ1 (keyboard) + IRQ2 (cascade) + IRQ4 (COM1, UART IER stays 0 so it never fires) +...
+- `pic_eoi` (function) `kernel/sched.c:814` `static void pic_eoi(int irq)`
+- `tss_write_desc` (function) `kernel/sched.c:821` `static void tss_write_desc(int cpu)`
+- `tss_init` (function) `kernel/sched.c:838` `static void tss_init(void)`
+- `tss_init_ap` (function) `kernel/sched.c:870` `void tss_init_ap(int cpu)` -- Load this AP's task register.
+- `context` (function) `kernel/sched.c:888` `* context (anything entered via k_exec_user) is inside a syscall
+ * (entry swapped 0 in), and a c...`
+- `point` (function) `kernel/sched.c:901` `* return address as the resume point ("continue the ISR"), which
+ * required the stranded ISR fra...`
+- `FSBASE` (function) `kernel/sched.c:913` `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...`
+- `sched_next_locked` (function) `kernel/sched.c:930` `static int sched_next_locked(int start, int vm_only)` -- Fair-share scan with sched_lock HELD.
+- `sched_set_nice` (function) `kernel/sched.c:948` `int sched_set_nice(int pid, int nice)` -- for (t = 0; t < MAX_PROCS; t++) { int cand = (start + 1 + t) % MAX_PROCS; unsigned long key; if (procs[cand].state...
+- `seccomp_deny_one` (function) `kernel/sched.c:957` `int seccomp_deny_one(int pid, int n)` -- procs[best].state = PROC_RUNNING; procs[best].vruntime += SCHED_BASE_QUANTUM + (unsigned long)(procs[best].nice +...
+- `seccomp_allow_one` (function) `kernel/sched.c:964` `int seccomp_allow_one(int pid, int n)`
+- `seccomp_denied` (function) `kernel/sched.c:971` `int seccomp_denied(int pid, int n)`
+- `smp_try_claim_hint` (function) `kernel/sched.c:980` `static int smp_try_claim_hint(int pid, int vm_only)` -- Claim one READY thread for this CPU's idle loop (the AP only claims CLONE_VM threads): marks it RUNNING under lock...
+- `smp_claim_thread_v` (function) `kernel/sched.c:996` `static int smp_claim_thread_v(int vm_only)`
+- `smp_ap_idle_loop` (function) `kernel/sched.c:1042` `void smp_ap_idle_loop(void)` -- AP idle loop: hlt until a CLONE_VM thread is ready, run it, repeat.
+- `sched_ap_preempt` (function) `kernel/sched.c:1076` `static void sched_ap_preempt(trap_frame_t *frame)` -- AP timer preemption: time-slice the AP's current CLONE_VM thread with the next READY one.
+- `smp_any_ap_idle` (function) `kernel/sched.c:1146` `static int smp_any_ap_idle(void)` -- True when some AP is idle.
+- `rlimit_cpu_exceeded` (function) `kernel/sched.c:1182` `int rlimit_cpu_exceeded(int pid)`
+- `isr_dispatch` (function) `kernel/sched.c:1203` `void isr_dispatch(int vector, trap_frame_t *frame)`
+- `syscall` (function) `kernel/sched.c:1320` `* outgoing syscall (see sched_rearm_kgs). Without * this the next entry swapgs puts garbage under GS * and the pid...`
+- `BSP` (function) `kernel/sched.c:1780` `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs
+         * running the shell contex...`
+- `proc_get` (function) `kernel/sched.c:1821` `proc_t *proc_get(int pid)`
+- `proc_create` (function) `kernel/sched.c:1827` `int proc_create(const char *name, int parent_pid)`
+- `proc_spawn_elf_inner` (function) `kernel/sched.c:1945` `static int proc_spawn_elf_inner(const char *name, void *data, unsigned size,
+                   i...` -- Spawn body: runs with the timer held off by the wrapper below, so page-table construction, heap allocation and the...
+- `proc_spawn_elf` (function) `kernel/sched.c:2105` `int proc_spawn_elf(const char *name, void *data, unsigned size,
+                   int argc, char...` -- Atomic spawn wrapper: the whole construction (page tables, image copy, stack, publish) runs with the timer held off...
+- `schedule` (function) `kernel/sched.c:2147` `* that keeps schedule()'s own rbp runs the caller's frame accesses
+ * (locals, leave/ret) on the ...`
+- `schedule` (function) `kernel/sched.c:2154` `void schedule(void)`
+- `PROC_SWITCHING` (function) `kernel/sched.c:2180` `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...`
+- `yield` (function) `kernel/sched.c:2235` `void yield(void)`
+- `returns` (function) `kernel/sched.c:2243` `* that returns (and the resumed thread returns with IF=1). */ __asm__ volatile("cli");`
+- `do_exit` (function) `kernel/sched.c:2250` `void do_exit(int code)`
+- `do_thread_spawn` (function) `kernel/sched.c:2314` `long do_thread_spawn(unsigned long fn, unsigned long stack,
+                     unsigned long arg)` -- frame is ambiguous, this one starts cleanly at fn(arg) on the given stack:  child RIP = fn, child RSP = stack, child...
+- `registers` (function) `kernel/sched.c:2345` `* registers (float args would need XMM inheritance, which the * arg-passing contract does not carry: fn takes one...`
+- `itself` (function) `kernel/sched.c:2514` `* the shell itself (use mrun first), and a CLONE_VM thread forking
+ * would duplicate shared stat...`
+- `ctx_from_frame` (function) `kernel/sched.c:2537` `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)` -- Every register Linux preserves across a syscall, copied into a child's * PCB so it resumes after the syscall exactly...
+- `fork_child_settid` (function) `kernel/sched.c:2555` `void fork_child_settid(void)` -- First code a fork or clone child runs (fork_trampoline, its own window live): store its tid at the...
+- `do_fork` (function) `kernel/sched.c:2564` `long do_fork(void)`
+- `fork_report` (function) `kernel/sched.c:2570` `static void fork_report(const char *what)` -- A fork that fails names the resource that ran out (failure paths * report): -ENOMEM alone cannot tell a heap leak...
+- `do_fork_ex` (function) `kernel/sched.c:2577` `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)`
+- `shares` (function) `kernel/sched.c:2595` `* thread on another CPU kept its writable translation and wrote straight * into frames the child now shares (the...`
+- `MSR` (function) `kernel/sched.c:2633` `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...`
+- `do_clone_thread` (function) `kernel/sched.c:2724` `static long do_clone_thread(unsigned long flags, unsigned long newsp,
+                           ...` -- NPTL thread (clone with CLONE_VM|CLONE_SIGHAND|CLONE_THREAD): same window and fd view, resumes after the syscall on...
+- `kill_group_threads_locked` (function) `kernel/sched.c:2838` `static void kill_group_threads_locked(int tgid, int except)` -- Zombify every live CLONE_THREAD member of a group except one pid.
+- `do_group_exit` (function) `kernel/sched.c:2859` `void do_group_exit(int code)` -- Linux exit_group(2) and fatal-signal semantics, minus the caller's own exit (the caller follows with do_exit or...
+- `aslr_mix` (function) `kernel/sched.c:2887` `static unsigned long aslr_mix(unsigned long salt)`
+- `aslr_stack_bytes` (function) `kernel/sched.c:2896` `unsigned long aslr_stack_bytes(void)`
+- `aslr_brk_pages` (function) `kernel/sched.c:2897` `unsigned long aslr_brk_pages(void)`
+- `aslr_mmap_pages` (function) `kernel/sched.c:2898` `unsigned long aslr_mmap_pages(void)`
+- `aslr_dyn_base` (function) `kernel/sched.c:2899` `unsigned long aslr_dyn_base(void)`
+- `cli` (function) `kernel/sched.c:2908` `* cli (disk PIO must never run with the timer held off);`
+- `adopt` (function) `kernel/sched.c:2922` `* adopt (armed by Linux O_CLOEXEC on open);`
+- `do_execve` (function) `kernel/sched.c:2926` `long do_execve(char *kpath, int kargc, char **kargv)` -- Scope, fail-closed: the caller must be an isolated non-CLONE_VM ring-3 proc (pid 0 has no own window; a thread...
+- `proc_running_anywhere` (function) `kernel/sched.c:3159` `static int proc_running_anywhere(int pid)` -- A zombie may still be finishing its exit tail (schedule()'s save and switch) on its own kernel stack on some CPU...
+- `reap_autoreap_locked` (function) `kernel/sched.c:3168` `static void reap_autoreap_locked(int tgid)` -- Reclaim every auto-reaped (CLONE_THREAD) zombie, or only those of one * thread group when tgid >= 0.
+- `alloc_pid_locked` (function) `kernel/sched.c:3180` `static int alloc_pid_locked(void)` -- First free pid slot after reclaiming finished threads, or -1.
+- `group_threads_live_locked` (function) `kernel/sched.c:3192` `static int group_threads_live_locked(int tgid)` -- 1 while a thread of group tgid has not finished exiting: still alive, or a zombie some CPU is still running on.
+- `waitpid_scan` (function) `kernel/sched.c:3203` `static int waitpid_scan(int pid, int *found)`
+- `do_waitpid` (function) `kernel/sched.c:3224` `int do_waitpid(int pid)`
+- `waitpid_has_child` (function) `kernel/sched.c:3241` `static int waitpid_has_child(int pid)` -- 1 when the caller has a waitable child matching pid (-1 = any): one that is not an auto-reaped thread, in any state...
+- `do_waitpid_linux` (function) `kernel/sched.c:3255` `int do_waitpid_linux(int pid, int nohang, int *found)` -- Linux wait4 core (docs/spec/smp-sched.md): reap one matching child and report its pid through *found and its raw...
+- `shell_reap_nb` (function) `kernel/sched.c:3272` `int shell_reap_nb(int *pid_out, int *code_out)` -- Reap one zombie child for `jobs`/auto-reap messages: returns 1 with * pid+code, or 0 when none is ready.
+- `shell_reap_one` (function) `kernel/sched.c:3286` `int shell_reap_one(int pid, int *code_out)` -- Reap one specific zombie child (foreground wait).
+- `shell_nchildren` (function) `kernel/sched.c:3298` `int shell_nchildren(void)` -- Reap one specific zombie child (foreground wait).
+- `do_kill` (function) `kernel/sched.c:3324` `int do_kill(int pid)` -- True kill: the TARGET becomes a zombie for its parent to reap (its stack/tables free in do_waitpid, never here).
+- `do_kill_code` (function) `kernel/sched.c:3330` `int do_kill_code(int pid, int code)` -- End pid with exit code (negative: killed by signal -code, as wait4 * reports it).
+- `timer_tick` (function) `kernel/sched.c:3357` `void timer_tick(void)`
+- `sched_init` (function) `kernel/sched.c:3362` `void sched_init(void)`
+- `it` (function) `kernel/sched.c:3370` `* it (SPAWN/exec point proc 0 here transiently);`
+- `park` (function) `kernel/sched.c:3422` `* an image its live FPU registers would be dropped by the preempt * park (the save path skips a null area). */...`
+- `zeroed` (function) `kernel/sched.c:3433` `* still zeroed (kmemset happens inside idt_init) faults through a * null gate. Handlers for 32/33/44 are safe...`
 
-## kernel/vga_cursor.c
-Depends on: `headers/kernel/vga_cursor.h`, `headers/vga_fb.h`
-- `cursor_save_bg` (function) `kernel/vga_cursor.c:40` `static void cursor_save_bg(int mx, int my)` -- The cursor is drawn with its top-left corner at (mx, my), so the sprite spans down-right of the pointer.
-- `cursor_is_set` (function) `kernel/vga_cursor.c:50` `static int cursor_is_set(int i, int j)` -- spans down-right of the pointer.
-- `cursor_has_set_neighbour` (function) `kernel/vga_cursor.c:57` `static int cursor_has_set_neighbour(int i, int j)` -- int y0 = my - CURSOR_TIP_Y; for (j = 0; j < 8; j++) for (i = 0; i < 8; i++) cursor_save[j][i] = fb_read_packed(x0 +...
-- `cursor_draw` (function) `kernel/vga_cursor.c:68` `static void cursor_draw(int mx, int my)`
-- `cursor_restore` (function) `kernel/vga_cursor.c:81` `static void cursor_restore(int mx, int my)`
-- `cursor_over` (function) `kernel/vga_cursor.c:96` `int cursor_over(int x0, int y0, int w, int h)` -- Docstring: True when the cursor sprite overlaps the given screen rectangle.
-- `cursor_place` (function) `kernel/vga_cursor.c:106` `void cursor_place(int mx, int my)` -- Docstring: Paint the pointer at mx/my unconditionally: save the * background, draw the sprite, record the position.
-- `cursor_move` (function) `kernel/vga_cursor.c:116` `void cursor_move(int mx, int my)` -- Docstring: Desktop-tick pointer update: repaint only when the position * moved since the last paint, otherwise keep...
-- `cursor_erase` (function) `kernel/vga_cursor.c:133` `void cursor_erase(void)` -- Docstring: Restore the saved background when the pointer is up, then mark it hidden.
-- `cursor_invalidate` (function) `kernel/vga_cursor.c:141` `void cursor_invalidate(void)` -- Docstring: Mark the pointer hidden without touching the framebuffer. * Used after any repaint that may have covered...
-- `cursor_note_repaint` (function) `kernel/vga_cursor.c:147` `void cursor_note_repaint(int x0, int y0, int w, int h)` -- Docstring: Invalidate the pointer when it overlaps a repainted screen * rectangle, so the next move re-saves a fresh...
+## kernel/scrollback.c
+- `vga_scroll` (function) `kernel/scrollback.c:4` `* Captured lazily from vga_scroll();`
+- `sb_init` (function) `kernel/scrollback.c:17` `void sb_init(void)`
+- `sb_capture_row0` (function) `kernel/scrollback.c:23` `void sb_capture_row0(void)`
+- `sb_reset` (function) `kernel/scrollback.c:34` `void sb_reset(void)`
+- `sb_get_count` (function) `kernel/scrollback.c:38` `int sb_get_count(void)`
+- `sb_get_head` (function) `kernel/scrollback.c:39` `int sb_get_head(void)`
+- `sb_get_char` (function) `kernel/scrollback.c:41` `char sb_get_char(int row, int col)`
 
-## kernel/vga_fb.c
-Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_gfxview.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
-- `wm_geom_cfg` (function) `kernel/vga_fb.c:49` `static wm_geom_config_t wm_geom_cfg(void)` -- /** Docstring: Focus ids share one space across terminals and graphics. _Static_assert(WM_FOCUS_GFX ==...
-- `wm_event_cfg` (function) `kernel/vga_fb.c:60` `static wm_event_config_t wm_event_cfg(void)` -- static int wm_ggy; /** Docstring: Geometry config derived once from the font layout. static wm_geom_config_t...
-- `wm_drag_reset` (function) `kernel/vga_fb.c:69` `static void wm_drag_reset(void)` -- cfg.title_h = FONT_H; return cfg; } /** Docstring: Event config for the PS/2 mouse button mask. static...
-- `vga_fb_boot_config` (function) `kernel/vga_fb.c:90` `void vga_fb_boot_config(void)`
-- `fb_bytes_per_pixel` (function) `kernel/vga_fb.c:117` `int fb_bytes_per_pixel(void)`
-- `compositions` (function) `kernel/vga_fb.c:133` `* compositions (an ISR tick composing inside a syscall composition) draw * into the same shadow and leave the...`
-- `fb_copy_bytes` (function) `kernel/vga_fb.c:151` `static void fb_copy_bytes(volatile void *dst, const volatile void *src, unsigned long n)` -- Docstring: Bulk copy through the string engine: quadwords first (rep movsq, an eighth of the iterations, which is...
-- `fb_fill_u32` (function) `kernel/vga_fb.c:169` `static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n)` -- Docstring: Fill n 32-bit words with one value: pairs as quadwords * (rep stosq), then the odd word.
-- `fb_frame_bytes` (function) `kernel/vga_fb.c:183` `static unsigned long fb_frame_bytes(void)` -- static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n) { void *d = (void *)dst; unsigned long...
-- `fb_shadow_ready` (function) `kernel/vga_fb.c:189` `static int fb_shadow_ready(void)` -- : "+D"(d), "+c"(q) : "a"(pat) : "memory"); if (n & 1UL) (volatile unsigned int *)d = v; } /** Docstring: Bytes one...
-- `fb_present_shadow` (function) `kernel/vga_fb.c:210` `static void fb_present_shadow(void)` -- return 1; } if (fb_shadow) { return 0; } fb_shadow = (uint8_t *)kmalloc(need); if (!fb_shadow) { return 0; }...
-- `fb_compose_begin` (function) `kernel/vga_fb.c:221` `static int fb_compose_begin(void)` -- Docstring: Enter a composition.
-- `fb_compose_end` (function) `kernel/vga_fb.c:234` `static void fb_compose_end(int owner)` -- entry that must not present. static int fb_compose_begin(void) { if (fb_compose_depth++ > 0) { return 0; } if...
-- `lg_get` (function) `kernel/vga_fb.c:305` `static const char *lg_get(int i)` -- Docstring: Completed-logical-lines ring, heap-owned since the .bss diet (256 x TERM_MAX_COLS).
-- `lg_push` (function) `kernel/vga_fb.c:312` `static void lg_push(const char *line, int len)` -- Append a completed logical line to the ring.
-- `line_nrows` (function) `kernel/vga_fb.c:327` `static int line_nrows(int len)` -- int k, idx; char *dst; if (!lg) return; if (len >= SB_LINE_MAX) len = SB_LINE_MAX - 1; idx = lg_tail; dst =...
-- `act_nrows` (function) `kernel/vga_fb.c:334` `static int act_nrows(void)`
-- `total_rows` (function) `kernel/vga_fb.c:337` `static int total_rows(void)` -- else lg_head = (lg_head + 1) % SB_MAX_LINES; } /* Display rows a logical line of `len` characters occupies at...
-- `disp_clamp` (function) `kernel/vga_fb.c:345` `static void disp_clamp(void)` -- return n; } static int act_nrows(void) { return line_nrows(act_len); } /* Total display rows of the whole history...
-- `line_at` (function) `kernel/vga_fb.c:363` `static const char *line_at(int abs, int *off)` -- Locate the logical line contributing the display row `abs`, and set *off to the character offset where that display...
-- `first` (function) `kernel/vga_fb.c:419` `* screen ever showing it whole first (the old flash-then-melt). */
-static unsigned int *fx_start_...`
-- `flag` (function) `kernel/vga_fb.c:496` `* is the minimized flag (the program keeps running, nothing composites);`
-- `letterbox` (function) `kernel/vga_fb.c:500` `* present to repaint chrome plus letterbox (after a desktop redraw or a * view change);`
-- `gfx_covers_screen` (function) `kernel/vga_fb.c:527` `static int gfx_covers_screen(void)` -- Docstring: 1 while a visible fullscreen graphics window owns every * pixel: the terminals, taskbar and dock must not...
-- `gfx_keep_save` (function) `kernel/vga_fb.c:533` `static void gfx_keep_save(const volatile uint8_t *src, int kind, int sw, int sh)` -- Docstring: 1 while a visible fullscreen graphics window owns every * pixel: the terminals, taskbar and dock must not...
-- `vga_fb_set_gfx_program` (function) `kernel/vga_fb.c:559` `void vga_fb_set_gfx_program(const char *name)`
-- `shcmd_base` (function) `kernel/vga_fb.c:578` `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` -- Basename of a shortcut command's program: first token after an optional `run`, then past the last '/'. "run...
-- `ci_eq` (function) `kernel/vga_fb.c:595` `static int ci_eq(const char *a, const char *b)`
-- `gfx_prog_icon` (function) `kernel/vga_fb.c:608` `static const uint8_t *gfx_prog_icon(void)` -- Icon of the running program via the shortcuts config: whoever composited * last, resolved through its launch command.
-- `vga_fb_set_gfx_mode` (function) `kernel/vga_fb.c:621` `void vga_fb_set_gfx_mode(int on)`
-- `gfx_view_for` (function) `kernel/vga_fb.c:667` `static int gfx_view_for(int sw, int sh, wm_gfxview_t *v)` -- Docstring: Compute the view for a sw x sh source under the current mode.
-- `gfx_view_publish` (function) `kernel/vga_fb.c:679` `static void gfx_view_publish(const wm_gfxview_t *v)` -- mode.
-- `gfx_float_frame` (function) `kernel/vga_fb.c:693` `static int gfx_float_frame(wm_gfxview_rect_t *out)` -- Docstring: Floating-mode frame of the current source, used by the * snap and drag math, which move the native...
-- `vga_fb_gfx_origin` (function) `kernel/vga_fb.c:709` `void vga_fb_gfx_origin(int *x, int *y)` -- Docstring: Content origin of the graphics window (the point an app * subtracts from SYS_MOUSE coordinates), for the...
-- `coordinates` (function) `kernel/vga_fb.c:723` `* windows keep the exact historical coordinates (including outside the * window);`
-- `vga_fb_gfx_map_mouse` (function) `kernel/vga_fb.c:726` `void vga_fb_gfx_map_mouse(int *x, int *y)` -- Docstring: Map a desktop pointer into the graphics app's back-buffer space when its view is scaled.
-- `vga_fb_gfx_cursor_erase` (function) `kernel/vga_fb.c:741` `static void vga_fb_gfx_cursor_erase(void)` -- Restore the last composite's pointer before the new frame covers it.
-- `vga_fb_gfx_cursor_draw` (function) `kernel/vga_fb.c:751` `static void vga_fb_gfx_cursor_draw(void)` -- Clamp the mouse into the framebuffer (the idle loop that normally clamps never runs in graphics mode) and draw the...
-- `gfx_transition` (function) `kernel/vga_fb.c:917` `static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled);`
-- `wm_focus_cursor_sync` (function) `kernel/vga_fb.c:942` `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` -- char eline[WM_ELINE_SZ]; int epos, has_line; int prompted; } termwin_t; static termwin_t twins[WM_MAX_TERMS]; static...
-- `wm_emit_focus_moved` (function) `kernel/vga_fb.c:949` `static void wm_emit_focus_moved(int before, int source)` -- static int wm_term; static int wm_inited; /** Docstring: Single focus event bus owned by the desktop. static...
-- `vga_fb_focus_event` (function) `kernel/vga_fb.c:961` `const wm_notify_event_t *vga_fb_focus_event(void)` -- /** Docstring: Emit one focus event when the id actually moved. static void wm_emit_focus_moved(int before, int...
-- `vga_fb_focus_report` (function) `kernel/vga_fb.c:967` `void vga_fb_focus_report(int before, int source)` -- e.type = WM_NOTIFY_FOCUS; e.old_focus = before; e.new_focus = wm_focus; e.source = source; wm_notify_emit(&wm_bus...
-- `tw_park` (function) `kernel/vga_fb.c:976` `static void tw_park(int i)`
-- `tw_unpark` (function) `kernel/vga_fb.c:1006` `static void tw_unpark(int i)`
-- `wm_init_once` (function) `kernel/vga_fb.c:1041` `static void wm_init_once(void)`
-- `tw_select` (function) `kernel/vga_fb.c:1066` `static void tw_select(int i)` -- twins[k].has_line = 0; twins[k].eline[0] = '\0'; twins[k].epos = 0; twins[k].prompted = 0; } twins[0].lg = lg; if...
-- `vga_fb_focus_get` (function) `kernel/vga_fb.c:1078` `int vga_fb_focus_get(void)`
-- `vga_fb_nterms_get` (function) `kernel/vga_fb.c:1079` `int vga_fb_nterms_get(void)`
-- `wm_snapshot_state` (function) `kernel/vga_fb.c:1082` `static void wm_snapshot_state(wm_focus_state_t *st)` -- if (!twins[i].present) return; if (shell_readline_active()) shell_focus_park(); tw_park(wm_term); wm_focus = i...
-- `vga_fb_focus_next` (function) `kernel/vga_fb.c:1095` `void vga_fb_focus_next(void)` -- /** Docstring: Single snapshot of every window for focus decisions. static void wm_snapshot_state(wm_focus_state_t...
-- `app` (function) `kernel/vga_fb.c:1136` `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep...`
-- `wm_gfx_focus_sync` (function) `kernel/vga_fb.c:1141` `static void wm_gfx_focus_sync(int on)` -- Docstring: Route WM focus with the graphics mode switch.
-- `vga_fb_focus_id` (function) `kernel/vga_fb.c:1160` `int vga_fb_focus_id(int id)` -- tw_park(wm_term); wm_focus = WM_FOCUS_GFX; kbd_raw_flush(); wm_emit_focus_moved(before, WM_FOCUS_SRC_MODE); } } else...
-- `content` (function) `kernel/vga_fb.c:1193` `* windows would share content (same prompt/output on both) and a park
- * would alias src == dst. ...`
-- `vga_fb_layout_set` (function) `kernel/vga_fb.c:1274` `int vga_fb_layout_set(int mode)` -- twins[1].lg = 0; twins[1].present = 0; twins[1].has_line = 0; twins[1].eline[0] = '\0'; twins[1].epos = 0...
-- `vga_fb_layout_cycle` (function) `kernel/vga_fb.c:1285` `void vga_fb_layout_cycle(void)` -- /** Docstring: Tile terminals through the tiling contract, graphics right. /** Docstring: Set active layout mode...
-- `vga_fb_layout_get` (function) `kernel/vga_fb.c:1301` `int vga_fb_layout_get(void)` -- if (wm_layout_mode == WM_LAYOUT_TILE) { wm_layout_mode = WM_LAYOUT_BSP; } else if (wm_layout_mode == WM_LAYOUT_BSP)...
-- `vga_fb_layout_name` (function) `kernel/vga_fb.c:1307` `const char *vga_fb_layout_name(void)` -- } else { wm_layout_mode = WM_LAYOUT_TILE; } wm_last_n = -1; vga_fb_tile_all(); } /** Docstring: Active layout mode...
-- `alone` (function) `kernel/vga_fb.c:1319` `* window alone (an unfocused graphics window minimizes to the taskbar,
- * exactly like the hidden...`
-- `vga_fb_list_windows` (function) `kernel/vga_fb.c:1446` `void vga_fb_list_windows(void)`
-- `vga_fb_act_empty` (function) `kernel/vga_fb.c:1504` `int vga_fb_act_empty(void)` -- vn ? vn : "floating", gfx_view_valid ? gfx_view.content.x : gfx_win_x, gfx_view_valid ? gfx_view.content.y...
-- `vga_fb_note_prompt` (function) `kernel/vga_fb.c:1508` `void vga_fb_note_prompt(void)` -- The shell loop calls note after printing a prompt (it is live in the * focused window) and clear once the line is...
-- `vga_fb_clear_prompt` (function) `kernel/vga_fb.c:1513` `void vga_fb_clear_prompt(void)`
-- `vga_fb_prompted` (function) `kernel/vga_fb.c:1518` `int vga_fb_prompted(void)`
-- `vga_fb_prompt_live` (function) `kernel/vga_fb.c:1527` `int vga_fb_prompt_live(void)` -- 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate...
-- `vga_fb_park_line` (function) `kernel/vga_fb.c:1534` `void vga_fb_park_line(const char *b, int p)` -- 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate...
-- `vga_fb_unpark_line` (function) `kernel/vga_fb.c:1549` `int vga_fb_unpark_line(char *b, int *p)` -- A fresh prompt parks empty: record no line, so `wm list` does not * claim a half-typed command that never existed....
-- `tw_hit` (function) `kernel/vga_fb.c:1564` `static int tw_hit(int i, int mx, int my)` -- termwin_t *t; int k; wm_init_once(); if (wm_focus < 0 || wm_focus >= WM_MAX_TERMS) return 0; t = &twins[wm_focus]...
-- `vga_fb_set_gfx_palette` (function) `kernel/vga_fb.c:1670` `void vga_fb_set_gfx_palette(const unsigned char *pal)`
-- `fb_pack_idx` (function) `kernel/vga_fb.c:1685` `static unsigned long fb_pack_idx(unsigned idx)` -- --- True-color pixel layer ---- VBE true-color framebuffers store pixels natively as B,G,R(,X) bytes, so the DAC is...
-- `fb_write_packed` (function) `kernel/vga_fb.c:1701` `void fb_write_packed(int x, int y, unsigned long rgb)`
-- `fb_read_packed` (function) `kernel/vga_fb.c:1721` `unsigned long fb_read_packed(int x, int y)`
-- `vga_fb_read_rgb` (function) `kernel/vga_fb.c:1745` `unsigned long vga_fb_read_rgb(int x, int y)`
-- `fb_write_row_packed` (function) `kernel/vga_fb.c:1750` `void fb_write_row_packed(int x, int y, const unsigned int *src, int n)` -- Docstring: Write n packed pixels (0x00RRGGBB, or raw indices in 8-bit mode) to row y from column x, clipped once.
-- `fb_read_row_packed` (function) `kernel/vga_fb.c:1780` `void fb_read_row_packed(int x, int y, unsigned int *dst, int n)` -- Docstring: Read n packed pixels of row y from column x into dst, * clipped once; pixels outside the screen read as 0.
-- `fb_fill_run` (function) `kernel/vga_fb.c:1802` `static void fb_fill_run(int x, int y, int n, unsigned long px)` -- int xx = x + i; if (xx < 0 || xx >= fb_width) continue; if (fb_bpp == 32) { dst[i] = *(volatile unsigned int *)(p +...
-- `wall_level` (function) `kernel/vga_fb.c:1828` `static int wall_level(int v)` -- for (i = 0; i < n; i++) { q[0] = (uint8_t)(px & 0xFF); q[1] = (uint8_t)((px >> 8) & 0xFF); q[2] = (uint8_t)((px >>...
-- `vga_fb_set_palette` (function) `kernel/vga_fb.c:1837` `static void vga_fb_set_palette(void)`
-- `fb_glyph` (function) `kernel/vga_fb.c:1890` `static const uint8_t *fb_glyph(unsigned char c)` -- Resolve one byte to its 8-row glyph: ASCII through font8x8, Spanish Latin-1 through the table above, anything else...
-- `vga_fb_pixel` (function) `kernel/vga_fb.c:1911` `void vga_fb_pixel(int x, int y, uint8_t color)` -- case 0xAC: return glyph_notsign; case 0xB4: return glyph_acute; case 0xB7: return glyph_middot; case 0xBA: return...
-- `vga_fb_clear` (function) `kernel/vga_fb.c:1921` `void vga_fb_clear(void)` -- } } /* ---- Drawing primitives ---- void vga_fb_pixel(int x, int y, uint8_t color) { if (fb_bpp == 8) { if (x >= 0...
-- `vga_fb_rect` (function) `kernel/vga_fb.c:1931` `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` -- Docstring: Solid rectangle: the color resolves once, every row is one * clipped run fill instead of a per-pixel...
-- `vga_fb_pixel_rgb` (function) `kernel/vga_fb.c:1946` `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` -- Direct RGB pixel: full color depth in true-color modes, best-effort quantization in 8-bit mode.
-- `vga_fb_rect_rgb` (function) `kernel/vga_fb.c:1955` `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)`
-- `vga_fb_char` (function) `kernel/vga_fb.c:1962` `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-- `vga_fb_str` (function) `kernel/vga_fb.c:1976` `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-- `text_px` (function) `kernel/vga_fb.c:1987` `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` -- Blit a text string at an absolute pixel position.
-- `wm_draw_buttons` (function) `kernel/vga_fb.c:2013` `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` -- --- Window controls ---- Three glyph buttons at the right end of a window's title bar: minimize (_), maximize...
-- `wm_buttons_hit` (function) `kernel/vga_fb.c:2039` `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` -- } for (i = 1; i < WM_BTN_H - 1; i++) { vga_fb_pixel(bx + 1, by + i, fg); vga_fb_pixel(bx + WM_BTN_W - 2, by + i...
-- `wm_close_pending` (function) `kernel/vga_fb.c:2054` `int wm_close_pending(void)` -- Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the...
-- `wm_clear_close` (function) `kernel/vga_fb.c:2055` `void wm_clear_close(void)`
-- `wm_gfx_mode_active` (function) `kernel/vga_fb.c:2056` `int wm_gfx_mode_active(void)`
-- `vga_fb_ps2_owner` (function) `kernel/vga_fb.c:2059` `int vga_fb_ps2_owner(int pid)` -- Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the...
-- `taskbar` (function) `kernel/vga_fb.c:2079` `* minimize hides the app to the taskbar (it never closes it), maximize
- * toggles true fullscreen...`
-- `directly` (function) `kernel/vga_fb.c:2127` `* RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */
-static void gfx_scale_...`
-- `gfx_letterbox` (function) `kernel/vga_fb.c:2232` `static void gfx_letterbox(const wm_gfxview_t *v)` -- Docstring: Clear the frame area the content does not cover (the * letterbox bars of a tiled or fullscreen view) to...
-- `gfx_title` (function) `kernel/vga_fb.c:2251` `static void gfx_title(const wm_gfxview_t *v)` -- int ah = v->frame.h - v->title_h; const wm_gfxview_rect_t *c = &v->content; if (aw <= 0 || ah <= 0) return; if (c->y...
-- `gfx_compose` (function) `kernel/vga_fb.c:2263` `static void gfx_compose(const volatile uint8_t *src, int kind, int sw, int sh,
-                  ...` -- Docstring: Compose one graphics frame at a view into the render target: * title, letterbox (when full is set) and...
-- `vga_fb_blit_gfx_window` (function) `kernel/vga_fb.c:2326` `void vga_fb_blit_gfx_window(void)`
-- `vga_fb_blit_nk_window` (function) `kernel/vga_fb.c:2335` `void vga_fb_blit_nk_window(void)`
-- `vga_fb_blit_nk_rgb_window` (function) `kernel/vga_fb.c:2341` `void vga_fb_blit_nk_rgb_window(void)` -- Composite the Nuklear RGB back-buffer (NK_RGB_ADDR, NK_W x NK_H x 3 bytes) * through the same present path as the...
-- `term_recalc` (function) `kernel/vga_fb.c:2350` `static void term_recalc(void)`
-- `draw_title_win` (function) `kernel/vga_fb.c:2376` `static void draw_title_win(int idx, int focused)` -- Preserve the current window position, clamping it into range so a * drag or Ctrl+arrow move is not undone by the...
-- `taskbar_layout` (function) `kernel/vga_fb.c:2407` `static void taskbar_layout(void)`
-- `draw_speaker_icon` (function) `kernel/vga_fb.c:2438` `static void draw_speaker_icon(int x, int y, uint8_t color)` -- Running-app button right after it: mini icon + title while a graphics program owns the display.
-- `taskbar_render` (function) `kernel/vga_fb.c:2447` `static void taskbar_render(void)`
-- `title` (function) `kernel/vga_fb.c:2457` `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...`
-- `taskbar_tick` (function) `kernel/vga_fb.c:2526` `static void taskbar_tick(void)` -- Redraw the clock only when the wall-clock second changes.
-- `vga_fb_theme_name` (function) `kernel/vga_fb.c:2542` `int vga_fb_theme_name(char *dst, int cap)` -- Docstring: Active Nuklear theme name for the taskbar widget.
-- `taskbar_theme_cycle` (function) `kernel/vga_fb.c:2563` `static void taskbar_theme_cycle(void)` -- Cycle the active theme to the next etc/themes/ entry (ramdisk).
-- `taskbar_handle_click` (function) `kernel/vga_fb.c:2603` `static void taskbar_handle_click(int mx, int my)` -- Click handling for the keyboard widget, the speaker icon and -/+ buttons, plus the restore button that reappears...
-- `draw_scrollbar` (function) `kernel/vga_fb.c:2663` `static void draw_scrollbar(void)` -- return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v >...
-- `render_blank_row` (function) `kernel/vga_fb.c:2698` `static void render_blank_row(int vrow)` -- Blank one viewport row: every cell is repainted with the terminal background. vga_fb_str with an empty string would...
-- `render_row` (function) `kernel/vga_fb.c:2708` `static void render_row(int vrow, int abs)` -- Render one display row at viewport row `vrow` for the absolute display row `abs`.
-- `term_render` (function) `kernel/vga_fb.c:2743` `static void term_render(void)`
-- `buffer` (function) `kernel/vga_fb.c:2758` `* owns the buffer (indices reset, render reads an empty ring). */
-void term_clear(void)`
-- `term_render_active` (function) `kernel/vga_fb.c:2775` `static void term_render_active(void)` -- Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the...
-- `line` (function) `kernel/vga_fb.c:2818` `* display stale bytes left over from a longer previous line (e.g. the prompt
- * would show the ta...`
-- `escapes` (function) `kernel/vga_fb.c:2827` `* swallowing them here keeps the escapes (which the serial side needs)
-     * from printing as li...`
-- `vga_fb_puts_term` (function) `kernel/vga_fb.c:2884` `void vga_fb_puts_term(const char *s)`
-- `vga_fb_text_cursor` (function) `kernel/vga_fb.c:2890` `void vga_fb_text_cursor(int col)` -- Show the text cursor at character column `col` of the active line, or hide * it with a negative column.
-- `vga_fb_hide_text_cursor` (function) `kernel/vga_fb.c:2898` `void vga_fb_hide_text_cursor(void)` -- Show the text cursor at character column `col` of the active line, or hide * it with a negative column.
-- `vga_fb_draw_desktop` (function) `kernel/vga_fb.c:2922` `void vga_fb_draw_desktop(void)` -- Docstring: Repaint the desktop through the shared render plan.
-- `gfx_view_in_rect` (function) `kernel/vga_fb.c:3017` `static void gfx_view_in_rect(const wm_gfxview_rect_t *r, int titled, wm_gfxview_t *v)` -- Docstring: View of the persistent source inside an arbitrary frame, * titled when the frame is tall enough to carry...
-- `gfx_animate` (function) `kernel/vga_fb.c:3036` `static void gfx_animate(const wm_gfxview_rect_t *from, const wm_gfxview_rect_t *to,
-             ...` -- Docstring: Glide the persistent source frame from one rect to * another over the desktop, then settle with a plain...
-- `gfx_taskbar_rect` (function) `kernel/vga_fb.c:3086` `static void gfx_taskbar_rect(wm_gfxview_rect_t *r)` -- fb_tgt = fb_shadow; gfx_compose(gfx_keep, gfx_keep_kind, gfx_keep_sw, gfx_keep_sh, &v, 0); fb_tgt = 0...
-- `gfx_drop_focus` (function) `kernel/vga_fb.c:3123` `static void gfx_drop_focus(int source)` -- Docstring: Hand keyboard focus to the graphics window without a * redraw (callers repaint once afterwards). static...
-- `from` (function) `kernel/vga_fb.c:3134` `* leaving returns to the view it came from (floating or tiled). Returns
- * 0 on success, -1 witho...`
-- `vga_fb_gfx_set_hidden` (function) `kernel/vga_fb.c:3168` `int vga_fb_gfx_set_hidden(int hide)` -- Docstring: Minimize (hide) or restore the graphics window.
-- `vga_fb_gfx_view_name` (function) `kernel/vga_fb.c:3196` `const char *vga_fb_gfx_view_name(void)` -- if (gfx_view_valid) gfx_animate(&from, &btn, titled, 0); else vga_fb_draw_desktop(); return 0; } gfx_hidden = 0...
-- `term_toggle_fullscreen` (function) `kernel/vga_fb.c:3208` `static void term_toggle_fullscreen(void)` -- /** Docstring: Graphics view state for `wm state`/`wm list`. const char *vga_fb_gfx_view_name(void) { const char *n...
-- `vga_fb_toggle_fullscreen` (function) `kernel/vga_fb.c:3220` `void vga_fb_toggle_fullscreen(void)` -- Docstring: Toggle fullscreen on the focused window: the graphics * window scales to the whole display, a terminal...
-- `term_toggle_minimize` (function) `kernel/vga_fb.c:3231` `static void term_toggle_minimize(void)` -- Minimize/restore the terminal window.
-- `vga_fb_toggle_minimize` (function) `kernel/vga_fb.c:3241` `void vga_fb_toggle_minimize(void)` -- Minimize/restore the terminal window.
-- `vga_fb_is_minimized` (function) `kernel/vga_fb.c:3249` `int vga_fb_is_minimized(void)`
-- `vga_fb_is_fullscreen` (function) `kernel/vga_fb.c:3250` `int vga_fb_is_fullscreen(void)`
-- `gfx_snap` (function) `kernel/vga_fb.c:3255` `static void gfx_snap(int zone)` -- Snap the focused graphics window into a screen region (halves place it against that edge, quadrants into that...
-- `term_close_default` (function) `kernel/vga_fb.c:3288` `static void term_close_default(void)` -- Docstring: Terminal close button: restore the default geometry (the * shell cannot be closed).
-- `vga_fb_close_active` (function) `kernel/vga_fb.c:3304` `int vga_fb_close_active(void)` -- Close the focused window.
-- `vga_fb_move_terminal` (function) `kernel/vga_fb.c:3318` `void vga_fb_move_terminal(int dx, int dy)`
-- `term_max_cols` (function) `kernel/vga_fb.c:3363` `static int term_max_cols(void)` -- --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes...
-- `term_max_rows` (function) `kernel/vga_fb.c:3367` `static int term_max_rows(void)`
-- `term_finish_layout` (function) `kernel/vga_fb.c:3372` `static void term_finish_layout(void)`
-- `vga_fb_snap_window` (function) `kernel/vga_fb.c:3378` `void vga_fb_snap_window(int zone)`
-- `vga_fb_resize` (function) `kernel/vga_fb.c:3406` `void vga_fb_resize(int dcols, int drows)`
-- `vga_fb_reset_default` (function) `kernel/vga_fb.c:3426` `void vga_fb_reset_default(void)` -- int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if...
-- `wallpaper_ensure` (function) `kernel/vga_fb.c:3480` `static void wallpaper_ensure(void)`
-- `wallpaper_usable` (function) `kernel/vga_fb.c:3532` `static int wallpaper_usable(void)` -- d[2] = px[0]; if (bpx == 4) d[3] = 0; } } } stbi_image_free(img); wall_native = cache; wall_cw = fb_width; wall_ch =...
-- `wallpaper_draw` (function) `kernel/vga_fb.c:3537` `static void wallpaper_draw(void)`
-- `pipe_field` (function) `kernel/vga_fb.c:3563` `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` -- --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line...
-- `icon_nearest` (function) `kernel/vga_fb.c:3581` `static int icon_nearest(int r, int g, int b)` -- Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far...
-- `icon_embedded` (function) `kernel/vga_fb.c:3597` `static const uint8_t *icon_embedded(const char *name)` -- for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b...
-- `icon_decode` (function) `kernel/vga_fb.c:3617` `static const uint8_t *icon_decode(const char *path)` -- Decode a shortcut's PNG to raw 32x32 RGBA pixels.
-- `icon_embedded_rgba` (function) `kernel/vga_fb.c:3651` `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` -- Expand an embedded index icon (desktop_icons.h, transparent 0) to RGBA through the icon palette, so fallback art...
-- `dock_label_px` (function) `kernel/vga_fb.c:3679` `static int dock_label_px(const struct desktop_shortcut *sc)` -- Width of the longest shortcut label in pixels (cached after load).
-- `shortcuts_layout` (function) `kernel/vga_fb.c:3688` `static void shortcuts_layout(void)` -- Dock layout: one centred row just above the taskbar.
-- `shortcut_cell_left` (function) `kernel/vga_fb.c:3706` `static int shortcut_cell_left(int i)` -- dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y; x0 = (fb_width - dock_w) / 2; if (x0 < 0) x0 = 0...
-- `desktop_shortcuts_load` (function) `kernel/vga_fb.c:3713` `void desktop_shortcuts_load(void)`
-- `shortcut_draw_scaled` (function) `kernel/vga_fb.c:3769` `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
-                             ...` -- Blit one shortcut icon scaled to dw x dh at (dx, dy), nearest neighbour from the cached 32x32 RGBA source.
-- `dock_hover_index` (function) `kernel/vga_fb.c:3794` `static int dock_hover_index(int mx, int my)` -- Index of the shortcut column under (mx, my), or -1.
-- `dock_bounce_counts` (function) `kernel/vga_fb.c:3821` `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)`
-- `dock_click_count` (function) `kernel/vga_fb.c:3831` `void dock_click_count(unsigned long *edges)`
-- `dock_bounce_elapsed` (function) `kernel/vga_fb.c:3837` `static unsigned long dock_bounce_elapsed(void)` -- Ticks elapsed since the bounce click, capped so the subtraction can * never wrap on a late read.
-- `dock_bounce_live` (function) `kernel/vga_fb.c:3845` `static int dock_bounce_live(void)` -- Ticks elapsed since the bounce click, capped so the subtraction can * never wrap on a late read. static unsigned...
-- `dock_pending_active` (function) `kernel/vga_fb.c:3895` `int dock_pending_active(void)`
-- `dock_paint_icons` (function) `kernel/vga_fb.c:3903` `static void dock_paint_icons(int hover)` -- Paint every shortcut icon and label at the given hover sizes.
-- `desktop_shortcuts_draw` (function) `kernel/vga_fb.c:3939` `void desktop_shortcuts_draw(void)`
-- `wallpaper_rect` (function) `kernel/vga_fb.c:3966` `static void wallpaper_rect(int x0, int y0, int w, int h)` -- Paint one wallpaper rectangle from the cache (solid fill when the cache * is absent or stale): the strip-erase...
-- `dock_paint_hover` (function) `kernel/vga_fb.c:3997` `static void dock_paint_hover(int hover)` -- Hover repaint without the fullscreen flash: erase only the dock strip (bar plus the overflow the magnified icons...
-- `command` (function) `kernel/vga_fb.c:4028` `* its launch command (config-driven, covers apps that never set a window * title);`
-- `gfx_task_icon` (function) `kernel/vga_fb.c:4033` `static const uint8_t *gfx_task_icon(void)` -- Icon for the taskbar running-app button.
-- `desktop_shortcuts_hit_test` (function) `kernel/vga_fb.c:4054` `const char *desktop_shortcuts_hit_test(int mx, int my)`
-- `mouse_focus_topmost` (function) `kernel/vga_fb.c:4068` `static int mouse_focus_topmost(int mx, int my)` -- const char *desktop_shortcuts_hit_test(int mx, int my) { shortcuts_layout(); for (int i = 0; i < shortcut_count...
-- `mouse_apply_wheel` (function) `kernel/vga_fb.c:4094` `static void mouse_apply_wheel(int wheel, int step)` -- if (!twins[f].present) continue; if (tw_hit(f, mx, my)) { if (f == wm_focus) return 0; before = wm_focus...
-- `pointer` (function) `kernel/vga_fb.c:4115` `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...`
-- `mouse_drag_gfx` (function) `kernel/vga_fb.c:4118` `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` -- Docstring: Title-bar drag of the graphics window.
-- `mouse_drag_term` (function) `kernel/vga_fb.c:4170` `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` -- Docstring: Title-bar drag of the focused terminal window.
-- `mouse_scrollbar` (function) `kernel/vga_fb.c:4193` `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` -- wm_grab_cx = (mx - term_px_x) / FONT_W; } } else { wm_dragging = 0; } if (wm_dragging) { vga_fb_drag_terminal(mx...
-- `vga_fb_mouse_tick` (function) `kernel/vga_fb.c:4216` `void vga_fb_mouse_tick(void)` -- total = total_rows(); visible = term_rows; if (total <= visible || sh <= 0) return; max_off = total - visible...
-- `path` (function) `kernel/vga_fb.c:4227` `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...`
-- `state` (function) `kernel/vga_fb.c:4339` `* ignores the button state (the arming press is consumed) and settles
-     * once on expiry, so t...`
-- `vga_fb_mouse_init` (function) `kernel/vga_fb.c:4417` `void vga_fb_mouse_init(void)`
-- `vga_fb_init` (function) `kernel/vga_fb.c:4445` `void vga_fb_init(void)`
+## kernel/seccomp_bpf.c
+Depends on: `headers/seccomp_bpf.h`
+- `sbpf_opcode_ok` (function) `kernel/seccomp_bpf.c:17` `static int sbpf_opcode_ok(const sbpf_insn *in)` -- Freestanding: no libc, no kernel state; the same object links into the kernel and into the host test.  #include...
+- `sbpf_check` (function) `kernel/seccomp_bpf.c:69` `int sbpf_check(const sbpf_insn *prog, unsigned len, unsigned short *scratch)`
+- `sbpf_load_word` (function) `kernel/seccomp_bpf.c:114` `static unsigned int sbpf_load_word(const sbpf_data *d, unsigned off)` -- scratch[pc + 1u + in->k] &= (unsigned short)memvalid; } else { scratch[pc + 1u + in->jt] &= (unsigned...
+- `sbpf_run` (function) `kernel/seccomp_bpf.c:120` `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d)`
+- `sbpf_action_rank` (function) `kernel/seccomp_bpf.c:194` `int sbpf_action_rank(unsigned int action)`
 
-## kernel/vga_fx.c
-Depends on: `headers/vga_fb.h`, `headers/vga_fx.h`
-- `vga_fx_set_enabled` (function) `kernel/vga_fx.c:22` `void vga_fx_set_enabled(int on)`
-- `vga_fx_enabled` (function) `kernel/vga_fx.c:27` `int vga_fx_enabled(void)`
-- `fx_wait_until` (function) `kernel/vga_fx.c:35` `static void fx_wait_until(unsigned long deadline)` -- Deadline pacing over the PIT-calibrated TSC clock.
-- `vga_fx_snap_rect` (function) `kernel/vga_fx.c:41` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)`
-- `vga_fx_restore_rect` (function) `kernel/vga_fx.c:63` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)`
-- `vga_fx_free` (function) `kernel/vga_fx.c:77` `void vga_fx_free(unsigned int *buf)`
-- `once` (function) `kernel/vga_fx.c:90` `* once (prev[] tracks the revealed frontier per column), then the final
- * restore guarantees the...`
-- `vga_fx_melt_rect` (function) `kernel/vga_fx.c:150` `void vga_fx_melt_rect(int x, int y, int w, int h,
-    const unsigned int *oldb, const unsigned in...` -- Drive one old->new melt.
-- `vga_fx_melt_from_black` (function) `kernel/vga_fx.c:159` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` -- Boot melt: the framebuffer is already cleared to black on entry, so no * old snapshot is needed; the new frame...
+## kernel/serial.c
+Depends on: `headers/sched.h`
+- `serial_init` (function) `kernel/serial.c:20` `void serial_init(void)`
+- `serial_tx_ready` (function) `kernel/serial.c:30` `static int serial_tx_ready(void)`
+- `serial_rx_ready` (function) `kernel/serial.c:31` `static int serial_rx_ready(void)`
+- `serial_putc` (function) `kernel/serial.c:33` `void serial_putc(char c)`
+- `serial_e_count` (function) `kernel/serial.c:38` `unsigned long serial_e_count(void)`
+- `serial_puts` (function) `kernel/serial.c:40` `void serial_puts(const char *s)`
+- `serial_available` (function) `kernel/serial.c:42` `int serial_available(void)`
+- `serial_getc` (function) `kernel/serial.c:44` `int serial_getc(void)`
 
-## mcp/mcp_dbg_driver.py
-Depends on: `kernel/time.c`
-- `Client.__init__` (method) `mcp/mcp_dbg_driver.py:16` `def __init__(self)`
-- `Client.request` (method) `mcp/mcp_dbg_driver.py:28` `def request(self, method, params)`
-- `Client.tool` (method) `mcp/mcp_dbg_driver.py:46` `def tool(self, name, params)`
-- `Client.close` (method) `mcp/mcp_dbg_driver.py:54` `def close(self)`
-- `Client.main` (method) `mcp/mcp_dbg_driver.py:64` `def main()`
+## kernel/shell.c
+Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
+- `shell_queue_launch` (function) `kernel/shell.c:87` `void shell_queue_launch(const char *cmd)` -- Queue a desktop-icon command to run after the current user program exits.
+- `shell_readline_active` (function) `kernel/shell.c:115` `int shell_readline_active(void)`
+- `shell_focus_park` (function) `kernel/shell.c:116` `void shell_focus_park(void)`
+- `shell_focus_restore` (function) `kernel/shell.c:121` `void shell_focus_restore(void)`
+- `shell_prompt` (function) `kernel/shell.c:148` `static void shell_prompt(void)`
+- `shell_run_pipeline` (function) `kernel/shell.c:151` `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
+- `shell_parse_vol` (function) `kernel/shell.c:158` `static int shell_parse_vol(const char *s, unsigned *out)` -- Strict decimal parse for the `vol` builtin: delegates the digit and overflow work to shell_parse_long and clamps the...
+- `shell_readline_buf` (function) `kernel/shell.c:184` `void shell_readline_buf(char *buf, int size)` -- Read one line into buf (at most size-1 chars).
+- `shell_name_base` (function) `kernel/shell.c:213` `static const char *shell_name_base(const char *path)` -- The component of a ramdisk path after the last '/', or the whole path when * there is no '/'.
+- `shell_complete_tier` (function) `kernel/shell.c:238` `static int shell_complete_tier(const char *nm)` -- Runnable tier of a file name for first-word TAB completion: 0=.elf, 1=.cvm, 2=.o, 3=anything else.
+- `shell_complete_replace` (function) `kernel/shell.c:250` `static void shell_complete_replace(char *buf, int size, int *pos,
+                               ...`
+- `shell_complete_minifs_arg` (function) `kernel/shell.c:271` `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,
+                     ...` -- Complete an argument word from MiniFS (the ramdisk loop at the call site covers the ramdisk half).
+- `shell_readline` (function) `kernel/shell.c:338` `static void shell_readline(void)`
+- `shell_hist_show` (function) `kernel/shell.c:346` `static void shell_hist_show(char *buf, int size, int *pos, const char *text)` -- Redraw the edit line: erase what is shown, then write `text` into buf and onto the console, leaving the text cursor...
+- `shell_line_repaint` (function) `kernel/shell.c:368` `static void shell_line_repaint(char *buf, int size, int pos)` -- Repaint the edit line after a cursor move or mid-line edit: erase the whole visible line, rewrite buf, then back the...
+- `shell_line_insert` (function) `kernel/shell.c:381` `static void shell_line_insert(char *buf, int size, int *pos, char c)` -- Insert character c into buf at `pos`, shifting the tail right.
+- `shell_line_backspace` (function) `kernel/shell.c:390` `static void shell_line_backspace(char *buf, int size, int *pos)` -- Insert character c into buf at `pos`, shifting the tail right.
+- `shell_line_delete` (function) `kernel/shell.c:398` `static void shell_line_delete(char *buf, int size, int *pos)` -- kmemmove(buf + *pos + 1, buf + *pos, (unsigned long)(len - *pos + 1)); buf[*pos] = c; (*pos)++; } /* Delete the...
+- `shell_line_kill_front` (function) `kernel/shell.c:405` `static void shell_line_kill_front(char *buf, int size, int *pos)` -- int len = (int)kstrlen(buf); if (*pos <= 0) return; kmemmove(buf + *pos - 1, buf + *pos, (unsigned long)(len - *pos...
+- `shell_line_kill_tail` (function) `kernel/shell.c:412` `static void shell_line_kill_tail(char *buf, int size, int *pos)` -- static void shell_line_delete(char *buf, int size, int *pos) { int len = (int)kstrlen(buf); if (*pos >= len) return...
+- `shell_line_kill_word` (function) `kernel/shell.c:417` `static void shell_line_kill_word(char *buf, int size, int *pos)` -- /* Delete from the cursor to the start of the line (Ctrl+U). static void shell_line_kill_front(char *buf, int size...
+- `shell_hist_newest_match` (function) `kernel/shell.c:429` `static int shell_hist_newest_match(const char *prefix, unsigned long plen)` -- Most recent history entry starting with `prefix` (of length plen) that is strictly longer than the prefix, or -1...
+- `line` (function) `kernel/shell.c:446` `* to the live line (handled by the caller resetting shell_hist_idx). */
+static void shell_hist_na...`
+- `shell_readline_hist` (function) `kernel/shell.c:491` `static void shell_readline_hist(char *buf, int size)` -- Shell prompt readline: like shell_readline_buf plus command history.
+- `root` (function) `kernel/shell.c:651` `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
+- `shell_parse` (function) `kernel/shell.c:811` `int shell_parse(char *line, char **argv, int max_args)`
+- `desktop_unflag` (function) `kernel/shell.c:833` `static void desktop_unflag(const char *name);`
+- `shell_run_init` (function) `kernel/shell.c:840` `static void shell_run_init(void)` -- Startup commands from etc/init: one shell command per line, `#` comments and blank lines skipped.
+- `shell_run` (function) `kernel/shell.c:879` `void shell_run(void)`
+- `shell_load` (function) `kernel/shell.c:949` `static int shell_load(const char *fname, char *progname_out, void **entry_out)` -- Load an ELF file from the ramdisk and register it under its filename stem.
+- `outw_port` (function) `kernel/shell.c:1012` `static inline void outw_port(unsigned short port, unsigned short val)`
+- `shell_cmd_poweroff` (function) `kernel/shell.c:1018` `static void shell_cmd_poweroff(void)`
+- `shell_run_dir_for` (function) `kernel/shell.c:1034` `static const ShellRunDir *shell_run_dir_for(const char *name)` -- The toolchain directory that owns `name`, chosen by suffix.
+- `shell_file_is_real` (function) `kernel/shell.c:1052` `static int shell_file_is_real(const char *resolved)` -- Is `resolved` (already normalised against the cwd) a real ramdisk file?
+- `shell_resolve_run` (function) `kernel/shell.c:1064` `static int shell_resolve_run(const char *name, char *out, unsigned cap)` -- Resolve `name` to a full ramdisk path suitable for running.
+- `etrel_path_trusted` (function) `kernel/shell.c:1106` `static int etrel_path_trusted(const char *full)` -- ET_REL trust gate (boyscout fix for ring-0 .o without validation): relocatables execute as kernel extensions, so...
+- `shell_run_elf_buf_path` (function) `kernel/shell.c:1146` `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+                    ...` -- Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`. argv[0] is the program name the program sees.
+- `shell_run_elf_file` (function) `kernel/shell.c:1179` `static int shell_run_elf_file(const char *full, int argc, char **argv)` -- Load the ramdisk file at `full` and run it as an ELF.
+- `shell_run_elf_minifs` (function) `kernel/shell.c:1192` `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` -- Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on...
+- `shell_run_cvm` (function) `kernel/shell.c:1249` `static int shell_run_cvm(const char *full, int argc, char **argv)` -- Run a `.cvm` module at the resolved path `full`.
+- `shell_run_file` (function) `kernel/shell.c:1285` `static int shell_run_file(const char *name, int argc, char **argv)` -- Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the...
+- `window` (function) `kernel/shell.c:1322` `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
+- `shell_read_elf_bytes` (function) `kernel/shell.c:1329` `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+                          ...` -- --- Multitask run (mrun): concurrent isolated ELFs ----  `mrun a.elf b.elf ...` loads each ET_EXEC/ET_DYN into its...
+- `code` (function) `kernel/shell.c:1395` `* the last exit code (130 when interrupted). */
+static int shell_wait_fg(int *pids, int n, int ki...`
+- `shell_cmd_mrun` (function) `kernel/shell.c:1449` `static void shell_cmd_mrun(int argc, char **argv)`
+- `shell_run_bg` (function) `kernel/shell.c:1497` `static void shell_run_bg(const char *name, int argc, char **argv)` -- `run <elf> &`: background a single isolated ELF (same spawn path as mrun).
+- `this` (function) `kernel/shell.c:1527` `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
+- `desktop_path` (function) `kernel/shell.c:1540` `static void desktop_path(const char *name, char *dst, unsigned cap)`
+- `desktop_flag` (function) `kernel/shell.c:1549` `static void desktop_flag(const char *name)`
+- `desktop_flag_on` (function) `kernel/shell.c:1559` `static int desktop_flag_on(const char *name)`
+- `flows` (function) `kernel/shell.c:1573` `* and external flows (make wl) set it themselves. */
+static void desktop_unflag(const char *name)`
+- `desktop_srv_alive` (function) `kernel/shell.c:1581` `static int desktop_srv_alive(void)`
+- `shell_cmd_desktop` (function) `kernel/shell.c:1597` `static void shell_cmd_desktop(int argc, char **argv)`
+- `shell_run_any` (function) `kernel/shell.c:1661` `int shell_run_any(const char *name, int argc, char **argv)` -- Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver....
+- `context` (function) `kernel/shell.c:1688` `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
+- `gfx_parse_int` (function) `kernel/shell.c:1734` `static int gfx_parse_int(const char *s, int *out)` -- --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives...
+- `gfx_read_palette` (function) `kernel/shell.c:1754` `static void gfx_read_palette(unsigned char pal[768])` -- Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation).
+- `shell_cmd_gfx` (function) `kernel/shell.c:1761` `static void shell_cmd_gfx(int argc, char **argv)`
+- `shell_cmd_wm` (function) `kernel/shell.c:1913` `static void shell_cmd_wm(int argc, char **argv)` -- `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and...
+- `tree` (function) `kernel/shell.c:2048` `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+ * Ctrl+C (it never poll...`
+- `shell_cmd_jobs` (function) `kernel/shell.c:2061` `static void shell_cmd_jobs(void)`
+- `shell_has_child` (function) `kernel/shell.c:2090` `static int shell_has_child(int pid)` -- Live-child check for one pid: a slot that is neither FREE nor reparented still belongs to this shell.
+- `shell_cmd_wait` (function) `kernel/shell.c:2100` `static void shell_cmd_wait(int argc, char **argv)`
+- `shell_cmd_kill` (function) `kernel/shell.c:2135` `static void shell_cmd_kill(int argc, char **argv)`
+- `shell_cmd_mem` (function) `kernel/shell.c:2158` `static void shell_cmd_mem(void)` -- `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS...
+- `VMA` (function) `kernel/shell.c:2191` `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+ * stack, 128 regions prin...`
+- `to` (function) `kernel/shell.c:2264` `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+static void shell_cmd_trac...`
+- `shell_parse_u64` (function) `kernel/shell.c:2333` `static int shell_parse_u64(const char *s, unsigned long *out)` -- Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing...
+- `shell_parse_long` (function) `kernel/shell.c:2349` `int shell_parse_long(const char *s, long *out)` -- Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow...
+- `shell_parse_pid` (function) `kernel/shell.c:2370` `int shell_parse_pid(const char *s, int min_pid, int *out)` -- Bounded pid parse shared by wait/kill/vmmap: one range check instead of three open-coded copies. min_pid is 1 for...
+- `shell_cmd_gdb` (function) `kernel/shell.c:2385` `static void shell_cmd_gdb(int argc, char **argv)` -- `gdb <op>` -- in-OS inspector half of the debugger story.
+- `shell_cmd_hash` (function) `kernel/shell.c:2428` `static void shell_cmd_hash(int argc, char **argv)` -- `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file...
+- `shell_resolve_arg` (function) `kernel/shell.c:2447` `static int shell_resolve_arg(const char *cmd, const char *arg,
+                             const...` -- Docstring: Resolve `arg` against the cwd into `out` (`RAMDISK_FNAME_LEN` bytes); on failure print `<cmd>: <arg>...
+- `shell_httpd_one` (function) `kernel/shell.c:2553` `static void shell_httpd_one(int child, const char *root)` -- Serve one accepted connection: read one request, map GET path onto the VFS mounts under root, stream head + body, close.
+- `shell_httpd_serve` (function) `kernel/shell.c:2638` `static void shell_httpd_serve(unsigned short port, const char *root,
+        int max_conn)` -- Accept loop: one connection at a time, Ctrl+C quits.
+- `shell_cross_ls` (function) `kernel/shell.c:2805` `static void shell_cross_ls(const char *drv, const char *imgarg,
+                           const ...` -- List one directory from a cross-filesystem VFS driver (fat:, ext4:) to the console: same "drv:/img:path" addressing...
+- `shell_cross_cat` (function) `kernel/shell.c:2846` `static void shell_cross_cat(const char *drv, const char *imgarg,
+                            cons...` -- Stream one file from a cross-filesystem VFS driver (fat:, ext4:) to the console: "drv:/img:path" per open (the...
+- `shell_exec_builtin` (function) `kernel/shell.c:2888` `void shell_exec_builtin(int argc, char **argv)`
+- `terminal` (function) `kernel/shell.c:2963` `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
+- `driver` (function) `kernel/shell.c:3306` `* stream through the fat: VFS driver ("img:fatpath" per open,
+     * registered at boot beside me...`
+- `frame` (function) `kernel/shell.c:3700` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
+- `stdout` (function) `kernel/shell.c:4068` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+- `shell_is_pipe_tok` (function) `kernel/shell.c:4080` `static int shell_is_pipe_tok(const char *a)`
+- `shell_run_stage` (function) `kernel/shell.c:4119` `static char *shell_run_stage(char **sargv, int sargc,
+        const char *input, unsigned long in...` -- Run one pipeline stage with stdin/out doors installed. input may be 0 (first stage reads the live console).
 
-## mcp/mcp_dogfood.py
-Depends on: `kernel/time.c`
-- `Client.__init__` (method) `mcp/mcp_dogfood.py:20` `def __init__(self, addons_dir)`
-- `Client.request` (method) `mcp/mcp_dogfood.py:40` `def request(self, method, params)`
-- `Client.tool` (method) `mcp/mcp_dogfood.py:58` `def tool(self, name, params)`
-- `Client.close` (method) `mcp/mcp_dogfood.py:68` `def close(self)`
-- `Client.main` (method) `mcp/mcp_dogfood.py:78` `def main()`
+## kernel/spawn.c
+Depends on: `headers/arch/x86/msr.h`, `headers/arena.h`, `headers/minifs.h`, `headers/sched.h`, `headers/spawn.h`, `headers/vga_fb.h`, `headers/vma.h`
+- `spawn_backup` (function) `kernel/spawn.c:11` `int spawn_backup(spawn_ctx_t *ctx)` -- #include "kernel.h" #include "sched.h" #include "vma.h" #include "spawn.h" #include "arena.h" #include "minifs.h"...
+- `spawn_restore` (function) `kernel/spawn.c:38` `void spawn_restore(spawn_ctx_t *ctx)` -- if (!ctx->pool_copy) return 0; for (i = 0; i < vma_pool_n; i++) ctx->pool_copy[i] = vma_pool[i]; } ctx->live_root =...
+- `spawn_free_argv` (function) `kernel/spawn.c:87` `void spawn_free_argv(char **kargv, int argc)` -- Docstring: Release a copy produced by spawn_copy_argv.
+- `spawn_copy_argv` (function) `kernel/spawn.c:99` `char **spawn_copy_argv(int argc, const char **uargv)` -- Docstring: Copy user argv into kernel memory, zero terminated.
+- `spawn_validate_argv` (function) `kernel/spawn.c:143` `int spawn_validate_argv(int argc, const char **uargv)` -- slen = (unsigned long)kstrlen(uargv[i]) + 1; dst = (char *)arena_alloc(&a, (size_t)slen, 1); if (!dst) {...
+- `spawn_load_image` (function) `kernel/spawn.c:161` `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out)` -- if (!user_range_ok((unsigned long)uargv, (unsigned long)(argc + 1) * sizeof(char *))) return 0; for (i = 0; i <...
+- `spawn_run_rel` (function) `kernel/spawn.c:196` `static int spawn_run_rel(const char *resolved, const char *redirect,
+                         uns...` -- MiniFSInode mi; if (minifs_stat(ino, &mi) >= 0 && mi.size > 0) { data_size = mi.size; data = (unsigned char...
+- `spawn_run_exec` (function) `kernel/spawn.c:222` `static int spawn_run_exec(const char *resolved, const char *redirect,
+                           ...` -- return EFAULT; } entry = elf_load((void *)data, data_size, &base); if (redirect && redirect[0]) did_redirect =...
+- `spawn_execute` (function) `kernel/spawn.c:268` `int spawn_execute(const char *resolved, const char *redirect,
+                  unsigned char *da...` -- do_kill(pid); do_waitpid(pid); rc = 130; break; } yield(); } } if (did_redirect && redirect_commit(redirect, 0) !=...
 
-## mcp/minios_addons.py
-Depends on: `kernel/time.c`
-Imported by: `mcp/minios_mcp.py`
-- `AddonError.parse_addon_yaml` (method) `mcp/minios_addons.py:73` `def parse_addon_yaml(text)` -- Parse the strict YAML subset.
-- `AddonError.fail` (method) `mcp/minios_addons.py:85` `def fail(lineno, why)`
-- `AddonError.validate_addon` (method) `mcp/minios_addons.py:205` `def validate_addon(addon, source)` -- Check bounds and character sets.
-- `AddonError.validate_addon_path` (method) `mcp/minios_addons.py:295` `def validate_addon_path(path)` -- dst paths live on the ramdisk: relative, no '..', bounded charset.
-- `AddonError.validate_shell_line` (method) `mcp/minios_addons.py:309` `def validate_shell_line(line)` -- Build/verify lines are single printable-ASCII shell commands.
-- `AddonError.load_addons_dir` (method) `mcp/minios_addons.py:323` `def load_addons_dir(addons_dir)` -- Load every addon yaml; each entry is a dict or an error string.
-- `AddonError.split_for_editor` (method) `mcp/minios_addons.py:347` `def split_for_editor(text)` -- Split a source into editor-sized chunks.
-- `AddonError.exit_code_of` (method) `mcp/minios_addons.py:372` `def exit_code_of(text)`
-- `AddonState.__init__` (method) `mcp/minios_addons.py:380` `def __init__(self, path)`
-- `AddonState.load` (method) `mcp/minios_addons.py:383` `def load(self)`
-- `AddonState.save` (method) `mcp/minios_addons.py:393` `def save(self, addons)`
-- `AddonState.install_addon` (method) `mcp/minios_addons.py:401` `def install_addon(session, addon, cfg)` -- Install one validated addon into the booted MiniOS session.
+## kernel/string.c
+Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
+- `kstrlen` (function) `kernel/string.c:17` `unsigned long kstrlen(const char *s)`
+- `kstrcpy` (function) `kernel/string.c:23` `char *kstrcpy(char *dst, const char *src)`
+- `kstrncpy` (function) `kernel/string.c:29` `char *kstrncpy(char *dst, const char *src, unsigned long n)`
+- `kstrncat` (function) `kernel/string.c:35` `char *kstrncat(char *dst, const char *src, unsigned long n)`
+- `kstrcmp` (function) `kernel/string.c:43` `int kstrcmp(const char *a, const char *b)`
+- `kstrncmp` (function) `kernel/string.c:48` `int kstrncmp(const char *a, const char *b, unsigned long n)`
+- `kstrchr` (function) `kernel/string.c:53` `char *kstrchr(const char *s, int c)`
+- `kstrstr` (function) `kernel/string.c:58` `char *kstrstr(const char *hay, const char *ndl)`
+- `kmemcpy` (function) `kernel/string.c:68` `void *kmemcpy(void *dst, const void *src, unsigned long n)`
+- `kmemset` (function) `kernel/string.c:75` `void *kmemset(void *dst, int c, unsigned long n)`
+- `kmemcmp` (function) `kernel/string.c:81` `int kmemcmp(const void *a, const void *b, unsigned long n)`
+- `kmemmove` (function) `kernel/string.c:87` `void *kmemmove(void *dst, const void *src, unsigned long n)`
+- `katol` (function) `kernel/string.c:95` `long katol(const char *s)`
+
+## kernel/symtab.c
+- `k_register_symbol` (function) `kernel/symtab.c:10` `void k_register_symbol(const char *name, void *addr)`
+- `ksym_resolve` (function) `kernel/symtab.c:18` `void *ksym_resolve(const char *name)`
+- `kprog_slot` (function) `kernel/symtab.c:34` `KProg *kprog_slot(const char *name)`
+- `kprog_lookup` (function) `kernel/symtab.c:42` `KProg *kprog_lookup(const char *name)`
+- `k_register_program` (function) `kernel/symtab.c:49` `void k_register_program(const char *name, prog_entry_t entry)`
+- `k_register_process` (function) `kernel/symtab.c:57` `void k_register_process(const char *name, void *proc_entry)`
+- `k_spawn` (function) `kernel/symtab.c:65` `int k_spawn(const char *name, int argc, char **argv)`
+
+## kernel/sync.c
+Depends on: `headers/sync.h`
+- `wq_init` (function) `kernel/sync.c:27` `void wq_init(wait_queue_t *q)`
+- `sleep_on` (function) `kernel/sync.c:33` `void sleep_on(wait_queue_t *q)`
+- `wake_up` (function) `kernel/sync.c:54` `int wake_up(wait_queue_t *q)`
+- `wake_up_all` (function) `kernel/sync.c:70` `int wake_up_all(wait_queue_t *q)`
+- `mutex_init` (function) `kernel/sync.c:76` `void mutex_init(mutex_t *m)`
+- `pi_valid` (function) `kernel/sync.c:93` `static int pi_valid(int pid)`
+- `pi_set_base` (function) `kernel/sync.c:99` `void pi_set_base(int pid, int prio)`
+- `pi_get_eff` (function) `kernel/sync.c:108` `int pi_get_eff(int pid)`
+- `pi_recompute` (function) `kernel/sync.c:113` `static void pi_recompute(int pid)`
+- `pi_boost` (function) `kernel/sync.c:124` `static void pi_boost(int waiter, int owner)`
+- `mutex_lock` (function) `kernel/sync.c:150` `void mutex_lock(mutex_t *m)`
+- `mutex_trylock` (function) `kernel/sync.c:170` `int mutex_trylock(mutex_t *m)`
+- `mutex_unlock` (function) `kernel/sync.c:186` `void mutex_unlock(mutex_t *m)`
+- `sem_init` (function) `kernel/sync.c:207` `void sem_init(sem_t *s, int value)`
+- `sem_wait` (function) `kernel/sync.c:213` `void sem_wait(sem_t *s)`
+- `sem_post` (function) `kernel/sync.c:227` `void sem_post(sem_t *s)`
+- `cond_init` (function) `kernel/sync.c:235` `void cond_init(cond_t *c)`
+- `cond_wait` (function) `kernel/sync.c:239` `void cond_wait(cond_t *c, mutex_t *m)`
+- `cond_signal` (function) `kernel/sync.c:245` `void cond_signal(cond_t *c)`
+- `cond_broadcast` (function) `kernel/sync.c:249` `void cond_broadcast(cond_t *c)`
+- `rwlock_init` (function) `kernel/sync.c:253` `void rwlock_init(rwlock_t *rw)`
+- `rwlock_read_lock` (function) `kernel/sync.c:260` `void rwlock_read_lock(rwlock_t *rw)`
+- `rwlock_read_unlock` (function) `kernel/sync.c:274` `void rwlock_read_unlock(rwlock_t *rw)`
+- `rwlock_write_lock` (function) `kernel/sync.c:283` `void rwlock_write_lock(rwlock_t *rw)`
+- `rwlock_write_unlock` (function) `kernel/sync.c:297` `void rwlock_write_unlock(rwlock_t *rw)`
 
 
 Next: [API_p8.md](API_p8.md)

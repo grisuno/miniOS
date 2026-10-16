@@ -155,6 +155,51 @@ Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_ker
   - `register_host_natives` (function, line 392) `static void register_host_natives(CvmState *vm)`
   - `cvm_main` (function, line 437) `int cvm_main(int argc, char **argv)`
 
+## kernel/ed25519.c
+- Doc: Docstring: kernel/ed25519.c -- Ed25519 signature verification.
+- Layer: utility
+- Language: c
+- Symbols:
+  - `ed_fe` (struct, line 28)
+  - `ed_ge` (struct, line 32)
+  - `ed_u64` (type_alias, line 23) `typedef unsigned long long ed_u64;`
+  - `ed_rotr` (function, line 84) `static ed_u64 ed_rotr(ed_u64 x, unsigned n)`
+  - `ed_sha_block` (function, line 89) `static void ed_sha_block(ed_sha *c, const unsigned char *p)`
+  - `ed_sha512_init` (function, line 147) `void ed_sha512_init(ed_sha *c)`
+  - `ed_sha512_update` (function, line 162) `void ed_sha512_update(ed_sha *c, const unsigned char *data, unsigned long len)`
+  - `ed_sha512_final` (function, line 188) `void ed_sha512_final(ed_sha *c, unsigned char out[64])`
+  - `ed_fe_copy` (function, line 214) `static void ed_fe_copy(ed_fe *r, const ed_fe *a)`
+  - `ed_fe_zero` (function, line 222) `static void ed_fe_zero(ed_fe *r)`
+  - `ed_fe_one` (function, line 230) `static void ed_fe_one(ed_fe *r)`
+  - `ed_fe_cmov` (function, line 238) `static void ed_fe_cmov(ed_fe *r, const ed_fe *b, unsigned flag)`
+  - `ed_fe_ge` (function, line 247) `static unsigned ed_fe_ge(const ed_fe *a, const ed_fe *b)`
+  - `ed_fe_rawsub` (function, line 258) `static void ed_fe_rawsub(ed_fe *r, const ed_fe *a, const ed_fe *b)`
+  - `ed_fe_add` (function, line 280) `static void ed_fe_add(ed_fe *r, const ed_fe *a, const ed_fe *b)`
+  - `ed_fe_sub` (function, line 302) `static void ed_fe_sub(ed_fe *r, const ed_fe *a, const ed_fe *b)`
+  - `ed_fe_fold` (function, line 344) `static void ed_fe_fold(ed_fe *r, ed_u64 w[8])`
+  - `ed_fe_mul` (function, line 387) `static void ed_fe_mul(ed_fe *r, const ed_fe *a, const ed_fe *b)`
+  - `ed_fe_sq` (function, line 416) `static void ed_fe_sq(ed_fe *r, const ed_fe *a)`
+  - `ed_fe_pow` (function, line 421) `static void ed_fe_pow(ed_fe *r, const ed_fe *a, const unsigned char *bits, unsigned nbits)`
+  - `ed_fe_inv` (function, line 438) `static void ed_fe_inv(ed_fe *r, const ed_fe *a)`
+  - `ed_fe_frombytes` (function, line 449) `static void ed_fe_frombytes(ed_fe *r, const unsigned char b[32])`
+  - `ed_fe_tobytes` (function, line 461) `static void ed_fe_tobytes(unsigned char b[32], const ed_fe *a)`
+  - `ed_fe_eq` (function, line 470) `static unsigned ed_fe_eq(const ed_fe *a, const ed_fe *b)`
+  - `ed_bytes_lt_q` (function, line 477) `static unsigned ed_bytes_lt_q(const unsigned char b[32])`
+  - `ed_scalar_lt_l` (function, line 495) `static unsigned ed_scalar_lt_l(const unsigned char b[32])`
+  - `ed_rem_sub` (function, line 517) `static void ed_rem_sub(ed_u64 r[5], const ed_u64 a[5], const ed_u64 b[5])`
+  - `ed_rem_ge` (function, line 545) `static unsigned ed_rem_ge(const ed_u64 a[5], const ed_u64 b[5])`
+  - `ed_mod_l` (function, line 557) `static void ed_mod_l(ed_fe *r, const unsigned char h[64])`
+  - `ed_ge_copy` (function, line 596) `static void ed_ge_copy(ed_ge *r, const ed_ge *a)`
+  - `ed_ge_cmov` (function, line 604) `static void ed_ge_cmov(ed_ge *r, const ed_ge *b, unsigned flag)`
+  - `ed_ge_add` (function, line 612) `static void ed_ge_add(ed_ge *r, const ed_ge *p, const ed_ge *q, const ed_fe *d2)`
+  - `ed_ge_double` (function, line 644) `static void ed_ge_double(ed_ge *r, const ed_ge *p)`
+  - `ed_ge_scalarmult` (function, line 686) `static void ed_ge_scalarmult(ed_ge *r, const ed_ge *p, const unsigned char s[32],
+               ...`
+  - `ed_curve_d` (function, line 706) `static void ed_curve_d(ed_fe *d)`
+  - `ed25519_verify` (function, line 810) `int ed25519_verify(const unsigned char sig[64], const unsigned char *msg,
+                   unsi...`
+- Depends on: `headers/sign.h`
+
 ## kernel/editor.c
 - Doc: edit_list: List a (possibly empty) range [start, end], both 1-based inclusive.
 - Layer: utility
@@ -211,9 +256,11 @@ Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_ker
   - `futex_hash` (function, line 23) `static unsigned long futex_hash(unsigned long uaddr)`
   - `futex_bucket` (function, line 31) `static futex_bucket_t *futex_bucket(unsigned long uaddr)`
   - `futex_init` (function, line 36) `void futex_init(void)`
-  - `futex_linux_cmd` (function, line 84) `int futex_linux_cmd(long op)`
-  - `futex_timeout_remaining_us` (function, line 95) `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us)`
-  - `futex_wake` (function, line 112) `long futex_wake(unsigned long uaddr, int n)`
+  - `futex_unlink_locked` (function, line 50) `static void futex_unlink_locked(futex_bucket_t *b, int pid)`
+  - `futex_forget` (function, line 76) `void futex_forget(int pid)`
+  - `futex_linux_cmd` (function, line 128) `int futex_linux_cmd(long op)`
+  - `futex_timeout_remaining_us` (function, line 139) `long futex_timeout_remaining_us(int cmd, long sec, long nsec, unsigned long now_us)`
+  - `futex_wake` (function, line 158) `long futex_wake(unsigned long uaddr, int n)`
   - `t_cur_pid` (variable, line 13) `extern int t_cur_pid;`
 - Depends on: `headers/futex.h`, `headers/sync.h`
 
@@ -275,61 +322,78 @@ Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_ker
 - Layer: utility
 - Language: c
 - Symbols:
-  - `exec_range` (struct, line 97)
-  - `Elf64_Shdr` (struct, line 22)
-  - `Elf64_Sym` (struct, line 35)
-  - `Elf64_Rela` (struct, line 44)
-  - `Elf64_Phdr` (struct, line 50)
-  - `LdsoLibEnt` (struct, line 381)
-  - `elf_name_copy` (function, line 107) `static void elf_name_copy(char *out, unsigned out_cap, const char *tab,
+  - `exec_range` (struct, line 104)
+  - `Elf64_Shdr` (struct, line 23)
+  - `Elf64_Sym` (struct, line 36)
+  - `Elf64_Rela` (struct, line 45)
+  - `Elf64_Phdr` (struct, line 51)
+  - `LdsoLibEnt` (struct, line 388)
+  - `elf_name_copy` (function, line 114) `static void elf_name_copy(char *out, unsigned out_cap, const char *tab,
                          ...`
-  - `elf_load_fail` (function, line 121) `static void elf_load_fail(void *base, void **sec_addrs, const char *why)`
-  - `elf_load` (function, line 129) `void *elf_load(void *data, unsigned size, void **base_out)`
-  - `ldso_pseudo_stat` (function, line 395) `int ldso_pseudo_stat(int ino, unsigned long *size_out)`
-  - `ldso_pseudo_read` (function, line 409) `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len)`
-  - `ldso_read_file` (function, line 434) `static int ldso_read_file(const char *name, unsigned char **out,
+  - `elf_load_fail` (function, line 128) `static void elf_load_fail(void *base, void **sec_addrs, const char *why)`
+  - `elf_load` (function, line 136) `void *elf_load(void *data, unsigned size, void **base_out)`
+  - `ldso_pseudo_stat` (function, line 402) `int ldso_pseudo_stat(int ino, unsigned long *size_out)`
+  - `ldso_pseudo_read` (function, line 416) `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len)`
+  - `ldso_read_file` (function, line 441) `static int ldso_read_file(const char *name, unsigned char **out,
         unsigned *size_out)`
-  - `ldso_ensure_slot` (function, line 476) `static int ldso_ensure_slot(const char *needed, int *slot_out)`
-  - `consistent` (function, line 572) `* consistent (the next exec forgets them, a dying window frees them),
+  - `ldso_ensure_slot` (function, line 483) `static int ldso_ensure_slot(const char *needed, int *slot_out)`
+  - `consistent` (function, line 579) `* consistent (the next exec forgets them, a dying window frees them),
  * and only reports. */
 sta...`
-  - `ldso_bind_into` (function, line 787) `int ldso_bind_into(void *data, unsigned size, unsigned long base,
+  - `ldso_bind_into` (function, line 794) `int ldso_bind_into(void *data, unsigned size, unsigned long base,
         unsigned long cr3, vma_...`
-  - `apply_exec_relocs` (function, line 977) `static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
+  - `apply_exec_relocs` (function, line 984) `static void apply_exec_relocs(void *data, unsigned size, unsigned long base,
                     ...`
-  - `load_exec_elf` (function, line 1060) `void *load_exec_elf(void *data, unsigned size)`
-  - `base_out` (function, line 1191) `* the link base via base_out (0 when the caller runs static images
+  - `elf_note_pad` (function, line 1072) `static unsigned long elf_note_pad(unsigned long n)`
+  - `elf_sign_note_span` (function, line 1083) `static int elf_sign_note_span(const unsigned char *img, unsigned long off,
+                      ...`
+  - `elf_sign_note_find` (function, line 1108) `static int elf_sign_note_find(const unsigned char *img, unsigned size,
+                          ...`
+  - `elf_sign_section_find` (function, line 1132) `static int elf_sign_section_find(const unsigned char *img, unsigned size,
+                       ...`
+  - `elf_sign_u64` (function, line 1172) `static void elf_sign_u64(ed_sha *c, unsigned long v)`
+  - `elf_sign_u32` (function, line 1181) `static void elf_sign_u32(ed_sha *c, unsigned v)`
+  - `load_exec_elf` (function, line 1262) `void *load_exec_elf(void *data, unsigned size)`
+  - `base_out` (function, line 1395) `* the link base via base_out (0 when the caller runs static images
  * only: the dynamic binder ne...`
-  - `inodes` (function, line 374) `* Pseudo inodes (LDSO_INO_BASE + slot) keep registry pages apart from * MiniFS inodes in the shared cache. No unload...`
-  - `images` (function, line 783) `* Static images (no dynamic section, or none needed) return 0 at * once, so the legacy paths never observe a...`
-  - `process` (function, line 1084) `* atomic section: a 100 Hz tick between two segments would switch * CR3 into another process (copies landing in its...`
-  - `time` (function, line 1262) `* time (with the failing offset);`
-  - `ELF64_R_SYM` (macro, line 61) `#define ELF64_R_SYM(i)`
-  - `ELF64_R_TYPE` (macro, line 62) `#define ELF64_R_TYPE(i)`
-  - `SHN_UNDEF` (macro, line 63) `#define SHN_UNDEF`
-  - `ETREL_IMAGE_MAX` (macro, line 70) `#define ETREL_IMAGE_MAX`
-  - `SHT_SYMTAB` (macro, line 72) `#define SHT_SYMTAB`
-  - `SHT_STRTAB` (macro, line 73) `#define SHT_STRTAB`
-  - `SHT_RELA` (macro, line 74) `#define SHT_RELA`
-  - `SHT_PROGBITS` (macro, line 75) `#define SHT_PROGBITS`
-  - `SHT_NOBITS` (macro, line 76) `#define SHT_NOBITS`
-  - `SHF_ALLOC` (macro, line 77) `#define SHF_ALLOC`
-  - `SHF_EXECINSTR` (macro, line 78) `#define SHF_EXECINSTR`
-  - `EM_X86_64` (macro, line 80) `#define EM_X86_64`
-  - `PT_LOAD` (macro, line 81) `#define PT_LOAD`
-  - `R_X86_64_64` (macro, line 83) `#define R_X86_64_64`
-  - `R_X86_64_PC32` (macro, line 84) `#define R_X86_64_PC32`
-  - `R_X86_64_PLT32` (macro, line 85) `#define R_X86_64_PLT32`
-  - `R_X86_64_GLOB_DAT` (macro, line 86) `#define R_X86_64_GLOB_DAT`
-  - `R_X86_64_JUMP_SLOT` (macro, line 87) `#define R_X86_64_JUMP_SLOT`
-  - `R_X86_64_RELATIVE` (macro, line 88) `#define R_X86_64_RELATIVE`
-  - `R_X86_64_32` (macro, line 89) `#define R_X86_64_32`
-  - `R_X86_64_32S` (macro, line 90) `#define R_X86_64_32S`
-  - `R_X86_64_IRELATIVE` (macro, line 91) `#define R_X86_64_IRELATIVE`
-  - `PF_X` (macro, line 93) `#define PF_X`
-  - `ELF_MAX_SEGMENTS` (macro, line 94) `#define ELF_MAX_SEGMENTS`
-  - `ELF_NAME_MAX` (macro, line 95) `#define ELF_NAME_MAX`
-- Depends on: `headers/ldso.h`, `headers/minifs.h`, `headers/pcache.h`, `headers/sched.h`, `headers/vga_fb.h`
+  - `elf_wants_process` (function, line 1432) `int elf_wants_process(const void *data, unsigned size)`
+  - `load_exec_elf_into` (function, line 1456) `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3,
+                         u...`
+  - `inodes` (function, line 381) `* Pseudo inodes (LDSO_INO_BASE + slot) keep registry pages apart from * MiniFS inodes in the shared cache. No unload...`
+  - `images` (function, line 790) `* Static images (no dynamic section, or none needed) return 0 at * once, so the legacy paths never observe a...`
+  - `process` (function, line 1288) `* atomic section: a 100 Hz tick between two segments would switch * CR3 into another process (copies landing in its...`
+  - `time` (function, line 1520) `* time (with the failing offset);`
+  - `ELF64_R_SYM` (macro, line 62) `#define ELF64_R_SYM(i)`
+  - `ELF64_R_TYPE` (macro, line 63) `#define ELF64_R_TYPE(i)`
+  - `SHN_UNDEF` (macro, line 64) `#define SHN_UNDEF`
+  - `ETREL_IMAGE_MAX` (macro, line 71) `#define ETREL_IMAGE_MAX`
+  - `SHT_SYMTAB` (macro, line 73) `#define SHT_SYMTAB`
+  - `SHT_STRTAB` (macro, line 74) `#define SHT_STRTAB`
+  - `SHT_RELA` (macro, line 75) `#define SHT_RELA`
+  - `SHT_PROGBITS` (macro, line 76) `#define SHT_PROGBITS`
+  - `SHT_NOBITS` (macro, line 77) `#define SHT_NOBITS`
+  - `SHF_ALLOC` (macro, line 78) `#define SHF_ALLOC`
+  - `SHF_EXECINSTR` (macro, line 79) `#define SHF_EXECINSTR`
+  - `EM_X86_64` (macro, line 81) `#define EM_X86_64`
+  - `PT_LOAD` (macro, line 82) `#define PT_LOAD`
+  - `PT_NOTE` (macro, line 83) `#define PT_NOTE`
+  - `ELF_NOTE_HDR` (macro, line 87) `#define ELF_NOTE_HDR`
+  - `ELF_NOTE_ALIGN` (macro, line 88) `#define ELF_NOTE_ALIGN`
+  - `R_X86_64_64` (macro, line 90) `#define R_X86_64_64`
+  - `R_X86_64_PC32` (macro, line 91) `#define R_X86_64_PC32`
+  - `R_X86_64_PLT32` (macro, line 92) `#define R_X86_64_PLT32`
+  - `R_X86_64_GLOB_DAT` (macro, line 93) `#define R_X86_64_GLOB_DAT`
+  - `R_X86_64_JUMP_SLOT` (macro, line 94) `#define R_X86_64_JUMP_SLOT`
+  - `R_X86_64_RELATIVE` (macro, line 95) `#define R_X86_64_RELATIVE`
+  - `R_X86_64_32` (macro, line 96) `#define R_X86_64_32`
+  - `R_X86_64_32S` (macro, line 97) `#define R_X86_64_32S`
+  - `R_X86_64_IRELATIVE` (macro, line 98) `#define R_X86_64_IRELATIVE`
+  - `PF_X` (macro, line 100) `#define PF_X`
+  - `ELF_MAX_SEGMENTS` (macro, line 101) `#define ELF_MAX_SEGMENTS`
+  - `ELF_NAME_MAX` (macro, line 102) `#define ELF_NAME_MAX`
+  - `SHT_NOTE` (macro, line 1067) `#define SHT_NOTE`
+  - `SIGN_NOTE_NAME` (macro, line 1069) `#define SIGN_NOTE_NAME`
+- Depends on: `headers/ldso.h`, `headers/minifs.h`, `headers/pcache.h`, `headers/sched.h`, `headers/sign.h`, `headers/vga_fb.h`
 
 ## kernel/lz4_kernel.c
 - Layer: utility
@@ -424,56 +488,6 @@ sta...`
   - `ksprintf` (function, line 166) `int ksprintf(char *buf, const char *fmt, ...)`
   - `putc_snbuf` (function, line 178) `static void putc_snbuf(char c, void *ctx, int *written)`
   - `ksnprintf` (function, line 184) `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...)`
-
-## kernel/proc_sec.c
-- Doc: Docstring: proc_sec.c -- per-process security state: the Linux seccomp
-- Layer: utility
-- Language: c
-- Symbols:
-  - `sec_filter` (struct, line 48)
-  - `ref` (type_alias, line 47) `typedef struct sec_filter { int ref;`
-  - `pid_ok` (function, line 74) `static int pid_ok(int pid)`
-  - `chain_put` (function, line 78) `static void chain_put(sec_filter_t *f)`
-  - `proc_sec_inherit` (function, line 87) `void proc_sec_inherit(int child, int parent)`
-  - `proc_sec_release` (function, line 101) `void proc_sec_release(int pid)`
-  - `proc_sec_exec` (function, line 115) `void proc_sec_exec(int pid)`
-  - `proc_sec_set_exe` (function, line 119) `void proc_sec_set_exe(int pid, const char *resolved)`
-  - `proc_sec_exe` (function, line 125) `const char *proc_sec_exe(int pid)`
-  - `sec_kill` (function, line 130) `static void sec_kill(long n, int whole_group)`
-  - `proc_sec_filter` (function, line 136) `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret)`
-  - `sec_install` (function, line 191) `static long sec_install(const sbpf_insn *prog, unsigned len, int strict)`
-  - `sec_install_user` (function, line 224) `static long sec_install_user(long ufprog)`
-  - `proc_sec_prctl` (function, line 235) `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5)`
-  - `proc_sec_seccomp` (function, line 290) `long proc_sec_seccomp(long op, long flags, long uargs)`
-  - `LINUX_PR_GET_DUMPABLE` (macro, line 18) `#define LINUX_PR_GET_DUMPABLE`
-  - `LINUX_PR_SET_DUMPABLE` (macro, line 19) `#define LINUX_PR_SET_DUMPABLE`
-  - `LINUX_PR_SET_NAME` (macro, line 20) `#define LINUX_PR_SET_NAME`
-  - `LINUX_PR_GET_NAME` (macro, line 21) `#define LINUX_PR_GET_NAME`
-  - `LINUX_PR_GET_SECCOMP` (macro, line 22) `#define LINUX_PR_GET_SECCOMP`
-  - `LINUX_PR_SET_SECCOMP` (macro, line 23) `#define LINUX_PR_SET_SECCOMP`
-  - `LINUX_PR_SET_NO_NEW_PRIVS` (macro, line 24) `#define LINUX_PR_SET_NO_NEW_PRIVS`
-  - `LINUX_PR_GET_NO_NEW_PRIVS` (macro, line 25) `#define LINUX_PR_GET_NO_NEW_PRIVS`
-  - `LINUX_SECCOMP_MODE_DISABLED` (macro, line 26) `#define LINUX_SECCOMP_MODE_DISABLED`
-  - `LINUX_SECCOMP_MODE_STRICT` (macro, line 27) `#define LINUX_SECCOMP_MODE_STRICT`
-  - `LINUX_SECCOMP_MODE_FILTER` (macro, line 28) `#define LINUX_SECCOMP_MODE_FILTER`
-  - `LINUX_SECCOMP_SET_MODE_STRICT` (macro, line 29) `#define LINUX_SECCOMP_SET_MODE_STRICT`
-  - `LINUX_SECCOMP_SET_MODE_FILTER` (macro, line 30) `#define LINUX_SECCOMP_SET_MODE_FILTER`
-  - `LINUX_SECCOMP_GET_ACTION_AVAIL` (macro, line 31) `#define LINUX_SECCOMP_GET_ACTION_AVAIL`
-  - `LINUX_NR_READ` (macro, line 32) `#define LINUX_NR_READ`
-  - `LINUX_NR_WRITE` (macro, line 33) `#define LINUX_NR_WRITE`
-  - `LINUX_NR_RT_SIGRETURN` (macro, line 34) `#define LINUX_NR_RT_SIGRETURN`
-  - `LINUX_NR_EXIT` (macro, line 35) `#define LINUX_NR_EXIT`
-  - `LINUX_ERRNO_MAX` (macro, line 36) `#define LINUX_ERRNO_MAX`
-  - `LINUX_TASK_COMM_LEN` (macro, line 37) `#define LINUX_TASK_COMM_LEN`
-  - `SOCK_FPROG_SIZE` (macro, line 39) `#define SOCK_FPROG_SIZE`
-  - `SOCK_FPROG_FILTER_OFF` (macro, line 40) `#define SOCK_FPROG_FILTER_OFF`
-  - `ERR_ENOMEM` (macro, line 42) `#define ERR_ENOMEM`
-  - `ERR_EACCES` (macro, line 43) `#define ERR_EACCES`
-  - `ERR_EINVAL` (macro, line 44) `#define ERR_EINVAL`
-  - `ERR_ENOSYS` (macro, line 45) `#define ERR_ENOSYS`
-  - `ERR_EOPNOTSUPP` (macro, line 46) `#define ERR_EOPNOTSUPP`
-  - `SEC_STRICT_LEN` (macro, line 72) `#define SEC_STRICT_LEN`
-- Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`, `headers/seccomp_bpf.h`, `headers/syscalls_proc.h`
 
 
 Next: [KB_kernel_p2.md](KB_kernel_p2.md)

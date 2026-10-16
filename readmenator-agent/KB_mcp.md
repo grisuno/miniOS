@@ -10,7 +10,7 @@
 - Language: py
 - Symbols:
   - `Client` (class, line 15) `class Client`
-  - `main` (method, line 64) `def main()`
+  - `main` (function, line 64) `def main()`
   - `__init__` (method, line 16) `def __init__(self)`
   - `request` (method, line 28) `def request(self, method, params)`
   - `tool` (method, line 46) `def tool(self, name, params)`
@@ -23,7 +23,7 @@
 - Language: py
 - Symbols:
   - `Client` (class, line 19) `class Client`
-  - `main` (method, line 78) `def main()`
+  - `main` (function, line 78) `def main()`
   - `__init__` (method, line 20) `def __init__(self, addons_dir)`
   - `request` (method, line 40) `def request(self, method, params)`
   - `tool` (method, line 58) `def tool(self, name, params)`
@@ -36,18 +36,18 @@
 - Language: py
 - Symbols:
   - `AddonError` (class, line 56) `class AddonError(Exception)`
-  - `_clean` (method, line 62) `def _clean(s)`
-  - `_unquote` (method, line 66) `def _unquote(v)`
-  - `parse_addon_yaml` (method, line 73) `def parse_addon_yaml(text)`
-  - `validate_addon` (method, line 205) `def validate_addon(addon, source)`
-  - `validate_addon_path` (method, line 295) `def validate_addon_path(path)`
-  - `validate_shell_line` (method, line 309) `def validate_shell_line(line)`
-  - `load_addons_dir` (method, line 323) `def load_addons_dir(addons_dir)`
-  - `split_for_editor` (method, line 347) `def split_for_editor(text)`
-  - `exit_code_of` (method, line 372) `def exit_code_of(text)`
+  - `_clean` (function, line 62) `def _clean(s)`
+  - `_unquote` (function, line 66) `def _unquote(v)`
+  - `parse_addon_yaml` (function, line 73) `def parse_addon_yaml(text)`
+  - `validate_addon` (function, line 205) `def validate_addon(addon, source)`
+  - `validate_addon_path` (function, line 295) `def validate_addon_path(path)`
+  - `validate_shell_line` (function, line 309) `def validate_shell_line(line)`
+  - `load_addons_dir` (function, line 323) `def load_addons_dir(addons_dir)`
+  - `split_for_editor` (function, line 347) `def split_for_editor(text)`
+  - `exit_code_of` (function, line 372) `def exit_code_of(text)`
   - `AddonState` (class, line 377) `class AddonState`
-  - `install_addon` (method, line 401) `def install_addon(session, addon, cfg)`
-  - `fail` (method, line 85) `def fail(lineno, why)`
+  - `install_addon` (function, line 401) `def install_addon(session, addon, cfg)`
+  - `fail` (function, line 85) `def fail(lineno, why)`
   - `__init__` (method, line 380) `def __init__(self, path)`
   - `load` (method, line 383) `def load(self)`
   - `save` (method, line 393) `def save(self, addons)`
@@ -67,9 +67,9 @@
   - `RPCError` (class, line 137) `class RPCError(Exception)`
   - `LogBuffer` (class, line 146) `class LogBuffer`
   - `MiniOSSession` (class, line 216) `class MiniOSSession`
-  - `subprocess_launch` (method, line 580) `def subprocess_launch(cfg, slave_fd)`
+  - `subprocess_launch` (function, line 580) `def subprocess_launch(cfg, slave_fd)`
   - `MCPServer` (class, line 731) `class MCPServer`
-  - `main` (method, line 888) `def main()`
+  - `main` (function, line 888) `def main()`
   - `__init__` (method, line 140) `def __init__(self, code, message)`
   - `__init__` (method, line 149) `def __init__(self, cap)`
   - `append` (method, line 155) `def append(self, data)`
@@ -132,11 +132,11 @@
   - `TestLogBuffer` (class, line 254) `class TestLogBuffer(TestCase)`
   - `_ConsoleBDDBase` (class, line 306) `class _ConsoleBDDBase(TestCase)`
   - `TestMiniOSBDD` (class, line 342) `class TestMiniOSBDD(_ConsoleBDDBase)`
-  - `TestAddonYaml` (class, line 477) `class TestAddonYaml(TestCase)`
-  - `TestAddonHelpers` (class, line 599) `class TestAddonHelpers(TestCase)`
-  - `FakeOS` (class, line 639) `class FakeOS`
-  - `TestAddonInstall` (class, line 705) `class TestAddonInstall(TestCase)`
-  - `TestAddonBDD` (class, line 841) `class TestAddonBDD(_ConsoleBDDBase)`
+  - `TestAddonYaml` (class, line 480) `class TestAddonYaml(TestCase)`
+  - `TestAddonHelpers` (class, line 602) `class TestAddonHelpers(TestCase)`
+  - `FakeOS` (class, line 642) `class FakeOS`
+  - `TestAddonInstall` (class, line 708) `class TestAddonInstall(TestCase)`
+  - `TestAddonBDD` (class, line 844) `class TestAddonBDD(_ConsoleBDDBase)`
   - `__init__` (method, line 61) `def __init__(self, env_extra)`
   - `initialize` (method, line 80) `def initialize(self)`
   - `request` (method, line 84) `def request(self, method, params)`
@@ -180,54 +180,54 @@
   - `test_t02_expect` (method, line 365) `def test_t02_expect(self)`
   - `test_t03_write_and_cat` (method, line 372) `def test_t03_write_and_cat(self)`
   - `test_t04_toolchain_elf` (method, line 382) `def test_t04_toolchain_elf(self)`
-  - `test_t05_toolchain_cvm` (method, line 393) `def test_t05_toolchain_cvm(self)`
-  - `test_t06_selfhosted_compiler` (method, line 403) `def test_t06_selfhosted_compiler(self)`
-  - `test_t07_bin_command_path` (method, line 409) `def test_t07_bin_command_path(self)`
-  - `test_t08_python_script` (method, line 417) `def test_t08_python_script(self)`
-  - `test_t09_py_eval` (method, line 424) `def test_t09_py_eval(self)`
-  - `test_t10_minios_test` (method, line 429) `def test_t10_minios_test(self)`
-  - `test_t11_poweroff_and_reboot` (method, line 450) `def test_t11_poweroff_and_reboot(self)`
-  - `setUpClass` (method, line 479) `def setUpClass(cls)`
-  - `test_parse_valid` (method, line 489) `def test_parse_valid(self)`
-  - `test_validate_accepts_valid` (method, line 499) `def test_validate_accepts_valid(self)`
-  - `test_unknown_key_rejected` (method, line 503) `def test_unknown_key_rejected(self)`
-  - `test_bad_indent_rejected` (method, line 507) `def test_bad_indent_rejected(self)`
-  - `test_validate_rejects_bad_dst` (method, line 511) `def test_validate_rejects_bad_dst(self)`
-  - `test_validate_rejects_missing_name` (method, line 516) `def test_validate_rejects_missing_name(self)`
-  - `test_validate_rejects_long_build_line` (method, line 520) `def test_validate_rejects_long_build_line(self)`
-  - `test_validate_rejects_control_chars` (method, line 528) `def test_validate_rejects_control_chars(self)`
-  - `test_validate_rejects_empty_files` (method, line 533) `def test_validate_rejects_empty_files(self)`
-  - `test_host_kind_accepts_empty_files` (method, line 538) `def test_host_kind_accepts_empty_files(self)`
-  - `test_reference_kind_carries_nothing` (method, line 553) `def test_reference_kind_carries_nothing(self)`
-  - `test_bad_kind_rejected` (method, line 561) `def test_bad_kind_rejected(self)`
-  - `test_host_kind_requires_artifact` (method, line 569) `def test_host_kind_requires_artifact(self)`
-  - `test_install_refuses_host_before_touching_session` (method, line 583) `def test_install_refuses_host_before_touching_session(self)`
-  - `setUpClass` (method, line 601) `def setUpClass(cls)`
-  - `test_split_for_editor_chunks` (method, line 611) `def test_split_for_editor_chunks(self)`
-  - `test_split_rejects_long_line` (method, line 618) `def test_split_rejects_long_line(self)`
-  - `test_split_rejects_non_ascii` (method, line 622) `def test_split_rejects_non_ascii(self)`
-  - `test_exit_code_of` (method, line 626) `def test_exit_code_of(self)`
-  - `test_state_roundtrip` (method, line 631) `def test_state_roundtrip(self)`
-  - `__init__` (method, line 642) `def __init__(self, exit_codes)`
-  - `booted` (method, line 649) `def booted(self)`
-  - `boot` (method, line 652) `def boot(self, timeout_ms)`
-  - `write` (method, line 656) `def write(self, path, content)`
-  - `send` (method, line 663) `def send(self, line, timeout_ms)`
-  - `cat_body` (method, line 687) `def cat_body(self, path, missing_ok)`
-  - `_toolerror` (class, line 694) `class _toolerror(Exception)`
-  - `_cleanup_parts` (method, line 699) `def _cleanup_parts(self, parts)`
-  - `setUpClass` (method, line 707) `def setUpClass(cls)`
-  - `tearDownClass` (method, line 739) `def tearDownClass(cls)`
-  - `make_addon` (method, line 744) `def make_addon(self)`
-  - `test_install_success` (method, line 766) `def test_install_success(self)`
-  - `test_install_mismatch_aborts_and_cleans` (method, line 779) `def test_install_mismatch_aborts_and_cleans(self)`
-  - `test_install_multi_chunk_reassembly` (method, line 793) `def test_install_multi_chunk_reassembly(self)`
-  - `test_install_verify_failure_aborts` (method, line 825) `def test_install_verify_failure_aborts(self)`
-  - `test_install_build_failure_aborts` (method, line 832) `def test_install_build_failure_aborts(self)`
-  - `setUpClass` (method, line 845) `def setUpClass(cls)`
-  - `tearDownClass` (method, line 882) `def tearDownClass(cls)`
-  - `test_addons_list` (method, line 890) `def test_addons_list(self)`
-  - `test_install_fixture` (method, line 896) `def test_install_fixture(self)`
-  - `test_install_unknown_addon_fails` (method, line 905) `def test_install_unknown_addon_fails(self)`
-  - `guarded` (method, line 318) `def guarded(name, params)`
-  - `broken_cat` (method, line 783) `def broken_cat(path, missing_ok)`
+  - `test_t05_toolchain_cvm` (method, line 394) `def test_t05_toolchain_cvm(self)`
+  - `test_t06_selfhosted_compiler` (method, line 404) `def test_t06_selfhosted_compiler(self)`
+  - `test_t07_bin_command_path` (method, line 411) `def test_t07_bin_command_path(self)`
+  - `test_t08_python_script` (method, line 419) `def test_t08_python_script(self)`
+  - `test_t09_py_eval` (method, line 426) `def test_t09_py_eval(self)`
+  - `test_t10_minios_test` (method, line 431) `def test_t10_minios_test(self)`
+  - `test_t11_poweroff_and_reboot` (method, line 452) `def test_t11_poweroff_and_reboot(self)`
+  - `setUpClass` (method, line 482) `def setUpClass(cls)`
+  - `test_parse_valid` (method, line 492) `def test_parse_valid(self)`
+  - `test_validate_accepts_valid` (method, line 502) `def test_validate_accepts_valid(self)`
+  - `test_unknown_key_rejected` (method, line 506) `def test_unknown_key_rejected(self)`
+  - `test_bad_indent_rejected` (method, line 510) `def test_bad_indent_rejected(self)`
+  - `test_validate_rejects_bad_dst` (method, line 514) `def test_validate_rejects_bad_dst(self)`
+  - `test_validate_rejects_missing_name` (method, line 519) `def test_validate_rejects_missing_name(self)`
+  - `test_validate_rejects_long_build_line` (method, line 523) `def test_validate_rejects_long_build_line(self)`
+  - `test_validate_rejects_control_chars` (method, line 531) `def test_validate_rejects_control_chars(self)`
+  - `test_validate_rejects_empty_files` (method, line 536) `def test_validate_rejects_empty_files(self)`
+  - `test_host_kind_accepts_empty_files` (method, line 541) `def test_host_kind_accepts_empty_files(self)`
+  - `test_reference_kind_carries_nothing` (method, line 556) `def test_reference_kind_carries_nothing(self)`
+  - `test_bad_kind_rejected` (method, line 564) `def test_bad_kind_rejected(self)`
+  - `test_host_kind_requires_artifact` (method, line 572) `def test_host_kind_requires_artifact(self)`
+  - `test_install_refuses_host_before_touching_session` (method, line 586) `def test_install_refuses_host_before_touching_session(self)`
+  - `setUpClass` (method, line 604) `def setUpClass(cls)`
+  - `test_split_for_editor_chunks` (method, line 614) `def test_split_for_editor_chunks(self)`
+  - `test_split_rejects_long_line` (method, line 621) `def test_split_rejects_long_line(self)`
+  - `test_split_rejects_non_ascii` (method, line 625) `def test_split_rejects_non_ascii(self)`
+  - `test_exit_code_of` (method, line 629) `def test_exit_code_of(self)`
+  - `test_state_roundtrip` (method, line 634) `def test_state_roundtrip(self)`
+  - `__init__` (method, line 645) `def __init__(self, exit_codes)`
+  - `booted` (method, line 652) `def booted(self)`
+  - `boot` (method, line 655) `def boot(self, timeout_ms)`
+  - `write` (method, line 659) `def write(self, path, content)`
+  - `send` (method, line 666) `def send(self, line, timeout_ms)`
+  - `cat_body` (method, line 690) `def cat_body(self, path, missing_ok)`
+  - `_toolerror` (class, line 697) `class _toolerror(Exception)`
+  - `_cleanup_parts` (method, line 702) `def _cleanup_parts(self, parts)`
+  - `setUpClass` (method, line 710) `def setUpClass(cls)`
+  - `tearDownClass` (method, line 742) `def tearDownClass(cls)`
+  - `make_addon` (method, line 747) `def make_addon(self)`
+  - `test_install_success` (method, line 769) `def test_install_success(self)`
+  - `test_install_mismatch_aborts_and_cleans` (method, line 782) `def test_install_mismatch_aborts_and_cleans(self)`
+  - `test_install_multi_chunk_reassembly` (method, line 796) `def test_install_multi_chunk_reassembly(self)`
+  - `test_install_verify_failure_aborts` (method, line 828) `def test_install_verify_failure_aborts(self)`
+  - `test_install_build_failure_aborts` (method, line 835) `def test_install_build_failure_aborts(self)`
+  - `setUpClass` (method, line 848) `def setUpClass(cls)`
+  - `tearDownClass` (method, line 886) `def tearDownClass(cls)`
+  - `test_addons_list` (method, line 894) `def test_addons_list(self)`
+  - `test_install_fixture` (method, line 900) `def test_install_fixture(self)`
+  - `test_install_unknown_addon_fails` (method, line 909) `def test_install_unknown_addon_fails(self)`
+  - `guarded` (function, line 318) `def guarded(name, params)`
+  - `broken_cat` (function, line 786) `def broken_cat(path, missing_ok)`

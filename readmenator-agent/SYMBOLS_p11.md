@@ -3,6 +3,106 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `LNX_F_SETFD` | macro | `net/net.c:1063` | `#define LNX_F_SETFD` |
+| `LNX_F_SETFL` | macro | `net/net.c:1065` | `#define LNX_F_SETFL` |
+| `LNX_IPPROTO_IP` | macro | `net/net.c:1049` | `#define LNX_IPPROTO_IP` |
+| `LNX_IPPROTO_TCP` | macro | `net/net.c:1034` | `#define LNX_IPPROTO_TCP` |
+| `LNX_IPPROTO_UDP` | macro | `net/net.c:1035` | `#define LNX_IPPROTO_UDP` |
+| `LNX_IP_MTU_DISCOVER` | macro | `net/net.c:1052` | `#define LNX_IP_MTU_DISCOVER` |
+| `LNX_IP_RECVERR` | macro | `net/net.c:1053` | `#define LNX_IP_RECVERR` |
+| `LNX_IP_TOS` | macro | `net/net.c:1050` | `#define LNX_IP_TOS` |
+| `LNX_IP_TTL` | macro | `net/net.c:1051` | `#define LNX_IP_TTL` |
+| `LNX_MSG_DONTWAIT` | macro | `net/net.c:1037` | `#define LNX_MSG_DONTWAIT` |
+| `LNX_MSG_NOSIGNAL` | macro | `net/net.c:1038` | `#define LNX_MSG_NOSIGNAL` |
+| `LNX_MSG_PEEK` | macro | `net/net.c:1036` | `#define LNX_MSG_PEEK` |
+| `LNX_O_NONBLOCK` | macro | `net/net.c:1060` | `#define LNX_O_NONBLOCK` |
+| `LNX_O_RDWR` | macro | `net/net.c:1059` | `#define LNX_O_RDWR` |
+| `LNX_POLLERR` | macro | `net/net.c:1068` | `#define LNX_POLLERR` |
+| `LNX_POLLHUP` | macro | `net/net.c:1069` | `#define LNX_POLLHUP` |
+| `LNX_POLLIN` | macro | `net/net.c:1066` | `#define LNX_POLLIN` |
+| `LNX_POLLNVAL` | macro | `net/net.c:1070` | `#define LNX_POLLNVAL` |
+| `LNX_POLLOUT` | macro | `net/net.c:1067` | `#define LNX_POLLOUT` |
+| `LNX_SOCK_CLOEXEC` | macro | `net/net.c:1033` | `#define LNX_SOCK_CLOEXEC` |
+| `LNX_SOCK_DGRAM` | macro | `net/net.c:1030` | `#define LNX_SOCK_DGRAM` |
+| `LNX_SOCK_NONBLOCK` | macro | `net/net.c:1032` | `#define LNX_SOCK_NONBLOCK` |
+| `LNX_SOCK_STREAM` | macro | `net/net.c:1029` | `#define LNX_SOCK_STREAM` |
+| `LNX_SOCK_TYPE_MASK` | macro | `net/net.c:1031` | `#define LNX_SOCK_TYPE_MASK` |
+| `LNX_SOL_SOCKET` | macro | `net/net.c:1039` | `#define LNX_SOL_SOCKET` |
+| `LNX_SO_ERROR` | macro | `net/net.c:1042` | `#define LNX_SO_ERROR` |
+| `LNX_SO_KEEPALIVE` | macro | `net/net.c:1045` | `#define LNX_SO_KEEPALIVE` |
+| `LNX_SO_LINGER` | macro | `net/net.c:1046` | `#define LNX_SO_LINGER` |
+| `LNX_SO_RCVBUF` | macro | `net/net.c:1044` | `#define LNX_SO_RCVBUF` |
+| `LNX_SO_RCVTIMEO` | macro | `net/net.c:1047` | `#define LNX_SO_RCVTIMEO` |
+| `LNX_SO_REUSEADDR` | macro | `net/net.c:1040` | `#define LNX_SO_REUSEADDR` |
+| `LNX_SO_SNDBUF` | macro | `net/net.c:1043` | `#define LNX_SO_SNDBUF` |
+| `LNX_SO_SNDTIMEO` | macro | `net/net.c:1048` | `#define LNX_SO_SNDTIMEO` |
+| `LNX_SO_TYPE` | macro | `net/net.c:1041` | `#define LNX_SO_TYPE` |
+| `LNX_TCP_KEEPCNT` | macro | `net/net.c:1058` | `#define LNX_TCP_KEEPCNT` |
+| `LNX_TCP_KEEPIDLE` | macro | `net/net.c:1056` | `#define LNX_TCP_KEEPIDLE` |
+| `LNX_TCP_KEEPINTVL` | macro | `net/net.c:1057` | `#define LNX_TCP_KEEPINTVL` |
+| `LNX_TCP_NODELAY` | macro | `net/net.c:1055` | `#define LNX_TCP_NODELAY` |
+| `NET_IP_DEFAULT_TTL` | macro | `net/net.c:1054` | `#define NET_IP_DEFAULT_TTL` |
+| `NET_RECV_FLAGS_OK` | macro | `net/net.c:1089` | `#define NET_RECV_FLAGS_OK` |
+| `NET_SEND_FLAGS_OK` | macro | `net/net.c:1088` | `#define NET_SEND_FLAGS_OK` |
+| `NET_TCP_CLOSED` | macro | `net/net.c:400` | `#define NET_TCP_CLOSED` |
+| `NET_TCP_DEAD` | macro | `net/net.c:404` | `#define NET_TCP_DEAD` |
+| `NET_TCP_ESTABLISHED` | macro | `net/net.c:402` | `#define NET_TCP_ESTABLISHED` |
+| `NET_TCP_FIN_SENT` | macro | `net/net.c:403` | `#define NET_TCP_FIN_SENT` |
+| `NET_TCP_LISTEN` | macro | `net/net.c:405` | `#define NET_TCP_LISTEN` |
+| `NET_TCP_SYN_RCVD` | macro | `net/net.c:406` | `#define NET_TCP_SYN_RCVD` |
+| `NET_TCP_SYN_SENT` | macro | `net/net.c:401` | `#define NET_TCP_SYN_SENT` |
+| `net_accept_nb` | function | `net/net.c:942` | `int net_accept_nb(int fd)` |
+| `net_arp_entry` | struct | `net/net.c:95` | `` |
+| `net_arp_lookup` | function | `net/net.c:118` | `static int net_arp_lookup(const unsigned char *ip, unsigned char *mac_out)` |
+| `net_arp_request` | function | `net/net.c:129` | `static void net_arp_request(const unsigned char *ip)` |
+| `net_arp_resolve` | function | `net/net.c:147` | `static int net_arp_resolve(const unsigned char *ip, unsigned char *mac_out)` |
+| `net_arp_store` | function | `net/net.c:103` | `static void net_arp_store(const unsigned char *ip, const unsigned char *mac)` |
+| `net_checksum` | function | `net/net.c:78` | `static unsigned short net_checksum(const void *data, unsigned len)` |
+| `net_close` | function | `net/net.c:916` | `void net_close(int fd)` |
+| `net_cmd_dns` | function | `net/net.c:1842` | `void net_cmd_dns(const char *host)` |
+| `net_cmd_ping` | function | `net/net.c:1831` | `void net_cmd_ping(const char *ip_text)` |
+| `net_cmd_status` | function | `net/net.c:1803` | `void net_cmd_status(void)` |
+| `net_connect` | function | `net/net.c:892` | `int net_connect(const char *host, unsigned short port)` |
+| `net_dns_parse` | function | `net/net.c:230` | `static void net_dns_parse(const unsigned char *data, unsigned len)` |
+| `net_dns_resolve` | function | `net/net.c:268` | `static int net_dns_resolve(const char *host, unsigned char ip_out[4])` |
+| `net_dns_state` | struct | `net/net.c:221` | `` |
+| `net_drv_poll` | function | `net/net.c:43` | `static void net_drv_poll(void)` |
+| `net_drv_present` | function | `net/net.c:48` | `static int net_drv_present(void)` |
+| `net_drv_send` | function | `net/net.c:38` | `static int net_drv_send(const unsigned char *frame, unsigned len)` |
+| `net_fd_udp` | function | `net/net.c:1096` | `static int net_fd_udp(long fd)` |
+| `net_gather_msg` | function | `net/net.c:1450` | `static long net_gather_msg(long msg, unsigned char *kbuf, long cap)` |
+| `net_get16` | function | `net/net.c:69` | `static unsigned short net_get16(const unsigned char *p)` |
+| `net_get32` | function | `net/net.c:73` | `static unsigned int net_get32(const unsigned char *p)` |
+| `net_get_addrs` | function | `net/net.c:1825` | `void net_get_addrs(unsigned char mac_out[NET_ETH_ALEN], unsigned char ip_out[4])` |
+| `net_icmp_rx` | function | `net/net.c:348` | `static void net_icmp_rx(const unsigned char *ip, unsigned len)` |
+| `net_init` | function | `net/net.c:1863` | `void net_init(void)` |
+| `net_ip_send` | function | `net/net.c:172` | `static int net_ip_send(const unsigned char *dip, unsigned char proto,                        cons...` |
+| `net_listen` | function | `net/net.c:927` | `int net_listen(unsigned short port)` |
+| `net_load_sockaddr` | function | `net/net.c:1185` | `static long net_load_sockaddr(long addr, long len, unsigned char ip[4], unsigned short *port)` |
+| `net_open` | function | `net/net.c:886` | `int net_open(void)` |
+| `net_parse_ip` | function | `net/net.c:1778` | `static int net_parse_ip(const char *text, unsigned char ip[4])` |
+| `net_ping` | function | `net/net.c:377` | `static int net_ping(const unsigned char ip[4])` |
+| `net_put16` | function | `net/net.c:57` | `static void net_put16(unsigned char *p, unsigned short v)` |
+| `net_put32` | function | `net/net.c:62` | `static void net_put32(unsigned char *p, unsigned int v)` |
+| `net_put_sockaddr` | function | `net/net.c:1158` | `static void net_put_sockaddr(unsigned char *sa, const unsigned char ip[4], unsigned short port)` |
+| `net_recv` | function | `net/net.c:906` | `int net_recv(int fd, char *buf, int len)` |
+| `net_recv_timeout` | function | `net/net.c:911` | `int net_recv_timeout(int fd, char *buf, int len, unsigned long timeout_ms)` |
+| `net_register_symbols` | function | `net/net.c:1855` | `void net_register_symbols(void)` |
+| `net_rx_handle_frame` | function | `net/net.c:822` | `void net_rx_handle_frame(const unsigned char *frame, unsigned len)` |
+| `net_send` | function | `net/net.c:901` | `int net_send(int fd, const char *buf, int len)` |
+| `net_send_bytes` | function | `net/net.c:1347` | `static long net_send_bytes(long fd, const unsigned char *buf, long len,                          ...` |
+| `net_sock_alloc` | function | `net/net.c:469` | `static struct net_tcp_sock *net_sock_alloc(void)` |
+| `net_sock_index` | function | `net/net.c:484` | `static int net_sock_index(const struct net_tcp_sock *s)` |
+| `net_sock_state` | function | `net/net.c:976` | `int net_sock_state(int fd)` |
+| `net_socket_revents` | function | `net/net.c:1707` | `static unsigned short net_socket_revents(long fd)` |
+| `net_store_sockaddr` | function | `net/net.c:1168` | `static long net_store_sockaddr(long addr, long lenp, const unsigned char ip[4],                  ...` |
+| `net_sys_accept` | function | `net/net.c:1329` | `long net_sys_accept(long fd, long sockaddr, long addrlen)` |
+| `net_sys_bind` | function | `net/net.c:1296` | `long net_sys_bind(long fd, long sockaddr, long addrlen)` |
+| `net_sys_close` | function | `net/net.c:1523` | `long net_sys_close(long fd)` |
+| `net_sys_connect` | function | `net/net.c:1249` | `long net_sys_connect(long fd, long sockaddr, long addrlen)` |
+| `net_sys_dns` | function | `net/net.c:1767` | `long net_sys_dns(long host)` |
+| `net_sys_fcntl` | function | `net/net.c:1643` | `long net_sys_fcntl(long fd, long cmd, long arg)` |
+| `net_sys_getpeername` | function | `net/net.c:1625` | `long net_sys_getpeername(long fd, long addr, long lenp)` |
 | `net_sys_getsockname` | function | `net/net.c:1616` | `long net_sys_getsockname(long fd, long addr, long lenp)` |
 | `net_sys_getsockopt` | function | `net/net.c:1569` | `long net_sys_getsockopt(long fd, long level, long name, long val, long lenp)` |
 | `net_sys_ioctl` | function | `net/net.c:1674` | `long net_sys_ioctl(long fd, long req, long arg)` |
@@ -396,105 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `disk_f` | function | `progs/asm/mtop.s:39` | `` |
 | `disk_path` | function | `progs/asm/mtop.s:43` | `` |
 | `emit` | function | `progs/asm/mtop.s:206` | `` |
-| `h_cpu` | function | `progs/asm/mtop.s:3` | `` |
-| `h_fill` | function | `progs/asm/mtop.s:11` | `` |
-| `h_mem` | function | `progs/asm/mtop.s:7` | `` |
-| `have_prev` | function | `progs/asm/mtop.s:35` | `` |
-| `last_dns` | function | `progs/asm/mtop.s:15` | `` |
-| `last_dns_ms` | function | `progs/asm/mtop.s:19` | `` |
-| `last_sock` | function | `progs/asm/mtop.s:23` | `` |
-| `main` | function | `progs/asm/mtop.s:3831` | `` |
-| `mtop_atoi` | function | `progs/asm/mtop.s:443` | `` |
-| `mtop_bar` | function | `progs/asm/mtop.s:887` | `` |
-| `mtop_clear` | function | `progs/asm/mtop.s:401` | `` |
-| `mtop_clear_ansi` | function | `progs/asm/mtop.s:317` | `` |
-| `mtop_cpu` | function | `progs/asm/mtop.s:1556` | `` |
-| `mtop_disk_open` | function | `progs/asm/mtop.s:1842` | `` |
-| `mtop_disk_read` | function | `progs/asm/mtop.s:1966` | `` |
-| `mtop_frame` | function | `progs/asm/mtop.s:2275` | `` |
-| `mtop_hist_max` | function | `progs/asm/mtop.s:1038` | `` |
-| `mtop_hist_push` | function | `progs/asm/mtop.s:1106` | `` |
-| `mtop_key` | function | `progs/asm/mtop.s:137` | `` |
-| `mtop_mem` | function | `progs/asm/mtop.s:1452` | `` |
-| `mtop_minfo` | function | `progs/asm/mtop.s:165` | `` |
-| `mtop_net_probe` | function | `progs/asm/mtop.s:2128` | `` |
-| `mtop_put2` | function | `progs/asm/mtop.s:725` | `` |
-| `mtop_put_kb` | function | `progs/asm/mtop.s:765` | `` |
-| `mtop_putu` | function | `progs/asm/mtop.s:569` | `` |
-| `mtop_quit_key` | function | `progs/asm/mtop.s:241` | `` |
-| `mtop_rtc` | function | `progs/asm/mtop.s:106` | `` |
-| `mtop_spark` | function | `progs/asm/mtop.s:1201` | `` |
-| `mtop_time` | function | `progs/asm/mtop.s:78` | `` |
-| `prev_idle` | function | `progs/asm/mtop.s:31` | `` |
-| `prev_total` | function | `progs/asm/mtop.s:27` | `` |
-| `sc3` | function | `progs/asm/mtop.s:47` | `` |
-| `_start` | function | `progs/asm/w1.s:37` | `` |
-| `main` | function | `progs/asm/w1.s:3` | `` |
-| `DMAP_BRUSH_COUNT` | macro | `progs/doomedit/doomedit.c:230` | `#define DMAP_BRUSH_COUNT` |
-| `DMAP_CANVAS_W` | macro | `progs/doomedit/doomedit.c:61` | `#define DMAP_CANVAS_W` |
-| `DMAP_CEIL_FLAT` | macro | `progs/doomedit/doomedit.c:97` | `#define DMAP_CEIL_FLAT` |
-| `DMAP_CEIL_H` | macro | `progs/doomedit/doomedit.c:100` | `#define DMAP_CEIL_H` |
-| `DMAP_CELL_PX` | macro | `progs/doomedit/doomedit.c:60` | `#define DMAP_CELL_PX` |
-| `DMAP_DARK_LIGHT` | macro | `progs/doomedit/doomedit.c:103` | `#define DMAP_DARK_LIGHT` |
-| `DMAP_DARK_MID` | macro | `progs/doomedit/doomedit.c:92` | `#define DMAP_DARK_MID` |
-| `DMAP_DEF_H` | macro | `progs/doomedit/doomedit.c:58` | `#define DMAP_DEF_H` |
-| `DMAP_DEF_W` | macro | `progs/doomedit/doomedit.c:57` | `#define DMAP_DEF_W` |
-| `DMAP_DOOR_CEIL` | macro | `progs/doomedit/doomedit.c:101` | `#define DMAP_DOOR_CEIL` |
-| `DMAP_DOOR_LIGHT` | macro | `progs/doomedit/doomedit.c:104` | `#define DMAP_DOOR_LIGHT` |
-| `DMAP_DOOR_SPECIAL` | macro | `progs/doomedit/doomedit.c:85` | `#define DMAP_DOOR_SPECIAL` |
-| `DMAP_DOOR_UPPER` | macro | `progs/doomedit/doomedit.c:91` | `#define DMAP_DOOR_UPPER` |
-| `DMAP_EXIT_MID` | macro | `progs/doomedit/doomedit.c:90` | `#define DMAP_EXIT_MID` |
-| `DMAP_EXIT_SPECIAL` | macro | `progs/doomedit/doomedit.c:84` | `#define DMAP_EXIT_SPECIAL` |
-| `DMAP_FLAG_BLOCKING` | macro | `progs/doomedit/doomedit.c:86` | `#define DMAP_FLAG_BLOCKING` |
-| `DMAP_FLAG_TWOSIDED` | macro | `progs/doomedit/doomedit.c:87` | `#define DMAP_FLAG_TWOSIDED` |
-| `DMAP_FLOOR_FLAT` | macro | `progs/doomedit/doomedit.c:95` | `#define DMAP_FLOOR_FLAT` |
-| `DMAP_FLOOR_H` | macro | `progs/doomedit/doomedit.c:98` | `#define DMAP_FLOOR_H` |
-| `DMAP_FNAME_MAX` | macro | `progs/doomedit/doomedit.c:67` | `#define DMAP_FNAME_MAX` |
-| `DMAP_FOV_PLANE` | macro | `progs/doomedit/doomedit.c:78` | `#define DMAP_FOV_PLANE` |
-| `DMAP_FRAME_MS` | macro | `progs/doomedit/doomedit.c:75` | `#define DMAP_FRAME_MS` |
-| `DMAP_HISTORY` | macro | `progs/doomedit/doomedit.c:111` | `#define DMAP_HISTORY` |
-| `DMAP_LEVEL_COUNT` | macro | `progs/doomedit/doomedit.c:70` | `#define DMAP_LEVEL_COUNT` |
-| `DMAP_LIGHT` | macro | `progs/doomedit/doomedit.c:102` | `#define DMAP_LIGHT` |
-| `DMAP_MAX_H` | macro | `progs/doomedit/doomedit.c:56` | `#define DMAP_MAX_H` |
-| `DMAP_MAX_LINES` | macro | `progs/doomedit/doomedit.c:79` | `#define DMAP_MAX_LINES` |
-| `DMAP_MAX_SECTORS` | macro | `progs/doomedit/doomedit.c:72` | `#define DMAP_MAX_SECTORS` |
-| `DMAP_MAX_THINGS` | macro | `progs/doomedit/doomedit.c:81` | `#define DMAP_MAX_THINGS` |
-| `DMAP_MAX_VERTS` | macro | `progs/doomedit/doomedit.c:80` | `#define DMAP_MAX_VERTS` |
-| `DMAP_MAX_W` | macro | `progs/doomedit/doomedit.c:55` | `#define DMAP_MAX_W` |
-| `DMAP_MOVE_STEP` | macro | `progs/doomedit/doomedit.c:77` | `#define DMAP_MOVE_STEP` |
-| `DMAP_NODE_LEAF` | macro | `progs/doomedit/doomedit.c:106` | `#define DMAP_NODE_LEAF` |
-| `DMAP_NO_SIDE` | macro | `progs/doomedit/doomedit.c:88` | `#define DMAP_NO_SIDE` |
-| `DMAP_NUKE_FLAT` | macro | `progs/doomedit/doomedit.c:96` | `#define DMAP_NUKE_FLAT` |
-| `DMAP_NUKE_FLOOR` | macro | `progs/doomedit/doomedit.c:99` | `#define DMAP_NUKE_FLOOR` |
-| `DMAP_NUKE_MID` | macro | `progs/doomedit/doomedit.c:93` | `#define DMAP_NUKE_MID` |
-| `DMAP_NUKE_SPECIAL` | macro | `progs/doomedit/doomedit.c:105` | `#define DMAP_NUKE_SPECIAL` |
-| `DMAP_PANEL_MIN_H` | macro | `progs/doomedit/doomedit.c:62` | `#define DMAP_PANEL_MIN_H` |
-| `DMAP_PLAYER_TYPE` | macro | `progs/doomedit/doomedit.c:82` | `#define DMAP_PLAYER_TYPE` |
-| `DMAP_PREV_H` | macro | `progs/doomedit/doomedit.c:64` | `#define DMAP_PREV_H` |
-| `DMAP_PREV_W` | macro | `progs/doomedit/doomedit.c:63` | `#define DMAP_PREV_W` |
-| `DMAP_RANDOM_ATTEMPTS` | macro | `progs/doomedit/doomedit.c:71` | `#define DMAP_RANDOM_ATTEMPTS` |
-| `DMAP_ROOM_MAX` | macro | `progs/doomedit/doomedit.c:73` | `#define DMAP_ROOM_MAX` |
-| `DMAP_ROOM_TRIES` | macro | `progs/doomedit/doomedit.c:74` | `#define DMAP_ROOM_TRIES` |
-| `DMAP_SAVE_TXT` | macro | `progs/doomedit/doomedit.c:108` | `#define DMAP_SAVE_TXT` |
-| `DMAP_SAVE_WAD` | macro | `progs/doomedit/doomedit.c:109` | `#define DMAP_SAVE_WAD` |
-| `DMAP_SLOTS` | macro | `progs/doomedit/doomedit.c:69` | `#define DMAP_SLOTS` |
-| `DMAP_STATUS_MAX` | macro | `progs/doomedit/doomedit.c:68` | `#define DMAP_STATUS_MAX` |
-| `DMAP_THING_OPT` | macro | `progs/doomedit/doomedit.c:83` | `#define DMAP_THING_OPT` |
-| `DMAP_TILE` | macro | `progs/doomedit/doomedit.c:59` | `#define DMAP_TILE` |
-| `DMAP_TITLE` | macro | `progs/doomedit/doomedit.c:110` | `#define DMAP_TITLE` |
-| `DMAP_TOOL_DOOM` | macro | `progs/doomedit/doomedit.c:107` | `#define DMAP_TOOL_DOOM` |
-| `DMAP_TOOL_FILL` | macro | `progs/doomedit/doomedit.c:115` | `#define DMAP_TOOL_FILL` |
-| `DMAP_TOOL_LINE` | macro | `progs/doomedit/doomedit.c:113` | `#define DMAP_TOOL_LINE` |
-| `DMAP_TOOL_PAINT` | macro | `progs/doomedit/doomedit.c:112` | `#define DMAP_TOOL_PAINT` |
-| `DMAP_TOOL_RECT` | macro | `progs/doomedit/doomedit.c:114` | `#define DMAP_TOOL_RECT` |
-| `DMAP_TURN_STEP` | macro | `progs/doomedit/doomedit.c:76` | `#define DMAP_TURN_STEP` |
-| `DMAP_UI_MEMORY` | macro | `progs/doomedit/doomedit.c:65` | `#define DMAP_UI_MEMORY` |
-| `DMAP_UNUSED_TEX` | macro | `progs/doomedit/doomedit.c:94` | `#define DMAP_UNUSED_TEX` |
-| `DMAP_WAD_MAX` | macro | `progs/doomedit/doomedit.c:66` | `#define DMAP_WAD_MAX` |
-| `DMAP_WALL_MID` | macro | `progs/doomedit/doomedit.c:89` | `#define DMAP_WALL_MID` |
-| `areas` | function | `progs/doomedit/doomedit.c:1150` | `* floor areas (doors stand alone, dark and nukage never merge);` |
-| `dmap_apply_cell` | function | `progs/doomedit/doomedit.c:326` | `static void dmap_apply_cell(int r, int c, int brush)` |
-| `dmap_brush_combo` | function | `progs/doomedit/doomedit.c:1760` | `static void dmap_brush_combo(struct nk_context *ctx)` |
-| `dmap_build_wad` | function | `progs/doomedit/doomedit.c:1343` | `static int dmap_build_wad(int *size_out)` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

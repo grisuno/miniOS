@@ -58,8 +58,8 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `proc_t` (struct, line 50)
   - `syscall_frame_t` (struct, line 235)
   - `kfd_view_t` (type_alias, line 11) `typedef struct kfd_view kfd_view_t;`
-  - `limit` (type_alias, line 372) `typedef struct __attribute__((packed)) { uint16_t limit;`
-  - `__attribute__` (function, line 372) `typedef struct __attribute__((packed))`
+  - `limit` (type_alias, line 375) `typedef struct __attribute__((packed)) { uint16_t limit;`
+  - `__attribute__` (function, line 375) `typedef struct __attribute__((packed))`
   - `group` (function, line 108) `* process is its own group (tgid == pid);`
   - `entry` (function, line 135) `* private view with one KFILE ref per live entry (0 on OOM), release * drops the view at reap, cloexec closes marked...`
   - `kfd_view_copy` (function, line 138) `int kfd_view_copy(proc_t *child, proc_t *parent);`
@@ -69,55 +69,56 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `bytes` (function, line 173) `* RLIM_AS total user bytes (brk growth + mmap) beyond the load base * RLIM_CPU timer ticks of CPU time, then...`
   - `first` (function, line 232) `* address first (SYSCALL_FRAME_WORDS in syscall_asm.h). It ends exactly at * the saved top (sc_top_save[pid]);`
   - `syscall_frame_current` (function, line 245) `const syscall_frame_t *syscall_frame_current(void);`
-  - `sched_init` (function, line 376) `void sched_init(void);`
-  - `kstack_report` (function, line 377) `void kstack_report(void);`
-  - `schedtop_report` (function, line 378) `void schedtop_report(void);`
-  - `irqstat_report` (function, line 379) `void irqstat_report(void);`
-  - `gdb_regs_report` (function, line 380) `void gdb_regs_report(int pid);`
-  - `gdb_dump_report` (function, line 381) `void gdb_dump_report(unsigned long addr, unsigned long len);`
-  - `tss_init_ap` (function, line 385) `void tss_init_ap(int cpu);`
-  - `smp_ap_idle_loop` (function, line 386) `void smp_ap_idle_loop(void);`
-  - `proc_create` (function, line 387) `int proc_create(const char *name, int parent_pid);`
-  - `proc_get` (function, line 388) `proc_t *proc_get(int pid);`
-  - `schedule` (function, line 389) `void schedule(void);`
-  - `sched_set_nice` (function, line 390) `int sched_set_nice(int pid, int nice);`
-  - `seccomp_deny_one` (function, line 391) `int seccomp_deny_one(int pid, int n);`
-  - `seccomp_allow_one` (function, line 392) `int seccomp_allow_one(int pid, int n);`
-  - `seccomp_denied` (function, line 393) `int seccomp_denied(int pid, int n);`
-  - `rlimit_cpu_exceeded` (function, line 394) `int rlimit_cpu_exceeded(int pid);`
-  - `rlimit_cpu_tick` (function, line 395) `void rlimit_cpu_tick(int pid);`
-  - `switch_to` (function, line 396) `void switch_to(proc_t *prev, proc_t *next);`
-  - `switch_to_notrap` (function, line 397) `void switch_to_notrap(proc_t *prev, proc_t *next);`
-  - `switch_save_only` (function, line 398) `void switch_save_only(proc_t *prev);`
-  - `resume_iretq` (function, line 405) `void resume_iretq(void);`
-  - `yield` (function, line 406) `void yield(void);`
-  - `do_exit` (function, line 407) `void do_exit(int code);`
-  - `do_clone` (function, line 408) `long do_clone(long flags, long newsp);`
-  - `do_fork` (function, line 409) `long do_fork(void);`
-  - `do_fork_ex` (function, line 410) `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);`
-  - `do_linux_clone` (function, line 411) `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...`
-  - `do_group_exit` (function, line 413) `void do_group_exit(int code);`
-  - `mm_view_claim_current` (function, line 414) `void mm_view_claim_current(void);`
-  - `do_kill_code` (function, line 415) `int do_kill_code(int pid, int code);`
-  - `fork_child_settid` (function, line 418) `void fork_child_settid(void);`
-  - `aslr_stack_bytes` (function, line 428) `unsigned long aslr_stack_bytes(void);`
-  - `aslr_brk_pages` (function, line 429) `unsigned long aslr_brk_pages(void);`
-  - `aslr_mmap_pages` (function, line 430) `unsigned long aslr_mmap_pages(void);`
-  - `aslr_dyn_base` (function, line 431) `unsigned long aslr_dyn_base(void);`
-  - `failure` (function, line 436) `* failure (negative errno);`
-  - `do_execve` (function, line 437) `long do_execve(char *kpath, int kargc, char **kargv);`
-  - `do_thread_spawn` (function, line 438) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-  - `do_waitpid` (function, line 440) `int do_waitpid(int pid);`
-  - `do_waitpid_nb` (function, line 441) `int do_waitpid_nb(int pid);`
-  - `shell_reap_nb` (function, line 442) `int shell_reap_nb(int *pid_out, int *code_out);`
-  - `shell_reap_one` (function, line 443) `int shell_reap_one(int pid, int *code_out);`
-  - `shell_nchildren` (function, line 444) `int shell_nchildren(void);`
-  - `do_waitpid_linux` (function, line 448) `int do_waitpid_linux(int pid, int nohang, int *found);`
-  - `do_kill` (function, line 449) `int do_kill(int pid);`
-  - `timer_tick` (function, line 450) `void timer_tick(void);`
-  - `pt_clone_user` (function, line 453) `uint64_t pt_clone_user(uint64_t parent_cr3);`
-  - `pt_free_user` (function, line 454) `void pt_free_user(uint64_t cr3);`
-  - `caller` (function, line 459) `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
+  - `sched_idle_on_kernel_cr3` (function, line 359) `int sched_idle_on_kernel_cr3(int cpu);`
+  - `sched_init` (function, line 379) `void sched_init(void);`
+  - `kstack_report` (function, line 380) `void kstack_report(void);`
+  - `schedtop_report` (function, line 381) `void schedtop_report(void);`
+  - `irqstat_report` (function, line 382) `void irqstat_report(void);`
+  - `gdb_regs_report` (function, line 383) `void gdb_regs_report(int pid);`
+  - `gdb_dump_report` (function, line 384) `void gdb_dump_report(unsigned long addr, unsigned long len);`
+  - `tss_init_ap` (function, line 388) `void tss_init_ap(int cpu);`
+  - `smp_ap_idle_loop` (function, line 389) `void smp_ap_idle_loop(void);`
+  - `proc_create` (function, line 390) `int proc_create(const char *name, int parent_pid);`
+  - `proc_get` (function, line 391) `proc_t *proc_get(int pid);`
+  - `schedule` (function, line 392) `void schedule(void);`
+  - `sched_set_nice` (function, line 393) `int sched_set_nice(int pid, int nice);`
+  - `seccomp_deny_one` (function, line 394) `int seccomp_deny_one(int pid, int n);`
+  - `seccomp_allow_one` (function, line 395) `int seccomp_allow_one(int pid, int n);`
+  - `seccomp_denied` (function, line 396) `int seccomp_denied(int pid, int n);`
+  - `rlimit_cpu_exceeded` (function, line 397) `int rlimit_cpu_exceeded(int pid);`
+  - `rlimit_cpu_tick` (function, line 398) `void rlimit_cpu_tick(int pid);`
+  - `switch_to` (function, line 399) `void switch_to(proc_t *prev, proc_t *next);`
+  - `switch_to_notrap` (function, line 400) `void switch_to_notrap(proc_t *prev, proc_t *next);`
+  - `switch_save_only` (function, line 401) `void switch_save_only(proc_t *prev);`
+  - `resume_iretq` (function, line 408) `void resume_iretq(void);`
+  - `yield` (function, line 409) `void yield(void);`
+  - `do_exit` (function, line 410) `void do_exit(int code);`
+  - `do_clone` (function, line 411) `long do_clone(long flags, long newsp);`
+  - `do_fork` (function, line 412) `long do_fork(void);`
+  - `do_fork_ex` (function, line 413) `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);`
+  - `do_linux_clone` (function, line 414) `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...`
+  - `do_group_exit` (function, line 416) `void do_group_exit(int code);`
+  - `mm_view_claim_current` (function, line 417) `void mm_view_claim_current(void);`
+  - `do_kill_code` (function, line 418) `int do_kill_code(int pid, int code);`
+  - `fork_child_settid` (function, line 421) `void fork_child_settid(void);`
+  - `aslr_stack_bytes` (function, line 431) `unsigned long aslr_stack_bytes(void);`
+  - `aslr_brk_pages` (function, line 432) `unsigned long aslr_brk_pages(void);`
+  - `aslr_mmap_pages` (function, line 433) `unsigned long aslr_mmap_pages(void);`
+  - `aslr_dyn_base` (function, line 434) `unsigned long aslr_dyn_base(void);`
+  - `failure` (function, line 439) `* failure (negative errno);`
+  - `do_execve` (function, line 440) `long do_execve(char *kpath, int kargc, char **kargv);`
+  - `do_thread_spawn` (function, line 441) `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
+  - `do_waitpid` (function, line 443) `int do_waitpid(int pid);`
+  - `do_waitpid_nb` (function, line 444) `int do_waitpid_nb(int pid);`
+  - `shell_reap_nb` (function, line 445) `int shell_reap_nb(int *pid_out, int *code_out);`
+  - `shell_reap_one` (function, line 446) `int shell_reap_one(int pid, int *code_out);`
+  - `shell_nchildren` (function, line 447) `int shell_nchildren(void);`
+  - `do_waitpid_linux` (function, line 451) `int do_waitpid_linux(int pid, int nohang, int *found);`
+  - `do_kill` (function, line 452) `int do_kill(int pid);`
+  - `timer_tick` (function, line 453) `void timer_tick(void);`
+  - `pt_clone_user` (function, line 456) `uint64_t pt_clone_user(uint64_t parent_cr3);`
+  - `pt_free_user` (function, line 457) `void pt_free_user(uint64_t cr3);`
+  - `caller` (function, line 462) `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
   - `cpus` (variable, line 294) `extern cpu_t cpus[MAX_CPUS];`
   - `cpu_count` (variable, line 295) `extern int cpu_count;`
   - `procs` (variable, line 333) `extern proc_t procs[MAX_PROCS];`
@@ -127,14 +128,14 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `sched_lock` (variable, line 337) `extern spinlock_t sched_lock;`
   - `sched_ready` (variable, line 338) `extern volatile int sched_ready;`
   - `ap_idle_proc` (variable, line 356) `extern proc_t ap_idle_proc[MAX_CPUS];`
-  - `smp_dispatches` (variable, line 357) `extern volatile unsigned long smp_dispatches[MAX_CPUS];`
-  - `smp_idle_polls` (variable, line 358) `extern volatile unsigned long smp_idle_polls[MAX_CPUS];`
-  - `cpu_idle_ticks` (variable, line 361) `extern volatile unsigned long cpu_idle_ticks[MAX_CPUS];`
-  - `smp_dbg_bad_gs` (variable, line 364) `extern volatile unsigned smp_dbg_bad_gs;`
-  - `bsp_idtr` (variable, line 373) `extern idtr_t bsp_idtr;`
-  - `isr_cnt_kbd` (variable, line 382) `extern volatile unsigned long isr_cnt_kbd;`
-  - `isr_cnt_mouse` (variable, line 383) `extern volatile unsigned long isr_cnt_mouse;`
-  - `isr_cnt_sb16` (variable, line 384) `extern volatile unsigned long isr_cnt_sb16;`
+  - `smp_dispatches` (variable, line 360) `extern volatile unsigned long smp_dispatches[MAX_CPUS];`
+  - `smp_idle_polls` (variable, line 361) `extern volatile unsigned long smp_idle_polls[MAX_CPUS];`
+  - `cpu_idle_ticks` (variable, line 364) `extern volatile unsigned long cpu_idle_ticks[MAX_CPUS];`
+  - `smp_dbg_bad_gs` (variable, line 367) `extern volatile unsigned smp_dbg_bad_gs;`
+  - `bsp_idtr` (variable, line 376) `extern idtr_t bsp_idtr;`
+  - `isr_cnt_kbd` (variable, line 385) `extern volatile unsigned long isr_cnt_kbd;`
+  - `isr_cnt_mouse` (variable, line 386) `extern volatile unsigned long isr_cnt_mouse;`
+  - `isr_cnt_sb16` (variable, line 387) `extern volatile unsigned long isr_cnt_sb16;`
   - `SCHED_H` (macro, line 2) `#define SCHED_H`
   - `PROC_FREE` (macro, line 14) `#define PROC_FREE`
   - `PROC_READY` (macro, line 15) `#define PROC_READY`
@@ -204,14 +205,14 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `LINUX_CLONE_FORK_OK` (macro, line 228) `#define LINUX_CLONE_FORK_OK`
   - `current_pid` (macro, line 312) `#define current_pid`
   - `DESKTOP_TICK_INTERVAL` (macro, line 316) `#define DESKTOP_TICK_INTERVAL`
-  - `TSS_SEL` (macro, line 369) `#define TSS_SEL(cpu)`
-  - `USER_FAULT_SIGNAL` (macro, line 417) `#define USER_FAULT_SIGNAL`
-  - `EXECVE_MAX_ARGS` (macro, line 421) `#define EXECVE_MAX_ARGS`
-  - `EXECVE_MAX_ARG` (macro, line 422) `#define EXECVE_MAX_ARG`
-  - `WAITPID_NONE` (macro, line 445) `#define WAITPID_NONE`
-  - `WAITPID_NOCHILD` (macro, line 447) `#define WAITPID_NOCHILD`
+  - `TSS_SEL` (macro, line 372) `#define TSS_SEL(cpu)`
+  - `USER_FAULT_SIGNAL` (macro, line 420) `#define USER_FAULT_SIGNAL`
+  - `EXECVE_MAX_ARGS` (macro, line 424) `#define EXECVE_MAX_ARGS`
+  - `EXECVE_MAX_ARG` (macro, line 425) `#define EXECVE_MAX_ARG`
+  - `WAITPID_NONE` (macro, line 448) `#define WAITPID_NONE`
+  - `WAITPID_NOCHILD` (macro, line 450) `#define WAITPID_NOCHILD`
 - Depends on: `headers/spinlock.h`, `headers/vma.h`
-- Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `progs/src/lxabi.c`, `smp.c`
+- Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/tlb.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `progs/src/lxabi.c`, `smp.c`
 
 ## headers/seccomp_bpf.h
 - Doc: Docstring: seccomp_bpf.h -- classic BPF checker and interpreter for
@@ -294,6 +295,27 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
 - Depends on: `headers/kernel.h`, `headers/kernel/console_in.h`
 - Imported by: `kernel/editor.c`, `kernel/shell.c`, `kernel/syscalls.c`
 
+## headers/sign.h
+- Doc: Docstring: sign.h -- MiniOS binary signing contract.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `ed_sha` (struct, line 61)
+  - `sign_pubkey` (function, line 47) `static inline const unsigned char *sign_pubkey(unsigned id)`
+  - `ed_sha512_init` (function, line 69) `void ed_sha512_init(ed_sha *c);`
+  - `ed_sha512_update` (function, line 70) `void ed_sha512_update(ed_sha *c, const unsigned char *data, unsigned long len);`
+  - `ed_sha512_final` (function, line 71) `void ed_sha512_final(ed_sha *c, unsigned char out[64]);`
+  - `ed25519_verify` (function, line 75) `int ed25519_verify(const unsigned char sig[64], const unsigned char *msg, unsigned long msglen, const unsigned char...`
+  - `SIGN_H` (macro, line 17) `#define SIGN_H`
+  - `SIGN_KEY_DEV` (macro, line 19) `#define SIGN_KEY_DEV`
+  - `SIGN_KEY_PROD` (macro, line 20) `#define SIGN_KEY_PROD`
+  - `SIGN_KEYS` (macro, line 21) `#define SIGN_KEYS`
+  - `SIGN_PUB_BYTES` (macro, line 22) `#define SIGN_PUB_BYTES`
+  - `SIGN_SIG_BYTES` (macro, line 23) `#define SIGN_SIG_BYTES`
+  - `SIGN_DESC_BYTES` (macro, line 24) `#define SIGN_DESC_BYTES`
+  - `SIGN_NOTE_TYPE` (macro, line 25) `#define SIGN_NOTE_TYPE`
+- Imported by: `kernel/ed25519.c`, `kernel/loader.c`, `tests/test_sign.c`
+
 ## headers/smp.h
 - Doc: SMP bring-up: wake the application processors (APs) via the LAPIC INIT/SIPI
 - Layer: utility
@@ -302,6 +324,7 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `smp_init` (function, line 41) `void smp_init(void);`
   - `smp_ap_entry` (function, line 42) `void smp_ap_entry(void);`
   - `smp_ipi_broadcast` (function, line 43) `void smp_ipi_broadcast(int vector);`
+  - `smp_nmi_broadcast` (function, line 44) `void smp_nmi_broadcast(void);`
   - `smp_lock` (variable, line 25) `extern spinlock_t smp_lock;`
   - `smp_dbg_svr` (variable, line 30) `extern volatile unsigned smp_dbg_svr;`
   - `smp_dbg_lvt` (variable, line 31) `extern volatile unsigned smp_dbg_lvt;`
@@ -311,7 +334,7 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `lapic_cal_valid` (variable, line 39) `extern int lapic_cal_valid;`
   - `SMP_H` (macro, line 2) `#define SMP_H`
 - Depends on: `headers/spinlock.h`
-- Imported by: `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `smp.c`
+- Imported by: `kernel.c`, `kernel/mm/tlb.c`, `kernel/sched.c`, `kernel/shell.c`, `smp.c`
 
 ## headers/spawn.h
 - Doc: Docstring: Scalar shared-window view saved across a child run.
@@ -328,7 +351,7 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `spawn_execute` (function, line 48) `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...`
   - `SPAWN_H` (macro, line 2) `#define SPAWN_H`
 - Depends on: `headers/kernel.h`, `headers/sched.h`, `headers/vma.h`
-- Imported by: `kernel/sched.c`, `kernel/spawn.c`, `kernel/syscalls.c`
+- Imported by: `kernel/sched.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`
 
 ## headers/spinlock.h
 - Doc: Lightweight spinlock for MiniOS kernel.
@@ -354,7 +377,7 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `spin_unlock_irqrestore` (function, line 150) `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
   - `SPINLOCK_H` (macro, line 2) `#define SPINLOCK_H`
   - `SPINLOCK_INIT` (macro, line 44) `#define SPINLOCK_INIT`
-- Imported by: `drivers/pcm2.c`, `headers/futex.h`, `headers/kernel.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/sched.h`, `headers/smp.h`, `headers/sync.h`
+- Imported by: `drivers/pcm2.c`, `headers/futex.h`, `headers/kernel.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/sched.h`, `headers/smp.h`, `headers/sync.h`, `kernel/mm/tlb.c`
 
 ## headers/sync.h
 - Doc: Blocking synchronization primitives (roadmap Phase 3.1).

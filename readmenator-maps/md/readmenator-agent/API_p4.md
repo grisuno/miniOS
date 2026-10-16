@@ -1,5 +1,286 @@
-# API (page 4 of 19)
+# API (page 4 of 21)
 Previous: [API_p3.md](API_p3.md)
+
+## headers/kernel.h
+Depends on: `headers/ldso.h`, `headers/pipe.h`, `headers/spinlock.h`, `headers/vma.h`, `progs/minios_abi.h`
+Imported by: `headers/editor.h`, `headers/shell.h`, `headers/spawn.h`, `headers/tls_port.h`
+- `ktime_ms` (function) `headers/kernel.h:25` `unsigned long ktime_ms(void);` -- Forward: PIT-calibrated wall clock (defined in kernel/time.c); valid * once pit_init has run.
+- `outb` (function) `headers/kernel.h:26` `static inline void outb(unsigned short port, unsigned char val)`
+- `inb` (function) `headers/kernel.h:29` `static inline unsigned char inb(unsigned short port)`
+- `outw` (function) `headers/kernel.h:34` `static inline void outw(unsigned short port, unsigned short val)`
+- `inw` (function) `headers/kernel.h:37` `static inline unsigned short inw(unsigned short port)`
+- `insw` (function) `headers/kernel.h:47` `static inline void insw(unsigned short port, unsigned short *buf,
+                        unsigne...` -- String port I/O: one instruction moves `count` words between the port and the buffer.
+- `outsw` (function) `headers/kernel.h:54` `static inline void outsw(unsigned short port, const unsigned short *buf,
+                        ...`
+- `waits` (function) `headers/kernel.h:64` `* and mouse_hw_init issues dozens of waits (measured 5 s of boot).  This
+ * polls the port once p...`
+- `vga_clear` (function) `headers/kernel.h:94` `void vga_clear(void);`
+- `vga_putc` (function) `headers/kernel.h:95` `void vga_putc(char c);`
+- `vga_puts` (function) `headers/kernel.h:96` `void vga_puts(const char *s);`
+- `vga_scroll` (function) `headers/kernel.h:97` `void vga_scroll(void);`
+- `vga_set_cursor` (function) `headers/kernel.h:98` `void vga_set_cursor(int x, int y);`
+- `vga_newline` (function) `headers/kernel.h:99` `void vga_newline(void);`
+- `vga_cursor_enable` (function) `headers/kernel.h:100` `void vga_cursor_enable(int on);`
+- `vga_get_x` (function) `headers/kernel.h:108` `int vga_get_x(void);` -- Console output lock (kernel/console.c): serializes SMP console output across CPUs.
+- `vga_get_y` (function) `headers/kernel.h:109` `int vga_get_y(void);`
+- `vga_set_xy` (function) `headers/kernel.h:110` `void vga_set_xy(int x, int y);`
+- `vga_get_color` (function) `headers/kernel.h:111` `char vga_get_color(void);`
+- `minfo_sleep_init` (function) `headers/kernel.h:116` `void minfo_sleep_init(int tick_ok);` -- MINFO sleep support (kernel/syscalls.c): timed park for ring-3 monitors. sched_init passes the tick-registration...
+- `minfo_tick_wake` (function) `headers/kernel.h:117` `void minfo_tick_wake(void *ctx);`
+- `sb_init` (function) `headers/kernel.h:120` `void sb_init(void);` -- MINFO sleep support (kernel/syscalls.c): timed park for ring-3 monitors. sched_init passes the tick-registration...
+- `sb_capture_row0` (function) `headers/kernel.h:121` `void sb_capture_row0(void);`
+- `sb_reset` (function) `headers/kernel.h:122` `void sb_reset(void);`
+- `sb_get_count` (function) `headers/kernel.h:123` `int sb_get_count(void);`
+- `sb_get_head` (function) `headers/kernel.h:124` `int sb_get_head(void);`
+- `sb_get_char` (function) `headers/kernel.h:125` `char sb_get_char(int row, int col);`
+- `serial_init` (function) `headers/kernel.h:128` `void serial_init(void);` -- monitors. sched_init passes the tick-registration result; without a * registered waker sel 6 fails closed instead of...
+- `serial_putc` (function) `headers/kernel.h:129` `void serial_putc(char c);`
+- `serial_puts` (function) `headers/kernel.h:130` `void serial_puts(const char *s);`
+- `sc_record_dump` (function) `headers/kernel.h:131` `void sc_record_dump(int pid);`
+- `serial_e_count` (function) `headers/kernel.h:132` `unsigned long serial_e_count(void);`
+- `serial_available` (function) `headers/kernel.h:134` `int serial_available(void);` -- void sb_init(void); void sb_capture_row0(void); void sb_reset(void); int  sb_get_count(void); int...
+- `serial_getc` (function) `headers/kernel.h:135` `int serial_getc(void);`
+- `kbd_read` (function) `headers/kernel.h:173` `int kbd_read(void);`
+- `kbd_available` (function) `headers/kernel.h:174` `int kbd_available(void);`
+- `kbd_reset_for_shell` (function) `headers/kernel.h:175` `void kbd_reset_for_shell(void);`
+- `kmalloc` (function) `headers/kernel.h:213` `void *kmalloc(unsigned long size);`
+- `kfree` (function) `headers/kernel.h:215` `void kfree(void *ptr);`
+- `kcalloc` (function) `headers/kernel.h:216` `void *kcalloc(unsigned long nmemb, unsigned long size);`
+- `krealloc` (function) `headers/kernel.h:217` `void *krealloc(void *ptr, unsigned long size);`
+- `kallocator_init` (function) `headers/kernel.h:218` `void kallocator_init(void);`
+- `kmalloc_aligned` (function) `headers/kernel.h:219` `void *kmalloc_aligned(unsigned long size, unsigned long align);`
+- `kmalloc_page` (function) `headers/kernel.h:221` `void *kmalloc_page(void);` -- define KMALLOC_PAGE 0x1000UL
+- `kfree_aligned` (function) `headers/kernel.h:222` `void kfree_aligned(void *ptr);`
+- `dlmalloc_init` (function) `headers/kernel.h:226` `void dlmalloc_init(unsigned long size);` -- dlmalloc backend (third_party/dlmalloc): an mspace rooted over the fixed * kernel heap.
+- `dlmalloc_malloc` (function) `headers/kernel.h:230` `void *dlmalloc_malloc(unsigned long size);`
+- `dlmalloc_memalign` (function) `headers/kernel.h:231` `void *dlmalloc_memalign(unsigned long align, unsigned long size);`
+- `dlmalloc_free` (function) `headers/kernel.h:232` `void dlmalloc_free(void *ptr);`
+- `dlmalloc_calloc` (function) `headers/kernel.h:233` `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);`
+- `dlmalloc_realloc` (function) `headers/kernel.h:234` `void *dlmalloc_realloc(void *ptr, unsigned long size);`
+- `dlmalloc_usage` (function) `headers/kernel.h:236` `void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);` -- Bytes of kernel heap actually in use as the dlmalloc space: HEAP_SIZE * clamped to the RAM installed above...
+- `ramdisk_init` (function) `headers/kernel.h:278` `void ramdisk_init(void);`
+- `ramdisk_open` (function) `headers/kernel.h:279` `RDFile *ramdisk_open(const char *name);`
+- `ramdisk_read` (function) `headers/kernel.h:280` `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);`
+- `ramdisk_write` (function) `headers/kernel.h:281` `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);`
+- `ramdisk_create` (function) `headers/kernel.h:282` `RDFile *ramdisk_create(const char *name, unsigned size);`
+- `ramdisk_resize` (function) `headers/kernel.h:283` `int ramdisk_resize(RDFile *f, unsigned newsize);`
+- `ramdisk_delete` (function) `headers/kernel.h:284` `int ramdisk_delete(RDFile *f);`
+- `RAMDISK_FNAME_LEN` (function) `headers/kernel.h:286` `* RAMDISK_FNAME_LEN (fs_resolve guarantees it);`
+- `ramdisk_rename` (function) `headers/kernel.h:288` `int ramdisk_rename(const char *oldname, const char *newname);` -- Docstring: In-place rename of one ramdisk entry.
+- `ramdisk_list` (function) `headers/kernel.h:289` `int ramdisk_list(RDFile **out, int max);`
+- `ramdisk_setup_from` (function) `headers/kernel.h:290` `void ramdisk_setup_from(void *data, unsigned size);`
+- `ramdisk_count` (function) `headers/kernel.h:291` `int ramdisk_count(void);`
+- `ramdisk_file_name` (function) `headers/kernel.h:292` `const char *ramdisk_file_name(int idx);`
+- `ramdisk_usage` (function) `headers/kernel.h:294` `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);` -- Docstring: In-place rename of one ramdisk entry.
+- `fs_resolve` (function) `headers/kernel.h:302` `int fs_resolve(const char *path, char *out, unsigned cap);` -- Path resolution choke point shared by the shell builtins and the zip builtins. fs_resolve resolves a path against...
+- `fs_dir_exists` (function) `headers/kernel.h:303` `int fs_dir_exists(const char *dir);`
+- `fs_is_dir` (function) `headers/kernel.h:304` `int fs_is_dir(const char *resolved);`
+- `vfs_register` (function) `headers/kernel.h:408` `int vfs_register(const char *prefix, const vfs_ops_t *ops, const char *driver);`
+- `vfs_unregister` (function) `headers/kernel.h:409` `int vfs_unregister(const char *prefix);`
+- `vfs_list` (function) `headers/kernel.h:413` `int vfs_list(char prefixes[][VFS_PREFIX_LEN], char drivers[][VFS_DRIVER_LEN], int refs[], int cap);` -- define VFS_MAX_MOUNTS 8 define VFS_PREFIX_LEN 32 define VFS_DRIVER_LEN 16
+- `vfs_mount_driver` (function) `headers/kernel.h:415` `int vfs_mount_driver(const char *prefix, const char *driver);`
+- `vfs_open` (function) `headers/kernel.h:416` `int vfs_open(const char *path, int mode, vfs_file_t *f);`
+- `vfs_read` (function) `headers/kernel.h:417` `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);`
+- `vfs_write` (function) `headers/kernel.h:418` `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);`
+- `vfs_close` (function) `headers/kernel.h:419` `int vfs_close(vfs_file_t *f);`
+- `vfs_fstat` (function) `headers/kernel.h:420` `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);`
+- `vfs_readdir` (function) `headers/kernel.h:421` `int vfs_readdir(const char *path, vfs_dirent_t *ents, int cap);`
+- `vfs_init` (function) `headers/kernel.h:422` `void vfs_init(void);`
+- `vfs_register_builtins` (function) `headers/kernel.h:423` `void vfs_register_builtins(void);`
+- `minifs_mkdir_p` (function) `headers/kernel.h:424` `int minifs_mkdir_p(const char *resolved);`
+- `kfopen` (function) `headers/kernel.h:483` `KFILE *kfopen(const char *path, const char *mode);`
+- `kfclose` (function) `headers/kernel.h:484` `int kfclose(KFILE *f);`
+- `today` (function) `headers/kernel.h:489` `* cell is correct today (single shared ET_REL window, no miniGCC * threads);`
+- `fs_rename` (function) `headers/kernel.h:508` `int fs_rename(const char *oldr, const char *newr);` -- Rename one file within its filesystem; see fs/kfile.c for the contract: * 0 ok, -2 missing src, -21 directory, -17...
+- `kfgetc` (function) `headers/kernel.h:509` `int kfgetc(KFILE *f);`
+- `kfgets` (function) `headers/kernel.h:510` `char *kfgets(char *buf, int size, KFILE *f);`
+- `kfungetc` (function) `headers/kernel.h:511` `int kfungetc(int c, KFILE *f);`
+- `kfread` (function) `headers/kernel.h:512` `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);`
+- `kfwrite` (function) `headers/kernel.h:513` `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);`
+- `kfseek` (function) `headers/kernel.h:514` `int kfseek(KFILE *f, long offset, int whence);`
+- `kftell` (function) `headers/kernel.h:515` `long kftell(KFILE *f);`
+- `kfputs` (function) `headers/kernel.h:516` `int kfputs(const char *s, KFILE *f);`
+- `kfputc` (function) `headers/kernel.h:517` `int kfputc(int c, KFILE *f);`
+- `kfflush` (function) `headers/kernel.h:518` `int kfflush(KFILE *f);`
+- `krewind` (function) `headers/kernel.h:519` `void krewind(KFILE *f);`
+- `kfile_stdin` (function) `headers/kernel.h:524` `KFILE *kfile_stdin(void);`
+- `kfile_stdout` (function) `headers/kernel.h:525` `KFILE *kfile_stdout(void);`
+- `kfile_stderr` (function) `headers/kernel.h:526` `KFILE *kfile_stderr(void);`
+- `kstrlen` (function) `headers/kernel.h:529` `unsigned long kstrlen(const char *s);` -- long   kftell(KFILE *f); int    kfputs(const char *s, KFILE *f); int    kfputc(int c, KFILE *f); int...
+- `kstrcpy` (function) `headers/kernel.h:530` `char *kstrcpy(char *dst, const char *src);`
+- `kstrncpy` (function) `headers/kernel.h:531` `char *kstrncpy(char *dst, const char *src, unsigned long n);`
+- `kstrncat` (function) `headers/kernel.h:532` `char *kstrncat(char *dst, const char *src, unsigned long n);`
+- `kstrcmp` (function) `headers/kernel.h:533` `int kstrcmp(const char *a, const char *b);`
+- `kstrncmp` (function) `headers/kernel.h:534` `int kstrncmp(const char *a, const char *b, unsigned long n);`
+- `kstrchr` (function) `headers/kernel.h:535` `char *kstrchr(const char *s, int c);`
+- `kstrstr` (function) `headers/kernel.h:536` `char *kstrstr(const char *hay, const char *ndl);`
+- `kmemcpy` (function) `headers/kernel.h:537` `void *kmemcpy(void *dst, const void *src, unsigned long n);`
+- `kmemset` (function) `headers/kernel.h:538` `void *kmemset(void *dst, int c, unsigned long n);`
+- `kmemcmp` (function) `headers/kernel.h:539` `int kmemcmp(const void *a, const void *b, unsigned long n);`
+- `kmemmove` (function) `headers/kernel.h:540` `void *kmemmove(void *dst, const void *src, unsigned long n);`
+- `katol` (function) `headers/kernel.h:541` `long katol(const char *s);`
+- `kprintf` (function) `headers/kernel.h:544` `int kprintf(const char *fmt, ...);` -- char *kstrcpy(char *dst, const char *src); char *kstrncpy(char *dst, const char *src, unsigned long n); char...
+- `kfprintf` (function) `headers/kernel.h:545` `int kfprintf(KFILE *f, const char *fmt, ...);`
+- `ksprintf` (function) `headers/kernel.h:546` `int ksprintf(char *buf, const char *fmt, ...);`
+- `ksnprintf` (function) `headers/kernel.h:547` `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);`
+- `klog` (function) `headers/kernel.h:562` `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);`
+- `klog_hexdump` (function) `headers/kernel.h:564` `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);`
+- `klog_set_level` (function) `headers/kernel.h:566` `void klog_set_level(log_level_t level);`
+- `klog_set_subsys_level` (function) `headers/kernel.h:567` `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);`
+- `klog_disable` (function) `headers/kernel.h:568` `void klog_disable(void);`
+- `klog_enable` (function) `headers/kernel.h:569` `void klog_enable(void);`
+- `shell_init` (function) `headers/kernel.h:572` `void shell_init(void);` -- LOG_SUBSYS_SHELL, LOG_SUBSYS_BOOT, LOG_SUBSYS_GENERAL, LOG_SUBSYS_COUNT } log_subsystem_t; void klog(log_level_t...
+- `shell_run` (function) `headers/kernel.h:573` `void shell_run(void);`
+- `console_getc` (function) `headers/kernel.h:574` `int console_getc(void);`
+- `console_peek` (function) `headers/kernel.h:575` `int console_peek(void);`
+- `redirect_suspend` (function) `headers/kernel.h:576` `int redirect_suspend(void);`
+- `redirect_resume` (function) `headers/kernel.h:577` `void redirect_resume(int was);`
+- `redirect_begin` (function) `headers/kernel.h:578` `int redirect_begin(void);`
+- `redirect_commit` (function) `headers/kernel.h:579` `int redirect_commit(const char *path, int append_mode);`
+- `redirect_take` (function) `headers/kernel.h:580` `char *redirect_take(unsigned long *len_out);`
+- `redirect_pending` (function) `headers/kernel.h:581` `unsigned long redirect_pending(void);`
+- `redirect_take_into` (function) `headers/kernel.h:582` `unsigned long redirect_take_into(char *dst, unsigned long cap, unsigned long *len_out);`
+- `redirect_discard` (function) `headers/kernel.h:584` `void redirect_discard(void);`
+- `redirect_active` (function) `headers/kernel.h:585` `int redirect_active(void);`
+- `console_stdin_push` (function) `headers/kernel.h:586` `int console_stdin_push(const char *data, unsigned long len);`
+- `console_stdin_clear` (function) `headers/kernel.h:587` `void console_stdin_clear(void);`
+- `console_stdin_active` (function) `headers/kernel.h:588` `int console_stdin_active(void);`
+- `panic_screen` (function) `headers/kernel.h:591` `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp...` -- void redirect_resume(int was); int  redirect_begin(void); int  redirect_commit(const char *path, int append_mode)...
+- `clip_set` (function) `headers/kernel.h:595` `int clip_set(const char *data, unsigned long len);` -- unsigned long redirect_pending(void); unsigned long redirect_take_into(char *dst, unsigned long cap, unsigned long...
+- `clip_get` (function) `headers/kernel.h:596` `int clip_get(char *out, unsigned long cap);`
+- `clip_clear` (function) `headers/kernel.h:597` `void clip_clear(void);`
+- `clip_len_get` (function) `headers/kernel.h:598` `int clip_len_get(void);`
+- `shell_take_redirect` (function) `headers/kernel.h:599` `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);`
+- `shell_run_any` (function) `headers/kernel.h:600` `int shell_run_any(const char *name, int argc, char **argv);`
+- `shell_exec_builtin` (function) `headers/kernel.h:601` `void shell_exec_builtin(int argc, char **argv);`
+- `shell_report_exit` (function) `headers/kernel.h:602` `void shell_report_exit(int code);`
+- `shell_report` (function) `headers/kernel.h:603` `void shell_report(const char *what, const char *detail);`
+- `kprog_slot` (function) `headers/kernel.h:628` `KProg *kprog_slot(const char *name);`
+- `kprog_lookup` (function) `headers/kernel.h:629` `KProg *kprog_lookup(const char *name);`
+- `ksym_resolve` (function) `headers/kernel.h:630` `void *ksym_resolve(const char *name);`
+- `k_spawn` (function) `headers/kernel.h:631` `int k_spawn(const char *name, int argc, char **argv);`
+- `k_register_program` (function) `headers/kernel.h:632` `void k_register_program(const char *name, prog_entry_t entry);`
+- `k_register_process` (function) `headers/kernel.h:633` `void k_register_process(const char *name, void *proc_entry);`
+- `k_register_symbol` (function) `headers/kernel.h:634` `void k_register_symbol(const char *name, void *addr);`
+- `register_libc_symbols` (function) `headers/kernel.h:638` `void register_libc_symbols(void);` -- Libc name table for ET_REL programs (kernel/console.c).
+- `k_exec_user` (function) `headers/kernel.h:641` `int k_exec_user(void *entry, int argc, char **argv);` -- Libc name table for ET_REL programs (kernel/console.c).
+- `k_run_rel` (function) `headers/kernel.h:642` `int k_run_rel(prog_entry_t entry, int argc, char **argv);`
+- `kexit` (function) `headers/kernel.h:643` `void kexit(int code);`
+- `k_run_on_stack` (function) `headers/kernel.h:646` `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` -- ET_REL stack switch (arch/x86/ctx_sw.S): runs entry(argc, argv) on * the 64 KB stack ending at stack_top.
+- `ksetjmp` (function) `headers/kernel.h:651` `int ksetjmp(void *buf) __attribute__((returns_twice));`
+- `klongjmp` (function) `headers/kernel.h:652` `void klongjmp(void *buf, int val) __attribute__((noreturn));`
+- `setup_user_stack` (function) `headers/kernel.h:655` `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);`
+- `vga_mode_set` (function) `headers/kernel.h:657` `void vga_mode_set(int on);`
+- `vga_mode_is_active` (function) `headers/kernel.h:658` `int vga_mode_is_active(void);`
+- `vga_gfx_ran_set` (function) `headers/kernel.h:659` `void vga_gfx_ran_set(int on);`
+- `desktop_launch` (function) `headers/kernel.h:662` `void desktop_launch(const char *cmd);`
+- `shell_queue_launch` (function) `headers/kernel.h:663` `void shell_queue_launch(const char *cmd);`
+- `vga_fb_focus_next` (function) `headers/kernel.h:666` `void vga_fb_focus_next(void);` -- void klongjmp(void *buf, int val) __attribute__((noreturn)); extern kjmpbuf exec_return; extern int...
+- `vga_fb_focus_id` (function) `headers/kernel.h:667` `int vga_fb_focus_id(int id);`
+- `vga_fb_focus_get` (function) `headers/kernel.h:668` `int vga_fb_focus_get(void);`
+- `vga_fb_nterms_get` (function) `headers/kernel.h:669` `int vga_fb_nterms_get(void);`
+- `vga_fb_term_split` (function) `headers/kernel.h:670` `int vga_fb_term_split(void);`
+- `vga_fb_term_close_focused` (function) `headers/kernel.h:671` `int vga_fb_term_close_focused(void);`
+- `vga_fb_tile_all` (function) `headers/kernel.h:672` `void vga_fb_tile_all(void);`
+- `vga_fb_list_windows` (function) `headers/kernel.h:673` `void vga_fb_list_windows(void);`
+- `vga_fb_park_line` (function) `headers/kernel.h:674` `void vga_fb_park_line(const char *b, int p);`
+- `vga_fb_unpark_line` (function) `headers/kernel.h:675` `int vga_fb_unpark_line(char *b, int *p);`
+- `vga_fb_set_gfx_program` (function) `headers/kernel.h:676` `void vga_fb_set_gfx_program(const char *name);`
+- `vga_fb_act_empty` (function) `headers/kernel.h:677` `int vga_fb_act_empty(void);`
+- `vga_fb_prompt_live` (function) `headers/kernel.h:678` `int vga_fb_prompt_live(void);`
+- `vga_fb_note_prompt` (function) `headers/kernel.h:679` `void vga_fb_note_prompt(void);`
+- `vga_fb_clear_prompt` (function) `headers/kernel.h:680` `void vga_fb_clear_prompt(void);`
+- `vga_fb_prompted` (function) `headers/kernel.h:681` `int vga_fb_prompted(void);`
+- `shell_readline_active` (function) `headers/kernel.h:685` `int shell_readline_active(void);` -- Shell side of window focus: park/restore the half-typed input line so it * travels with its window.
+- `shell_focus_park` (function) `headers/kernel.h:686` `void shell_focus_park(void);`
+- `shell_focus_restore` (function) `headers/kernel.h:687` `void shell_focus_restore(void);`
+- `user_range_ok` (function) `headers/kernel.h:692` `int user_range_ok(unsigned long p, unsigned long len);` -- Shell side of window focus: park/restore the half-typed input line so it * travels with its window.
+- `user_str_ok` (function) `headers/kernel.h:693` `int user_str_ok(unsigned long p, unsigned long maxlen);`
+- `mm_setup_protections` (function) `headers/kernel.h:696` `void mm_setup_protections(void);` -- Shell side of window focus: park/restore the half-typed input line so it * travels with its window.
+- `pt_page_alloc` (function) `headers/kernel.h:697` `void *pt_page_alloc(void);`
+- `pt_page_free` (function) `headers/kernel.h:698` `void pt_page_free(void *ptr);`
+- `mm_user_pte_update` (function) `headers/kernel.h:699` `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);`
+- `mm_user_set_exec` (function) `headers/kernel.h:700` `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);`
+- `swap_out` (function) `headers/kernel.h:703` `int swap_out(unsigned long window_sz);` -- extern volatile int shell_fg_active; /*
+- `swap_in` (function) `headers/kernel.h:704` `int swap_in(void);`
+- `elf_load` (function) `headers/kernel.h:750` `void *elf_load(void *data, unsigned size, void **base_out);`
+- `load_exec_elf` (function) `headers/kernel.h:751` `void *load_exec_elf(void *data, unsigned size);` -- Heap/mmap ceiling: the shared-library region starts here with the graphics tail above it, so brk growth and the mmap...
+- `elf_wants_process` (function) `headers/kernel.h:752` `int elf_wants_process(const void *data, unsigned size);` -- Heap/mmap ceiling: the shared-library region starts here with the graphics tail above it, so brk growth and the mmap...
+- `load_exec_elf_into` (function) `headers/kernel.h:753` `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out, unsigned long *base_out);` -- Heap/mmap ceiling: the shared-library region starts here with the graphics tail above it, so brk growth and the mmap...
+- `ldso_bind_into` (function) `headers/kernel.h:762` `int ldso_bind_into(void *data, unsigned size, unsigned long base, unsigned long cr3, vma_ctx_t *vma);` -- Minimal dynamic linker (T8 ld.so, kernel/loader.c). bind_into maps the DT_NEEDED libraries of an already-copied...
+- `ldso_pseudo_stat` (function) `headers/kernel.h:764` `int ldso_pseudo_stat(int ino, unsigned long *size_out);`
+- `ldso_pseudo_read` (function) `headers/kernel.h:765` `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len);`
+- `pt_clone_user_empty` (function) `headers/kernel.h:766` `unsigned long pt_clone_user_empty(void);`
+- `mm_user_ensure_page` (function) `headers/kernel.h:767` `int mm_user_ensure_page(unsigned long cr3, unsigned long va);`
+- `mm_user_map_page` (function) `headers/kernel.h:768` `int mm_user_map_page(unsigned long cr3, unsigned long va, unsigned long phys, int write, int exec);`
+- `mm_file_fault` (function) `headers/kernel.h:770` `int mm_file_fault(unsigned long cr3, unsigned long va);`
+- `mm_file_break` (function) `headers/kernel.h:771` `int mm_file_break(unsigned long cr3, unsigned long va);`
+- `mm_file_page_phys` (function) `headers/kernel.h:772` `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va);`
+- `mm_file_range_release` (function) `headers/kernel.h:773` `void mm_file_range_release(unsigned long cr3, unsigned long base, unsigned long len, int ino, unsigned long off, int...`
+- `mm_demand_pte` (function) `headers/kernel.h:789` `unsigned long mm_demand_pte(unsigned long prot);` -- Anonymous demand paging (docs/spec/kernel.md): a reserved page is a non-present PTE carrying PTE_DEMAND and the...
+- `mm_anon_reserve` (function) `headers/kernel.h:790` `int mm_anon_reserve(unsigned long cr3, unsigned long base, unsigned long len, unsigned long prot);`
+- `mm_anon_fault` (function) `headers/kernel.h:792` `int mm_anon_fault(unsigned long cr3, unsigned long va, int write);`
+- `pt_page_owned` (function) `headers/kernel.h:793` `int pt_page_owned(unsigned long phys);`
+- `mm_anon_release` (function) `headers/kernel.h:794` `void mm_anon_release(unsigned long cr3, unsigned long base, unsigned long len);`
+- `cow_drop_ref` (function) `headers/kernel.h:795` `int cow_drop_ref(unsigned long phys);`
+- `refused` (function) `headers/kernel.h:801` `* refused (see kernel/mm/paging.c for the fail-closed list). */ unsigned long kmm_map_device(unsigned long phys...`
+- `kmm_make_uncached` (function) `headers/kernel.h:803` `int kmm_make_uncached(unsigned long phys, unsigned long len);`
+- `mm_copy_user_page` (function) `headers/kernel.h:804` `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);`
+- `fault` (function) `headers/kernel.h:808` `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */...`
+- `cow_resolve` (function) `headers/kernel.h:811` `int cow_resolve(unsigned long cr3, unsigned long va);`
+- `user_page_present` (function) `headers/kernel.h:812` `int user_page_present(unsigned long cr3, unsigned long va);`
+- `cow_release_window` (function) `headers/kernel.h:813` `void cow_release_window(unsigned long cr3);`
+- `cow_shared` (function) `headers/kernel.h:814` `int cow_shared(void);`
+- `cow_page_shared` (function) `headers/kernel.h:815` `int cow_page_shared(unsigned long phys);`
+- `syscall_init` (function) `headers/kernel.h:818` `void syscall_init(void);` -- Copy-on-write fork (kernel/mm/cow.c): share on fork, privatize on first write. cow_fork_window builds the child...
+- `ksyscall` (function) `headers/kernel.h:822` `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+- `syscall_trace_enabled` (function) `headers/kernel.h:823` `long syscall_trace_enabled(void);`
+- `syscall_trace_set` (function) `headers/kernel.h:824` `void syscall_trace_set(int on);`
+- `syscall_trace_verbose_enabled` (function) `headers/kernel.h:825` `long syscall_trace_verbose_enabled(void);`
+- `syscall_trace_verbose_set` (function) `headers/kernel.h:826` `void syscall_trace_verbose_set(int on);`
+- `syscall_trace_shown` (function) `headers/kernel.h:827` `unsigned long syscall_trace_shown(void);`
+- `syscall_name` (function) `headers/kernel.h:828` `const char *syscall_name(long n);`
+- `kfd_get` (function) `headers/kernel.h:849` `KFILE *kfd_get(int fd);`
+- `kfd_put` (function) `headers/kernel.h:850` `void kfd_put(KFILE *f);`
+- `kfd_override` (function) `headers/kernel.h:851` `KFILE *kfd_override(int fd, KFILE *f);`
+- `kpipe_pair` (function) `headers/kernel.h:852` `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);`
+- `kpipe_empty_wopen` (function) `headers/kernel.h:853` `int kpipe_empty_wopen(KFILE *f);`
+- `kpipe_is_write_end` (function) `headers/kernel.h:854` `int kpipe_is_write_end(KFILE *f);`
+- `kpipe_state` (function) `headers/kernel.h:857` `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen);` -- Pipe snapshot for poll and the blocking syscall layer: bytes waiting, * free space, writer open, reader open. -1 on...
+- `kfd_poll_revents` (function) `headers/kernel.h:860` `int kfd_poll_revents(int fd);` -- poll(2) readiness bits of a non-socket descriptor (kernel/syscalls.c): * pipes, eventfds, files and the console...
+- `kevent_create` (function) `headers/kernel.h:866` `KFILE *kevent_create(unsigned long long initval, int semaphore);` -- eventfd(2) descriptions (docs/spec/smp-sched.md): create with an initial counter, read (0 or -EAGAIN when the...
+- `kevent_read` (function) `headers/kernel.h:867` `long kevent_read(KFILE *f, unsigned long long *out);`
+- `kevent_write` (function) `headers/kernel.h:868` `long kevent_write(KFILE *f, unsigned long long v);`
+- `kevent_readable` (function) `headers/kernel.h:869` `int kevent_readable(KFILE *f);`
+- `kevent_writable` (function) `headers/kernel.h:870` `int kevent_writable(KFILE *f);`
+- `fd_lock` (function) `headers/kernel.h:873` `* fd_lock (never nested, never held across yields);`
+- `C` (function) `headers/kernel.h:887` `* it with pointer subtraction in C (undefined behaviour). The value is
+ * a link-time difference,...`
+- `ktime_us` (function) `headers/kernel.h:897` `unsigned long ktime_us(void);`
+- `wall_us_now` (function) `headers/kernel.h:898` `unsigned long wall_us_now(void);`
+- `bootlog_mark` (function) `headers/kernel.h:901` `void bootlog_mark(const char *name);` -- it with pointer subtraction in C (undefined behaviour).
+- `bootlog_report` (function) `headers/kernel.h:902` `void bootlog_report(void);`
+- `pcspk_init` (function) `headers/kernel.h:905` `void pcspk_init(void);` -- static inline unsigned long ramdisk_image_size(void) { return (unsigned long)ramdisk_size; } /*
+- `pcspk_tone` (function) `headers/kernel.h:906` `void pcspk_tone(unsigned freq);`
+- `pcspk_off` (function) `headers/kernel.h:907` `void pcspk_off(void);`
+- `pcspk_set_volume` (function) `headers/kernel.h:908` `void pcspk_set_volume(unsigned volume);`
+- `pcspk_get_volume` (function) `headers/kernel.h:909` `unsigned pcspk_get_volume(void);`
+- `rtc_read_tod` (function) `headers/kernel.h:912` `int rtc_read_tod(int *hour, int *min, int *sec);` -- unsigned long wall_us_now(void); /*
+- `ide_init` (function) `headers/kernel.h:915` `void ide_init(void);` -- void bootlog_mark(const char *name); void bootlog_report(void); /*
+- `ide_read_sectors` (function) `headers/kernel.h:916` `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);`
+- `ide_write_sectors` (function) `headers/kernel.h:917` `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);`
+- `ide_read_sector` (function) `headers/kernel.h:918` `int ide_read_sector(unsigned int lba, void *buf);`
+- `ide_write_sector` (function) `headers/kernel.h:919` `int ide_write_sector(unsigned int lba, const void *buf);`
+- `ide_total_sectors` (function) `headers/kernel.h:920` `unsigned int ide_total_sectors(void);`
+- `ide_present` (function) `headers/kernel.h:921` `int ide_present(void);`
+- `block_init` (function) `headers/kernel.h:924` `void block_init(void);`
+- `block_read` (function) `headers/kernel.h:925` `int block_read(unsigned int block_num, void *buf);`
+- `block_write` (function) `headers/kernel.h:926` `int block_write(unsigned int block_num, const void *buf);`
+- `block_read_multi` (function) `headers/kernel.h:927` `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);`
+- `block_write_multi` (function) `headers/kernel.h:928` `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);`
+- `block_total` (function) `headers/kernel.h:929` `unsigned int block_total(void);`
+- `k_user_fault_return` (function) `headers/kernel.h:932` `void k_user_fault_return(void);` -- int  ide_read_sector(unsigned int lba, void *buf); int  ide_write_sector(unsigned int lba, const void *buf)...
 
 ## headers/kernel/console_in.h
 Imported by: `headers/shell.h`, `kernel/console_in.c`, `kernel/shell.c`
@@ -210,279 +491,6 @@ Imported by: `drivers/pcm2.c`, `tests/test_pcm.c`
                   ...`
 - `pcm_ring_read` (function) `headers/pcm_ring.h:76` `static inline unsigned pcm_ring_read(pcm_ring_t *r, unsigned char *dst,
                          ...`
-
-## headers/pcspk.h
-Imported by: `drivers/pcspk.c`, `kernel/shell.c`, `kernel/syscalls.c`
-- `pcspk_init` (function) `headers/pcspk.h:8` `void pcspk_init(void);`
-- `pcspk_tone` (function) `headers/pcspk.h:9` `void pcspk_tone(unsigned freq);`
-- `pcspk_off` (function) `headers/pcspk.h:10` `void pcspk_off(void);`
-- `pcspk_set_volume` (function) `headers/pcspk.h:11` `void pcspk_set_volume(unsigned volume);`
-- `pcspk_get_volume` (function) `headers/pcspk.h:12` `unsigned pcspk_get_volume(void);`
-
-## headers/percpu_rq.h
-Depends on: `headers/sched.h`, `headers/spinlock.h`
-Imported by: `kernel/percpu_rq.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`, `tests/test_percpu_rq.c`
-- `rq_init` (function) `headers/percpu_rq.h:61` `void rq_init(void);`
-- `rq_enqueue` (function) `headers/percpu_rq.h:62` `void rq_enqueue(int cpu, int pid);`
-- `rq_pop_local` (function) `headers/percpu_rq.h:63` `int rq_pop_local(int cpu);`
-- `rq_steal_once` (function) `headers/percpu_rq.h:64` `int rq_steal_once(int self_cpu, int *from_cpu);`
-- `rq_empty` (function) `headers/percpu_rq.h:65` `int rq_empty(int cpu);`
-- `rq_should_rescan` (function) `headers/percpu_rq.h:66` `int rq_should_rescan(int cpu);`
-- `rq_note_poll` (function) `headers/percpu_rq.h:67` `void rq_note_poll(int cpu);`
-- `rq_stats` (function) `headers/percpu_rq.h:68` `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals, unsigned long *drops);`
-
-## headers/pipe.h
-Imported by: `headers/kernel.h`, `kernel/console_in.c`, `tests/test_pipe.c`
-- `ends` (function) `headers/pipe.h:4` `* * Single source of truth for the pipe byte ring shared by the kernel * pipe ends (fs/kfile.c), the pipe/dup/dup2...`
-- `pipe_ring_init` (function) `headers/pipe.h:47` `static inline int pipe_ring_init(pipe_ring_t *r, unsigned char *buf,
-        unsigned cap)` -- Docstring: Bind a caller-owned buffer to a ring.
-- `pipe_ring_avail` (function) `headers/pipe.h:64` `static inline unsigned pipe_ring_avail(const pipe_ring_t *r)` -- return PIPE_ERR_BOUND; if (cap == 0u || cap > PIPE_CAP_MAX) return PIPE_ERR_BOUND; r->buf = buf; r->cap = cap...
-- `pipe_ring_space` (function) `headers/pipe.h:71` `static inline unsigned pipe_ring_space(const pipe_ring_t *r)` -- r->count = 0u; r->wopen = 1; r->ropen = 1; return 0; } /** Docstring: Bytes available to read.
-- `pipe_ring_write` (function) `headers/pipe.h:79` `static inline unsigned pipe_ring_write(pipe_ring_t *r,
-        const unsigned char *src, unsigned...` -- Docstring: Append up to len bytes, return bytes stored.
-- `pipe_ring_close_writer` (function) `headers/pipe.h:118` `static inline int pipe_ring_close_writer(pipe_ring_t *r)` -- Docstring: Mark the writer closed.
-- `pipe_ring_close_reader` (function) `headers/pipe.h:128` `static inline int pipe_ring_close_reader(pipe_ring_t *r)` -- Docstring: Mark the reader closed.
-- `pipe_ring_ropen` (function) `headers/pipe.h:135` `static inline int pipe_ring_ropen(const pipe_ring_t *r)` -- Docstring: Mark the reader closed.
-- `pipe_ring_stat` (function) `headers/pipe.h:140` `static inline int pipe_ring_stat(const pipe_ring_t *r, pipe_cfg_t *out)` -- Docstring: Snapshot ring geometry into a caller struct.
-
-## headers/proc_sec.h
-Imported by: `kernel/exec.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
-- `proc_sec_inherit` (function) `headers/proc_sec.h:23` `void proc_sec_inherit(int child, int parent);` -- Exit code of a process or thread a filter kills: a death by SIGSYS (31), recorded negative like every MiniOS signal...
-- `proc_sec_release` (function) `headers/proc_sec.h:24` `void proc_sec_release(int pid);`
-- `proc_sec_exec` (function) `headers/proc_sec.h:25` `void proc_sec_exec(int pid);`
-- `proc_sec_set_exe` (function) `headers/proc_sec.h:26` `void proc_sec_set_exe(int pid, const char *resolved);`
-- `proc_sec_exe` (function) `headers/proc_sec.h:28` `const char *proc_sec_exe(int pid);` -- Exit code of a process or thread a filter kills: a death by SIGSYS (31), recorded negative like every MiniOS signal...
-- `it` (function) `headers/proc_sec.h:31` `* the syscall must answer in *ret when a filter decided it (ERRNO, TRACE, * USER_NOTIF);`
-- `proc_sec_filter` (function) `headers/proc_sec.h:34` `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret);` -- Run the caller's filters for syscall n.
-- `proc_sec_prctl` (function) `headers/proc_sec.h:36` `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5);`
-- `proc_sec_seccomp` (function) `headers/proc_sec.h:37` `long proc_sec_seccomp(long op, long flags, long uargs);`
-
-## headers/qga.h
-Imported by: `qga.c`
-- `qga_init` (function) `headers/qga.h:48` `void qga_init(void);`
-- `qga_poll` (function) `headers/qga.h:49` `void qga_poll(void);`
-
-## headers/randmix.h
-Imported by: `kernel/syscalls.c`, `tests/test_randmix.c`
-- `source` (function) `headers/randmix.h:11` `* source (all-zero seed) still walks, because the increment is inside
- * the mixer, not in the ca...`
-
-## headers/rcu.h
-Depends on: `headers/sched.h`, `headers/spinlock.h`
-Imported by: `kernel/rcu.c`, `kernel/sched.c`, `kernel/syscalls.c`, `tests/test_rcu.c`
-- `retirement` (function) `headers/rcu.h:30` `* retirement (the writer keeps ownership) instead of dropping the free. * Callbacks run in tick context with...`
-- `rcu_init` (function) `headers/rcu.h:51` `void rcu_init(void);`
-- `rcu_read_lock` (function) `headers/rcu.h:52` `void rcu_read_lock(void);`
-- `rcu_read_unlock` (function) `headers/rcu.h:53` `void rcu_read_unlock(void);`
-- `rcu_deref` (function) `headers/rcu.h:54` `void *rcu_deref(void *volatile *pp);`
-- `rcu_publish` (function) `headers/rcu.h:55` `void rcu_publish(void *volatile *pp, void *v);`
-- `rcu_call` (function) `headers/rcu.h:56` `long rcu_call(rcu_cb_t fn, void *arg);`
-- `rcu_note_tick` (function) `headers/rcu.h:57` `void rcu_note_tick(int cpu);`
-- `rcu_note_idle` (function) `headers/rcu.h:58` `void rcu_note_idle(int cpu);`
-- `rcu_poll` (function) `headers/rcu.h:59` `void rcu_poll(void);`
-- `rcu_synchronize` (function) `headers/rcu.h:60` `long rcu_synchronize(void);`
-
-## headers/rtc.h
-Imported by: `drivers/rtc.c`, `kernel/minifetch.c`, `kernel/shell.c`, `kernel/syscalls.c`, `qga.c`, `tests/test_rtc.c`
-- `rtc_read_tod` (function) `headers/rtc.h:4` `int rtc_read_tod(int *hour, int *min, int *sec);`
-- `rtc_read_date` (function) `headers/rtc.h:11` `int rtc_read_date(int *year, int *mon, int *day);` -- Calendar date from the CMOS RTC (registers 0x07-0x09).
-- `suite` (function) `headers/rtc.h:15` `* host suite (tests/test_rtc.c);`
-- `rtc_days_from_civil` (function) `headers/rtc.h:18` `static inline long rtc_days_from_civil(long y, long m, long d)` -- Days since 1970-01-01 for a civil date (Howard Hinnant's algorithm, pure integer arithmetic, no tables).
-- `rtc_wall_seconds` (function) `headers/rtc.h:33` `int rtc_wall_seconds(unsigned long *out);` -- Wall-clock seconds since the Unix epoch from one RTC snapshot.
-
-## headers/sb16.h
-Imported by: `drivers/pcm2.c`, `drivers/sb16.c`, `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `kernel/syscalls.c`
-- `sb16_init` (function) `headers/sb16.h:65` `int sb16_init(void);`
-- `sb16_present` (function) `headers/sb16.h:66` `int sb16_present(void);`
-- `sb16_tone` (function) `headers/sb16.h:67` `void sb16_tone(unsigned freq);`
-- `sb16_irq` (function) `headers/sb16.h:68` `void sb16_irq(void);`
-- `sb16_poll` (function) `headers/sb16.h:69` `void sb16_poll(void);`
-- `sb16_pcm_open` (function) `headers/sb16.h:73` `void sb16_pcm_open(void);` -- Legacy single-stream API (maps to mixer stream 0: pcm_open allocates it, * pcm_submit forwards into it, pcm_close...
-- `sb16_pcm_submit` (function) `headers/sb16.h:74` `int sb16_pcm_submit(const unsigned char *pcm, unsigned len);`
-- `sb16_pcm_close` (function) `headers/sb16.h:75` `void sb16_pcm_close(void);`
-- `sb16_pump` (function) `headers/sb16.h:76` `void sb16_pump(void);`
-- `sb16_stream_open` (function) `headers/sb16.h:79` `int sb16_stream_open(void);` -- Legacy single-stream API (maps to mixer stream 0: pcm_open allocates it, * pcm_submit forwards into it, pcm_close...
-- `sb16_stream_close` (function) `headers/sb16.h:80` `void sb16_stream_close(int id);`
-- `sb16_stream_submit` (function) `headers/sb16.h:81` `int sb16_stream_submit(int id, const unsigned char *pcm, unsigned len);`
-- `sb16_stream_volume` (function) `headers/sb16.h:82` `void sb16_stream_volume(int id, unsigned char vol);`
-- `sb16_stream_count` (function) `headers/sb16.h:83` `int sb16_stream_count(void);`
-- `sb16_ring_free` (function) `headers/sb16.h:85` `unsigned sb16_ring_free(void);`
-- `sb16_mode_active` (function) `headers/sb16.h:86` `int sb16_mode_active(void);`
-- `sb16_legacy_busy` (function) `headers/sb16.h:91` `int sb16_legacy_busy(void);` -- True while the legacy engine audibly owns the DSP (PCM stream open or a tone sounding). pcm2_open consults it for...
-- `sb16_counters` (function) `headers/sb16.h:93` `void sb16_counters(sb16_counters_t *out);`
-
-## headers/sched.h
-Depends on: `headers/spinlock.h`, `headers/vma.h`
-Imported by: `drivers/kbd.c`, `drivers/pcm2.c`, `headers/futex.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/spawn.h`, `headers/sync.h`, `kernel.c`, `kernel/console.c`, `kernel/exec.c`, `kernel/loader.c`, `kernel/minifetch.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/panic.c`, `kernel/proc_sec.c`, `kernel/sched.c`, `kernel/serial.c`, `kernel/shell.c`, `kernel/spawn.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`, `kernel/vga_fb.c`, `net/net.c`, `net/rtl8139.c`, `progs/src/lxabi.c`, `smp.c`
-- `group` (function) `headers/sched.h:108` `* process is its own group (tgid == pid);`
-- `entry` (function) `headers/sched.h:135` `* private view with one KFILE ref per live entry (0 on OOM), release * drops the view at reap, cloexec closes marked...`
-- `kfd_view_copy` (function) `headers/sched.h:138` `int kfd_view_copy(proc_t *child, proc_t *parent);`
-- `kfd_view_release` (function) `headers/sched.h:139` `void kfd_view_release(proc_t *p);`
-- `kfd_view_cloexec` (function) `headers/sched.h:140` `void kfd_view_cloexec(void);`
-- `kfd_view_root` (function) `headers/sched.h:141` `kfd_view_t *kfd_view_root(void);`
-- `bytes` (function) `headers/sched.h:173` `* RLIM_AS total user bytes (brk growth + mmap) beyond the load base * RLIM_CPU timer ticks of CPU time, then...`
-- `first` (function) `headers/sched.h:232` `* address first (SYSCALL_FRAME_WORDS in syscall_asm.h). It ends exactly at * the saved top (sc_top_save[pid]);`
-- `syscall_frame_current` (function) `headers/sched.h:245` `const syscall_frame_t *syscall_frame_current(void);` -- The frame syscall_entry.S builds on the per-proc kernel stack, lowest address first (SYSCALL_FRAME_WORDS in...
-- `sched_init` (function) `headers/sched.h:376` `void sched_init(void);` -- Per-CPU TSS selectors: slot 5 + 2*cpu in the runtime GDT (each TSS descriptor occupies two 8-byte slots).
-- `kstack_report` (function) `headers/sched.h:377` `void kstack_report(void);`
-- `schedtop_report` (function) `headers/sched.h:378` `void schedtop_report(void);`
-- `irqstat_report` (function) `headers/sched.h:379` `void irqstat_report(void);`
-- `gdb_regs_report` (function) `headers/sched.h:380` `void gdb_regs_report(int pid);`
-- `gdb_dump_report` (function) `headers/sched.h:381` `void gdb_dump_report(unsigned long addr, unsigned long len);`
-- `tss_init_ap` (function) `headers/sched.h:385` `void tss_init_ap(int cpu);`
-- `smp_ap_idle_loop` (function) `headers/sched.h:386` `void smp_ap_idle_loop(void);`
-- `proc_create` (function) `headers/sched.h:387` `int proc_create(const char *name, int parent_pid);`
-- `proc_get` (function) `headers/sched.h:388` `proc_t *proc_get(int pid);`
-- `schedule` (function) `headers/sched.h:389` `void schedule(void);`
-- `sched_set_nice` (function) `headers/sched.h:390` `int sched_set_nice(int pid, int nice);`
-- `seccomp_deny_one` (function) `headers/sched.h:391` `int seccomp_deny_one(int pid, int n);`
-- `seccomp_allow_one` (function) `headers/sched.h:392` `int seccomp_allow_one(int pid, int n);`
-- `seccomp_denied` (function) `headers/sched.h:393` `int seccomp_denied(int pid, int n);`
-- `rlimit_cpu_exceeded` (function) `headers/sched.h:394` `int rlimit_cpu_exceeded(int pid);`
-- `rlimit_cpu_tick` (function) `headers/sched.h:395` `void rlimit_cpu_tick(int pid);`
-- `switch_to` (function) `headers/sched.h:396` `void switch_to(proc_t *prev, proc_t *next);`
-- `switch_to_notrap` (function) `headers/sched.h:397` `void switch_to_notrap(proc_t *prev, proc_t *next);`
-- `switch_save_only` (function) `headers/sched.h:398` `void switch_save_only(proc_t *prev);`
-- `resume_iretq` (function) `headers/sched.h:405` `void resume_iretq(void);`
-- `yield` (function) `headers/sched.h:406` `void yield(void);`
-- `do_exit` (function) `headers/sched.h:407` `void do_exit(int code);`
-- `do_clone` (function) `headers/sched.h:408` `long do_clone(long flags, long newsp);`
-- `do_fork` (function) `headers/sched.h:409` `long do_fork(void);`
-- `do_fork_ex` (function) `headers/sched.h:410` `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid);`
-- `do_linux_clone` (function) `headers/sched.h:411` `long do_linux_clone(unsigned long flags, unsigned long newsp, unsigned long ptid, unsigned long ctid, unsigned long...`
-- `do_group_exit` (function) `headers/sched.h:413` `void do_group_exit(int code);`
-- `mm_view_claim_current` (function) `headers/sched.h:414` `void mm_view_claim_current(void);`
-- `do_kill_code` (function) `headers/sched.h:415` `int do_kill_code(int pid, int code);`
-- `fork_child_settid` (function) `headers/sched.h:418` `void fork_child_settid(void);` -- void     sched_park_capture(proc_t *cur); void     resume_iretq(void); void     yield(void); void     do_exit(int...
-- `aslr_stack_bytes` (function) `headers/sched.h:428` `unsigned long aslr_stack_bytes(void);` -- ASLR jitter, fresh per exec (TSC + ticks + per-exec counter, never zero for stack/brk so consecutive execs differ...
-- `aslr_brk_pages` (function) `headers/sched.h:429` `unsigned long aslr_brk_pages(void);`
-- `aslr_mmap_pages` (function) `headers/sched.h:430` `unsigned long aslr_mmap_pages(void);`
-- `aslr_dyn_base` (function) `headers/sched.h:431` `unsigned long aslr_dyn_base(void);`
-- `failure` (function) `headers/sched.h:436` `* failure (negative errno);`
-- `do_execve` (function) `headers/sched.h:437` `long do_execve(char *kpath, int kargc, char **kargv);` -- do_execve() - replace the caller's image with a fresh ET_EXEC/ET_DYN program (kernel/sched.c).
-- `do_thread_spawn` (function) `headers/sched.h:438` `long do_thread_spawn(unsigned long fn, unsigned long stack, unsigned long arg);`
-- `do_waitpid` (function) `headers/sched.h:440` `int do_waitpid(int pid);`
-- `do_waitpid_nb` (function) `headers/sched.h:441` `int do_waitpid_nb(int pid);`
-- `shell_reap_nb` (function) `headers/sched.h:442` `int shell_reap_nb(int *pid_out, int *code_out);`
-- `shell_reap_one` (function) `headers/sched.h:443` `int shell_reap_one(int pid, int *code_out);`
-- `shell_nchildren` (function) `headers/sched.h:444` `int shell_nchildren(void);`
-- `do_waitpid_linux` (function) `headers/sched.h:448` `int do_waitpid_linux(int pid, int nohang, int *found);` -- kstack slot family, fd table and limits; everything else (window, VMA, brk view, stack, FPU, FSBASE, name) is rebuilt.
-- `do_kill` (function) `headers/sched.h:449` `int do_kill(int pid);`
-- `timer_tick` (function) `headers/sched.h:450` `void timer_tick(void);`
-- `pt_clone_user` (function) `headers/sched.h:453` `uint64_t pt_clone_user(uint64_t parent_cr3);` -- unsigned long arg); int      do_waitpid(int pid); int      do_waitpid_nb(int pid); int      shell_reap_nb(int...
-- `pt_free_user` (function) `headers/sched.h:454` `void pt_free_user(uint64_t cr3);`
-- `caller` (function) `headers/sched.h:459` `* caller (shell mrun) reaps it with do_waitpid. Returns pid or -1. * Programs using mmap/VMA or expecting a shared...`
-
-## headers/seccomp_bpf.h
-Imported by: `kernel/proc_sec.c`, `kernel/seccomp_bpf.c`, `tests/test_seccomp_bpf.c`
-- `sbpf_check` (function) `headers/seccomp_bpf.h:95` `int sbpf_check(const sbpf_insn *prog, unsigned len, unsigned short *scratch);` -- Validate a program before it ever runs: 1..SBPF_MAX_INSNS instructions, only the opcodes Linux accepts for seccomp...
-- `sbpf_run` (function) `headers/seccomp_bpf.h:100` `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d);` -- Run a program sbpf_check accepted over one syscall's data; returns the 32-bit action.
-- `sbpf_action_rank` (function) `headers/seccomp_bpf.h:104` `int sbpf_action_rank(unsigned int action);` -- Restrictiveness rank of an action (0 = most restrictive): the order * stacked filters are combined in.
-
-## headers/shell.h
-Depends on: `headers/kernel.h`, `headers/kernel/console_in.h`
-Imported by: `kernel/editor.c`, `kernel/shell.c`, `kernel/syscalls.c`
-- `shell_readline_buf` (function) `headers/shell.h:18` `void shell_readline_buf(char *buf, int size);` -- Read one line into buf with arrow-key editing; used by the built-in * editor to edit file text.
-- `shell_parse` (function) `headers/shell.h:21` `int shell_parse(char *line, char **argv, int max_args);` -- Read one line into buf with arrow-key editing; used by the built-in * editor to edit file text. void...
-- `shell_parse_long` (function) `headers/shell.h:29` `int shell_parse_long(const char *s, long *out);` -- Strict signed decimal parse for numeric shell/editor operands: an optional sign followed by at least one digit...
-- `shell_parse_pid` (function) `headers/shell.h:34` `int shell_parse_pid(const char *s, int min_pid, int *out);` -- Bounded pid parse: strict shell_parse_long plus min_pid <= pid < MAX_PROCS.
-- `shell_cmd_sh` (function) `headers/shell.h:39` `int shell_cmd_sh(int argc, char **argv);` -- Execute a shell script: read `path` line by line, skip blanks and `#` comments, parse each line and dispatch it...
-
-## headers/smp.h
-Depends on: `headers/spinlock.h`
-Imported by: `kernel.c`, `kernel/sched.c`, `kernel/shell.c`, `smp.c`
-- `smp_init` (function) `headers/smp.h:41` `void smp_init(void);`
-- `smp_ap_entry` (function) `headers/smp.h:42` `void smp_ap_entry(void);`
-- `smp_ipi_broadcast` (function) `headers/smp.h:43` `void smp_ipi_broadcast(int vector);` -- PIT-anchored LAPIC calibration (ticks per 10 ms at divide-by-16).
-
-## headers/spawn.h
-Depends on: `headers/kernel.h`, `headers/sched.h`, `headers/vma.h`
-Imported by: `kernel/sched.c`, `kernel/spawn.c`, `kernel/syscalls.c`
-- `spawn_backup` (function) `headers/spawn.h:28` `int spawn_backup(spawn_ctx_t *ctx);` -- Docstring: Save the caller shared-window view into ctx.
-- `spawn_restore` (function) `headers/spawn.h:31` `void spawn_restore(spawn_ctx_t *ctx);` -- Docstring: Save the caller shared-window view into ctx.
-- `spawn_validate_argv` (function) `headers/spawn.h:34` `int spawn_validate_argv(int argc, const char **uargv);` -- Docstring: Save the caller shared-window view into ctx.
-- `spawn_copy_argv` (function) `headers/spawn.h:39` `char **spawn_copy_argv(int argc, const char **uargv);` -- Docstring: Copy user argv into kernel memory, zero terminated.
-- `spawn_free_argv` (function) `headers/spawn.h:42` `void spawn_free_argv(char **kargv, int argc);` -- Docstring: Copy user argv into kernel memory, zero terminated.
-- `spawn_load_image` (function) `headers/spawn.h:45` `unsigned char *spawn_load_image(const char *resolved, unsigned *size_out);` -- Docstring: Copy user argv into kernel memory, zero terminated.
-- `spawn_execute` (function) `headers/spawn.h:48` `int spawn_execute(const char *resolved, const char *redirect, unsigned char *data, unsigned data_size, int argc...` -- Docstring: Copy user argv into kernel memory, zero terminated.
-
-## headers/spinlock.h
-Imported by: `drivers/pcm2.c`, `headers/futex.h`, `headers/kernel.h`, `headers/percpu_rq.h`, `headers/rcu.h`, `headers/sched.h`, `headers/smp.h`, `headers/sync.h`
-- `spin_init` (function) `headers/spinlock.h:46` `static inline void spin_init(spinlock_t *lock)`
-- `spin_save_irq` (function) `headers/spinlock.h:56` `static inline irqflags_t spin_save_irq(void)` -- Host unit-test variants (tests/test_sync.c, `make test-sync`): cli/sti and pushf/popf are privileged and fault in...
-- `spin_restore_irq` (function) `headers/spinlock.h:57` `static inline void spin_restore_irq(irqflags_t flags)`
-- `spin_lock` (function) `headers/spinlock.h:58` `static inline void spin_lock(spinlock_t *lock)`
-- `spin_unlock` (function) `headers/spinlock.h:64` `static inline void spin_unlock(spinlock_t *lock)`
-- `spin_lock_irqsave` (function) `headers/spinlock.h:68` `static inline void spin_lock_irqsave(spinlock_t *lock, irqflags_t *flags)`
-- `spin_unlock_irqrestore` (function) `headers/spinlock.h:75` `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)`
-- `spin_unlock_keep_irq` (function) `headers/spinlock.h:80` `static inline void spin_unlock_keep_irq(spinlock_t *lock)`
-- `spin_trylock` (function) `headers/spinlock.h:84` `static inline int spin_trylock(spinlock_t *lock)`
-- `spin_save_irq` (function) `headers/spinlock.h:92` `static inline irqflags_t spin_save_irq(void)` -- __sync_lock_release(&lock->locked); } static inline void spin_unlock_keep_irq(spinlock_t *lock) {...
-- `spin_restore_irq` (function) `headers/spinlock.h:99` `static inline void spin_restore_irq(irqflags_t flags)` -- int was = __sync_lock_test_and_set(&lock->locked, 1); if (!was) __sync_synchronize(); return !was; } #else /* Read...
-- `spin_lock` (function) `headers/spinlock.h:107` `static inline void spin_lock(spinlock_t *lock)` -- Acquire the lock and disable interrupts.
-- `spin_unlock` (function) `headers/spinlock.h:118` `static inline void spin_unlock(spinlock_t *lock)` -- Release the lock and re-enable interrupts.
-- `spin_unlock_keep_irq` (function) `headers/spinlock.h:130` `static inline void spin_unlock_keep_irq(spinlock_t *lock)` -- Release the lock WITHOUT touching interrupts (IF stays as-is).
-- `spin_unlock_irqrestore` (function) `headers/spinlock.h:150` `static inline void spin_unlock_irqrestore(spinlock_t *lock, irqflags_t flags)` -- Release the lock and restore the saved interrupt state.
-
-## headers/sync.h
-Depends on: `headers/sched.h`, `headers/spinlock.h`
-Imported by: `drivers/sb16.c`, `headers/futex.h`, `kernel/futex.c`, `kernel/sched.c`, `kernel/sync.c`, `kernel/syscalls.c`, `tests/test_sync.c`
-- `wq_init` (function) `headers/sync.h:50` `void wq_init(wait_queue_t *q);`
-- `sleep_on` (function) `headers/sync.h:51` `void sleep_on(wait_queue_t *q);`
-- `wake_up` (function) `headers/sync.h:52` `int wake_up(wait_queue_t *q);`
-- `wake_up_all` (function) `headers/sync.h:53` `int wake_up_all(wait_queue_t *q);`
-- `inheritance` (function) `headers/sync.h:56` `* Priority inheritance (thesis correction 3): a low-priority holder that * blocks a high-priority waiter is boosted...`
-- `mutex_init` (function) `headers/sync.h:72` `void mutex_init(mutex_t *m);`
-- `mutex_lock` (function) `headers/sync.h:73` `void mutex_lock(mutex_t *m);`
-- `mutex_unlock` (function) `headers/sync.h:74` `void mutex_unlock(mutex_t *m);`
-- `mutex_trylock` (function) `headers/sync.h:75` `int mutex_trylock(mutex_t *m);`
-- `mutex_note_waiter` (function) `headers/sync.h:76` `void mutex_note_waiter(mutex_t *m, int waiter);`
-- `pi_set_base` (function) `headers/sync.h:77` `void pi_set_base(int pid, int prio);`
-- `pi_get_eff` (function) `headers/sync.h:78` `int pi_get_eff(int pid);`
-- `sem_init` (function) `headers/sync.h:89` `void sem_init(sem_t *s, int value);`
-- `sem_wait` (function) `headers/sync.h:90` `void sem_wait(sem_t *s);`
-- `sem_post` (function) `headers/sync.h:91` `void sem_post(sem_t *s);`
-- `cond_init` (function) `headers/sync.h:103` `void cond_init(cond_t *c);`
-- `cond_wait` (function) `headers/sync.h:104` `void cond_wait(cond_t *c, mutex_t *m);`
-- `cond_signal` (function) `headers/sync.h:105` `void cond_signal(cond_t *c);`
-- `cond_broadcast` (function) `headers/sync.h:106` `void cond_broadcast(cond_t *c);`
-- `rwlock_init` (function) `headers/sync.h:118` `void rwlock_init(rwlock_t *rw);`
-- `rwlock_read_lock` (function) `headers/sync.h:119` `void rwlock_read_lock(rwlock_t *rw);`
-- `rwlock_read_unlock` (function) `headers/sync.h:120` `void rwlock_read_unlock(rwlock_t *rw);`
-- `rwlock_write_lock` (function) `headers/sync.h:121` `void rwlock_write_lock(rwlock_t *rw);`
-- `rwlock_write_unlock` (function) `headers/sync.h:122` `void rwlock_write_unlock(rwlock_t *rw);`
-
-## headers/syscalls_proc.h
-Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
-- `dispatcher` (function) `headers/syscalls_proc.h:5` `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...`
-- `sys_minios_nice` (function) `headers/syscalls_proc.h:12` `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_minios_clone` (function) `headers/syscalls_proc.h:13` `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6);`
-- `sys_minios_thread_spawn` (function) `headers/syscalls_proc.h:14` `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_yield` (function) `headers/syscalls_proc.h:15` `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_getpid` (function) `headers/syscalls_proc.h:16` `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_gettid` (function) `headers/syscalls_proc.h:17` `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_fork` (function) `headers/syscalls_proc.h:18` `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_clone` (function) `headers/syscalls_proc.h:19` `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_vfork` (function) `headers/syscalls_proc.h:20` `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_execve` (function) `headers/syscalls_proc.h:21` `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_exit` (function) `headers/syscalls_proc.h:22` `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_wait4` (function) `headers/syscalls_proc.h:23` `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `sys_linux_kill` (function) `headers/syscalls_proc.h:24` `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);`
-- `linux_signal_fatal` (function) `headers/syscalls_proc.h:31` `int linux_signal_fatal(long sig);` -- Linux signal numbers 1..LINUX_SIGNAL_MAX; a fatal one ends its target. * The foreground shell reports a signal death...
-- `do_proc_exit` (function) `headers/syscalls_proc.h:34` `long do_proc_exit(long code);` -- Linux signal numbers 1..LINUX_SIGNAL_MAX; a fatal one ends its target. * The foreground shell reports a signal death...
-
-## headers/tick.h
-Imported by: `kernel/sched.c`, `kernel/tick.c`, `tests/test_tick.c`
-- `tick_reset` (function) `headers/tick.h:47` `void tick_reset(void);` -- needs; the bound exists so the tables stay fixed-size. #define TICK_MAX_USB_LISTENERS 2 /** Docstring: Default bus...
-- `tick_register_audio` (function) `headers/tick.h:54` `int tick_register_audio(tick_fn_t fn, void *ctx);` -- Docstring: Register an unconditional BSP audio effect.
-- `tick_register_desktop` (function) `headers/tick.h:61` `int tick_register_desktop(tick_fn_t fn, void *ctx);` -- Docstring: Register a gated desktop effect.
-- `tick_register_usb` (function) `headers/tick.h:69` `int tick_register_usb(tick_fn_t fn, void *ctx);` -- Docstring: Register a polled USB controller effect.
-- `tick_run_usb` (function) `headers/tick.h:72` `void tick_run_usb(void);` -- Docstring: Register a polled USB controller effect.
-- `tick_run_audio` (function) `headers/tick.h:75` `void tick_run_audio(void);` -- Docstring: Register a polled USB controller effect.
-- `tick_run_desktop` (function) `headers/tick.h:78` `void tick_run_desktop(void);` -- The xHCI event ring is polled by decision rather than interrupt-driven, so this listener is the polling trigger.
-- `tick_audio_count` (function) `headers/tick.h:81` `int tick_audio_count(void);` -- handler is null or the USB table is full.
-- `tick_desktop_count` (function) `headers/tick.h:84` `int tick_desktop_count(void);` -- /** Docstring: Run USB listeners in registration order. void tick_run_usb(void); /** Docstring: Run audio listeners...
-- `tick_desktop_due` (function) `headers/tick.h:92` `int tick_desktop_due(unsigned long long ticks, unsigned interval);` -- Docstring: Pure desktop gating predicate.
 
 
 Next: [API_p5.md](API_p5.md)

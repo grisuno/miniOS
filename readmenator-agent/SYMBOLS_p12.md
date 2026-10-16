@@ -3,6 +3,191 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `h_cpu` | function | `progs/asm/mtop.s:3` | `` |
+| `h_fill` | function | `progs/asm/mtop.s:11` | `` |
+| `h_mem` | function | `progs/asm/mtop.s:7` | `` |
+| `have_prev` | function | `progs/asm/mtop.s:35` | `` |
+| `last_dns` | function | `progs/asm/mtop.s:15` | `` |
+| `last_dns_ms` | function | `progs/asm/mtop.s:19` | `` |
+| `last_sock` | function | `progs/asm/mtop.s:23` | `` |
+| `main` | function | `progs/asm/mtop.s:3831` | `` |
+| `mtop_atoi` | function | `progs/asm/mtop.s:443` | `` |
+| `mtop_bar` | function | `progs/asm/mtop.s:887` | `` |
+| `mtop_clear` | function | `progs/asm/mtop.s:401` | `` |
+| `mtop_clear_ansi` | function | `progs/asm/mtop.s:317` | `` |
+| `mtop_cpu` | function | `progs/asm/mtop.s:1556` | `` |
+| `mtop_disk_open` | function | `progs/asm/mtop.s:1842` | `` |
+| `mtop_disk_read` | function | `progs/asm/mtop.s:1966` | `` |
+| `mtop_frame` | function | `progs/asm/mtop.s:2275` | `` |
+| `mtop_hist_max` | function | `progs/asm/mtop.s:1038` | `` |
+| `mtop_hist_push` | function | `progs/asm/mtop.s:1106` | `` |
+| `mtop_key` | function | `progs/asm/mtop.s:137` | `` |
+| `mtop_mem` | function | `progs/asm/mtop.s:1452` | `` |
+| `mtop_minfo` | function | `progs/asm/mtop.s:165` | `` |
+| `mtop_net_probe` | function | `progs/asm/mtop.s:2128` | `` |
+| `mtop_put2` | function | `progs/asm/mtop.s:725` | `` |
+| `mtop_put_kb` | function | `progs/asm/mtop.s:765` | `` |
+| `mtop_putu` | function | `progs/asm/mtop.s:569` | `` |
+| `mtop_quit_key` | function | `progs/asm/mtop.s:241` | `` |
+| `mtop_rtc` | function | `progs/asm/mtop.s:106` | `` |
+| `mtop_spark` | function | `progs/asm/mtop.s:1201` | `` |
+| `mtop_time` | function | `progs/asm/mtop.s:78` | `` |
+| `prev_idle` | function | `progs/asm/mtop.s:31` | `` |
+| `prev_total` | function | `progs/asm/mtop.s:27` | `` |
+| `sc3` | function | `progs/asm/mtop.s:47` | `` |
+| `_start` | function | `progs/asm/sign.s:14926` | `` |
+| `fe_add` | function | `progs/asm/sign.s:4837` | `` |
+| `fe_cmov` | function | `progs/asm/sign.s:4505` | `` |
+| `fe_copy` | function | `progs/asm/sign.s:4387` | `` |
+| `fe_curved` | function | `progs/asm/sign.s:6586` | `` |
+| `fe_foldadd` | function | `progs/asm/sign.s:5426` | `` |
+| `fe_frombytes` | function | `progs/asm/sign.s:6284` | `` |
+| `fe_ge` | function | `progs/asm/sign.s:4589` | `` |
+| `fe_inv` | function | `progs/asm/sign.s:6135` | `` |
+| `fe_mul` | function | `progs/asm/sign.s:5481` | `` |
+| `fe_off` | function | `progs/asm/sign.s:6760` | `` |
+| `fe_one` | function | `progs/asm/sign.s:4476` | `` |
+| `fe_rawsub` | function | `progs/asm/sign.s:4713` | `` |
+| `fe_rowadd` | function | `progs/asm/sign.s:5297` | `` |
+| `fe_sq` | function | `progs/asm/sign.s:6109` | `` |
+| `fe_sub` | function | `progs/asm/sign.s:5031` | `` |
+| `fe_tobytes` | function | `progs/asm/sign.s:6432` | `` |
+| `fe_zero` | function | `progs/asm/sign.s:4435` | `` |
+| `ge_add` | function | `progs/asm/sign.s:6864` | `` |
+| `ge_cmov` | function | `progs/asm/sign.s:6780` | `` |
+| `ge_copy` | function | `progs/asm/sign.s:6712` | `` |
+| `ge_double` | function | `progs/asm/sign.s:7325` | `` |
+| `ge_scalarmult` | function | `progs/asm/sign.s:7701` | `` |
+| `main` | function | `progs/asm/sign.s:14647` | `` |
+| `sc_mod_l` | function | `progs/asm/sign.s:7916` | `` |
+| `sc_mul_add` | function | `progs/asm/sign.s:8461` | `` |
+| `sign_add3` | function | `progs/asm/sign.s:1218` | `` |
+| `sign_append` | function | `progs/asm/sign.s:12154` | `` |
+| `sign_ax_hex` | function | `progs/asm/sign.s:47` | `` |
+| `sign_ay_hex` | function | `progs/asm/sign.s:51` | `` |
+| `sign_be32` | function | `progs/asm/sign.s:1292` | `` |
+| `sign_block` | function | `progs/asm/sign.s:1394` | `` |
+| `sign_borrow2` | function | `progs/asm/sign.s:1158` | `` |
+| `sign_buf` | function | `progs/asm/sign.s:79` | `` |
+| `sign_bx_hex` | function | `progs/asm/sign.s:39` | `` |
+| `sign_by_hex` | function | `progs/asm/sign.s:43` | `` |
+| `sign_byte` | function | `progs/asm/sign.s:325` | `` |
+| `sign_carry2` | function | `progs/asm/sign.s:1099` | `` |
+| `sign_copy` | function | `progs/asm/sign.s:363` | `` |
+| `sign_digest` | function | `progs/asm/sign.s:9485` | `` |
+| `sign_digest_of` | function | `progs/asm/sign.s:11374` | `` |
+| `sign_feed32` | function | `progs/asm/sign.s:3871` | `` |
+| `sign_file` | function | `progs/asm/sign.s:13433` | `` |
+| `sign_ga` | function | `progs/asm/sign.s:107` | `` |
+| `sign_gb` | function | `progs/asm/sign.s:103` | `` |
+| `sign_h` | function | `progs/asm/sign.s:71` | `` |
+| `sign_hexout` | function | `progs/asm/sign.s:688` | `` |
+| `sign_hexval` | function | `progs/asm/sign.s:111` | `` |
+| `sign_k` | function | `progs/asm/sign.s:67` | `` |
+| `sign_k0` | function | `progs/asm/sign.s:3` | `` |
+| `sign_k1` | function | `progs/asm/sign.s:7` | `` |
+| `sign_k2` | function | `progs/asm/sign.s:11` | `` |
+| `sign_k3` | function | `progs/asm/sign.s:15` | `` |
+| `sign_k4` | function | `progs/asm/sign.s:19` | `` |
+| `sign_k5` | function | `progs/asm/sign.s:23` | `` |
+| `sign_k6` | function | `progs/asm/sign.s:27` | `` |
+| `sign_k7` | function | `progs/asm/sign.s:31` | `` |
+| `sign_key_init` | function | `progs/asm/sign.s:3962` | `` |
+| `sign_l8` | function | `progs/asm/sign.s:99` | `` |
+| `sign_le16` | function | `progs/asm/sign.s:444` | `` |
+| `sign_le32` | function | `progs/asm/sign.s:494` | `` |
+| `sign_nhi` | function | `progs/asm/sign.s:91` | `` |
+| `sign_nlo` | function | `progs/asm/sign.s:87` | `` |
+| `sign_note_name` | function | `progs/asm/sign.s:59` | `` |
+| `sign_note_span` | function | `progs/asm/sign.s:11061` | `` |
+| `sign_offok` | function | `progs/asm/sign.s:866` | `` |
+| `sign_patch_notes` | function | `progs/asm/sign.s:11834` | `` |
+| `sign_points_init` | function | `progs/asm/sign.s:9084` | `` |
+| `sign_pub_hex` | function | `progs/asm/sign.s:55` | `` |
+| `sign_put32` | function | `progs/asm/sign.s:596` | `` |
+| `sign_q4` | function | `progs/asm/sign.s:95` | `` |
+| `sign_read` | function | `progs/asm/sign.s:10733` | `` |
+| `sign_rev32` | function | `progs/asm/sign.s:9013` | `` |
+| `sign_rotr` | function | `progs/asm/sign.s:927` | `` |
+| `sign_section_name` | function | `progs/asm/sign.s:63` | `` |
+| `sign_seed_hex` | function | `progs/asm/sign.s:35` | `` |
+| `sign_selftest` | function | `progs/asm/sign.s:14501` | `` |
+| `sign_sha_final` | function | `progs/asm/sign.s:3477` | `` |
+| `sign_sha_init` | function | `progs/asm/sign.s:3105` | `` |
+| `sign_sha_update` | function | `progs/asm/sign.s:3287` | `` |
+| `sign_strlen` | function | `progs/asm/sign.s:405` | `` |
+| `sign_unhex` | function | `progs/asm/sign.s:232` | `` |
+| `sign_used` | function | `progs/asm/sign.s:83` | `` |
+| `sign_w` | function | `progs/asm/sign.s:75` | `` |
+| `sign_write` | function | `progs/asm/sign.s:10972` | `` |
+| `_start` | function | `progs/asm/w1.s:37` | `` |
+| `main` | function | `progs/asm/w1.s:3` | `` |
+| `DMAP_BRUSH_COUNT` | macro | `progs/doomedit/doomedit.c:230` | `#define DMAP_BRUSH_COUNT` |
+| `DMAP_CANVAS_W` | macro | `progs/doomedit/doomedit.c:61` | `#define DMAP_CANVAS_W` |
+| `DMAP_CEIL_FLAT` | macro | `progs/doomedit/doomedit.c:97` | `#define DMAP_CEIL_FLAT` |
+| `DMAP_CEIL_H` | macro | `progs/doomedit/doomedit.c:100` | `#define DMAP_CEIL_H` |
+| `DMAP_CELL_PX` | macro | `progs/doomedit/doomedit.c:60` | `#define DMAP_CELL_PX` |
+| `DMAP_DARK_LIGHT` | macro | `progs/doomedit/doomedit.c:103` | `#define DMAP_DARK_LIGHT` |
+| `DMAP_DARK_MID` | macro | `progs/doomedit/doomedit.c:92` | `#define DMAP_DARK_MID` |
+| `DMAP_DEF_H` | macro | `progs/doomedit/doomedit.c:58` | `#define DMAP_DEF_H` |
+| `DMAP_DEF_W` | macro | `progs/doomedit/doomedit.c:57` | `#define DMAP_DEF_W` |
+| `DMAP_DOOR_CEIL` | macro | `progs/doomedit/doomedit.c:101` | `#define DMAP_DOOR_CEIL` |
+| `DMAP_DOOR_LIGHT` | macro | `progs/doomedit/doomedit.c:104` | `#define DMAP_DOOR_LIGHT` |
+| `DMAP_DOOR_SPECIAL` | macro | `progs/doomedit/doomedit.c:85` | `#define DMAP_DOOR_SPECIAL` |
+| `DMAP_DOOR_UPPER` | macro | `progs/doomedit/doomedit.c:91` | `#define DMAP_DOOR_UPPER` |
+| `DMAP_EXIT_MID` | macro | `progs/doomedit/doomedit.c:90` | `#define DMAP_EXIT_MID` |
+| `DMAP_EXIT_SPECIAL` | macro | `progs/doomedit/doomedit.c:84` | `#define DMAP_EXIT_SPECIAL` |
+| `DMAP_FLAG_BLOCKING` | macro | `progs/doomedit/doomedit.c:86` | `#define DMAP_FLAG_BLOCKING` |
+| `DMAP_FLAG_TWOSIDED` | macro | `progs/doomedit/doomedit.c:87` | `#define DMAP_FLAG_TWOSIDED` |
+| `DMAP_FLOOR_FLAT` | macro | `progs/doomedit/doomedit.c:95` | `#define DMAP_FLOOR_FLAT` |
+| `DMAP_FLOOR_H` | macro | `progs/doomedit/doomedit.c:98` | `#define DMAP_FLOOR_H` |
+| `DMAP_FNAME_MAX` | macro | `progs/doomedit/doomedit.c:67` | `#define DMAP_FNAME_MAX` |
+| `DMAP_FOV_PLANE` | macro | `progs/doomedit/doomedit.c:78` | `#define DMAP_FOV_PLANE` |
+| `DMAP_FRAME_MS` | macro | `progs/doomedit/doomedit.c:75` | `#define DMAP_FRAME_MS` |
+| `DMAP_HISTORY` | macro | `progs/doomedit/doomedit.c:111` | `#define DMAP_HISTORY` |
+| `DMAP_LEVEL_COUNT` | macro | `progs/doomedit/doomedit.c:70` | `#define DMAP_LEVEL_COUNT` |
+| `DMAP_LIGHT` | macro | `progs/doomedit/doomedit.c:102` | `#define DMAP_LIGHT` |
+| `DMAP_MAX_H` | macro | `progs/doomedit/doomedit.c:56` | `#define DMAP_MAX_H` |
+| `DMAP_MAX_LINES` | macro | `progs/doomedit/doomedit.c:79` | `#define DMAP_MAX_LINES` |
+| `DMAP_MAX_SECTORS` | macro | `progs/doomedit/doomedit.c:72` | `#define DMAP_MAX_SECTORS` |
+| `DMAP_MAX_THINGS` | macro | `progs/doomedit/doomedit.c:81` | `#define DMAP_MAX_THINGS` |
+| `DMAP_MAX_VERTS` | macro | `progs/doomedit/doomedit.c:80` | `#define DMAP_MAX_VERTS` |
+| `DMAP_MAX_W` | macro | `progs/doomedit/doomedit.c:55` | `#define DMAP_MAX_W` |
+| `DMAP_MOVE_STEP` | macro | `progs/doomedit/doomedit.c:77` | `#define DMAP_MOVE_STEP` |
+| `DMAP_NODE_LEAF` | macro | `progs/doomedit/doomedit.c:106` | `#define DMAP_NODE_LEAF` |
+| `DMAP_NO_SIDE` | macro | `progs/doomedit/doomedit.c:88` | `#define DMAP_NO_SIDE` |
+| `DMAP_NUKE_FLAT` | macro | `progs/doomedit/doomedit.c:96` | `#define DMAP_NUKE_FLAT` |
+| `DMAP_NUKE_FLOOR` | macro | `progs/doomedit/doomedit.c:99` | `#define DMAP_NUKE_FLOOR` |
+| `DMAP_NUKE_MID` | macro | `progs/doomedit/doomedit.c:93` | `#define DMAP_NUKE_MID` |
+| `DMAP_NUKE_SPECIAL` | macro | `progs/doomedit/doomedit.c:105` | `#define DMAP_NUKE_SPECIAL` |
+| `DMAP_PANEL_MIN_H` | macro | `progs/doomedit/doomedit.c:62` | `#define DMAP_PANEL_MIN_H` |
+| `DMAP_PLAYER_TYPE` | macro | `progs/doomedit/doomedit.c:82` | `#define DMAP_PLAYER_TYPE` |
+| `DMAP_PREV_H` | macro | `progs/doomedit/doomedit.c:64` | `#define DMAP_PREV_H` |
+| `DMAP_PREV_W` | macro | `progs/doomedit/doomedit.c:63` | `#define DMAP_PREV_W` |
+| `DMAP_RANDOM_ATTEMPTS` | macro | `progs/doomedit/doomedit.c:71` | `#define DMAP_RANDOM_ATTEMPTS` |
+| `DMAP_ROOM_MAX` | macro | `progs/doomedit/doomedit.c:73` | `#define DMAP_ROOM_MAX` |
+| `DMAP_ROOM_TRIES` | macro | `progs/doomedit/doomedit.c:74` | `#define DMAP_ROOM_TRIES` |
+| `DMAP_SAVE_TXT` | macro | `progs/doomedit/doomedit.c:108` | `#define DMAP_SAVE_TXT` |
+| `DMAP_SAVE_WAD` | macro | `progs/doomedit/doomedit.c:109` | `#define DMAP_SAVE_WAD` |
+| `DMAP_SLOTS` | macro | `progs/doomedit/doomedit.c:69` | `#define DMAP_SLOTS` |
+| `DMAP_STATUS_MAX` | macro | `progs/doomedit/doomedit.c:68` | `#define DMAP_STATUS_MAX` |
+| `DMAP_THING_OPT` | macro | `progs/doomedit/doomedit.c:83` | `#define DMAP_THING_OPT` |
+| `DMAP_TILE` | macro | `progs/doomedit/doomedit.c:59` | `#define DMAP_TILE` |
+| `DMAP_TITLE` | macro | `progs/doomedit/doomedit.c:110` | `#define DMAP_TITLE` |
+| `DMAP_TOOL_DOOM` | macro | `progs/doomedit/doomedit.c:107` | `#define DMAP_TOOL_DOOM` |
+| `DMAP_TOOL_FILL` | macro | `progs/doomedit/doomedit.c:115` | `#define DMAP_TOOL_FILL` |
+| `DMAP_TOOL_LINE` | macro | `progs/doomedit/doomedit.c:113` | `#define DMAP_TOOL_LINE` |
+| `DMAP_TOOL_PAINT` | macro | `progs/doomedit/doomedit.c:112` | `#define DMAP_TOOL_PAINT` |
+| `DMAP_TOOL_RECT` | macro | `progs/doomedit/doomedit.c:114` | `#define DMAP_TOOL_RECT` |
+| `DMAP_TURN_STEP` | macro | `progs/doomedit/doomedit.c:76` | `#define DMAP_TURN_STEP` |
+| `DMAP_UI_MEMORY` | macro | `progs/doomedit/doomedit.c:65` | `#define DMAP_UI_MEMORY` |
+| `DMAP_UNUSED_TEX` | macro | `progs/doomedit/doomedit.c:94` | `#define DMAP_UNUSED_TEX` |
+| `DMAP_WAD_MAX` | macro | `progs/doomedit/doomedit.c:66` | `#define DMAP_WAD_MAX` |
+| `DMAP_WALL_MID` | macro | `progs/doomedit/doomedit.c:89` | `#define DMAP_WALL_MID` |
+| `areas` | function | `progs/doomedit/doomedit.c:1150` | `* floor areas (doors stand alone, dark and nukage never merge);` |
+| `dmap_apply_cell` | function | `progs/doomedit/doomedit.c:326` | `static void dmap_apply_cell(int r, int c, int brush)` |
+| `dmap_brush_combo` | function | `progs/doomedit/doomedit.c:1760` | `static void dmap_brush_combo(struct nk_context *ctx)` |
+| `dmap_build_wad` | function | `progs/doomedit/doomedit.c:1343` | `static int dmap_build_wad(int *size_out)` |
 | `dmap_canvas` | function | `progs/doomedit/doomedit.c:1773` | `static void dmap_canvas(struct nk_context *ctx)` |
 | `dmap_cell_class` | function | `progs/doomedit/doomedit.c:583` | `static int dmap_cell_class(int cell)` |
 | `dmap_cell_color` | function | `progs/doomedit/doomedit.c:594` | `static struct nk_color dmap_cell_color(int cell)` |
@@ -311,190 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `HUSTR_E4M1` | macro | `progs/doomgeneric/d_englsh.h:169` | `#define HUSTR_E4M1` |
 | `HUSTR_E4M2` | macro | `progs/doomgeneric/d_englsh.h:170` | `#define HUSTR_E4M2` |
 | `HUSTR_E4M3` | macro | `progs/doomgeneric/d_englsh.h:171` | `#define HUSTR_E4M3` |
-| `HUSTR_E4M4` | macro | `progs/doomgeneric/d_englsh.h:172` | `#define HUSTR_E4M4` |
-| `HUSTR_E4M5` | macro | `progs/doomgeneric/d_englsh.h:173` | `#define HUSTR_E4M5` |
-| `HUSTR_E4M6` | macro | `progs/doomgeneric/d_englsh.h:174` | `#define HUSTR_E4M6` |
-| `HUSTR_E4M7` | macro | `progs/doomgeneric/d_englsh.h:175` | `#define HUSTR_E4M7` |
-| `HUSTR_E4M8` | macro | `progs/doomgeneric/d_englsh.h:176` | `#define HUSTR_E4M8` |
-| `HUSTR_E4M9` | macro | `progs/doomgeneric/d_englsh.h:177` | `#define HUSTR_E4M9` |
-| `HUSTR_KEYBROWN` | macro | `progs/doomgeneric/d_englsh.h:316` | `#define HUSTR_KEYBROWN` |
-| `HUSTR_KEYGREEN` | macro | `progs/doomgeneric/d_englsh.h:314` | `#define HUSTR_KEYGREEN` |
-| `HUSTR_KEYINDIGO` | macro | `progs/doomgeneric/d_englsh.h:315` | `#define HUSTR_KEYINDIGO` |
-| `HUSTR_KEYRED` | macro | `progs/doomgeneric/d_englsh.h:317` | `#define HUSTR_KEYRED` |
-| `HUSTR_MESSAGESENT` | macro | `progs/doomgeneric/d_englsh.h:304` | `#define HUSTR_MESSAGESENT` |
-| `HUSTR_MSGU` | macro | `progs/doomgeneric/d_englsh.h:137` | `#define HUSTR_MSGU` |
-| `HUSTR_PLRBROWN` | macro | `progs/doomgeneric/d_englsh.h:311` | `#define HUSTR_PLRBROWN` |
-| `HUSTR_PLRGREEN` | macro | `progs/doomgeneric/d_englsh.h:309` | `#define HUSTR_PLRGREEN` |
-| `HUSTR_PLRINDIGO` | macro | `progs/doomgeneric/d_englsh.h:310` | `#define HUSTR_PLRINDIGO` |
-| `HUSTR_PLRRED` | macro | `progs/doomgeneric/d_englsh.h:312` | `#define HUSTR_PLRRED` |
-| `HUSTR_TALKTOSELF1` | macro | `progs/doomgeneric/d_englsh.h:298` | `#define HUSTR_TALKTOSELF1` |
-| `HUSTR_TALKTOSELF2` | macro | `progs/doomgeneric/d_englsh.h:299` | `#define HUSTR_TALKTOSELF2` |
-| `HUSTR_TALKTOSELF3` | macro | `progs/doomgeneric/d_englsh.h:300` | `#define HUSTR_TALKTOSELF3` |
-| `HUSTR_TALKTOSELF4` | macro | `progs/doomgeneric/d_englsh.h:301` | `#define HUSTR_TALKTOSELF4` |
-| `HUSTR_TALKTOSELF5` | macro | `progs/doomgeneric/d_englsh.h:302` | `#define HUSTR_TALKTOSELF5` |
-| `LOADNET` | macro | `progs/doomgeneric/d_englsh.h:39` | `#define LOADNET` |
-| `MSGOFF` | macro | `progs/doomgeneric/d_englsh.h:58` | `#define MSGOFF` |
-| `MSGON` | macro | `progs/doomgeneric/d_englsh.h:59` | `#define MSGON` |
-| `NETEND` | macro | `progs/doomgeneric/d_englsh.h:60` | `#define NETEND` |
-| `NEWGAME` | macro | `progs/doomgeneric/d_englsh.h:46` | `#define NEWGAME` |
-| `NIGHTMARE` | macro | `progs/doomgeneric/d_englsh.h:50` | `#define NIGHTMARE` |
-| `P1TEXT` | macro | `progs/doomgeneric/d_englsh.h:526` | `#define P1TEXT` |
-| `P2TEXT` | macro | `progs/doomgeneric/d_englsh.h:543` | `#define P2TEXT` |
-| `P3TEXT` | macro | `progs/doomgeneric/d_englsh.h:554` | `#define P3TEXT` |
-| `P4TEXT` | macro | `progs/doomgeneric/d_englsh.h:568` | `#define P4TEXT` |
-| `P5TEXT` | macro | `progs/doomgeneric/d_englsh.h:584` | `#define P5TEXT` |
-| `P6TEXT` | macro | `progs/doomgeneric/d_englsh.h:592` | `#define P6TEXT` |
-| `PD_BLUEK` | macro | `progs/doomgeneric/d_englsh.h:125` | `#define PD_BLUEK` |
-| `PD_BLUEO` | macro | `progs/doomgeneric/d_englsh.h:122` | `#define PD_BLUEO` |
-| `PD_REDK` | macro | `progs/doomgeneric/d_englsh.h:126` | `#define PD_REDK` |
-| `PD_REDO` | macro | `progs/doomgeneric/d_englsh.h:123` | `#define PD_REDO` |
-| `PD_YELLOWK` | macro | `progs/doomgeneric/d_englsh.h:127` | `#define PD_YELLOWK` |
-| `PD_YELLOWO` | macro | `progs/doomgeneric/d_englsh.h:124` | `#define PD_YELLOWO` |
-| `PHUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:215` | `#define PHUSTR_1` |
-| `PHUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:224` | `#define PHUSTR_10` |
-| `PHUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:225` | `#define PHUSTR_11` |
-| `PHUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:227` | `#define PHUSTR_12` |
-| `PHUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:228` | `#define PHUSTR_13` |
-| `PHUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:229` | `#define PHUSTR_14` |
-| `PHUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:230` | `#define PHUSTR_15` |
-| `PHUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:231` | `#define PHUSTR_16` |
-| `PHUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:232` | `#define PHUSTR_17` |
-| `PHUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:233` | `#define PHUSTR_18` |
-| `PHUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:234` | `#define PHUSTR_19` |
-| `PHUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:216` | `#define PHUSTR_2` |
-| `PHUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:235` | `#define PHUSTR_20` |
-| `PHUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:237` | `#define PHUSTR_21` |
-| `PHUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:238` | `#define PHUSTR_22` |
-| `PHUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:239` | `#define PHUSTR_23` |
-| `PHUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:240` | `#define PHUSTR_24` |
-| `PHUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:241` | `#define PHUSTR_25` |
-| `PHUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:242` | `#define PHUSTR_26` |
-| `PHUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:243` | `#define PHUSTR_27` |
-| `PHUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:244` | `#define PHUSTR_28` |
-| `PHUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:245` | `#define PHUSTR_29` |
-| `PHUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:217` | `#define PHUSTR_3` |
-| `PHUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:246` | `#define PHUSTR_30` |
-| `PHUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:248` | `#define PHUSTR_31` |
-| `PHUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:249` | `#define PHUSTR_32` |
-| `PHUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:218` | `#define PHUSTR_4` |
-| `PHUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:219` | `#define PHUSTR_5` |
-| `PHUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:220` | `#define PHUSTR_6` |
-| `PHUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:221` | `#define PHUSTR_7` |
-| `PHUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:222` | `#define PHUSTR_8` |
-| `PHUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:223` | `#define PHUSTR_9` |
-| `PRESSKEY` | macro | `progs/doomgeneric/d_englsh.h:36` | `#define PRESSKEY` |
-| `PRESSYN` | macro | `progs/doomgeneric/d_englsh.h:37` | `#define PRESSYN` |
-| `QLOADNET` | macro | `progs/doomgeneric/d_englsh.h:40` | `#define QLOADNET` |
-| `QLPROMPT` | macro | `progs/doomgeneric/d_englsh.h:44` | `#define QLPROMPT` |
-| `QSAVESPOT` | macro | `progs/doomgeneric/d_englsh.h:41` | `#define QSAVESPOT` |
-| `QSPROMPT` | macro | `progs/doomgeneric/d_englsh.h:43` | `#define QSPROMPT` |
-| `QUITMSG` | macro | `progs/doomgeneric/d_englsh.h:38` | `#define QUITMSG` |
-| `SAVEDEAD` | macro | `progs/doomgeneric/d_englsh.h:42` | `#define SAVEDEAD` |
-| `STSTR_BEHOLD` | macro | `progs/doomgeneric/d_englsh.h:347` | `#define STSTR_BEHOLD` |
-| `STSTR_BEHOLDX` | macro | `progs/doomgeneric/d_englsh.h:348` | `#define STSTR_BEHOLDX` |
-| `STSTR_CHOPPERS` | macro | `progs/doomgeneric/d_englsh.h:350` | `#define STSTR_CHOPPERS` |
-| `STSTR_CLEV` | macro | `progs/doomgeneric/d_englsh.h:351` | `#define STSTR_CLEV` |
-| `STSTR_DQDOFF` | macro | `progs/doomgeneric/d_englsh.h:339` | `#define STSTR_DQDOFF` |
-| `STSTR_DQDON` | macro | `progs/doomgeneric/d_englsh.h:338` | `#define STSTR_DQDON` |
-| `STSTR_FAADDED` | macro | `progs/doomgeneric/d_englsh.h:342` | `#define STSTR_FAADDED` |
-| `STSTR_KFAADDED` | macro | `progs/doomgeneric/d_englsh.h:341` | `#define STSTR_KFAADDED` |
-| `STSTR_MUS` | macro | `progs/doomgeneric/d_englsh.h:336` | `#define STSTR_MUS` |
-| `STSTR_NCOFF` | macro | `progs/doomgeneric/d_englsh.h:345` | `#define STSTR_NCOFF` |
-| `STSTR_NCON` | macro | `progs/doomgeneric/d_englsh.h:344` | `#define STSTR_NCON` |
-| `STSTR_NOMUS` | macro | `progs/doomgeneric/d_englsh.h:337` | `#define STSTR_NOMUS` |
-| `SWSTRING` | macro | `progs/doomgeneric/d_englsh.h:54` | `#define SWSTRING` |
-| `T1TEXT` | macro | `progs/doomgeneric/d_englsh.h:598` | `#define T1TEXT` |
-| `T2TEXT` | macro | `progs/doomgeneric/d_englsh.h:613` | `#define T2TEXT` |
-| `T3TEXT` | macro | `progs/doomgeneric/d_englsh.h:625` | `#define T3TEXT` |
-| `T4TEXT` | macro | `progs/doomgeneric/d_englsh.h:635` | `#define T4TEXT` |
-| `T5TEXT` | macro | `progs/doomgeneric/d_englsh.h:649` | `#define T5TEXT` |
-| `T6TEXT` | macro | `progs/doomgeneric/d_englsh.h:657` | `#define T6TEXT` |
-| `THUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:251` | `#define THUSTR_1` |
-| `THUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:260` | `#define THUSTR_10` |
-| `THUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:261` | `#define THUSTR_11` |
-| `THUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:263` | `#define THUSTR_12` |
-| `THUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:264` | `#define THUSTR_13` |
-| `THUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:265` | `#define THUSTR_14` |
-| `THUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:266` | `#define THUSTR_15` |
-| `THUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:267` | `#define THUSTR_16` |
-| `THUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:268` | `#define THUSTR_17` |
-| `THUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:269` | `#define THUSTR_18` |
-| `THUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:270` | `#define THUSTR_19` |
-| `THUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:252` | `#define THUSTR_2` |
-| `THUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:271` | `#define THUSTR_20` |
-| `THUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:273` | `#define THUSTR_21` |
-| `THUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:274` | `#define THUSTR_22` |
-| `THUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:275` | `#define THUSTR_23` |
-| `THUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:276` | `#define THUSTR_24` |
-| `THUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:277` | `#define THUSTR_25` |
-| `THUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:278` | `#define THUSTR_26` |
-| `THUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:279` | `#define THUSTR_27` |
-| `THUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:280` | `#define THUSTR_28` |
-| `THUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:281` | `#define THUSTR_29` |
-| `THUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:253` | `#define THUSTR_3` |
-| `THUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:282` | `#define THUSTR_30` |
-| `THUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:284` | `#define THUSTR_31` |
-| `THUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:285` | `#define THUSTR_32` |
-| `THUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:254` | `#define THUSTR_4` |
-| `THUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:255` | `#define THUSTR_5` |
-| `THUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:256` | `#define THUSTR_6` |
-| `THUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:257` | `#define THUSTR_7` |
-| `THUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:258` | `#define THUSTR_8` |
-| `THUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:259` | `#define THUSTR_9` |
-| `__D_ENGLSH__` | macro | `progs/doomgeneric/d_englsh.h:21` | `#define __D_ENGLSH__` |
-| `D_PopEvent` | function | `progs/doomgeneric/d_event.c:43` | `event_t *D_PopEvent(void)` |
-| `D_PostEvent` | function | `progs/doomgeneric/d_event.c:35` | `void D_PostEvent (event_t* ev)` |
-| `MAXEVENTS` | macro | `progs/doomgeneric/d_event.c:25` | `#define MAXEVENTS` |
-| `D_PopEvent` | function | `progs/doomgeneric/d_event.h:133` | `event_t *D_PopEvent(void);` |
-| `D_PostEvent` | function | `progs/doomgeneric/d_event.h:129` | `void D_PostEvent (event_t *ev);` |
-| `__D_EVENT__` | macro | `progs/doomgeneric/d_event.h:21` | `#define __D_EVENT__` |
-| `event_t` | struct | `progs/doomgeneric/d_event.h:42` | `` |
-| `__D_ITEMS__` | macro | `progs/doomgeneric/d_items.h:21` | `#define __D_ITEMS__` |
-| `weaponinfo` | variable | `progs/doomgeneric/d_items.h:39` | `extern weaponinfo_t weaponinfo[NUMWEAPONS];` |
-| `weaponinfo_t` | struct | `progs/doomgeneric/d_items.h:28` | `` |
-| `AddDoomWadPath` | function | `progs/doomgeneric/d_iwad.c:518` | `static void AddDoomWadPath(void)` |
-| `AddIWADDir` | function | `progs/doomgeneric/d_iwad.c:64` | `static void AddIWADDir(char *dir)` |
-| `BuildIWADDirList` | function | `progs/doomgeneric/d_iwad.c:569` | `static void BuildIWADDirList(void)` |
-| `CheckCollectorsEdition` | function | `progs/doomgeneric/d_iwad.c:270` | `static void CheckCollectorsEdition(void)` |
-| `CheckDOSDefaults` | function | `progs/doomgeneric/d_iwad.c:364` | `static void CheckDOSDefaults(void)` |
-| `CheckDirectoryHasIWAD` | function | `progs/doomgeneric/d_iwad.c:408` | `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)` |
-| `CheckSteamEdition` | function | `progs/doomgeneric/d_iwad.c:297` | `static void CheckSteamEdition(void)` |
-| `CheckSteamGUSPatches` | function | `progs/doomgeneric/d_iwad.c:324` | `static void CheckSteamGUSPatches(void)` |
-| `CheckUninstallStrings` | function | `progs/doomgeneric/d_iwad.c:236` | `static void CheckUninstallStrings(void)` |
-| `D_FindAllIWADs` | function | `progs/doomgeneric/d_iwad.c:757` | `const iwad_t **D_FindAllIWADs(int mask)` |
-| `D_FindIWAD` | function | `progs/doomgeneric/d_iwad.c:704` | `char *D_FindIWAD(int mask, GameMission_t *mission)` |
-| `D_FindWADByName` | function | `progs/doomgeneric/d_iwad.c:630` | `char *D_FindWADByName(char *name)` |
-| `D_SaveGameIWADName` | function | `progs/doomgeneric/d_iwad.c:796` | `char *D_SaveGameIWADName(GameMission_t gamemission)` |
-| `D_SuggestGameName` | function | `progs/doomgeneric/d_iwad.c:835` | `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)` |
-| `D_SuggestIWADName` | function | `progs/doomgeneric/d_iwad.c:820` | `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)` |
-| `D_TryFindWADByName` | function | `progs/doomgeneric/d_iwad.c:681` | `char *D_TryFindWADByName(char *filename)` |
-| `DirIsFile` | function | `progs/doomgeneric/d_iwad.c:391` | `static boolean DirIsFile(char *path, char *filename)` |
-| `GetRegistryString` | function | `progs/doomgeneric/d_iwad.c:192` | `static char *GetRegistryString(registry_value_t *reg_val)` |
-| `IdentifyIWADByName` | function | `progs/doomgeneric/d_iwad.c:477` | `static GameMission_t IdentifyIWADByName(char *name, int mask)` |
-| `MAX_IWAD_DIRS` | macro | `progs/doomgeneric/d_iwad.c:58` | `#define MAX_IWAD_DIRS` |
-| `SOFTWARE_KEY` | macro | `progs/doomgeneric/d_iwad.c:102` | `#define SOFTWARE_KEY` |
-| `SOFTWARE_KEY` | macro | `progs/doomgeneric/d_iwad.c:104` | `#define SOFTWARE_KEY` |
-| `STEAM_BFG_GUS_PATCHES` | macro | `progs/doomgeneric/d_iwad.c:189` | `#define STEAM_BFG_GUS_PATCHES` |
-| `SearchDirectoryForIWAD` | function | `progs/doomgeneric/d_iwad.c:449` | `static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)` |
-| `UNINSTALLER_STRING` | macro | `progs/doomgeneric/d_iwad.c:90` | `#define UNINSTALLER_STRING` |
-| `WIN32_LEAN_AND_MEAN` | macro | `progs/doomgeneric/d_iwad.c:80` | `#define WIN32_LEAN_AND_MEAN` |
-| `registry_value_t` | struct | `progs/doomgeneric/d_iwad.c:83` | `` |
-| `D_CheckCorrectIWAD` | function | `progs/doomgeneric/d_iwad.h:49` | `void D_CheckCorrectIWAD(GameMission_t mission);` |
-| `D_FindAllIWADs` | function | `progs/doomgeneric/d_iwad.h:45` | `const iwad_t **D_FindAllIWADs(int mask);` |
-| `D_FindIWAD` | function | `progs/doomgeneric/d_iwad.h:44` | `char *D_FindIWAD(int mask, GameMission_t *mission);` |
-| `D_FindWADByName` | function | `progs/doomgeneric/d_iwad.h:42` | `char *D_FindWADByName(char *filename);` |
-| `D_SaveGameIWADName` | function | `progs/doomgeneric/d_iwad.h:46` | `char *D_SaveGameIWADName(GameMission_t gamemission);` |
-| `D_SuggestGameName` | function | `progs/doomgeneric/d_iwad.h:48` | `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode);` |
-| `D_SuggestIWADName` | function | `progs/doomgeneric/d_iwad.h:47` | `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode);` |
-| `D_TryFindWADByName` | function | `progs/doomgeneric/d_iwad.h:43` | `char *D_TryFindWADByName(char *filename);` |
-| `IWAD_MASK_DOOM` | macro | `progs/doomgeneric/d_iwad.h:24` | `#define IWAD_MASK_DOOM` |
-| `IWAD_MASK_HERETIC` | macro | `progs/doomgeneric/d_iwad.h:30` | `#define IWAD_MASK_HERETIC` |
-| `IWAD_MASK_HEXEN` | macro | `progs/doomgeneric/d_iwad.h:31` | `#define IWAD_MASK_HEXEN` |
-| `IWAD_MASK_STRIFE` | macro | `progs/doomgeneric/d_iwad.h:32` | `#define IWAD_MASK_STRIFE` |
-| `__D_IWAD__` | macro | `progs/doomgeneric/d_iwad.h:20` | `#define __D_IWAD__` |
-| `iwad_t` | struct | `progs/doomgeneric/d_iwad.h:34` | `` |
-| `BlockUntilStart` | function | `progs/doomgeneric/d_loop.c:315` | `static void BlockUntilStart(net_gamesettings_t *settings,                             netgame_sta...` |
-| `BuildNewTic` | function | `progs/doomgeneric/d_loop.c:136` | `static boolean BuildNewTic(void)` |
-| `D_Disconnected` | function | `progs/doomgeneric/d_loop.c:252` | `static void D_Disconnected(void)` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)

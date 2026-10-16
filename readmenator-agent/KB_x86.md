@@ -69,3 +69,9 @@
   - `sc_top_save_addr` (function, line 55)
   - `syscall_entry` (function, line 65)
 - Depends on: `headers/syscall_asm.h`
+
+## arch/x86/tlb_nmi.S
+- Layer: utility
+- Language: S
+- Symbols:
+  - `tlb_nmi_entry` (function, line 21)

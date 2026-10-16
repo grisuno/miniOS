@@ -1,5 +1,5 @@
-# API (page 1 of 19)
-Pages: [API.md](API.md), [API_p2.md](API_p2.md), [API_p3.md](API_p3.md), [API_p4.md](API_p4.md), [API_p5.md](API_p5.md), [API_p6.md](API_p6.md), [API_p7.md](API_p7.md), [API_p8.md](API_p8.md), [API_p9.md](API_p9.md), [API_p10.md](API_p10.md), [API_p11.md](API_p11.md), [API_p12.md](API_p12.md), [API_p13.md](API_p13.md), [API_p14.md](API_p14.md), [API_p15.md](API_p15.md), [API_p16.md](API_p16.md), [API_p17.md](API_p17.md), [API_p18.md](API_p18.md), [API_p19.md](API_p19.md)
+# API (page 1 of 21)
+Pages: [API.md](API.md), [API_p2.md](API_p2.md), [API_p3.md](API_p3.md), [API_p4.md](API_p4.md), [API_p5.md](API_p5.md), [API_p6.md](API_p6.md), [API_p7.md](API_p7.md), [API_p8.md](API_p8.md), [API_p9.md](API_p9.md), [API_p10.md](API_p10.md), [API_p11.md](API_p11.md), [API_p12.md](API_p12.md), [API_p13.md](API_p13.md), [API_p14.md](API_p14.md), [API_p15.md](API_p15.md), [API_p16.md](API_p16.md), [API_p17.md](API_p17.md), [API_p18.md](API_p18.md), [API_p19.md](API_p19.md), [API_p20.md](API_p20.md), [API_p21.md](API_p21.md)
 
 ## arch/x86/ap_entry.S
 Depends on: `headers/arch/x86/boot/bootdefs.h`
@@ -87,6 +87,9 @@ Depends on: `headers/syscall_asm.h`
 - `kstack_base` (function) `arch/x86/syscall_entry.S:52`
 - `sc_top_save_addr` (function) `arch/x86/syscall_entry.S:55`
 - `syscall_entry` (function) `arch/x86/syscall_entry.S:65`
+
+## arch/x86/tlb_nmi.S
+- `tlb_nmi_entry` (function) `arch/x86/tlb_nmi.S:21`
 
 ## bootloader.c
 - `main` (function) `bootloader.c:21` `void main(void)`

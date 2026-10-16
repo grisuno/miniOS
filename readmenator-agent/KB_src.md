@@ -62,6 +62,28 @@ Pages: [KB_src.md](KB_src.md), [KB_src_p2.md](KB_src_p2.md), [KB_src_p3.md](KB_s
   - `AES_SEEK_END` (macro, line 59) `#define AES_SEEK_END`
   - `AES_EXIT_FAIL` (macro, line 61) `#define AES_EXIT_FAIL`
 
+## progs/src/apsse.c
+- Doc: SSE in glibc threads on every CPU (docs/spec/smp-sched.md,
+- Layer: utility
+- Language: c
+- Symbols:
+  - `apsse_job` (struct, line 42)
+  - `apsse_grind` (function, line 49) `static uint64_t apsse_grind(int id)`
+  - `apsse_worker` (function, line 75) `static void *apsse_worker(void *arg)`
+  - `main` (function, line 81) `int main(void)`
+  - `_GNU_SOURCE` (macro, line 23) `#define _GNU_SOURCE`
+  - `APSSE_THREADS` (macro, line 31) `#define APSSE_THREADS`
+  - `APSSE_ROUNDS` (macro, line 32) `#define APSSE_ROUNDS`
+  - `APSSE_SEED` (macro, line 33) `#define APSSE_SEED`
+  - `APSSE_BUF` (macro, line 34) `#define APSSE_BUF`
+  - `APSSE_NEEDLE` (macro, line 35) `#define APSSE_NEEDLE`
+  - `APSSE_MAP_ROUNDS` (macro, line 36) `#define APSSE_MAP_ROUNDS`
+  - `APSSE_MAP_BYTES` (macro, line 37) `#define APSSE_MAP_BYTES`
+  - `APSSE_MAP_FILL` (macro, line 38) `#define APSSE_MAP_FILL`
+  - `APSSE_OK` (macro, line 39) `#define APSSE_OK`
+  - `APSSE_BAD` (macro, line 40) `#define APSSE_BAD`
+- Depends on: `kernel/string.c`
+
 ## progs/src/aslr.c
 - Doc: aslr -- userspace ASLR probe (self-exec chain).
 - Layer: utility

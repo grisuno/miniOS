@@ -1,5 +1,15 @@
 # Subsystem: headers_arch_x86
 
+## headers/arch/x86/cpu_setup.h
+- Doc: per-CPU control-register setup shared by the BSP (kmain)
+- Layer: infrastructure
+- Language: h
+- Symbols:
+  - `cpu_enable_caches` (function, line 30) `static inline void cpu_enable_caches(void)`
+  - `ARCH_X86_CPU_SETUP_H` (macro, line 10) `#define ARCH_X86_CPU_SETUP_H`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`
+- Imported by: `kernel.c`, `smp.c`
+
 ## headers/arch/x86/hal_io.h
 - Doc: Docstring: x86 port I/O hardware abstraction contract.
 - Layer: utility

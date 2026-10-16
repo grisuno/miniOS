@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Diagrams | Component diagrams</title>
+<style>
+:root{--cb-bg:#020617;--cb-stage:#030a1c;--cb-panel:#0b1224;--cb-panel2:#111c33;--cb-ink:#f8fafc;--cb-muted:#94a3b8;--cb-faint:#475569;--cb-border:#1e293b;--cb-accent:#22d3ee;--cb-accent2:#f472b6;--cb-chip:#111c33;--cb-glow:rgba(34,211,238,.16)}
+html[data-theme="light"]{--cb-bg:#f8fafc;--cb-stage:#eef2f7;--cb-panel:#ffffff;--cb-panel2:#f1f5f9;--cb-ink:#0f172a;--cb-muted:#475569;--cb-faint:#94a3b8;--cb-border:#e2e8f0;--cb-accent:#0891b2;--cb-accent2:#db2777;--cb-chip:#f1f5f9;--cb-glow:rgba(8,145,178,.10)}
+*{box-sizing:border-box}
+body{margin:0 auto;max-width:1240px;padding:20px;background:var(--cb-bg);color:var(--cb-ink);font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.6}
+a{color:var(--cb-accent)}
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.brand{font-weight:700;background:linear-gradient(90deg,var(--cb-ink),var(--cb-accent) 70%,var(--cb-accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.spacer{flex:1}
+.home,.topbar button{font:inherit;font-size:12px;text-decoration:none;border:1px solid var(--cb-border);border-radius:9px;padding:6px 10px;color:var(--cb-ink);background:var(--cb-panel);cursor:pointer}
+.home:hover,.topbar button:hover{border-color:var(--cb-accent)}
+h1{margin:.4em 0 .2em;font-size:22px}
+h2{font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--cb-muted);margin:26px 0 8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px}
+.chips span{background:var(--cb-chip);border:1px solid var(--cb-border);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--cb-muted)}
+.chips span b{color:var(--cb-accent)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:10px 0 2px;font-size:12px;color:var(--cb-muted)}
+.legend-title{letter-spacing:.12em;text-transform:uppercase;font-size:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;box-shadow:0 0 8px currentColor}
+.diagram-controls{margin:10px 0;text-align:center}
+.diagram-controls button{font:inherit;margin:0 5px;padding:8px 16px;background:var(--cb-panel);color:var(--cb-ink);border:1px solid var(--cb-border);border-radius:9px;cursor:pointer}
+.diagram-controls button:hover{border-color:var(--cb-accent)}
+.cb-wrap{border:1px solid var(--cb-border);border-radius:12px;background:radial-gradient(900px 400px at 20% 0%,var(--cb-glow),transparent 70%),var(--cb-stage);overflow:hidden}
+svg.cb-diagram{display:block;width:100%;height:auto;touch-action:none;cursor:grab}
+.cb-node rect{fill:var(--cb-panel2)}
+.cb-node:hover rect{stroke:var(--cb-accent)!important;stroke-width:3}
+.cb-node.hub rect{filter:drop-shadow(0 0 10px var(--cb-glow))}
+.cb-node a{text-decoration:none}
+.cb-node-label{fill:var(--cb-ink);font-size:13px;font-weight:700}
+.cb-node-sub{fill:var(--cb-muted);font-size:10px}
+.cb-node-layer{fill:var(--cb-muted);font-size:10px}
+.cb-node-sym{fill:var(--cb-accent);font-size:10.5px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.cb-node-hub{fill:var(--cb-accent2);font-size:9px;font-weight:700;text-anchor:end;letter-spacing:.1em}
+.cb-edge{fill:none;stroke:#38bdf8;stroke-opacity:.75}
+.cb-arrow{fill:#38bdf8;fill-opacity:.9}
+.cb-edge-label{fill:var(--cb-ink);font-size:10.5px;text-anchor:middle;paint-order:stroke;stroke:var(--cb-stage);stroke-width:4px}
+.cb-edge-sub{fill:var(--cb-muted);font-size:9px;text-anchor:middle;paint-order:stroke;stroke:var(--cb-stage);stroke-width:4px}
+.component{border:1px solid var(--cb-border);border-left:3px solid var(--cb-accent);background:var(--cb-panel);padding:15px;border-radius:10px;margin-bottom:20px}
+.component h3{color:var(--cb-ink);margin-top:0}
+.component h4{color:var(--cb-muted);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.rellist{list-style:none;padding-left:0}
+.rellist li{background:var(--cb-panel);border:1px solid var(--cb-border);border-radius:8px;padding:8px 12px;margin:6px 0;font-size:12px}
+.rellist b{color:var(--cb-accent)}
+.references{list-style:none;padding-left:0;margin:10px 0}
+.references li{margin:4px 0}
+code{background:var(--cb-chip);border:1px solid var(--cb-border);padding:1px 6px;border-radius:6px;font-size:12px}
+.muted{color:var(--cb-muted)}
+footer{color:var(--cb-muted);font-size:12px;margin:24px 0}
+#cb-tip{position:fixed;z-index:50;pointer-events:none;display:none;max-width:340px;background:var(--cb-panel);color:var(--cb-ink);border:1px solid var(--cb-border);border-radius:10px;padding:8px 10px;font-size:12px;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><span class="brand">Component diagrams</span>
+<a class="home" href="index.html">← Maps gallery</a>
+<span class="spacer"></span>
+<button type="button" id="cb-theme" title="Toggle light and dark theme">Theme</button></div>
+<main>
+<h1>Component Diagrams</h1>
+<div class="chips"><span>10 components</span><span>29 relations</span><span>579 files</span></div>
+<div class="legend"><span class="legend-title">Layer</span><span><i style="background:#fb923c"></i>testing</span><span><i style="background:#94a3b8"></i>utility</span></div>
+<div class="diagram-controls"><button type="button" id="cb-reset" title="Reset pan and zoom">Reset Layout</button><button type="button" id="cb-fit" title="Fit the diagram to the view">Fit to View</button><button type="button" id="cb-png" title="Export the diagram as PNG">Export PNG</button></div>
+<div class="cb-wrap"><svg id="cb-diagram" class="cb-diagram" viewBox="0 0 21470 610" role="img" aria-label="Component diagram"><defs><marker id="cb-diagram-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="cb-arrow"/></marker></defs><path d="M20950.0 206.0 C21055.0 206.0 21055.0 305.0 21160.0 305.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21055.0" y="247.5" class="cb-edge-label">calls into</text><text x="21055.0" y="261.5" class="cb-edge-sub">38 calls · 16 imports</text><path d="M20950.0 206.0 C21055.0 206.0 21055.0 503.0 21160.0 503.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21055.0" y="346.5" class="cb-edge-label">calls into</text><text x="21055.0" y="360.5" class="cb-edge-sub">36 calls · 0 imports</text><path d="M20950.0 206.0 C21000.0 206.0 19190.0 107.0 19240.0 107.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:4.8"/><text x="20095.0" y="148.5" class="cb-edge-label">calls into</text><text x="20095.0" y="162.5" class="cb-edge-sub">6 calls · 3 imports</text><path d="M20950.0 206.0 C21000.0 206.0 20150.0 305.0 20200.0 305.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="20575.0" y="247.5" class="cb-edge-label">calls into</text><text x="20575.0" y="261.5" class="cb-edge-sub">8 calls · 2 imports</text><path d="M20950.0 206.0 C21000.0 206.0 19190.0 305.0 19240.0 305.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:3.1"/><text x="20095.0" y="247.5" class="cb-edge-label">calls into</text><text x="20095.0" y="261.5" class="cb-edge-sub">1 calls · 1 imports</text><path d="M20950.0 206.0 C21000.0 206.0 19190.0 503.0 19240.0 503.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="20095.0" y="346.5" class="cb-edge-label">calls into</text><text x="20095.0" y="360.5" class="cb-edge-sub">9 calls · 1 imports</text><path d="M310.0 305.0 C10495.0 305.0 10495.0 206.0 20680.0 206.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="10495.0" y="247.5" class="cb-edge-label">calls into</text><text x="10495.0" y="261.5" class="cb-edge-sub">13 calls · 0 imports</text><path d="M310.0 305.0 C9775.0 305.0 9775.0 107.0 19240.0 107.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:3.1"/><text x="9775.0" y="198.0" class="cb-edge-label">calls into</text><text x="9775.0" y="212.0" class="cb-edge-sub">2 calls · 0 imports</text><path d="M21430.0 107.0 C21480.0 107.0 20630.0 206.0 20680.0 206.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:4.3"/><text x="21055.0" y="148.5" class="cb-edge-label">calls into</text><text x="21055.0" y="162.5" class="cb-edge-sub">6 calls · 0 imports</text><path d="M21430.0 107.0 C21480.0 107.0 21110.0 305.0 21160.0 305.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21295.0" y="198.0" class="cb-edge-label">depends on</text><text x="21295.0" y="212.0" class="cb-edge-sub">12 calls · 21 imports</text><path d="M21430.0 107.0 C21480.0 107.0 21110.0 503.0 21160.0 503.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21295.0" y="297.0" class="cb-edge-label">calls into</text><text x="21295.0" y="311.0" class="cb-edge-sub">149 calls · 77 imports</text><path d="M21430.0 107.0 C21480.0 107.0 20630.0 404.0 20680.0 404.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21055.0" y="247.5" class="cb-edge-label">calls into</text><text x="21055.0" y="261.5" class="cb-edge-sub">12 calls · 6 imports</text><path d="M21430.0 305.0 C21480.0 305.0 20630.0 206.0 20680.0 206.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21055.0" y="247.5" class="cb-edge-label">calls into</text><text x="21055.0" y="261.5" class="cb-edge-sub">21 calls · 2 imports</text><path d="M21430.0 305.0 C21480.0 305.0 21110.0 107.0 21160.0 107.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21295.0" y="198.0" class="cb-edge-label">calls into</text><text x="21295.0" y="212.0" class="cb-edge-sub">8 calls · 3 imports</text><path d="M21430.0 305.0 C21480.0 305.0 21110.0 503.0 21160.0 503.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21295.0" y="396.0" class="cb-edge-label">calls into</text><text x="21295.0" y="410.0" class="cb-edge-sub">12 calls · 1 imports</text><path d="M21430.0 305.0 C21480.0 305.0 20150.0 305.0 20200.0 305.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:3.5"/><text x="20815.0" y="297.0" class="cb-edge-label">calls into</text><text x="20815.0" y="311.0" class="cb-edge-sub">3 calls · 0 imports</text><path d="M21430.0 503.0 C21480.0 503.0 21110.0 107.0 21160.0 107.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21295.0" y="297.0" class="cb-edge-label">calls into</text><text x="21295.0" y="311.0" class="cb-edge-sub">313 calls · 70 imports</text><path d="M21430.0 503.0 C21480.0 503.0 21110.0 305.0 21160.0 305.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:4.1"/><text x="21295.0" y="396.0" class="cb-edge-label">depends on</text><text x="21295.0" y="410.0" class="cb-edge-sub">1 calls · 4 imports</text><path d="M21430.0 503.0 C21480.0 503.0 20630.0 404.0 20680.0 404.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:4.1"/><text x="21055.0" y="445.5" class="cb-edge-label">depends on</text><text x="21055.0" y="459.5" class="cb-edge-sub">1 calls · 4 imports</text><path d="M19510.0 107.0 C20095.0 107.0 20095.0 206.0 20680.0 206.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="20095.0" y="148.5" class="cb-edge-label">calls into</text><text x="20095.0" y="162.5" class="cb-edge-sub">105 calls · 3 imports</text><path d="M19510.0 107.0 C20335.0 107.0 20335.0 107.0 21160.0 107.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:3.1"/><text x="20335.0" y="99.0" class="cb-edge-label">depends on</text><text x="20335.0" y="113.0" class="cb-edge-sub">0 calls · 2 imports</text><path d="M19510.0 107.0 C20335.0 107.0 20335.0 305.0 21160.0 305.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="20335.0" y="198.0" class="cb-edge-label">depends on</text><text x="20335.0" y="212.0" class="cb-edge-sub">4 calls · 6 imports</text><path d="M19510.0 107.0 C20335.0 107.0 20335.0 503.0 21160.0 503.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:3.1"/><text x="20335.0" y="297.0" class="cb-edge-label">calls into</text><text x="20335.0" y="311.0" class="cb-edge-sub">2 calls · 0 imports</text><path d="M20470.0 305.0 C20575.0 305.0 20575.0 206.0 20680.0 206.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="20575.0" y="247.5" class="cb-edge-label">calls into</text><text x="20575.0" y="261.5" class="cb-edge-sub">65 calls · 8 imports</text><path d="M20950.0 404.0 C21055.0 404.0 21055.0 107.0 21160.0 107.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:5.0"/><text x="21055.0" y="247.5" class="cb-edge-label">calls into</text><text x="21055.0" y="261.5" class="cb-edge-sub">27 calls · 12 imports</text><path d="M20950.0 404.0 C21055.0 404.0 21055.0 305.0 21160.0 305.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:3.1"/><text x="21055.0" y="346.5" class="cb-edge-label">depends on</text><text x="21055.0" y="360.5" class="cb-edge-sub">0 calls · 2 imports</text><path d="M20950.0 404.0 C21055.0 404.0 21055.0 503.0 21160.0 503.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:4.3"/><text x="21055.0" y="445.5" class="cb-edge-label">calls into</text><text x="21055.0" y="459.5" class="cb-edge-sub">4 calls · 2 imports</text><path d="M19510.0 305.0 C20095.0 305.0 20095.0 206.0 20680.0 206.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:2.5"/><text x="20095.0" y="247.5" class="cb-edge-label">calls into</text><text x="20095.0" y="261.5" class="cb-edge-sub">1 calls · 0 imports</text><path d="M19510.0 503.0 C20335.0 503.0 20335.0 503.0 21160.0 503.0" class="cb-edge" marker-end="url(#cb-diagram-arrow)" style="stroke-width:2.5"/><text x="20335.0" y="495.0" class="cb-edge-label">calls into</text><text x="20335.0" y="509.0" class="cb-edge-sub">1 calls · 0 imports</text><g class="cb-node linked hub" data-desc="headers: kernel groups 137 files (S, c, h) around SPINLOCK_H, spinlock_t, irqflags_t, SPINLOCK_INIT, spin_init. SMP application-processor bootstrap stub."><a href="#comp-1"><rect x="20680.0" y="139.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="3"/><text x="20694.0" y="163.0" class="cb-node-label">headers: kernel</text><text x="20694.0" y="179.0" class="cb-node-sub">137 files · 4185 symbols</text><circle cx="20700.0" cy="191.0" r="4" fill="#94a3b8"/><text x="20710.0" y="195.0" class="cb-node-layer">utility</text><text x="20694.0" y="211.0" class="cb-node-sym">SPINLOCK_H</text><text x="20694.0" y="225.0" class="cb-node-sym">spinlock_t</text><text x="20694.0" y="239.0" class="cb-node-sym">irqflags_t</text><text x="20694.0" y="253.0" class="cb-node-sub">+3457 more</text><text x="20936.0" y="159.0" class="cb-node-hub">HUB</text></a></g><g class="cb-node" data-desc="tools: doom_pwad groups 2 files (py) around DoomPwadConfig, PwadError, pad_tex, parse_grid, grid_extents. host contract suite for tools/doom_pwad.py."><a href="#comp-10"><rect x="40.0" y="238.0" width="270" height="134" rx="10" stroke="#fb923c" stroke-width="2.5"/><text x="54.0" y="262.0" class="cb-node-label">tools: doom_pwad</text><text x="54.0" y="278.0" class="cb-node-sub">2 files · 69 symbols</text><circle cx="60.0" cy="290.0" r="4" fill="#fb923c"/><text x="70.0" y="294.0" class="cb-node-layer">testing</text><text x="54.0" y="310.0" class="cb-node-sym">DoomPwadConfig</text><text x="54.0" y="324.0" class="cb-node-sym">PwadError</text><text x="54.0" y="338.0" class="cb-node-sym">pad_tex</text><text x="54.0" y="352.0" class="cb-node-sub">+65 more</text></a></g><g class="cb-node" data-desc="progs/doomgeneric: d_englsh groups 99 files (c, h) around __DOOMTYPE__, strcasecmp, strncasecmp, PACKEDATTR, PACKEDATTR. Copyright(C) 1993-1996 Id Software, Inc."><a href="#comp-2"><rect x="21160.0" y="40.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="21174.0" y="64.0" class="cb-node-label">progs/doomgeneric: d_englsh</text><text x="21174.0" y="80.0" class="cb-node-sub">99 files · 2055 symbols</text><circle cx="21180.0" cy="92.0" r="4" fill="#94a3b8"/><text x="21190.0" y="96.0" class="cb-node-layer">utility</text><text x="21174.0" y="112.0" class="cb-node-sym">__DOOMTYPE__</text><text x="21174.0" y="126.0" class="cb-node-sym">strcasecmp</text><text x="21174.0" y="140.0" class="cb-node-sym">strncasecmp</text><text x="21174.0" y="154.0" class="cb-node-sub">+1753 more</text></a></g><g class="cb-node linked" data-desc="progs/src groups 86 files (c, h, py) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract."><a href="#comp-3"><rect x="21160.0" y="238.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="3"/><text x="21174.0" y="262.0" class="cb-node-label">progs/src</text><text x="21174.0" y="278.0" class="cb-node-sub">86 files · 2715 symbols</text><circle cx="21180.0" cy="290.0" r="4" fill="#94a3b8"/><text x="21190.0" y="294.0" class="cb-node-layer">utility</text><text x="21174.0" y="310.0" class="cb-node-sym">kstrlen</text><text x="21174.0" y="324.0" class="cb-node-sym">kstrcpy</text><text x="21174.0" y="338.0" class="cb-node-sym">kstrncpy</text><text x="21174.0" y="352.0" class="cb-node-sub">+2495 more</text></a></g><g class="cb-node" data-desc="progs/doomgeneric: p_spec groups 69 files (c, h) around __DOOMDEF__, DOOM_VERSION, DOOM_191_VERSION, RANGECHECK, MAXPLAYERS. Copyright(C) 1993-1996 Id Software, Inc."><a href="#comp-4"><rect x="21160.0" y="436.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="21174.0" y="460.0" class="cb-node-label">progs/doomgeneric: p_spec</text><text x="21174.0" y="476.0" class="cb-node-sub">69 files · 1152 symbols</text><circle cx="21180.0" cy="488.0" r="4" fill="#94a3b8"/><text x="21190.0" y="492.0" class="cb-node-layer">utility</text><text x="21174.0" y="508.0" class="cb-node-sym">__DOOMDEF__</text><text x="21174.0" y="522.0" class="cb-node-sym">DOOM_VERSION</text><text x="21174.0" y="536.0" class="cb-node-sym">DOOM_191_VERSION</text><text x="21174.0" y="550.0" class="cb-node-sub">+914 more</text></a></g><g class="cb-node linked" data-desc="tools: tls_crypto groups 37 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock"><a href="#comp-5"><rect x="19240.0" y="40.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="3"/><text x="19254.0" y="64.0" class="cb-node-label">tools: tls_crypto</text><text x="19254.0" y="80.0" class="cb-node-sub">37 files · 666 symbols</text><circle cx="19260.0" cy="92.0" r="4" fill="#94a3b8"/><text x="19270.0" y="96.0" class="cb-node-layer">utility</text><text x="19254.0" y="112.0" class="cb-node-sym">ktime_rdtsc</text><text x="19254.0" y="126.0" class="cb-node-sym">ktime_init</text><text x="19254.0" y="140.0" class="cb-node-sym">ktime_ms</text><text x="19254.0" y="154.0" class="cb-node-sub">+461 more</text></a></g><g class="cb-node linked" data-desc="headers: vga_fb groups 17 files (c, h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. embedded icon pixel data for desktop shortcuts."><a href="#comp-6"><rect x="20200.0" y="238.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="3"/><text x="20214.0" y="262.0" class="cb-node-label">headers: vga_fb</text><text x="20214.0" y="278.0" class="cb-node-sub">17 files · 383 symbols</text><circle cx="20220.0" cy="290.0" r="4" fill="#94a3b8"/><text x="20230.0" y="294.0" class="cb-node-layer">utility</text><text x="20214.0" y="310.0" class="cb-node-sym">WM_GEOM_H</text><text x="20214.0" y="324.0" class="cb-node-sym">wm_geom_config_t</text><text x="20214.0" y="338.0" class="cb-node-sym">WM_GEOM_CONFIG_DEFAULT</text><text x="20214.0" y="352.0" class="cb-node-sub">+369 more</text></a></g><g class="cb-node" data-desc="progs/doomgeneric: net_defs groups 13 files (c, h) around NET_DEFS_H, MAXNETNODES, NET_MAXPLAYERS, MAXPLAYERNAME, BACKUPTICS. Copyright(C) 1993-1996 Id Software, Inc."><a href="#comp-7"><rect x="20680.0" y="337.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="20694.0" y="361.0" class="cb-node-label">progs/doomgeneric: net_defs</text><text x="20694.0" y="377.0" class="cb-node-sub">13 files · 140 symbols</text><circle cx="20700.0" cy="389.0" r="4" fill="#94a3b8"/><text x="20710.0" y="393.0" class="cb-node-layer">utility</text><text x="20694.0" y="409.0" class="cb-node-sym">NET_DEFS_H</text><text x="20694.0" y="423.0" class="cb-node-sym">MAXNETNODES</text><text x="20694.0" y="437.0" class="cb-node-sym">NET_MAXPLAYERS</text><text x="20694.0" y="451.0" class="cb-node-sub">+131 more</text></a></g><g class="cb-node" data-desc="headers: batch groups 3 files (c, h) around BATCH_H, BATCH_MAX_OPS, BATCH_OP_NOP, BATCH_OP_YIELD, BATCH_OP_TIME. Docstring: batch.h -- Batched synchronous syscall submission."><a href="#comp-8"><rect x="19240.0" y="238.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="19254.0" y="262.0" class="cb-node-label">headers: batch</text><text x="19254.0" y="278.0" class="cb-node-sub">3 files · 16 symbols</text><circle cx="19260.0" cy="290.0" r="4" fill="#94a3b8"/><text x="19270.0" y="294.0" class="cb-node-layer">utility</text><text x="19254.0" y="310.0" class="cb-node-sym">BATCH_H</text><text x="19254.0" y="324.0" class="cb-node-sym">BATCH_MAX_OPS</text><text x="19254.0" y="338.0" class="cb-node-sym">BATCH_OP_NOP</text><text x="19254.0" y="352.0" class="cb-node-sub">+12 more</text></a></g><g class="cb-node" data-desc="headers: tick groups 3 files (c, h) around TICK_H, tick_config_t, TICK_MAX_AUDIO_LISTENERS, TICK_MAX_DESKTOP_LISTENERS, TICK_MAX_USB_LISTENERS. Docstring: Tick listener bus contract."><a href="#comp-9"><rect x="19240.0" y="436.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="19254.0" y="460.0" class="cb-node-label">headers: tick</text><text x="19254.0" y="476.0" class="cb-node-sub">3 files · 33 symbols</text><circle cx="19260.0" cy="488.0" r="4" fill="#94a3b8"/><text x="19270.0" y="492.0" class="cb-node-layer">utility</text><text x="19254.0" y="508.0" class="cb-node-sym">TICK_H</text><text x="19254.0" y="522.0" class="cb-node-sym">tick_config_t</text><text x="19254.0" y="536.0" class="cb-node-sym">TICK_MAX_AUDIO_LISTENERS</text><text x="19254.0" y="550.0" class="cb-node-sub">+20 more</text></a></g></svg></div>
+<h2>Details</h2>
+<p>Static architecture map of 579 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.</p>
+<h2>Relations</h2>
+<ul class="rellist">
+<li><b>headers: kernel</b> calls into <b>progs/src</b> — 16 imports, 38 calls across the boundary
+<br><code>drivers/pcm2.c::pcm2_arm_block@136 → headers/pcm_ring.h::pcm_ring_read</code> · <code>drivers/pcm2.c::pcm2_open@209 → headers/pcm_ring.h::pcm_ring_init</code> · <code>drivers/pcm2.c::pcm2_write@251 → headers/pcm_ring.h::pcm_ring_free</code>
+</li>
+<li><b>headers: kernel</b> calls into <b>progs/doomgeneric: p_spec</b> — 0 imports, 36 calls across the boundary
+<br><code>drivers/ide.c::ide_init@102 → progs/doomgeneric/r_state.h::sectors</code> · <code>headers/driver.h::audio_ops_t@38 → progs/doomgeneric/r_main.h::void</code> · <code>headers/driver.h::audio_ops_t@39 → progs/doomgeneric/r_main.h::void</code>
+</li>
+<li><b>headers: kernel</b> calls into <b>tools: tls_crypto</b> — 3 imports, 6 calls across the boundary
+<br><code>kernel/loader.c::process@1340 → mcp/minios_addons.py::load</code> · <code>kernel/shell.c::shell_cmd_gdb@2409 → net/tls.c::number</code> · <code>kernel/shell.c::shell_exec_builtin@2914 → tools/boot_wl.py::proxy</code>
+</li>
+<li><b>headers: kernel</b> calls into <b>headers: vga_fb</b> — 2 imports, 8 calls across the boundary
+<br><code>drivers/kbd.c::wm_raw_combo@282 → headers/wm_events.h::wm_combo_lookup_mods</code> · <code>drivers/kbd.c::key@389 → headers/wm_events.h::wm_combo_lookup_mods</code> · <code>drivers/kbd.c::key@421 → headers/wm_events.h::wm_combo_lookup_mods</code>
+</li>
+<li><b>headers: kernel</b> calls into <b>headers: batch</b> — 1 imports, 1 calls across the boundary
+<br><code>kernel/syscalls.c::sys_minios_submit_batch@884 → headers/batch.h::batch_exec</code>
+</li>
+<li><b>headers: kernel</b> calls into <b>headers: tick</b> — 1 imports, 9 calls across the boundary
+<br><code>kernel/sched.c::isr_dispatch@1230 → headers/tick.h::tick_run_usb</code> · <code>kernel/sched.c::isr_dispatch@1231 → headers/tick.h::tick_run_audio</code> · <code>kernel/sched.c::syscall@1356 → headers/tick.h::tick_desktop_due</code>
+</li>
+<li><b>tools: doom_pwad</b> calls into <b>headers: kernel</b> — 0 imports, 13 calls across the boundary
+<br><code>tests/test_doom_pwad.py::test_open_boundary_dies@171 → headers/sched.h::bytes</code> · <code>tests/test_doom_pwad.py::test_open_boundary_dies@178 → headers/sched.h::bytes</code> · <code>tests/test_doom_pwad.py::test_swapped_lumps_die@201 → headers/sched.h::bytes</code>
+</li>
+<li><b>tools: doom_pwad</b> calls into <b>tools: tls_crypto</b> — 0 imports, 2 calls across the boundary
+<br><code>tools/doom_pwad.py::check_pwad@645 → tools/minios_hyper.py::decode</code> · <code>tools/doom_pwad.py::check_multiple@660 → tools/minios_hyper.py::decode</code>
+</li>
+<li><b>progs/doomgeneric: d_englsh</b> calls into <b>headers: kernel</b> — 0 imports, 6 calls across the boundary
+<br><code>progs/doomgeneric/d_main.c::LoadIwadDeh@1160 → headers/fat32.h::file</code> · <code>progs/doomgeneric/m_menu.c::M_Responder@1804 → smp.c::routine</code> · <code>progs/doomgeneric/m_menu.c::M_Responder@1816 → smp.c::routine</code>
+</li>
+<li><b>progs/doomgeneric: d_englsh</b> depends on <b>progs/src</b> — 21 imports, 12 calls across the boundary
+<br><code>progs/doomgeneric/d_iwad.c::CheckUninstallStrings@253 → progs/topogpt3/topogpt3.c::strstr</code> · <code>progs/doomgeneric/d_iwad.c::AddDoomWadPath@544 → progs/src/freedom.c::strchr</code> · <code>progs/doomgeneric/gusconf.c::ParseDMXConfig@145 → progs/src/freedom.c::strchr</code>
+</li>
+<li><b>progs/doomgeneric: d_englsh</b> calls into <b>progs/doomgeneric: p_spec</b> — 77 imports, 149 calls across the boundary
+<br><code>progs/doomgeneric/d_main.c::D_DoomLoop@466 → progs/doomgeneric/s_sound.h::S_UpdateSounds</code> · <code>progs/doomgeneric/d_main.c::D_DoAdvanceDemo@553 → progs/doomgeneric/s_sound.h::S_StartMusic</code> · <code>progs/doomgeneric/d_main.c::D_DoAdvanceDemo@555 → progs/doomgeneric/s_sound.h::S_StartMusic</code>
+</li>
+<li><b>progs/doomgeneric: d_englsh</b> calls into <b>progs/doomgeneric: net_defs</b> — 6 imports, 12 calls across the boundary
+<br><code>progs/doomgeneric/d_main.c::D_BindVariables@357 → progs/doomgeneric/net_client.h::NET_BindVariables</code> · <code>progs/doomgeneric/d_main.c::D_DoomMain@1221 → progs/doomgeneric/net_query.h::NET_MasterQuery</code> · <code>progs/doomgeneric/d_main.c::D_DoomMain@1237 → progs/doomgeneric/net_query.h::NET_QueryAddress</code>
+</li>
+<li><b>progs/src</b> calls into <b>headers: kernel</b> — 2 imports, 21 calls across the boundary
+<br><code>progs/nuklear/cvm_emit.h::cvm_node_type@46 → headers/arch/x86/boot/bootdefs.h::address</code> · <code>progs/piano/piano.c::ui_run@653 → kernel.c::ms</code> · <code>progs/piano/piano.c::run_pcm2_probe@1022 → headers/kernel.h::refused</code>
+</li>
+<li><b>progs/src</b> calls into <b>progs/doomgeneric: d_englsh</b> — 3 imports, 8 calls across the boundary
+<br><code>progs/doomgeneric/memio.c::mem_fopen_read@46 → progs/doomgeneric/z_zone.h::Z_Malloc</code> · <code>progs/doomgeneric/memio.c::mem_fopen_write@94 → progs/doomgeneric/z_zone.h::Z_Malloc</code> · <code>progs/doomgeneric/memio.c::mem_fopen_write@97 → progs/doomgeneric/z_zone.h::Z_Malloc</code>
+</li>
+<li><b>progs/src</b> calls into <b>progs/doomgeneric: p_spec</b> — 1 imports, 12 calls across the boundary
+<br><code>progs/doomgeneric/doomgeneric_minios.c::DG_DrawFrame@269 → progs/doomgeneric/s_sound.h::S_Shutdown</code> · <code>progs/minicraft/minicraft.c::dumpstats@3723 → progs/doomgeneric/p_local.h::d</code> · <code>progs/minicraft/minicraft.c::dumpstats@3734 → progs/doomgeneric/p_local.h::d</code>
+</li>
+<li><b>progs/src</b> calls into <b>headers: vga_fb</b> — 0 imports, 3 calls across the boundary
+<br><code>progs/vedit/vedit.c::vedit_open_in_buffer@2157 → kernel/vga_fb.c::buffer</code> · <code>progs/vedit/vedit.c::vedit_list_buffers@2979 → kernel/vga_fb.c::buffer</code> · <code>progs/vedit/vedit.c::vedit_prompt_key@4319 → kernel/vga_fb.c::command</code>
+</li>
+<li><b>progs/doomgeneric: p_spec</b> calls into <b>progs/doomgeneric: d_englsh</b> — 70 imports, 313 calls across the boundary
+<br><code>progs/doomgeneric/d_loop.h::__D_LOOP__@28 → progs/doomgeneric/doomtype.h::boolean</code> · <code>progs/doomgeneric/d_mode.c::D_ValidGameMode@54 → progs/doomgeneric/doomtype.h::arrlen</code> · <code>progs/doomgeneric/d_mode.c::D_ValidEpisodeMap@86 → progs/doomgeneric/doomtype.h::arrlen</code>
+</li>
+<li><b>progs/doomgeneric: p_spec</b> depends on <b>progs/src</b> — 4 imports, 1 calls across the boundary
+<br><code>progs/quake2generic/q2generic_minios.c::SWimp_EndFrame@375 → progs/topogpt3/topogpt3.c::fflush</code>
+</li>
+<li><b>progs/doomgeneric: p_spec</b> depends on <b>progs/doomgeneric: net_defs</b> — 4 imports, 1 calls across the boundary
+<br><code>progs/doomgeneric/d_loop.h::D_StartGameLoop@69 → progs/doomgeneric/d_loop.c::D_InitNetGame</code>
+</li>
+<li><b>tools: tls_crypto</b> calls into <b>headers: kernel</b> — 3 imports, 105 calls across the boundary
+<br><code>headers/tls_port.h::tls_now_days@41 → kernel/loader.c::time</code> · <code>mcp/mcp_dbg_driver.py::close@61 → kernel/syscalls_proc.c::kill</code> · <code>mcp/mcp_dogfood.py::close@75 → kernel/syscalls_proc.c::kill</code>
+</li>
+<li><b>tools: tls_crypto</b> depends on <b>progs/doomgeneric: d_englsh</b> — 2 imports, 0 calls across the boundary
+</li>
+<li><b>tools: tls_crypto</b> depends on <b>progs/src</b> — 6 imports, 4 calls across the boundary
+<br><code>progs/src/lxabi.c::report@71 → progs/topogpt3/topogpt3.c::fflush</code> · <code>progs/src/lxabi.c::check_mkdir@467 → progs/topogpt3/topogpt3.c::fputs</code> · <code>progs/src/lxabi.c::check_sleep@512 → progs/minios_abi.h::clock_nanosleep</code>
+</li>
+<li><b>tools: tls_crypto</b> calls into <b>progs/doomgeneric: p_spec</b> — 0 imports, 2 calls across the boundary
+<br><code>progs/src/lxabi.c::child_status@534 → progs/doomgeneric/r_main.h::void</code> · <code>progs/src/lxabi.c::wild_jump_body@573 → progs/doomgeneric/r_main.h::void</code>
+</li>
+<li><b>headers: vga_fb</b> calls into <b>headers: kernel</b> — 8 imports, 65 calls across the boundary
+<br><code>headers/desktop_shortcuts.h::desktop_shortcut@77 → headers/vga_fb.h::pixels</code> · <code>kernel/vga_cursor.c::cursor_save_bg@46 → headers/vga_fb.h::fb_read_packed</code> · <code>kernel/vga_cursor.c::cursor_draw@75 → headers/vga_fb.h::vga_fb_pixel</code>
+</li>
+<li><b>progs/doomgeneric: net_defs</b> calls into <b>progs/doomgeneric: d_englsh</b> — 12 imports, 27 calls across the boundary
+<br><code>progs/doomgeneric/d_loop.c::GetAdjustedTime@123 → progs/doomgeneric/i_timer.h::I_GetTimeMS</code> · <code>progs/doomgeneric/d_loop.c::BuildNewTic@143 → progs/doomgeneric/i_video.h::I_StartTic</code> · <code>progs/doomgeneric/d_loop.c::D_Disconnected@258 → progs/doomgeneric/i_system.h::I_Error</code>
+</li>
+<li><b>progs/doomgeneric: net_defs</b> depends on <b>progs/src</b> — 2 imports, 0 calls across the boundary
+</li>
+<li><b>progs/doomgeneric: net_defs</b> calls into <b>progs/doomgeneric: p_spec</b> — 2 imports, 4 calls across the boundary
+<br><code>progs/doomgeneric/net_defs.h::_net_module_s@72 → progs/doomgeneric/r_main.h::void</code> · <code>progs/doomgeneric/net_defs.h::_net_module_s@82 → progs/doomgeneric/r_main.h::void</code> · <code>progs/doomgeneric/net_defs.h::_net_module_s@86 → progs/doomgeneric/r_main.h::void</code>
+</li>
+<li><b>headers: batch</b> calls into <b>headers: kernel</b> — 0 imports, 1 calls across the boundary
+<br><code>headers/batch.h::batch_op_t@60 → kernel/syscalls.c::long</code>
+</li>
+<li><b>headers: tick</b> calls into <b>progs/doomgeneric: p_spec</b> — 0 imports, 1 calls across the boundary
+<br><code>headers/tick.h::TICK_CONFIG_DEFAULT@44 → progs/doomgeneric/r_main.h::void</code>
+</li>
+</ul>
+<section class="component" id="comp-1">
+<h3>headers: kernel (1)
+ <a href="#comp-1-children">[Expand]</a>
+</h3>
+<p>headers: kernel groups 137 files (S, c, h) around SPINLOCK_H, spinlock_t, irqflags_t, SPINLOCK_INIT, spin_init. SMP application-processor bootstrap stub.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>headers/spinlock.h::SPINLOCK_H#L2-L37</code></li>
+<li><code>headers/spinlock.h::spinlock_t#L38-L40</code></li>
+<li><code>headers/spinlock.h::irqflags_t#L41-L43</code></li>
+<li><code>headers/spinlock.h::SPINLOCK_INIT#L44-L45</code></li>
+<li><code>headers/spinlock.h::spin_init#L46-L55</code></li>
+<li><code>headers/spinlock.h::spin_save_irq</code></li>
+<li><code>headers/spinlock.h::spin_restore_irq</code></li>
+<li><code>headers/spinlock.h::spin_lock#L58-L63</code></li>
+</ul>
+<h4 id="comp-1-children">Sub-components</h4>
+<div class="cb-wrap"><svg id="cb-sub-comp-1" class="cb-diagram" viewBox="0 0 17630 808" role="img" aria-label="Component diagram"><defs><marker id="cb-sub-comp-1-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="cb-arrow"/></marker></defs><path d="M310.0 404.0 C8815.0 404.0 8815.0 503.0 17320.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="8815.0" y="445.5" class="cb-edge-label">calls into</text><text x="8815.0" y="459.5" class="cb-edge-sub">16 calls · 4 imports</text><path d="M310.0 404.0 C415.0 404.0 415.0 404.0 520.0 404.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:2.5"/><text x="415.0" y="396.0" class="cb-edge-label">calls into</text><text x="415.0" y="410.0" class="cb-edge-sub">1 calls · 0 imports</text><path d="M17590.0 107.0 C17640.0 107.0 17270.0 503.0 17320.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="17455.0" y="297.0" class="cb-edge-label">calls into</text><text x="17455.0" y="311.0" class="cb-edge-sub">220 calls · 49 imports</text><path d="M17590.0 107.0 C17640.0 107.0 17270.0 701.0 17320.0 701.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:3.1"/><text x="17455.0" y="396.0" class="cb-edge-label">calls into</text><text x="17455.0" y="410.0" class="cb-edge-sub">2 calls · 0 imports</text><path d="M17590.0 305.0 C17640.0 305.0 17270.0 503.0 17320.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="17455.0" y="396.0" class="cb-edge-label">calls into</text><text x="17455.0" y="410.0" class="cb-edge-sub">193 calls · 21 imports</text><path d="M17590.0 503.0 C17640.0 503.0 17270.0 305.0 17320.0 305.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:2.5"/><text x="17455.0" y="396.0" class="cb-edge-label">calls into</text><text x="17455.0" y="410.0" class="cb-edge-sub">1 calls · 0 imports</text><path d="M17590.0 503.0 C17640.0 503.0 17270.0 701.0 17320.0 701.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:3.5"/><text x="17455.0" y="594.0" class="cb-edge-label">calls into</text><text x="17455.0" y="608.0" class="cb-edge-sub">3 calls · 0 imports</text><path d="M17590.0 503.0 C17640.0 503.0 16790.0 305.0 16840.0 305.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:3.5"/><text x="17215.0" y="396.0" class="cb-edge-label">calls into</text><text x="17215.0" y="410.0" class="cb-edge-sub">3 calls · 0 imports</text><path d="M17590.0 701.0 C17640.0 701.0 17270.0 503.0 17320.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="17455.0" y="594.0" class="cb-edge-label">calls into</text><text x="17455.0" y="608.0" class="cb-edge-sub">1143 calls · 147 imports</text><path d="M17590.0 701.0 C17640.0 701.0 16790.0 305.0 16840.0 305.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:3.1"/><text x="17215.0" y="495.0" class="cb-edge-label">calls into</text><text x="17215.0" y="509.0" class="cb-edge-sub">2 calls · 0 imports</text><path d="M17590.0 701.0 C17640.0 701.0 16790.0 503.0 16840.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:3.1"/><text x="17215.0" y="594.0" class="cb-edge-label">calls into</text><text x="17215.0" y="608.0" class="cb-edge-sub">2 calls · 0 imports</text><path d="M17110.0 305.0 C17215.0 305.0 17215.0 503.0 17320.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="17215.0" y="396.0" class="cb-edge-label">calls into</text><text x="17215.0" y="410.0" class="cb-edge-sub">63 calls · 8 imports</text><path d="M790.0 404.0 C9055.0 404.0 9055.0 503.0 17320.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="9055.0" y="445.5" class="cb-edge-label">calls into</text><text x="9055.0" y="459.5" class="cb-edge-sub">43 calls · 26 imports</text><path d="M790.0 404.0 C9055.0 404.0 9055.0 701.0 17320.0 701.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:2.5"/><text x="9055.0" y="544.5" class="cb-edge-label">calls into</text><text x="9055.0" y="558.5" class="cb-edge-sub">1 calls · 0 imports</text><path d="M790.0 404.0 C8815.0 404.0 8815.0 305.0 16840.0 305.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:2.5"/><text x="8815.0" y="346.5" class="cb-edge-label">calls into</text><text x="8815.0" y="360.5" class="cb-edge-sub">1 calls · 0 imports</text><path d="M17110.0 503.0 C17215.0 503.0 17215.0 107.0 17320.0 107.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="17215.0" y="297.0" class="cb-edge-label">calls into</text><text x="17215.0" y="311.0" class="cb-edge-sub">34 calls · 10 imports</text><path d="M17110.0 503.0 C17215.0 503.0 17215.0 305.0 17320.0 305.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="17215.0" y="396.0" class="cb-edge-label">calls into</text><text x="17215.0" y="410.0" class="cb-edge-sub">116 calls · 10 imports</text><path d="M17110.0 503.0 C17215.0 503.0 17215.0 503.0 17320.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:5.0"/><text x="17215.0" y="495.0" class="cb-edge-label">calls into</text><text x="17215.0" y="509.0" class="cb-edge-sub">429 calls · 28 imports</text><path d="M17110.0 503.0 C17215.0 503.0 17215.0 701.0 17320.0 701.0" class="cb-edge" marker-end="url(#cb-sub-comp-1-arrow)" style="stroke-width:3.1"/><text x="17215.0" y="594.0" class="cb-edge-label">depends on</text><text x="17215.0" y="608.0" class="cb-edge-sub">0 calls · 2 imports</text><g class="cb-node" data-desc="arch groups 4 files (S) around ap_stub_start, ap_pm, ap_lm, ap_patch_slot, ap_gdt32. SMP application-processor bootstrap stub."><a href="#comp-1-1"><rect x="40.0" y="337.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="54.0" y="361.0" class="cb-node-label">arch</text><text x="54.0" y="377.0" class="cb-node-sub">4 files · 64 symbols</text><circle cx="60.0" cy="389.0" r="4" fill="#94a3b8"/><text x="70.0" y="393.0" class="cb-node-layer">utility</text><text x="54.0" y="409.0" class="cb-node-sym">ap_stub_start</text><text x="54.0" y="423.0" class="cb-node-sym">ap_pm</text><text x="54.0" y="437.0" class="cb-node-sym">ap_lm</text><text x="54.0" y="451.0" class="cb-node-sub">+55 more</text></a></g><g class="cb-node" data-desc="drivers groups 15 files (c) around XHC_CAP_OFF, XHC_OP_USBCMD, XHC_OP_USBSTS, XHC_OP_PAGESIZE, XHC_OP_CRCR. Block device layer for MiniFS."><a href="#comp-1-2"><rect x="17320.0" y="40.0" width="270" height="134" rx="10" stroke="#fbbf24" stroke-width="2.5"/><text x="17334.0" y="64.0" class="cb-node-label">drivers</text><text x="17334.0" y="80.0" class="cb-node-sub">15 files · 650 symbols</text><circle cx="17340.0" cy="92.0" r="4" fill="#fbbf24"/><text x="17350.0" y="96.0" class="cb-node-layer">infrastructure</text><text x="17334.0" y="112.0" class="cb-node-sym">XHC_CAP_OFF</text><text x="17334.0" y="126.0" class="cb-node-sym">XHC_OP_USBCMD</text><text x="17334.0" y="140.0" class="cb-node-sym">XHC_OP_USBSTS</text><text x="17334.0" y="154.0" class="cb-node-sub">+647 more</text></a></g><g class="cb-node" data-desc="fs groups 7 files (c) around fsimg_open_file, fsimg_open_dev, fsimg_dev_read, fsimg_read, fsimg_split. ext_geo_t: Filesystem geometry from the superblock."><a href="#comp-1-3"><rect x="17320.0" y="238.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="17334.0" y="262.0" class="cb-node-label">fs</text><text x="17334.0" y="278.0" class="cb-node-sub">7 files · 230 symbols</text><circle cx="17340.0" cy="290.0" r="4" fill="#94a3b8"/><text x="17350.0" y="294.0" class="cb-node-layer">utility</text><text x="17334.0" y="310.0" class="cb-node-sym">fsimg_open_file</text><text x="17334.0" y="324.0" class="cb-node-sym">fsimg_open_dev</text><text x="17334.0" y="338.0" class="cb-node-sym">fsimg_dev_read</text><text x="17334.0" y="352.0" class="cb-node-sub">+227 more</text></a></g><g class="cb-node" data-desc="headers groups 57 files (h) around SPINLOCK_H, spinlock_t, irqflags_t, SPINLOCK_INIT, spin_init. generated from ap_stub.bin - do not edit"><a href="#comp-1-4"><rect x="17320.0" y="436.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="17334.0" y="460.0" class="cb-node-label">headers</text><text x="17334.0" y="476.0" class="cb-node-sub">57 files · 1893 symbols</text><circle cx="17340.0" cy="488.0" r="4" fill="#94a3b8"/><text x="17350.0" y="492.0" class="cb-node-layer">utility</text><text x="17334.0" y="508.0" class="cb-node-sym">SPINLOCK_H</text><text x="17334.0" y="522.0" class="cb-node-sym">spinlock_t</text><text x="17334.0" y="536.0" class="cb-node-sym">irqflags_t</text><text x="17334.0" y="550.0" class="cb-node-sub">+1839 more</text></a></g><g class="cb-node" data-desc="kernel groups 25 files (c) around LDSO_EHSIZE, LDSO_PHENTSZ, LDSO_DYN_ENT, LDSO_HASH_HDR, ldso_rd16. Execution-context output: text console, capture, libc names."><a href="#comp-1-5"><rect x="17320.0" y="634.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="17334.0" y="658.0" class="cb-node-label">kernel</text><text x="17334.0" y="674.0" class="cb-node-sub">25 files · 893 symbols</text><circle cx="17340.0" cy="686.0" r="4" fill="#94a3b8"/><text x="17350.0" y="690.0" class="cb-node-layer">utility</text><text x="17334.0" y="706.0" class="cb-node-sym">LDSO_EHSIZE</text><text x="17334.0" y="720.0" class="cb-node-sym">LDSO_PHENTSZ</text><text x="17334.0" y="734.0" class="cb-node-sym">LDSO_DYN_ENT</text><text x="17334.0" y="748.0" class="cb-node-sub">+880 more</text></a></g><g class="cb-node" data-desc="net groups 2 files (c) around net_drv_send, net_drv_poll, net_drv_present, net_put16, net_put32. MiniOS network stack: virtio-net preferred, rtl8139 fallback, under"><a href="#comp-1-6"><rect x="16840.0" y="238.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="16854.0" y="262.0" class="cb-node-label">net</text><text x="16854.0" y="278.0" class="cb-node-sub">2 files · 186 symbols</text><circle cx="16860.0" cy="290.0" r="4" fill="#94a3b8"/><text x="16870.0" y="294.0" class="cb-node-layer">utility</text><text x="16854.0" y="310.0" class="cb-node-sym">net_drv_send</text><text x="16854.0" y="324.0" class="cb-node-sym">net_drv_poll</text><text x="16854.0" y="338.0" class="cb-node-sym">net_drv_present</text><text x="16854.0" y="352.0" class="cb-node-sub">+182 more</text></a></g><g class="cb-node" data-desc="root groups 4 files (c) around table, KSYM_MAX, syscall_kstack, syscall_init, ksyscall. Mediator: boot orchestration and the syscall trampoline."><a href="#comp-1-7"><rect x="520.0" y="337.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="534.0" y="361.0" class="cb-node-label">root</text><text x="534.0" y="377.0" class="cb-node-sub">4 files · 103 symbols</text><circle cx="540.0" cy="389.0" r="4" fill="#94a3b8"/><text x="550.0" y="393.0" class="cb-node-layer">utility</text><text x="534.0" y="409.0" class="cb-node-sym">table</text><text x="534.0" y="423.0" class="cb-node-sym">KSYM_MAX</text><text x="534.0" y="437.0" class="cb-node-sym">syscall_kstack</text><text x="534.0" y="451.0" class="cb-node-sub">+100 more</text></a></g><g class="cb-node" data-desc="tests groups 23 files (c) around test_read, test_pcm_open, test_pcm_submit, test_tone, main. Host test for the Strategy-pattern device registry."><a href="#comp-1-8"><rect x="16840.0" y="436.0" width="270" height="134" rx="10" stroke="#fb923c" stroke-width="2.5"/><text x="16854.0" y="460.0" class="cb-node-label">tests</text><text x="16854.0" y="476.0" class="cb-node-sub">23 files · 166 symbols</text><circle cx="16860.0" cy="488.0" r="4" fill="#fb923c"/><text x="16870.0" y="492.0" class="cb-node-layer">testing</text><text x="16854.0" y="508.0" class="cb-node-sym">test_read</text><text x="16854.0" y="522.0" class="cb-node-sym">test_pcm_open</text><text x="16854.0" y="536.0" class="cb-node-sym">test_pcm_submit</text><text x="16854.0" y="550.0" class="cb-node-sub">+95 more</text></a></g></svg></div>
+<h5 id="comp-1-1">arch (1.1)</h5>
+<p>arch groups 4 files (S) around ap_stub_start, ap_pm, ap_lm, ap_patch_slot, ap_gdt32. SMP application-processor bootstrap stub.</p>
+<h5 id="comp-1-2">drivers (1.2)</h5>
+<p>drivers groups 15 files (c) around XHC_CAP_OFF, XHC_OP_USBCMD, XHC_OP_USBSTS, XHC_OP_PAGESIZE, XHC_OP_CRCR. Block device layer for MiniFS.</p>
+<h5 id="comp-1-3">fs (1.3)</h5>
+<p>fs groups 7 files (c) around fsimg_open_file, fsimg_open_dev, fsimg_dev_read, fsimg_read, fsimg_split. ext_geo_t: Filesystem geometry from the superblock.</p>
+<h5 id="comp-1-4">headers (1.4)</h5>
+<p>headers groups 57 files (h) around SPINLOCK_H, spinlock_t, irqflags_t, SPINLOCK_INIT, spin_init. generated from ap_stub.bin - do not edit</p>
+<h5 id="comp-1-5">kernel (1.5)</h5>
+<p>kernel groups 25 files (c) around LDSO_EHSIZE, LDSO_PHENTSZ, LDSO_DYN_ENT, LDSO_HASH_HDR, ldso_rd16. Execution-context output: text console, capture, libc names.</p>
+<h5 id="comp-1-6">net (1.6)</h5>
+<p>net groups 2 files (c) around net_drv_send, net_drv_poll, net_drv_present, net_put16, net_put32. MiniOS network stack: virtio-net preferred, rtl8139 fallback, under</p>
+<h5 id="comp-1-7">root (1.7)</h5>
+<p>root groups 4 files (c) around table, KSYM_MAX, syscall_kstack, syscall_init, ksyscall. Mediator: boot orchestration and the syscall trampoline.</p>
+<h5 id="comp-1-8">tests (1.8)</h5>
+<p>tests groups 23 files (c) around test_read, test_pcm_open, test_pcm_submit, test_tone, main. Host test for the Strategy-pattern device registry.</p>
+<h4>Files</h4>
+<ul class="references">
+<li><code>arch/x86/ap_entry.S</code></li>
+<li><code>arch/x86/boot/stage1.S</code></li>
+<li><code>arch/x86/boot/stage2.S</code></li>
+<li><code>arch/x86/syscall_entry.S</code></li>
+<li><code>drivers/block.c</code></li>
+<li><code>drivers/driver.c</code></li>
+<li><code>drivers/ide.c</code></li>
+<li><code>drivers/kbd.c</code></li>
+<li><code>drivers/mouse.c</code></li>
+<li><code>drivers/nvme.c</code></li>
+<li><code>drivers/pcm2.c</code></li>
+<li><code>drivers/pcspk.c</code></li>
+<li><code>drivers/rtc.c</code></li>
+<li><code>drivers/sb16.c</code></li>
+<li><code>drivers/usbblk.c</code></li>
+<li><code>drivers/usbhid.c</code></li>
+<li><code>drivers/virtio_blk.c</code></li>
+<li><code>drivers/virtio_net.c</code></li>
+<li><code>drivers/xhci.c</code></li>
+<li><code>fs/ext4.c</code></li>
+<li><code>fs/fat32.c</code></li>
+<li><code>fs/fsimg.c</code></li>
+<li><code>fs/kfile.c</code></li>
+<li><code>fs/minifs.c</code></li>
+<li><code>fs/pcache.c</code></li>
+<li><code>fs/vfs.c</code></li>
+<li><code>headers/ap_stub.h</code></li>
+<li><code>headers/arch/x86/boot/bootdefs.h</code></li>
+<li><code>headers/arch/x86/cpu_setup.h</code></li>
+<li><code>headers/arch/x86/hal_io.h</code></li>
+<li><code>headers/arch/x86/msr.h</code></li>
+<li><code>headers/block.h</code></li>
+<li><code>headers/driver.h</code></li>
+<li><code>headers/drivers/kbd.h</code></li>
+<li><code>headers/drivers/modifiers.h</code></li>
+<li><code>headers/drivers/mouse.h</code></li>
+<li><code>headers/drivers/nvme.h</code></li>
+<li><code>headers/drivers/pci.h</code></li>
+<li><code>headers/drivers/usbblk.h</code></li>
+<li><code>headers/drivers/usbhid.h</code></li>
+<li><code>headers/drivers/virtio_blk.h</code></li>
+<li><code>headers/drivers/virtio_net.h</code></li>
+<li><code>headers/drivers/xhci.h</code></li>
+<li><code>headers/editor.h</code></li>
+<li><code>headers/ext4.h</code></li>
+<li><code>headers/fat32.h</code></li>
+<li><code>headers/fsimg.h</code></li>
+<li><code>headers/futex.h</code></li>
+<li><code>headers/ide.h</code></li>
+<li><code>headers/kernel.h</code></li>
+<li><code>headers/kernel/console_in.h</code></li>
+<li><code>headers/ldso.h</code></li>
+<li><code>headers/lz4_kernel.h</code></li>
+<li><code>headers/minifetch.h</code></li>
+<li><code>headers/minifs.h</code></li>
+<li><code>headers/net.h</code></li>
+<li><code>headers/net/rtl8139.h</code></li>
+<li><code>headers/panic.h</code></li>
+<li><code>headers/pcache.h</code></li>
+<li><code>headers/pcm2.h</code></li>
+<li><code>headers/pcspk.h</code></li>
+<li><code>headers/percpu_rq.h</code></li>
+<li><code>headers/pipe.h</code></li>
+<li><code>headers/proc_sec.h</code></li>
+<li><code>headers/qga.h</code></li>
+<li><code>headers/randmix.h</code></li>
+<li><code>headers/rcu.h</code></li>
+<li><code>headers/rtc.h</code></li>
+<li><code>headers/sanitize.h</code></li>
+<li><code>headers/sb16.h</code></li>
+<li><code>headers/sched.h</code></li>
+<li><code>headers/shell.h</code></li>
+<li><code>headers/smp.h</code></li>
+<li><code>headers/spawn.h</code></li>
+<li><code>headers/spinlock.h</code></li>
+<li><code>headers/sync.h</code></li>
+<li><code>headers/syscall_asm.h</code></li>
+<li><code>headers/syscalls_proc.h</code></li>
+<li><code>headers/tlb.h</code></li>
+<li><code>headers/vga_fb.h</code></li>
+<li><code>headers/vma.h</code></li>
+<li><code>headers/wm_notify.h</code></li>
+<li><code>headers/zip.h</code></li>
+<li><code>kernel.c</code></li>
+<li><code>kernel/console.c</code></li>
+<li><code>kernel/console_in.c</code></li>
+<li><code>kernel/editor.c</code></li>
+<li><code>kernel/exec.c</code></li>
+<li><code>kernel/futex.c</code></li>
+<li><code>kernel/ldso_parse.c</code></li>
+<li><code>kernel/loader.c</code></li>
+<li><code>kernel/lz4_kernel.c</code></li>
+<li><code>kernel/minifetch.c</code></li>
+<li><code>kernel/mm.c</code></li>
+<li><code>kernel/mm/cow.c</code></li>
+<li><code>kernel/mm/paging.c</code></li>
+<li><code>kernel/mm/swap.c</code></li>
+<li><code>kernel/mm/tlb.c</code></li>
+<li><code>kernel/panic.c</code></li>
+<li><code>kernel/percpu_rq.c</code></li>
+<li><code>kernel/proc_sec.c</code></li>
+<li><code>kernel/rcu.c</code></li>
+<li><code>kernel/sched.c</code></li>
+<li><code>kernel/serial.c</code></li>
+<li><code>kernel/shell.c</code></li>
+<li><code>kernel/spawn.c</code></li>
+<li><code>kernel/sync.c</code></li>
+<li><code>kernel/syscalls.c</code></li>
+<li><code>kernel/syscalls_proc.c</code></li>
+<li><code>net/net.c</code></li>
+<li><code>net/rtl8139.c</code></li>
+<li><code>qga.c</code></li>
+<li><code>smp.c</code></li>
+<li><code>tests/test_driver.c</code></li>
+<li><code>tests/test_ext4.c</code></li>
+<li><code>tests/test_fat32.c</code></li>
+<li><code>tests/test_fault.c</code></li>
+<li><code>tests/test_futex.c</code></li>
+<li><code>tests/test_hal_io.c</code></li>
+<li><code>tests/test_ldso.c</code></li>
+<li><code>tests/test_modifiers.c</code></li>
+<li><code>tests/test_notify.c</code></li>
+<li><code>tests/test_panic.c</code></li>
+<li><code>tests/test_pcache.c</code></li>
+<li><code>tests/test_pci.c</code></li>
+<li><code>tests/test_percpu_rq.c</code></li>
+<li><code>tests/test_pipe.c</code></li>
+<li><code>tests/test_randmix.c</code></li>
+<li><code>tests/test_rcu.c</code></li>
+<li><code>tests/test_rtc.c</code></li>
+<li><code>tests/test_sync.c</code></li>
+<li><code>tests/test_usbblk.c</code></li>
+<li><code>tests/test_usbhid.c</code></li>
+<li><code>tests/test_vma.c</code></li>
+<li><code>tests/test_vma_bench.c</code></li>
+<li><code>tests/test_xhci.c</code></li>
+<li><code>vma.c</code></li>
+</ul>
+</section>
+<section class="component" id="comp-2">
+<h3>progs/doomgeneric: d_englsh (2)
+</h3>
+<p>progs/doomgeneric: d_englsh groups 99 files (c, h) around __DOOMTYPE__, strcasecmp, strncasecmp, PACKEDATTR, PACKEDATTR. Copyright(C) 1993-1996 Id Software, Inc.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>progs/doomgeneric/doomtype.h::__DOOMTYPE__#L22-L29</code></li>
+<li><code>progs/doomgeneric/doomtype.h::strcasecmp</code></li>
+<li><code>progs/doomgeneric/doomtype.h::strncasecmp#L31-L49</code></li>
+<li><code>progs/doomgeneric/doomtype.h::PACKEDATTR#L50-L51</code></li>
+<li><code>progs/doomgeneric/doomtype.h::PACKEDATTR#L52-L67</code></li>
+<li><code>progs/doomgeneric/doomtype.h::boolean#L68-L80</code></li>
+<li><code>progs/doomgeneric/doomtype.h::byte#L81-L87</code></li>
+<li><code>progs/doomgeneric/doomtype.h::DIR_SEPARATOR</code></li>
+</ul>
+<h4>Files</h4>
+<ul class="references">
+<li><code>progs/doomgeneric/am_map.c</code></li>
+<li><code>progs/doomgeneric/am_map.h</code></li>
+<li><code>progs/doomgeneric/config.h</code></li>
+<li><code>progs/doomgeneric/d_englsh.h</code></li>
+<li><code>progs/doomgeneric/d_event.c</code></li>
+<li><code>progs/doomgeneric/d_event.h</code></li>
+<li><code>progs/doomgeneric/d_iwad.c</code></li>
+<li><code>progs/doomgeneric/d_iwad.h</code></li>
+<li><code>progs/doomgeneric/d_main.c</code></li>
+<li><code>progs/doomgeneric/d_main.h</code></li>
+<li><code>progs/doomgeneric/d_net.c</code></li>
+<li><code>progs/doomgeneric/d_textur.h</code></li>
+<li><code>progs/doomgeneric/deh_main.h</code></li>
+<li><code>progs/doomgeneric/deh_str.h</code></li>
+<li><code>progs/doomgeneric/doomfeatures.h</code></li>
+<li><code>progs/doomgeneric/doomgeneric.c</code></li>
+<li><code>progs/doomgeneric/doomgeneric.h</code></li>
+<li><code>progs/doomgeneric/doomgeneric_sdl.c</code></li>
+<li><code>progs/doomgeneric/doomgeneric_soso.c</code></li>
+<li><code>progs/doomgeneric/doomgeneric_sosox.c</code></li>
+<li><code>progs/doomgeneric/doomgeneric_win.c</code></li>
+<li><code>progs/doomgeneric/doomkeys.h</code></li>
+<li><code>progs/doomgeneric/doomtype.h</code></li>
+<li><code>progs/doomgeneric/dstrings.c</code></li>
+<li><code>progs/doomgeneric/dstrings.h</code></li>
+<li><code>progs/doomgeneric/dummy.c</code></li>
+<li><code>progs/doomgeneric/f_finale.c</code></li>
+<li><code>progs/doomgeneric/f_finale.h</code></li>
+<li><code>progs/doomgeneric/f_wipe.c</code></li>
+<li><code>progs/doomgeneric/f_wipe.h</code></li>
+<li><code>progs/doomgeneric/g_game.c</code></li>
+<li><code>progs/doomgeneric/g_game.h</code></li>
+<li><code>progs/doomgeneric/gusconf.c</code></li>
+<li><code>progs/doomgeneric/gusconf.h</code></li>
+<li><code>progs/doomgeneric/hu_stuff.c</code></li>
+<li><code>progs/doomgeneric/hu_stuff.h</code></li>
+<li><code>progs/doomgeneric/i_cdmus.c</code></li>
+<li><code>progs/doomgeneric/i_cdmus.h</code></li>
+<li><code>progs/doomgeneric/i_endoom.c</code></li>
+<li><code>progs/doomgeneric/i_endoom.h</code></li>
+<li><code>progs/doomgeneric/i_input.c</code></li>
+<li><code>progs/doomgeneric/i_joystick.c</code></li>
+<li><code>progs/doomgeneric/i_joystick.h</code></li>
+<li><code>progs/doomgeneric/i_main.c</code></li>
+<li><code>progs/doomgeneric/i_minios_sound.c</code></li>
+<li><code>progs/doomgeneric/i_scale.c</code></li>
+<li><code>progs/doomgeneric/i_scale.h</code></li>
+<li><code>progs/doomgeneric/i_sound.c</code></li>
+<li><code>progs/doomgeneric/i_sound.h</code></li>
+<li><code>progs/doomgeneric/i_swap.h</code></li>
+<li><code>progs/doomgeneric/i_system.c</code></li>
+<li><code>progs/doomgeneric/i_system.h</code></li>
+<li><code>progs/doomgeneric/i_timer.c</code></li>
+<li><code>progs/doomgeneric/i_timer.h</code></li>
+<li><code>progs/doomgeneric/i_video.c</code></li>
+<li><code>progs/doomgeneric/i_video.h</code></li>
+<li><code>progs/doomgeneric/m_argv.c</code></li>
+<li><code>progs/doomgeneric/m_argv.h</code></li>
+<li><code>progs/doomgeneric/m_cheat.c</code></li>
+<li><code>progs/doomgeneric/m_cheat.h</code></li>
+<li><code>progs/doomgeneric/m_config.c</code></li>
+<li><code>progs/doomgeneric/m_config.h</code></li>
+<li><code>progs/doomgeneric/m_controls.c</code></li>
+<li><code>progs/doomgeneric/m_controls.h</code></li>
+<li><code>progs/doomgeneric/m_fixed.c</code></li>
+<li><code>progs/doomgeneric/m_menu.c</code></li>
+<li><code>progs/doomgeneric/m_menu.h</code></li>
+<li><code>progs/doomgeneric/m_misc.c</code></li>
+<li><code>progs/doomgeneric/m_misc.h</code></li>
+<li><code>progs/doomgeneric/net_dedicated.h</code></li>
+<li><code>progs/doomgeneric/p_saveg.c</code></li>
+<li><code>progs/doomgeneric/p_saveg.h</code></li>
+<li><code>progs/doomgeneric/p_setup.h</code></li>
+<li><code>progs/doomgeneric/p_tick.h</code></li>
+<li><code>progs/doomgeneric/r_draw.c</code></li>
+<li><code>progs/doomgeneric/r_things.c</code></li>
+<li><code>progs/doomgeneric/s_sound.c</code></li>
+<li><code>progs/doomgeneric/st_lib.c</code></li>
+<li><code>progs/doomgeneric/st_lib.h</code></li>
+<li><code>progs/doomgeneric/st_stuff.c</code></li>
+<li><code>progs/doomgeneric/st_stuff.h</code></li>
+<li><code>progs/doomgeneric/statdump.h</code></li>
+<li><code>progs/doomgeneric/v_video.c</code></li>
+<li><code>progs/doomgeneric/v_video.h</code></li>
+<li><code>progs/doomgeneric/w_checksum.c</code></li>
+<li><code>progs/doomgeneric/w_checksum.h</code></li>
+<li><code>progs/doomgeneric/w_file.c</code></li>
+<li><code>progs/doomgeneric/w_file.h</code></li>
+<li><code>progs/doomgeneric/w_file_stdc.c</code></li>
+<li><code>progs/doomgeneric/w_main.c</code></li>
+<li><code>progs/doomgeneric/w_main.h</code></li>
+<li><code>progs/doomgeneric/w_merge.h</code></li>
+<li><code>progs/doomgeneric/w_wad.c</code></li>
+<li><code>progs/doomgeneric/w_wad.h</code></li>
+<li><code>progs/doomgeneric/wi_stuff.c</code></li>
+<li><code>progs/doomgeneric/wi_stuff.h</code></li>
+<li><code>progs/doomgeneric/z_zone.c</code></li>
+<li><code>progs/doomgeneric/z_zone.h</code></li>
+<li><code>progs/pokemon/minios_stubs/SDL.h</code></li>
+</ul>
+</section>
+<section class="component" id="comp-3">
+<h3>progs/src (3)
+ <a href="#comp-3-children">[Expand]</a>
+</h3>
+<p>progs/src groups 86 files (c, h, py) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>kernel/string.c::kstrlen#L17-L22</code></li>
+<li><code>kernel/string.c::kstrcpy#L23-L28</code></li>
+<li><code>kernel/string.c::kstrncpy#L29-L34</code></li>
+<li><code>kernel/string.c::kstrncat#L35-L42</code></li>
+<li><code>kernel/string.c::kstrcmp#L43-L47</code></li>
+<li><code>kernel/string.c::kstrncmp#L48-L52</code></li>
+<li><code>kernel/string.c::kstrchr#L53-L57</code></li>
+<li><code>kernel/string.c::kstrstr#L58-L67</code></li>
+</ul>
+<h4 id="comp-3-children">Sub-components</h4>
+<div class="cb-wrap"><svg id="cb-sub-comp-3" class="cb-diagram" viewBox="0 0 6110 412" role="img" aria-label="Component diagram"><defs><marker id="cb-sub-comp-3-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="cb-arrow"/></marker></defs><path d="M6070.0 206.0 C6120.0 206.0 5270.0 206.0 5320.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-3-arrow)" style="stroke-width:2.5"/><text x="5695.0" y="198.0" class="cb-edge-label">depends on</text><text x="5695.0" y="212.0" class="cb-edge-sub">0 calls · 1 imports</text><path d="M5590.0 206.0 C5695.0 206.0 5695.0 206.0 5800.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-3-arrow)" style="stroke-width:4.7"/><text x="5695.0" y="198.0" class="cb-edge-label">calls into</text><text x="5695.0" y="212.0" class="cb-edge-sub">5 calls · 3 imports</text><path d="M790.0 206.0 C3295.0 206.0 3295.0 206.0 5800.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-3-arrow)" style="stroke-width:5.0"/><text x="3295.0" y="198.0" class="cb-edge-label">calls into</text><text x="3295.0" y="212.0" class="cb-edge-sub">29 calls · 3 imports</text><path d="M790.0 206.0 C3055.0 206.0 3055.0 206.0 5320.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-3-arrow)" style="stroke-width:5.0"/><text x="3055.0" y="198.0" class="cb-edge-label">depends on</text><text x="3055.0" y="212.0" class="cb-edge-sub">0 calls · 31 imports</text><path d="M310.0 107.0 C3055.0 107.0 3055.0 206.0 5800.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-3-arrow)" style="stroke-width:5.0"/><text x="3055.0" y="148.5" class="cb-edge-label">calls into</text><text x="3055.0" y="162.5" class="cb-edge-sub">187 calls · 7 imports</text><path d="M310.0 107.0 C2815.0 107.0 2815.0 206.0 5320.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-3-arrow)" style="stroke-width:5.0"/><text x="2815.0" y="148.5" class="cb-edge-label">depends on</text><text x="2815.0" y="162.5" class="cb-edge-sub">0 calls · 16 imports</text><path d="M310.0 107.0 C415.0 107.0 415.0 206.0 520.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-3-arrow)" style="stroke-width:5.0"/><text x="415.0" y="148.5" class="cb-edge-label">calls into</text><text x="415.0" y="162.5" class="cb-edge-sub">415 calls · 22 imports</text><path d="M310.0 305.0 C415.0 305.0 415.0 206.0 520.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-3-arrow)" style="stroke-width:3.1"/><text x="415.0" y="247.5" class="cb-edge-label">depends on</text><text x="415.0" y="261.5" class="cb-edge-sub">0 calls · 2 imports</text><g class="cb-node" data-desc="headers groups 8 files (h) around SECCOMP_BPF_H, sbpf_insn, sbpf_data, SBPF_MAX_INSNS, SBPF_DATA_SIZE. Docstring: abi.h -- Boot-time ABI manifest gate contract."><a href="#comp-3-1"><rect x="5800.0" y="139.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="5814.0" y="163.0" class="cb-node-label">headers</text><text x="5814.0" y="179.0" class="cb-node-sub">8 files · 156 symbols</text><circle cx="5820.0" cy="191.0" r="4" fill="#94a3b8"/><text x="5830.0" y="195.0" class="cb-node-layer">utility</text><text x="5814.0" y="211.0" class="cb-node-sym">SECCOMP_BPF_H</text><text x="5814.0" y="225.0" class="cb-node-sym">sbpf_insn</text><text x="5814.0" y="239.0" class="cb-node-sym">sbpf_data</text><text x="5814.0" y="253.0" class="cb-node-sub">+148 more</text></a></g><g class="cb-node" data-desc="kernel groups 4 files (c) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: kernel/abi.c -- Boot-time ABI manifest gate."><a href="#comp-3-2"><rect x="5320.0" y="139.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="5334.0" y="163.0" class="cb-node-label">kernel</text><text x="5334.0" y="179.0" class="cb-node-sub">4 files · 64 symbols</text><circle cx="5340.0" cy="191.0" r="4" fill="#94a3b8"/><text x="5350.0" y="195.0" class="cb-node-layer">utility</text><text x="5334.0" y="211.0" class="cb-node-sym">kstrlen</text><text x="5334.0" y="225.0" class="cb-node-sym">kstrcpy</text><text x="5334.0" y="239.0" class="cb-node-sym">kstrncpy</text><text x="5334.0" y="253.0" class="cb-node-sub">+61 more</text></a></g><g class="cb-node" data-desc="progs groups 55 files (c, h, py) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI_CHECKSUM, MINIOS_USER_LOAD_BASE, MINIOS_USER_LOAD_END. tile map editor that builds playable Doom PWADs."><a href="#comp-3-3"><rect x="520.0" y="139.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="534.0" y="163.0" class="cb-node-label">progs</text><text x="534.0" y="179.0" class="cb-node-sub">55 files · 2343 symbols</text><circle cx="540.0" cy="191.0" r="4" fill="#94a3b8"/><text x="550.0" y="195.0" class="cb-node-layer">utility</text><text x="534.0" y="211.0" class="cb-node-sym">MINIOS_ABI_H</text><text x="534.0" y="225.0" class="cb-node-sym">MINIOS_ABI_VERSION</text><text x="534.0" y="239.0" class="cb-node-sym">MINIOS_ABI_CHECKSUM</text><text x="534.0" y="253.0" class="cb-node-sub">+2198 more</text></a></g><g class="cb-node" data-desc="tests groups 18 files (c, h) around observe, TEST_STUB_KERNEL_H, PCI_MMIO_SIZE, __attribute__, __attribute__. Docstring: Host-test stand-in for headers/kernel.h (tests/stubs first on"><a href="#comp-3-4"><rect x="40.0" y="40.0" width="270" height="134" rx="10" stroke="#fb923c" stroke-width="2.5"/><text x="54.0" y="64.0" class="cb-node-label">tests</text><text x="54.0" y="80.0" class="cb-node-sub">18 files · 151 symbols</text><circle cx="60.0" cy="92.0" r="4" fill="#fb923c"/><text x="70.0" y="96.0" class="cb-node-layer">testing</text><text x="54.0" y="112.0" class="cb-node-sym">observe</text><text x="54.0" y="126.0" class="cb-node-sym">TEST_STUB_KERNEL_H</text><text x="54.0" y="140.0" class="cb-node-sym">PCI_MMIO_SIZE</text><text x="54.0" y="154.0" class="cb-node-sub">+111 more</text></a></g><g class="cb-node" data-desc="tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator."><a href="#comp-3-5"><rect x="40.0" y="238.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="54.0" y="262.0" class="cb-node-label">tools</text><text x="54.0" y="278.0" class="cb-node-sub">1 files · 1 symbols</text><circle cx="60.0" cy="290.0" r="4" fill="#94a3b8"/><text x="70.0" y="294.0" class="cb-node-layer">utility</text><text x="54.0" y="310.0" class="cb-node-sym">main</text></a></g></svg></div>
+<h5 id="comp-3-1">headers (3.1)</h5>
+<p>headers groups 8 files (h) around SECCOMP_BPF_H, sbpf_insn, sbpf_data, SBPF_MAX_INSNS, SBPF_DATA_SIZE. Docstring: abi.h -- Boot-time ABI manifest gate contract.</p>
+<h5 id="comp-3-2">kernel (3.2)</h5>
+<p>kernel groups 4 files (c) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: kernel/abi.c -- Boot-time ABI manifest gate.</p>
+<h5 id="comp-3-3">progs (3.3)</h5>
+<p>progs groups 55 files (c, h, py) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI_CHECKSUM, MINIOS_USER_LOAD_BASE, MINIOS_USER_LOAD_END. tile map editor that builds playable Doom PWADs.</p>
+<h5 id="comp-3-4">tests (3.4)</h5>
+<p>tests groups 18 files (c, h) around observe, TEST_STUB_KERNEL_H, PCI_MMIO_SIZE, __attribute__, __attribute__. Docstring: Host-test stand-in for headers/kernel.h (tests/stubs first on</p>
+<h5 id="comp-3-5">tools (3.5)</h5>
+<p>tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator.</p>
+<h4>Files</h4>
+<ul class="references">
+<li><code>headers/abi.h</code></li>
+<li><code>headers/arena.h</code></li>
+<li><code>headers/audio.h</code></li>
+<li><code>headers/httpd.h</code></li>
+<li><code>headers/leakcheck.h</code></li>
+<li><code>headers/pcm_ring.h</code></li>
+<li><code>headers/seccomp_bpf.h</code></li>
+<li><code>headers/sign.h</code></li>
+<li><code>kernel/abi.c</code></li>
+<li><code>kernel/ed25519.c</code></li>
+<li><code>kernel/seccomp_bpf.c</code></li>
+<li><code>kernel/string.c</code></li>
+<li><code>progs/doomedit/doomedit.c</code></li>
+<li><code>progs/doomgeneric/doomgeneric_minios.c</code></li>
+<li><code>progs/doomgeneric/memio.c</code></li>
+<li><code>progs/doomgeneric/memio.h</code></li>
+<li><code>progs/file/file.c</code></li>
+<li><code>progs/file/file_assoc.h</code></li>
+<li><code>progs/freedomui/freedomui_minios.c</code></li>
+<li><code>progs/freedomui/media_unavailable.c</code></li>
+<li><code>progs/freedomui/platform_minios.c</code></li>
+<li><code>progs/freedomui/ps2_keymap.c</code></li>
+<li><code>progs/freedomui/ps2_keymap.h</code></li>
+<li><code>progs/lisp/lisp.c</code></li>
+<li><code>progs/lua/lua_main.c</code></li>
+<li><code>progs/lua/minios.c</code></li>
+<li><code>progs/micropython/variants/minios/lib/hello.py</code></li>
+<li><code>progs/micropython/variants/minios/minios_module.c</code></li>
+<li><code>progs/minicraft/minicraft.c</code></li>
+<li><code>progs/minios_abi.h</code></li>
+<li><code>progs/minios_png.h</code></li>
+<li><code>progs/nk_palette.h</code></li>
+<li><code>progs/nuklear/cvm_emit.c</code></li>
+<li><code>progs/nuklear/cvm_emit.h</code></li>
+<li><code>progs/nuklear/font8x8.c</code></li>
+<li><code>progs/nuklear/node_editor.c</code></li>
+<li><code>progs/nuklear/nuklear_minios.c</code></li>
+<li><code>progs/nuklear/nuklear_minios.h</code></li>
+<li><code>progs/nuklear/nuklear_theme.c</code></li>
+<li><code>progs/nuklear/nuklear_theme.h</code></li>
+<li><code>progs/paint/paint.c</code></li>
+<li><code>progs/piano/piano.c</code></li>
+<li><code>progs/pokemon/platform_minios.c</code></li>
+<li><code>progs/quake2generic/snddma_minios.c</code></li>
+<li><code>progs/src/apsse.c</code></li>
+<li><code>progs/src/audio.c</code></li>
+<li><code>progs/src/fptest.c</code></li>
+<li><code>progs/src/freedom.c</code></li>
+<li><code>progs/src/freedom_wl.c</code></li>
+<li><code>progs/src/lxnet.c</code></li>
+<li><code>progs/src/lxproc.c</code></li>
+<li><code>progs/src/lxsecc.c</code></li>
+<li><code>progs/src/lxtls.c</code></li>
+<li><code>progs/src/mthreads.h</code></li>
+<li><code>progs/src/opl3.c</code></li>
+<li><code>progs/src/sbtone.c</code></li>
+<li><code>progs/src/scfuzz.c</code></li>
+<li><code>progs/src/shell.py</code></li>
+<li><code>progs/src/test.py</code></li>
+<li><code>progs/src/thdemo.c</code></li>
+<li><code>progs/topogpt3/topogpt3.c</code></li>
+<li><code>progs/vedit/vedit.c</code></li>
+<li><code>progs/wl/wl_client.h</code></li>
+<li><code>progs/wl/wl_mbox.h</code></li>
+<li><code>progs/wl/wl_mini.h</code></li>
+<li><code>progs/wl/wl_pixbuf.h</code></li>
+<li><code>progs/wl/wlcomp.c</code></li>
+<li><code>tests/stubs/kernel.h</code></li>
+<li><code>tests/test_abi.c</code></li>
+<li><code>tests/test_arena.c</code></li>
+<li><code>tests/test_file_assoc.c</code></li>
+<li><code>tests/test_freedom_wl.c</code></li>
+<li><code>tests/test_freedomui.c</code></li>
+<li><code>tests/test_httpd.c</code></li>
+<li><code>tests/test_leakcheck.c</code></li>
+<li><code>tests/test_minios_png.c</code></li>
+<li><code>tests/test_paint.c</code></li>
+<li><code>tests/test_pcm.c</code></li>
+<li><code>tests/test_ps2_keymap.c</code></li>
+<li><code>tests/test_sanitize.c</code></li>
+<li><code>tests/test_seccomp_bpf.c</code></li>
+<li><code>tests/test_sign.c</code></li>
+<li><code>tests/test_theme.c</code></li>
+<li><code>tests/test_vedit_build.c</code></li>
+<li><code>tests/test_wl.c</code></li>
+<li><code>tools/abi_stamp.c</code></li>
+</ul>
+</section>
+<section class="component" id="comp-4">
+<h3>progs/doomgeneric: p_spec (4)
+</h3>
+<p>progs/doomgeneric: p_spec groups 69 files (c, h) around __DOOMDEF__, DOOM_VERSION, DOOM_191_VERSION, RANGECHECK, MAXPLAYERS. Copyright(C) 1993-1996 Id Software, Inc.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>progs/doomgeneric/doomdef.h::__DOOMDEF__#L21-L33</code></li>
+<li><code>progs/doomgeneric/doomdef.h::DOOM_VERSION#L34-L36</code></li>
+<li><code>progs/doomgeneric/doomdef.h::DOOM_191_VERSION#L37-L41</code></li>
+<li><code>progs/doomgeneric/doomdef.h::RANGECHECK#L42-L44</code></li>
+<li><code>progs/doomgeneric/doomdef.h::MAXPLAYERS#L45-L76</code></li>
+<li><code>progs/doomgeneric/doomdef.h::MTF_EASY</code></li>
+<li><code>progs/doomgeneric/doomdef.h::MTF_NORMAL</code></li>
+<li><code>progs/doomgeneric/doomdef.h::MTF_HARD#L79-L81</code></li>
+</ul>
+<h4>Files</h4>
+<ul class="references">
+<li><code>progs/doomgeneric/d_items.c</code></li>
+<li><code>progs/doomgeneric/d_items.h</code></li>
+<li><code>progs/doomgeneric/d_loop.h</code></li>
+<li><code>progs/doomgeneric/d_mode.c</code></li>
+<li><code>progs/doomgeneric/d_mode.h</code></li>
+<li><code>progs/doomgeneric/d_player.h</code></li>
+<li><code>progs/doomgeneric/d_think.h</code></li>
+<li><code>progs/doomgeneric/deh_misc.h</code></li>
+<li><code>progs/doomgeneric/doomdata.h</code></li>
+<li><code>progs/doomgeneric/doomdef.c</code></li>
+<li><code>progs/doomgeneric/doomdef.h</code></li>
+<li><code>progs/doomgeneric/doomstat.c</code></li>
+<li><code>progs/doomgeneric/doomstat.h</code></li>
+<li><code>progs/doomgeneric/hu_lib.c</code></li>
+<li><code>progs/doomgeneric/hu_lib.h</code></li>
+<li><code>progs/doomgeneric/info.c</code></li>
+<li><code>progs/doomgeneric/info.h</code></li>
+<li><code>progs/doomgeneric/m_bbox.c</code></li>
+<li><code>progs/doomgeneric/m_bbox.h</code></li>
+<li><code>progs/doomgeneric/m_fixed.h</code></li>
+<li><code>progs/doomgeneric/m_random.h</code></li>
+<li><code>progs/doomgeneric/p_ceilng.c</code></li>
+<li><code>progs/doomgeneric/p_doors.c</code></li>
+<li><code>progs/doomgeneric/p_enemy.c</code></li>
+<li><code>progs/doomgeneric/p_floor.c</code></li>
+<li><code>progs/doomgeneric/p_inter.c</code></li>
+<li><code>progs/doomgeneric/p_inter.h</code></li>
+<li><code>progs/doomgeneric/p_lights.c</code></li>
+<li><code>progs/doomgeneric/p_local.h</code></li>
+<li><code>progs/doomgeneric/p_map.c</code></li>
+<li><code>progs/doomgeneric/p_maputl.c</code></li>
+<li><code>progs/doomgeneric/p_mobj.c</code></li>
+<li><code>progs/doomgeneric/p_mobj.h</code></li>
+<li><code>progs/doomgeneric/p_plats.c</code></li>
+<li><code>progs/doomgeneric/p_pspr.c</code></li>
+<li><code>progs/doomgeneric/p_pspr.h</code></li>
+<li><code>progs/doomgeneric/p_setup.c</code></li>
+<li><code>progs/doomgeneric/p_sight.c</code></li>
+<li><code>progs/doomgeneric/p_spec.c</code></li>
+<li><code>progs/doomgeneric/p_spec.h</code></li>
+<li><code>progs/doomgeneric/p_switch.c</code></li>
+<li><code>progs/doomgeneric/p_telept.c</code></li>
+<li><code>progs/doomgeneric/p_tick.c</code></li>
+<li><code>progs/doomgeneric/p_user.c</code></li>
+<li><code>progs/doomgeneric/r_bsp.c</code></li>
+<li><code>progs/doomgeneric/r_bsp.h</code></li>
+<li><code>progs/doomgeneric/r_data.c</code></li>
+<li><code>progs/doomgeneric/r_data.h</code></li>
+<li><code>progs/doomgeneric/r_defs.h</code></li>
+<li><code>progs/doomgeneric/r_draw.h</code></li>
+<li><code>progs/doomgeneric/r_local.h</code></li>
+<li><code>progs/doomgeneric/r_main.c</code></li>
+<li><code>progs/doomgeneric/r_main.h</code></li>
+<li><code>progs/doomgeneric/r_plane.c</code></li>
+<li><code>progs/doomgeneric/r_plane.h</code></li>
+<li><code>progs/doomgeneric/r_segs.c</code></li>
+<li><code>progs/doomgeneric/r_segs.h</code></li>
+<li><code>progs/doomgeneric/r_sky.c</code></li>
+<li><code>progs/doomgeneric/r_sky.h</code></li>
+<li><code>progs/doomgeneric/r_state.h</code></li>
+<li><code>progs/doomgeneric/r_things.h</code></li>
+<li><code>progs/doomgeneric/s_sound.h</code></li>
+<li><code>progs/doomgeneric/sounds.c</code></li>
+<li><code>progs/doomgeneric/sounds.h</code></li>
+<li><code>progs/doomgeneric/statdump.c</code></li>
+<li><code>progs/doomgeneric/tables.c</code></li>
+<li><code>progs/doomgeneric/tables.h</code></li>
+<li><code>progs/doomgeneric/v_patch.h</code></li>
+<li><code>progs/quake2generic/q2generic_minios.c</code></li>
+</ul>
+</section>
+<section class="component" id="comp-5">
+<h3>tools: tls_crypto (5)
+ <a href="#comp-5-children">[Expand]</a>
+</h3>
+<p>tools: tls_crypto groups 37 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>kernel/time.c::ktime_rdtsc#L13-L18</code></li>
+<li><code>kernel/time.c::ktime_init#L19-L32</code></li>
+<li><code>kernel/time.c::ktime_ms#L33-L40</code></li>
+<li><code>kernel/time.c::ktime_us#L41-L44</code></li>
+<li><code>headers/ktime.h::KTIME_H#L2-L18</code></li>
+<li><code>headers/ktime.h::ktime_us_from_delta#L19-L29</code></li>
+<li><code>headers/ktime.h::wall_us_from_parts#L30-L36</code></li>
+<li><code>headers/tls.h::TLS_H#L2-L6</code></li>
+</ul>
+<h4 id="comp-5-children">Sub-components</h4>
+<div class="cb-wrap"><svg id="cb-sub-comp-5" class="cb-diagram" viewBox="0 0 8990 808" role="img" aria-label="Component diagram"><defs><marker id="cb-sub-comp-5-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="cb-arrow"/></marker></defs><path d="M8950.0 206.0 C9000.0 206.0 8630.0 404.0 8680.0 404.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:2.5"/><text x="8815.0" y="297.0" class="cb-edge-label">depends on</text><text x="8815.0" y="311.0" class="cb-edge-sub">0 calls · 1 imports</text><path d="M8950.0 206.0 C9000.0 206.0 8150.0 107.0 8200.0 107.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:2.5"/><text x="8575.0" y="148.5" class="cb-edge-label">calls into</text><text x="8575.0" y="162.5" class="cb-edge-sub">1 calls · 0 imports</text><path d="M8950.0 206.0 C9000.0 206.0 8150.0 305.0 8200.0 305.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:2.5"/><text x="8575.0" y="247.5" class="cb-edge-label">calls into</text><text x="8575.0" y="261.5" class="cb-edge-sub">1 calls · 0 imports</text><path d="M8950.0 206.0 C9000.0 206.0 8150.0 503.0 8200.0 503.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:2.5"/><text x="8575.0" y="346.5" class="cb-edge-label">calls into</text><text x="8575.0" y="360.5" class="cb-edge-sub">1 calls · 0 imports</text><path d="M8950.0 404.0 C9000.0 404.0 8630.0 206.0 8680.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:3.1"/><text x="8815.0" y="297.0" class="cb-edge-label">calls into</text><text x="8815.0" y="311.0" class="cb-edge-sub">1 calls · 1 imports</text><path d="M8950.0 602.0 C9000.0 602.0 8630.0 404.0 8680.0 404.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:3.8"/><text x="8815.0" y="495.0" class="cb-edge-label">depends on</text><text x="8815.0" y="509.0" class="cb-edge-sub">0 calls · 4 imports</text><path d="M8950.0 602.0 C9000.0 602.0 8150.0 701.0 8200.0 701.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:5.0"/><text x="8575.0" y="643.5" class="cb-edge-label">calls into</text><text x="8575.0" y="657.5" class="cb-edge-sub">12 calls · 0 imports</text><path d="M8470.0 107.0 C8575.0 107.0 8575.0 206.0 8680.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:5.0"/><text x="8575.0" y="148.5" class="cb-edge-label">calls into</text><text x="8575.0" y="162.5" class="cb-edge-sub">133 calls · 7 imports</text><path d="M8470.0 305.0 C8575.0 305.0 8575.0 206.0 8680.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:4.7"/><text x="8575.0" y="247.5" class="cb-edge-label">calls into</text><text x="8575.0" y="261.5" class="cb-edge-sub">6 calls · 2 imports</text><path d="M8470.0 305.0 C8575.0 305.0 8575.0 404.0 8680.0 404.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:4.1"/><text x="8575.0" y="346.5" class="cb-edge-label">depends on</text><text x="8575.0" y="360.5" class="cb-edge-sub">0 calls · 5 imports</text><path d="M8470.0 503.0 C8575.0 503.0 8575.0 206.0 8680.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:5.0"/><text x="8575.0" y="346.5" class="cb-edge-label">calls into</text><text x="8575.0" y="360.5" class="cb-edge-sub">31 calls · 3 imports</text><path d="M310.0 404.0 C4495.0 404.0 4495.0 206.0 8680.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:5.0"/><text x="4495.0" y="297.0" class="cb-edge-label">calls into</text><text x="4495.0" y="311.0" class="cb-edge-sub">12 calls · 1 imports</text><path d="M8470.0 701.0 C8575.0 701.0 8575.0 404.0 8680.0 404.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:5.0"/><text x="8575.0" y="544.5" class="cb-edge-label">depends on</text><text x="8575.0" y="558.5" class="cb-edge-sub">0 calls · 18 imports</text><path d="M8470.0 701.0 C8575.0 701.0 8575.0 602.0 8680.0 602.0" class="cb-edge" marker-end="url(#cb-sub-comp-5-arrow)" style="stroke-width:5.0"/><text x="8575.0" y="643.5" class="cb-edge-label">calls into</text><text x="8575.0" y="657.5" class="cb-edge-sub">18 calls · 0 imports</text><g class="cb-node" data-desc="headers groups 5 files (h) around KTIME_H, ktime_us_from_delta, wall_us_from_parts, TLS_H, TLS_CT_CCS. pure time-conversion helpers shared by the kernel clock"><a href="#comp-5-1"><rect x="8680.0" y="139.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="8694.0" y="163.0" class="cb-node-label">headers</text><text x="8694.0" y="179.0" class="cb-node-sub">5 files · 125 symbols</text><circle cx="8700.0" cy="191.0" r="4" fill="#94a3b8"/><text x="8710.0" y="195.0" class="cb-node-layer">utility</text><text x="8694.0" y="211.0" class="cb-node-sym">KTIME_H</text><text x="8694.0" y="225.0" class="cb-node-sym">ktime_us_from_delta</text><text x="8694.0" y="239.0" class="cb-node-sym">wall_us_from_parts</text><text x="8694.0" y="253.0" class="cb-node-sub">+98 more</text></a></g><g class="cb-node" data-desc="kernel groups 1 files (c) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us. ktime_us: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3..."><a href="#comp-5-2"><rect x="8680.0" y="337.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="8694.0" y="361.0" class="cb-node-label">kernel</text><text x="8694.0" y="377.0" class="cb-node-sub">1 files · 4 symbols</text><circle cx="8700.0" cy="389.0" r="4" fill="#94a3b8"/><text x="8710.0" y="393.0" class="cb-node-layer">utility</text><text x="8694.0" y="409.0" class="cb-node-sym">ktime_rdtsc</text><text x="8694.0" y="423.0" class="cb-node-sym">ktime_init</text><text x="8694.0" y="437.0" class="cb-node-sym">ktime_ms</text><text x="8694.0" y="451.0" class="cb-node-sub">+1 more</text></a></g><g class="cb-node" data-desc="mcp groups 4 files (py) around AddonError, _clean, _unquote, parse_addon_yaml, fail. Debug driver: boot MiniOS through the MCP bridge and run freedom."><a href="#comp-5-3"><rect x="8680.0" y="535.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="8694.0" y="559.0" class="cb-node-label">mcp</text><text x="8694.0" y="575.0" class="cb-node-sub">4 files · 79 symbols</text><circle cx="8700.0" cy="587.0" r="4" fill="#94a3b8"/><text x="8710.0" y="591.0" class="cb-node-layer">utility</text><text x="8694.0" y="607.0" class="cb-node-sym">AddonError</text><text x="8694.0" y="621.0" class="cb-node-sym">_clean</text><text x="8694.0" y="635.0" class="cb-node-sym">_unquote</text><text x="8694.0" y="649.0" class="cb-node-sub">+63 more</text></a></g><g class="cb-node" data-desc="net groups 3 files (c) around tls_fail, tls_fd_of, tls_free_fd, tls_aad, number. TLS 1.2 client sessions for MiniOS."><a href="#comp-5-4"><rect x="8200.0" y="40.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="8214.0" y="64.0" class="cb-node-label">net</text><text x="8214.0" y="80.0" class="cb-node-sub">3 files · 128 symbols</text><circle cx="8220.0" cy="92.0" r="4" fill="#94a3b8"/><text x="8230.0" y="96.0" class="cb-node-layer">utility</text><text x="8214.0" y="112.0" class="cb-node-sym">tls_fail</text><text x="8214.0" y="126.0" class="cb-node-sym">tls_fd_of</text><text x="8214.0" y="140.0" class="cb-node-sym">tls_free_fd</text><text x="8214.0" y="154.0" class="cb-node-sub">+125 more</text></a></g><g class="cb-node" data-desc="progs groups 4 files (c) around KEYQUEUE_SIZE, convertToDoomKey, addKeyToQueue, DG_Init, DG_DrawFrame. Linux process, thread and descriptor ABI probe (FreeDom"><a href="#comp-5-5"><rect x="8200.0" y="238.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="8214.0" y="262.0" class="cb-node-label">progs</text><text x="8214.0" y="278.0" class="cb-node-sub">4 files · 86 symbols</text><circle cx="8220.0" cy="290.0" r="4" fill="#94a3b8"/><text x="8230.0" y="294.0" class="cb-node-layer">utility</text><text x="8214.0" y="310.0" class="cb-node-sym">KEYQUEUE_SIZE</text><text x="8214.0" y="324.0" class="cb-node-sym">convertToDoomKey</text><text x="8214.0" y="338.0" class="cb-node-sym">addKeyToQueue</text><text x="8214.0" y="352.0" class="cb-node-sub">+80 more</text></a></g><g class="cb-node" data-desc="root groups 1 files (c) around tls_test_send, tls_test_recv, tls_test_recv_timeout, tls_test_close, CHECK. host-side tests for the kernel TLS stack."><a href="#comp-5-6"><rect x="8200.0" y="436.0" width="270" height="134" rx="10" stroke="#fb923c" stroke-width="2.5"/><text x="8214.0" y="460.0" class="cb-node-label">root</text><text x="8214.0" y="476.0" class="cb-node-sub">1 files · 23 symbols</text><circle cx="8220.0" cy="488.0" r="4" fill="#fb923c"/><text x="8230.0" y="492.0" class="cb-node-layer">testing</text><text x="8214.0" y="508.0" class="cb-node-sym">tls_test_send</text><text x="8214.0" y="522.0" class="cb-node-sym">tls_test_recv</text><text x="8214.0" y="536.0" class="cb-node-sym">tls_test_recv_timeout</text><text x="8214.0" y="550.0" class="cb-node-sub">+20 more</text></a></g><g class="cb-node" data-desc="tests groups 1 files (c) around CHECK, main. host test for the pure conversion math in ktime.h"><a href="#comp-5-7"><rect x="40.0" y="337.0" width="270" height="134" rx="10" stroke="#fb923c" stroke-width="2.5"/><text x="54.0" y="361.0" class="cb-node-label">tests</text><text x="54.0" y="377.0" class="cb-node-sub">1 files · 2 symbols</text><circle cx="60.0" cy="389.0" r="4" fill="#fb923c"/><text x="70.0" y="393.0" class="cb-node-layer">testing</text><text x="54.0" y="409.0" class="cb-node-sym">CHECK</text><text x="54.0" y="423.0" class="cb-node-sym">main</text></a></g><g class="cb-node" data-desc="tools groups 18 files (py) around note, Guest, __init__, _ser, _reader. boot the miniOS Wayland-mini desktop in one step."><a href="#comp-5-8"><rect x="8200.0" y="634.0" width="270" height="134" rx="10" stroke="#fb923c" stroke-width="2.5"/><text x="8214.0" y="658.0" class="cb-node-label">tools</text><text x="8214.0" y="674.0" class="cb-node-sub">18 files · 219 symbols</text><circle cx="8220.0" cy="686.0" r="4" fill="#fb923c"/><text x="8230.0" y="690.0" class="cb-node-layer">testing</text><text x="8214.0" y="706.0" class="cb-node-sym">note</text><text x="8214.0" y="720.0" class="cb-node-sym">Guest</text><text x="8214.0" y="734.0" class="cb-node-sym">__init__</text><text x="8214.0" y="748.0" class="cb-node-sub">+114 more</text></a></g></svg></div>
+<h5 id="comp-5-1">headers (5.1)</h5>
+<p>headers groups 5 files (h) around KTIME_H, ktime_us_from_delta, wall_us_from_parts, TLS_H, TLS_CT_CCS. pure time-conversion helpers shared by the kernel clock</p>
+<h5 id="comp-5-2">kernel (5.2)</h5>
+<p>kernel groups 1 files (c) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us. ktime_us: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3...</p>
+<h5 id="comp-5-3">mcp (5.3)</h5>
+<p>mcp groups 4 files (py) around AddonError, _clean, _unquote, parse_addon_yaml, fail. Debug driver: boot MiniOS through the MCP bridge and run freedom.</p>
+<h5 id="comp-5-4">net (5.4)</h5>
+<p>net groups 3 files (c) around tls_fail, tls_fd_of, tls_free_fd, tls_aad, number. TLS 1.2 client sessions for MiniOS.</p>
+<h5 id="comp-5-5">progs (5.5)</h5>
+<p>progs groups 4 files (c) around KEYQUEUE_SIZE, convertToDoomKey, addKeyToQueue, DG_Init, DG_DrawFrame. Linux process, thread and descriptor ABI probe (FreeDom</p>
+<h5 id="comp-5-6">root (5.6)</h5>
+<p>root groups 1 files (c) around tls_test_send, tls_test_recv, tls_test_recv_timeout, tls_test_close, CHECK. host-side tests for the kernel TLS stack.</p>
+<h5 id="comp-5-7">tests (5.7)</h5>
+<p>tests groups 1 files (c) around CHECK, main. host test for the pure conversion math in ktime.h</p>
+<h5 id="comp-5-8">tools (5.8)</h5>
+<p>tools groups 18 files (py) around note, Guest, __init__, _ser, _reader. boot the miniOS Wayland-mini desktop in one step.</p>
+<h4>Files</h4>
+<ul class="references">
+<li><code>headers/ktime.h</code></li>
+<li><code>headers/tls.h</code></li>
+<li><code>headers/tls_port.h</code></li>
+<li><code>headers/tls_roots.h</code></li>
+<li><code>headers/tls_test_roots.h</code></li>
+<li><code>kernel/time.c</code></li>
+<li><code>mcp/mcp_dbg_driver.py</code></li>
+<li><code>mcp/mcp_dogfood.py</code></li>
+<li><code>mcp/minios_addons.py</code></li>
+<li><code>mcp/minios_mcp.py</code></li>
+<li><code>net/tls.c</code></li>
+<li><code>net/tls_crypto.c</code></li>
+<li><code>net/tls_x509.c</code></li>
+<li><code>progs/doomgeneric/doomgeneric_xlib.c</code></li>
+<li><code>progs/src/lxabi.c</code></li>
+<li><code>progs/tls_u/tls_u_main.c</code></li>
+<li><code>progs/tls_u/tls_u_port.c</code></li>
+<li><code>tests/test_ktime.c</code></li>
+<li><code>tls_test.c</code></li>
+<li><code>tools/boot_wl.py</code></li>
+<li><code>tools/gdb_repro.py</code></li>
+<li><code>tools/minios_cli.py</code></li>
+<li><code>tools/minios_gui.py</code></li>
+<li><code>tools/minios_hyper.py</code></li>
+<li><code>tools/probe_compute_vga.py</code></li>
+<li><code>tools/probe_minicraft.py</code></li>
+<li><code>tools/qga_client.py</code></li>
+<li><code>tools/repro_gui.py</code></li>
+<li><code>tools/test_gui_fashion.py</code></li>
+<li><code>tools/test_gui_freedom.py</code></li>
+<li><code>tools/test_gui_gfxview.py</code></li>
+<li><code>tools/test_gui_icon_cwd.py</code></li>
+<li><code>tools/test_gui_menu.py</code></li>
+<li><code>tools/test_gui_wm.py</code></li>
+<li><code>tools/test_gui_zoom.py</code></li>
+<li><code>tools/test_http_server.py</code></li>
+<li><code>tools/tls_test.py</code></li>
+</ul>
+</section>
+<section class="component" id="comp-6">
+<h3>headers: vga_fb (6)
+ <a href="#comp-6-children">[Expand]</a>
+</h3>
+<p>headers: vga_fb groups 17 files (c, h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. embedded icon pixel data for desktop shortcuts.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>headers/wm_geom.h::WM_GEOM_H#L11-L13</code></li>
+<li><code>headers/wm_geom.h::wm_geom_config_t#L14-L21</code></li>
+<li><code>headers/wm_geom.h::WM_GEOM_CONFIG_DEFAULT#L22-L24</code></li>
+<li><code>headers/wm_geom.h::wm_rect_t#L25-L32</code></li>
+<li><code>headers/wm_geom.h::wm_rect_valid#L33-L38</code></li>
+<li><code>headers/wm_geom.h::wm_rect_contains#L39-L47</code></li>
+<li><code>headers/wm_geom.h::wm_title_bar_rect#L48-L58</code></li>
+<li><code>headers/wm_geom.h::wm_content_rect#L59-L70</code></li>
+</ul>
+<h4 id="comp-6-children">Sub-components</h4>
+<div class="cb-wrap"><svg id="cb-sub-comp-6" class="cb-diagram" viewBox="0 0 830 412" role="img" aria-label="Component diagram"><defs><marker id="cb-sub-comp-6-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="cb-arrow"/></marker></defs><path d="M310.0 107.0 C415.0 107.0 415.0 206.0 520.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-6-arrow)" style="stroke-width:5.0"/><text x="415.0" y="148.5" class="cb-edge-label">calls into</text><text x="415.0" y="162.5" class="cb-edge-sub">62 calls · 14 imports</text><path d="M310.0 305.0 C415.0 305.0 415.0 206.0 520.0 206.0" class="cb-edge" marker-end="url(#cb-sub-comp-6-arrow)" style="stroke-width:5.0"/><text x="415.0" y="247.5" class="cb-edge-label">calls into</text><text x="415.0" y="261.5" class="cb-edge-sub">167 calls · 9 imports</text><g class="cb-node" data-desc="headers groups 12 files (h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. embedded icon pixel data for desktop shortcuts."><a href="#comp-6-1"><rect x="520.0" y="139.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="534.0" y="163.0" class="cb-node-label">headers</text><text x="534.0" y="179.0" class="cb-node-sub">12 files · 152 symbols</text><circle cx="540.0" cy="191.0" r="4" fill="#94a3b8"/><text x="550.0" y="195.0" class="cb-node-layer">utility</text><text x="534.0" y="211.0" class="cb-node-sym">WM_GEOM_H</text><text x="534.0" y="225.0" class="cb-node-sym">wm_geom_config_t</text><text x="534.0" y="239.0" class="cb-node-sym">WM_GEOM_CONFIG_DEFAULT</text><text x="534.0" y="253.0" class="cb-node-sub">+149 more</text></a></g><g class="cb-node" data-desc="kernel groups 3 files (c) around CURSOR_TIP_X, CURSOR_TIP_Y, cursor_save_bg, cursor_is_set, cursor_has_set_neighbour. Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c)."><a href="#comp-6-2"><rect x="40.0" y="40.0" width="270" height="134" rx="10" stroke="#94a3b8" stroke-width="2.5"/><text x="54.0" y="64.0" class="cb-node-label">kernel</text><text x="54.0" y="80.0" class="cb-node-sub">3 files · 227 symbols</text><circle cx="60.0" cy="92.0" r="4" fill="#94a3b8"/><text x="70.0" y="96.0" class="cb-node-layer">utility</text><text x="54.0" y="112.0" class="cb-node-sym">CURSOR_TIP_X</text><text x="54.0" y="126.0" class="cb-node-sym">CURSOR_TIP_Y</text><text x="54.0" y="140.0" class="cb-node-sym">cursor_save_bg</text><text x="54.0" y="154.0" class="cb-node-sub">+224 more</text></a></g><g class="cb-node" data-desc="tests groups 2 files (c) around CHECK, main, CHECK, main. Docstring: Host test for headers/vga_fx.h (make test-fx)."><a href="#comp-6-3"><rect x="40.0" y="238.0" width="270" height="134" rx="10" stroke="#fb923c" stroke-width="2.5"/><text x="54.0" y="262.0" class="cb-node-label">tests</text><text x="54.0" y="278.0" class="cb-node-sub">2 files · 4 symbols</text><circle cx="60.0" cy="290.0" r="4" fill="#fb923c"/><text x="70.0" y="294.0" class="cb-node-layer">testing</text><text x="54.0" y="310.0" class="cb-node-sym">CHECK</text><text x="54.0" y="324.0" class="cb-node-sym">main</text><text x="54.0" y="338.0" class="cb-node-sym">CHECK</text></a></g></svg></div>
+<h5 id="comp-6-1">headers (6.1)</h5>
+<p>headers groups 12 files (h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. embedded icon pixel data for desktop shortcuts.</p>
+<h5 id="comp-6-2">kernel (6.2)</h5>
+<p>kernel groups 3 files (c) around CURSOR_TIP_X, CURSOR_TIP_Y, cursor_save_bg, cursor_is_set, cursor_has_set_neighbour. Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c).</p>
+<h5 id="comp-6-3">tests (6.3)</h5>
+<p>tests groups 2 files (c) around CHECK, main, CHECK, main. Docstring: Host test for headers/vga_fx.h (make test-fx).</p>
+<h4>Files</h4>
+<ul class="references">
+<li><code>headers/desktop_icons.h</code></li>
+<li><code>headers/desktop_shortcuts.h</code></li>
+<li><code>headers/kernel/vga_cursor.h</code></li>
+<li><code>headers/vga_fx.h</code></li>
+<li><code>headers/wm_events.h</code></li>
+<li><code>headers/wm_focus.h</code></li>
+<li><code>headers/wm_geom.h</code></li>
+<li><code>headers/wm_gfxview.h</code></li>
+<li><code>headers/wm_layout.h</code></li>
+<li><code>headers/wm_render.h</code></li>
+<li><code>headers/wm_tiling.h</code></li>
+<li><code>headers/wm_window.h</code></li>
+<li><code>kernel/vga_cursor.c</code></li>
+<li><code>kernel/vga_fb.c</code></li>
+<li><code>kernel/vga_fx.c</code></li>
+<li><code>tests/test_fx.c</code></li>
+<li><code>tests/test_wm.c</code></li>
+</ul>
+</section>
+<section class="component" id="comp-7">
+<h3>progs/doomgeneric: net_defs (7)
+</h3>
+<p>progs/doomgeneric: net_defs groups 13 files (c, h) around NET_DEFS_H, MAXNETNODES, NET_MAXPLAYERS, MAXPLAYERNAME, BACKUPTICS. Copyright(C) 1993-1996 Id Software, Inc.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>progs/doomgeneric/net_defs.h::NET_DEFS_H#L19-L30</code></li>
+<li><code>progs/doomgeneric/net_defs.h::MAXNETNODES#L31-L36</code></li>
+<li><code>progs/doomgeneric/net_defs.h::NET_MAXPLAYERS#L37-L40</code></li>
+<li><code>progs/doomgeneric/net_defs.h::MAXPLAYERNAME#L41-L44</code></li>
+<li><code>progs/doomgeneric/net_defs.h::BACKUPTICS</code></li>
+<li><code>progs/doomgeneric/net_defs.h::net_module_t#L46-L47</code></li>
+<li><code>progs/doomgeneric/net_defs.h::net_packet_t</code></li>
+<li><code>progs/doomgeneric/net_defs.h::net_addr_t</code></li>
+</ul>
+<h4>Files</h4>
+<ul class="references">
+<li><code>progs/doomgeneric/d_loop.c</code></li>
+<li><code>progs/doomgeneric/d_ticcmd.h</code></li>
+<li><code>progs/doomgeneric/net_client.h</code></li>
+<li><code>progs/doomgeneric/net_defs.h</code></li>
+<li><code>progs/doomgeneric/net_gui.h</code></li>
+<li><code>progs/doomgeneric/net_io.h</code></li>
+<li><code>progs/doomgeneric/net_loop.h</code></li>
+<li><code>progs/doomgeneric/net_packet.h</code></li>
+<li><code>progs/doomgeneric/net_query.h</code></li>
+<li><code>progs/doomgeneric/net_sdl.h</code></li>
+<li><code>progs/doomgeneric/net_server.h</code></li>
+<li><code>progs/doomgeneric/sha1.c</code></li>
+<li><code>progs/doomgeneric/sha1.h</code></li>
+</ul>
+</section>
+<section class="component" id="comp-8">
+<h3>headers: batch (8)
+</h3>
+<p>headers: batch groups 3 files (c, h) around BATCH_H, BATCH_MAX_OPS, BATCH_OP_NOP, BATCH_OP_YIELD, BATCH_OP_TIME. Docstring: batch.h -- Batched synchronous syscall submission.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>headers/batch.h::BATCH_H#L2-L40</code></li>
+<li><code>headers/batch.h::BATCH_MAX_OPS#L41-L42</code></li>
+<li><code>headers/batch.h::BATCH_OP_NOP</code></li>
+<li><code>headers/batch.h::BATCH_OP_YIELD</code></li>
+<li><code>headers/batch.h::BATCH_OP_TIME</code></li>
+<li><code>headers/batch.h::BATCH_OP_GETPID#L46-L47</code></li>
+<li><code>headers/batch.h::BATCH_OK</code></li>
+<li><code>headers/batch.h::BATCH_ERR_COUNT</code></li>
+</ul>
+<h4>Files</h4>
+<ul class="references">
+<li><code>headers/batch.h</code></li>
+<li><code>kernel/batch.c</code></li>
+<li><code>tests/test_batch.c</code></li>
+</ul>
+</section>
+<section class="component" id="comp-9">
+<h3>headers: tick (9)
+</h3>
+<p>headers: tick groups 3 files (c, h) around TICK_H, tick_config_t, TICK_MAX_AUDIO_LISTENERS, TICK_MAX_DESKTOP_LISTENERS, TICK_MAX_USB_LISTENERS. Docstring: Tick listener bus contract.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>headers/tick.h::TICK_H#L19-L21</code></li>
+<li><code>headers/tick.h::tick_config_t#L22-L28</code></li>
+<li><code>headers/tick.h::TICK_MAX_AUDIO_LISTENERS#L29-L30</code></li>
+<li><code>headers/tick.h::TICK_MAX_DESKTOP_LISTENERS#L31-L33</code></li>
+<li><code>headers/tick.h::TICK_MAX_USB_LISTENERS#L34-L36</code></li>
+<li><code>headers/tick.h::TICK_CONFIG_DEFAULT#L37-L46</code></li>
+<li><code>headers/tick.h::tick_reset#L47-L53</code></li>
+<li><code>headers/tick.h::tick_register_audio#L54-L60</code></li>
+</ul>
+<h4>Files</h4>
+<ul class="references">
+<li><code>headers/tick.h</code></li>
+<li><code>kernel/tick.c</code></li>
+<li><code>tests/test_tick.c</code></li>
+</ul>
+</section>
+<section class="component" id="comp-10">
+<h3>tools: doom_pwad (10)
+</h3>
+<p>tools: doom_pwad groups 2 files (py) around DoomPwadConfig, PwadError, pad_tex, parse_grid, grid_extents. host contract suite for tools/doom_pwad.py.</p>
+<h4>Related Classes/Methods:</h4>
+<ul class="references">
+<li><code>tools/doom_pwad.py::DoomPwadConfig#L52-L160</code></li>
+<li><code>tools/doom_pwad.py::PwadError#L161-L164</code></li>
+<li><code>tools/doom_pwad.py::pad_tex#L165-L171</code></li>
+<li><code>tools/doom_pwad.py::parse_grid#L172-L194</code></li>
+<li><code>tools/doom_pwad.py::grid_extents#L195-L202</code></li>
+<li><code>tools/doom_pwad.py::is_wall#L203-L209</code></li>
+<li><code>tools/doom_pwad.py::flood_reachable#L210-L239</code></li>
+<li><code>tools/doom_pwad.py::validate_grid#L240-L268</code></li>
+</ul>
+<h4>Files</h4>
+<ul class="references">
+<li><code>tests/test_doom_pwad.py</code></li>
+<li><code>tools/doom_pwad.py</code></li>
+</ul>
+</section>
+<footer>Generated offline from static analysis &middot; a177395f3380</footer>
+</main>
+<div id="cb-tip" role="tooltip"></div>
+<script>
+(function(){
+"use strict";
+try{var s=localStorage.getItem("readmenator-theme");if(s==="light"||s==="dark")document.documentElement.setAttribute("data-theme",s);}catch(e){}
+document.getElementById("cb-theme").addEventListener("click",function(){
+  var r=document.documentElement,n=r.getAttribute("data-theme")==="light"?"dark":"light";
+  r.setAttribute("data-theme",n);try{localStorage.setItem("readmenator-theme",n);}catch(e){}
+});
+var tip=document.getElementById("cb-tip");
+document.querySelectorAll(".cb-node").forEach(function(g){
+  g.addEventListener("mousemove",function(ev){
+    var d=g.getAttribute("data-desc");
+    if(!d){tip.style.display="none";return;}
+    tip.textContent=d;tip.style.display="block";
+    tip.style.left=Math.min(window.innerWidth-330,ev.clientX+12)+"px";
+    tip.style.top=(ev.clientY+14)+"px";
+  });
+  g.addEventListener("mouseleave",function(){tip.style.display="none";});
+});
+document.querySelectorAll("svg.cb-diagram").forEach(function(svg){
+  var vb=svg.viewBox.baseVal,home={x:vb.x,y:vb.y,w:vb.width,h:vb.height},drag=null;
+  function set(x,y,w,h){svg.setAttribute("viewBox",x+" "+y+" "+w+" "+h);}
+  function cur(){var v=svg.viewBox.baseVal;return {x:v.x,y:v.y,w:v.width,h:v.height};}
+  svg.addEventListener("pointerdown",function(ev){drag={x:ev.clientX,y:ev.clientY,v:cur()};svg.setPointerCapture(ev.pointerId);});
+  svg.addEventListener("pointermove",function(ev){
+    if(!drag)return;
+    var r=svg.getBoundingClientRect(),k=drag.v.w/r.width;
+    set(drag.v.x-(ev.clientX-drag.x)*k,drag.v.y-(ev.clientY-drag.y)*k,drag.v.w,drag.v.h);
+  });
+  svg.addEventListener("pointerup",function(){drag=null;});
+  svg.addEventListener("wheel",function(ev){
+    ev.preventDefault();
+    var v=cur(),r=svg.getBoundingClientRect(),f=Math.exp(ev.deltaY*0.0012);
+    var mx=v.x+(ev.clientX-r.left)/r.width*v.w,my=v.y+(ev.clientY-r.top)/r.height*v.h;
+    var w=Math.min(home.w*4,Math.max(home.w/8,v.w*f)),h=w*v.h/v.w;
+    set(mx-(mx-v.x)*w/v.w,my-(my-v.y)*h/v.h,w,h);
+  },{passive:false});
+  svg._home=home;svg._set=set;
+});
+document.getElementById("cb-reset").addEventListener("click",function(){
+  var svg=document.getElementById("cb-diagram");if(!svg)return;var h=svg._home;svg._set(h.x,h.y,h.w,h.h);
+});
+document.getElementById("cb-fit").addEventListener("click",function(){
+  var svg=document.getElementById("cb-diagram");if(!svg)return;var h=svg._home;svg._set(h.x,h.y,h.w,h.h);
+});
+document.getElementById("cb-png").addEventListener("click",function(){
+  var svg=document.getElementById("cb-diagram");if(!svg)return;
+  try{
+    var data=new XMLSerializer().serializeToString(svg);
+    var img=new Image();
+    img.onload=function(){
+      var c=document.createElement("canvas"),k=2;
+      c.width=svg.viewBox.baseVal.width*k;c.height=svg.viewBox.baseVal.height*k;
+      var x=c.getContext("2d");x.fillStyle="#020617";x.fillRect(0,0,c.width,c.height);
+      x.drawImage(img,0,0,c.width,c.height);
+      var a=document.createElement("a");a.download="component-diagram.png";a.href=c.toDataURL("image/png");a.click();
+    };
+    img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(data);
+  }catch(e){}
+});
+})();
+</script>
+
+</body>
+</html>

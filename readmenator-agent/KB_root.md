@@ -12,25 +12,24 @@
 - Layer: utility
 - Language: c
 - Symbols:
-  - `syscall_init` (function, line 116) `void syscall_init(void)`
-  - `bootlog_mark` (function, line 191) `void bootlog_mark(const char *name)`
-  - `bootlog_report` (function, line 198) `void bootlog_report(void)`
-  - `__attribute__` (function, line 206) `__attribute__((section(".init.text")))
+  - `syscall_init` (function, line 117) `void syscall_init(void)`
+  - `bootlog_mark` (function, line 192) `void bootlog_mark(const char *name)`
+  - `bootlog_report` (function, line 199) `void bootlog_report(void)`
+  - `__attribute__` (function, line 207) `__attribute__((section(".init.text")))
 void kmain(void)`
-  - `tables` (function, line 283) `* tables (already built above) for its uncached register window and the
+  - `tables` (function, line 275) `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
-  - `table` (function, line 103) `* Symbol table (for resolving program references) * ================================================================...`
-  - `ksyscall` (function, line 129) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `kstack` (function, line 145) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
-  - `ms` (function, line 184) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-  - `EM` (function, line 220) `* CR0: clear EM (bit 2), set MP (bit 1);`
-  - `size` (function, line 261) `* image size (see kernel.ld);`
-  - `syscall_kstack` (variable, line 114) `extern unsigned long syscall_kstack;`
-  - `ramdisk_start` (variable, line 178) `extern char ramdisk_start[];`
-  - `ramdisk_end` (variable, line 179) `extern char ramdisk_end[];`
-  - `KSYM_MAX` (macro, line 106) `#define KSYM_MAX`
-  - `BOOTLOG_MAX` (macro, line 187) `#define BOOTLOG_MAX`
-- Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
+  - `table` (function, line 104) `* Symbol table (for resolving program references) * ================================================================...`
+  - `ksyscall` (function, line 130) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
+  - `kstack` (function, line 146) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
+  - `ms` (function, line 185) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
+  - `size` (function, line 253) `* image size (see kernel.ld);`
+  - `syscall_kstack` (variable, line 115) `extern unsigned long syscall_kstack;`
+  - `ramdisk_start` (variable, line 179) `extern char ramdisk_start[];`
+  - `ramdisk_end` (variable, line 180) `extern char ramdisk_end[];`
+  - `KSYM_MAX` (macro, line 107) `#define KSYM_MAX`
+  - `BOOTLOG_MAX` (macro, line 188) `#define BOOTLOG_MAX`
+- Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/cpu_setup.h`, `headers/arch/x86/msr.h`, `headers/block.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/xhci.h`, `headers/ide.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/sb16.h`, `headers/sched.h`, `headers/smp.h`, `headers/syscall_asm.h`, `headers/vga_fb.h`
 
 ## qga.c
 - Doc: MiniOS QEMU guest agent (QGA).
@@ -72,46 +71,50 @@ void kmain(void)`
 - Layer: utility
 - Language: c
 - Symbols:
-  - `lapic_read` (function, line 84) `static unsigned lapic_read(unsigned off)`
-  - `lapic_write` (function, line 87) `static void lapic_write(unsigned off, unsigned val)`
-  - `map_lapic` (function, line 108) `static int map_lapic(void)`
-  - `ap_delay` (function, line 121) `static void ap_delay(void)`
-  - `lapic_calibrate` (function, line 150) `static void lapic_calibrate(void)`
-  - `ap_lapic_timer_start` (function, line 184) `static void ap_lapic_timer_start(void)`
-  - `ap_lapic_timer_init` (function, line 190) `static void ap_lapic_timer_init(void)`
-  - `smp_init` (function, line 314) `void smp_init(void)`
-  - `syscall_entry` (function, line 82) `extern void syscall_entry(void);`
-  - `BSP` (function, line 238) `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed...`
-  - `INIT` (function, line 332) `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status...`
-  - `LAPIC_BASE` (macro, line 28) `#define LAPIC_BASE`
-  - `LAPIC_ID_OFF` (macro, line 29) `#define LAPIC_ID_OFF`
-  - `LAPIC_SVR_OFF` (macro, line 30) `#define LAPIC_SVR_OFF`
-  - `LAPIC_ICR_HI` (macro, line 31) `#define LAPIC_ICR_HI`
-  - `LAPIC_ICR_LO` (macro, line 32) `#define LAPIC_ICR_LO`
-  - `LAPIC_LVT_TIMER` (macro, line 33) `#define LAPIC_LVT_TIMER`
-  - `LAPIC_LVT_LINT0` (macro, line 34) `#define LAPIC_LVT_LINT0`
-  - `LAPIC_LVT_LINT1` (macro, line 35) `#define LAPIC_LVT_LINT1`
-  - `LAPIC_LVT_MASKED` (macro, line 36) `#define LAPIC_LVT_MASKED`
-  - `LAPIC_LVT_EXTINT` (macro, line 37) `#define LAPIC_LVT_EXTINT`
-  - `LAPIC_EOI_OFF` (macro, line 38) `#define LAPIC_EOI_OFF`
-  - `LAPIC_TIMER_DIV` (macro, line 39) `#define LAPIC_TIMER_DIV`
-  - `LAPIC_TIMER_INIT` (macro, line 40) `#define LAPIC_TIMER_INIT`
-  - `LAPIC_TIMER_CUR` (macro, line 41) `#define LAPIC_TIMER_CUR`
-  - `LAPIC_SVR_ENABLE` (macro, line 43) `#define LAPIC_SVR_ENABLE`
-  - `LAPIC_ICR_BUSY` (macro, line 44) `#define LAPIC_ICR_BUSY`
-  - `LAPIC_ICR_INIT` (macro, line 45) `#define LAPIC_ICR_INIT`
-  - `LAPIC_ICR_SIPI` (macro, line 46) `#define LAPIC_ICR_SIPI`
-  - `LAPIC_ICR_ALL_EXC` (macro, line 47) `#define LAPIC_ICR_ALL_EXC`
-  - `LAPIC_ICR_LEVEL` (macro, line 48) `#define LAPIC_ICR_LEVEL`
-  - `LAPIC_ICR_TRIGGER` (macro, line 49) `#define LAPIC_ICR_TRIGGER`
-  - `SIPI_VECTOR` (macro, line 51) `#define SIPI_VECTOR`
-  - `PIT_HZ` (macro, line 54) `#define PIT_HZ`
-  - `LAPIC_TIMER_DIVIDE_16` (macro, line 57) `#define LAPIC_TIMER_DIVIDE_16`
-  - `LAPIC_TIMER_PERIODIC` (macro, line 58) `#define LAPIC_TIMER_PERIODIC`
-  - `LAPIC_PD_ADDR` (macro, line 66) `#define LAPIC_PD_ADDR`
-  - `LAPIC_PDPT_SLOT` (macro, line 67) `#define LAPIC_PDPT_SLOT`
-  - `LAPIC_PD_IDX` (macro, line 68) `#define LAPIC_PD_IDX`
-- Depends on: `headers/ap_stub.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/sched.h`, `headers/smp.h`
+  - `lapic_read` (function, line 88) `static unsigned lapic_read(unsigned off)`
+  - `lapic_write` (function, line 91) `static void lapic_write(unsigned off, unsigned val)`
+  - `smp_nmi_broadcast` (function, line 113) `void smp_nmi_broadcast(void)`
+  - `map_lapic` (function, line 128) `static int map_lapic(void)`
+  - `ap_delay` (function, line 141) `static void ap_delay(void)`
+  - `lapic_calibrate` (function, line 170) `static void lapic_calibrate(void)`
+  - `ap_lapic_timer_start` (function, line 204) `static void ap_lapic_timer_start(void)`
+  - `ap_lapic_timer_init` (function, line 210) `static void ap_lapic_timer_init(void)`
+  - `smp_init` (function, line 341) `void smp_init(void)`
+  - `syscall_entry` (function, line 86) `extern void syscall_entry(void);`
+  - `BSP` (function, line 258) `* were programmed only on the BSP (syscall_init runs in kmain), so * an AP's first sysretq loaded SS from a zeroed...`
+  - `routine` (function, line 286) `* routine (FreeDom's fetch threads, under -smp 2). */ cpu_enable_caches();`
+  - `INIT` (function, line 359) `* INIT (edge-triggered): resets APs to wait-for-SIPI state. * QEMU 11 drops level-triggered INIT (delivery status...`
+  - `LAPIC_BASE` (macro, line 29) `#define LAPIC_BASE`
+  - `LAPIC_ID_OFF` (macro, line 30) `#define LAPIC_ID_OFF`
+  - `LAPIC_SVR_OFF` (macro, line 31) `#define LAPIC_SVR_OFF`
+  - `LAPIC_ICR_HI` (macro, line 32) `#define LAPIC_ICR_HI`
+  - `LAPIC_ICR_LO` (macro, line 33) `#define LAPIC_ICR_LO`
+  - `LAPIC_LVT_TIMER` (macro, line 34) `#define LAPIC_LVT_TIMER`
+  - `LAPIC_LVT_LINT0` (macro, line 35) `#define LAPIC_LVT_LINT0`
+  - `LAPIC_LVT_LINT1` (macro, line 36) `#define LAPIC_LVT_LINT1`
+  - `LAPIC_LVT_MASKED` (macro, line 37) `#define LAPIC_LVT_MASKED`
+  - `LAPIC_LVT_EXTINT` (macro, line 38) `#define LAPIC_LVT_EXTINT`
+  - `LAPIC_EOI_OFF` (macro, line 39) `#define LAPIC_EOI_OFF`
+  - `LAPIC_TIMER_DIV` (macro, line 40) `#define LAPIC_TIMER_DIV`
+  - `LAPIC_TIMER_INIT` (macro, line 41) `#define LAPIC_TIMER_INIT`
+  - `LAPIC_TIMER_CUR` (macro, line 42) `#define LAPIC_TIMER_CUR`
+  - `LAPIC_SVR_ENABLE` (macro, line 44) `#define LAPIC_SVR_ENABLE`
+  - `LAPIC_ICR_BUSY` (macro, line 45) `#define LAPIC_ICR_BUSY`
+  - `LAPIC_ICR_INIT` (macro, line 46) `#define LAPIC_ICR_INIT`
+  - `LAPIC_ICR_SIPI` (macro, line 47) `#define LAPIC_ICR_SIPI`
+  - `LAPIC_ICR_ALL_EXC` (macro, line 48) `#define LAPIC_ICR_ALL_EXC`
+  - `LAPIC_ICR_LEVEL` (macro, line 49) `#define LAPIC_ICR_LEVEL`
+  - `LAPIC_ICR_TRIGGER` (macro, line 50) `#define LAPIC_ICR_TRIGGER`
+  - `LAPIC_ICR_NMI` (macro, line 51) `#define LAPIC_ICR_NMI`
+  - `LAPIC_ICR_IDLE_SPINS` (macro, line 53) `#define LAPIC_ICR_IDLE_SPINS`
+  - `SIPI_VECTOR` (macro, line 55) `#define SIPI_VECTOR`
+  - `PIT_HZ` (macro, line 58) `#define PIT_HZ`
+  - `LAPIC_TIMER_DIVIDE_16` (macro, line 61) `#define LAPIC_TIMER_DIVIDE_16`
+  - `LAPIC_TIMER_PERIODIC` (macro, line 62) `#define LAPIC_TIMER_PERIODIC`
+  - `LAPIC_PD_ADDR` (macro, line 70) `#define LAPIC_PD_ADDR`
+  - `LAPIC_PDPT_SLOT` (macro, line 71) `#define LAPIC_PDPT_SLOT`
+  - `LAPIC_PD_IDX` (macro, line 72) `#define LAPIC_PD_IDX`
+- Depends on: `headers/ap_stub.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/cpu_setup.h`, `headers/arch/x86/msr.h`, `headers/sched.h`, `headers/smp.h`
 
 ## tls_test.c
 - Doc: host-side tests for the kernel TLS stack.

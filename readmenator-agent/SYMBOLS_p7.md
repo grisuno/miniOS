@@ -3,10 +3,44 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `do_proc_exit` | function | `headers/syscalls_proc.h:34` | `long do_proc_exit(long code);` |
+| `linux_signal_fatal` | function | `headers/syscalls_proc.h:31` | `int linux_signal_fatal(long sig);` |
+| `sys_linux_clone` | function | `headers/syscalls_proc.h:19` | `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_execve` | function | `headers/syscalls_proc.h:21` | `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_exit` | function | `headers/syscalls_proc.h:22` | `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_fork` | function | `headers/syscalls_proc.h:18` | `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_getpid` | function | `headers/syscalls_proc.h:16` | `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_gettid` | function | `headers/syscalls_proc.h:17` | `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_kill` | function | `headers/syscalls_proc.h:24` | `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_vfork` | function | `headers/syscalls_proc.h:20` | `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_wait4` | function | `headers/syscalls_proc.h:23` | `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_linux_yield` | function | `headers/syscalls_proc.h:15` | `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_minios_clone` | function | `headers/syscalls_proc.h:13` | `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6);` |
+| `sys_minios_nice` | function | `headers/syscalls_proc.h:12` | `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `sys_minios_thread_spawn` | function | `headers/syscalls_proc.h:14` | `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `TICK_CONFIG_DEFAULT` | macro | `headers/tick.h:37` | `#define TICK_CONFIG_DEFAULT` |
+| `TICK_H` | macro | `headers/tick.h:19` | `#define TICK_H` |
+| `TICK_MAX_AUDIO_LISTENERS` | macro | `headers/tick.h:29` | `#define TICK_MAX_AUDIO_LISTENERS` |
+| `TICK_MAX_DESKTOP_LISTENERS` | macro | `headers/tick.h:31` | `#define TICK_MAX_DESKTOP_LISTENERS` |
+| `TICK_MAX_USB_LISTENERS` | macro | `headers/tick.h:34` | `#define TICK_MAX_USB_LISTENERS` |
+| `tick_audio_count` | function | `headers/tick.h:81` | `int tick_audio_count(void);` |
+| `tick_config_t` | struct | `headers/tick.h:22` | `` |
+| `tick_desktop_count` | function | `headers/tick.h:84` | `int tick_desktop_count(void);` |
+| `tick_desktop_due` | function | `headers/tick.h:92` | `int tick_desktop_due(unsigned long long ticks, unsigned interval);` |
+| `tick_register_audio` | function | `headers/tick.h:54` | `int tick_register_audio(tick_fn_t fn, void *ctx);` |
+| `tick_register_desktop` | function | `headers/tick.h:61` | `int tick_register_desktop(tick_fn_t fn, void *ctx);` |
+| `tick_register_usb` | function | `headers/tick.h:69` | `int tick_register_usb(tick_fn_t fn, void *ctx);` |
 | `tick_reset` | function | `headers/tick.h:47` | `void tick_reset(void);` |
 | `tick_run_audio` | function | `headers/tick.h:75` | `void tick_run_audio(void);` |
 | `tick_run_desktop` | function | `headers/tick.h:78` | `void tick_run_desktop(void);` |
 | `tick_run_usb` | function | `headers/tick.h:72` | `void tick_run_usb(void);` |
+| `TLB_H` | macro | `headers/tlb.h:10` | `#define TLB_H` |
+| `TLB_RELEASE_BATCH` | macro | `headers/tlb.h:13` | `#define TLB_RELEASE_BATCH` |
+| `space` | function | `headers/tlb.h:4` | `* while that CPU keeps running the same address space (CLONE_VM threads on * an AP). Callers clear the PTEs, flush...` |
+| `tlb_nmi_entry` | function | `headers/tlb.h:26` | `void tlb_nmi_entry(void);` |
+| `tlb_shoot_acks` | variable | `headers/tlb.h:27` | `extern volatile unsigned int tlb_shoot_acks;` |
+| `tlb_shootdown_count` | function | `headers/tlb.h:22` | `unsigned long tlb_shootdown_count(void);` |
+| `tlb_shootdown_timeouts` | function | `headers/tlb.h:23` | `unsigned long tlb_shootdown_timeouts(void);` |
 | `TLS_ALERT_LEVEL_FATAL` | macro | `headers/tls.h:47` | `#define TLS_ALERT_LEVEL_FATAL` |
 | `TLS_ALERT_LEVEL_WARNING` | macro | `headers/tls.h:46` | `#define TLS_ALERT_LEVEL_WARNING` |
 | `TLS_BN_384_WORDS` | macro | `headers/tls.h:63` | `#define TLS_BN_384_WORDS` |
@@ -195,9 +229,9 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `WM_BTN_W` | macro | `headers/vga_fb.h:148` | `#define WM_BTN_W` |
 | `WM_FOCUS_GFX` | macro | `headers/vga_fb.h:222` | `#define WM_FOCUS_GFX` |
 | `below` | function | `headers/vga_fb.h:99` | `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via...` |
-| `dock_bounce_counts` | function | `headers/vga_fb.h:253` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);` |
-| `dock_click_count` | function | `headers/vga_fb.h:254` | `void dock_click_count(unsigned long *edges);` |
-| `dock_pending_active` | function | `headers/vga_fb.h:255` | `int dock_pending_active(void);` |
+| `dock_bounce_counts` | function | `headers/vga_fb.h:257` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);` |
+| `dock_click_count` | function | `headers/vga_fb.h:258` | `void dock_click_count(unsigned long *edges);` |
+| `dock_pending_active` | function | `headers/vga_fb.h:259` | `int dock_pending_active(void);` |
 | `fb_bpp` | variable | `headers/vga_fb.h:26` | `extern int fb_bpp;` |
 | `fb_bytes_per_pixel` | function | `headers/vga_fb.h:30` | `int fb_bytes_per_pixel(void);` |
 | `fb_height` | variable | `headers/vga_fb.h:24` | `extern int fb_height;` |
@@ -208,16 +242,16 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `fb_width` | variable | `headers/vga_fb.h:23` | `extern int fb_width;` |
 | `fb_write_packed` | function | `headers/vga_fb.h:194` | `void fb_write_packed(int x, int y, unsigned long rgb);` |
 | `fb_write_row_packed` | function | `headers/vga_fb.h:217` | `void fb_write_row_packed(int x, int y, const unsigned int *src, int n);` |
-| `fx_melts_completed` | variable | `headers/vga_fb.h:273` | `extern unsigned long fx_melts_completed;` |
+| `fx_melts_completed` | variable | `headers/vga_fb.h:277` | `extern unsigned long fx_melts_completed;` |
 | `gfx_frames_composited` | variable | `headers/vga_fb.h:59` | `extern unsigned long gfx_frames_composited;` |
 | `gfx_win_title` | variable | `headers/vga_fb.h:50` | `extern const char *gfx_win_title;` |
 | `mouse_state` | variable | `headers/vga_fb.h:167` | `extern mouse_state_t mouse_state;` |
 | `mouse_state_t` | struct | `headers/vga_fb.h:159` | `` |
 | `nk_win_y` | variable | `headers/vga_fb.h:79` | `extern int nk_win_x, nk_win_y;` |
-| `pixels` | function | `headers/vga_fb.h:259` | `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...` |
+| `pixels` | function | `headers/vga_fb.h:263` | `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...` |
 | `term_clear` | function | `headers/vga_fb.h:188` | `void term_clear(void);` |
 | `term_rows` | variable | `headers/vga_fb.h:156` | `extern int term_x, term_y, term_cols, term_rows;` |
-| `vga_fb_active` | variable | `headers/vga_fb.h:282` | `extern int vga_fb_active;` |
+| `vga_fb_active` | variable | `headers/vga_fb.h:286` | `extern int vga_fb_active;` |
 | `vga_fb_blit_nk_rgb_window` | function | `headers/vga_fb.h:76` | `void vga_fb_blit_nk_rgb_window(void);` |
 | `vga_fb_blit_nk_window` | function | `headers/vga_fb.h:75` | `void vga_fb_blit_nk_window(void);` |
 | `vga_fb_boot_config` | function | `headers/vga_fb.h:40` | `void vga_fb_boot_config(void);` |
@@ -244,7 +278,7 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vga_fb_layout_name` | function | `headers/vga_fb.h:244` | `const char *vga_fb_layout_name(void);` |
 | `vga_fb_layout_set` | function | `headers/vga_fb.h:241` | `int vga_fb_layout_set(int mode);` |
 | `vga_fb_list_windows` | function | `headers/vga_fb.h:245` | `void vga_fb_list_windows(void);` |
-| `vga_fb_mouse_init` | function | `headers/vga_fb.h:250` | `void vga_fb_mouse_init(void);` |
+| `vga_fb_mouse_init` | function | `headers/vga_fb.h:254` | `void vga_fb_mouse_init(void);` |
 | `vga_fb_mouse_tick` | function | `headers/vga_fb.h:249` | `void vga_fb_mouse_tick(void);` |
 | `vga_fb_move_terminal` | function | `headers/vga_fb.h:197` | `void vga_fb_move_terminal(int dx, int dy);` |
 | `vga_fb_nterms_get` | function | `headers/vga_fb.h:237` | `int vga_fb_nterms_get(void);` |
@@ -258,7 +292,7 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vga_fb_rect_rgb` | function | `headers/vga_fb.h:183` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);` |
 | `vga_fb_reset_default` | function | `headers/vga_fb.h:200` | `void vga_fb_reset_default(void);` |
 | `vga_fb_resize` | function | `headers/vga_fb.h:199` | `void vga_fb_resize(int dcols, int drows);` |
-| `vga_fb_set_gfx_mode` | function | `headers/vga_fb.h:280` | `void vga_fb_set_gfx_mode(int on);` |
+| `vga_fb_set_gfx_mode` | function | `headers/vga_fb.h:284` | `void vga_fb_set_gfx_mode(int on);` |
 | `vga_fb_set_gfx_palette` | function | `headers/vga_fb.h:38` | `void vga_fb_set_gfx_palette(const unsigned char *pal);` |
 | `vga_fb_snap_window` | function | `headers/vga_fb.h:198` | `void vga_fb_snap_window(int zone);` |
 | `vga_fb_str` | function | `headers/vga_fb.h:185` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);` |
@@ -269,12 +303,13 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vga_fb_tile_all` | function | `headers/vga_fb.h:240` | `void vga_fb_tile_all(void);` |
 | `vga_fb_toggle_fullscreen` | function | `headers/vga_fb.h:196` | `void vga_fb_toggle_fullscreen(void);` |
 | `vga_fb_toggle_minimize` | function | `headers/vga_fb.h:201` | `void vga_fb_toggle_minimize(void);` |
-| `vga_fx_enabled` | function | `headers/vga_fb.h:263` | `int vga_fx_enabled(void);` |
-| `vga_fx_free` | function | `headers/vga_fb.h:266` | `void vga_fx_free(unsigned int *buf);` |
-| `vga_fx_melt_from_black` | function | `headers/vga_fb.h:269` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);` |
-| `vga_fx_melt_rect` | function | `headers/vga_fb.h:267` | `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);` |
-| `vga_fx_restore_rect` | function | `headers/vga_fb.h:265` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);` |
-| `vga_fx_snap_rect` | function | `headers/vga_fb.h:264` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);` |
+| `vga_fb_wait_tick` | function | `headers/vga_fb.h:253` | `void vga_fb_wait_tick(void);` |
+| `vga_fx_enabled` | function | `headers/vga_fb.h:267` | `int vga_fx_enabled(void);` |
+| `vga_fx_free` | function | `headers/vga_fb.h:270` | `void vga_fx_free(unsigned int *buf);` |
+| `vga_fx_melt_from_black` | function | `headers/vga_fb.h:273` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);` |
+| `vga_fx_melt_rect` | function | `headers/vga_fb.h:271` | `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);` |
+| `vga_fx_restore_rect` | function | `headers/vga_fb.h:269` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);` |
+| `vga_fx_snap_rect` | function | `headers/vga_fb.h:268` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);` |
 | `wm_clear_close` | function | `headers/vga_fb.h:247` | `void wm_clear_close(void);` |
 | `wm_close_pending` | function | `headers/vga_fb.h:246` | `int wm_close_pending(void);` |
 | `wm_gfx_mode_active` | function | `headers/vga_fb.h:248` | `int wm_gfx_mode_active(void);` |
@@ -429,22 +464,21 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `ZIP_H` | macro | `headers/zip.h:2` | `#define ZIP_H` |
 | `miniz` | function | `headers/zip.h:6` | `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the...` |
 | `shell_cmd_zip` | function | `headers/zip.h:15` | `void shell_cmd_zip(int argc, char **argv);` |
-| `BOOTLOG_MAX` | macro | `kernel.c:187` | `#define BOOTLOG_MAX` |
-| `EM` | function | `kernel.c:220` | `* CR0: clear EM (bit 2), set MP (bit 1);` |
-| `KSYM_MAX` | macro | `kernel.c:106` | `#define KSYM_MAX` |
-| `__attribute__` | function | `kernel.c:206` | `__attribute__((section(".init.text"))) void kmain(void)` |
-| `bootlog_mark` | function | `kernel.c:191` | `void bootlog_mark(const char *name)` |
-| `bootlog_report` | function | `kernel.c:198` | `void bootlog_report(void)` |
-| `kstack` | function | `kernel.c:145` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
-| `ksyscall` | function | `kernel.c:129` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `ms` | function | `kernel.c:184` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
-| `ramdisk_end` | variable | `kernel.c:179` | `extern char ramdisk_end[];` |
-| `ramdisk_start` | variable | `kernel.c:178` | `extern char ramdisk_start[];` |
-| `size` | function | `kernel.c:261` | `* image size (see kernel.ld);` |
-| `syscall_init` | function | `kernel.c:116` | `void syscall_init(void)` |
-| `syscall_kstack` | variable | `kernel.c:114` | `extern unsigned long syscall_kstack;` |
-| `table` | function | `kernel.c:103` | `* Symbol table (for resolving program references) * ================================================================...` |
-| `tables` | function | `kernel.c:283` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
+| `BOOTLOG_MAX` | macro | `kernel.c:188` | `#define BOOTLOG_MAX` |
+| `KSYM_MAX` | macro | `kernel.c:107` | `#define KSYM_MAX` |
+| `__attribute__` | function | `kernel.c:207` | `__attribute__((section(".init.text"))) void kmain(void)` |
+| `bootlog_mark` | function | `kernel.c:192` | `void bootlog_mark(const char *name)` |
+| `bootlog_report` | function | `kernel.c:199` | `void bootlog_report(void)` |
+| `kstack` | function | `kernel.c:146` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
+| `ksyscall` | function | `kernel.c:130` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ms` | function | `kernel.c:185` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
+| `ramdisk_end` | variable | `kernel.c:180` | `extern char ramdisk_end[];` |
+| `ramdisk_start` | variable | `kernel.c:179` | `extern char ramdisk_start[];` |
+| `size` | function | `kernel.c:253` | `* image size (see kernel.ld);` |
+| `syscall_init` | function | `kernel.c:117` | `void syscall_init(void)` |
+| `syscall_kstack` | variable | `kernel.c:115` | `extern unsigned long syscall_kstack;` |
+| `table` | function | `kernel.c:104` | `* Symbol table (for resolving program references) * ================================================================...` |
+| `tables` | function | `kernel.c:275` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
 | `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
 | `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
 | `abi_verify` | function | `kernel/abi.c:38` | `int abi_verify(const char *text, long version, unsigned long checksum)` |
@@ -462,39 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `redirect_commit` | function | `kernel/console.c:147` | `int redirect_commit(const char *path, int append_mode)` |
 | `redirect_discard` | function | `kernel/console.c:216` | `void redirect_discard(void)` |
 | `redirect_pending` | function | `kernel/console.c:185` | `unsigned long redirect_pending(void)` |
-| `redirect_putc` | function | `kernel/console.c:122` | `static int redirect_putc(char c)` |
-| `redirect_resume` | function | `kernel/console.c:135` | `void redirect_resume(int was)` |
-| `redirect_suspend` | function | `kernel/console.c:129` | `int redirect_suspend(void)` |
-| `redirect_take_into` | function | `kernel/console.c:196` | `unsigned long redirect_take_into(char *dst, unsigned long cap,         unsigned long *len_out)` |
-| `register_libc_symbols` | function | `kernel/console.c:271` | `void register_libc_symbols(void)` |
-| `vga_clear` | function | `kernel/console.c:25` | `void vga_clear(void)` |
-| `vga_cursor_enable` | function | `kernel/console.c:81` | `void vga_cursor_enable(int on)` |
-| `vga_get_color` | function | `kernel/console.c:21` | `char vga_get_color(void)` |
-| `vga_get_x` | function | `kernel/console.c:18` | `int vga_get_x(void)` |
-| `vga_get_y` | function | `kernel/console.c:19` | `int vga_get_y(void)` |
-| `vga_newline` | function | `kernel/console.c:75` | `void vga_newline(void)` |
-| `vga_offset` | function | `kernel/console.c:23` | `static inline unsigned vga_offset(int x, int y)` |
-| `vga_putc` | function | `kernel/console.c:223` | `void vga_putc(char c)` |
-| `vga_puts` | function | `kernel/console.c:267` | `void vga_puts(const char *s)` |
-| `vga_raw_space` | function | `kernel/console.c:88` | `static void vga_raw_space(void)` |
-| `vga_scroll` | function | `kernel/console.c:56` | `void vga_scroll(void)` |
-| `vga_set_cursor` | function | `kernel/console.c:36` | `void vga_set_cursor(int x, int y)` |
-| `vga_set_xy` | function | `kernel/console.c:20` | `void vga_set_xy(int x, int y)` |
-| `ESC` | function | `kernel/console_in.c:157` | `* The bound keeps a bare ESC (never completed into a sequence) from  * hanging the reader. */ #de...` |
-| `MAX_SEQ_POLL` | macro | `kernel/console_in.c:159` | `#define MAX_SEQ_POLL` |
-| `PB_LEN` | macro | `kernel/console_in.c:18` | `#define PB_LEN` |
-| `SB_EXIT` | macro | `kernel/console_in.c:306` | `#define SB_EXIT` |
-| `SB_LEN` | macro | `kernel/console_in.c:281` | `#define SB_LEN` |
-| `SB_PGDN` | macro | `kernel/console_in.c:305` | `#define SB_PGDN` |
-| `SB_PGUP` | macro | `kernel/console_in.c:304` | `#define SB_PGUP` |
-| `console_getc` | function | `kernel/console_in.c:205` | `int console_getc(void)` |
-| `console_job_get` | function | `kernel/console_in.c:267` | `int console_job_get(void)` |
-| `console_job_try` | function | `kernel/console_in.c:257` | `int console_job_try(void)` |
-| `console_peek` | function | `kernel/console_in.c:233` | `int console_peek(void)` |
-| `console_poll_usb` | function | `kernel/console_in.c:93` | `static void console_poll_usb(void)` |
-| `console_ps2_live` | function | `kernel/console_in.c:106` | `static int console_ps2_live(void)` |
-| `console_raw_get` | function | `kernel/console_in.c:250` | `int console_raw_get(void)` |
-| `console_raw_try` | function | `kernel/console_in.c:246` | `int console_raw_try(void)` |
-| `console_stdin_active` | function | `kernel/console_in.c:56` | `int console_stdin_active(void)` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

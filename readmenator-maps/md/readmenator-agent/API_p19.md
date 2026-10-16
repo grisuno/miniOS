@@ -1,341 +1,359 @@
-# API (page 19 of 19)
+# API (page 19 of 21)
 Previous: [API_p18.md](API_p18.md)
 
-## tools/check_complexity.py
-- `count_symbols` (function) `tools/check_complexity.py:24` `def count_symbols(filepath)` -- Count top-level function and global variable definitions.
-- `load_approval` (function) `tools/check_complexity.py:46` `def load_approval(policy_path)` -- Load explicit complexity approval from ARCH_POLICY.yaml.
-- `main` (function) `tools/check_complexity.py:61` `def main()`
+## progs/src/mmreuse.c
+- `ENOMEM` (function) `progs/src/mmreuse.c:3` `* downward mmap cursor drains until a map fails with ENOMEM (-12);`
+- `mmap_anon` (function) `progs/src/mmreuse.c:7` `static long mmap_anon(long len)` -- mmap/munmap reclaim stress test.
+- `munmap` (function) `progs/src/mmreuse.c:21` `static long munmap(long addr, long len)`
+- `exit_now` (function) `progs/src/mmreuse.c:31` `static void exit_now(long code)`
 
-## tools/check_kb_sync.py
-- `regenerate_kb` (function) `tools/check_kb_sync.py:24` `def regenerate_kb()` -- Attempt to regenerate KNOWLEDGE_BASE.md using readmenator.
-- `main` (function) `tools/check_kb_sync.py:43` `def main()`
+## progs/src/mprot.c
+- `mmap_anon` (function) `progs/src/mprot.c:11` `static long mmap_anon(long len)`
+- `mprotect_sys` (function) `progs/src/mprot.c:25` `static long mprotect_sys(long addr, long len, long prot)`
+- `write_str` (function) `progs/src/mprot.c:36` `static long write_str(const char *s, long n)`
+- `exit_now` (function) `progs/src/mprot.c:44` `static void exit_now(long code)`
 
-## tools/check_mutant_anchors.py
-- `Config.bash_unquote` (method) `tools/check_mutant_anchors.py:26` `def bash_unquote(expr)` -- Collapse the escapes bash applies inside the MUTATIONS string.
-- `Config.unescaped_quote` (method) `tools/check_mutant_anchors.py:41` `def unescaped_quote(expr)` -- True when expr holds a double quote bash would not keep.
-- `Config.parse_mutations` (method) `tools/check_mutant_anchors.py:58` `def parse_mutations(text)` -- Extract (name, expression, target) triples from the MUTATIONS block.
-- `Config.anchor_matches` (method) `tools/check_mutant_anchors.py:84` `def anchor_matches(repo, target, expr)` -- Apply the sed expression to a scratch copy; True when it changes it.
-- `Config.main` (method) `tools/check_mutant_anchors.py:105` `def main()` -- Entry point: report anchors that change nothing and exit nonzero.
+## progs/src/mthreads.h
+Depends on: `progs/minios_abi.h`
+Imported by: `progs/src/fptest.c`, `progs/src/scfuzz.c`, `progs/src/thdemo.c`
+- `m_syscall6` (function) `progs/src/mthreads.h:50` `static inline long m_syscall6(long n, long a, long b, long c)`
+- `myield` (function) `progs/src/mthreads.h:59` `static inline void myield(void)`
+- `mfutex_wait` (function) `progs/src/mthreads.h:63` `static inline long mfutex_wait(volatile int *addr, int val)`
+- `mfutex_wake` (function) `progs/src/mthreads.h:67` `static inline long mfutex_wake(volatile int *addr, int n)`
+- `mmutex_init` (function) `progs/src/mthreads.h:71` `static inline void mmutex_init(mmutex_t *m)`
+- `mmutex_lock` (function) `progs/src/mthreads.h:75` `static inline void mmutex_lock(mmutex_t *m)`
+- `mmutex_unlock` (function) `progs/src/mthreads.h:90` `static inline void mmutex_unlock(mmutex_t *m)`
+- `mthread_entry` (function) `progs/src/mthreads.h:98` `static void mthread_entry(void *p)` -- Thread entry trampoline: runs fn(arg), stores the return, exits 0. * The exit code is always 0; join reads retval...
+- `mthread_create` (function) `progs/src/mthreads.h:117` `static int mthread_create(mthread_t *t, void *(*fn)(void *), void *arg)`
+- `mthread_join` (function) `progs/src/mthreads.h:144` `static int mthread_join(mthread_t t, void **retval)` -- Join: wait4 (Linux semantics) answers the reaped pid and stores the status word; the thread always exits 0, so a...
 
-## tools/check_spin_discipline.py
-- `Config.iter_functions` (method) `tools/check_spin_discipline.py:38` `def iter_functions(path)` -- Yield (name, first_line, body_lines) with a brace-depth split.
-- `Config.check_file` (method) `tools/check_spin_discipline.py:64` `def check_file(path)` -- Return a list of violation strings for one translation unit.
-- `Config.main` (method) `tools/check_spin_discipline.py:99` `def main(argv)` -- Walk the configured roots and fail closed on any violation.
+## progs/src/mtop.c
+- `syscall` (function) `progs/src/mtop.c:12` `* * All system figures come from the MINFO syscall (251): heap used / * free, ramdisk used / cap, MiniFS free /...`
+- `putchar` (function) `progs/src/mtop.c:35` `int putchar();`
+- `strlen` (function) `progs/src/mtop.c:36` `int strlen();`
+- `strcmp` (function) `progs/src/mtop.c:37` `int strcmp();`
+- `fopen` (function) `progs/src/mtop.c:38` `void *fopen();`
+- `fclose` (function) `progs/src/mtop.c:39` `int fclose();`
+- `fread` (function) `progs/src/mtop.c:40` `int fread();`
+- `rewind` (function) `progs/src/mtop.c:41` `void rewind();`
+- `socket` (function) `progs/src/mtop.c:42` `int socket();`
+- `close` (function) `progs/src/mtop.c:43` `int close();`
+- `net_dns_resolve` (function) `progs/src/mtop.c:44` `int net_dns_resolve();`
+- `sc3` (function) `progs/src/mtop.c:63` `static long sc3(long n, long a1, long a2, long a3)`
+- `mtop_time` (function) `progs/src/mtop.c:72` `static long mtop_time(void)`
+- `mtop_rtc` (function) `progs/src/mtop.c:76` `static long mtop_rtc(int *h, int *m, int *s)`
+- `mtop_key` (function) `progs/src/mtop.c:80` `static long mtop_key(void)`
+- `mtop_minfo` (function) `progs/src/mtop.c:84` `static long mtop_minfo(long sel, long *o1, long *o2)`
+- `emit` (function) `progs/src/mtop.c:90` `static void emit(char *s)`
+- `mtop_quit_key` (function) `progs/src/mtop.c:94` `static int mtop_quit_key(long k)`
+- `mtop_clear_ansi` (function) `progs/src/mtop.c:103` `static void mtop_clear_ansi(void)`
+- `mtop_clear` (function) `progs/src/mtop.c:113` `static void mtop_clear(void)`
+- `mtop_atoi` (function) `progs/src/mtop.c:117` `static int mtop_atoi(char *s)`
+- `mtop_putu` (function) `progs/src/mtop.c:136` `static void mtop_putu(long v)`
+- `mtop_put2` (function) `progs/src/mtop.c:158` `static void mtop_put2(int v)`
+- `mtop_put_kb` (function) `progs/src/mtop.c:163` `static void mtop_put_kb(long kb)`
+- `mtop_bar` (function) `progs/src/mtop.c:179` `static void mtop_bar(long v, long max, int w)`
+- `mtop_hist_max` (function) `progs/src/mtop.c:194` `static long mtop_hist_max(long *h, int n)`
+- `mtop_hist_push` (function) `progs/src/mtop.c:204` `static void mtop_hist_push(long *h, long v)`
+- `mtop_spark` (function) `progs/src/mtop.c:214` `static void mtop_spark(long *h, int n)`
+- `mtop_mem` (function) `progs/src/mtop.c:242` `static long mtop_mem(long *used, long *freeb, long *total)`
+- `mtop_cpu` (function) `progs/src/mtop.c:253` `static long mtop_cpu(long *count, long *busy)`
+- `mtop_disk_open` (function) `progs/src/mtop.c:289` `static void mtop_disk_open(void)`
+- `mtop_disk_read` (function) `progs/src/mtop.c:313` `static long mtop_disk_read(long *bytes)`
+- `mtop_net_probe` (function) `progs/src/mtop.c:337` `static long mtop_net_probe(long *dns_ms, long *sock_ok)`
+- `mtop_frame` (function) `progs/src/mtop.c:355` `static void mtop_frame(int n)`
+- `main` (function) `progs/src/mtop.c:531` `int main(int argc, char **argv)`
 
-## tools/check_surprising.py
-- `load_cpg` (function) `tools/check_surprising.py:25` `def load_cpg(path)` -- Load and parse the CPG JSON-LD file.
-- `build_graph` (function) `tools/check_surprising.py:33` `def build_graph(cpg)` -- Build adjacency list from CPG nodes and edges.
-- `bfs_min_hops` (function) `tools/check_surprising.py:56` `def bfs_min_hops(nodes, edges, source, target_community, max_hops)` -- BFS from source to any node in target_community, returning hop count.
-- `find_surprising_connections` (function) `tools/check_surprising.py:87` `def find_surprising_connections(nodes, edges, min_hops)` -- Find connections of min_hops or more between distinct communities.
-- `main` (function) `tools/check_surprising.py:118` `def main()`
+## progs/src/mvrn.c
+- `mvrn_sc3` (function) `progs/src/mvrn.c:9` `static long mvrn_sc3(long n, long a1, long a2, long a3)` -- mvrn -- rename(82) syscall probe.
+- `mvrn_write` (function) `progs/src/mvrn.c:16` `static void mvrn_write(const char *s, unsigned long len)`
+- `mvrn_exit` (function) `progs/src/mvrn.c:20` `static void mvrn_exit(long code)`
+- `mvrn_fail` (function) `progs/src/mvrn.c:24` `static void mvrn_fail(int step)`
+- `lmain` (function) `progs/src/mvrn.c:32` `int lmain(void)`
 
-## tools/check_syscall_sanitize.py
-- `Config.split_functions` (method) `tools/check_syscall_sanitize.py:69` `def split_functions(lines)` -- Yield (name, start, body_lines) triples using brace depth.
-- `Config.checked_names` (method) `tools/check_syscall_sanitize.py:112` `def checked_names(body)` -- Return identifiers named inside sanitizer checks in a body.
-- `Config.delegated_only` (method) `tools/check_syscall_sanitize.py:122` `def delegated_only(body, alias)` -- Decide whether an alias flows only into sanitizing callees.
-- `Config.split_top_args` (method) `tools/check_syscall_sanitize.py:143` `def split_top_args(argtext)` -- Split a call argument list on top-level commas only.
-- `Config.audit_body` (method) `tools/check_syscall_sanitize.py:162` `def audit_body(name, body)` -- Return violation strings for one function body.
-- `Config.audit_file` (method) `tools/check_syscall_sanitize.py:217` `def audit_file(path)` -- Audit every handler in one file, return violation strings.
-- `Config.main` (method) `tools/check_syscall_sanitize.py:228` `def main()` -- Entry point used by lint and CI.
+## progs/src/nx.c
+- `write_str` (function) `progs/src/nx.c:11` `static long write_str(const char *s, long n)`
+- `exit_now` (function) `progs/src/nx.c:19` `static void exit_now(long code)`
 
-## tools/clip_bridge.py
-- `ClipBridgeConfig.valid_dst` (method) `tools/clip_bridge.py:41` `def valid_dst(name, cfg)` -- True when name is a safe guest path.
-- `ClipBridgeConfig.printable_line` (method) `tools/clip_bridge.py:52` `def printable_line(line, cfg)` -- True when every char survives the kernel readline.
-- `ClipBridgeConfig.build_plan` (method) `tools/clip_bridge.py:59` `def build_plan(text, dst, cfg)` -- Return (ok, lines, diagnostic) for carrying text to dst.
-- `ClipBridgeConfig.main` (method) `tools/clip_bridge.py:84` `def main(argv)` -- Entry point: clip_bridge.py <src-file> <dst-name>.
+## progs/src/opl3.c
+Depends on: `kernel/string.c`, `progs/minios_abi.h`
+Imported by: `progs/piano/piano.c`
+- `sys_time` (function) `progs/src/opl3.c:36` `static long sys_time(void)`
+- `sys_open` (function) `progs/src/opl3.c:39` `static long sys_open(long on)`
+- `sys_submit` (function) `progs/src/opl3.c:42` `static long sys_submit(const void *buf, long len)`
+- `busy_ms` (function) `progs/src/opl3.c:46` `static void busy_ms(long ms)`
+- `opl3_set_instrument` (function) `progs/src/opl3.c:52` `static void opl3_set_instrument(opl3_chip *chip)` -- } static long sys_open(long on) { long r; __asm__ volatile("syscall":"=a"(r):"a"(SYS_SB16_OPEN),"D"(on):"rcx","r11","...
+- `opl3_note` (function) `progs/src/opl3.c:69` `static void opl3_note(opl3_chip *chip, unsigned block, unsigned fnum, int on)`
+- `render` (function) `progs/src/opl3.c:77` `static void render(opl3_chip *chip, long ms, long *fail)` -- Render `ms` of the current note and stream it to the SB16.
+- `main` (function) `progs/src/opl3.c:107` `int main(void)`
 
-## tools/doom_pwad.py
-Imported by: `tests/test_doom_pwad.py`
-- `PwadError.pad_tex` (method) `tools/doom_pwad.py:165` `def pad_tex(raw)` -- Return a texture or flat name padded to its 8-byte field.
-- `PwadError.parse_grid` (method) `tools/doom_pwad.py:172` `def parse_grid(text)` -- Parse grid text into rows, refusing empty or ragged input.
-- `PwadError.grid_extents` (method) `tools/doom_pwad.py:195` `def grid_extents(rows)` -- Return coordinate bounds of the lattice in map units.
-- `PwadError.is_wall` (method) `tools/doom_pwad.py:203` `def is_wall(rows, row, col)` -- Treat out-of-bounds cells as solid wall so maps stay closed.
-- `PwadError.flood_reachable` (method) `tools/doom_pwad.py:210` `def flood_reachable(rows)` -- Return the walkable set reachable from the player start tile.
-- `PwadError.validate_grid` (method) `tools/doom_pwad.py:240` `def validate_grid(rows)` -- Enforce single player, single exit, and full reachability.
-- `PwadError.cell_corners` (method) `tools/doom_pwad.py:269` `def cell_corners(row, col)` -- Return cell corners as (x0, x1, y_top, y_bottom) in map units.
-- `PwadError.cell_class` (method) `tools/doom_pwad.py:279` `def cell_class(cell)` -- Classify a walkable cell: doors stand alone, styles never merge.
-- `PwadError.label_regions` (method) `tools/doom_pwad.py:291` `def label_regions(rows)` -- Flood same-class walkable cells into region ids; walls stay -1.
-- `PwadError.region_sector` (method) `tools/doom_pwad.py:326` `def region_sector(region, door_tag)` -- Map a labelled region to its sector record fields and wall skin.
-- `PwadError.compile_geometry` (method) `tools/doom_pwad.py:371` `def compile_geometry(rows, exit_pos, wall_side)` -- Compile edges into vertexes, two-sided rooms and tagged doors.
-- `PwadError.vertex` (method) `tools/doom_pwad.py:386` `def vertex(x, y)` -- Deduplicate lattice points shared by adjacent edges.
-- `PwadError.compile_things` (method) `tools/doom_pwad.py:485` `def compile_things(rows)` -- Compile thing stamps into mapthing records in scan order.
-- `PwadError.seg_angle` (method) `tools/doom_pwad.py:506` `def seg_angle(dx, dy)` -- Return the stored short angle for a seg direction vector.
-- `PwadError.build_lumps` (method) `tools/doom_pwad.py:516` `def build_lumps(rows)` -- Compile a validated grid into the eleven E1M1 lump payloads.
-- `PwadError.build_pwad` (method) `tools/doom_pwad.py:597` `def build_pwad(rows)` -- Assemble lump payloads into a complete PWAD byte string.
-- `PwadError.read_pwad` (method) `tools/doom_pwad.py:616` `def read_pwad(data)` -- Split PWAD bytes into header fields and an ordered lump table.
-- `PwadError.check_pwad` (method) `tools/doom_pwad.py:639` `def check_pwad(data)` -- Validate lump order, record sizes and cross-lump references.
-- `PwadError.payload` (method) `tools/doom_pwad.py:650` `def payload(name)` -- Slice one lump payload out of the file image.
-- `PwadError.check_multiple` (method) `tools/doom_pwad.py:655` `def check_multiple(name, fmt)` -- Require the lump length to hold whole records only.
-- `PwadError.cmd_build` (method) `tools/doom_pwad.py:816` `def cmd_build(grid_path, out_path)` -- Build a PWAD from a grid file, refusing to write on any error.
-- `PwadError.cmd_check` (method) `tools/doom_pwad.py:826` `def cmd_check(path)` -- Validate a PWAD file and report its lump census on success.
-- `PwadError.main` (method) `tools/doom_pwad.py:834` `def main(argv)` -- Dispatch the build, check and info verbs with host-safe errors.
+## progs/src/pcmap.c
+- `sc_open` (function) `progs/src/pcmap.c:12` `static long sc_open(const char *p)` -- pcmap probe: file-backed MAP_PRIVATE mmap shares text.
+- `sc_mmap` (function) `progs/src/pcmap.c:21` `static long sc_mmap(long len, long prot, long flags, long fd, long off)`
+- `sc_write` (function) `progs/src/pcmap.c:34` `static long sc_write(long fd, const char *s, long n)`
+- `sc_exit` (function) `progs/src/pcmap.c:42` `static void sc_exit(long code)`
+- `sc_fnv` (function) `progs/src/pcmap.c:46` `static unsigned long sc_fnv(const char *p, long n)`
+- `sc_hex8` (function) `progs/src/pcmap.c:56` `static void sc_hex8(unsigned long v, char *out)`
+- `sc_munmap` (function) `progs/src/pcmap.c:65` `static long sc_munmap(long addr, long len)`
 
-## tools/gdb_repro.py
-Depends on: `kernel/time.c`
-- `rs` (function) `tools/gdb_repro.py:23` `def rs(m, t)`
-- `main` (function) `tools/gdb_repro.py:27` `def main()`
-- `send` (function) `tools/gdb_repro.py:65` `def send(line)`
-- `quit_doom` (function) `tools/gdb_repro.py:70` `def quit_doom()`
+## progs/src/pollready.c
+- `p_write` (function) `progs/src/pollready.c:26` `static long p_write(long fd, const char *s, long n)`
+- `p_strlen` (function) `progs/src/pollready.c:30` `static unsigned long p_strlen(const char *s)`
+- `p_puts` (function) `progs/src/pollready.c:36` `static void p_puts(long fd, const char *s)`
+- `p_atoi` (function) `progs/src/pollready.c:40` `static int p_atoi(const char *s)`
+- `p_parse_ip` (function) `progs/src/pollready.c:46` `static int p_parse_ip(const char *s, unsigned char out[4])`
+- `lmain` (function) `progs/src/pollready.c:63` `int lmain(long argc, char **argv)` -- int v = 0; int digits = 0; while (*s >= '0' && *s <= '9') { v = v * 10 + (*s - '0'); s++; digits++; } if (!digits ||...
 
-## tools/gen_desktop_pngs.py
-- `write_atomic` (function) `tools/gen_desktop_pngs.py:69` `def write_atomic(img, path)`
-- `main` (function) `tools/gen_desktop_pngs.py:75` `def main()`
+## progs/src/sbtone.c
+Depends on: `progs/minios_abi.h`
+- `buffers` (function) `progs/src/sbtone.c:14` `*
+ * Exit code is the number of submitted buffers (0 on failure to open).
+ */
 
-## tools/gen_icons.py
-- `make_png` (function) `tools/gen_icons.py:179` `def make_png(pixels, palette, width, height)` -- Create a minimal indexed-colour PNG from pixel indices and a palette.
-- `make_chunk` (function) `tools/gen_icons.py:209` `def make_chunk(chunk_type, data)`
-- `main` (function) `tools/gen_icons.py:214` `def main()`
+#include <stdio.h>...`
+- `main` (function) `progs/src/sbtone.c:36` `int main(void)`
 
-## tools/gen_zip_fixtures.py
-- `write_zip` (function) `tools/gen_zip_fixtures.py:28` `def write_zip(path, entries)` -- entries: list of (name, data_or_None).  data None marks a directory.
-- `main` (function) `tools/gen_zip_fixtures.py:42` `def main()`
+## progs/src/scfuzz.c
+Depends on: `progs/src/mthreads.h`
+- `guest` (function) `progs/src/scfuzz.c:7` `* the guest (the BDD timeout then talks). All fuzz maps stay inside
+ * one private 4 MB arena (pa...`
+- `sc_mprotect` (function) `progs/src/scfuzz.c:38` `static long sc_mprotect(long addr, long len, long prot)`
+- `sc_munmap` (function) `progs/src/scfuzz.c:49` `static long sc_munmap(long addr, long len)`
+- `sc_write` (function) `progs/src/scfuzz.c:53` `static long sc_write(long fd, const char *s, long n)`
+- `sc_exit` (function) `progs/src/scfuzz.c:61` `static void sc_exit(long code)`
+- `sc_rng` (function) `progs/src/scfuzz.c:67` `static unsigned long sc_rng(unsigned long *s)`
+- `sc_fold` (function) `progs/src/scfuzz.c:76` `static unsigned long sc_fold(unsigned long h, unsigned long v)`
+- `sc_hex8` (function) `progs/src/scfuzz.c:88` `static void sc_hex8(unsigned long v, char *out)`
+- `sc_worker` (function) `progs/src/scfuzz.c:97` `static unsigned long sc_worker(int me, unsigned long seed)`
+- `sc_thread1` (function) `progs/src/scfuzz.c:154` `static void *sc_thread1(void *arg)`
 
-## tools/kernel_feature_survey.py
-- `SurveyConfig.iter_sources` (method) `tools/kernel_feature_survey.py:34` `def iter_sources(root)` -- Yield C source paths under root, skipping vendored and cache dirs.
-- `SurveyConfig.find_fnptr_hits` (method) `tools/kernel_feature_survey.py:43` `def find_fnptr_hits(path, text)` -- Return line numbers declaring function pointers.
-- `SurveyConfig.find_asm_constraints` (method) `tools/kernel_feature_survey.py:49` `def find_asm_constraints(path, text)` -- Return sorted constraint letters used in extended asm.
-- `SurveyConfig.count_params` (method) `tools/kernel_feature_survey.py:59` `def count_params(params)` -- Count parameters, treating void and empty as zero.
-- `SurveyConfig.survey` (method) `tools/kernel_feature_survey.py:67` `def survey(root)` -- Collect findings per category across all sources.
-- `SurveyConfig.render_text` (method) `tools/kernel_feature_survey.py:103` `def render_text(findings)` -- Render findings as plain text.
-- `SurveyConfig.main` (method) `tools/kernel_feature_survey.py:122` `def main(argv)` -- Entry point for the survey tool.
+## progs/src/shell.py
+Depends on: `progs/lua/minios.c`
+- `run_capture` (function) `progs/src/shell.py:20` `def run_capture(cmd, args)`
+- `expand` (function) `progs/src/shell.py:30` `def expand(line, env)`
+- `main` (function) `progs/src/shell.py:36` `def main()`
 
-## tools/lisp_scoped.sh
-- `say` (function) `tools/lisp_scoped.sh:8`
-- `die` (function) `tools/lisp_scoped.sh:9`
-- `mutant` (function) `tools/lisp_scoped.sh:20`
-- `lisp_mut` (function) `tools/lisp_scoped.sh:41`
-- `mut_usage` (function) `tools/lisp_scoped.sh:63`
+## progs/src/sign.c
+- `printf` (function) `progs/src/sign.c:28` `int printf();`
+- `strcmp` (function) `progs/src/sign.c:29` `int strcmp();`
+- `fopen` (function) `progs/src/sign.c:30` `void *fopen();`
+- `fclose` (function) `progs/src/sign.c:31` `int fclose();`
+- `fread` (function) `progs/src/sign.c:32` `int fread();`
+- `fwrite` (function) `progs/src/sign.c:33` `int fwrite();`
+- `fseek` (function) `progs/src/sign.c:34` `int fseek();`
+- `ftell` (function) `progs/src/sign.c:35` `int ftell();`
+- `malloc` (function) `progs/src/sign.c:36` `void *malloc();`
+- `free` (function) `progs/src/sign.c:37` `void free();`
+- `sign_hexval` (function) `progs/src/sign.c:89` `static unsigned int sign_hexval(char c)` -- static unsigned int sign_k[160]; static unsigned int sign_h[16]; static unsigned int sign_w[160]; static char...
+- `sign_unhex` (function) `progs/src/sign.c:100` `static void sign_unhex(char *out, char *in, int n)` -- static unsigned int sign_ga[32]; /** Docstring: Hex digit value, 0 outside hex. static unsigned int sign_hexval(char...
+- `sign_byte` (function) `progs/src/sign.c:111` `static unsigned int sign_byte(char *p, int i)` -- } /** Docstring: Decode 2*n hex chars into n bytes. static void sign_unhex(char *out, char *in, int n) { int i = 0...
+- `sign_copy` (function) `progs/src/sign.c:119` `static void sign_copy(char *dst, char *src, int n)` -- out[i] = (char)((hi << 4) | lo); i++; } } /** Docstring: Unsigned byte at index, the aes.c masking idiom. static...
+- `sign_strlen` (function) `progs/src/sign.c:128` `static int sign_strlen(char *s)` -- v = v + 256; return (unsigned int)v; } /** Docstring: Copy n bytes. static void sign_copy(char *dst, char *src, int...
+- `sign_le16` (function) `progs/src/sign.c:136` `static unsigned int sign_le16(char *p, int off)` -- dst[i] = src[i]; i++; } } /** Docstring: String length. static int sign_strlen(char *s) { int n = 0; while (s[n] !=...
+- `sign_le32` (function) `progs/src/sign.c:141` `static unsigned int sign_le32(char *p, int off)` -- /** Docstring: String length. static int sign_strlen(char *s) { int n = 0; while (s[n] != 0) n = n + 1; return n; }...
+- `sign_put32` (function) `progs/src/sign.c:147` `static void sign_put32(char *p, int off, unsigned int v)` -- } /** Docstring: Little-endian u16 at offset. static unsigned int sign_le16(char *p, int off) { return sign_byte(p...
+- `sign_offok` (function) `progs/src/sign.c:180` `static int sign_offok(char *p, int off, int *lo)` -- if (hi < 10) out[2 * i] = (char)(48 + hi); else out[2 * i] = (char)(87 + hi); if (lo < 10) out[2 * i + 1] =...
+- `below` (function) `progs/src/sign.c:195` `* every other op below (`|`, `<<`) is low-32 exact. */
+static void sign_rotr(unsigned int *lo, un...`
+- `sign_borrow2` (function) `progs/src/sign.c:230` `static unsigned int sign_borrow2(unsigned int x, unsigned int y, unsigned int s)` -- Docstring: Borrow out of x minus y into s, without comparisons. * Same miniGCC rationale as sign_carry2: sanitize...
+- `sign_add3` (function) `progs/src/sign.c:237` `static unsigned int sign_add3(unsigned int *s, unsigned int a, unsigned int b, unsigned int c)` -- Docstring: Borrow out of x minus y into s, without comparisons. * Same miniGCC rationale as sign_carry2: sanitize...
+- `sign_be32` (function) `progs/src/sign.c:247` `static unsigned int sign_be32(char *p, int off)` -- return (t >> 31) & 1; } /** Docstring: Add three words with carry, returning the new carry. static unsigned int...
+- `sign_block` (function) `progs/src/sign.c:253` `static void sign_block(void)` -- unsigned int cy = sign_carry2(a, b, t); unsigned int u = t + c; cy = cy + sign_carry2(t, c, u); s = u; return cy; }...
+- `sign_sha_init` (function) `progs/src/sign.c:387` `static void sign_sha_init(void)` -- i = 0; while (i < 16) { unsigned int n = sign_h[i] + st[i]; unsigned int cy = 0; cy = sign_carry2(sign_h[i], st[i]...
+- `sign_sha_update` (function) `progs/src/sign.c:410` `static void sign_sha_update(char *data, int len)` -- sign_h[8] = 0xade682d1; sign_h[9] = 0x510e527f; sign_h[10] = 0x2b3e6c1f; sign_h[11] = 0x9b05688c; sign_h[12] =...
+- `sign_sha_final` (function) `progs/src/sign.c:442` `static void sign_sha_final(char *out)` -- Docstring: Finish the digest into 64 bytes.
+- `sign_feed32` (function) `progs/src/sign.c:490` `static void sign_feed32(unsigned int v)` -- while (s < 8) { int ww = 0; if (s < 4) ww = (int)((sign_h[2 * i + 1] >> (24 - 8 * s)) & 255); else ww =...
+- `sign_key_init` (function) `progs/src/sign.c:500` `static void sign_key_init(void)` -- } } /** Docstring: Feed a u32 into the digest little-endian. static void sign_feed32(unsigned int v) { char b[4]...
+- `fe_copy` (function) `progs/src/sign.c:549` `static void fe_copy(unsigned int *r, unsigned int *a)` -- sign_q4[5] = 4294967295; sign_q4[6] = 4294967295; sign_q4[7] = 2147483647; sign_l8[0] = 1559614445; sign_l8[1] =...
+- `fe_zero` (function) `progs/src/sign.c:558` `static void fe_zero(unsigned int *r)` -- sign_l8[6] = 0; sign_l8[7] = 268435456; } /** Docstring: Copy eight limbs. static void fe_copy(unsigned int *r...
+- `fe_one` (function) `progs/src/sign.c:567` `static void fe_one(unsigned int *r)` -- i = i + 1; } } /** Docstring: Zero eight limbs. static void fe_zero(unsigned int *r) { int i = 0; while (i < 8) {...
+- `fe_cmov` (function) `progs/src/sign.c:573` `static void fe_cmov(unsigned int *r, unsigned int *b, unsigned int flag)` -- int i = 0; while (i < 8) { r[i] = 0; i = i + 1; } } /** Docstring: One as eight limbs. static void fe_one(unsigned...
+- `fe_ge` (function) `progs/src/sign.c:586` `static unsigned int fe_ge(unsigned int *a, unsigned int *b)` -- Docstring: 1 when a holds at least b, else 0.
+- `fe_rawsub` (function) `progs/src/sign.c:601` `static void fe_rawsub(unsigned int *r, unsigned int *a, unsigned int *b)` -- unsigned int borrow = 0; int i = 0; while (i < 8) { unsigned int t1 = a[i] - borrow; unsigned int c0 =...
+- `fe_add` (function) `progs/src/sign.c:617` `static void fe_add(unsigned int *r, unsigned int *a, unsigned int *b)` -- int i = 0; while (i < 8) { unsigned int ai = a[i]; unsigned int t1 = ai - borrow; unsigned int c0 = sign_borrow2(ai...
+- `fe_sub` (function) `progs/src/sign.c:636` `static void fe_sub(unsigned int *r, unsigned int *a, unsigned int *b)` -- unsigned int s1 = a[i] + b[i]; unsigned int c0 = sign_carry2(a[i], b[i], s1); unsigned int s2 = s1 + carry; unsigned...
+- `bits` (function) `progs/src/sign.c:672` `* values here always fit 32 bits (limbs below 2^16, carries and
+ * products below 2^32), so the s...`
+- `fe_foldadd` (function) `progs/src/sign.c:690` `static void fe_foldadd(unsigned int *row, int at, unsigned int x)` -- unsigned int carry = 0; carry = (v << 32) >> 32; while (i < 32 && carry != 0) { unsigned int rv = 0; unsigned int s...
+- `fe_mul` (function) `progs/src/sign.c:696` `static void fe_mul(unsigned int *r, unsigned int *a, unsigned int *b)` -- s = rv + carry; row[i] = s & 65535; carry = s >> 16; i = i + 1; } } /** Docstring: Fold 38 times a sub-2^16 limb...
+- `fe_sq` (function) `progs/src/sign.c:766` `static void fe_sq(unsigned int *r, unsigned int *a)` -- fe_zero(back); back[0] = acc[16] * 38; fe_add(t, t, back); k = 0; while (k < 3) { if (fe_ge(t, sign_q4) == 1)...
+- `fe_inv` (function) `progs/src/sign.c:771` `static void fe_inv(unsigned int *r, unsigned int *a)` -- if (fe_ge(t, sign_q4) == 1) fe_rawsub(t, t, sign_q4); k = k + 1; } fe_copy(r, t); } } /** Docstring: Square mod q....
+- `fe_frombytes` (function) `progs/src/sign.c:790` `static void fe_frombytes(unsigned int *r, char *b)` -- while (i < 255) { unsigned int bit = 1; if (i == 252 || i == 250) bit = 0; fe_sq(tmp, acc); fe_copy(acc, tmp)...
+- `fe_tobytes` (function) `progs/src/sign.c:800` `static void fe_tobytes(char *b, unsigned int *a)` -- fe_copy(r, acc); } /** Docstring: Load 32 bytes into eight limbs. static void fe_frombytes(unsigned int *r, char *b)...
+- `fe_curved` (function) `progs/src/sign.c:812` `static void fe_curved(unsigned int *d, unsigned int *d2)` -- /** Docstring: Store eight limbs as 32 bytes. static void fe_tobytes(char *b, unsigned int *a) { int i = 0; while (i...
+- `ge_copy` (function) `progs/src/sign.c:829` `static void ge_copy(unsigned int *r, unsigned int *a)` -- unsigned int inv[8]; unsigned int zero[8]; fe_zero(num); fe_zero(den); num[0] = 121665; den[0] = 121666; fe_inv(inv...
+- `fe_off` (function) `progs/src/sign.c:845` `static unsigned int *fe_off(unsigned int *p, int n)` -- Docstring: Address of limb n from a limb base.  miniGCC scales `a[i]` by 8 (its `unsigned int` slot) but adds raw...
+- `ge_cmov` (function) `progs/src/sign.c:850` `static void ge_cmov(unsigned int *r, unsigned int *b, unsigned int flag)` -- Docstring: Address of limb n from a limb base.  miniGCC scales `a[i]` by 8 (its `unsigned int` slot) but adds raw...
+- `ge_add` (function) `progs/src/sign.c:860` `static void ge_add(unsigned int *r, unsigned int *p, unsigned int *q, unsigned int *d2)` -- return p + n * 8; } /** Docstring: Masked point select, no secret branches. static void ge_cmov(unsigned int *r...
+- `ge_double` (function) `progs/src/sign.c:892` `static void ge_double(unsigned int *r, unsigned int *p)` -- fe_mul(c, t0, d2); fe_add(t0, fe_off(p, 16), fe_off(p, 16)); fe_mul(d, t0, fe_off(q, 16)); fe_sub(e, b, a)...
+- `ge_scalarmult` (function) `progs/src/sign.c:926` `static void ge_scalarmult(unsigned int *r, unsigned int *p, char *s, unsigned int *d2)` -- fe_zero(na); fe_sub(na, na, a); fe_add(g, na, b); fe_sub(f, g, c); fe_zero(nb); fe_sub(nb, nb, b); fe_add(h, na...
+- `sc_mod_l` (function) `progs/src/sign.c:951` `static void sc_mod_l(unsigned int *r, unsigned int *t16)` -- while (i >= 0) { unsigned int bit = 0; if (((sign_byte(s, i >> 3) >> (i & 7)) & 1) == 1) bit = 1; ge_double(dbl...
+- `sc_mul_add` (function) `progs/src/sign.c:1013` `static void sc_mul_add(unsigned int *r, unsigned int *a, unsigned int *b, unsigned int *c)` -- rem[8] = rem[8] - borrow; } s = s + 1; } b = b + 1; } k = 0; while (k < 8) { r[k] = rem[k]; k = k + 1; } } /**...
+- `sign_rev32` (function) `progs/src/sign.c:1070` `static void sign_rev32(char *b)` -- carry = c0 | c1; i = i + 1; } while (i < 16) { unsigned int s = t16[i] + carry; carry = sign_carry2(t16[i], carry...
+- `sign_points_init` (function) `progs/src/sign.c:1081` `static void sign_points_init(void)` -- } /** Docstring: Reverse 32 bytes in place, big-endian hex to limbs. static void sign_rev32(char *b) { int i = 0...
+- `sign_digest` (function) `progs/src/sign.c:1112` `static void sign_digest(char *sig, char *digest)` -- fe_copy(fe_off(sign_gb, 8), t); fe_one(fe_off(sign_gb, 16)); fe_mul(t, sign_gb, fe_off(sign_gb, 8))...
+- `sign_read` (function) `progs/src/sign.c:1232` `static char *sign_read(char *name, int *len)` -- while (i < 16) { t16[i] = sign_byte(hrambytes, 4 * i) | (sign_byte(hrambytes, 4 * i + 1) << 8) |...
+- `sign_write` (function) `progs/src/sign.c:1260` `static int sign_write(char *name, char *data, int len)` -- len = 1; buf = malloc(*len); if (buf == 0) { fclose(f); return 0; } got = fread(buf, 1, *len, f); fclose(f); if (got...
+- `sign_note_span` (function) `progs/src/sign.c:1273` `static int sign_note_span(char *img, int off, int len, int *desc)` -- /** Docstring: Write a whole file, 0 on success. static int sign_write(char *name, char *data, int len) { void *f =...
+- `sign_digest_of` (function) `progs/src/sign.c:1307` `static int sign_digest_of(char *img, int size, int entry, char *ph, int phnum, char *digest)` -- Docstring: Build the canonical digest over entry plus PT_LOADs.
+- `sign_patch_notes` (function) `progs/src/sign.c:1356` `static int sign_patch_notes(char *img, int size, char *ph, int phnum, char *desc)` -- sign_feed32(0); start = poff; if (start < SIGN_EHDR_SIZE) start = SIGN_EHDR_SIZE; end = poff + pfilesz; if (start <...
+- `sign_append` (function) `progs/src/sign.c:1393` `static int sign_append(char *name, char *img, int size, int shoff, int shnum, int shentsize,
+    ...` -- rc = sign_note_span(img, poff, pfilesz, &slot); if (rc == 1 && img[slot] == SIGN_KEY_ID) { while (k <...
+- `sign_file` (function) `progs/src/sign.c:1529` `static int sign_file(char *name)` -- int sn = shnum + 1; out[60] = (char)(sn & 255); out[61] = (char)((sn >> 8) & 255); } } if (sign_write(name, out...
+- `sign_selftest` (function) `progs/src/sign.c:1637` `static int sign_selftest(void)` -- Docstring: In-OS differential selftest, pinned by BDD.
+- `main` (function) `progs/src/sign.c:1657` `int main(int argc, char **argv)`
 
-## tools/make_usb.sh
-- `usage` (function) `tools/make_usb.sh:40`
-- `wizard` (function) `tools/make_usb.sh:56`
+## progs/src/spin.c
+- `lx_syscall3` (function) `progs/src/spin.c:11` `static long lx_syscall3(long n, long a1, long a2, long a3)`
+- `lx_strlen` (function) `progs/src/spin.c:20` `static unsigned long lx_strlen(const char *s)`
+- `lx_write` (function) `progs/src/spin.c:26` `static void lx_write(const char *s)`
+- `lx_write_int` (function) `progs/src/spin.c:30` `static void lx_write_int(long v)`
+- `lx_atoi` (function) `progs/src/spin.c:42` `static long lx_atoi(const char *s)`
+- `spin_u32` (function) `progs/src/spin.c:66` `static void spin_u32(unsigned char *d, unsigned long v)`
+- `spin_hdr` (function) `progs/src/spin.c:73` `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,
+        unsigned long ...`
+- `spin_box_ok` (function) `progs/src/spin.c:82` `static int spin_box_ok(const char *box)`
+- `spin_hex8` (function) `progs/src/spin.c:95` `static void spin_hex8(unsigned int v, char *dst)`
+- `spin_write_all` (function) `progs/src/spin.c:104` `static long spin_write_all(long fd, const unsigned char *buf, long len)`
+- `spin_emit` (function) `progs/src/spin.c:114` `static int spin_emit(const char *box, unsigned int seq,
+        const unsigned char *msg, long mlen)`
+- `spin_raw_file` (function) `progs/src/spin.c:145` `static int spin_raw_file(const char *box)`
+- `spin_pixels` (function) `progs/src/spin.c:169` `static void spin_pixels(long off)`
+- `spin_wl` (function) `progs/src/spin.c:181` `static int spin_wl(const char *box, const char *narg)`
+- `lmain` (function) `progs/src/spin.c:225` `int lmain(long argc, char **argv)`
 
-## tools/minifs_dump.py
-- `u16` (function) `tools/minifs_dump.py:13` `def u16(d, o)`
-- `u32` (function) `tools/minifs_dump.py:14` `def u32(d, o)`
-- `mode_str` (function) `tools/minifs_dump.py:16` `def mode_str(m)`
-- `FS.__init__` (method) `tools/minifs_dump.py:26` `def __init__(self, fn)`
-- `FS.blk` (method) `tools/minifs_dump.py:29` `def blk(self, n)`
-- `FS.inode` (method) `tools/minifs_dump.py:38` `def inode(self, i)`
-- `FS.read` (method) `tools/minifs_dump.py:47` `def read(self, ino)`
-- `FS.resolve` (method) `tools/minifs_dump.py:67` `def resolve(self, path)`
-- `FS.ls` (method) `tools/minifs_dump.py:86` `def ls(self, ino, prefix)`
-- `FS.main` (method) `tools/minifs_dump.py:105` `def main()`
+## progs/src/thdemo.c
+Depends on: `progs/minios_abi.h`, `progs/src/mthreads.h`
+- `threads` (function) `progs/src/thdemo.c:3` `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall...`
+- `producer` (function) `progs/src/thdemo.c:36` `static void *producer(void *p)`
+- `consumer` (function) `progs/src/thdemo.c:57` `static void *consumer(void *p)`
+- `main` (function) `progs/src/thdemo.c:82` `int main(void)`
 
-## tools/minifs_fsck.py
-- `u16` (function) `tools/minifs_fsck.py:13` `def u16(d, o)`
-- `u32` (function) `tools/minifs_fsck.py:14` `def u32(d, o)`
-- `crc32` (function) `tools/minifs_fsck.py:15` `def crc32(data)`
-- `FSCK.__init__` (method) `tools/minifs_fsck.py:24` `def __init__(self, fn)`
-- `FSCK.blk` (method) `tools/minifs_fsck.py:49` `def blk(self, n)`
-- `FSCK.inode` (method) `tools/minifs_fsck.py:58` `def inode(self, i)`
-- `FSCK.inode_crc_ok` (method) `tools/minifs_fsck.py:65` `def inode_crc_ok(self, i)`
-- `FSCK.read` (method) `tools/minifs_fsck.py:71` `def read(self, ino)`
-- `FSCK.err` (method) `tools/minifs_fsck.py:86` `def err(self, msg)`
-- `FSCK.mark_block` (method) `tools/minifs_fsck.py:88` `def mark_block(self, n)`
-- `FSCK.scan_inode` (method) `tools/minifs_fsck.py:93` `def scan_inode(self, i)`
-- `FSCK.scan_dir` (method) `tools/minifs_fsck.py:105` `def scan_dir(self, ino)`
-- `FSCK.bitmap_free` (method) `tools/minifs_fsck.py:137` `def bitmap_free(self, start, count)` -- Clear bits among the first count bits of the bitmap at block start.
-- `FSCK.check_counters` (method) `tools/minifs_fsck.py:146` `def check_counters(self)` -- The superblock free counters must match the bitmaps, or every free-space report (and the kernel's own decrement)...
-- `FSCK.run` (method) `tools/minifs_fsck.py:161` `def run(self)`
-- `FSCK.main` (method) `tools/minifs_fsck.py:173` `def main()`
+## progs/src/w1.c
+- `write` (function) `progs/src/w1.c:1` `int write(int fd, char *buf, int n);`
+- `main` (function) `progs/src/w1.c:3` `int main(void)`
 
-## tools/minifs_saves.py
-- `u16` (function) `tools/minifs_saves.py:53` `def u16(d, o)`
-- `u32` (function) `tools/minifs_saves.py:57` `def u32(d, o)`
-- `Image.__init__` (method) `tools/minifs_saves.py:64` `def __init__(self, fn, base)`
-- `Image.close` (method) `tools/minifs_saves.py:72` `def close(self)`
-- `Image.blk` (method) `tools/minifs_saves.py:75` `def blk(self, n)`
-- `FS.__init__` (method) `tools/minifs_saves.py:86` `def __init__(self, img)`
-- `FS.inode` (method) `tools/minifs_saves.py:95` `def inode(self, i)`
-- `FS.is_dir` (method) `tools/minifs_saves.py:110` `def is_dir(self, st)`
-- `FS.read_file` (method) `tools/minifs_saves.py:113` `def read_file(self, ino)`
-- `FS.listdir` (method) `tools/minifs_saves.py:146` `def listdir(self, ino)`
-- `FS.read_file_dir` (method) `tools/minifs_saves.py:165` `def read_file_dir(self, ino)`
-- `FS.read_file_raw` (method) `tools/minifs_saves.py:173` `def read_file_raw(self, st)`
-- `FS.resolve` (method) `tools/minifs_saves.py:197` `def resolve(self, path)`
-- `FS.valid_name` (method) `tools/minifs_saves.py:216` `def valid_name(nm)`
-- `FS.strict_name` (method) `tools/minifs_saves.py:224` `def strict_name(nm)`
-- `FS.find_partition_base` (method) `tools/minifs_saves.py:233` `def find_partition_base(fn)` -- Locate the MiniFS partition inside a host image file.
-- `FS.cmd_backup` (method) `tools/minifs_saves.py:271` `def cmd_backup(img_path, stage)`
-- `FS.walk` (method) `tools/minifs_saves.py:293` `def walk(dir_ino, rel)`
-- `FS.main` (method) `tools/minifs_saves.py:343` `def main(argv)`
+## progs/tls_u/tls_u_main.c
+Depends on: `headers/tls.h`, `headers/tls_port.h`, `kernel/string.c`
+- `syscall` (function) `progs/tls_u/tls_u_main.c:10` `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).
+ * The kernel keeps servi...`
+- `parse_port` (function) `progs/tls_u/tls_u_main.c:47` `static int parse_port(const char *s)` -- Strict port parser (clang-tidy cert-err34-c: atoi reports no errors, so "abc" and overflow both become 0 and fail...
+- `main` (function) `progs/tls_u/tls_u_main.c:61` `int main(int argc, char **argv)`
 
-## tools/minios_cli.py
-Depends on: `kernel/time.c`
-- `Client.__init__` (method) `tools/minios_cli.py:39` `def __init__(self)`
-- `Client.request` (method) `tools/minios_cli.py:56` `def request(self, method, params)`
-- `Client.tool` (method) `tools/minios_cli.py:77` `def tool(self, name, params)`
-- `Client.close` (method) `tools/minios_cli.py:87` `def close(self)`
-- `Client.main` (method) `tools/minios_cli.py:100` `def main()`
+## progs/tls_u/tls_u_port.c
+Depends on: `kernel/string.c`, `kernel/time.c`
+- `sockets` (function) `progs/tls_u/tls_u_port.c:5` `* sockets: on the host they are host sockets (used by the
+ * openssl-s_server interop test), insi...`
+- `tls_u_recv` (function) `progs/tls_u/tls_u_port.c:39` `int tls_u_recv(int fd, char *buf, int len)`
+- `tls_u_recv_timeout` (function) `progs/tls_u/tls_u_port.c:44` `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)`
+- `tls_u_close` (function) `progs/tls_u/tls_u_port.c:55` `void tls_u_close(int fd)`
+- `tls_free_fd` (function) `progs/tls_u/tls_u_port.c:66` `void tls_free_fd(int fd);` -- Session-aware close for multi-fetch processes (freedom follows redirects and linked stylesheets, reusing the lowest...
+- `tls_close` (function) `progs/tls_u/tls_u_port.c:67` `void tls_close(int fd)` -- Session-aware close for multi-fetch processes (freedom follows redirects and linked stylesheets, reusing the lowest...
+- `tls_now_days` (function) `progs/tls_u/tls_u_port.c:72` `long tls_now_days(void)`
+- `tls_random` (function) `progs/tls_u/tls_u_port.c:78` `void tls_random(unsigned char *out, unsigned len)`
+- `u_raw_syscall3` (function) `progs/tls_u/tls_u_port.c:99` `static long u_raw_syscall3(long n, long a1, long a2, long a3)`
+- `parse_quad` (function) `progs/tls_u/tls_u_port.c:122` `static int parse_quad(const char *s, unsigned *ip_out)` -- Strict dotted-quad parser (clang-tidy cert-err34-c: sscanf %u has undefined overflow and accepts whitespace/sign, so...
+- `tls_u_resolve` (function) `progs/tls_u/tls_u_port.c:147` `int tls_u_resolve(const char *host, unsigned *ip_out)`
+- `answer` (function) `progs/tls_u/tls_u_port.c:163` `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));`
+- `net_dns_resolve` (function) `progs/tls_u/tls_u_port.c:183` `int net_dns_resolve(const char *host)` -- freedom's resolver name: kernel DNS value semantics (u32 host order, * -1 on failure).
 
-## tools/minios_gui.py
-Depends on: `kernel/time.c`
-- `read_serial` (function) `tools/minios_gui.py:50` `def read_serial(master, timeout)`
-- `QMP.__init__` (method) `tools/minios_gui.py:67` `def __init__(self, path)`
-- `QMP.cmd` (method) `tools/minios_gui.py:79` `def cmd(self, obj)`
-- `QMP.mouse` (method) `tools/minios_gui.py:98` `def mouse(self, dx, dy, click)`
-- `QMP.key` (method) `tools/minios_gui.py:108` `def key(self, qcode, up)`
-- `QMP.screendump` (method) `tools/minios_gui.py:114` `def screendump(self, path)`
-- `QMP.main` (method) `tools/minios_gui.py:118` `def main()`
+## progs/topogpt3/topogpt3.c
+Depends on: `kernel/string.c`
+- `printf` (function) `progs/topogpt3/topogpt3.c:28` `extern int printf(const char *, ...);`
+- `fprintf` (function) `progs/topogpt3/topogpt3.c:29` `extern int fprintf(FILE *, const char *, ...);`
+- `sprintf` (function) `progs/topogpt3/topogpt3.c:30` `extern int sprintf(char *, const char *, ...);`
+- `snprintf` (function) `progs/topogpt3/topogpt3.c:31` `extern int snprintf(char *, unsigned long, const char *, ...);`
+- `puts` (function) `progs/topogpt3/topogpt3.c:32` `extern int puts(const char *);`
+- `putchar` (function) `progs/topogpt3/topogpt3.c:33` `extern int putchar(int);`
+- `fputc` (function) `progs/topogpt3/topogpt3.c:34` `extern int fputc(int, FILE *);`
+- `fputs` (function) `progs/topogpt3/topogpt3.c:35` `extern int fputs(const char *, FILE *);`
+- `fopen` (function) `progs/topogpt3/topogpt3.c:36` `extern FILE *fopen(const char *, const char *);`
+- `fclose` (function) `progs/topogpt3/topogpt3.c:37` `extern int fclose(FILE *);`
+- `fread` (function) `progs/topogpt3/topogpt3.c:38` `extern unsigned long fread(void *, unsigned long, unsigned long, FILE *);`
+- `fwrite` (function) `progs/topogpt3/topogpt3.c:39` `extern unsigned long fwrite(const void *, unsigned long, unsigned long, FILE *);`
+- `fseek` (function) `progs/topogpt3/topogpt3.c:40` `extern int fseek(FILE *, long, int);`
+- `ftell` (function) `progs/topogpt3/topogpt3.c:41` `extern long ftell(FILE *);`
+- `fflush` (function) `progs/topogpt3/topogpt3.c:42` `extern int fflush(FILE *);`
+- `malloc` (function) `progs/topogpt3/topogpt3.c:47` `extern void *malloc(unsigned long);` -- define NULL ((void*)0) define SEEK_SET 0 define SEEK_CUR 1 define SEEK_END 2
+- `free` (function) `progs/topogpt3/topogpt3.c:48` `extern void free(void *);`
+- `memcpy` (function) `progs/topogpt3/topogpt3.c:49` `extern void *memcpy(void *, const void *, unsigned long);`
+- `memset` (function) `progs/topogpt3/topogpt3.c:50` `extern void *memset(void *, int, unsigned long);`
+- `strcmp` (function) `progs/topogpt3/topogpt3.c:51` `extern int strcmp(const char *, const char *);`
+- `strncmp` (function) `progs/topogpt3/topogpt3.c:52` `extern int strncmp(const char *, const char *, unsigned long);`
+- `strlen` (function) `progs/topogpt3/topogpt3.c:53` `extern unsigned long strlen(const char *);`
+- `strstr` (function) `progs/topogpt3/topogpt3.c:54` `extern char *strstr(const char *, const char *);`
+- `tg_exp` (function) `progs/topogpt3/topogpt3.c:114` `static float tg_exp(float x)`
+- `tg_tanh` (function) `progs/topogpt3/topogpt3.c:128` `static float tg_tanh(float x)`
+- `tg_sin` (function) `progs/topogpt3/topogpt3.c:135` `static float tg_sin(float x)`
+- `tg_cos` (function) `progs/topogpt3/topogpt3.c:144` `static float tg_cos(float x)`
+- `tg_fabs` (function) `progs/topogpt3/topogpt3.c:148` `static float tg_fabs(float x)`
+- `tg_log` (function) `progs/topogpt3/topogpt3.c:152` `static float tg_log(float x)`
+- `tg_fmax` (function) `progs/topogpt3/topogpt3.c:164` `static float tg_fmax(float a, float b)`
+- `tg_fmin` (function) `progs/topogpt3/topogpt3.c:168` `static float tg_fmin(float a, float b)`
+- `load_vocab` (function) `progs/topogpt3/topogpt3.c:255` `static void load_vocab(const char *path)`
+- `build_torus_graph` (function) `progs/topogpt3/topogpt3.c:296` `static void build_torus_graph(void)`
+- `precompute_rope` (function) `progs/topogpt3/topogpt3.c:327` `static void precompute_rope(void)`
+- `matvec` (function) `progs/topogpt3/topogpt3.c:359` `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
+- `matvec_bias` (function) `progs/topogpt3/topogpt3.c:370` `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
+               ...`
+- `rmsnorm` (function) `progs/topogpt3/topogpt3.c:382` `static void rmsnorm(const float *x, const float *w, float *y, int d)`
+- `softmax` (function) `progs/topogpt3/topogpt3.c:391` `static void softmax(float *x, int n)`
+- `gelu` (function) `progs/topogpt3/topogpt3.c:400` `static void gelu(float *x, int n)`
+- `silu` (function) `progs/topogpt3/topogpt3.c:410` `static void silu(float *x, int n)`
+- `swiglu` (function) `progs/topogpt3/topogpt3.c:418` `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
+                 ...`
+- `quat_normalize` (function) `progs/topogpt3/topogpt3.c:435` `static void quat_normalize(float *q)`
+- `quat_hamilton` (function) `progs/topogpt3/topogpt3.c:440` `static void quat_hamilton(const float *a, const float *b, float *c)`
+- `quat_linear` (function) `progs/topogpt3/topogpt3.c:448` `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,
+     ...` -- static void quat_normalize(float *q) { float n = tg_sqrt(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]); if (n >...
+- `ifft_radix2` (function) `progs/topogpt3/topogpt3.c:505` `static void ifft_radix2(float *real, float *imag, int n)`
+- `rfft` (function) `progs/topogpt3/topogpt3.c:513` `static void rfft(const float *x, float *Xr, float *Xi, int n)` -- cur_r = nr; } } } } static void ifft_radix2(float *real, float *imag, int n) { int i; for (i = 0; i < n; i++)...
+- `irfft` (function) `progs/topogpt3/topogpt3.c:522` `static void irfft(const float *Xr, const float *Xi, float *x, int n)` -- fft_radix2(real, imag, n); for (i = 0; i < n; i++) { real[i] /= (float)n; imag[i] = -imag[i] / (float)n; } } /* Real...
+- `filter1d` (function) `progs/topogpt3/topogpt3.c:537` `static void filter1d(const float *x, const float *kr, const float *ki,
+                      floa...`
+- `ifft2d` (function) `progs/topogpt3/topogpt3.c:580` `static void ifft2d(float *data_r, float *data_i, int h, int w)`
+- `rfft2d_real` (function) `progs/topogpt3/topogpt3.c:602` `static void rfft2d_real(const float *data, float *out_r, float *out_i,
+                         i...` -- ifft_radix2(row_re, row_im, w); for (c = 0; c < w; c++) { re[r*w+c] = row_re[c]; im[r*w+c] = row_im[c]; } } /* IFFT...
+- `irfft2d` (function) `progs/topogpt3/topogpt3.c:629` `static void irfft2d(const float *in_r, const float *in_i, float *out,
+                     int h,...` -- for (r = 0; r < h; r++) { col_re[r] = re[r*w+c]; col_im[r] = im[r*w+c]; } fft_radix2(col_re, col_im, h); for (r = 0...
+- `cmul` (function) `progs/topogpt3/topogpt3.c:664` `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)`
+- `spectral_contract` (function) `progs/topogpt3/topogpt3.c:670` `static void spectral_contract(const float *Wr, const float *Wi,
+                               co...`
+- `quat_spectral_layer_2d` (function) `progs/topogpt3/topogpt3.c:695` `static void quat_spectral_layer_2d(
+    const float *x, float *y,
+    const float *kr_w, const fl...`
+- `spectral_ae_encode` (function) `progs/topogpt3/topogpt3.c:785` `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
+- `spectral_ae_decode` (function) `progs/topogpt3/topogpt3.c:793` `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
+- `process_torus_grid` (function) `progs/topogpt3/topogpt3.c:800` `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
+- `torus_soft_assign` (function) `progs/topogpt3/topogpt3.c:821` `static void torus_soft_assign(const float *phi1, const float *phi2,
+                             ...`
+- `message_passing` (function) `progs/topogpt3/topogpt3.c:843` `static void message_passing(const float *node_feat, float *out,
+                             cons...`
+- `torus_brain_forward` (function) `progs/topogpt3/topogpt3.c:888` `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
+                  ...`
+- `attention_forward` (function) `progs/topogpt3/topogpt3.c:978` `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
+- `moe_forward` (function) `progs/topogpt3/topogpt3.c:1078` `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
+- `forward` (function) `progs/topogpt3/topogpt3.c:1128` `static void forward(const int *token_ids, int seq_len, float *logits_out)`
+- `tokenize_string` (function) `progs/topogpt3/topogpt3.c:1195` `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
+- `apply_temperature` (function) `progs/topogpt3/topogpt3.c:1210` `static void apply_temperature(float *logits, int n, float temp)`
+- `apply_repetition_penalty` (function) `progs/topogpt3/topogpt3.c:1216` `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
+                   ...`
+- `apply_top_k` (function) `progs/topogpt3/topogpt3.c:1229` `static void apply_top_k(float *logits, int n, int k)`
+- `sample` (function) `progs/topogpt3/topogpt3.c:1248` `static int sample(const float *logits, int n)`
+- `load_weights` (function) `progs/topogpt3/topogpt3.c:1282` `static int load_weights(const char *path)`
+- `load_weights_fp16` (function) `progs/topogpt3/topogpt3.c:1452` `static int load_weights_fp16(const char *path)`
+- `load_weights_auto` (function) `progs/topogpt3/topogpt3.c:1583` `static int load_weights_auto(const char *path)` -- printf("  Layer %d loaded\n", i); } READ_TENSOR16(W.final_norm, D_MODEL); #undef SKIP_TENSOR16 #undef READ_TENSOR16...
+- `time_now_ms` (function) `progs/topogpt3/topogpt3.c:1600` `static double time_now_ms(void)`
+- `decode_token` (function) `progs/topogpt3/topogpt3.c:1614` `static void decode_token(int tid)`
+- `load_token_file` (function) `progs/topogpt3/topogpt3.c:1629` `static int load_token_file(const char *path, int *out_ids, int max_ids)` -- if (tid < 256) { /* Map GPT-2 byte-level encoding back to original byte int n = tid; if (n < 94) n += 33; else if (n...
+- `decode_token_tiktoken` (function) `progs/topogpt3/topogpt3.c:1652` `static void decode_token_tiktoken(int tid)` -- if (fread(&n, 4, 1, f) != 1) { fclose(f); return 0; } if (n > (unsigned)max_ids) n = max_ids; int count = (int)n...
+- `generate_tokens` (function) `progs/topogpt3/topogpt3.c:1661` `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
+               ...`
+- `generate` (function) `progs/topogpt3/topogpt3.c:1725` `static void generate(const char *prompt, int max_new_tokens, float temperature,
+                 ...`
+- `interactive_mode` (function) `progs/topogpt3/topogpt3.c:1736` `static void interactive_mode(void)`
+- `print_help` (function) `progs/topogpt3/topogpt3.c:1850` `static void print_help(void)`
+- `main` (function) `progs/topogpt3/topogpt3.c:1885` `int main(int argc, char **argv)`
 
-## tools/minios_hyper.py
-Depends on: `kernel/time.c`
-- `RspCodec.encode` (method) `tools/minios_hyper.py:77` `def encode(payload)` -- Wrap raw payload bytes into a $...#cs frame.
-- `RspCodec.decode` (method) `tools/minios_hyper.py:85` `def decode(frame)` -- Extract payload from a $...#cs frame, empty bytes on malformed.
-- `QmpChannel.__init__` (method) `tools/minios_hyper.py:99` `def __init__(self, path)`
-- `QmpChannel.raw` (method) `tools/minios_hyper.py:117` `def raw(self, obj)` -- Send one QMP object and return the raw reply bytes.
-- `QmpChannel.screendump` (method) `tools/minios_hyper.py:121` `def screendump(self, path)` -- Ask QEMU to write the VGA frame to path.
-- `QmpChannel.rel` (method) `tools/minios_hyper.py:126` `def rel(self, dx, dy)` -- Inject relative mouse motion.
-- `QmpChannel.key` (method) `tools/minios_hyper.py:132` `def key(self, qcode)` -- Tap one qemu keycode down and up.
-- `QmpChannel.status` (method) `tools/minios_hyper.py:141` `def status(self)` -- Query the VM run state.
-- `QmpChannel.close` (method) `tools/minios_hyper.py:145` `def close(self)`
-- `GdbChannel.__init__` (method) `tools/minios_hyper.py:155` `def __init__(self, port)`
-- `GdbChannel.regs` (method) `tools/minios_hyper.py:181` `def regs(self)` -- Return raw g-packet bytes, empty on failure.
-- `GdbChannel.read_mem` (method) `tools/minios_hyper.py:185` `def read_mem(self, addr, length)` -- Read length bytes at addr, None on failure or malformed reply.
-- `GdbChannel.halt` (method) `tools/minios_hyper.py:195` `def halt(self)`
-- `GdbChannel.cont` (method) `tools/minios_hyper.py:201` `def cont(self)`
-- `GdbChannel.close` (method) `tools/minios_hyper.py:204` `def close(self)`
-- `Guest.__init__` (method) `tools/minios_hyper.py:214` `def __init__(self, with_gdb)`
-- `Guest.snapshot` (method) `tools/minios_hyper.py:276` `def snapshot(self)`
-- `Guest.wait_for` (method) `tools/minios_hyper.py:280` `def wait_for(self, marker, timeout)`
-- `Guest.send` (method) `tools/minios_hyper.py:288` `def send(self, line, settle)`
-- `Guest.qmp_chan` (method) `tools/minios_hyper.py:298` `def qmp_chan(self)`
-- `Guest.gdb_chan` (method) `tools/minios_hyper.py:303` `def gdb_chan(self)`
-- `Guest.dump` (method) `tools/minios_hyper.py:308` `def dump(self, name)`
-- `Guest.stop` (method) `tools/minios_hyper.py:314` `def stop(self)`
-- `FrameDiff.mean_diff` (method) `tools/minios_hyper.py:343` `def mean_diff(a_path, b_path)` -- Mean absolute grey difference above the taskbar strip.
-- `FrameDiff.cursor_positions` (method) `tools/minios_hyper.py:356` `def cursor_positions(shot_path)` -- Clustered arrow-template hit positions, static-safe.
-- `FrameDiff.count_cursors` (method) `tools/minios_hyper.py:394` `def count_cursors(shot_path)` -- Clustered arrow-sprite count for one frame.
-- `FrameDiff.moved_cursors` (method) `tools/minios_hyper.py:399` `def moved_cursors(before_path, after_path)` -- Hits in after with no neighbour in before, the live pointer.
-- `HyperChecks.__init__` (method) `tools/minios_hyper.py:412` `def __init__(self, guest)`
-- `HyperChecks.vga_idle` (method) `tools/minios_hyper.py:415` `def vga_idle(self)` -- Two idle frames must match, no unsolicited redraw or flicker.
-- `HyperChecks.vga_cursor` (method) `tools/minios_hyper.py:427` `def vga_cursor(self)` -- One live pointer must move, static template hits are ignored.
-- `HyperChecks.gfx_frames` (method) `tools/minios_hyper.py:439` `def gfx_frames(self)` -- The composited-frame counter must climb across a real present.
-- `HyperChecks.pixel_oob` (method) `tools/minios_hyper.py:452` `def pixel_oob(self)` -- Out-of-range pixel probes must diagnose, never wrap or crash.
-- `HyperChecks.sys_trace` (method) `tools/minios_hyper.py:465` `def sys_trace(self)` -- Verbose trace must show a named syscall for a real program.
-- `HyperChecks.run_selftest` (method) `tools/minios_hyper.py:491` `def run_selftest()` -- Host-only vectors for the packet codec and pixel math, no QEMU.
-- `HyperChecks.check` (method) `tools/minios_hyper.py:495` `def check(ok, msg)`
-- `HyperChecks.run_boot` (method) `tools/minios_hyper.py:523` `def run_boot(checks, extra_shell, interactive)` -- Boot the guest and run the requested scripted checks.
-- `HyperChecks.repl` (method) `tools/minios_hyper.py:561` `def repl(guest)` -- Tiny interactive loop joining shell, QMP and gdb reads.
-- `HyperChecks.main` (method) `tools/minios_hyper.py:591` `def main(argv)` -- Parse argv and dispatch to selftest, boot checks or repl.
 
-## tools/mkfs.minifs.py
-- `roundup4` (function) `tools/mkfs.minifs.py:22` `def roundup4(v)`
-- `div_round_up` (function) `tools/mkfs.minifs.py:25` `def div_round_up(n, d)`
-- `crc16` (function) `tools/mkfs.minifs.py:28` `def crc16(data)`
-- `crc32` (function) `tools/mkfs.minifs.py:36` `def crc32(data)`
-- `count_free` (function) `tools/mkfs.minifs.py:44` `def count_free(bitmap, count)` -- Clear bits among the first count bits of bitmap: the superblock free counters must equal what the kernel allocator...
-- `MiniFS.__init__` (method) `tools/mkfs.minifs.py:51` `def __init__(self, total_blocks)`
-- `MiniFS.mark_inodes_used` (method) `tools/mkfs.minifs.py:74` `def mark_inodes_used(self, start, count)`
-- `MiniFS.mark_blocks_used` (method) `tools/mkfs.minifs.py:78` `def mark_blocks_used(self, start, count)`
-- `MiniFS.alloc_inode` (method) `tools/mkfs.minifs.py:82` `def alloc_inode(self)`
-- `MiniFS.alloc_block` (method) `tools/mkfs.minifs.py:88` `def alloc_block(self)`
-- `MiniFS.create_root` (method) `tools/mkfs.minifs.py:94` `def create_root(self)`
-- `MiniFS.seal_inode` (method) `tools/mkfs.minifs.py:102` `def seal_inode(self, ino)` -- Store the inode checksum over its first 124 bytes; every mutation reseals, or the kernel rejects the inode on read.
-- `MiniFS.create_inode` (method) `tools/mkfs.minifs.py:107` `def create_inode(self, mode, links)`
-- `MiniFS.inode_set_size` (method) `tools/mkfs.minifs.py:114` `def inode_set_size(self, ino, size)`
-- `MiniFS.inode_set_block` (method) `tools/mkfs.minifs.py:118` `def inode_set_block(self, ino, logblk, phys)`
-- `MiniFS.add_dir_entry` (method) `tools/mkfs.minifs.py:148` `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
-- `MiniFS.claim_name` (method) `tools/mkfs.minifs.py:186` `def claim_name(self, parent_ino, name, is_dir)` -- Record name in parent_ino.
-- `MiniFS.write_file` (method) `tools/mkfs.minifs.py:199` `def write_file(self, parent_ino, name, data)`
-- `MiniFS.write_dir` (method) `tools/mkfs.minifs.py:218` `def write_dir(self, parent_ino, name)`
-- `MiniFS.serialize` (method) `tools/mkfs.minifs.py:230` `def serialize(self)`
-- `MiniFS.main` (method) `tools/mkfs.minifs.py:274` `def main()`
-- `MiniFS.pack_tree` (method) `tools/mkfs.minifs.py:304` `def pack_tree(parent_ino, path, rel)`
-
-## tools/mkpak1.py
-- `main` (function) `tools/mkpak1.py:29` `def main()`
-
-## tools/mkramdisk.py
-- `pack_name` (function) `tools/mkramdisk.py:38` `def pack_name(path, common)`
-- `main` (function) `tools/mkramdisk.py:48` `def main()`
-
-## tools/mkvocab.py
-- `bytes_to_unicode` (function) `tools/mkvocab.py:18` `def bytes_to_unicode()` -- Reversible byte to unicode map used by the GPT-2 encoder.
-- `main` (function) `tools/mkvocab.py:35` `def main(encoder_path, vocab_path)` -- Convert encoder.json to the VOCB binary vocabulary.
-
-## tools/mutate.sh
-- `usage` (function) `tools/mutate.sh:51`
-- `restore_sources` (function) `tools/mutate.sh:129`
-- `cleanup` (function) `tools/mutate.sh:136`
-- `record` (function) `tools/mutate.sh:482`
-- `find_index` (function) `tools/mutate.sh:488` -- Locate a mutant by name.
-
-## tools/probe_compute_vga.py
-Depends on: `kernel/time.c`
-- `main` (function) `tools/probe_compute_vga.py:22` `def main()`
-- `send` (function) `tools/probe_compute_vga.py:55` `def send(line)`
-- `poll` (function) `tools/probe_compute_vga.py:61` `def poll(timeout)`
-- `qmp` (function) `tools/probe_compute_vga.py:88` `def qmp(obj)`
-- `rel` (function) `tools/probe_compute_vga.py:97` `def rel(dx, dy)`
-- `dump` (function) `tools/probe_compute_vga.py:104` `def dump(name)`
-
-## tools/probe_minicraft.py
-Depends on: `kernel/time.c`
-- `main` (function) `tools/probe_minicraft.py:34` `def main()`
-- `send` (function) `tools/probe_minicraft.py:68` `def send(line)`
-- `poll` (function) `tools/probe_minicraft.py:74` `def poll(timeout)`
-- `grab` (function) `tools/probe_minicraft.py:85` `def grab(pat, timeout)`
-- `qkey` (function) `tools/probe_minicraft.py:143` `def qkey(qcode, down)`
-- `pos` (function) `tools/probe_minicraft.py:154` `def pos(tag)`
-
-## tools/qga_client.py
-Depends on: `kernel/time.c`
-- `send_command` (function) `tools/qga_client.py:33` `def send_command(sock, cmd, args)`
-- `read_reply` (function) `tools/qga_client.py:41` `def read_reply(sock, timeout)` -- Read one newline-terminated JSON object from the agent.
-- `connect` (function) `tools/qga_client.py:57` `def connect(path)`
-- `main` (function) `tools/qga_client.py:74` `def main(argv)`
-
-## tools/repro_gui.py
-Depends on: `kernel/time.c`
-- `read_serial` (function) `tools/repro_gui.py:30` `def read_serial(master, timeout)`
-- `QMP.__init__` (method) `tools/repro_gui.py:47` `def __init__(self, path)`
-- `QMP.cmd` (method) `tools/repro_gui.py:59` `def cmd(self, obj)`
-- `QMP.mouse` (method) `tools/repro_gui.py:78` `def mouse(self, dx, dy, left)`
-- `QMP.key` (method) `tools/repro_gui.py:87` `def key(self, qcode, down)`
-- `QMP.main` (method) `tools/repro_gui.py:92` `def main()`
-- `QMP.send` (method) `tools/repro_gui.py:113` `def send(line)`
-- `QMP.mouse_state` (method) `tools/repro_gui.py:118` `def mouse_state()`
-
-## tools/wl_scoped.sh
-- `say` (function) `tools/wl_scoped.sh:8`
-- `die` (function) `tools/wl_scoped.sh:9`
-- `mut` (function) `tools/wl_scoped.sh:77`
-- `mutm` (function) `tools/wl_scoped.sh:84`
-
-## tools/wm_layout_sync.py
-- `WmLayoutSyncConfig.__init__` (method) `tools/wm_layout_sync.py:20` `def __init__(self, root)` -- Docstring: Bind all paths to one repository root.
-- `WmLayoutSyncResult.__init__` (method) `tools/wm_layout_sync.py:39` `def __init__(self, modes, symbols, checks)` -- Docstring: Store discovered modes, symbols and check count.
-- `WmLayoutSync.__init__` (method) `tools/wm_layout_sync.py:49` `def __init__(self, config)` -- Docstring: Hold config as the sole tunable source.
-- `WmLayoutSync.discover` (method) `tools/wm_layout_sync.py:53` `def discover(self)` -- Docstring: Extract modes, symbols and test checks from sources.
-- `WmLayoutSync.render` (method) `tools/wm_layout_sync.py:66` `def render(self, result)` -- Docstring: Build manifest markdown from discovery result.
-- `WmLayoutSync.synchronize` (method) `tools/wm_layout_sync.py:101` `def synchronize(self, write)` -- Docstring: Discover, render and optionally write the manifest.
-- `WmLayoutSync.parse_args` (method) `tools/wm_layout_sync.py:151` `def parse_args(argv)` -- Docstring: Parse CLI flags for check or write modes.
-- `WmLayoutSync.main` (method) `tools/wm_layout_sync.py:159` `def main(argv)` -- Docstring: Run discovery and write or verify the manifest.
-
-## tools/wm_scoped.sh
-- `say` (function) `tools/wm_scoped.sh:8`
-- `die` (function) `tools/wm_scoped.sh:9`
-
-## vma.c
-Depends on: `headers/vma.h`
-- `vma_ctx_init` (function) `vma.c:37` `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)`
-- `vma_ctx_bind` (function) `vma.c:52` `void vma_ctx_bind(vma_ctx_t *c)`
-- `vma_ctx_save` (function) `vma.c:64` `void vma_ctx_save(vma_ctx_t *c)`
-- `vma_view_save` (function) `vma.c:74` `void vma_view_save(vma_view_t *v)`
-- `vma_view_load` (function) `vma.c:86` `void vma_view_load(const vma_view_t *v)`
-- `vma_tree_init` (function) `vma.c:98` `void vma_tree_init(void)`
-- `vma_alloc_node` (function) `vma.c:113` `static vma_node_t *vma_alloc_node(void)`
-- `vma_rotate_left` (function) `vma.c:124` `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)`
-- `vma_rotate_right` (function) `vma.c:136` `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)`
-- `vma_insert_fixup` (function) `vma.c:148` `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)`
-- `vma_tree_insert` (function) `vma.c:187` `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)`
-- `vma_node_in_tree` (function) `vma.c:215` `static int vma_node_in_tree(vma_node_t *root, vma_node_t *n)` -- 1 when node n hangs in the tree rooted at root (live and free trees * share one pool and one cache, so a cached node...
-- `vma_tree_find` (function) `vma.c:220` `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)`
-- `vma_tree_find_containing` (function) `vma.c:238` `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va)` -- Docstring: Find the live node containing va (base <= va < base+len), or VMA_NIL.
-- `vma_transplant` (function) `vma.c:252` `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)`
-- `vma_tree_minimum` (function) `vma.c:259` `static vma_node_t *vma_tree_minimum(vma_node_t *x)`
-- `vma_delete_fixup` (function) `vma.c:264` `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)`
-- `vma_tree_delete` (function) `vma.c:319` `int vma_tree_delete(vma_node_t **root, unsigned long base)`
-
+Next: [API_p20.md](API_p20.md)
