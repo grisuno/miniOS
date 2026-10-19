@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `key_menu_volume` | variable | `progs/doomgeneric/m_controls.h:112` | `extern int key_menu_volume;` |
+| `key_message_refresh` | variable | `progs/doomgeneric/m_controls.h:55` | `extern int key_message_refresh;` |
+| `key_mission` | variable | `progs/doomgeneric/m_controls.h:47` | `extern int key_mission;` |
+| `key_multi_msg` | variable | `progs/doomgeneric/m_controls.h:58` | `extern int key_multi_msg;` |
+| `key_multi_msgplayer` | variable | `progs/doomgeneric/m_controls.h:59` | `extern int key_multi_msgplayer[8];` |
+| `key_nextweapon` | variable | `progs/doomgeneric/m_controls.h:82` | `extern int key_nextweapon;` |
+| `key_pause` | variable | `progs/doomgeneric/m_controls.h:56` | `extern int key_pause;` |
+| `key_prevweapon` | variable | `progs/doomgeneric/m_controls.h:81` | `extern int key_prevweapon;` |
 | `key_right` | variable | `progs/doomgeneric/m_controls.h:20` | `extern int key_right;` |
 | `key_speed` | variable | `progs/doomgeneric/m_controls.h:30` | `extern int key_speed;` |
 | `key_spy` | variable | `progs/doomgeneric/m_controls.h:80` | `extern int key_spy;` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 | `P_LineAttack` | function | `progs/doomgeneric/p_map.c:1110` | `void P_LineAttack ( mobj_t*	t1,   angle_t	angle,   fixed_t	distance,   fixed_t	slope,   int		dama...` |
 | `P_RadiusAttack` | function | `progs/doomgeneric/p_map.c:1253` | `void P_RadiusAttack ( mobj_t*	spot,   mobj_t*	source,   int		damage )` |
 | `P_SlideMove` | function | `progs/doomgeneric/p_map.c:722` | `void P_SlideMove (mobj_t* mo)` |
-| `P_TeleportMove` | function | `progs/doomgeneric/p_map.c:131` | `boolean P_TeleportMove ( mobj_t*	thing,   fixed_t	x,   fixed_t	y )` |
-| `P_ThingHeightClip` | function | `progs/doomgeneric/p_map.c:557` | `boolean P_ThingHeightClip (mobj_t* thing)` |
-| `P_TryMove` | function | `progs/doomgeneric/p_map.c:478` | `boolean P_TryMove ( mobj_t*	thing,   fixed_t	x,   fixed_t	y )` |
-| `P_UseLines` | function | `progs/doomgeneric/p_map.c:1177` | `void P_UseLines (player_t*	player)` |
-| `SpechitOverrun` | function | `progs/doomgeneric/p_map.c:1391` | `static void SpechitOverrun(line_t *ld)` |
-| `bottomslope` | variable | `progs/doomgeneric/p_map.c:835` | `extern fixed_t bottomslope;` |
-| `topslope` | variable | `progs/doomgeneric/p_map.c:834` | `extern fixed_t topslope;` |
-| `InterceptsMemoryOverrun` | function | `progs/doomgeneric/p_maputl.c:782` | `static void InterceptsMemoryOverrun(int location, int value)` |
 
 Next: [SYMBOLS_p17.md](SYMBOLS_p17.md)

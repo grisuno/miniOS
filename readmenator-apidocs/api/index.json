@@ -2,11 +2,11 @@
  "schema_version": 1,
  "format": "jsonl",
  "meta": {
-  "modules": 508,
-  "entities": 10310,
+  "modules": 509,
+  "entities": 10320,
   "languages": {
    "S": 7,
-   "c": 237,
+   "c": 238,
    "h": 194,
    "py": 48,
    "s": 12,
@@ -19,12 +19,12 @@
    "constructor": 23,
    "enum": 3,
    "exception": 4,
-   "function": 4466,
-   "macro": 3866,
+   "function": 4468,
+   "macro": 3872,
    "method": 116,
-   "module": 508,
+   "module": 509,
    "staticmethod": 6,
-   "struct": 315,
+   "struct": 316,
    "type_alias": 74,
    "variable": 578
   },
@@ -34,9 +34,9 @@
  },
  "coverage": {
   "overall": {
-   "documented": 2749,
-   "total": 9415,
-   "percent": 29.2
+   "documented": 2757,
+   "total": 9425,
+   "percent": 29.3
   },
   "by_kind": {
    "class": {
@@ -60,14 +60,14 @@
     "percent": 100.0
    },
    "function": {
-    "documented": 1437,
-    "total": 4466,
+    "documented": 1438,
+    "total": 4468,
     "percent": 32.2
    },
    "macro": {
-    "documented": 657,
-    "total": 3866,
-    "percent": 17.0
+    "documented": 662,
+    "total": 3872,
+    "percent": 17.1
    },
    "method": {
     "documented": 24,
@@ -75,8 +75,8 @@
     "percent": 20.7
    },
    "module": {
-    "documented": 421,
-    "total": 508,
+    "documented": 422,
+    "total": 509,
     "percent": 82.9
    },
    "staticmethod": {
@@ -85,9 +85,9 @@
     "percent": 100.0
    },
    "struct": {
-    "documented": 131,
-    "total": 315,
-    "percent": 41.6
+    "documented": 132,
+    "total": 316,
+    "percent": 41.8
    },
    "type_alias": {
     "documented": 42,
@@ -862,9 +862,9 @@
     "percent": 4.3
    },
    "kernel/syscalls.c": {
-    "documented": 22,
-    "total": 123,
-    "percent": 17.9
+    "documented": 23,
+    "total": 125,
+    "percent": 18.4
    },
    "kernel/syscalls_proc.c": {
     "documented": 7,
@@ -2306,6 +2306,11 @@
     "total": 2,
     "percent": 0.0
    },
+   "progs/src/pip.c": {
+    "documented": 7,
+    "total": 8,
+    "percent": 87.5
+   },
    "progs/src/pollready.c": {
     "documented": 1,
     "total": 2,
@@ -3407,7 +3412,7 @@
   {
    "uid": "kernel/syscalls.c",
    "path": "modules/kernel.syscalls.c.jsonl",
-   "entities": 125
+   "entities": 127
   },
   {
    "uid": "kernel/syscalls_proc.c",
@@ -4850,6 +4855,11 @@
    "entities": 2
   },
   {
+   "uid": "progs/src/pip.c",
+   "path": "modules/progs.src.pip.c.jsonl",
+   "entities": 8
+  },
+  {
    "uid": "progs/src/pollready.c",
    "path": "modules/progs.src.pollready.c.jsonl",
    "entities": 2
@@ -5182,7 +5192,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 6657
+  "total": 6659
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

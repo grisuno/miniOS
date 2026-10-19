@@ -1,10 +1,10 @@
 # miniOS API Reference
 
-> Generated offline by readmenator: 508 modules, 10310 documented entities, documentation coverage 29.2% (2749/9415 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
+> Generated offline by readmenator: 509 modules, 10320 documented entities, documentation coverage 29.3% (2757/9425 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
 
 Navigate: [Interactive architecture and flows](flows.html) | [Architecture and flows (Mermaid)](architecture.md) | [Class hierarchy](classes.md) | [General index](genindex.md) | [Coverage and warnings](COVERAGE.md) | [`api/index.json`](api/index.json) | [HTML browser](index.html)
 
-Languages: S (7), c (237), h (194), py (48), s (12), sh (10)
+Languages: S (7), c (238), h (194), py (48), s (12), sh (10)
 
 ## Modules
 
@@ -224,7 +224,7 @@ Languages: S (7), c (237), h (194), py (48), s (12), sh (10)
 | [`kernel/string.c`](modules/kernel.string.c.md) | string.c -- Kernel string and memory functions. | 0 | 13 | 14.3% |
 | [`kernel/symtab.c`](modules/kernel.symtab.c.md) | ================================================================ | 0 | 7 | 12.5% |
 | [`kernel/sync.c`](modules/kernel.sync.c.md) | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | 0 | 22 | 4.3% |
-| [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | 5 | 117 | 17.9% |
+| [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | 5 | 119 | 18.4% |
 | [`kernel/syscalls_proc.c`](modules/kernel.syscalls_proc.c.md) | syscalls_proc.c - Process-management syscall handlers. | 0 | 24 | 28.0% |
 | [`kernel/tick.c`](modules/kernel.tick.c.md) | Docstring: Tick listener bus implementation. | 1 | 10 | 100.0% |
 | [`kernel/time.c`](modules/kernel.time.c.md) | ================================================================ | 0 | 2 | 100.0% |
@@ -622,6 +622,7 @@ Languages: S (7), c (237), h (194), py (48), s (12), sh (10)
 | [`progs/src/nx.c`](modules/progs.src.nx.c.md) | NX probe. | 0 | 1 | 50.0% |
 | [`progs/src/opl3.c`](modules/progs.src.opl3.c.md) |  | 1 | 10 | 8.3% |
 | [`progs/src/pcmap.c`](modules/progs.src.pcmap.c.md) |  | 0 | 1 | 0.0% |
+| [`progs/src/pip.c`](modules/progs.src.pip.c.md) | pip -- launcher for `python3 -m pip`, and pip3 as a copy of this image. | 1 | 6 | 87.5% |
 | [`progs/src/pollready.c`](modules/progs.src.pollready.c.md) |  | 0 | 1 | 50.0% |
 | [`progs/src/sbtone.c`](modules/progs.src.sbtone.c.md) | sbtone.c — headless SB16 diagnostic (ring-3, no GUI). | 0 | 8 | 11.1% |
 | [`progs/src/scfuzz.c`](modules/progs.src.scfuzz.c.md) | scfuzz: deterministic syscall fuzzer (syzkaller spirit, BDD scale). | 0 | 10 | 9.1% |

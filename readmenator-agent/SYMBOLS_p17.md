@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `P_TeleportMove` | function | `progs/doomgeneric/p_map.c:131` | `boolean P_TeleportMove ( mobj_t*	thing,   fixed_t	x,   fixed_t	y )` |
+| `P_ThingHeightClip` | function | `progs/doomgeneric/p_map.c:557` | `boolean P_ThingHeightClip (mobj_t* thing)` |
+| `P_TryMove` | function | `progs/doomgeneric/p_map.c:478` | `boolean P_TryMove ( mobj_t*	thing,   fixed_t	x,   fixed_t	y )` |
+| `P_UseLines` | function | `progs/doomgeneric/p_map.c:1177` | `void P_UseLines (player_t*	player)` |
+| `SpechitOverrun` | function | `progs/doomgeneric/p_map.c:1391` | `static void SpechitOverrun(line_t *ld)` |
+| `bottomslope` | variable | `progs/doomgeneric/p_map.c:835` | `extern fixed_t bottomslope;` |
+| `topslope` | variable | `progs/doomgeneric/p_map.c:834` | `extern fixed_t topslope;` |
+| `InterceptsMemoryOverrun` | function | `progs/doomgeneric/p_maputl.c:782` | `static void InterceptsMemoryOverrun(int location, int value)` |
 | `InterceptsOverrun` | function | `progs/doomgeneric/p_maputl.c:827` | `static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)` |
 | `PIT_AddLineIntercepts` | function | `progs/doomgeneric/p_maputl.c:559` | `boolean PIT_AddLineIntercepts (line_t* ld)` |
 | `PIT_AddThingIntercepts` | function | `progs/doomgeneric/p_maputl.c:614` | `boolean PIT_AddThingIntercepts (mobj_t* thing)` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 | `R_SetViewSize` | function | `progs/doomgeneric/r_main.c:654` | `void R_SetViewSize ( int		blocks,   int		detail )` |
 | `R_SetupFrame` | function | `progs/doomgeneric/r_main.c:823` | `void R_SetupFrame (player_t* player)` |
 | `walllights` | variable | `progs/doomgeneric/r_main.c:54` | `extern lighttable_t** walllights;` |
-| `LIGHTLEVELS` | macro | `progs/doomgeneric/r_main.h:61` | `#define LIGHTLEVELS` |
-| `LIGHTSCALESHIFT` | macro | `progs/doomgeneric/r_main.h:65` | `#define LIGHTSCALESHIFT` |
-| `LIGHTSEGSHIFT` | macro | `progs/doomgeneric/r_main.h:62` | `#define LIGHTSEGSHIFT` |
-| `LIGHTZSHIFT` | macro | `progs/doomgeneric/r_main.h:67` | `#define LIGHTZSHIFT` |
-| `MAXLIGHTSCALE` | macro | `progs/doomgeneric/r_main.h:64` | `#define MAXLIGHTSCALE` |
-| `MAXLIGHTZ` | macro | `progs/doomgeneric/r_main.h:66` | `#define MAXLIGHTZ` |
-| `NUMCOLORMAPS` | macro | `progs/doomgeneric/r_main.h:79` | `#define NUMCOLORMAPS` |
-| `R_AddPointToBox` | function | `progs/doomgeneric/r_main.h:140` | `void R_AddPointToBox ( int x, int y, fixed_t* box );` |
 
 Next: [SYMBOLS_p18.md](SYMBOLS_p18.md)

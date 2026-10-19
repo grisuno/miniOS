@@ -42,9 +42,10 @@ Previous: [KB_src.md](KB_src.md)
   - `process` (function, line 581) `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
  * leaves the target aliv...`
   - `check_uid_gid` (function, line 642) `static void check_uid_gid(void)`
-  - `copy_dentry_name` (function, line 680) `static void copy_dentry_name(char *dst, size_t cap, const char *src)`
-  - `check_getdents64` (function, line 687) `static void check_getdents64(void)`
-  - `main` (function, line 754) `int main(void)`
+  - `check_rename_dir` (function, line 649) `static void check_rename_dir(void)`
+  - `copy_dentry_name` (function, line 715) `static void copy_dentry_name(char *dst, size_t cap, const char *src)`
+  - `check_getdents64` (function, line 722) `static void check_getdents64(void)`
+  - `main` (function, line 789) `int main(void)`
   - `_GNU_SOURCE` (macro, line 17) `#define _GNU_SOURCE`
   - `LXABI_CHILD_DELAY_MS` (macro, line 41) `#define LXABI_CHILD_DELAY_MS`
   - `LXABI_THREADS` (macro, line 42) `#define LXABI_THREADS`
@@ -436,6 +437,20 @@ Previous: [KB_src.md](KB_src.md)
   - `sc_munmap` (function, line 65) `static long sc_munmap(long addr, long len)`
   - `_start` (function, line 75) `void _start(void)`
 
+## progs/src/pip.c
+- Doc: pip -- launcher for `python3 -m pip`, and pip3 as a copy of this image.
+- Layer: utility
+- Language: c
+- Symbols:
+  - `pip_note` (struct, line 30)
+  - `main` (function, line 45) `int main(int argc, char **argv)`
+  - `PIP_PYTHON_PATH` (macro, line 19) `#define PIP_PYTHON_PATH`
+  - `PIP_MODULE_FLAG` (macro, line 21) `#define PIP_MODULE_FLAG`
+  - `PIP_MODULE_NAME` (macro, line 22) `#define PIP_MODULE_NAME`
+  - `PIP_PREFIX_WORDS` (macro, line 24) `#define PIP_PREFIX_WORDS`
+  - `PIP_EXEC_FAILED` (macro, line 26) `#define PIP_EXEC_FAILED`
+- Depends on: `kernel/string.c`, `progs/minios_abi.h`
+
 ## progs/src/pollready.c
 - Doc: lmain: int v = 0; int digits = 0; while (*s >= '0' && *s <= '9') { v = v * 10 + (*s - '0'); s++...
 - Layer: utility
@@ -466,33 +481,6 @@ Previous: [KB_src.md](KB_src.md)
   - `BUF` (macro, line 26) `#define BUF`
   - `WINDOW_MS` (macro, line 27) `#define WINDOW_MS`
 - Depends on: `progs/minios_abi.h`
-
-## progs/src/scfuzz.c
-- Doc: scfuzz: deterministic syscall fuzzer (syzkaller spirit, BDD scale).
-- Layer: utility
-- Language: c
-- Symbols:
-  - `guest` (function, line 7) `* the guest (the BDD timeout then talks). All fuzz maps stay inside
- * one private 4 MB arena (pa...`
-  - `sc_mprotect` (function, line 38) `static long sc_mprotect(long addr, long len, long prot)`
-  - `sc_munmap` (function, line 49) `static long sc_munmap(long addr, long len)`
-  - `sc_write` (function, line 53) `static long sc_write(long fd, const char *s, long n)`
-  - `sc_exit` (function, line 61) `static void sc_exit(long code)`
-  - `sc_rng` (function, line 67) `static unsigned long sc_rng(unsigned long *s)`
-  - `sc_fold` (function, line 76) `static unsigned long sc_fold(unsigned long h, unsigned long v)`
-  - `sc_hex8` (function, line 88) `static void sc_hex8(unsigned long v, char *out)`
-  - `sc_worker` (function, line 97) `static unsigned long sc_worker(int me, unsigned long seed)`
-  - `sc_thread1` (function, line 154) `static void *sc_thread1(void *arg)`
-  - `_start` (function, line 160) `void _start(void)`
-  - `SC_OPS` (macro, line 15) `#define SC_OPS`
-  - `SC_ARENA` (macro, line 16) `#define SC_ARENA`
-  - `SC_PAGE` (macro, line 17) `#define SC_PAGE`
-  - `SC_PAGES` (macro, line 18) `#define SC_PAGES`
-  - `SC_T0_BASE` (macro, line 19) `#define SC_T0_BASE`
-  - `SC_T0_N` (macro, line 20) `#define SC_T0_N`
-  - `SC_T1_BASE` (macro, line 21) `#define SC_T1_BASE`
-  - `SC_T1_N` (macro, line 22) `#define SC_T1_N`
-- Depends on: `progs/src/mthreads.h`
 
 
 Next: [KB_src_p3.md](KB_src_p3.md)

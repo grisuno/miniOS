@@ -4,31 +4,31 @@
 
 These files have the most connections. Changes here have high blast radius.
 
-- `kernel/string.c` (score: 177.30, imported by 88 files)
+- `kernel/string.c` (score: 179.30, imported by 89 files)
 - `progs/doomgeneric/doomtype.h` (score: 101.40, imported by 50 files)
 - `progs/doomgeneric/doomdef.h` (score: 90.90, imported by 41 files)
-- `kernel/syscalls.c` (score: 89.60)
+- `kernel/syscalls.c` (score: 90.30)
 - `progs/doomgeneric/doomstat.h` (score: 84.80, imported by 34 files)
 - `progs/doomgeneric/z_zone.h` (score: 81.30, imported by 40 files)
 - `progs/doomgeneric/i_system.h` (score: 81.20, imported by 38 files)
 - `progs/doomgeneric/d_main.c` (score: 80.90)
-- `progs/minios_abi.h` (score: 77.60, imported by 31 files)
+- `progs/minios_abi.h` (score: 79.60, imported by 32 files)
 - `headers/sched.h` (score: 75.80, imported by 28 files)
 
 ## Blast Radius (change impact)
 
 Editing these files can break the listed number of dependents. Run their tests after any change.
 
-- `kernel/string.c` -- 50 direct, 88 total dependents
-- `progs/minios_abi.h` -- 31 direct, 59 total dependents
+- `kernel/string.c` -- 50 direct, 89 total dependents
+- `progs/minios_abi.h` -- 32 direct, 62 total dependents
+- `progs/doomgeneric/d_mode.h` -- 6 direct, 60 total dependents
 - `progs/doomgeneric/m_fixed.h` -- 9 direct, 58 total dependents
-- `progs/doomgeneric/d_mode.h` -- 6 direct, 56 total dependents
-- `progs/doomgeneric/d_think.h` -- 3 direct, 56 total dependents
 - `progs/doomgeneric/tables.h` -- 6 direct, 56 total dependents
-- `progs/doomgeneric/info.h` -- 4 direct, 54 total dependents
+- `progs/doomgeneric/d_think.h` -- 3 direct, 55 total dependents
 - `progs/doomgeneric/v_patch.h` -- 2 direct, 54 total dependents
 - `progs/doomgeneric/d_ticcmd.h` -- 6 direct, 53 total dependents
 - `progs/doomgeneric/i_video.h` -- 18 direct, 53 total dependents
+- `progs/doomgeneric/sha1.h` -- 5 direct, 53 total dependents
 
 ## Hotspots (complexity + centrality)
 

@@ -31,7 +31,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `fs/fat32.c` | fat_geo_t: Parsed BPB plus derived geometry. secs = total data clusters + 2 (cluster numbers 0/1... | fs | 31 | 1 |
 | `fs/fsimg.c` | fsimg_dev_read: Docstring: Sector reads off the active backend through the block layer, so a... | fs | 5 | 2 |
 | `fs/kfile.c` | kpipe_pair: Docstring: Create a connected pipe pair sharing one ring. | fs | 31 | 0 |
-| `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 66 | 0 |
+| `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 67 | 0 |
 | `fs/pcache.c` | Docstring: fs/pcache.c -- page cache store for MiniFS (T5 slice 1). | fs | 16 | 1 |
 | `fs/ramdisk.c` | ramdisk_usage: int ramdisk_list(RDFile **out, int max) { if (!rd) return 0; int n =... | fs | 25 | 0 |
 | `fs/vfs.c` | ramdisk_vfs_readdir: Docstring: List ramdisk leaves under dir ("" or "/" is root). | fs | 44 | 0 |
@@ -154,10 +154,10 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `kernel/serial.c` | COM1 16550 UART driver. | kernel | 9 | 0 |
 | `kernel/shell.c` | ShellRunDir: Runnable-file lookup: a bare name is mapped to a toolchain directory by its suffix... | kernel | 97 | 0 |
 | `kernel/spawn.c` | Docstring: Save the caller shared-window view into ctx. | kernel | 9 | 0 |
-| `kernel/string.c` | Kernel string and memory functions. | kernel | 13 | 88 |
+| `kernel/string.c` | Kernel string and memory functions. | kernel | 13 | 89 |
 | `kernel/symtab.c` | - | kernel | 7 | 0 |
 | `kernel/sync.c` | Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 26 | 0 |
-| `kernel/syscalls.c` | Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 256 | 0 |
+| `kernel/syscalls.c` | Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 263 | 0 |
 | `kernel/syscalls_proc.c` | Process-management syscall handlers. | kernel | 24 | 0 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 11 | 0 |
 | `kernel/time.c` | ktime_us: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime... | kernel | 4 | 29 |
@@ -393,7 +393,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `progs/micropython/variants/minios/minios_module.c` | msys5: /* ── raw syscall helper (x86-64 Linux ABI) ─────────────────────────── static long... | minios | 21 | 0 |
 | `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 46 | 0 |
 | `progs/minicraft/minicraft.c` | Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 237 | 0 |
-| `progs/minios_abi.h` | Single source of truth for the MiniOS user-kernel ABI. | progs | 156 | 31 |
+| `progs/minios_abi.h` | Single source of truth for the MiniOS user-kernel ABI. | progs | 156 | 32 |
 | `progs/minios_png.h` | Docstring: shared ring-3 PNG helpers for MiniOS apps (progs/minios_png.h). | progs | 21 | 3 |
 | `progs/nk_palette.h` | one shared hybrid palette for every NK-window app. | progs | 9 | 5 |
 | `progs/nuklear/cvm_emit.c` | — node-graph to CVM bytecode compiler. | nuklear | 56 | 0 |
@@ -432,7 +432,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `progs/src/json.c` | command path JSON tool: validate, pretty-print and query. | src | 41 | 0 |
 | `progs/src/kmem.c` | Kernel-pointer rejection probe. | src | 3 | 0 |
 | `progs/src/ldhello.c` | - | src | 1 | 0 |
-| `progs/src/lxabi.c` | Linux process, thread and descriptor ABI probe (FreeDom | src | 60 | 0 |
+| `progs/src/lxabi.c` | Linux process, thread and descriptor ABI probe (FreeDom | src | 61 | 0 |
 | `progs/src/lxhello.c` | lmain: static void lx_write_int(long v) { char buf[24]; int i = (int)sizeof(buf); int neg = 0... | src | 7 | 0 |
 | `progs/src/lxnet.c` | Linux socket ABI probe (FreeDom readiness step 6, | src | 16 | 0 |
 | `progs/src/lxproc.c` | foreground process-note probe (docs/spec/shell-fs.md, "Process | src | 9 | 0 |
@@ -449,6 +449,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `progs/src/nx.c` | NX probe. | src | 3 | 0 |
 | `progs/src/opl3.c` | opl3_set_instrument: } static long sys_open(long on) { long r; __asm__... | src | 18 | 1 |
 | `progs/src/pcmap.c` | pcmap probe: file-backed MAP_PRIVATE mmap shares text. | src | 8 | 0 |
+| `progs/src/pip.c` | pip -- launcher for `python3 -m pip`, and pip3 as a copy of this image. | src | 7 | 0 |
 | `progs/src/pollready.c` | lmain: int v = 0; int digits = 0; while (*s >= '0' && *s <= '9') { v = v * 10 + (*s - '0'); s++... | src | 6 | 0 |
 | `progs/src/sbtone.c` | — headless SB16 diagnostic (ring-3, no GUI). | src | 8 | 0 |
 | `progs/src/scfuzz.c` | scfuzz: deterministic syscall fuzzer (syzkaller spirit, BDD scale). | src | 19 | 0 |
@@ -495,6 +496,5 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `tests/test_ldso.c` | Docstring: host test for the ld.so pure parser (make test-ldso). | tests | 12 | 0 |
 | `tests/test_leakcheck.c` | Docstring: host test for the leak tracker (make test-leakcheck). | tests | 4 | 0 |
 | `tests/test_minifs_tools.py` | Host suite for the MiniFS image tools (docs/spec/shell-fs.md).  tools/mkfs.minifs.py builds the... | tests | 12 | 0 |
-| `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 10 | 0 |
 
 Next: [INDEX_p2.md](INDEX_p2.md)

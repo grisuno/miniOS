@@ -1,6 +1,33 @@
 # Subsystem: src (page 3 of 3)
 Previous: [KB_src_p2.md](KB_src_p2.md)
 
+## progs/src/scfuzz.c
+- Doc: scfuzz: deterministic syscall fuzzer (syzkaller spirit, BDD scale).
+- Layer: utility
+- Language: c
+- Symbols:
+  - `guest` (function, line 7) `* the guest (the BDD timeout then talks). All fuzz maps stay inside
+ * one private 4 MB arena (pa...`
+  - `sc_mprotect` (function, line 38) `static long sc_mprotect(long addr, long len, long prot)`
+  - `sc_munmap` (function, line 49) `static long sc_munmap(long addr, long len)`
+  - `sc_write` (function, line 53) `static long sc_write(long fd, const char *s, long n)`
+  - `sc_exit` (function, line 61) `static void sc_exit(long code)`
+  - `sc_rng` (function, line 67) `static unsigned long sc_rng(unsigned long *s)`
+  - `sc_fold` (function, line 76) `static unsigned long sc_fold(unsigned long h, unsigned long v)`
+  - `sc_hex8` (function, line 88) `static void sc_hex8(unsigned long v, char *out)`
+  - `sc_worker` (function, line 97) `static unsigned long sc_worker(int me, unsigned long seed)`
+  - `sc_thread1` (function, line 154) `static void *sc_thread1(void *arg)`
+  - `_start` (function, line 160) `void _start(void)`
+  - `SC_OPS` (macro, line 15) `#define SC_OPS`
+  - `SC_ARENA` (macro, line 16) `#define SC_ARENA`
+  - `SC_PAGE` (macro, line 17) `#define SC_PAGE`
+  - `SC_PAGES` (macro, line 18) `#define SC_PAGES`
+  - `SC_T0_BASE` (macro, line 19) `#define SC_T0_BASE`
+  - `SC_T0_N` (macro, line 20) `#define SC_T0_N`
+  - `SC_T1_BASE` (macro, line 21) `#define SC_T1_BASE`
+  - `SC_T1_N` (macro, line 22) `#define SC_T1_N`
+- Depends on: `progs/src/mthreads.h`
+
 ## progs/src/shell.py
 - Doc: pybash: a Python shell layer on top of MiniOS's C shell.
 - Layer: utility
@@ -199,10 +226,10 @@ static void sign_rotr(unsigned int *lo, un...`
 - Language: py
 - Symbols:
   - `check` (function, line 12) `def check(name, cond)`
-  - `_asyncio_double` (function, line 72) `def _asyncio_double(n, ms)`
-  - `_asyncio_main` (function, line 77) `def _asyncio_main()`
-  - `_asyncio_wire_check` (function, line 81) `def _asyncio_wire_check(host, port)`
-  - `_one` (function, line 82) `def _one()`
+  - `_asyncio_double` (function, line 79) `def _asyncio_double(n, ms)`
+  - `_asyncio_main` (function, line 84) `def _asyncio_main()`
+  - `_asyncio_wire_check` (function, line 88) `def _asyncio_wire_check(host, port)`
+  - `_one` (function, line 89) `def _one()`
 - Depends on: `kernel/time.c`, `progs/micropython/variants/minios/lib/mip.py`
 
 ## progs/src/thdemo.c

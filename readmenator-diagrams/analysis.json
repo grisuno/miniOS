@@ -1,19 +1,19 @@
 {
  "metadata": {
-  "generated_at": "2026-10-19T12:26:52.872255+00:00",
-  "source_tree_hash": "45faf2e1a60fd014b8f9cb339325c21f8b5337505ff2e41018fab8d7841c75b7",
+  "generated_at": "2026-10-19T23:55:53.448518+00:00",
+  "source_tree_hash": "80a2a66ba2a0fe1c0c6f533359f7193c7b1794fceaceb85a5b892953cd337256",
   "repo_name": "miniOS",
   "depth_level": 2,
   "depth_cap": 3,
   "file_coverage_summary": {
-   "total_files": 586,
-   "analyzed": 586,
+   "total_files": 587,
+   "analyzed": 587,
    "not_analyzed": 0,
    "not_analyzed_by_reason": {}
   },
   "tree_spec": {}
  },
- "description": "Static architecture map of 586 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.",
+ "description": "Static architecture map of 587 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.",
  "files": {
   "arch/x86/ap_entry.S": {
    "language": "S",
@@ -129,7 +129,7 @@
   },
   "fs/minifs.c": {
    "language": "c",
-   "symbols": 66
+   "symbols": 67
   },
   "fs/pcache.c": {
    "language": "c",
@@ -633,7 +633,7 @@
   },
   "kernel/syscalls.c": {
    "language": "c",
-   "symbols": 256
+   "symbols": 263
   },
   "kernel/syscalls_proc.c": {
    "language": "c",
@@ -1733,7 +1733,7 @@
   },
   "progs/src/lxabi.c": {
    "language": "c",
-   "symbols": 60
+   "symbols": 61
   },
   "progs/src/lxhello.c": {
    "language": "c",
@@ -1798,6 +1798,10 @@
   "progs/src/pcmap.c": {
    "language": "c",
    "symbols": 8
+  },
+  "progs/src/pip.c": {
+   "language": "c",
+   "symbols": 7
   },
   "progs/src/pollready.c": {
    "language": "c",
@@ -9469,113 +9473,113 @@
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::fs_rename_on_minifs",
    "start_line": 361,
-   "end_line": 379,
+   "end_line": 378,
    "type": "FUNCTION",
    "content_hash": "423c4ff56243b295"
   },
-  "fs/kfile.c|fs/kfile.c::entry": {
+  "fs/kfile.c|fs/kfile.c::directory": {
    "file_path": "fs/kfile.c",
-   "qualified_name": "fs/kfile.c::entry",
-   "start_line": 380,
-   "end_line": 421,
+   "qualified_name": "fs/kfile.c::directory",
+   "start_line": 379,
+   "end_line": 431,
    "type": "FUNCTION",
-   "content_hash": "17cc8be2b87bf4dc"
+   "content_hash": "625bf365d7773823"
   },
   "fs/kfile.c|fs/kfile.c::kfclose": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfclose",
-   "start_line": 422,
-   "end_line": 466,
+   "start_line": 432,
+   "end_line": 476,
    "type": "FUNCTION",
-   "content_hash": "80c341f1ccac38bf"
+   "content_hash": "26c9d58dc67a343d"
   },
   "fs/kfile.c|fs/kfile.c::kfgetc": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfgetc",
-   "start_line": 467,
-   "end_line": 507,
+   "start_line": 477,
+   "end_line": 517,
    "type": "FUNCTION",
-   "content_hash": "70325dee4b8fb40e"
+   "content_hash": "a9528f6537d50e92"
   },
   "fs/kfile.c|fs/kfile.c::kfgets": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfgets",
-   "start_line": 508,
-   "end_line": 521,
+   "start_line": 518,
+   "end_line": 531,
    "type": "FUNCTION",
-   "content_hash": "0662072df38cd0f1"
+   "content_hash": "64eb06a4f9eeb3e5"
   },
   "fs/kfile.c|fs/kfile.c::kfungetc": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfungetc",
-   "start_line": 522,
-   "end_line": 528,
+   "start_line": 532,
+   "end_line": 538,
    "type": "FUNCTION",
-   "content_hash": "551b0d4031b03c27"
+   "content_hash": "fec1ddafbb093f6e"
   },
   "fs/kfile.c|fs/kfile.c::kfread": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfread",
-   "start_line": 529,
-   "end_line": 574,
+   "start_line": 539,
+   "end_line": 584,
    "type": "FUNCTION",
-   "content_hash": "9e2afe777469dee7"
+   "content_hash": "eee9810d1a8163fa"
   },
   "fs/kfile.c|fs/kfile.c::kfwrite": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfwrite",
-   "start_line": 575,
-   "end_line": 640,
+   "start_line": 585,
+   "end_line": 650,
    "type": "FUNCTION",
-   "content_hash": "c69e3f92a15b4a71"
+   "content_hash": "af5b954c5b1e1bc9"
   },
   "fs/kfile.c|fs/kfile.c::kfseek": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfseek",
-   "start_line": 641,
-   "end_line": 661,
+   "start_line": 651,
+   "end_line": 671,
    "type": "FUNCTION",
-   "content_hash": "0f27a5b3516cc5d2"
+   "content_hash": "cfd4fe9ce25bd6e8"
   },
   "fs/kfile.c|fs/kfile.c::kftell": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kftell",
-   "start_line": 662,
-   "end_line": 665,
+   "start_line": 672,
+   "end_line": 675,
    "type": "FUNCTION",
-   "content_hash": "561b49743a24a4c7"
+   "content_hash": "40f2b5ab3fe23db1"
   },
   "fs/kfile.c|fs/kfile.c::kfflush": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfflush",
-   "start_line": 666,
-   "end_line": 691,
+   "start_line": 676,
+   "end_line": 701,
    "type": "FUNCTION",
-   "content_hash": "11cece40e6e9f1ed"
+   "content_hash": "468f8866d549c4a5"
   },
   "fs/kfile.c|fs/kfile.c::kfputs": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfputs",
-   "start_line": 692,
-   "end_line": 697,
+   "start_line": 702,
+   "end_line": 707,
    "type": "FUNCTION",
-   "content_hash": "169865dade0ef15e"
+   "content_hash": "5f00f85735513d02"
   },
   "fs/kfile.c|fs/kfile.c::kfputc": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::kfputc",
-   "start_line": 698,
-   "end_line": 702,
+   "start_line": 708,
+   "end_line": 712,
    "type": "FUNCTION",
-   "content_hash": "7b58e2853216a5ae"
+   "content_hash": "6585ec5561bb0c91"
   },
   "fs/kfile.c|fs/kfile.c::krewind": {
    "file_path": "fs/kfile.c",
    "qualified_name": "fs/kfile.c::krewind",
-   "start_line": 703,
-   "end_line": 703,
+   "start_line": 713,
+   "end_line": 713,
    "type": "FUNCTION",
-   "content_hash": "edec4277ab3cf2a1"
+   "content_hash": "ca339929b3bbddeb"
   },
   "fs/minifs.c|fs/minifs.c::DE_NAME": {
    "file_path": "fs/minifs.c",
@@ -9973,137 +9977,145 @@
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_split_parent",
    "start_line": 1119,
-   "end_line": 1143,
+   "end_line": 1147,
    "type": "FUNCTION",
    "content_hash": "9edf1b413c973ef0"
+  },
+  "fs/minifs.c|fs/minifs.c::minifs_dir_is_empty": {
+   "file_path": "fs/minifs.c",
+   "qualified_name": "fs/minifs.c::minifs_dir_is_empty",
+   "start_line": 1148,
+   "end_line": 1174,
+   "type": "FUNCTION",
+   "content_hash": "4ca06a7a9fee0ebc"
   },
   "fs/minifs.c|fs/minifs.c::minifs_rename": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_rename",
-   "start_line": 1144,
-   "end_line": 1175,
+   "start_line": 1175,
+   "end_line": 1224,
    "type": "FUNCTION",
-   "content_hash": "d5401562fea0dc9f"
+   "content_hash": "1fe8f33345e4a584"
   },
   "fs/minifs.c|fs/minifs.c::minifs_rmdir": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_rmdir",
-   "start_line": 1176,
-   "end_line": 1215,
+   "start_line": 1225,
+   "end_line": 1265,
    "type": "FUNCTION",
-   "content_hash": "f028c4d4f30194c5"
+   "content_hash": "55ca2c150b5ecbd2"
   },
   "fs/minifs.c|fs/minifs.c::minifs_read": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_read",
-   "start_line": 1216,
-   "end_line": 1286,
+   "start_line": 1266,
+   "end_line": 1336,
    "type": "FUNCTION",
-   "content_hash": "45a6f0db2929b228"
+   "content_hash": "27911c0838a6d843"
   },
   "fs/minifs.c|fs/minifs.c::minifs_write": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_write",
-   "start_line": 1287,
-   "end_line": 1373,
+   "start_line": 1337,
+   "end_line": 1423,
    "type": "FUNCTION",
-   "content_hash": "027c76196ace51de"
+   "content_hash": "e7786c4c541cf87e"
   },
   "fs/minifs.c|fs/minifs.c::minifs_truncate": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_truncate",
-   "start_line": 1374,
-   "end_line": 1390,
+   "start_line": 1424,
+   "end_line": 1440,
    "type": "FUNCTION",
-   "content_hash": "5f9744a57ba599e6"
+   "content_hash": "b3c7e6383bf857ac"
   },
   "fs/minifs.c|fs/minifs.c::minifs_stat": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_stat",
-   "start_line": 1391,
-   "end_line": 1394,
+   "start_line": 1441,
+   "end_line": 1444,
    "type": "FUNCTION",
-   "content_hash": "588c8fc4b17d801d"
+   "content_hash": "489f6082e0055265"
   },
   "fs/minifs.c|fs/minifs.c::minifs_access": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_access",
-   "start_line": 1395,
-   "end_line": 1400,
+   "start_line": 1445,
+   "end_line": 1450,
    "type": "FUNCTION",
-   "content_hash": "c8b51f331b0cb7f5"
+   "content_hash": "d75ed45fc1557be4"
   },
   "fs/minifs.c|fs/minifs.c::minifs_init": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_init",
-   "start_line": 1401,
-   "end_line": 1408,
+   "start_line": 1451,
+   "end_line": 1458,
    "type": "FUNCTION",
-   "content_hash": "19e8505215175a70"
+   "content_hash": "64b960a8ba8304e1"
   },
   "fs/minifs.c|fs/minifs.c::minifs_get_lba_start": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_get_lba_start",
-   "start_line": 1409,
-   "end_line": 1409,
+   "start_line": 1459,
+   "end_line": 1459,
    "type": "FUNCTION",
-   "content_hash": "5a4d39fa6864207e"
+   "content_hash": "9af7d98a1d3cea80"
   },
   "fs/minifs.c|fs/minifs.c::minifs_is_mounted": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_is_mounted",
-   "start_line": 1410,
-   "end_line": 1417,
+   "start_line": 1460,
+   "end_line": 1467,
    "type": "FUNCTION",
-   "content_hash": "47596f149c2fb12c"
+   "content_hash": "f8c76c9c3ba0e07f"
   },
   "fs/minifs.c|fs/minifs.c::minifs_mount": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_mount",
-   "start_line": 1418,
-   "end_line": 1567,
+   "start_line": 1468,
+   "end_line": 1617,
    "type": "FUNCTION",
-   "content_hash": "fd2d21b7342bb560"
+   "content_hash": "f257b5073d10cd3d"
   },
   "fs/minifs.c|fs/minifs.c::minifs_sync": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_sync",
-   "start_line": 1568,
-   "end_line": 1582,
+   "start_line": 1618,
+   "end_line": 1632,
    "type": "FUNCTION",
-   "content_hash": "b29027e5be7e136f"
+   "content_hash": "b441bd1821100163"
   },
   "fs/minifs.c|fs/minifs.c::minifs_file_open": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_file_open",
-   "start_line": 1583,
-   "end_line": 1596,
+   "start_line": 1633,
+   "end_line": 1646,
    "type": "FUNCTION",
-   "content_hash": "129a33224c6e3805"
+   "content_hash": "eb7aedd3fec03215"
   },
   "fs/minifs.c|fs/minifs.c::minifs_file_close": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_file_close",
-   "start_line": 1597,
-   "end_line": 1603,
+   "start_line": 1647,
+   "end_line": 1653,
    "type": "FUNCTION",
-   "content_hash": "4336d19e99e3e44a"
+   "content_hash": "3516b896e3475a19"
   },
   "fs/minifs.c|fs/minifs.c::minifs_get_total_blocks": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_get_total_blocks",
-   "start_line": 1604,
-   "end_line": 1608,
+   "start_line": 1654,
+   "end_line": 1658,
    "type": "FUNCTION",
-   "content_hash": "22f6a980d39c3995"
+   "content_hash": "26b94b3fc4d5667b"
   },
   "fs/minifs.c|fs/minifs.c::minifs_usage": {
    "file_path": "fs/minifs.c",
    "qualified_name": "fs/minifs.c::minifs_usage",
-   "start_line": 1609,
-   "end_line": 1615,
+   "start_line": 1659,
+   "end_line": 1665,
    "type": "FUNCTION",
-   "content_hash": "8c7245947b88850a"
+   "content_hash": "f16c1168a5cb4bd5"
   },
   "fs/pcache.c|fs/pcache.c::pcache_slot_t": {
    "file_path": "fs/pcache.c",
@@ -36533,1353 +36545,1409 @@
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfd_install",
    "start_line": 1403,
-   "end_line": 1423,
+   "end_line": 1425,
    "type": "FUNCTION",
    "content_hash": "de88d91b81fd5c98"
+  },
+  "kernel/syscalls.c|kernel/syscalls.c::do_open_kpath": {
+   "file_path": "kernel/syscalls.c",
+   "qualified_name": "kernel/syscalls.c::do_open_kpath",
+   "start_line": 1426,
+   "end_line": 1451,
+   "type": "FUNCTION",
+   "content_hash": "4c9188129d46970a"
   },
   "kernel/syscalls.c|kernel/syscalls.c::do_open_path": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::do_open_path",
-   "start_line": 1424,
-   "end_line": 1450,
+   "start_line": 1452,
+   "end_line": 1456,
    "type": "FUNCTION",
-   "content_hash": "9530fb458e61197f"
+   "content_hash": "9506b8a62f0f3e90"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_open": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_open",
-   "start_line": 1451,
-   "end_line": 1457,
+   "start_line": 1457,
+   "end_line": 1465,
    "type": "FUNCTION",
-   "content_hash": "0894bc0c8804fa7f"
+   "content_hash": "ff10863d5c03cba4"
+  },
+  "kernel/syscalls.c|kernel/syscalls.c::cwd": {
+   "file_path": "kernel/syscalls.c",
+   "qualified_name": "kernel/syscalls.c::cwd",
+   "start_line": 1466,
+   "end_line": 1467,
+   "type": "FUNCTION",
+   "content_hash": "5ff037842c979034"
+  },
+  "kernel/syscalls.c|kernel/syscalls.c::LINUX_AT_FDCWD": {
+   "file_path": "kernel/syscalls.c",
+   "qualified_name": "kernel/syscalls.c::LINUX_AT_FDCWD",
+   "start_line": 1468,
+   "end_line": 1502,
+   "type": "FUNCTION",
+   "content_hash": "4434f148514b4db3"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_O_RDONLY": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_O_RDONLY",
-   "start_line": 1458,
-   "end_line": 1458,
+   "start_line": 1503,
+   "end_line": 1503,
    "type": "FUNCTION",
-   "content_hash": "91ce3f98fef499b6"
+   "content_hash": "3c7444d559380965"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_O_WRONLY": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_O_WRONLY",
-   "start_line": 1459,
-   "end_line": 1459,
+   "start_line": 1504,
+   "end_line": 1504,
    "type": "FUNCTION",
-   "content_hash": "137108f0401e5521"
+   "content_hash": "692685e95e67c329"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_O_RDWR": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_O_RDWR",
-   "start_line": 1460,
-   "end_line": 1460,
+   "start_line": 1505,
+   "end_line": 1505,
    "type": "FUNCTION",
-   "content_hash": "caad596ed4fe31b2"
+   "content_hash": "85fb72d3966bc312"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_O_APPEND": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_O_APPEND",
-   "start_line": 1461,
-   "end_line": 1461,
+   "start_line": 1506,
+   "end_line": 1506,
    "type": "FUNCTION",
-   "content_hash": "8bf65e652a6ec24b"
+   "content_hash": "73fb7a96cbd24b2c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_O_NONBLOCK": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_O_NONBLOCK",
-   "start_line": 1462,
-   "end_line": 1462,
+   "start_line": 1507,
+   "end_line": 1507,
    "type": "FUNCTION",
-   "content_hash": "5f6dc9b00a64a2e0"
+   "content_hash": "caf229ef6e75f7f0"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_O_DIRECT": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_O_DIRECT",
-   "start_line": 1463,
-   "end_line": 1463,
+   "start_line": 1508,
+   "end_line": 1508,
    "type": "FUNCTION",
-   "content_hash": "41e499641285dabb"
+   "content_hash": "df1291c325814281"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_O_CLOEXEC": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_O_CLOEXEC",
-   "start_line": 1464,
-   "end_line": 1464,
+   "start_line": 1509,
+   "end_line": 1509,
    "type": "FUNCTION",
-   "content_hash": "73b075b0b2f22ee0"
+   "content_hash": "04734502315f2486"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_FD_CLOEXEC": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_FD_CLOEXEC",
-   "start_line": 1465,
-   "end_line": 1465,
+   "start_line": 1510,
+   "end_line": 1510,
    "type": "FUNCTION",
-   "content_hash": "a663c6607d178e3e"
+   "content_hash": "1da23fc508710412"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_F_DUPFD": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_F_DUPFD",
-   "start_line": 1466,
-   "end_line": 1466,
+   "start_line": 1511,
+   "end_line": 1511,
    "type": "FUNCTION",
-   "content_hash": "daa202bf861c328e"
+   "content_hash": "070e750afb2d4147"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_F_GETFD": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_F_GETFD",
-   "start_line": 1467,
-   "end_line": 1467,
+   "start_line": 1512,
+   "end_line": 1512,
    "type": "FUNCTION",
-   "content_hash": "e3eda0881b15ded8"
+   "content_hash": "bf7bdd7696bf4f5a"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_F_SETFD": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_F_SETFD",
-   "start_line": 1468,
-   "end_line": 1468,
+   "start_line": 1513,
+   "end_line": 1513,
    "type": "FUNCTION",
-   "content_hash": "2367d0c0eae011a8"
+   "content_hash": "2ce05d363073a80a"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_F_GETFL": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_F_GETFL",
-   "start_line": 1469,
-   "end_line": 1469,
+   "start_line": 1514,
+   "end_line": 1514,
    "type": "FUNCTION",
-   "content_hash": "f40d5bf8a0ca9529"
+   "content_hash": "7463423b3fc59c3a"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_F_SETFL": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_F_SETFL",
-   "start_line": 1470,
-   "end_line": 1470,
+   "start_line": 1515,
+   "end_line": 1515,
    "type": "FUNCTION",
-   "content_hash": "984a5186ce85599c"
+   "content_hash": "f7aa25cb7a79283a"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_F_DUPFD_CLOEXEC": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_F_DUPFD_CLOEXEC",
-   "start_line": 1471,
-   "end_line": 1471,
+   "start_line": 1516,
+   "end_line": 1516,
    "type": "FUNCTION",
-   "content_hash": "baaeaf9e31ecaf8f"
+   "content_hash": "81b02584e1094f0e"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_CLOSE_RANGE_UNSHARE": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_CLOSE_RANGE_UNSHARE",
-   "start_line": 1472,
-   "end_line": 1472,
+   "start_line": 1517,
+   "end_line": 1517,
    "type": "FUNCTION",
-   "content_hash": "8fe4083545414913"
+   "content_hash": "b2de796c177ef0b2"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_CLOSE_RANGE_CLOEXEC": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_CLOSE_RANGE_CLOEXEC",
-   "start_line": 1473,
-   "end_line": 1473,
+   "start_line": 1518,
+   "end_line": 1518,
    "type": "FUNCTION",
-   "content_hash": "c992f5654daaf14d"
+   "content_hash": "d5d4c3eb78a0f494"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_EFD_SEMAPHORE": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_EFD_SEMAPHORE",
-   "start_line": 1474,
-   "end_line": 1474,
+   "start_line": 1519,
+   "end_line": 1519,
    "type": "FUNCTION",
-   "content_hash": "0a80fb3963e1b069"
+   "content_hash": "e9ca9d2e175ba2cc"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_EFD_NONBLOCK": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_EFD_NONBLOCK",
-   "start_line": 1475,
-   "end_line": 1475,
+   "start_line": 1520,
+   "end_line": 1520,
    "type": "FUNCTION",
-   "content_hash": "a9a55ff07932948f"
+   "content_hash": "c2a1e6e6100f4654"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_EFD_CLOEXEC": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_EFD_CLOEXEC",
-   "start_line": 1476,
-   "end_line": 1476,
+   "start_line": 1521,
+   "end_line": 1521,
    "type": "FUNCTION",
-   "content_hash": "e69f3f63dca75fe4"
+   "content_hash": "004d29d38ef3fdd5"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_EVENTFD_WORD": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_EVENTFD_WORD",
-   "start_line": 1477,
-   "end_line": 1477,
+   "start_line": 1522,
+   "end_line": 1522,
    "type": "FUNCTION",
-   "content_hash": "8bf1fcf009575e89"
+   "content_hash": "7627ae5f3e6327b7"
   },
   "kernel/syscalls.c|kernel/syscalls.c::FD_STD_COUNT": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::FD_STD_COUNT",
-   "start_line": 1478,
-   "end_line": 1483,
+   "start_line": 1523,
+   "end_line": 1528,
    "type": "FUNCTION",
-   "content_hash": "d55e1238cb8726d9"
+   "content_hash": "a6b2474602e51c3a"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfd_claim_from": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfd_claim_from",
-   "start_line": 1484,
-   "end_line": 1508,
+   "start_line": 1529,
+   "end_line": 1553,
    "type": "FUNCTION",
-   "content_hash": "c7fbb5350d7d4c41"
+   "content_hash": "0fcc513db8ebd66e"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfd_claim": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfd_claim",
-   "start_line": 1509,
-   "end_line": 1532,
+   "start_line": 1554,
+   "end_line": 1577,
    "type": "FUNCTION",
-   "content_hash": "50f8e169af9a06bd"
+   "content_hash": "724681b30d98fd56"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_pipe2": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_pipe2",
-   "start_line": 1533,
-   "end_line": 1560,
+   "start_line": 1578,
+   "end_line": 1605,
    "type": "FUNCTION",
-   "content_hash": "90272c6be19c12db"
+   "content_hash": "7475ae8da82b4248"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_pipe": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_pipe",
-   "start_line": 1561,
-   "end_line": 1566,
+   "start_line": 1606,
+   "end_line": 1611,
    "type": "FUNCTION",
-   "content_hash": "eb215961c2f8fa74"
+   "content_hash": "a7321c5365a70f63"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfd_cloexec_get": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfd_cloexec_get",
-   "start_line": 1567,
-   "end_line": 1576,
+   "start_line": 1612,
+   "end_line": 1621,
    "type": "FUNCTION",
-   "content_hash": "a223068c583834b5"
+   "content_hash": "93581f0603f0dfa1"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfd_cloexec_set": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfd_cloexec_set",
-   "start_line": 1577,
-   "end_line": 1587,
+   "start_line": 1622,
+   "end_line": 1632,
    "type": "FUNCTION",
-   "content_hash": "d4680cb036516ead"
+   "content_hash": "79a3f76044de3b39"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfile_status_flags": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfile_status_flags",
-   "start_line": 1588,
-   "end_line": 1638,
+   "start_line": 1633,
+   "end_line": 1683,
    "type": "FUNCTION",
-   "content_hash": "d67ef0cbcf009378"
+   "content_hash": "0920d29fb4aac6b7"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_dup3": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_dup3",
-   "start_line": 1639,
-   "end_line": 1648,
+   "start_line": 1684,
+   "end_line": 1693,
    "type": "FUNCTION",
-   "content_hash": "92d71568dde9655d"
+   "content_hash": "7d3d475dd3435637"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_close_range": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_close_range",
-   "start_line": 1649,
-   "end_line": 1672,
+   "start_line": 1694,
+   "end_line": 1717,
    "type": "FUNCTION",
-   "content_hash": "26fe824ad9fa698a"
+   "content_hash": "a1525de3c43cfc16"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_eventfd2": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_eventfd2",
-   "start_line": 1673,
-   "end_line": 1685,
+   "start_line": 1718,
+   "end_line": 1730,
    "type": "FUNCTION",
-   "content_hash": "eced3a8e26a63828"
+   "content_hash": "6f025f80619868d3"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_eventfd": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_eventfd",
-   "start_line": 1686,
-   "end_line": 1693,
+   "start_line": 1731,
+   "end_line": 1738,
    "type": "FUNCTION",
-   "content_hash": "2a360032a1084d3e"
+   "content_hash": "1b49fb03fe453f09"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfd_poll_revents": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfd_poll_revents",
-   "start_line": 1694,
-   "end_line": 1728,
+   "start_line": 1739,
+   "end_line": 1773,
    "type": "FUNCTION",
-   "content_hash": "7ff3bf7af7ce4f62"
+   "content_hash": "6af75a35405e7d08"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfile_user_read": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfile_user_read",
-   "start_line": 1729,
-   "end_line": 1758,
+   "start_line": 1774,
+   "end_line": 1803,
    "type": "FUNCTION",
-   "content_hash": "d363b3edd38a7a7b"
+   "content_hash": "6ba95ab8cbde505b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfile_user_write": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfile_user_write",
-   "start_line": 1759,
-   "end_line": 1787,
+   "start_line": 1804,
+   "end_line": 1832,
    "type": "FUNCTION",
-   "content_hash": "a2b053cbaa3d960f"
+   "content_hash": "381c8f49725dd0e9"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_dup": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_dup",
-   "start_line": 1788,
-   "end_line": 1802,
+   "start_line": 1833,
+   "end_line": 1847,
    "type": "FUNCTION",
-   "content_hash": "fa3fda5327247970"
+   "content_hash": "036278d080eb0aee"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_dup2": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_dup2",
-   "start_line": 1803,
-   "end_line": 1836,
+   "start_line": 1848,
+   "end_line": 1881,
    "type": "FUNCTION",
-   "content_hash": "6fb1571cf6c3dd49"
+   "content_hash": "18d1756028d3f35c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_close": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_close",
-   "start_line": 1837,
-   "end_line": 1859,
+   "start_line": 1882,
+   "end_line": 1904,
    "type": "FUNCTION",
-   "content_hash": "5a28403ed085d617"
+   "content_hash": "a4e9fdedebeed14c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_lseek": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_lseek",
-   "start_line": 1860,
-   "end_line": 1877,
+   "start_line": 1905,
+   "end_line": 1922,
    "type": "FUNCTION",
-   "content_hash": "1a60c4056138d955"
+   "content_hash": "96838ea3a0249d3c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::mm_ensure_cur": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::mm_ensure_cur",
-   "start_line": 1878,
-   "end_line": 1886,
+   "start_line": 1923,
+   "end_line": 1931,
    "type": "FUNCTION",
-   "content_hash": "46f12ba925841b81"
+   "content_hash": "16731d93eec250ac"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_brk": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_brk",
-   "start_line": 1887,
-   "end_line": 1919,
+   "start_line": 1932,
+   "end_line": 1964,
    "type": "FUNCTION",
-   "content_hash": "6836a28235d856ea"
+   "content_hash": "016d21bc5dca73f6"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_MAP_SHARED": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_MAP_SHARED",
-   "start_line": 1920,
-   "end_line": 1920,
+   "start_line": 1965,
+   "end_line": 1965,
    "type": "FUNCTION",
-   "content_hash": "74d864ee0c1c09f3"
+   "content_hash": "6203661ff0bba041"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_MAP_PRIVATE": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_MAP_PRIVATE",
-   "start_line": 1921,
-   "end_line": 1921,
+   "start_line": 1966,
+   "end_line": 1966,
    "type": "FUNCTION",
-   "content_hash": "9b92a8eb85c49022"
+   "content_hash": "a84620db3b0ed5c8"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_MAP_FIXED": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_MAP_FIXED",
-   "start_line": 1922,
-   "end_line": 1922,
+   "start_line": 1967,
+   "end_line": 1967,
    "type": "FUNCTION",
-   "content_hash": "238c3bf353d95365"
+   "content_hash": "c7408ec4e5f3576c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_MAP_ANONYMOUS": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_MAP_ANONYMOUS",
-   "start_line": 1923,
-   "end_line": 1927,
+   "start_line": 1968,
+   "end_line": 1972,
    "type": "FUNCTION",
-   "content_hash": "71752a2239d85911"
+   "content_hash": "079fb45d941bd233"
   },
   "kernel/syscalls.c|kernel/syscalls.c::mmap_tag_file": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::mmap_tag_file",
-   "start_line": 1928,
-   "end_line": 1942,
+   "start_line": 1973,
+   "end_line": 1987,
    "type": "FUNCTION",
-   "content_hash": "758781eaf013945d"
+   "content_hash": "ac09b38c247f4669"
   },
   "kernel/syscalls.c|kernel/syscalls.c::mmap_range_free": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::mmap_range_free",
-   "start_line": 1943,
-   "end_line": 1951,
+   "start_line": 1988,
+   "end_line": 1996,
    "type": "FUNCTION",
-   "content_hash": "392190eb890062d8"
+   "content_hash": "ce9cebf4c8453fdc"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_mmap": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_mmap",
-   "start_line": 1952,
-   "end_line": 2049,
+   "start_line": 1997,
+   "end_line": 2094,
    "type": "FUNCTION",
-   "content_hash": "af66f51dc4cc651b"
+   "content_hash": "2711ad83c258eaf8"
   },
   "kernel/syscalls.c|kernel/syscalls.c::vma_live_first_overlap": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::vma_live_first_overlap",
-   "start_line": 2050,
-   "end_line": 2066,
+   "start_line": 2095,
+   "end_line": 2111,
    "type": "FUNCTION",
-   "content_hash": "554f70bb93ba0874"
+   "content_hash": "4379f0f4ab39a27b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::vma_live_remainder": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::vma_live_remainder",
-   "start_line": 2067,
-   "end_line": 2080,
+   "start_line": 2112,
+   "end_line": 2125,
    "type": "FUNCTION",
-   "content_hash": "09398c9382605c6a"
+   "content_hash": "93b7b6d6b7ffc564"
   },
   "kernel/syscalls.c|kernel/syscalls.c::split": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::split",
-   "start_line": 2081,
-   "end_line": 2130,
+   "start_line": 2126,
+   "end_line": 2175,
    "type": "FUNCTION",
-   "content_hash": "1bea6595b96fb4b6"
+   "content_hash": "e9bc12f70b157c93"
   },
   "kernel/syscalls.c|kernel/syscalls.c::mprotect_pte": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::mprotect_pte",
-   "start_line": 2131,
-   "end_line": 2154,
+   "start_line": 2176,
+   "end_line": 2199,
    "type": "FUNCTION",
-   "content_hash": "b8eb07a40e73b1ab"
+   "content_hash": "dfa2fe8361198ebd"
   },
   "kernel/syscalls.c|kernel/syscalls.c::first": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::first",
-   "start_line": 2155,
-   "end_line": 2230,
+   "start_line": 2200,
+   "end_line": 2275,
    "type": "FUNCTION",
-   "content_hash": "89addd4ef691a548"
+   "content_hash": "69d296457175d5c0"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_MREMAP_MAYMOVE": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_MREMAP_MAYMOVE",
-   "start_line": 2231,
-   "end_line": 2231,
+   "start_line": 2276,
+   "end_line": 2276,
    "type": "FUNCTION",
-   "content_hash": "db497f0bfd878e79"
+   "content_hash": "ed3d32a84079d613"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_MREMAP_FIXED": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_MREMAP_FIXED",
-   "start_line": 2232,
-   "end_line": 2235,
+   "start_line": 2277,
+   "end_line": 2280,
    "type": "FUNCTION",
-   "content_hash": "c55372c0fb2bbe8f"
+   "content_hash": "6dd26ee66f72d29d"
   },
   "kernel/syscalls.c|kernel/syscalls.c::vma_free_cover": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::vma_free_cover",
-   "start_line": 2236,
-   "end_line": 2254,
+   "start_line": 2281,
+   "end_line": 2299,
    "type": "FUNCTION",
-   "content_hash": "351605ca418e5670"
+   "content_hash": "bfe71b1abbbe5cda"
   },
   "kernel/syscalls.c|kernel/syscalls.c::vma_live_overlap": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::vma_live_overlap",
-   "start_line": 2255,
-   "end_line": 2276,
+   "start_line": 2300,
+   "end_line": 2321,
    "type": "FUNCTION",
-   "content_hash": "958f5baa75dd8424"
+   "content_hash": "8098699e1a208265"
   },
   "kernel/syscalls.c|kernel/syscalls.c::node": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::node",
-   "start_line": 2277,
-   "end_line": 2281,
+   "start_line": 2322,
+   "end_line": 2326,
    "type": "FUNCTION",
-   "content_hash": "91004dcf0b3a175b"
+   "content_hash": "0eb1f6fec1c6724b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_mremap": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_mremap",
-   "start_line": 2282,
-   "end_line": 2547,
+   "start_line": 2327,
+   "end_line": 2592,
    "type": "FUNCTION",
-   "content_hash": "b2861ce3c4d9985b"
+   "content_hash": "92887f5817988671"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_sigaction": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_sigaction",
-   "start_line": 2548,
-   "end_line": 2552,
+   "start_line": 2593,
+   "end_line": 2597,
    "type": "FUNCTION",
-   "content_hash": "e5841fd98d0bd3d1"
+   "content_hash": "7ad618b893f07a5b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_sigprocmask": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_sigprocmask",
-   "start_line": 2553,
-   "end_line": 2557,
+   "start_line": 2598,
+   "end_line": 2602,
    "type": "FUNCTION",
-   "content_hash": "bda22e2d1715c652"
+   "content_hash": "1210e1263669121e"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_TCGETS": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_TCGETS",
-   "start_line": 2558,
-   "end_line": 2558,
+   "start_line": 2603,
+   "end_line": 2603,
    "type": "FUNCTION",
-   "content_hash": "b74fa50282472a5b"
+   "content_hash": "394d79bf1a395b10"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_TIOCGWINSZ": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_TIOCGWINSZ",
-   "start_line": 2559,
-   "end_line": 2559,
+   "start_line": 2604,
+   "end_line": 2604,
    "type": "FUNCTION",
-   "content_hash": "a6645adee1ec9fd4"
+   "content_hash": "30da01fcce7d634e"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_FIONREAD": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_FIONREAD",
-   "start_line": 2560,
-   "end_line": 2560,
+   "start_line": 2605,
+   "end_line": 2605,
    "type": "FUNCTION",
-   "content_hash": "034502c676d66ba9"
+   "content_hash": "9bfb8f3c5c58104c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_FIONBIO": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_FIONBIO",
-   "start_line": 2561,
-   "end_line": 2561,
+   "start_line": 2606,
+   "end_line": 2606,
    "type": "FUNCTION",
-   "content_hash": "7916dce8fc234857"
+   "content_hash": "23c86049445e70c9"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_FIONCLEX": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_FIONCLEX",
-   "start_line": 2562,
-   "end_line": 2562,
+   "start_line": 2607,
+   "end_line": 2607,
    "type": "FUNCTION",
-   "content_hash": "6a8448000cef9cd0"
+   "content_hash": "b3c6934b22fc249c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_FIOCLEX": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_FIOCLEX",
-   "start_line": 2563,
-   "end_line": 2563,
+   "start_line": 2608,
+   "end_line": 2608,
    "type": "FUNCTION",
-   "content_hash": "f9dd47729f28f508"
+   "content_hash": "9127f3cca86283b0"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_TCGETS2": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_TCGETS2",
-   "start_line": 2564,
-   "end_line": 2564,
+   "start_line": 2609,
+   "end_line": 2609,
    "type": "FUNCTION",
-   "content_hash": "5e2d578cc88d95ed"
+   "content_hash": "4f50752225e441e8"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_ENOTTY": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_ENOTTY",
-   "start_line": 2565,
-   "end_line": 2565,
+   "start_line": 2610,
+   "end_line": 2610,
    "type": "FUNCTION",
-   "content_hash": "7f01199c7e4cdf56"
+   "content_hash": "b840db30b65bbc08"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_WINSIZE_LEN": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_WINSIZE_LEN",
-   "start_line": 2566,
-   "end_line": 2566,
+   "start_line": 2611,
+   "end_line": 2611,
    "type": "FUNCTION",
-   "content_hash": "bed6d41a16d55199"
+   "content_hash": "b404c3c8da81d9d2"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_TERMIOS_LEN": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_TERMIOS_LEN",
-   "start_line": 2567,
-   "end_line": 2567,
+   "start_line": 2612,
+   "end_line": 2612,
    "type": "FUNCTION",
-   "content_hash": "1800983710342e97"
+   "content_hash": "f550fdc15543093c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_TERMIOS2_LEN": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_TERMIOS2_LEN",
-   "start_line": 2568,
-   "end_line": 2568,
+   "start_line": 2613,
+   "end_line": 2613,
    "type": "FUNCTION",
-   "content_hash": "45597e6a0dac01e4"
+   "content_hash": "7ecfbae0a6f581bd"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_IOCTL_INT": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_IOCTL_INT",
-   "start_line": 2569,
-   "end_line": 2571,
+   "start_line": 2614,
+   "end_line": 2616,
    "type": "FUNCTION",
-   "content_hash": "17636e8cd88e1725"
+   "content_hash": "0c6542999ec01f26"
   },
   "kernel/syscalls.c|kernel/syscalls.c::kfile_readable_bytes": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::kfile_readable_bytes",
-   "start_line": 2572,
-   "end_line": 2587,
+   "start_line": 2617,
+   "end_line": 2632,
    "type": "FUNCTION",
-   "content_hash": "ed221e1efe54778e"
+   "content_hash": "b3fd209a6f9c9bf3"
   },
   "kernel/syscalls.c|kernel/syscalls.c::FIONREAD": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::FIONREAD",
-   "start_line": 2588,
-   "end_line": 2627,
+   "start_line": 2633,
+   "end_line": 2672,
    "type": "FUNCTION",
-   "content_hash": "563ce934d745f37f"
+   "content_hash": "614f9427d343d6af"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_access": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_access",
-   "start_line": 2628,
-   "end_line": 2649,
+   "start_line": 2673,
+   "end_line": 2694,
    "type": "FUNCTION",
-   "content_hash": "a473e883f3217147"
+   "content_hash": "5218bd69be3cf933"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_socket": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_socket",
-   "start_line": 2650,
-   "end_line": 2654,
+   "start_line": 2695,
+   "end_line": 2699,
    "type": "FUNCTION",
-   "content_hash": "9f1e6a660d574ee0"
+   "content_hash": "4c13af3f1ced9d38"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_connect": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_connect",
-   "start_line": 2655,
-   "end_line": 2660,
+   "start_line": 2700,
+   "end_line": 2705,
    "type": "FUNCTION",
-   "content_hash": "6160d512997a0694"
+   "content_hash": "3dc3f9996564d48b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_bind": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_bind",
-   "start_line": 2661,
-   "end_line": 2666,
+   "start_line": 2706,
+   "end_line": 2711,
    "type": "FUNCTION",
-   "content_hash": "410cd5544fe9a56a"
+   "content_hash": "787c9634ed3a84e3"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_listen": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_listen",
-   "start_line": 2667,
-   "end_line": 2671,
+   "start_line": 2712,
+   "end_line": 2716,
    "type": "FUNCTION",
-   "content_hash": "5397abe2126a5d15"
+   "content_hash": "2300357023447d10"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_accept": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_accept",
-   "start_line": 2672,
-   "end_line": 2677,
+   "start_line": 2717,
+   "end_line": 2722,
    "type": "FUNCTION",
-   "content_hash": "01395bf4df433c26"
+   "content_hash": "c828544c885580ae"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_sendto": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_sendto",
-   "start_line": 2678,
-   "end_line": 2682,
+   "start_line": 2723,
+   "end_line": 2727,
    "type": "FUNCTION",
-   "content_hash": "aef8266caa41513c"
+   "content_hash": "5da5d8ced0643089"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_recvfrom": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_recvfrom",
-   "start_line": 2683,
-   "end_line": 2687,
+   "start_line": 2728,
+   "end_line": 2732,
    "type": "FUNCTION",
-   "content_hash": "a1776639e52a325d"
+   "content_hash": "cebcbc848edaa4d6"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_shutdown": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_shutdown",
-   "start_line": 2688,
-   "end_line": 2692,
+   "start_line": 2733,
+   "end_line": 2737,
    "type": "FUNCTION",
-   "content_hash": "aa4cc57e7ea31533"
+   "content_hash": "c445516aa7b89bec"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_RLIMIT_CPU": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_RLIMIT_CPU",
-   "start_line": 2693,
-   "end_line": 2693,
+   "start_line": 2738,
+   "end_line": 2738,
    "type": "FUNCTION",
-   "content_hash": "50f61ec8d4d16b1b"
+   "content_hash": "57aca83b5ea7fe68"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_RLIMIT_STACK": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_RLIMIT_STACK",
-   "start_line": 2694,
-   "end_line": 2694,
+   "start_line": 2739,
+   "end_line": 2739,
    "type": "FUNCTION",
-   "content_hash": "ad7a02fc5fa65d08"
+   "content_hash": "34bc599da4da2a49"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_RLIMIT_NOFILE": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_RLIMIT_NOFILE",
-   "start_line": 2695,
-   "end_line": 2695,
+   "start_line": 2740,
+   "end_line": 2740,
    "type": "FUNCTION",
-   "content_hash": "93a24c1c6954f3c6"
+   "content_hash": "9ee2b99d6fdc5e27"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_RLIMIT_AS": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_RLIMIT_AS",
-   "start_line": 2696,
-   "end_line": 2696,
+   "start_line": 2741,
+   "end_line": 2741,
    "type": "FUNCTION",
-   "content_hash": "35d6428471bb1d20"
+   "content_hash": "dd8102b5e06184bd"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_RLIMIT_NLIMITS": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_RLIMIT_NLIMITS",
-   "start_line": 2697,
-   "end_line": 2697,
+   "start_line": 2742,
+   "end_line": 2742,
    "type": "FUNCTION",
-   "content_hash": "0cfb04377669effe"
+   "content_hash": "3c22dd82428a3a13"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_RLIM_INFINITY": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_RLIM_INFINITY",
-   "start_line": 2698,
-   "end_line": 2698,
+   "start_line": 2743,
+   "end_line": 2743,
    "type": "FUNCTION",
-   "content_hash": "6d49a581c3452635"
+   "content_hash": "b72411b1817e343e"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_RLIMIT_PAIR": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_RLIMIT_PAIR",
-   "start_line": 2699,
-   "end_line": 2700,
+   "start_line": 2744,
+   "end_line": 2745,
    "type": "FUNCTION",
-   "content_hash": "cf05d6c893e2cd55"
+   "content_hash": "337596883febf6f3"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_RLIMIT_TICKS_PER_S": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_RLIMIT_TICKS_PER_S",
-   "start_line": 2701,
-   "end_line": 2701,
+   "start_line": 2746,
+   "end_line": 2746,
    "type": "FUNCTION",
-   "content_hash": "2ecc9c0a2db5e144"
+   "content_hash": "cd234af1432abd11"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_CPUMASK_BYTES": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_CPUMASK_BYTES",
-   "start_line": 2702,
-   "end_line": 2722,
+   "start_line": 2747,
+   "end_line": 2767,
    "type": "FUNCTION",
-   "content_hash": "5cf7563e6ea485ac"
+   "content_hash": "ef4daab5658a0e4d"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_prlimit64": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_prlimit64",
-   "start_line": 2723,
-   "end_line": 2755,
+   "start_line": 2768,
+   "end_line": 2800,
    "type": "FUNCTION",
-   "content_hash": "6ed7ab050cceb246"
+   "content_hash": "7552ccead0d0ed90"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_sched_getaffinity": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_sched_getaffinity",
-   "start_line": 2756,
-   "end_line": 2766,
+   "start_line": 2801,
+   "end_line": 2811,
    "type": "FUNCTION",
-   "content_hash": "de5840d330609405"
+   "content_hash": "0fd071efa6571912"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_CLOCK_REALTIME": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_CLOCK_REALTIME",
-   "start_line": 2767,
-   "end_line": 2767,
+   "start_line": 2812,
+   "end_line": 2812,
    "type": "FUNCTION",
-   "content_hash": "e708bcf0a1c81801"
+   "content_hash": "67a9817cf090d604"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_CLOCK_MONOTONIC": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_CLOCK_MONOTONIC",
-   "start_line": 2768,
-   "end_line": 2768,
+   "start_line": 2813,
+   "end_line": 2813,
    "type": "FUNCTION",
-   "content_hash": "9b32ab98b14fdedb"
+   "content_hash": "5007f3716517f531"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_CLOCK_BOOTTIME": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_CLOCK_BOOTTIME",
-   "start_line": 2769,
-   "end_line": 2769,
+   "start_line": 2814,
+   "end_line": 2814,
    "type": "FUNCTION",
-   "content_hash": "ca34227dd4a7f40f"
+   "content_hash": "50fb57b6cb4fcbc4"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_TIMER_ABSTIME": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_TIMER_ABSTIME",
-   "start_line": 2770,
-   "end_line": 2770,
+   "start_line": 2815,
+   "end_line": 2815,
    "type": "FUNCTION",
-   "content_hash": "11b4a512e316e68d"
+   "content_hash": "1e75dcc76b028491"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_NS_PER_US": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_NS_PER_US",
-   "start_line": 2771,
-   "end_line": 2771,
+   "start_line": 2816,
+   "end_line": 2816,
    "type": "FUNCTION",
-   "content_hash": "392c1c1b6829fc43"
+   "content_hash": "06b1d1637ad62a61"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_US_PER_S": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_US_PER_S",
-   "start_line": 2772,
-   "end_line": 2772,
+   "start_line": 2817,
+   "end_line": 2817,
    "type": "FUNCTION",
-   "content_hash": "3f64c7122608a396"
+   "content_hash": "9ccc18a51270728c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_NS_PER_S": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_NS_PER_S",
-   "start_line": 2773,
-   "end_line": 2773,
+   "start_line": 2818,
+   "end_line": 2818,
    "type": "FUNCTION",
-   "content_hash": "0bb53dbfe8d384ec"
+   "content_hash": "62eff0514b5e1e46"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_SLEEP_MAX_S": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_SLEEP_MAX_S",
-   "start_line": 2774,
-   "end_line": 2777,
+   "start_line": 2819,
+   "end_line": 2822,
    "type": "FUNCTION",
-   "content_hash": "3d21c9ece1a72a7d"
+   "content_hash": "549b58f65bb0800f"
   },
   "kernel/syscalls.c|kernel/syscalls.c::linux_timespec_us": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::linux_timespec_us",
-   "start_line": 2778,
-   "end_line": 2794,
+   "start_line": 2823,
+   "end_line": 2839,
    "type": "FUNCTION",
-   "content_hash": "a1d3f7f3ed3452f1"
+   "content_hash": "8f67fc848cdff1c8"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_pause": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_pause",
-   "start_line": 2795,
-   "end_line": 2802,
+   "start_line": 2840,
+   "end_line": 2847,
    "type": "FUNCTION",
-   "content_hash": "86b3b6e7d83b2ff1"
+   "content_hash": "97d98055baf450dc"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_nanosleep": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_nanosleep",
-   "start_line": 2803,
-   "end_line": 2813,
+   "start_line": 2848,
+   "end_line": 2858,
    "type": "FUNCTION",
-   "content_hash": "afe5b0d03d90cde1"
+   "content_hash": "43c89eb0d7654870"
   },
   "kernel/syscalls.c|kernel/syscalls.c::clock": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::clock",
-   "start_line": 2814,
-   "end_line": 2817,
+   "start_line": 2859,
+   "end_line": 2862,
    "type": "FUNCTION",
-   "content_hash": "b3017f3d66416bdb"
+   "content_hash": "b1602461403fc263"
   },
   "kernel/syscalls.c|kernel/syscalls.c::clock_gettime": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::clock_gettime",
-   "start_line": 2818,
-   "end_line": 2819,
+   "start_line": 2863,
+   "end_line": 2864,
    "type": "FUNCTION",
-   "content_hash": "69a1d9b2fa88e5fb"
+   "content_hash": "89cdb4bcae319a0e"
   },
   "kernel/syscalls.c|kernel/syscalls.c::long": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::long",
-   "start_line": 2820,
-   "end_line": 2834,
+   "start_line": 2865,
+   "end_line": 2879,
    "type": "FUNCTION",
-   "content_hash": "7b0dfc0893eb7c2d"
+   "content_hash": "c10871e59fe1e23f"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_setsockopt": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_setsockopt",
-   "start_line": 2835,
-   "end_line": 2841,
+   "start_line": 2880,
+   "end_line": 2886,
    "type": "FUNCTION",
-   "content_hash": "1e8d40f3bad81747"
+   "content_hash": "ea42abcf838cd047"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_getsockopt": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_getsockopt",
-   "start_line": 2842,
-   "end_line": 2848,
+   "start_line": 2887,
+   "end_line": 2893,
    "type": "FUNCTION",
-   "content_hash": "9ace195409cbb54f"
+   "content_hash": "7d013e0b266198fc"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_getsockname": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_getsockname",
-   "start_line": 2849,
-   "end_line": 2854,
+   "start_line": 2894,
+   "end_line": 2899,
    "type": "FUNCTION",
-   "content_hash": "b2a2bbce215bbd7f"
+   "content_hash": "3915cf63dcac6ae7"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_getpeername": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_getpeername",
-   "start_line": 2855,
-   "end_line": 2860,
+   "start_line": 2900,
+   "end_line": 2905,
    "type": "FUNCTION",
-   "content_hash": "c66fc7510615dee1"
+   "content_hash": "3bd39f8278971198"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_sendmsg": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_sendmsg",
-   "start_line": 2861,
-   "end_line": 2866,
+   "start_line": 2906,
+   "end_line": 2911,
    "type": "FUNCTION",
-   "content_hash": "70373539688437b6"
+   "content_hash": "fe4e83d98fa3861b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_sendmmsg": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_sendmmsg",
-   "start_line": 2867,
-   "end_line": 2874,
+   "start_line": 2912,
+   "end_line": 2919,
    "type": "FUNCTION",
-   "content_hash": "4abf5cbb55e271a9"
+   "content_hash": "4012b7d4ffa520ac"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_poll": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_poll",
-   "start_line": 2875,
-   "end_line": 2889,
+   "start_line": 2920,
+   "end_line": 2934,
    "type": "FUNCTION",
-   "content_hash": "3f70df28505c3348"
+   "content_hash": "f73eb3cad9f603f0"
   },
   "kernel/syscalls.c|kernel/syscalls.c::SELECT_NFDS_MAX": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::SELECT_NFDS_MAX",
-   "start_line": 2890,
-   "end_line": 2890,
+   "start_line": 2935,
+   "end_line": 2935,
    "type": "FUNCTION",
-   "content_hash": "9764c6a511610318"
+   "content_hash": "0491fc13359207cf"
   },
   "kernel/syscalls.c|kernel/syscalls.c::SELECT_TIMEVAL_BYTES": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::SELECT_TIMEVAL_BYTES",
-   "start_line": 2891,
-   "end_line": 2891,
+   "start_line": 2936,
+   "end_line": 2936,
    "type": "FUNCTION",
-   "content_hash": "a1d39a57d65badee"
+   "content_hash": "0315e19dad4b2d71"
   },
   "kernel/syscalls.c|kernel/syscalls.c::SELECT_TIMESPEC_BYTES": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::SELECT_TIMESPEC_BYTES",
-   "start_line": 2892,
-   "end_line": 2894,
+   "start_line": 2937,
+   "end_line": 2939,
    "type": "FUNCTION",
-   "content_hash": "01e27ad07209a004"
+   "content_hash": "a1f7ac90e00eadc2"
   },
   "kernel/syscalls.c|kernel/syscalls.c::SELECT_TIMEOUT_MS_MAX": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::SELECT_TIMEOUT_MS_MAX",
-   "start_line": 2895,
-   "end_line": 2900,
+   "start_line": 2940,
+   "end_line": 2945,
    "type": "FUNCTION",
-   "content_hash": "03a7676301fafbab"
+   "content_hash": "9ac795b6db84a68b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::select_timeout_ms": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::select_timeout_ms",
-   "start_line": 2901,
-   "end_line": 2985,
+   "start_line": 2946,
+   "end_line": 3030,
    "type": "FUNCTION",
-   "content_hash": "ba21f437cb36e18a"
+   "content_hash": "cbe5f8b784db5782"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_select": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_select",
-   "start_line": 2986,
-   "end_line": 2990,
+   "start_line": 3031,
+   "end_line": 3035,
    "type": "FUNCTION",
-   "content_hash": "618fc7c65a5fd2a4"
+   "content_hash": "139f2d745951ff25"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_pselect6": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_pselect6",
-   "start_line": 2991,
-   "end_line": 2995,
+   "start_line": 3036,
+   "end_line": 3040,
    "type": "FUNCTION",
-   "content_hash": "636b59e7da727ed7"
+   "content_hash": "fe52e859c6df236c"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_flock": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_flock",
-   "start_line": 2996,
-   "end_line": 3004,
+   "start_line": 3041,
+   "end_line": 3049,
    "type": "FUNCTION",
-   "content_hash": "f7d8457a39cdf359"
+   "content_hash": "ffd38cc5f3d15de0"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_fsync": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_fsync",
-   "start_line": 3005,
-   "end_line": 3009,
+   "start_line": 3050,
+   "end_line": 3054,
    "type": "FUNCTION",
-   "content_hash": "fd435b5d6b08ebe3"
+   "content_hash": "ee5a3bc524e04c05"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_fdatasync": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_fdatasync",
-   "start_line": 3010,
-   "end_line": 3014,
+   "start_line": 3055,
+   "end_line": 3059,
    "type": "FUNCTION",
-   "content_hash": "1c0644330525ef27"
+   "content_hash": "c7d400dc1efe3d50"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_getcwd": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_getcwd",
-   "start_line": 3015,
-   "end_line": 3026,
+   "start_line": 3060,
+   "end_line": 3072,
    "type": "FUNCTION",
-   "content_hash": "6fd77cb644ed35b3"
+   "content_hash": "8dd8a0f93e86aa4d"
+  },
+  "kernel/syscalls.c|kernel/syscalls.c::unlink_kpath": {
+   "file_path": "kernel/syscalls.c",
+   "qualified_name": "kernel/syscalls.c::unlink_kpath",
+   "start_line": 3073,
+   "end_line": 3088,
+   "type": "FUNCTION",
+   "content_hash": "f81481d088d6985d"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_unlink": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_unlink",
-   "start_line": 3027,
-   "end_line": 3045,
+   "start_line": 3089,
+   "end_line": 3095,
    "type": "FUNCTION",
-   "content_hash": "8499bdbbdfe572d4"
+   "content_hash": "b9e593e3f1f20a37"
   },
   "kernel/syscalls.c|kernel/syscalls.c::PROC_SELF_EXE": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::PROC_SELF_EXE",
-   "start_line": 3046,
-   "end_line": 3050,
+   "start_line": 3096,
+   "end_line": 3100,
    "type": "FUNCTION",
-   "content_hash": "5f7f4011036e0e14"
+   "content_hash": "f2d5d7079139a171"
   },
   "kernel/syscalls.c|kernel/syscalls.c::readlink_path": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::readlink_path",
-   "start_line": 3051,
-   "end_line": 3066,
+   "start_line": 3101,
+   "end_line": 3116,
    "type": "FUNCTION",
-   "content_hash": "3b2b93004fd7cb84"
+   "content_hash": "57e6734ab0ad3053"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_readlink": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_readlink",
-   "start_line": 3067,
-   "end_line": 3072,
+   "start_line": 3117,
+   "end_line": 3122,
    "type": "FUNCTION",
-   "content_hash": "d943f6eec469869d"
+   "content_hash": "be6a630077271f07"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_prctl": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_prctl",
-   "start_line": 3073,
-   "end_line": 3081,
+   "start_line": 3123,
+   "end_line": 3131,
    "type": "FUNCTION",
-   "content_hash": "0bdf5b72d231e78c"
+   "content_hash": "ccbb54ef1691126b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_rename": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_rename",
-   "start_line": 3082,
-   "end_line": 3095,
+   "start_line": 3132,
+   "end_line": 3145,
    "type": "FUNCTION",
-   "content_hash": "c2d7dd2b24d63510"
+   "content_hash": "a6d67ed7a9d3174d"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_fstat": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_fstat",
-   "start_line": 3096,
-   "end_line": 3120,
+   "start_line": 3146,
+   "end_line": 3170,
    "type": "FUNCTION",
-   "content_hash": "10c857a9d2a446cd"
+   "content_hash": "eb70b8da15f5a478"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_gettimeofday": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_gettimeofday",
-   "start_line": 3121,
-   "end_line": 3143,
+   "start_line": 3171,
+   "end_line": 3193,
    "type": "FUNCTION",
-   "content_hash": "2421828c8afb6da1"
+   "content_hash": "065bcca70c5f46b6"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_arch_prctl": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_arch_prctl",
-   "start_line": 3144,
-   "end_line": 3155,
+   "start_line": 3194,
+   "end_line": 3205,
    "type": "FUNCTION",
-   "content_hash": "0f35cd77eb5be3b6"
+   "content_hash": "c895d4a5011317c7"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_uname": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_uname",
-   "start_line": 3156,
-   "end_line": 3179,
+   "start_line": 3206,
+   "end_line": 3229,
    "type": "FUNCTION",
-   "content_hash": "9f6fb912f504e090"
+   "content_hash": "f51791f6c7cbf47e"
   },
   "kernel/syscalls.c|kernel/syscalls.c::answer": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::answer",
-   "start_line": 3180,
-   "end_line": 3180,
+   "start_line": 3230,
+   "end_line": 3230,
    "type": "FUNCTION",
-   "content_hash": "7867aae1491afa11"
+   "content_hash": "e70f461b6e0f5254"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_UID_GID_ROOT": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_UID_GID_ROOT",
-   "start_line": 3181,
-   "end_line": 3187,
+   "start_line": 3231,
+   "end_line": 3237,
    "type": "FUNCTION",
-   "content_hash": "37c4fec0cf749ee7"
+   "content_hash": "8c5c15bc11a8603f"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_getgid": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_getgid",
-   "start_line": 3188,
-   "end_line": 3192,
+   "start_line": 3238,
+   "end_line": 3242,
    "type": "FUNCTION",
-   "content_hash": "18bab9754e5b8d27"
+   "content_hash": "e9d69a3e86d85cda"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_geteuid": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_geteuid",
-   "start_line": 3193,
-   "end_line": 3197,
+   "start_line": 3243,
+   "end_line": 3247,
    "type": "FUNCTION",
-   "content_hash": "b249672c70de3330"
+   "content_hash": "6fe9a8ff5ec1e153"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_getegid": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_getegid",
-   "start_line": 3198,
-   "end_line": 3204,
+   "start_line": 3248,
+   "end_line": 3254,
    "type": "FUNCTION",
-   "content_hash": "51e8b224483778cf"
+   "content_hash": "425f0182b8cd296d"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_madvise": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_madvise",
-   "start_line": 3205,
-   "end_line": 3212,
+   "start_line": 3255,
+   "end_line": 3262,
    "type": "FUNCTION",
-   "content_hash": "e257c6f5ecfa8408"
+   "content_hash": "2d5b62263174b6cc"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_mkdir": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_mkdir",
-   "start_line": 3213,
-   "end_line": 3247,
+   "start_line": 3263,
+   "end_line": 3298,
    "type": "FUNCTION",
-   "content_hash": "9ae2c3c7bd4d68c6"
+   "content_hash": "176fdd20ce48b691"
+  },
+  "kernel/syscalls.c|kernel/syscalls.c::rmdir_kpath": {
+   "file_path": "kernel/syscalls.c",
+   "qualified_name": "kernel/syscalls.c::rmdir_kpath",
+   "start_line": 3299,
+   "end_line": 3319,
+   "type": "FUNCTION",
+   "content_hash": "539e66fbefb37f85"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sys_linux_rmdir": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sys_linux_rmdir",
-   "start_line": 3248,
-   "end_line": 3271,
+   "start_line": 3320,
+   "end_line": 3333,
    "type": "FUNCTION",
-   "content_hash": "972e1f4908a73d18"
+   "content_hash": "e3ed0f32e97b6d05"
+  },
+  "kernel/syscalls.c|kernel/syscalls.c::sys_linux_umask": {
+   "file_path": "kernel/syscalls.c",
+   "qualified_name": "kernel/syscalls.c::sys_linux_umask",
+   "start_line": 3334,
+   "end_line": 3356,
+   "type": "FUNCTION",
+   "content_hash": "edbc194ed4884f38"
+  },
+  "kernel/syscalls.c|kernel/syscalls.c::sys_linux_fchmod": {
+   "file_path": "kernel/syscalls.c",
+   "qualified_name": "kernel/syscalls.c::sys_linux_fchmod",
+   "start_line": 3357,
+   "end_line": 3367,
+   "type": "FUNCTION",
+   "content_hash": "307f52fd3bd183b1"
   },
   "kernel/syscalls.c|kernel/syscalls.c::LINUX_SYSCALL_COUNT": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::LINUX_SYSCALL_COUNT",
-   "start_line": 3272,
-   "end_line": 3343,
+   "start_line": 3368,
+   "end_line": 3442,
    "type": "FUNCTION",
-   "content_hash": "d87d48ea1d1a80e0"
+   "content_hash": "a064a1e69480d211"
   },
   "kernel/syscalls.c|kernel/syscalls.c::trace_is_noisy": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::trace_is_noisy",
-   "start_line": 3344,
-   "end_line": 3355,
+   "start_line": 3443,
+   "end_line": 3454,
    "type": "FUNCTION",
-   "content_hash": "fc9fefb05e66bb7b"
+   "content_hash": "def990986db8bd51"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sc_extra_name": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sc_extra_name",
-   "start_line": 3356,
-   "end_line": 3371,
+   "start_line": 3455,
+   "end_line": 3470,
    "type": "CLASS",
-   "content_hash": "b0b7a8ae8ece7d08"
+   "content_hash": "7b99b0a310c518fa"
   },
   "kernel/syscalls.c|kernel/syscalls.c::SC_EXTRA_COUNT": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::SC_EXTRA_COUNT",
-   "start_line": 3372,
-   "end_line": 3372,
+   "start_line": 3471,
+   "end_line": 3471,
    "type": "FUNCTION",
-   "content_hash": "b23922cf836aa73a"
+   "content_hash": "3d0473d593ee99b9"
   },
   "kernel/syscalls.c|kernel/syscalls.c::syscall_name": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::syscall_name",
-   "start_line": 3373,
-   "end_line": 3393,
+   "start_line": 3472,
+   "end_line": 3492,
    "type": "FUNCTION",
-   "content_hash": "6a9f5f732c4b74e3"
+   "content_hash": "bf047ae16509a2ee"
   },
   "kernel/syscalls.c|kernel/syscalls.c::TRACE_HINT_NONE": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::TRACE_HINT_NONE",
-   "start_line": 3394,
-   "end_line": 3394,
+   "start_line": 3493,
+   "end_line": 3493,
    "type": "FUNCTION",
-   "content_hash": "d980a743bfdcafd8"
+   "content_hash": "5f800302f6464203"
   },
   "kernel/syscalls.c|kernel/syscalls.c::TRACE_HINT_PATH": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::TRACE_HINT_PATH",
-   "start_line": 3395,
-   "end_line": 3413,
+   "start_line": 3494,
+   "end_line": 3512,
    "type": "FUNCTION",
-   "content_hash": "d82c964585c48fdb"
+   "content_hash": "40b0bf0b1a889bbe"
   },
   "kernel/syscalls.c|kernel/syscalls.c::trace_hint_print": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::trace_hint_print",
-   "start_line": 3414,
-   "end_line": 3432,
+   "start_line": 3513,
+   "end_line": 3531,
    "type": "FUNCTION",
-   "content_hash": "5632b3a7b5bf6986"
+   "content_hash": "df56d2e406a6cd97"
   },
   "kernel/syscalls.c|kernel/syscalls.c::SC_RECORD_LEN": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::SC_RECORD_LEN",
-   "start_line": 3433,
-   "end_line": 3433,
+   "start_line": 3532,
+   "end_line": 3532,
    "type": "FUNCTION",
-   "content_hash": "b2f593ffd8cd2793"
+   "content_hash": "f4e56e52d22c2309"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sc_record": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sc_record",
-   "start_line": 3438,
-   "end_line": 3457,
+   "start_line": 3537,
+   "end_line": 3556,
    "type": "FUNCTION",
-   "content_hash": "9f537a56d931c257"
+   "content_hash": "2d658d42eb8bc4ca"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sc_log": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sc_log",
-   "start_line": 3435,
-   "end_line": 3437,
+   "start_line": 3534,
+   "end_line": 3536,
    "type": "CLASS",
-   "content_hash": "7fd826a3986fb4b4"
+   "content_hash": "e6835fdea0a28225"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sc_hex": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sc_hex",
-   "start_line": 3458,
-   "end_line": 3467,
+   "start_line": 3557,
+   "end_line": 3566,
    "type": "FUNCTION",
-   "content_hash": "98b92f776583dfe3"
+   "content_hash": "927a04003e939a72"
   },
   "kernel/syscalls.c|kernel/syscalls.c::sc_record_dump": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::sc_record_dump",
-   "start_line": 3468,
-   "end_line": 3485,
+   "start_line": 3567,
+   "end_line": 3584,
    "type": "FUNCTION",
-   "content_hash": "6565af6f98316cdb"
+   "content_hash": "e1504776514bb77f"
   },
   "kernel/syscalls.c|kernel/syscalls.c::ksyscall": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::ksyscall",
-   "start_line": 3486,
-   "end_line": 3524,
+   "start_line": 3585,
+   "end_line": 3623,
    "type": "FUNCTION",
-   "content_hash": "81221694c3c9cd58"
+   "content_hash": "3c32db0ddceae078"
   },
   "kernel/syscalls.c|kernel/syscalls.c::user_range_ok": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::user_range_ok",
-   "start_line": 3525,
-   "end_line": 3537,
+   "start_line": 3624,
+   "end_line": 3636,
    "type": "FUNCTION",
-   "content_hash": "873a3db171299121"
+   "content_hash": "24396448a8384e94"
   },
   "kernel/syscalls.c|kernel/syscalls.c::Discipline": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::Discipline",
-   "start_line": 3538,
-   "end_line": 3541,
+   "start_line": 3637,
+   "end_line": 3640,
    "type": "FUNCTION",
-   "content_hash": "e47d806e1c668e77"
+   "content_hash": "41e57ea3068da038"
   },
   "kernel/syscalls.c|kernel/syscalls.c::products": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::products",
-   "start_line": 3542,
-   "end_line": 3554,
+   "start_line": 3641,
+   "end_line": 3653,
    "type": "FUNCTION",
-   "content_hash": "db2e43e03d045d1a"
+   "content_hash": "ae3bcc704702307b"
   },
   "kernel/syscalls.c|kernel/syscalls.c::ksyscall_dispatch": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::ksyscall_dispatch",
-   "start_line": 3555,
-   "end_line": 3695,
+   "start_line": 3654,
+   "end_line": 3800,
    "type": "FUNCTION",
-   "content_hash": "6a278491a3e96214"
+   "content_hash": "fb32207ada255749"
   },
   "kernel/syscalls.c|kernel/syscalls.c::readlink": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::readlink",
-   "start_line": 3696,
-   "end_line": 3804,
+   "start_line": 3801,
+   "end_line": 3922,
    "type": "FUNCTION",
-   "content_hash": "b636281017a5a8b3"
+   "content_hash": "3744239e35915423"
   },
   "kernel/syscalls.c|kernel/syscalls.c::proc_spawn_elf": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::proc_spawn_elf",
-   "start_line": 3805,
-   "end_line": 3813,
+   "start_line": 3923,
+   "end_line": 3931,
    "type": "FUNCTION",
-   "content_hash": "d0c6b0a3ace52157"
+   "content_hash": "b5cf34106c826e73"
   },
   "kernel/syscalls.c|kernel/syscalls.c::k_syscall_spawn": {
    "file_path": "kernel/syscalls.c",
    "qualified_name": "kernel/syscalls.c::k_syscall_spawn",
-   "start_line": 3814,
-   "end_line": 3854,
+   "start_line": 3932,
+   "end_line": 3972,
    "type": "FUNCTION",
-   "content_hash": "5573b4cf380b30e2"
+   "content_hash": "6f0244a1f995b533"
   },
   "kernel/syscalls_proc.c|kernel/syscalls_proc.c::state": {
    "file_path": "kernel/syscalls_proc.c",
@@ -88205,33 +88273,41 @@
    "file_path": "progs/src/lxabi.c",
    "qualified_name": "progs/src/lxabi.c::check_uid_gid",
    "start_line": 642,
-   "end_line": 679,
+   "end_line": 648,
    "type": "FUNCTION",
    "content_hash": "cca9802197a89f8f"
+  },
+  "progs/src/lxabi.c|progs/src/lxabi.c::check_rename_dir": {
+   "file_path": "progs/src/lxabi.c",
+   "qualified_name": "progs/src/lxabi.c::check_rename_dir",
+   "start_line": 649,
+   "end_line": 714,
+   "type": "FUNCTION",
+   "content_hash": "056c6f7a05357afa"
   },
   "progs/src/lxabi.c|progs/src/lxabi.c::copy_dentry_name": {
    "file_path": "progs/src/lxabi.c",
    "qualified_name": "progs/src/lxabi.c::copy_dentry_name",
-   "start_line": 680,
-   "end_line": 686,
+   "start_line": 715,
+   "end_line": 721,
    "type": "FUNCTION",
-   "content_hash": "9c69021dd8d77e64"
+   "content_hash": "bdffa0beeeebbf37"
   },
   "progs/src/lxabi.c|progs/src/lxabi.c::check_getdents64": {
    "file_path": "progs/src/lxabi.c",
    "qualified_name": "progs/src/lxabi.c::check_getdents64",
-   "start_line": 687,
-   "end_line": 753,
+   "start_line": 722,
+   "end_line": 788,
    "type": "FUNCTION",
-   "content_hash": "92ed0bcd57f83d97"
+   "content_hash": "4e52f190af9b54b2"
   },
   "progs/src/lxabi.c|progs/src/lxabi.c::main": {
    "file_path": "progs/src/lxabi.c",
    "qualified_name": "progs/src/lxabi.c::main",
-   "start_line": 754,
-   "end_line": 784,
+   "start_line": 789,
+   "end_line": 820,
    "type": "FUNCTION",
-   "content_hash": "baf32d2333cfaf16"
+   "content_hash": "1d19188fc77fa710"
   },
   "progs/src/lxhello.c|progs/src/lxhello.c::lx_syscall3": {
    "file_path": "progs/src/lxhello.c",
@@ -90313,6 +90389,62 @@
    "type": "FUNCTION",
    "content_hash": "e6b084a6b44541f2"
   },
+  "progs/src/pip.c|progs/src/pip.c::PIP_PYTHON_PATH": {
+   "file_path": "progs/src/pip.c",
+   "qualified_name": "progs/src/pip.c::PIP_PYTHON_PATH",
+   "start_line": 19,
+   "end_line": 20,
+   "type": "FUNCTION",
+   "content_hash": "4e3cdaa575b7e0a7"
+  },
+  "progs/src/pip.c|progs/src/pip.c::PIP_MODULE_FLAG": {
+   "file_path": "progs/src/pip.c",
+   "qualified_name": "progs/src/pip.c::PIP_MODULE_FLAG",
+   "start_line": 21,
+   "end_line": 21,
+   "type": "FUNCTION",
+   "content_hash": "b7777a19c57af82b"
+  },
+  "progs/src/pip.c|progs/src/pip.c::PIP_MODULE_NAME": {
+   "file_path": "progs/src/pip.c",
+   "qualified_name": "progs/src/pip.c::PIP_MODULE_NAME",
+   "start_line": 22,
+   "end_line": 23,
+   "type": "FUNCTION",
+   "content_hash": "5bef4846a0a87789"
+  },
+  "progs/src/pip.c|progs/src/pip.c::PIP_PREFIX_WORDS": {
+   "file_path": "progs/src/pip.c",
+   "qualified_name": "progs/src/pip.c::PIP_PREFIX_WORDS",
+   "start_line": 24,
+   "end_line": 25,
+   "type": "FUNCTION",
+   "content_hash": "306251946f44751c"
+  },
+  "progs/src/pip.c|progs/src/pip.c::PIP_EXEC_FAILED": {
+   "file_path": "progs/src/pip.c",
+   "qualified_name": "progs/src/pip.c::PIP_EXEC_FAILED",
+   "start_line": 26,
+   "end_line": 29,
+   "type": "FUNCTION",
+   "content_hash": "2cbfe5f894b15fd4"
+  },
+  "progs/src/pip.c|progs/src/pip.c::pip_note": {
+   "file_path": "progs/src/pip.c",
+   "qualified_name": "progs/src/pip.c::pip_note",
+   "start_line": 30,
+   "end_line": 44,
+   "type": "CLASS",
+   "content_hash": "739113c020e38ab2"
+  },
+  "progs/src/pip.c|progs/src/pip.c::main": {
+   "file_path": "progs/src/pip.c",
+   "qualified_name": "progs/src/pip.c::main",
+   "start_line": 45,
+   "end_line": 63,
+   "type": "FUNCTION",
+   "content_hash": "24a0a2f65feeed78"
+  },
   "progs/src/pollready.c|progs/src/pollready.c::p_write": {
    "file_path": "progs/src/pollready.c",
    "qualified_name": "progs/src/pollready.c::p_write",
@@ -91757,41 +91889,41 @@
    "file_path": "progs/src/test_py.py",
    "qualified_name": "progs/src/test_py.py::check",
    "start_line": 12,
-   "end_line": 71,
+   "end_line": 78,
    "type": "FUNCTION",
    "content_hash": "5f642922d6bbcf52"
   },
   "progs/src/test_py.py|progs/src/test_py.py::_asyncio_double": {
    "file_path": "progs/src/test_py.py",
    "qualified_name": "progs/src/test_py.py::_asyncio_double",
-   "start_line": 72,
-   "end_line": 76,
+   "start_line": 79,
+   "end_line": 83,
    "type": "FUNCTION",
-   "content_hash": "d48c82e7e43b0bda"
+   "content_hash": "2938df32307ba9a8"
   },
   "progs/src/test_py.py|progs/src/test_py.py::_asyncio_main": {
    "file_path": "progs/src/test_py.py",
    "qualified_name": "progs/src/test_py.py::_asyncio_main",
-   "start_line": 77,
-   "end_line": 80,
+   "start_line": 84,
+   "end_line": 87,
    "type": "FUNCTION",
-   "content_hash": "50b7db06c2cec09f"
+   "content_hash": "432dfb64a153d1c0"
   },
   "progs/src/test_py.py|progs/src/test_py.py::_asyncio_wire_check": {
    "file_path": "progs/src/test_py.py",
    "qualified_name": "progs/src/test_py.py::_asyncio_wire_check",
-   "start_line": 81,
-   "end_line": 81,
+   "start_line": 88,
+   "end_line": 88,
    "type": "FUNCTION",
-   "content_hash": "c585bfe5f1027fc6"
+   "content_hash": "074fa1739c222578"
   },
   "progs/src/test_py.py|progs/src/test_py.py::_one": {
    "file_path": "progs/src/test_py.py",
    "qualified_name": "progs/src/test_py.py::_one",
-   "start_line": 82,
-   "end_line": 107,
+   "start_line": 89,
+   "end_line": 114,
    "type": "FUNCTION",
-   "content_hash": "b084b6858406c3b7"
+   "content_hash": "b0da55fdef6ebdce"
   },
   "progs/src/thdemo.c|progs/src/thdemo.c::threads": {
    "file_path": "progs/src/thdemo.c",
@@ -103037,25 +103169,25 @@
    "file_path": "tools/mutate.sh",
    "qualified_name": "tools/mutate.sh::cleanup",
    "start_line": 139,
-   "end_line": 515,
+   "end_line": 517,
    "type": "FUNCTION",
    "content_hash": "3d4fe79863017cf6"
   },
   "tools/mutate.sh|tools/mutate.sh::record": {
    "file_path": "tools/mutate.sh",
    "qualified_name": "tools/mutate.sh::record",
-   "start_line": 516,
-   "end_line": 521,
+   "start_line": 518,
+   "end_line": 523,
    "type": "FUNCTION",
-   "content_hash": "f3432a6116d99a84"
+   "content_hash": "2650ea808caf9f41"
   },
   "tools/mutate.sh|tools/mutate.sh::find_index": {
    "file_path": "tools/mutate.sh",
    "qualified_name": "tools/mutate.sh::find_index",
-   "start_line": 522,
-   "end_line": 993,
+   "start_line": 524,
+   "end_line": 995,
    "type": "FUNCTION",
-   "content_hash": "27b57d033776e834"
+   "content_hash": "8547170571c9dd05"
   },
   "tools/probe_compute_vga.py|tools/probe_compute_vga.py::main": {
    "file_path": "tools/probe_compute_vga.py",
@@ -103485,105 +103617,105 @@
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::cleanup_stale_qemu",
    "start_line": 43,
-   "end_line": 53,
+   "end_line": 55,
    "type": "FUNCTION",
    "content_hash": "22c204b4ca26ced8"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::scenario": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::scenario",
-   "start_line": 54,
-   "end_line": 73,
+   "start_line": 56,
+   "end_line": 76,
    "type": "FUNCTION",
-   "content_hash": "6995847dbf214ad0"
+   "content_hash": "ee8cfd6af49e762b"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::scenario_smp": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::scenario_smp",
-   "start_line": 74,
-   "end_line": 96,
+   "start_line": 77,
+   "end_line": 99,
    "type": "FUNCTION",
-   "content_hash": "492e5956d1db667a"
+   "content_hash": "87ec840dddb8433f"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::expect": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::expect",
-   "start_line": 97,
-   "end_line": 118,
+   "start_line": 100,
+   "end_line": 121,
    "type": "FUNCTION",
-   "content_hash": "6a844bb2a4fdbc5f"
+   "content_hash": "77cdecbea6d8bb31"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::expect_count": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::expect_count",
-   "start_line": 119,
-   "end_line": 141,
+   "start_line": 122,
+   "end_line": 144,
    "type": "FUNCTION",
-   "content_hash": "b63ad67472f3649c"
+   "content_hash": "66eb69000db5be71"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::refute": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::refute",
-   "start_line": 142,
-   "end_line": 166,
+   "start_line": 145,
+   "end_line": 169,
    "type": "FUNCTION",
-   "content_hash": "c310f2ccfea988a6"
+   "content_hash": "880de39484a00331"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::scenario_uefi": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::scenario_uefi",
-   "start_line": 167,
-   "end_line": 1388,
+   "start_line": 170,
+   "end_line": 1412,
    "type": "FUNCTION",
-   "content_hash": "0f83998d6d9acd25"
+   "content_hash": "ab7384e7797c5aba"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::http_server_start": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::http_server_start",
-   "start_line": 1389,
-   "end_line": 1395,
+   "start_line": 1413,
+   "end_line": 1419,
    "type": "FUNCTION",
-   "content_hash": "2a13b43a1ddfc670"
+   "content_hash": "ca13cd0f690fece3"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::http_server_stop": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::http_server_stop",
-   "start_line": 1396,
-   "end_line": 1400,
+   "start_line": 1420,
+   "end_line": 1424,
    "type": "FUNCTION",
-   "content_hash": "48ade636b0018f4d"
+   "content_hash": "68510177a447038c"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::http_fixture_start": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::http_fixture_start",
-   "start_line": 1401,
-   "end_line": 1407,
+   "start_line": 1425,
+   "end_line": 1431,
    "type": "FUNCTION",
-   "content_hash": "d52bd8c0a2d30b27"
+   "content_hash": "ffef1462492f2777"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::http_fixture_stop": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::http_fixture_stop",
-   "start_line": 1408,
-   "end_line": 1412,
+   "start_line": 1432,
+   "end_line": 1436,
    "type": "FUNCTION",
-   "content_hash": "c3f58ac0a3fcf4ed"
+   "content_hash": "d73ba009095c6d6a"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::net_fixture_start": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::net_fixture_start",
-   "start_line": 1413,
-   "end_line": 1419,
+   "start_line": 1437,
+   "end_line": 1443,
    "type": "FUNCTION",
-   "content_hash": "1da07b69ef132b4b"
+   "content_hash": "43785710d4fd215a"
   },
   "tools/test_bdd.sh|tools/test_bdd.sh::net_fixture_stop": {
    "file_path": "tools/test_bdd.sh",
    "qualified_name": "tools/test_bdd.sh::net_fixture_stop",
-   "start_line": 1420,
-   "end_line": 2302,
+   "start_line": 1444,
+   "end_line": 2326,
    "type": "FUNCTION",
-   "content_hash": "bab4909c9f8ca8eb"
+   "content_hash": "4dab4078a74e1eb6"
   },
   "tools/test_call_align.py|tools/test_call_align.py::AlignConfig": {
    "file_path": "tools/test_call_align.py",
@@ -105937,7 +106069,7 @@
       "fs/kfile.c::kfopen_dir",
       "fs/kfile.c::kfopen",
       "fs/kfile.c::fs_rename_on_minifs",
-      "fs/kfile.c::entry",
+      "fs/kfile.c::directory",
       "fs/kfile.c::kfclose",
       "fs/kfile.c::kfgetc",
       "fs/kfile.c::kfgets",
@@ -106005,6 +106137,7 @@
       "fs/minifs.c::minifs_mkdir",
       "fs/minifs.c::minifs_unlink",
       "fs/minifs.c::minifs_split_parent",
+      "fs/minifs.c::minifs_dir_is_empty",
       "fs/minifs.c::minifs_rename",
       "fs/minifs.c::minifs_rmdir",
       "fs/minifs.c::minifs_read",
@@ -109128,8 +109261,11 @@
       "kernel/syscalls.c::sys_linux_write",
       "kernel/syscalls.c::sys_linux_writev",
       "kernel/syscalls.c::kfd_install",
+      "kernel/syscalls.c::do_open_kpath",
       "kernel/syscalls.c::do_open_path",
       "kernel/syscalls.c::sys_linux_open",
+      "kernel/syscalls.c::cwd",
+      "kernel/syscalls.c::LINUX_AT_FDCWD",
       "kernel/syscalls.c::LINUX_O_RDONLY",
       "kernel/syscalls.c::LINUX_O_WRONLY",
       "kernel/syscalls.c::LINUX_O_RDWR",
@@ -109257,6 +109393,7 @@
       "kernel/syscalls.c::sys_linux_fsync",
       "kernel/syscalls.c::sys_linux_fdatasync",
       "kernel/syscalls.c::sys_linux_getcwd",
+      "kernel/syscalls.c::unlink_kpath",
       "kernel/syscalls.c::sys_linux_unlink",
       "kernel/syscalls.c::PROC_SELF_EXE",
       "kernel/syscalls.c::readlink_path",
@@ -109274,7 +109411,10 @@
       "kernel/syscalls.c::sys_linux_getegid",
       "kernel/syscalls.c::sys_linux_madvise",
       "kernel/syscalls.c::sys_linux_mkdir",
+      "kernel/syscalls.c::rmdir_kpath",
       "kernel/syscalls.c::sys_linux_rmdir",
+      "kernel/syscalls.c::sys_linux_umask",
+      "kernel/syscalls.c::sys_linux_fchmod",
       "kernel/syscalls.c::LINUX_SYSCALL_COUNT",
       "kernel/syscalls.c::trace_is_noisy",
       "kernel/syscalls.c::sc_extra_name",
@@ -111042,7 +111182,7 @@
         "fs/kfile.c::kfopen_dir",
         "fs/kfile.c::kfopen",
         "fs/kfile.c::fs_rename_on_minifs",
-        "fs/kfile.c::entry",
+        "fs/kfile.c::directory",
         "fs/kfile.c::kfclose",
         "fs/kfile.c::kfgetc",
         "fs/kfile.c::kfgets",
@@ -111110,6 +111250,7 @@
         "fs/minifs.c::minifs_mkdir",
         "fs/minifs.c::minifs_unlink",
         "fs/minifs.c::minifs_split_parent",
+        "fs/minifs.c::minifs_dir_is_empty",
         "fs/minifs.c::minifs_rename",
         "fs/minifs.c::minifs_rmdir",
         "fs/minifs.c::minifs_read",
@@ -111204,7 +111345,7 @@
      "components": [],
      "components_relations": [],
      "layer": "utility",
-     "symbol_count": 231,
+     "symbol_count": 232,
      "top_symbols": [
       {
        "n": "fsimg_open_file",
@@ -111219,7 +111360,7 @@
        "k": "function"
       }
      ],
-     "top_symbols_more": 228
+     "top_symbols_more": 229
     },
     {
      "name": "headers",
@@ -114369,8 +114510,11 @@
         "kernel/syscalls.c::sys_linux_write",
         "kernel/syscalls.c::sys_linux_writev",
         "kernel/syscalls.c::kfd_install",
+        "kernel/syscalls.c::do_open_kpath",
         "kernel/syscalls.c::do_open_path",
         "kernel/syscalls.c::sys_linux_open",
+        "kernel/syscalls.c::cwd",
+        "kernel/syscalls.c::LINUX_AT_FDCWD",
         "kernel/syscalls.c::LINUX_O_RDONLY",
         "kernel/syscalls.c::LINUX_O_WRONLY",
         "kernel/syscalls.c::LINUX_O_RDWR",
@@ -114498,6 +114642,7 @@
         "kernel/syscalls.c::sys_linux_fsync",
         "kernel/syscalls.c::sys_linux_fdatasync",
         "kernel/syscalls.c::sys_linux_getcwd",
+        "kernel/syscalls.c::unlink_kpath",
         "kernel/syscalls.c::sys_linux_unlink",
         "kernel/syscalls.c::PROC_SELF_EXE",
         "kernel/syscalls.c::readlink_path",
@@ -114515,7 +114660,10 @@
         "kernel/syscalls.c::sys_linux_getegid",
         "kernel/syscalls.c::sys_linux_madvise",
         "kernel/syscalls.c::sys_linux_mkdir",
+        "kernel/syscalls.c::rmdir_kpath",
         "kernel/syscalls.c::sys_linux_rmdir",
+        "kernel/syscalls.c::sys_linux_umask",
+        "kernel/syscalls.c::sys_linux_fchmod",
         "kernel/syscalls.c::LINUX_SYSCALL_COUNT",
         "kernel/syscalls.c::trace_is_noisy",
         "kernel/syscalls.c::sc_extra_name",
@@ -114575,7 +114723,7 @@
      "components": [],
      "components_relations": [],
      "layer": "utility",
-     "symbol_count": 912,
+     "symbol_count": 919,
      "top_symbols": [
       {
        "n": "LDSO_EHSIZE",
@@ -114590,7 +114738,7 @@
        "k": "macro"
       }
      ],
-     "top_symbols_more": 899
+     "top_symbols_more": 906
     },
     {
      "name": "net",
@@ -116460,9 +116608,9 @@
      "relation": "calls into",
      "src_name": "fs",
      "dst_name": "headers",
-     "evidence": "21 imports, 193 calls across the boundary",
+     "evidence": "21 imports, 195 calls across the boundary",
      "import_count": 21,
-     "call_count": 193,
+     "call_count": 195,
      "key_edges": [
       {
        "source": "fs/ext4.c|fs/ext4.c::ext_parse_sb",
@@ -117312,9 +117460,9 @@
      "relation": "calls into",
      "src_name": "kernel",
      "dst_name": "headers",
-     "evidence": "147 imports, 1168 calls across the boundary",
+     "evidence": "147 imports, 1173 calls across the boundary",
      "import_count": 147,
-     "call_count": 1168,
+     "call_count": 1173,
      "key_edges": [
       {
        "source": "kernel/console.c|kernel/console.c::redirect_commit",
@@ -121180,7 +121328,7 @@
     }
    ],
    "layer": "utility",
-   "symbol_count": 4206,
+   "symbol_count": 4214,
    "top_symbols": [
     {
      "n": "SPINLOCK_H",
@@ -121195,7 +121343,7 @@
      "k": "type_alias"
     }
    ],
-   "top_symbols_more": 3477,
+   "top_symbols_more": 3486,
    "hub": true
   },
   {
@@ -123828,7 +123976,7 @@
   },
   {
    "name": "progs/src",
-   "description": "progs/src groups 84 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.",
+   "description": "progs/src groups 85 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.",
    "key_entities": [
     {
      "qualified_name": "kernel/string.c::kstrlen",
@@ -126073,6 +126221,18 @@
      ]
     },
     {
+     "file_path": "progs/src/pip.c",
+     "methods": [
+      "progs/src/pip.c::PIP_PYTHON_PATH",
+      "progs/src/pip.c::PIP_MODULE_FLAG",
+      "progs/src/pip.c::PIP_MODULE_NAME",
+      "progs/src/pip.c::PIP_PREFIX_WORDS",
+      "progs/src/pip.c::PIP_EXEC_FAILED",
+      "progs/src/pip.c::pip_note",
+      "progs/src/pip.c::main"
+     ]
+    },
+    {
      "file_path": "progs/src/sbtone.c",
      "methods": [
       "progs/src/sbtone.c::buffers",
@@ -127463,7 +127623,7 @@
     },
     {
      "name": "progs",
-     "description": "progs groups 51 files (c, h) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI_CHECKSUM, MINIOS_USER_LOAD_BASE, MINIOS_USER_LOAD_END. tile map editor that builds playable Doom PWADs.",
+     "description": "progs groups 52 files (c, h) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI_CHECKSUM, MINIOS_USER_LOAD_BASE, MINIOS_USER_LOAD_END. tile map editor that builds playable Doom PWADs.",
      "key_entities": [
       {
        "qualified_name": "progs/minios_abi.h::MINIOS_ABI_H",
@@ -129407,6 +129567,18 @@
        ]
       },
       {
+       "file_path": "progs/src/pip.c",
+       "methods": [
+        "progs/src/pip.c::PIP_PYTHON_PATH",
+        "progs/src/pip.c::PIP_MODULE_FLAG",
+        "progs/src/pip.c::PIP_MODULE_NAME",
+        "progs/src/pip.c::PIP_PREFIX_WORDS",
+        "progs/src/pip.c::PIP_EXEC_FAILED",
+        "progs/src/pip.c::pip_note",
+        "progs/src/pip.c::main"
+       ]
+      },
+      {
        "file_path": "progs/src/sbtone.c",
        "methods": [
         "progs/src/sbtone.c::buffers",
@@ -130079,7 +130251,7 @@
      "components": [],
      "components_relations": [],
      "layer": "utility",
-     "symbol_count": 2303,
+     "symbol_count": 2310,
      "top_symbols": [
       {
        "n": "MINIOS_ABI_H",
@@ -130094,7 +130266,7 @@
        "k": "macro"
       }
      ],
-     "top_symbols_more": 2175
+     "top_symbols_more": 2181
     },
     {
      "name": "tests",
@@ -131029,8 +131201,8 @@
      "relation": "depends on",
      "src_name": "progs",
      "dst_name": "kernel",
-     "evidence": "31 imports, 0 calls across the boundary",
-     "import_count": 31,
+     "evidence": "32 imports, 0 calls across the boundary",
+     "import_count": 32,
      "call_count": 0,
      "key_edges": [],
      "src_id": "3.3",
@@ -132372,7 +132544,7 @@
     }
    ],
    "layer": "utility",
-   "symbol_count": 2700,
+   "symbol_count": 2707,
    "top_symbols": [
     {
      "n": "kstrlen",
@@ -132387,7 +132559,7 @@
      "k": "function"
     }
    ],
-   "top_symbols_more": 2496,
+   "top_symbols_more": 2502,
    "hub": false
   },
   {
@@ -134537,6 +134709,7 @@
       "progs/src/lxabi.c::wild_jump_body",
       "progs/src/lxabi.c::process",
       "progs/src/lxabi.c::check_uid_gid",
+      "progs/src/lxabi.c::check_rename_dir",
       "progs/src/lxabi.c::copy_dentry_name",
       "progs/src/lxabi.c::check_getdents64",
       "progs/src/lxabi.c::main"
@@ -135841,6 +136014,7 @@
         "progs/src/lxabi.c::wild_jump_body",
         "progs/src/lxabi.c::process",
         "progs/src/lxabi.c::check_uid_gid",
+        "progs/src/lxabi.c::check_rename_dir",
         "progs/src/lxabi.c::copy_dentry_name",
         "progs/src/lxabi.c::check_getdents64",
         "progs/src/lxabi.c::main"
@@ -135941,7 +136115,7 @@
      "components": [],
      "components_relations": [],
      "layer": "utility",
-     "symbol_count": 160,
+     "symbol_count": 161,
      "top_symbols": [
       {
        "n": "msys5",
@@ -135956,7 +136130,7 @@
        "k": "macro"
       }
      ],
-     "top_symbols_more": 147
+     "top_symbols_more": 148
     },
     {
      "name": "root",
@@ -138943,7 +139117,7 @@
     }
    ],
    "layer": "utility",
-   "symbol_count": 740,
+   "symbol_count": 741,
    "top_symbols": [
     {
      "n": "ktime_rdtsc",
@@ -138958,7 +139132,7 @@
      "k": "function"
     }
    ],
-   "top_symbols_more": 527,
+   "top_symbols_more": 528,
    "hub": false
   },
   {
@@ -142677,7 +142851,7 @@
      "target": "headers/select_map.h|headers/select_map.h::select_poll_count",
      "call_sites": [
       {
-       "line": 2957,
+       "line": 3002,
        "column": 12
       }
      ],
@@ -142688,7 +142862,7 @@
      "target": "headers/select_map.h|headers/select_map.h::select_poll_build",
      "call_sites": [
       {
-       "line": 2961,
+       "line": 3006,
        "column": 8
       }
      ],
@@ -142699,7 +142873,7 @@
      "target": "headers/select_map.h|headers/select_map.h::select_poll_badfd",
      "call_sites": [
       {
-       "line": 2966,
+       "line": 3011,
        "column": 12
       }
      ],
@@ -142710,7 +142884,7 @@
      "target": "headers/select_map.h|headers/select_map.h::select_poll_result",
      "call_sites": [
       {
-       "line": 2969,
+       "line": 3014,
        "column": 20
       }
      ],
@@ -143231,7 +143405,7 @@
      "target": "progs/doomgeneric/p_local.h|progs/doomgeneric/p_local.h::d",
      "call_sites": [
       {
-       "line": 3509,
+       "line": 3608,
        "column": 30
       }
      ],
@@ -143296,7 +143470,7 @@
      "target": "headers/tls.h|headers/tls.h::now",
      "call_sites": [
       {
-       "line": 2790,
+       "line": 2835,
        "column": 11
       }
      ],
@@ -143367,7 +143541,7 @@
      "target": "headers/tls.h|headers/tls.h::now",
      "call_sites": [
       {
-       "line": 2790,
+       "line": 2835,
        "column": 11
       }
      ],

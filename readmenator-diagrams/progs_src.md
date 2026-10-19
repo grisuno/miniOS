@@ -1,6 +1,6 @@
 # progs/src
 
-progs/src groups 84 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
+progs/src groups 85 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
 
 ```mermaid
 graph LR
@@ -29,7 +29,7 @@ kernel groups 4 files (c) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. 
 
 ## progs (3.3)
 
-progs groups 51 files (c, h) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI_CHECKSUM, MINIOS_USER_LOAD_BASE, MINIOS_USER_LOAD_END. tile map editor that builds playable Doom PWADs.
+progs groups 52 files (c, h) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI_CHECKSUM, MINIOS_USER_LOAD_BASE, MINIOS_USER_LOAD_END. tile map editor that builds playable Doom PWADs.
 
 ## tests (3.4)
 
@@ -95,6 +95,7 @@ tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time
 - progs/src/lxtls.c
 - progs/src/mthreads.h
 - progs/src/opl3.c
+- progs/src/pip.c
 - progs/src/sbtone.c
 - progs/src/scfuzz.c
 - progs/src/thdemo.c

@@ -3,6 +3,7 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `pcache_stats` | function | `fs/pcache.c:314` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out,         unsigned long *miss_...` |
 | `pcache_unmap` | function | `fs/pcache.c:216` | `void pcache_unmap(int ino, unsigned index)` |
 | `RDSuper` | struct | `fs/ramdisk.c:26` | `` |
 | `RD_DATA_MIN` | macro | `fs/ramdisk.c:18` | `#define RD_DATA_MIN` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `PCI_CLASS_MAX_PASSES` | macro | `headers/drivers/pci.h:68` | `#define PCI_CLASS_MAX_PASSES` |
 | `PCI_CLASS_XHCI` | macro | `headers/drivers/pci.h:57` | `#define PCI_CLASS_XHCI` |
 | `PCI_COMMAND_BUS_MASTER` | macro | `headers/drivers/pci.h:34` | `#define PCI_COMMAND_BUS_MASTER` |
-| `PCI_COMMAND_IO` | macro | `headers/drivers/pci.h:32` | `#define PCI_COMMAND_IO` |
 
 Next: [SYMBOLS_p4.md](SYMBOLS_p4.md)

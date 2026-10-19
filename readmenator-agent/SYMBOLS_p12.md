@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `js_type` | function | `progs/asm/json.s:11` | `` |
+| `main` | function | `progs/asm/json.s:3772` | `` |
+| `_start` | function | `progs/asm/ldhello.s:14` | `` |
+| `main` | function | `progs/asm/ldhello.s:3` | `` |
+| `_start` | function | `progs/asm/lz4.s:1535` | `` |
+| `lz4_compress_file` | function | `progs/asm/lz4.s:478` | `` |
+| `lz4_decompress_file` | function | `progs/asm/lz4.s:791` | `` |
+| `lz4_has` | function | `progs/asm/lz4.s:3` | `` |
 | `lz4_read_all` | function | `progs/asm/lz4.s:156` | `` |
 | `lz4_write_all` | function | `progs/asm/lz4.s:371` | `` |
 | `main` | function | `progs/asm/lz4.s:1228` | `` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `HUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:212` | `#define HUSTR_31` |
 | `HUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:213` | `#define HUSTR_32` |
 | `HUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:182` | `#define HUSTR_4` |
-| `HUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:183` | `#define HUSTR_5` |
-| `HUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:184` | `#define HUSTR_6` |
-| `HUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:185` | `#define HUSTR_7` |
-| `HUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:186` | `#define HUSTR_8` |
-| `HUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:187` | `#define HUSTR_9` |
-| `HUSTR_CHATMACRO0` | macro | `progs/doomgeneric/d_englsh.h:296` | `#define HUSTR_CHATMACRO0` |
-| `HUSTR_CHATMACRO1` | macro | `progs/doomgeneric/d_englsh.h:287` | `#define HUSTR_CHATMACRO1` |
-| `HUSTR_CHATMACRO2` | macro | `progs/doomgeneric/d_englsh.h:288` | `#define HUSTR_CHATMACRO2` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)

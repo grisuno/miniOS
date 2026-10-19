@@ -27,7 +27,7 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/src/lxabi.c` | c | utility | 60 | yes |
+| `progs/src/lxabi.c` | c | utility | 61 | yes |
 | `progs/src/lxsel.c` | c | utility | 11 | yes |
 
 ### `mcp` (4 files)
@@ -147,8 +147,8 @@ This community groups 44 file(s) rooted at `tools` with dominant language py (co
 - [taint high] `mcp/minios_addons.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_addons.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `mcp/minios_mcp.py` -> `mcp/minios_mcp.py` via `subprocess` (0 hops)
-- [taint high] `mcp/minios_mcp.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_mcp.py` -> `mcp/minios_addons.py` via `subprocess` (1 hops)
+- [taint high] `mcp/minios_mcp.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_mcp.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `tools/boot_wl.py` -> `tools/boot_wl.py` via `subprocess` (0 hops)
 - [taint high] `tools/boot_wl.py` -> `kernel/time.c` via `subprocess` (1 hops)

@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `menu_fill` | function | `progs/pokemon/platform_minios.c:632` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
+| `menu_item_at` | function | `progs/pokemon/platform_minios.c:700` | `static int menu_item_at(int lx, int ly)` |
+| `menu_osd` | function | `progs/pokemon/platform_minios.c:664` | `static void menu_osd(const char *s)` |
+| `menu_text` | function | `progs/pokemon/platform_minios.c:645` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
+| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:330` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,                             ...` |
+| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:262` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
+| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1222` | `static void minios_autosave(uint32_t now)` |
+| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1208` | `static inline bool minios_fast_forward(void)` |
 | `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:1097` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,                        ...` |
 | `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1217` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
 | `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:1132` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
@@ -459,26 +467,27 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `check_eventfd` | function | `progs/src/lxabi.c:418` | `static void check_eventfd(void)` |
 | `check_fork_cow_kernel_write` | function | `progs/src/lxabi.c:160` | `static void check_fork_cow_kernel_write(void)` |
 | `check_fork_registers` | function | `progs/src/lxabi.c:138` | `static void check_fork_registers(void)` |
-| `check_getdents64` | function | `progs/src/lxabi.c:687` | `static void check_getdents64(void)` |
+| `check_getdents64` | function | `progs/src/lxabi.c:722` | `static void check_getdents64(void)` |
 | `check_limits` | function | `progs/src/lxabi.c:478` | `static void check_limits(void)` |
 | `check_mkdir` | function | `progs/src/lxabi.c:464` | `static void check_mkdir(void)` |
 | `check_pipe2_flags` | function | `progs/src/lxabi.c:307` | `static void check_pipe2_flags(void)` |
 | `check_pipe_blocking` | function | `progs/src/lxabi.c:334` | `static void check_pipe_blocking(void)` |
 | `check_pipe_epipe` | function | `progs/src/lxabi.c:356` | `static void check_pipe_epipe(void)` |
 | `check_poll` | function | `progs/src/lxabi.c:394` | `static void check_poll(void)` |
+| `check_rename_dir` | function | `progs/src/lxabi.c:649` | `static void check_rename_dir(void)` |
 | `check_sleep` | function | `progs/src/lxabi.c:500` | `static void check_sleep(void)` |
 | `check_threads` | function | `progs/src/lxabi.c:215` | `static void check_threads(void)` |
 | `check_time` | function | `progs/src/lxabi.c:455` | `static void check_time(void)` |
 | `check_uid_gid` | function | `progs/src/lxabi.c:642` | `static void check_uid_gid(void)` |
 | `check_writev_pipe` | function | `progs/src/lxabi.c:382` | `static void check_writev_pipe(void)` |
 | `child_status` | function | `progs/src/lxabi.c:535` | `static int child_status(void (*body)(void))` |
-| `copy_dentry_name` | function | `progs/src/lxabi.c:680` | `static void copy_dentry_name(char *dst, size_t cap, const char *src)` |
+| `copy_dentry_name` | function | `progs/src/lxabi.c:715` | `static void copy_dentry_name(char *dst, size_t cap, const char *src)` |
 | `detached_worker` | function | `progs/src/lxabi.c:245` | `static void *detached_worker(void *arg)` |
 | `exit_group_from_worker_body` | function | `progs/src/lxabi.c:567` | `static void exit_group_from_worker_body(void)` |
 | `fork_probe` | function | `progs/src/lxabi.c:95` | `static void fork_probe(uint64_t *out)` |
 | `lxabi_exit_group_worker` | function | `progs/src/lxabi.c:561` | `static void *lxabi_exit_group_worker(void *arg)` |
 | `lxabi_sleeper` | function | `progs/src/lxabi.c:527` | `static void *lxabi_sleeper(void *arg)` |
-| `main` | function | `progs/src/lxabi.c:754` | `int main(void)` |
+| `main` | function | `progs/src/lxabi.c:789` | `int main(void)` |
 | `mono_us` | function | `progs/src/lxabi.c:491` | `static long mono_us(void)` |
 | `now_ms` | function | `progs/src/lxabi.c:75` | `static long now_ms(void)` |
 | `process` | function | `progs/src/lxabi.c:581` | `* process (never a kernel panic), and kill(pid, 0) or a harmless signal  * leaves the target aliv...` |
@@ -487,14 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `signaller` | function | `progs/src/lxabi.c:275` | `static void *signaller(void *arg)` |
 | `thread_result` | struct | `progs/src/lxabi.c:195` | `` |
 | `tls_seen` | type_alias | `progs/src/lxabi.c:194` | `typedef struct thread_result { long tls_seen;` |
-| `wild_jump_body` | function | `progs/src/lxabi.c:573` | `static void wild_jump_body(void)` |
-| `worker` | function | `progs/src/lxabi.c:201` | `static void *worker(void *arg)` |
-| `SYS_exit` | macro | `progs/src/lxhello.c:21` | `#define SYS_exit` |
-| `SYS_write` | macro | `progs/src/lxhello.c:20` | `#define SYS_write` |
-| `lmain` | function | `progs/src/lxhello.c:46` | `int lmain(long argc, char **argv)` |
-| `lx_strlen` | function | `progs/src/lxhello.c:23` | `static unsigned long lx_strlen(const char *s)` |
-| `lx_syscall3` | function | `progs/src/lxhello.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
-| `lx_write` | function | `progs/src/lxhello.c:29` | `static void lx_write(const char *s)` |
-| `lx_write_int` | function | `progs/src/lxhello.c:33` | `static void lx_write_int(long v)` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)

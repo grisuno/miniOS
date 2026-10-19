@@ -1,10 +1,10 @@
 # progs/src
 
-*Community 2 | 84 files | cohesion 0.71*
+*Community 2 | 85 files | cohesion 0.71*
 
 ## Definition
 
-This community groups 84 file(s) rooted at `tests` with dominant language c (cohesion 0.71). Central symbols: `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`, `ABI_NO_MANIFEST`, `ABI_OK`, `ABI_VERSION_MISMATCH`. Core file: `progs/vedit/vedit.c` (245 symbols). Documented purpose: Docstring: abi.h -- Boot-time ABI manifest gate contract..
+This community groups 85 file(s) rooted at `tests` with dominant language c (cohesion 0.71). Central symbols: `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`, `ABI_NO_MANIFEST`, `ABI_OK`, `ABI_VERSION_MISMATCH`. Core file: `progs/vedit/vedit.c` (245 symbols). Documented purpose: Docstring: abi.h -- Boot-time ABI manifest gate contract..
 
 ## Files
 
@@ -14,7 +14,7 @@ This community groups 84 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `tests/test_abi.c` | c | testing | 2 | yes |
 
-### `progs/src` (14 files)
+### `progs/src` (15 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -128,7 +128,7 @@ This community groups 84 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/topogpt3/topogpt3.c` | c | utility | 128 | no |
 
-*... and 64 more files in this community.*
+*... and 65 more files in this community.*
 
 
 ## Key Symbols
@@ -166,7 +166,7 @@ This community groups 84 file(s) rooted at `tests` with dominant language c (coh
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 140
+- Internal resolved imports (EXTRACTED): 142
 - Cross-boundary resolved imports (EXTRACTED): 57
 
 ## Connections
@@ -216,4 +216,4 @@ This community groups 84 file(s) rooted at `tests` with dominant language c (coh
 - `progs/file/file.c`
 - `progs/file/file_assoc.h`
 - `progs/freedomui/freedomui_minios.c`
-- *... and 64 more*
+- *... and 65 more*

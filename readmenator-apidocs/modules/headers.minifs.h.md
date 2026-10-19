@@ -209,7 +209,7 @@ int minifs_is_mounted(void);
 
 **Returns:** `int`
 
-*Called by:* [`fsimg_open_file`](fs.fsimg.c.md#fsimg_open_file), [`entry`](fs.kfile.c.md#entry), [`kfclose`](fs.kfile.c.md#kfclose), [`kfopen`](fs.kfile.c.md#kfopen), [`fs_dir_exists`](fs.vfs.c.md#fs_dir_exists), [`flows`](kernel.shell.c.md#flows), [`shell_exec_builtin`](kernel.shell.c.md#shell_exec_builtin), [`window`](kernel.shell.c.md#window), [`spawn_load_image`](kernel.spawn.c.md#spawn_load_image), [`view`](kernel.syscalls.c.md#view)
+*Called by:* [`fsimg_open_file`](fs.fsimg.c.md#fsimg_open_file), [`directory`](fs.kfile.c.md#directory), [`kfclose`](fs.kfile.c.md#kfclose), [`kfopen`](fs.kfile.c.md#kfopen), [`fs_dir_exists`](fs.vfs.c.md#fs_dir_exists), [`flows`](kernel.shell.c.md#flows), [`shell_exec_builtin`](kernel.shell.c.md#shell_exec_builtin), [`window`](kernel.shell.c.md#window), [`spawn_load_image`](kernel.spawn.c.md#spawn_load_image), [`view`](kernel.syscalls.c.md#view)
 
 ---
 
@@ -344,7 +344,7 @@ Files only; directories refuse. An existing file dst refuses (no silent overwrit
 
 **Returns:** `int`
 
-*Called by:* [`entry`](fs.kfile.c.md#entry)
+*Called by:* [`directory`](fs.kfile.c.md#directory)
 
 ---
 
@@ -482,7 +482,7 @@ int minifs_resolve_path(const char *path);
 
 **Returns:** `int`
 
-*Called by:* [`fsimg_open_file`](fs.fsimg.c.md#fsimg_open_file), [`entry`](fs.kfile.c.md#entry), [`kfopen`](fs.kfile.c.md#kfopen), [`fs_dir_exists`](fs.vfs.c.md#fs_dir_exists), [`minifs_mkdir_p`](fs.vfs.c.md#minifs_mkdir_p), [`shell_exec_builtin`](kernel.shell.c.md#shell_exec_builtin), [`window`](kernel.shell.c.md#window), [`spawn_load_image`](kernel.spawn.c.md#spawn_load_image)
+*Called by:* [`fsimg_open_file`](fs.fsimg.c.md#fsimg_open_file), [`directory`](fs.kfile.c.md#directory), [`kfopen`](fs.kfile.c.md#kfopen), [`fs_dir_exists`](fs.vfs.c.md#fs_dir_exists), [`minifs_mkdir_p`](fs.vfs.c.md#minifs_mkdir_p), [`shell_exec_builtin`](kernel.shell.c.md#shell_exec_builtin), [`window`](kernel.shell.c.md#window), [`spawn_load_image`](kernel.spawn.c.md#spawn_load_image)
 
 ---
 

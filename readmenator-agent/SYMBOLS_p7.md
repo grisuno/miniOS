@@ -3,6 +3,7 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `wq_init` | function | `headers/sync.h:50` | `void wq_init(wait_queue_t *q);` |
 | `SYSCALL_ASM_H` | macro | `headers/syscall_asm.h:2` | `#define SYSCALL_ASM_H` |
 | `SYSCALL_CPU_CUR_PID_OFF` | macro | `headers/syscall_asm.h:20` | `#define SYSCALL_CPU_CUR_PID_OFF` |
 | `SYSCALL_CPU_SC_N_OFF` | macro | `headers/syscall_asm.h:21` | `#define SYSCALL_CPU_SC_N_OFF` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `size` | function | `kernel.c:253` | `* image size (see kernel.ld);` |
 | `syscall_init` | function | `kernel.c:117` | `void syscall_init(void)` |
 | `syscall_kstack` | variable | `kernel.c:115` | `extern unsigned long syscall_kstack;` |
-| `table` | function | `kernel.c:104` | `* Symbol table (for resolving program references) * ================================================================...` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

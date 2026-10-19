@@ -15,7 +15,7 @@ flowchart TB
     subgraph lane_0["Tier 1 - entry / orchestration"]
         direction LR
         n_c1["progs/doomgeneric: d_englsh<br/>98 files, 2045 symbols<br/>Core / utility"]:::cycle
-        n_c4["tools: tls_crypto<br/>30 files, 582 symbols<br/>Core / utility"]:::cycle
+        n_c4["tools: tls_crypto<br/>30 files, 583 symbols<br/>Core / utility"]:::cycle
         n_c5["headers: vga_fb<br/>15 files, 379 symbols<br/>Core / utility"]:::cycle
         n_d_tools["tools<br/>34 files, 199 symbols<br/>Core / utility"]:::default
         n_d_progs["progs<br/>49 files, 809 symbols<br/>Core / utility"]:::default
@@ -28,7 +28,7 @@ flowchart TB
     end
     subgraph lane_1["Tier 2"]
         direction LR
-        n_c0["headers: kernel<br/>113 files, 4040 symbols<br/>Core / utility"]:::cycle
+        n_c0["headers: kernel<br/>113 files, 4048 symbols<br/>Core / utility"]:::cycle
         n_c3["progs/doomgeneric: p_spec<br/>67 files, 1027 symbols<br/>Core / utility"]:::cycle
     end
     subgraph lane_2["Tier 3"]
@@ -39,7 +39,7 @@ flowchart TB
     end
     subgraph lane_3["Tier 4 - foundation"]
         direction LR
-        n_c2["progs/src<br/>65 files, 2540 symbols<br/>Core / utility"]:::cycle
+        n_c2["progs/src<br/>66 files, 2547 symbols<br/>Core / utility"]:::cycle
     end
     n_c0 ==>|"9"| n_c2
     n_c0 -->|"1"| n_c7

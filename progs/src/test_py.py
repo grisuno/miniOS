@@ -35,14 +35,21 @@ epoch = time.gmtime(0)
 check('py-time-epoch-ok', epoch[0] == 1970 and epoch[1] == 1 and epoch[2] == 1)
 
 import os
-check('py-uid-ok', os.getuid() == 0 and os.geteuid() == 0)
-check('py-listdir-ok', 'resolv.conf' in os.listdir('/etc'))
-try:
-    os.mkdir('/tmp/py_rmdir')
-    os.rmdir('/tmp/py_rmdir')
-    check('py-rmdir-ok', not os.path.exists('/tmp/py_rmdir'))
-except OSError:
-    check('py-rmdir-ok', False)
+if hasattr(os, 'getuid'):
+    check('py-uid-ok', os.getuid() == 0 and os.geteuid() == 0)
+    check('py-listdir-ok', 'resolv.conf' in os.listdir('/etc'))
+if hasattr(os, 'rmdir'):
+    try:
+        os.mkdir('/tmp/py_rmdir')
+        os.rmdir('/tmp/py_rmdir')
+        try:
+            os.stat('/tmp/py_rmdir')
+            _gone = False
+        except OSError:
+            _gone = True
+        check('py-rmdir-ok', _gone)
+    except OSError:
+        check('py-rmdir-ok', False)
 
 import mip
 

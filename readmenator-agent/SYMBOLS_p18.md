@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `LIGHTLEVELS` | macro | `progs/doomgeneric/r_main.h:61` | `#define LIGHTLEVELS` |
+| `LIGHTSCALESHIFT` | macro | `progs/doomgeneric/r_main.h:65` | `#define LIGHTSCALESHIFT` |
+| `LIGHTSEGSHIFT` | macro | `progs/doomgeneric/r_main.h:62` | `#define LIGHTSEGSHIFT` |
+| `LIGHTZSHIFT` | macro | `progs/doomgeneric/r_main.h:67` | `#define LIGHTZSHIFT` |
+| `MAXLIGHTSCALE` | macro | `progs/doomgeneric/r_main.h:64` | `#define MAXLIGHTSCALE` |
+| `MAXLIGHTZ` | macro | `progs/doomgeneric/r_main.h:66` | `#define MAXLIGHTZ` |
+| `NUMCOLORMAPS` | macro | `progs/doomgeneric/r_main.h:79` | `#define NUMCOLORMAPS` |
+| `R_AddPointToBox` | function | `progs/doomgeneric/r_main.h:140` | `void R_AddPointToBox ( int x, int y, fixed_t* box );` |
 | `R_Init` | function | `progs/doomgeneric/r_main.h:155` | `void R_Init (void);` |
 | `R_PointInSubsector` | function | `progs/doomgeneric/r_main.h:135` | `subsector_t* R_PointInSubsector ( fixed_t x, fixed_t y );` |
 | `R_PointOnSegSide` | function | `progs/doomgeneric/r_main.h:109` | `int R_PointOnSegSide ( fixed_t x, fixed_t y, seg_t* line );` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 | `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.h:105` | `void V_DrawMouseSpeedBox(int speed);` |
 | `V_DrawPatch` | function | `progs/doomgeneric/v_video.h:57` | `void V_DrawPatch(int x, int y, patch_t *patch);` |
 | `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.h:63` | `void V_DrawPatchDirect(int x, int y, patch_t *patch);` |
-| `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.h:58` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch);` |
-| `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.h:78` | `void V_DrawRawScreen(byte *raw);` |
-| `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.h:61` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch);` |
-| `V_DrawTLPatch` | function | `progs/doomgeneric/v_video.h:59` | `void V_DrawTLPatch(int x, int y, patch_t *patch);` |
-| `V_DrawVertLine` | function | `progs/doomgeneric/v_video.h:73` | `void V_DrawVertLine(int x, int y, int h, int c);` |
-| `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.h:62` | `void V_DrawXlaPatch(int x, int y, patch_t * patch);` |
-| `V_Init` | function | `progs/doomgeneric/v_video.h:49` | `void V_Init (void);` |
-| `V_LoadTintTable` | function | `progs/doomgeneric/v_video.h:97` | `void V_LoadTintTable(void);` |
 
 Next: [SYMBOLS_p19.md](SYMBOLS_p19.md)

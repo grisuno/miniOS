@@ -3,6 +3,13 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `sys_linux_unlink` | function | `kernel/syscalls.c:3089` | `static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_write` | function | `kernel/syscalls.c:1351` | `static long sys_linux_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_writev` | function | `kernel/syscalls.c:1358` | `static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_clip_get` | function | `kernel/syscalls.c:770` | `static long sys_minios_clip_get(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_clip_set` | function | `kernel/syscalls.c:760` | `static long sys_minios_clip_set(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_dir_list` | function | `kernel/syscalls.c:1069` | `static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_dns` | function | `kernel/syscalls.c:266` | `static long sys_minios_dns(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_doom_frame` | function | `kernel/syscalls.c:409` | `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_fb_info` | function | `kernel/syscalls.c:442` | `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_futex_wait` | function | `kernel/syscalls.c:799` | `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)` |
@@ -37,22 +44,23 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 | `sys_minios_time` | function | `kernel/syscalls.c:342` | `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_tls_retired` | function | `kernel/syscalls.c:271` | `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_minios_vga_mode` | function | `kernel/syscalls.c:384` | `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `syscall_name` | function | `kernel/syscalls.c:3373` | `const char *syscall_name(long n)` |
+| `syscall_name` | function | `kernel/syscalls.c:3472` | `const char *syscall_name(long n)` |
 | `syscall_trace_enabled` | function | `kernel/syscalls.c:1241` | `long syscall_trace_enabled(void)` |
 | `syscall_trace_set` | function | `kernel/syscalls.c:1242` | `void syscall_trace_set(int on)` |
 | `syscall_trace_shown` | function | `kernel/syscalls.c:1245` | `unsigned long syscall_trace_shown(void)` |
 | `syscall_trace_verbose_enabled` | function | `kernel/syscalls.c:1243` | `long syscall_trace_verbose_enabled(void)` |
 | `syscall_trace_verbose_set` | function | `kernel/syscalls.c:1244` | `void syscall_trace_verbose_set(int on)` |
-| `trace_hint_print` | function | `kernel/syscalls.c:3414` | `static void trace_hint_print(long n, int kind, const char *path,                              lon...` |
-| `trace_is_noisy` | function | `kernel/syscalls.c:3344` | `static int trace_is_noisy(long n)` |
+| `trace_hint_print` | function | `kernel/syscalls.c:3513` | `static void trace_hint_print(long n, int kind, const char *path,                              lon...` |
+| `trace_is_noisy` | function | `kernel/syscalls.c:3443` | `static int trace_is_noisy(long n)` |
 | `unchanged` | function | `kernel/syscalls.c:1260` | `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...` |
+| `unlink_kpath` | function | `kernel/syscalls.c:3073` | `static long unlink_kpath(const char *path)` |
 | `untouched` | function | `kernel/syscalls.c:139` | `* child untouched (caller refuses fail-closed). */ int kfd_view_copy(proc_t *child, proc_t *parent)` |
-| `user_range_ok` | function | `kernel/syscalls.c:3525` | `int user_range_ok(unsigned long p, unsigned long len)` |
+| `user_range_ok` | function | `kernel/syscalls.c:3624` | `int user_range_ok(unsigned long p, unsigned long len)` |
 | `view` | function | `kernel/syscalls.c:503` | `* view (same as the `clear` builtin). Anything else is -EINVAL. Each  * out-word is range-checked...` |
-| `vma_free_cover` | function | `kernel/syscalls.c:2236` | `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` |
-| `vma_live_first_overlap` | function | `kernel/syscalls.c:2050` | `static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end)` |
-| `vma_live_overlap` | function | `kernel/syscalls.c:2255` | `static int vma_live_overlap(unsigned long base, unsigned long len)` |
-| `vma_live_remainder` | function | `kernel/syscalls.c:2067` | `static int vma_live_remainder(unsigned long base, unsigned long len,         int file, int ino, u...` |
+| `vma_free_cover` | function | `kernel/syscalls.c:2281` | `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` |
+| `vma_live_first_overlap` | function | `kernel/syscalls.c:2095` | `static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end)` |
+| `vma_live_overlap` | function | `kernel/syscalls.c:2300` | `static int vma_live_overlap(unsigned long base, unsigned long len)` |
+| `vma_live_remainder` | function | `kernel/syscalls.c:2112` | `static int vma_live_remainder(unsigned long base, unsigned long len,         int file, int ino, u...` |
 | `wall_us_now` | function | `kernel/syscalls.c:256` | `unsigned long wall_us_now(void)` |
 | `LINUX_ECHILD` | macro | `kernel/syscalls_proc.c:197` | `#define LINUX_ECHILD` |
 | `LINUX_EINVAL` | macro | `kernel/syscalls_proc.c:198` | `#define LINUX_EINVAL` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 | `test_t07_bin_command_path` | method | `mcp/test_minios_mcp.py:411` | `def test_t07_bin_command_path(self)` |
 | `test_t08_python_script` | method | `mcp/test_minios_mcp.py:419` | `def test_t08_python_script(self)` |
 | `test_t09_py_eval` | method | `mcp/test_minios_mcp.py:426` | `def test_t09_py_eval(self)` |
-| `test_t10_minios_test` | method | `mcp/test_minios_mcp.py:431` | `def test_t10_minios_test(self)` |
-| `test_t11_poweroff_and_reboot` | method | `mcp/test_minios_mcp.py:452` | `def test_t11_poweroff_and_reboot(self)` |
-| `test_test_not_booted` | method | `mcp/test_minios_mcp.py:195` | `def test_test_not_booted(self)` |
-| `test_timeout_clamped` | method | `mcp/test_minios_mcp.py:230` | `def test_timeout_clamped(self)` |
-| `test_tools_list` | method | `mcp/test_minios_mcp.py:158` | `def test_tools_list(self)` |
-| `test_unknown_key_rejected` | method | `mcp/test_minios_mcp.py:506` | `def test_unknown_key_rejected(self)` |
-| `test_unknown_method` | method | `mcp/test_minios_mcp.py:170` | `def test_unknown_method(self)` |
-| `test_unknown_tool` | method | `mcp/test_minios_mcp.py:178` | `def test_unknown_tool(self)` |
 
 Next: [SYMBOLS_p11.md](SYMBOLS_p11.md)

@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `mus_render_push` | function | `progs/doomgeneric/i_minios_sound.c:359` | `static void mus_render_push(mus_player_t *m, unsigned n)` |
+| `muted` | function | `progs/doomgeneric/i_minios_sound.c:51` | `* pcm2 while sfx stay muted (effect tones ruined the melody);` |
+| `pcspk_channel_t` | struct | `progs/doomgeneric/i_minios_sound.c:17` | `` |
+| `sys_pcm2_close` | function | `progs/doomgeneric/i_minios_sound.c:44` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/doomgeneric/i_minios_sound.c:38` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/doomgeneric/i_minios_sound.c:41` | `static long sys_pcm2_write(const void *buf, long len)` |
+| `sys_time` | function | `progs/doomgeneric/i_minios_sound.c:35` | `static long sys_time(void)` |
+| `sys_tone_hw` | function | `progs/doomgeneric/i_minios_sound.c:32` | `static long sys_tone_hw(unsigned f)` |
 | `DRAW_PIXEL2` | macro | `progs/doomgeneric/i_scale.c:1099` | `#define DRAW_PIXEL2` |
 | `DRAW_PIXEL3` | macro | `progs/doomgeneric/i_scale.c:1194` | `#define DRAW_PIXEL3` |
 | `DRAW_PIXEL4` | macro | `progs/doomgeneric/i_scale.c:1276` | `#define DRAW_PIXEL4` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 | `key_menu_save` | variable | `progs/doomgeneric/m_controls.h:110` | `extern int key_menu_save;` |
 | `key_menu_screenshot` | variable | `progs/doomgeneric/m_controls.h:123` | `extern int key_menu_screenshot;` |
 | `key_menu_up` | variable | `progs/doomgeneric/m_controls.h:100` | `extern int key_menu_up;` |
-| `key_menu_volume` | variable | `progs/doomgeneric/m_controls.h:112` | `extern int key_menu_volume;` |
-| `key_message_refresh` | variable | `progs/doomgeneric/m_controls.h:55` | `extern int key_message_refresh;` |
-| `key_mission` | variable | `progs/doomgeneric/m_controls.h:47` | `extern int key_mission;` |
-| `key_multi_msg` | variable | `progs/doomgeneric/m_controls.h:58` | `extern int key_multi_msg;` |
-| `key_multi_msgplayer` | variable | `progs/doomgeneric/m_controls.h:59` | `extern int key_multi_msgplayer[8];` |
-| `key_nextweapon` | variable | `progs/doomgeneric/m_controls.h:82` | `extern int key_nextweapon;` |
-| `key_pause` | variable | `progs/doomgeneric/m_controls.h:56` | `extern int key_pause;` |
-| `key_prevweapon` | variable | `progs/doomgeneric/m_controls.h:81` | `extern int key_prevweapon;` |
 
 Next: [SYMBOLS_p16.md](SYMBOLS_p16.md)

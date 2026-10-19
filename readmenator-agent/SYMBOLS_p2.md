@@ -384,7 +384,7 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `fsimg_open_file` | function | `fs/fsimg.c:15` | `int fsimg_open_file(const char *resolved, fsimg_t *img)` |
 | `fsimg_read` | function | `fs/fsimg.c:96` | `int fsimg_read(const fsimg_t *img, unsigned long off, void *buf,                unsigned long len)` |
 | `fsimg_split` | function | `fs/fsimg.c:112` | `int fsimg_split(const char *path, char *left, unsigned llen,                 char *right, unsigne...` |
-| `entry` | function | `fs/kfile.c:380` | `* directory with a volatile ramdisk entry (the kfopen misroute class) or  * need a copy+delete th...` |
+| `directory` | function | `fs/kfile.c:379` | `* empty directory by a directory (-20/-21 for a kind mismatch, -39 for a  * non-empty directory)....` |
 | `fs_drop` | function | `fs/kfile.c:70` | `static inline void fs_drop(irqflags_t flags)` |
 | `fs_rename_on_minifs` | function | `fs/kfile.c:361` | `static int fs_rename_on_minifs(const char *dst)` |
 | `fs_take` | function | `fs/kfile.c:66` | `static inline void fs_take(irqflags_t *flags)` |
@@ -392,28 +392,28 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `kevent_read` | function | `fs/kfile.c:163` | `long kevent_read(KFILE *f, unsigned long long *out)` |
 | `kevent_readable` | function | `fs/kfile.c:199` | `int kevent_readable(KFILE *f)` |
 | `kevent_writable` | function | `fs/kfile.c:204` | `int kevent_writable(KFILE *f)` |
-| `kfclose` | function | `fs/kfile.c:422` | `int kfclose(KFILE *f)` |
-| `kfflush` | function | `fs/kfile.c:666` | `int kfflush(KFILE *f)` |
-| `kfgetc` | function | `fs/kfile.c:467` | `int kfgetc(KFILE *f)` |
-| `kfgets` | function | `fs/kfile.c:508` | `char *kfgets(char *buf, int size, KFILE *f)` |
+| `kfclose` | function | `fs/kfile.c:432` | `int kfclose(KFILE *f)` |
+| `kfflush` | function | `fs/kfile.c:676` | `int kfflush(KFILE *f)` |
+| `kfgetc` | function | `fs/kfile.c:477` | `int kfgetc(KFILE *f)` |
+| `kfgets` | function | `fs/kfile.c:518` | `char *kfgets(char *buf, int size, KFILE *f)` |
 | `kfile_corrupt` | function | `fs/kfile.c:33` | `static int kfile_corrupt(const KFILE *f)` |
 | `kfile_stderr` | function | `fs/kfile.c:17` | `KFILE *kfile_stderr(void)` |
 | `kfile_stdin` | function | `fs/kfile.c:15` | `KFILE *kfile_stdin(void)` |
 | `kfile_stdout` | function | `fs/kfile.c:16` | `KFILE *kfile_stdout(void)` |
 | `kfopen` | function | `fs/kfile.c:264` | `KFILE *kfopen(const char *path, const char *mode)` |
 | `kfopen_dir` | function | `fs/kfile.c:243` | `KFILE *kfopen_dir(const char *resolved)` |
-| `kfputc` | function | `fs/kfile.c:698` | `int kfputc(int c, KFILE *f)` |
-| `kfputs` | function | `fs/kfile.c:692` | `int kfputs(const char *s, KFILE *f)` |
-| `kfread` | function | `fs/kfile.c:529` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
-| `kfseek` | function | `fs/kfile.c:641` | `int kfseek(KFILE *f, long offset, int whence)` |
-| `kftell` | function | `fs/kfile.c:662` | `long kftell(KFILE *f)` |
-| `kfungetc` | function | `fs/kfile.c:522` | `int kfungetc(int c, KFILE *f)` |
-| `kfwrite` | function | `fs/kfile.c:575` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
+| `kfputc` | function | `fs/kfile.c:708` | `int kfputc(int c, KFILE *f)` |
+| `kfputs` | function | `fs/kfile.c:702` | `int kfputs(const char *s, KFILE *f)` |
+| `kfread` | function | `fs/kfile.c:539` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
+| `kfseek` | function | `fs/kfile.c:651` | `int kfseek(KFILE *f, long offset, int whence)` |
+| `kftell` | function | `fs/kfile.c:672` | `long kftell(KFILE *f)` |
+| `kfungetc` | function | `fs/kfile.c:532` | `int kfungetc(int c, KFILE *f)` |
+| `kfwrite` | function | `fs/kfile.c:585` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
 | `kpipe_grow` | function | `fs/kfile.c:216` | `static int kpipe_grow(pipe_ring_t *ring)` |
 | `kpipe_is_write_end` | function | `fs/kfile.c:209` | `int kpipe_is_write_end(KFILE *f)` |
 | `kpipe_pair` | function | `fs/kfile.c:78` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out)` |
 | `kpipe_state` | function | `fs/kfile.c:130` | `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen)` |
-| `krewind` | function | `fs/kfile.c:703` | `void krewind(KFILE *f)` |
+| `krewind` | function | `fs/kfile.c:713` | `void krewind(KFILE *f)` |
 | `recovery` | function | `fs/kfile.c:28` | `* halts the machine with no recovery (the DOOM ABI-drift black screen),  * so every public KFILE ...` |
 | `DE_NAME` | macro | `fs/minifs.c:13` | `#define DE_NAME(de)` |
 | `DE_NAME_W` | macro | `fs/minifs.c:14` | `#define DE_NAME_W(de)` |
@@ -437,7 +437,7 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `journal_load_super` | function | `fs/minifs.c:446` | `static void journal_load_super(void)` |
 | `journal_save_entries` | function | `fs/minifs.c:478` | `static void journal_save_entries(void)` |
 | `journal_save_super` | function | `fs/minifs.c:464` | `static void journal_save_super(unsigned int state)` |
-| `minifs_access` | function | `fs/minifs.c:1395` | `int minifs_access(const char *path)` |
+| `minifs_access` | function | `fs/minifs.c:1445` | `int minifs_access(const char *path)` |
 | `minifs_alloc_block` | function | `fs/minifs.c:215` | `int minifs_alloc_block(void)` |
 | `minifs_alloc_inode` | function | `fs/minifs.c:240` | `int minifs_alloc_inode(void)` |
 | `minifs_compress` | function | `fs/minifs.c:35` | `unsigned int minifs_compress(const void *src, unsigned int src_len,                              ...` |
@@ -446,19 +446,20 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `minifs_create` | function | `fs/minifs.c:974` | `int minifs_create(const char *path, unsigned short mode)` |
 | `minifs_decompress` | function | `fs/minifs.c:46` | `unsigned int minifs_decompress(const void *src, unsigned int src_len,                            ...` |
 | `minifs_dir_add_entry` | function | `fs/minifs.c:722` | `int minifs_dir_add_entry(int dir_ino, const char *name, int child_ino,                           ...` |
+| `minifs_dir_is_empty` | function | `fs/minifs.c:1148` | `static int minifs_dir_is_empty(int dir_ino)` |
 | `minifs_dir_lookup` | function | `fs/minifs.c:692` | `int minifs_dir_lookup(int dir_ino, const char *name)` |
 | `minifs_dir_read` | function | `fs/minifs.c:891` | `int minifs_dir_read(int dir_ino, int index, MiniFSDirEntry *out, char *name_out)` |
 | `minifs_dir_remove_entry` | function | `fs/minifs.c:860` | `int minifs_dir_remove_entry(int dir_ino, const char *name)` |
-| `minifs_file_close` | function | `fs/minifs.c:1597` | `int minifs_file_close(MiniFSFile *f)` |
-| `minifs_file_open` | function | `fs/minifs.c:1583` | `MiniFSFile *minifs_file_open(int inode_num, int flags)` |
+| `minifs_file_close` | function | `fs/minifs.c:1647` | `int minifs_file_close(MiniFSFile *f)` |
+| `minifs_file_open` | function | `fs/minifs.c:1633` | `MiniFSFile *minifs_file_open(int inode_num, int flags)` |
 | `minifs_free_block` | function | `fs/minifs.c:232` | `void minifs_free_block(unsigned int block)` |
 | `minifs_free_inode` | function | `fs/minifs.c:252` | `void minifs_free_inode(int num)` |
-| `minifs_get_lba_start` | function | `fs/minifs.c:1409` | `unsigned int minifs_get_lba_start(void)` |
-| `minifs_get_total_blocks` | function | `fs/minifs.c:1604` | `unsigned int minifs_get_total_blocks(void)` |
-| `minifs_init` | function | `fs/minifs.c:1401` | `void minifs_init(void)` |
+| `minifs_get_lba_start` | function | `fs/minifs.c:1459` | `unsigned int minifs_get_lba_start(void)` |
+| `minifs_get_total_blocks` | function | `fs/minifs.c:1654` | `unsigned int minifs_get_total_blocks(void)` |
+| `minifs_init` | function | `fs/minifs.c:1451` | `void minifs_init(void)` |
 | `minifs_inode_alloc_block` | function | `fs/minifs.c:343` | `int minifs_inode_alloc_block(MiniFSInode *inode, unsigned int logblk)` |
 | `minifs_inode_get_block` | function | `fs/minifs.c:260` | `int minifs_inode_get_block(MiniFSInode *inode, unsigned int logblk,                            un...` |
-| `minifs_is_mounted` | function | `fs/minifs.c:1410` | `int minifs_is_mounted(void)` |
+| `minifs_is_mounted` | function | `fs/minifs.c:1460` | `int minifs_is_mounted(void)` |
 | `minifs_journal_abort` | function | `fs/minifs.c:531` | `void minifs_journal_abort(void)` |
 | `minifs_journal_add_block` | function | `fs/minifs.c:504` | `void minifs_journal_add_block(unsigned int block)` |
 | `minifs_journal_begin` | function | `fs/minifs.c:495` | `void minifs_journal_begin(unsigned int txn_id)` |
@@ -467,18 +468,18 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `minifs_journal_recover` | function | `fs/minifs.c:597` | `void minifs_journal_recover(void)` |
 | `minifs_journal_touch` | function | `fs/minifs.c:16` | `void minifs_journal_touch(unsigned int phys);` |
 | `minifs_mkdir` | function | `fs/minifs.c:1027` | `int minifs_mkdir(const char *path, unsigned short mode)` |
-| `minifs_mount` | function | `fs/minifs.c:1418` | `int minifs_mount(void)` |
-| `minifs_read` | function | `fs/minifs.c:1216` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)` |
-| `minifs_rename` | function | `fs/minifs.c:1144` | `int minifs_rename(const char *oldpath, const char *newpath)` |
+| `minifs_mount` | function | `fs/minifs.c:1468` | `int minifs_mount(void)` |
+| `minifs_read` | function | `fs/minifs.c:1266` | `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)` |
+| `minifs_rename` | function | `fs/minifs.c:1175` | `int minifs_rename(const char *oldpath, const char *newpath)` |
 | `minifs_resolve_path` | function | `fs/minifs.c:941` | `int minifs_resolve_path(const char *path)` |
-| `minifs_rmdir` | function | `fs/minifs.c:1176` | `int minifs_rmdir(const char *path)` |
+| `minifs_rmdir` | function | `fs/minifs.c:1225` | `int minifs_rmdir(const char *path)` |
 | `minifs_split_parent` | function | `fs/minifs.c:1119` | `static int minifs_split_parent(const char *path, char *parent_out,                               ...` |
-| `minifs_stat` | function | `fs/minifs.c:1391` | `int minifs_stat(int inode_num, MiniFSInode *out)` |
-| `minifs_sync` | function | `fs/minifs.c:1568` | `int minifs_sync(void)` |
-| `minifs_truncate` | function | `fs/minifs.c:1374` | `int minifs_truncate(int inode_num, unsigned int new_size)` |
+| `minifs_stat` | function | `fs/minifs.c:1441` | `int minifs_stat(int inode_num, MiniFSInode *out)` |
+| `minifs_sync` | function | `fs/minifs.c:1618` | `int minifs_sync(void)` |
+| `minifs_truncate` | function | `fs/minifs.c:1424` | `int minifs_truncate(int inode_num, unsigned int new_size)` |
 | `minifs_unlink` | function | `fs/minifs.c:1076` | `int minifs_unlink(const char *path)` |
-| `minifs_usage` | function | `fs/minifs.c:1609` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b,                   unsigned int *fr...` |
-| `minifs_write` | function | `fs/minifs.c:1287` | `int minifs_write(int inode_num, const void *buf, unsigned int offset,                  unsigned i...` |
+| `minifs_usage` | function | `fs/minifs.c:1659` | `void minifs_usage(unsigned int *free_b, unsigned int *total_b,                   unsigned int *fr...` |
+| `minifs_write` | function | `fs/minifs.c:1337` | `int minifs_write(int inode_num, const void *buf, unsigned int offset,                  unsigned i...` |
 | `returns` | function | `fs/minifs.c:92` | `* overflowed the slot and smashed returns (measured ring-0 #UD on  * lua->lua->cp). Every scratch...` |
 | `roundup4` | function | `fs/minifs.c:81` | `static unsigned int roundup4(unsigned int v)` |
 | `match` | function | `fs/pcache.c:230` | `* a phys match (owned, ref dropped unless already zero), 0  * otherwise. */ int pcache_put_if(int...` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `pcache_ref_if` | function | `fs/pcache.c:255` | `int pcache_ref_if(int ino, unsigned index, unsigned long phys)` |
 | `pcache_slot_phys` | function | `fs/pcache.c:222` | `static unsigned long pcache_slot_phys(int slot)` |
 | `pcache_slot_t` | struct | `fs/pcache.c:17` | `` |
-| `pcache_stats` | function | `fs/pcache.c:314` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out,         unsigned long *miss_...` |
 
 Next: [SYMBOLS_p3.md](SYMBOLS_p3.md)

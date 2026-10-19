@@ -1,11 +1,12 @@
 # Python on MiniOS
 
-The Python story has one interpreter today: the frozen MicroPython unix
-port of `docs/spec/apps.md`. This document owns what MiniOS adds around it
-so Python programs can use the network, install modules and sleep: the
-socket ABI surface the port leans on, the `mip` package installer, the
-`select(2)`/`pselect6(2)` syscalls behind `select.poll()` and
-`time.sleep`, and the staged plan toward the wider ecosystem.
+The Python story has two runtimes: the frozen MicroPython unix port of
+`docs/spec/apps.md` and a full static CPython 3.12 with pip. This document
+owns what MiniOS adds around them so Python programs can use the network,
+install modules and sleep: the socket ABI surface the port leans on, the
+`mip` package installer, the `select(2)`/`pselect6(2)` syscalls behind
+`select.poll()` and `time.sleep`, the Linux calls CPython and pip require,
+and the staged plan toward the wider ecosystem.
 
 Hard rule: no address, socket fd encoding or poll bit is invented here.
 Sockets ride `docs/spec/network.md`'s Linux socket ABI; poll bits are the
@@ -128,6 +129,106 @@ named" no matter what the file contained. Fixed in all three branches
 (`stat-minifs-file-mode`, `stat-ramdisk-file-mode`, `stat-dir-mode`,
 `stat-size`) plus the `lxabi-stat-*-offset` mutants.
 
+## CPython 3.12 and pip (phase 3)
+
+The full interpreter runs in ring 3 unmodified: `python3.elf` is a static
+x86-64 CPython 3.12.11 built from the sibling `../cpython` checkout with
+`--disable-shared --without-ensurepip --disable-test-modules` and
+`LDFLAGS="-static -no-pie"`. Every extension module is linked in
+(`Modules/Setup.local` holds `*static*` plus the `Setup.stdlib` lines with
+`*shared*` removed; without that, `zlib`, `_socket` and `hashlib` are
+silently dropped and C-extension imports fail at runtime).
+
+Layout (all paths are build products, never host paths):
+
+- `/usr/local/lib/python312.zip` carries the stdlib (`tools/mkcpyzip.py`,
+  STORED so `zipimport` can read it; one MiniFS inode instead of ~600).
+- `/usr/local/lib/python3.12/site-packages` holds unzipped pip 24.3.1 (from
+  the pinned wheel) and the generated `_sysconfigdata_*.py` that
+  `sysconfig` imports. The file is produced by `make sharedmods` in the
+  CPython tree, not by `make python`; a tree that only built `python`
+  boots but every `sysconfig` call dies with `ModuleNotFoundError`.
+- `/usr/local/lib/python3.12/packages/six-1.16.0-py2.py3-none-any.whl` is
+  the install demo wheel, fetched by `make sources` (offline hosts keep it
+  in the tree).
+
+The kernel-side work this phase forced (all pinned by tests):
+
+- **uid/gid family** (`getuid` 102, `getgid` 104, `geteuid` 107, `getegid`
+  108): every process is root, like the shell; `-ENOSYS` made glibc answer
+  `(uid_t)-1` and broke CPython's startup checks.
+- **`getdents64` (217):** `os.listdir`, `os.scandir` and pip's wheel walk.
+  The listing handle is `KFILE.is_dir` + `dir_off` + `dir_path`, opened by
+  `kfopen_dir`. Its `ref` must start at 1: with 0 the first `kfd_put`
+  freed the handle under the iterator and the process hung.
+- **`select(23)` / `pselect6(270)`:** see the section above.
+- **`rmdir` (84)** and **`unlinkat` (263, `AT_REMOVEDIR` selects `rmdir`):**
+  pip's `shutil.rmtree` walks with dir fds and `unlinkat`, never path
+  `rmdir`. Missing paths are `ENOENT`, non-directories `ENOTDIR`, non-empty
+  directories and the root `ENOTEMPTY`.
+- **`chmod` (90), `fchmod` (91), `umask` (95):** MiniFS modes are fixed at
+  creation and nothing on the boot image is permission-checked, so the
+  kernel validates the target and reports success. Refusing breaks pip's
+  console-script installation, which chmods every wrapper to 0755.
+- **`*at(2)` dirfd resolution** (`openat` 257, `newfstatat` 262,
+  `unlinkat` 263): relative names are joined against the open directory
+  fd's `dir_path`; `AT_FDCWD` (-100, normalized through `int`) passes
+  through. Before this, CPython's fd-based `shutil.rmtree` resolved the
+  child name against the cwd. The joined path lives in kernel memory, so
+  the *at handlers call the trusted `do_open_kpath`/`unlink_kpath`/
+  `rmdir_kpath` cores: re-running `SANITIZE_STR` on a kernel buffer
+  answers `EFAULT`.
+- **`rename` replaces a regular-file destination**, like Linux (`fs_rename`
+  refuses only directories and ramdisk targets). pip writes
+  `RECORD<random>.tmp` and renames it over the wheel's `RECORD`; a
+  no-overwrite `rename` fails every install with `EEXIST`.
+- **`RAMDISK_FNAME_LEN` 64 -> 96** (`headers/kernel.h`): the deepest pip
+  module open is 82 bytes; 64 failed `ENAMETOOLONG` during the first
+  import. The ramdisk format's name slot is derived from that define
+  (`tools/mkramdisk.py` parses it), so packer and `RDFile` cannot drift;
+  the earlier hardcoded 64 against a 96-byte kernel slot misaligned every
+  entry and the ABI gate halted with `manifest check failed (1)`.
+- **MiniFS inode table** 2048 entries (`INODE_TABLE_BLOCKS = 64` in
+  `tools/mkfs.minifs.py`): the pip + stdlib tree needs more than the old
+  table.
+
+Boot evidence (outside the hermetic suite): `pip --version` and `pip3
+--version` answer `pip 24.3.1 from /usr/local/lib/python3.12/site-packages/pip
+(python 3.12)`; `pip install --no-index --no-deps
+/usr/local/lib/python3.12/packages/six-1.16.0-py2.py3-none-any.whl`
+answers `Successfully installed six`, `pip uninstall -y six` answers
+`Successfully uninstalled six-1.16.0`, and `pip show six` prints
+`Name: six` / `Version: 1.16.0`; `import six` prints `1.16.0`;
+`os.listdir('/etc')` matches the host view and fd-based `shutil.rmtree`
+removes a nested tree. The one remaining startup warning
+(`Could not find platform independent libraries <prefix>`) is cosmetic:
+`sys.prefix` resolves to `/usr/local` and both `purelib` and the zip are
+found.
+
+### `pip` and `pip3` commands
+
+The shell does not expand `$@`, so a script cannot forward `pip install
+x`. `progs/src/pip.c` builds `python3 -m pip <user args>` and `execv`s
+`/python3` (a MiniFS root entry, cwd independent); it carries the
+`MINIOS_NOTE_PROCESS` note so the shell runs it as a process, since the
+pid-0 exec frame cannot `execve`. `bin/pip3` is a copy of the image and
+`make` ships both only when the CPython checkout exists. `pip --version`,
+`pip3 --version`, `pip install`, `pip uninstall -y` and `pip show` are
+driven by the BDD scenario "cpython runs and pip installs a wheel by
+command name".
+
+Directory renames are part of this contract: pip's uninstall stashes a
+whole `dist-info`/`__pycache__` directory with `os.rename`, so MiniFS
+`rename` moves directories (replacing an empty destination directory), and
+rejects moving a directory into its own subtree. `unlinkat`'s
+`AT_REMOVEDIR` and the fd-based walk cover the rest of `shutil.rmtree`.
+
+Known phase-3 gaps, documented rather than hidden: no `epoll_create1`
+(291) so a library that insists on epoll gets `ENOSYS` (pip itself
+survives); `chmod` does not store modes; paths longer than 95 bytes still
+fail `ENAMETOOLONG`; and there is no dynamic extension loading, so pip can
+install pure-Python wheels only.
+
 ## Evidence
 
 - `tests/test_mip.py` (`make test-mip`): pure vectors for URL split,
@@ -144,12 +245,14 @@ named" no matter what the file contained. Fixed in all three branches
   readiness through both syscall numbers, empty-read timeout, EBADF on
   a bad fd). The `lxsel-*` mutants in `tools/mutate.sh` (nfds check,
   bad-fd detection, result mapping, timeval write-back) all die here.
-- `progs/src/lxabi.c` stat-mode vectors + the `lxabi-stat-*-offset`
-  mutants pin the `newfstatat` fix (docs above).
-- `progs/src/test_py.py` inside `sh src/test_all.sh` (now 109 PASS):
-  socket creation, `select.poll`, `time.sleep` wall-clock, `time`
-  epoch, the mip refusal vectors and the asyncio scheduler run on every
-  boot suite.
+- `progs/src/lxabi.c` stat-mode, uid/gid, `rmdir` (empty, non-empty,
+  missing) and `getdents64` vectors, with the `lxabi-stat-*-offset`,
+  `lxabi-uid-nonzero`, `lxabi-rmdir-notempty-lost` and
+  `lxabi-getdents-*` mutants.
+- `progs/src/test_py.py` inside `sh src/test_all.sh` (now 112 PASS):
+  socket creation, `select.poll`, `time.sleep` wall-clock, `time` epoch,
+  `os.mkdir`/`os.rmdir`, the mip refusal vectors, the asyncio scheduler
+  run, plus the CPython and pip import markers on every boot suite.
 - Live in-OS proof (outside the hermetic suite, needs the host's
   internet): `mip.install` over https pulled `heapq.py` and
   `functools.py` from micropython-lib (`raw.githubusercontent.com`),
@@ -161,21 +264,19 @@ named" no matter what the file contained. Fixed in all three branches
 
 Done: phase 1 (sockets, `select.poll`/`time.sleep`, `select(2)`/
 `pselect6(2)`, https through `bin/tlsget`, the `newfstatat` mode fix,
-the `mip` installer) and phase 2 (asyncio with `errno` and non-blocking
-streams).
+the `mip` installer), phase 2 (asyncio with `errno` and non-blocking
+streams) and phase 3 (static CPython 3.12 with all modules, the stdlib
+zip, pip and a working wheel install).
+
+Next candidates, in dependency order:
 
 1. **Loopback TCP.** The net stack has no 127.0.0.1 route, so local
    servers and hermetic async wire tests are impossible; an in-stack
    loopback shortcut would close that gap.
-2. **More of the library.** `micropython-lib` packages that fit the
-   single-file installer, and `ssl`-shaped helpers for packages that
-   expect one.
-3. **CPython.** A sibling-repo port built exactly like
-   MicroPython/DOOM (`-static -no-pie`, ring-3, Linux ABI) as
-   `python3.elf` plus pip from `get-pip.py` over the https path.
-   Prerequisites this document does not yet satisfy: symlink syscalls
-   (CPython and wheels assume them; `readlink` answers `EINVAL` today),
-   `dlopen` of C extensions and dynamic linking depth, `termios`/`tty`
-   for the REPL, signals beyond group-kill, and a memory budget review
-   for the 140 MB user window. Until those land, CPython is a
-   documented plan, not a promise.
+2. **Dynamic extension modules.** pip can install pure-Python wheels
+   today; anything with a `.so` needs `dlopen`/`mmap`-exec and a loader
+   path contract (MiniOS has no shared libraries).
+3. **`epoll` (291).** `ENOSYS` is survivable but libraries that require
+   an epoll loop (rather than falling back to poll) cannot run.
+4. **REPL quality.** No `termios`/`tty` ioctls, so `python3` runs
+   scripts and `-c`; interactive editing stays in `vedit`/`edit`.

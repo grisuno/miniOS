@@ -128,6 +128,10 @@ Imported by: `progs/piano/piano.c`
 - `sc_hex8` (function) `progs/src/pcmap.c:56` `static void sc_hex8(unsigned long v, char *out)`
 - `sc_munmap` (function) `progs/src/pcmap.c:65` `static long sc_munmap(long addr, long len)`
 
+## progs/src/pip.c
+Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- `main` (function) `progs/src/pip.c:45` `int main(int argc, char **argv)` -- uint32_t namesz; uint32_t descsz; uint32_t type; char     name[sizeof MINIOS_NOTE_NAME]; uint32_t desc; }...
+
 ## progs/src/pollready.c
 - `p_write` (function) `progs/src/pollready.c:26` `static long p_write(long fd, const char *s, long n)`
 - `p_strlen` (function) `progs/src/pollready.c:30` `static unsigned long p_strlen(const char *s)`

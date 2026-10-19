@@ -4,13 +4,13 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 
 | Concept | Files | Mentions | Top Files |
 |---------|-------|----------|-----------|
-| `progs` | 316 | 332 | `headers/vga_fb.h`, `headers/vga_fx.h`, `progs/asm/aes.s`, `progs/asm/cp.s`, `progs/asm/fib.s` |
+| `progs` | 317 | 333 | `headers/vga_fb.h`, `headers/vga_fx.h`, `progs/asm/aes.s`, `progs/asm/cp.s`, `progs/asm/fib.s` |
 | `free` | 240 | 522 | `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/minifs.c`, `fs/pcache.c` |
 | `any` | 238 | 475 | `arch/x86/boot/stage2.S`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/kfile.c` |
 | `without` | 230 | 457 | `arch/x86/ctx_sw.S`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c` |
 | `program` | 221 | 445 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `headers/drivers/pci.h` |
 | `can` | 218 | 276 | `arch/x86/boot/stage2.S`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/fat32.c` |
-| `under` | 210 | 228 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/kfile.c`, `fs/pcache.c` |
+| `under` | 211 | 229 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/kfile.c`, `fs/pcache.c` |
 | `see` | 192 | 201 | `drivers/xhci.c`, `fs/kfile.c`, `fs/pcache.c`, `headers/arch/x86/hal_io.h`, `headers/ext4.h` |
 | `doomgeneric` | 188 | 211 | `headers/vga_fx.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_englsh.h` |
 | `version` | 186 | 378 | `drivers/nvme.c`, `headers/abi.h`, `headers/drivers/nvme.h`, `headers/drivers/xhci.h`, `headers/httpd.h` |
@@ -44,16 +44,16 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 | `howard` | 168 | 168 | `headers/rtc.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
 | `simon` | 167 | 167 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h` |
 | `description` | 159 | 169 | `fs/kfile.c`, `kernel/syscalls.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h` |
-| `one` | 157 | 605 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/usbblk.c` |
-| `kernel` | 153 | 373 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/sb16.c`, `drivers/xhci.c`, `fs/kfile.c` |
+| `one` | 157 | 606 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/usbblk.c` |
+| `kernel` | 153 | 377 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/sb16.c`, `drivers/xhci.c`, `fs/kfile.c` |
 | `read` | 149 | 453 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c` |
 | `inc` | 146 | 147 | `headers/wm_events.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
 | `docstring` | 138 | 1148 | `boot/uefi_stub.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/sb16.c` |
-| `mini` | 134 | 244 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c` |
+| `mini` | 135 | 245 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c` |
 | `max` | 131 | 600 | `boot/uefi_stub.c`, `drivers/nvme.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/usbblk.c` |
 | `when` | 129 | 403 | `drivers/block.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c` |
-| `every` | 129 | 294 | `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c` |
-| `file` | 127 | 598 | `boot/uefi_stub.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c` |
+| `every` | 129 | 295 | `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c` |
+| `file` | 127 | 599 | `boot/uefi_stub.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c` |
 
 ## Verb Edges
 

@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `HUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:183` | `#define HUSTR_5` |
+| `HUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:184` | `#define HUSTR_6` |
+| `HUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:185` | `#define HUSTR_7` |
+| `HUSTR_8` | macro | `progs/doomgeneric/d_englsh.h:186` | `#define HUSTR_8` |
+| `HUSTR_9` | macro | `progs/doomgeneric/d_englsh.h:187` | `#define HUSTR_9` |
+| `HUSTR_CHATMACRO0` | macro | `progs/doomgeneric/d_englsh.h:296` | `#define HUSTR_CHATMACRO0` |
+| `HUSTR_CHATMACRO1` | macro | `progs/doomgeneric/d_englsh.h:287` | `#define HUSTR_CHATMACRO1` |
+| `HUSTR_CHATMACRO2` | macro | `progs/doomgeneric/d_englsh.h:288` | `#define HUSTR_CHATMACRO2` |
 | `HUSTR_CHATMACRO3` | macro | `progs/doomgeneric/d_englsh.h:289` | `#define HUSTR_CHATMACRO3` |
 | `HUSTR_CHATMACRO4` | macro | `progs/doomgeneric/d_englsh.h:290` | `#define HUSTR_CHATMACRO4` |
 | `HUSTR_CHATMACRO5` | macro | `progs/doomgeneric/d_englsh.h:291` | `#define HUSTR_CHATMACRO5` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `disable_raw_mode` | function | `progs/doomgeneric/doomgeneric_sosox.c:102` | `void disable_raw_mode()` |
 | `enable_raw_mode` | function | `progs/doomgeneric/doomgeneric_sosox.c:107` | `void enable_raw_mode()` |
 | `handle_key_input` | function | `progs/doomgeneric/doomgeneric_sosox.c:159` | `static void handle_key_input()` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_win.c:146` | `void DG_DrawFrame()` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_win.c:172` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_win.c:167` | `uint32_t DG_GetTicksMs()` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric_win.c:95` | `void DG_Init()` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_win.c:193` | `void DG_SetWindowTitle(const char * title)` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_win.c:162` | `void DG_SleepMs(uint32_t ms)` |
-| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_win.c:14` | `#define KEYQUEUE_SIZE` |
-| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_win.c:59` | `static void addKeyToQueue(int pressed, unsigned char keyCode)` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

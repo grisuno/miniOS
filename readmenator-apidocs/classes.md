@@ -254,6 +254,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`pf_window`](modules/progs.freedomui.platform_minios.c.md#pf_window) struct in `progs/freedomui/platform_minios.c`
 - [`pic_t`](modules/progs.doomgeneric.d_textur.h.md#pic_t) struct in `progs/doomgeneric/d_textur.h`
 - [`Pig`](modules/progs.minicraft.minicraft.c.md#pig) struct in `progs/minicraft/minicraft.c`
+- [`pip_note`](modules/progs.src.pip.c.md#pip_note) struct in `progs/src/pip.c`
 - [`pipe_cfg_t`](modules/headers.pipe.h.md#pipe_cfg_t) struct in `headers/pipe.h`
 - [`pipe_ring_t`](modules/headers.pipe.h.md#pipe_ring_t) struct in `headers/pipe.h`
 - [`player_s`](modules/progs.doomgeneric.d_player.h.md#player_s) struct in `progs/doomgeneric/d_player.h`

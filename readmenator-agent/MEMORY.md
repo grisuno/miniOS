@@ -2,15 +2,15 @@
 
 > Cross-session context for agents. Sections 1-6 are regenerated from the source tree with zero LLM tokens: declared rules are quoted verbatim with `file:line`, measured baselines come from the scan. Section 7 is written by agents and humans and is preserved across rebuilds.
 
-Generated from 586 files at commit `d6cb4257d181`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
+Generated from 587 files at commit `7cc22fee05ed`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
 
 ## 1. Purpose and domain
 
 - What it is: I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [compiler/linker](https://github.com/grisuno/ld), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). (`README.md:10`)
-- Domain vocabulary (term, files): `progs` (316), `free` (240), `any` (238), `without` (230), `program` (221), `can` (218), `under` (210), `see` (192), `doomgeneric` (188), `version` (186), `but` (185), `later` (184), `either` (183), `more` (181), `public` (179)
+- Domain vocabulary (term, files): `progs` (317), `free` (240), `any` (238), `without` (230), `program` (221), `can` (218), `under` (211), `see` (192), `doomgeneric` (188), `version` (186), `but` (185), `later` (184), `either` (183), `more` (181), `public` (179)
 - Subsystem `headers: kernel`: 137 files, core `headers/kernel.h`: The user-window memory layout (load base, stack, brk cap, graphics
 - Subsystem `progs/doomgeneric: d_englsh`: 99 files, core `progs/doomgeneric/d_englsh.h`: Copyright(C) 1993-1996 Id Software, Inc.
-- Subsystem `progs/src`: 84 files, core `progs/vedit/vedit.c`: vedit IDE build and run contract.
+- Subsystem `progs/src`: 85 files, core `progs/vedit/vedit.c`: vedit IDE build and run contract.
 - Subsystem `progs/doomgeneric: p_spec`: 69 files, core `progs/doomgeneric/p_spec.h`: Copyright(C) 1993-1996 Id Software, Inc.
 - Subsystem `tools: tls_crypto`: 44 files, core `net/tls_crypto.c`: the crypto behind the kernel TLS 1.2 client.
 - Subsystem `headers: vga_fb`: 17 files, core `kernel/vga_fb.c`: wm_geom_cfg: /** Docstring: Focus ids share one space across terminals and graphics....
@@ -70,10 +70,10 @@ Declared:
 - none declared in instruction files (add them to AGENTS.md or record them in section 7)
 
 Measured baseline:
-- c: 286 files, 7067 symbols; docstrings on 22% of symbols; functions snake_case (76%); types PascalCase (19%); median file 260 lines, max 4902.
+- c: 287 files, 7083 symbols; docstrings on 22% of symbols; functions snake_case (76%); types PascalCase (18%); median file 259 lines, max 4902.
 - h: 197 files, 4610 symbols; docstrings on 17% of symbols; functions snake_case (70%); types PascalCase (7%); median file 69 lines, max 1331.
 - py: 66 files, 783 symbols; docstrings on 37% of symbols; functions snake_case (97%); types PascalCase (99%); median file 135 lines, max 957.
-- sh: 17 files, 45 symbols; docstrings on 18% of symbols; functions snake_case (100%); median file 80 lines, max 2302.
+- sh: 17 files, 45 symbols; docstrings on 18% of symbols; functions snake_case (100%); median file 80 lines, max 2326.
 - Tests: 70 files under mcp, progs/src, tests; follow the existing naming (e.g. `test_minios_mcp.py`).
 
 ## 5. Minimum deliverables

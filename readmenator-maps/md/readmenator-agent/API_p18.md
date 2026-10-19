@@ -387,9 +387,10 @@ Depends on: `headers/sched.h`, `kernel/string.c`, `kernel/time.c`
 - `process` (function) `progs/src/lxabi.c:581` `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
  * leaves the target aliv...`
 - `check_uid_gid` (function) `progs/src/lxabi.c:642` `static void check_uid_gid(void)` -- Every process runs as root (uid/gid 0); glibc and CPython's startup * read these, and -ENOSYS made them answer...
-- `copy_dentry_name` (function) `progs/src/lxabi.c:680` `static void copy_dentry_name(char *dst, size_t cap, const char *src)` -- getdents64 (217): a directory fd enumerates MiniFS entries with the right d_type and resumes across calls; a regular...
-- `check_getdents64` (function) `progs/src/lxabi.c:687` `static void check_getdents64(void)`
-- `main` (function) `progs/src/lxabi.c:754` `int main(void)`
+- `check_rename_dir` (function) `progs/src/lxabi.c:649` `static void check_rename_dir(void)` -- Directory rename within one parent: Linux allows it, and pip's * uninstall stashes a whole dist-info/pycache...
+- `copy_dentry_name` (function) `progs/src/lxabi.c:715` `static void copy_dentry_name(char *dst, size_t cap, const char *src)` -- getdents64 (217): a directory fd enumerates MiniFS entries with the right d_type and resumes across calls; a regular...
+- `check_getdents64` (function) `progs/src/lxabi.c:722` `static void check_getdents64(void)`
+- `main` (function) `progs/src/lxabi.c:789` `int main(void)`
 
 ## progs/src/lxhello.c
 - `lx_syscall3` (function) `progs/src/lxhello.c:11` `static long lx_syscall3(long n, long a1, long a2, long a3)`

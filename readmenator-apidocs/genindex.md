@@ -978,6 +978,7 @@
 - [`CVM_NODE_STR_MAX`](modules/progs.nuklear.cvm_emit.h.md#cvm_node_str_max) macro in `progs/nuklear/cvm_emit.h`
 - [`cvm_node_type`](modules/progs.nuklear.cvm_emit.h.md#cvm_node_type) enum in `progs/nuklear/cvm_emit.h`
 - [`CVM_VERSION_MAJOR`](modules/progs.nuklear.cvm_emit.c.md#cvm_version_major) macro in `progs/nuklear/cvm_emit.c`
+- [`cwd`](modules/kernel.syscalls.c.md#cwd) function in `kernel/syscalls.c`
 - [`CXMTOF`](modules/progs.doomgeneric.am_map.c.md#cxmtof) macro in `progs/doomgeneric/am_map.c`
 - [`CYMTOF`](modules/progs.doomgeneric.am_map.c.md#cymtof) macro in `progs/doomgeneric/am_map.c`
 
@@ -1281,6 +1282,7 @@
 - [`DIR_SEPARATOR_S`](modules/progs.doomgeneric.doomtype.h.md#dir_separator_s) macro in `progs/doomgeneric/doomtype.h`
 - [`DIR_SEPARATOR_S`](modules/progs.doomgeneric.doomtype.h.md#dir_separator_s) macro in `progs/doomgeneric/doomtype.h`
 - [`directly`](modules/kernel.vga_fb.c.md#directly) function in `kernel/vga_fb.c`
+- [`directory`](modules/fs.kfile.c.md#directory) function in `fs/kfile.c`
 - [`dirtybox`](modules/progs.doomgeneric.v_video.h.md#dirtybox) variable in `progs/doomgeneric/v_video.h`
 - [`disable_raw_mode`](modules/progs.doomgeneric.doomgeneric_sosox.c.md#disable_raw_mode) function in `progs/doomgeneric/doomgeneric_sosox.c`
 - [`disableRawMode`](modules/progs.doomgeneric.doomgeneric_soso.c.md#disablerawmode) function in `progs/doomgeneric/doomgeneric_soso.c`
@@ -1584,7 +1586,6 @@
 - [`ENOTDIR`](modules/headers.kernel.h.md#enotdir) macro in `headers/kernel.h`
 - [`ensure_dir`](modules/progs.micropython.variants.minios.lib.mip.py.md#ensure_dir) function in `progs.micropython.variants.minios.lib.mip`
 - [`enter_long_mode`](modules/arch.x86.boot.stage2.S.md#enter_long_mode) function in `arch/x86/boot/stage2.S`
-- [`entry`](modules/fs.kfile.c.md#entry) function in `fs/kfile.c`
 - [`ENTRY_BYTES`](modules/tools.mkramdisk.py.md#entry_bytes) constant in `tools.mkramdisk`
 - [`Env`](modules/progs.lisp.lisp.c.md#env) type_alias in `progs/lisp/lisp.c`
 - [`Env`](modules/progs.lisp.lisp.c.md#env) struct in `progs/lisp/lisp.c`
@@ -3720,6 +3721,7 @@
 - [`LINEHEIGHT`](modules/progs.doomgeneric.m_menu.c.md#lineheight) macro in `progs/doomgeneric/m_menu.c`
 - [`lines`](modules/progs.doomgeneric.r_state.h.md#lines) variable in `progs/doomgeneric/r_state.h`
 - [`linetarget`](modules/progs.doomgeneric.p_local.h.md#linetarget) variable in `progs/doomgeneric/p_local.h`
+- [`LINUX_AT_FDCWD`](modules/kernel.syscalls.c.md#linux_at_fdcwd) macro in `kernel/syscalls.c`
 - [`LINUX_CLOCK_BOOTTIME`](modules/kernel.syscalls.c.md#linux_clock_boottime) macro in `kernel/syscalls.c`
 - [`LINUX_CLOCK_MONOTONIC`](modules/kernel.syscalls.c.md#linux_clock_monotonic) macro in `kernel/syscalls.c`
 - [`LINUX_CLOCK_REALTIME`](modules/kernel.syscalls.c.md#linux_clock_realtime) macro in `kernel/syscalls.c`
@@ -4307,6 +4309,7 @@
 - [`main`](modules/progs.src.lzss.c.md#main) function in `progs/src/lzss.c`
 - [`main`](modules/progs.src.mtop.c.md#main) function in `progs/src/mtop.c`
 - [`main`](modules/progs.src.opl3.c.md#main) function in `progs/src/opl3.c`
+- [`main`](modules/progs.src.pip.c.md#main) function in `progs/src/pip.c`
 - [`main`](modules/progs.src.sbtone.c.md#main) function in `progs/src/sbtone.c`
 - [`main`](modules/progs.src.shell.py.md#main) function in `progs.src.shell`
 - [`main`](modules/progs.src.sign.c.md#main) function in `progs/src/sign.c`
@@ -6138,6 +6141,12 @@
 - [`Pig`](modules/progs.minicraft.minicraft.c.md#pig) struct in `progs/minicraft/minicraft.c`
 - [`PIN_DIAM`](modules/progs.nuklear.node_editor.c.md#pin_diam) macro in `progs/nuklear/node_editor.c`
 - [`PIN_R`](modules/progs.nuklear.node_editor.c.md#pin_r) macro in `progs/nuklear/node_editor.c`
+- [`PIP_EXEC_FAILED`](modules/progs.src.pip.c.md#pip_exec_failed) macro in `progs/src/pip.c`
+- [`PIP_MODULE_FLAG`](modules/progs.src.pip.c.md#pip_module_flag) macro in `progs/src/pip.c`
+- [`PIP_MODULE_NAME`](modules/progs.src.pip.c.md#pip_module_name) macro in `progs/src/pip.c`
+- [`pip_note`](modules/progs.src.pip.c.md#pip_note) struct in `progs/src/pip.c`
+- [`PIP_PREFIX_WORDS`](modules/progs.src.pip.c.md#pip_prefix_words) macro in `progs/src/pip.c`
+- [`PIP_PYTHON_PATH`](modules/progs.src.pip.c.md#pip_python_path) macro in `progs/src/pip.c`
 - [`PIPE_CAP_DEFAULT`](modules/headers.pipe.h.md#pipe_cap_default) macro in `headers/pipe.h`
 - [`PIPE_CAP_MAX`](modules/headers.pipe.h.md#pipe_cap_max) macro in `headers/pipe.h`
 - [`PIPE_CFG_DEFAULT`](modules/headers.pipe.h.md#pipe_cfg_default) macro in `headers/pipe.h`

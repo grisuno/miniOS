@@ -655,13 +655,15 @@ int minifs_unlink(const char *path)
 
 *Calls:* [`minifs_dir_remove_entry`](#minifs_dir_remove_entry), [`minifs_free_inode`](#minifs_free_inode), [`minifs_journal_begin`](#minifs_journal_begin), [`minifs_journal_clear`](#minifs_journal_clear), [`minifs_journal_commit`](#minifs_journal_commit), [`minifs_resolve_path`](#minifs_resolve_path), [`pcache_invalidate_ino`](headers.pcache.h.md#pcache_invalidate_ino)
 
+*Called by:* [`minifs_rename`](#minifs_rename)
+
 ---
 
 <a id="minifs_rename"></a>
 
 ### `minifs_rename`
 
-`function` | [fs/minifs.c:1144](../../fs/minifs.c#L1144)
+`function` | [fs/minifs.c:1175](../../fs/minifs.c#L1175)
 
 ```c
 int minifs_rename(const char *oldpath, const char *newpath)
@@ -682,7 +684,7 @@ Files only; directories refuse. An existing file dst refuses (no silent overwrit
 
 > **Inherited:** Documentation from [`minifs_rename`](#minifs_rename) (headers/minifs.h:130).
 
-*Calls:* [`minifs_dir_add_entry`](#minifs_dir_add_entry), [`minifs_dir_lookup`](#minifs_dir_lookup), [`minifs_dir_remove_entry`](#minifs_dir_remove_entry), [`minifs_journal_abort`](#minifs_journal_abort), [`minifs_journal_begin`](#minifs_journal_begin), [`minifs_journal_clear`](#minifs_journal_clear), [`minifs_journal_commit`](#minifs_journal_commit), [`minifs_resolve_path`](#minifs_resolve_path)
+*Calls:* [`minifs_dir_add_entry`](#minifs_dir_add_entry), [`minifs_dir_lookup`](#minifs_dir_lookup), [`minifs_dir_remove_entry`](#minifs_dir_remove_entry), [`minifs_journal_abort`](#minifs_journal_abort), [`minifs_journal_begin`](#minifs_journal_begin), [`minifs_journal_clear`](#minifs_journal_clear), [`minifs_journal_commit`](#minifs_journal_commit), [`minifs_resolve_path`](#minifs_resolve_path), [`minifs_rmdir`](#minifs_rmdir), [`minifs_unlink`](#minifs_unlink)
 
 ---
 
@@ -690,7 +692,7 @@ Files only; directories refuse. An existing file dst refuses (no silent overwrit
 
 ### `minifs_rmdir`
 
-`function` | [fs/minifs.c:1176](../../fs/minifs.c#L1176)
+`function` | [fs/minifs.c:1225](../../fs/minifs.c#L1225)
 
 ```c
 int minifs_rmdir(const char *path)
@@ -706,13 +708,15 @@ int minifs_rmdir(const char *path)
 
 *Calls:* [`minifs_dir_remove_entry`](#minifs_dir_remove_entry), [`minifs_free_inode`](#minifs_free_inode), [`minifs_journal_begin`](#minifs_journal_begin), [`minifs_journal_clear`](#minifs_journal_clear), [`minifs_journal_commit`](#minifs_journal_commit), [`minifs_resolve_path`](#minifs_resolve_path)
 
+*Called by:* [`minifs_rename`](#minifs_rename)
+
 ---
 
 <a id="minifs_read"></a>
 
 ### `minifs_read`
 
-`function` | [fs/minifs.c:1216](../../fs/minifs.c#L1216)
+`function` | [fs/minifs.c:1266](../../fs/minifs.c#L1266)
 
 ```c
 int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)
@@ -737,7 +741,7 @@ int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)
 
 ### `minifs_write`
 
-`function` | [fs/minifs.c:1287](../../fs/minifs.c#L1287)
+`function` | [fs/minifs.c:1337](../../fs/minifs.c#L1337)
 
 ```c
 int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned int len)
@@ -762,7 +766,7 @@ int minifs_write(int inode_num, const void *buf, unsigned int offset, unsigned i
 
 ### `minifs_truncate`
 
-`function` | [fs/minifs.c:1374](../../fs/minifs.c#L1374)
+`function` | [fs/minifs.c:1424](../../fs/minifs.c#L1424)
 
 ```c
 int minifs_truncate(int inode_num, unsigned int new_size)
@@ -785,7 +789,7 @@ int minifs_truncate(int inode_num, unsigned int new_size)
 
 ### `minifs_stat`
 
-`function` | [fs/minifs.c:1391](../../fs/minifs.c#L1391)
+`function` | [fs/minifs.c:1441](../../fs/minifs.c#L1441)
 
 ```c
 int minifs_stat(int inode_num, MiniFSInode *out)
@@ -806,7 +810,7 @@ int minifs_stat(int inode_num, MiniFSInode *out)
 
 ### `minifs_access`
 
-`function` | [fs/minifs.c:1395](../../fs/minifs.c#L1395)
+`function` | [fs/minifs.c:1445](../../fs/minifs.c#L1445)
 
 ```c
 int minifs_access(const char *path)
@@ -828,7 +832,7 @@ int minifs_access(const char *path)
 
 ### `minifs_init`
 
-`function` | [fs/minifs.c:1401](../../fs/minifs.c#L1401)
+`function` | [fs/minifs.c:1451](../../fs/minifs.c#L1451)
 
 ```c
 void minifs_init(void)
@@ -840,7 +844,7 @@ void minifs_init(void)
 
 ### `minifs_get_lba_start`
 
-`function` | [fs/minifs.c:1409](../../fs/minifs.c#L1409)
+`function` | [fs/minifs.c:1459](../../fs/minifs.c#L1459)
 
 ```c
 unsigned int minifs_get_lba_start(void)
@@ -854,7 +858,7 @@ unsigned int minifs_get_lba_start(void)
 
 ### `minifs_is_mounted`
 
-`function` | [fs/minifs.c:1410](../../fs/minifs.c#L1410)
+`function` | [fs/minifs.c:1460](../../fs/minifs.c#L1460)
 
 ```c
 int minifs_is_mounted(void)
@@ -868,7 +872,7 @@ int minifs_is_mounted(void)
 
 ### `minifs_mount`
 
-`function` | [fs/minifs.c:1418](../../fs/minifs.c#L1418)
+`function` | [fs/minifs.c:1468](../../fs/minifs.c#L1468)
 
 ```c
 int minifs_mount(void)
@@ -886,7 +890,7 @@ Boot-time exemption from the -Wframe-larger-than=2048 gate: mount and mkfs run o
 
 ### `minifs_sync`
 
-`function` | [fs/minifs.c:1568](../../fs/minifs.c#L1568)
+`function` | [fs/minifs.c:1618](../../fs/minifs.c#L1618)
 
 ```c
 int minifs_sync(void)
@@ -902,7 +906,7 @@ int minifs_sync(void)
 
 ### `minifs_file_open`
 
-`function` | [fs/minifs.c:1583](../../fs/minifs.c#L1583)
+`function` | [fs/minifs.c:1633](../../fs/minifs.c#L1633)
 
 ```c
 MiniFSFile *minifs_file_open(int inode_num, int flags)
@@ -923,7 +927,7 @@ MiniFSFile *minifs_file_open(int inode_num, int flags)
 
 ### `minifs_file_close`
 
-`function` | [fs/minifs.c:1597](../../fs/minifs.c#L1597)
+`function` | [fs/minifs.c:1647](../../fs/minifs.c#L1647)
 
 ```c
 int minifs_file_close(MiniFSFile *f)
@@ -943,7 +947,7 @@ int minifs_file_close(MiniFSFile *f)
 
 ### `minifs_get_total_blocks`
 
-`function` | [fs/minifs.c:1604](../../fs/minifs.c#L1604)
+`function` | [fs/minifs.c:1654](../../fs/minifs.c#L1654)
 
 ```c
 unsigned int minifs_get_total_blocks(void)
@@ -957,7 +961,7 @@ unsigned int minifs_get_total_blocks(void)
 
 ### `minifs_usage`
 
-`function` | [fs/minifs.c:1609](../../fs/minifs.c#L1609)
+`function` | [fs/minifs.c:1659](../../fs/minifs.c#L1659)
 
 ```c
 void minifs_usage(unsigned int *free_b, unsigned int *total_b, unsigned int *free_i, unsigned int *total_i)

@@ -3,6 +3,22 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `CHECK` | macro | `tests/test_sanitize.c:41` | `#define CHECK(cond, msg)` |
+| `EFAULT` | macro | `tests/test_sanitize.c:13` | `#define EFAULT` |
+| `copy_probe` | function | `tests/test_sanitize.c:61` | `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)` |
+| `kmemcpy` | function | `tests/test_sanitize.c:32` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
+| `main` | function | `tests/test_sanitize.c:67` | `int main(void)` |
+| `range_probe` | function | `tests/test_sanitize.c:48` | `static long range_probe(unsigned long p, long len)` |
+| `str_probe` | function | `tests/test_sanitize.c:54` | `static long str_probe(unsigned long p)` |
+| `user_range_ok` | function | `tests/test_sanitize.c:20` | `int user_range_ok(unsigned long p, unsigned long len)` |
+| `user_str_ok` | function | `tests/test_sanitize.c:26` | `int user_str_ok(unsigned long p, unsigned long maxlen)` |
+| `ARGS2_OFF` | macro | `tests/test_seccomp_bpf.c:30` | `#define ARGS2_OFF` |
+| `CHECK` | macro | `tests/test_seccomp_bpf.c:17` | `#define CHECK(cond, msg)` |
+| `JUMP` | macro | `tests/test_seccomp_bpf.c:22` | `#define JUMP(c, k, t, f)` |
+| `NR_MMAP` | macro | `tests/test_seccomp_bpf.c:27` | `#define NR_MMAP` |
+| `NR_MPROTECT` | macro | `tests/test_seccomp_bpf.c:28` | `#define NR_MPROTECT` |
+| `NR_OPEN` | macro | `tests/test_seccomp_bpf.c:26` | `#define NR_OPEN` |
+| `NR_READ` | macro | `tests/test_seccomp_bpf.c:24` | `#define NR_READ` |
 | `NR_WRITE` | macro | `tests/test_seccomp_bpf.c:25` | `#define NR_WRITE` |
 | `PROT_EXEC` | macro | `tests/test_seccomp_bpf.c:29` | `#define PROT_EXEC` |
 | `STMT` | macro | `tests/test_seccomp_bpf.c:21` | `#define STMT(c, k)` |
@@ -380,8 +396,8 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
 | `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
 | `cleanup` | function | `tools/mutate.sh:139` | `` |
-| `find_index` | function | `tools/mutate.sh:522` | `` |
-| `record` | function | `tools/mutate.sh:516` | `` |
+| `find_index` | function | `tools/mutate.sh:524` | `` |
+| `record` | function | `tools/mutate.sh:518` | `` |
 | `restore_sources` | function | `tools/mutate.sh:132` | `` |
 | `usage` | function | `tools/mutate.sh:51` | `` |
 | `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
@@ -437,18 +453,18 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `sign_digest` | function | `tools/sign_elf.py:121` | `def sign_digest(digest, seed)` |
 | `verify_external` | function | `tools/sign_elf.py:395` | `def verify_external(sig, digest, pub)` |
 | `cleanup_stale_qemu` | function | `tools/test_bdd.sh:43` | `` |
-| `expect` | function | `tools/test_bdd.sh:97` | `` |
-| `expect_count` | function | `tools/test_bdd.sh:119` | `` |
-| `http_fixture_start` | function | `tools/test_bdd.sh:1401` | `` |
-| `http_fixture_stop` | function | `tools/test_bdd.sh:1408` | `` |
-| `http_server_start` | function | `tools/test_bdd.sh:1389` | `` |
-| `http_server_stop` | function | `tools/test_bdd.sh:1396` | `` |
-| `net_fixture_start` | function | `tools/test_bdd.sh:1413` | `` |
-| `net_fixture_stop` | function | `tools/test_bdd.sh:1420` | `` |
-| `refute` | function | `tools/test_bdd.sh:142` | `` |
-| `scenario` | function | `tools/test_bdd.sh:54` | `` |
-| `scenario_smp` | function | `tools/test_bdd.sh:74` | `` |
-| `scenario_uefi` | function | `tools/test_bdd.sh:167` | `` |
+| `expect` | function | `tools/test_bdd.sh:100` | `` |
+| `expect_count` | function | `tools/test_bdd.sh:122` | `` |
+| `http_fixture_start` | function | `tools/test_bdd.sh:1425` | `` |
+| `http_fixture_stop` | function | `tools/test_bdd.sh:1432` | `` |
+| `http_server_start` | function | `tools/test_bdd.sh:1413` | `` |
+| `http_server_stop` | function | `tools/test_bdd.sh:1420` | `` |
+| `net_fixture_start` | function | `tools/test_bdd.sh:1437` | `` |
+| `net_fixture_stop` | function | `tools/test_bdd.sh:1444` | `` |
+| `refute` | function | `tools/test_bdd.sh:145` | `` |
+| `scenario` | function | `tools/test_bdd.sh:56` | `` |
+| `scenario_smp` | function | `tools/test_bdd.sh:77` | `` |
+| `scenario_uefi` | function | `tools/test_bdd.sh:170` | `` |
 | `should_run` | function | `tools/test_bdd.sh:35` | `` |
 | `AlignConfig` | class | `tools/test_call_align.py:24` | `class AlignConfig` |
 | `find_minigcc` | function | `tools/test_call_align.py:59` | `def find_minigcc(explicit)` |
@@ -480,21 +496,5 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `_reader` | method | `tools/test_gui_freedom.py:132` | `def _reader(self)` |
 | `_serial` | method | `tools/test_gui_freedom.py:127` | `def _serial(self)` |
 | `around` | function | `tools/test_gui_freedom.py:259` | `def around(point)` |
-| `button` | method | `tools/test_gui_freedom.py:201` | `def button(self, down)` |
-| `changed_pixels` | function | `tools/test_gui_freedom.py:249` | `def changed_pixels(a_path, b_path, box)` |
-| `chord` | method | `tools/test_gui_freedom.py:193` | `def chord(self, mod, qcode)` |
-| `content_origin` | function | `tools/test_gui_freedom.py:240` | `def content_origin(listing)` |
-| `dump` | method | `tools/test_gui_freedom.py:207` | `def dump(self, name)` |
-| `foreground_phase` | function | `tools/test_gui_freedom.py:276` | `def foreground_phase(g)` |
-| `keys` | method | `tools/test_gui_freedom.py:182` | `def keys(self, events)` |
-| `main` | function | `tools/test_gui_freedom.py:319` | `def main()` |
-| `move_to` | function | `tools/test_gui_freedom.py:313` | `def move_to(g, frame_size, target)` |
-| `note` | function | `tools/test_gui_freedom.py:84` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_freedom.py:167` | `def qmp_cmd(self, obj)` |
-| `region_diff` | function | `tools/test_gui_freedom.py:232` | `def region_diff(a_path, b_path, box)` |
-| `rel` | method | `tools/test_gui_freedom.py:196` | `def rel(self, dx, dy)` |
-| `screen_box` | function | `tools/test_gui_freedom.py:308` | `def screen_box(origin, box)` |
-| `send` | method | `tools/test_gui_freedom.py:156` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_freedom.py:143` | `def snapshot(self)` |
 
 Next: [SYMBOLS_p27.md](SYMBOLS_p27.md)

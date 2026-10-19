@@ -204,20 +204,20 @@ Depends on: `headers/minifs.h`
 - `kfopen_dir` (function) `fs/kfile.c:243` `KFILE *kfopen_dir(const char *resolved)` -- Directory open for getdents64 (kernel/syscalls.c 217): kfopen refuses directories, so open(2) on one lands here.
 - `kfopen` (function) `fs/kfile.c:264` `KFILE *kfopen(const char *path, const char *mode)`
 - `fs_rename_on_minifs` (function) `fs/kfile.c:361` `static int fs_rename_on_minifs(const char *dst)` -- True when `dst` can live on MiniFS: no directory part (root), or its * parent resolves there.
-- `entry` (function) `fs/kfile.c:380` `* directory with a volatile ramdisk entry (the kfopen misroute class) or
- * need a copy+delete th...`
-- `kfclose` (function) `fs/kfile.c:422` `int kfclose(KFILE *f)`
-- `kfgetc` (function) `fs/kfile.c:467` `int kfgetc(KFILE *f)`
-- `kfgets` (function) `fs/kfile.c:508` `char *kfgets(char *buf, int size, KFILE *f)`
-- `kfungetc` (function) `fs/kfile.c:522` `int kfungetc(int c, KFILE *f)`
-- `kfread` (function) `fs/kfile.c:529` `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-- `kfwrite` (function) `fs/kfile.c:575` `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-- `kfseek` (function) `fs/kfile.c:641` `int kfseek(KFILE *f, long offset, int whence)`
-- `kftell` (function) `fs/kfile.c:662` `long kftell(KFILE *f)`
-- `kfflush` (function) `fs/kfile.c:666` `int kfflush(KFILE *f)`
-- `kfputs` (function) `fs/kfile.c:692` `int kfputs(const char *s, KFILE *f)`
-- `kfputc` (function) `fs/kfile.c:698` `int kfputc(int c, KFILE *f)`
-- `krewind` (function) `fs/kfile.c:703` `void krewind(KFILE *f)`
+- `directory` (function) `fs/kfile.c:379` `* empty directory by a directory (-20/-21 for a kind mismatch, -39 for a
+ * non-empty directory)....`
+- `kfclose` (function) `fs/kfile.c:432` `int kfclose(KFILE *f)`
+- `kfgetc` (function) `fs/kfile.c:477` `int kfgetc(KFILE *f)`
+- `kfgets` (function) `fs/kfile.c:518` `char *kfgets(char *buf, int size, KFILE *f)`
+- `kfungetc` (function) `fs/kfile.c:532` `int kfungetc(int c, KFILE *f)`
+- `kfread` (function) `fs/kfile.c:539` `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+- `kfwrite` (function) `fs/kfile.c:585` `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+- `kfseek` (function) `fs/kfile.c:651` `int kfseek(KFILE *f, long offset, int whence)`
+- `kftell` (function) `fs/kfile.c:672` `long kftell(KFILE *f)`
+- `kfflush` (function) `fs/kfile.c:676` `int kfflush(KFILE *f)`
+- `kfputs` (function) `fs/kfile.c:702` `int kfputs(const char *s, KFILE *f)`
+- `kfputc` (function) `fs/kfile.c:708` `int kfputc(int c, KFILE *f)`
+- `krewind` (function) `fs/kfile.c:713` `void krewind(KFILE *f)`
 
 ## fs/minifs.c
 Depends on: `headers/block.h`, `headers/ide.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/pcache.h`
@@ -277,23 +277,24 @@ void minifs_journal_touch(unsigned int phys)`
 - `minifs_unlink` (function) `fs/minifs.c:1076` `int minifs_unlink(const char *path)`
 - `minifs_split_parent` (function) `fs/minifs.c:1119` `static int minifs_split_parent(const char *path, char *parent_out,
                               ...` -- Split a resolved path into its parent directory path ("" for root) and its leaf name.
-- `minifs_rename` (function) `fs/minifs.c:1144` `int minifs_rename(const char *oldpath, const char *newpath)`
-- `minifs_rmdir` (function) `fs/minifs.c:1176` `int minifs_rmdir(const char *path)`
-- `minifs_read` (function) `fs/minifs.c:1216` `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)`
-- `minifs_write` (function) `fs/minifs.c:1287` `int minifs_write(int inode_num, const void *buf, unsigned int offset,
+- `minifs_dir_is_empty` (function) `fs/minifs.c:1148` `static int minifs_dir_is_empty(int dir_ino)` -- An entry removal only clears the record in place, so a directory's size never shrinks.
+- `minifs_rename` (function) `fs/minifs.c:1175` `int minifs_rename(const char *oldpath, const char *newpath)`
+- `minifs_rmdir` (function) `fs/minifs.c:1225` `int minifs_rmdir(const char *path)`
+- `minifs_read` (function) `fs/minifs.c:1266` `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)`
+- `minifs_write` (function) `fs/minifs.c:1337` `int minifs_write(int inode_num, const void *buf, unsigned int offset,
                  unsigned i...`
-- `minifs_truncate` (function) `fs/minifs.c:1374` `int minifs_truncate(int inode_num, unsigned int new_size)`
-- `minifs_stat` (function) `fs/minifs.c:1391` `int minifs_stat(int inode_num, MiniFSInode *out)`
-- `minifs_access` (function) `fs/minifs.c:1395` `int minifs_access(const char *path)`
-- `minifs_init` (function) `fs/minifs.c:1401` `void minifs_init(void)`
-- `minifs_get_lba_start` (function) `fs/minifs.c:1409` `unsigned int minifs_get_lba_start(void)`
-- `minifs_is_mounted` (function) `fs/minifs.c:1410` `int minifs_is_mounted(void)`
-- `minifs_mount` (function) `fs/minifs.c:1418` `int minifs_mount(void)` -- Boot-time exemption from the -Wframe-larger-than=2048 gate: mount and mkfs run once on deep boot stacks, never on 16...
-- `minifs_sync` (function) `fs/minifs.c:1568` `int minifs_sync(void)`
-- `minifs_file_open` (function) `fs/minifs.c:1583` `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-- `minifs_file_close` (function) `fs/minifs.c:1597` `int minifs_file_close(MiniFSFile *f)`
-- `minifs_get_total_blocks` (function) `fs/minifs.c:1604` `unsigned int minifs_get_total_blocks(void)`
-- `minifs_usage` (function) `fs/minifs.c:1609` `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+- `minifs_truncate` (function) `fs/minifs.c:1424` `int minifs_truncate(int inode_num, unsigned int new_size)`
+- `minifs_stat` (function) `fs/minifs.c:1441` `int minifs_stat(int inode_num, MiniFSInode *out)`
+- `minifs_access` (function) `fs/minifs.c:1445` `int minifs_access(const char *path)`
+- `minifs_init` (function) `fs/minifs.c:1451` `void minifs_init(void)`
+- `minifs_get_lba_start` (function) `fs/minifs.c:1459` `unsigned int minifs_get_lba_start(void)`
+- `minifs_is_mounted` (function) `fs/minifs.c:1460` `int minifs_is_mounted(void)`
+- `minifs_mount` (function) `fs/minifs.c:1468` `int minifs_mount(void)` -- Boot-time exemption from the -Wframe-larger-than=2048 gate: mount and mkfs run once on deep boot stacks, never on 16...
+- `minifs_sync` (function) `fs/minifs.c:1618` `int minifs_sync(void)`
+- `minifs_file_open` (function) `fs/minifs.c:1633` `MiniFSFile *minifs_file_open(int inode_num, int flags)`
+- `minifs_file_close` (function) `fs/minifs.c:1647` `int minifs_file_close(MiniFSFile *f)`
+- `minifs_get_total_blocks` (function) `fs/minifs.c:1654` `unsigned int minifs_get_total_blocks(void)`
+- `minifs_usage` (function) `fs/minifs.c:1659` `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
                   unsigned int *fr...` -- } int minifs_file_close(MiniFSFile *f) { if (!f) return 0; if (f->inode_cache) kfree(f->inode_cache); kfree(f)...
 
 ## fs/pcache.c

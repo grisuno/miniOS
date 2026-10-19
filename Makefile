@@ -981,7 +981,7 @@ $(BIN_DIR)/micropython: $(BIN_DIR)/micropython.elf
 # pieces pruned: test, idlelib/tkinter, lib2to3, ensurepip/venv).
 CPYTHON_AVAILABLE := $(if $(wildcard $(CPYTHON_DIR)/python),1,0)
 CPYTHON_STDLIB = build/cpython-stdlib/usr
-CPYTHON_FILES = $(if $(filter 1,$(CPYTHON_AVAILABLE)),$(BIN_DIR)/python3.elf $(BIN_DIR)/python3 $(CPYTHON_STDLIB),)
+CPYTHON_FILES = $(if $(filter 1,$(CPYTHON_AVAILABLE)),$(BIN_DIR)/python3.elf $(BIN_DIR)/python3 $(BIN_DIR)/pip $(BIN_DIR)/pip3 $(CPYTHON_STDLIB),)
 
 $(CPYTHON_DIR)/python:
 	@echo "missing $@"
@@ -993,6 +993,15 @@ $(BIN_DIR)/python3.elf: $(CPYTHON_DIR)/python
 	cp $< $@
 
 $(BIN_DIR)/python3: $(BIN_DIR)/python3.elf
+	cp $< $@
+
+# pip/pip3: launchers that rebuild argv as `python3 -m pip ...` and exec
+# the interpreter (progs/src/pip.c). The process note lets the shell run
+# them as a process so execve is available.
+$(BIN_DIR)/pip: $(SRC_DIR)/pip.c $(PROGS_DIR)/minios_abi.h
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -I$(PROGS_DIR) -DPIP_PROCESS_NOTE -o $@ $(SRC_DIR)/pip.c
+
+$(BIN_DIR)/pip3: $(BIN_DIR)/pip
 	cp $< $@
 
 $(CPYTHON_STDLIB): $(CPYTHON_DIR)/Lib/encodings/__init__.py tools/mkcpyzip.py $(wildcard $(CPYTHON_PIP_WHL)) $(wildcard $(CPYTHON_DEMO_WHL)) $(wildcard $(CPYTHON_DIR)/build/lib.*/_sysconfigdata*.py)
@@ -2153,7 +2162,7 @@ uefi.img: BOOTX64.EFI kernel.bin tools/uefi_part.sfdisk
 uefi: uefi.img
 
 # ── Kernel ────────────────────────────────────────────────────────
-kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h syscall_asm.h drivers/virtio_blk.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h arch/x86/cpu_setup.h arch/x86/boot/bootdefs.h
+kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h syscall_asm.h drivers/virtio_blk.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h arch/x86/cpu_setup.h arch/x86/boot/bootdefs.h progs/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h

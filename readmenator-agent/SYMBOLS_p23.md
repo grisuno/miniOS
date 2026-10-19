@@ -3,6 +3,15 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `wild_jump_body` | function | `progs/src/lxabi.c:573` | `static void wild_jump_body(void)` |
+| `worker` | function | `progs/src/lxabi.c:201` | `static void *worker(void *arg)` |
+| `SYS_exit` | macro | `progs/src/lxhello.c:21` | `#define SYS_exit` |
+| `SYS_write` | macro | `progs/src/lxhello.c:20` | `#define SYS_write` |
+| `lmain` | function | `progs/src/lxhello.c:46` | `int lmain(long argc, char **argv)` |
+| `lx_strlen` | function | `progs/src/lxhello.c:23` | `static unsigned long lx_strlen(const char *s)` |
+| `lx_syscall3` | function | `progs/src/lxhello.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
+| `lx_write` | function | `progs/src/lxhello.c:29` | `static void lx_write(const char *s)` |
+| `lx_write_int` | function | `progs/src/lxhello.c:33` | `static void lx_write_int(long v)` |
 | `LXNET_BUF` | macro | `progs/src/lxnet.c:41` | `#define LXNET_BUF` |
 | `LXNET_IP_UNKNOWN` | macro | `progs/src/lxnet.c:45` | `#define LXNET_IP_UNKNOWN` |
 | `LXNET_LOOPBACK` | macro | `progs/src/lxnet.c:44` | `#define LXNET_LOOPBACK` |
@@ -256,6 +265,13 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `sc_munmap` | function | `progs/src/pcmap.c:65` | `static long sc_munmap(long addr, long len)` |
 | `sc_open` | function | `progs/src/pcmap.c:12` | `static long sc_open(const char *p)` |
 | `sc_write` | function | `progs/src/pcmap.c:34` | `static long sc_write(long fd, const char *s, long n)` |
+| `PIP_EXEC_FAILED` | macro | `progs/src/pip.c:26` | `#define PIP_EXEC_FAILED` |
+| `PIP_MODULE_FLAG` | macro | `progs/src/pip.c:21` | `#define PIP_MODULE_FLAG` |
+| `PIP_MODULE_NAME` | macro | `progs/src/pip.c:22` | `#define PIP_MODULE_NAME` |
+| `PIP_PREFIX_WORDS` | macro | `progs/src/pip.c:24` | `#define PIP_PREFIX_WORDS` |
+| `PIP_PYTHON_PATH` | macro | `progs/src/pip.c:19` | `#define PIP_PYTHON_PATH` |
+| `main` | function | `progs/src/pip.c:45` | `int main(int argc, char **argv)` |
+| `pip_note` | struct | `progs/src/pip.c:30` | `` |
 | `lmain` | function | `progs/src/pollready.c:63` | `int lmain(long argc, char **argv)` |
 | `p_atoi` | function | `progs/src/pollready.c:40` | `static int p_atoi(const char *s)` |
 | `p_parse_ip` | function | `progs/src/pollready.c:46` | `static int p_parse_ip(const char *s, unsigned char out[4])` |
@@ -436,10 +452,10 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `test_stb` | function | `progs/src/test.py:77` | `def test_stb()` |
 | `test_toolchain_roundtrip` | function | `progs/src/test.py:119` | `def test_toolchain_roundtrip()` |
 | `test_xxhash` | function | `progs/src/test.py:72` | `def test_xxhash()` |
-| `_asyncio_double` | function | `progs/src/test_py.py:72` | `def _asyncio_double(n, ms)` |
-| `_asyncio_main` | function | `progs/src/test_py.py:77` | `def _asyncio_main()` |
-| `_asyncio_wire_check` | function | `progs/src/test_py.py:81` | `def _asyncio_wire_check(host, port)` |
-| `_one` | function | `progs/src/test_py.py:82` | `def _one()` |
+| `_asyncio_double` | function | `progs/src/test_py.py:79` | `def _asyncio_double(n, ms)` |
+| `_asyncio_main` | function | `progs/src/test_py.py:84` | `def _asyncio_main()` |
+| `_asyncio_wire_check` | function | `progs/src/test_py.py:88` | `def _asyncio_wire_check(host, port)` |
+| `_one` | function | `progs/src/test_py.py:89` | `def _one()` |
 | `check` | function | `progs/src/test_py.py:12` | `def check(name, cond)` |
 | `BUFSZ` | macro | `progs/src/thdemo.c:24` | `#define BUFSZ` |
 | `EXPECTED_N` | macro | `progs/src/thdemo.c:26` | `#define EXPECTED_N` |
@@ -480,21 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `EMBED_INNER` | macro | `progs/topogpt3/topogpt3.c:90` | `#define EMBED_INNER` |
 | `EOS_TOKEN` | macro | `progs/topogpt3/topogpt3.c:89` | `#define EOS_TOKEN` |
 | `EPS_RMS` | macro | `progs/topogpt3/topogpt3.c:92` | `#define EPS_RMS` |
-| `EXPERT_INNER` | macro | `progs/topogpt3/topogpt3.c:87` | `#define EXPERT_INNER` |
-| `FILE` | struct | `progs/topogpt3/topogpt3.c:24` | `` |
-| `FREQ_W` | macro | `progs/topogpt3/topogpt3.c:85` | `#define FREQ_W` |
-| `GQA_GROUPS` | macro | `progs/topogpt3/topogpt3.c:69` | `#define GQA_GROUPS` |
-| `LayerWeights` | struct | `progs/topogpt3/topogpt3.c:176` | `` |
-| `MAX_LINE` | macro | `progs/topogpt3/topogpt3.c:96` | `#define MAX_LINE` |
-| `MAX_PROMPT_LEN` | macro | `progs/topogpt3/topogpt3.c:95` | `#define MAX_PROMPT_LEN` |
-| `MAX_SEQ_LEN` | macro | `progs/topogpt3/topogpt3.c:73` | `#define MAX_SEQ_LEN` |
-| `MAX_TOKENS` | macro | `progs/topogpt3/topogpt3.c:94` | `#define MAX_TOKENS` |
-| `MOE_TOP_K` | macro | `progs/topogpt3/topogpt3.c:75` | `#define MOE_TOP_K` |
-| `ModelWeights` | struct | `progs/topogpt3/topogpt3.c:224` | `` |
-| `NULL` | macro | `progs/topogpt3/topogpt3.c:43` | `#define NULL` |
-| `N_ANGULAR` | macro | `progs/topogpt3/topogpt3.c:78` | `#define N_ANGULAR` |
-| `N_EDGES` | macro | `progs/topogpt3/topogpt3.c:80` | `#define N_EDGES` |
-| `N_EDGE_TYPES` | macro | `progs/topogpt3/topogpt3.c:79` | `#define N_EDGE_TYPES` |
-| `N_EXPERTS` | macro | `progs/topogpt3/topogpt3.c:74` | `#define N_EXPERTS` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

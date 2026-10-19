@@ -3,6 +3,7 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCI_COMMAND_IO` | macro | `headers/drivers/pci.h:32` | `#define PCI_COMMAND_IO` |
 | `PCI_COMMAND_MEMORY` | macro | `headers/drivers/pci.h:33` | `#define PCI_COMMAND_MEMORY` |
 | `PCI_HDR_TYPE_BRIDGE` | macro | `headers/drivers/pci.h:47` | `#define PCI_HDR_TYPE_BRIDGE` |
 | `PCI_HEADER_MULTIFUNC` | macro | `headers/drivers/pci.h:45` | `#define PCI_HEADER_MULTIFUNC` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `kmemmove` | function | `headers/kernel.h:556` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
 | `kmemset` | function | `headers/kernel.h:554` | `void *kmemset(void *dst, int c, unsigned long n);` |
 | `kmm_make_uncached` | function | `headers/kernel.h:819` | `int kmm_make_uncached(unsigned long phys, unsigned long len);` |
-| `kpipe_empty_wopen` | function | `headers/kernel.h:869` | `int kpipe_empty_wopen(KFILE *f);` |
 
 Next: [SYMBOLS_p5.md](SYMBOLS_p5.md)

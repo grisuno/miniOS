@@ -3,6 +3,7 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `kpipe_empty_wopen` | function | `headers/kernel.h:869` | `int kpipe_empty_wopen(KFILE *f);` |
 | `kpipe_is_write_end` | function | `headers/kernel.h:870` | `int kpipe_is_write_end(KFILE *f);` |
 | `kpipe_pair` | function | `headers/kernel.h:868` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);` |
 | `kpipe_state` | function | `headers/kernel.h:873` | `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen);` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `PCM2_DMA_BYTES` | macro | `headers/pcm2.h:55` | `#define PCM2_DMA_BYTES` |
 | `PCM2_ERR_BUSY` | macro | `headers/pcm2.h:60` | `#define PCM2_ERR_BUSY` |
 | `PCM2_ERR_INVAL` | macro | `headers/pcm2.h:65` | `#define PCM2_ERR_INVAL` |
-| `PCM2_ERR_NODEV` | macro | `headers/pcm2.h:61` | `#define PCM2_ERR_NODEV` |
 
 Next: [SYMBOLS_p6.md](SYMBOLS_p6.md)

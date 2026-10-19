@@ -50,10 +50,13 @@ cleanup_stale_qemu() {
     sleep 0.5
 }
 
-# scenario <name> <script of shell commands>
+# scenario <name> <script of shell commands> [timeout-seconds]
+# The optional third argument overrides TMO for scenarios that boot the
+# full interpreter several times (pip is slow under emulation).
 scenario() {
     SCENARIO="$1"
     local cmds="$2"
+    local tmo="${3:-$TMO}"
     if ! should_run; then echo "--- $SCENARIO (SKIP)"; SKIP=1; return 0; fi
     SKIP=0
     echo "--- $SCENARIO"
@@ -61,7 +64,7 @@ scenario() {
     {
         sleep "$BOOT_WAIT"
         printf '%s\n' "$cmds"
-    } | timeout "$TMO" "$QEMU" \
+    } | timeout "$tmo" "$QEMU" \
         -drive "file=$IMAGE,format=raw,if=ide" -m "$MEM" \
         -nic user,model=rtl8139 \
         -display none -serial stdio -no-reboot $SCENARIO_QEMU_ARGS > "$LOG" 2>&1
@@ -498,7 +501,9 @@ expect "lxabi: stat-size ok"
 expect "lxabi: uid-gid-root ok"
 expect "lxabi: rmdir-empty ok"
 expect "lxabi: rmdir-notempty ok"
+expect "lxabi: rmdir-emptied ok"
 expect "lxabi: rmdir-missing ok"
+expect "lxabi: rename-dir ok"
 expect "lxabi: getdents64-entries ok"
 expect "lxabi: getdents64-resume ok"
 expect "lxabi: getdents64-enotdir ok"
@@ -514,6 +519,25 @@ expect "lxabi: all ok"
 expect "exit code: 0"
 refute "FAIL"
 refute "UNIMPL"
+
+# Static CPython and the pip launcher (docs/spec/python.md): the bare
+# `pip`/`pip3` commands forward their arguments to `python3 -m pip`
+# through the process-note launcher, and an offline wheel install works.
+scenario "cpython runs and pip installs a wheel by command name" "pip --version
+pip3 --version
+python3 -c \"print('cpython-ok', 6 * 7)\"
+pip uninstall -y six
+pip install --no-index --no-deps /usr/local/lib/python3.12/packages/six-1.16.0-py2.py3-none-any.whl
+pip show six
+poweroff" 400
+expect "pip 24.3.1 from /usr/local/lib/python3.12/site-packages/pip"
+expect_count 2 "pip 24.3.1 from"
+expect "cpython-ok 42"
+expect "Successfully installed six"
+expect "Name: six"
+expect "Version: 1.16.0"
+refute "Traceback"
+refute "not found: pip"
 
 # Linux seccomp-bpf, prctl and /proc/self/exe (docs/spec/kernel.md): every
 # check of progs/src/lxsecc.c passes, filters live in forked children.

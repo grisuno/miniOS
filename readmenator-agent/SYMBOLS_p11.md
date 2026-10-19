@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `test_t10_minios_test` | method | `mcp/test_minios_mcp.py:431` | `def test_t10_minios_test(self)` |
+| `test_t11_poweroff_and_reboot` | method | `mcp/test_minios_mcp.py:452` | `def test_t11_poweroff_and_reboot(self)` |
+| `test_test_not_booted` | method | `mcp/test_minios_mcp.py:195` | `def test_test_not_booted(self)` |
+| `test_timeout_clamped` | method | `mcp/test_minios_mcp.py:230` | `def test_timeout_clamped(self)` |
+| `test_tools_list` | method | `mcp/test_minios_mcp.py:158` | `def test_tools_list(self)` |
+| `test_unknown_key_rejected` | method | `mcp/test_minios_mcp.py:506` | `def test_unknown_key_rejected(self)` |
+| `test_unknown_method` | method | `mcp/test_minios_mcp.py:170` | `def test_unknown_method(self)` |
+| `test_unknown_tool` | method | `mcp/test_minios_mcp.py:178` | `def test_unknown_tool(self)` |
 | `test_validate_accepts_valid` | method | `mcp/test_minios_mcp.py:502` | `def test_validate_accepts_valid(self)` |
 | `test_validate_rejects_bad_dst` | method | `mcp/test_minios_mcp.py:514` | `def test_validate_rejects_bad_dst(self)` |
 | `test_validate_rejects_control_chars` | method | `mcp/test_minios_mcp.py:531` | `def test_validate_rejects_control_chars(self)` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `js_skip_ws` | function | `progs/asm/json.s:306` | `` |
 | `js_src` | function | `progs/asm/json.s:43` | `` |
 | `js_str` | function | `progs/asm/json.s:7` | `` |
-| `js_type` | function | `progs/asm/json.s:11` | `` |
-| `main` | function | `progs/asm/json.s:3772` | `` |
-| `_start` | function | `progs/asm/ldhello.s:14` | `` |
-| `main` | function | `progs/asm/ldhello.s:3` | `` |
-| `_start` | function | `progs/asm/lz4.s:1535` | `` |
-| `lz4_compress_file` | function | `progs/asm/lz4.s:478` | `` |
-| `lz4_decompress_file` | function | `progs/asm/lz4.s:791` | `` |
-| `lz4_has` | function | `progs/asm/lz4.s:3` | `` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

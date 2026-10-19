@@ -1,6 +1,6 @@
 # Documentation Coverage
 
-Overall: **29.2%** (2749 of 9415 public modules, types, and callables). Data members are excluded from the ratio.
+Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data members are excluded from the ratio.
 
 [Back to index](index.md)
 
@@ -12,12 +12,12 @@ Overall: **29.2%** (2749 of 9415 public modules, types, and callables). Data mem
 | constructor | 3 | 23 | 13.0% |
 | enum | 2 | 3 | 66.7% |
 | exception | 4 | 4 | 100.0% |
-| function | 1437 | 4466 | 32.2% |
-| macro | 657 | 3866 | 17.0% |
+| function | 1438 | 4468 | 32.2% |
+| macro | 662 | 3872 | 17.1% |
 | method | 24 | 116 | 20.7% |
-| module | 421 | 508 | 82.9% |
+| module | 422 | 509 | 82.9% |
 | staticmethod | 6 | 6 | 100.0% |
-| struct | 131 | 315 | 41.6% |
+| struct | 132 | 316 | 41.8% |
 | type_alias | 42 | 74 | 56.8% |
 
 ## By module (lowest first)
@@ -188,10 +188,10 @@ Overall: **29.2%** (2749 of 9415 public modules, types, and callables). Data mem
 | [`progs/doomgeneric/p_local.h`](modules/progs.doomgeneric.p_local.h.md) | 11 | 63 | 17.5% |
 | [`progs/doomgeneric/p_maputl.c`](modules/progs.doomgeneric.p_maputl.c.md) | 3 | 17 | 17.6% |
 | [`kernel/proc_sec.c`](modules/kernel.proc_sec.c.md) | 7 | 39 | 17.9% |
-| [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | 22 | 123 | 17.9% |
 | [`progs/doomgeneric/st_lib.c`](modules/progs.doomgeneric.st_lib.c.md) | 2 | 11 | 18.2% |
 | [`progs/pokemon/minios_stubs/SDL.h`](modules/progs.pokemon.minios_stubs.SDL.h.md) | 2 | 11 | 18.2% |
 | [`progs/wl/wl_mini.h`](modules/progs.wl.wl_mini.h.md) | 20 | 109 | 18.3% |
+| [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | 23 | 125 | 18.4% |
 | [`drivers/kbd.c`](modules/drivers.kbd.c.md) | 6 | 32 | 18.8% |
 | [`progs/doomgeneric/hu_stuff.h`](modules/progs.doomgeneric.hu_stuff.h.md) | 3 | 16 | 18.8% |
 | [`headers/sync.h`](modules/headers.sync.h.md) | 7 | 36 | 19.4% |
@@ -466,6 +466,7 @@ Overall: **29.2%** (2749 of 9415 public modules, types, and callables). Data mem
 | [`headers/net/rtl8139.h`](modules/headers.net.rtl8139.h.md) | 7 | 8 | 87.5% |
 | [`kernel/spawn.c`](modules/kernel.spawn.c.md) | 7 | 8 | 87.5% |
 | [`progs/doomgeneric/p_setup.c`](modules/progs.doomgeneric.p_setup.c.md) | 14 | 16 | 87.5% |
+| [`progs/src/pip.c`](modules/progs.src.pip.c.md) | 7 | 8 | 87.5% |
 | [`headers/drivers/virtio_net.h`](modules/headers.drivers.virtio_net.h.md) | 8 | 9 | 88.9% |
 | [`headers/spawn.h`](modules/headers.spawn.h.md) | 8 | 9 | 88.9% |
 | [`headers/wm_notify.h`](modules/headers.wm_notify.h.md) | 8 | 9 | 88.9% |
@@ -537,7 +538,7 @@ Overall: **29.2%** (2749 of 9415 public modules, types, and callables). Data mem
 
 DOC001 undocumented public item, DOC002 parameter not documented, DOC003 documented parameter missing from the signature (stale doc), DOC004 return value not documented, DOC005 raised exception not documented.
 
-DOC001: 6656, DOC005: 1
+DOC001: 6658, DOC005: 1
 
 - DOC001 `arch/x86/ap_entry.S:21` function ap_stub_start is not documented
 - DOC001 `arch/x86/ap_entry.S:39` function ap_pm is not documented
@@ -1039,4 +1040,4 @@ DOC001: 6656, DOC005: 1
 - DOC001 `fs/ext4.c:666` function ext4_vfs_write is not documented
 - DOC001 `fs/ext4.c:675` function ext4_vfs_close is not documented
 - DOC001 `fs/ext4.c:680` function ext4_vfs_fstat is not documented
-- ... 6157 more in `api/warnings.jsonl`
+- ... 6159 more in `api/warnings.jsonl`

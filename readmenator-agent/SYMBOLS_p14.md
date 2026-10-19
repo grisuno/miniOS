@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_win.c:146` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_win.c:172` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_win.c:167` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_win.c:95` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_win.c:193` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_win.c:162` | `void DG_SleepMs(uint32_t ms)` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_win.c:14` | `#define KEYQUEUE_SIZE` |
+| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_win.c:59` | `static void addKeyToQueue(int pressed, unsigned char keyCode)` |
 | `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_win.c:20` | `static unsigned char convertToDoomKey(unsigned char key)` |
 | `wndProc` | function | `progs/doomgeneric/doomgeneric_win.c:70` | `static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)` |
 | `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_xlib.c:127` | `void DG_DrawFrame()` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 | `mus_player_t` | struct | `progs/doomgeneric/i_minios_sound.c:146` | `` |
 | `mus_read_varlen` | function | `progs/doomgeneric/i_minios_sound.c:169` | `static int mus_read_varlen(mus_player_t *m, unsigned long *out)` |
 | `mus_render_pcm` | function | `progs/doomgeneric/i_minios_sound.c:320` | `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)` |
-| `mus_render_push` | function | `progs/doomgeneric/i_minios_sound.c:359` | `static void mus_render_push(mus_player_t *m, unsigned n)` |
-| `muted` | function | `progs/doomgeneric/i_minios_sound.c:51` | `* pcm2 while sfx stay muted (effect tones ruined the melody);` |
-| `pcspk_channel_t` | struct | `progs/doomgeneric/i_minios_sound.c:17` | `` |
-| `sys_pcm2_close` | function | `progs/doomgeneric/i_minios_sound.c:44` | `static void sys_pcm2_close(void)` |
-| `sys_pcm2_open` | function | `progs/doomgeneric/i_minios_sound.c:38` | `static long sys_pcm2_open(long flags)` |
-| `sys_pcm2_write` | function | `progs/doomgeneric/i_minios_sound.c:41` | `static long sys_pcm2_write(const void *buf, long len)` |
-| `sys_time` | function | `progs/doomgeneric/i_minios_sound.c:35` | `static long sys_time(void)` |
-| `sys_tone_hw` | function | `progs/doomgeneric/i_minios_sound.c:32` | `static long sys_tone_hw(unsigned f)` |
 
 Next: [SYMBOLS_p15.md](SYMBOLS_p15.md)

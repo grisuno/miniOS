@@ -1141,6 +1141,37 @@ static int minifs_split_parent(const char *path, char *parent_out,
     return 0;
 }
 
+/* An entry removal only clears the record in place, so a directory's
+ * size never shrinks. Emptiness must therefore be decided by scanning
+ * for a live inode; trusting size kept every directory that ever held a
+ * file non-empty and broke nested shutil.rmtree. */
+static int minifs_dir_is_empty(int dir_ino) {
+    MiniFSInode dir;
+    unsigned int total_blocks, b;
+    unsigned char *buf;
+    if (fs_read_inode((unsigned int)dir_ino, &dir) < 0) return 0;
+    if (!(dir.mode & MINIFS_S_IFDIR)) return 0;
+    buf = blk_new();
+    if (!buf) return 0;
+    total_blocks = (dir.size + MINIFS_BLOCK_SIZE - 1) / MINIFS_BLOCK_SIZE;
+    for (b = 0; b < total_blocks; b++) {
+        unsigned int phys, off;
+        int empty = 1;
+        if (minifs_inode_get_block(&dir, b, &phys) < 0 || phys == 0) continue;
+        if (block_read(phys, buf) < 0) { blk_free(buf); return 0; }
+        off = 0;
+        while (off < MINIFS_BLOCK_SIZE) {
+            MiniFSDirEntry *de = (MiniFSDirEntry *)(buf + off);
+            if (de->rec_len == 0) break;
+            if (de->inode != 0) { empty = 0; break; }
+            off += de->rec_len;
+        }
+        if (!empty) { blk_free(buf); return 0; }
+    }
+    blk_free(buf);
+    return 1;
+}
+
 int minifs_rename(const char *oldpath, const char *newpath) {
     char old_parent[RAMDISK_FNAME_LEN], new_parent[RAMDISK_FNAME_LEN];
     char old_name[MINIFS_MAX_FILENAME + 1], new_name[MINIFS_MAX_FILENAME + 1];
@@ -1156,16 +1187,34 @@ int minifs_rename(const char *oldpath, const char *newpath) {
     child = minifs_dir_lookup(old_pin, old_name);
     if (child < 0) return -1;
     if (fs_read_inode((unsigned)child, &st) < 0) return -1;
-    if (st.mode & MINIFS_S_IFDIR) return -1;
-    if (minifs_dir_lookup(new_pin, new_name) >= 0) return -1;
+    {
+        int dst = minifs_dir_lookup(new_pin, new_name);
+        if (dst == child) return 0;
+        if (dst >= 0) {
+            MiniFSInode dst_st;
+            if (fs_read_inode((unsigned)dst, &dst_st) < 0) return -1;
+            if ((st.mode & MINIFS_S_IFDIR) != (dst_st.mode & MINIFS_S_IFDIR))
+                return (st.mode & MINIFS_S_IFDIR) ? -20 : -21;
+            if (st.mode & MINIFS_S_IFDIR) {
+                if (!minifs_dir_is_empty(dst)) return -39;
+                if (minifs_rmdir(newpath) < 0) return -39;
+            } else {
+                if (minifs_unlink(newpath) < 0) return -1;
+            }
+        }
+    }
     minifs_journal_begin(0);
     minifs_journal_commit(0);
     if (minifs_dir_remove_entry(old_pin, old_name) < 0) {
         minifs_journal_abort();
         return -1;
     }
-    if (minifs_dir_add_entry(new_pin, new_name, child, MINIFS_FT_FILE) < 0) {
-        minifs_dir_add_entry(old_pin, old_name, child, MINIFS_FT_FILE);
+    if (minifs_dir_add_entry(new_pin, new_name, child,
+                             (st.mode & MINIFS_S_IFDIR) ? MINIFS_FT_DIR
+                                                        : MINIFS_FT_FILE) < 0) {
+        minifs_dir_add_entry(old_pin, old_name, child,
+                             (st.mode & MINIFS_S_IFDIR) ? MINIFS_FT_DIR
+                                                        : MINIFS_FT_FILE);
         minifs_journal_abort();
         return -1;
     }
@@ -1180,9 +1229,10 @@ int minifs_rmdir(const char *path) {
     if (ino == MINIFS_ROOT_INODE) return -1;
     if (fs_read_inode((unsigned int)ino, &inode) < 0) return -1;
     if (!(inode.mode & MINIFS_S_IFDIR)) return -1;
-    if (inode.size > 0) return -1;
+    if (!minifs_dir_is_empty(ino)) return -1;
     minifs_journal_begin(0);
     minifs_journal_commit(0);
+    fs_inode_free_all_blocks(&inode);
     inode.mode = 0;
     inode.size = 0;
     inode.link_count = 0;

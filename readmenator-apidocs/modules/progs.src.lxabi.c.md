@@ -87,7 +87,7 @@ typedef struct thread_result { long tls_seen;
 
 ### `main`
 
-`function` | [progs/src/lxabi.c:754](../../progs/src/lxabi.c#L754)
+`function` | [progs/src/lxabi.c:789](../../progs/src/lxabi.c#L789)
 
 ```c
 int main(void)

@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:315` | `#define MINIOS_SYS_PALETTE` |
+| `MINIOS_SYS_PCM2_CLOSE` | macro | `progs/minios_abi.h:367` | `#define MINIOS_SYS_PCM2_CLOSE` |
+| `MINIOS_SYS_PCM2_OPEN` | macro | `progs/minios_abi.h:365` | `#define MINIOS_SYS_PCM2_OPEN` |
+| `MINIOS_SYS_PCM2_WRITE` | macro | `progs/minios_abi.h:366` | `#define MINIOS_SYS_PCM2_WRITE` |
+| `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:318` | `#define MINIOS_SYS_PCSPK_INIT` |
+| `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:319` | `#define MINIOS_SYS_PCSPK_TONE` |
+| `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:323` | `#define MINIOS_SYS_PCSPK_VOL` |
+| `MINIOS_SYS_POLL` | macro | `progs/minios_abi.h:243` | `#define MINIOS_SYS_POLL` |
 | `MINIOS_SYS_PRLIMIT64` | macro | `progs/minios_abi.h:293` | `#define MINIOS_SYS_PRLIMIT64` |
 | `MINIOS_SYS_READ` | macro | `progs/minios_abi.h:238` | `#define MINIOS_SYS_READ` |
 | `MINIOS_SYS_READLINK` | macro | `progs/minios_abi.h:270` | `#define MINIOS_SYS_READLINK` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `menu_do_load` | function | `progs/pokemon/platform_minios.c:723` | `static void menu_do_load(void)` |
 | `menu_do_save` | function | `progs/pokemon/platform_minios.c:707` | `static void menu_do_save(void)` |
 | `menu_draw` | function | `progs/pokemon/platform_minios.c:670` | `static void menu_draw(void)` |
-| `menu_fill` | function | `progs/pokemon/platform_minios.c:632` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
-| `menu_item_at` | function | `progs/pokemon/platform_minios.c:700` | `static int menu_item_at(int lx, int ly)` |
-| `menu_osd` | function | `progs/pokemon/platform_minios.c:664` | `static void menu_osd(const char *s)` |
-| `menu_text` | function | `progs/pokemon/platform_minios.c:645` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
-| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:330` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,                             ...` |
-| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:262` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
-| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1222` | `static void minios_autosave(uint32_t now)` |
-| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1208` | `static inline bool minios_fast_forward(void)` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

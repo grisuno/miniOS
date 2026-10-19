@@ -147,20 +147,20 @@
   - `kfopen_dir` (function, line 243) `KFILE *kfopen_dir(const char *resolved)`
   - `kfopen` (function, line 264) `KFILE *kfopen(const char *path, const char *mode)`
   - `fs_rename_on_minifs` (function, line 361) `static int fs_rename_on_minifs(const char *dst)`
-  - `entry` (function, line 380) `* directory with a volatile ramdisk entry (the kfopen misroute class) or
- * need a copy+delete th...`
-  - `kfclose` (function, line 422) `int kfclose(KFILE *f)`
-  - `kfgetc` (function, line 467) `int kfgetc(KFILE *f)`
-  - `kfgets` (function, line 508) `char *kfgets(char *buf, int size, KFILE *f)`
-  - `kfungetc` (function, line 522) `int kfungetc(int c, KFILE *f)`
-  - `kfread` (function, line 529) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfwrite` (function, line 575) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfseek` (function, line 641) `int kfseek(KFILE *f, long offset, int whence)`
-  - `kftell` (function, line 662) `long kftell(KFILE *f)`
-  - `kfflush` (function, line 666) `int kfflush(KFILE *f)`
-  - `kfputs` (function, line 692) `int kfputs(const char *s, KFILE *f)`
-  - `kfputc` (function, line 698) `int kfputc(int c, KFILE *f)`
-  - `krewind` (function, line 703) `void krewind(KFILE *f)`
+  - `directory` (function, line 379) `* empty directory by a directory (-20/-21 for a kind mismatch, -39 for a
+ * non-empty directory)....`
+  - `kfclose` (function, line 432) `int kfclose(KFILE *f)`
+  - `kfgetc` (function, line 477) `int kfgetc(KFILE *f)`
+  - `kfgets` (function, line 518) `char *kfgets(char *buf, int size, KFILE *f)`
+  - `kfungetc` (function, line 532) `int kfungetc(int c, KFILE *f)`
+  - `kfread` (function, line 539) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfwrite` (function, line 585) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfseek` (function, line 651) `int kfseek(KFILE *f, long offset, int whence)`
+  - `kftell` (function, line 672) `long kftell(KFILE *f)`
+  - `kfflush` (function, line 676) `int kfflush(KFILE *f)`
+  - `kfputs` (function, line 702) `int kfputs(const char *s, KFILE *f)`
+  - `kfputc` (function, line 708) `int kfputc(int c, KFILE *f)`
+  - `krewind` (function, line 713) `void krewind(KFILE *f)`
 - Depends on: `headers/minifs.h`
 
 ## fs/minifs.c
@@ -221,23 +221,24 @@ void minifs_journal_touch(unsigned int phys)`
   - `minifs_unlink` (function, line 1076) `int minifs_unlink(const char *path)`
   - `minifs_split_parent` (function, line 1119) `static int minifs_split_parent(const char *path, char *parent_out,
                               ...`
-  - `minifs_rename` (function, line 1144) `int minifs_rename(const char *oldpath, const char *newpath)`
-  - `minifs_rmdir` (function, line 1176) `int minifs_rmdir(const char *path)`
-  - `minifs_read` (function, line 1216) `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)`
-  - `minifs_write` (function, line 1287) `int minifs_write(int inode_num, const void *buf, unsigned int offset,
+  - `minifs_dir_is_empty` (function, line 1148) `static int minifs_dir_is_empty(int dir_ino)`
+  - `minifs_rename` (function, line 1175) `int minifs_rename(const char *oldpath, const char *newpath)`
+  - `minifs_rmdir` (function, line 1225) `int minifs_rmdir(const char *path)`
+  - `minifs_read` (function, line 1266) `int minifs_read(int inode_num, void *buf, unsigned int offset, unsigned int len)`
+  - `minifs_write` (function, line 1337) `int minifs_write(int inode_num, const void *buf, unsigned int offset,
                  unsigned i...`
-  - `minifs_truncate` (function, line 1374) `int minifs_truncate(int inode_num, unsigned int new_size)`
-  - `minifs_stat` (function, line 1391) `int minifs_stat(int inode_num, MiniFSInode *out)`
-  - `minifs_access` (function, line 1395) `int minifs_access(const char *path)`
-  - `minifs_init` (function, line 1401) `void minifs_init(void)`
-  - `minifs_get_lba_start` (function, line 1409) `unsigned int minifs_get_lba_start(void)`
-  - `minifs_is_mounted` (function, line 1410) `int minifs_is_mounted(void)`
-  - `minifs_mount` (function, line 1418) `int minifs_mount(void)`
-  - `minifs_sync` (function, line 1568) `int minifs_sync(void)`
-  - `minifs_file_open` (function, line 1583) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
-  - `minifs_file_close` (function, line 1597) `int minifs_file_close(MiniFSFile *f)`
-  - `minifs_get_total_blocks` (function, line 1604) `unsigned int minifs_get_total_blocks(void)`
-  - `minifs_usage` (function, line 1609) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
+  - `minifs_truncate` (function, line 1424) `int minifs_truncate(int inode_num, unsigned int new_size)`
+  - `minifs_stat` (function, line 1441) `int minifs_stat(int inode_num, MiniFSInode *out)`
+  - `minifs_access` (function, line 1445) `int minifs_access(const char *path)`
+  - `minifs_init` (function, line 1451) `void minifs_init(void)`
+  - `minifs_get_lba_start` (function, line 1459) `unsigned int minifs_get_lba_start(void)`
+  - `minifs_is_mounted` (function, line 1460) `int minifs_is_mounted(void)`
+  - `minifs_mount` (function, line 1468) `int minifs_mount(void)`
+  - `minifs_sync` (function, line 1618) `int minifs_sync(void)`
+  - `minifs_file_open` (function, line 1633) `MiniFSFile *minifs_file_open(int inode_num, int flags)`
+  - `minifs_file_close` (function, line 1647) `int minifs_file_close(MiniFSFile *f)`
+  - `minifs_get_total_blocks` (function, line 1654) `unsigned int minifs_get_total_blocks(void)`
+  - `minifs_usage` (function, line 1659) `void minifs_usage(unsigned int *free_b, unsigned int *total_b,
                   unsigned int *fr...`
   - `minifs_journal_touch` (function, line 16) `void minifs_journal_touch(unsigned int phys);`
   - `blk_new` (function, line 22) `static unsigned char *blk_new(void);`

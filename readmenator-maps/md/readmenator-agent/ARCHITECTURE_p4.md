@@ -197,6 +197,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `progs/src/lxsel.c` -> errno.h, stdio.h, sys/select.h, sys/syscall.h, unistd.h
 - `progs/src/lxtls.c` -> curl/curl.h, openssl/err.h, openssl/evp.h, openssl/rand.h, stdio.h
 - `progs/src/opl3.c` -> stdint.h, stdio.h
+- `progs/src/pip.c` -> errno.h, stdint.h, stdio.h, stdlib.h, unistd.h
 - `progs/src/sbtone.c` -> math.h, stdio.h
 - `progs/src/shell.py` -> os, sys
 - `progs/src/test.py` -> sys

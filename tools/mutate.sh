@@ -374,6 +374,8 @@ lxabi-uid-nonzero | s/return LINUX_UID_GID_ROOT;/return 1;/ | kernel/syscalls.c
 lxabi-getdents-no-resume | s/        f->dir_off++;/        (void)0;/ | kernel/syscalls.c
 lxabi-getdents-enotdir-lost | s/    if (!f->is_dir) {/    if (0) {/ | kernel/syscalls.c
 lxabi-rmdir-notempty-lost | s/    return r >= 0 ? 0 : -39;               \/\* only empty-dir refusals here \*\//    return 0;/ | kernel/syscalls.c
+lxabi-rmdir-emptied-size | s/    if (!minifs_dir_is_empty(ino)) return -1;/    if (inode.size > 0) return -1;/ | fs/minifs.c
+lxabi-rename-dir-lost | s/    if (fs_read_inode((unsigned)child, \&st) < 0) return -1;/&\n    if (st.mode \& MINIFS_S_IFDIR) return -1;/ | fs/minifs.c
 lxabi-futex-timeout-never | s/        if (left <= 0) return -110; \/\* ETIMEDOUT \*\//        if (0) return -110;/ | kernel/syscalls.c
 lxabi-time-unreclaimed | s/= { sys_linux_time, /= { sys_minios_tls_retired, / | kernel/syscalls.c
 lxabi-eventfd-overwrites | s/        f->efd_count += v;/        f->efd_count = v;/ | fs/kfile.c

@@ -372,20 +372,22 @@ static int fs_rename_on_minifs(const char *dst) {
     }
 }
 
-/** Docstring: Rename one file within its own filesystem. Both paths are
- * already fs_resolve'd (RAMDISK_FNAME_LEN, never truncated). Directories
- * refuse with -21, a missing src with -2, an existing dst with -17 (no
- * silent overwrite in v1). A dst whose parent lives only on the other
- * filesystem refuses with -18: moving it would either shadow a MiniFS
- * directory with a volatile ramdisk entry (the kfopen misroute class) or
- * need a copy+delete the caller must ask for explicitly. Owns fs_lock
- * for the whole decision, so src and dst cannot change under it. */
+/** Docstring: Rename one entry within its own filesystem. Both paths are
+ * already fs_resolve'd (RAMDISK_FNAME_LEN, never truncated). A missing
+ * src is -2; a directory renamed into its own subtree is -22. Destination
+ * replacement follows Linux: a regular file is replaced by a file, and an
+ * empty directory by a directory (-20/-21 for a kind mismatch, -39 for a
+ * non-empty directory). A ramdisk dst, or a MiniFS dst whose parent lives
+ * only on the other filesystem, refuses with -17/-18: replacing the
+ * embedded boot image or moving across filesystems would either shadow a
+ * MiniFS directory with a volatile ramdisk entry (the kfopen misroute
+ * class) or need a copy+delete the caller must ask for explicitly. Owns
+ * fs_lock for the whole decision, so src and dst cannot change under it. */
 int fs_rename(const char *oldr, const char *newr) {
     irqflags_t flags;
     int r;
     if (!oldr || !newr) return -2;
     if (kstrcmp(oldr, newr) == 0) return 0;
-    if (fs_is_dir(oldr) || fs_is_dir(newr)) return -21;
     fs_take(&flags);
     if (ramdisk_open(oldr)) {
         if (ramdisk_open(newr) ||
@@ -402,8 +404,16 @@ int fs_rename(const char *oldr, const char *newr) {
         return r;
     }
     if (minifs_is_mounted() && minifs_resolve_path(oldr) >= 0) {
+        if (fs_is_dir(oldr)) {
+            unsigned ol = (unsigned)kstrlen(oldr);
+            if (kstrncmp(newr, oldr, ol) == 0 && newr[ol] == '/') {
+                fs_drop(flags);
+                return -22;
+            }
+        }
         if (ramdisk_open(newr) ||
-            minifs_resolve_path(newr) >= 0) {
+            (fs_is_dir(newr) &&
+             !(minifs_is_mounted() && minifs_resolve_path(newr) >= 0))) {
             fs_drop(flags);
             return -17;
         }

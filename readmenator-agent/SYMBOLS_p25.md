@@ -3,6 +3,22 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `wl_str_decode` | function | `progs/wl/wl_mini.h:188` | `static inline int wl_str_decode(const unsigned char *src, int len, int off,         char *dst, in...` |
+| `wl_str_encode` | function | `progs/wl/wl_mini.h:163` | `static inline int wl_str_encode(unsigned char *dst, int cap, int off,         const char *s)` |
+| `wl_stream_consume` | function | `progs/wl/wl_mini.h:1166` | `static inline int wl_stream_consume(wl_stream_t *s, int n)` |
+| `wl_stream_feed` | function | `progs/wl/wl_mini.h:1135` | `static inline int wl_stream_feed(wl_stream_t *s, const unsigned char *src,         int n)` |
+| `wl_stream_init` | function | `progs/wl/wl_mini.h:1129` | `static inline void wl_stream_init(wl_stream_t *s)` |
+| `wl_stream_next` | function | `progs/wl/wl_mini.h:1150` | `static inline int wl_stream_next(wl_stream_t *s, int *size)` |
+| `wl_stream_t` | struct | `progs/wl/wl_mini.h:1124` | `` |
+| `wl_strlen_bounded` | function | `progs/wl/wl_mini.h:150` | `static inline int wl_strlen_bounded(const char *s)` |
+| `wl_surface_hit_zone` | function | `progs/wl/wl_mini.h:415` | `static inline int wl_surface_hit_zone(const wl_surface_t *s, int x, int y)` |
+| `wl_surface_id_valid` | function | `progs/wl/wl_mini.h:214` | `static inline int wl_surface_id_valid(unsigned int id)` |
+| `wl_surface_t` | struct | `progs/wl/wl_mini.h:251` | `` |
+| `wl_u32_decode` | function | `progs/wl/wl_mini.h:139` | `static inline int wl_u32_decode(const unsigned char *src, int len, int off,         unsigned int *v)` |
+| `wl_u32_encode` | function | `progs/wl/wl_mini.h:128` | `static inline int wl_u32_encode(unsigned char *dst, int cap, int off,         unsigned int v)` |
+| `wlcomp_blit` | function | `progs/wl/wl_mini.h:637` | `static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h, ...` |
+| `wlcomp_render` | function | `progs/wl/wl_mini.h:512` | `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h)` |
+| `MINIOS_WL_PIXBUF_H` | macro | `progs/wl/wl_pixbuf.h:17` | `#define MINIOS_WL_PIXBUF_H` |
 | `WPIX_BUDGET_MAX` | macro | `progs/wl/wl_pixbuf.h:44` | `#define WPIX_BUDGET_MAX` |
 | `WPIX_MAX_H` | macro | `progs/wl/wl_pixbuf.h:36` | `#define WPIX_MAX_H` |
 | `WPIX_MAX_SLOTS` | macro | `progs/wl/wl_pixbuf.h:28` | `#define WPIX_MAX_SLOTS` |
@@ -480,21 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `test_cb` | function | `tests/test_rcu.c:23` | `static void test_cb(void *arg)` |
 | `CHECK` | macro | `tests/test_rtc.c:16` | `#define CHECK(c, m)` |
 | `main` | function | `tests/test_rtc.c:18` | `int main(void)` |
-| `CHECK` | macro | `tests/test_sanitize.c:41` | `#define CHECK(cond, msg)` |
-| `EFAULT` | macro | `tests/test_sanitize.c:13` | `#define EFAULT` |
-| `copy_probe` | function | `tests/test_sanitize.c:61` | `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)` |
-| `kmemcpy` | function | `tests/test_sanitize.c:32` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
-| `main` | function | `tests/test_sanitize.c:67` | `int main(void)` |
-| `range_probe` | function | `tests/test_sanitize.c:48` | `static long range_probe(unsigned long p, long len)` |
-| `str_probe` | function | `tests/test_sanitize.c:54` | `static long str_probe(unsigned long p)` |
-| `user_range_ok` | function | `tests/test_sanitize.c:20` | `int user_range_ok(unsigned long p, unsigned long len)` |
-| `user_str_ok` | function | `tests/test_sanitize.c:26` | `int user_str_ok(unsigned long p, unsigned long maxlen)` |
-| `ARGS2_OFF` | macro | `tests/test_seccomp_bpf.c:30` | `#define ARGS2_OFF` |
-| `CHECK` | macro | `tests/test_seccomp_bpf.c:17` | `#define CHECK(cond, msg)` |
-| `JUMP` | macro | `tests/test_seccomp_bpf.c:22` | `#define JUMP(c, k, t, f)` |
-| `NR_MMAP` | macro | `tests/test_seccomp_bpf.c:27` | `#define NR_MMAP` |
-| `NR_MPROTECT` | macro | `tests/test_seccomp_bpf.c:28` | `#define NR_MPROTECT` |
-| `NR_OPEN` | macro | `tests/test_seccomp_bpf.c:26` | `#define NR_OPEN` |
-| `NR_READ` | macro | `tests/test_seccomp_bpf.c:24` | `#define NR_READ` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

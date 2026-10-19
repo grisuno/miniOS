@@ -3,6 +3,7 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 10 | 0 |
 | `tests/test_mip.py` | host test for the frozen MicroPython installer (make test-mip). | tests | 44 | 0 |
 | `tests/test_modifiers.c` | Docstring: Designated initializers, so adding a member cannot silently | tests | 2 | 0 |
 | `tests/test_notify.c` | - | tests | 3 | 0 |

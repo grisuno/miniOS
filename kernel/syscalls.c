@@ -1421,9 +1421,10 @@ static long kfd_install(KFILE *f, int cloexec) {
     return fd;
 }
 
-static long do_open_path(const char *path, long flags) {
+/* Trusted core: `path` is already a kernel string (syscall argument that
+ * passed SANITIZE_STR, or an *at(2) join built in kernel memory). */
+static long do_open_kpath(const char *path, long flags) {
     int cloexec = (flags & 0x80000) ? 1 : 0;
-    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
     {
         proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
         if (op && op->rl_nofile_max && (unsigned long)op->open_files >= op->rl_nofile_max)
@@ -1448,9 +1449,53 @@ static long do_open_path(const char *path, long flags) {
     }
 }
 
+static long do_open_path(const char *path, long flags) {
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+    return do_open_kpath(path, flags);
+}
+
 static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a3; (void)a4; (void)a5; (void)a6;
     return do_open_path((const char *)a1, a2);
+}
+
+/* Resolve an *at(2) relative name against an open directory fd. Absolute
+ * paths and AT_FDCWD pass through; a relative name with a directory fd
+ * becomes <dir_path>/<name>. Returns 0 when the fd is not a directory
+ * or the joined path does not fit, which callers report as ENOTDIR/
+ * ENAMETOOLONG instead of silently resolving against the cwd (the bug
+ * that broke shutil.rmtree's fd-based walks). */
+#define LINUX_AT_FDCWD (-100)
+
+static int resolve_at_path(long dirfd, const char *path, char *out, unsigned out_sz) {
+    unsigned plen, nlen;
+    KFILE *d;
+    int dfd = (int)dirfd;
+    if (!path || !out || out_sz == 0) return 0;
+    if (path[0] == '/' || dfd == LINUX_AT_FDCWD) {
+        unsigned len = (unsigned)kstrlen(path);
+        if (len >= out_sz) return 0;
+        kmemcpy(out, path, len + 1);
+        return 1;
+    }
+    if (dfd < 0) return 0;
+    d = kfd_get(dfd);
+    if (!d) return 0;
+    if (!d->is_dir) {
+        kfd_put(d);
+        return 0;
+    }
+    plen = (unsigned)kstrlen(d->dir_path);
+    nlen = (unsigned)kstrlen(path);
+    if (plen + 1 + nlen >= out_sz || (plen && d->dir_path[plen - 1] == '/' && nlen == 0)) {
+        kfd_put(d);
+        return 0;
+    }
+    kmemcpy(out, d->dir_path, plen);
+    if (plen == 0 || d->dir_path[plen - 1] != '/') out[plen++] = '/';
+    kmemcpy(out + plen, path, nlen + 1);
+    kfd_put(d);
+    return 1;
 }
 
 /* Linux descriptor-flag ABI values (docs/spec/smp-sched.md, Linux
@@ -3024,10 +3069,8 @@ static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a
     return (long)(cwd_len + 1);
 }
 
-static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6) {
-    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    const char *path = (const char *)a1;
-    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+/* Trusted core: `path` is already a kernel string. */
+static long unlink_kpath(const char *path) {
     char resolved[RAMDISK_FNAME_LEN];
     if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
     if (fs_is_dir(resolved)) return -21;
@@ -3041,6 +3084,13 @@ static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a
         spin_unlock_irqrestore(&fs_lock, flags);
         return r;
     }
+}
+
+static long sys_linux_unlink(long a1, long a2, long a3, long a4, long a5, long a6) {
+    const char *path = (const char *)a1;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+    return unlink_kpath(path);
 }
 
 #define PROC_SELF_EXE "/proc/self/exe"
@@ -3245,14 +3295,12 @@ static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6
  * are ENOENT, a non-directory is ENOTDIR and a non-empty directory or
  * the root is ENOTEMPTY, like Linux. pip's tempdir cleanup
  * (shutil.rmtree) is the main caller. */
-static long sys_linux_rmdir(long a1, long a2, long a3, long a4, long a5, long a6) {
-    const char *path = (const char *)a1;
+/* Trusted core: `path` is already a kernel string. */
+static long rmdir_kpath(const char *path) {
     char resolved[RAMDISK_FNAME_LEN];
     unsigned len;
     irqflags_t flags;
     int r;
-    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
-    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
     if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
     len = (unsigned)kstrlen(resolved);
     while (len > 0 && resolved[len - 1] == '/') resolved[--len] = 0;
@@ -3267,6 +3315,54 @@ static long sys_linux_rmdir(long a1, long a2, long a3, long a4, long a5, long a6
     if (r >= 0) minifs_sync();
     spin_unlock_irqrestore(&fs_lock, flags);
     return r >= 0 ? 0 : -39;               /* only empty-dir refusals here */
+}
+
+static long sys_linux_rmdir(long a1, long a2, long a3, long a4, long a5, long a6) {
+    const char *path = (const char *)a1;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+    return rmdir_kpath(path);
+}
+
+/* umask (95): MiniFS modes are fixed at creation (0644 files, 0755
+ * directories) and never masked, so the kernel only keeps the customary
+ * process-wide value for the return interface; changing it does not
+ * alter any mode written to disk. pip and CPython query it during
+ * tempdir/venv setup. */
+static unsigned linux_umask = 0022;
+
+static long sys_linux_umask(long a1, long a2, long a3, long a4, long a5, long a6) {
+    long previous = (long)linux_umask;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    linux_umask = (unsigned)(a1 & 0777);
+    return previous;
+}
+
+/* chmod (90) and fchmod (91): MiniFS modes are fixed at creation and no
+ * boot-image operation is permission-checked, so the kernel validates the
+ * target (ENOENT/EBADF) and reports success. Refusing would break pip's
+ * console-script installation, which chmods every wrapper to 0755. */
+static long sys_linux_chmod(long a1, long a2, long a3, long a4, long a5, long a6) {
+    const char *path = (const char *)a1;
+    char resolved[RAMDISK_FNAME_LEN];
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+    if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
+    if (fs_is_dir(resolved) || ramdisk_open(resolved) ||
+        (minifs_is_mounted() && minifs_resolve_path(resolved) >= 0))
+        return 0;
+    return -2;
+}
+
+static long sys_linux_fchmod(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    if (a1 >= 0 && a1 <= 2) return 0;
+    {
+        KFILE *f = kfd_get((int)a1);
+        if (!f) return -9;
+        kfd_put(f);
+    }
+    return 0;
 }
 
 #define LINUX_SYSCALL_COUNT 200
@@ -3329,6 +3425,9 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [84]  = { sys_linux_rmdir,        "rmdir" },
     [87]  = { sys_linux_unlink,       "unlink" },
     [89]  = { sys_linux_readlink,     "readlink" },
+    [90]  = { sys_linux_chmod,        "chmod" },
+    [91]  = { sys_linux_fchmod,       "fchmod" },
+    [95]  = { sys_linux_umask,        "umask" },
     [96]  = { sys_linux_gettimeofday, "gettimeofday" },
     [102] = { sys_linux_getuid,       "getuid" },
     [104] = { sys_linux_getgid,       "getgid" },
@@ -3616,7 +3715,13 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     /* 0, 1, 20, 2 now live in linux_syscall_table; 257 shares
      * do_open_path with open. */
     case 257: /* openat (open/2 is table-driven) */
-        return do_open_path((const char *)a2, a3);
+        {
+            char at_path[RAMDISK_FNAME_LEN];
+            const char *name = (const char *)a2;
+            SANITIZE_STR(name, RAMDISK_FNAME_LEN);
+            if (!resolve_at_path(a1, name, at_path, sizeof(at_path))) return -20;
+            return do_open_kpath(at_path, a3);
+        }
     /* 12, 9, 11, 158 now live in linux_syscall_table. */
     case 218: /* set_tid_address: record nothing (single robust-list slot
         * arrives in Phase 1.B); return the caller tid like Linux. */
@@ -3764,11 +3869,13 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
     case 262: { /* newfstatat */
         const char *path = (const char *)a2;
         unsigned long *st = (unsigned long *)a3;
+        char at_path[RAMDISK_FNAME_LEN];
         SANITIZE_STR(path, RAMDISK_FNAME_LEN);
         SANITIZE_RANGE(st, 144);
+        if (!resolve_at_path(a1, path, at_path, sizeof(at_path))) return -20;
         for (int i = 0; i < 18; i++) st[i] = 0;
         char resolved[RAMDISK_FNAME_LEN];
-        if (!fs_resolve(path, resolved, sizeof(resolved))) return -2;
+        if (!fs_resolve(at_path, resolved, sizeof(resolved))) return -2;
         if (fs_is_dir(resolved)) {
             ((unsigned int *)(unsigned long)st)[6] = 0040755;
         } else {
@@ -3791,6 +3898,17 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         return 0;
     }
     /* 223 is table-driven (minios_syscall_table); switch copy was dead. */
+    case 263: { /* unlinkat: flags 0x200 (AT_REMOVEDIR) selects rmdir,
+        * any other flag set removes the file. CPython's fd-based
+        * shutil.rmtree walks with this call. */
+        char at_path[RAMDISK_FNAME_LEN];
+        const char *name = (const char *)a2;
+        SANITIZE_STR(name, RAMDISK_FNAME_LEN);
+        if (!resolve_at_path(a1, name, at_path, sizeof(at_path))) return -20;
+        if (a3 & 0x200)
+            return rmdir_kpath(at_path);
+        return unlink_kpath(at_path);
+    }
     default:
         kprintf("UNIMPL SYSCALL %ld\n", n);
         return -38;

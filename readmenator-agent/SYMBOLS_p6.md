@@ -3,6 +3,7 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCM2_ERR_NODEV` | macro | `headers/pcm2.h:61` | `#define PCM2_ERR_NODEV` |
 | `PCM2_ERR_NOMEM` | macro | `headers/pcm2.h:62` | `#define PCM2_ERR_NOMEM` |
 | `PCM2_ERR_PERM` | macro | `headers/pcm2.h:63` | `#define PCM2_ERR_PERM` |
 | `PCM2_ERR_PIPE` | macro | `headers/pcm2.h:64` | `#define PCM2_ERR_PIPE` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `wait_queue_t` | struct | `headers/sync.h:42` | `` |
 | `wake_up` | function | `headers/sync.h:52` | `int wake_up(wait_queue_t *q);` |
 | `wake_up_all` | function | `headers/sync.h:53` | `int wake_up_all(wait_queue_t *q);` |
-| `wq_init` | function | `headers/sync.h:50` | `void wq_init(wait_queue_t *q);` |
 
 Next: [SYMBOLS_p7.md](SYMBOLS_p7.md)

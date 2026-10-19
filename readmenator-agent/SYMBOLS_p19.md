@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.h:58` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch);` |
+| `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.h:78` | `void V_DrawRawScreen(byte *raw);` |
+| `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.h:61` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch);` |
+| `V_DrawTLPatch` | function | `progs/doomgeneric/v_video.h:59` | `void V_DrawTLPatch(int x, int y, patch_t *patch);` |
+| `V_DrawVertLine` | function | `progs/doomgeneric/v_video.h:73` | `void V_DrawVertLine(int x, int y, int h, int c);` |
+| `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.h:62` | `void V_DrawXlaPatch(int x, int y, patch_t * patch);` |
+| `V_Init` | function | `progs/doomgeneric/v_video.h:49` | `void V_Init (void);` |
+| `V_LoadTintTable` | function | `progs/doomgeneric/v_video.h:97` | `void V_LoadTintTable(void);` |
 | `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.h:103` | `void V_LoadXlaTable(void);` |
 | `V_MarkRect` | function | `progs/doomgeneric/v_video.h:69` | `void V_MarkRect(int x, int y, int width, int height);` |
 | `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.h:86` | `void V_RestoreBuffer(void);` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `make_error` | function | `progs/lisp/lisp.c:293` | `static Node *make_error(Runtime *rt, const char *message)` |
 | `make_file` | function | `progs/lisp/lisp.c:355` | `static Node *make_file(Runtime *rt, FILE *handle)` |
 | `make_node` | function | `progs/lisp/lisp.c:284` | `static Node *make_node(Runtime *rt, NodeType type)` |
-| `make_num` | function | `progs/lisp/lisp.c:302` | `static Node *make_num(Runtime *rt, int64_t value)` |
-| `make_prim` | function | `progs/lisp/lisp.c:329` | `static Node *make_prim(Runtime *rt, PrimFn function)` |
-| `make_str` | function | `progs/lisp/lisp.c:311` | `static Node *make_str(Runtime *rt, const char *value)` |
-| `make_sym` | function | `progs/lisp/lisp.c:320` | `static Node *make_sym(Runtime *rt, const char *value)` |
-| `msys` | function | `progs/lisp/lisp.c:205` | `static long msys(long n, long a1, long a2, long a3)` |
-| `msys5` | function | `progs/lisp/lisp.c:218` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
-| `numbers` | function | `progs/lisp/lisp.c:9` | `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special...` |
-| `parse_eof` | function | `progs/lisp/lisp.c:573` | `static ParseResult parse_eof(void)` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

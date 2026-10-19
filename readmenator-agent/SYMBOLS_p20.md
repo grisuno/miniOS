@@ -3,6 +3,14 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `make_num` | function | `progs/lisp/lisp.c:302` | `static Node *make_num(Runtime *rt, int64_t value)` |
+| `make_prim` | function | `progs/lisp/lisp.c:329` | `static Node *make_prim(Runtime *rt, PrimFn function)` |
+| `make_str` | function | `progs/lisp/lisp.c:311` | `static Node *make_str(Runtime *rt, const char *value)` |
+| `make_sym` | function | `progs/lisp/lisp.c:320` | `static Node *make_sym(Runtime *rt, const char *value)` |
+| `msys` | function | `progs/lisp/lisp.c:205` | `static long msys(long n, long a1, long a2, long a3)` |
+| `msys5` | function | `progs/lisp/lisp.c:218` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
+| `numbers` | function | `progs/lisp/lisp.c:9` | `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special...` |
+| `parse_eof` | function | `progs/lisp/lisp.c:573` | `static ParseResult parse_eof(void)` |
 | `parse_error` | function | `progs/lisp/lisp.c:584` | `static ParseResult parse_error(const char *message)` |
 | `parse_ok` | function | `progs/lisp/lisp.c:562` | `static ParseResult parse_ok(Node *value)` |
 | `prim_add` | function | `progs/lisp/lisp.c:869` | `static Node *prim_add(Runtime *rt, Node *args)` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MINIOS_SYS_NK_FRAME` | macro | `progs/minios_abi.h:332` | `#define MINIOS_SYS_NK_FRAME` |
 | `MINIOS_SYS_OPEN` | macro | `progs/minios_abi.h:240` | `#define MINIOS_SYS_OPEN` |
 | `MINIOS_SYS_OPENAT` | macro | `progs/minios_abi.h:281` | `#define MINIOS_SYS_OPENAT` |
-| `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:315` | `#define MINIOS_SYS_PALETTE` |
-| `MINIOS_SYS_PCM2_CLOSE` | macro | `progs/minios_abi.h:367` | `#define MINIOS_SYS_PCM2_CLOSE` |
-| `MINIOS_SYS_PCM2_OPEN` | macro | `progs/minios_abi.h:365` | `#define MINIOS_SYS_PCM2_OPEN` |
-| `MINIOS_SYS_PCM2_WRITE` | macro | `progs/minios_abi.h:366` | `#define MINIOS_SYS_PCM2_WRITE` |
-| `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:318` | `#define MINIOS_SYS_PCSPK_INIT` |
-| `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:319` | `#define MINIOS_SYS_PCSPK_TONE` |
-| `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:323` | `#define MINIOS_SYS_PCSPK_VOL` |
-| `MINIOS_SYS_POLL` | macro | `progs/minios_abi.h:243` | `#define MINIOS_SYS_POLL` |
 
 Next: [SYMBOLS_p21.md](SYMBOLS_p21.md)

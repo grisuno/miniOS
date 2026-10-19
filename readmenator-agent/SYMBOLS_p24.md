@@ -3,6 +3,22 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `EXPERT_INNER` | macro | `progs/topogpt3/topogpt3.c:87` | `#define EXPERT_INNER` |
+| `FILE` | struct | `progs/topogpt3/topogpt3.c:24` | `` |
+| `FREQ_W` | macro | `progs/topogpt3/topogpt3.c:85` | `#define FREQ_W` |
+| `GQA_GROUPS` | macro | `progs/topogpt3/topogpt3.c:69` | `#define GQA_GROUPS` |
+| `LayerWeights` | struct | `progs/topogpt3/topogpt3.c:176` | `` |
+| `MAX_LINE` | macro | `progs/topogpt3/topogpt3.c:96` | `#define MAX_LINE` |
+| `MAX_PROMPT_LEN` | macro | `progs/topogpt3/topogpt3.c:95` | `#define MAX_PROMPT_LEN` |
+| `MAX_SEQ_LEN` | macro | `progs/topogpt3/topogpt3.c:73` | `#define MAX_SEQ_LEN` |
+| `MAX_TOKENS` | macro | `progs/topogpt3/topogpt3.c:94` | `#define MAX_TOKENS` |
+| `MOE_TOP_K` | macro | `progs/topogpt3/topogpt3.c:75` | `#define MOE_TOP_K` |
+| `ModelWeights` | struct | `progs/topogpt3/topogpt3.c:224` | `` |
+| `NULL` | macro | `progs/topogpt3/topogpt3.c:43` | `#define NULL` |
+| `N_ANGULAR` | macro | `progs/topogpt3/topogpt3.c:78` | `#define N_ANGULAR` |
+| `N_EDGES` | macro | `progs/topogpt3/topogpt3.c:80` | `#define N_EDGES` |
+| `N_EDGE_TYPES` | macro | `progs/topogpt3/topogpt3.c:79` | `#define N_EDGE_TYPES` |
+| `N_EXPERTS` | macro | `progs/topogpt3/topogpt3.c:74` | `#define N_EXPERTS` |
 | `N_HEADS` | macro | `progs/topogpt3/topogpt3.c:67` | `#define N_HEADS` |
 | `N_KV_HEADS` | macro | `progs/topogpt3/topogpt3.c:68` | `#define N_KV_HEADS` |
 | `N_LAYERS` | macro | `progs/topogpt3/topogpt3.c:72` | `#define N_LAYERS` |
@@ -480,21 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `wl_pool_fit` | function | `progs/wl/wl_mini.h:223` | `static inline int wl_pool_fit(int w, int h)` |
 | `wl_pool_id_valid` | function | `progs/wl/wl_mini.h:219` | `static inline int wl_pool_id_valid(unsigned int id)` |
 | `wl_scale_nearest` | function | `progs/wl/wl_mini.h:793` | `static inline int wl_scale_nearest(unsigned char *dst, int dw, int dh,         const unsigned cha...` |
-| `wl_str_decode` | function | `progs/wl/wl_mini.h:188` | `static inline int wl_str_decode(const unsigned char *src, int len, int off,         char *dst, in...` |
-| `wl_str_encode` | function | `progs/wl/wl_mini.h:163` | `static inline int wl_str_encode(unsigned char *dst, int cap, int off,         const char *s)` |
-| `wl_stream_consume` | function | `progs/wl/wl_mini.h:1166` | `static inline int wl_stream_consume(wl_stream_t *s, int n)` |
-| `wl_stream_feed` | function | `progs/wl/wl_mini.h:1135` | `static inline int wl_stream_feed(wl_stream_t *s, const unsigned char *src,         int n)` |
-| `wl_stream_init` | function | `progs/wl/wl_mini.h:1129` | `static inline void wl_stream_init(wl_stream_t *s)` |
-| `wl_stream_next` | function | `progs/wl/wl_mini.h:1150` | `static inline int wl_stream_next(wl_stream_t *s, int *size)` |
-| `wl_stream_t` | struct | `progs/wl/wl_mini.h:1124` | `` |
-| `wl_strlen_bounded` | function | `progs/wl/wl_mini.h:150` | `static inline int wl_strlen_bounded(const char *s)` |
-| `wl_surface_hit_zone` | function | `progs/wl/wl_mini.h:415` | `static inline int wl_surface_hit_zone(const wl_surface_t *s, int x, int y)` |
-| `wl_surface_id_valid` | function | `progs/wl/wl_mini.h:214` | `static inline int wl_surface_id_valid(unsigned int id)` |
-| `wl_surface_t` | struct | `progs/wl/wl_mini.h:251` | `` |
-| `wl_u32_decode` | function | `progs/wl/wl_mini.h:139` | `static inline int wl_u32_decode(const unsigned char *src, int len, int off,         unsigned int *v)` |
-| `wl_u32_encode` | function | `progs/wl/wl_mini.h:128` | `static inline int wl_u32_encode(unsigned char *dst, int cap, int off,         unsigned int v)` |
-| `wlcomp_blit` | function | `progs/wl/wl_mini.h:637` | `static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h, ...` |
-| `wlcomp_render` | function | `progs/wl/wl_mini.h:512` | `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h)` |
-| `MINIOS_WL_PIXBUF_H` | macro | `progs/wl/wl_pixbuf.h:17` | `#define MINIOS_WL_PIXBUF_H` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

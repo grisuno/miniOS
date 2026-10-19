@@ -1984,7 +1984,7 @@ Rename one file within its filesystem; see fs/kfile.c for the contract: 0 ok, -2
 
 **Returns:** `int`
 
-*Called by:* [`entry`](fs.kfile.c.md#entry), [`shell_exec_builtin`](kernel.shell.c.md#shell_exec_builtin)
+*Called by:* [`directory`](fs.kfile.c.md#directory), [`shell_exec_builtin`](kernel.shell.c.md#shell_exec_builtin)
 
 ---
 

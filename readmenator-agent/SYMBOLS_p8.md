@@ -3,6 +3,7 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `table` | function | `kernel.c:104` | `* Symbol table (for resolving program references) * ================================================================...` |
 | `tables` | function | `kernel.c:275` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
 | `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
 | `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `cli` | function | `kernel/sched.c:2908` | `* cli (disk PIO must never run with the timer held off);` |
 | `context` | function | `kernel/sched.c:888` | `* context (anything entered via k_exec_user) is inside a syscall  * (entry swapped 0 in), and a c...` |
 | `copy` | function | `kernel/sched.c:362` | `* copy (fail closed, fork refuses) instead of forging pointers. */ /* Name the link a fork could ...` |
-| `ctx_from_frame` | function | `kernel/sched.c:2537` | `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)` |
 
 Next: [SYMBOLS_p9.md](SYMBOLS_p9.md)

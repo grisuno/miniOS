@@ -644,6 +644,29 @@ static void check_uid_gid(void) {
            getgid() == 0 && getegid() == 0, "not all ids are 0");
 }
 
+/* Directory rename within one parent: Linux allows it, and pip's
+ * uninstall stashes a whole dist-info/pycache directory this way. */
+static void check_rename_dir(void) {
+    int ok;
+    mkdir("/tmp/lxabi_ren", 0755);
+    mkdir("/tmp/lxabi_ren/sub", 0755);
+    {
+        int fd = open("/tmp/lxabi_ren/sub/keep", O_WRONLY | O_CREAT, 0644);
+        if (fd >= 0) close(fd);
+    }
+    if (rename("/tmp/lxabi_ren", "/tmp/lxabi_ren2") != 0) {
+        report("rename-dir", 0, "rename failed");
+    } else {
+        ok = access("/tmp/lxabi_ren2/sub/keep", F_OK) == 0 &&
+             access("/tmp/lxabi_ren", F_OK) != 0;
+        report("rename-dir", ok, "moved tree incomplete");
+    }
+    unlink("/tmp/lxabi_ren2/sub/keep");
+    rmdir("/tmp/lxabi_ren2/sub");
+    rmdir("/tmp/lxabi_ren2");
+    rmdir("/tmp/lxabi_ren");
+}
+
 /* rmdir (84): removes an empty directory, refuses to remove one with
  * contents (pip's tempdir cleanup is the main caller). */
 static void check_rmdir(void) {
@@ -672,6 +695,18 @@ static void check_rmdir(void) {
     errno = 0;
     rc = rmdir("/tmp/lxabi_rmdir_absent");
     report("rmdir-missing", rc == -1 && errno == ENOENT, "missing rmdir not ENOENT");
+    /* A directory that held a file and lost it is empty even though its
+     * on-disk size never shrinks; nested shutil.rmtree relies on this. */
+    if (mkdir("/tmp/lxabi_rmdir", 0755) != 0) {
+        report("rmdir-emptied", 0, strerror(errno));
+    } else {
+        int fd2 = open("/tmp/lxabi_rmdir/keep", O_WRONLY | O_CREAT, 0644);
+        if (fd2 >= 0) close(fd2);
+        unlink("/tmp/lxabi_rmdir/keep");
+        errno = 0;
+        rc = rmdir("/tmp/lxabi_rmdir");
+        report("rmdir-emptied", rc == 0, "emptied dir refused");
+    }
 }
 
 /* getdents64 (217): a directory fd enumerates MiniFS entries with the
@@ -768,6 +803,7 @@ int main(void) {
     check_stat_modes();
     check_uid_gid();
     check_rmdir();
+    check_rename_dir();
     check_getdents64();
     check_threads();
     check_condvar();

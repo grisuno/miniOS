@@ -278,6 +278,7 @@
         "progs/src/nx.c",
         "progs/src/opl3.c",
         "progs/src/pcmap.c",
+        "progs/src/pip.c",
         "progs/src/pollready.c",
         "progs/src/sbtone.c",
         "progs/src/scfuzz.c",
@@ -320,7 +321,7 @@
         "tools/test_lisp.py",
         "tools/test_net_fixture.py"
       ],
-      "mentions": 332,
+      "mentions": 333,
       "confidence": "EXTRACTED"
     },
     {
@@ -1717,9 +1718,10 @@
         "tools/kernel_feature_survey.py",
         "tools/minios_gui.py",
         "tools/mkpak1.py",
-        "tools/sign_elf.py"
+        "tools/sign_elf.py",
+        "tools/test_bdd.sh"
       ],
-      "mentions": 228,
+      "mentions": 229,
       "confidence": "EXTRACTED"
     },
     {
@@ -7858,7 +7860,7 @@
         "tools/wm_layout_sync.py",
         "vma.c"
       ],
-      "mentions": 605,
+      "mentions": 606,
       "confidence": "EXTRACTED"
     },
     {
@@ -8018,7 +8020,7 @@
         "tools/tls_test.py",
         "tools/wm_scoped.sh"
       ],
-      "mentions": 373,
+      "mentions": 377,
       "confidence": "EXTRACTED"
     },
     {
@@ -8559,6 +8561,7 @@
         "progs/src/mthreads.h",
         "progs/src/mtop.c",
         "progs/src/pcmap.c",
+        "progs/src/pip.c",
         "progs/src/shell.py",
         "progs/src/sign.c",
         "progs/src/test.py",
@@ -8613,7 +8616,7 @@
         "tools/tls_test.py",
         "tools/wl_scoped.sh"
       ],
-      "mentions": 244,
+      "mentions": 245,
       "confidence": "EXTRACTED"
     },
     {
@@ -9023,7 +9026,7 @@
         "tools/test_net_fixture.py",
         "tools/test_sb16.sh"
       ],
-      "mentions": 294,
+      "mentions": 295,
       "confidence": "EXTRACTED"
     },
     {
@@ -9157,7 +9160,7 @@
         "tools/test_lisp.py",
         "tools/wm_layout_sync.py"
       ],
-      "mentions": 598,
+      "mentions": 599,
       "confidence": "EXTRACTED"
     }
   ],

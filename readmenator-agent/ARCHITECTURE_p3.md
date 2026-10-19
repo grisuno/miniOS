@@ -239,6 +239,8 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/src/mthreads.h` -> `progs/minios_abi.h`
 - `progs/src/opl3.c` -> `kernel/string.c`
 - `progs/src/opl3.c` -> `progs/minios_abi.h`
+- `progs/src/pip.c` -> `kernel/string.c`
+- `progs/src/pip.c` -> `progs/minios_abi.h`
 - `progs/src/sbtone.c` -> `progs/minios_abi.h`
 - `progs/src/scfuzz.c` -> `progs/src/mthreads.h`
 - `progs/src/shell.py` -> `progs/lua/minios.c`

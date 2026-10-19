@@ -31,7 +31,6 @@ flowchart LR
     n_headers_vga_fb_h__vga_fb_draw_desktop["vga_fb.vga_fb_draw_desktop"]
     n_headers_vga_fb_h__vga_fb_set_gfx_mode["vga_fb.vga_fb_set_gfx_mode"]
     n_kernel_exec_c__k_run_rel(["k_run_rel"])
-    n_fs_kfile_c__entry["kfile.entry"]
     n_kernel_exec_c__kexit(["kexit"])
     n_kernel_exec_c__ETREL_CHILD_STACK_SZ --> n_kernel_exec_c__setup_user_stack
     n_kernel_exec_c__k_user_fault_return -.-> n_headers_arch_x86_msr_h__wrmsr
@@ -46,7 +45,6 @@ flowchart LR
     n_kernel_exec_c__ETREL_CHILD_STACK_SZ -.-> n_headers_sched_h__pt_free_user
     n_kernel_exec_c__ETREL_CHILD_STACK_SZ -.-> n_headers_vga_fb_h__vga_fb_draw_desktop
     n_kernel_exec_c__ETREL_CHILD_STACK_SZ -.-> n_headers_vga_fb_h__vga_fb_set_gfx_mode
-    n_kernel_exec_c__k_run_rel -.-> n_fs_kfile_c__entry
     n_kernel_exec_c__k_run_rel -.-> n_headers_drivers_kbd_h__kbd_reset_for_shell
     n_kernel_exec_c__k_run_rel -.-> n_headers_kernel_h__ksetjmp
     n_kernel_exec_c__k_run_rel -.-> n_headers_vga_fb_h__vga_fb_draw_desktop
@@ -167,7 +165,7 @@ int k_run_rel(prog_entry_t entry, int argc, char **argv)
 
 **Returns:** `int`
 
-*Calls:* [`entry`](fs.kfile.c.md#entry), [`kbd_reset_for_shell`](headers.drivers.kbd.h.md#kbd_reset_for_shell), [`ksetjmp`](headers.kernel.h.md#ksetjmp), [`vga_fb_draw_desktop`](headers.vga_fb.h.md#vga_fb_draw_desktop), [`vga_fb_set_gfx_mode`](headers.vga_fb.h.md#vga_fb_set_gfx_mode)
+*Calls:* [`kbd_reset_for_shell`](headers.drivers.kbd.h.md#kbd_reset_for_shell), [`ksetjmp`](headers.kernel.h.md#ksetjmp), [`vga_fb_draw_desktop`](headers.vga_fb.h.md#vga_fb_draw_desktop), [`vga_fb_set_gfx_mode`](headers.vga_fb.h.md#vga_fb_set_gfx_mode)
 
 ---
 

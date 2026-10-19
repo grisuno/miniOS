@@ -175,8 +175,8 @@ Depends on: `kernel/time.c`
 - `usage` (function) `tools/mutate.sh:51`
 - `restore_sources` (function) `tools/mutate.sh:132`
 - `cleanup` (function) `tools/mutate.sh:139`
-- `record` (function) `tools/mutate.sh:516`
-- `find_index` (function) `tools/mutate.sh:522` -- Locate a mutant by name.
+- `record` (function) `tools/mutate.sh:518`
+- `find_index` (function) `tools/mutate.sh:524` -- Locate a mutant by name.
 
 ## tools/probe_compute_vga.py
 Depends on: `kernel/time.c`
