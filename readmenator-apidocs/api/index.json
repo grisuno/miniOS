@@ -2,41 +2,41 @@
  "schema_version": 1,
  "format": "jsonl",
  "meta": {
-  "modules": 504,
-  "entities": 10237,
+  "modules": 508,
+  "entities": 10310,
   "languages": {
    "S": 7,
-   "c": 236,
-   "h": 193,
-   "py": 46,
+   "c": 237,
+   "h": 194,
+   "py": 48,
    "s": 12,
    "sh": 10
   },
   "kinds": {
    "attribute": 158,
    "class": 34,
-   "constant": 146,
+   "constant": 159,
    "constructor": 23,
    "enum": 3,
    "exception": 4,
-   "function": 4442,
-   "macro": 3835,
+   "function": 4466,
+   "macro": 3866,
    "method": 116,
-   "module": 504,
+   "module": 508,
    "staticmethod": 6,
-   "struct": 314,
+   "struct": 315,
    "type_alias": 74,
    "variable": 578
   },
   "truncated": false,
-  "skipped_files": 75,
+  "skipped_files": 78,
   "privacy_mode": false
  },
  "coverage": {
   "overall": {
-   "documented": 2714,
-   "total": 9355,
-   "percent": 29.0
+   "documented": 2749,
+   "total": 9415,
+   "percent": 29.2
   },
   "by_kind": {
    "class": {
@@ -60,14 +60,14 @@
     "percent": 100.0
    },
    "function": {
-    "documented": 1417,
-    "total": 4442,
-    "percent": 31.9
+    "documented": 1437,
+    "total": 4466,
+    "percent": 32.2
    },
    "macro": {
-    "documented": 646,
-    "total": 3835,
-    "percent": 16.8
+    "documented": 657,
+    "total": 3866,
+    "percent": 17.0
    },
    "method": {
     "documented": 24,
@@ -75,9 +75,9 @@
     "percent": 20.7
    },
    "module": {
-    "documented": 417,
-    "total": 504,
-    "percent": 82.7
+    "documented": 421,
+    "total": 508,
+    "percent": 82.9
    },
    "staticmethod": {
     "documented": 6,
@@ -86,8 +86,8 @@
    },
    "struct": {
     "documented": 131,
-    "total": 314,
-    "percent": 41.7
+    "total": 315,
+    "percent": 41.6
    },
    "type_alias": {
     "documented": 42,
@@ -232,9 +232,9 @@
     "percent": 100.0
    },
    "fs/kfile.c": {
-    "documented": 8,
-    "total": 26,
-    "percent": 30.8
+    "documented": 9,
+    "total": 27,
+    "percent": 33.3
    },
    "fs/minifs.c": {
     "documented": 11,
@@ -412,9 +412,9 @@
     "percent": 77.1
    },
    "headers/kernel.h": {
-    "documented": 76,
-    "total": 385,
-    "percent": 19.7
+    "documented": 79,
+    "total": 386,
+    "percent": 20.5
    },
    "headers/kernel/console_in.h": {
     "documented": 6,
@@ -545,6 +545,11 @@
     "documented": 8,
     "total": 58,
     "percent": 13.8
+   },
+   "headers/select_map.h": {
+    "documented": 6,
+    "total": 16,
+    "percent": 37.5
    },
    "headers/shell.h": {
     "documented": 6,
@@ -857,9 +862,9 @@
     "percent": 4.3
    },
    "kernel/syscalls.c": {
-    "documented": 19,
-    "total": 113,
-    "percent": 16.8
+    "documented": 22,
+    "total": 123,
+    "percent": 17.9
    },
    "kernel/syscalls_proc.c": {
     "documented": 7,
@@ -1996,6 +2001,11 @@
     "total": 1,
     "percent": 100.0
    },
+   "progs/micropython/variants/minios/lib/mip.py": {
+    "documented": 12,
+    "total": 12,
+    "percent": 100.0
+   },
    "progs/micropython/variants/minios/manifest.py": {
     "documented": 1,
     "total": 1,
@@ -2007,9 +2017,9 @@
     "percent": 11.1
    },
    "progs/micropython/variants/minios/mpconfigvariant.h": {
-    "documented": 15,
-    "total": 39,
-    "percent": 38.5
+    "documented": 19,
+    "total": 47,
+    "percent": 40.4
    },
    "progs/minicraft/minicraft.c": {
     "documented": 8,
@@ -2017,9 +2027,9 @@
     "percent": 7.0
    },
    "progs/minios_abi.h": {
-    "documented": 31,
+    "documented": 32,
     "total": 154,
-    "percent": 20.1
+    "percent": 20.8
    },
    "progs/minios_png.h": {
     "documented": 11,
@@ -2235,6 +2245,11 @@
     "documented": 1,
     "total": 16,
     "percent": 6.2
+   },
+   "progs/src/lxsel.c": {
+    "documented": 2,
+    "total": 8,
+    "percent": 25.0
    },
    "progs/src/lxtls.c": {
     "documented": 1,
@@ -2541,6 +2556,11 @@
     "total": 45,
     "percent": 66.7
    },
+   "tools/mkcpyzip.py": {
+    "documented": 2,
+    "total": 3,
+    "percent": 66.7
+   },
    "tools/mkfs.minifs.py": {
     "documented": 4,
     "total": 23,
@@ -2552,9 +2572,9 @@
     "percent": 50.0
    },
    "tools/mkramdisk.py": {
-    "documented": 1,
-    "total": 3,
-    "percent": 33.3
+    "documented": 2,
+    "total": 4,
+    "percent": 50.0
    },
    "tools/mkroots.sh": {
     "documented": 1,
@@ -2757,7 +2777,7 @@
   {
    "uid": "fs/kfile.c",
    "path": "modules/fs.kfile.c.jsonl",
-   "entities": 26
+   "entities": 27
   },
   {
    "uid": "fs/minifs.c",
@@ -2937,7 +2957,7 @@
   {
    "uid": "headers/kernel.h",
    "path": "modules/headers.kernel.h.jsonl",
-   "entities": 410
+   "entities": 411
   },
   {
    "uid": "headers/kernel/console_in.h",
@@ -3068,6 +3088,11 @@
    "uid": "headers/seccomp_bpf.h",
    "path": "modules/headers.seccomp_bpf.h.jsonl",
    "entities": 58
+  },
+  {
+   "uid": "headers/select_map.h",
+   "path": "modules/headers.select_map.h.jsonl",
+   "entities": 16
   },
   {
    "uid": "headers/shell.h",
@@ -3382,7 +3407,7 @@
   {
    "uid": "kernel/syscalls.c",
    "path": "modules/kernel.syscalls.c.jsonl",
-   "entities": 115
+   "entities": 125
   },
   {
    "uid": "kernel/syscalls_proc.c",
@@ -4520,6 +4545,11 @@
    "entities": 1
   },
   {
+   "uid": "progs/micropython/variants/minios/lib/mip.py",
+   "path": "modules/progs.micropython.variants.minios.lib.mip.py.jsonl",
+   "entities": 24
+  },
+  {
    "uid": "progs/micropython/variants/minios/manifest.py",
    "path": "modules/progs.micropython.variants.minios.manifest.py.jsonl",
    "entities": 1
@@ -4532,7 +4562,7 @@
   {
    "uid": "progs/micropython/variants/minios/mpconfigvariant.h",
    "path": "modules/progs.micropython.variants.minios.mpconfigvariant.h.jsonl",
-   "entities": 39
+   "entities": 47
   },
   {
    "uid": "progs/minicraft/minicraft.c",
@@ -4758,6 +4788,11 @@
    "uid": "progs/src/lxsecc.c",
    "path": "modules/progs.src.lxsecc.c.jsonl",
    "entities": 16
+  },
+  {
+   "uid": "progs/src/lxsel.c",
+   "path": "modules/progs.src.lxsel.c.jsonl",
+   "entities": 8
   },
   {
    "uid": "progs/src/lxtls.c",
@@ -5065,9 +5100,14 @@
    "entities": 63
   },
   {
+   "uid": "tools/mkcpyzip.py",
+   "path": "modules/tools.mkcpyzip.py.jsonl",
+   "entities": 3
+  },
+  {
    "uid": "tools/mkfs.minifs.py",
    "path": "modules/tools.mkfs.minifs.py.jsonl",
-   "entities": 32
+   "entities": 33
   },
   {
    "uid": "tools/mkpak1.py",
@@ -5077,7 +5117,7 @@
   {
    "uid": "tools/mkramdisk.py",
    "path": "modules/tools.mkramdisk.py.jsonl",
-   "entities": 10
+   "entities": 11
   },
   {
    "uid": "tools/mkroots.sh",
@@ -5142,7 +5182,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 6632
+  "total": 6657
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

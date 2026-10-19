@@ -1,6 +1,17 @@
 # Subsystem: tools (page 2 of 2)
 Previous: [KB_tools.md](KB_tools.md)
 
+## tools/mutate.sh
+- Doc: Mutation testing for MiniOS.
+- Layer: utility
+- Language: sh
+- Symbols:
+  - `usage` (function, line 51)
+  - `restore_sources` (function, line 132)
+  - `cleanup` (function, line 139)
+  - `record` (function, line 516)
+  - `find_index` (function, line 522)
+
 ## tools/probe_compute_vga.py
 - Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute.
 - Layer: utility
@@ -106,12 +117,12 @@ Previous: [KB_tools.md](KB_tools.md)
   - `expect_count` (function, line 119)
   - `refute` (function, line 142)
   - `scenario_uefi` (function, line 167)
-  - `http_server_start` (function, line 1357)
-  - `http_server_stop` (function, line 1364)
-  - `http_fixture_start` (function, line 1369)
-  - `http_fixture_stop` (function, line 1376)
-  - `net_fixture_start` (function, line 1381)
-  - `net_fixture_stop` (function, line 1388)
+  - `http_server_start` (function, line 1389)
+  - `http_server_stop` (function, line 1396)
+  - `http_fixture_start` (function, line 1401)
+  - `http_fixture_stop` (function, line 1408)
+  - `net_fixture_start` (function, line 1413)
+  - `net_fixture_stop` (function, line 1420)
 
 ## tools/test_call_align.py
 - Doc: verify stack alignment at call sites, both parities.

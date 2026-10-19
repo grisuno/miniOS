@@ -1,8 +1,82 @@
-# Symbols (page 23 of 26)
+# Symbols (page 23 of 27)
 Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `LXNET_BUF` | macro | `progs/src/lxnet.c:41` | `#define LXNET_BUF` |
+| `LXNET_IP_UNKNOWN` | macro | `progs/src/lxnet.c:45` | `#define LXNET_IP_UNKNOWN` |
+| `LXNET_LOOPBACK` | macro | `progs/src/lxnet.c:44` | `#define LXNET_LOOPBACK` |
+| `LXNET_TCP_MSG` | macro | `progs/src/lxnet.c:43` | `#define LXNET_TCP_MSG` |
+| `LXNET_UDP_MSG` | macro | `progs/src/lxnet.c:42` | `#define LXNET_UDP_MSG` |
+| `LXNET_WAIT_MS` | macro | `progs/src/lxnet.c:40` | `#define LXNET_WAIT_MS` |
+| `_GNU_SOURCE` | macro | `progs/src/lxnet.c:24` | `#define _GNU_SOURCE` |
+| `check_misc` | function | `progs/src/lxnet.c:217` | `static void check_misc(void)` |
+| `check_refused` | function | `progs/src/lxnet.c:150` | `static void check_refused(const struct sockaddr_in *peer)` |
+| `check_tcp` | function | `progs/src/lxnet.c:174` | `static void check_tcp(const struct sockaddr_in *peer)` |
+| `check_udp` | function | `progs/src/lxnet.c:73` | `static void check_udp(const struct sockaddr_in *peer)` |
+| `dial` | function | `progs/src/lxnet.c:236` | `static int dial(const char *host, const char *port)` |
+| `main` | function | `progs/src/lxnet.c:280` | `int main(int argc, char **argv)` |
+| `read_all` | function | `progs/src/lxnet.c:62` | `static int read_all(int fd, char *buf, size_t len)` |
+| `report` | function | `progs/src/lxnet.c:49` | `static void report(const char *name, int ok, const char *detail)` |
+| `wait_for` | function | `progs/src/lxnet.c:55` | `static int wait_for(int fd, short events)` |
+| `LXPROC_BAD` | macro | `progs/src/lxproc.c:31` | `#define LXPROC_BAD` |
+| `LXPROC_CHILD_CODE` | macro | `progs/src/lxproc.c:29` | `#define LXPROC_CHILD_CODE` |
+| `LXPROC_EXE_MAX` | macro | `progs/src/lxproc.c:27` | `#define LXPROC_EXE_MAX` |
+| `LXPROC_OK` | macro | `progs/src/lxproc.c:30` | `#define LXPROC_OK` |
+| `_GNU_SOURCE` | macro | `progs/src/lxproc.c:17` | `#define _GNU_SOURCE` |
+| `lxproc_note` | struct | `progs/src/lxproc.c:35` | `` |
+| `main` | function | `progs/src/lxproc.c:91` | `int main(void)` |
+| `report_exe` | function | `progs/src/lxproc.c:50` | `static int report_exe(void)` |
+| `report_fork` | function | `progs/src/lxproc.c:64` | `static int report_fork(void)` |
+| `LXSECC_BAD_CODE` | macro | `progs/src/lxsecc.c:31` | `#define LXSECC_BAD_CODE` |
+| `LXSECC_ERRNO_A` | macro | `progs/src/lxsecc.c:35` | `#define LXSECC_ERRNO_A` |
+| `LXSECC_ERRNO_B` | macro | `progs/src/lxsecc.c:36` | `#define LXSECC_ERRNO_B` |
+| `LXSECC_EXEC_CODE` | macro | `progs/src/lxsecc.c:29` | `#define LXSECC_EXEC_CODE` |
+| `LXSECC_EXEC_FLAG` | macro | `progs/src/lxsecc.c:28` | `#define LXSECC_EXEC_FLAG` |
+| `LXSECC_EXE_MAX` | macro | `progs/src/lxsecc.c:32` | `#define LXSECC_EXE_MAX` |
+| `LXSECC_NAME` | macro | `progs/src/lxsecc.c:33` | `#define LXSECC_NAME` |
+| `LXSECC_NAME_MAX` | macro | `progs/src/lxsecc.c:34` | `#define LXSECC_NAME_MAX` |
+| `LXSECC_OK_CODE` | macro | `progs/src/lxsecc.c:30` | `#define LXSECC_OK_CODE` |
+| `LXSECC_PAGE` | macro | `progs/src/lxsecc.c:37` | `#define LXSECC_PAGE` |
+| `LXSECC_STATUS_BYTE` | macro | `progs/src/lxsecc.c:40` | `#define LXSECC_STATUS_BYTE` |
+| `LXSECC_STATUS_MASK` | macro | `progs/src/lxsecc.c:38` | `#define LXSECC_STATUS_MASK` |
+| `LXSECC_STATUS_SHIFT` | macro | `progs/src/lxsecc.c:39` | `#define LXSECC_STATUS_SHIFT` |
+| `_GNU_SOURCE` | macro | `progs/src/lxsecc.c:13` | `#define _GNU_SOURCE` |
+| `check_prctl_flags` | function | `progs/src/lxsecc.c:177` | `static void check_prctl_flags(void)` |
+| `check_proc_self_exe` | function | `progs/src/lxsecc.c:197` | `static void check_proc_self_exe(const char *argv0)` |
+| `child_bad_program` | function | `progs/src/lxsecc.c:165` | `static void child_bad_program(void)` |
+| `child_errno_action` | function | `progs/src/lxsecc.c:100` | `static void child_errno_action(void)` |
+| `child_inherit` | function | `progs/src/lxsecc.c:133` | `static void child_inherit(void)` |
+| `child_kill_action` | function | `progs/src/lxsecc.c:107` | `static void child_kill_action(void)` |
+| `child_no_nnp` | function | `progs/src/lxsecc.c:157` | `static void child_no_nnp(void)` |
+| `child_stacked` | function | `progs/src/lxsecc.c:142` | `static void child_stacked(void)` |
+| `child_strict` | function | `progs/src/lxsecc.c:150` | `static void child_strict(void)` |
+| `child_wx` | function | `progs/src/lxsecc.c:116` | `static void child_wx(void)` |
+| `exit_code_of` | function | `progs/src/lxsecc.c:53` | `static int exit_code_of(int st)` |
+| `grandchild_inherits` | function | `progs/src/lxsecc.c:127` | `static void grandchild_inherits(void)` |
+| `install_filter` | function | `progs/src/lxsecc.c:72` | `static int install_filter(unsigned getpid_action)` |
+| `main` | function | `progs/src/lxsecc.c:215` | `int main(int argc, char **argv)` |
+| `report` | function | `progs/src/lxsecc.c:44` | `static void report(const char *name, int ok, const char *detail)` |
+| `run_child` | function | `progs/src/lxsecc.c:58` | `static int run_child(void (*body)(void))` |
+| `LXSEL_BAD_FD` | macro | `progs/src/lxsel.c:29` | `#define LXSEL_BAD_FD` |
+| `LXSEL_NFDS_OUT_OF_RANGE` | macro | `progs/src/lxsel.c:28` | `#define LXSEL_NFDS_OUT_OF_RANGE` |
+| `LXSEL_PSELECT_TIMEOUT_NS` | macro | `progs/src/lxsel.c:32` | `#define LXSEL_PSELECT_TIMEOUT_NS` |
+| `LXSEL_TIMEOUT_MS_MIN` | macro | `progs/src/lxsel.c:31` | `#define LXSEL_TIMEOUT_MS_MIN` |
+| `LXSEL_TIMEOUT_US` | macro | `progs/src/lxsel.c:30` | `#define LXSEL_TIMEOUT_US` |
+| `_GNU_SOURCE` | macro | `progs/src/lxsel.c:17` | `#define _GNU_SOURCE` |
+| `elapsed_ms` | function | `progs/src/lxsel.c:55` | `static long elapsed_ms(struct timespec *a, struct timespec *b)` |
+| `main` | function | `progs/src/lxsel.c:60` | `int main(void)` |
+| `raw_pselect6` | function | `progs/src/lxsel.c:50` | `static long raw_pselect6(long nfds, fd_set *r, fd_set *w, fd_set *e,                          str...` |
+| `raw_select` | function | `progs/src/lxsel.c:45` | `static long raw_select(long nfds, fd_set *r, fd_set *w, fd_set *e,                        struct ...` |
+| `report` | function | `progs/src/lxsel.c:36` | `static void report(const char *name, int ok)` |
+| `LXTLS_CA_BUNDLE` | macro | `progs/src/lxtls.c:34` | `#define LXTLS_CA_BUNDLE` |
+| `LXTLS_CONNECT_S` | macro | `progs/src/lxtls.c:32` | `#define LXTLS_CONNECT_S` |
+| `LXTLS_MAX_REDIRECTS` | macro | `progs/src/lxtls.c:33` | `#define LXTLS_MAX_REDIRECTS` |
+| `LXTLS_RAND_BYTES` | macro | `progs/src/lxtls.c:35` | `#define LXTLS_RAND_BYTES` |
+| `LXTLS_TIMEOUT_S` | macro | `progs/src/lxtls.c:31` | `#define LXTLS_TIMEOUT_S` |
+| `lxtls_debug` | function | `progs/src/lxtls.c:46` | `static int lxtls_debug(CURL *h, curl_infotype type, char *data, size_t size, void *user)` |
+| `lxtls_rand` | function | `progs/src/lxtls.c:73` | `static int lxtls_rand(void)` |
+| `lxtls_sink` | function | `progs/src/lxtls.c:39` | `static size_t lxtls_sink(char *data, size_t size, size_t nmemb, void *user)` |
 | `lxtls_step` | function | `progs/src/lxtls.c:65` | `static int lxtls_step(const char *name, int ok)` |
 | `main` | function | `progs/src/lxtls.c:87` | `int main(int argc, char **argv)` |
 | `LZ4_BOUND_DEN` | macro | `progs/src/lz4.c:31` | `#define LZ4_BOUND_DEN` |
@@ -362,6 +436,11 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `test_stb` | function | `progs/src/test.py:77` | `def test_stb()` |
 | `test_toolchain_roundtrip` | function | `progs/src/test.py:119` | `def test_toolchain_roundtrip()` |
 | `test_xxhash` | function | `progs/src/test.py:72` | `def test_xxhash()` |
+| `_asyncio_double` | function | `progs/src/test_py.py:72` | `def _asyncio_double(n, ms)` |
+| `_asyncio_main` | function | `progs/src/test_py.py:77` | `def _asyncio_main()` |
+| `_asyncio_wire_check` | function | `progs/src/test_py.py:81` | `def _asyncio_wire_check(host, port)` |
+| `_one` | function | `progs/src/test_py.py:82` | `def _one()` |
+| `check` | function | `progs/src/test_py.py:12` | `def check(name, cond)` |
 | `BUFSZ` | macro | `progs/src/thdemo.c:24` | `#define BUFSZ` |
 | `EXPECTED_N` | macro | `progs/src/thdemo.c:26` | `#define EXPECTED_N` |
 | `EXPECTED_SUM` | macro | `progs/src/thdemo.c:27` | `#define EXPECTED_SUM` |
@@ -417,84 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `N_EDGES` | macro | `progs/topogpt3/topogpt3.c:80` | `#define N_EDGES` |
 | `N_EDGE_TYPES` | macro | `progs/topogpt3/topogpt3.c:79` | `#define N_EDGE_TYPES` |
 | `N_EXPERTS` | macro | `progs/topogpt3/topogpt3.c:74` | `#define N_EXPERTS` |
-| `N_HEADS` | macro | `progs/topogpt3/topogpt3.c:67` | `#define N_HEADS` |
-| `N_KV_HEADS` | macro | `progs/topogpt3/topogpt3.c:68` | `#define N_KV_HEADS` |
-| `N_LAYERS` | macro | `progs/topogpt3/topogpt3.c:72` | `#define N_LAYERS` |
-| `N_NODES` | macro | `progs/topogpt3/topogpt3.c:76` | `#define N_NODES` |
-| `N_RADIAL` | macro | `progs/topogpt3/topogpt3.c:77` | `#define N_RADIAL` |
-| `N_SPECTRAL_LAYERS` | macro | `progs/topogpt3/topogpt3.c:86` | `#define N_SPECTRAL_LAYERS` |
-| `PI` | macro | `progs/topogpt3/topogpt3.c:91` | `#define PI` |
-| `READOUT_INNER` | macro | `progs/topogpt3/topogpt3.c:88` | `#define READOUT_INNER` |
-| `READ_TENSOR` | macro | `progs/topogpt3/topogpt3.c:1310` | `#define READ_TENSOR(dest, count)` |
-| `READ_TENSOR16` | macro | `progs/topogpt3/topogpt3.c:1480` | `#define READ_TENSOR16(dest, count)` |
-| `SEEK_CUR` | macro | `progs/topogpt3/topogpt3.c:45` | `#define SEEK_CUR` |
-| `SEEK_END` | macro | `progs/topogpt3/topogpt3.c:46` | `#define SEEK_END` |
-| `SEEK_SET` | macro | `progs/topogpt3/topogpt3.c:44` | `#define SEEK_SET` |
-| `SKIP_TENSOR` | macro | `progs/topogpt3/topogpt3.c:1300` | `#define SKIP_TENSOR()` |
-| `SKIP_TENSOR16` | macro | `progs/topogpt3/topogpt3.c:1470` | `#define SKIP_TENSOR16()` |
-| `SPECTRAL_LATENT_DIM` | macro | `progs/topogpt3/topogpt3.c:81` | `#define SPECTRAL_LATENT_DIM` |
-| `TOK_TAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:97` | `#define TOK_TAB_SIZE` |
-| `TOK_VOCAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:98` | `#define TOK_VOCAB_SIZE` |
-| `TORUS_GRID_H` | macro | `progs/topogpt3/topogpt3.c:83` | `#define TORUS_GRID_H` |
-| `TORUS_GRID_W` | macro | `progs/topogpt3/topogpt3.c:84` | `#define TORUS_GRID_W` |
-| `TORUS_TEMP` | macro | `progs/topogpt3/topogpt3.c:93` | `#define TORUS_TEMP` |
-| `VOCAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:65` | `#define VOCAB_SIZE` |
-| `apply_repetition_penalty` | function | `progs/topogpt3/topogpt3.c:1216` | `static void apply_repetition_penalty(float *logits, int n, const int *tokens,                    ...` |
-| `apply_temperature` | function | `progs/topogpt3/topogpt3.c:1210` | `static void apply_temperature(float *logits, int n, float temp)` |
-| `apply_top_k` | function | `progs/topogpt3/topogpt3.c:1229` | `static void apply_top_k(float *logits, int n, int k)` |
-| `attention_forward` | function | `progs/topogpt3/topogpt3.c:978` | `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...` |
-| `build_torus_graph` | function | `progs/topogpt3/topogpt3.c:296` | `static void build_torus_graph(void)` |
-| `cmul` | function | `progs/topogpt3/topogpt3.c:664` | `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)` |
-| `decode_token` | function | `progs/topogpt3/topogpt3.c:1614` | `static void decode_token(int tid)` |
-| `decode_token_tiktoken` | function | `progs/topogpt3/topogpt3.c:1652` | `static void decode_token_tiktoken(int tid)` |
-| `fclose` | function | `progs/topogpt3/topogpt3.c:37` | `extern int fclose(FILE *);` |
-| `fflush` | function | `progs/topogpt3/topogpt3.c:42` | `extern int fflush(FILE *);` |
-| `filter1d` | function | `progs/topogpt3/topogpt3.c:537` | `static void filter1d(const float *x, const float *kr, const float *ki,                       floa...` |
-| `fopen` | function | `progs/topogpt3/topogpt3.c:36` | `extern FILE *fopen(const char *, const char *);` |
-| `forward` | function | `progs/topogpt3/topogpt3.c:1128` | `static void forward(const int *token_ids, int seq_len, float *logits_out)` |
-| `fprintf` | function | `progs/topogpt3/topogpt3.c:29` | `extern int fprintf(FILE *, const char *, ...);` |
-| `fputc` | function | `progs/topogpt3/topogpt3.c:34` | `extern int fputc(int, FILE *);` |
-| `fputs` | function | `progs/topogpt3/topogpt3.c:35` | `extern int fputs(const char *, FILE *);` |
-| `fread` | function | `progs/topogpt3/topogpt3.c:38` | `extern unsigned long fread(void *, unsigned long, unsigned long, FILE *);` |
-| `free` | function | `progs/topogpt3/topogpt3.c:48` | `extern void free(void *);` |
-| `fseek` | function | `progs/topogpt3/topogpt3.c:40` | `extern int fseek(FILE *, long, int);` |
-| `ftell` | function | `progs/topogpt3/topogpt3.c:41` | `extern long ftell(FILE *);` |
-| `fwrite` | function | `progs/topogpt3/topogpt3.c:39` | `extern unsigned long fwrite(const void *, unsigned long, unsigned long, FILE *);` |
-| `gelu` | function | `progs/topogpt3/topogpt3.c:400` | `static void gelu(float *x, int n)` |
-| `generate` | function | `progs/topogpt3/topogpt3.c:1725` | `static void generate(const char *prompt, int max_new_tokens, float temperature,                  ...` |
-| `generate_tokens` | function | `progs/topogpt3/topogpt3.c:1661` | `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,                ...` |
-| `ifft2d` | function | `progs/topogpt3/topogpt3.c:580` | `static void ifft2d(float *data_r, float *data_i, int h, int w)` |
-| `ifft_radix2` | function | `progs/topogpt3/topogpt3.c:505` | `static void ifft_radix2(float *real, float *imag, int n)` |
-| `interactive_mode` | function | `progs/topogpt3/topogpt3.c:1736` | `static void interactive_mode(void)` |
-| `irfft` | function | `progs/topogpt3/topogpt3.c:522` | `static void irfft(const float *Xr, const float *Xi, float *x, int n)` |
-| `irfft2d` | function | `progs/topogpt3/topogpt3.c:629` | `static void irfft2d(const float *in_r, const float *in_i, float *out,                      int h,...` |
-| `load_token_file` | function | `progs/topogpt3/topogpt3.c:1629` | `static int load_token_file(const char *path, int *out_ids, int max_ids)` |
-| `load_vocab` | function | `progs/topogpt3/topogpt3.c:255` | `static void load_vocab(const char *path)` |
-| `load_weights` | function | `progs/topogpt3/topogpt3.c:1282` | `static int load_weights(const char *path)` |
-| `load_weights_auto` | function | `progs/topogpt3/topogpt3.c:1583` | `static int load_weights_auto(const char *path)` |
-| `load_weights_fp16` | function | `progs/topogpt3/topogpt3.c:1452` | `static int load_weights_fp16(const char *path)` |
-| `main` | function | `progs/topogpt3/topogpt3.c:1885` | `int main(int argc, char **argv)` |
-| `malloc` | function | `progs/topogpt3/topogpt3.c:47` | `extern void *malloc(unsigned long);` |
-| `matvec` | function | `progs/topogpt3/topogpt3.c:359` | `static void matvec(const float *W, const float *x, float *y, int rows, int cols)` |
-| `matvec_bias` | function | `progs/topogpt3/topogpt3.c:370` | `static void matvec_bias(const float *W, const float *b, const float *x, float *y,                ...` |
-| `memcpy` | function | `progs/topogpt3/topogpt3.c:49` | `extern void *memcpy(void *, const void *, unsigned long);` |
-| `memset` | function | `progs/topogpt3/topogpt3.c:50` | `extern void *memset(void *, int, unsigned long);` |
-| `message_passing` | function | `progs/topogpt3/topogpt3.c:843` | `static void message_passing(const float *node_feat, float *out,                              cons...` |
-| `moe_forward` | function | `progs/topogpt3/topogpt3.c:1078` | `static void moe_forward(const float *x, float *out, const LayerWeights *lw)` |
-| `precompute_rope` | function | `progs/topogpt3/topogpt3.c:327` | `static void precompute_rope(void)` |
-| `print_help` | function | `progs/topogpt3/topogpt3.c:1850` | `static void print_help(void)` |
-| `printf` | function | `progs/topogpt3/topogpt3.c:28` | `extern int printf(const char *, ...);` |
-| `process_torus_grid` | function | `progs/topogpt3/topogpt3.c:800` | `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)` |
-| `putchar` | function | `progs/topogpt3/topogpt3.c:33` | `extern int putchar(int);` |
-| `puts` | function | `progs/topogpt3/topogpt3.c:32` | `extern int puts(const char *);` |
-| `quat_hamilton` | function | `progs/topogpt3/topogpt3.c:440` | `static void quat_hamilton(const float *a, const float *b, float *c)` |
-| `quat_linear` | function | `progs/topogpt3/topogpt3.c:448` | `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,      ...` |
-| `quat_normalize` | function | `progs/topogpt3/topogpt3.c:435` | `static void quat_normalize(float *q)` |
-| `quat_spectral_layer_2d` | function | `progs/topogpt3/topogpt3.c:695` | `static void quat_spectral_layer_2d(     const float *x, float *y,     const float *kr_w, const fl...` |
-| `rfft` | function | `progs/topogpt3/topogpt3.c:513` | `static void rfft(const float *x, float *Xr, float *Xi, int n)` |
-| `rfft2d_real` | function | `progs/topogpt3/topogpt3.c:602` | `static void rfft2d_real(const float *data, float *out_r, float *out_i,                          i...` |
-| `rmsnorm` | function | `progs/topogpt3/topogpt3.c:382` | `static void rmsnorm(const float *x, const float *w, float *y, int d)` |
-| `sample` | function | `progs/topogpt3/topogpt3.c:1248` | `static int sample(const float *logits, int n)` |
-| `silu` | function | `progs/topogpt3/topogpt3.c:410` | `static void silu(float *x, int n)` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

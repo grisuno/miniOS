@@ -2,6 +2,7 @@
 Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_sky.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/w_wad.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/z_zone.h`
 - `progs/doomgeneric/r_plane.h` -> `progs/doomgeneric/r_data.h`
@@ -179,6 +180,7 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/lua/lua_main.c` -> `kernel/string.c`
 - `progs/lua/minios.c` -> `progs/minios_abi.h`
 - `progs/micropython/variants/minios/lib/hello.py` -> `progs/lua/minios.c`
+- `progs/micropython/variants/minios/lib/mip.py` -> `progs/lua/minios.c`
 - `progs/micropython/variants/minios/minios_module.c` -> `progs/minios_abi.h`
 - `progs/minicraft/minicraft.c` -> `kernel/string.c`
 - `progs/minicraft/minicraft.c` -> `progs/minios_abi.h`
@@ -232,6 +234,7 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/src/lxnet.c` -> `kernel/string.c`
 - `progs/src/lxproc.c` -> `progs/minios_abi.h`
 - `progs/src/lxsecc.c` -> `kernel/string.c`
+- `progs/src/lxsel.c` -> `kernel/time.c`
 - `progs/src/lxtls.c` -> `kernel/string.c`
 - `progs/src/mthreads.h` -> `progs/minios_abi.h`
 - `progs/src/opl3.c` -> `kernel/string.c`
@@ -240,6 +243,8 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/src/scfuzz.c` -> `progs/src/mthreads.h`
 - `progs/src/shell.py` -> `progs/lua/minios.c`
 - `progs/src/test.py` -> `progs/lua/minios.c`
+- `progs/src/test_py.py` -> `kernel/time.c`
+- `progs/src/test_py.py` -> `progs/micropython/variants/minios/lib/mip.py`
 - `progs/src/thdemo.c` -> `progs/minios_abi.h`
 - `progs/src/thdemo.c` -> `progs/src/mthreads.h`
 - `progs/tls_u/tls_u_main.c` -> `headers/tls.h`
@@ -333,6 +338,8 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `tests/test_sanitize.c` -> `kernel/string.c`
 - `tests/test_seccomp_bpf.c` -> `headers/seccomp_bpf.h`
 - `tests/test_seccomp_bpf.c` -> `kernel/string.c`
+- `tests/test_select_map.c` -> `headers/select_map.h`
+- `tests/test_select_map.c` -> `kernel/string.c`
 - `tests/test_sign.c` -> `headers/sign.h`
 - `tests/test_sign.c` -> `kernel/string.c`
 - `tests/test_sync.c` -> `headers/sync.h`

@@ -143,6 +143,6 @@ ET_REL stack switch (arch/x86/ctx_sw.S): runs entry(argc, argv) on the 64 KB sta
 
 See the asm contract there.
 
-> **Inherited:** Documentation from [`k_run_on_stack`](#k_run_on_stack) (headers/kernel.h:646).
+> **Inherited:** Documentation from [`k_run_on_stack`](#k_run_on_stack) (headers/kernel.h:662).
 
 ---

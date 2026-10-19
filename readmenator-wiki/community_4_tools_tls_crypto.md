@@ -1,10 +1,10 @@
 # tools: tls_crypto
 
-*Community 4 | 37 files | cohesion 0.76*
+*Community 4 | 44 files | cohesion 0.77*
 
 ## Definition
 
-This community groups 37 file(s) rooted at `tools` with dominant language py (cohesion 0.76). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `DG_DrawFrame`, `DG_GetKey`, `DG_GetTicksMs`. Core file: `net/tls_crypto.c` (78 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
+This community groups 44 file(s) rooted at `tools` with dominant language py (cohesion 0.77). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `DG_DrawFrame`, `DG_GetKey`, `DG_GetTicksMs`. Core file: `net/tls_crypto.c` (78 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
 
 ## Files
 
@@ -15,7 +15,6 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 | `tools/boot_wl.py` | py | utility | 15 | yes |
 | `tools/gdb_repro.py` | py | utility | 4 | yes |
 | `tools/minios_cli.py` | py | utility | 6 | yes |
-| `tools/minios_gui.py` | py | utility | 9 | yes |
 
 ### `headers` (5 files)
 
@@ -23,7 +22,13 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `headers/ktime.h` | h | utility | 3 | yes |
 | `headers/tls.h` | h | utility | 73 | yes |
-| `headers/tls_port.h` | h | utility | 49 | yes |
+
+### `progs/src` (5 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/src/lxabi.c` | c | utility | 60 | yes |
+| `progs/src/lxsel.c` | c | utility | 11 | yes |
 
 ### `mcp` (4 files)
 
@@ -31,7 +36,6 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `mcp/mcp_dbg_driver.py` | py | infrastructure | 6 | yes |
 | `mcp/mcp_dogfood.py` | py | utility | 6 | yes |
-| `mcp/minios_addons.py` | py | utility | 16 | yes |
 
 ### `net` (3 files)
 
@@ -39,7 +43,13 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `net/tls.c` | c | utility | 27 | yes |
 | `net/tls_crypto.c` | c | utility | 78 | yes |
-| `net/tls_x509.c` | c | utility | 23 | yes |
+
+### `progs/micropython/variants/minios/lib` (2 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/micropython/variants/minios/lib/hello.py` | py | utility | 0 | yes |
+| `progs/micropython/variants/minios/lib/mip.py` | py | utility | 15 | yes |
 
 ### `progs/tls_u` (2 files)
 
@@ -66,11 +76,11 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `progs/doomgeneric/doomgeneric_xlib.c` | c | utility | 9 | no |
 
-### `progs/src` (1 files)
+### `progs/lua` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/src/lxabi.c` | c | utility | 57 | yes |
+| `progs/lua/minios.c` | c | utility | 17 | no |
 
 ### `tests` (1 files)
 
@@ -78,7 +88,7 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `tests/test_ktime.c` | c | testing | 2 | yes |
 
-*... and 17 more files in this community.*
+*... and 24 more files in this community.*
 
 
 ## Key Symbols
@@ -116,8 +126,8 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 46
-- Cross-boundary resolved imports (EXTRACTED): 14
+- Internal resolved imports (EXTRACTED): 54
+- Cross-boundary resolved imports (EXTRACTED): 15
 
 ## Connections
 
@@ -137,18 +147,18 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 - [taint high] `mcp/minios_addons.py` -> `kernel/time.c` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_addons.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `mcp/minios_mcp.py` -> `mcp/minios_mcp.py` via `subprocess` (0 hops)
-- [taint high] `mcp/minios_mcp.py` -> `mcp/minios_addons.py` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_mcp.py` -> `kernel/time.c` via `subprocess` (1 hops)
+- [taint high] `mcp/minios_mcp.py` -> `mcp/minios_addons.py` via `subprocess` (1 hops)
 - [taint high] `mcp/minios_mcp.py` -> `headers/ktime.h` via `subprocess` (2 hops)
 - [taint high] `tools/boot_wl.py` -> `tools/boot_wl.py` via `subprocess` (0 hops)
 - [taint high] `tools/boot_wl.py` -> `kernel/time.c` via `subprocess` (1 hops)
 
 ## Open Questions
 
-- Why do 1 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric_xlib.c`)? What purpose do they serve?
+- Why do 2 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric_xlib.c`)? What purpose do they serve?
 - Is the dangerous import `subprocess` in `mcp/mcp_dbg_driver.py` still required, or can it be isolated?
 - What would break if the most connected file in tools: tls_crypto changed?
-- Should tools: tls_crypto be split, given cohesion 0.76?
+- Should tools: tls_crypto be split, given cohesion 0.77?
 
 ## Sources
 
@@ -166,10 +176,10 @@ This community groups 37 file(s) rooted at `tools` with dominant language py (co
 - `net/tls_crypto.c`
 - `net/tls_x509.c`
 - `progs/doomgeneric/doomgeneric_xlib.c`
+- `progs/lua/minios.c`
+- `progs/micropython/variants/minios/lib/hello.py`
+- `progs/micropython/variants/minios/lib/mip.py`
 - `progs/src/lxabi.c`
-- `progs/tls_u/tls_u_main.c`
-- `progs/tls_u/tls_u_port.c`
-- `tests/test_ktime.c`
-- `tls_test.c`
-- `tools/boot_wl.py`
-- *... and 17 more*
+- `progs/src/lxsel.c`
+- `progs/src/shell.py`
+- *... and 24 more*

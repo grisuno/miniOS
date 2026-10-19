@@ -1,12 +1,12 @@
 # `fs/kfile.c`
 
-> Source: [fs/kfile.c:1](../../fs/kfile.c#L1) | language `c` | coverage 30.8% | [API index](../index.md)
+> Source: [fs/kfile.c:1](../../fs/kfile.c#L1) | language `c` | coverage 33.3% | [API index](../index.md)
 
 ================================================================
 
 ## Contents
 
-- **Functions:** [`kfile_stdin`](#kfile_stdin), [`kfile_stdout`](#kfile_stdout), [`kfile_stderr`](#kfile_stderr), [`recovery`](#recovery), [`kpipe_pair`](#kpipe_pair), [`kpipe_state`](#kpipe_state), [`kevent_create`](#kevent_create), [`kevent_read`](#kevent_read), [`kevent_readable`](#kevent_readable), [`kevent_writable`](#kevent_writable), [`kpipe_is_write_end`](#kpipe_is_write_end), [`kfopen`](#kfopen), [`entry`](#entry), [`kfclose`](#kfclose), [`kfgetc`](#kfgetc), [`kfgets`](#kfgets), [`kfungetc`](#kfungetc), [`kfread`](#kfread), [`kfwrite`](#kfwrite), [`kfseek`](#kfseek), [`kftell`](#kftell), [`kfflush`](#kfflush), [`kfputs`](#kfputs), [`kfputc`](#kfputc), [`krewind`](#krewind)
+- **Functions:** [`kfile_stdin`](#kfile_stdin), [`kfile_stdout`](#kfile_stdout), [`kfile_stderr`](#kfile_stderr), [`recovery`](#recovery), [`kpipe_pair`](#kpipe_pair), [`kpipe_state`](#kpipe_state), [`kevent_create`](#kevent_create), [`kevent_read`](#kevent_read), [`kevent_readable`](#kevent_readable), [`kevent_writable`](#kevent_writable), [`kpipe_is_write_end`](#kpipe_is_write_end), [`kfopen_dir`](#kfopen_dir), [`kfopen`](#kfopen), [`entry`](#entry), [`kfclose`](#kfclose), [`kfgetc`](#kfgetc), [`kfgets`](#kfgets), [`kfungetc`](#kfungetc), [`kfread`](#kfread), [`kfwrite`](#kfwrite), [`kfseek`](#kfseek), [`kftell`](#kftell), [`kfflush`](#kfflush), [`kfputs`](#kfputs), [`kfputc`](#kfputc), [`krewind`](#krewind)
 
 ## Call Graph
 
@@ -302,11 +302,35 @@ Docstring: True when f is the write end of a pipe.
 
 ---
 
+<a id="kfopen_dir"></a>
+
+### `kfopen_dir`
+
+`function` | [fs/kfile.c:243](../../fs/kfile.c#L243)
+
+```c
+KFILE *kfopen_dir(const char *resolved)
+```
+
+Directory open for getdents64 (kernel/syscalls.c 217): kfopen refuses directories, so open(2) on one lands here.
+
+The handle stores the resolved path (with the trailing slash the listing walks) and the next-entry index; everything else is enumerated on demand.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `resolved` | `char *` |  |  |
+
+**Returns:** `KFILE *`
+
+---
+
 <a id="kfopen"></a>
 
 ### `kfopen`
 
-`function` | [fs/kfile.c:239](../../fs/kfile.c#L239)
+`function` | [fs/kfile.c:264](../../fs/kfile.c#L264)
 
 ```c
 KFILE *kfopen(const char *path, const char *mode)
@@ -329,7 +353,7 @@ KFILE *kfopen(const char *path, const char *mode)
 
 ### `entry`
 
-`function` | [fs/kfile.c:355](../../fs/kfile.c#L355)
+`function` | [fs/kfile.c:380](../../fs/kfile.c#L380)
 
 ```c
 * directory with a volatile ramdisk entry (the kfopen misroute class) or * need a copy+delete th...
@@ -353,7 +377,7 @@ KFILE *kfopen(const char *path, const char *mode)
 
 ### `kfclose`
 
-`function` | [fs/kfile.c:397](../../fs/kfile.c#L397)
+`function` | [fs/kfile.c:422](../../fs/kfile.c#L422)
 
 ```c
 int kfclose(KFILE *f)
@@ -375,7 +399,7 @@ int kfclose(KFILE *f)
 
 ### `kfgetc`
 
-`function` | [fs/kfile.c:442](../../fs/kfile.c#L442)
+`function` | [fs/kfile.c:467](../../fs/kfile.c#L467)
 
 ```c
 int kfgetc(KFILE *f)
@@ -399,7 +423,7 @@ int kfgetc(KFILE *f)
 
 ### `kfgets`
 
-`function` | [fs/kfile.c:483](../../fs/kfile.c#L483)
+`function` | [fs/kfile.c:508](../../fs/kfile.c#L508)
 
 ```c
 char *kfgets(char *buf, int size, KFILE *f)
@@ -423,7 +447,7 @@ char *kfgets(char *buf, int size, KFILE *f)
 
 ### `kfungetc`
 
-`function` | [fs/kfile.c:497](../../fs/kfile.c#L497)
+`function` | [fs/kfile.c:522](../../fs/kfile.c#L522)
 
 ```c
 int kfungetc(int c, KFILE *f)
@@ -444,7 +468,7 @@ int kfungetc(int c, KFILE *f)
 
 ### `kfread`
 
-`function` | [fs/kfile.c:504](../../fs/kfile.c#L504)
+`function` | [fs/kfile.c:529](../../fs/kfile.c#L529)
 
 ```c
 unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)
@@ -469,7 +493,7 @@ unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)
 
 ### `kfwrite`
 
-`function` | [fs/kfile.c:550](../../fs/kfile.c#L550)
+`function` | [fs/kfile.c:575](../../fs/kfile.c#L575)
 
 ```c
 unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)
@@ -496,7 +520,7 @@ unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFIL
 
 ### `kfseek`
 
-`function` | [fs/kfile.c:616](../../fs/kfile.c#L616)
+`function` | [fs/kfile.c:641](../../fs/kfile.c#L641)
 
 ```c
 int kfseek(KFILE *f, long offset, int whence)
@@ -520,7 +544,7 @@ int kfseek(KFILE *f, long offset, int whence)
 
 ### `kftell`
 
-`function` | [fs/kfile.c:637](../../fs/kfile.c#L637)
+`function` | [fs/kfile.c:662](../../fs/kfile.c#L662)
 
 ```c
 long kftell(KFILE *f)
@@ -540,7 +564,7 @@ long kftell(KFILE *f)
 
 ### `kfflush`
 
-`function` | [fs/kfile.c:641](../../fs/kfile.c#L641)
+`function` | [fs/kfile.c:666](../../fs/kfile.c#L666)
 
 ```c
 int kfflush(KFILE *f)
@@ -564,7 +588,7 @@ int kfflush(KFILE *f)
 
 ### `kfputs`
 
-`function` | [fs/kfile.c:667](../../fs/kfile.c#L667)
+`function` | [fs/kfile.c:692](../../fs/kfile.c#L692)
 
 ```c
 int kfputs(const char *s, KFILE *f)
@@ -587,7 +611,7 @@ int kfputs(const char *s, KFILE *f)
 
 ### `kfputc`
 
-`function` | [fs/kfile.c:673](../../fs/kfile.c#L673)
+`function` | [fs/kfile.c:698](../../fs/kfile.c#L698)
 
 ```c
 int kfputc(int c, KFILE *f)
@@ -610,7 +634,7 @@ int kfputc(int c, KFILE *f)
 
 ### `krewind`
 
-`function` | [fs/kfile.c:678](../../fs/kfile.c#L678)
+`function` | [fs/kfile.c:703](../../fs/kfile.c#L703)
 
 ```c
 void krewind(KFILE *f)

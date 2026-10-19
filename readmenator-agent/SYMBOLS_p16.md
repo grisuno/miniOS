@@ -1,8 +1,45 @@
-# Symbols (page 16 of 26)
+# Symbols (page 16 of 27)
 Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `key_right` | variable | `progs/doomgeneric/m_controls.h:20` | `extern int key_right;` |
+| `key_speed` | variable | `progs/doomgeneric/m_controls.h:30` | `extern int key_speed;` |
+| `key_spy` | variable | `progs/doomgeneric/m_controls.h:80` | `extern int key_spy;` |
+| `key_strafe` | variable | `progs/doomgeneric/m_controls.h:29` | `extern int key_strafe;` |
+| `key_strafeleft` | variable | `progs/doomgeneric/m_controls.h:25` | `extern int key_strafeleft;` |
+| `key_straferight` | variable | `progs/doomgeneric/m_controls.h:26` | `extern int key_straferight;` |
+| `key_up` | variable | `progs/doomgeneric/m_controls.h:23` | `extern int key_up;` |
+| `key_use` | variable | `progs/doomgeneric/m_controls.h:28` | `extern int key_use;` |
+| `key_useartifact` | variable | `progs/doomgeneric/m_controls.h:42` | `extern int key_useartifact;` |
+| `key_usehealth` | variable | `progs/doomgeneric/m_controls.h:45` | `extern int key_usehealth;` |
+| `key_weapon1` | variable | `progs/doomgeneric/m_controls.h:61` | `extern int key_weapon1;` |
+| `key_weapon2` | variable | `progs/doomgeneric/m_controls.h:62` | `extern int key_weapon2;` |
+| `key_weapon3` | variable | `progs/doomgeneric/m_controls.h:63` | `extern int key_weapon3;` |
+| `key_weapon4` | variable | `progs/doomgeneric/m_controls.h:64` | `extern int key_weapon4;` |
+| `key_weapon5` | variable | `progs/doomgeneric/m_controls.h:65` | `extern int key_weapon5;` |
+| `key_weapon6` | variable | `progs/doomgeneric/m_controls.h:66` | `extern int key_weapon6;` |
+| `key_weapon7` | variable | `progs/doomgeneric/m_controls.h:67` | `extern int key_weapon7;` |
+| `key_weapon8` | variable | `progs/doomgeneric/m_controls.h:68` | `extern int key_weapon8;` |
+| `mousebbackward` | variable | `progs/doomgeneric/m_controls.h:133` | `extern int mousebbackward;` |
+| `mousebfire` | variable | `progs/doomgeneric/m_controls.h:125` | `extern int mousebfire;` |
+| `mousebforward` | variable | `progs/doomgeneric/m_controls.h:127` | `extern int mousebforward;` |
+| `mousebjump` | variable | `progs/doomgeneric/m_controls.h:129` | `extern int mousebjump;` |
+| `mousebnextweapon` | variable | `progs/doomgeneric/m_controls.h:137` | `extern int mousebnextweapon;` |
+| `mousebprevweapon` | variable | `progs/doomgeneric/m_controls.h:136` | `extern int mousebprevweapon;` |
+| `mousebstrafe` | variable | `progs/doomgeneric/m_controls.h:126` | `extern int mousebstrafe;` |
+| `mousebstrafeleft` | variable | `progs/doomgeneric/m_controls.h:131` | `extern int mousebstrafeleft;` |
+| `mousebstraferight` | variable | `progs/doomgeneric/m_controls.h:132` | `extern int mousebstraferight;` |
+| `mousebuse` | variable | `progs/doomgeneric/m_controls.h:134` | `extern int mousebuse;` |
+| `FixedDiv` | function | `progs/doomgeneric/m_fixed.c:47` | `fixed_t FixedDiv(fixed_t a, fixed_t b)` |
+| `FixedMul` | function | `progs/doomgeneric/m_fixed.c:34` | `fixed_t FixedMul ( fixed_t	a,   fixed_t	b )` |
+| `FRACBITS` | macro | `progs/doomgeneric/m_fixed.h:29` | `#define FRACBITS` |
+| `FRACUNIT` | macro | `progs/doomgeneric/m_fixed.h:30` | `#define FRACUNIT` |
+| `FixedDiv` | function | `progs/doomgeneric/m_fixed.h:35` | `fixed_t FixedDiv (fixed_t a, fixed_t b);` |
+| `FixedMul` | function | `progs/doomgeneric/m_fixed.h:34` | `fixed_t FixedMul (fixed_t a, fixed_t b);` |
+| `__M_FIXED__` | macro | `progs/doomgeneric/m_fixed.h:21` | `#define __M_FIXED__` |
+| `fixed_t` | type_alias | `progs/doomgeneric/m_fixed.h:31` | `typedef int fixed_t;` |
+| `I_OPL_DevMessages` | function | `progs/doomgeneric/m_menu.c:1915` | `extern void I_OPL_DevMessages(char *, size_t);` |
 | `IsNullKey` | function | `progs/doomgeneric/m_menu.c:1403` | `static boolean IsNullKey(int key)` |
 | `LINEHEIGHT` | macro | `progs/doomgeneric/m_menu.c:121` | `#define LINEHEIGHT` |
 | `M_ChangeDetail` | function | `progs/doomgeneric/m_menu.c:1197` | `void M_ChangeDetail(int choice)` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 | `bottomslope` | variable | `progs/doomgeneric/p_map.c:835` | `extern fixed_t bottomslope;` |
 | `topslope` | variable | `progs/doomgeneric/p_map.c:834` | `extern fixed_t topslope;` |
 | `InterceptsMemoryOverrun` | function | `progs/doomgeneric/p_maputl.c:782` | `static void InterceptsMemoryOverrun(int location, int value)` |
-| `InterceptsOverrun` | function | `progs/doomgeneric/p_maputl.c:827` | `static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)` |
-| `PIT_AddLineIntercepts` | function | `progs/doomgeneric/p_maputl.c:559` | `boolean PIT_AddLineIntercepts (line_t* ld)` |
-| `PIT_AddThingIntercepts` | function | `progs/doomgeneric/p_maputl.c:614` | `boolean PIT_AddThingIntercepts (mobj_t* thing)` |
-| `P_AproxDistance` | function | `progs/doomgeneric/p_maputl.c:44` | `fixed_t P_AproxDistance ( fixed_t	dx,   fixed_t	dy )` |
-| `P_BlockLinesIterator` | function | `progs/doomgeneric/p_maputl.c:467` | `boolean P_BlockLinesIterator ( int			x,   int			y,   boolean(*func)(line_t*) )` |
-| `P_BlockThingsIterator` | function | `progs/doomgeneric/p_maputl.c:508` | `boolean P_BlockThingsIterator ( int			x,   int			y,   boolean(*func)(mobj_t*) )` |
-| `P_BoxOnLineSide` | function | `progs/doomgeneric/p_maputl.c:105` | `int P_BoxOnLineSide ( fixed_t*	tmbox,   line_t*	ld )` |
-| `P_InterceptVector` | function | `progs/doomgeneric/p_maputl.c:226` | `fixed_t P_InterceptVector ( divline_t*	v2,   divline_t*	v1 )` |
-| `P_LineOpening` | function | `progs/doomgeneric/p_maputl.c:295` | `void P_LineOpening (line_t* linedef)` |
-| `P_MakeDivline` | function | `progs/doomgeneric/p_maputl.c:206` | `void P_MakeDivline ( line_t*	li,   divline_t*	dl )` |
-| `P_PathTraverse` | function | `progs/doomgeneric/p_maputl.c:861` | `boolean P_PathTraverse ( fixed_t		x1,   fixed_t		y1,   fixed_t		x2,   fixed_t		y2,   int			flags,...` |
-| `P_PointOnDivlineSide` | function | `progs/doomgeneric/p_maputl.c:156` | `int P_PointOnDivlineSide ( fixed_t	x,   fixed_t	y,   divline_t*	line )` |
-| `P_PointOnLineSide` | function | `progs/doomgeneric/p_maputl.c:61` | `int P_PointOnLineSide ( fixed_t	x,   fixed_t	y,   line_t*	line )` |
-| `P_SetThingPosition` | function | `progs/doomgeneric/p_maputl.c:391` | `void P_SetThingPosition (mobj_t* thing)` |
-| `P_TraverseIntercepts` | function | `progs/doomgeneric/p_maputl.c:682` | `boolean P_TraverseIntercepts ( traverser_t	func,   fixed_t	maxfrac )` |
-| `P_UnsetThingPosition` | function | `progs/doomgeneric/p_maputl.c:342` | `void P_UnsetThingPosition (mobj_t* thing)` |
-| `bulletslope` | variable | `progs/doomgeneric/p_maputl.c:731` | `extern fixed_t bulletslope;` |
-| `intercepts_overrun_t` | struct | `progs/doomgeneric/p_maputl.c:738` | `` |
-| `FRICTION` | macro | `progs/doomgeneric/p_mobj.c:106` | `#define FRICTION` |
-| `G_PlayerReborn` | function | `progs/doomgeneric/p_mobj.c:37` | `void G_PlayerReborn (int player);` |
-| `P_CheckMissileSpawn` | function | `progs/doomgeneric/p_mobj.c:907` | `void P_CheckMissileSpawn (mobj_t* th)` |
-| `P_ExplodeMissile` | function | `progs/doomgeneric/p_mobj.c:84` | `void P_ExplodeMissile (mobj_t* mo)` |
-| `P_MobjThinker` | function | `progs/doomgeneric/p_mobj.c:441` | `void P_MobjThinker (mobj_t* mobj)` |
-| `P_NightmareRespawn` | function | `progs/doomgeneric/p_mobj.c:383` | `void P_NightmareRespawn (mobj_t* mobj)` |
-| `P_RemoveMobj` | function | `progs/doomgeneric/p_mobj.c:572` | `void P_RemoveMobj (mobj_t* mobj)` |
-| `P_RespawnSpecials` | function | `progs/doomgeneric/p_mobj.c:604` | `void P_RespawnSpecials (void)` |
-| `P_SetMobjState` | function | `progs/doomgeneric/p_mobj.c:48` | `boolean P_SetMobjState ( mobj_t*	mobj,   statenum_t	state )` |
-| `P_SpawnBlood` | function | `progs/doomgeneric/p_mobj.c:878` | `void P_SpawnBlood ( fixed_t	x,   fixed_t	y,   fixed_t	z,   int		damage )` |
-| `P_SpawnMapThing` | function | `progs/doomgeneric/p_mobj.c:739` | `void P_SpawnMapThing (mapthing_t* mthing)` |
-| `P_SpawnMissile` | function | `progs/doomgeneric/p_mobj.c:950` | `mobj_t* P_SpawnMissile ( mobj_t*	source,   mobj_t*	dest,   mobjtype_t	type )` |
-| `P_SpawnMobj` | function | `progs/doomgeneric/p_mobj.c:506` | `mobj_t* P_SpawnMobj ( fixed_t	x,   fixed_t	y,   fixed_t	z,   mobjtype_t	type )` |
-| `P_SpawnPlayer` | function | `progs/doomgeneric/p_mobj.c:668` | `void P_SpawnPlayer (mapthing_t* mthing)` |
-| `P_SpawnPlayerMissile` | function | `progs/doomgeneric/p_mobj.c:996` | `void P_SpawnPlayerMissile ( mobj_t*	source,   mobjtype_t	type )` |
-| `P_SpawnPuff` | function | `progs/doomgeneric/p_mobj.c:851` | `void P_SpawnPuff ( fixed_t	x,   fixed_t	y,   fixed_t	z )` |
-| `P_SubstNullMobj` | function | `progs/doomgeneric/p_mobj.c:929` | `mobj_t *P_SubstNullMobj(mobj_t *mobj)` |
-| `P_XYMovement` | function | `progs/doomgeneric/p_mobj.c:108` | `void P_XYMovement (mobj_t* mo)` |
-| `P_ZMovement` | function | `progs/doomgeneric/p_mobj.c:240` | `void P_ZMovement (mobj_t* mo)` |
 
 Next: [SYMBOLS_p17.md](SYMBOLS_p17.md)

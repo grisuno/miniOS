@@ -1,22 +1,59 @@
-# Symbols (page 10 of 26)
+# Symbols (page 10 of 27)
 Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `syscall_trace_shown` | function | `kernel/syscalls.c:1113` | `unsigned long syscall_trace_shown(void)` |
-| `syscall_trace_verbose_enabled` | function | `kernel/syscalls.c:1111` | `long syscall_trace_verbose_enabled(void)` |
-| `syscall_trace_verbose_set` | function | `kernel/syscalls.c:1112` | `void syscall_trace_verbose_set(int on)` |
-| `trace_hint_print` | function | `kernel/syscalls.c:3086` | `static void trace_hint_print(long n, int kind, const char *path,                              lon...` |
-| `trace_is_noisy` | function | `kernel/syscalls.c:3018` | `static int trace_is_noisy(long n)` |
-| `unchanged` | function | `kernel/syscalls.c:1128` | `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...` |
-| `untouched` | function | `kernel/syscalls.c:138` | `* child untouched (caller refuses fail-closed). */ int kfd_view_copy(proc_t *child, proc_t *parent)` |
-| `user_range_ok` | function | `kernel/syscalls.c:3197` | `int user_range_ok(unsigned long p, unsigned long len)` |
-| `view` | function | `kernel/syscalls.c:502` | `* view (same as the `clear` builtin). Anything else is -EINVAL. Each  * out-word is range-checked...` |
-| `vma_free_cover` | function | `kernel/syscalls.c:2087` | `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` |
-| `vma_live_first_overlap` | function | `kernel/syscalls.c:1901` | `static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end)` |
-| `vma_live_overlap` | function | `kernel/syscalls.c:2106` | `static int vma_live_overlap(unsigned long base, unsigned long len)` |
-| `vma_live_remainder` | function | `kernel/syscalls.c:1918` | `static int vma_live_remainder(unsigned long base, unsigned long len,         int file, int ino, u...` |
-| `wall_us_now` | function | `kernel/syscalls.c:255` | `unsigned long wall_us_now(void)` |
+| `sys_minios_doom_frame` | function | `kernel/syscalls.c:409` | `static long sys_minios_doom_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_fb_info` | function | `kernel/syscalls.c:442` | `static long sys_minios_fb_info(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_futex_wait` | function | `kernel/syscalls.c:799` | `static long sys_minios_futex_wait(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_futex_wake` | function | `kernel/syscalls.c:805` | `static long sys_minios_futex_wake(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_getc_raw` | function | `kernel/syscalls.c:863` | `static long sys_minios_getc_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_gfx_title` | function | `kernel/syscalls.c:698` | `static long sys_minios_gfx_title(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_gfx_zoom` | function | `kernel/syscalls.c:420` | `static long sys_minios_gfx_zoom(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_kbd` | function | `kernel/syscalls.c:346` | `static long sys_minios_kbd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_kbd_raw` | function | `kernel/syscalls.c:378` | `static long sys_minios_kbd_raw(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_lz4_compress` | function | `kernel/syscalls.c:605` | `static long sys_minios_lz4_compress(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_lz4_decompress` | function | `kernel/syscalls.c:618` | `static long sys_minios_lz4_decompress(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_mouse` | function | `kernel/syscalls.c:632` | `static long sys_minios_mouse(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_nk_frame` | function | `kernel/syscalls.c:656` | `static long sys_minios_nk_frame(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_palette` | function | `kernel/syscalls.c:366` | `static long sys_minios_palette(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcm2_close` | function | `kernel/syscalls.c:750` | `static long sys_minios_pcm2_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcm2_open` | function | `kernel/syscalls.c:737` | `static long sys_minios_pcm2_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcm2_write` | function | `kernel/syscalls.c:742` | `static long sys_minios_pcm2_write(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_init` | function | `kernel/syscalls.c:391` | `static long sys_minios_pcspk_init(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_tone` | function | `kernel/syscalls.c:395` | `static long sys_minios_pcspk_tone(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_pcspk_vol` | function | `kernel/syscalls.c:462` | `static long sys_minios_pcspk_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_rlimit` | function | `kernel/syscalls.c:897` | `static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_rtc` | function | `kernel/syscalls.c:429` | `static long sys_minios_rtc(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_open` | function | `kernel/syscalls.c:675` | `static long sys_minios_sb16_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_pump` | function | `kernel/syscalls.c:712` | `static long sys_minios_sb16_pump(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_close` | function | `kernel/syscalls.c:720` | `static long sys_minios_sb16_stream_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_open` | function | `kernel/syscalls.c:716` | `static long sys_minios_sb16_stream_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_submit` | function | `kernel/syscalls.c:724` | `static long sys_minios_sb16_stream_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_stream_vol` | function | `kernel/syscalls.c:786` | `static long sys_minios_sb16_stream_vol(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_sb16_submit` | function | `kernel/syscalls.c:687` | `static long sys_minios_sb16_submit(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_spawn` | function | `kernel/syscalls.c:594` | `static long sys_minios_spawn(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_submit_batch` | function | `kernel/syscalls.c:874` | `static long sys_minios_submit_batch(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_time` | function | `kernel/syscalls.c:342` | `static long sys_minios_time(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_tls_retired` | function | `kernel/syscalls.c:271` | `static long sys_minios_tls_retired(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_minios_vga_mode` | function | `kernel/syscalls.c:384` | `static long sys_minios_vga_mode(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `syscall_name` | function | `kernel/syscalls.c:3373` | `const char *syscall_name(long n)` |
+| `syscall_trace_enabled` | function | `kernel/syscalls.c:1241` | `long syscall_trace_enabled(void)` |
+| `syscall_trace_set` | function | `kernel/syscalls.c:1242` | `void syscall_trace_set(int on)` |
+| `syscall_trace_shown` | function | `kernel/syscalls.c:1245` | `unsigned long syscall_trace_shown(void)` |
+| `syscall_trace_verbose_enabled` | function | `kernel/syscalls.c:1243` | `long syscall_trace_verbose_enabled(void)` |
+| `syscall_trace_verbose_set` | function | `kernel/syscalls.c:1244` | `void syscall_trace_verbose_set(int on)` |
+| `trace_hint_print` | function | `kernel/syscalls.c:3414` | `static void trace_hint_print(long n, int kind, const char *path,                              lon...` |
+| `trace_is_noisy` | function | `kernel/syscalls.c:3344` | `static int trace_is_noisy(long n)` |
+| `unchanged` | function | `kernel/syscalls.c:1260` | `* unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as...` |
+| `untouched` | function | `kernel/syscalls.c:139` | `* child untouched (caller refuses fail-closed). */ int kfd_view_copy(proc_t *child, proc_t *parent)` |
+| `user_range_ok` | function | `kernel/syscalls.c:3525` | `int user_range_ok(unsigned long p, unsigned long len)` |
+| `view` | function | `kernel/syscalls.c:503` | `* view (same as the `clear` builtin). Anything else is -EINVAL. Each  * out-word is range-checked...` |
+| `vma_free_cover` | function | `kernel/syscalls.c:2236` | `static vma_node_t *vma_free_cover(unsigned long base, unsigned long len)` |
+| `vma_live_first_overlap` | function | `kernel/syscalls.c:2050` | `static vma_node_t *vma_live_first_overlap(unsigned long base, unsigned long end)` |
+| `vma_live_overlap` | function | `kernel/syscalls.c:2255` | `static int vma_live_overlap(unsigned long base, unsigned long len)` |
+| `vma_live_remainder` | function | `kernel/syscalls.c:2067` | `static int vma_live_remainder(unsigned long base, unsigned long len,         int file, int ino, u...` |
+| `wall_us_now` | function | `kernel/syscalls.c:256` | `unsigned long wall_us_now(void)` |
 | `LINUX_ECHILD` | macro | `kernel/syscalls_proc.c:197` | `#define LINUX_ECHILD` |
 | `LINUX_EINVAL` | macro | `kernel/syscalls_proc.c:198` | `#define LINUX_EINVAL` |
 | `LINUX_ESRCH` | macro | `kernel/syscalls_proc.c:199` | `#define LINUX_ESRCH` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 | `test_unknown_key_rejected` | method | `mcp/test_minios_mcp.py:506` | `def test_unknown_key_rejected(self)` |
 | `test_unknown_method` | method | `mcp/test_minios_mcp.py:170` | `def test_unknown_method(self)` |
 | `test_unknown_tool` | method | `mcp/test_minios_mcp.py:178` | `def test_unknown_tool(self)` |
-| `test_validate_accepts_valid` | method | `mcp/test_minios_mcp.py:502` | `def test_validate_accepts_valid(self)` |
-| `test_validate_rejects_bad_dst` | method | `mcp/test_minios_mcp.py:514` | `def test_validate_rejects_bad_dst(self)` |
-| `test_validate_rejects_control_chars` | method | `mcp/test_minios_mcp.py:531` | `def test_validate_rejects_control_chars(self)` |
-| `test_validate_rejects_empty_files` | method | `mcp/test_minios_mcp.py:536` | `def test_validate_rejects_empty_files(self)` |
-| `test_validate_rejects_long_build_line` | method | `mcp/test_minios_mcp.py:523` | `def test_validate_rejects_long_build_line(self)` |
-| `test_validate_rejects_missing_name` | method | `mcp/test_minios_mcp.py:519` | `def test_validate_rejects_missing_name(self)` |
-| `test_wait_for_any_earliest` | method | `mcp/test_minios_mcp.py:284` | `def test_wait_for_any_earliest(self)` |
-| `test_write_rejects_line_too_long` | method | `mcp/test_minios_mcp.py:234` | `def test_write_rejects_line_too_long(self)` |
-| `test_write_rejects_too_many_lines` | method | `mcp/test_minios_mcp.py:243` | `def test_write_rejects_too_many_lines(self)` |
-| `tool` | method | `mcp/test_minios_mcp.py:110` | `def tool(self, name, params)` |
-| `write` | method | `mcp/test_minios_mcp.py:659` | `def write(self, path, content)` |
-| `LNX_AF_INET` | macro | `net/net.c:1028` | `#define LNX_AF_INET` |
-| `LNX_EAFNOSUPPORT` | macro | `net/net.c:1081` | `#define LNX_EAFNOSUPPORT` |
-| `LNX_EAGAIN` | macro | `net/net.c:1072` | `#define LNX_EAGAIN` |
-| `LNX_EALREADY` | macro | `net/net.c:1086` | `#define LNX_EALREADY` |
-| `LNX_EBADF` | macro | `net/net.c:1071` | `#define LNX_EBADF` |
-| `LNX_ECONNREFUSED` | macro | `net/net.c:1085` | `#define LNX_ECONNREFUSED` |
-| `LNX_EDESTADDRREQ` | macro | `net/net.c:1076` | `#define LNX_EDESTADDRREQ` |
-| `LNX_EFAULT` | macro | `net/net.c:1073` | `#define LNX_EFAULT` |
-| `LNX_EINPROGRESS` | macro | `net/net.c:1087` | `#define LNX_EINPROGRESS` |
-| `LNX_EINVAL` | macro | `net/net.c:1074` | `#define LNX_EINVAL` |
-| `LNX_EISCONN` | macro | `net/net.c:1082` | `#define LNX_EISCONN` |
-| `LNX_EMSGSIZE` | macro | `net/net.c:1077` | `#define LNX_EMSGSIZE` |
-| `LNX_ENOPROTOOPT` | macro | `net/net.c:1078` | `#define LNX_ENOPROTOOPT` |
-| `LNX_ENOTCONN` | macro | `net/net.c:1083` | `#define LNX_ENOTCONN` |
-| `LNX_ENOTTY` | macro | `net/net.c:1667` | `#define LNX_ENOTTY` |
-| `LNX_EOPNOTSUPP` | macro | `net/net.c:1080` | `#define LNX_EOPNOTSUPP` |
-| `LNX_EPIPE` | macro | `net/net.c:1075` | `#define LNX_EPIPE` |
-| `LNX_EPROTONOSUPPORT` | macro | `net/net.c:1079` | `#define LNX_EPROTONOSUPPORT` |
-| `LNX_ETIMEDOUT` | macro | `net/net.c:1084` | `#define LNX_ETIMEDOUT` |
-| `LNX_FD_CLOEXEC` | macro | `net/net.c:1061` | `#define LNX_FD_CLOEXEC` |
-| `LNX_FIOCLEX` | macro | `net/net.c:1666` | `#define LNX_FIOCLEX` |
-| `LNX_FIONBIO` | macro | `net/net.c:1664` | `#define LNX_FIONBIO` |
-| `LNX_FIONCLEX` | macro | `net/net.c:1665` | `#define LNX_FIONCLEX` |
-| `LNX_FIONREAD` | macro | `net/net.c:1663` | `#define LNX_FIONREAD` |
-| `LNX_F_GETFD` | macro | `net/net.c:1062` | `#define LNX_F_GETFD` |
-| `LNX_F_GETFL` | macro | `net/net.c:1064` | `#define LNX_F_GETFL` |
 
 Next: [SYMBOLS_p11.md](SYMBOLS_p11.md)

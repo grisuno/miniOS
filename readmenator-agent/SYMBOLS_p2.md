@@ -1,4 +1,4 @@
-# Symbols (page 2 of 26)
+# Symbols (page 2 of 27)
 Previous: [SYMBOLS.md](SYMBOLS.md)
 
 | Symbol | Kind | File:Line | Signature |
@@ -384,35 +384,36 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `fsimg_open_file` | function | `fs/fsimg.c:15` | `int fsimg_open_file(const char *resolved, fsimg_t *img)` |
 | `fsimg_read` | function | `fs/fsimg.c:96` | `int fsimg_read(const fsimg_t *img, unsigned long off, void *buf,                unsigned long len)` |
 | `fsimg_split` | function | `fs/fsimg.c:112` | `int fsimg_split(const char *path, char *left, unsigned llen,                 char *right, unsigne...` |
-| `entry` | function | `fs/kfile.c:355` | `* directory with a volatile ramdisk entry (the kfopen misroute class) or  * need a copy+delete th...` |
+| `entry` | function | `fs/kfile.c:380` | `* directory with a volatile ramdisk entry (the kfopen misroute class) or  * need a copy+delete th...` |
 | `fs_drop` | function | `fs/kfile.c:70` | `static inline void fs_drop(irqflags_t flags)` |
-| `fs_rename_on_minifs` | function | `fs/kfile.c:336` | `static int fs_rename_on_minifs(const char *dst)` |
+| `fs_rename_on_minifs` | function | `fs/kfile.c:361` | `static int fs_rename_on_minifs(const char *dst)` |
 | `fs_take` | function | `fs/kfile.c:66` | `static inline void fs_take(irqflags_t *flags)` |
 | `kevent_create` | function | `fs/kfile.c:148` | `KFILE *kevent_create(unsigned long long initval, int semaphore)` |
 | `kevent_read` | function | `fs/kfile.c:163` | `long kevent_read(KFILE *f, unsigned long long *out)` |
 | `kevent_readable` | function | `fs/kfile.c:199` | `int kevent_readable(KFILE *f)` |
 | `kevent_writable` | function | `fs/kfile.c:204` | `int kevent_writable(KFILE *f)` |
-| `kfclose` | function | `fs/kfile.c:397` | `int kfclose(KFILE *f)` |
-| `kfflush` | function | `fs/kfile.c:641` | `int kfflush(KFILE *f)` |
-| `kfgetc` | function | `fs/kfile.c:442` | `int kfgetc(KFILE *f)` |
-| `kfgets` | function | `fs/kfile.c:483` | `char *kfgets(char *buf, int size, KFILE *f)` |
+| `kfclose` | function | `fs/kfile.c:422` | `int kfclose(KFILE *f)` |
+| `kfflush` | function | `fs/kfile.c:666` | `int kfflush(KFILE *f)` |
+| `kfgetc` | function | `fs/kfile.c:467` | `int kfgetc(KFILE *f)` |
+| `kfgets` | function | `fs/kfile.c:508` | `char *kfgets(char *buf, int size, KFILE *f)` |
 | `kfile_corrupt` | function | `fs/kfile.c:33` | `static int kfile_corrupt(const KFILE *f)` |
 | `kfile_stderr` | function | `fs/kfile.c:17` | `KFILE *kfile_stderr(void)` |
 | `kfile_stdin` | function | `fs/kfile.c:15` | `KFILE *kfile_stdin(void)` |
 | `kfile_stdout` | function | `fs/kfile.c:16` | `KFILE *kfile_stdout(void)` |
-| `kfopen` | function | `fs/kfile.c:239` | `KFILE *kfopen(const char *path, const char *mode)` |
-| `kfputc` | function | `fs/kfile.c:673` | `int kfputc(int c, KFILE *f)` |
-| `kfputs` | function | `fs/kfile.c:667` | `int kfputs(const char *s, KFILE *f)` |
-| `kfread` | function | `fs/kfile.c:504` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
-| `kfseek` | function | `fs/kfile.c:616` | `int kfseek(KFILE *f, long offset, int whence)` |
-| `kftell` | function | `fs/kfile.c:637` | `long kftell(KFILE *f)` |
-| `kfungetc` | function | `fs/kfile.c:497` | `int kfungetc(int c, KFILE *f)` |
-| `kfwrite` | function | `fs/kfile.c:550` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
+| `kfopen` | function | `fs/kfile.c:264` | `KFILE *kfopen(const char *path, const char *mode)` |
+| `kfopen_dir` | function | `fs/kfile.c:243` | `KFILE *kfopen_dir(const char *resolved)` |
+| `kfputc` | function | `fs/kfile.c:698` | `int kfputc(int c, KFILE *f)` |
+| `kfputs` | function | `fs/kfile.c:692` | `int kfputs(const char *s, KFILE *f)` |
+| `kfread` | function | `fs/kfile.c:529` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
+| `kfseek` | function | `fs/kfile.c:641` | `int kfseek(KFILE *f, long offset, int whence)` |
+| `kftell` | function | `fs/kfile.c:662` | `long kftell(KFILE *f)` |
+| `kfungetc` | function | `fs/kfile.c:522` | `int kfungetc(int c, KFILE *f)` |
+| `kfwrite` | function | `fs/kfile.c:575` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)` |
 | `kpipe_grow` | function | `fs/kfile.c:216` | `static int kpipe_grow(pipe_ring_t *ring)` |
 | `kpipe_is_write_end` | function | `fs/kfile.c:209` | `int kpipe_is_write_end(KFILE *f)` |
 | `kpipe_pair` | function | `fs/kfile.c:78` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out)` |
 | `kpipe_state` | function | `fs/kfile.c:130` | `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen)` |
-| `krewind` | function | `fs/kfile.c:678` | `void krewind(KFILE *f)` |
+| `krewind` | function | `fs/kfile.c:703` | `void krewind(KFILE *f)` |
 | `recovery` | function | `fs/kfile.c:28` | `* halts the machine with no recovery (the DOOM ABI-drift black screen),  * so every public KFILE ...` |
 | `DE_NAME` | macro | `fs/minifs.c:13` | `#define DE_NAME(de)` |
 | `DE_NAME_W` | macro | `fs/minifs.c:14` | `#define DE_NAME_W(de)` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `pcache_slot_phys` | function | `fs/pcache.c:222` | `static unsigned long pcache_slot_phys(int slot)` |
 | `pcache_slot_t` | struct | `fs/pcache.c:17` | `` |
 | `pcache_stats` | function | `fs/pcache.c:314` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out,         unsigned long *miss_...` |
-| `pcache_unmap` | function | `fs/pcache.c:216` | `void pcache_unmap(int ino, unsigned index)` |
 
 Next: [SYMBOLS_p3.md](SYMBOLS_p3.md)

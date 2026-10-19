@@ -68,7 +68,7 @@ Centralized tunable values for the sanitize audit.
 | [`scalar_pattern`](#config-scalar_pattern) |  | `re.compile('(\\w+)\\s*=\\s*\\(\\s*(?:unsigned\\s+long\|long\|unsigned\|int)\\s*\\)\\s*\\(?\\s*(a[1-6])\\b')` |  |
 | [`check_patterns`](#config-check_patterns) |  | `(re.compile('SANITIZE_\\w+\\(([^;]*)\\)'), re.compile('user_range_ok\\(([^;]*)\\)'), re.compile('user_str_ok\\(([^;]*)\\)'))` |  |
 | [`deref_template`](#config-deref_template) |  | `'(?:\\*\\s*{n}\\b\|{n}\\s*\\[\|{n}\\s*->)'` |  |
-| [`delegated_callees`](#config-delegated_callees) |  | `('k_syscall_spawn', 'do_open_path', 'futex_wake', 'do_waitpid', 'do_waitpid_nb', 'do_kill', 'do_thread_spawn')` |  |
+| [`delegated_callees`](#config-delegated_callees) |  | `('k_syscall_spawn', 'do_open_path', 'futex_wake', 'do_waitpid', 'do_waitpid_nb', 'do_kill', 'do_thread_spawn', 'select_common')` |  |
 | [`dereferencing_callees`](#config-dereferencing_callees) |  | `('futex_wait', 'net_sys_dns', 'net_sys_connect', 'net_sys_sendto', 'net_sys_recvfrom', 'net_sys_poll', 'do_clone')` |  |
 | [`callee_ptr_params`](#config-callee_ptr_params) |  | `{'futex_wait': (0,), 'net_sys_dns': (0,), 'net_sys_connect': (1,), 'net_sys_sendto': (1,), 'net_sys_recvfrom': (1,), 'net_sys_poll': (0,), 'do_clone': (1,)}` |  |
 
@@ -80,7 +80,7 @@ Centralized tunable values for the sanitize audit.
 
 ### `split_functions`
 
-`function` | [tools/check_syscall_sanitize.py:69](../../tools/check_syscall_sanitize.py#L69)
+`function` | [tools/check_syscall_sanitize.py:70](../../tools/check_syscall_sanitize.py#L70)
 
 ```python
 def split_functions(lines)
@@ -104,7 +104,7 @@ Yield (name, start, body_lines) triples using brace depth.
 
 ### `checked_names`
 
-`function` | [tools/check_syscall_sanitize.py:112](../../tools/check_syscall_sanitize.py#L112)
+`function` | [tools/check_syscall_sanitize.py:113](../../tools/check_syscall_sanitize.py#L113)
 
 ```python
 def checked_names(body)
@@ -126,7 +126,7 @@ Return identifiers named inside sanitizer checks in a body.
 
 ### `delegated_only`
 
-`function` | [tools/check_syscall_sanitize.py:122](../../tools/check_syscall_sanitize.py#L122)
+`function` | [tools/check_syscall_sanitize.py:123](../../tools/check_syscall_sanitize.py#L123)
 
 ```python
 def delegated_only(body, alias)
@@ -149,7 +149,7 @@ Decide whether an alias flows only into sanitizing callees.
 
 ### `split_top_args`
 
-`function` | [tools/check_syscall_sanitize.py:143](../../tools/check_syscall_sanitize.py#L143)
+`function` | [tools/check_syscall_sanitize.py:144](../../tools/check_syscall_sanitize.py#L144)
 
 ```python
 def split_top_args(argtext)
@@ -171,7 +171,7 @@ Split a call argument list on top-level commas only.
 
 ### `audit_body`
 
-`function` | [tools/check_syscall_sanitize.py:162](../../tools/check_syscall_sanitize.py#L162)
+`function` | [tools/check_syscall_sanitize.py:163](../../tools/check_syscall_sanitize.py#L163)
 
 ```python
 def audit_body(name, body)
@@ -196,7 +196,7 @@ Return violation strings for one function body.
 
 ### `audit_file`
 
-`function` | [tools/check_syscall_sanitize.py:217](../../tools/check_syscall_sanitize.py#L217)
+`function` | [tools/check_syscall_sanitize.py:218](../../tools/check_syscall_sanitize.py#L218)
 
 ```python
 def audit_file(path)
@@ -220,7 +220,7 @@ Audit every handler in one file, return violation strings.
 
 ### `main`
 
-`function` | [tools/check_syscall_sanitize.py:228](../../tools/check_syscall_sanitize.py#L228)
+`function` | [tools/check_syscall_sanitize.py:229](../../tools/check_syscall_sanitize.py#L229)
 
 ```python
 def main()

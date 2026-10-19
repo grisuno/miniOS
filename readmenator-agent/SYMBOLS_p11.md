@@ -1,8 +1,45 @@
-# Symbols (page 11 of 26)
+# Symbols (page 11 of 27)
 Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `test_validate_accepts_valid` | method | `mcp/test_minios_mcp.py:502` | `def test_validate_accepts_valid(self)` |
+| `test_validate_rejects_bad_dst` | method | `mcp/test_minios_mcp.py:514` | `def test_validate_rejects_bad_dst(self)` |
+| `test_validate_rejects_control_chars` | method | `mcp/test_minios_mcp.py:531` | `def test_validate_rejects_control_chars(self)` |
+| `test_validate_rejects_empty_files` | method | `mcp/test_minios_mcp.py:536` | `def test_validate_rejects_empty_files(self)` |
+| `test_validate_rejects_long_build_line` | method | `mcp/test_minios_mcp.py:523` | `def test_validate_rejects_long_build_line(self)` |
+| `test_validate_rejects_missing_name` | method | `mcp/test_minios_mcp.py:519` | `def test_validate_rejects_missing_name(self)` |
+| `test_wait_for_any_earliest` | method | `mcp/test_minios_mcp.py:284` | `def test_wait_for_any_earliest(self)` |
+| `test_write_rejects_line_too_long` | method | `mcp/test_minios_mcp.py:234` | `def test_write_rejects_line_too_long(self)` |
+| `test_write_rejects_too_many_lines` | method | `mcp/test_minios_mcp.py:243` | `def test_write_rejects_too_many_lines(self)` |
+| `tool` | method | `mcp/test_minios_mcp.py:110` | `def tool(self, name, params)` |
+| `write` | method | `mcp/test_minios_mcp.py:659` | `def write(self, path, content)` |
+| `LNX_AF_INET` | macro | `net/net.c:1028` | `#define LNX_AF_INET` |
+| `LNX_EAFNOSUPPORT` | macro | `net/net.c:1081` | `#define LNX_EAFNOSUPPORT` |
+| `LNX_EAGAIN` | macro | `net/net.c:1072` | `#define LNX_EAGAIN` |
+| `LNX_EALREADY` | macro | `net/net.c:1086` | `#define LNX_EALREADY` |
+| `LNX_EBADF` | macro | `net/net.c:1071` | `#define LNX_EBADF` |
+| `LNX_ECONNREFUSED` | macro | `net/net.c:1085` | `#define LNX_ECONNREFUSED` |
+| `LNX_EDESTADDRREQ` | macro | `net/net.c:1076` | `#define LNX_EDESTADDRREQ` |
+| `LNX_EFAULT` | macro | `net/net.c:1073` | `#define LNX_EFAULT` |
+| `LNX_EINPROGRESS` | macro | `net/net.c:1087` | `#define LNX_EINPROGRESS` |
+| `LNX_EINVAL` | macro | `net/net.c:1074` | `#define LNX_EINVAL` |
+| `LNX_EISCONN` | macro | `net/net.c:1082` | `#define LNX_EISCONN` |
+| `LNX_EMSGSIZE` | macro | `net/net.c:1077` | `#define LNX_EMSGSIZE` |
+| `LNX_ENOPROTOOPT` | macro | `net/net.c:1078` | `#define LNX_ENOPROTOOPT` |
+| `LNX_ENOTCONN` | macro | `net/net.c:1083` | `#define LNX_ENOTCONN` |
+| `LNX_ENOTTY` | macro | `net/net.c:1667` | `#define LNX_ENOTTY` |
+| `LNX_EOPNOTSUPP` | macro | `net/net.c:1080` | `#define LNX_EOPNOTSUPP` |
+| `LNX_EPIPE` | macro | `net/net.c:1075` | `#define LNX_EPIPE` |
+| `LNX_EPROTONOSUPPORT` | macro | `net/net.c:1079` | `#define LNX_EPROTONOSUPPORT` |
+| `LNX_ETIMEDOUT` | macro | `net/net.c:1084` | `#define LNX_ETIMEDOUT` |
+| `LNX_FD_CLOEXEC` | macro | `net/net.c:1061` | `#define LNX_FD_CLOEXEC` |
+| `LNX_FIOCLEX` | macro | `net/net.c:1666` | `#define LNX_FIOCLEX` |
+| `LNX_FIONBIO` | macro | `net/net.c:1664` | `#define LNX_FIONBIO` |
+| `LNX_FIONCLEX` | macro | `net/net.c:1665` | `#define LNX_FIONCLEX` |
+| `LNX_FIONREAD` | macro | `net/net.c:1663` | `#define LNX_FIONREAD` |
+| `LNX_F_GETFD` | macro | `net/net.c:1062` | `#define LNX_F_GETFD` |
+| `LNX_F_GETFL` | macro | `net/net.c:1064` | `#define LNX_F_GETFL` |
 | `LNX_F_SETFD` | macro | `net/net.c:1063` | `#define LNX_F_SETFD` |
 | `LNX_F_SETFL` | macro | `net/net.c:1065` | `#define LNX_F_SETFL` |
 | `LNX_IPPROTO_IP` | macro | `net/net.c:1049` | `#define LNX_IPPROTO_IP` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `lz4_compress_file` | function | `progs/asm/lz4.s:478` | `` |
 | `lz4_decompress_file` | function | `progs/asm/lz4.s:791` | `` |
 | `lz4_has` | function | `progs/asm/lz4.s:3` | `` |
-| `lz4_read_all` | function | `progs/asm/lz4.s:156` | `` |
-| `lz4_write_all` | function | `progs/asm/lz4.s:371` | `` |
-| `main` | function | `progs/asm/lz4.s:1228` | `` |
-| `_start` | function | `progs/asm/lzss.s:3497` | `` |
-| `lz_buf` | function | `progs/asm/lzss.s:35` | `` |
-| `lz_compress` | function | `progs/asm/lzss.s:2257` | `` |
-| `lz_decode` | function | `progs/asm/lzss.s:1171` | `` |
-| `lz_decompress` | function | `progs/asm/lzss.s:2628` | `` |
-| `lz_dst` | function | `progs/asm/lzss.s:19` | `` |
-| `lz_dstcap` | function | `progs/asm/lzss.s:23` | `` |
-| `lz_dstlen` | function | `progs/asm/lzss.s:27` | `` |
-| `lz_encode` | function | `progs/asm/lzss.s:451` | `` |
-| `lz_err` | function | `progs/asm/lzss.s:31` | `` |
-| `lz_flush_bits` | function | `progs/asm/lzss.s:223` | `` |
-| `lz_getbit` | function | `progs/asm/lzss.s:1051` | `` |
-| `lz_has` | function | `progs/asm/lzss.s:1782` | `` |
-| `lz_hdr_get` | function | `progs/asm/lzss.s:1629` | `` |
-| `lz_hdr_put` | function | `progs/asm/lzss.s:1514` | `` |
-| `lz_in_getc` | function | `progs/asm/lzss.s:43` | `` |
-| `lz_mask` | function | `progs/asm/lzss.s:39` | `` |
-| `lz_next_mb` | function | `progs/asm/lzss.s:447` | `` |
-| `lz_out_literal` | function | `progs/asm/lzss.s:251` | `` |
-| `lz_out_pair` | function | `progs/asm/lzss.s:321` | `` |
-| `lz_out_put` | function | `progs/asm/lzss.s:79` | `` |
-| `lz_putbit0` | function | `progs/asm/lzss.s:174` | `` |
-| `lz_putbit1` | function | `progs/asm/lzss.s:116` | `` |
-| `lz_read_all` | function | `progs/asm/lzss.s:1935` | `` |
-| `lz_src` | function | `progs/asm/lzss.s:7` | `` |
-| `lz_srclen` | function | `progs/asm/lzss.s:11` | `` |
-| `lz_srcpos` | function | `progs/asm/lzss.s:15` | `` |
-| `lz_win` | function | `progs/asm/lzss.s:3` | `` |
-| `lz_write_all` | function | `progs/asm/lzss.s:2150` | `` |
-| `main` | function | `progs/asm/lzss.s:3178` | `` |
-| `_start` | function | `progs/asm/mtop.s:4781` | `` |
-| `disk_f` | function | `progs/asm/mtop.s:39` | `` |
-| `disk_path` | function | `progs/asm/mtop.s:43` | `` |
-| `emit` | function | `progs/asm/mtop.s:206` | `` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

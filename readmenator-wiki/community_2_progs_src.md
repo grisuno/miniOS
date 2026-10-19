@@ -1,26 +1,26 @@
 # progs/src
 
-*Community 2 | 86 files | cohesion 0.72*
+*Community 2 | 84 files | cohesion 0.71*
 
 ## Definition
 
-This community groups 86 file(s) rooted at `tests` with dominant language c (cohesion 0.72). Central symbols: `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`, `ABI_NO_MANIFEST`, `ABI_OK`, `ABI_VERSION_MISMATCH`. Core file: `progs/vedit/vedit.c` (245 symbols). Documented purpose: Docstring: abi.h -- Boot-time ABI manifest gate contract..
+This community groups 84 file(s) rooted at `tests` with dominant language c (cohesion 0.71). Central symbols: `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`, `ABI_NO_MANIFEST`, `ABI_OK`, `ABI_VERSION_MISMATCH`. Core file: `progs/vedit/vedit.c` (245 symbols). Documented purpose: Docstring: abi.h -- Boot-time ABI manifest gate contract..
 
 ## Files
 
-### `tests` (17 files)
+### `tests` (18 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `tests/test_abi.c` | c | testing | 2 | yes |
 
-### `progs/src` (16 files)
+### `progs/src` (14 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/src/apsse.c` | c | utility | 15 | yes |
 
-### `headers` (8 files)
+### `headers` (9 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -68,12 +68,6 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/file/file.c` | c | utility | 65 | yes |
 
-### `progs/lua` (2 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `progs/lua/lua_main.c` | c | utility | 7 | no |
-
 ### `progs/doomedit` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
@@ -86,17 +80,17 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/lisp/lisp.c` | c | utility | 105 | no |
 
+### `progs/lua` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/lua/lua_main.c` | c | utility | 7 | no |
+
 ### `progs/micropython/variants/minios` (1 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `progs/micropython/variants/minios/minios_module.c` | c | utility | 21 | no |
-
-### `progs/micropython/variants/minios/lib` (1 files)
-
-| File | Language | Layer | Symbols | Doc |
-|------|----------|-------|---------|-----|
-| `progs/micropython/variants/minios/lib/hello.py` | py | utility | 0 | yes |
 
 ### `progs/minicraft` (1 files)
 
@@ -128,7 +122,13 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/quake2generic/snddma_minios.c` | c | utility | 16 | yes |
 
-*... and 66 more files in this community.*
+### `progs/topogpt3` (1 files)
+
+| File | Language | Layer | Symbols | Doc |
+|------|----------|-------|---------|-----|
+| `progs/topogpt3/topogpt3.c` | c | utility | 128 | no |
+
+*... and 64 more files in this community.*
 
 
 ## Key Symbols
@@ -166,8 +166,8 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 142
-- Cross-boundary resolved imports (EXTRACTED): 55
+- Internal resolved imports (EXTRACTED): 140
+- Cross-boundary resolved imports (EXTRACTED): 57
 
 ## Connections
 
@@ -190,9 +190,9 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 
 ## Open Questions
 
-- Why do 8 file(s) lack file-level docs (e.g. `progs/lisp/lisp.c`)? What purpose do they serve?
+- Why do 7 file(s) lack file-level docs (e.g. `progs/lisp/lisp.c`)? What purpose do they serve?
 - What would break if the most connected file in progs/src changed?
-- Should progs/src be split, given cohesion 0.72?
+- Should progs/src be split, given cohesion 0.71?
 
 ## Sources
 
@@ -203,6 +203,7 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 - `headers/leakcheck.h`
 - `headers/pcm_ring.h`
 - `headers/seccomp_bpf.h`
+- `headers/select_map.h`
 - `headers/sign.h`
 - `kernel/abi.c`
 - `kernel/ed25519.c`
@@ -215,5 +216,4 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 - `progs/file/file.c`
 - `progs/file/file_assoc.h`
 - `progs/freedomui/freedomui_minios.c`
-- `progs/freedomui/media_unavailable.c`
-- *... and 66 more*
+- *... and 64 more*

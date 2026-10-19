@@ -281,6 +281,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/syscalls.c` -> `headers/sanitize.h`
 - `kernel/syscalls.c` -> `headers/sb16.h`
 - `kernel/syscalls.c` -> `headers/sched.h`
+- `kernel/syscalls.c` -> `headers/select_map.h`
 - `kernel/syscalls.c` -> `headers/shell.h`
 - `kernel/syscalls.c` -> `headers/spawn.h`
 - `kernel/syscalls.c` -> `headers/sync.h`
@@ -495,6 +496,5 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/time.c`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `progs/doomgeneric/doomgeneric.h`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `progs/doomgeneric/doomkeys.h`
-- `progs/doomgeneric/doomstat.c` -> `progs/doomgeneric/doomstat.h`
 
 Next: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)

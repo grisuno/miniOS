@@ -353,40 +353,43 @@ Imported by: `tests/test_freedom_wl.c`
 
 ## progs/src/lxabi.c
 Depends on: `headers/sched.h`, `kernel/string.c`, `kernel/time.c`
-- `report` (function) `progs/src/lxabi.c:64` `static void report(const char *name, int ok, const char *detail)`
-- `now_ms` (function) `progs/src/lxabi.c:74` `static long now_ms(void)`
-- `busy_wait_ms` (function) `progs/src/lxabi.c:80` `static void busy_wait_ms(long ms)`
-- `fork_probe` (function) `progs/src/lxabi.c:94` `static void fork_probe(uint64_t *out)` -- Raw clone(SIGCHLD) with known values in every callee-saved register and in * the argument registers; both sides...
-- `regs_match` (function) `progs/src/lxabi.c:131` `static int regs_match(const uint64_t *r)`
-- `check_fork_registers` (function) `progs/src/lxabi.c:137` `static void check_fork_registers(void)`
-- `check_fork_cow_kernel_write` (function) `progs/src/lxabi.c:159` `static void check_fork_cow_kernel_write(void)`
-- `worker` (function) `progs/src/lxabi.c:200` `static void *worker(void *arg)`
-- `check_threads` (function) `progs/src/lxabi.c:214` `static void check_threads(void)`
-- `detached_worker` (function) `progs/src/lxabi.c:244` `static void *detached_worker(void *arg)`
-- `check_detached_reaped` (function) `progs/src/lxabi.c:250` `static void check_detached_reaped(void)`
-- `signaller` (function) `progs/src/lxabi.c:274` `static void *signaller(void *arg)`
-- `check_condvar` (function) `progs/src/lxabi.c:284` `static void check_condvar(void)`
-- `check_pipe2_flags` (function) `progs/src/lxabi.c:306` `static void check_pipe2_flags(void)`
-- `check_pipe_blocking` (function) `progs/src/lxabi.c:333` `static void check_pipe_blocking(void)`
-- `check_pipe_epipe` (function) `progs/src/lxabi.c:355` `static void check_pipe_epipe(void)`
-- `check_writev_pipe` (function) `progs/src/lxabi.c:381` `static void check_writev_pipe(void)`
-- `check_poll` (function) `progs/src/lxabi.c:393` `static void check_poll(void)`
-- `check_eventfd` (function) `progs/src/lxabi.c:417` `static void check_eventfd(void)`
-- `check_close_range` (function) `progs/src/lxabi.c:442` `static void check_close_range(void)`
-- `check_time` (function) `progs/src/lxabi.c:454` `static void check_time(void)`
-- `check_mkdir` (function) `progs/src/lxabi.c:463` `static void check_mkdir(void)`
-- `check_limits` (function) `progs/src/lxabi.c:477` `static void check_limits(void)` -- The answers glibc sizes memory from: a finite stack limit (thread stacks default to it) and a CPU count that matches...
-- `mono_us` (function) `progs/src/lxabi.c:490` `static long mono_us(void)`
-- `check_sleep` (function) `progs/src/lxabi.c:499` `static void check_sleep(void)` -- Sleeps really wait: nanosleep for a relative interval, clock_nanosleep until an absolute monotonic deadline, and a...
-- `lxabi_sleeper` (function) `progs/src/lxabi.c:526` `static void *lxabi_sleeper(void *arg)` -- rc = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &abs_t, NULL); waited = mono_us() - t0...
-- `child_status` (function) `progs/src/lxabi.c:534` `static int child_status(void (*body)(void))` -- Fork a child that runs body, wait for it with a bounded spin and return * its wait status, or -1 when it never ended...
-- `abort_from_worker_body` (function) `progs/src/lxabi.c:554` `static void abort_from_worker_body(void)`
-- `lxabi_exit_group_worker` (function) `progs/src/lxabi.c:560` `static void *lxabi_exit_group_worker(void *arg)`
-- `exit_group_from_worker_body` (function) `progs/src/lxabi.c:566` `static void exit_group_from_worker_body(void)`
-- `wild_jump_body` (function) `progs/src/lxabi.c:572` `static void wild_jump_body(void)`
-- `process` (function) `progs/src/lxabi.c:580` `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
+- `report` (function) `progs/src/lxabi.c:65` `static void report(const char *name, int ok, const char *detail)`
+- `now_ms` (function) `progs/src/lxabi.c:75` `static long now_ms(void)`
+- `busy_wait_ms` (function) `progs/src/lxabi.c:81` `static void busy_wait_ms(long ms)`
+- `fork_probe` (function) `progs/src/lxabi.c:95` `static void fork_probe(uint64_t *out)` -- Raw clone(SIGCHLD) with known values in every callee-saved register and in * the argument registers; both sides...
+- `regs_match` (function) `progs/src/lxabi.c:132` `static int regs_match(const uint64_t *r)`
+- `check_fork_registers` (function) `progs/src/lxabi.c:138` `static void check_fork_registers(void)`
+- `check_fork_cow_kernel_write` (function) `progs/src/lxabi.c:160` `static void check_fork_cow_kernel_write(void)`
+- `worker` (function) `progs/src/lxabi.c:201` `static void *worker(void *arg)`
+- `check_threads` (function) `progs/src/lxabi.c:215` `static void check_threads(void)`
+- `detached_worker` (function) `progs/src/lxabi.c:245` `static void *detached_worker(void *arg)`
+- `check_detached_reaped` (function) `progs/src/lxabi.c:251` `static void check_detached_reaped(void)`
+- `signaller` (function) `progs/src/lxabi.c:275` `static void *signaller(void *arg)`
+- `check_condvar` (function) `progs/src/lxabi.c:285` `static void check_condvar(void)`
+- `check_pipe2_flags` (function) `progs/src/lxabi.c:307` `static void check_pipe2_flags(void)`
+- `check_pipe_blocking` (function) `progs/src/lxabi.c:334` `static void check_pipe_blocking(void)`
+- `check_pipe_epipe` (function) `progs/src/lxabi.c:356` `static void check_pipe_epipe(void)`
+- `check_writev_pipe` (function) `progs/src/lxabi.c:382` `static void check_writev_pipe(void)`
+- `check_poll` (function) `progs/src/lxabi.c:394` `static void check_poll(void)`
+- `check_eventfd` (function) `progs/src/lxabi.c:418` `static void check_eventfd(void)`
+- `check_close_range` (function) `progs/src/lxabi.c:443` `static void check_close_range(void)`
+- `check_time` (function) `progs/src/lxabi.c:455` `static void check_time(void)`
+- `check_mkdir` (function) `progs/src/lxabi.c:464` `static void check_mkdir(void)`
+- `check_limits` (function) `progs/src/lxabi.c:478` `static void check_limits(void)` -- The answers glibc sizes memory from: a finite stack limit (thread stacks default to it) and a CPU count that matches...
+- `mono_us` (function) `progs/src/lxabi.c:491` `static long mono_us(void)`
+- `check_sleep` (function) `progs/src/lxabi.c:500` `static void check_sleep(void)` -- Sleeps really wait: nanosleep for a relative interval, clock_nanosleep until an absolute monotonic deadline, and a...
+- `lxabi_sleeper` (function) `progs/src/lxabi.c:527` `static void *lxabi_sleeper(void *arg)` -- rc = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &abs_t, NULL); waited = mono_us() - t0...
+- `child_status` (function) `progs/src/lxabi.c:535` `static int child_status(void (*body)(void))` -- Fork a child that runs body, wait for it with a bounded spin and return * its wait status, or -1 when it never ended...
+- `abort_from_worker_body` (function) `progs/src/lxabi.c:555` `static void abort_from_worker_body(void)`
+- `lxabi_exit_group_worker` (function) `progs/src/lxabi.c:561` `static void *lxabi_exit_group_worker(void *arg)`
+- `exit_group_from_worker_body` (function) `progs/src/lxabi.c:567` `static void exit_group_from_worker_body(void)`
+- `wild_jump_body` (function) `progs/src/lxabi.c:573` `static void wild_jump_body(void)`
+- `process` (function) `progs/src/lxabi.c:581` `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
  * leaves the target aliv...`
-- `main` (function) `progs/src/lxabi.c:617` `int main(void)`
+- `check_uid_gid` (function) `progs/src/lxabi.c:642` `static void check_uid_gid(void)` -- Every process runs as root (uid/gid 0); glibc and CPython's startup * read these, and -ENOSYS made them answer...
+- `copy_dentry_name` (function) `progs/src/lxabi.c:680` `static void copy_dentry_name(char *dst, size_t cap, const char *src)` -- getdents64 (217): a directory fd enumerates MiniFS entries with the right d_type and resumes across calls; a regular...
+- `check_getdents64` (function) `progs/src/lxabi.c:687` `static void check_getdents64(void)`
+- `main` (function) `progs/src/lxabi.c:754` `int main(void)`
 
 ## progs/src/lxhello.c
 - `lx_syscall3` (function) `progs/src/lxhello.c:11` `static long lx_syscall3(long n, long a1, long a2, long a3)`
@@ -432,6 +435,16 @@ Depends on: `kernel/string.c`
 - `check_proc_self_exe` (function) `progs/src/lxsecc.c:197` `static void check_proc_self_exe(const char *argv0)`
 - `main` (function) `progs/src/lxsecc.c:215` `int main(int argc, char **argv)`
 
+## progs/src/lxsel.c
+Depends on: `kernel/time.c`
+- `report` (function) `progs/src/lxsel.c:36` `static void report(const char *name, int ok)`
+- `raw_select` (function) `progs/src/lxsel.c:45` `static long raw_select(long nfds, fd_set *r, fd_set *w, fd_set *e,
+                       struct ...`
+- `raw_pselect6` (function) `progs/src/lxsel.c:50` `static long raw_pselect6(long nfds, fd_set *r, fd_set *w, fd_set *e,
+                         str...`
+- `elapsed_ms` (function) `progs/src/lxsel.c:55` `static long elapsed_ms(struct timespec *a, struct timespec *b)`
+- `main` (function) `progs/src/lxsel.c:60` `int main(void)`
+
 ## progs/src/lxtls.c
 Depends on: `kernel/string.c`
 - `lxtls_sink` (function) `progs/src/lxtls.c:39` `static size_t lxtls_sink(char *data, size_t size, size_t nmemb, void *user)` -- Count the body without storing it: the probe proves transport, not * content.
@@ -461,38 +474,6 @@ Depends on: `kernel/string.c`
 - `lz4_compress_file` (function) `progs/src/lz4.c:80` `static int lz4_compress_file(const char *src, const char *dst)`
 - `lz4_decompress_file` (function) `progs/src/lz4.c:117` `static int lz4_decompress_file(const char *src, const char *dst)`
 - `main` (function) `progs/src/lz4.c:164` `int main(int argc, char **argv)`
-
-## progs/src/lzss.c
-- `malloc` (function) `progs/src/lzss.c:13` `void *malloc();`
-- `free` (function) `progs/src/lzss.c:14` `void free();`
-- `printf` (function) `progs/src/lzss.c:15` `int printf();`
-- `strcmp` (function) `progs/src/lzss.c:16` `int strcmp();`
-- `strlen` (function) `progs/src/lzss.c:17` `int strlen();`
-- `fopen` (function) `progs/src/lzss.c:18` `void *fopen();`
-- `fclose` (function) `progs/src/lzss.c:19` `int fclose();`
-- `fread` (function) `progs/src/lzss.c:20` `int fread();`
-- `fwrite` (function) `progs/src/lzss.c:21` `int fwrite();`
-- `fseek` (function) `progs/src/lzss.c:22` `int fseek();`
-- `ftell` (function) `progs/src/lzss.c:23` `int ftell();`
-- `rewind` (function) `progs/src/lzss.c:24` `void rewind();`
-- `lz_in_getc` (function) `progs/src/lzss.c:64` `static int lz_in_getc(void)`
-- `lz_out_put` (function) `progs/src/lzss.c:69` `static void lz_out_put(int c)`
-- `lz_putbit1` (function) `progs/src/lzss.c:74` `static void lz_putbit1(void)`
-- `lz_putbit0` (function) `progs/src/lzss.c:84` `static void lz_putbit0(void)`
-- `lz_flush_bits` (function) `progs/src/lzss.c:93` `static void lz_flush_bits(void)`
-- `lz_out_literal` (function) `progs/src/lzss.c:97` `static void lz_out_literal(int c)`
-- `lz_out_pair` (function) `progs/src/lzss.c:105` `static void lz_out_pair(int x, int y)`
-- `lz_encode` (function) `progs/src/lzss.c:118` `static int lz_encode(void)`
-- `lz_getbit` (function) `progs/src/lzss.c:173` `static int lz_getbit(int n)`
-- `lz_decode` (function) `progs/src/lzss.c:189` `static int lz_decode(void)`
-- `lz_hdr_put` (function) `progs/src/lzss.c:218` `static void lz_hdr_put(char *h, int size)`
-- `lz_hdr_get` (function) `progs/src/lzss.c:229` `static int lz_hdr_get(char *h)`
-- `lz_has` (function) `progs/src/lzss.c:237` `static int lz_has(const char *s, const char *needle)`
-- `lz_read_all` (function) `progs/src/lzss.c:251` `static char *lz_read_all(const char *name, int *len)`
-- `lz_write_all` (function) `progs/src/lzss.c:268` `static int lz_write_all(const char *name, char *data, int len)`
-- `lz_compress` (function) `progs/src/lzss.c:278` `static int lz_compress(const char *src, const char *dst)`
-- `lz_decompress` (function) `progs/src/lzss.c:325` `static int lz_decompress(const char *src, const char *dst)`
-- `main` (function) `progs/src/lzss.c:397` `int main(int argc, char **argv)`
 
 
 Next: [API_p19.md](API_p19.md)

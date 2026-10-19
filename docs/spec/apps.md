@@ -300,10 +300,11 @@ repository as an out-of-tree unix-port variant.
 - **Variant**: `progs/micropython/variants/minios/{mpconfigvariant.h,
   mpconfigvariant.mk}` is a variant of `ports/unix` selected at build time
   through the `VARIANT_DIR` mechanism, so the upstream checkout carries no
-  modifications. The configuration keeps the compiler, floats and the `os`
-  module, and disables readline (the kernel console is a cooked, line-based
-  device with its own echo), sockets, threading, SSL, FFI, termios, VFS
-  layers and native emitters.
+  modifications. The configuration keeps the compiler, floats, the `os`
+  module, sockets, `select.poll`, `time` and the frozen `mip` installer
+  (docs/spec/python.md owns that surface), and disables readline (the
+  kernel console is a cooked, line-based device with its own echo),
+  threading, SSL, FFI, termios, VFS layers and native emitters.
 - **Build**: `make` builds `mpy-cross` and then the port with
   `LDFLAGS_EXTRA="-static -no-pie"`, exactly the linking contract DOOM
   follows; the ELF is copied to `progs/bin/micropython.elf` and packed into

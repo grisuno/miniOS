@@ -1,6 +1,6 @@
 # tools: tls_crypto
 
-tools: tls_crypto groups 37 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
+tools: tls_crypto groups 44 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
 
 ```mermaid
 graph LR
@@ -22,6 +22,8 @@ graph LR
     net -- "calls into" --> headers
     progs -- "calls into" --> headers
     progs -- "depends on" --> kernel
+    progs -- "calls into" --> mcp
+    progs -- "calls into" --> tools
     root -- "calls into" --> headers
     tests -- "calls into" --> headers
     tools -- "depends on" --> kernel
@@ -46,7 +48,7 @@ net groups 3 files (c) around tls_fail, tls_fd_of, tls_free_fd, tls_aad, number.
 
 ## progs (5.5)
 
-progs groups 4 files (c) around KEYQUEUE_SIZE, convertToDoomKey, addKeyToQueue, DG_Init, DG_DrawFrame. Linux process, thread and descriptor ABI probe (FreeDom
+progs groups 11 files (c, py) around msys5, SYS_TIME_MS, SYS_PALETTE, SYS_PCSPK_INIT, SYS_PCSPK_TONE. msys5: /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static...
 
 ## root (5.6)
 
@@ -76,7 +78,14 @@ tools groups 18 files (py) around note, Guest, __init__, _ser, _reader. boot the
 - net/tls_crypto.c
 - net/tls_x509.c
 - progs/doomgeneric/doomgeneric_xlib.c
+- progs/lua/minios.c
+- progs/micropython/variants/minios/lib/hello.py
+- progs/micropython/variants/minios/lib/mip.py
 - progs/src/lxabi.c
+- progs/src/lxsel.c
+- progs/src/shell.py
+- progs/src/test.py
+- progs/src/test_py.py
 - progs/tls_u/tls_u_main.c
 - progs/tls_u/tls_u_port.c
 - tests/test_ktime.c

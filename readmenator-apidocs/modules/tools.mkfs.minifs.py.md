@@ -12,7 +12,7 @@ Usage: python3 mkfs.minifs.py <output_file> <total_blocks> [files...]
 
 - **Classes:** [`MiniFS`](#minifs)
 - **Functions:** [`roundup4`](#roundup4), [`div_round_up`](#div_round_up), [`crc16`](#crc16), [`crc32`](#crc32), [`count_free`](#count_free), [`main`](#main)
-- **Constants:** [`MAGIC`](#magic), [`VERSION`](#version), [`BLOCK_SIZE`](#block_size), [`ROOT_INODE`](#root_inode), [`S_IFREG`](#s_ifreg), [`S_IFDIR`](#s_ifdir), [`FT_FILE`](#ft_file), [`FT_DIR`](#ft_dir), [`DIR_ENTRY_HDR_SIZE`](#dir_entry_hdr_size)
+- **Constants:** [`MAGIC`](#magic), [`VERSION`](#version), [`BLOCK_SIZE`](#block_size), [`ROOT_INODE`](#root_inode), [`INODE_TABLE_BLOCKS`](#inode_table_blocks), [`S_IFREG`](#s_ifreg), [`S_IFDIR`](#s_ifdir), [`FT_FILE`](#ft_file), [`FT_DIR`](#ft_dir), [`DIR_ENTRY_HDR_SIZE`](#dir_entry_hdr_size)
 
 ## Call Graph
 
@@ -68,7 +68,7 @@ flowchart LR
 
 ### `MiniFS`
 
-`class` | [tools/mkfs.minifs.py:50](../../tools/mkfs.minifs.py#L50)
+`class` | [tools/mkfs.minifs.py:56](../../tools/mkfs.minifs.py#L56)
 
 ```python
 class MiniFS
@@ -98,7 +98,7 @@ class MiniFS
 
 #### `MiniFS.__init__`
 
-`constructor` | [tools/mkfs.minifs.py:51](../../tools/mkfs.minifs.py#L51)
+`constructor` | [tools/mkfs.minifs.py:57](../../tools/mkfs.minifs.py#L57)
 
 ```python
 def __init__(self, total_blocks)
@@ -118,7 +118,7 @@ def __init__(self, total_blocks)
 
 #### `MiniFS.mark_inodes_used`
 
-`method` | [tools/mkfs.minifs.py:74](../../tools/mkfs.minifs.py#L74)
+`method` | [tools/mkfs.minifs.py:80](../../tools/mkfs.minifs.py#L80)
 
 ```python
 def mark_inodes_used(self, start, count)
@@ -137,7 +137,7 @@ def mark_inodes_used(self, start, count)
 
 #### `MiniFS.mark_blocks_used`
 
-`method` | [tools/mkfs.minifs.py:78](../../tools/mkfs.minifs.py#L78)
+`method` | [tools/mkfs.minifs.py:84](../../tools/mkfs.minifs.py#L84)
 
 ```python
 def mark_blocks_used(self, start, count)
@@ -156,7 +156,7 @@ def mark_blocks_used(self, start, count)
 
 #### `MiniFS.alloc_inode`
 
-`method` | [tools/mkfs.minifs.py:82](../../tools/mkfs.minifs.py#L82)
+`method` | [tools/mkfs.minifs.py:88](../../tools/mkfs.minifs.py#L88)
 
 ```python
 def alloc_inode(self)
@@ -170,7 +170,7 @@ def alloc_inode(self)
 
 #### `MiniFS.alloc_block`
 
-`method` | [tools/mkfs.minifs.py:88](../../tools/mkfs.minifs.py#L88)
+`method` | [tools/mkfs.minifs.py:94](../../tools/mkfs.minifs.py#L94)
 
 ```python
 def alloc_block(self)
@@ -184,7 +184,7 @@ def alloc_block(self)
 
 #### `MiniFS.create_root`
 
-`method` | [tools/mkfs.minifs.py:94](../../tools/mkfs.minifs.py#L94)
+`method` | [tools/mkfs.minifs.py:100](../../tools/mkfs.minifs.py#L100)
 
 ```python
 def create_root(self)
@@ -198,7 +198,7 @@ def create_root(self)
 
 #### `MiniFS.seal_inode`
 
-`method` | [tools/mkfs.minifs.py:102](../../tools/mkfs.minifs.py#L102)
+`method` | [tools/mkfs.minifs.py:108](../../tools/mkfs.minifs.py#L108)
 
 ```python
 def seal_inode(self, ino)
@@ -220,7 +220,7 @@ Store the inode checksum over its first 124 bytes; every mutation reseals, or th
 
 #### `MiniFS.create_inode`
 
-`method` | [tools/mkfs.minifs.py:107](../../tools/mkfs.minifs.py#L107)
+`method` | [tools/mkfs.minifs.py:113](../../tools/mkfs.minifs.py#L113)
 
 ```python
 def create_inode(self, mode, links=1)
@@ -241,7 +241,7 @@ def create_inode(self, mode, links=1)
 
 #### `MiniFS.inode_set_size`
 
-`method` | [tools/mkfs.minifs.py:114](../../tools/mkfs.minifs.py#L114)
+`method` | [tools/mkfs.minifs.py:120](../../tools/mkfs.minifs.py#L120)
 
 ```python
 def inode_set_size(self, ino, size)
@@ -262,7 +262,7 @@ def inode_set_size(self, ino, size)
 
 #### `MiniFS.inode_set_block`
 
-`method` | [tools/mkfs.minifs.py:118](../../tools/mkfs.minifs.py#L118)
+`method` | [tools/mkfs.minifs.py:124](../../tools/mkfs.minifs.py#L124)
 
 ```python
 def inode_set_block(self, ino, logblk, phys)
@@ -284,7 +284,7 @@ def inode_set_block(self, ino, logblk, phys)
 
 #### `MiniFS.add_dir_entry`
 
-`method` | [tools/mkfs.minifs.py:148](../../tools/mkfs.minifs.py#L148)
+`method` | [tools/mkfs.minifs.py:154](../../tools/mkfs.minifs.py#L154)
 
 ```python
 def add_dir_entry(self, dir_ino, name, child_ino, ftype)
@@ -307,7 +307,7 @@ def add_dir_entry(self, dir_ino, name, child_ino, ftype)
 
 #### `MiniFS.claim_name`
 
-`method` | [tools/mkfs.minifs.py:186](../../tools/mkfs.minifs.py#L186)
+`method` | [tools/mkfs.minifs.py:192](../../tools/mkfs.minifs.py#L192)
 
 ```python
 def claim_name(self, parent_ino, name, is_dir)
@@ -335,7 +335,7 @@ Returns the inode of an existing directory when a directory of the same name is 
 
 #### `MiniFS.write_file`
 
-`method` | [tools/mkfs.minifs.py:199](../../tools/mkfs.minifs.py#L199)
+`method` | [tools/mkfs.minifs.py:205](../../tools/mkfs.minifs.py#L205)
 
 ```python
 def write_file(self, parent_ino, name, data)
@@ -357,7 +357,7 @@ def write_file(self, parent_ino, name, data)
 
 #### `MiniFS.write_dir`
 
-`method` | [tools/mkfs.minifs.py:218](../../tools/mkfs.minifs.py#L218)
+`method` | [tools/mkfs.minifs.py:224](../../tools/mkfs.minifs.py#L224)
 
 ```python
 def write_dir(self, parent_ino, name)
@@ -378,7 +378,7 @@ def write_dir(self, parent_ino, name)
 
 #### `MiniFS.serialize`
 
-`method` | [tools/mkfs.minifs.py:230](../../tools/mkfs.minifs.py#L230)
+`method` | [tools/mkfs.minifs.py:236](../../tools/mkfs.minifs.py#L236)
 
 ```python
 def serialize(self)
@@ -396,7 +396,7 @@ def serialize(self)
 
 ### `roundup4`
 
-`function` | [tools/mkfs.minifs.py:22](../../tools/mkfs.minifs.py#L22)
+`function` | [tools/mkfs.minifs.py:28](../../tools/mkfs.minifs.py#L28)
 
 ```python
 def roundup4(v)
@@ -416,7 +416,7 @@ def roundup4(v)
 
 ### `div_round_up`
 
-`function` | [tools/mkfs.minifs.py:25](../../tools/mkfs.minifs.py#L25)
+`function` | [tools/mkfs.minifs.py:31](../../tools/mkfs.minifs.py#L31)
 
 ```python
 def div_round_up(n, d)
@@ -437,7 +437,7 @@ def div_round_up(n, d)
 
 ### `crc16`
 
-`function` | [tools/mkfs.minifs.py:28](../../tools/mkfs.minifs.py#L28)
+`function` | [tools/mkfs.minifs.py:34](../../tools/mkfs.minifs.py#L34)
 
 ```python
 def crc16(data)
@@ -457,7 +457,7 @@ def crc16(data)
 
 ### `crc32`
 
-`function` | [tools/mkfs.minifs.py:36](../../tools/mkfs.minifs.py#L36)
+`function` | [tools/mkfs.minifs.py:42](../../tools/mkfs.minifs.py#L42)
 
 ```python
 def crc32(data)
@@ -477,7 +477,7 @@ def crc32(data)
 
 ### `count_free`
 
-`function` | [tools/mkfs.minifs.py:44](../../tools/mkfs.minifs.py#L44)
+`function` | [tools/mkfs.minifs.py:50](../../tools/mkfs.minifs.py#L50)
 
 ```python
 def count_free(bitmap, count)
@@ -500,7 +500,7 @@ Clear bits among the first count bits of bitmap: the superblock free counters mu
 
 ### `main`
 
-`function` | [tools/mkfs.minifs.py:274](../../tools/mkfs.minifs.py#L274)
+`function` | [tools/mkfs.minifs.py:280](../../tools/mkfs.minifs.py#L280)
 
 ```python
 def main()
@@ -560,11 +560,23 @@ ROOT_INODE = 2
 
 ---
 
+<a id="inode_table_blocks"></a>
+
+### `INODE_TABLE_BLOCKS`
+
+`constant` | [tools/mkfs.minifs.py:21](../../tools/mkfs.minifs.py#L21)
+
+```python
+INODE_TABLE_BLOCKS = 64
+```
+
+---
+
 <a id="s_ifreg"></a>
 
 ### `S_IFREG`
 
-`constant` | [tools/mkfs.minifs.py:16](../../tools/mkfs.minifs.py#L16)
+`constant` | [tools/mkfs.minifs.py:22](../../tools/mkfs.minifs.py#L22)
 
 ```python
 S_IFREG = 32768
@@ -576,7 +588,7 @@ S_IFREG = 32768
 
 ### `S_IFDIR`
 
-`constant` | [tools/mkfs.minifs.py:17](../../tools/mkfs.minifs.py#L17)
+`constant` | [tools/mkfs.minifs.py:23](../../tools/mkfs.minifs.py#L23)
 
 ```python
 S_IFDIR = 16384
@@ -588,7 +600,7 @@ S_IFDIR = 16384
 
 ### `FT_FILE`
 
-`constant` | [tools/mkfs.minifs.py:18](../../tools/mkfs.minifs.py#L18)
+`constant` | [tools/mkfs.minifs.py:24](../../tools/mkfs.minifs.py#L24)
 
 ```python
 FT_FILE = 1
@@ -600,7 +612,7 @@ FT_FILE = 1
 
 ### `FT_DIR`
 
-`constant` | [tools/mkfs.minifs.py:19](../../tools/mkfs.minifs.py#L19)
+`constant` | [tools/mkfs.minifs.py:25](../../tools/mkfs.minifs.py#L25)
 
 ```python
 FT_DIR = 2
@@ -612,7 +624,7 @@ FT_DIR = 2
 
 ### `DIR_ENTRY_HDR_SIZE`
 
-`constant` | [tools/mkfs.minifs.py:20](../../tools/mkfs.minifs.py#L20)
+`constant` | [tools/mkfs.minifs.py:26](../../tools/mkfs.minifs.py#L26)
 
 ```python
 DIR_ENTRY_HDR_SIZE = 8

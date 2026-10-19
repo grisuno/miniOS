@@ -201,22 +201,23 @@ Depends on: `headers/minifs.h`
 - `kevent_writable` (function) `fs/kfile.c:204` `int kevent_writable(KFILE *f)` -- if (v <= KEVENT_MAX - f->efd_count) { f->efd_count += v; rc = 0; } fs_drop(flags); return rc; } /** Docstring: 1...
 - `kpipe_is_write_end` (function) `fs/kfile.c:209` `int kpipe_is_write_end(KFILE *f)` -- return rc; } /** Docstring: 1 when a read would not block. int kevent_readable(KFILE *f) { return f && f->is_eventfd...
 - `kpipe_grow` (function) `fs/kfile.c:216` `static int kpipe_grow(pipe_ring_t *ring)` -- Docstring: Grow a pipe ring buffer, linearizing wrapped bytes first.
-- `kfopen` (function) `fs/kfile.c:239` `KFILE *kfopen(const char *path, const char *mode)`
-- `fs_rename_on_minifs` (function) `fs/kfile.c:336` `static int fs_rename_on_minifs(const char *dst)` -- True when `dst` can live on MiniFS: no directory part (root), or its * parent resolves there.
-- `entry` (function) `fs/kfile.c:355` `* directory with a volatile ramdisk entry (the kfopen misroute class) or
+- `kfopen_dir` (function) `fs/kfile.c:243` `KFILE *kfopen_dir(const char *resolved)` -- Directory open for getdents64 (kernel/syscalls.c 217): kfopen refuses directories, so open(2) on one lands here.
+- `kfopen` (function) `fs/kfile.c:264` `KFILE *kfopen(const char *path, const char *mode)`
+- `fs_rename_on_minifs` (function) `fs/kfile.c:361` `static int fs_rename_on_minifs(const char *dst)` -- True when `dst` can live on MiniFS: no directory part (root), or its * parent resolves there.
+- `entry` (function) `fs/kfile.c:380` `* directory with a volatile ramdisk entry (the kfopen misroute class) or
  * need a copy+delete th...`
-- `kfclose` (function) `fs/kfile.c:397` `int kfclose(KFILE *f)`
-- `kfgetc` (function) `fs/kfile.c:442` `int kfgetc(KFILE *f)`
-- `kfgets` (function) `fs/kfile.c:483` `char *kfgets(char *buf, int size, KFILE *f)`
-- `kfungetc` (function) `fs/kfile.c:497` `int kfungetc(int c, KFILE *f)`
-- `kfread` (function) `fs/kfile.c:504` `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-- `kfwrite` (function) `fs/kfile.c:550` `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-- `kfseek` (function) `fs/kfile.c:616` `int kfseek(KFILE *f, long offset, int whence)`
-- `kftell` (function) `fs/kfile.c:637` `long kftell(KFILE *f)`
-- `kfflush` (function) `fs/kfile.c:641` `int kfflush(KFILE *f)`
-- `kfputs` (function) `fs/kfile.c:667` `int kfputs(const char *s, KFILE *f)`
-- `kfputc` (function) `fs/kfile.c:673` `int kfputc(int c, KFILE *f)`
-- `krewind` (function) `fs/kfile.c:678` `void krewind(KFILE *f)`
+- `kfclose` (function) `fs/kfile.c:422` `int kfclose(KFILE *f)`
+- `kfgetc` (function) `fs/kfile.c:467` `int kfgetc(KFILE *f)`
+- `kfgets` (function) `fs/kfile.c:508` `char *kfgets(char *buf, int size, KFILE *f)`
+- `kfungetc` (function) `fs/kfile.c:522` `int kfungetc(int c, KFILE *f)`
+- `kfread` (function) `fs/kfile.c:529` `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+- `kfwrite` (function) `fs/kfile.c:575` `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+- `kfseek` (function) `fs/kfile.c:641` `int kfseek(KFILE *f, long offset, int whence)`
+- `kftell` (function) `fs/kfile.c:662` `long kftell(KFILE *f)`
+- `kfflush` (function) `fs/kfile.c:666` `int kfflush(KFILE *f)`
+- `kfputs` (function) `fs/kfile.c:692` `int kfputs(const char *s, KFILE *f)`
+- `kfputc` (function) `fs/kfile.c:698` `int kfputc(int c, KFILE *f)`
+- `krewind` (function) `fs/kfile.c:703` `void krewind(KFILE *f)`
 
 ## fs/minifs.c
 Depends on: `headers/block.h`, `headers/ide.h`, `headers/lz4_kernel.h`, `headers/minifs.h`, `headers/pcache.h`

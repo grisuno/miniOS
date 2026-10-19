@@ -82,7 +82,7 @@ void mm_setup_protections(void)
 
 ========== Page table helpers (kernel/mm/paging.c) ==========
 
-> **Inherited:** Documentation from [`mm_setup_protections`](#mm_setup_protections) (headers/kernel.h:696).
+> **Inherited:** Documentation from [`mm_setup_protections`](#mm_setup_protections) (headers/kernel.h:712).
 
 *Calls:* [`rdmsr`](headers.arch.x86.msr.h.md#rdmsr), [`wrmsr`](headers.arch.x86.msr.h.md#wrmsr)
 

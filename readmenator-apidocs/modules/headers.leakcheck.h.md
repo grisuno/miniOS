@@ -143,7 +143,7 @@ extern int kprintf(const char *fmt, ...);
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`kprintf`](#kprintf) (headers/kernel.h:544).
+> **Inherited:** Documentation from [`kprintf`](#kprintf) (headers/kernel.h:560).
 
 *Called by:* [`lk_print`](#lk_print)
 

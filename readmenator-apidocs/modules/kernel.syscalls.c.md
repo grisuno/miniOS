@@ -1,14 +1,14 @@
 # `kernel/syscalls.c`
 
-> Source: [kernel/syscalls.c:1](../../kernel/syscalls.c#L1) | language `c` | coverage 16.8% | [API index](../index.md)
+> Source: [kernel/syscalls.c:1](../../kernel/syscalls.c#L1) | language `c` | coverage 17.9% | [API index](../index.md)
 
 syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN.
 
 ## Contents
 
 - **Structs:** [`minios_syscall_entry_t`](#minios_syscall_entry_t), [`kiovec`](#kiovec), [`sc_extra_name`](#sc_extra_name), [`sc_record`](#sc_record), [`sc_log`](#sc_log)
-- **Functions:** [`kfd_view_root`](#kfd_view_root), [`kfd_get`](#kfd_get), [`kfd_put`](#kfd_put), [`untouched`](#untouched), [`NULL`](#null), [`kfd_view_cloexec`](#kfd_view_cloexec), [`by`](#by), [`wall_us_now`](#wall_us_now), [`boot`](#boot), [`minfo_sleep_init`](#minfo_sleep_init), [`minfo_tick_wake`](#minfo_tick_wake), [`view`](#view), [`DOOM_FRAME`](#doom_frame), [`syscall_trace_enabled`](#syscall_trace_enabled), [`syscall_trace_set`](#syscall_trace_set), [`syscall_trace_verbose_enabled`](#syscall_trace_verbose_enabled), [`syscall_trace_verbose_set`](#syscall_trace_verbose_set), [`syscall_trace_shown`](#syscall_trace_shown), [`unchanged`](#unchanged), [`EAGAIN`](#eagain), [`EOF`](#eof), [`kfd_poll_revents`](#kfd_poll_revents), [`split`](#split), [`first`](#first), [`node`](#node), [`FIONREAD`](#fionread), [`clock`](#clock), [`clock_gettime`](#clock_gettime), [`long`](#long), [`syscall_name`](#syscall_name), [`sc_record_dump`](#sc_record_dump), [`ksyscall`](#ksyscall), [`user_range_ok`](#user_range_ok), [`Discipline`](#discipline), [`products`](#products), [`readlink`](#readlink), [`proc_spawn_elf`](#proc_spawn_elf)
-- **Macros:** [`KFD_MAX`](#kfd_max), [`MINIOS_SYSCALL_BASE`](#minios_syscall_base), [`MINIOS_SYSCALL_COUNT`](#minios_syscall_count), [`SYSCALL_TRACE`](#syscall_trace), [`SYS_NOISY_TIME`](#sys_noisy_time), [`SYS_NOISY_KBD`](#sys_noisy_kbd), [`SYS_NOISY_MOUSE`](#sys_noisy_mouse), [`SYS_NOISY_GETC_RAW`](#sys_noisy_getc_raw), [`LINUX_O_RDONLY`](#linux_o_rdonly), [`LINUX_O_WRONLY`](#linux_o_wronly), [`LINUX_O_RDWR`](#linux_o_rdwr), [`LINUX_O_APPEND`](#linux_o_append), [`LINUX_O_NONBLOCK`](#linux_o_nonblock), [`LINUX_O_DIRECT`](#linux_o_direct), [`LINUX_O_CLOEXEC`](#linux_o_cloexec), [`LINUX_FD_CLOEXEC`](#linux_fd_cloexec), [`LINUX_F_DUPFD`](#linux_f_dupfd), [`LINUX_F_GETFD`](#linux_f_getfd), [`LINUX_F_SETFD`](#linux_f_setfd), [`LINUX_F_GETFL`](#linux_f_getfl), [`LINUX_F_SETFL`](#linux_f_setfl), [`LINUX_F_DUPFD_CLOEXEC`](#linux_f_dupfd_cloexec), [`LINUX_CLOSE_RANGE_UNSHARE`](#linux_close_range_unshare), [`LINUX_CLOSE_RANGE_CLOEXEC`](#linux_close_range_cloexec), [`LINUX_EFD_SEMAPHORE`](#linux_efd_semaphore), [`LINUX_EFD_NONBLOCK`](#linux_efd_nonblock), [`LINUX_EFD_CLOEXEC`](#linux_efd_cloexec), [`LINUX_EVENTFD_WORD`](#linux_eventfd_word), [`FD_STD_COUNT`](#fd_std_count), [`LINUX_MAP_SHARED`](#linux_map_shared), [`LINUX_MAP_PRIVATE`](#linux_map_private), [`LINUX_MAP_FIXED`](#linux_map_fixed), [`LINUX_MAP_ANONYMOUS`](#linux_map_anonymous), [`LINUX_MREMAP_MAYMOVE`](#linux_mremap_maymove), [`LINUX_MREMAP_FIXED`](#linux_mremap_fixed), [`LINUX_TCGETS`](#linux_tcgets), [`LINUX_TIOCGWINSZ`](#linux_tiocgwinsz), [`LINUX_FIONREAD`](#linux_fionread), [`LINUX_FIONBIO`](#linux_fionbio), [`LINUX_FIONCLEX`](#linux_fionclex), [`LINUX_FIOCLEX`](#linux_fioclex), [`LINUX_TCGETS2`](#linux_tcgets2), [`LINUX_ENOTTY`](#linux_enotty), [`LINUX_WINSIZE_LEN`](#linux_winsize_len), [`LINUX_TERMIOS_LEN`](#linux_termios_len), [`LINUX_TERMIOS2_LEN`](#linux_termios2_len), [`LINUX_IOCTL_INT`](#linux_ioctl_int), [`LINUX_RLIMIT_CPU`](#linux_rlimit_cpu), [`LINUX_RLIMIT_STACK`](#linux_rlimit_stack), [`LINUX_RLIMIT_NOFILE`](#linux_rlimit_nofile), [`LINUX_RLIMIT_AS`](#linux_rlimit_as), [`LINUX_RLIMIT_NLIMITS`](#linux_rlimit_nlimits), [`LINUX_RLIM_INFINITY`](#linux_rlim_infinity), [`LINUX_RLIMIT_PAIR`](#linux_rlimit_pair), [`LINUX_RLIMIT_TICKS_PER_S`](#linux_rlimit_ticks_per_s), [`LINUX_CPUMASK_BYTES`](#linux_cpumask_bytes), [`LINUX_CLOCK_REALTIME`](#linux_clock_realtime), [`LINUX_CLOCK_MONOTONIC`](#linux_clock_monotonic), [`LINUX_CLOCK_BOOTTIME`](#linux_clock_boottime), [`LINUX_TIMER_ABSTIME`](#linux_timer_abstime), [`LINUX_NS_PER_US`](#linux_ns_per_us), [`LINUX_US_PER_S`](#linux_us_per_s), [`LINUX_NS_PER_S`](#linux_ns_per_s), [`LINUX_SLEEP_MAX_S`](#linux_sleep_max_s), [`PROC_SELF_EXE`](#proc_self_exe), [`LINUX_SYSCALL_COUNT`](#linux_syscall_count), [`SC_EXTRA_COUNT`](#sc_extra_count), [`TRACE_HINT_NONE`](#trace_hint_none), [`TRACE_HINT_PATH`](#trace_hint_path), [`SC_RECORD_LEN`](#sc_record_len)
+- **Functions:** [`kfd_view_root`](#kfd_view_root), [`kfd_get`](#kfd_get), [`kfd_put`](#kfd_put), [`untouched`](#untouched), [`NULL`](#null), [`kfd_view_cloexec`](#kfd_view_cloexec), [`by`](#by), [`wall_us_now`](#wall_us_now), [`boot`](#boot), [`minfo_sleep_init`](#minfo_sleep_init), [`minfo_tick_wake`](#minfo_tick_wake), [`view`](#view), [`DOOM_FRAME`](#doom_frame), [`syscall_trace_enabled`](#syscall_trace_enabled), [`syscall_trace_set`](#syscall_trace_set), [`syscall_trace_verbose_enabled`](#syscall_trace_verbose_enabled), [`syscall_trace_verbose_set`](#syscall_trace_verbose_set), [`syscall_trace_shown`](#syscall_trace_shown), [`unchanged`](#unchanged), [`EAGAIN`](#eagain), [`EOF`](#eof), [`kfd_poll_revents`](#kfd_poll_revents), [`split`](#split), [`first`](#first), [`node`](#node), [`FIONREAD`](#fionread), [`clock`](#clock), [`clock_gettime`](#clock_gettime), [`long`](#long), [`answer`](#answer), [`syscall_name`](#syscall_name), [`sc_record_dump`](#sc_record_dump), [`ksyscall`](#ksyscall), [`user_range_ok`](#user_range_ok), [`Discipline`](#discipline), [`products`](#products), [`readlink`](#readlink), [`proc_spawn_elf`](#proc_spawn_elf)
+- **Macros:** [`KFD_MAX`](#kfd_max), [`MINIOS_SYSCALL_BASE`](#minios_syscall_base), [`MINIOS_SYSCALL_COUNT`](#minios_syscall_count), [`LINUX_DT_DIR`](#linux_dt_dir), [`LINUX_DT_REG`](#linux_dt_reg), [`GETDENTS64_NAME_OFF`](#getdents64_name_off), [`GETDENTS64_ALIGN`](#getdents64_align), [`SYSCALL_TRACE`](#syscall_trace), [`SYS_NOISY_TIME`](#sys_noisy_time), [`SYS_NOISY_KBD`](#sys_noisy_kbd), [`SYS_NOISY_MOUSE`](#sys_noisy_mouse), [`SYS_NOISY_GETC_RAW`](#sys_noisy_getc_raw), [`LINUX_O_RDONLY`](#linux_o_rdonly), [`LINUX_O_WRONLY`](#linux_o_wronly), [`LINUX_O_RDWR`](#linux_o_rdwr), [`LINUX_O_APPEND`](#linux_o_append), [`LINUX_O_NONBLOCK`](#linux_o_nonblock), [`LINUX_O_DIRECT`](#linux_o_direct), [`LINUX_O_CLOEXEC`](#linux_o_cloexec), [`LINUX_FD_CLOEXEC`](#linux_fd_cloexec), [`LINUX_F_DUPFD`](#linux_f_dupfd), [`LINUX_F_GETFD`](#linux_f_getfd), [`LINUX_F_SETFD`](#linux_f_setfd), [`LINUX_F_GETFL`](#linux_f_getfl), [`LINUX_F_SETFL`](#linux_f_setfl), [`LINUX_F_DUPFD_CLOEXEC`](#linux_f_dupfd_cloexec), [`LINUX_CLOSE_RANGE_UNSHARE`](#linux_close_range_unshare), [`LINUX_CLOSE_RANGE_CLOEXEC`](#linux_close_range_cloexec), [`LINUX_EFD_SEMAPHORE`](#linux_efd_semaphore), [`LINUX_EFD_NONBLOCK`](#linux_efd_nonblock), [`LINUX_EFD_CLOEXEC`](#linux_efd_cloexec), [`LINUX_EVENTFD_WORD`](#linux_eventfd_word), [`FD_STD_COUNT`](#fd_std_count), [`LINUX_MAP_SHARED`](#linux_map_shared), [`LINUX_MAP_PRIVATE`](#linux_map_private), [`LINUX_MAP_FIXED`](#linux_map_fixed), [`LINUX_MAP_ANONYMOUS`](#linux_map_anonymous), [`LINUX_MREMAP_MAYMOVE`](#linux_mremap_maymove), [`LINUX_MREMAP_FIXED`](#linux_mremap_fixed), [`LINUX_TCGETS`](#linux_tcgets), [`LINUX_TIOCGWINSZ`](#linux_tiocgwinsz), [`LINUX_FIONREAD`](#linux_fionread), [`LINUX_FIONBIO`](#linux_fionbio), [`LINUX_FIONCLEX`](#linux_fionclex), [`LINUX_FIOCLEX`](#linux_fioclex), [`LINUX_TCGETS2`](#linux_tcgets2), [`LINUX_ENOTTY`](#linux_enotty), [`LINUX_WINSIZE_LEN`](#linux_winsize_len), [`LINUX_TERMIOS_LEN`](#linux_termios_len), [`LINUX_TERMIOS2_LEN`](#linux_termios2_len), [`LINUX_IOCTL_INT`](#linux_ioctl_int), [`LINUX_RLIMIT_CPU`](#linux_rlimit_cpu), [`LINUX_RLIMIT_STACK`](#linux_rlimit_stack), [`LINUX_RLIMIT_NOFILE`](#linux_rlimit_nofile), [`LINUX_RLIMIT_AS`](#linux_rlimit_as), [`LINUX_RLIMIT_NLIMITS`](#linux_rlimit_nlimits), [`LINUX_RLIM_INFINITY`](#linux_rlim_infinity), [`LINUX_RLIMIT_PAIR`](#linux_rlimit_pair), [`LINUX_RLIMIT_TICKS_PER_S`](#linux_rlimit_ticks_per_s), [`LINUX_CPUMASK_BYTES`](#linux_cpumask_bytes), [`LINUX_CLOCK_REALTIME`](#linux_clock_realtime), [`LINUX_CLOCK_MONOTONIC`](#linux_clock_monotonic), [`LINUX_CLOCK_BOOTTIME`](#linux_clock_boottime), [`LINUX_TIMER_ABSTIME`](#linux_timer_abstime), [`LINUX_NS_PER_US`](#linux_ns_per_us), [`LINUX_US_PER_S`](#linux_us_per_s), [`LINUX_NS_PER_S`](#linux_ns_per_s), [`LINUX_SLEEP_MAX_S`](#linux_sleep_max_s), [`SELECT_NFDS_MAX`](#select_nfds_max), [`SELECT_TIMEVAL_BYTES`](#select_timeval_bytes), [`SELECT_TIMESPEC_BYTES`](#select_timespec_bytes), [`SELECT_TIMEOUT_MS_MAX`](#select_timeout_ms_max), [`PROC_SELF_EXE`](#proc_self_exe), [`LINUX_UID_GID_ROOT`](#linux_uid_gid_root), [`LINUX_SYSCALL_COUNT`](#linux_syscall_count), [`SC_EXTRA_COUNT`](#sc_extra_count), [`TRACE_HINT_NONE`](#trace_hint_none), [`TRACE_HINT_PATH`](#trace_hint_path), [`SC_RECORD_LEN`](#sc_record_len)
 - **Variables:** [`gfx_zoom_2x`](#gfx_zoom_2x), [`gfx_win_title`](#gfx_win_title)
 
 ## Type Diagram
@@ -90,7 +90,7 @@ flowchart LR
 
 ### `minios_syscall_entry_t`
 
-`struct` | [kernel/syscalls.c:237](../../kernel/syscalls.c#L237)
+`struct` | [kernel/syscalls.c:238](../../kernel/syscalls.c#L238)
 
 ```c
 typedef struct
@@ -102,7 +102,7 @@ typedef struct
 
 ### `kiovec`
 
-`struct` `const` | [kernel/syscalls.c:1097](../../kernel/syscalls.c#L1097)
+`struct` `const` | [kernel/syscalls.c:1229](../../kernel/syscalls.c#L1229)
 
 ```c
 struct kiovec { const char *iov_base; unsigned long iov_len; };
@@ -114,7 +114,7 @@ struct kiovec { const char *iov_base; unsigned long iov_len; };
 
 ### `sc_extra_name`
 
-`struct` `const` | [kernel/syscalls.c:3030](../../kernel/syscalls.c#L3030)
+`struct` `const` | [kernel/syscalls.c:3356](../../kernel/syscalls.c#L3356)
 
 ```c
 struct sc_extra_name { long n; const char *name; };
@@ -130,7 +130,7 @@ The tail is a data table, not a switch: a `case N:` ladder would trip tools/chec
 
 ### `sc_record`
 
-`struct` | [kernel/syscalls.c:3106](../../kernel/syscalls.c#L3106)
+`struct` | [kernel/syscalls.c:3434](../../kernel/syscalls.c#L3434)
 
 ```c
 struct sc_record { long n, a1, a2, a3, ret; };
@@ -146,7 +146,7 @@ Per process, so a busy poll loop elsewhere cannot flush a dying worker's history
 
 ### `sc_log`
 
-`struct` | [kernel/syscalls.c:3107](../../kernel/syscalls.c#L3107)
+`struct` | [kernel/syscalls.c:3435](../../kernel/syscalls.c#L3435)
 
 ```c
 struct sc_log { unsigned long next; struct sc_record r[SC_RECORD_LEN]; };
@@ -160,7 +160,7 @@ struct sc_log { unsigned long next; struct sc_record r[SC_RECORD_LEN]; };
 
 ### `kfd_view_root`
 
-`function` | [kernel/syscalls.c:70](../../kernel/syscalls.c#L70)
+`function` | [kernel/syscalls.c:71](../../kernel/syscalls.c#L71)
 
 ```c
 kfd_view_t *kfd_view_root(void)
@@ -178,7 +178,7 @@ Docstring: Static root view (shell pid 0, pids without their own): entries are t
 
 ### `kfd_get`
 
-`function` | [kernel/syscalls.c:89](../../kernel/syscalls.c#L89)
+`function` | [kernel/syscalls.c:90](../../kernel/syscalls.c#L90)
 
 ```c
 KFILE *kfd_get(int fd)
@@ -202,7 +202,7 @@ KFILE *kfd_get(int fd)
 
 ### `kfd_put`
 
-`function` | [kernel/syscalls.c:102](../../kernel/syscalls.c#L102)
+`function` | [kernel/syscalls.c:103](../../kernel/syscalls.c#L103)
 
 ```c
 void kfd_put(KFILE *f)
@@ -224,7 +224,7 @@ void kfd_put(KFILE *f)
 
 ### `untouched`
 
-`function` | [kernel/syscalls.c:138](../../kernel/syscalls.c#L138)
+`function` | [kernel/syscalls.c:139](../../kernel/syscalls.c#L139)
 
 ```c
 * child untouched (caller refuses fail-closed). */ int kfd_view_copy(proc_t *child, proc_t *parent)
@@ -246,7 +246,7 @@ void kfd_put(KFILE *f)
 
 ### `NULL`
 
-`function` | [kernel/syscalls.c:165](../../kernel/syscalls.c#L165)
+`function` | [kernel/syscalls.c:166](../../kernel/syscalls.c#L166)
 
 ```c
 * on NULL (already released or never owned). */ void kfd_view_release(proc_t *p)
@@ -268,7 +268,7 @@ void kfd_put(KFILE *f)
 
 ### `kfd_view_cloexec`
 
-`function` | [kernel/syscalls.c:196](../../kernel/syscalls.c#L196)
+`function` | [kernel/syscalls.c:197](../../kernel/syscalls.c#L197)
 
 ```c
 void kfd_view_cloexec(void)
@@ -286,7 +286,7 @@ Runs on the live view entries with the same ref discipline as close.
 
 ### `by`
 
-`function` | [kernel/syscalls.c:224](../../kernel/syscalls.c#L224)
+`function` | [kernel/syscalls.c:225](../../kernel/syscalls.c#L225)
 
 ```c
 * is indexed by (syscall_number - 200). New syscalls are added by: * 1. Adding a MINIOS_SYS_* constant to progs/minios_abi.h * 2. Implementing a static long sys_*(long a1, ..., long a6) function here
@@ -306,7 +306,7 @@ Runs on the live view entries with the same ref discipline as close.
 
 ### `wall_us_now`
 
-`function` | [kernel/syscalls.c:255](../../kernel/syscalls.c#L255)
+`function` | [kernel/syscalls.c:256](../../kernel/syscalls.c#L256)
 
 ```c
 unsigned long wall_us_now(void)
@@ -326,7 +326,7 @@ The RTC gives whole seconds; the fraction is the free-running ktime_us rebased a
 
 ### `boot`
 
-`function` | [kernel/syscalls.c:478](../../kernel/syscalls.c#L478)
+`function` | [kernel/syscalls.c:479](../../kernel/syscalls.c#L479)
 
 ```c
 * boot (minfo_sleep_init from sched_init);
@@ -346,7 +346,7 @@ The RTC gives whole seconds; the fraction is the free-running ktime_us rebased a
 
 ### `minfo_sleep_init`
 
-`function` | [kernel/syscalls.c:485](../../kernel/syscalls.c#L485)
+`function` | [kernel/syscalls.c:486](../../kernel/syscalls.c#L486)
 
 ```c
 void minfo_sleep_init(int tick_ok)
@@ -370,7 +370,7 @@ MINFO sleep support (kernel/syscalls.c): timed park for ring-3 monitors. sched_i
 
 ### `minfo_tick_wake`
 
-`function` | [kernel/syscalls.c:490](../../kernel/syscalls.c#L490)
+`function` | [kernel/syscalls.c:491](../../kernel/syscalls.c#L491)
 
 ```c
 void minfo_tick_wake(void *ctx)
@@ -390,7 +390,7 @@ void minfo_tick_wake(void *ctx)
 
 ### `view`
 
-`function` | [kernel/syscalls.c:502](../../kernel/syscalls.c#L502)
+`function` | [kernel/syscalls.c:503](../../kernel/syscalls.c#L503)
 
 ```c
 * view (same as the `clear` builtin). Anything else is -EINVAL. Each * out-word is range-checked...
@@ -412,7 +412,7 @@ void minfo_tick_wake(void *ctx)
 
 ### `DOOM_FRAME`
 
-`function` | [kernel/syscalls.c:828](../../kernel/syscalls.c#L828)
+`function` | [kernel/syscalls.c:829](../../kernel/syscalls.c#L829)
 
 ```c
 * DOOM_FRAME (211) and NK_FRAME (220) stay as compat aliases. */ static long sys_minios_gfx_prese...
@@ -434,7 +434,7 @@ void minfo_tick_wake(void *ctx)
 
 ### `syscall_trace_enabled`
 
-`function` | [kernel/syscalls.c:1109](../../kernel/syscalls.c#L1109)
+`function` | [kernel/syscalls.c:1241](../../kernel/syscalls.c#L1241)
 
 ```c
 long syscall_trace_enabled(void)
@@ -448,7 +448,7 @@ long syscall_trace_enabled(void)
 
 ### `syscall_trace_set`
 
-`function` | [kernel/syscalls.c:1110](../../kernel/syscalls.c#L1110)
+`function` | [kernel/syscalls.c:1242](../../kernel/syscalls.c#L1242)
 
 ```c
 void syscall_trace_set(int on)
@@ -466,7 +466,7 @@ void syscall_trace_set(int on)
 
 ### `syscall_trace_verbose_enabled`
 
-`function` | [kernel/syscalls.c:1111](../../kernel/syscalls.c#L1111)
+`function` | [kernel/syscalls.c:1243](../../kernel/syscalls.c#L1243)
 
 ```c
 long syscall_trace_verbose_enabled(void)
@@ -480,7 +480,7 @@ long syscall_trace_verbose_enabled(void)
 
 ### `syscall_trace_verbose_set`
 
-`function` | [kernel/syscalls.c:1112](../../kernel/syscalls.c#L1112)
+`function` | [kernel/syscalls.c:1244](../../kernel/syscalls.c#L1244)
 
 ```c
 void syscall_trace_verbose_set(int on)
@@ -498,7 +498,7 @@ void syscall_trace_verbose_set(int on)
 
 ### `syscall_trace_shown`
 
-`function` | [kernel/syscalls.c:1113](../../kernel/syscalls.c#L1113)
+`function` | [kernel/syscalls.c:1245](../../kernel/syscalls.c#L1245)
 
 ```c
 unsigned long syscall_trace_shown(void)
@@ -512,7 +512,7 @@ unsigned long syscall_trace_shown(void)
 
 ### `unchanged`
 
-`function` | [kernel/syscalls.c:1128](../../kernel/syscalls.c#L1128)
+`function` | [kernel/syscalls.c:1260](../../kernel/syscalls.c#L1260)
 
 ```c
 * unchanged (same code, same order of checks). Numbers >= 200 that * overlap real Linux ABIs stay in the switch as documented * fall-throughs, as do out-of-range numbers (e.g. 334) and the * default E
@@ -533,7 +533,7 @@ unsigned long syscall_trace_shown(void)
 
 ### `EAGAIN`
 
-`function` | [kernel/syscalls.c:1155](../../kernel/syscalls.c#L1155)
+`function` | [kernel/syscalls.c:1287](../../kernel/syscalls.c#L1287)
 
 ```c
 * writer open is EAGAIN (-11, retry);
@@ -553,7 +553,7 @@ unsigned long syscall_trace_shown(void)
 
 ### `EOF`
 
-`function` | [kernel/syscalls.c:1156](../../kernel/syscalls.c#L1156)
+`function` | [kernel/syscalls.c:1288](../../kernel/syscalls.c#L1288)
 
 ```c
 * is EOF (0). */ KFILE *o = kfd_get(0);
@@ -597,7 +597,7 @@ Invariants:
 
 **Returns:** `* is`
 
-> **Inherited:** Documentation from [`EOF`](#eof) (headers/kernel.h:459).
+> **Inherited:** Documentation from [`EOF`](#eof) (headers/kernel.h:468).
 
 ---
 
@@ -605,7 +605,7 @@ Invariants:
 
 ### `kfd_poll_revents`
 
-`function` | [kernel/syscalls.c:1545](../../kernel/syscalls.c#L1545)
+`function` | [kernel/syscalls.c:1694](../../kernel/syscalls.c#L1694)
 
 ```c
 int kfd_poll_revents(int fd)
@@ -631,7 +631,7 @@ POLLNVAL for a closed fd.
 
 ### `split`
 
-`function` | [kernel/syscalls.c:1932](../../kernel/syscalls.c#L1932)
+`function` | [kernel/syscalls.c:2081](../../kernel/syscalls.c#L2081)
 
 ```c
 * hold a split (the mapping is restored untouched). */ static long sys_linux_munmap(long a1, long...
@@ -653,7 +653,7 @@ POLLNVAL for a closed fd.
 
 ### `first`
 
-`function` | [kernel/syscalls.c:2006](../../kernel/syscalls.c#L2006)
+`function` | [kernel/syscalls.c:2155](../../kernel/syscalls.c#L2155)
 
 ```c
 * passes under mm_lock: validate every page first (present, user, * private), then apply, so a h...
@@ -673,7 +673,7 @@ POLLNVAL for a closed fd.
 
 ### `node`
 
-`function` | [kernel/syscalls.c:2128](../../kernel/syscalls.c#L2128)
+`function` | [kernel/syscalls.c:2277](../../kernel/syscalls.c#L2277)
 
 ```c
 * mapping is one exact live VMA node (what mmap inserts);
@@ -695,7 +695,7 @@ POLLNVAL for a closed fd.
 
 ### `FIONREAD`
 
-`function` | [kernel/syscalls.c:2439](../../kernel/syscalls.c#L2439)
+`function` | [kernel/syscalls.c:2588](../../kernel/syscalls.c#L2588)
 
 ```c
 * descriptor answers FIONREAD (bytes readable now), FIONBIO (O_NONBLOCK), * FIOCLEX/FIONCLEX (FD...
@@ -717,7 +717,7 @@ POLLNVAL for a closed fd.
 
 ### `clock`
 
-`function` | [kernel/syscalls.c:2665](../../kernel/syscalls.c#L2665)
+`function` | [kernel/syscalls.c:2814](../../kernel/syscalls.c#L2814)
 
 ```c
 * clock (the monotonic TSC clock times it, as Linux does: glibc sends * every nanosleep here as a relative CLOCK_REALTIME sleep);
@@ -740,7 +740,7 @@ POLLNVAL for a closed fd.
 
 ### `clock_gettime`
 
-`function` | [kernel/syscalls.c:2669](../../kernel/syscalls.c#L2669)
+`function` | [kernel/syscalls.c:2818](../../kernel/syscalls.c#L2818)
 
 ```c
 * clock_gettime(1) reads. */ static long sys_linux_clock_nanosleep(long a1, long a2, long a3, lon...
@@ -756,13 +756,15 @@ POLLNVAL for a closed fd.
 
 *Calls:* [`SANITIZE_RANGE`](headers.sanitize.h.md#sanitize_range)
 
+*Called by:* [`main`](progs.src.lxsel.c.md#main)
+
 ---
 
 <a id="long"></a>
 
 ### `long`
 
-`function` | [kernel/syscalls.c:2671](../../kernel/syscalls.c#L2671)
+`function` | [kernel/syscalls.c:2820](../../kernel/syscalls.c#L2820)
 
 ```c
 unsigned long (*now)(void);
@@ -778,11 +780,25 @@ unsigned long (*now)(void);
 
 ---
 
+<a id="answer"></a>
+
+### `answer`
+
+`function` | [kernel/syscalls.c:3180](../../kernel/syscalls.c#L3180)
+
+```c
+* made glibc answer (uid_t)-1, which CPython's startup reads. */ #define LINUX_UID_GID_ROOT 0 st...
+```
+
+**Returns:** `* made glibc`
+
+---
+
 <a id="syscall_name"></a>
 
 ### `syscall_name`
 
-`function` `const` | [kernel/syscalls.c:3045](../../kernel/syscalls.c#L3045)
+`function` `const` | [kernel/syscalls.c:3373](../../kernel/syscalls.c#L3373)
 
 ```c
 const char *syscall_name(long n)
@@ -806,7 +822,7 @@ define SC_EXTRA_COUNT (sizeof(sc_extra_names) / sizeof(sc_extra_names[0]))
 
 ### `sc_record_dump`
 
-`function` | [kernel/syscalls.c:3140](../../kernel/syscalls.c#L3140)
+`function` | [kernel/syscalls.c:3468](../../kernel/syscalls.c#L3468)
 
 ```c
 void sc_record_dump(int pid)
@@ -826,7 +842,7 @@ Serial-only, safe from the exception path: pid's log, oldest first.
 
 ### `ksyscall`
 
-`function` | [kernel/syscalls.c:3158](../../kernel/syscalls.c#L3158)
+`function` | [kernel/syscalls.c:3486](../../kernel/syscalls.c#L3486)
 
 ```c
 long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)
@@ -854,7 +870,7 @@ long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)
 
 ### `user_range_ok`
 
-`function` | [kernel/syscalls.c:3197](../../kernel/syscalls.c#L3197)
+`function` | [kernel/syscalls.c:3525](../../kernel/syscalls.c#L3525)
 
 ```c
 int user_range_ok(unsigned long p, unsigned long len)
@@ -871,7 +887,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`user_range_ok`](#user_range_ok) (headers/kernel.h:692).
+> **Inherited:** Documentation from [`user_range_ok`](#user_range_ok) (headers/kernel.h:708).
 
 ---
 
@@ -879,7 +895,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `Discipline`
 
-`function` | [kernel/syscalls.c:3210](../../kernel/syscalls.c#L3210)
+`function` | [kernel/syscalls.c:3538](../../kernel/syscalls.c#L3538)
 
 ```c
 * * Discipline (audit 2026-09, kept as comment, not a deprecation: both * primitives are legitimate): user_range_ok is ONLY for exact-size * buffers (sizeof(int), 144-byte stat, fixed PCM length);
@@ -901,7 +917,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `products`
 
-`function` | [kernel/syscalls.c:3214](../../kernel/syscalls.c#L3214)
+`function` | [kernel/syscalls.c:3542](../../kernel/syscalls.c#L3542)
 
 ```c
 * products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are * pre-bounded against (END-...
@@ -925,7 +941,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `readlink`
 
-`function` | [kernel/syscalls.c:3364](../../kernel/syscalls.c#L3364)
+`function` | [kernel/syscalls.c:3696](../../kernel/syscalls.c#L3696)
 
 ```c
 * readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);
@@ -945,7 +961,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `proc_spawn_elf`
 
-`function` | [kernel/syscalls.c:3473](../../kernel/syscalls.c#L3473)
+`function` | [kernel/syscalls.c:3805](../../kernel/syscalls.c#L3805)
 
 ```c
 * proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is left intact. */ #include "spawn.h" static int k_syscall_spawn(const char *path, const c
@@ -967,7 +983,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `KFD_MAX`
 
-`macro` | [kernel/syscalls.c:51](../../kernel/syscalls.c#L51)
+`macro` | [kernel/syscalls.c:52](../../kernel/syscalls.c#L52)
 
 ```c
 #define KFD_MAX
@@ -979,7 +995,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `MINIOS_SYSCALL_BASE`
 
-`macro` | [kernel/syscalls.c:242](../../kernel/syscalls.c#L242)
+`macro` | [kernel/syscalls.c:243](../../kernel/syscalls.c#L243)
 
 ```c
 #define MINIOS_SYSCALL_BASE
@@ -991,10 +1007,62 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `MINIOS_SYSCALL_COUNT`
 
-`macro` | [kernel/syscalls.c:243](../../kernel/syscalls.c#L243)
+`macro` | [kernel/syscalls.c:244](../../kernel/syscalls.c#L244)
 
 ```c
 #define MINIOS_SYSCALL_COUNT
+```
+
+---
+
+<a id="linux_dt_dir"></a>
+
+### `LINUX_DT_DIR`
+
+`macro` | [kernel/syscalls.c:947](../../kernel/syscalls.c#L947)
+
+```c
+#define LINUX_DT_DIR
+```
+
+getdents64 (217).
+
+Directory enumeration for readdir(3)/os.scandir: the fd must be a directory handle from open(2) on a directory, the listing is the MiniFS directory followed by the ramdisk children of the same path (the DIR_LIST order), and the handle's dir_off makes calls resumable: an entry that does not fit stays for the next call instead of being dropped. Records are Linux struct linux_dirent64 (d_ino, d_off, d_reclen, d_type, NUL-terminated name). "." and ".." are not synthesized, which readdir consumers skip and CPython's scandir filters anyway.
+
+---
+
+<a id="linux_dt_reg"></a>
+
+### `LINUX_DT_REG`
+
+`macro` | [kernel/syscalls.c:948](../../kernel/syscalls.c#L948)
+
+```c
+#define LINUX_DT_REG
+```
+
+---
+
+<a id="getdents64_name_off"></a>
+
+### `GETDENTS64_NAME_OFF`
+
+`macro` | [kernel/syscalls.c:949](../../kernel/syscalls.c#L949)
+
+```c
+#define GETDENTS64_NAME_OFF
+```
+
+---
+
+<a id="getdents64_align"></a>
+
+### `GETDENTS64_ALIGN`
+
+`macro` | [kernel/syscalls.c:950](../../kernel/syscalls.c#L950)
+
+```c
+#define GETDENTS64_ALIGN
 ```
 
 ---
@@ -1003,7 +1071,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `SYSCALL_TRACE`
 
-`macro` | [kernel/syscalls.c:1099](../../kernel/syscalls.c#L1099)
+`macro` | [kernel/syscalls.c:1231](../../kernel/syscalls.c#L1231)
 
 ```c
 #define SYSCALL_TRACE
@@ -1015,7 +1083,7 @@ int user_range_ok(unsigned long p, unsigned long len)
 
 ### `SYS_NOISY_TIME`
 
-`macro` | [kernel/syscalls.c:1119](../../kernel/syscalls.c#L1119)
+`macro` | [kernel/syscalls.c:1251](../../kernel/syscalls.c#L1251)
 
 ```c
 #define SYS_NOISY_TIME
@@ -1031,7 +1099,7 @@ Other syscalls are traced one-to-one so a short program's full dialogue stays vi
 
 ### `SYS_NOISY_KBD`
 
-`macro` | [kernel/syscalls.c:1120](../../kernel/syscalls.c#L1120)
+`macro` | [kernel/syscalls.c:1252](../../kernel/syscalls.c#L1252)
 
 ```c
 #define SYS_NOISY_KBD
@@ -1043,7 +1111,7 @@ Other syscalls are traced one-to-one so a short program's full dialogue stays vi
 
 ### `SYS_NOISY_MOUSE`
 
-`macro` | [kernel/syscalls.c:1121](../../kernel/syscalls.c#L1121)
+`macro` | [kernel/syscalls.c:1253](../../kernel/syscalls.c#L1253)
 
 ```c
 #define SYS_NOISY_MOUSE
@@ -1055,7 +1123,7 @@ Other syscalls are traced one-to-one so a short program's full dialogue stays vi
 
 ### `SYS_NOISY_GETC_RAW`
 
-`macro` | [kernel/syscalls.c:1122](../../kernel/syscalls.c#L1122)
+`macro` | [kernel/syscalls.c:1254](../../kernel/syscalls.c#L1254)
 
 ```c
 #define SYS_NOISY_GETC_RAW
@@ -1067,7 +1135,7 @@ Other syscalls are traced one-to-one so a short program's full dialogue stays vi
 
 ### `LINUX_O_RDONLY`
 
-`macro` | [kernel/syscalls.c:1309](../../kernel/syscalls.c#L1309)
+`macro` | [kernel/syscalls.c:1458](../../kernel/syscalls.c#L1458)
 
 ```c
 #define LINUX_O_RDONLY
@@ -1083,7 +1151,7 @@ Named, never bare.
 
 ### `LINUX_O_WRONLY`
 
-`macro` | [kernel/syscalls.c:1310](../../kernel/syscalls.c#L1310)
+`macro` | [kernel/syscalls.c:1459](../../kernel/syscalls.c#L1459)
 
 ```c
 #define LINUX_O_WRONLY
@@ -1095,7 +1163,7 @@ Named, never bare.
 
 ### `LINUX_O_RDWR`
 
-`macro` | [kernel/syscalls.c:1311](../../kernel/syscalls.c#L1311)
+`macro` | [kernel/syscalls.c:1460](../../kernel/syscalls.c#L1460)
 
 ```c
 #define LINUX_O_RDWR
@@ -1107,7 +1175,7 @@ Named, never bare.
 
 ### `LINUX_O_APPEND`
 
-`macro` | [kernel/syscalls.c:1312](../../kernel/syscalls.c#L1312)
+`macro` | [kernel/syscalls.c:1461](../../kernel/syscalls.c#L1461)
 
 ```c
 #define LINUX_O_APPEND
@@ -1119,7 +1187,7 @@ Named, never bare.
 
 ### `LINUX_O_NONBLOCK`
 
-`macro` | [kernel/syscalls.c:1313](../../kernel/syscalls.c#L1313)
+`macro` | [kernel/syscalls.c:1462](../../kernel/syscalls.c#L1462)
 
 ```c
 #define LINUX_O_NONBLOCK
@@ -1131,7 +1199,7 @@ Named, never bare.
 
 ### `LINUX_O_DIRECT`
 
-`macro` | [kernel/syscalls.c:1314](../../kernel/syscalls.c#L1314)
+`macro` | [kernel/syscalls.c:1463](../../kernel/syscalls.c#L1463)
 
 ```c
 #define LINUX_O_DIRECT
@@ -1143,7 +1211,7 @@ Named, never bare.
 
 ### `LINUX_O_CLOEXEC`
 
-`macro` | [kernel/syscalls.c:1315](../../kernel/syscalls.c#L1315)
+`macro` | [kernel/syscalls.c:1464](../../kernel/syscalls.c#L1464)
 
 ```c
 #define LINUX_O_CLOEXEC
@@ -1155,7 +1223,7 @@ Named, never bare.
 
 ### `LINUX_FD_CLOEXEC`
 
-`macro` | [kernel/syscalls.c:1316](../../kernel/syscalls.c#L1316)
+`macro` | [kernel/syscalls.c:1465](../../kernel/syscalls.c#L1465)
 
 ```c
 #define LINUX_FD_CLOEXEC
@@ -1167,7 +1235,7 @@ Named, never bare.
 
 ### `LINUX_F_DUPFD`
 
-`macro` | [kernel/syscalls.c:1317](../../kernel/syscalls.c#L1317)
+`macro` | [kernel/syscalls.c:1466](../../kernel/syscalls.c#L1466)
 
 ```c
 #define LINUX_F_DUPFD
@@ -1179,7 +1247,7 @@ Named, never bare.
 
 ### `LINUX_F_GETFD`
 
-`macro` | [kernel/syscalls.c:1318](../../kernel/syscalls.c#L1318)
+`macro` | [kernel/syscalls.c:1467](../../kernel/syscalls.c#L1467)
 
 ```c
 #define LINUX_F_GETFD
@@ -1191,7 +1259,7 @@ Named, never bare.
 
 ### `LINUX_F_SETFD`
 
-`macro` | [kernel/syscalls.c:1319](../../kernel/syscalls.c#L1319)
+`macro` | [kernel/syscalls.c:1468](../../kernel/syscalls.c#L1468)
 
 ```c
 #define LINUX_F_SETFD
@@ -1203,7 +1271,7 @@ Named, never bare.
 
 ### `LINUX_F_GETFL`
 
-`macro` | [kernel/syscalls.c:1320](../../kernel/syscalls.c#L1320)
+`macro` | [kernel/syscalls.c:1469](../../kernel/syscalls.c#L1469)
 
 ```c
 #define LINUX_F_GETFL
@@ -1215,7 +1283,7 @@ Named, never bare.
 
 ### `LINUX_F_SETFL`
 
-`macro` | [kernel/syscalls.c:1321](../../kernel/syscalls.c#L1321)
+`macro` | [kernel/syscalls.c:1470](../../kernel/syscalls.c#L1470)
 
 ```c
 #define LINUX_F_SETFL
@@ -1227,7 +1295,7 @@ Named, never bare.
 
 ### `LINUX_F_DUPFD_CLOEXEC`
 
-`macro` | [kernel/syscalls.c:1322](../../kernel/syscalls.c#L1322)
+`macro` | [kernel/syscalls.c:1471](../../kernel/syscalls.c#L1471)
 
 ```c
 #define LINUX_F_DUPFD_CLOEXEC
@@ -1239,7 +1307,7 @@ Named, never bare.
 
 ### `LINUX_CLOSE_RANGE_UNSHARE`
 
-`macro` | [kernel/syscalls.c:1323](../../kernel/syscalls.c#L1323)
+`macro` | [kernel/syscalls.c:1472](../../kernel/syscalls.c#L1472)
 
 ```c
 #define LINUX_CLOSE_RANGE_UNSHARE
@@ -1251,7 +1319,7 @@ Named, never bare.
 
 ### `LINUX_CLOSE_RANGE_CLOEXEC`
 
-`macro` | [kernel/syscalls.c:1324](../../kernel/syscalls.c#L1324)
+`macro` | [kernel/syscalls.c:1473](../../kernel/syscalls.c#L1473)
 
 ```c
 #define LINUX_CLOSE_RANGE_CLOEXEC
@@ -1263,7 +1331,7 @@ Named, never bare.
 
 ### `LINUX_EFD_SEMAPHORE`
 
-`macro` | [kernel/syscalls.c:1325](../../kernel/syscalls.c#L1325)
+`macro` | [kernel/syscalls.c:1474](../../kernel/syscalls.c#L1474)
 
 ```c
 #define LINUX_EFD_SEMAPHORE
@@ -1275,7 +1343,7 @@ Named, never bare.
 
 ### `LINUX_EFD_NONBLOCK`
 
-`macro` | [kernel/syscalls.c:1326](../../kernel/syscalls.c#L1326)
+`macro` | [kernel/syscalls.c:1475](../../kernel/syscalls.c#L1475)
 
 ```c
 #define LINUX_EFD_NONBLOCK
@@ -1287,7 +1355,7 @@ Named, never bare.
 
 ### `LINUX_EFD_CLOEXEC`
 
-`macro` | [kernel/syscalls.c:1327](../../kernel/syscalls.c#L1327)
+`macro` | [kernel/syscalls.c:1476](../../kernel/syscalls.c#L1476)
 
 ```c
 #define LINUX_EFD_CLOEXEC
@@ -1299,7 +1367,7 @@ Named, never bare.
 
 ### `LINUX_EVENTFD_WORD`
 
-`macro` | [kernel/syscalls.c:1328](../../kernel/syscalls.c#L1328)
+`macro` | [kernel/syscalls.c:1477](../../kernel/syscalls.c#L1477)
 
 ```c
 #define LINUX_EVENTFD_WORD
@@ -1311,7 +1379,7 @@ Named, never bare.
 
 ### `FD_STD_COUNT`
 
-`macro` | [kernel/syscalls.c:1329](../../kernel/syscalls.c#L1329)
+`macro` | [kernel/syscalls.c:1478](../../kernel/syscalls.c#L1478)
 
 ```c
 #define FD_STD_COUNT
@@ -1325,7 +1393,7 @@ Named, never bare.
 
 ### `LINUX_MAP_SHARED`
 
-`macro` | [kernel/syscalls.c:1771](../../kernel/syscalls.c#L1771)
+`macro` | [kernel/syscalls.c:1920](../../kernel/syscalls.c#L1920)
 
 ```c
 #define LINUX_MAP_SHARED
@@ -1341,7 +1409,7 @@ Named, never bare. File-backed mappings are MAP_PRIVATE over a MiniFS file at a 
 
 ### `LINUX_MAP_PRIVATE`
 
-`macro` | [kernel/syscalls.c:1772](../../kernel/syscalls.c#L1772)
+`macro` | [kernel/syscalls.c:1921](../../kernel/syscalls.c#L1921)
 
 ```c
 #define LINUX_MAP_PRIVATE
@@ -1353,7 +1421,7 @@ Named, never bare. File-backed mappings are MAP_PRIVATE over a MiniFS file at a 
 
 ### `LINUX_MAP_FIXED`
 
-`macro` | [kernel/syscalls.c:1773](../../kernel/syscalls.c#L1773)
+`macro` | [kernel/syscalls.c:1922](../../kernel/syscalls.c#L1922)
 
 ```c
 #define LINUX_MAP_FIXED
@@ -1365,7 +1433,7 @@ Named, never bare. File-backed mappings are MAP_PRIVATE over a MiniFS file at a 
 
 ### `LINUX_MAP_ANONYMOUS`
 
-`macro` | [kernel/syscalls.c:1774](../../kernel/syscalls.c#L1774)
+`macro` | [kernel/syscalls.c:1923](../../kernel/syscalls.c#L1923)
 
 ```c
 #define LINUX_MAP_ANONYMOUS
@@ -1377,7 +1445,7 @@ Named, never bare. File-backed mappings are MAP_PRIVATE over a MiniFS file at a 
 
 ### `LINUX_MREMAP_MAYMOVE`
 
-`macro` | [kernel/syscalls.c:2082](../../kernel/syscalls.c#L2082)
+`macro` | [kernel/syscalls.c:2231](../../kernel/syscalls.c#L2231)
 
 ```c
 #define LINUX_MREMAP_MAYMOVE
@@ -1393,7 +1461,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_MREMAP_FIXED`
 
-`macro` | [kernel/syscalls.c:2083](../../kernel/syscalls.c#L2083)
+`macro` | [kernel/syscalls.c:2232](../../kernel/syscalls.c#L2232)
 
 ```c
 #define LINUX_MREMAP_FIXED
@@ -1405,7 +1473,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_TCGETS`
 
-`macro` | [kernel/syscalls.c:2409](../../kernel/syscalls.c#L2409)
+`macro` | [kernel/syscalls.c:2558](../../kernel/syscalls.c#L2558)
 
 ```c
 #define LINUX_TCGETS
@@ -1417,7 +1485,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_TIOCGWINSZ`
 
-`macro` | [kernel/syscalls.c:2410](../../kernel/syscalls.c#L2410)
+`macro` | [kernel/syscalls.c:2559](../../kernel/syscalls.c#L2559)
 
 ```c
 #define LINUX_TIOCGWINSZ
@@ -1429,7 +1497,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_FIONREAD`
 
-`macro` | [kernel/syscalls.c:2411](../../kernel/syscalls.c#L2411)
+`macro` | [kernel/syscalls.c:2560](../../kernel/syscalls.c#L2560)
 
 ```c
 #define LINUX_FIONREAD
@@ -1441,7 +1509,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_FIONBIO`
 
-`macro` | [kernel/syscalls.c:2412](../../kernel/syscalls.c#L2412)
+`macro` | [kernel/syscalls.c:2561](../../kernel/syscalls.c#L2561)
 
 ```c
 #define LINUX_FIONBIO
@@ -1453,7 +1521,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_FIONCLEX`
 
-`macro` | [kernel/syscalls.c:2413](../../kernel/syscalls.c#L2413)
+`macro` | [kernel/syscalls.c:2562](../../kernel/syscalls.c#L2562)
 
 ```c
 #define LINUX_FIONCLEX
@@ -1465,7 +1533,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_FIOCLEX`
 
-`macro` | [kernel/syscalls.c:2414](../../kernel/syscalls.c#L2414)
+`macro` | [kernel/syscalls.c:2563](../../kernel/syscalls.c#L2563)
 
 ```c
 #define LINUX_FIOCLEX
@@ -1477,7 +1545,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_TCGETS2`
 
-`macro` | [kernel/syscalls.c:2415](../../kernel/syscalls.c#L2415)
+`macro` | [kernel/syscalls.c:2564](../../kernel/syscalls.c#L2564)
 
 ```c
 #define LINUX_TCGETS2
@@ -1489,7 +1557,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_ENOTTY`
 
-`macro` | [kernel/syscalls.c:2416](../../kernel/syscalls.c#L2416)
+`macro` | [kernel/syscalls.c:2565](../../kernel/syscalls.c#L2565)
 
 ```c
 #define LINUX_ENOTTY
@@ -1501,7 +1569,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_WINSIZE_LEN`
 
-`macro` | [kernel/syscalls.c:2417](../../kernel/syscalls.c#L2417)
+`macro` | [kernel/syscalls.c:2566](../../kernel/syscalls.c#L2566)
 
 ```c
 #define LINUX_WINSIZE_LEN
@@ -1513,7 +1581,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_TERMIOS_LEN`
 
-`macro` | [kernel/syscalls.c:2418](../../kernel/syscalls.c#L2418)
+`macro` | [kernel/syscalls.c:2567](../../kernel/syscalls.c#L2567)
 
 ```c
 #define LINUX_TERMIOS_LEN
@@ -1525,7 +1593,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_TERMIOS2_LEN`
 
-`macro` | [kernel/syscalls.c:2419](../../kernel/syscalls.c#L2419)
+`macro` | [kernel/syscalls.c:2568](../../kernel/syscalls.c#L2568)
 
 ```c
 #define LINUX_TERMIOS2_LEN
@@ -1537,7 +1605,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_IOCTL_INT`
 
-`macro` | [kernel/syscalls.c:2420](../../kernel/syscalls.c#L2420)
+`macro` | [kernel/syscalls.c:2569](../../kernel/syscalls.c#L2569)
 
 ```c
 #define LINUX_IOCTL_INT
@@ -1549,7 +1617,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_RLIMIT_CPU`
 
-`macro` | [kernel/syscalls.c:2544](../../kernel/syscalls.c#L2544)
+`macro` | [kernel/syscalls.c:2693](../../kernel/syscalls.c#L2693)
 
 ```c
 #define LINUX_RLIMIT_CPU
@@ -1561,7 +1629,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_RLIMIT_STACK`
 
-`macro` | [kernel/syscalls.c:2545](../../kernel/syscalls.c#L2545)
+`macro` | [kernel/syscalls.c:2694](../../kernel/syscalls.c#L2694)
 
 ```c
 #define LINUX_RLIMIT_STACK
@@ -1573,7 +1641,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_RLIMIT_NOFILE`
 
-`macro` | [kernel/syscalls.c:2546](../../kernel/syscalls.c#L2546)
+`macro` | [kernel/syscalls.c:2695](../../kernel/syscalls.c#L2695)
 
 ```c
 #define LINUX_RLIMIT_NOFILE
@@ -1585,7 +1653,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_RLIMIT_AS`
 
-`macro` | [kernel/syscalls.c:2547](../../kernel/syscalls.c#L2547)
+`macro` | [kernel/syscalls.c:2696](../../kernel/syscalls.c#L2696)
 
 ```c
 #define LINUX_RLIMIT_AS
@@ -1597,7 +1665,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_RLIMIT_NLIMITS`
 
-`macro` | [kernel/syscalls.c:2548](../../kernel/syscalls.c#L2548)
+`macro` | [kernel/syscalls.c:2697](../../kernel/syscalls.c#L2697)
 
 ```c
 #define LINUX_RLIMIT_NLIMITS
@@ -1609,7 +1677,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_RLIM_INFINITY`
 
-`macro` | [kernel/syscalls.c:2549](../../kernel/syscalls.c#L2549)
+`macro` | [kernel/syscalls.c:2698](../../kernel/syscalls.c#L2698)
 
 ```c
 #define LINUX_RLIM_INFINITY
@@ -1621,7 +1689,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_RLIMIT_PAIR`
 
-`macro` | [kernel/syscalls.c:2550](../../kernel/syscalls.c#L2550)
+`macro` | [kernel/syscalls.c:2699](../../kernel/syscalls.c#L2699)
 
 ```c
 #define LINUX_RLIMIT_PAIR
@@ -1633,7 +1701,7 @@ Named, never bare: FIXED needs MAYMOVE plus the 5th-arg target, anything outside
 
 ### `LINUX_RLIMIT_TICKS_PER_S`
 
-`macro` | [kernel/syscalls.c:2552](../../kernel/syscalls.c#L2552)
+`macro` | [kernel/syscalls.c:2701](../../kernel/syscalls.c#L2701)
 
 ```c
 #define LINUX_RLIMIT_TICKS_PER_S
@@ -1647,7 +1715,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_CPUMASK_BYTES`
 
-`macro` | [kernel/syscalls.c:2553](../../kernel/syscalls.c#L2553)
+`macro` | [kernel/syscalls.c:2702](../../kernel/syscalls.c#L2702)
 
 ```c
 #define LINUX_CPUMASK_BYTES
@@ -1659,7 +1727,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_CLOCK_REALTIME`
 
-`macro` | [kernel/syscalls.c:2618](../../kernel/syscalls.c#L2618)
+`macro` | [kernel/syscalls.c:2767](../../kernel/syscalls.c#L2767)
 
 ```c
 #define LINUX_CLOCK_REALTIME
@@ -1671,7 +1739,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_CLOCK_MONOTONIC`
 
-`macro` | [kernel/syscalls.c:2619](../../kernel/syscalls.c#L2619)
+`macro` | [kernel/syscalls.c:2768](../../kernel/syscalls.c#L2768)
 
 ```c
 #define LINUX_CLOCK_MONOTONIC
@@ -1683,7 +1751,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_CLOCK_BOOTTIME`
 
-`macro` | [kernel/syscalls.c:2620](../../kernel/syscalls.c#L2620)
+`macro` | [kernel/syscalls.c:2769](../../kernel/syscalls.c#L2769)
 
 ```c
 #define LINUX_CLOCK_BOOTTIME
@@ -1695,7 +1763,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_TIMER_ABSTIME`
 
-`macro` | [kernel/syscalls.c:2621](../../kernel/syscalls.c#L2621)
+`macro` | [kernel/syscalls.c:2770](../../kernel/syscalls.c#L2770)
 
 ```c
 #define LINUX_TIMER_ABSTIME
@@ -1707,7 +1775,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_NS_PER_US`
 
-`macro` | [kernel/syscalls.c:2622](../../kernel/syscalls.c#L2622)
+`macro` | [kernel/syscalls.c:2771](../../kernel/syscalls.c#L2771)
 
 ```c
 #define LINUX_NS_PER_US
@@ -1719,7 +1787,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_US_PER_S`
 
-`macro` | [kernel/syscalls.c:2623](../../kernel/syscalls.c#L2623)
+`macro` | [kernel/syscalls.c:2772](../../kernel/syscalls.c#L2772)
 
 ```c
 #define LINUX_US_PER_S
@@ -1731,7 +1799,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_NS_PER_S`
 
-`macro` | [kernel/syscalls.c:2624](../../kernel/syscalls.c#L2624)
+`macro` | [kernel/syscalls.c:2773](../../kernel/syscalls.c#L2773)
 
 ```c
 #define LINUX_NS_PER_S
@@ -1743,7 +1811,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `LINUX_SLEEP_MAX_S`
 
-`macro` | [kernel/syscalls.c:2625](../../kernel/syscalls.c#L2625)
+`macro` | [kernel/syscalls.c:2774](../../kernel/syscalls.c#L2774)
 
 ```c
 #define LINUX_SLEEP_MAX_S
@@ -1751,11 +1819,61 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ---
 
+<a id="select_nfds_max"></a>
+
+### `SELECT_NFDS_MAX`
+
+`macro` | [kernel/syscalls.c:2890](../../kernel/syscalls.c#L2890)
+
+```c
+#define SELECT_NFDS_MAX
+```
+
+---
+
+<a id="select_timeval_bytes"></a>
+
+### `SELECT_TIMEVAL_BYTES`
+
+`macro` | [kernel/syscalls.c:2891](../../kernel/syscalls.c#L2891)
+
+```c
+#define SELECT_TIMEVAL_BYTES
+```
+
+---
+
+<a id="select_timespec_bytes"></a>
+
+### `SELECT_TIMESPEC_BYTES`
+
+`macro` | [kernel/syscalls.c:2892](../../kernel/syscalls.c#L2892)
+
+```c
+#define SELECT_TIMESPEC_BYTES
+```
+
+---
+
+<a id="select_timeout_ms_max"></a>
+
+### `SELECT_TIMEOUT_MS_MAX`
+
+`macro` | [kernel/syscalls.c:2895](../../kernel/syscalls.c#L2895)
+
+```c
+#define SELECT_TIMEOUT_MS_MAX
+```
+
+One day in milliseconds: Linux caps a select timeout to ~24 days; the exact ceiling does not matter, only that the unsigned math cannot wrap.
+
+---
+
 <a id="proc_self_exe"></a>
 
 ### `PROC_SELF_EXE`
 
-`macro` | [kernel/syscalls.c:2783](../../kernel/syscalls.c#L2783)
+`macro` | [kernel/syscalls.c:3046](../../kernel/syscalls.c#L3046)
 
 ```c
 #define PROC_SELF_EXE
@@ -1765,11 +1883,27 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ---
 
+<a id="linux_uid_gid_root"></a>
+
+### `LINUX_UID_GID_ROOT`
+
+`macro` | [kernel/syscalls.c:3181](../../kernel/syscalls.c#L3181)
+
+```c
+#define LINUX_UID_GID_ROOT
+```
+
+getuid/getgid/geteuid/getegid (102/104/107/108).
+
+MiniOS has no user database and the file modes already assume a single root owner, so every process answers 0; those are the truthful values, and -ENOSYS made glibc answer (uid_t)-1, which CPython's startup reads.
+
+---
+
 <a id="linux_syscall_count"></a>
 
 ### `LINUX_SYSCALL_COUNT`
 
-`macro` | [kernel/syscalls.c:2952](../../kernel/syscalls.c#L2952)
+`macro` | [kernel/syscalls.c:3272](../../kernel/syscalls.c#L3272)
 
 ```c
 #define LINUX_SYSCALL_COUNT
@@ -1781,7 +1915,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `SC_EXTRA_COUNT`
 
-`macro` | [kernel/syscalls.c:3044](../../kernel/syscalls.c#L3044)
+`macro` | [kernel/syscalls.c:3372](../../kernel/syscalls.c#L3372)
 
 ```c
 #define SC_EXTRA_COUNT
@@ -1793,7 +1927,7 @@ RLIMIT_CPU is counted in scheduler ticks (the 100 Hz PIT).
 
 ### `TRACE_HINT_NONE`
 
-`macro` | [kernel/syscalls.c:3066](../../kernel/syscalls.c#L3066)
+`macro` | [kernel/syscalls.c:3394](../../kernel/syscalls.c#L3394)
 
 ```c
 #define TRACE_HINT_NONE
@@ -1809,7 +1943,7 @@ The snapshot runs BEFORE dispatch (the only moment user memory may be read: a pa
 
 ### `TRACE_HINT_PATH`
 
-`macro` | [kernel/syscalls.c:3067](../../kernel/syscalls.c#L3067)
+`macro` | [kernel/syscalls.c:3395](../../kernel/syscalls.c#L3395)
 
 ```c
 #define TRACE_HINT_PATH
@@ -1823,7 +1957,7 @@ The snapshot runs BEFORE dispatch (the only moment user memory may be read: a pa
 
 ### `SC_RECORD_LEN`
 
-`macro` | [kernel/syscalls.c:3105](../../kernel/syscalls.c#L3105)
+`macro` | [kernel/syscalls.c:3433](../../kernel/syscalls.c#L3433)
 
 ```c
 #define SC_RECORD_LEN
@@ -1841,7 +1975,7 @@ Per process, so a busy poll loop elsewhere cannot flush a dying worker's history
 
 ### `gfx_zoom_2x`
 
-`variable` `extern` | [kernel/syscalls.c:421](../../kernel/syscalls.c#L421)
+`variable` `extern` | [kernel/syscalls.c:422](../../kernel/syscalls.c#L422)
 
 ```c
 extern int gfx_zoom_2x;
@@ -1853,7 +1987,7 @@ extern int gfx_zoom_2x;
 
 ### `gfx_win_title`
 
-`variable` `const` `extern` | [kernel/syscalls.c:702](../../kernel/syscalls.c#L702)
+`variable` `const` `extern` | [kernel/syscalls.c:703](../../kernel/syscalls.c#L703)
 
 ```c
 extern const char *gfx_win_title;

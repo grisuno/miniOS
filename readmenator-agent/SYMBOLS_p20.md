@@ -1,8 +1,45 @@
-# Symbols (page 20 of 26)
+# Symbols (page 20 of 27)
 Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `parse_error` | function | `progs/lisp/lisp.c:584` | `static ParseResult parse_error(const char *message)` |
+| `parse_ok` | function | `progs/lisp/lisp.c:562` | `static ParseResult parse_ok(Node *value)` |
+| `prim_add` | function | `progs/lisp/lisp.c:869` | `static Node *prim_add(Runtime *rt, Node *args)` |
+| `prim_car` | function | `progs/lisp/lisp.c:963` | `static Node *prim_car(Runtime *rt, Node *args)` |
+| `prim_cdr` | function | `progs/lisp/lisp.c:975` | `static Node *prim_cdr(Runtime *rt, Node *args)` |
+| `prim_char_code` | function | `progs/lisp/lisp.c:1072` | `static Node *prim_char_code(Runtime *rt, Node *args)` |
+| `prim_close_file` | function | `progs/lisp/lisp.c:1224` | `static Node *prim_close_file(Runtime *rt, Node *args)` |
+| `prim_cons` | function | `progs/lisp/lisp.c:987` | `static Node *prim_cons(Runtime *rt, Node *args)` |
+| `prim_div` | function | `progs/lisp/lisp.c:917` | `static Node *prim_div(Runtime *rt, Node *args)` |
+| `prim_eq` | function | `progs/lisp/lisp.c:939` | `static Node *prim_eq(Runtime *rt, Node *args)` |
+| `prim_error_message` | function | `progs/lisp/lisp.c:1285` | `static Node *prim_error_message(Runtime *rt, Node *args)` |
+| `prim_exit` | function | `progs/lisp/lisp.c:1303` | `static Node *prim_exit(Runtime *rt, Node *args)` |
+| `prim_fb_info` | function | `progs/lisp/lisp.c:1357` | `static Node *prim_fb_info(Runtime *rt, Node *args)` |
+| `prim_lt` | function | `progs/lisp/lisp.c:951` | `static Node *prim_lt(Runtime *rt, Node *args)` |
+| `prim_minios_run` | function | `progs/lisp/lisp.c:1465` | `static Node *prim_minios_run(Runtime *rt, Node *args)` |
+| `prim_mul` | function | `progs/lisp/lisp.c:901` | `static Node *prim_mul(Runtime *rt, Node *args)` |
+| `prim_null_p` | function | `progs/lisp/lisp.c:1249` | `static Node *prim_null_p(Runtime *rt, Node *args)` |
+| `prim_number_p` | function | `progs/lisp/lisp.c:1261` | `static Node *prim_number_p(Runtime *rt, Node *args)` |
+| `prim_pal` | function | `progs/lisp/lisp.c:1405` | `static Node *prim_pal(Runtime *rt, Node *args)` |
+| `prim_pcspeaker` | function | `progs/lisp/lisp.c:1421` | `static Node *prim_pcspeaker(Runtime *rt, Node *args)` |
+| `prim_print` | function | `progs/lisp/lisp.c:1094` | `static Node *prim_print(Runtime *rt, Node *args)` |
+| `prim_println` | function | `progs/lisp/lisp.c:1108` | `static Node *prim_println(Runtime *rt, Node *args)` |
+| `prim_read_char` | function | `progs/lisp/lisp.c:1183` | `static Node *prim_read_char(Runtime *rt, Node *args)` |
+| `prim_rtc` | function | `progs/lisp/lisp.c:1340` | `static Node *prim_rtc(Runtime *rt, Node *args)` |
+| `prim_string_at` | function | `progs/lisp/lisp.c:1050` | `static Node *prim_string_at(Runtime *rt, Node *args)` |
+| `prim_string_concat` | function | `progs/lisp/lisp.c:999` | `static Node *prim_string_concat(Runtime *rt, Node *args)` |
+| `prim_string_eq` | function | `progs/lisp/lisp.c:1026` | `static Node *prim_string_eq(Runtime *rt, Node *args)` |
+| `prim_string_length` | function | `progs/lisp/lisp.c:1038` | `static Node *prim_string_length(Runtime *rt, Node *args)` |
+| `prim_string_p` | function | `progs/lisp/lisp.c:1273` | `static Node *prim_string_p(Runtime *rt, Node *args)` |
+| `prim_sub` | function | `progs/lisp/lisp.c:885` | `static Node *prim_sub(Runtime *rt, Node *args)` |
+| `prim_time_ms` | function | `progs/lisp/lisp.c:1330` | `static Node *prim_time_ms(Runtime *rt, Node *args)` |
+| `prim_vol` | function | `progs/lisp/lisp.c:1377` | `static Node *prim_vol(Runtime *rt, Node *args)` |
+| `prim_write` | function | `progs/lisp/lisp.c:1200` | `static Node *prim_write(Runtime *rt, Node *args)` |
+| `print_escaped_string` | function | `progs/lisp/lisp.c:1846` | `static void print_escaped_string(FILE *out, const char *value)` |
+| `print_node` | function | `progs/lisp/lisp.c:1877` | `static void print_node(Runtime *rt, Node *node, bool readable)` |
+| `print_usage` | function | `progs/lisp/lisp.c:2136` | `static void print_usage(Runtime *rt)` |
+| `process_inline` | function | `progs/lisp/lisp.c:2129` | `static int process_inline(Runtime *rt, const char *code)` |
 | `process_source` | function | `progs/lisp/lisp.c:2087` | `static int process_source(Runtime *rt, const char *source,     const char *source_name, bool echo)` |
 | `read_all_file` | function | `progs/lisp/lisp.c:2029` | `static char *read_all_file(const char *filename, size_t max_bytes)` |
 | `read_atom` | function | `progs/lisp/lisp.c:685` | `static ParseResult read_atom(Runtime *rt, Reader *reader)` |
@@ -46,6 +83,21 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `minios_time_ms` | function | `progs/lua/minios.c:62` | `static int minios_time_ms(lua_State *L)` |
 | `minios_vol` | function | `progs/lua/minios.c:96` | `static int minios_vol(lua_State *L)` |
 | `msys5` | function | `progs/lua/minios.c:37` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
+| `_is_module_stem` | function | `progs/micropython/variants/minios/lib/mip.py:136` | `def _is_module_stem(stem)` |
+| `_split_authority_path` | function | `progs/micropython/variants/minios/lib/mip.py:67` | `def _split_authority_path(url, rest, default_port)` |
+| `_status_code` | function | `progs/micropython/variants/minios/lib/mip.py:191` | `def _status_code(line)` |
+| `_unlink_quiet` | function | `progs/micropython/variants/minios/lib/mip.py:268` | `def _unlink_quiet(path)` |
+| `absolute_url` | function | `progs/micropython/variants/minios/lib/mip.py:202` | `def absolute_url(base, location)` |
+| `ensure_dir` | function | `progs/micropython/variants/minios/lib/mip.py:276` | `def ensure_dir(path)` |
+| `http_get` | function | `progs/micropython/variants/minios/lib/mip.py:222` | `def http_get(host, port, path)` |
+| `https_get` | function | `progs/micropython/variants/minios/lib/mip.py:298` | `def https_get(host, port, path)` |
+| `install` | function | `progs/micropython/variants/minios/lib/mip.py:336` | `def install(url, dest)` |
+| `main` | function | `progs/micropython/variants/minios/lib/mip.py:394` | `def main(argv)` |
+| `module_name` | function | `progs/micropython/variants/minios/lib/mip.py:114` | `def module_name(url)` |
+| `parse_response` | function | `progs/micropython/variants/minios/lib/mip.py:150` | `def parse_response(data)` |
+| `parse_url` | function | `progs/micropython/variants/minios/lib/mip.py:49` | `def parse_url(url)` |
+| `split_https_url` | function | `progs/micropython/variants/minios/lib/mip.py:106` | `def split_https_url(url)` |
+| `split_url` | function | `progs/micropython/variants/minios/lib/mip.py:98` | `def split_url(url)` |
 | `MP_DEFINE_CONST_DICT` | function | `progs/micropython/variants/minios/minios_module.c:207` | `static MP_DEFINE_CONST_DICT(minios_module_globals, minios_module_globals_table);` |
 | `MP_DEFINE_CONST_FUN_OBJ_0` | function | `progs/micropython/variants/minios/minios_module.c:55` | `static MP_DEFINE_CONST_FUN_OBJ_0(minios_time_ms_obj, minios_time_ms);` |
 | `MP_DEFINE_CONST_FUN_OBJ_1` | function | `progs/micropython/variants/minios/minios_module.c:123` | `static MP_DEFINE_CONST_FUN_OBJ_1(minios_pal_obj, minios_pal);` |
@@ -70,40 +122,48 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MICROPY_ASYNC_KBD_INTR` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:31` | `#define MICROPY_ASYNC_KBD_INTR` |
 | `MICROPY_CONFIG_ROM_LEVEL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:11` | `#define MICROPY_CONFIG_ROM_LEVEL` |
 | `MICROPY_DEBUG_PRINTERS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:20` | `#define MICROPY_DEBUG_PRINTERS` |
-| `MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:75` | `#define MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE` |
-| `MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:74` | `#define MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF` |
+| `MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:103` | `#define MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE` |
+| `MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:102` | `#define MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF` |
 | `MICROPY_ERROR_REPORTING` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:18` | `#define MICROPY_ERROR_REPORTING` |
 | `MICROPY_FLOAT_IMPL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:14` | `#define MICROPY_FLOAT_IMPL` |
 | `MICROPY_HELPER_REPL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:34` | `#define MICROPY_HELPER_REPL` |
 | `MICROPY_KBD_EXCEPTION` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:30` | `#define MICROPY_KBD_EXCEPTION` |
 | `MICROPY_LONGINT_IMPL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:15` | `#define MICROPY_LONGINT_IMPL` |
-| `MICROPY_OPT_COMPUTED_GOTO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:71` | `#define MICROPY_OPT_COMPUTED_GOTO` |
-| `MICROPY_PERSISTENT_CODE_LOAD` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:61` | `#define MICROPY_PERSISTENT_CODE_LOAD` |
-| `MICROPY_PY_FFI` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:55` | `#define MICROPY_PY_FFI` |
-| `MICROPY_PY_GC_COLLECT_RETVAL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:78` | `#define MICROPY_PY_GC_COLLECT_RETVAL` |
-| `MICROPY_PY_MACHINE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:57` | `#define MICROPY_PY_MACHINE` |
+| `MICROPY_OPT_COMPUTED_GOTO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:99` | `#define MICROPY_OPT_COMPUTED_GOTO` |
+| `MICROPY_PERSISTENT_CODE_LOAD` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:89` | `#define MICROPY_PERSISTENT_CODE_LOAD` |
+| `MICROPY_PY_ASYNCIO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:65` | `#define MICROPY_PY_ASYNCIO` |
+| `MICROPY_PY_ERRNO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:73` | `#define MICROPY_PY_ERRNO` |
+| `MICROPY_PY_FFI` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:83` | `#define MICROPY_PY_FFI` |
+| `MICROPY_PY_GC_COLLECT_RETVAL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:106` | `#define MICROPY_PY_GC_COLLECT_RETVAL` |
+| `MICROPY_PY_MACHINE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:85` | `#define MICROPY_PY_MACHINE` |
 | `MICROPY_PY_OS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:42` | `#define MICROPY_PY_OS` |
 | `MICROPY_PY_OS_ERRNO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:44` | `#define MICROPY_PY_OS_ERRNO` |
 | `MICROPY_PY_OS_GETENV_PUTENV_UNSETENV` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:45` | `#define MICROPY_PY_OS_GETENV_PUTENV_UNSETENV` |
 | `MICROPY_PY_OS_INCLUDEFILE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:43` | `#define MICROPY_PY_OS_INCLUDEFILE` |
 | `MICROPY_PY_OS_SYSTEM` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:46` | `#define MICROPY_PY_OS_SYSTEM` |
 | `MICROPY_PY_OS_URANDOM` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:47` | `#define MICROPY_PY_OS_URANDOM` |
-| `MICROPY_PY_SOCKET` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:53` | `#define MICROPY_PY_SOCKET` |
-| `MICROPY_PY_SSL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:54` | `#define MICROPY_PY_SSL` |
+| `MICROPY_PY_SELECT` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:60` | `#define MICROPY_PY_SELECT` |
+| `MICROPY_PY_SELECT_POSIX_OPTIMISATIONS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:61` | `#define MICROPY_PY_SELECT_POSIX_OPTIMISATIONS` |
+| `MICROPY_PY_SELECT_SELECT` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:62` | `#define MICROPY_PY_SELECT_SELECT` |
+| `MICROPY_PY_SSL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:82` | `#define MICROPY_PY_SSL` |
 | `MICROPY_PY_SYS_ATEXIT` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:37` | `#define MICROPY_PY_SYS_ATEXIT` |
 | `MICROPY_PY_SYS_EXC_INFO` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:38` | `#define MICROPY_PY_SYS_EXC_INFO` |
 | `MICROPY_PY_SYS_PS1` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:35` | `#define MICROPY_PY_SYS_PS1` |
 | `MICROPY_PY_SYS_PS2` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:36` | `#define MICROPY_PY_SYS_PS2` |
 | `MICROPY_PY_SYS_STDFILES` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:39` | `#define MICROPY_PY_SYS_STDFILES` |
-| `MICROPY_PY_THREAD` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:56` | `#define MICROPY_PY_THREAD` |
-| `MICROPY_PY_TIME` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:50` | `#define MICROPY_PY_TIME` |
-| `MICROPY_PY_WEBSOCKET` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:58` | `#define MICROPY_PY_WEBSOCKET` |
-| `MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:65` | `#define MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE` |
-| `MICROPY_REPL_EMACS_WORDS_MOVE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:64` | `#define MICROPY_REPL_EMACS_WORDS_MOVE` |
+| `MICROPY_PY_THREAD` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:84` | `#define MICROPY_PY_THREAD` |
+| `MICROPY_PY_TIME` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:76` | `#define MICROPY_PY_TIME` |
+| `MICROPY_PY_TIME_CUSTOM_SLEEP` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:79` | `#define MICROPY_PY_TIME_CUSTOM_SLEEP` |
+| `MICROPY_PY_TIME_INCLUDEFILE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:77` | `#define MICROPY_PY_TIME_INCLUDEFILE` |
+| `MICROPY_PY_TIME_TIME_TIME_NS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:78` | `#define MICROPY_PY_TIME_TIME_TIME_NS` |
+| `MICROPY_PY_WEBSOCKET` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:86` | `#define MICROPY_PY_WEBSOCKET` |
+| `MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:93` | `#define MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE` |
+| `MICROPY_REPL_EMACS_WORDS_MOVE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:92` | `#define MICROPY_REPL_EMACS_WORDS_MOVE` |
+| `MICROPY_STREAMS_NON_BLOCK` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:70` | `#define MICROPY_STREAMS_NON_BLOCK` |
 | `MICROPY_USE_READLINE` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:23` | `#define MICROPY_USE_READLINE` |
-| `MICROPY_USE_READLINE_HISTORY` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:66` | `#define MICROPY_USE_READLINE_HISTORY` |
-| `MICROPY_VFS_ROM` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:81` | `#define MICROPY_VFS_ROM` |
-| `MICROPY_VFS_ROM_IOCTL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:82` | `#define MICROPY_VFS_ROM_IOCTL` |
+| `MICROPY_USE_READLINE_HISTORY` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:94` | `#define MICROPY_USE_READLINE_HISTORY` |
+| `MICROPY_VFS_ROM` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:109` | `#define MICROPY_VFS_ROM` |
+| `MICROPY_VFS_ROM_IOCTL` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:110` | `#define MICROPY_VFS_ROM_IOCTL` |
 | `MICROPY_WARNINGS` | macro | `progs/micropython/variants/minios/mpconfigvariant.h:19` | `#define MICROPY_WARNINGS` |
 | `BACKBUF` | macro | `progs/minicraft/minicraft.c:45` | `#define BACKBUF` |
 | `BACKBUF` | macro | `progs/minicraft/minicraft.c:47` | `#define BACKBUF` |
@@ -350,17 +410,17 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MINIOS_DOOM_BACKBUF_ADDR` | macro | `progs/minios_abi.h:135` | `#define MINIOS_DOOM_BACKBUF_ADDR` |
 | `MINIOS_DOOM_H` | macro | `progs/minios_abi.h:137` | `#define MINIOS_DOOM_H` |
 | `MINIOS_DOOM_W` | macro | `progs/minios_abi.h:136` | `#define MINIOS_DOOM_W` |
-| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:436` | `#define MINIOS_EABI_MISMATCH` |
+| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:440` | `#define MINIOS_EABI_MISMATCH` |
 | `MINIOS_FB_ADDR` | macro | `progs/minios_abi.h:138` | `#define MINIOS_FB_ADDR` |
 | `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:220` | `#define MINIOS_FB_HEIGHT_MAX` |
 | `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:219` | `#define MINIOS_FB_WIDTH_MAX` |
-| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:406` | `#define MINIOS_GFX_BUF_GAME` |
-| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:407` | `#define MINIOS_GFX_BUF_NK` |
-| `MINIOS_GFX_BUF_NK_RGB` | macro | `progs/minios_abi.h:408` | `#define MINIOS_GFX_BUF_NK_RGB` |
-| `MINIOS_GFX_ZOOM_2X` | macro | `progs/minios_abi.h:419` | `#define MINIOS_GFX_ZOOM_2X` |
-| `MINIOS_GFX_ZOOM_FULLSCREEN` | macro | `progs/minios_abi.h:420` | `#define MINIOS_GFX_ZOOM_FULLSCREEN` |
-| `MINIOS_GFX_ZOOM_NATIVE` | macro | `progs/minios_abi.h:418` | `#define MINIOS_GFX_ZOOM_NATIVE` |
-| `MINIOS_GFX_ZOOM_WINDOWED` | macro | `progs/minios_abi.h:421` | `#define MINIOS_GFX_ZOOM_WINDOWED` |
+| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:410` | `#define MINIOS_GFX_BUF_GAME` |
+| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:411` | `#define MINIOS_GFX_BUF_NK` |
+| `MINIOS_GFX_BUF_NK_RGB` | macro | `progs/minios_abi.h:412` | `#define MINIOS_GFX_BUF_NK_RGB` |
+| `MINIOS_GFX_ZOOM_2X` | macro | `progs/minios_abi.h:423` | `#define MINIOS_GFX_ZOOM_2X` |
+| `MINIOS_GFX_ZOOM_FULLSCREEN` | macro | `progs/minios_abi.h:424` | `#define MINIOS_GFX_ZOOM_FULLSCREEN` |
+| `MINIOS_GFX_ZOOM_NATIVE` | macro | `progs/minios_abi.h:422` | `#define MINIOS_GFX_ZOOM_NATIVE` |
+| `MINIOS_GFX_ZOOM_WINDOWED` | macro | `progs/minios_abi.h:425` | `#define MINIOS_GFX_ZOOM_WINDOWED` |
 | `MINIOS_HEAP_BASE` | macro | `progs/minios_abi.h:172` | `#define MINIOS_HEAP_BASE` |
 | `MINIOS_HEAP_SIZE` | macro | `progs/minios_abi.h:178` | `#define MINIOS_HEAP_SIZE` |
 | `MINIOS_LDSO_BASE` | macro | `progs/minios_abi.h:156` | `#define MINIOS_LDSO_BASE` |
@@ -371,23 +431,23 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MINIOS_NK_RGB_ADDR` | macro | `progs/minios_abi.h:166` | `#define MINIOS_NK_RGB_ADDR` |
 | `MINIOS_NK_RGB_BYTES` | macro | `progs/minios_abi.h:167` | `#define MINIOS_NK_RGB_BYTES` |
 | `MINIOS_NK_W` | macro | `progs/minios_abi.h:140` | `#define MINIOS_NK_W` |
-| `MINIOS_NOTE_NAME` | macro | `progs/minios_abi.h:449` | `#define MINIOS_NOTE_NAME` |
-| `MINIOS_NOTE_PROCESS` | macro | `progs/minios_abi.h:450` | `#define MINIOS_NOTE_PROCESS` |
-| `MINIOS_NOTE_SIGN` | macro | `progs/minios_abi.h:451` | `#define MINIOS_NOTE_SIGN` |
+| `MINIOS_NOTE_NAME` | macro | `progs/minios_abi.h:453` | `#define MINIOS_NOTE_NAME` |
+| `MINIOS_NOTE_PROCESS` | macro | `progs/minios_abi.h:454` | `#define MINIOS_NOTE_PROCESS` |
+| `MINIOS_NOTE_SIGN` | macro | `progs/minios_abi.h:455` | `#define MINIOS_NOTE_SIGN` |
 | `MINIOS_PCI_MMIO_SIZE` | macro | `progs/minios_abi.h:202` | `#define MINIOS_PCI_MMIO_SIZE` |
-| `MINIOS_PCM2_FRAG` | macro | `progs/minios_abi.h:395` | `#define MINIOS_PCM2_FRAG` |
-| `MINIOS_PCM2_NONBLOCK` | macro | `progs/minios_abi.h:390` | `#define MINIOS_PCM2_NONBLOCK` |
-| `MINIOS_PCM2_RATE` | macro | `progs/minios_abi.h:394` | `#define MINIOS_PCM2_RATE` |
+| `MINIOS_PCM2_FRAG` | macro | `progs/minios_abi.h:399` | `#define MINIOS_PCM2_FRAG` |
+| `MINIOS_PCM2_NONBLOCK` | macro | `progs/minios_abi.h:394` | `#define MINIOS_PCM2_NONBLOCK` |
+| `MINIOS_PCM2_RATE` | macro | `progs/minios_abi.h:398` | `#define MINIOS_PCM2_RATE` |
 | `MINIOS_SYS_ACCESS` | macro | `progs/minios_abi.h:253` | `#define MINIOS_SYS_ACCESS` |
 | `MINIOS_SYS_ARCH_PRCTL` | macro | `progs/minios_abi.h:280` | `#define MINIOS_SYS_ARCH_PRCTL` |
 | `MINIOS_SYS_BRK` | macro | `progs/minios_abi.h:248` | `#define MINIOS_SYS_BRK` |
-| `MINIOS_SYS_CLIP_GET` | macro | `progs/minios_abi.h:372` | `#define MINIOS_SYS_CLIP_GET` |
-| `MINIOS_SYS_CLIP_SET` | macro | `progs/minios_abi.h:371` | `#define MINIOS_SYS_CLIP_SET` |
+| `MINIOS_SYS_CLIP_GET` | macro | `progs/minios_abi.h:376` | `#define MINIOS_SYS_CLIP_GET` |
+| `MINIOS_SYS_CLIP_SET` | macro | `progs/minios_abi.h:375` | `#define MINIOS_SYS_CLIP_SET` |
 | `MINIOS_SYS_CLOCK_GETTIME` | macro | `progs/minios_abi.h:298` | `#define MINIOS_SYS_CLOCK_GETTIME` |
-| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:397` | `#define MINIOS_SYS_CLONE` |
+| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:401` | `#define MINIOS_SYS_CLONE` |
 | `MINIOS_SYS_CLOSE` | macro | `progs/minios_abi.h:241` | `#define MINIOS_SYS_CLOSE` |
 | `MINIOS_SYS_CONNECT` | macro | `progs/minios_abi.h:257` | `#define MINIOS_SYS_CONNECT` |
-| `MINIOS_SYS_DIR_LIST` | macro | `progs/minios_abi.h:348` | `#define MINIOS_SYS_DIR_LIST` |
+| `MINIOS_SYS_DIR_LIST` | macro | `progs/minios_abi.h:352` | `#define MINIOS_SYS_DIR_LIST` |
 | `MINIOS_SYS_DNS` | macro | `progs/minios_abi.h:302` | `#define MINIOS_SYS_DNS` |
 | `MINIOS_SYS_DOOM_FRAME` | macro | `progs/minios_abi.h:320` | `#define MINIOS_SYS_DOOM_FRAME` |
 | `MINIOS_SYS_EXECVE` | macro | `progs/minios_abi.h:263` | `#define MINIOS_SYS_EXECVE` |
@@ -397,104 +457,44 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MINIOS_SYS_FDATASYNC` | macro | `progs/minios_abi.h:277` | `#define MINIOS_SYS_FDATASYNC` |
 | `MINIOS_SYS_FLOCK` | macro | `progs/minios_abi.h:275` | `#define MINIOS_SYS_FLOCK` |
 | `MINIOS_SYS_FORK` | macro | `progs/minios_abi.h:261` | `#define MINIOS_SYS_FORK` |
-| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:409` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
+| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:413` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
 | `MINIOS_SYS_FSTAT` | macro | `progs/minios_abi.h:242` | `#define MINIOS_SYS_FSTAT` |
 | `MINIOS_SYS_FSYNC` | macro | `progs/minios_abi.h:276` | `#define MINIOS_SYS_FSYNC` |
-| `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:340` | `#define MINIOS_SYS_FUTEX_WAIT` |
-| `MINIOS_SYS_FUTEX_WAKE` | macro | `progs/minios_abi.h:341` | `#define MINIOS_SYS_FUTEX_WAKE` |
+| `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:344` | `#define MINIOS_SYS_FUTEX_WAIT` |
+| `MINIOS_SYS_FUTEX_WAKE` | macro | `progs/minios_abi.h:345` | `#define MINIOS_SYS_FUTEX_WAKE` |
 | `MINIOS_SYS_GETCWD` | macro | `progs/minios_abi.h:278` | `#define MINIOS_SYS_GETCWD` |
-| `MINIOS_SYS_GETC_RAW` | macro | `progs/minios_abi.h:343` | `#define MINIOS_SYS_GETC_RAW` |
+| `MINIOS_SYS_GETC_RAW` | macro | `progs/minios_abi.h:347` | `#define MINIOS_SYS_GETC_RAW` |
 | `MINIOS_SYS_GETPID` | macro | `progs/minios_abi.h:255` | `#define MINIOS_SYS_GETPID` |
 | `MINIOS_SYS_GETRANDOM` | macro | `progs/minios_abi.h:294` | `#define MINIOS_SYS_GETRANDOM` |
 | `MINIOS_SYS_GETTID` | macro | `progs/minios_abi.h:271` | `#define MINIOS_SYS_GETTID` |
 | `MINIOS_SYS_GETTIMEOFDAY` | macro | `progs/minios_abi.h:279` | `#define MINIOS_SYS_GETTIMEOFDAY` |
-| `MINIOS_SYS_GFX_PRESENT` | macro | `progs/minios_abi.h:344` | `#define MINIOS_SYS_GFX_PRESENT` |
-| `MINIOS_SYS_GFX_SET_TITLE` | macro | `progs/minios_abi.h:331` | `#define MINIOS_SYS_GFX_SET_TITLE` |
-| `MINIOS_SYS_GFX_ZOOM` | macro | `progs/minios_abi.h:349` | `#define MINIOS_SYS_GFX_ZOOM` |
+| `MINIOS_SYS_GFX_PRESENT` | macro | `progs/minios_abi.h:348` | `#define MINIOS_SYS_GFX_PRESENT` |
+| `MINIOS_SYS_GFX_SET_TITLE` | macro | `progs/minios_abi.h:335` | `#define MINIOS_SYS_GFX_SET_TITLE` |
+| `MINIOS_SYS_GFX_ZOOM` | macro | `progs/minios_abi.h:353` | `#define MINIOS_SYS_GFX_ZOOM` |
 | `MINIOS_SYS_IOCTL` | macro | `progs/minios_abi.h:251` | `#define MINIOS_SYS_IOCTL` |
 | `MINIOS_SYS_KBD` | macro | `progs/minios_abi.h:314` | `#define MINIOS_SYS_KBD` |
 | `MINIOS_SYS_KBD_RAW` | macro | `progs/minios_abi.h:316` | `#define MINIOS_SYS_KBD_RAW` |
 | `MINIOS_SYS_KILL` | macro | `progs/minios_abi.h:266` | `#define MINIOS_SYS_KILL` |
 | `MINIOS_SYS_LSEEK` | macro | `progs/minios_abi.h:244` | `#define MINIOS_SYS_LSEEK` |
 | `MINIOS_SYS_LZ4_COMPRESS` | macro | `progs/minios_abi.h:325` | `#define MINIOS_SYS_LZ4_COMPRESS` |
-| `MINIOS_SYS_LZ4_DECOMPRESS` | macro | `progs/minios_abi.h:326` | `#define MINIOS_SYS_LZ4_DECOMPRESS` |
-| `MINIOS_SYS_MINFO` | macro | `progs/minios_abi.h:389` | `#define MINIOS_SYS_MINFO` |
+| `MINIOS_SYS_LZ4_DECOMPRESS` | macro | `progs/minios_abi.h:330` | `#define MINIOS_SYS_LZ4_DECOMPRESS` |
+| `MINIOS_SYS_MINFO` | macro | `progs/minios_abi.h:393` | `#define MINIOS_SYS_MINFO` |
 | `MINIOS_SYS_MMAP` | macro | `progs/minios_abi.h:245` | `#define MINIOS_SYS_MMAP` |
-| `MINIOS_SYS_MOUSE` | macro | `progs/minios_abi.h:327` | `#define MINIOS_SYS_MOUSE` |
+| `MINIOS_SYS_MOUSE` | macro | `progs/minios_abi.h:331` | `#define MINIOS_SYS_MOUSE` |
 | `MINIOS_SYS_MPROTECT` | macro | `progs/minios_abi.h:246` | `#define MINIOS_SYS_MPROTECT` |
 | `MINIOS_SYS_MUNMAP` | macro | `progs/minios_abi.h:247` | `#define MINIOS_SYS_MUNMAP` |
 | `MINIOS_SYS_NEWFSTATAT` | macro | `progs/minios_abi.h:282` | `#define MINIOS_SYS_NEWFSTATAT` |
-| `MINIOS_SYS_NICE` | macro | `progs/minios_abi.h:346` | `#define MINIOS_SYS_NICE` |
-| `MINIOS_SYS_NK_FRAME` | macro | `progs/minios_abi.h:328` | `#define MINIOS_SYS_NK_FRAME` |
+| `MINIOS_SYS_NICE` | macro | `progs/minios_abi.h:350` | `#define MINIOS_SYS_NICE` |
+| `MINIOS_SYS_NK_FRAME` | macro | `progs/minios_abi.h:332` | `#define MINIOS_SYS_NK_FRAME` |
 | `MINIOS_SYS_OPEN` | macro | `progs/minios_abi.h:240` | `#define MINIOS_SYS_OPEN` |
 | `MINIOS_SYS_OPENAT` | macro | `progs/minios_abi.h:281` | `#define MINIOS_SYS_OPENAT` |
 | `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:315` | `#define MINIOS_SYS_PALETTE` |
-| `MINIOS_SYS_PCM2_CLOSE` | macro | `progs/minios_abi.h:363` | `#define MINIOS_SYS_PCM2_CLOSE` |
-| `MINIOS_SYS_PCM2_OPEN` | macro | `progs/minios_abi.h:361` | `#define MINIOS_SYS_PCM2_OPEN` |
-| `MINIOS_SYS_PCM2_WRITE` | macro | `progs/minios_abi.h:362` | `#define MINIOS_SYS_PCM2_WRITE` |
+| `MINIOS_SYS_PCM2_CLOSE` | macro | `progs/minios_abi.h:367` | `#define MINIOS_SYS_PCM2_CLOSE` |
+| `MINIOS_SYS_PCM2_OPEN` | macro | `progs/minios_abi.h:365` | `#define MINIOS_SYS_PCM2_OPEN` |
+| `MINIOS_SYS_PCM2_WRITE` | macro | `progs/minios_abi.h:366` | `#define MINIOS_SYS_PCM2_WRITE` |
 | `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:318` | `#define MINIOS_SYS_PCSPK_INIT` |
 | `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:319` | `#define MINIOS_SYS_PCSPK_TONE` |
 | `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:323` | `#define MINIOS_SYS_PCSPK_VOL` |
 | `MINIOS_SYS_POLL` | macro | `progs/minios_abi.h:243` | `#define MINIOS_SYS_POLL` |
-| `MINIOS_SYS_PRLIMIT64` | macro | `progs/minios_abi.h:293` | `#define MINIOS_SYS_PRLIMIT64` |
-| `MINIOS_SYS_READ` | macro | `progs/minios_abi.h:238` | `#define MINIOS_SYS_READ` |
-| `MINIOS_SYS_READLINK` | macro | `progs/minios_abi.h:270` | `#define MINIOS_SYS_READLINK` |
-| `MINIOS_SYS_RECVFROM` | macro | `progs/minios_abi.h:259` | `#define MINIOS_SYS_RECVFROM` |
-| `MINIOS_SYS_RENAME` | macro | `progs/minios_abi.h:269` | `#define MINIOS_SYS_RENAME` |
-| `MINIOS_SYS_RLIMIT` | macro | `progs/minios_abi.h:347` | `#define MINIOS_SYS_RLIMIT` |
-| `MINIOS_SYS_RSEQ` | macro | `progs/minios_abi.h:295` | `#define MINIOS_SYS_RSEQ` |
-| `MINIOS_SYS_RTC` | macro | `progs/minios_abi.h:321` | `#define MINIOS_SYS_RTC` |
-| `MINIOS_SYS_RT_SIGACTION` | macro | `progs/minios_abi.h:249` | `#define MINIOS_SYS_RT_SIGACTION` |
-| `MINIOS_SYS_RT_SIGPROCMASK` | macro | `progs/minios_abi.h:250` | `#define MINIOS_SYS_RT_SIGPROCMASK` |
-| `MINIOS_SYS_SB16_OPEN` | macro | `progs/minios_abi.h:329` | `#define MINIOS_SYS_SB16_OPEN` |
-| `MINIOS_SYS_SB16_PUMP` | macro | `progs/minios_abi.h:332` | `#define MINIOS_SYS_SB16_PUMP` |
-| `MINIOS_SYS_SB16_STREAM_CLOSE` | macro | `progs/minios_abi.h:336` | `#define MINIOS_SYS_SB16_STREAM_CLOSE` |
-| `MINIOS_SYS_SB16_STREAM_OPEN` | macro | `progs/minios_abi.h:335` | `#define MINIOS_SYS_SB16_STREAM_OPEN` |
-| `MINIOS_SYS_SB16_STREAM_SUBMIT` | macro | `progs/minios_abi.h:337` | `#define MINIOS_SYS_SB16_STREAM_SUBMIT` |
-| `MINIOS_SYS_SB16_STREAM_VOLUME` | macro | `progs/minios_abi.h:338` | `#define MINIOS_SYS_SB16_STREAM_VOLUME` |
-| `MINIOS_SYS_SB16_SUBMIT` | macro | `progs/minios_abi.h:330` | `#define MINIOS_SYS_SB16_SUBMIT` |
-| `MINIOS_SYS_SCHED_YIELD` | macro | `progs/minios_abi.h:254` | `#define MINIOS_SYS_SCHED_YIELD` |
-| `MINIOS_SYS_SECCOMP` | macro | `progs/minios_abi.h:345` | `#define MINIOS_SYS_SECCOMP` |
-| `MINIOS_SYS_SENDTO` | macro | `progs/minios_abi.h:258` | `#define MINIOS_SYS_SENDTO` |
-| `MINIOS_SYS_SET_ROBUST_LIST` | macro | `progs/minios_abi.h:289` | `#define MINIOS_SYS_SET_ROBUST_LIST` |
-| `MINIOS_SYS_SET_TID_ADDRESS` | macro | `progs/minios_abi.h:297` | `#define MINIOS_SYS_SET_TID_ADDRESS` |
-| `MINIOS_SYS_SHUTDOWN` | macro | `progs/minios_abi.h:260` | `#define MINIOS_SYS_SHUTDOWN` |
-| `MINIOS_SYS_SOCKET` | macro | `progs/minios_abi.h:256` | `#define MINIOS_SYS_SOCKET` |
-| `MINIOS_SYS_SPAWN` | macro | `progs/minios_abi.h:324` | `#define MINIOS_SYS_SPAWN` |
-| `MINIOS_SYS_STATX` | macro | `progs/minios_abi.h:285` | `#define MINIOS_SYS_STATX` |
-| `MINIOS_SYS_SUBMIT_BATCH` | macro | `progs/minios_abi.h:342` | `#define MINIOS_SYS_SUBMIT_BATCH` |
-| `MINIOS_SYS_TGKILL` | macro | `progs/minios_abi.h:299` | `#define MINIOS_SYS_TGKILL` |
-| `MINIOS_SYS_THREAD_SPAWN` | macro | `progs/minios_abi.h:339` | `#define MINIOS_SYS_THREAD_SPAWN` |
-| `MINIOS_SYS_TIME` | macro | `progs/minios_abi.h:313` | `#define MINIOS_SYS_TIME` |
-| `MINIOS_SYS_TLS_HANDSHAKE` | macro | `progs/minios_abi.h:308` | `#define MINIOS_SYS_TLS_HANDSHAKE` |
-| `MINIOS_SYS_TLS_RECV` | macro | `progs/minios_abi.h:310` | `#define MINIOS_SYS_TLS_RECV` |
-| `MINIOS_SYS_TLS_SEND` | macro | `progs/minios_abi.h:309` | `#define MINIOS_SYS_TLS_SEND` |
-| `MINIOS_SYS_UNAME` | macro | `progs/minios_abi.h:267` | `#define MINIOS_SYS_UNAME` |
-| `MINIOS_SYS_UNLINK` | macro | `progs/minios_abi.h:268` | `#define MINIOS_SYS_UNLINK` |
-| `MINIOS_SYS_VFORK` | macro | `progs/minios_abi.h:262` | `#define MINIOS_SYS_VFORK` |
-| `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:317` | `#define MINIOS_SYS_VGA_MODE` |
-| `MINIOS_SYS_WAIT4` | macro | `progs/minios_abi.h:265` | `#define MINIOS_SYS_WAIT4` |
-| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:410` | `#define MINIOS_SYS_WINDOW_PRESENT` |
-| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:411` | `#define MINIOS_SYS_WINDOW_TITLE` |
-| `MINIOS_SYS_WL_ATTACH` | macro | `progs/minios_abi.h:354` | `#define MINIOS_SYS_WL_ATTACH` |
-| `MINIOS_SYS_WL_COMMIT` | macro | `progs/minios_abi.h:355` | `#define MINIOS_SYS_WL_COMMIT` |
-| `MINIOS_SYS_WL_INPUT` | macro | `progs/minios_abi.h:356` | `#define MINIOS_SYS_WL_INPUT` |
-| `MINIOS_SYS_WRITE` | macro | `progs/minios_abi.h:239` | `#define MINIOS_SYS_WRITE` |
-| `MINIOS_SYS_WRITEV` | macro | `progs/minios_abi.h:252` | `#define MINIOS_SYS_WRITEV` |
-| `MINIOS_USER_BRK_END` | macro | `progs/minios_abi.h:118` | `#define MINIOS_USER_BRK_END` |
-| `MINIOS_USER_LOAD_BASE` | macro | `progs/minios_abi.h:113` | `#define MINIOS_USER_LOAD_BASE` |
-| `MINIOS_USER_LOAD_END` | macro | `progs/minios_abi.h:114` | `#define MINIOS_USER_LOAD_END` |
-| `MINIOS_USER_STACK_BASE` | macro | `progs/minios_abi.h:117` | `#define MINIOS_USER_STACK_BASE` |
-| `MINIOS_USER_STACK_SIZE` | macro | `progs/minios_abi.h:115` | `#define MINIOS_USER_STACK_SIZE` |
-| `MINIOS_USER_STACK_TOP` | macro | `progs/minios_abi.h:116` | `#define MINIOS_USER_STACK_TOP` |
-| `SYS_FB_INFO` | macro | `progs/minios_abi.h:429` | `#define SYS_FB_INFO` |
-| `SYS_PALETTE` | macro | `progs/minios_abi.h:425` | `#define SYS_PALETTE` |
-| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:426` | `#define SYS_PCSPK_INIT` |
-| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:427` | `#define SYS_PCSPK_TONE` |
-| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:430` | `#define SYS_PCSPK_VOL` |
-| `SYS_RTC` | macro | `progs/minios_abi.h:428` | `#define SYS_RTC` |
-| `SYS_SPAWN` | macro | `progs/minios_abi.h:431` | `#define SYS_SPAWN` |
-| `SYS_TIME` | macro | `progs/minios_abi.h:432` | `#define SYS_TIME` |
-| `SYS_TIME_MS` | macro | `progs/minios_abi.h:424` | `#define SYS_TIME_MS` |
 
 Next: [SYMBOLS_p21.md](SYMBOLS_p21.md)

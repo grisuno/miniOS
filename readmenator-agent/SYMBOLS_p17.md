@@ -1,8 +1,45 @@
-# Symbols (page 17 of 26)
+# Symbols (page 17 of 27)
 Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `InterceptsOverrun` | function | `progs/doomgeneric/p_maputl.c:827` | `static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)` |
+| `PIT_AddLineIntercepts` | function | `progs/doomgeneric/p_maputl.c:559` | `boolean PIT_AddLineIntercepts (line_t* ld)` |
+| `PIT_AddThingIntercepts` | function | `progs/doomgeneric/p_maputl.c:614` | `boolean PIT_AddThingIntercepts (mobj_t* thing)` |
+| `P_AproxDistance` | function | `progs/doomgeneric/p_maputl.c:44` | `fixed_t P_AproxDistance ( fixed_t	dx,   fixed_t	dy )` |
+| `P_BlockLinesIterator` | function | `progs/doomgeneric/p_maputl.c:467` | `boolean P_BlockLinesIterator ( int			x,   int			y,   boolean(*func)(line_t*) )` |
+| `P_BlockThingsIterator` | function | `progs/doomgeneric/p_maputl.c:508` | `boolean P_BlockThingsIterator ( int			x,   int			y,   boolean(*func)(mobj_t*) )` |
+| `P_BoxOnLineSide` | function | `progs/doomgeneric/p_maputl.c:105` | `int P_BoxOnLineSide ( fixed_t*	tmbox,   line_t*	ld )` |
+| `P_InterceptVector` | function | `progs/doomgeneric/p_maputl.c:226` | `fixed_t P_InterceptVector ( divline_t*	v2,   divline_t*	v1 )` |
+| `P_LineOpening` | function | `progs/doomgeneric/p_maputl.c:295` | `void P_LineOpening (line_t* linedef)` |
+| `P_MakeDivline` | function | `progs/doomgeneric/p_maputl.c:206` | `void P_MakeDivline ( line_t*	li,   divline_t*	dl )` |
+| `P_PathTraverse` | function | `progs/doomgeneric/p_maputl.c:861` | `boolean P_PathTraverse ( fixed_t		x1,   fixed_t		y1,   fixed_t		x2,   fixed_t		y2,   int			flags,...` |
+| `P_PointOnDivlineSide` | function | `progs/doomgeneric/p_maputl.c:156` | `int P_PointOnDivlineSide ( fixed_t	x,   fixed_t	y,   divline_t*	line )` |
+| `P_PointOnLineSide` | function | `progs/doomgeneric/p_maputl.c:61` | `int P_PointOnLineSide ( fixed_t	x,   fixed_t	y,   line_t*	line )` |
+| `P_SetThingPosition` | function | `progs/doomgeneric/p_maputl.c:391` | `void P_SetThingPosition (mobj_t* thing)` |
+| `P_TraverseIntercepts` | function | `progs/doomgeneric/p_maputl.c:682` | `boolean P_TraverseIntercepts ( traverser_t	func,   fixed_t	maxfrac )` |
+| `P_UnsetThingPosition` | function | `progs/doomgeneric/p_maputl.c:342` | `void P_UnsetThingPosition (mobj_t* thing)` |
+| `bulletslope` | variable | `progs/doomgeneric/p_maputl.c:731` | `extern fixed_t bulletslope;` |
+| `intercepts_overrun_t` | struct | `progs/doomgeneric/p_maputl.c:738` | `` |
+| `FRICTION` | macro | `progs/doomgeneric/p_mobj.c:106` | `#define FRICTION` |
+| `G_PlayerReborn` | function | `progs/doomgeneric/p_mobj.c:37` | `void G_PlayerReborn (int player);` |
+| `P_CheckMissileSpawn` | function | `progs/doomgeneric/p_mobj.c:907` | `void P_CheckMissileSpawn (mobj_t* th)` |
+| `P_ExplodeMissile` | function | `progs/doomgeneric/p_mobj.c:84` | `void P_ExplodeMissile (mobj_t* mo)` |
+| `P_MobjThinker` | function | `progs/doomgeneric/p_mobj.c:441` | `void P_MobjThinker (mobj_t* mobj)` |
+| `P_NightmareRespawn` | function | `progs/doomgeneric/p_mobj.c:383` | `void P_NightmareRespawn (mobj_t* mobj)` |
+| `P_RemoveMobj` | function | `progs/doomgeneric/p_mobj.c:572` | `void P_RemoveMobj (mobj_t* mobj)` |
+| `P_RespawnSpecials` | function | `progs/doomgeneric/p_mobj.c:604` | `void P_RespawnSpecials (void)` |
+| `P_SetMobjState` | function | `progs/doomgeneric/p_mobj.c:48` | `boolean P_SetMobjState ( mobj_t*	mobj,   statenum_t	state )` |
+| `P_SpawnBlood` | function | `progs/doomgeneric/p_mobj.c:878` | `void P_SpawnBlood ( fixed_t	x,   fixed_t	y,   fixed_t	z,   int		damage )` |
+| `P_SpawnMapThing` | function | `progs/doomgeneric/p_mobj.c:739` | `void P_SpawnMapThing (mapthing_t* mthing)` |
+| `P_SpawnMissile` | function | `progs/doomgeneric/p_mobj.c:950` | `mobj_t* P_SpawnMissile ( mobj_t*	source,   mobj_t*	dest,   mobjtype_t	type )` |
+| `P_SpawnMobj` | function | `progs/doomgeneric/p_mobj.c:506` | `mobj_t* P_SpawnMobj ( fixed_t	x,   fixed_t	y,   fixed_t	z,   mobjtype_t	type )` |
+| `P_SpawnPlayer` | function | `progs/doomgeneric/p_mobj.c:668` | `void P_SpawnPlayer (mapthing_t* mthing)` |
+| `P_SpawnPlayerMissile` | function | `progs/doomgeneric/p_mobj.c:996` | `void P_SpawnPlayerMissile ( mobj_t*	source,   mobjtype_t	type )` |
+| `P_SpawnPuff` | function | `progs/doomgeneric/p_mobj.c:851` | `void P_SpawnPuff ( fixed_t	x,   fixed_t	y,   fixed_t	z )` |
+| `P_SubstNullMobj` | function | `progs/doomgeneric/p_mobj.c:929` | `mobj_t *P_SubstNullMobj(mobj_t *mobj)` |
+| `P_XYMovement` | function | `progs/doomgeneric/p_mobj.c:108` | `void P_XYMovement (mobj_t* mo)` |
+| `P_ZMovement` | function | `progs/doomgeneric/p_mobj.c:240` | `void P_ZMovement (mobj_t* mo)` |
 | `STOPSPEED` | macro | `progs/doomgeneric/p_mobj.c:105` | `#define STOPSPEED` |
 | `attackrange` | variable | `progs/doomgeneric/p_mobj.c:848` | `extern fixed_t attackrange;` |
 | `__P_MOBJ__` | macro | `progs/doomgeneric/p_mobj.h:21` | `#define __P_MOBJ__` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 | `MAXLIGHTZ` | macro | `progs/doomgeneric/r_main.h:66` | `#define MAXLIGHTZ` |
 | `NUMCOLORMAPS` | macro | `progs/doomgeneric/r_main.h:79` | `#define NUMCOLORMAPS` |
 | `R_AddPointToBox` | function | `progs/doomgeneric/r_main.h:140` | `void R_AddPointToBox ( int x, int y, fixed_t* box );` |
-| `R_Init` | function | `progs/doomgeneric/r_main.h:155` | `void R_Init (void);` |
-| `R_PointInSubsector` | function | `progs/doomgeneric/r_main.h:135` | `subsector_t* R_PointInSubsector ( fixed_t x, fixed_t y );` |
-| `R_PointOnSegSide` | function | `progs/doomgeneric/r_main.h:109` | `int R_PointOnSegSide ( fixed_t x, fixed_t y, seg_t* line );` |
-| `R_PointOnSide` | function | `progs/doomgeneric/r_main.h:103` | `int R_PointOnSide ( fixed_t x, fixed_t y, node_t* node );` |
-| `R_PointToAngle` | function | `progs/doomgeneric/r_main.h:115` | `angle_t R_PointToAngle ( fixed_t x, fixed_t y );` |
-| `R_PointToAngle2` | function | `progs/doomgeneric/r_main.h:120` | `angle_t R_PointToAngle2 ( fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2 );` |
-| `R_PointToDist` | function | `progs/doomgeneric/r_main.h:127` | `fixed_t R_PointToDist ( fixed_t x, fixed_t y );` |
-| `R_RenderPlayerView` | function | `progs/doomgeneric/r_main.h:152` | `void R_RenderPlayerView (player_t *player);` |
-| `R_ScaleFromGlobalAngle` | function | `progs/doomgeneric/r_main.h:132` | `fixed_t R_ScaleFromGlobalAngle (angle_t visangle);` |
-| `R_SetViewSize` | function | `progs/doomgeneric/r_main.h:158` | `void R_SetViewSize (int blocks, int detail);` |
-| `__R_MAIN__` | macro | `progs/doomgeneric/r_main.h:21` | `#define __R_MAIN__` |
-| `centerx` | variable | `progs/doomgeneric/r_main.h:40` | `extern int centerx;` |
-| `centerxfrac` | variable | `progs/doomgeneric/r_main.h:43` | `extern fixed_t centerxfrac;` |
-| `centery` | variable | `progs/doomgeneric/r_main.h:41` | `extern int centery;` |
-| `centeryfrac` | variable | `progs/doomgeneric/r_main.h:44` | `extern fixed_t centeryfrac;` |
-| `detailshift` | variable | `progs/doomgeneric/r_main.h:85` | `extern int detailshift;` |
-| `extralight` | variable | `progs/doomgeneric/r_main.h:73` | `extern int extralight;` |
-| `fixedcolormap` | variable | `progs/doomgeneric/r_main.h:74` | `extern lighttable_t* fixedcolormap;` |
-| `linecount` | variable | `progs/doomgeneric/r_main.h:49` | `extern int linecount;` |
-| `loopcount` | variable | `progs/doomgeneric/r_main.h:50` | `extern int loopcount;` |
-| `projection` | variable | `progs/doomgeneric/r_main.h:45` | `extern fixed_t projection;` |
-| `scalelightfixed` | variable | `progs/doomgeneric/r_main.h:70` | `extern lighttable_t* scalelightfixed[MAXLIGHTSCALE];` |
-| `validcount` | variable | `progs/doomgeneric/r_main.h:47` | `extern int validcount;` |
-| `viewcos` | variable | `progs/doomgeneric/r_main.h:32` | `extern fixed_t viewcos;` |
-| `viewsin` | variable | `progs/doomgeneric/r_main.h:33` | `extern fixed_t viewsin;` |
-| `viewwindowx` | variable | `progs/doomgeneric/r_main.h:35` | `extern int viewwindowx;` |
-| `viewwindowy` | variable | `progs/doomgeneric/r_main.h:36` | `extern int viewwindowy;` |
-| `void` | function | `progs/doomgeneric/r_main.h:92` | `extern void (*colfunc) (void);` |
-| `MAXOPENINGS` | macro | `progs/doomgeneric/r_plane.c:52` | `#define MAXOPENINGS` |
-| `MAXVISPLANES` | macro | `progs/doomgeneric/r_plane.c:45` | `#define MAXVISPLANES` |
-| `R_CheckPlane` | function | `progs/doomgeneric/r_plane.c:259` | `visplane_t* R_CheckPlane ( visplane_t*	pl,   int		start,   int		stop )` |
-| `R_ClearPlanes` | function | `progs/doomgeneric/r_plane.c:178` | `void R_ClearPlanes (void)` |
-| `R_DrawPlanes` | function | `progs/doomgeneric/r_plane.c:360` | `void R_DrawPlanes (void)` |
-| `R_FindPlane` | function | `progs/doomgeneric/r_plane.c:211` | `visplane_t* R_FindPlane ( fixed_t	height,   int		picnum,   int		lightlevel )` |
-| `R_InitPlanes` | function | `progs/doomgeneric/r_plane.c:94` | `void R_InitPlanes (void)` |
-| `R_MakeSpans` | function | `progs/doomgeneric/r_plane.c:324` | `void R_MakeSpans ( int		x,   int		t1,   int		b1,   int		t2,   int		b2 )` |
-| `R_MapPlane` | function | `progs/doomgeneric/r_plane.c:114` | `void R_MapPlane ( int		y,   int		x1,   int		x2 )` |
 
 Next: [SYMBOLS_p18.md](SYMBOLS_p18.md)

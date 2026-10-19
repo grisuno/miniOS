@@ -388,7 +388,7 @@ Libc name table for ET_REL programs (kernel/console.c).
 
 Called once from kmain; the table itself lives in kernel/symtab.c.
 
-> **Inherited:** Documentation from [`register_libc_symbols`](#register_libc_symbols) (headers/kernel.h:638).
+> **Inherited:** Documentation from [`register_libc_symbols`](#register_libc_symbols) (headers/kernel.h:654).
 
 ---
 

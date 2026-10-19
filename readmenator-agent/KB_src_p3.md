@@ -1,6 +1,16 @@
 # Subsystem: src (page 3 of 3)
 Previous: [KB_src_p2.md](KB_src_p2.md)
 
+## progs/src/shell.py
+- Doc: pybash: a Python shell layer on top of MiniOS's C shell.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `run_capture` (function, line 20) `def run_capture(cmd, args)`
+  - `expand` (function, line 30) `def expand(line, env)`
+  - `main` (function, line 36) `def main()`
+- Depends on: `progs/lua/minios.c`
+
 ## progs/src/sign.c
 - Doc: in-OS Ed25519 code signer for MiniOS secure boot.
 - Layer: utility
@@ -182,6 +192,18 @@ static void sign_rotr(unsigned int *lo, un...`
 - Doc: comprehensive non-interactive test suite for MiniOS.
 - Layer: testing
 - Language: sh
+
+## progs/src/test_py.py
+- Doc: in-OS Python checks for src/test_all.sh (docs/spec/python.md).
+- Layer: testing
+- Language: py
+- Symbols:
+  - `check` (function, line 12) `def check(name, cond)`
+  - `_asyncio_double` (function, line 72) `def _asyncio_double(n, ms)`
+  - `_asyncio_main` (function, line 77) `def _asyncio_main()`
+  - `_asyncio_wire_check` (function, line 81) `def _asyncio_wire_check(host, port)`
+  - `_one` (function, line 82) `def _one()`
+- Depends on: `kernel/time.c`, `progs/micropython/variants/minios/lib/mip.py`
 
 ## progs/src/thdemo.c
 - Doc: Producer-consumer over mthreads (roadmap Phase 1, M1).

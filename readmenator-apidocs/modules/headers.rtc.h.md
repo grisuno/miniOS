@@ -30,7 +30,7 @@ int rtc_read_tod(int *hour, int *min, int *sec);
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`rtc_read_tod`](#rtc_read_tod) (headers/kernel.h:912).
+> **Inherited:** Documentation from [`rtc_read_tod`](#rtc_read_tod) (headers/kernel.h:928).
 
 ---
 

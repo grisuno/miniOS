@@ -54,7 +54,7 @@ flowchart LR
 
 ### `normalize`
 
-`function` | [tools/check_abi_numbers.py:131](../../tools/check_abi_numbers.py#L131)
+`function` | [tools/check_abi_numbers.py:130](../../tools/check_abi_numbers.py#L130)
 
 ```python
 def normalize(minios_name)
@@ -74,7 +74,7 @@ def normalize(minios_name)
 
 ### `parse_abi`
 
-`function` | [tools/check_abi_numbers.py:135](../../tools/check_abi_numbers.py#L135)
+`function` | [tools/check_abi_numbers.py:134](../../tools/check_abi_numbers.py#L134)
 
 ```python
 def parse_abi(path)
@@ -94,7 +94,7 @@ def parse_abi(path)
 
 ### `parse_dispatch`
 
-`function` | [tools/check_abi_numbers.py:146](../../tools/check_abi_numbers.py#L146)
+`function` | [tools/check_abi_numbers.py:145](../../tools/check_abi_numbers.py#L145)
 
 ```python
 def parse_dispatch(path)
@@ -114,7 +114,7 @@ def parse_dispatch(path)
 
 ### `main`
 
-`function` | [tools/check_abi_numbers.py:159](../../tools/check_abi_numbers.py#L159)
+`function` | [tools/check_abi_numbers.py:158](../../tools/check_abi_numbers.py#L158)
 
 ```python
 def main()
@@ -154,7 +154,7 @@ DEVIATIONS
 
 ### `ABI_RE`
 
-`constant` | [tools/check_abi_numbers.py:126](../../tools/check_abi_numbers.py#L126)
+`constant` | [tools/check_abi_numbers.py:125](../../tools/check_abi_numbers.py#L125)
 
 ```python
 ABI_RE = re.compile('#define\\s+(MINIOS_SYS_[A-Z0-9_]+)\\s+(\\d+)')
@@ -166,7 +166,7 @@ ABI_RE = re.compile('#define\\s+(MINIOS_SYS_[A-Z0-9_]+)\\s+(\\d+)')
 
 ### `TABLE_RE`
 
-`constant` | [tools/check_abi_numbers.py:127](../../tools/check_abi_numbers.py#L127)
+`constant` | [tools/check_abi_numbers.py:126](../../tools/check_abi_numbers.py#L126)
 
 ```python
 TABLE_RE
@@ -178,7 +178,7 @@ TABLE_RE
 
 ### `CASE_RE`
 
-`constant` | [tools/check_abi_numbers.py:128](../../tools/check_abi_numbers.py#L128)
+`constant` | [tools/check_abi_numbers.py:127](../../tools/check_abi_numbers.py#L127)
 
 ```python
 CASE_RE = re.compile('^\\s*case\\s+(\\d+)\\s*:[^/]*(?:/\\*\\s*([a-z0-9_]+))?')

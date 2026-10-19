@@ -1,8 +1,26 @@
-# Symbols (page 7 of 26)
+# Symbols (page 7 of 27)
 Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `SYSCALL_ASM_H` | macro | `headers/syscall_asm.h:2` | `#define SYSCALL_ASM_H` |
+| `SYSCALL_CPU_CUR_PID_OFF` | macro | `headers/syscall_asm.h:20` | `#define SYSCALL_CPU_CUR_PID_OFF` |
+| `SYSCALL_CPU_SC_N_OFF` | macro | `headers/syscall_asm.h:21` | `#define SYSCALL_CPU_SC_N_OFF` |
+| `SYSCALL_CPU_SC_PID_OFF` | macro | `headers/syscall_asm.h:23` | `#define SYSCALL_CPU_SC_PID_OFF` |
+| `SYSCALL_CPU_SC_RET_OFF` | macro | `headers/syscall_asm.h:24` | `#define SYSCALL_CPU_SC_RET_OFF` |
+| `SYSCALL_CPU_SC_RIP_OFF` | macro | `headers/syscall_asm.h:22` | `#define SYSCALL_CPU_SC_RIP_OFF` |
+| `SYSCALL_CPU_SC_TMP_OFF` | macro | `headers/syscall_asm.h:25` | `#define SYSCALL_CPU_SC_TMP_OFF` |
+| `SYSCALL_FRAME_WORDS` | macro | `headers/syscall_asm.h:29` | `#define SYSCALL_FRAME_WORDS` |
+| `SYSCALL_MAX_PROCS` | macro | `headers/syscall_asm.h:19` | `#define SYSCALL_MAX_PROCS` |
+| `SYSCALL_PROC_KSTACK_OFF` | macro | `headers/syscall_asm.h:18` | `#define SYSCALL_PROC_KSTACK_OFF` |
+| `SYSCALL_PROC_T_SIZE` | macro | `headers/syscall_asm.h:17` | `#define SYSCALL_PROC_T_SIZE` |
+| `SYSCALL_USER_WIN_HI` | macro | `headers/syscall_asm.h:16` | `#define SYSCALL_USER_WIN_HI` |
+| `SYSCALL_USER_WIN_LO` | macro | `headers/syscall_asm.h:15` | `#define SYSCALL_USER_WIN_LO` |
+| `LINUX_EXIT_STATUS_MASK` | macro | `headers/syscalls_proc.h:30` | `#define LINUX_EXIT_STATUS_MASK` |
+| `LINUX_SIGNAL_EXIT_BASE` | macro | `headers/syscalls_proc.h:29` | `#define LINUX_SIGNAL_EXIT_BASE` |
+| `LINUX_SIGNAL_MAX` | macro | `headers/syscalls_proc.h:28` | `#define LINUX_SIGNAL_MAX` |
+| `SYSCALLS_PROC_H` | macro | `headers/syscalls_proc.h:2` | `#define SYSCALLS_PROC_H` |
+| `dispatcher` | function | `headers/syscalls_proc.h:5` | `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...` |
 | `do_proc_exit` | function | `headers/syscalls_proc.h:34` | `long do_proc_exit(long code);` |
 | `linux_signal_fatal` | function | `headers/syscalls_proc.h:31` | `int linux_signal_fatal(long sig);` |
 | `sys_linux_clone` | function | `headers/syscalls_proc.h:19` | `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);` |
@@ -478,23 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `syscall_init` | function | `kernel.c:117` | `void syscall_init(void)` |
 | `syscall_kstack` | variable | `kernel.c:115` | `extern unsigned long syscall_kstack;` |
 | `table` | function | `kernel.c:104` | `* Symbol table (for resolving program references) * ================================================================...` |
-| `tables` | function | `kernel.c:275` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
-| `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
-| `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
-| `abi_verify` | function | `kernel/abi.c:38` | `int abi_verify(const char *text, long version, unsigned long checksum)` |
-| `batch_exec` | function | `kernel/batch.c:19` | `long batch_exec(const batch_op_t *ops, long *results, int count,                 int *completed, ...` |
-| `CLIP_MAX` | macro | `kernel/clip.c:17` | `#define CLIP_MAX` |
-| `clip_clear` | function | `kernel/clip.c:48` | `void clip_clear(void)` |
-| `clip_len_get` | function | `kernel/clip.c:55` | `int clip_len_get(void)` |
-| `clip_set` | function | `kernel/clip.c:25` | `int clip_set(const char *data, unsigned long len)` |
-| `REDIR_INITIAL_CAP` | macro | `kernel/console.c:96` | `#define REDIR_INITIAL_CAP` |
-| `REDIR_MAX_BYTES` | macro | `kernel/console.c:97` | `#define REDIR_MAX_BYTES` |
-| `XXH_STATIC_LINKING_ONLY` | macro | `kernel/console.c:4` | `#define XXH_STATIC_LINKING_ONLY` |
-| `redir_grow` | function | `kernel/console.c:110` | `static int redir_grow(void)` |
-| `redirect_active` | function | `kernel/console.c:120` | `int redirect_active(void)` |
-| `redirect_begin` | function | `kernel/console.c:139` | `int redirect_begin(void)` |
-| `redirect_commit` | function | `kernel/console.c:147` | `int redirect_commit(const char *path, int append_mode)` |
-| `redirect_discard` | function | `kernel/console.c:216` | `void redirect_discard(void)` |
-| `redirect_pending` | function | `kernel/console.c:185` | `unsigned long redirect_pending(void)` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

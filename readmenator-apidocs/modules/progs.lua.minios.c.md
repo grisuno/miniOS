@@ -43,7 +43,7 @@ int luaopen_minios(lua_State *L)
 
 --- Compatibility aliases for runtime bindings ---
 
-> **Inherited:** Documentation from [`SYS_TIME_MS`](#sys_time_ms) (progs/minios_abi.h:424).
+> **Inherited:** Documentation from [`SYS_TIME_MS`](#sys_time_ms) (progs/minios_abi.h:428).
 
 ---
 

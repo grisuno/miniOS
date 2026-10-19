@@ -103,7 +103,7 @@ A bare name with no recognised suffix (cp, freedom, ...) resolves through bin/, 
 
 ### `job_row`
 
-`struct` | [kernel/shell.c:2062](../../kernel/shell.c#L2062)
+`struct` | [kernel/shell.c:2068](../../kernel/shell.c#L2068)
 
 ```c
 struct job_row { int pid; int state; char name[32]; };
@@ -115,7 +115,7 @@ struct job_row { int pid; int state; char name[32]; };
 
 ### `ps_row`
 
-`struct` | [kernel/shell.c:3698](../../kernel/shell.c#L3698)
+`struct` | [kernel/shell.c:3704](../../kernel/shell.c#L3704)
 
 ```c
 struct ps_row { int pid; int ppid; int state; int code; char name[32]; };
@@ -163,7 +163,7 @@ Implemented in shell.c, called from vga_fb.c.
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`shell_readline_active`](#shell_readline_active) (headers/kernel.h:685).
+> **Inherited:** Documentation from [`shell_readline_active`](#shell_readline_active) (headers/kernel.h:701).
 
 ---
 
@@ -240,7 +240,7 @@ Echoes input and honours backspace. Shared by the shell prompt and the editor.
 
 ### `root`
 
-`function` | [kernel/shell.c:651](../../kernel/shell.c#L651)
+`function` | [kernel/shell.c:654](../../kernel/shell.c#L654)
 
 ```c
 * MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * explicit path or an argument word keeps every match, so * navigating to data file
@@ -260,7 +260,7 @@ Echoes input and honours backspace. Shared by the shell prompt and the editor.
 
 ### `shell_parse`
 
-`function` | [kernel/shell.c:811](../../kernel/shell.c#L811)
+`function` | [kernel/shell.c:815](../../kernel/shell.c#L815)
 
 ```c
 int shell_parse(char *line, char **argv, int max_args)
@@ -288,7 +288,7 @@ Tokenize [`line`](#line) into up to `max_args` argv entries; returns argc.
 
 ### `shell_run`
 
-`function` | [kernel/shell.c:879](../../kernel/shell.c#L879)
+`function` | [kernel/shell.c:883](../../kernel/shell.c#L883)
 
 ```c
 void shell_run(void)
@@ -302,7 +302,7 @@ void shell_run(void)
 
 ### `window`
 
-`function` | [kernel/shell.c:1322](../../kernel/shell.c#L1322)
+`function` | [kernel/shell.c:1328](../../kernel/shell.c#L1328)
 
 ```c
 * window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small programs overlap in * time instead of running one after another. ET_REL is refus
@@ -318,7 +318,7 @@ void shell_run(void)
 
 ### `code`
 
-`function` | [kernel/shell.c:1395](../../kernel/shell.c#L1395)
+`function` | [kernel/shell.c:1401](../../kernel/shell.c#L1401)
 
 ```c
 * the last exit code (130 when interrupted). */ static int shell_wait_fg(int *pids, int n, int ki...
@@ -340,7 +340,7 @@ void shell_run(void)
 
 ### `this`
 
-`function` | [kernel/shell.c:1527](../../kernel/shell.c#L1527)
+`function` | [kernel/shell.c:1533](../../kernel/shell.c#L1533)
 
 ```c
 * boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit, piano) runs as a * Wayland client (pixels to its pid-unique mailbox, input from its * .
@@ -354,7 +354,7 @@ void shell_run(void)
 
 ### `flows`
 
-`function` | [kernel/shell.c:1573](../../kernel/shell.c#L1573)
+`function` | [kernel/shell.c:1579](../../kernel/shell.c#L1579)
 
 ```c
 * and external flows (make wl) set it themselves. */ static void desktop_unflag(const char *name)
@@ -376,7 +376,7 @@ void shell_run(void)
 
 ### `shell_run_any`
 
-`function` | [kernel/shell.c:1661](../../kernel/shell.c#L1661)
+`function` | [kernel/shell.c:1667](../../kernel/shell.c#L1667)
 
 ```c
 int shell_run_any(const char *name, int argc, char **argv)
@@ -404,7 +404,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `context`
 
-`function` | [kernel/shell.c:1688](../../kernel/shell.c#L1688)
+`function` | [kernel/shell.c:1694](../../kernel/shell.c#L1694)
 
 ```c
 * ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */ shell_queue_launch(cmd);
@@ -424,7 +424,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `tree`
 
-`function` | [kernel/shell.c:2048](../../kernel/shell.c#L2048)
+`function` | [kernel/shell.c:2054](../../kernel/shell.c#L2054)
 
 ```c
 * tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores * Ctrl+C (it never poll...
@@ -444,7 +444,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `VMA`
 
-`function` | [kernel/shell.c:2191](../../kernel/shell.c#L2191)
+`function` | [kernel/shell.c:2197](../../kernel/shell.c#L2197)
 
 ```c
 * plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit * stack, 128 regions prin...
@@ -460,7 +460,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `to`
 
-`function` | [kernel/shell.c:2264](../../kernel/shell.c#L2264)
+`function` | [kernel/shell.c:2270](../../kernel/shell.c#L2270)
 
 ```c
 * actually trap to (brk/mmap/munmap/mprotect) and says so up front. */ static void shell_cmd_trac...
@@ -482,7 +482,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `shell_parse_long`
 
-`function` | [kernel/shell.c:2349](../../kernel/shell.c#L2349)
+`function` | [kernel/shell.c:2355](../../kernel/shell.c#L2355)
 
 ```c
 int shell_parse_long(const char *s, long *out)
@@ -509,7 +509,7 @@ The bound comes from the compiler's __LONG_MAX__ (freestanding-safe, no libc hea
 
 ### `shell_parse_pid`
 
-`function` | [kernel/shell.c:2370](../../kernel/shell.c#L2370)
+`function` | [kernel/shell.c:2376](../../kernel/shell.c#L2376)
 
 ```c
 int shell_parse_pid(const char *s, int min_pid, int *out)
@@ -537,7 +537,7 @@ Bounded pid parse shared by wait/kill/vmmap: one range check instead of three op
 
 ### `shell_exec_builtin`
 
-`function` | [kernel/shell.c:2888](../../kernel/shell.c#L2888)
+`function` | [kernel/shell.c:2894](../../kernel/shell.c#L2894)
 
 ```c
 void shell_exec_builtin(int argc, char **argv)
@@ -550,7 +550,7 @@ void shell_exec_builtin(int argc, char **argv)
 | `argc` | `int` |  |  |
 | `argv` | `char **` |  |  |
 
-*Calls:* [`nvme_init`](headers.drivers.nvme.h.md#nvme_init), [`nvme_note`](headers.drivers.nvme.h.md#nvme_note), [`nvme_present`](headers.drivers.nvme.h.md#nvme_present), [`nvme_read_sectors`](headers.drivers.nvme.h.md#nvme_read_sectors), [`nvme_sectors`](headers.drivers.nvme.h.md#nvme_sectors), [`nvme_version`](headers.drivers.nvme.h.md#nvme_version), [`vblk_init`](headers.drivers.virtio_blk.h.md#vblk_init), [`vblk_read_sectors`](headers.drivers.virtio_blk.h.md#vblk_read_sectors), [`vblk_sectors`](headers.drivers.virtio_blk.h.md#vblk_sectors), [`vnet_get_mac`](headers.drivers.virtio_net.h.md#vnet_get_mac), [`vnet_init`](headers.drivers.virtio_net.h.md#vnet_init), [`shell_cmd_edit`](headers.editor.h.md#shell_cmd_edit) and 17 more
+*Calls:* [`nvme_init`](headers.drivers.nvme.h.md#nvme_init), [`nvme_note`](headers.drivers.nvme.h.md#nvme_note), [`nvme_present`](headers.drivers.nvme.h.md#nvme_present), [`nvme_read_sectors`](headers.drivers.nvme.h.md#nvme_read_sectors), [`nvme_sectors`](headers.drivers.nvme.h.md#nvme_sectors), [`nvme_version`](headers.drivers.nvme.h.md#nvme_version), [`vblk_init`](headers.drivers.virtio_blk.h.md#vblk_init), [`vblk_read_sectors`](headers.drivers.virtio_blk.h.md#vblk_read_sectors), [`vblk_sectors`](headers.drivers.virtio_blk.h.md#vblk_sectors), [`shell_cmd_edit`](headers.editor.h.md#shell_cmd_edit), [`clip_get`](headers.kernel.h.md#clip_get), [`fs_rename`](headers.kernel.h.md#fs_rename) and 15 more
 
 *Called by:* [`shell_run`](#shell_run), [`to`](#to)
 
@@ -560,7 +560,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `terminal`
 
-`function` | [kernel/shell.c:2963](../../kernel/shell.c#L2963)
+`function` | [kernel/shell.c:2969](../../kernel/shell.c#L2969)
 
 ```c
 * sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */ if (vga_fb_active) term_clear();
@@ -580,7 +580,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `driver`
 
-`function` | [kernel/shell.c:3306](../../kernel/shell.c#L3306)
+`function` | [kernel/shell.c:3312](../../kernel/shell.c#L3312)
 
 ```c
 * stream through the fat: VFS driver ("img:fatpath" per open, * registered at boot beside mem:), 4 KB heap chunks so a hostile * size can never drive an oversized alloc. Bad magic, missing files * and overlong names are diagnostics. */ else if (kstrcmp(argv[0], "fat") == 0)
@@ -601,7 +601,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `frame`
 
-`function` | [kernel/shell.c:3700](../../kernel/shell.c#L3700)
+`function` | [kernel/shell.c:3706](../../kernel/shell.c#L3706)
 
 ```c
 * not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row *)kmalloc(sizeof(struct ps_row) * MAX_PROCS);
@@ -622,7 +622,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `stdout`
 
-`function` | [kernel/shell.c:4068](../../kernel/shell.c#L4068)
+`function` | [kernel/shell.c:4074](../../kernel/shell.c#L4074)
 
 ```c
 * the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console, never into the * pipe (shell_report suspends the capture), so `run x | cat` shows the *
@@ -706,7 +706,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `QEMU_PM_PORT`
 
-`macro` | [kernel/shell.c:1016](../../kernel/shell.c#L1016)
+`macro` | [kernel/shell.c:1022](../../kernel/shell.c#L1022)
 
 ```c
 #define QEMU_PM_PORT
@@ -718,7 +718,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `HTTPD_REQ_CAP`
 
-`macro` | [kernel/shell.c:2546](../../kernel/shell.c#L2546)
+`macro` | [kernel/shell.c:2552](../../kernel/shell.c#L2552)
 
 ```c
 #define HTTPD_REQ_CAP
@@ -730,7 +730,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `HTTPD_IO_CHUNK`
 
-`macro` | [kernel/shell.c:2547](../../kernel/shell.c#L2547)
+`macro` | [kernel/shell.c:2553](../../kernel/shell.c#L2553)
 
 ```c
 #define HTTPD_IO_CHUNK
@@ -744,7 +744,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `SHELL_LS_CAP`
 
-`macro` | [kernel/shell.c:2804](../../kernel/shell.c#L2804)
+`macro` | [kernel/shell.c:2810](../../kernel/shell.c#L2810)
 
 ```c
 #define SHELL_LS_CAP
@@ -762,7 +762,7 @@ Shared by the fat and ext4 builtins.
 
 ### `PIPE_HOP_MAX`
 
-`macro` | [kernel/shell.c:4078](../../kernel/shell.c#L4078)
+`macro` | [kernel/shell.c:4084](../../kernel/shell.c#L4084)
 
 ```c
 #define PIPE_HOP_MAX

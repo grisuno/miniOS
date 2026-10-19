@@ -256,7 +256,7 @@ Path resolution choke point shared by the shell builtins and the zip builtins. f
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`fs_resolve`](#fs_resolve) (headers/kernel.h:302).
+> **Inherited:** Documentation from [`fs_resolve`](#fs_resolve) (headers/kernel.h:311).
 
 ---
 

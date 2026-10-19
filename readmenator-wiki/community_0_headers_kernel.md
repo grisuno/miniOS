@@ -4,7 +4,7 @@
 
 ## Definition
 
-This community groups 137 file(s) rooted at `headers` with dominant language c (cohesion 0.90). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ALIGN_UP`, `AP_STUB_ADDR`, `ARCH_X86_CPU_SETUP_H`, `ARCH_X86_MSR_H`, `BC_LINE`. Core file: `headers/kernel.h` (411 symbols). Documented purpose: SMP application-processor bootstrap stub..
+This community groups 137 file(s) rooted at `headers` with dominant language c (cohesion 0.90). Central symbols: `A20_CONTROL_PORT`, `A20_ENABLE_BIT`, `A20_RESET_CLEAR_MASK`, `ALIGN_UP`, `AP_STUB_ADDR`, `ARCH_X86_CPU_SETUP_H`, `ARCH_X86_MSR_H`, `BC_LINE`. Core file: `headers/kernel.h` (412 symbols). Documented purpose: SMP application-processor bootstrap stub..
 
 ## Files
 
@@ -142,7 +142,7 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 ## Internal vs External Edges
 
 - Internal resolved imports (EXTRACTED): 319
-- Cross-boundary resolved imports (EXTRACTED): 36
+- Cross-boundary resolved imports (EXTRACTED): 37
 
 ## Connections
 

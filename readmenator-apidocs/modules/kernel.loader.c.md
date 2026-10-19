@@ -346,7 +346,7 @@ ET_REL relocatable .o
 
 **Returns:** `void *`
 
-> **Inherited:** Documentation from [`load_exec_elf`](#load_exec_elf) (headers/kernel.h:751).
+> **Inherited:** Documentation from [`load_exec_elf`](#load_exec_elf) (headers/kernel.h:767).
 
 *Calls:* [`ALIGN_UP`](headers.kernel.h.md#align_up), [`aslr_brk_pages`](headers.sched.h.md#aslr_brk_pages), [`aslr_dyn_base`](headers.sched.h.md#aslr_dyn_base), [`aslr_mmap_pages`](headers.sched.h.md#aslr_mmap_pages), [`spin_restore_irq`](headers.spinlock.h.md#spin_restore_irq), [`spin_save_irq`](headers.spinlock.h.md#spin_save_irq), [`ldso_bind_into`](#ldso_bind_into), [`AddonState.load`](mcp.minios_addons.py.md#addonstate-load)
 
@@ -443,7 +443,7 @@ process note
 
 **Returns:** `void *`
 
-> **Inherited:** Documentation from [`load_exec_elf_into`](#load_exec_elf_into) (headers/kernel.h:753).
+> **Inherited:** Documentation from [`load_exec_elf_into`](#load_exec_elf_into) (headers/kernel.h:769).
 
 *Calls:* [`ALIGN_UP`](headers.kernel.h.md#align_up), [`aslr_brk_pages`](headers.sched.h.md#aslr_brk_pages), [`aslr_dyn_base`](headers.sched.h.md#aslr_dyn_base), [`spin_restore_irq`](headers.spinlock.h.md#spin_restore_irq), [`spin_save_irq`](headers.spinlock.h.md#spin_save_irq)
 

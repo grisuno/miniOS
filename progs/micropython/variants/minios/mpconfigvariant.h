@@ -46,11 +46,39 @@
 #define MICROPY_PY_OS_SYSTEM (0)
 #define MICROPY_PY_OS_URANDOM (0)
 
-// ── time module disabled (no select() syscall for sleep) ───────────
-#define MICROPY_PY_TIME (0)
+// ── sockets: client and server over the kernel's Linux socket ABI ──
+// The kernel answers the full Linux socket surface (docs/spec/network.md):
+// socket/connect/bind/listen/accept/send/recv/sendto/recvfrom, sockopts,
+// poll(2) readiness and static glibc's resolver.  SSL stays off: no TLS
+// engine ships in this port, so `import ssl` fails and https URLs are
+// refused by mip.py.  The switch lives in mpconfigvariant.mk
+// (MICROPY_PY_SOCKET = 1), which the port Makefile turns into
+// -DMICROPY_PY_SOCKET=1; defining it here too would win with a
+// redefinition warning and turn the module back off.
+
+// ── select: poll-based (unix POSIX optimisations), like every variant ─
+#define MICROPY_PY_SELECT (1)
+#define MICROPY_PY_SELECT_POSIX_OPTIMISATIONS (1)
+#define MICROPY_PY_SELECT_SELECT (0)
+
+// ── asyncio: the extmod event loop over select.poll() and sockets ───
+#define MICROPY_PY_ASYNCIO (1)
+// Non-blocking streams: EAGAIN reads answer None instead of raising
+// (py/stream.h mp_is_nonblocking_error). asyncio's Stream.read relies on
+// it: without this the socket read raises EAGAIN and every async stream
+// dies mid-transfer.
+#define MICROPY_STREAMS_NON_BLOCK (1)
+
+// ── errno: the ecosystem (asyncio.stream) imports EINPROGRESS et al ─
+#define MICROPY_PY_ERRNO (1)
+
+// ── time: unix modtime.c; sleep(select) is backed by pselect6(2) ────
+#define MICROPY_PY_TIME (1)
+#define MICROPY_PY_TIME_INCLUDEFILE "ports/unix/modtime.c"
+#define MICROPY_PY_TIME_TIME_TIME_NS (1)
+#define MICROPY_PY_TIME_CUSTOM_SLEEP (1)
 
 // ── explicit disables ─────────────────────────────────────────────
-#define MICROPY_PY_SOCKET (0)
 #define MICROPY_PY_SSL (0)
 #define MICROPY_PY_FFI (0)
 #define MICROPY_PY_THREAD (0)

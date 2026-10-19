@@ -323,7 +323,11 @@
 #define MINIOS_SYS_PCSPK_VOL   214
 #define MINIOS_SYS_SPAWN       215
 #define MINIOS_SYS_LZ4_COMPRESS   216
-#define MINIOS_SYS_LZ4_DECOMPRESS 217
+/* lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64,
+ * which the kernel now serves (directory enumeration for readdir(3) and
+ * CPython's os.scandir; see docs/spec/python.md). 248 is a free x86-64
+ * number inside the MiniOS window, and the ABI checksum moved with it. */
+#define MINIOS_SYS_LZ4_DECOMPRESS 248
 #define MINIOS_SYS_MOUSE       219
 #define MINIOS_SYS_NK_FRAME    220
 #define MINIOS_SYS_SB16_OPEN   221

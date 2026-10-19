@@ -293,8 +293,8 @@ Previous: [KB_kernel.md](KB_kernel.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `job_row` (struct, line 2062)
-  - `ps_row` (struct, line 3698)
+  - `job_row` (struct, line 2068)
+  - `ps_row` (struct, line 3704)
   - `ShellRunDir` (struct, line 61)
   - `shell_queue_launch` (function, line 87) `void shell_queue_launch(const char *cmd)`
   - `shell_readline_active` (function, line 115) `int shell_readline_active(void)`
@@ -322,90 +322,90 @@ Previous: [KB_kernel.md](KB_kernel.md)
   - `line` (function, line 446) `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
   - `shell_readline_hist` (function, line 491) `static void shell_readline_hist(char *buf, int size)`
-  - `shell_parse` (function, line 811) `int shell_parse(char *line, char **argv, int max_args)`
-  - `shell_run_init` (function, line 840) `static void shell_run_init(void)`
-  - `shell_run` (function, line 879) `void shell_run(void)`
-  - `shell_load` (function, line 949) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
-  - `outw_port` (function, line 1012) `static inline void outw_port(unsigned short port, unsigned short val)`
-  - `shell_cmd_poweroff` (function, line 1018) `static void shell_cmd_poweroff(void)`
-  - `shell_run_dir_for` (function, line 1034) `static const ShellRunDir *shell_run_dir_for(const char *name)`
-  - `shell_file_is_real` (function, line 1052) `static int shell_file_is_real(const char *resolved)`
-  - `shell_resolve_run` (function, line 1064) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
-  - `etrel_path_trusted` (function, line 1106) `static int etrel_path_trusted(const char *full)`
-  - `shell_run_elf_buf_path` (function, line 1146) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+  - `shell_parse` (function, line 815) `int shell_parse(char *line, char **argv, int max_args)`
+  - `shell_run_init` (function, line 844) `static void shell_run_init(void)`
+  - `shell_run` (function, line 883) `void shell_run(void)`
+  - `shell_load` (function, line 955) `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+  - `outw_port` (function, line 1018) `static inline void outw_port(unsigned short port, unsigned short val)`
+  - `shell_cmd_poweroff` (function, line 1024) `static void shell_cmd_poweroff(void)`
+  - `shell_run_dir_for` (function, line 1040) `static const ShellRunDir *shell_run_dir_for(const char *name)`
+  - `shell_file_is_real` (function, line 1058) `static int shell_file_is_real(const char *resolved)`
+  - `shell_resolve_run` (function, line 1070) `static int shell_resolve_run(const char *name, char *out, unsigned cap)`
+  - `etrel_path_trusted` (function, line 1112) `static int etrel_path_trusted(const char *full)`
+  - `shell_run_elf_buf_path` (function, line 1152) `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...`
-  - `shell_run_elf_file` (function, line 1179) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
-  - `shell_run_elf_minifs` (function, line 1192) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
-  - `shell_run_cvm` (function, line 1249) `static int shell_run_cvm(const char *full, int argc, char **argv)`
-  - `shell_run_file` (function, line 1285) `static int shell_run_file(const char *name, int argc, char **argv)`
-  - `shell_read_elf_bytes` (function, line 1329) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+  - `shell_run_elf_file` (function, line 1185) `static int shell_run_elf_file(const char *full, int argc, char **argv)`
+  - `shell_run_elf_minifs` (function, line 1198) `static int shell_run_elf_minifs(const char *name, int argc, char **argv)`
+  - `shell_run_cvm` (function, line 1255) `static int shell_run_cvm(const char *full, int argc, char **argv)`
+  - `shell_run_file` (function, line 1291) `static int shell_run_file(const char *name, int argc, char **argv)`
+  - `shell_read_elf_bytes` (function, line 1335) `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...`
-  - `code` (function, line 1395) `* the last exit code (130 when interrupted). */
+  - `code` (function, line 1401) `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-  - `shell_cmd_mrun` (function, line 1449) `static void shell_cmd_mrun(int argc, char **argv)`
-  - `shell_run_bg` (function, line 1497) `static void shell_run_bg(const char *name, int argc, char **argv)`
-  - `desktop_path` (function, line 1540) `static void desktop_path(const char *name, char *dst, unsigned cap)`
-  - `desktop_flag` (function, line 1549) `static void desktop_flag(const char *name)`
-  - `desktop_flag_on` (function, line 1559) `static int desktop_flag_on(const char *name)`
-  - `flows` (function, line 1573) `* and external flows (make wl) set it themselves. */
+  - `shell_cmd_mrun` (function, line 1455) `static void shell_cmd_mrun(int argc, char **argv)`
+  - `shell_run_bg` (function, line 1503) `static void shell_run_bg(const char *name, int argc, char **argv)`
+  - `desktop_path` (function, line 1546) `static void desktop_path(const char *name, char *dst, unsigned cap)`
+  - `desktop_flag` (function, line 1555) `static void desktop_flag(const char *name)`
+  - `desktop_flag_on` (function, line 1565) `static int desktop_flag_on(const char *name)`
+  - `flows` (function, line 1579) `* and external flows (make wl) set it themselves. */
 static void desktop_unflag(const char *name)`
-  - `desktop_srv_alive` (function, line 1581) `static int desktop_srv_alive(void)`
-  - `shell_cmd_desktop` (function, line 1597) `static void shell_cmd_desktop(int argc, char **argv)`
-  - `shell_run_any` (function, line 1661) `int shell_run_any(const char *name, int argc, char **argv)`
-  - `gfx_parse_int` (function, line 1734) `static int gfx_parse_int(const char *s, int *out)`
-  - `gfx_read_palette` (function, line 1754) `static void gfx_read_palette(unsigned char pal[768])`
-  - `shell_cmd_gfx` (function, line 1761) `static void shell_cmd_gfx(int argc, char **argv)`
-  - `shell_cmd_wm` (function, line 1913) `static void shell_cmd_wm(int argc, char **argv)`
-  - `tree` (function, line 2048) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+  - `desktop_srv_alive` (function, line 1587) `static int desktop_srv_alive(void)`
+  - `shell_cmd_desktop` (function, line 1603) `static void shell_cmd_desktop(int argc, char **argv)`
+  - `shell_run_any` (function, line 1667) `int shell_run_any(const char *name, int argc, char **argv)`
+  - `gfx_parse_int` (function, line 1740) `static int gfx_parse_int(const char *s, int *out)`
+  - `gfx_read_palette` (function, line 1760) `static void gfx_read_palette(unsigned char pal[768])`
+  - `shell_cmd_gfx` (function, line 1767) `static void shell_cmd_gfx(int argc, char **argv)`
+  - `shell_cmd_wm` (function, line 1919) `static void shell_cmd_wm(int argc, char **argv)`
+  - `tree` (function, line 2054) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-  - `shell_cmd_jobs` (function, line 2061) `static void shell_cmd_jobs(void)`
-  - `shell_has_child` (function, line 2090) `static int shell_has_child(int pid)`
-  - `shell_cmd_wait` (function, line 2100) `static void shell_cmd_wait(int argc, char **argv)`
-  - `shell_cmd_kill` (function, line 2135) `static void shell_cmd_kill(int argc, char **argv)`
-  - `shell_cmd_mem` (function, line 2158) `static void shell_cmd_mem(void)`
-  - `VMA` (function, line 2191) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+  - `shell_cmd_jobs` (function, line 2067) `static void shell_cmd_jobs(void)`
+  - `shell_has_child` (function, line 2096) `static int shell_has_child(int pid)`
+  - `shell_cmd_wait` (function, line 2106) `static void shell_cmd_wait(int argc, char **argv)`
+  - `shell_cmd_kill` (function, line 2141) `static void shell_cmd_kill(int argc, char **argv)`
+  - `shell_cmd_mem` (function, line 2164) `static void shell_cmd_mem(void)`
+  - `VMA` (function, line 2197) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-  - `to` (function, line 2264) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+  - `to` (function, line 2270) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-  - `shell_parse_u64` (function, line 2333) `static int shell_parse_u64(const char *s, unsigned long *out)`
-  - `shell_parse_long` (function, line 2349) `int shell_parse_long(const char *s, long *out)`
-  - `shell_parse_pid` (function, line 2370) `int shell_parse_pid(const char *s, int min_pid, int *out)`
-  - `shell_cmd_gdb` (function, line 2385) `static void shell_cmd_gdb(int argc, char **argv)`
-  - `shell_cmd_hash` (function, line 2428) `static void shell_cmd_hash(int argc, char **argv)`
-  - `shell_resolve_arg` (function, line 2447) `static int shell_resolve_arg(const char *cmd, const char *arg,
+  - `shell_parse_u64` (function, line 2339) `static int shell_parse_u64(const char *s, unsigned long *out)`
+  - `shell_parse_long` (function, line 2355) `int shell_parse_long(const char *s, long *out)`
+  - `shell_parse_pid` (function, line 2376) `int shell_parse_pid(const char *s, int min_pid, int *out)`
+  - `shell_cmd_gdb` (function, line 2391) `static void shell_cmd_gdb(int argc, char **argv)`
+  - `shell_cmd_hash` (function, line 2434) `static void shell_cmd_hash(int argc, char **argv)`
+  - `shell_resolve_arg` (function, line 2453) `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...`
-  - `shell_httpd_one` (function, line 2553) `static void shell_httpd_one(int child, const char *root)`
-  - `shell_httpd_serve` (function, line 2638) `static void shell_httpd_serve(unsigned short port, const char *root,
+  - `shell_httpd_one` (function, line 2559) `static void shell_httpd_one(int child, const char *root)`
+  - `shell_httpd_serve` (function, line 2644) `static void shell_httpd_serve(unsigned short port, const char *root,
         int max_conn)`
-  - `shell_cross_ls` (function, line 2805) `static void shell_cross_ls(const char *drv, const char *imgarg,
+  - `shell_cross_ls` (function, line 2811) `static void shell_cross_ls(const char *drv, const char *imgarg,
                            const ...`
-  - `shell_cross_cat` (function, line 2846) `static void shell_cross_cat(const char *drv, const char *imgarg,
+  - `shell_cross_cat` (function, line 2852) `static void shell_cross_cat(const char *drv, const char *imgarg,
                             cons...`
-  - `shell_exec_builtin` (function, line 2888) `void shell_exec_builtin(int argc, char **argv)`
-  - `driver` (function, line 3306) `* stream through the fat: VFS driver ("img:fatpath" per open,
+  - `shell_exec_builtin` (function, line 2894) `void shell_exec_builtin(int argc, char **argv)`
+  - `driver` (function, line 3312) `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
-  - `shell_is_pipe_tok` (function, line 4080) `static int shell_is_pipe_tok(const char *a)`
-  - `shell_run_stage` (function, line 4119) `static char *shell_run_stage(char **sargv, int sargc,
+  - `shell_is_pipe_tok` (function, line 4086) `static int shell_is_pipe_tok(const char *a)`
+  - `shell_run_stage` (function, line 4125) `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...`
   - `shell_run_pipeline` (function, line 151) `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
-  - `root` (function, line 651) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
-  - `desktop_unflag` (function, line 833) `static void desktop_unflag(const char *name);`
-  - `window` (function, line 1322) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
-  - `this` (function, line 1527) `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
-  - `context` (function, line 1688) `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
-  - `terminal` (function, line 2963) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
-  - `frame` (function, line 3700) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-  - `stdout` (function, line 4068) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+  - `root` (function, line 654) `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
+  - `desktop_unflag` (function, line 837) `static void desktop_unflag(const char *name);`
+  - `window` (function, line 1328) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
+  - `this` (function, line 1533) `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
+  - `context` (function, line 1694) `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
+  - `terminal` (function, line 2969) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
+  - `frame` (function, line 3706) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
+  - `stdout` (function, line 4074) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 25) `#define XXH_STATIC_LINKING_ONLY`
   - `SHELL_CVM_INTERP` (macro, line 53) `#define SHELL_CVM_INTERP`
   - `SHELL_RUN_DIRS` (macro, line 72) `#define SHELL_RUN_DIRS`
   - `SHELL_HIST_MAX` (macro, line 98) `#define SHELL_HIST_MAX`
   - `SHELL_BUILTIN_COUNT` (macro, line 232) `#define SHELL_BUILTIN_COUNT`
-  - `QEMU_PM_PORT` (macro, line 1016) `#define QEMU_PM_PORT`
-  - `HTTPD_REQ_CAP` (macro, line 2546) `#define HTTPD_REQ_CAP`
-  - `HTTPD_IO_CHUNK` (macro, line 2547) `#define HTTPD_IO_CHUNK`
-  - `SHELL_LS_CAP` (macro, line 2804) `#define SHELL_LS_CAP`
-  - `PIPE_HOP_MAX` (macro, line 4078) `#define PIPE_HOP_MAX`
+  - `QEMU_PM_PORT` (macro, line 1022) `#define QEMU_PM_PORT`
+  - `HTTPD_REQ_CAP` (macro, line 2552) `#define HTTPD_REQ_CAP`
+  - `HTTPD_IO_CHUNK` (macro, line 2553) `#define HTTPD_IO_CHUNK`
+  - `SHELL_LS_CAP` (macro, line 2810) `#define SHELL_LS_CAP`
+  - `PIPE_HOP_MAX` (macro, line 4084) `#define PIPE_HOP_MAX`
 - Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ## kernel/spawn.c
@@ -445,7 +445,7 @@ static void shell_cmd_trac...`
   - `kmemcmp` (function, line 81) `int kmemcmp(const void *a, const void *b, unsigned long n)`
   - `kmemmove` (function, line 87) `void *kmemmove(void *dst, const void *src, unsigned long n)`
   - `katol` (function, line 95) `long katol(const char *s)`
-- Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
+- Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_select_map.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
 
 ## kernel/symtab.c
 - Layer: utility

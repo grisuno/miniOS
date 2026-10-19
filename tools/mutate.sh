@@ -364,6 +364,16 @@ lxabi-pipe-eof-lost | s/            if (!kpipe_empty_wopen(f)) return 0;/       
 lxabi-epipe-lost | s/            if (!ropen) return done > 0 ? done : -32;/            if (0) return -32;/ | kernel/syscalls.c
 lxabi-pipe2-cloexec-lost | s/    int cloexec = (a2 \& LINUX_O_CLOEXEC) ? 1 : 0;/    int cloexec = 0;/ | kernel/syscalls.c
 lxabi-poll-hup-lost | s/                if (!wopen) rev |= NET_POLLHUP;/                if (0) rev |= NET_POLLHUP;/ | kernel/syscalls.c
+lxsel-nfds-unchecked | s/    if (nfds < 0 || nfds > SELECT_NFDS_MAX) return -EINVAL;/    if (0) return -EINVAL;/ | kernel/syscalls.c
+lxsel-badfd-undetected | s/        if (select_poll_badfd(pfd, count)) {/        if (0) {/ | kernel/syscalls.c
+lxsel-result-unmapped | s/            ready = select_poll_result(rout, rset, wout, wset, eout, eset, pfd, count);/            ready = 0;/ | kernel/syscalls.c
+lxsel-writeback-dropped | s/    if (tp \&\& !pselect \&\& timeout_ms > 0) {/    if (0) {/ | kernel/syscalls.c
+lxabi-stat-file-mode-offset | s/((unsigned int \*)(unsigned long)st)\[6\] = 0100666;/((unsigned int *)(unsigned long)st)[5] = 0100666;/ | kernel/syscalls.c
+lxabi-stat-dir-mode-offset | s/((unsigned int \*)(unsigned long)st)\[6\] = 0040755;/((unsigned int *)(unsigned long)st)[5] = 0040755;/ | kernel/syscalls.c
+lxabi-uid-nonzero | s/return LINUX_UID_GID_ROOT;/return 1;/ | kernel/syscalls.c
+lxabi-getdents-no-resume | s/        f->dir_off++;/        (void)0;/ | kernel/syscalls.c
+lxabi-getdents-enotdir-lost | s/    if (!f->is_dir) {/    if (0) {/ | kernel/syscalls.c
+lxabi-rmdir-notempty-lost | s/    return r >= 0 ? 0 : -39;               \/\* only empty-dir refusals here \*\//    return 0;/ | kernel/syscalls.c
 lxabi-futex-timeout-never | s/        if (left <= 0) return -110; \/\* ETIMEDOUT \*\//        if (0) return -110;/ | kernel/syscalls.c
 lxabi-time-unreclaimed | s/= { sys_linux_time, /= { sys_minios_tls_retired, / | kernel/syscalls.c
 lxabi-eventfd-overwrites | s/        f->efd_count += v;/        f->efd_count = v;/ | fs/kfile.c
@@ -598,6 +608,7 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
     case "$name" in
         lxabi-*) suite_key="lxabi-probe" ;;
         lxsecc-*) suite_key="lxsecc-probe" ;;
+        lxsel-*) suite_key="lxsel-probe" ;;
         lxnet-*) suite_key="lxnet-probe" ;;
         minifs-*) suite_key="minifs-tools" ;;
     esac
@@ -607,6 +618,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         lxsecc-probe)
             MATCH="lxsecc" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        lxsel-probe)
+            MATCH="lxsel" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
         lxnet-probe)
             MATCH="lxnet" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1

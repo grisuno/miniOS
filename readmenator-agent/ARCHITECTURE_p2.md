@@ -2,6 +2,7 @@
 Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/doomstat.c` -> `progs/doomgeneric/doomstat.h`
 - `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_loop.h`
 - `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_mode.h`
 - `progs/doomgeneric/doomstat.h` -> `progs/doomgeneric/d_player.h`
@@ -495,6 +496,5 @@ Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/doomstat.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/i_system.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_local.h`
-- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_sky.h`
 
 Next: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)

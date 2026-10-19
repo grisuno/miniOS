@@ -43,7 +43,7 @@ unsigned long kstrlen(const char *s)
 
 **Returns:** `unsigned long`
 
-> **Inherited:** Documentation from [`kstrlen`](#kstrlen) (headers/kernel.h:529).
+> **Inherited:** Documentation from [`kstrlen`](#kstrlen) (headers/kernel.h:545).
 
 *Called by:* [`kstrstr`](#kstrstr)
 

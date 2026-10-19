@@ -1,8 +1,10 @@
-# Symbols (page 6 of 26)
+# Symbols (page 6 of 27)
 Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCM2_ERR_NOMEM` | macro | `headers/pcm2.h:62` | `#define PCM2_ERR_NOMEM` |
+| `PCM2_ERR_PERM` | macro | `headers/pcm2.h:63` | `#define PCM2_ERR_PERM` |
 | `PCM2_ERR_PIPE` | macro | `headers/pcm2.h:64` | `#define PCM2_ERR_PIPE` |
 | `PCM2_FLAG_NONBLOCK` | macro | `headers/pcm2.h:58` | `#define PCM2_FLAG_NONBLOCK` |
 | `PCM2_FRAG` | macro | `headers/pcm2.h:53` | `#define PCM2_FRAG` |
@@ -380,6 +382,22 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `sbpf_data` | struct | `headers/seccomp_bpf.h:23` | `` |
 | `sbpf_insn` | struct | `headers/seccomp_bpf.h:15` | `` |
 | `sbpf_run` | function | `headers/seccomp_bpf.h:100` | `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d);` |
+| `SELECT_FD_SETSIZE` | macro | `headers/select_map.h:20` | `#define SELECT_FD_SETSIZE` |
+| `SELECT_FD_SET_BYTES` | macro | `headers/select_map.h:21` | `#define SELECT_FD_SET_BYTES` |
+| `SELECT_MAP_H` | macro | `headers/select_map.h:2` | `#define SELECT_MAP_H` |
+| `SELECT_POLLERR` | macro | `headers/select_map.h:27` | `#define SELECT_POLLERR` |
+| `SELECT_POLLHUP` | macro | `headers/select_map.h:28` | `#define SELECT_POLLHUP` |
+| `SELECT_POLLIN` | macro | `headers/select_map.h:24` | `#define SELECT_POLLIN` |
+| `SELECT_POLLNVAL` | macro | `headers/select_map.h:29` | `#define SELECT_POLLNVAL` |
+| `SELECT_POLLOUT` | macro | `headers/select_map.h:26` | `#define SELECT_POLLOUT` |
+| `SELECT_POLLPRI` | macro | `headers/select_map.h:25` | `#define SELECT_POLLPRI` |
+| `select_fd_isset` | function | `headers/select_map.h:37` | `static inline int select_fd_isset(const unsigned char *set, int fd)` |
+| `select_fd_put` | function | `headers/select_map.h:41` | `static inline void select_fd_put(unsigned char *set, int fd)` |
+| `select_poll_badfd` | function | `headers/select_map.h:131` | `static inline int select_poll_badfd(const select_pollfd_t *pfd,                                  ...` |
+| `select_poll_build` | function | `headers/select_map.h:66` | `static inline unsigned select_poll_build(select_pollfd_t *pfd,                                   ...` |
+| `select_poll_count` | function | `headers/select_map.h:46` | `static inline unsigned select_poll_count(const unsigned char *r,                                 ...` |
+| `select_poll_result` | function | `headers/select_map.h:95` | `static inline unsigned select_poll_result(unsigned char *rout,                                   ...` |
+| `select_pollfd_t` | struct | `headers/select_map.h:31` | `` |
 | `CMD_BUF_SZ` | macro | `headers/shell.h:13` | `#define CMD_BUF_SZ` |
 | `MAX_ARGS` | macro | `headers/shell.h:14` | `#define MAX_ARGS` |
 | `SHELL_H` | macro | `headers/shell.h:2` | `#define SHELL_H` |
@@ -478,23 +496,5 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `wake_up` | function | `headers/sync.h:52` | `int wake_up(wait_queue_t *q);` |
 | `wake_up_all` | function | `headers/sync.h:53` | `int wake_up_all(wait_queue_t *q);` |
 | `wq_init` | function | `headers/sync.h:50` | `void wq_init(wait_queue_t *q);` |
-| `SYSCALL_ASM_H` | macro | `headers/syscall_asm.h:2` | `#define SYSCALL_ASM_H` |
-| `SYSCALL_CPU_CUR_PID_OFF` | macro | `headers/syscall_asm.h:20` | `#define SYSCALL_CPU_CUR_PID_OFF` |
-| `SYSCALL_CPU_SC_N_OFF` | macro | `headers/syscall_asm.h:21` | `#define SYSCALL_CPU_SC_N_OFF` |
-| `SYSCALL_CPU_SC_PID_OFF` | macro | `headers/syscall_asm.h:23` | `#define SYSCALL_CPU_SC_PID_OFF` |
-| `SYSCALL_CPU_SC_RET_OFF` | macro | `headers/syscall_asm.h:24` | `#define SYSCALL_CPU_SC_RET_OFF` |
-| `SYSCALL_CPU_SC_RIP_OFF` | macro | `headers/syscall_asm.h:22` | `#define SYSCALL_CPU_SC_RIP_OFF` |
-| `SYSCALL_CPU_SC_TMP_OFF` | macro | `headers/syscall_asm.h:25` | `#define SYSCALL_CPU_SC_TMP_OFF` |
-| `SYSCALL_FRAME_WORDS` | macro | `headers/syscall_asm.h:29` | `#define SYSCALL_FRAME_WORDS` |
-| `SYSCALL_MAX_PROCS` | macro | `headers/syscall_asm.h:19` | `#define SYSCALL_MAX_PROCS` |
-| `SYSCALL_PROC_KSTACK_OFF` | macro | `headers/syscall_asm.h:18` | `#define SYSCALL_PROC_KSTACK_OFF` |
-| `SYSCALL_PROC_T_SIZE` | macro | `headers/syscall_asm.h:17` | `#define SYSCALL_PROC_T_SIZE` |
-| `SYSCALL_USER_WIN_HI` | macro | `headers/syscall_asm.h:16` | `#define SYSCALL_USER_WIN_HI` |
-| `SYSCALL_USER_WIN_LO` | macro | `headers/syscall_asm.h:15` | `#define SYSCALL_USER_WIN_LO` |
-| `LINUX_EXIT_STATUS_MASK` | macro | `headers/syscalls_proc.h:30` | `#define LINUX_EXIT_STATUS_MASK` |
-| `LINUX_SIGNAL_EXIT_BASE` | macro | `headers/syscalls_proc.h:29` | `#define LINUX_SIGNAL_EXIT_BASE` |
-| `LINUX_SIGNAL_MAX` | macro | `headers/syscalls_proc.h:28` | `#define LINUX_SIGNAL_MAX` |
-| `SYSCALLS_PROC_H` | macro | `headers/syscalls_proc.h:2` | `#define SYSCALLS_PROC_H` |
-| `dispatcher` | function | `headers/syscalls_proc.h:5` | `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...` |
 
 Next: [SYMBOLS_p7.md](SYMBOLS_p7.md)

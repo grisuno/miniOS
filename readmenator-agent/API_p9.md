@@ -1,6 +1,22 @@
 # API (page 9 of 21)
 Previous: [API_p8.md](API_p8.md)
 
+## mcp/minios_addons.py
+Depends on: `kernel/time.c`
+Imported by: `mcp/minios_mcp.py`
+- `parse_addon_yaml` (function) `mcp/minios_addons.py:73` `def parse_addon_yaml(text)` -- Parse the strict YAML subset.
+- `fail` (function) `mcp/minios_addons.py:85` `def fail(lineno, why)`
+- `validate_addon` (function) `mcp/minios_addons.py:205` `def validate_addon(addon, source)` -- Check bounds and character sets.
+- `validate_addon_path` (function) `mcp/minios_addons.py:295` `def validate_addon_path(path)` -- dst paths live on the ramdisk: relative, no '..', bounded charset.
+- `validate_shell_line` (function) `mcp/minios_addons.py:309` `def validate_shell_line(line)` -- Build/verify lines are single printable-ASCII shell commands.
+- `load_addons_dir` (function) `mcp/minios_addons.py:323` `def load_addons_dir(addons_dir)` -- Load every addon yaml; each entry is a dict or an error string.
+- `split_for_editor` (function) `mcp/minios_addons.py:347` `def split_for_editor(text)` -- Split a source into editor-sized chunks.
+- `exit_code_of` (function) `mcp/minios_addons.py:372` `def exit_code_of(text)`
+- `AddonState.__init__` (method) `mcp/minios_addons.py:380` `def __init__(self, path)`
+- `AddonState.load` (method) `mcp/minios_addons.py:383` `def load(self)`
+- `AddonState.save` (method) `mcp/minios_addons.py:393` `def save(self, addons)`
+- `install_addon` (function) `mcp/minios_addons.py:401` `def install_addon(session, addon, cfg)` -- Install one validated addon into the booted MiniOS session.
+
 ## mcp/minios_mcp.py
 Depends on: `kernel/time.c`, `mcp/minios_addons.py`
 - `env_config` (function) `mcp/minios_mcp.py:71` `def env_config()` -- Resolve the configuration: defaults overridden by the environment.

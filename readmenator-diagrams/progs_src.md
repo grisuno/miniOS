@@ -1,6 +1,6 @@
 # progs/src
 
-progs/src groups 86 files (c, h, py) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
+progs/src groups 84 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
 
 ```mermaid
 graph LR
@@ -21,7 +21,7 @@ graph LR
 
 ## headers (3.1)
 
-headers groups 8 files (h) around SECCOMP_BPF_H, sbpf_insn, sbpf_data, SBPF_MAX_INSNS, SBPF_DATA_SIZE. Docstring: abi.h -- Boot-time ABI manifest gate contract.
+headers groups 9 files (h) around SECCOMP_BPF_H, sbpf_insn, sbpf_data, SBPF_MAX_INSNS, SBPF_DATA_SIZE. Docstring: abi.h -- Boot-time ABI manifest gate contract.
 
 ## kernel (3.2)
 
@@ -29,11 +29,11 @@ kernel groups 4 files (c) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. 
 
 ## progs (3.3)
 
-progs groups 55 files (c, h, py) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI_CHECKSUM, MINIOS_USER_LOAD_BASE, MINIOS_USER_LOAD_END. tile map editor that builds playable Doom PWADs.
+progs groups 51 files (c, h) around MINIOS_ABI_H, MINIOS_ABI_VERSION, MINIOS_ABI_CHECKSUM, MINIOS_USER_LOAD_BASE, MINIOS_USER_LOAD_END. tile map editor that builds playable Doom PWADs.
 
 ## tests (3.4)
 
-tests groups 18 files (c, h) around observe, TEST_STUB_KERNEL_H, PCI_MMIO_SIZE, __attribute__, __attribute__. Docstring: Host-test stand-in for headers/kernel.h (tests/stubs first on
+tests groups 19 files (c, h) around observe, TEST_STUB_KERNEL_H, PCI_MMIO_SIZE, __attribute__, __attribute__. Docstring: Host-test stand-in for headers/kernel.h (tests/stubs first on
 
 ## tools (3.5)
 
@@ -48,6 +48,7 @@ tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time
 - headers/leakcheck.h
 - headers/pcm_ring.h
 - headers/seccomp_bpf.h
+- headers/select_map.h
 - headers/sign.h
 - kernel/abi.c
 - kernel/ed25519.c
@@ -66,8 +67,6 @@ tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time
 - progs/freedomui/ps2_keymap.h
 - progs/lisp/lisp.c
 - progs/lua/lua_main.c
-- progs/lua/minios.c
-- progs/micropython/variants/minios/lib/hello.py
 - progs/micropython/variants/minios/minios_module.c
 - progs/minicraft/minicraft.c
 - progs/minios_abi.h
@@ -98,8 +97,6 @@ tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time
 - progs/src/opl3.c
 - progs/src/sbtone.c
 - progs/src/scfuzz.c
-- progs/src/shell.py
-- progs/src/test.py
 - progs/src/thdemo.c
 - progs/topogpt3/topogpt3.c
 - progs/vedit/vedit.c
@@ -122,6 +119,7 @@ tools groups 1 files (c) around main. Docstring: tools/abi_stamp.c -- Build-time
 - tests/test_ps2_keymap.c
 - tests/test_sanitize.c
 - tests/test_seccomp_bpf.c
+- tests/test_select_map.c
 - tests/test_sign.c
 - tests/test_theme.c
 - tests/test_vedit_build.c

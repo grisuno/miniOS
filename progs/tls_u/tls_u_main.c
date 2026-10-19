@@ -70,15 +70,24 @@ int main(int argc, char **argv) {
     int n;
     long total = 0;
     int rlen;
+    int quiet = 0;
+    int argi = 1;
 
-    if (argc < 2) {
-        diag("usage: tlsget <host-or-ip> [path] [port]\n");
+    /* -q suppresses the success diagnostic on stderr so callers that
+     * capture the console (SYS_SPAWN redirect, mip's https_get) get the
+     * raw HTTP response and nothing else; failures always diagnose. */
+    if (argc > 1 && strcmp(argv[1], "-q") == 0) {
+        quiet = 1;
+        argi = 2;
+    }
+    if (argc - argi < 1) {
+        diag("usage: tlsget [-q] <host-or-ip> [path] [port]\n");
         return 2;
     }
-    host = argv[1];
-    if (argc > 2) path = argv[2];
-    if (argc > 3) {
-        int p = parse_port(argv[3]);
+    host = argv[argi];
+    if (argc - argi > 1) path = argv[argi + 1];
+    if (argc - argi > 2) {
+        int p = parse_port(argv[argi + 2]);
         if (p < 0) {
             diag("tlsget: bad port\n");
             return 2;
@@ -139,6 +148,6 @@ int main(int argc, char **argv) {
         }
     }
     close(fd);
-    diag("tlsget: %s (%ld bytes)\n", host, total);
+    if (!quiet) diag("tlsget: %s (%ld bytes)\n", host, total);
     return 0;
 }

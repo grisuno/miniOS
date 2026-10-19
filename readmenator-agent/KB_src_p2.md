@@ -6,64 +6,67 @@ Previous: [KB_src.md](KB_src.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `thread_result` (struct, line 194)
-  - `tls_seen` (type_alias, line 193) `typedef struct thread_result { long tls_seen;`
-  - `report` (function, line 64) `static void report(const char *name, int ok, const char *detail)`
-  - `now_ms` (function, line 74) `static long now_ms(void)`
-  - `busy_wait_ms` (function, line 80) `static void busy_wait_ms(long ms)`
-  - `fork_probe` (function, line 94) `static void fork_probe(uint64_t *out)`
-  - `regs_match` (function, line 131) `static int regs_match(const uint64_t *r)`
-  - `check_fork_registers` (function, line 137) `static void check_fork_registers(void)`
-  - `check_fork_cow_kernel_write` (function, line 159) `static void check_fork_cow_kernel_write(void)`
-  - `worker` (function, line 200) `static void *worker(void *arg)`
-  - `check_threads` (function, line 214) `static void check_threads(void)`
-  - `detached_worker` (function, line 244) `static void *detached_worker(void *arg)`
-  - `check_detached_reaped` (function, line 250) `static void check_detached_reaped(void)`
-  - `signaller` (function, line 274) `static void *signaller(void *arg)`
-  - `check_condvar` (function, line 284) `static void check_condvar(void)`
-  - `check_pipe2_flags` (function, line 306) `static void check_pipe2_flags(void)`
-  - `check_pipe_blocking` (function, line 333) `static void check_pipe_blocking(void)`
-  - `check_pipe_epipe` (function, line 355) `static void check_pipe_epipe(void)`
-  - `check_writev_pipe` (function, line 381) `static void check_writev_pipe(void)`
-  - `check_poll` (function, line 393) `static void check_poll(void)`
-  - `check_eventfd` (function, line 417) `static void check_eventfd(void)`
-  - `check_close_range` (function, line 442) `static void check_close_range(void)`
-  - `check_time` (function, line 454) `static void check_time(void)`
-  - `check_mkdir` (function, line 463) `static void check_mkdir(void)`
-  - `check_limits` (function, line 477) `static void check_limits(void)`
-  - `mono_us` (function, line 490) `static long mono_us(void)`
-  - `check_sleep` (function, line 499) `static void check_sleep(void)`
-  - `lxabi_sleeper` (function, line 526) `static void *lxabi_sleeper(void *arg)`
-  - `child_status` (function, line 534) `static int child_status(void (*body)(void))`
-  - `abort_from_worker_body` (function, line 554) `static void abort_from_worker_body(void)`
-  - `lxabi_exit_group_worker` (function, line 560) `static void *lxabi_exit_group_worker(void *arg)`
-  - `exit_group_from_worker_body` (function, line 566) `static void exit_group_from_worker_body(void)`
-  - `wild_jump_body` (function, line 572) `static void wild_jump_body(void)`
-  - `process` (function, line 580) `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
+  - `thread_result` (struct, line 195)
+  - `tls_seen` (type_alias, line 194) `typedef struct thread_result { long tls_seen;`
+  - `report` (function, line 65) `static void report(const char *name, int ok, const char *detail)`
+  - `now_ms` (function, line 75) `static long now_ms(void)`
+  - `busy_wait_ms` (function, line 81) `static void busy_wait_ms(long ms)`
+  - `fork_probe` (function, line 95) `static void fork_probe(uint64_t *out)`
+  - `regs_match` (function, line 132) `static int regs_match(const uint64_t *r)`
+  - `check_fork_registers` (function, line 138) `static void check_fork_registers(void)`
+  - `check_fork_cow_kernel_write` (function, line 160) `static void check_fork_cow_kernel_write(void)`
+  - `worker` (function, line 201) `static void *worker(void *arg)`
+  - `check_threads` (function, line 215) `static void check_threads(void)`
+  - `detached_worker` (function, line 245) `static void *detached_worker(void *arg)`
+  - `check_detached_reaped` (function, line 251) `static void check_detached_reaped(void)`
+  - `signaller` (function, line 275) `static void *signaller(void *arg)`
+  - `check_condvar` (function, line 285) `static void check_condvar(void)`
+  - `check_pipe2_flags` (function, line 307) `static void check_pipe2_flags(void)`
+  - `check_pipe_blocking` (function, line 334) `static void check_pipe_blocking(void)`
+  - `check_pipe_epipe` (function, line 356) `static void check_pipe_epipe(void)`
+  - `check_writev_pipe` (function, line 382) `static void check_writev_pipe(void)`
+  - `check_poll` (function, line 394) `static void check_poll(void)`
+  - `check_eventfd` (function, line 418) `static void check_eventfd(void)`
+  - `check_close_range` (function, line 443) `static void check_close_range(void)`
+  - `check_time` (function, line 455) `static void check_time(void)`
+  - `check_mkdir` (function, line 464) `static void check_mkdir(void)`
+  - `check_limits` (function, line 478) `static void check_limits(void)`
+  - `mono_us` (function, line 491) `static long mono_us(void)`
+  - `check_sleep` (function, line 500) `static void check_sleep(void)`
+  - `lxabi_sleeper` (function, line 527) `static void *lxabi_sleeper(void *arg)`
+  - `child_status` (function, line 535) `static int child_status(void (*body)(void))`
+  - `abort_from_worker_body` (function, line 555) `static void abort_from_worker_body(void)`
+  - `lxabi_exit_group_worker` (function, line 561) `static void *lxabi_exit_group_worker(void *arg)`
+  - `exit_group_from_worker_body` (function, line 567) `static void exit_group_from_worker_body(void)`
+  - `wild_jump_body` (function, line 573) `static void wild_jump_body(void)`
+  - `process` (function, line 581) `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
  * leaves the target aliv...`
-  - `main` (function, line 617) `int main(void)`
+  - `check_uid_gid` (function, line 642) `static void check_uid_gid(void)`
+  - `copy_dentry_name` (function, line 680) `static void copy_dentry_name(char *dst, size_t cap, const char *src)`
+  - `check_getdents64` (function, line 687) `static void check_getdents64(void)`
+  - `main` (function, line 754) `int main(void)`
   - `_GNU_SOURCE` (macro, line 17) `#define _GNU_SOURCE`
-  - `LXABI_CHILD_DELAY_MS` (macro, line 40) `#define LXABI_CHILD_DELAY_MS`
-  - `LXABI_THREADS` (macro, line 41) `#define LXABI_THREADS`
-  - `LXABI_THREAD_ITERS` (macro, line 42) `#define LXABI_THREAD_ITERS`
-  - `LXABI_DETACHED` (macro, line 43) `#define LXABI_DETACHED`
-  - `LXABI_WAIT_SPINS` (macro, line 44) `#define LXABI_WAIT_SPINS`
-  - `LXABI_GROUP_EXIT_CODE` (macro, line 45) `#define LXABI_GROUP_EXIT_CODE`
-  - `LXABI_SLEEP_MS` (macro, line 46) `#define LXABI_SLEEP_MS`
-  - `LXABI_MAX_SANE_CPUS` (macro, line 47) `#define LXABI_MAX_SANE_CPUS`
-  - `LXABI_TIMEDWAIT_MS` (macro, line 48) `#define LXABI_TIMEDWAIT_MS`
-  - `LXABI_EPOCH_2023` (macro, line 49) `#define LXABI_EPOCH_2023`
-  - `LXABI_CLOCK_SKEW_S` (macro, line 50) `#define LXABI_CLOCK_SKEW_S`
-  - `LXABI_REG_PROBE_WORDS` (macro, line 51) `#define LXABI_REG_PROBE_WORDS`
-  - `LXABI_CLONE_NR` (macro, line 52) `#define LXABI_CLONE_NR`
-  - `LXABI_SIGCHLD` (macro, line 53) `#define LXABI_SIGCHLD`
-  - `LXABI_A6_MAGIC` (macro, line 54) `#define LXABI_A6_MAGIC`
-  - `LXABI_CHILD_BAD` (macro, line 55) `#define LXABI_CHILD_BAD`
-  - `LXABI_MKDIR_PATH` (macro, line 56) `#define LXABI_MKDIR_PATH`
-  - `LXABI_MKDIR_FILE` (macro, line 57) `#define LXABI_MKDIR_FILE`
-  - `LXABI_CLOSE_RANGE_NR` (macro, line 58) `#define LXABI_CLOSE_RANGE_NR`
-  - `LXABI_PAGE` (macro, line 59) `#define LXABI_PAGE`
-  - `LXABI_COW_WORD` (macro, line 60) `#define LXABI_COW_WORD`
+  - `LXABI_CHILD_DELAY_MS` (macro, line 41) `#define LXABI_CHILD_DELAY_MS`
+  - `LXABI_THREADS` (macro, line 42) `#define LXABI_THREADS`
+  - `LXABI_THREAD_ITERS` (macro, line 43) `#define LXABI_THREAD_ITERS`
+  - `LXABI_DETACHED` (macro, line 44) `#define LXABI_DETACHED`
+  - `LXABI_WAIT_SPINS` (macro, line 45) `#define LXABI_WAIT_SPINS`
+  - `LXABI_GROUP_EXIT_CODE` (macro, line 46) `#define LXABI_GROUP_EXIT_CODE`
+  - `LXABI_SLEEP_MS` (macro, line 47) `#define LXABI_SLEEP_MS`
+  - `LXABI_MAX_SANE_CPUS` (macro, line 48) `#define LXABI_MAX_SANE_CPUS`
+  - `LXABI_TIMEDWAIT_MS` (macro, line 49) `#define LXABI_TIMEDWAIT_MS`
+  - `LXABI_EPOCH_2023` (macro, line 50) `#define LXABI_EPOCH_2023`
+  - `LXABI_CLOCK_SKEW_S` (macro, line 51) `#define LXABI_CLOCK_SKEW_S`
+  - `LXABI_REG_PROBE_WORDS` (macro, line 52) `#define LXABI_REG_PROBE_WORDS`
+  - `LXABI_CLONE_NR` (macro, line 53) `#define LXABI_CLONE_NR`
+  - `LXABI_SIGCHLD` (macro, line 54) `#define LXABI_SIGCHLD`
+  - `LXABI_A6_MAGIC` (macro, line 55) `#define LXABI_A6_MAGIC`
+  - `LXABI_CHILD_BAD` (macro, line 56) `#define LXABI_CHILD_BAD`
+  - `LXABI_MKDIR_PATH` (macro, line 57) `#define LXABI_MKDIR_PATH`
+  - `LXABI_MKDIR_FILE` (macro, line 58) `#define LXABI_MKDIR_FILE`
+  - `LXABI_CLOSE_RANGE_NR` (macro, line 59) `#define LXABI_CLOSE_RANGE_NR`
+  - `LXABI_PAGE` (macro, line 60) `#define LXABI_PAGE`
+  - `LXABI_COW_WORD` (macro, line 61) `#define LXABI_COW_WORD`
 - Depends on: `headers/sched.h`, `kernel/string.c`, `kernel/time.c`
 
 ## progs/src/lxhello.c
@@ -154,6 +157,26 @@ Previous: [KB_src.md](KB_src.md)
   - `LXSECC_STATUS_SHIFT` (macro, line 39) `#define LXSECC_STATUS_SHIFT`
   - `LXSECC_STATUS_BYTE` (macro, line 40) `#define LXSECC_STATUS_BYTE`
 - Depends on: `kernel/string.c`
+
+## progs/src/lxsel.c
+- Doc: select(2)/pselect6(2) ABI probe (docs/spec/python.md).
+- Layer: utility
+- Language: c
+- Symbols:
+  - `report` (function, line 36) `static void report(const char *name, int ok)`
+  - `raw_select` (function, line 45) `static long raw_select(long nfds, fd_set *r, fd_set *w, fd_set *e,
+                       struct ...`
+  - `raw_pselect6` (function, line 50) `static long raw_pselect6(long nfds, fd_set *r, fd_set *w, fd_set *e,
+                         str...`
+  - `elapsed_ms` (function, line 55) `static long elapsed_ms(struct timespec *a, struct timespec *b)`
+  - `main` (function, line 60) `int main(void)`
+  - `_GNU_SOURCE` (macro, line 17) `#define _GNU_SOURCE`
+  - `LXSEL_NFDS_OUT_OF_RANGE` (macro, line 28) `#define LXSEL_NFDS_OUT_OF_RANGE`
+  - `LXSEL_BAD_FD` (macro, line 29) `#define LXSEL_BAD_FD`
+  - `LXSEL_TIMEOUT_US` (macro, line 30) `#define LXSEL_TIMEOUT_US`
+  - `LXSEL_TIMEOUT_MS_MIN` (macro, line 31) `#define LXSEL_TIMEOUT_MS_MIN`
+  - `LXSEL_PSELECT_TIMEOUT_NS` (macro, line 32) `#define LXSEL_PSELECT_TIMEOUT_NS`
+- Depends on: `kernel/time.c`
 
 ## progs/src/lxtls.c
 - Doc: libcurl/OpenSSL fetch probe (FreeDom readiness step 6,
@@ -470,16 +493,6 @@ Previous: [KB_src.md](KB_src.md)
   - `SC_T1_BASE` (macro, line 21) `#define SC_T1_BASE`
   - `SC_T1_N` (macro, line 22) `#define SC_T1_N`
 - Depends on: `progs/src/mthreads.h`
-
-## progs/src/shell.py
-- Doc: pybash: a Python shell layer on top of MiniOS's C shell.
-- Layer: utility
-- Language: py
-- Symbols:
-  - `run_capture` (function, line 20) `def run_capture(cmd, args)`
-  - `expand` (function, line 30) `def expand(line, env)`
-  - `main` (function, line 36) `def main()`
-- Depends on: `progs/lua/minios.c`
 
 
 Next: [KB_src_p3.md](KB_src_p3.md)

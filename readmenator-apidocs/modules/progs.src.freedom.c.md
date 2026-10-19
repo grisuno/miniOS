@@ -29,7 +29,6 @@ flowchart LR
     n_progs_asm_freedom_s__print_css_dump["freedom.print_css_dump"]
     n_progs_asm_freedom_s__print_dom_dump["freedom.print_dom_dump"]
     n_progs_asm_freedom_s__resolve_redirect["freedom.resolve_redirect"]
-    n_progs_asm_freedom_s__split_url["freedom.split_url"]
     n_progs_src_freedom_c__main --> n_progs_src_freedom_c__memcpy
     n_progs_src_freedom_c__main --> n_progs_src_freedom_c__printf
     n_progs_src_freedom_c__main --> n_progs_src_freedom_c__puts
@@ -43,7 +42,6 @@ flowchart LR
     n_progs_src_freedom_c__main -.-> n_progs_asm_freedom_s__print_css_dump
     n_progs_src_freedom_c__main -.-> n_progs_asm_freedom_s__print_dom_dump
     n_progs_src_freedom_c__main -.-> n_progs_asm_freedom_s__resolve_redirect
-    n_progs_src_freedom_c__main -.-> n_progs_asm_freedom_s__split_url
 ```
 
 ## Functions
@@ -509,7 +507,7 @@ int main(int argc, char **argv)
 
 **Returns:** `int`
 
-*Calls:* [`fetch_css`](progs.asm.freedom.s.md#fetch_css), [`has_scheme`](progs.asm.freedom.s.md#has_scheme), [`looks_like_url`](progs.asm.freedom.s.md#looks_like_url), [`make_search`](progs.asm.freedom.s.md#make_search), [`print_css_dump`](progs.asm.freedom.s.md#print_css_dump), [`print_dom_dump`](progs.asm.freedom.s.md#print_dom_dump), [`resolve_redirect`](progs.asm.freedom.s.md#resolve_redirect), [`split_url`](progs.asm.freedom.s.md#split_url), [`memcpy`](#memcpy), [`printf`](#printf), [`puts`](#puts), [`strcmp`](#strcmp) and 2 more
+*Calls:* [`fetch_css`](progs.asm.freedom.s.md#fetch_css), [`has_scheme`](progs.asm.freedom.s.md#has_scheme), [`looks_like_url`](progs.asm.freedom.s.md#looks_like_url), [`make_search`](progs.asm.freedom.s.md#make_search), [`print_css_dump`](progs.asm.freedom.s.md#print_css_dump), [`print_dom_dump`](progs.asm.freedom.s.md#print_dom_dump), [`resolve_redirect`](progs.asm.freedom.s.md#resolve_redirect), [`memcpy`](#memcpy), [`printf`](#printf), [`puts`](#puts), [`strcmp`](#strcmp), [`strlen`](#strlen) and 1 more
 
 ---
 

@@ -174,6 +174,7 @@
 - [`abi_verify`](modules/headers.abi.h.md#abi_verify) function in `headers/abi.h`
 - [`abi_verify`](modules/kernel.abi.c.md#abi_verify) function in `kernel/abi.c`
 - [`ABI_VERSION_MISMATCH`](modules/headers.abi.h.md#abi_version_mismatch) macro in `headers/abi.h`
+- [`absolute_url`](modules/progs.micropython.variants.minios.lib.mip.py.md#absolute_url) function in `progs.micropython.variants.minios.lib.mip`
 - [`add_dir_entry`](modules/tools.mkfs.minifs.py.md#minifs-add_dir_entry) method of `MiniFS` in `tools.mkfs.minifs`
 - [`adderr`](modules/progs.nuklear.node_editor.c.md#adderr) function in `progs/nuklear/node_editor.c`
 - [`ADDON_CHUNK_LINE_MAX`](modules/mcp.minios_addons.py.md#addon_chunk_line_max) constant in `mcp.minios_addons`
@@ -318,6 +319,7 @@
 - [`ANGLETOSKYSHIFT`](modules/progs.doomgeneric.r_sky.h.md#angletoskyshift) macro in `progs/doomgeneric/r_sky.h`
 - [`ANIM`](modules/progs.doomgeneric.wi_stuff.c.md#anim) macro in `progs/doomgeneric/wi_stuff.c`
 - [`anim_t`](modules/progs.doomgeneric.wi_stuff.c.md#anim_t) struct in `progs/doomgeneric/wi_stuff.c`
+- [`answer`](modules/kernel.syscalls.c.md#answer) function in `kernel/syscalls.c`
 - [`answer`](modules/progs.tls_u.tls_u_port.c.md#answer) function in `progs/tls_u/tls_u_port.c`
 - [`ap_gdt32`](modules/arch.x86.ap_entry.S.md#ap_gdt32) function in `arch/x86/ap_entry.S`
 - [`ap_gdt32_end`](modules/arch.x86.ap_entry.S.md#ap_gdt32_end) function in `arch/x86/ap_entry.S`
@@ -594,6 +596,7 @@
 - [`build_lumps`](modules/tools.doom_pwad.py.md#build_lumps) function in `tools.doom_pwad`
 - [`build_plan`](modules/tools.clip_bridge.py.md#build_plan) function in `tools.clip_bridge`
 - [`build_pwad`](modules/tools.doom_pwad.py.md#build_pwad) function in `tools.doom_pwad`
+- [`build_zip`](modules/tools.mkcpyzip.py.md#build_zip) function in `tools.mkcpyzip`
 - [`bulletslope`](modules/progs.doomgeneric.p_maputl.c.md#bulletslope) variable in `progs/doomgeneric/p_maputl.c`
 - [`BUTTON_AXIS`](modules/progs.doomgeneric.i_joystick.h.md#button_axis) macro in `progs/doomgeneric/i_joystick.h`
 - [`BUTTON_AXIS_NEG`](modules/progs.doomgeneric.i_joystick.h.md#button_axis_neg) macro in `progs/doomgeneric/i_joystick.h`
@@ -1087,6 +1090,7 @@
 - [`default_collection_t`](modules/progs.doomgeneric.m_config.c.md#default_collection_t) struct in `progs/doomgeneric/m_config.c`
 - [`DEFAULT_CPG_PATH`](modules/tools.check_cohesion.py.md#default_cpg_path) constant in `tools.check_cohesion`
 - [`DEFAULT_CPG_PATH`](modules/tools.check_surprising.py.md#default_cpg_path) constant in `tools.check_surprising`
+- [`DEFAULT_DEST`](modules/progs.micropython.variants.minios.lib.mip.py.md#default_dest) constant in `progs.micropython.variants.minios.lib.mip`
 - [`DEFAULT_KB`](modules/tools.check_kb_sync.py.md#default_kb) constant in `tools.check_kb_sync`
 - [`DEFAULT_MIN_HOPS`](modules/tools.check_surprising.py.md#default_min_hops) constant in `tools.check_surprising`
 - [`DEFAULT_RAM`](modules/progs.doomgeneric.i_system.c.md#default_ram) macro in `progs/doomgeneric/i_system.c`
@@ -1501,6 +1505,7 @@
 - [`EditBuf`](modules/kernel.editor.c.md#editbuf) struct in `kernel/editor.c`
 - [`EditLine`](modules/kernel.editor.c.md#editline) struct in `kernel/editor.c`
 - [`edwards_add`](modules/tools.sign_elf.py.md#edwards_add) function in `tools.sign_elf`
+- [`EEXIST`](modules/progs.micropython.variants.minios.lib.mip.py.md#eexist) constant in `progs.micropython.variants.minios.lib.mip`
 - [`EFAULT`](modules/headers.kernel.h.md#efault) macro in `headers/kernel.h`
 - [`EFBIG`](modules/headers.kernel.h.md#efbig) macro in `headers/kernel.h`
 - [`EFER_LME`](modules/headers.arch.x86.boot.bootdefs.h.md#efer_lme) macro in `headers/arch/x86/boot/bootdefs.h`
@@ -1577,6 +1582,7 @@
 - [`ENOSPC`](modules/headers.kernel.h.md#enospc) macro in `headers/kernel.h`
 - [`enosys_literal`](modules/tools.check_fork_stubs.py.md#config-enosys_literal) attribute of `Config` in `tools.check_fork_stubs`
 - [`ENOTDIR`](modules/headers.kernel.h.md#enotdir) macro in `headers/kernel.h`
+- [`ensure_dir`](modules/progs.micropython.variants.minios.lib.mip.py.md#ensure_dir) function in `progs.micropython.variants.minios.lib.mip`
 - [`enter_long_mode`](modules/arch.x86.boot.stage2.S.md#enter_long_mode) function in `arch/x86/boot/stage2.S`
 - [`entry`](modules/fs.kfile.c.md#entry) function in `fs/kfile.c`
 - [`ENTRY_BYTES`](modules/tools.mkramdisk.py.md#entry_bytes) constant in `tools.mkramdisk`
@@ -2300,6 +2306,8 @@
 - [`ge_copy`](modules/progs.asm.sign.s.md#ge_copy) function in `progs/asm/sign.s`
 - [`ge_double`](modules/progs.asm.sign.s.md#ge_double) function in `progs/asm/sign.s`
 - [`ge_scalarmult`](modules/progs.asm.sign.s.md#ge_scalarmult) function in `progs/asm/sign.s`
+- [`GETDENTS64_ALIGN`](modules/kernel.syscalls.c.md#getdents64_align) macro in `kernel/syscalls.c`
+- [`GETDENTS64_NAME_OFF`](modules/kernel.syscalls.c.md#getdents64_name_off) macro in `kernel/syscalls.c`
 - [`GetSectorAtNullAddress`](modules/progs.doomgeneric.p_setup.c.md#getsectoratnulladdress) function in `progs/doomgeneric/p_setup.c`
 - [`gettid`](modules/progs.src.fptest.c.md#gettid) function in `progs/src/fptest.c`
 - [`gettimeofday`](modules/headers.tls_port.h.md#gettimeofday) function in `headers/tls_port.h`
@@ -2329,6 +2337,7 @@
 - [`_GNU_SOURCE`](modules/progs.src.lxnet.c.md#_gnu_source) macro in `progs/src/lxnet.c`
 - [`_GNU_SOURCE`](modules/progs.src.lxproc.c.md#_gnu_source) macro in `progs/src/lxproc.c`
 - [`_GNU_SOURCE`](modules/progs.src.lxsecc.c.md#_gnu_source) macro in `progs/src/lxsecc.c`
+- [`_GNU_SOURCE`](modules/progs.src.lxsel.c.md#_gnu_source) macro in `progs/src/lxsel.c`
 - [`GOTARMBONUS`](modules/progs.doomgeneric.d_englsh.h.md#gotarmbonus) macro in `progs/doomgeneric/d_englsh.h`
 - [`GOTARMOR`](modules/progs.doomgeneric.d_englsh.h.md#gotarmor) macro in `progs/doomgeneric/d_englsh.h`
 - [`GOTBACKPACK`](modules/progs.doomgeneric.d_englsh.h.md#gotbackpack) macro in `progs/doomgeneric/d_englsh.h`
@@ -2520,6 +2529,8 @@
 - [`HOLD`](modules/tools.probe_minicraft.py.md#hold) constant in `tools.probe_minicraft`
 - [`honest`](modules/kernel.mm.paging.c.md#honest) function in `kernel/mm/paging.c`
 - [`hscalelight`](modules/progs.doomgeneric.r_bsp.h.md#hscalelight) variable in `progs/doomgeneric/r_bsp.h`
+- [`http_get`](modules/progs.micropython.variants.minios.lib.mip.py.md#http_get) function in `progs.micropython.variants.minios.lib.mip`
+- [`HTTP_PORT_DEFAULT`](modules/progs.micropython.variants.minios.lib.mip.py.md#http_port_default) constant in `progs.micropython.variants.minios.lib.mip`
 - [`httpd_ctype`](modules/headers.httpd.h.md#httpd_ctype) function in `headers/httpd.h`
 - [`HTTPD_ERR_BOUND`](modules/headers.httpd.h.md#httpd_err_bound) macro in `headers/httpd.h`
 - [`HTTPD_ERR_METHOD`](modules/headers.httpd.h.md#httpd_err_method) macro in `headers/httpd.h`
@@ -2531,6 +2542,8 @@
 - [`HTTPD_MAX_PATH`](modules/headers.httpd.h.md#httpd_max_path) macro in `headers/httpd.h`
 - [`HTTPD_MAX_REQ`](modules/headers.httpd.h.md#httpd_max_req) macro in `headers/httpd.h`
 - [`HTTPD_REQ_CAP`](modules/kernel.shell.c.md#httpd_req_cap) macro in `kernel/shell.c`
+- [`https_get`](modules/progs.micropython.variants.minios.lib.mip.py.md#https_get) function in `progs.micropython.variants.minios.lib.mip`
+- [`HTTPS_PORT_DEFAULT`](modules/progs.micropython.variants.minios.lib.mip.py.md#https_port_default) constant in `progs.micropython.variants.minios.lib.mip`
 - [`HU_BROADCAST`](modules/progs.doomgeneric.hu_stuff.h.md#hu_broadcast) macro in `progs/doomgeneric/hu_stuff.h`
 - [`HU_CHARERASE`](modules/progs.doomgeneric.hu_lib.h.md#hu_charerase) macro in `progs/doomgeneric/hu_lib.h`
 - [`HU_dequeueChatChar`](modules/progs.doomgeneric.hu_stuff.c.md#hu_dequeuechatchar) function in `progs/doomgeneric/hu_stuff.c`
@@ -2974,7 +2987,9 @@
 - [`inode_crc_ok`](modules/tools.minifs_fsck.py.md#fsck-inode_crc_ok) method of `FSCK` in `tools.minifs_fsck`
 - [`inode_set_block`](modules/tools.mkfs.minifs.py.md#minifs-inode_set_block) method of `MiniFS` in `tools.mkfs.minifs`
 - [`inode_set_size`](modules/tools.mkfs.minifs.py.md#minifs-inode_set_size) method of `MiniFS` in `tools.mkfs.minifs`
+- [`INODE_TABLE_BLOCKS`](modules/tools.mkfs.minifs.py.md#inode_table_blocks) constant in `tools.mkfs.minifs`
 - [`inodes`](modules/kernel.loader.c.md#inodes) function in `kernel/loader.c`
+- [`install`](modules/progs.micropython.variants.minios.lib.mip.py.md#install) function in `progs.micropython.variants.minios.lib.mip`
 - [`install_addon`](modules/mcp.minios_addons.py.md#install_addon) function in `mcp.minios_addons`
 - [`instead`](modules/fs.minifs.c.md#instead) function in `fs/minifs.c`
 - [`insw`](modules/headers.kernel.h.md#insw) function in `headers/kernel.h`
@@ -3416,6 +3431,8 @@
 - [`kfile_stdout`](modules/headers.kernel.h.md#kfile_stdout) function in `headers/kernel.h`
 - [`kfopen`](modules/fs.kfile.c.md#kfopen) function in `fs/kfile.c`
 - [`kfopen`](modules/headers.kernel.h.md#kfopen) function in `headers/kernel.h`
+- [`kfopen_dir`](modules/fs.kfile.c.md#kfopen_dir) function in `fs/kfile.c`
+- [`kfopen_dir`](modules/headers.kernel.h.md#kfopen_dir) function in `headers/kernel.h`
 - [`kfprintf`](modules/headers.kernel.h.md#kfprintf) function in `headers/kernel.h`
 - [`kfprintf`](modules/kernel.printf.c.md#kfprintf) function in `kernel/printf.c`
 - [`kfputc`](modules/fs.kfile.c.md#kfputc) function in `fs/kfile.c`
@@ -3731,6 +3748,8 @@
 - [`LINUX_CLOSE_RANGE_CLOEXEC`](modules/kernel.syscalls.c.md#linux_close_range_cloexec) macro in `kernel/syscalls.c`
 - [`LINUX_CLOSE_RANGE_UNSHARE`](modules/kernel.syscalls.c.md#linux_close_range_unshare) macro in `kernel/syscalls.c`
 - [`LINUX_CPUMASK_BYTES`](modules/kernel.syscalls.c.md#linux_cpumask_bytes) macro in `kernel/syscalls.c`
+- [`LINUX_DT_DIR`](modules/kernel.syscalls.c.md#linux_dt_dir) macro in `kernel/syscalls.c`
+- [`LINUX_DT_REG`](modules/kernel.syscalls.c.md#linux_dt_reg) macro in `kernel/syscalls.c`
 - [`LINUX_ECHILD`](modules/kernel.syscalls_proc.c.md#linux_echild) macro in `kernel/syscalls_proc.c`
 - [`LINUX_EFD_CLOEXEC`](modules/kernel.syscalls.c.md#linux_efd_cloexec) macro in `kernel/syscalls.c`
 - [`LINUX_EFD_NONBLOCK`](modules/kernel.syscalls.c.md#linux_efd_nonblock) macro in `kernel/syscalls.c`
@@ -3820,6 +3839,7 @@
 - [`LINUX_TERMIOS_LEN`](modules/kernel.syscalls.c.md#linux_termios_len) macro in `kernel/syscalls.c`
 - [`LINUX_TIMER_ABSTIME`](modules/kernel.syscalls.c.md#linux_timer_abstime) macro in `kernel/syscalls.c`
 - [`LINUX_TIOCGWINSZ`](modules/kernel.syscalls.c.md#linux_tiocgwinsz) macro in `kernel/syscalls.c`
+- [`LINUX_UID_GID_ROOT`](modules/kernel.syscalls.c.md#linux_uid_gid_root) macro in `kernel/syscalls.c`
 - [`LINUX_US_PER_S`](modules/kernel.syscalls.c.md#linux_us_per_s) macro in `kernel/syscalls.c`
 - [`LINUX_WINSIZE_LEN`](modules/kernel.syscalls.c.md#linux_winsize_len) macro in `kernel/syscalls.c`
 - [`LINUX_WNOHANG`](modules/kernel.syscalls_proc.c.md#linux_wnohang) macro in `kernel/syscalls_proc.c`
@@ -3988,6 +4008,11 @@
 - [`LXSECC_STATUS_BYTE`](modules/progs.src.lxsecc.c.md#lxsecc_status_byte) macro in `progs/src/lxsecc.c`
 - [`LXSECC_STATUS_MASK`](modules/progs.src.lxsecc.c.md#lxsecc_status_mask) macro in `progs/src/lxsecc.c`
 - [`LXSECC_STATUS_SHIFT`](modules/progs.src.lxsecc.c.md#lxsecc_status_shift) macro in `progs/src/lxsecc.c`
+- [`LXSEL_BAD_FD`](modules/progs.src.lxsel.c.md#lxsel_bad_fd) macro in `progs/src/lxsel.c`
+- [`LXSEL_NFDS_OUT_OF_RANGE`](modules/progs.src.lxsel.c.md#lxsel_nfds_out_of_range) macro in `progs/src/lxsel.c`
+- [`LXSEL_PSELECT_TIMEOUT_NS`](modules/progs.src.lxsel.c.md#lxsel_pselect_timeout_ns) macro in `progs/src/lxsel.c`
+- [`LXSEL_TIMEOUT_MS_MIN`](modules/progs.src.lxsel.c.md#lxsel_timeout_ms_min) macro in `progs/src/lxsel.c`
+- [`LXSEL_TIMEOUT_US`](modules/progs.src.lxsel.c.md#lxsel_timeout_us) macro in `progs/src/lxsel.c`
 - [`LXTLS_CA_BUNDLE`](modules/progs.src.lxtls.c.md#lxtls_ca_bundle) macro in `progs/src/lxtls.c`
 - [`LXTLS_CONNECT_S`](modules/progs.src.lxtls.c.md#lxtls_connect_s) macro in `progs/src/lxtls.c`
 - [`LXTLS_MAX_REDIRECTS`](modules/progs.src.lxtls.c.md#lxtls_max_redirects) macro in `progs/src/lxtls.c`
@@ -4254,6 +4279,7 @@
 - [`main`](modules/progs.lisp.lisp.c.md#main) function in `progs/lisp/lisp.c`
 - [`main`](modules/progs.lisp.tin.c.md#main) function in `progs/lisp/tin.c`
 - [`main`](modules/progs.lua.lua_main.c.md#main) function in `progs/lua/lua_main.c`
+- [`main`](modules/progs.micropython.variants.minios.lib.mip.py.md#main) function in `progs.micropython.variants.minios.lib.mip`
 - [`main`](modules/progs.minicraft.minicraft.c.md#main) function in `progs/minicraft/minicraft.c`
 - [`main`](modules/progs.nuklear.node_editor.c.md#main) function in `progs/nuklear/node_editor.c`
 - [`main`](modules/progs.paint.paint.c.md#main) function in `progs/paint/paint.c`
@@ -4275,6 +4301,7 @@
 - [`main`](modules/progs.src.lxnet.c.md#main) function in `progs/src/lxnet.c`
 - [`main`](modules/progs.src.lxproc.c.md#main) function in `progs/src/lxproc.c`
 - [`main`](modules/progs.src.lxsecc.c.md#main) function in `progs/src/lxsecc.c`
+- [`main`](modules/progs.src.lxsel.c.md#main) function in `progs/src/lxsel.c`
 - [`main`](modules/progs.src.lxtls.c.md#main) function in `progs/src/lxtls.c`
 - [`main`](modules/progs.src.lz4.c.md#main) function in `progs/src/lz4.c`
 - [`main`](modules/progs.src.lzss.c.md#main) function in `progs/src/lzss.c`
@@ -4314,6 +4341,7 @@
 - [`main`](modules/tools.minios_cli.py.md#main) function in `tools.minios_cli`
 - [`main`](modules/tools.minios_gui.py.md#main) function in `tools.minios_gui`
 - [`main`](modules/tools.minios_hyper.py.md#main) function in `tools.minios_hyper`
+- [`main`](modules/tools.mkcpyzip.py.md#main) function in `tools.mkcpyzip`
 - [`main`](modules/tools.mkfs.minifs.py.md#main) function in `tools.mkfs.minifs`
 - [`main`](modules/tools.mkpak1.py.md#main) function in `tools.mkpak1`
 - [`main`](modules/tools.mkramdisk.py.md#main) function in `tools.mkramdisk`
@@ -4349,6 +4377,7 @@
 - [`match`](modules/headers.pcache.h.md#match) function in `headers/pcache.h`
 - [`MAX_ARGS`](modules/headers.shell.h.md#max_args) macro in `headers/shell.h`
 - [`MAX_AUDIO_MS`](modules/progs.piano.piano.c.md#max_audio_ms) macro in `progs/piano/piano.c`
+- [`MAX_BODY`](modules/progs.micropython.variants.minios.lib.mip.py.md#max_body) constant in `progs.micropython.variants.minios.lib.mip`
 - [`MAX_CAPTURES`](modules/progs.doomgeneric.statdump.c.md#max_captures) macro in `progs/doomgeneric/statdump.c`
 - [`MAX_CHEAT_LEN`](modules/progs.doomgeneric.m_cheat.h.md#max_cheat_len) macro in `progs/doomgeneric/m_cheat.h`
 - [`MAX_CHEAT_PARAMS`](modules/progs.doomgeneric.m_cheat.h.md#max_cheat_params) macro in `progs/doomgeneric/m_cheat.h`
@@ -4358,6 +4387,7 @@
 - [`MAX_ENTRIES`](modules/tools.minifs_saves.py.md#max_entries) constant in `tools.minifs_saves`
 - [`MAX_FILE_BYTES`](modules/tools.minifs_saves.py.md#max_file_bytes) constant in `tools.minifs_saves`
 - [`MAX_FILES`](modules/tools.mkramdisk.py.md#max_files) constant in `tools.mkramdisk`
+- [`MAX_HEAD_BYTES`](modules/progs.micropython.variants.minios.lib.mip.py.md#max_head_bytes) constant in `progs.micropython.variants.minios.lib.mip`
 - [`MAX_INSTRUMENTS`](modules/progs.doomgeneric.gusconf.c.md#max_instruments) macro in `progs/doomgeneric/gusconf.c`
 - [`MAX_IWAD_DIRS`](modules/progs.doomgeneric.d_iwad.c.md#max_iwad_dirs) macro in `progs/doomgeneric/d_iwad.c`
 - [`MAX_JOY_BUTTONS`](modules/progs.doomgeneric.g_game.c.md#max_joy_buttons) macro in `progs/doomgeneric/g_game.c`
@@ -4368,6 +4398,7 @@
 - [`MAX_PARAMS_MINIGCC`](modules/tools.kernel_feature_survey.py.md#surveyconfig-max_params_minigcc) attribute of `SurveyConfig` in `tools.kernel_feature_survey`
 - [`MAX_PROCS`](modules/headers.sched.h.md#max_procs) macro in `headers/sched.h`
 - [`MAX_PROMPT_LEN`](modules/progs.topogpt3.topogpt3.c.md#max_prompt_len) macro in `progs/topogpt3/topogpt3.c`
+- [`MAX_REDIRECTS`](modules/progs.micropython.variants.minios.lib.mip.py.md#max_redirects) constant in `progs.micropython.variants.minios.lib.mip`
 - [`max_sectors`](modules/tools.doom_pwad.py.md#doompwadconfig-max_sectors) attribute of `DoomPwadConfig` in `tools.doom_pwad`
 - [`MAX_SEQ_LEN`](modules/progs.topogpt3.topogpt3.c.md#max_seq_len) macro in `progs/topogpt3/topogpt3.c`
 - [`MAX_SEQ_POLL`](modules/kernel.console_in.c.md#max_seq_poll) macro in `kernel/console_in.c`
@@ -4532,6 +4563,8 @@
 - [`MICROPY_LONGINT_IMPL`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_longint_impl) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_OPT_COMPUTED_GOTO`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_opt_computed_goto) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PERSISTENT_CODE_LOAD`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_persistent_code_load) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_PY_ASYNCIO`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_asyncio) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_PY_ERRNO`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_errno) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_FFI`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_ffi) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_GC_COLLECT_RETVAL`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_gc_collect_retval) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_MACHINE`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_machine) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
@@ -4541,7 +4574,9 @@
 - [`MICROPY_PY_OS_INCLUDEFILE`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_os_includefile) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_OS_SYSTEM`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_os_system) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_OS_URANDOM`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_os_urandom) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
-- [`MICROPY_PY_SOCKET`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_socket) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_PY_SELECT`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_select) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_PY_SELECT_POSIX_OPTIMISATIONS`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_select_posix_optimisations) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_PY_SELECT_SELECT`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_select_select) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_SSL`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_ssl) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_SYS_ATEXIT`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_sys_atexit) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_SYS_EXC_INFO`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_sys_exc_info) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
@@ -4550,9 +4585,13 @@
 - [`MICROPY_PY_SYS_STDFILES`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_sys_stdfiles) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_THREAD`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_thread) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_TIME`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_time) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_PY_TIME_CUSTOM_SLEEP`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_time_custom_sleep) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_PY_TIME_INCLUDEFILE`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_time_includefile) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_PY_TIME_TIME_TIME_NS`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_time_time_time_ns) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_PY_WEBSOCKET`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_py_websocket) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_repl_emacs_extra_words_move) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_REPL_EMACS_WORDS_MOVE`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_repl_emacs_words_move) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
+- [`MICROPY_STREAMS_NON_BLOCK`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_streams_non_block) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_USE_READLINE`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_use_readline) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_USE_READLINE_HISTORY`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_use_readline_history) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
 - [`MICROPY_VFS_ROM`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md#micropy_vfs_rom) macro in `progs/micropython/variants/minios/mpconfigvariant.h`
@@ -4938,6 +4977,7 @@
 - [`modifiers_update`](modules/headers.drivers.modifiers.h.md#modifiers_update) function in `headers/drivers/modifiers.h`
 - [`module`](modules/progs.lua.lua_main.c.md#module) function in `progs/lua/lua_main.c`
 - [`module`](modules/progs.nuklear.cvm_emit.c.md#module) function in `progs/nuklear/cvm_emit.c`
+- [`module_name`](modules/progs.micropython.variants.minios.lib.mip.py.md#module_name) function in `progs.micropython.variants.minios.lib.mip`
 - [`MOE_TOP_K`](modules/progs.topogpt3.topogpt3.c.md#moe_top_k) macro in `progs/topogpt3/topogpt3.c`
 - [`MONO_BYTES`](modules/progs.src.opl3.c.md#mono_bytes) macro in `progs/src/opl3.c`
 - [`mont_ctx`](modules/net.tls_crypto.c.md#mont_ctx) struct in `net/tls_crypto.c`
@@ -5843,6 +5883,8 @@
 - [`parse_input`](modules/progs.nuklear.node_editor.c.md#parse_input) function in `progs/nuklear/node_editor.c`
 - [`parse_mutations`](modules/tools.check_mutant_anchors.py.md#parse_mutations) function in `tools.check_mutant_anchors`
 - [`parse_phdrs`](modules/tools.sign_elf.py.md#parse_phdrs) function in `tools.sign_elf`
+- [`parse_response`](modules/progs.micropython.variants.minios.lib.mip.py.md#parse_response) function in `progs.micropython.variants.minios.lib.mip`
+- [`parse_url`](modules/progs.micropython.variants.minios.lib.mip.py.md#parse_url) function in `progs.micropython.variants.minios.lib.mip`
 - [`ParseResult`](modules/progs.lisp.lisp.c.md#parseresult) struct in `progs/lisp/lisp.c`
 - [`path`](modules/kernel.vga_fb.c.md#path) function in `kernel/vga_fb.c`
 - [`path`](modules/progs.src.execho.c.md#path) function in `progs/src/execho.c`
@@ -6655,11 +6697,13 @@
 - [`RDSuper`](modules/fs.ramdisk.c.md#rdsuper) struct in `fs/ramdisk.c`
 - [`read`](modules/tools.minifs_dump.py.md#fs-read) method of `FS` in `tools.minifs_dump`
 - [`read`](modules/tools.minifs_fsck.py.md#fsck-read) method of `FSCK` in `tools.minifs_fsck`
+- [`READ_CHUNK`](modules/progs.micropython.variants.minios.lib.mip.py.md#read_chunk) constant in `progs.micropython.variants.minios.lib.mip`
 - [`read_failed`](modules/arch.x86.boot.stage1.S.md#read_failed) function in `arch/x86/boot/stage1.S`
 - [`read_failed`](modules/arch.x86.boot.stage2.S.md#read_failed) function in `arch/x86/boot/stage2.S`
 - [`read_file`](modules/tools.minifs_saves.py.md#fs-read_file) method of `FS` in `tools.minifs_saves`
 - [`read_file_dir`](modules/tools.minifs_saves.py.md#fs-read_file_dir) method of `FS` in `tools.minifs_saves`
 - [`read_file_raw`](modules/tools.minifs_saves.py.md#fs-read_file_raw) method of `FS` in `tools.minifs_saves`
+- [`read_fname_bytes`](modules/tools.mkramdisk.py.md#read_fname_bytes) function in `tools.mkramdisk`
 - [`read_mem`](modules/tools.minios_hyper.py.md#gdbchannel-read_mem) method of `GdbChannel` in `tools.minios_hyper`
 - [`read_piece`](modules/arch.x86.boot.stage2.S.md#read_piece) function in `arch/x86/boot/stage2.S`
 - [`read_pwad`](modules/tools.doom_pwad.py.md#read_pwad) function in `tools.doom_pwad`
@@ -6694,6 +6738,7 @@
 - [`redirect_pending`](modules/kernel.console.c.md#redirect_pending) function in `kernel/console.c`
 - [`redirect_resume`](modules/headers.kernel.h.md#redirect_resume) function in `headers/kernel.h`
 - [`redirect_resume`](modules/kernel.console.c.md#redirect_resume) function in `kernel/console.c`
+- [`REDIRECT_STATUS`](modules/progs.micropython.variants.minios.lib.mip.py.md#redirect_status) constant in `progs.micropython.variants.minios.lib.mip`
 - [`redirect_suspend`](modules/headers.kernel.h.md#redirect_suspend) function in `headers/kernel.h`
 - [`redirect_suspend`](modules/kernel.console.c.md#redirect_suspend) function in `kernel/console.c`
 - [`redirect_take`](modules/headers.kernel.h.md#redirect_take) function in `headers/kernel.h`
@@ -7263,6 +7308,25 @@
 - [`seg_t`](modules/progs.doomgeneric.r_defs.h.md#seg_t) struct in `progs/doomgeneric/r_defs.h`
 - [`segs`](modules/progs.doomgeneric.r_state.h.md#segs) variable in `progs/doomgeneric/r_state.h`
 - [`segtextured`](modules/progs.doomgeneric.r_bsp.h.md#segtextured) variable in `progs/doomgeneric/r_bsp.h`
+- [`select_fd_isset`](modules/headers.select_map.h.md#select_fd_isset) function in `headers/select_map.h`
+- [`select_fd_put`](modules/headers.select_map.h.md#select_fd_put) function in `headers/select_map.h`
+- [`SELECT_FD_SET_BYTES`](modules/headers.select_map.h.md#select_fd_set_bytes) macro in `headers/select_map.h`
+- [`SELECT_FD_SETSIZE`](modules/headers.select_map.h.md#select_fd_setsize) macro in `headers/select_map.h`
+- [`SELECT_NFDS_MAX`](modules/kernel.syscalls.c.md#select_nfds_max) macro in `kernel/syscalls.c`
+- [`select_poll_badfd`](modules/headers.select_map.h.md#select_poll_badfd) function in `headers/select_map.h`
+- [`select_poll_build`](modules/headers.select_map.h.md#select_poll_build) function in `headers/select_map.h`
+- [`select_poll_count`](modules/headers.select_map.h.md#select_poll_count) function in `headers/select_map.h`
+- [`select_poll_result`](modules/headers.select_map.h.md#select_poll_result) function in `headers/select_map.h`
+- [`SELECT_POLLERR`](modules/headers.select_map.h.md#select_pollerr) macro in `headers/select_map.h`
+- [`select_pollfd_t`](modules/headers.select_map.h.md#select_pollfd_t) struct in `headers/select_map.h`
+- [`SELECT_POLLHUP`](modules/headers.select_map.h.md#select_pollhup) macro in `headers/select_map.h`
+- [`SELECT_POLLIN`](modules/headers.select_map.h.md#select_pollin) macro in `headers/select_map.h`
+- [`SELECT_POLLNVAL`](modules/headers.select_map.h.md#select_pollnval) macro in `headers/select_map.h`
+- [`SELECT_POLLOUT`](modules/headers.select_map.h.md#select_pollout) macro in `headers/select_map.h`
+- [`SELECT_POLLPRI`](modules/headers.select_map.h.md#select_pollpri) macro in `headers/select_map.h`
+- [`SELECT_TIMEOUT_MS_MAX`](modules/kernel.syscalls.c.md#select_timeout_ms_max) macro in `kernel/syscalls.c`
+- [`SELECT_TIMESPEC_BYTES`](modules/kernel.syscalls.c.md#select_timespec_bytes) macro in `kernel/syscalls.c`
+- [`SELECT_TIMEVAL_BYTES`](modules/kernel.syscalls.c.md#select_timeval_bytes) macro in `kernel/syscalls.c`
 - [`SEM_INIT`](modules/headers.sync.h.md#sem_init) macro in `headers/sync.h`
 - [`sem_init`](modules/headers.sync.h.md#sem_init) function in `headers/sync.h`
 - [`sem_init`](modules/kernel.sync.c.md#sem_init) function in `kernel/sync.c`
@@ -7577,6 +7641,7 @@
 - [`SOCK_FPROG_SIZE`](modules/kernel.proc_sec.c.md#sock_fprog_size) macro in `kernel/proc_sec.c`
 - [`socket`](modules/progs.src.freedom.c.md#socket) function in `progs/src/freedom.c`
 - [`socket`](modules/progs.src.mtop.c.md#socket) function in `progs/src/mtop.c`
+- [`SOCKET_TIMEOUT_S`](modules/progs.micropython.variants.minios.lib.mip.py.md#socket_timeout_s) constant in `progs.micropython.variants.minios.lib.mip`
 - [`sockets`](modules/headers.tls_port.h.md#sockets) function in `headers/tls_port.h`
 - [`sockets`](modules/progs.tls_u.tls_u_port.c.md#sockets) function in `progs/tls_u/tls_u_port.c`
 - [`SOFTWARE_KEY`](modules/progs.doomgeneric.d_iwad.c.md#software_key) macro in `progs/doomgeneric/d_iwad.c`
@@ -7648,8 +7713,10 @@
 - [`split`](modules/kernel.syscalls.c.md#split) function in `kernel/syscalls.c`
 - [`split_for_editor`](modules/mcp.minios_addons.py.md#split_for_editor) function in `mcp.minios_addons`
 - [`split_functions`](modules/tools.check_syscall_sanitize.py.md#split_functions) function in `tools.check_syscall_sanitize`
+- [`split_https_url`](modules/progs.micropython.variants.minios.lib.mip.py.md#split_https_url) function in `progs.micropython.variants.minios.lib.mip`
 - [`split_top_args`](modules/tools.check_syscall_sanitize.py.md#split_top_args) function in `tools.check_syscall_sanitize`
 - [`split_url`](modules/progs.asm.freedom.s.md#split_url) function in `progs/asm/freedom.s`
+- [`split_url`](modules/progs.micropython.variants.minios.lib.mip.py.md#split_url) function in `progs.micropython.variants.minios.lib.mip`
 - [`sprintf`](modules/progs.topogpt3.topogpt3.c.md#sprintf) function in `progs/topogpt3/topogpt3.c`
 - [`spritedef_t`](modules/progs.doomgeneric.r_defs.h.md#spritedef_t) struct in `progs/doomgeneric/r_defs.h`
 - [`spriteframe_t`](modules/progs.doomgeneric.r_defs.h.md#spriteframe_t) struct in `progs/doomgeneric/r_defs.h`
@@ -8407,6 +8474,8 @@
 - [`tls_x509_parse_pubkey`](modules/headers.tls.h.md#tls_x509_parse_pubkey) function in `headers/tls.h`
 - [`tls_x509_parse_pubkey`](modules/net.tls_x509.c.md#tls_x509_parse_pubkey) function in `net/tls_x509.c`
 - [`tls_x509_verify_chain`](modules/net.tls_x509.c.md#tls_x509_verify_chain) function in `net/tls_x509.c`
+- [`TLSGET_OUT`](modules/progs.micropython.variants.minios.lib.mip.py.md#tlsget_out) constant in `progs.micropython.variants.minios.lib.mip`
+- [`TLSGET_PATH`](modules/progs.micropython.variants.minios.lib.mip.py.md#tlsget_path) constant in `progs.micropython.variants.minios.lib.mip`
 - [`tmceilingz`](modules/progs.doomgeneric.p_local.h.md#tmceilingz) variable in `progs/doomgeneric/p_local.h`
 - [`tmfloorz`](modules/progs.doomgeneric.p_local.h.md#tmfloorz) variable in `progs/doomgeneric/p_local.h`
 - [`TMO`](modules/mcp.mcp_dbg_driver.py.md#tmo) constant in `mcp.mcp_dbg_driver`

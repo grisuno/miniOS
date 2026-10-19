@@ -1,10 +1,10 @@
 # `progs/micropython/variants/minios/mpconfigvariant.h`
 
-> Source: [progs/micropython/variants/minios/mpconfigvariant.h:1](../../progs/micropython/variants/minios/mpconfigvariant.h#L1) | language `h` | coverage 38.5% | [API index](../index.md)
+> Source: [progs/micropython/variants/minios/mpconfigvariant.h:1](../../progs/micropython/variants/minios/mpconfigvariant.h#L1) | language `h` | coverage 40.4% | [API index](../index.md)
 
 ## Contents
 
-- **Macros:** [`MICROPY_CONFIG_ROM_LEVEL`](#micropy_config_rom_level), [`MICROPY_FLOAT_IMPL`](#micropy_float_impl), [`MICROPY_LONGINT_IMPL`](#micropy_longint_impl), [`MICROPY_ERROR_REPORTING`](#micropy_error_reporting), [`MICROPY_WARNINGS`](#micropy_warnings), [`MICROPY_DEBUG_PRINTERS`](#micropy_debug_printers), [`MICROPY_USE_READLINE`](#micropy_use_readline), [`MICROPY_KBD_EXCEPTION`](#micropy_kbd_exception), [`MICROPY_ASYNC_KBD_INTR`](#micropy_async_kbd_intr), [`MICROPY_HELPER_REPL`](#micropy_helper_repl), [`MICROPY_PY_SYS_PS1`](#micropy_py_sys_ps1), [`MICROPY_PY_SYS_PS2`](#micropy_py_sys_ps2), [`MICROPY_PY_SYS_ATEXIT`](#micropy_py_sys_atexit), [`MICROPY_PY_SYS_EXC_INFO`](#micropy_py_sys_exc_info), [`MICROPY_PY_SYS_STDFILES`](#micropy_py_sys_stdfiles), [`MICROPY_PY_OS`](#micropy_py_os), [`MICROPY_PY_OS_INCLUDEFILE`](#micropy_py_os_includefile), [`MICROPY_PY_OS_ERRNO`](#micropy_py_os_errno), [`MICROPY_PY_OS_GETENV_PUTENV_UNSETENV`](#micropy_py_os_getenv_putenv_unsetenv), [`MICROPY_PY_OS_SYSTEM`](#micropy_py_os_system), [`MICROPY_PY_OS_URANDOM`](#micropy_py_os_urandom), [`MICROPY_PY_TIME`](#micropy_py_time), [`MICROPY_PY_SOCKET`](#micropy_py_socket), [`MICROPY_PY_SSL`](#micropy_py_ssl), [`MICROPY_PY_FFI`](#micropy_py_ffi), [`MICROPY_PY_THREAD`](#micropy_py_thread), [`MICROPY_PY_MACHINE`](#micropy_py_machine), [`MICROPY_PY_WEBSOCKET`](#micropy_py_websocket), [`MICROPY_PERSISTENT_CODE_LOAD`](#micropy_persistent_code_load), [`MICROPY_REPL_EMACS_WORDS_MOVE`](#micropy_repl_emacs_words_move), [`MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE`](#micropy_repl_emacs_extra_words_move), [`MICROPY_USE_READLINE_HISTORY`](#micropy_use_readline_history), [`MICROPY_OPT_COMPUTED_GOTO`](#micropy_opt_computed_goto), [`MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF`](#micropy_enable_emergency_exception_buf), [`MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE`](#micropy_emergency_exception_buf_size), [`MICROPY_PY_GC_COLLECT_RETVAL`](#micropy_py_gc_collect_retval), [`MICROPY_VFS_ROM`](#micropy_vfs_rom), [`MICROPY_VFS_ROM_IOCTL`](#micropy_vfs_rom_ioctl)
+- **Macros:** [`MICROPY_CONFIG_ROM_LEVEL`](#micropy_config_rom_level), [`MICROPY_FLOAT_IMPL`](#micropy_float_impl), [`MICROPY_LONGINT_IMPL`](#micropy_longint_impl), [`MICROPY_ERROR_REPORTING`](#micropy_error_reporting), [`MICROPY_WARNINGS`](#micropy_warnings), [`MICROPY_DEBUG_PRINTERS`](#micropy_debug_printers), [`MICROPY_USE_READLINE`](#micropy_use_readline), [`MICROPY_KBD_EXCEPTION`](#micropy_kbd_exception), [`MICROPY_ASYNC_KBD_INTR`](#micropy_async_kbd_intr), [`MICROPY_HELPER_REPL`](#micropy_helper_repl), [`MICROPY_PY_SYS_PS1`](#micropy_py_sys_ps1), [`MICROPY_PY_SYS_PS2`](#micropy_py_sys_ps2), [`MICROPY_PY_SYS_ATEXIT`](#micropy_py_sys_atexit), [`MICROPY_PY_SYS_EXC_INFO`](#micropy_py_sys_exc_info), [`MICROPY_PY_SYS_STDFILES`](#micropy_py_sys_stdfiles), [`MICROPY_PY_OS`](#micropy_py_os), [`MICROPY_PY_OS_INCLUDEFILE`](#micropy_py_os_includefile), [`MICROPY_PY_OS_ERRNO`](#micropy_py_os_errno), [`MICROPY_PY_OS_GETENV_PUTENV_UNSETENV`](#micropy_py_os_getenv_putenv_unsetenv), [`MICROPY_PY_OS_SYSTEM`](#micropy_py_os_system), [`MICROPY_PY_OS_URANDOM`](#micropy_py_os_urandom), [`MICROPY_PY_SELECT`](#micropy_py_select), [`MICROPY_PY_SELECT_POSIX_OPTIMISATIONS`](#micropy_py_select_posix_optimisations), [`MICROPY_PY_SELECT_SELECT`](#micropy_py_select_select), [`MICROPY_PY_ASYNCIO`](#micropy_py_asyncio), [`MICROPY_STREAMS_NON_BLOCK`](#micropy_streams_non_block), [`MICROPY_PY_ERRNO`](#micropy_py_errno), [`MICROPY_PY_TIME`](#micropy_py_time), [`MICROPY_PY_TIME_INCLUDEFILE`](#micropy_py_time_includefile), [`MICROPY_PY_TIME_TIME_TIME_NS`](#micropy_py_time_time_time_ns), [`MICROPY_PY_TIME_CUSTOM_SLEEP`](#micropy_py_time_custom_sleep), [`MICROPY_PY_SSL`](#micropy_py_ssl), [`MICROPY_PY_FFI`](#micropy_py_ffi), [`MICROPY_PY_THREAD`](#micropy_py_thread), [`MICROPY_PY_MACHINE`](#micropy_py_machine), [`MICROPY_PY_WEBSOCKET`](#micropy_py_websocket), [`MICROPY_PERSISTENT_CODE_LOAD`](#micropy_persistent_code_load), [`MICROPY_REPL_EMACS_WORDS_MOVE`](#micropy_repl_emacs_words_move), [`MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE`](#micropy_repl_emacs_extra_words_move), [`MICROPY_USE_READLINE_HISTORY`](#micropy_use_readline_history), [`MICROPY_OPT_COMPUTED_GOTO`](#micropy_opt_computed_goto), [`MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF`](#micropy_enable_emergency_exception_buf), [`MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE`](#micropy_emergency_exception_buf_size), [`MICROPY_PY_GC_COLLECT_RETVAL`](#micropy_py_gc_collect_retval), [`MICROPY_VFS_ROM`](#micropy_vfs_rom), [`MICROPY_VFS_ROM_IOCTL`](#micropy_vfs_rom_ioctl)
 
 ## Macros
 
@@ -276,31 +276,133 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ---
 
+<a id="micropy_py_select"></a>
+
+### `MICROPY_PY_SELECT`
+
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:60](../../progs/micropython/variants/minios/mpconfigvariant.h#L60)
+
+```c
+#define MICROPY_PY_SELECT
+```
+
+── select: poll-based (unix POSIX optimisations), like every variant ─
+
+---
+
+<a id="micropy_py_select_posix_optimisations"></a>
+
+### `MICROPY_PY_SELECT_POSIX_OPTIMISATIONS`
+
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:61](../../progs/micropython/variants/minios/mpconfigvariant.h#L61)
+
+```c
+#define MICROPY_PY_SELECT_POSIX_OPTIMISATIONS
+```
+
+---
+
+<a id="micropy_py_select_select"></a>
+
+### `MICROPY_PY_SELECT_SELECT`
+
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:62](../../progs/micropython/variants/minios/mpconfigvariant.h#L62)
+
+```c
+#define MICROPY_PY_SELECT_SELECT
+```
+
+---
+
+<a id="micropy_py_asyncio"></a>
+
+### `MICROPY_PY_ASYNCIO`
+
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:65](../../progs/micropython/variants/minios/mpconfigvariant.h#L65)
+
+```c
+#define MICROPY_PY_ASYNCIO
+```
+
+── asyncio: the extmod event loop over select.poll() and sockets ───
+
+---
+
+<a id="micropy_streams_non_block"></a>
+
+### `MICROPY_STREAMS_NON_BLOCK`
+
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:70](../../progs/micropython/variants/minios/mpconfigvariant.h#L70)
+
+```c
+#define MICROPY_STREAMS_NON_BLOCK
+```
+
+Non-blocking streams: EAGAIN reads answer None instead of raising (py/stream.h mp_is_nonblocking_error). asyncio's Stream.read relies on it: without this the socket read raises EAGAIN and every async stream dies mid-transfer.
+
+---
+
+<a id="micropy_py_errno"></a>
+
+### `MICROPY_PY_ERRNO`
+
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:73](../../progs/micropython/variants/minios/mpconfigvariant.h#L73)
+
+```c
+#define MICROPY_PY_ERRNO
+```
+
+── errno: the ecosystem (asyncio.stream) imports EINPROGRESS et al ─
+
+---
+
 <a id="micropy_py_time"></a>
 
 ### `MICROPY_PY_TIME`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:50](../../progs/micropython/variants/minios/mpconfigvariant.h#L50)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:76](../../progs/micropython/variants/minios/mpconfigvariant.h#L76)
 
 ```c
 #define MICROPY_PY_TIME
 ```
 
-── time module disabled (no select() syscall for sleep) ───────────
+── time: unix modtime.c; sleep(select) is backed by pselect6(2) ────
 
 ---
 
-<a id="micropy_py_socket"></a>
+<a id="micropy_py_time_includefile"></a>
 
-### `MICROPY_PY_SOCKET`
+### `MICROPY_PY_TIME_INCLUDEFILE`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:53](../../progs/micropython/variants/minios/mpconfigvariant.h#L53)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:77](../../progs/micropython/variants/minios/mpconfigvariant.h#L77)
 
 ```c
-#define MICROPY_PY_SOCKET
+#define MICROPY_PY_TIME_INCLUDEFILE
 ```
 
-── explicit disables ─────────────────────────────────────────────
+---
+
+<a id="micropy_py_time_time_time_ns"></a>
+
+### `MICROPY_PY_TIME_TIME_TIME_NS`
+
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:78](../../progs/micropython/variants/minios/mpconfigvariant.h#L78)
+
+```c
+#define MICROPY_PY_TIME_TIME_TIME_NS
+```
+
+---
+
+<a id="micropy_py_time_custom_sleep"></a>
+
+### `MICROPY_PY_TIME_CUSTOM_SLEEP`
+
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:79](../../progs/micropython/variants/minios/mpconfigvariant.h#L79)
+
+```c
+#define MICROPY_PY_TIME_CUSTOM_SLEEP
+```
 
 ---
 
@@ -308,11 +410,13 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_PY_SSL`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:54](../../progs/micropython/variants/minios/mpconfigvariant.h#L54)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:82](../../progs/micropython/variants/minios/mpconfigvariant.h#L82)
 
 ```c
 #define MICROPY_PY_SSL
 ```
+
+── explicit disables ─────────────────────────────────────────────
 
 ---
 
@@ -320,7 +424,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_PY_FFI`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:55](../../progs/micropython/variants/minios/mpconfigvariant.h#L55)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:83](../../progs/micropython/variants/minios/mpconfigvariant.h#L83)
 
 ```c
 #define MICROPY_PY_FFI
@@ -332,7 +436,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_PY_THREAD`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:56](../../progs/micropython/variants/minios/mpconfigvariant.h#L56)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:84](../../progs/micropython/variants/minios/mpconfigvariant.h#L84)
 
 ```c
 #define MICROPY_PY_THREAD
@@ -344,7 +448,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_PY_MACHINE`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:57](../../progs/micropython/variants/minios/mpconfigvariant.h#L57)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:85](../../progs/micropython/variants/minios/mpconfigvariant.h#L85)
 
 ```c
 #define MICROPY_PY_MACHINE
@@ -356,7 +460,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_PY_WEBSOCKET`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:58](../../progs/micropython/variants/minios/mpconfigvariant.h#L58)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:86](../../progs/micropython/variants/minios/mpconfigvariant.h#L86)
 
 ```c
 #define MICROPY_PY_WEBSOCKET
@@ -368,7 +472,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_PERSISTENT_CODE_LOAD`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:61](../../progs/micropython/variants/minios/mpconfigvariant.h#L61)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:89](../../progs/micropython/variants/minios/mpconfigvariant.h#L89)
 
 ```c
 #define MICROPY_PERSISTENT_CODE_LOAD
@@ -382,7 +486,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_REPL_EMACS_WORDS_MOVE`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:64](../../progs/micropython/variants/minios/mpconfigvariant.h#L64)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:92](../../progs/micropython/variants/minios/mpconfigvariant.h#L92)
 
 ```c
 #define MICROPY_REPL_EMACS_WORDS_MOVE
@@ -396,7 +500,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:65](../../progs/micropython/variants/minios/mpconfigvariant.h#L65)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:93](../../progs/micropython/variants/minios/mpconfigvariant.h#L93)
 
 ```c
 #define MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
@@ -408,7 +512,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_USE_READLINE_HISTORY`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:66](../../progs/micropython/variants/minios/mpconfigvariant.h#L66)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:94](../../progs/micropython/variants/minios/mpconfigvariant.h#L94)
 
 ```c
 #define MICROPY_USE_READLINE_HISTORY
@@ -420,7 +524,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_OPT_COMPUTED_GOTO`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:71](../../progs/micropython/variants/minios/mpconfigvariant.h#L71)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:99](../../progs/micropython/variants/minios/mpconfigvariant.h#L99)
 
 ```c
 #define MICROPY_OPT_COMPUTED_GOTO
@@ -434,7 +538,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:74](../../progs/micropython/variants/minios/mpconfigvariant.h#L74)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:102](../../progs/micropython/variants/minios/mpconfigvariant.h#L102)
 
 ```c
 #define MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF
@@ -448,7 +552,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:75](../../progs/micropython/variants/minios/mpconfigvariant.h#L75)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:103](../../progs/micropython/variants/minios/mpconfigvariant.h#L103)
 
 ```c
 #define MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE
@@ -460,7 +564,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_PY_GC_COLLECT_RETVAL`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:78](../../progs/micropython/variants/minios/mpconfigvariant.h#L78)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:106](../../progs/micropython/variants/minios/mpconfigvariant.h#L106)
 
 ```c
 #define MICROPY_PY_GC_COLLECT_RETVAL
@@ -474,7 +578,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_VFS_ROM`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:81](../../progs/micropython/variants/minios/mpconfigvariant.h#L81)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:109](../../progs/micropython/variants/minios/mpconfigvariant.h#L109)
 
 ```c
 #define MICROPY_VFS_ROM
@@ -488,7 +592,7 @@ The REPL still works; Ctrl-C simply has no effect.
 
 ### `MICROPY_VFS_ROM_IOCTL`
 
-`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:82](../../progs/micropython/variants/minios/mpconfigvariant.h#L82)
+`macro` | [progs/micropython/variants/minios/mpconfigvariant.h:110](../../progs/micropython/variants/minios/mpconfigvariant.h#L110)
 
 ```c
 #define MICROPY_VFS_ROM_IOCTL

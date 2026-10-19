@@ -926,8 +926,6 @@ split_url:
 
 *Calls:* [`f_secure`](#f_secure)
 
-*Called by:* [`main`](progs.src.freedom.c.md#main)
-
 ---
 
 <a id="resolve_redirect"></a>

@@ -97,7 +97,6 @@ DEVIATIONS = {
     214: ("pcspk_vol", "epoll_ctl_old", "ADR-0014: obsolete number, never trapped"),
     215: ("spawn", "epoll_wait_old", "ADR-0014: obsolete number, never trapped"),
     216: ("lz4_compress", "remap_file_pages", "ADR-0014: exotic number, never trapped by libc"),
-    217: ("lz4_decompress", "getdents64", "ADR-0014: REAL conflict, fix scheduled in Phase 1.A: getdents64 takes 217, lz4 pair relocates"),
     219: ("mouse", "restart_syscall", "ADR-0014: kernel-internal number, never trapped by libc"),
     220: ("nk_frame", "semtimedop", "ADR-0014: sysv-ipc number; MiniOS has no sysv ipc, glibc traps it only for shm users"),
     221: ("sb16_open", "fadvise64", "ADR-0014: fadvise is advisory; a trapped call gets stream validation, fail-closed"),

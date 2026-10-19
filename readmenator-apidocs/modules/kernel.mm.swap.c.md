@@ -69,7 +69,7 @@ int swap_out(unsigned long window_sz)
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`swap_out`](#swap_out) (headers/kernel.h:703).
+> **Inherited:** Documentation from [`swap_out`](#swap_out) (headers/kernel.h:719).
 
 *Calls:* [`ide_write_sectors`](headers.ide.h.md#ide_write_sectors), [`LZ4_compress_default`](headers.lz4_kernel.h.md#lz4_compress_default)
 

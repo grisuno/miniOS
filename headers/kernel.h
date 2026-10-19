@@ -264,10 +264,19 @@ void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *a
  *   4. ramdisk_delete marks the entry as free; the name is zeroed.
  *   5. ramdisk_setup_from validates the entire image before publishing.
  *   6. RAMDISK_MAX_FILES (128) limits concurrent entries.
- *   7. RAMDISK_FNAME_LEN (64) limits name length; truncation is a bug.
+ *   7. RAMDISK_FNAME_LEN (below) limits name length; truncation is a bug.
  * ========================================================================= */
 #define RAMDISK_MAX_FILES 128
-#define RAMDISK_FNAME_LEN 64
+/* Longest kernel-side path buffer (resolve, open, spawn, cwd). 96 covers
+ * the real Python layouts with the current prefix: the deepest module pip
+ * imports lives at
+ * /usr/local/lib/python3.12/site-packages/pip/_vendor/urllib3/contrib/
+ * securetransport.py (82) and a wheel's dist-info RECORD lands at 65; the
+ * old 64 made every such open fail ENAMETOOLONG (docs/spec/python.md).
+ * Kept at 96, not 256, so stack frames stay inside the 2 KB gate. The
+ * ramdisk on-disk name slot (tools/mkramdisk.py) derives its width from
+ * this define, so the packer and RDFile can never drift. */
+#define RAMDISK_FNAME_LEN 96
 
 typedef struct {
     char     name[RAMDISK_FNAME_LEN];
@@ -478,9 +487,16 @@ typedef struct {
     int      is_eventfd;  /* 1 = eventfd counter, see kevent_* */
     int      efd_semaphore; /* EFD_SEMAPHORE: reads take 1, not all */
     unsigned long long efd_count;
+    int      is_dir;      /* 1 = directory handle read by getdents64(217) */
+    unsigned dir_off;     /* next entry index in the directory listing */
+    char     dir_path[RAMDISK_FNAME_LEN]; /* resolved dir path, trailing '/' */
 } KFILE;
 
 KFILE *kfopen(const char *path, const char *mode);
+/* Directory handle for getdents64: kfopen refuses directories (EISDIR),
+ * so open(2) on a directory takes this path instead. resolved must be a
+ * directory path; trailing '/' is added by the helper. */
+KFILE *kfopen_dir(const char *resolved);
 int    kfclose(KFILE *f);
 /* POSIX codes reported through kerrno ("errno" for ET_REL toolchain
  * programs, which name it extern like stdout; glibc ELFs keep their

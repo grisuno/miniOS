@@ -15,24 +15,50 @@ stored raw and flagged so.
 
 Layout (little endian):
     u32 magic, u32 count
-    count * { char name[64]; u32 raw_size; u32 stored_size;
+    count * { char name[RAMDISK_FNAME_LEN]; u32 raw_size; u32 stored_size;
               u32 data_offset; u32 flags }
     payload area (concatenated, offsets relative to its start)
 flags bit 0: stored_size bytes are a zlib stream, else raw.
+
+The name slot width is RAMDISK_FNAME_LEN parsed from headers/kernel.h
+(the single source of truth): the kernel's RDFile table reads the same
+width, and a mismatch silently misaligns every entry; changing the
+constant there and rebuilding is the only way to move it.
 """
 
 import os
+import re
 import struct
 import sys
 import zlib
 
 MAGIC = 0x4B534452
-FNAME_BYTES = 64
-NAME_MAX = FNAME_BYTES - 1
 MAX_FILES = 128
-ENTRY_BYTES = FNAME_BYTES + 16
 FLAG_DEFLATE = 1
 DEFLATE_LEVEL = 6
+
+
+def read_fname_bytes(kernel_h_path):
+    """Parse RAMDISK_FNAME_LEN from headers/kernel.h; fail closed."""
+    try:
+        text = open(kernel_h_path, "r").read()
+    except OSError as exc:
+        raise SystemExit("mkramdisk: cannot read %s: %s" % (kernel_h_path, exc))
+    match = re.search(r"#define\s+RAMDISK_FNAME_LEN\s+(\d+)", text)
+    if not match:
+        raise SystemExit("mkramdisk: RAMDISK_FNAME_LEN not found in %s"
+                         % kernel_h_path)
+    value = int(match.group(1))
+    if value < 32 or value > 4096:
+        raise SystemExit("mkramdisk: implausible RAMDISK_FNAME_LEN %d" % value)
+    return value
+
+
+FNAME_BYTES = read_fname_bytes(
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                 "headers", "kernel.h"))
+NAME_MAX = FNAME_BYTES - 1
+ENTRY_BYTES = FNAME_BYTES + 16
 
 
 def pack_name(path, common):

@@ -279,6 +279,33 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `SBPF_TXA` (macro, line 86) `#define SBPF_TXA`
 - Imported by: `kernel/proc_sec.c`, `kernel/seccomp_bpf.c`, `tests/test_seccomp_bpf.c`
 
+## headers/select_map.h
+- Doc: Docstring: select_map.h -- fd_set <-> pollfd translation for select(2).
+- Layer: utility
+- Language: h
+- Symbols:
+  - `select_pollfd_t` (struct, line 31)
+  - `select_fd_isset` (function, line 37) `static inline int select_fd_isset(const unsigned char *set, int fd)`
+  - `select_fd_put` (function, line 41) `static inline void select_fd_put(unsigned char *set, int fd)`
+  - `select_poll_count` (function, line 46) `static inline unsigned select_poll_count(const unsigned char *r,
+                                ...`
+  - `select_poll_build` (function, line 66) `static inline unsigned select_poll_build(select_pollfd_t *pfd,
+                                  ...`
+  - `select_poll_result` (function, line 95) `static inline unsigned select_poll_result(unsigned char *rout,
+                                  ...`
+  - `select_poll_badfd` (function, line 131) `static inline int select_poll_badfd(const select_pollfd_t *pfd,
+                                 ...`
+  - `SELECT_MAP_H` (macro, line 2) `#define SELECT_MAP_H`
+  - `SELECT_FD_SETSIZE` (macro, line 20) `#define SELECT_FD_SETSIZE`
+  - `SELECT_FD_SET_BYTES` (macro, line 21) `#define SELECT_FD_SET_BYTES`
+  - `SELECT_POLLIN` (macro, line 24) `#define SELECT_POLLIN`
+  - `SELECT_POLLPRI` (macro, line 25) `#define SELECT_POLLPRI`
+  - `SELECT_POLLOUT` (macro, line 26) `#define SELECT_POLLOUT`
+  - `SELECT_POLLERR` (macro, line 27) `#define SELECT_POLLERR`
+  - `SELECT_POLLHUP` (macro, line 28) `#define SELECT_POLLHUP`
+  - `SELECT_POLLNVAL` (macro, line 29) `#define SELECT_POLLNVAL`
+- Imported by: `kernel/syscalls.c`, `tests/test_select_map.c`
+
 ## headers/shell.h
 - Doc: shared shell constants and the line reader/parser reused by
 - Layer: utility
@@ -442,56 +469,6 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `SYSCALL_CPU_SC_TMP_OFF` (macro, line 25) `#define SYSCALL_CPU_SC_TMP_OFF`
   - `SYSCALL_FRAME_WORDS` (macro, line 29) `#define SYSCALL_FRAME_WORDS`
 - Imported by: `arch/x86/syscall_entry.S`, `kernel.c`
-
-## headers/syscalls_proc.h
-- Doc: process-management syscall handlers shared with the
-- Layer: utility
-- Language: h
-- Symbols:
-  - `dispatcher` (function, line 5) `* dispatcher (kernel/syscalls.c). These handlers touch only scheduler * state (current_pid, procs[], do_* /...`
-  - `sys_minios_nice` (function, line 12) `long sys_minios_nice(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_minios_clone` (function, line 13) `long sys_minios_clone(long flags, long newsp, long a3, long a4, long a5, long a6);`
-  - `sys_minios_thread_spawn` (function, line 14) `long sys_minios_thread_spawn(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_yield` (function, line 15) `long sys_linux_yield(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_getpid` (function, line 16) `long sys_linux_getpid(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_gettid` (function, line 17) `long sys_linux_gettid(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_fork` (function, line 18) `long sys_linux_fork(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_clone` (function, line 19) `long sys_linux_clone(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_vfork` (function, line 20) `long sys_linux_vfork(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_execve` (function, line 21) `long sys_linux_execve(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_exit` (function, line 22) `long sys_linux_exit(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_wait4` (function, line 23) `long sys_linux_wait4(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `sys_linux_kill` (function, line 24) `long sys_linux_kill(long a1, long a2, long a3, long a4, long a5, long a6);`
-  - `linux_signal_fatal` (function, line 31) `int linux_signal_fatal(long sig);`
-  - `do_proc_exit` (function, line 34) `long do_proc_exit(long code);`
-  - `SYSCALLS_PROC_H` (macro, line 2) `#define SYSCALLS_PROC_H`
-  - `LINUX_SIGNAL_MAX` (macro, line 28) `#define LINUX_SIGNAL_MAX`
-  - `LINUX_SIGNAL_EXIT_BASE` (macro, line 29) `#define LINUX_SIGNAL_EXIT_BASE`
-  - `LINUX_EXIT_STATUS_MASK` (macro, line 30) `#define LINUX_EXIT_STATUS_MASK`
-- Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
-
-## headers/tick.h
-- Doc: Docstring: Tick listener bus contract.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `tick_config_t` (struct, line 22)
-  - `tick_reset` (function, line 47) `void tick_reset(void);`
-  - `tick_register_audio` (function, line 54) `int tick_register_audio(tick_fn_t fn, void *ctx);`
-  - `tick_register_desktop` (function, line 61) `int tick_register_desktop(tick_fn_t fn, void *ctx);`
-  - `tick_register_usb` (function, line 69) `int tick_register_usb(tick_fn_t fn, void *ctx);`
-  - `tick_run_usb` (function, line 72) `void tick_run_usb(void);`
-  - `tick_run_audio` (function, line 75) `void tick_run_audio(void);`
-  - `tick_run_desktop` (function, line 78) `void tick_run_desktop(void);`
-  - `tick_audio_count` (function, line 81) `int tick_audio_count(void);`
-  - `tick_desktop_count` (function, line 84) `int tick_desktop_count(void);`
-  - `tick_desktop_due` (function, line 92) `int tick_desktop_due(unsigned long long ticks, unsigned interval);`
-  - `TICK_H` (macro, line 19) `#define TICK_H`
-  - `TICK_MAX_AUDIO_LISTENERS` (macro, line 29) `#define TICK_MAX_AUDIO_LISTENERS`
-  - `TICK_MAX_DESKTOP_LISTENERS` (macro, line 31) `#define TICK_MAX_DESKTOP_LISTENERS`
-  - `TICK_MAX_USB_LISTENERS` (macro, line 34) `#define TICK_MAX_USB_LISTENERS`
-  - `TICK_CONFIG_DEFAULT` (macro, line 37) `#define TICK_CONFIG_DEFAULT`
-- Imported by: `kernel/sched.c`, `kernel/tick.c`, `tests/test_tick.c`
 
 
 Next: [KB_headers_p5.md](KB_headers_p5.md)

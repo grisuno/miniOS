@@ -1,9 +1,141 @@
-# Symbols (page 26 of 26)
+# Symbols (page 26 of 27)
 Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `parse_dispatch` | function | `tools/check_abi_numbers.py:146` | `def parse_dispatch(path)` |
+| `NR_WRITE` | macro | `tests/test_seccomp_bpf.c:25` | `#define NR_WRITE` |
+| `PROT_EXEC` | macro | `tests/test_seccomp_bpf.c:29` | `#define PROT_EXEC` |
+| `STMT` | macro | `tests/test_seccomp_bpf.c:21` | `#define STMT(c, k)` |
+| `data_for` | function | `tests/test_seccomp_bpf.c:34` | `static sbpf_data data_for(int nr, unsigned long long a2)` |
+| `main` | function | `tests/test_seccomp_bpf.c:210` | `int main(void)` |
+| `test_action_rank` | function | `tests/test_seccomp_bpf.c:199` | `static void test_action_rank(void)` |
+| `test_alu_and_jumps` | function | `tests/test_seccomp_bpf.c:150` | `static void test_alu_and_jumps(void)` |
+| `test_check_refusals` | function | `tests/test_seccomp_bpf.c:88` | `static void test_check_refusals(void)` |
+| `test_freedom_shape` | function | `tests/test_seccomp_bpf.c:43` | `static void test_freedom_shape(void)` |
+| `test_scratch_flow` | function | `tests/test_seccomp_bpf.c:130` | `static void test_scratch_flow(void)` |
+| `CHECK` | macro | `tests/test_select_map.c:18` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_select_map.c:169` | `int main(void)` |
+| `test_badfd` | function | `tests/test_select_map.c:160` | `static void test_badfd(void)` |
+| `test_bit_ops` | function | `tests/test_select_map.c:25` | `static void test_bit_ops(void)` |
+| `test_count_and_build` | function | `tests/test_select_map.c:50` | `static void test_count_and_build(void)` |
+| `test_result_classes` | function | `tests/test_select_map.c:90` | `static void test_result_classes(void)` |
+| `test_result_hup_read_only` | function | `tests/test_select_map.c:142` | `static void test_result_hup_read_only(void)` |
+| `test_result_only_requested` | function | `tests/test_select_map.c:123` | `static void test_result_only_requested(void)` |
+| `test_union_events` | function | `tests/test_select_map.c:72` | `static void test_union_events(void)` |
+| `CHECK` | macro | `tests/test_sign.c:20` | `#define CHECK(cond, msg)` |
+| `hexval` | function | `tests/test_sign.c:27` | `static unsigned hexval(char c)` |
+| `main` | function | `tests/test_sign.c:51` | `int main(void)` |
+| `unhex` | function | `tests/test_sign.c:33` | `static void unhex(unsigned char *out, const char *in, unsigned n)` |
+| `CHECK` | macro | `tests/test_sync.c:37` | `#define CHECK(cond, msg)` |
+| `fresh_all` | function | `tests/test_sync.c:52` | `static void fresh_all(void)` |
+| `fresh_proc` | function | `tests/test_sync.c:44` | `static void fresh_proc(int pid)` |
+| `main` | function | `tests/test_sync.c:63` | `int main(void)` |
+| `proc_get` | function | `tests/test_sync.c:24` | `proc_t *proc_get(int pid)` |
+| `schedule` | function | `tests/test_sync.c:30` | `void schedule(void)` |
+| `CHECK` | macro | `tests/test_theme.c:16` | `#define CHECK(cond, msg)` |
+| `X` | macro | `tests/test_theme.c:29` | `#define X(k, i)` |
+| `check_theme_file` | function | `tests/test_theme.c:78` | `static void check_theme_file(const char *path)` |
+| `cube_exact` | function | `tests/test_theme.c:74` | `static int cube_exact(long v)` |
+| `main` | function | `tests/test_theme.c:107` | `int main(void)` |
+| `t_name_ok` | function | `tests/test_theme.c:34` | `static int t_name_ok(const char *name)` |
+| `t_parse_line` | function | `tests/test_theme.c:46` | `static int t_parse_line(const char *line, int *idx, long v[3])` |
+| `tslot` | struct | `tests/test_theme.c:23` | `` |
+| `CHECK` | macro | `tests/test_tick.c:17` | `#define CHECK(cond, msg)` |
+| `dummy` | function | `tests/test_tick.c:47` | `static void dummy(void *ctx)` |
+| `main` | function | `tests/test_tick.c:52` | `int main(void)` |
+| `rec_a` | function | `tests/test_tick.c:24` | `static void rec_a(void *ctx)` |
+| `rec_b` | function | `tests/test_tick.c:31` | `static void rec_b(void *ctx)` |
+| `rec_d` | function | `tests/test_tick.c:38` | `static void rec_d(void *ctx)` |
+| `CHECK` | macro | `tests/test_usbblk.c:36` | `#define CHECK(cond, msg)` |
+| `device_find` | function | `tests/test_usbblk.c:26` | `device_t *device_find(const char *name)` |
+| `device_register` | function | `tests/test_usbblk.c:20` | `int device_register(device_t *dev)` |
+| `main` | function | `tests/test_usbblk.c:43` | `int main(void)` |
+| `CHECK` | macro | `tests/test_usbhid.c:41` | `#define CHECK(cond, msg)` |
+| `check_usage` | function | `tests/test_usbhid.c:48` | `static void check_usage(unsigned usage, unsigned char want_sc, int want_e0,                      ...` |
+| `kbd_feed_scancode` | function | `tests/test_usbhid.c:22` | `int kbd_feed_scancode(unsigned char sc)` |
+| `kbd_q_push` | function | `tests/test_usbhid.c:30` | `void kbd_q_push(unsigned char c)` |
+| `main` | function | `tests/test_usbhid.c:59` | `int main(void)` |
+| `CHECK` | macro | `tests/test_vedit_build.c:33` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_vedit_build.c:345` | `int main(void)` |
+| `t_base_of` | function | `tests/test_vedit_build.c:51` | `static int t_base_of(const char *fname, char *dst, size_t cap)` |
+| `t_cmd` | function | `tests/test_vedit_build.c:299` | `static int t_cmd(const char *name)` |
+| `t_has_ext` | function | `tests/test_vedit_build.c:40` | `static int t_has_ext(const char *fname, const char *ext)` |
+| `t_join` | function | `tests/test_vedit_build.c:71` | `static int t_join(const char *dir, const char *base, const char *ext,                   char *dst...` |
+| `t_lang_of` | function | `tests/test_vedit_build.c:101` | `static int t_lang_of(const char *fname)` |
+| `t_link_fmt` | function | `tests/test_vedit_build.c:87` | `static int t_link_fmt(const char *s)` |
+| `t_magic` | function | `tests/test_vedit_build.c:268` | `static int t_magic(const char *text, const char *pat, int *mlen)` |
+| `t_matom` | function | `tests/test_vedit_build.c:188` | `static int t_matom(const char *pat, int c, int *atom_len)` |
+| `t_mclass` | function | `tests/test_vedit_build.c:166` | `static int t_mclass(int c, const char *cls)` |
+| `t_mhere` | function | `tests/test_vedit_build.c:211` | `static int t_mhere(const char *text, const char *pat, int *mlen)` |
+| `t_parse_key` | function | `tests/test_vedit_build.c:312` | `static int t_parse_key(const char *s)` |
+| `t_run_kind` | function | `tests/test_vedit_build.c:121` | `static int t_run_kind(const char *fname)` |
+| `t_str_case` | function | `tests/test_vedit_build.c:131` | `static void t_str_case(char *s, int mode)` |
+| `t_transpose` | function | `tests/test_vedit_build.c:157` | `static void t_transpose(char *s, int len, int pos)` |
+| `CHECK` | macro | `tests/test_vma.c:20` | `#define CHECK(cond, msg)` |
+| `black_height` | function | `tests/test_vma.c:27` | `static int black_height(const vma_node_t *n)` |
+| `count_nodes` | function | `tests/test_vma.c:75` | `static int count_nodes(const vma_node_t *root)` |
+| `main` | function | `tests/test_vma.c:231` | `int main(void)` |
+| `test_file_tags_and_containing` | function | `tests/test_vma.c:167` | `static void test_file_tags_and_containing(void)` |
+| `test_full_drain` | function | `tests/test_vma.c:153` | `static void test_full_drain(void)` |
+| `test_insert_find_delete` | function | `tests/test_vma.c:89` | `static void test_insert_find_delete(void)` |
+| `test_node_recycling` | function | `tests/test_vma.c:201` | `static void test_node_recycling(void)` |
+| `test_pool_exhaustion` | function | `tests/test_vma.c:136` | `static void test_pool_exhaustion(void)` |
+| `tree_valid` | function | `tests/test_vma.c:38` | `static int tree_valid(const vma_node_t *root)` |
+| `LIST_MAX` | macro | `tests/test_vma_bench.c:20` | `#define LIST_MAX` |
+| `bench` | function | `tests/test_vma_bench.c:34` | `static void bench(int n)` |
+| `l_find` | function | `tests/test_vma_bench.c:28` | `static int l_find(unsigned long b)` |
+| `l_insert` | function | `tests/test_vma_bench.c:23` | `static void l_insert(unsigned long b)` |
+| `main` | function | `tests/test_vma_bench.c:54` | `int main(void)` |
+| `now_us` | function | `tests/test_vma_bench.c:13` | `static long now_us(void)` |
+| `CHECK` | macro | `tests/test_wl.c:20` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_wl.c:27` | `int main(void)` |
+| `CHECK` | macro | `tests/test_wm.c:22` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_wm.c:29` | `int main(void)` |
+| `CHECK` | macro | `tests/test_xhci.c:23` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_xhci.c:30` | `int main(void)` |
+| `CHECK` | macro | `tls_test.c:62` | `#define CHECK(name, cond)` |
+| `bytes_eq` | function | `tls_test.c:80` | `static int bytes_eq(const unsigned char *a, const unsigned char *b, int n)` |
+| `hexdigit` | function | `tls_test.c:67` | `static int hexdigit(int c)` |
+| `http_over_tls` | function | `tls_test.c:265` | `static int http_over_tls(int port, const char *host)` |
+| `main` | function | `tls_test.c:349` | `int main(int argc, char **argv)` |
+| `scenario_bad_ca` | function | `tls_test.c:329` | `static int scenario_bad_ca(int port)` |
+| `scenario_bad_host` | function | `tls_test.c:319` | `static int scenario_bad_host(int port)` |
+| `scenario_expired` | function | `tls_test.c:339` | `static int scenario_expired(int port)` |
+| `scenario_good` | function | `tls_test.c:290` | `static int scenario_good(int port)` |
+| `scenario_wild_deep` | function | `tls_test.c:309` | `static int scenario_wild_deep(int port)` |
+| `scenario_wild_good` | function | `tls_test.c:295` | `static int scenario_wild_good(int port)` |
+| `scenario_wild_root` | function | `tls_test.c:299` | `static int scenario_wild_root(int port)` |
+| `tcp_connect` | function | `tls_test.c:249` | `static int tcp_connect(int port)` |
+| `test_gcm` | function | `tls_test.c:114` | `static void test_gcm(void)` |
+| `test_p256` | function | `tls_test.c:154` | `static void test_p256(void)` |
+| `test_rsa_ecdsa_vectors` | function | `tls_test.c:200` | `static void test_rsa_ecdsa_vectors(void)` |
+| `test_sha256` | function | `tls_test.c:88` | `static void test_sha256(void)` |
+| `test_sha384` | function | `tls_test.c:103` | `static void test_sha384(void)` |
+| `tls_test_close` | function | `tls_test.c:54` | `void tls_test_close(int fd)` |
+| `tls_test_recv` | function | `tls_test.c:36` | `int tls_test_recv(int fd, char *buf, int len)` |
+| `tls_test_recv_timeout` | function | `tls_test.c:41` | `int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms)` |
+| `tls_test_send` | function | `tls_test.c:26` | `int tls_test_send(int fd, const char *buf, int len)` |
+| `unhex` | function | `tls_test.c:74` | `static void unhex(const char *hex, unsigned char *out, int n)` |
+| `main` | function | `tools/abi_stamp.c:14` | `int main(void)` |
+| `WlBoot` | class | `tools/boot_wl.py:67` | `class WlBoot` |
+| `WlBootConfig` | class | `tools/boot_wl.py:40` | `class WlBootConfig` |
+| `__init__` | method | `tools/boot_wl.py:68` | `def __init__(self, cfg)` |
+| `boot` | method | `tools/boot_wl.py:91` | `def boot(self)` |
+| `close` | method | `tools/boot_wl.py:80` | `def close(self)` |
+| `fail` | method | `tools/boot_wl.py:75` | `def fail(self, msg)` |
+| `headless` | method | `tools/boot_wl.py:182` | `def headless(self)` |
+| `main` | function | `tools/boot_wl.py:226` | `def main()` |
+| `proxy` | method | `tools/boot_wl.py:195` | `def proxy(self)` |
+| `qmp` | method | `tools/boot_wl.py:165` | `def qmp(self, obj)` |
+| `send` | method | `tools/boot_wl.py:135` | `def send(self, line)` |
+| `send_wait` | method | `tools/boot_wl.py:142` | `def send_wait(self, line, timeout)` |
+| `setup` | method | `tools/boot_wl.py:154` | `def setup(self)` |
+| `snapshot` | method | `tools/boot_wl.py:107` | `def snapshot(self, timeout)` |
+| `wait_prompt` | method | `tools/boot_wl.py:124` | `def wait_prompt(self)` |
+| `main` | function | `tools/check_abi_numbers.py:158` | `def main()` |
+| `normalize` | function | `tools/check_abi_numbers.py:130` | `def normalize(minios_name)` |
+| `parse_abi` | function | `tools/check_abi_numbers.py:134` | `def parse_abi(path)` |
+| `parse_dispatch` | function | `tools/check_abi_numbers.py:145` | `def parse_dispatch(path)` |
 | `load_parser` | function | `tools/check_addons.py:22` | `def load_parser()` |
 | `main` | function | `tools/check_addons.py:31` | `def main()` |
 | `compute_cohesion` | function | `tools/check_cohesion.py:31` | `def compute_cohesion(community_nodes, community_edges)` |
@@ -35,13 +167,13 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `load_cpg` | function | `tools/check_surprising.py:25` | `def load_cpg(path)` |
 | `main` | function | `tools/check_surprising.py:118` | `def main()` |
 | `Config` | class | `tools/check_syscall_sanitize.py:18` | `class Config` |
-| `audit_body` | function | `tools/check_syscall_sanitize.py:162` | `def audit_body(name, body)` |
-| `audit_file` | function | `tools/check_syscall_sanitize.py:217` | `def audit_file(path)` |
-| `checked_names` | function | `tools/check_syscall_sanitize.py:112` | `def checked_names(body)` |
-| `delegated_only` | function | `tools/check_syscall_sanitize.py:122` | `def delegated_only(body, alias)` |
-| `main` | function | `tools/check_syscall_sanitize.py:228` | `def main()` |
-| `split_functions` | function | `tools/check_syscall_sanitize.py:69` | `def split_functions(lines)` |
-| `split_top_args` | function | `tools/check_syscall_sanitize.py:143` | `def split_top_args(argtext)` |
+| `audit_body` | function | `tools/check_syscall_sanitize.py:163` | `def audit_body(name, body)` |
+| `audit_file` | function | `tools/check_syscall_sanitize.py:218` | `def audit_file(path)` |
+| `checked_names` | function | `tools/check_syscall_sanitize.py:113` | `def checked_names(body)` |
+| `delegated_only` | function | `tools/check_syscall_sanitize.py:123` | `def delegated_only(body, alias)` |
+| `main` | function | `tools/check_syscall_sanitize.py:229` | `def main()` |
+| `split_functions` | function | `tools/check_syscall_sanitize.py:70` | `def split_functions(lines)` |
+| `split_top_args` | function | `tools/check_syscall_sanitize.py:144` | `def split_top_args(argtext)` |
 | `ClipBridgeConfig` | class | `tools/clip_bridge.py:30` | `class ClipBridgeConfig` |
 | `build_plan` | function | `tools/clip_bridge.py:59` | `def build_plan(text, dst, cfg)` |
 | `main` | function | `tools/clip_bridge.py:84` | `def main(argv)` |
@@ -216,37 +348,40 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `vga_cursor` | method | `tools/minios_hyper.py:427` | `def vga_cursor(self)` |
 | `vga_idle` | method | `tools/minios_hyper.py:415` | `def vga_idle(self)` |
 | `wait_for` | method | `tools/minios_hyper.py:280` | `def wait_for(self, marker, timeout)` |
-| `MiniFS` | class | `tools/mkfs.minifs.py:50` | `class MiniFS` |
-| `__init__` | method | `tools/mkfs.minifs.py:51` | `def __init__(self, total_blocks)` |
-| `add_dir_entry` | method | `tools/mkfs.minifs.py:148` | `def add_dir_entry(self, dir_ino, name, child_ino, ftype)` |
-| `alloc_block` | method | `tools/mkfs.minifs.py:88` | `def alloc_block(self)` |
-| `alloc_inode` | method | `tools/mkfs.minifs.py:82` | `def alloc_inode(self)` |
-| `claim_name` | method | `tools/mkfs.minifs.py:186` | `def claim_name(self, parent_ino, name, is_dir)` |
-| `count_free` | function | `tools/mkfs.minifs.py:44` | `def count_free(bitmap, count)` |
-| `crc16` | function | `tools/mkfs.minifs.py:28` | `def crc16(data)` |
-| `crc32` | function | `tools/mkfs.minifs.py:36` | `def crc32(data)` |
-| `create_inode` | method | `tools/mkfs.minifs.py:107` | `def create_inode(self, mode, links)` |
-| `create_root` | method | `tools/mkfs.minifs.py:94` | `def create_root(self)` |
-| `div_round_up` | function | `tools/mkfs.minifs.py:25` | `def div_round_up(n, d)` |
-| `inode_set_block` | method | `tools/mkfs.minifs.py:118` | `def inode_set_block(self, ino, logblk, phys)` |
-| `inode_set_size` | method | `tools/mkfs.minifs.py:114` | `def inode_set_size(self, ino, size)` |
-| `main` | function | `tools/mkfs.minifs.py:274` | `def main()` |
-| `mark_blocks_used` | method | `tools/mkfs.minifs.py:78` | `def mark_blocks_used(self, start, count)` |
-| `mark_inodes_used` | method | `tools/mkfs.minifs.py:74` | `def mark_inodes_used(self, start, count)` |
-| `pack_tree` | function | `tools/mkfs.minifs.py:304` | `def pack_tree(parent_ino, path, rel)` |
-| `roundup4` | function | `tools/mkfs.minifs.py:22` | `def roundup4(v)` |
-| `seal_inode` | method | `tools/mkfs.minifs.py:102` | `def seal_inode(self, ino)` |
-| `serialize` | method | `tools/mkfs.minifs.py:230` | `def serialize(self)` |
-| `write_dir` | method | `tools/mkfs.minifs.py:218` | `def write_dir(self, parent_ino, name)` |
-| `write_file` | method | `tools/mkfs.minifs.py:199` | `def write_file(self, parent_ino, name, data)` |
+| `build_zip` | function | `tools/mkcpyzip.py:22` | `def build_zip(lib_dir, out_zip, skip)` |
+| `main` | function | `tools/mkcpyzip.py:41` | `def main()` |
+| `MiniFS` | class | `tools/mkfs.minifs.py:56` | `class MiniFS` |
+| `__init__` | method | `tools/mkfs.minifs.py:57` | `def __init__(self, total_blocks)` |
+| `add_dir_entry` | method | `tools/mkfs.minifs.py:154` | `def add_dir_entry(self, dir_ino, name, child_ino, ftype)` |
+| `alloc_block` | method | `tools/mkfs.minifs.py:94` | `def alloc_block(self)` |
+| `alloc_inode` | method | `tools/mkfs.minifs.py:88` | `def alloc_inode(self)` |
+| `claim_name` | method | `tools/mkfs.minifs.py:192` | `def claim_name(self, parent_ino, name, is_dir)` |
+| `count_free` | function | `tools/mkfs.minifs.py:50` | `def count_free(bitmap, count)` |
+| `crc16` | function | `tools/mkfs.minifs.py:34` | `def crc16(data)` |
+| `crc32` | function | `tools/mkfs.minifs.py:42` | `def crc32(data)` |
+| `create_inode` | method | `tools/mkfs.minifs.py:113` | `def create_inode(self, mode, links)` |
+| `create_root` | method | `tools/mkfs.minifs.py:100` | `def create_root(self)` |
+| `div_round_up` | function | `tools/mkfs.minifs.py:31` | `def div_round_up(n, d)` |
+| `inode_set_block` | method | `tools/mkfs.minifs.py:124` | `def inode_set_block(self, ino, logblk, phys)` |
+| `inode_set_size` | method | `tools/mkfs.minifs.py:120` | `def inode_set_size(self, ino, size)` |
+| `main` | function | `tools/mkfs.minifs.py:280` | `def main()` |
+| `mark_blocks_used` | method | `tools/mkfs.minifs.py:84` | `def mark_blocks_used(self, start, count)` |
+| `mark_inodes_used` | method | `tools/mkfs.minifs.py:80` | `def mark_inodes_used(self, start, count)` |
+| `pack_tree` | function | `tools/mkfs.minifs.py:310` | `def pack_tree(parent_ino, path, rel)` |
+| `roundup4` | function | `tools/mkfs.minifs.py:28` | `def roundup4(v)` |
+| `seal_inode` | method | `tools/mkfs.minifs.py:108` | `def seal_inode(self, ino)` |
+| `serialize` | method | `tools/mkfs.minifs.py:236` | `def serialize(self)` |
+| `write_dir` | method | `tools/mkfs.minifs.py:224` | `def write_dir(self, parent_ino, name)` |
+| `write_file` | method | `tools/mkfs.minifs.py:205` | `def write_file(self, parent_ino, name, data)` |
 | `main` | function | `tools/mkpak1.py:29` | `def main()` |
-| `main` | function | `tools/mkramdisk.py:48` | `def main()` |
-| `pack_name` | function | `tools/mkramdisk.py:38` | `def pack_name(path, common)` |
+| `main` | function | `tools/mkramdisk.py:74` | `def main()` |
+| `pack_name` | function | `tools/mkramdisk.py:64` | `def pack_name(path, common)` |
+| `read_fname_bytes` | function | `tools/mkramdisk.py:41` | `def read_fname_bytes(kernel_h_path)` |
 | `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
 | `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
 | `cleanup` | function | `tools/mutate.sh:139` | `` |
-| `find_index` | function | `tools/mutate.sh:512` | `` |
-| `record` | function | `tools/mutate.sh:506` | `` |
+| `find_index` | function | `tools/mutate.sh:522` | `` |
+| `record` | function | `tools/mutate.sh:516` | `` |
 | `restore_sources` | function | `tools/mutate.sh:132` | `` |
 | `usage` | function | `tools/mutate.sh:51` | `` |
 | `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
@@ -304,12 +439,12 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `cleanup_stale_qemu` | function | `tools/test_bdd.sh:43` | `` |
 | `expect` | function | `tools/test_bdd.sh:97` | `` |
 | `expect_count` | function | `tools/test_bdd.sh:119` | `` |
-| `http_fixture_start` | function | `tools/test_bdd.sh:1369` | `` |
-| `http_fixture_stop` | function | `tools/test_bdd.sh:1376` | `` |
-| `http_server_start` | function | `tools/test_bdd.sh:1357` | `` |
-| `http_server_stop` | function | `tools/test_bdd.sh:1364` | `` |
-| `net_fixture_start` | function | `tools/test_bdd.sh:1381` | `` |
-| `net_fixture_stop` | function | `tools/test_bdd.sh:1388` | `` |
+| `http_fixture_start` | function | `tools/test_bdd.sh:1401` | `` |
+| `http_fixture_stop` | function | `tools/test_bdd.sh:1408` | `` |
+| `http_server_start` | function | `tools/test_bdd.sh:1389` | `` |
+| `http_server_stop` | function | `tools/test_bdd.sh:1396` | `` |
+| `net_fixture_start` | function | `tools/test_bdd.sh:1413` | `` |
+| `net_fixture_stop` | function | `tools/test_bdd.sh:1420` | `` |
 | `refute` | function | `tools/test_bdd.sh:142` | `` |
 | `scenario` | function | `tools/test_bdd.sh:54` | `` |
 | `scenario_smp` | function | `tools/test_bdd.sh:74` | `` |
@@ -361,133 +496,5 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `screen_box` | function | `tools/test_gui_freedom.py:308` | `def screen_box(origin, box)` |
 | `send` | method | `tools/test_gui_freedom.py:156` | `def send(self, line, settle)` |
 | `snapshot` | method | `tools/test_gui_freedom.py:143` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_freedom.py:213` | `def stop(self)` |
-| `tap` | method | `tools/test_gui_freedom.py:190` | `def tap(self, qcode)` |
-| `wait_for` | method | `tools/test_gui_freedom.py:147` | `def wait_for(self, text, timeout, since)` |
-| `walk` | function | `tools/test_gui_freedom.py:265` | `def walk(g, delta)` |
-| `Config` | class | `tools/test_gui_gfxview.py:39` | `class Config` |
-| `dark_share` | function | `tools/test_gui_gfxview.py:84` | `def dark_share(img, box)` |
-| `gfx_row` | function | `tools/test_gui_gfxview.py:72` | `def gfx_row(g)` |
-| `last_line` | function | `tools/test_gui_gfxview.py:62` | `def last_line(g, prefix)` |
-| `main` | function | `tools/test_gui_gfxview.py:109` | `def main()` |
-| `note` | function | `tools/test_gui_gfxview.py:55` | `def note(ok, msg)` |
-| `wait_frames` | function | `tools/test_gui_gfxview.py:94` | `def wait_frames(g, want)` |
-| `Guest` | class | `tools/test_gui_icon_cwd.py:42` | `class Guest` |
-| `__init__` | method | `tools/test_gui_icon_cwd.py:43` | `def __init__(self)` |
-| `_qmp` | method | `tools/test_gui_icon_cwd.py:130` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_icon_cwd.py:79` | `def _reader(self)` |
-| `_ser` | method | `tools/test_gui_icon_cwd.py:67` | `def _ser(self)` |
-| `click` | method | `tools/test_gui_icon_cwd.py:145` | `def click(self)` |
-| `dump` | method | `tools/test_gui_icon_cwd.py:155` | `def dump(self, name)` |
-| `find_icon` | function | `tools/test_gui_icon_cwd.py:180` | `def find_icon(shot_path, icon_path)` |
-| `main` | function | `tools/test_gui_icon_cwd.py:228` | `def main()` |
-| `note` | function | `tools/test_gui_icon_cwd.py:36` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_icon_cwd.py:117` | `def qmp_cmd(self, obj)` |
-| `rel` | method | `tools/test_gui_icon_cwd.py:138` | `def rel(self, dx, dy)` |
-| `send` | method | `tools/test_gui_icon_cwd.py:107` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_icon_cwd.py:95` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_icon_cwd.py:162` | `def stop(self)` |
-| `wait_prompt` | method | `tools/test_gui_icon_cwd.py:99` | `def wait_prompt(self, timeout)` |
-| `walk` | function | `tools/test_gui_icon_cwd.py:213` | `def walk(g, tx, ty, fw, fh)` |
-| `main` | function | `tools/test_gui_menu.py:20` | `def main()` |
-| `Guest` | class | `tools/test_gui_wm.py:46` | `class Guest` |
-| `__init__` | method | `tools/test_gui_wm.py:47` | `def __init__(self)` |
-| `_qmp` | method | `tools/test_gui_wm.py:143` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_wm.py:87` | `def _reader(self)` |
-| `_ser` | method | `tools/test_gui_wm.py:75` | `def _ser(self)` |
-| `btn` | method | `tools/test_gui_wm.py:170` | `def btn(self, down)` |
-| `dump` | method | `tools/test_gui_wm.py:176` | `def dump(self, name)` |
-| `key` | method | `tools/test_gui_wm.py:151` | `def key(self, qcode, down, up)` |
-| `main` | function | `tools/test_gui_wm.py:214` | `def main()` |
-| `meandiff` | function | `tools/test_gui_wm.py:204` | `def meandiff(a_path, b_path)` |
-| `note` | function | `tools/test_gui_wm.py:40` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_wm.py:130` | `def qmp_cmd(self, obj)` |
-| `rel` | method | `tools/test_gui_wm.py:163` | `def rel(self, dx, dy)` |
-| `send` | method | `tools/test_gui_wm.py:115` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_wm.py:103` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_wm.py:183` | `def stop(self)` |
-| `wait_prompt` | method | `tools/test_gui_wm.py:107` | `def wait_prompt(self, timeout)` |
-| `main` | function | `tools/test_gui_zoom.py:22` | `def main()` |
-| `Handler` | class | `tools/test_http_server.py:21` | `class Handler(BaseHTTPRequestHandler)` |
-| `do_GET` | method | `tools/test_http_server.py:24` | `def do_GET(self)` |
-| `log_message` | method | `tools/test_http_server.py:114` | `def log_message(self, fmt)` |
-| `LispConfig` | class | `tools/test_lisp.py:28` | `class LispConfig` |
-| `LispTest` | class | `tools/test_lisp.py:37` | `class LispTest` |
-| `__init__` | method | `tools/test_lisp.py:40` | `def __init__(self, binary, suite)` |
-| `build_binary` | function | `tools/test_lisp.py:308` | `def build_binary(source, output)` |
-| `check` | method | `tools/test_lisp.py:47` | `def check(self, name, actual, expected)` |
-| `check_cli` | method | `tools/test_lisp.py:142` | `def check_cli(self)` |
-| `check_error` | method | `tools/test_lisp.py:70` | `def check_error(self, name, code, fragment)` |
-| `check_eval` | method | `tools/test_lisp.py:65` | `def check_eval(self, name, code, stdout)` |
-| `check_exit_code` | method | `tools/test_lisp.py:135` | `def check_exit_code(self)` |
-| `check_file_roundtrip` | method | `tools/test_lisp.py:121` | `def check_file_roundtrip(self)` |
-| `check_minigcc_subset` | method | `tools/test_lisp.py:177` | `def check_minigcc_subset(self)` |
-| `check_suite_language_only` | method | `tools/test_lisp.py:159` | `def check_suite_language_only(self)` |
-| `main` | function | `tools/test_lisp.py:321` | `def main()` |
-| `report` | method | `tools/test_lisp.py:300` | `def report(self)` |
-| `run_all` | method | `tools/test_lisp.py:76` | `def run_all(self)` |
-| `run_expr` | method | `tools/test_lisp.py:58` | `def run_expr(self, code)` |
-| `Config` | class | `tools/test_net_fixture.py:26` | `class Config` |
-| `echo_stream` | function | `tools/test_net_fixture.py:43` | `def echo_stream(conn)` |
-| `main` | function | `tools/test_net_fixture.py:64` | `def main()` |
-| `serve_tcp` | function | `tools/test_net_fixture.py:53` | `def serve_tcp(port)` |
-| `serve_udp` | function | `tools/test_net_fixture.py:34` | `def serve_udp(port)` |
-| `fail_msg` | function | `tools/test_sb16.sh:45` | `` |
-| `Server` | class | `tools/tls_test.py:241` | `class Server(Thread)` |
-| `__init__` | method | `tools/tls_test.py:242` | `def __init__(self, cert, key, tls13_ok)` |
-| `c_bytes` | function | `tools/tls_test.py:183` | `def c_bytes(data, name)` |
-| `check` | function | `tools/tls_test.py:30` | `def check(cmd)` |
-| `der_bytes` | function | `tools/tls_test.py:154` | `def der_bytes(pem_path)` |
-| `ec_pub` | function | `tools/tls_test.py:172` | `def ec_pub(key_path)` |
-| `expect` | function | `tools/tls_test.py:306` | `def expect(bin_path, args, want_zero, marker)` |
-| `gen_certs` | function | `tools/tls_test.py:37` | `def gen_certs()` |
-| `gen_header` | function | `tools/tls_test.py:191` | `def gen_header(p)` |
-| `main` | function | `tools/tls_test.py:319` | `def main()` |
-| `rsa_params` | function | `tools/tls_test.py:162` | `def rsa_params(key_path)` |
-| `run` | function | `tools/tls_test.py:26` | `def run(cmd)` |
-| `run` | method | `tools/tls_test.py:248` | `def run(self)` |
-| `serve` | function | `tools/tls_test.py:280` | `def serve(cert, key)` |
-| `serve_openssl` | function | `tools/tls_test.py:288` | `def serve_openssl(cert, key, chain)` |
-| `server_cert` | function | `tools/tls_test.py:61` | `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)` |
-| `die` | function | `tools/wl_scoped.sh:9` | `` |
-| `mut` | function | `tools/wl_scoped.sh:77` | `` |
-| `mutm` | function | `tools/wl_scoped.sh:84` | `` |
-| `say` | function | `tools/wl_scoped.sh:8` | `` |
-| `WmLayoutSync` | class | `tools/wm_layout_sync.py:46` | `class WmLayoutSync` |
-| `WmLayoutSyncConfig` | class | `tools/wm_layout_sync.py:17` | `class WmLayoutSyncConfig` |
-| `WmLayoutSyncResult` | class | `tools/wm_layout_sync.py:36` | `class WmLayoutSyncResult` |
-| `__init__` | method | `tools/wm_layout_sync.py:20` | `def __init__(self, root)` |
-| `__init__` | method | `tools/wm_layout_sync.py:39` | `def __init__(self, modes, symbols, checks)` |
-| `__init__` | method | `tools/wm_layout_sync.py:49` | `def __init__(self, config)` |
-| `_count_layout_checks` | method | `tools/wm_layout_sync.py:133` | `def _count_layout_checks(self, tests_text)` |
-| `_extract_modes` | method | `tools/wm_layout_sync.py:116` | `def _extract_modes(self, header_text)` |
-| `_extract_symbols` | method | `tools/wm_layout_sync.py:125` | `def _extract_symbols(self, header_text)` |
-| `_read_text` | method | `tools/wm_layout_sync.py:110` | `def _read_text(self, path)` |
-| `_require_modes` | method | `tools/wm_layout_sync.py:138` | `def _require_modes(self, modes)` |
-| `_require_symbols` | method | `tools/wm_layout_sync.py:144` | `def _require_symbols(self, symbols)` |
-| `discover` | method | `tools/wm_layout_sync.py:53` | `def discover(self)` |
-| `main` | function | `tools/wm_layout_sync.py:159` | `def main(argv)` |
-| `parse_args` | function | `tools/wm_layout_sync.py:151` | `def parse_args(argv)` |
-| `render` | method | `tools/wm_layout_sync.py:66` | `def render(self, result)` |
-| `synchronize` | method | `tools/wm_layout_sync.py:101` | `def synchronize(self, write)` |
-| `die` | function | `tools/wm_scoped.sh:9` | `` |
-| `say` | function | `tools/wm_scoped.sh:8` | `` |
-| `vma_alloc_node` | function | `vma.c:113` | `static vma_node_t *vma_alloc_node(void)` |
-| `vma_ctx_bind` | function | `vma.c:52` | `void vma_ctx_bind(vma_ctx_t *c)` |
-| `vma_ctx_init` | function | `vma.c:37` | `void vma_ctx_init(vma_ctx_t *c, vma_node_t *pool)` |
-| `vma_ctx_save` | function | `vma.c:64` | `void vma_ctx_save(vma_ctx_t *c)` |
-| `vma_delete_fixup` | function | `vma.c:264` | `static void vma_delete_fixup(vma_node_t **root, vma_node_t *x)` |
-| `vma_insert_fixup` | function | `vma.c:148` | `static void vma_insert_fixup(vma_node_t **root, vma_node_t *z)` |
-| `vma_node_in_tree` | function | `vma.c:215` | `static int vma_node_in_tree(vma_node_t *root, vma_node_t *n)` |
-| `vma_rotate_left` | function | `vma.c:124` | `static void vma_rotate_left(vma_node_t **root, vma_node_t *x)` |
-| `vma_rotate_right` | function | `vma.c:136` | `static void vma_rotate_right(vma_node_t **root, vma_node_t *x)` |
-| `vma_transplant` | function | `vma.c:252` | `static void vma_transplant(vma_node_t **root, vma_node_t *u, vma_node_t *v)` |
-| `vma_tree_delete` | function | `vma.c:319` | `int vma_tree_delete(vma_node_t **root, unsigned long base)` |
-| `vma_tree_find` | function | `vma.c:220` | `vma_node_t *vma_tree_find(vma_node_t *root, unsigned long base)` |
-| `vma_tree_find_containing` | function | `vma.c:238` | `vma_node_t *vma_tree_find_containing(vma_node_t *root, unsigned long va)` |
-| `vma_tree_init` | function | `vma.c:98` | `void vma_tree_init(void)` |
-| `vma_tree_insert` | function | `vma.c:187` | `vma_node_t *vma_tree_insert(vma_node_t **root, unsigned long base, unsigned long len)` |
-| `vma_tree_minimum` | function | `vma.c:259` | `static vma_node_t *vma_tree_minimum(vma_node_t *x)` |
-| `vma_view_load` | function | `vma.c:86` | `void vma_view_load(const vma_view_t *v)` |
-| `vma_view_save` | function | `vma.c:74` | `void vma_view_save(vma_view_t *v)` |
 
+Next: [SYMBOLS_p27.md](SYMBOLS_p27.md)

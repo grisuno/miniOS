@@ -1,8 +1,45 @@
-# Symbols (page 18 of 26)
+# Symbols (page 18 of 27)
 Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `R_Init` | function | `progs/doomgeneric/r_main.h:155` | `void R_Init (void);` |
+| `R_PointInSubsector` | function | `progs/doomgeneric/r_main.h:135` | `subsector_t* R_PointInSubsector ( fixed_t x, fixed_t y );` |
+| `R_PointOnSegSide` | function | `progs/doomgeneric/r_main.h:109` | `int R_PointOnSegSide ( fixed_t x, fixed_t y, seg_t* line );` |
+| `R_PointOnSide` | function | `progs/doomgeneric/r_main.h:103` | `int R_PointOnSide ( fixed_t x, fixed_t y, node_t* node );` |
+| `R_PointToAngle` | function | `progs/doomgeneric/r_main.h:115` | `angle_t R_PointToAngle ( fixed_t x, fixed_t y );` |
+| `R_PointToAngle2` | function | `progs/doomgeneric/r_main.h:120` | `angle_t R_PointToAngle2 ( fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2 );` |
+| `R_PointToDist` | function | `progs/doomgeneric/r_main.h:127` | `fixed_t R_PointToDist ( fixed_t x, fixed_t y );` |
+| `R_RenderPlayerView` | function | `progs/doomgeneric/r_main.h:152` | `void R_RenderPlayerView (player_t *player);` |
+| `R_ScaleFromGlobalAngle` | function | `progs/doomgeneric/r_main.h:132` | `fixed_t R_ScaleFromGlobalAngle (angle_t visangle);` |
+| `R_SetViewSize` | function | `progs/doomgeneric/r_main.h:158` | `void R_SetViewSize (int blocks, int detail);` |
+| `__R_MAIN__` | macro | `progs/doomgeneric/r_main.h:21` | `#define __R_MAIN__` |
+| `centerx` | variable | `progs/doomgeneric/r_main.h:40` | `extern int centerx;` |
+| `centerxfrac` | variable | `progs/doomgeneric/r_main.h:43` | `extern fixed_t centerxfrac;` |
+| `centery` | variable | `progs/doomgeneric/r_main.h:41` | `extern int centery;` |
+| `centeryfrac` | variable | `progs/doomgeneric/r_main.h:44` | `extern fixed_t centeryfrac;` |
+| `detailshift` | variable | `progs/doomgeneric/r_main.h:85` | `extern int detailshift;` |
+| `extralight` | variable | `progs/doomgeneric/r_main.h:73` | `extern int extralight;` |
+| `fixedcolormap` | variable | `progs/doomgeneric/r_main.h:74` | `extern lighttable_t* fixedcolormap;` |
+| `linecount` | variable | `progs/doomgeneric/r_main.h:49` | `extern int linecount;` |
+| `loopcount` | variable | `progs/doomgeneric/r_main.h:50` | `extern int loopcount;` |
+| `projection` | variable | `progs/doomgeneric/r_main.h:45` | `extern fixed_t projection;` |
+| `scalelightfixed` | variable | `progs/doomgeneric/r_main.h:70` | `extern lighttable_t* scalelightfixed[MAXLIGHTSCALE];` |
+| `validcount` | variable | `progs/doomgeneric/r_main.h:47` | `extern int validcount;` |
+| `viewcos` | variable | `progs/doomgeneric/r_main.h:32` | `extern fixed_t viewcos;` |
+| `viewsin` | variable | `progs/doomgeneric/r_main.h:33` | `extern fixed_t viewsin;` |
+| `viewwindowx` | variable | `progs/doomgeneric/r_main.h:35` | `extern int viewwindowx;` |
+| `viewwindowy` | variable | `progs/doomgeneric/r_main.h:36` | `extern int viewwindowy;` |
+| `void` | function | `progs/doomgeneric/r_main.h:92` | `extern void (*colfunc) (void);` |
+| `MAXOPENINGS` | macro | `progs/doomgeneric/r_plane.c:52` | `#define MAXOPENINGS` |
+| `MAXVISPLANES` | macro | `progs/doomgeneric/r_plane.c:45` | `#define MAXVISPLANES` |
+| `R_CheckPlane` | function | `progs/doomgeneric/r_plane.c:259` | `visplane_t* R_CheckPlane ( visplane_t*	pl,   int		start,   int		stop )` |
+| `R_ClearPlanes` | function | `progs/doomgeneric/r_plane.c:178` | `void R_ClearPlanes (void)` |
+| `R_DrawPlanes` | function | `progs/doomgeneric/r_plane.c:360` | `void R_DrawPlanes (void)` |
+| `R_FindPlane` | function | `progs/doomgeneric/r_plane.c:211` | `visplane_t* R_FindPlane ( fixed_t	height,   int		picnum,   int		lightlevel )` |
+| `R_InitPlanes` | function | `progs/doomgeneric/r_plane.c:94` | `void R_InitPlanes (void)` |
+| `R_MakeSpans` | function | `progs/doomgeneric/r_plane.c:324` | `void R_MakeSpans ( int		x,   int		t1,   int		b1,   int		t2,   int		b2 )` |
+| `R_MapPlane` | function | `progs/doomgeneric/r_plane.c:114` | `void R_MapPlane ( int		y,   int		x1,   int		x2 )` |
 | `R_CheckPlane` | function | `progs/doomgeneric/r_plane.h:69` | `visplane_t* R_CheckPlane ( visplane_t* pl, int start, int stop );` |
 | `R_ClearPlanes` | function | `progs/doomgeneric/r_plane.h:44` | `void R_ClearPlanes (void);` |
 | `R_DrawPlanes` | function | `progs/doomgeneric/r_plane.h:60` | `void R_DrawPlanes (void);` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 | `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.h:62` | `void V_DrawXlaPatch(int x, int y, patch_t * patch);` |
 | `V_Init` | function | `progs/doomgeneric/v_video.h:49` | `void V_Init (void);` |
 | `V_LoadTintTable` | function | `progs/doomgeneric/v_video.h:97` | `void V_LoadTintTable(void);` |
-| `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.h:103` | `void V_LoadXlaTable(void);` |
-| `V_MarkRect` | function | `progs/doomgeneric/v_video.h:69` | `void V_MarkRect(int x, int y, int width, int height);` |
-| `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.h:86` | `void V_RestoreBuffer(void);` |
-| `V_ScreenShot` | function | `progs/doomgeneric/v_video.h:92` | `void V_ScreenShot(char *format);` |
-| `V_SetPatchClipCallback` | function | `progs/doomgeneric/v_video.h:45` | `void V_SetPatchClipCallback(vpatchclipfunc_t func);` |
-| `V_UseBuffer` | function | `progs/doomgeneric/v_video.h:82` | `void V_UseBuffer(byte *buffer);` |
-| `__V_VIDEO__` | macro | `progs/doomgeneric/v_video.h:23` | `#define __V_VIDEO__` |
-| `dirtybox` | variable | `progs/doomgeneric/v_video.h:37` | `extern int dirtybox[4];` |
-| `tinttable` | variable | `progs/doomgeneric/v_video.h:39` | `extern byte *tinttable;` |
-| `ChecksumAddLump` | function | `progs/doomgeneric/w_checksum.c:57` | `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)` |
-| `GetFileNumber` | function | `progs/doomgeneric/w_checksum.c:31` | `static int GetFileNumber(wad_file_t *handle)` |
-| `W_Checksum` | function | `progs/doomgeneric/w_checksum.c:68` | `void W_Checksum(sha1_digest_t digest)` |
-| `W_CHECKSUM_H` | macro | `progs/doomgeneric/w_checksum.h:20` | `#define W_CHECKSUM_H` |
-| `W_Checksum` | function | `progs/doomgeneric/w_checksum.h:24` | `extern void W_Checksum(sha1_digest_t digest);` |
-| `W_CloseFile` | function | `progs/doomgeneric/w_file.c:85` | `void W_CloseFile(wad_file_t *wad)` |
-| `W_OpenFile` | function | `progs/doomgeneric/w_file.c:53` | `wad_file_t *W_OpenFile(char *path)` |
-| `W_Read` | function | `progs/doomgeneric/w_file.c:90` | `size_t W_Read(wad_file_t *wad, unsigned int offset,               void *buffer, size_t buffer_len)` |
-| `posix_wad_file` | variable | `progs/doomgeneric/w_file.c:37` | `extern wad_file_class_t posix_wad_file;` |
-| `stdc_wad_file` | variable | `progs/doomgeneric/w_file.c:28` | `extern wad_file_class_t stdc_wad_file;` |
-| `win32_wad_file` | variable | `progs/doomgeneric/w_file.c:32` | `extern wad_file_class_t win32_wad_file;` |
-| `W_CloseFile` | function | `progs/doomgeneric/w_file.h:69` | `void W_CloseFile(wad_file_t *wad);` |
-| `W_OpenFile` | function | `progs/doomgeneric/w_file.h:65` | `wad_file_t *W_OpenFile(char *path);` |
-| `W_Read` | function | `progs/doomgeneric/w_file.h:75` | `size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len);` |
-| `__W_FILE__` | macro | `progs/doomgeneric/w_file.h:21` | `#define __W_FILE__` |
-| `_wad_file_s` | struct | `progs/doomgeneric/w_file.h:46` | `` |
-| `wad_file_class_t` | struct | `progs/doomgeneric/w_file.h:28` | `` |
-| `wad_file_t` | type_alias | `progs/doomgeneric/w_file.h:25` | `typedef struct _wad_file_s wad_file_t;` |
-| `W_StdC_CloseFile` | function | `progs/doomgeneric/w_file_stdc.c:56` | `static void W_StdC_CloseFile(wad_file_t *wad)` |
-| `W_StdC_OpenFile` | function | `progs/doomgeneric/w_file_stdc.c:33` | `static wad_file_t *W_StdC_OpenFile(char *path)` |
-| `W_StdC_Read` | function | `progs/doomgeneric/w_file_stdc.c:69` | `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,                    void *buffer, size_t ...` |
-| `stdc_wad_file` | variable | `progs/doomgeneric/w_file_stdc.c:31` | `extern wad_file_class_t stdc_wad_file;` |
-| `stdc_wad_file_t` | struct | `progs/doomgeneric/w_file_stdc.c:25` | `` |
-| `W_ParseCommandLine` | function | `progs/doomgeneric/w_main.c:30` | `boolean W_ParseCommandLine(void)` |
-| `W_MAIN_H` | macro | `progs/doomgeneric/w_main.h:19` | `#define W_MAIN_H` |
-| `W_MERGE_H` | macro | `progs/doomgeneric/w_merge.h:22` | `#define W_MERGE_H` |
-| `W_MergeFile` | function | `progs/doomgeneric/w_merge.h:29` | `void W_MergeFile(char *filename);` |
-| `W_NWTDashMerge` | function | `progs/doomgeneric/w_merge.h:37` | `void W_NWTDashMerge(char *filename);` |
 
 Next: [SYMBOLS_p19.md](SYMBOLS_p19.md)

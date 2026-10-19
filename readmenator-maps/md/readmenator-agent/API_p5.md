@@ -170,6 +170,19 @@ Imported by: `kernel/proc_sec.c`, `kernel/seccomp_bpf.c`, `tests/test_seccomp_bp
 - `sbpf_run` (function) `headers/seccomp_bpf.h:100` `unsigned int sbpf_run(const sbpf_insn *prog, unsigned len, const sbpf_data *d);` -- Run a program sbpf_check accepted over one syscall's data; returns the 32-bit action.
 - `sbpf_action_rank` (function) `headers/seccomp_bpf.h:104` `int sbpf_action_rank(unsigned int action);` -- Restrictiveness rank of an action (0 = most restrictive): the order * stacked filters are combined in.
 
+## headers/select_map.h
+Imported by: `kernel/syscalls.c`, `tests/test_select_map.c`
+- `select_fd_isset` (function) `headers/select_map.h:37` `static inline int select_fd_isset(const unsigned char *set, int fd)`
+- `select_fd_put` (function) `headers/select_map.h:41` `static inline void select_fd_put(unsigned char *set, int fd)`
+- `select_poll_count` (function) `headers/select_map.h:46` `static inline unsigned select_poll_count(const unsigned char *r,
+                                ...` -- int fd; short events; short revents; } select_pollfd_t; static inline int select_fd_isset(const unsigned char *set...
+- `select_poll_build` (function) `headers/select_map.h:66` `static inline unsigned select_poll_build(select_pollfd_t *pfd,
+                                  ...` -- Docstring: Build the pollfd array for the fds the sets request.
+- `select_poll_result` (function) `headers/select_map.h:95` `static inline unsigned select_poll_result(unsigned char *rout,
+                                  ...` -- Docstring: Map poll revents into fresh result sets (Linux classes).
+- `select_poll_badfd` (function) `headers/select_map.h:131` `static inline int select_poll_badfd(const select_pollfd_t *pfd,
+                                 ...` -- (rv & (SELECT_POLLOUT | SELECT_POLLERR))) { select_fd_put(wout, fd); any = 1; } if (eout && select_fd_isset(ein, fd)...
+
 ## headers/shell.h
 Depends on: `headers/kernel.h`, `headers/kernel/console_in.h`
 Imported by: `kernel/editor.c`, `kernel/shell.c`, `kernel/syscalls.c`
@@ -467,22 +480,6 @@ Imported by: `headers/wm_window.h`, `kernel/vga_fb.c`, `tests/test_wm.c`
 - `wm_scrollbar_rect` (function) `headers/wm_geom.h:71` `static inline wm_rect_t wm_scrollbar_rect(const wm_geom_config_t *cfg, int px, int py, int conten...` -- /** Docstring: Text content area below the title bar. static inline wm_rect_t wm_content_rect(const wm_geom_config_t...
 - `wm_hit_title_bar` (function) `headers/wm_geom.h:84` `static inline int wm_hit_title_bar(const wm_geom_config_t *cfg, int wx, int wy, int w, int px, in...` -- /** Docstring: Scrollbar strip at the right edge of the content area. static inline wm_rect_t...
 - `wm_clamp_point` (function) `headers/wm_geom.h:91` `static inline void wm_clamp_point(int *px, int *py, int fb_w, int fb_h)` -- r.y = py + th; r.w = sw; r.h = content_h > 0 ? content_h : 0; return r; } /** Docstring: True when point px,py hits...
-
-## headers/wm_gfxview.h
-Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
-- `wm_gfxview_mode_name` (function) `headers/wm_gfxview.h:64` `static inline const char *wm_gfxview_mode_name(int mode)` -- Docstring: One computed view: frame (chrome plus content area), * title strip height (0 in fullscreen) and the...
-- `wm_gfxview_dims_ok` (function) `headers/wm_gfxview.h:79` `static inline int wm_gfxview_dims_ok(int w, int h)` -- { switch (mode) { case WM_GFXVIEW_FLOAT: return "floating"; case WM_GFXVIEW_TILED: return "tiled"; case...
-- `Downscale` (function) `headers/wm_gfxview.h:88` `* Downscale (fit below 1x) always takes the exact fit. Returns 1 on
- * success, 0 on degenerate i...`
-- `wm_gfxview_clamp` (function) `headers/wm_gfxview.h:134` `static inline void wm_gfxview_clamp(wm_gfxview_rect_t *r, int fb_w, int fb_h)` -- Docstring: Clamp a rect inside the framebuffer by moving, then by * shrinking when it is larger than the screen.
-- `wm_gfxview_place_content` (function) `headers/wm_gfxview.h:160` `static inline int wm_gfxview_place_content(const wm_gfxview_config_t *cfg, int sw, int sh,
-      ...` -- r->x = fb_w - r->w; } if (r->y + r->h > fb_h) { r->y = fb_h - r->h; } if (r->x < 0) { r->x = 0; } if (r->y < 0) {...
-- `wm_gfxview_map_point` (function) `headers/wm_gfxview.h:255` `static inline int wm_gfxview_map_point(const wm_gfxview_t *v, int sw, int sh,
-                   ...` -- Docstring: Map a framebuffer point into back-buffer space.
-- `wm_gfxview_ease` (function) `headers/wm_gfxview.h:291` `static inline long wm_gfxview_ease(int t, int n, long den)` -- Docstring: Ease-out cubic progress in [0, den] for step t of n.
-- `wm_gfxview_lerp_rect` (function) `headers/wm_gfxview.h:313` `static inline int wm_gfxview_lerp_rect(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b,
-  ...` -- return 0; } inv = (long)(n - t); r = den - (den * inv * inv * inv) / ((long)n * (long)n * (long)n); if (r < 0) { r =...
-- `wm_gfxview_rect_same` (function) `headers/wm_gfxview.h:336` `static inline int wm_gfxview_rect_same(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b)` -- out->x = a->x + (int)(((long)(b->x - a->x) * p) / den); out->y = a->y + (int)(((long)(b->y - a->y) * p) / den)...
 
 
 Next: [API_p6.md](API_p6.md)

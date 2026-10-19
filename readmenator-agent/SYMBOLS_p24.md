@@ -1,8 +1,87 @@
-# Symbols (page 24 of 26)
+# Symbols (page 24 of 27)
 Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `N_HEADS` | macro | `progs/topogpt3/topogpt3.c:67` | `#define N_HEADS` |
+| `N_KV_HEADS` | macro | `progs/topogpt3/topogpt3.c:68` | `#define N_KV_HEADS` |
+| `N_LAYERS` | macro | `progs/topogpt3/topogpt3.c:72` | `#define N_LAYERS` |
+| `N_NODES` | macro | `progs/topogpt3/topogpt3.c:76` | `#define N_NODES` |
+| `N_RADIAL` | macro | `progs/topogpt3/topogpt3.c:77` | `#define N_RADIAL` |
+| `N_SPECTRAL_LAYERS` | macro | `progs/topogpt3/topogpt3.c:86` | `#define N_SPECTRAL_LAYERS` |
+| `PI` | macro | `progs/topogpt3/topogpt3.c:91` | `#define PI` |
+| `READOUT_INNER` | macro | `progs/topogpt3/topogpt3.c:88` | `#define READOUT_INNER` |
+| `READ_TENSOR` | macro | `progs/topogpt3/topogpt3.c:1310` | `#define READ_TENSOR(dest, count)` |
+| `READ_TENSOR16` | macro | `progs/topogpt3/topogpt3.c:1480` | `#define READ_TENSOR16(dest, count)` |
+| `SEEK_CUR` | macro | `progs/topogpt3/topogpt3.c:45` | `#define SEEK_CUR` |
+| `SEEK_END` | macro | `progs/topogpt3/topogpt3.c:46` | `#define SEEK_END` |
+| `SEEK_SET` | macro | `progs/topogpt3/topogpt3.c:44` | `#define SEEK_SET` |
+| `SKIP_TENSOR` | macro | `progs/topogpt3/topogpt3.c:1300` | `#define SKIP_TENSOR()` |
+| `SKIP_TENSOR16` | macro | `progs/topogpt3/topogpt3.c:1470` | `#define SKIP_TENSOR16()` |
+| `SPECTRAL_LATENT_DIM` | macro | `progs/topogpt3/topogpt3.c:81` | `#define SPECTRAL_LATENT_DIM` |
+| `TOK_TAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:97` | `#define TOK_TAB_SIZE` |
+| `TOK_VOCAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:98` | `#define TOK_VOCAB_SIZE` |
+| `TORUS_GRID_H` | macro | `progs/topogpt3/topogpt3.c:83` | `#define TORUS_GRID_H` |
+| `TORUS_GRID_W` | macro | `progs/topogpt3/topogpt3.c:84` | `#define TORUS_GRID_W` |
+| `TORUS_TEMP` | macro | `progs/topogpt3/topogpt3.c:93` | `#define TORUS_TEMP` |
+| `VOCAB_SIZE` | macro | `progs/topogpt3/topogpt3.c:65` | `#define VOCAB_SIZE` |
+| `apply_repetition_penalty` | function | `progs/topogpt3/topogpt3.c:1216` | `static void apply_repetition_penalty(float *logits, int n, const int *tokens,                    ...` |
+| `apply_temperature` | function | `progs/topogpt3/topogpt3.c:1210` | `static void apply_temperature(float *logits, int n, float temp)` |
+| `apply_top_k` | function | `progs/topogpt3/topogpt3.c:1229` | `static void apply_top_k(float *logits, int n, int k)` |
+| `attention_forward` | function | `progs/topogpt3/topogpt3.c:978` | `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...` |
+| `build_torus_graph` | function | `progs/topogpt3/topogpt3.c:296` | `static void build_torus_graph(void)` |
+| `cmul` | function | `progs/topogpt3/topogpt3.c:664` | `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)` |
+| `decode_token` | function | `progs/topogpt3/topogpt3.c:1614` | `static void decode_token(int tid)` |
+| `decode_token_tiktoken` | function | `progs/topogpt3/topogpt3.c:1652` | `static void decode_token_tiktoken(int tid)` |
+| `fclose` | function | `progs/topogpt3/topogpt3.c:37` | `extern int fclose(FILE *);` |
+| `fflush` | function | `progs/topogpt3/topogpt3.c:42` | `extern int fflush(FILE *);` |
+| `filter1d` | function | `progs/topogpt3/topogpt3.c:537` | `static void filter1d(const float *x, const float *kr, const float *ki,                       floa...` |
+| `fopen` | function | `progs/topogpt3/topogpt3.c:36` | `extern FILE *fopen(const char *, const char *);` |
+| `forward` | function | `progs/topogpt3/topogpt3.c:1128` | `static void forward(const int *token_ids, int seq_len, float *logits_out)` |
+| `fprintf` | function | `progs/topogpt3/topogpt3.c:29` | `extern int fprintf(FILE *, const char *, ...);` |
+| `fputc` | function | `progs/topogpt3/topogpt3.c:34` | `extern int fputc(int, FILE *);` |
+| `fputs` | function | `progs/topogpt3/topogpt3.c:35` | `extern int fputs(const char *, FILE *);` |
+| `fread` | function | `progs/topogpt3/topogpt3.c:38` | `extern unsigned long fread(void *, unsigned long, unsigned long, FILE *);` |
+| `free` | function | `progs/topogpt3/topogpt3.c:48` | `extern void free(void *);` |
+| `fseek` | function | `progs/topogpt3/topogpt3.c:40` | `extern int fseek(FILE *, long, int);` |
+| `ftell` | function | `progs/topogpt3/topogpt3.c:41` | `extern long ftell(FILE *);` |
+| `fwrite` | function | `progs/topogpt3/topogpt3.c:39` | `extern unsigned long fwrite(const void *, unsigned long, unsigned long, FILE *);` |
+| `gelu` | function | `progs/topogpt3/topogpt3.c:400` | `static void gelu(float *x, int n)` |
+| `generate` | function | `progs/topogpt3/topogpt3.c:1725` | `static void generate(const char *prompt, int max_new_tokens, float temperature,                  ...` |
+| `generate_tokens` | function | `progs/topogpt3/topogpt3.c:1661` | `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,                ...` |
+| `ifft2d` | function | `progs/topogpt3/topogpt3.c:580` | `static void ifft2d(float *data_r, float *data_i, int h, int w)` |
+| `ifft_radix2` | function | `progs/topogpt3/topogpt3.c:505` | `static void ifft_radix2(float *real, float *imag, int n)` |
+| `interactive_mode` | function | `progs/topogpt3/topogpt3.c:1736` | `static void interactive_mode(void)` |
+| `irfft` | function | `progs/topogpt3/topogpt3.c:522` | `static void irfft(const float *Xr, const float *Xi, float *x, int n)` |
+| `irfft2d` | function | `progs/topogpt3/topogpt3.c:629` | `static void irfft2d(const float *in_r, const float *in_i, float *out,                      int h,...` |
+| `load_token_file` | function | `progs/topogpt3/topogpt3.c:1629` | `static int load_token_file(const char *path, int *out_ids, int max_ids)` |
+| `load_vocab` | function | `progs/topogpt3/topogpt3.c:255` | `static void load_vocab(const char *path)` |
+| `load_weights` | function | `progs/topogpt3/topogpt3.c:1282` | `static int load_weights(const char *path)` |
+| `load_weights_auto` | function | `progs/topogpt3/topogpt3.c:1583` | `static int load_weights_auto(const char *path)` |
+| `load_weights_fp16` | function | `progs/topogpt3/topogpt3.c:1452` | `static int load_weights_fp16(const char *path)` |
+| `main` | function | `progs/topogpt3/topogpt3.c:1885` | `int main(int argc, char **argv)` |
+| `malloc` | function | `progs/topogpt3/topogpt3.c:47` | `extern void *malloc(unsigned long);` |
+| `matvec` | function | `progs/topogpt3/topogpt3.c:359` | `static void matvec(const float *W, const float *x, float *y, int rows, int cols)` |
+| `matvec_bias` | function | `progs/topogpt3/topogpt3.c:370` | `static void matvec_bias(const float *W, const float *b, const float *x, float *y,                ...` |
+| `memcpy` | function | `progs/topogpt3/topogpt3.c:49` | `extern void *memcpy(void *, const void *, unsigned long);` |
+| `memset` | function | `progs/topogpt3/topogpt3.c:50` | `extern void *memset(void *, int, unsigned long);` |
+| `message_passing` | function | `progs/topogpt3/topogpt3.c:843` | `static void message_passing(const float *node_feat, float *out,                              cons...` |
+| `moe_forward` | function | `progs/topogpt3/topogpt3.c:1078` | `static void moe_forward(const float *x, float *out, const LayerWeights *lw)` |
+| `precompute_rope` | function | `progs/topogpt3/topogpt3.c:327` | `static void precompute_rope(void)` |
+| `print_help` | function | `progs/topogpt3/topogpt3.c:1850` | `static void print_help(void)` |
+| `printf` | function | `progs/topogpt3/topogpt3.c:28` | `extern int printf(const char *, ...);` |
+| `process_torus_grid` | function | `progs/topogpt3/topogpt3.c:800` | `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)` |
+| `putchar` | function | `progs/topogpt3/topogpt3.c:33` | `extern int putchar(int);` |
+| `puts` | function | `progs/topogpt3/topogpt3.c:32` | `extern int puts(const char *);` |
+| `quat_hamilton` | function | `progs/topogpt3/topogpt3.c:440` | `static void quat_hamilton(const float *a, const float *b, float *c)` |
+| `quat_linear` | function | `progs/topogpt3/topogpt3.c:448` | `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,      ...` |
+| `quat_normalize` | function | `progs/topogpt3/topogpt3.c:435` | `static void quat_normalize(float *q)` |
+| `quat_spectral_layer_2d` | function | `progs/topogpt3/topogpt3.c:695` | `static void quat_spectral_layer_2d(     const float *x, float *y,     const float *kr_w, const fl...` |
+| `rfft` | function | `progs/topogpt3/topogpt3.c:513` | `static void rfft(const float *x, float *Xr, float *Xi, int n)` |
+| `rfft2d_real` | function | `progs/topogpt3/topogpt3.c:602` | `static void rfft2d_real(const float *data, float *out_r, float *out_i,                          i...` |
+| `rmsnorm` | function | `progs/topogpt3/topogpt3.c:382` | `static void rmsnorm(const float *x, const float *w, float *y, int d)` |
+| `sample` | function | `progs/topogpt3/topogpt3.c:1248` | `static int sample(const float *logits, int n)` |
+| `silu` | function | `progs/topogpt3/topogpt3.c:410` | `static void silu(float *x, int n)` |
 | `snprintf` | function | `progs/topogpt3/topogpt3.c:31` | `extern int snprintf(char *, unsigned long, const char *, ...);` |
 | `softmax` | function | `progs/topogpt3/topogpt3.c:391` | `static void softmax(float *x, int n)` |
 | `spectral_ae_decode` | function | `progs/topogpt3/topogpt3.c:793` | `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)` |
@@ -417,84 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `wlcomp_blit` | function | `progs/wl/wl_mini.h:637` | `static inline int wlcomp_blit(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h, ...` |
 | `wlcomp_render` | function | `progs/wl/wl_mini.h:512` | `static inline int wlcomp_render(const wl_comp_t *c, unsigned char *fb,         int fb_w, int fb_h)` |
 | `MINIOS_WL_PIXBUF_H` | macro | `progs/wl/wl_pixbuf.h:17` | `#define MINIOS_WL_PIXBUF_H` |
-| `WPIX_BUDGET_MAX` | macro | `progs/wl/wl_pixbuf.h:44` | `#define WPIX_BUDGET_MAX` |
-| `WPIX_MAX_H` | macro | `progs/wl/wl_pixbuf.h:36` | `#define WPIX_MAX_H` |
-| `WPIX_MAX_SLOTS` | macro | `progs/wl/wl_pixbuf.h:28` | `#define WPIX_MAX_SLOTS` |
-| `WPIX_MAX_W` | macro | `progs/wl/wl_pixbuf.h:32` | `#define WPIX_MAX_W` |
-| `WPIX_SLOT_MAX` | macro | `progs/wl/wl_pixbuf.h:40` | `#define WPIX_SLOT_MAX` |
-| `wpix_commit` | function | `progs/wl/wl_pixbuf.h:175` | `static int wpix_commit(struct wpix_store *s, int idx, const unsigned char *src, int w, int h)` |
-| `wpix_drop` | function | `progs/wl/wl_pixbuf.h:127` | `static void wpix_drop(struct wpix_store *s, int idx)` |
-| `wpix_dst` | function | `progs/wl/wl_pixbuf.h:121` | `static unsigned char *wpix_dst(struct wpix_store *s)` |
-| `wpix_ensure` | function | `progs/wl/wl_pixbuf.h:153` | `static int wpix_ensure(struct wpix_store *s, int idx, int w, int h)` |
-| `wpix_free` | function | `progs/wl/wl_pixbuf.h:78` | `static void wpix_free(struct wpix_store *s)` |
-| `wpix_init` | function | `progs/wl/wl_pixbuf.h:63` | `static int wpix_init(struct wpix_store *s)` |
-| `wpix_ptr` | function | `progs/wl/wl_pixbuf.h:107` | `static unsigned char *wpix_ptr(struct wpix_store *s, int idx)` |
-| `wpix_raw` | function | `progs/wl/wl_pixbuf.h:115` | `static unsigned char *wpix_raw(struct wpix_store *s)` |
-| `wpix_slot` | struct | `progs/wl/wl_pixbuf.h:48` | `` |
-| `wpix_store` | struct | `progs/wl/wl_pixbuf.h:55` | `` |
-| `wpix_tmp` | function | `progs/wl/wl_pixbuf.h:136` | `static int wpix_tmp(struct wpix_store *s, size_t need)` |
-| `wpix_used` | function | `progs/wl/wl_pixbuf.h:95` | `static size_t wpix_used(const struct wpix_store *s)` |
-| `WLCOMP_CFG_DEFAULT` | macro | `progs/wl/wlcomp.c:53` | `#define WLCOMP_CFG_DEFAULT` |
-| `WLCOMP_H` | macro | `progs/wl/wlcomp.c:40` | `#define WLCOMP_H` |
-| `WLCOMP_W` | macro | `progs/wl/wlcomp.c:39` | `#define WLCOMP_W` |
-| `forever` | function | `progs/wl/wlcomp.c:844` | `* one of the WL_MAX_SURFACES slots forever (eight bad names used to lock  * every real client out...` |
-| `main` | function | `progs/wl/wlcomp.c:1467` | `int main(int argc, char **argv)` |
-| `wlclient_find` | function | `progs/wl/wlcomp.c:1005` | `static const wlclient_pat_t *wlclient_find(const char *name)` |
-| `wlclient_pat_t` | struct | `progs/wl/wlcomp.c:995` | `` |
-| `wlcomp_cfg_t` | struct | `progs/wl/wlcomp.c:43` | `` |
-| `wlcomp_clean` | function | `progs/wl/wlcomp.c:1137` | `static int wlcomp_clean(void)` |
-| `wlcomp_client` | function | `progs/wl/wlcomp.c:1034` | `static int wlcomp_client(const char *box, const char *pat)` |
-| `wlcomp_demo` | function | `progs/wl/wlcomp.c:189` | `static int wlcomp_demo(wl_comp_t *c)` |
-| `wlcomp_demo_blit` | function | `progs/wl/wlcomp.c:214` | `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)` |
-| `wlcomp_emit` | function | `progs/wl/wlcomp.c:260` | `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,         unsigned int op...` |
-| `wlcomp_once` | function | `progs/wl/wlcomp.c:1165` | `static int wlcomp_once(void)` |
-| `wlcomp_palette` | function | `progs/wl/wlcomp.c:139` | `static int wlcomp_palette(void)` |
-| `wlcomp_path` | function | `progs/wl/wlcomp.c:1103` | `static int wlcomp_path(char *dst, int cap, const char *name)` |
-| `wlcomp_pattern` | function | `progs/wl/wlcomp.c:150` | `static void wlcomp_pattern(unsigned char *dst, int w, int h,         unsigned char a, unsigned ch...` |
-| `wlcomp_selftest` | function | `progs/wl/wlcomp.c:345` | `static int wlcomp_selftest(void)` |
-| `wlcomp_server` | function | `progs/wl/wlcomp.c:1197` | `static int wlcomp_server(void)` |
-| `wlcomp_session` | function | `progs/wl/wlcomp.c:272` | `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)` |
-| `wlcomp_sys_dir_list` | function | `progs/wl/wlcomp.c:129` | `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)` |
-| `wlcomp_sys_kbd` | function | `progs/wl/wlcomp.c:97` | `static long wlcomp_sys_kbd(void)` |
-| `wlcomp_sys_kbd_raw` | function | `progs/wl/wlcomp.c:105` | `static long wlcomp_sys_kbd_raw(long on)` |
-| `wlcomp_sys_mouse` | function | `progs/wl/wlcomp.c:89` | `static long wlcomp_sys_mouse(int *m)` |
-| `wlcomp_sys_palette` | function | `progs/wl/wlcomp.c:81` | `static long wlcomp_sys_palette(unsigned char *pal)` |
-| `wlcomp_sys_present` | function | `progs/wl/wlcomp.c:65` | `static long wlcomp_sys_present(long buf)` |
-| `wlcomp_sys_present_origin` | function | `progs/wl/wlcomp.c:73` | `static long wlcomp_sys_present_origin(long buf, int *origin)` |
-| `wlcomp_sys_title` | function | `progs/wl/wlcomp.c:57` | `static long wlcomp_sys_title(const char *t)` |
-| `wlcomp_sys_vga_mode` | function | `progs/wl/wlcomp.c:113` | `static long wlcomp_sys_vga_mode(long on)` |
-| `wlcomp_sys_yield` | function | `progs/wl/wlcomp.c:121` | `static long wlcomp_sys_yield(void)` |
-| `wlserv_box_known` | function | `progs/wl/wlcomp.c:830` | `static int wlserv_box_known(const wlserv_t *s, const char *box)` |
-| `wlserv_clean_ev` | function | `progs/wl/wlcomp.c:765` | `static void wlserv_clean_ev(void)` |
-| `wlserv_close` | function | `progs/wl/wlcomp.c:798` | `static int wlserv_close(wlserv_t *s, unsigned int id)` |
-| `wlserv_drain` | function | `progs/wl/wlcomp.c:933` | `static int wlserv_drain(wlserv_t *s)` |
-| `wlserv_ev_clear` | function | `progs/wl/wlcomp.c:706` | `static void wlserv_ev_clear(wlserv_t *s, int b)` |
-| `wlserv_fit` | function | `progs/wl/wlcomp.c:547` | `static void wlserv_fit(wlserv_t *s)` |
-| `wlserv_focus_box` | function | `progs/wl/wlcomp.c:664` | `static int wlserv_focus_box(const wlserv_t *s)` |
-| `wlserv_gc_strays` | function | `progs/wl/wlcomp.c:609` | `static void wlserv_gc_strays(void)` |
-| `wlserv_init` | function | `progs/wl/wlcomp.c:418` | `static void wlserv_init(wlserv_t *s)` |
-| `wlserv_key` | function | `progs/wl/wlcomp.c:686` | `static void wlserv_key(wlserv_t *s, unsigned char byte)` |
-| `wlserv_load_raw` | function | `progs/wl/wlcomp.c:502` | `static int wlserv_load_raw(wlserv_t *s, int b, int idx)` |
-| `wlserv_present` | function | `progs/wl/wlcomp.c:467` | `static int wlserv_present(wlserv_t *s)` |
-| `wlserv_push_ev` | function | `progs/wl/wlcomp.c:717` | `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)` |
-| `wlserv_recolor` | function | `progs/wl/wlcomp.c:450` | `static void wlserv_recolor(wl_comp_t *c)` |
-| `wlserv_relayout_present` | function | `progs/wl/wlcomp.c:1123` | `static int wlserv_relayout_present(wlserv_t *s)` |
-| `wlserv_slot` | function | `progs/wl/wlcomp.c:437` | `static int wlserv_slot(const wl_comp_t *c, unsigned int id)` |
-| `wlserv_t` | struct | `progs/wl/wlcomp.c:406` | `` |
-| `channel` | function | `qga.c:10` | `* * Polled channel (no interrupt controller): qga_init sets up COM2 and * qga_poll, called from raw_blocking_getc...` |
-| `qga_b64_encode` | function | `qga.c:231` | `static void qga_b64_encode(const unsigned char *in, int n)` |
-| `qga_cmd_exec` | function | `qga.c:306` | `static void qga_cmd_exec(const struct qga_pair *pairs, int n)` |
-| `qga_cmd_file_close` | function | `qga.c:384` | `static void qga_cmd_file_close(const struct qga_pair *pairs, int n)` |
-| `qga_cmd_file_open` | function | `qga.c:334` | `static void qga_cmd_file_open(const struct qga_pair *pairs, int n)` |
-| `qga_cmd_file_read` | function | `qga.c:360` | `static void qga_cmd_file_read(const struct qga_pair *pairs, int n)` |
-| `qga_cmd_get_time` | function | `qga.c:281` | `static void qga_cmd_get_time(void)` |
-| `qga_cmd_shutdown` | function | `qga.c:316` | `static void qga_cmd_shutdown(const struct qga_pair *pairs, int n)` |
-| `qga_dispatch` | function | `qga.c:401` | `static void qga_dispatch(struct qga_pair *pairs, int n)` |
-| `qga_err` | function | `qga.c:210` | `static void qga_err(const char *klass, const char *desc)` |
-| `qga_file_size` | function | `qga.c:329` | `static int qga_file_size(const KFILE *f)` |
-| `qga_get_int` | function | `qga.c:166` | `static int qga_get_int(const struct qga_pair *pairs, int n, const char *key, long *out)` |
-| `qga_get_str` | function | `qga.c:158` | `static const char *qga_get_str(const struct qga_pair *pairs, int n, const char *key)` |
-| `qga_init` | function | `qga.c:35` | `void qga_init(void)` |
-| `qga_pair` | struct | `qga.c:49` | `` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

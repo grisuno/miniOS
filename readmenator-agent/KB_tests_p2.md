@@ -1,6 +1,55 @@
 # Subsystem: tests (page 2 of 2)
 Previous: [KB_tests.md](KB_tests.md)
 
+## tests/test_pci.c
+- Doc: Docstring: Host test for headers/drivers/pci.h (make test-pci).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `fake_outl` (function, line 39) `static void fake_outl(unsigned short port, unsigned val)`
+  - `fake_inl` (function, line 60) `static unsigned fake_inl(unsigned short port)`
+  - `set_dev` (function, line 73) `static void set_dev(unsigned bus, unsigned dev, unsigned func,
+                    unsigned id, u...`
+  - `main` (function, line 79) `int main(void)`
+  - `CHECK` (macro, line 26) `#define CHECK(cond, msg)`
+  - `FAKE_BUSES` (macro, line 33) `#define FAKE_BUSES`
+  - `FAKE_REGS` (macro, line 34) `#define FAKE_REGS`
+- Depends on: `headers/drivers/pci.h`
+
+## tests/test_pcm.c
+- Doc: Host-side unit test for the PCM ring buffer (headers/pcm_ring.h).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `t_roundtrip` (function, line 28) `static void t_roundtrip(void)`
+  - `t_wrap` (function, line 44) `static void t_wrap(void)`
+  - `t_overrun` (function, line 61) `static void t_overrun(void)`
+  - `t_underrun` (function, line 75) `static void t_underrun(void)`
+  - `t_zero_cap` (function, line 91) `static void t_zero_cap(void)`
+  - `lcg_next` (function, line 104) `static unsigned lcg_next(void)`
+  - `t_model` (function, line 109) `static void t_model(void)`
+  - `main` (function, line 144) `int main(void)`
+  - `CHECK` (macro, line 21) `#define CHECK(cond, msg)`
+- Depends on: `headers/pcm_ring.h`, `kernel/string.c`
+
+## tests/test_percpu_rq.c
+- Doc: Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `main` (function, line 24) `int main(void)`
+  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
+- Depends on: `headers/percpu_rq.h`
+
+## tests/test_pipe.c
+- Doc: Docstring: Host test for headers/pipe.h (make test-pipe).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `main` (function, line 23) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+- Depends on: `headers/pipe.h`
+
 ## tests/test_ps2_keymap.c
 - Doc: test_ps2_keymap - host suite for the PS/2 set 1 to keysym translator.
 - Layer: testing
@@ -92,6 +141,22 @@ Previous: [KB_tests.md](KB_tests.md)
   - `PROT_EXEC` (macro, line 29) `#define PROT_EXEC`
   - `ARGS2_OFF` (macro, line 30) `#define ARGS2_OFF`
 - Depends on: `headers/seccomp_bpf.h`, `kernel/string.c`
+
+## tests/test_select_map.c
+- Doc: Docstring: Host test for headers/select_map.h (make test-select-map).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `test_bit_ops` (function, line 25) `static void test_bit_ops(void)`
+  - `test_count_and_build` (function, line 50) `static void test_count_and_build(void)`
+  - `test_union_events` (function, line 72) `static void test_union_events(void)`
+  - `test_result_classes` (function, line 90) `static void test_result_classes(void)`
+  - `test_result_only_requested` (function, line 123) `static void test_result_only_requested(void)`
+  - `test_result_hup_read_only` (function, line 142) `static void test_result_hup_read_only(void)`
+  - `test_badfd` (function, line 160) `static void test_badfd(void)`
+  - `main` (function, line 169) `int main(void)`
+  - `CHECK` (macro, line 18) `#define CHECK(cond, msg)`
+- Depends on: `headers/select_map.h`, `kernel/string.c`
 
 ## tests/test_sign.c
 - Doc: Docstring: Host test for kernel/ed25519.c plus headers/sign.h.

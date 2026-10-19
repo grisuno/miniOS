@@ -6,7 +6,7 @@
 - Language: h
 - Symbols:
   - `DOOM_BACKBUF_ADDR` (function, line 128) `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...`
-  - `clock_nanosleep` (function, line 334) `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...`
+  - `clock_nanosleep` (function, line 338) `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...`
   - `MINIOS_ABI_H` (macro, line 2) `#define MINIOS_ABI_H`
   - `MINIOS_ABI_VERSION` (macro, line 41) `#define MINIOS_ABI_VERSION`
   - `MINIOS_ABI_CHECKSUM` (macro, line 45) `#define MINIOS_ABI_CHECKSUM`
@@ -102,65 +102,65 @@
   - `MINIOS_SYS_PCSPK_VOL` (macro, line 323) `#define MINIOS_SYS_PCSPK_VOL`
   - `MINIOS_SYS_SPAWN` (macro, line 324) `#define MINIOS_SYS_SPAWN`
   - `MINIOS_SYS_LZ4_COMPRESS` (macro, line 325) `#define MINIOS_SYS_LZ4_COMPRESS`
-  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 326) `#define MINIOS_SYS_LZ4_DECOMPRESS`
-  - `MINIOS_SYS_MOUSE` (macro, line 327) `#define MINIOS_SYS_MOUSE`
-  - `MINIOS_SYS_NK_FRAME` (macro, line 328) `#define MINIOS_SYS_NK_FRAME`
-  - `MINIOS_SYS_SB16_OPEN` (macro, line 329) `#define MINIOS_SYS_SB16_OPEN`
-  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 330) `#define MINIOS_SYS_SB16_SUBMIT`
-  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 331) `#define MINIOS_SYS_GFX_SET_TITLE`
-  - `MINIOS_SYS_SB16_PUMP` (macro, line 332) `#define MINIOS_SYS_SB16_PUMP`
-  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 335) `#define MINIOS_SYS_SB16_STREAM_OPEN`
-  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 336) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
-  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 337) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
-  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 338) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
-  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 339) `#define MINIOS_SYS_THREAD_SPAWN`
-  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 340) `#define MINIOS_SYS_FUTEX_WAIT`
-  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 341) `#define MINIOS_SYS_FUTEX_WAKE`
-  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 342) `#define MINIOS_SYS_SUBMIT_BATCH`
-  - `MINIOS_SYS_GETC_RAW` (macro, line 343) `#define MINIOS_SYS_GETC_RAW`
-  - `MINIOS_SYS_GFX_PRESENT` (macro, line 344) `#define MINIOS_SYS_GFX_PRESENT`
-  - `MINIOS_SYS_SECCOMP` (macro, line 345) `#define MINIOS_SYS_SECCOMP`
-  - `MINIOS_SYS_NICE` (macro, line 346) `#define MINIOS_SYS_NICE`
-  - `MINIOS_SYS_RLIMIT` (macro, line 347) `#define MINIOS_SYS_RLIMIT`
-  - `MINIOS_SYS_DIR_LIST` (macro, line 348) `#define MINIOS_SYS_DIR_LIST`
-  - `MINIOS_SYS_GFX_ZOOM` (macro, line 349) `#define MINIOS_SYS_GFX_ZOOM`
-  - `MINIOS_SYS_WL_ATTACH` (macro, line 354) `#define MINIOS_SYS_WL_ATTACH`
-  - `MINIOS_SYS_WL_COMMIT` (macro, line 355) `#define MINIOS_SYS_WL_COMMIT`
-  - `MINIOS_SYS_WL_INPUT` (macro, line 356) `#define MINIOS_SYS_WL_INPUT`
-  - `MINIOS_SYS_PCM2_OPEN` (macro, line 361) `#define MINIOS_SYS_PCM2_OPEN`
-  - `MINIOS_SYS_PCM2_WRITE` (macro, line 362) `#define MINIOS_SYS_PCM2_WRITE`
-  - `MINIOS_SYS_PCM2_CLOSE` (macro, line 363) `#define MINIOS_SYS_PCM2_CLOSE`
-  - `MINIOS_SYS_CLIP_SET` (macro, line 371) `#define MINIOS_SYS_CLIP_SET`
-  - `MINIOS_SYS_CLIP_GET` (macro, line 372) `#define MINIOS_SYS_CLIP_GET`
-  - `MINIOS_SYS_MINFO` (macro, line 389) `#define MINIOS_SYS_MINFO`
-  - `MINIOS_PCM2_NONBLOCK` (macro, line 390) `#define MINIOS_PCM2_NONBLOCK`
-  - `MINIOS_PCM2_RATE` (macro, line 394) `#define MINIOS_PCM2_RATE`
-  - `MINIOS_PCM2_FRAG` (macro, line 395) `#define MINIOS_PCM2_FRAG`
-  - `MINIOS_SYS_CLONE` (macro, line 397) `#define MINIOS_SYS_CLONE`
-  - `MINIOS_GFX_BUF_GAME` (macro, line 406) `#define MINIOS_GFX_BUF_GAME`
-  - `MINIOS_GFX_BUF_NK` (macro, line 407) `#define MINIOS_GFX_BUF_NK`
-  - `MINIOS_GFX_BUF_NK_RGB` (macro, line 408) `#define MINIOS_GFX_BUF_NK_RGB`
-  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 409) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
-  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 410) `#define MINIOS_SYS_WINDOW_PRESENT`
-  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 411) `#define MINIOS_SYS_WINDOW_TITLE`
-  - `MINIOS_GFX_ZOOM_NATIVE` (macro, line 418) `#define MINIOS_GFX_ZOOM_NATIVE`
-  - `MINIOS_GFX_ZOOM_2X` (macro, line 419) `#define MINIOS_GFX_ZOOM_2X`
-  - `MINIOS_GFX_ZOOM_FULLSCREEN` (macro, line 420) `#define MINIOS_GFX_ZOOM_FULLSCREEN`
-  - `MINIOS_GFX_ZOOM_WINDOWED` (macro, line 421) `#define MINIOS_GFX_ZOOM_WINDOWED`
-  - `SYS_TIME_MS` (macro, line 424) `#define SYS_TIME_MS`
-  - `SYS_PALETTE` (macro, line 425) `#define SYS_PALETTE`
-  - `SYS_PCSPK_INIT` (macro, line 426) `#define SYS_PCSPK_INIT`
-  - `SYS_PCSPK_TONE` (macro, line 427) `#define SYS_PCSPK_TONE`
-  - `SYS_RTC` (macro, line 428) `#define SYS_RTC`
-  - `SYS_FB_INFO` (macro, line 429) `#define SYS_FB_INFO`
-  - `SYS_PCSPK_VOL` (macro, line 430) `#define SYS_PCSPK_VOL`
-  - `SYS_SPAWN` (macro, line 431) `#define SYS_SPAWN`
-  - `SYS_TIME` (macro, line 432) `#define SYS_TIME`
-  - `SYS_WRITE` (macro, line 433) `#define SYS_WRITE`
-  - `MINIOS_EABI_MISMATCH` (macro, line 436) `#define MINIOS_EABI_MISMATCH`
-  - `MINIOS_NOTE_NAME` (macro, line 449) `#define MINIOS_NOTE_NAME`
-  - `MINIOS_NOTE_PROCESS` (macro, line 450) `#define MINIOS_NOTE_PROCESS`
-  - `MINIOS_NOTE_SIGN` (macro, line 451) `#define MINIOS_NOTE_SIGN`
+  - `MINIOS_SYS_LZ4_DECOMPRESS` (macro, line 330) `#define MINIOS_SYS_LZ4_DECOMPRESS`
+  - `MINIOS_SYS_MOUSE` (macro, line 331) `#define MINIOS_SYS_MOUSE`
+  - `MINIOS_SYS_NK_FRAME` (macro, line 332) `#define MINIOS_SYS_NK_FRAME`
+  - `MINIOS_SYS_SB16_OPEN` (macro, line 333) `#define MINIOS_SYS_SB16_OPEN`
+  - `MINIOS_SYS_SB16_SUBMIT` (macro, line 334) `#define MINIOS_SYS_SB16_SUBMIT`
+  - `MINIOS_SYS_GFX_SET_TITLE` (macro, line 335) `#define MINIOS_SYS_GFX_SET_TITLE`
+  - `MINIOS_SYS_SB16_PUMP` (macro, line 336) `#define MINIOS_SYS_SB16_PUMP`
+  - `MINIOS_SYS_SB16_STREAM_OPEN` (macro, line 339) `#define MINIOS_SYS_SB16_STREAM_OPEN`
+  - `MINIOS_SYS_SB16_STREAM_CLOSE` (macro, line 340) `#define MINIOS_SYS_SB16_STREAM_CLOSE`
+  - `MINIOS_SYS_SB16_STREAM_SUBMIT` (macro, line 341) `#define MINIOS_SYS_SB16_STREAM_SUBMIT`
+  - `MINIOS_SYS_SB16_STREAM_VOLUME` (macro, line 342) `#define MINIOS_SYS_SB16_STREAM_VOLUME`
+  - `MINIOS_SYS_THREAD_SPAWN` (macro, line 343) `#define MINIOS_SYS_THREAD_SPAWN`
+  - `MINIOS_SYS_FUTEX_WAIT` (macro, line 344) `#define MINIOS_SYS_FUTEX_WAIT`
+  - `MINIOS_SYS_FUTEX_WAKE` (macro, line 345) `#define MINIOS_SYS_FUTEX_WAKE`
+  - `MINIOS_SYS_SUBMIT_BATCH` (macro, line 346) `#define MINIOS_SYS_SUBMIT_BATCH`
+  - `MINIOS_SYS_GETC_RAW` (macro, line 347) `#define MINIOS_SYS_GETC_RAW`
+  - `MINIOS_SYS_GFX_PRESENT` (macro, line 348) `#define MINIOS_SYS_GFX_PRESENT`
+  - `MINIOS_SYS_SECCOMP` (macro, line 349) `#define MINIOS_SYS_SECCOMP`
+  - `MINIOS_SYS_NICE` (macro, line 350) `#define MINIOS_SYS_NICE`
+  - `MINIOS_SYS_RLIMIT` (macro, line 351) `#define MINIOS_SYS_RLIMIT`
+  - `MINIOS_SYS_DIR_LIST` (macro, line 352) `#define MINIOS_SYS_DIR_LIST`
+  - `MINIOS_SYS_GFX_ZOOM` (macro, line 353) `#define MINIOS_SYS_GFX_ZOOM`
+  - `MINIOS_SYS_WL_ATTACH` (macro, line 358) `#define MINIOS_SYS_WL_ATTACH`
+  - `MINIOS_SYS_WL_COMMIT` (macro, line 359) `#define MINIOS_SYS_WL_COMMIT`
+  - `MINIOS_SYS_WL_INPUT` (macro, line 360) `#define MINIOS_SYS_WL_INPUT`
+  - `MINIOS_SYS_PCM2_OPEN` (macro, line 365) `#define MINIOS_SYS_PCM2_OPEN`
+  - `MINIOS_SYS_PCM2_WRITE` (macro, line 366) `#define MINIOS_SYS_PCM2_WRITE`
+  - `MINIOS_SYS_PCM2_CLOSE` (macro, line 367) `#define MINIOS_SYS_PCM2_CLOSE`
+  - `MINIOS_SYS_CLIP_SET` (macro, line 375) `#define MINIOS_SYS_CLIP_SET`
+  - `MINIOS_SYS_CLIP_GET` (macro, line 376) `#define MINIOS_SYS_CLIP_GET`
+  - `MINIOS_SYS_MINFO` (macro, line 393) `#define MINIOS_SYS_MINFO`
+  - `MINIOS_PCM2_NONBLOCK` (macro, line 394) `#define MINIOS_PCM2_NONBLOCK`
+  - `MINIOS_PCM2_RATE` (macro, line 398) `#define MINIOS_PCM2_RATE`
+  - `MINIOS_PCM2_FRAG` (macro, line 399) `#define MINIOS_PCM2_FRAG`
+  - `MINIOS_SYS_CLONE` (macro, line 401) `#define MINIOS_SYS_CLONE`
+  - `MINIOS_GFX_BUF_GAME` (macro, line 410) `#define MINIOS_GFX_BUF_GAME`
+  - `MINIOS_GFX_BUF_NK` (macro, line 411) `#define MINIOS_GFX_BUF_NK`
+  - `MINIOS_GFX_BUF_NK_RGB` (macro, line 412) `#define MINIOS_GFX_BUF_NK_RGB`
+  - `MINIOS_SYS_FRAMEBUFFER_COMMIT` (macro, line 413) `#define MINIOS_SYS_FRAMEBUFFER_COMMIT`
+  - `MINIOS_SYS_WINDOW_PRESENT` (macro, line 414) `#define MINIOS_SYS_WINDOW_PRESENT`
+  - `MINIOS_SYS_WINDOW_TITLE` (macro, line 415) `#define MINIOS_SYS_WINDOW_TITLE`
+  - `MINIOS_GFX_ZOOM_NATIVE` (macro, line 422) `#define MINIOS_GFX_ZOOM_NATIVE`
+  - `MINIOS_GFX_ZOOM_2X` (macro, line 423) `#define MINIOS_GFX_ZOOM_2X`
+  - `MINIOS_GFX_ZOOM_FULLSCREEN` (macro, line 424) `#define MINIOS_GFX_ZOOM_FULLSCREEN`
+  - `MINIOS_GFX_ZOOM_WINDOWED` (macro, line 425) `#define MINIOS_GFX_ZOOM_WINDOWED`
+  - `SYS_TIME_MS` (macro, line 428) `#define SYS_TIME_MS`
+  - `SYS_PALETTE` (macro, line 429) `#define SYS_PALETTE`
+  - `SYS_PCSPK_INIT` (macro, line 430) `#define SYS_PCSPK_INIT`
+  - `SYS_PCSPK_TONE` (macro, line 431) `#define SYS_PCSPK_TONE`
+  - `SYS_RTC` (macro, line 432) `#define SYS_RTC`
+  - `SYS_FB_INFO` (macro, line 433) `#define SYS_FB_INFO`
+  - `SYS_PCSPK_VOL` (macro, line 434) `#define SYS_PCSPK_VOL`
+  - `SYS_SPAWN` (macro, line 435) `#define SYS_SPAWN`
+  - `SYS_TIME` (macro, line 436) `#define SYS_TIME`
+  - `SYS_WRITE` (macro, line 437) `#define SYS_WRITE`
+  - `MINIOS_EABI_MISMATCH` (macro, line 440) `#define MINIOS_EABI_MISMATCH`
+  - `MINIOS_NOTE_NAME` (macro, line 453) `#define MINIOS_NOTE_NAME`
+  - `MINIOS_NOTE_PROCESS` (macro, line 454) `#define MINIOS_NOTE_PROCESS`
+  - `MINIOS_NOTE_SIGN` (macro, line 455) `#define MINIOS_NOTE_SIGN`
 - Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/platform_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/lxproc.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
 
 ## progs/minios_png.h

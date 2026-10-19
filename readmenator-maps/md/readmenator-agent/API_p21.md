@@ -131,36 +131,41 @@ Depends on: `kernel/time.c`
 - `repl` (function) `tools/minios_hyper.py:561` `def repl(guest)` -- Tiny interactive loop joining shell, QMP and gdb reads.
 - `main` (function) `tools/minios_hyper.py:591` `def main(argv)` -- Parse argv and dispatch to selftest, boot checks or repl.
 
+## tools/mkcpyzip.py
+- `build_zip` (function) `tools/mkcpyzip.py:22` `def build_zip(lib_dir, out_zip, skip)` -- Write out_zip with the Lib tree minus skip dirs; return file count.
+- `main` (function) `tools/mkcpyzip.py:41` `def main()`
+
 ## tools/mkfs.minifs.py
-- `roundup4` (function) `tools/mkfs.minifs.py:22` `def roundup4(v)`
-- `div_round_up` (function) `tools/mkfs.minifs.py:25` `def div_round_up(n, d)`
-- `crc16` (function) `tools/mkfs.minifs.py:28` `def crc16(data)`
-- `crc32` (function) `tools/mkfs.minifs.py:36` `def crc32(data)`
-- `count_free` (function) `tools/mkfs.minifs.py:44` `def count_free(bitmap, count)` -- Clear bits among the first count bits of bitmap: the superblock free counters must equal what the kernel allocator...
-- `MiniFS.__init__` (method) `tools/mkfs.minifs.py:51` `def __init__(self, total_blocks)`
-- `MiniFS.mark_inodes_used` (method) `tools/mkfs.minifs.py:74` `def mark_inodes_used(self, start, count)`
-- `MiniFS.mark_blocks_used` (method) `tools/mkfs.minifs.py:78` `def mark_blocks_used(self, start, count)`
-- `MiniFS.alloc_inode` (method) `tools/mkfs.minifs.py:82` `def alloc_inode(self)`
-- `MiniFS.alloc_block` (method) `tools/mkfs.minifs.py:88` `def alloc_block(self)`
-- `MiniFS.create_root` (method) `tools/mkfs.minifs.py:94` `def create_root(self)`
-- `MiniFS.seal_inode` (method) `tools/mkfs.minifs.py:102` `def seal_inode(self, ino)` -- Store the inode checksum over its first 124 bytes; every mutation reseals, or the kernel rejects the inode on read.
-- `MiniFS.create_inode` (method) `tools/mkfs.minifs.py:107` `def create_inode(self, mode, links)`
-- `MiniFS.inode_set_size` (method) `tools/mkfs.minifs.py:114` `def inode_set_size(self, ino, size)`
-- `MiniFS.inode_set_block` (method) `tools/mkfs.minifs.py:118` `def inode_set_block(self, ino, logblk, phys)`
-- `MiniFS.add_dir_entry` (method) `tools/mkfs.minifs.py:148` `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
-- `MiniFS.claim_name` (method) `tools/mkfs.minifs.py:186` `def claim_name(self, parent_ino, name, is_dir)` -- Record name in parent_ino.
-- `MiniFS.write_file` (method) `tools/mkfs.minifs.py:199` `def write_file(self, parent_ino, name, data)`
-- `MiniFS.write_dir` (method) `tools/mkfs.minifs.py:218` `def write_dir(self, parent_ino, name)`
-- `MiniFS.serialize` (method) `tools/mkfs.minifs.py:230` `def serialize(self)`
-- `main` (function) `tools/mkfs.minifs.py:274` `def main()`
-- `pack_tree` (function) `tools/mkfs.minifs.py:304` `def pack_tree(parent_ino, path, rel)`
+- `roundup4` (function) `tools/mkfs.minifs.py:28` `def roundup4(v)`
+- `div_round_up` (function) `tools/mkfs.minifs.py:31` `def div_round_up(n, d)`
+- `crc16` (function) `tools/mkfs.minifs.py:34` `def crc16(data)`
+- `crc32` (function) `tools/mkfs.minifs.py:42` `def crc32(data)`
+- `count_free` (function) `tools/mkfs.minifs.py:50` `def count_free(bitmap, count)` -- Clear bits among the first count bits of bitmap: the superblock free counters must equal what the kernel allocator...
+- `MiniFS.__init__` (method) `tools/mkfs.minifs.py:57` `def __init__(self, total_blocks)`
+- `MiniFS.mark_inodes_used` (method) `tools/mkfs.minifs.py:80` `def mark_inodes_used(self, start, count)`
+- `MiniFS.mark_blocks_used` (method) `tools/mkfs.minifs.py:84` `def mark_blocks_used(self, start, count)`
+- `MiniFS.alloc_inode` (method) `tools/mkfs.minifs.py:88` `def alloc_inode(self)`
+- `MiniFS.alloc_block` (method) `tools/mkfs.minifs.py:94` `def alloc_block(self)`
+- `MiniFS.create_root` (method) `tools/mkfs.minifs.py:100` `def create_root(self)`
+- `MiniFS.seal_inode` (method) `tools/mkfs.minifs.py:108` `def seal_inode(self, ino)` -- Store the inode checksum over its first 124 bytes; every mutation reseals, or the kernel rejects the inode on read.
+- `MiniFS.create_inode` (method) `tools/mkfs.minifs.py:113` `def create_inode(self, mode, links)`
+- `MiniFS.inode_set_size` (method) `tools/mkfs.minifs.py:120` `def inode_set_size(self, ino, size)`
+- `MiniFS.inode_set_block` (method) `tools/mkfs.minifs.py:124` `def inode_set_block(self, ino, logblk, phys)`
+- `MiniFS.add_dir_entry` (method) `tools/mkfs.minifs.py:154` `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
+- `MiniFS.claim_name` (method) `tools/mkfs.minifs.py:192` `def claim_name(self, parent_ino, name, is_dir)` -- Record name in parent_ino.
+- `MiniFS.write_file` (method) `tools/mkfs.minifs.py:205` `def write_file(self, parent_ino, name, data)`
+- `MiniFS.write_dir` (method) `tools/mkfs.minifs.py:224` `def write_dir(self, parent_ino, name)`
+- `MiniFS.serialize` (method) `tools/mkfs.minifs.py:236` `def serialize(self)`
+- `main` (function) `tools/mkfs.minifs.py:280` `def main()`
+- `pack_tree` (function) `tools/mkfs.minifs.py:310` `def pack_tree(parent_ino, path, rel)`
 
 ## tools/mkpak1.py
 - `main` (function) `tools/mkpak1.py:29` `def main()`
 
 ## tools/mkramdisk.py
-- `pack_name` (function) `tools/mkramdisk.py:38` `def pack_name(path, common)`
-- `main` (function) `tools/mkramdisk.py:48` `def main()`
+- `read_fname_bytes` (function) `tools/mkramdisk.py:41` `def read_fname_bytes(kernel_h_path)` -- Parse RAMDISK_FNAME_LEN from headers/kernel.h; fail closed.
+- `pack_name` (function) `tools/mkramdisk.py:64` `def pack_name(path, common)`
+- `main` (function) `tools/mkramdisk.py:74` `def main()`
 
 ## tools/mkvocab.py
 - `bytes_to_unicode` (function) `tools/mkvocab.py:18` `def bytes_to_unicode()` -- Reversible byte to unicode map used by the GPT-2 encoder.
@@ -170,8 +175,8 @@ Depends on: `kernel/time.c`
 - `usage` (function) `tools/mutate.sh:51`
 - `restore_sources` (function) `tools/mutate.sh:132`
 - `cleanup` (function) `tools/mutate.sh:139`
-- `record` (function) `tools/mutate.sh:506`
-- `find_index` (function) `tools/mutate.sh:512` -- Locate a mutant by name.
+- `record` (function) `tools/mutate.sh:516`
+- `find_index` (function) `tools/mutate.sh:522` -- Locate a mutant by name.
 
 ## tools/probe_compute_vga.py
 Depends on: `kernel/time.c`

@@ -491,6 +491,17 @@ expect "lxabi: close-range-cloexec ok"
 expect "lxabi: close-range-close ok"
 expect "lxabi: mkdir ok"
 expect "lxabi: mkdir-eexist ok"
+expect "lxabi: stat-minifs-file-mode ok"
+expect "lxabi: stat-ramdisk-file-mode ok"
+expect "lxabi: stat-dir-mode ok"
+expect "lxabi: stat-size ok"
+expect "lxabi: uid-gid-root ok"
+expect "lxabi: rmdir-empty ok"
+expect "lxabi: rmdir-notempty ok"
+expect "lxabi: rmdir-missing ok"
+expect "lxabi: getdents64-entries ok"
+expect "lxabi: getdents64-resume ok"
+expect "lxabi: getdents64-enotdir ok"
 expect "lxabi: thread-create-join ok"
 expect "lxabi: thread-mutex ok"
 expect "lxabi: thread-tls ok"
@@ -528,6 +539,27 @@ expect "lxsecc: all ok"
 expect "exit code: 0"
 refute "FAIL"
 refute "UNIMPL"
+
+# select(2)/pselect6(2) ABI (docs/spec/python.md): every vector of
+# progs/src/lxsel.c passes; MicroPython's time.sleep and select.poll()
+# ride these numbers, so this scenario is the suite that kills the
+# lxsel-* mutants in tools/mutate.sh.
+scenario "lxsel probes select(2) and pselect6(2)" "run bin/lxsel
+poweroff"
+expect "lxsel: nfds-bounds ok"
+expect "lxsel: negative-timeout ok"
+expect "lxsel: timeout-waits ok"
+expect "lxsel: timeval-writeback ok"
+expect "lxsel: pselect6-ready-read ok"
+expect "lxsel: select-ready-read ok"
+expect "lxsel: pselect6-ready-write ok"
+expect "lxsel: pselect6-times-out ok"
+expect "lxsel: bad-fd-ebadf ok"
+expect "lxsel: all ok"
+expect "exit code: 0"
+refute "FAIL"
+refute "UNIMPL"
+expect "powering off"
 
 scenario "background jobs return the prompt and auto-reap" "mrun bin/fib.elf &
 wait

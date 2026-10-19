@@ -600,6 +600,9 @@ static void shell_readline_hist(char *buf, int size) {
             if (wlen == 0) { vga_putc('\a'); continue; }
             char *comps[32];
             int ncomps = 0;
+            /* One listing buffer for every completion branch below: two
+             * scoped copies pushed the frame past the 2 KB gate. */
+            RDFile *files[RAMDISK_MAX_FILES];
             if (word_start == buf) {
                 /* First word: newest history commands complete too, so TAB
                  * after "minigcc" offers the most recent matching command
@@ -684,7 +687,6 @@ static void shell_readline_hist(char *buf, int size) {
                             nmini++;
                         }
                     }
-                    RDFile *files[RAMDISK_MAX_FILES];
                     int n = ramdisk_list(files, RAMDISK_MAX_FILES);
                     for (int t = 0; t < 4 && ncomps < 32; t++) {
                         int before = ncomps;
@@ -703,7 +705,6 @@ static void shell_readline_hist(char *buf, int size) {
                         if (ncomps > before) break;
                     }
                 } else {
-                    RDFile *files[RAMDISK_MAX_FILES];
                     int n = ramdisk_list(files, RAMDISK_MAX_FILES);
                     for (int i = 0; i < n && ncomps < 32; i++) {
                         const char *base = shell_name_base(files[i]->name);
@@ -741,12 +742,15 @@ static void shell_readline_hist(char *buf, int size) {
                 common = j;
             }
             if (common > wlen && kstrncmp(comps[0], word_start, wlen) == 0) {
-                char prefix[RAMDISK_FNAME_LEN];
-                if (common < sizeof(prefix)) {
+                /* Heap prefix buffer: a RAMDISK_FNAME_LEN[] here pushed
+                 * shell_readline_hist's frame past the 2 KB gate. */
+                char *prefix = (char *)kmalloc(RAMDISK_FNAME_LEN);
+                if (prefix && common < RAMDISK_FNAME_LEN) {
                     kmemcpy(prefix, comps[0], common);
                     prefix[common] = 0;
                     shell_complete_replace(buf, size, &pos, word_start, wlen, prefix);
                 }
+                if (prefix) kfree(prefix);
                 continue;
             }
             vga_puts("Possible completions:");
@@ -945,7 +949,9 @@ void shell_run(void) {
 
 /* Load an ELF file from the ramdisk and register it under its filename stem.
  * Returns 1 for an ET_REL program, 2 for an ET_EXEC/ET_DYN Linux process,
- * 0 on failure.  progname_out must hold at least 32 bytes. */
+ * 0 on failure.  progname_out must hold at least 32 bytes.  noinline: its
+ * RAMDISK_FNAME_LEN buffer inlined into shell_run once the path cap grew. */
+__attribute__((noinline))
 static int shell_load(const char *fname, char *progname_out, void **entry_out) {
     char resolved[RAMDISK_FNAME_LEN];
     if (!fs_resolve(fname, resolved, sizeof(resolved))) return 0;

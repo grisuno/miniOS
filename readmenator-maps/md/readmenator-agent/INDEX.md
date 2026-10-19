@@ -30,7 +30,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `fs/ext4.c` | ext_geo_t: Filesystem geometry from the superblock. | fs | 38 | 1 |
 | `fs/fat32.c` | fat_geo_t: Parsed BPB plus derived geometry. secs = total data clusters + 2 (cluster numbers 0/1... | fs | 31 | 1 |
 | `fs/fsimg.c` | fsimg_dev_read: Docstring: Sector reads off the active backend through the block layer, so a... | fs | 5 | 2 |
-| `fs/kfile.c` | kpipe_pair: Docstring: Create a connected pipe pair sharing one ring. | fs | 30 | 0 |
+| `fs/kfile.c` | kpipe_pair: Docstring: Create a connected pipe pair sharing one ring. | fs | 31 | 0 |
 | `fs/minifs.c` | MiniFS: minimal Unix-like filesystem for MiniOS. | fs | 66 | 0 |
 | `fs/pcache.c` | Docstring: fs/pcache.c -- page cache store for MiniFS (T5 slice 1). | fs | 16 | 1 |
 | `fs/ramdisk.c` | ramdisk_usage: int ramdisk_list(RDFile **out, int max) { if (!rd) return 0; int n =... | fs | 25 | 0 |
@@ -66,7 +66,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `headers/futex.h` | Docstring: futex.h -- Fast userspace mutex sleep/wake contract. | headers | 28 | 4 |
 | `headers/httpd.h` | Docstring: httpd.h -- Minimal static HTTP/1.0 server contract. | headers | 10 | 2 |
 | `headers/ide.h` | IDE/ATA PIO driver for MiniOS. | headers | 35 | 6 |
-| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 411 | 4 |
+| `headers/kernel.h` | The user-window memory layout (load base, stack, brk cap, graphics | headers | 412 | 4 |
 | `headers/kernel/console_in.h` | Docstring: console_in.h -- boundary of the console input device | headers_kernel | 11 | 3 |
 | `headers/kernel/vga_cursor.h` | Docstring: vga_cursor.h -- boundary of the pointer sprite layer | headers_kernel | 9 | 2 |
 | `headers/ktime.h` | pure time-conversion helpers shared by the kernel clock | headers | 3 | 3 |
@@ -93,6 +93,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `headers/sb16.h` | Sound Blaster 16 DMA audio driver contract. | headers | 28 | 6 |
 | `headers/sched.h` | Forward: full view lives in kernel.h (needs KFILE first); the PCB | headers | 158 | 28 |
 | `headers/seccomp_bpf.h` | Docstring: seccomp_bpf.h -- classic BPF checker and interpreter for | headers | 58 | 3 |
+| `headers/select_map.h` | Docstring: select_map.h -- fd_set <-> pollfd translation for select(2). | headers | 16 | 2 |
 | `headers/shell.h` | shared shell constants and the line reader/parser reused by | headers | 8 | 3 |
 | `headers/sign.h` | Docstring: sign.h -- MiniOS binary signing contract. | headers | 14 | 3 |
 | `headers/smp.h` | SMP bring-up: wake the application processors (APs) via the LAPIC INIT/SIPI | headers | 12 | 5 |
@@ -153,13 +154,13 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `kernel/serial.c` | COM1 16550 UART driver. | kernel | 9 | 0 |
 | `kernel/shell.c` | ShellRunDir: Runnable-file lookup: a bare name is mapped to a toolchain directory by its suffix... | kernel | 97 | 0 |
 | `kernel/spawn.c` | Docstring: Save the caller shared-window view into ctx. | kernel | 9 | 0 |
-| `kernel/string.c` | Kernel string and memory functions. | kernel | 13 | 87 |
+| `kernel/string.c` | Kernel string and memory functions. | kernel | 13 | 88 |
 | `kernel/symtab.c` | - | kernel | 7 | 0 |
 | `kernel/sync.c` | Blocking synchronization primitives (roadmap Phase 3.1). | kernel | 26 | 0 |
-| `kernel/syscalls.c` | Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 237 | 0 |
+| `kernel/syscalls.c` | Linux x86-64 syscall dispatcher and SYS_SPAWN. | kernel | 256 | 0 |
 | `kernel/syscalls_proc.c` | Process-management syscall handlers. | kernel | 24 | 0 |
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 11 | 0 |
-| `kernel/time.c` | ktime_us: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime... | kernel | 4 | 27 |
+| `kernel/time.c` | ktime_us: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime... | kernel | 4 | 29 |
 | `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | kernel | 13 | 0 |
 | `kernel/vga_fb.c` | wm_geom_cfg: /** Docstring: Focus ids share one space across terminals and graphics.... | kernel | 205 | 0 |
 | `kernel/vga_fx.c` | DOOM-melt desktop effects (see headers/vga_fx.h for the contract). | kernel | 9 | 0 |
@@ -384,12 +385,13 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `progs/lisp/lisp.c` | Node: Runtime value node with one payload per type. | lisp | 105 | 0 |
 | `progs/lisp/tin.c` | - | lisp | 1 | 0 |
 | `progs/lua/lua_main.c` | - | lua | 7 | 0 |
-| `progs/lua/minios.c` | msys5: /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static long... | lua | 17 | 3 |
+| `progs/lua/minios.c` | msys5: /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static long... | lua | 17 | 4 |
 | `progs/micropython/variants/minios/lib/__init__.py` | MiniOS frozen library package. | lib | 0 | 0 |
 | `progs/micropython/variants/minios/lib/hello.py` | frozen demo: runs at import time as a smoke test. | lib | 0 | 0 |
+| `progs/micropython/variants/minios/lib/mip.py` | MiniOS package installer (frozen module). | lib | 15 | 1 |
 | `progs/micropython/variants/minios/manifest.py` | frozen modules for the MiniOS MicroPython variant. | minios | 0 | 0 |
 | `progs/micropython/variants/minios/minios_module.c` | msys5: /* ── raw syscall helper (x86-64 Linux ABI) ─────────────────────────── static long... | minios | 21 | 0 |
-| `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 38 | 0 |
+| `progs/micropython/variants/minios/mpconfigvariant.h` | - | minios | 46 | 0 |
 | `progs/minicraft/minicraft.c` | Minecraft-like voxel walker for MiniOS (ring 3, static ELF). | misc | 237 | 0 |
 | `progs/minios_abi.h` | Single source of truth for the MiniOS user-kernel ABI. | progs | 156 | 31 |
 | `progs/minios_png.h` | Docstring: shared ring-3 PNG helpers for MiniOS apps (progs/minios_png.h). | progs | 21 | 3 |
@@ -430,11 +432,12 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `progs/src/json.c` | command path JSON tool: validate, pretty-print and query. | src | 41 | 0 |
 | `progs/src/kmem.c` | Kernel-pointer rejection probe. | src | 3 | 0 |
 | `progs/src/ldhello.c` | - | src | 1 | 0 |
-| `progs/src/lxabi.c` | Linux process, thread and descriptor ABI probe (FreeDom | src | 57 | 0 |
+| `progs/src/lxabi.c` | Linux process, thread and descriptor ABI probe (FreeDom | src | 60 | 0 |
 | `progs/src/lxhello.c` | lmain: static void lx_write_int(long v) { char buf[24]; int i = (int)sizeof(buf); int neg = 0... | src | 7 | 0 |
 | `progs/src/lxnet.c` | Linux socket ABI probe (FreeDom readiness step 6, | src | 16 | 0 |
 | `progs/src/lxproc.c` | foreground process-note probe (docs/spec/shell-fs.md, "Process | src | 9 | 0 |
 | `progs/src/lxsecc.c` | Linux seccomp-bpf, prctl and /proc/self/exe probe (FreeDom | src | 30 | 0 |
+| `progs/src/lxsel.c` | select(2)/pselect6(2) ABI probe (docs/spec/python.md). | src | 11 | 0 |
 | `progs/src/lxtls.c` | libcurl/OpenSSL fetch probe (FreeDom readiness step 6, | src | 10 | 0 |
 | `progs/src/lz4.c` | command path LZ4 (de)compression tools: lz4 and unlz4. | src | 26 | 0 |
 | `progs/src/lzss.c` | command path LZSS (de)compression tools: lzss and unlzss. | src | 48 | 0 |
@@ -456,6 +459,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `progs/src/test.lua` | - | src | 20 | 0 |
 | `progs/src/test.py` | in-OS test suite for MiniOS, driven by MicroPython. | src | 20 | 0 |
 | `progs/src/test_all.sh` | comprehensive non-interactive test suite for MiniOS. | src | 0 | 0 |
+| `progs/src/test_py.py` | in-OS Python checks for src/test_all.sh (docs/spec/python.md). | src | 5 | 0 |
 | `progs/src/thdemo.c` | Producer-consumer over mthreads (roadmap Phase 1, M1). | src | 10 | 0 |
 | `progs/src/w1.c` | - | src | 2 | 0 |
 | `progs/tls_u/tls_u_main.c` | tlsget - minimal HTTPS GET over the ring-3 TLS stack. | tls_u | 5 | 0 |
@@ -492,9 +496,5 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `tests/test_leakcheck.c` | Docstring: host test for the leak tracker (make test-leakcheck). | tests | 4 | 0 |
 | `tests/test_minifs_tools.py` | Host suite for the MiniFS image tools (docs/spec/shell-fs.md).  tools/mkfs.minifs.py builds the... | tests | 12 | 0 |
 | `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 10 | 0 |
-| `tests/test_modifiers.c` | Docstring: Designated initializers, so adding a member cannot silently | tests | 2 | 0 |
-| `tests/test_notify.c` | - | tests | 3 | 0 |
-| `tests/test_paint.c` | Docstring: host test for the paint canvas/PNG contract (make test-paint). | tests | 21 | 0 |
-| `tests/test_panic.c` | Docstring: Host test for headers/panic.h (make test-panic). | tests | 5 | 0 |
 
 Next: [INDEX_p2.md](INDEX_p2.md)

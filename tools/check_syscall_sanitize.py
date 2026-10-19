@@ -45,6 +45,7 @@ class Config:
         "do_waitpid_nb",
         "do_kill",
         "do_thread_spawn",
+        "select_common",
     )
     dereferencing_callees = (
         "futex_wait",

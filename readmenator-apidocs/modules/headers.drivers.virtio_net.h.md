@@ -26,7 +26,7 @@ Idempotent: a second call reuses the live queues. Returns 1 when the device is r
 
 **Returns:** `int`
 
-*Called by:* [`unusable`](drivers.virtio_net.c.md#unusable), [`shell_exec_builtin`](kernel.shell.c.md#shell_exec_builtin), [`net_init`](net.net.c.md#net_init)
+*Called by:* [`unusable`](drivers.virtio_net.c.md#unusable), [`net_init`](net.net.c.md#net_init)
 
 ---
 
@@ -101,7 +101,7 @@ Docstring: Copy the NIC MAC into out (NET_ETH_ALEN bytes).
 |---|---|---|---|
 | `out` | `unsigned char [6]` |  |  |
 
-*Called by:* [`shell_exec_builtin`](kernel.shell.c.md#shell_exec_builtin), [`net_init`](net.net.c.md#net_init)
+*Called by:* [`net_init`](net.net.c.md#net_init)
 
 ---
 

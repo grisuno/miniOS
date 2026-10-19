@@ -37,4 +37,4 @@
   - `SYS_PCSPK_VOL` (macro, line 58) `#define SYS_PCSPK_VOL`
   - `SYS_SPAWN` (macro, line 59) `#define SYS_SPAWN`
 - Depends on: `progs/minios_abi.h`
-- Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
+- Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/micropython/variants/minios/lib/mip.py`, `progs/src/shell.py`, `progs/src/test.py`

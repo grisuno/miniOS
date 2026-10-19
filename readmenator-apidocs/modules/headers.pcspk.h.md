@@ -21,7 +21,7 @@ void pcspk_init(void);
 
 ========== PC speaker ==========
 
-> **Inherited:** Documentation from [`pcspk_init`](#pcspk_init) (headers/kernel.h:905).
+> **Inherited:** Documentation from [`pcspk_init`](#pcspk_init) (headers/kernel.h:921).
 
 ---
 

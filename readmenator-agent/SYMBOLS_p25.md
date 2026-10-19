@@ -1,8 +1,87 @@
-# Symbols (page 25 of 26)
+# Symbols (page 25 of 27)
 Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `WPIX_BUDGET_MAX` | macro | `progs/wl/wl_pixbuf.h:44` | `#define WPIX_BUDGET_MAX` |
+| `WPIX_MAX_H` | macro | `progs/wl/wl_pixbuf.h:36` | `#define WPIX_MAX_H` |
+| `WPIX_MAX_SLOTS` | macro | `progs/wl/wl_pixbuf.h:28` | `#define WPIX_MAX_SLOTS` |
+| `WPIX_MAX_W` | macro | `progs/wl/wl_pixbuf.h:32` | `#define WPIX_MAX_W` |
+| `WPIX_SLOT_MAX` | macro | `progs/wl/wl_pixbuf.h:40` | `#define WPIX_SLOT_MAX` |
+| `wpix_commit` | function | `progs/wl/wl_pixbuf.h:175` | `static int wpix_commit(struct wpix_store *s, int idx, const unsigned char *src, int w, int h)` |
+| `wpix_drop` | function | `progs/wl/wl_pixbuf.h:127` | `static void wpix_drop(struct wpix_store *s, int idx)` |
+| `wpix_dst` | function | `progs/wl/wl_pixbuf.h:121` | `static unsigned char *wpix_dst(struct wpix_store *s)` |
+| `wpix_ensure` | function | `progs/wl/wl_pixbuf.h:153` | `static int wpix_ensure(struct wpix_store *s, int idx, int w, int h)` |
+| `wpix_free` | function | `progs/wl/wl_pixbuf.h:78` | `static void wpix_free(struct wpix_store *s)` |
+| `wpix_init` | function | `progs/wl/wl_pixbuf.h:63` | `static int wpix_init(struct wpix_store *s)` |
+| `wpix_ptr` | function | `progs/wl/wl_pixbuf.h:107` | `static unsigned char *wpix_ptr(struct wpix_store *s, int idx)` |
+| `wpix_raw` | function | `progs/wl/wl_pixbuf.h:115` | `static unsigned char *wpix_raw(struct wpix_store *s)` |
+| `wpix_slot` | struct | `progs/wl/wl_pixbuf.h:48` | `` |
+| `wpix_store` | struct | `progs/wl/wl_pixbuf.h:55` | `` |
+| `wpix_tmp` | function | `progs/wl/wl_pixbuf.h:136` | `static int wpix_tmp(struct wpix_store *s, size_t need)` |
+| `wpix_used` | function | `progs/wl/wl_pixbuf.h:95` | `static size_t wpix_used(const struct wpix_store *s)` |
+| `WLCOMP_CFG_DEFAULT` | macro | `progs/wl/wlcomp.c:53` | `#define WLCOMP_CFG_DEFAULT` |
+| `WLCOMP_H` | macro | `progs/wl/wlcomp.c:40` | `#define WLCOMP_H` |
+| `WLCOMP_W` | macro | `progs/wl/wlcomp.c:39` | `#define WLCOMP_W` |
+| `forever` | function | `progs/wl/wlcomp.c:844` | `* one of the WL_MAX_SURFACES slots forever (eight bad names used to lock  * every real client out...` |
+| `main` | function | `progs/wl/wlcomp.c:1467` | `int main(int argc, char **argv)` |
+| `wlclient_find` | function | `progs/wl/wlcomp.c:1005` | `static const wlclient_pat_t *wlclient_find(const char *name)` |
+| `wlclient_pat_t` | struct | `progs/wl/wlcomp.c:995` | `` |
+| `wlcomp_cfg_t` | struct | `progs/wl/wlcomp.c:43` | `` |
+| `wlcomp_clean` | function | `progs/wl/wlcomp.c:1137` | `static int wlcomp_clean(void)` |
+| `wlcomp_client` | function | `progs/wl/wlcomp.c:1034` | `static int wlcomp_client(const char *box, const char *pat)` |
+| `wlcomp_demo` | function | `progs/wl/wlcomp.c:189` | `static int wlcomp_demo(wl_comp_t *c)` |
+| `wlcomp_demo_blit` | function | `progs/wl/wlcomp.c:214` | `static int wlcomp_demo_blit(wl_comp_t *c, unsigned char *fb)` |
+| `wlcomp_emit` | function | `progs/wl/wlcomp.c:260` | `static int wlcomp_emit(unsigned char *s, int cap, int o, unsigned int id,         unsigned int op...` |
+| `wlcomp_once` | function | `progs/wl/wlcomp.c:1165` | `static int wlcomp_once(void)` |
+| `wlcomp_palette` | function | `progs/wl/wlcomp.c:139` | `static int wlcomp_palette(void)` |
+| `wlcomp_path` | function | `progs/wl/wlcomp.c:1103` | `static int wlcomp_path(char *dst, int cap, const char *name)` |
+| `wlcomp_pattern` | function | `progs/wl/wlcomp.c:150` | `static void wlcomp_pattern(unsigned char *dst, int w, int h,         unsigned char a, unsigned ch...` |
+| `wlcomp_selftest` | function | `progs/wl/wlcomp.c:345` | `static int wlcomp_selftest(void)` |
+| `wlcomp_server` | function | `progs/wl/wlcomp.c:1197` | `static int wlcomp_server(void)` |
+| `wlcomp_session` | function | `progs/wl/wlcomp.c:272` | `static int wlcomp_session(wl_comp_t *c, wl_client_t *cl)` |
+| `wlcomp_sys_dir_list` | function | `progs/wl/wlcomp.c:129` | `static long wlcomp_sys_dir_list(const char *path, char *buf, long cap)` |
+| `wlcomp_sys_kbd` | function | `progs/wl/wlcomp.c:97` | `static long wlcomp_sys_kbd(void)` |
+| `wlcomp_sys_kbd_raw` | function | `progs/wl/wlcomp.c:105` | `static long wlcomp_sys_kbd_raw(long on)` |
+| `wlcomp_sys_mouse` | function | `progs/wl/wlcomp.c:89` | `static long wlcomp_sys_mouse(int *m)` |
+| `wlcomp_sys_palette` | function | `progs/wl/wlcomp.c:81` | `static long wlcomp_sys_palette(unsigned char *pal)` |
+| `wlcomp_sys_present` | function | `progs/wl/wlcomp.c:65` | `static long wlcomp_sys_present(long buf)` |
+| `wlcomp_sys_present_origin` | function | `progs/wl/wlcomp.c:73` | `static long wlcomp_sys_present_origin(long buf, int *origin)` |
+| `wlcomp_sys_title` | function | `progs/wl/wlcomp.c:57` | `static long wlcomp_sys_title(const char *t)` |
+| `wlcomp_sys_vga_mode` | function | `progs/wl/wlcomp.c:113` | `static long wlcomp_sys_vga_mode(long on)` |
+| `wlcomp_sys_yield` | function | `progs/wl/wlcomp.c:121` | `static long wlcomp_sys_yield(void)` |
+| `wlserv_box_known` | function | `progs/wl/wlcomp.c:830` | `static int wlserv_box_known(const wlserv_t *s, const char *box)` |
+| `wlserv_clean_ev` | function | `progs/wl/wlcomp.c:765` | `static void wlserv_clean_ev(void)` |
+| `wlserv_close` | function | `progs/wl/wlcomp.c:798` | `static int wlserv_close(wlserv_t *s, unsigned int id)` |
+| `wlserv_drain` | function | `progs/wl/wlcomp.c:933` | `static int wlserv_drain(wlserv_t *s)` |
+| `wlserv_ev_clear` | function | `progs/wl/wlcomp.c:706` | `static void wlserv_ev_clear(wlserv_t *s, int b)` |
+| `wlserv_fit` | function | `progs/wl/wlcomp.c:547` | `static void wlserv_fit(wlserv_t *s)` |
+| `wlserv_focus_box` | function | `progs/wl/wlcomp.c:664` | `static int wlserv_focus_box(const wlserv_t *s)` |
+| `wlserv_gc_strays` | function | `progs/wl/wlcomp.c:609` | `static void wlserv_gc_strays(void)` |
+| `wlserv_init` | function | `progs/wl/wlcomp.c:418` | `static void wlserv_init(wlserv_t *s)` |
+| `wlserv_key` | function | `progs/wl/wlcomp.c:686` | `static void wlserv_key(wlserv_t *s, unsigned char byte)` |
+| `wlserv_load_raw` | function | `progs/wl/wlcomp.c:502` | `static int wlserv_load_raw(wlserv_t *s, int b, int idx)` |
+| `wlserv_present` | function | `progs/wl/wlcomp.c:467` | `static int wlserv_present(wlserv_t *s)` |
+| `wlserv_push_ev` | function | `progs/wl/wlcomp.c:717` | `static void wlserv_push_ev(wlserv_t *s, int fx, int fy, int buttons)` |
+| `wlserv_recolor` | function | `progs/wl/wlcomp.c:450` | `static void wlserv_recolor(wl_comp_t *c)` |
+| `wlserv_relayout_present` | function | `progs/wl/wlcomp.c:1123` | `static int wlserv_relayout_present(wlserv_t *s)` |
+| `wlserv_slot` | function | `progs/wl/wlcomp.c:437` | `static int wlserv_slot(const wl_comp_t *c, unsigned int id)` |
+| `wlserv_t` | struct | `progs/wl/wlcomp.c:406` | `` |
+| `channel` | function | `qga.c:10` | `* * Polled channel (no interrupt controller): qga_init sets up COM2 and * qga_poll, called from raw_blocking_getc...` |
+| `qga_b64_encode` | function | `qga.c:231` | `static void qga_b64_encode(const unsigned char *in, int n)` |
+| `qga_cmd_exec` | function | `qga.c:306` | `static void qga_cmd_exec(const struct qga_pair *pairs, int n)` |
+| `qga_cmd_file_close` | function | `qga.c:384` | `static void qga_cmd_file_close(const struct qga_pair *pairs, int n)` |
+| `qga_cmd_file_open` | function | `qga.c:334` | `static void qga_cmd_file_open(const struct qga_pair *pairs, int n)` |
+| `qga_cmd_file_read` | function | `qga.c:360` | `static void qga_cmd_file_read(const struct qga_pair *pairs, int n)` |
+| `qga_cmd_get_time` | function | `qga.c:281` | `static void qga_cmd_get_time(void)` |
+| `qga_cmd_shutdown` | function | `qga.c:316` | `static void qga_cmd_shutdown(const struct qga_pair *pairs, int n)` |
+| `qga_dispatch` | function | `qga.c:401` | `static void qga_dispatch(struct qga_pair *pairs, int n)` |
+| `qga_err` | function | `qga.c:210` | `static void qga_err(const char *klass, const char *desc)` |
+| `qga_file_size` | function | `qga.c:329` | `static int qga_file_size(const KFILE *f)` |
+| `qga_get_int` | function | `qga.c:166` | `static int qga_get_int(const struct qga_pair *pairs, int n, const char *key, long *out)` |
+| `qga_get_str` | function | `qga.c:158` | `static const char *qga_get_str(const struct qga_pair *pairs, int n, const char *key)` |
+| `qga_init` | function | `qga.c:35` | `void qga_init(void)` |
+| `qga_pair` | struct | `qga.c:49` | `` |
 | `qga_parse_flat` | function | `qga.c:147` | `static int qga_parse_flat(const char *s, struct qga_pair *out, int max)` |
 | `qga_parse_object` | function | `qga.c:65` | `static int qga_parse_object(const char **pp, struct qga_pair *out, int max,                      ...` |
 | `qga_poll` | function | `qga.c:446` | `void qga_poll(void)` |
@@ -277,6 +356,50 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `t_policy` | function | `tests/test_minios_png.c:176` | `static void t_policy(void)` |
 | `t_scale` | function | `tests/test_minios_png.c:70` | `static void t_scale(void)` |
 | `t_scale_big` | function | `tests/test_minios_png.c:99` | `static void t_scale_big(void)` |
+| `MipLiveTests` | class | `tests/test_mip.py:242` | `class MipLiveTests(TestCase)` |
+| `MipPureTests` | class | `tests/test_mip.py:44` | `class MipPureTests(TestCase)` |
+| `_Handler` | class | `tests/test_mip.py:212` | `class _Handler(BaseHTTPRequestHandler)` |
+| `combined` | method | `tests/test_mip.py:277` | `def combined(self, proc)` |
+| `do_GET` | method | `tests/test_mip.py:220` | `def do_GET(self)` |
+| `load_mip` | function | `tests/test_mip.py:36` | `def load_mip()` |
+| `log_message` | method | `tests/test_mip.py:217` | `def log_message(self, fmt)` |
+| `run_in_elf` | method | `tests/test_mip.py:270` | `def run_in_elf(self, code)` |
+| `setUp` | method | `tests/test_mip.py:266` | `def setUp(self)` |
+| `setUpClass` | method | `tests/test_mip.py:48` | `def setUpClass(cls)` |
+| `setUpClass` | method | `tests/test_mip.py:246` | `def setUpClass(cls)` |
+| `tearDownClass` | method | `tests/test_mip.py:261` | `def tearDownClass(cls)` |
+| `test_absolute_url_keeps_absolute_location` | method | `tests/test_mip.py:187` | `def test_absolute_url_keeps_absolute_location(self)` |
+| `test_absolute_url_keeps_base_scheme` | method | `tests/test_mip.py:197` | `def test_absolute_url_keeps_base_scheme(self)` |
+| `test_absolute_url_refuses_relative_location` | method | `tests/test_mip.py:207` | `def test_absolute_url_refuses_relative_location(self)` |
+| `test_absolute_url_resolves_path_location` | method | `tests/test_mip.py:177` | `def test_absolute_url_resolves_path_location(self)` |
+| `test_cli_install` | method | `tests/test_mip.py:344` | `def test_cli_install(self)` |
+| `test_https_get_needs_minios_on_host` | method | `tests/test_mip.py:173` | `def test_https_get_needs_minios_on_host(self)` |
+| `test_install_404_fails` | method | `tests/test_mip.py:300` | `def test_install_404_fails(self)` |
+| `test_install_follows_redirect` | method | `tests/test_mip.py:290` | `def test_install_follows_redirect(self)` |
+| `test_install_https_needs_minios` | method | `tests/test_mip.py:308` | `def test_install_https_needs_minios(self)` |
+| `test_install_plain_and_load` | method | `tests/test_mip.py:280` | `def test_install_plain_and_load(self)` |
+| `test_install_refuses_chunked` | method | `tests/test_mip.py:319` | `def test_install_refuses_chunked(self)` |
+| `test_install_refuses_traversal_name` | method | `tests/test_mip.py:327` | `def test_install_refuses_traversal_name(self)` |
+| `test_install_twice_succeeds` | method | `tests/test_mip.py:334` | `def test_install_twice_succeeds(self)` |
+| `test_module_name_accepts_plain_module` | method | `tests/test_mip.py:112` | `def test_module_name_accepts_plain_module(self)` |
+| `test_module_name_refuses_unsafe_names` | method | `tests/test_mip.py:119` | `def test_module_name_refuses_unsafe_names(self)` |
+| `test_module_name_strips_query` | method | `tests/test_mip.py:116` | `def test_module_name_strips_query(self)` |
+| `test_parse_response_bare_lf` | method | `tests/test_mip.py:144` | `def test_parse_response_bare_lf(self)` |
+| `test_parse_response_crlf` | method | `tests/test_mip.py:135` | `def test_parse_response_crlf(self)` |
+| `test_parse_response_refuses_chunked` | method | `tests/test_mip.py:167` | `def test_parse_response_refuses_chunked(self)` |
+| `test_parse_response_rejects_content_length_mismatch` | method | `tests/test_mip.py:157` | `def test_parse_response_rejects_content_length_mismatch(self)` |
+| `test_parse_response_rejects_garbage` | method | `tests/test_mip.py:151` | `def test_parse_response_rejects_garbage(self)` |
+| `test_parse_url_reports_scheme` | method | `tests/test_mip.py:86` | `def test_parse_url_reports_scheme(self)` |
+| `test_split_https_url_default_port` | method | `tests/test_mip.py:70` | `def test_split_https_url_default_port(self)` |
+| `test_split_https_url_explicit_port` | method | `tests/test_mip.py:76` | `def test_split_https_url_explicit_port(self)` |
+| `test_split_https_url_refuses_plain_http` | method | `tests/test_mip.py:82` | `def test_split_https_url_refuses_plain_http(self)` |
+| `test_split_url_default_port` | method | `tests/test_mip.py:51` | `def test_split_url_default_port(self)` |
+| `test_split_url_explicit_port_and_query` | method | `tests/test_mip.py:57` | `def test_split_url_explicit_port_and_query(self)` |
+| `test_split_url_path_defaults_to_root` | method | `tests/test_mip.py:63` | `def test_split_url_path_defaults_to_root(self)` |
+| `test_split_url_refuses_bad_authority` | method | `tests/test_mip.py:101` | `def test_split_url_refuses_bad_authority(self)` |
+| `test_split_url_refuses_control_chars` | method | `tests/test_mip.py:107` | `def test_split_url_refuses_control_chars(self)` |
+| `test_split_url_refuses_https` | method | `tests/test_mip.py:66` | `def test_split_url_refuses_https(self)` |
+| `test_split_url_refuses_other_schemes` | method | `tests/test_mip.py:96` | `def test_split_url_refuses_other_schemes(self)` |
 | `CHECK` | macro | `tests/test_modifiers.c:17` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_modifiers.c:24` | `int main(void)` |
 | `CHECK` | macro | `tests/test_notify.c:9` | `#define CHECK(cond, msg)` |
@@ -373,128 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `NR_MPROTECT` | macro | `tests/test_seccomp_bpf.c:28` | `#define NR_MPROTECT` |
 | `NR_OPEN` | macro | `tests/test_seccomp_bpf.c:26` | `#define NR_OPEN` |
 | `NR_READ` | macro | `tests/test_seccomp_bpf.c:24` | `#define NR_READ` |
-| `NR_WRITE` | macro | `tests/test_seccomp_bpf.c:25` | `#define NR_WRITE` |
-| `PROT_EXEC` | macro | `tests/test_seccomp_bpf.c:29` | `#define PROT_EXEC` |
-| `STMT` | macro | `tests/test_seccomp_bpf.c:21` | `#define STMT(c, k)` |
-| `data_for` | function | `tests/test_seccomp_bpf.c:34` | `static sbpf_data data_for(int nr, unsigned long long a2)` |
-| `main` | function | `tests/test_seccomp_bpf.c:210` | `int main(void)` |
-| `test_action_rank` | function | `tests/test_seccomp_bpf.c:199` | `static void test_action_rank(void)` |
-| `test_alu_and_jumps` | function | `tests/test_seccomp_bpf.c:150` | `static void test_alu_and_jumps(void)` |
-| `test_check_refusals` | function | `tests/test_seccomp_bpf.c:88` | `static void test_check_refusals(void)` |
-| `test_freedom_shape` | function | `tests/test_seccomp_bpf.c:43` | `static void test_freedom_shape(void)` |
-| `test_scratch_flow` | function | `tests/test_seccomp_bpf.c:130` | `static void test_scratch_flow(void)` |
-| `CHECK` | macro | `tests/test_sign.c:20` | `#define CHECK(cond, msg)` |
-| `hexval` | function | `tests/test_sign.c:27` | `static unsigned hexval(char c)` |
-| `main` | function | `tests/test_sign.c:51` | `int main(void)` |
-| `unhex` | function | `tests/test_sign.c:33` | `static void unhex(unsigned char *out, const char *in, unsigned n)` |
-| `CHECK` | macro | `tests/test_sync.c:37` | `#define CHECK(cond, msg)` |
-| `fresh_all` | function | `tests/test_sync.c:52` | `static void fresh_all(void)` |
-| `fresh_proc` | function | `tests/test_sync.c:44` | `static void fresh_proc(int pid)` |
-| `main` | function | `tests/test_sync.c:63` | `int main(void)` |
-| `proc_get` | function | `tests/test_sync.c:24` | `proc_t *proc_get(int pid)` |
-| `schedule` | function | `tests/test_sync.c:30` | `void schedule(void)` |
-| `CHECK` | macro | `tests/test_theme.c:16` | `#define CHECK(cond, msg)` |
-| `X` | macro | `tests/test_theme.c:29` | `#define X(k, i)` |
-| `check_theme_file` | function | `tests/test_theme.c:78` | `static void check_theme_file(const char *path)` |
-| `cube_exact` | function | `tests/test_theme.c:74` | `static int cube_exact(long v)` |
-| `main` | function | `tests/test_theme.c:107` | `int main(void)` |
-| `t_name_ok` | function | `tests/test_theme.c:34` | `static int t_name_ok(const char *name)` |
-| `t_parse_line` | function | `tests/test_theme.c:46` | `static int t_parse_line(const char *line, int *idx, long v[3])` |
-| `tslot` | struct | `tests/test_theme.c:23` | `` |
-| `CHECK` | macro | `tests/test_tick.c:17` | `#define CHECK(cond, msg)` |
-| `dummy` | function | `tests/test_tick.c:47` | `static void dummy(void *ctx)` |
-| `main` | function | `tests/test_tick.c:52` | `int main(void)` |
-| `rec_a` | function | `tests/test_tick.c:24` | `static void rec_a(void *ctx)` |
-| `rec_b` | function | `tests/test_tick.c:31` | `static void rec_b(void *ctx)` |
-| `rec_d` | function | `tests/test_tick.c:38` | `static void rec_d(void *ctx)` |
-| `CHECK` | macro | `tests/test_usbblk.c:36` | `#define CHECK(cond, msg)` |
-| `device_find` | function | `tests/test_usbblk.c:26` | `device_t *device_find(const char *name)` |
-| `device_register` | function | `tests/test_usbblk.c:20` | `int device_register(device_t *dev)` |
-| `main` | function | `tests/test_usbblk.c:43` | `int main(void)` |
-| `CHECK` | macro | `tests/test_usbhid.c:41` | `#define CHECK(cond, msg)` |
-| `check_usage` | function | `tests/test_usbhid.c:48` | `static void check_usage(unsigned usage, unsigned char want_sc, int want_e0,                      ...` |
-| `kbd_feed_scancode` | function | `tests/test_usbhid.c:22` | `int kbd_feed_scancode(unsigned char sc)` |
-| `kbd_q_push` | function | `tests/test_usbhid.c:30` | `void kbd_q_push(unsigned char c)` |
-| `main` | function | `tests/test_usbhid.c:59` | `int main(void)` |
-| `CHECK` | macro | `tests/test_vedit_build.c:33` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_vedit_build.c:345` | `int main(void)` |
-| `t_base_of` | function | `tests/test_vedit_build.c:51` | `static int t_base_of(const char *fname, char *dst, size_t cap)` |
-| `t_cmd` | function | `tests/test_vedit_build.c:299` | `static int t_cmd(const char *name)` |
-| `t_has_ext` | function | `tests/test_vedit_build.c:40` | `static int t_has_ext(const char *fname, const char *ext)` |
-| `t_join` | function | `tests/test_vedit_build.c:71` | `static int t_join(const char *dir, const char *base, const char *ext,                   char *dst...` |
-| `t_lang_of` | function | `tests/test_vedit_build.c:101` | `static int t_lang_of(const char *fname)` |
-| `t_link_fmt` | function | `tests/test_vedit_build.c:87` | `static int t_link_fmt(const char *s)` |
-| `t_magic` | function | `tests/test_vedit_build.c:268` | `static int t_magic(const char *text, const char *pat, int *mlen)` |
-| `t_matom` | function | `tests/test_vedit_build.c:188` | `static int t_matom(const char *pat, int c, int *atom_len)` |
-| `t_mclass` | function | `tests/test_vedit_build.c:166` | `static int t_mclass(int c, const char *cls)` |
-| `t_mhere` | function | `tests/test_vedit_build.c:211` | `static int t_mhere(const char *text, const char *pat, int *mlen)` |
-| `t_parse_key` | function | `tests/test_vedit_build.c:312` | `static int t_parse_key(const char *s)` |
-| `t_run_kind` | function | `tests/test_vedit_build.c:121` | `static int t_run_kind(const char *fname)` |
-| `t_str_case` | function | `tests/test_vedit_build.c:131` | `static void t_str_case(char *s, int mode)` |
-| `t_transpose` | function | `tests/test_vedit_build.c:157` | `static void t_transpose(char *s, int len, int pos)` |
-| `CHECK` | macro | `tests/test_vma.c:20` | `#define CHECK(cond, msg)` |
-| `black_height` | function | `tests/test_vma.c:27` | `static int black_height(const vma_node_t *n)` |
-| `count_nodes` | function | `tests/test_vma.c:75` | `static int count_nodes(const vma_node_t *root)` |
-| `main` | function | `tests/test_vma.c:231` | `int main(void)` |
-| `test_file_tags_and_containing` | function | `tests/test_vma.c:167` | `static void test_file_tags_and_containing(void)` |
-| `test_full_drain` | function | `tests/test_vma.c:153` | `static void test_full_drain(void)` |
-| `test_insert_find_delete` | function | `tests/test_vma.c:89` | `static void test_insert_find_delete(void)` |
-| `test_node_recycling` | function | `tests/test_vma.c:201` | `static void test_node_recycling(void)` |
-| `test_pool_exhaustion` | function | `tests/test_vma.c:136` | `static void test_pool_exhaustion(void)` |
-| `tree_valid` | function | `tests/test_vma.c:38` | `static int tree_valid(const vma_node_t *root)` |
-| `LIST_MAX` | macro | `tests/test_vma_bench.c:20` | `#define LIST_MAX` |
-| `bench` | function | `tests/test_vma_bench.c:34` | `static void bench(int n)` |
-| `l_find` | function | `tests/test_vma_bench.c:28` | `static int l_find(unsigned long b)` |
-| `l_insert` | function | `tests/test_vma_bench.c:23` | `static void l_insert(unsigned long b)` |
-| `main` | function | `tests/test_vma_bench.c:54` | `int main(void)` |
-| `now_us` | function | `tests/test_vma_bench.c:13` | `static long now_us(void)` |
-| `CHECK` | macro | `tests/test_wl.c:20` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_wl.c:27` | `int main(void)` |
-| `CHECK` | macro | `tests/test_wm.c:22` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_wm.c:29` | `int main(void)` |
-| `CHECK` | macro | `tests/test_xhci.c:23` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_xhci.c:30` | `int main(void)` |
-| `CHECK` | macro | `tls_test.c:62` | `#define CHECK(name, cond)` |
-| `bytes_eq` | function | `tls_test.c:80` | `static int bytes_eq(const unsigned char *a, const unsigned char *b, int n)` |
-| `hexdigit` | function | `tls_test.c:67` | `static int hexdigit(int c)` |
-| `http_over_tls` | function | `tls_test.c:265` | `static int http_over_tls(int port, const char *host)` |
-| `main` | function | `tls_test.c:349` | `int main(int argc, char **argv)` |
-| `scenario_bad_ca` | function | `tls_test.c:329` | `static int scenario_bad_ca(int port)` |
-| `scenario_bad_host` | function | `tls_test.c:319` | `static int scenario_bad_host(int port)` |
-| `scenario_expired` | function | `tls_test.c:339` | `static int scenario_expired(int port)` |
-| `scenario_good` | function | `tls_test.c:290` | `static int scenario_good(int port)` |
-| `scenario_wild_deep` | function | `tls_test.c:309` | `static int scenario_wild_deep(int port)` |
-| `scenario_wild_good` | function | `tls_test.c:295` | `static int scenario_wild_good(int port)` |
-| `scenario_wild_root` | function | `tls_test.c:299` | `static int scenario_wild_root(int port)` |
-| `tcp_connect` | function | `tls_test.c:249` | `static int tcp_connect(int port)` |
-| `test_gcm` | function | `tls_test.c:114` | `static void test_gcm(void)` |
-| `test_p256` | function | `tls_test.c:154` | `static void test_p256(void)` |
-| `test_rsa_ecdsa_vectors` | function | `tls_test.c:200` | `static void test_rsa_ecdsa_vectors(void)` |
-| `test_sha256` | function | `tls_test.c:88` | `static void test_sha256(void)` |
-| `test_sha384` | function | `tls_test.c:103` | `static void test_sha384(void)` |
-| `tls_test_close` | function | `tls_test.c:54` | `void tls_test_close(int fd)` |
-| `tls_test_recv` | function | `tls_test.c:36` | `int tls_test_recv(int fd, char *buf, int len)` |
-| `tls_test_recv_timeout` | function | `tls_test.c:41` | `int tls_test_recv_timeout(int fd, char *buf, int len, unsigned long ms)` |
-| `tls_test_send` | function | `tls_test.c:26` | `int tls_test_send(int fd, const char *buf, int len)` |
-| `unhex` | function | `tls_test.c:74` | `static void unhex(const char *hex, unsigned char *out, int n)` |
-| `main` | function | `tools/abi_stamp.c:14` | `int main(void)` |
-| `WlBoot` | class | `tools/boot_wl.py:67` | `class WlBoot` |
-| `WlBootConfig` | class | `tools/boot_wl.py:40` | `class WlBootConfig` |
-| `__init__` | method | `tools/boot_wl.py:68` | `def __init__(self, cfg)` |
-| `boot` | method | `tools/boot_wl.py:91` | `def boot(self)` |
-| `close` | method | `tools/boot_wl.py:80` | `def close(self)` |
-| `fail` | method | `tools/boot_wl.py:75` | `def fail(self, msg)` |
-| `headless` | method | `tools/boot_wl.py:182` | `def headless(self)` |
-| `main` | function | `tools/boot_wl.py:226` | `def main()` |
-| `proxy` | method | `tools/boot_wl.py:195` | `def proxy(self)` |
-| `qmp` | method | `tools/boot_wl.py:165` | `def qmp(self, obj)` |
-| `send` | method | `tools/boot_wl.py:135` | `def send(self, line)` |
-| `send_wait` | method | `tools/boot_wl.py:142` | `def send_wait(self, line, timeout)` |
-| `setup` | method | `tools/boot_wl.py:154` | `def setup(self)` |
-| `snapshot` | method | `tools/boot_wl.py:107` | `def snapshot(self, timeout)` |
-| `wait_prompt` | method | `tools/boot_wl.py:124` | `def wait_prompt(self)` |
-| `main` | function | `tools/check_abi_numbers.py:159` | `def main()` |
-| `normalize` | function | `tools/check_abi_numbers.py:131` | `def normalize(minios_name)` |
-| `parse_abi` | function | `tools/check_abi_numbers.py:135` | `def parse_abi(path)` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

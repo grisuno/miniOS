@@ -341,7 +341,7 @@ Depends on: `kernel/string.c`
 
 ## progs/lua/minios.c
 Depends on: `progs/minios_abi.h`
-Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.py`, `progs/src/test.py`
+Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/micropython/variants/minios/lib/mip.py`, `progs/src/shell.py`, `progs/src/test.py`
 - `msys5` (function) `progs/lua/minios.c:37` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2...
 - `minios_time_ms` (function) `progs/lua/minios.c:62` `static int minios_time_ms(lua_State *L)` -- } /* ── MiniOS syscall numbers (canonical table from minios_abi.h) ─────── #include "minios_abi.h" #define...
 - `minios_rtc` (function) `progs/lua/minios.c:68` `static int minios_rtc(lua_State *L)` -- #define SYS_PCSPK_INIT  MINIOS_SYS_PCSPK_INIT #define SYS_PCSPK_TONE  MINIOS_SYS_PCSPK_TONE #define SYS_RTC...
@@ -351,6 +351,21 @@ Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/src/shell.
 - `minios_pcspeaker` (function) `progs/lua/minios.c:119` `static int minios_pcspeaker(lua_State *L)` -- return 1; } /* ── minios.pal(buf) -- load a 768-byte VGA DAC palette ────────────── static int minios_pal(lua_State...
 - `minios_run` (function) `progs/lua/minios.c:136` `static int minios_run(lua_State *L)` -- ── minios.run(path[, args][, redirect]) -> exit code ─────────────── Runs a program through SYS_SPAWN (215)...
 - `luaopen_minios` (function) `progs/lua/minios.c:192` `int luaopen_minios(lua_State *L)`
+
+## progs/micropython/variants/minios/lib/mip.py
+Depends on: `progs/lua/minios.c`
+Imported by: `progs/src/test_py.py`
+- `parse_url` (function) `progs/micropython/variants/minios/lib/mip.py:49` `def parse_url(url)` -- Split an http/https URL into (scheme, host, port, path).
+- `split_url` (function) `progs/micropython/variants/minios/lib/mip.py:98` `def split_url(url)` -- Split an http URL into (host, port, path); https is refused here.
+- `split_https_url` (function) `progs/micropython/variants/minios/lib/mip.py:106` `def split_https_url(url)` -- Split an https URL into (host, port, path); http is refused here.
+- `module_name` (function) `progs/micropython/variants/minios/lib/mip.py:114` `def module_name(url)` -- Return the .py file name a URL installs, validating it is bare.
+- `parse_response` (function) `progs/micropython/variants/minios/lib/mip.py:150` `def parse_response(data)` -- Split one HTTP/1.x response into (status, headers, body).
+- `absolute_url` (function) `progs/micropython/variants/minios/lib/mip.py:202` `def absolute_url(base, location)` -- Resolve a redirect Location against base; http and https survive.
+- `http_get` (function) `progs/micropython/variants/minios/lib/mip.py:222` `def http_get(host, port, path)` -- Fetch http://host:port/path, returning the raw response bytes.
+- `ensure_dir` (function) `progs/micropython/variants/minios/lib/mip.py:276` `def ensure_dir(path)` -- Create path and its parents; existing directories are fine.
+- `https_get` (function) `progs/micropython/variants/minios/lib/mip.py:298` `def https_get(host, port, path)` -- Fetch https://host:port/path through the ring-3 TLS engine.
+- `install` (function) `progs/micropython/variants/minios/lib/mip.py:336` `def install(url, dest)` -- Fetch url and write it as <dest>/<module>.py; returns the path.
+- `main` (function) `progs/micropython/variants/minios/lib/mip.py:394` `def main(argv)` -- CLI entry point: install <url> [dest]; returns the exit code.
 
 ## progs/micropython/variants/minios/minios_module.c
 Depends on: `progs/minios_abi.h`

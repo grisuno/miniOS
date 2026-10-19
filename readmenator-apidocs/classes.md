@@ -304,6 +304,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`sector`](modules/progs.doomgeneric.r_defs.h.md#sector) type_alias in `progs/doomgeneric/r_defs.h`
 - [`sector_t`](modules/progs.doomgeneric.r_defs.h.md#sector_t) struct in `progs/doomgeneric/r_defs.h`
 - [`seg_t`](modules/progs.doomgeneric.r_defs.h.md#seg_t) struct in `progs/doomgeneric/r_defs.h`
+- [`select_pollfd_t`](modules/headers.select_map.h.md#select_pollfd_t) struct in `headers/select_map.h`
 - [`sem_t`](modules/headers.sync.h.md#sem_t) struct in `headers/sync.h`
 - [`sfxinfo_struct`](modules/progs.doomgeneric.i_sound.h.md#sfxinfo_struct) struct in `progs/doomgeneric/i_sound.h`
 - [`sfxinfo_t`](modules/progs.doomgeneric.i_sound.h.md#sfxinfo_t) type_alias in `progs/doomgeneric/i_sound.h`

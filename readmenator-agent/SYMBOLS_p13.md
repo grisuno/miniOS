@@ -1,8 +1,45 @@
-# Symbols (page 13 of 26)
+# Symbols (page 13 of 27)
 Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `HUSTR_CHATMACRO3` | macro | `progs/doomgeneric/d_englsh.h:289` | `#define HUSTR_CHATMACRO3` |
+| `HUSTR_CHATMACRO4` | macro | `progs/doomgeneric/d_englsh.h:290` | `#define HUSTR_CHATMACRO4` |
+| `HUSTR_CHATMACRO5` | macro | `progs/doomgeneric/d_englsh.h:291` | `#define HUSTR_CHATMACRO5` |
+| `HUSTR_CHATMACRO6` | macro | `progs/doomgeneric/d_englsh.h:292` | `#define HUSTR_CHATMACRO6` |
+| `HUSTR_CHATMACRO7` | macro | `progs/doomgeneric/d_englsh.h:293` | `#define HUSTR_CHATMACRO7` |
+| `HUSTR_CHATMACRO8` | macro | `progs/doomgeneric/d_englsh.h:294` | `#define HUSTR_CHATMACRO8` |
+| `HUSTR_CHATMACRO9` | macro | `progs/doomgeneric/d_englsh.h:295` | `#define HUSTR_CHATMACRO9` |
+| `HUSTR_E1M1` | macro | `progs/doomgeneric/d_englsh.h:139` | `#define HUSTR_E1M1` |
+| `HUSTR_E1M2` | macro | `progs/doomgeneric/d_englsh.h:140` | `#define HUSTR_E1M2` |
+| `HUSTR_E1M3` | macro | `progs/doomgeneric/d_englsh.h:141` | `#define HUSTR_E1M3` |
+| `HUSTR_E1M4` | macro | `progs/doomgeneric/d_englsh.h:142` | `#define HUSTR_E1M4` |
+| `HUSTR_E1M5` | macro | `progs/doomgeneric/d_englsh.h:143` | `#define HUSTR_E1M5` |
+| `HUSTR_E1M6` | macro | `progs/doomgeneric/d_englsh.h:144` | `#define HUSTR_E1M6` |
+| `HUSTR_E1M7` | macro | `progs/doomgeneric/d_englsh.h:145` | `#define HUSTR_E1M7` |
+| `HUSTR_E1M8` | macro | `progs/doomgeneric/d_englsh.h:146` | `#define HUSTR_E1M8` |
+| `HUSTR_E1M9` | macro | `progs/doomgeneric/d_englsh.h:147` | `#define HUSTR_E1M9` |
+| `HUSTR_E2M1` | macro | `progs/doomgeneric/d_englsh.h:149` | `#define HUSTR_E2M1` |
+| `HUSTR_E2M2` | macro | `progs/doomgeneric/d_englsh.h:150` | `#define HUSTR_E2M2` |
+| `HUSTR_E2M3` | macro | `progs/doomgeneric/d_englsh.h:151` | `#define HUSTR_E2M3` |
+| `HUSTR_E2M4` | macro | `progs/doomgeneric/d_englsh.h:152` | `#define HUSTR_E2M4` |
+| `HUSTR_E2M5` | macro | `progs/doomgeneric/d_englsh.h:153` | `#define HUSTR_E2M5` |
+| `HUSTR_E2M6` | macro | `progs/doomgeneric/d_englsh.h:154` | `#define HUSTR_E2M6` |
+| `HUSTR_E2M7` | macro | `progs/doomgeneric/d_englsh.h:155` | `#define HUSTR_E2M7` |
+| `HUSTR_E2M8` | macro | `progs/doomgeneric/d_englsh.h:156` | `#define HUSTR_E2M8` |
+| `HUSTR_E2M9` | macro | `progs/doomgeneric/d_englsh.h:157` | `#define HUSTR_E2M9` |
+| `HUSTR_E3M1` | macro | `progs/doomgeneric/d_englsh.h:159` | `#define HUSTR_E3M1` |
+| `HUSTR_E3M2` | macro | `progs/doomgeneric/d_englsh.h:160` | `#define HUSTR_E3M2` |
+| `HUSTR_E3M3` | macro | `progs/doomgeneric/d_englsh.h:161` | `#define HUSTR_E3M3` |
+| `HUSTR_E3M4` | macro | `progs/doomgeneric/d_englsh.h:162` | `#define HUSTR_E3M4` |
+| `HUSTR_E3M5` | macro | `progs/doomgeneric/d_englsh.h:163` | `#define HUSTR_E3M5` |
+| `HUSTR_E3M6` | macro | `progs/doomgeneric/d_englsh.h:164` | `#define HUSTR_E3M6` |
+| `HUSTR_E3M7` | macro | `progs/doomgeneric/d_englsh.h:165` | `#define HUSTR_E3M7` |
+| `HUSTR_E3M8` | macro | `progs/doomgeneric/d_englsh.h:166` | `#define HUSTR_E3M8` |
+| `HUSTR_E3M9` | macro | `progs/doomgeneric/d_englsh.h:167` | `#define HUSTR_E3M9` |
+| `HUSTR_E4M1` | macro | `progs/doomgeneric/d_englsh.h:169` | `#define HUSTR_E4M1` |
+| `HUSTR_E4M2` | macro | `progs/doomgeneric/d_englsh.h:170` | `#define HUSTR_E4M2` |
+| `HUSTR_E4M3` | macro | `progs/doomgeneric/d_englsh.h:171` | `#define HUSTR_E4M3` |
 | `HUSTR_E4M4` | macro | `progs/doomgeneric/d_englsh.h:172` | `#define HUSTR_E4M4` |
 | `HUSTR_E4M5` | macro | `progs/doomgeneric/d_englsh.h:173` | `#define HUSTR_E4M5` |
 | `HUSTR_E4M6` | macro | `progs/doomgeneric/d_englsh.h:174` | `#define HUSTR_E4M6` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_win.c:162` | `void DG_SleepMs(uint32_t ms)` |
 | `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_win.c:14` | `#define KEYQUEUE_SIZE` |
 | `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_win.c:59` | `static void addKeyToQueue(int pressed, unsigned char keyCode)` |
-| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_win.c:20` | `static unsigned char convertToDoomKey(unsigned char key)` |
-| `wndProc` | function | `progs/doomgeneric/doomgeneric_win.c:70` | `static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_xlib.c:127` | `void DG_DrawFrame()` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_xlib.c:187` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_xlib.c:177` | `uint32_t DG_GetTicksMs()` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric_xlib.c:79` | `void DG_Init()` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_xlib.c:208` | `void DG_SetWindowTitle(const char * title)` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_xlib.c:172` | `void DG_SleepMs(uint32_t ms)` |
-| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_xlib.c:21` | `#define KEYQUEUE_SIZE` |
-| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_xlib.c:68` | `static void addKeyToQueue(int pressed, unsigned int keyCode)` |
-| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_xlib.c:27` | `static unsigned char convertToDoomKey(unsigned int key)` |
-| `KEYP_0` | macro | `progs/doomgeneric/doomkeys.h:77` | `#define KEYP_0` |
-| `KEYP_1` | macro | `progs/doomgeneric/doomkeys.h:78` | `#define KEYP_1` |
-| `KEYP_2` | macro | `progs/doomgeneric/doomkeys.h:79` | `#define KEYP_2` |
-| `KEYP_3` | macro | `progs/doomgeneric/doomkeys.h:80` | `#define KEYP_3` |
-| `KEYP_4` | macro | `progs/doomgeneric/doomkeys.h:81` | `#define KEYP_4` |
-| `KEYP_5` | macro | `progs/doomgeneric/doomkeys.h:82` | `#define KEYP_5` |
-| `KEYP_6` | macro | `progs/doomgeneric/doomkeys.h:83` | `#define KEYP_6` |
-| `KEYP_7` | macro | `progs/doomgeneric/doomkeys.h:84` | `#define KEYP_7` |
-| `KEYP_8` | macro | `progs/doomgeneric/doomkeys.h:85` | `#define KEYP_8` |
-| `KEYP_9` | macro | `progs/doomgeneric/doomkeys.h:86` | `#define KEYP_9` |
-| `KEYP_DIVIDE` | macro | `progs/doomgeneric/doomkeys.h:88` | `#define KEYP_DIVIDE` |
-| `KEYP_ENTER` | macro | `progs/doomgeneric/doomkeys.h:94` | `#define KEYP_ENTER` |
-| `KEYP_EQUALS` | macro | `progs/doomgeneric/doomkeys.h:93` | `#define KEYP_EQUALS` |
-| `KEYP_MINUS` | macro | `progs/doomgeneric/doomkeys.h:90` | `#define KEYP_MINUS` |
-| `KEYP_MULTIPLY` | macro | `progs/doomgeneric/doomkeys.h:91` | `#define KEYP_MULTIPLY` |
-| `KEYP_PERIOD` | macro | `progs/doomgeneric/doomkeys.h:92` | `#define KEYP_PERIOD` |
-| `KEYP_PLUS` | macro | `progs/doomgeneric/doomkeys.h:89` | `#define KEYP_PLUS` |
-| `KEY_BACKSPACE` | macro | `progs/doomgeneric/doomkeys.h:51` | `#define KEY_BACKSPACE` |
-| `KEY_CAPSLOCK` | macro | `progs/doomgeneric/doomkeys.h:65` | `#define KEY_CAPSLOCK` |
-| `KEY_DEL` | macro | `progs/doomgeneric/doomkeys.h:75` | `#define KEY_DEL` |
-| `KEY_DOWNARROW` | macro | `progs/doomgeneric/doomkeys.h:30` | `#define KEY_DOWNARROW` |
-| `KEY_END` | macro | `progs/doomgeneric/doomkeys.h:71` | `#define KEY_END` |
-| `KEY_ENTER` | macro | `progs/doomgeneric/doomkeys.h:36` | `#define KEY_ENTER` |
-| `KEY_EQUALS` | macro | `progs/doomgeneric/doomkeys.h:54` | `#define KEY_EQUALS` |
-| `KEY_ESCAPE` | macro | `progs/doomgeneric/doomkeys.h:35` | `#define KEY_ESCAPE` |
-| `KEY_F1` | macro | `progs/doomgeneric/doomkeys.h:38` | `#define KEY_F1` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

@@ -1,8 +1,45 @@
-# Symbols (page 14 of 26)
+# Symbols (page 14 of 27)
 Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_win.c:20` | `static unsigned char convertToDoomKey(unsigned char key)` |
+| `wndProc` | function | `progs/doomgeneric/doomgeneric_win.c:70` | `static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_xlib.c:127` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_xlib.c:187` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_xlib.c:177` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_xlib.c:79` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_xlib.c:208` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_xlib.c:172` | `void DG_SleepMs(uint32_t ms)` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_xlib.c:21` | `#define KEYQUEUE_SIZE` |
+| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_xlib.c:68` | `static void addKeyToQueue(int pressed, unsigned int keyCode)` |
+| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_xlib.c:27` | `static unsigned char convertToDoomKey(unsigned int key)` |
+| `KEYP_0` | macro | `progs/doomgeneric/doomkeys.h:77` | `#define KEYP_0` |
+| `KEYP_1` | macro | `progs/doomgeneric/doomkeys.h:78` | `#define KEYP_1` |
+| `KEYP_2` | macro | `progs/doomgeneric/doomkeys.h:79` | `#define KEYP_2` |
+| `KEYP_3` | macro | `progs/doomgeneric/doomkeys.h:80` | `#define KEYP_3` |
+| `KEYP_4` | macro | `progs/doomgeneric/doomkeys.h:81` | `#define KEYP_4` |
+| `KEYP_5` | macro | `progs/doomgeneric/doomkeys.h:82` | `#define KEYP_5` |
+| `KEYP_6` | macro | `progs/doomgeneric/doomkeys.h:83` | `#define KEYP_6` |
+| `KEYP_7` | macro | `progs/doomgeneric/doomkeys.h:84` | `#define KEYP_7` |
+| `KEYP_8` | macro | `progs/doomgeneric/doomkeys.h:85` | `#define KEYP_8` |
+| `KEYP_9` | macro | `progs/doomgeneric/doomkeys.h:86` | `#define KEYP_9` |
+| `KEYP_DIVIDE` | macro | `progs/doomgeneric/doomkeys.h:88` | `#define KEYP_DIVIDE` |
+| `KEYP_ENTER` | macro | `progs/doomgeneric/doomkeys.h:94` | `#define KEYP_ENTER` |
+| `KEYP_EQUALS` | macro | `progs/doomgeneric/doomkeys.h:93` | `#define KEYP_EQUALS` |
+| `KEYP_MINUS` | macro | `progs/doomgeneric/doomkeys.h:90` | `#define KEYP_MINUS` |
+| `KEYP_MULTIPLY` | macro | `progs/doomgeneric/doomkeys.h:91` | `#define KEYP_MULTIPLY` |
+| `KEYP_PERIOD` | macro | `progs/doomgeneric/doomkeys.h:92` | `#define KEYP_PERIOD` |
+| `KEYP_PLUS` | macro | `progs/doomgeneric/doomkeys.h:89` | `#define KEYP_PLUS` |
+| `KEY_BACKSPACE` | macro | `progs/doomgeneric/doomkeys.h:51` | `#define KEY_BACKSPACE` |
+| `KEY_CAPSLOCK` | macro | `progs/doomgeneric/doomkeys.h:65` | `#define KEY_CAPSLOCK` |
+| `KEY_DEL` | macro | `progs/doomgeneric/doomkeys.h:75` | `#define KEY_DEL` |
+| `KEY_DOWNARROW` | macro | `progs/doomgeneric/doomkeys.h:30` | `#define KEY_DOWNARROW` |
+| `KEY_END` | macro | `progs/doomgeneric/doomkeys.h:71` | `#define KEY_END` |
+| `KEY_ENTER` | macro | `progs/doomgeneric/doomkeys.h:36` | `#define KEY_ENTER` |
+| `KEY_EQUALS` | macro | `progs/doomgeneric/doomkeys.h:54` | `#define KEY_EQUALS` |
+| `KEY_ESCAPE` | macro | `progs/doomgeneric/doomkeys.h:35` | `#define KEY_ESCAPE` |
+| `KEY_F1` | macro | `progs/doomgeneric/doomkeys.h:38` | `#define KEY_F1` |
 | `KEY_F10` | macro | `progs/doomgeneric/doomkeys.h:47` | `#define KEY_F10` |
 | `KEY_F11` | macro | `progs/doomgeneric/doomkeys.h:48` | `#define KEY_F11` |
 | `KEY_F12` | macro | `progs/doomgeneric/doomkeys.h:49` | `#define KEY_F12` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 | `sys_pcm2_write` | function | `progs/doomgeneric/i_minios_sound.c:41` | `static long sys_pcm2_write(const void *buf, long len)` |
 | `sys_time` | function | `progs/doomgeneric/i_minios_sound.c:35` | `static long sys_time(void)` |
 | `sys_tone_hw` | function | `progs/doomgeneric/i_minios_sound.c:32` | `static long sys_tone_hw(unsigned f)` |
-| `DRAW_PIXEL2` | macro | `progs/doomgeneric/i_scale.c:1099` | `#define DRAW_PIXEL2` |
-| `DRAW_PIXEL3` | macro | `progs/doomgeneric/i_scale.c:1194` | `#define DRAW_PIXEL3` |
-| `DRAW_PIXEL4` | macro | `progs/doomgeneric/i_scale.c:1276` | `#define DRAW_PIXEL4` |
-| `DRAW_PIXEL5` | macro | `progs/doomgeneric/i_scale.c:1387` | `#define DRAW_PIXEL5` |
-| `FindNearestColor` | function | `progs/doomgeneric/i_scale.c:295` | `static int FindNearestColor(byte *palette, int r, int g, int b)` |
-| `GenerateStretchTable` | function | `progs/doomgeneric/i_scale.c:332` | `static byte *GenerateStretchTable(byte *palette, int pct)` |
-| `I_InitScale` | function | `progs/doomgeneric/i_scale.c:61` | `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch)` |
-| `I_InitSquashTable` | function | `progs/doomgeneric/i_scale.c:387` | `static void I_InitSquashTable(byte *palette)` |
-| `I_InitStretchTables` | function | `progs/doomgeneric/i_scale.c:361` | `static void I_InitStretchTables(byte *palette)` |
-| `I_ResetScaleTables` | function | `progs/doomgeneric/i_scale.c:404` | `void I_ResetScaleTables(byte *palette)` |
-| `I_Scale1x` | function | `progs/doomgeneric/i_scale.c:75` | `static boolean I_Scale1x(int x1, int y1, int x2, int y2)` |
-| `I_Scale2x` | function | `progs/doomgeneric/i_scale.c:105` | `static boolean I_Scale2x(int x1, int y1, int x2, int y2)` |
-| `I_Scale3x` | function | `progs/doomgeneric/i_scale.c:146` | `static boolean I_Scale3x(int x1, int y1, int x2, int y2)` |
-| `I_Scale4x` | function | `progs/doomgeneric/i_scale.c:191` | `static boolean I_Scale4x(int x1, int y1, int x2, int y2)` |
-| `I_Scale5x` | function | `progs/doomgeneric/i_scale.c:240` | `static boolean I_Scale5x(int x1, int y1, int x2, int y2)` |
-| `I_Squash1x` | function | `progs/doomgeneric/i_scale.c:1061` | `static boolean I_Squash1x(int x1, int y1, int x2, int y2)` |
-| `I_Squash2x` | function | `progs/doomgeneric/i_scale.c:1160` | `static boolean I_Squash2x(int x1, int y1, int x2, int y2)` |
-| `I_Squash3x` | function | `progs/doomgeneric/i_scale.c:1243` | `static boolean I_Squash3x(int x1, int y1, int x2, int y2)` |
-| `I_Squash4x` | function | `progs/doomgeneric/i_scale.c:1354` | `static boolean I_Squash4x(int x1, int y1, int x2, int y2)` |
-| `I_Squash5x` | function | `progs/doomgeneric/i_scale.c:1419` | `static boolean I_Squash5x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch1x` | function | `progs/doomgeneric/i_scale.c:450` | `static boolean I_Stretch1x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch2x` | function | `progs/doomgeneric/i_scale.c:539` | `static boolean I_Stretch2x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch3x` | function | `progs/doomgeneric/i_scale.c:654` | `static boolean I_Stretch3x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch4x` | function | `progs/doomgeneric/i_scale.c:795` | `static boolean I_Stretch4x(int x1, int y1, int x2, int y2)` |
-| `I_Stretch5x` | function | `progs/doomgeneric/i_scale.c:942` | `static boolean I_Stretch5x(int x1, int y1, int x2, int y2)` |
-| `WriteBlendedLine1x` | function | `progs/doomgeneric/i_scale.c:434` | `static inline void WriteBlendedLine1x(byte *dest, byte *src1, byte *src2,                        ...` |
-| `WriteBlendedLine2x` | function | `progs/doomgeneric/i_scale.c:520` | `static inline void WriteBlendedLine2x(byte *dest, byte *src1, byte *src2,                        ...` |
-| `WriteBlendedLine3x` | function | `progs/doomgeneric/i_scale.c:634` | `static inline void WriteBlendedLine3x(byte *dest, byte *src1, byte *src2,                        ...` |
-| `WriteBlendedLine4x` | function | `progs/doomgeneric/i_scale.c:774` | `static inline void WriteBlendedLine4x(byte *dest, byte *src1, byte *src2,                        ...` |
-| `WriteLine2x` | function | `progs/doomgeneric/i_scale.c:507` | `static inline void WriteLine2x(byte *dest, byte *src)` |
-| `WriteLine3x` | function | `progs/doomgeneric/i_scale.c:620` | `static inline void WriteLine3x(byte *dest, byte *src)` |
-| `WriteLine4x` | function | `progs/doomgeneric/i_scale.c:759` | `static inline void WriteLine4x(byte *dest, byte *src)` |
-| `WriteLine5x` | function | `progs/doomgeneric/i_scale.c:924` | `static inline void WriteLine5x(byte *dest, byte *src)` |
-| `WriteSquashedLine1x` | function | `progs/doomgeneric/i_scale.c:1030` | `static inline void WriteSquashedLine1x(byte *dest, byte *src)` |
-| `WriteSquashedLine2x` | function | `progs/doomgeneric/i_scale.c:1102` | `static inline void WriteSquashedLine2x(byte *dest, byte *src)` |
-| `WriteSquashedLine3x` | function | `progs/doomgeneric/i_scale.c:1197` | `static inline void WriteSquashedLine3x(byte *dest, byte *src)` |
-| `WriteSquashedLine4x` | function | `progs/doomgeneric/i_scale.c:1279` | `static inline void WriteSquashedLine4x(byte *dest, byte *src)` |
 
 Next: [SYMBOLS_p15.md](SYMBOLS_p15.md)

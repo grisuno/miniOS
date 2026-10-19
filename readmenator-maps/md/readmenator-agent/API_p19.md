@@ -1,6 +1,38 @@
 # API (page 19 of 21)
 Previous: [API_p18.md](API_p18.md)
 
+## progs/src/lzss.c
+- `malloc` (function) `progs/src/lzss.c:13` `void *malloc();`
+- `free` (function) `progs/src/lzss.c:14` `void free();`
+- `printf` (function) `progs/src/lzss.c:15` `int printf();`
+- `strcmp` (function) `progs/src/lzss.c:16` `int strcmp();`
+- `strlen` (function) `progs/src/lzss.c:17` `int strlen();`
+- `fopen` (function) `progs/src/lzss.c:18` `void *fopen();`
+- `fclose` (function) `progs/src/lzss.c:19` `int fclose();`
+- `fread` (function) `progs/src/lzss.c:20` `int fread();`
+- `fwrite` (function) `progs/src/lzss.c:21` `int fwrite();`
+- `fseek` (function) `progs/src/lzss.c:22` `int fseek();`
+- `ftell` (function) `progs/src/lzss.c:23` `int ftell();`
+- `rewind` (function) `progs/src/lzss.c:24` `void rewind();`
+- `lz_in_getc` (function) `progs/src/lzss.c:64` `static int lz_in_getc(void)`
+- `lz_out_put` (function) `progs/src/lzss.c:69` `static void lz_out_put(int c)`
+- `lz_putbit1` (function) `progs/src/lzss.c:74` `static void lz_putbit1(void)`
+- `lz_putbit0` (function) `progs/src/lzss.c:84` `static void lz_putbit0(void)`
+- `lz_flush_bits` (function) `progs/src/lzss.c:93` `static void lz_flush_bits(void)`
+- `lz_out_literal` (function) `progs/src/lzss.c:97` `static void lz_out_literal(int c)`
+- `lz_out_pair` (function) `progs/src/lzss.c:105` `static void lz_out_pair(int x, int y)`
+- `lz_encode` (function) `progs/src/lzss.c:118` `static int lz_encode(void)`
+- `lz_getbit` (function) `progs/src/lzss.c:173` `static int lz_getbit(int n)`
+- `lz_decode` (function) `progs/src/lzss.c:189` `static int lz_decode(void)`
+- `lz_hdr_put` (function) `progs/src/lzss.c:218` `static void lz_hdr_put(char *h, int size)`
+- `lz_hdr_get` (function) `progs/src/lzss.c:229` `static int lz_hdr_get(char *h)`
+- `lz_has` (function) `progs/src/lzss.c:237` `static int lz_has(const char *s, const char *needle)`
+- `lz_read_all` (function) `progs/src/lzss.c:251` `static char *lz_read_all(const char *name, int *len)`
+- `lz_write_all` (function) `progs/src/lzss.c:268` `static int lz_write_all(const char *name, char *data, int len)`
+- `lz_compress` (function) `progs/src/lzss.c:278` `static int lz_compress(const char *src, const char *dst)`
+- `lz_decompress` (function) `progs/src/lzss.c:325` `static int lz_decompress(const char *src, const char *dst)`
+- `main` (function) `progs/src/lzss.c:397` `int main(int argc, char **argv)`
+
 ## progs/src/mmreuse.c
 - `ENOMEM` (function) `progs/src/mmreuse.c:3` `* downward mmap cursor drains until a map fails with ENOMEM (-12);`
 - `mmap_anon` (function) `progs/src/mmreuse.c:7` `static long mmap_anon(long len)` -- mmap/munmap reclaim stress test.

@@ -1,10 +1,10 @@
 # miniOS API Reference
 
-> Generated offline by readmenator: 504 modules, 10237 documented entities, documentation coverage 29.0% (2714/9355 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
+> Generated offline by readmenator: 508 modules, 10310 documented entities, documentation coverage 29.2% (2749/9415 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
 
 Navigate: [Interactive architecture and flows](flows.html) | [Architecture and flows (Mermaid)](architecture.md) | [Class hierarchy](classes.md) | [General index](genindex.md) | [Coverage and warnings](COVERAGE.md) | [`api/index.json`](api/index.json) | [HTML browser](index.html)
 
-Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
+Languages: S (7), c (237), h (194), py (48), s (12), sh (10)
 
 ## Modules
 
@@ -68,7 +68,7 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 | [`fs/ext4.c`](modules/fs.ext4.c.md) | ================================================================ | 2 | 22 | 20.0% |
 | [`fs/fat32.c`](modules/fs.fat32.c.md) | ================================================================ | 1 | 16 | 33.3% |
 | [`fs/fsimg.c`](modules/fs.fsimg.c.md) | ================================================================ | 0 | 4 | 100.0% |
-| [`fs/kfile.c`](modules/fs.kfile.c.md) | ================================================================ | 0 | 25 | 30.8% |
+| [`fs/kfile.c`](modules/fs.kfile.c.md) | ================================================================ | 0 | 26 | 33.3% |
 | [`fs/minifs.c`](modules/fs.minifs.c.md) | MiniFS: minimal Unix-like filesystem for MiniOS. | 0 | 46 | 23.4% |
 | [`fs/pcache.c`](modules/fs.pcache.c.md) | Docstring: fs/pcache.c -- page cache store for MiniFS (T5 slice 1). | 1 | 14 | 87.5% |
 | [`fs/ramdisk.c`](modules/fs.ramdisk.c.md) | ================================================================ | 1 | 23 | 12.0% |
@@ -95,7 +95,7 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 | [`headers/futex.h`](modules/headers.futex.h.md) | Docstring: futex.h -- Fast userspace mutex sleep/wake contract. | 1 | 26 | 21.4% |
 | [`headers/httpd.h`](modules/headers.httpd.h.md) | Docstring: httpd.h -- Minimal static HTTP/1.0 server contract. | 0 | 9 | 30.0% |
 | [`headers/ide.h`](modules/headers.ide.h.md) | IDE/ATA PIO driver for MiniOS. | 0 | 34 | 77.1% |
-| [`headers/kernel.h`](modules/headers.kernel.h.md) | The user-window memory layout (load base, stack, brk cap, graphics | 19 | 365 | 19.7% |
+| [`headers/kernel.h`](modules/headers.kernel.h.md) | The user-window memory layout (load base, stack, brk cap, graphics | 19 | 366 | 20.5% |
 | [`headers/ktime.h`](modules/headers.ktime.h.md) | ktime.h -- pure time-conversion helpers shared by the kernel clock | 0 | 2 | 66.7% |
 | [`headers/ldso.h`](modules/headers.ldso.h.md) | Docstring: headers/ldso.h -- minimal dynamic-linking (T8 ld.so) contract. | 3 | 41 | 24.4% |
 | [`headers/leakcheck.h`](modules/headers.leakcheck.h.md) | Docstring: allocation tracker for MiniOS, STB leakcheck lineage. | 2 | 21 | 54.2% |
@@ -119,6 +119,7 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 | [`headers/sb16.h`](modules/headers.sb16.h.md) | Sound Blaster 16 DMA audio driver contract. | 2 | 25 | 35.7% |
 | [`headers/sched.h`](modules/headers.sched.h.md) |  | 6 | 133 | 29.3% |
 | [`headers/seccomp_bpf.h`](modules/headers.seccomp_bpf.h.md) | Docstring: seccomp_bpf.h -- classic BPF checker and interpreter for | 2 | 55 | 13.8% |
+| [`headers/select_map.h`](modules/headers.select_map.h.md) | Docstring: select_map.h -- fd_set <-> pollfd translation for select(2). | 1 | 14 | 37.5% |
 | [`headers/shell.h`](modules/headers.shell.h.md) | shell.h -- shared shell constants and the line reader/parser reused by | 0 | 7 | 75.0% |
 | [`headers/sign.h`](modules/headers.sign.h.md) | Docstring: sign.h -- MiniOS binary signing contract. | 1 | 12 | 21.4% |
 | [`headers/smp.h`](modules/headers.smp.h.md) | SMP bring-up: wake the application processors (APs) via the LAPIC INIT/SIPI | 0 | 4 | 60.0% |
@@ -223,7 +224,7 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 | [`kernel/string.c`](modules/kernel.string.c.md) | string.c -- Kernel string and memory functions. | 0 | 13 | 14.3% |
 | [`kernel/symtab.c`](modules/kernel.symtab.c.md) | ================================================================ | 0 | 7 | 12.5% |
 | [`kernel/sync.c`](modules/kernel.sync.c.md) | sync.c -- Blocking synchronization primitives (roadmap Phase 3.1). | 0 | 22 | 4.3% |
-| [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | 5 | 107 | 16.8% |
+| [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | syscalls.c - Linux x86-64 syscall dispatcher and SYS_SPAWN. | 5 | 117 | 17.9% |
 | [`kernel/syscalls_proc.c`](modules/kernel.syscalls_proc.c.md) | syscalls_proc.c - Process-management syscall handlers. | 0 | 24 | 28.0% |
 | [`kernel/tick.c`](modules/kernel.tick.c.md) | Docstring: Tick listener bus implementation. | 1 | 10 | 100.0% |
 | [`kernel/time.c`](modules/kernel.time.c.md) | ================================================================ | 0 | 2 | 100.0% |
@@ -265,7 +266,7 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 
 | Module | Summary | Types | Callables | Coverage |
 |---|---|---|---|---|
-| [`progs/minios_abi.h`](modules/progs.minios_abi.h.md) | minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI. | 0 | 153 | 20.1% |
+| [`progs/minios_abi.h`](modules/progs.minios_abi.h.md) | minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI. | 0 | 153 | 20.8% |
 | [`progs/minios_png.h`](modules/progs.minios_png.h.md) | Docstring: shared ring-3 PNG helpers for MiniOS apps (progs/minios_png.h). | 0 | 20 | 52.4% |
 | [`progs/nk_palette.h`](modules/progs.nk_palette.h.md) | nk_palette.h - one shared hybrid palette for every NK-window app. | 0 | 8 | 11.1% |
 
@@ -518,7 +519,7 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 |---|---|---|---|---|
 | [`progs.micropython.variants.minios.manifest`](modules/progs.micropython.variants.minios.manifest.py.md) | manifest.py -- frozen modules for the MiniOS MicroPython variant. | 0 | 0 | 100.0% |
 | [`progs/micropython/variants/minios/minios_module.c`](modules/progs.micropython.variants.minios.minios_module.c.md) |  | 0 | 8 | 11.1% |
-| [`progs/micropython/variants/minios/mpconfigvariant.h`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md) |  | 0 | 38 | 38.5% |
+| [`progs/micropython/variants/minios/mpconfigvariant.h`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md) |  | 0 | 46 | 40.4% |
 
 ### `progs/micropython/variants/minios/lib`
 
@@ -526,6 +527,7 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 |---|---|---|---|---|
 | [`progs.micropython.variants.minios.lib`](modules/progs.micropython.variants.minios.lib.__init__.py.md) | MiniOS frozen library package. | 0 | 0 | 100.0% |
 | [`progs.micropython.variants.minios.lib.hello`](modules/progs.micropython.variants.minios.lib.hello.py.md) | hello.py -- frozen demo: runs at import time as a smoke test. | 0 | 0 | 100.0% |
+| [`progs.micropython.variants.minios.lib.mip`](modules/progs.micropython.variants.minios.lib.mip.py.md) | mip.py -- MiniOS package installer (frozen module). | 0 | 11 | 100.0% |
 
 ### `progs/minicraft`
 
@@ -608,6 +610,7 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 | [`progs/src/lxnet.c`](modules/progs.src.lxnet.c.md) |  | 0 | 8 | 11.1% |
 | [`progs/src/lxproc.c`](modules/progs.src.lxproc.c.md) |  | 1 | 6 | 50.0% |
 | [`progs/src/lxsecc.c`](modules/progs.src.lxsecc.c.md) |  | 0 | 15 | 6.2% |
+| [`progs/src/lxsel.c`](modules/progs.src.lxsel.c.md) | lxsel.c -- select(2)/pselect6(2) ABI probe (docs/spec/python.md). | 0 | 7 | 25.0% |
 | [`progs/src/lxtls.c`](modules/progs.src.lxtls.c.md) | lxtls.c - libcurl/OpenSSL fetch probe (FreeDom readiness step 6, | 0 | 6 | 14.3% |
 | [`progs/src/lz4.c`](modules/progs.src.lz4.c.md) | lz4.c - command path LZ4 (de)compression tools: lz4 and unlz4. | 0 | 21 | 4.5% |
 | [`progs/src/lzss.c`](modules/progs.src.lzss.c.md) | lzss.c - command path LZSS (de)compression tools: lzss and unlzss. | 0 | 31 | 3.1% |
@@ -692,9 +695,10 @@ Languages: S (7), c (236), h (193), py (46), s (12), sh (10)
 | [`tools.minios_cli`](modules/tools.minios_cli.py.md) | minios_cli.py — drive MiniOS through the MCP bridge, not by hand. | 1 | 5 | 14.3% |
 | [`tools.minios_gui`](modules/tools.minios_gui.py.md) | minios_gui.py — inject VGA-mode input and capture the framebuffer. | 1 | 7 | 11.1% |
 | [`tools.minios_hyper`](modules/tools.minios_hyper.py.md) | minios_hyper.py -- host-side ring-minus-one debugger for MiniOS. | 7 | 37 | 66.7% |
+| [`tools.mkcpyzip`](modules/tools.mkcpyzip.py.md) | mkcpyzip.py -- pack a CPython Lib tree into a zipimport stdlib. | 0 | 2 | 66.7% |
 | [`tools.mkfs.minifs`](modules/tools.mkfs.minifs.py.md) | mkfs.minifs.py - Create a MiniFS filesystem image for MiniOS. | 1 | 21 | 17.4% |
 | [`tools.mkpak1`](modules/tools.mkpak1.py.md) | Build baseq2/pak1.pak carrying the player model. | 0 | 1 | 50.0% |
-| [`tools.mkramdisk`](modules/tools.mkramdisk.py.md) | Build a MiniOS ramdisk image from files in a directory tree. | 0 | 2 | 33.3% |
+| [`tools.mkramdisk`](modules/tools.mkramdisk.py.md) | Build a MiniOS ramdisk image from files in a directory tree. | 0 | 3 | 50.0% |
 | [`tools/mkroots.sh`](modules/tools.mkroots.sh.md) | mkroots.sh - regenerate tls_roots.h from the DER files in tls_roots_src/. | 0 | 0 | 100.0% |
 | [`tools.mkvocab`](modules/tools.mkvocab.py.md) | Build progs/topogpt3/vocab.bin from the GPT-2 encoder.json. | 0 | 2 | 100.0% |
 | [`tools/mutate.sh`](modules/tools.mutate.sh.md) | Mutation testing for MiniOS. | 0 | 5 | 33.3% |

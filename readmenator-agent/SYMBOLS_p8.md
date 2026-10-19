@@ -1,8 +1,26 @@
-# Symbols (page 8 of 26)
+# Symbols (page 8 of 27)
 Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `tables` | function | `kernel.c:275` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
+| `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
+| `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
+| `abi_verify` | function | `kernel/abi.c:38` | `int abi_verify(const char *text, long version, unsigned long checksum)` |
+| `batch_exec` | function | `kernel/batch.c:19` | `long batch_exec(const batch_op_t *ops, long *results, int count,                 int *completed, ...` |
+| `CLIP_MAX` | macro | `kernel/clip.c:17` | `#define CLIP_MAX` |
+| `clip_clear` | function | `kernel/clip.c:48` | `void clip_clear(void)` |
+| `clip_len_get` | function | `kernel/clip.c:55` | `int clip_len_get(void)` |
+| `clip_set` | function | `kernel/clip.c:25` | `int clip_set(const char *data, unsigned long len)` |
+| `REDIR_INITIAL_CAP` | macro | `kernel/console.c:96` | `#define REDIR_INITIAL_CAP` |
+| `REDIR_MAX_BYTES` | macro | `kernel/console.c:97` | `#define REDIR_MAX_BYTES` |
+| `XXH_STATIC_LINKING_ONLY` | macro | `kernel/console.c:4` | `#define XXH_STATIC_LINKING_ONLY` |
+| `redir_grow` | function | `kernel/console.c:110` | `static int redir_grow(void)` |
+| `redirect_active` | function | `kernel/console.c:120` | `int redirect_active(void)` |
+| `redirect_begin` | function | `kernel/console.c:139` | `int redirect_begin(void)` |
+| `redirect_commit` | function | `kernel/console.c:147` | `int redirect_commit(const char *path, int append_mode)` |
+| `redirect_discard` | function | `kernel/console.c:216` | `void redirect_discard(void)` |
+| `redirect_pending` | function | `kernel/console.c:185` | `unsigned long redirect_pending(void)` |
 | `redirect_putc` | function | `kernel/console.c:122` | `static int redirect_putc(char c)` |
 | `redirect_resume` | function | `kernel/console.c:135` | `void redirect_resume(int was)` |
 | `redirect_suspend` | function | `kernel/console.c:129` | `int redirect_suspend(void)` |
@@ -478,23 +496,5 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `context` | function | `kernel/sched.c:888` | `* context (anything entered via k_exec_user) is inside a syscall  * (entry swapped 0 in), and a c...` |
 | `copy` | function | `kernel/sched.c:362` | `* copy (fail closed, fork refuses) instead of forging pointers. */ /* Name the link a fork could ...` |
 | `ctx_from_frame` | function | `kernel/sched.c:2537` | `static void ctx_from_frame(ctx_regs_t *c, const syscall_frame_t *f)` |
-| `descriptor` | function | `kernel/sched.c:97` | `* descriptor (two slots) per CPU past the 5 stage-2 entries. */ _Static_assert((5 + 2 * MAX_CPUS) * 8 ==...` |
-| `do_clone_thread` | function | `kernel/sched.c:2724` | `static long do_clone_thread(unsigned long flags, unsigned long newsp,                            ...` |
-| `do_execve` | function | `kernel/sched.c:2926` | `long do_execve(char *kpath, int kargc, char **kargv)` |
-| `do_exit` | function | `kernel/sched.c:2250` | `void do_exit(int code)` |
-| `do_fork` | function | `kernel/sched.c:2564` | `long do_fork(void)` |
-| `do_fork_ex` | function | `kernel/sched.c:2577` | `long do_fork_ex(uint64_t set_tid, uint64_t clear_tid)` |
-| `do_group_exit` | function | `kernel/sched.c:2859` | `void do_group_exit(int code)` |
-| `do_kill` | function | `kernel/sched.c:3324` | `int do_kill(int pid)` |
-| `do_kill_code` | function | `kernel/sched.c:3330` | `int do_kill_code(int pid, int code)` |
-| `do_thread_spawn` | function | `kernel/sched.c:2314` | `long do_thread_spawn(unsigned long fn, unsigned long stack,                      unsigned long arg)` |
-| `do_waitpid` | function | `kernel/sched.c:3224` | `int do_waitpid(int pid)` |
-| `do_waitpid_linux` | function | `kernel/sched.c:3255` | `int do_waitpid_linux(int pid, int nohang, int *found)` |
-| `exec_enter` | function | `kernel/sched.c:72` | `extern void exec_enter(unsigned long frame);` |
-| `fork_child_settid` | function | `kernel/sched.c:2555` | `void fork_child_settid(void)` |
-| `fork_report` | function | `kernel/sched.c:2570` | `static void fork_report(const char *what)` |
-| `fork_trampoline` | function | `kernel/sched.c:67` | `extern void fork_trampoline(void);` |
-| `fpu_alloc_clean` | function | `kernel/sched.c:318` | `static void *fpu_alloc_clean(void)` |
-| `fpu_free_proc` | function | `kernel/sched.c:336` | `static void fpu_free_proc(proc_t *p)` |
 
 Next: [SYMBOLS_p9.md](SYMBOLS_p9.md)

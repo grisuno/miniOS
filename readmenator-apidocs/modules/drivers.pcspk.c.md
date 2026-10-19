@@ -47,7 +47,7 @@ void pcspk_init(void)
 
 ========== PC speaker ==========
 
-> **Inherited:** Documentation from [`pcspk_init`](#pcspk_init) (headers/kernel.h:905).
+> **Inherited:** Documentation from [`pcspk_init`](#pcspk_init) (headers/kernel.h:921).
 
 *Calls:* [`device_register`](headers.driver.h.md#device_register), [`inb`](headers.kernel.h.md#inb), [`outb`](headers.kernel.h.md#outb)
 

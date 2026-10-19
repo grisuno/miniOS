@@ -360,6 +360,56 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `kernel/string.c`, `progs/minios_png.h`
 
+## tests/test_mip.py
+- Doc: host test for the frozen MicroPython installer (make test-mip).
+- Layer: testing
+- Language: py
+- Symbols:
+  - `load_mip` (function, line 36) `def load_mip()`
+  - `MipPureTests` (class, line 44) `class MipPureTests(TestCase)`
+  - `_Handler` (class, line 212) `class _Handler(BaseHTTPRequestHandler)`
+  - `MipLiveTests` (class, line 242) `class MipLiveTests(TestCase)`
+  - `setUpClass` (method, line 48) `def setUpClass(cls)`
+  - `test_split_url_default_port` (method, line 51) `def test_split_url_default_port(self)`
+  - `test_split_url_explicit_port_and_query` (method, line 57) `def test_split_url_explicit_port_and_query(self)`
+  - `test_split_url_path_defaults_to_root` (method, line 63) `def test_split_url_path_defaults_to_root(self)`
+  - `test_split_url_refuses_https` (method, line 66) `def test_split_url_refuses_https(self)`
+  - `test_split_https_url_default_port` (method, line 70) `def test_split_https_url_default_port(self)`
+  - `test_split_https_url_explicit_port` (method, line 76) `def test_split_https_url_explicit_port(self)`
+  - `test_split_https_url_refuses_plain_http` (method, line 82) `def test_split_https_url_refuses_plain_http(self)`
+  - `test_parse_url_reports_scheme` (method, line 86) `def test_parse_url_reports_scheme(self)`
+  - `test_split_url_refuses_other_schemes` (method, line 96) `def test_split_url_refuses_other_schemes(self)`
+  - `test_split_url_refuses_bad_authority` (method, line 101) `def test_split_url_refuses_bad_authority(self)`
+  - `test_split_url_refuses_control_chars` (method, line 107) `def test_split_url_refuses_control_chars(self)`
+  - `test_module_name_accepts_plain_module` (method, line 112) `def test_module_name_accepts_plain_module(self)`
+  - `test_module_name_strips_query` (method, line 116) `def test_module_name_strips_query(self)`
+  - `test_module_name_refuses_unsafe_names` (method, line 119) `def test_module_name_refuses_unsafe_names(self)`
+  - `test_parse_response_crlf` (method, line 135) `def test_parse_response_crlf(self)`
+  - `test_parse_response_bare_lf` (method, line 144) `def test_parse_response_bare_lf(self)`
+  - `test_parse_response_rejects_garbage` (method, line 151) `def test_parse_response_rejects_garbage(self)`
+  - `test_parse_response_rejects_content_length_mismatch` (method, line 157) `def test_parse_response_rejects_content_length_mismatch(self)`
+  - `test_parse_response_refuses_chunked` (method, line 167) `def test_parse_response_refuses_chunked(self)`
+  - `test_https_get_needs_minios_on_host` (method, line 173) `def test_https_get_needs_minios_on_host(self)`
+  - `test_absolute_url_resolves_path_location` (method, line 177) `def test_absolute_url_resolves_path_location(self)`
+  - `test_absolute_url_keeps_absolute_location` (method, line 187) `def test_absolute_url_keeps_absolute_location(self)`
+  - `test_absolute_url_keeps_base_scheme` (method, line 197) `def test_absolute_url_keeps_base_scheme(self)`
+  - `test_absolute_url_refuses_relative_location` (method, line 207) `def test_absolute_url_refuses_relative_location(self)`
+  - `log_message` (method, line 217) `def log_message(self, fmt)`
+  - `do_GET` (method, line 220) `def do_GET(self)`
+  - `setUpClass` (method, line 246) `def setUpClass(cls)`
+  - `tearDownClass` (method, line 261) `def tearDownClass(cls)`
+  - `setUp` (method, line 266) `def setUp(self)`
+  - `run_in_elf` (method, line 270) `def run_in_elf(self, code)`
+  - `combined` (method, line 277) `def combined(self, proc)`
+  - `test_install_plain_and_load` (method, line 280) `def test_install_plain_and_load(self)`
+  - `test_install_follows_redirect` (method, line 290) `def test_install_follows_redirect(self)`
+  - `test_install_404_fails` (method, line 300) `def test_install_404_fails(self)`
+  - `test_install_https_needs_minios` (method, line 308) `def test_install_https_needs_minios(self)`
+  - `test_install_refuses_chunked` (method, line 319) `def test_install_refuses_chunked(self)`
+  - `test_install_refuses_traversal_name` (method, line 327) `def test_install_refuses_traversal_name(self)`
+  - `test_install_twice_succeeds` (method, line 334) `def test_install_twice_succeeds(self)`
+  - `test_cli_install` (method, line 344) `def test_cli_install(self)`
+
 ## tests/test_modifiers.c
 - Doc: Docstring: Designated initializers, so adding a member cannot silently
 - Layer: testing
@@ -433,55 +483,6 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `main` (function, line 43) `int main(void)`
   - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
 - Depends on: `fs/pcache.c`, `headers/pcache.h`, `kernel/string.c`
-
-## tests/test_pci.c
-- Doc: Docstring: Host test for headers/drivers/pci.h (make test-pci).
-- Layer: testing
-- Language: c
-- Symbols:
-  - `fake_outl` (function, line 39) `static void fake_outl(unsigned short port, unsigned val)`
-  - `fake_inl` (function, line 60) `static unsigned fake_inl(unsigned short port)`
-  - `set_dev` (function, line 73) `static void set_dev(unsigned bus, unsigned dev, unsigned func,
-                    unsigned id, u...`
-  - `main` (function, line 79) `int main(void)`
-  - `CHECK` (macro, line 26) `#define CHECK(cond, msg)`
-  - `FAKE_BUSES` (macro, line 33) `#define FAKE_BUSES`
-  - `FAKE_REGS` (macro, line 34) `#define FAKE_REGS`
-- Depends on: `headers/drivers/pci.h`
-
-## tests/test_pcm.c
-- Doc: Host-side unit test for the PCM ring buffer (headers/pcm_ring.h).
-- Layer: testing
-- Language: c
-- Symbols:
-  - `t_roundtrip` (function, line 28) `static void t_roundtrip(void)`
-  - `t_wrap` (function, line 44) `static void t_wrap(void)`
-  - `t_overrun` (function, line 61) `static void t_overrun(void)`
-  - `t_underrun` (function, line 75) `static void t_underrun(void)`
-  - `t_zero_cap` (function, line 91) `static void t_zero_cap(void)`
-  - `lcg_next` (function, line 104) `static unsigned lcg_next(void)`
-  - `t_model` (function, line 109) `static void t_model(void)`
-  - `main` (function, line 144) `int main(void)`
-  - `CHECK` (macro, line 21) `#define CHECK(cond, msg)`
-- Depends on: `headers/pcm_ring.h`, `kernel/string.c`
-
-## tests/test_percpu_rq.c
-- Doc: Docstring: Host test for kernel/percpu_rq.c (make test-percpu-rq).
-- Layer: testing
-- Language: c
-- Symbols:
-  - `main` (function, line 24) `int main(void)`
-  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
-- Depends on: `headers/percpu_rq.h`
-
-## tests/test_pipe.c
-- Doc: Docstring: Host test for headers/pipe.h (make test-pipe).
-- Layer: testing
-- Language: c
-- Symbols:
-  - `main` (function, line 23) `int main(void)`
-  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
-- Depends on: `headers/pipe.h`
 
 
 Next: [KB_tests_p2.md](KB_tests_p2.md)

@@ -15,6 +15,7 @@
  * inline assembly.
  */
 #define _GNU_SOURCE
+#include <dirent.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
@@ -614,6 +615,142 @@ static void check_fatal_signals(void) {
     report("kill-sigterm-status", killed, "SIGTERM not reported through WTERMSIG");
 }
 
+/* stat(2) must fill st_mode at the Linux x86-64 offset: S_ISREG for
+ * files (MiniFS and the ramdisk) and S_ISDIR for directories, with the
+ * size next to it. MicroPython's filesystem import (vfs_posix) trusts
+ * exactly this bit through newfstatat, so a wrong offset makes every
+ * `import` of an installed .py fail "no module named", and every
+ * mode-driven decision in glibc (realpath, file type probes) sees plain
+ * files as untyped. */
+static void check_stat_modes(void) {
+    struct stat st;
+    int rc = stat("/etc/resolv.conf", &st);
+    report("stat-minifs-file-mode", rc == 0 && S_ISREG(st.st_mode),
+           rc != 0 ? strerror(errno) : "not S_IFREG");
+    rc = stat("/src/test_all.sh", &st);
+    report("stat-ramdisk-file-mode", rc == 0 && S_ISREG(st.st_mode),
+           rc != 0 ? strerror(errno) : "not S_IFREG");
+    rc = stat("/etc", &st);
+    report("stat-dir-mode", rc == 0 && S_ISDIR(st.st_mode),
+           rc != 0 ? strerror(errno) : "not S_IFDIR");
+    rc = stat("/etc/resolv.conf", &st);
+    report("stat-size", rc == 0 && st.st_size > 0, "size not positive");
+}
+
+/* Every process runs as root (uid/gid 0); glibc and CPython's startup
+ * read these, and -ENOSYS made them answer (uid_t)-1. */
+static void check_uid_gid(void) {
+    report("uid-gid-root", getuid() == 0 && geteuid() == 0 &&
+           getgid() == 0 && getegid() == 0, "not all ids are 0");
+}
+
+/* rmdir (84): removes an empty directory, refuses to remove one with
+ * contents (pip's tempdir cleanup is the main caller). */
+static void check_rmdir(void) {
+    int rc;
+    if (mkdir("/tmp/lxabi_rmdir", 0755) != 0) {
+        report("rmdir-empty", 0, strerror(errno));
+        report("rmdir-notempty", 0, "mkdir failed");
+        report("rmdir-missing", 0, "mkdir failed");
+        return;
+    }
+    rc = rmdir("/tmp/lxabi_rmdir");
+    report("rmdir-empty", rc == 0 && access("/tmp/lxabi_rmdir", F_OK) != 0,
+           "empty rmdir failed");
+    if (mkdir("/tmp/lxabi_rmdir", 0755) != 0) {
+        report("rmdir-notempty", 0, strerror(errno));
+    } else {
+        int fd = open("/tmp/lxabi_rmdir/keep", O_WRONLY | O_CREAT, 0644);
+        if (fd >= 0) close(fd);
+        errno = 0;
+        rc = rmdir("/tmp/lxabi_rmdir");
+        report("rmdir-notempty", rc == -1 && (errno == ENOTEMPTY || errno == EEXIST),
+               "non-empty rmdir not refused");
+        unlink("/tmp/lxabi_rmdir/keep");
+        rmdir("/tmp/lxabi_rmdir");
+    }
+    errno = 0;
+    rc = rmdir("/tmp/lxabi_rmdir_absent");
+    report("rmdir-missing", rc == -1 && errno == ENOENT, "missing rmdir not ENOENT");
+}
+
+/* getdents64 (217): a directory fd enumerates MiniFS entries with the
+ * right d_type and resumes across calls; a regular file fd answers
+ * ENOTDIR. CPython's os.scandir/FileFinder ride exactly this. */
+static void copy_dentry_name(char *dst, size_t cap, const char *src) {
+    size_t len = strlen(src);
+    if (len > cap - 1) len = cap - 1;
+    memcpy(dst, src, len);
+    dst[len] = 0;
+}
+
+static void check_getdents64(void) {
+    struct dirent64 *d;
+    char buf[512];
+    char first[64] = { 0 };
+    int fd, found, err;
+    fd = open("/etc", O_RDONLY | O_DIRECTORY);
+    if (fd < 0) {
+        report("getdents64-entries", 0, strerror(errno));
+        report("getdents64-resume", 0, "open /etc failed");
+        report("getdents64-enotdir", 0, "open /etc failed");
+        return;
+    }
+    found = 0;
+    err = 0;
+    for (int round = 0; round < 32; round++) {
+        long n = syscall(SYS_getdents64, fd, buf, (long)sizeof(buf));
+        long off;
+        if (n < 0) { err = errno; break; }
+        if (n == 0) break;
+        for (off = 0; off < n; ) {
+            d = (struct dirent64 *)(buf + off);
+            if (d->d_reclen == 0 || off + d->d_reclen > n) { err = EIO; break; }
+            if (strcmp(d->d_name, "resolv.conf") == 0) {
+                found = (d->d_type == DT_REG) ? 1 : -1;
+            }
+            off += d->d_reclen;
+        }
+        if (err) break;
+    }
+    report("getdents64-entries", found == 1 && err == 0,
+           err ? strerror(err) : (found < 0 ? "resolv.conf d_type wrong" : "resolv.conf not listed"));
+    close(fd);
+
+    /* Resume: a one-entry buffer must not repeat the first entry on the
+     * next call. */
+    fd = open("/etc", O_RDONLY | O_DIRECTORY);
+    if (fd < 0) {
+        report("getdents64-resume", 0, strerror(errno));
+    } else {
+        char second[64] = { 0 };
+        long n1 = syscall(SYS_getdents64, fd, buf, 64L);
+        long n2 = 0;
+        if (n1 > 0) {
+            d = (struct dirent64 *)buf;
+            copy_dentry_name(first, sizeof(first), d->d_name);
+            n2 = syscall(SYS_getdents64, fd, buf, (long)sizeof(buf));
+            if (n2 > 0) {
+                d = (struct dirent64 *)buf;
+                copy_dentry_name(second, sizeof(second), d->d_name);
+            }
+        }
+        report("getdents64-resume", n1 > 0 && n2 > 0 && strcmp(first, second) != 0,
+               "second call repeated the first entry");
+        close(fd);
+    }
+
+    fd = open("/etc/resolv.conf", O_RDONLY);
+    if (fd < 0) {
+        report("getdents64-enotdir", 0, strerror(errno));
+    } else {
+        errno = 0;
+        long n = syscall(SYS_getdents64, fd, buf, (long)sizeof(buf));
+        report("getdents64-enotdir", n == -1 && errno == ENOTDIR, "file fd not ENOTDIR");
+        close(fd);
+    }
+}
+
 int main(void) {
     main_pid = getpid();
     check_time();
@@ -628,6 +765,10 @@ int main(void) {
     check_eventfd();
     check_close_range();
     check_mkdir();
+    check_stat_modes();
+    check_uid_gid();
+    check_rmdir();
+    check_getdents64();
     check_threads();
     check_condvar();
     check_detached_reaped();

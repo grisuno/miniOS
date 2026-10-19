@@ -386,10 +386,10 @@ Depends on: `kernel/time.c`
 - `main` (function) `tools/boot_wl.py:226` `def main()`
 
 ## tools/check_abi_numbers.py
-- `normalize` (function) `tools/check_abi_numbers.py:131` `def normalize(minios_name)`
-- `parse_abi` (function) `tools/check_abi_numbers.py:135` `def parse_abi(path)`
-- `parse_dispatch` (function) `tools/check_abi_numbers.py:146` `def parse_dispatch(path)`
-- `main` (function) `tools/check_abi_numbers.py:159` `def main()`
+- `normalize` (function) `tools/check_abi_numbers.py:130` `def normalize(minios_name)`
+- `parse_abi` (function) `tools/check_abi_numbers.py:134` `def parse_abi(path)`
+- `parse_dispatch` (function) `tools/check_abi_numbers.py:145` `def parse_dispatch(path)`
+- `main` (function) `tools/check_abi_numbers.py:158` `def main()`
 
 ## tools/check_addons.py
 - `load_parser` (function) `tools/check_addons.py:22` `def load_parser()`
@@ -430,13 +430,13 @@ Depends on: `kernel/time.c`
 - `main` (function) `tools/check_surprising.py:118` `def main()`
 
 ## tools/check_syscall_sanitize.py
-- `split_functions` (function) `tools/check_syscall_sanitize.py:69` `def split_functions(lines)` -- Yield (name, start, body_lines) triples using brace depth.
-- `checked_names` (function) `tools/check_syscall_sanitize.py:112` `def checked_names(body)` -- Return identifiers named inside sanitizer checks in a body.
-- `delegated_only` (function) `tools/check_syscall_sanitize.py:122` `def delegated_only(body, alias)` -- Decide whether an alias flows only into sanitizing callees.
-- `split_top_args` (function) `tools/check_syscall_sanitize.py:143` `def split_top_args(argtext)` -- Split a call argument list on top-level commas only.
-- `audit_body` (function) `tools/check_syscall_sanitize.py:162` `def audit_body(name, body)` -- Return violation strings for one function body.
-- `audit_file` (function) `tools/check_syscall_sanitize.py:217` `def audit_file(path)` -- Audit every handler in one file, return violation strings.
-- `main` (function) `tools/check_syscall_sanitize.py:228` `def main()` -- Entry point used by lint and CI.
+- `split_functions` (function) `tools/check_syscall_sanitize.py:70` `def split_functions(lines)` -- Yield (name, start, body_lines) triples using brace depth.
+- `checked_names` (function) `tools/check_syscall_sanitize.py:113` `def checked_names(body)` -- Return identifiers named inside sanitizer checks in a body.
+- `delegated_only` (function) `tools/check_syscall_sanitize.py:123` `def delegated_only(body, alias)` -- Decide whether an alias flows only into sanitizing callees.
+- `split_top_args` (function) `tools/check_syscall_sanitize.py:144` `def split_top_args(argtext)` -- Split a call argument list on top-level commas only.
+- `audit_body` (function) `tools/check_syscall_sanitize.py:163` `def audit_body(name, body)` -- Return violation strings for one function body.
+- `audit_file` (function) `tools/check_syscall_sanitize.py:218` `def audit_file(path)` -- Audit every handler in one file, return violation strings.
+- `main` (function) `tools/check_syscall_sanitize.py:229` `def main()` -- Entry point used by lint and CI.
 
 ## tools/clip_bridge.py
 - `valid_dst` (function) `tools/clip_bridge.py:41` `def valid_dst(name, cfg)` -- True when name is a safe guest path.

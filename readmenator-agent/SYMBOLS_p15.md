@@ -1,8 +1,45 @@
-# Symbols (page 15 of 26)
+# Symbols (page 15 of 27)
 Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `DRAW_PIXEL2` | macro | `progs/doomgeneric/i_scale.c:1099` | `#define DRAW_PIXEL2` |
+| `DRAW_PIXEL3` | macro | `progs/doomgeneric/i_scale.c:1194` | `#define DRAW_PIXEL3` |
+| `DRAW_PIXEL4` | macro | `progs/doomgeneric/i_scale.c:1276` | `#define DRAW_PIXEL4` |
+| `DRAW_PIXEL5` | macro | `progs/doomgeneric/i_scale.c:1387` | `#define DRAW_PIXEL5` |
+| `FindNearestColor` | function | `progs/doomgeneric/i_scale.c:295` | `static int FindNearestColor(byte *palette, int r, int g, int b)` |
+| `GenerateStretchTable` | function | `progs/doomgeneric/i_scale.c:332` | `static byte *GenerateStretchTable(byte *palette, int pct)` |
+| `I_InitScale` | function | `progs/doomgeneric/i_scale.c:61` | `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch)` |
+| `I_InitSquashTable` | function | `progs/doomgeneric/i_scale.c:387` | `static void I_InitSquashTable(byte *palette)` |
+| `I_InitStretchTables` | function | `progs/doomgeneric/i_scale.c:361` | `static void I_InitStretchTables(byte *palette)` |
+| `I_ResetScaleTables` | function | `progs/doomgeneric/i_scale.c:404` | `void I_ResetScaleTables(byte *palette)` |
+| `I_Scale1x` | function | `progs/doomgeneric/i_scale.c:75` | `static boolean I_Scale1x(int x1, int y1, int x2, int y2)` |
+| `I_Scale2x` | function | `progs/doomgeneric/i_scale.c:105` | `static boolean I_Scale2x(int x1, int y1, int x2, int y2)` |
+| `I_Scale3x` | function | `progs/doomgeneric/i_scale.c:146` | `static boolean I_Scale3x(int x1, int y1, int x2, int y2)` |
+| `I_Scale4x` | function | `progs/doomgeneric/i_scale.c:191` | `static boolean I_Scale4x(int x1, int y1, int x2, int y2)` |
+| `I_Scale5x` | function | `progs/doomgeneric/i_scale.c:240` | `static boolean I_Scale5x(int x1, int y1, int x2, int y2)` |
+| `I_Squash1x` | function | `progs/doomgeneric/i_scale.c:1061` | `static boolean I_Squash1x(int x1, int y1, int x2, int y2)` |
+| `I_Squash2x` | function | `progs/doomgeneric/i_scale.c:1160` | `static boolean I_Squash2x(int x1, int y1, int x2, int y2)` |
+| `I_Squash3x` | function | `progs/doomgeneric/i_scale.c:1243` | `static boolean I_Squash3x(int x1, int y1, int x2, int y2)` |
+| `I_Squash4x` | function | `progs/doomgeneric/i_scale.c:1354` | `static boolean I_Squash4x(int x1, int y1, int x2, int y2)` |
+| `I_Squash5x` | function | `progs/doomgeneric/i_scale.c:1419` | `static boolean I_Squash5x(int x1, int y1, int x2, int y2)` |
+| `I_Stretch1x` | function | `progs/doomgeneric/i_scale.c:450` | `static boolean I_Stretch1x(int x1, int y1, int x2, int y2)` |
+| `I_Stretch2x` | function | `progs/doomgeneric/i_scale.c:539` | `static boolean I_Stretch2x(int x1, int y1, int x2, int y2)` |
+| `I_Stretch3x` | function | `progs/doomgeneric/i_scale.c:654` | `static boolean I_Stretch3x(int x1, int y1, int x2, int y2)` |
+| `I_Stretch4x` | function | `progs/doomgeneric/i_scale.c:795` | `static boolean I_Stretch4x(int x1, int y1, int x2, int y2)` |
+| `I_Stretch5x` | function | `progs/doomgeneric/i_scale.c:942` | `static boolean I_Stretch5x(int x1, int y1, int x2, int y2)` |
+| `WriteBlendedLine1x` | function | `progs/doomgeneric/i_scale.c:434` | `static inline void WriteBlendedLine1x(byte *dest, byte *src1, byte *src2,                        ...` |
+| `WriteBlendedLine2x` | function | `progs/doomgeneric/i_scale.c:520` | `static inline void WriteBlendedLine2x(byte *dest, byte *src1, byte *src2,                        ...` |
+| `WriteBlendedLine3x` | function | `progs/doomgeneric/i_scale.c:634` | `static inline void WriteBlendedLine3x(byte *dest, byte *src1, byte *src2,                        ...` |
+| `WriteBlendedLine4x` | function | `progs/doomgeneric/i_scale.c:774` | `static inline void WriteBlendedLine4x(byte *dest, byte *src1, byte *src2,                        ...` |
+| `WriteLine2x` | function | `progs/doomgeneric/i_scale.c:507` | `static inline void WriteLine2x(byte *dest, byte *src)` |
+| `WriteLine3x` | function | `progs/doomgeneric/i_scale.c:620` | `static inline void WriteLine3x(byte *dest, byte *src)` |
+| `WriteLine4x` | function | `progs/doomgeneric/i_scale.c:759` | `static inline void WriteLine4x(byte *dest, byte *src)` |
+| `WriteLine5x` | function | `progs/doomgeneric/i_scale.c:924` | `static inline void WriteLine5x(byte *dest, byte *src)` |
+| `WriteSquashedLine1x` | function | `progs/doomgeneric/i_scale.c:1030` | `static inline void WriteSquashedLine1x(byte *dest, byte *src)` |
+| `WriteSquashedLine2x` | function | `progs/doomgeneric/i_scale.c:1102` | `static inline void WriteSquashedLine2x(byte *dest, byte *src)` |
+| `WriteSquashedLine3x` | function | `progs/doomgeneric/i_scale.c:1197` | `static inline void WriteSquashedLine3x(byte *dest, byte *src)` |
+| `WriteSquashedLine4x` | function | `progs/doomgeneric/i_scale.c:1279` | `static inline void WriteSquashedLine4x(byte *dest, byte *src)` |
 | `WriteSquashedLine5x` | function | `progs/doomgeneric/i_scale.c:1390` | `static inline void WriteSquashedLine5x(byte *dest, byte *src)` |
 | `inline` | macro | `progs/doomgeneric/i_scale.c:32` | `#define inline` |
 | `I_InitScale` | function | `progs/doomgeneric/i_scale.h:25` | `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch);` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 | `key_nextweapon` | variable | `progs/doomgeneric/m_controls.h:82` | `extern int key_nextweapon;` |
 | `key_pause` | variable | `progs/doomgeneric/m_controls.h:56` | `extern int key_pause;` |
 | `key_prevweapon` | variable | `progs/doomgeneric/m_controls.h:81` | `extern int key_prevweapon;` |
-| `key_right` | variable | `progs/doomgeneric/m_controls.h:20` | `extern int key_right;` |
-| `key_speed` | variable | `progs/doomgeneric/m_controls.h:30` | `extern int key_speed;` |
-| `key_spy` | variable | `progs/doomgeneric/m_controls.h:80` | `extern int key_spy;` |
-| `key_strafe` | variable | `progs/doomgeneric/m_controls.h:29` | `extern int key_strafe;` |
-| `key_strafeleft` | variable | `progs/doomgeneric/m_controls.h:25` | `extern int key_strafeleft;` |
-| `key_straferight` | variable | `progs/doomgeneric/m_controls.h:26` | `extern int key_straferight;` |
-| `key_up` | variable | `progs/doomgeneric/m_controls.h:23` | `extern int key_up;` |
-| `key_use` | variable | `progs/doomgeneric/m_controls.h:28` | `extern int key_use;` |
-| `key_useartifact` | variable | `progs/doomgeneric/m_controls.h:42` | `extern int key_useartifact;` |
-| `key_usehealth` | variable | `progs/doomgeneric/m_controls.h:45` | `extern int key_usehealth;` |
-| `key_weapon1` | variable | `progs/doomgeneric/m_controls.h:61` | `extern int key_weapon1;` |
-| `key_weapon2` | variable | `progs/doomgeneric/m_controls.h:62` | `extern int key_weapon2;` |
-| `key_weapon3` | variable | `progs/doomgeneric/m_controls.h:63` | `extern int key_weapon3;` |
-| `key_weapon4` | variable | `progs/doomgeneric/m_controls.h:64` | `extern int key_weapon4;` |
-| `key_weapon5` | variable | `progs/doomgeneric/m_controls.h:65` | `extern int key_weapon5;` |
-| `key_weapon6` | variable | `progs/doomgeneric/m_controls.h:66` | `extern int key_weapon6;` |
-| `key_weapon7` | variable | `progs/doomgeneric/m_controls.h:67` | `extern int key_weapon7;` |
-| `key_weapon8` | variable | `progs/doomgeneric/m_controls.h:68` | `extern int key_weapon8;` |
-| `mousebbackward` | variable | `progs/doomgeneric/m_controls.h:133` | `extern int mousebbackward;` |
-| `mousebfire` | variable | `progs/doomgeneric/m_controls.h:125` | `extern int mousebfire;` |
-| `mousebforward` | variable | `progs/doomgeneric/m_controls.h:127` | `extern int mousebforward;` |
-| `mousebjump` | variable | `progs/doomgeneric/m_controls.h:129` | `extern int mousebjump;` |
-| `mousebnextweapon` | variable | `progs/doomgeneric/m_controls.h:137` | `extern int mousebnextweapon;` |
-| `mousebprevweapon` | variable | `progs/doomgeneric/m_controls.h:136` | `extern int mousebprevweapon;` |
-| `mousebstrafe` | variable | `progs/doomgeneric/m_controls.h:126` | `extern int mousebstrafe;` |
-| `mousebstrafeleft` | variable | `progs/doomgeneric/m_controls.h:131` | `extern int mousebstrafeleft;` |
-| `mousebstraferight` | variable | `progs/doomgeneric/m_controls.h:132` | `extern int mousebstraferight;` |
-| `mousebuse` | variable | `progs/doomgeneric/m_controls.h:134` | `extern int mousebuse;` |
-| `FixedDiv` | function | `progs/doomgeneric/m_fixed.c:47` | `fixed_t FixedDiv(fixed_t a, fixed_t b)` |
-| `FixedMul` | function | `progs/doomgeneric/m_fixed.c:34` | `fixed_t FixedMul ( fixed_t	a,   fixed_t	b )` |
-| `FRACBITS` | macro | `progs/doomgeneric/m_fixed.h:29` | `#define FRACBITS` |
-| `FRACUNIT` | macro | `progs/doomgeneric/m_fixed.h:30` | `#define FRACUNIT` |
-| `FixedDiv` | function | `progs/doomgeneric/m_fixed.h:35` | `fixed_t FixedDiv (fixed_t a, fixed_t b);` |
-| `FixedMul` | function | `progs/doomgeneric/m_fixed.h:34` | `fixed_t FixedMul (fixed_t a, fixed_t b);` |
-| `__M_FIXED__` | macro | `progs/doomgeneric/m_fixed.h:21` | `#define __M_FIXED__` |
-| `fixed_t` | type_alias | `progs/doomgeneric/m_fixed.h:31` | `typedef int fixed_t;` |
-| `I_OPL_DevMessages` | function | `progs/doomgeneric/m_menu.c:1915` | `extern void I_OPL_DevMessages(char *, size_t);` |
 
 Next: [SYMBOLS_p16.md](SYMBOLS_p16.md)

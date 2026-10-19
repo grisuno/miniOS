@@ -4,3 +4,8 @@
 # touching the filesystem.
 
 freeze('lib')
+
+# asyncio ships as pure Python over the _asyncio C helper (extmod),
+# reaching the poll(2) event loop through select.poll and sockets
+# (docs/spec/python.md).
+include('$(MPY_DIR)/extmod/asyncio/manifest.py')

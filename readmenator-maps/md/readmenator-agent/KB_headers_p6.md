@@ -1,6 +1,50 @@
 # Subsystem: headers (page 6 of 6)
 Previous: [KB_headers_p5.md](KB_headers_p5.md)
 
+## headers/wm_geom.h
+- Doc: Docstring: Window geometry contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_geom_config_t` (struct, line 14)
+  - `wm_rect_t` (struct, line 25)
+  - `wm_rect_valid` (function, line 33) `static inline int wm_rect_valid(const wm_rect_t *r)`
+  - `wm_rect_contains` (function, line 39) `static inline int wm_rect_contains(const wm_rect_t *r, int px, int py)`
+  - `wm_title_bar_rect` (function, line 48) `static inline wm_rect_t wm_title_bar_rect(const wm_geom_config_t *cfg, int px, int py, int w)`
+  - `wm_content_rect` (function, line 59) `static inline wm_rect_t wm_content_rect(const wm_geom_config_t *cfg, int px, int py, int w, int h)`
+  - `wm_scrollbar_rect` (function, line 71) `static inline wm_rect_t wm_scrollbar_rect(const wm_geom_config_t *cfg, int px, int py, int conten...`
+  - `wm_hit_title_bar` (function, line 84) `static inline int wm_hit_title_bar(const wm_geom_config_t *cfg, int wx, int wy, int w, int px, in...`
+  - `wm_clamp_point` (function, line 91) `static inline void wm_clamp_point(int *px, int *py, int fb_w, int fb_h)`
+  - `WM_GEOM_H` (macro, line 11) `#define WM_GEOM_H`
+  - `WM_GEOM_CONFIG_DEFAULT` (macro, line 22) `#define WM_GEOM_CONFIG_DEFAULT`
+- Imported by: `headers/wm_window.h`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_gfxview.h
+- Doc: Docstring: Graphics-window view contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_gfxview_config_t` (struct, line 31)
+  - `wm_gfxview_rect_t` (struct, line 47)
+  - `wm_gfxview_t` (struct, line 56)
+  - `wm_gfxview_mode_name` (function, line 64) `static inline const char *wm_gfxview_mode_name(int mode)`
+  - `wm_gfxview_dims_ok` (function, line 79) `static inline int wm_gfxview_dims_ok(int w, int h)`
+  - `Downscale` (function, line 88) `* Downscale (fit below 1x) always takes the exact fit. Returns 1 on
+ * success, 0 on degenerate i...`
+  - `wm_gfxview_clamp` (function, line 134) `static inline void wm_gfxview_clamp(wm_gfxview_rect_t *r, int fb_w, int fb_h)`
+  - `wm_gfxview_place_content` (function, line 160) `static inline int wm_gfxview_place_content(const wm_gfxview_config_t *cfg, int sw, int sh,
+      ...`
+  - `wm_gfxview_map_point` (function, line 255) `static inline int wm_gfxview_map_point(const wm_gfxview_t *v, int sw, int sh,
+                   ...`
+  - `wm_gfxview_ease` (function, line 291) `static inline long wm_gfxview_ease(int t, int n, long den)`
+  - `wm_gfxview_lerp_rect` (function, line 313) `static inline int wm_gfxview_lerp_rect(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b,
+  ...`
+  - `wm_gfxview_rect_same` (function, line 336) `static inline int wm_gfxview_rect_same(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b)`
+  - `WM_GFXVIEW_H` (macro, line 21) `#define WM_GFXVIEW_H`
+  - `WM_GFXVIEW_CONFIG_DEFAULT` (macro, line 41) `#define WM_GFXVIEW_CONFIG_DEFAULT`
+  - `WM_GFXVIEW_DIM_MAX` (macro, line 44) `#define WM_GFXVIEW_DIM_MAX`
+- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
+
 ## headers/wm_layout.h
 - Doc: Docstring: Unified layout contract for the MiniOS desktop.
 - Layer: presentation

@@ -1,6 +1,22 @@
 # API (page 6 of 21)
 Previous: [API_p5.md](API_p5.md)
 
+## headers/wm_gfxview.h
+Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
+- `wm_gfxview_mode_name` (function) `headers/wm_gfxview.h:64` `static inline const char *wm_gfxview_mode_name(int mode)` -- Docstring: One computed view: frame (chrome plus content area), * title strip height (0 in fullscreen) and the...
+- `wm_gfxview_dims_ok` (function) `headers/wm_gfxview.h:79` `static inline int wm_gfxview_dims_ok(int w, int h)` -- { switch (mode) { case WM_GFXVIEW_FLOAT: return "floating"; case WM_GFXVIEW_TILED: return "tiled"; case...
+- `Downscale` (function) `headers/wm_gfxview.h:88` `* Downscale (fit below 1x) always takes the exact fit. Returns 1 on
+ * success, 0 on degenerate i...`
+- `wm_gfxview_clamp` (function) `headers/wm_gfxview.h:134` `static inline void wm_gfxview_clamp(wm_gfxview_rect_t *r, int fb_w, int fb_h)` -- Docstring: Clamp a rect inside the framebuffer by moving, then by * shrinking when it is larger than the screen.
+- `wm_gfxview_place_content` (function) `headers/wm_gfxview.h:160` `static inline int wm_gfxview_place_content(const wm_gfxview_config_t *cfg, int sw, int sh,
+      ...` -- r->x = fb_w - r->w; } if (r->y + r->h > fb_h) { r->y = fb_h - r->h; } if (r->x < 0) { r->x = 0; } if (r->y < 0) {...
+- `wm_gfxview_map_point` (function) `headers/wm_gfxview.h:255` `static inline int wm_gfxview_map_point(const wm_gfxview_t *v, int sw, int sh,
+                   ...` -- Docstring: Map a framebuffer point into back-buffer space.
+- `wm_gfxview_ease` (function) `headers/wm_gfxview.h:291` `static inline long wm_gfxview_ease(int t, int n, long den)` -- Docstring: Ease-out cubic progress in [0, den] for step t of n.
+- `wm_gfxview_lerp_rect` (function) `headers/wm_gfxview.h:313` `static inline int wm_gfxview_lerp_rect(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b,
+  ...` -- return 0; } inv = (long)(n - t); r = den - (den * inv * inv * inv) / ((long)n * (long)n * (long)n); if (r < 0) { r =...
+- `wm_gfxview_rect_same` (function) `headers/wm_gfxview.h:336` `static inline int wm_gfxview_rect_same(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b)` -- out->x = a->x + (int)(((long)(b->x - a->x) * p) / den); out->y = a->y + (int)(((long)(b->y - a->y) * p) / den)...
+
 ## headers/wm_layout.h
 Imported by: `kernel/shell.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
 - `wm_layout_mode_name` (function) `headers/wm_layout.h:57` `static inline const char *wm_layout_mode_name(int mode)` -- /** Docstring: Default layout matching the legacy two terminal split. #define WM_LAYOUT_CONFIG_DEFAULT { 0, 4, 2...
@@ -467,19 +483,6 @@ Depends on: `headers/percpu_rq.h`
 - `rq_should_rescan` (function) `kernel/percpu_rq.c:137` `int rq_should_rescan(int cpu)` -- return empty; } /** Docstring: Count an unsuccessful claim poll for the rescan schedule. void rq_note_poll(int cpu)...
 - `rq_stats` (function) `kernel/percpu_rq.c:152` `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals,
               unsigned long *d...` -- irqflags_t flags; int due = 0; if (!rq_cpu_valid(cpu)) return 1; spin_lock_irqsave(&rqueues[cpu].lock, &flags); if...
-
-## kernel/printf.c
-- `putc_buf` (function) `kernel/printf.c:7` `static void putc_buf(char c, void *ctx, int *written)`
-- `putc_file` (function) `kernel/printf.c:13` `static void putc_file(char c, void *ctx, int *written)`
-- `putc_str` (function) `kernel/printf.c:19` `static void putc_str(char c, void *ctx, int *written)`
-- `emit_num` (function) `kernel/printf.c:26` `static void emit_num(void (*emit)(char, void *, int *), void *ctx, int *written,
-                ...`
-- `kformat` (function) `kernel/printf.c:44` `static void kformat(void (*emit)(char, void *, int *), void *ctx,
-                    int *writte...`
-- `kfprintf` (function) `kernel/printf.c:157` `int kfprintf(KFILE *f, const char *fmt, ...)`
-- `ksprintf` (function) `kernel/printf.c:166` `int ksprintf(char *buf, const char *fmt, ...)`
-- `putc_snbuf` (function) `kernel/printf.c:178` `static void putc_snbuf(char c, void *ctx, int *written)`
-- `ksnprintf` (function) `kernel/printf.c:184` `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...)`
 
 
 Next: [API_p7.md](API_p7.md)

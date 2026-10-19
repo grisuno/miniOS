@@ -236,6 +236,31 @@ static int kpipe_grow(pipe_ring_t *ring) {
     return 0;
 }
 
+/* Directory open for getdents64 (kernel/syscalls.c 217): kfopen refuses
+ * directories, so open(2) on one lands here. The handle stores the
+ * resolved path (with the trailing slash the listing walks) and the
+ * next-entry index; everything else is enumerated on demand. */
+KFILE *kfopen_dir(const char *resolved) {
+    KFILE *f;
+    unsigned len;
+    if (!resolved) { kerrno = ENOENT; return 0; }
+    len = (unsigned)kstrlen(resolved);
+    if (len == 0 || len + 2 > RAMDISK_FNAME_LEN) { kerrno = ENAMETOOLONG; return 0; }
+    if (!fs_is_dir(resolved)) { kerrno = ENOTDIR; return 0; }
+    f = kmalloc(sizeof(KFILE));
+    if (!f) { kerrno = ENOMEM; return 0; }
+    kmemset(f, 0, sizeof(KFILE));
+    f->minifs_ino = -1;
+    f->is_dir = 1;
+    f->ref = 1;
+    kmemcpy(f->dir_path, resolved, len + 1);
+    if (f->dir_path[len - 1] != '/') {
+        f->dir_path[len] = '/';
+        f->dir_path[len + 1] = 0;
+    }
+    return f;
+}
+
 KFILE *kfopen(const char *path, const char *mode) {
     char resolved[RAMDISK_FNAME_LEN];
     int want_write;

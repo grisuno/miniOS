@@ -38,6 +38,7 @@
 #include "sync.h"
 #include "percpu_rq.h"
 #include "sanitize.h"
+#include "select_map.h"
 #include "driver.h"
 #include "syscalls_proc.h"
 #include "shell.h"
@@ -934,6 +935,137 @@ static long sys_minios_rlimit(long a1, long a2, long a3, long a4, long a5, long 
  * call stops before an entry that would not fit and returns the
  * entries that did fit. Paths resolve through fs_resolve, so '..'
  * cannot escape, and overlong names fail closed. */
+/* getdents64 (217). Directory enumeration for readdir(3)/os.scandir:
+ * the fd must be a directory handle from open(2) on a directory, the
+ * listing is the MiniFS directory followed by the ramdisk children of
+ * the same path (the DIR_LIST order), and the handle's dir_off makes
+ * calls resumable: an entry that does not fit stays for the next call
+ * instead of being dropped. Records are Linux struct linux_dirent64
+ * (d_ino, d_off, d_reclen, d_type, NUL-terminated name). "." and ".."
+ * are not synthesized, which readdir consumers skip and CPython's
+ * scandir filters anyway. */
+#define LINUX_DT_DIR 4
+#define LINUX_DT_REG 8
+#define GETDENTS64_NAME_OFF 19
+#define GETDENTS64_ALIGN 7
+
+static unsigned long getdents64_put(char *out, unsigned long used,
+                                    unsigned long ino, const char *name,
+                                    int isdir) {
+    unsigned nlen = (unsigned)kstrlen(name);
+    unsigned rlen = (GETDENTS64_NAME_OFF + nlen + 1 + GETDENTS64_ALIGN) &
+                    ~(unsigned)GETDENTS64_ALIGN;
+    unsigned char *p = (unsigned char *)out + used;
+    unsigned k;
+    kmemcpy(p, &ino, sizeof(ino));
+    {
+        long off = (long)(used + rlen);
+        kmemcpy(p + 8, &off, sizeof(off));
+    }
+    {
+        unsigned short reclen = (unsigned short)rlen;
+        kmemcpy(p + 16, &reclen, sizeof(reclen));
+    }
+    p[18] = isdir ? LINUX_DT_DIR : LINUX_DT_REG;
+    kmemcpy(p + GETDENTS64_NAME_OFF, name, nlen);
+    p[GETDENTS64_NAME_OFF + nlen] = 0;
+    for (k = GETDENTS64_NAME_OFF + nlen + 1; k < rlen; k++) p[k] = 0;
+    return rlen;
+}
+
+static long sys_linux_getdents64(long a1, long a2, long a3, long a4, long a5, long a6) {
+    char namebuf[MINIFS_MAX_FILENAME + 1];
+    char *out;
+    unsigned long cap, used = 0;
+    KFILE *f;
+    irqflags_t flags;
+    int ino = -1, nm = 0;
+    (void)a4; (void)a5; (void)a6;
+    if (a3 <= 0 || a3 > 65536) return -EINVAL;
+    cap = (unsigned long)a3;
+    SANITIZE_RANGE(a2, cap);
+    f = kfd_get((int)a1);
+    if (!f) return -EBADF;
+    if (!f->is_dir) {
+        kfd_put(f);
+        return -ENOTDIR;
+    }
+    out = (char *)a2;
+    spin_lock_irqsave(&fs_lock, &flags);
+    if (minifs_is_mounted()) {
+        ino = minifs_resolve_path(f->dir_path);
+        if (ino >= 0) {
+            MiniFSDirEntry de;
+            while (minifs_dir_read(ino, nm, &de, namebuf) == 0) nm++;
+        }
+    }
+    while (ino >= 0 && f->dir_off < (unsigned)nm) {
+        MiniFSDirEntry de;
+        MiniFSInode st;
+        unsigned rlen;
+        if (minifs_dir_read(ino, (int)f->dir_off, &de, namebuf) != 0) break;
+        rlen = (GETDENTS64_NAME_OFF + (unsigned)kstrlen(namebuf) + 1 +
+                GETDENTS64_ALIGN) & ~(unsigned)GETDENTS64_ALIGN;
+        if (used + rlen > cap) break;
+        kmemset(&st, 0, sizeof(st));
+        minifs_stat(de.inode, &st);
+        used += getdents64_put(out, used, (unsigned long)de.inode, namebuf,
+                               (st.mode & MINIFS_S_IFDIR) == MINIFS_S_IFDIR);
+        f->dir_off++;
+    }
+    if (f->dir_off >= (unsigned)nm) {
+        unsigned base = f->dir_off - (unsigned)nm;
+        unsigned listed = 0;
+        unsigned plen = (unsigned)kstrlen(f->dir_path);
+        RDFile *files[RAMDISK_MAX_FILES];
+        int n = ramdisk_list(files, RAMDISK_MAX_FILES);
+        int k;
+        for (k = 0; k < n; k++) {
+            const char *rn = files[k]->name;
+            const char *rel;
+            const char *slash;
+            unsigned comp_len, rlen;
+            int j, dup = 0;
+            if (plen && kstrncmp(rn, f->dir_path, plen) != 0) continue;
+            rel = rn + plen;
+            if (!rel[0]) continue;
+            slash = kstrchr(rel, '/');
+            comp_len = slash ? (unsigned)(slash - rel) + 1 : (unsigned)kstrlen(rel);
+            if (comp_len == 0 || comp_len >= RAMDISK_FNAME_LEN) continue;
+            for (j = 0; j < k; j++) {
+                const char *ar;
+                const char *as;
+                unsigned ac;
+                if (plen && kstrncmp(files[j]->name, f->dir_path, plen) != 0) continue;
+                ar = files[j]->name + plen;
+                as = kstrchr(ar, '/');
+                ac = as ? (unsigned)(as - ar) + 1 : (unsigned)kstrlen(ar);
+                if (ac == comp_len && kstrncmp(ar, rel, comp_len) == 0) {
+                    dup = 1;
+                    break;
+                }
+            }
+            if (dup) continue;
+            if (listed++ < base) continue;
+            rlen = (GETDENTS64_NAME_OFF + comp_len + 1 + GETDENTS64_ALIGN) &
+                   ~(unsigned)GETDENTS64_ALIGN;
+            if (used + rlen > cap) break;
+            {
+                char comp[RAMDISK_FNAME_LEN];
+                int isdir = rel[comp_len - 1] == '/';
+                unsigned clen = isdir ? comp_len - 1 : comp_len;
+                kmemcpy(comp, rel, clen);
+                comp[clen] = 0;
+                used += getdents64_put(out, used, 2UL, comp, isdir);
+            }
+            f->dir_off++;
+        }
+    }
+    spin_unlock_irqrestore(&fs_lock, flags);
+    kfd_put(f);
+    return (long)used;
+}
+
 static long sys_minios_dir_list(long a1, long a2, long a3, long a4, long a5, long a6) {
     char resolved[RAMDISK_FNAME_LEN];
     char dir[RAMDISK_FNAME_LEN];
@@ -1266,22 +1398,12 @@ static long sys_linux_writev(long a1, long a2, long a3, long a4, long a5, long a
  * opens can never claim the same slot; the slow kfopen runs outside
  * the lock with nothing published yet. Linux O_CLOEXEC (0x80000) arms
  * the close-on-exec bit without disturbing the mode selection. */
-static long do_open_path(const char *path, long flags) {
-    const char *mode = ((flags & 1) || (flags & 0x40)) ? "w" : "r";
-    int fd, cloexec = (flags & 0x80000) ? 1 : 0;
+/* Install an open description as the lowest free fd (>= 3), honouring
+ * close-on-exec; shared by do_open_path's file and directory branches. */
+static long kfd_install(KFILE *f, int cloexec) {
+    int fd;
     irqflags_t flags_irq;
-    kfd_view_t *v;
-    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
-    {
-        proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
-        if (op && op->rl_nofile_max && (unsigned long)op->open_files >= op->rl_nofile_max)
-            return -24;
-    }
-    KFILE *f = kfopen(path, mode);
-    if (!f) {
-        return -2;
-    }
-    v = kfd_view_current();
+    kfd_view_t *v = kfd_view_current();
     spin_lock_irqsave(&fd_lock, &flags_irq);
     for (fd = 3; fd < KFD_MAX; fd++) if (!v->f[fd]) break;
     if (fd >= KFD_MAX) {
@@ -1297,6 +1419,33 @@ static long do_open_path(const char *path, long flags) {
         if (op && op->open_files < KFD_MAX) op->open_files++;
     }
     return fd;
+}
+
+static long do_open_path(const char *path, long flags) {
+    int cloexec = (flags & 0x80000) ? 1 : 0;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+    {
+        proc_t *op = (current_pid >= 0 && current_pid < MAX_PROCS) ? &procs[current_pid] : 0;
+        if (op && op->rl_nofile_max && (unsigned long)op->open_files >= op->rl_nofile_max)
+            return -24;
+    }
+    /* Directories open read-only as a listing handle for getdents64
+     * (opendir's exact sequence: open, fstat must say S_IFDIR). A write
+     * intent on a directory still fails EISDIR through kfopen. */
+    if (!(flags & (1 | 2 | 0x40))) {
+        char resolved[RAMDISK_FNAME_LEN];
+        if (fs_resolve(path, resolved, sizeof(resolved)) && fs_is_dir(resolved)) {
+            KFILE *d = kfopen_dir(resolved);
+            if (!d) return -2;
+            return kfd_install(d, cloexec);
+        }
+    }
+    {
+        const char *mode = ((flags & 1) || (flags & 0x40)) ? "w" : "r";
+        KFILE *f = kfopen(path, mode);
+        if (!f) return -2;
+        return kfd_install(f, cloexec);
+    }
 }
 
 static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -2730,6 +2879,120 @@ static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)
     return net_sys_poll(a1, a2, a3);
 }
 
+/* select(2)/pselect6(2).  Static glibc's select() enters pselect6 (270)
+ * on x86-64; the fd_set translation lives in headers/select_map.h and the
+ * polling itself goes through net_sys_poll, exactly like poll(2).  The
+ * pselect6 sigmask argument (a6) is accepted and ignored: MiniOS delivers
+ * no signals to ring-3 handlers, and nothing here dereferences it.
+ * select's timeval is updated with the remaining budget like Linux;
+ * pselect6's timespec is left alone, like Linux. */
+
+#define SELECT_NFDS_MAX       SELECT_FD_SETSIZE
+#define SELECT_TIMEVAL_BYTES  16
+#define SELECT_TIMESPEC_BYTES 16
+/* One day in milliseconds: Linux caps a select timeout to ~24 days; the
+ * exact ceiling does not matter, only that the unsigned math cannot wrap. */
+#define SELECT_TIMEOUT_MS_MAX (24L * 60L * 60L * 1000L)
+
+/* Convert a sanitized timeval/timespec to a net_sys_poll budget:
+ * 0 polls once, -1 waits forever (net_sys_poll's negative timeout).
+ * Sub-millisecond fractions round up so a sleep never returns early.
+ * Returns 0 on success, -1 on a negative or out-of-range field. */
+static int select_timeout_ms(const long *t, int pselect, long *out) {
+    long sec = t[0];
+    long frac = t[1];
+    long frac_limit = pselect ? 999999999L : 999999L;
+    unsigned long scale = pselect ? 1000000UL : 1000UL;
+    unsigned long ms;
+    if (sec < 0 || frac < 0 || frac > frac_limit) return -1;
+    if (sec > SELECT_TIMEOUT_MS_MAX / 1000L) {
+        *out = SELECT_TIMEOUT_MS_MAX;
+        return 0;
+    }
+    ms = (unsigned long)sec * 1000UL;
+    if (frac) ms += ((unsigned long)frac + scale - 1UL) / scale;
+    if (ms > (unsigned long)SELECT_TIMEOUT_MS_MAX) ms = (unsigned long)SELECT_TIMEOUT_MS_MAX;
+    *out = (long)ms;
+    return 0;
+}
+
+/* Shared select/pselect6 body.  The fd_sets are copied to the kernel
+ * stack at the boundary (SANITIZE_RANGE), the pollfd array lives on the
+ * heap (1024 entries do not fit a 16 KB stack frame under
+ * -Werror=frame-larger-than=2048), and the result sets are copied back
+ * only for the pointers the caller provided. */
+static long select_common(long nfds, long rp, long wp, long ep, long tp, int pselect) {
+    unsigned char rset[SELECT_FD_SET_BYTES], wset[SELECT_FD_SET_BYTES], eset[SELECT_FD_SET_BYTES];
+    unsigned char rout[SELECT_FD_SET_BYTES], wout[SELECT_FD_SET_BYTES], eout[SELECT_FD_SET_BYTES];
+    unsigned long set_bytes;
+    select_pollfd_t *pfd = 0;
+    unsigned count = 0, ready = 0;
+    long timeout_ms = -1;
+    long ret;
+    unsigned long t0 = 0;
+
+    if (nfds < 0 || nfds > SELECT_NFDS_MAX) return -EINVAL;
+    set_bytes = ((unsigned long)nfds + 7UL) / 8UL;
+    kmemset(rset, 0, sizeof(rset));
+    kmemset(wset, 0, sizeof(wset));
+    kmemset(eset, 0, sizeof(eset));
+    if (set_bytes) {
+        if (rp) {
+            SANITIZE_RANGE(rp, set_bytes);
+            kmemcpy(rset, (const void *)rp, set_bytes);
+        }
+        if (wp) {
+            SANITIZE_RANGE(wp, set_bytes);
+            kmemcpy(wset, (const void *)wp, set_bytes);
+        }
+        if (ep) {
+            SANITIZE_RANGE(ep, set_bytes);
+            kmemcpy(eset, (const void *)ep, set_bytes);
+        }
+    }
+    if (tp) {
+        SANITIZE_RANGE(tp, pselect ? SELECT_TIMESPEC_BYTES : SELECT_TIMEVAL_BYTES);
+        if (select_timeout_ms((const long *)tp, pselect, &timeout_ms)) return -EINVAL;
+    }
+    count = select_poll_count(rset, wset, eset, (unsigned)nfds);
+    if (count) {
+        pfd = (select_pollfd_t *)kmalloc((unsigned long)count * sizeof(select_pollfd_t));
+        if (!pfd) return -ENOMEM;
+        select_poll_build(pfd, rset, wset, eset, (unsigned)nfds);
+    }
+    if (timeout_ms > 0) t0 = net_time_ms();
+    ret = net_sys_poll((long)pfd, (long)count, timeout_ms);
+    if (ret >= 0) {
+        if (select_poll_badfd(pfd, count)) {
+            ret = -EBADF;
+        } else if (count) {
+            ready = select_poll_result(rout, rset, wout, wset, eout, eset, pfd, count);
+        }
+    }
+    if (pfd) kfree(pfd);
+    if (ret < 0) return ret;
+    if (rp && set_bytes) kmemcpy((void *)rp, rout, set_bytes);
+    if (wp && set_bytes) kmemcpy((void *)wp, wout, set_bytes);
+    if (ep && set_bytes) kmemcpy((void *)ep, eout, set_bytes);
+    if (tp && !pselect && timeout_ms > 0) {
+        unsigned long elapsed = net_time_ms() - t0;
+        long remaining = (long)elapsed >= timeout_ms ? 0 : timeout_ms - (long)elapsed;
+        ((long *)tp)[0] = remaining / 1000;
+        ((long *)tp)[1] = (remaining % 1000) * 1000;
+    }
+    return (long)ready;
+}
+
+static long sys_linux_select(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a6;
+    return select_common(a1, a2, a3, a4, a5, 0);
+}
+
+static long sys_linux_pselect6(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a6;
+    return select_common(a1, a2, a3, a4, a5, 1);
+}
+
 static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6) {
     (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
     return 0;
@@ -2842,7 +3105,9 @@ static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6
         {
             KFILE *kf = kfd_get((int)a1);
             if (kf) {
-                if (kf->rf)
+                if (kf->is_dir)
+                    ((unsigned int *)(unsigned long)a2)[6] = 0040755;
+                else if (kf->rf)
                     ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kf->rf->size;
                 else if (kf->minifs_ino >= 0)
                     ((unsigned long *)(unsigned long)a2)[6] = (unsigned long)kf->minifs_size;
@@ -2909,6 +3174,32 @@ static long sys_linux_uname(long a1, long a2, long a3, long a4, long a5, long a6
     return 0;
 }
 
+/* getuid/getgid/geteuid/getegid (102/104/107/108). MiniOS has no user
+ * database and the file modes already assume a single root owner, so
+ * every process answers 0; those are the truthful values, and -ENOSYS
+ * made glibc answer (uid_t)-1, which CPython's startup reads. */
+#define LINUX_UID_GID_ROOT 0
+
+static long sys_linux_getuid(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return LINUX_UID_GID_ROOT;
+}
+
+static long sys_linux_getgid(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return LINUX_UID_GID_ROOT;
+}
+
+static long sys_linux_geteuid(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return LINUX_UID_GID_ROOT;
+}
+
+static long sys_linux_getegid(long a1, long a2, long a3, long a4, long a5, long a6) {
+    (void)a1; (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    return LINUX_UID_GID_ROOT;
+}
+
 /* madvise (28): advice only; glibc frees thread stacks with it and
  * ignores the result, MiniOS keeps the pages, so 0 is truthful. */
 static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6) {
@@ -2949,6 +3240,35 @@ static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6
     return r >= 0 ? 0 : -5;
 }
 
+/* rmdir (84): remove one empty MiniFS directory (the ramdisk carries no
+ * directories of its own; its prefixes come from files). Missing paths
+ * are ENOENT, a non-directory is ENOTDIR and a non-empty directory or
+ * the root is ENOTEMPTY, like Linux. pip's tempdir cleanup
+ * (shutil.rmtree) is the main caller. */
+static long sys_linux_rmdir(long a1, long a2, long a3, long a4, long a5, long a6) {
+    const char *path = (const char *)a1;
+    char resolved[RAMDISK_FNAME_LEN];
+    unsigned len;
+    irqflags_t flags;
+    int r;
+    (void)a2; (void)a3; (void)a4; (void)a5; (void)a6;
+    SANITIZE_STR(path, RAMDISK_FNAME_LEN);
+    if (!fs_resolve(path, resolved, sizeof(resolved))) return -36;
+    len = (unsigned)kstrlen(resolved);
+    while (len > 0 && resolved[len - 1] == '/') resolved[--len] = 0;
+    if (len == 0) return -39;              /* the root: ENOTEMPTY, like Linux */
+    if (!fs_is_dir(resolved)) {
+        if (minifs_is_mounted() && minifs_resolve_path(resolved) >= 0) return -20;
+        return -2;
+    }
+    if (!minifs_is_mounted() || minifs_resolve_path(resolved) < 0) return -30;
+    spin_lock_irqsave(&fs_lock, &flags);
+    r = minifs_rmdir(resolved);
+    if (r >= 0) minifs_sync();
+    spin_unlock_irqrestore(&fs_lock, flags);
+    return r >= 0 ? 0 : -39;               /* only empty-dir refusals here */
+}
+
 #define LINUX_SYSCALL_COUNT 200
 
 static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
@@ -2969,6 +3289,7 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [20]  = { sys_linux_writev,       "writev" },
     [21]  = { sys_linux_access,       "access" },
     [22]  = { sys_linux_pipe,         "pipe" },
+    [23]  = { sys_linux_select,       "select" },
     [24]  = { sys_linux_yield,        "yield" },
     [25]  = { sys_linux_mremap,       "mremap" },
     [28]  = { sys_linux_madvise,      "madvise" },
@@ -3005,9 +3326,14 @@ static const minios_syscall_entry_t linux_syscall_table[LINUX_SYSCALL_COUNT] = {
     [79]  = { sys_linux_getcwd,       "getcwd" },
     [82]  = { sys_linux_rename,       "rename" },
     [83]  = { sys_linux_mkdir,        "mkdir" },
+    [84]  = { sys_linux_rmdir,        "rmdir" },
     [87]  = { sys_linux_unlink,       "unlink" },
     [89]  = { sys_linux_readlink,     "readlink" },
     [96]  = { sys_linux_gettimeofday, "gettimeofday" },
+    [102] = { sys_linux_getuid,       "getuid" },
+    [104] = { sys_linux_getgid,       "getgid" },
+    [107] = { sys_linux_geteuid,      "geteuid" },
+    [108] = { sys_linux_getegid,      "getegid" },
     [157] = { sys_linux_prctl,        "prctl" },
     [158] = { sys_linux_arch_prctl,   "arch_prctl" },
     [186] = { sys_linux_gettid,       "gettid" },
@@ -3038,6 +3364,8 @@ static const struct sc_extra_name sc_extra_names[] = {
     { 159, "getcpu" }, { 218, "set_tid_address" },
     { 228, "clock_gettime" }, { 231, "exit_group" }, { 234, "tgkill" },
     { 257, "openat" }, { 262, "newfstatat" }, { 267, "readlinkat" },
+    { 270, "pselect6" },
+    { 217, "getdents64" },
     { 273, "set_robust_list" }, { 302, "prlimit64" }, { 318, "getrandom" },
     { 332, "statx" }, { 334, "rseq" },
 };
@@ -3331,6 +3659,10 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         return 0;
     case 230: /* clock_nanosleep */
         return sys_linux_clock_nanosleep(a1, a2, a3, a4, a5, a6);
+    case 217: /* getdents64: readdir(3) and CPython's os.scandir */
+        return sys_linux_getdents64(a1, a2, a3, a4, a5, a6);
+    case 270: /* pselect6: glibc's select() enters this number on x86-64 */
+        return sys_linux_pselect6(a1, a2, a3, a4, a5, a6);
     case 307: /* sendmmsg: glibc's resolver sends A and AAAA together */
         return sys_linux_sendmmsg(a1, a2, a3, a4, a5, a6);
     case 290: /* eventfd2 */
@@ -3438,7 +3770,7 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
         char resolved[RAMDISK_FNAME_LEN];
         if (!fs_resolve(path, resolved, sizeof(resolved))) return -2;
         if (fs_is_dir(resolved)) {
-            ((unsigned int *)(unsigned long)st)[5] = 0040755;
+            ((unsigned int *)(unsigned long)st)[6] = 0040755;
         } else {
             RDFile *rf = ramdisk_open(resolved);
             if (!rf) {
@@ -3446,14 +3778,14 @@ static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a
                     int ino = minifs_resolve_path(resolved);
                     MiniFSInode mi;
                     if (ino >= 0 && minifs_stat(ino, &mi) >= 0) {
-                        ((unsigned int *)(unsigned long)st)[5] = 0100666;
+                        ((unsigned int *)(unsigned long)st)[6] = 0100666;
                         ((unsigned long *)(unsigned long)st)[6] = (unsigned long)mi.size;
                         return 0;
                     }
                 }
                 return -2;
             }
-            ((unsigned int *)(unsigned long)st)[5] = 0100666;
+            ((unsigned int *)(unsigned long)st)[6] = 0100666;
             ((unsigned long *)(unsigned long)st)[6] = (unsigned long)rf->size;
         }
         return 0;

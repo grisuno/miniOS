@@ -1,6 +1,6 @@
 # Documentation Coverage
 
-Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data members are excluded from the ratio.
+Overall: **29.2%** (2749 of 9415 public modules, types, and callables). Data members are excluded from the ratio.
 
 [Back to index](index.md)
 
@@ -12,12 +12,12 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | constructor | 3 | 23 | 13.0% |
 | enum | 2 | 3 | 66.7% |
 | exception | 4 | 4 | 100.0% |
-| function | 1417 | 4442 | 31.9% |
-| macro | 646 | 3835 | 16.8% |
+| function | 1437 | 4466 | 32.2% |
+| macro | 657 | 3866 | 17.0% |
 | method | 24 | 116 | 20.7% |
-| module | 417 | 504 | 82.7% |
+| module | 421 | 508 | 82.9% |
 | staticmethod | 6 | 6 | 100.0% |
-| struct | 131 | 314 | 41.7% |
+| struct | 131 | 315 | 41.6% |
 | type_alias | 42 | 74 | 56.8% |
 
 ## By module (lowest first)
@@ -183,19 +183,18 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`progs/src/spin.c`](modules/progs.src.spin.c.md) | 1 | 6 | 16.7% |
 | [`tools/lisp_scoped.sh`](modules/tools.lisp_scoped.sh.md) | 1 | 6 | 16.7% |
 | [`tools.minifs_fsck`](modules/tools.minifs_fsck.py.md) | 3 | 18 | 16.7% |
-| [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | 19 | 113 | 16.8% |
 | [`progs/doomgeneric/m_misc.c`](modules/progs.doomgeneric.m_misc.c.md) | 4 | 23 | 17.4% |
 | [`tools.mkfs.minifs`](modules/tools.mkfs.minifs.py.md) | 4 | 23 | 17.4% |
 | [`progs/doomgeneric/p_local.h`](modules/progs.doomgeneric.p_local.h.md) | 11 | 63 | 17.5% |
 | [`progs/doomgeneric/p_maputl.c`](modules/progs.doomgeneric.p_maputl.c.md) | 3 | 17 | 17.6% |
 | [`kernel/proc_sec.c`](modules/kernel.proc_sec.c.md) | 7 | 39 | 17.9% |
+| [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | 22 | 123 | 17.9% |
 | [`progs/doomgeneric/st_lib.c`](modules/progs.doomgeneric.st_lib.c.md) | 2 | 11 | 18.2% |
 | [`progs/pokemon/minios_stubs/SDL.h`](modules/progs.pokemon.minios_stubs.SDL.h.md) | 2 | 11 | 18.2% |
 | [`progs/wl/wl_mini.h`](modules/progs.wl.wl_mini.h.md) | 20 | 109 | 18.3% |
 | [`drivers/kbd.c`](modules/drivers.kbd.c.md) | 6 | 32 | 18.8% |
 | [`progs/doomgeneric/hu_stuff.h`](modules/progs.doomgeneric.hu_stuff.h.md) | 3 | 16 | 18.8% |
 | [`headers/sync.h`](modules/headers.sync.h.md) | 7 | 36 | 19.4% |
-| [`headers/kernel.h`](modules/headers.kernel.h.md) | 76 | 385 | 19.7% |
 | [`arch/x86/ap_entry.S`](modules/arch.x86.ap_entry.S.md) | 2 | 10 | 20.0% |
 | [`arch/x86/ctx_sw.S`](modules/arch.x86.ctx_sw.S.md) | 2 | 10 | 20.0% |
 | [`drivers/virtio_net.c`](modules/drivers.virtio_net.c.md) | 7 | 35 | 20.0% |
@@ -214,8 +213,9 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`progs/tls_u/tls_u_main.c`](modules/progs.tls_u.tls_u_main.c.md) | 1 | 5 | 20.0% |
 | [`tools.check_abi_numbers`](modules/tools.check_abi_numbers.py.md) | 1 | 5 | 20.0% |
 | [`tools/wl_scoped.sh`](modules/tools.wl_scoped.sh.md) | 1 | 5 | 20.0% |
-| [`progs/minios_abi.h`](modules/progs.minios_abi.h.md) | 31 | 154 | 20.1% |
+| [`headers/kernel.h`](modules/headers.kernel.h.md) | 79 | 386 | 20.5% |
 | [`progs/doomgeneric/v_video.c`](modules/progs.doomgeneric.v_video.c.md) | 6 | 29 | 20.7% |
+| [`progs/minios_abi.h`](modules/progs.minios_abi.h.md) | 32 | 154 | 20.8% |
 | [`headers/futex.h`](modules/headers.futex.h.md) | 6 | 28 | 21.4% |
 | [`headers/sign.h`](modules/headers.sign.h.md) | 3 | 14 | 21.4% |
 | [`drivers/rtc.c`](modules/drivers.rtc.c.md) | 5 | 23 | 21.7% |
@@ -240,6 +240,7 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`progs/doomgeneric/w_file.h`](modules/progs.doomgeneric.w_file.h.md) | 2 | 8 | 25.0% |
 | [`progs/src/execho.c`](modules/progs.src.execho.c.md) | 1 | 4 | 25.0% |
 | [`progs/src/lxhello.c`](modules/progs.src.lxhello.c.md) | 1 | 4 | 25.0% |
+| [`progs/src/lxsel.c`](modules/progs.src.lxsel.c.md) | 2 | 8 | 25.0% |
 | [`progs.src.shell`](modules/progs.src.shell.py.md) | 1 | 4 | 25.0% |
 | [`progs/doomgeneric/st_stuff.c`](modules/progs.doomgeneric.st_stuff.c.md) | 34 | 135 | 25.2% |
 | [`headers/vga_fb.h`](modules/headers.vga_fb.h.md) | 34 | 133 | 25.6% |
@@ -261,13 +262,13 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`headers/httpd.h`](modules/headers.httpd.h.md) | 3 | 10 | 30.0% |
 | [`progs/piano/piano.c`](modules/progs.piano.piano.c.md) | 9 | 30 | 30.0% |
 | [`progs/doomgeneric/s_sound.c`](modules/progs.doomgeneric.s_sound.c.md) | 7 | 23 | 30.4% |
-| [`fs/kfile.c`](modules/fs.kfile.c.md) | 8 | 26 | 30.8% |
 | [`progs/doomgeneric/doomgeneric_minios.c`](modules/progs.doomgeneric.doomgeneric_minios.c.md) | 4 | 13 | 30.8% |
 | [`drivers/xhci.c`](modules/drivers.xhci.c.md) | 49 | 152 | 32.2% |
 | [`progs/doomgeneric/p_enemy.c`](modules/progs.doomgeneric.p_enemy.c.md) | 22 | 68 | 32.4% |
 | [`progs/freedomui/platform_minios.c`](modules/progs.freedomui.platform_minios.c.md) | 12 | 37 | 32.4% |
 | [`bootloader.c`](modules/bootloader.c.md) | 1 | 3 | 33.3% |
 | [`fs/fat32.c`](modules/fs.fat32.c.md) | 6 | 18 | 33.3% |
+| [`fs/kfile.c`](modules/fs.kfile.c.md) | 9 | 27 | 33.3% |
 | [`headers/fat32.h`](modules/headers.fat32.h.md) | 5 | 15 | 33.3% |
 | [`headers/zip.h`](modules/headers.zip.h.md) | 1 | 3 | 33.3% |
 | [`kernel/vga_fx.c`](modules/kernel.vga_fx.c.md) | 3 | 9 | 33.3% |
@@ -288,7 +289,6 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`tools.gdb_repro`](modules/tools.gdb_repro.py.md) | 1 | 3 | 33.3% |
 | [`tools.gen_desktop_pngs`](modules/tools.gen_desktop_pngs.py.md) | 1 | 3 | 33.3% |
 | [`tools/make_usb.sh`](modules/tools.make_usb.sh.md) | 1 | 3 | 33.3% |
-| [`tools.mkramdisk`](modules/tools.mkramdisk.py.md) | 1 | 3 | 33.3% |
 | [`tools/mutate.sh`](modules/tools.mutate.sh.md) | 2 | 6 | 33.3% |
 | [`tools/wm_scoped.sh`](modules/tools.wm_scoped.sh.md) | 1 | 3 | 33.3% |
 | [`progs/src/freedom_wl.c`](modules/progs.src.freedom_wl.c.md) | 9 | 26 | 34.6% |
@@ -296,6 +296,7 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`kernel/seccomp_bpf.c`](modules/kernel.seccomp_bpf.c.md) | 4 | 11 | 36.4% |
 | [`progs/doomgeneric/p_doors.c`](modules/progs.doomgeneric.p_doors.c.md) | 4 | 11 | 36.4% |
 | [`kernel/mm/cow.c`](modules/kernel.mm.cow.c.md) | 7 | 19 | 36.8% |
+| [`headers/select_map.h`](modules/headers.select_map.h.md) | 6 | 16 | 37.5% |
 | [`kernel/serial.c`](modules/kernel.serial.c.md) | 3 | 8 | 37.5% |
 | [`net/tls_x509.c`](modules/net.tls_x509.c.md) | 3 | 8 | 37.5% |
 | [`progs/doomgeneric/w_wad.c`](modules/progs.doomgeneric.w_wad.c.md) | 6 | 16 | 37.5% |
@@ -303,7 +304,6 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`progs/wl/wlcomp.c`](modules/progs.wl.wlcomp.c.md) | 3 | 8 | 37.5% |
 | [`kernel.c`](modules/kernel.c.md) | 5 | 13 | 38.5% |
 | [`progs/doomgeneric/i_system.h`](modules/progs.doomgeneric.i_system.h.md) | 5 | 13 | 38.5% |
-| [`progs/micropython/variants/minios/mpconfigvariant.h`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md) | 15 | 39 | 38.5% |
 | [`progs/nuklear/nuklear_theme.h`](modules/progs.nuklear.nuklear_theme.h.md) | 5 | 13 | 38.5% |
 | [`headers/audio.h`](modules/headers.audio.h.md) | 7 | 18 | 38.9% |
 | [`kernel/sched.c`](modules/kernel.sched.c.md) | 35 | 90 | 38.9% |
@@ -315,6 +315,7 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`qga.c`](modules/qga.c.md) | 2 | 5 | 40.0% |
 | [`tools.qga_client`](modules/tools.qga_client.py.md) | 2 | 5 | 40.0% |
 | [`headers/tls.h`](modules/headers.tls.h.md) | 29 | 72 | 40.3% |
+| [`progs/micropython/variants/minios/mpconfigvariant.h`](modules/progs.micropython.variants.minios.mpconfigvariant.h.md) | 19 | 47 | 40.4% |
 | [`mcp.minios_mcp`](modules/mcp.minios_mcp.py.md) | 15 | 37 | 40.5% |
 | [`smp.c`](modules/smp.c.md) | 15 | 37 | 40.5% |
 | [`progs/freedomui/freedomui_minios.c`](modules/progs.freedomui.freedomui_minios.c.md) | 9 | 22 | 40.9% |
@@ -372,6 +373,7 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`tools/abi_stamp.c`](modules/tools.abi_stamp.c.md) | 1 | 2 | 50.0% |
 | [`tools.gen_icons`](modules/tools.gen_icons.py.md) | 2 | 4 | 50.0% |
 | [`tools.mkpak1`](modules/tools.mkpak1.py.md) | 1 | 2 | 50.0% |
+| [`tools.mkramdisk`](modules/tools.mkramdisk.py.md) | 2 | 4 | 50.0% |
 | [`tools.probe_compute_vga`](modules/tools.probe_compute_vga.py.md) | 1 | 2 | 50.0% |
 | [`tools.probe_minicraft`](modules/tools.probe_minicraft.py.md) | 1 | 2 | 50.0% |
 | [`kernel/vga_fb.c`](modules/kernel.vga_fb.c.md) | 54 | 107 | 50.5% |
@@ -421,6 +423,7 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`tools.check_kb_sync`](modules/tools.check_kb_sync.py.md) | 2 | 3 | 66.7% |
 | [`tools.gen_zip_fixtures`](modules/tools.gen_zip_fixtures.py.md) | 2 | 3 | 66.7% |
 | [`tools.minios_hyper`](modules/tools.minios_hyper.py.md) | 30 | 45 | 66.7% |
+| [`tools.mkcpyzip`](modules/tools.mkcpyzip.py.md) | 2 | 3 | 66.7% |
 | [`headers/spinlock.h`](modules/headers.spinlock.h.md) | 13 | 19 | 68.4% |
 | [`progs/doomgeneric/r_defs.h`](modules/progs.doomgeneric.r_defs.h.md) | 18 | 26 | 69.2% |
 | [`kernel/mm.c`](modules/kernel.mm.c.md) | 7 | 10 | 70.0% |
@@ -512,6 +515,7 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 | [`progs/freedomui/media_unavailable.c`](modules/progs.freedomui.media_unavailable.c.md) | 2 | 2 | 100.0% |
 | [`progs.micropython.variants.minios.lib`](modules/progs.micropython.variants.minios.lib.__init__.py.md) | 1 | 1 | 100.0% |
 | [`progs.micropython.variants.minios.lib.hello`](modules/progs.micropython.variants.minios.lib.hello.py.md) | 1 | 1 | 100.0% |
+| [`progs.micropython.variants.minios.lib.mip`](modules/progs.micropython.variants.minios.lib.mip.py.md) | 12 | 12 | 100.0% |
 | [`progs.micropython.variants.minios.manifest`](modules/progs.micropython.variants.minios.manifest.py.md) | 1 | 1 | 100.0% |
 | [`progs/nuklear/font8x8.c`](modules/progs.nuklear.font8x8.c.md) | 1 | 1 | 100.0% |
 | [`progs/pokemon/fetch.sh`](modules/progs.pokemon.fetch.sh.md) | 1 | 1 | 100.0% |
@@ -533,7 +537,7 @@ Overall: **29.0%** (2714 of 9355 public modules, types, and callables). Data mem
 
 DOC001 undocumented public item, DOC002 parameter not documented, DOC003 documented parameter missing from the signature (stale doc), DOC004 return value not documented, DOC005 raised exception not documented.
 
-DOC001: 6631, DOC005: 1
+DOC001: 6656, DOC005: 1
 
 - DOC001 `arch/x86/ap_entry.S:21` function ap_stub_start is not documented
 - DOC001 `arch/x86/ap_entry.S:39` function ap_pm is not documented
@@ -1035,4 +1039,4 @@ DOC001: 6631, DOC005: 1
 - DOC001 `fs/ext4.c:666` function ext4_vfs_write is not documented
 - DOC001 `fs/ext4.c:675` function ext4_vfs_close is not documented
 - DOC001 `fs/ext4.c:680` function ext4_vfs_fstat is not documented
-- ... 6132 more in `api/warnings.jsonl`
+- ... 6157 more in `api/warnings.jsonl`

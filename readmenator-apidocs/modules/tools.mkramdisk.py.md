@@ -1,6 +1,6 @@
 # `tools.mkramdisk`
 
-> Source: [tools/mkramdisk.py:1](../../tools/mkramdisk.py#L1) | language `py` | coverage 33.3% | [API index](../index.md)
+> Source: [tools/mkramdisk.py:1](../../tools/mkramdisk.py#L1) | language `py` | coverage 50.0% | [API index](../index.md)
 
 Build a MiniOS ramdisk image from files in a directory tree.
 
@@ -19,15 +19,20 @@ stored raw and flagged so.
 
 Layout (little endian):
     u32 magic, u32 count
-    count * { char name[64]; u32 raw_size; u32 stored_size;
+    count * { char name[RAMDISK_FNAME_LEN]; u32 raw_size; u32 stored_size;
               u32 data_offset; u32 flags }
     payload area (concatenated, offsets relative to its start)
 flags bit 0: stored_size bytes are a zlib stream, else raw.
 
+The name slot width is RAMDISK_FNAME_LEN parsed from headers/kernel.h
+(the single source of truth): the kernel's RDFile table reads the same
+width, and a mismatch silently misaligns every entry; changing the
+constant there and rebuilding is the only way to move it.
+
 ## Contents
 
-- **Functions:** [`pack_name`](#pack_name), [`main`](#main)
-- **Constants:** [`MAGIC`](#magic), [`FNAME_BYTES`](#fname_bytes), [`NAME_MAX`](#name_max), [`MAX_FILES`](#max_files), [`ENTRY_BYTES`](#entry_bytes), [`FLAG_DEFLATE`](#flag_deflate), [`DEFLATE_LEVEL`](#deflate_level)
+- **Functions:** [`read_fname_bytes`](#read_fname_bytes), [`pack_name`](#pack_name), [`main`](#main)
+- **Constants:** [`MAGIC`](#magic), [`MAX_FILES`](#max_files), [`FLAG_DEFLATE`](#flag_deflate), [`DEFLATE_LEVEL`](#deflate_level), [`FNAME_BYTES`](#fname_bytes), [`NAME_MAX`](#name_max), [`ENTRY_BYTES`](#entry_bytes)
 
 ## Call Graph
 
@@ -42,11 +47,35 @@ flowchart LR
 
 ## Functions
 
+<a id="read_fname_bytes"></a>
+
+### `read_fname_bytes`
+
+`function` | [tools/mkramdisk.py:41](../../tools/mkramdisk.py#L41)
+
+```python
+def read_fname_bytes(kernel_h_path)
+```
+
+Parse RAMDISK_FNAME_LEN from headers/kernel.h; fail closed.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `kernel_h_path` |  |  |  |
+
+**Raises**
+
+- `SystemExit`: (raised in the body, not documented)
+
+---
+
 <a id="pack_name"></a>
 
 ### `pack_name`
 
-`function` | [tools/mkramdisk.py:38](../../tools/mkramdisk.py#L38)
+`function` | [tools/mkramdisk.py:64](../../tools/mkramdisk.py#L64)
 
 ```python
 def pack_name(path, common)
@@ -71,7 +100,7 @@ def pack_name(path, common)
 
 ### `main`
 
-`function` | [tools/mkramdisk.py:48](../../tools/mkramdisk.py#L48)
+`function` | [tools/mkramdisk.py:74](../../tools/mkramdisk.py#L74)
 
 ```python
 def main()
@@ -91,34 +120,10 @@ def main()
 
 ### `MAGIC`
 
-`constant` | [tools/mkramdisk.py:29](../../tools/mkramdisk.py#L29)
+`constant` | [tools/mkramdisk.py:35](../../tools/mkramdisk.py#L35)
 
 ```python
 MAGIC = 1263748178
-```
-
----
-
-<a id="fname_bytes"></a>
-
-### `FNAME_BYTES`
-
-`constant` | [tools/mkramdisk.py:30](../../tools/mkramdisk.py#L30)
-
-```python
-FNAME_BYTES = 64
-```
-
----
-
-<a id="name_max"></a>
-
-### `NAME_MAX`
-
-`constant` | [tools/mkramdisk.py:31](../../tools/mkramdisk.py#L31)
-
-```python
-NAME_MAX = FNAME_BYTES - 1
 ```
 
 ---
@@ -127,22 +132,10 @@ NAME_MAX = FNAME_BYTES - 1
 
 ### `MAX_FILES`
 
-`constant` | [tools/mkramdisk.py:32](../../tools/mkramdisk.py#L32)
+`constant` | [tools/mkramdisk.py:36](../../tools/mkramdisk.py#L36)
 
 ```python
 MAX_FILES = 128
-```
-
----
-
-<a id="entry_bytes"></a>
-
-### `ENTRY_BYTES`
-
-`constant` | [tools/mkramdisk.py:33](../../tools/mkramdisk.py#L33)
-
-```python
-ENTRY_BYTES = FNAME_BYTES + 16
 ```
 
 ---
@@ -151,7 +144,7 @@ ENTRY_BYTES = FNAME_BYTES + 16
 
 ### `FLAG_DEFLATE`
 
-`constant` | [tools/mkramdisk.py:34](../../tools/mkramdisk.py#L34)
+`constant` | [tools/mkramdisk.py:37](../../tools/mkramdisk.py#L37)
 
 ```python
 FLAG_DEFLATE = 1
@@ -163,10 +156,46 @@ FLAG_DEFLATE = 1
 
 ### `DEFLATE_LEVEL`
 
-`constant` | [tools/mkramdisk.py:35](../../tools/mkramdisk.py#L35)
+`constant` | [tools/mkramdisk.py:38](../../tools/mkramdisk.py#L38)
 
 ```python
 DEFLATE_LEVEL = 6
+```
+
+---
+
+<a id="fname_bytes"></a>
+
+### `FNAME_BYTES`
+
+`constant` | [tools/mkramdisk.py:57](../../tools/mkramdisk.py#L57)
+
+```python
+FNAME_BYTES
+```
+
+---
+
+<a id="name_max"></a>
+
+### `NAME_MAX`
+
+`constant` | [tools/mkramdisk.py:60](../../tools/mkramdisk.py#L60)
+
+```python
+NAME_MAX = FNAME_BYTES - 1
+```
+
+---
+
+<a id="entry_bytes"></a>
+
+### `ENTRY_BYTES`
+
+`constant` | [tools/mkramdisk.py:61](../../tools/mkramdisk.py#L61)
+
+```python
+ENTRY_BYTES = FNAME_BYTES + 16
 ```
 
 ---

@@ -28,6 +28,21 @@ MICROPYTHON_URL ?= https://github.com/micropython/micropython
 MICROPYTHON_DIR ?= ../micropython
 MICROPYTHON_REF ?= v1.28.0
 
+# CPython: the reference interpreter as a ring-3 static ELF (phase 3 in
+# docs/spec/python.md), built from a sibling checkout exactly like the
+# MicroPython port. Ships on MiniFS only when the checkout exists.
+CPYTHON_URL ?= https://github.com/python/cpython
+CPYTHON_DIR ?= ../cpython
+CPYTHON_REF ?= v3.12.11
+# pip rides pre-installed in site-packages (the wheel is a zip; `make
+# sources` fetches it when missing) so the guest never needs HTTPS to
+# bootstrap the installer. The six wheel is the offline install demo
+# asset (docs/spec/python.md evidence).
+CPYTHON_PIP_WHL ?= $(PROGS_DIR)/cpython/pip-24.3.1-py3-none-any.whl
+CPYTHON_PIP_INDEX ?= https://pypi.org/pypi/pip/24.3.1/json
+CPYTHON_DEMO_WHL ?= $(PROGS_DIR)/cpython/six-1.16.0-py2.py3-none-any.whl
+CPYTHON_DEMO_INDEX ?= https://pypi.org/pypi/six/1.16.0/json
+
 # Lua 5.4: the reference implementation built as a ring-3 static ELF, exactly
 # like MicroPython (host gcc -static, Linux syscall ABI, ships on MiniFS).
 LUA_URL ?= https://github.com/lua/lua
@@ -177,6 +192,7 @@ PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o $(OBJ_DIR)/dlmalloc.o \
             $(BIN_DIR)/cp $(BIN_DIR)/mtop \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
+            $(SRC_DIR)/test_py.py \
             $(SRC_DIR)/test.lua $(SRC_DIR)/test.lisp $(SRC_DIR)/test_all.sh \
             $(PROGS_DIR)/etc/alias \
             $(PROGS_DIR)/etc/init \
@@ -215,6 +231,32 @@ sources:
 	    echo "cloning  $(MICROPYTHON_URL) -> $(MICROPYTHON_DIR) ($(MICROPYTHON_REF))"; \
 	    $(GIT) clone --depth 1 -b $(MICROPYTHON_REF) "$(MICROPYTHON_URL)" "$(MICROPYTHON_DIR)" || exit 1; \
 	    $(GIT) -C "$(MICROPYTHON_DIR)" submodule update --init lib/micropython-lib || exit 1; \
+	fi
+	@if [ -d "$(CPYTHON_DIR)/.git" ]; then \
+	    echo "present  $(CPYTHON_DIR)"; \
+	elif [ -e "$(CPYTHON_DIR)" ]; then \
+	    echo "skipped  $(CPYTHON_DIR) exists and is not a git clone"; \
+	else \
+	    echo "cloning  $(CPYTHON_URL) -> $(CPYTHON_DIR) ($(CPYTHON_REF))"; \
+	    $(GIT) clone --depth 1 -b $(CPYTHON_REF) "$(CPYTHON_URL)" "$(CPYTHON_DIR)" || exit 1; \
+	fi
+	@if [ ! -f "$(CPYTHON_PIP_WHL)" ]; then \
+	    echo "fetching $(notdir $(CPYTHON_PIP_WHL))"; \
+	    mkdir -p "$(dir $(CPYTHON_PIP_WHL))"; \
+	    python3 -c "import json, urllib.request; \
+	        meta = json.load(urllib.request.urlopen('$(CPYTHON_PIP_INDEX)')); \
+	        url = [u['url'] for u in meta['urls'] \
+	               if u['filename'].endswith('.whl')][0]; \
+	        urllib.request.urlretrieve(url, '$(CPYTHON_PIP_WHL)')" || exit 1; \
+	fi
+	@if [ ! -f "$(CPYTHON_DEMO_WHL)" ]; then \
+	    echo "fetching $(notdir $(CPYTHON_DEMO_WHL))"; \
+	    mkdir -p "$(dir $(CPYTHON_DEMO_WHL))"; \
+	    python3 -c "import json, urllib.request; \
+	        meta = json.load(urllib.request.urlopen('$(CPYTHON_DEMO_INDEX)')); \
+	        url = [u['url'] for u in meta['urls'] \
+	               if u['filename'].endswith('.whl')][0]; \
+	        urllib.request.urlretrieve(url, '$(CPYTHON_DEMO_WHL)')" || exit 1; \
 	fi
 	@if [ -d "$(NUKLEAR_DIR)/.git" ]; then \
 	    echo "present  $(NUKLEAR_DIR)"; \
@@ -914,6 +956,7 @@ $(BIN_DIR)/micropython.elf: $(MICROPYTHON_DIR)/ports/unix/main.c \
                            $(PROGS_DIR)/micropython/variants/minios/manifest.py \
                            $(PROGS_DIR)/micropython/variants/minios/lib/__init__.py \
                            $(PROGS_DIR)/micropython/variants/minios/lib/hello.py \
+                           $(PROGS_DIR)/micropython/variants/minios/lib/mip.py \
                            | $(MPY_CROSS)
 	$(MAKE) -C $(MICROPYTHON_DIR)/ports/unix \
 	    VARIANT_DIR=$(MPY_VARIANT_DIR) \
@@ -925,6 +968,51 @@ $(BIN_DIR)/micropython.elf: $(MICROPYTHON_DIR)/ports/unix/main.c \
 # Bare-name alias so `micropython` works without the .elf suffix.
 $(BIN_DIR)/micropython: $(BIN_DIR)/micropython.elf
 	cp $< $@
+
+# ── CPython (reference interpreter, static ring-3 ELF) ──────────────
+# Same contract as MicroPython/DOOM: host gcc -static -no-pie, ET_EXEC,
+# Linux syscall ABI, ships on MiniFS (docs/spec/python.md phase 3). The
+# sibling checkout is configured once by hand for a static build; when the
+# checkout is missing the image simply does not carry python3. The pure
+# stdlib ships as /usr/local/lib/python312.zip (the exact path the static
+# binary's sys.path already names), a stored zip so zipimport needs no
+# zlib in the guest and MiniFS spends one inode instead of thousands
+# (tools/mkcpyzip.py, Makefile entries with the trees that need absent
+# pieces pruned: test, idlelib/tkinter, lib2to3, ensurepip/venv).
+CPYTHON_AVAILABLE := $(if $(wildcard $(CPYTHON_DIR)/python),1,0)
+CPYTHON_STDLIB = build/cpython-stdlib/usr
+CPYTHON_FILES = $(if $(filter 1,$(CPYTHON_AVAILABLE)),$(BIN_DIR)/python3.elf $(BIN_DIR)/python3 $(CPYTHON_STDLIB),)
+
+$(CPYTHON_DIR)/python:
+	@echo "missing $@"
+	@echo "run 'make sources', then build once:"
+	@echo "  cd $(CPYTHON_DIR) && ./configure --disable-shared --without-ensurepip --disable-test-modules LDFLAGS='-static -no-pie' && make -j python"
+	@exit 1
+
+$(BIN_DIR)/python3.elf: $(CPYTHON_DIR)/python
+	cp $< $@
+
+$(BIN_DIR)/python3: $(BIN_DIR)/python3.elf
+	cp $< $@
+
+$(CPYTHON_STDLIB): $(CPYTHON_DIR)/Lib/encodings/__init__.py tools/mkcpyzip.py $(wildcard $(CPYTHON_PIP_WHL)) $(wildcard $(CPYTHON_DEMO_WHL)) $(wildcard $(CPYTHON_DIR)/build/lib.*/_sysconfigdata*.py)
+	rm -rf $(CPYTHON_STDLIB)
+	mkdir -p $(CPYTHON_STDLIB)/local/lib/python3.12/site-packages
+	mkdir -p $(CPYTHON_STDLIB)/local/lib/python3.12/lib-dynload
+	python3 tools/mkcpyzip.py $(CPYTHON_DIR)/Lib \
+	    $(CPYTHON_STDLIB)/local/lib/python312.zip \
+	    test idlelib tkinter turtledemo lib2to3 ensurepip venv
+	if [ -f $(CPYTHON_PIP_WHL) ]; then \
+	    python3 -m zipfile -e $(CPYTHON_PIP_WHL) \
+	        $(CPYTHON_STDLIB)/local/lib/python3.12/site-packages/; \
+	fi
+	if [ -f $(CPYTHON_DEMO_WHL) ]; then \
+	    mkdir -p $(CPYTHON_STDLIB)/local/lib/python3.12/packages; \
+	    cp $(CPYTHON_DEMO_WHL) $(CPYTHON_STDLIB)/local/lib/python3.12/packages/; \
+	fi
+	for data in $(wildcard $(CPYTHON_DIR)/build/lib.*/_sysconfigdata*.py); do \
+	    cp "$$data" $(CPYTHON_STDLIB)/local/lib/python3.12/site-packages/ || exit 1; \
+	done
 
 # ── Lua 5.4 (reference interpreter + minios module, static glibc ELF) ──
 # Same contract as MicroPython/DOOM: host gcc -static, ring-3 ET_EXEC, on
@@ -1245,6 +1333,12 @@ $(BIN_DIR)/lxframe: $(SRC_DIR)/lxproc.c $(PROGS_DIR)/minios_abi.h
 $(BIN_DIR)/lxsecc: $(SRC_DIR)/lxsecc.c
 	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -o $@ $(SRC_DIR)/lxsecc.c
 
+# lxsel: select(2)/pselect6(2) ABI probe (docs/spec/python.md). Static
+# glibc's select() enters pselect6 on x86-64 (MicroPython's time.sleep
+# rides it), so this pins the kernel contract the Python port leans on.
+$(BIN_DIR)/lxsel: $(SRC_DIR)/lxsel.c
+	$(CC) -static -no-pie -std=gnu11 -O2 -Wall -Wextra -Werror -o $@ $(SRC_DIR)/lxsel.c
+
 # lxnet: Linux socket ABI probe (docs/spec/network.md). The linker notes
 # that static getaddrinfo needs glibc's NSS at runtime; the probe resolves
 # through /etc/hosts, which static glibc serves itself.
@@ -1478,6 +1572,7 @@ $(MINIFS_TMP_DIR):
 	mkdir -p $@
 
 MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) $(MINIFS_FREEDOM_GUI_FILES) $(MINIFS_TMP_DIR) $(MINIFS_NET_ETC) $(BIN_DIR)/micropython.elf $(BIN_DIR)/micropython \
+               $(CPYTHON_FILES) \
                $(BIN_DIR)/lua.elf $(BIN_DIR)/lua \
                $(PROGS_DIR)/lua/minios.c $(PROGS_DIR)/lua/lua_main.c \
                $(BIN_DIR)/lisp.elf $(BIN_DIR)/lisp \
@@ -1494,6 +1589,7 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(BIN_DIR)/thdemo $(SRC_DIR)/thdemo.c $(SRC_DIR)/mthreads.h \
                $(BIN_DIR)/lxabi $(SRC_DIR)/lxabi.c \
                $(BIN_DIR)/lxsecc $(SRC_DIR)/lxsecc.c \
+               $(BIN_DIR)/lxsel $(SRC_DIR)/lxsel.c \
                $(BIN_DIR)/lxproc $(BIN_DIR)/lxframe $(SRC_DIR)/lxproc.c \
                $(BIN_DIR)/apsse $(SRC_DIR)/apsse.c \
                $(BIN_DIR)/lxnet $(SRC_DIR)/lxnet.c \
@@ -1858,6 +1954,22 @@ mpng_test: tests/test_minios_png.c progs/minios_png.h | $(TOOLS_DIR)
 test-png: mpng_test
 	$(TOOLS_DIR)/mpng_test
 
+# Frozen mip installer host test (tests/test_mip.py, docs/spec/python.md):
+# pure URL/HTTP vectors under CPython plus a live install through the
+# static micropython.elf against a local http.server (plain, redirect,
+# chunked/https refusals, CLI). The ELF must carry MICROPY_PY_SOCKET=1,
+# so the target depends on it.
+test-mip: $(BIN_DIR)/micropython.elf
+	python3 tests/test_mip.py
+
+# select(2)/pselect6(2) fd_set<->pollfd mapping host test
+# (tests/test_select_map.c, docs/spec/python.md).
+smap_test: tests/test_select_map.c headers/select_map.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/smap_test tests/test_select_map.c
+
+test-select-map: smap_test
+	$(TOOLS_DIR)/smap_test
+
 # Doom PWAD grid-compiler host test (tests/test_doom_pwad.py, ADR-0022).
 # Covers the python writer plus the C editor roundtrip: the C --demo
 # output must pass the python checker and vice versa, so the two
@@ -2121,7 +2233,7 @@ klog.o: kernel/klog.c kernel.h
 exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h proc_sec.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h syscalls_proc.h shell.h spawn.h driver.h pipe.h ktime.h randmix.h proc_sec.h tlb.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h select_map.h syscalls_proc.h shell.h spawn.h driver.h pipe.h ktime.h randmix.h proc_sec.h tlb.h
 # NOTE: -Os, same pattern as shell.o (measured -3.5 KB vs -O1). The
 # dispatcher is a large switch, cold paths dominate; revalidate with
 # test_all.sh plus the syscall-heavy BDD scenarios after any change here.

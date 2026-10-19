@@ -1,8 +1,68 @@
-# Symbols (page 22 of 26)
+# Symbols (page 22 of 27)
 Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:1097` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,                        ...` |
+| `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1217` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:1132` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
+| `minios_load_helper` | function | `progs/pokemon/platform_minios.c:1103` | `static bool minios_load_helper(const char *path, void *data, size_t size,                        ...` |
+| `minios_load_rtc_data` | function | `progs/pokemon/platform_minios.c:1157` | `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,                           ...` |
+| `minios_persist_path` | function | `progs/pokemon/platform_minios.c:1088` | `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,                       ...` |
+| `minios_save_battery_ram` | function | `progs/pokemon/platform_minios.c:1147` | `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
+| `minios_save_helper` | function | `progs/pokemon/platform_minios.c:1121` | `static bool minios_save_helper(const char *path, const void *data, size_t size)` |
+| `minios_save_rtc_data` | function | `progs/pokemon/platform_minios.c:1170` | `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,                           ...` |
+| `minios_state_path` | function | `progs/pokemon/platform_minios.c:1212` | `static void minios_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `pokemon_art_draw` | function | `progs/pokemon/platform_minios.c:925` | `static void pokemon_art_draw(void)` |
+| `pokemon_art_draw_one` | function | `progs/pokemon/platform_minios.c:887` | `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,                       ...` |
+| `pokemon_art_load` | function | `progs/pokemon/platform_minios.c:869` | `static void pokemon_art_load(void)` |
+| `pokemon_art_load_one` | function | `progs/pokemon/platform_minios.c:844` | `static int pokemon_art_load_one(const char *path, unsigned char **rgb,                           ...` |
+| `poll_hotkeys` | function | `progs/pokemon/platform_minios.c:1236` | `static void poll_hotkeys(void)` |
+| `poll_keyboard` | function | `progs/pokemon/platform_minios.c:416` | `static void poll_keyboard(void)` |
+| `poll_menu` | function | `progs/pokemon/platform_minios.c:776` | `static void poll_menu(void)` |
+| `push_332_palette` | function | `progs/pokemon/platform_minios.c:455` | `static void push_332_palette(void)` |
+| `px_to_idx` | function | `progs/pokemon/platform_minios.c:956` | `static uint8_t px_to_idx(uint32_t pixel)` |
+| `rebuild_joypad` | function | `progs/pokemon/platform_minios.c:402` | `static void rebuild_joypad(void)` |
+| `sample_apu_voices` | function | `progs/pokemon/platform_minios.c:310` | `static void sample_apu_voices(gb_voice_t *v)` |
+| `sys_gfx_title` | function | `progs/pokemon/platform_minios.c:111` | `static long sys_gfx_title(const char *t)` |
+| `sys_kbd` | function | `progs/pokemon/platform_minios.c:75` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/pokemon/platform_minios.c:99` | `static long sys_kbd_raw(int on)` |
+| `sys_mouse` | function | `progs/pokemon/platform_minios.c:87` | `static long sys_mouse(int *xybw)` |
+| `sys_nk_frame` | function | `progs/pokemon/platform_minios.c:81` | `static long sys_nk_frame(int *origin)` |
+| `sys_palette` | function | `progs/pokemon/platform_minios.c:105` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_pcm2_close` | function | `progs/pokemon/platform_minios.c:135` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/pokemon/platform_minios.c:123` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/pokemon/platform_minios.c:129` | `static long sys_pcm2_write(const void *buf, long len)` |
+| `sys_tone` | function | `progs/pokemon/platform_minios.c:117` | `static long sys_tone(unsigned f)` |
+| `sys_vga_mode` | function | `progs/pokemon/platform_minios.c:93` | `static long sys_vga_mode(int on)` |
+| `ui_fringe_dirty` | function | `progs/pokemon/platform_minios.c:620` | `static bool ui_fringe_dirty(uint32_t now)` |
+| `ui_fringe_sync` | function | `progs/pokemon/platform_minios.c:626` | `static void ui_fringe_sync(uint32_t now)` |
+| `upload_frame` | function | `progs/pokemon/platform_minios.c:975` | `static void upload_frame(const uint32_t *framebuffer)` |
+| `Cbuf_AddText` | function | `progs/quake2generic/q2generic_minios.c:102` | `extern void Cbuf_AddText(char *text);` |
+| `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/quake2generic/q2generic_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
+| `MINIOS_GFX_BUF_GAME` | function | `progs/quake2generic/q2generic_minios.c:5` | `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel  * compat alias) and the...` |
+| `Q2G_BACKBUF` | macro | `progs/quake2generic/q2generic_minios.c:78` | `#define Q2G_BACKBUF` |
+| `Q2G_FB_H` | macro | `progs/quake2generic/q2generic_minios.c:22` | `#define Q2G_FB_H` |
+| `Q2G_FB_W` | macro | `progs/quake2generic/q2generic_minios.c:21` | `#define Q2G_FB_W` |
+| `QG_CaptureMouse` | function | `progs/quake2generic/q2generic_minios.c:168` | `void QG_CaptureMouse(void)` |
+| `QG_GetMouseDiff` | function | `progs/quake2generic/q2generic_minios.c:154` | `void QG_GetMouseDiff(int *dx, int *dy)` |
+| `QG_Milliseconds` | function | `progs/quake2generic/q2generic_minios.c:385` | `int QG_Milliseconds(void)` |
+| `QG_Mkdir` | function | `progs/quake2generic/q2generic_minios.c:175` | `void QG_Mkdir(const char *path)` |
+| `QG_ReleaseMouse` | function | `progs/quake2generic/q2generic_minios.c:172` | `void QG_ReleaseMouse(void)` |
+| `SWimp_AppActivate` | function | `progs/quake2generic/q2generic_minios.c:381` | `void SWimp_AppActivate(qboolean active)` |
+| `SWimp_BeginFrame` | function | `progs/quake2generic/q2generic_minios.c:349` | `void SWimp_BeginFrame(float camera_separation)` |
+| `SWimp_EndFrame` | function | `progs/quake2generic/q2generic_minios.c:352` | `void SWimp_EndFrame(void)` |
+| `SWimp_Init` | function | `progs/quake2generic/q2generic_minios.c:337` | `int SWimp_Init(void *hInstance, void *wndProc)` |
+| `SWimp_SetMode` | function | `progs/quake2generic/q2generic_minios.c:320` | `rserr_t SWimp_SetMode(int *pwidth, int *pheight, int mode, qboolean fullscreen)` |
+| `SWimp_SetPalette` | function | `progs/quake2generic/q2generic_minios.c:310` | `void SWimp_SetPalette(const unsigned char *palette)` |
+| `SWimp_Shutdown` | function | `progs/quake2generic/q2generic_minios.c:346` | `void SWimp_Shutdown(void)` |
+| `Sys_Quit` | function | `progs/quake2generic/q2generic_minios.c:99` | `extern void Sys_Quit(void);` |
+| `extended_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:262` | `static unsigned char extended_to_q2key(unsigned char sc)` |
+| `kbd_poll` | function | `progs/quake2generic/q2generic_minios.c:280` | `static void kbd_poll(void)` |
+| `main` | function | `progs/quake2generic/q2generic_minios.c:389` | `int main(int argc, char **argv)` |
+| `q2g_parse_autoframes` | function | `progs/quake2generic/q2generic_minios.c:121` | `static void q2g_parse_autoframes(int argc, char **argv)` |
+| `q2g_parse_windowed` | function | `progs/quake2generic/q2generic_minios.c:86` | `static void q2g_parse_windowed(int argc, char **argv)` |
+| `q2snd_probe` | function | `progs/quake2generic/q2generic_minios.c:106` | `extern int q2snd_probe(void);` |
 | `scancode_to_q2key` | function | `progs/quake2generic/q2generic_minios.c:179` | `static unsigned char scancode_to_q2key(unsigned char raw)` |
 | `sys_doom_frame` | function | `progs/quake2generic/q2generic_minios.c:54` | `static long sys_doom_frame(void)` |
 | `sys_gfx_zoom` | function | `progs/quake2generic/q2generic_minios.c:72` | `static long sys_gfx_zoom(long mode)` |
@@ -369,63 +429,66 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `exit_now` | function | `progs/src/kmem.c:14` | `static void exit_now(long code)` |
 | `syscall3` | function | `progs/src/kmem.c:7` | `static long syscall3(long n, long a1, long a2, long a3)` |
 | `main` | function | `progs/src/ldhello.c:1` | `int main(void)` |
-| `LXABI_A6_MAGIC` | macro | `progs/src/lxabi.c:54` | `#define LXABI_A6_MAGIC` |
-| `LXABI_CHILD_BAD` | macro | `progs/src/lxabi.c:55` | `#define LXABI_CHILD_BAD` |
-| `LXABI_CHILD_DELAY_MS` | macro | `progs/src/lxabi.c:40` | `#define LXABI_CHILD_DELAY_MS` |
-| `LXABI_CLOCK_SKEW_S` | macro | `progs/src/lxabi.c:50` | `#define LXABI_CLOCK_SKEW_S` |
-| `LXABI_CLONE_NR` | macro | `progs/src/lxabi.c:52` | `#define LXABI_CLONE_NR` |
-| `LXABI_CLOSE_RANGE_NR` | macro | `progs/src/lxabi.c:58` | `#define LXABI_CLOSE_RANGE_NR` |
-| `LXABI_COW_WORD` | macro | `progs/src/lxabi.c:60` | `#define LXABI_COW_WORD` |
-| `LXABI_DETACHED` | macro | `progs/src/lxabi.c:43` | `#define LXABI_DETACHED` |
-| `LXABI_EPOCH_2023` | macro | `progs/src/lxabi.c:49` | `#define LXABI_EPOCH_2023` |
-| `LXABI_GROUP_EXIT_CODE` | macro | `progs/src/lxabi.c:45` | `#define LXABI_GROUP_EXIT_CODE` |
-| `LXABI_MAX_SANE_CPUS` | macro | `progs/src/lxabi.c:47` | `#define LXABI_MAX_SANE_CPUS` |
-| `LXABI_MKDIR_FILE` | macro | `progs/src/lxabi.c:57` | `#define LXABI_MKDIR_FILE` |
-| `LXABI_MKDIR_PATH` | macro | `progs/src/lxabi.c:56` | `#define LXABI_MKDIR_PATH` |
-| `LXABI_PAGE` | macro | `progs/src/lxabi.c:59` | `#define LXABI_PAGE` |
-| `LXABI_REG_PROBE_WORDS` | macro | `progs/src/lxabi.c:51` | `#define LXABI_REG_PROBE_WORDS` |
-| `LXABI_SIGCHLD` | macro | `progs/src/lxabi.c:53` | `#define LXABI_SIGCHLD` |
-| `LXABI_SLEEP_MS` | macro | `progs/src/lxabi.c:46` | `#define LXABI_SLEEP_MS` |
-| `LXABI_THREADS` | macro | `progs/src/lxabi.c:41` | `#define LXABI_THREADS` |
-| `LXABI_THREAD_ITERS` | macro | `progs/src/lxabi.c:42` | `#define LXABI_THREAD_ITERS` |
-| `LXABI_TIMEDWAIT_MS` | macro | `progs/src/lxabi.c:48` | `#define LXABI_TIMEDWAIT_MS` |
-| `LXABI_WAIT_SPINS` | macro | `progs/src/lxabi.c:44` | `#define LXABI_WAIT_SPINS` |
+| `LXABI_A6_MAGIC` | macro | `progs/src/lxabi.c:55` | `#define LXABI_A6_MAGIC` |
+| `LXABI_CHILD_BAD` | macro | `progs/src/lxabi.c:56` | `#define LXABI_CHILD_BAD` |
+| `LXABI_CHILD_DELAY_MS` | macro | `progs/src/lxabi.c:41` | `#define LXABI_CHILD_DELAY_MS` |
+| `LXABI_CLOCK_SKEW_S` | macro | `progs/src/lxabi.c:51` | `#define LXABI_CLOCK_SKEW_S` |
+| `LXABI_CLONE_NR` | macro | `progs/src/lxabi.c:53` | `#define LXABI_CLONE_NR` |
+| `LXABI_CLOSE_RANGE_NR` | macro | `progs/src/lxabi.c:59` | `#define LXABI_CLOSE_RANGE_NR` |
+| `LXABI_COW_WORD` | macro | `progs/src/lxabi.c:61` | `#define LXABI_COW_WORD` |
+| `LXABI_DETACHED` | macro | `progs/src/lxabi.c:44` | `#define LXABI_DETACHED` |
+| `LXABI_EPOCH_2023` | macro | `progs/src/lxabi.c:50` | `#define LXABI_EPOCH_2023` |
+| `LXABI_GROUP_EXIT_CODE` | macro | `progs/src/lxabi.c:46` | `#define LXABI_GROUP_EXIT_CODE` |
+| `LXABI_MAX_SANE_CPUS` | macro | `progs/src/lxabi.c:48` | `#define LXABI_MAX_SANE_CPUS` |
+| `LXABI_MKDIR_FILE` | macro | `progs/src/lxabi.c:58` | `#define LXABI_MKDIR_FILE` |
+| `LXABI_MKDIR_PATH` | macro | `progs/src/lxabi.c:57` | `#define LXABI_MKDIR_PATH` |
+| `LXABI_PAGE` | macro | `progs/src/lxabi.c:60` | `#define LXABI_PAGE` |
+| `LXABI_REG_PROBE_WORDS` | macro | `progs/src/lxabi.c:52` | `#define LXABI_REG_PROBE_WORDS` |
+| `LXABI_SIGCHLD` | macro | `progs/src/lxabi.c:54` | `#define LXABI_SIGCHLD` |
+| `LXABI_SLEEP_MS` | macro | `progs/src/lxabi.c:47` | `#define LXABI_SLEEP_MS` |
+| `LXABI_THREADS` | macro | `progs/src/lxabi.c:42` | `#define LXABI_THREADS` |
+| `LXABI_THREAD_ITERS` | macro | `progs/src/lxabi.c:43` | `#define LXABI_THREAD_ITERS` |
+| `LXABI_TIMEDWAIT_MS` | macro | `progs/src/lxabi.c:49` | `#define LXABI_TIMEDWAIT_MS` |
+| `LXABI_WAIT_SPINS` | macro | `progs/src/lxabi.c:45` | `#define LXABI_WAIT_SPINS` |
 | `_GNU_SOURCE` | macro | `progs/src/lxabi.c:17` | `#define _GNU_SOURCE` |
-| `abort_from_worker_body` | function | `progs/src/lxabi.c:554` | `static void abort_from_worker_body(void)` |
-| `busy_wait_ms` | function | `progs/src/lxabi.c:80` | `static void busy_wait_ms(long ms)` |
-| `check_close_range` | function | `progs/src/lxabi.c:442` | `static void check_close_range(void)` |
-| `check_condvar` | function | `progs/src/lxabi.c:284` | `static void check_condvar(void)` |
-| `check_detached_reaped` | function | `progs/src/lxabi.c:250` | `static void check_detached_reaped(void)` |
-| `check_eventfd` | function | `progs/src/lxabi.c:417` | `static void check_eventfd(void)` |
-| `check_fork_cow_kernel_write` | function | `progs/src/lxabi.c:159` | `static void check_fork_cow_kernel_write(void)` |
-| `check_fork_registers` | function | `progs/src/lxabi.c:137` | `static void check_fork_registers(void)` |
-| `check_limits` | function | `progs/src/lxabi.c:477` | `static void check_limits(void)` |
-| `check_mkdir` | function | `progs/src/lxabi.c:463` | `static void check_mkdir(void)` |
-| `check_pipe2_flags` | function | `progs/src/lxabi.c:306` | `static void check_pipe2_flags(void)` |
-| `check_pipe_blocking` | function | `progs/src/lxabi.c:333` | `static void check_pipe_blocking(void)` |
-| `check_pipe_epipe` | function | `progs/src/lxabi.c:355` | `static void check_pipe_epipe(void)` |
-| `check_poll` | function | `progs/src/lxabi.c:393` | `static void check_poll(void)` |
-| `check_sleep` | function | `progs/src/lxabi.c:499` | `static void check_sleep(void)` |
-| `check_threads` | function | `progs/src/lxabi.c:214` | `static void check_threads(void)` |
-| `check_time` | function | `progs/src/lxabi.c:454` | `static void check_time(void)` |
-| `check_writev_pipe` | function | `progs/src/lxabi.c:381` | `static void check_writev_pipe(void)` |
-| `child_status` | function | `progs/src/lxabi.c:534` | `static int child_status(void (*body)(void))` |
-| `detached_worker` | function | `progs/src/lxabi.c:244` | `static void *detached_worker(void *arg)` |
-| `exit_group_from_worker_body` | function | `progs/src/lxabi.c:566` | `static void exit_group_from_worker_body(void)` |
-| `fork_probe` | function | `progs/src/lxabi.c:94` | `static void fork_probe(uint64_t *out)` |
-| `lxabi_exit_group_worker` | function | `progs/src/lxabi.c:560` | `static void *lxabi_exit_group_worker(void *arg)` |
-| `lxabi_sleeper` | function | `progs/src/lxabi.c:526` | `static void *lxabi_sleeper(void *arg)` |
-| `main` | function | `progs/src/lxabi.c:617` | `int main(void)` |
-| `mono_us` | function | `progs/src/lxabi.c:490` | `static long mono_us(void)` |
-| `now_ms` | function | `progs/src/lxabi.c:74` | `static long now_ms(void)` |
-| `process` | function | `progs/src/lxabi.c:580` | `* process (never a kernel panic), and kill(pid, 0) or a harmless signal  * leaves the target aliv...` |
-| `regs_match` | function | `progs/src/lxabi.c:131` | `static int regs_match(const uint64_t *r)` |
-| `report` | function | `progs/src/lxabi.c:64` | `static void report(const char *name, int ok, const char *detail)` |
-| `signaller` | function | `progs/src/lxabi.c:274` | `static void *signaller(void *arg)` |
-| `thread_result` | struct | `progs/src/lxabi.c:194` | `` |
-| `tls_seen` | type_alias | `progs/src/lxabi.c:193` | `typedef struct thread_result { long tls_seen;` |
-| `wild_jump_body` | function | `progs/src/lxabi.c:572` | `static void wild_jump_body(void)` |
-| `worker` | function | `progs/src/lxabi.c:200` | `static void *worker(void *arg)` |
+| `abort_from_worker_body` | function | `progs/src/lxabi.c:555` | `static void abort_from_worker_body(void)` |
+| `busy_wait_ms` | function | `progs/src/lxabi.c:81` | `static void busy_wait_ms(long ms)` |
+| `check_close_range` | function | `progs/src/lxabi.c:443` | `static void check_close_range(void)` |
+| `check_condvar` | function | `progs/src/lxabi.c:285` | `static void check_condvar(void)` |
+| `check_detached_reaped` | function | `progs/src/lxabi.c:251` | `static void check_detached_reaped(void)` |
+| `check_eventfd` | function | `progs/src/lxabi.c:418` | `static void check_eventfd(void)` |
+| `check_fork_cow_kernel_write` | function | `progs/src/lxabi.c:160` | `static void check_fork_cow_kernel_write(void)` |
+| `check_fork_registers` | function | `progs/src/lxabi.c:138` | `static void check_fork_registers(void)` |
+| `check_getdents64` | function | `progs/src/lxabi.c:687` | `static void check_getdents64(void)` |
+| `check_limits` | function | `progs/src/lxabi.c:478` | `static void check_limits(void)` |
+| `check_mkdir` | function | `progs/src/lxabi.c:464` | `static void check_mkdir(void)` |
+| `check_pipe2_flags` | function | `progs/src/lxabi.c:307` | `static void check_pipe2_flags(void)` |
+| `check_pipe_blocking` | function | `progs/src/lxabi.c:334` | `static void check_pipe_blocking(void)` |
+| `check_pipe_epipe` | function | `progs/src/lxabi.c:356` | `static void check_pipe_epipe(void)` |
+| `check_poll` | function | `progs/src/lxabi.c:394` | `static void check_poll(void)` |
+| `check_sleep` | function | `progs/src/lxabi.c:500` | `static void check_sleep(void)` |
+| `check_threads` | function | `progs/src/lxabi.c:215` | `static void check_threads(void)` |
+| `check_time` | function | `progs/src/lxabi.c:455` | `static void check_time(void)` |
+| `check_uid_gid` | function | `progs/src/lxabi.c:642` | `static void check_uid_gid(void)` |
+| `check_writev_pipe` | function | `progs/src/lxabi.c:382` | `static void check_writev_pipe(void)` |
+| `child_status` | function | `progs/src/lxabi.c:535` | `static int child_status(void (*body)(void))` |
+| `copy_dentry_name` | function | `progs/src/lxabi.c:680` | `static void copy_dentry_name(char *dst, size_t cap, const char *src)` |
+| `detached_worker` | function | `progs/src/lxabi.c:245` | `static void *detached_worker(void *arg)` |
+| `exit_group_from_worker_body` | function | `progs/src/lxabi.c:567` | `static void exit_group_from_worker_body(void)` |
+| `fork_probe` | function | `progs/src/lxabi.c:95` | `static void fork_probe(uint64_t *out)` |
+| `lxabi_exit_group_worker` | function | `progs/src/lxabi.c:561` | `static void *lxabi_exit_group_worker(void *arg)` |
+| `lxabi_sleeper` | function | `progs/src/lxabi.c:527` | `static void *lxabi_sleeper(void *arg)` |
+| `main` | function | `progs/src/lxabi.c:754` | `int main(void)` |
+| `mono_us` | function | `progs/src/lxabi.c:491` | `static long mono_us(void)` |
+| `now_ms` | function | `progs/src/lxabi.c:75` | `static long now_ms(void)` |
+| `process` | function | `progs/src/lxabi.c:581` | `* process (never a kernel panic), and kill(pid, 0) or a harmless signal  * leaves the target aliv...` |
+| `regs_match` | function | `progs/src/lxabi.c:132` | `static int regs_match(const uint64_t *r)` |
+| `report` | function | `progs/src/lxabi.c:65` | `static void report(const char *name, int ok, const char *detail)` |
+| `signaller` | function | `progs/src/lxabi.c:275` | `static void *signaller(void *arg)` |
+| `thread_result` | struct | `progs/src/lxabi.c:195` | `` |
+| `tls_seen` | type_alias | `progs/src/lxabi.c:194` | `typedef struct thread_result { long tls_seen;` |
+| `wild_jump_body` | function | `progs/src/lxabi.c:573` | `static void wild_jump_body(void)` |
+| `worker` | function | `progs/src/lxabi.c:201` | `static void *worker(void *arg)` |
 | `SYS_exit` | macro | `progs/src/lxhello.c:21` | `#define SYS_exit` |
 | `SYS_write` | macro | `progs/src/lxhello.c:20` | `#define SYS_write` |
 | `lmain` | function | `progs/src/lxhello.c:46` | `int lmain(long argc, char **argv)` |
@@ -433,68 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `lx_syscall3` | function | `progs/src/lxhello.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
 | `lx_write` | function | `progs/src/lxhello.c:29` | `static void lx_write(const char *s)` |
 | `lx_write_int` | function | `progs/src/lxhello.c:33` | `static void lx_write_int(long v)` |
-| `LXNET_BUF` | macro | `progs/src/lxnet.c:41` | `#define LXNET_BUF` |
-| `LXNET_IP_UNKNOWN` | macro | `progs/src/lxnet.c:45` | `#define LXNET_IP_UNKNOWN` |
-| `LXNET_LOOPBACK` | macro | `progs/src/lxnet.c:44` | `#define LXNET_LOOPBACK` |
-| `LXNET_TCP_MSG` | macro | `progs/src/lxnet.c:43` | `#define LXNET_TCP_MSG` |
-| `LXNET_UDP_MSG` | macro | `progs/src/lxnet.c:42` | `#define LXNET_UDP_MSG` |
-| `LXNET_WAIT_MS` | macro | `progs/src/lxnet.c:40` | `#define LXNET_WAIT_MS` |
-| `_GNU_SOURCE` | macro | `progs/src/lxnet.c:24` | `#define _GNU_SOURCE` |
-| `check_misc` | function | `progs/src/lxnet.c:217` | `static void check_misc(void)` |
-| `check_refused` | function | `progs/src/lxnet.c:150` | `static void check_refused(const struct sockaddr_in *peer)` |
-| `check_tcp` | function | `progs/src/lxnet.c:174` | `static void check_tcp(const struct sockaddr_in *peer)` |
-| `check_udp` | function | `progs/src/lxnet.c:73` | `static void check_udp(const struct sockaddr_in *peer)` |
-| `dial` | function | `progs/src/lxnet.c:236` | `static int dial(const char *host, const char *port)` |
-| `main` | function | `progs/src/lxnet.c:280` | `int main(int argc, char **argv)` |
-| `read_all` | function | `progs/src/lxnet.c:62` | `static int read_all(int fd, char *buf, size_t len)` |
-| `report` | function | `progs/src/lxnet.c:49` | `static void report(const char *name, int ok, const char *detail)` |
-| `wait_for` | function | `progs/src/lxnet.c:55` | `static int wait_for(int fd, short events)` |
-| `LXPROC_BAD` | macro | `progs/src/lxproc.c:31` | `#define LXPROC_BAD` |
-| `LXPROC_CHILD_CODE` | macro | `progs/src/lxproc.c:29` | `#define LXPROC_CHILD_CODE` |
-| `LXPROC_EXE_MAX` | macro | `progs/src/lxproc.c:27` | `#define LXPROC_EXE_MAX` |
-| `LXPROC_OK` | macro | `progs/src/lxproc.c:30` | `#define LXPROC_OK` |
-| `_GNU_SOURCE` | macro | `progs/src/lxproc.c:17` | `#define _GNU_SOURCE` |
-| `lxproc_note` | struct | `progs/src/lxproc.c:35` | `` |
-| `main` | function | `progs/src/lxproc.c:91` | `int main(void)` |
-| `report_exe` | function | `progs/src/lxproc.c:50` | `static int report_exe(void)` |
-| `report_fork` | function | `progs/src/lxproc.c:64` | `static int report_fork(void)` |
-| `LXSECC_BAD_CODE` | macro | `progs/src/lxsecc.c:31` | `#define LXSECC_BAD_CODE` |
-| `LXSECC_ERRNO_A` | macro | `progs/src/lxsecc.c:35` | `#define LXSECC_ERRNO_A` |
-| `LXSECC_ERRNO_B` | macro | `progs/src/lxsecc.c:36` | `#define LXSECC_ERRNO_B` |
-| `LXSECC_EXEC_CODE` | macro | `progs/src/lxsecc.c:29` | `#define LXSECC_EXEC_CODE` |
-| `LXSECC_EXEC_FLAG` | macro | `progs/src/lxsecc.c:28` | `#define LXSECC_EXEC_FLAG` |
-| `LXSECC_EXE_MAX` | macro | `progs/src/lxsecc.c:32` | `#define LXSECC_EXE_MAX` |
-| `LXSECC_NAME` | macro | `progs/src/lxsecc.c:33` | `#define LXSECC_NAME` |
-| `LXSECC_NAME_MAX` | macro | `progs/src/lxsecc.c:34` | `#define LXSECC_NAME_MAX` |
-| `LXSECC_OK_CODE` | macro | `progs/src/lxsecc.c:30` | `#define LXSECC_OK_CODE` |
-| `LXSECC_PAGE` | macro | `progs/src/lxsecc.c:37` | `#define LXSECC_PAGE` |
-| `LXSECC_STATUS_BYTE` | macro | `progs/src/lxsecc.c:40` | `#define LXSECC_STATUS_BYTE` |
-| `LXSECC_STATUS_MASK` | macro | `progs/src/lxsecc.c:38` | `#define LXSECC_STATUS_MASK` |
-| `LXSECC_STATUS_SHIFT` | macro | `progs/src/lxsecc.c:39` | `#define LXSECC_STATUS_SHIFT` |
-| `_GNU_SOURCE` | macro | `progs/src/lxsecc.c:13` | `#define _GNU_SOURCE` |
-| `check_prctl_flags` | function | `progs/src/lxsecc.c:177` | `static void check_prctl_flags(void)` |
-| `check_proc_self_exe` | function | `progs/src/lxsecc.c:197` | `static void check_proc_self_exe(const char *argv0)` |
-| `child_bad_program` | function | `progs/src/lxsecc.c:165` | `static void child_bad_program(void)` |
-| `child_errno_action` | function | `progs/src/lxsecc.c:100` | `static void child_errno_action(void)` |
-| `child_inherit` | function | `progs/src/lxsecc.c:133` | `static void child_inherit(void)` |
-| `child_kill_action` | function | `progs/src/lxsecc.c:107` | `static void child_kill_action(void)` |
-| `child_no_nnp` | function | `progs/src/lxsecc.c:157` | `static void child_no_nnp(void)` |
-| `child_stacked` | function | `progs/src/lxsecc.c:142` | `static void child_stacked(void)` |
-| `child_strict` | function | `progs/src/lxsecc.c:150` | `static void child_strict(void)` |
-| `child_wx` | function | `progs/src/lxsecc.c:116` | `static void child_wx(void)` |
-| `exit_code_of` | function | `progs/src/lxsecc.c:53` | `static int exit_code_of(int st)` |
-| `grandchild_inherits` | function | `progs/src/lxsecc.c:127` | `static void grandchild_inherits(void)` |
-| `install_filter` | function | `progs/src/lxsecc.c:72` | `static int install_filter(unsigned getpid_action)` |
-| `main` | function | `progs/src/lxsecc.c:215` | `int main(int argc, char **argv)` |
-| `report` | function | `progs/src/lxsecc.c:44` | `static void report(const char *name, int ok, const char *detail)` |
-| `run_child` | function | `progs/src/lxsecc.c:58` | `static int run_child(void (*body)(void))` |
-| `LXTLS_CA_BUNDLE` | macro | `progs/src/lxtls.c:34` | `#define LXTLS_CA_BUNDLE` |
-| `LXTLS_CONNECT_S` | macro | `progs/src/lxtls.c:32` | `#define LXTLS_CONNECT_S` |
-| `LXTLS_MAX_REDIRECTS` | macro | `progs/src/lxtls.c:33` | `#define LXTLS_MAX_REDIRECTS` |
-| `LXTLS_RAND_BYTES` | macro | `progs/src/lxtls.c:35` | `#define LXTLS_RAND_BYTES` |
-| `LXTLS_TIMEOUT_S` | macro | `progs/src/lxtls.c:31` | `#define LXTLS_TIMEOUT_S` |
-| `lxtls_debug` | function | `progs/src/lxtls.c:46` | `static int lxtls_debug(CURL *h, curl_infotype type, char *data, size_t size, void *user)` |
-| `lxtls_rand` | function | `progs/src/lxtls.c:73` | `static int lxtls_rand(void)` |
-| `lxtls_sink` | function | `progs/src/lxtls.c:39` | `static size_t lxtls_sink(char *data, size_t size, size_t nmemb, void *user)` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)

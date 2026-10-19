@@ -1,8 +1,9 @@
-# Symbols (page 4 of 26)
+# Symbols (page 4 of 27)
 Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCI_COMMAND_MEMORY` | macro | `headers/drivers/pci.h:33` | `#define PCI_COMMAND_MEMORY` |
 | `PCI_HDR_TYPE_BRIDGE` | macro | `headers/drivers/pci.h:47` | `#define PCI_HDR_TYPE_BRIDGE` |
 | `PCI_HEADER_MULTIFUNC` | macro | `headers/drivers/pci.h:45` | `#define PCI_HEADER_MULTIFUNC` |
 | `PCI_HEADER_TYPE_MASK` | macro | `headers/drivers/pci.h:46` | `#define PCI_HEADER_TYPE_MASK` |
@@ -267,38 +268,38 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `ide_write_sector` | function | `headers/ide.h:58` | `int ide_write_sector(unsigned int lba, const void *buf);` |
 | `ide_write_sectors` | function | `headers/ide.h:54` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `ALIGN_UP` | macro | `headers/kernel.h:20` | `#define ALIGN_UP(x, a)` |
-| `C` | function | `headers/kernel.h:887` | `* it with pointer subtraction in C (undefined behaviour). The value is  * a link-time difference,...` |
+| `C` | function | `headers/kernel.h:903` | `* it with pointer subtraction in C (undefined behaviour). The value is  * a link-time difference,...` |
 | `DEV_MMIO_VBASE` | macro | `headers/kernel.h:210` | `#define DEV_MMIO_VBASE` |
-| `EBADF` | macro | `headers/kernel.h:495` | `#define EBADF` |
+| `EBADF` | macro | `headers/kernel.h:511` | `#define EBADF` |
 | `EFAULT` | macro | `headers/kernel.h:4` | `#define EFAULT` |
-| `EFBIG` | macro | `headers/kernel.h:500` | `#define EFBIG` |
-| `EINVAL` | macro | `headers/kernel.h:499` | `#define EINVAL` |
-| `EIO` | macro | `headers/kernel.h:494` | `#define EIO` |
-| `EISDIR` | macro | `headers/kernel.h:498` | `#define EISDIR` |
-| `EI_NIDENT` | macro | `headers/kernel.h:714` | `#define EI_NIDENT` |
-| `ENAMETOOLONG` | macro | `headers/kernel.h:503` | `#define ENAMETOOLONG` |
-| `ENOENT` | macro | `headers/kernel.h:493` | `#define ENOENT` |
-| `ENOMEM` | macro | `headers/kernel.h:496` | `#define ENOMEM` |
-| `ENOSPC` | macro | `headers/kernel.h:501` | `#define ENOSPC` |
-| `ENOTDIR` | macro | `headers/kernel.h:497` | `#define ENOTDIR` |
-| `EOF` | macro | `headers/kernel.h:459` | `#define EOF` |
-| `ESPIPE` | macro | `headers/kernel.h:502` | `#define ESPIPE` |
-| `ETREL_TRUSTED_DIR` | macro | `headers/kernel.h:313` | `#define ETREL_TRUSTED_DIR` |
-| `ETREL_TRUSTED_LEN` | macro | `headers/kernel.h:314` | `#define ETREL_TRUSTED_LEN` |
-| `ET_DYN` | macro | `headers/kernel.h:741` | `#define ET_DYN` |
-| `ET_EXEC` | macro | `headers/kernel.h:740` | `#define ET_EXEC` |
-| `ET_REL` | macro | `headers/kernel.h:739` | `#define ET_REL` |
-| `Elf64_Addr` | type_alias | `headers/kernel.h:715` | `typedef unsigned long long Elf64_Addr;` |
-| `Elf64_Ehdr` | struct | `headers/kernel.h:722` | `` |
-| `Elf64_Half` | type_alias | `headers/kernel.h:718` | `typedef unsigned short Elf64_Half;` |
-| `Elf64_Off` | type_alias | `headers/kernel.h:716` | `typedef unsigned long long Elf64_Off;` |
-| `Elf64_Sxword` | type_alias | `headers/kernel.h:720` | `typedef long long Elf64_Sxword;` |
-| `Elf64_Word` | type_alias | `headers/kernel.h:717` | `typedef unsigned int Elf64_Word;` |
-| `Elf64_Xword` | type_alias | `headers/kernel.h:719` | `typedef unsigned long long Elf64_Xword;` |
+| `EFBIG` | macro | `headers/kernel.h:516` | `#define EFBIG` |
+| `EINVAL` | macro | `headers/kernel.h:515` | `#define EINVAL` |
+| `EIO` | macro | `headers/kernel.h:510` | `#define EIO` |
+| `EISDIR` | macro | `headers/kernel.h:514` | `#define EISDIR` |
+| `EI_NIDENT` | macro | `headers/kernel.h:730` | `#define EI_NIDENT` |
+| `ENAMETOOLONG` | macro | `headers/kernel.h:519` | `#define ENAMETOOLONG` |
+| `ENOENT` | macro | `headers/kernel.h:509` | `#define ENOENT` |
+| `ENOMEM` | macro | `headers/kernel.h:512` | `#define ENOMEM` |
+| `ENOSPC` | macro | `headers/kernel.h:517` | `#define ENOSPC` |
+| `ENOTDIR` | macro | `headers/kernel.h:513` | `#define ENOTDIR` |
+| `EOF` | macro | `headers/kernel.h:468` | `#define EOF` |
+| `ESPIPE` | macro | `headers/kernel.h:518` | `#define ESPIPE` |
+| `ETREL_TRUSTED_DIR` | macro | `headers/kernel.h:322` | `#define ETREL_TRUSTED_DIR` |
+| `ETREL_TRUSTED_LEN` | macro | `headers/kernel.h:323` | `#define ETREL_TRUSTED_LEN` |
+| `ET_DYN` | macro | `headers/kernel.h:757` | `#define ET_DYN` |
+| `ET_EXEC` | macro | `headers/kernel.h:756` | `#define ET_EXEC` |
+| `ET_REL` | macro | `headers/kernel.h:755` | `#define ET_REL` |
+| `Elf64_Addr` | type_alias | `headers/kernel.h:731` | `typedef unsigned long long Elf64_Addr;` |
+| `Elf64_Ehdr` | struct | `headers/kernel.h:738` | `` |
+| `Elf64_Half` | type_alias | `headers/kernel.h:734` | `typedef unsigned short Elf64_Half;` |
+| `Elf64_Off` | type_alias | `headers/kernel.h:732` | `typedef unsigned long long Elf64_Off;` |
+| `Elf64_Sxword` | type_alias | `headers/kernel.h:736` | `typedef long long Elf64_Sxword;` |
+| `Elf64_Word` | type_alias | `headers/kernel.h:733` | `typedef unsigned int Elf64_Word;` |
+| `Elf64_Xword` | type_alias | `headers/kernel.h:735` | `typedef unsigned long long Elf64_Xword;` |
 | `HEAP_BASE` | macro | `headers/kernel.h:204` | `#define HEAP_BASE` |
 | `HEAP_SIZE` | macro | `headers/kernel.h:205` | `#define HEAP_SIZE` |
 | `KERNEL_H` | macro | `headers/kernel.h:2` | `#define KERNEL_H` |
-| `KEVENT_MAX` | macro | `headers/kernel.h:865` | `#define KEVENT_MAX` |
+| `KEVENT_MAX` | macro | `headers/kernel.h:881` | `#define KEVENT_MAX` |
 | `KEY_ARR_DOWN` | macro | `headers/kernel.h:151` | `#define KEY_ARR_DOWN` |
 | `KEY_ARR_LEFT` | macro | `headers/kernel.h:153` | `#define KEY_ARR_LEFT` |
 | `KEY_ARR_RIGHT` | macro | `headers/kernel.h:152` | `#define KEY_ARR_RIGHT` |
@@ -333,70 +334,70 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `KEY_TAB` | macro | `headers/kernel.h:169` | `#define KEY_TAB` |
 | `KEY_TILDE` | macro | `headers/kernel.h:164` | `#define KEY_TILDE` |
 | `KEY_UP` | macro | `headers/kernel.h:144` | `#define KEY_UP` |
-| `KFD_MAX` | macro | `headers/kernel.h:829` | `#define KFD_MAX` |
-| `KFILE` | struct | `headers/kernel.h:461` | `` |
+| `KFD_MAX` | macro | `headers/kernel.h:845` | `#define KFD_MAX` |
+| `KFILE` | struct | `headers/kernel.h:470` | `` |
 | `KMALLOC_PAGE` | macro | `headers/kernel.h:220` | `#define KMALLOC_PAGE` |
-| `KPROG_MAX` | macro | `headers/kernel.h:609` | `#define KPROG_MAX` |
-| `KProg` | struct | `headers/kernel.h:616` | `` |
-| `KSYM_MAX` | macro | `headers/kernel.h:608` | `#define KSYM_MAX` |
-| `KSym` | struct | `headers/kernel.h:611` | `` |
+| `KPROG_MAX` | macro | `headers/kernel.h:625` | `#define KPROG_MAX` |
+| `KProg` | struct | `headers/kernel.h:632` | `` |
+| `KSYM_MAX` | macro | `headers/kernel.h:624` | `#define KSYM_MAX` |
+| `KSym` | struct | `headers/kernel.h:627` | `` |
 | `LDSO_REGION_BASE` | macro | `headers/kernel.h:194` | `#define LDSO_REGION_BASE` |
 | `LDSO_REGION_END` | macro | `headers/kernel.h:196` | `#define LDSO_REGION_END` |
 | `LDSO_REGION_SIZE` | macro | `headers/kernel.h:195` | `#define LDSO_REGION_SIZE` |
-| `LINUX_PROT_EXEC` | macro | `headers/kernel.h:788` | `#define LINUX_PROT_EXEC` |
-| `LINUX_PROT_READ` | macro | `headers/kernel.h:786` | `#define LINUX_PROT_READ` |
-| `LINUX_PROT_WRITE` | macro | `headers/kernel.h:787` | `#define LINUX_PROT_WRITE` |
+| `LINUX_PROT_EXEC` | macro | `headers/kernel.h:804` | `#define LINUX_PROT_EXEC` |
+| `LINUX_PROT_READ` | macro | `headers/kernel.h:802` | `#define LINUX_PROT_READ` |
+| `LINUX_PROT_WRITE` | macro | `headers/kernel.h:803` | `#define LINUX_PROT_WRITE` |
 | `PCI_MMIO_SIZE` | macro | `headers/kernel.h:211` | `#define PCI_MMIO_SIZE` |
 | `PORT_IO_DEFINED` | macro | `headers/kernel.h:22` | `#define PORT_IO_DEFINED` |
-| `PTE_DEMAND` | macro | `headers/kernel.h:782` | `#define PTE_DEMAND` |
-| `PTE_DEMAND_EXEC` | macro | `headers/kernel.h:785` | `#define PTE_DEMAND_EXEC` |
-| `PTE_DEMAND_READ` | macro | `headers/kernel.h:783` | `#define PTE_DEMAND_READ` |
-| `PTE_DEMAND_WRITE` | macro | `headers/kernel.h:784` | `#define PTE_DEMAND_WRITE` |
-| `RAMDISK_FNAME_LEN` | macro | `headers/kernel.h:270` | `#define RAMDISK_FNAME_LEN` |
-| `RAMDISK_FNAME_LEN` | function | `headers/kernel.h:286` | `* RAMDISK_FNAME_LEN (fs_resolve guarantees it);` |
+| `PTE_DEMAND` | macro | `headers/kernel.h:798` | `#define PTE_DEMAND` |
+| `PTE_DEMAND_EXEC` | macro | `headers/kernel.h:801` | `#define PTE_DEMAND_EXEC` |
+| `PTE_DEMAND_READ` | macro | `headers/kernel.h:799` | `#define PTE_DEMAND_READ` |
+| `PTE_DEMAND_WRITE` | macro | `headers/kernel.h:800` | `#define PTE_DEMAND_WRITE` |
+| `RAMDISK_FNAME_LEN` | macro | `headers/kernel.h:279` | `#define RAMDISK_FNAME_LEN` |
+| `RAMDISK_FNAME_LEN` | function | `headers/kernel.h:295` | `* RAMDISK_FNAME_LEN (fs_resolve guarantees it);` |
 | `RAMDISK_MAX_FILES` | macro | `headers/kernel.h:269` | `#define RAMDISK_MAX_FILES` |
-| `RDFile` | struct | `headers/kernel.h:272` | `` |
-| `RD_DATA_MAX` | macro | `headers/kernel.h:296` | `#define RD_DATA_MAX` |
+| `RDFile` | struct | `headers/kernel.h:281` | `` |
+| `RD_DATA_MAX` | macro | `headers/kernel.h:305` | `#define RD_DATA_MAX` |
 | `SYS_KSTK_BASE` | macro | `headers/kernel.h:202` | `#define SYS_KSTK_BASE` |
 | `SYS_KSTK_TOP` | macro | `headers/kernel.h:201` | `#define SYS_KSTK_TOP` |
 | `USER_BRK_END` | macro | `headers/kernel.h:190` | `#define USER_BRK_END` |
-| `USER_HEAP_CEIL` | macro | `headers/kernel.h:748` | `#define USER_HEAP_CEIL` |
+| `USER_HEAP_CEIL` | macro | `headers/kernel.h:764` | `#define USER_HEAP_CEIL` |
 | `USER_LOAD_BASE` | macro | `headers/kernel.h:185` | `#define USER_LOAD_BASE` |
 | `USER_LOAD_END` | macro | `headers/kernel.h:186` | `#define USER_LOAD_END` |
 | `USER_STACK_BASE` | macro | `headers/kernel.h:189` | `#define USER_STACK_BASE` |
 | `USER_STACK_SIZE` | macro | `headers/kernel.h:187` | `#define USER_STACK_SIZE` |
 | `USER_STACK_TOP` | macro | `headers/kernel.h:188` | `#define USER_STACK_TOP` |
-| `VFS_DRIVER_LEN` | macro | `headers/kernel.h:412` | `#define VFS_DRIVER_LEN` |
-| `VFS_MAX_MOUNTS` | macro | `headers/kernel.h:410` | `#define VFS_MAX_MOUNTS` |
-| `VFS_NAME_MAX` | macro | `headers/kernel.h:373` | `#define VFS_NAME_MAX` |
-| `VFS_PREFIX_LEN` | macro | `headers/kernel.h:411` | `#define VFS_PREFIX_LEN` |
+| `VFS_DRIVER_LEN` | macro | `headers/kernel.h:421` | `#define VFS_DRIVER_LEN` |
+| `VFS_MAX_MOUNTS` | macro | `headers/kernel.h:419` | `#define VFS_MAX_MOUNTS` |
+| `VFS_NAME_MAX` | macro | `headers/kernel.h:382` | `#define VFS_NAME_MAX` |
+| `VFS_PREFIX_LEN` | macro | `headers/kernel.h:420` | `#define VFS_PREFIX_LEN` |
 | `VGA_BASE` | macro | `headers/kernel.h:90` | `#define VGA_BASE` |
 | `VGA_COLS` | macro | `headers/kernel.h:91` | `#define VGA_COLS` |
 | `VGA_ROWS` | macro | `headers/kernel.h:92` | `#define VGA_ROWS` |
-| `block_init` | function | `headers/kernel.h:924` | `void block_init(void);` |
-| `block_read` | function | `headers/kernel.h:925` | `int block_read(unsigned int block_num, void *buf);` |
-| `block_read_multi` | function | `headers/kernel.h:927` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
-| `block_total` | function | `headers/kernel.h:929` | `unsigned int block_total(void);` |
-| `block_write` | function | `headers/kernel.h:926` | `int block_write(unsigned int block_num, const void *buf);` |
-| `block_write_multi` | function | `headers/kernel.h:928` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
-| `bootlog_mark` | function | `headers/kernel.h:901` | `void bootlog_mark(const char *name);` |
-| `bootlog_report` | function | `headers/kernel.h:902` | `void bootlog_report(void);` |
-| `clip_clear` | function | `headers/kernel.h:597` | `void clip_clear(void);` |
-| `clip_get` | function | `headers/kernel.h:596` | `int clip_get(char *out, unsigned long cap);` |
-| `clip_len_get` | function | `headers/kernel.h:598` | `int clip_len_get(void);` |
-| `clip_set` | function | `headers/kernel.h:595` | `int clip_set(const char *data, unsigned long len);` |
-| `console_getc` | function | `headers/kernel.h:574` | `int console_getc(void);` |
+| `block_init` | function | `headers/kernel.h:940` | `void block_init(void);` |
+| `block_read` | function | `headers/kernel.h:941` | `int block_read(unsigned int block_num, void *buf);` |
+| `block_read_multi` | function | `headers/kernel.h:943` | `int block_read_multi(unsigned int block_num, unsigned int count, void *buf);` |
+| `block_total` | function | `headers/kernel.h:945` | `unsigned int block_total(void);` |
+| `block_write` | function | `headers/kernel.h:942` | `int block_write(unsigned int block_num, const void *buf);` |
+| `block_write_multi` | function | `headers/kernel.h:944` | `int block_write_multi(unsigned int block_num, unsigned int count, const void *buf);` |
+| `bootlog_mark` | function | `headers/kernel.h:917` | `void bootlog_mark(const char *name);` |
+| `bootlog_report` | function | `headers/kernel.h:918` | `void bootlog_report(void);` |
+| `clip_clear` | function | `headers/kernel.h:613` | `void clip_clear(void);` |
+| `clip_get` | function | `headers/kernel.h:612` | `int clip_get(char *out, unsigned long cap);` |
+| `clip_len_get` | function | `headers/kernel.h:614` | `int clip_len_get(void);` |
+| `clip_set` | function | `headers/kernel.h:611` | `int clip_set(const char *data, unsigned long len);` |
+| `console_getc` | function | `headers/kernel.h:590` | `int console_getc(void);` |
 | `console_lock` | variable | `headers/kernel.h:105` | `extern spinlock_t console_lock;` |
-| `console_peek` | function | `headers/kernel.h:575` | `int console_peek(void);` |
-| `console_stdin_active` | function | `headers/kernel.h:588` | `int console_stdin_active(void);` |
-| `console_stdin_clear` | function | `headers/kernel.h:587` | `void console_stdin_clear(void);` |
-| `console_stdin_push` | function | `headers/kernel.h:586` | `int console_stdin_push(const char *data, unsigned long len);` |
-| `cow_drop_ref` | function | `headers/kernel.h:795` | `int cow_drop_ref(unsigned long phys);` |
-| `cow_page_shared` | function | `headers/kernel.h:815` | `int cow_page_shared(unsigned long phys);` |
-| `cow_release_window` | function | `headers/kernel.h:813` | `void cow_release_window(unsigned long cr3);` |
-| `cow_resolve` | function | `headers/kernel.h:811` | `int cow_resolve(unsigned long cr3, unsigned long va);` |
-| `cow_shared` | function | `headers/kernel.h:814` | `int cow_shared(void);` |
-| `desktop_launch` | function | `headers/kernel.h:662` | `void desktop_launch(const char *cmd);` |
+| `console_peek` | function | `headers/kernel.h:591` | `int console_peek(void);` |
+| `console_stdin_active` | function | `headers/kernel.h:604` | `int console_stdin_active(void);` |
+| `console_stdin_clear` | function | `headers/kernel.h:603` | `void console_stdin_clear(void);` |
+| `console_stdin_push` | function | `headers/kernel.h:602` | `int console_stdin_push(const char *data, unsigned long len);` |
+| `cow_drop_ref` | function | `headers/kernel.h:811` | `int cow_drop_ref(unsigned long phys);` |
+| `cow_page_shared` | function | `headers/kernel.h:831` | `int cow_page_shared(unsigned long phys);` |
+| `cow_release_window` | function | `headers/kernel.h:829` | `void cow_release_window(unsigned long cr3);` |
+| `cow_resolve` | function | `headers/kernel.h:827` | `int cow_resolve(unsigned long cr3, unsigned long va);` |
+| `cow_shared` | function | `headers/kernel.h:830` | `int cow_shared(void);` |
+| `desktop_launch` | function | `headers/kernel.h:678` | `void desktop_launch(const char *cmd);` |
 | `dlmalloc_calloc` | function | `headers/kernel.h:233` | `void *dlmalloc_calloc(unsigned long nmemb, unsigned long size);` |
 | `dlmalloc_free` | function | `headers/kernel.h:232` | `void dlmalloc_free(void *ptr);` |
 | `dlmalloc_init` | function | `headers/kernel.h:226` | `void dlmalloc_init(unsigned long size);` |
@@ -404,97 +405,96 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `dlmalloc_memalign` | function | `headers/kernel.h:231` | `void *dlmalloc_memalign(unsigned long align, unsigned long size);` |
 | `dlmalloc_realloc` | function | `headers/kernel.h:234` | `void *dlmalloc_realloc(void *ptr, unsigned long size);` |
 | `dlmalloc_usage` | function | `headers/kernel.h:236` | `void dlmalloc_usage(unsigned long *used, unsigned long *free_b, unsigned long *arena);` |
-| `elf_load` | function | `headers/kernel.h:750` | `void *elf_load(void *data, unsigned size, void **base_out);` |
-| `elf_wants_process` | function | `headers/kernel.h:752` | `int elf_wants_process(const void *data, unsigned size);` |
-| `exec_exit_code` | variable | `headers/kernel.h:654` | `extern int exec_exit_code;` |
-| `exec_return` | variable | `headers/kernel.h:653` | `extern kjmpbuf exec_return;` |
-| `fault` | function | `headers/kernel.h:808` | `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */...` |
-| `fd_lock` | variable | `headers/kernel.h:848` | `extern spinlock_t fd_lock;` |
-| `fd_lock` | function | `headers/kernel.h:873` | `* fd_lock (never nested, never held across yields);` |
-| `file_operations` | type_alias | `headers/kernel.h:405` | `typedef vfs_ops_t file_operations;` |
-| `fs_cwd` | variable | `headers/kernel.h:425` | `extern char fs_cwd[];` |
-| `fs_dir_exists` | function | `headers/kernel.h:303` | `int fs_dir_exists(const char *dir);` |
-| `fs_is_dir` | function | `headers/kernel.h:304` | `int fs_is_dir(const char *resolved);` |
-| `fs_lock` | variable | `headers/kernel.h:875` | `extern spinlock_t fs_lock;` |
-| `fs_rename` | function | `headers/kernel.h:508` | `int fs_rename(const char *oldr, const char *newr);` |
-| `fs_resolve` | function | `headers/kernel.h:302` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
-| `g_brk` | variable | `headers/kernel.h:707` | `extern unsigned long g_brk;` |
-| `g_brk_limit` | variable | `headers/kernel.h:708` | `extern unsigned long g_brk_limit;` |
-| `ide_init` | function | `headers/kernel.h:915` | `void ide_init(void);` |
-| `ide_present` | function | `headers/kernel.h:921` | `int ide_present(void);` |
-| `ide_read_sector` | function | `headers/kernel.h:918` | `int ide_read_sector(unsigned int lba, void *buf);` |
-| `ide_read_sectors` | function | `headers/kernel.h:916` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
-| `ide_total_sectors` | function | `headers/kernel.h:920` | `unsigned int ide_total_sectors(void);` |
-| `ide_write_sector` | function | `headers/kernel.h:919` | `int ide_write_sector(unsigned int lba, const void *buf);` |
-| `ide_write_sectors` | function | `headers/kernel.h:917` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
+| `elf_load` | function | `headers/kernel.h:766` | `void *elf_load(void *data, unsigned size, void **base_out);` |
+| `elf_wants_process` | function | `headers/kernel.h:768` | `int elf_wants_process(const void *data, unsigned size);` |
+| `exec_exit_code` | variable | `headers/kernel.h:670` | `extern int exec_exit_code;` |
+| `exec_return` | variable | `headers/kernel.h:669` | `extern kjmpbuf exec_return;` |
+| `fault` | function | `headers/kernel.h:824` | `* fixes one write fault (0 = resume), cow_release_window drops a * dying window's shares ahead of pt_free_user. */...` |
+| `fd_lock` | variable | `headers/kernel.h:864` | `extern spinlock_t fd_lock;` |
+| `fd_lock` | function | `headers/kernel.h:889` | `* fd_lock (never nested, never held across yields);` |
+| `file_operations` | type_alias | `headers/kernel.h:414` | `typedef vfs_ops_t file_operations;` |
+| `fs_cwd` | variable | `headers/kernel.h:434` | `extern char fs_cwd[];` |
+| `fs_dir_exists` | function | `headers/kernel.h:312` | `int fs_dir_exists(const char *dir);` |
+| `fs_is_dir` | function | `headers/kernel.h:313` | `int fs_is_dir(const char *resolved);` |
+| `fs_lock` | variable | `headers/kernel.h:891` | `extern spinlock_t fs_lock;` |
+| `fs_rename` | function | `headers/kernel.h:524` | `int fs_rename(const char *oldr, const char *newr);` |
+| `fs_resolve` | function | `headers/kernel.h:311` | `int fs_resolve(const char *path, char *out, unsigned cap);` |
+| `g_brk` | variable | `headers/kernel.h:723` | `extern unsigned long g_brk;` |
+| `g_brk_limit` | variable | `headers/kernel.h:724` | `extern unsigned long g_brk_limit;` |
+| `ide_init` | function | `headers/kernel.h:931` | `void ide_init(void);` |
+| `ide_present` | function | `headers/kernel.h:937` | `int ide_present(void);` |
+| `ide_read_sector` | function | `headers/kernel.h:934` | `int ide_read_sector(unsigned int lba, void *buf);` |
+| `ide_read_sectors` | function | `headers/kernel.h:932` | `int ide_read_sectors(unsigned int lba, unsigned int count, void *buf);` |
+| `ide_total_sectors` | function | `headers/kernel.h:936` | `unsigned int ide_total_sectors(void);` |
+| `ide_write_sector` | function | `headers/kernel.h:935` | `int ide_write_sector(unsigned int lba, const void *buf);` |
+| `ide_write_sectors` | function | `headers/kernel.h:933` | `int ide_write_sectors(unsigned int lba, unsigned int count, const void *buf);` |
 | `inb` | function | `headers/kernel.h:29` | `static inline unsigned char inb(unsigned short port)` |
 | `insw` | function | `headers/kernel.h:47` | `static inline void insw(unsigned short port, unsigned short *buf,                         unsigne...` |
 | `inw` | function | `headers/kernel.h:37` | `static inline unsigned short inw(unsigned short port)` |
-| `k_exec_user` | function | `headers/kernel.h:641` | `int k_exec_user(void *entry, int argc, char **argv);` |
-| `k_register_process` | function | `headers/kernel.h:633` | `void k_register_process(const char *name, void *proc_entry);` |
-| `k_register_program` | function | `headers/kernel.h:632` | `void k_register_program(const char *name, prog_entry_t entry);` |
-| `k_register_symbol` | function | `headers/kernel.h:634` | `void k_register_symbol(const char *name, void *addr);` |
-| `k_run_on_stack` | function | `headers/kernel.h:646` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
-| `k_run_rel` | function | `headers/kernel.h:642` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
-| `k_spawn` | function | `headers/kernel.h:631` | `int k_spawn(const char *name, int argc, char **argv);` |
-| `k_user_fault_return` | function | `headers/kernel.h:932` | `void k_user_fault_return(void);` |
+| `k_exec_user` | function | `headers/kernel.h:657` | `int k_exec_user(void *entry, int argc, char **argv);` |
+| `k_register_process` | function | `headers/kernel.h:649` | `void k_register_process(const char *name, void *proc_entry);` |
+| `k_register_program` | function | `headers/kernel.h:648` | `void k_register_program(const char *name, prog_entry_t entry);` |
+| `k_register_symbol` | function | `headers/kernel.h:650` | `void k_register_symbol(const char *name, void *addr);` |
+| `k_run_on_stack` | function | `headers/kernel.h:662` | `int k_run_on_stack(void *stack_top, prog_entry_t entry, int argc, char **argv);` |
+| `k_run_rel` | function | `headers/kernel.h:658` | `int k_run_rel(prog_entry_t entry, int argc, char **argv);` |
+| `k_spawn` | function | `headers/kernel.h:647` | `int k_spawn(const char *name, int argc, char **argv);` |
+| `k_user_fault_return` | function | `headers/kernel.h:948` | `void k_user_fault_return(void);` |
 | `kallocator_init` | function | `headers/kernel.h:218` | `void kallocator_init(void);` |
-| `katol` | function | `headers/kernel.h:541` | `long katol(const char *s);` |
+| `katol` | function | `headers/kernel.h:557` | `long katol(const char *s);` |
 | `kbd_available` | function | `headers/kernel.h:174` | `int kbd_available(void);` |
 | `kbd_read` | function | `headers/kernel.h:173` | `int kbd_read(void);` |
 | `kbd_reset_for_shell` | function | `headers/kernel.h:175` | `void kbd_reset_for_shell(void);` |
 | `kcalloc` | function | `headers/kernel.h:216` | `void *kcalloc(unsigned long nmemb, unsigned long size);` |
-| `kernel_end` | variable | `headers/kernel.h:878` | `extern unsigned long kernel_end;` |
-| `kerrno` | variable | `headers/kernel.h:505` | `extern int kerrno;` |
-| `kevent_create` | function | `headers/kernel.h:866` | `KFILE *kevent_create(unsigned long long initval, int semaphore);` |
-| `kevent_read` | function | `headers/kernel.h:867` | `long kevent_read(KFILE *f, unsigned long long *out);` |
-| `kevent_readable` | function | `headers/kernel.h:869` | `int kevent_readable(KFILE *f);` |
-| `kevent_writable` | function | `headers/kernel.h:870` | `int kevent_writable(KFILE *f);` |
-| `kevent_write` | function | `headers/kernel.h:868` | `long kevent_write(KFILE *f, unsigned long long v);` |
-| `kexit` | function | `headers/kernel.h:643` | `void kexit(int code);` |
-| `kfclose` | function | `headers/kernel.h:484` | `int kfclose(KFILE *f);` |
-| `kfd_get` | function | `headers/kernel.h:849` | `KFILE *kfd_get(int fd);` |
-| `kfd_override` | function | `headers/kernel.h:851` | `KFILE *kfd_override(int fd, KFILE *f);` |
-| `kfd_poll_revents` | function | `headers/kernel.h:860` | `int kfd_poll_revents(int fd);` |
-| `kfd_put` | function | `headers/kernel.h:850` | `void kfd_put(KFILE *f);` |
-| `kfd_view` | struct | `headers/kernel.h:839` | `` |
-| `kfflush` | function | `headers/kernel.h:518` | `int kfflush(KFILE *f);` |
-| `kfgetc` | function | `headers/kernel.h:509` | `int kfgetc(KFILE *f);` |
-| `kfgets` | function | `headers/kernel.h:510` | `char *kfgets(char *buf, int size, KFILE *f);` |
-| `kfile_stderr` | function | `headers/kernel.h:526` | `KFILE *kfile_stderr(void);` |
-| `kfile_stdin` | function | `headers/kernel.h:524` | `KFILE *kfile_stdin(void);` |
-| `kfile_stdout` | function | `headers/kernel.h:525` | `KFILE *kfile_stdout(void);` |
-| `kfopen` | function | `headers/kernel.h:483` | `KFILE *kfopen(const char *path, const char *mode);` |
-| `kfprintf` | function | `headers/kernel.h:545` | `int kfprintf(KFILE *f, const char *fmt, ...);` |
-| `kfputc` | function | `headers/kernel.h:517` | `int kfputc(int c, KFILE *f);` |
-| `kfputs` | function | `headers/kernel.h:516` | `int kfputs(const char *s, KFILE *f);` |
-| `kfread` | function | `headers/kernel.h:512` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
+| `kernel_end` | variable | `headers/kernel.h:894` | `extern unsigned long kernel_end;` |
+| `kerrno` | variable | `headers/kernel.h:521` | `extern int kerrno;` |
+| `kevent_create` | function | `headers/kernel.h:882` | `KFILE *kevent_create(unsigned long long initval, int semaphore);` |
+| `kevent_read` | function | `headers/kernel.h:883` | `long kevent_read(KFILE *f, unsigned long long *out);` |
+| `kevent_readable` | function | `headers/kernel.h:885` | `int kevent_readable(KFILE *f);` |
+| `kevent_writable` | function | `headers/kernel.h:886` | `int kevent_writable(KFILE *f);` |
+| `kevent_write` | function | `headers/kernel.h:884` | `long kevent_write(KFILE *f, unsigned long long v);` |
+| `kexit` | function | `headers/kernel.h:659` | `void kexit(int code);` |
+| `kfclose` | function | `headers/kernel.h:500` | `int kfclose(KFILE *f);` |
+| `kfd_get` | function | `headers/kernel.h:865` | `KFILE *kfd_get(int fd);` |
+| `kfd_override` | function | `headers/kernel.h:867` | `KFILE *kfd_override(int fd, KFILE *f);` |
+| `kfd_poll_revents` | function | `headers/kernel.h:876` | `int kfd_poll_revents(int fd);` |
+| `kfd_put` | function | `headers/kernel.h:866` | `void kfd_put(KFILE *f);` |
+| `kfd_view` | struct | `headers/kernel.h:855` | `` |
+| `kfflush` | function | `headers/kernel.h:534` | `int kfflush(KFILE *f);` |
+| `kfgetc` | function | `headers/kernel.h:525` | `int kfgetc(KFILE *f);` |
+| `kfgets` | function | `headers/kernel.h:526` | `char *kfgets(char *buf, int size, KFILE *f);` |
+| `kfile_stderr` | function | `headers/kernel.h:542` | `KFILE *kfile_stderr(void);` |
+| `kfile_stdin` | function | `headers/kernel.h:540` | `KFILE *kfile_stdin(void);` |
+| `kfile_stdout` | function | `headers/kernel.h:541` | `KFILE *kfile_stdout(void);` |
+| `kfopen` | function | `headers/kernel.h:495` | `KFILE *kfopen(const char *path, const char *mode);` |
+| `kfopen_dir` | function | `headers/kernel.h:499` | `KFILE *kfopen_dir(const char *resolved);` |
+| `kfprintf` | function | `headers/kernel.h:561` | `int kfprintf(KFILE *f, const char *fmt, ...);` |
+| `kfputc` | function | `headers/kernel.h:533` | `int kfputc(int c, KFILE *f);` |
+| `kfputs` | function | `headers/kernel.h:532` | `int kfputs(const char *s, KFILE *f);` |
+| `kfread` | function | `headers/kernel.h:528` | `unsigned long kfread(void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
 | `kfree` | function | `headers/kernel.h:215` | `void kfree(void *ptr);` |
 | `kfree_aligned` | function | `headers/kernel.h:222` | `void kfree_aligned(void *ptr);` |
-| `kfseek` | function | `headers/kernel.h:514` | `int kfseek(KFILE *f, long offset, int whence);` |
-| `kftell` | function | `headers/kernel.h:515` | `long kftell(KFILE *f);` |
-| `kfungetc` | function | `headers/kernel.h:511` | `int kfungetc(int c, KFILE *f);` |
-| `kfwrite` | function | `headers/kernel.h:513` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
+| `kfseek` | function | `headers/kernel.h:530` | `int kfseek(KFILE *f, long offset, int whence);` |
+| `kftell` | function | `headers/kernel.h:531` | `long kftell(KFILE *f);` |
+| `kfungetc` | function | `headers/kernel.h:527` | `int kfungetc(int c, KFILE *f);` |
+| `kfwrite` | function | `headers/kernel.h:529` | `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long nmemb, KFILE *f);` |
 | `kheap_size` | variable | `headers/kernel.h:229` | `extern unsigned long kheap_size;` |
-| `kjmpbuf` | struct | `headers/kernel.h:650` | `` |
-| `klog` | function | `headers/kernel.h:562` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
-| `klog_disable` | function | `headers/kernel.h:568` | `void klog_disable(void);` |
-| `klog_enable` | function | `headers/kernel.h:569` | `void klog_enable(void);` |
-| `klog_hexdump` | function | `headers/kernel.h:564` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
-| `klog_set_level` | function | `headers/kernel.h:566` | `void klog_set_level(log_level_t level);` |
-| `klog_set_subsys_level` | function | `headers/kernel.h:567` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
-| `klongjmp` | function | `headers/kernel.h:652` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
+| `kjmpbuf` | struct | `headers/kernel.h:666` | `` |
+| `klog` | function | `headers/kernel.h:578` | `void klog(log_level_t level, log_subsystem_t subsys, const char *fmt, ...);` |
+| `klog_disable` | function | `headers/kernel.h:584` | `void klog_disable(void);` |
+| `klog_enable` | function | `headers/kernel.h:585` | `void klog_enable(void);` |
+| `klog_hexdump` | function | `headers/kernel.h:580` | `void klog_hexdump(log_level_t level, log_subsystem_t subsys, const void *data, unsigned long len, const char *label);` |
+| `klog_set_level` | function | `headers/kernel.h:582` | `void klog_set_level(log_level_t level);` |
+| `klog_set_subsys_level` | function | `headers/kernel.h:583` | `void klog_set_subsys_level(log_subsystem_t subsys, log_level_t level);` |
+| `klongjmp` | function | `headers/kernel.h:668` | `void klongjmp(void *buf, int val) __attribute__((noreturn));` |
 | `kmalloc` | function | `headers/kernel.h:213` | `void *kmalloc(unsigned long size);` |
 | `kmalloc_aligned` | function | `headers/kernel.h:219` | `void *kmalloc_aligned(unsigned long size, unsigned long align);` |
 | `kmalloc_fail_after` | variable | `headers/kernel.h:214` | `extern long kmalloc_fail_after;` |
 | `kmalloc_page` | function | `headers/kernel.h:221` | `void *kmalloc_page(void);` |
-| `kmemcmp` | function | `headers/kernel.h:539` | `int kmemcmp(const void *a, const void *b, unsigned long n);` |
-| `kmemcpy` | function | `headers/kernel.h:537` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
-| `kmemmove` | function | `headers/kernel.h:540` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
-| `kmemset` | function | `headers/kernel.h:538` | `void *kmemset(void *dst, int c, unsigned long n);` |
-| `kmm_make_uncached` | function | `headers/kernel.h:803` | `int kmm_make_uncached(unsigned long phys, unsigned long len);` |
-| `kpipe_empty_wopen` | function | `headers/kernel.h:853` | `int kpipe_empty_wopen(KFILE *f);` |
-| `kpipe_is_write_end` | function | `headers/kernel.h:854` | `int kpipe_is_write_end(KFILE *f);` |
-| `kpipe_pair` | function | `headers/kernel.h:852` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);` |
+| `kmemcmp` | function | `headers/kernel.h:555` | `int kmemcmp(const void *a, const void *b, unsigned long n);` |
+| `kmemcpy` | function | `headers/kernel.h:553` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
+| `kmemmove` | function | `headers/kernel.h:556` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
+| `kmemset` | function | `headers/kernel.h:554` | `void *kmemset(void *dst, int c, unsigned long n);` |
+| `kmm_make_uncached` | function | `headers/kernel.h:819` | `int kmm_make_uncached(unsigned long phys, unsigned long len);` |
+| `kpipe_empty_wopen` | function | `headers/kernel.h:869` | `int kpipe_empty_wopen(KFILE *f);` |
 
 Next: [SYMBOLS_p5.md](SYMBOLS_p5.md)

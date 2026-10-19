@@ -37,7 +37,7 @@ flowchart LR
 
 ### `thread_result`
 
-`struct` | [progs/src/lxabi.c:194](../../progs/src/lxabi.c#L194)
+`struct` | [progs/src/lxabi.c:195](../../progs/src/lxabi.c#L195)
 
 ```c
 typedef struct thread_result
@@ -51,7 +51,7 @@ typedef struct thread_result
 
 ### `tls_seen`
 
-`type_alias` | [progs/src/lxabi.c:193](../../progs/src/lxabi.c#L193)
+`type_alias` | [progs/src/lxabi.c:194](../../progs/src/lxabi.c#L194)
 
 ```c
 typedef struct thread_result { long tls_seen;
@@ -65,7 +65,7 @@ typedef struct thread_result { long tls_seen;
 
 ### `process`
 
-`function` | [progs/src/lxabi.c:580](../../progs/src/lxabi.c#L580)
+`function` | [progs/src/lxabi.c:581](../../progs/src/lxabi.c#L581)
 
 ```c
 * process (never a kernel panic), and kill(pid, 0) or a harmless signal * leaves the target aliv...
@@ -87,7 +87,7 @@ typedef struct thread_result { long tls_seen;
 
 ### `main`
 
-`function` | [progs/src/lxabi.c:617](../../progs/src/lxabi.c#L617)
+`function` | [progs/src/lxabi.c:754](../../progs/src/lxabi.c#L754)
 
 ```c
 int main(void)
@@ -129,7 +129,7 @@ inline assembly.
 
 ### `LXABI_CHILD_DELAY_MS`
 
-`macro` | [progs/src/lxabi.c:40](../../progs/src/lxabi.c#L40)
+`macro` | [progs/src/lxabi.c:41](../../progs/src/lxabi.c#L41)
 
 ```c
 #define LXABI_CHILD_DELAY_MS
@@ -141,7 +141,7 @@ inline assembly.
 
 ### `LXABI_THREADS`
 
-`macro` | [progs/src/lxabi.c:41](../../progs/src/lxabi.c#L41)
+`macro` | [progs/src/lxabi.c:42](../../progs/src/lxabi.c#L42)
 
 ```c
 #define LXABI_THREADS
@@ -153,7 +153,7 @@ inline assembly.
 
 ### `LXABI_THREAD_ITERS`
 
-`macro` | [progs/src/lxabi.c:42](../../progs/src/lxabi.c#L42)
+`macro` | [progs/src/lxabi.c:43](../../progs/src/lxabi.c#L43)
 
 ```c
 #define LXABI_THREAD_ITERS
@@ -165,7 +165,7 @@ inline assembly.
 
 ### `LXABI_DETACHED`
 
-`macro` | [progs/src/lxabi.c:43](../../progs/src/lxabi.c#L43)
+`macro` | [progs/src/lxabi.c:44](../../progs/src/lxabi.c#L44)
 
 ```c
 #define LXABI_DETACHED
@@ -177,7 +177,7 @@ inline assembly.
 
 ### `LXABI_WAIT_SPINS`
 
-`macro` | [progs/src/lxabi.c:44](../../progs/src/lxabi.c#L44)
+`macro` | [progs/src/lxabi.c:45](../../progs/src/lxabi.c#L45)
 
 ```c
 #define LXABI_WAIT_SPINS
@@ -189,7 +189,7 @@ inline assembly.
 
 ### `LXABI_GROUP_EXIT_CODE`
 
-`macro` | [progs/src/lxabi.c:45](../../progs/src/lxabi.c#L45)
+`macro` | [progs/src/lxabi.c:46](../../progs/src/lxabi.c#L46)
 
 ```c
 #define LXABI_GROUP_EXIT_CODE
@@ -201,7 +201,7 @@ inline assembly.
 
 ### `LXABI_SLEEP_MS`
 
-`macro` | [progs/src/lxabi.c:46](../../progs/src/lxabi.c#L46)
+`macro` | [progs/src/lxabi.c:47](../../progs/src/lxabi.c#L47)
 
 ```c
 #define LXABI_SLEEP_MS
@@ -213,7 +213,7 @@ inline assembly.
 
 ### `LXABI_MAX_SANE_CPUS`
 
-`macro` | [progs/src/lxabi.c:47](../../progs/src/lxabi.c#L47)
+`macro` | [progs/src/lxabi.c:48](../../progs/src/lxabi.c#L48)
 
 ```c
 #define LXABI_MAX_SANE_CPUS
@@ -225,7 +225,7 @@ inline assembly.
 
 ### `LXABI_TIMEDWAIT_MS`
 
-`macro` | [progs/src/lxabi.c:48](../../progs/src/lxabi.c#L48)
+`macro` | [progs/src/lxabi.c:49](../../progs/src/lxabi.c#L49)
 
 ```c
 #define LXABI_TIMEDWAIT_MS
@@ -237,7 +237,7 @@ inline assembly.
 
 ### `LXABI_EPOCH_2023`
 
-`macro` | [progs/src/lxabi.c:49](../../progs/src/lxabi.c#L49)
+`macro` | [progs/src/lxabi.c:50](../../progs/src/lxabi.c#L50)
 
 ```c
 #define LXABI_EPOCH_2023
@@ -249,7 +249,7 @@ inline assembly.
 
 ### `LXABI_CLOCK_SKEW_S`
 
-`macro` | [progs/src/lxabi.c:50](../../progs/src/lxabi.c#L50)
+`macro` | [progs/src/lxabi.c:51](../../progs/src/lxabi.c#L51)
 
 ```c
 #define LXABI_CLOCK_SKEW_S
@@ -261,7 +261,7 @@ inline assembly.
 
 ### `LXABI_REG_PROBE_WORDS`
 
-`macro` | [progs/src/lxabi.c:51](../../progs/src/lxabi.c#L51)
+`macro` | [progs/src/lxabi.c:52](../../progs/src/lxabi.c#L52)
 
 ```c
 #define LXABI_REG_PROBE_WORDS
@@ -273,7 +273,7 @@ inline assembly.
 
 ### `LXABI_CLONE_NR`
 
-`macro` | [progs/src/lxabi.c:52](../../progs/src/lxabi.c#L52)
+`macro` | [progs/src/lxabi.c:53](../../progs/src/lxabi.c#L53)
 
 ```c
 #define LXABI_CLONE_NR
@@ -285,7 +285,7 @@ inline assembly.
 
 ### `LXABI_SIGCHLD`
 
-`macro` | [progs/src/lxabi.c:53](../../progs/src/lxabi.c#L53)
+`macro` | [progs/src/lxabi.c:54](../../progs/src/lxabi.c#L54)
 
 ```c
 #define LXABI_SIGCHLD
@@ -297,7 +297,7 @@ inline assembly.
 
 ### `LXABI_A6_MAGIC`
 
-`macro` | [progs/src/lxabi.c:54](../../progs/src/lxabi.c#L54)
+`macro` | [progs/src/lxabi.c:55](../../progs/src/lxabi.c#L55)
 
 ```c
 #define LXABI_A6_MAGIC
@@ -309,7 +309,7 @@ inline assembly.
 
 ### `LXABI_CHILD_BAD`
 
-`macro` | [progs/src/lxabi.c:55](../../progs/src/lxabi.c#L55)
+`macro` | [progs/src/lxabi.c:56](../../progs/src/lxabi.c#L56)
 
 ```c
 #define LXABI_CHILD_BAD
@@ -321,7 +321,7 @@ inline assembly.
 
 ### `LXABI_MKDIR_PATH`
 
-`macro` | [progs/src/lxabi.c:56](../../progs/src/lxabi.c#L56)
+`macro` | [progs/src/lxabi.c:57](../../progs/src/lxabi.c#L57)
 
 ```c
 #define LXABI_MKDIR_PATH
@@ -333,7 +333,7 @@ inline assembly.
 
 ### `LXABI_MKDIR_FILE`
 
-`macro` | [progs/src/lxabi.c:57](../../progs/src/lxabi.c#L57)
+`macro` | [progs/src/lxabi.c:58](../../progs/src/lxabi.c#L58)
 
 ```c
 #define LXABI_MKDIR_FILE
@@ -345,7 +345,7 @@ inline assembly.
 
 ### `LXABI_CLOSE_RANGE_NR`
 
-`macro` | [progs/src/lxabi.c:58](../../progs/src/lxabi.c#L58)
+`macro` | [progs/src/lxabi.c:59](../../progs/src/lxabi.c#L59)
 
 ```c
 #define LXABI_CLOSE_RANGE_NR
@@ -357,7 +357,7 @@ inline assembly.
 
 ### `LXABI_PAGE`
 
-`macro` | [progs/src/lxabi.c:59](../../progs/src/lxabi.c#L59)
+`macro` | [progs/src/lxabi.c:60](../../progs/src/lxabi.c#L60)
 
 ```c
 #define LXABI_PAGE
@@ -369,7 +369,7 @@ inline assembly.
 
 ### `LXABI_COW_WORD`
 
-`macro` | [progs/src/lxabi.c:60](../../progs/src/lxabi.c#L60)
+`macro` | [progs/src/lxabi.c:61](../../progs/src/lxabi.c#L61)
 
 ```c
 #define LXABI_COW_WORD

@@ -297,6 +297,14 @@ run cvm/w1.cvm
 run cvm/fib.cvm
 echo PASS: heap-stability-ok
 
+# === PYTHON AND SELECT ABI (docs/spec/python.md) ===
+run bin/lxsel
+echo PASS: lxsel-ok
+micropython src/test_py.py
+echo PASS: py-suite-ok
+python3 -c "print('PASS: py3-cpython-ok', 6 * 7)"
+python3 -c "import pip; print('PASS: py3-pip-ok', pip.__version__)"
+
 # === TRACING ===
 trace on
 cp src/fib.c /tmp/trace_test.txt

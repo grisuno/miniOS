@@ -1,6 +1,6 @@
 # Recipe: Change a File Safely
 
-Riskiest file: `kernel/string.c` (87 dependents)
+Riskiest file: `kernel/string.c` (88 dependents)
 
 1. Who depends on it: `grep -n -- '-> `<file>`' readmenator-agent/ARCHITECTURE*.md`
 2. Its public surface: `grep -n '`<file>:' readmenator-agent/API*.md`

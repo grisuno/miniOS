@@ -1,6 +1,19 @@
 # API (page 7 of 21)
 Previous: [API_p6.md](API_p6.md)
 
+## kernel/printf.c
+- `putc_buf` (function) `kernel/printf.c:7` `static void putc_buf(char c, void *ctx, int *written)`
+- `putc_file` (function) `kernel/printf.c:13` `static void putc_file(char c, void *ctx, int *written)`
+- `putc_str` (function) `kernel/printf.c:19` `static void putc_str(char c, void *ctx, int *written)`
+- `emit_num` (function) `kernel/printf.c:26` `static void emit_num(void (*emit)(char, void *, int *), void *ctx, int *written,
+                ...`
+- `kformat` (function) `kernel/printf.c:44` `static void kformat(void (*emit)(char, void *, int *), void *ctx,
+                    int *writte...`
+- `kfprintf` (function) `kernel/printf.c:157` `int kfprintf(KFILE *f, const char *fmt, ...)`
+- `ksprintf` (function) `kernel/printf.c:166` `int ksprintf(char *buf, const char *fmt, ...)`
+- `putc_snbuf` (function) `kernel/printf.c:178` `static void putc_snbuf(char c, void *ctx, int *written)`
+- `ksnprintf` (function) `kernel/printf.c:184` `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...)`
+
 ## kernel/proc_sec.c
 Depends on: `headers/proc_sec.h`, `headers/sanitize.h`, `headers/sched.h`, `headers/seccomp_bpf.h`, `headers/syscalls_proc.h`
 - `pid_ok` (function) `kernel/proc_sec.c:74` `static int pid_ok(int pid)`
@@ -230,78 +243,78 @@ Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/
 - `line` (function) `kernel/shell.c:446` `* to the live line (handled by the caller resetting shell_hist_idx). */
 static void shell_hist_na...`
 - `shell_readline_hist` (function) `kernel/shell.c:491` `static void shell_readline_hist(char *buf, int size)` -- Shell prompt readline: like shell_readline_buf plus command history.
-- `root` (function) `kernel/shell.c:651` `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
-- `shell_parse` (function) `kernel/shell.c:811` `int shell_parse(char *line, char **argv, int max_args)`
-- `desktop_unflag` (function) `kernel/shell.c:833` `static void desktop_unflag(const char *name);`
-- `shell_run_init` (function) `kernel/shell.c:840` `static void shell_run_init(void)` -- Startup commands from etc/init: one shell command per line, `#` comments and blank lines skipped.
-- `shell_run` (function) `kernel/shell.c:879` `void shell_run(void)`
-- `shell_load` (function) `kernel/shell.c:949` `static int shell_load(const char *fname, char *progname_out, void **entry_out)` -- Load an ELF file from the ramdisk and register it under its filename stem.
-- `outw_port` (function) `kernel/shell.c:1012` `static inline void outw_port(unsigned short port, unsigned short val)`
-- `shell_cmd_poweroff` (function) `kernel/shell.c:1018` `static void shell_cmd_poweroff(void)`
-- `shell_run_dir_for` (function) `kernel/shell.c:1034` `static const ShellRunDir *shell_run_dir_for(const char *name)` -- The toolchain directory that owns `name`, chosen by suffix.
-- `shell_file_is_real` (function) `kernel/shell.c:1052` `static int shell_file_is_real(const char *resolved)` -- Is `resolved` (already normalised against the cwd) a real ramdisk file?
-- `shell_resolve_run` (function) `kernel/shell.c:1064` `static int shell_resolve_run(const char *name, char *out, unsigned cap)` -- Resolve `name` to a full ramdisk path suitable for running.
-- `etrel_path_trusted` (function) `kernel/shell.c:1106` `static int etrel_path_trusted(const char *full)` -- ET_REL trust gate (boyscout fix for ring-0 .o without validation): relocatables execute as kernel extensions, so...
-- `shell_run_elf_buf_path` (function) `kernel/shell.c:1146` `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
+- `root` (function) `kernel/shell.c:654` `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...`
+- `shell_parse` (function) `kernel/shell.c:815` `int shell_parse(char *line, char **argv, int max_args)`
+- `desktop_unflag` (function) `kernel/shell.c:837` `static void desktop_unflag(const char *name);`
+- `shell_run_init` (function) `kernel/shell.c:844` `static void shell_run_init(void)` -- Startup commands from etc/init: one shell command per line, `#` comments and blank lines skipped.
+- `shell_run` (function) `kernel/shell.c:883` `void shell_run(void)`
+- `shell_load` (function) `kernel/shell.c:955` `static int shell_load(const char *fname, char *progname_out, void **entry_out)`
+- `outw_port` (function) `kernel/shell.c:1018` `static inline void outw_port(unsigned short port, unsigned short val)`
+- `shell_cmd_poweroff` (function) `kernel/shell.c:1024` `static void shell_cmd_poweroff(void)`
+- `shell_run_dir_for` (function) `kernel/shell.c:1040` `static const ShellRunDir *shell_run_dir_for(const char *name)` -- The toolchain directory that owns `name`, chosen by suffix.
+- `shell_file_is_real` (function) `kernel/shell.c:1058` `static int shell_file_is_real(const char *resolved)` -- Is `resolved` (already normalised against the cwd) a real ramdisk file?
+- `shell_resolve_run` (function) `kernel/shell.c:1070` `static int shell_resolve_run(const char *name, char *out, unsigned cap)` -- Resolve `name` to a full ramdisk path suitable for running.
+- `etrel_path_trusted` (function) `kernel/shell.c:1112` `static int etrel_path_trusted(const char *full)` -- ET_REL trust gate (boyscout fix for ring-0 .o without validation): relocatables execute as kernel extensions, so...
+- `shell_run_elf_buf_path` (function) `kernel/shell.c:1152` `static int shell_run_elf_buf_path(const char *data, unsigned size, int argc,
                     ...` -- Run a raw ELF image (ET_REL, ET_EXEC or ET_DYN) already read into `data`. argv[0] is the program name the program sees.
-- `shell_run_elf_file` (function) `kernel/shell.c:1179` `static int shell_run_elf_file(const char *full, int argc, char **argv)` -- Load the ramdisk file at `full` and run it as an ELF.
-- `shell_run_elf_minifs` (function) `kernel/shell.c:1192` `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` -- Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on...
-- `shell_run_cvm` (function) `kernel/shell.c:1249` `static int shell_run_cvm(const char *full, int argc, char **argv)` -- Run a `.cvm` module at the resolved path `full`.
-- `shell_run_file` (function) `kernel/shell.c:1285` `static int shell_run_file(const char *name, int argc, char **argv)` -- Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the...
-- `window` (function) `kernel/shell.c:1322` `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
-- `shell_read_elf_bytes` (function) `kernel/shell.c:1329` `static int shell_read_elf_bytes(const char *name, unsigned char **out,
+- `shell_run_elf_file` (function) `kernel/shell.c:1185` `static int shell_run_elf_file(const char *full, int argc, char **argv)` -- Load the ramdisk file at `full` and run it as an ELF.
+- `shell_run_elf_minifs` (function) `kernel/shell.c:1198` `static int shell_run_elf_minifs(const char *name, int argc, char **argv)` -- Load a Linux ELF from the MiniFS disk and run it (preserves the historical * `run` fallback when a name is not on...
+- `shell_run_cvm` (function) `kernel/shell.c:1255` `static int shell_run_cvm(const char *full, int argc, char **argv)` -- Run a `.cvm` module at the resolved path `full`.
+- `shell_run_file` (function) `kernel/shell.c:1291` `static int shell_run_file(const char *name, int argc, char **argv)` -- Run `name` as a ramdisk/MiniFS file: `.cvm` modules through the interpreter, ELF files by content through the...
+- `window` (function) `kernel/shell.c:1328` `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
+- `shell_read_elf_bytes` (function) `kernel/shell.c:1335` `static int shell_read_elf_bytes(const char *name, unsigned char **out,
                           ...` -- --- Multitask run (mrun): concurrent isolated ELFs ----  `mrun a.elf b.elf ...` loads each ET_EXEC/ET_DYN into its...
-- `code` (function) `kernel/shell.c:1395` `* the last exit code (130 when interrupted). */
+- `code` (function) `kernel/shell.c:1401` `* the last exit code (130 when interrupted). */
 static int shell_wait_fg(int *pids, int n, int ki...`
-- `shell_cmd_mrun` (function) `kernel/shell.c:1449` `static void shell_cmd_mrun(int argc, char **argv)`
-- `shell_run_bg` (function) `kernel/shell.c:1497` `static void shell_run_bg(const char *name, int argc, char **argv)` -- `run <elf> &`: background a single isolated ELF (same spawn path as mrun).
-- `this` (function) `kernel/shell.c:1527` `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
-- `desktop_path` (function) `kernel/shell.c:1540` `static void desktop_path(const char *name, char *dst, unsigned cap)`
-- `desktop_flag` (function) `kernel/shell.c:1549` `static void desktop_flag(const char *name)`
-- `desktop_flag_on` (function) `kernel/shell.c:1559` `static int desktop_flag_on(const char *name)`
-- `flows` (function) `kernel/shell.c:1573` `* and external flows (make wl) set it themselves. */
+- `shell_cmd_mrun` (function) `kernel/shell.c:1455` `static void shell_cmd_mrun(int argc, char **argv)`
+- `shell_run_bg` (function) `kernel/shell.c:1503` `static void shell_run_bg(const char *name, int argc, char **argv)` -- `run <elf> &`: background a single isolated ELF (same spawn path as mrun).
+- `this` (function) `kernel/shell.c:1533` `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
+- `desktop_path` (function) `kernel/shell.c:1546` `static void desktop_path(const char *name, char *dst, unsigned cap)`
+- `desktop_flag` (function) `kernel/shell.c:1555` `static void desktop_flag(const char *name)`
+- `desktop_flag_on` (function) `kernel/shell.c:1565` `static int desktop_flag_on(const char *name)`
+- `flows` (function) `kernel/shell.c:1579` `* and external flows (make wl) set it themselves. */
 static void desktop_unflag(const char *name)`
-- `desktop_srv_alive` (function) `kernel/shell.c:1581` `static int desktop_srv_alive(void)`
-- `shell_cmd_desktop` (function) `kernel/shell.c:1597` `static void shell_cmd_desktop(int argc, char **argv)`
-- `shell_run_any` (function) `kernel/shell.c:1661` `int shell_run_any(const char *name, int argc, char **argv)` -- Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver....
-- `context` (function) `kernel/shell.c:1688` `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
-- `gfx_parse_int` (function) `kernel/shell.c:1734` `static int gfx_parse_int(const char *s, int *out)` -- --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives...
-- `gfx_read_palette` (function) `kernel/shell.c:1754` `static void gfx_read_palette(unsigned char pal[768])` -- Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation).
-- `shell_cmd_gfx` (function) `kernel/shell.c:1761` `static void shell_cmd_gfx(int argc, char **argv)`
-- `shell_cmd_wm` (function) `kernel/shell.c:1913` `static void shell_cmd_wm(int argc, char **argv)` -- `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and...
-- `tree` (function) `kernel/shell.c:2048` `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+- `desktop_srv_alive` (function) `kernel/shell.c:1587` `static int desktop_srv_alive(void)`
+- `shell_cmd_desktop` (function) `kernel/shell.c:1603` `static void shell_cmd_desktop(int argc, char **argv)`
+- `shell_run_any` (function) `kernel/shell.c:1667` `int shell_run_any(const char *name, int argc, char **argv)` -- Unified dispatcher used by `run` and by bare commands: a registered program wins, then the runnable-file resolver....
+- `context` (function) `kernel/shell.c:1694` `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
+- `gfx_parse_int` (function) `kernel/shell.c:1740` `static int gfx_parse_int(const char *s, int *out)` -- --- Graphics debugging (`gfx` builtin) ----  The serial console is the observability surface the BDD suite drives...
+- `gfx_read_palette` (function) `kernel/shell.c:1760` `static void gfx_read_palette(unsigned char pal[768])` -- Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation).
+- `shell_cmd_gfx` (function) `kernel/shell.c:1767` `static void shell_cmd_gfx(int argc, char **argv)`
+- `shell_cmd_wm` (function) `kernel/shell.c:1919` `static void shell_cmd_wm(int argc, char **argv)` -- `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and...
+- `tree` (function) `kernel/shell.c:2054` `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-- `shell_cmd_jobs` (function) `kernel/shell.c:2061` `static void shell_cmd_jobs(void)`
-- `shell_has_child` (function) `kernel/shell.c:2090` `static int shell_has_child(int pid)` -- Live-child check for one pid: a slot that is neither FREE nor reparented still belongs to this shell.
-- `shell_cmd_wait` (function) `kernel/shell.c:2100` `static void shell_cmd_wait(int argc, char **argv)`
-- `shell_cmd_kill` (function) `kernel/shell.c:2135` `static void shell_cmd_kill(int argc, char **argv)`
-- `shell_cmd_mem` (function) `kernel/shell.c:2158` `static void shell_cmd_mem(void)` -- `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS...
-- `VMA` (function) `kernel/shell.c:2191` `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+- `shell_cmd_jobs` (function) `kernel/shell.c:2067` `static void shell_cmd_jobs(void)`
+- `shell_has_child` (function) `kernel/shell.c:2096` `static int shell_has_child(int pid)` -- Live-child check for one pid: a slot that is neither FREE nor reparented still belongs to this shell.
+- `shell_cmd_wait` (function) `kernel/shell.c:2106` `static void shell_cmd_wait(int argc, char **argv)`
+- `shell_cmd_kill` (function) `kernel/shell.c:2141` `static void shell_cmd_kill(int argc, char **argv)`
+- `shell_cmd_mem` (function) `kernel/shell.c:2164` `static void shell_cmd_mem(void)` -- `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS...
+- `VMA` (function) `kernel/shell.c:2197` `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-- `to` (function) `kernel/shell.c:2264` `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+- `to` (function) `kernel/shell.c:2270` `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-- `shell_parse_u64` (function) `kernel/shell.c:2333` `static int shell_parse_u64(const char *s, unsigned long *out)` -- Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing...
-- `shell_parse_long` (function) `kernel/shell.c:2349` `int shell_parse_long(const char *s, long *out)` -- Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow...
-- `shell_parse_pid` (function) `kernel/shell.c:2370` `int shell_parse_pid(const char *s, int min_pid, int *out)` -- Bounded pid parse shared by wait/kill/vmmap: one range check instead of three open-coded copies. min_pid is 1 for...
-- `shell_cmd_gdb` (function) `kernel/shell.c:2385` `static void shell_cmd_gdb(int argc, char **argv)` -- `gdb <op>` -- in-OS inspector half of the debugger story.
-- `shell_cmd_hash` (function) `kernel/shell.c:2428` `static void shell_cmd_hash(int argc, char **argv)` -- `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file...
-- `shell_resolve_arg` (function) `kernel/shell.c:2447` `static int shell_resolve_arg(const char *cmd, const char *arg,
+- `shell_parse_u64` (function) `kernel/shell.c:2339` `static int shell_parse_u64(const char *s, unsigned long *out)` -- Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing...
+- `shell_parse_long` (function) `kernel/shell.c:2355` `int shell_parse_long(const char *s, long *out)` -- Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow...
+- `shell_parse_pid` (function) `kernel/shell.c:2376` `int shell_parse_pid(const char *s, int min_pid, int *out)` -- Bounded pid parse shared by wait/kill/vmmap: one range check instead of three open-coded copies. min_pid is 1 for...
+- `shell_cmd_gdb` (function) `kernel/shell.c:2391` `static void shell_cmd_gdb(int argc, char **argv)` -- `gdb <op>` -- in-OS inspector half of the debugger story.
+- `shell_cmd_hash` (function) `kernel/shell.c:2434` `static void shell_cmd_hash(int argc, char **argv)` -- `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file...
+- `shell_resolve_arg` (function) `kernel/shell.c:2453` `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...` -- Docstring: Resolve `arg` against the cwd into `out` (`RAMDISK_FNAME_LEN` bytes); on failure print `<cmd>: <arg>...
-- `shell_httpd_one` (function) `kernel/shell.c:2553` `static void shell_httpd_one(int child, const char *root)` -- Serve one accepted connection: read one request, map GET path onto the VFS mounts under root, stream head + body, close.
-- `shell_httpd_serve` (function) `kernel/shell.c:2638` `static void shell_httpd_serve(unsigned short port, const char *root,
+- `shell_httpd_one` (function) `kernel/shell.c:2559` `static void shell_httpd_one(int child, const char *root)` -- Serve one accepted connection: read one request, map GET path onto the VFS mounts under root, stream head + body, close.
+- `shell_httpd_serve` (function) `kernel/shell.c:2644` `static void shell_httpd_serve(unsigned short port, const char *root,
         int max_conn)` -- Accept loop: one connection at a time, Ctrl+C quits.
-- `shell_cross_ls` (function) `kernel/shell.c:2805` `static void shell_cross_ls(const char *drv, const char *imgarg,
+- `shell_cross_ls` (function) `kernel/shell.c:2811` `static void shell_cross_ls(const char *drv, const char *imgarg,
                            const ...` -- List one directory from a cross-filesystem VFS driver (fat:, ext4:) to the console: same "drv:/img:path" addressing...
-- `shell_cross_cat` (function) `kernel/shell.c:2846` `static void shell_cross_cat(const char *drv, const char *imgarg,
+- `shell_cross_cat` (function) `kernel/shell.c:2852` `static void shell_cross_cat(const char *drv, const char *imgarg,
                             cons...` -- Stream one file from a cross-filesystem VFS driver (fat:, ext4:) to the console: "drv:/img:path" per open (the...
-- `shell_exec_builtin` (function) `kernel/shell.c:2888` `void shell_exec_builtin(int argc, char **argv)`
-- `terminal` (function) `kernel/shell.c:2963` `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
-- `driver` (function) `kernel/shell.c:3306` `* stream through the fat: VFS driver ("img:fatpath" per open,
+- `shell_exec_builtin` (function) `kernel/shell.c:2894` `void shell_exec_builtin(int argc, char **argv)`
+- `terminal` (function) `kernel/shell.c:2969` `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
+- `driver` (function) `kernel/shell.c:3312` `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
-- `frame` (function) `kernel/shell.c:3700` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-- `stdout` (function) `kernel/shell.c:4068` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
-- `shell_is_pipe_tok` (function) `kernel/shell.c:4080` `static int shell_is_pipe_tok(const char *a)`
-- `shell_run_stage` (function) `kernel/shell.c:4119` `static char *shell_run_stage(char **sargv, int sargc,
+- `frame` (function) `kernel/shell.c:3706` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
+- `stdout` (function) `kernel/shell.c:4074` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+- `shell_is_pipe_tok` (function) `kernel/shell.c:4086` `static int shell_is_pipe_tok(const char *a)`
+- `shell_run_stage` (function) `kernel/shell.c:4125` `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...` -- Run one pipeline stage with stdin/out doors installed. input may be 0 (first stage reads the live console).
 
 ## kernel/spawn.c
@@ -320,7 +333,7 @@ Depends on: `headers/arch/x86/msr.h`, `headers/arena.h`, `headers/minifs.h`, `he
                   unsigned char *da...` -- do_kill(pid); do_waitpid(pid); rc = 130; break; } yield(); } } if (did_redirect && redirect_commit(redirect, 0) !=...
 
 ## kernel/string.c
-Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
+Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_select_map.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
 - `kstrlen` (function) `kernel/string.c:17` `unsigned long kstrlen(const char *s)`
 - `kstrcpy` (function) `kernel/string.c:23` `char *kstrcpy(char *dst, const char *src)`
 - `kstrncpy` (function) `kernel/string.c:29` `char *kstrncpy(char *dst, const char *src, unsigned long n)`

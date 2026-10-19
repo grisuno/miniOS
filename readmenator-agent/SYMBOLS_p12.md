@@ -1,8 +1,45 @@
-# Symbols (page 12 of 26)
+# Symbols (page 12 of 27)
 Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `lz4_read_all` | function | `progs/asm/lz4.s:156` | `` |
+| `lz4_write_all` | function | `progs/asm/lz4.s:371` | `` |
+| `main` | function | `progs/asm/lz4.s:1228` | `` |
+| `_start` | function | `progs/asm/lzss.s:3497` | `` |
+| `lz_buf` | function | `progs/asm/lzss.s:35` | `` |
+| `lz_compress` | function | `progs/asm/lzss.s:2257` | `` |
+| `lz_decode` | function | `progs/asm/lzss.s:1171` | `` |
+| `lz_decompress` | function | `progs/asm/lzss.s:2628` | `` |
+| `lz_dst` | function | `progs/asm/lzss.s:19` | `` |
+| `lz_dstcap` | function | `progs/asm/lzss.s:23` | `` |
+| `lz_dstlen` | function | `progs/asm/lzss.s:27` | `` |
+| `lz_encode` | function | `progs/asm/lzss.s:451` | `` |
+| `lz_err` | function | `progs/asm/lzss.s:31` | `` |
+| `lz_flush_bits` | function | `progs/asm/lzss.s:223` | `` |
+| `lz_getbit` | function | `progs/asm/lzss.s:1051` | `` |
+| `lz_has` | function | `progs/asm/lzss.s:1782` | `` |
+| `lz_hdr_get` | function | `progs/asm/lzss.s:1629` | `` |
+| `lz_hdr_put` | function | `progs/asm/lzss.s:1514` | `` |
+| `lz_in_getc` | function | `progs/asm/lzss.s:43` | `` |
+| `lz_mask` | function | `progs/asm/lzss.s:39` | `` |
+| `lz_next_mb` | function | `progs/asm/lzss.s:447` | `` |
+| `lz_out_literal` | function | `progs/asm/lzss.s:251` | `` |
+| `lz_out_pair` | function | `progs/asm/lzss.s:321` | `` |
+| `lz_out_put` | function | `progs/asm/lzss.s:79` | `` |
+| `lz_putbit0` | function | `progs/asm/lzss.s:174` | `` |
+| `lz_putbit1` | function | `progs/asm/lzss.s:116` | `` |
+| `lz_read_all` | function | `progs/asm/lzss.s:1935` | `` |
+| `lz_src` | function | `progs/asm/lzss.s:7` | `` |
+| `lz_srclen` | function | `progs/asm/lzss.s:11` | `` |
+| `lz_srcpos` | function | `progs/asm/lzss.s:15` | `` |
+| `lz_win` | function | `progs/asm/lzss.s:3` | `` |
+| `lz_write_all` | function | `progs/asm/lzss.s:2150` | `` |
+| `main` | function | `progs/asm/lzss.s:3178` | `` |
+| `_start` | function | `progs/asm/mtop.s:4781` | `` |
+| `disk_f` | function | `progs/asm/mtop.s:39` | `` |
+| `disk_path` | function | `progs/asm/mtop.s:43` | `` |
+| `emit` | function | `progs/asm/mtop.s:206` | `` |
 | `h_cpu` | function | `progs/asm/mtop.s:3` | `` |
 | `h_fill` | function | `progs/asm/mtop.s:11` | `` |
 | `h_mem` | function | `progs/asm/mtop.s:7` | `` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `HUSTR_CHATMACRO0` | macro | `progs/doomgeneric/d_englsh.h:296` | `#define HUSTR_CHATMACRO0` |
 | `HUSTR_CHATMACRO1` | macro | `progs/doomgeneric/d_englsh.h:287` | `#define HUSTR_CHATMACRO1` |
 | `HUSTR_CHATMACRO2` | macro | `progs/doomgeneric/d_englsh.h:288` | `#define HUSTR_CHATMACRO2` |
-| `HUSTR_CHATMACRO3` | macro | `progs/doomgeneric/d_englsh.h:289` | `#define HUSTR_CHATMACRO3` |
-| `HUSTR_CHATMACRO4` | macro | `progs/doomgeneric/d_englsh.h:290` | `#define HUSTR_CHATMACRO4` |
-| `HUSTR_CHATMACRO5` | macro | `progs/doomgeneric/d_englsh.h:291` | `#define HUSTR_CHATMACRO5` |
-| `HUSTR_CHATMACRO6` | macro | `progs/doomgeneric/d_englsh.h:292` | `#define HUSTR_CHATMACRO6` |
-| `HUSTR_CHATMACRO7` | macro | `progs/doomgeneric/d_englsh.h:293` | `#define HUSTR_CHATMACRO7` |
-| `HUSTR_CHATMACRO8` | macro | `progs/doomgeneric/d_englsh.h:294` | `#define HUSTR_CHATMACRO8` |
-| `HUSTR_CHATMACRO9` | macro | `progs/doomgeneric/d_englsh.h:295` | `#define HUSTR_CHATMACRO9` |
-| `HUSTR_E1M1` | macro | `progs/doomgeneric/d_englsh.h:139` | `#define HUSTR_E1M1` |
-| `HUSTR_E1M2` | macro | `progs/doomgeneric/d_englsh.h:140` | `#define HUSTR_E1M2` |
-| `HUSTR_E1M3` | macro | `progs/doomgeneric/d_englsh.h:141` | `#define HUSTR_E1M3` |
-| `HUSTR_E1M4` | macro | `progs/doomgeneric/d_englsh.h:142` | `#define HUSTR_E1M4` |
-| `HUSTR_E1M5` | macro | `progs/doomgeneric/d_englsh.h:143` | `#define HUSTR_E1M5` |
-| `HUSTR_E1M6` | macro | `progs/doomgeneric/d_englsh.h:144` | `#define HUSTR_E1M6` |
-| `HUSTR_E1M7` | macro | `progs/doomgeneric/d_englsh.h:145` | `#define HUSTR_E1M7` |
-| `HUSTR_E1M8` | macro | `progs/doomgeneric/d_englsh.h:146` | `#define HUSTR_E1M8` |
-| `HUSTR_E1M9` | macro | `progs/doomgeneric/d_englsh.h:147` | `#define HUSTR_E1M9` |
-| `HUSTR_E2M1` | macro | `progs/doomgeneric/d_englsh.h:149` | `#define HUSTR_E2M1` |
-| `HUSTR_E2M2` | macro | `progs/doomgeneric/d_englsh.h:150` | `#define HUSTR_E2M2` |
-| `HUSTR_E2M3` | macro | `progs/doomgeneric/d_englsh.h:151` | `#define HUSTR_E2M3` |
-| `HUSTR_E2M4` | macro | `progs/doomgeneric/d_englsh.h:152` | `#define HUSTR_E2M4` |
-| `HUSTR_E2M5` | macro | `progs/doomgeneric/d_englsh.h:153` | `#define HUSTR_E2M5` |
-| `HUSTR_E2M6` | macro | `progs/doomgeneric/d_englsh.h:154` | `#define HUSTR_E2M6` |
-| `HUSTR_E2M7` | macro | `progs/doomgeneric/d_englsh.h:155` | `#define HUSTR_E2M7` |
-| `HUSTR_E2M8` | macro | `progs/doomgeneric/d_englsh.h:156` | `#define HUSTR_E2M8` |
-| `HUSTR_E2M9` | macro | `progs/doomgeneric/d_englsh.h:157` | `#define HUSTR_E2M9` |
-| `HUSTR_E3M1` | macro | `progs/doomgeneric/d_englsh.h:159` | `#define HUSTR_E3M1` |
-| `HUSTR_E3M2` | macro | `progs/doomgeneric/d_englsh.h:160` | `#define HUSTR_E3M2` |
-| `HUSTR_E3M3` | macro | `progs/doomgeneric/d_englsh.h:161` | `#define HUSTR_E3M3` |
-| `HUSTR_E3M4` | macro | `progs/doomgeneric/d_englsh.h:162` | `#define HUSTR_E3M4` |
-| `HUSTR_E3M5` | macro | `progs/doomgeneric/d_englsh.h:163` | `#define HUSTR_E3M5` |
-| `HUSTR_E3M6` | macro | `progs/doomgeneric/d_englsh.h:164` | `#define HUSTR_E3M6` |
-| `HUSTR_E3M7` | macro | `progs/doomgeneric/d_englsh.h:165` | `#define HUSTR_E3M7` |
-| `HUSTR_E3M8` | macro | `progs/doomgeneric/d_englsh.h:166` | `#define HUSTR_E3M8` |
-| `HUSTR_E3M9` | macro | `progs/doomgeneric/d_englsh.h:167` | `#define HUSTR_E3M9` |
-| `HUSTR_E4M1` | macro | `progs/doomgeneric/d_englsh.h:169` | `#define HUSTR_E4M1` |
-| `HUSTR_E4M2` | macro | `progs/doomgeneric/d_englsh.h:170` | `#define HUSTR_E4M2` |
-| `HUSTR_E4M3` | macro | `progs/doomgeneric/d_englsh.h:171` | `#define HUSTR_E4M3` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)

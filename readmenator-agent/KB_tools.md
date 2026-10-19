@@ -41,10 +41,10 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `normalize` (function, line 131) `def normalize(minios_name)`
-  - `parse_abi` (function, line 135) `def parse_abi(path)`
-  - `parse_dispatch` (function, line 146) `def parse_dispatch(path)`
-  - `main` (function, line 159) `def main()`
+  - `normalize` (function, line 130) `def normalize(minios_name)`
+  - `parse_abi` (function, line 134) `def parse_abi(path)`
+  - `parse_dispatch` (function, line 145) `def parse_dispatch(path)`
+  - `main` (function, line 158) `def main()`
 
 ## tools/check_addons.py
 - Doc: validate the MiniOS addon marketplace index.
@@ -130,13 +130,13 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 18) `class Config`
-  - `split_functions` (function, line 69) `def split_functions(lines)`
-  - `checked_names` (function, line 112) `def checked_names(body)`
-  - `delegated_only` (function, line 122) `def delegated_only(body, alias)`
-  - `split_top_args` (function, line 143) `def split_top_args(argtext)`
-  - `audit_body` (function, line 162) `def audit_body(name, body)`
-  - `audit_file` (function, line 217) `def audit_file(path)`
-  - `main` (function, line 228) `def main()`
+  - `split_functions` (function, line 70) `def split_functions(lines)`
+  - `checked_names` (function, line 113) `def checked_names(body)`
+  - `delegated_only` (function, line 123) `def delegated_only(body, alias)`
+  - `split_top_args` (function, line 144) `def split_top_args(argtext)`
+  - `audit_body` (function, line 163) `def audit_body(name, body)`
+  - `audit_file` (function, line 218) `def audit_file(path)`
+  - `main` (function, line 229) `def main()`
 
 ## tools/clip_bridge.py
 - Doc: Host to MiniOS clipboard bridge plan builder.
@@ -421,34 +421,42 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `check` (function, line 495) `def check(ok, msg)`
 - Depends on: `kernel/time.c`
 
+## tools/mkcpyzip.py
+- Doc: pack a CPython Lib tree into a zipimport stdlib.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `build_zip` (function, line 22) `def build_zip(lib_dir, out_zip, skip)`
+  - `main` (function, line 41) `def main()`
+
 ## tools/mkfs.minifs.py
 - Doc: Create a MiniFS filesystem image for MiniOS.
 - Layer: utility
 - Language: py
 - Symbols:
-  - `roundup4` (function, line 22) `def roundup4(v)`
-  - `div_round_up` (function, line 25) `def div_round_up(n, d)`
-  - `crc16` (function, line 28) `def crc16(data)`
-  - `crc32` (function, line 36) `def crc32(data)`
-  - `count_free` (function, line 44) `def count_free(bitmap, count)`
-  - `MiniFS` (class, line 50) `class MiniFS`
-  - `main` (function, line 274) `def main()`
-  - `__init__` (method, line 51) `def __init__(self, total_blocks)`
-  - `mark_inodes_used` (method, line 74) `def mark_inodes_used(self, start, count)`
-  - `mark_blocks_used` (method, line 78) `def mark_blocks_used(self, start, count)`
-  - `alloc_inode` (method, line 82) `def alloc_inode(self)`
-  - `alloc_block` (method, line 88) `def alloc_block(self)`
-  - `create_root` (method, line 94) `def create_root(self)`
-  - `seal_inode` (method, line 102) `def seal_inode(self, ino)`
-  - `create_inode` (method, line 107) `def create_inode(self, mode, links)`
-  - `inode_set_size` (method, line 114) `def inode_set_size(self, ino, size)`
-  - `inode_set_block` (method, line 118) `def inode_set_block(self, ino, logblk, phys)`
-  - `add_dir_entry` (method, line 148) `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
-  - `claim_name` (method, line 186) `def claim_name(self, parent_ino, name, is_dir)`
-  - `write_file` (method, line 199) `def write_file(self, parent_ino, name, data)`
-  - `write_dir` (method, line 218) `def write_dir(self, parent_ino, name)`
-  - `serialize` (method, line 230) `def serialize(self)`
-  - `pack_tree` (function, line 304) `def pack_tree(parent_ino, path, rel)`
+  - `roundup4` (function, line 28) `def roundup4(v)`
+  - `div_round_up` (function, line 31) `def div_round_up(n, d)`
+  - `crc16` (function, line 34) `def crc16(data)`
+  - `crc32` (function, line 42) `def crc32(data)`
+  - `count_free` (function, line 50) `def count_free(bitmap, count)`
+  - `MiniFS` (class, line 56) `class MiniFS`
+  - `main` (function, line 280) `def main()`
+  - `__init__` (method, line 57) `def __init__(self, total_blocks)`
+  - `mark_inodes_used` (method, line 80) `def mark_inodes_used(self, start, count)`
+  - `mark_blocks_used` (method, line 84) `def mark_blocks_used(self, start, count)`
+  - `alloc_inode` (method, line 88) `def alloc_inode(self)`
+  - `alloc_block` (method, line 94) `def alloc_block(self)`
+  - `create_root` (method, line 100) `def create_root(self)`
+  - `seal_inode` (method, line 108) `def seal_inode(self, ino)`
+  - `create_inode` (method, line 113) `def create_inode(self, mode, links)`
+  - `inode_set_size` (method, line 120) `def inode_set_size(self, ino, size)`
+  - `inode_set_block` (method, line 124) `def inode_set_block(self, ino, logblk, phys)`
+  - `add_dir_entry` (method, line 154) `def add_dir_entry(self, dir_ino, name, child_ino, ftype)`
+  - `claim_name` (method, line 192) `def claim_name(self, parent_ino, name, is_dir)`
+  - `write_file` (method, line 205) `def write_file(self, parent_ino, name, data)`
+  - `write_dir` (method, line 224) `def write_dir(self, parent_ino, name)`
+  - `serialize` (method, line 236) `def serialize(self)`
+  - `pack_tree` (function, line 310) `def pack_tree(parent_ino, path, rel)`
 
 ## tools/mkpak1.py
 - Doc: Build baseq2/pak1.pak carrying the player model.
@@ -462,8 +470,9 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `pack_name` (function, line 38) `def pack_name(path, common)`
-  - `main` (function, line 48) `def main()`
+  - `read_fname_bytes` (function, line 41) `def read_fname_bytes(kernel_h_path)`
+  - `pack_name` (function, line 64) `def pack_name(path, common)`
+  - `main` (function, line 74) `def main()`
 
 ## tools/mkroots.sh
 - Doc: regenerate tls_roots.h from the DER files in tls_roots_src/.
@@ -477,17 +486,6 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Symbols:
   - `bytes_to_unicode` (function, line 18) `def bytes_to_unicode()`
   - `main` (function, line 35) `def main(encoder_path, vocab_path)`
-
-## tools/mutate.sh
-- Doc: Mutation testing for MiniOS.
-- Layer: utility
-- Language: sh
-- Symbols:
-  - `usage` (function, line 51)
-  - `restore_sources` (function, line 132)
-  - `cleanup` (function, line 139)
-  - `record` (function, line 506)
-  - `find_index` (function, line 512)
 
 
 Next: [KB_tools_p2.md](KB_tools_p2.md)

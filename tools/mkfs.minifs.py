@@ -13,6 +13,12 @@ MAGIC = 0x4D494E49
 VERSION = 1
 BLOCK_SIZE = 4096
 ROOT_INODE = 2
+# Inode table blocks: 32 inodes per 4K block, so 64 blocks carry 2048
+# inodes (the CPython stdlib zip + pip ride as one file, but site-packages
+# and the shipped assets need the headroom; the kernel derives the inode
+# bitmap size from total_inodes in the superblock, so this only has to
+# stay >= what the image packs).
+INODE_TABLE_BLOCKS = 64
 S_IFREG = 0o100000
 S_IFDIR = 0o040000
 FT_FILE = 1
@@ -53,7 +59,7 @@ class MiniFS:
         self.names = {}
         self.ibm_blocks = 1
         self.bbm_blocks = div_round_up(total_blocks, BLOCK_SIZE * 8)
-        self.it_blocks = 16
+        self.it_blocks = INODE_TABLE_BLOCKS
         self.data_start = 1 + self.ibm_blocks + self.bbm_blocks + self.it_blocks
         self.total_inodes = self.it_blocks * (BLOCK_SIZE // 128)
 

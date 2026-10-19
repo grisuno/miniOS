@@ -1,8 +1,9 @@
-# Symbols (page 3 of 26)
+# Symbols (page 3 of 27)
 Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `pcache_unmap` | function | `fs/pcache.c:216` | `void pcache_unmap(int ino, unsigned index)` |
 | `RDSuper` | struct | `fs/ramdisk.c:26` | `` |
 | `RD_DATA_MIN` | macro | `fs/ramdisk.c:18` | `#define RD_DATA_MIN` |
 | `RD_DATA_SPARE` | macro | `fs/ramdisk.c:19` | `#define RD_DATA_SPARE` |
@@ -495,6 +496,5 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `PCI_CLASS_XHCI` | macro | `headers/drivers/pci.h:57` | `#define PCI_CLASS_XHCI` |
 | `PCI_COMMAND_BUS_MASTER` | macro | `headers/drivers/pci.h:34` | `#define PCI_COMMAND_BUS_MASTER` |
 | `PCI_COMMAND_IO` | macro | `headers/drivers/pci.h:32` | `#define PCI_COMMAND_IO` |
-| `PCI_COMMAND_MEMORY` | macro | `headers/drivers/pci.h:33` | `#define PCI_COMMAND_MEMORY` |
 
 Next: [SYMBOLS_p4.md](SYMBOLS_p4.md)

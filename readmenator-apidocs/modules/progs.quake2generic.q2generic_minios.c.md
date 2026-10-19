@@ -85,7 +85,7 @@ DOOM_FRAME/NK_FRAME remain as compat numbers that route through the same composi
 
 **Returns:** `* MINIOS_SYS_GFX_PRESENT with`
 
-> **Inherited:** Documentation from [`MINIOS_GFX_BUF_GAME`](#minios_gfx_buf_game) (progs/minios_abi.h:406).
+> **Inherited:** Documentation from [`MINIOS_GFX_BUF_GAME`](#minios_gfx_buf_game) (progs/minios_abi.h:410).
 
 ---
 

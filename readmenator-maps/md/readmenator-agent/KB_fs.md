@@ -144,22 +144,23 @@
   - `kevent_writable` (function, line 204) `int kevent_writable(KFILE *f)`
   - `kpipe_is_write_end` (function, line 209) `int kpipe_is_write_end(KFILE *f)`
   - `kpipe_grow` (function, line 216) `static int kpipe_grow(pipe_ring_t *ring)`
-  - `kfopen` (function, line 239) `KFILE *kfopen(const char *path, const char *mode)`
-  - `fs_rename_on_minifs` (function, line 336) `static int fs_rename_on_minifs(const char *dst)`
-  - `entry` (function, line 355) `* directory with a volatile ramdisk entry (the kfopen misroute class) or
+  - `kfopen_dir` (function, line 243) `KFILE *kfopen_dir(const char *resolved)`
+  - `kfopen` (function, line 264) `KFILE *kfopen(const char *path, const char *mode)`
+  - `fs_rename_on_minifs` (function, line 361) `static int fs_rename_on_minifs(const char *dst)`
+  - `entry` (function, line 380) `* directory with a volatile ramdisk entry (the kfopen misroute class) or
  * need a copy+delete th...`
-  - `kfclose` (function, line 397) `int kfclose(KFILE *f)`
-  - `kfgetc` (function, line 442) `int kfgetc(KFILE *f)`
-  - `kfgets` (function, line 483) `char *kfgets(char *buf, int size, KFILE *f)`
-  - `kfungetc` (function, line 497) `int kfungetc(int c, KFILE *f)`
-  - `kfread` (function, line 504) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfwrite` (function, line 550) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
-  - `kfseek` (function, line 616) `int kfseek(KFILE *f, long offset, int whence)`
-  - `kftell` (function, line 637) `long kftell(KFILE *f)`
-  - `kfflush` (function, line 641) `int kfflush(KFILE *f)`
-  - `kfputs` (function, line 667) `int kfputs(const char *s, KFILE *f)`
-  - `kfputc` (function, line 673) `int kfputc(int c, KFILE *f)`
-  - `krewind` (function, line 678) `void krewind(KFILE *f)`
+  - `kfclose` (function, line 422) `int kfclose(KFILE *f)`
+  - `kfgetc` (function, line 467) `int kfgetc(KFILE *f)`
+  - `kfgets` (function, line 508) `char *kfgets(char *buf, int size, KFILE *f)`
+  - `kfungetc` (function, line 522) `int kfungetc(int c, KFILE *f)`
+  - `kfread` (function, line 529) `unsigned long kfread(void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfwrite` (function, line 575) `unsigned long kfwrite(const void *ptr, unsigned long size, unsigned long n, KFILE *f)`
+  - `kfseek` (function, line 641) `int kfseek(KFILE *f, long offset, int whence)`
+  - `kftell` (function, line 662) `long kftell(KFILE *f)`
+  - `kfflush` (function, line 666) `int kfflush(KFILE *f)`
+  - `kfputs` (function, line 692) `int kfputs(const char *s, KFILE *f)`
+  - `kfputc` (function, line 698) `int kfputc(int c, KFILE *f)`
+  - `krewind` (function, line 703) `void krewind(KFILE *f)`
 - Depends on: `headers/minifs.h`
 
 ## fs/minifs.c

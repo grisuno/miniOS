@@ -1,100 +1,102 @@
-# Symbols (page 5 of 26)
+# Symbols (page 5 of 27)
 Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `kpipe_state` | function | `headers/kernel.h:857` | `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen);` |
-| `kprintf` | function | `headers/kernel.h:544` | `int kprintf(const char *fmt, ...);` |
-| `kprog_count` | variable | `headers/kernel.h:626` | `extern int kprog_count;` |
-| `kprog_lookup` | function | `headers/kernel.h:629` | `KProg *kprog_lookup(const char *name);` |
-| `kprog_slot` | function | `headers/kernel.h:628` | `KProg *kprog_slot(const char *name);` |
-| `kprog_table` | variable | `headers/kernel.h:625` | `extern KProg kprog_table[];` |
+| `kpipe_is_write_end` | function | `headers/kernel.h:870` | `int kpipe_is_write_end(KFILE *f);` |
+| `kpipe_pair` | function | `headers/kernel.h:868` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);` |
+| `kpipe_state` | function | `headers/kernel.h:873` | `int kpipe_state(KFILE *f, unsigned *avail, unsigned *space, int *wopen, int *ropen);` |
+| `kprintf` | function | `headers/kernel.h:560` | `int kprintf(const char *fmt, ...);` |
+| `kprog_count` | variable | `headers/kernel.h:642` | `extern int kprog_count;` |
+| `kprog_lookup` | function | `headers/kernel.h:645` | `KProg *kprog_lookup(const char *name);` |
+| `kprog_slot` | function | `headers/kernel.h:644` | `KProg *kprog_slot(const char *name);` |
+| `kprog_table` | variable | `headers/kernel.h:641` | `extern KProg kprog_table[];` |
 | `krealloc` | function | `headers/kernel.h:217` | `void *krealloc(void *ptr, unsigned long size);` |
-| `krewind` | function | `headers/kernel.h:519` | `void krewind(KFILE *f);` |
-| `ksetjmp` | function | `headers/kernel.h:651` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
-| `ksnprintf` | function | `headers/kernel.h:547` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
-| `ksprintf` | function | `headers/kernel.h:546` | `int ksprintf(char *buf, const char *fmt, ...);` |
-| `kstderr` | variable | `headers/kernel.h:523` | `extern KFILE *kstderr;` |
-| `kstdin` | variable | `headers/kernel.h:521` | `extern KFILE *kstdin;` |
-| `kstdout` | variable | `headers/kernel.h:522` | `extern KFILE *kstdout;` |
-| `kstrchr` | function | `headers/kernel.h:535` | `char *kstrchr(const char *s, int c);` |
-| `kstrcmp` | function | `headers/kernel.h:533` | `int kstrcmp(const char *a, const char *b);` |
-| `kstrcpy` | function | `headers/kernel.h:530` | `char *kstrcpy(char *dst, const char *src);` |
-| `kstrlen` | function | `headers/kernel.h:529` | `unsigned long kstrlen(const char *s);` |
-| `kstrncat` | function | `headers/kernel.h:532` | `char *kstrncat(char *dst, const char *src, unsigned long n);` |
-| `kstrncmp` | function | `headers/kernel.h:534` | `int kstrncmp(const char *a, const char *b, unsigned long n);` |
-| `kstrncpy` | function | `headers/kernel.h:531` | `char *kstrncpy(char *dst, const char *src, unsigned long n);` |
-| `kstrstr` | function | `headers/kernel.h:536` | `char *kstrstr(const char *hay, const char *ndl);` |
-| `ksym_count` | variable | `headers/kernel.h:624` | `extern int ksym_count;` |
-| `ksym_resolve` | function | `headers/kernel.h:630` | `void *ksym_resolve(const char *name);` |
-| `ksym_table` | variable | `headers/kernel.h:623` | `extern KSym ksym_table[];` |
-| `ksyscall` | function | `headers/kernel.h:822` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `krewind` | function | `headers/kernel.h:535` | `void krewind(KFILE *f);` |
+| `ksetjmp` | function | `headers/kernel.h:667` | `int ksetjmp(void *buf) __attribute__((returns_twice));` |
+| `ksnprintf` | function | `headers/kernel.h:563` | `int ksnprintf(char *buf, unsigned long size, const char *fmt, ...);` |
+| `ksprintf` | function | `headers/kernel.h:562` | `int ksprintf(char *buf, const char *fmt, ...);` |
+| `kstderr` | variable | `headers/kernel.h:539` | `extern KFILE *kstderr;` |
+| `kstdin` | variable | `headers/kernel.h:537` | `extern KFILE *kstdin;` |
+| `kstdout` | variable | `headers/kernel.h:538` | `extern KFILE *kstdout;` |
+| `kstrchr` | function | `headers/kernel.h:551` | `char *kstrchr(const char *s, int c);` |
+| `kstrcmp` | function | `headers/kernel.h:549` | `int kstrcmp(const char *a, const char *b);` |
+| `kstrcpy` | function | `headers/kernel.h:546` | `char *kstrcpy(char *dst, const char *src);` |
+| `kstrlen` | function | `headers/kernel.h:545` | `unsigned long kstrlen(const char *s);` |
+| `kstrncat` | function | `headers/kernel.h:548` | `char *kstrncat(char *dst, const char *src, unsigned long n);` |
+| `kstrncmp` | function | `headers/kernel.h:550` | `int kstrncmp(const char *a, const char *b, unsigned long n);` |
+| `kstrncpy` | function | `headers/kernel.h:547` | `char *kstrncpy(char *dst, const char *src, unsigned long n);` |
+| `kstrstr` | function | `headers/kernel.h:552` | `char *kstrstr(const char *hay, const char *ndl);` |
+| `ksym_count` | variable | `headers/kernel.h:640` | `extern int ksym_count;` |
+| `ksym_resolve` | function | `headers/kernel.h:646` | `void *ksym_resolve(const char *name);` |
+| `ksym_table` | variable | `headers/kernel.h:639` | `extern KSym ksym_table[];` |
+| `ksyscall` | function | `headers/kernel.h:838` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `ktime_ms` | function | `headers/kernel.h:25` | `unsigned long ktime_ms(void);` |
-| `ktime_us` | function | `headers/kernel.h:897` | `unsigned long ktime_us(void);` |
-| `ldso_bind_into` | function | `headers/kernel.h:762` | `int ldso_bind_into(void *data, unsigned size, unsigned long base, unsigned long cr3, vma_ctx_t *vma);` |
-| `ldso_pseudo_read` | function | `headers/kernel.h:765` | `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len);` |
-| `ldso_pseudo_stat` | function | `headers/kernel.h:764` | `int ldso_pseudo_stat(int ino, unsigned long *size_out);` |
-| `load_exec_elf` | function | `headers/kernel.h:751` | `void *load_exec_elf(void *data, unsigned size);` |
-| `load_exec_elf_into` | function | `headers/kernel.h:753` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out, unsigned long *base_out);` |
+| `ktime_us` | function | `headers/kernel.h:913` | `unsigned long ktime_us(void);` |
+| `ldso_bind_into` | function | `headers/kernel.h:778` | `int ldso_bind_into(void *data, unsigned size, unsigned long base, unsigned long cr3, vma_ctx_t *vma);` |
+| `ldso_pseudo_read` | function | `headers/kernel.h:781` | `int ldso_pseudo_read(int ino, void *dst, unsigned long off, unsigned len);` |
+| `ldso_pseudo_stat` | function | `headers/kernel.h:780` | `int ldso_pseudo_stat(int ino, unsigned long *size_out);` |
+| `load_exec_elf` | function | `headers/kernel.h:767` | `void *load_exec_elf(void *data, unsigned size);` |
+| `load_exec_elf_into` | function | `headers/kernel.h:769` | `void *load_exec_elf_into(void *data, unsigned size, unsigned long cr3, unsigned long *brk_out, unsigned long *base_out);` |
 | `minfo_sleep_init` | function | `headers/kernel.h:116` | `void minfo_sleep_init(int tick_ok);` |
 | `minfo_tick_wake` | function | `headers/kernel.h:117` | `void minfo_tick_wake(void *ctx);` |
-| `minifs_mkdir_p` | function | `headers/kernel.h:424` | `int minifs_mkdir_p(const char *resolved);` |
-| `mm_anon_fault` | function | `headers/kernel.h:792` | `int mm_anon_fault(unsigned long cr3, unsigned long va, int write);` |
-| `mm_anon_release` | function | `headers/kernel.h:794` | `void mm_anon_release(unsigned long cr3, unsigned long base, unsigned long len);` |
-| `mm_anon_reserve` | function | `headers/kernel.h:790` | `int mm_anon_reserve(unsigned long cr3, unsigned long base, unsigned long len, unsigned long prot);` |
-| `mm_copy_user_page` | function | `headers/kernel.h:804` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
-| `mm_demand_pte` | function | `headers/kernel.h:789` | `unsigned long mm_demand_pte(unsigned long prot);` |
-| `mm_file_break` | function | `headers/kernel.h:771` | `int mm_file_break(unsigned long cr3, unsigned long va);` |
-| `mm_file_fault` | function | `headers/kernel.h:770` | `int mm_file_fault(unsigned long cr3, unsigned long va);` |
-| `mm_file_page_phys` | function | `headers/kernel.h:772` | `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va);` |
-| `mm_file_range_release` | function | `headers/kernel.h:773` | `void mm_file_range_release(unsigned long cr3, unsigned long base, unsigned long len, int ino, unsigned long off, int...` |
-| `mm_setup_protections` | function | `headers/kernel.h:696` | `void mm_setup_protections(void);` |
-| `mm_user_ensure_page` | function | `headers/kernel.h:767` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
-| `mm_user_map_page` | function | `headers/kernel.h:768` | `int mm_user_map_page(unsigned long cr3, unsigned long va, unsigned long phys, int write, int exec);` |
-| `mm_user_pte_update` | function | `headers/kernel.h:699` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
-| `mm_user_set_exec` | function | `headers/kernel.h:700` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
-| `name` | type_alias | `headers/kernel.h:374` | `typedef struct vfs_dirent { char name[VFS_NAME_MAX + 1];` |
+| `minifs_mkdir_p` | function | `headers/kernel.h:433` | `int minifs_mkdir_p(const char *resolved);` |
+| `mm_anon_fault` | function | `headers/kernel.h:808` | `int mm_anon_fault(unsigned long cr3, unsigned long va, int write);` |
+| `mm_anon_release` | function | `headers/kernel.h:810` | `void mm_anon_release(unsigned long cr3, unsigned long base, unsigned long len);` |
+| `mm_anon_reserve` | function | `headers/kernel.h:806` | `int mm_anon_reserve(unsigned long cr3, unsigned long base, unsigned long len, unsigned long prot);` |
+| `mm_copy_user_page` | function | `headers/kernel.h:820` | `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va);` |
+| `mm_demand_pte` | function | `headers/kernel.h:805` | `unsigned long mm_demand_pte(unsigned long prot);` |
+| `mm_file_break` | function | `headers/kernel.h:787` | `int mm_file_break(unsigned long cr3, unsigned long va);` |
+| `mm_file_fault` | function | `headers/kernel.h:786` | `int mm_file_fault(unsigned long cr3, unsigned long va);` |
+| `mm_file_page_phys` | function | `headers/kernel.h:788` | `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va);` |
+| `mm_file_range_release` | function | `headers/kernel.h:789` | `void mm_file_range_release(unsigned long cr3, unsigned long base, unsigned long len, int ino, unsigned long off, int...` |
+| `mm_setup_protections` | function | `headers/kernel.h:712` | `void mm_setup_protections(void);` |
+| `mm_user_ensure_page` | function | `headers/kernel.h:783` | `int mm_user_ensure_page(unsigned long cr3, unsigned long va);` |
+| `mm_user_map_page` | function | `headers/kernel.h:784` | `int mm_user_map_page(unsigned long cr3, unsigned long va, unsigned long phys, int write, int exec);` |
+| `mm_user_pte_update` | function | `headers/kernel.h:715` | `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3);` |
+| `mm_user_set_exec` | function | `headers/kernel.h:716` | `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3);` |
+| `name` | type_alias | `headers/kernel.h:383` | `typedef struct vfs_dirent { char name[VFS_NAME_MAX + 1];` |
 | `outb` | function | `headers/kernel.h:26` | `static inline void outb(unsigned short port, unsigned char val)` |
 | `outsw` | function | `headers/kernel.h:54` | `static inline void outsw(unsigned short port, const unsigned short *buf,                         ...` |
 | `outw` | function | `headers/kernel.h:34` | `static inline void outw(unsigned short port, unsigned short val)` |
-| `panic_screen` | function | `headers/kernel.h:591` | `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp...` |
-| `pcspk_get_volume` | function | `headers/kernel.h:909` | `unsigned pcspk_get_volume(void);` |
-| `pcspk_init` | function | `headers/kernel.h:905` | `void pcspk_init(void);` |
-| `pcspk_off` | function | `headers/kernel.h:907` | `void pcspk_off(void);` |
-| `pcspk_set_volume` | function | `headers/kernel.h:908` | `void pcspk_set_volume(unsigned volume);` |
-| `pcspk_tone` | function | `headers/kernel.h:906` | `void pcspk_tone(unsigned freq);` |
-| `pt_clone_user_empty` | function | `headers/kernel.h:766` | `unsigned long pt_clone_user_empty(void);` |
-| `pt_page_alloc` | function | `headers/kernel.h:697` | `void *pt_page_alloc(void);` |
-| `pt_page_free` | function | `headers/kernel.h:698` | `void pt_page_free(void *ptr);` |
-| `pt_page_owned` | function | `headers/kernel.h:793` | `int pt_page_owned(unsigned long phys);` |
-| `ramdisk_count` | function | `headers/kernel.h:291` | `int ramdisk_count(void);` |
-| `ramdisk_create` | function | `headers/kernel.h:282` | `RDFile *ramdisk_create(const char *name, unsigned size);` |
-| `ramdisk_delete` | function | `headers/kernel.h:284` | `int ramdisk_delete(RDFile *f);` |
-| `ramdisk_end` | variable | `headers/kernel.h:880` | `extern char ramdisk_end[];` |
-| `ramdisk_file_name` | function | `headers/kernel.h:292` | `const char *ramdisk_file_name(int idx);` |
-| `ramdisk_init` | function | `headers/kernel.h:278` | `void ramdisk_init(void);` |
-| `ramdisk_list` | function | `headers/kernel.h:289` | `int ramdisk_list(RDFile **out, int max);` |
-| `ramdisk_open` | function | `headers/kernel.h:279` | `RDFile *ramdisk_open(const char *name);` |
-| `ramdisk_read` | function | `headers/kernel.h:280` | `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);` |
-| `ramdisk_rename` | function | `headers/kernel.h:288` | `int ramdisk_rename(const char *oldname, const char *newname);` |
-| `ramdisk_resize` | function | `headers/kernel.h:283` | `int ramdisk_resize(RDFile *f, unsigned newsize);` |
-| `ramdisk_setup_from` | function | `headers/kernel.h:290` | `void ramdisk_setup_from(void *data, unsigned size);` |
-| `ramdisk_size` | variable | `headers/kernel.h:881` | `extern char ramdisk_size[];` |
-| `ramdisk_start` | variable | `headers/kernel.h:879` | `extern char ramdisk_start[];` |
-| `ramdisk_usage` | function | `headers/kernel.h:294` | `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);` |
-| `ramdisk_write` | function | `headers/kernel.h:281` | `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);` |
-| `redirect_active` | function | `headers/kernel.h:585` | `int redirect_active(void);` |
-| `redirect_begin` | function | `headers/kernel.h:578` | `int redirect_begin(void);` |
-| `redirect_commit` | function | `headers/kernel.h:579` | `int redirect_commit(const char *path, int append_mode);` |
-| `redirect_discard` | function | `headers/kernel.h:584` | `void redirect_discard(void);` |
-| `redirect_pending` | function | `headers/kernel.h:581` | `unsigned long redirect_pending(void);` |
-| `redirect_resume` | function | `headers/kernel.h:577` | `void redirect_resume(int was);` |
-| `redirect_suspend` | function | `headers/kernel.h:576` | `int redirect_suspend(void);` |
-| `redirect_take` | function | `headers/kernel.h:580` | `char *redirect_take(unsigned long *len_out);` |
-| `redirect_take_into` | function | `headers/kernel.h:582` | `unsigned long redirect_take_into(char *dst, unsigned long cap, unsigned long *len_out);` |
-| `refused` | function | `headers/kernel.h:801` | `* refused (see kernel/mm/paging.c for the fail-closed list). */ unsigned long kmm_map_device(unsigned long phys...` |
-| `register_libc_symbols` | function | `headers/kernel.h:638` | `void register_libc_symbols(void);` |
-| `rtc_read_tod` | function | `headers/kernel.h:912` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
+| `panic_screen` | function | `headers/kernel.h:607` | `void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp...` |
+| `pcspk_get_volume` | function | `headers/kernel.h:925` | `unsigned pcspk_get_volume(void);` |
+| `pcspk_init` | function | `headers/kernel.h:921` | `void pcspk_init(void);` |
+| `pcspk_off` | function | `headers/kernel.h:923` | `void pcspk_off(void);` |
+| `pcspk_set_volume` | function | `headers/kernel.h:924` | `void pcspk_set_volume(unsigned volume);` |
+| `pcspk_tone` | function | `headers/kernel.h:922` | `void pcspk_tone(unsigned freq);` |
+| `pt_clone_user_empty` | function | `headers/kernel.h:782` | `unsigned long pt_clone_user_empty(void);` |
+| `pt_page_alloc` | function | `headers/kernel.h:713` | `void *pt_page_alloc(void);` |
+| `pt_page_free` | function | `headers/kernel.h:714` | `void pt_page_free(void *ptr);` |
+| `pt_page_owned` | function | `headers/kernel.h:809` | `int pt_page_owned(unsigned long phys);` |
+| `ramdisk_count` | function | `headers/kernel.h:300` | `int ramdisk_count(void);` |
+| `ramdisk_create` | function | `headers/kernel.h:291` | `RDFile *ramdisk_create(const char *name, unsigned size);` |
+| `ramdisk_delete` | function | `headers/kernel.h:293` | `int ramdisk_delete(RDFile *f);` |
+| `ramdisk_end` | variable | `headers/kernel.h:896` | `extern char ramdisk_end[];` |
+| `ramdisk_file_name` | function | `headers/kernel.h:301` | `const char *ramdisk_file_name(int idx);` |
+| `ramdisk_init` | function | `headers/kernel.h:287` | `void ramdisk_init(void);` |
+| `ramdisk_list` | function | `headers/kernel.h:298` | `int ramdisk_list(RDFile **out, int max);` |
+| `ramdisk_open` | function | `headers/kernel.h:288` | `RDFile *ramdisk_open(const char *name);` |
+| `ramdisk_read` | function | `headers/kernel.h:289` | `int ramdisk_read(RDFile *f, void *buf, unsigned offset, unsigned len);` |
+| `ramdisk_rename` | function | `headers/kernel.h:297` | `int ramdisk_rename(const char *oldname, const char *newname);` |
+| `ramdisk_resize` | function | `headers/kernel.h:292` | `int ramdisk_resize(RDFile *f, unsigned newsize);` |
+| `ramdisk_setup_from` | function | `headers/kernel.h:299` | `void ramdisk_setup_from(void *data, unsigned size);` |
+| `ramdisk_size` | variable | `headers/kernel.h:897` | `extern char ramdisk_size[];` |
+| `ramdisk_start` | variable | `headers/kernel.h:895` | `extern char ramdisk_start[];` |
+| `ramdisk_usage` | function | `headers/kernel.h:303` | `void ramdisk_usage(unsigned *used, unsigned *cap, unsigned *max);` |
+| `ramdisk_write` | function | `headers/kernel.h:290` | `int ramdisk_write(RDFile *f, const void *buf, unsigned offset, unsigned len);` |
+| `redirect_active` | function | `headers/kernel.h:601` | `int redirect_active(void);` |
+| `redirect_begin` | function | `headers/kernel.h:594` | `int redirect_begin(void);` |
+| `redirect_commit` | function | `headers/kernel.h:595` | `int redirect_commit(const char *path, int append_mode);` |
+| `redirect_discard` | function | `headers/kernel.h:600` | `void redirect_discard(void);` |
+| `redirect_pending` | function | `headers/kernel.h:597` | `unsigned long redirect_pending(void);` |
+| `redirect_resume` | function | `headers/kernel.h:593` | `void redirect_resume(int was);` |
+| `redirect_suspend` | function | `headers/kernel.h:592` | `int redirect_suspend(void);` |
+| `redirect_take` | function | `headers/kernel.h:596` | `char *redirect_take(unsigned long *len_out);` |
+| `redirect_take_into` | function | `headers/kernel.h:598` | `unsigned long redirect_take_into(char *dst, unsigned long cap, unsigned long *len_out);` |
+| `refused` | function | `headers/kernel.h:817` | `* refused (see kernel/mm/paging.c for the fail-closed list). */ unsigned long kmm_map_device(unsigned long phys...` |
+| `register_libc_symbols` | function | `headers/kernel.h:654` | `void register_libc_symbols(void);` |
+| `rtc_read_tod` | function | `headers/kernel.h:928` | `int rtc_read_tod(int *hour, int *min, int *sec);` |
 | `sb_capture_row0` | function | `headers/kernel.h:121` | `void sb_capture_row0(void);` |
 | `sb_get_char` | function | `headers/kernel.h:125` | `char sb_get_char(int row, int col);` |
 | `sb_get_count` | function | `headers/kernel.h:123` | `int sb_get_count(void);` |
@@ -109,81 +111,81 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `serial_init` | function | `headers/kernel.h:128` | `void serial_init(void);` |
 | `serial_putc` | function | `headers/kernel.h:129` | `void serial_putc(char c);` |
 | `serial_puts` | function | `headers/kernel.h:130` | `void serial_puts(const char *s);` |
-| `setup_user_stack` | function | `headers/kernel.h:655` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
-| `shell_exec_builtin` | function | `headers/kernel.h:601` | `void shell_exec_builtin(int argc, char **argv);` |
-| `shell_fg_active` | variable | `headers/kernel.h:689` | `extern volatile int shell_fg_active;` |
-| `shell_focus_park` | function | `headers/kernel.h:686` | `void shell_focus_park(void);` |
-| `shell_focus_restore` | function | `headers/kernel.h:687` | `void shell_focus_restore(void);` |
-| `shell_init` | function | `headers/kernel.h:572` | `void shell_init(void);` |
-| `shell_queue_launch` | function | `headers/kernel.h:663` | `void shell_queue_launch(const char *cmd);` |
-| `shell_readline_active` | function | `headers/kernel.h:685` | `int shell_readline_active(void);` |
-| `shell_report` | function | `headers/kernel.h:603` | `void shell_report(const char *what, const char *detail);` |
-| `shell_report_exit` | function | `headers/kernel.h:602` | `void shell_report_exit(int code);` |
-| `shell_run` | function | `headers/kernel.h:573` | `void shell_run(void);` |
-| `shell_run_any` | function | `headers/kernel.h:600` | `int shell_run_any(const char *name, int argc, char **argv);` |
-| `shell_take_redirect` | function | `headers/kernel.h:599` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
-| `swap_in` | function | `headers/kernel.h:704` | `int swap_in(void);` |
-| `swap_out` | function | `headers/kernel.h:703` | `int swap_out(unsigned long window_sz);` |
-| `syscall_init` | function | `headers/kernel.h:818` | `void syscall_init(void);` |
-| `syscall_name` | function | `headers/kernel.h:828` | `const char *syscall_name(long n);` |
-| `syscall_trace_enabled` | function | `headers/kernel.h:823` | `long syscall_trace_enabled(void);` |
-| `syscall_trace_set` | function | `headers/kernel.h:824` | `void syscall_trace_set(int on);` |
-| `syscall_trace_shown` | function | `headers/kernel.h:827` | `unsigned long syscall_trace_shown(void);` |
-| `syscall_trace_verbose_enabled` | function | `headers/kernel.h:825` | `long syscall_trace_verbose_enabled(void);` |
-| `syscall_trace_verbose_set` | function | `headers/kernel.h:826` | `void syscall_trace_verbose_set(int on);` |
-| `today` | function | `headers/kernel.h:489` | `* cell is correct today (single shared ET_REL window, no miniGCC * threads);` |
-| `user_mmap_cur` | variable | `headers/kernel.h:709` | `extern unsigned long user_mmap_cur;` |
-| `user_page_present` | function | `headers/kernel.h:812` | `int user_page_present(unsigned long cr3, unsigned long va);` |
-| `user_range_ok` | function | `headers/kernel.h:692` | `int user_range_ok(unsigned long p, unsigned long len);` |
-| `user_str_ok` | function | `headers/kernel.h:693` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
-| `vfs_close` | function | `headers/kernel.h:419` | `int vfs_close(vfs_file_t *f);` |
-| `vfs_dirent` | struct | `headers/kernel.h:374` | `` |
-| `vfs_file` | struct | `headers/kernel.h:389` | `` |
-| `vfs_fstat` | function | `headers/kernel.h:420` | `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);` |
-| `vfs_init` | function | `headers/kernel.h:422` | `void vfs_init(void);` |
-| `vfs_list` | function | `headers/kernel.h:413` | `int vfs_list(char prefixes[][VFS_PREFIX_LEN], char drivers[][VFS_DRIVER_LEN], int refs[], int cap);` |
-| `vfs_mount_driver` | function | `headers/kernel.h:415` | `int vfs_mount_driver(const char *prefix, const char *driver);` |
-| `vfs_open` | function | `headers/kernel.h:416` | `int vfs_open(const char *path, int mode, vfs_file_t *f);` |
-| `vfs_ops` | struct | `headers/kernel.h:379` | `` |
-| `vfs_read` | function | `headers/kernel.h:417` | `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);` |
-| `vfs_readdir` | function | `headers/kernel.h:421` | `int vfs_readdir(const char *path, vfs_dirent_t *ents, int cap);` |
-| `vfs_register` | function | `headers/kernel.h:408` | `int vfs_register(const char *prefix, const vfs_ops_t *ops, const char *driver);` |
-| `vfs_register_builtins` | function | `headers/kernel.h:423` | `void vfs_register_builtins(void);` |
-| `vfs_unregister` | function | `headers/kernel.h:409` | `int vfs_unregister(const char *prefix);` |
-| `vfs_write` | function | `headers/kernel.h:418` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
+| `setup_user_stack` | function | `headers/kernel.h:671` | `unsigned long *setup_user_stack(char *sbase, unsigned long ssize, int argc, char **argv);` |
+| `shell_exec_builtin` | function | `headers/kernel.h:617` | `void shell_exec_builtin(int argc, char **argv);` |
+| `shell_fg_active` | variable | `headers/kernel.h:705` | `extern volatile int shell_fg_active;` |
+| `shell_focus_park` | function | `headers/kernel.h:702` | `void shell_focus_park(void);` |
+| `shell_focus_restore` | function | `headers/kernel.h:703` | `void shell_focus_restore(void);` |
+| `shell_init` | function | `headers/kernel.h:588` | `void shell_init(void);` |
+| `shell_queue_launch` | function | `headers/kernel.h:679` | `void shell_queue_launch(const char *cmd);` |
+| `shell_readline_active` | function | `headers/kernel.h:701` | `int shell_readline_active(void);` |
+| `shell_report` | function | `headers/kernel.h:619` | `void shell_report(const char *what, const char *detail);` |
+| `shell_report_exit` | function | `headers/kernel.h:618` | `void shell_report_exit(int code);` |
+| `shell_run` | function | `headers/kernel.h:589` | `void shell_run(void);` |
+| `shell_run_any` | function | `headers/kernel.h:616` | `int shell_run_any(const char *name, int argc, char **argv);` |
+| `shell_take_redirect` | function | `headers/kernel.h:615` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode);` |
+| `swap_in` | function | `headers/kernel.h:720` | `int swap_in(void);` |
+| `swap_out` | function | `headers/kernel.h:719` | `int swap_out(unsigned long window_sz);` |
+| `syscall_init` | function | `headers/kernel.h:834` | `void syscall_init(void);` |
+| `syscall_name` | function | `headers/kernel.h:844` | `const char *syscall_name(long n);` |
+| `syscall_trace_enabled` | function | `headers/kernel.h:839` | `long syscall_trace_enabled(void);` |
+| `syscall_trace_set` | function | `headers/kernel.h:840` | `void syscall_trace_set(int on);` |
+| `syscall_trace_shown` | function | `headers/kernel.h:843` | `unsigned long syscall_trace_shown(void);` |
+| `syscall_trace_verbose_enabled` | function | `headers/kernel.h:841` | `long syscall_trace_verbose_enabled(void);` |
+| `syscall_trace_verbose_set` | function | `headers/kernel.h:842` | `void syscall_trace_verbose_set(int on);` |
+| `today` | function | `headers/kernel.h:505` | `* cell is correct today (single shared ET_REL window, no miniGCC * threads);` |
+| `user_mmap_cur` | variable | `headers/kernel.h:725` | `extern unsigned long user_mmap_cur;` |
+| `user_page_present` | function | `headers/kernel.h:828` | `int user_page_present(unsigned long cr3, unsigned long va);` |
+| `user_range_ok` | function | `headers/kernel.h:708` | `int user_range_ok(unsigned long p, unsigned long len);` |
+| `user_str_ok` | function | `headers/kernel.h:709` | `int user_str_ok(unsigned long p, unsigned long maxlen);` |
+| `vfs_close` | function | `headers/kernel.h:428` | `int vfs_close(vfs_file_t *f);` |
+| `vfs_dirent` | struct | `headers/kernel.h:383` | `` |
+| `vfs_file` | struct | `headers/kernel.h:398` | `` |
+| `vfs_fstat` | function | `headers/kernel.h:429` | `int vfs_fstat(vfs_file_t *f, unsigned long *size_out);` |
+| `vfs_init` | function | `headers/kernel.h:431` | `void vfs_init(void);` |
+| `vfs_list` | function | `headers/kernel.h:422` | `int vfs_list(char prefixes[][VFS_PREFIX_LEN], char drivers[][VFS_DRIVER_LEN], int refs[], int cap);` |
+| `vfs_mount_driver` | function | `headers/kernel.h:424` | `int vfs_mount_driver(const char *prefix, const char *driver);` |
+| `vfs_open` | function | `headers/kernel.h:425` | `int vfs_open(const char *path, int mode, vfs_file_t *f);` |
+| `vfs_ops` | struct | `headers/kernel.h:388` | `` |
+| `vfs_read` | function | `headers/kernel.h:426` | `int vfs_read(vfs_file_t *f, void *buf, unsigned long len);` |
+| `vfs_readdir` | function | `headers/kernel.h:430` | `int vfs_readdir(const char *path, vfs_dirent_t *ents, int cap);` |
+| `vfs_register` | function | `headers/kernel.h:417` | `int vfs_register(const char *prefix, const vfs_ops_t *ops, const char *driver);` |
+| `vfs_register_builtins` | function | `headers/kernel.h:432` | `void vfs_register_builtins(void);` |
+| `vfs_unregister` | function | `headers/kernel.h:418` | `int vfs_unregister(const char *prefix);` |
+| `vfs_write` | function | `headers/kernel.h:427` | `int vfs_write(vfs_file_t *f, const void *buf, unsigned long len);` |
 | `vga_clear` | function | `headers/kernel.h:94` | `void vga_clear(void);` |
 | `vga_cursor_enable` | function | `headers/kernel.h:100` | `void vga_cursor_enable(int on);` |
-| `vga_fb_act_empty` | function | `headers/kernel.h:677` | `int vga_fb_act_empty(void);` |
-| `vga_fb_clear_prompt` | function | `headers/kernel.h:680` | `void vga_fb_clear_prompt(void);` |
-| `vga_fb_focus_get` | function | `headers/kernel.h:668` | `int vga_fb_focus_get(void);` |
-| `vga_fb_focus_id` | function | `headers/kernel.h:667` | `int vga_fb_focus_id(int id);` |
-| `vga_fb_focus_next` | function | `headers/kernel.h:666` | `void vga_fb_focus_next(void);` |
-| `vga_fb_list_windows` | function | `headers/kernel.h:673` | `void vga_fb_list_windows(void);` |
-| `vga_fb_note_prompt` | function | `headers/kernel.h:679` | `void vga_fb_note_prompt(void);` |
-| `vga_fb_nterms_get` | function | `headers/kernel.h:669` | `int vga_fb_nterms_get(void);` |
-| `vga_fb_park_line` | function | `headers/kernel.h:674` | `void vga_fb_park_line(const char *b, int p);` |
-| `vga_fb_prompt_live` | function | `headers/kernel.h:678` | `int vga_fb_prompt_live(void);` |
-| `vga_fb_prompted` | function | `headers/kernel.h:681` | `int vga_fb_prompted(void);` |
-| `vga_fb_set_gfx_program` | function | `headers/kernel.h:676` | `void vga_fb_set_gfx_program(const char *name);` |
-| `vga_fb_term_close_focused` | function | `headers/kernel.h:671` | `int vga_fb_term_close_focused(void);` |
-| `vga_fb_term_split` | function | `headers/kernel.h:670` | `int vga_fb_term_split(void);` |
-| `vga_fb_tile_all` | function | `headers/kernel.h:672` | `void vga_fb_tile_all(void);` |
-| `vga_fb_unpark_line` | function | `headers/kernel.h:675` | `int vga_fb_unpark_line(char *b, int *p);` |
+| `vga_fb_act_empty` | function | `headers/kernel.h:693` | `int vga_fb_act_empty(void);` |
+| `vga_fb_clear_prompt` | function | `headers/kernel.h:696` | `void vga_fb_clear_prompt(void);` |
+| `vga_fb_focus_get` | function | `headers/kernel.h:684` | `int vga_fb_focus_get(void);` |
+| `vga_fb_focus_id` | function | `headers/kernel.h:683` | `int vga_fb_focus_id(int id);` |
+| `vga_fb_focus_next` | function | `headers/kernel.h:682` | `void vga_fb_focus_next(void);` |
+| `vga_fb_list_windows` | function | `headers/kernel.h:689` | `void vga_fb_list_windows(void);` |
+| `vga_fb_note_prompt` | function | `headers/kernel.h:695` | `void vga_fb_note_prompt(void);` |
+| `vga_fb_nterms_get` | function | `headers/kernel.h:685` | `int vga_fb_nterms_get(void);` |
+| `vga_fb_park_line` | function | `headers/kernel.h:690` | `void vga_fb_park_line(const char *b, int p);` |
+| `vga_fb_prompt_live` | function | `headers/kernel.h:694` | `int vga_fb_prompt_live(void);` |
+| `vga_fb_prompted` | function | `headers/kernel.h:697` | `int vga_fb_prompted(void);` |
+| `vga_fb_set_gfx_program` | function | `headers/kernel.h:692` | `void vga_fb_set_gfx_program(const char *name);` |
+| `vga_fb_term_close_focused` | function | `headers/kernel.h:687` | `int vga_fb_term_close_focused(void);` |
+| `vga_fb_term_split` | function | `headers/kernel.h:686` | `int vga_fb_term_split(void);` |
+| `vga_fb_tile_all` | function | `headers/kernel.h:688` | `void vga_fb_tile_all(void);` |
+| `vga_fb_unpark_line` | function | `headers/kernel.h:691` | `int vga_fb_unpark_line(char *b, int *p);` |
 | `vga_get_color` | function | `headers/kernel.h:111` | `char vga_get_color(void);` |
 | `vga_get_x` | function | `headers/kernel.h:108` | `int vga_get_x(void);` |
 | `vga_get_y` | function | `headers/kernel.h:109` | `int vga_get_y(void);` |
-| `vga_gfx_ran_set` | function | `headers/kernel.h:659` | `void vga_gfx_ran_set(int on);` |
-| `vga_mode_is_active` | function | `headers/kernel.h:658` | `int vga_mode_is_active(void);` |
-| `vga_mode_set` | function | `headers/kernel.h:657` | `void vga_mode_set(int on);` |
+| `vga_gfx_ran_set` | function | `headers/kernel.h:675` | `void vga_gfx_ran_set(int on);` |
+| `vga_mode_is_active` | function | `headers/kernel.h:674` | `int vga_mode_is_active(void);` |
+| `vga_mode_set` | function | `headers/kernel.h:673` | `void vga_mode_set(int on);` |
 | `vga_newline` | function | `headers/kernel.h:99` | `void vga_newline(void);` |
 | `vga_putc` | function | `headers/kernel.h:95` | `void vga_putc(char c);` |
 | `vga_puts` | function | `headers/kernel.h:96` | `void vga_puts(const char *s);` |
 | `vga_scroll` | function | `headers/kernel.h:97` | `void vga_scroll(void);` |
 | `vga_set_cursor` | function | `headers/kernel.h:98` | `void vga_set_cursor(int x, int y);` |
 | `vga_set_xy` | function | `headers/kernel.h:110` | `void vga_set_xy(int x, int y);` |
-| `vnode_t` | type_alias | `headers/kernel.h:406` | `typedef vfs_file_t vnode_t;` |
+| `vnode_t` | type_alias | `headers/kernel.h:415` | `typedef vfs_file_t vnode_t;` |
 | `waits` | function | `headers/kernel.h:64` | `* and mouse_hw_init issues dozens of waits (measured 5 s of boot).  This  * polls the port once p...` |
-| `wall_us_now` | function | `headers/kernel.h:898` | `unsigned long wall_us_now(void);` |
+| `wall_us_now` | function | `headers/kernel.h:914` | `unsigned long wall_us_now(void);` |
 | `CONSOLE_IN_H` | macro | `headers/kernel/console_in.h:2` | `#define CONSOLE_IN_H` |
 | `Consumers` | function | `headers/kernel/console_in.h:7` | `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into...` |
 | `console_job_get` | function | `headers/kernel/console_in.h:26` | `int console_job_get(void);` |
@@ -494,7 +496,5 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `PCM2_ERR_BUSY` | macro | `headers/pcm2.h:60` | `#define PCM2_ERR_BUSY` |
 | `PCM2_ERR_INVAL` | macro | `headers/pcm2.h:65` | `#define PCM2_ERR_INVAL` |
 | `PCM2_ERR_NODEV` | macro | `headers/pcm2.h:61` | `#define PCM2_ERR_NODEV` |
-| `PCM2_ERR_NOMEM` | macro | `headers/pcm2.h:62` | `#define PCM2_ERR_NOMEM` |
-| `PCM2_ERR_PERM` | macro | `headers/pcm2.h:63` | `#define PCM2_ERR_PERM` |
 
 Next: [SYMBOLS_p6.md](SYMBOLS_p6.md)

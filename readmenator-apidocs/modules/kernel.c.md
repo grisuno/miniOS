@@ -102,7 +102,7 @@ void syscall_init(void)
 
 ========== Linux syscall interface ==========
 
-> **Inherited:** Documentation from [`syscall_init`](#syscall_init) (headers/kernel.h:818).
+> **Inherited:** Documentation from [`syscall_init`](#syscall_init) (headers/kernel.h:834).
 
 *Calls:* [`rdmsr`](headers.arch.x86.msr.h.md#rdmsr), [`wrmsr`](headers.arch.x86.msr.h.md#wrmsr)
 
@@ -196,7 +196,7 @@ void bootlog_mark(const char *name)
 |---|---|---|---|
 | `name` | `char *` |  |  |
 
-> **Inherited:** Documentation from [`bootlog_mark`](#bootlog_mark) (headers/kernel.h:901).
+> **Inherited:** Documentation from [`bootlog_mark`](#bootlog_mark) (headers/kernel.h:917).
 
 *Called by:* [`__attribute__`](#__attribute__)
 

@@ -1,8 +1,45 @@
-# Symbols (page 19 of 26)
+# Symbols (page 19 of 27)
 Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.h:103` | `void V_LoadXlaTable(void);` |
+| `V_MarkRect` | function | `progs/doomgeneric/v_video.h:69` | `void V_MarkRect(int x, int y, int width, int height);` |
+| `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.h:86` | `void V_RestoreBuffer(void);` |
+| `V_ScreenShot` | function | `progs/doomgeneric/v_video.h:92` | `void V_ScreenShot(char *format);` |
+| `V_SetPatchClipCallback` | function | `progs/doomgeneric/v_video.h:45` | `void V_SetPatchClipCallback(vpatchclipfunc_t func);` |
+| `V_UseBuffer` | function | `progs/doomgeneric/v_video.h:82` | `void V_UseBuffer(byte *buffer);` |
+| `__V_VIDEO__` | macro | `progs/doomgeneric/v_video.h:23` | `#define __V_VIDEO__` |
+| `dirtybox` | variable | `progs/doomgeneric/v_video.h:37` | `extern int dirtybox[4];` |
+| `tinttable` | variable | `progs/doomgeneric/v_video.h:39` | `extern byte *tinttable;` |
+| `ChecksumAddLump` | function | `progs/doomgeneric/w_checksum.c:57` | `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)` |
+| `GetFileNumber` | function | `progs/doomgeneric/w_checksum.c:31` | `static int GetFileNumber(wad_file_t *handle)` |
+| `W_Checksum` | function | `progs/doomgeneric/w_checksum.c:68` | `void W_Checksum(sha1_digest_t digest)` |
+| `W_CHECKSUM_H` | macro | `progs/doomgeneric/w_checksum.h:20` | `#define W_CHECKSUM_H` |
+| `W_Checksum` | function | `progs/doomgeneric/w_checksum.h:24` | `extern void W_Checksum(sha1_digest_t digest);` |
+| `W_CloseFile` | function | `progs/doomgeneric/w_file.c:85` | `void W_CloseFile(wad_file_t *wad)` |
+| `W_OpenFile` | function | `progs/doomgeneric/w_file.c:53` | `wad_file_t *W_OpenFile(char *path)` |
+| `W_Read` | function | `progs/doomgeneric/w_file.c:90` | `size_t W_Read(wad_file_t *wad, unsigned int offset,               void *buffer, size_t buffer_len)` |
+| `posix_wad_file` | variable | `progs/doomgeneric/w_file.c:37` | `extern wad_file_class_t posix_wad_file;` |
+| `stdc_wad_file` | variable | `progs/doomgeneric/w_file.c:28` | `extern wad_file_class_t stdc_wad_file;` |
+| `win32_wad_file` | variable | `progs/doomgeneric/w_file.c:32` | `extern wad_file_class_t win32_wad_file;` |
+| `W_CloseFile` | function | `progs/doomgeneric/w_file.h:69` | `void W_CloseFile(wad_file_t *wad);` |
+| `W_OpenFile` | function | `progs/doomgeneric/w_file.h:65` | `wad_file_t *W_OpenFile(char *path);` |
+| `W_Read` | function | `progs/doomgeneric/w_file.h:75` | `size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len);` |
+| `__W_FILE__` | macro | `progs/doomgeneric/w_file.h:21` | `#define __W_FILE__` |
+| `_wad_file_s` | struct | `progs/doomgeneric/w_file.h:46` | `` |
+| `wad_file_class_t` | struct | `progs/doomgeneric/w_file.h:28` | `` |
+| `wad_file_t` | type_alias | `progs/doomgeneric/w_file.h:25` | `typedef struct _wad_file_s wad_file_t;` |
+| `W_StdC_CloseFile` | function | `progs/doomgeneric/w_file_stdc.c:56` | `static void W_StdC_CloseFile(wad_file_t *wad)` |
+| `W_StdC_OpenFile` | function | `progs/doomgeneric/w_file_stdc.c:33` | `static wad_file_t *W_StdC_OpenFile(char *path)` |
+| `W_StdC_Read` | function | `progs/doomgeneric/w_file_stdc.c:69` | `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,                    void *buffer, size_t ...` |
+| `stdc_wad_file` | variable | `progs/doomgeneric/w_file_stdc.c:31` | `extern wad_file_class_t stdc_wad_file;` |
+| `stdc_wad_file_t` | struct | `progs/doomgeneric/w_file_stdc.c:25` | `` |
+| `W_ParseCommandLine` | function | `progs/doomgeneric/w_main.c:30` | `boolean W_ParseCommandLine(void)` |
+| `W_MAIN_H` | macro | `progs/doomgeneric/w_main.h:19` | `#define W_MAIN_H` |
+| `W_MERGE_H` | macro | `progs/doomgeneric/w_merge.h:22` | `#define W_MERGE_H` |
+| `W_MergeFile` | function | `progs/doomgeneric/w_merge.h:29` | `void W_MergeFile(char *filename);` |
+| `W_NWTDashMerge` | function | `progs/doomgeneric/w_merge.h:37` | `void W_NWTDashMerge(char *filename);` |
 | `W_NWTMergeFile` | function | `progs/doomgeneric/w_merge.h:33` | `void W_NWTMergeFile(char *filename, int flags);` |
 | `W_NWT_MERGE_FLATS` | macro | `progs/doomgeneric/w_merge.h:25` | `#define W_NWT_MERGE_FLATS` |
 | `W_NWT_MERGE_SPRITES` | macro | `progs/doomgeneric/w_merge.h:24` | `#define W_NWT_MERGE_SPRITES` |
@@ -459,42 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `msys5` | function | `progs/lisp/lisp.c:218` | `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` |
 | `numbers` | function | `progs/lisp/lisp.c:9` | `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special...` |
 | `parse_eof` | function | `progs/lisp/lisp.c:573` | `static ParseResult parse_eof(void)` |
-| `parse_error` | function | `progs/lisp/lisp.c:584` | `static ParseResult parse_error(const char *message)` |
-| `parse_ok` | function | `progs/lisp/lisp.c:562` | `static ParseResult parse_ok(Node *value)` |
-| `prim_add` | function | `progs/lisp/lisp.c:869` | `static Node *prim_add(Runtime *rt, Node *args)` |
-| `prim_car` | function | `progs/lisp/lisp.c:963` | `static Node *prim_car(Runtime *rt, Node *args)` |
-| `prim_cdr` | function | `progs/lisp/lisp.c:975` | `static Node *prim_cdr(Runtime *rt, Node *args)` |
-| `prim_char_code` | function | `progs/lisp/lisp.c:1072` | `static Node *prim_char_code(Runtime *rt, Node *args)` |
-| `prim_close_file` | function | `progs/lisp/lisp.c:1224` | `static Node *prim_close_file(Runtime *rt, Node *args)` |
-| `prim_cons` | function | `progs/lisp/lisp.c:987` | `static Node *prim_cons(Runtime *rt, Node *args)` |
-| `prim_div` | function | `progs/lisp/lisp.c:917` | `static Node *prim_div(Runtime *rt, Node *args)` |
-| `prim_eq` | function | `progs/lisp/lisp.c:939` | `static Node *prim_eq(Runtime *rt, Node *args)` |
-| `prim_error_message` | function | `progs/lisp/lisp.c:1285` | `static Node *prim_error_message(Runtime *rt, Node *args)` |
-| `prim_exit` | function | `progs/lisp/lisp.c:1303` | `static Node *prim_exit(Runtime *rt, Node *args)` |
-| `prim_fb_info` | function | `progs/lisp/lisp.c:1357` | `static Node *prim_fb_info(Runtime *rt, Node *args)` |
-| `prim_lt` | function | `progs/lisp/lisp.c:951` | `static Node *prim_lt(Runtime *rt, Node *args)` |
-| `prim_minios_run` | function | `progs/lisp/lisp.c:1465` | `static Node *prim_minios_run(Runtime *rt, Node *args)` |
-| `prim_mul` | function | `progs/lisp/lisp.c:901` | `static Node *prim_mul(Runtime *rt, Node *args)` |
-| `prim_null_p` | function | `progs/lisp/lisp.c:1249` | `static Node *prim_null_p(Runtime *rt, Node *args)` |
-| `prim_number_p` | function | `progs/lisp/lisp.c:1261` | `static Node *prim_number_p(Runtime *rt, Node *args)` |
-| `prim_pal` | function | `progs/lisp/lisp.c:1405` | `static Node *prim_pal(Runtime *rt, Node *args)` |
-| `prim_pcspeaker` | function | `progs/lisp/lisp.c:1421` | `static Node *prim_pcspeaker(Runtime *rt, Node *args)` |
-| `prim_print` | function | `progs/lisp/lisp.c:1094` | `static Node *prim_print(Runtime *rt, Node *args)` |
-| `prim_println` | function | `progs/lisp/lisp.c:1108` | `static Node *prim_println(Runtime *rt, Node *args)` |
-| `prim_read_char` | function | `progs/lisp/lisp.c:1183` | `static Node *prim_read_char(Runtime *rt, Node *args)` |
-| `prim_rtc` | function | `progs/lisp/lisp.c:1340` | `static Node *prim_rtc(Runtime *rt, Node *args)` |
-| `prim_string_at` | function | `progs/lisp/lisp.c:1050` | `static Node *prim_string_at(Runtime *rt, Node *args)` |
-| `prim_string_concat` | function | `progs/lisp/lisp.c:999` | `static Node *prim_string_concat(Runtime *rt, Node *args)` |
-| `prim_string_eq` | function | `progs/lisp/lisp.c:1026` | `static Node *prim_string_eq(Runtime *rt, Node *args)` |
-| `prim_string_length` | function | `progs/lisp/lisp.c:1038` | `static Node *prim_string_length(Runtime *rt, Node *args)` |
-| `prim_string_p` | function | `progs/lisp/lisp.c:1273` | `static Node *prim_string_p(Runtime *rt, Node *args)` |
-| `prim_sub` | function | `progs/lisp/lisp.c:885` | `static Node *prim_sub(Runtime *rt, Node *args)` |
-| `prim_time_ms` | function | `progs/lisp/lisp.c:1330` | `static Node *prim_time_ms(Runtime *rt, Node *args)` |
-| `prim_vol` | function | `progs/lisp/lisp.c:1377` | `static Node *prim_vol(Runtime *rt, Node *args)` |
-| `prim_write` | function | `progs/lisp/lisp.c:1200` | `static Node *prim_write(Runtime *rt, Node *args)` |
-| `print_escaped_string` | function | `progs/lisp/lisp.c:1846` | `static void print_escaped_string(FILE *out, const char *value)` |
-| `print_node` | function | `progs/lisp/lisp.c:1877` | `static void print_node(Runtime *rt, Node *node, bool readable)` |
-| `print_usage` | function | `progs/lisp/lisp.c:2136` | `static void print_usage(Runtime *rt)` |
-| `process_inline` | function | `progs/lisp/lisp.c:2129` | `static int process_inline(Runtime *rt, const char *code)` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

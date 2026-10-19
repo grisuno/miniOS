@@ -3,6 +3,11 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_mip.py` | host test for the frozen MicroPython installer (make test-mip). | tests | 44 | 0 |
+| `tests/test_modifiers.c` | Docstring: Designated initializers, so adding a member cannot silently | tests | 2 | 0 |
+| `tests/test_notify.c` | - | tests | 3 | 0 |
+| `tests/test_paint.c` | Docstring: host test for the paint canvas/PNG contract (make test-paint). | tests | 21 | 0 |
+| `tests/test_panic.c` | Docstring: Host test for headers/panic.h (make test-panic). | tests | 5 | 0 |
 | `tests/test_pcache.c` | Docstring: host test for the page cache store (make test-pcache). | tests | 5 | 0 |
 | `tests/test_pci.c` | Docstring: Host test for headers/drivers/pci.h (make test-pci). | tests | 7 | 0 |
 | `tests/test_pcm.c` | Host-side unit test for the PCM ring buffer (headers/pcm_ring.h). | tests | 9 | 0 |
@@ -14,6 +19,7 @@ Previous: [INDEX.md](INDEX.md)
 | `tests/test_rtc.c` | host test for the pure date math in drivers/rtc.c | tests | 2 | 0 |
 | `tests/test_sanitize.c` | Docstring: Host test for sanitize.h (make test-sanitize). | tests | 9 | 0 |
 | `tests/test_seccomp_bpf.c` | Docstring: Host test for kernel/seccomp_bpf.c (make test-seccomp-bpf). | tests | 17 | 0 |
+| `tests/test_select_map.c` | Docstring: Host test for headers/select_map.h (make test-select-map). | tests | 9 | 0 |
 | `tests/test_sign.c` | Docstring: Host test for kernel/ed25519.c plus headers/sign.h. | tests | 4 | 0 |
 | `tests/test_sync.c` | Host-side unit test for the blocking sync primitives (kernel/sync.c). | tests | 6 | 0 |
 | `tests/test_theme.c` | Docstring: host test for the shared Nuklear theme contract. | tests | 8 | 0 |
@@ -58,9 +64,10 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/minios_cli.py` | — drive MiniOS through the MCP bridge, not by hand. | tools | 6 | 0 |
 | `tools/minios_gui.py` | — inject VGA-mode input and capture the framebuffer. | tools | 9 | 0 |
 | `tools/minios_hyper.py` | host-side ring-minus-one debugger for MiniOS. | tools | 51 | 0 |
+| `tools/mkcpyzip.py` | pack a CPython Lib tree into a zipimport stdlib. | tools | 2 | 0 |
 | `tools/mkfs.minifs.py` | Create a MiniFS filesystem image for MiniOS. | tools | 23 | 0 |
 | `tools/mkpak1.py` | Build baseq2/pak1.pak carrying the player model. | tools | 1 | 0 |
-| `tools/mkramdisk.py` | Build a MiniOS ramdisk image from files in a directory tree. | tools | 2 | 0 |
+| `tools/mkramdisk.py` | Build a MiniOS ramdisk image from files in a directory tree. | tools | 3 | 0 |
 | `tools/mkroots.sh` | regenerate tls_roots.h from the DER files in tls_roots_src/. | tools | 0 | 0 |
 | `tools/mkvocab.py` | Build progs/topogpt3/vocab.bin from the GPT-2 encoder.json. | tools | 2 | 0 |
 | `tools/mutate.sh` | Mutation testing for MiniOS. | tools | 5 | 0 |

@@ -305,7 +305,7 @@ Both names fit RAMDISK_FNAME_LEN (fs_resolve guarantees it); missing src or an e
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`ramdisk_rename`](#ramdisk_rename) (headers/kernel.h:288).
+> **Inherited:** Documentation from [`ramdisk_rename`](#ramdisk_rename) (headers/kernel.h:297).
 
 *Calls:* [`ramdisk_open`](#ramdisk_open)
 
