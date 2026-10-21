@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `V_LoadTintTable` | function | `progs/doomgeneric/v_video.c:482` | `void V_LoadTintTable(void)` |
+| `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.c:493` | `void V_LoadXlaTable(void)` |
+| `V_MarkRect` | function | `progs/doomgeneric/v_video.c:69` | `void V_MarkRect(int x, int y, int width, int height)` |
+| `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.c:613` | `void V_RestoreBuffer(void)` |
+| `V_ScreenShot` | function | `progs/doomgeneric/v_video.c:791` | `void V_ScreenShot(char *format)` |
+| `V_SetPatchClipCallback` | function | `progs/doomgeneric/v_video.c:129` | `void V_SetPatchClipCallback(vpatchclipfunc_t func)` |
+| `V_UseBuffer` | function | `progs/doomgeneric/v_video.c:606` | `void V_UseBuffer(byte *buffer)` |
+| `WritePCXfile` | function | `progs/doomgeneric/v_video.c:653` | `void WritePCXfile(char *filename, byte *data,                   int width, int height,           ...` |
+| `WritePNGfile` | function | `progs/doomgeneric/v_video.c:721` | `void WritePNGfile(char *filename, byte *data,                   int width, int height,           ...` |
+| `error_fn` | function | `progs/doomgeneric/v_video.c:711` | `static void error_fn(png_structp p, png_const_charp s)` |
+| `png_screenshots` | variable | `progs/doomgeneric/v_video.c:800` | `extern int png_screenshots;` |
+| `usemouse` | variable | `progs/doomgeneric/v_video.c:848` | `extern int usemouse;` |
+| `warning_fn` | function | `progs/doomgeneric/v_video.c:716` | `static void warning_fn(png_structp p, png_const_charp s)` |
+| `CENTERY` | macro | `progs/doomgeneric/v_video.h:34` | `#define CENTERY` |
+| `V_CopyRect` | function | `progs/doomgeneric/v_video.h:53` | `void V_CopyRect(int srcx, int srcy, byte *source, int width, int height, int destx, int desty);` |
+| `V_DrawAltTLPatch` | function | `progs/doomgeneric/v_video.h:60` | `void V_DrawAltTLPatch(int x, int y, patch_t * patch);` |
+| `V_DrawBlock` | function | `progs/doomgeneric/v_video.h:67` | `void V_DrawBlock(int x, int y, int width, int height, byte *src);` |
+| `V_DrawBox` | function | `progs/doomgeneric/v_video.h:74` | `void V_DrawBox(int x, int y, int w, int h, int c);` |
+| `V_DrawFilledBox` | function | `progs/doomgeneric/v_video.h:71` | `void V_DrawFilledBox(int x, int y, int w, int h, int c);` |
+| `V_DrawHorizLine` | function | `progs/doomgeneric/v_video.h:72` | `void V_DrawHorizLine(int x, int y, int w, int c);` |
+| `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.h:105` | `void V_DrawMouseSpeedBox(int speed);` |
+| `V_DrawPatch` | function | `progs/doomgeneric/v_video.h:57` | `void V_DrawPatch(int x, int y, patch_t *patch);` |
+| `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.h:63` | `void V_DrawPatchDirect(int x, int y, patch_t *patch);` |
 | `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.h:58` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch);` |
 | `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.h:78` | `void V_DrawRawScreen(byte *raw);` |
 | `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.h:61` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch);` |
@@ -288,9 +311,9 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `freedomui_build_palette` | function | `progs/freedomui/freedomui_minios.c:130` | `static long freedomui_build_palette(unsigned char *pal, long cap)` |
 | `freedomui_default` | function | `progs/freedomui/freedomui_minios.c:97` | `static FreedomUiConfig freedomui_default(void)` |
 | `freedomui_engine_text` | function | `progs/freedomui/freedomui_minios.c:145` | `static long freedomui_engine_text(char *body, long n, char **title, char **text)` |
-| `freedomui_host_entry` | function | `progs/freedomui/freedomui_minios.c:1067` | `int freedomui_host_entry(FreedomUiConfig *c)` |
-| `freedomui_host_probe` | function | `progs/freedomui/freedomui_minios.c:984` | `static long freedomui_host_probe(FreedomUiConfig *c)` |
-| `freedomui_selftest` | function | `progs/freedomui/freedomui_minios.c:896` | `static long freedomui_selftest(void)` |
+| `freedomui_host_entry` | function | `progs/freedomui/freedomui_minios.c:1098` | `int freedomui_host_entry(FreedomUiConfig *c)` |
+| `freedomui_host_probe` | function | `progs/freedomui/freedomui_minios.c:1015` | `static long freedomui_host_probe(FreedomUiConfig *c)` |
+| `freedomui_selftest` | function | `progs/freedomui/freedomui_minios.c:927` | `static long freedomui_selftest(void)` |
 | `freedomui_sys_kbd` | function | `progs/freedomui/freedomui_minios.c:221` | `static long freedomui_sys_kbd(void)` |
 | `freedomui_sys_kbd_raw` | function | `progs/freedomui/freedomui_minios.c:235` | `static long freedomui_sys_kbd_raw(long on)` |
 | `freedomui_sys_mouse` | function | `progs/freedomui/freedomui_minios.c:214` | `static long freedomui_sys_mouse(long *m)` |
@@ -300,13 +323,15 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `freedomui_sys_vga_mode` | function | `progs/freedomui/freedomui_minios.c:228` | `static long freedomui_sys_vga_mode(long on)` |
 | `freedomui_sys_yield` | function | `progs/freedomui/freedomui_minios.c:242` | `static long freedomui_sys_yield(void)` |
 | `fui_append` | function | `progs/freedomui/freedomui_minios.c:249` | `static long fui_append(char *dst, long pos, char *src, long cap)` |
-| `fui_browse` | function | `progs/freedomui/freedomui_minios.c:817` | `static long fui_browse(FreedomUiConfig *c)` |
-| `fui_fetch_raw` | function | `progs/freedomui/freedomui_minios.c:470` | `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)` |
-| `fui_parse_headers` | function | `progs/freedomui/freedomui_minios.c:352` | `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...` |
-| `fui_render` | function | `progs/freedomui/freedomui_minios.c:698` | `static long fui_render(FreedomUiConfig *c, size_t off)` |
-| `fui_split_url` | function | `progs/freedomui/freedomui_minios.c:283` | `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...` |
+| `fui_browse` | function | `progs/freedomui/freedomui_minios.c:848` | `static long fui_browse(FreedomUiConfig *c)` |
+| `fui_fetch_raw` | function | `progs/freedomui/freedomui_minios.c:501` | `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)` |
+| `fui_has_scheme` | function | `progs/freedomui/freedomui_minios.c:285` | `static int fui_has_scheme(const char *s, const char *scheme)` |
+| `fui_is_http_scheme` | function | `progs/freedomui/freedomui_minios.c:309` | `static int fui_is_http_scheme(const char *s)` |
+| `fui_parse_headers` | function | `progs/freedomui/freedomui_minios.c:383` | `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...` |
+| `fui_render` | function | `progs/freedomui/freedomui_minios.c:729` | `static long fui_render(FreedomUiConfig *c, size_t off)` |
+| `fui_split_url` | function | `progs/freedomui/freedomui_minios.c:314` | `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...` |
 | `fui_strlen` | function | `progs/freedomui/freedomui_minios.c:267` | `static long fui_strlen(char *s, long cap)` |
-| `main` | function | `progs/freedomui/freedomui_minios.c:1072` | `int main(int argc, char **argv)` |
+| `main` | function | `progs/freedomui/freedomui_minios.c:1103` | `int main(int argc, char **argv)` |
 | `net_dns_resolve` | function | `progs/freedomui/freedomui_minios.c:44` | `int net_dns_resolve(const char *host);` |
 | `present_buf` | type_alias | `progs/freedomui/freedomui_minios.c:69` | `typedef struct FreedomUiConfig { long present_buf;` |
 | `tls_close` | function | `progs/freedomui/freedomui_minios.c:48` | `void tls_close(int fd);` |
@@ -471,30 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `StringBuilder` | struct | `progs/lisp/lisp.c:192` | `` |
 | `arg_at` | function | `progs/lisp/lisp.c:775` | `static Node *arg_at(Runtime *rt, Node *args, size_t index)` |
 | `arg_matches` | function | `progs/lisp/lisp.c:815` | `static bool arg_matches(const Node *value, ArgKind kind)` |
-| `arity` | function | `progs/lisp/lisp.c:1300` | `* * Variable arity (0 or 1);` |
-| `arity0` | function | `progs/lisp/lisp.c:861` | `static bool arity0(Runtime *rt, Node *args)` |
-| `bind_argv` | function | `progs/lisp/lisp.c:2017` | `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` |
-| `bind_primitive` | function | `progs/lisp/lisp.c:1948` | `static void bind_primitive(Runtime *rt, Env *env, const char *name,     PrimFn function)` |
-| `check_args` | function | `progs/lisp/lisp.c:841` | `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,     size_t n, Node **out)` |
-| `cleanup` | function | `progs/lisp/lisp.c:377` | `static void cleanup(Runtime *rt)` |
-| `cons` | function | `progs/lisp/lisp.c:338` | `static Node *cons(Runtime *rt, Node *car, Node *cdr)` |
-| `env_bind` | function | `progs/lisp/lisp.c:421` | `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)` |
-| `env_lookup` | function | `progs/lisp/lisp.c:454` | `static Node *env_lookup(Env *env, Node *symbol)` |
-| `env_new` | function | `progs/lisp/lisp.c:411` | `static Env *env_new(Runtime *rt, Env *parent)` |
-| `env_set` | function | `progs/lisp/lisp.c:432` | `static bool env_set(Env *env, Node *symbol, Node *value)` |
-| `eval` | function | `progs/lisp/lisp.c:1583` | `static Node *eval(Runtime *rt, Node *expression, Env *env)` |
-| `eval_list` | function | `progs/lisp/lisp.c:1527` | `static Node *eval_list(Runtime *rt, Node *list, Env *env)` |
-| `eval_sequence` | function | `progs/lisp/lisp.c:1551` | `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)` |
-| `fatal` | function | `progs/lisp/lisp.c:233` | `static void fatal(Runtime *rt, const char *message)` |
-| `file_mode_allowed` | function | `progs/lisp/lisp.c:1123` | `static bool file_mode_allowed(const char *mode)` |
-| `has_arity` | function | `progs/lisp/lisp.c:767` | `static bool has_arity(Runtime *rt, Node *args, size_t expected)` |
-| `init_env` | function | `progs/lisp/lisp.c:2004` | `static Env *init_env(Runtime *rt)` |
-| `is_nil` | function | `progs/lisp/lisp.c:348` | `static bool is_nil(Runtime *rt, const Node *node)` |
-| `lisp_version` | function | `progs/lisp/lisp.c:62` | `static const char *lisp_version(void)` |
-| `list_count` | function | `progs/lisp/lisp.c:750` | `static size_t list_count(Runtime *rt, Node *list, bool *proper)` |
-| `main` | function | `progs/lisp/lisp.c:2190` | `int main(int argc, char **argv)` |
-| `make_error` | function | `progs/lisp/lisp.c:293` | `static Node *make_error(Runtime *rt, const char *message)` |
-| `make_file` | function | `progs/lisp/lisp.c:355` | `static Node *make_file(Runtime *rt, FILE *handle)` |
-| `make_node` | function | `progs/lisp/lisp.c:284` | `static Node *make_node(Runtime *rt, NodeType type)` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

@@ -127,7 +127,14 @@ static unsigned long sc_worker(int me, unsigned long seed) {
             for (k = 0; k < len; k++) sc_arena_prot[pg + k] = (char)prot;
         } else if (op == 2) {
             long p = sc_mmap(SC_PAGE);
-            h = sc_fold(h, (unsigned long)p);
+            /* The address itself is not folded: user ASLR moves the
+             * mapping on every boot, so a raw address would make the
+             * oracle unreproducible. What the fold keeps is what a
+             * kernel bug would break: the mapping succeeded, it is page
+             * aligned and it does not overlap the arena. */
+            h = sc_fold(h, (unsigned long)(p > 0 ? 1u : 0u));
+            h = sc_fold(h, (unsigned long)(p > 0 && (p & (SC_PAGE - 1)) == 0 ? 1u : 0u));
+            h = sc_fold(h, (unsigned long)(p > 0 && p >= sc_arena && p < sc_arena + SC_ARENA ? 1u : 0u));
             if (p > 0) {
                 volatile char *m = (volatile char *)p;
                 m[0] = (char)(i & 0xFF);

@@ -182,7 +182,7 @@ void tls_close(int fd);
 
 ### `freedomui_host_entry`
 
-`function` | [progs/freedomui/freedomui_minios.c:1067](../../progs/freedomui/freedomui_minios.c#L1067)
+`function` | [progs/freedomui/freedomui_minios.c:1098](../../progs/freedomui/freedomui_minios.c#L1098)
 
 ```c
 int freedomui_host_entry(FreedomUiConfig *c)
@@ -204,7 +204,7 @@ Host harness entry for pure backend logic plus engine linkage.
 
 ### `main`
 
-`function` | [progs/freedomui/freedomui_minios.c:1072](../../progs/freedomui/freedomui_minios.c#L1072)
+`function` | [progs/freedomui/freedomui_minios.c:1103](../../progs/freedomui/freedomui_minios.c#L1103)
 
 ```c
 int main(int argc, char **argv)

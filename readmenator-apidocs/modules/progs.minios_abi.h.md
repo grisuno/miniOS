@@ -6,7 +6,7 @@ minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
 
 ## Contents
 
-- **Functions:** [`DOOM_BACKBUF_ADDR`](#doom_backbuf_addr), [`clock_nanosleep`](#clock_nanosleep)
+- **Functions:** [`DOOM_BACKBUF_ADDR`](#doom_backbuf_addr), [`range`](#range)
 - **Macros:** [`MINIOS_ABI_VERSION`](#minios_abi_version), [`MINIOS_ABI_CHECKSUM`](#minios_abi_checksum), [`MINIOS_USER_LOAD_BASE`](#minios_user_load_base), [`MINIOS_USER_LOAD_END`](#minios_user_load_end), [`MINIOS_USER_STACK_SIZE`](#minios_user_stack_size), [`MINIOS_USER_STACK_TOP`](#minios_user_stack_top), [`MINIOS_USER_STACK_BASE`](#minios_user_stack_base), [`MINIOS_USER_BRK_END`](#minios_user_brk_end), [`MINIOS_DOOM_BACKBUF_ADDR`](#minios_doom_backbuf_addr), [`MINIOS_DOOM_W`](#minios_doom_w), [`MINIOS_FB_ADDR`](#minios_fb_addr), [`MINIOS_NK_BACKBUF_ADDR`](#minios_nk_backbuf_addr), [`MINIOS_NK_W`](#minios_nk_w), [`MINIOS_LDSO_BASE`](#minios_ldso_base), [`MINIOS_LDSO_SIZE`](#minios_ldso_size), [`MINIOS_LDSO_END`](#minios_ldso_end), [`MINIOS_NK_RGB_ADDR`](#minios_nk_rgb_addr), [`MINIOS_NK_RGB_BYTES`](#minios_nk_rgb_bytes), [`MINIOS_HEAP_BASE`](#minios_heap_base), [`MINIOS_HEAP_SIZE`](#minios_heap_size), [`MINIOS_PCI_MMIO_SIZE`](#minios_pci_mmio_size), [`MINIOS_DEV_MMIO_VBASE`](#minios_dev_mmio_vbase), [`MINIOS_FB_WIDTH_MAX`](#minios_fb_width_max), [`MINIOS_FB_HEIGHT_MAX`](#minios_fb_height_max), [`MINIOS_SYS_READ`](#minios_sys_read), [`MINIOS_SYS_WRITE`](#minios_sys_write), [`MINIOS_SYS_OPEN`](#minios_sys_open), [`MINIOS_SYS_CLOSE`](#minios_sys_close), [`MINIOS_SYS_FSTAT`](#minios_sys_fstat), [`MINIOS_SYS_POLL`](#minios_sys_poll), [`MINIOS_SYS_LSEEK`](#minios_sys_lseek), [`MINIOS_SYS_MMAP`](#minios_sys_mmap), [`MINIOS_SYS_MPROTECT`](#minios_sys_mprotect), [`MINIOS_SYS_MUNMAP`](#minios_sys_munmap), [`MINIOS_SYS_BRK`](#minios_sys_brk), [`MINIOS_SYS_RT_SIGACTION`](#minios_sys_rt_sigaction), [`MINIOS_SYS_RT_SIGPROCMASK`](#minios_sys_rt_sigprocmask), [`MINIOS_SYS_IOCTL`](#minios_sys_ioctl), [`MINIOS_SYS_WRITEV`](#minios_sys_writev), [`MINIOS_SYS_ACCESS`](#minios_sys_access), [`MINIOS_SYS_SCHED_YIELD`](#minios_sys_sched_yield), [`MINIOS_SYS_GETPID`](#minios_sys_getpid), [`MINIOS_SYS_SOCKET`](#minios_sys_socket), [`MINIOS_SYS_CONNECT`](#minios_sys_connect), [`MINIOS_SYS_SENDTO`](#minios_sys_sendto), [`MINIOS_SYS_RECVFROM`](#minios_sys_recvfrom), [`MINIOS_SYS_SHUTDOWN`](#minios_sys_shutdown), [`MINIOS_SYS_FORK`](#minios_sys_fork), [`MINIOS_SYS_VFORK`](#minios_sys_vfork), [`MINIOS_SYS_EXECVE`](#minios_sys_execve), [`MINIOS_SYS_EXIT`](#minios_sys_exit), [`MINIOS_SYS_WAIT4`](#minios_sys_wait4), [`MINIOS_SYS_KILL`](#minios_sys_kill), [`MINIOS_SYS_UNAME`](#minios_sys_uname), [`MINIOS_SYS_UNLINK`](#minios_sys_unlink), [`MINIOS_SYS_RENAME`](#minios_sys_rename), [`MINIOS_SYS_READLINK`](#minios_sys_readlink), [`MINIOS_SYS_GETTID`](#minios_sys_gettid), [`MINIOS_SYS_FLOCK`](#minios_sys_flock), [`MINIOS_SYS_FSYNC`](#minios_sys_fsync), [`MINIOS_SYS_FDATASYNC`](#minios_sys_fdatasync), [`MINIOS_SYS_GETCWD`](#minios_sys_getcwd), [`MINIOS_SYS_GETTIMEOFDAY`](#minios_sys_gettimeofday), [`MINIOS_SYS_ARCH_PRCTL`](#minios_sys_arch_prctl), [`MINIOS_SYS_OPENAT`](#minios_sys_openat), [`MINIOS_SYS_NEWFSTATAT`](#minios_sys_newfstatat), [`MINIOS_SYS_STATX`](#minios_sys_statx), [`MINIOS_SYS_SET_ROBUST_LIST`](#minios_sys_set_robust_list), [`MINIOS_SYS_PRLIMIT64`](#minios_sys_prlimit64), [`MINIOS_SYS_GETRANDOM`](#minios_sys_getrandom), [`MINIOS_SYS_RSEQ`](#minios_sys_rseq), [`MINIOS_SYS_EXIT_GROUP`](#minios_sys_exit_group), [`MINIOS_SYS_SET_TID_ADDRESS`](#minios_sys_set_tid_address), [`MINIOS_SYS_CLOCK_GETTIME`](#minios_sys_clock_gettime), [`MINIOS_SYS_TGKILL`](#minios_sys_tgkill), [`MINIOS_SYS_DNS`](#minios_sys_dns), [`MINIOS_SYS_TLS_HANDSHAKE`](#minios_sys_tls_handshake), [`MINIOS_SYS_TLS_SEND`](#minios_sys_tls_send), [`MINIOS_SYS_TLS_RECV`](#minios_sys_tls_recv), [`MINIOS_SYS_TIME`](#minios_sys_time), [`MINIOS_SYS_KBD`](#minios_sys_kbd), [`MINIOS_SYS_PALETTE`](#minios_sys_palette), [`MINIOS_SYS_KBD_RAW`](#minios_sys_kbd_raw), [`MINIOS_SYS_VGA_MODE`](#minios_sys_vga_mode), [`MINIOS_SYS_PCSPK_INIT`](#minios_sys_pcspk_init), [`MINIOS_SYS_PCSPK_TONE`](#minios_sys_pcspk_tone), [`MINIOS_SYS_DOOM_FRAME`](#minios_sys_doom_frame), [`MINIOS_SYS_RTC`](#minios_sys_rtc), [`MINIOS_SYS_FB_INFO`](#minios_sys_fb_info), [`MINIOS_SYS_PCSPK_VOL`](#minios_sys_pcspk_vol), [`MINIOS_SYS_SPAWN`](#minios_sys_spawn), [`MINIOS_SYS_LZ4_COMPRESS`](#minios_sys_lz4_compress), [`MINIOS_SYS_LZ4_DECOMPRESS`](#minios_sys_lz4_decompress), [`MINIOS_SYS_MOUSE`](#minios_sys_mouse), [`MINIOS_SYS_NK_FRAME`](#minios_sys_nk_frame), [`MINIOS_SYS_SB16_OPEN`](#minios_sys_sb16_open), [`MINIOS_SYS_SB16_SUBMIT`](#minios_sys_sb16_submit), [`MINIOS_SYS_GFX_SET_TITLE`](#minios_sys_gfx_set_title), [`MINIOS_SYS_SB16_PUMP`](#minios_sys_sb16_pump), [`MINIOS_SYS_SB16_STREAM_OPEN`](#minios_sys_sb16_stream_open), [`MINIOS_SYS_SB16_STREAM_CLOSE`](#minios_sys_sb16_stream_close), [`MINIOS_SYS_SB16_STREAM_SUBMIT`](#minios_sys_sb16_stream_submit), [`MINIOS_SYS_SB16_STREAM_VOLUME`](#minios_sys_sb16_stream_volume), [`MINIOS_SYS_THREAD_SPAWN`](#minios_sys_thread_spawn), [`MINIOS_SYS_FUTEX_WAIT`](#minios_sys_futex_wait), [`MINIOS_SYS_FUTEX_WAKE`](#minios_sys_futex_wake), [`MINIOS_SYS_SUBMIT_BATCH`](#minios_sys_submit_batch), [`MINIOS_SYS_GETC_RAW`](#minios_sys_getc_raw), [`MINIOS_SYS_GFX_PRESENT`](#minios_sys_gfx_present), [`MINIOS_SYS_SECCOMP`](#minios_sys_seccomp), [`MINIOS_SYS_NICE`](#minios_sys_nice), [`MINIOS_SYS_RLIMIT`](#minios_sys_rlimit), [`MINIOS_SYS_DIR_LIST`](#minios_sys_dir_list), [`MINIOS_SYS_GFX_ZOOM`](#minios_sys_gfx_zoom), [`MINIOS_SYS_WL_ATTACH`](#minios_sys_wl_attach), [`MINIOS_SYS_WL_COMMIT`](#minios_sys_wl_commit), [`MINIOS_SYS_WL_INPUT`](#minios_sys_wl_input), [`MINIOS_SYS_PCM2_OPEN`](#minios_sys_pcm2_open), [`MINIOS_SYS_PCM2_WRITE`](#minios_sys_pcm2_write), [`MINIOS_SYS_PCM2_CLOSE`](#minios_sys_pcm2_close), [`MINIOS_SYS_CLIP_SET`](#minios_sys_clip_set), [`MINIOS_SYS_CLIP_GET`](#minios_sys_clip_get), [`MINIOS_SYS_MINFO`](#minios_sys_minfo), [`MINIOS_PCM2_NONBLOCK`](#minios_pcm2_nonblock), [`MINIOS_PCM2_RATE`](#minios_pcm2_rate), [`MINIOS_PCM2_FRAG`](#minios_pcm2_frag), [`MINIOS_SYS_CLONE`](#minios_sys_clone), [`MINIOS_GFX_BUF_GAME`](#minios_gfx_buf_game), [`MINIOS_GFX_BUF_NK`](#minios_gfx_buf_nk), [`MINIOS_GFX_BUF_NK_RGB`](#minios_gfx_buf_nk_rgb), [`MINIOS_SYS_FRAMEBUFFER_COMMIT`](#minios_sys_framebuffer_commit), [`MINIOS_SYS_WINDOW_PRESENT`](#minios_sys_window_present), [`MINIOS_SYS_WINDOW_TITLE`](#minios_sys_window_title), [`MINIOS_GFX_ZOOM_NATIVE`](#minios_gfx_zoom_native), [`MINIOS_GFX_ZOOM_2X`](#minios_gfx_zoom_2x), [`MINIOS_GFX_ZOOM_FULLSCREEN`](#minios_gfx_zoom_fullscreen), [`MINIOS_GFX_ZOOM_WINDOWED`](#minios_gfx_zoom_windowed), [`SYS_TIME_MS`](#sys_time_ms), [`SYS_PALETTE`](#sys_palette), [`SYS_PCSPK_INIT`](#sys_pcspk_init), [`SYS_PCSPK_TONE`](#sys_pcspk_tone), [`SYS_RTC`](#sys_rtc), [`SYS_FB_INFO`](#sys_fb_info), [`SYS_PCSPK_VOL`](#sys_pcspk_vol), [`SYS_SPAWN`](#sys_spawn), [`SYS_TIME`](#sys_time), [`SYS_WRITE`](#sys_write), [`MINIOS_EABI_MISMATCH`](#minios_eabi_mismatch), [`MINIOS_NOTE_NAME`](#minios_note_name), [`MINIOS_NOTE_PROCESS`](#minios_note_process), [`MINIOS_NOTE_SIGN`](#minios_note_sign)
 
 ## Functions
@@ -15,7 +15,7 @@ minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
 
 ### `DOOM_BACKBUF_ADDR`
 
-`function` | [progs/minios_abi.h:128](../../progs/minios_abi.h#L128)
+`function` | [progs/minios_abi.h:133](../../progs/minios_abi.h#L133)
 
 ```c
 * * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can never reach them. NK_BACKBUF sits * HIGHER than the framebuffer's maximum span: at
@@ -31,23 +31,23 @@ minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
 
 ---
 
-<a id="clock_nanosleep"></a>
+<a id="range"></a>
 
-### `clock_nanosleep`
+### `range`
 
-`function` | [progs/minios_abi.h:338](../../progs/minios_abi.h#L338)
+`function` | [progs/minios_abi.h:334](../../progs/minios_abi.h#L334)
 
 ```c
-* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define MINIOS_SYS_SB16_STREAM_CLOSE 253 #define MINIOS_SYS_SB16_STREAM_SUBMIT 232 #define MI
+* number inside the MiniOS window and outside the pcm2 range (246-248). */ #define MINIOS_SYS_LZ4_DECOMPRESS 255 #define MINIOS_SYS_MOUSE 219 #define MINIOS_SYS_NK_FRAME 220 #define MINIOS_SYS_SB16_OP
 ```
 
 **Parameters**
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `nanosleep` | `static glibc's sleep, usleep and` |  |  |
+| `246-248` |  |  |  |
 
-**Returns:** `*`
+**Returns:** `* number inside the MiniOS window and outside the pcm2`
 
 ---
 
@@ -57,18 +57,13 @@ minios_abi.h -- Single source of truth for the MiniOS user-kernel ABI.
 
 ### `MINIOS_ABI_VERSION`
 
-`macro` | [progs/minios_abi.h:41](../../progs/minios_abi.h#L41)
+`macro` | [progs/minios_abi.h:44](../../progs/minios_abi.h#L44)
 
 ```c
 #define MINIOS_ABI_VERSION
 ```
 
-========================================================================= ABI Version ========================================================================= Bump MINIOS_ABI_VERSION on every backwards-incompatible change: - layout constant address or size change - syscall number addition, removal, or reordering - graphics back-buffer geometry change - kernel heap relocation
-
-MINIOS_ABI_CHECKSUM is computed at compile time from all layout constants.
-It is verified at build time (kernel _Static_asserts), not at load time:
-see the ABI Version note above for why the loader cannot gate on it.
-=========================================================================
+v13: lz4_decompress moved 217 -> 255 (217 is Linux getdents64; 248 was already the pcm2 close number, so the two MiniOS numbers collided and only the last table entry survived).
 
 ---
 
@@ -76,7 +71,7 @@ see the ABI Version note above for why the loader cannot gate on it.
 
 ### `MINIOS_ABI_CHECKSUM`
 
-`macro` | [progs/minios_abi.h:45](../../progs/minios_abi.h#L45)
+`macro` | [progs/minios_abi.h:48](../../progs/minios_abi.h#L48)
 
 ```c
 #define MINIOS_ABI_CHECKSUM
@@ -92,7 +87,7 @@ Recomputed by the kernel at load time for verification.
 
 ### `MINIOS_USER_LOAD_BASE`
 
-`macro` | [progs/minios_abi.h:113](../../progs/minios_abi.h#L113)
+`macro` | [progs/minios_abi.h:118](../../progs/minios_abi.h#L118)
 
 ```c
 #define MINIOS_USER_LOAD_BASE
@@ -126,7 +121,7 @@ Layout (low to high):
 
 ### `MINIOS_USER_LOAD_END`
 
-`macro` | [progs/minios_abi.h:114](../../progs/minios_abi.h#L114)
+`macro` | [progs/minios_abi.h:119](../../progs/minios_abi.h#L119)
 
 ```c
 #define MINIOS_USER_LOAD_END
@@ -138,7 +133,7 @@ Layout (low to high):
 
 ### `MINIOS_USER_STACK_SIZE`
 
-`macro` | [progs/minios_abi.h:115](../../progs/minios_abi.h#L115)
+`macro` | [progs/minios_abi.h:120](../../progs/minios_abi.h#L120)
 
 ```c
 #define MINIOS_USER_STACK_SIZE
@@ -150,7 +145,7 @@ Layout (low to high):
 
 ### `MINIOS_USER_STACK_TOP`
 
-`macro` | [progs/minios_abi.h:116](../../progs/minios_abi.h#L116)
+`macro` | [progs/minios_abi.h:121](../../progs/minios_abi.h#L121)
 
 ```c
 #define MINIOS_USER_STACK_TOP
@@ -162,7 +157,7 @@ Layout (low to high):
 
 ### `MINIOS_USER_STACK_BASE`
 
-`macro` | [progs/minios_abi.h:117](../../progs/minios_abi.h#L117)
+`macro` | [progs/minios_abi.h:122](../../progs/minios_abi.h#L122)
 
 ```c
 #define MINIOS_USER_STACK_BASE
@@ -174,7 +169,7 @@ Layout (low to high):
 
 ### `MINIOS_USER_BRK_END`
 
-`macro` | [progs/minios_abi.h:118](../../progs/minios_abi.h#L118)
+`macro` | [progs/minios_abi.h:123](../../progs/minios_abi.h#L123)
 
 ```c
 #define MINIOS_USER_BRK_END
@@ -186,7 +181,7 @@ Layout (low to high):
 
 ### `MINIOS_DOOM_BACKBUF_ADDR`
 
-`macro` | [progs/minios_abi.h:135](../../progs/minios_abi.h#L135)
+`macro` | [progs/minios_abi.h:140](../../progs/minios_abi.h#L140)
 
 ```c
 #define MINIOS_DOOM_BACKBUF_ADDR
@@ -210,7 +205,7 @@ framebuffer's second page-table slot, rendering the dock/taskbar black).
 
 ### `MINIOS_DOOM_W`
 
-`macro` | [progs/minios_abi.h:136](../../progs/minios_abi.h#L136)
+`macro` | [progs/minios_abi.h:141](../../progs/minios_abi.h#L141)
 
 ```c
 #define MINIOS_DOOM_W
@@ -222,7 +217,7 @@ framebuffer's second page-table slot, rendering the dock/taskbar black).
 
 ### `MINIOS_FB_ADDR`
 
-`macro` | [progs/minios_abi.h:138](../../progs/minios_abi.h#L138)
+`macro` | [progs/minios_abi.h:143](../../progs/minios_abi.h#L143)
 
 ```c
 #define MINIOS_FB_ADDR
@@ -234,7 +229,7 @@ framebuffer's second page-table slot, rendering the dock/taskbar black).
 
 ### `MINIOS_NK_BACKBUF_ADDR`
 
-`macro` | [progs/minios_abi.h:139](../../progs/minios_abi.h#L139)
+`macro` | [progs/minios_abi.h:144](../../progs/minios_abi.h#L144)
 
 ```c
 #define MINIOS_NK_BACKBUF_ADDR
@@ -246,7 +241,7 @@ framebuffer's second page-table slot, rendering the dock/taskbar black).
 
 ### `MINIOS_NK_W`
 
-`macro` | [progs/minios_abi.h:140](../../progs/minios_abi.h#L140)
+`macro` | [progs/minios_abi.h:145](../../progs/minios_abi.h#L145)
 
 ```c
 #define MINIOS_NK_W
@@ -258,7 +253,7 @@ framebuffer's second page-table slot, rendering the dock/taskbar black).
 
 ### `MINIOS_LDSO_BASE`
 
-`macro` | [progs/minios_abi.h:156](../../progs/minios_abi.h#L156)
+`macro` | [progs/minios_abi.h:161](../../progs/minios_abi.h#L161)
 
 ```c
 #define MINIOS_LDSO_BASE
@@ -274,7 +269,7 @@ The kernel assigns each library a base inside this region on first use (bump all
 
 ### `MINIOS_LDSO_SIZE`
 
-`macro` | [progs/minios_abi.h:157](../../progs/minios_abi.h#L157)
+`macro` | [progs/minios_abi.h:162](../../progs/minios_abi.h#L162)
 
 ```c
 #define MINIOS_LDSO_SIZE
@@ -286,7 +281,7 @@ The kernel assigns each library a base inside this region on first use (bump all
 
 ### `MINIOS_LDSO_END`
 
-`macro` | [progs/minios_abi.h:158](../../progs/minios_abi.h#L158)
+`macro` | [progs/minios_abi.h:163](../../progs/minios_abi.h#L163)
 
 ```c
 #define MINIOS_LDSO_END
@@ -298,7 +293,7 @@ The kernel assigns each library a base inside this region on first use (bump all
 
 ### `MINIOS_NK_RGB_ADDR`
 
-`macro` | [progs/minios_abi.h:166](../../progs/minios_abi.h#L166)
+`macro` | [progs/minios_abi.h:171](../../progs/minios_abi.h#L171)
 
 ```c
 #define MINIOS_NK_RGB_ADDR
@@ -314,7 +309,7 @@ Sits clear of the framebuffer's worst span (FB + 3 MB = 0x0B500000), the indexed
 
 ### `MINIOS_NK_RGB_BYTES`
 
-`macro` | [progs/minios_abi.h:167](../../progs/minios_abi.h#L167)
+`macro` | [progs/minios_abi.h:172](../../progs/minios_abi.h#L172)
 
 ```c
 #define MINIOS_NK_RGB_BYTES
@@ -326,7 +321,7 @@ Sits clear of the framebuffer's worst span (FB + 3 MB = 0x0B500000), the indexed
 
 ### `MINIOS_HEAP_BASE`
 
-`macro` | [progs/minios_abi.h:172](../../progs/minios_abi.h#L172)
+`macro` | [progs/minios_abi.h:177](../../progs/minios_abi.h#L177)
 
 ```c
 #define MINIOS_HEAP_BASE
@@ -340,7 +335,7 @@ Sits clear of the framebuffer's worst span (FB + 3 MB = 0x0B500000), the indexed
 
 ### `MINIOS_HEAP_SIZE`
 
-`macro` | [progs/minios_abi.h:178](../../progs/minios_abi.h#L178)
+`macro` | [progs/minios_abi.h:183](../../progs/minios_abi.h#L183)
 
 ```c
 #define MINIOS_HEAP_SIZE
@@ -356,7 +351,7 @@ Every user page and page table lives on this heap, so it bounds all user memory;
 
 ### `MINIOS_PCI_MMIO_SIZE`
 
-`macro` | [progs/minios_abi.h:202](../../progs/minios_abi.h#L202)
+`macro` | [progs/minios_abi.h:207](../../progs/minios_abi.h#L207)
 
 ```c
 #define MINIOS_PCI_MMIO_SIZE
@@ -383,7 +378,7 @@ program can never see or forge a device address.
 
 ### `MINIOS_DEV_MMIO_VBASE`
 
-`macro` | [progs/minios_abi.h:214](../../progs/minios_abi.h#L214)
+`macro` | [progs/minios_abi.h:219](../../progs/minios_abi.h#L219)
 
 ```c
 #define MINIOS_DEV_MMIO_VBASE
@@ -403,7 +398,7 @@ or write a device register through it.
 
 ### `MINIOS_FB_WIDTH_MAX`
 
-`macro` | [progs/minios_abi.h:219](../../progs/minios_abi.h#L219)
+`macro` | [progs/minios_abi.h:224](../../progs/minios_abi.h#L224)
 
 ```c
 #define MINIOS_FB_WIDTH_MAX
@@ -417,7 +412,7 @@ or write a device register through it.
 
 ### `MINIOS_FB_HEIGHT_MAX`
 
-`macro` | [progs/minios_abi.h:220](../../progs/minios_abi.h#L220)
+`macro` | [progs/minios_abi.h:225](../../progs/minios_abi.h#L225)
 
 ```c
 #define MINIOS_FB_HEIGHT_MAX
@@ -429,7 +424,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_READ`
 
-`macro` | [progs/minios_abi.h:238](../../progs/minios_abi.h#L238)
+`macro` | [progs/minios_abi.h:243](../../progs/minios_abi.h#L243)
 
 ```c
 #define MINIOS_SYS_READ
@@ -443,7 +438,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_WRITE`
 
-`macro` | [progs/minios_abi.h:239](../../progs/minios_abi.h#L239)
+`macro` | [progs/minios_abi.h:244](../../progs/minios_abi.h#L244)
 
 ```c
 #define MINIOS_SYS_WRITE
@@ -455,7 +450,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_OPEN`
 
-`macro` | [progs/minios_abi.h:240](../../progs/minios_abi.h#L240)
+`macro` | [progs/minios_abi.h:245](../../progs/minios_abi.h#L245)
 
 ```c
 #define MINIOS_SYS_OPEN
@@ -467,7 +462,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_CLOSE`
 
-`macro` | [progs/minios_abi.h:241](../../progs/minios_abi.h#L241)
+`macro` | [progs/minios_abi.h:246](../../progs/minios_abi.h#L246)
 
 ```c
 #define MINIOS_SYS_CLOSE
@@ -479,7 +474,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_FSTAT`
 
-`macro` | [progs/minios_abi.h:242](../../progs/minios_abi.h#L242)
+`macro` | [progs/minios_abi.h:247](../../progs/minios_abi.h#L247)
 
 ```c
 #define MINIOS_SYS_FSTAT
@@ -491,7 +486,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_POLL`
 
-`macro` | [progs/minios_abi.h:243](../../progs/minios_abi.h#L243)
+`macro` | [progs/minios_abi.h:248](../../progs/minios_abi.h#L248)
 
 ```c
 #define MINIOS_SYS_POLL
@@ -503,7 +498,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_LSEEK`
 
-`macro` | [progs/minios_abi.h:244](../../progs/minios_abi.h#L244)
+`macro` | [progs/minios_abi.h:249](../../progs/minios_abi.h#L249)
 
 ```c
 #define MINIOS_SYS_LSEEK
@@ -515,7 +510,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_MMAP`
 
-`macro` | [progs/minios_abi.h:245](../../progs/minios_abi.h#L245)
+`macro` | [progs/minios_abi.h:250](../../progs/minios_abi.h#L250)
 
 ```c
 #define MINIOS_SYS_MMAP
@@ -527,7 +522,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_MPROTECT`
 
-`macro` | [progs/minios_abi.h:246](../../progs/minios_abi.h#L246)
+`macro` | [progs/minios_abi.h:251](../../progs/minios_abi.h#L251)
 
 ```c
 #define MINIOS_SYS_MPROTECT
@@ -539,7 +534,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_MUNMAP`
 
-`macro` | [progs/minios_abi.h:247](../../progs/minios_abi.h#L247)
+`macro` | [progs/minios_abi.h:252](../../progs/minios_abi.h#L252)
 
 ```c
 #define MINIOS_SYS_MUNMAP
@@ -551,7 +546,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_BRK`
 
-`macro` | [progs/minios_abi.h:248](../../progs/minios_abi.h#L248)
+`macro` | [progs/minios_abi.h:253](../../progs/minios_abi.h#L253)
 
 ```c
 #define MINIOS_SYS_BRK
@@ -563,7 +558,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_RT_SIGACTION`
 
-`macro` | [progs/minios_abi.h:249](../../progs/minios_abi.h#L249)
+`macro` | [progs/minios_abi.h:254](../../progs/minios_abi.h#L254)
 
 ```c
 #define MINIOS_SYS_RT_SIGACTION
@@ -575,7 +570,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_RT_SIGPROCMASK`
 
-`macro` | [progs/minios_abi.h:250](../../progs/minios_abi.h#L250)
+`macro` | [progs/minios_abi.h:255](../../progs/minios_abi.h#L255)
 
 ```c
 #define MINIOS_SYS_RT_SIGPROCMASK
@@ -587,7 +582,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_IOCTL`
 
-`macro` | [progs/minios_abi.h:251](../../progs/minios_abi.h#L251)
+`macro` | [progs/minios_abi.h:256](../../progs/minios_abi.h#L256)
 
 ```c
 #define MINIOS_SYS_IOCTL
@@ -599,7 +594,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_WRITEV`
 
-`macro` | [progs/minios_abi.h:252](../../progs/minios_abi.h#L252)
+`macro` | [progs/minios_abi.h:257](../../progs/minios_abi.h#L257)
 
 ```c
 #define MINIOS_SYS_WRITEV
@@ -611,7 +606,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_ACCESS`
 
-`macro` | [progs/minios_abi.h:253](../../progs/minios_abi.h#L253)
+`macro` | [progs/minios_abi.h:258](../../progs/minios_abi.h#L258)
 
 ```c
 #define MINIOS_SYS_ACCESS
@@ -623,7 +618,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_SCHED_YIELD`
 
-`macro` | [progs/minios_abi.h:254](../../progs/minios_abi.h#L254)
+`macro` | [progs/minios_abi.h:259](../../progs/minios_abi.h#L259)
 
 ```c
 #define MINIOS_SYS_SCHED_YIELD
@@ -635,7 +630,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_GETPID`
 
-`macro` | [progs/minios_abi.h:255](../../progs/minios_abi.h#L255)
+`macro` | [progs/minios_abi.h:260](../../progs/minios_abi.h#L260)
 
 ```c
 #define MINIOS_SYS_GETPID
@@ -647,7 +642,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_SOCKET`
 
-`macro` | [progs/minios_abi.h:256](../../progs/minios_abi.h#L256)
+`macro` | [progs/minios_abi.h:261](../../progs/minios_abi.h#L261)
 
 ```c
 #define MINIOS_SYS_SOCKET
@@ -659,7 +654,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_CONNECT`
 
-`macro` | [progs/minios_abi.h:257](../../progs/minios_abi.h#L257)
+`macro` | [progs/minios_abi.h:262](../../progs/minios_abi.h#L262)
 
 ```c
 #define MINIOS_SYS_CONNECT
@@ -671,7 +666,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_SENDTO`
 
-`macro` | [progs/minios_abi.h:258](../../progs/minios_abi.h#L258)
+`macro` | [progs/minios_abi.h:263](../../progs/minios_abi.h#L263)
 
 ```c
 #define MINIOS_SYS_SENDTO
@@ -683,7 +678,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_RECVFROM`
 
-`macro` | [progs/minios_abi.h:259](../../progs/minios_abi.h#L259)
+`macro` | [progs/minios_abi.h:264](../../progs/minios_abi.h#L264)
 
 ```c
 #define MINIOS_SYS_RECVFROM
@@ -695,7 +690,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_SHUTDOWN`
 
-`macro` | [progs/minios_abi.h:260](../../progs/minios_abi.h#L260)
+`macro` | [progs/minios_abi.h:265](../../progs/minios_abi.h#L265)
 
 ```c
 #define MINIOS_SYS_SHUTDOWN
@@ -707,7 +702,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_FORK`
 
-`macro` | [progs/minios_abi.h:261](../../progs/minios_abi.h#L261)
+`macro` | [progs/minios_abi.h:266](../../progs/minios_abi.h#L266)
 
 ```c
 #define MINIOS_SYS_FORK
@@ -719,7 +714,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_VFORK`
 
-`macro` | [progs/minios_abi.h:262](../../progs/minios_abi.h#L262)
+`macro` | [progs/minios_abi.h:267](../../progs/minios_abi.h#L267)
 
 ```c
 #define MINIOS_SYS_VFORK
@@ -731,7 +726,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_EXECVE`
 
-`macro` | [progs/minios_abi.h:263](../../progs/minios_abi.h#L263)
+`macro` | [progs/minios_abi.h:268](../../progs/minios_abi.h#L268)
 
 ```c
 #define MINIOS_SYS_EXECVE
@@ -743,7 +738,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_EXIT`
 
-`macro` | [progs/minios_abi.h:264](../../progs/minios_abi.h#L264)
+`macro` | [progs/minios_abi.h:269](../../progs/minios_abi.h#L269)
 
 ```c
 #define MINIOS_SYS_EXIT
@@ -755,7 +750,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_WAIT4`
 
-`macro` | [progs/minios_abi.h:265](../../progs/minios_abi.h#L265)
+`macro` | [progs/minios_abi.h:270](../../progs/minios_abi.h#L270)
 
 ```c
 #define MINIOS_SYS_WAIT4
@@ -767,7 +762,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_KILL`
 
-`macro` | [progs/minios_abi.h:266](../../progs/minios_abi.h#L266)
+`macro` | [progs/minios_abi.h:271](../../progs/minios_abi.h#L271)
 
 ```c
 #define MINIOS_SYS_KILL
@@ -779,7 +774,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_UNAME`
 
-`macro` | [progs/minios_abi.h:267](../../progs/minios_abi.h#L267)
+`macro` | [progs/minios_abi.h:272](../../progs/minios_abi.h#L272)
 
 ```c
 #define MINIOS_SYS_UNAME
@@ -791,7 +786,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_UNLINK`
 
-`macro` | [progs/minios_abi.h:268](../../progs/minios_abi.h#L268)
+`macro` | [progs/minios_abi.h:273](../../progs/minios_abi.h#L273)
 
 ```c
 #define MINIOS_SYS_UNLINK
@@ -803,7 +798,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_RENAME`
 
-`macro` | [progs/minios_abi.h:269](../../progs/minios_abi.h#L269)
+`macro` | [progs/minios_abi.h:274](../../progs/minios_abi.h#L274)
 
 ```c
 #define MINIOS_SYS_RENAME
@@ -815,7 +810,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_READLINK`
 
-`macro` | [progs/minios_abi.h:270](../../progs/minios_abi.h#L270)
+`macro` | [progs/minios_abi.h:275](../../progs/minios_abi.h#L275)
 
 ```c
 #define MINIOS_SYS_READLINK
@@ -827,7 +822,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_GETTID`
 
-`macro` | [progs/minios_abi.h:271](../../progs/minios_abi.h#L271)
+`macro` | [progs/minios_abi.h:276](../../progs/minios_abi.h#L276)
 
 ```c
 #define MINIOS_SYS_GETTID
@@ -839,7 +834,7 @@ or write a device register through it.
 
 ### `MINIOS_SYS_FLOCK`
 
-`macro` | [progs/minios_abi.h:275](../../progs/minios_abi.h#L275)
+`macro` | [progs/minios_abi.h:280](../../progs/minios_abi.h#L280)
 
 ```c
 #define MINIOS_SYS_FLOCK
@@ -855,7 +850,7 @@ A host-built static ELF trapping fsync got flock semantics. 73/74/75 now match t
 
 ### `MINIOS_SYS_FSYNC`
 
-`macro` | [progs/minios_abi.h:276](../../progs/minios_abi.h#L276)
+`macro` | [progs/minios_abi.h:281](../../progs/minios_abi.h#L281)
 
 ```c
 #define MINIOS_SYS_FSYNC
@@ -867,7 +862,7 @@ A host-built static ELF trapping fsync got flock semantics. 73/74/75 now match t
 
 ### `MINIOS_SYS_FDATASYNC`
 
-`macro` | [progs/minios_abi.h:277](../../progs/minios_abi.h#L277)
+`macro` | [progs/minios_abi.h:282](../../progs/minios_abi.h#L282)
 
 ```c
 #define MINIOS_SYS_FDATASYNC
@@ -879,7 +874,7 @@ A host-built static ELF trapping fsync got flock semantics. 73/74/75 now match t
 
 ### `MINIOS_SYS_GETCWD`
 
-`macro` | [progs/minios_abi.h:278](../../progs/minios_abi.h#L278)
+`macro` | [progs/minios_abi.h:283](../../progs/minios_abi.h#L283)
 
 ```c
 #define MINIOS_SYS_GETCWD
@@ -891,7 +886,7 @@ A host-built static ELF trapping fsync got flock semantics. 73/74/75 now match t
 
 ### `MINIOS_SYS_GETTIMEOFDAY`
 
-`macro` | [progs/minios_abi.h:279](../../progs/minios_abi.h#L279)
+`macro` | [progs/minios_abi.h:284](../../progs/minios_abi.h#L284)
 
 ```c
 #define MINIOS_SYS_GETTIMEOFDAY
@@ -903,7 +898,7 @@ A host-built static ELF trapping fsync got flock semantics. 73/74/75 now match t
 
 ### `MINIOS_SYS_ARCH_PRCTL`
 
-`macro` | [progs/minios_abi.h:280](../../progs/minios_abi.h#L280)
+`macro` | [progs/minios_abi.h:285](../../progs/minios_abi.h#L285)
 
 ```c
 #define MINIOS_SYS_ARCH_PRCTL
@@ -915,7 +910,7 @@ A host-built static ELF trapping fsync got flock semantics. 73/74/75 now match t
 
 ### `MINIOS_SYS_OPENAT`
 
-`macro` | [progs/minios_abi.h:281](../../progs/minios_abi.h#L281)
+`macro` | [progs/minios_abi.h:286](../../progs/minios_abi.h#L286)
 
 ```c
 #define MINIOS_SYS_OPENAT
@@ -927,7 +922,7 @@ A host-built static ELF trapping fsync got flock semantics. 73/74/75 now match t
 
 ### `MINIOS_SYS_NEWFSTATAT`
 
-`macro` | [progs/minios_abi.h:282](../../progs/minios_abi.h#L282)
+`macro` | [progs/minios_abi.h:287](../../progs/minios_abi.h#L287)
 
 ```c
 #define MINIOS_SYS_NEWFSTATAT
@@ -939,7 +934,7 @@ A host-built static ELF trapping fsync got flock semantics. 73/74/75 now match t
 
 ### `MINIOS_SYS_STATX`
 
-`macro` | [progs/minios_abi.h:285](../../progs/minios_abi.h#L285)
+`macro` | [progs/minios_abi.h:290](../../progs/minios_abi.h#L290)
 
 ```c
 #define MINIOS_SYS_STATX
@@ -955,7 +950,7 @@ The header now claims the true number.
 
 ### `MINIOS_SYS_SET_ROBUST_LIST`
 
-`macro` | [progs/minios_abi.h:289](../../progs/minios_abi.h#L289)
+`macro` | [progs/minios_abi.h:294](../../progs/minios_abi.h#L294)
 
 ```c
 #define MINIOS_SYS_SET_ROBUST_LIST
@@ -971,7 +966,7 @@ The label now names the number the kernel actually stubs.
 
 ### `MINIOS_SYS_PRLIMIT64`
 
-`macro` | [progs/minios_abi.h:293](../../progs/minios_abi.h#L293)
+`macro` | [progs/minios_abi.h:298](../../progs/minios_abi.h#L298)
 
 ```c
 #define MINIOS_SYS_PRLIMIT64
@@ -987,7 +982,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_GETRANDOM`
 
-`macro` | [progs/minios_abi.h:294](../../progs/minios_abi.h#L294)
+`macro` | [progs/minios_abi.h:299](../../progs/minios_abi.h#L299)
 
 ```c
 #define MINIOS_SYS_GETRANDOM
@@ -999,7 +994,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_RSEQ`
 
-`macro` | [progs/minios_abi.h:295](../../progs/minios_abi.h#L295)
+`macro` | [progs/minios_abi.h:300](../../progs/minios_abi.h#L300)
 
 ```c
 #define MINIOS_SYS_RSEQ
@@ -1011,7 +1006,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_EXIT_GROUP`
 
-`macro` | [progs/minios_abi.h:296](../../progs/minios_abi.h#L296)
+`macro` | [progs/minios_abi.h:301](../../progs/minios_abi.h#L301)
 
 ```c
 #define MINIOS_SYS_EXIT_GROUP
@@ -1023,7 +1018,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_SET_TID_ADDRESS`
 
-`macro` | [progs/minios_abi.h:297](../../progs/minios_abi.h#L297)
+`macro` | [progs/minios_abi.h:302](../../progs/minios_abi.h#L302)
 
 ```c
 #define MINIOS_SYS_SET_TID_ADDRESS
@@ -1035,7 +1030,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_CLOCK_GETTIME`
 
-`macro` | [progs/minios_abi.h:298](../../progs/minios_abi.h#L298)
+`macro` | [progs/minios_abi.h:303](../../progs/minios_abi.h#L303)
 
 ```c
 #define MINIOS_SYS_CLOCK_GETTIME
@@ -1047,7 +1042,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_TGKILL`
 
-`macro` | [progs/minios_abi.h:299](../../progs/minios_abi.h#L299)
+`macro` | [progs/minios_abi.h:304](../../progs/minios_abi.h#L304)
 
 ```c
 #define MINIOS_SYS_TGKILL
@@ -1059,7 +1054,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_DNS`
 
-`macro` | [progs/minios_abi.h:302](../../progs/minios_abi.h#L302)
+`macro` | [progs/minios_abi.h:307](../../progs/minios_abi.h#L307)
 
 ```c
 #define MINIOS_SYS_DNS
@@ -1073,7 +1068,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_TLS_HANDSHAKE`
 
-`macro` | [progs/minios_abi.h:308](../../progs/minios_abi.h#L308)
+`macro` | [progs/minios_abi.h:313](../../progs/minios_abi.h#L313)
 
 ```c
 #define MINIOS_SYS_TLS_HANDSHAKE
@@ -1089,7 +1084,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_TLS_SEND`
 
-`macro` | [progs/minios_abi.h:309](../../progs/minios_abi.h#L309)
+`macro` | [progs/minios_abi.h:314](../../progs/minios_abi.h#L314)
 
 ```c
 #define MINIOS_SYS_TLS_SEND
@@ -1101,7 +1096,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_TLS_RECV`
 
-`macro` | [progs/minios_abi.h:310](../../progs/minios_abi.h#L310)
+`macro` | [progs/minios_abi.h:315](../../progs/minios_abi.h#L315)
 
 ```c
 #define MINIOS_SYS_TLS_RECV
@@ -1113,7 +1108,7 @@ The kernel still answers 0 there for old binaries (see syscalls.c), but new code
 
 ### `MINIOS_SYS_TIME`
 
-`macro` | [progs/minios_abi.h:313](../../progs/minios_abi.h#L313)
+`macro` | [progs/minios_abi.h:318](../../progs/minios_abi.h#L318)
 
 ```c
 #define MINIOS_SYS_TIME
@@ -1127,7 +1122,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_KBD`
 
-`macro` | [progs/minios_abi.h:314](../../progs/minios_abi.h#L314)
+`macro` | [progs/minios_abi.h:319](../../progs/minios_abi.h#L319)
 
 ```c
 #define MINIOS_SYS_KBD
@@ -1139,7 +1134,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_PALETTE`
 
-`macro` | [progs/minios_abi.h:315](../../progs/minios_abi.h#L315)
+`macro` | [progs/minios_abi.h:320](../../progs/minios_abi.h#L320)
 
 ```c
 #define MINIOS_SYS_PALETTE
@@ -1151,7 +1146,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_KBD_RAW`
 
-`macro` | [progs/minios_abi.h:316](../../progs/minios_abi.h#L316)
+`macro` | [progs/minios_abi.h:321](../../progs/minios_abi.h#L321)
 
 ```c
 #define MINIOS_SYS_KBD_RAW
@@ -1163,7 +1158,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_VGA_MODE`
 
-`macro` | [progs/minios_abi.h:317](../../progs/minios_abi.h#L317)
+`macro` | [progs/minios_abi.h:322](../../progs/minios_abi.h#L322)
 
 ```c
 #define MINIOS_SYS_VGA_MODE
@@ -1175,7 +1170,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_PCSPK_INIT`
 
-`macro` | [progs/minios_abi.h:318](../../progs/minios_abi.h#L318)
+`macro` | [progs/minios_abi.h:323](../../progs/minios_abi.h#L323)
 
 ```c
 #define MINIOS_SYS_PCSPK_INIT
@@ -1187,7 +1182,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_PCSPK_TONE`
 
-`macro` | [progs/minios_abi.h:319](../../progs/minios_abi.h#L319)
+`macro` | [progs/minios_abi.h:324](../../progs/minios_abi.h#L324)
 
 ```c
 #define MINIOS_SYS_PCSPK_TONE
@@ -1199,7 +1194,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_DOOM_FRAME`
 
-`macro` | [progs/minios_abi.h:320](../../progs/minios_abi.h#L320)
+`macro` | [progs/minios_abi.h:325](../../progs/minios_abi.h#L325)
 
 ```c
 #define MINIOS_SYS_DOOM_FRAME
@@ -1211,7 +1206,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_RTC`
 
-`macro` | [progs/minios_abi.h:321](../../progs/minios_abi.h#L321)
+`macro` | [progs/minios_abi.h:326](../../progs/minios_abi.h#L326)
 
 ```c
 #define MINIOS_SYS_RTC
@@ -1223,7 +1218,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_FB_INFO`
 
-`macro` | [progs/minios_abi.h:322](../../progs/minios_abi.h#L322)
+`macro` | [progs/minios_abi.h:327](../../progs/minios_abi.h#L327)
 
 ```c
 #define MINIOS_SYS_FB_INFO
@@ -1235,7 +1230,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_PCSPK_VOL`
 
-`macro` | [progs/minios_abi.h:323](../../progs/minios_abi.h#L323)
+`macro` | [progs/minios_abi.h:328](../../progs/minios_abi.h#L328)
 
 ```c
 #define MINIOS_SYS_PCSPK_VOL
@@ -1247,7 +1242,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_SPAWN`
 
-`macro` | [progs/minios_abi.h:324](../../progs/minios_abi.h#L324)
+`macro` | [progs/minios_abi.h:329](../../progs/minios_abi.h#L329)
 
 ```c
 #define MINIOS_SYS_SPAWN
@@ -1259,7 +1254,7 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_LZ4_COMPRESS`
 
-`macro` | [progs/minios_abi.h:325](../../progs/minios_abi.h#L325)
+`macro` | [progs/minios_abi.h:330](../../progs/minios_abi.h#L330)
 
 ```c
 #define MINIOS_SYS_LZ4_COMPRESS
@@ -1271,15 +1266,15 @@ v12: relocated from 204, which belongs to Linux sched_getaffinity (glibc's get_n
 
 ### `MINIOS_SYS_LZ4_DECOMPRESS`
 
-`macro` | [progs/minios_abi.h:330](../../progs/minios_abi.h#L330)
+`macro` | [progs/minios_abi.h:335](../../progs/minios_abi.h#L335)
 
 ```c
 #define MINIOS_SYS_LZ4_DECOMPRESS
 ```
 
-lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64, which the kernel now serves (directory enumeration for readdir(3) and CPython's os.scandir; see docs/spec/python.md).
+v13: lz4_decompress moved from 217 to 255.
 
-248 is a free x86-64 number inside the MiniOS window, and the ABI checksum moved with it.
+217 is Linux getdents64, which the kernel now serves (directory enumeration for readdir(3) and CPython's os.scandir; see docs/spec/python.md). 255 is a free x86-64 number inside the MiniOS window and outside the pcm2 range (246-248).
 
 ---
 
@@ -1287,7 +1282,7 @@ lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64, which the 
 
 ### `MINIOS_SYS_MOUSE`
 
-`macro` | [progs/minios_abi.h:331](../../progs/minios_abi.h#L331)
+`macro` | [progs/minios_abi.h:336](../../progs/minios_abi.h#L336)
 
 ```c
 #define MINIOS_SYS_MOUSE
@@ -1299,7 +1294,7 @@ lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64, which the 
 
 ### `MINIOS_SYS_NK_FRAME`
 
-`macro` | [progs/minios_abi.h:332](../../progs/minios_abi.h#L332)
+`macro` | [progs/minios_abi.h:337](../../progs/minios_abi.h#L337)
 
 ```c
 #define MINIOS_SYS_NK_FRAME
@@ -1311,7 +1306,7 @@ lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64, which the 
 
 ### `MINIOS_SYS_SB16_OPEN`
 
-`macro` | [progs/minios_abi.h:333](../../progs/minios_abi.h#L333)
+`macro` | [progs/minios_abi.h:338](../../progs/minios_abi.h#L338)
 
 ```c
 #define MINIOS_SYS_SB16_OPEN
@@ -1323,7 +1318,7 @@ lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64, which the 
 
 ### `MINIOS_SYS_SB16_SUBMIT`
 
-`macro` | [progs/minios_abi.h:334](../../progs/minios_abi.h#L334)
+`macro` | [progs/minios_abi.h:339](../../progs/minios_abi.h#L339)
 
 ```c
 #define MINIOS_SYS_SB16_SUBMIT
@@ -1335,7 +1330,7 @@ lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64, which the 
 
 ### `MINIOS_SYS_GFX_SET_TITLE`
 
-`macro` | [progs/minios_abi.h:335](../../progs/minios_abi.h#L335)
+`macro` | [progs/minios_abi.h:340](../../progs/minios_abi.h#L340)
 
 ```c
 #define MINIOS_SYS_GFX_SET_TITLE
@@ -1347,7 +1342,7 @@ lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64, which the 
 
 ### `MINIOS_SYS_SB16_PUMP`
 
-`macro` | [progs/minios_abi.h:336](../../progs/minios_abi.h#L336)
+`macro` | [progs/minios_abi.h:341](../../progs/minios_abi.h#L341)
 
 ```c
 #define MINIOS_SYS_SB16_PUMP
@@ -1359,7 +1354,7 @@ lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64, which the 
 
 ### `MINIOS_SYS_SB16_STREAM_OPEN`
 
-`macro` | [progs/minios_abi.h:339](../../progs/minios_abi.h#L339)
+`macro` | [progs/minios_abi.h:344](../../progs/minios_abi.h#L344)
 
 ```c
 #define MINIOS_SYS_SB16_STREAM_OPEN
@@ -1373,7 +1368,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_SB16_STREAM_CLOSE`
 
-`macro` | [progs/minios_abi.h:340](../../progs/minios_abi.h#L340)
+`macro` | [progs/minios_abi.h:345](../../progs/minios_abi.h#L345)
 
 ```c
 #define MINIOS_SYS_SB16_STREAM_CLOSE
@@ -1385,7 +1380,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_SB16_STREAM_SUBMIT`
 
-`macro` | [progs/minios_abi.h:341](../../progs/minios_abi.h#L341)
+`macro` | [progs/minios_abi.h:346](../../progs/minios_abi.h#L346)
 
 ```c
 #define MINIOS_SYS_SB16_STREAM_SUBMIT
@@ -1397,7 +1392,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_SB16_STREAM_VOLUME`
 
-`macro` | [progs/minios_abi.h:342](../../progs/minios_abi.h#L342)
+`macro` | [progs/minios_abi.h:347](../../progs/minios_abi.h#L347)
 
 ```c
 #define MINIOS_SYS_SB16_STREAM_VOLUME
@@ -1409,7 +1404,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_THREAD_SPAWN`
 
-`macro` | [progs/minios_abi.h:343](../../progs/minios_abi.h#L343)
+`macro` | [progs/minios_abi.h:348](../../progs/minios_abi.h#L348)
 
 ```c
 #define MINIOS_SYS_THREAD_SPAWN
@@ -1421,7 +1416,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_FUTEX_WAIT`
 
-`macro` | [progs/minios_abi.h:344](../../progs/minios_abi.h#L344)
+`macro` | [progs/minios_abi.h:349](../../progs/minios_abi.h#L349)
 
 ```c
 #define MINIOS_SYS_FUTEX_WAIT
@@ -1433,7 +1428,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_FUTEX_WAKE`
 
-`macro` | [progs/minios_abi.h:345](../../progs/minios_abi.h#L345)
+`macro` | [progs/minios_abi.h:350](../../progs/minios_abi.h#L350)
 
 ```c
 #define MINIOS_SYS_FUTEX_WAKE
@@ -1445,7 +1440,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_SUBMIT_BATCH`
 
-`macro` | [progs/minios_abi.h:346](../../progs/minios_abi.h#L346)
+`macro` | [progs/minios_abi.h:351](../../progs/minios_abi.h#L351)
 
 ```c
 #define MINIOS_SYS_SUBMIT_BATCH
@@ -1457,7 +1452,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_GETC_RAW`
 
-`macro` | [progs/minios_abi.h:347](../../progs/minios_abi.h#L347)
+`macro` | [progs/minios_abi.h:352](../../progs/minios_abi.h#L352)
 
 ```c
 #define MINIOS_SYS_GETC_RAW
@@ -1469,7 +1464,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_GFX_PRESENT`
 
-`macro` | [progs/minios_abi.h:348](../../progs/minios_abi.h#L348)
+`macro` | [progs/minios_abi.h:353](../../progs/minios_abi.h#L353)
 
 ```c
 #define MINIOS_SYS_GFX_PRESENT
@@ -1481,7 +1476,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_SECCOMP`
 
-`macro` | [progs/minios_abi.h:349](../../progs/minios_abi.h#L349)
+`macro` | [progs/minios_abi.h:354](../../progs/minios_abi.h#L354)
 
 ```c
 #define MINIOS_SYS_SECCOMP
@@ -1493,7 +1488,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_NICE`
 
-`macro` | [progs/minios_abi.h:350](../../progs/minios_abi.h#L350)
+`macro` | [progs/minios_abi.h:355](../../progs/minios_abi.h#L355)
 
 ```c
 #define MINIOS_SYS_NICE
@@ -1505,7 +1500,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_RLIMIT`
 
-`macro` | [progs/minios_abi.h:351](../../progs/minios_abi.h#L351)
+`macro` | [progs/minios_abi.h:356](../../progs/minios_abi.h#L356)
 
 ```c
 #define MINIOS_SYS_RLIMIT
@@ -1517,7 +1512,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_DIR_LIST`
 
-`macro` | [progs/minios_abi.h:352](../../progs/minios_abi.h#L352)
+`macro` | [progs/minios_abi.h:357](../../progs/minios_abi.h#L357)
 
 ```c
 #define MINIOS_SYS_DIR_LIST
@@ -1529,7 +1524,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_GFX_ZOOM`
 
-`macro` | [progs/minios_abi.h:353](../../progs/minios_abi.h#L353)
+`macro` | [progs/minios_abi.h:358](../../progs/minios_abi.h#L358)
 
 ```c
 #define MINIOS_SYS_GFX_ZOOM
@@ -1541,7 +1536,7 @@ v12: relocated from 229/230, which belong to Linux clock_getres and clock_nanosl
 
 ### `MINIOS_SYS_WL_ATTACH`
 
-`macro` | [progs/minios_abi.h:358](../../progs/minios_abi.h#L358)
+`macro` | [progs/minios_abi.h:363](../../progs/minios_abi.h#L363)
 
 ```c
 #define MINIOS_SYS_WL_ATTACH
@@ -1557,7 +1552,7 @@ Reserved only: the kernel answers -ENOSYS until Phase 2 wires them, so they stay
 
 ### `MINIOS_SYS_WL_COMMIT`
 
-`macro` | [progs/minios_abi.h:359](../../progs/minios_abi.h#L359)
+`macro` | [progs/minios_abi.h:364](../../progs/minios_abi.h#L364)
 
 ```c
 #define MINIOS_SYS_WL_COMMIT
@@ -1569,7 +1564,7 @@ Reserved only: the kernel answers -ENOSYS until Phase 2 wires them, so they stay
 
 ### `MINIOS_SYS_WL_INPUT`
 
-`macro` | [progs/minios_abi.h:360](../../progs/minios_abi.h#L360)
+`macro` | [progs/minios_abi.h:365](../../progs/minios_abi.h#L365)
 
 ```c
 #define MINIOS_SYS_WL_INPUT
@@ -1581,7 +1576,7 @@ Reserved only: the kernel answers -ENOSYS until Phase 2 wires them, so they stay
 
 ### `MINIOS_SYS_PCM2_OPEN`
 
-`macro` | [progs/minios_abi.h:365](../../progs/minios_abi.h#L365)
+`macro` | [progs/minios_abi.h:371](../../progs/minios_abi.h#L371)
 
 ```c
 #define MINIOS_SYS_PCM2_OPEN
@@ -1589,7 +1584,7 @@ Reserved only: the kernel answers -ENOSYS until Phase 2 wires them, so they stay
 
 Low-latency PCM path (pcm2, 8-bit mono 22050 Hz over SB16 single-cycle DMA): OPEN takes flags (bit 0 NONBLOCK), WRITE returns bytes taken (blocking unless NONBLOCK), CLOSE releases.
 
-Numbers 246-248 are free in Linux x86-64 (no table entry), so no DEVIATION is needed.
+Numbers 246-248 are free in Linux x86-64 (no table entry), so no DEVIATION is needed. The pcm2 range is exclusive: 255 carries lz4_decompress (v13).
 
 ---
 
@@ -1597,7 +1592,7 @@ Numbers 246-248 are free in Linux x86-64 (no table entry), so no DEVIATION is ne
 
 ### `MINIOS_SYS_PCM2_WRITE`
 
-`macro` | [progs/minios_abi.h:366](../../progs/minios_abi.h#L366)
+`macro` | [progs/minios_abi.h:372](../../progs/minios_abi.h#L372)
 
 ```c
 #define MINIOS_SYS_PCM2_WRITE
@@ -1609,7 +1604,7 @@ Numbers 246-248 are free in Linux x86-64 (no table entry), so no DEVIATION is ne
 
 ### `MINIOS_SYS_PCM2_CLOSE`
 
-`macro` | [progs/minios_abi.h:367](../../progs/minios_abi.h#L367)
+`macro` | [progs/minios_abi.h:373](../../progs/minios_abi.h#L373)
 
 ```c
 #define MINIOS_SYS_PCM2_CLOSE
@@ -1621,7 +1616,7 @@ Numbers 246-248 are free in Linux x86-64 (no table entry), so no DEVIATION is ne
 
 ### `MINIOS_SYS_CLIP_SET`
 
-`macro` | [progs/minios_abi.h:375](../../progs/minios_abi.h#L375)
+`macro` | [progs/minios_abi.h:381](../../progs/minios_abi.h#L381)
 
 ```c
 #define MINIOS_SYS_CLIP_SET
@@ -1637,7 +1632,7 @@ Linux x86-64 owns 249 (request_key) and 250 (keyctl); no ring-3 program MiniOS r
 
 ### `MINIOS_SYS_CLIP_GET`
 
-`macro` | [progs/minios_abi.h:376](../../progs/minios_abi.h#L376)
+`macro` | [progs/minios_abi.h:382](../../progs/minios_abi.h#L382)
 
 ```c
 #define MINIOS_SYS_CLIP_GET
@@ -1649,7 +1644,7 @@ Linux x86-64 owns 249 (request_key) and 250 (keyctl); no ring-3 program MiniOS r
 
 ### `MINIOS_SYS_MINFO`
 
-`macro` | [progs/minios_abi.h:393](../../progs/minios_abi.h#L393)
+`macro` | [progs/minios_abi.h:399](../../progs/minios_abi.h#L399)
 
 ```c
 #define MINIOS_SYS_MINFO
@@ -1665,7 +1660,7 @@ Machine info (mtop, 251): multiplexed kernel-statistics read with a selector in 
 
 ### `MINIOS_PCM2_NONBLOCK`
 
-`macro` | [progs/minios_abi.h:394](../../progs/minios_abi.h#L394)
+`macro` | [progs/minios_abi.h:400](../../progs/minios_abi.h#L400)
 
 ```c
 #define MINIOS_PCM2_NONBLOCK
@@ -1677,7 +1672,7 @@ Machine info (mtop, 251): multiplexed kernel-statistics read with a selector in 
 
 ### `MINIOS_PCM2_RATE`
 
-`macro` | [progs/minios_abi.h:398](../../progs/minios_abi.h#L398)
+`macro` | [progs/minios_abi.h:404](../../progs/minios_abi.h#L404)
 
 ```c
 #define MINIOS_PCM2_RATE
@@ -1693,7 +1688,7 @@ A writer produces whole fragments; the kernel refills finished ones from its rin
 
 ### `MINIOS_PCM2_FRAG`
 
-`macro` | [progs/minios_abi.h:399](../../progs/minios_abi.h#L399)
+`macro` | [progs/minios_abi.h:405](../../progs/minios_abi.h#L405)
 
 ```c
 #define MINIOS_PCM2_FRAG
@@ -1705,7 +1700,7 @@ A writer produces whole fragments; the kernel refills finished ones from its rin
 
 ### `MINIOS_SYS_CLONE`
 
-`macro` | [progs/minios_abi.h:401](../../progs/minios_abi.h#L401)
+`macro` | [progs/minios_abi.h:407](../../progs/minios_abi.h#L407)
 
 ```c
 #define MINIOS_SYS_CLONE
@@ -1717,7 +1712,7 @@ A writer produces whole fragments; the kernel refills finished ones from its rin
 
 ### `MINIOS_GFX_BUF_GAME`
 
-`macro` | [progs/minios_abi.h:410](../../progs/minios_abi.h#L410)
+`macro` | [progs/minios_abi.h:416](../../progs/minios_abi.h#L416)
 
 ```c
 #define MINIOS_GFX_BUF_GAME
@@ -1733,7 +1728,7 @@ DOOM_FRAME/NK_FRAME remain as compat numbers that route through the same composi
 
 ### `MINIOS_GFX_BUF_NK`
 
-`macro` | [progs/minios_abi.h:411](../../progs/minios_abi.h#L411)
+`macro` | [progs/minios_abi.h:417](../../progs/minios_abi.h#L417)
 
 ```c
 #define MINIOS_GFX_BUF_NK
@@ -1745,7 +1740,7 @@ DOOM_FRAME/NK_FRAME remain as compat numbers that route through the same composi
 
 ### `MINIOS_GFX_BUF_NK_RGB`
 
-`macro` | [progs/minios_abi.h:412](../../progs/minios_abi.h#L412)
+`macro` | [progs/minios_abi.h:418](../../progs/minios_abi.h#L418)
 
 ```c
 #define MINIOS_GFX_BUF_NK_RGB
@@ -1757,7 +1752,7 @@ DOOM_FRAME/NK_FRAME remain as compat numbers that route through the same composi
 
 ### `MINIOS_SYS_FRAMEBUFFER_COMMIT`
 
-`macro` | [progs/minios_abi.h:413](../../progs/minios_abi.h#L413)
+`macro` | [progs/minios_abi.h:419](../../progs/minios_abi.h#L419)
 
 ```c
 #define MINIOS_SYS_FRAMEBUFFER_COMMIT
@@ -1769,7 +1764,7 @@ DOOM_FRAME/NK_FRAME remain as compat numbers that route through the same composi
 
 ### `MINIOS_SYS_WINDOW_PRESENT`
 
-`macro` | [progs/minios_abi.h:414](../../progs/minios_abi.h#L414)
+`macro` | [progs/minios_abi.h:420](../../progs/minios_abi.h#L420)
 
 ```c
 #define MINIOS_SYS_WINDOW_PRESENT
@@ -1781,7 +1776,7 @@ DOOM_FRAME/NK_FRAME remain as compat numbers that route through the same composi
 
 ### `MINIOS_SYS_WINDOW_TITLE`
 
-`macro` | [progs/minios_abi.h:415](../../progs/minios_abi.h#L415)
+`macro` | [progs/minios_abi.h:421](../../progs/minios_abi.h#L421)
 
 ```c
 #define MINIOS_SYS_WINDOW_TITLE
@@ -1793,7 +1788,7 @@ DOOM_FRAME/NK_FRAME remain as compat numbers that route through the same composi
 
 ### `MINIOS_GFX_ZOOM_NATIVE`
 
-`macro` | [progs/minios_abi.h:422](../../progs/minios_abi.h#L422)
+`macro` | [progs/minios_abi.h:428](../../progs/minios_abi.h#L428)
 
 ```c
 #define MINIOS_GFX_ZOOM_NATIVE
@@ -1809,7 +1804,7 @@ GFX_ZOOM (242) argument values.
 
 ### `MINIOS_GFX_ZOOM_2X`
 
-`macro` | [progs/minios_abi.h:423](../../progs/minios_abi.h#L423)
+`macro` | [progs/minios_abi.h:429](../../progs/minios_abi.h#L429)
 
 ```c
 #define MINIOS_GFX_ZOOM_2X
@@ -1821,7 +1816,7 @@ GFX_ZOOM (242) argument values.
 
 ### `MINIOS_GFX_ZOOM_FULLSCREEN`
 
-`macro` | [progs/minios_abi.h:424](../../progs/minios_abi.h#L424)
+`macro` | [progs/minios_abi.h:430](../../progs/minios_abi.h#L430)
 
 ```c
 #define MINIOS_GFX_ZOOM_FULLSCREEN
@@ -1833,7 +1828,7 @@ GFX_ZOOM (242) argument values.
 
 ### `MINIOS_GFX_ZOOM_WINDOWED`
 
-`macro` | [progs/minios_abi.h:425](../../progs/minios_abi.h#L425)
+`macro` | [progs/minios_abi.h:431](../../progs/minios_abi.h#L431)
 
 ```c
 #define MINIOS_GFX_ZOOM_WINDOWED
@@ -1845,7 +1840,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_TIME_MS`
 
-`macro` | [progs/minios_abi.h:428](../../progs/minios_abi.h#L428)
+`macro` | [progs/minios_abi.h:434](../../progs/minios_abi.h#L434)
 
 ```c
 #define SYS_TIME_MS
@@ -1859,7 +1854,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_PALETTE`
 
-`macro` | [progs/minios_abi.h:429](../../progs/minios_abi.h#L429)
+`macro` | [progs/minios_abi.h:435](../../progs/minios_abi.h#L435)
 
 ```c
 #define SYS_PALETTE
@@ -1871,7 +1866,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_PCSPK_INIT`
 
-`macro` | [progs/minios_abi.h:430](../../progs/minios_abi.h#L430)
+`macro` | [progs/minios_abi.h:436](../../progs/minios_abi.h#L436)
 
 ```c
 #define SYS_PCSPK_INIT
@@ -1883,7 +1878,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_PCSPK_TONE`
 
-`macro` | [progs/minios_abi.h:431](../../progs/minios_abi.h#L431)
+`macro` | [progs/minios_abi.h:437](../../progs/minios_abi.h#L437)
 
 ```c
 #define SYS_PCSPK_TONE
@@ -1895,7 +1890,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_RTC`
 
-`macro` | [progs/minios_abi.h:432](../../progs/minios_abi.h#L432)
+`macro` | [progs/minios_abi.h:438](../../progs/minios_abi.h#L438)
 
 ```c
 #define SYS_RTC
@@ -1907,7 +1902,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_FB_INFO`
 
-`macro` | [progs/minios_abi.h:433](../../progs/minios_abi.h#L433)
+`macro` | [progs/minios_abi.h:439](../../progs/minios_abi.h#L439)
 
 ```c
 #define SYS_FB_INFO
@@ -1919,7 +1914,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_PCSPK_VOL`
 
-`macro` | [progs/minios_abi.h:434](../../progs/minios_abi.h#L434)
+`macro` | [progs/minios_abi.h:440](../../progs/minios_abi.h#L440)
 
 ```c
 #define SYS_PCSPK_VOL
@@ -1931,7 +1926,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_SPAWN`
 
-`macro` | [progs/minios_abi.h:435](../../progs/minios_abi.h#L435)
+`macro` | [progs/minios_abi.h:441](../../progs/minios_abi.h#L441)
 
 ```c
 #define SYS_SPAWN
@@ -1943,7 +1938,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_TIME`
 
-`macro` | [progs/minios_abi.h:436](../../progs/minios_abi.h#L436)
+`macro` | [progs/minios_abi.h:442](../../progs/minios_abi.h#L442)
 
 ```c
 #define SYS_TIME
@@ -1955,7 +1950,7 @@ GFX_ZOOM (242) argument values.
 
 ### `SYS_WRITE`
 
-`macro` | [progs/minios_abi.h:437](../../progs/minios_abi.h#L437)
+`macro` | [progs/minios_abi.h:443](../../progs/minios_abi.h#L443)
 
 ```c
 #define SYS_WRITE
@@ -1967,13 +1962,13 @@ GFX_ZOOM (242) argument values.
 
 ### `MINIOS_EABI_MISMATCH`
 
-`macro` | [progs/minios_abi.h:440](../../progs/minios_abi.h#L440)
+`macro` | [progs/minios_abi.h:450](../../progs/minios_abi.h#L450)
 
 ```c
 #define MINIOS_EABI_MISMATCH
 ```
 
---- Error codes ---
+Reserved for the load-time ABI gate (ARCHITECTURE_PLAN.md Phase 1.1): no code path returns it yet, because Linux-ABI binaries carry no MiniOS version note and rejecting them would break the Linux compatibility requirement.
 
 ---
 
@@ -1981,7 +1976,7 @@ GFX_ZOOM (242) argument values.
 
 ### `MINIOS_NOTE_NAME`
 
-`macro` | [progs/minios_abi.h:453](../../progs/minios_abi.h#L453)
+`macro` | [progs/minios_abi.h:463](../../progs/minios_abi.h#L463)
 
 ```c
 #define MINIOS_NOTE_NAME
@@ -1997,7 +1992,7 @@ A program that needs process semantics (threads plus fork/exec, like the FreeDom
 
 ### `MINIOS_NOTE_PROCESS`
 
-`macro` | [progs/minios_abi.h:454](../../progs/minios_abi.h#L454)
+`macro` | [progs/minios_abi.h:464](../../progs/minios_abi.h#L464)
 
 ```c
 #define MINIOS_NOTE_PROCESS
@@ -2009,7 +2004,7 @@ A program that needs process semantics (threads plus fork/exec, like the FreeDom
 
 ### `MINIOS_NOTE_SIGN`
 
-`macro` | [progs/minios_abi.h:455](../../progs/minios_abi.h#L455)
+`macro` | [progs/minios_abi.h:465](../../progs/minios_abi.h#L465)
 
 ```c
 #define MINIOS_NOTE_SIGN

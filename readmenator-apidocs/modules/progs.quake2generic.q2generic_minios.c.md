@@ -59,7 +59,7 @@ framebuffer's second page-table slot, rendering the dock/taskbar black).
 
 **Returns:** `*`
 
-> **Inherited:** Documentation from [`MINIOS_DOOM_BACKBUF_ADDR`](#minios_doom_backbuf_addr) (progs/minios_abi.h:135).
+> **Inherited:** Documentation from [`MINIOS_DOOM_BACKBUF_ADDR`](#minios_doom_backbuf_addr) (progs/minios_abi.h:140).
 
 ---
 
@@ -85,7 +85,7 @@ DOOM_FRAME/NK_FRAME remain as compat numbers that route through the same composi
 
 **Returns:** `* MINIOS_SYS_GFX_PRESENT with`
 
-> **Inherited:** Documentation from [`MINIOS_GFX_BUF_GAME`](#minios_gfx_buf_game) (progs/minios_abi.h:410).
+> **Inherited:** Documentation from [`MINIOS_GFX_BUF_GAME`](#minios_gfx_buf_game) (progs/minios_abi.h:416).
 
 ---
 

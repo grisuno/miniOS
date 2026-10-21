@@ -48,7 +48,7 @@ depend on where the bytes came from.
 ## Proof
 
 `make test-wl` pins stream split reassembly, consume, overflow refusal,
-the full seven-message session, and the fail-closed set (wild id,
+the full nine-message session, and the fail-closed set (wild id,
 unknown opcode, short attach, truncated commit). Five scoped mutants
 over the new paths die in `make test-wl`; the runner is
 `tools/wl_scoped.sh`. The BDD strings are unchanged.

@@ -36,8 +36,9 @@
  * voice is audible (noise SFX, sweep zaps), the raw mix estimate plays.
  *
  * Debug: heartbeat to stderr is OFF unless the game is started with
- * --debug. Detected via a constructor scanning _dl_argv (static
- * glibc), so generated main.c files need no patches.
+ * --debug. The flag arrives through gb_platform_set_debug(), wired by
+ * the --debug flag that main-minios.patch adds to generated main.c
+ * files; see the NOTE below before touching argv handling.
  */
 
 #include "gbrt.h"

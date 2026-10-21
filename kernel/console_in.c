@@ -197,6 +197,18 @@ static int consume_page_after_esc(void) {
     return 0;
 }
 
+/** Docstring: Page the console history by one screen (dir -1 up, +1 down).
+ * The framebuffer terminal keeps its own logical ring, the text-mode
+ * console the legacy VGA scrollback ring; this picks the one that is up
+ * and is the single entry point for the page keys. */
+void console_history_page(int dir) {
+    if (vga_fb_active) {
+        vga_fb_history_page(dir);
+        return;
+    }
+    scrollback_view(dir);
+}
+
 /** Docstring: Blocking read from either the PS/2 keyboard or COM1 serial
  * line. Recognises the PageUp/PageDown escape sequences and detours into
  * the scrollback view; the view re-injects any terminating key into the
@@ -212,8 +224,10 @@ int console_getc(void) {
     int c = raw_blocking_getc();
     if (c != KEY_ESC) return c;
     int r = consume_page_after_esc();
-    if (r == 1) { scrollback_view(-1); return console_getc(); }
-    if (r == 2) { scrollback_view(+1); return console_getc(); }
+    if (r == 1 || r == 2) {
+        console_history_page(r == 1 ? -1 : 1);
+        return console_getc();
+    }
     if (r == 3) {
         /* Delete key: re-inject the ESC [ 3 ~ sequence so the readline layer
          * handles it identically to a keyboard-delivered Del. */

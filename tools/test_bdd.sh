@@ -116,6 +116,32 @@ expect() {
     fi
 }
 
+# expect_min <count> <marker>: the marker must appear at least that many
+# times in the log. Used where the exact count depends on how much history
+# the console holds (a scrollback view echoes the whole viewport, so the
+# same line can show up once per page).
+expect_min() {
+    if [ "$SKIP" = "1" ]; then return 0; fi
+    local n="$1"
+    local what="$2"
+    local got
+    got=$(tr -d '\r' < "$LOG" | grep -o -- "$what" | wc -l)
+    if [ "$got" -ge "$n" ]; then
+        echo "    PASS  $what x$got (>=$n)"
+        PASS=$((PASS + 1))
+    else
+        echo "    FAIL  $what (expected >=$n, found x$got)"
+        FAIL=$((FAIL + 1))
+        FAILED_NAMES="$FAILED_NAMES [$SCENARIO: $what x$got]"
+        if [ "$FAIL_FAST" = "1" ]; then
+            echo ""
+            echo "=== summary: $PASS passed, $FAIL failed (stopped at first failure) ==="
+            [ "$KEEP_LOG" = "1" ] || rm -f "$LOG"
+            exit 1
+        fi
+    fi
+}
+
 # expect_count <count> <marker>: the marker must appear exactly that many
 # times in the log. Used where a single occurrence would also match the
 # echoed command line, so only the output can prove the behaviour.
@@ -358,6 +384,18 @@ scenario "cvm module built by ld runs on the interpreter" "run cvm/fib.cvm
 poweroff"
 expect "exit code: 55"
 
+# The guest CVM hosts the libc natives a module needs. The formatting
+# ones (sprintf/snprintf/printf) used to be stubs that wrote an empty
+# string, so a module could not print a number at all.
+scenario "cvm module formats numbers through the host natives" "run cvm/cvmfmt.cvm
+poweroff"
+expect "n=42 s=ok len=9"
+expect "t=7 x=ff"
+expect "win=0123456"
+expect "canary=CCCCCCCC"
+refute "#"
+refute "ABCDEF"
+
 scenario "cvm module prints through the write native" "run cvm/w1.cvm
 poweroff"
 expect "hola cvm"
@@ -399,7 +437,7 @@ refute "exit code: 0"
 scenario "syscall fuzzer completes its seeded run" "run bin/scfuzz.elf
 poweroff"
 expect "scfuzz: start"
-expect "scfuzz: 9cfa1899"
+expect "scfuzz: 81fec1f6"
 expect "exit code: 0"
 
 scenario "pcache shares file text between mappers" "mrun bin/pcmap.elf
@@ -431,6 +469,7 @@ expect "exit code: 0"
 
 scenario "run resolves a bare .o name from objects/" "run minigcc.o src/fib.c > asm/bare.s
 run objects/ld.o -f elf -o bin/bare.elf asm/bare.s
+run sign bin/bare.elf
 run bin/bare.elf
 poweroff"
 expect "exit code: 0"
@@ -627,11 +666,29 @@ SCENARIO_QEMU_ARGS=""
 
 # A FAT32 data stick on xHCI becomes the block backend and reads through
 # BOT: partition discovery, directory listing and file bytes all come off
-# USB. Needs pendrive.img (make pendrive.img).
-SCENARIO_QEMU_ARGS="-device nec-usb-xhci -device usb-kbd -drive file=pendrive.img,format=raw,if=none,id=stick0 -device usb-storage,drive=stick0"
-scenario "usb stick fat32 reads" "fat ls hd0
+# USB. The stick image is built on demand with the host tools (sfdisk,
+# mkfs.vfat, mcopy) and the scenario skips cleanly when they are absent
+# (same doctrine as the QEMU-absent and OVMF skips).
+usb_stick_ready() {
+    if [ -f "$HERE/pendrive.img" ]; then
+        return 0
+    fi
+    command -v sfdisk >/dev/null 2>&1 || return 1
+    command -v mkfs.vfat >/dev/null 2>&1 || return 1
+    command -v mcopy >/dev/null 2>&1 || return 1
+    make -C "$HERE" pendrive.img >/dev/null 2>&1 || return 1
+    [ -f "$HERE/pendrive.img" ]
+}
+if usb_stick_ready; then
+    SCENARIO_QEMU_ARGS="-device nec-usb-xhci -device usb-kbd -drive file=$HERE/pendrive.img,format=raw,if=none,id=stick0 -device usb-storage,drive=stick0"
+    scenario "usb stick fat32 reads" "fat ls hd0
 fat cat hd0 HELLO.TXT
 poweroff"
+else
+    SCENARIO="usb stick fat32 reads"
+    echo "--- $SCENARIO (SKIP: no sfdisk/mkfs.vfat/mcopy)"
+    SKIP=1
+fi
 expect "backend=usb"
 expect "HELLO.TXT"
 expect "hello from USB"
@@ -693,8 +750,14 @@ expect "win term0 *"
 refute "win term1"
 expect "powering off"
 
-scenario "background gfx joins the Alt-Tab cycle and tiles with terminals" "run doomgeneric.elf mini_autoframes 3000 &
+# A background graphics program owns the keyboard when it claims the
+# display, so the cycle is walked from the terminal: focus 0 then
+# "focus next" lands on the graphics window. The frame count keeps the
+# program alive long enough for the window commands (it would exit on
+# its own otherwise and take the window with it).
+scenario "background gfx joins the Alt-Tab cycle and tiles with terminals" "run doomgeneric.elf mini_autoframes 100000 &
 sleep 10
+wm focus 0
 wm focus next
 wm state
 wm tile
@@ -765,6 +828,7 @@ expect "exit code: 55"
 
 scenario "a bare .o toolchain object drives the full compile pipeline" "minigcc.o src/fib.c > asm/direct.s
 ld.o -f elf -o bin/direct.elf asm/direct.s
+run sign bin/direct.elf
 direct.elf
 poweroff"
 expect "exit code: 55"
@@ -791,6 +855,7 @@ echo \"int dynadd(int a, int b);\" > src/du.c
 echo \"int main(void) { return dynadd(40, 2); }\" >> src/du.c
 run objects/minigcc.o src/du.c > asm/du.s
 run objects/ld.o -f elf -d dyn.so -o bin/du.elf asm/du.s
+run sign bin/du.elf
 run bin/du.elf
 run bin/du.elf
 poweroff"
@@ -805,6 +870,7 @@ echo \"int dynadd(int a, int b);\" > src/du.c
 echo \"int main(void) { return dynadd(40, 2); }\" >> src/du.c
 run objects/minigcc.o src/du.c > asm/du.s
 run objects/ld.o -f elf -d dyn.so -o bin/du.elf asm/du.s
+run sign bin/du.elf
 mrun bin/du.elf
 poweroff"
 expect "ld.so: dyn.so shared x1"
@@ -856,11 +922,16 @@ expect "wrote 1 line(s) to vis.txt"
 expect "hello visual"
 expect "exit code: 0"
 
-scenario "vedit console dump highlights C keywords with ANSI" $'vedit hl.c\nint main(void) { return 0; }\x04\x1b\npoweroff'
+# ^D dumps the buffer to the console with the ANSI highlighting, ^Q quits
+# without saving (the dump must not write the file). The editor reads the
+# raw keys, so the quit key cannot be followed by a newline: the ESC
+# decoder would read it as the second byte of a sequence.
+scenario "vedit console dump highlights C keywords with ANSI" $'vedit hl.c\nint main(void) { return 0; }\x04\x11\npoweroff'
 expect "main"
 expect "return"
 expect $'\x1b\[1;34m'
 refute "wrote"
+expect_count 1 "--- hl.c"
 expect "exit code: 0"
 
 scenario "vedit selftest renders one UI frame" "vedit --selftest
@@ -1070,6 +1141,7 @@ int main(void) { return 7; }
 x
 run objects/minigcc.o src/p.c > asm/p.s
 run objects/ld.o -f elf -o bin/p.elf asm/p.s
+run sign bin/p.elf
 run bin/p.elf
 poweroff"
 expect "exit code: 7"
@@ -1096,6 +1168,7 @@ a
 x
 run objects/minigcc.o src/errno.c > asm/errno.s
 run objects/ld.o -f elf -o bin/errno.elf asm/errno.s
+run sign bin/errno.elf
 run bin/errno.elf
 poweroff"
 expect "errno: 2"
@@ -1133,6 +1206,7 @@ expect "exit code: 0"
 
 scenario "self-hosted minigcc (compiled by minigcc, linked by ld) compiles inside the OS" "run bin/minigcc.elf src/test.c > asm/t.s
 run objects/ld.o -f elf -o bin/t.elf asm/t.s
+run sign bin/t.elf
 run bin/t.elf
 poweroff"
 expect "exit code: 12"
@@ -1833,7 +1907,11 @@ scenario "page up scrolls back to the boot banner" "cat docs/hostile.html docs/h
 ${PGUP}${PGUP}${PGUP}
 echo done
 poweroff"
-expect_count 2 "MiniOS Kernel v0.3"
+# The boot banner is in the console history: once from the boot log and
+# once from the history view the page key renders. The view echoes the
+# whole viewport, so how many views show the banner depends on how much
+# history the console holds.
+expect_min 2 "MiniOS Kernel v0.3"
 expect "done"
 
 # MicroPython: a host-built static glibc ELF on MiniFS running at ring 3
@@ -1888,6 +1966,7 @@ expect "exit code: 0"
 # ring-3 ELF, proving the Lisp-to-asm path end to end.
 scenario "lisp minigcc compiles a tiny program end to end" "lisp minigcc.lisp tin.c > asm/_t_mini.s
 run objects/ld.o -f elf -o bin/_t_mini.elf asm/_t_mini.s
+run sign bin/_t_mini.elf
 run bin/_t_mini.elf
 poweroff"
 expect "exit code: 42"
@@ -1901,6 +1980,7 @@ expect "exit code: 1"
 # real two-function shape (add plus main), linked and run for exit 12.
 scenario "lisp minigcc compiles calls end to end" "lisp minigcc.lisp test.c > asm/_t_call.s
 run objects/ld.o -f elf -o bin/_t_call.elf asm/_t_call.s
+run sign bin/_t_call.elf
 run bin/_t_call.elf
 poweroff"
 expect "exit code: 12"
@@ -2007,9 +2087,15 @@ expect "freedomui: frame ok (800x360)"
 # The network section stops the host fixture server before this point, so
 # this fetch starts its own and stops it again.
 http_server_start
+# An explicit http:// target stays on http (the FreeDom omnibox would
+# upgrade it to https and the plain-HTTP fixture would refuse the
+# handshake), in either case.
 scenario "freedomui fetches a page and presents it" "freedomui --once http://10.0.2.2:8899/README.txt
+freedomui --once HTTP://10.0.2.2:8899/README.txt
+freedomui --once https://10.0.2.2:8899/README.txt
 poweroff"
-expect "freedomui: 10.0.2.2 ("
+expect_count 2 "freedomui: 10.0.2.2 ("
+expect "freedomui: https handshake with 10.0.2.2 failed"
 refute "UNIMPL"
 http_server_stop
 
@@ -2255,7 +2341,9 @@ expect "fx: on melts=1"
 expect "fx: on melts=3"
 expect "nuklear: frame ok (800x360)"
 expect "fx: on melts=5"
-expect "gfx: frames composited 1"
+# The nuklear selftest presents twice: the indexed frame and the RGB
+# proof frame, so the compositor counted two frames.
+expect "gfx: frames composited 2"
 
 # ── Quake 2 (quake2generic) ─────────────────────────────────────────
 

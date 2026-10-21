@@ -106,6 +106,10 @@ SOURCES="$SOURCES progs/minicraft/minicraft.c"
 # rcu/percpu/lisp predated the allowlist and their kills were vacuous
 # for a whole run; httpd.h shipped its own mutants without an entry.
 SOURCES="$SOURCES kernel/futex.c kernel/percpu_rq.c kernel/batch.c kernel/rcu.c"
+# The rwlock writer-preference rule lives in kernel/sync.c (the header
+# carries the state): both must be restored after a mutant run.
+SOURCES="$SOURCES kernel/sync.c headers/sync.h"
+SOURCES="$SOURCES kernel/cvm_host.c"
 SOURCES="$SOURCES progs/src/lxabi.c tools/mkfs.minifs.py tools/minifs_fsck.py"
 SOURCES="$SOURCES kernel/proc_sec.c kernel/seccomp_bpf.c progs/src/lxsecc.c"
 SOURCES="$SOURCES progs/lisp/lisp.c headers/httpd.h"
@@ -121,6 +125,7 @@ SOURCES="$SOURCES headers/wm_gfxview.h tests/test_wm.c"
 SOURCES="$SOURCES kernel/syscalls_proc.c kernel/loader.c kernel/exec.c kernel/ldso_parse.c"
 SOURCES="$SOURCES kernel/ed25519.c headers/sign.h tools/sign_elf.py tests/test_sign.c"
 SOURCES="$SOURCES progs/src/sign.c"
+SOURCES="$SOURCES progs/src/scfuzz.c"
 SOURCES="$SOURCES kernel/spawn.c kernel/mm/tlb.c arch/x86/tlb_nmi.S"
 # ldso-* rows target the pure dynamic-table parser (kernel/ldso_parse.c,
 # host-pinned by make test-ldso) and its kernel glue (kernel/loader.c);
@@ -242,6 +247,8 @@ pipe-empty-stage-accepted | s/            if (sargc == 0) {/            if (0) {
 panic-null-ret-continues | s/        if (ret == 0u)/        if (0)/ | headers/panic.h
 panic-max-never-clamps | s/        max = PANIC_BT_MAX;/        max = 0;/ | headers/panic.h
 panic-valid-unchecked | s/        if (!valid(rbp) || !valid(rbp + 8u))/        if (0)/ | headers/panic.h
+panic-hex-capacity-clamp-dropped | s/    if (cap < digits + 1)/    if (0) \&\& (cap < digits + 1)/ | headers/panic.h
+panic-hex-digits-clamp-dropped | s/    if (digits > PANIC_HEX_MAX_DIGITS)/    if (0) \&\& (digits > PANIC_HEX_MAX_DIGITS)/ | headers/panic.h
 vfs-first-match-wins | s/            if (plen > best_len || best < 0) {/            if (best < 0) {/ | fs/vfs.c
 vfs-busy-unmount-allowed | s/                return -16;/                return 0;/ | fs/vfs.c
 vfs-root-unmountable | s/    if (!prefix\[0\]) return -22;/    if (0) return -22;/ | fs/vfs.c
@@ -334,6 +341,17 @@ abi-robust-back-to-301 | s/#define MINIOS_SYS_SET_ROBUST_LIST 273/#define MINIOS
 truth-gettid-returns-one | s/return (long)current_pid;/return 1;/ | kernel/syscalls.c
 truth-getrandom-count-zero | s/return (long)cnt;/return 0;/ | kernel/syscalls.c
 truth-gettimeofday-usec-zero | s/tv\\[1\\] = total % 1000000UL;/tv[1] = 0;/ | kernel/syscalls.c
+rwlock-writer-preference-dropped | s/if (!rw->writer \&\& rw->writers_waiting == 0) {/if (!rw->writer) {/ | kernel/sync.c
+scfuzz-address-folded | s/            h = sc_fold(h, (unsigned long)(p > 0 ? 1u : 0u));/            h = sc_fold(h, (unsigned long)p);/ | progs/src/scfuzz.c
+scfuzz-align-check-dropped | s/            h = sc_fold(h, (unsigned long)(p > 0 \&\& (p \& (SC_PAGE - 1)) == 0 ? 1u : 0u));/            (void)0;/ | progs/src/scfuzz.c
+freedomui-http-scheme-ignored | s/    if (fui_is_http_scheme(argv\[qi\])) {/    if (0) {/ | progs/freedomui/freedomui_minios.c
+freedomui-scheme-case-lost | s/        if (a >= 'A' \&\& a <= 'Z') {/        if (0) {/ | progs/freedomui/freedomui_minios.c
+freedomui-https-scheme-ignored | s/    if (fui_has_scheme(url, \"https:\/\/\")) {/    if (0) {/ | progs/freedomui/freedomui_minios.c
+cvm-sprintf-cap-clamped | s/    k.cap = (size_t)-1;/    k.cap = 1;/ | kernel/cvm_host.c
+cvm-snprintf-cap-clamped | s/    k.cap = n;/    k.cap = 1;/ | kernel/cvm_host.c
+cvm-snprintf-nul-dropped | s/    if (n > 0) buf\[k.len < n ? k.len : n - 1\] = 0;/    if (0) {}/ | kernel/cvm_host.c
+cvm-sprintf-nul-dropped | s/    buf\[k.len\] = 0;/    (void)k;/ | kernel/cvm_host.c
+cvm-buffer-cap-ignored | s/        if (k->len + 1 < k->cap) k->buf\[k->len\] = c;/        if (k->len + 1 < 1000000u) k->buf[k->len] = c;/ | kernel/cvm_host.c
 fpu-no-save | s/fxsave  (%rax)/\\/* mutant: no save *\\// | arch/x86/ctx_sw.S
 fpu-no-restore | s/fxrstor (%rax)/\\/* mutant: no restore *\\// | arch/x86/ctx_sw.S
 fsbase-restore-corrupted | s/movq    320(%rax), %rax/movq    320(%rax), %rdx/ | arch/x86/ctx_sw.S
@@ -642,6 +660,17 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
         kernel/futex.c)
             make -C "$HERE" test-futex > "$BACKUP/suite.log" 2>&1
             ;;
+        kernel/sync.c)
+            make -C "$HERE" test-sync > "$BACKUP/suite.log" 2>&1
+            ;;
+        kernel/cvm_host.c)
+            MATCH="cvm module formats numbers" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
+        progs/src/scfuzz.c)
+            # The fuzzer oracle is a pinned hash, so the fold has to stay
+            # address-free: a raw address would move with ASLR.
+            MATCH="syscall fuzzer" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
+            ;;
         headers/rtc.h)
             make -C "$HERE" test-rtc > "$BACKUP/suite.log" 2>&1
             ;;
@@ -683,7 +712,14 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             # (selftest vectors plus the full sign-and-run loop).
             MATCH="sign" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" > "$BACKUP/suite.log" 2>&1
             ;;
-        progs/freedomui/freedomui_minios.c|tests/test_freedomui.c)
+        progs/freedomui/freedomui_minios.c)
+            # The port keeps an explicit http:// target on http (the
+            # omnibox would upgrade it to https), so the browser fetch is
+            # pinned by the BDD slice next to the host unit test.
+            make -C "$HERE" test-freedomui > "$BACKUP/suite.log" 2>&1 && \
+            MATCH="freedomui fetches a page" FAIL_FAST=1 "$HERE/tools/test_bdd.sh" >> "$BACKUP/suite.log" 2>&1
+            ;;
+        tests/test_freedomui.c)
             make -C "$HERE" test-freedomui > "$BACKUP/suite.log" 2>&1
             ;;
         progs/freedomui/ps2_keymap.c|tests/test_ps2_keymap.c)

@@ -20,15 +20,17 @@
   - `freedomui_sys_yield` (function, line 242) `static long freedomui_sys_yield(void)`
   - `fui_append` (function, line 249) `static long fui_append(char *dst, long pos, char *src, long cap)`
   - `fui_strlen` (function, line 267) `static long fui_strlen(char *s, long cap)`
-  - `fui_split_url` (function, line 283) `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...`
-  - `fui_parse_headers` (function, line 352) `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...`
-  - `fui_fetch_raw` (function, line 470) `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)`
-  - `fui_render` (function, line 698) `static long fui_render(FreedomUiConfig *c, size_t off)`
-  - `fui_browse` (function, line 817) `static long fui_browse(FreedomUiConfig *c)`
-  - `freedomui_selftest` (function, line 896) `static long freedomui_selftest(void)`
-  - `freedomui_host_probe` (function, line 984) `static long freedomui_host_probe(FreedomUiConfig *c)`
-  - `freedomui_host_entry` (function, line 1067) `int freedomui_host_entry(FreedomUiConfig *c)`
-  - `main` (function, line 1072) `int main(int argc, char **argv)`
+  - `fui_has_scheme` (function, line 285) `static int fui_has_scheme(const char *s, const char *scheme)`
+  - `fui_is_http_scheme` (function, line 309) `static int fui_is_http_scheme(const char *s)`
+  - `fui_split_url` (function, line 314) `static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long...`
+  - `fui_parse_headers` (function, line 383) `static long fui_parse_headers(FreedomUiConfig *c, char *hdr, long *status, long *clen, long *hasc...`
+  - `fui_fetch_raw` (function, line 501) `static long fui_fetch_raw(FreedomUiConfig *c, char *host, char *path, long port, long secure)`
+  - `fui_render` (function, line 729) `static long fui_render(FreedomUiConfig *c, size_t off)`
+  - `fui_browse` (function, line 848) `static long fui_browse(FreedomUiConfig *c)`
+  - `freedomui_selftest` (function, line 927) `static long freedomui_selftest(void)`
+  - `freedomui_host_probe` (function, line 1015) `static long freedomui_host_probe(FreedomUiConfig *c)`
+  - `freedomui_host_entry` (function, line 1098) `int freedomui_host_entry(FreedomUiConfig *c)`
+  - `main` (function, line 1103) `int main(int argc, char **argv)`
   - `net_dns_resolve` (function, line 44) `int net_dns_resolve(const char *host);`
   - `tls_handshake` (function, line 45) `int tls_handshake(int fd, char *host);`
   - `tls_send` (function, line 46) `int tls_send(int fd, char *buf, int len);`

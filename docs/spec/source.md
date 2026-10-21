@@ -9,7 +9,8 @@ source: the toolchain ([miniGCC](https://github.com/grisuno/miniGCC),
 [ld](https://github.com/grisuno/ld),
 [cvm](https://github.com/grisuno/cvm)), the interpreters
 ([lua](https://github.com/lua/lua),
-[micropython](https://github.com/micropython/micropython)), the UI and
+[micropython](https://github.com/micropython/micropython),
+[cpython](https://github.com/python/cpython)), the UI and
 audio libraries ([nuklear](https://github.com/Immediate-Mode-UI/Nuklear),
 [nuked-opl3](https://github.com/nukeykt/Nuked-OPL3)), the browser
 ([FreeDom](https://github.com/grisuno/FreeDom)) and the reference-only
@@ -53,6 +54,120 @@ reproducible from those upstreams alone, so:
   The ramdisk tree is organized by kind: `objects/` (ET_REL toolchain),
   `bin/` (Linux ELFs + command path), `cvm/` (CVM modules), `src/` (C
   sources), `asm/` (miniGCC assembly), `docs/`.
+
+### The four repositories and the self-hosting bootstrap
+
+MiniOS is one of four projects that together make the system: this
+repository holds the kernel, the boot path and the ramdisk, and the
+toolchain it carries lives next door.
+
+| Repository | Role |
+|------------|------|
+| [miniOS](https://github.com/grisuno/miniOS) | this repository: kernel, two-stage boot path, ramdisk, shell, editor |
+| [miniGCC](https://github.com/grisuno/miniGCC) | C compiler: C to x86-64 AT&T assembly |
+| [ld](https://github.com/grisuno/ld) | assembler and linker: assembly to a Linux ELF or a CVM module |
+| [cvm](https://github.com/grisuno/cvm) | the CVM / cvm2 bytecode interpreter |
+
+To build the whole system from source, clone the other three next to this
+one:
+
+```bash
+make sources          # clone the missing repositories from GitHub
+make toolchain        # build minigcc, ld and cvm2 from those sources
+make                  # rebuild every ramdisk object and os.img
+```
+
+`make sources` never touches a directory that already exists, so a checkout
+with local work is left alone. `make sources-update` pulls the latest commit
+of each before rebuilding, and `make sources-status` shows which revision
+each one is sitting on.
+
+Expected layout: the directory holding this repository can have any name:
+
+```
+src/
+├── miniOS/     (this repository)
+├── miniGCC/
+├── ld/
+└── cvm/            with cvm/cvm2 inside
+```
+
+The defaults are `MINIGCC_DIR=../miniGCC`, `LD_DIR=../ld`,
+`CVM_REPO_DIR=../cvm` and `CVM_DIR=$(CVM_REPO_DIR)/cvm2`. Point the build
+somewhere else with `MINIGCC_DIR=`, `LD_DIR=`, `CVM_REPO_DIR=` or `CVM_DIR=`;
+change where `make sources` clones from with `MINIGCC_URL=`, `LD_URL=` or
+`CVM_URL=`.
+
+Nothing on the ramdisk is a binary you have to take on trust:
+`objects/minigcc.o`, `objects/ld.o` and `objects/cvm.o` are compiled from
+the sibling checkouts, and the demo programs (`fib`, `w1`, `ldhello`) are
+compiled from this repository's own C sources in `progs/src/` through the
+full miniGCC-to-ld chain. The objects under `progs/objects/` are build
+products, not tracked files, so a fresh clone runs `make sources` first.
+
+The compiler on the ramdisk is self-hosted, in three generations: the
+host-built generation 1 compiles the `miniGCC` source, `ld` links that into
+the generation 2 compiler, and the generation 2 compiler compiles the
+source again into the generation 3 assembly that `ld` links into
+`bin/minigcc.elf`, the compiler that ships on the ramdisk. No GNU as/ld is
+involved anywhere after generation 1. `make selfhost` verifies the
+bootstrap fixed point on the host (`g3.s == g4.s`: the generation 3 binary
+reproduces its own output of its own source). Inside the OS the
+self-hosted compiler drives the same edit/compile/link/run loop as
+`objects/minigcc.o`.
+
+### Repository layout (file to role)
+
+| File | Role |
+|------|------|
+| `headers/arch/x86/boot/bootdefs.h` | every constant shared by the boot path |
+| `arch/x86/boot/stage1.S` | 512-byte boot sector: loads stage 2 over LBA |
+| `arch/x86/boot/stage2.S` | loads the kernel above 1 MB, enters long mode |
+| `kernel.c` / `headers/kernel.h` | kernel: console, heap, ramdisk, loaders, shell |
+| `kernel/shell.c` / `headers/shell.h` | shell prompt, command resolution, builtins |
+| `kernel/editor.c` / `headers/editor.h` | line editor (nano-like: status, goto, search, range listing) |
+| `kernel/syscalls.c` | Linux ABI syscall dispatcher, user pointer validation |
+| `kernel/syscalls_proc.c` / `headers/syscalls_proc.h` | process syscalls: clone, seccomp, nice, yield, getpid/tid, exit, wait4, kill |
+| `kernel/redirect.c` | shell I/O redirection (`>`, `>>`) |
+| `kernel/sched.c` | process management, timer ISR, desktop tick |
+| `kernel/vga_fb.c` | VESA framebuffer desktop, windowed terminal, mouse, WM |
+| `net/rtl8139.c` / `headers/net/rtl8139.h` | rtl8139 NIC driver: port I/O, PCI, TX/RX, TSC clock |
+| `net/net.c` / `headers/net.h` | protocol stack: ARP/IP/ICMP/UDP/DNS/TCP, sockets |
+| `net/tls.c` / `net/tls_crypto.c` / `net/tls_x509.c` | kernel TLS 1.2 client, crypto, X.509 |
+| `vma.c` / `headers/vma.h` | VMA red-black tree for mmap tracking |
+| `fs/ramdisk.c` | ramdisk filesystem driver |
+| `fs/minifs.c` | MiniFS filesystem driver |
+| `fs/kfile.c` | unified file API (ramdisk + MiniFS) |
+| `fs/vfs.c` | VFS dispatch layer |
+| `fs/zip.c` | ZIP archive read/write (miniz) |
+| `drivers/ide.c` | IDE PIO disk driver |
+| `drivers/pcspk.c` | PC speaker driver (tone, volume) |
+| `drivers/sb16.c` | Sound Blaster 16 DMA driver |
+| `drivers/rtc.c` | CMOS RTC clock driver |
+| `tls_roots_src/` + `tools/mkroots.sh` | the 8 embedded CA roots and their generator |
+| `tools/tls_test.py` / `tls_test.c` | host TLS suite: vectors + full handshakes |
+| `kernel/cvm_host.c` | CVM interpreter + JIT integration in MiniOS |
+| `progs/lua/lua_main.c` | Lua 5.4 entry point (REPL, `-e`, `-l`, script modes) |
+| `progs/lua/minios.c` | Lua bindings for MiniOS kernel services |
+| `progs/lisp/lisp.c` | self-contained Lisp interpreter + MiniOS primitives (ring-3 static ELF) |
+| `progs/lisp/minigcc.lisp` | subset C compiler in Lisp (v0.3: multi-function, params, calls, usage/version CLI, ld-ready asm) |
+| `progs/src/test.lisp` | in-OS Lisp suite: language, primitives, toolchain roundtrip |
+| `progs/wl/wl_mini.h` | Wayland-mini wire contract (header-only, ADR-0024) |
+| `progs/wl/wlcomp.c` | ring-3 Wayland-mini compositor (max 8 surfaces) |
+| `tools/test_lisp.py` | host Lisp suite: 49 vectors, zero-warning build |
+| `tools/lisp_scoped.sh` | scoped Lisp gate: rebuild plus 13 targeted mutants |
+| `progs/topogpt3/topogpt3.c` | TopoGPT3 C inference engine (1,999 lines) |
+| `progs/topogpt3/topogpt3.fp16` | TopoGPT3 float16 model weights (48,930,967 bytes) |
+| `progs/topogpt3/vocab.bin` | GPT-2 BPE vocabulary (50,257 tokens, 421,349 bytes) |
+| `progs/` | ramdisk contents organized by kind: `objects/`, `bin/`, `cvm/`, `src/`, `asm/`, `docs/` |
+| `tools/mkramdisk.py` | packs `progs/` into the ramdisk image |
+| `tools/test_bdd.sh` / `tools/test_http_server.py` | behavioural suite and its HTTP fixture |
+| `progs/src/test_all.sh` | one-boot comprehensive non-interactive test (103 PASS markers) |
+| `mcp/minios_mcp.py` | MCP bridge: boots the OS and exposes its console as tools |
+| `mcp/test_minios_mcp.py` | unit + QEMU BDD suite for the bridge |
+| `mcp/mutate_mcp.sh` | mutation testing for the bridge |
+| `skills/minios/SKILL.md` | agent skill: the edit/compile/link/run workflow over the bridge |
+| `tools/mutate.sh` | mutation testing |
 
 ### Toolchain kernel-build contract (sibling repos miniGCC/ld/cvm)
 The end state is that the kernel itself builds through the hosted chain
@@ -136,7 +251,7 @@ program selects its mode from `argv[0]` (any invocation path containing
 the same `argv[0]` dispatch as `lzss` (any invocation path containing
 `unlz4` decodes; `-d` forces decode). The codec itself lives in the kernel
 (`lz4_kernel.c`, the same one MiniFS uses), so the tools are thin syscall
-front-ends over two MiniOS syscalls, 216 `lz4_compress` and 217
+front-ends over two MiniOS syscalls, 216 `lz4_compress` and 255
 `lz4_decompress`, which mirror `minifs_compress`/`minifs_decompress` byte
 for byte. A call passes a user pointer validated to lie inside the user
 window; a violating pointer returns `-EFAULT`.

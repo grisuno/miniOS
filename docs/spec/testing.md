@@ -65,33 +65,69 @@ QEMU boot.  Every command prints a `PASS:` marker; the host runner greps the
 serial log for these markers.  The script ships on the ramdisk (`progs/src/`)
 and is added to both `PROGS` and `MINIFS_FILES` in the Makefile.
 
-Categories tested (96 PASS):
+Categories tested (112 PASS):
 - **Boot/help**: boot banner, help, clear
 - **Filesystem**: ls (root, objects, bin), mkdir, cd, pwd, rm, cp
+- **Movements**: `mv` on the ramdisk, `mv` on MiniFS, missing source, existing destination
 - **Redirects**: `>`, `>>` and `2>` (merged-streams alias)
 - **Pipes**: `|` basic, chained, `cat` stdin terminator
-- **Builtins**: echo, date, vol (set/report/reset), kbd (report/es/en), ps, trace, net, gfx, wm, fx (report, melts climb on minimize/restore), hash
-- **Observability**: trace verbose, strace, ltrace, vmmap, schedtop, irqstat, bootlog, gdb, gdb-regs, gdb-dump-hex
+- **Builtins**: echo, date, clock, vol (set/report/reset), kbd (report/es/en), ps, minifetch, trace, net (ping), gfx, wm, fx (report, melts climb on minimize/restore), hash
 - **Panic/VFS/clip/fork/httpd/vblk**: panic demo, mount/vfstest, clipboard set/clear, CoW forktest, httpd selftest, vblk absent-proof
-- **Observability**: trace verbose, strace, ltrace, vmmap, schedtop, irqstat, bootlog, gdb, gdb-regs, gdb-dump-hex
-- **Toolchain**: minigcc.o compile, ld.o link, run ELF, run CVM
+- **Toolchain**: minigcc.o compile, ld.o link, sign, run ELF, run CVM
 - **Bare names**: ld.o, .elf, .cvm without `run` prefix
-- **Self-host**: minigcc.elf compiles, ld.o links, run
+- **Self-host**: minigcc.elf compiles, ld.o links, sign, run
 - **Codecs**: lzss/lz4/aes roundtrips, error cases
 - **JSON**: validate and query
 - **ZIP**: hostile archive (traversal refused), host-produced archive
 - **ELF programs**: lxhello, cpl, kmem, nx, mmreuse
 - **CVM modules**: fib, w1
 - **Lisp**: inline eval, in-OS suite
-- **Selftests**: xxhash.o, dlmalloc.o
+- **Python**: `micropython src/test_py.py` (in-OS suite), static CPython 3.12, `import pip`
+- **Selftests**: xxhash.o, dlmalloc.o, fptest, `file --selftest`, `paint --selftest`, `run bin/lxsel` (select/poll ABI)
 - **Heap stability**: repeated CVM runs
 - **Tracing**: trace on/off during cp
+- **Observability**: trace verbose, strace, ltrace, vmmap, schedtop, irqstat, bootlog, gdb, gdb-regs, gdb-dump-hex
 
 Usage from host:
 ```bash
 tools/boot_run.sh "sh src/test_all.sh" --timeout 120
-strings boot_run.log | grep -c 'PASS:'   # expect 96
+strings boot_run.log | grep -c 'PASS:'   # expect 112
 ```
+
+### One-boot marker accounting
+
+The suite prints one `PASS:` marker per scenario and the host runner counts
+them in the serial log. A green boot logs **112** markers, composed of:
+
+- 103 from `progs/src/test_all.sh` itself: 102 scenarios plus the
+  `PASS: ALL-TESTS-DONE` terminator (`progs/src/test_all.sh:339`).
+- 9 from the in-OS Python suite the script invokes
+  (`micropython src/test_py.py`, `progs/src/test_all.sh:303`), which prints
+  the same marker shape (`progs/src/test_py.py:13`). Two of its eleven
+  checks (`py-uid-ok`, `py-listdir-ok`) are gated on `os.getuid` existing
+  (`progs/src/test_py.py:38`); the guest MicroPython build has no
+  `os.getuid`, so nine of the eleven run.
+
+A green run prints zero `FAIL:` lines. The figures quoted in older
+documents (81, 96) predate the `mv`, Python, select-ABI and self-host
+scenarios and are stale.
+
+### `mmreuse`: mmap/munmap reclaim contract
+
+`mmreuse` (`progs/src/mmreuse.c`) is the ring-3 leak detector for the
+kernel's mmap/munmap pair. It maps an 8 MB anonymous private region
+(`MAP_PRIVATE|MAP_ANONYMOUS`, `PROT_READ|PROT_WRITE`), writes to it so the
+mapping is really used, unmaps it, and repeats that 64 times
+(`progs/src/mmreuse.c:36-43`). The verdict is the exit code; the program
+prints nothing:
+
+- exit 0: every region was reclaimed, the address space did not leak.
+- exit 1: a mapping failed with ENOMEM, the downward mmap cursor drained
+  and the region was never given back (the leak it guards against).
+- exit 2: the unmap itself failed.
+
+The shell surfaces it as `exit code: 0`, and the one-boot suite asserts it
+as `PASS: mmreuse-ok` (`progs/src/test_all.sh:267-268`).
 
 ### In-OS test suites (Lua / MicroPython / Lisp toolchain)
 
@@ -128,7 +164,10 @@ Two 1:1 threads (`progs/src/mthreads.h`) hammer mmap/munmap/mprotect/yield
 with seeded, interleaved operation streams and fold every return code and
 readback into an FNV-1a checksum; the BDD scenario pins the exact hash, so
 any race, lost update or behavioral drift fails it deterministically across
-boots (ASLR-proof: addresses never enter the hash, only codes and data).
+boots (ASLR-proof: addresses never enter the hash, only codes and data). A
+transient mapping contributes its success, its page alignment and the fact
+that it does not overlap the arena, never its address, so the pinned hash
+is the same on every boot.
 All fuzz maps stay inside one private 4 MB arena (per-thread partitions
 plus one shared atomic page) and transient single pages, so a fault always
 names a kernel bug: the oracle already proved itself when a fuzzer-side
@@ -159,6 +198,34 @@ from the kernel flight recorder (live or exited) without the timing change
 `trace` causes, and `ps` shows the exit code of finished processes. A ring-3
 crash dump carries the same log plus a census of every kernel stack slot.
 
+### Performance and audio diagnostics (`perf`, `sbtone`, `sb16`)
+
+Three probes answer "where did the time, and the sound, go" without a GUI:
+
+- `perf` (shell builtin, `kernel/shell.c:2985`): three timed loops — 1M
+  `nop` (raw CPU speed), 100k `ktime_ms()` calls (clock-read overhead) and
+  1000 100-char `kprintf`s (console output throughput). The last line
+  carries the accumulated sink so no loop can be optimised away.
+- `sbtone` (ring-3, `run bin/sbtone`, ships on MiniFS): opens the SB16
+  PCM sink and streams a clean 440 Hz sine (22050 Hz, 2048-byte buffers,
+  about 93 ms of audio each) paced to real time over a 3000 ms window. It
+  reports the submitted buffer count, the audio milliseconds and the guest
+  milliseconds, and its exit code is the number of submitted buffers (0 when
+  the SB16 does not open). The oracle: a clean tone with about 32 buffers in
+  about 3000 ms means the SB16 driver is correct and any garbage is the
+  piano's GUI; garbage audio, or a submit count far below real time, points
+  at the SB16 DMA/driver.
+- `sb16` (shell builtin, `kernel/shell.c:3941`): the driver counters over
+  serial — presence, mode, ring free/capacity, stream count, IRQ arms, poll
+  arms, submits, drops, stalls, pump fills and mixes, plus the `pcm2`
+  counters (active, irqs, polls, spurious, bytes, underruns, drops, wakes).
+  Ring health is observable over the console without ears.
+
+The rest of the dissection toolbox (`trace`/`strace`/`ltrace`, `vmmap`,
+`schedtop`, `irqstat`, `bootlog`, `gdb` with the `make gdb` remote hookup,
+the MCP bridge and the host harnesses) is documented in
+`docs/debug_tools.md`.
+
 ## Library integration assessments
 A library lands in MiniOS only when it fits the freestanding kernel's rules
 (integer-only, no POSIX, allocator and libc callbacks redirected through
@@ -167,9 +234,12 @@ static ELF (DOOM, MicroPython, Nuklear). Candidates that pass are vendored;
 candidates that do not are assessed honestly and documented here, never
 silently forced in.
 
-- **miniz 3.0.2** (ZIP read/write): accepted, shipped as `unzip`/`zip`
+- **miniz 3.0.0** (ZIP read/write): accepted, shipped as `unzip`/`zip`
   builtins — see the Zip builtins section. Integer-only, allocator hooks, and
-  the whole archive API works whole-file in memory.
+  the whole archive API works whole-file in memory. The vendored copy is
+  upstream 3.0.0 (`third_party/miniz/miniz.h:4`); its `MZ_VERSION` is the
+  zlib-compatibility string `11.0.2` (`third_party/miniz/miniz.h:278`), not
+  the library version.
 - **dlmalloc 2.8.6** (kernel heap allocator): accepted, shipped as the
   backend for `kmalloc`/`kfree`/`kcalloc`/`krealloc`. See the Memory
   allocator contract below.
@@ -181,6 +251,21 @@ silently forced in.
   needs a redistributable TTF in-tree and a FONT_W/FONT_H resize through the
   whole terminal/taskbar/title-bar geometry), so the kernel keeps its
   embedded 8x8 CP437 bitmap font.
+- **stb_image** (PNG/TGA decode): vendored, accepted and wired at runtime,
+  not build-time only. `third_party/stb/stb_impl.c` compiles the pristine
+  header into the kernel with the allocator and the `mem*` calls redirected
+  to the kernel ones and every codec but PNG/TGA disabled (`STBI_NO_JPEG`,
+  `STBI_NO_HDR`, `STBI_NO_LINEAR`, ...), so the kernel path is integer-only
+  and matches the `-mno-sse -mno-mmx` build; stb's thread-locals are
+  disabled because the kernel has no TLS segments. The entry points
+  (`stbi_load_file`, `stbi_load_from_memory`, `stbi_image_free`) are the
+  shared surface of `third_party/stb/stb_api.h`, exported through the
+  kernel symbol table (`kernel/console.c:293-295`), and are used by the
+  desktop wallpaper and the 32x32 dock icons (`kernel/vga_fb.c:3546`,
+  `kernel/vga_fb.c:3677`) and the minifetch logo (`kernel/minifetch.c:84`);
+  ring-3 programs compile the same header themselves
+  (`progs/file/file.c:179`). The float-heavy, build-time-only caveat above
+  belongs to stb_truetype, not to stb_image.
 - **linenoise**: rejected. It is a POSIX line editor (termios, `isatty`,
   `read`); the equivalent mid-line editing feature set was implemented natively
   in the shell prompt instead (see the Shell section).
@@ -257,7 +342,7 @@ beat repair (a future per-CPU allocator starts from `kmalloc_aligned`).
 ```bash
 make                # zero warnings
 make lint           # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh  # one-boot comprehensive non-interactive suite (96 PASS)
+sh src/test_all.sh  # one-boot comprehensive non-interactive suite (112 PASS)
 ./tools/test_bdd.sh  # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd
@@ -307,3 +392,82 @@ against a plain-HTTP port, https redirect landing on plain HTTP), the
 TCP ack-advancement contract (a fixture that holds its second half until
 the guest ACKs the first) and the dump modes over the host fixture
 server.
+
+### Gate contract and ordering
+
+`CLAUDE.md` ("Validation Gate") is the normative command list; the block
+above is a snapshot of it, not the whole set. The targets it also requires
+and that the snapshot omits are `make test-pipe test-panic test-pci
+test-httpd`, `make test-fat test-ext4`, `make test-ktime test-randmix`,
+`make test-mip test-select-map`, `make test-seccomp-bpf test-minifs-tools`
+and `make test-arena test-leakcheck test-pcache`. Beyond that list,
+`make uefi` builds the OVMF stub image that has to boot under QEMU
+(`Makefile:2162`). `make test-host` runs the fast host unit suites in
+one shot (`Makefile:2052`); it excludes `test-tls` (it drives OpenSSL
+servers) and the QEMU-backed BDD/MCP suites.
+
+The order is part of the contract: `make` (zero warnings) first, then the
+one-boot suite (`sh src/test_all.sh`, 112 PASS), then the full interactive
+suite (`./tools/test_bdd.sh`), then the host suites and the mutation gate.
+The methodology behind that order (SDD, TDD, BDD, mutation testing, Boy
+Scout) lives in `CLAUDE.md` ("Development Methodology"); this file is the
+subsystem contract for the harnesses themselves.
+
+What the host suites prove, beyond the one-line summaries above:
+
+- `test-vma`: the VMA red-black tree invariants, pool exhaustion and a full
+  drain (`tests/test_vma.c:102`, `tests/test_vma.c:136`,
+  `tests/test_vma.c:153`).
+- `test-lisp`: the host interpreter assertion vectors (arithmetic,
+  fail-closed errors, closures, strings, files, predicates, CLI flags) plus
+  the in-OS suite file in language-only mode (`tools/test_lisp.py`).
+- `test-wm`: WM geometry, events, window model, render plan, tiling, focus,
+  layout and gfx-view contracts (`Makefile:2033`).
+- `test-fat`: the FAT32 loopback driver over a synthetic in-memory image
+  (units, multi-cluster reads, fail-closed edges) (`Makefile:2077`).
+- `test-wl`: the Wayland-mini wire roundtrip and fail-closed bounds
+  (`Makefile:2040`).
+
+### Governance gates (`ARCH_POLICY.yaml`)
+
+`ARCH_POLICY.yaml` is the single source of truth for the architectural
+thresholds; the gate scripts read it and fail on a regression:
+
+- `python3 tools/check_complexity.py --policy ARCH_POLICY.yaml`: the kernel
+  God-object symbol budget, 350 (`ARCH_POLICY.yaml:7`). The measured count
+  today is 12 symbols (`OK (12 symbols, limit=350)`), and any growth needs
+  an explicit, expiring entry in `approvals` (`ARCH_POLICY.yaml:20-25`).
+- `python3 tools/check_cohesion.py`: the root-community cohesion floor,
+  0.25 (`ARCH_POLICY.yaml:11`).
+- `python3 tools/check_surprising.py`: the long-hop coupling floor, 5 hops
+  (`ARCH_POLICY.yaml:14`).
+- `python3 tools/check_kb_sync.py`: knowledge-base drift.
+
+Caveat: the cohesion and surprising gates consume the readmenator CPG
+(`KNOWLEDGE_BASE.jsonld`), a generated artifact that is not committed; with
+it absent both gates print "not found, skipping" and exit 0, so they are
+green no-ops until readmenator regenerates the CPG. `check_kb_sync.py` is a
+no-op as well unless `--regenerate` is passed
+(`tools/check_kb_sync.py:55-57`), and even then it needs
+`tools/readmenator.py`, which is not in the tree.
+
+### Mutant survival rule and anchor hygiene
+
+A mutant that survives a full green suite is a test gap: close it with a
+new scenario, never by deleting the mutant. Only a provably equivalent
+mutant (no input distinguishes it, recorded in
+`docs/spec/architecture.md`) may leave the set.
+
+Anchor hygiene is what keeps the gate honest. `SOURCES`
+(`tools/mutate.sh:85`) is the backup/restore allowlist, not documentation:
+every file named by the mutation table must appear in it, or the mutant is
+never restored, leaks into the tree and stacks under the next mutant, whose
+kill is then vacuous (`tools/mutate.sh:95-99`; the `progs/paint/paint.c`
+incident). `tools/check_mutant_anchors.py` (run by `make lint`,
+`Makefile:1759`) verifies that every mutation expression still matches its
+target file: a no-match anchor is reported BROKEN
+(`tools/check_mutant_anchors.py:115`) instead of silently rebuilding
+pristine sources, which would look like a test gap. The check fails closed.
+
+A run interrupted mid-way leaves `os.img` built from the mutant: rebuild
+before trusting any boot.

@@ -252,7 +252,11 @@ finds nothing, not an assertion that hardware must exist.
   keyboard and mouse addressed with boot protocol, the disk registered with a
   non-zero sector count, and that a read of LBA 0 through the block layer
   returns the same bytes a direct read returns. The no-USB path is asserted
-  too, so the driver cannot start *requiring* a controller.
+  too, so the driver cannot start *requiring* a controller. The FAT32 data
+  stick the mass-storage scenario reads is built on demand (the host tools
+  `sfdisk`, `mkfs.vfat` and `mcopy` make `pendrive.img`); the scenario
+  skips cleanly when those tools are absent, the same doctrine as the
+  QEMU-absent and OVMF skips.
 - **Mutation**: every target file is in `SOURCES` and carries at least one
   anchor-checked mutant -- cycle-bit handling, doorbell ordering, TRB cycle
   field, the usage table, the differ, the CSW status check, the residue check.

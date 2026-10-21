@@ -3,6 +3,32 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_main.c:14` | `#define _POSIX_C_SOURCE` |
+| `main` | function | `progs/tls_u/tls_u_main.c:61` | `int main(int argc, char **argv)` |
+| `parse_port` | function | `progs/tls_u/tls_u_main.c:47` | `static int parse_port(const char *s)` |
+| `syscall` | function | `progs/tls_u/tls_u_main.c:10` | `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).  * The kernel keeps servi...` |
+| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_port.c:13` | `#define _DEFAULT_SOURCE` |
+| `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_port.c:12` | `#define _POSIX_C_SOURCE` |
+| `answer` | function | `progs/tls_u/tls_u_port.c:163` | `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));` |
+| `net_dns_resolve` | function | `progs/tls_u/tls_u_port.c:183` | `int net_dns_resolve(const char *host)` |
+| `parse_quad` | function | `progs/tls_u/tls_u_port.c:122` | `static int parse_quad(const char *s, unsigned *ip_out)` |
+| `sockets` | function | `progs/tls_u/tls_u_port.c:5` | `* sockets: on the host they are host sockets (used by the  * openssl-s_server interop test), insi...` |
+| `tls_close` | function | `progs/tls_u/tls_u_port.c:67` | `void tls_close(int fd)` |
+| `tls_free_fd` | function | `progs/tls_u/tls_u_port.c:66` | `void tls_free_fd(int fd);` |
+| `tls_now_days` | function | `progs/tls_u/tls_u_port.c:72` | `long tls_now_days(void)` |
+| `tls_random` | function | `progs/tls_u/tls_u_port.c:78` | `void tls_random(unsigned char *out, unsigned len)` |
+| `tls_u_close` | function | `progs/tls_u/tls_u_port.c:55` | `void tls_u_close(int fd)` |
+| `tls_u_recv` | function | `progs/tls_u/tls_u_port.c:39` | `int tls_u_recv(int fd, char *buf, int len)` |
+| `tls_u_recv_timeout` | function | `progs/tls_u/tls_u_port.c:44` | `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)` |
+| `tls_u_resolve` | function | `progs/tls_u/tls_u_port.c:147` | `int tls_u_resolve(const char *host, unsigned *ip_out)` |
+| `u_raw_syscall3` | function | `progs/tls_u/tls_u_port.c:99` | `static long u_raw_syscall3(long n, long a1, long a2, long a3)` |
+| `D_HEAD` | macro | `progs/topogpt3/topogpt3.c:70` | `#define D_HEAD` |
+| `D_LAT_Q` | macro | `progs/topogpt3/topogpt3.c:82` | `#define D_LAT_Q` |
+| `D_MODEL` | macro | `progs/topogpt3/topogpt3.c:66` | `#define D_MODEL` |
+| `D_QUAT` | macro | `progs/topogpt3/topogpt3.c:71` | `#define D_QUAT` |
+| `EMBED_INNER` | macro | `progs/topogpt3/topogpt3.c:90` | `#define EMBED_INNER` |
+| `EOS_TOKEN` | macro | `progs/topogpt3/topogpt3.c:89` | `#define EOS_TOKEN` |
+| `EPS_RMS` | macro | `progs/topogpt3/topogpt3.c:92` | `#define EPS_RMS` |
 | `EXPERT_INNER` | macro | `progs/topogpt3/topogpt3.c:87` | `#define EXPERT_INNER` |
 | `FILE` | struct | `progs/topogpt3/topogpt3.c:24` | `` |
 | `FREQ_W` | macro | `progs/topogpt3/topogpt3.c:85` | `#define FREQ_W` |
@@ -470,31 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `wl_clip_encode` | function | `progs/wl/wl_mini.h:907` | `static inline int wl_clip_encode(unsigned char *dst, int cap,         const unsigned char *text, ...` |
 | `wl_commit_decode` | function | `progs/wl/wl_mini.h:883` | `static inline int wl_commit_decode(const unsigned char *src, int len,         unsigned int *id)` |
 | `wl_commit_encode` | function | `progs/wl/wl_mini.h:870` | `static inline int wl_commit_encode(unsigned char *dst, int cap,         unsigned int id)` |
-| `wl_comp_add` | function | `progs/wl/wl_mini.h:309` | `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)` |
-| `wl_comp_attach_buf` | function | `progs/wl/wl_mini.h:1218` | `static inline int wl_comp_attach_buf(wl_comp_t *c, unsigned int id,         unsigned int pool, in...` |
-| `wl_comp_focus` | function | `progs/wl/wl_mini.h:372` | `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)` |
-| `wl_comp_hit` | function | `progs/wl/wl_mini.h:397` | `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)` |
-| `wl_comp_init` | function | `progs/wl/wl_mini.h:271` | `static inline void wl_comp_init(wl_comp_t *c)` |
-| `wl_comp_layout_tile` | function | `progs/wl/wl_mini.h:577` | `static inline int wl_comp_layout_tile(wl_comp_t *c, int fb_w, int fb_h)` |
-| `wl_comp_refresh_active` | function | `progs/wl/wl_mini.h:289` | `static inline void wl_comp_refresh_active(wl_comp_t *c)` |
-| `wl_comp_remove` | function | `progs/wl/wl_mini.h:345` | `static inline int wl_comp_remove(wl_comp_t *c, unsigned int id)` |
-| `wl_comp_set_color` | function | `progs/wl/wl_mini.h:487` | `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)` |
-| `wl_comp_set_minimized` | function | `progs/wl/wl_mini.h:460` | `static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,         int minimized)` |
-| `wl_comp_set_rect` | function | `progs/wl/wl_mini.h:550` | `static inline int wl_comp_set_rect(wl_comp_t *c, unsigned int id,         int x, int y, int w, in...` |
-| `wl_comp_t` | struct | `progs/wl/wl_mini.h:264` | `` |
-| `wl_comp_top_visible` | function | `progs/wl/wl_mini.h:441` | `static inline int wl_comp_top_visible(const wl_comp_t *c)` |
-| `wl_dispatch` | function | `progs/wl/wl_mini.h:1245` | `static inline int wl_dispatch(wl_comp_t *c, wl_client_t *cl,         unsigned int id, unsigned in...` |
-| `wl_ev_decode` | function | `progs/wl/wl_mini.h:1008` | `static inline int wl_ev_decode(const unsigned char *src, int len,         wl_ev_t *ev)` |
-| `wl_ev_encode` | function | `progs/wl/wl_mini.h:978` | `static inline int wl_ev_encode(unsigned char *dst, int cap,         const wl_ev_t *ev)` |
-| `wl_ev_map` | function | `progs/wl/wl_mini.h:1051` | `static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,         int sh, int rw, int r...` |
-| `wl_ev_t` | struct | `progs/wl/wl_mini.h:968` | `` |
-| `wl_hdr_decode` | function | `progs/wl/wl_mini.h:99` | `static inline int wl_hdr_decode(const unsigned char *src, int len,         wl_hdr_t *out)` |
-| `wl_hdr_encode` | function | `progs/wl/wl_mini.h:71` | `static inline int wl_hdr_encode(unsigned char *dst, int cap,         unsigned int id, unsigned in...` |
-| `wl_hdr_t` | struct | `progs/wl/wl_mini.h:57` | `` |
-| `wl_iface_find` | function | `progs/wl/wl_mini.h:1187` | `static inline int wl_iface_find(const char *name)` |
-| `wl_iface_t` | struct | `progs/wl/wl_mini.h:1179` | `` |
-| `wl_pool_fit` | function | `progs/wl/wl_mini.h:223` | `static inline int wl_pool_fit(int w, int h)` |
-| `wl_pool_id_valid` | function | `progs/wl/wl_mini.h:219` | `static inline int wl_pool_id_valid(unsigned int id)` |
-| `wl_scale_nearest` | function | `progs/wl/wl_mini.h:793` | `static inline int wl_scale_nearest(unsigned char *dst, int dw, int dh,         const unsigned cha...` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

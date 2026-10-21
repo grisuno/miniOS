@@ -3,6 +3,25 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `test_path_rejects_long` | method | `mcp/test_minios_mcp.py:220` | `def test_path_rejects_long(self)` |
+| `test_path_rejects_unsafe` | method | `mcp/test_minios_mcp.py:216` | `def test_path_rejects_unsafe(self)` |
+| `test_ping` | method | `mcp/test_minios_mcp.py:166` | `def test_ping(self)` |
+| `test_reference_kind_carries_nothing` | method | `mcp/test_minios_mcp.py:556` | `def test_reference_kind_carries_nothing(self)` |
+| `test_send_empty_line_rejected` | method | `mcp/test_minios_mcp.py:189` | `def test_send_empty_line_rejected(self)` |
+| `test_send_not_booted` | method | `mcp/test_minios_mcp.py:183` | `def test_send_not_booted(self)` |
+| `test_split_for_editor_chunks` | method | `mcp/test_minios_mcp.py:614` | `def test_split_for_editor_chunks(self)` |
+| `test_split_rejects_long_line` | method | `mcp/test_minios_mcp.py:621` | `def test_split_rejects_long_line(self)` |
+| `test_split_rejects_non_ascii` | method | `mcp/test_minios_mcp.py:625` | `def test_split_rejects_non_ascii(self)` |
+| `test_state_roundtrip` | method | `mcp/test_minios_mcp.py:634` | `def test_state_roundtrip(self)` |
+| `test_t01_boot` | method | `mcp/test_minios_mcp.py:355` | `def test_t01_boot(self)` |
+| `test_t02_expect` | method | `mcp/test_minios_mcp.py:365` | `def test_t02_expect(self)` |
+| `test_t03_write_and_cat` | method | `mcp/test_minios_mcp.py:372` | `def test_t03_write_and_cat(self)` |
+| `test_t04_toolchain_elf` | method | `mcp/test_minios_mcp.py:382` | `def test_t04_toolchain_elf(self)` |
+| `test_t05_toolchain_cvm` | method | `mcp/test_minios_mcp.py:394` | `def test_t05_toolchain_cvm(self)` |
+| `test_t06_selfhosted_compiler` | method | `mcp/test_minios_mcp.py:404` | `def test_t06_selfhosted_compiler(self)` |
+| `test_t07_bin_command_path` | method | `mcp/test_minios_mcp.py:411` | `def test_t07_bin_command_path(self)` |
+| `test_t08_python_script` | method | `mcp/test_minios_mcp.py:419` | `def test_t08_python_script(self)` |
+| `test_t09_py_eval` | method | `mcp/test_minios_mcp.py:426` | `def test_t09_py_eval(self)` |
 | `test_t10_minios_test` | method | `mcp/test_minios_mcp.py:431` | `def test_t10_minios_test(self)` |
 | `test_t11_poweroff_and_reboot` | method | `mcp/test_minios_mcp.py:452` | `def test_t11_poweroff_and_reboot(self)` |
 | `test_test_not_booted` | method | `mcp/test_minios_mcp.py:195` | `def test_test_not_booted(self)` |
@@ -368,6 +387,10 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `main` | function | `progs/asm/aes.s:3807` | `` |
 | `_start` | function | `progs/asm/cp.s:322` | `` |
 | `main` | function | `progs/asm/cp.s:3` | `` |
+| `_start` | function | `progs/asm/cvmfmt.s:245` | `` |
+| `fcanary` | function | `progs/asm/cvmfmt.s:7` | `` |
+| `fwin` | function | `progs/asm/cvmfmt.s:3` | `` |
+| `main` | function | `progs/asm/cvmfmt.s:11` | `` |
 | `_start` | function | `progs/asm/fib.s:82` | `` |
 | `fib` | function | `progs/asm/fib.s:3` | `` |
 | `main` | function | `progs/asm/fib.s:61` | `` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `js_find_member` | function | `progs/asm/json.s:3313` | `` |
 | `js_first` | function | `progs/asm/json.s:19` | `` |
 | `js_indent` | function | `progs/asm/json.s:2481` | `` |
-| `js_key` | function | `progs/asm/json.s:3` | `` |
-| `js_key_match` | function | `progs/asm/json.s:947` | `` |
-| `js_len` | function | `progs/asm/json.s:51` | `` |
-| `js_n` | function | `progs/asm/json.s:31` | `` |
-| `js_new` | function | `progs/asm/json.s:274` | `` |
-| `js_next` | function | `progs/asm/json.s:27` | `` |
-| `js_num` | function | `progs/asm/json.s:15` | `` |
-| `js_parse_array` | function | `progs/asm/json.s:1335` | `` |
-| `js_parse_number` | function | `progs/asm/json.s:851` | `` |
-| `js_parse_object` | function | `progs/asm/json.s:983` | `` |
-| `js_parse_string` | function | `progs/asm/json.s:437` | `` |
-| `js_parse_value` | function | `progs/asm/json.s:1594` | `` |
-| `js_peek` | function | `progs/asm/json.s:397` | `` |
-| `js_plen` | function | `progs/asm/json.s:39` | `` |
-| `js_pool` | function | `progs/asm/json.s:35` | `` |
-| `js_pos` | function | `progs/asm/json.s:47` | `` |
-| `js_print_str` | function | `progs/asm/json.s:2524` | `` |
-| `js_print_value` | function | `progs/asm/json.s:2747` | `` |
-| `js_query` | function | `progs/asm/json.s:3460` | `` |
-| `js_read_all` | function | `progs/asm/json.s:59` | `` |
-| `js_skip_ws` | function | `progs/asm/json.s:306` | `` |
-| `js_src` | function | `progs/asm/json.s:43` | `` |
-| `js_str` | function | `progs/asm/json.s:7` | `` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

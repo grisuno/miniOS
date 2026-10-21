@@ -3,6 +3,7 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_minifs_tools.py` | Host suite for the MiniFS image tools (docs/spec/shell-fs.md).  tools/mkfs.minifs.py builds the... | tests | 12 | 0 |
 | `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 10 | 0 |
 | `tests/test_mip.py` | host test for the frozen MicroPython installer (make test-mip). | tests | 44 | 0 |
 | `tests/test_modifiers.c` | Docstring: Designated initializers, so adding a member cannot silently | tests | 2 | 0 |
@@ -37,7 +38,7 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/abi_stamp.c` | Docstring: tools/abi_stamp.c -- Build-time ABI manifest generator. | tools | 1 | 0 |
 | `tools/boot_run.sh` | boot the MiniOS image in QEMU and drive the shell over the serial console with a list of... | tools | 0 | 0 |
 | `tools/boot_wl.py` | boot the miniOS Wayland-mini desktop in one step. | tools | 15 | 0 |
-| `tools/check_abi_numbers.py` | MiniOS syscall numbers vs Linux x86-64 truth. | tools | 4 | 0 |
+| `tools/check_abi_numbers.py` | MiniOS syscall numbers vs Linux x86-64 truth. | tools | 5 | 0 |
 | `tools/check_addons.py` | validate the MiniOS addon marketplace index. | tools | 2 | 0 |
 | `tools/check_cohesion.py` | Architectural cohesion gate for MiniOS CI. | tools | 4 | 0 |
 | `tools/check_complexity.py` | Kernel complexity gate for MiniOS CI. | tools | 3 | 0 |
@@ -78,7 +79,7 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/qga_test.sh` | Quick standalone smoke test for the QEMU guest agent: boots os.img once with the agent socket... | tools | 3 | 0 |
 | `tools/repro_gui.py` | — reproduce the VGA/mouse state bug after ring-3 programs. | tools | 10 | 0 |
 | `tools/sign_elf.py` | Sign MiniOS user binaries with Ed25519 (development key). . | tools | 23 | 0 |
-| `tools/test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the serial console... | tools | 14 | 0 |
+| `tools/test_bdd.sh` | BDD suite for MiniOS: boots the disk image in QEMU and drives the shell over the serial console... | tools | 16 | 0 |
 | `tools/test_call_align.py` | verify stack alignment at call sites, both parities. | tools | 4 | 0 |
 | `tools/test_codecs.sh` | exercise the lzss/lz4/aes command-pair tools inside the OS. | tools | 0 | 0 |
 | `tools/test_gui_fashion.py` | GUI proof for the cursor/flicker/quit fixes. | tools | 18 | 0 |

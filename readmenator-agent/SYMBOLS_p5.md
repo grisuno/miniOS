@@ -189,15 +189,16 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `wall_us_now` | function | `headers/kernel.h:914` | `unsigned long wall_us_now(void);` |
 | `CONSOLE_IN_H` | macro | `headers/kernel/console_in.h:2` | `#define CONSOLE_IN_H` |
 | `Consumers` | function | `headers/kernel/console_in.h:7` | `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into...` |
-| `console_job_get` | function | `headers/kernel/console_in.h:26` | `int console_job_get(void);` |
-| `console_job_try` | function | `headers/kernel/console_in.h:25` | `int console_job_try(void);` |
-| `console_peek` | function | `headers/kernel/console_in.h:17` | `int console_peek(void);` |
-| `console_raw_get` | function | `headers/kernel/console_in.h:22` | `int console_raw_get(void);` |
-| `console_raw_try` | function | `headers/kernel/console_in.h:21` | `int console_raw_try(void);` |
-| `console_stdin_active` | function | `headers/kernel/console_in.h:39` | `int console_stdin_active(void);` |
-| `console_stdin_clear` | function | `headers/kernel/console_in.h:38` | `void console_stdin_clear(void);` |
-| `console_stdin_push` | function | `headers/kernel/console_in.h:37` | `int console_stdin_push(const char *data, unsigned long len);` |
-| `console_ungetc` | function | `headers/kernel/console_in.h:30` | `void console_ungetc(unsigned char c);` |
+| `console_history_page` | function | `headers/kernel/console_in.h:19` | `void console_history_page(int dir);` |
+| `console_job_get` | function | `headers/kernel/console_in.h:31` | `int console_job_get(void);` |
+| `console_job_try` | function | `headers/kernel/console_in.h:30` | `int console_job_try(void);` |
+| `console_peek` | function | `headers/kernel/console_in.h:22` | `int console_peek(void);` |
+| `console_raw_get` | function | `headers/kernel/console_in.h:27` | `int console_raw_get(void);` |
+| `console_raw_try` | function | `headers/kernel/console_in.h:26` | `int console_raw_try(void);` |
+| `console_stdin_active` | function | `headers/kernel/console_in.h:44` | `int console_stdin_active(void);` |
+| `console_stdin_clear` | function | `headers/kernel/console_in.h:43` | `void console_stdin_clear(void);` |
+| `console_stdin_push` | function | `headers/kernel/console_in.h:42` | `int console_stdin_push(const char *data, unsigned long len);` |
+| `console_ungetc` | function | `headers/kernel/console_in.h:35` | `void console_ungetc(unsigned char c);` |
 | `CURSOR_H` | macro | `headers/kernel/vga_cursor.h:13` | `#define CURSOR_H` |
 | `CURSOR_W` | macro | `headers/kernel/vga_cursor.h:12` | `#define CURSOR_W` |
 | `VGA_CURSOR_H` | macro | `headers/kernel/vga_cursor.h:2` | `#define VGA_CURSOR_H` |
@@ -475,7 +476,9 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `rtl_send` | function | `headers/net/rtl8139.h:25` | `int rtl_send(const unsigned char *frame, unsigned len);` |
 | `PANIC_BT_MAX` | macro | `headers/panic.h:17` | `#define PANIC_BT_MAX` |
 | `PANIC_H` | macro | `headers/panic.h:15` | `#define PANIC_H` |
-| `panic_backtrace` | function | `headers/panic.h:25` | `static inline int panic_backtrace(unsigned long rbp, panic_valid_fn valid,         unsigned long ...` |
+| `PANIC_HEX_MAX_DIGITS` | macro | `headers/panic.h:20` | `#define PANIC_HEX_MAX_DIGITS` |
+| `panic_backtrace` | function | `headers/panic.h:51` | `static inline int panic_backtrace(unsigned long rbp, panic_valid_fn valid,         unsigned long ...` |
+| `panic_hex_str` | function | `headers/panic.h:28` | `static inline int panic_hex_str(char *buf, int cap, unsigned long v, int digits)` |
 | `PCACHE_H` | macro | `headers/pcache.h:17` | `#define PCACHE_H` |
 | `PCACHE_PAGE` | macro | `headers/pcache.h:23` | `#define PCACHE_PAGE` |
 | `PCACHE_PAGES` | macro | `headers/pcache.h:20` | `#define PCACHE_PAGES` |
@@ -493,8 +496,5 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `pcache_ref_if` | function | `headers/pcache.h:83` | `int pcache_ref_if(int ino, unsigned index, unsigned long phys);` |
 | `pcache_stats` | function | `headers/pcache.h:106` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out, unsigned long *miss_out, unsigned long...` |
 | `pcache_unmap` | function | `headers/pcache.h:69` | `void pcache_unmap(int ino, unsigned index);` |
-| `PCM2_DMA_BYTES` | macro | `headers/pcm2.h:55` | `#define PCM2_DMA_BYTES` |
-| `PCM2_ERR_BUSY` | macro | `headers/pcm2.h:60` | `#define PCM2_ERR_BUSY` |
-| `PCM2_ERR_INVAL` | macro | `headers/pcm2.h:65` | `#define PCM2_ERR_INVAL` |
 
 Next: [SYMBOLS_p6.md](SYMBOLS_p6.md)

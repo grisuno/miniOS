@@ -25,7 +25,7 @@ flowchart LR
 
 ### `panic_screen`
 
-`function` | [kernel/panic.c:96](../../kernel/panic.c#L96)
+`function` | [kernel/panic.c:98](../../kernel/panic.c#L98)
 
 ```c
 void panic_screen(unsigned long vector, unsigned long err, unsigned long rip, unsigned long rsp, unsigned long rbp, int halt)

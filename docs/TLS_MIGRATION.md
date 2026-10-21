@@ -1,10 +1,11 @@
 # TLS migration: kernel engine → userspace library
 
 Status: complete. The kernel no longer ships the TLS engine
-(`net/tls*.c` never link into the image; 201/203 always answer `-ENOSYS`
-and 202 serves Linux `futex(2)`). `tlsget`/`freedom` are the supported
-HTTPS path. There is no legacy opt-in: a switchable engine preserved a
-trap (kernel TLS and glibc were never compatible at 202), not a fallback.
+(`net/tls*.c` never link into the image; 203 always answers `-ENOSYS`,
+201 serves Linux `time(2)` and 202 serves Linux `futex(2)`).
+`tlsget`/`freedom` are the supported HTTPS path. There is no legacy
+opt-in: a switchable engine preserved a trap (kernel TLS and glibc were
+never compatible at 202), not a fallback.
 
 ## Why
 
@@ -21,19 +22,21 @@ selects the environment:
 
 | build | transport | alloc | time | entropy |
 |---|---|---|---|---|
-| kernel (default) | `net_send/recv` | `kmalloc` | CMOS RTC | TSC + net counters |
+| kernel (port branch only, not built into the image) | `net_send/recv` | `kmalloc` | CMOS RTC | TSC + net counters |
 | `TLS_TEST` (host suite) | POSIX test sockets | libc | `time()` | `/dev/urandom` |
 | `TLS_RING3` (`tlsget`) | POSIX sockets | libc | `gettimeofday` | `/dev/urandom`, time/pid fallback |
 
-Session slots are indexed by raw OS fd (`TLS_FD_MAX` 160 covers the
-MiniOS socket range 100+ and host small fds).
+Session slots are indexed by raw OS fd (`TLS_FD_MAX` 160 in the
+`TLS_RING3` build, 16 in `TLS_TEST`, `NET_SOCKETS` in the kernel
+branch): 160 covers the MiniOS socket range 100+ and host small fds.
 
 ## Phases
 
-- [x] **1. Ring-3 client lands.** `progs/tls_u/tlsget` (static ET_EXEC
-  on MiniFS): `tlsget <host> [path] [port]` does TCP + `tls_handshake`
-  + HTTP GET over the shared stack. Verified on the host against
-  `openssl s_server` (`make tlsget-host`, same sources, same flag).
+- [x] **1. Ring-3 client lands.** `progs/bin/tlsget` (from
+  `progs/tls_u/tls_u_main.c`, static ET_EXEC on MiniFS): `tlsget
+  <host> [path] [port]` does TCP + `tls_handshake` + HTTP GET over the
+  shared stack. Verified on the host against `openssl s_server` (`make
+  tlsget-host`, same sources, same flag).
 - [x] **2. Relink freedom.** `progs/bin/freedom` builds the same
   `progs/src/freedom.c` with host gcc + glibc (`FREEDOM_RING3_LIBC`
   shim: casts miniGCC cannot parse stay behind `#ifdef`) and links the
@@ -45,11 +48,12 @@ MiniOS socket range 100+ and host small fds).
   twin of the same source (http only), kept as toolchain dogfood and
   pinned by its own BDD fetch scenario.
 - [x] **3. Kernel engine removed for good.** There is no opt-in legacy
-  build anymore: 201/203 always answer `-ENOSYS`, and 202 serves Linux
-  `futex(2)` — kernel TLS and glibc ring-3 were never compatible at that
-  number (`__NR_futex` collides with TLS_SEND; glibc aborts without a
-  real futex), so keeping a switchable engine preserved a trap, not a
-  fallback. `net/tls*.c` never link into the image.
+  build anymore: 203 always answers `-ENOSYS`, 201 serves Linux
+  `time(2)` and 202 serves Linux `futex(2)` — kernel TLS and glibc
+  ring-3 were never compatible at that number (`__NR_futex` collides
+  with TLS_SEND; glibc aborts without a real futex), so keeping a
+  switchable engine preserved a trap, not a fallback. `net/tls*.c` never
+  link into the image.
 - [x] **4. Delete `net/tls*.c` from the kernel image.** Default build
   unlinks `tls.o tls_crypto.o tls_x509.o` (`KERN_TLS_OBJS` empty); the
   kernel keeps only TCP/UDP/DNS sockets. `make test-tls` still compiles
@@ -74,10 +78,17 @@ poll never reported readiness. Fixed in `net/net.c` (host-order
 `kmemcpy`), with regression scenario "poll reports a connected socket
 readable" (`progs/src/pollready.c`, `run bin/pollready.elf`).
 
-Known flake (2026-10 audit): `make test-tls` fails ~1 run in 10 at
-`chain-good` (`freedom: tls: chain: verification failed`) with
-`ConnectionResetError` in the fixture server threads, then passes on
-retry with no tree change. Suspect is a harness race (parallel
-openssl/python servers vs client connect), not the stack: the same
-binaries pass 8/9. Follow-up is a server-ready retry in
-`tools/tls_test.py`, never a looser assertion.
+Known failure mode (2026-10 audit, re-verified 2026-10-20, fixed
+2026-10-21): `make test-tls` used to fail every positive scenario
+(`good-rsa`, `good-ec`, `wild-good`, `chain-good`) with `freedom: tls:
+chain: verification failed`, and the fixture server threads logged
+`ConnectionResetError` as the client aborted the handshake. The trigger
+was deterministic, not a race: the binary embedded the roots of
+`headers/tls_test_roots.h` while the servers used the CA under
+`build/tls_test_work`, so every chain was rejected when the two
+disagreed (a fresh clone, a wiped work dir, or a header older than the
+certs). The fix belongs in the build order, never in a looser
+assertion: the roots header now lives in the work directory next to the
+certificates (`build/tls_test_work/tls_test_roots.h`) and the Makefile
+regenerates both together (`tls_test.py --gen-only --regen`), so the
+binary and the servers can never disagree.

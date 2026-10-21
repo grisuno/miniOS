@@ -5,7 +5,7 @@
  *
  * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so
  * these tools are thin front-ends over the two MiniOS syscalls 216
- * (lz4_compress) and 217 (lz4_decompress), which mirror
+ * (lz4_compress) and 255 (lz4_decompress), which mirror
  * minifs_compress/minifs_decompress byte for byte.  The on-disk block is
  * therefore the MiniFS LZ4 block format: a 4-byte little-endian original
  * size, then the raw LZ4 stream.  Every shortfall and implausible declared

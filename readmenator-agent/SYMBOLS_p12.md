@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `js_key` | function | `progs/asm/json.s:3` | `` |
+| `js_key_match` | function | `progs/asm/json.s:947` | `` |
+| `js_len` | function | `progs/asm/json.s:51` | `` |
+| `js_n` | function | `progs/asm/json.s:31` | `` |
+| `js_new` | function | `progs/asm/json.s:274` | `` |
+| `js_next` | function | `progs/asm/json.s:27` | `` |
+| `js_num` | function | `progs/asm/json.s:15` | `` |
+| `js_parse_array` | function | `progs/asm/json.s:1335` | `` |
+| `js_parse_number` | function | `progs/asm/json.s:851` | `` |
+| `js_parse_object` | function | `progs/asm/json.s:983` | `` |
+| `js_parse_string` | function | `progs/asm/json.s:437` | `` |
+| `js_parse_value` | function | `progs/asm/json.s:1594` | `` |
+| `js_peek` | function | `progs/asm/json.s:397` | `` |
+| `js_plen` | function | `progs/asm/json.s:39` | `` |
+| `js_pool` | function | `progs/asm/json.s:35` | `` |
+| `js_pos` | function | `progs/asm/json.s:47` | `` |
+| `js_print_str` | function | `progs/asm/json.s:2524` | `` |
+| `js_print_value` | function | `progs/asm/json.s:2747` | `` |
+| `js_query` | function | `progs/asm/json.s:3460` | `` |
+| `js_read_all` | function | `progs/asm/json.s:59` | `` |
+| `js_skip_ws` | function | `progs/asm/json.s:306` | `` |
+| `js_src` | function | `progs/asm/json.s:43` | `` |
+| `js_str` | function | `progs/asm/json.s:7` | `` |
 | `js_type` | function | `progs/asm/json.s:11` | `` |
 | `main` | function | `progs/asm/json.s:3772` | `` |
 | `_start` | function | `progs/asm/ldhello.s:14` | `` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `HUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:188` | `#define HUSTR_10` |
 | `HUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:189` | `#define HUSTR_11` |
 | `HUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:191` | `#define HUSTR_12` |
-| `HUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:192` | `#define HUSTR_13` |
-| `HUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:193` | `#define HUSTR_14` |
-| `HUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:194` | `#define HUSTR_15` |
-| `HUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:195` | `#define HUSTR_16` |
-| `HUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:196` | `#define HUSTR_17` |
-| `HUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:197` | `#define HUSTR_18` |
-| `HUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:198` | `#define HUSTR_19` |
-| `HUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:180` | `#define HUSTR_2` |
-| `HUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:199` | `#define HUSTR_20` |
-| `HUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:201` | `#define HUSTR_21` |
-| `HUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:202` | `#define HUSTR_22` |
-| `HUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:203` | `#define HUSTR_23` |
-| `HUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:204` | `#define HUSTR_24` |
-| `HUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:205` | `#define HUSTR_25` |
-| `HUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:206` | `#define HUSTR_26` |
-| `HUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:207` | `#define HUSTR_27` |
-| `HUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:208` | `#define HUSTR_28` |
-| `HUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:209` | `#define HUSTR_29` |
-| `HUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:181` | `#define HUSTR_3` |
-| `HUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:210` | `#define HUSTR_30` |
-| `HUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:212` | `#define HUSTR_31` |
-| `HUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:213` | `#define HUSTR_32` |
-| `HUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:182` | `#define HUSTR_4` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)

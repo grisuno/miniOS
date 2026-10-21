@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `HUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:192` | `#define HUSTR_13` |
+| `HUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:193` | `#define HUSTR_14` |
+| `HUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:194` | `#define HUSTR_15` |
+| `HUSTR_16` | macro | `progs/doomgeneric/d_englsh.h:195` | `#define HUSTR_16` |
+| `HUSTR_17` | macro | `progs/doomgeneric/d_englsh.h:196` | `#define HUSTR_17` |
+| `HUSTR_18` | macro | `progs/doomgeneric/d_englsh.h:197` | `#define HUSTR_18` |
+| `HUSTR_19` | macro | `progs/doomgeneric/d_englsh.h:198` | `#define HUSTR_19` |
+| `HUSTR_2` | macro | `progs/doomgeneric/d_englsh.h:180` | `#define HUSTR_2` |
+| `HUSTR_20` | macro | `progs/doomgeneric/d_englsh.h:199` | `#define HUSTR_20` |
+| `HUSTR_21` | macro | `progs/doomgeneric/d_englsh.h:201` | `#define HUSTR_21` |
+| `HUSTR_22` | macro | `progs/doomgeneric/d_englsh.h:202` | `#define HUSTR_22` |
+| `HUSTR_23` | macro | `progs/doomgeneric/d_englsh.h:203` | `#define HUSTR_23` |
+| `HUSTR_24` | macro | `progs/doomgeneric/d_englsh.h:204` | `#define HUSTR_24` |
+| `HUSTR_25` | macro | `progs/doomgeneric/d_englsh.h:205` | `#define HUSTR_25` |
+| `HUSTR_26` | macro | `progs/doomgeneric/d_englsh.h:206` | `#define HUSTR_26` |
+| `HUSTR_27` | macro | `progs/doomgeneric/d_englsh.h:207` | `#define HUSTR_27` |
+| `HUSTR_28` | macro | `progs/doomgeneric/d_englsh.h:208` | `#define HUSTR_28` |
+| `HUSTR_29` | macro | `progs/doomgeneric/d_englsh.h:209` | `#define HUSTR_29` |
+| `HUSTR_3` | macro | `progs/doomgeneric/d_englsh.h:181` | `#define HUSTR_3` |
+| `HUSTR_30` | macro | `progs/doomgeneric/d_englsh.h:210` | `#define HUSTR_30` |
+| `HUSTR_31` | macro | `progs/doomgeneric/d_englsh.h:212` | `#define HUSTR_31` |
+| `HUSTR_32` | macro | `progs/doomgeneric/d_englsh.h:213` | `#define HUSTR_32` |
+| `HUSTR_4` | macro | `progs/doomgeneric/d_englsh.h:182` | `#define HUSTR_4` |
 | `HUSTR_5` | macro | `progs/doomgeneric/d_englsh.h:183` | `#define HUSTR_5` |
 | `HUSTR_6` | macro | `progs/doomgeneric/d_englsh.h:184` | `#define HUSTR_6` |
 | `HUSTR_7` | macro | `progs/doomgeneric/d_englsh.h:185` | `#define HUSTR_7` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `handleKeyInput` | function | `progs/doomgeneric/doomgeneric_sdl.c:72` | `static void handleKeyInput()` |
 | `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_soso.c:214` | `void DG_DrawFrame()` |
 | `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_soso.c:237` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_soso.c:232` | `uint32_t DG_GetTicksMs()` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric_soso.c:124` | `void DG_Init()` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_soso.c:258` | `void DG_SetWindowTitle(const char * title)` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_soso.c:227` | `void DG_SleepMs(uint32_t ms)` |
-| `EnFrameBuferIoctl` | enum | `progs/doomgeneric/doomgeneric_soso.c:36` | `` |
-| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_soso.c:24` | `#define KEYQUEUE_SIZE` |
-| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_soso.c:92` | `static void addKeyToQueue(int pressed, unsigned char keyCode)` |
-| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_soso.c:43` | `static unsigned char convertToDoomKey(unsigned char scancode)` |
-| `disableRawMode` | function | `progs/doomgeneric/doomgeneric_soso.c:108` | `void disableRawMode()` |
-| `enableRawMode` | function | `progs/doomgeneric/doomgeneric_soso.c:114` | `void enableRawMode()` |
-| `handleKeyInput` | function | `progs/doomgeneric/doomgeneric_soso.c:186` | `static void handleKeyInput()` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_sosox.c:187` | `void DG_DrawFrame()` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_sosox.c:235` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_sosox.c:230` | `uint32_t DG_GetTicksMs()` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric_sosox.c:117` | `void DG_Init()` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_sosox.c:256` | `void DG_SetWindowTitle(const char * title)` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_sosox.c:225` | `void DG_SleepMs(uint32_t ms)` |
-| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_sosox.c:24` | `#define KEYQUEUE_SIZE` |
-| `add_key_to_queue` | function | `progs/doomgeneric/doomgeneric_sosox.c:88` | `static void add_key_to_queue(int pressed, unsigned char key_code)` |
-| `convert_to_doom_key` | function | `progs/doomgeneric/doomgeneric_sosox.c:39` | `static unsigned char convert_to_doom_key(unsigned char scancode)` |
-| `disable_raw_mode` | function | `progs/doomgeneric/doomgeneric_sosox.c:102` | `void disable_raw_mode()` |
-| `enable_raw_mode` | function | `progs/doomgeneric/doomgeneric_sosox.c:107` | `void enable_raw_mode()` |
-| `handle_key_input` | function | `progs/doomgeneric/doomgeneric_sosox.c:159` | `static void handle_key_input()` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

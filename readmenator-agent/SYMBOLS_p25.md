@@ -3,6 +3,32 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `wl_comp_add` | function | `progs/wl/wl_mini.h:309` | `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)` |
+| `wl_comp_attach_buf` | function | `progs/wl/wl_mini.h:1218` | `static inline int wl_comp_attach_buf(wl_comp_t *c, unsigned int id,         unsigned int pool, in...` |
+| `wl_comp_focus` | function | `progs/wl/wl_mini.h:372` | `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)` |
+| `wl_comp_hit` | function | `progs/wl/wl_mini.h:397` | `static inline int wl_comp_hit(const wl_comp_t *c, int x, int y)` |
+| `wl_comp_init` | function | `progs/wl/wl_mini.h:271` | `static inline void wl_comp_init(wl_comp_t *c)` |
+| `wl_comp_layout_tile` | function | `progs/wl/wl_mini.h:577` | `static inline int wl_comp_layout_tile(wl_comp_t *c, int fb_w, int fb_h)` |
+| `wl_comp_refresh_active` | function | `progs/wl/wl_mini.h:289` | `static inline void wl_comp_refresh_active(wl_comp_t *c)` |
+| `wl_comp_remove` | function | `progs/wl/wl_mini.h:345` | `static inline int wl_comp_remove(wl_comp_t *c, unsigned int id)` |
+| `wl_comp_set_color` | function | `progs/wl/wl_mini.h:487` | `static inline int wl_comp_set_color(wl_comp_t *c, unsigned int id, int color)` |
+| `wl_comp_set_minimized` | function | `progs/wl/wl_mini.h:460` | `static inline int wl_comp_set_minimized(wl_comp_t *c, unsigned int id,         int minimized)` |
+| `wl_comp_set_rect` | function | `progs/wl/wl_mini.h:550` | `static inline int wl_comp_set_rect(wl_comp_t *c, unsigned int id,         int x, int y, int w, in...` |
+| `wl_comp_t` | struct | `progs/wl/wl_mini.h:264` | `` |
+| `wl_comp_top_visible` | function | `progs/wl/wl_mini.h:441` | `static inline int wl_comp_top_visible(const wl_comp_t *c)` |
+| `wl_dispatch` | function | `progs/wl/wl_mini.h:1245` | `static inline int wl_dispatch(wl_comp_t *c, wl_client_t *cl,         unsigned int id, unsigned in...` |
+| `wl_ev_decode` | function | `progs/wl/wl_mini.h:1008` | `static inline int wl_ev_decode(const unsigned char *src, int len,         wl_ev_t *ev)` |
+| `wl_ev_encode` | function | `progs/wl/wl_mini.h:978` | `static inline int wl_ev_encode(unsigned char *dst, int cap,         const wl_ev_t *ev)` |
+| `wl_ev_map` | function | `progs/wl/wl_mini.h:1051` | `static inline int wl_ev_map(int fx, int fy, int sx, int sy, int sw,         int sh, int rw, int r...` |
+| `wl_ev_t` | struct | `progs/wl/wl_mini.h:968` | `` |
+| `wl_hdr_decode` | function | `progs/wl/wl_mini.h:99` | `static inline int wl_hdr_decode(const unsigned char *src, int len,         wl_hdr_t *out)` |
+| `wl_hdr_encode` | function | `progs/wl/wl_mini.h:71` | `static inline int wl_hdr_encode(unsigned char *dst, int cap,         unsigned int id, unsigned in...` |
+| `wl_hdr_t` | struct | `progs/wl/wl_mini.h:57` | `` |
+| `wl_iface_find` | function | `progs/wl/wl_mini.h:1187` | `static inline int wl_iface_find(const char *name)` |
+| `wl_iface_t` | struct | `progs/wl/wl_mini.h:1179` | `` |
+| `wl_pool_fit` | function | `progs/wl/wl_mini.h:223` | `static inline int wl_pool_fit(int w, int h)` |
+| `wl_pool_id_valid` | function | `progs/wl/wl_mini.h:219` | `static inline int wl_pool_id_valid(unsigned int id)` |
+| `wl_scale_nearest` | function | `progs/wl/wl_mini.h:793` | `static inline int wl_scale_nearest(unsigned char *dst, int dw, int dh,         const unsigned cha...` |
 | `wl_str_decode` | function | `progs/wl/wl_mini.h:188` | `static inline int wl_str_decode(const unsigned char *src, int len, int off,         char *dst, in...` |
 | `wl_str_encode` | function | `progs/wl/wl_mini.h:163` | `static inline int wl_str_encode(unsigned char *dst, int cap, int off,         const char *s)` |
 | `wl_stream_consume` | function | `progs/wl/wl_mini.h:1166` | `static inline int wl_stream_consume(wl_stream_t *s, int n)` |
@@ -470,31 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `t_zero_cap` | function | `tests/test_pcm.c:91` | `static void t_zero_cap(void)` |
 | `CHECK` | macro | `tests/test_percpu_rq.c:17` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_percpu_rq.c:24` | `int main(void)` |
-| `CHECK` | macro | `tests/test_pipe.c:16` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_pipe.c:23` | `int main(void)` |
-| `check` | function | `tests/test_ps2_keymap.c:19` | `static void check(int cond, const char *name)` |
-| `feed_seq` | function | `tests/test_ps2_keymap.c:29` | `static int feed_seq(ps2_state *s, const unsigned char *seq, int n, ps2_key *out)` |
-| `main` | function | `tests/test_ps2_keymap.c:293` | `int main(void)` |
-| `press` | function | `tests/test_ps2_keymap.c:36` | `static int press(ps2_state *s, unsigned char code, ps2_key *out)` |
-| `release` | function | `tests/test_ps2_keymap.c:41` | `static int release(ps2_state *s, unsigned char code, ps2_key *out)` |
-| `test_caps_lock` | function | `tests/test_ps2_keymap.c:69` | `static void test_caps_lock(void)` |
-| `test_chords_have_no_text` | function | `tests/test_ps2_keymap.c:128` | `static void test_chords_have_no_text(void)` |
-| `test_control_key_text` | function | `tests/test_ps2_keymap.c:111` | `static void test_control_key_text(void)` |
-| `test_extended_keys` | function | `tests/test_ps2_keymap.c:150` | `static void test_extended_keys(void)` |
-| `test_fail_closed` | function | `tests/test_ps2_keymap.c:280` | `static void test_fail_closed(void)` |
-| `test_function_keys` | function | `tests/test_ps2_keymap.c:202` | `static void test_function_keys(void)` |
-| `test_keypad_num_lock` | function | `tests/test_ps2_keymap.c:218` | `static void test_keypad_num_lock(void)` |
-| `test_letters_and_shift` | function | `tests/test_ps2_keymap.c:45` | `static void test_letters_and_shift(void)` |
-| `test_prefix_sequences` | function | `tests/test_ps2_keymap.c:263` | `static void test_prefix_sequences(void)` |
-| `test_punctuation` | function | `tests/test_ps2_keymap.c:90` | `static void test_punctuation(void)` |
-| `CHECK` | macro | `tests/test_randmix.c:16` | `#define CHECK(c, m)` |
-| `main` | function | `tests/test_randmix.c:24` | `int main(void)` |
-| `popcount64` | function | `tests/test_randmix.c:18` | `static int popcount64(unsigned long x)` |
-| `CHECK` | macro | `tests/test_rcu.c:30` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_rcu.c:37` | `int main(void)` |
-| `rcu_host_cpu` | function | `tests/test_rcu.c:19` | `cpu_t *rcu_host_cpu(void)` |
-| `test_cb` | function | `tests/test_rcu.c:23` | `static void test_cb(void *arg)` |
-| `CHECK` | macro | `tests/test_rtc.c:16` | `#define CHECK(c, m)` |
-| `main` | function | `tests/test_rtc.c:18` | `int main(void)` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

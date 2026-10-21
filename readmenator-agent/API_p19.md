@@ -161,7 +161,7 @@ Depends on: `progs/src/mthreads.h`
 - `sc_fold` (function) `progs/src/scfuzz.c:76` `static unsigned long sc_fold(unsigned long h, unsigned long v)`
 - `sc_hex8` (function) `progs/src/scfuzz.c:88` `static void sc_hex8(unsigned long v, char *out)`
 - `sc_worker` (function) `progs/src/scfuzz.c:97` `static unsigned long sc_worker(int me, unsigned long seed)`
-- `sc_thread1` (function) `progs/src/scfuzz.c:154` `static void *sc_thread1(void *arg)`
+- `sc_thread1` (function) `progs/src/scfuzz.c:161` `static void *sc_thread1(void *arg)`
 
 ## progs/src/shell.py
 Depends on: `progs/lua/minios.c`

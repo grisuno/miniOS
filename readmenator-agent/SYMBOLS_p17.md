@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `rejectmatrix` | variable | `progs/doomgeneric/p_local.h:261` | `extern byte* rejectmatrix;` |
+| `spechit` | variable | `progs/doomgeneric/p_local.h:222` | `extern line_t* spechit[MAXSPECIALCROSS];` |
+| `thinkercap` | variable | `progs/doomgeneric/p_local.h:67` | `extern thinker_t thinkercap;` |
+| `tmceilingz` | variable | `progs/doomgeneric/p_local.h:206` | `extern fixed_t tmceilingz;` |
+| `tmfloorz` | variable | `progs/doomgeneric/p_local.h:205` | `extern fixed_t tmfloorz;` |
+| `trace` | variable | `progs/doomgeneric/p_local.h:183` | `extern divline_t trace;` |
+| `DEFAULT_SPECHIT_MAGIC` | macro | `progs/doomgeneric/p_map.c:50` | `#define DEFAULT_SPECHIT_MAGIC` |
+| `PIT_ChangeSector` | function | `progs/doomgeneric/p_map.c:1304` | `boolean PIT_ChangeSector (mobj_t*	thing)` |
+| `PIT_CheckLine` | function | `progs/doomgeneric/p_map.c:206` | `boolean PIT_CheckLine (line_t* ld)` |
+| `PIT_CheckThing` | function | `progs/doomgeneric/p_map.c:275` | `boolean PIT_CheckThing (mobj_t* thing)` |
+| `PIT_RadiusAttack` | function | `progs/doomgeneric/p_map.c:1211` | `boolean PIT_RadiusAttack (mobj_t* thing)` |
+| `PIT_StompThing` | function | `progs/doomgeneric/p_map.c:97` | `boolean PIT_StompThing (mobj_t* thing)` |
+| `PTR_AimTraverse` | function | `progs/doomgeneric/p_map.c:843` | `boolean PTR_AimTraverse (intercept_t* in)` |
+| `PTR_ShootTraverse` | function | `progs/doomgeneric/p_map.c:928` | `boolean PTR_ShootTraverse (intercept_t* in)` |
+| `PTR_SlideTraverse` | function | `progs/doomgeneric/p_map.c:663` | `boolean PTR_SlideTraverse (intercept_t* in)` |
+| `PTR_UseTraverse` | function | `progs/doomgeneric/p_map.c:1142` | `boolean	PTR_UseTraverse (intercept_t* in)` |
+| `P_AimLineAttack` | function | `progs/doomgeneric/p_map.c:1068` | `fixed_t P_AimLineAttack ( mobj_t*	t1,   angle_t	angle,   fixed_t	distance )` |
+| `P_ChangeSector` | function | `progs/doomgeneric/p_map.c:1368` | `boolean P_ChangeSector ( sector_t*	sector,   boolean	crunch )` |
+| `P_CheckPosition` | function | `progs/doomgeneric/p_map.c:402` | `boolean P_CheckPosition ( mobj_t*	thing,   fixed_t	x,   fixed_t	y )` |
+| `P_HitSlideLine` | function | `progs/doomgeneric/p_map.c:611` | `void P_HitSlideLine (line_t* ld)` |
+| `P_LineAttack` | function | `progs/doomgeneric/p_map.c:1110` | `void P_LineAttack ( mobj_t*	t1,   angle_t	angle,   fixed_t	distance,   fixed_t	slope,   int		dama...` |
+| `P_RadiusAttack` | function | `progs/doomgeneric/p_map.c:1253` | `void P_RadiusAttack ( mobj_t*	spot,   mobj_t*	source,   int		damage )` |
+| `P_SlideMove` | function | `progs/doomgeneric/p_map.c:722` | `void P_SlideMove (mobj_t* mo)` |
 | `P_TeleportMove` | function | `progs/doomgeneric/p_map.c:131` | `boolean P_TeleportMove ( mobj_t*	thing,   fixed_t	x,   fixed_t	y )` |
 | `P_ThingHeightClip` | function | `progs/doomgeneric/p_map.c:557` | `boolean P_ThingHeightClip (mobj_t* thing)` |
 | `P_TryMove` | function | `progs/doomgeneric/p_map.c:478` | `boolean P_TryMove ( mobj_t*	thing,   fixed_t	x,   fixed_t	y )` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 | `ds_xstep` | variable | `progs/doomgeneric/r_draw.h:66` | `extern fixed_t ds_xstep;` |
 | `ds_y` | variable | `progs/doomgeneric/r_draw.h:58` | `extern int ds_y;` |
 | `ds_yfrac` | variable | `progs/doomgeneric/r_draw.h:65` | `extern fixed_t ds_yfrac;` |
-| `ds_ystep` | variable | `progs/doomgeneric/r_draw.h:67` | `extern fixed_t ds_ystep;` |
-| `translationtables` | variable | `progs/doomgeneric/r_draw.h:72` | `extern byte* translationtables;` |
-| `__R_LOCAL__` | macro | `progs/doomgeneric/r_local.h:21` | `#define __R_LOCAL__` |
-| `DISTMAP` | macro | `progs/doomgeneric/r_main.c:608` | `#define DISTMAP` |
-| `FIELDOFVIEW` | macro | `progs/doomgeneric/r_main.c:43` | `#define FIELDOFVIEW` |
-| `R_AddPointToBox` | function | `progs/doomgeneric/r_main.c:123` | `void R_AddPointToBox ( int		x,   int		y,   fixed_t*	box )` |
-| `R_ExecuteSetViewSize` | function | `progs/doomgeneric/r_main.c:667` | `void R_ExecuteSetViewSize (void)` |
-| `R_Init` | function | `progs/doomgeneric/r_main.c:767` | `void R_Init (void)` |
-| `R_InitLightTables` | function | `progs/doomgeneric/r_main.c:610` | `void R_InitLightTables (void)` |
-| `R_InitPointToAngle` | function | `progs/doomgeneric/r_main.c:422` | `void R_InitPointToAngle (void)` |
-| `R_InitTables` | function | `progs/doomgeneric/r_main.c:505` | `void R_InitTables (void)` |
-| `R_InitTextureMapping` | function | `progs/doomgeneric/r_main.c:540` | `void R_InitTextureMapping (void)` |
-| `R_PointInSubsector` | function | `progs/doomgeneric/r_main.c:794` | `subsector_t* R_PointInSubsector ( fixed_t	x,   fixed_t	y )` |
-| `R_PointOnSegSide` | function | `progs/doomgeneric/r_main.c:199` | `int R_PointOnSegSide ( fixed_t	x,   fixed_t	y,   seg_t*	line )` |
-| `R_PointOnSide` | function | `progs/doomgeneric/r_main.c:146` | `int R_PointOnSide ( fixed_t	x,   fixed_t	y,   node_t*	node )` |
-| `R_PointToAngle` | function | `progs/doomgeneric/r_main.c:276` | `angle_t R_PointToAngle ( fixed_t	x,   fixed_t	y )` |
-| `R_PointToAngle2` | function | `progs/doomgeneric/r_main.c:362` | `angle_t R_PointToAngle2 ( fixed_t	x1,   fixed_t	y1,   fixed_t	x2,   fixed_t	y2 )` |
-| `R_PointToDist` | function | `progs/doomgeneric/r_main.c:376` | `fixed_t R_PointToDist ( fixed_t	x,   fixed_t	y )` |
-| `R_RenderPlayerView` | function | `progs/doomgeneric/r_main.c:863` | `void R_RenderPlayerView (player_t* player)` |
-| `R_ScaleFromGlobalAngle` | function | `progs/doomgeneric/r_main.c:449` | `fixed_t R_ScaleFromGlobalAngle (angle_t visangle)` |
-| `R_SetViewSize` | function | `progs/doomgeneric/r_main.c:654` | `void R_SetViewSize ( int		blocks,   int		detail )` |
-| `R_SetupFrame` | function | `progs/doomgeneric/r_main.c:823` | `void R_SetupFrame (player_t* player)` |
-| `walllights` | variable | `progs/doomgeneric/r_main.c:54` | `extern lighttable_t** walllights;` |
 
 Next: [SYMBOLS_p18.md](SYMBOLS_p18.md)

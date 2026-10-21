@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCSPK_Init` | function | `progs/doomgeneric/i_minios_sound.c:512` | `static boolean PCSPK_Init(boolean use_sfx_prefix)` |
+| `PCSPK_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:519` | `static void PCSPK_Shutdown(void)` |
+| `PCSPK_SoundIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:647` | `static boolean PCSPK_SoundIsPlaying(int channel)` |
+| `PCSPK_StartSound` | function | `progs/doomgeneric/i_minios_sound.c:591` | `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)` |
+| `PCSPK_StopSound` | function | `progs/doomgeneric/i_minios_sound.c:641` | `static void PCSPK_StopSound(int channel)` |
+| `PCSPK_TICK_MS` | macro | `progs/doomgeneric/i_minios_sound.c:13` | `#define PCSPK_TICK_MS` |
+| `PCSPK_Update` | function | `progs/doomgeneric/i_minios_sound.c:549` | `static void PCSPK_Update(void)` |
+| `PCSPK_UpdateSoundParams` | function | `progs/doomgeneric/i_minios_sound.c:587` | `static void PCSPK_UpdateSoundParams(int ch, int v, int s)` |
+| `audio_close` | function | `progs/doomgeneric/i_minios_sound.c:92` | `static void audio_close(void)` |
+| `audio_ensure` | function | `progs/doomgeneric/i_minios_sound.c:68` | `static void audio_ensure(void)` |
+| `audio_pump` | function | `progs/doomgeneric/i_minios_sound.c:77` | `static void audio_pump(void)` |
+| `audio_tone` | function | `progs/doomgeneric/i_minios_sound.c:85` | `static void audio_tone(unsigned freq)` |
+| `free_channel` | function | `progs/doomgeneric/i_minios_sound.c:540` | `static void free_channel(int i)` |
+| `mus_advance` | function | `progs/doomgeneric/i_minios_sound.c:288` | `static void mus_advance(mus_player_t *m, unsigned long ms)` |
+| `mus_advance_pcm` | function | `progs/doomgeneric/i_minios_sound.c:369` | `static void mus_advance_pcm(mus_player_t *m)` |
+| `mus_build_chord` | function | `progs/doomgeneric/i_minios_sound.c:236` | `static void mus_build_chord(mus_player_t *m)` |
+| `mus_hold_tone` | function | `progs/doomgeneric/i_minios_sound.c:261` | `static void mus_hold_tone(unsigned freq, unsigned long ms)` |
+| `mus_next_block` | function | `progs/doomgeneric/i_minios_sound.c:183` | `static int mus_next_block(mus_player_t *m, unsigned long *out)` |
+| `mus_note_cmp` | function | `progs/doomgeneric/i_minios_sound.c:228` | `static int mus_note_cmp(const void *a, const void *b)` |
+| `mus_play_chord` | function | `progs/doomgeneric/i_minios_sound.c:274` | `static void mus_play_chord(mus_player_t *m)` |
+| `mus_player_t` | struct | `progs/doomgeneric/i_minios_sound.c:146` | `` |
+| `mus_read_varlen` | function | `progs/doomgeneric/i_minios_sound.c:169` | `static int mus_read_varlen(mus_player_t *m, unsigned long *out)` |
+| `mus_render_pcm` | function | `progs/doomgeneric/i_minios_sound.c:320` | `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)` |
 | `mus_render_push` | function | `progs/doomgeneric/i_minios_sound.c:359` | `static void mus_render_push(mus_player_t *m, unsigned n)` |
 | `muted` | function | `progs/doomgeneric/i_minios_sound.c:51` | `* pcm2 while sfx stay muted (effect tones ruined the melody);` |
 | `pcspk_channel_t` | struct | `progs/doomgeneric/i_minios_sound.c:17` | `` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 | `key_map_toggle` | variable | `progs/doomgeneric/m_controls.h:90` | `extern int key_map_toggle;` |
 | `key_map_west` | variable | `progs/doomgeneric/m_controls.h:87` | `extern int key_map_west;` |
 | `key_map_zoomin` | variable | `progs/doomgeneric/m_controls.h:88` | `extern int key_map_zoomin;` |
-| `key_map_zoomout` | variable | `progs/doomgeneric/m_controls.h:89` | `extern int key_map_zoomout;` |
-| `key_menu_abort` | variable | `progs/doomgeneric/m_controls.h:107` | `extern int key_menu_abort;` |
-| `key_menu_activate` | variable | `progs/doomgeneric/m_controls.h:99` | `extern int key_menu_activate;` |
-| `key_menu_back` | variable | `progs/doomgeneric/m_controls.h:104` | `extern int key_menu_back;` |
-| `key_menu_confirm` | variable | `progs/doomgeneric/m_controls.h:106` | `extern int key_menu_confirm;` |
-| `key_menu_decscreen` | variable | `progs/doomgeneric/m_controls.h:122` | `extern int key_menu_decscreen;` |
-| `key_menu_detail` | variable | `progs/doomgeneric/m_controls.h:113` | `extern int key_menu_detail;` |
-| `key_menu_down` | variable | `progs/doomgeneric/m_controls.h:101` | `extern int key_menu_down;` |
-| `key_menu_endgame` | variable | `progs/doomgeneric/m_controls.h:115` | `extern int key_menu_endgame;` |
-| `key_menu_forward` | variable | `progs/doomgeneric/m_controls.h:105` | `extern int key_menu_forward;` |
-| `key_menu_gamma` | variable | `progs/doomgeneric/m_controls.h:119` | `extern int key_menu_gamma;` |
-| `key_menu_help` | variable | `progs/doomgeneric/m_controls.h:109` | `extern int key_menu_help;` |
-| `key_menu_incscreen` | variable | `progs/doomgeneric/m_controls.h:121` | `extern int key_menu_incscreen;` |
-| `key_menu_left` | variable | `progs/doomgeneric/m_controls.h:102` | `extern int key_menu_left;` |
-| `key_menu_load` | variable | `progs/doomgeneric/m_controls.h:111` | `extern int key_menu_load;` |
-| `key_menu_messages` | variable | `progs/doomgeneric/m_controls.h:116` | `extern int key_menu_messages;` |
-| `key_menu_qload` | variable | `progs/doomgeneric/m_controls.h:117` | `extern int key_menu_qload;` |
-| `key_menu_qsave` | variable | `progs/doomgeneric/m_controls.h:114` | `extern int key_menu_qsave;` |
-| `key_menu_quit` | variable | `progs/doomgeneric/m_controls.h:118` | `extern int key_menu_quit;` |
-| `key_menu_right` | variable | `progs/doomgeneric/m_controls.h:103` | `extern int key_menu_right;` |
-| `key_menu_save` | variable | `progs/doomgeneric/m_controls.h:110` | `extern int key_menu_save;` |
-| `key_menu_screenshot` | variable | `progs/doomgeneric/m_controls.h:123` | `extern int key_menu_screenshot;` |
-| `key_menu_up` | variable | `progs/doomgeneric/m_controls.h:100` | `extern int key_menu_up;` |
 
 Next: [SYMBOLS_p16.md](SYMBOLS_p16.md)

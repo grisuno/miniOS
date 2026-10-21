@@ -14,6 +14,8 @@
  *     sleeper retries the acquisition loop.  Priority inheritance lifts a
  *     holder to its highest waiter's level (pi_boost/pi_recompute).
  *   - Semaphores wake one waiter per post; broadcasts drain the queue.
+ *   - The read-write lock prefers writers: a queued writer announces
+ *     itself and new readers yield, so a reader stream cannot starve it.
  */
 
 #include "sync.h"
@@ -254,40 +256,69 @@ void rwlock_init(rwlock_t *rw) {
     spin_init(&rw->guard);
     rw->readers = 0;
     rw->writer = 0;
+    rw->writers_waiting = 0;
     wq_init(&rw->waiters);
+}
+
+int rwlock_read_trylock(rwlock_t *rw) {
+    irqflags_t flags;
+    int rc = -1;
+    spin_lock_irqsave(&rw->guard, &flags);
+    /* Writer preference: a queued writer keeps new readers out, so a
+     * steady reader stream cannot starve it. */
+    if (!rw->writer && rw->writers_waiting == 0) {
+        rw->readers++;
+        rc = 0;
+    }
+    spin_unlock_irqrestore(&rw->guard, flags);
+    return rc;
+}
+
+int rwlock_write_trylock(rwlock_t *rw) {
+    irqflags_t flags;
+    int rc = -1;
+    spin_lock_irqsave(&rw->guard, &flags);
+    if (!rw->writer && rw->readers == 0) {
+        rw->writer = 1;
+        rc = 0;
+    }
+    spin_unlock_irqrestore(&rw->guard, flags);
+    return rc;
 }
 
 void rwlock_read_lock(rwlock_t *rw) {
     for (;;) {
-        irqflags_t flags;
-        spin_lock_irqsave(&rw->guard, &flags);
-        if (!rw->writer) {
-            rw->readers++;
-            spin_unlock_irqrestore(&rw->guard, flags);
-            return;
-        }
-        spin_unlock_irqrestore(&rw->guard, flags);
+        if (rwlock_read_trylock(rw) == 0) return;
         sleep_on(&rw->waiters);
     }
 }
 
 void rwlock_read_unlock(rwlock_t *rw) {
     irqflags_t flags;
+    int wake = 0;
     spin_lock_irqsave(&rw->guard, &flags);
     if (rw->readers > 0) rw->readers--;
-    int wake = (rw->readers == 0);
+    wake = (rw->readers == 0);
     spin_unlock_irqrestore(&rw->guard, flags);
-    if (wake) wake_up(&rw->waiters);
+    if (wake) wake_up_all(&rw->waiters);
 }
 
 void rwlock_write_lock(rwlock_t *rw) {
+    int queued = 0;
     for (;;) {
         irqflags_t flags;
         spin_lock_irqsave(&rw->guard, &flags);
         if (!rw->writer && rw->readers == 0) {
             rw->writer = 1;
+            if (queued) rw->writers_waiting--;
             spin_unlock_irqrestore(&rw->guard, flags);
             return;
+        }
+        /* Announce the wait once, so readers arriving later yield to
+         * this writer instead of starving it. */
+        if (!queued) {
+            rw->writers_waiting++;
+            queued = 1;
         }
         spin_unlock_irqrestore(&rw->guard, flags);
         sleep_on(&rw->waiters);

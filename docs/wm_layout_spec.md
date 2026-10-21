@@ -32,44 +32,54 @@ focus rotation and paint order stay in their existing contracts.
 I add `wm_layout.h` as the single owner of layout decisions.
 
 I define `wm_layout_mode_t` with `TILE`, `BSP`, `CASCADE`, `FIBONACCI`
-and `FULLSCREEN`. I define `wm_layout_window_t` with kind, id, span
-weight, minimum size and fullscreen flag. I define `wm_layout_config_t`
-with gap, border, cascade step, fibonacci ratio and screen bounds. Every
-numeric choice arrives through that config. I expose no bare constant.
+and `FULLSCREEN`. I define `wm_layout_window_t` with kind, id, a present
+flag and the minimum columns and rows a window needs. I define
+`wm_layout_config_t` with gap, the cascade step in columns and rows, and
+the fibonacci ratio as a numerator over a denominator. Every numeric
+choice arrives through that config. I expose no bare constant.
 
 I expose `wm_layout_compute` which takes the window list, the mode, the
-focused id and the screen grid and returns one cell per input window in
-input order. I expose `wm_layout_fullscreen_cell` which returns the full
-grid for the focused window. I fail closed: null pointers, zero windows,
-zero grid or a full output buffer return zero and write nothing.
+focused id and the screen grid and returns one cell per present window in
+input order, absent windows skipped. I expose `wm_layout_fullscreen_cell`
+which returns the full-grid cell; `wm_layout_compute` is what gives it to
+the focused window. I fail closed: null pointers, zero windows, zero
+grid or a full output buffer return zero and write nothing.
 
 ## Behavior
 
 In `TILE` I split the grid evenly across the window count on the long
 axis, which matches the legacy two terminal split exactly. In `BSP` I
-split recursively alternating axes so a third window does not collapse
-the first two. In `CASCADE` I offset each window by the configured step
-so titles stay visible. In `FIBONACCI` I carve each next window from the
-remaining strip by the configured ratio, which gives the spiral feel
-without floating point. In `FULLSCREEN` I return one cell covering the
-grid for the focused window only.
+split the longer remaining axis in half at every step, so a third window
+does not collapse the first two. In `CASCADE` I offset each window by
+the configured step so titles stay visible. In `FIBONACCI` I carve each
+next window from the remaining strip by the configured ratio, which gives
+the spiral feel without floating point. In `FULLSCREEN` I return one cell
+covering the grid for the focused window only.
 
-I keep the legacy `wm_tile_layout` signature working by delegating to
-`TILE` mode, so existing callers and tests do not break.
+The legacy `wm_tile_layout` keeps its own signature and its own two
+terminal split in `wm_tiling.h`, so its callers and vectors do not break;
+the kernel tiles through `wm_layout_compute`.
 
 ## Fullscreen uniformity
 
-I treat Alt+Enter as `FULLSCREEN` mode on focus. A terminal fullscreen
-fills the grid in cells. A graphics fullscreen centers at native size
-with zero offset, which is the existing recenter behavior expressed as
-layout output. Exit restores the previous mode.
+I treat Alt+Enter as fullscreen on focus: the shared combo table maps
+`Alt+Enter` to `WM_COMBO_FULLSCREEN`, and `vga_fb_toggle_fullscreen`
+answers it for whichever window holds focus. A terminal fullscreen fills
+the grid in cells. A graphics fullscreen switches to the `fullscreen`
+graphics view: the frame fills the display, the title disappears and the
+content is centered inside it. Exit restores the previous view mode.
+
+The `FULLSCREEN` layout mode is the layout contract's own mode: I give
+the full grid to the focused window and an empty cell to the rest, and
+the kernel reaches it through the layout mode API (`wm layout`), never
+through the combo.
 
 ## Resize
 
 I express resize as cell delta plus clamp to minimum and grid bounds.
-Terminals resize in cells. Graphics placement hints resize by pixel
-scale factor derived from cells, never by direct framebuffer writes, so
-fixed size backbuffers stay valid.
+Terminals resize in cells. The graphics window does not resize at all: its
+backbuffer is fixed size, so `vga_fb_resize` refuses the request and
+only the terminal cells move, never a framebuffer write.
 
 ## Flicker reduction
 
@@ -90,6 +100,7 @@ I prove pixels with `tools/test_gui_wm.py`. Full `test_bdd.sh` and
 ## Risks
 
 I keep the window count at two terminals plus one graphics window. The
-layout functions accept longer lists so the contract does not hardcode
-that bound, but the kernel still allocates two terminal slots. I do not
-change the 8x8 font geometry. I do not change syscall numbers.
+layout entry point accepts up to eight windows, so the contract does not
+hardcode that bound, but the kernel still allocates two terminal slots
+plus the graphics window. I do not change the 8x8 font geometry. I do not
+change syscall numbers.

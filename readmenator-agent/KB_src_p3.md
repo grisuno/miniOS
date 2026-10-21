@@ -16,8 +16,8 @@ Previous: [KB_src_p2.md](KB_src_p2.md)
   - `sc_fold` (function, line 76) `static unsigned long sc_fold(unsigned long h, unsigned long v)`
   - `sc_hex8` (function, line 88) `static void sc_hex8(unsigned long v, char *out)`
   - `sc_worker` (function, line 97) `static unsigned long sc_worker(int me, unsigned long seed)`
-  - `sc_thread1` (function, line 154) `static void *sc_thread1(void *arg)`
-  - `_start` (function, line 160) `void _start(void)`
+  - `sc_thread1` (function, line 161) `static void *sc_thread1(void *arg)`
+  - `_start` (function, line 167) `void _start(void)`
   - `SC_OPS` (macro, line 15) `#define SC_OPS`
   - `SC_ARENA` (macro, line 16) `#define SC_ARENA`
   - `SC_PAGE` (macro, line 17) `#define SC_PAGE`

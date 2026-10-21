@@ -57,12 +57,14 @@ Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_ker
   - `redirect_take_into` (function, line 196) `unsigned long redirect_take_into(char *dst, unsigned long cap,
         unsigned long *len_out)`
   - `redirect_discard` (function, line 216) `void redirect_discard(void)`
-  - `vga_putc` (function, line 223) `void vga_putc(char c)`
-  - `vga_puts` (function, line 267) `void vga_puts(const char *s)`
-  - `register_libc_symbols` (function, line 271) `void register_libc_symbols(void)`
+  - `vga_line_feed` (function, line 231) `static void vga_line_feed(void)`
+  - `vga_putc` (function, line 237) `void vga_putc(char c)`
+  - `vga_puts` (function, line 283) `void vga_puts(const char *s)`
+  - `register_libc_symbols` (function, line 287) `void register_libc_symbols(void)`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 4) `#define XXH_STATIC_LINKING_ONLY`
   - `REDIR_INITIAL_CAP` (macro, line 96) `#define REDIR_INITIAL_CAP`
   - `REDIR_MAX_BYTES` (macro, line 97) `#define REDIR_MAX_BYTES`
+  - `VGA_LINE_MAX` (macro, line 226) `#define VGA_LINE_MAX`
 - Depends on: `headers/sched.h`, `headers/vga_fb.h`
 
 ## kernel/console_in.c
@@ -88,27 +90,30 @@ Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_ker
  * hanging the reader. */
 #de...`
   - `consume_page_after_esc` (function, line 178) `static int consume_page_after_esc(void)`
-  - `console_getc` (function, line 205) `int console_getc(void)`
-  - `console_peek` (function, line 233) `int console_peek(void)`
-  - `console_raw_try` (function, line 246) `int console_raw_try(void)`
-  - `console_raw_get` (function, line 250) `int console_raw_get(void)`
-  - `console_job_try` (function, line 257) `int console_job_try(void)`
-  - `console_job_get` (function, line 267) `int console_job_get(void)`
-  - `scrollback_render` (function, line 283) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
-  - `sb_next` (function, line 311) `static int sb_next(void)`
-  - `scrollback_view` (function, line 321) `static void scrollback_view(int initial_dir)`
+  - `console_history_page` (function, line 204) `void console_history_page(int dir)`
+  - `console_getc` (function, line 217) `int console_getc(void)`
+  - `console_peek` (function, line 247) `int console_peek(void)`
+  - `console_raw_try` (function, line 260) `int console_raw_try(void)`
+  - `console_raw_get` (function, line 264) `int console_raw_get(void)`
+  - `console_job_try` (function, line 271) `int console_job_try(void)`
+  - `console_job_get` (function, line 281) `int console_job_get(void)`
+  - `scrollback_render` (function, line 297) `static void scrollback_render(int voff, int total, const unsigned char *saved)`
+  - `sb_next` (function, line 325) `static int sb_next(void)`
+  - `scrollback_view` (function, line 335) `static void scrollback_view(int initial_dir)`
   - `PB_LEN` (macro, line 18) `#define PB_LEN`
   - `MAX_SEQ_POLL` (macro, line 159) `#define MAX_SEQ_POLL`
-  - `SB_LEN` (macro, line 281) `#define SB_LEN`
-  - `SB_PGUP` (macro, line 304) `#define SB_PGUP`
-  - `SB_PGDN` (macro, line 305) `#define SB_PGDN`
-  - `SB_EXIT` (macro, line 306) `#define SB_EXIT`
+  - `SB_LEN` (macro, line 295) `#define SB_LEN`
+  - `SB_PGUP` (macro, line 318) `#define SB_PGUP`
+  - `SB_PGDN` (macro, line 319) `#define SB_PGDN`
+  - `SB_EXIT` (macro, line 320) `#define SB_EXIT`
 - Depends on: `headers/drivers/kbd.h`, `headers/drivers/usbhid.h`, `headers/drivers/xhci.h`, `headers/kernel/console_in.h`, `headers/pipe.h`, `headers/vga_fb.h`
 
 ## kernel/cvm_host.c
+- Doc: kout_sink: Output sink for kformat: a stream (FILE*) or a bounded buffer.
 - Layer: utility
 - Language: c
 - Symbols:
+  - `kout_sink` (struct, line 281)
   - `n_strcmp` (function, line 22) `static int64_t n_strcmp(void *vm, int ac, uint64_t *av)`
   - `n_strncmp` (function, line 28) `static int64_t n_strncmp(void *vm, int ac, uint64_t *av)`
   - `n_strcpy` (function, line 35) `static int64_t n_strcpy(void *vm, int ac, uint64_t *av)`
@@ -145,15 +150,14 @@ Pages: [KB_kernel.md](KB_kernel.md), [KB_kernel_p2.md](KB_kernel_p2.md), [KB_ker
   - `n_stderr_addr` (function, line 262) `static int64_t n_stderr_addr(void *vm, int ac, uint64_t *av)`
   - `n_stdout_addr` (function, line 267) `static int64_t n_stdout_addr(void *vm, int ac, uint64_t *av)`
   - `n_stdin_addr` (function, line 272) `static int64_t n_stdin_addr(void *vm, int ac, uint64_t *av)`
-  - `kout_char` (function, line 277) `static void kout_char(void *ctx, char c)`
-  - `kout_uint` (function, line 283) `static void kout_uint(void *ctx, unsigned long long v, int base, int upper)`
-  - `kformat` (function, line 296) `static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc)`
-  - `n_fprintf` (function, line 362) `static int64_t n_fprintf(void *vm, int ac, uint64_t *av)`
-  - `n_printf` (function, line 369) `static int64_t n_printf(void *vm, int ac, uint64_t *av)`
-  - `n_sprintf` (function, line 376) `static int64_t n_sprintf(void *vm, int ac, uint64_t *av)`
-  - `n_snprintf` (function, line 384) `static int64_t n_snprintf(void *vm, int ac, uint64_t *av)`
-  - `register_host_natives` (function, line 392) `static void register_host_natives(CvmState *vm)`
-  - `cvm_main` (function, line 437) `int cvm_main(int argc, char **argv)`
+  - `kout_char` (function, line 288) `static void kout_char(void *ctx, char c)`
+  - `kout_uint` (function, line 300) `static void kout_uint(void *ctx, unsigned long long v, int base, int upper)`
+  - `kformat` (function, line 313) `static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc)`
+  - `n_fprintf` (function, line 390) `static int64_t n_fprintf(void *vm, int ac, uint64_t *av)`
+  - `n_printf` (function, line 403) `static int64_t n_printf(void *vm, int ac, uint64_t *av)`
+  - `n_sprintf` (function, line 418) `static int64_t n_sprintf(void *vm, int ac, uint64_t *av)`
+  - `register_host_natives` (function, line 452) `static void register_host_natives(CvmState *vm)`
+  - `cvm_main` (function, line 497) `int cvm_main(int argc, char **argv)`
 
 ## kernel/ed25519.c
 - Doc: Docstring: kernel/ed25519.c -- Ed25519 signature verification.
@@ -451,7 +455,7 @@ sta...`
   - `panic_hex` (function, line 23) `static void panic_hex(unsigned long v, int digits)`
   - `panic_fb_puts` (function, line 30) `static void panic_fb_puts(const char *s)`
   - `panic_fb_hex` (function, line 61) `static void panic_fb_hex(unsigned long v, int digits)`
-  - `panic_screen` (function, line 96) `void panic_screen(unsigned long vector, unsigned long err,
+  - `panic_screen` (function, line 98) `void panic_screen(unsigned long vector, unsigned long err,
         unsigned long rip, unsigned lo...`
 - Depends on: `headers/panic.h`, `headers/sched.h`, `headers/vga_fb.h`
 

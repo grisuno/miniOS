@@ -1,11 +1,11 @@
 # `kernel/vga_fb.c`
 
-> Source: [kernel/vga_fb.c:1](../../kernel/vga_fb.c#L1) | language `c` | coverage 50.5% | [API index](../index.md)
+> Source: [kernel/vga_fb.c:1](../../kernel/vga_fb.c#L1) | language `c` | coverage 51.8% | [API index](../index.md)
 
 ## Contents
 
 - **Structs:** [`termwin_t`](#termwin_t)
-- **Functions:** [`vga_fb_boot_config`](#vga_fb_boot_config), [`fb_bytes_per_pixel`](#fb_bytes_per_pixel), [`compositions`](#compositions), [`first`](#first), [`flag`](#flag), [`letterbox`](#letterbox), [`vga_fb_set_gfx_program`](#vga_fb_set_gfx_program), [`vga_fb_set_gfx_mode`](#vga_fb_set_gfx_mode), [`vga_fb_gfx_origin`](#vga_fb_gfx_origin), [`coordinates`](#coordinates), [`vga_fb_gfx_map_mouse`](#vga_fb_gfx_map_mouse), [`vga_fb_focus_event`](#vga_fb_focus_event), [`vga_fb_focus_report`](#vga_fb_focus_report), [`vga_fb_focus_get`](#vga_fb_focus_get), [`vga_fb_nterms_get`](#vga_fb_nterms_get), [`vga_fb_focus_next`](#vga_fb_focus_next), [`app`](#app), [`vga_fb_focus_id`](#vga_fb_focus_id), [`content`](#content), [`vga_fb_layout_set`](#vga_fb_layout_set), [`vga_fb_layout_cycle`](#vga_fb_layout_cycle), [`vga_fb_layout_get`](#vga_fb_layout_get), [`vga_fb_layout_name`](#vga_fb_layout_name), [`alone`](#alone), [`vga_fb_list_windows`](#vga_fb_list_windows), [`vga_fb_act_empty`](#vga_fb_act_empty), [`vga_fb_note_prompt`](#vga_fb_note_prompt), [`vga_fb_clear_prompt`](#vga_fb_clear_prompt), [`vga_fb_prompted`](#vga_fb_prompted), [`vga_fb_prompt_live`](#vga_fb_prompt_live), [`vga_fb_park_line`](#vga_fb_park_line), [`vga_fb_unpark_line`](#vga_fb_unpark_line), [`vga_fb_set_gfx_palette`](#vga_fb_set_gfx_palette), [`fb_write_packed`](#fb_write_packed), [`fb_read_packed`](#fb_read_packed), [`vga_fb_read_rgb`](#vga_fb_read_rgb), [`fb_write_row_packed`](#fb_write_row_packed), [`fb_read_row_packed`](#fb_read_row_packed), [`vga_fb_pixel`](#vga_fb_pixel), [`vga_fb_clear`](#vga_fb_clear), [`vga_fb_rect`](#vga_fb_rect), [`vga_fb_pixel_rgb`](#vga_fb_pixel_rgb), [`vga_fb_rect_rgb`](#vga_fb_rect_rgb), [`vga_fb_char`](#vga_fb_char), [`vga_fb_str`](#vga_fb_str), [`wm_close_pending`](#wm_close_pending), [`wm_clear_close`](#wm_clear_close), [`wm_gfx_mode_active`](#wm_gfx_mode_active), [`vga_fb_ps2_owner`](#vga_fb_ps2_owner), [`taskbar`](#taskbar), [`directly`](#directly), [`vga_fb_blit_gfx_window`](#vga_fb_blit_gfx_window), [`vga_fb_blit_nk_window`](#vga_fb_blit_nk_window), [`vga_fb_blit_nk_rgb_window`](#vga_fb_blit_nk_rgb_window), [`title`](#title), [`vga_fb_theme_name`](#vga_fb_theme_name), [`buffer`](#buffer), [`line`](#line), [`escapes`](#escapes), [`vga_fb_puts_term`](#vga_fb_puts_term), [`vga_fb_text_cursor`](#vga_fb_text_cursor), [`vga_fb_hide_text_cursor`](#vga_fb_hide_text_cursor), [`vga_fb_draw_desktop`](#vga_fb_draw_desktop), [`from`](#from), [`vga_fb_gfx_set_hidden`](#vga_fb_gfx_set_hidden), [`vga_fb_gfx_view_name`](#vga_fb_gfx_view_name), [`vga_fb_toggle_fullscreen`](#vga_fb_toggle_fullscreen), [`vga_fb_toggle_minimize`](#vga_fb_toggle_minimize), [`vga_fb_is_minimized`](#vga_fb_is_minimized), [`vga_fb_is_fullscreen`](#vga_fb_is_fullscreen), [`vga_fb_close_active`](#vga_fb_close_active), [`vga_fb_move_terminal`](#vga_fb_move_terminal), [`vga_fb_snap_window`](#vga_fb_snap_window), [`vga_fb_resize`](#vga_fb_resize), [`vga_fb_reset_default`](#vga_fb_reset_default), [`desktop_shortcuts_load`](#desktop_shortcuts_load), [`dock_bounce_counts`](#dock_bounce_counts), [`dock_click_count`](#dock_click_count), [`dock_pending_active`](#dock_pending_active), [`desktop_shortcuts_draw`](#desktop_shortcuts_draw), [`command`](#command), [`desktop_shortcuts_hit_test`](#desktop_shortcuts_hit_test), [`pointer`](#pointer), [`vga_fb_wait_tick`](#vga_fb_wait_tick), [`vga_fb_mouse_tick`](#vga_fb_mouse_tick), [`path`](#path), [`state`](#state), [`vga_fb_mouse_init`](#vga_fb_mouse_init), [`vga_fb_init`](#vga_fb_init)
+- **Functions:** [`vga_fb_boot_config`](#vga_fb_boot_config), [`fb_bytes_per_pixel`](#fb_bytes_per_pixel), [`compositions`](#compositions), [`vga_fb_term_ring_init`](#vga_fb_term_ring_init), [`vga_fb_term_feed`](#vga_fb_term_feed), [`first`](#first), [`flag`](#flag), [`letterbox`](#letterbox), [`vga_fb_set_gfx_program`](#vga_fb_set_gfx_program), [`vga_fb_set_gfx_mode`](#vga_fb_set_gfx_mode), [`vga_fb_gfx_origin`](#vga_fb_gfx_origin), [`coordinates`](#coordinates), [`vga_fb_gfx_map_mouse`](#vga_fb_gfx_map_mouse), [`vga_fb_focus_event`](#vga_fb_focus_event), [`vga_fb_focus_report`](#vga_fb_focus_report), [`vga_fb_focus_get`](#vga_fb_focus_get), [`vga_fb_nterms_get`](#vga_fb_nterms_get), [`vga_fb_focus_next`](#vga_fb_focus_next), [`app`](#app), [`vga_fb_focus_id`](#vga_fb_focus_id), [`content`](#content), [`vga_fb_layout_set`](#vga_fb_layout_set), [`vga_fb_layout_cycle`](#vga_fb_layout_cycle), [`vga_fb_layout_get`](#vga_fb_layout_get), [`vga_fb_layout_name`](#vga_fb_layout_name), [`alone`](#alone), [`vga_fb_list_windows`](#vga_fb_list_windows), [`vga_fb_act_empty`](#vga_fb_act_empty), [`vga_fb_note_prompt`](#vga_fb_note_prompt), [`vga_fb_clear_prompt`](#vga_fb_clear_prompt), [`vga_fb_prompted`](#vga_fb_prompted), [`vga_fb_prompt_live`](#vga_fb_prompt_live), [`vga_fb_park_line`](#vga_fb_park_line), [`vga_fb_unpark_line`](#vga_fb_unpark_line), [`vga_fb_set_gfx_palette`](#vga_fb_set_gfx_palette), [`fb_write_packed`](#fb_write_packed), [`fb_read_packed`](#fb_read_packed), [`vga_fb_read_rgb`](#vga_fb_read_rgb), [`fb_write_row_packed`](#fb_write_row_packed), [`fb_read_row_packed`](#fb_read_row_packed), [`vga_fb_pixel`](#vga_fb_pixel), [`vga_fb_clear`](#vga_fb_clear), [`vga_fb_rect`](#vga_fb_rect), [`vga_fb_pixel_rgb`](#vga_fb_pixel_rgb), [`vga_fb_rect_rgb`](#vga_fb_rect_rgb), [`vga_fb_char`](#vga_fb_char), [`vga_fb_str`](#vga_fb_str), [`wm_close_pending`](#wm_close_pending), [`wm_clear_close`](#wm_clear_close), [`wm_gfx_mode_active`](#wm_gfx_mode_active), [`vga_fb_ps2_owner`](#vga_fb_ps2_owner), [`taskbar`](#taskbar), [`directly`](#directly), [`vga_fb_blit_gfx_window`](#vga_fb_blit_gfx_window), [`vga_fb_blit_nk_window`](#vga_fb_blit_nk_window), [`vga_fb_blit_nk_rgb_window`](#vga_fb_blit_nk_rgb_window), [`title`](#title), [`vga_fb_theme_name`](#vga_fb_theme_name), [`buffer`](#buffer), [`line`](#line), [`escapes`](#escapes), [`vga_fb_puts_term`](#vga_fb_puts_term), [`vga_fb_text_cursor`](#vga_fb_text_cursor), [`vga_fb_hide_text_cursor`](#vga_fb_hide_text_cursor), [`vga_fb_draw_desktop`](#vga_fb_draw_desktop), [`from`](#from), [`vga_fb_gfx_set_hidden`](#vga_fb_gfx_set_hidden), [`vga_fb_gfx_view_name`](#vga_fb_gfx_view_name), [`vga_fb_toggle_fullscreen`](#vga_fb_toggle_fullscreen), [`vga_fb_toggle_minimize`](#vga_fb_toggle_minimize), [`vga_fb_is_minimized`](#vga_fb_is_minimized), [`vga_fb_is_fullscreen`](#vga_fb_is_fullscreen), [`vga_fb_close_active`](#vga_fb_close_active), [`vga_fb_move_terminal`](#vga_fb_move_terminal), [`vga_fb_snap_window`](#vga_fb_snap_window), [`vga_fb_resize`](#vga_fb_resize), [`vga_fb_reset_default`](#vga_fb_reset_default), [`desktop_shortcuts_load`](#desktop_shortcuts_load), [`dock_bounce_counts`](#dock_bounce_counts), [`dock_click_count`](#dock_click_count), [`dock_pending_active`](#dock_pending_active), [`desktop_shortcuts_draw`](#desktop_shortcuts_draw), [`command`](#command), [`desktop_shortcuts_hit_test`](#desktop_shortcuts_hit_test), [`pointer`](#pointer), [`vga_fb_wait_tick`](#vga_fb_wait_tick), [`vga_fb_mouse_tick`](#vga_fb_mouse_tick), [`path`](#path), [`state`](#state), [`vga_fb_mouse_init`](#vga_fb_mouse_init), [`vga_fb_history_page`](#vga_fb_history_page), [`vga_fb_init`](#vga_fb_init)
 - **Macros:** [`FBT`](#fbt), [`LG_LINE`](#lg_line), [`GFX_SRC_IDX`](#gfx_src_idx), [`GFX_SRC_RGB`](#gfx_src_rgb), [`GFX_KEEP_BYTES`](#gfx_keep_bytes), [`GFX_CURSOR_IDLE_TICKS`](#gfx_cursor_idle_ticks), [`GFX_CURSOR_FOLLOW_TICKS`](#gfx_cursor_follow_ticks), [`GFX_PROG_LEN`](#gfx_prog_len), [`WIN_DEF_COLS`](#win_def_cols), [`WIN_DEF_ROWS`](#win_def_rows), [`WIN_DEF_X`](#win_def_x), [`WIN_DEF_Y`](#win_def_y), [`WM_MAX_TERMS`](#wm_max_terms), [`WM_ELINE_SZ`](#wm_eline_sz), [`FB_OFFSET`](#fb_offset), [`TB_GFX_TITLE_MAX`](#tb_gfx_title_max)
 
 ## Call Graph
@@ -72,7 +72,7 @@ flowchart LR
 
 ### `termwin_t`
 
-`struct` | [kernel/vga_fb.c:941](../../kernel/vga_fb.c#L941)
+`struct` | [kernel/vga_fb.c:978](../../kernel/vga_fb.c#L978)
 
 ```c
 typedef struct
@@ -132,11 +132,50 @@ Bytes per framebuffer pixel derived from fb_bpp (1 for 8-bit, 3 for 24, 4 for 32
 
 ---
 
+<a id="vga_fb_term_ring_init"></a>
+
+### `vga_fb_term_ring_init`
+
+`function` | [kernel/vga_fb.c:349](../../kernel/vga_fb.c#L349)
+
+```c
+void vga_fb_term_ring_init(void)
+```
+
+Docstring: Create the terminal history ring.
+
+Called once the heap is up, before the boot banner is printed, so the text-mode console has somewhere to put the boot log.
+
+---
+
+<a id="vga_fb_term_feed"></a>
+
+### `vga_fb_term_feed`
+
+`function` | [kernel/vga_fb.c:357](../../kernel/vga_fb.c#L357)
+
+```c
+void vga_fb_term_feed(const char *line, int len)
+```
+
+Docstring: Feed one completed console line into the terminal history.
+
+The text-mode console (the boot log, before the desktop comes up) has no other history, and the desktop terminal owns the ring afterwards, so the ring is the one place both halves land.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `line` | `char *` |  |  |
+| `len` | `int` |  |  |
+
+---
+
 <a id="first"></a>
 
 ### `first`
 
-`function` | [kernel/vga_fb.c:419](../../kernel/vga_fb.c#L419)
+`function` | [kernel/vga_fb.c:456](../../kernel/vga_fb.c#L456)
 
 ```c
 * screen ever showing it whole first (the old flash-then-melt). */ static unsigned int *fx_start_...
@@ -158,7 +197,7 @@ Bytes per framebuffer pixel derived from fb_bpp (1 for 8-bit, 3 for 24, 4 for 32
 
 ### `flag`
 
-`function` | [kernel/vga_fb.c:496](../../kernel/vga_fb.c#L496)
+`function` | [kernel/vga_fb.c:533](../../kernel/vga_fb.c#L533)
 
 ```c
 * is the minimized flag (the program keeps running, nothing composites);
@@ -179,7 +218,7 @@ Bytes per framebuffer pixel derived from fb_bpp (1 for 8-bit, 3 for 24, 4 for 32
 
 ### `letterbox`
 
-`function` | [kernel/vga_fb.c:500](../../kernel/vga_fb.c#L500)
+`function` | [kernel/vga_fb.c:537](../../kernel/vga_fb.c#L537)
 
 ```c
 * present to repaint chrome plus letterbox (after a desktop redraw or a * view change);
@@ -199,7 +238,7 @@ Bytes per framebuffer pixel derived from fb_bpp (1 for 8-bit, 3 for 24, 4 for 32
 
 ### `vga_fb_set_gfx_program`
 
-`function` | [kernel/vga_fb.c:576](../../kernel/vga_fb.c#L576)
+`function` | [kernel/vga_fb.c:613](../../kernel/vga_fb.c#L613)
 
 ```c
 void vga_fb_set_gfx_program(const char *name)
@@ -217,7 +256,7 @@ void vga_fb_set_gfx_program(const char *name)
 
 ### `vga_fb_set_gfx_mode`
 
-`function` | [kernel/vga_fb.c:638](../../kernel/vga_fb.c#L638)
+`function` | [kernel/vga_fb.c:675](../../kernel/vga_fb.c#L675)
 
 ```c
 void vga_fb_set_gfx_mode(int on)
@@ -233,7 +272,7 @@ SYS_VGA_MODE toggles vga_fb_set_gfx_mode; while a ring-3 graphics program owns t
 |---|---|---|---|
 | `on` | `int` |  |  |
 
-> **Inherited:** Documentation from [`vga_fb_set_gfx_mode`](#vga_fb_set_gfx_mode) (headers/vga_fb.h:284).
+> **Inherited:** Documentation from [`vga_fb_set_gfx_mode`](#vga_fb_set_gfx_mode) (headers/vga_fb.h:291).
 
 *Calls:* [`cursor_erase`](headers.kernel.vga_cursor.h.md#cursor_erase), [`cursor_invalidate`](headers.kernel.vga_cursor.h.md#cursor_invalidate)
 
@@ -243,7 +282,7 @@ SYS_VGA_MODE toggles vga_fb_set_gfx_mode; while a ring-3 graphics program owns t
 
 ### `vga_fb_gfx_origin`
 
-`function` | [kernel/vga_fb.c:731](../../kernel/vga_fb.c#L731)
+`function` | [kernel/vga_fb.c:768](../../kernel/vga_fb.c#L768)
 
 ```c
 void vga_fb_gfx_origin(int *x, int *y)
@@ -264,7 +303,7 @@ Docstring: Content origin of the graphics window (the point an app subtracts fro
 
 ### `coordinates`
 
-`function` | [kernel/vga_fb.c:745](../../kernel/vga_fb.c#L745)
+`function` | [kernel/vga_fb.c:782](../../kernel/vga_fb.c#L782)
 
 ```c
 * windows keep the exact historical coordinates (including outside the * window);
@@ -284,7 +323,7 @@ Docstring: Content origin of the graphics window (the point an app subtracts fro
 
 ### `vga_fb_gfx_map_mouse`
 
-`function` | [kernel/vga_fb.c:748](../../kernel/vga_fb.c#L748)
+`function` | [kernel/vga_fb.c:785](../../kernel/vga_fb.c#L785)
 
 ```c
 void vga_fb_gfx_map_mouse(int *x, int *y)
@@ -309,7 +348,7 @@ A 1:1 view is left untouched so native windows keep the exact historical coordin
 
 ### `vga_fb_focus_event`
 
-`function` `const` | [kernel/vga_fb.c:983](../../kernel/vga_fb.c#L983)
+`function` `const` | [kernel/vga_fb.c:1020](../../kernel/vga_fb.c#L1020)
 
 ```c
 const wm_notify_event_t *vga_fb_focus_event(void)
@@ -327,7 +366,7 @@ Docstring: Last focus event for serial-observable state.
 
 ### `vga_fb_focus_report`
 
-`function` | [kernel/vga_fb.c:989](../../kernel/vga_fb.c#L989)
+`function` | [kernel/vga_fb.c:1026](../../kernel/vga_fb.c#L1026)
 
 ```c
 void vga_fb_focus_report(int before, int source)
@@ -348,7 +387,7 @@ Docstring: Record a programmatic focus move from another unit.
 
 ### `vga_fb_focus_get`
 
-`function` | [kernel/vga_fb.c:1100](../../kernel/vga_fb.c#L1100)
+`function` | [kernel/vga_fb.c:1137](../../kernel/vga_fb.c#L1137)
 
 ```c
 int vga_fb_focus_get(void)
@@ -362,7 +401,7 @@ int vga_fb_focus_get(void)
 
 ### `vga_fb_nterms_get`
 
-`function` | [kernel/vga_fb.c:1101](../../kernel/vga_fb.c#L1101)
+`function` | [kernel/vga_fb.c:1138](../../kernel/vga_fb.c#L1138)
 
 ```c
 int vga_fb_nterms_get(void)
@@ -376,7 +415,7 @@ int vga_fb_nterms_get(void)
 
 ### `vga_fb_focus_next`
 
-`function` | [kernel/vga_fb.c:1117](../../kernel/vga_fb.c#L1117)
+`function` | [kernel/vga_fb.c:1154](../../kernel/vga_fb.c#L1154)
 
 ```c
 void vga_fb_focus_next(void)
@@ -392,7 +431,7 @@ Docstring: Cycle focus across terminals plus graphics when active.
 
 ### `app`
 
-`function` | [kernel/vga_fb.c:1158](../../kernel/vga_fb.c#L1158)
+`function` | [kernel/vga_fb.c:1195](../../kernel/vga_fb.c#L1195)
 
 ```c
 * a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep landing on the shell * while the app looks hung. The enable arm mirrors the focus-gf
@@ -414,7 +453,7 @@ Docstring: Cycle focus across terminals plus graphics when active.
 
 ### `vga_fb_focus_id`
 
-`function` | [kernel/vga_fb.c:1182](../../kernel/vga_fb.c#L1182)
+`function` | [kernel/vga_fb.c:1219](../../kernel/vga_fb.c#L1219)
 
 ```c
 int vga_fb_focus_id(int id)
@@ -438,7 +477,7 @@ Docstring: Focus window id directly, fail closed on invalid id.
 
 ### `content`
 
-`function` | [kernel/vga_fb.c:1215](../../kernel/vga_fb.c#L1215)
+`function` | [kernel/vga_fb.c:1269](../../kernel/vga_fb.c#L1269)
 
 ```c
 * windows would share content (same prompt/output on both) and a park * would alias src == dst. ...
@@ -460,7 +499,7 @@ Docstring: Focus window id directly, fail closed on invalid id.
 
 ### `vga_fb_layout_set`
 
-`function` | [kernel/vga_fb.c:1296](../../kernel/vga_fb.c#L1296)
+`function` | [kernel/vga_fb.c:1354](../../kernel/vga_fb.c#L1354)
 
 ```c
 int vga_fb_layout_set(int mode)
@@ -484,7 +523,7 @@ Docstring: Set active layout mode, fail closed on bad mode.
 
 ### `vga_fb_layout_cycle`
 
-`function` | [kernel/vga_fb.c:1307](../../kernel/vga_fb.c#L1307)
+`function` | [kernel/vga_fb.c:1365](../../kernel/vga_fb.c#L1365)
 
 ```c
 void vga_fb_layout_cycle(void)
@@ -500,7 +539,7 @@ Docstring: Cycle layout mode tile bsp cascade fibonacci.
 
 ### `vga_fb_layout_get`
 
-`function` | [kernel/vga_fb.c:1323](../../kernel/vga_fb.c#L1323)
+`function` | [kernel/vga_fb.c:1381](../../kernel/vga_fb.c#L1381)
 
 ```c
 int vga_fb_layout_get(void)
@@ -516,7 +555,7 @@ Docstring: Active layout mode id.
 
 ### `vga_fb_layout_name`
 
-`function` `const` | [kernel/vga_fb.c:1329](../../kernel/vga_fb.c#L1329)
+`function` `const` | [kernel/vga_fb.c:1387](../../kernel/vga_fb.c#L1387)
 
 ```c
 const char *vga_fb_layout_name(void)
@@ -534,7 +573,7 @@ Docstring: Active layout mode name, never null.
 
 ### `alone`
 
-`function` | [kernel/vga_fb.c:1341](../../kernel/vga_fb.c#L1341)
+`function` | [kernel/vga_fb.c:1399](../../kernel/vga_fb.c#L1399)
 
 ```c
 * window alone (an unfocused graphics window minimizes to the taskbar, * exactly like the hidden terminals). The graphics move glides. */ void vga_fb_tile_all(void)
@@ -557,7 +596,7 @@ Docstring: Active layout mode name, never null.
 
 ### `vga_fb_list_windows`
 
-`function` | [kernel/vga_fb.c:1468](../../kernel/vga_fb.c#L1468)
+`function` | [kernel/vga_fb.c:1526](../../kernel/vga_fb.c#L1526)
 
 ```c
 void vga_fb_list_windows(void)
@@ -571,7 +610,7 @@ void vga_fb_list_windows(void)
 
 ### `vga_fb_act_empty`
 
-`function` | [kernel/vga_fb.c:1526](../../kernel/vga_fb.c#L1526)
+`function` | [kernel/vga_fb.c:1584](../../kernel/vga_fb.c#L1584)
 
 ```c
 int vga_fb_act_empty(void)
@@ -587,7 +626,7 @@ int vga_fb_act_empty(void)
 
 ### `vga_fb_note_prompt`
 
-`function` | [kernel/vga_fb.c:1530](../../kernel/vga_fb.c#L1530)
+`function` | [kernel/vga_fb.c:1588](../../kernel/vga_fb.c#L1588)
 
 ```c
 void vga_fb_note_prompt(void)
@@ -601,7 +640,7 @@ The shell loop calls note after printing a prompt (it is live in the focused win
 
 ### `vga_fb_clear_prompt`
 
-`function` | [kernel/vga_fb.c:1535](../../kernel/vga_fb.c#L1535)
+`function` | [kernel/vga_fb.c:1593](../../kernel/vga_fb.c#L1593)
 
 ```c
 void vga_fb_clear_prompt(void)
@@ -613,7 +652,7 @@ void vga_fb_clear_prompt(void)
 
 ### `vga_fb_prompted`
 
-`function` | [kernel/vga_fb.c:1540](../../kernel/vga_fb.c#L1540)
+`function` | [kernel/vga_fb.c:1598](../../kernel/vga_fb.c#L1598)
 
 ```c
 int vga_fb_prompted(void)
@@ -627,7 +666,7 @@ int vga_fb_prompted(void)
 
 ### `vga_fb_prompt_live`
 
-`function` | [kernel/vga_fb.c:1549](../../kernel/vga_fb.c#L1549)
+`function` | [kernel/vga_fb.c:1607](../../kernel/vga_fb.c#L1607)
 
 ```c
 int vga_fb_prompt_live(void)
@@ -645,7 +684,7 @@ Compares the whole line, not a prefix.
 
 ### `vga_fb_park_line`
 
-`function` | [kernel/vga_fb.c:1556](../../kernel/vga_fb.c#L1556)
+`function` | [kernel/vga_fb.c:1614](../../kernel/vga_fb.c#L1614)
 
 ```c
 void vga_fb_park_line(const char *b, int p)
@@ -666,7 +705,7 @@ Park the shell's half-typed line into the focused window slot.
 
 ### `vga_fb_unpark_line`
 
-`function` | [kernel/vga_fb.c:1571](../../kernel/vga_fb.c#L1571)
+`function` | [kernel/vga_fb.c:1629](../../kernel/vga_fb.c#L1629)
 
 ```c
 int vga_fb_unpark_line(char *b, int *p)
@@ -691,7 +730,7 @@ Returns 1 when one existed.
 
 ### `vga_fb_set_gfx_palette`
 
-`function` | [kernel/vga_fb.c:1692](../../kernel/vga_fb.c#L1692)
+`function` | [kernel/vga_fb.c:1750](../../kernel/vga_fb.c#L1750)
 
 ```c
 void vga_fb_set_gfx_palette(const unsigned char *pal)
@@ -717,7 +756,7 @@ In 8-bit mode it is also programmed into the DAC; in true color it is only kept 
 
 ### `fb_write_packed`
 
-`function` | [kernel/vga_fb.c:1723](../../kernel/vga_fb.c#L1723)
+`function` | [kernel/vga_fb.c:1781](../../kernel/vga_fb.c#L1781)
 
 ```c
 void fb_write_packed(int x, int y, unsigned long rgb)
@@ -739,7 +778,7 @@ void fb_write_packed(int x, int y, unsigned long rgb)
 
 ### `fb_read_packed`
 
-`function` | [kernel/vga_fb.c:1743](../../kernel/vga_fb.c#L1743)
+`function` | [kernel/vga_fb.c:1801](../../kernel/vga_fb.c#L1801)
 
 ```c
 unsigned long fb_read_packed(int x, int y)
@@ -756,7 +795,7 @@ Packed-pixel primitives (0x00RRGGBB): the cursor layer draws through these so it
 
 **Returns:** `unsigned long`
 
-> **Inherited:** Documentation from [`fb_read_packed`](#fb_read_packed) (headers/vga_fb.h:193).
+> **Inherited:** Documentation from [`fb_read_packed`](#fb_read_packed) (headers/vga_fb.h:200).
 
 *Called by:* [`vga_fb_read_rgb`](#vga_fb_read_rgb)
 
@@ -766,7 +805,7 @@ Packed-pixel primitives (0x00RRGGBB): the cursor layer draws through these so it
 
 ### `vga_fb_read_rgb`
 
-`function` | [kernel/vga_fb.c:1767](../../kernel/vga_fb.c#L1767)
+`function` | [kernel/vga_fb.c:1825](../../kernel/vga_fb.c#L1825)
 
 ```c
 unsigned long vga_fb_read_rgb(int x, int y)
@@ -795,7 +834,7 @@ Backstop for `gfx pixel`/`gfx shot`, which must report colors instead of DAC ind
 
 ### `fb_write_row_packed`
 
-`function` | [kernel/vga_fb.c:1772](../../kernel/vga_fb.c#L1772)
+`function` | [kernel/vga_fb.c:1830](../../kernel/vga_fb.c#L1830)
 
 ```c
 void fb_write_row_packed(int x, int y, const unsigned int *src, int n)
@@ -820,7 +859,7 @@ The row fast path the melt and the snapshot restore use instead of one call per 
 
 ### `fb_read_row_packed`
 
-`function` | [kernel/vga_fb.c:1802](../../kernel/vga_fb.c#L1802)
+`function` | [kernel/vga_fb.c:1860](../../kernel/vga_fb.c#L1860)
 
 ```c
 void fb_read_row_packed(int x, int y, unsigned int *dst, int n)
@@ -843,7 +882,7 @@ Docstring: Read n packed pixels of row y from column x into dst, clipped once; p
 
 ### `vga_fb_pixel`
 
-`function` | [kernel/vga_fb.c:1933](../../kernel/vga_fb.c#L1933)
+`function` | [kernel/vga_fb.c:1991](../../kernel/vga_fb.c#L1991)
 
 ```c
 void vga_fb_pixel(int x, int y, uint8_t color)
@@ -869,7 +908,7 @@ void vga_fb_pixel(int x, int y, uint8_t color)
 
 ### `vga_fb_clear`
 
-`function` | [kernel/vga_fb.c:1943](../../kernel/vga_fb.c#L1943)
+`function` | [kernel/vga_fb.c:2001](../../kernel/vga_fb.c#L2001)
 
 ```c
 void vga_fb_clear(void)
@@ -885,7 +924,7 @@ Docstring: Clear the render target to black in bulk.
 
 ### `vga_fb_rect`
 
-`function` | [kernel/vga_fb.c:1953](../../kernel/vga_fb.c#L1953)
+`function` | [kernel/vga_fb.c:2011](../../kernel/vga_fb.c#L2011)
 
 ```c
 void vga_fb_rect(int x, int y, int w, int h, uint8_t color)
@@ -911,7 +950,7 @@ Docstring: Solid rectangle: the color resolves once, every row is one clipped ru
 
 ### `vga_fb_pixel_rgb`
 
-`function` | [kernel/vga_fb.c:1968](../../kernel/vga_fb.c#L1968)
+`function` | [kernel/vga_fb.c:2026](../../kernel/vga_fb.c#L2026)
 
 ```c
 void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)
@@ -941,7 +980,7 @@ This is the primitive future UI (gradients, hover glows, selection blends) build
 
 ### `vga_fb_rect_rgb`
 
-`function` | [kernel/vga_fb.c:1977](../../kernel/vga_fb.c#L1977)
+`function` | [kernel/vga_fb.c:2035](../../kernel/vga_fb.c#L2035)
 
 ```c
 void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)
@@ -967,7 +1006,7 @@ void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b
 
 ### `vga_fb_char`
 
-`function` | [kernel/vga_fb.c:1984](../../kernel/vga_fb.c#L1984)
+`function` | [kernel/vga_fb.c:2042](../../kernel/vga_fb.c#L2042)
 
 ```c
 void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)
@@ -993,7 +1032,7 @@ void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)
 
 ### `vga_fb_str`
 
-`function` | [kernel/vga_fb.c:1998](../../kernel/vga_fb.c#L1998)
+`function` | [kernel/vga_fb.c:2056](../../kernel/vga_fb.c#L2056)
 
 ```c
 void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)
@@ -1017,7 +1056,7 @@ void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)
 
 ### `wm_close_pending`
 
-`function` | [kernel/vga_fb.c:2076](../../kernel/vga_fb.c#L2076)
+`function` | [kernel/vga_fb.c:2134](../../kernel/vga_fb.c#L2134)
 
 ```c
 int wm_close_pending(void)
@@ -1033,7 +1072,7 @@ Close request bridge: the syscall dispatcher polls this so a graphics program's 
 
 ### `wm_clear_close`
 
-`function` | [kernel/vga_fb.c:2077](../../kernel/vga_fb.c#L2077)
+`function` | [kernel/vga_fb.c:2135](../../kernel/vga_fb.c#L2135)
 
 ```c
 void wm_clear_close(void)
@@ -1045,7 +1084,7 @@ void wm_clear_close(void)
 
 ### `wm_gfx_mode_active`
 
-`function` | [kernel/vga_fb.c:2078](../../kernel/vga_fb.c#L2078)
+`function` | [kernel/vga_fb.c:2136](../../kernel/vga_fb.c#L2136)
 
 ```c
 int wm_gfx_mode_active(void)
@@ -1059,7 +1098,7 @@ int wm_gfx_mode_active(void)
 
 ### `vga_fb_ps2_owner`
 
-`function` | [kernel/vga_fb.c:2081](../../kernel/vga_fb.c#L2081)
+`function` | [kernel/vga_fb.c:2139](../../kernel/vga_fb.c#L2139)
 
 ```c
 int vga_fb_ps2_owner(int pid)
@@ -1081,7 +1120,7 @@ Docstring: PS/2 owner check with pid range validation, focus routed.
 
 ### `taskbar`
 
-`function` | [kernel/vga_fb.c:2101](../../kernel/vga_fb.c#L2101)
+`function` | [kernel/vga_fb.c:2159](../../kernel/vga_fb.c#L2159)
 
 ```c
 * minimize hides the app to the taskbar (it never closes it), maximize * toggles true fullscreen...
@@ -1103,7 +1142,7 @@ Docstring: PS/2 owner check with pid range validation, focus routed.
 
 ### `directly`
 
-`function` | [kernel/vga_fb.c:2149](../../kernel/vga_fb.c#L2149)
+`function` | [kernel/vga_fb.c:2207](../../kernel/vga_fb.c#L2207)
 
 ```c
 * RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */ static void gfx_scale_...
@@ -1123,7 +1162,7 @@ Docstring: PS/2 owner check with pid range validation, focus routed.
 
 ### `vga_fb_blit_gfx_window`
 
-`function` | [kernel/vga_fb.c:2380](../../kernel/vga_fb.c#L2380)
+`function` | [kernel/vga_fb.c:2438](../../kernel/vga_fb.c#L2438)
 
 ```c
 void vga_fb_blit_gfx_window(void)
@@ -1137,7 +1176,7 @@ void vga_fb_blit_gfx_window(void)
 
 ### `vga_fb_blit_nk_window`
 
-`function` | [kernel/vga_fb.c:2389](../../kernel/vga_fb.c#L2389)
+`function` | [kernel/vga_fb.c:2447](../../kernel/vga_fb.c#L2447)
 
 ```c
 void vga_fb_blit_nk_window(void)
@@ -1155,7 +1194,7 @@ Mapped by mm_setup_protections like the indexed buffers; presented with * GFX_PR
 
 ### `vga_fb_blit_nk_rgb_window`
 
-`function` | [kernel/vga_fb.c:2395](../../kernel/vga_fb.c#L2395)
+`function` | [kernel/vga_fb.c:2453](../../kernel/vga_fb.c#L2453)
 
 ```c
 void vga_fb_blit_nk_rgb_window(void)
@@ -1169,7 +1208,7 @@ Composite the Nuklear RGB back-buffer (NK_RGB_ADDR, NK_W x NK_H x 3 bytes) throu
 
 ### `title`
 
-`function` | [kernel/vga_fb.c:2511](../../kernel/vga_fb.c#L2511)
+`function` | [kernel/vga_fb.c:2569](../../kernel/vga_fb.c#L2569)
 
 ```c
 * 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const uint8_t *ipx = gfx_task_icon();
@@ -1189,7 +1228,7 @@ Composite the Nuklear RGB back-buffer (NK_RGB_ADDR, NK_W x NK_H x 3 bytes) throu
 
 ### `vga_fb_theme_name`
 
-`function` | [kernel/vga_fb.c:2596](../../kernel/vga_fb.c#L2596)
+`function` | [kernel/vga_fb.c:2654](../../kernel/vga_fb.c#L2654)
 
 ```c
 int vga_fb_theme_name(char *dst, int cap)
@@ -1215,7 +1254,7 @@ overlong read falls back to "dark", never a stale or partial name.
 
 ### `buffer`
 
-`function` | [kernel/vga_fb.c:2812](../../kernel/vga_fb.c#L2812)
+`function` | [kernel/vga_fb.c:2870](../../kernel/vga_fb.c#L2870)
 
 ```c
 * owns the buffer (indices reset, render reads an empty ring). */ void term_clear(void)
@@ -1240,7 +1279,7 @@ overlong read falls back to "dark", never a stale or partial name.
 
 ### `line`
 
-`function` | [kernel/vga_fb.c:2872](../../kernel/vga_fb.c#L2872)
+`function` | [kernel/vga_fb.c:2930](../../kernel/vga_fb.c#L2930)
 
 ```c
 * display stale bytes left over from a longer previous line (e.g. the prompt * would show the tail of the previous command's last output line stuck after * it). */ void vga_fb_putc_term(char c)
@@ -1262,7 +1301,7 @@ overlong read falls back to "dark", never a stale or partial name.
 
 ### `escapes`
 
-`function` | [kernel/vga_fb.c:2881](../../kernel/vga_fb.c#L2881)
+`function` | [kernel/vga_fb.c:2939](../../kernel/vga_fb.c#L2939)
 
 ```c
 * swallowing them here keeps the escapes (which the serial side needs) * from printing as li...
@@ -1282,7 +1321,7 @@ overlong read falls back to "dark", never a stale or partial name.
 
 ### `vga_fb_puts_term`
 
-`function` | [kernel/vga_fb.c:2938](../../kernel/vga_fb.c#L2938)
+`function` | [kernel/vga_fb.c:2996](../../kernel/vga_fb.c#L2996)
 
 ```c
 void vga_fb_puts_term(const char *s)
@@ -1302,7 +1341,7 @@ void vga_fb_puts_term(const char *s)
 
 ### `vga_fb_text_cursor`
 
-`function` | [kernel/vga_fb.c:2944](../../kernel/vga_fb.c#L2944)
+`function` | [kernel/vga_fb.c:3002](../../kernel/vga_fb.c#L3002)
 
 ```c
 void vga_fb_text_cursor(int col)
@@ -1324,7 +1363,7 @@ The cursor is a block rendered by render_row.
 
 ### `vga_fb_hide_text_cursor`
 
-`function` | [kernel/vga_fb.c:2952](../../kernel/vga_fb.c#L2952)
+`function` | [kernel/vga_fb.c:3010](../../kernel/vga_fb.c#L3010)
 
 ```c
 void vga_fb_hide_text_cursor(void)
@@ -1338,7 +1377,7 @@ Hide the text cursor (used when a live edit starts or the window redraws).
 
 ### `vga_fb_draw_desktop`
 
-`function` | [kernel/vga_fb.c:2976](../../kernel/vga_fb.c#L2976)
+`function` | [kernel/vga_fb.c:3034](../../kernel/vga_fb.c#L3034)
 
 ```c
 void vga_fb_draw_desktop(void)
@@ -1358,7 +1397,7 @@ The whole frame composes off-screen (see the render-target section) and is prese
 
 ### `from`
 
-`function` | [kernel/vga_fb.c:3188](../../kernel/vga_fb.c#L3188)
+`function` | [kernel/vga_fb.c:3246](../../kernel/vga_fb.c#L3246)
 
 ```c
 * leaving returns to the view it came from (floating or tiled). Returns * 0 on success, -1 witho...
@@ -1380,7 +1419,7 @@ The whole frame composes off-screen (see the render-target section) and is prese
 
 ### `vga_fb_gfx_set_hidden`
 
-`function` | [kernel/vga_fb.c:3222](../../kernel/vga_fb.c#L3222)
+`function` | [kernel/vga_fb.c:3280](../../kernel/vga_fb.c#L3280)
 
 ```c
 int vga_fb_gfx_set_hidden(int hide)
@@ -1408,7 +1447,7 @@ The app keeps running; a hidden window paints nothing, drops the keyboard to the
 
 ### `vga_fb_gfx_view_name`
 
-`function` `const` | [kernel/vga_fb.c:3250](../../kernel/vga_fb.c#L3250)
+`function` `const` | [kernel/vga_fb.c:3308](../../kernel/vga_fb.c#L3308)
 
 ```c
 const char *vga_fb_gfx_view_name(void)
@@ -1426,7 +1465,7 @@ Docstring: Graphics view state for `wm state`/`wm list`.
 
 ### `vga_fb_toggle_fullscreen`
 
-`function` | [kernel/vga_fb.c:3274](../../kernel/vga_fb.c#L3274)
+`function` | [kernel/vga_fb.c:3332](../../kernel/vga_fb.c#L3332)
 
 ```c
 void vga_fb_toggle_fullscreen(void)
@@ -1442,7 +1481,7 @@ Docstring: Toggle fullscreen on the focused window: the graphics window scales t
 
 ### `vga_fb_toggle_minimize`
 
-`function` | [kernel/vga_fb.c:3295](../../kernel/vga_fb.c#L3295)
+`function` | [kernel/vga_fb.c:3353](../../kernel/vga_fb.c#L3353)
 
 ```c
 void vga_fb_toggle_minimize(void)
@@ -1458,7 +1497,7 @@ Docstring: Minimize/restore the focused window (graphics or terminal).
 
 ### `vga_fb_is_minimized`
 
-`function` | [kernel/vga_fb.c:3303](../../kernel/vga_fb.c#L3303)
+`function` | [kernel/vga_fb.c:3361](../../kernel/vga_fb.c#L3361)
 
 ```c
 int vga_fb_is_minimized(void)
@@ -1472,7 +1511,7 @@ int vga_fb_is_minimized(void)
 
 ### `vga_fb_is_fullscreen`
 
-`function` | [kernel/vga_fb.c:3304](../../kernel/vga_fb.c#L3304)
+`function` | [kernel/vga_fb.c:3362](../../kernel/vga_fb.c#L3362)
 
 ```c
 int vga_fb_is_fullscreen(void)
@@ -1486,7 +1525,7 @@ int vga_fb_is_fullscreen(void)
 
 ### `vga_fb_close_active`
 
-`function` | [kernel/vga_fb.c:3358](../../kernel/vga_fb.c#L3358)
+`function` | [kernel/vga_fb.c:3416](../../kernel/vga_fb.c#L3416)
 
 ```c
 int vga_fb_close_active(void)
@@ -1504,7 +1543,7 @@ For the graphics window (focused) this arms the close request that the syscall d
 
 ### `vga_fb_move_terminal`
 
-`function` | [kernel/vga_fb.c:3372](../../kernel/vga_fb.c#L3372)
+`function` | [kernel/vga_fb.c:3430](../../kernel/vga_fb.c#L3430)
 
 ```c
 void vga_fb_move_terminal(int dx, int dy)
@@ -1525,7 +1564,7 @@ void vga_fb_move_terminal(int dx, int dy)
 
 ### `vga_fb_snap_window`
 
-`function` | [kernel/vga_fb.c:3432](../../kernel/vga_fb.c#L3432)
+`function` | [kernel/vga_fb.c:3490](../../kernel/vga_fb.c#L3490)
 
 ```c
 void vga_fb_snap_window(int zone)
@@ -1543,7 +1582,7 @@ void vga_fb_snap_window(int zone)
 
 ### `vga_fb_resize`
 
-`function` | [kernel/vga_fb.c:3460](../../kernel/vga_fb.c#L3460)
+`function` | [kernel/vga_fb.c:3518](../../kernel/vga_fb.c#L3518)
 
 ```c
 void vga_fb_resize(int dcols, int drows)
@@ -1562,7 +1601,7 @@ void vga_fb_resize(int dcols, int drows)
 
 ### `vga_fb_reset_default`
 
-`function` | [kernel/vga_fb.c:3480](../../kernel/vga_fb.c#L3480)
+`function` | [kernel/vga_fb.c:3538](../../kernel/vga_fb.c#L3538)
 
 ```c
 void vga_fb_reset_default(void)
@@ -1576,7 +1615,7 @@ Docstring: Restore defaults on the focused window plus graphics offset.
 
 ### `desktop_shortcuts_load`
 
-`function` | [kernel/vga_fb.c:3767](../../kernel/vga_fb.c#L3767)
+`function` | [kernel/vga_fb.c:3825](../../kernel/vga_fb.c#L3825)
 
 ```c
 void desktop_shortcuts_load(void)
@@ -1596,7 +1635,7 @@ Called once from vga_fb_draw_desktop on first draw.
 
 ### `dock_bounce_counts`
 
-`function` | [kernel/vga_fb.c:3875](../../kernel/vga_fb.c#L3875)
+`function` | [kernel/vga_fb.c:3933](../../kernel/vga_fb.c#L3933)
 
 ```c
 void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)
@@ -1611,7 +1650,7 @@ Dock click bounce (Mac style): arm count and strip repaints while live, for the 
 | `kicks` | `unsigned long *` |  |  |
 | `paints` | `unsigned long *` |  |  |
 
-> **Inherited:** Documentation from [`dock_bounce_counts`](#dock_bounce_counts) (headers/vga_fb.h:257).
+> **Inherited:** Documentation from [`dock_bounce_counts`](#dock_bounce_counts) (headers/vga_fb.h:264).
 
 ---
 
@@ -1619,7 +1658,7 @@ Dock click bounce (Mac style): arm count and strip repaints while live, for the 
 
 ### `dock_click_count`
 
-`function` | [kernel/vga_fb.c:3885](../../kernel/vga_fb.c#L3885)
+`function` | [kernel/vga_fb.c:3943](../../kernel/vga_fb.c#L3943)
 
 ```c
 void dock_click_count(unsigned long *edges)
@@ -1637,7 +1676,7 @@ void dock_click_count(unsigned long *edges)
 
 ### `dock_pending_active`
 
-`function` | [kernel/vga_fb.c:3949](../../kernel/vga_fb.c#L3949)
+`function` | [kernel/vga_fb.c:4007](../../kernel/vga_fb.c#L4007)
 
 ```c
 int dock_pending_active(void)
@@ -1651,7 +1690,7 @@ int dock_pending_active(void)
 
 ### `desktop_shortcuts_draw`
 
-`function` | [kernel/vga_fb.c:3993](../../kernel/vga_fb.c#L3993)
+`function` | [kernel/vga_fb.c:4051](../../kernel/vga_fb.c#L4051)
 
 ```c
 void desktop_shortcuts_draw(void)
@@ -1671,7 +1710,7 @@ Draw all shortcut icons and labels onto the framebuffer.
 
 ### `command`
 
-`function` | [kernel/vga_fb.c:4082](../../kernel/vga_fb.c#L4082)
+`function` | [kernel/vga_fb.c:4140](../../kernel/vga_fb.c#L4140)
 
 ```c
 * its launch command (config-driven, covers apps that never set a window * title);
@@ -1694,7 +1733,7 @@ Draw all shortcut icons and labels onto the framebuffer.
 
 ### `desktop_shortcuts_hit_test`
 
-`function` `const` | [kernel/vga_fb.c:4108](../../kernel/vga_fb.c#L4108)
+`function` `const` | [kernel/vga_fb.c:4166](../../kernel/vga_fb.c#L4166)
 
 ```c
 const char *desktop_shortcuts_hit_test(int mx, int my)
@@ -1723,7 +1762,7 @@ Returns the command string if the click hit an icon, or NULL otherwise.
 
 ### `pointer`
 
-`function` | [kernel/vga_fb.c:4169](../../kernel/vga_fb.c#L4169)
+`function` | [kernel/vga_fb.c:4227](../../kernel/vga_fb.c#L4227)
 
 ```c
 * tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the title);
@@ -1745,7 +1784,7 @@ Returns the command string if the click hit an icon, or NULL otherwise.
 
 ### `vga_fb_wait_tick`
 
-`function` | [kernel/vga_fb.c:4276](../../kernel/vga_fb.c#L4276)
+`function` | [kernel/vga_fb.c:4334](../../kernel/vga_fb.c#L4334)
 
 ```c
 void vga_fb_wait_tick(void)
@@ -1763,7 +1802,7 @@ While the shell waits for a foreground process nothing else runs vga_fb_mouse_ti
 
 ### `vga_fb_mouse_tick`
 
-`function` | [kernel/vga_fb.c:4285](../../kernel/vga_fb.c#L4285)
+`function` | [kernel/vga_fb.c:4343](../../kernel/vga_fb.c#L4343)
 
 ```c
 void vga_fb_mouse_tick(void)
@@ -1781,7 +1820,7 @@ Docstring: Per-tick mouse dispatch over unified geometry and events.
 
 ### `path`
 
-`function` | [kernel/vga_fb.c:4296](../../kernel/vga_fb.c#L4296)
+`function` | [kernel/vga_fb.c:4354](../../kernel/vga_fb.c#L4354)
 
 ```c
 * present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and raced every present * (~60fps vs 25Hz): stale restores painted trails and flicker, worst
@@ -1795,7 +1834,7 @@ Docstring: Per-tick mouse dispatch over unified geometry and events.
 
 ### `state`
 
-`function` | [kernel/vga_fb.c:4409](../../kernel/vga_fb.c#L4409)
+`function` | [kernel/vga_fb.c:4467](../../kernel/vga_fb.c#L4467)
 
 ```c
 * ignores the button state (the arming press is consumed) and settles * once on expiry, so t...
@@ -1817,7 +1856,7 @@ Docstring: Per-tick mouse dispatch over unified geometry and events.
 
 ### `vga_fb_mouse_init`
 
-`function` | [kernel/vga_fb.c:4487](../../kernel/vga_fb.c#L4487)
+`function` | [kernel/vga_fb.c:4545](../../kernel/vga_fb.c#L4545)
 
 ```c
 void vga_fb_mouse_init(void)
@@ -1829,11 +1868,33 @@ void vga_fb_mouse_init(void)
 
 ---
 
+<a id="vga_fb_history_page"></a>
+
+### `vga_fb_history_page`
+
+`function` | [kernel/vga_fb.c:4599](../../kernel/vga_fb.c#L4599)
+
+```c
+void vga_fb_history_page(int dir)
+```
+
+Docstring: Page the terminal history by one screen (dir -1 up, +1 down).
+
+The framebuffer terminal keeps its own logical ring, so the page keys move that viewport; the legacy VGA scrollback ring only serves the text-mode console, where the framebuffer terminal does not exist.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `dir` | `int` |  |  |
+
+---
+
 <a id="vga_fb_init"></a>
 
 ### `vga_fb_init`
 
-`function` | [kernel/vga_fb.c:4515](../../kernel/vga_fb.c#L4515)
+`function` | [kernel/vga_fb.c:4611](../../kernel/vga_fb.c#L4611)
 
 ```c
 void vga_fb_init(void)
@@ -1843,7 +1904,7 @@ void vga_fb_init(void)
 
 > **Inherited:** Documentation from [`vga_fb_init`](#vga_fb_init) (headers/vga_fb.h:177).
 
-*Calls:* [`cursor_invalidate`](headers.kernel.vga_cursor.h.md#cursor_invalidate), [`ring`](headers.net.h.md#ring), [`vga_fx_enabled`](headers.vga_fb.h.md#vga_fx_enabled), [`vga_fx_free`](headers.vga_fb.h.md#vga_fx_free), [`vga_fx_melt_from_black`](headers.vga_fb.h.md#vga_fx_melt_from_black), [`vga_fx_snap_rect`](headers.vga_fb.h.md#vga_fx_snap_rect), [`vga_fb_clear`](#vga_fb_clear), [`vga_fb_draw_desktop`](#vga_fb_draw_desktop), [`vga_fb_mouse_init`](#vga_fb_mouse_init)
+*Calls:* [`cursor_invalidate`](headers.kernel.vga_cursor.h.md#cursor_invalidate), [`vga_fx_enabled`](headers.vga_fb.h.md#vga_fx_enabled), [`vga_fx_free`](headers.vga_fb.h.md#vga_fx_free), [`vga_fx_melt_from_black`](headers.vga_fb.h.md#vga_fx_melt_from_black), [`vga_fx_snap_rect`](headers.vga_fb.h.md#vga_fx_snap_rect), [`vga_fb_clear`](#vga_fb_clear), [`vga_fb_draw_desktop`](#vga_fb_draw_desktop), [`vga_fb_mouse_init`](#vga_fb_mouse_init)
 
 ---
 
@@ -1877,7 +1938,7 @@ void vga_fb_init(void)
 
 ### `GFX_SRC_IDX`
 
-`macro` | [kernel/vga_fb.c:487](../../kernel/vga_fb.c#L487)
+`macro` | [kernel/vga_fb.c:524](../../kernel/vga_fb.c#L524)
 
 ```c
 #define GFX_SRC_IDX
@@ -1893,7 +1954,7 @@ A desktop redraw (Alt+Tab, tile, drag, taskbar tick) wipes the whole framebuffer
 
 ### `GFX_SRC_RGB`
 
-`macro` | [kernel/vga_fb.c:488](../../kernel/vga_fb.c#L488)
+`macro` | [kernel/vga_fb.c:525](../../kernel/vga_fb.c#L525)
 
 ```c
 #define GFX_SRC_RGB
@@ -1905,7 +1966,7 @@ A desktop redraw (Alt+Tab, tile, drag, taskbar tick) wipes the whole framebuffer
 
 ### `GFX_KEEP_BYTES`
 
-`macro` | [kernel/vga_fb.c:489](../../kernel/vga_fb.c#L489)
+`macro` | [kernel/vga_fb.c:526](../../kernel/vga_fb.c#L526)
 
 ```c
 #define GFX_KEEP_BYTES
@@ -1917,7 +1978,7 @@ A desktop redraw (Alt+Tab, tile, drag, taskbar tick) wipes the whole framebuffer
 
 ### `GFX_CURSOR_IDLE_TICKS`
 
-`macro` | [kernel/vga_fb.c:515](../../kernel/vga_fb.c#L515)
+`macro` | [kernel/vga_fb.c:552](../../kernel/vga_fb.c#L552)
 
 ```c
 #define GFX_CURSOR_IDLE_TICKS
@@ -1931,7 +1992,7 @@ Docstring: Hide the pointer over a fullscreen app after this many idle timer tic
 
 ### `GFX_CURSOR_FOLLOW_TICKS`
 
-`macro` | [kernel/vga_fb.c:521](../../kernel/vga_fb.c#L521)
+`macro` | [kernel/vga_fb.c:558](../../kernel/vga_fb.c#L558)
 
 ```c
 #define GFX_CURSOR_FOLLOW_TICKS
@@ -1947,7 +2008,7 @@ An app that presents only on damage (the FreeDom browser idles on a static page)
 
 ### `GFX_PROG_LEN`
 
-`macro` | [kernel/vga_fb.c:573](../../kernel/vga_fb.c#L573)
+`macro` | [kernel/vga_fb.c:610](../../kernel/vga_fb.c#L610)
 
 ```c
 #define GFX_PROG_LEN
@@ -1963,7 +2024,7 @@ The shell records its fg launch name; the syscall layer attributes every backgro
 
 ### `WIN_DEF_COLS`
 
-`macro` | [kernel/vga_fb.c:899](../../kernel/vga_fb.c#L899)
+`macro` | [kernel/vga_fb.c:936](../../kernel/vga_fb.c#L936)
 
 ```c
 #define WIN_DEF_COLS
@@ -1979,7 +2040,7 @@ The shell runs in a movable window: a title bar on top, a scrollbar on its right
 
 ### `WIN_DEF_ROWS`
 
-`macro` | [kernel/vga_fb.c:900](../../kernel/vga_fb.c#L900)
+`macro` | [kernel/vga_fb.c:937](../../kernel/vga_fb.c#L937)
 
 ```c
 #define WIN_DEF_ROWS
@@ -1991,7 +2052,7 @@ The shell runs in a movable window: a title bar on top, a scrollbar on its right
 
 ### `WIN_DEF_X`
 
-`macro` | [kernel/vga_fb.c:901](../../kernel/vga_fb.c#L901)
+`macro` | [kernel/vga_fb.c:938](../../kernel/vga_fb.c#L938)
 
 ```c
 #define WIN_DEF_X
@@ -2003,7 +2064,7 @@ The shell runs in a movable window: a title bar on top, a scrollbar on its right
 
 ### `WIN_DEF_Y`
 
-`macro` | [kernel/vga_fb.c:902](../../kernel/vga_fb.c#L902)
+`macro` | [kernel/vga_fb.c:939](../../kernel/vga_fb.c#L939)
 
 ```c
 #define WIN_DEF_Y
@@ -2015,7 +2076,7 @@ The shell runs in a movable window: a title bar on top, a scrollbar on its right
 
 ### `WM_MAX_TERMS`
 
-`macro` | [kernel/vga_fb.c:930](../../kernel/vga_fb.c#L930)
+`macro` | [kernel/vga_fb.c:967](../../kernel/vga_fb.c#L967)
 
 ```c
 #define WM_MAX_TERMS
@@ -2045,7 +2106,7 @@ Close drops the snapshot and re-homes window 0 on the static ring.
 
 ### `WM_ELINE_SZ`
 
-`macro` | [kernel/vga_fb.c:931](../../kernel/vga_fb.c#L931)
+`macro` | [kernel/vga_fb.c:968](../../kernel/vga_fb.c#L968)
 
 ```c
 #define WM_ELINE_SZ
@@ -2057,7 +2118,7 @@ Close drops the snapshot and re-homes window 0 on the static ring.
 
 ### `FB_OFFSET`
 
-`macro` | [kernel/vga_fb.c:1629](../../kernel/vga_fb.c#L1629)
+`macro` | [kernel/vga_fb.c:1687](../../kernel/vga_fb.c#L1687)
 
 ```c
 #define FB_OFFSET(x,y)
@@ -2069,7 +2130,7 @@ Close drops the snapshot and re-homes window 0 on the static ring.
 
 ### `TB_GFX_TITLE_MAX`
 
-`macro` | [kernel/vga_fb.c:2459](../../kernel/vga_fb.c#L2459)
+`macro` | [kernel/vga_fb.c:2517](../../kernel/vga_fb.c#L2517)
 
 ```c
 #define TB_GFX_TITLE_MAX

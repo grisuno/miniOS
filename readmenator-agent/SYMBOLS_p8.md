@@ -3,8 +3,16 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `kstack` | function | `kernel.c:146` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
+| `ksyscall` | function | `kernel.c:130` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
+| `ms` | function | `kernel.c:185` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
+| `ramdisk_end` | variable | `kernel.c:180` | `extern char ramdisk_end[];` |
+| `ramdisk_start` | variable | `kernel.c:179` | `extern char ramdisk_start[];` |
+| `size` | function | `kernel.c:257` | `* image size (see kernel.ld);` |
+| `syscall_init` | function | `kernel.c:117` | `void syscall_init(void)` |
+| `syscall_kstack` | variable | `kernel.c:115` | `extern unsigned long syscall_kstack;` |
 | `table` | function | `kernel.c:104` | `* Symbol table (for resolving program references) * ================================================================...` |
-| `tables` | function | `kernel.c:275` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
+| `tables` | function | `kernel.c:279` | `* tables (already built above) for its uncached register window and the      * heap for its rings...` |
 | `abi_check_manifest` | function | `kernel/abi.c:74` | `int abi_check_manifest(void)` |
 | `abi_parse_num` | function | `kernel/abi.c:20` | `static int abi_parse_num(const char **pp, const char *end, unsigned long *out)` |
 | `abi_verify` | function | `kernel/abi.c:38` | `int abi_verify(const char *text, long version, unsigned long checksum)` |
@@ -15,6 +23,7 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `clip_set` | function | `kernel/clip.c:25` | `int clip_set(const char *data, unsigned long len)` |
 | `REDIR_INITIAL_CAP` | macro | `kernel/console.c:96` | `#define REDIR_INITIAL_CAP` |
 | `REDIR_MAX_BYTES` | macro | `kernel/console.c:97` | `#define REDIR_MAX_BYTES` |
+| `VGA_LINE_MAX` | macro | `kernel/console.c:226` | `#define VGA_LINE_MAX` |
 | `XXH_STATIC_LINKING_ONLY` | macro | `kernel/console.c:4` | `#define XXH_STATIC_LINKING_ONLY` |
 | `redir_grow` | function | `kernel/console.c:110` | `static int redir_grow(void)` |
 | `redirect_active` | function | `kernel/console.c:120` | `int redirect_active(void)` |
@@ -26,16 +35,17 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `redirect_resume` | function | `kernel/console.c:135` | `void redirect_resume(int was)` |
 | `redirect_suspend` | function | `kernel/console.c:129` | `int redirect_suspend(void)` |
 | `redirect_take_into` | function | `kernel/console.c:196` | `unsigned long redirect_take_into(char *dst, unsigned long cap,         unsigned long *len_out)` |
-| `register_libc_symbols` | function | `kernel/console.c:271` | `void register_libc_symbols(void)` |
+| `register_libc_symbols` | function | `kernel/console.c:287` | `void register_libc_symbols(void)` |
 | `vga_clear` | function | `kernel/console.c:25` | `void vga_clear(void)` |
 | `vga_cursor_enable` | function | `kernel/console.c:81` | `void vga_cursor_enable(int on)` |
 | `vga_get_color` | function | `kernel/console.c:21` | `char vga_get_color(void)` |
 | `vga_get_x` | function | `kernel/console.c:18` | `int vga_get_x(void)` |
 | `vga_get_y` | function | `kernel/console.c:19` | `int vga_get_y(void)` |
+| `vga_line_feed` | function | `kernel/console.c:231` | `static void vga_line_feed(void)` |
 | `vga_newline` | function | `kernel/console.c:75` | `void vga_newline(void)` |
 | `vga_offset` | function | `kernel/console.c:23` | `static inline unsigned vga_offset(int x, int y)` |
-| `vga_putc` | function | `kernel/console.c:223` | `void vga_putc(char c)` |
-| `vga_puts` | function | `kernel/console.c:267` | `void vga_puts(const char *s)` |
+| `vga_putc` | function | `kernel/console.c:237` | `void vga_putc(char c)` |
+| `vga_puts` | function | `kernel/console.c:283` | `void vga_puts(const char *s)` |
 | `vga_raw_space` | function | `kernel/console.c:88` | `static void vga_raw_space(void)` |
 | `vga_scroll` | function | `kernel/console.c:56` | `void vga_scroll(void)` |
 | `vga_set_cursor` | function | `kernel/console.c:36` | `void vga_set_cursor(int x, int y)` |
@@ -43,18 +53,19 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `ESC` | function | `kernel/console_in.c:157` | `* The bound keeps a bare ESC (never completed into a sequence) from  * hanging the reader. */ #de...` |
 | `MAX_SEQ_POLL` | macro | `kernel/console_in.c:159` | `#define MAX_SEQ_POLL` |
 | `PB_LEN` | macro | `kernel/console_in.c:18` | `#define PB_LEN` |
-| `SB_EXIT` | macro | `kernel/console_in.c:306` | `#define SB_EXIT` |
-| `SB_LEN` | macro | `kernel/console_in.c:281` | `#define SB_LEN` |
-| `SB_PGDN` | macro | `kernel/console_in.c:305` | `#define SB_PGDN` |
-| `SB_PGUP` | macro | `kernel/console_in.c:304` | `#define SB_PGUP` |
-| `console_getc` | function | `kernel/console_in.c:205` | `int console_getc(void)` |
-| `console_job_get` | function | `kernel/console_in.c:267` | `int console_job_get(void)` |
-| `console_job_try` | function | `kernel/console_in.c:257` | `int console_job_try(void)` |
-| `console_peek` | function | `kernel/console_in.c:233` | `int console_peek(void)` |
+| `SB_EXIT` | macro | `kernel/console_in.c:320` | `#define SB_EXIT` |
+| `SB_LEN` | macro | `kernel/console_in.c:295` | `#define SB_LEN` |
+| `SB_PGDN` | macro | `kernel/console_in.c:319` | `#define SB_PGDN` |
+| `SB_PGUP` | macro | `kernel/console_in.c:318` | `#define SB_PGUP` |
+| `console_getc` | function | `kernel/console_in.c:217` | `int console_getc(void)` |
+| `console_history_page` | function | `kernel/console_in.c:204` | `void console_history_page(int dir)` |
+| `console_job_get` | function | `kernel/console_in.c:281` | `int console_job_get(void)` |
+| `console_job_try` | function | `kernel/console_in.c:271` | `int console_job_try(void)` |
+| `console_peek` | function | `kernel/console_in.c:247` | `int console_peek(void)` |
 | `console_poll_usb` | function | `kernel/console_in.c:93` | `static void console_poll_usb(void)` |
 | `console_ps2_live` | function | `kernel/console_in.c:106` | `static int console_ps2_live(void)` |
-| `console_raw_get` | function | `kernel/console_in.c:250` | `int console_raw_get(void)` |
-| `console_raw_try` | function | `kernel/console_in.c:246` | `int console_raw_try(void)` |
+| `console_raw_get` | function | `kernel/console_in.c:264` | `int console_raw_get(void)` |
+| `console_raw_try` | function | `kernel/console_in.c:260` | `int console_raw_try(void)` |
 | `console_stdin_active` | function | `kernel/console_in.c:56` | `int console_stdin_active(void)` |
 | `console_stdin_clear` | function | `kernel/console_in.c:46` | `void console_stdin_clear(void)` |
 | `console_stdin_push` | function | `kernel/console_in.c:32` | `int console_stdin_push(const char *data, unsigned long len)` |
@@ -68,13 +79,14 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `pb_push_front` | function | `kernel/console_in.c:67` | `static void pb_push_front(unsigned char c)` |
 | `raw_blocking_getc` | function | `kernel/console_in.c:118` | `static int raw_blocking_getc(void)` |
 | `raw_try_getc` | function | `kernel/console_in.c:139` | `static int raw_try_getc(void)` |
-| `sb_next` | function | `kernel/console_in.c:311` | `static int sb_next(void)` |
-| `scrollback_render` | function | `kernel/console_in.c:283` | `static void scrollback_render(int voff, int total, const unsigned char *saved)` |
-| `scrollback_view` | function | `kernel/console_in.c:321` | `static void scrollback_view(int initial_dir)` |
-| `cvm_main` | function | `kernel/cvm_host.c:437` | `int cvm_main(int argc, char **argv)` |
-| `kformat` | function | `kernel/cvm_host.c:296` | `static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc)` |
-| `kout_char` | function | `kernel/cvm_host.c:277` | `static void kout_char(void *ctx, char c)` |
-| `kout_uint` | function | `kernel/cvm_host.c:283` | `static void kout_uint(void *ctx, unsigned long long v, int base, int upper)` |
+| `sb_next` | function | `kernel/console_in.c:325` | `static int sb_next(void)` |
+| `scrollback_render` | function | `kernel/console_in.c:297` | `static void scrollback_render(int voff, int total, const unsigned char *saved)` |
+| `scrollback_view` | function | `kernel/console_in.c:335` | `static void scrollback_view(int initial_dir)` |
+| `cvm_main` | function | `kernel/cvm_host.c:497` | `int cvm_main(int argc, char **argv)` |
+| `kformat` | function | `kernel/cvm_host.c:313` | `static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc)` |
+| `kout_char` | function | `kernel/cvm_host.c:288` | `static void kout_char(void *ctx, char c)` |
+| `kout_sink` | struct | `kernel/cvm_host.c:281` | `` |
+| `kout_uint` | function | `kernel/cvm_host.c:300` | `static void kout_uint(void *ctx, unsigned long long v, int base, int upper)` |
 | `n_atol` | function | `kernel/cvm_host.c:236` | `static int64_t n_atol(void *vm, int ac, uint64_t *av)` |
 | `n_calloc` | function | `kernel/cvm_host.c:98` | `static int64_t n_calloc(void *vm, int ac, uint64_t *av)` |
 | `n_exit` | function | `kernel/cvm_host.c:114` | `static int64_t n_exit(void *vm, int ac, uint64_t *av)` |
@@ -82,7 +94,7 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `n_fflush` | function | `kernel/cvm_host.c:191` | `static int64_t n_fflush(void *vm, int ac, uint64_t *av)` |
 | `n_fgetc` | function | `kernel/cvm_host.c:179` | `static int64_t n_fgetc(void *vm, int ac, uint64_t *av)` |
 | `n_fopen` | function | `kernel/cvm_host.c:121` | `static int64_t n_fopen(void *vm, int ac, uint64_t *av)` |
-| `n_fprintf` | function | `kernel/cvm_host.c:362` | `static int64_t n_fprintf(void *vm, int ac, uint64_t *av)` |
+| `n_fprintf` | function | `kernel/cvm_host.c:390` | `static int64_t n_fprintf(void *vm, int ac, uint64_t *av)` |
 | `n_fputc` | function | `kernel/cvm_host.c:173` | `static int64_t n_fputc(void *vm, int ac, uint64_t *av)` |
 | `n_fputs` | function | `kernel/cvm_host.c:167` | `static int64_t n_fputs(void *vm, int ac, uint64_t *av)` |
 | `n_fread` | function | `kernel/cvm_host.c:134` | `static int64_t n_fread(void *vm, int ac, uint64_t *av)` |
@@ -95,14 +107,13 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `n_memcpy` | function | `kernel/cvm_host.c:48` | `static int64_t n_memcpy(void *vm, int ac, uint64_t *av)` |
 | `n_memmove` | function | `kernel/cvm_host.c:61` | `static int64_t n_memmove(void *vm, int ac, uint64_t *av)` |
 | `n_memset` | function | `kernel/cvm_host.c:55` | `static int64_t n_memset(void *vm, int ac, uint64_t *av)` |
-| `n_printf` | function | `kernel/cvm_host.c:369` | `static int64_t n_printf(void *vm, int ac, uint64_t *av)` |
+| `n_printf` | function | `kernel/cvm_host.c:403` | `static int64_t n_printf(void *vm, int ac, uint64_t *av)` |
 | `n_putchar` | function | `kernel/cvm_host.c:197` | `static int64_t n_putchar(void *vm, int ac, uint64_t *av)` |
 | `n_puts` | function | `kernel/cvm_host.c:228` | `static int64_t n_puts(void *vm, int ac, uint64_t *av)` |
 | `n_read` | function | `kernel/cvm_host.c:213` | `static int64_t n_read(void *vm, int ac, uint64_t *av)` |
 | `n_realloc` | function | `kernel/cvm_host.c:106` | `static int64_t n_realloc(void *vm, int ac, uint64_t *av)` |
 | `n_rewind` | function | `kernel/cvm_host.c:160` | `static int64_t n_rewind(void *vm, int ac, uint64_t *av)` |
-| `n_snprintf` | function | `kernel/cvm_host.c:384` | `static int64_t n_snprintf(void *vm, int ac, uint64_t *av)` |
-| `n_sprintf` | function | `kernel/cvm_host.c:376` | `static int64_t n_sprintf(void *vm, int ac, uint64_t *av)` |
+| `n_sprintf` | function | `kernel/cvm_host.c:418` | `static int64_t n_sprintf(void *vm, int ac, uint64_t *av)` |
 | `n_stderr_addr` | function | `kernel/cvm_host.c:262` | `static int64_t n_stderr_addr(void *vm, int ac, uint64_t *av)` |
 | `n_stdin_addr` | function | `kernel/cvm_host.c:272` | `static int64_t n_stdin_addr(void *vm, int ac, uint64_t *av)` |
 | `n_stdout_addr` | function | `kernel/cvm_host.c:267` | `static int64_t n_stdout_addr(void *vm, int ac, uint64_t *av)` |
@@ -115,7 +126,7 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `n_strtol` | function | `kernel/cvm_host.c:249` | `static int64_t n_strtol(void *vm, int ac, uint64_t *av)` |
 | `n_ungetc` | function | `kernel/cvm_host.c:185` | `static int64_t n_ungetc(void *vm, int ac, uint64_t *av)` |
 | `n_write` | function | `kernel/cvm_host.c:204` | `static int64_t n_write(void *vm, int ac, uint64_t *av)` |
-| `register_host_natives` | function | `kernel/cvm_host.c:392` | `static void register_host_natives(CvmState *vm)` |
+| `register_host_natives` | function | `kernel/cvm_host.c:452` | `static void register_host_natives(CvmState *vm)` |
 | `ed25519_verify` | function | `kernel/ed25519.c:810` | `int ed25519_verify(const unsigned char sig[64], const unsigned char *msg,                    unsi...` |
 | `ed_bytes_lt_q` | function | `kernel/ed25519.c:477` | `static unsigned ed_bytes_lt_q(const unsigned char b[32])` |
 | `ed_curve_d` | function | `kernel/ed25519.c:706` | `static void ed_curve_d(ed_fe *d)` |
@@ -387,7 +398,7 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `panic_fb_hex` | function | `kernel/panic.c:61` | `static void panic_fb_hex(unsigned long v, int digits)` |
 | `panic_fb_puts` | function | `kernel/panic.c:30` | `static void panic_fb_puts(const char *s)` |
 | `panic_hex` | function | `kernel/panic.c:23` | `static void panic_hex(unsigned long v, int digits)` |
-| `panic_screen` | function | `kernel/panic.c:96` | `void panic_screen(unsigned long vector, unsigned long err,         unsigned long rip, unsigned lo...` |
+| `panic_screen` | function | `kernel/panic.c:98` | `void panic_screen(unsigned long vector, unsigned long err,         unsigned long rip, unsigned lo...` |
 | `rq_cpu_valid` | function | `kernel/percpu_rq.c:14` | `static int rq_cpu_valid(int cpu)` |
 | `rq_empty` | function | `kernel/percpu_rq.c:115` | `int rq_empty(int cpu)` |
 | `rq_enqueue` | function | `kernel/percpu_rq.c:41` | `void rq_enqueue(int cpu, int pid)` |
@@ -485,16 +496,5 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `PROC_SWITCHING` | function | `kernel/sched.c:2180` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...` |
 | `__attribute__` | function | `kernel/sched.c:109` | `typedef struct __attribute__((packed))` |
 | `__attribute__` | function | `kernel/sched.c:143` | `typedef struct __attribute__((packed))` |
-| `adopt` | function | `kernel/sched.c:2922` | `* adopt (armed by Linux O_CLOEXEC on open);` |
-| `alloc_kstack` | function | `kernel/sched.c:262` | `static uint64_t alloc_kstack(void)` |
-| `alloc_pid_locked` | function | `kernel/sched.c:3180` | `static int alloc_pid_locked(void)` |
-| `aslr_brk_pages` | function | `kernel/sched.c:2897` | `unsigned long aslr_brk_pages(void)` |
-| `aslr_dyn_base` | function | `kernel/sched.c:2899` | `unsigned long aslr_dyn_base(void)` |
-| `aslr_mix` | function | `kernel/sched.c:2887` | `static unsigned long aslr_mix(unsigned long salt)` |
-| `aslr_mmap_pages` | function | `kernel/sched.c:2898` | `unsigned long aslr_mmap_pages(void)` |
-| `aslr_stack_bytes` | function | `kernel/sched.c:2896` | `unsigned long aslr_stack_bytes(void)` |
-| `cli` | function | `kernel/sched.c:2908` | `* cli (disk PIO must never run with the timer held off);` |
-| `context` | function | `kernel/sched.c:888` | `* context (anything entered via k_exec_user) is inside a syscall  * (entry swapped 0 in), and a c...` |
-| `copy` | function | `kernel/sched.c:362` | `* copy (fail closed, fork refuses) instead of forging pointers. */ /* Name the link a fork could ...` |
 
 Next: [SYMBOLS_p9.md](SYMBOLS_p9.md)

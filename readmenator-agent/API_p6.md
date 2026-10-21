@@ -74,8 +74,8 @@ Depends on: `headers/abi.h`, `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x
 - `ms` (function) `kernel.c:185` `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
 - `bootlog_mark` (function) `kernel.c:192` `void bootlog_mark(const char *name)`
 - `bootlog_report` (function) `kernel.c:199` `void bootlog_report(void)`
-- `size` (function) `kernel.c:253` `* image size (see kernel.ld);`
-- `tables` (function) `kernel.c:275` `* tables (already built above) for its uncached register window and the
+- `size` (function) `kernel.c:257` `* image size (see kernel.ld);`
+- `tables` (function) `kernel.c:279` `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
 
 ## kernel/abi.c
@@ -118,9 +118,10 @@ Depends on: `headers/sched.h`, `headers/vga_fb.h`
 - `redirect_take_into` (function) `kernel/console.c:196` `unsigned long redirect_take_into(char *dst, unsigned long cap,
         unsigned long *len_out)` -- Docstring: Drain the capture into the caller's arena memory instead of a fresh heap block.
 - `redirect_discard` (function) `kernel/console.c:216` `void redirect_discard(void)` -- Docstring: Drop the capture without any allocation.
-- `vga_putc` (function) `kernel/console.c:223` `void vga_putc(char c)`
-- `vga_puts` (function) `kernel/console.c:267` `void vga_puts(const char *s)`
-- `register_libc_symbols` (function) `kernel/console.c:271` `void register_libc_symbols(void)`
+- `vga_line_feed` (function) `kernel/console.c:231` `static void vga_line_feed(void)` -- Text-mode console line buffer.
+- `vga_putc` (function) `kernel/console.c:237` `void vga_putc(char c)`
+- `vga_puts` (function) `kernel/console.c:283` `void vga_puts(const char *s)`
+- `register_libc_symbols` (function) `kernel/console.c:287` `void register_libc_symbols(void)`
 
 ## kernel/console_in.c
 Depends on: `headers/drivers/kbd.h`, `headers/drivers/usbhid.h`, `headers/drivers/xhci.h`, `headers/kernel/console_in.h`, `headers/pipe.h`, `headers/vga_fb.h`
@@ -142,15 +143,16 @@ Depends on: `headers/drivers/kbd.h`, `headers/drivers/usbhid.h`, `headers/driver
  * hanging the reader. */
 #de...`
 - `consume_page_after_esc` (function) `kernel/console_in.c:178` `static int consume_page_after_esc(void)` -- Docstring: Called after an ESC byte has been read.
-- `console_getc` (function) `kernel/console_in.c:205` `int console_getc(void)` -- Docstring: Blocking read from either the PS/2 keyboard or COM1 serial line.
-- `console_peek` (function) `kernel/console_in.c:233` `int console_peek(void)` -- Docstring: Next buffered byte without consuming it, or -1 when nothing is available right now.
-- `console_raw_try` (function) `kernel/console_in.c:246` `int console_raw_try(void)` -- Docstring: Raw console multiplexer for the GETC_RAW syscall.
-- `console_raw_get` (function) `kernel/console_in.c:250` `int console_raw_get(void)`
-- `console_job_try` (function) `kernel/console_in.c:257` `int console_job_try(void)` -- Docstring: GETC_RAW source for ring-3 background jobs.
-- `console_job_get` (function) `kernel/console_in.c:267` `int console_job_get(void)` -- Docstring: GETC_RAW source for ring-3 background jobs.
-- `scrollback_render` (function) `kernel/console_in.c:283` `static void scrollback_render(int voff, int total, const unsigned char *saved)`
-- `sb_next` (function) `kernel/console_in.c:311` `static int sb_next(void)` -- Docstring: Reads the next scrollback key event: PageUp/PageDown navigate; any other key (or a non-page escape...
-- `scrollback_view` (function) `kernel/console_in.c:321` `static void scrollback_view(int initial_dir)`
+- `console_history_page` (function) `kernel/console_in.c:204` `void console_history_page(int dir)` -- Docstring: Page the console history by one screen (dir -1 up, +1 down).
+- `console_getc` (function) `kernel/console_in.c:217` `int console_getc(void)` -- Docstring: Blocking read from either the PS/2 keyboard or COM1 serial line.
+- `console_peek` (function) `kernel/console_in.c:247` `int console_peek(void)` -- Docstring: Next buffered byte without consuming it, or -1 when nothing is available right now.
+- `console_raw_try` (function) `kernel/console_in.c:260` `int console_raw_try(void)` -- Docstring: Raw console multiplexer for the GETC_RAW syscall.
+- `console_raw_get` (function) `kernel/console_in.c:264` `int console_raw_get(void)`
+- `console_job_try` (function) `kernel/console_in.c:271` `int console_job_try(void)` -- Docstring: GETC_RAW source for ring-3 background jobs.
+- `console_job_get` (function) `kernel/console_in.c:281` `int console_job_get(void)` -- Docstring: GETC_RAW source for ring-3 background jobs.
+- `scrollback_render` (function) `kernel/console_in.c:297` `static void scrollback_render(int voff, int total, const unsigned char *saved)`
+- `sb_next` (function) `kernel/console_in.c:325` `static int sb_next(void)` -- Docstring: Reads the next scrollback key event: PageUp/PageDown navigate; any other key (or a non-page escape...
+- `scrollback_view` (function) `kernel/console_in.c:335` `static void scrollback_view(int initial_dir)`
 
 ## kernel/cvm_host.c
 - `n_strcmp` (function) `kernel/cvm_host.c:22` `static int64_t n_strcmp(void *vm, int ac, uint64_t *av)`
@@ -189,15 +191,14 @@ Depends on: `headers/drivers/kbd.h`, `headers/drivers/usbhid.h`, `headers/driver
 - `n_stderr_addr` (function) `kernel/cvm_host.c:262` `static int64_t n_stderr_addr(void *vm, int ac, uint64_t *av)`
 - `n_stdout_addr` (function) `kernel/cvm_host.c:267` `static int64_t n_stdout_addr(void *vm, int ac, uint64_t *av)`
 - `n_stdin_addr` (function) `kernel/cvm_host.c:272` `static int64_t n_stdin_addr(void *vm, int ac, uint64_t *av)`
-- `kout_char` (function) `kernel/cvm_host.c:277` `static void kout_char(void *ctx, char c)`
-- `kout_uint` (function) `kernel/cvm_host.c:283` `static void kout_uint(void *ctx, unsigned long long v, int base, int upper)`
-- `kformat` (function) `kernel/cvm_host.c:296` `static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc)`
-- `n_fprintf` (function) `kernel/cvm_host.c:362` `static int64_t n_fprintf(void *vm, int ac, uint64_t *av)`
-- `n_printf` (function) `kernel/cvm_host.c:369` `static int64_t n_printf(void *vm, int ac, uint64_t *av)`
-- `n_sprintf` (function) `kernel/cvm_host.c:376` `static int64_t n_sprintf(void *vm, int ac, uint64_t *av)`
-- `n_snprintf` (function) `kernel/cvm_host.c:384` `static int64_t n_snprintf(void *vm, int ac, uint64_t *av)`
-- `register_host_natives` (function) `kernel/cvm_host.c:392` `static void register_host_natives(CvmState *vm)`
-- `cvm_main` (function) `kernel/cvm_host.c:437` `int cvm_main(int argc, char **argv)`
+- `kout_char` (function) `kernel/cvm_host.c:288` `static void kout_char(void *ctx, char c)`
+- `kout_uint` (function) `kernel/cvm_host.c:300` `static void kout_uint(void *ctx, unsigned long long v, int base, int upper)`
+- `kformat` (function) `kernel/cvm_host.c:313` `static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc)`
+- `n_fprintf` (function) `kernel/cvm_host.c:390` `static int64_t n_fprintf(void *vm, int ac, uint64_t *av)` -- Docstring: fprintf native.
+- `n_printf` (function) `kernel/cvm_host.c:403` `static int64_t n_printf(void *vm, int ac, uint64_t *av)` -- vector. static int64_t n_fprintf(void *vm, int ac, uint64_t *av) { (void)vm; if (ac < 2) return -1; kout_sink k; k.f...
+- `n_sprintf` (function) `kernel/cvm_host.c:418` `static int64_t n_sprintf(void *vm, int ac, uint64_t *av)` -- Docstring: sprintf native.
+- `register_host_natives` (function) `kernel/cvm_host.c:452` `static void register_host_natives(CvmState *vm)`
+- `cvm_main` (function) `kernel/cvm_host.c:497` `int cvm_main(int argc, char **argv)`
 
 ## kernel/ed25519.c
 Depends on: `headers/sign.h`
@@ -468,7 +469,7 @@ Depends on: `headers/panic.h`, `headers/sched.h`, `headers/vga_fb.h`
 - `panic_hex` (function) `kernel/panic.c:23` `static void panic_hex(unsigned long v, int digits)`
 - `panic_fb_puts` (function) `kernel/panic.c:30` `static void panic_fb_puts(const char *s)`
 - `panic_fb_hex` (function) `kernel/panic.c:61` `static void panic_fb_hex(unsigned long v, int digits)`
-- `panic_screen` (function) `kernel/panic.c:96` `void panic_screen(unsigned long vector, unsigned long err,
+- `panic_screen` (function) `kernel/panic.c:98` `void panic_screen(unsigned long vector, unsigned long err,
         unsigned long rip, unsigned lo...` -- Docstring: Paint the panic screen for an unrecoverable fault and halt when asked. vector/err/rip/rsp come from the...
 
 ## kernel/percpu_rq.c

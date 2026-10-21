@@ -72,9 +72,30 @@ reason.
 **AP stub stack (`ap_entry.S`):** the AP's temporary stack is at 0x78000
 (identity-mapped low memory, below the LAPIC PD at 0x70000, above the
 syscall kernel stack at 0x88000).  This is only needed until
-`smp_ap_entry()` sets up the per-CPU context; the idle loop runs on this
-same stack.  A stack at 0x80000 overlaps the syscall kernel stack and
-causes exception cascades when the LAPIC timer ISR fires.
+`smp_ap_entry()` sets up the per-CPU context.  A stack at 0x80000
+overlaps the syscall kernel stack and causes exception cascades when the
+LAPIC timer ISR fires.
+
+**Per-CPU TSS and runtime GDT (`sched.c` `tss_init`):** every CPU owns a
+private TSS (`the_tss[MAX_CPUS]`, filled before the APs are woken) whose
+`rsp0` points at its own 8 KB `tss_kstack` slot, so a ring-3 preempt on
+one CPU never lands on another CPU's ISR stack; `ist1` carries the
+per-CPU 1 KB NMI stack (`NMI_IST_STACK_SZ`).  The runtime GDT grows from
+the stage-2 image to `5 + 2*MAX_CPUS` entries (`GDT64_SMP_BYTES` =
+`(5 + 2*8) * 8` at `GDT64_ADDR` 0x8000): the TSS descriptor of CPU `c`
+sits at GDT slot `5 + 2*c` (`TSS_SEL(c)`), CPU 0 keeps selector `0x28`
+(`ltr` in `tss_init`), and an AP points its own TR at `TSS_SEL(cpu)`
+(`tss_init_ap`, called from `smp_ap_entry`).
+
+**Per-CPU stacks, none shared.**  Three distinct per-CPU stacks: the
+ring-0 interrupt stack `tss_kstack[MAX_CPUS][8192]` above; the AP idle
+loop's own C stack `ap_idle_kstack[MAX_CPUS][8192]` (`smp.c`, because the
+loop and the IPI ISRs it services need real depth and the 2 KB stub
+stack is too shallow); and the idle *context* the scheduler switches
+into, `ap_idle_stack[MAX_CPUS][4096]` (`sched.c`), whose CR3 is
+`sched_idle_cr3` (see "Per-CPU state and cross-CPU memory coherence").
+The 0x78000 stub stack is used only until `smp_ap_entry` moves onto the
+idle stack.
 
 **BDD tests (`test_bdd.sh`):** `scenario_smp` boots with `-smp 2` and
 asserts "SMP: Brought up 2 CPUs"; a single-CPU scenario asserts
@@ -84,6 +105,36 @@ asserts "SMP: Brought up 2 CPUs"; a single-CPU scenario asserts
 position), `smp-init-missing` (no INIT before SIPI), `smp-sipi-vector-zero`
 (zero vector), `smp-ap-no-lapic-eoi` (missing AP EOI), `smp-bsp-ctx-switch-not-guarded`
 (AP corrupts process table), `smp-gs-base-not-set` (missing GS base).
+
+### Lock ownership and spinlock discipline
+
+**Spinlock API (`headers/spinlock.h`).**  One primitive, four entry
+points, all xchg-based (the x86 LOCK XCHG is atomic across cores and
+needs no LOCK prefix): `spin_lock`/`spin_unlock` disable interrupts on
+acquire and re-enable them on release, so they serve single-level
+sections entered with IF=1 and must never be taken inside an ISR or
+under another interrupt-disabling lock; `spin_lock_irqsave`/
+`spin_unlock_irqrestore` save RFLAGS.IF before disabling and restore
+the saved state on release, so the inner release cannot re-enable
+interrupts the outer section still needs - the ISR-safe and nestable
+form; `spin_trylock` never touches interrupts and returns 1 only when
+the lock was free; `spin_unlock_keep_irq` releases without touching IF,
+for the context-switch paths, where a tick landing between the release
+and the switch would park a half-switched state over the incoming
+thread's context.  A spinlock is never held across a blocking operation
+and never acquired twice without releasing.
+
+**Owners.**  `sched_lock` guards `procs[]`, `proc_count` and the
+scheduler state; `mm_lock` guards the shared brk/mmap view (`g_brk`,
+`g_brk_limit`, `user_mmap_cur`) and the VMA trees against concurrent
+brk/mmap/munmap syscalls from threads on different CPUs; `smp_lock`
+guards the `cpu_count` publication when an AP comes up (`smp.c`).
+`ap_count` is a lockless atomic (`__sync_fetch_and_add`) and the LAPIC
+ICR/SVR are BSP-only writes, so neither needs a lock.  **Lock order:
+`sched_lock` -> `mm_lock`** - in the scheduler paths `mm_lock` is always
+taken inside `sched_lock`, never alone; in the MM paths `mm_lock` is the
+outer lock and the order is `mm_lock` -> `mm_fault_lock`.  Per-CPU data
+(`cpus[]`, the idle flags, the per-CPU stacks) needs no lock.
 
 ### Per-CPU state and cross-CPU memory coherence
 With `-smp 2` the APs run CLONE_VM threads, so every glibc program with
@@ -238,6 +289,168 @@ its config; cross-file layout constants stay in `progs/minios_abi.h`.
   plan: lock-free everything, kernel preemption, M:N threading and
   per-CPU allocators.
 
+### Thread model: 1:1 entities, spawn ABI and the userspace layer
+
+**Kernel side.**  A thread is a 1:1 scheduler entity: a `proc_t` with
+`CLONE_VM` (same CR3, shared window, shared fd view) plus its own kernel
+stack, its own FPU image and its own trap-frame slot.
+`do_thread_spawn(fn, stack, arg)` (`kernel/sched.c`) builds the child
+directly: RIP = `fn`, RSP = the caller-owned stack top, RDI = `arg`
+(SysV first argument), entered through `user_trampoline` + `iretq` with
+RFLAGS `0x202`.  The child starts from a clean FPU image, never the
+spawner's live registers: float arguments are not inherited, because the
+contract carries exactly one integer argument.  The slot stays
+`PROC_SWITCHING` until it is fully built and is published `READY` only
+then.  Syscall 225 (`MINIOS_SYS_THREAD_SPAWN`, `kernel/syscalls_proc.c`)
+validates `fn` and the 8 bytes below the stack top against the user
+window (`user_range_ok`, `-EFAULT` otherwise) before calling
+`do_thread_spawn`; `do_clone` (300) and `yield` (24) complete the
+surface.  The caller owns the stack: it is allocated before the spawn
+(8 KB per thread in the userspace layer) and stays alive until the
+thread is joined.
+
+**Reaping.**  The parent joins with `waitpid`/`wait4`, which returns the
+exit code and frees the slot, its kernel stack and its FPU image, but
+never the shared page tables: `proc_reap_slot_locked` skips
+`pt_free_user` for a `CLONE_VM` child.
+
+**AP claim.**  APs run `CLONE_VM` threads only; an isolated process never
+leaves the BSP (see "SMP Beyond Threads").  The BSP's 100 Hz tick leaves
+freshly parked VM threads unclaimed while any AP is idle
+(`sched_next_locked(current_pid, smp_any_ap_idle())`), so a thread is
+dispatched to the AP instead of losing every claim race to the BSP; the
+AP then picks it up from a per-CPU runqueue hint or by stealing one (see
+"SMP Scaling").  A VM thread on an AP shares the CR3 and skips the
+brk/mmap view swap and the TLB work entirely.
+
+**Userspace layer (`progs/src/mthreads.h`).**  A self-contained
+pthread-like layer over raw syscalls, with no libc thread support:
+`mthread_create` / `mthread_join` over a fixed table of `MTHREAD_MAX`
+(16) slots, each with its own 16-byte-aligned `MTHREAD_STACK_SZ`
+(8 KB) stack.  The stack top passed to the kernel is `base + 8192 - 8`:
+the kernel enters the thread through `iretq`, not `call`, so there is no
+pushed return address, and the -8 keeps the entry function's
+`rsp % 16 == 8` exactly like a called function (the first `movaps` spill
+of a glibc `printf "%f"` would fault with #GP otherwise).  Mutexes are
+0/1/2-state futex-backed locks (`MMUTEX_FREE`/`MMUTEX_HELD`/
+`MMUTEX_CONTENDED`): an uncontended acquire/release never traps,
+contention sleeps in the kernel, and an `-ENOSYS` reply (no futex in the
+kernel) degrades to the old spin + `yield` loop, so old kernels keep
+working.  Condition variables are Mesa-style: always wait in
+`while (!predicate)`.
+
+**Rules of the single address space.**  All stacks and thread slots are
+allocated before the first thread is created; after that only allocation
+under a mutex is safe, because brk and mmap are process-global and two
+concurrent allocators corrupt the heap.  `printf` may malloc, so it runs
+under the print mutex; the workers do not allocate at all.
+
+**Headless proof (`progs/src/thdemo.c`, `bin/thdemo`).**  1 main + 5
+producers + 4 consumers (10 threads) over one bounded buffer (16 slots),
+each producer making 200 items: `thdemo: produced=1000 consumed=1000
+sum=2099500 threads=10` and `thdemo: PASS` (exit 0).  The workers never
+touch stdio or the allocator; only the main thread prints, after every
+join, so the output is deterministic.  The BDD suite runs it single-CPU
+and under `-smp 2`.
+
+### Kernel blocking synchronization primitives
+
+`headers/sync.h` + `kernel/sync.c`, host-tested by `tests/test_sync.c`
+(`make test-sync`).  The blocking layer on top of the scheduler and the
+irqsave spinlocks, deliberately free of other kernel dependencies so the
+whole file stays host-testable.
+
+- **Wait queues.**  `wq_init`/`sleep_on`/`wake_up`/`wake_up_all`.
+  Sleepers chain through `proc_t.wq_next` as a FIFO of pids (`WQ_NONE`
+  ends the chain; pids start at 1, so a zeroed `proc_t` never aliases a
+  queued entry).  A sleeper marks itself `PROC_BLOCKED` while holding
+  the queue lock with interrupts disabled, so the timer-ISR dispatch
+  (which only claims `PROC_READY`) can neither lose nor double-schedule
+  it.  The queue lock is never held across `schedule()`: `wake_up` needs
+  the same lock, and a spinlock must never cross a blocking operation.
+- **Mutexes.**  Non-recursive, no handoff: `mutex_unlock` wakes one
+  waiter and the woken sleeper retries the acquisition loop;
+  `mutex_trylock` answers 0/-1.  Priority inheritance runs beside it
+  (`pi_set_base`, `pi_get_eff`, `pi_boost`, `pi_recompute`): a holder
+  blocking a higher-priority waiter is boosted to the waiter's
+  effective priority, transitively along the blocked-on chain, until it
+  releases.  The state lives in parallel arrays in `sync.c` because
+  `proc_t` is frozen at `PROC_T_SIZE` (360) bytes by the syscall-entry
+  asm contract, so no field can be added to it.
+- **Counting semaphores.**  `sem_init`/`sem_wait`/`sem_post`: `sem_post`
+  increments the count and wakes one waiter, a broadcast drains the
+  queue.
+- **Condition variables.**  Mesa semantics: `cond_wait` releases the
+  mutex, sleeps and re-acquires the mutex before returning, so the
+  predicate is always re-checked in a loop; `cond_signal` wakes one
+  waiter, `cond_broadcast` wakes all.
+- **Read-write lock.**  `rwlock_init`/`rwlock_read_lock`/
+  `rwlock_write_lock` and their unlocks, no recursion, plus the
+  non-blocking `rwlock_read_trylock`/`rwlock_write_trylock`.  It is
+  writer-preferring: a writer that has to wait announces itself in
+  `rwlock_writers_waiting`, and every new reader checks that counter
+  before it enters, so a steady reader stream cannot starve the writer.
+  The counter is incremented when the writer starts waiting and
+  decremented when it finally holds the lock, so it never leaks.  The
+  last reader out wakes the waiters, and the writer releases with a
+  broadcast.  `make test-sync` pins the rule (a queued writer keeps new
+  readers out) and `tools/mutate.sh` carries the
+  `rwlock-writer-preference-dropped` mutant for it.
+- **No deadlock detection.**  Locking the same mutex twice without
+  unlocking deadlocks exactly like a double `spin_lock`; prefer
+  `mutex_trylock` on paths that may re-enter.  Every `sleep_on` site
+  must be paired with a `wake_up` on all exit paths, and every blocking
+  call must loop on its predicate, because a wake-up can land between
+  the predicate check and the sleep.
+
+### Scheduler internals: park, publish, resume and exit
+
+- **Publish after the save (`PROC_SWITCHING`).**  A newborn slot stays
+  `PROC_SWITCHING`, a state the claim paths never select (they take
+  `PROC_READY` only), until its context is complete; the slot goes
+  `READY` only after the save, under `sched_lock`.  A tick that claimed
+  a half-built context hung the machine with no output.
+- **`schedule()` parks as "returned from `schedule()`".**  The park is
+  captured in pure asm (`sched_park_capture`, `arch/x86/ctx_sw.S`): RIP
+  is the return address into `schedule()`'s CALLER (`yield`, `sleep_on`,
+  `do_waitpid`, `do_exit`), never into `schedule()`'s own tail, which
+  would run the publish/unlock/switch sequence twice.  The resumed
+  thread therefore continues in its own caller instead of replaying the
+  tail on a foreign CPU.
+- **`switch_to_notrap` is load-only.**  The ISR uses it after parking a
+  preempted ring-3 trap frame, because saving the ISR's own kernel
+  registers over the parked state would destroy it.  A parked ring-3
+  context resumes through `resume_iretq` + `iretq` (exact preempted
+  state), never through a `ret` at CPL 0.
+- **Per-pid trap-frame slots (`isr_park`).**  The preempted frame is
+  copied into `isr_park[MAX_PROCS]`, one slot per pid, so parking can
+  never clobber a shared frame; the same holds for ring-0 and ring-3
+  preempts.
+- **Per-proc kernel stacks for syscall entry.**  Every syscall swaps
+  onto the calling proc's own kernel stack (`procs[pid].kstack`), so two
+  threads entering the kernel on one CPU never share an entry stack
+  (the legacy shared `syscall_kstack` could not survive that).  The
+  kernel stack top is saved per pid (`sc_top_save[]`), never in a
+  global, so a thread preempted mid-syscall keeps its own top.
+- **`ctx.rflags` is saved, never restored.**  The switch stores the flags
+  as metadata and never loads them: `popfq` before the final `ret`
+  would open a two-instruction window in which an IPI interrupts a
+  half-switched context.  Every resume path sets its own IF
+  (`resume_iretq` and `user_trampoline` iretq with the parked rflags;
+  the kernel continuations `sti` explicitly).
+- **`k_exec_user` runs its `swapgs` dance with interrupts off**, from
+  the dance through the `iretq` (see the GS validation note in
+  "SMP (Symmetric Multiprocessing) Foundation").
+- **Exit discriminates on context, not on `proc_count`.**  PID 0 is the
+  `k_exec_user` frame: its exit `klongjmp`s back to the shell
+  (`kernel/syscalls_proc.c`), because a program that registered threads
+  makes `proc_count > 1` even though the context is still the exec
+  frame.  Every other pid exits through the scheduler as a
+  `PROC_ZOMBIE` for its parent to reap.  `SYS_SPAWN` is BSP-only and
+  fails closed with `-EFAULT` on an AP: it replaces the shared
+  brk/mmap/VMA/fd view, which a thread on an AP shares with its
+  siblings.
+
 ### ISR-driven desktop event loop (`sched.c` + `vga_fb.c`)
 
 The desktop event loop (`vga_fb_mouse_tick`) must run continuously regardless
@@ -298,11 +511,15 @@ two adapters, `sched_tick_audio` (forwards to `sb16_poll`) and
 `tick_run_desktop()` when `tick_desktop_due(sys_ticks,
 DESKTOP_TICK_INTERVAL)` and `user_program_active` hold. Call order,
 gating and branch structure are unchanged; only the call path moved, so a
-new periodic effect registers without editing the ISR. The bus is two
-fixed tables (`TICK_MAX_AUDIO_LISTENERS` / `TICK_MAX_DESKTOP_LISTENERS`,
-no heap, no locks): registration is boot-time only before `sti`,
-dispatch only reads, a null or full registration returns -1 and changes
-nothing, and `tick_reset` empties both lists. Host-tested (`make
+new periodic effect registers without editing the ISR. The bus is three
+fixed tables (`TICK_MAX_AUDIO_LISTENERS` / `TICK_MAX_DESKTOP_LISTENERS`
+/ `TICK_MAX_USB_LISTENERS`, no heap, no locks): registration is boot-time
+only before `sti`, dispatch only reads, a null or full registration
+returns -1 and changes nothing, and `tick_reset` empties every list. The
+third table carries the polled xHCI controller: `sched_tick_usb` forwards
+to `xhc_poll()`, `tick_run_usb()` runs unconditionally on the BSP ahead
+of the audio list, and the xHCI event ring is polled by decision - no
+vector, IDT arm or PIC mask is involved. Host-tested (`make
 test-tick`, mutation-covered); the live-boot proof is the existing SMP
 (`SMP: Brought up 2 CPUs`) and sb16 scenarios, which exercise both
 dispatch paths.
@@ -444,23 +661,28 @@ cooperative and preemption is the backstop, not the norm.
   `tools/check_fork_stubs.py` gates this; `mm_copy_user_page`
   waits for it), APs claim `CLONE_VM` threads only, no Alt-Tab
   mid-`edit`, serial sees one interleaved console (use `wm list`).
-- **Known race, root-caused 2026-09-25 (not a regression): `run thdemo`
-  faults deterministically in this environment (`EXCEPTION 0e`,
-  user read of `0x10` in `_IO_puts`, i.e. `%fs:0x10` with FSBASE 0)
-  and fails byte-identically on a clean-HEAD baseline image, so no
-  session change is implicated (verified by stashing the whole tree,
-  rebuilding and rerunning). Mechanism: the main thread's first
-  `printf` runs single-threaded (no FS read); once producers spawn,
-  any tick that runs a thread (whose PCB `fsbase` is 0, never set)
-  `wrmsr`s 0, and the resume onto pid 0 skips the FSBASE restore
-  (`ctx_sw.S` restores it for every pid except 0), so the next
-  `printf` reads TLS through base 0. Whether the tick lands inside
-  the spawn loop is boot-timing dependent, which is why the suite
-  historically flakes here instead of failing always. The honest fix
-  (save FSBASE on every park including `switch_save_only`, restore
-  for pid 0 too) touches every context switch and waits for its own
-  SDD cycle with fptest/thdemo validation, so it is scoped as
-  follow-up work, never a drive-by.
+- **Known race, root-caused 2026-09-25, closed by the FSBASE fix (not a
+  regression): `run thdemo` used to fault deterministically in this
+  environment (`EXCEPTION 0e`, user read of `0x10` in `_IO_puts`, i.e.
+  `%fs:0x10` with FSBASE 0) and failed byte-identically on a clean-HEAD
+  baseline image, so no session change was implicated (verified by
+  stashing the whole tree, rebuilding and rerunning). Mechanism: the main
+  thread's first `printf` runs single-threaded (no FS read); once
+  producers spawn, any tick that runs a thread (whose PCB `fsbase` is 0,
+  never set) `wrmsr`s 0, and the resume onto pid 0 used to skip the
+  FSBASE restore, so the next `printf` read TLS through base 0. Whether
+  the tick landed inside the spawn loop was boot-timing dependent, which
+  is why the suite flaked here instead of failing always. **Status:
+  closed.** The switch now saves `%fs` base into the outgoing PCB
+  unconditionally and restores the incoming one, with the AP idle loop
+  (no user state to restore) as the only exception; the old pid-0 skip
+  is gone (`arch/x86/ctx_sw.S`, see "FSBASE rides every switch, pid 0
+  included" in docs/spec/kernel.md). Live check on the current tree:
+  `run thdemo` prints `thdemo: PASS` and `run fptest` prints `fptest: ok`
+  both single-CPU and under `-smp 2`. The heavy ring-3 overlap remains
+  known-red for a different reason (the global memory view, see "SMP
+  Beyond Threads"), so heavyweight ring-3 processes still run
+  sequentially.
 - **`execve(59)` replaces the caller's image in place** (`do_execve` in
   `kernel/sched.c`, entered through `arch/x86/ctx_sw.S` `exec_enter`):
   the caller keeps pid/parent/children/fds/limits while window, VMA,

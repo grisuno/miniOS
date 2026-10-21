@@ -30,7 +30,7 @@ graph LR
     tests -- "calls into" --> drivers
     tests -- "calls into" --> fs
     tests -- "calls into" --> headers
-    tests -- "depends on" --> kernel
+    tests -- "calls into" --> kernel
 ```
 
 ## arch (1.1)

@@ -28,7 +28,7 @@ usage()
 
 ### `restore_sources`
 
-`function` | [tools/mutate.sh:132](../../tools/mutate.sh#L132)
+`function` | [tools/mutate.sh:137](../../tools/mutate.sh#L137)
 
 ```bash
 restore_sources()
@@ -40,7 +40,7 @@ restore_sources()
 
 ### `cleanup`
 
-`function` | [tools/mutate.sh:139](../../tools/mutate.sh#L139)
+`function` | [tools/mutate.sh:144](../../tools/mutate.sh#L144)
 
 ```bash
 cleanup()
@@ -54,7 +54,7 @@ cleanup()
 
 ### `record`
 
-`function` | [tools/mutate.sh:518](../../tools/mutate.sh#L518)
+`function` | [tools/mutate.sh:536](../../tools/mutate.sh#L536)
 
 ```bash
 record()
@@ -66,7 +66,7 @@ record()
 
 ### `find_index`
 
-`function` | [tools/mutate.sh:524](../../tools/mutate.sh#L524)
+`function` | [tools/mutate.sh:542](../../tools/mutate.sh#L542)
 
 ```bash
 find_index()

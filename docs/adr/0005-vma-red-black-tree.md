@@ -11,7 +11,7 @@ $O(n)$ scans on every fault-adjacent path, and the tree header
 ## Decision
 
 `vma.c` with the single header `vma.h`: two red-black trees (live and
-free), a static `VMA_MAX` (4096) node pool reset by `vma_tree_init` on
+free), a static `VMA_MAX` (2048) node pool reset by `vma_tree_init` on
 every exec, exhaustion fail-closed (`VMA_NIL`, never overrun). `mmap`
 reuses free-tree regions before carving from the cursor; `munmap`
 returns regions to the free tree; SPAWN saves/restores pool and roots.

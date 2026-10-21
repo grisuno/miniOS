@@ -1,6 +1,6 @@
 # tools: tls_crypto
 
-tools: tls_crypto groups 44 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
+tools: tls_crypto groups 43 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
 
 ```mermaid
 graph LR
@@ -32,7 +32,7 @@ graph LR
 
 ## headers (5.1)
 
-headers groups 5 files (h) around KTIME_H, ktime_us_from_delta, wall_us_from_parts, TLS_H, TLS_CT_CCS. pure time-conversion helpers shared by the kernel clock
+headers groups 4 files (h) around KTIME_H, ktime_us_from_delta, wall_us_from_parts, TLS_H, TLS_CT_CCS. pure time-conversion helpers shared by the kernel clock
 
 ## kernel (5.2)
 
@@ -68,7 +68,6 @@ tools groups 18 files (py) around note, Guest, __init__, _ser, _reader. boot the
 - headers/tls.h
 - headers/tls_port.h
 - headers/tls_roots.h
-- headers/tls_test_roots.h
 - kernel/time.c
 - mcp/mcp_dbg_driver.py
 - mcp/mcp_dogfood.py

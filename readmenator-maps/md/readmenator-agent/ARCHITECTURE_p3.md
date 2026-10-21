@@ -220,6 +220,7 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `progs/quake2generic/snddma_minios.c` -> `progs/minios_abi.h`
 - `progs/src/apsse.c` -> `kernel/string.c`
 - `progs/src/audio.c` -> `progs/minios_abi.h`
+- `progs/src/cvmfmt.c` -> `kernel/string.c`
 - `progs/src/fptest.c` -> `progs/minios_abi.h`
 - `progs/src/fptest.c` -> `progs/src/mthreads.h`
 - `progs/src/freedom.c` -> `kernel/string.c`
@@ -379,7 +380,6 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `tests/test_xhci.c` -> `kernel/string.c`
 - `tls_test.c` -> `headers/tls.h`
 - `tls_test.c` -> `headers/tls_port.h`
-- `tls_test.c` -> `headers/tls_test_roots.h`
 - `tls_test.c` -> `kernel/string.c`
 - `tools/abi_stamp.c` -> `progs/minios_abi.h`
 - `tools/boot_wl.py` -> `kernel/time.c`

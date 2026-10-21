@@ -1,4 +1,4 @@
-# Ring-3 apps: vedit, file, paint, themes, MicroPython, Lisp, Nuklear, Quake 2, doomedit
+# Ring-3 apps: vedit, file, paint, themes, Lua, MicroPython, Lisp, Nuklear, Quake 2, doomedit
 
 Moved verbatim from CLAUDE.md (2026-09-29 compaction); CLAUDE.md keeps the
 rules and hazards and indexes this file.
@@ -11,14 +11,18 @@ window and killed the boot (measured `_kernel_end 0x403220`). The editor
 lives in `progs/vedit/vedit.c`, is built on the host like the piano and
 the node editor (static ELF, shared `nuklear_minios.c` platform layer),
 and ships on MiniFS (`vedit.elf` plus the bare-name alias, source
-beside it).
+beside it). Commands: `vedit [file]` (the file is optional; the
+default buffer is `untitled`), plus the headless proofs
+`vedit --selftest`, `vedit --selftest-build` and
+`vedit --selftest-leak`. The full key guide lives in
+`progs/vedit/README.md`.
 
 - Interaction: arrow-key navigation with in-place typing (no line
   numbers to name), Enter splits with auto-indent, Tab inserts a stop,
   Backspace/Delete erase and join, Home/End/PgUp/PgDn jump, `^O`/`^S`
   save, `^N` save-as, `^W` find (wraps once), `^G` goto line, `^R`
   build/run by extension, `^L` link (prompts `elf|cvm`), `^X`
-  save+quit, Esc quit without saving, `^D` dumps the buffer with ANSI
+  save+quit, Esc or `^Q` quit without saving, `^D` dumps the buffer with ANSI
   highlight to the console (serial fallback and BDD hook; moved from
   `^L` so the linker owns `^L`). uemacs adoption (buffers, region,
   search, windows, macros, shell, in the same file, every bound in
@@ -28,34 +32,53 @@ beside it).
   kill, 8-deep kill ring, `^K` kill line, `^Y` yank), word ops (`M-f`/
   `M-b`, `M-c`/`M-l`/`M-u` case), `^T` transpose, `^]` goto fence,
   `^U` universal arg (repeat motions/kills/inserts, digits accumulate),
-  `^A`/`^E` bol/eol, `M-s`/`M-r` incremental search, `M-n` hunt,
+  `^A`/`^E` bol/eol, `M-s`/`M-r` incremental search (type to narrow,
+  Backspace to widen, Enter keeps, ESC restores), `M-n` hunt,
   `M-%` query-replace (`y/n/!/q`), `M-x replace-string`, magic
   search (`M-x search-forward-magic`: `. * ^ $ [class]`, host-pinned),
-  `M-q` fill paragraph, stacked 2-pane split (`M-2`/`M-1`/`M-o`),
+  `M-q` fill paragraph to 72 columns (`VEDIT_FILL_COL`), stacked 2-pane
+  split (`M-2`/`M-1`/`M-o`),
   keyboard macros (`M-( M-) M-e`, depth-guarded), `M-x` named commands
   (46, `help` lists keys on the console), `bind-to-key` plus
   `/etc/vedit.rc` + `./vedit.rc` startup (`bind <key> <cmd>`, bare
   commands), `M-!` shell capture into `*shell*`, `M-#` filter region
-  through a program, `M-x grep` (magic) into `*grep*` with `next-error`,
+  (or the whole buffer when no region is set) through a program,
+  `M-x grep` (magic) into `*grep*` with `next-error`,
   read-only toggle, overwrite toggle, `~` backup on save with
   changed-on-disk armed-force, stat-backed mtime guard, status row
-  (`B1/8 Ln Col %` plus `RO OVR REC MRK ARG`). Clipboard Phase 2 is
+  (`name [Lang] B1/8 Ln 12/300(4%) Col 5` plus the `RO OVR REC MRK
+  SEL META ARG` flags and a trailing message). Clipboard Phase 2 is
   wired: mouse drag selects into syscalls 249/250 (4 KB, fail closed,
   inverted highlight, `SEL` flag), `M-v`/`M-x paste` pastes, `M-W`/
-  `M-x copy-to-clipboard` copies the emacs region, and
-  `--selftest-build` proves the wire live (set/get roundtrip plus the
+  `M-x copy-to-clipboard` copies the emacs region, and the shell
+  `clip` builtin shares the same 4 KB slot; `--selftest-build` proves
+  the wire live (set/get roundtrip plus the
   oversize/undersize refusals). Save/Find/Name/Run/Link/
-  Buf/M-x/Done are also clickable buttons; the wheel scrolls by moving the cursor (the old
+  Buf/M-x/Done are also clickable buttons (labels `^O Save`, `^W Find`,
+  `^N Name`, `^R Run`, `^L Link`, `Buf`, `M-x`, `^X Done`); the wheel scrolls by moving the cursor (the old
   code moved only the viewport offset, which the cursor-follow pass
    snapped straight back, so wheeling long files did nothing). A
    4096-line / 255-char heap buffer (1 MB pool, so real sources like
    `freedom.c` at 1236 lines open whole)
    with the same fail-closed rules as `edit`: full lines, overflowing
    joins and full buffers refuse whole, and a truncated load refuses
-   to save and to build. The frame loop polls instead of blocking on a
+   to save and to build. There is no undo stack (uemacs never had
+   one). The frame loop polls instead of blocking on a
    key (8 ms pacing like the node editor) so wheel and mouse drain every
   frame; the ESC `[` decoder is a cross-frame state machine with a
-  100 ms timeout, degrading to a bare Esc instead of hanging.
+   1000 ms timeout, degrading to a bare Esc instead of hanging. A
+   scripted quit must therefore not carry a trailing newline: the decoder
+   would read it as the second byte of a sequence and turn the quit into
+   a Meta key (the BDD scenario quits with `^Q` for that reason).
+- Key prefixes: `^X` is Control+key; `M-x` is ESC then the key
+  within one second (`VEDIT_ESC_MS` 1000), and the status row shows
+  `META` while that prefix is armed, so a lone ESC quits only after
+  the same one-second pause. Holding Alt just types the letter (the
+  PS/2 driver folds Ctrl+letter into a control code only, and nothing
+  else, in `drivers/kbd.c`), and physical Ctrl+Space arrives as a
+  plain space, so `M-SP` (ESC, Space) is the reliable set mark. If
+  no key responds at all, the terminal owns the keyboard: focus the
+  graphics window (Alt-Tab or its taskbar button) and try again.
 - Build/run (`^R`, `^L`, single-file contract in `progs/vedit/vedit.c`):
   `^R` saves then routes by extension through `SYS_SPAWN` (215) so the
   IDE survives the child: `.c`/`.h` compile with
@@ -138,7 +161,9 @@ beside it).
 `bin/file` is the graphical file browser, a ring-3 Nuklear app built like
 vedit (host gcc `-static`, MiniFS with a bare-name alias, source beside
 it at `progs/file/file.c`, one file per contract with a centralized
-config). It lists the unified filesystem (ramdisk first, MiniFS fallback)
+config). Commands: `file` (GUI: navigate, open, run, preview) and
+`file --selftest` (headless: assoc vectors plus a live listing).
+It lists the unified filesystem (ramdisk first, MiniFS fallback)
 through the DIR_LIST syscall (241, `MINIOS_SYS_DIR_LIST`), which fills a
 user buffer with NUL-separated names (dirs carry `/`) and returns the
 count, fail closed on bad pointers, overlong names and truncation.
@@ -208,8 +233,9 @@ count, fail closed on bad pointers, overlong names and truncation.
   plus an assoc push/clear/free cycle on the host.
 - Every NK app quits the same way: ESC or Alt+F4 through the platform
   latch (`nk_quit_requested` in `nuklear_minios.c`, polled per frame)
-  plus an on-canvas Quit control (file's `quit` button, piano's `Quit`
-  pad, the node editor's existing Quit; vedit already exits on Esc/^X).
+  plus an on-canvas Quit control (file's `quit` button, paint's `quit`
+  button, piano's `Quit` pad, the node editor's existing Quit; vedit
+  already exits on Esc/^X).
   No window depends on the title-bar X alone.
 
 ### Paint program (`paint`, ring 3, Nuklear)
@@ -217,17 +243,29 @@ count, fail closed on bad pointers, overlong names and truncation.
 the file browser (host gcc `-static`, MiniFS with a bare-name alias,
 source beside it at `progs/paint/paint.c`, one file per contract with a
 centralized config). The canvas is 320x200 palette indices blitted into
-the NK back-buffer after rasterize (the file-preview pattern); the widget
+the NK back-buffer after rasterize (the file-preview pattern); that
+back-buffer is the shared `NK_BACKBUF_ADDR` window, presented through
+`SYS_NK_FRAME` (220) like every other NK app. The widget
 bounds from `nk_widget` are the single source for both the blit offset
 and mouse hit-testing, so no screen coordinate is hardcoded. There is no
 GLFW or OpenGL anywhere: MiniOS has no GPU stack, only the 8-bit
 composited back-buffer, so the desktop GLFW demo layout does not apply.
+Commands: `paint` (GUI: draw, save to the default `/drawing.png`),
+`paint <file>` (preloads it) and `paint --selftest`
+(headless: vectors, png, file, frame). Build: `make progs/bin/paint.elf`
+(or just `make` to rebuild everything).
 
-- Tools: brush, line, rect, circle, fill and eraser with sizes 1/2/4; a
-  16-swatch picker drawn from exact hybrid-palette entries (black, the 14
-  saturated accents, white), so a saved PNG reloads pixel-identical
+- Layout: the white canvas cell is exactly 320 px wide (`PAINT_W`), so
+  every white pixel shown is paintable; the tools, the 16 swatches and
+  the size buttons live in the side panel beside the canvas, never
+  above an oversized slot.
+- Tools: brush, line, rect, circle, fill and eraser with sizes 1/2/4;
+  a 16-swatch picker drawn from exact hybrid-palette entries (black, the
+  14 saturated accents, white), so a saved PNG reloads pixel-identical
   (nearest-mapping ties resolve to an identical RGB, never a wrong
-  color). Shape tools rubber-band from a 64 KB backup copy taken at
+  color). Some swatches tie with the 6x6x6 cube (black and white live
+  in both ranges), so the selftest asserts by RGB color, never by
+  index. Shape tools rubber-band from a 64 KB backup copy taken at
   stroke start. The status row always shows tool, swatch, size and the
   last file result.
 - PNG save/load is self-contained: the writer emits 8-bit truecolor PNG
@@ -260,7 +298,7 @@ composited back-buffer, so the desktop GLFW demo layout does not apply.
 ### Nuklear themes (`nuklear_theme`, all NK apps)
 `progs/nuklear/nuklear_theme.c` (header `nuklear_theme.h`) is the one
 theme loader every NK app links through `NUKLEAR_PLATFORM` (file,
-nuklear, piano, vedit): each calls `nk_theme_apply(&ctx, 0)` after
+nuklear, piano, vedit, paint): each calls `nk_theme_apply(&ctx, 0)` after
 `nk_init_fixed`, which resolves `/etc/themes/current` (else `dark`),
 loads `/etc/themes/<name>` over a compiled-in fallback and pushes the
 32 colors via `nk_style_from_table`. A theme file is `key r g b` lines
@@ -279,8 +317,68 @@ so the widget is serial-observable. Proof: `file --selftest` prints
 the active theme name (BDD pins `theme dark`), `make test-theme` pins
 the contract plus all five shipped files (`dark light amber forest
 slate`, 32 keys each, unique, palette-exact, `current` naming an
-existing file).
+existing file). Build: `make progs/bin/nuklear.elf` (or just `make` to
+rebuild everything).
 
+### Lua (`lua.elf`)
+Lua 5.4 runs inside MiniOS exactly like DOOM and MicroPython: the
+upstream reference interpreter is cloned as a sibling checkout and
+built on the host with the ordinary gcc toolchain against the static
+glibc, and the resulting `ET_EXEC` binary ships on MiniFS, where it
+runs as a ring-3 process through the Linux syscall ABI. The upstream
+`lua.c` main is replaced by `progs/lua/lua_main.c`, which registers
+the `minios` C module (`progs/lua/minios.c`) globally before any
+script runs, so the kernel services are a plain global table exactly
+like `import minios` in MicroPython.
+
+- **Source**: `LUA_DIR` (default `../lua`), `LUA_URL` and the pinned
+  release tag `LUA_REF` (v5.4.7) are overridable like every toolchain
+  location, and `make sources` clones it with
+  `--depth 1 -b $LUA_REF`; an existing checkout is never touched
+  (`docs/spec/source.md` owns that contract).
+- **Build**: `gcc -static -no-pie` against the upstream library
+  sources plus `progs/lua/{minios.c,lua_main.c}`, exactly the linking
+  contract DOOM follows. The ELF is copied to `progs/bin/lua.elf` and
+  packed into `minifs.bin` at its root together with the `lua`
+  bare-name alias, so it never inflates the kernel image.
+- **CLI**: `lua -e <expr>`, `lua -l minios` (the only loadable
+  library, the statically linked module itself), `lua -v`/`--version`,
+  `lua <script> [args]` and `lua` for the interactive REPL; the banner
+  is `Lua 5.4  (MiniOS)  type 'os.exit()' to quit`, the REPL reads
+  stdin from the serial console and a line starting with `=` means
+  `return <expr>`. `run lua.elf`, bare `lua.elf` and bare `lua` all
+  work. Scripts are opened through the unified filesystem (ramdisk
+  first, MiniFS fallback).
+- **Bindings** (`progs/lua/minios.c`): `minios.time_ms()` (ms since
+  boot), `minios.rtc()` (hour, minute, second from the CMOS clock),
+  `minios.fb_info()` (width, height, pitch), `minios.vol([v])`
+  (PC-speaker volume 0..100), `minios.pal(buf)` (768-byte VGA DAC
+  palette), `minios.pcspeaker(freq, ms)` (tone for `ms` milliseconds)
+  and `minios.run(path[, args][, redirect])`.
+- **Spawn**: `minios.run` invokes `SYS_SPAWN` (215), which runs a
+  child program while preserving the Lua interpreter (user window,
+  file descriptors, brk and mmap cursors), so a script orchestrates
+  the toolchain from inside the OS. `args` is a table of strings (a
+  non-table is an error) and `redirect` is a single output-file path
+  that captures the console output; the call returns the child exit
+  code, or `nil` plus `spawn failed` when the kernel refuses:
+
+  ```
+  miniOS> lua -e "minios.run('/objects/minigcc.o', {'/src/fib.c'}, '/asm/fib.s')"
+  miniOS> lua -e "minios.run('/objects/ld.o', {'-f','elf','-o','/bin/fib.elf','/asm/fib.s'})"
+  miniOS> lua -e "minios.run('/bin/fib.elf')"
+  exit code: 0
+  ```
+
+  The kernel resolves the path against the cwd, so a bare
+  `objects/minigcc.o` depends on where the shell stands; the
+  root-anchored `/objects/...` form is the portable one.
+- **In-OS suite**: `src/test.lua` (on the ramdisk next to
+  `src/test.py` and `src/test.lisp`) exercises the `time_ms`, `rtc`,
+  `fb_info`, `vol` and `run` bindings, the filesystem and the
+  compression and encryption tools (the `lz4`, `lzss` and `aes`
+  roundtrips through `minios.run`). It covers neither `pal` nor
+  `pcspeaker`.
 
 ## MicroPython (`micropython.elf`)
 MicroPython runs inside MiniOS exactly like DOOM does: the upstream project
@@ -300,7 +398,8 @@ repository as an out-of-tree unix-port variant.
 - **Variant**: `progs/micropython/variants/minios/{mpconfigvariant.h,
   mpconfigvariant.mk}` is a variant of `ports/unix` selected at build time
   through the `VARIANT_DIR` mechanism, so the upstream checkout carries no
-  modifications. The configuration keeps the compiler, floats, the `os`
+  modifications. The configuration keeps the compiler, floats, computed-goto
+  (`MICROPY_OPT_COMPUTED_GOTO`), the `os`
   module, sockets, `select.poll`, `time` and the frozen `mip` installer
   (docs/spec/python.md owns that surface), and disables readline (the
   kernel console is a cooked, line-based device with its own echo),
@@ -313,7 +412,8 @@ repository as an out-of-tree unix-port variant.
   micropython.elf`, bare `micropython.elf` and bare `micropython` all work;
   `micropython -c "expr"` evaluates, `micropython src/script.py` runs a file
   (opened through the unified fs: ramdisk first, MiniFS fallback), and bare
-  `micropython` reads the interactive REPL from stdin. The process exits
+  `micropython` reads the interactive REPL from stdin (the serial
+  console). The process exits
   with `exit code: N` like any other program.
  - **Kernel ABI**: the binary leans on the same glibc-static stub set DOOM
    proved (`open/openat`, `read`, `write`, `brk`, `mmap`, `fstat`, ...). The
@@ -335,13 +435,25 @@ repository as an out-of-tree unix-port variant.
    ring-3 glibc binary.
 
 - **`minios` module + `SYS_SPAWN` (215)**: the variant ships a `minios` C
-    module exposing kernel services and `run()`; `SYS_SPAWN` runs a ramdisk
+    module (`progs/micropython/variants/minios/minios_module.c`) exposing
+    `time_ms()`, `rtc()` (hour, minute, second), `fb_info()` (width,
+    height, pitch), `vol([v])` (0..100), `pal(buf)` (768-byte VGA DAC
+    palette), `pcspeaker(freq, ms)` and `run(path, args=None,
+    redirect=None)`; `args` must be a list or tuple of strings (max 64)
+    and `redirect` is a single output-file path that captures the
+    console output; `run` returns the child exit code and raises
+    `OSError` on a kernel fault. `SYS_SPAWN` runs a ramdisk
     program from the interpreter while preserving it.  ET_REL children
     (`minigcc.o`, `ld.o`) run at ring 0 through `k_run_rel`; ET_EXEC/ET_DYN
     children run in a fresh isolated window via `proc_spawn_elf` (the same
     path `mrun` uses) and the caller blocks in `do_waitpid`, so the parent
     address space, FS/GS base, fd table and brk/mmap cursors are untouched.
-    This drives `build.py`, `shell.py` and `test.py` on the ramdisk.  The
+    This drives `build.py`, `shell.py` and `test.py` on the ramdisk
+    (`micropython src/build.py` chains minigcc to ld to run and builds
+    every target by default, `micropython src/shell.py` is the pybash
+    layer with variables, pipelines and output capture, `micropython
+    src/test.py` verifies the kernel bindings and the toolchain from
+    inside the machine and then runs every non-graphical binary).  The
     exec frame's kernel stack is `EXEC_KSTACK_SZ` (64 KB, `kernel/exec.c`):
     it must hold a ring-0 toolchain child's deep recursion (minigcc/ld), and
     a child that overflowed the old 32 KB stack wrote into adjacent kernel-heap
@@ -364,9 +476,17 @@ sibling directory to clone and `LISP_DIR` does not exist.
   `close-file`), `exit`, and the MiniOS primitives `time-ms`, `rtc`,
   `fb-info`, `vol`, `pal`, `pcspeaker` and `minios-run` (SYS_SPAWN 215,
   same isolated-window path the other interpreters use). CLI is
-  `lisp [-e expr] [script [args]]` with an interactive REPL on stdin;
-  `lisp src/test.lisp` runs the in-OS suite. `run lisp.elf`, bare
-  `lisp.elf` and bare `lisp` all work.
+  `lisp [-e expr] [script [args]]` with an interactive REPL on stdin
+  (banner `Lisp 2.1 (MiniOS)`);
+  `lisp src/test.lisp` runs the in-OS suite (the file is on the ramdisk
+  next to `src/test.lua` and `src/test.py`). `run lisp.elf`, bare
+  `lisp.elf` and bare `lisp` all work. `minios-run` takes a path, an
+  argument list and a redirect file, and answers the child exit code:
+
+  ```
+  miniOS> lisp -e '(minios-run "/objects/minigcc.o" (quote ("/src/fib.c")) "/asm/_t.s")'
+  0
+  ```
 - **Fail-closed arithmetic**: `+`, `-`, `*` use overflow-checked builtins
   and `/` guards zero and `INT64_MIN / -1`; a violation is an error
   value, never a wrap. File modes are whitelisted to read/write/append
@@ -496,6 +616,10 @@ into a `.cvm` module the interpreter runs.
   errors with diagnostics, computes every node value into a local slot,
   prints through the `printf` native and exits with `OP_HALT`; division by
   zero fails closed (`cvm: runtime error: division by zero`, exit 1).
+  Commands: `nuklear` (GUI: drag nodes, wire pins, compile),
+  `nuklear --selftest`, `nuklear --demo cvm/demo.cvm`,
+  `nuklear --compile src/graph.txt cvm/out.cvm` and `run cvm/out.cvm`
+  to run the compiled module.
 - **Syscall surface**: the kernel adds 219 (`SYS_MOUSE`: read the desktop
   mouse state into a user int[4], resetting the wheel) and 220
   (`SYS_NK_FRAME`: composite the Nuklear back-buffer as a titled window,
@@ -659,7 +783,14 @@ in the style of the sibling
 `../raycastlib` checkout (CC0, cloned by hand, reference only, never
 vendored), exports a multi-sector E1M1 PWAD snapshot to `/saves`, and
 boots the shipped Doom on it with `-file` without ever writing to the
-immutable IWAD.
+immutable IWAD. Commands: `doomedit` (GUI editor), `doomedit --demo
+/saves/dmap0.wad`, `doomedit --preset 8 /saves/dmap1.wad` (the bundled
+levels are 0-8), `doomedit --random [seed] /saves/dmap2.wad`,
+`doomedit --check /saves/dmap0.wad` (validate a snapshot) and `run
+doomgeneric.elf -file /saves/dmap0.wad mini_autoframes 30` to play a
+snapshot headlessly.
+Build: `make progs/bin/doomedit.elf` (or just `make` to rebuild
+everything).
 
 - **PWAD writer (`tools/doom_pwad.py`)**: a single-file host tool with the
   same algorithm as the C exporter (`build`/`check`/`info` verbs). Grid
@@ -698,7 +829,9 @@ immutable IWAD.
   connected rooms joined by corridors, splits them with a door-pierced
   wall divider and stains dark patches plus one nukage pool, with the
   full thing palette (demon, shotgun guy, shotgun, medikit and shells
-  guaranteed), retried until the validator accepts it. Headless:
+  guaranteed), retried until the validator accepts it. Painting any
+  tile (or a line/rect drag) returns the level combo to `Custom`.
+  Headless:
   `doomedit --preset N out.wad` and `doomedit --random [seed] out.wad`;
   the selftest builds every preset plus a fixed-seed random map and
   `make test-doomedit` runs all nine through the Python checker.

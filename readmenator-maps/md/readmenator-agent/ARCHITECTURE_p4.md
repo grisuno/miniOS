@@ -187,6 +187,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `progs/quake2generic/q2generic_minios.c` -> client/keys.h, quake2.h, quakegeneric.h, stdint.h, stdlib.h
 - `progs/quake2generic/snddma_minios.c` -> client/client.h, client/snd_loc.h, stdlib.h
 - `progs/src/apsse.c` -> emmintrin.h, pthread.h, stdint.h, stdio.h, sys/mman.h
+- `progs/src/cvmfmt.c` -> stdio.h
 - `progs/src/fptest.c` -> stdio.h
 - `progs/src/freedom.c` -> stdio.h, sys/socket.h, unistd.h
 - `progs/src/freedom_wl.c` -> stdint.h, stdio.h, sys/socket.h, unistd.h
@@ -261,7 +262,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tests/test_wl.c` -> malloc.h, stdio.h
 - `tests/test_wm.c` -> stdio.h
 - `tests/test_xhci.c` -> stdio.h, stdlib.h
-- `tls_test.c` -> arpa/inet.h, netinet/in.h, stdio.h, stdlib.h, sys/select.h, sys/socket.h, unistd.h
+- `tls_test.c` -> arpa/inet.h, netinet/in.h, stdio.h, stdlib.h, sys/select.h, sys/socket.h, tls_test_roots.h, unistd.h
 - `tools/abi_stamp.c` -> stdio.h
 - `tools/boot_wl.py` -> json, os, pty, select, socket, subprocess, sys, tempfile, termios, tty
 - `tools/check_abi_numbers.py` -> os, re, sys

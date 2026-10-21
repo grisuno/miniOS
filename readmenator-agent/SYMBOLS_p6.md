@@ -3,6 +3,9 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCM2_DMA_BYTES` | macro | `headers/pcm2.h:55` | `#define PCM2_DMA_BYTES` |
+| `PCM2_ERR_BUSY` | macro | `headers/pcm2.h:60` | `#define PCM2_ERR_BUSY` |
+| `PCM2_ERR_INVAL` | macro | `headers/pcm2.h:65` | `#define PCM2_ERR_INVAL` |
 | `PCM2_ERR_NODEV` | macro | `headers/pcm2.h:61` | `#define PCM2_ERR_NODEV` |
 | `PCM2_ERR_NOMEM` | macro | `headers/pcm2.h:62` | `#define PCM2_ERR_NOMEM` |
 | `PCM2_ERR_PERM` | macro | `headers/pcm2.h:63` | `#define PCM2_ERR_PERM` |
@@ -463,7 +466,7 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `spinlock_t` | struct | `headers/spinlock.h:38` | `` |
 | `COND_INIT` | macro | `headers/sync.h:101` | `#define COND_INIT` |
 | `MUTEX_INIT` | macro | `headers/sync.h:70` | `#define MUTEX_INIT` |
-| `RWLOCK_INIT` | macro | `headers/sync.h:116` | `#define RWLOCK_INIT` |
+| `RWLOCK_INIT` | macro | `headers/sync.h:122` | `#define RWLOCK_INIT` |
 | `SEM_INIT` | macro | `headers/sync.h:87` | `#define SEM_INIT(n)` |
 | `SYNC_H` | macro | `headers/sync.h:2` | `#define SYNC_H` |
 | `WAIT_QUEUE_INIT` | macro | `headers/sync.h:48` | `#define WAIT_QUEUE_INIT` |
@@ -480,21 +483,18 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `mutex_t` | struct | `headers/sync.h:63` | `` |
 | `mutex_trylock` | function | `headers/sync.h:75` | `int mutex_trylock(mutex_t *m);` |
 | `mutex_unlock` | function | `headers/sync.h:74` | `void mutex_unlock(mutex_t *m);` |
+| `now` | function | `headers/sync.h:130` | `* available right now (a reader never takes it while a writer waits). */ int rwlock_read_trylock(rwlock_t *rw);` |
 | `pi_get_eff` | function | `headers/sync.h:78` | `int pi_get_eff(int pid);` |
 | `pi_set_base` | function | `headers/sync.h:77` | `void pi_set_base(int pid, int prio);` |
-| `rwlock_init` | function | `headers/sync.h:118` | `void rwlock_init(rwlock_t *rw);` |
-| `rwlock_read_lock` | function | `headers/sync.h:119` | `void rwlock_read_lock(rwlock_t *rw);` |
-| `rwlock_read_unlock` | function | `headers/sync.h:120` | `void rwlock_read_unlock(rwlock_t *rw);` |
-| `rwlock_t` | struct | `headers/sync.h:109` | `` |
-| `rwlock_write_lock` | function | `headers/sync.h:121` | `void rwlock_write_lock(rwlock_t *rw);` |
-| `rwlock_write_unlock` | function | `headers/sync.h:122` | `void rwlock_write_unlock(rwlock_t *rw);` |
+| `rwlock_init` | function | `headers/sync.h:124` | `void rwlock_init(rwlock_t *rw);` |
+| `rwlock_read_lock` | function | `headers/sync.h:125` | `void rwlock_read_lock(rwlock_t *rw);` |
+| `rwlock_read_unlock` | function | `headers/sync.h:126` | `void rwlock_read_unlock(rwlock_t *rw);` |
+| `rwlock_t` | struct | `headers/sync.h:114` | `` |
+| `rwlock_write_lock` | function | `headers/sync.h:127` | `void rwlock_write_lock(rwlock_t *rw);` |
+| `rwlock_write_trylock` | function | `headers/sync.h:132` | `int rwlock_write_trylock(rwlock_t *rw);` |
+| `rwlock_write_unlock` | function | `headers/sync.h:128` | `void rwlock_write_unlock(rwlock_t *rw);` |
 | `sem_init` | function | `headers/sync.h:89` | `void sem_init(sem_t *s, int value);` |
 | `sem_post` | function | `headers/sync.h:91` | `void sem_post(sem_t *s);` |
 | `sem_t` | struct | `headers/sync.h:81` | `` |
-| `sem_wait` | function | `headers/sync.h:90` | `void sem_wait(sem_t *s);` |
-| `sleep_on` | function | `headers/sync.h:51` | `void sleep_on(wait_queue_t *q);` |
-| `wait_queue_t` | struct | `headers/sync.h:42` | `` |
-| `wake_up` | function | `headers/sync.h:52` | `int wake_up(wait_queue_t *q);` |
-| `wake_up_all` | function | `headers/sync.h:53` | `int wake_up_all(wait_queue_t *q);` |
 
 Next: [SYMBOLS_p7.md](SYMBOLS_p7.md)

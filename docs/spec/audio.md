@@ -183,3 +183,115 @@ command (two frequency bytes, low then high) so the clock matches the declared
   spin. Clicking the dock icon over QEMU with a serial-idle watchdog
   reproduced it deterministically (TCG, `-smp 2`, SB16 attached, either
   audio backend, with or without PulseAudio).
+
+### Piano FM synth: Nuked-OPL3 engine and expressive controls (`progs/piano/piano.c`)
+The piano is a ring-3 static ELF (host `gcc -static -no-pie`, Makefile
+target `bin/piano` plus a bare-name alias so `piano` resolves, shipped on
+MiniFS with its source) that runs Nuked-OPL3, a cycle-accurate Yamaha OPL3
+chip emulator vendored as a sibling repo (`NUKED_OPL3_DIR`, cloned by
+`make sources`; the Makefile target fails with a diagnostic when it is
+missing). Each note drives one modulator plus one carrier (2-operator FM)
+on one of the 18 OPL3 channels (`MAX_VOICES` 18). The audio sink, the
+render pacing and the keyboard map are owned by the bullets above ("Piano
+pacing", "Piano keyboard", the pcm2 bullet); this section owns the synth
+and the expressive layer.
+
+- **Operator slots are not contiguous.** Inside a bank the modulators sit
+  at 0,1,2 / 8,9,10 / 16,17,18 and each carrier three slots later
+  (3,4,5 / 11,12,13 / 19,20,21); bank `0x00` for channels 0..8 and
+  `0x100` for 9..17. Addressing a carrier as `2*ch+1` programs channel
+  `ch+1`'s modulator and leaves the real carrier at its reset values
+  (attack rate 0: never opens audibly), so every note plays silence. The
+  carrier is always `modulator slot + 3`.
+- **Patch** (`o3_instrument`): modulator MULT 1 (`0x20` = 0x01), KSL+level
+  0x18 (`0x40`), attack 0xF2 (`0x60`), decay/release 0x85 (`0x80`), sine
+  (`0xE0` = 0); carrier MULT 1, total level from the velocity (`0x40`),
+  attack 0xF4, decay/release 0x77, sine; channel `0xC0` = 0 (algorithm 0,
+  FM mod->carrier, feedback 0). The envelopes are percussive (attack rate
+  15) so a clicked note opens at once.
+- **Pitch** (`o3_note`): the MIDI frequency is halved until it fits the
+  YM3812 register window (`fnum * 65536 / 49716 <= 1000`, at most 7
+  octaves of `block`), then `fnum` goes to `0xA0` and
+  `block<<2 | (fnum>>8 & 3) | 0x20` to `0xB0`; the key-on bit is cleared
+  on release.
+- **Velocity is FM amplitude, not a mixer gain**: the click's vertical
+  position inside a key sets the carrier output level (top = soft, vel 1;
+  bottom = loud, vel 100) as `tl = 0x08 + ((100 - vel) * 0x1F) / 100`,
+  clamped to 0x3F. PC-keyboard notes use vel 80.
+- **Sustain pedal**: while it is held a key release is deferred and the FM
+  voice keeps ringing (the OPL3 decays on its own) until the pedal lifts,
+  which then frees every held voice. When all 18 voices are busy
+  `voice_alloc` steals a sustained voice (the lowest-numbered one) instead
+  of dropping the new note.
+- **Octave shift**: -2..+2 steps of 12 semitones, from the `-Oct`/`+Oct`
+  pads or the `,`/`.` keys; the note is transposed by `12*octave` and
+  clamped to the MIDI range 0..127 (`clamp_midi`).
+- **Master volume**: 0..100, applied last on the mix, 80 at startup, with
+  `-Vol`/`+Vol` stepping by 5.
+- **Live DSP on the mono mix**, per sample, before the 8-bit conversion, in
+  this order: an echo/delay line (feedback 0.35, wet 0.55, line capped at
+  1 s of delay at 22050 Hz; the `Echo` pad toggles 220 ms), a tremolo LFO
+  (5 Hz, depth 0..100%, the `Tremolo` pad toggles 70%, gain scaled over
+  `1-depth..1`), a soft clip (`tanh`, the output always stays inside
+  [-1,1], `Clip` pad) and the master volume. Every stage is reachable
+  through `fx_process`, so the headless selftest drives the FX without an
+  SB16 or the GUI.
+- **Control bar**: `-Oct`, `+Oct`, `-Vol`, `+Vol`, `Sustain`, `Echo`,
+  `Tremolo`, `Clip`, `Quit` (the last one leaves the app).
+- **Headless modes**:
+  - `piano --selftest` prints `piano: selftest ok`. It needs neither the
+    SB16 nor the GUI and covers the velocity mapping (top soft, bottom
+    loud), the sustain hold/release, the octave clamp, the keyboard map and
+    the per-scancode voices (chords, release, sustained release), every FX
+    stage (the master volume scales the mix, the soft clip bounds the
+    output, the echo line keeps ringing after the input stops, the tremolo
+    modulates from sample to sample), the pcm2 pacing constants (one frame
+    bite must exceed one DMA fragment, the hold buffer must cover a whole
+    `MAX_AUDIO_MS` stall, the 500 ms debt horizon must sit below
+    `MAX_AUDIO_MS`) and the FM voice energy (a triggered note must peak
+    over 500, or a misaddressed carrier reads as silence).
+  - `piano --bench` runs the UI render loop for 2000 ms and prints
+    `piano: bench N frames in 2000 ms (~X fps, audio A ms, ui U ms)`.
+  - `piano --pcm2-probe` opens pcm2 `NONBLOCK`, streams one 2048-byte
+    pattern, closes, reopens and closes again, printing
+    `pcm2: probe ok (accepted=N)`. A draining engine accepts all 2048, a
+    stalled one accepts the first kernel ring (1024 B), so N is a range,
+    never an exact count.
+- **No legacy fallback**: when the pcm2 open is refused the piano prints
+  `piano: pcm2 unavailable (%ld), silent` and stays silent. It never
+  falls back to the 221/222 legacy ring, which stays the ~650 ms Doom
+  music path (see above).
+
+### OPL3 FM synth demo (`progs/src/opl3.c`)
+`opl3` is the standalone headless demo of the same Nuked-OPL3 engine: a
+static ring-3 ET_EXEC (host `gcc -static`, Makefile target `bin/opl3`)
+built from `progs/src/opl3.c` plus the nuked-opl3 sources, shipped on
+MiniFS under the bare name `opl3`. The shell also resolves the
+`run bin/opl3` spelling through its basename fallback. It runs headless,
+produces audio through the SB16 and exits when the melody completes.
+
+```
+miniOS> opl3
+```
+
+- **Sink**: the legacy SB16 PCM path, not pcm2: `SYS_SB16_PCM_OPEN` 221
+  and `SYS_SB16_PCM_SUBMIT` 222 (`MINIOS_SYS_SB16_OPEN` /
+  `MINIOS_SYS_SB16_SUBMIT` in `progs/minios_abi.h`), 8-bit unsigned mono
+  at 22050 Hz. `sys_open(1)` switches the SB16 to PCM mode; each submit is
+  one 2048-byte buffer (the `SB16_PCM_BUF` size) and is followed by a
+  real-time wait of one buffer (`BUF_MS` 92 ms) so the kernel ring stays
+  full without overflowing.
+- **Instrument**: 2-operator FM on channel 0 (modulator op0, carrier op1),
+  algorithm 0 (FM mod->carrier), feedback 0; modulator MULT 1, level 0x10,
+  attack 0xF0, sustain full with a short release 0xF5, sine; carrier MULT
+  1, level 0x00, attack/decay 0x93, sustain/release 0xF5.
+- **Melody**: a 10-note scale from A3 (220.00 Hz) to C5 (523.25 Hz) —
+  A3 B3 C4 D4 E4 F4 G4 A4 B4 C5 — 160 ms per note, up the scale and then
+  back down to B3. Each note is written with `block` 4 and
+  `fnum = freq * 65536 / 49716`. The chip output is rendered in
+  2048-sample blocks, mixed to mono and converted 16-bit -> 8-bit
+  unsigned before the submit.
+- **End of run**: a 300 ms drain so the tail is not cut off, then
+  `opl3: gen_ms=N failures=M (streamed clean|dropped)`. With no SB16
+  present the submit fails and the demo reports it only in that summary
+  line; it is an audio demo, not a diagnostic.

@@ -99,12 +99,13 @@ file code. I document this so the next port with tiered IWAD
 editions checks its edition gates before debugging its lumps.
 
 ## Revision 2: bundled levels and procedural maps
-The editor now ships five compiled-in levels (`Hangar of Dawn`, `Imp
-Gallery`, `Demon Pit`, `Crossfire Chapel`, `Fortress of Lead`) in the
-same one-char-per-tile grid text the editor saves, a few hundred bytes
+The editor now ships nine compiled-in levels (`Hangar of Dawn`, `Imp
+Gallery`, `Demon Pit`, `Crossfire Chapel`, `Fortress of Lead`, `Sunken
+Halls`, `Baron's Court`, `Gatehouse`, `Nukage Mills`) in the same
+one-char-per-tile grid text the editor saves, a few hundred bytes
 each, picked from a combo box beside a Random button that grows a fresh
 map with the full thing palette (demons guaranteed) and keeps the
 first layout the validator accepts. `doomedit --preset N out.wad`
 exports a level headlessly; the selftest builds every preset plus a
-fixed-seed random map, and `make test-doomedit` runs all five through
+fixed-seed random map, and `make test-doomedit` runs all nine through
 the Python checker so the two writers cannot drift.

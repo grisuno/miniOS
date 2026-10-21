@@ -3,76 +3,101 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:315` | `#define MINIOS_SYS_PALETTE` |
-| `MINIOS_SYS_PCM2_CLOSE` | macro | `progs/minios_abi.h:367` | `#define MINIOS_SYS_PCM2_CLOSE` |
-| `MINIOS_SYS_PCM2_OPEN` | macro | `progs/minios_abi.h:365` | `#define MINIOS_SYS_PCM2_OPEN` |
-| `MINIOS_SYS_PCM2_WRITE` | macro | `progs/minios_abi.h:366` | `#define MINIOS_SYS_PCM2_WRITE` |
-| `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:318` | `#define MINIOS_SYS_PCSPK_INIT` |
-| `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:319` | `#define MINIOS_SYS_PCSPK_TONE` |
-| `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:323` | `#define MINIOS_SYS_PCSPK_VOL` |
-| `MINIOS_SYS_POLL` | macro | `progs/minios_abi.h:243` | `#define MINIOS_SYS_POLL` |
-| `MINIOS_SYS_PRLIMIT64` | macro | `progs/minios_abi.h:293` | `#define MINIOS_SYS_PRLIMIT64` |
-| `MINIOS_SYS_READ` | macro | `progs/minios_abi.h:238` | `#define MINIOS_SYS_READ` |
-| `MINIOS_SYS_READLINK` | macro | `progs/minios_abi.h:270` | `#define MINIOS_SYS_READLINK` |
-| `MINIOS_SYS_RECVFROM` | macro | `progs/minios_abi.h:259` | `#define MINIOS_SYS_RECVFROM` |
-| `MINIOS_SYS_RENAME` | macro | `progs/minios_abi.h:269` | `#define MINIOS_SYS_RENAME` |
-| `MINIOS_SYS_RLIMIT` | macro | `progs/minios_abi.h:351` | `#define MINIOS_SYS_RLIMIT` |
-| `MINIOS_SYS_RSEQ` | macro | `progs/minios_abi.h:295` | `#define MINIOS_SYS_RSEQ` |
-| `MINIOS_SYS_RTC` | macro | `progs/minios_abi.h:321` | `#define MINIOS_SYS_RTC` |
-| `MINIOS_SYS_RT_SIGACTION` | macro | `progs/minios_abi.h:249` | `#define MINIOS_SYS_RT_SIGACTION` |
-| `MINIOS_SYS_RT_SIGPROCMASK` | macro | `progs/minios_abi.h:250` | `#define MINIOS_SYS_RT_SIGPROCMASK` |
-| `MINIOS_SYS_SB16_OPEN` | macro | `progs/minios_abi.h:333` | `#define MINIOS_SYS_SB16_OPEN` |
-| `MINIOS_SYS_SB16_PUMP` | macro | `progs/minios_abi.h:336` | `#define MINIOS_SYS_SB16_PUMP` |
-| `MINIOS_SYS_SB16_STREAM_CLOSE` | macro | `progs/minios_abi.h:340` | `#define MINIOS_SYS_SB16_STREAM_CLOSE` |
-| `MINIOS_SYS_SB16_STREAM_OPEN` | macro | `progs/minios_abi.h:339` | `#define MINIOS_SYS_SB16_STREAM_OPEN` |
-| `MINIOS_SYS_SB16_STREAM_SUBMIT` | macro | `progs/minios_abi.h:341` | `#define MINIOS_SYS_SB16_STREAM_SUBMIT` |
-| `MINIOS_SYS_SB16_STREAM_VOLUME` | macro | `progs/minios_abi.h:342` | `#define MINIOS_SYS_SB16_STREAM_VOLUME` |
-| `MINIOS_SYS_SB16_SUBMIT` | macro | `progs/minios_abi.h:334` | `#define MINIOS_SYS_SB16_SUBMIT` |
-| `MINIOS_SYS_SCHED_YIELD` | macro | `progs/minios_abi.h:254` | `#define MINIOS_SYS_SCHED_YIELD` |
-| `MINIOS_SYS_SECCOMP` | macro | `progs/minios_abi.h:349` | `#define MINIOS_SYS_SECCOMP` |
-| `MINIOS_SYS_SENDTO` | macro | `progs/minios_abi.h:258` | `#define MINIOS_SYS_SENDTO` |
-| `MINIOS_SYS_SET_ROBUST_LIST` | macro | `progs/minios_abi.h:289` | `#define MINIOS_SYS_SET_ROBUST_LIST` |
-| `MINIOS_SYS_SET_TID_ADDRESS` | macro | `progs/minios_abi.h:297` | `#define MINIOS_SYS_SET_TID_ADDRESS` |
-| `MINIOS_SYS_SHUTDOWN` | macro | `progs/minios_abi.h:260` | `#define MINIOS_SYS_SHUTDOWN` |
-| `MINIOS_SYS_SOCKET` | macro | `progs/minios_abi.h:256` | `#define MINIOS_SYS_SOCKET` |
-| `MINIOS_SYS_SPAWN` | macro | `progs/minios_abi.h:324` | `#define MINIOS_SYS_SPAWN` |
-| `MINIOS_SYS_STATX` | macro | `progs/minios_abi.h:285` | `#define MINIOS_SYS_STATX` |
-| `MINIOS_SYS_SUBMIT_BATCH` | macro | `progs/minios_abi.h:346` | `#define MINIOS_SYS_SUBMIT_BATCH` |
-| `MINIOS_SYS_TGKILL` | macro | `progs/minios_abi.h:299` | `#define MINIOS_SYS_TGKILL` |
-| `MINIOS_SYS_THREAD_SPAWN` | macro | `progs/minios_abi.h:343` | `#define MINIOS_SYS_THREAD_SPAWN` |
-| `MINIOS_SYS_TIME` | macro | `progs/minios_abi.h:313` | `#define MINIOS_SYS_TIME` |
-| `MINIOS_SYS_TLS_HANDSHAKE` | macro | `progs/minios_abi.h:308` | `#define MINIOS_SYS_TLS_HANDSHAKE` |
-| `MINIOS_SYS_TLS_RECV` | macro | `progs/minios_abi.h:310` | `#define MINIOS_SYS_TLS_RECV` |
-| `MINIOS_SYS_TLS_SEND` | macro | `progs/minios_abi.h:309` | `#define MINIOS_SYS_TLS_SEND` |
-| `MINIOS_SYS_UNAME` | macro | `progs/minios_abi.h:267` | `#define MINIOS_SYS_UNAME` |
-| `MINIOS_SYS_UNLINK` | macro | `progs/minios_abi.h:268` | `#define MINIOS_SYS_UNLINK` |
-| `MINIOS_SYS_VFORK` | macro | `progs/minios_abi.h:262` | `#define MINIOS_SYS_VFORK` |
-| `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:317` | `#define MINIOS_SYS_VGA_MODE` |
-| `MINIOS_SYS_WAIT4` | macro | `progs/minios_abi.h:265` | `#define MINIOS_SYS_WAIT4` |
-| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:414` | `#define MINIOS_SYS_WINDOW_PRESENT` |
-| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:415` | `#define MINIOS_SYS_WINDOW_TITLE` |
-| `MINIOS_SYS_WL_ATTACH` | macro | `progs/minios_abi.h:358` | `#define MINIOS_SYS_WL_ATTACH` |
-| `MINIOS_SYS_WL_COMMIT` | macro | `progs/minios_abi.h:359` | `#define MINIOS_SYS_WL_COMMIT` |
-| `MINIOS_SYS_WL_INPUT` | macro | `progs/minios_abi.h:360` | `#define MINIOS_SYS_WL_INPUT` |
-| `MINIOS_SYS_WRITE` | macro | `progs/minios_abi.h:239` | `#define MINIOS_SYS_WRITE` |
-| `MINIOS_SYS_WRITEV` | macro | `progs/minios_abi.h:252` | `#define MINIOS_SYS_WRITEV` |
-| `MINIOS_USER_BRK_END` | macro | `progs/minios_abi.h:118` | `#define MINIOS_USER_BRK_END` |
-| `MINIOS_USER_LOAD_BASE` | macro | `progs/minios_abi.h:113` | `#define MINIOS_USER_LOAD_BASE` |
-| `MINIOS_USER_LOAD_END` | macro | `progs/minios_abi.h:114` | `#define MINIOS_USER_LOAD_END` |
-| `MINIOS_USER_STACK_BASE` | macro | `progs/minios_abi.h:117` | `#define MINIOS_USER_STACK_BASE` |
-| `MINIOS_USER_STACK_SIZE` | macro | `progs/minios_abi.h:115` | `#define MINIOS_USER_STACK_SIZE` |
-| `MINIOS_USER_STACK_TOP` | macro | `progs/minios_abi.h:116` | `#define MINIOS_USER_STACK_TOP` |
-| `SYS_FB_INFO` | macro | `progs/minios_abi.h:433` | `#define SYS_FB_INFO` |
-| `SYS_PALETTE` | macro | `progs/minios_abi.h:429` | `#define SYS_PALETTE` |
-| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:430` | `#define SYS_PCSPK_INIT` |
-| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:431` | `#define SYS_PCSPK_TONE` |
-| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:434` | `#define SYS_PCSPK_VOL` |
-| `SYS_RTC` | macro | `progs/minios_abi.h:432` | `#define SYS_RTC` |
-| `SYS_SPAWN` | macro | `progs/minios_abi.h:435` | `#define SYS_SPAWN` |
-| `SYS_TIME` | macro | `progs/minios_abi.h:436` | `#define SYS_TIME` |
-| `SYS_TIME_MS` | macro | `progs/minios_abi.h:428` | `#define SYS_TIME_MS` |
-| `SYS_WRITE` | macro | `progs/minios_abi.h:437` | `#define SYS_WRITE` |
-| `clock_nanosleep` | function | `progs/minios_abi.h:338` | `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...` |
+| `MINIOS_SYS_GETC_RAW` | macro | `progs/minios_abi.h:352` | `#define MINIOS_SYS_GETC_RAW` |
+| `MINIOS_SYS_GETPID` | macro | `progs/minios_abi.h:260` | `#define MINIOS_SYS_GETPID` |
+| `MINIOS_SYS_GETRANDOM` | macro | `progs/minios_abi.h:299` | `#define MINIOS_SYS_GETRANDOM` |
+| `MINIOS_SYS_GETTID` | macro | `progs/minios_abi.h:276` | `#define MINIOS_SYS_GETTID` |
+| `MINIOS_SYS_GETTIMEOFDAY` | macro | `progs/minios_abi.h:284` | `#define MINIOS_SYS_GETTIMEOFDAY` |
+| `MINIOS_SYS_GFX_PRESENT` | macro | `progs/minios_abi.h:353` | `#define MINIOS_SYS_GFX_PRESENT` |
+| `MINIOS_SYS_GFX_SET_TITLE` | macro | `progs/minios_abi.h:340` | `#define MINIOS_SYS_GFX_SET_TITLE` |
+| `MINIOS_SYS_GFX_ZOOM` | macro | `progs/minios_abi.h:358` | `#define MINIOS_SYS_GFX_ZOOM` |
+| `MINIOS_SYS_IOCTL` | macro | `progs/minios_abi.h:256` | `#define MINIOS_SYS_IOCTL` |
+| `MINIOS_SYS_KBD` | macro | `progs/minios_abi.h:319` | `#define MINIOS_SYS_KBD` |
+| `MINIOS_SYS_KBD_RAW` | macro | `progs/minios_abi.h:321` | `#define MINIOS_SYS_KBD_RAW` |
+| `MINIOS_SYS_KILL` | macro | `progs/minios_abi.h:271` | `#define MINIOS_SYS_KILL` |
+| `MINIOS_SYS_LSEEK` | macro | `progs/minios_abi.h:249` | `#define MINIOS_SYS_LSEEK` |
+| `MINIOS_SYS_LZ4_COMPRESS` | macro | `progs/minios_abi.h:330` | `#define MINIOS_SYS_LZ4_COMPRESS` |
+| `MINIOS_SYS_LZ4_DECOMPRESS` | macro | `progs/minios_abi.h:335` | `#define MINIOS_SYS_LZ4_DECOMPRESS` |
+| `MINIOS_SYS_MINFO` | macro | `progs/minios_abi.h:399` | `#define MINIOS_SYS_MINFO` |
+| `MINIOS_SYS_MMAP` | macro | `progs/minios_abi.h:250` | `#define MINIOS_SYS_MMAP` |
+| `MINIOS_SYS_MOUSE` | macro | `progs/minios_abi.h:336` | `#define MINIOS_SYS_MOUSE` |
+| `MINIOS_SYS_MPROTECT` | macro | `progs/minios_abi.h:251` | `#define MINIOS_SYS_MPROTECT` |
+| `MINIOS_SYS_MUNMAP` | macro | `progs/minios_abi.h:252` | `#define MINIOS_SYS_MUNMAP` |
+| `MINIOS_SYS_NEWFSTATAT` | macro | `progs/minios_abi.h:287` | `#define MINIOS_SYS_NEWFSTATAT` |
+| `MINIOS_SYS_NICE` | macro | `progs/minios_abi.h:355` | `#define MINIOS_SYS_NICE` |
+| `MINIOS_SYS_NK_FRAME` | macro | `progs/minios_abi.h:337` | `#define MINIOS_SYS_NK_FRAME` |
+| `MINIOS_SYS_OPEN` | macro | `progs/minios_abi.h:245` | `#define MINIOS_SYS_OPEN` |
+| `MINIOS_SYS_OPENAT` | macro | `progs/minios_abi.h:286` | `#define MINIOS_SYS_OPENAT` |
+| `MINIOS_SYS_PALETTE` | macro | `progs/minios_abi.h:320` | `#define MINIOS_SYS_PALETTE` |
+| `MINIOS_SYS_PCM2_CLOSE` | macro | `progs/minios_abi.h:373` | `#define MINIOS_SYS_PCM2_CLOSE` |
+| `MINIOS_SYS_PCM2_OPEN` | macro | `progs/minios_abi.h:371` | `#define MINIOS_SYS_PCM2_OPEN` |
+| `MINIOS_SYS_PCM2_WRITE` | macro | `progs/minios_abi.h:372` | `#define MINIOS_SYS_PCM2_WRITE` |
+| `MINIOS_SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:323` | `#define MINIOS_SYS_PCSPK_INIT` |
+| `MINIOS_SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:324` | `#define MINIOS_SYS_PCSPK_TONE` |
+| `MINIOS_SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:328` | `#define MINIOS_SYS_PCSPK_VOL` |
+| `MINIOS_SYS_POLL` | macro | `progs/minios_abi.h:248` | `#define MINIOS_SYS_POLL` |
+| `MINIOS_SYS_PRLIMIT64` | macro | `progs/minios_abi.h:298` | `#define MINIOS_SYS_PRLIMIT64` |
+| `MINIOS_SYS_READ` | macro | `progs/minios_abi.h:243` | `#define MINIOS_SYS_READ` |
+| `MINIOS_SYS_READLINK` | macro | `progs/minios_abi.h:275` | `#define MINIOS_SYS_READLINK` |
+| `MINIOS_SYS_RECVFROM` | macro | `progs/minios_abi.h:264` | `#define MINIOS_SYS_RECVFROM` |
+| `MINIOS_SYS_RENAME` | macro | `progs/minios_abi.h:274` | `#define MINIOS_SYS_RENAME` |
+| `MINIOS_SYS_RLIMIT` | macro | `progs/minios_abi.h:356` | `#define MINIOS_SYS_RLIMIT` |
+| `MINIOS_SYS_RSEQ` | macro | `progs/minios_abi.h:300` | `#define MINIOS_SYS_RSEQ` |
+| `MINIOS_SYS_RTC` | macro | `progs/minios_abi.h:326` | `#define MINIOS_SYS_RTC` |
+| `MINIOS_SYS_RT_SIGACTION` | macro | `progs/minios_abi.h:254` | `#define MINIOS_SYS_RT_SIGACTION` |
+| `MINIOS_SYS_RT_SIGPROCMASK` | macro | `progs/minios_abi.h:255` | `#define MINIOS_SYS_RT_SIGPROCMASK` |
+| `MINIOS_SYS_SB16_OPEN` | macro | `progs/minios_abi.h:338` | `#define MINIOS_SYS_SB16_OPEN` |
+| `MINIOS_SYS_SB16_PUMP` | macro | `progs/minios_abi.h:341` | `#define MINIOS_SYS_SB16_PUMP` |
+| `MINIOS_SYS_SB16_STREAM_CLOSE` | macro | `progs/minios_abi.h:345` | `#define MINIOS_SYS_SB16_STREAM_CLOSE` |
+| `MINIOS_SYS_SB16_STREAM_OPEN` | macro | `progs/minios_abi.h:344` | `#define MINIOS_SYS_SB16_STREAM_OPEN` |
+| `MINIOS_SYS_SB16_STREAM_SUBMIT` | macro | `progs/minios_abi.h:346` | `#define MINIOS_SYS_SB16_STREAM_SUBMIT` |
+| `MINIOS_SYS_SB16_STREAM_VOLUME` | macro | `progs/minios_abi.h:347` | `#define MINIOS_SYS_SB16_STREAM_VOLUME` |
+| `MINIOS_SYS_SB16_SUBMIT` | macro | `progs/minios_abi.h:339` | `#define MINIOS_SYS_SB16_SUBMIT` |
+| `MINIOS_SYS_SCHED_YIELD` | macro | `progs/minios_abi.h:259` | `#define MINIOS_SYS_SCHED_YIELD` |
+| `MINIOS_SYS_SECCOMP` | macro | `progs/minios_abi.h:354` | `#define MINIOS_SYS_SECCOMP` |
+| `MINIOS_SYS_SENDTO` | macro | `progs/minios_abi.h:263` | `#define MINIOS_SYS_SENDTO` |
+| `MINIOS_SYS_SET_ROBUST_LIST` | macro | `progs/minios_abi.h:294` | `#define MINIOS_SYS_SET_ROBUST_LIST` |
+| `MINIOS_SYS_SET_TID_ADDRESS` | macro | `progs/minios_abi.h:302` | `#define MINIOS_SYS_SET_TID_ADDRESS` |
+| `MINIOS_SYS_SHUTDOWN` | macro | `progs/minios_abi.h:265` | `#define MINIOS_SYS_SHUTDOWN` |
+| `MINIOS_SYS_SOCKET` | macro | `progs/minios_abi.h:261` | `#define MINIOS_SYS_SOCKET` |
+| `MINIOS_SYS_SPAWN` | macro | `progs/minios_abi.h:329` | `#define MINIOS_SYS_SPAWN` |
+| `MINIOS_SYS_STATX` | macro | `progs/minios_abi.h:290` | `#define MINIOS_SYS_STATX` |
+| `MINIOS_SYS_SUBMIT_BATCH` | macro | `progs/minios_abi.h:351` | `#define MINIOS_SYS_SUBMIT_BATCH` |
+| `MINIOS_SYS_TGKILL` | macro | `progs/minios_abi.h:304` | `#define MINIOS_SYS_TGKILL` |
+| `MINIOS_SYS_THREAD_SPAWN` | macro | `progs/minios_abi.h:348` | `#define MINIOS_SYS_THREAD_SPAWN` |
+| `MINIOS_SYS_TIME` | macro | `progs/minios_abi.h:318` | `#define MINIOS_SYS_TIME` |
+| `MINIOS_SYS_TLS_HANDSHAKE` | macro | `progs/minios_abi.h:313` | `#define MINIOS_SYS_TLS_HANDSHAKE` |
+| `MINIOS_SYS_TLS_RECV` | macro | `progs/minios_abi.h:315` | `#define MINIOS_SYS_TLS_RECV` |
+| `MINIOS_SYS_TLS_SEND` | macro | `progs/minios_abi.h:314` | `#define MINIOS_SYS_TLS_SEND` |
+| `MINIOS_SYS_UNAME` | macro | `progs/minios_abi.h:272` | `#define MINIOS_SYS_UNAME` |
+| `MINIOS_SYS_UNLINK` | macro | `progs/minios_abi.h:273` | `#define MINIOS_SYS_UNLINK` |
+| `MINIOS_SYS_VFORK` | macro | `progs/minios_abi.h:267` | `#define MINIOS_SYS_VFORK` |
+| `MINIOS_SYS_VGA_MODE` | macro | `progs/minios_abi.h:322` | `#define MINIOS_SYS_VGA_MODE` |
+| `MINIOS_SYS_WAIT4` | macro | `progs/minios_abi.h:270` | `#define MINIOS_SYS_WAIT4` |
+| `MINIOS_SYS_WINDOW_PRESENT` | macro | `progs/minios_abi.h:420` | `#define MINIOS_SYS_WINDOW_PRESENT` |
+| `MINIOS_SYS_WINDOW_TITLE` | macro | `progs/minios_abi.h:421` | `#define MINIOS_SYS_WINDOW_TITLE` |
+| `MINIOS_SYS_WL_ATTACH` | macro | `progs/minios_abi.h:363` | `#define MINIOS_SYS_WL_ATTACH` |
+| `MINIOS_SYS_WL_COMMIT` | macro | `progs/minios_abi.h:364` | `#define MINIOS_SYS_WL_COMMIT` |
+| `MINIOS_SYS_WL_INPUT` | macro | `progs/minios_abi.h:365` | `#define MINIOS_SYS_WL_INPUT` |
+| `MINIOS_SYS_WRITE` | macro | `progs/minios_abi.h:244` | `#define MINIOS_SYS_WRITE` |
+| `MINIOS_SYS_WRITEV` | macro | `progs/minios_abi.h:257` | `#define MINIOS_SYS_WRITEV` |
+| `MINIOS_USER_BRK_END` | macro | `progs/minios_abi.h:123` | `#define MINIOS_USER_BRK_END` |
+| `MINIOS_USER_LOAD_BASE` | macro | `progs/minios_abi.h:118` | `#define MINIOS_USER_LOAD_BASE` |
+| `MINIOS_USER_LOAD_END` | macro | `progs/minios_abi.h:119` | `#define MINIOS_USER_LOAD_END` |
+| `MINIOS_USER_STACK_BASE` | macro | `progs/minios_abi.h:122` | `#define MINIOS_USER_STACK_BASE` |
+| `MINIOS_USER_STACK_SIZE` | macro | `progs/minios_abi.h:120` | `#define MINIOS_USER_STACK_SIZE` |
+| `MINIOS_USER_STACK_TOP` | macro | `progs/minios_abi.h:121` | `#define MINIOS_USER_STACK_TOP` |
+| `SYS_FB_INFO` | macro | `progs/minios_abi.h:439` | `#define SYS_FB_INFO` |
+| `SYS_PALETTE` | macro | `progs/minios_abi.h:435` | `#define SYS_PALETTE` |
+| `SYS_PCSPK_INIT` | macro | `progs/minios_abi.h:436` | `#define SYS_PCSPK_INIT` |
+| `SYS_PCSPK_TONE` | macro | `progs/minios_abi.h:437` | `#define SYS_PCSPK_TONE` |
+| `SYS_PCSPK_VOL` | macro | `progs/minios_abi.h:440` | `#define SYS_PCSPK_VOL` |
+| `SYS_RTC` | macro | `progs/minios_abi.h:438` | `#define SYS_RTC` |
+| `SYS_SPAWN` | macro | `progs/minios_abi.h:441` | `#define SYS_SPAWN` |
+| `SYS_TIME` | macro | `progs/minios_abi.h:442` | `#define SYS_TIME` |
+| `SYS_TIME_MS` | macro | `progs/minios_abi.h:434` | `#define SYS_TIME_MS` |
+| `SYS_WRITE` | macro | `progs/minios_abi.h:443` | `#define SYS_WRITE` |
+| `range` | function | `progs/minios_abi.h:334` | `* number inside the MiniOS window and outside the pcm2 range (246-248). */ #define MINIOS_SYS_LZ4_DECOMPRESS 255...` |
 | `MINIOS_PNG_H` | macro | `progs/minios_png.h:22` | `#define MINIOS_PNG_H` |
 | `MPNG_BIG_DIM` | macro | `progs/minios_png.h:33` | `#define MPNG_BIG_DIM` |
 | `MPNG_ERR_BOUND` | macro | `progs/minios_png.h:40` | `#define MPNG_ERR_BOUND` |
@@ -428,73 +453,48 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `Uint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:6` | `typedef uint32_t Uint32;` |
 | `Uint64` | type_alias | `progs/pokemon/minios_stubs/SDL.h:5` | `typedef uint64_t Uint64;` |
 | `Uint8` | type_alias | `progs/pokemon/minios_stubs/SDL.h:9` | `typedef uint8_t Uint8;` |
-| `FB_ADDR` | macro | `progs/pokemon/platform_minios.c:160` | `#define FB_ADDR` |
-| `FB_H` | macro | `progs/pokemon/platform_minios.c:162` | `#define FB_H` |
-| `FB_W` | macro | `progs/pokemon/platform_minios.c:161` | `#define FB_W` |
-| `GB_DST_H` | macro | `progs/pokemon/platform_minios.c:166` | `#define GB_DST_H` |
-| `GB_DST_W` | macro | `progs/pokemon/platform_minios.c:165` | `#define GB_DST_W` |
-| `GB_DST_X0` | macro | `progs/pokemon/platform_minios.c:167` | `#define GB_DST_X0` |
-| `GB_DST_Y0` | macro | `progs/pokemon/platform_minios.c:168` | `#define GB_DST_Y0` |
-| `GB_SCALE` | macro | `progs/pokemon/platform_minios.c:164` | `#define GB_SCALE` |
-| `MENU_BAR_H` | macro | `progs/pokemon/platform_minios.c:586` | `#define MENU_BAR_H` |
-| `MENU_BG` | macro | `progs/pokemon/platform_minios.c:595` | `#define MENU_BG` |
-| `MENU_DROP_W` | macro | `progs/pokemon/platform_minios.c:590` | `#define MENU_DROP_W` |
-| `MENU_DROP_X0` | macro | `progs/pokemon/platform_minios.c:589` | `#define MENU_DROP_X0` |
-| `MENU_FG` | macro | `progs/pokemon/platform_minios.c:596` | `#define MENU_FG` |
-| `MENU_FILE_X0` | macro | `progs/pokemon/platform_minios.c:587` | `#define MENU_FILE_X0` |
-| `MENU_FILE_X1` | macro | `progs/pokemon/platform_minios.c:588` | `#define MENU_FILE_X1` |
-| `MENU_HOVER` | macro | `progs/pokemon/platform_minios.c:597` | `#define MENU_HOVER` |
-| `MENU_ITEM_H` | macro | `progs/pokemon/platform_minios.c:591` | `#define MENU_ITEM_H` |
-| `MENU_NITEMS` | macro | `progs/pokemon/platform_minios.c:592` | `#define MENU_NITEMS` |
-| `MENU_OSD_BG` | macro | `progs/pokemon/platform_minios.c:598` | `#define MENU_OSD_BG` |
-| `MINIOS_ARP_BASS_MS` | macro | `progs/pokemon/platform_minios.c:237` | `#define MINIOS_ARP_BASS_MS` |
-| `MINIOS_ARP_MEL_MS` | macro | `progs/pokemon/platform_minios.c:238` | `#define MINIOS_ARP_MEL_MS` |
-| `MINIOS_AUDIO_MAX_HZ` | macro | `progs/pokemon/platform_minios.c:236` | `#define MINIOS_AUDIO_MAX_HZ` |
-| `MINIOS_AUDIO_MIN_HZ` | macro | `progs/pokemon/platform_minios.c:235` | `#define MINIOS_AUDIO_MIN_HZ` |
-| `MINIOS_AUDIO_RATE` | macro | `progs/pokemon/platform_minios.c:233` | `#define MINIOS_AUDIO_RATE` |
-| `MINIOS_AUDIO_SILENCE_E` | macro | `progs/pokemon/platform_minios.c:234` | `#define MINIOS_AUDIO_SILENCE_E` |
-| `MINIOS_AUTOSAVE_MS` | macro | `progs/pokemon/platform_minios.c:1193` | `#define MINIOS_AUTOSAVE_MS` |
-| `MINIOS_FF_FRAMESKIP` | macro | `progs/pokemon/platform_minios.c:1205` | `#define MINIOS_FF_FRAMESKIP` |
-| `STBI_NO_STDIO` | macro | `progs/pokemon/platform_minios.c:62` | `#define STBI_NO_STDIO` |
-| `STBI_ONLY_PNG` | macro | `progs/pokemon/platform_minios.c:61` | `#define STBI_ONLY_PNG` |
-| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/pokemon/platform_minios.c:60` | `#define STB_IMAGE_IMPLEMENTATION` |
-| `_dl_argv` | function | `progs/pokemon/platform_minios.c:197` | `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).  * DO NOT reintroduce argv ...` |
-| `audible` | function | `progs/pokemon/platform_minios.c:36` | `* voice is audible (noise SFX, sweep zaps), the raw mix estimate plays.  *  * Debug: heartbeat to...` |
-| `audio` | function | `progs/pokemon/platform_minios.c:218` | `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...` |
-| `frames` | function | `progs/pokemon/platform_minios.c:1366` | `* frames (menu bar not on screen yet) and any frame after the          * LCD-off path zeroed the ...` |
-| `gain` | function | `progs/pokemon/platform_minios.c:142` | `* timing gain (overshoot is microseconds against millisecond waits).  * Difference-based, so it s...` |
-| `gb_platform_get_exit_action` | function | `progs/pokemon/platform_minios.c:1552` | `GBPlatformExitAction gb_platform_get_exit_action(void)` |
-| `gb_platform_get_joypad` | function | `progs/pokemon/platform_minios.c:1530` | `uint8_t gb_platform_get_joypad(void)` |
-| `gb_platform_get_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1540` | `bool gb_platform_get_smooth_lcd_transitions(void)` |
-| `gb_platform_get_timing_info` | function | `progs/pokemon/platform_minios.c:1523` | `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)` |
-| `gb_platform_init` | function | `progs/pokemon/platform_minios.c:1056` | `bool gb_platform_init(int scale)` |
-| `gb_platform_poll_events` | function | `progs/pokemon/platform_minios.c:1321` | `bool gb_platform_poll_events(GBContext *ctx)` |
-| `gb_platform_present_framebuffer` | function | `progs/pokemon/platform_minios.c:1399` | `void gb_platform_present_framebuffer(const uint32_t *framebuffer)` |
-| `gb_platform_register_context` | function | `progs/pokemon/platform_minios.c:1288` | `void gb_platform_register_context(GBContext *ctx)` |
-| `gb_platform_render_frame` | function | `progs/pokemon/platform_minios.c:1330` | `void gb_platform_render_frame(const uint32_t *framebuffer)` |
-| `gb_platform_render_lcd_off_frame` | function | `progs/pokemon/platform_minios.c:1411` | `void gb_platform_render_lcd_off_frame(void)` |
-| `gb_platform_set_benchmark_mode` | function | `progs/pokemon/platform_minios.c:1450` | `void gb_platform_set_benchmark_mode(bool enabled)` |
-| `gb_platform_set_debug` | function | `progs/pokemon/platform_minios.c:190` | `void gb_platform_set_debug(bool enabled)` |
-| `gb_platform_set_dump_frames` | function | `progs/pokemon/platform_minios.c:1474` | `void gb_platform_set_dump_frames(const char *frames)` |
-| `gb_platform_set_dump_present_frames` | function | `progs/pokemon/platform_minios.c:1496` | `void gb_platform_set_dump_present_frames(const char *frames)` |
-| `gb_platform_set_input_record_file` | function | `progs/pokemon/platform_minios.c:1460` | `void gb_platform_set_input_record_file(const char *path)` |
-| `gb_platform_set_input_script` | function | `progs/pokemon/platform_minios.c:1454` | `bool gb_platform_set_input_script(const char *script)` |
-| `gb_platform_set_launcher_return_enabled` | function | `progs/pokemon/platform_minios.c:1548` | `void gb_platform_set_launcher_return_enabled(bool enabled)` |
-| `gb_platform_set_persistence_dir` | function | `progs/pokemon/platform_minios.c:1465` | `bool gb_platform_set_persistence_dir(const char *path)` |
-| `gb_platform_set_screenshot_prefix` | function | `progs/pokemon/platform_minios.c:1517` | `void gb_platform_set_screenshot_prefix(const char *prefix)` |
-| `gb_platform_set_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1544` | `void gb_platform_set_smooth_lcd_transitions(bool enabled)` |
-| `gb_platform_set_title` | function | `progs/pokemon/platform_minios.c:1534` | `void gb_platform_set_title(const char *title)` |
-| `gb_platform_shutdown` | function | `progs/pokemon/platform_minios.c:1310` | `void gb_platform_shutdown(void)` |
-| `gb_platform_submit_port_frame` | function | `progs/pokemon/platform_minios.c:1556` | `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)` |
-| `gb_platform_test_audio_concurrency` | function | `progs/pokemon/platform_minios.c:1562` | `bool gb_platform_test_audio_concurrency(uint32_t frames,                                         ...` |
-| `gb_platform_test_inject_persistence_fault` | function | `progs/pokemon/platform_minios.c:1571` | `void gb_platform_test_inject_persistence_fault(     GBPersistenceTestTarget target,     GBPersist...` |
-| `gb_platform_vsync` | function | `progs/pokemon/platform_minios.c:1433` | `void gb_platform_vsync(uint32_t frame_cycles)` |
-| `gb_voice_in_range` | function | `progs/pokemon/platform_minios.c:306` | `static bool gb_voice_in_range(unsigned f)` |
-| `gb_voice_t` | struct | `progs/pokemon/platform_minios.c:301` | `` |
-| `menu` | function | `progs/pokemon/platform_minios.c:571` | `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it...` |
-| `menu_activate` | function | `progs/pokemon/platform_minios.c:742` | `static void menu_activate(int it)` |
-| `menu_do_load` | function | `progs/pokemon/platform_minios.c:723` | `static void menu_do_load(void)` |
-| `menu_do_save` | function | `progs/pokemon/platform_minios.c:707` | `static void menu_do_save(void)` |
-| `menu_draw` | function | `progs/pokemon/platform_minios.c:670` | `static void menu_draw(void)` |
+| `FB_ADDR` | macro | `progs/pokemon/platform_minios.c:161` | `#define FB_ADDR` |
+| `FB_H` | macro | `progs/pokemon/platform_minios.c:163` | `#define FB_H` |
+| `FB_W` | macro | `progs/pokemon/platform_minios.c:162` | `#define FB_W` |
+| `GB_DST_H` | macro | `progs/pokemon/platform_minios.c:167` | `#define GB_DST_H` |
+| `GB_DST_W` | macro | `progs/pokemon/platform_minios.c:166` | `#define GB_DST_W` |
+| `GB_DST_X0` | macro | `progs/pokemon/platform_minios.c:168` | `#define GB_DST_X0` |
+| `GB_DST_Y0` | macro | `progs/pokemon/platform_minios.c:169` | `#define GB_DST_Y0` |
+| `GB_SCALE` | macro | `progs/pokemon/platform_minios.c:165` | `#define GB_SCALE` |
+| `MENU_BAR_H` | macro | `progs/pokemon/platform_minios.c:587` | `#define MENU_BAR_H` |
+| `MENU_BG` | macro | `progs/pokemon/platform_minios.c:596` | `#define MENU_BG` |
+| `MENU_DROP_W` | macro | `progs/pokemon/platform_minios.c:591` | `#define MENU_DROP_W` |
+| `MENU_DROP_X0` | macro | `progs/pokemon/platform_minios.c:590` | `#define MENU_DROP_X0` |
+| `MENU_FG` | macro | `progs/pokemon/platform_minios.c:597` | `#define MENU_FG` |
+| `MENU_FILE_X0` | macro | `progs/pokemon/platform_minios.c:588` | `#define MENU_FILE_X0` |
+| `MENU_FILE_X1` | macro | `progs/pokemon/platform_minios.c:589` | `#define MENU_FILE_X1` |
+| `MENU_HOVER` | macro | `progs/pokemon/platform_minios.c:598` | `#define MENU_HOVER` |
+| `MENU_ITEM_H` | macro | `progs/pokemon/platform_minios.c:592` | `#define MENU_ITEM_H` |
+| `MENU_NITEMS` | macro | `progs/pokemon/platform_minios.c:593` | `#define MENU_NITEMS` |
+| `MENU_OSD_BG` | macro | `progs/pokemon/platform_minios.c:599` | `#define MENU_OSD_BG` |
+| `MINIOS_ARP_BASS_MS` | macro | `progs/pokemon/platform_minios.c:238` | `#define MINIOS_ARP_BASS_MS` |
+| `MINIOS_ARP_MEL_MS` | macro | `progs/pokemon/platform_minios.c:239` | `#define MINIOS_ARP_MEL_MS` |
+| `MINIOS_AUDIO_MAX_HZ` | macro | `progs/pokemon/platform_minios.c:237` | `#define MINIOS_AUDIO_MAX_HZ` |
+| `MINIOS_AUDIO_MIN_HZ` | macro | `progs/pokemon/platform_minios.c:236` | `#define MINIOS_AUDIO_MIN_HZ` |
+| `MINIOS_AUDIO_RATE` | macro | `progs/pokemon/platform_minios.c:234` | `#define MINIOS_AUDIO_RATE` |
+| `MINIOS_AUDIO_SILENCE_E` | macro | `progs/pokemon/platform_minios.c:235` | `#define MINIOS_AUDIO_SILENCE_E` |
+| `MINIOS_AUTOSAVE_MS` | macro | `progs/pokemon/platform_minios.c:1194` | `#define MINIOS_AUTOSAVE_MS` |
+| `MINIOS_FF_FRAMESKIP` | macro | `progs/pokemon/platform_minios.c:1206` | `#define MINIOS_FF_FRAMESKIP` |
+| `STBI_NO_STDIO` | macro | `progs/pokemon/platform_minios.c:63` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/pokemon/platform_minios.c:62` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/pokemon/platform_minios.c:61` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `_dl_argv` | function | `progs/pokemon/platform_minios.c:198` | `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).  * DO NOT reintroduce argv ...` |
+| `audio` | function | `progs/pokemon/platform_minios.c:219` | `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...` |
+| `frames` | function | `progs/pokemon/platform_minios.c:1367` | `* frames (menu bar not on screen yet) and any frame after the          * LCD-off path zeroed the ...` |
+| `gain` | function | `progs/pokemon/platform_minios.c:143` | `* timing gain (overshoot is microseconds against millisecond waits).  * Difference-based, so it s...` |
+| `gb_platform_get_exit_action` | function | `progs/pokemon/platform_minios.c:1553` | `GBPlatformExitAction gb_platform_get_exit_action(void)` |
+| `gb_platform_get_joypad` | function | `progs/pokemon/platform_minios.c:1531` | `uint8_t gb_platform_get_joypad(void)` |
+| `gb_platform_get_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1541` | `bool gb_platform_get_smooth_lcd_transitions(void)` |
+| `gb_platform_get_timing_info` | function | `progs/pokemon/platform_minios.c:1524` | `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)` |
+| `gb_platform_init` | function | `progs/pokemon/platform_minios.c:1057` | `bool gb_platform_init(int scale)` |
+| `gb_platform_poll_events` | function | `progs/pokemon/platform_minios.c:1322` | `bool gb_platform_poll_events(GBContext *ctx)` |
+| `gb_platform_present_framebuffer` | function | `progs/pokemon/platform_minios.c:1400` | `void gb_platform_present_framebuffer(const uint32_t *framebuffer)` |
+| `gb_platform_register_context` | function | `progs/pokemon/platform_minios.c:1289` | `void gb_platform_register_context(GBContext *ctx)` |
+| `gb_platform_render_frame` | function | `progs/pokemon/platform_minios.c:1331` | `void gb_platform_render_frame(const uint32_t *framebuffer)` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

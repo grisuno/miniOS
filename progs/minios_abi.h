@@ -38,7 +38,10 @@
  * It is verified at build time (kernel _Static_asserts), not at load time:
  * see the ABI Version note above for why the loader cannot gate on it.
  * ========================================================================= */
-#define MINIOS_ABI_VERSION 12
+/* v13: lz4_decompress moved 217 -> 255 (217 is Linux getdents64; 248 was
+ * already the pcm2 close number, so the two MiniOS numbers collided and
+ * only the last table entry survived). */
+#define MINIOS_ABI_VERSION 13
 
 /* Compile-time checksum: XOR-fold of all layout constants.
  * Recomputed by the kernel at load time for verification. */
@@ -65,6 +68,8 @@
     MINIOS_FB_HEIGHT_MAX       ^ \
     MINIOS_SYS_FUTEX_WAIT      ^ \
     MINIOS_SYS_FUTEX_WAKE      ^ \
+    MINIOS_SYS_LZ4_COMPRESS    ^ \
+    MINIOS_SYS_LZ4_DECOMPRESS  ^ \
     MINIOS_SYS_SUBMIT_BATCH    ^ \
     MINIOS_SYS_GETC_RAW      ^ \
     MINIOS_SYS_GFX_PRESENT     ^ \
@@ -323,11 +328,11 @@
 #define MINIOS_SYS_PCSPK_VOL   214
 #define MINIOS_SYS_SPAWN       215
 #define MINIOS_SYS_LZ4_COMPRESS   216
-/* lz4_decompress moved from 217 to 248: Linux x86-64 217 is getdents64,
+/* v13: lz4_decompress moved from 217 to 255. 217 is Linux getdents64,
  * which the kernel now serves (directory enumeration for readdir(3) and
- * CPython's os.scandir; see docs/spec/python.md). 248 is a free x86-64
- * number inside the MiniOS window, and the ABI checksum moved with it. */
-#define MINIOS_SYS_LZ4_DECOMPRESS 248
+ * CPython's os.scandir; see docs/spec/python.md). 255 is a free x86-64
+ * number inside the MiniOS window and outside the pcm2 range (246-248). */
+#define MINIOS_SYS_LZ4_DECOMPRESS 255
 #define MINIOS_SYS_MOUSE       219
 #define MINIOS_SYS_NK_FRAME    220
 #define MINIOS_SYS_SB16_OPEN   221
@@ -361,7 +366,8 @@
 /* Low-latency PCM path (pcm2, 8-bit mono 22050 Hz over SB16 single-cycle
  * DMA): OPEN takes flags (bit 0 NONBLOCK), WRITE returns bytes taken
  * (blocking unless NONBLOCK), CLOSE releases. Numbers 246-248 are
- * free in Linux x86-64 (no table entry), so no DEVIATION is needed. */
+ * free in Linux x86-64 (no table entry), so no DEVIATION is needed.
+ * The pcm2 range is exclusive: 255 carries lz4_decompress (v13). */
 #define MINIOS_SYS_PCM2_OPEN     246
 #define MINIOS_SYS_PCM2_WRITE    247
 #define MINIOS_SYS_PCM2_CLOSE    248
@@ -437,6 +443,10 @@
 #define SYS_WRITE      MINIOS_SYS_WRITE
 
 /* --- Error codes --- */
+/* Reserved for the load-time ABI gate (ARCHITECTURE_PLAN.md Phase 1.1):
+ * no code path returns it yet, because Linux-ABI binaries carry no
+ * MiniOS version note and rejecting them would break the Linux
+ * compatibility requirement. */
 #define MINIOS_EABI_MISMATCH (-100)
 
 /* =========================================================================

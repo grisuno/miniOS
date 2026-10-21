@@ -72,7 +72,7 @@ framebuffer's second page-table slot, rendering the dock/taskbar black).
 
 **Returns:** `*`
 
-> **Inherited:** Documentation from [`MINIOS_DOOM_BACKBUF_ADDR`](#minios_doom_backbuf_addr) (progs/minios_abi.h:135).
+> **Inherited:** Documentation from [`MINIOS_DOOM_BACKBUF_ADDR`](#minios_doom_backbuf_addr) (progs/minios_abi.h:140).
 
 ---
 

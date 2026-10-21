@@ -105,20 +105,30 @@ void cond_wait(cond_t *c, mutex_t *m);
 void cond_signal(cond_t *c);
 void cond_broadcast(cond_t *c);
 
-/* ---- Read-write lock (writer-preferring, no recursion) ---- */
+/* ---- Read-write lock (writer-preferring, no recursion) ----
+ * A queued writer announces itself in `writers_waiting`, and new
+ * readers yield to it: without that rule a steady stream of readers
+ * starves the writer (every reader sees readers == 0 on its way in).
+ * The counter is incremented when the writer starts waiting and
+ * decremented when it finally holds the lock, so it never leaks. */
 typedef struct {
     spinlock_t   guard;
     int          readers;  /* active readers */
     int          writer;   /* 0 = no writer, 1 = writer holds */
+    int          writers_waiting; /* queued writers; new readers yield */
     wait_queue_t waiters;
 } rwlock_t;
 
-#define RWLOCK_INIT { SPINLOCK_INIT, 0, 0, WAIT_QUEUE_INIT }
+#define RWLOCK_INIT { SPINLOCK_INIT, 0, 0, 0, WAIT_QUEUE_INIT }
 
 void rwlock_init(rwlock_t *rw);
 void rwlock_read_lock(rwlock_t *rw);
 void rwlock_read_unlock(rwlock_t *rw);
 void rwlock_write_lock(rwlock_t *rw);
 void rwlock_write_unlock(rwlock_t *rw);
+/* Non-blocking attempts: 0 on success, -1 when the lock is not
+ * available right now (a reader never takes it while a writer waits). */
+int  rwlock_read_trylock(rwlock_t *rw);
+int  rwlock_write_trylock(rwlock_t *rw);
 
 #endif

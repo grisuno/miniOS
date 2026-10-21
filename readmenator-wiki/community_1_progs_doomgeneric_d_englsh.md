@@ -88,7 +88,7 @@ This community groups 99 file(s) rooted at `progs/doomgeneric` with dominant lan
 - [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language h and layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 5 (headers: vga_fb).
 - [INFERRED] shares_context community 1 <-> 7 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 7 (headers: batch).
 - [INFERRED] shares_context community 1 <-> 8 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 8 (headers: tick).
-- [INFERRED] shares_context community 1 <-> 10 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 10 (orphans).
+- [INFERRED] shares_context community 1 <-> 9 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 9 (tools: doom_pwad).
 
 ## Risks
 

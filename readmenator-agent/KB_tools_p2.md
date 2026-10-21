@@ -7,10 +7,10 @@ Previous: [KB_tools.md](KB_tools.md)
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 132)
-  - `cleanup` (function, line 139)
-  - `record` (function, line 518)
-  - `find_index` (function, line 524)
+  - `restore_sources` (function, line 137)
+  - `cleanup` (function, line 144)
+  - `record` (function, line 536)
+  - `find_index` (function, line 542)
 
 ## tools/probe_compute_vga.py
 - Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute.
@@ -114,15 +114,17 @@ Previous: [KB_tools.md](KB_tools.md)
   - `scenario` (function, line 56)
   - `scenario_smp` (function, line 77)
   - `expect` (function, line 100)
-  - `expect_count` (function, line 122)
-  - `refute` (function, line 145)
-  - `scenario_uefi` (function, line 170)
-  - `http_server_start` (function, line 1413)
-  - `http_server_stop` (function, line 1420)
-  - `http_fixture_start` (function, line 1425)
-  - `http_fixture_stop` (function, line 1432)
-  - `net_fixture_start` (function, line 1437)
-  - `net_fixture_stop` (function, line 1444)
+  - `expect_min` (function, line 123)
+  - `expect_count` (function, line 148)
+  - `refute` (function, line 171)
+  - `scenario_uefi` (function, line 196)
+  - `usb_stick_ready` (function, line 672)
+  - `http_server_start` (function, line 1487)
+  - `http_server_stop` (function, line 1494)
+  - `http_fixture_start` (function, line 1499)
+  - `http_fixture_stop` (function, line 1506)
+  - `net_fixture_start` (function, line 1511)
+  - `net_fixture_stop` (function, line 1518)
 
 ## tools/test_call_align.py
 - Doc: verify stack alignment at call sites, both parities.
@@ -332,22 +334,22 @@ Previous: [KB_tools.md](KB_tools.md)
 - Layer: testing
 - Language: py
 - Symbols:
-  - `run` (function, line 26) `def run(cmd)`
-  - `check` (function, line 30) `def check(cmd)`
-  - `gen_certs` (function, line 37) `def gen_certs()`
-  - `der_bytes` (function, line 154) `def der_bytes(pem_path)`
-  - `rsa_params` (function, line 162) `def rsa_params(key_path)`
-  - `ec_pub` (function, line 172) `def ec_pub(key_path)`
-  - `c_bytes` (function, line 183) `def c_bytes(data, name)`
-  - `gen_header` (function, line 191) `def gen_header(p)`
-  - `Server` (class, line 241) `class Server(Thread)`
-  - `serve` (function, line 280) `def serve(cert, key)`
-  - `serve_openssl` (function, line 288) `def serve_openssl(cert, key, chain)`
-  - `expect` (function, line 306) `def expect(bin_path, args, want_zero, marker)`
-  - `main` (function, line 319) `def main()`
-  - `server_cert` (function, line 61) `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)`
-  - `__init__` (method, line 242) `def __init__(self, cert, key, tls13_ok)`
-  - `run` (method, line 248) `def run(self)`
+  - `run` (function, line 32) `def run(cmd)`
+  - `check` (function, line 36) `def check(cmd)`
+  - `gen_certs` (function, line 43) `def gen_certs()`
+  - `der_bytes` (function, line 160) `def der_bytes(pem_path)`
+  - `rsa_params` (function, line 168) `def rsa_params(key_path)`
+  - `ec_pub` (function, line 178) `def ec_pub(key_path)`
+  - `c_bytes` (function, line 189) `def c_bytes(data, name)`
+  - `gen_header` (function, line 197) `def gen_header(p)`
+  - `Server` (class, line 247) `class Server(Thread)`
+  - `serve` (function, line 286) `def serve(cert, key)`
+  - `serve_openssl` (function, line 294) `def serve_openssl(cert, key, chain)`
+  - `expect` (function, line 312) `def expect(bin_path, args, want_zero, marker)`
+  - `main` (function, line 325) `def main()`
+  - `server_cert` (function, line 67) `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)`
+  - `__init__` (method, line 248) `def __init__(self, cert, key, tls13_ok)`
+  - `run` (method, line 254) `def run(self)`
 - Depends on: `kernel/time.c`
 
 ## tools/wl_scoped.sh

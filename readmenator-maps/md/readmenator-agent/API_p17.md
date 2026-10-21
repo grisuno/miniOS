@@ -132,8 +132,8 @@ Depends on: `kernel/string.c`, `progs/minios_abi.h`
 
 ## progs/minios_abi.h
 Imported by: `headers/kernel.h`, `headers/vga_fb.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/file/file.c`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/platform_minios.c`, `progs/lisp/lisp.c`, `progs/lua/minios.c`, `progs/micropython/variants/minios/minios_module.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.h`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/audio.c`, `progs/src/fptest.c`, `progs/src/freedom_wl.c`, `progs/src/lxproc.c`, `progs/src/mthreads.h`, `progs/src/opl3.c`, `progs/src/pip.c`, `progs/src/sbtone.c`, `progs/src/thdemo.c`, `progs/wl/wlcomp.c`, `tests/test_abi.c`, `tests/test_wl.c`, `tools/abi_stamp.c`
-- `DOOM_BACKBUF_ADDR` (function) `progs/minios_abi.h:128` `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...`
-- `clock_nanosleep` (function) `progs/minios_abi.h:338` `* clock_nanosleep (static glibc's sleep, usleep and nanosleep). */ #define MINIOS_SYS_SB16_STREAM_OPEN 252 #define...`
+- `DOOM_BACKBUF_ADDR` (function) `progs/minios_abi.h:133` `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...`
+- `range` (function) `progs/minios_abi.h:334` `* number inside the MiniOS window and outside the pcm2 range (246-248). */ #define MINIOS_SYS_LZ4_DECOMPRESS 255...`
 
 ## progs/minios_png.h
 Imported by: `progs/file/file.c`, `progs/pokemon/platform_minios.c`, `tests/test_minios_png.c`
@@ -387,100 +387,98 @@ Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_mini
 
 ## progs/pokemon/platform_minios.c
 Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-- `audible` (function) `progs/pokemon/platform_minios.c:36` `* voice is audible (noise SFX, sweep zaps), the raw mix estimate plays.
- *
- * Debug: heartbeat to...`
-- `sys_kbd` (function) `progs/pokemon/platform_minios.c:75` `static long sys_kbd(void)`
-- `sys_nk_frame` (function) `progs/pokemon/platform_minios.c:81` `static long sys_nk_frame(int *origin)`
-- `sys_mouse` (function) `progs/pokemon/platform_minios.c:87` `static long sys_mouse(int *xybw)`
-- `sys_vga_mode` (function) `progs/pokemon/platform_minios.c:93` `static long sys_vga_mode(int on)`
-- `sys_kbd_raw` (function) `progs/pokemon/platform_minios.c:99` `static long sys_kbd_raw(int on)`
-- `sys_palette` (function) `progs/pokemon/platform_minios.c:105` `static long sys_palette(const unsigned char *pal)`
-- `sys_gfx_title` (function) `progs/pokemon/platform_minios.c:111` `static long sys_gfx_title(const char *t)`
-- `sys_tone` (function) `progs/pokemon/platform_minios.c:117` `static long sys_tone(unsigned f)`
-- `sys_pcm2_open` (function) `progs/pokemon/platform_minios.c:123` `static long sys_pcm2_open(long flags)`
-- `sys_pcm2_write` (function) `progs/pokemon/platform_minios.c:129` `static long sys_pcm2_write(const void *buf, long len)`
-- `sys_pcm2_close` (function) `progs/pokemon/platform_minios.c:135` `static void sys_pcm2_close(void)`
-- `gain` (function) `progs/pokemon/platform_minios.c:142` `* timing gain (overshoot is microseconds against millisecond waits).
+- `sys_time_ms` (function) `progs/pokemon/platform_minios.c:70` `static long sys_time_ms(void)`
+- `sys_kbd` (function) `progs/pokemon/platform_minios.c:76` `static long sys_kbd(void)`
+- `sys_nk_frame` (function) `progs/pokemon/platform_minios.c:82` `static long sys_nk_frame(int *origin)`
+- `sys_mouse` (function) `progs/pokemon/platform_minios.c:88` `static long sys_mouse(int *xybw)`
+- `sys_vga_mode` (function) `progs/pokemon/platform_minios.c:94` `static long sys_vga_mode(int on)`
+- `sys_kbd_raw` (function) `progs/pokemon/platform_minios.c:100` `static long sys_kbd_raw(int on)`
+- `sys_palette` (function) `progs/pokemon/platform_minios.c:106` `static long sys_palette(const unsigned char *pal)`
+- `sys_gfx_title` (function) `progs/pokemon/platform_minios.c:112` `static long sys_gfx_title(const char *t)`
+- `sys_tone` (function) `progs/pokemon/platform_minios.c:118` `static long sys_tone(unsigned f)`
+- `sys_pcm2_open` (function) `progs/pokemon/platform_minios.c:124` `static long sys_pcm2_open(long flags)`
+- `sys_pcm2_write` (function) `progs/pokemon/platform_minios.c:130` `static long sys_pcm2_write(const void *buf, long len)`
+- `sys_pcm2_close` (function) `progs/pokemon/platform_minios.c:136` `static void sys_pcm2_close(void)`
+- `gain` (function) `progs/pokemon/platform_minios.c:143` `* timing gain (overshoot is microseconds against millisecond waits).
  * Difference-based, so it s...`
-- `gb_platform_set_debug` (function) `progs/pokemon/platform_minios.c:190` `void gb_platform_set_debug(bool enabled)`
-- `audio` (function) `progs/pokemon/platform_minios.c:218` `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...`
-- `minios_audio_sample` (function) `progs/pokemon/platform_minios.c:262` `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
-- `gb_voice_in_range` (function) `progs/pokemon/platform_minios.c:306` `static bool gb_voice_in_range(unsigned f)`
-- `sample_apu_voices` (function) `progs/pokemon/platform_minios.c:310` `static void sample_apu_voices(gb_voice_t *v)`
-- `minios_audio_play` (function) `progs/pokemon/platform_minios.c:330` `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
+- `gb_platform_set_debug` (function) `progs/pokemon/platform_minios.c:191` `void gb_platform_set_debug(bool enabled)`
+- `audio` (function) `progs/pokemon/platform_minios.c:219` `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...`
+- `minios_audio_sample` (function) `progs/pokemon/platform_minios.c:263` `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
+- `gb_voice_in_range` (function) `progs/pokemon/platform_minios.c:307` `static bool gb_voice_in_range(unsigned f)`
+- `sample_apu_voices` (function) `progs/pokemon/platform_minios.c:311` `static void sample_apu_voices(gb_voice_t *v)`
+- `minios_audio_play` (function) `progs/pokemon/platform_minios.c:331` `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
                             ...`
-- `rebuild_joypad` (function) `progs/pokemon/platform_minios.c:402` `static void rebuild_joypad(void)`
-- `poll_keyboard` (function) `progs/pokemon/platform_minios.c:416` `static void poll_keyboard(void)`
-- `push_332_palette` (function) `progs/pokemon/platform_minios.c:455` `static void push_332_palette(void)` -- 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B &...
-- `menu` (function) `progs/pokemon/platform_minios.c:571` `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it...`
-- `ui_fringe_dirty` (function) `progs/pokemon/platform_minios.c:620` `static bool ui_fringe_dirty(uint32_t now)`
-- `ui_fringe_sync` (function) `progs/pokemon/platform_minios.c:626` `static void ui_fringe_sync(uint32_t now)`
-- `menu_fill` (function) `progs/pokemon/platform_minios.c:632` `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)`
-- `menu_text` (function) `progs/pokemon/platform_minios.c:645` `static void menu_text(int x, int y, const char *s, uint8_t fg)`
-- `menu_osd` (function) `progs/pokemon/platform_minios.c:664` `static void menu_osd(const char *s)`
-- `menu_draw` (function) `progs/pokemon/platform_minios.c:670` `static void menu_draw(void)`
-- `menu_item_at` (function) `progs/pokemon/platform_minios.c:700` `static int menu_item_at(int lx, int ly)`
-- `menu_do_save` (function) `progs/pokemon/platform_minios.c:707` `static void menu_do_save(void)`
-- `menu_do_load` (function) `progs/pokemon/platform_minios.c:723` `static void menu_do_load(void)`
-- `menu_activate` (function) `progs/pokemon/platform_minios.c:742` `static void menu_activate(int it)`
-- `poll_menu` (function) `progs/pokemon/platform_minios.c:776` `static void poll_menu(void)` -- Esc toggles, Up/Down move, Enter activates; the mouse is a bonus. * PS/2 Set 1: Esc = 0x01, Up = 0x48, Down = 0x50...
-- `pokemon_art_load_one` (function) `progs/pokemon/platform_minios.c:844` `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
+- `rebuild_joypad` (function) `progs/pokemon/platform_minios.c:403` `static void rebuild_joypad(void)`
+- `poll_keyboard` (function) `progs/pokemon/platform_minios.c:417` `static void poll_keyboard(void)`
+- `push_332_palette` (function) `progs/pokemon/platform_minios.c:456` `static void push_332_palette(void)` -- 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B &...
+- `menu` (function) `progs/pokemon/platform_minios.c:572` `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it...`
+- `ui_fringe_dirty` (function) `progs/pokemon/platform_minios.c:621` `static bool ui_fringe_dirty(uint32_t now)`
+- `ui_fringe_sync` (function) `progs/pokemon/platform_minios.c:627` `static void ui_fringe_sync(uint32_t now)`
+- `menu_fill` (function) `progs/pokemon/platform_minios.c:633` `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)`
+- `menu_text` (function) `progs/pokemon/platform_minios.c:646` `static void menu_text(int x, int y, const char *s, uint8_t fg)`
+- `menu_osd` (function) `progs/pokemon/platform_minios.c:665` `static void menu_osd(const char *s)`
+- `menu_draw` (function) `progs/pokemon/platform_minios.c:671` `static void menu_draw(void)`
+- `menu_item_at` (function) `progs/pokemon/platform_minios.c:701` `static int menu_item_at(int lx, int ly)`
+- `menu_do_save` (function) `progs/pokemon/platform_minios.c:708` `static void menu_do_save(void)`
+- `menu_do_load` (function) `progs/pokemon/platform_minios.c:724` `static void menu_do_load(void)`
+- `menu_activate` (function) `progs/pokemon/platform_minios.c:743` `static void menu_activate(int it)`
+- `poll_menu` (function) `progs/pokemon/platform_minios.c:777` `static void poll_menu(void)` -- Esc toggles, Up/Down move, Enter activates; the mouse is a bonus. * PS/2 Set 1: Esc = 0x01, Up = 0x48, Down = 0x50...
+- `pokemon_art_load_one` (function) `progs/pokemon/platform_minios.c:845` `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
                           ...`
-- `pokemon_art_load` (function) `progs/pokemon/platform_minios.c:869` `static void pokemon_art_load(void)`
-- `pokemon_art_draw_one` (function) `progs/pokemon/platform_minios.c:887` `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
+- `pokemon_art_load` (function) `progs/pokemon/platform_minios.c:870` `static void pokemon_art_load(void)`
+- `pokemon_art_draw_one` (function) `progs/pokemon/platform_minios.c:888` `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
                       ...`
-- `pokemon_art_draw` (function) `progs/pokemon/platform_minios.c:925` `static void pokemon_art_draw(void)`
-- `px_to_idx` (function) `progs/pokemon/platform_minios.c:956` `static uint8_t px_to_idx(uint32_t pixel)`
-- `upload_frame` (function) `progs/pokemon/platform_minios.c:975` `static void upload_frame(const uint32_t *framebuffer)`
-- `gb_platform_init` (function) `progs/pokemon/platform_minios.c:1056` `bool gb_platform_init(int scale)`
-- `minios_persist_path` (function) `progs/pokemon/platform_minios.c:1088` `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
+- `pokemon_art_draw` (function) `progs/pokemon/platform_minios.c:926` `static void pokemon_art_draw(void)`
+- `px_to_idx` (function) `progs/pokemon/platform_minios.c:957` `static uint8_t px_to_idx(uint32_t pixel)`
+- `upload_frame` (function) `progs/pokemon/platform_minios.c:976` `static void upload_frame(const uint32_t *framebuffer)`
+- `gb_platform_init` (function) `progs/pokemon/platform_minios.c:1057` `bool gb_platform_init(int scale)`
+- `minios_persist_path` (function) `progs/pokemon/platform_minios.c:1089` `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
                       ...`
-- `minios_legacy_path` (function) `progs/pokemon/platform_minios.c:1097` `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
+- `minios_legacy_path` (function) `progs/pokemon/platform_minios.c:1098` `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
                        ...` -- Legacy ramdisk path (pre-MiniFS fix wrote bin/<id>.* onto volatile ramdisk).
-- `minios_load_helper` (function) `progs/pokemon/platform_minios.c:1103` `static bool minios_load_helper(const char *path, void *data, size_t size,
+- `minios_load_helper` (function) `progs/pokemon/platform_minios.c:1104` `static bool minios_load_helper(const char *path, void *data, size_t size,
                        ...`
-- `minios_save_helper` (function) `progs/pokemon/platform_minios.c:1121` `static bool minios_save_helper(const char *path, const void *data, size_t size)`
-- `minios_load_battery_ram` (function) `progs/pokemon/platform_minios.c:1132` `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
+- `minios_save_helper` (function) `progs/pokemon/platform_minios.c:1122` `static bool minios_save_helper(const char *path, const void *data, size_t size)`
+- `minios_load_battery_ram` (function) `progs/pokemon/platform_minios.c:1133` `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-- `minios_save_battery_ram` (function) `progs/pokemon/platform_minios.c:1147` `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
+- `minios_save_battery_ram` (function) `progs/pokemon/platform_minios.c:1148` `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
                        ...`
-- `minios_load_rtc_data` (function) `progs/pokemon/platform_minios.c:1157` `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
+- `minios_load_rtc_data` (function) `progs/pokemon/platform_minios.c:1158` `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-- `minios_save_rtc_data` (function) `progs/pokemon/platform_minios.c:1170` `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
+- `minios_save_rtc_data` (function) `progs/pokemon/platform_minios.c:1171` `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
                           ...`
-- `minios_fast_forward` (function) `progs/pokemon/platform_minios.c:1208` `static inline bool minios_fast_forward(void)`
-- `minios_state_path` (function) `progs/pokemon/platform_minios.c:1212` `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
-- `minios_legacy_state_path` (function) `progs/pokemon/platform_minios.c:1217` `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
-- `minios_autosave` (function) `progs/pokemon/platform_minios.c:1222` `static void minios_autosave(uint32_t now)`
-- `poll_hotkeys` (function) `progs/pokemon/platform_minios.c:1236` `static void poll_hotkeys(void)` -- PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, SPACE = 0x39, Shift = 0x2A/0x36.
-- `gb_platform_register_context` (function) `progs/pokemon/platform_minios.c:1288` `void gb_platform_register_context(GBContext *ctx)`
-- `gb_platform_shutdown` (function) `progs/pokemon/platform_minios.c:1310` `void gb_platform_shutdown(void)`
-- `gb_platform_poll_events` (function) `progs/pokemon/platform_minios.c:1321` `bool gb_platform_poll_events(GBContext *ctx)`
-- `gb_platform_render_frame` (function) `progs/pokemon/platform_minios.c:1330` `void gb_platform_render_frame(const uint32_t *framebuffer)`
-- `frames` (function) `progs/pokemon/platform_minios.c:1366` `* frames (menu bar not on screen yet) and any frame after the
+- `minios_fast_forward` (function) `progs/pokemon/platform_minios.c:1209` `static inline bool minios_fast_forward(void)`
+- `minios_state_path` (function) `progs/pokemon/platform_minios.c:1213` `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
+- `minios_legacy_state_path` (function) `progs/pokemon/platform_minios.c:1218` `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
+- `minios_autosave` (function) `progs/pokemon/platform_minios.c:1223` `static void minios_autosave(uint32_t now)`
+- `poll_hotkeys` (function) `progs/pokemon/platform_minios.c:1237` `static void poll_hotkeys(void)` -- PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, SPACE = 0x39, Shift = 0x2A/0x36.
+- `gb_platform_register_context` (function) `progs/pokemon/platform_minios.c:1289` `void gb_platform_register_context(GBContext *ctx)`
+- `gb_platform_shutdown` (function) `progs/pokemon/platform_minios.c:1311` `void gb_platform_shutdown(void)`
+- `gb_platform_poll_events` (function) `progs/pokemon/platform_minios.c:1322` `bool gb_platform_poll_events(GBContext *ctx)`
+- `gb_platform_render_frame` (function) `progs/pokemon/platform_minios.c:1331` `void gb_platform_render_frame(const uint32_t *framebuffer)`
+- `frames` (function) `progs/pokemon/platform_minios.c:1367` `* frames (menu bar not on screen yet) and any frame after the
          * LCD-off path zeroed the ...`
-- `gb_platform_present_framebuffer` (function) `progs/pokemon/platform_minios.c:1399` `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
-- `gb_platform_render_lcd_off_frame` (function) `progs/pokemon/platform_minios.c:1411` `void gb_platform_render_lcd_off_frame(void)`
-- `gb_platform_vsync` (function) `progs/pokemon/platform_minios.c:1433` `void gb_platform_vsync(uint32_t frame_cycles)`
-- `gb_platform_set_benchmark_mode` (function) `progs/pokemon/platform_minios.c:1450` `void gb_platform_set_benchmark_mode(bool enabled)`
-- `gb_platform_set_input_script` (function) `progs/pokemon/platform_minios.c:1454` `bool gb_platform_set_input_script(const char *script)`
-- `gb_platform_set_input_record_file` (function) `progs/pokemon/platform_minios.c:1460` `void gb_platform_set_input_record_file(const char *path)`
-- `gb_platform_set_persistence_dir` (function) `progs/pokemon/platform_minios.c:1465` `bool gb_platform_set_persistence_dir(const char *path)`
-- `gb_platform_set_dump_frames` (function) `progs/pokemon/platform_minios.c:1474` `void gb_platform_set_dump_frames(const char *frames)`
-- `gb_platform_set_dump_present_frames` (function) `progs/pokemon/platform_minios.c:1496` `void gb_platform_set_dump_present_frames(const char *frames)`
-- `gb_platform_set_screenshot_prefix` (function) `progs/pokemon/platform_minios.c:1517` `void gb_platform_set_screenshot_prefix(const char *prefix)`
-- `gb_platform_get_timing_info` (function) `progs/pokemon/platform_minios.c:1523` `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
-- `gb_platform_get_joypad` (function) `progs/pokemon/platform_minios.c:1530` `uint8_t gb_platform_get_joypad(void)`
-- `gb_platform_set_title` (function) `progs/pokemon/platform_minios.c:1534` `void gb_platform_set_title(const char *title)`
-- `gb_platform_get_smooth_lcd_transitions` (function) `progs/pokemon/platform_minios.c:1540` `bool gb_platform_get_smooth_lcd_transitions(void)`
-- `gb_platform_set_smooth_lcd_transitions` (function) `progs/pokemon/platform_minios.c:1544` `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
-- `gb_platform_set_launcher_return_enabled` (function) `progs/pokemon/platform_minios.c:1548` `void gb_platform_set_launcher_return_enabled(bool enabled)`
-- `gb_platform_get_exit_action` (function) `progs/pokemon/platform_minios.c:1552` `GBPlatformExitAction gb_platform_get_exit_action(void)`
-- `gb_platform_submit_port_frame` (function) `progs/pokemon/platform_minios.c:1556` `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
-- `gb_platform_test_audio_concurrency` (function) `progs/pokemon/platform_minios.c:1562` `bool gb_platform_test_audio_concurrency(uint32_t frames,
+- `gb_platform_present_framebuffer` (function) `progs/pokemon/platform_minios.c:1400` `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
+- `gb_platform_render_lcd_off_frame` (function) `progs/pokemon/platform_minios.c:1412` `void gb_platform_render_lcd_off_frame(void)`
+- `gb_platform_vsync` (function) `progs/pokemon/platform_minios.c:1434` `void gb_platform_vsync(uint32_t frame_cycles)`
+- `gb_platform_set_benchmark_mode` (function) `progs/pokemon/platform_minios.c:1451` `void gb_platform_set_benchmark_mode(bool enabled)`
+- `gb_platform_set_input_script` (function) `progs/pokemon/platform_minios.c:1455` `bool gb_platform_set_input_script(const char *script)`
+- `gb_platform_set_input_record_file` (function) `progs/pokemon/platform_minios.c:1461` `void gb_platform_set_input_record_file(const char *path)`
+- `gb_platform_set_persistence_dir` (function) `progs/pokemon/platform_minios.c:1466` `bool gb_platform_set_persistence_dir(const char *path)`
+- `gb_platform_set_dump_frames` (function) `progs/pokemon/platform_minios.c:1475` `void gb_platform_set_dump_frames(const char *frames)`
+- `gb_platform_set_dump_present_frames` (function) `progs/pokemon/platform_minios.c:1497` `void gb_platform_set_dump_present_frames(const char *frames)`
+- `gb_platform_set_screenshot_prefix` (function) `progs/pokemon/platform_minios.c:1518` `void gb_platform_set_screenshot_prefix(const char *prefix)`
+- `gb_platform_get_timing_info` (function) `progs/pokemon/platform_minios.c:1524` `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
+- `gb_platform_get_joypad` (function) `progs/pokemon/platform_minios.c:1531` `uint8_t gb_platform_get_joypad(void)`
+- `gb_platform_set_title` (function) `progs/pokemon/platform_minios.c:1535` `void gb_platform_set_title(const char *title)`
+- `gb_platform_get_smooth_lcd_transitions` (function) `progs/pokemon/platform_minios.c:1541` `bool gb_platform_get_smooth_lcd_transitions(void)`
+- `gb_platform_set_smooth_lcd_transitions` (function) `progs/pokemon/platform_minios.c:1545` `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
+- `gb_platform_set_launcher_return_enabled` (function) `progs/pokemon/platform_minios.c:1549` `void gb_platform_set_launcher_return_enabled(bool enabled)`
+- `gb_platform_get_exit_action` (function) `progs/pokemon/platform_minios.c:1553` `GBPlatformExitAction gb_platform_get_exit_action(void)`
+- `gb_platform_submit_port_frame` (function) `progs/pokemon/platform_minios.c:1557` `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
+- `gb_platform_test_audio_concurrency` (function) `progs/pokemon/platform_minios.c:1563` `bool gb_platform_test_audio_concurrency(uint32_t frames,
                                         ...` -- void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction...
-- `gb_platform_test_inject_persistence_fault` (function) `progs/pokemon/platform_minios.c:1571` `void gb_platform_test_inject_persistence_fault(
+- `gb_platform_test_inject_persistence_fault` (function) `progs/pokemon/platform_minios.c:1572` `void gb_platform_test_inject_persistence_fault(
     GBPersistenceTestTarget target,
     GBPersist...`
 

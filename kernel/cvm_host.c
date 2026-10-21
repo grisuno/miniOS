@@ -274,9 +274,26 @@ static int64_t n_stdin_addr(void *vm, int ac, uint64_t *av) {
     return (int64_t)(uintptr_t)stdin;
 }
 
+/* Output sink for kformat: a stream (FILE*) or a bounded buffer. The
+ * buffer form follows the C library: at most cap-1 characters plus a
+ * terminating NUL are stored, while len keeps the length the whole
+ * format would have produced (what sprintf and snprintf return). */
+typedef struct {
+    FILE *f;
+    char *buf;
+    size_t cap;
+    size_t len;
+} kout_sink;
+
 static void kout_char(void *ctx, char c) {
-    FILE *f = (FILE *)ctx;
-    if (f) fputc(c, f);
+    kout_sink *k = (kout_sink *)ctx;
+    if (!k) { fputc(c, stdout); return; }
+    if (k->buf) {
+        if (k->len + 1 < k->cap) k->buf[k->len] = c;
+        k->len++;
+        return;
+    }
+    if (k->f) fputc(c, k->f);
     else fputc(c, stdout);
 }
 
@@ -344,9 +361,17 @@ static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc) {
             if (prec != 0 || m != 0) kout_uint(ctx, m, 10, 0);
             if (pad > 0 && left) while (pad-- > 0) kout_char(ctx, ' ');
         } else if (c == 'u') {
+            int pad = width - 1;
+            if (pad > 0 && !left && !zero) while (pad-- > 0) kout_char(ctx, ' ');
             kout_uint(ctx, val, 10, 0);
+            if (pad > 0 && left) while (pad-- > 0) kout_char(ctx, ' ');
         } else if (c == 'x' || c == 'X') {
+            int pad = width - 1;
+            if (pad > 0 && !left && !zero) while (pad-- > 0) kout_char(ctx, ' ');
             kout_uint(ctx, val, 16, c == 'X');
+            if (pad > 0 && left) while (pad-- > 0) kout_char(ctx, ' ');
+        } else if (c == 'o') {
+            kout_uint(ctx, val, 8, 0);
         } else if (c == 'p') {
             kout_char(ctx, '0');
             kout_char(ctx, 'x');
@@ -359,34 +384,69 @@ static void kformat(void *ctx, const char *fmt, uint64_t *argv, int argc) {
     }
 }
 
+/* Docstring: fprintf native. The stream is the first argument, the
+ * format the second, the variadic values follow in the CVM argument
+ * vector. */
 static int64_t n_fprintf(void *vm, int ac, uint64_t *av) {
     (void)vm;
     if (ac < 2) return -1;
-    kformat((void *)(uintptr_t)av[0], (const char *)(uintptr_t)av[1], av + 2, ac - 2);
+    kout_sink k;
+    k.f = (FILE *)(uintptr_t)av[0];
+    k.buf = 0;
+    k.cap = 0;
+    k.len = 0;
+    kformat(&k, (const char *)(uintptr_t)av[1], av + 2, ac - 2);
     return 0;
 }
 
+/* Docstring: printf native. Writes to the standard output. */
 static int64_t n_printf(void *vm, int ac, uint64_t *av) {
     (void)vm;
     if (ac < 1) return -1;
-    kformat(0, (const char *)(uintptr_t)av[0], av + 1, ac - 1);
+    kout_sink k;
+    k.f = stdout;
+    k.buf = 0;
+    k.cap = 0;
+    k.len = 0;
+    kformat(&k, (const char *)(uintptr_t)av[0], av + 1, ac - 1);
     return 0;
 }
 
+/* Docstring: sprintf native. Formats into the caller's buffer and
+ * returns the number of characters written. The buffer is the first
+ * argument, the format the second, the variadic values follow. */
 static int64_t n_sprintf(void *vm, int ac, uint64_t *av) {
     (void)vm;
     if (ac < 2) return -1;
     char *buf = (char *)(uintptr_t)av[0];
-    buf[0] = 0;
-    return 0;
+    kout_sink k;
+    k.f = 0;
+    k.buf = buf;
+    k.cap = (size_t)-1;
+    k.len = 0;
+    kformat(&k, (const char *)(uintptr_t)av[1], av + 2, ac - 2);
+    buf[k.len] = 0;
+    return (int64_t)k.len;
 }
 
+/* Docstring: snprintf native. Formats into the caller's buffer, stores
+ * at most size-1 characters plus the terminating NUL and returns the
+ * length the whole format would have produced (the C library rule). The
+ * buffer is the first argument, the size the second, the format the
+ * third, the variadic values follow. */
 static int64_t n_snprintf(void *vm, int ac, uint64_t *av) {
     (void)vm;
     if (ac < 3) return -1;
     char *buf = (char *)(uintptr_t)av[0];
-    if (av[1] > 0) buf[0] = 0;
-    return 0;
+    size_t n = (size_t)av[1];
+    kout_sink k;
+    k.f = 0;
+    k.buf = buf;
+    k.cap = n;
+    k.len = 0;
+    kformat(&k, (const char *)(uintptr_t)av[2], av + 3, ac - 3);
+    if (n > 0) buf[k.len < n ? k.len : n - 1] = 0;
+    return (int64_t)k.len;
 }
 
 static void register_host_natives(CvmState *vm) {

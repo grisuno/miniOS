@@ -386,10 +386,11 @@ Depends on: `kernel/time.c`
 - `main` (function) `tools/boot_wl.py:226` `def main()`
 
 ## tools/check_abi_numbers.py
-- `normalize` (function) `tools/check_abi_numbers.py:130` `def normalize(minios_name)`
-- `parse_abi` (function) `tools/check_abi_numbers.py:134` `def parse_abi(path)`
-- `parse_dispatch` (function) `tools/check_abi_numbers.py:145` `def parse_dispatch(path)`
-- `main` (function) `tools/check_abi_numbers.py:158` `def main()`
+- `normalize` (function) `tools/check_abi_numbers.py:142` `def normalize(minios_name)`
+- `parse_abi` (function) `tools/check_abi_numbers.py:146` `def parse_abi(path)`
+- `parse_ld_stubs` (function) `tools/check_abi_numbers.py:157` `def parse_ld_stubs(path)` -- Read the sibling ld's built-in libc stubs: symbol -> syscall number.
+- `parse_dispatch` (function) `tools/check_abi_numbers.py:164` `def parse_dispatch(path)`
+- `main` (function) `tools/check_abi_numbers.py:177` `def main()`
 
 ## tools/check_addons.py
 - `load_parser` (function) `tools/check_addons.py:22` `def load_parser()`

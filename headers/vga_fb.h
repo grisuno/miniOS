@@ -175,6 +175,13 @@ extern mouse_state_t mouse_state;
 
 /* ---- Public API ---- */
 void     vga_fb_init(void);
+/* Feed one completed console line into the terminal history (the text-mode
+ * console has no other history) and page that history by one screen
+ * (dir -1 up, +1 down). The page keys drive the paging when the
+ * framebuffer terminal is up. */
+void     vga_fb_term_ring_init(void);
+void     vga_fb_term_feed(const char *line, int len);
+void     vga_fb_history_page(int dir);
 void     vga_fb_clear(void);
 void     vga_fb_pixel(int x, int y, uint8_t color);
 void     vga_fb_rect(int x, int y, int w, int h, uint8_t color);

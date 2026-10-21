@@ -75,6 +75,31 @@ int main(void) {
         out[i] = 0u;
     CHECK(panic_backtrace((unsigned long)&f1[0], always_valid, out, 100) == 3, "huge max clamps");
 
+    /* Hex formatting: the widest field must write its digits plus the
+     * terminator and nothing else. A 16-digit field used to write one
+     * byte past a 16-byte buffer, landing on the caller's saved frame
+     * pointer; the canary below proves the bound holds. */
+    {
+        struct {
+            char buf[PANIC_HEX_MAX_DIGITS + 1];
+            char canary;
+        } cell;
+        cell.canary = (char)0x5A;
+        CHECK(panic_hex_str(cell.buf, (int)sizeof(cell.buf), 0xdeadbeefcafe1234UL, 16) == 16,
+              "widest field writes 16 digits");
+        CHECK(cell.canary == (char)0x5A, "widest field leaves the canary alone");
+        CHECK(cell.buf[16] == 0, "widest field terminates inside the buffer");
+        CHECK(panic_hex_str(cell.buf, (int)sizeof(cell.buf), 0xABUL, 2) == 2, "narrow field");
+        CHECK(cell.buf[0] == 'a' && cell.buf[1] == 'b' && cell.buf[2] == 0, "narrow field digits");
+        CHECK(panic_hex_str(cell.buf, (int)sizeof(cell.buf), 0xFFUL, 99) == 16, "digits clamp to 16");
+        CHECK(panic_hex_str(cell.buf, (int)sizeof(cell.buf), 0xFFUL, -3) == 0, "negative digits give 0");
+        CHECK(panic_hex_str(cell.buf, (int)sizeof(cell.buf), 0xFFUL, 0) == 0, "zero digits give 0");
+        CHECK(cell.buf[0] == 0, "zero digits still terminate");
+        CHECK(panic_hex_str(cell.buf, 4, 0x1234UL, 16) == 3, "capacity clamps the field");
+        CHECK(panic_hex_str(cell.buf, 0, 0x1234UL, 16) == 0, "no capacity writes nothing");
+        CHECK(panic_hex_str(0, 16, 0x1234UL, 16) == 0, "null buffer writes nothing");
+    }
+
     if (failures == 0)
         printf("panic: ok\n");
     return failures != 0;

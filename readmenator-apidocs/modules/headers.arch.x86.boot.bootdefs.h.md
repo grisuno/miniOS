@@ -15,7 +15,7 @@ bootdefs.h - centralized configuration for the MiniOS two-stage boot path.
 
 ### `address`
 
-`function` | [headers/arch/x86/boot/bootdefs.h:197](../../headers/arch/x86/boot/bootdefs.h#L197)
+`function` | [headers/arch/x86/boot/bootdefs.h:196](../../headers/arch/x86/boot/bootdefs.h#L196)
 
 ```c
 * address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and 64-bit GDT stage 2 built for the BSP. */ #define AP_STUB_ADDR 0x6000 #define GDT64_COD
@@ -541,7 +541,7 @@ bootdefs.h - centralized configuration for the MiniOS two-stage boot path.
 
 ### `BIOS_VBE_GET_MODE_INFO`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:117](../../headers/arch/x86/boot/bootdefs.h#L117)
+`macro` | [headers/arch/x86/boot/bootdefs.h:116](../../headers/arch/x86/boot/bootdefs.h#L116)
 
 ```c
 #define BIOS_VBE_GET_MODE_INFO
@@ -549,7 +549,7 @@ bootdefs.h - centralized configuration for the MiniOS two-stage boot path.
 
 VESA BIOS Extensions (VBE) linear-framebuffer video setup.
 
-Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 MB scan-out window (800x600x32, then 640x480x32), then the 8-bit-palette modes, and records the result for the kernel in a fixed low-memory struct (see VBE_INFO_ADDR). If no VBE mode is available it falls back to VGA Mode 13h (320x200x8). In a true-color mode the kernel expands its palette-index drawing to RGB and the desktop/icon pixels are no longer quantized; the 8-bit modes keep the 256-entry VGA DAC palette path unchanged. A true-color mode taller than 800x600 (1024x768x24 = 2.25 MB) would render its bottom rows black because QEMU only scans out the first ~2 MB of the framebuffer, so none is offered.
+Stage 2 probes a ladder of modes, true color first at each resolution, and records the result for the kernel in a fixed low-memory struct (see VBE_INFO_ADDR): 1024x768x32, 1024x768x8, 800x600x32, 800x600x8, 640x480x32, 640x480x8. If no VBE mode is available it falls back to VGA Mode 13h (320x200x8). In a true-color mode the kernel expands its palette-index drawing to RGB and the desktop/icon pixels are no longer quantized; the 8-bit modes keep the 256-entry VGA DAC palette path unchanged. The kernel maps the framebuffer slot by slot, so a multi-MB framebuffer spanning two 2 MB PD slots is fully mapped.
 
 ---
 
@@ -557,7 +557,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `BIOS_VBE_SET_MODE`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:118](../../headers/arch/x86/boot/bootdefs.h#L118)
+`macro` | [headers/arch/x86/boot/bootdefs.h:117](../../headers/arch/x86/boot/bootdefs.h#L117)
 
 ```c
 #define BIOS_VBE_SET_MODE
@@ -569,7 +569,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_1024x768x32`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:119](../../headers/arch/x86/boot/bootdefs.h#L119)
+`macro` | [headers/arch/x86/boot/bootdefs.h:118](../../headers/arch/x86/boot/bootdefs.h#L118)
 
 ```c
 #define VBE_MODE_1024x768x32
@@ -581,7 +581,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_800x600x32`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:120](../../headers/arch/x86/boot/bootdefs.h#L120)
+`macro` | [headers/arch/x86/boot/bootdefs.h:119](../../headers/arch/x86/boot/bootdefs.h#L119)
 
 ```c
 #define VBE_MODE_800x600x32
@@ -593,7 +593,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_640x480x32`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:121](../../headers/arch/x86/boot/bootdefs.h#L121)
+`macro` | [headers/arch/x86/boot/bootdefs.h:120](../../headers/arch/x86/boot/bootdefs.h#L120)
 
 ```c
 #define VBE_MODE_640x480x32
@@ -605,7 +605,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_1024x768x8`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:122](../../headers/arch/x86/boot/bootdefs.h#L122)
+`macro` | [headers/arch/x86/boot/bootdefs.h:121](../../headers/arch/x86/boot/bootdefs.h#L121)
 
 ```c
 #define VBE_MODE_1024x768x8
@@ -617,7 +617,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_800x600x8`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:123](../../headers/arch/x86/boot/bootdefs.h#L123)
+`macro` | [headers/arch/x86/boot/bootdefs.h:122](../../headers/arch/x86/boot/bootdefs.h#L122)
 
 ```c
 #define VBE_MODE_800x600x8
@@ -629,7 +629,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_640x480x8`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:124](../../headers/arch/x86/boot/bootdefs.h#L124)
+`macro` | [headers/arch/x86/boot/bootdefs.h:123](../../headers/arch/x86/boot/bootdefs.h#L123)
 
 ```c
 #define VBE_MODE_640x480x8
@@ -641,7 +641,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_LFB`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:125](../../headers/arch/x86/boot/bootdefs.h#L125)
+`macro` | [headers/arch/x86/boot/bootdefs.h:124](../../headers/arch/x86/boot/bootdefs.h#L124)
 
 ```c
 #define VBE_MODE_LFB
@@ -653,7 +653,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_INFO_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:126](../../headers/arch/x86/boot/bootdefs.h#L126)
+`macro` | [headers/arch/x86/boot/bootdefs.h:125](../../headers/arch/x86/boot/bootdefs.h#L125)
 
 ```c
 #define VBE_MODE_INFO_ADDR
@@ -665,7 +665,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_MODE_ATTR_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:127](../../headers/arch/x86/boot/bootdefs.h#L127)
+`macro` | [headers/arch/x86/boot/bootdefs.h:126](../../headers/arch/x86/boot/bootdefs.h#L126)
 
 ```c
 #define VBE_MODE_ATTR_OFF
@@ -677,7 +677,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_ATTR_SUPPORTED`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:128](../../headers/arch/x86/boot/bootdefs.h#L128)
+`macro` | [headers/arch/x86/boot/bootdefs.h:127](../../headers/arch/x86/boot/bootdefs.h#L127)
 
 ```c
 #define VBE_ATTR_SUPPORTED
@@ -689,7 +689,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_ATTR_LFB`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:129](../../headers/arch/x86/boot/bootdefs.h#L129)
+`macro` | [headers/arch/x86/boot/bootdefs.h:128](../../headers/arch/x86/boot/bootdefs.h#L128)
 
 ```c
 #define VBE_ATTR_LFB
@@ -701,7 +701,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_INFO_XRES_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:130](../../headers/arch/x86/boot/bootdefs.h#L130)
+`macro` | [headers/arch/x86/boot/bootdefs.h:129](../../headers/arch/x86/boot/bootdefs.h#L129)
 
 ```c
 #define VBE_INFO_XRES_OFF
@@ -715,7 +715,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_INFO_YRES_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:131](../../headers/arch/x86/boot/bootdefs.h#L131)
+`macro` | [headers/arch/x86/boot/bootdefs.h:130](../../headers/arch/x86/boot/bootdefs.h#L130)
 
 ```c
 #define VBE_INFO_YRES_OFF
@@ -729,7 +729,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_INFO_BYTES_SCAN_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:132](../../headers/arch/x86/boot/bootdefs.h#L132)
+`macro` | [headers/arch/x86/boot/bootdefs.h:131](../../headers/arch/x86/boot/bootdefs.h#L131)
 
 ```c
 #define VBE_INFO_BYTES_SCAN_OFF
@@ -743,7 +743,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_INFO_PHYSBASE_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:133](../../headers/arch/x86/boot/bootdefs.h#L133)
+`macro` | [headers/arch/x86/boot/bootdefs.h:132](../../headers/arch/x86/boot/bootdefs.h#L132)
 
 ```c
 #define VBE_INFO_PHYSBASE_OFF
@@ -757,7 +757,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_INFO_BPP_SRC_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:134](../../headers/arch/x86/boot/bootdefs.h#L134)
+`macro` | [headers/arch/x86/boot/bootdefs.h:133](../../headers/arch/x86/boot/bootdefs.h#L133)
 
 ```c
 #define VBE_INFO_BPP_SRC_OFF
@@ -771,7 +771,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_BPP_8`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:135](../../headers/arch/x86/boot/bootdefs.h#L135)
+`macro` | [headers/arch/x86/boot/bootdefs.h:134](../../headers/arch/x86/boot/bootdefs.h#L134)
 
 ```c
 #define VBE_BPP_8
@@ -783,7 +783,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_BPP_24`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:136](../../headers/arch/x86/boot/bootdefs.h#L136)
+`macro` | [headers/arch/x86/boot/bootdefs.h:135](../../headers/arch/x86/boot/bootdefs.h#L135)
 
 ```c
 #define VBE_BPP_24
@@ -795,7 +795,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_BPP_32`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:137](../../headers/arch/x86/boot/bootdefs.h#L137)
+`macro` | [headers/arch/x86/boot/bootdefs.h:136](../../headers/arch/x86/boot/bootdefs.h#L136)
 
 ```c
 #define VBE_BPP_32
@@ -807,7 +807,7 @@ Stage 2 probes a true-color mode whose framebuffer fits the emulated std-VGA ~2 
 
 ### `VBE_INFO_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:149](../../headers/arch/x86/boot/bootdefs.h#L149)
+`macro` | [headers/arch/x86/boot/bootdefs.h:148](../../headers/arch/x86/boot/bootdefs.h#L148)
 
 ```c
 #define VBE_INFO_ADDR
@@ -823,7 +823,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `VBE_INFO_FBBASE_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:150](../../headers/arch/x86/boot/bootdefs.h#L150)
+`macro` | [headers/arch/x86/boot/bootdefs.h:149](../../headers/arch/x86/boot/bootdefs.h#L149)
 
 ```c
 #define VBE_INFO_FBBASE_OFF
@@ -835,7 +835,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `VBE_INFO_PITCH_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:151](../../headers/arch/x86/boot/bootdefs.h#L151)
+`macro` | [headers/arch/x86/boot/bootdefs.h:150](../../headers/arch/x86/boot/bootdefs.h#L150)
 
 ```c
 #define VBE_INFO_PITCH_OFF
@@ -847,7 +847,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `VBE_INFO_WIDTH_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:152](../../headers/arch/x86/boot/bootdefs.h#L152)
+`macro` | [headers/arch/x86/boot/bootdefs.h:151](../../headers/arch/x86/boot/bootdefs.h#L151)
 
 ```c
 #define VBE_INFO_WIDTH_OFF
@@ -859,7 +859,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `VBE_INFO_HEIGHT_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:153](../../headers/arch/x86/boot/bootdefs.h#L153)
+`macro` | [headers/arch/x86/boot/bootdefs.h:152](../../headers/arch/x86/boot/bootdefs.h#L152)
 
 ```c
 #define VBE_INFO_HEIGHT_OFF
@@ -871,7 +871,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `VBE_INFO_VALID_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:154](../../headers/arch/x86/boot/bootdefs.h#L154)
+`macro` | [headers/arch/x86/boot/bootdefs.h:153](../../headers/arch/x86/boot/bootdefs.h#L153)
 
 ```c
 #define VBE_INFO_VALID_OFF
@@ -883,7 +883,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `VBE_INFO_BPP_OFF`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:155](../../headers/arch/x86/boot/bootdefs.h#L155)
+`macro` | [headers/arch/x86/boot/bootdefs.h:154](../../headers/arch/x86/boot/bootdefs.h#L154)
 
 ```c
 #define VBE_INFO_BPP_OFF
@@ -895,7 +895,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `A20_CONTROL_PORT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:157](../../headers/arch/x86/boot/bootdefs.h#L157)
+`macro` | [headers/arch/x86/boot/bootdefs.h:156](../../headers/arch/x86/boot/bootdefs.h#L156)
 
 ```c
 #define A20_CONTROL_PORT
@@ -907,7 +907,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `A20_ENABLE_BIT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:158](../../headers/arch/x86/boot/bootdefs.h#L158)
+`macro` | [headers/arch/x86/boot/bootdefs.h:157](../../headers/arch/x86/boot/bootdefs.h#L157)
 
 ```c
 #define A20_ENABLE_BIT
@@ -919,7 +919,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `A20_RESET_CLEAR_MASK`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:159](../../headers/arch/x86/boot/bootdefs.h#L159)
+`macro` | [headers/arch/x86/boot/bootdefs.h:158](../../headers/arch/x86/boot/bootdefs.h#L158)
 
 ```c
 #define A20_RESET_CLEAR_MASK
@@ -931,7 +931,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `CR0_PE`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:161](../../headers/arch/x86/boot/bootdefs.h#L161)
+`macro` | [headers/arch/x86/boot/bootdefs.h:160](../../headers/arch/x86/boot/bootdefs.h#L160)
 
 ```c
 #define CR0_PE
@@ -943,7 +943,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `CR0_PE_CLEAR_MASK`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:162](../../headers/arch/x86/boot/bootdefs.h#L162)
+`macro` | [headers/arch/x86/boot/bootdefs.h:161](../../headers/arch/x86/boot/bootdefs.h#L161)
 
 ```c
 #define CR0_PE_CLEAR_MASK
@@ -955,7 +955,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `CR0_PG`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:163](../../headers/arch/x86/boot/bootdefs.h#L163)
+`macro` | [headers/arch/x86/boot/bootdefs.h:162](../../headers/arch/x86/boot/bootdefs.h#L162)
 
 ```c
 #define CR0_PG
@@ -967,7 +967,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `CR0_WP`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:164](../../headers/arch/x86/boot/bootdefs.h#L164)
+`macro` | [headers/arch/x86/boot/bootdefs.h:163](../../headers/arch/x86/boot/bootdefs.h#L163)
 
 ```c
 #define CR0_WP
@@ -979,7 +979,7 @@ Stage 2 writes this fixed low-memory struct; the kernel reads it once at boot to
 
 ### `CR4_PAE`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:165](../../headers/arch/x86/boot/bootdefs.h#L165)
+`macro` | [headers/arch/x86/boot/bootdefs.h:164](../../headers/arch/x86/boot/bootdefs.h#L164)
 
 ```c
 #define CR4_PAE
@@ -993,7 +993,7 @@ ring 0 honours read-only user pages (COW)
 
 ### `CR0_MP`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:166](../../headers/arch/x86/boot/bootdefs.h#L166)
+`macro` | [headers/arch/x86/boot/bootdefs.h:165](../../headers/arch/x86/boot/bootdefs.h#L165)
 
 ```c
 #define CR0_MP
@@ -1005,7 +1005,7 @@ ring 0 honours read-only user pages (COW)
 
 ### `CR0_EM`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:167](../../headers/arch/x86/boot/bootdefs.h#L167)
+`macro` | [headers/arch/x86/boot/bootdefs.h:166](../../headers/arch/x86/boot/bootdefs.h#L166)
 
 ```c
 #define CR0_EM
@@ -1019,7 +1019,7 @@ WAIT/FWAIT honour TS (SSE contract)
 
 ### `CR0_NW`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:168](../../headers/arch/x86/boot/bootdefs.h#L168)
+`macro` | [headers/arch/x86/boot/bootdefs.h:167](../../headers/arch/x86/boot/bootdefs.h#L167)
 
 ```c
 #define CR0_NW
@@ -1033,7 +1033,7 @@ x87/SSE emulation: must be clear for SSE
 
 ### `CR0_CD`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:169](../../headers/arch/x86/boot/bootdefs.h#L169)
+`macro` | [headers/arch/x86/boot/bootdefs.h:168](../../headers/arch/x86/boot/bootdefs.h#L168)
 
 ```c
 #define CR0_CD
@@ -1047,7 +1047,7 @@ not write-through (power-on value on an AP)
 
 ### `CR4_OSFXSR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:170](../../headers/arch/x86/boot/bootdefs.h#L170)
+`macro` | [headers/arch/x86/boot/bootdefs.h:169](../../headers/arch/x86/boot/bootdefs.h#L169)
 
 ```c
 #define CR4_OSFXSR
@@ -1061,7 +1061,7 @@ cache disable (power-on value on an AP)
 
 ### `CR4_OSXMMEXCPT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:171](../../headers/arch/x86/boot/bootdefs.h#L171)
+`macro` | [headers/arch/x86/boot/bootdefs.h:170](../../headers/arch/x86/boot/bootdefs.h#L170)
 
 ```c
 #define CR4_OSXMMEXCPT
@@ -1075,7 +1075,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `MSR_EFER`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:173](../../headers/arch/x86/boot/bootdefs.h#L173)
+`macro` | [headers/arch/x86/boot/bootdefs.h:172](../../headers/arch/x86/boot/bootdefs.h#L172)
 
 ```c
 #define MSR_EFER
@@ -1087,7 +1087,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `EFER_LME`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:174](../../headers/arch/x86/boot/bootdefs.h#L174)
+`macro` | [headers/arch/x86/boot/bootdefs.h:173](../../headers/arch/x86/boot/bootdefs.h#L173)
 
 ```c
 #define EFER_LME
@@ -1099,7 +1099,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `EFER_NXE`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:175](../../headers/arch/x86/boot/bootdefs.h#L175)
+`macro` | [headers/arch/x86/boot/bootdefs.h:174](../../headers/arch/x86/boot/bootdefs.h#L174)
 
 ```c
 #define EFER_NXE
@@ -1111,7 +1111,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_CODE32_SEL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:177](../../headers/arch/x86/boot/bootdefs.h#L177)
+`macro` | [headers/arch/x86/boot/bootdefs.h:176](../../headers/arch/x86/boot/bootdefs.h#L176)
 
 ```c
 #define GDT32_CODE32_SEL
@@ -1123,7 +1123,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_DATA32_SEL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:178](../../headers/arch/x86/boot/bootdefs.h#L178)
+`macro` | [headers/arch/x86/boot/bootdefs.h:177](../../headers/arch/x86/boot/bootdefs.h#L177)
 
 ```c
 #define GDT32_DATA32_SEL
@@ -1135,7 +1135,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_CODE16_SEL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:179](../../headers/arch/x86/boot/bootdefs.h#L179)
+`macro` | [headers/arch/x86/boot/bootdefs.h:178](../../headers/arch/x86/boot/bootdefs.h#L178)
 
 ```c
 #define GDT32_CODE16_SEL
@@ -1147,7 +1147,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_DATA16_SEL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:180](../../headers/arch/x86/boot/bootdefs.h#L180)
+`macro` | [headers/arch/x86/boot/bootdefs.h:179](../../headers/arch/x86/boot/bootdefs.h#L179)
 
 ```c
 #define GDT32_DATA16_SEL
@@ -1159,7 +1159,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_DESC_NULL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:182](../../headers/arch/x86/boot/bootdefs.h#L182)
+`macro` | [headers/arch/x86/boot/bootdefs.h:181](../../headers/arch/x86/boot/bootdefs.h#L181)
 
 ```c
 #define GDT32_DESC_NULL
@@ -1171,7 +1171,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_DESC_CODE32`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:183](../../headers/arch/x86/boot/bootdefs.h#L183)
+`macro` | [headers/arch/x86/boot/bootdefs.h:182](../../headers/arch/x86/boot/bootdefs.h#L182)
 
 ```c
 #define GDT32_DESC_CODE32
@@ -1183,7 +1183,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_DESC_DATA32`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:184](../../headers/arch/x86/boot/bootdefs.h#L184)
+`macro` | [headers/arch/x86/boot/bootdefs.h:183](../../headers/arch/x86/boot/bootdefs.h#L183)
 
 ```c
 #define GDT32_DESC_DATA32
@@ -1195,7 +1195,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_DESC_CODE16`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:185](../../headers/arch/x86/boot/bootdefs.h#L185)
+`macro` | [headers/arch/x86/boot/bootdefs.h:184](../../headers/arch/x86/boot/bootdefs.h#L184)
 
 ```c
 #define GDT32_DESC_CODE16
@@ -1207,7 +1207,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT32_DESC_DATA16`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:186](../../headers/arch/x86/boot/bootdefs.h#L186)
+`macro` | [headers/arch/x86/boot/bootdefs.h:185](../../headers/arch/x86/boot/bootdefs.h#L185)
 
 ```c
 #define GDT32_DESC_DATA16
@@ -1219,7 +1219,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT64_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:188](../../headers/arch/x86/boot/bootdefs.h#L188)
+`macro` | [headers/arch/x86/boot/bootdefs.h:187](../../headers/arch/x86/boot/bootdefs.h#L187)
 
 ```c
 #define GDT64_ADDR
@@ -1231,7 +1231,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT64_BYTES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:189](../../headers/arch/x86/boot/bootdefs.h#L189)
+`macro` | [headers/arch/x86/boot/bootdefs.h:188](../../headers/arch/x86/boot/bootdefs.h#L188)
 
 ```c
 #define GDT64_BYTES
@@ -1243,7 +1243,7 @@ FXSAVE/FXRSTOR and SSE instructions enabled
 
 ### `GDT64_SMP_BYTES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:194](../../headers/arch/x86/boot/bootdefs.h#L194)
+`macro` | [headers/arch/x86/boot/bootdefs.h:193](../../headers/arch/x86/boot/bootdefs.h#L193)
 
 ```c
 #define GDT64_SMP_BYTES
@@ -1257,7 +1257,7 @@ Runtime-expanded GDT: the 5 stage-2 entries plus one 16-byte TSS descriptor (two
 
 ### `AP_STUB_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:199](../../headers/arch/x86/boot/bootdefs.h#L199)
+`macro` | [headers/arch/x86/boot/bootdefs.h:198](../../headers/arch/x86/boot/bootdefs.h#L198)
 
 ```c
 #define AP_STUB_ADDR
@@ -1273,7 +1273,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_CODE_SEL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:200](../../headers/arch/x86/boot/bootdefs.h#L200)
+`macro` | [headers/arch/x86/boot/bootdefs.h:199](../../headers/arch/x86/boot/bootdefs.h#L199)
 
 ```c
 #define GDT64_CODE_SEL
@@ -1285,7 +1285,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_DATA_SEL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:201](../../headers/arch/x86/boot/bootdefs.h#L201)
+`macro` | [headers/arch/x86/boot/bootdefs.h:200](../../headers/arch/x86/boot/bootdefs.h#L200)
 
 ```c
 #define GDT64_DATA_SEL
@@ -1297,7 +1297,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_USER_DATA_SEL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:202](../../headers/arch/x86/boot/bootdefs.h#L202)
+`macro` | [headers/arch/x86/boot/bootdefs.h:201](../../headers/arch/x86/boot/bootdefs.h#L201)
 
 ```c
 #define GDT64_USER_DATA_SEL
@@ -1309,7 +1309,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_USER_CODE_SEL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:203](../../headers/arch/x86/boot/bootdefs.h#L203)
+`macro` | [headers/arch/x86/boot/bootdefs.h:202](../../headers/arch/x86/boot/bootdefs.h#L202)
 
 ```c
 #define GDT64_USER_CODE_SEL
@@ -1321,7 +1321,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_DESC_NULL`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:204](../../headers/arch/x86/boot/bootdefs.h#L204)
+`macro` | [headers/arch/x86/boot/bootdefs.h:203](../../headers/arch/x86/boot/bootdefs.h#L203)
 
 ```c
 #define GDT64_DESC_NULL
@@ -1333,7 +1333,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_DESC_CODE`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:205](../../headers/arch/x86/boot/bootdefs.h#L205)
+`macro` | [headers/arch/x86/boot/bootdefs.h:204](../../headers/arch/x86/boot/bootdefs.h#L204)
 
 ```c
 #define GDT64_DESC_CODE
@@ -1345,7 +1345,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_DESC_DATA`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:206](../../headers/arch/x86/boot/bootdefs.h#L206)
+`macro` | [headers/arch/x86/boot/bootdefs.h:205](../../headers/arch/x86/boot/bootdefs.h#L205)
 
 ```c
 #define GDT64_DESC_DATA
@@ -1357,7 +1357,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_DESC_UDATA`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:207](../../headers/arch/x86/boot/bootdefs.h#L207)
+`macro` | [headers/arch/x86/boot/bootdefs.h:206](../../headers/arch/x86/boot/bootdefs.h#L206)
 
 ```c
 #define GDT64_DESC_UDATA
@@ -1369,7 +1369,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `GDT64_DESC_UCODE`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:208](../../headers/arch/x86/boot/bootdefs.h#L208)
+`macro` | [headers/arch/x86/boot/bootdefs.h:207](../../headers/arch/x86/boot/bootdefs.h#L207)
 
 ```c
 #define GDT64_DESC_UCODE
@@ -1381,7 +1381,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_PML4_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:210](../../headers/arch/x86/boot/bootdefs.h#L210)
+`macro` | [headers/arch/x86/boot/bootdefs.h:209](../../headers/arch/x86/boot/bootdefs.h#L209)
 
 ```c
 #define PT_PML4_ADDR
@@ -1393,7 +1393,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_PDPT_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:211](../../headers/arch/x86/boot/bootdefs.h#L211)
+`macro` | [headers/arch/x86/boot/bootdefs.h:210](../../headers/arch/x86/boot/bootdefs.h#L210)
 
 ```c
 #define PT_PDPT_ADDR
@@ -1405,7 +1405,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_PD_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:212](../../headers/arch/x86/boot/bootdefs.h#L212)
+`macro` | [headers/arch/x86/boot/bootdefs.h:211](../../headers/arch/x86/boot/bootdefs.h#L211)
 
 ```c
 #define PT_PD_ADDR
@@ -1417,7 +1417,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_USER0_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:213](../../headers/arch/x86/boot/bootdefs.h#L213)
+`macro` | [headers/arch/x86/boot/bootdefs.h:212](../../headers/arch/x86/boot/bootdefs.h#L212)
 
 ```c
 #define PT_USER0_ADDR
@@ -1429,7 +1429,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_USER1_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:214](../../headers/arch/x86/boot/bootdefs.h#L214)
+`macro` | [headers/arch/x86/boot/bootdefs.h:213](../../headers/arch/x86/boot/bootdefs.h#L213)
 
 ```c
 #define PT_USER1_ADDR
@@ -1441,7 +1441,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_ZERO_DWORDS`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:215](../../headers/arch/x86/boot/bootdefs.h#L215)
+`macro` | [headers/arch/x86/boot/bootdefs.h:214](../../headers/arch/x86/boot/bootdefs.h#L214)
 
 ```c
 #define PT_ZERO_DWORDS
@@ -1453,7 +1453,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_FLAGS_PRESENT_RW`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:216](../../headers/arch/x86/boot/bootdefs.h#L216)
+`macro` | [headers/arch/x86/boot/bootdefs.h:215](../../headers/arch/x86/boot/bootdefs.h#L215)
 
 ```c
 #define PT_FLAGS_PRESENT_RW
@@ -1465,7 +1465,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_FLAGS_PRESENT_RW_PS`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:217](../../headers/arch/x86/boot/bootdefs.h#L217)
+`macro` | [headers/arch/x86/boot/bootdefs.h:216](../../headers/arch/x86/boot/bootdefs.h#L216)
 
 ```c
 #define PT_FLAGS_PRESENT_RW_PS
@@ -1477,7 +1477,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_FLAGS_PS`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:218](../../headers/arch/x86/boot/bootdefs.h#L218)
+`macro` | [headers/arch/x86/boot/bootdefs.h:217](../../headers/arch/x86/boot/bootdefs.h#L217)
 
 ```c
 #define PT_FLAGS_PS
@@ -1489,7 +1489,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_FLAGS_USER`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:219](../../headers/arch/x86/boot/bootdefs.h#L219)
+`macro` | [headers/arch/x86/boot/bootdefs.h:218](../../headers/arch/x86/boot/bootdefs.h#L218)
 
 ```c
 #define PT_FLAGS_USER
@@ -1501,7 +1501,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_FLAGS_PCD`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:220](../../headers/arch/x86/boot/bootdefs.h#L220)
+`macro` | [headers/arch/x86/boot/bootdefs.h:219](../../headers/arch/x86/boot/bootdefs.h#L219)
 
 ```c
 #define PT_FLAGS_PCD
@@ -1513,7 +1513,7 @@ It reuses the page tables and 64-bit GDT stage 2 built for the BSP.
 
 ### `PT_FLAGS_PWT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:221](../../headers/arch/x86/boot/bootdefs.h#L221)
+`macro` | [headers/arch/x86/boot/bootdefs.h:220](../../headers/arch/x86/boot/bootdefs.h#L220)
 
 ```c
 #define PT_FLAGS_PWT
@@ -1527,7 +1527,7 @@ page cache disable (uncacheable)
 
 ### `PT_FLAGS_NX`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:222](../../headers/arch/x86/boot/bootdefs.h#L222)
+`macro` | [headers/arch/x86/boot/bootdefs.h:221](../../headers/arch/x86/boot/bootdefs.h#L221)
 
 ```c
 #define PT_FLAGS_NX
@@ -1541,7 +1541,7 @@ page write-through
 
 ### `PT_ADDR_MASK`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:223](../../headers/arch/x86/boot/bootdefs.h#L223)
+`macro` | [headers/arch/x86/boot/bootdefs.h:222](../../headers/arch/x86/boot/bootdefs.h#L222)
 
 ```c
 #define PT_ADDR_MASK
@@ -1555,7 +1555,7 @@ no-execute
 
 ### `PT_USER_ENTRY`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:224](../../headers/arch/x86/boot/bootdefs.h#L224)
+`macro` | [headers/arch/x86/boot/bootdefs.h:223](../../headers/arch/x86/boot/bootdefs.h#L223)
 
 ```c
 #define PT_USER_ENTRY
@@ -1569,7 +1569,7 @@ physical addr mask
 
 ### `PT_USER_NX_ENTRY`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:225](../../headers/arch/x86/boot/bootdefs.h#L225)
+`macro` | [headers/arch/x86/boot/bootdefs.h:224](../../headers/arch/x86/boot/bootdefs.h#L224)
 
 ```c
 #define PT_USER_NX_ENTRY
@@ -1583,7 +1583,7 @@ present | rw | user
 
 ### `PT_ENTRY_PRESENT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:226](../../headers/arch/x86/boot/bootdefs.h#L226)
+`macro` | [headers/arch/x86/boot/bootdefs.h:225](../../headers/arch/x86/boot/bootdefs.h#L225)
 
 ```c
 #define PT_ENTRY_PRESENT
@@ -1595,7 +1595,7 @@ present | rw | user
 
 ### `PT_ENTRY_USER`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:227](../../headers/arch/x86/boot/bootdefs.h#L227)
+`macro` | [headers/arch/x86/boot/bootdefs.h:226](../../headers/arch/x86/boot/bootdefs.h#L226)
 
 ```c
 #define PT_ENTRY_USER
@@ -1609,7 +1609,7 @@ present | rw
 
 ### `SB16_DMA_PT_ENTRY`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:233](../../headers/arch/x86/boot/bootdefs.h#L233)
+`macro` | [headers/arch/x86/boot/bootdefs.h:232](../../headers/arch/x86/boot/bootdefs.h#L232)
 
 ```c
 #define SB16_DMA_PT_ENTRY
@@ -1625,7 +1625,7 @@ Those pages must be marked uncacheable (PCD) or the freshly written PCM stays st
 
 ### `SB16_DMA_PT_PAGES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:234](../../headers/arch/x86/boot/bootdefs.h#L234)
+`macro` | [headers/arch/x86/boot/bootdefs.h:233](../../headers/arch/x86/boot/bootdefs.h#L233)
 
 ```c
 #define SB16_DMA_PT_PAGES
@@ -1639,7 +1639,7 @@ PT0 entry index
 
 ### `PT_FLAGS_UNCACHED`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:239](../../headers/arch/x86/boot/bootdefs.h#L239)
+`macro` | [headers/arch/x86/boot/bootdefs.h:238](../../headers/arch/x86/boot/bootdefs.h#L238)
 
 ```c
 #define PT_FLAGS_UNCACHED
@@ -1653,7 +1653,7 @@ Both bits are required for a device mapping: PCD alone leaves the page write-bac
 
 ### `KMM_DEVICE_PDPT_SLOT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:245](../../headers/arch/x86/boot/bootdefs.h#L245)
+`macro` | [headers/arch/x86/boot/bootdefs.h:244](../../headers/arch/x86/boot/bootdefs.h#L244)
 
 ```c
 #define KMM_DEVICE_PDPT_SLOT
@@ -1669,7 +1669,7 @@ Slot 0 is the boot identity map, slot 1 the user window, slot 3 the local APIC, 
 
 ### `PT_PD_ENTRIES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:246](../../headers/arch/x86/boot/bootdefs.h#L246)
+`macro` | [headers/arch/x86/boot/bootdefs.h:245](../../headers/arch/x86/boot/bootdefs.h#L245)
 
 ```c
 #define PT_PD_ENTRIES
@@ -1681,7 +1681,7 @@ Slot 0 is the boot identity map, slot 1 the user window, slot 3 the local APIC, 
 
 ### `PT_PD_ENTRY_BYTES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:247](../../headers/arch/x86/boot/bootdefs.h#L247)
+`macro` | [headers/arch/x86/boot/bootdefs.h:246](../../headers/arch/x86/boot/bootdefs.h#L246)
 
 ```c
 #define PT_PD_ENTRY_BYTES
@@ -1693,7 +1693,7 @@ Slot 0 is the boot identity map, slot 1 the user window, slot 3 the local APIC, 
 
 ### `PT_PD_PAGE_BYTES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:248](../../headers/arch/x86/boot/bootdefs.h#L248)
+`macro` | [headers/arch/x86/boot/bootdefs.h:247](../../headers/arch/x86/boot/bootdefs.h#L247)
 
 ```c
 #define PT_PD_PAGE_BYTES
@@ -1705,7 +1705,7 @@ Slot 0 is the boot identity map, slot 1 the user window, slot 3 the local APIC, 
 
 ### `PT_PD_INDEX_SHIFT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:249](../../headers/arch/x86/boot/bootdefs.h#L249)
+`macro` | [headers/arch/x86/boot/bootdefs.h:248](../../headers/arch/x86/boot/bootdefs.h#L248)
 
 ```c
 #define PT_PD_INDEX_SHIFT
@@ -1717,7 +1717,7 @@ Slot 0 is the boot identity map, slot 1 the user window, slot 3 the local APIC, 
 
 ### `PT_FILL_START_INDEX`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:250](../../headers/arch/x86/boot/bootdefs.h#L250)
+`macro` | [headers/arch/x86/boot/bootdefs.h:249](../../headers/arch/x86/boot/bootdefs.h#L249)
 
 ```c
 #define PT_FILL_START_INDEX
@@ -1729,7 +1729,7 @@ Slot 0 is the boot identity map, slot 1 the user window, slot 3 the local APIC, 
 
 ### `PT_FILL_START_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:251](../../headers/arch/x86/boot/bootdefs.h#L251)
+`macro` | [headers/arch/x86/boot/bootdefs.h:250](../../headers/arch/x86/boot/bootdefs.h#L250)
 
 ```c
 #define PT_FILL_START_ADDR
@@ -1741,7 +1741,7 @@ Slot 0 is the boot identity map, slot 1 the user window, slot 3 the local APIC, 
 
 ### `PT_FILL_ENTRIES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:252](../../headers/arch/x86/boot/bootdefs.h#L252)
+`macro` | [headers/arch/x86/boot/bootdefs.h:251](../../headers/arch/x86/boot/bootdefs.h#L251)
 
 ```c
 #define PT_FILL_ENTRIES
@@ -1753,7 +1753,7 @@ Slot 0 is the boot identity map, slot 1 the user window, slot 3 the local APIC, 
 
 ### `PT_USER_TABLES_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:272](../../headers/arch/x86/boot/bootdefs.h#L272)
+`macro` | [headers/arch/x86/boot/bootdefs.h:271](../../headers/arch/x86/boot/bootdefs.h#L271)
 
 ```c
 #define PT_USER_TABLES_ADDR
@@ -1783,7 +1783,7 @@ kernel writes through.
 
 ### `PT_USER_TABLES_BYTES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:273](../../headers/arch/x86/boot/bootdefs.h#L273)
+`macro` | [headers/arch/x86/boot/bootdefs.h:272](../../headers/arch/x86/boot/bootdefs.h#L272)
 
 ```c
 #define PT_USER_TABLES_BYTES
@@ -1795,7 +1795,7 @@ kernel writes through.
 
 ### `KASLR_MIN_ADDR`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:285](../../headers/arch/x86/boot/bootdefs.h#L285)
+`macro` | [headers/arch/x86/boot/bootdefs.h:284](../../headers/arch/x86/boot/bootdefs.h#L284)
 
 ```c
 #define KASLR_MIN_ADDR
@@ -1811,7 +1811,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `KASLR_ALIGN_SHIFT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:286](../../headers/arch/x86/boot/bootdefs.h#L286)
+`macro` | [headers/arch/x86/boot/bootdefs.h:285](../../headers/arch/x86/boot/bootdefs.h#L285)
 
 ```c
 #define KASLR_ALIGN_SHIFT
@@ -1823,7 +1823,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `KASLR_MAX_UNITS`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:287](../../headers/arch/x86/boot/bootdefs.h#L287)
+`macro` | [headers/arch/x86/boot/bootdefs.h:286](../../headers/arch/x86/boot/bootdefs.h#L286)
 
 ```c
 #define KASLR_MAX_UNITS
@@ -1835,7 +1835,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `KASLR_IMG_OFF_1MB`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:288](../../headers/arch/x86/boot/bootdefs.h#L288)
+`macro` | [headers/arch/x86/boot/bootdefs.h:287](../../headers/arch/x86/boot/bootdefs.h#L287)
 
 ```c
 #define KASLR_IMG_OFF_1MB
@@ -1847,7 +1847,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `KASLR_IMG_OFF_2MB`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:289](../../headers/arch/x86/boot/bootdefs.h#L289)
+`macro` | [headers/arch/x86/boot/bootdefs.h:288](../../headers/arch/x86/boot/bootdefs.h#L288)
 
 ```c
 #define KASLR_IMG_OFF_2MB
@@ -1859,7 +1859,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `KASLR_IMAGE_SPAN`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:290](../../headers/arch/x86/boot/bootdefs.h#L290)
+`macro` | [headers/arch/x86/boot/bootdefs.h:289](../../headers/arch/x86/boot/bootdefs.h#L289)
 
 ```c
 #define KASLR_IMAGE_SPAN
@@ -1871,7 +1871,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `CMOS_INDEX_PORT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:292](../../headers/arch/x86/boot/bootdefs.h#L292)
+`macro` | [headers/arch/x86/boot/bootdefs.h:291](../../headers/arch/x86/boot/bootdefs.h#L291)
 
 ```c
 #define CMOS_INDEX_PORT
@@ -1883,7 +1883,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `CMOS_DATA_PORT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:293](../../headers/arch/x86/boot/bootdefs.h#L293)
+`macro` | [headers/arch/x86/boot/bootdefs.h:292](../../headers/arch/x86/boot/bootdefs.h#L292)
 
 ```c
 #define CMOS_DATA_PORT
@@ -1895,7 +1895,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `CMOS_NMI_DISABLE`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:294](../../headers/arch/x86/boot/bootdefs.h#L294)
+`macro` | [headers/arch/x86/boot/bootdefs.h:293](../../headers/arch/x86/boot/bootdefs.h#L293)
 
 ```c
 #define CMOS_NMI_DISABLE
@@ -1907,7 +1907,7 @@ The virtual base stays at the link-time address (0x100000); the loader maps it t
 
 ### `CMOS_REG_EXTMEM_LO`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:296](../../headers/arch/x86/boot/bootdefs.h#L296)
+`macro` | [headers/arch/x86/boot/bootdefs.h:295](../../headers/arch/x86/boot/bootdefs.h#L295)
 
 ```c
 #define CMOS_REG_EXTMEM_LO
@@ -1921,7 +1921,7 @@ RAM above 16 MB in 64 KB units (PC BIOS / QEMU convention).
 
 ### `CMOS_REG_EXTMEM_HI`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:297](../../headers/arch/x86/boot/bootdefs.h#L297)
+`macro` | [headers/arch/x86/boot/bootdefs.h:296](../../headers/arch/x86/boot/bootdefs.h#L296)
 
 ```c
 #define CMOS_REG_EXTMEM_HI
@@ -1933,7 +1933,7 @@ RAM above 16 MB in 64 KB units (PC BIOS / QEMU convention).
 
 ### `CMOS_EXTMEM_BASE`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:298](../../headers/arch/x86/boot/bootdefs.h#L298)
+`macro` | [headers/arch/x86/boot/bootdefs.h:297](../../headers/arch/x86/boot/bootdefs.h#L297)
 
 ```c
 #define CMOS_EXTMEM_BASE
@@ -1945,7 +1945,7 @@ RAM above 16 MB in 64 KB units (PC BIOS / QEMU convention).
 
 ### `CMOS_EXTMEM_UNIT`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:299](../../headers/arch/x86/boot/bootdefs.h#L299)
+`macro` | [headers/arch/x86/boot/bootdefs.h:298](../../headers/arch/x86/boot/bootdefs.h#L298)
 
 ```c
 #define CMOS_EXTMEM_UNIT
@@ -1957,7 +1957,7 @@ RAM above 16 MB in 64 KB units (PC BIOS / QEMU convention).
 
 ### `CMOS_REG_SECONDS`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:300](../../headers/arch/x86/boot/bootdefs.h#L300)
+`macro` | [headers/arch/x86/boot/bootdefs.h:299](../../headers/arch/x86/boot/bootdefs.h#L299)
 
 ```c
 #define CMOS_REG_SECONDS
@@ -1969,7 +1969,7 @@ RAM above 16 MB in 64 KB units (PC BIOS / QEMU convention).
 
 ### `CMOS_REG_MINUTES`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:301](../../headers/arch/x86/boot/bootdefs.h#L301)
+`macro` | [headers/arch/x86/boot/bootdefs.h:300](../../headers/arch/x86/boot/bootdefs.h#L300)
 
 ```c
 #define CMOS_REG_MINUTES
@@ -1981,7 +1981,7 @@ RAM above 16 MB in 64 KB units (PC BIOS / QEMU convention).
 
 ### `CMOS_REG_HOURS`
 
-`macro` | [headers/arch/x86/boot/bootdefs.h:302](../../headers/arch/x86/boot/bootdefs.h#L302)
+`macro` | [headers/arch/x86/boot/bootdefs.h:301](../../headers/arch/x86/boot/bootdefs.h#L301)
 
 ```c
 #define CMOS_REG_HOURS

@@ -1,6 +1,6 @@
 # miniOS
 
-> Static analysis knowledge base for miniOS: 10 communities, 587 files, 2238 imports, 7 languages, 12963 symbols.
+> Static analysis knowledge base for miniOS: 10 communities, 588 files, 2240 imports, 7 languages, 12992 symbols.
 
 Generated offline by readmenator (zero LLM tokens). Start with the wiki index for the big picture, then the agent INDEX for file lookup.
 
@@ -62,7 +62,7 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/KB_headers_p3.md](md/readmenator-agent/KB_headers_p3.md): Doc: Docstring: allocation tracker for MiniOS, STB leakcheck lineage.
 - [readmenator-agent/KB_headers_p4.md](md/readmenator-agent/KB_headers_p4.md): Doc: Docstring: sanitize.h -- Single choke point for syscall argument checks.
 - [readmenator-agent/KB_headers_p5.md](md/readmenator-agent/KB_headers_p5.md): Doc: process-management syscall handlers shared with the
-- [readmenator-agent/KB_headers_p6.md](md/readmenator-agent/KB_headers_p6.md): Doc: Docstring: Window geometry contract for the MiniOS desktop.
+- [readmenator-agent/KB_headers_p6.md](md/readmenator-agent/KB_headers_p6.md): Doc: Docstring: Graphics-window view contract for the MiniOS desktop.
 
 ## Project Docs
 

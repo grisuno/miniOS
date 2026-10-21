@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ds_ystep` | variable | `progs/doomgeneric/r_draw.h:67` | `extern fixed_t ds_ystep;` |
+| `translationtables` | variable | `progs/doomgeneric/r_draw.h:72` | `extern byte* translationtables;` |
+| `__R_LOCAL__` | macro | `progs/doomgeneric/r_local.h:21` | `#define __R_LOCAL__` |
+| `DISTMAP` | macro | `progs/doomgeneric/r_main.c:608` | `#define DISTMAP` |
+| `FIELDOFVIEW` | macro | `progs/doomgeneric/r_main.c:43` | `#define FIELDOFVIEW` |
+| `R_AddPointToBox` | function | `progs/doomgeneric/r_main.c:123` | `void R_AddPointToBox ( int		x,   int		y,   fixed_t*	box )` |
+| `R_ExecuteSetViewSize` | function | `progs/doomgeneric/r_main.c:667` | `void R_ExecuteSetViewSize (void)` |
+| `R_Init` | function | `progs/doomgeneric/r_main.c:767` | `void R_Init (void)` |
+| `R_InitLightTables` | function | `progs/doomgeneric/r_main.c:610` | `void R_InitLightTables (void)` |
+| `R_InitPointToAngle` | function | `progs/doomgeneric/r_main.c:422` | `void R_InitPointToAngle (void)` |
+| `R_InitTables` | function | `progs/doomgeneric/r_main.c:505` | `void R_InitTables (void)` |
+| `R_InitTextureMapping` | function | `progs/doomgeneric/r_main.c:540` | `void R_InitTextureMapping (void)` |
+| `R_PointInSubsector` | function | `progs/doomgeneric/r_main.c:794` | `subsector_t* R_PointInSubsector ( fixed_t	x,   fixed_t	y )` |
+| `R_PointOnSegSide` | function | `progs/doomgeneric/r_main.c:199` | `int R_PointOnSegSide ( fixed_t	x,   fixed_t	y,   seg_t*	line )` |
+| `R_PointOnSide` | function | `progs/doomgeneric/r_main.c:146` | `int R_PointOnSide ( fixed_t	x,   fixed_t	y,   node_t*	node )` |
+| `R_PointToAngle` | function | `progs/doomgeneric/r_main.c:276` | `angle_t R_PointToAngle ( fixed_t	x,   fixed_t	y )` |
+| `R_PointToAngle2` | function | `progs/doomgeneric/r_main.c:362` | `angle_t R_PointToAngle2 ( fixed_t	x1,   fixed_t	y1,   fixed_t	x2,   fixed_t	y2 )` |
+| `R_PointToDist` | function | `progs/doomgeneric/r_main.c:376` | `fixed_t R_PointToDist ( fixed_t	x,   fixed_t	y )` |
+| `R_RenderPlayerView` | function | `progs/doomgeneric/r_main.c:863` | `void R_RenderPlayerView (player_t* player)` |
+| `R_ScaleFromGlobalAngle` | function | `progs/doomgeneric/r_main.c:449` | `fixed_t R_ScaleFromGlobalAngle (angle_t visangle)` |
+| `R_SetViewSize` | function | `progs/doomgeneric/r_main.c:654` | `void R_SetViewSize ( int		blocks,   int		detail )` |
+| `R_SetupFrame` | function | `progs/doomgeneric/r_main.c:823` | `void R_SetupFrame (player_t* player)` |
+| `walllights` | variable | `progs/doomgeneric/r_main.c:54` | `extern lighttable_t** walllights;` |
 | `LIGHTLEVELS` | macro | `progs/doomgeneric/r_main.h:61` | `#define LIGHTLEVELS` |
 | `LIGHTSCALESHIFT` | macro | `progs/doomgeneric/r_main.h:65` | `#define LIGHTSCALESHIFT` |
 | `LIGHTSEGSHIFT` | macro | `progs/doomgeneric/r_main.h:62` | `#define LIGHTSEGSHIFT` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 | `V_DrawVertLine` | function | `progs/doomgeneric/v_video.c:562` | `void V_DrawVertLine(int x, int y, int h, int c)` |
 | `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.c:329` | `void V_DrawXlaPatch(int x, int y, patch_t * patch)` |
 | `V_Init` | function | `progs/doomgeneric/v_video.c:597` | `void V_Init (void)` |
-| `V_LoadTintTable` | function | `progs/doomgeneric/v_video.c:482` | `void V_LoadTintTable(void)` |
-| `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.c:493` | `void V_LoadXlaTable(void)` |
-| `V_MarkRect` | function | `progs/doomgeneric/v_video.c:69` | `void V_MarkRect(int x, int y, int width, int height)` |
-| `V_RestoreBuffer` | function | `progs/doomgeneric/v_video.c:613` | `void V_RestoreBuffer(void)` |
-| `V_ScreenShot` | function | `progs/doomgeneric/v_video.c:791` | `void V_ScreenShot(char *format)` |
-| `V_SetPatchClipCallback` | function | `progs/doomgeneric/v_video.c:129` | `void V_SetPatchClipCallback(vpatchclipfunc_t func)` |
-| `V_UseBuffer` | function | `progs/doomgeneric/v_video.c:606` | `void V_UseBuffer(byte *buffer)` |
-| `WritePCXfile` | function | `progs/doomgeneric/v_video.c:653` | `void WritePCXfile(char *filename, byte *data,                   int width, int height,           ...` |
-| `WritePNGfile` | function | `progs/doomgeneric/v_video.c:721` | `void WritePNGfile(char *filename, byte *data,                   int width, int height,           ...` |
-| `error_fn` | function | `progs/doomgeneric/v_video.c:711` | `static void error_fn(png_structp p, png_const_charp s)` |
-| `png_screenshots` | variable | `progs/doomgeneric/v_video.c:800` | `extern int png_screenshots;` |
-| `usemouse` | variable | `progs/doomgeneric/v_video.c:848` | `extern int usemouse;` |
-| `warning_fn` | function | `progs/doomgeneric/v_video.c:716` | `static void warning_fn(png_structp p, png_const_charp s)` |
-| `CENTERY` | macro | `progs/doomgeneric/v_video.h:34` | `#define CENTERY` |
-| `V_CopyRect` | function | `progs/doomgeneric/v_video.h:53` | `void V_CopyRect(int srcx, int srcy, byte *source, int width, int height, int destx, int desty);` |
-| `V_DrawAltTLPatch` | function | `progs/doomgeneric/v_video.h:60` | `void V_DrawAltTLPatch(int x, int y, patch_t * patch);` |
-| `V_DrawBlock` | function | `progs/doomgeneric/v_video.h:67` | `void V_DrawBlock(int x, int y, int width, int height, byte *src);` |
-| `V_DrawBox` | function | `progs/doomgeneric/v_video.h:74` | `void V_DrawBox(int x, int y, int w, int h, int c);` |
-| `V_DrawFilledBox` | function | `progs/doomgeneric/v_video.h:71` | `void V_DrawFilledBox(int x, int y, int w, int h, int c);` |
-| `V_DrawHorizLine` | function | `progs/doomgeneric/v_video.h:72` | `void V_DrawHorizLine(int x, int y, int w, int c);` |
-| `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.h:105` | `void V_DrawMouseSpeedBox(int speed);` |
-| `V_DrawPatch` | function | `progs/doomgeneric/v_video.h:57` | `void V_DrawPatch(int x, int y, patch_t *patch);` |
-| `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.h:63` | `void V_DrawPatchDirect(int x, int y, patch_t *patch);` |
 
 Next: [SYMBOLS_p19.md](SYMBOLS_p19.md)

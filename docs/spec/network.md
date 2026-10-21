@@ -80,9 +80,10 @@ into the IPv4 ethertype kills every TCP scenario, so the full suite
 is its gate).
 
 ### TLS client (userspace: tlsget/freedom over net/tls*.c)
-TLS 1.2 left ring 0 (`net/tls*.c` never link into the image; 201/203
-always answer `-ENOSYS` and 202 serves Linux `futex(2)`). The same sources compile
-unchanged with `-DTLS_RING3` into `tlsget`/`freedom`, so `https://`
+TLS 1.2 left ring 0 (`net/tls*.c` never link into the image; 203
+always answers `-ENOSYS`, 202 serves Linux `futex(2)` and 201 serves
+Linux `time(2)`). The same sources compile unchanged with `-DTLS_RING3`
+into `tlsget`/`freedom`, so `https://`
 works without the kernel ever touching key material. The engine spec
 below describes the shared sources, not kernel code. The scope
 is fixed and fail-closed: no downgrade, no fallback, no session resumption.
@@ -136,14 +137,33 @@ is fixed and fail-closed: no downgrade, no fallback, no session resumption.
   records are decrypted before their level/description is read, so an
   encrypted close_notify is a clean EOF and never a bogus diagnostic).
   All three validate fd and length and return -1 with a diagnostic on
-  misuse. Retired: the engine left ring 0 for good, so 201/203 always
-  answer `-ENOSYS` and 202 serves Linux `futex(2)` instead (`__NR_futex`
-  collides with the old TLS_SEND number; glibc's NPTL aborts without a
-  real futex there). Fossil miniGCC binaries still trap all three and
-  fail closed. The supported path is `tlsget`/`freedom`, which link the
+  misuse. Retired: the engine left ring 0 for good, so 203 always
+  answers `-ENOSYS`, 202 serves Linux `futex(2)` and 201 serves Linux
+  `time(2)` instead (`__NR_futex` collides with the old TLS_SEND
+  number; glibc's NPTL aborts without a real futex there, and static
+  glibc has no vDSO, so 201 must answer a clock value). Fossil
+  miniGCC binaries still trap all three and fail closed. The
+  supported path is `tlsget`/`freedom`, which link the
   same engine in ring 3 and never trap 201-203. Multi-fetch processes
   must close through `tls_close` (frees the fd-keyed session), never raw
   `close`, or the next fetch reuses the recycled fd onto a live slot.
+- Host proof (`make test-tls`): the target builds `tools/tls_test`
+  (host gcc `-DTLS_TEST`, linking `net/tls.c`, `net/tls_crypto.c` and
+  `net/tls_x509.c`) and runs `tools/tls_test.py`, which mints a
+  throwaway CA and the server certificates with openssl (offline,
+  bounded), emits the roots header next to the certificates
+  (`build/tls_test_work/tls_test_roots.h`, the test CA DER plus the
+  RSA/ECDSA verify vectors) and drives the binary against Python `ssl`
+  servers. The positive set is `good-rsa` (RSA chain), `good-ec`
+  (ECDSA P-256 leaf over a P-384 CA), `wild-good` (`*.example.com`
+  matching `sub.example.com`) and `chain-good` (the server presents
+  leaf + CA); the negative set is `bad-host`, `bad-ca` (self-signed,
+  unknown CA), `expired`, `wild-root` (the bare domain must not match
+  the wildcard) and `wild-deep` (two labels must not match). One
+  scenario runs against `openssl s_server`, because only openssl sends
+  a real close_notify and the clean-EOF contract needs one. The
+  vectors cover the 4096-bit RSA path (the host signs with a 4096-bit
+  key, so the 128-limb Montgomery width is exercised in full).
 
 ### Headless browser (`freedom`)
 `bin/freedom` is the headless text browser: a curlfree-style engine (the
@@ -158,6 +178,23 @@ syscall; every timeout, retransmission and EOF (0 = FIN) semantics it leans
 on is already implemented in the network driver, so the program owns only
 HTTP semantics.
 
+- Shell surface (the browser is a ramdisk program; `bin/` is on the
+  resolver path, so the bare `freedom` resolves the same file,
+  docs/spec/shell-fs.md):
+
+  ```
+  miniOS> run bin/freedom https://duckduckgo.com
+  miniOS> run bin/freedom mini os kernel        # DuckDuckGo search over https
+  miniOS> run bin/freedom https://en.wikipedia.org/wiki/Mini
+  miniOS> run bin/freedom --dump-dom https://example.com
+  miniOS> run bin/freedom --dump-css https://example.com
+  ```
+
+  The wire details behind those lines: the search target is the no-JS
+  endpoint `html.duckduckgo.com` on port 443 with the path `/html/?q=`
+  (a space becomes `+`, and `&`, `=` and `+` are percent-escaped), the
+  URL argument is bounded to 191 characters (`url[192]`), and every
+  request carries the fixed `User-Agent: freedom/1.0 (MiniOS)`.
 - Omnibox (FreeDom): an argument that is not a URL is a DuckDuckGo HTML
   (no-JS) search over https; `javascript:`/`data:` (any non-http scheme) is
   searched, never executed; the User-Agent is a fixed anti-fingerprinting
@@ -197,9 +234,9 @@ HTTP semantics.
   `FREEDOM_CSS_MAX`, each bounded bytes) and printed with their source.
   `freedom --dump-dom <url>` prints `=== freedom dom ===` then the
   element outline: one depth-indented `tag#id.class` line per element in
-  document order (bounded buffer `FREEDOM_DOM_MAX`). Dump modes suppress
-  the normal filtered text. Both flags validate argv and refuse unknown
-  flags with a usage diagnostic.
+  document order (bounded buffer `FREEDOM_DOM_BUF`, 8192 bytes). Dump
+  modes suppress the normal filtered text. Both flags validate argv and
+  refuse unknown flags with a usage diagnostic.
 - Diagnostics are `freedom: ...` lines; the fetch ends with
   `freedom: <host> (<n> bytes)`.
 - Build: the ld stubs grew `tls_handshake`/`tls_send`/`tls_recv` (MiniOS
@@ -246,7 +283,75 @@ disk-only and moves no memory address. Proof: `make test-freedom-wl` (host),
 at 83 KB against the 256 KB body cap), five mutants (clip, https port,
 title, keysym, uname) die in `mutate.sh`, plus the palette-bg mutant dies
 in the host suite (`palette bg terminal`).
+- Input map (PS/2 set 1, `progs/src/freedom_wl.c`): the arrows (`0x48`
+  up, `0x50` down, and the same codes behind the `E0` prefix) scroll
+  one line, `E0 0x49` (PgUp) and `E0 0x51` (PgDn) scroll one text page
+  (`WL_TEXT_ROWS`, 44 rows), `E0 0x47` (Home) jumps to the top and
+  `E0 0x4F` (End) to the last line; the mouse wheel moves
+  `scroll_step` (3) lines per notch. `ESC` (`0x01`) and `q` quit, and
+  the offset is clamped to the page (`wl_scroll_clamp`). Without
+  `--once` the program stays in that loop until one of those keys
+  arrives; `--once` fetches, renders one frame and exits.
+
 See ADR-0019.
+
+### Wayland-mini compositor (`wlcomp`): the desktop the browsers land in
+`bin/wlcomp` is the ring-3 Wayland-mini compositor (ADR-0024/0025/0026,
+`docs/adr/0024-wayland-mini.md`) that hosts the graphical browsers:
+`freedom_wl` joins it as a `wl_mini` client. It is a local compositor,
+not a network program: no socket, no TLS, no fetch. The canonical
+contract is `docs/spec/wayland.md` (spec) plus `docs/wayland.md` (user
+guide); what follows is the surface the browsers and the stack share.
+
+- Paths: `bin/wlcomp.elf` (the static ELF) and `bin/wlcomp` (the
+  command-path alias), built from `progs/wl/wlcomp.c` with the
+  header-only contracts `progs/wl/wl_mini.h` (the wire subset) and
+  `progs/wl/wl_mbox.h` (the mailbox transport), plus the one shared
+  palette in `progs/nk_palette.h`.
+- Bounds: at most 8 client surfaces (`WL_MAX_SURFACES`), each at most
+  800x360 (`WL_SURF_MAX_W/H`, the `MINIOS_NK_W/H` bounds), presented
+  through `GFX_PRESENT` with `BUF_NK`; wire messages cap at 4096 bytes
+  (`WL_MAX_MSG`) and strings at 256 (`WL_MAX_STR`).
+- Modes: `wlcomp --selftest` prints `wlcomp: frame ok (800x360)`; bare
+  `wlcomp` composites two demo surfaces
+  (`wlcomp: presented 2 surfaces (800x360)`, BDD-pinned beside the
+  `gfx frames` climb); `wlcomp --server` runs the interactive desktop
+  (click focuses, title drag moves, `t` re-tiles, ESC quits);
+  `wlcomp --client <box> <stripe|checker|field|term>` attaches from a
+  second process and `wlcomp --once` drains once for scripts
+  (`wlcomp: mapped <n> surfaces (800x360)`). `make wl` boots the whole
+  desktop in one step (`tools/boot_wl.py`: mailbox clean, three real
+  app frames, one terminal client, server in the background).
+- Transport: one wire message per file under `/shm/wl` (the zero-kernel
+  mailbox carrier; the kernel `pipe()` is the proper later carrier,
+  ADR-0027), and the Wayland-mini syscall numbers 243/244/245
+  (`WL_ATTACH`/`WL_COMMIT`/`WL_INPUT`) stay reserved outside the ABI
+  checksum until Phase 2. `make test-wl` pins the wire, session and
+  mailbox bounds.
+
+### Network programs on the ramdisk (`bin/` paths)
+The network-facing programs are ramdisk files, and `bin/` is on the
+resolver path, so the bare name resolves the same file
+(docs/spec/shell-fs.md).
+
+- `bin/freedom`: the headless browser (host gcc, static, plus the
+  shared ring-3 TLS engine, so no TLS byte crosses ring 0).
+  `bin/freedom3` is a byte copy of it kept for the alias runs, and
+  `bin/freedom-mini` is the miniGCC-to-ld twin of the same source
+  (http only: miniGCC cannot compile the struct-heavy TLS engine).
+  All three are built from `progs/src/freedom.c`.
+- `bin/tlsget`: the minimal ring-3 HTTPS GET over the same engine
+  (`progs/tls_u/tls_u_main.c` plus the POSIX transport
+  `progs/tls_u/tls_u_port.c`).
+- `bin/freedom_wl`: the Wayland-to-MiniOS browser layer
+  (`progs/src/freedom_wl.c`, the shared 8x8 font and the same TLS
+  engine).
+- `bin/freedomui`: the real FreeDom engine ELF (host gcc, static,
+  Lexbor parse; conditional on the sibling checkout).
+- `bin/freedom-gui`: the full FreeDom GUI ELF (FreeDom's own Makefile
+  plus the MiniOS port in `progs/freedomui/`; conditional on the
+  sibling checkout and the deps prefix).
+- `bin/wlcomp` and `bin/wlcomp.elf`: the Wayland-mini compositor.
 
 ### Real FreeDom browser (`freedomui`)
 `bin/freedomui` is the real FreeDom engine on MiniOS, built exactly like
@@ -270,6 +375,15 @@ Lexbor parse plus wrap), `freedomui --selftest` prints
 presents with `freedomui: <host> (<n> bytes, <m> elems)` (live boot proves
 `gfx frames` climbs 0 to 1), two mutants (palette-bg, omnibox-kind) die in
 `mutate.sh`.
+Omnibox policy: the port keeps the MiniOS deviation from the shared
+FreeDom omnibox, so an explicit `http://` target stays on http (the host
+dev loop serves the BDD fixtures over plain HTTP) while the FreeDom
+upgrade to https is skipped for that scheme only. A bare host is still
+fetched as https, any other input is still a search, and an `https://`
+target still goes through the ring-3 TLS engine. The scheme comparison is
+case-insensitive (RFC 3986), and the BDD slice pins all three: the plain
+fetch, the same fetch with an uppercase scheme, and the https target
+failing closed against the plain-HTTP port.
 See ADR-0021.
 
 ### Full FreeDom GUI (`freedom-gui`)

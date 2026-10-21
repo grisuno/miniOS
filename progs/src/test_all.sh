@@ -211,7 +211,11 @@ rm /tmp/lzss_c.bin
 rm /tmp/lzss_dst.txt
 
 # === CODECS: lz4 roundtrip ===
-echo lz4-roundtrip-payload-0123456789 > /tmp/lz4_src.txt
+# The payload must actually compress: the kernel refuses to hand back a
+# block that is not smaller than the input (the tool then reports "not
+# compressible"), so a short unique line would skip the roundtrip and
+# the PASS markers below would prove nothing.
+echo lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4-lz4 > /tmp/lz4_src.txt
 run bin/lz4 /tmp/lz4_src.txt /tmp/lz4_c.bin
 echo PASS: lz4-compile-ok
 run bin/unlz4 /tmp/lz4_c.bin /tmp/lz4_dst.txt

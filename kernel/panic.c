@@ -59,12 +59,14 @@ static void panic_fb_puts(const char *s) {
 }
 
 static void panic_fb_hex(unsigned long v, int digits) {
-    static const char d[] = "0123456789abcdef";
-    char buf[16];
-    int i;
-    for (i = 0; i < digits && i < 16; i++)
-        buf[i] = d[(v >> ((digits - 1 - i) * 4)) & 0xF];
-    buf[i] = 0;
+    /* One byte more than the widest field: the terminator needs its own
+     * slot. A 16-digit field used to write buf[16] past the end of a
+     * 16-byte buffer, which landed on the saved frame pointer and made
+     * the caller's rbp lose its low byte: the panic demo then read the
+     * halt flag from the wrong stack slot and halted instead of
+     * returning. */
+    char buf[PANIC_HEX_MAX_DIGITS + 1];
+    panic_hex_str(buf, (int)sizeof(buf), v, digits);
     panic_fb_puts(buf);
 }
 

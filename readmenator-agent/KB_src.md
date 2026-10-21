@@ -158,6 +158,14 @@ Pages: [KB_src.md](KB_src.md), [KB_src_p2.md](KB_src_p2.md), [KB_src_p3.md](KB_s
   - `exit_now` (function, line 12) `static void exit_now(long code)`
   - `_start` (function, line 16) `void _start(void)`
 
+## progs/src/cvmfmt.c
+- Doc: CVM formatting probe.
+- Layer: utility
+- Language: c
+- Symbols:
+  - `main` (function, line 19) `int main(void)`
+- Depends on: `kernel/string.c`
+
 ## progs/src/execho.c
 - Doc: execho -- fork(57) + execve(59) + wait4(61) probe.
 - Layer: utility

@@ -13,6 +13,11 @@
  * scrollback detour. */
 int console_getc(void);
 
+/** Docstring: Page the console history by one screen (dir -1 up, +1 down).
+ * The framebuffer terminal keeps its own logical ring and the text-mode
+ * console the legacy VGA scrollback ring; this picks the one that is up. */
+void console_history_page(int dir);
+
 /** Docstring: Next buffered byte without consuming it, or -1. */
 int console_peek(void);
 

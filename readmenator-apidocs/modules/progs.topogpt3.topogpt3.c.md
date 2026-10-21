@@ -170,6 +170,8 @@ extern int sprintf(char *, const char *, ...);
 
 **Returns:** `int`
 
+*Called by:* [`main`](progs.src.cvmfmt.c.md#main)
+
 ---
 
 <a id="snprintf"></a>

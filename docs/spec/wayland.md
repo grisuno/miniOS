@@ -55,7 +55,7 @@ header-only pattern as the `wm_*.h` contracts.
   unchanged. The kernel audit behind this stands: no `pipe()`
   handler exists, sockets serve TCP only, and there is no `AF_UNIX`,
   `socketpair`, `SCM_RIGHTS` or `dup`, so live multi-process bytes
-  are Fase 3, never assumed here.
+  are Phase 3, never assumed here.
 - I carry live multiprocess bytes on mailbox files (ADR-0026):
   one wire message per file under `/shm/wl/<box>-<seq>.msg`
   (`WLMB` magic plus sequence), pixels beside it as `<box>.raw`
@@ -73,13 +73,15 @@ header-only pattern as the `wm_*.h` contracts.
   desktop now: `--server` owns the display, focuses on click, title
   drag moves, rim drag resizes through `wl_comp_set_rect`, close box
   closes through `wlserv_close` (slot plus raw unlinked for the next
-  client), `t` re-tiles, `m` minimizes the focused window, `u`
-  restores all, ESC quits; `--once` drains once for scripts;
-  `--client` attaches from a second process; `--clean` clears the
-  directory. Layout resizes cells while pixels arrive at attach size,
-  so the server rescales on fit (`wl_scale_nearest`); a lying raw
-  degrades to solid ink, never a torn frame. `make wl` boots this
-  desktop directly (Fase 4, `tools/boot_wl.sh`).
+  client). The server shortcuts are Alt-held, so a plain key still
+  reaches the client: Alt+T re-tiles, Alt+M minimizes the focused
+  window, Alt+U restores all, Alt+Q quits and Alt+Tab cycles the
+  focus; ESC quits only when no window is mapped. `--once` drains once
+  for scripts; `--client` attaches from a second process; `--clean`
+  unlinks the mailbox files. Layout resizes cells while pixels arrive
+  at attach size, so the server rescales on fit (`wl_scale_nearest`); a
+  lying raw degrades to solid ink, never a torn frame. `make wl` boots
+  this desktop directly (Phase 4, `tools/boot_wl.py`).
 - The 768-byte hybrid palette lived in three identical copies while
   the program that needed it most had none, which read as a glitch
   on truecolor VBE modes. It lives once in `progs/nk_palette.h`

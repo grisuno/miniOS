@@ -1248,7 +1248,7 @@ unsigned long syscall_trace_shown(void) { return s_trace_shown; }
  * (SYS_TIME is called inside every pacing spin loop), which made `trace on`
  * turn an interactive program into a 100 ms-per-syscall crawl.  Other syscalls
  * are traced one-to-one so a short program's full dialogue stays visible. */
-#define SYS_NOISY_TIME   204
+#define SYS_NOISY_TIME   254
 #define SYS_NOISY_KBD    205
 #define SYS_NOISY_MOUSE  219
 #define SYS_NOISY_GETC_RAW 236

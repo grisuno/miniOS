@@ -384,6 +384,11 @@ Depends on: `headers/tls.h`, `headers/tls_port.h`
 ## progs/asm/cp.s
 - `main` (function) `progs/asm/cp.s:3`
 
+## progs/asm/cvmfmt.s
+- `fwin` (function) `progs/asm/cvmfmt.s:3`
+- `fcanary` (function) `progs/asm/cvmfmt.s:7`
+- `main` (function) `progs/asm/cvmfmt.s:11`
+
 ## progs/asm/fib.s
 - `fib` (function) `progs/asm/fib.s:3`
 - `main` (function) `progs/asm/fib.s:61`

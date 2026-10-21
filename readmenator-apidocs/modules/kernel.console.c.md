@@ -1,13 +1,13 @@
 # `kernel/console.c`
 
-> Source: [kernel/console.c:1](../../kernel/console.c#L1) | language `c` | coverage 25.0% | [API index](../index.md)
+> Source: [kernel/console.c:1](../../kernel/console.c#L1) | language `c` | coverage 28.0% | [API index](../index.md)
 
 console.c -- Execution-context output: text console, capture, libc names.
 
 ## Contents
 
 - **Functions:** [`vga_get_x`](#vga_get_x), [`vga_get_y`](#vga_get_y), [`vga_set_xy`](#vga_set_xy), [`vga_get_color`](#vga_get_color), [`vga_clear`](#vga_clear), [`vga_set_cursor`](#vga_set_cursor), [`vga_scroll`](#vga_scroll), [`vga_newline`](#vga_newline), [`vga_cursor_enable`](#vga_cursor_enable), [`redirect_active`](#redirect_active), [`redirect_suspend`](#redirect_suspend), [`redirect_resume`](#redirect_resume), [`redirect_begin`](#redirect_begin), [`redirect_commit`](#redirect_commit), [`redirect_pending`](#redirect_pending), [`redirect_take_into`](#redirect_take_into), [`redirect_discard`](#redirect_discard), [`vga_putc`](#vga_putc), [`vga_puts`](#vga_puts), [`register_libc_symbols`](#register_libc_symbols)
-- **Macros:** [`XXH_STATIC_LINKING_ONLY`](#xxh_static_linking_only), [`REDIR_INITIAL_CAP`](#redir_initial_cap), [`REDIR_MAX_BYTES`](#redir_max_bytes)
+- **Macros:** [`XXH_STATIC_LINKING_ONLY`](#xxh_static_linking_only), [`REDIR_INITIAL_CAP`](#redir_initial_cap), [`REDIR_MAX_BYTES`](#redir_max_bytes), [`VGA_LINE_MAX`](#vga_line_max)
 
 ## Call Graph
 
@@ -336,7 +336,7 @@ The ring keeps its backing block for the next Ctrl+R / Ctrl+L build, so repeated
 
 ### `vga_putc`
 
-`function` | [kernel/console.c:223](../../kernel/console.c#L223)
+`function` | [kernel/console.c:237](../../kernel/console.c#L237)
 
 ```c
 void vga_putc(char c)
@@ -358,7 +358,7 @@ void vga_putc(char c)
 
 ### `vga_puts`
 
-`function` | [kernel/console.c:267](../../kernel/console.c#L267)
+`function` | [kernel/console.c:283](../../kernel/console.c#L283)
 
 ```c
 void vga_puts(const char *s)
@@ -378,7 +378,7 @@ void vga_puts(const char *s)
 
 ### `register_libc_symbols`
 
-`function` | [kernel/console.c:271](../../kernel/console.c#L271)
+`function` | [kernel/console.c:287](../../kernel/console.c#L287)
 
 ```c
 void register_libc_symbols(void)
@@ -427,5 +427,21 @@ Called once from kmain; the table itself lives in kernel/symtab.c.
 ```c
 #define REDIR_MAX_BYTES
 ```
+
+---
+
+<a id="vga_line_max"></a>
+
+### `VGA_LINE_MAX`
+
+`macro` | [kernel/console.c:226](../../kernel/console.c#L226)
+
+```c
+#define VGA_LINE_MAX
+```
+
+Text-mode console line buffer.
+
+The framebuffer terminal owns its own history; this is the text-mode half of the same history, so the boot log (printed before the desktop comes up) is still reachable with PageUp.
 
 ---

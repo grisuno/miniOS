@@ -26,8 +26,8 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `kernel/console.c` | c | utility | 27 | yes |
-| `kernel/console_in.c` | c | utility | 31 | yes |
+| `kernel/console.c` | c | utility | 29 | yes |
+| `kernel/console_in.c` | c | utility | 32 | yes |
 
 ### `drivers` (15 files)
 
@@ -95,7 +95,7 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `headers/kernel/console_in.h` | h | utility | 11 | yes |
+| `headers/kernel/console_in.h` | h | utility | 12 | yes |
 
 ### `headers/net` (1 files)
 
@@ -152,6 +152,7 @@ This community groups 137 file(s) rooted at `headers` with dominant language c (
 - [EXTRACTED] depends_on community 0 <-> 8 (strength 0.9): Extracted import edge crosses communities: kernel/sched.c imports headers/tick.h.
 - [EXTRACTED] depends_on community 0 <-> 7 (strength 0.9): Extracted import edge crosses communities: kernel/syscalls.c imports headers/batch.h.
 - [INFERRED] shares_context community 0 <-> 6 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers: kernel) and community 6 (progs/doomgeneric: net_defs).
+- [INFERRED] shares_context community 0 <-> 9 (strength 0.5): Inferred shared context (layer utility) with no import path between community 0 (headers: kernel) and community 9 (tools: doom_pwad).
 - [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers: kernel) and community 10 (orphans).
 
 ## Risks

@@ -4,7 +4,7 @@
 
 ## Definition
 
-This community groups 17 file(s) rooted at `headers` with dominant language h (cohesion 0.72). Central symbols: `CHECK`, `CURSOR_H`, `CURSOR_TIP_X`, `CURSOR_TIP_Y`, `CURSOR_W`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`. Core file: `kernel/vga_fb.c` (205 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
+This community groups 17 file(s) rooted at `headers` with dominant language h (cohesion 0.72). Central symbols: `CHECK`, `CURSOR_H`, `CURSOR_TIP_X`, `CURSOR_TIP_Y`, `CURSOR_W`, `DESKTOP_ICONS_H`, `DESKTOP_SHORTCUTS_H`, `DOCK_BOUNCE_H`. Core file: `kernel/vga_fb.c` (210 symbols). Documented purpose: embedded icon pixel data for desktop shortcuts..
 
 ## Files
 
@@ -23,7 +23,7 @@ This community groups 17 file(s) rooted at `headers` with dominant language h (c
 | `headers/wm_tiling.h` | h | utility | 3 | yes |
 | `headers/wm_window.h` | h | utility | 10 | yes |
 | `kernel/vga_cursor.c` | c | utility | 13 | yes |
-| `kernel/vga_fb.c` | c | utility | 205 | no |
+| `kernel/vga_fb.c` | c | utility | 210 | no |
 | `kernel/vga_fx.c` | c | utility | 9 | yes |
 | `tests/test_fx.c` | c | testing | 2 | yes |
 | `tests/test_wm.c` | c | testing | 2 | yes |
@@ -70,20 +70,19 @@ This community groups 17 file(s) rooted at `headers` with dominant language h (c
 
 - [EXTRACTED] depends_on community 0 <-> 5 (strength 0.9): Extracted import edge crosses communities: drivers/kbd.c imports headers/wm_events.h.
 - [INFERRED] shares_context community 1 <-> 5 (strength 0.5): Inferred shared context (language h and layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 5 (headers: vga_fb).
-- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (progs/src) and community 5 (headers: vga_fb).
 
 ## Risks
 
 - [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_render.h` (presentation)
 - [layer strict] `tests/test_wm.c` (testing) -> `headers/wm_layout.h` (presentation)
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2506` `taskbar_render` `lx`: `lx` assigned at line 2506 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:2876` `line` `rows_before`: `rows_before` assigned at line 2876 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3569` `wallpaper_ensure` `d`: `d` assigned at line 3569 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3694` `icon_decode` `dst`: `dst` assigned at line 3694 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:3713` `icon_embedded_rgba` `dst`: `dst` assigned at line 3713 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4287` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 4287 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4288` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 4288 but never read afterwards.
-- [dataflow DEAD_STORE] `kernel/vga_fb.c:4290` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 4290 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2564` `taskbar_render` `lx`: `lx` assigned at line 2564 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:2934` `line` `rows_before`: `rows_before` assigned at line 2934 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3627` `wallpaper_ensure` `d`: `d` assigned at line 3627 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3752` `icon_decode` `dst`: `dst` assigned at line 3752 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:3771` `icon_embedded_rgba` `dst`: `dst` assigned at line 3771 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4345` `vga_fb_mouse_tick` `gcfg`: `gcfg` assigned at line 4345 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4346` `vga_fb_mouse_tick` `ecfg`: `ecfg` assigned at line 4346 but never read afterwards.
+- [dataflow DEAD_STORE] `kernel/vga_fb.c:4348` `vga_fb_mouse_tick` `win_w`: `win_w` assigned at line 4348 but never read afterwards.
 
 ## Open Questions
 

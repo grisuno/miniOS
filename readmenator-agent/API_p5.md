@@ -259,11 +259,13 @@ Imported by: `drivers/sb16.c`, `headers/futex.h`, `kernel/futex.c`, `kernel/sche
 - `cond_wait` (function) `headers/sync.h:104` `void cond_wait(cond_t *c, mutex_t *m);`
 - `cond_signal` (function) `headers/sync.h:105` `void cond_signal(cond_t *c);`
 - `cond_broadcast` (function) `headers/sync.h:106` `void cond_broadcast(cond_t *c);`
-- `rwlock_init` (function) `headers/sync.h:118` `void rwlock_init(rwlock_t *rw);`
-- `rwlock_read_lock` (function) `headers/sync.h:119` `void rwlock_read_lock(rwlock_t *rw);`
-- `rwlock_read_unlock` (function) `headers/sync.h:120` `void rwlock_read_unlock(rwlock_t *rw);`
-- `rwlock_write_lock` (function) `headers/sync.h:121` `void rwlock_write_lock(rwlock_t *rw);`
-- `rwlock_write_unlock` (function) `headers/sync.h:122` `void rwlock_write_unlock(rwlock_t *rw);`
+- `rwlock_init` (function) `headers/sync.h:124` `void rwlock_init(rwlock_t *rw);`
+- `rwlock_read_lock` (function) `headers/sync.h:125` `void rwlock_read_lock(rwlock_t *rw);`
+- `rwlock_read_unlock` (function) `headers/sync.h:126` `void rwlock_read_unlock(rwlock_t *rw);`
+- `rwlock_write_lock` (function) `headers/sync.h:127` `void rwlock_write_lock(rwlock_t *rw);`
+- `rwlock_write_unlock` (function) `headers/sync.h:128` `void rwlock_write_unlock(rwlock_t *rw);`
+- `now` (function) `headers/sync.h:130` `* available right now (a reader never takes it while a writer waits). */ int rwlock_read_trylock(rwlock_t *rw);`
+- `rwlock_write_trylock` (function) `headers/sync.h:132` `int rwlock_write_trylock(rwlock_t *rw);`
 
 ## headers/syscalls_proc.h
 Imported by: `kernel/proc_sec.c`, `kernel/syscalls.c`, `kernel/syscalls_proc.c`
@@ -366,70 +368,73 @@ Imported by: `drivers/kbd.c`, `drivers/usbhid.c`, `kernel.c`, `kernel/console.c`
 - `vga_fb_blit_nk_rgb_window` (function) `headers/vga_fb.h:76` `void vga_fb_blit_nk_rgb_window(void);`
 - `below` (function) `headers/vga_fb.h:99` `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via...`
 - `vga_fb_init` (function) `headers/vga_fb.h:177` `void vga_fb_init(void);` -- A scrollback line can be up to the widest terminal (TERM_MAX_COLS), and a long logical line that wrapped across...
-- `vga_fb_clear` (function) `headers/vga_fb.h:178` `void vga_fb_clear(void);`
-- `vga_fb_pixel` (function) `headers/vga_fb.h:179` `void vga_fb_pixel(int x, int y, uint8_t color);`
-- `vga_fb_rect` (function) `headers/vga_fb.h:180` `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
-- `vga_fb_pixel_rgb` (function) `headers/vga_fb.h:182` `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b);` -- A scrollback line can be up to the widest terminal (TERM_MAX_COLS), and a long logical line that wrapped across...
-- `vga_fb_rect_rgb` (function) `headers/vga_fb.h:183` `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);`
-- `vga_fb_char` (function) `headers/vga_fb.h:184` `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
-- `vga_fb_str` (function) `headers/vga_fb.h:185` `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
-- `vga_fb_putc_term` (function) `headers/vga_fb.h:186` `void vga_fb_putc_term(char c);`
-- `vga_fb_puts_term` (function) `headers/vga_fb.h:187` `void vga_fb_puts_term(const char *s);`
-- `term_clear` (function) `headers/vga_fb.h:188` `void term_clear(void);`
-- `vga_fb_text_cursor` (function) `headers/vga_fb.h:189` `void vga_fb_text_cursor(int col);`
-- `vga_fb_hide_text_cursor` (function) `headers/vga_fb.h:190` `void vga_fb_hide_text_cursor(void);`
-- `fb_read_packed` (function) `headers/vga_fb.h:193` `unsigned long fb_read_packed(int x, int y);` -- Packed-pixel primitives (0x00RRGGBB): the cursor layer draws through * these so it never touches raw framebuffer...
-- `fb_write_packed` (function) `headers/vga_fb.h:194` `void fb_write_packed(int x, int y, unsigned long rgb);`
-- `vga_fb_draw_desktop` (function) `headers/vga_fb.h:195` `void vga_fb_draw_desktop(void);`
-- `vga_fb_toggle_fullscreen` (function) `headers/vga_fb.h:196` `void vga_fb_toggle_fullscreen(void);`
-- `vga_fb_move_terminal` (function) `headers/vga_fb.h:197` `void vga_fb_move_terminal(int dx, int dy);`
-- `vga_fb_snap_window` (function) `headers/vga_fb.h:198` `void vga_fb_snap_window(int zone);`
-- `vga_fb_resize` (function) `headers/vga_fb.h:199` `void vga_fb_resize(int dcols, int drows);`
-- `vga_fb_reset_default` (function) `headers/vga_fb.h:200` `void vga_fb_reset_default(void);`
-- `vga_fb_toggle_minimize` (function) `headers/vga_fb.h:201` `void vga_fb_toggle_minimize(void);`
-- `vga_fb_is_minimized` (function) `headers/vga_fb.h:202` `int vga_fb_is_minimized(void);`
-- `vga_fb_is_fullscreen` (function) `headers/vga_fb.h:203` `int vga_fb_is_fullscreen(void);`
-- `vga_fb_gfx_set_fullscreen` (function) `headers/vga_fb.h:211` `int vga_fb_gfx_set_fullscreen(int on);` -- Graphics window view (headers/wm_gfxview.h owns the math).
-- `vga_fb_gfx_set_hidden` (function) `headers/vga_fb.h:212` `int vga_fb_gfx_set_hidden(int hide);`
-- `vga_fb_gfx_view_name` (function) `headers/vga_fb.h:213` `const char *vga_fb_gfx_view_name(void);`
-- `vga_fb_gfx_origin` (function) `headers/vga_fb.h:214` `void vga_fb_gfx_origin(int *x, int *y);`
-- `vga_fb_gfx_map_mouse` (function) `headers/vga_fb.h:215` `void vga_fb_gfx_map_mouse(int *x, int *y);`
-- `fb_write_row_packed` (function) `headers/vga_fb.h:217` `void fb_write_row_packed(int x, int y, const unsigned int *src, int n);` -- Graphics window view (headers/wm_gfxview.h owns the math).
-- `fb_read_row_packed` (function) `headers/vga_fb.h:218` `void fb_read_row_packed(int x, int y, unsigned int *dst, int n);`
-- `vga_fb_close_active` (function) `headers/vga_fb.h:219` `int vga_fb_close_active(void);`
-- `vga_fb_focus_next` (function) `headers/vga_fb.h:223` `void vga_fb_focus_next(void);` -- Multi-window manager: Alt-Tab focus cycle, Super-Tab tiling, second * terminal.
-- `vga_fb_focus_id` (function) `headers/vga_fb.h:224` `int vga_fb_focus_id(int id);`
-- `vga_fb_focus_get` (function) `headers/vga_fb.h:225` `int vga_fb_focus_get(void);`
-- `vga_fb_focus_event` (function) `headers/vga_fb.h:228` `const wm_notify_event_t *vga_fb_focus_event(void);` -- Focus event bus (wm_notify.h): last move for serial-observable state, * plus programmatic reporting for focus moves...
-- `vga_fb_focus_report` (function) `headers/vga_fb.h:229` `void vga_fb_focus_report(int before, int source);`
-- `vga_fb_theme_name` (function) `headers/vga_fb.h:230` `int vga_fb_theme_name(char *dst, int cap);`
-- `vga_fb_ps2_owner` (function) `headers/vga_fb.h:236` `int vga_fb_ps2_owner(int pid);` -- PS/2 ownership for pid: 1 when pid may consume the keyboard port.
-- `vga_fb_nterms_get` (function) `headers/vga_fb.h:237` `int vga_fb_nterms_get(void);`
-- `vga_fb_term_split` (function) `headers/vga_fb.h:238` `int vga_fb_term_split(void);`
-- `vga_fb_term_close_focused` (function) `headers/vga_fb.h:239` `int vga_fb_term_close_focused(void);`
-- `vga_fb_tile_all` (function) `headers/vga_fb.h:240` `void vga_fb_tile_all(void);`
-- `vga_fb_layout_set` (function) `headers/vga_fb.h:241` `int vga_fb_layout_set(int mode);`
-- `vga_fb_layout_cycle` (function) `headers/vga_fb.h:242` `void vga_fb_layout_cycle(void);`
-- `vga_fb_layout_get` (function) `headers/vga_fb.h:243` `int vga_fb_layout_get(void);`
-- `vga_fb_layout_name` (function) `headers/vga_fb.h:244` `const char *vga_fb_layout_name(void);`
-- `vga_fb_list_windows` (function) `headers/vga_fb.h:245` `void vga_fb_list_windows(void);`
-- `wm_close_pending` (function) `headers/vga_fb.h:246` `int wm_close_pending(void);`
-- `wm_clear_close` (function) `headers/vga_fb.h:247` `void wm_clear_close(void);`
-- `wm_gfx_mode_active` (function) `headers/vga_fb.h:248` `int wm_gfx_mode_active(void);`
-- `vga_fb_mouse_tick` (function) `headers/vga_fb.h:249` `void vga_fb_mouse_tick(void);`
-- `vga_fb_wait_tick` (function) `headers/vga_fb.h:253` `void vga_fb_wait_tick(void);` -- Desktop tick for a kernel wait loop (foreground process wait, mrun): runs vga_fb_mouse_tick at DESKTOP_TICK_INTERVAL...
-- `vga_fb_mouse_init` (function) `headers/vga_fb.h:254` `void vga_fb_mouse_init(void);`
-- `dock_bounce_counts` (function) `headers/vga_fb.h:257` `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);` -- Dock click bounce (Mac style): arm count and strip repaints while live, * for the serial-observable proof (`wm...
-- `dock_click_count` (function) `headers/vga_fb.h:258` `void dock_click_count(unsigned long *edges);`
-- `dock_pending_active` (function) `headers/vga_fb.h:259` `int dock_pending_active(void);`
-- `pixels` (function) `headers/vga_fb.h:263` `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
-- `vga_fx_enabled` (function) `headers/vga_fb.h:267` `int vga_fx_enabled(void);`
-- `vga_fx_snap_rect` (function) `headers/vga_fb.h:268` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
-- `vga_fx_restore_rect` (function) `headers/vga_fb.h:269` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
-- `vga_fx_free` (function) `headers/vga_fb.h:270` `void vga_fx_free(unsigned int *buf);`
-- `vga_fx_melt_rect` (function) `headers/vga_fb.h:271` `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
-- `vga_fx_melt_from_black` (function) `headers/vga_fb.h:273` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
-- `vga_fb_set_gfx_mode` (function) `headers/vga_fb.h:284` `void vga_fb_set_gfx_mode(int on);` -- Graphics-mode pointer.
+- `vga_fb_term_ring_init` (function) `headers/vga_fb.h:182` `void vga_fb_term_ring_init(void);` -- Feed one completed console line into the terminal history (the text-mode console has no other history) and page that...
+- `vga_fb_term_feed` (function) `headers/vga_fb.h:183` `void vga_fb_term_feed(const char *line, int len);`
+- `vga_fb_history_page` (function) `headers/vga_fb.h:184` `void vga_fb_history_page(int dir);`
+- `vga_fb_clear` (function) `headers/vga_fb.h:185` `void vga_fb_clear(void);`
+- `vga_fb_pixel` (function) `headers/vga_fb.h:186` `void vga_fb_pixel(int x, int y, uint8_t color);`
+- `vga_fb_rect` (function) `headers/vga_fb.h:187` `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);`
+- `vga_fb_pixel_rgb` (function) `headers/vga_fb.h:189` `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b);` -- Feed one completed console line into the terminal history (the text-mode console has no other history) and page that...
+- `vga_fb_rect_rgb` (function) `headers/vga_fb.h:190` `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);`
+- `vga_fb_char` (function) `headers/vga_fb.h:191` `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);`
+- `vga_fb_str` (function) `headers/vga_fb.h:192` `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);`
+- `vga_fb_putc_term` (function) `headers/vga_fb.h:193` `void vga_fb_putc_term(char c);`
+- `vga_fb_puts_term` (function) `headers/vga_fb.h:194` `void vga_fb_puts_term(const char *s);`
+- `term_clear` (function) `headers/vga_fb.h:195` `void term_clear(void);`
+- `vga_fb_text_cursor` (function) `headers/vga_fb.h:196` `void vga_fb_text_cursor(int col);`
+- `vga_fb_hide_text_cursor` (function) `headers/vga_fb.h:197` `void vga_fb_hide_text_cursor(void);`
+- `fb_read_packed` (function) `headers/vga_fb.h:200` `unsigned long fb_read_packed(int x, int y);` -- Packed-pixel primitives (0x00RRGGBB): the cursor layer draws through * these so it never touches raw framebuffer...
+- `fb_write_packed` (function) `headers/vga_fb.h:201` `void fb_write_packed(int x, int y, unsigned long rgb);`
+- `vga_fb_draw_desktop` (function) `headers/vga_fb.h:202` `void vga_fb_draw_desktop(void);`
+- `vga_fb_toggle_fullscreen` (function) `headers/vga_fb.h:203` `void vga_fb_toggle_fullscreen(void);`
+- `vga_fb_move_terminal` (function) `headers/vga_fb.h:204` `void vga_fb_move_terminal(int dx, int dy);`
+- `vga_fb_snap_window` (function) `headers/vga_fb.h:205` `void vga_fb_snap_window(int zone);`
+- `vga_fb_resize` (function) `headers/vga_fb.h:206` `void vga_fb_resize(int dcols, int drows);`
+- `vga_fb_reset_default` (function) `headers/vga_fb.h:207` `void vga_fb_reset_default(void);`
+- `vga_fb_toggle_minimize` (function) `headers/vga_fb.h:208` `void vga_fb_toggle_minimize(void);`
+- `vga_fb_is_minimized` (function) `headers/vga_fb.h:209` `int vga_fb_is_minimized(void);`
+- `vga_fb_is_fullscreen` (function) `headers/vga_fb.h:210` `int vga_fb_is_fullscreen(void);`
+- `vga_fb_gfx_set_fullscreen` (function) `headers/vga_fb.h:218` `int vga_fb_gfx_set_fullscreen(int on);` -- Graphics window view (headers/wm_gfxview.h owns the math).
+- `vga_fb_gfx_set_hidden` (function) `headers/vga_fb.h:219` `int vga_fb_gfx_set_hidden(int hide);`
+- `vga_fb_gfx_view_name` (function) `headers/vga_fb.h:220` `const char *vga_fb_gfx_view_name(void);`
+- `vga_fb_gfx_origin` (function) `headers/vga_fb.h:221` `void vga_fb_gfx_origin(int *x, int *y);`
+- `vga_fb_gfx_map_mouse` (function) `headers/vga_fb.h:222` `void vga_fb_gfx_map_mouse(int *x, int *y);`
+- `fb_write_row_packed` (function) `headers/vga_fb.h:224` `void fb_write_row_packed(int x, int y, const unsigned int *src, int n);` -- Graphics window view (headers/wm_gfxview.h owns the math).
+- `fb_read_row_packed` (function) `headers/vga_fb.h:225` `void fb_read_row_packed(int x, int y, unsigned int *dst, int n);`
+- `vga_fb_close_active` (function) `headers/vga_fb.h:226` `int vga_fb_close_active(void);`
+- `vga_fb_focus_next` (function) `headers/vga_fb.h:230` `void vga_fb_focus_next(void);` -- Multi-window manager: Alt-Tab focus cycle, Super-Tab tiling, second * terminal.
+- `vga_fb_focus_id` (function) `headers/vga_fb.h:231` `int vga_fb_focus_id(int id);`
+- `vga_fb_focus_get` (function) `headers/vga_fb.h:232` `int vga_fb_focus_get(void);`
+- `vga_fb_focus_event` (function) `headers/vga_fb.h:235` `const wm_notify_event_t *vga_fb_focus_event(void);` -- Focus event bus (wm_notify.h): last move for serial-observable state, * plus programmatic reporting for focus moves...
+- `vga_fb_focus_report` (function) `headers/vga_fb.h:236` `void vga_fb_focus_report(int before, int source);`
+- `vga_fb_theme_name` (function) `headers/vga_fb.h:237` `int vga_fb_theme_name(char *dst, int cap);`
+- `vga_fb_ps2_owner` (function) `headers/vga_fb.h:243` `int vga_fb_ps2_owner(int pid);` -- PS/2 ownership for pid: 1 when pid may consume the keyboard port.
+- `vga_fb_nterms_get` (function) `headers/vga_fb.h:244` `int vga_fb_nterms_get(void);`
+- `vga_fb_term_split` (function) `headers/vga_fb.h:245` `int vga_fb_term_split(void);`
+- `vga_fb_term_close_focused` (function) `headers/vga_fb.h:246` `int vga_fb_term_close_focused(void);`
+- `vga_fb_tile_all` (function) `headers/vga_fb.h:247` `void vga_fb_tile_all(void);`
+- `vga_fb_layout_set` (function) `headers/vga_fb.h:248` `int vga_fb_layout_set(int mode);`
+- `vga_fb_layout_cycle` (function) `headers/vga_fb.h:249` `void vga_fb_layout_cycle(void);`
+- `vga_fb_layout_get` (function) `headers/vga_fb.h:250` `int vga_fb_layout_get(void);`
+- `vga_fb_layout_name` (function) `headers/vga_fb.h:251` `const char *vga_fb_layout_name(void);`
+- `vga_fb_list_windows` (function) `headers/vga_fb.h:252` `void vga_fb_list_windows(void);`
+- `wm_close_pending` (function) `headers/vga_fb.h:253` `int wm_close_pending(void);`
+- `wm_clear_close` (function) `headers/vga_fb.h:254` `void wm_clear_close(void);`
+- `wm_gfx_mode_active` (function) `headers/vga_fb.h:255` `int wm_gfx_mode_active(void);`
+- `vga_fb_mouse_tick` (function) `headers/vga_fb.h:256` `void vga_fb_mouse_tick(void);`
+- `vga_fb_wait_tick` (function) `headers/vga_fb.h:260` `void vga_fb_wait_tick(void);` -- Desktop tick for a kernel wait loop (foreground process wait, mrun): runs vga_fb_mouse_tick at DESKTOP_TICK_INTERVAL...
+- `vga_fb_mouse_init` (function) `headers/vga_fb.h:261` `void vga_fb_mouse_init(void);`
+- `dock_bounce_counts` (function) `headers/vga_fb.h:264` `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);` -- Dock click bounce (Mac style): arm count and strip repaints while live, * for the serial-observable proof (`wm...
+- `dock_click_count` (function) `headers/vga_fb.h:265` `void dock_click_count(unsigned long *edges);`
+- `dock_pending_active` (function) `headers/vga_fb.h:266` `int dock_pending_active(void);`
+- `pixels` (function) `headers/vga_fb.h:270` `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
+- `vga_fx_enabled` (function) `headers/vga_fb.h:274` `int vga_fx_enabled(void);`
+- `vga_fx_snap_rect` (function) `headers/vga_fb.h:275` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
+- `vga_fx_restore_rect` (function) `headers/vga_fb.h:276` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
+- `vga_fx_free` (function) `headers/vga_fb.h:277` `void vga_fx_free(unsigned int *buf);`
+- `vga_fx_melt_rect` (function) `headers/vga_fb.h:278` `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
+- `vga_fx_melt_from_black` (function) `headers/vga_fb.h:280` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+- `vga_fb_set_gfx_mode` (function) `headers/vga_fb.h:291` `void vga_fb_set_gfx_mode(int on);` -- Graphics-mode pointer.
 
 ## headers/vga_fx.h
 Imported by: `kernel/vga_fb.c`, `kernel/vga_fx.c`, `tests/test_fx.c`

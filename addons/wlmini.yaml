@@ -5,7 +5,7 @@ version: "0.4.0"
 install:
   repo_url: https://github.com/grisuno/miniOS.git
   kind: host
-  dir_var: WLMINI_DIR
+  dir_var: PROGS_DIR
   artifact: wlcomp
   files: []
   host_build:

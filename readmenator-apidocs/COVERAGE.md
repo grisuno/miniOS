@@ -1,6 +1,6 @@
 # Documentation Coverage
 
-Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data members are excluded from the ratio.
+Overall: **29.3%** (2769 of 9449 public modules, types, and callables). Data members are excluded from the ratio.
 
 [Back to index](index.md)
 
@@ -12,12 +12,12 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | constructor | 3 | 23 | 13.0% |
 | enum | 2 | 3 | 66.7% |
 | exception | 4 | 4 | 100.0% |
-| function | 1438 | 4468 | 32.2% |
-| macro | 662 | 3872 | 17.1% |
+| function | 1446 | 4487 | 32.2% |
+| macro | 664 | 3874 | 17.1% |
 | method | 24 | 116 | 20.7% |
-| module | 422 | 509 | 82.9% |
+| module | 423 | 511 | 82.8% |
 | staticmethod | 6 | 6 | 100.0% |
-| struct | 132 | 316 | 41.8% |
+| struct | 133 | 317 | 42.0% |
 | type_alias | 42 | 74 | 56.8% |
 
 ## By module (lowest first)
@@ -29,11 +29,11 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`drivers/nvme.c`](modules/drivers.nvme.c.md) | 0 | 36 | 0.0% |
 | [`headers/drivers/nvme.h`](modules/headers.drivers.nvme.h.md) | 0 | 7 | 0.0% |
 | [`headers/lz4_kernel.h`](modules/headers.lz4_kernel.h.md) | 0 | 4 | 0.0% |
-| [`kernel/cvm_host.c`](modules/kernel.cvm_host.c.md) | 0 | 2 | 0.0% |
 | [`kernel/lz4_kernel.c`](modules/kernel.lz4_kernel.c.md) | 0 | 7 | 0.0% |
 | [`mcp`](modules/mcp.__init__.py.md) | 0 | 1 | 0.0% |
 | [`progs/asm/aes.s`](modules/progs.asm.aes.s.md) | 0 | 31 | 0.0% |
 | [`progs/asm/cp.s`](modules/progs.asm.cp.s.md) | 0 | 3 | 0.0% |
+| [`progs/asm/cvmfmt.s`](modules/progs.asm.cvmfmt.s.md) | 0 | 5 | 0.0% |
 | [`progs/asm/fib.s`](modules/progs.asm.fib.s.md) | 0 | 4 | 0.0% |
 | [`progs/asm/freedom.s`](modules/progs.asm.freedom.s.md) | 0 | 93 | 0.0% |
 | [`progs/asm/http.s`](modules/progs.asm.http.s.md) | 0 | 4 | 0.0% |
@@ -80,7 +80,7 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`progs/src/lxabi.c`](modules/progs.src.lxabi.c.md) | 1 | 27 | 3.7% |
 | [`progs/src/json.c`](modules/progs.src.json.c.md) | 1 | 26 | 3.8% |
 | [`headers/minifs.h`](modules/headers.minifs.h.md) | 3 | 77 | 3.9% |
-| [`kernel/sync.c`](modules/kernel.sync.c.md) | 1 | 23 | 4.3% |
+| [`kernel/sync.c`](modules/kernel.sync.c.md) | 1 | 25 | 4.0% |
 | [`progs/doomgeneric/i_sound.c`](modules/progs.doomgeneric.i_sound.c.md) | 1 | 22 | 4.5% |
 | [`progs/src/lz4.c`](modules/progs.src.lz4.c.md) | 1 | 22 | 4.5% |
 | [`headers/pcm2.h`](modules/headers.pcm2.h.md) | 1 | 21 | 4.8% |
@@ -142,7 +142,7 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`progs/src/sbtone.c`](modules/progs.src.sbtone.c.md) | 1 | 9 | 11.1% |
 | [`progs/src/thdemo.c`](modules/progs.src.thdemo.c.md) | 1 | 9 | 11.1% |
 | [`tools.minios_gui`](modules/tools.minios_gui.py.md) | 1 | 9 | 11.1% |
-| [`progs/pokemon/platform_minios.c`](modules/progs.pokemon.platform_minios.c.md) | 7 | 60 | 11.7% |
+| [`progs/pokemon/platform_minios.c`](modules/progs.pokemon.platform_minios.c.md) | 7 | 59 | 11.9% |
 | [`fs/ramdisk.c`](modules/fs.ramdisk.c.md) | 3 | 25 | 12.0% |
 | [`progs/doomgeneric/i_sound.h`](modules/progs.doomgeneric.i_sound.h.md) | 3 | 25 | 12.0% |
 | [`arch/x86/boot/stage2.S`](modules/arch.x86.boot.stage2.S.md) | 5 | 41 | 12.2% |
@@ -191,10 +191,10 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`progs/doomgeneric/st_lib.c`](modules/progs.doomgeneric.st_lib.c.md) | 2 | 11 | 18.2% |
 | [`progs/pokemon/minios_stubs/SDL.h`](modules/progs.pokemon.minios_stubs.SDL.h.md) | 2 | 11 | 18.2% |
 | [`progs/wl/wl_mini.h`](modules/progs.wl.wl_mini.h.md) | 20 | 109 | 18.3% |
+| [`headers/sync.h`](modules/headers.sync.h.md) | 7 | 38 | 18.4% |
 | [`kernel/syscalls.c`](modules/kernel.syscalls.c.md) | 23 | 125 | 18.4% |
 | [`drivers/kbd.c`](modules/drivers.kbd.c.md) | 6 | 32 | 18.8% |
 | [`progs/doomgeneric/hu_stuff.h`](modules/progs.doomgeneric.hu_stuff.h.md) | 3 | 16 | 18.8% |
-| [`headers/sync.h`](modules/headers.sync.h.md) | 7 | 36 | 19.4% |
 | [`arch/x86/ap_entry.S`](modules/arch.x86.ap_entry.S.md) | 2 | 10 | 20.0% |
 | [`arch/x86/ctx_sw.S`](modules/arch.x86.ctx_sw.S.md) | 2 | 10 | 20.0% |
 | [`drivers/virtio_net.c`](modules/drivers.virtio_net.c.md) | 7 | 35 | 20.0% |
@@ -211,7 +211,6 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`progs/src/freedom.c`](modules/progs.src.freedom.c.md) | 6 | 30 | 20.0% |
 | [`progs/src/mthreads.h`](modules/progs.src.mthreads.h.md) | 4 | 20 | 20.0% |
 | [`progs/tls_u/tls_u_main.c`](modules/progs.tls_u.tls_u_main.c.md) | 1 | 5 | 20.0% |
-| [`tools.check_abi_numbers`](modules/tools.check_abi_numbers.py.md) | 1 | 5 | 20.0% |
 | [`tools/wl_scoped.sh`](modules/tools.wl_scoped.sh.md) | 1 | 5 | 20.0% |
 | [`headers/kernel.h`](modules/headers.kernel.h.md) | 79 | 386 | 20.5% |
 | [`progs/doomgeneric/v_video.c`](modules/progs.doomgeneric.v_video.c.md) | 6 | 29 | 20.7% |
@@ -227,8 +226,8 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`fs/minifs.c`](modules/fs.minifs.c.md) | 11 | 47 | 23.4% |
 | [`headers/ldso.h`](modules/headers.ldso.h.md) | 11 | 45 | 24.4% |
 | [`headers/drivers/kbd.h`](modules/headers.drivers.kbd.h.md) | 6 | 24 | 25.0% |
-| [`kernel/console.c`](modules/kernel.console.c.md) | 6 | 24 | 25.0% |
 | [`kernel/redirect.c`](modules/kernel.redirect.c.md) | 1 | 4 | 25.0% |
+| [`kernel/shell.c`](modules/kernel.shell.c.md) | 10 | 40 | 25.0% |
 | [`progs/doomgeneric/d_main.h`](modules/progs.doomgeneric.d_main.h.md) | 2 | 8 | 25.0% |
 | [`progs/doomgeneric/d_mode.h`](modules/progs.doomgeneric.d_mode.h.md) | 1 | 4 | 25.0% |
 | [`progs/doomgeneric/f_wipe.h`](modules/progs.doomgeneric.f_wipe.h.md) | 1 | 4 | 25.0% |
@@ -243,13 +242,13 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`progs/src/lxsel.c`](modules/progs.src.lxsel.c.md) | 2 | 8 | 25.0% |
 | [`progs.src.shell`](modules/progs.src.shell.py.md) | 1 | 4 | 25.0% |
 | [`progs/doomgeneric/st_stuff.c`](modules/progs.doomgeneric.st_stuff.c.md) | 34 | 135 | 25.2% |
-| [`headers/vga_fb.h`](modules/headers.vga_fb.h.md) | 34 | 133 | 25.6% |
-| [`kernel/shell.c`](modules/kernel.shell.c.md) | 10 | 39 | 25.6% |
+| [`headers/vga_fb.h`](modules/headers.vga_fb.h.md) | 35 | 136 | 25.7% |
 | [`progs/doomgeneric/wi_stuff.c`](modules/progs.doomgeneric.wi_stuff.c.md) | 17 | 66 | 25.8% |
 | [`progs/doomgeneric/am_map.c`](modules/progs.doomgeneric.am_map.c.md) | 23 | 88 | 26.1% |
 | [`progs/doomgeneric/st_lib.h`](modules/progs.doomgeneric.st_lib.h.md) | 4 | 15 | 26.7% |
 | [`progs/doomgeneric/i_system.c`](modules/progs.doomgeneric.i_system.c.md) | 5 | 18 | 27.8% |
 | [`drivers/virtio_blk.c`](modules/drivers.virtio_blk.c.md) | 7 | 25 | 28.0% |
+| [`kernel/console.c`](modules/kernel.console.c.md) | 7 | 25 | 28.0% |
 | [`kernel/syscalls_proc.c`](modules/kernel.syscalls_proc.c.md) | 7 | 25 | 28.0% |
 | [`headers/drivers/virtio_blk.h`](modules/headers.drivers.virtio_blk.h.md) | 2 | 7 | 28.6% |
 | [`headers/ext4.h`](modules/headers.ext4.h.md) | 4 | 14 | 28.6% |
@@ -271,6 +270,7 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`fs/kfile.c`](modules/fs.kfile.c.md) | 9 | 27 | 33.3% |
 | [`headers/fat32.h`](modules/headers.fat32.h.md) | 5 | 15 | 33.3% |
 | [`headers/zip.h`](modules/headers.zip.h.md) | 1 | 3 | 33.3% |
+| [`kernel/cvm_host.c`](modules/kernel.cvm_host.c.md) | 1 | 3 | 33.3% |
 | [`kernel/vga_fx.c`](modules/kernel.vga_fx.c.md) | 3 | 9 | 33.3% |
 | [`progs/doomgeneric/d_ticcmd.h`](modules/progs.doomgeneric.d_ticcmd.h.md) | 1 | 3 | 33.3% |
 | [`progs/doomgeneric/i_endoom.c`](modules/progs.doomgeneric.i_endoom.c.md) | 1 | 3 | 33.3% |
@@ -285,6 +285,7 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`progs/doomgeneric/w_file_stdc.c`](modules/progs.doomgeneric.w_file_stdc.c.md) | 1 | 3 | 33.3% |
 | [`progs/src/hello.c`](modules/progs.src.hello.c.md) | 1 | 3 | 33.3% |
 | [`progs/src/mmreuse.c`](modules/progs.src.mmreuse.c.md) | 1 | 3 | 33.3% |
+| [`tools.check_abi_numbers`](modules/tools.check_abi_numbers.py.md) | 2 | 6 | 33.3% |
 | [`tools.check_addons`](modules/tools.check_addons.py.md) | 1 | 3 | 33.3% |
 | [`tools.gdb_repro`](modules/tools.gdb_repro.py.md) | 1 | 3 | 33.3% |
 | [`tools.gen_desktop_pngs`](modules/tools.gen_desktop_pngs.py.md) | 1 | 3 | 33.3% |
@@ -366,6 +367,7 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`progs/doomgeneric/w_checksum.c`](modules/progs.doomgeneric.w_checksum.c.md) | 1 | 2 | 50.0% |
 | [`progs/doomgeneric/w_checksum.h`](modules/progs.doomgeneric.w_checksum.h.md) | 1 | 2 | 50.0% |
 | [`progs/doomgeneric/w_main.c`](modules/progs.doomgeneric.w_main.c.md) | 1 | 2 | 50.0% |
+| [`progs/src/cvmfmt.c`](modules/progs.src.cvmfmt.c.md) | 1 | 2 | 50.0% |
 | [`progs/src/lxproc.c`](modules/progs.src.lxproc.c.md) | 4 | 8 | 50.0% |
 | [`progs/src/mprot.c`](modules/progs.src.mprot.c.md) | 1 | 2 | 50.0% |
 | [`progs/src/nx.c`](modules/progs.src.nx.c.md) | 1 | 2 | 50.0% |
@@ -376,17 +378,17 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`tools.mkramdisk`](modules/tools.mkramdisk.py.md) | 2 | 4 | 50.0% |
 | [`tools.probe_compute_vga`](modules/tools.probe_compute_vga.py.md) | 1 | 2 | 50.0% |
 | [`tools.probe_minicraft`](modules/tools.probe_minicraft.py.md) | 1 | 2 | 50.0% |
-| [`kernel/vga_fb.c`](modules/kernel.vga_fb.c.md) | 54 | 107 | 50.5% |
+| [`kernel/vga_fb.c`](modules/kernel.vga_fb.c.md) | 57 | 110 | 51.8% |
 | [`progs/minios_png.h`](modules/progs.minios_png.h.md) | 11 | 21 | 52.4% |
 | [`progs/doomgeneric/z_zone.c`](modules/progs.doomgeneric.z_zone.c.md) | 10 | 19 | 52.6% |
 | [`headers/pipe.h`](modules/headers.pipe.h.md) | 9 | 17 | 52.9% |
 | [`progs/nuklear/nuklear_minios.h`](modules/progs.nuklear.nuklear_minios.h.md) | 15 | 28 | 53.6% |
 | [`headers/leakcheck.h`](modules/headers.leakcheck.h.md) | 13 | 24 | 54.2% |
-| [`headers/kernel/console_in.h`](modules/headers.kernel.console_in.h.md) | 6 | 11 | 54.5% |
 | [`progs/doomgeneric/p_map.c`](modules/progs.doomgeneric.p_map.c.md) | 12 | 22 | 54.5% |
 | [`drivers/usbblk.c`](modules/drivers.usbblk.c.md) | 19 | 33 | 57.6% |
 | [`kernel/mm/paging.c`](modules/kernel.mm.paging.c.md) | 15 | 26 | 57.7% |
 | [`progs/lisp/lisp.c`](modules/progs.lisp.lisp.c.md) | 11 | 19 | 57.9% |
+| [`headers/kernel/console_in.h`](modules/headers.kernel.console_in.h.md) | 7 | 12 | 58.3% |
 | [`progs/doomgeneric/r_bsp.c`](modules/progs.doomgeneric.r_bsp.c.md) | 7 | 12 | 58.3% |
 | [`progs/doomgeneric/hu_lib.c`](modules/progs.doomgeneric.hu_lib.c.md) | 13 | 22 | 59.1% |
 | [`drivers/block.c`](modules/drivers.block.c.md) | 9 | 15 | 60.0% |
@@ -405,10 +407,8 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`headers/block.h`](modules/headers.block.h.md) | 9 | 14 | 64.3% |
 | [`progs/file/file_assoc.h`](modules/progs.file.file_assoc.h.md) | 11 | 17 | 64.7% |
 | [`headers/ktime.h`](modules/headers.ktime.h.md) | 2 | 3 | 66.7% |
-| [`headers/panic.h`](modules/headers.panic.h.md) | 2 | 3 | 66.7% |
 | [`headers/rtc.h`](modules/headers.rtc.h.md) | 4 | 6 | 66.7% |
 | [`headers/tlb.h`](modules/headers.tlb.h.md) | 4 | 6 | 66.7% |
-| [`kernel/console_in.c`](modules/kernel.console_in.c.md) | 12 | 18 | 66.7% |
 | [`progs/doomgeneric/d_items.h`](modules/progs.doomgeneric.d_items.h.md) | 2 | 3 | 66.7% |
 | [`progs/doomgeneric/d_loop.h`](modules/progs.doomgeneric.d_loop.h.md) | 6 | 9 | 66.7% |
 | [`progs/doomgeneric/d_net.c`](modules/progs.doomgeneric.d_net.c.md) | 2 | 3 | 66.7% |
@@ -425,6 +425,7 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`tools.minios_hyper`](modules/tools.minios_hyper.py.md) | 30 | 45 | 66.7% |
 | [`tools.mkcpyzip`](modules/tools.mkcpyzip.py.md) | 2 | 3 | 66.7% |
 | [`headers/spinlock.h`](modules/headers.spinlock.h.md) | 13 | 19 | 68.4% |
+| [`kernel/console_in.c`](modules/kernel.console_in.c.md) | 13 | 19 | 68.4% |
 | [`progs/doomgeneric/r_defs.h`](modules/progs.doomgeneric.r_defs.h.md) | 18 | 26 | 69.2% |
 | [`kernel/mm.c`](modules/kernel.mm.c.md) | 7 | 10 | 70.0% |
 | [`progs/doomgeneric/doomdef.h`](modules/progs.doomgeneric.doomdef.h.md) | 7 | 10 | 70.0% |
@@ -449,6 +450,7 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 | [`drivers/ide.c`](modules/drivers.ide.c.md) | 7 | 9 | 77.8% |
 | [`progs/doomgeneric/p_user.c`](modules/progs.doomgeneric.p_user.c.md) | 7 | 9 | 77.8% |
 | [`drivers/mouse.c`](modules/drivers.mouse.c.md) | 4 | 5 | 80.0% |
+| [`headers/panic.h`](modules/headers.panic.h.md) | 4 | 5 | 80.0% |
 | [`kernel/clip.c`](modules/kernel.clip.c.md) | 4 | 5 | 80.0% |
 | [`progs/doomgeneric/d_think.h`](modules/progs.doomgeneric.d_think.h.md) | 4 | 5 | 80.0% |
 | [`progs/doomgeneric/m_random.h`](modules/progs.doomgeneric.m_random.h.md) | 4 | 5 | 80.0% |
@@ -538,7 +540,7 @@ Overall: **29.3%** (2757 of 9425 public modules, types, and callables). Data mem
 
 DOC001 undocumented public item, DOC002 parameter not documented, DOC003 documented parameter missing from the signature (stale doc), DOC004 return value not documented, DOC005 raised exception not documented.
 
-DOC001: 6658, DOC005: 1
+DOC001: 6670, DOC005: 1
 
 - DOC001 `arch/x86/ap_entry.S:21` function ap_stub_start is not documented
 - DOC001 `arch/x86/ap_entry.S:39` function ap_pm is not documented
@@ -1040,4 +1042,4 @@ DOC001: 6658, DOC005: 1
 - DOC001 `fs/ext4.c:666` function ext4_vfs_write is not documented
 - DOC001 `fs/ext4.c:675` function ext4_vfs_close is not documented
 - DOC001 `fs/ext4.c:680` function ext4_vfs_fstat is not documented
-- ... 6159 more in `api/warnings.jsonl`
+- ... 6171 more in `api/warnings.jsonl`

@@ -48,7 +48,7 @@ flowchart LR
 
 ### `_start`
 
-`function` | [progs/src/scfuzz.c:160](../../progs/src/scfuzz.c#L160)
+`function` | [progs/src/scfuzz.c:167](../../progs/src/scfuzz.c#L167)
 
 ```c
 void _start(void)

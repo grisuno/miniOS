@@ -263,6 +263,34 @@ int main(void) {
         CHECK(pi_get_eff(1) == 1, "holder falls back to base");
     }
 
+    /* 11. RWLock writer preference: a queued writer keeps new readers
+     * out, and the pending counter never leaks. */
+    {
+        rwlock_t rw = RWLOCK_INIT;
+        fresh_all();
+        fresh_proc(1); fresh_proc(2); fresh_proc(3);
+        t_cur_pid = 1; rwlock_read_lock(&rw);
+        CHECK(rw.readers == 1, "reader holds the lock");
+        CHECK(rwlock_write_trylock(&rw) == -1, "write trylock fails under a reader");
+        CHECK(rwlock_read_trylock(&rw) == 0, "second reader joins");
+        rwlock_read_unlock(&rw);
+        /* A writer announces itself: the counter is what new readers
+         * test, and it must be back to zero once the writer is in. */
+        rw.writers_waiting = 1;
+        CHECK(rwlock_read_trylock(&rw) == -1, "a queued writer keeps new readers out");
+        CHECK(rwlock_write_trylock(&rw) == -1, "write trylock fails while a reader holds it");
+        rw.writers_waiting = 0;
+        CHECK(rwlock_read_trylock(&rw) == 0, "readers return once no writer waits");
+        rwlock_read_unlock(&rw);
+        rwlock_read_unlock(&rw);
+        CHECK(rw.readers == 0, "both readers are out");
+        CHECK(rwlock_write_trylock(&rw) == 0, "write trylock takes the free lock");
+        CHECK(rw.writer && rw.readers == 0, "writer holds the lock");
+        CHECK(rwlock_read_trylock(&rw) == -1, "no reader enters while the writer holds it");
+        rwlock_write_unlock(&rw);
+        CHECK(!rw.writer, "writer releases");
+    }
+
     if (failures == 0) printf("sync: ok\n");
     else printf("sync: %d failures\n", failures);
     return failures != 0;

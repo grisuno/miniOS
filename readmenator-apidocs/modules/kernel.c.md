@@ -35,13 +35,13 @@ flowchart LR
     n_headers_smp_h__smp_init["smp.smp_init"]
     n_headers_vga_fb_h__vga_fb_boot_config["vga_fb.vga_fb_boot_config"]
     n_headers_vga_fb_h__vga_fb_init["vga_fb.vga_fb_init"]
+    n_headers_vga_fb_h__vga_fb_term_ring_init["vga_fb.vga_fb_term_ring_init"]
     n_net_net_c__net_init["net.net_init"]
     n_progs_doomgeneric_p_local_h__d["p_local.d"]
     n_kernel_c__tables(["tables"])
     n_headers_drivers_usbhid_h__usbhid_init["usbhid.usbhid_init"]
     n_headers_drivers_usbhid_h__usbhid_keyboard_present["usbhid.usbhid_keyboard_present"]
     n_headers_drivers_usbhid_h__usbhid_mouse_present["usbhid.usbhid_mouse_present"]
-    n_headers_drivers_xhci_h__xhc_enumerate_all["xhci.xhc_enumerate_all"]
     n_kernel_c____attribute__ --> n_kernel_c__bootlog_mark
     n_kernel_c____attribute__ --> n_kernel_c__syscall_init
     n_kernel_c__syscall_init -.-> n_headers_arch_x86_msr_h__rdmsr
@@ -60,12 +60,12 @@ flowchart LR
     n_kernel_c____attribute__ -.-> n_headers_smp_h__smp_init
     n_kernel_c____attribute__ -.-> n_headers_vga_fb_h__vga_fb_boot_config
     n_kernel_c____attribute__ -.-> n_headers_vga_fb_h__vga_fb_init
+    n_kernel_c____attribute__ -.-> n_headers_vga_fb_h__vga_fb_term_ring_init
     n_kernel_c____attribute__ -.-> n_net_net_c__net_init
     n_kernel_c____attribute__ -.-> n_progs_doomgeneric_p_local_h__d
     n_kernel_c__tables -.-> n_headers_drivers_usbhid_h__usbhid_init
     n_kernel_c__tables -.-> n_headers_drivers_usbhid_h__usbhid_keyboard_present
     n_kernel_c__tables -.-> n_headers_drivers_usbhid_h__usbhid_mouse_present
-    n_kernel_c__tables -.-> n_headers_drivers_xhci_h__xhc_enumerate_all
 ```
 
 ## Functions
@@ -234,7 +234,7 @@ Exported IDTR for APs to load during SMP bring-up.
 
 > **Inherited:** Documentation from [`__attribute__`](#__attribute__) (headers/sched.h:375).
 
-*Calls:* [`abi_check_manifest`](headers.abi.h.md#abi_check_manifest), [`block_init`](headers.block.h.md#block_init), [`ubk_present`](headers.drivers.usbblk.h.md#ubk_present), [`vblk_present`](headers.drivers.virtio_blk.h.md#vblk_present), [`ide_present`](headers.ide.h.md#ide_present), [`outb`](headers.kernel.h.md#outb), [`minifs_init`](headers.minifs.h.md#minifs_init), [`minifs_mount`](headers.minifs.h.md#minifs_mount), [`pcache_init`](headers.pcache.h.md#pcache_init), [`sb16_init`](headers.sb16.h.md#sb16_init), [`sched_init`](headers.sched.h.md#sched_init), [`smp_init`](headers.smp.h.md#smp_init) and 6 more
+*Calls:* [`abi_check_manifest`](headers.abi.h.md#abi_check_manifest), [`block_init`](headers.block.h.md#block_init), [`ubk_present`](headers.drivers.usbblk.h.md#ubk_present), [`vblk_present`](headers.drivers.virtio_blk.h.md#vblk_present), [`ide_present`](headers.ide.h.md#ide_present), [`outb`](headers.kernel.h.md#outb), [`minifs_init`](headers.minifs.h.md#minifs_init), [`minifs_mount`](headers.minifs.h.md#minifs_mount), [`pcache_init`](headers.pcache.h.md#pcache_init), [`sb16_init`](headers.sb16.h.md#sb16_init), [`sched_init`](headers.sched.h.md#sched_init), [`smp_init`](headers.smp.h.md#smp_init) and 7 more
 
 ---
 
@@ -242,7 +242,7 @@ Exported IDTR for APs to load during SMP bring-up.
 
 ### `size`
 
-`function` | [kernel.c:253](../../kernel.c#L253)
+`function` | [kernel.c:257](../../kernel.c#L257)
 
 ```c
 * image size (see kernel.ld);
@@ -262,7 +262,7 @@ Exported IDTR for APs to load during SMP bring-up.
 
 ### `tables`
 
-`function` | [kernel.c:275](../../kernel.c#L275)
+`function` | [kernel.c:279](../../kernel.c#L279)
 
 ```c
 * tables (already built above) for its uncached register window and the * heap for its rings...

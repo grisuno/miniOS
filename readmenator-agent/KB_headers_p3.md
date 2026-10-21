@@ -251,10 +251,12 @@ Previous: [KB_headers_p2.md](KB_headers_p2.md)
 - Layer: utility
 - Language: h
 - Symbols:
-  - `panic_backtrace` (function, line 25) `static inline int panic_backtrace(unsigned long rbp, panic_valid_fn valid,
+  - `panic_hex_str` (function, line 28) `static inline int panic_hex_str(char *buf, int cap, unsigned long v, int digits)`
+  - `panic_backtrace` (function, line 51) `static inline int panic_backtrace(unsigned long rbp, panic_valid_fn valid,
         unsigned long ...`
   - `PANIC_H` (macro, line 15) `#define PANIC_H`
   - `PANIC_BT_MAX` (macro, line 17) `#define PANIC_BT_MAX`
+  - `PANIC_HEX_MAX_DIGITS` (macro, line 20) `#define PANIC_HEX_MAX_DIGITS`
 - Imported by: `kernel/panic.c`, `tests/test_panic.c`
 
 ## headers/pcache.h

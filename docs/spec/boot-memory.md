@@ -84,10 +84,69 @@ both ways, selected by firmware, never by build flag.
 LBA 0        stage 1
 LBA 1 .. 8   stage 2
 LBA 9 ..     kernel image (kernel.bin, ramdisk embedded)
+2048-aligned MiniFS partition (minifs.bin), found by superblock probe
+64 MB swap hole (131072 sectors), reserved, no writer today
+FAT32 reference image (etc/fat.img), superfloppy, no MBR entry
+ext4 reference image (etc/ext4.img), superfloppy, no MBR entry
 ```
 `KERNEL_SECTORS` is supplied by the build from the size of `kernel.bin`; the
 LBA constants come from `bootdefs.h` so the Makefile and the assembly cannot
 disagree.
+
+The tail of the image is assembled by the `os.img` rule (`Makefile:2662-2685`)
+and every part of it is located by a PROBE, never by a computed offset:
+
+- The MiniFS partition starts at the first 2048-sector boundary at or after
+  the kernel image (`DISK_ALIGN_SECTORS = 2048`). The kernel does not trust
+  that arithmetic: `minifs_mount` tries the computed guess first and then
+  every 2048-aligned candidate, accepting the first superblock whose magic,
+  version and block size all match, and failing closed when none does
+  (`fs/minifs.c:1492-1539`). The reason is in the code: the `KERNEL_SECTORS`
+  fast path is compiled into stage2 only, so the C unit sees the
+  ramdisk-size fallback, which underestimates the kernel image and lands
+  before the real partition. See `docs/spec/shell-fs.md` ("MiniFS mount is a
+  superblock probe").
+- The 64 MB hole after MiniFS is the reserved swap area (131072 sectors,
+  the same size as `SWAP_MAX_SECTORS` in `kernel/mm/swap.c:21`). Nothing
+  writes it today: the swap-out path is unwired (the isolated-window spawn
+  path superseded it) and, when it does run, it addresses the LAST 131072
+  sectors of the disk (`kernel/mm/swap.c:41-45`), not this hole.
+- The FAT32 and ext4 reference images are appended past the swap hole as
+  superfloppies: `os.img` carries no partition table for them, so the
+  drivers find them exactly as they find a filesystem on real hardware —
+  a genuine MBR entry proven by a BPB/superblock read first, then a
+  2048-aligned magic scan for superfloppy layouts (GPT protective degrades
+  to the scan). That is what lets `fat ls hd0` and `ext4 ls hd0` exercise
+  the device path end to end against `os.img` (`docs/spec/shell-fs.md`).
+  The USB image (`os.usb.img`) adds one MBR partition over the whole tail
+  for `fdisk`/`parted`; the bootloader reads raw LBAs and ignores it.
+
+### VESA/VBE probe (before long mode kills BIOS video)
+Stage 2 probes VESA BIOS Extensions while the BIOS video services are still
+alive. The probe runs in real mode after the kernel image is fully loaded and
+must complete before the transition to long mode, which kills INT 10h
+(`arch/x86/boot/stage2.S:315-324`).
+
+The mode ladder (`vbe_probe`, `arch/x86/boot/stage2.S:325-357`) is:
+1024x768x32 (0x0118), 1024x768x8 (0x0105), 800x600x32 (0x0115), 800x600x8
+(0x0103), 640x480x32 (0x0112), 640x480x8 (0x0101), and finally the VGA Mode
+13h fallback (320x200x8, framebuffer at 0xA0000). A candidate is accepted
+only when INT 10h AX=4F01 returns the 0x4F signature, the mode-attribute word
+claims supported (0x01) and linear framebuffer (0x80), and the bpp byte is
+8, 24 or 32 — a 15/16-bit mode is skipped because the kernel carries no
+RGB565 packer. True color is preferred at each resolution, so the desktop is
+never quantized when the mode exists; the 8-bit modes keep the 256-entry VGA
+DAC path.
+
+The handoff is a fixed struct at `VBE_INFO_ADDR` (0x7E20,
+`headers/arch/x86/boot/bootdefs.h:149`): physical framebuffer base, pitch,
+width, height, a valid byte and the bpp. The Mode 13h fallback fills the
+same struct with its own defaults, so the kernel always finds a complete
+record. The kernel reads it once at boot (`vga_fb_boot_config`,
+`kernel/vga_fb.c:90-115`) and maps the physical framebuffer into the user
+window at `FB_ADDR` (0x0B200000, `MINIOS_FB_ADDR`) page by page and slot by
+slot, so a multi-megabyte framebuffer spanning two 2 MB PD slots is fully
+mapped (`kernel/mm/paging.c:84-106`).
 
 ### Physical memory map
 ```
@@ -96,6 +155,8 @@ disagree.
 0x10000-0x1FFFF  user page table zone (64 KB, PT_USER_TABLES_ADDR)
 0x07C00-0x07DFF  stage 1
 0x07E00-0x07E14  disk address packet, boot drive and KASLR base scratch
+0x07E20-0x07E2B  VBE handoff struct (VBE_INFO_ADDR: framebuffer base, pitch,
+                 width, height, valid, bpp)
 0x08000-0x08027  long-mode GDT handed to the kernel (kernel + user segments)
 0x09000-0x0AFFF  stage 2
 0x10000-0x8FFFF  kernel staging buffer (64 KB chunks, reused; the first
@@ -238,3 +299,34 @@ user programs crash at "unmapped" addresses — that is the historical
    and Nuklear back-buffers through `mm_page_aligned_alloc` (over-allocates
    one page, rounds the base up) and asserts `phys & 0xFFF == 0` for both.
    Never map a raw `kmalloc` pointer page-by-page without aligning it.
+
+### Image budget gate and its levers
+The build-time half of hazard contract item 2. `make check-size` is a
+prerequisite of `kernel.bin` (`Makefile:2567`), so every `make os.img` runs
+it. It reads `_kernel_end` from `kernel.elf` and compares it against
+`USER_LOAD_BASE` taken from `progs/minios_abi.h` (the same header the kernel
+derives its layout from, so the two cannot disagree), and fails the build
+on overflow (`Makefile:2577`, `Makefile:2589-2606`). It also proves the
+`kernel.ld` mirrors of the user window equal the ABI header, so editing the
+window in one file without the other fails here, never at boot
+(`Makefile:2583-2597`).
+
+The image is code + data + the embedded ramdisk + `.bss` (`Makefile:2572`),
+and the documented levers are:
+
+- **Per-TU `-Os`** against the kernel-wide `-O1`: `shell.o` is the precedent
+  (`Makefile:2171-2177`), the ramdisk `cvm.o` objects use the same pattern.
+  A per-TU flag changes codegen for the whole unit, so it must be
+  revalidated by the shell-heavy suites, never assumed safe.
+- **Trimming the ramdisk.** The ramdisk is packed into the image as the
+  `.ramdisk` section (`ramdisk.bin` -> `ramdisk_data.c` -> `ramdisk_data.o`,
+  `Makefile:2112-2116`, `Makefile:2307`), so dropping files from the ramdisk
+  list shrinks the kernel image directly.
+- **The `VMA_MAX` pool bound.** `VMA_MAX` is 2048 nodes
+  (`headers/vma.h:31`). One static pool lives in `.bss` — `vma_pool[VMA_MAX]`
+  at `vma.c:13`, 64 bytes per node, 128 KB — and the per-process pool is a
+  kernel-heap allocation of the same size (`kernel/sched.c:346`), so the
+  bound scales both. Lowering it shrinks `.bss` at the cost of how many live
+  VMAs one program may hold; the pool fails closed when exhausted, and a
+  node that is deleted is recycled before the pool grows
+  (`vma.c:31-34`).

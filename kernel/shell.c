@@ -588,6 +588,17 @@ static void shell_readline_hist(char *buf, int size) {
                     } else if (t >= 0) {
                         console_ungetc((unsigned char)t);
                     }
+                } else if (b == '5' || b == '6') {
+                    /* PageUp (ESC [ 5 ~) and PageDown (ESC [ 6 ~) walk the
+                     * console history. Without this branch the readline
+                     * swallowed the sequence as plain text ("5~" in the
+                     * line) and the history was unreachable from the
+                     * prompt. */
+                    console_getc();
+                    int t = console_getc();
+                    if (t != KEY_TILDE && t >= 0)
+                        console_ungetc((unsigned char)t);
+                    console_history_page(b == '5' ? -1 : 1);
                 }
             }
             continue;
@@ -3116,6 +3127,14 @@ void shell_exec_builtin(int argc, char **argv) {
         if (argc < 3) { vga_puts("usage: mv <src> <dst>\n"); return; }
         if (!shell_resolve_arg("mv", argv[1], "no such file", src)) return;
         if (!shell_resolve_arg("mv", argv[2], "name too long", dst)) return;
+        /* A directory is refused with its own diagnostic. Without this
+         * check the rename misses the entry (a directory lives under the
+         * name "dir/", and the source was typed without the slash) and
+         * the caller sees "no such file" instead of the real reason. */
+        if (fs_is_dir(src)) {
+            kprintf("mv: %s: is a directory\n", argv[1]);
+            return;
+        }
         r = fs_rename(src, dst);
         if (r == 0) { kprintf("renamed %s to %s\n", src, dst); return; }
         if (r == -21) { kprintf("mv: %s: is a directory\n", argv[1]); return; }

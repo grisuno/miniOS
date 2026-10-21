@@ -8,10 +8,10 @@ root on the host unless marked `miniOS>` (inside the guest).
 ## 1. Prerequisites
 
 Host tools: `gcc`, binutils (`ld`, `objcopy`, `xxd`), `qemu-system-x86_64`,
-`python3`, `git`, mtools plus `mkfs.vfat` (FAT fixtures: `etc/fat.img`
-for the `fat` builtin, `uefi.img` for the UEFI stub), e2fsprogs
-(`mkfs.ext4`, `etc/ext4.img` for the `ext4` builtin). No absolute paths
-are assumed anywhere in the build;
+`python3`, `git`, mtools (`mformat`, `mcopy`) plus `mkfs.vfat` (FAT fixture
+`etc/fat.img` for the `fat` builtin), `sfdisk` (util-linux: `uefi.img` and
+the USB pendrive image), e2fsprogs (`mkfs.ext4`, `etc/ext4.img` for the
+`ext4` builtin). No absolute paths are assumed anywhere in the build;
 every external checkout location is overridable (see `make sources-status`).
 
 ## 2. Fetch the sibling sources
@@ -20,9 +20,13 @@ every external checkout location is overridable (see `make sources-status`).
 make sources
 ```
 
-Clones miniGCC, `ld`, cvm/cvm2, MicroPython, Nuklear and Lua next to the
-repo (defaults `../miniGCC`, `../ld`, `../cvm`, `../micropython`,
-`../nuklear`, `../lua`). Existing directories are never touched.
+Clones the missing sibling repos next to the repo (defaults `../miniGCC`,
+`../ld`, `../cvm` with `cvm2` inside, `../micropython`, `../cpython`,
+`../lua`, `../nuklear`, `../nuked-opl3`, `../FreeDom`, `../raycastlib`)
+and Quake 2 Generic into `progs/quake2generic/quake2generic`. It also
+fetches the `pip` and `six` wheels CPython installs offline.
+Existing directories are never touched.
+The full source contract: `docs/spec/source.md`.
 
 ## 3. Build the image
 
@@ -31,8 +35,8 @@ make
 ```
 
 Zero warnings is required. Produces `os.img` (boot sectors, kernel with
-embedded ramdisk, MiniFS partition, swap). Rebuilding after a kernel
-change is the same single command.
+embedded ramdisk, MiniFS partition, swap, FAT and ext4 fixture images).
+Rebuilding after a kernel change is the same single command.
 
 ## 4. Boot it
 
@@ -69,16 +73,17 @@ instead: `run objects/ld.o -f cvm -o cvm/p.cvm asm/p.s`, then
 `run cvm/p.cvm`.
 
 Interpreters are also on board: bare `micropython`, `lua` or `lisp`
-start a REPL, `micropython src/script.py` runs a file, and
-`lisp src/test.lisp` runs the in-OS Lisp suite.
+start a REPL, `micropython src/script.py` runs a file, `lisp src/test.lisp`
+runs the in-OS Lisp suite, and `python3 -c "..."` runs a CPython one-liner
+(needs the CPython checkout).
 
 ## 6. Verify your change
 
 ```sh
 make test-host           # all fast host suites (sync, vma, futex, percpu_rq,
                          # batch, rcu, sanitize, tick, pipe, panic, pci,
-                         # httpd, hal, driver, ktime, randmix, wm,
-                         # modifiers, notify, abi, wl, lisp)
+                         # httpd, sign, hal, driver, ktime, randmix, wm, fx,
+                         # modifiers, notify, abi, wl, fat, ext4, lisp)
 make test-tick test-hal  # tick listener bus + HAL port mapping only
 make test-lisp           # Lisp interpreter vectors + in-OS suite head only
 make test-wl             # Wayland-mini wire roundtrip + fail-closed bounds only
@@ -92,14 +97,14 @@ tools/boot_run.sh "smp" "sb16" "run cvm/w1.cvm" --timeout 80
 
 It boots `os.img`, runs the commands, sends `poweroff`, and returns
 nonzero on hang. GUI behaviour (cursor, drag, title buttons) must be
-driven with `tools/minios_gui.py`, never headless; see `README.md`
-"Testing the VGA desktop".
+driven with `tools/minios_gui.py`, never headless; the GUI proofs live
+in `docs/spec/testing.md`.
 
 ## 7. Full gate (before a commit)
 
 ```sh
 make
-sh src/test_all.sh
+tools/boot_run.sh "sh src/test_all.sh" --timeout 120   # 112 PASS markers
 ./tools/test_bdd.sh
 ./tools/test_codecs.sh
 ./tools/mutate.sh

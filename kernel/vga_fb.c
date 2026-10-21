@@ -323,6 +323,43 @@ static void lg_push(const char *line, int len) {
     else lg_head = (lg_head + 1) % SB_MAX_LINES;
 }
 
+/* Allocate the history ring on demand. The text-mode console feeds it
+ * before the desktop exists (the boot log is printed in text mode), so the
+ * ring must be creatable outside vga_fb_init. The heap must be up first:
+ * the ring is 256 lines, so the feed is refused until the allocator is up
+ * (the boot banner is printed after it). */
+static int lg_ready;
+
+static void lg_alloc(void) {
+    int i;
+    if (lg) return;
+    lg = (char (*)[SB_LINE_MAX])kmalloc(SB_MAX_LINES * SB_LINE_MAX);
+    if (!lg) {
+        kprintf("vga: no scrollback ring (out of memory)\n");
+        return;
+    }
+    for (i = 0; i < SB_MAX_LINES; i++) lg[i][0] = '\0';
+    lg_head = lg_tail = lg_count = 0;
+    lg_ready = 1;
+}
+
+/** Docstring: Create the terminal history ring. Called once the heap is
+ * up, before the boot banner is printed, so the text-mode console has
+ * somewhere to put the boot log. */
+void vga_fb_term_ring_init(void) {
+    lg_alloc();
+}
+
+/** Docstring: Feed one completed console line into the terminal history.
+ * The text-mode console (the boot log, before the desktop comes up) has no
+ * other history, and the desktop terminal owns the ring afterwards, so the
+ * ring is the one place both halves land. */
+void vga_fb_term_feed(const char *line, int len) {
+    if (!line || len <= 0) return;
+    if (!lg_ready) return;
+    lg_push(line, len);
+}
+
 /* Display rows a logical line of `len` characters occupies at term_cols. */
 static int line_nrows(int len) {
     int w = term_cols > 0 ? term_cols : 1;
@@ -1209,6 +1246,23 @@ int vga_fb_focus_id(int id) {
     return 0;
 }
 
+/** Docstring: Copy the boot-time history into the terminal that owns the
+ * screen after the desktop comes up. The boot log is printed in text mode,
+ * before the second window exists, so it lives in the first window's ring;
+ * the shell runs in the other one, and the page keys must reach the boot
+ * banner from there. */
+static void vga_fb_boot_history_to_active(void) {
+    termwin_t *t = &twins[0];
+    int k;
+    if (!t->lg || t->count <= 0) return;
+    for (k = 0; k < t->count; k++) {
+        const char *s = t->lg[(t->head + k) % SB_MAX_LINES];
+        int len = (int)kstrlen(s);
+        if (len > 0) lg_push(s, len);
+    }
+    disp_off = 0;
+}
+
 /* Open the second terminal (heap ring, right half) or focus it when open.
  * Window 0 also takes a heap snapshot while split: its slot borrows the
  * static ring, which IS the live one, so without a private copy both
@@ -1255,6 +1309,10 @@ int vga_fb_term_split(void) {
     fx_old = fx_start_full();
     vga_fb_tile_all();
     tw_select(1);
+    /* The shell runs in the twin window and the boot log lives in the
+     * first one, so the history is copied into the window that owns the
+     * screen: the page keys must reach the boot banner from there. */
+    vga_fb_boot_history_to_active();
     vga_fb_draw_desktop();
     fx_finish_full(fx_old);
     return 0;
@@ -4493,10 +4551,11 @@ void vga_fb_mouse_init(void) {
     mouse_state.wheel = 0;
     mouse_state.present = 0;
     cursor_invalidate();
-    lg_head = lg_tail = lg_count = 0;
-    act_len = 0;
-    act[0] = '\0';
-    disp_off = 0;
+    /* The history ring, the active line and the viewport belong to the
+     * terminal, not to the mouse: this init used to reset them, which
+     * threw away the boot log the text-mode console had already fed
+     * into the ring. The ring is empty by construction (lg_alloc), the
+     * active line starts empty and the viewport starts at the bottom. */
     wm_inited = 0;
     wm_nterms = 1;
     wm_focus = 0;
@@ -4512,10 +4571,46 @@ void vga_fb_mouse_init(void) {
     dock_pending_cmd[0] = 0;
 }
 
+/** Docstring: Echo the visible viewport rows to the serial console, so the
+ * history the desktop shows is also readable on the host console (the
+ * legacy VGA scrollback view echoed it the same way). */
+static void term_echo_viewport(void) {
+    int top = disp_top();
+    int r;
+    if (top < 0) top = 0;
+    for (r = 0; r < term_rows; r++) {
+        int off = 0;
+        const char *l = line_at(top + r, &off);
+        int c = 0;
+        if (l) {
+            int len = (int)kstrlen(l);
+            for (c = 0; c < term_cols && off + c < len; c++)
+                serial_putc(l[off + c]);
+        }
+        while (c < term_cols) { serial_putc(' '); c++; }
+        serial_putc('\n');
+    }
+}
+
+/** Docstring: Page the terminal history by one screen (dir -1 up, +1 down).
+ * The framebuffer terminal keeps its own logical ring, so the page keys
+ * move that viewport; the legacy VGA scrollback ring only serves the
+ * text-mode console, where the framebuffer terminal does not exist. */
+void vga_fb_history_page(int dir) {
+    int tr = total_rows();
+    int max_off = tr > term_rows ? tr - term_rows : 0;
+    if (term_minimized) return;
+    if (dir < 0) disp_off += term_rows;
+    else disp_off -= term_rows;
+    if (disp_off > max_off) disp_off = max_off;
+    if (disp_off < 0) disp_off = 0;
+    term_render();
+    term_echo_viewport();
+}
+
 void vga_fb_init(void) {
     int i;
-    lg = (char (*)[SB_LINE_MAX])kmalloc(SB_MAX_LINES * SB_LINE_MAX);
-    if (!lg) kprintf("vga: no scrollback ring (out of memory)\n");
+    lg_alloc();
     /* Gray ramp until the first graphics program sets its palette. */
     for (i = 0; i < 256; i++) {
         gfx_pal[i * 3 + 0] = (unsigned char)i;

@@ -41,7 +41,7 @@ flowchart LR
 `function` | [progs/src/lz4.c:6](../../progs/src/lz4.c#L6)
 
 ```c
-* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends over the two MiniOS syscalls 216 * (lz4_compress) and 217 (lz4_decompress), which mirro
+* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends over the two MiniOS syscalls 216 * (lz4_compress) and 255 (lz4_decompress), which mirro
 ```
 
 **Parameters**

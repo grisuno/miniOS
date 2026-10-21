@@ -3,6 +3,32 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `CHECK` | macro | `tests/test_pipe.c:16` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_pipe.c:23` | `int main(void)` |
+| `check` | function | `tests/test_ps2_keymap.c:19` | `static void check(int cond, const char *name)` |
+| `feed_seq` | function | `tests/test_ps2_keymap.c:29` | `static int feed_seq(ps2_state *s, const unsigned char *seq, int n, ps2_key *out)` |
+| `main` | function | `tests/test_ps2_keymap.c:293` | `int main(void)` |
+| `press` | function | `tests/test_ps2_keymap.c:36` | `static int press(ps2_state *s, unsigned char code, ps2_key *out)` |
+| `release` | function | `tests/test_ps2_keymap.c:41` | `static int release(ps2_state *s, unsigned char code, ps2_key *out)` |
+| `test_caps_lock` | function | `tests/test_ps2_keymap.c:69` | `static void test_caps_lock(void)` |
+| `test_chords_have_no_text` | function | `tests/test_ps2_keymap.c:128` | `static void test_chords_have_no_text(void)` |
+| `test_control_key_text` | function | `tests/test_ps2_keymap.c:111` | `static void test_control_key_text(void)` |
+| `test_extended_keys` | function | `tests/test_ps2_keymap.c:150` | `static void test_extended_keys(void)` |
+| `test_fail_closed` | function | `tests/test_ps2_keymap.c:280` | `static void test_fail_closed(void)` |
+| `test_function_keys` | function | `tests/test_ps2_keymap.c:202` | `static void test_function_keys(void)` |
+| `test_keypad_num_lock` | function | `tests/test_ps2_keymap.c:218` | `static void test_keypad_num_lock(void)` |
+| `test_letters_and_shift` | function | `tests/test_ps2_keymap.c:45` | `static void test_letters_and_shift(void)` |
+| `test_prefix_sequences` | function | `tests/test_ps2_keymap.c:263` | `static void test_prefix_sequences(void)` |
+| `test_punctuation` | function | `tests/test_ps2_keymap.c:90` | `static void test_punctuation(void)` |
+| `CHECK` | macro | `tests/test_randmix.c:16` | `#define CHECK(c, m)` |
+| `main` | function | `tests/test_randmix.c:24` | `int main(void)` |
+| `popcount64` | function | `tests/test_randmix.c:18` | `static int popcount64(unsigned long x)` |
+| `CHECK` | macro | `tests/test_rcu.c:30` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_rcu.c:37` | `int main(void)` |
+| `rcu_host_cpu` | function | `tests/test_rcu.c:19` | `cpu_t *rcu_host_cpu(void)` |
+| `test_cb` | function | `tests/test_rcu.c:23` | `static void test_cb(void *arg)` |
+| `CHECK` | macro | `tests/test_rtc.c:16` | `#define CHECK(c, m)` |
+| `main` | function | `tests/test_rtc.c:18` | `int main(void)` |
 | `CHECK` | macro | `tests/test_sanitize.c:41` | `#define CHECK(cond, msg)` |
 | `EFAULT` | macro | `tests/test_sanitize.c:13` | `#define EFAULT` |
 | `copy_probe` | function | `tests/test_sanitize.c:61` | `static long copy_probe(unsigned long uptr, long count, unsigned long elemsz)` |
@@ -148,10 +174,11 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `setup` | method | `tools/boot_wl.py:154` | `def setup(self)` |
 | `snapshot` | method | `tools/boot_wl.py:107` | `def snapshot(self, timeout)` |
 | `wait_prompt` | method | `tools/boot_wl.py:124` | `def wait_prompt(self)` |
-| `main` | function | `tools/check_abi_numbers.py:158` | `def main()` |
-| `normalize` | function | `tools/check_abi_numbers.py:130` | `def normalize(minios_name)` |
-| `parse_abi` | function | `tools/check_abi_numbers.py:134` | `def parse_abi(path)` |
-| `parse_dispatch` | function | `tools/check_abi_numbers.py:145` | `def parse_dispatch(path)` |
+| `main` | function | `tools/check_abi_numbers.py:177` | `def main()` |
+| `normalize` | function | `tools/check_abi_numbers.py:142` | `def normalize(minios_name)` |
+| `parse_abi` | function | `tools/check_abi_numbers.py:146` | `def parse_abi(path)` |
+| `parse_dispatch` | function | `tools/check_abi_numbers.py:164` | `def parse_dispatch(path)` |
+| `parse_ld_stubs` | function | `tools/check_abi_numbers.py:157` | `def parse_ld_stubs(path)` |
 | `load_parser` | function | `tools/check_addons.py:22` | `def load_parser()` |
 | `main` | function | `tools/check_addons.py:31` | `def main()` |
 | `compute_cohesion` | function | `tools/check_cohesion.py:31` | `def compute_cohesion(community_nodes, community_edges)` |
@@ -395,10 +422,10 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `read_fname_bytes` | function | `tools/mkramdisk.py:41` | `def read_fname_bytes(kernel_h_path)` |
 | `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
 | `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
-| `cleanup` | function | `tools/mutate.sh:139` | `` |
-| `find_index` | function | `tools/mutate.sh:524` | `` |
-| `record` | function | `tools/mutate.sh:518` | `` |
-| `restore_sources` | function | `tools/mutate.sh:132` | `` |
+| `cleanup` | function | `tools/mutate.sh:144` | `` |
+| `find_index` | function | `tools/mutate.sh:542` | `` |
+| `record` | function | `tools/mutate.sh:536` | `` |
+| `restore_sources` | function | `tools/mutate.sh:137` | `` |
 | `usage` | function | `tools/mutate.sh:51` | `` |
 | `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
 | `main` | function | `tools/probe_compute_vga.py:22` | `def main()` |
@@ -454,47 +481,20 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `verify_external` | function | `tools/sign_elf.py:395` | `def verify_external(sig, digest, pub)` |
 | `cleanup_stale_qemu` | function | `tools/test_bdd.sh:43` | `` |
 | `expect` | function | `tools/test_bdd.sh:100` | `` |
-| `expect_count` | function | `tools/test_bdd.sh:122` | `` |
-| `http_fixture_start` | function | `tools/test_bdd.sh:1425` | `` |
-| `http_fixture_stop` | function | `tools/test_bdd.sh:1432` | `` |
-| `http_server_start` | function | `tools/test_bdd.sh:1413` | `` |
-| `http_server_stop` | function | `tools/test_bdd.sh:1420` | `` |
-| `net_fixture_start` | function | `tools/test_bdd.sh:1437` | `` |
-| `net_fixture_stop` | function | `tools/test_bdd.sh:1444` | `` |
-| `refute` | function | `tools/test_bdd.sh:145` | `` |
+| `expect_count` | function | `tools/test_bdd.sh:148` | `` |
+| `expect_min` | function | `tools/test_bdd.sh:123` | `` |
+| `http_fixture_start` | function | `tools/test_bdd.sh:1499` | `` |
+| `http_fixture_stop` | function | `tools/test_bdd.sh:1506` | `` |
+| `http_server_start` | function | `tools/test_bdd.sh:1487` | `` |
+| `http_server_stop` | function | `tools/test_bdd.sh:1494` | `` |
+| `net_fixture_start` | function | `tools/test_bdd.sh:1511` | `` |
+| `net_fixture_stop` | function | `tools/test_bdd.sh:1518` | `` |
+| `refute` | function | `tools/test_bdd.sh:171` | `` |
 | `scenario` | function | `tools/test_bdd.sh:56` | `` |
 | `scenario_smp` | function | `tools/test_bdd.sh:77` | `` |
-| `scenario_uefi` | function | `tools/test_bdd.sh:170` | `` |
+| `scenario_uefi` | function | `tools/test_bdd.sh:196` | `` |
 | `should_run` | function | `tools/test_bdd.sh:35` | `` |
+| `usb_stick_ready` | function | `tools/test_bdd.sh:672` | `` |
 | `AlignConfig` | class | `tools/test_call_align.py:24` | `class AlignConfig` |
-| `find_minigcc` | function | `tools/test_call_align.py:59` | `def find_minigcc(explicit)` |
-| `main` | function | `tools/test_call_align.py:79` | `def main(argv)` |
-| `run` | function | `tools/test_call_align.py:74` | `def run(argv)` |
-| `Guest` | class | `tools/test_gui_fashion.py:45` | `class Guest` |
-| `__init__` | method | `tools/test_gui_fashion.py:46` | `def __init__(self)` |
-| `_qmp` | method | `tools/test_gui_fashion.py:141` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_fashion.py:82` | `def _reader(self)` |
-| `_ser` | method | `tools/test_gui_fashion.py:70` | `def _ser(self)` |
-| `count_arrows` | function | `tools/test_gui_fashion.py:206` | `def count_arrows(shot_path)` |
-| `dump` | method | `tools/test_gui_fashion.py:168` | `def dump(self, name)` |
-| `key` | method | `tools/test_gui_fashion.py:149` | `def key(self, qcode, down, up)` |
-| `main` | function | `tools/test_gui_fashion.py:239` | `def main()` |
-| `meandiff` | function | `tools/test_gui_fashion.py:190` | `def meandiff(a_path, b_path)` |
-| `note` | function | `tools/test_gui_fashion.py:39` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_fashion.py:128` | `def qmp_cmd(self, obj)` |
-| `rel` | method | `tools/test_gui_fashion.py:161` | `def rel(self, dx, dy)` |
-| `send` | method | `tools/test_gui_fashion.py:118` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_fashion.py:98` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_fashion.py:175` | `def stop(self)` |
-| `wait_for` | method | `tools/test_gui_fashion.py:110` | `def wait_for(self, marker, timeout)` |
-| `wait_prompt` | method | `tools/test_gui_fashion.py:102` | `def wait_prompt(self, timeout)` |
-| `Config` | class | `tools/test_gui_freedom.py:45` | `class Config` |
-| `Guest` | class | `tools/test_gui_freedom.py:91` | `class Guest` |
-| `__init__` | method | `tools/test_gui_freedom.py:94` | `def __init__(self, work)` |
-| `_connect` | method | `tools/test_gui_freedom.py:118` | `def _connect(self, path)` |
-| `_qmp` | method | `tools/test_gui_freedom.py:174` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_freedom.py:132` | `def _reader(self)` |
-| `_serial` | method | `tools/test_gui_freedom.py:127` | `def _serial(self)` |
-| `around` | function | `tools/test_gui_freedom.py:259` | `def around(point)` |
 
 Next: [SYMBOLS_p27.md](SYMBOLS_p27.md)

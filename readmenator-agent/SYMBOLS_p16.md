@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `key_map_zoomout` | variable | `progs/doomgeneric/m_controls.h:89` | `extern int key_map_zoomout;` |
+| `key_menu_abort` | variable | `progs/doomgeneric/m_controls.h:107` | `extern int key_menu_abort;` |
+| `key_menu_activate` | variable | `progs/doomgeneric/m_controls.h:99` | `extern int key_menu_activate;` |
+| `key_menu_back` | variable | `progs/doomgeneric/m_controls.h:104` | `extern int key_menu_back;` |
+| `key_menu_confirm` | variable | `progs/doomgeneric/m_controls.h:106` | `extern int key_menu_confirm;` |
+| `key_menu_decscreen` | variable | `progs/doomgeneric/m_controls.h:122` | `extern int key_menu_decscreen;` |
+| `key_menu_detail` | variable | `progs/doomgeneric/m_controls.h:113` | `extern int key_menu_detail;` |
+| `key_menu_down` | variable | `progs/doomgeneric/m_controls.h:101` | `extern int key_menu_down;` |
+| `key_menu_endgame` | variable | `progs/doomgeneric/m_controls.h:115` | `extern int key_menu_endgame;` |
+| `key_menu_forward` | variable | `progs/doomgeneric/m_controls.h:105` | `extern int key_menu_forward;` |
+| `key_menu_gamma` | variable | `progs/doomgeneric/m_controls.h:119` | `extern int key_menu_gamma;` |
+| `key_menu_help` | variable | `progs/doomgeneric/m_controls.h:109` | `extern int key_menu_help;` |
+| `key_menu_incscreen` | variable | `progs/doomgeneric/m_controls.h:121` | `extern int key_menu_incscreen;` |
+| `key_menu_left` | variable | `progs/doomgeneric/m_controls.h:102` | `extern int key_menu_left;` |
+| `key_menu_load` | variable | `progs/doomgeneric/m_controls.h:111` | `extern int key_menu_load;` |
+| `key_menu_messages` | variable | `progs/doomgeneric/m_controls.h:116` | `extern int key_menu_messages;` |
+| `key_menu_qload` | variable | `progs/doomgeneric/m_controls.h:117` | `extern int key_menu_qload;` |
+| `key_menu_qsave` | variable | `progs/doomgeneric/m_controls.h:114` | `extern int key_menu_qsave;` |
+| `key_menu_quit` | variable | `progs/doomgeneric/m_controls.h:118` | `extern int key_menu_quit;` |
+| `key_menu_right` | variable | `progs/doomgeneric/m_controls.h:103` | `extern int key_menu_right;` |
+| `key_menu_save` | variable | `progs/doomgeneric/m_controls.h:110` | `extern int key_menu_save;` |
+| `key_menu_screenshot` | variable | `progs/doomgeneric/m_controls.h:123` | `extern int key_menu_screenshot;` |
+| `key_menu_up` | variable | `progs/doomgeneric/m_controls.h:100` | `extern int key_menu_up;` |
 | `key_menu_volume` | variable | `progs/doomgeneric/m_controls.h:112` | `extern int key_menu_volume;` |
 | `key_message_refresh` | variable | `progs/doomgeneric/m_controls.h:55` | `extern int key_message_refresh;` |
 | `key_mission` | variable | `progs/doomgeneric/m_controls.h:47` | `extern int key_mission;` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 | `openbottom` | variable | `progs/doomgeneric/p_local.h:170` | `extern fixed_t openbottom;` |
 | `openrange` | variable | `progs/doomgeneric/p_local.h:171` | `extern fixed_t openrange;` |
 | `opentop` | variable | `progs/doomgeneric/p_local.h:169` | `extern fixed_t opentop;` |
-| `rejectmatrix` | variable | `progs/doomgeneric/p_local.h:261` | `extern byte* rejectmatrix;` |
-| `spechit` | variable | `progs/doomgeneric/p_local.h:222` | `extern line_t* spechit[MAXSPECIALCROSS];` |
-| `thinkercap` | variable | `progs/doomgeneric/p_local.h:67` | `extern thinker_t thinkercap;` |
-| `tmceilingz` | variable | `progs/doomgeneric/p_local.h:206` | `extern fixed_t tmceilingz;` |
-| `tmfloorz` | variable | `progs/doomgeneric/p_local.h:205` | `extern fixed_t tmfloorz;` |
-| `trace` | variable | `progs/doomgeneric/p_local.h:183` | `extern divline_t trace;` |
-| `DEFAULT_SPECHIT_MAGIC` | macro | `progs/doomgeneric/p_map.c:50` | `#define DEFAULT_SPECHIT_MAGIC` |
-| `PIT_ChangeSector` | function | `progs/doomgeneric/p_map.c:1304` | `boolean PIT_ChangeSector (mobj_t*	thing)` |
-| `PIT_CheckLine` | function | `progs/doomgeneric/p_map.c:206` | `boolean PIT_CheckLine (line_t* ld)` |
-| `PIT_CheckThing` | function | `progs/doomgeneric/p_map.c:275` | `boolean PIT_CheckThing (mobj_t* thing)` |
-| `PIT_RadiusAttack` | function | `progs/doomgeneric/p_map.c:1211` | `boolean PIT_RadiusAttack (mobj_t* thing)` |
-| `PIT_StompThing` | function | `progs/doomgeneric/p_map.c:97` | `boolean PIT_StompThing (mobj_t* thing)` |
-| `PTR_AimTraverse` | function | `progs/doomgeneric/p_map.c:843` | `boolean PTR_AimTraverse (intercept_t* in)` |
-| `PTR_ShootTraverse` | function | `progs/doomgeneric/p_map.c:928` | `boolean PTR_ShootTraverse (intercept_t* in)` |
-| `PTR_SlideTraverse` | function | `progs/doomgeneric/p_map.c:663` | `boolean PTR_SlideTraverse (intercept_t* in)` |
-| `PTR_UseTraverse` | function | `progs/doomgeneric/p_map.c:1142` | `boolean	PTR_UseTraverse (intercept_t* in)` |
-| `P_AimLineAttack` | function | `progs/doomgeneric/p_map.c:1068` | `fixed_t P_AimLineAttack ( mobj_t*	t1,   angle_t	angle,   fixed_t	distance )` |
-| `P_ChangeSector` | function | `progs/doomgeneric/p_map.c:1368` | `boolean P_ChangeSector ( sector_t*	sector,   boolean	crunch )` |
-| `P_CheckPosition` | function | `progs/doomgeneric/p_map.c:402` | `boolean P_CheckPosition ( mobj_t*	thing,   fixed_t	x,   fixed_t	y )` |
-| `P_HitSlideLine` | function | `progs/doomgeneric/p_map.c:611` | `void P_HitSlideLine (line_t* ld)` |
-| `P_LineAttack` | function | `progs/doomgeneric/p_map.c:1110` | `void P_LineAttack ( mobj_t*	t1,   angle_t	angle,   fixed_t	distance,   fixed_t	slope,   int		dama...` |
-| `P_RadiusAttack` | function | `progs/doomgeneric/p_map.c:1253` | `void P_RadiusAttack ( mobj_t*	spot,   mobj_t*	source,   int		damage )` |
-| `P_SlideMove` | function | `progs/doomgeneric/p_map.c:722` | `void P_SlideMove (mobj_t* mo)` |
 
 Next: [SYMBOLS_p17.md](SYMBOLS_p17.md)

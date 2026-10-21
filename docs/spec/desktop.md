@@ -14,8 +14,9 @@ to inject PS/2 mouse motion, clicks and keyboard, and a pty serial console;
 after each action it saves the framebuffer to a PNG via QMP `screendump`.
 `gfx` / `gfx pixel x y` probe the framebuffer over serial as a text backstop.
 
-The desktop runs at a VESA linear-framebuffer resolution (800x600x8 by
-default) instead of VGA Mode 13h, and DOOM runs in a titled window at its
+The desktop runs at a VESA linear-framebuffer resolution (the probe picks
+the first mode the BIOS offers, 1024x768 in true color on QEMU) instead
+of VGA Mode 13h, and DOOM runs in a titled window at its
 native 320x200 instead of stealing the whole display.
 
 - **Boot path (stage2.S + bootdefs.h):** after the kernel image is loaded and
@@ -37,11 +38,47 @@ native 320x200 instead of stealing the whole display.
   drawing addresses through `FB_ADDR` (desktop and graphics programs) work
   unchanged; pixel addressing honors `fb_pitch`.
 - **Movable shell window (vga_fb.c):** the shell runs in a window (default
-  72x40 cells, clamped to the framebuffer) with a title bar on top and a
-  scrollbar on the window's right edge, over a desktop background with a
-  bottom taskbar. Click-and-drag on the title bar moves the window with the
-  mouse; F11 toggles fullscreen, F5 resets the position. Window geometry is
-  independent of the framebuffer dimensions.
+  74x28 cells at cell (4,3), clamped to the framebuffer) with a title bar on
+  top and a scrollbar on the window's right edge, over a desktop background
+  with a bottom taskbar, so a VGA session never needs the serial console
+  (which stays the shell's own and is never shared with a background job).
+  Click-and-drag on the title bar moves the window with the mouse and keeps
+  it under the pointer (the grab column is remembered, so the window does not
+  jump to the mouse origin); the title reads "MiniOS Terminal", the split
+  window "MiniOS Terminal 2". F11 toggles fullscreen, F5 resets the
+  position (and leaves fullscreen). Window geometry is independent of the
+  framebuffer dimensions.
+- **Logical-line buffer and re-wrap (vga_fb.c):** the terminal history is
+  one ring of logical lines plus the in-progress line; the screen is never
+  stored pre-wrapped. Every render rebuilds the visible window by wrapping
+  the logical lines at the current `term_cols`, so a resize or a snap
+  re-flows the text instead of clipping it, and the live screen and the
+  scrollback view can never disagree. A logical line of length L occupies
+  `max(1, ceil(L/term_cols))` display rows, the whole history is
+  `total_rows` rows and the viewport shows `term_rows` of them. A completed
+  line is pushed to the ring exactly once, when it ends with '\n' (the old
+  two-buffer scheme pushed it twice and produced the duplicated and partial
+  scrollback entries that showed as pixel artifacts), and it is stored
+  whole, never width-dependent, so a long line re-wraps cleanly at any
+  later width. `disp_off` counts the display rows the viewport is scrolled
+  up from the bottom (0 = live), clamped to `total_rows - term_rows`; a
+  '\r' snaps the view back to live. Moving, snapping and resizing therefore
+  never lose the prompt or the half-typed line: both are re-rendered from
+  the logical buffer at the new position and size.
+- **Mouse over the terminal (vga_fb.c):** the wheel scrolls the scrollback
+  of the focused terminal in `wm_event_config_t.wheel_step` (3) row steps
+  and never while the graphics window holds the focus (a focused app reads
+  the wheel through `SYS_MOUSE` and the tick must not eat it). Pressing or
+  dragging the scrollbar jumps the view to the pointer position inside the
+  track (`disp_off` proportional to it) and scrubs it. PageUp/PageDown
+  (PS/2 E0 make codes, or the serial `ESC [ 5 ~` / `ESC [ 6 ~`) move the
+  same viewport one screen per key and echo the visible rows to the serial
+  console, so the history the desktop shows is also readable on the host
+  console. The boot log is part of that history: the text-mode console
+  feeds the same ring (`vga_fb_term_feed`). The scrollbar, the wheel and
+  the title drag are ignored while the window is minimized. The pointer is a
+  software sprite composited into the framebuffer, not a VGA hardware
+  cursor.
 - **Windowed DOOM (syscall 211 + doomgeneric_minios.c):** the kernel maps a
   64 KB kernel-heap back-buffer into the user window at `DOOM_BACKBUF_ADDR`
   (0x0B000000, RW, NX). DOOM renders its 320x200 frame there and calls
@@ -111,15 +148,30 @@ framebuffer is not.
   the arrow points; the IRQ12 phase guard also rejects first-byte overflow
   bits, so a stray init reply (`0xFA`/`0xAA`) can never shift the packet
   framing and warp the first motion after boot.
+- **Theme widget (`vga_fb.c`):** the active Nuklear theme name sits left of
+  the `EN`/`ES` label in the taskbar (`TASKBAR_THEME_W` wide, bright). A
+  click cycles `etc/themes/` in ramdisk order with wraparound and writes the
+  choice back to `etc/themes/current`, so the next app launch picks it up
+  while running apps keep their theme. `vga_fb_theme_name` reads `current`
+  and fails closed to `dark` on a missing file, a bad name or an overlong
+  read; `wm state` reports `wm: theme <name>`. The theme files and the
+  loader every NK app links through are in docs/spec/apps.md.
 - **Tiling shortcuts (Alt = WM modifier, `kernel.c` + `vga_fb.c`):** the window
   is moved, snapped and resized from the keyboard for a tiling-WM feel. Alt is
-  tracked as a modifier beside Shift and Ctrl. Alt+Enter toggles fullscreen,
-  Alt+arrows snap the window to the left/right/top/bottom half of the screen,
-  Alt+Home/End snap to the top-left / bottom-right quadrant, Alt+`[`/`]`
-  shrink/grow width, Alt+`-`/`=` shrink/grow both dimensions, and Alt+0 resets
-  the window to its default position and size. The window keeps its current
-  size across redraws (resize/snap persist instead of snapping back to the
-  default like the old layout engine).
+  tracked as a modifier beside Shift and Ctrl. Alt+Enter (or F11) toggles
+  fullscreen, Alt+arrows snap the window to the left/right/top/bottom half of
+  the screen (the snapped region also sizes the window), Alt+Home/End snap
+  to the top-left / bottom-right quadrant, Alt+`[`/`]` shrink/grow the width,
+  Alt+`-`/`=` shrink/grow both dimensions, Alt+0 resets the window to its
+  default position and size, F5 resets the position only, and Ctrl+arrows
+  nudge the focused window by one cell (a focused graphics window floats out
+  of a tiled cell instead and moves by pixels). The path mask in `WM_COMBOS`
+  (`headers/wm_events.h`) decides which input path sees a combo: Alt+arrows
+  are cooked-only (the desktop shell), Alt+Home/End are raw-only (a game
+  reading `SYS_KBD`), so from the desktop the quadrants are reached through
+  `wm snap tl|tr|bl|br`. The window keeps its current size across redraws
+  (resize/snap persist instead of snapping back to the default like the old
+  layout engine).
 - **Focus + tiling across windows (Alt-Tab, Super-Tab, `vga_fb.c` + `drivers/kbd.c`):**
   the focused window owns the keyboard; its title bar paints bright
   (`COL_TITLEBAR`) while unfocused terminals dim (`COL_SHADOW`) with a `*`
@@ -148,7 +200,10 @@ framebuffer is not.
   drives the same functions (`wm focus [next|0|1|2]`, `wm tile`, `wm list`,
   `wm state` reports `focus`/`nterms`) so the BDD suite asserts them over
   serial exactly like `date`/`vol` (including a background-DOOM scenario
-  that focuses, tiles, lists and closes the gfx window); real scancodes are
+  that focuses, tiles, lists and closes the gfx window; the graphics
+  program owns the keyboard from the moment it claims the display, so the
+  scenario walks the cycle from the terminal with `wm focus 0` before
+  `wm focus next` lands on the graphics window); real scancodes are
   covered by QMP `input-send-event` (`alt`+`tab`, `meta_l`+`tab`) against
   `display none`.
 - **Second terminal (`wm split`, `vga_fb.c` + `shell.c`):** two shells share
@@ -491,3 +546,75 @@ framebuffer is not.
   (open+close), beside the `gfx frames` climb. Eight `fx-*` mutants
   (default, toggle, reporting, skipped melts, stuck/clamp column logic)
   die in `make test-fx` and the `MATCH=fx` BDD slice.
+
+### Desktop GUI harness (`tools/minios_gui.py`)
+
+The harness boots QEMU with the emulated std VGA device (the linear
+framebuffer the desktop renders into), a QMP socket to inject PS/2 mouse
+motion, clicks and keyboard, and a pty serial console to drive the shell.
+After each action it dumps the framebuffer to a PNG through QMP
+`screendump`, so a crashed desktop, a vanished cursor or a corrupted window
+is visible without a physical display.
+
+Actions: `send LINE` (one shell line, the reply is printed), `mouse DX DY`
+(relative motion), `click` (left-button press and release), `key QCODE` (a
+qemu keycode, e.g. `esc`, `return`), `dump NAME` (screendump to
+`$TMPDIR/gui_*/NAME.png`), `sleep SECS`. The harness reads `MEM` (default
+1G, like `boot_run.sh`) and `DISPLAY` from the environment; run it under
+`xvfb-run` to stay headless. Example:
+
+```
+python3 tools/minios_gui.py send "doomgeneric.elf" sleep 10 \
+    key esc key down key down key down key down key down key ret key y \
+    dump after_doom
+```
+
+### Desktop icons, Nuklear and the low-code CVM path
+
+- **PNG icons and the dock (`vga_fb.c`):** shortcuts live in `etc/shortcuts`
+  on the ramdisk, one per line as `name|icon_path|command`. The icon is a
+  32x32 PNG decoded once at boot through `stbi_load_file` (stb_image) and
+  kept in the heap; a missing or undecodable PNG falls back to the embedded
+  icon set (terminal, DOOM, Nuklear, Piano, Quake 2). True color keeps the
+  PNG's own colors, the 8-bit mode quantizes them at draw time to the
+  nearest of the 16 palette entries. The same decoder reaches ring-3 as the
+  kernel symbols `stbi_load_file` and `stbi_load_from_memory`. A click on
+  the icon launches its command with the shell cwd pinned to `/` (see the
+  dock paragraph above), so the launch never depends on where the shell
+  sits.
+- **Nuklear (`progs/nuklear/`):** the desktop hosts immediate-mode UI
+  (windows, buttons and widgets, no retained-mode toolkit). The app renders
+  into an 800x360 back-buffer (indexed at `NK_BACKBUF_ADDR`, RGB at
+  `NK_RGB_ADDR` when the kernel maps it) and presents through the same
+  graphics path DOOM uses, so it composes as a titled window with the shell
+  visible around it. Loader, palette and theme contract: docs/spec/apps.md.
+- **Low-code CVM (`progs/nuklear/node_editor.c`):** the Nuklear demo is a
+  visual node editor that compiles a dataflow graph straight into a `.cvm`
+  module the CVM runs. `ld -f cvm` emits a CVM v2 stack-bytecode module,
+  the interpreter (`objects/cvm.o`) and the baseline x86-64 JIT live in the
+  CVM repository, and the kernel hosts them through `cvm_main`
+  (`kernel/cvm_host.c`). A `.cvm` module stays unsigned (as do `ET_REL`
+  objects) while an `ET_EXEC` image needs the `sign` step
+  (docs/spec/kernel.md). The whole loop runs from the desktop shell:
+
+  ```
+  miniOS> edit src/p.c
+  edit> a
+  int main(void) { return 7; }
+  edit> x
+  miniOS> run objects/minigcc.o src/p.c > asm/p.s
+  miniOS> run objects/ld.o -f elf -o bin/p.elf asm/p.s
+  miniOS> run objects/ld.o -f cvm -o cvm/p.cvm asm/p.s
+  miniOS> run sign bin/p.elf
+  miniOS> run bin/p.elf
+  exit code: 7
+  miniOS> run cvm/p.cvm
+  exit code: 7
+  ```
+
+- **xxHash (`third_party/xxhash`, `kernel/xxhash.o`):** XXH64 with seed 0 is
+  exported to ring-3 as the kernel symbol `XXH64` and reaches the shell as
+  the builtin `hash <file>`, which streams the file in 1 KB chunks so a
+  large MiniFS file never needs a whole-file buffer. It is the integrity
+  tool for CVM modules and ramdisk payloads: an image built from source is
+  compared against a recorded hash before it is trusted.

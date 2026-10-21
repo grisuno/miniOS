@@ -1,13 +1,13 @@
 # `headers/sync.h`
 
-> Source: [headers/sync.h:1](../../headers/sync.h#L1) | language `h` | coverage 19.4% | [API index](../index.md)
+> Source: [headers/sync.h:1](../../headers/sync.h#L1) | language `h` | coverage 18.4% | [API index](../index.md)
 
 sync.h -- Blocking synchronization primitives (roadmap Phase 3.1).
 
 ## Contents
 
 - **Structs:** [`wait_queue_t`](#wait_queue_t), [`mutex_t`](#mutex_t), [`sem_t`](#sem_t), [`cond_t`](#cond_t), [`rwlock_t`](#rwlock_t)
-- **Functions:** [`wq_init`](#wq_init), [`sleep_on`](#sleep_on), [`wake_up`](#wake_up), [`wake_up_all`](#wake_up_all), [`inheritance`](#inheritance), [`mutex_init`](#mutex_init), [`mutex_lock`](#mutex_lock), [`mutex_unlock`](#mutex_unlock), [`mutex_trylock`](#mutex_trylock), [`mutex_note_waiter`](#mutex_note_waiter), [`pi_set_base`](#pi_set_base), [`pi_get_eff`](#pi_get_eff), [`sem_init`](#sem_init), [`sem_wait`](#sem_wait), [`sem_post`](#sem_post), [`cond_init`](#cond_init), [`cond_wait`](#cond_wait), [`cond_signal`](#cond_signal), [`cond_broadcast`](#cond_broadcast), [`rwlock_init`](#rwlock_init), [`rwlock_read_lock`](#rwlock_read_lock), [`rwlock_read_unlock`](#rwlock_read_unlock), [`rwlock_write_lock`](#rwlock_write_lock), [`rwlock_write_unlock`](#rwlock_write_unlock)
+- **Functions:** [`wq_init`](#wq_init), [`sleep_on`](#sleep_on), [`wake_up`](#wake_up), [`wake_up_all`](#wake_up_all), [`inheritance`](#inheritance), [`mutex_init`](#mutex_init), [`mutex_lock`](#mutex_lock), [`mutex_unlock`](#mutex_unlock), [`mutex_trylock`](#mutex_trylock), [`mutex_note_waiter`](#mutex_note_waiter), [`pi_set_base`](#pi_set_base), [`pi_get_eff`](#pi_get_eff), [`sem_init`](#sem_init), [`sem_wait`](#sem_wait), [`sem_post`](#sem_post), [`cond_init`](#cond_init), [`cond_wait`](#cond_wait), [`cond_signal`](#cond_signal), [`cond_broadcast`](#cond_broadcast), [`rwlock_init`](#rwlock_init), [`rwlock_read_lock`](#rwlock_read_lock), [`rwlock_read_unlock`](#rwlock_read_unlock), [`rwlock_write_lock`](#rwlock_write_lock), [`rwlock_write_unlock`](#rwlock_write_unlock), [`now`](#now), [`rwlock_write_trylock`](#rwlock_write_trylock)
 - **Macros:** [`WQ_NONE`](#wq_none), [`WAIT_QUEUE_INIT`](#wait_queue_init), [`MUTEX_INIT`](#mutex_init), [`SEM_INIT`](#sem_init), [`COND_INIT`](#cond_init), [`RWLOCK_INIT`](#rwlock_init)
 
 ## Type Diagram
@@ -99,13 +99,18 @@ the predicate in a loop).
 
 ### `rwlock_t`
 
-`struct` | [headers/sync.h:109](../../headers/sync.h#L109)
+`struct` | [headers/sync.h:114](../../headers/sync.h#L114)
 
 ```c
 typedef struct
 ```
 
 ---- Read-write lock (writer-preferring, no recursion) ----
+A queued writer announces itself in `writers_waiting`, and new
+readers yield to it: without that rule a steady stream of readers
+starves the writer (every reader sees readers == 0 on its way in).
+The counter is incremented when the writer starts waiting and
+decremented when it finally holds the lock, so it never leaks.
 
 ---
 
@@ -479,7 +484,7 @@ void cond_broadcast(cond_t *c);
 
 ### `rwlock_init`
 
-`function` | [headers/sync.h:118](../../headers/sync.h#L118)
+`function` | [headers/sync.h:124](../../headers/sync.h#L124)
 
 ```c
 void rwlock_init(rwlock_t *rw);
@@ -497,7 +502,7 @@ void rwlock_init(rwlock_t *rw);
 
 ### `rwlock_read_lock`
 
-`function` | [headers/sync.h:119](../../headers/sync.h#L119)
+`function` | [headers/sync.h:125](../../headers/sync.h#L125)
 
 ```c
 void rwlock_read_lock(rwlock_t *rw);
@@ -515,7 +520,7 @@ void rwlock_read_lock(rwlock_t *rw);
 
 ### `rwlock_read_unlock`
 
-`function` | [headers/sync.h:120](../../headers/sync.h#L120)
+`function` | [headers/sync.h:126](../../headers/sync.h#L126)
 
 ```c
 void rwlock_read_unlock(rwlock_t *rw);
@@ -533,7 +538,7 @@ void rwlock_read_unlock(rwlock_t *rw);
 
 ### `rwlock_write_lock`
 
-`function` | [headers/sync.h:121](../../headers/sync.h#L121)
+`function` | [headers/sync.h:127](../../headers/sync.h#L127)
 
 ```c
 void rwlock_write_lock(rwlock_t *rw);
@@ -551,7 +556,7 @@ void rwlock_write_lock(rwlock_t *rw);
 
 ### `rwlock_write_unlock`
 
-`function` | [headers/sync.h:122](../../headers/sync.h#L122)
+`function` | [headers/sync.h:128](../../headers/sync.h#L128)
 
 ```c
 void rwlock_write_unlock(rwlock_t *rw);
@@ -562,6 +567,46 @@ void rwlock_write_unlock(rwlock_t *rw);
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `rw` | `rwlock_t *` |  |  |
+
+---
+
+<a id="now"></a>
+
+### `now`
+
+`function` | [headers/sync.h:130](../../headers/sync.h#L130)
+
+```c
+* available right now (a reader never takes it while a writer waits). */ int rwlock_read_trylock(rwlock_t *rw);
+```
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `waits` | `a reader never takes it while a writer` |  |  |
+
+**Returns:** `* available right`
+
+---
+
+<a id="rwlock_write_trylock"></a>
+
+### `rwlock_write_trylock`
+
+`function` | [headers/sync.h:132](../../headers/sync.h#L132)
+
+```c
+int rwlock_write_trylock(rwlock_t *rw);
+```
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `rw` | `rwlock_t *` |  |  |
+
+**Returns:** `int`
 
 ---
 
@@ -635,7 +680,7 @@ PIDs start at 1 (sched.c), so a zeroed proc_t never aliases a queued entry.
 
 ### `RWLOCK_INIT`
 
-`macro` | [headers/sync.h:116](../../headers/sync.h#L116)
+`macro` | [headers/sync.h:122](../../headers/sync.h#L122)
 
 ```c
 #define RWLOCK_INIT

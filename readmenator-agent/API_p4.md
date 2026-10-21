@@ -286,15 +286,16 @@ Imported by: `headers/editor.h`, `headers/shell.h`, `headers/spawn.h`, `headers/
 ## headers/kernel/console_in.h
 Imported by: `headers/shell.h`, `kernel/console_in.c`, `kernel/shell.c`
 - `Consumers` (function) `headers/kernel/console_in.h:7` `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into...`
-- `console_peek` (function) `headers/kernel/console_in.h:17` `int console_peek(void);` -- Docstring: Blocking read from PS/2 or COM1 with PageUp/PageDown * scrollback detour. int console_getc(void); /**...
-- `console_raw_try` (function) `headers/kernel/console_in.h:21` `int console_raw_try(void);` -- Docstring: Raw console multiplexer backing GETC_RAW: same sources, * no line buffering, echo or scrollback. try...
-- `console_raw_get` (function) `headers/kernel/console_in.h:22` `int console_raw_get(void);`
-- `console_job_try` (function) `headers/kernel/console_in.h:25` `int console_job_try(void);` -- Docstring: Raw console multiplexer backing GETC_RAW: same sources, * no line buffering, echo or scrollback. try...
-- `console_job_get` (function) `headers/kernel/console_in.h:26` `int console_job_get(void);`
-- `console_ungetc` (function) `headers/kernel/console_in.h:30` `void console_ungetc(unsigned char c);` -- Docstring: Push one byte back into the console FIFO; the next * console_getc/console_peek serves it first.
-- `console_stdin_push` (function) `headers/kernel/console_in.h:37` `int console_stdin_push(const char *data, unsigned long len);` -- Docstring: Pipeline stdin override: the next console_getc calls serve len bytes from data, then report EOF (-1)...
-- `console_stdin_clear` (function) `headers/kernel/console_in.h:38` `void console_stdin_clear(void);`
-- `console_stdin_active` (function) `headers/kernel/console_in.h:39` `int console_stdin_active(void);`
+- `console_history_page` (function) `headers/kernel/console_in.h:19` `void console_history_page(int dir);` -- Docstring: Page the console history by one screen (dir -1 up, +1 down).
+- `console_peek` (function) `headers/kernel/console_in.h:22` `int console_peek(void);` -- Docstring: Page the console history by one screen (dir -1 up, +1 down).
+- `console_raw_try` (function) `headers/kernel/console_in.h:26` `int console_raw_try(void);` -- Docstring: Raw console multiplexer backing GETC_RAW: same sources, * no line buffering, echo or scrollback. try...
+- `console_raw_get` (function) `headers/kernel/console_in.h:27` `int console_raw_get(void);`
+- `console_job_try` (function) `headers/kernel/console_in.h:30` `int console_job_try(void);` -- Docstring: Raw console multiplexer backing GETC_RAW: same sources, * no line buffering, echo or scrollback. try...
+- `console_job_get` (function) `headers/kernel/console_in.h:31` `int console_job_get(void);`
+- `console_ungetc` (function) `headers/kernel/console_in.h:35` `void console_ungetc(unsigned char c);` -- Docstring: Push one byte back into the console FIFO; the next * console_getc/console_peek serves it first.
+- `console_stdin_push` (function) `headers/kernel/console_in.h:42` `int console_stdin_push(const char *data, unsigned long len);` -- Docstring: Pipeline stdin override: the next console_getc calls serve len bytes from data, then report EOF (-1)...
+- `console_stdin_clear` (function) `headers/kernel/console_in.h:43` `void console_stdin_clear(void);`
+- `console_stdin_active` (function) `headers/kernel/console_in.h:44` `int console_stdin_active(void);`
 
 ## headers/kernel/vga_cursor.h
 Imported by: `kernel/vga_cursor.c`, `kernel/vga_fb.c`
@@ -452,7 +453,8 @@ Imported by: `net/net.c`, `net/rtl8139.c`
 
 ## headers/panic.h
 Imported by: `kernel/panic.c`, `tests/test_panic.c`
-- `panic_backtrace` (function) `headers/panic.h:25` `static inline int panic_backtrace(unsigned long rbp, panic_valid_fn valid,
+- `panic_hex_str` (function) `headers/panic.h:28` `static inline int panic_hex_str(char *buf, int cap, unsigned long v, int digits)` -- Docstring: Format an unsigned long as fixed-width lowercase hex into buf, writing exactly digits characters plus a...
+- `panic_backtrace` (function) `headers/panic.h:51` `static inline int panic_backtrace(unsigned long rbp, panic_valid_fn valid,
         unsigned long ...` -- Docstring: Walk up to max frame pointers from rbp, storing each frame's return address (*(rbp+8)) into out.
 
 ## headers/pcache.h

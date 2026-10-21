@@ -42,6 +42,15 @@
   - `main` (function, line 3)
   - `_start` (function, line 322)
 
+## progs/asm/cvmfmt.s
+- Layer: utility
+- Language: s
+- Symbols:
+  - `fwin` (function, line 3)
+  - `fcanary` (function, line 7)
+  - `main` (function, line 11)
+  - `_start` (function, line 245)
+
 ## progs/asm/fib.s
 - Layer: utility
 - Language: s

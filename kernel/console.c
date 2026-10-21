@@ -220,6 +220,20 @@ void redirect_discard(void) {
 
 spinlock_t console_lock = SPINLOCK_INIT;
 
+/* Text-mode console line buffer. The framebuffer terminal owns its own
+ * history; this is the text-mode half of the same history, so the boot log
+ * (printed before the desktop comes up) is still reachable with PageUp. */
+#define VGA_LINE_MAX 256
+static char vga_line[VGA_LINE_MAX];
+static int  vga_line_len;
+
+/** Docstring: Push the buffered text-mode line into the terminal history. */
+static void vga_line_feed(void) {
+    if (vga_line_len <= 0) return;
+    vga_fb_term_feed(vga_line, vga_line_len);
+    vga_line_len = 0;
+}
+
 void vga_putc(char c) {
     int locked = spin_trylock(&console_lock);
     if (redirect_putc(c)) { if (locked) spin_unlock(&console_lock); return; }
@@ -235,8 +249,8 @@ void vga_putc(char c) {
         if (locked) spin_unlock(&console_lock);
         return;
     }
-    if (c == '\n') { serial_putc('\r'); vga_newline(); vga_set_cursor(vga_x, vga_y); if (locked) spin_unlock(&console_lock); return; }
-    if (c == '\r') { vga_x = 0; vga_set_cursor(vga_x, vga_y); if (locked) spin_unlock(&console_lock); return; }
+    if (c == '\n') { serial_putc('\r'); vga_newline(); vga_set_cursor(vga_x, vga_y); vga_line_feed(); if (locked) spin_unlock(&console_lock); return; }
+    if (c == '\r') { vga_x = 0; vga_set_cursor(vga_x, vga_y); vga_line_feed(); if (locked) spin_unlock(&console_lock); return; }
     if (c == '\t') {
         int spaces = 8 - (vga_x & 7);
         while (spaces--) vga_raw_space();
@@ -255,6 +269,8 @@ void vga_putc(char c) {
         if (locked) spin_unlock(&console_lock);
         return;
     }
+    if (vga_line_len < VGA_LINE_MAX - 1)
+        vga_line[vga_line_len++] = c;
     unsigned off = vga_offset(vga_x, vga_y);
     VGA_BASE[off]     = c;
     VGA_BASE[off + 1] = vga_color;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiniOS Documentation Index</title>
     <style>
@@ -9,17 +9,66 @@
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #ccc; padding: 0.4em 0.6em; text-align: left; }
         code { background: #f4f4f4; padding: 0 0.3em; }
+        h2 { margin-top: 2em; }
     </style>
 </head>
 <body>
     <h1>MiniOS Documentation Index</h1>
+
+    <h2>Start here</h2>
     <table>
         <tr><th>Document</th><th>Purpose</th></tr>
         <tr><td><a href="quickstart.md">quickstart.md</a></td><td>Build, boot, first in-OS program, verify</td></tr>
         <tr><td><a href="cheatsheet.md">cheatsheet.md</a></td><td>Shell, editor, make targets, keys, syscalls</td></tr>
-        <tr><td><a href="KNOWLEDGE_BASE.md">KNOWLEDGE_BASE.md</a></td><td>Generated architecture reference (synced copy of the root file)</td></tr>
+        <tr><td><a href="ABI.md">ABI.md</a></td><td>Ring-3 programmer's manual: memory layout, syscalls, versioning</td></tr>
+        <tr><td><a href="debug_tools.md">debug_tools.md</a></td><td>In-OS and host dissection toolbox</td></tr>
+        <tr><td><a href="acknowledgments.md">acknowledgments.md</a></td><td>Third-party projects, authors and links</td></tr>
+    </table>
+
+    <h2>Subsystem specifications</h2>
+    <table>
+        <tr><th>Document</th><th>Purpose</th></tr>
+        <tr><td><a href="spec/source.md">spec/source.md</a></td><td>Sibling repositories, toolchain bootstrap, codec tools, repository layout</td></tr>
+        <tr><td><a href="spec/build-run.md">spec/build-run.md</a></td><td>Make targets, KVM vs TCG, USB images, other hypervisors</td></tr>
+        <tr><td><a href="spec/boot-memory.md">spec/boot-memory.md</a></td><td>Boot path, disk layout, physical map, KASLR, ASLR</td></tr>
+        <tr><td><a href="spec/kernel.md">spec/kernel.md</a></td><td>ABI source of truth, loaders, CVM, stacks, sanitization, isolation</td></tr>
+        <tr><td><a href="spec/smp-sched.md">spec/smp-sched.md</a></td><td>SMP, threads, futexes, tick bus, preemption, execve</td></tr>
+        <tr><td><a href="spec/desktop.md">spec/desktop.md</a></td><td>VESA desktop, graphics windows, window manager, taskbar, dock</td></tr>
+        <tr><td><a href="spec/shell-fs.md">spec/shell-fs.md</a></td><td>Shell, resolver, filesystem names, MiniFS, tracing, editor</td></tr>
+        <tr><td><a href="spec/network.md">spec/network.md</a></td><td>Network stack, TLS 1.2 client, browsers</td></tr>
+        <tr><td><a href="spec/usb.md">spec/usb.md</a></td><td>xHCI host controller, HID input, mass storage</td></tr>
+        <tr><td><a href="spec/wayland.md">spec/wayland.md</a></td><td>Wayland-mini compositor and mailbox transport</td></tr>
+        <tr><td><a href="spec/apps.md">spec/apps.md</a></td><td>vedit, file, paint, themes, Lua, MicroPython, Lisp, Nuklear, doomedit</td></tr>
+        <tr><td><a href="spec/python.md">spec/python.md</a></td><td>MicroPython sockets, mip, asyncio, static CPython 3.12 and pip</td></tr>
+        <tr><td><a href="spec/games.md">spec/games.md</a></td><td>DOOM, Quake 2, Minicraft, Pokemon</td></tr>
+        <tr><td><a href="spec/topogpt3.md">spec/topogpt3.md</a></td><td>TopoGPT3 inference engine</td></tr>
+        <tr><td><a href="spec/audio.md">spec/audio.md</a></td><td>PC speaker, SB16, pcm2, FM piano, OPL3</td></tr>
+        <tr><td><a href="spec/performance.md">spec/performance.md</a></td><td>Measured optimizations and the mechanism behind each</td></tr>
+        <tr><td><a href="spec/qga.md">spec/qga.md</a></td><td>QEMU guest agent channel on COM2</td></tr>
+        <tr><td><a href="spec/testing.md">spec/testing.md</a></td><td>Harnesses, one-boot suite, validation gate, library verdicts</td></tr>
+        <tr><td><a href="spec/mcp.md">spec/mcp.md</a></td><td>MCP bridge, tools, addon marketplace</td></tr>
+        <tr><td><a href="spec/architecture.md">spec/architecture.md</a></td><td>VFS, VMA, mounts, pipes, fork, httpd, governance</td></tr>
+    </table>
+
+    <h2>Decisions and analysis</h2>
+    <table>
+        <tr><th>Document</th><th>Purpose</th></tr>
+        <tr><td><a href="adr/">adr/</a></td><td>Architectural decision records (why MiniOS looks the way it does)</td></tr>
+        <tr><td><a href="wayland.md">wayland.md</a></td><td>Wayland-mini user guide</td></tr>
+        <tr><td><a href="wayland-mini.md">wayland-mini.md</a></td><td>Wayland-mini subset specification</td></tr>
+        <tr><td><a href="wm_layout_spec.md">wm_layout_spec.md</a></td><td>Window manager layout specification</td></tr>
+        <tr><td><a href="wm_layout_manifest.md">wm_layout_manifest.md</a></td><td>Window manager layout manifest</td></tr>
         <tr><td><a href="KB_sync.md">KB_sync.md</a></td><td>Blocking synchronization layer notes</td></tr>
-        <tr><td><a href="../README.md">README.md</a></td><td>Full user and subsystem reference</td></tr>
+        <tr><td><a href="vma-complexity.md">vma-complexity.md</a></td><td>VMA red-black tree complexity proof</td></tr>
+        <tr><td><a href="TLS_MIGRATION.md">TLS_MIGRATION.md</a></td><td>TLS migration: kernel engine to userspace library</td></tr>
+        <tr><td><a href="LINT_TRIAGE.md">LINT_TRIAGE.md</a></td><td>Linter findings and verdicts</td></tr>
+    </table>
+
+    <h2>Generated</h2>
+    <table>
+        <tr><th>Document</th><th>Purpose</th></tr>
+        <tr><td><a href="KNOWLEDGE_BASE.md">KNOWLEDGE_BASE.md</a></td><td>Generated architecture reference (synced copy of the root file)</td></tr>
+        <tr><td><a href="../README.md">README.md</a></td><td>Project entry point and documentation index</td></tr>
         <tr><td><a href="../CLAUDE.md">CLAUDE.md</a></td><td>Engineering contract (specs, invariants, gates)</td></tr>
     </table>
 </body>

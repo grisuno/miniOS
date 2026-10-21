@@ -36,7 +36,7 @@
  *                      64 KB page).  The stack never grows up past
  *                      0x90000 to touch either.
  *   0x100000           kernel link-time virtual base (physical base is
- *                      randomized by KASLR into [0x0600000, 0x0E000000)
+ *                      randomized by KASLR into [0x28000000, 0x30000000)
  *                      when enabled). The kernel image (code + .bss) maps
  *                      contiguously: KASLR builds put it at [base, base+3 MB),
  *                      plain builds at [0x100000, 0x400000).
@@ -104,16 +104,15 @@
 #define BIOS_VIDEO_SET_MODE       0x0013
 
 /* VESA BIOS Extensions (VBE) linear-framebuffer video setup. Stage 2 probes a
- * true-color mode whose framebuffer fits the emulated std-VGA ~2 MB scan-out
- * window (800x600x32, then 640x480x32), then the 8-bit-palette modes, and
- * records the result for the kernel in a fixed low-memory struct (see
- * VBE_INFO_ADDR). If no VBE mode is available it falls back to VGA Mode 13h
- * (320x200x8). In a true-color mode the kernel expands its palette-index
- * drawing to RGB and the desktop/icon pixels are no longer quantized; the
- * 8-bit modes keep the 256-entry VGA DAC palette path unchanged. A true-color
- * mode taller than 800x600 (1024x768x24 = 2.25 MB) would render its bottom
- * rows black because QEMU only scans out the first ~2 MB of the framebuffer,
- * so none is offered. */
+ * ladder of modes, true color first at each resolution, and records the
+ * result for the kernel in a fixed low-memory struct (see VBE_INFO_ADDR):
+ * 1024x768x32, 1024x768x8, 800x600x32, 800x600x8, 640x480x32, 640x480x8.
+ * If no VBE mode is available it falls back to VGA Mode 13h (320x200x8).
+ * In a true-color mode the kernel expands its palette-index drawing to RGB
+ * and the desktop/icon pixels are no longer quantized; the 8-bit modes keep
+ * the 256-entry VGA DAC palette path unchanged. The kernel maps the
+ * framebuffer slot by slot, so a multi-MB framebuffer spanning two 2 MB PD
+ * slots is fully mapped. */
 #define BIOS_VBE_GET_MODE_INFO    0x4F01
 #define BIOS_VBE_SET_MODE         0x4F02
 #define VBE_MODE_1024x768x32      0x0118

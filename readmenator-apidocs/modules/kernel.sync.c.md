@@ -1,12 +1,12 @@
 # `kernel/sync.c`
 
-> Source: [kernel/sync.c:1](../../kernel/sync.c#L1) | language `c` | coverage 4.3% | [API index](../index.md)
+> Source: [kernel/sync.c:1](../../kernel/sync.c#L1) | language `c` | coverage 4.0% | [API index](../index.md)
 
 sync.c -- Blocking synchronization primitives (roadmap Phase 3.1).
 
 ## Contents
 
-- **Functions:** [`wq_init`](#wq_init), [`sleep_on`](#sleep_on), [`wake_up`](#wake_up), [`wake_up_all`](#wake_up_all), [`mutex_init`](#mutex_init), [`pi_set_base`](#pi_set_base), [`pi_get_eff`](#pi_get_eff), [`mutex_lock`](#mutex_lock), [`mutex_trylock`](#mutex_trylock), [`mutex_unlock`](#mutex_unlock), [`sem_init`](#sem_init), [`sem_wait`](#sem_wait), [`sem_post`](#sem_post), [`cond_init`](#cond_init), [`cond_wait`](#cond_wait), [`cond_signal`](#cond_signal), [`cond_broadcast`](#cond_broadcast), [`rwlock_init`](#rwlock_init), [`rwlock_read_lock`](#rwlock_read_lock), [`rwlock_read_unlock`](#rwlock_read_unlock), [`rwlock_write_lock`](#rwlock_write_lock), [`rwlock_write_unlock`](#rwlock_write_unlock)
+- **Functions:** [`wq_init`](#wq_init), [`sleep_on`](#sleep_on), [`wake_up`](#wake_up), [`wake_up_all`](#wake_up_all), [`mutex_init`](#mutex_init), [`pi_set_base`](#pi_set_base), [`pi_get_eff`](#pi_get_eff), [`mutex_lock`](#mutex_lock), [`mutex_trylock`](#mutex_trylock), [`mutex_unlock`](#mutex_unlock), [`sem_init`](#sem_init), [`sem_wait`](#sem_wait), [`sem_post`](#sem_post), [`cond_init`](#cond_init), [`cond_wait`](#cond_wait), [`cond_signal`](#cond_signal), [`cond_broadcast`](#cond_broadcast), [`rwlock_init`](#rwlock_init), [`rwlock_read_trylock`](#rwlock_read_trylock), [`rwlock_write_trylock`](#rwlock_write_trylock), [`rwlock_read_lock`](#rwlock_read_lock), [`rwlock_read_unlock`](#rwlock_read_unlock), [`rwlock_write_lock`](#rwlock_write_lock), [`rwlock_write_unlock`](#rwlock_write_unlock)
 - **Variables:** [`t_cur_pid`](#t_cur_pid)
 
 ## Call Graph
@@ -31,6 +31,7 @@ flowchart LR
     n_kernel_sync_c__cond_broadcast(["cond_broadcast"])
     n_kernel_sync_c__rwlock_init(["rwlock_init"])
     n_kernel_sync_c__rwlock_read_lock(["rwlock_read_lock"])
+    n_kernel_sync_c__rwlock_read_trylock(["rwlock_read_trylock"])
     n_kernel_sync_c__rwlock_read_unlock(["rwlock_read_unlock"])
     n_kernel_sync_c__rwlock_write_lock(["rwlock_write_lock"])
     n_kernel_sync_c__rwlock_write_unlock(["rwlock_write_unlock"])
@@ -51,8 +52,9 @@ flowchart LR
     n_kernel_sync_c__cond_signal --> n_kernel_sync_c__wake_up
     n_kernel_sync_c__cond_broadcast --> n_kernel_sync_c__wake_up_all
     n_kernel_sync_c__rwlock_init --> n_kernel_sync_c__wq_init
+    n_kernel_sync_c__rwlock_read_lock --> n_kernel_sync_c__rwlock_read_trylock
     n_kernel_sync_c__rwlock_read_lock --> n_kernel_sync_c__sleep_on
-    n_kernel_sync_c__rwlock_read_unlock --> n_kernel_sync_c__wake_up
+    n_kernel_sync_c__rwlock_read_unlock --> n_kernel_sync_c__wake_up_all
     n_kernel_sync_c__rwlock_write_lock --> n_kernel_sync_c__sleep_on
     n_kernel_sync_c__rwlock_write_unlock --> n_kernel_sync_c__wake_up_all
     n_kernel_sync_c__wq_init -.-> n_headers_spinlock_h__spin_init
@@ -60,7 +62,6 @@ flowchart LR
     n_kernel_sync_c__sleep_on -.-> n_headers_spinlock_h__spin_unlock_irqrestore
     n_kernel_sync_c__wake_up -.-> n_headers_spinlock_h__spin_lock_irqsave
     n_kernel_sync_c__wake_up -.-> n_headers_spinlock_h__spin_unlock_irqrestore
-    n_kernel_sync_c__mutex_init -.-> n_headers_spinlock_h__spin_init
 ```
 
 ## Functions
@@ -69,7 +70,7 @@ flowchart LR
 
 ### `wq_init`
 
-`function` | [kernel/sync.c:27](../../kernel/sync.c#L27)
+`function` | [kernel/sync.c:29](../../kernel/sync.c#L29)
 
 ```c
 void wq_init(wait_queue_t *q)
@@ -91,7 +92,7 @@ void wq_init(wait_queue_t *q)
 
 ### `sleep_on`
 
-`function` | [kernel/sync.c:33](../../kernel/sync.c#L33)
+`function` | [kernel/sync.c:35](../../kernel/sync.c#L35)
 
 ```c
 void sleep_on(wait_queue_t *q)
@@ -113,7 +114,7 @@ void sleep_on(wait_queue_t *q)
 
 ### `wake_up`
 
-`function` | [kernel/sync.c:54](../../kernel/sync.c#L54)
+`function` | [kernel/sync.c:56](../../kernel/sync.c#L56)
 
 ```c
 int wake_up(wait_queue_t *q)
@@ -129,7 +130,7 @@ int wake_up(wait_queue_t *q)
 
 *Calls:* [`spin_lock_irqsave`](headers.spinlock.h.md#spin_lock_irqsave), [`spin_unlock_irqrestore`](headers.spinlock.h.md#spin_unlock_irqrestore)
 
-*Called by:* [`cond_signal`](#cond_signal), [`mutex_unlock`](#mutex_unlock), [`rwlock_read_unlock`](#rwlock_read_unlock), [`sem_post`](#sem_post), [`wake_up_all`](#wake_up_all)
+*Called by:* [`cond_signal`](#cond_signal), [`mutex_unlock`](#mutex_unlock), [`sem_post`](#sem_post), [`wake_up_all`](#wake_up_all)
 
 ---
 
@@ -137,7 +138,7 @@ int wake_up(wait_queue_t *q)
 
 ### `wake_up_all`
 
-`function` | [kernel/sync.c:70](../../kernel/sync.c#L70)
+`function` | [kernel/sync.c:72](../../kernel/sync.c#L72)
 
 ```c
 int wake_up_all(wait_queue_t *q)
@@ -153,7 +154,7 @@ int wake_up_all(wait_queue_t *q)
 
 *Calls:* [`wake_up`](#wake_up)
 
-*Called by:* [`cond_broadcast`](#cond_broadcast), [`rwlock_write_unlock`](#rwlock_write_unlock)
+*Called by:* [`cond_broadcast`](#cond_broadcast), [`rwlock_read_unlock`](#rwlock_read_unlock), [`rwlock_write_unlock`](#rwlock_write_unlock)
 
 ---
 
@@ -161,7 +162,7 @@ int wake_up_all(wait_queue_t *q)
 
 ### `mutex_init`
 
-`function` | [kernel/sync.c:76](../../kernel/sync.c#L76)
+`function` | [kernel/sync.c:78](../../kernel/sync.c#L78)
 
 ```c
 void mutex_init(mutex_t *m)
@@ -181,7 +182,7 @@ void mutex_init(mutex_t *m)
 
 ### `pi_set_base`
 
-`function` | [kernel/sync.c:99](../../kernel/sync.c#L99)
+`function` | [kernel/sync.c:101](../../kernel/sync.c#L101)
 
 ```c
 void pi_set_base(int pid, int prio)
@@ -200,7 +201,7 @@ void pi_set_base(int pid, int prio)
 
 ### `pi_get_eff`
 
-`function` | [kernel/sync.c:108](../../kernel/sync.c#L108)
+`function` | [kernel/sync.c:110](../../kernel/sync.c#L110)
 
 ```c
 int pi_get_eff(int pid)
@@ -220,7 +221,7 @@ int pi_get_eff(int pid)
 
 ### `mutex_lock`
 
-`function` | [kernel/sync.c:150](../../kernel/sync.c#L150)
+`function` | [kernel/sync.c:152](../../kernel/sync.c#L152)
 
 ```c
 void mutex_lock(mutex_t *m)
@@ -242,7 +243,7 @@ void mutex_lock(mutex_t *m)
 
 ### `mutex_trylock`
 
-`function` | [kernel/sync.c:170](../../kernel/sync.c#L170)
+`function` | [kernel/sync.c:172](../../kernel/sync.c#L172)
 
 ```c
 int mutex_trylock(mutex_t *m)
@@ -264,7 +265,7 @@ int mutex_trylock(mutex_t *m)
 
 ### `mutex_unlock`
 
-`function` | [kernel/sync.c:186](../../kernel/sync.c#L186)
+`function` | [kernel/sync.c:188](../../kernel/sync.c#L188)
 
 ```c
 void mutex_unlock(mutex_t *m)
@@ -286,7 +287,7 @@ void mutex_unlock(mutex_t *m)
 
 ### `sem_init`
 
-`function` | [kernel/sync.c:207](../../kernel/sync.c#L207)
+`function` | [kernel/sync.c:209](../../kernel/sync.c#L209)
 
 ```c
 void sem_init(sem_t *s, int value)
@@ -307,7 +308,7 @@ void sem_init(sem_t *s, int value)
 
 ### `sem_wait`
 
-`function` | [kernel/sync.c:213](../../kernel/sync.c#L213)
+`function` | [kernel/sync.c:215](../../kernel/sync.c#L215)
 
 ```c
 void sem_wait(sem_t *s)
@@ -327,7 +328,7 @@ void sem_wait(sem_t *s)
 
 ### `sem_post`
 
-`function` | [kernel/sync.c:227](../../kernel/sync.c#L227)
+`function` | [kernel/sync.c:229](../../kernel/sync.c#L229)
 
 ```c
 void sem_post(sem_t *s)
@@ -347,7 +348,7 @@ void sem_post(sem_t *s)
 
 ### `cond_init`
 
-`function` | [kernel/sync.c:235](../../kernel/sync.c#L235)
+`function` | [kernel/sync.c:237](../../kernel/sync.c#L237)
 
 ```c
 void cond_init(cond_t *c)
@@ -367,7 +368,7 @@ void cond_init(cond_t *c)
 
 ### `cond_wait`
 
-`function` | [kernel/sync.c:239](../../kernel/sync.c#L239)
+`function` | [kernel/sync.c:241](../../kernel/sync.c#L241)
 
 ```c
 void cond_wait(cond_t *c, mutex_t *m)
@@ -388,7 +389,7 @@ void cond_wait(cond_t *c, mutex_t *m)
 
 ### `cond_signal`
 
-`function` | [kernel/sync.c:245](../../kernel/sync.c#L245)
+`function` | [kernel/sync.c:247](../../kernel/sync.c#L247)
 
 ```c
 void cond_signal(cond_t *c)
@@ -408,7 +409,7 @@ void cond_signal(cond_t *c)
 
 ### `cond_broadcast`
 
-`function` | [kernel/sync.c:249](../../kernel/sync.c#L249)
+`function` | [kernel/sync.c:251](../../kernel/sync.c#L251)
 
 ```c
 void cond_broadcast(cond_t *c)
@@ -428,7 +429,7 @@ void cond_broadcast(cond_t *c)
 
 ### `rwlock_init`
 
-`function` | [kernel/sync.c:253](../../kernel/sync.c#L253)
+`function` | [kernel/sync.c:255](../../kernel/sync.c#L255)
 
 ```c
 void rwlock_init(rwlock_t *rw)
@@ -444,11 +445,57 @@ void rwlock_init(rwlock_t *rw)
 
 ---
 
+<a id="rwlock_read_trylock"></a>
+
+### `rwlock_read_trylock`
+
+`function` | [kernel/sync.c:263](../../kernel/sync.c#L263)
+
+```c
+int rwlock_read_trylock(rwlock_t *rw)
+```
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `rw` | `rwlock_t *` |  |  |
+
+**Returns:** `int`
+
+*Calls:* [`spin_lock_irqsave`](headers.spinlock.h.md#spin_lock_irqsave), [`spin_unlock_irqrestore`](headers.spinlock.h.md#spin_unlock_irqrestore)
+
+*Called by:* [`rwlock_read_lock`](#rwlock_read_lock)
+
+---
+
+<a id="rwlock_write_trylock"></a>
+
+### `rwlock_write_trylock`
+
+`function` | [kernel/sync.c:277](../../kernel/sync.c#L277)
+
+```c
+int rwlock_write_trylock(rwlock_t *rw)
+```
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `rw` | `rwlock_t *` |  |  |
+
+**Returns:** `int`
+
+*Calls:* [`spin_lock_irqsave`](headers.spinlock.h.md#spin_lock_irqsave), [`spin_unlock_irqrestore`](headers.spinlock.h.md#spin_unlock_irqrestore)
+
+---
+
 <a id="rwlock_read_lock"></a>
 
 ### `rwlock_read_lock`
 
-`function` | [kernel/sync.c:260](../../kernel/sync.c#L260)
+`function` | [kernel/sync.c:289](../../kernel/sync.c#L289)
 
 ```c
 void rwlock_read_lock(rwlock_t *rw)
@@ -460,7 +507,7 @@ void rwlock_read_lock(rwlock_t *rw)
 |---|---|---|---|
 | `rw` | `rwlock_t *` |  |  |
 
-*Calls:* [`spin_lock_irqsave`](headers.spinlock.h.md#spin_lock_irqsave), [`spin_unlock_irqrestore`](headers.spinlock.h.md#spin_unlock_irqrestore), [`sleep_on`](#sleep_on)
+*Calls:* [`rwlock_read_trylock`](#rwlock_read_trylock), [`sleep_on`](#sleep_on)
 
 ---
 
@@ -468,7 +515,7 @@ void rwlock_read_lock(rwlock_t *rw)
 
 ### `rwlock_read_unlock`
 
-`function` | [kernel/sync.c:274](../../kernel/sync.c#L274)
+`function` | [kernel/sync.c:296](../../kernel/sync.c#L296)
 
 ```c
 void rwlock_read_unlock(rwlock_t *rw)
@@ -480,7 +527,7 @@ void rwlock_read_unlock(rwlock_t *rw)
 |---|---|---|---|
 | `rw` | `rwlock_t *` |  |  |
 
-*Calls:* [`spin_lock_irqsave`](headers.spinlock.h.md#spin_lock_irqsave), [`spin_unlock_irqrestore`](headers.spinlock.h.md#spin_unlock_irqrestore), [`wake_up`](#wake_up)
+*Calls:* [`spin_lock_irqsave`](headers.spinlock.h.md#spin_lock_irqsave), [`spin_unlock_irqrestore`](headers.spinlock.h.md#spin_unlock_irqrestore), [`wake_up_all`](#wake_up_all)
 
 ---
 
@@ -488,7 +535,7 @@ void rwlock_read_unlock(rwlock_t *rw)
 
 ### `rwlock_write_lock`
 
-`function` | [kernel/sync.c:283](../../kernel/sync.c#L283)
+`function` | [kernel/sync.c:306](../../kernel/sync.c#L306)
 
 ```c
 void rwlock_write_lock(rwlock_t *rw)
@@ -508,7 +555,7 @@ void rwlock_write_lock(rwlock_t *rw)
 
 ### `rwlock_write_unlock`
 
-`function` | [kernel/sync.c:297](../../kernel/sync.c#L297)
+`function` | [kernel/sync.c:328](../../kernel/sync.c#L328)
 
 ```c
 void rwlock_write_unlock(rwlock_t *rw)
@@ -530,7 +577,7 @@ void rwlock_write_unlock(rwlock_t *rw)
 
 ### `t_cur_pid`
 
-`variable` `extern` | [kernel/sync.c:24](../../kernel/sync.c#L24)
+`variable` `extern` | [kernel/sync.c:26](../../kernel/sync.c#L26)
 
 ```c
 extern int t_cur_pid;

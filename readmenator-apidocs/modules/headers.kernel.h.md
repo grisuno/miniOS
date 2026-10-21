@@ -2789,7 +2789,7 @@ Docstring: Next buffered byte without consuming it, or -1.
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`console_peek`](#console_peek) (headers/kernel/console_in.h:17).
+> **Inherited:** Documentation from [`console_peek`](#console_peek) (headers/kernel/console_in.h:22).
 
 ---
 
@@ -2965,7 +2965,7 @@ The shell pipeline runner owns this: stage N+1 reads stage N's captured output a
 
 **Returns:** `int`
 
-> **Inherited:** Documentation from [`console_stdin_push`](#console_stdin_push) (headers/kernel/console_in.h:37).
+> **Inherited:** Documentation from [`console_stdin_push`](#console_stdin_push) (headers/kernel/console_in.h:42).
 
 ---
 

@@ -21,8 +21,17 @@ Rule C -- dispatch site in kernel/syscalls.c: every
   `[N] = { fn, "name" }` entry of linux_syscall_table and every
   `case N:` fall-through in ksyscall_dispatch must resolve N to the
   Linux number for "name".
+Rule D -- MiniOS-internal collisions: two MINIOS_SYS_* names must never
+  share a number. The dispatch table is indexed by number, so a second
+  name silently overwrites the first (lz4_decompress vs pcm2_close both
+  claimed 248 and only the last entry survived).
+Rule E -- toolchain stubs: the sibling `ld` links every miniGCC program
+  with a built-in libc whose MiniOS stubs hardcode syscall numbers. A
+  stale stub number sends the program to the wrong handler, so every
+  stub must match progs/minios_abi.h (or the Linux table).
 
 Usage: python3 tools/check_abi_numbers.py [--abi PATH] [--syscalls PATH]
+          [--ld PATH]
 Exits 0 printing "abi: ok" when every number is either exact or listed.
 """
 import re
@@ -125,6 +134,9 @@ DEVIATIONS = {
 ABI_RE = re.compile(r"#define\s+(MINIOS_SYS_[A-Z0-9_]+)\s+(\d+)")
 TABLE_RE = re.compile(r"\[\s*(\d+)\s*\]\s*=\s*\{\s*\w+\s*,\s*\"([a-z0-9_]+)\"\s*\}")
 CASE_RE = re.compile(r"^\s*case\s+(\d+)\s*:[^/]*(?:/\*\s*([a-z0-9_]+))?")
+LD_STUB_RE = re.compile(
+    r"\"\.globl\s+([A-Za-z0-9_]+)\\n\"\s*\n\s*\"\1:\\n\"\s*\n\s*\"[^\"]*?movq?\s+\$(\d+),\s*%rax",
+)
 
 
 def normalize(minios_name):
@@ -140,6 +152,13 @@ def parse_abi(path):
                 name, num = m.group(1), int(m.group(2))
                 found.setdefault(name, num)
     return found
+
+
+def parse_ld_stubs(path):
+    """Read the sibling ld's built-in libc stubs: symbol -> syscall number."""
+    with open(path) as f:
+        text = f.read()
+    return {m.group(1): int(m.group(2)) for m in LD_STUB_RE.finditer(text)}
 
 
 def parse_dispatch(path):
@@ -206,6 +225,32 @@ def main():
         if num in DEVIATIONS:
             continue
         failures.append("RULE B: MiniOS number %d collides with Linux %s, unlisted" % (num, linux_by_num[num]))
+
+    owners = {}
+    for name, num in sorted(abi.items(), key=lambda kv: kv[1]):
+        if num in owners:
+            failures.append("RULE D: %s and %s both claim syscall %d" % (owners[num], name, num))
+        else:
+            owners[num] = name
+
+    ld_path = sys.argv[sys.argv.index("--ld") + 1] if "--ld" in sys.argv else os.path.join(root, "..", "ld", "ld.c")
+    if os.path.exists(ld_path):
+        stubs = parse_ld_stubs(ld_path)
+        for symbol, num in sorted(stubs.items()):
+            norm = symbol.lower()
+            if norm in LINUX_X86_64:
+                want = LINUX_X86_64[norm]
+                if num != want and num not in DEVIATIONS:
+                    failures.append("RULE E: ld stub %s uses %d, Linux %s is %d" % (symbol, num, norm, want))
+                continue
+            match = [n for n in abi if normalize(n) == norm]
+            if not match:
+                continue
+            want = abi[match[0]]
+            if num != want:
+                failures.append("RULE E: ld stub %s uses %d, the header says %d" % (symbol, num, want))
+    else:
+        print("ld stubs: skipped (no %s)" % ld_path)
 
     if failures:
         print("abi: DRIFT")

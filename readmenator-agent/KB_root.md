@@ -17,13 +17,13 @@
   - `bootlog_report` (function, line 199) `void bootlog_report(void)`
   - `__attribute__` (function, line 207) `__attribute__((section(".init.text")))
 void kmain(void)`
-  - `tables` (function, line 275) `* tables (already built above) for its uncached register window and the
+  - `tables` (function, line 279) `* tables (already built above) for its uncached register window and the
      * heap for its rings...`
   - `table` (function, line 104) `* Symbol table (for resolving program references) * ================================================================...`
   - `ksyscall` (function, line 130) `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);`
   - `kstack` (function, line 146) `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...`
   - `ms` (function, line 185) `* 0 ms (TSC ticks since power-on divided down, still monotonic);`
-  - `size` (function, line 253) `* image size (see kernel.ld);`
+  - `size` (function, line 257) `* image size (see kernel.ld);`
   - `syscall_kstack` (variable, line 115) `extern unsigned long syscall_kstack;`
   - `ramdisk_start` (variable, line 179) `extern char ramdisk_start[];`
   - `ramdisk_end` (variable, line 180) `extern char ramdisk_end[];`
@@ -144,7 +144,7 @@ void kmain(void)`
   - `scenario_expired` (function, line 339) `static int scenario_expired(int port)`
   - `main` (function, line 349) `int main(int argc, char **argv)`
   - `CHECK` (macro, line 62) `#define CHECK(name, cond)`
-- Depends on: `headers/tls.h`, `headers/tls_port.h`, `headers/tls_test_roots.h`, `kernel/string.c`
+- Depends on: `headers/tls.h`, `headers/tls_port.h`, `kernel/string.c`
 
 ## vma.c
 - Doc: vma_node_in_tree: 1 when node n hangs in the tree rooted at root (live and free trees * share...

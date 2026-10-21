@@ -1,10 +1,10 @@
 # progs/src
 
-*Community 2 | 85 files | cohesion 0.71*
+*Community 2 | 86 files | cohesion 0.71*
 
 ## Definition
 
-This community groups 85 file(s) rooted at `tests` with dominant language c (cohesion 0.71). Central symbols: `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`, `ABI_NO_MANIFEST`, `ABI_OK`, `ABI_VERSION_MISMATCH`. Core file: `progs/vedit/vedit.c` (245 symbols). Documented purpose: Docstring: abi.h -- Boot-time ABI manifest gate contract..
+This community groups 86 file(s) rooted at `tests` with dominant language c (cohesion 0.71). Central symbols: `ABI_BAD_FORMAT`, `ABI_CHECKSUM_MISMATCH`, `ABI_H`, `ABI_MANIFEST_MAX`, `ABI_MANIFEST_NAME`, `ABI_NO_MANIFEST`, `ABI_OK`, `ABI_VERSION_MISMATCH`. Core file: `progs/vedit/vedit.c` (245 symbols). Documented purpose: Docstring: abi.h -- Boot-time ABI manifest gate contract..
 
 ## Files
 
@@ -14,7 +14,7 @@ This community groups 85 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `tests/test_abi.c` | c | testing | 2 | yes |
 
-### `progs/src` (15 files)
+### `progs/src` (16 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -36,7 +36,7 @@ This community groups 85 file(s) rooted at `tests` with dominant language c (coh
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
-| `progs/freedomui/freedomui_minios.c` | c | utility | 42 | yes |
+| `progs/freedomui/freedomui_minios.c` | c | utility | 44 | yes |
 
 ### `progs/wl` (5 files)
 
@@ -128,7 +128,7 @@ This community groups 85 file(s) rooted at `tests` with dominant language c (coh
 |------|----------|-------|---------|-----|
 | `progs/topogpt3/topogpt3.c` | c | utility | 128 | no |
 
-*... and 65 more files in this community.*
+*... and 66 more files in this community.*
 
 
 ## Key Symbols
@@ -166,7 +166,7 @@ This community groups 85 file(s) rooted at `tests` with dominant language c (coh
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 142
+- Internal resolved imports (EXTRACTED): 143
 - Cross-boundary resolved imports (EXTRACTED): 57
 
 ## Connections
@@ -176,7 +176,6 @@ This community groups 85 file(s) rooted at `tests` with dominant language c (coh
 - [EXTRACTED] depends_on community 1 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
 - [EXTRACTED] depends_on community 6 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_loop.c imports kernel/string.c.
 - [EXTRACTED] depends_on community 3 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomdef.h imports kernel/string.c.
-- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (progs/src) and community 5 (headers: vga_fb).
 
 ## Risks
 
@@ -216,4 +215,4 @@ This community groups 85 file(s) rooted at `tests` with dominant language c (coh
 - `progs/file/file.c`
 - `progs/file/file_assoc.h`
 - `progs/freedomui/freedomui_minios.c`
-- *... and 65 more*
+- *... and 66 more*

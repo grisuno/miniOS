@@ -25,6 +25,26 @@ hardcode a layout address in the kernel or a ring-3 program; put it in
 is gone — it went stale when the window grew and would have stacked a scheduled
 process in the middle of the heap.
 
+The same header carries the ABI generation instruments: `MINIOS_ABI_VERSION`
+(13 today, bumped on every backwards-incompatible change to a layout
+constant, a syscall number or the back-buffer geometry) and
+`MINIOS_ABI_CHECKSUM`, the XOR-fold of every layout constant. Both are
+build-time drift instruments only: Linux-ABI binaries carry no MiniOS
+version note, so the loader cannot reject on version without breaking the
+Linux compatibility requirement (load-time rejection is future work).
+The syscall numbers are canonical in the header as well: 0-199 are
+Linux-ABI compatible, 200-299 are MiniOS custom (networking, audio,
+graphics), 300+ are reserved, and the gaps inside a range are reserved and
+must not be reused. Two gates keep that honest:
+`tools/check_abi_numbers.py` fails closed when two MiniOS names claim the
+same number (rule D: the dispatch table is indexed by number, so a
+duplicate silently kills one of them) and when the sibling `ld`'s
+built-in libc stubs carry a stale MiniOS number (rule E: the stubs
+hardcode the numbers, so a toolchain that lags the header sends the
+program to the wrong handler). v13 is the first bump those rules would
+have caught on their own: `LZ4_DECOMPRESS` sat on 248, which
+`PCM2_CLOSE` also claimed.
+
 ### Ramdisk
 The data area is sized from the image that is loaded plus a spare margin, and
 grows on demand up to `RD_DATA_MAX`; it is never a fixed reservation that the
@@ -32,6 +52,37 @@ payload can silently outgrow. `ramdisk_setup_from` validates the whole image
 (header, table extent, per-file offset and size, total against the maximum)
 **before** publishing any entry, so a rejected image leaves the directory
 untouched instead of advertising files whose data was never copied.
+
+### Ramdisk layout
+The program tree (`progs/`) is organized by kind, and the shell lists each
+directory with `ls <dir>` (a prefix match over the flat ramdisk names, with
+a MiniFS fallback when the ramdisk holds no entry under that prefix):
+
+| Directory | Contents |
+|-----------|----------|
+| `objects/` | ET_REL toolchain: `minigcc.o`, `ld.o`, `cvm.o`, plus the demo objects (`ftest.o`, `hello.o`) |
+| `bin/` | Linux ELFs and the command-path utilities (`cp`, `freedom`, `micropython`, `lisp`, `topogpt3`) |
+| `cvm/` | CVM modules: `fib.cvm`, `w1.cvm`, `minigcc.cvm` |
+| `src/` | C sources for every program on the ramdisk |
+| `asm/` | miniGCC assembly (`*.s`) for the toolchain-built programs |
+| `docs/` | documentation fixtures (`hostile.html`, `test.png`) |
+| `topogpt3/` | the TopoGPT3 model: `topogpt3.c`, `topogpt3.fp16` (47 MB of weights), `vocab.bin` |
+
+The kernel ramdisk is flat: a `/` inside a name is data, not a path
+(`objects/minigcc.o` is one name). `tools/mkramdisk.py` derives each name
+from the path relative to the shared parent of the packed inputs (`progs/`
+for the shipped set) and carries directories as slashes inside those flat
+names; a name longer than `RAMDISK_FNAME_LEN - 1`, or two inputs that map
+to the same name, are hard errors, because a truncated or overwritten name
+makes every later lookup miss.
+
+Only a minimal subset of that tree rides in the kernel image (the `PROGS`
+list: `objects/`, `bin/cp`, `bin/mtop`, the `src/` test suites, `etc/` and
+`docs/test.png`), because every byte of the ramdisk lives in the kernel
+image, which must end below `USER_LOAD_BASE`. The rest of the tree (the
+ELFs, the icons, the themes, the models) ships on MiniFS and is read
+through the unified `kfopen` fallback. Payload ownership and the deflate
+encoding of the packed entries are specified in docs/spec/source.md.
 
 ### ELF loaders
 Relocation is fail-closed. Every relocation is bounds checked against the
@@ -42,6 +93,61 @@ program a wild call target, so it is never skipped. No libc name is ever
 registered with a null address. Section header arithmetic uses the
 overflow-safe pattern `sh_offset > size || sh_size > size - sh_offset` to
 prevent unsigned wrap from bypassing the bounds check.
+
+### Program formats: three loaders, three rings
+MiniOS runs three kinds of program, one loader each:
+
+| Format | Loader | Ring | Contract |
+|--------|--------|------|----------|
+| `ET_REL` (`.o`) | `elf_load` (`kernel/loader.c`) | 0 | linked at load time against the kernel symbol table; a kernel extension by contract |
+| `ET_EXEC` / `ET_DYN` | `load_exec_elf` / `load_exec_elf_into` | 3 | static Linux binaries on the x86-64 `syscall` ABI under hardware page protection |
+| `.cvm` | cvm2 interpreter plus the JIT (`kernel/cvm_host.c`) | 0 | stack bytecode emitted by `ld -f cvm`, argv per the CVM contract above |
+
+The toolchain ships as `ET_REL`: `objects/minigcc.o`, `objects/ld.o` and
+`objects/cvm.o` are ring-0 extensions resolved against the kernel's libc
+symbol table (`register_libc_symbols`, `kernel.c`), and `spawn_execute`
+runs them behind the `objects/` trust gate (see the Spawn contract below).
+The trust gate is a path rule (`ETREL_TRUSTED_DIR` = `objects/`), so the
+relocatables that must run as ring-0 extensions have to live in the
+ramdisk's `objects/` directory: the MiniFS is flat, so a `.o` stored
+there loses its `objects/` prefix and the gate refuses it. The test
+objects (`ftest.o`, `hello.o`) therefore ship on the ramdisk, not on
+MiniFS.
+DOOM, Quake 2, Lua, MicroPython and TopoGPT3 are the `ET_EXEC` class: a
+static binary built on the host runs unmodified, but it must be **signed**
+before it loads -- `load_exec_elf` calls `elf_verify_signature` before it
+maps a single page (`kernel/loader.c:1275`), so "copy it onto the ramdisk"
+is no longer sufficient on its own. The image is re-signed at build time
+(`tools/sign_elf.py`) or inside the OS by the ring-3 `sign` program
+(embedded development key, documented dev-only); see Signed binaries below.
+
+The ring-3 boundary is pinned headlessly by static ELF probes (no libc, raw
+`syscall` only), each printing one `ok` line and exiting 0 only when every
+step behaves:
+
+- `mvrn.elf` -- `rename`(82): create a file, move it, refuse a missing
+  source (`-ENOENT`) and a kernel-space pointer (`-EFAULT`), then `unlink`.
+- `execho.elf` -- `fork`(57) + `execve`(59) + `wait4`(61): the parent reaps
+  the *replaced* image (not a clone), and a ghost path fails with `-2`.
+- `execthr.elf` -- `execve` kills the spinning sibling thread (Linux
+  semantics); the dead thread stays a zombie of the exec'd program, which
+  costs one proc slot per run (test-only, never a server pattern).
+- `aslr.elf` -- self-exec chain: prints stack, brk and mmap addresses in
+  generation 0, re-execs carrying them, prints `aslr: ok` in generation 1
+  when any dimension differs.
+- `burn.elf` -- brk plus mmap plus a CPU burn with checksum `417386880`
+  (`sum(i&255)` over 1 MB of brk, `sum((i*7)&255)` over 1 MB of mmap, plus
+  20,000,000 `i&15` steps): a corrupted brk view, an aliased mmap or a torn
+  page changes the sum or faults before the probe prints.
+
+Every probe enters through a hand-written `_start` that does `call lmain`,
+and that shape is not cosmetic: the kernel hands ring 3 a 16-byte aligned
+`sp` (`setup_user_stack` masks the argv vector with `& ~15UL`,
+`kernel/exec.c:102`), so a C `_start` would see the entry stack misaligned
+by 8 against SysV and any vectorized spill would fault with `#GP`; the
+`call` re-aligns the stack to the ABI entry state (`rsp%16==8`) before the
+first C frame. The same entry zeroes `rdi`/`rsi`/`rdx`
+(`kernel/exec.c:190-192`), so a glibc `_start` sees `rtld_fini` NULL.
 
 ### Signed binaries (Ed25519, ELF NOTE, enforce)
 Every `ET_EXEC`/`ET_DYN` image carries one `PT_NOTE` note with name
@@ -82,6 +188,54 @@ to the fixed layout). `cvm_set_args` copies the argument strings into the
 module heap and builds the argv pointer array in the reserved area above the
 stack region; a module whose layout cannot hold the argument list is
 rejected with a diagnostic, never silently corrupted.
+
+### CVM JIT compiler (baseline tier, native x86-64)
+Every `.cvm` module is compiled to native x86-64 code at load time by the
+baseline tier of the multi-tier CVM JIT (sibling `cvm` repo, `cvm2/`), and
+the JIT is transparent: the output is identical to the interpreter and the
+full miniGCC compiler (`minigcc.cvm`) runs correctly under it inside the OS.
+
+- **Per function.** Each CVM function is compiled independently into a
+  native code buffer that lives on the kernel heap. The heap keeps its
+  2 MB executable pages, so the buffer is executable as it stands.
+- **Same ABI.** Cross-function control flow (CALL/RET) goes through the
+  interpreter's frame stack (`vm->frames`, `push_frame`), so the operand
+  stack layout, the frame layout and the helper calling convention are
+  unchanged by the compilation.
+- **Fail soft.** `kernel/cvm_host.c` creates the JIT state per module run
+  (`cvm_jit_create`, released by `cvm_destroy` -> `cvm_jit_destroy`) and
+  falls back to `cvm_run` (the interpreter) when that state is NULL: a
+  failed JIT initialization degrades to the interpreter, never to a failed
+  module.
+- **Two allocators.** On the host the code buffer is `mmap`ed RWX; inside
+  MiniOS it is a plain `malloc` (the kernel routes it to `kmalloc`, and the
+  heap is already executable): `JIT_BUF_ALLOC` in `cvm_jit_x86.c`.
+
+Sources: `cvm_jit.c` (compiler), `cvm_jit_x86.c` (x86-64 emitter),
+`cvm_jit_help.c` (runtime helpers), built into `objects/cvm.o` with
+`-DCVM_JIT` (Makefile). Runtime faults (division by zero, bad address) are
+encoded by the JIT as a negative exit code because `cvm_jit_error` only
+stops the machine; `cvm_host` reports them the way the interpreter's return
+code would be reported, never as a negative status to the shell.
+
+### CVM host natives (the kernel libc as the module's libc)
+A module produced by `ld -f cvm` calls the C library through natives the
+kernel registers (`kernel/cvm_host.c`): the string and memory calls, the
+stdio calls, the allocator and the formatter. The formatter is real, not a
+placeholder: `printf` and `fprintf` write through the stream sink, and
+`sprintf` and `snprintf` format into the caller's buffer with the C
+library rules (at most `size-1` characters plus the terminating NUL, and
+the returned length is the length the whole format would have produced).
+Both sinks share one formatter (`kformat`), so the flags, the width, the
+precision and the length modifiers behave the same on both paths.
+
+The stub that wrote an empty string is what crippled the toolchain: the
+compiler formats every integer constant with `snprintf`, so a CVM-hosted
+`minigcc` emitted `movq $, %rax` with no immediate, and the assembly it
+produced did not link. The regression is pinned by the BDD scenario "cvm
+module formats numbers through the host natives" (the `cvm/cvmfmt.cvm`
+module), which also pins the truncation rule: a value longer than the
+window is cut at the window size and never written past it.
 
 ### Integer overflow protection
 `kfread` and `kfwrite` compute `size * n` before accessing the buffer.
@@ -336,6 +490,48 @@ Cursor visibility is structural: the arrow paints white over a 1-px
 black outline (`COL_BLACK`), so it reads on the white paint canvas and
 on dark terminals alike.
 
+### Storage and boot hardware
+Block storage, PCI discovery, USB and the UEFI entry point.
+
+- **PCI config space has one owner**: `headers/drivers/pci.h` (not
+  `drivers/pci.h`), shared by the rtl8139 NIC (`net/rtl8139.c`), the
+  virtio-blk and virtio-net drivers, NVMe and the xHCI controller. Host
+  pin: `make test-pci`.
+- **virtio-blk is proven against the same bytes as IDE PIO**: the `vblk`
+  shell builtin initializes the device (absent hardware reports
+  `vblk: absent`, never a hang), prints the capacity, then reads LBA 0
+  (the `0x55 0xAA` boot signature) and LBA 2048 (the MiniFS superblock,
+  magic `MINIFS_MAGIC` `0x4D494E49`) straight off the virtio queue and
+  checks both magics (`kernel/shell.c:3400-3435`).
+- **DMA buffers are heap, never statics**: every heap and user page in
+  this kernel is identity mapped (VA == PA), while statics and the stack
+  are not (KASLR slides the image, so VA != PA there). The virtio request
+  header and the status byte therefore live in the heap next to the queue
+  (`drivers/virtio_blk.c:13-18, 207-215`): a stale static would sit in the
+  slid image where the device cannot reach it.
+- **UEFI**: `make uefi` builds `BOOTX64.EFI` (a freestanding PE32+ image,
+  `i386pep`, subsystem EFI) and `uefi.img` (a 32 MB whole-disk image: an
+  sfdisk MBR with an EFI system partition at LBA 2048 formatted with
+  mtools, holding `EFI/BOOT/BOOTX64.EFI` and `kernel.bin`). Under OVMF the
+  stub prints its banner, queries the GOP mode, retrieves the full memory
+  map and reads LBA 0 through Block I/O (the MBR signature). The phase
+  contract (ExitBootServices, the stage2 handoff, the trampoline) is in
+  docs/spec/boot-memory.md.
+- **USB**: mass storage (Bulk-Only Transport) and HID boot input
+  (keyboard and mouse) over xHCI are done: `drivers/xhci.c`,
+  `drivers/usbblk.c`, `drivers/usbhid.c`. `make run-usb-fake` boots `os.img`
+  on IDE with a FAT32 stick attached to the xHCI, and the `usb` shell
+  builtin dumps the controller (version, caplength, slots, ports), every
+  device (port, slot, address, speed, power), the HID report counters and
+  the disk state with its command counters. The xHCI rings, the HID boot
+  protocol and the mass-storage transport are specified in
+  docs/spec/usb.md.
+- **Surveyed, not built**: E1000 and AHCI reuse the PCI discovery
+  virtio-blk already owns, and runtime TrueType stays out (stb_truetype
+  is float-heavy and the kernel builds `-mno-sse -mno-mmx`, so fonts
+  remain build-time bitmaps). Both are tracked in
+  docs/spec/architecture.md.
+
 ### User-mode isolation
 ET_EXEC / ET_DYN binaries run at ring 3 under hardware page protection;
 ET_REL objects (the toolchain) remain ring-0 kernel extensions by contract,
@@ -363,6 +559,33 @@ data buffer nor kernel `.bss` growth can ever clobber them.
 The BDD suite proves the isolation with `cpl.elf` (reports ring 3),
 `kmem.elf` (kernel pointers rejected) and `nx.elf` (a `ret` written to the
 stack faults on fetch, so `poweroff` is never reached).
+
+### Kernel-image KASLR and userspace ASLR
+The kernel image's physical base is randomized per boot; the virtual base
+never moves. Stage 2 mixes the TSC with the CMOS clock (hours, minutes and
+seconds fed into separate bytes) and picks one of 64 aligned 2 MB slots in
+`[0x28000000, 0x30000000)`: `KASLR_MIN_ADDR + (entropy &
+(KASLR_MAX_UNITS-1)) * KASLR_ALIGN` (`headers/arch/x86/boot/bootdefs.h`,
+`arch/x86/boot/stage2.S:438`). The kernel always executes at virtual
+`0x100000` and the boot banner reports the randomized physical base
+(`kernel: physical base 0x%x`, `kernel.c:246`). `make ENABLE_KASLR=0` gives
+a deterministic physical layout. The image is mapped contiguously over
+`[base, base+KASLR_IMAGE_SPAN)`; the full physical map, the PT0/PT1 scheme
+and the low-4 MB hazard contract are in docs/spec/boot-memory.md.
+
+Every exec (legacy `run`, `mrun`/SPAWN, `execve`) jitters the new program's
+addresses with fresh entropy (TSC low bits XOR the 100 Hz tick count XOR an
+avalanche-mixed per-exec counter, `aslr_mix` in `kernel/sched.c`): the stack
+top slides 1..4096 bytes, brk starts 1..256 pages past the image (clamped
+to its cap), the mmap cursor starts up to 255 pages down (clamped above the
+brk limit), and an `ET_DYN` base slides up to 47 slots of 2 MB
+(`aslr_dyn_base`, added to the load base in `load_exec_elf`; the loader
+bounds still fail closed). Stack and brk slides are never zero, so
+consecutive runs differ observably; `fork` never re-randomizes (children
+share by definition). The headless proof is `bin/aslr.elf`: a self-exec
+chain that prints stack, brk and mmap addresses in generation 0, re-execs
+carrying them and prints `aslr: ok` in generation 1 when any dimension
+differs.
 
 ### FSBASE rides every switch, pid 0 included (`arch/x86/ctx_sw.S`)
 The switch saves `%fs` base into the outgoing PCB unconditionally and

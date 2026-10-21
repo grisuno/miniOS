@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_soso.c:232` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_soso.c:124` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_soso.c:258` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_soso.c:227` | `void DG_SleepMs(uint32_t ms)` |
+| `EnFrameBuferIoctl` | enum | `progs/doomgeneric/doomgeneric_soso.c:36` | `` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_soso.c:24` | `#define KEYQUEUE_SIZE` |
+| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_soso.c:92` | `static void addKeyToQueue(int pressed, unsigned char keyCode)` |
+| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_soso.c:43` | `static unsigned char convertToDoomKey(unsigned char scancode)` |
+| `disableRawMode` | function | `progs/doomgeneric/doomgeneric_soso.c:108` | `void disableRawMode()` |
+| `enableRawMode` | function | `progs/doomgeneric/doomgeneric_soso.c:114` | `void enableRawMode()` |
+| `handleKeyInput` | function | `progs/doomgeneric/doomgeneric_soso.c:186` | `static void handleKeyInput()` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_sosox.c:187` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_sosox.c:235` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_sosox.c:230` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_sosox.c:117` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_sosox.c:256` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_sosox.c:225` | `void DG_SleepMs(uint32_t ms)` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_sosox.c:24` | `#define KEYQUEUE_SIZE` |
+| `add_key_to_queue` | function | `progs/doomgeneric/doomgeneric_sosox.c:88` | `static void add_key_to_queue(int pressed, unsigned char key_code)` |
+| `convert_to_doom_key` | function | `progs/doomgeneric/doomgeneric_sosox.c:39` | `static unsigned char convert_to_doom_key(unsigned char scancode)` |
+| `disable_raw_mode` | function | `progs/doomgeneric/doomgeneric_sosox.c:102` | `void disable_raw_mode()` |
+| `enable_raw_mode` | function | `progs/doomgeneric/doomgeneric_sosox.c:107` | `void enable_raw_mode()` |
+| `handle_key_input` | function | `progs/doomgeneric/doomgeneric_sosox.c:159` | `static void handle_key_input()` |
 | `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_win.c:146` | `void DG_DrawFrame()` |
 | `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_win.c:172` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
 | `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_win.c:167` | `uint32_t DG_GetTicksMs()` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 | `PCSPK_CHANNELS` | macro | `progs/doomgeneric/i_minios_sound.c:12` | `#define PCSPK_CHANNELS` |
 | `PCSPK_CacheSounds` | function | `progs/doomgeneric/i_minios_sound.c:653` | `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)` |
 | `PCSPK_GetSfxLumpNum` | function | `progs/doomgeneric/i_minios_sound.c:529` | `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)` |
-| `PCSPK_Init` | function | `progs/doomgeneric/i_minios_sound.c:512` | `static boolean PCSPK_Init(boolean use_sfx_prefix)` |
-| `PCSPK_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:519` | `static void PCSPK_Shutdown(void)` |
-| `PCSPK_SoundIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:647` | `static boolean PCSPK_SoundIsPlaying(int channel)` |
-| `PCSPK_StartSound` | function | `progs/doomgeneric/i_minios_sound.c:591` | `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)` |
-| `PCSPK_StopSound` | function | `progs/doomgeneric/i_minios_sound.c:641` | `static void PCSPK_StopSound(int channel)` |
-| `PCSPK_TICK_MS` | macro | `progs/doomgeneric/i_minios_sound.c:13` | `#define PCSPK_TICK_MS` |
-| `PCSPK_Update` | function | `progs/doomgeneric/i_minios_sound.c:549` | `static void PCSPK_Update(void)` |
-| `PCSPK_UpdateSoundParams` | function | `progs/doomgeneric/i_minios_sound.c:587` | `static void PCSPK_UpdateSoundParams(int ch, int v, int s)` |
-| `audio_close` | function | `progs/doomgeneric/i_minios_sound.c:92` | `static void audio_close(void)` |
-| `audio_ensure` | function | `progs/doomgeneric/i_minios_sound.c:68` | `static void audio_ensure(void)` |
-| `audio_pump` | function | `progs/doomgeneric/i_minios_sound.c:77` | `static void audio_pump(void)` |
-| `audio_tone` | function | `progs/doomgeneric/i_minios_sound.c:85` | `static void audio_tone(unsigned freq)` |
-| `free_channel` | function | `progs/doomgeneric/i_minios_sound.c:540` | `static void free_channel(int i)` |
-| `mus_advance` | function | `progs/doomgeneric/i_minios_sound.c:288` | `static void mus_advance(mus_player_t *m, unsigned long ms)` |
-| `mus_advance_pcm` | function | `progs/doomgeneric/i_minios_sound.c:369` | `static void mus_advance_pcm(mus_player_t *m)` |
-| `mus_build_chord` | function | `progs/doomgeneric/i_minios_sound.c:236` | `static void mus_build_chord(mus_player_t *m)` |
-| `mus_hold_tone` | function | `progs/doomgeneric/i_minios_sound.c:261` | `static void mus_hold_tone(unsigned freq, unsigned long ms)` |
-| `mus_next_block` | function | `progs/doomgeneric/i_minios_sound.c:183` | `static int mus_next_block(mus_player_t *m, unsigned long *out)` |
-| `mus_note_cmp` | function | `progs/doomgeneric/i_minios_sound.c:228` | `static int mus_note_cmp(const void *a, const void *b)` |
-| `mus_play_chord` | function | `progs/doomgeneric/i_minios_sound.c:274` | `static void mus_play_chord(mus_player_t *m)` |
-| `mus_player_t` | struct | `progs/doomgeneric/i_minios_sound.c:146` | `` |
-| `mus_read_varlen` | function | `progs/doomgeneric/i_minios_sound.c:169` | `static int mus_read_varlen(mus_player_t *m, unsigned long *out)` |
-| `mus_render_pcm` | function | `progs/doomgeneric/i_minios_sound.c:320` | `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)` |
 
 Next: [SYMBOLS_p15.md](SYMBOLS_p15.md)

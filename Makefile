@@ -190,6 +190,7 @@ DOC_DIR   = $(PROGS_DIR)/docs
 PROGS     = $(OBJ_DIR)/minigcc.o \
             $(OBJ_DIR)/ld.o $(OBJ_DIR)/cvm.o \
             $(OBJ_DIR)/stb.o $(OBJ_DIR)/xxhash.o $(OBJ_DIR)/dlmalloc.o \
+            $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
             $(BIN_DIR)/cp $(BIN_DIR)/mtop \
             $(SRC_DIR)/build.py $(SRC_DIR)/shell.py $(SRC_DIR)/test.py \
             $(SRC_DIR)/test_py.py \
@@ -517,6 +518,12 @@ $(CVMOD_DIR)/fib.cvm: $(ASM_DIR)/fib.s $(LD_TOOL)
 $(CVMOD_DIR)/w1.cvm: $(ASM_DIR)/w1.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
+# Formatting probe: a CVM module that prints numbers through the host
+# natives (sprintf/snprintf/printf). It pins the guest's CVM formatter,
+# which used to ship stub natives that wrote an empty string.
+$(CVMOD_DIR)/cvmfmt.cvm: $(ASM_DIR)/cvmfmt.s $(LD_TOOL)
+	$(LD_TOOL) -f cvm -o $@ $<
+
 $(CVMOD_DIR)/minigcc.cvm: $(TOOLS_DIR)/g2.s $(LD_TOOL)
 	$(LD_TOOL) -f cvm -o $@ $<
 
@@ -664,6 +671,10 @@ $(BIN_DIR)/doomgeneric.elf: $(DOOM_OBJS) $(PROGS_DIR)/minios_abi.h
 DOOM1_WAD     ?= Doom1.wad
 DOOM1_WAD_URL ?= https://archive.org/download/doom_20230531/doom_dos.ZIP
 DOOM1_WAD_MD5 ?= f0cefca49926d00903cf57551d901abe
+# The shareware IWAD circulates in two well-known builds (the DOS
+# installer copy and the rerelease copy); both are accepted, anything
+# else fails closed.
+DOOM1_WAD_MD5_ALT ?= 5f4eb849b1af12887dec04a2a12e5e62
 DOOM1_WAD_ZIP ?= $(basename $(DOOM1_WAD)).zip
 
 $(DOOM1_WAD):
@@ -671,9 +682,26 @@ $(DOOM1_WAD):
 	python3 -c "import zipfile; zipfile.ZipFile('$(DOOM1_WAD_ZIP)').extract('DOOM1.WAD')"
 	mv -f DOOM1.WAD $@
 	rm -f $(DOOM1_WAD_ZIP)
-	echo "$(DOOM1_WAD_MD5)  $@" | md5sum -c - || (rm -f $@; exit 1)
+	@$(MAKE) --no-print-directory doom1-wad-check
 
-$(BIN_DIR)/DOOM1.WAD: $(DOOM1_WAD)
+# The hash check runs on the file that is actually packed, not only on
+# a fresh download: a WAD already on disk used to bypass the pin
+# entirely, so a wrong asset could reach the image unnoticed.
+doom1-wad-check:
+	@md5=$$(md5sum $(DOOM1_WAD) 2>/dev/null | cut -d' ' -f1); \
+	 if [ "$$md5" = "$(DOOM1_WAD_MD5)" ] || [ "$$md5" = "$(DOOM1_WAD_MD5_ALT)" ]; then \
+	   echo "doom1.wad: md5 $$md5 accepted"; \
+	 else \
+	   echo "doom1.wad: md5 $$md5 is not a known shareware IWAD" >&2; \
+	   echo "  expected $(DOOM1_WAD_MD5) or $(DOOM1_WAD_MD5_ALT)" >&2; \
+	   echo "  pass DOOM1_WAD=/path/to/your/doom1.wad or DOOM1_WAD_MD5=<md5>" >&2; \
+	   exit 1; \
+	 fi
+
+.PHONY: doom1-wad-check
+
+$(BIN_DIR)/DOOM1.WAD: $(DOOM1_WAD) | $(TOOLS_DIR)
+	@$(MAKE) --no-print-directory doom1-wad-check
 	cp $< $@
 
 # DOOM binaries live on minifs, not the ramdisk (kernel must stay < 3 MB)
@@ -877,6 +905,9 @@ Q2G_PLAYER_FILES = $(Q2G_DIR)/players/male/tris.md2 \
 Q2_DEMO_URL  ?= https://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/quake2/q2-314-demo-x86.exe
 Q2_DEMO_SHA1 ?= 5b4dedc59ceee306956a3e48a8bdf6dd33bc91ed
 Q2_PAK0_SHA1 ?= b86e8878a8e8706595ceebe88b3e6b4c1ba5bcab
+# The retail data set is accepted too: a tree that already carries the
+# full pak keeps it, and the check still rejects anything unknown.
+Q2_PAK0_SHA1_ALT ?= e4d748e881855ad208ba4abce7503f22fe9d18a7
 Q2_DEMO_EXE  ?= $(basename $(PROGS_DIR)/baseq2/pak0.pak).exe
 
 $(PROGS_DIR)/baseq2:
@@ -889,7 +920,22 @@ $(PROGS_DIR)/baseq2/pak0.pak: | $(PROGS_DIR)/baseq2
 	mv -f Install/Data/baseq2/pak0.pak $@
 	rm -f $(Q2_DEMO_EXE)
 	rm -rf Install
-	echo "$(Q2_PAK0_SHA1)  $@" | sha1sum -c - || (rm -f $@; exit 1)
+	@$(MAKE) --no-print-directory q2-pak0-check
+
+# The pak hash is checked on the file that is packed, not only after a
+# fresh download: a pak already on disk used to bypass the pin.
+q2-pak0-check:
+	@sha=$$(sha1sum $(PROGS_DIR)/baseq2/pak0.pak 2>/dev/null | cut -d' ' -f1); \
+	 if [ "$$sha" = "$(Q2_PAK0_SHA1)" ] || [ "$$sha" = "$(Q2_PAK0_SHA1_ALT)" ]; then \
+	   echo "pak0.pak: sha1 $$sha accepted"; \
+	 else \
+	   echo "pak0.pak: sha1 $$sha is not a known data set" >&2; \
+	   echo "  expected $(Q2_PAK0_SHA1) (shareware) or $(Q2_PAK0_SHA1_ALT) (retail)" >&2; \
+	   echo "  drop your own baseq2/pak0.pak in place and re-run make" >&2; \
+	   exit 1; \
+	 fi
+
+.PHONY: q2-pak0-check
 
 $(PROGS_DIR)/baseq2/pak1.pak: $(Q2G_PLAYER_FILES) tools/mkpak1.py | $(PROGS_DIR)/baseq2
 	python3 tools/mkpak1.py
@@ -1633,7 +1679,6 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                $(PROGS_DIR)/etc/shortcuts \
                $(BIN_DIR)/lzss $(BIN_DIR)/unlzss $(SRC_DIR)/lzss.c $(ASM_DIR)/lzss.s \
                $(BIN_DIR)/lz4 $(BIN_DIR)/unlz4 $(SRC_DIR)/lz4.c $(ASM_DIR)/lz4.s \
-               $(OBJ_DIR)/hello.o $(OBJ_DIR)/ftest.o \
                $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf $(BIN_DIR)/w1.elf \
                $(BIN_DIR)/fib.elf $(BIN_DIR)/http.elf $(BIN_DIR)/mtop.elf \
                $(BIN_DIR)/cpl.elf $(BIN_DIR)/kmem.elf $(BIN_DIR)/nx.elf $(BIN_DIR)/mprot.elf $(BIN_DIR)/pcmap.elf $(BIN_DIR)/forktest.elf \
@@ -1646,8 +1691,8 @@ MINIFS_FILES = $(MINIFS_DOOM_FILES) $(MINIFS_Q2G_FILES) $(MINIFS_POKEMON_FILES) 
                 $(BIN_DIR)/minigcc.elf \
                 $(PROGS_DIR)/etc/host.zip $(PROGS_DIR)/etc/hostile.zip \
                 $(PROGS_DIR)/etc/fat.img $(PROGS_DIR)/etc/ext4.img \
-                $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm \
-               $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c \
+                $(CVMOD_DIR)/fib.cvm $(CVMOD_DIR)/w1.cvm $(CVMOD_DIR)/minigcc.cvm $(CVMOD_DIR)/cvmfmt.cvm \
+               $(SRC_DIR)/hello.c $(SRC_DIR)/ftest.c $(SRC_DIR)/test.c $(SRC_DIR)/cvmfmt.c \
                $(SRC_DIR)/fib.c $(SRC_DIR)/ldhello.c $(SRC_DIR)/w1.c \
                $(SRC_DIR)/lxhello.c $(SRC_DIR)/cpl.c $(SRC_DIR)/kmem.c \
                $(SRC_DIR)/mvrn.c $(SRC_DIR)/execho.c $(SRC_DIR)/aslr.c $(SRC_DIR)/burn.c $(SRC_DIR)/execthr.c \
@@ -1693,12 +1738,21 @@ selfhost: $(BIN_DIR)/minigcc.elf
 # Fixed vectors plus full TLS 1.2 handshakes against openssl-driven
 # servers (RSA and ECDSA chains, correct hostname), plus the negative
 # set (unknown CA, wrong hostname, expired certificate).
-headers/tls_test_roots.h: tools/tls_test.py
-	python3 tools/tls_test.py --gen-only
+#
+# The roots header and the server certificates are generated together
+# and live in the same directory (build/tls_test_work): the binary
+# embeds the roots while the servers use the certificates, so a stale
+# header against fresh certificates fails the suite with an "unknown CA"
+# that looks flaky but is a build-order desync.
+TLS_WORK    := build/tls_test_work
+TLS_ROOTS   := $(TLS_WORK)/tls_test_roots.h
 
-tls_test: tls_test.c headers/tls_test_roots.h net/tls.c net/tls_crypto.c net/tls_x509.c \
+$(TLS_ROOTS): tools/tls_test.py
+	python3 tools/tls_test.py --gen-only --regen
+
+tls_test: tls_test.c $(TLS_ROOTS) net/tls.c net/tls_crypto.c net/tls_x509.c \
           tls.h tls_port.h
-	$(CC) $(CFLAGS_HOST) -DTLS_TEST -I. -o $(TOOLS_DIR)/tls_test \
+	$(CC) $(CFLAGS_HOST) -DTLS_TEST -I. -I$(TLS_WORK) -o $(TOOLS_DIR)/tls_test \
 	      tls_test.c net/tls.c net/tls_crypto.c net/tls_x509.c
 
 test-tls: tls_test
@@ -2165,30 +2219,30 @@ uefi: uefi.img
 kernel.o: kernel.c kernel.h minifs.h ide.h block.h sched.h pcache.h syscall_asm.h drivers/virtio_blk.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h arch/x86/cpu_setup.h arch/x86/boot/bootdefs.h progs/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h
+console.o: kernel/console.c kernel.h sched.h vga_fb.h xxhash.h stb_api.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 shell.o: kernel/shell.c kernel.h net.h minifs.h sched.h vga_fb.h pcspk.h \
-         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_blk.h drivers/virtio_net.h drivers/nvme.h pcache.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h proc_sec.h spawn.h tlb.h
+         sb16.h pcm2.h rtc.h drivers/kbd.h xxhash.h zip.h shell.h editor.h percpu_rq.h wm_notify.h minifetch.h kernel/console_in.h httpd.h drivers/virtio_blk.h drivers/virtio_net.h drivers/nvme.h pcache.h drivers/xhci.h drivers/usbhid.h drivers/usbblk.h proc_sec.h spawn.h tlb.h $(PROGS_DIR)/minios_abi.h
 # NOTE: -Os, not the kernel-wide -O1. shell.o is the largest TU (~40 KB)
 # and the image ends just below USER_LOAD_BASE, so the check-size gate
 # is binding: bytes matter more than compiler speed in the prompt,
 # completion and builtin dispatch paths.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
-editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h kernel/console_in.h
+editor.o: kernel/editor.c kernel.h shell.h editor.h vga_fb.h kernel/console_in.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-console_in.o: kernel/console_in.c kernel.h drivers/kbd.h drivers/xhci.h drivers/usbhid.h vga_fb.h kernel/console_in.h
+console_in.o: kernel/console_in.c kernel.h drivers/kbd.h drivers/xhci.h drivers/usbhid.h vga_fb.h kernel/console_in.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-vga_cursor.o: kernel/vga_cursor.c kernel.h vga_fb.h kernel/vga_cursor.h
+vga_cursor.o: kernel/vga_cursor.c kernel.h vga_fb.h kernel/vga_cursor.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-serial.o: kernel/serial.c kernel.h
+serial.o: kernel/serial.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-string.o: kernel/string.c kernel.h
+string.o: kernel/string.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 ed25519.o: kernel/ed25519.c headers/sign.h
@@ -2205,25 +2259,25 @@ ldso_parse.o: kernel/ldso_parse.c headers/ldso.h
 vma.o: vma.c vma.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-mm.o: kernel/mm.c kernel.h sched.h $(BOOTDEFS)
+mm.o: kernel/mm.c kernel.h sched.h $(BOOTDEFS) $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-scrollback.o: kernel/scrollback.c kernel.h
+scrollback.o: kernel/scrollback.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-paging.o: kernel/mm/paging.c kernel.h headers/ldso.h $(BOOTDEFS) vga_fb.h arch/x86/msr.h tlb.h
+paging.o: kernel/mm/paging.c kernel.h headers/ldso.h $(BOOTDEFS) vga_fb.h arch/x86/msr.h tlb.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-cow.o: kernel/mm/cow.c kernel.h $(BOOTDEFS) vga_fb.h tlb.h
+cow.o: kernel/mm/cow.c kernel.h $(BOOTDEFS) vga_fb.h tlb.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-swap.o: kernel/mm/swap.c kernel.h ide.h lz4_kernel.h
+swap.o: kernel/mm/swap.c kernel.h ide.h lz4_kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 ramdisk.o: fs/ramdisk.c kernel.h third_party/miniz/miniz.h
 	$(CC) $(CFLAGS_KERN) -Ithird_party/miniz -c $< -o $@
 
-time.o: kernel/time.c kernel.h
+time.o: kernel/time.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 kbd.o: drivers/kbd.c kernel.h vga_fb.h drivers/kbd.h drivers/modifiers.h arch/x86/hal_io.h
@@ -2233,25 +2287,25 @@ mouse.o: drivers/mouse.c kernel.h arch/x86/hal_io.h drivers/mouse.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-printf.o: kernel/printf.c kernel.h
+printf.o: kernel/printf.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-klog.o: kernel/klog.c kernel.h
+klog.o: kernel/klog.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h proc_sec.h
+exec.o: kernel/exec.c kernel.h $(BOOTDEFS) arch/x86/msr.h vga_fb.h sched.h drivers/kbd.h proc_sec.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h select_map.h syscalls_proc.h shell.h spawn.h driver.h pipe.h ktime.h randmix.h proc_sec.h tlb.h
+syscalls.o: kernel/syscalls.c kernel.h net.h tls.h $(BOOTDEFS) minifs.h ide.h block.h sched.h vga_fb.h pcspk.h sb16.h pcm2.h rtc.h lz4_kernel.h drivers/kbd.h arch/x86/hal_io.h arch/x86/msr.h zip.h futex.h batch.h rcu.h percpu_rq.h sanitize.h select_map.h syscalls_proc.h shell.h spawn.h driver.h pipe.h ktime.h randmix.h proc_sec.h tlb.h $(PROGS_DIR)/minios_abi.h
 # NOTE: -Os, same pattern as shell.o (measured -3.5 KB vs -O1). The
 # dispatcher is a large switch, cold paths dominate; revalidate with
 # test_all.sh plus the syscall-heavy BDD scenarios after any change here.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
-spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h arena.h minifs.h vga_fb.h
+spawn.o: kernel/spawn.c spawn.h kernel.h sched.h vma.h arch/x86/msr.h arena.h minifs.h vga_fb.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h proc_sec.h
+syscalls_proc.o: kernel/syscalls_proc.c kernel.h sched.h syscalls_proc.h proc_sec.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vfs.o: fs/vfs.c kernel.h fs/ramdisk.c
@@ -2272,16 +2326,16 @@ kfile.o: fs/kfile.c kernel.h pipe.h
 pcache.o: fs/pcache.c kernel.h pcache.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-redirect.o: kernel/redirect.c kernel.h
+redirect.o: kernel/redirect.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-panic.o: kernel/panic.c kernel.h sched.h vga_fb.h panic.h
+panic.o: kernel/panic.c kernel.h sched.h vga_fb.h panic.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-clip.o: kernel/clip.c kernel.h
+clip.o: kernel/clip.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-symtab.o: kernel/symtab.c kernel.h
+symtab.o: kernel/symtab.c kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 net.o: net/net.c net.h kernel.h sched.h net/rtl8139.h drivers/virtio_net.h
@@ -2337,7 +2391,7 @@ minifs.o: fs/minifs.c minifs.h block.h ide.h kernel.h pcache.h
 # through the MiniFS fallback) after any change here.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
-lz4_kernel.o: kernel/lz4_kernel.c lz4_kernel.h
+lz4_kernel.o: kernel/lz4_kernel.c lz4_kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 # xxHash XXH64: pure integer, freestanding-safe, compiled straight into the
@@ -2465,19 +2519,19 @@ $(PROGS_DIR)/etc/ext4.img:
 # the caller's set survives every voluntary switch by construction.
 # Removing a flag reopens the lost-waitpid-pid hang; check_abi_numbers
 # does not cover it, the thdemo/fptest BDD scenarios do.
-sched.o: kernel/sched.c sched.h kernel.h $(BOOTDEFS) arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcm2.h pcspk.h futex.h percpu_rq.h rcu.h proc_sec.h tlb.h
+sched.o: kernel/sched.c sched.h kernel.h $(BOOTDEFS) arch/x86/hal_io.h drivers/mouse.h tick.h vga_fb.h sb16.h pcm2.h pcspk.h futex.h percpu_rq.h rcu.h proc_sec.h tlb.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -ffixed-rbx -ffixed-r12 -ffixed-r13 -ffixed-r14 -ffixed-r15 -c $< -o $@
 
 tick.o: kernel/tick.c tick.h drivers/xhci.h drivers/usbhid.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
-           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h vga_fx.h kernel/vga_cursor.h
+           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h vga_fx.h kernel/vga_cursor.h $(PROGS_DIR)/minios_abi.h
 # NOTE: -Os, same pattern as shell.o (measured -6.2 KB vs -O1). Revalidate
 # with test_gui_wm.py + test_gui_fashion.py (pixel proof) after any change.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@
 
-vga_fx.o: kernel/vga_fx.c vga_fb.h vga_fx.h kernel.h
+vga_fx.o: kernel/vga_fx.c vga_fb.h vga_fx.h kernel.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 pcspk.o: drivers/pcspk.c pcspk.h driver.h kernel.h
@@ -2502,7 +2556,7 @@ ctx_sw.o: arch/x86/ctx_sw.S
 tlb_nmi.o: arch/x86/tlb_nmi.S
 	$(CC) -c -m64 $< -o $@
 
-tlb.o: kernel/mm/tlb.c tlb.h kernel.h sched.h smp.h spinlock.h
+tlb.o: kernel/mm/tlb.c tlb.h kernel.h sched.h smp.h spinlock.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 # SYSCALL trampoline (was inline asm in kernel.c): dedicated assembly so
@@ -2540,7 +2594,7 @@ futex.o: kernel/futex.c futex.h sync.h sched.h spinlock.h
 seccomp_bpf.o: kernel/seccomp_bpf.c seccomp_bpf.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-proc_sec.o: kernel/proc_sec.c proc_sec.h seccomp_bpf.h kernel.h sched.h sanitize.h syscalls_proc.h
+proc_sec.o: kernel/proc_sec.c proc_sec.h seccomp_bpf.h kernel.h sched.h sanitize.h syscalls_proc.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 percpu_rq.o: kernel/percpu_rq.c percpu_rq.h sched.h spinlock.h
@@ -2555,7 +2609,7 @@ rcu.o: kernel/rcu.c rcu.h sched.h spinlock.h
 abi.o: kernel/abi.c abi.h kernel.h progs/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
-minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h
+minifetch.o: kernel/minifetch.c minifetch.h kernel.h net.h minifs.h sched.h stb_api.h vga_fb.h rtc.h $(PROGS_DIR)/minios_abi.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 kernel.elf: kernel.o console.o console_in.o serial.o string.o loader.o ldso_parse.o vma.o mm.o scrollback.o paging.o cow.o tlb.o tlb_nmi.o swap.o ramdisk.o time.o kbd.o mouse.o printf.o klog.o exec.o syscalls.o spawn.o syscalls_proc.o shell.o editor.o vfs.o kfile.o redirect.o panic.o clip.o symtab.o net.o rtl8139.o virtio_net.o pcache.o $(KERN_TLS_OBJS) ramdisk_data.o ide.o virtio_blk.o nvme.o xhci.o usbhid.o usbblk.o block.o driver.o minifs.o fat32.o fsimg.o ext4.o lz4_kernel.o sched.o tick.o isr_stubs.o ctx_sw.o syscall_entry.o vga_fb.o vga_fx.o vga_cursor.o pcspk.o sb16.o pcm2.o rtc.o xxhash.o stb_impl.o miniz_impl.o zip.o dlmalloc_impl.o smp.o sync.o futex.o seccomp_bpf.o proc_sec.o percpu_rq.o batch.o rcu.o abi.o minifetch.o ed25519.o kernel.ld

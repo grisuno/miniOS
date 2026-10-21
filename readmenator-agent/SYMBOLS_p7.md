@@ -3,6 +3,11 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `sem_wait` | function | `headers/sync.h:90` | `void sem_wait(sem_t *s);` |
+| `sleep_on` | function | `headers/sync.h:51` | `void sleep_on(wait_queue_t *q);` |
+| `wait_queue_t` | struct | `headers/sync.h:42` | `` |
+| `wake_up` | function | `headers/sync.h:52` | `int wake_up(wait_queue_t *q);` |
+| `wake_up_all` | function | `headers/sync.h:53` | `int wake_up_all(wait_queue_t *q);` |
 | `wq_init` | function | `headers/sync.h:50` | `void wq_init(wait_queue_t *q);` |
 | `SYSCALL_ASM_H` | macro | `headers/syscall_asm.h:2` | `#define SYSCALL_ASM_H` |
 | `SYSCALL_CPU_CUR_PID_OFF` | macro | `headers/syscall_asm.h:20` | `#define SYSCALL_CPU_CUR_PID_OFF` |
@@ -246,92 +251,95 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `WM_BTN_MIN` | macro | `headers/vga_fb.h:151` | `#define WM_BTN_MIN` |
 | `WM_BTN_PAD` | macro | `headers/vga_fb.h:150` | `#define WM_BTN_PAD` |
 | `WM_BTN_W` | macro | `headers/vga_fb.h:148` | `#define WM_BTN_W` |
-| `WM_FOCUS_GFX` | macro | `headers/vga_fb.h:222` | `#define WM_FOCUS_GFX` |
+| `WM_FOCUS_GFX` | macro | `headers/vga_fb.h:229` | `#define WM_FOCUS_GFX` |
 | `below` | function | `headers/vga_fb.h:99` | `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via...` |
-| `dock_bounce_counts` | function | `headers/vga_fb.h:257` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);` |
-| `dock_click_count` | function | `headers/vga_fb.h:258` | `void dock_click_count(unsigned long *edges);` |
-| `dock_pending_active` | function | `headers/vga_fb.h:259` | `int dock_pending_active(void);` |
+| `dock_bounce_counts` | function | `headers/vga_fb.h:264` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);` |
+| `dock_click_count` | function | `headers/vga_fb.h:265` | `void dock_click_count(unsigned long *edges);` |
+| `dock_pending_active` | function | `headers/vga_fb.h:266` | `int dock_pending_active(void);` |
 | `fb_bpp` | variable | `headers/vga_fb.h:26` | `extern int fb_bpp;` |
 | `fb_bytes_per_pixel` | function | `headers/vga_fb.h:30` | `int fb_bytes_per_pixel(void);` |
 | `fb_height` | variable | `headers/vga_fb.h:24` | `extern int fb_height;` |
 | `fb_phys_base` | variable | `headers/vga_fb.h:27` | `extern unsigned long fb_phys_base;` |
 | `fb_pitch` | variable | `headers/vga_fb.h:25` | `extern int fb_pitch;` |
-| `fb_read_packed` | function | `headers/vga_fb.h:193` | `unsigned long fb_read_packed(int x, int y);` |
-| `fb_read_row_packed` | function | `headers/vga_fb.h:218` | `void fb_read_row_packed(int x, int y, unsigned int *dst, int n);` |
+| `fb_read_packed` | function | `headers/vga_fb.h:200` | `unsigned long fb_read_packed(int x, int y);` |
+| `fb_read_row_packed` | function | `headers/vga_fb.h:225` | `void fb_read_row_packed(int x, int y, unsigned int *dst, int n);` |
 | `fb_width` | variable | `headers/vga_fb.h:23` | `extern int fb_width;` |
-| `fb_write_packed` | function | `headers/vga_fb.h:194` | `void fb_write_packed(int x, int y, unsigned long rgb);` |
-| `fb_write_row_packed` | function | `headers/vga_fb.h:217` | `void fb_write_row_packed(int x, int y, const unsigned int *src, int n);` |
-| `fx_melts_completed` | variable | `headers/vga_fb.h:277` | `extern unsigned long fx_melts_completed;` |
+| `fb_write_packed` | function | `headers/vga_fb.h:201` | `void fb_write_packed(int x, int y, unsigned long rgb);` |
+| `fb_write_row_packed` | function | `headers/vga_fb.h:224` | `void fb_write_row_packed(int x, int y, const unsigned int *src, int n);` |
+| `fx_melts_completed` | variable | `headers/vga_fb.h:284` | `extern unsigned long fx_melts_completed;` |
 | `gfx_frames_composited` | variable | `headers/vga_fb.h:59` | `extern unsigned long gfx_frames_composited;` |
 | `gfx_win_title` | variable | `headers/vga_fb.h:50` | `extern const char *gfx_win_title;` |
 | `mouse_state` | variable | `headers/vga_fb.h:167` | `extern mouse_state_t mouse_state;` |
 | `mouse_state_t` | struct | `headers/vga_fb.h:159` | `` |
 | `nk_win_y` | variable | `headers/vga_fb.h:79` | `extern int nk_win_x, nk_win_y;` |
-| `pixels` | function | `headers/vga_fb.h:263` | `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...` |
-| `term_clear` | function | `headers/vga_fb.h:188` | `void term_clear(void);` |
+| `pixels` | function | `headers/vga_fb.h:270` | `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...` |
+| `term_clear` | function | `headers/vga_fb.h:195` | `void term_clear(void);` |
 | `term_rows` | variable | `headers/vga_fb.h:156` | `extern int term_x, term_y, term_cols, term_rows;` |
-| `vga_fb_active` | variable | `headers/vga_fb.h:286` | `extern int vga_fb_active;` |
+| `vga_fb_active` | variable | `headers/vga_fb.h:293` | `extern int vga_fb_active;` |
 | `vga_fb_blit_nk_rgb_window` | function | `headers/vga_fb.h:76` | `void vga_fb_blit_nk_rgb_window(void);` |
 | `vga_fb_blit_nk_window` | function | `headers/vga_fb.h:75` | `void vga_fb_blit_nk_window(void);` |
 | `vga_fb_boot_config` | function | `headers/vga_fb.h:40` | `void vga_fb_boot_config(void);` |
-| `vga_fb_char` | function | `headers/vga_fb.h:184` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);` |
-| `vga_fb_clear` | function | `headers/vga_fb.h:178` | `void vga_fb_clear(void);` |
-| `vga_fb_close_active` | function | `headers/vga_fb.h:219` | `int vga_fb_close_active(void);` |
-| `vga_fb_draw_desktop` | function | `headers/vga_fb.h:195` | `void vga_fb_draw_desktop(void);` |
-| `vga_fb_focus_event` | function | `headers/vga_fb.h:228` | `const wm_notify_event_t *vga_fb_focus_event(void);` |
-| `vga_fb_focus_get` | function | `headers/vga_fb.h:225` | `int vga_fb_focus_get(void);` |
-| `vga_fb_focus_id` | function | `headers/vga_fb.h:224` | `int vga_fb_focus_id(int id);` |
-| `vga_fb_focus_next` | function | `headers/vga_fb.h:223` | `void vga_fb_focus_next(void);` |
-| `vga_fb_focus_report` | function | `headers/vga_fb.h:229` | `void vga_fb_focus_report(int before, int source);` |
-| `vga_fb_gfx_map_mouse` | function | `headers/vga_fb.h:215` | `void vga_fb_gfx_map_mouse(int *x, int *y);` |
-| `vga_fb_gfx_origin` | function | `headers/vga_fb.h:214` | `void vga_fb_gfx_origin(int *x, int *y);` |
-| `vga_fb_gfx_set_fullscreen` | function | `headers/vga_fb.h:211` | `int vga_fb_gfx_set_fullscreen(int on);` |
-| `vga_fb_gfx_set_hidden` | function | `headers/vga_fb.h:212` | `int vga_fb_gfx_set_hidden(int hide);` |
-| `vga_fb_gfx_view_name` | function | `headers/vga_fb.h:213` | `const char *vga_fb_gfx_view_name(void);` |
-| `vga_fb_hide_text_cursor` | function | `headers/vga_fb.h:190` | `void vga_fb_hide_text_cursor(void);` |
+| `vga_fb_char` | function | `headers/vga_fb.h:191` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg);` |
+| `vga_fb_clear` | function | `headers/vga_fb.h:185` | `void vga_fb_clear(void);` |
+| `vga_fb_close_active` | function | `headers/vga_fb.h:226` | `int vga_fb_close_active(void);` |
+| `vga_fb_draw_desktop` | function | `headers/vga_fb.h:202` | `void vga_fb_draw_desktop(void);` |
+| `vga_fb_focus_event` | function | `headers/vga_fb.h:235` | `const wm_notify_event_t *vga_fb_focus_event(void);` |
+| `vga_fb_focus_get` | function | `headers/vga_fb.h:232` | `int vga_fb_focus_get(void);` |
+| `vga_fb_focus_id` | function | `headers/vga_fb.h:231` | `int vga_fb_focus_id(int id);` |
+| `vga_fb_focus_next` | function | `headers/vga_fb.h:230` | `void vga_fb_focus_next(void);` |
+| `vga_fb_focus_report` | function | `headers/vga_fb.h:236` | `void vga_fb_focus_report(int before, int source);` |
+| `vga_fb_gfx_map_mouse` | function | `headers/vga_fb.h:222` | `void vga_fb_gfx_map_mouse(int *x, int *y);` |
+| `vga_fb_gfx_origin` | function | `headers/vga_fb.h:221` | `void vga_fb_gfx_origin(int *x, int *y);` |
+| `vga_fb_gfx_set_fullscreen` | function | `headers/vga_fb.h:218` | `int vga_fb_gfx_set_fullscreen(int on);` |
+| `vga_fb_gfx_set_hidden` | function | `headers/vga_fb.h:219` | `int vga_fb_gfx_set_hidden(int hide);` |
+| `vga_fb_gfx_view_name` | function | `headers/vga_fb.h:220` | `const char *vga_fb_gfx_view_name(void);` |
+| `vga_fb_hide_text_cursor` | function | `headers/vga_fb.h:197` | `void vga_fb_hide_text_cursor(void);` |
+| `vga_fb_history_page` | function | `headers/vga_fb.h:184` | `void vga_fb_history_page(int dir);` |
 | `vga_fb_init` | function | `headers/vga_fb.h:177` | `void vga_fb_init(void);` |
-| `vga_fb_is_fullscreen` | function | `headers/vga_fb.h:203` | `int vga_fb_is_fullscreen(void);` |
-| `vga_fb_is_minimized` | function | `headers/vga_fb.h:202` | `int vga_fb_is_minimized(void);` |
-| `vga_fb_layout_cycle` | function | `headers/vga_fb.h:242` | `void vga_fb_layout_cycle(void);` |
-| `vga_fb_layout_get` | function | `headers/vga_fb.h:243` | `int vga_fb_layout_get(void);` |
-| `vga_fb_layout_name` | function | `headers/vga_fb.h:244` | `const char *vga_fb_layout_name(void);` |
-| `vga_fb_layout_set` | function | `headers/vga_fb.h:241` | `int vga_fb_layout_set(int mode);` |
-| `vga_fb_list_windows` | function | `headers/vga_fb.h:245` | `void vga_fb_list_windows(void);` |
-| `vga_fb_mouse_init` | function | `headers/vga_fb.h:254` | `void vga_fb_mouse_init(void);` |
-| `vga_fb_mouse_tick` | function | `headers/vga_fb.h:249` | `void vga_fb_mouse_tick(void);` |
-| `vga_fb_move_terminal` | function | `headers/vga_fb.h:197` | `void vga_fb_move_terminal(int dx, int dy);` |
-| `vga_fb_nterms_get` | function | `headers/vga_fb.h:237` | `int vga_fb_nterms_get(void);` |
-| `vga_fb_pixel` | function | `headers/vga_fb.h:179` | `void vga_fb_pixel(int x, int y, uint8_t color);` |
-| `vga_fb_pixel_rgb` | function | `headers/vga_fb.h:182` | `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b);` |
-| `vga_fb_ps2_owner` | function | `headers/vga_fb.h:236` | `int vga_fb_ps2_owner(int pid);` |
-| `vga_fb_putc_term` | function | `headers/vga_fb.h:186` | `void vga_fb_putc_term(char c);` |
-| `vga_fb_puts_term` | function | `headers/vga_fb.h:187` | `void vga_fb_puts_term(const char *s);` |
+| `vga_fb_is_fullscreen` | function | `headers/vga_fb.h:210` | `int vga_fb_is_fullscreen(void);` |
+| `vga_fb_is_minimized` | function | `headers/vga_fb.h:209` | `int vga_fb_is_minimized(void);` |
+| `vga_fb_layout_cycle` | function | `headers/vga_fb.h:249` | `void vga_fb_layout_cycle(void);` |
+| `vga_fb_layout_get` | function | `headers/vga_fb.h:250` | `int vga_fb_layout_get(void);` |
+| `vga_fb_layout_name` | function | `headers/vga_fb.h:251` | `const char *vga_fb_layout_name(void);` |
+| `vga_fb_layout_set` | function | `headers/vga_fb.h:248` | `int vga_fb_layout_set(int mode);` |
+| `vga_fb_list_windows` | function | `headers/vga_fb.h:252` | `void vga_fb_list_windows(void);` |
+| `vga_fb_mouse_init` | function | `headers/vga_fb.h:261` | `void vga_fb_mouse_init(void);` |
+| `vga_fb_mouse_tick` | function | `headers/vga_fb.h:256` | `void vga_fb_mouse_tick(void);` |
+| `vga_fb_move_terminal` | function | `headers/vga_fb.h:204` | `void vga_fb_move_terminal(int dx, int dy);` |
+| `vga_fb_nterms_get` | function | `headers/vga_fb.h:244` | `int vga_fb_nterms_get(void);` |
+| `vga_fb_pixel` | function | `headers/vga_fb.h:186` | `void vga_fb_pixel(int x, int y, uint8_t color);` |
+| `vga_fb_pixel_rgb` | function | `headers/vga_fb.h:189` | `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b);` |
+| `vga_fb_ps2_owner` | function | `headers/vga_fb.h:243` | `int vga_fb_ps2_owner(int pid);` |
+| `vga_fb_putc_term` | function | `headers/vga_fb.h:193` | `void vga_fb_putc_term(char c);` |
+| `vga_fb_puts_term` | function | `headers/vga_fb.h:194` | `void vga_fb_puts_term(const char *s);` |
 | `vga_fb_read_rgb` | function | `headers/vga_fb.h:34` | `unsigned long vga_fb_read_rgb(int x, int y);` |
-| `vga_fb_rect` | function | `headers/vga_fb.h:180` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);` |
-| `vga_fb_rect_rgb` | function | `headers/vga_fb.h:183` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);` |
-| `vga_fb_reset_default` | function | `headers/vga_fb.h:200` | `void vga_fb_reset_default(void);` |
-| `vga_fb_resize` | function | `headers/vga_fb.h:199` | `void vga_fb_resize(int dcols, int drows);` |
-| `vga_fb_set_gfx_mode` | function | `headers/vga_fb.h:284` | `void vga_fb_set_gfx_mode(int on);` |
+| `vga_fb_rect` | function | `headers/vga_fb.h:187` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color);` |
+| `vga_fb_rect_rgb` | function | `headers/vga_fb.h:190` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);` |
+| `vga_fb_reset_default` | function | `headers/vga_fb.h:207` | `void vga_fb_reset_default(void);` |
+| `vga_fb_resize` | function | `headers/vga_fb.h:206` | `void vga_fb_resize(int dcols, int drows);` |
+| `vga_fb_set_gfx_mode` | function | `headers/vga_fb.h:291` | `void vga_fb_set_gfx_mode(int on);` |
 | `vga_fb_set_gfx_palette` | function | `headers/vga_fb.h:38` | `void vga_fb_set_gfx_palette(const unsigned char *pal);` |
-| `vga_fb_snap_window` | function | `headers/vga_fb.h:198` | `void vga_fb_snap_window(int zone);` |
-| `vga_fb_str` | function | `headers/vga_fb.h:185` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);` |
-| `vga_fb_term_close_focused` | function | `headers/vga_fb.h:239` | `int vga_fb_term_close_focused(void);` |
-| `vga_fb_term_split` | function | `headers/vga_fb.h:238` | `int vga_fb_term_split(void);` |
-| `vga_fb_text_cursor` | function | `headers/vga_fb.h:189` | `void vga_fb_text_cursor(int col);` |
-| `vga_fb_theme_name` | function | `headers/vga_fb.h:230` | `int vga_fb_theme_name(char *dst, int cap);` |
-| `vga_fb_tile_all` | function | `headers/vga_fb.h:240` | `void vga_fb_tile_all(void);` |
-| `vga_fb_toggle_fullscreen` | function | `headers/vga_fb.h:196` | `void vga_fb_toggle_fullscreen(void);` |
-| `vga_fb_toggle_minimize` | function | `headers/vga_fb.h:201` | `void vga_fb_toggle_minimize(void);` |
-| `vga_fb_wait_tick` | function | `headers/vga_fb.h:253` | `void vga_fb_wait_tick(void);` |
-| `vga_fx_enabled` | function | `headers/vga_fb.h:267` | `int vga_fx_enabled(void);` |
-| `vga_fx_free` | function | `headers/vga_fb.h:270` | `void vga_fx_free(unsigned int *buf);` |
-| `vga_fx_melt_from_black` | function | `headers/vga_fb.h:273` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);` |
-| `vga_fx_melt_rect` | function | `headers/vga_fb.h:271` | `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);` |
-| `vga_fx_restore_rect` | function | `headers/vga_fb.h:269` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);` |
-| `vga_fx_snap_rect` | function | `headers/vga_fb.h:268` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);` |
-| `wm_clear_close` | function | `headers/vga_fb.h:247` | `void wm_clear_close(void);` |
-| `wm_close_pending` | function | `headers/vga_fb.h:246` | `int wm_close_pending(void);` |
-| `wm_gfx_mode_active` | function | `headers/vga_fb.h:248` | `int wm_gfx_mode_active(void);` |
+| `vga_fb_snap_window` | function | `headers/vga_fb.h:205` | `void vga_fb_snap_window(int zone);` |
+| `vga_fb_str` | function | `headers/vga_fb.h:192` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);` |
+| `vga_fb_term_close_focused` | function | `headers/vga_fb.h:246` | `int vga_fb_term_close_focused(void);` |
+| `vga_fb_term_feed` | function | `headers/vga_fb.h:183` | `void vga_fb_term_feed(const char *line, int len);` |
+| `vga_fb_term_ring_init` | function | `headers/vga_fb.h:182` | `void vga_fb_term_ring_init(void);` |
+| `vga_fb_term_split` | function | `headers/vga_fb.h:245` | `int vga_fb_term_split(void);` |
+| `vga_fb_text_cursor` | function | `headers/vga_fb.h:196` | `void vga_fb_text_cursor(int col);` |
+| `vga_fb_theme_name` | function | `headers/vga_fb.h:237` | `int vga_fb_theme_name(char *dst, int cap);` |
+| `vga_fb_tile_all` | function | `headers/vga_fb.h:247` | `void vga_fb_tile_all(void);` |
+| `vga_fb_toggle_fullscreen` | function | `headers/vga_fb.h:203` | `void vga_fb_toggle_fullscreen(void);` |
+| `vga_fb_toggle_minimize` | function | `headers/vga_fb.h:208` | `void vga_fb_toggle_minimize(void);` |
+| `vga_fb_wait_tick` | function | `headers/vga_fb.h:260` | `void vga_fb_wait_tick(void);` |
+| `vga_fx_enabled` | function | `headers/vga_fb.h:274` | `int vga_fx_enabled(void);` |
+| `vga_fx_free` | function | `headers/vga_fb.h:277` | `void vga_fx_free(unsigned int *buf);` |
+| `vga_fx_melt_from_black` | function | `headers/vga_fb.h:280` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);` |
+| `vga_fx_melt_rect` | function | `headers/vga_fb.h:278` | `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);` |
+| `vga_fx_restore_rect` | function | `headers/vga_fb.h:276` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);` |
+| `vga_fx_snap_rect` | function | `headers/vga_fb.h:275` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);` |
+| `wm_clear_close` | function | `headers/vga_fb.h:254` | `void wm_clear_close(void);` |
+| `wm_close_pending` | function | `headers/vga_fb.h:253` | `int wm_close_pending(void);` |
+| `wm_gfx_mode_active` | function | `headers/vga_fb.h:255` | `int wm_gfx_mode_active(void);` |
 | `VGA_FX_COLS_MAX` | macro | `headers/vga_fx.h:27` | `#define VGA_FX_COLS_MAX` |
 | `VGA_FX_CONFIG_DEFAULT` | macro | `headers/vga_fx.h:24` | `#define VGA_FX_CONFIG_DEFAULT` |
 | `VGA_FX_H` | macro | `headers/vga_fx.h:13` | `#define VGA_FX_H` |
@@ -488,13 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `__attribute__` | function | `kernel.c:207` | `__attribute__((section(".init.text"))) void kmain(void)` |
 | `bootlog_mark` | function | `kernel.c:192` | `void bootlog_mark(const char *name)` |
 | `bootlog_report` | function | `kernel.c:199` | `void bootlog_report(void)` |
-| `kstack` | function | `kernel.c:146` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
-| `ksyscall` | function | `kernel.c:130` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
-| `ms` | function | `kernel.c:185` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
-| `ramdisk_end` | variable | `kernel.c:180` | `extern char ramdisk_end[];` |
-| `ramdisk_start` | variable | `kernel.c:179` | `extern char ramdisk_start[];` |
-| `size` | function | `kernel.c:253` | `* image size (see kernel.ld);` |
-| `syscall_init` | function | `kernel.c:117` | `void syscall_init(void)` |
-| `syscall_kstack` | variable | `kernel.c:115` | `extern unsigned long syscall_kstack;` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

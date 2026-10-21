@@ -6,15 +6,16 @@
 - Language: h
 - Symbols:
   - `Consumers` (function, line 7) `* Consumers (shell prompt, editor, SPAWN waits, GETC_RAW syscall) include * this header instead of reaching into...`
-  - `console_peek` (function, line 17) `int console_peek(void);`
-  - `console_raw_try` (function, line 21) `int console_raw_try(void);`
-  - `console_raw_get` (function, line 22) `int console_raw_get(void);`
-  - `console_job_try` (function, line 25) `int console_job_try(void);`
-  - `console_job_get` (function, line 26) `int console_job_get(void);`
-  - `console_ungetc` (function, line 30) `void console_ungetc(unsigned char c);`
-  - `console_stdin_push` (function, line 37) `int console_stdin_push(const char *data, unsigned long len);`
-  - `console_stdin_clear` (function, line 38) `void console_stdin_clear(void);`
-  - `console_stdin_active` (function, line 39) `int console_stdin_active(void);`
+  - `console_history_page` (function, line 19) `void console_history_page(int dir);`
+  - `console_peek` (function, line 22) `int console_peek(void);`
+  - `console_raw_try` (function, line 26) `int console_raw_try(void);`
+  - `console_raw_get` (function, line 27) `int console_raw_get(void);`
+  - `console_job_try` (function, line 30) `int console_job_try(void);`
+  - `console_job_get` (function, line 31) `int console_job_get(void);`
+  - `console_ungetc` (function, line 35) `void console_ungetc(unsigned char c);`
+  - `console_stdin_push` (function, line 42) `int console_stdin_push(const char *data, unsigned long len);`
+  - `console_stdin_clear` (function, line 43) `void console_stdin_clear(void);`
+  - `console_stdin_active` (function, line 44) `int console_stdin_active(void);`
   - `CONSOLE_IN_H` (macro, line 2) `#define CONSOLE_IN_H`
 - Imported by: `headers/shell.h`, `kernel/console_in.c`, `kernel/shell.c`
 

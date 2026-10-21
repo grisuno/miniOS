@@ -387,7 +387,6 @@
 - [`__attribute__`](modules/kernel.c.md#__attribute__) function in `kernel.c`
 - [`__attribute__`](modules/kernel.sched.c.md#__attribute__) function in `kernel/sched.c`
 - [`__attribute__`](modules/kernel.sched.c.md#__attribute__) function in `kernel/sched.c`
-- [`audible`](modules/progs.pokemon.platform_minios.c.md#audible) function in `progs/pokemon/platform_minios.c`
 - [`audio`](modules/progs.pokemon.platform_minios.c.md#audio) function in `progs/pokemon/platform_minios.c`
 - [`AUDIO_CHANNELS_MONO`](modules/headers.audio.h.md#audio_channels_mono) macro in `headers/audio.h`
 - [`AUDIO_FORMAT_S16`](modules/headers.audio.h.md#audio_format_s16) macro in `headers/audio.h`
@@ -759,7 +758,6 @@
 - [`cliprange_t`](modules/progs.doomgeneric.r_bsp.c.md#cliprange_t) struct in `progs/doomgeneric/r_bsp.c`
 - [`clock`](modules/kernel.syscalls.c.md#clock) function in `kernel/syscalls.c`
 - [`clock_gettime`](modules/kernel.syscalls.c.md#clock_gettime) function in `kernel/syscalls.c`
-- [`clock_nanosleep`](modules/progs.minios_abi.h.md#clock_nanosleep) function in `progs/minios_abi.h`
 - [`CLONE_FILES`](modules/headers.sched.h.md#clone_files) macro in `headers/sched.h`
 - [`CLONE_VM`](modules/headers.sched.h.md#clone_vm) macro in `headers/sched.h`
 - [`close`](modules/mcp.mcp_dbg_driver.py.md#client-close) method of `Client` in `mcp.mcp_dbg_driver`
@@ -853,6 +851,8 @@
 - [`consistent`](modules/kernel.loader.c.md#consistent) function in `kernel/loader.c`
 - [`console_getc`](modules/headers.kernel.h.md#console_getc) function in `headers/kernel.h`
 - [`console_getc`](modules/kernel.console_in.c.md#console_getc) function in `kernel/console_in.c`
+- [`console_history_page`](modules/headers.kernel.console_in.h.md#console_history_page) function in `headers/kernel/console_in.h`
+- [`console_history_page`](modules/kernel.console_in.c.md#console_history_page) function in `kernel/console_in.c`
 - [`console_job_get`](modules/headers.kernel.console_in.h.md#console_job_get) function in `headers/kernel/console_in.h`
 - [`console_job_get`](modules/kernel.console_in.c.md#console_job_get) function in `kernel/console_in.c`
 - [`console_job_try`](modules/headers.kernel.console_in.h.md#console_job_try) function in `headers/kernel/console_in.h`
@@ -1857,6 +1857,7 @@
 - [`fb_write_row_packed`](modules/headers.vga_fb.h.md#fb_write_row_packed) function in `headers/vga_fb.h`
 - [`fb_write_row_packed`](modules/kernel.vga_fb.c.md#fb_write_row_packed) function in `kernel/vga_fb.c`
 - [`FBT`](modules/kernel.vga_fb.c.md#fbt) macro in `kernel/vga_fb.c`
+- [`fcanary`](modules/progs.asm.cvmfmt.s.md#fcanary) function in `progs/asm/cvmfmt.s`
 - [`fclose`](modules/progs.src.aes.c.md#fclose) function in `progs/src/aes.c`
 - [`fclose`](modules/progs.src.cp.c.md#fclose) function in `progs/src/cp.c`
 - [`fclose`](modules/progs.src.json.c.md#fclose) function in `progs/src/json.c`
@@ -2149,6 +2150,7 @@
 - [`FUTEX_WAKE_ALL`](modules/headers.futex.h.md#futex_wake_all) macro in `headers/futex.h`
 - [`FUZZOFF`](modules/progs.doomgeneric.r_draw.c.md#fuzzoff) macro in `progs/doomgeneric/r_draw.c`
 - [`FUZZTABLE`](modules/progs.doomgeneric.r_draw.c.md#fuzztable) macro in `progs/doomgeneric/r_draw.c`
+- [`fwin`](modules/progs.asm.cvmfmt.s.md#fwin) function in `progs/asm/cvmfmt.s`
 - [`fwrite`](modules/progs.src.aes.c.md#fwrite) function in `progs/src/aes.c`
 - [`fwrite`](modules/progs.src.cp.c.md#fwrite) function in `progs/src/cp.c`
 - [`fwrite`](modules/progs.src.lz4.c.md#fwrite) function in `progs/src/lz4.c`
@@ -3498,6 +3500,7 @@
 - [`kmm_make_uncached`](modules/headers.kernel.h.md#kmm_make_uncached) function in `headers/kernel.h`
 - [`kmm_map_device`](modules/kernel.mm.paging.c.md#kmm_map_device) function in `kernel/mm/paging.c`
 - [`KMM_MAX_IDENTITY`](modules/kernel.mm.paging.c.md#kmm_max_identity) macro in `kernel/mm/paging.c`
+- [`kout_sink`](modules/kernel.cvm_host.c.md#kout_sink) struct in `kernel/cvm_host.c`
 - [`kpipe_empty_wopen`](modules/headers.kernel.h.md#kpipe_empty_wopen) function in `headers/kernel.h`
 - [`kpipe_is_write_end`](modules/fs.kfile.c.md#kpipe_is_write_end) function in `fs/kfile.c`
 - [`kpipe_is_write_end`](modules/headers.kernel.h.md#kpipe_is_write_end) function in `headers/kernel.h`
@@ -3630,6 +3633,7 @@
 - [`lastopening`](modules/progs.doomgeneric.r_plane.h.md#lastopening) variable in `progs/doomgeneric/r_plane.h`
 - [`lastspritelump`](modules/progs.doomgeneric.r_state.h.md#lastspritelump) variable in `progs/doomgeneric/r_state.h`
 - [`LayerWeights`](modules/progs.topogpt3.topogpt3.c.md#layerweights) struct in `progs/topogpt3/topogpt3.c`
+- [`LD_STUB_RE`](modules/tools.check_abi_numbers.py.md#ld_stub_re) constant in `tools.check_abi_numbers`
 - [`ldso_basename`](modules/headers.ldso.h.md#ldso_basename) function in `headers/ldso.h`
 - [`ldso_basename`](modules/kernel.ldso_parse.c.md#ldso_basename) function in `kernel/ldso_parse.c`
 - [`ldso_bind_into`](modules/headers.kernel.h.md#ldso_bind_into) function in `headers/kernel.h`
@@ -4264,6 +4268,7 @@
 - [`main`](modules/mcp.minios_mcp.py.md#main) function in `mcp.minios_mcp`
 - [`main`](modules/progs.asm.aes.s.md#main) function in `progs/asm/aes.s`
 - [`main`](modules/progs.asm.cp.s.md#main) function in `progs/asm/cp.s`
+- [`main`](modules/progs.asm.cvmfmt.s.md#main) function in `progs/asm/cvmfmt.s`
 - [`main`](modules/progs.asm.fib.s.md#main) function in `progs/asm/fib.s`
 - [`main`](modules/progs.asm.freedom.s.md#main) function in `progs/asm/freedom.s`
 - [`main`](modules/progs.asm.http.s.md#main) function in `progs/asm/http.s`
@@ -4290,6 +4295,7 @@
 - [`main`](modules/progs.src.aes.c.md#main) function in `progs/src/aes.c`
 - [`main`](modules/progs.src.apsse.c.md#main) function in `progs/src/apsse.c`
 - [`main`](modules/progs.src.cp.c.md#main) function in `progs/src/cp.c`
+- [`main`](modules/progs.src.cvmfmt.c.md#main) function in `progs/src/cvmfmt.c`
 - [`main`](modules/progs.src.fib.c.md#main) function in `progs/src/fib.c`
 - [`main`](modules/progs.src.fptest.c.md#main) function in `progs/src/fptest.c`
 - [`main`](modules/progs.src.freedom.c.md#main) function in `progs/src/freedom.c`
@@ -5502,6 +5508,7 @@
 - [`note_t`](modules/progs.src.opl3.c.md#note_t) struct in `progs/src/opl3.c`
 - [`note_total`](modules/tools.sign_elf.py.md#config-note_total) attribute of `Config` in `tools.sign_elf`
 - [`noterased`](modules/progs.doomgeneric.hu_lib.c.md#noterased) macro in `progs/doomgeneric/hu_lib.c`
+- [`now`](modules/headers.sync.h.md#now) function in `headers/sync.h`
 - [`now`](modules/headers.tls.h.md#now) function in `headers/tls.h`
 - [`NPROD`](modules/progs.src.thdemo.c.md#nprod) macro in `progs/src/thdemo.c`
 - [`nukage_char`](modules/tools.doom_pwad.py.md#doompwadconfig-nukage_char) attribute of `DoomPwadConfig` in `tools.doom_pwad`
@@ -5873,6 +5880,8 @@
 - [`PALETTE`](modules/tools.gen_icons.py.md#palette) constant in `tools.gen_icons`
 - [`panic_backtrace`](modules/headers.panic.h.md#panic_backtrace) function in `headers/panic.h`
 - [`PANIC_BT_MAX`](modules/headers.panic.h.md#panic_bt_max) macro in `headers/panic.h`
+- [`PANIC_HEX_MAX_DIGITS`](modules/headers.panic.h.md#panic_hex_max_digits) macro in `headers/panic.h`
+- [`panic_hex_str`](modules/headers.panic.h.md#panic_hex_str) function in `headers/panic.h`
 - [`panic_screen`](modules/headers.kernel.h.md#panic_screen) function in `headers/kernel.h`
 - [`panic_screen`](modules/kernel.panic.c.md#panic_screen) function in `kernel/panic.c`
 - [`park`](modules/kernel.sched.c.md#park) function in `kernel/sched.c`
@@ -5884,6 +5893,7 @@
 - [`parse_grid`](modules/tools.doom_pwad.py.md#parse_grid) function in `tools.doom_pwad`
 - [`parse_head`](modules/progs.asm.freedom.s.md#parse_head) function in `progs/asm/freedom.s`
 - [`parse_input`](modules/progs.nuklear.node_editor.c.md#parse_input) function in `progs/nuklear/node_editor.c`
+- [`parse_ld_stubs`](modules/tools.check_abi_numbers.py.md#parse_ld_stubs) function in `tools.check_abi_numbers`
 - [`parse_mutations`](modules/tools.check_mutant_anchors.py.md#parse_mutations) function in `tools.check_mutant_anchors`
 - [`parse_phdrs`](modules/tools.sign_elf.py.md#parse_phdrs) function in `tools.sign_elf`
 - [`parse_response`](modules/progs.micropython.variants.minios.lib.mip.py.md#parse_response) function in `progs.micropython.variants.minios.lib.mip`
@@ -6658,6 +6668,7 @@
 - [`ramdisk_usage`](modules/headers.kernel.h.md#ramdisk_usage) function in `headers/kernel.h`
 - [`ramdisk_write`](modules/fs.ramdisk.c.md#ramdisk_write) function in `fs/ramdisk.c`
 - [`ramdisk_write`](modules/headers.kernel.h.md#ramdisk_write) function in `headers/kernel.h`
+- [`range`](modules/progs.minios_abi.h.md#range) function in `progs/minios_abi.h`
 - [`RANGECHECK`](modules/progs.doomgeneric.doomdef.h.md#rangecheck) macro in `progs/doomgeneric/doomdef.h`
 - [`RANGECHECK`](modules/progs.doomgeneric.v_video.c.md#rangecheck) macro in `progs/doomgeneric/v_video.c`
 - [`RATE`](modules/progs.piano.piano.c.md#rate) macro in `progs/piano/piano.c`
@@ -6911,11 +6922,14 @@
 - [`rwlock_init`](modules/kernel.sync.c.md#rwlock_init) function in `kernel/sync.c`
 - [`rwlock_read_lock`](modules/headers.sync.h.md#rwlock_read_lock) function in `headers/sync.h`
 - [`rwlock_read_lock`](modules/kernel.sync.c.md#rwlock_read_lock) function in `kernel/sync.c`
+- [`rwlock_read_trylock`](modules/kernel.sync.c.md#rwlock_read_trylock) function in `kernel/sync.c`
 - [`rwlock_read_unlock`](modules/headers.sync.h.md#rwlock_read_unlock) function in `headers/sync.h`
 - [`rwlock_read_unlock`](modules/kernel.sync.c.md#rwlock_read_unlock) function in `kernel/sync.c`
 - [`rwlock_t`](modules/headers.sync.h.md#rwlock_t) struct in `headers/sync.h`
 - [`rwlock_write_lock`](modules/headers.sync.h.md#rwlock_write_lock) function in `headers/sync.h`
 - [`rwlock_write_lock`](modules/kernel.sync.c.md#rwlock_write_lock) function in `kernel/sync.c`
+- [`rwlock_write_trylock`](modules/headers.sync.h.md#rwlock_write_trylock) function in `headers/sync.h`
+- [`rwlock_write_trylock`](modules/kernel.sync.c.md#rwlock_write_trylock) function in `kernel/sync.c`
 - [`rwlock_write_unlock`](modules/headers.sync.h.md#rwlock_write_unlock) function in `headers/sync.h`
 - [`rwlock_write_unlock`](modules/kernel.sync.c.md#rwlock_write_unlock) function in `kernel/sync.c`
 
@@ -7884,6 +7898,7 @@
 - [`stage2_main`](modules/arch.x86.boot.stage2.S.md#stage2_main) function in `arch/x86/boot/stage2.S`
 - [`_start`](modules/progs.asm.aes.s.md#_start) function in `progs/asm/aes.s`
 - [`_start`](modules/progs.asm.cp.s.md#_start) function in `progs/asm/cp.s`
+- [`_start`](modules/progs.asm.cvmfmt.s.md#_start) function in `progs/asm/cvmfmt.s`
 - [`_start`](modules/progs.asm.fib.s.md#_start) function in `progs/asm/fib.s`
 - [`_start`](modules/progs.asm.freedom.s.md#_start) function in `progs/asm/freedom.s`
 - [`_start`](modules/progs.asm.http.s.md#_start) function in `progs/asm/http.s`
@@ -8221,6 +8236,7 @@
 - [`testcontrols`](modules/progs.doomgeneric.doomstat.h.md#testcontrols) variable in `progs/doomgeneric/doomstat.h`
 - [`testcontrols_mousespeed`](modules/progs.doomgeneric.doomstat.h.md#testcontrols_mousespeed) variable in `progs/doomgeneric/doomstat.h`
 - [`texpatch_t`](modules/progs.doomgeneric.r_data.c.md#texpatch_t) struct in `progs/doomgeneric/r_data.c`
+- [`text`](modules/kernel.shell.c.md#text) function in `kernel/shell.c`
 - [`text_from`](modules/mcp.minios_mcp.py.md#logbuffer-text_from) method of `LogBuffer` in `mcp.minios_mcp`
 - [`textscreen_t`](modules/progs.doomgeneric.f_finale.c.md#textscreen_t) struct in `progs/doomgeneric/f_finale.c`
 - [`TEXTSPEED`](modules/progs.doomgeneric.f_finale.c.md#textspeed) macro in `progs/doomgeneric/f_finale.c`
@@ -8984,6 +9000,8 @@
 - [`vga_fb_gfx_view_name`](modules/kernel.vga_fb.c.md#vga_fb_gfx_view_name) function in `kernel/vga_fb.c`
 - [`vga_fb_hide_text_cursor`](modules/headers.vga_fb.h.md#vga_fb_hide_text_cursor) function in `headers/vga_fb.h`
 - [`vga_fb_hide_text_cursor`](modules/kernel.vga_fb.c.md#vga_fb_hide_text_cursor) function in `kernel/vga_fb.c`
+- [`vga_fb_history_page`](modules/headers.vga_fb.h.md#vga_fb_history_page) function in `headers/vga_fb.h`
+- [`vga_fb_history_page`](modules/kernel.vga_fb.c.md#vga_fb_history_page) function in `kernel/vga_fb.c`
 - [`vga_fb_init`](modules/headers.vga_fb.h.md#vga_fb_init) function in `headers/vga_fb.h`
 - [`vga_fb_init`](modules/kernel.vga_fb.c.md#vga_fb_init) function in `kernel/vga_fb.c`
 - [`vga_fb_is_fullscreen`](modules/headers.vga_fb.h.md#vga_fb_is_fullscreen) function in `headers/vga_fb.h`
@@ -9049,6 +9067,10 @@
 - [`vga_fb_str`](modules/kernel.vga_fb.c.md#vga_fb_str) function in `kernel/vga_fb.c`
 - [`vga_fb_term_close_focused`](modules/headers.kernel.h.md#vga_fb_term_close_focused) function in `headers/kernel.h`
 - [`vga_fb_term_close_focused`](modules/headers.vga_fb.h.md#vga_fb_term_close_focused) function in `headers/vga_fb.h`
+- [`vga_fb_term_feed`](modules/headers.vga_fb.h.md#vga_fb_term_feed) function in `headers/vga_fb.h`
+- [`vga_fb_term_feed`](modules/kernel.vga_fb.c.md#vga_fb_term_feed) function in `kernel/vga_fb.c`
+- [`vga_fb_term_ring_init`](modules/headers.vga_fb.h.md#vga_fb_term_ring_init) function in `headers/vga_fb.h`
+- [`vga_fb_term_ring_init`](modules/kernel.vga_fb.c.md#vga_fb_term_ring_init) function in `kernel/vga_fb.c`
 - [`vga_fb_term_split`](modules/headers.kernel.h.md#vga_fb_term_split) function in `headers/kernel.h`
 - [`vga_fb_term_split`](modules/headers.vga_fb.h.md#vga_fb_term_split) function in `headers/vga_fb.h`
 - [`vga_fb_text_cursor`](modules/headers.vga_fb.h.md#vga_fb_text_cursor) function in `headers/vga_fb.h`
@@ -9095,6 +9117,7 @@
 - [`vga_gfx_ran_set`](modules/headers.kernel.h.md#vga_gfx_ran_set) function in `headers/kernel.h`
 - [`vga_gfx_ran_set`](modules/kernel.exec.c.md#vga_gfx_ran_set) function in `kernel/exec.c`
 - [`vga_idle`](modules/tools.minios_hyper.py.md#hyperchecks-vga_idle) method of `HyperChecks` in `tools.minios_hyper`
+- [`VGA_LINE_MAX`](modules/kernel.console.c.md#vga_line_max) macro in `kernel/console.c`
 - [`vga_mode_is_active`](modules/headers.kernel.h.md#vga_mode_is_active) function in `headers/kernel.h`
 - [`vga_mode_is_active`](modules/kernel.exec.c.md#vga_mode_is_active) function in `kernel/exec.c`
 - [`vga_mode_set`](modules/headers.kernel.h.md#vga_mode_set) function in `headers/kernel.h`

@@ -415,7 +415,7 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `mutex_t` (struct, line 63)
   - `sem_t` (struct, line 81)
   - `cond_t` (struct, line 97)
-  - `rwlock_t` (struct, line 109)
+  - `rwlock_t` (struct, line 114)
   - `wq_init` (function, line 50) `void wq_init(wait_queue_t *q);`
   - `sleep_on` (function, line 51) `void sleep_on(wait_queue_t *q);`
   - `wake_up` (function, line 52) `int wake_up(wait_queue_t *q);`
@@ -435,18 +435,20 @@ Previous: [KB_headers_p3.md](KB_headers_p3.md)
   - `cond_wait` (function, line 104) `void cond_wait(cond_t *c, mutex_t *m);`
   - `cond_signal` (function, line 105) `void cond_signal(cond_t *c);`
   - `cond_broadcast` (function, line 106) `void cond_broadcast(cond_t *c);`
-  - `rwlock_init` (function, line 118) `void rwlock_init(rwlock_t *rw);`
-  - `rwlock_read_lock` (function, line 119) `void rwlock_read_lock(rwlock_t *rw);`
-  - `rwlock_read_unlock` (function, line 120) `void rwlock_read_unlock(rwlock_t *rw);`
-  - `rwlock_write_lock` (function, line 121) `void rwlock_write_lock(rwlock_t *rw);`
-  - `rwlock_write_unlock` (function, line 122) `void rwlock_write_unlock(rwlock_t *rw);`
+  - `rwlock_init` (function, line 124) `void rwlock_init(rwlock_t *rw);`
+  - `rwlock_read_lock` (function, line 125) `void rwlock_read_lock(rwlock_t *rw);`
+  - `rwlock_read_unlock` (function, line 126) `void rwlock_read_unlock(rwlock_t *rw);`
+  - `rwlock_write_lock` (function, line 127) `void rwlock_write_lock(rwlock_t *rw);`
+  - `rwlock_write_unlock` (function, line 128) `void rwlock_write_unlock(rwlock_t *rw);`
+  - `now` (function, line 130) `* available right now (a reader never takes it while a writer waits). */ int rwlock_read_trylock(rwlock_t *rw);`
+  - `rwlock_write_trylock` (function, line 132) `int rwlock_write_trylock(rwlock_t *rw);`
   - `SYNC_H` (macro, line 2) `#define SYNC_H`
   - `WQ_NONE` (macro, line 39) `#define WQ_NONE`
   - `WAIT_QUEUE_INIT` (macro, line 48) `#define WAIT_QUEUE_INIT`
   - `MUTEX_INIT` (macro, line 70) `#define MUTEX_INIT`
   - `SEM_INIT` (macro, line 87) `#define SEM_INIT(n)`
   - `COND_INIT` (macro, line 101) `#define COND_INIT`
-  - `RWLOCK_INIT` (macro, line 116) `#define RWLOCK_INIT`
+  - `RWLOCK_INIT` (macro, line 122) `#define RWLOCK_INIT`
 - Depends on: `headers/sched.h`, `headers/spinlock.h`
 - Imported by: `drivers/sb16.c`, `headers/futex.h`, `kernel/futex.c`, `kernel/sched.c`, `kernel/sync.c`, `kernel/syscalls.c`, `tests/test_sync.c`
 

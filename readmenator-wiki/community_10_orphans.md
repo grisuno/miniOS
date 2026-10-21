@@ -1,10 +1,10 @@
 # orphans
 
-*Community 10 | 115 files | cohesion 0.00*
+*Community 10 | 116 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 115 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (107 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
+This community groups 116 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (107 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
@@ -13,7 +13,7 @@ This community groups 115 file(s) rooted at `tools` with dominant language c (co
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
 | `tools/boot_run.sh` | sh | utility | 0 | yes |
-| `tools/check_abi_numbers.py` | py | utility | 4 | yes |
+| `tools/check_abi_numbers.py` | py | utility | 5 | yes |
 
 ### `progs/src` (32 files)
 
@@ -22,7 +22,7 @@ This community groups 115 file(s) rooted at `tools` with dominant language c (co
 | `progs/src/aes.c` | c | utility | 54 | yes |
 | `progs/src/aslr.c` | c | utility | 10 | yes |
 
-### `progs/asm` (12 files)
+### `progs/asm` (13 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -103,7 +103,7 @@ This community groups 115 file(s) rooted at `tools` with dominant language c (co
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 95 more files in this community.*
+*... and 96 more files in this community.*
 
 
 ## Key Symbols
@@ -147,7 +147,6 @@ This community groups 115 file(s) rooted at `tools` with dominant language c (co
 ## Connections
 
 - [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers: kernel) and community 10 (orphans).
-- [INFERRED] shares_context community 1 <-> 10 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 10 (orphans).
 
 ## Risks
 
@@ -159,7 +158,7 @@ This community groups 115 file(s) rooted at `tools` with dominant language c (co
 
 ## Open Questions
 
-- Why do 34 file(s) lack file-level docs (e.g. `arch/x86/ctx_sw.S`)? What purpose do they serve?
+- Why do 35 file(s) lack file-level docs (e.g. `arch/x86/ctx_sw.S`)? What purpose do they serve?
 - Is the dangerous import `subprocess` in `mcp/test_minios_mcp.py` still required, or can it be isolated?
 - What would break if the most connected file in orphans changed?
 - Should orphans be split, given cohesion 0.00?
@@ -185,5 +184,5 @@ This community groups 115 file(s) rooted at `tools` with dominant language c (co
 - `mcp/test_minios_mcp.py`
 - `progs/asm/aes.s`
 - `progs/asm/cp.s`
-- `progs/asm/fib.s`
-- *... and 95 more*
+- `progs/asm/cvmfmt.s`
+- *... and 96 more*

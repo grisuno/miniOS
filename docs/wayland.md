@@ -26,18 +26,20 @@ miniOS> wlcomp --server        # interactive desktop (same as desktop,
                                # foreground; desktop backgrounds it)
 miniOS> wlcomp --client red stripe   # attach a surface from a client
 miniOS> wlcomp --once          # drain once for scripts
-miniOS> wlcomp --clean         # unlink the mailbox directory
+miniOS> wlcomp --clean         # unlink the mailbox files
 miniOS> freedom_wl --once <url>  # graphical browser, now a wl_mini client
 ```
 
 A plain `make run` boot plus one `desktop` is the multitasking
 Wayland session: click focuses (active title paints bright), title
 drag moves, rim drag resizes, the close box closes (kill a live
-client's job too, it re-attaches otherwise), `t` re-tiles, `m`/`u`
-minimize/restore, `q` quits. Server shortcuts are Alt-held
-(`Alt+T/M/U/Q`) so plain keys always reach the focused client; `ESC`
-belongs to the app. `desktop stop` quits through the quit flag
-because a background job owns no console to hear keys on.
+client's job too, it re-attaches otherwise), `Alt+T` re-tiles,
+`Alt+M`/`Alt+U` minimize/restore, `Alt+Q` quits. Every server
+shortcut is Alt-held (`Alt+T/M/U/Q`, plus `Alt+Tab` cycles focus) so
+plain keys always reach the focused client; `ESC` reaches the app too
+and quits only when no window is mapped. `desktop stop` quits through
+the quit flag because a background job owns no console to hear keys
+on.
 
 `wlcomp` without arguments is the visible proof: it builds two demo
 surfaces, tiles them side by side with `wl_comp_layout_tile`,
@@ -53,8 +55,9 @@ scenario pins both lines.
 
 `wlcomp --server` is the functional desktop: it owns the display,
 drains client mailboxes, focuses on click, drags the focused surface
-(`wl_comp_set_rect`), re-tiles on `t` and quits on ESC with the
-desktop redrawn. `make wl` boots the desktop in one step (`tools/boot_wl.py` over
+(`wl_comp_set_rect`), re-tiles on `Alt+T` and quits on `Alt+Q` (ESC
+quits only on an empty desktop) with the desktop redrawn. `make wl`
+boots the desktop in one step (`tools/boot_wl.py` over
 `os.img`): mailbox clean, mirror flag, three real app frames
 (`paint`, `vedit`, `nuklear` selftests, strictly sequential),
 one terminal-pattern client, server in background, console attached

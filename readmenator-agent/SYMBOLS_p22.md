@@ -3,49 +3,74 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `menu_fill` | function | `progs/pokemon/platform_minios.c:632` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
-| `menu_item_at` | function | `progs/pokemon/platform_minios.c:700` | `static int menu_item_at(int lx, int ly)` |
-| `menu_osd` | function | `progs/pokemon/platform_minios.c:664` | `static void menu_osd(const char *s)` |
-| `menu_text` | function | `progs/pokemon/platform_minios.c:645` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
-| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:330` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,                             ...` |
-| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:262` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
-| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1222` | `static void minios_autosave(uint32_t now)` |
-| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1208` | `static inline bool minios_fast_forward(void)` |
-| `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:1097` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,                        ...` |
-| `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1217` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
-| `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:1132` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
-| `minios_load_helper` | function | `progs/pokemon/platform_minios.c:1103` | `static bool minios_load_helper(const char *path, void *data, size_t size,                        ...` |
-| `minios_load_rtc_data` | function | `progs/pokemon/platform_minios.c:1157` | `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,                           ...` |
-| `minios_persist_path` | function | `progs/pokemon/platform_minios.c:1088` | `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,                       ...` |
-| `minios_save_battery_ram` | function | `progs/pokemon/platform_minios.c:1147` | `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
-| `minios_save_helper` | function | `progs/pokemon/platform_minios.c:1121` | `static bool minios_save_helper(const char *path, const void *data, size_t size)` |
-| `minios_save_rtc_data` | function | `progs/pokemon/platform_minios.c:1170` | `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,                           ...` |
-| `minios_state_path` | function | `progs/pokemon/platform_minios.c:1212` | `static void minios_state_path(char *out, size_t n, const GBContext *ctx)` |
-| `pokemon_art_draw` | function | `progs/pokemon/platform_minios.c:925` | `static void pokemon_art_draw(void)` |
-| `pokemon_art_draw_one` | function | `progs/pokemon/platform_minios.c:887` | `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,                       ...` |
-| `pokemon_art_load` | function | `progs/pokemon/platform_minios.c:869` | `static void pokemon_art_load(void)` |
-| `pokemon_art_load_one` | function | `progs/pokemon/platform_minios.c:844` | `static int pokemon_art_load_one(const char *path, unsigned char **rgb,                           ...` |
-| `poll_hotkeys` | function | `progs/pokemon/platform_minios.c:1236` | `static void poll_hotkeys(void)` |
-| `poll_keyboard` | function | `progs/pokemon/platform_minios.c:416` | `static void poll_keyboard(void)` |
-| `poll_menu` | function | `progs/pokemon/platform_minios.c:776` | `static void poll_menu(void)` |
-| `push_332_palette` | function | `progs/pokemon/platform_minios.c:455` | `static void push_332_palette(void)` |
-| `px_to_idx` | function | `progs/pokemon/platform_minios.c:956` | `static uint8_t px_to_idx(uint32_t pixel)` |
-| `rebuild_joypad` | function | `progs/pokemon/platform_minios.c:402` | `static void rebuild_joypad(void)` |
-| `sample_apu_voices` | function | `progs/pokemon/platform_minios.c:310` | `static void sample_apu_voices(gb_voice_t *v)` |
-| `sys_gfx_title` | function | `progs/pokemon/platform_minios.c:111` | `static long sys_gfx_title(const char *t)` |
-| `sys_kbd` | function | `progs/pokemon/platform_minios.c:75` | `static long sys_kbd(void)` |
-| `sys_kbd_raw` | function | `progs/pokemon/platform_minios.c:99` | `static long sys_kbd_raw(int on)` |
-| `sys_mouse` | function | `progs/pokemon/platform_minios.c:87` | `static long sys_mouse(int *xybw)` |
-| `sys_nk_frame` | function | `progs/pokemon/platform_minios.c:81` | `static long sys_nk_frame(int *origin)` |
-| `sys_palette` | function | `progs/pokemon/platform_minios.c:105` | `static long sys_palette(const unsigned char *pal)` |
-| `sys_pcm2_close` | function | `progs/pokemon/platform_minios.c:135` | `static void sys_pcm2_close(void)` |
-| `sys_pcm2_open` | function | `progs/pokemon/platform_minios.c:123` | `static long sys_pcm2_open(long flags)` |
-| `sys_pcm2_write` | function | `progs/pokemon/platform_minios.c:129` | `static long sys_pcm2_write(const void *buf, long len)` |
-| `sys_tone` | function | `progs/pokemon/platform_minios.c:117` | `static long sys_tone(unsigned f)` |
-| `sys_vga_mode` | function | `progs/pokemon/platform_minios.c:93` | `static long sys_vga_mode(int on)` |
-| `ui_fringe_dirty` | function | `progs/pokemon/platform_minios.c:620` | `static bool ui_fringe_dirty(uint32_t now)` |
-| `ui_fringe_sync` | function | `progs/pokemon/platform_minios.c:626` | `static void ui_fringe_sync(uint32_t now)` |
-| `upload_frame` | function | `progs/pokemon/platform_minios.c:975` | `static void upload_frame(const uint32_t *framebuffer)` |
+| `gb_platform_render_lcd_off_frame` | function | `progs/pokemon/platform_minios.c:1412` | `void gb_platform_render_lcd_off_frame(void)` |
+| `gb_platform_set_benchmark_mode` | function | `progs/pokemon/platform_minios.c:1451` | `void gb_platform_set_benchmark_mode(bool enabled)` |
+| `gb_platform_set_debug` | function | `progs/pokemon/platform_minios.c:191` | `void gb_platform_set_debug(bool enabled)` |
+| `gb_platform_set_dump_frames` | function | `progs/pokemon/platform_minios.c:1475` | `void gb_platform_set_dump_frames(const char *frames)` |
+| `gb_platform_set_dump_present_frames` | function | `progs/pokemon/platform_minios.c:1497` | `void gb_platform_set_dump_present_frames(const char *frames)` |
+| `gb_platform_set_input_record_file` | function | `progs/pokemon/platform_minios.c:1461` | `void gb_platform_set_input_record_file(const char *path)` |
+| `gb_platform_set_input_script` | function | `progs/pokemon/platform_minios.c:1455` | `bool gb_platform_set_input_script(const char *script)` |
+| `gb_platform_set_launcher_return_enabled` | function | `progs/pokemon/platform_minios.c:1549` | `void gb_platform_set_launcher_return_enabled(bool enabled)` |
+| `gb_platform_set_persistence_dir` | function | `progs/pokemon/platform_minios.c:1466` | `bool gb_platform_set_persistence_dir(const char *path)` |
+| `gb_platform_set_screenshot_prefix` | function | `progs/pokemon/platform_minios.c:1518` | `void gb_platform_set_screenshot_prefix(const char *prefix)` |
+| `gb_platform_set_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1545` | `void gb_platform_set_smooth_lcd_transitions(bool enabled)` |
+| `gb_platform_set_title` | function | `progs/pokemon/platform_minios.c:1535` | `void gb_platform_set_title(const char *title)` |
+| `gb_platform_shutdown` | function | `progs/pokemon/platform_minios.c:1311` | `void gb_platform_shutdown(void)` |
+| `gb_platform_submit_port_frame` | function | `progs/pokemon/platform_minios.c:1557` | `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)` |
+| `gb_platform_test_audio_concurrency` | function | `progs/pokemon/platform_minios.c:1563` | `bool gb_platform_test_audio_concurrency(uint32_t frames,                                         ...` |
+| `gb_platform_test_inject_persistence_fault` | function | `progs/pokemon/platform_minios.c:1572` | `void gb_platform_test_inject_persistence_fault(     GBPersistenceTestTarget target,     GBPersist...` |
+| `gb_platform_vsync` | function | `progs/pokemon/platform_minios.c:1434` | `void gb_platform_vsync(uint32_t frame_cycles)` |
+| `gb_voice_in_range` | function | `progs/pokemon/platform_minios.c:307` | `static bool gb_voice_in_range(unsigned f)` |
+| `gb_voice_t` | struct | `progs/pokemon/platform_minios.c:302` | `` |
+| `menu` | function | `progs/pokemon/platform_minios.c:572` | `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it...` |
+| `menu_activate` | function | `progs/pokemon/platform_minios.c:743` | `static void menu_activate(int it)` |
+| `menu_do_load` | function | `progs/pokemon/platform_minios.c:724` | `static void menu_do_load(void)` |
+| `menu_do_save` | function | `progs/pokemon/platform_minios.c:708` | `static void menu_do_save(void)` |
+| `menu_draw` | function | `progs/pokemon/platform_minios.c:671` | `static void menu_draw(void)` |
+| `menu_fill` | function | `progs/pokemon/platform_minios.c:633` | `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)` |
+| `menu_item_at` | function | `progs/pokemon/platform_minios.c:701` | `static int menu_item_at(int lx, int ly)` |
+| `menu_osd` | function | `progs/pokemon/platform_minios.c:665` | `static void menu_osd(const char *s)` |
+| `menu_text` | function | `progs/pokemon/platform_minios.c:646` | `static void menu_text(int x, int y, const char *s, uint8_t fg)` |
+| `minios_audio_play` | function | `progs/pokemon/platform_minios.c:331` | `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,                             ...` |
+| `minios_audio_sample` | function | `progs/pokemon/platform_minios.c:263` | `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)` |
+| `minios_autosave` | function | `progs/pokemon/platform_minios.c:1223` | `static void minios_autosave(uint32_t now)` |
+| `minios_fast_forward` | function | `progs/pokemon/platform_minios.c:1209` | `static inline bool minios_fast_forward(void)` |
+| `minios_legacy_path` | function | `progs/pokemon/platform_minios.c:1098` | `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,                        ...` |
+| `minios_legacy_state_path` | function | `progs/pokemon/platform_minios.c:1218` | `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `minios_load_battery_ram` | function | `progs/pokemon/platform_minios.c:1133` | `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
+| `minios_load_helper` | function | `progs/pokemon/platform_minios.c:1104` | `static bool minios_load_helper(const char *path, void *data, size_t size,                        ...` |
+| `minios_load_rtc_data` | function | `progs/pokemon/platform_minios.c:1158` | `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,                           ...` |
+| `minios_persist_path` | function | `progs/pokemon/platform_minios.c:1089` | `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,                       ...` |
+| `minios_save_battery_ram` | function | `progs/pokemon/platform_minios.c:1148` | `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,                        ...` |
+| `minios_save_helper` | function | `progs/pokemon/platform_minios.c:1122` | `static bool minios_save_helper(const char *path, const void *data, size_t size)` |
+| `minios_save_rtc_data` | function | `progs/pokemon/platform_minios.c:1171` | `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,                           ...` |
+| `minios_state_path` | function | `progs/pokemon/platform_minios.c:1213` | `static void minios_state_path(char *out, size_t n, const GBContext *ctx)` |
+| `pokemon_art_draw` | function | `progs/pokemon/platform_minios.c:926` | `static void pokemon_art_draw(void)` |
+| `pokemon_art_draw_one` | function | `progs/pokemon/platform_minios.c:888` | `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,                       ...` |
+| `pokemon_art_load` | function | `progs/pokemon/platform_minios.c:870` | `static void pokemon_art_load(void)` |
+| `pokemon_art_load_one` | function | `progs/pokemon/platform_minios.c:845` | `static int pokemon_art_load_one(const char *path, unsigned char **rgb,                           ...` |
+| `poll_hotkeys` | function | `progs/pokemon/platform_minios.c:1237` | `static void poll_hotkeys(void)` |
+| `poll_keyboard` | function | `progs/pokemon/platform_minios.c:417` | `static void poll_keyboard(void)` |
+| `poll_menu` | function | `progs/pokemon/platform_minios.c:777` | `static void poll_menu(void)` |
+| `push_332_palette` | function | `progs/pokemon/platform_minios.c:456` | `static void push_332_palette(void)` |
+| `px_to_idx` | function | `progs/pokemon/platform_minios.c:957` | `static uint8_t px_to_idx(uint32_t pixel)` |
+| `rebuild_joypad` | function | `progs/pokemon/platform_minios.c:403` | `static void rebuild_joypad(void)` |
+| `sample_apu_voices` | function | `progs/pokemon/platform_minios.c:311` | `static void sample_apu_voices(gb_voice_t *v)` |
+| `sys_gfx_title` | function | `progs/pokemon/platform_minios.c:112` | `static long sys_gfx_title(const char *t)` |
+| `sys_kbd` | function | `progs/pokemon/platform_minios.c:76` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/pokemon/platform_minios.c:100` | `static long sys_kbd_raw(int on)` |
+| `sys_mouse` | function | `progs/pokemon/platform_minios.c:88` | `static long sys_mouse(int *xybw)` |
+| `sys_nk_frame` | function | `progs/pokemon/platform_minios.c:82` | `static long sys_nk_frame(int *origin)` |
+| `sys_palette` | function | `progs/pokemon/platform_minios.c:106` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_pcm2_close` | function | `progs/pokemon/platform_minios.c:136` | `static void sys_pcm2_close(void)` |
+| `sys_pcm2_open` | function | `progs/pokemon/platform_minios.c:124` | `static long sys_pcm2_open(long flags)` |
+| `sys_pcm2_write` | function | `progs/pokemon/platform_minios.c:130` | `static long sys_pcm2_write(const void *buf, long len)` |
+| `sys_time_ms` | function | `progs/pokemon/platform_minios.c:70` | `static long sys_time_ms(void)` |
+| `sys_tone` | function | `progs/pokemon/platform_minios.c:118` | `static long sys_tone(unsigned f)` |
+| `sys_vga_mode` | function | `progs/pokemon/platform_minios.c:94` | `static long sys_vga_mode(int on)` |
+| `ui_fringe_dirty` | function | `progs/pokemon/platform_minios.c:621` | `static bool ui_fringe_dirty(uint32_t now)` |
+| `ui_fringe_sync` | function | `progs/pokemon/platform_minios.c:627` | `static void ui_fringe_sync(uint32_t now)` |
+| `upload_frame` | function | `progs/pokemon/platform_minios.c:976` | `static void upload_frame(const uint32_t *framebuffer)` |
 | `Cbuf_AddText` | function | `progs/quake2generic/q2generic_minios.c:102` | `extern void Cbuf_AddText(char *text);` |
 | `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/quake2generic/q2generic_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
 | `MINIOS_GFX_BUF_GAME` | function | `progs/quake2generic/q2generic_minios.c:5` | `* MINIOS_SYS_GFX_PRESENT with MINIOS_GFX_BUF_GAME (211 stays as a kernel  * compat alias) and the...` |
@@ -210,6 +235,7 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `_start` | function | `progs/src/cpl.c:16` | `void _start(void)` |
 | `exit_now` | function | `progs/src/cpl.c:12` | `static void exit_now(long code)` |
 | `read_cpl` | function | `progs/src/cpl.c:6` | `static long read_cpl(void)` |
+| `main` | function | `progs/src/cvmfmt.c:19` | `int main(void)` |
 | `ex_exit` | function | `progs/src/execho.c:24` | `static void ex_exit(long code)` |
 | `ex_fail` | function | `progs/src/execho.c:29` | `static void ex_fail(int step)` |
 | `ex_write` | function | `progs/src/execho.c:20` | `static void ex_write(const char *s, unsigned long len)` |
@@ -470,31 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `check_getdents64` | function | `progs/src/lxabi.c:722` | `static void check_getdents64(void)` |
 | `check_limits` | function | `progs/src/lxabi.c:478` | `static void check_limits(void)` |
 | `check_mkdir` | function | `progs/src/lxabi.c:464` | `static void check_mkdir(void)` |
-| `check_pipe2_flags` | function | `progs/src/lxabi.c:307` | `static void check_pipe2_flags(void)` |
-| `check_pipe_blocking` | function | `progs/src/lxabi.c:334` | `static void check_pipe_blocking(void)` |
-| `check_pipe_epipe` | function | `progs/src/lxabi.c:356` | `static void check_pipe_epipe(void)` |
-| `check_poll` | function | `progs/src/lxabi.c:394` | `static void check_poll(void)` |
-| `check_rename_dir` | function | `progs/src/lxabi.c:649` | `static void check_rename_dir(void)` |
-| `check_sleep` | function | `progs/src/lxabi.c:500` | `static void check_sleep(void)` |
-| `check_threads` | function | `progs/src/lxabi.c:215` | `static void check_threads(void)` |
-| `check_time` | function | `progs/src/lxabi.c:455` | `static void check_time(void)` |
-| `check_uid_gid` | function | `progs/src/lxabi.c:642` | `static void check_uid_gid(void)` |
-| `check_writev_pipe` | function | `progs/src/lxabi.c:382` | `static void check_writev_pipe(void)` |
-| `child_status` | function | `progs/src/lxabi.c:535` | `static int child_status(void (*body)(void))` |
-| `copy_dentry_name` | function | `progs/src/lxabi.c:715` | `static void copy_dentry_name(char *dst, size_t cap, const char *src)` |
-| `detached_worker` | function | `progs/src/lxabi.c:245` | `static void *detached_worker(void *arg)` |
-| `exit_group_from_worker_body` | function | `progs/src/lxabi.c:567` | `static void exit_group_from_worker_body(void)` |
-| `fork_probe` | function | `progs/src/lxabi.c:95` | `static void fork_probe(uint64_t *out)` |
-| `lxabi_exit_group_worker` | function | `progs/src/lxabi.c:561` | `static void *lxabi_exit_group_worker(void *arg)` |
-| `lxabi_sleeper` | function | `progs/src/lxabi.c:527` | `static void *lxabi_sleeper(void *arg)` |
-| `main` | function | `progs/src/lxabi.c:789` | `int main(void)` |
-| `mono_us` | function | `progs/src/lxabi.c:491` | `static long mono_us(void)` |
-| `now_ms` | function | `progs/src/lxabi.c:75` | `static long now_ms(void)` |
-| `process` | function | `progs/src/lxabi.c:581` | `* process (never a kernel panic), and kill(pid, 0) or a harmless signal  * leaves the target aliv...` |
-| `regs_match` | function | `progs/src/lxabi.c:132` | `static int regs_match(const uint64_t *r)` |
-| `report` | function | `progs/src/lxabi.c:65` | `static void report(const char *name, int ok, const char *detail)` |
-| `signaller` | function | `progs/src/lxabi.c:275` | `static void *signaller(void *arg)` |
-| `thread_result` | struct | `progs/src/lxabi.c:195` | `` |
-| `tls_seen` | type_alias | `progs/src/lxabi.c:194` | `typedef struct thread_result { long tls_seen;` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)

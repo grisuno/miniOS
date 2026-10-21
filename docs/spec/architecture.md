@@ -367,7 +367,7 @@ image (cvm-argv exit 12, ps-hello anchor, bg-gfx focus, fx-melts
 count), thdemo/fptest/pageup are the documented flaky/limited areas,
 and the freedom-fetch/exit-130 remainder is fixture-timing sensitive
 (each passes in isolation). Every scenario touching new code passes;
-`sh src/test_all.sh` prints 96 PASS with zero FAIL.
+`sh src/test_all.sh` prints 112 PASS with zero FAIL.
 
 #### Mutation anchor hygiene and the equivalent-mutant record
 Every `mutate.sh` expression must match its target file, or `mutate.sh`
@@ -678,7 +678,7 @@ CI gates enforce architectural constraints:
 ```bash
 make                        # zero warnings
 make lint                   # cppcheck + -Wextra (ring-3) + clang-tidy curated + bash -n + abi-numbers + fork-stubs + sanitize-audit + addons, all green
-sh src/test_all.sh          # one-boot comprehensive non-interactive suite (96 PASS)
+sh src/test_all.sh          # one-boot comprehensive non-interactive suite (112 PASS)
 ./tools/test_bdd.sh          # all scenarios green (full interactive suite)
 python3 tools/test_gui_wm.py  # QMP pixel proof: gfx survives Alt+Tab/tile, taskbar button refocuses
 python3 tools/test_gui_icon_cwd.py  # QMP pixel proof: dock launch ignores shell cwd

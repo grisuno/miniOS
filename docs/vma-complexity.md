@@ -34,24 +34,32 @@ $O(1)$ extra space.
 search + one live delete + one free insert. By Lemma 1, $h = O(\log n)$,
 so both operations are $O(\log n)$ worst-case, including under severe
 fragmentation: fragmentation grows $n$ (more, smaller regions), and the
-bound is a function of $n$ alone, never of contiguity. The pool is a
-static array with a bump cursor, so node allocation is $O(1)$.
+bound is a function of $n$ alone, never of contiguity. Node allocation
+is $O(1)$: a deleted node is recycled from the spare list before the
+pool cursor advances, and the pool is a fixed array (the static array
+for the legacy single-window path, a private heap pool for an isolated
+process). The one-entry MRU cache in front of the find path only lowers
+the cost; the worst case is still the tree bound.
 
 ## Fragmentation accounting
 
 Worst case for $n$: alternating allocated/free pages over the user
 window $W$ bytes with minimum region $r$ gives $n \le W/r$. With
 $W = 184$ MB and $r = 4$ KB, $n \le 47104$ nominally, but the pool caps
-operations at `VMA_MAX` (2048) per exec, fail-closed (`VMA_NIL`). At the
-cap, $h \le 2\log_2(2049) < 23$ comparisons per operation: bounded,
+the live regions at `VMA_MAX` (2048) per process context (deleted nodes
+are recycled, so the cap counts live regions, not lifetime operations),
+and an insert past the cap fails closed (`VMA_NIL`). At the cap,
+$h \le 2\log_2(2049) < 23$ comparisons per operation: bounded,
 predictable, and independent of how adversarial the layout is.
 
 ## Test correspondence
 
 `tests/test_vma.c` asserts the invariants Lemma 1 depends on (root
 black, no double-red, equal black height, in-order uniqueness) across
-insert/find/delete, pool exhaustion and full drain. The suite caught a
-real soundness bug: the two-child delete restored the successor's color
-instead of the deleted node's, unbalancing black height (reproduced with
-eight nodes). An implementation that violates the invariants voids this
-proof; the suite is the proof's executable guard.
+insert/find/delete, pool exhaustion and full drain, and also covers the
+node recycling, the tagged (file-backed) nodes, the containing find and
+the MRU cache. The suite caught a real soundness bug: the two-child
+delete restored the successor's color instead of the deleted node's,
+unbalancing black height (reproduced with eight nodes). An
+implementation that violates the invariants voids this proof; the suite
+is the proof's executable guard.

@@ -22,8 +22,6 @@
 
 **Returns:** `*`
 
-*Called by:* [`vga_fb_init`](kernel.vga_fb.c.md#vga_fb_init)
-
 ---
 
 <a id="net_sys_is_socket"></a>

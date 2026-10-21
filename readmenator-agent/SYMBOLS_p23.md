@@ -3,6 +3,32 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `check_pipe2_flags` | function | `progs/src/lxabi.c:307` | `static void check_pipe2_flags(void)` |
+| `check_pipe_blocking` | function | `progs/src/lxabi.c:334` | `static void check_pipe_blocking(void)` |
+| `check_pipe_epipe` | function | `progs/src/lxabi.c:356` | `static void check_pipe_epipe(void)` |
+| `check_poll` | function | `progs/src/lxabi.c:394` | `static void check_poll(void)` |
+| `check_rename_dir` | function | `progs/src/lxabi.c:649` | `static void check_rename_dir(void)` |
+| `check_sleep` | function | `progs/src/lxabi.c:500` | `static void check_sleep(void)` |
+| `check_threads` | function | `progs/src/lxabi.c:215` | `static void check_threads(void)` |
+| `check_time` | function | `progs/src/lxabi.c:455` | `static void check_time(void)` |
+| `check_uid_gid` | function | `progs/src/lxabi.c:642` | `static void check_uid_gid(void)` |
+| `check_writev_pipe` | function | `progs/src/lxabi.c:382` | `static void check_writev_pipe(void)` |
+| `child_status` | function | `progs/src/lxabi.c:535` | `static int child_status(void (*body)(void))` |
+| `copy_dentry_name` | function | `progs/src/lxabi.c:715` | `static void copy_dentry_name(char *dst, size_t cap, const char *src)` |
+| `detached_worker` | function | `progs/src/lxabi.c:245` | `static void *detached_worker(void *arg)` |
+| `exit_group_from_worker_body` | function | `progs/src/lxabi.c:567` | `static void exit_group_from_worker_body(void)` |
+| `fork_probe` | function | `progs/src/lxabi.c:95` | `static void fork_probe(uint64_t *out)` |
+| `lxabi_exit_group_worker` | function | `progs/src/lxabi.c:561` | `static void *lxabi_exit_group_worker(void *arg)` |
+| `lxabi_sleeper` | function | `progs/src/lxabi.c:527` | `static void *lxabi_sleeper(void *arg)` |
+| `main` | function | `progs/src/lxabi.c:789` | `int main(void)` |
+| `mono_us` | function | `progs/src/lxabi.c:491` | `static long mono_us(void)` |
+| `now_ms` | function | `progs/src/lxabi.c:75` | `static long now_ms(void)` |
+| `process` | function | `progs/src/lxabi.c:581` | `* process (never a kernel panic), and kill(pid, 0) or a harmless signal  * leaves the target aliv...` |
+| `regs_match` | function | `progs/src/lxabi.c:132` | `static int regs_match(const uint64_t *r)` |
+| `report` | function | `progs/src/lxabi.c:65` | `static void report(const char *name, int ok, const char *detail)` |
+| `signaller` | function | `progs/src/lxabi.c:275` | `static void *signaller(void *arg)` |
+| `thread_result` | struct | `progs/src/lxabi.c:195` | `` |
+| `tls_seen` | type_alias | `progs/src/lxabi.c:194` | `typedef struct thread_result { long tls_seen;` |
 | `wild_jump_body` | function | `progs/src/lxabi.c:573` | `static void wild_jump_body(void)` |
 | `worker` | function | `progs/src/lxabi.c:201` | `static void *worker(void *arg)` |
 | `SYS_exit` | macro | `progs/src/lxhello.c:21` | `#define SYS_exit` |
@@ -294,7 +320,7 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `SC_T0_N` | macro | `progs/src/scfuzz.c:20` | `#define SC_T0_N` |
 | `SC_T1_BASE` | macro | `progs/src/scfuzz.c:21` | `#define SC_T1_BASE` |
 | `SC_T1_N` | macro | `progs/src/scfuzz.c:22` | `#define SC_T1_N` |
-| `_start` | function | `progs/src/scfuzz.c:160` | `void _start(void)` |
+| `_start` | function | `progs/src/scfuzz.c:167` | `void _start(void)` |
 | `guest` | function | `progs/src/scfuzz.c:7` | `* the guest (the BDD timeout then talks). All fuzz maps stay inside  * one private 4 MB arena (pa...` |
 | `sc_exit` | function | `progs/src/scfuzz.c:61` | `static void sc_exit(long code)` |
 | `sc_fold` | function | `progs/src/scfuzz.c:76` | `static unsigned long sc_fold(unsigned long h, unsigned long v)` |
@@ -302,7 +328,7 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `sc_mprotect` | function | `progs/src/scfuzz.c:38` | `static long sc_mprotect(long addr, long len, long prot)` |
 | `sc_munmap` | function | `progs/src/scfuzz.c:49` | `static long sc_munmap(long addr, long len)` |
 | `sc_rng` | function | `progs/src/scfuzz.c:67` | `static unsigned long sc_rng(unsigned long *s)` |
-| `sc_thread1` | function | `progs/src/scfuzz.c:154` | `static void *sc_thread1(void *arg)` |
+| `sc_thread1` | function | `progs/src/scfuzz.c:161` | `static void *sc_thread1(void *arg)` |
 | `sc_worker` | function | `progs/src/scfuzz.c:97` | `static unsigned long sc_worker(int me, unsigned long seed)` |
 | `sc_write` | function | `progs/src/scfuzz.c:53` | `static long sc_write(long fd, const char *s, long n)` |
 | `expand` | function | `progs/src/shell.py:30` | `def expand(line, env)` |
@@ -470,31 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `main` | function | `progs/src/w1.c:3` | `int main(void)` |
 | `write` | function | `progs/src/w1.c:1` | `int write(int fd, char *buf, int n);` |
 | `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_main.c:15` | `#define _DEFAULT_SOURCE` |
-| `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_main.c:14` | `#define _POSIX_C_SOURCE` |
-| `main` | function | `progs/tls_u/tls_u_main.c:61` | `int main(int argc, char **argv)` |
-| `parse_port` | function | `progs/tls_u/tls_u_main.c:47` | `static int parse_port(const char *s)` |
-| `syscall` | function | `progs/tls_u/tls_u_main.c:10` | `* the MiniOS DNS syscall (200, sig 0: error-check only, sends nothing).  * The kernel keeps servi...` |
-| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_port.c:13` | `#define _DEFAULT_SOURCE` |
-| `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_port.c:12` | `#define _POSIX_C_SOURCE` |
-| `answer` | function | `progs/tls_u/tls_u_port.c:163` | `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));` |
-| `net_dns_resolve` | function | `progs/tls_u/tls_u_port.c:183` | `int net_dns_resolve(const char *host)` |
-| `parse_quad` | function | `progs/tls_u/tls_u_port.c:122` | `static int parse_quad(const char *s, unsigned *ip_out)` |
-| `sockets` | function | `progs/tls_u/tls_u_port.c:5` | `* sockets: on the host they are host sockets (used by the  * openssl-s_server interop test), insi...` |
-| `tls_close` | function | `progs/tls_u/tls_u_port.c:67` | `void tls_close(int fd)` |
-| `tls_free_fd` | function | `progs/tls_u/tls_u_port.c:66` | `void tls_free_fd(int fd);` |
-| `tls_now_days` | function | `progs/tls_u/tls_u_port.c:72` | `long tls_now_days(void)` |
-| `tls_random` | function | `progs/tls_u/tls_u_port.c:78` | `void tls_random(unsigned char *out, unsigned len)` |
-| `tls_u_close` | function | `progs/tls_u/tls_u_port.c:55` | `void tls_u_close(int fd)` |
-| `tls_u_recv` | function | `progs/tls_u/tls_u_port.c:39` | `int tls_u_recv(int fd, char *buf, int len)` |
-| `tls_u_recv_timeout` | function | `progs/tls_u/tls_u_port.c:44` | `int tls_u_recv_timeout(int fd, char *buf, int len, unsigned long ms)` |
-| `tls_u_resolve` | function | `progs/tls_u/tls_u_port.c:147` | `int tls_u_resolve(const char *host, unsigned *ip_out)` |
-| `u_raw_syscall3` | function | `progs/tls_u/tls_u_port.c:99` | `static long u_raw_syscall3(long n, long a1, long a2, long a3)` |
-| `D_HEAD` | macro | `progs/topogpt3/topogpt3.c:70` | `#define D_HEAD` |
-| `D_LAT_Q` | macro | `progs/topogpt3/topogpt3.c:82` | `#define D_LAT_Q` |
-| `D_MODEL` | macro | `progs/topogpt3/topogpt3.c:66` | `#define D_MODEL` |
-| `D_QUAT` | macro | `progs/topogpt3/topogpt3.c:71` | `#define D_QUAT` |
-| `EMBED_INNER` | macro | `progs/topogpt3/topogpt3.c:90` | `#define EMBED_INNER` |
-| `EOS_TOKEN` | macro | `progs/topogpt3/topogpt3.c:89` | `#define EOS_TOKEN` |
-| `EPS_RMS` | macro | `progs/topogpt3/topogpt3.c:92` | `#define EPS_RMS` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

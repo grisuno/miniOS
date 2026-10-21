@@ -3,9 +3,15 @@
 
 Generates a throwaway CA and server certificates with openssl (bounded,
 offline), emits tls_test_roots.h (test CA DER + RSA/ECDSA verify
-vectors), then runs the compiled tls_test binary against python ssl
-servers: positive handshakes (RSA chain, ECDSA P-256 leaf over a P-384
-CA) and the negative set (wrong hostname, unknown CA, expired cert).
+vectors) next to them under build/tls_test_work, then runs the compiled
+tls_test binary against python ssl servers: positive handshakes (RSA
+chain, ECDSA P-256 leaf over a P-384 CA) and the negative set (wrong
+hostname, unknown CA, expired cert).
+
+The roots header lives in the same directory as the certificates on
+purpose: the binary embeds the roots while the servers use the
+certificates, so both must be generated together or the suite fails with
+an "unknown CA" that looks like a flaky test.
 """
 
 import os
@@ -234,7 +240,7 @@ def gen_header(p):
     out.append(c_bytes(ec_sig, "test_ec_sig"))
     out.append(c_bytes(payload, "test_payload"))
     out.append("")
-    with open(os.path.join(HERE, "headers", "tls_test_roots.h"), "w") as f:
+    with open(os.path.join(WORK, "tls_test_roots.h"), "w") as f:
         f.write("\n".join(out))
 
 
@@ -321,7 +327,7 @@ def main():
     if "--gen-only" in sys.argv:
         p = gen_certs()
         gen_header(p)
-        print("tls_test_roots.h generated")
+        print("tls_test_roots.h generated in %s" % WORK)
         return 0
     if not os.path.exists(bin_path):
         print("tls_test binary missing; run through 'make test-tls'")

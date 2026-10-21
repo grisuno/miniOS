@@ -1,12 +1,12 @@
 # `headers/kernel/console_in.h`
 
-> Source: [headers/kernel/console_in.h:1](../../headers/kernel/console_in.h#L1) | language `h` | coverage 54.5% | [API index](../index.md)
+> Source: [headers/kernel/console_in.h:1](../../headers/kernel/console_in.h#L1) | language `h` | coverage 58.3% | [API index](../index.md)
 
 Docstring: console_in.h -- boundary of the console input device
 
 ## Contents
 
-- **Functions:** [`Consumers`](#consumers), [`console_peek`](#console_peek), [`console_raw_try`](#console_raw_try), [`console_raw_get`](#console_raw_get), [`console_job_try`](#console_job_try), [`console_job_get`](#console_job_get), [`console_ungetc`](#console_ungetc), [`console_stdin_push`](#console_stdin_push), [`console_stdin_clear`](#console_stdin_clear), [`console_stdin_active`](#console_stdin_active)
+- **Functions:** [`Consumers`](#consumers), [`console_history_page`](#console_history_page), [`console_peek`](#console_peek), [`console_raw_try`](#console_raw_try), [`console_raw_get`](#console_raw_get), [`console_job_try`](#console_job_try), [`console_job_get`](#console_job_get), [`console_ungetc`](#console_ungetc), [`console_stdin_push`](#console_stdin_push), [`console_stdin_clear`](#console_stdin_clear), [`console_stdin_active`](#console_stdin_active)
 
 ## Functions
 
@@ -32,11 +32,33 @@ Docstring: console_in.h -- boundary of the console input device
 
 ---
 
+<a id="console_history_page"></a>
+
+### `console_history_page`
+
+`function` | [headers/kernel/console_in.h:19](../../headers/kernel/console_in.h#L19)
+
+```c
+void console_history_page(int dir);
+```
+
+Docstring: Page the console history by one screen (dir -1 up, +1 down).
+
+The framebuffer terminal keeps its own logical ring and the text-mode console the legacy VGA scrollback ring; this picks the one that is up.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `dir` | `int` |  |  |
+
+---
+
 <a id="console_peek"></a>
 
 ### `console_peek`
 
-`function` | [headers/kernel/console_in.h:17](../../headers/kernel/console_in.h#L17)
+`function` | [headers/kernel/console_in.h:22](../../headers/kernel/console_in.h#L22)
 
 ```c
 int console_peek(void);
@@ -54,7 +76,7 @@ Docstring: Next buffered byte without consuming it, or -1.
 
 ### `console_raw_try`
 
-`function` | [headers/kernel/console_in.h:21](../../headers/kernel/console_in.h#L21)
+`function` | [headers/kernel/console_in.h:26](../../headers/kernel/console_in.h#L26)
 
 ```c
 int console_raw_try(void);
@@ -70,7 +92,7 @@ Docstring: Raw console multiplexer backing GETC_RAW: same sources, no line buffe
 
 ### `console_raw_get`
 
-`function` | [headers/kernel/console_in.h:22](../../headers/kernel/console_in.h#L22)
+`function` | [headers/kernel/console_in.h:27](../../headers/kernel/console_in.h#L27)
 
 ```c
 int console_raw_get(void);
@@ -84,7 +106,7 @@ int console_raw_get(void);
 
 ### `console_job_try`
 
-`function` | [headers/kernel/console_in.h:25](../../headers/kernel/console_in.h#L25)
+`function` | [headers/kernel/console_in.h:30](../../headers/kernel/console_in.h#L30)
 
 ```c
 int console_job_try(void);
@@ -100,7 +122,7 @@ Docstring: PS/2-only GETC_RAW source for background jobs.
 
 ### `console_job_get`
 
-`function` | [headers/kernel/console_in.h:26](../../headers/kernel/console_in.h#L26)
+`function` | [headers/kernel/console_in.h:31](../../headers/kernel/console_in.h#L31)
 
 ```c
 int console_job_get(void);
@@ -114,7 +136,7 @@ int console_job_get(void);
 
 ### `console_ungetc`
 
-`function` | [headers/kernel/console_in.h:30](../../headers/kernel/console_in.h#L30)
+`function` | [headers/kernel/console_in.h:35](../../headers/kernel/console_in.h#L35)
 
 ```c
 void console_ungetc(unsigned char c);
@@ -136,7 +158,7 @@ Drops the byte when full.
 
 ### `console_stdin_push`
 
-`function` | [headers/kernel/console_in.h:37](../../headers/kernel/console_in.h#L37)
+`function` | [headers/kernel/console_in.h:42](../../headers/kernel/console_in.h#L42)
 
 ```c
 int console_stdin_push(const char *data, unsigned long len);
@@ -161,7 +183,7 @@ The shell pipeline runner owns this: stage N+1 reads stage N's captured output a
 
 ### `console_stdin_clear`
 
-`function` | [headers/kernel/console_in.h:38](../../headers/kernel/console_in.h#L38)
+`function` | [headers/kernel/console_in.h:43](../../headers/kernel/console_in.h#L43)
 
 ```c
 void console_stdin_clear(void);
@@ -173,7 +195,7 @@ void console_stdin_clear(void);
 
 ### `console_stdin_active`
 
-`function` | [headers/kernel/console_in.h:39](../../headers/kernel/console_in.h#L39)
+`function` | [headers/kernel/console_in.h:44](../../headers/kernel/console_in.h#L44)
 
 ```c
 int console_stdin_active(void);

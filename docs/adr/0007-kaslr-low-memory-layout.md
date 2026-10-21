@@ -14,8 +14,9 @@ with `EXCEPTION 14` at "unmapped" addresses.
 
 KASLR (default on, `make ENABLE_KASLR=0` disables): stage 2 mixes TSC
 with CMOS hours/minutes/seconds in distinct bytes and slides the image
-to one of 64 aligned 2 MB slots in `[0x6000000, 0xE000000)`, reporting
-the base at `BOOT_KASLR_ADDR`. The user page table zone sits at
+to one of 64 aligned 2 MB slots in `[0x28000000, 0x30000000)`
+(`KASLR_MIN_ADDR` plus `KASLR_MAX_UNITS` 2 MB units), reporting the base
+at `BOOT_KASLR_ADDR`. The user page table zone sits at
 `PT_USER_TABLES_ADDR` (0x10000), below the link base, unreachable by any
 image growth. The low 4 MB split into `PT0`/`PT1` maps the whole image +
 `.bss` contiguously at `[base, base+KASLR_IMAGE_SPAN)` (3 MB);

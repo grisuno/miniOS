@@ -156,6 +156,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`KFILE`](modules/headers.kernel.h.md#kfile) struct in `headers/kernel.h`
 - [`kiovec`](modules/kernel.syscalls.c.md#kiovec) struct in `kernel/syscalls.c`
 - [`kjmpbuf`](modules/headers.kernel.h.md#kjmpbuf) struct in `headers/kernel.h`
+- [`kout_sink`](modules/kernel.cvm_host.c.md#kout_sink) struct in `kernel/cvm_host.c`
 - [`KProg`](modules/headers.kernel.h.md#kprog) struct in `headers/kernel.h`
 - [`KSym`](modules/headers.kernel.h.md#ksym) struct in `headers/kernel.h`
 - [`LayerWeights`](modules/progs.topogpt3.topogpt3.c.md#layerweights) struct in `progs/topogpt3/topogpt3.c`

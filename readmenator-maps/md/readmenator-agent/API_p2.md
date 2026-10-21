@@ -399,7 +399,7 @@ Imported by: `kernel.c`, `kernel/abi.c`, `tests/test_abi.c`
 
 ## headers/arch/x86/boot/bootdefs.h
 Imported by: `arch/x86/ap_entry.S`, `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `drivers/pcm2.c`, `headers/arch/x86/cpu_setup.h`, `kernel.c`, `kernel/exec.c`, `kernel/mm.c`, `kernel/mm/cow.c`, `kernel/mm/paging.c`, `kernel/sched.c`, `kernel/syscalls.c`, `kernel/vga_fb.c`, `smp.c`
-- `address` (function) `headers/arch/x86/boot/bootdefs.h:197` `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and...`
+- `address` (function) `headers/arch/x86/boot/bootdefs.h:196` `* address (below 1 MB so a real-mode SIPI can reach it) and executed by every * AP. It reuses the page tables and...`
 
 ## headers/arch/x86/cpu_setup.h
 Depends on: `headers/arch/x86/boot/bootdefs.h`

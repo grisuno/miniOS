@@ -48,7 +48,7 @@ graph LR
 
 ## Details
 
-Static architecture map of 587 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.
+Static architecture map of 588 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.
 
 ### headers: kernel (1)
 
@@ -82,7 +82,7 @@ progs/doomgeneric: d_englsh groups 99 files (c, h) around __DOOMTYPE__, strcasec
 
 ### progs/src (3)
 
-progs/src groups 85 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
+progs/src groups 86 files (c, h) around kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp. Docstring: abi.h -- Boot-time ABI manifest gate contract.
 
 **Related Classes/Methods**:
 
@@ -112,7 +112,7 @@ progs/doomgeneric: p_spec groups 69 files (c, h) around __DOOMDEF__, DOOM_VERSIO
 
 ### tools: tls_crypto (5)
 
-tools: tls_crypto groups 44 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
+tools: tls_crypto groups 43 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
 
 **Related Classes/Methods**:
 

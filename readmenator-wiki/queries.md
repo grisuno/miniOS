@@ -4,7 +4,7 @@ Log each answered question here so the wiki compounds. Format: question, answer,
 
 ## Suggested
 
-### Q: What does string.c depend on, and what depends on it? (89 connections)
+### Q: What does string.c depend on, and what depends on it? (90 connections)
 
 - Status: unanswered
 

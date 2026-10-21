@@ -279,6 +279,37 @@ static long fui_strlen(char *s, long cap) {
     return i;
 }
 
+/** Nonzero when the target starts with the given scheme
+ * (case-insensitive). RFC 3986 says the scheme is case-insensitive, so
+ * "HTTP://host" and "http://host" are the same target. */
+static int fui_has_scheme(const char *s, const char *scheme) {
+    int i;
+    char a;
+    char b;
+    if (!s || !scheme) {
+        return 0;
+    }
+    for (i = 0; scheme[i] != 0; i++) {
+        a = s[i];
+        b = scheme[i];
+        if (a >= 'A' && a <= 'Z') {
+            a = (char)(a - 'A' + 'a');
+        }
+        if (a != b) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+/** Nonzero when the target starts with the explicit "http://" scheme
+ * (case-insensitive). The FreeDom omnibox upgrades every http:// target
+ * to https; the MiniOS contract keeps an explicit http:// on http, so
+ * the browser has to tell the two apart before the omnibox sees it. */
+static int fui_is_http_scheme(const char *s) {
+    return fui_has_scheme(s, "http://");
+}
+
 /** Split an http(s) URL into host, path, port and secure flag. */
 static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path, long *port, long *secure) {
     char *p;
@@ -288,11 +319,11 @@ static long fui_split_url(FreedomUiConfig *c, char *url, char *host, char *path,
     if (!c || !url || !host || !path || !port || !secure) {
         return 0L;
     }
-    if (url[0] == 'h' && url[1] == 't' && url[2] == 't' && url[3] == 'p' && url[4] == 's' && url[5] == ':' && url[6] == '/' && url[7] == '/') {
+    if (fui_has_scheme(url, "https://")) {
         *secure = 1L;
         *port = c->port_https;
         p = url + 8L;
-    } else if (url[0] == 'h' && url[1] == 't' && url[2] == 't' && url[3] == 'p' && url[4] == ':' && url[5] == '/' && url[6] == '/') {
+    } else if (fui_has_scheme(url, "http://")) {
         *secure = 0L;
         *port = c->port_http;
         p = url + 7L;
@@ -1102,20 +1133,34 @@ int main(int argc, char **argv) {
     }
     freedomui_sys_vga_mode(1L);
     freedomui_sys_kbd_raw(1L);
-    if (url_omnibox(argv[qi], &kind, nav, sizeof(nav)) != 0) {
-        printf("freedomui: cannot parse %s\n", argv[qi]);
-        return 3;
+    /* The MiniOS contract keeps an explicit http:// target on http (the
+     * host dev loop serves the BDD fixtures over plain HTTP), so the
+     * FreeDom omnibox HTTPS upgrade is bypassed for that scheme only.
+     * Every other input keeps the omnibox policy: a bare host is fetched
+     * as https and anything else becomes a search. */
+    if (fui_is_http_scheme(argv[qi])) {
+        k = 0L;
+        while (argv[qi][k] && k + 1L < (long)sizeof(url)) {
+            url[k] = argv[qi][k];
+            k++;
+        }
+        url[k] = 0;
+    } else {
+        if (url_omnibox(argv[qi], &kind, nav, sizeof(nav)) != 0) {
+            printf("freedomui: cannot parse %s\n", argv[qi]);
+            return 3;
+        }
+        if (kind == 1) {
+            printf("freedomui: search not yet in v1: %s\n", argv[qi]);
+            return 3;
+        }
+        k = 0L;
+        while (nav[k] && k + 1L < (long)sizeof(url)) {
+            url[k] = nav[k];
+            k++;
+        }
+        url[k] = 0;
     }
-    if (kind == 1) {
-        printf("freedomui: search not yet in v1: %s\n", argv[qi]);
-        return 3;
-    }
-    k = 0L;
-    while (nav[k] && k + 1L < (long)sizeof(url)) {
-        url[k] = nav[k];
-        k++;
-    }
-    url[k] = 0;
     if (!fui_split_url(&c, url, f_host, f_path, &f_port, &f_secure)) {
         printf("freedomui: cannot parse %s\n", url);
         return 3;

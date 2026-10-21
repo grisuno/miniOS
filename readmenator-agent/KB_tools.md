@@ -41,10 +41,11 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Layer: utility
 - Language: py
 - Symbols:
-  - `normalize` (function, line 130) `def normalize(minios_name)`
-  - `parse_abi` (function, line 134) `def parse_abi(path)`
-  - `parse_dispatch` (function, line 145) `def parse_dispatch(path)`
-  - `main` (function, line 158) `def main()`
+  - `normalize` (function, line 142) `def normalize(minios_name)`
+  - `parse_abi` (function, line 146) `def parse_abi(path)`
+  - `parse_ld_stubs` (function, line 157) `def parse_ld_stubs(path)`
+  - `parse_dispatch` (function, line 164) `def parse_dispatch(path)`
+  - `main` (function, line 177) `def main()`
 
 ## tools/check_addons.py
 - Doc: validate the MiniOS addon marketplace index.

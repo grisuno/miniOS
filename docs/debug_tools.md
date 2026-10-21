@@ -26,6 +26,8 @@ on screen instead of printing a forged number.
 | `panic` | fault vector/RIP/RSP/backtrace on screen | what killed the machine, with no serial? |
 | `ps` / `jobs` | processes / shell children | what exists, what finished? |
 | `kstack` | kernel-stack high water + canary | did a stack overflow? |
+| `sclog <pid>` | last syscalls of a process | what did that process ask the kernel for? |
+| `perf` | guest CPU, clock and console throughput | where does the time go? |
 | `smp` / `sb16` / `net` / `gfx` | subsystem status | per-domain health |
 
 ### trace / strace
@@ -34,11 +36,12 @@ on screen instead of printing a forged number.
 miniOS> trace verbose
 syscall tracing: on (verbose)
 miniOS> strace run bin/lxhello.elf
+exec: loaded at 400000 entry 401000 brk 45e000
 Hello from a REAL Linux ELF executable (syscall ABI)!
-syscall write(1, 4202496, 54, ...) fd=1 len=54 = 54
-syscall exit(1, ...) code=1 = 1
+syscall write(1, 4202496, 54, 4080, -65552, 201326592) fd=1 len=54 = 54
+...
 exit code: 1
-strace: done (tracing restored on)
+strace: done (9 syscalls, tracing off)
 ```
 
 - `trace [on|off|verbose|quiet]`. Verbose resolves names (`syscall_name`:
@@ -46,9 +49,10 @@ strace: done (tracing restored on)
   Linux numbers) and decodes: path strings for `open/openat/access/
   unlink/readlink`, `code=` for exit, `addr=` for brk, `len=` for mmap,
   `fd/len` for read/write, `pid=` for kill/wait4.
-- `SYS_TIME` (204), `SYS_KBD` (205), `SYS_MOUSE` (219), `GETC_RAW` (236)
-  are never traced: pacing loops hammer them and tracing turned
-  interactive programs into a crawl.
+- Four numbers are never traced: 205 (`SYS_KBD`), 219 (`SYS_MOUSE`),
+  236 (`GETC_RAW`) and 204, the retired `SYS_TIME` slot (`SYS_TIME` is
+  254 since v12, `progs/minios_abi.h`). Pacing loops hammer the keyboard
+  and the mouse, and tracing turned interactive programs into a crawl.
 - Zero traced syscalls is itself a diagnosis: `strace minifetch` prints
   `strace: 'minifetch' is a shell builtin (ring 0): nothing to trace`
   plus the count (`done (0 syscalls, ...)`). Builtins never cross into
@@ -79,8 +83,8 @@ tracing is host-GDB work (`make gdb` + `break malloc`).
 ```
 miniOS> vmmap
 vmmap: pid=0 (kernel) window 0x400000..0xc000000
-  text 0x400000..0x403000  brk 0x403000 cap 0xb000000  mmap 0xb000000..0xbf00000
-  game 0xb000000  fb 0xb200000  nk 0xb600000  stack 0xbf00000..0xc000000
+  text 0x400000..0x45e000  brk 0x45e000 cap 0x9000000  mmap 0x9000000..0xbf00000
+  game 0xb000000  fb 0xb200000  nk 0xb600000  rgb 0xb700000  stack 0xbf00000..0xc000000
   vma-live: (empty)
 ```
 
@@ -95,7 +99,7 @@ miniOS> schedtop
 schedtop: up 4s ticks 448 cpus 1
   cpu0 cur=0 dispatched=0 polls=0
   pid  tgid T/P ppid state nice vruntime ticks name
-  0    0    P   -1   run   0    0        0     kernel
+  0    0    P  -1   run   0    0        0     kernel
 miniOS> irqstat
 irqstat: timer=463 kbd=1 mouse=13 sb16=0 bad_gs=0
 irqstat: net tx=0 rx=0 drop=0 sb16 sub=0 drop=0 gfx=0
@@ -168,6 +172,7 @@ capped by `timeout_ms`). The debug loop is: `minios_boot` once, then
 | `minios_snapshot` | tail of the log since the cursor (peek) |
 | `minios_write` / `minios_cat` | upload / print ramdisk files (`[A-Za-z0-9._/-]`, printable ASCII, editor limits enforced up front) |
 | `minios_python` | run a Python snippet inside the bridge process |
+| `minios_py_eval` | evaluate a MicroPython one-liner inside MiniOS |
 | `minios_test` | send commands, assert `expect` markers present / `refute` absent; returns `{pass, failures, transcript}` |
 | `minios_addons` / `minios_install` | marketplace: build inside the OS, verify exit codes, record in `var/lib/addons.txt` |
 | `minios_poweroff` | clean shutdown, releases the pid file |
@@ -186,13 +191,14 @@ tools/boot_run.sh "strace run bin/lxhello.elf" "vmmap" --timeout 90 --log run.lo
 python3 tools/test_gui_wm.py        # QMP pixel proof (Alt+Tab/tile/taskbar)
 python3 tools/test_gui_fashion.py   # one cursor, stable frames, ESC quit
 python3 tools/test_gui_icon_cwd.py  # dock launch ignores shell cwd
-make gdb                            # QEMU -s -S gls; host attaches :1234
+make gdb                            # QEMU -s -S; host attaches :1234
 ```
 
 `tools/minios_gui.py` is mandatory for VGA-mode work: headless boots
-cannot observe desktop events. `sh src/test_all.sh` (79 PASS) covers the
-toolbox non-interactively (`trace-verbose`, `strace`, `ltrace`, `vmmap`,
-`schedtop`, `irqstat`, `bootlog`, `gdb`, `gdb-regs`, `gdb-dump-hex`).
+cannot observe desktop events. `tools/boot_run.sh "sh src/test_all.sh"`
+(112 PASS) covers the toolbox non-interactively (`trace-verbose`,
+`strace`, `ltrace`, `vmmap`, `schedtop`, `irqstat`, `bootlog`, `gdb`,
+`gdb-regs`, `gdb-dump-hex`).
 
 ## Recipes
 
@@ -230,5 +236,5 @@ atomic trace print), `kernel.o` +~0.4 KB (bootlog), ramdisk +~0.3 KB
 Trimmed back with a data-table resolver (no `case N:` ladder, which also
 keeps `check_abi_numbers.py` Rule C quiet), terse formats, and a 12-slot
 bootlog. Next levers if the gate bites again: teach `shell_resolve_run`
-a MiniFS fallback so bulk (e.g. `minigcc.elf`, 140 KB) can leave the
+a MiniFS fallback so bulk (e.g. `objects/minigcc.o`, 223 KB) can leave the
 ramdisk; compress `help` text; split cold reports behind a build flag.

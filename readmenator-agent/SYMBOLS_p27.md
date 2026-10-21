@@ -3,6 +3,35 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `find_minigcc` | function | `tools/test_call_align.py:59` | `def find_minigcc(explicit)` |
+| `main` | function | `tools/test_call_align.py:79` | `def main(argv)` |
+| `run` | function | `tools/test_call_align.py:74` | `def run(argv)` |
+| `Guest` | class | `tools/test_gui_fashion.py:45` | `class Guest` |
+| `__init__` | method | `tools/test_gui_fashion.py:46` | `def __init__(self)` |
+| `_qmp` | method | `tools/test_gui_fashion.py:141` | `def _qmp(self, obj)` |
+| `_reader` | method | `tools/test_gui_fashion.py:82` | `def _reader(self)` |
+| `_ser` | method | `tools/test_gui_fashion.py:70` | `def _ser(self)` |
+| `count_arrows` | function | `tools/test_gui_fashion.py:206` | `def count_arrows(shot_path)` |
+| `dump` | method | `tools/test_gui_fashion.py:168` | `def dump(self, name)` |
+| `key` | method | `tools/test_gui_fashion.py:149` | `def key(self, qcode, down, up)` |
+| `main` | function | `tools/test_gui_fashion.py:239` | `def main()` |
+| `meandiff` | function | `tools/test_gui_fashion.py:190` | `def meandiff(a_path, b_path)` |
+| `note` | function | `tools/test_gui_fashion.py:39` | `def note(ok, msg)` |
+| `qmp_cmd` | method | `tools/test_gui_fashion.py:128` | `def qmp_cmd(self, obj)` |
+| `rel` | method | `tools/test_gui_fashion.py:161` | `def rel(self, dx, dy)` |
+| `send` | method | `tools/test_gui_fashion.py:118` | `def send(self, line, settle)` |
+| `snapshot` | method | `tools/test_gui_fashion.py:98` | `def snapshot(self)` |
+| `stop` | method | `tools/test_gui_fashion.py:175` | `def stop(self)` |
+| `wait_for` | method | `tools/test_gui_fashion.py:110` | `def wait_for(self, marker, timeout)` |
+| `wait_prompt` | method | `tools/test_gui_fashion.py:102` | `def wait_prompt(self, timeout)` |
+| `Config` | class | `tools/test_gui_freedom.py:45` | `class Config` |
+| `Guest` | class | `tools/test_gui_freedom.py:91` | `class Guest` |
+| `__init__` | method | `tools/test_gui_freedom.py:94` | `def __init__(self, work)` |
+| `_connect` | method | `tools/test_gui_freedom.py:118` | `def _connect(self, path)` |
+| `_qmp` | method | `tools/test_gui_freedom.py:174` | `def _qmp(self, obj)` |
+| `_reader` | method | `tools/test_gui_freedom.py:132` | `def _reader(self)` |
+| `_serial` | method | `tools/test_gui_freedom.py:127` | `def _serial(self)` |
+| `around` | function | `tools/test_gui_freedom.py:259` | `def around(point)` |
 | `button` | method | `tools/test_gui_freedom.py:201` | `def button(self, down)` |
 | `changed_pixels` | function | `tools/test_gui_freedom.py:249` | `def changed_pixels(a_path, b_path, box)` |
 | `chord` | method | `tools/test_gui_freedom.py:193` | `def chord(self, mod, qcode)` |
@@ -91,22 +120,22 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `serve_tcp` | function | `tools/test_net_fixture.py:53` | `def serve_tcp(port)` |
 | `serve_udp` | function | `tools/test_net_fixture.py:34` | `def serve_udp(port)` |
 | `fail_msg` | function | `tools/test_sb16.sh:45` | `` |
-| `Server` | class | `tools/tls_test.py:241` | `class Server(Thread)` |
-| `__init__` | method | `tools/tls_test.py:242` | `def __init__(self, cert, key, tls13_ok)` |
-| `c_bytes` | function | `tools/tls_test.py:183` | `def c_bytes(data, name)` |
-| `check` | function | `tools/tls_test.py:30` | `def check(cmd)` |
-| `der_bytes` | function | `tools/tls_test.py:154` | `def der_bytes(pem_path)` |
-| `ec_pub` | function | `tools/tls_test.py:172` | `def ec_pub(key_path)` |
-| `expect` | function | `tools/tls_test.py:306` | `def expect(bin_path, args, want_zero, marker)` |
-| `gen_certs` | function | `tools/tls_test.py:37` | `def gen_certs()` |
-| `gen_header` | function | `tools/tls_test.py:191` | `def gen_header(p)` |
-| `main` | function | `tools/tls_test.py:319` | `def main()` |
-| `rsa_params` | function | `tools/tls_test.py:162` | `def rsa_params(key_path)` |
-| `run` | function | `tools/tls_test.py:26` | `def run(cmd)` |
-| `run` | method | `tools/tls_test.py:248` | `def run(self)` |
-| `serve` | function | `tools/tls_test.py:280` | `def serve(cert, key)` |
-| `serve_openssl` | function | `tools/tls_test.py:288` | `def serve_openssl(cert, key, chain)` |
-| `server_cert` | function | `tools/tls_test.py:61` | `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)` |
+| `Server` | class | `tools/tls_test.py:247` | `class Server(Thread)` |
+| `__init__` | method | `tools/tls_test.py:248` | `def __init__(self, cert, key, tls13_ok)` |
+| `c_bytes` | function | `tools/tls_test.py:189` | `def c_bytes(data, name)` |
+| `check` | function | `tools/tls_test.py:36` | `def check(cmd)` |
+| `der_bytes` | function | `tools/tls_test.py:160` | `def der_bytes(pem_path)` |
+| `ec_pub` | function | `tools/tls_test.py:178` | `def ec_pub(key_path)` |
+| `expect` | function | `tools/tls_test.py:312` | `def expect(bin_path, args, want_zero, marker)` |
+| `gen_certs` | function | `tools/tls_test.py:43` | `def gen_certs()` |
+| `gen_header` | function | `tools/tls_test.py:197` | `def gen_header(p)` |
+| `main` | function | `tools/tls_test.py:325` | `def main()` |
+| `rsa_params` | function | `tools/tls_test.py:168` | `def rsa_params(key_path)` |
+| `run` | function | `tools/tls_test.py:32` | `def run(cmd)` |
+| `run` | method | `tools/tls_test.py:254` | `def run(self)` |
+| `serve` | function | `tools/tls_test.py:286` | `def serve(cert, key)` |
+| `serve_openssl` | function | `tools/tls_test.py:294` | `def serve_openssl(cert, key, chain)` |
+| `server_cert` | function | `tools/tls_test.py:67` | `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)` |
 | `die` | function | `tools/wl_scoped.sh:9` | `` |
 | `mut` | function | `tools/wl_scoped.sh:77` | `` |
 | `mutm` | function | `tools/wl_scoped.sh:84` | `` |

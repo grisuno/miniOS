@@ -1,11 +1,11 @@
 # `kernel/shell.c`
 
-> Source: [kernel/shell.c:1](../../kernel/shell.c#L1) | language `c` | coverage 25.6% | [API index](../index.md)
+> Source: [kernel/shell.c:1](../../kernel/shell.c#L1) | language `c` | coverage 25.0% | [API index](../index.md)
 
 ## Contents
 
 - **Structs:** [`ShellRunDir`](#shellrundir), [`job_row`](#job_row), [`ps_row`](#ps_row)
-- **Functions:** [`shell_queue_launch`](#shell_queue_launch), [`shell_readline_active`](#shell_readline_active), [`shell_focus_park`](#shell_focus_park), [`shell_focus_restore`](#shell_focus_restore), [`shell_readline_buf`](#shell_readline_buf), [`line`](#line), [`root`](#root), [`shell_parse`](#shell_parse), [`shell_run`](#shell_run), [`window`](#window), [`code`](#code), [`this`](#this), [`flows`](#flows), [`shell_run_any`](#shell_run_any), [`context`](#context), [`tree`](#tree), [`VMA`](#vma), [`to`](#to), [`shell_parse_long`](#shell_parse_long), [`shell_parse_pid`](#shell_parse_pid), [`shell_exec_builtin`](#shell_exec_builtin), [`terminal`](#terminal), [`driver`](#driver), [`frame`](#frame), [`stdout`](#stdout)
+- **Functions:** [`shell_queue_launch`](#shell_queue_launch), [`shell_readline_active`](#shell_readline_active), [`shell_focus_park`](#shell_focus_park), [`shell_focus_restore`](#shell_focus_restore), [`shell_readline_buf`](#shell_readline_buf), [`line`](#line), [`text`](#text), [`root`](#root), [`shell_parse`](#shell_parse), [`shell_run`](#shell_run), [`window`](#window), [`code`](#code), [`this`](#this), [`flows`](#flows), [`shell_run_any`](#shell_run_any), [`context`](#context), [`tree`](#tree), [`VMA`](#vma), [`to`](#to), [`shell_parse_long`](#shell_parse_long), [`shell_parse_pid`](#shell_parse_pid), [`shell_exec_builtin`](#shell_exec_builtin), [`terminal`](#terminal), [`driver`](#driver), [`frame`](#frame), [`stdout`](#stdout)
 - **Macros:** [`XXH_STATIC_LINKING_ONLY`](#xxh_static_linking_only), [`SHELL_CVM_INTERP`](#shell_cvm_interp), [`SHELL_RUN_DIRS`](#shell_run_dirs), [`SHELL_HIST_MAX`](#shell_hist_max), [`SHELL_BUILTIN_COUNT`](#shell_builtin_count), [`QEMU_PM_PORT`](#qemu_pm_port), [`HTTPD_REQ_CAP`](#httpd_req_cap), [`HTTPD_IO_CHUNK`](#httpd_io_chunk), [`SHELL_LS_CAP`](#shell_ls_cap), [`PIPE_HOP_MAX`](#pipe_hop_max)
 
 ## Type Diagram
@@ -103,7 +103,7 @@ A bare name with no recognised suffix (cp, freedom, ...) resolves through bin/, 
 
 ### `job_row`
 
-`struct` | [kernel/shell.c:2068](../../kernel/shell.c#L2068)
+`struct` | [kernel/shell.c:2079](../../kernel/shell.c#L2079)
 
 ```c
 struct job_row { int pid; int state; char name[32]; };
@@ -115,7 +115,7 @@ struct job_row { int pid; int state; char name[32]; };
 
 ### `ps_row`
 
-`struct` | [kernel/shell.c:3704](../../kernel/shell.c#L3704)
+`struct` | [kernel/shell.c:3723](../../kernel/shell.c#L3723)
 
 ```c
 struct ps_row { int pid; int ppid; int state; int code; char name[32]; };
@@ -236,11 +236,31 @@ Echoes input and honours backspace. Shared by the shell prompt and the editor.
 
 ---
 
+<a id="text"></a>
+
+### `text`
+
+`function` | [kernel/shell.c:594](../../kernel/shell.c#L594)
+
+```c
+* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */ console_getc();
+```
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `line` | `"5~" in the *` |  |  |
+
+**Returns:** `* swallowed the sequence as plain`
+
+---
+
 <a id="root"></a>
 
 ### `root`
 
-`function` | [kernel/shell.c:654](../../kernel/shell.c#L654)
+`function` | [kernel/shell.c:665](../../kernel/shell.c#L665)
 
 ```c
 * MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An * explicit path or an argument word keeps every match, so * navigating to data file
@@ -260,7 +280,7 @@ Echoes input and honours backspace. Shared by the shell prompt and the editor.
 
 ### `shell_parse`
 
-`function` | [kernel/shell.c:815](../../kernel/shell.c#L815)
+`function` | [kernel/shell.c:826](../../kernel/shell.c#L826)
 
 ```c
 int shell_parse(char *line, char **argv, int max_args)
@@ -288,7 +308,7 @@ Tokenize [`line`](#line) into up to `max_args` argv entries; returns argc.
 
 ### `shell_run`
 
-`function` | [kernel/shell.c:883](../../kernel/shell.c#L883)
+`function` | [kernel/shell.c:894](../../kernel/shell.c#L894)
 
 ```c
 void shell_run(void)
@@ -302,7 +322,7 @@ void shell_run(void)
 
 ### `window`
 
-`function` | [kernel/shell.c:1328](../../kernel/shell.c#L1328)
+`function` | [kernel/shell.c:1339](../../kernel/shell.c#L1339)
 
 ```c
 * window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so small programs overlap in * time instead of running one after another. ET_REL is refus
@@ -318,7 +338,7 @@ void shell_run(void)
 
 ### `code`
 
-`function` | [kernel/shell.c:1401](../../kernel/shell.c#L1401)
+`function` | [kernel/shell.c:1412](../../kernel/shell.c#L1412)
 
 ```c
 * the last exit code (130 when interrupted). */ static int shell_wait_fg(int *pids, int n, int ki...
@@ -340,7 +360,7 @@ void shell_run(void)
 
 ### `this`
 
-`function` | [kernel/shell.c:1533](../../kernel/shell.c#L1533)
+`function` | [kernel/shell.c:1544](../../kernel/shell.c#L1544)
 
 ```c
 * boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit, piano) runs as a * Wayland client (pixels to its pid-unique mailbox, input from its * .
@@ -354,7 +374,7 @@ void shell_run(void)
 
 ### `flows`
 
-`function` | [kernel/shell.c:1579](../../kernel/shell.c#L1579)
+`function` | [kernel/shell.c:1590](../../kernel/shell.c#L1590)
 
 ```c
 * and external flows (make wl) set it themselves. */ static void desktop_unflag(const char *name)
@@ -376,7 +396,7 @@ void shell_run(void)
 
 ### `shell_run_any`
 
-`function` | [kernel/shell.c:1667](../../kernel/shell.c#L1667)
+`function` | [kernel/shell.c:1678](../../kernel/shell.c#L1678)
 
 ```c
 int shell_run_any(const char *name, int argc, char **argv)
@@ -404,7 +424,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `context`
 
-`function` | [kernel/shell.c:1694](../../kernel/shell.c#L1694)
+`function` | [kernel/shell.c:1705](../../kernel/shell.c#L1705)
 
 ```c
 * ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */ shell_queue_launch(cmd);
@@ -424,7 +444,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `tree`
 
-`function` | [kernel/shell.c:2054](../../kernel/shell.c#L2054)
+`function` | [kernel/shell.c:2065](../../kernel/shell.c#L2065)
 
 ```c
 * tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores * Ctrl+C (it never poll...
@@ -444,7 +464,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `VMA`
 
-`function` | [kernel/shell.c:2197](../../kernel/shell.c#L2197)
+`function` | [kernel/shell.c:2208](../../kernel/shell.c#L2208)
 
 ```c
 * plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit * stack, 128 regions prin...
@@ -460,7 +480,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `to`
 
-`function` | [kernel/shell.c:2270](../../kernel/shell.c#L2270)
+`function` | [kernel/shell.c:2281](../../kernel/shell.c#L2281)
 
 ```c
 * actually trap to (brk/mmap/munmap/mprotect) and says so up front. */ static void shell_cmd_trac...
@@ -482,7 +502,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `shell_parse_long`
 
-`function` | [kernel/shell.c:2355](../../kernel/shell.c#L2355)
+`function` | [kernel/shell.c:2366](../../kernel/shell.c#L2366)
 
 ```c
 int shell_parse_long(const char *s, long *out)
@@ -509,7 +529,7 @@ The bound comes from the compiler's __LONG_MAX__ (freestanding-safe, no libc hea
 
 ### `shell_parse_pid`
 
-`function` | [kernel/shell.c:2376](../../kernel/shell.c#L2376)
+`function` | [kernel/shell.c:2387](../../kernel/shell.c#L2387)
 
 ```c
 int shell_parse_pid(const char *s, int min_pid, int *out)
@@ -537,7 +557,7 @@ Bounded pid parse shared by wait/kill/vmmap: one range check instead of three op
 
 ### `shell_exec_builtin`
 
-`function` | [kernel/shell.c:2894](../../kernel/shell.c#L2894)
+`function` | [kernel/shell.c:2905](../../kernel/shell.c#L2905)
 
 ```c
 void shell_exec_builtin(int argc, char **argv)
@@ -560,7 +580,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `terminal`
 
-`function` | [kernel/shell.c:2969](../../kernel/shell.c#L2969)
+`function` | [kernel/shell.c:2980](../../kernel/shell.c#L2980)
 
 ```c
 * sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */ if (vga_fb_active) term_clear();
@@ -580,7 +600,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `driver`
 
-`function` | [kernel/shell.c:3312](../../kernel/shell.c#L3312)
+`function` | [kernel/shell.c:3331](../../kernel/shell.c#L3331)
 
 ```c
 * stream through the fat: VFS driver ("img:fatpath" per open, * registered at boot beside mem:), 4 KB heap chunks so a hostile * size can never drive an oversized alloc. Bad magic, missing files * and overlong names are diagnostics. */ else if (kstrcmp(argv[0], "fat") == 0)
@@ -601,7 +621,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `frame`
 
-`function` | [kernel/shell.c:3706](../../kernel/shell.c#L3706)
+`function` | [kernel/shell.c:3725](../../kernel/shell.c#L3725)
 
 ```c
 * not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row *)kmalloc(sizeof(struct ps_row) * MAX_PROCS);
@@ -622,7 +642,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `stdout`
 
-`function` | [kernel/shell.c:4074](../../kernel/shell.c#L4074)
+`function` | [kernel/shell.c:4093](../../kernel/shell.c#L4093)
 
 ```c
 * the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console, never into the * pipe (shell_report suspends the capture), so `run x | cat` shows the *
@@ -706,7 +726,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `QEMU_PM_PORT`
 
-`macro` | [kernel/shell.c:1022](../../kernel/shell.c#L1022)
+`macro` | [kernel/shell.c:1033](../../kernel/shell.c#L1033)
 
 ```c
 #define QEMU_PM_PORT
@@ -718,7 +738,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `HTTPD_REQ_CAP`
 
-`macro` | [kernel/shell.c:2552](../../kernel/shell.c#L2552)
+`macro` | [kernel/shell.c:2563](../../kernel/shell.c#L2563)
 
 ```c
 #define HTTPD_REQ_CAP
@@ -730,7 +750,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `HTTPD_IO_CHUNK`
 
-`macro` | [kernel/shell.c:2553](../../kernel/shell.c#L2553)
+`macro` | [kernel/shell.c:2564](../../kernel/shell.c#L2564)
 
 ```c
 #define HTTPD_IO_CHUNK
@@ -744,7 +764,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `SHELL_LS_CAP`
 
-`macro` | [kernel/shell.c:2810](../../kernel/shell.c#L2810)
+`macro` | [kernel/shell.c:2821](../../kernel/shell.c#L2821)
 
 ```c
 #define SHELL_LS_CAP
@@ -762,7 +782,7 @@ Shared by the fat and ext4 builtins.
 
 ### `PIPE_HOP_MAX`
 
-`macro` | [kernel/shell.c:4084](../../kernel/shell.c#L4084)
+`macro` | [kernel/shell.c:4103](../../kernel/shell.c#L4103)
 
 ```c
 #define PIPE_HOP_MAX

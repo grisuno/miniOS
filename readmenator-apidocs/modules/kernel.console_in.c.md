@@ -1,12 +1,12 @@
 # `kernel/console_in.c`
 
-> Source: [kernel/console_in.c:1](../../kernel/console_in.c#L1) | language `c` | coverage 66.7% | [API index](../index.md)
+> Source: [kernel/console_in.c:1](../../kernel/console_in.c#L1) | language `c` | coverage 68.4% | [API index](../index.md)
 
 Docstring: Console input device (kernel/console_in.c).
 
 ## Contents
 
-- **Functions:** [`console_stdin_push`](#console_stdin_push), [`console_stdin_clear`](#console_stdin_clear), [`console_stdin_active`](#console_stdin_active), [`console_ungetc`](#console_ungetc), [`ESC`](#esc), [`console_getc`](#console_getc), [`console_peek`](#console_peek), [`console_raw_try`](#console_raw_try), [`console_raw_get`](#console_raw_get), [`console_job_try`](#console_job_try), [`console_job_get`](#console_job_get)
+- **Functions:** [`console_stdin_push`](#console_stdin_push), [`console_stdin_clear`](#console_stdin_clear), [`console_stdin_active`](#console_stdin_active), [`console_ungetc`](#console_ungetc), [`ESC`](#esc), [`console_history_page`](#console_history_page), [`console_getc`](#console_getc), [`console_peek`](#console_peek), [`console_raw_try`](#console_raw_try), [`console_raw_get`](#console_raw_get), [`console_job_try`](#console_job_try), [`console_job_get`](#console_job_get)
 - **Macros:** [`PB_LEN`](#pb_len), [`MAX_SEQ_POLL`](#max_seq_poll), [`SB_LEN`](#sb_len), [`SB_PGUP`](#sb_pgup), [`SB_PGDN`](#sb_pgdn), [`SB_EXIT`](#sb_exit)
 
 ## Call Graph
@@ -17,11 +17,16 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_kernel_console_in_c__console_stdin_push(["console_stdin_push"])
     n_kernel_console_in_c__console_stdin_clear(["console_stdin_clear"])
+    n_kernel_console_in_c__console_getc(["console_getc"])
+    n_kernel_console_in_c__console_history_page(["console_history_page"])
     n_kernel_console_in_c__console_job_get(["console_job_get"])
     n_kernel_console_in_c__console_job_try(["console_job_try"])
+    n_headers_vga_fb_h__vga_fb_history_page["vga_fb.vga_fb_history_page"]
     n_headers_drivers_kbd_h__kbd_read["kbd.kbd_read"]
     n_kernel_console_in_c__console_stdin_push --> n_kernel_console_in_c__console_stdin_clear
+    n_kernel_console_in_c__console_getc --> n_kernel_console_in_c__console_history_page
     n_kernel_console_in_c__console_job_get --> n_kernel_console_in_c__console_job_try
+    n_kernel_console_in_c__console_history_page -.-> n_headers_vga_fb_h__vga_fb_history_page
     n_kernel_console_in_c__console_job_try -.-> n_headers_drivers_kbd_h__kbd_read
 ```
 
@@ -128,11 +133,37 @@ Drops the byte when full.
 
 ---
 
+<a id="console_history_page"></a>
+
+### `console_history_page`
+
+`function` | [kernel/console_in.c:204](../../kernel/console_in.c#L204)
+
+```c
+void console_history_page(int dir)
+```
+
+Docstring: Page the console history by one screen (dir -1 up, +1 down).
+
+The framebuffer terminal keeps its own logical ring, the text-mode console the legacy VGA scrollback ring; this picks the one that is up and is the single entry point for the page keys.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `dir` | `int` |  |  |
+
+*Calls:* [`vga_fb_history_page`](headers.vga_fb.h.md#vga_fb_history_page)
+
+*Called by:* [`console_getc`](#console_getc)
+
+---
+
 <a id="console_getc"></a>
 
 ### `console_getc`
 
-`function` | [kernel/console_in.c:205](../../kernel/console_in.c#L205)
+`function` | [kernel/console_in.c:217](../../kernel/console_in.c#L217)
 
 ```c
 int console_getc(void)
@@ -144,13 +175,15 @@ Recognises the PageUp/PageDown escape sequences and detours into the scrollback 
 
 **Returns:** `int`
 
+*Calls:* [`console_history_page`](#console_history_page)
+
 ---
 
 <a id="console_peek"></a>
 
 ### `console_peek`
 
-`function` | [kernel/console_in.c:233](../../kernel/console_in.c#L233)
+`function` | [kernel/console_in.c:247](../../kernel/console_in.c#L247)
 
 ```c
 int console_peek(void)
@@ -168,7 +201,7 @@ Used to tell an ESC prefix from a complete escape sequence, which always arrives
 
 ### `console_raw_try`
 
-`function` | [kernel/console_in.c:246](../../kernel/console_in.c#L246)
+`function` | [kernel/console_in.c:260](../../kernel/console_in.c#L260)
 
 ```c
 int console_raw_try(void)
@@ -186,7 +219,7 @@ The same serial + PS/2 sources console_getc funnels, but without the line buffer
 
 ### `console_raw_get`
 
-`function` | [kernel/console_in.c:250](../../kernel/console_in.c#L250)
+`function` | [kernel/console_in.c:264](../../kernel/console_in.c#L264)
 
 ```c
 int console_raw_get(void)
@@ -200,7 +233,7 @@ int console_raw_get(void)
 
 ### `console_job_try`
 
-`function` | [kernel/console_in.c:257](../../kernel/console_in.c#L257)
+`function` | [kernel/console_in.c:271](../../kernel/console_in.c#L271)
 
 ```c
 int console_job_try(void)
@@ -222,7 +255,7 @@ Serves the USB path too, so a ring-3 program that owns the keyboard on modern ha
 
 ### `console_job_get`
 
-`function` | [kernel/console_in.c:267](../../kernel/console_in.c#L267)
+`function` | [kernel/console_in.c:281](../../kernel/console_in.c#L281)
 
 ```c
 int console_job_get(void)
@@ -270,7 +303,7 @@ Returns the byte, or -1 after MAX_SEQ_POLL polls. The bound keeps a bare ESC (ne
 
 ### `SB_LEN`
 
-`macro` | [kernel/console_in.c:281](../../kernel/console_in.c#L281)
+`macro` | [kernel/console_in.c:295](../../kernel/console_in.c#L295)
 
 ```c
 #define SB_LEN
@@ -286,7 +319,7 @@ Renders a 25-row window over (scrollback ring + live screen) into the VGA frameb
 
 ### `SB_PGUP`
 
-`macro` | [kernel/console_in.c:304](../../kernel/console_in.c#L304)
+`macro` | [kernel/console_in.c:318](../../kernel/console_in.c#L318)
 
 ```c
 #define SB_PGUP
@@ -298,7 +331,7 @@ Renders a 25-row window over (scrollback ring + live screen) into the VGA frameb
 
 ### `SB_PGDN`
 
-`macro` | [kernel/console_in.c:305](../../kernel/console_in.c#L305)
+`macro` | [kernel/console_in.c:319](../../kernel/console_in.c#L319)
 
 ```c
 #define SB_PGDN
@@ -310,7 +343,7 @@ Renders a 25-row window over (scrollback ring + live screen) into the VGA frameb
 
 ### `SB_EXIT`
 
-`macro` | [kernel/console_in.c:306](../../kernel/console_in.c#L306)
+`macro` | [kernel/console_in.c:320](../../kernel/console_in.c#L320)
 
 ```c
 #define SB_EXIT

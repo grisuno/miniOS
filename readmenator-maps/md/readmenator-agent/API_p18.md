@@ -147,6 +147,10 @@ Depends on: `progs/minios_abi.h`
 - `read_cpl` (function) `progs/src/cpl.c:6` `static long read_cpl(void)` -- Ring-3 privilege probe.
 - `exit_now` (function) `progs/src/cpl.c:12` `static void exit_now(long code)`
 
+## progs/src/cvmfmt.c
+Depends on: `kernel/string.c`
+- `main` (function) `progs/src/cvmfmt.c:19` `int main(void)`
+
 ## progs/src/execho.c
 - `program` (function) `progs/src/execho.c:5` `* * Proves the UNIX process composition the kernel lacked: a child * produced by fork replaces its image with execve...`
 - `path` (function) `progs/src/execho.c:7` `* execs a ghost path (must fail -2, exits 42). The parent checks

@@ -2,40 +2,40 @@
  "schema_version": 1,
  "format": "jsonl",
  "meta": {
-  "modules": 509,
-  "entities": 10320,
+  "modules": 511,
+  "entities": 10345,
   "languages": {
    "S": 7,
-   "c": 238,
+   "c": 239,
    "h": 194,
    "py": 48,
-   "s": 12,
+   "s": 13,
    "sh": 10
   },
   "kinds": {
    "attribute": 158,
    "class": 34,
-   "constant": 159,
+   "constant": 160,
    "constructor": 23,
    "enum": 3,
    "exception": 4,
-   "function": 4468,
-   "macro": 3872,
+   "function": 4487,
+   "macro": 3874,
    "method": 116,
-   "module": 509,
+   "module": 511,
    "staticmethod": 6,
-   "struct": 316,
+   "struct": 317,
    "type_alias": 74,
    "variable": 578
   },
   "truncated": false,
-  "skipped_files": 78,
+  "skipped_files": 77,
   "privacy_mode": false
  },
  "coverage": {
   "overall": {
-   "documented": 2757,
-   "total": 9425,
+   "documented": 2769,
+   "total": 9449,
    "percent": 29.3
   },
   "by_kind": {
@@ -60,13 +60,13 @@
     "percent": 100.0
    },
    "function": {
-    "documented": 1438,
-    "total": 4468,
+    "documented": 1446,
+    "total": 4487,
     "percent": 32.2
    },
    "macro": {
-    "documented": 662,
-    "total": 3872,
+    "documented": 664,
+    "total": 3874,
     "percent": 17.1
    },
    "method": {
@@ -75,9 +75,9 @@
     "percent": 20.7
    },
    "module": {
-    "documented": 422,
-    "total": 509,
-    "percent": 82.9
+    "documented": 423,
+    "total": 511,
+    "percent": 82.8
    },
    "staticmethod": {
     "documented": 6,
@@ -85,9 +85,9 @@
     "percent": 100.0
    },
    "struct": {
-    "documented": 132,
-    "total": 316,
-    "percent": 41.8
+    "documented": 133,
+    "total": 317,
+    "percent": 42.0
    },
    "type_alias": {
     "documented": 42,
@@ -417,9 +417,9 @@
     "percent": 20.5
    },
    "headers/kernel/console_in.h": {
-    "documented": 6,
-    "total": 11,
-    "percent": 54.5
+    "documented": 7,
+    "total": 12,
+    "percent": 58.3
    },
    "headers/kernel/vga_cursor.h": {
     "documented": 8,
@@ -467,9 +467,9 @@
     "percent": 87.5
    },
    "headers/panic.h": {
-    "documented": 2,
-    "total": 3,
-    "percent": 66.7
+    "documented": 4,
+    "total": 5,
+    "percent": 80.0
    },
    "headers/pcache.h": {
     "documented": 16,
@@ -578,8 +578,8 @@
    },
    "headers/sync.h": {
     "documented": 7,
-    "total": 36,
-    "percent": 19.4
+    "total": 38,
+    "percent": 18.4
    },
    "headers/syscall_asm.h": {
     "documented": 12,
@@ -617,9 +617,9 @@
     "percent": 100.0
    },
    "headers/vga_fb.h": {
-    "documented": 34,
-    "total": 133,
-    "percent": 25.6
+    "documented": 35,
+    "total": 136,
+    "percent": 25.7
    },
    "headers/vga_fx.h": {
     "documented": 9,
@@ -702,19 +702,19 @@
     "percent": 80.0
    },
    "kernel/console.c": {
-    "documented": 6,
-    "total": 24,
-    "percent": 25.0
+    "documented": 7,
+    "total": 25,
+    "percent": 28.0
    },
    "kernel/console_in.c": {
-    "documented": 12,
-    "total": 18,
-    "percent": 66.7
+    "documented": 13,
+    "total": 19,
+    "percent": 68.4
    },
    "kernel/cvm_host.c": {
-    "documented": 0,
-    "total": 2,
-    "percent": 0.0
+    "documented": 1,
+    "total": 3,
+    "percent": 33.3
    },
    "kernel/ed25519.c": {
     "documented": 5,
@@ -838,8 +838,8 @@
    },
    "kernel/shell.c": {
     "documented": 10,
-    "total": 39,
-    "percent": 25.6
+    "total": 40,
+    "percent": 25.0
    },
    "kernel/spawn.c": {
     "documented": 7,
@@ -858,8 +858,8 @@
    },
    "kernel/sync.c": {
     "documented": 1,
-    "total": 23,
-    "percent": 4.3
+    "total": 25,
+    "percent": 4.0
    },
    "kernel/syscalls.c": {
     "documented": 23,
@@ -887,9 +887,9 @@
     "percent": 88.9
    },
    "kernel/vga_fb.c": {
-    "documented": 54,
-    "total": 107,
-    "percent": 50.5
+    "documented": 57,
+    "total": 110,
+    "percent": 51.8
    },
    "kernel/vga_fx.c": {
     "documented": 3,
@@ -959,6 +959,11 @@
    "progs/asm/cp.s": {
     "documented": 0,
     "total": 3,
+    "percent": 0.0
+   },
+   "progs/asm/cvmfmt.s": {
+    "documented": 0,
+    "total": 5,
     "percent": 0.0
    },
    "progs/asm/fib.s": {
@@ -2103,8 +2108,8 @@
    },
    "progs/pokemon/platform_minios.c": {
     "documented": 7,
-    "total": 60,
-    "percent": 11.7
+    "total": 59,
+    "percent": 11.9
    },
    "progs/quake2generic/q2generic_minios.c": {
     "documented": 6,
@@ -2150,6 +2155,11 @@
     "documented": 0,
     "total": 2,
     "percent": 0.0
+   },
+   "progs/src/cvmfmt.c": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
    },
    "progs/src/execho.c": {
     "documented": 1,
@@ -2422,9 +2432,9 @@
     "percent": 6.2
    },
    "tools/check_abi_numbers.py": {
-    "documented": 1,
-    "total": 5,
-    "percent": 20.0
+    "documented": 2,
+    "total": 6,
+    "percent": 33.3
    },
    "tools/check_addons.py": {
     "documented": 1,
@@ -2967,7 +2977,7 @@
   {
    "uid": "headers/kernel/console_in.h",
    "path": "modules/headers.kernel.console_in.h.jsonl",
-   "entities": 11
+   "entities": 12
   },
   {
    "uid": "headers/kernel/vga_cursor.h",
@@ -3017,7 +3027,7 @@
   {
    "uid": "headers/panic.h",
    "path": "modules/headers.panic.h.jsonl",
-   "entities": 3
+   "entities": 5
   },
   {
    "uid": "headers/pcache.h",
@@ -3127,7 +3137,7 @@
   {
    "uid": "headers/sync.h",
    "path": "modules/headers.sync.h.jsonl",
-   "entities": 36
+   "entities": 38
   },
   {
    "uid": "headers/syscall_asm.h",
@@ -3167,7 +3177,7 @@
   {
    "uid": "headers/vga_fb.h",
    "path": "modules/headers.vga_fb.h.jsonl",
-   "entities": 145
+   "entities": 148
   },
   {
    "uid": "headers/vga_fx.h",
@@ -3252,17 +3262,17 @@
   {
    "uid": "kernel/console.c",
    "path": "modules/kernel.console.c.jsonl",
-   "entities": 24
+   "entities": 25
   },
   {
    "uid": "kernel/console_in.c",
    "path": "modules/kernel.console_in.c.jsonl",
-   "entities": 18
+   "entities": 19
   },
   {
    "uid": "kernel/cvm_host.c",
    "path": "modules/kernel.cvm_host.c.jsonl",
-   "entities": 2
+   "entities": 3
   },
   {
    "uid": "kernel/ed25519.c",
@@ -3387,7 +3397,7 @@
   {
    "uid": "kernel/shell.c",
    "path": "modules/kernel.shell.c.jsonl",
-   "entities": 39
+   "entities": 40
   },
   {
    "uid": "kernel/spawn.c",
@@ -3407,7 +3417,7 @@
   {
    "uid": "kernel/sync.c",
    "path": "modules/kernel.sync.c.jsonl",
-   "entities": 24
+   "entities": 26
   },
   {
    "uid": "kernel/syscalls.c",
@@ -3437,7 +3447,7 @@
   {
    "uid": "kernel/vga_fb.c",
    "path": "modules/kernel.vga_fb.c.jsonl",
-   "entities": 107
+   "entities": 110
   },
   {
    "uid": "kernel/vga_fx.c",
@@ -3508,6 +3518,11 @@
    "uid": "progs/asm/cp.s",
    "path": "modules/progs.asm.cp.s.jsonl",
    "entities": 3
+  },
+  {
+   "uid": "progs/asm/cvmfmt.s",
+   "path": "modules/progs.asm.cvmfmt.s.jsonl",
+   "entities": 5
   },
   {
    "uid": "progs/asm/fib.s",
@@ -4652,7 +4667,7 @@
   {
    "uid": "progs/pokemon/platform_minios.c",
    "path": "modules/progs.pokemon.platform_minios.c.jsonl",
-   "entities": 60
+   "entities": 59
   },
   {
    "uid": "progs/quake2generic/q2generic_minios.c",
@@ -4697,6 +4712,11 @@
   {
    "uid": "progs/src/cpl.c",
    "path": "modules/progs.src.cpl.c.jsonl",
+   "entities": 2
+  },
+  {
+   "uid": "progs/src/cvmfmt.c",
+   "path": "modules/progs.src.cvmfmt.c.jsonl",
    "entities": 2
   },
   {
@@ -4972,7 +4992,7 @@
   {
    "uid": "tools/check_abi_numbers.py",
    "path": "modules/tools.check_abi_numbers.py.jsonl",
-   "entities": 10
+   "entities": 12
   },
   {
    "uid": "tools/check_addons.py",
@@ -5192,7 +5212,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 6659
+  "total": 6671
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

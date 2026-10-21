@@ -230,10 +230,14 @@ void kmain(void) {
      * garbage gates triple-fault the machine. */
     outb(0x21, 0xFF);
     outb(0xA1, 0xFF);
-    vga_puts("MiniOS Kernel v0.3\n====================\n");
     bootlog_mark("entry");
 
     kallocator_init();
+    /* The terminal history ring is allocated with the heap, before the
+     * banner is printed: the text-mode console feeds it, so the boot log
+     * stays reachable with PageUp once the desktop owns the screen. */
+    vga_fb_term_ring_init();
+    vga_puts("MiniOS Kernel v0.3\n====================\n");
     bootlog_mark("heap");
     ramdisk_init();
     register_libc_symbols();
