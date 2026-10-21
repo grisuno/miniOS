@@ -20,9 +20,10 @@ git clone https://github.com/grisuno/miniOS.git
 cd miniOS
 make sources        # clone the toolchain siblings (miniGCC, ld, cvm, ...)
 make                # build os.img
-make run            # boot it in QEMU
-make run-headless   # boot it on the serial console
+
 make run-kvm        # boot it in KVM mode
+make run-headless   # boot it on the serial console
+make run            # boot it in QEMU
 ```
 
 Full walkthrough: **[docs/quickstart.md](docs/quickstart.md)**. One-line lookups for
