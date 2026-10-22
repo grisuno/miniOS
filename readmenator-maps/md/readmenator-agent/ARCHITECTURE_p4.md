@@ -311,5 +311,6 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tools/test_lisp.py` -> argparse, os, shutil, subprocess, sys, tempfile
 - `tools/test_net_fixture.py` -> socket, sys, threading
 - `tools/tls_test.py` -> datetime, os, re, shlex, socket, ssl, subprocess, sys, threading
+- `tools/update_sources.py` -> __future__, argparse, dataclasses, datetime, json, pathlib, subprocess, sys
 - `tools/wm_layout_sync.py` -> __future__, argparse, pathlib, re, sys
 

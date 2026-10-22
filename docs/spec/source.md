@@ -82,6 +82,67 @@ with local work is left alone. `make sources-update` pulls the latest commit
 of each before rebuilding, and `make sources-status` shows which revision
 each one is sitting on.
 
+### The update contract (`make update`)
+
+`make sources` answers "where do the sources come from"; `make update`
+answers "bring me the newest ones". The updater lives in
+`tools/update_sources.py` and drives every checkout the build consumes, not
+just the toolchain trio:
+
+```bash
+make update                 # every checkout: toolchain, browser, interpreters, libraries
+make update freedom         # only the browser
+make update freedom ld      # only those two
+make update-status          # the revision each checkout sits on, no network
+make update-list            # the managed checkouts, their mode and their path
+make update-rollback        # restore the revisions the last update replaced
+```
+
+The fleet is: `minigcc`, `ld`, `cvm` (the toolchain), `freedom` (the
+browser), `micropython`, `cpython`, `lua` (the interpreters), `nuklear`,
+`nuked-opl3` (the UI and audio libraries), `raycastlib`, `quake2` and
+`pokemon` (the reference sources). Each one keeps its mode:
+
+| Mode | Checkouts | What "update" means |
+|------|-----------|---------------------|
+| track | minigcc, ld, cvm, freedom, nuklear, nuked-opl3 | fast-forward to the upstream tip |
+| pinned | micropython (v1.28.0), cpython (v3.12.11), lua (v5.4.7) | held at the release tag; the tag is re-verified and restored when it drifted |
+| reference | raycastlib, quake2, pokemon | tracked like `track`, but never required: a missing checkout is reported, not fetched |
+
+Freedom is the one checkout that carries a commit of its own: the platform
+seam (`gui/platform.h`, the local commit that lets the same browser link
+against Wayland or MiniOS) that `freedom-gui` depends on. Upstream keeps
+rewriting `gui/browser_ui.c`, so the two meet in a conflict that is
+resolved by hand inside the FreeDom repository: the seam wins for the
+host-specific parts, upstream's features enter through the seam's API, and
+`browser_ui.c` keeps zero host references.
+
+The safety rules are the contract, not a side effect:
+
+- Local work is never discarded. A dirty worktree is reported as `skipped`
+  and left exactly as it is; nothing is ever reset, stashed or
+  force-updated. The Quake 2 upstream carries the MiniOS bug fixes as local
+  edits for exactly that reason.
+- History is never rewritten. A checkout that carries local commits is
+  merged with the upstream tip, so a local commit and the upstream work
+  coexist. A merge that conflicts is aborted, the conflicted files are
+  named, and the checkout is left clean; the port is then done by hand in
+  the sibling repository. `UPDATE_STRATEGY=rebase` replays the local
+  commits instead, `UPDATE_STRATEGY=ff` reports a divergence and touches
+  nothing.
+- Every update records the pre-update revision in
+  `build/sources-snapshot.json`, so `make update-rollback` puts the fleet
+  back exactly where it was (`git reset --keep`, which refuses to discard
+  local changes).
+- A shallow checkout is deepened by a bounded number of steps until the
+  fast-forward becomes provable; the depth never grows without a budget.
+
+Each checkout reports one line: the state (`updated`, `current`, `pinned`,
+`repinned`, `skipped`, `diverged`, `conflict`, `absent`, `not-a-clone`,
+`would-update`, `failed`), the path, and a short detail. The command exits
+nonzero when a checkout failed or conflicted, so a scripted update never
+reports success over a broken fleet.
+
 Expected layout: the directory holding this repository can have any name:
 
 ```

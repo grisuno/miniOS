@@ -1,6 +1,6 @@
 # Documentation Coverage
 
-Overall: **29.3%** (2769 of 9449 public modules, types, and callables). Data members are excluded from the ratio.
+Overall: **29.5%** (2801 of 9483 public modules, types, and callables). Data members are excluded from the ratio.
 
 [Back to index](index.md)
 
@@ -8,14 +8,15 @@ Overall: **29.3%** (2769 of 9449 public modules, types, and callables). Data mem
 
 | Kind | Documented | Total | Coverage |
 |---|---|---|---|
-| class | 22 | 34 | 64.7% |
+| class | 25 | 37 | 67.6% |
 | constructor | 3 | 23 | 13.0% |
 | enum | 2 | 3 | 66.7% |
-| exception | 4 | 4 | 100.0% |
-| function | 1446 | 4487 | 32.2% |
+| exception | 5 | 5 | 100.0% |
+| function | 1473 | 4514 | 32.6% |
 | macro | 664 | 3874 | 17.1% |
 | method | 24 | 116 | 20.7% |
-| module | 423 | 511 | 82.8% |
+| module | 424 | 512 | 82.8% |
+| property | 0 | 2 | 0.0% |
 | staticmethod | 6 | 6 | 100.0% |
 | struct | 133 | 317 | 42.0% |
 | type_alias | 42 | 74 | 56.8% |
@@ -478,6 +479,7 @@ Overall: **29.3%** (2769 of 9449 public modules, types, and callables). Data mem
 | [`headers/arena.h`](modules/headers.arena.h.md) | 14 | 15 | 93.3% |
 | [`headers/wm_gfxview.h`](modules/headers.wm_gfxview.h.md) | 14 | 15 | 93.3% |
 | [`headers/pcache.h`](modules/headers.pcache.h.md) | 16 | 17 | 94.1% |
+| [`tools.update_sources`](modules/tools.update_sources.py.md) | 32 | 34 | 94.1% |
 | [`drivers/usbhid.c`](modules/drivers.usbhid.c.md) | 16 | 16 | 100.0% |
 | [`fs/fsimg.c`](modules/fs.fsimg.c.md) | 5 | 5 | 100.0% |
 | [`headers/ap_stub.h`](modules/headers.ap_stub.h.md) | 1 | 1 | 100.0% |
@@ -540,7 +542,7 @@ Overall: **29.3%** (2769 of 9449 public modules, types, and callables). Data mem
 
 DOC001 undocumented public item, DOC002 parameter not documented, DOC003 documented parameter missing from the signature (stale doc), DOC004 return value not documented, DOC005 raised exception not documented.
 
-DOC001: 6670, DOC005: 1
+DOC001: 6672, DOC005: 1
 
 - DOC001 `arch/x86/ap_entry.S:21` function ap_stub_start is not documented
 - DOC001 `arch/x86/ap_entry.S:39` function ap_pm is not documented
@@ -1042,4 +1044,4 @@ DOC001: 6670, DOC005: 1
 - DOC001 `fs/ext4.c:666` function ext4_vfs_write is not documented
 - DOC001 `fs/ext4.c:675` function ext4_vfs_close is not documented
 - DOC001 `fs/ext4.c:680` function ext4_vfs_fstat is not documented
-- ... 6171 more in `api/warnings.jsonl`
+- ... 6173 more in `api/warnings.jsonl`

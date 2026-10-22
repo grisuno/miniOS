@@ -135,6 +135,8 @@ Project types nested under the project types they derive from. External bases ar
 - [`gb_voice_t`](modules/progs.pokemon.platform_minios.c.md#gb_voice_t) struct in `progs/pokemon/platform_minios.c`
 - [`GdbChannel`](modules/tools.minios_hyper.py.md#gdbchannel) class in `tools.minios_hyper`
 - [`gf128`](modules/net.tls_crypto.c.md#gf128) struct in `net/tls_crypto.c`
+- [`GitError`](modules/tools.update_sources.py.md#giterror) exception in `tools.update_sources`(RuntimeError)
+- [`GitResult`](modules/tools.update_sources.py.md#gitresult) class in `tools.update_sources`
 - [`gnode`](modules/progs.nuklear.node_editor.c.md#gnode) struct in `progs/nuklear/node_editor.c`
 - [`Guest`](modules/tools.minios_hyper.py.md#guest) class in `tools.minios_hyper`
 - [`gus_config_t`](modules/progs.doomgeneric.gusconf.c.md#gus_config_t) struct in `progs/doomgeneric/gusconf.c`
@@ -244,6 +246,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`num_sym`](modules/progs.freedomui.ps2_keymap.c.md#num_sym) type_alias in `progs/freedomui/ps2_keymap.c`
 - [`numitems`](modules/progs.doomgeneric.m_menu.c.md#numitems) type_alias in `progs/doomgeneric/m_menu.c`
 - [`off_lo`](modules/kernel.sched.c.md#off_lo) type_alias in `kernel/sched.c`
+- [`Outcome`](modules/tools.update_sources.py.md#outcome) class in `tools.update_sources`
 - [`ParseResult`](modules/progs.lisp.lisp.c.md#parseresult) struct in `progs/lisp/lisp.c`
 - [`pcache_slot_t`](modules/fs.pcache.c.md#pcache_slot_t) struct in `fs/pcache.c`
 - [`pci_bdf_t`](modules/headers.drivers.pci.h.md#pci_bdf_t) struct in `headers/drivers/pci.h`
@@ -286,6 +289,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`Recipe`](modules/progs.minicraft.minicraft.c.md#recipe) struct in `progs/minicraft/minicraft.c`
 - [`ref`](modules/kernel.proc_sec.c.md#ref) type_alias in `kernel/proc_sec.c`
 - [`registry_value_t`](modules/progs.doomgeneric.d_iwad.c.md#registry_value_t) struct in `progs/doomgeneric/d_iwad.c`
+- [`Repo`](modules/tools.update_sources.py.md#repo) class in `tools.update_sources`
 - [`res0`](modules/kernel.sched.c.md#res0) type_alias in `kernel/sched.c`
 - [`RPCError`](modules/mcp.minios_mcp.py.md#rpcerror) exception in `mcp.minios_mcp`(Exception)
 - [`RspCodec`](modules/tools.minios_hyper.py.md#rspcodec) class in `tools.minios_hyper`

@@ -174,6 +174,7 @@
 - [`abi_verify`](modules/headers.abi.h.md#abi_verify) function in `headers/abi.h`
 - [`abi_verify`](modules/kernel.abi.c.md#abi_verify) function in `kernel/abi.c`
 - [`ABI_VERSION_MISMATCH`](modules/headers.abi.h.md#abi_version_mismatch) macro in `headers/abi.h`
+- [`abort_reconcile`](modules/tools.update_sources.py.md#abort_reconcile) function in `tools.update_sources`
 - [`absolute_url`](modules/progs.micropython.variants.minios.lib.mip.py.md#absolute_url) function in `progs.micropython.variants.minios.lib.mip`
 - [`add_dir_entry`](modules/tools.mkfs.minifs.py.md#minifs-add_dir_entry) method of `MiniFS` in `tools.mkfs.minifs`
 - [`adderr`](modules/progs.nuklear.node_editor.c.md#adderr) function in `progs/nuklear/node_editor.c`
@@ -249,6 +250,8 @@
 - [`aes_tool_name`](modules/progs.asm.aes.s.md#aes_tool_name) function in `progs/asm/aes.s`
 - [`aes_write_all`](modules/progs.asm.aes.s.md#aes_write_all) function in `progs/asm/aes.s`
 - [`aes_xtime`](modules/progs.asm.aes.s.md#aes_xtime) function in `progs/asm/aes.s`
+- [`after`](modules/tools.update_sources.py.md#outcome-after) attribute of `Outcome` in `tools.update_sources`
+- [`ahead_behind`](modules/tools.update_sources.py.md#ahead_behind) function in `tools.update_sources`
 - [`alias_pattern`](modules/tools.check_syscall_sanitize.py.md#config-alias_pattern) attribute of `Config` in `tools.check_syscall_sanitize`
 - [`ALIGN_UP`](modules/headers.kernel.h.md#align_up) macro in `headers/kernel.h`
 - [`alloc_block`](modules/tools.mkfs.minifs.py.md#minifs-alloc_block) method of `MiniFS` in `tools.mkfs.minifs`
@@ -459,6 +462,7 @@
 - [`BC_LINE`](modules/drivers.block.c.md#bc_line) macro in `drivers/block.c`
 - [`BC_MASK`](modules/drivers.block.c.md#bc_mask) macro in `drivers/block.c`
 - [`BC_WAYS`](modules/drivers.block.c.md#bc_ways) macro in `drivers/block.c`
+- [`before`](modules/tools.update_sources.py.md#outcome-before) attribute of `Outcome` in `tools.update_sources`
 - [`below`](modules/headers.vga_fb.h.md#below) function in `headers/vga_fb.h`
 - [`below`](modules/progs.src.sign.c.md#below) function in `progs/src/sign.c`
 - [`BEZIER_PAD`](modules/progs.nuklear.node_editor.c.md#bezier_pad) macro in `progs/nuklear/node_editor.c`
@@ -579,6 +583,7 @@
 - [`bootlog_report`](modules/kernel.c.md#bootlog_report) function in `kernel.c`
 - [`bottomslope`](modules/progs.doomgeneric.p_map.c.md#bottomslope) variable in `progs/doomgeneric/p_map.c`
 - [`bound`](modules/progs.minios_png.h.md#bound) function in `progs/minios_png.h`
+- [`branch`](modules/tools.update_sources.py.md#outcome-branch) attribute of `Outcome` in `tools.update_sources`
 - [`BROWNRANGE`](modules/progs.doomgeneric.am_map.c.md#brownrange) macro in `progs/doomgeneric/am_map.c`
 - [`BROWNS`](modules/progs.doomgeneric.am_map.c.md#browns) macro in `progs/doomgeneric/am_map.c`
 - [`BSP`](modules/kernel.sched.c.md#bsp) function in `kernel/sched.c`
@@ -697,6 +702,7 @@
 - [`CFG_TMO_MIN`](modules/mcp.minios_mcp.py.md#cfg_tmo_min) constant in `mcp.minios_mcp`
 - [`CFG_TMO_POWEROFF_MS`](modules/mcp.minios_mcp.py.md#cfg_tmo_poweroff_ms) constant in `mcp.minios_mcp`
 - [`CFG_TMO_PROMPT_MS`](modules/mcp.minios_mcp.py.md#cfg_tmo_prompt_ms) constant in `mcp.minios_mcp`
+- [`changed`](modules/tools.update_sources.py.md#outcome-changed) property of `Outcome` in `tools.update_sources`
 - [`channel`](modules/qga.c.md#channel) function in `qga.c`
 - [`channel_t`](modules/progs.doomgeneric.s_sound.c.md#channel_t) struct in `progs/doomgeneric/s_sound.c`
 - [`chat_macros`](modules/progs.doomgeneric.hu_stuff.h.md#chat_macros) variable in `progs/doomgeneric/hu_stuff.h`
@@ -843,6 +849,7 @@
 - [`CONFIG_VARIABLE_KEY`](modules/progs.doomgeneric.m_config.c.md#config_variable_key) macro in `progs/doomgeneric/m_config.c`
 - [`CONFIG_VARIABLE_STRING`](modules/progs.doomgeneric.m_config.c.md#config_variable_string) macro in `progs/doomgeneric/m_config.c`
 - [`configdir`](modules/progs.doomgeneric.m_config.h.md#configdir) variable in `progs/doomgeneric/m_config.h`
+- [`conflicted_files`](modules/tools.update_sources.py.md#conflicted_files) function in `tools.update_sources`
 - [`connect`](modules/progs.src.freedom.c.md#connect) function in `progs/src/freedom.c`
 - [`connect`](modules/progs.src.http.c.md#connect) function in `progs/src/http.c`
 - [`connect`](modules/tools.qga_client.py.md#connect) function in `tools.qga_client`
@@ -944,6 +951,7 @@
 - [`curlfree`](modules/progs.src.freedom.c.md#curlfree) function in `progs/src/freedom.c`
 - [`curline`](modules/progs.doomgeneric.r_bsp.h.md#curline) variable in `progs/doomgeneric/r_bsp.h`
 - [`curline`](modules/progs.doomgeneric.r_defs.h.md#curline) type_alias in `progs/doomgeneric/r_defs.h`
+- [`current_branch`](modules/tools.update_sources.py.md#current_branch) function in `tools.update_sources`
 - [`current_pid`](modules/headers.sched.h.md#current_pid) macro in `headers/sched.h`
 - [`cursor_erase`](modules/headers.kernel.vga_cursor.h.md#cursor_erase) function in `headers/kernel/vga_cursor.h`
 - [`cursor_erase`](modules/kernel.vga_cursor.c.md#cursor_erase) function in `kernel/vga_cursor.c`
@@ -1088,13 +1096,17 @@
 - [`deathmatchstarts`](modules/progs.doomgeneric.doomstat.h.md#deathmatchstarts) variable in `progs/doomgeneric/doomstat.h`
 - [`decode`](modules/tools.minios_hyper.py.md#rspcodec-decode) staticmethod of `RspCodec` in `tools.minios_hyper`
 - [`decode_point`](modules/tools.sign_elf.py.md#decode_point) function in `tools.sign_elf`
+- [`DEEPEN_STEP_COMMITS`](modules/tools.update_sources.py.md#deepen_step_commits) constant in `tools.update_sources`
+- [`deepen_upstream`](modules/tools.update_sources.py.md#deepen_upstream) function in `tools.update_sources`
 - [`default_collection_t`](modules/progs.doomgeneric.m_config.c.md#default_collection_t) struct in `progs/doomgeneric/m_config.c`
 - [`DEFAULT_CPG_PATH`](modules/tools.check_cohesion.py.md#default_cpg_path) constant in `tools.check_cohesion`
 - [`DEFAULT_CPG_PATH`](modules/tools.check_surprising.py.md#default_cpg_path) constant in `tools.check_surprising`
 - [`DEFAULT_DEST`](modules/progs.micropython.variants.minios.lib.mip.py.md#default_dest) constant in `progs.micropython.variants.minios.lib.mip`
+- [`default_dir`](modules/tools.update_sources.py.md#repo-default_dir) attribute of `Repo` in `tools.update_sources`
 - [`DEFAULT_KB`](modules/tools.check_kb_sync.py.md#default_kb) constant in `tools.check_kb_sync`
 - [`DEFAULT_MIN_HOPS`](modules/tools.check_surprising.py.md#default_min_hops) constant in `tools.check_surprising`
 - [`DEFAULT_RAM`](modules/progs.doomgeneric.i_system.c.md#default_ram) macro in `progs/doomgeneric/i_system.c`
+- [`DEFAULT_SNAPSHOT`](modules/tools.update_sources.py.md#default_snapshot) constant in `tools.update_sources`
 - [`DEFAULT_SOCK`](modules/tools.qga_client.py.md#default_sock) constant in `tools.qga_client`
 - [`_DEFAULT_SOURCE`](modules/progs.tls_u.tls_u_main.c.md#_default_source) macro in `progs/tls_u/tls_u_main.c`
 - [`_DEFAULT_SOURCE`](modules/progs.tls_u.tls_u_port.c.md#_default_source) macro in `progs/tls_u/tls_u_port.c`
@@ -1197,6 +1209,7 @@
 - [`desktop_shortcuts_load`](modules/kernel.vga_fb.c.md#desktop_shortcuts_load) function in `kernel/vga_fb.c`
 - [`DESKTOP_TICK_INTERVAL`](modules/headers.sched.h.md#desktop_tick_interval) macro in `headers/sched.h`
 - [`dest_addr`](modules/arch.x86.boot.stage2.S.md#dest_addr) function in `arch/x86/boot/stage2.S`
+- [`detail`](modules/tools.update_sources.py.md#outcome-detail) attribute of `Outcome` in `tools.update_sources`
 - [`DETAILHI`](modules/progs.doomgeneric.d_englsh.h.md#detailhi) macro in `progs/doomgeneric/d_englsh.h`
 - [`detailLevel`](modules/progs.doomgeneric.m_menu.h.md#detaillevel) variable in `progs/doomgeneric/m_menu.h`
 - [`DETAILLO`](modules/progs.doomgeneric.d_englsh.h.md#detaillo) macro in `progs/doomgeneric/d_englsh.h`
@@ -1797,6 +1810,7 @@
 - [`fassoc_push`](modules/progs.file.file_assoc.h.md#fassoc_push) function in `progs/file/file_assoc.h`
 - [`fassoc_reserve`](modules/progs.file.file_assoc.h.md#fassoc_reserve) function in `progs/file/file_assoc.h`
 - [`fassoc_table`](modules/progs.file.file_assoc.h.md#fassoc_table) struct in `progs/file/file_assoc.h`
+- [`fast_forward`](modules/tools.update_sources.py.md#fast_forward) function in `tools.update_sources`
 - [`fastparm`](modules/progs.doomgeneric.doomstat.h.md#fastparm) variable in `progs/doomgeneric/doomstat.h`
 - [`FAT32_CLUS_MAX`](modules/headers.fat32.h.md#fat32_clus_max) macro in `headers/fat32.h`
 - [`fat32_handle_t`](modules/headers.fat32.h.md#fat32_handle_t) struct in `headers/fat32.h`
@@ -1891,6 +1905,8 @@
 - [`FEATURE_SOUND`](modules/progs.doomgeneric.doomfeatures.h.md#feature_sound) macro in `progs/doomgeneric/doomfeatures.h`
 - [`fetch`](modules/progs.asm.freedom.s.md#fetch) function in `progs/asm/freedom.s`
 - [`fetch_css`](modules/progs.asm.freedom.s.md#fetch_css) function in `progs/asm/freedom.s`
+- [`FETCH_TIMEOUT_SECONDS`](modules/tools.update_sources.py.md#fetch_timeout_seconds) constant in `tools.update_sources`
+- [`fetch_upstream`](modules/tools.update_sources.py.md#fetch_upstream) function in `tools.update_sources`
 - [`FF_FRAMEMASK`](modules/progs.doomgeneric.p_pspr.h.md#ff_framemask) macro in `progs/doomgeneric/p_pspr.h`
 - [`FF_FULLBRIGHT`](modules/progs.doomgeneric.p_pspr.h.md#ff_fullbright) macro in `progs/doomgeneric/p_pspr.h`
 - [`fflush`](modules/progs.topogpt3.topogpt3.c.md#fflush) function in `progs/topogpt3/topogpt3.c`
@@ -2333,6 +2349,9 @@
 - [`gfx_win_title`](modules/kernel.syscalls.c.md#gfx_win_title) variable in `kernel/syscalls.c`
 - [`gfx_zoom_2x`](modules/kernel.syscalls.c.md#gfx_zoom_2x) variable in `kernel/syscalls.c`
 - [`GGSAVED`](modules/progs.doomgeneric.d_englsh.h.md#ggsaved) macro in `progs/doomgeneric/d_englsh.h`
+- [`git_out`](modules/tools.update_sources.py.md#git_out) function in `tools.update_sources`
+- [`GitError`](modules/tools.update_sources.py.md#giterror) exception in `tools.update_sources`
+- [`GitResult`](modules/tools.update_sources.py.md#gitresult) class in `tools.update_sources`
 - [`gnode`](modules/progs.nuklear.node_editor.c.md#gnode) struct in `progs/nuklear/node_editor.c`
 - [`_GNU_SOURCE`](modules/progs.freedomui.platform_minios.c.md#_gnu_source) macro in `progs/freedomui/platform_minios.c`
 - [`_GNU_SOURCE`](modules/progs.src.apsse.c.md#_gnu_source) macro in `progs/src/apsse.c`
@@ -2477,6 +2496,9 @@
 - [`halt`](modules/tools.minios_hyper.py.md#gdbchannel-halt) method of `GdbChannel` in `tools.minios_hyper`
 - [`halt`](modules/arch.x86.boot.stage1.S.md#halt) function in `arch/x86/boot/stage1.S`
 - [`halt`](modules/arch.x86.boot.stage2.S.md#halt) function in `arch/x86/boot/stage2.S`
+- [`handle_pinned`](modules/tools.update_sources.py.md#handle_pinned) function in `tools.update_sources`
+- [`handle_repo`](modules/tools.update_sources.py.md#handle_repo) function in `tools.update_sources`
+- [`handle_tracked`](modules/tools.update_sources.py.md#handle_tracked) function in `tools.update_sources`
 - [`handler_body`](modules/tools.check_fork_stubs.py.md#handler_body) function in `tools.check_fork_stubs`
 - [`handlers`](modules/tools.check_fork_stubs.py.md#config-handlers) attribute of `Config` in `tools.check_fork_stubs`
 - [`handoff`](modules/tools.check_spin_discipline.py.md#config-handoff) attribute of `Config` in `tools.check_spin_discipline`
@@ -2490,6 +2512,7 @@
 - [`HAT_AXIS_VERTICAL`](modules/progs.doomgeneric.i_joystick.h.md#hat_axis_vertical) macro in `progs/doomgeneric/i_joystick.h`
 - [`have_prev`](modules/progs.asm.mtop.s.md#have_prev) function in `progs/asm/mtop.s`
 - [`head_line`](modules/progs.asm.freedom.s.md#head_line) function in `progs/asm/freedom.s`
+- [`head_sha`](modules/tools.update_sources.py.md#head_sha) function in `tools.update_sources`
 - [`header_fmt`](modules/tools.doom_pwad.py.md#doompwadconfig-header_fmt) attribute of `DoomPwadConfig` in `tools.doom_pwad`
 - [`headless`](modules/tools.boot_wl.py.md#wlboot-headless) method of `WlBoot` in `tools.boot_wl`
 - [`headless`](modules/tools.boot_wl.py.md#wlbootconfig-headless) attribute of `WlBootConfig` in `tools.boot_wl`
@@ -3010,7 +3033,9 @@
 - [`irqstat_report`](modules/kernel.sched.c.md#irqstat_report) function in `kernel/sched.c`
 - [`IS_BUTTON_AXIS`](modules/progs.doomgeneric.i_joystick.h.md#is_button_axis) macro in `progs/doomgeneric/i_joystick.h`
 - [`is_dir`](modules/tools.minifs_saves.py.md#fs-is_dir) method of `FS` in `tools.minifs_saves`
+- [`is_dirty`](modules/tools.update_sources.py.md#is_dirty) function in `tools.update_sources`
 - [`IS_HAT_AXIS`](modules/progs.doomgeneric.i_joystick.h.md#is_hat_axis) macro in `progs/doomgeneric/i_joystick.h`
+- [`is_shallow`](modules/tools.update_sources.py.md#is_shallow) function in `tools.update_sources`
 - [`is_void_tag`](modules/progs.asm.freedom.s.md#is_void_tag) function in `progs/asm/freedom.s`
 - [`is_wall`](modules/tools.doom_pwad.py.md#is_wall) function in `tools.doom_pwad`
 - [`islope_t`](modules/progs.doomgeneric.am_map.c.md#islope_t) struct in `progs/doomgeneric/am_map.c`
@@ -4360,6 +4385,7 @@
 - [`main`](modules/tools.qga_client.py.md#main) function in `tools.qga_client`
 - [`main`](modules/tools.repro_gui.py.md#main) function in `tools.repro_gui`
 - [`main`](modules/tools.sign_elf.py.md#main) function in `tools.sign_elf`
+- [`main`](modules/tools.update_sources.py.md#main) function in `tools.update_sources`
 - [`main`](modules/tools.wm_layout_sync.py.md#main) function in `tools.wm_layout_sync`
 - [`make_chunk`](modules/tools.gen_icons.py.md#make_chunk) function in `tools.gen_icons`
 - [`make_png`](modules/tools.gen_icons.py.md#make_png) function in `tools.gen_icons`
@@ -4392,6 +4418,7 @@
 - [`MAX_CHEAT_PARAMS`](modules/progs.doomgeneric.m_cheat.h.md#max_cheat_params) macro in `progs/doomgeneric/m_cheat.h`
 - [`MAX_CPUS`](modules/headers.sched.h.md#max_cpus) macro in `headers/sched.h`
 - [`MAX_DEATHMATCH_STARTS`](modules/progs.doomgeneric.p_setup.c.md#max_deathmatch_starts) macro in `progs/doomgeneric/p_setup.c`
+- [`MAX_DEEPEN_STEPS`](modules/tools.update_sources.py.md#max_deepen_steps) constant in `tools.update_sources`
 - [`MAX_DM_STARTS`](modules/progs.doomgeneric.doomstat.h.md#max_dm_starts) macro in `progs/doomgeneric/doomstat.h`
 - [`MAX_ENTRIES`](modules/tools.minifs_saves.py.md#max_entries) constant in `tools.minifs_saves`
 - [`MAX_FILE_BYTES`](modules/tools.minifs_saves.py.md#max_file_bytes) constant in `tools.minifs_saves`
@@ -4961,6 +4988,9 @@
 - [`MOD_CTRL`](modules/headers.drivers.modifiers.h.md#mod_ctrl) macro in `headers/drivers/modifiers.h`
 - [`MOD_SHIFT`](modules/headers.drivers.modifiers.h.md#mod_shift) macro in `headers/drivers/modifiers.h`
 - [`MOD_SUPER`](modules/headers.drivers.modifiers.h.md#mod_super) macro in `headers/drivers/modifiers.h`
+- [`mode`](modules/tools.update_sources.py.md#repo-mode) attribute of `Repo` in `tools.update_sources`
+- [`MODE_PINNED`](modules/tools.update_sources.py.md#mode_pinned) constant in `tools.update_sources`
+- [`MODE_REFERENCE`](modules/tools.update_sources.py.md#mode_reference) constant in `tools.update_sources`
 - [`mode_scale_1x`](modules/progs.doomgeneric.i_scale.h.md#mode_scale_1x) variable in `progs/doomgeneric/i_scale.h`
 - [`mode_scale_2x`](modules/progs.doomgeneric.i_scale.h.md#mode_scale_2x) variable in `progs/doomgeneric/i_scale.h`
 - [`mode_scale_3x`](modules/progs.doomgeneric.i_scale.h.md#mode_scale_3x) variable in `progs/doomgeneric/i_scale.h`
@@ -4977,6 +5007,7 @@
 - [`mode_stretch_3x`](modules/progs.doomgeneric.i_scale.h.md#mode_stretch_3x) variable in `progs/doomgeneric/i_scale.h`
 - [`mode_stretch_4x`](modules/progs.doomgeneric.i_scale.h.md#mode_stretch_4x) variable in `progs/doomgeneric/i_scale.h`
 - [`mode_stretch_5x`](modules/progs.doomgeneric.i_scale.h.md#mode_stretch_5x) variable in `progs/doomgeneric/i_scale.h`
+- [`MODE_TRACK`](modules/tools.update_sources.py.md#mode_track) constant in `tools.update_sources`
 - [`ModelWeights`](modules/progs.topogpt3.topogpt3.c.md#modelweights) struct in `progs/topogpt3/topogpt3.c`
 - [`modifiedgame`](modules/progs.doomgeneric.doomstat.h.md#modifiedgame) variable in `progs/doomgeneric/doomstat.h`
 - [`modifier_keys_t`](modules/headers.drivers.modifiers.h.md#modifier_keys_t) struct in `headers/drivers/modifiers.h`
@@ -5144,6 +5175,8 @@
 - [`N_NODES`](modules/progs.topogpt3.topogpt3.c.md#n_nodes) macro in `progs/topogpt3/topogpt3.c`
 - [`N_RADIAL`](modules/progs.topogpt3.topogpt3.c.md#n_radial) macro in `progs/topogpt3/topogpt3.c`
 - [`N_SPECTRAL_LAYERS`](modules/progs.topogpt3.topogpt3.c.md#n_spectral_layers) macro in `progs/topogpt3/topogpt3.c`
+- [`name`](modules/tools.update_sources.py.md#outcome-name) attribute of `Outcome` in `tools.update_sources`
+- [`name`](modules/tools.update_sources.py.md#repo-name) attribute of `Repo` in `tools.update_sources`
 - [`name`](modules/headers.kernel.h.md#name) type_alias in `headers/kernel.h`
 - [`NAME_MAX`](modules/tools.mkramdisk.py.md#name_max) constant in `tools.mkramdisk`
 - [`NCONS`](modules/progs.src.thdemo.c.md#ncons) macro in `progs/src/thdemo.c`
@@ -5588,6 +5621,7 @@
 ## O
 
 - [`off_lo`](modules/kernel.sched.c.md#off_lo) type_alias in `kernel/sched.c`
+- [`ok`](modules/tools.update_sources.py.md#gitresult-ok) property of `GitResult` in `tools.update_sources`
 - [`once`](modules/kernel.vga_fx.c.md#once) function in `kernel/vga_fx.c`
 - [`ONCEILINGZ`](modules/progs.doomgeneric.p_local.h.md#onceilingz) macro in `progs/doomgeneric/p_local.h`
 - [`ONFLOORZ`](modules/progs.doomgeneric.p_local.h.md#onfloorz) macro in `progs/doomgeneric/p_local.h`
@@ -5630,6 +5664,7 @@
 - [`OUT`](modules/tools.gen_minifs.py.md#out) constant in `tools.gen_minifs`
 - [`OUT`](modules/tools.mkpak1.py.md#out) constant in `tools.mkpak1`
 - [`outb`](modules/headers.kernel.h.md#outb) function in `headers/kernel.h`
+- [`Outcome`](modules/tools.update_sources.py.md#outcome) class in `tools.update_sources`
 - [`outsw`](modules/headers.kernel.h.md#outsw) function in `headers/kernel.h`
 - [`outw`](modules/headers.kernel.h.md#outw) function in `headers/kernel.h`
 
@@ -5895,10 +5930,12 @@
 - [`parse_input`](modules/progs.nuklear.node_editor.c.md#parse_input) function in `progs/nuklear/node_editor.c`
 - [`parse_ld_stubs`](modules/tools.check_abi_numbers.py.md#parse_ld_stubs) function in `tools.check_abi_numbers`
 - [`parse_mutations`](modules/tools.check_mutant_anchors.py.md#parse_mutations) function in `tools.check_mutant_anchors`
+- [`parse_overrides`](modules/tools.update_sources.py.md#parse_overrides) function in `tools.update_sources`
 - [`parse_phdrs`](modules/tools.sign_elf.py.md#parse_phdrs) function in `tools.sign_elf`
 - [`parse_response`](modules/progs.micropython.variants.minios.lib.mip.py.md#parse_response) function in `progs.micropython.variants.minios.lib.mip`
 - [`parse_url`](modules/progs.micropython.variants.minios.lib.mip.py.md#parse_url) function in `progs.micropython.variants.minios.lib.mip`
 - [`ParseResult`](modules/progs.lisp.lisp.c.md#parseresult) struct in `progs/lisp/lisp.c`
+- [`path`](modules/tools.update_sources.py.md#outcome-path) attribute of `Outcome` in `tools.update_sources`
 - [`path`](modules/kernel.vga_fb.c.md#path) function in `kernel/vga_fb.c`
 - [`path`](modules/progs.src.execho.c.md#path) function in `progs/src/execho.c`
 - [`PATH_SEPARATOR`](modules/progs.doomgeneric.doomtype.h.md#path_separator) macro in `progs/doomgeneric/doomtype.h`
@@ -6222,6 +6259,8 @@
 - [`print_dom_dump`](modules/progs.asm.freedom.s.md#print_dom_dump) function in `progs/asm/freedom.s`
 - [`PRINT_HI`](modules/tools.clip_bridge.py.md#clipbridgeconfig-print_hi) attribute of `ClipBridgeConfig` in `tools.clip_bridge`
 - [`PRINT_LO`](modules/tools.clip_bridge.py.md#clipbridgeconfig-print_lo) attribute of `ClipBridgeConfig` in `tools.clip_bridge`
+- [`print_outcome`](modules/tools.update_sources.py.md#print_outcome) function in `tools.update_sources`
+- [`print_status`](modules/tools.update_sources.py.md#print_status) function in `tools.update_sources`
 - [`printable_line`](modules/tools.clip_bridge.py.md#printable_line) function in `tools.clip_bridge`
 - [`PrintDehackedBanners`](modules/progs.doomgeneric.d_main.c.md#printdehackedbanners) function in `progs/doomgeneric/d_main.c`
 - [`printf`](modules/progs.src.cp.c.md#printf) function in `progs/src/cp.c`
@@ -6738,6 +6777,7 @@
 - [`READOUT_INNER`](modules/progs.topogpt3.topogpt3.c.md#readout_inner) macro in `progs/topogpt3/topogpt3.c`
 - [`realloc`](modules/headers.leakcheck.h.md#realloc) macro in `headers/leakcheck.h`
 - [`Recipe`](modules/progs.minicraft.minicraft.c.md#recipe) struct in `progs/minicraft/minicraft.c`
+- [`reconcile`](modules/tools.update_sources.py.md#reconcile) function in `tools.update_sources`
 - [`record`](modules/tools.mutate.sh.md#record) function in `tools/mutate.sh`
 - [`record_attr`](modules/progs.asm.freedom.s.md#record_attr) function in `progs/asm/freedom.s`
 - [`recovery`](modules/fs.kfile.c.md#recovery) function in `fs/kfile.c`
@@ -6766,6 +6806,7 @@
 - [`redirect_take_into`](modules/kernel.console.c.md#redirect_take_into) function in `kernel/console.c`
 - [`REDRANGE`](modules/progs.doomgeneric.am_map.c.md#redrange) macro in `progs/doomgeneric/am_map.c`
 - [`REDS`](modules/progs.doomgeneric.am_map.c.md#reds) macro in `progs/doomgeneric/am_map.c`
+- [`ref`](modules/tools.update_sources.py.md#repo-ref) attribute of `Repo` in `tools.update_sources`
 - [`ref`](modules/kernel.proc_sec.c.md#ref) type_alias in `kernel/proc_sec.c`
 - [`refused`](modules/headers.kernel.h.md#refused) function in `headers/kernel.h`
 - [`refuses`](modules/headers.minifs.h.md#refuses) function in `headers/minifs.h`
@@ -6782,6 +6823,10 @@
 - [`render_text`](modules/tools.kernel_feature_survey.py.md#render_text) function in `tools.kernel_feature_survey`
 - [`repl`](modules/tools.minios_hyper.py.md#repl) function in `tools.minios_hyper`
 - [`repo`](modules/tools.check_mutant_anchors.py.md#config-repo) attribute of `Config` in `tools.check_mutant_anchors`
+- [`Repo`](modules/tools.update_sources.py.md#repo) class in `tools.update_sources`
+- [`REPO_ROOT`](modules/tools.update_sources.py.md#repo_root) constant in `tools.update_sources`
+- [`REPOS`](modules/tools.update_sources.py.md#repos) constant in `tools.update_sources`
+- [`REPOS_BY_NAME`](modules/tools.update_sources.py.md#repos_by_name) constant in `tools.update_sources`
 - [`request`](modules/mcp.mcp_dbg_driver.py.md#client-request) method of `Client` in `mcp.mcp_dbg_driver`
 - [`request`](modules/mcp.mcp_dogfood.py.md#client-request) method of `Client` in `mcp.mcp_dogfood`
 - [`request`](modules/tools.minios_cli.py.md#client-request) method of `Client` in `tools.minios_cli`
@@ -6789,6 +6834,7 @@
 - [`resolve`](modules/tools.minifs_dump.py.md#fs-resolve) method of `FS` in `tools.minifs_dump`
 - [`resolve`](modules/tools.minifs_saves.py.md#fs-resolve) method of `FS` in `tools.minifs_saves`
 - [`resolve`](modules/progs.nuklear.node_editor.c.md#resolve) function in `progs/nuklear/node_editor.c`
+- [`resolve_path`](modules/tools.update_sources.py.md#resolve_path) function in `tools.update_sources`
 - [`resolve_redirect`](modules/progs.asm.freedom.s.md#resolve_redirect) function in `progs/asm/freedom.s`
 - [`respawnmonsters`](modules/progs.doomgeneric.doomstat.h.md#respawnmonsters) variable in `progs/doomgeneric/doomstat.h`
 - [`respawnparm`](modules/progs.doomgeneric.doomstat.h.md#respawnparm) variable in `progs/doomgeneric/doomstat.h`
@@ -6796,6 +6842,7 @@
 - [`resume_iretq`](modules/arch.x86.ctx_sw.S.md#resume_iretq) function in `arch/x86/ctx_sw.S`
 - [`resume_iretq`](modules/headers.sched.h.md#resume_iretq) function in `headers/sched.h`
 - [`retirement`](modules/headers.rcu.h.md#retirement) function in `headers/rcu.h`
+- [`returncode`](modules/tools.update_sources.py.md#gitresult-returncode) attribute of `GitResult` in `tools.update_sources`
 - [`returns`](modules/fs.minifs.c.md#returns) function in `fs/minifs.c`
 - [`returns`](modules/kernel.sched.c.md#returns) function in `kernel/sched.c`
 - [`rewind`](modules/progs.src.aes.c.md#rewind) function in `progs/src/aes.c`
@@ -6815,6 +6862,7 @@
 - [`rlimit_cpu_tick`](modules/headers.sched.h.md#rlimit_cpu_tick) function in `headers/sched.h`
 - [`rndindex`](modules/progs.doomgeneric.doomstat.h.md#rndindex) variable in `progs/doomgeneric/doomstat.h`
 - [`rol`](modules/progs.doomgeneric.sha1.c.md#rol) macro in `progs/doomgeneric/sha1.c`
+- [`rollback`](modules/tools.update_sources.py.md#rollback) function in `tools.update_sources`
 - [`root`](modules/fs.zip.c.md#root) function in `fs/zip.c`
 - [`root`](modules/kernel.shell.c.md#root) function in `kernel/shell.c`
 - [`ROOT_INODE`](modules/tools.minifs_dump.py.md#root_inode) constant in `tools.minifs_dump`
@@ -6906,6 +6954,7 @@
 - [`run`](modules/mcp.minios_mcp.py.md#mcpserver-run) method of `MCPServer` in `mcp.minios_mcp`
 - [`run_boot`](modules/tools.minios_hyper.py.md#run_boot) function in `tools.minios_hyper`
 - [`run_capture`](modules/progs.src.shell.py.md#run_capture) function in `progs.src.shell`
+- [`run_git`](modules/tools.update_sources.py.md#run_git) function in `tools.update_sources`
 - [`run_one`](modules/mcp.mutate_mcp.sh.md#run_one) function in `mcp/mutate_mcp.sh`
 - [`run_python`](modules/mcp.minios_mcp.py.md#miniossession-run_python) method of `MiniOSSession` in `mcp.minios_mcp`
 - [`run_selftest`](modules/tools.minios_hyper.py.md#run_selftest) function in `tools.minios_hyper`
@@ -7347,6 +7396,7 @@
 - [`SELECT_POLLNVAL`](modules/headers.select_map.h.md#select_pollnval) macro in `headers/select_map.h`
 - [`SELECT_POLLOUT`](modules/headers.select_map.h.md#select_pollout) macro in `headers/select_map.h`
 - [`SELECT_POLLPRI`](modules/headers.select_map.h.md#select_pollpri) macro in `headers/select_map.h`
+- [`select_repos`](modules/tools.update_sources.py.md#select_repos) function in `tools.update_sources`
 - [`SELECT_TIMEOUT_MS_MAX`](modules/kernel.syscalls.c.md#select_timeout_ms_max) macro in `kernel/syscalls.c`
 - [`SELECT_TIMESPEC_BYTES`](modules/kernel.syscalls.c.md#select_timespec_bytes) macro in `kernel/syscalls.c`
 - [`SELECT_TIMEVAL_BYTES`](modules/kernel.syscalls.c.md#select_timeval_bytes) macro in `kernel/syscalls.c`
@@ -7480,6 +7530,7 @@
 - [`SHN_UNDEF`](modules/kernel.loader.c.md#shn_undef) macro in `kernel/loader.c`
 - [`SHORT`](modules/progs.doomgeneric.i_swap.h.md#short) macro in `progs/doomgeneric/i_swap.h`
 - [`SHORT`](modules/progs.doomgeneric.i_swap.h.md#short) macro in `progs/doomgeneric/i_swap.h`
+- [`short_sha`](modules/tools.update_sources.py.md#short_sha) function in `tools.update_sources`
 - [`SHORTCUT_CMD_LEN`](modules/headers.desktop_shortcuts.h.md#shortcut_cmd_len) macro in `headers/desktop_shortcuts.h`
 - [`SHORTCUT_NAME_LEN`](modules/headers.desktop_shortcuts.h.md#shortcut_name_len) macro in `headers/desktop_shortcuts.h`
 - [`SHORTCUT_PATH_LEN`](modules/headers.desktop_shortcuts.h.md#shortcut_path_len) macro in `headers/desktop_shortcuts.h`
@@ -7927,9 +7978,22 @@
 - [`StatCopy`](modules/progs.doomgeneric.statdump.h.md#statcopy) function in `progs/doomgeneric/statdump.h`
 - [`StatDump`](modules/progs.doomgeneric.statdump.c.md#statdump) function in `progs/doomgeneric/statdump.c`
 - [`StatDump`](modules/progs.doomgeneric.statdump.h.md#statdump) function in `progs/doomgeneric/statdump.h`
+- [`state`](modules/tools.update_sources.py.md#outcome-state) attribute of `Outcome` in `tools.update_sources`
 - [`state`](modules/kernel.syscalls_proc.c.md#state) function in `kernel/syscalls_proc.c`
 - [`state`](modules/kernel.vga_fb.c.md#state) function in `kernel/vga_fb.c`
+- [`STATE_ABSENT`](modules/tools.update_sources.py.md#state_absent) constant in `tools.update_sources`
+- [`STATE_CONFLICT`](modules/tools.update_sources.py.md#state_conflict) constant in `tools.update_sources`
+- [`STATE_CURRENT`](modules/tools.update_sources.py.md#state_current) constant in `tools.update_sources`
+- [`STATE_DIVERGED`](modules/tools.update_sources.py.md#state_diverged) constant in `tools.update_sources`
+- [`STATE_FAILED`](modules/tools.update_sources.py.md#state_failed) constant in `tools.update_sources`
+- [`STATE_NOT_A_CLONE`](modules/tools.update_sources.py.md#state_not_a_clone) constant in `tools.update_sources`
+- [`STATE_PINNED`](modules/tools.update_sources.py.md#state_pinned) constant in `tools.update_sources`
+- [`STATE_REPINNED`](modules/tools.update_sources.py.md#state_repinned) constant in `tools.update_sources`
+- [`STATE_SKIPPED`](modules/tools.update_sources.py.md#state_skipped) constant in `tools.update_sources`
 - [`state_t`](modules/progs.doomgeneric.info.h.md#state_t) struct in `progs/doomgeneric/info.h`
+- [`STATE_UPDATED`](modules/tools.update_sources.py.md#state_updated) constant in `tools.update_sources`
+- [`STATE_WIDTH`](modules/tools.update_sources.py.md#state_width) constant in `tools.update_sources`
+- [`STATE_WOULD_UPDATE`](modules/tools.update_sources.py.md#state_would_update) constant in `tools.update_sources`
 - [`states`](modules/progs.doomgeneric.info.h.md#states) variable in `progs/doomgeneric/info.h`
 - [`status`](modules/mcp.minios_mcp.py.md#miniossession-status) method of `MiniOSSession` in `mcp.minios_mcp`
 - [`status`](modules/tools.minios_hyper.py.md#qmpchannel-status) method of `QmpChannel` in `tools.minios_hyper`
@@ -7947,9 +8011,11 @@
 - [`stdc_wad_file`](modules/progs.doomgeneric.w_file.c.md#stdc_wad_file) variable in `progs/doomgeneric/w_file.c`
 - [`stdc_wad_file`](modules/progs.doomgeneric.w_file_stdc.c.md#stdc_wad_file) variable in `progs/doomgeneric/w_file_stdc.c`
 - [`stdc_wad_file_t`](modules/progs.doomgeneric.w_file_stdc.c.md#stdc_wad_file_t) struct in `progs/doomgeneric/w_file_stdc.c`
+- [`stderr`](modules/tools.update_sources.py.md#gitresult-stderr) attribute of `GitResult` in `tools.update_sources`
 - [`stderr`](modules/progs.src.ftest.c.md#stderr) variable in `progs/src/ftest.c`
 - [`stderr`](modules/progs.topogpt3.topogpt3.c.md#stderr) variable in `progs/topogpt3/topogpt3.c`
 - [`stdin`](modules/progs.topogpt3.topogpt3.c.md#stdin) variable in `progs/topogpt3/topogpt3.c`
+- [`stdout`](modules/tools.update_sources.py.md#gitresult-stdout) attribute of `GitResult` in `tools.update_sources`
 - [`stdout`](modules/kernel.shell.c.md#stdout) function in `kernel/shell.c`
 - [`stdout`](modules/progs.src.ftest.c.md#stdout) variable in `progs/src/ftest.c`
 - [`stdout`](modules/progs.topogpt3.topogpt3.c.md#stdout) variable in `progs/topogpt3/topogpt3.c`
@@ -7979,6 +8045,10 @@
 - [`stop_row`](modules/kernel.sched.c.md#stop_row) struct in `kernel/sched.c`
 - [`STOPSPEED`](modules/progs.doomgeneric.p_mobj.c.md#stopspeed) macro in `progs/doomgeneric/p_mobj.c`
 - [`STR_MAX`](modules/progs.nuklear.node_editor.c.md#str_max) macro in `progs/nuklear/node_editor.c`
+- [`STRATEGIES`](modules/tools.update_sources.py.md#strategies) constant in `tools.update_sources`
+- [`STRATEGY_FF`](modules/tools.update_sources.py.md#strategy_ff) constant in `tools.update_sources`
+- [`STRATEGY_MERGE`](modules/tools.update_sources.py.md#strategy_merge) constant in `tools.update_sources`
+- [`STRATEGY_REBASE`](modules/tools.update_sources.py.md#strategy_rebase) constant in `tools.update_sources`
 - [`strcasecmp`](modules/progs.doomgeneric.doomtype.h.md#strcasecmp) macro in `progs/doomgeneric/doomtype.h`
 - [`strchr`](modules/progs.src.freedom.c.md#strchr) function in `progs/src/freedom.c`
 - [`strcmp`](modules/progs.src.aes.c.md#strcmp) function in `progs/src/aes.c`
@@ -8017,6 +8087,7 @@
 - [`STSTR_NCON`](modules/progs.doomgeneric.d_englsh.h.md#ststr_ncon) macro in `progs/doomgeneric/d_englsh.h`
 - [`STSTR_NOMUS`](modules/progs.doomgeneric.d_englsh.h.md#ststr_nomus) macro in `progs/doomgeneric/d_englsh.h`
 - [`stub`](modules/kernel.sched.c.md#stub) function in `kernel/sched.c`
+- [`submodules`](modules/tools.update_sources.py.md#repo-submodules) attribute of `Repo` in `tools.update_sources`
 - [`subprocess_launch`](modules/mcp.minios_mcp.py.md#subprocess_launch) function in `mcp.minios_mcp`
 - [`subsector_fmt`](modules/tools.doom_pwad.py.md#doompwadconfig-subsector_fmt) attribute of `DoomPwadConfig` in `tools.doom_pwad`
 - [`subsector_s`](modules/progs.doomgeneric.r_defs.h.md#subsector_s) struct in `progs/doomgeneric/r_defs.h`
@@ -8024,6 +8095,7 @@
 - [`success_pattern`](modules/tools.check_fork_stubs.py.md#config-success_pattern) attribute of `Config` in `tools.check_fork_stubs`
 - [`suffix`](modules/tools.check_spin_discipline.py.md#config-suffix) attribute of `Config` in `tools.check_spin_discipline`
 - [`suite`](modules/headers.rtc.h.md#suite) function in `headers/rtc.h`
+- [`summary`](modules/tools.update_sources.py.md#repo-summary) attribute of `Repo` in `tools.update_sources`
 - [`survey`](modules/tools.kernel_feature_survey.py.md#survey) function in `tools.kernel_feature_survey`
 - [`SurveyConfig`](modules/tools.kernel_feature_survey.py.md#surveyconfig) class in `tools.kernel_feature_survey`
 - [`SWAP_CHUNK_CMP`](modules/kernel.mm.swap.c.md#swap_chunk_cmp) macro in `kernel/mm/swap.c`
@@ -8620,6 +8692,9 @@
 - [`unusable`](modules/drivers.virtio_net.c.md#unusable) function in `drivers/virtio_net.c`
 - [`unused_tex`](modules/tools.doom_pwad.py.md#doompwadconfig-unused_tex) attribute of `DoomPwadConfig` in `tools.doom_pwad`
 - [`unwired`](modules/kernel.mm.swap.c.md#unwired) function in `kernel/mm/swap.c`
+- [`update_submodules`](modules/tools.update_sources.py.md#update_submodules) function in `tools.update_sources`
+- [`upstream_target`](modules/tools.update_sources.py.md#upstream_target) function in `tools.update_sources`
+- [`url`](modules/tools.update_sources.py.md#repo-url) attribute of `Repo` in `tools.update_sources`
 - [`usage`](modules/tools.make_usb.sh.md#usage) function in `tools/make_usb.sh`
 - [`usage`](modules/tools.mutate.sh.md#usage) function in `tools/mutate.sh`
 - [`usbhid_counters`](modules/drivers.usbhid.c.md#usbhid_counters) function in `drivers/usbhid.c`
@@ -9700,6 +9775,7 @@
 - [`write_atomic`](modules/tools.gen_desktop_pngs.py.md#write_atomic) function in `tools.gen_desktop_pngs`
 - [`write_dir`](modules/tools.mkfs.minifs.py.md#minifs-write_dir) method of `MiniFS` in `tools.mkfs.minifs`
 - [`write_file`](modules/tools.mkfs.minifs.py.md#minifs-write_file) method of `MiniFS` in `tools.mkfs.minifs`
+- [`write_snapshot`](modules/tools.update_sources.py.md#write_snapshot) function in `tools.update_sources`
 - [`write_zip`](modules/tools.gen_zip_fixtures.py.md#write_zip) function in `tools.gen_zip_fixtures`
 - [`WritePCXfile`](modules/progs.doomgeneric.v_video.c.md#writepcxfile) function in `progs/doomgeneric/v_video.c`
 - [`WritePNGfile`](modules/progs.doomgeneric.v_video.c.md#writepngfile) function in `progs/doomgeneric/v_video.c`

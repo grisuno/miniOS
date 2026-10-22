@@ -309,25 +309,65 @@ sources:
 	fi
 
 sources-update: sources
-	@for pair in $(SOURCE_REPOS); do \
-	    dir="$${pair%%=*}"; \
-	    if [ -d "$$dir/.git" ]; then \
-	        echo "updating $$dir"; \
-	        $(GIT) -C "$$dir" pull --ff-only || exit 1; \
-	    fi; \
-	done
+	python3 $(UPDATE_TOOL) $(UPDATE_DIRS) --snapshot $(UPDATE_SNAPSHOT) \
+	  --strategy $(UPDATE_STRATEGY) --only minigcc --only ld --only cvm
 
 sources-status:
-	@for pair in $(SOURCE_REPOS); do \
-	    dir="$${pair%%=*}"; \
-	    if [ -d "$$dir/.git" ]; then \
-	        printf '%-16s %s\n' "$$dir" "$$($(GIT) -C "$$dir" log -1 --format='%h %ad %s' --date=short)"; \
-	    elif [ -e "$$dir" ]; then \
-	        printf '%-16s %s\n' "$$dir" "local directory, not a git clone"; \
-	    else \
-	        printf '%-16s %s\n' "$$dir" "absent (run 'make sources')"; \
-	    fi; \
-	done
+	python3 $(UPDATE_TOOL) $(UPDATE_DIRS) --status
+
+# ── Source update ─────────────────────────────────────────────────
+# `make update` refreshes every checkout MiniOS builds against (the
+# toolchain trio, the browser, the interpreters, the UI and audio libraries
+# and the reference sources). `make update freedom` refreshes only the
+# browser; `make update freedom ld` refreshes those two. The updater never
+# discards local work: a dirty worktree is skipped, a branch that carries
+# local commits is merged with the upstream tip (a conflicting merge is
+# aborted and reported), and a pinned checkout is held at its release tag.
+# Every update records the pre-update revision, so `make update-rollback`
+# puts the fleet back exactly where it was.
+UPDATE_TOOL     ?= tools/update_sources.py
+UPDATE_SNAPSHOT ?= $(TOOLS_DIR)/sources-snapshot.json
+UPDATE_STRATEGY ?= merge
+UPDATE_REPOS     = minigcc ld cvm freedom micropython cpython lua \
+                   nuklear nuked-opl3 raycastlib quake2 pokemon
+UPDATE_DIRS = --repo minigcc=$(MINIGCC_DIR) --repo ld=$(LD_DIR) \
+              --repo cvm=$(CVM_REPO_DIR) --repo freedom=$(FREEDOM_DIR) \
+              --repo micropython=$(MICROPYTHON_DIR) --repo cpython=$(CPYTHON_DIR) \
+              --repo lua=$(LUA_DIR) --repo nuklear=$(NUKLEAR_DIR) \
+              --repo nuked-opl3=$(NUKED_OPL3_DIR) \
+              --repo raycastlib=$(RAYCASTLIB_DIR) --repo quake2=$(Q2G_UPSTREAM) \
+              --repo pokemon=$(POKEMON_UPSTREAM)
+# The repository names given on the command line: `make update freedom ld`.
+UPDATE_SELECTED = $(filter-out update update-status update-list update-rollback,$(MAKECMDGOALS))
+UPDATE_ONLY      = $(foreach name,$(UPDATE_SELECTED),--only $(name))
+
+update:
+	@if [ -n "$(UPDATE_SELECTED)" ]; then \
+	    python3 $(UPDATE_TOOL) $(UPDATE_DIRS) $(UPDATE_ONLY) \
+	      --snapshot $(UPDATE_SNAPSHOT) --strategy $(UPDATE_STRATEGY); \
+	else \
+	    python3 $(UPDATE_TOOL) $(UPDATE_DIRS) \
+	      --snapshot $(UPDATE_SNAPSHOT) --strategy $(UPDATE_STRATEGY); \
+	fi
+
+update-status:
+	python3 $(UPDATE_TOOL) $(UPDATE_DIRS) --status
+
+update-list:
+	python3 $(UPDATE_TOOL) --list
+
+update-rollback:
+	python3 $(UPDATE_TOOL) $(UPDATE_DIRS) --rollback --snapshot $(UPDATE_SNAPSHOT)
+
+# `make freedom` updates only the browser; the same target is a no-op when
+# it rides along another goal (`make update freedom`), so the work is done
+# exactly once.
+.PHONY: $(UPDATE_REPOS)
+$(UPDATE_REPOS):
+	@if [ -z '$(filter update,$(MAKECMDGOALS))' ]; then \
+	    python3 $(UPDATE_TOOL) $(UPDATE_DIRS) --only $@ \
+	      --snapshot $(UPDATE_SNAPSHOT) --strategy $(UPDATE_STRATEGY); \
+	fi
 
 # Addon index: every external source carries an addons/*.yaml (guest =
 # installed in-OS through the editor, host = built by make and packed
@@ -715,6 +755,12 @@ MINIFS_DOOM_FILES = $(BIN_DIR)/doomgeneric.elf $(BIN_DIR)/DOOM1.WAD
 Q2G_DIR     = $(PROGS_DIR)/quake2generic
 Q2G_UPSTREAM = $(Q2G_DIR)/quake2generic
 Q2G_AVAILABLE := $(if $(wildcard $(Q2G_UPSTREAM)/client/cl_main.c),1,0)
+
+# Pokemon: the gb-recompiled upstream, cloned by progs/pokemon/fetch.sh
+# because the build also needs a ROM the user owns. Optional: the game only
+# builds when the checkout is there, so `make update` skips it when absent.
+POKEMON_URL ?= https://github.com/arcanite24/gb-recompiled.git
+POKEMON_UPSTREAM = $(PROGS_DIR)/pokemon/upstream
 
 Q2G_CLIENT_SRCS = cl_cin.c cl_ents.c cl_fx.c cl_newfx.c cl_input.c \
     cl_inv.c cl_main.c cl_parse.c cl_pred.c cl_tent.c cl_scrn.c \
@@ -1811,6 +1857,7 @@ lint: | $(TOOLS_DIR)
 	python3 tools/check_spin_discipline.py
 	python3 tools/check_addons.py
 	python3 tools/check_mutant_anchors.py
+	python3 -m py_compile $(UPDATE_TOOL)
 	bash -n tools/mutate.sh && bash -n tools/test_bdd.sh && echo "lint: ok"
 
 # Sync primitives host test (tests/test_sync.c + kernel/sync.c).
@@ -3018,4 +3065,5 @@ minifs-fsck:
 
 .PHONY: all run run-kvm run-headless run-iso run-usb run-usb-fake run-usb-host run-usb-boot clean debug gdb serial test \
         sources sources-update sources-status addons toolchain selfhost \
+        update update-status update-list update-rollback \
         minifs-mkfs minifs-dump minifs-fsck saves-backup os.iso usb usb-list vdi os.usb.img pendrive.img

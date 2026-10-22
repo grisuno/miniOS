@@ -17,6 +17,10 @@ the validation gate.
 | `sources` | clone the missing toolchain repositories from GitHub |
 | `sources-update` | pull the latest commit of each one |
 | `sources-status` | show the revision each checkout is on |
+| `update [repo...]` | bring the newest sources: every checkout, or only the named ones (`make update freedom`) |
+| `update-status` | show the revision each checkout is on, no network access |
+| `update-list` | list the managed checkouts, their mode and their path |
+| `update-rollback` | restore the revisions the last update replaced |
 | `toolchain` | build `minigcc`, `ld` and `cvm2` from those sources |
 | `selfhost` | compile minigcc with minigcc, link with `ld`, verify the bootstrap fixed point (`g3.s == g4.s`) |
 | `run` | boot the image in QEMU with a display (TCG by default) |

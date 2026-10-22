@@ -64,6 +64,17 @@ classDiagram
     <<struct>> efi_file
 ```
 
+## Call Graph
+
+Solid arrows stay in this module, dashed arrows leave it.
+
+```mermaid
+flowchart LR
+    n_boot_uefi_stub_c__efi_main(["efi_main"])
+    n_tools_update_sources_py__GitResult_ok["update_sources.GitResult.ok"]
+    n_boot_uefi_stub_c__efi_main -.-> n_tools_update_sources_py__GitResult_ok
+```
+
 ## Structs
 
 <a id="efi_table_header"></a>
@@ -417,6 +428,8 @@ efi_status EFIABI efi_main(efi_handle image, efi_system_table *systab)
 | `systab` | `efi_system_table *` |  |  |
 
 **Returns:** `efi_status EFIABI`
+
+*Calls:* [`GitResult.ok`](tools.update_sources.py.md#gitresult-ok)
 
 ---
 

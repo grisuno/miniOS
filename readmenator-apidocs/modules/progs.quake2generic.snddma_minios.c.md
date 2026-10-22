@@ -19,8 +19,10 @@ flowchart LR
     n_headers_sched_h__bytes["sched.bytes"]
     n_progs_quake2generic_snddma_minios_c__q2snd_probe(["q2snd_probe"])
     n_headers_kernel_h__refused["kernel.refused"]
+    n_tools_update_sources_py__GitResult_ok["update_sources.GitResult.ok"]
     n_progs_quake2generic_snddma_minios_c__SNDDMA_Shutdown -.-> n_headers_sched_h__bytes
     n_progs_quake2generic_snddma_minios_c__q2snd_probe -.-> n_headers_kernel_h__refused
+    n_progs_quake2generic_snddma_minios_c__q2snd_probe -.-> n_tools_update_sources_py__GitResult_ok
 ```
 
 ## Functions
@@ -107,7 +109,7 @@ Needs no game data, so it runs on a bare boot with the SB16 attached and is the 
 
 **Returns:** `int`
 
-*Calls:* [`refused`](headers.kernel.h.md#refused)
+*Calls:* [`refused`](headers.kernel.h.md#refused), [`GitResult.ok`](tools.update_sources.py.md#gitresult-ok)
 
 ---
 

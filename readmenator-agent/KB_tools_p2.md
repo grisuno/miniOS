@@ -352,6 +352,45 @@ Previous: [KB_tools.md](KB_tools.md)
   - `run` (method, line 254) `def run(self)`
 - Depends on: `kernel/time.c`
 
+## tools/update_sources.py
+- Doc: Update the sibling source checkouts MiniOS builds against.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `Repo` (class, line 96) `class Repo`
+  - `GitResult` (class, line 203) `class GitResult`
+  - `Outcome` (class, line 216) `class Outcome`
+  - `GitError` (class, line 232) `class GitError(RuntimeError)`
+  - `run_git` (function, line 236) `def run_git(git, cwd)`
+  - `git_out` (function, line 253) `def git_out(git, cwd)`
+  - `head_sha` (function, line 261) `def head_sha(git, path)`
+  - `short_sha` (function, line 266) `def short_sha(sha)`
+  - `current_branch` (function, line 271) `def current_branch(git, path)`
+  - `is_dirty` (function, line 276) `def is_dirty(git, path)`
+  - `is_shallow` (function, line 281) `def is_shallow(git, path)`
+  - `resolve_path` (function, line 286) `def resolve_path(directory)`
+  - `fetch_upstream` (function, line 294) `def fetch_upstream(git, path, branch, shallow_depth)`
+  - `deepen_upstream` (function, line 306) `def deepen_upstream(git, path, branch, commits)`
+  - `upstream_target` (function, line 316) `def upstream_target(git, path, branch)`
+  - `ahead_behind` (function, line 325) `def ahead_behind(git, path, branch)`
+  - `fast_forward` (function, line 339) `def fast_forward(git, path, target)`
+  - `reconcile` (function, line 344) `def reconcile(git, path, target, strategy)`
+  - `abort_reconcile` (function, line 351) `def abort_reconcile(git, path, strategy)`
+  - `conflicted_files` (function, line 359) `def conflicted_files(git, path)`
+  - `update_submodules` (function, line 365) `def update_submodules(git, path, submodules)`
+  - `handle_tracked` (function, line 375) `def handle_tracked(git, repo, path, dry_run, fetch_enabled, strategy)`
+  - `handle_pinned` (function, line 446) `def handle_pinned(git, repo, path, dry_run, fetch_enabled)`
+  - `handle_repo` (function, line 493) `def handle_repo(git, repo, directory, dry_run, fetch_enabled, strategy)`
+  - `write_snapshot` (function, line 513) `def write_snapshot(path, outcomes)`
+  - `rollback` (function, line 535) `def rollback(git, snapshot_path, directories)`
+  - `print_status` (function, line 572) `def print_status(git, selected, directories)`
+  - `print_outcome` (function, line 594) `def print_outcome(outcome)`
+  - `select_repos` (function, line 599) `def select_repos(names)`
+  - `parse_overrides` (function, line 614) `def parse_overrides(pairs)`
+  - `main` (function, line 634) `def main(argv)`
+  - `ok` (method, line 211) `def ok(self)`
+  - `changed` (method, line 228) `def changed(self)`
+
 ## tools/wl_scoped.sh
 - Doc: Docstring: Scoped Wayland-mini validation for the tiled ring-3 compositor.
 - Layer: utility

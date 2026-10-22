@@ -1,18 +1,18 @@
 {
   "tool": "readmenator",
   "schema_version": 2,
-  "generated_at": "2026-10-21T18:01:13Z",
+  "generated_at": "2026-10-22T03:29:15Z",
   "project_root": ".",
   "project_name": "miniOS",
-  "git_commit": "a40233ec561ad036454c7aba38e524e814eeae26",
+  "git_commit": "960686e51b0dabd1107987ef97e32ce8eff69bd4",
   "git_branch": "main",
-  "source_fingerprint": "df76e7f11279afcbd7d17e053143b421dc0ee57bca6156efd6885ad3d3a0ad80",
+  "source_fingerprint": "ecf00043e01d1567f9d0b6ca19146822688d1639d2b1b76c5f0e7206c90b1ca1",
   "freshness_check": "readmenator . fresh  # exit 0 = docs match sources, exit 1 = run: readmenator . --rebuild",
-  "files": 588,
-  "symbols": 12992,
-  "imports": 2240,
-  "calls": 5758,
-  "inherits": 26,
+  "files": 589,
+  "symbols": 13025,
+  "imports": 2248,
+  "calls": 5963,
+  "inherits": 27,
   "resolved_imports": 1394,
   "security_findings": 0,
   "languages": {
@@ -20,7 +20,7 @@
     "c": 288,
     "h": 196,
     "lua": 1,
-    "py": 66,
+    "py": 67,
     "s": 13,
     "sh": 17
   },
@@ -53,7 +53,7 @@
     "src": 53,
     "tests": 51,
     "tls_u": 2,
-    "tools": 62,
+    "tools": 63,
     "wl": 5,
     "x86": 5
   },
@@ -143,8 +143,8 @@
     },
     {
       "path": "API_p21.md",
-      "lines": 281,
-      "approx_tokens": 5627
+      "lines": 312,
+      "approx_tokens": 6712
     },
     {
       "path": "API_p3.md",
@@ -198,8 +198,8 @@
     },
     {
       "path": "ARCHITECTURE_p4.md",
-      "lines": 315,
-      "approx_tokens": 4117
+      "lines": 316,
+      "approx_tokens": 4144
     },
     {
       "path": "CONCEPTS.md",
@@ -209,7 +209,7 @@
     {
       "path": "GOTCHAS.md",
       "lines": 69,
-      "approx_tokens": 1001
+      "approx_tokens": 1004
     },
     {
       "path": "INDEX.md",
@@ -218,8 +218,8 @@
     },
     {
       "path": "INDEX_p2.md",
-      "lines": 101,
-      "approx_tokens": 2466
+      "lines": 102,
+      "approx_tokens": 2493
     },
     {
       "path": "KB_asm.md",
@@ -493,8 +493,8 @@
     },
     {
       "path": "KB_tools_p2.md",
-      "lines": 395,
-      "approx_tokens": 4206
+      "lines": 434,
+      "approx_tokens": 4844
     },
     {
       "path": "KB_wl.md",
@@ -509,7 +509,7 @@
     {
       "path": "MEMORY.md",
       "lines": 104,
-      "approx_tokens": 1798
+      "approx_tokens": 1799
     },
     {
       "path": "SECURITY.md",
@@ -613,8 +613,8 @@
     },
     {
       "path": "SYMBOLS_p27.md",
-      "lines": 180,
-      "approx_tokens": 3683
+      "lines": 213,
+      "approx_tokens": 4485
     },
     {
       "path": "SYMBOLS_p3.md",

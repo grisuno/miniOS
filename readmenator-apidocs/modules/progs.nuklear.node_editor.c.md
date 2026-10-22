@@ -41,6 +41,7 @@ flowchart LR
     n_progs_nuklear_nuklear_minios_h__nk_sys_nk_frame["nuklear_minios.nk_sys_nk_frame"]
     n_progs_nuklear_nuklear_minios_h__nk_sys_palette["nuklear_minios.nk_sys_palette"]
     n_progs_nuklear_nuklear_minios_h__nk_sys_vga_mode["nuklear_minios.nk_sys_vga_mode"]
+    n_tools_update_sources_py__GitResult_ok["update_sources.GitResult.ok"]
     n_progs_nuklear_node_editor_c__parse_input --> n_progs_nuklear_node_editor_c__resolve
     n_progs_nuklear_node_editor_c__main -.-> n_progs_nuklear_nuklear_minios_h__nk_build_palette
     n_progs_nuklear_node_editor_c__main -.-> n_progs_nuklear_nuklear_minios_h__nk_minios_font
@@ -53,6 +54,7 @@ flowchart LR
     n_progs_nuklear_node_editor_c__main -.-> n_progs_nuklear_nuklear_minios_h__nk_sys_nk_frame
     n_progs_nuklear_node_editor_c__main -.-> n_progs_nuklear_nuklear_minios_h__nk_sys_palette
     n_progs_nuklear_node_editor_c__main -.-> n_progs_nuklear_nuklear_minios_h__nk_sys_vga_mode
+    n_progs_nuklear_node_editor_c__main -.-> n_tools_update_sources_py__GitResult_ok
 ```
 
 ## Structs
@@ -189,7 +191,7 @@ int main(int argc, char **argv)
 
 **Returns:** `int`
 
-*Calls:* [`nk_build_palette`](progs.nuklear.nuklear_minios.h.md#nk_build_palette), [`nk_minios_font`](progs.nuklear.nuklear_minios.h.md#nk_minios_font), [`nk_rasterize`](progs.nuklear.nuklear_minios.h.md#nk_rasterize), [`nk_rgb_available`](progs.nuklear.nuklear_minios.h.md#nk_rgb_available), [`nk_sys_fb_info`](progs.nuklear.nuklear_minios.h.md#nk_sys_fb_info), [`nk_sys_kbd_raw`](progs.nuklear.nuklear_minios.h.md#nk_sys_kbd_raw), [`nk_sys_mouse`](progs.nuklear.nuklear_minios.h.md#nk_sys_mouse), [`nk_sys_mouse_badptr`](progs.nuklear.nuklear_minios.h.md#nk_sys_mouse_badptr), [`nk_sys_nk_frame`](progs.nuklear.nuklear_minios.h.md#nk_sys_nk_frame), [`nk_sys_palette`](progs.nuklear.nuklear_minios.h.md#nk_sys_palette), [`nk_sys_vga_mode`](progs.nuklear.nuklear_minios.h.md#nk_sys_vga_mode)
+*Calls:* [`nk_build_palette`](progs.nuklear.nuklear_minios.h.md#nk_build_palette), [`nk_minios_font`](progs.nuklear.nuklear_minios.h.md#nk_minios_font), [`nk_rasterize`](progs.nuklear.nuklear_minios.h.md#nk_rasterize), [`nk_rgb_available`](progs.nuklear.nuklear_minios.h.md#nk_rgb_available), [`nk_sys_fb_info`](progs.nuklear.nuklear_minios.h.md#nk_sys_fb_info), [`nk_sys_kbd_raw`](progs.nuklear.nuklear_minios.h.md#nk_sys_kbd_raw), [`nk_sys_mouse`](progs.nuklear.nuklear_minios.h.md#nk_sys_mouse), [`nk_sys_mouse_badptr`](progs.nuklear.nuklear_minios.h.md#nk_sys_mouse_badptr), [`nk_sys_nk_frame`](progs.nuklear.nuklear_minios.h.md#nk_sys_nk_frame), [`nk_sys_palette`](progs.nuklear.nuklear_minios.h.md#nk_sys_palette), [`nk_sys_vga_mode`](progs.nuklear.nuklear_minios.h.md#nk_sys_vga_mode), [`GitResult.ok`](tools.update_sources.py.md#gitresult-ok)
 
 ---
 

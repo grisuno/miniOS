@@ -136,6 +136,39 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `serve` | function | `tools/tls_test.py:286` | `def serve(cert, key)` |
 | `serve_openssl` | function | `tools/tls_test.py:294` | `def serve_openssl(cert, key, chain)` |
 | `server_cert` | function | `tools/tls_test.py:67` | `def server_cert(name, algo, curve, ca_name, ca_algo, curve_ca, extra, subj)` |
+| `GitError` | class | `tools/update_sources.py:232` | `class GitError(RuntimeError)` |
+| `GitResult` | class | `tools/update_sources.py:203` | `class GitResult` |
+| `Outcome` | class | `tools/update_sources.py:216` | `class Outcome` |
+| `Repo` | class | `tools/update_sources.py:96` | `class Repo` |
+| `abort_reconcile` | function | `tools/update_sources.py:351` | `def abort_reconcile(git, path, strategy)` |
+| `ahead_behind` | function | `tools/update_sources.py:325` | `def ahead_behind(git, path, branch)` |
+| `changed` | method | `tools/update_sources.py:228` | `def changed(self)` |
+| `conflicted_files` | function | `tools/update_sources.py:359` | `def conflicted_files(git, path)` |
+| `current_branch` | function | `tools/update_sources.py:271` | `def current_branch(git, path)` |
+| `deepen_upstream` | function | `tools/update_sources.py:306` | `def deepen_upstream(git, path, branch, commits)` |
+| `fast_forward` | function | `tools/update_sources.py:339` | `def fast_forward(git, path, target)` |
+| `fetch_upstream` | function | `tools/update_sources.py:294` | `def fetch_upstream(git, path, branch, shallow_depth)` |
+| `git_out` | function | `tools/update_sources.py:253` | `def git_out(git, cwd)` |
+| `handle_pinned` | function | `tools/update_sources.py:446` | `def handle_pinned(git, repo, path, dry_run, fetch_enabled)` |
+| `handle_repo` | function | `tools/update_sources.py:493` | `def handle_repo(git, repo, directory, dry_run, fetch_enabled, strategy)` |
+| `handle_tracked` | function | `tools/update_sources.py:375` | `def handle_tracked(git, repo, path, dry_run, fetch_enabled, strategy)` |
+| `head_sha` | function | `tools/update_sources.py:261` | `def head_sha(git, path)` |
+| `is_dirty` | function | `tools/update_sources.py:276` | `def is_dirty(git, path)` |
+| `is_shallow` | function | `tools/update_sources.py:281` | `def is_shallow(git, path)` |
+| `main` | function | `tools/update_sources.py:634` | `def main(argv)` |
+| `ok` | method | `tools/update_sources.py:211` | `def ok(self)` |
+| `parse_overrides` | function | `tools/update_sources.py:614` | `def parse_overrides(pairs)` |
+| `print_outcome` | function | `tools/update_sources.py:594` | `def print_outcome(outcome)` |
+| `print_status` | function | `tools/update_sources.py:572` | `def print_status(git, selected, directories)` |
+| `reconcile` | function | `tools/update_sources.py:344` | `def reconcile(git, path, target, strategy)` |
+| `resolve_path` | function | `tools/update_sources.py:286` | `def resolve_path(directory)` |
+| `rollback` | function | `tools/update_sources.py:535` | `def rollback(git, snapshot_path, directories)` |
+| `run_git` | function | `tools/update_sources.py:236` | `def run_git(git, cwd)` |
+| `select_repos` | function | `tools/update_sources.py:599` | `def select_repos(names)` |
+| `short_sha` | function | `tools/update_sources.py:266` | `def short_sha(sha)` |
+| `update_submodules` | function | `tools/update_sources.py:365` | `def update_submodules(git, path, submodules)` |
+| `upstream_target` | function | `tools/update_sources.py:316` | `def upstream_target(git, path, branch)` |
+| `write_snapshot` | function | `tools/update_sources.py:513` | `def write_snapshot(path, outcomes)` |
 | `die` | function | `tools/wl_scoped.sh:9` | `` |
 | `mut` | function | `tools/wl_scoped.sh:77` | `` |
 | `mutm` | function | `tools/wl_scoped.sh:84` | `` |

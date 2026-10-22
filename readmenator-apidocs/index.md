@@ -1,10 +1,10 @@
 # miniOS API Reference
 
-> Generated offline by readmenator: 511 modules, 10345 documented entities, documentation coverage 29.3% (2769/9449 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
+> Generated offline by readmenator: 512 modules, 10422 documented entities, documentation coverage 29.5% (2801/9483 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
 
 Navigate: [Interactive architecture and flows](flows.html) | [Architecture and flows (Mermaid)](architecture.md) | [Class hierarchy](classes.md) | [General index](genindex.md) | [Coverage and warnings](COVERAGE.md) | [`api/index.json`](api/index.json) | [HTML browser](index.html)
 
-Languages: S (7), c (239), h (194), py (48), s (13), sh (10)
+Languages: S (7), c (239), h (194), py (49), s (13), sh (10)
 
 ## Modules
 
@@ -710,6 +710,7 @@ Languages: S (7), c (239), h (194), py (48), s (13), sh (10)
 | [`tools.qga_client`](modules/tools.qga_client.py.md) | Minimal QEMU guest agent client for MiniOS. | 0 | 4 | 40.0% |
 | [`tools.repro_gui`](modules/tools.repro_gui.py.md) | repro_gui.py — reproduce the VGA/mouse state bug after ring-3 programs. | 1 | 6 | 12.5% |
 | [`tools.sign_elf`](modules/tools.sign_elf.py.md) | Sign MiniOS user binaries with Ed25519 (development key). . | 1 | 22 | 100.0% |
+| [`tools.update_sources`](modules/tools.update_sources.py.md) | Update the sibling source checkouts MiniOS builds against. | 4 | 29 | 94.1% |
 | [`tools/wl_scoped.sh`](modules/tools.wl_scoped.sh.md) | Docstring: Scoped Wayland-mini validation for the tiled ring-3 compositor. | 0 | 4 | 20.0% |
 | [`tools.wm_layout_sync`](modules/tools.wm_layout_sync.py.md) | Docstring: Synchronize the WM layout manifest from source truth. | 3 | 8 | 100.0% |
 | [`tools/wm_scoped.sh`](modules/tools.wm_scoped.sh.md) | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. | 0 | 2 | 33.3% |

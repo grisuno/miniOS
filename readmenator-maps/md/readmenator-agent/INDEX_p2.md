@@ -94,6 +94,7 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/test_net_fixture.py` | host-side UDP and TCP echo fixture for lxnet. | tools | 5 | 0 |
 | `tools/test_sb16.sh` | — targeted BDD harness for the SB16 audio path. | tools | 1 | 0 |
 | `tools/tls_test.py` | Host-side TLS test driver for the MiniOS kernel TLS client. | tools | 16 | 0 |
+| `tools/update_sources.py` | Update the sibling source checkouts MiniOS builds against. | tools | 33 | 0 |
 | `tools/wl_scoped.sh` | Docstring: Scoped Wayland-mini validation for the tiled ring-3 compositor. | tools | 4 | 0 |
 | `tools/wm_layout_sync.py` | Docstring: Synchronize the WM layout manifest from source truth. | tools | 17 | 0 |
 | `tools/wm_scoped.sh` | Docstring: Scoped WM validation for Alt-Tab and tile across all windows. | tools | 2 | 0 |

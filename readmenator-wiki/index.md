@@ -1,13 +1,13 @@
 # Second Brain
 
-*Last synthesized: 2026-10-21 | 588 files | 11 concept pages | offline, zero tokens*
+*Last synthesized: 2026-10-22 | 589 files | 11 concept pages | offline, zero tokens*
 
 > Raw sources -> readmenator wiki -> links (Karpathy LLM Wiki Pattern, deterministic).
 > Start here, then open one community page. Prefer grep over full reads.
 
 ## Vault Overview
 
-The codebase centres on `string.c`, `doomtype.h`, `doomdef.h`. Architecturally it is 5 layers, dominant utility (457 files) across 11 import-based communities. Recorded risk surface: 0 security findings and 1 dependency cycles.
+The codebase centres on `string.c`, `doomtype.h`, `doomdef.h`. Architecturally it is 5 layers, dominant utility (458 files) across 11 import-based communities. Recorded risk surface: 0 security findings and 1 dependency cycles.
 
 Surprising tissue lives between headers: kernel, progs/doomgeneric: d_englsh, progs/src: 13 extracted cross-community imports and 7 inferred bridges. Follow `connections.json` sorted by strength before refactoring.
 
@@ -17,14 +17,14 @@ Open work clusters around documentation (89% file coverage), 0 security findings
 
 | Metric | Value |
 |--------|-------|
-| Files | 588 |
-| Symbols | 12992 |
+| Files | 589 |
+| Symbols | 13025 |
 | Resolved imports | 1394 |
 | Languages | S, c, h, lua, py, s, sh |
 | Communities | 11 |
-| Doc coverage | 89% (522/588 files) |
+| Doc coverage | 89% (523/589 files) |
 | Security findings | 0 |
-| Estimated read cost | ~236943 tokens (chars/4, offline so $0) |
+| Estimated read cost | ~237780 tokens (chars/4, offline so $0) |
 | Large files (>256KB, maybe generated) | 1: `sign.s` |
 
 ## Reading Order
@@ -50,7 +50,7 @@ readmenator query "<question>" --target miniOS
 - [headers: batch (3 files, cohesion 0.67)](./community_7_headers_batch.md)
 - [headers: tick (3 files, cohesion 0.67)](./community_8_headers_tick.md)
 - [tools: doom_pwad (2 files, cohesion 1.00)](./community_9_tools_doom_pwad.md)
-- [orphans (116 files, cohesion 0.00)](./community_10_orphans.md)
+- [orphans (117 files, cohesion 0.00)](./community_10_orphans.md)
 
 ## God Nodes
 

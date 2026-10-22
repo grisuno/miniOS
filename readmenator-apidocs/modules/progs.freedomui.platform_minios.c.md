@@ -33,9 +33,11 @@ flowchart LR
     n_progs_freedomui_ps2_keymap_h__ps2_init["ps2_keymap.ps2_init"]
     n_progs_freedomui_platform_minios_c__pf_window_present(["pf_window_present"])
     n_progs_topogpt3_topogpt3_c__fflush["topogpt3.fflush"]
+    n_tools_update_sources_py__GitResult_ok["update_sources.GitResult.ok"]
     n_progs_freedomui_platform_minios_c__pf_display_close --> n_progs_freedomui_platform_minios_c__pf_window_close
     n_progs_freedomui_platform_minios_c__pf_display_open -.-> n_progs_freedomui_ps2_keymap_h__ps2_init
     n_progs_freedomui_platform_minios_c__pf_window_present -.-> n_progs_topogpt3_topogpt3_c__fflush
+    n_progs_freedomui_platform_minios_c__pf_window_present -.-> n_tools_update_sources_py__GitResult_ok
 ```
 
 ## Structs
@@ -327,7 +329,7 @@ void pf_window_present(pf_window *w)
 |---|---|---|---|
 | `w` | `pf_window *` |  |  |
 
-*Calls:* [`fflush`](progs.topogpt3.topogpt3.c.md#fflush)
+*Calls:* [`fflush`](progs.topogpt3.topogpt3.c.md#fflush), [`GitResult.ok`](tools.update_sources.py.md#gitresult-ok)
 
 ---
 

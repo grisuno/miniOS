@@ -6653,6 +6653,8 @@
 {"code":"DOC001","uid":"tools/repro_gui.py::QMP.mouse","file":"tools/repro_gui.py","line":78,"message":"method QMP.mouse is not documented"}
 {"code":"DOC001","uid":"tools/repro_gui.py::QMP.key","file":"tools/repro_gui.py","line":87,"message":"method QMP.key is not documented"}
 {"code":"DOC001","uid":"tools/repro_gui.py::main","file":"tools/repro_gui.py","line":92,"message":"function main is not documented"}
+{"code":"DOC001","uid":"tools/update_sources.py::GitResult.ok","file":"tools/update_sources.py","line":211,"message":"property GitResult.ok is not documented"}
+{"code":"DOC001","uid":"tools/update_sources.py::Outcome.changed","file":"tools/update_sources.py","line":228,"message":"property Outcome.changed is not documented"}
 {"code":"DOC001","uid":"tools/wl_scoped.sh::say","file":"tools/wl_scoped.sh","line":8,"message":"function say is not documented"}
 {"code":"DOC001","uid":"tools/wl_scoped.sh::die","file":"tools/wl_scoped.sh","line":9,"message":"function die is not documented"}
 {"code":"DOC001","uid":"tools/wl_scoped.sh::mut","file":"tools/wl_scoped.sh","line":77,"message":"function mut is not documented"}

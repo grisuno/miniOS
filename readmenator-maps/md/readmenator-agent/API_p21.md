@@ -238,6 +238,37 @@ Depends on: `kernel/time.c`
 - `points_equal` (function) `tools/sign_elf.py:447` `def points_equal(p, q)` -- Compare extended points by cross-multiplied coordinates.
 - `main` (function) `tools/sign_elf.py:454` `def main(argv)` -- Drive signing or checking over files and directory walks.
 
+## tools/update_sources.py
+- `GitResult.ok` (method) `tools/update_sources.py:211` `def ok(self)`
+- `Outcome.changed` (method) `tools/update_sources.py:228` `def changed(self)`
+- `run_git` (function) `tools/update_sources.py:236` `def run_git(git, cwd)` -- Run git in a directory and capture its output.
+- `git_out` (function) `tools/update_sources.py:253` `def git_out(git, cwd)` -- Run git and return stdout, or the empty string on failure.
+- `head_sha` (function) `tools/update_sources.py:261` `def head_sha(git, path)` -- Return the checked-out revision, or the empty string.
+- `short_sha` (function) `tools/update_sources.py:266` `def short_sha(sha)` -- Shorten a revision for display.
+- `current_branch` (function) `tools/update_sources.py:271` `def current_branch(git, path)` -- Return the checked-out branch name, empty when detached.
+- `is_dirty` (function) `tools/update_sources.py:276` `def is_dirty(git, path)` -- Report whether the worktree carries uncommitted changes.
+- `is_shallow` (function) `tools/update_sources.py:281` `def is_shallow(git, path)` -- Report whether the checkout is a shallow clone.
+- `resolve_path` (function) `tools/update_sources.py:286` `def resolve_path(directory)` -- Resolve a checkout directory against the repository root.
+- `fetch_upstream` (function) `tools/update_sources.py:294` `def fetch_upstream(git, path, branch, shallow_depth)` -- Fetch the upstream branch, optionally with a bounded depth.
+- `deepen_upstream` (function) `tools/update_sources.py:306` `def deepen_upstream(git, path, branch, commits)` -- Deepen a shallow checkout so a fast-forward becomes provable.
+- `upstream_target` (function) `tools/update_sources.py:316` `def upstream_target(git, path, branch)` -- Return the revision the upstream branch points at.
+- `ahead_behind` (function) `tools/update_sources.py:325` `def ahead_behind(git, path, branch)` -- Return the (ahead, behind) commit counts against the upstream branch.
+- `fast_forward` (function) `tools/update_sources.py:339` `def fast_forward(git, path, target)` -- Merge an upstream revision, refusing anything but a fast-forward.
+- `reconcile` (function) `tools/update_sources.py:344` `def reconcile(git, path, target, strategy)` -- Integrate an upstream revision into a branch that carries local commits.
+- `abort_reconcile` (function) `tools/update_sources.py:351` `def abort_reconcile(git, path, strategy)` -- Undo a failed reconciliation so the checkout stays clean.
+- `conflicted_files` (function) `tools/update_sources.py:359` `def conflicted_files(git, path)` -- List the files a failed reconciliation left unmerged.
+- `update_submodules` (function) `tools/update_sources.py:365` `def update_submodules(git, path, submodules)` -- Initialize and refresh the submodules of a checkout.
+- `handle_tracked` (function) `tools/update_sources.py:375` `def handle_tracked(git, repo, path, dry_run, fetch_enabled, strategy)` -- Bring a tracked checkout to the upstream tip, keeping local commits.
+- `handle_pinned` (function) `tools/update_sources.py:446` `def handle_pinned(git, repo, path, dry_run, fetch_enabled)` -- Hold a checkout at the release tag it is pinned to.
+- `handle_repo` (function) `tools/update_sources.py:493` `def handle_repo(git, repo, directory, dry_run, fetch_enabled, strategy)` -- Dispatch one checkout to the handler its mode asks for.
+- `write_snapshot` (function) `tools/update_sources.py:513` `def write_snapshot(path, outcomes)` -- Record the pre-update revision of every checkout that moved.
+- `rollback` (function) `tools/update_sources.py:535` `def rollback(git, snapshot_path, directories)` -- Restore the revisions recorded by the last update.
+- `print_status` (function) `tools/update_sources.py:572` `def print_status(git, selected, directories)` -- Print the revision of every managed checkout.
+- `print_outcome` (function) `tools/update_sources.py:594` `def print_outcome(outcome)` -- Print one checkout result.
+- `select_repos` (function) `tools/update_sources.py:599` `def select_repos(names)` -- Resolve the requested repository names, failing on unknown ones.
+- `parse_overrides` (function) `tools/update_sources.py:614` `def parse_overrides(pairs)` -- Split the --repo overrides into directory and URL maps.
+- `main` (function) `tools/update_sources.py:634` `def main(argv)` -- Run the updater and report what happened.
+
 ## tools/wl_scoped.sh
 - `say` (function) `tools/wl_scoped.sh:8`
 - `die` (function) `tools/wl_scoped.sh:9`

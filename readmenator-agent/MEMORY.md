@@ -2,12 +2,12 @@
 
 > Cross-session context for agents. Sections 1-6 are regenerated from the source tree with zero LLM tokens: declared rules are quoted verbatim with `file:line`, measured baselines come from the scan. Section 7 is written by agents and humans and is preserved across rebuilds.
 
-Generated from 588 files at commit `a40233ec561a`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
+Generated from 589 files at commit `960686e51b0d`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
 
 ## 1. Purpose and domain
 
 - What it is: I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [compiler/linker](https://github.com/grisuno/ld), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). (`README.md:10`)
-- Domain vocabulary (term, files): `progs` (319), `free` (240), `any` (238), `without` (231), `program` (221), `can` (218), `under` (212), `see` (192), `doomgeneric` (188), `version` (186), `but` (185), `later` (184), `either` (182), `more` (181), `public` (179)
+- Domain vocabulary (term, files): `progs` (319), `free` (241), `any` (239), `without` (231), `program` (221), `can` (219), `under` (212), `see` (192), `doomgeneric` (188), `version` (186), `but` (186), `later` (184), `more` (182), `either` (182), `public` (179)
 - Subsystem `headers: kernel`: 137 files, core `headers/kernel.h`: The user-window memory layout (load base, stack, brk cap, graphics
 - Subsystem `progs/doomgeneric: d_englsh`: 99 files, core `progs/doomgeneric/d_englsh.h`: Copyright(C) 1993-1996 Id Software, Inc.
 - Subsystem `progs/src`: 86 files, core `progs/vedit/vedit.c`: vedit IDE build and run contract.
@@ -26,13 +26,13 @@ Detected commands:
 - `make sources` (Makefile)
 - `make sources-update` (Makefile)
 - `make sources-status` (Makefile)
+- `make update` (Makefile)
+- `make update-status` (Makefile)
+- `make update-list` (Makefile)
+- `make update-rollback` (Makefile)
 - `make addons` (Makefile)
 - `make toolchain` (Makefile)
 - `make doom1-wad-check` (Makefile)
-- `make q2-pak0-check` (Makefile)
-- `make pokemon-fetch` (Makefile)
-- `make pokemon-clean` (Makefile)
-- `make lisp-host` (Makefile)
 
 Session protocol:
 1. Start: read this file, then `readmenator . fresh` (exit 1 means run `readmenator . --rebuild`).
@@ -44,21 +44,22 @@ Session protocol:
 ## 3. Rules and constraints
 
 Declared:
-- **Layout addresses** live once in `progs/minios_abi.h`; never hardcode one in (`CLAUDE.md:50`)
-- **Low 4 MB**: user page-table zone stays at `0x10000`; kernel image + `.bss` (`CLAUDE.md:52`)
-- **Kernel stacks**: 16 KB per proc, `-Werror=frame-larger-than=2048`; (`CLAUDE.md:56`)
-- **Syscalls** take user pointers only through `SANITIZE_*` (`-EFAULT` on (`CLAUDE.md:58`)
-- **SB16/DMA**: never auto-init DMA; one single-cycle block per terminal-count (`CLAUDE.md:60`)
-- **Build**: per-object header deps live in the Makefile; a new `#include` (`CLAUDE.md:62`)
-- **Graphics apps**: present through `GFX_PRESENT`; mouse via the origin the (`CLAUDE.md:64`)
-- **USB**: PCI MMIO is mapped only through `kmm_map_uncached()` (write-back (`CLAUDE.md:67`)
-- **Foreground processes**: the shell's pid-0 exec frame has no fork/execve; (`CLAUDE.md:75`)
-- **Heavy ring-3 overlap** (two big glibc processes) is known-red until (`CLAUDE.md:80`)
-- Every loader input is validated before use: ELF headers, section and (`CLAUDE.md:159`)
-- Size arithmetic is overflow checked before allocation (`size * n` included). (`CLAUDE.md:161`)
-- Failure paths report and release; no silent partial state. (`CLAUDE.md:162`)
-- No function symbol is ever resolved to a null address. (`CLAUDE.md:163`)
-- User stack setup validates that argv writes stay within bounds. (`CLAUDE.md:164`)
+- **Sibling sources**: `make update` (or `make update <repo>`) refreshes the (`CLAUDE.md:50`)
+- **Layout addresses** live once in `progs/minios_abi.h`; never hardcode one in (`CLAUDE.md:54`)
+- **Low 4 MB**: user page-table zone stays at `0x10000`; kernel image + `.bss` (`CLAUDE.md:56`)
+- **Kernel stacks**: 16 KB per proc, `-Werror=frame-larger-than=2048`; (`CLAUDE.md:60`)
+- **Syscalls** take user pointers only through `SANITIZE_*` (`-EFAULT` on (`CLAUDE.md:62`)
+- **SB16/DMA**: never auto-init DMA; one single-cycle block per terminal-count (`CLAUDE.md:64`)
+- **Build**: per-object header deps live in the Makefile; a new `#include` (`CLAUDE.md:66`)
+- **Graphics apps**: present through `GFX_PRESENT`; mouse via the origin the (`CLAUDE.md:68`)
+- **USB**: PCI MMIO is mapped only through `kmm_map_uncached()` (write-back (`CLAUDE.md:71`)
+- **Foreground processes**: the shell's pid-0 exec frame has no fork/execve; (`CLAUDE.md:79`)
+- **Heavy ring-3 overlap** (two big glibc processes) is known-red until (`CLAUDE.md:84`)
+- Every loader input is validated before use: ELF headers, section and (`CLAUDE.md:163`)
+- Size arithmetic is overflow checked before allocation (`size * n` included). (`CLAUDE.md:165`)
+- Failure paths report and release; no silent partial state. (`CLAUDE.md:166`)
+- No function symbol is ever resolved to a null address. (`CLAUDE.md:167`)
+- User stack setup validates that argv writes stay within bounds. (`CLAUDE.md:168`)
 
 Measured baseline:
 - Security findings at medium or above: 0 (see `readmenator-agent/SECURITY.md`); do not add new ones.
@@ -72,7 +73,7 @@ Declared:
 Measured baseline:
 - c: 288 files, 7097 symbols; docstrings on 22% of symbols; functions snake_case (76%); types PascalCase (18%); median file 259 lines, max 4902.
 - h: 196 files, 4618 symbols; docstrings on 17% of symbols; functions snake_case (70%); types PascalCase (7%); median file 70 lines, max 1331.
-- py: 66 files, 784 symbols; docstrings on 38% of symbols; functions snake_case (97%); types PascalCase (99%); median file 135 lines, max 957.
+- py: 67 files, 817 symbols; docstrings on 40% of symbols; functions snake_case (97%); types PascalCase (99%); median file 135 lines, max 957.
 - sh: 17 files, 47 symbols; docstrings on 21% of symbols; functions snake_case (100%); median file 80 lines, max 2414.
 - Tests: 70 files under mcp, progs/src, tests; follow the existing naming (e.g. `test_minios_mcp.py`).
 
@@ -83,7 +84,7 @@ Declared:
 
 Measured baseline:
 - Tests pass: `python -m pytest -q`.
-- Docstring coverage stays at or above 20%.
+- Docstring coverage stays at or above 21%.
 - No new security findings at medium or above (current: 0).
 - No new dependency cycles (current: 1).
 - Files stay under 300 lines where possible (`readmenator . lint`).

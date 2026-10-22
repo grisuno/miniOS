@@ -2,27 +2,28 @@
  "schema_version": 1,
  "format": "jsonl",
  "meta": {
-  "modules": 511,
-  "entities": 10345,
+  "modules": 512,
+  "entities": 10422,
   "languages": {
    "S": 7,
    "c": 239,
    "h": 194,
-   "py": 48,
+   "py": 49,
    "s": 13,
    "sh": 10
   },
   "kinds": {
-   "attribute": 158,
-   "class": 34,
-   "constant": 160,
+   "attribute": 175,
+   "class": 37,
+   "constant": 186,
    "constructor": 23,
    "enum": 3,
-   "exception": 4,
-   "function": 4487,
+   "exception": 5,
+   "function": 4514,
    "macro": 3874,
    "method": 116,
-   "module": 511,
+   "module": 512,
+   "property": 2,
    "staticmethod": 6,
    "struct": 317,
    "type_alias": 74,
@@ -34,15 +35,15 @@
  },
  "coverage": {
   "overall": {
-   "documented": 2769,
-   "total": 9449,
-   "percent": 29.3
+   "documented": 2801,
+   "total": 9483,
+   "percent": 29.5
   },
   "by_kind": {
    "class": {
-    "documented": 22,
-    "total": 34,
-    "percent": 64.7
+    "documented": 25,
+    "total": 37,
+    "percent": 67.6
    },
    "constructor": {
     "documented": 3,
@@ -55,14 +56,14 @@
     "percent": 66.7
    },
    "exception": {
-    "documented": 4,
-    "total": 4,
+    "documented": 5,
+    "total": 5,
     "percent": 100.0
    },
    "function": {
-    "documented": 1446,
-    "total": 4487,
-    "percent": 32.2
+    "documented": 1473,
+    "total": 4514,
+    "percent": 32.6
    },
    "macro": {
     "documented": 664,
@@ -75,9 +76,14 @@
     "percent": 20.7
    },
    "module": {
-    "documented": 423,
-    "total": 511,
+    "documented": 424,
+    "total": 512,
     "percent": 82.8
+   },
+   "property": {
+    "documented": 0,
+    "total": 2,
+    "percent": 0.0
    },
    "staticmethod": {
     "documented": 6,
@@ -2630,6 +2636,11 @@
     "documented": 24,
     "total": 24,
     "percent": 100.0
+   },
+   "tools/update_sources.py": {
+    "documented": 32,
+    "total": 34,
+    "percent": 94.1
    },
    "tools/wl_scoped.sh": {
     "documented": 1,
@@ -5190,6 +5201,11 @@
    "entities": 49
   },
   {
+   "uid": "tools/update_sources.py",
+   "path": "modules/tools.update_sources.py.jsonl",
+   "entities": 77
+  },
+  {
    "uid": "tools/wl_scoped.sh",
    "path": "modules/tools.wl_scoped.sh.jsonl",
    "entities": 5
@@ -5212,7 +5228,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 6671
+  "total": 6673
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

@@ -242,6 +242,7 @@
 {"confidence": "INFERRED", "description": "concept any appears in repro_gui.py", "relation": "documents", "source": "concept:any", "target": "file:tools/repro_gui.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept any appears in test_gui_wm.py", "relation": "documents", "source": "concept:any", "target": "file:tools/test_gui_wm.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept any appears in test_sb16.sh", "relation": "documents", "source": "concept:any", "target": "file:tools/test_sb16.sh", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept any appears in update_sources.py", "relation": "documents", "source": "concept:any", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept any appears in wm_layout_sync.py", "relation": "documents", "source": "concept:any", "target": "file:tools/wm_layout_sync.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "but depends_on any", "relation": "depends_on", "source": "concept:but", "target": "concept:any", "weight": 0.6}
 {"confidence": "INFERRED", "description": "but depends_on free", "relation": "depends_on", "source": "concept:but", "target": "concept:free", "weight": 0.6}
@@ -434,6 +435,7 @@
 {"confidence": "INFERRED", "description": "concept but appears in wlcomp.c", "relation": "documents", "source": "concept:but", "target": "file:progs/wl/wlcomp.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept but appears in test_bdd.sh", "relation": "documents", "source": "concept:but", "target": "file:tools/test_bdd.sh", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept but appears in test_gui_wm.py", "relation": "documents", "source": "concept:but", "target": "file:tools/test_gui_wm.py", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept but appears in update_sources.py", "relation": "documents", "source": "concept:but", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "can depends_on any", "relation": "depends_on", "source": "concept:can", "target": "concept:any", "weight": 0.6}
 {"confidence": "INFERRED", "description": "can depends_on free", "relation": "depends_on", "source": "concept:can", "target": "concept:free", "weight": 0.6}
 {"confidence": "INFERRED", "description": "can depends_on program", "relation": "depends_on", "source": "concept:can", "target": "concept:program", "weight": 0.6}
@@ -659,6 +661,7 @@
 {"confidence": "INFERRED", "description": "concept can appears in test_codecs.sh", "relation": "documents", "source": "concept:can", "target": "file:tools/test_codecs.sh", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept can appears in test_gui_icon_cwd.py", "relation": "documents", "source": "concept:can", "target": "file:tools/test_gui_icon_cwd.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept can appears in test_net_fixture.py", "relation": "documents", "source": "concept:can", "target": "file:tools/test_net_fixture.py", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept can appears in update_sources.py", "relation": "documents", "source": "concept:can", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "copyright depends_on progs", "relation": "depends_on", "source": "concept:copyright", "target": "concept:progs", "weight": 0.6}
 {"confidence": "INFERRED", "description": "concept copyright appears in am_map.c", "relation": "documents", "source": "concept:copyright", "target": "file:progs/doomgeneric/am_map.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept copyright appears in am_map.h", "relation": "documents", "source": "concept:copyright", "target": "file:progs/doomgeneric/am_map.h", "weight": 0.45}
@@ -2182,6 +2185,7 @@
 {"confidence": "INFERRED", "description": "concept every appears in test_lisp.py", "relation": "documents", "source": "concept:every", "target": "file:tools/test_lisp.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept every appears in test_net_fixture.py", "relation": "documents", "source": "concept:every", "target": "file:tools/test_net_fixture.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept every appears in test_sb16.sh", "relation": "documents", "source": "concept:every", "target": "file:tools/test_sb16.sh", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept every appears in update_sources.py", "relation": "documents", "source": "concept:every", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept file appears in uefi_stub.c", "relation": "documents", "source": "concept:file", "target": "file:boot/uefi_stub.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept file appears in ext4.c", "relation": "documents", "source": "concept:file", "target": "file:fs/ext4.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept file appears in fat32.c", "relation": "documents", "source": "concept:file", "target": "file:fs/fat32.c", "weight": 0.45}
@@ -2898,6 +2902,7 @@
 {"confidence": "INFERRED", "description": "concept free appears in minifs_fsck.py", "relation": "documents", "source": "concept:free", "target": "file:tools/minifs_fsck.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept free appears in mkfs.minifs.py", "relation": "documents", "source": "concept:free", "target": "file:tools/mkfs.minifs.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept free appears in test_gui_freedom.py", "relation": "documents", "source": "concept:free", "target": "file:tools/test_gui_freedom.py", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept free appears in update_sources.py", "relation": "documents", "source": "concept:free", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept free appears in vma.c", "relation": "documents", "source": "concept:free", "target": "file:vma.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept general appears in kernel.h", "relation": "documents", "source": "concept:general", "target": "file:headers/kernel.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept general appears in am_map.c", "relation": "documents", "source": "concept:general", "target": "file:progs/doomgeneric/am_map.c", "weight": 0.45}
@@ -4847,6 +4852,7 @@
 {"confidence": "INFERRED", "description": "concept mini appears in test_gui_zoom.py", "relation": "documents", "source": "concept:mini", "target": "file:tools/test_gui_zoom.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept mini appears in test_lisp.py", "relation": "documents", "source": "concept:mini", "target": "file:tools/test_lisp.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept mini appears in tls_test.py", "relation": "documents", "source": "concept:mini", "target": "file:tools/tls_test.py", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept mini appears in update_sources.py", "relation": "documents", "source": "concept:mini", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept mini appears in wl_scoped.sh", "relation": "documents", "source": "concept:mini", "target": "file:tools/wl_scoped.sh", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept modify appears in pci.h", "relation": "documents", "source": "concept:modify", "target": "file:headers/drivers/pci.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept modify appears in am_map.c", "relation": "documents", "source": "concept:modify", "target": "file:progs/doomgeneric/am_map.c", "weight": 0.45}
@@ -5201,6 +5207,7 @@
 {"confidence": "INFERRED", "description": "concept more appears in wl_mini.h", "relation": "documents", "source": "concept:more", "target": "file:progs/wl/wl_mini.h", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept more appears in test_vma.c", "relation": "documents", "source": "concept:more", "target": "file:tests/test_vma.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept more appears in check_surprising.py", "relation": "documents", "source": "concept:more", "target": "file:tools/check_surprising.py", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept more appears in update_sources.py", "relation": "documents", "source": "concept:more", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in stage2.S", "relation": "documents", "source": "concept:one", "target": "file:arch/x86/boot/stage2.S", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in uefi_stub.c", "relation": "documents", "source": "concept:one", "target": "file:boot/uefi_stub.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in kbd.c", "relation": "documents", "source": "concept:one", "target": "file:drivers/kbd.c", "weight": 0.45}
@@ -5356,6 +5363,7 @@
 {"confidence": "INFERRED", "description": "concept one appears in test_gui_menu.py", "relation": "documents", "source": "concept:one", "target": "file:tools/test_gui_menu.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in test_lisp.py", "relation": "documents", "source": "concept:one", "target": "file:tools/test_lisp.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in test_net_fixture.py", "relation": "documents", "source": "concept:one", "target": "file:tools/test_net_fixture.py", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept one appears in update_sources.py", "relation": "documents", "source": "concept:one", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in wm_layout_sync.py", "relation": "documents", "source": "concept:one", "target": "file:tools/wm_layout_sync.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept one appears in vma.c", "relation": "documents", "source": "concept:one", "target": "file:vma.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept option appears in am_map.c", "relation": "documents", "source": "concept:option", "target": "file:progs/doomgeneric/am_map.c", "weight": 0.45}
@@ -8681,6 +8689,7 @@
 {"confidence": "INFERRED", "description": "concept when appears in test_gui_menu.py", "relation": "documents", "source": "concept:when", "target": "file:tools/test_gui_menu.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in test_lisp.py", "relation": "documents", "source": "concept:when", "target": "file:tools/test_lisp.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in test_net_fixture.py", "relation": "documents", "source": "concept:when", "target": "file:tools/test_net_fixture.py", "weight": 0.45}
+{"confidence": "INFERRED", "description": "concept when appears in update_sources.py", "relation": "documents", "source": "concept:when", "target": "file:tools/update_sources.py", "weight": 0.45}
 {"confidence": "INFERRED", "description": "concept when appears in vma.c", "relation": "documents", "source": "concept:when", "target": "file:vma.c", "weight": 0.45}
 {"confidence": "INFERRED", "description": "without depends_on any", "relation": "depends_on", "source": "concept:without", "target": "concept:any", "weight": 0.6}
 {"confidence": "INFERRED", "description": "without depends_on can", "relation": "depends_on", "source": "concept:without", "target": "concept:can", "weight": 0.6}
@@ -24083,6 +24092,47 @@
 {"confidence": "EXTRACTED", "description": "tls_test.py defines function serve", "relation": "defines", "source": "file:tools/tls_test.py", "target": "sym:tools/tls_test.py::serve@286", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "tls_test.py defines function serve_openssl", "relation": "defines", "source": "file:tools/tls_test.py", "target": "sym:tools/tls_test.py::serve_openssl@294", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "tls_test.py defines function server_cert", "relation": "defines", "source": "file:tools/tls_test.py", "target": "sym:tools/tls_test.py::server_cert@67", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py imports external __future__", "relation": "imports", "source": "file:tools/update_sources.py", "target": "ext:__future__", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "update_sources.py imports external argparse", "relation": "imports", "source": "file:tools/update_sources.py", "target": "ext:argparse", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "update_sources.py imports external dataclasses", "relation": "imports", "source": "file:tools/update_sources.py", "target": "ext:dataclasses", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "update_sources.py imports external datetime", "relation": "imports", "source": "file:tools/update_sources.py", "target": "ext:datetime", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "update_sources.py imports external json", "relation": "imports", "source": "file:tools/update_sources.py", "target": "ext:json", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "update_sources.py imports external pathlib", "relation": "imports", "source": "file:tools/update_sources.py", "target": "ext:pathlib", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "update_sources.py imports external subprocess", "relation": "imports", "source": "file:tools/update_sources.py", "target": "ext:subprocess", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "update_sources.py imports external sys", "relation": "imports", "source": "file:tools/update_sources.py", "target": "ext:sys", "weight": 0.85}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines class GitError", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::GitError@232", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines class GitResult", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::GitResult@203", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines class Outcome", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::Outcome@216", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines class Repo", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::Repo@96", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function abort_reconcile", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::abort_reconcile@351", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function ahead_behind", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::ahead_behind@325", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines method changed", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::changed@228", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function conflicted_files", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::conflicted_files@359", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function current_branch", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::current_branch@271", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function deepen_upstream", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::deepen_upstream@306", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function fast_forward", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::fast_forward@339", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function fetch_upstream", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::fetch_upstream@294", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function git_out", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::git_out@253", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function handle_pinned", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::handle_pinned@446", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function handle_repo", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::handle_repo@493", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function handle_tracked", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::handle_tracked@375", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function head_sha", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::head_sha@261", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function is_dirty", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::is_dirty@276", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function is_shallow", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::is_shallow@281", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function main", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::main@634", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines method ok", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::ok@211", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function parse_overrides", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::parse_overrides@614", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function print_outcome", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::print_outcome@594", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function print_status", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::print_status@572", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function reconcile", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::reconcile@344", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function resolve_path", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::resolve_path@286", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function rollback", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::rollback@535", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function run_git", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::run_git@236", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function select_repos", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::select_repos@599", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function short_sha", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::short_sha@266", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function update_submodules", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::update_submodules@365", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function upstream_target", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::upstream_target@316", "weight": 0.7}
+{"confidence": "EXTRACTED", "description": "update_sources.py defines function write_snapshot", "relation": "defines", "source": "file:tools/update_sources.py", "target": "sym:tools/update_sources.py::write_snapshot@513", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "wl_scoped.sh defines function die", "relation": "defines", "source": "file:tools/wl_scoped.sh", "target": "sym:tools/wl_scoped.sh::die@9", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "wl_scoped.sh defines function mut", "relation": "defines", "source": "file:tools/wl_scoped.sh", "target": "sym:tools/wl_scoped.sh::mut@77", "weight": 0.7}
 {"confidence": "EXTRACTED", "description": "wl_scoped.sh defines function mutm", "relation": "defines", "source": "file:tools/wl_scoped.sh", "target": "sym:tools/wl_scoped.sh::mutm@84", "weight": 0.7}
@@ -25489,6 +25539,71 @@
 {"confidence": "INFERRED", "description": "serve calls Server", "relation": "calls", "source": "sym:tools/tls_test.py::serve@286", "target": "sym:tools/tls_test.py::Server@247", "weight": 1.0}
 {"confidence": "INFERRED", "description": "server_cert calls open", "relation": "calls", "source": "sym:tools/tls_test.py::server_cert@67", "target": "sym:fs/vfs.c::open@688", "weight": 1.0}
 {"confidence": "INFERRED", "description": "server_cert calls check", "relation": "calls", "source": "sym:tools/tls_test.py::server_cert@67", "target": "sym:tools/tls_test.py::check@36", "weight": 1.0}
+{"confidence": "INFERRED", "description": "abort_reconcile calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::abort_reconcile@351", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "ahead_behind calls split", "relation": "calls", "source": "sym:tools/update_sources.py::ahead_behind@325", "target": "sym:kernel/syscalls.c::split@2126", "weight": 1.0}
+{"confidence": "INFERRED", "description": "ahead_behind calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::ahead_behind@325", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
+{"confidence": "INFERRED", "description": "conflicted_files calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::conflicted_files@359", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
+{"confidence": "INFERRED", "description": "current_branch calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::current_branch@271", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
+{"confidence": "INFERRED", "description": "deepen_upstream calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::deepen_upstream@306", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "fast_forward calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::fast_forward@339", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "fetch_upstream calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::fetch_upstream@294", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "git_out calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::git_out@253", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_pinned calls Outcome", "relation": "calls", "source": "sym:tools/update_sources.py::handle_pinned@446", "target": "sym:tools/update_sources.py::Outcome@216", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_pinned calls current_branch", "relation": "calls", "source": "sym:tools/update_sources.py::handle_pinned@446", "target": "sym:tools/update_sources.py::current_branch@271", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_pinned calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::handle_pinned@446", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_pinned calls head_sha", "relation": "calls", "source": "sym:tools/update_sources.py::handle_pinned@446", "target": "sym:tools/update_sources.py::head_sha@261", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_pinned calls is_dirty", "relation": "calls", "source": "sym:tools/update_sources.py::handle_pinned@446", "target": "sym:tools/update_sources.py::is_dirty@276", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_pinned calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::handle_pinned@446", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_pinned calls update_submodules", "relation": "calls", "source": "sym:tools/update_sources.py::handle_pinned@446", "target": "sym:tools/update_sources.py::update_submodules@365", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_repo calls Outcome", "relation": "calls", "source": "sym:tools/update_sources.py::handle_repo@493", "target": "sym:tools/update_sources.py::Outcome@216", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_repo calls handle_pinned", "relation": "calls", "source": "sym:tools/update_sources.py::handle_repo@493", "target": "sym:tools/update_sources.py::handle_pinned@446", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_repo calls handle_tracked", "relation": "calls", "source": "sym:tools/update_sources.py::handle_repo@493", "target": "sym:tools/update_sources.py::handle_tracked@375", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_repo calls resolve_path", "relation": "calls", "source": "sym:tools/update_sources.py::handle_repo@493", "target": "sym:tools/update_sources.py::resolve_path@286", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls range", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:progs/minios_abi.h::range@334", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls Outcome", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::Outcome@216", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls abort_reconcile", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::abort_reconcile@351", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls ahead_behind", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::ahead_behind@325", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls conflicted_files", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::conflicted_files@359", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls current_branch", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::current_branch@271", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls deepen_upstream", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::deepen_upstream@306", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls fast_forward", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::fast_forward@339", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls fetch_upstream", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::fetch_upstream@294", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls head_sha", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::head_sha@261", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls is_dirty", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::is_dirty@276", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls is_shallow", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::is_shallow@281", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls reconcile", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::reconcile@344", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls short_sha", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::short_sha@266", "weight": 1.0}
+{"confidence": "INFERRED", "description": "handle_tracked calls upstream_target", "relation": "calls", "source": "sym:tools/update_sources.py::handle_tracked@375", "target": "sym:tools/update_sources.py::upstream_target@316", "weight": 1.0}
+{"confidence": "INFERRED", "description": "head_sha calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::head_sha@261", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
+{"confidence": "INFERRED", "description": "is_dirty calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::is_dirty@276", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
+{"confidence": "INFERRED", "description": "is_shallow calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::is_shallow@281", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls Repo", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::Repo@96", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls handle_repo", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::handle_repo@493", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls parse_overrides", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::parse_overrides@614", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls print_outcome", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::print_outcome@594", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls print_status", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::print_status@572", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls resolve_path", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::resolve_path@286", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls rollback", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::rollback@535", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls select_repos", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::select_repos@599", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls write_snapshot", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/update_sources.py::write_snapshot@513", "weight": 1.0}
+{"confidence": "INFERRED", "description": "main calls parse_args", "relation": "calls", "source": "sym:tools/update_sources.py::main@634", "target": "sym:tools/wm_layout_sync.py::parse_args@151", "weight": 1.0}
+{"confidence": "INFERRED", "description": "parse_overrides calls split", "relation": "calls", "source": "sym:tools/update_sources.py::parse_overrides@614", "target": "sym:kernel/syscalls.c::split@2126", "weight": 1.0}
+{"confidence": "INFERRED", "description": "print_status calls ahead_behind", "relation": "calls", "source": "sym:tools/update_sources.py::print_status@572", "target": "sym:tools/update_sources.py::ahead_behind@325", "weight": 1.0}
+{"confidence": "INFERRED", "description": "print_status calls current_branch", "relation": "calls", "source": "sym:tools/update_sources.py::print_status@572", "target": "sym:tools/update_sources.py::current_branch@271", "weight": 1.0}
+{"confidence": "INFERRED", "description": "print_status calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::print_status@572", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
+{"confidence": "INFERRED", "description": "print_status calls head_sha", "relation": "calls", "source": "sym:tools/update_sources.py::print_status@572", "target": "sym:tools/update_sources.py::head_sha@261", "weight": 1.0}
+{"confidence": "INFERRED", "description": "print_status calls resolve_path", "relation": "calls", "source": "sym:tools/update_sources.py::print_status@572", "target": "sym:tools/update_sources.py::resolve_path@286", "weight": 1.0}
+{"confidence": "INFERRED", "description": "print_status calls short_sha", "relation": "calls", "source": "sym:tools/update_sources.py::print_status@572", "target": "sym:tools/update_sources.py::short_sha@266", "weight": 1.0}
+{"confidence": "INFERRED", "description": "reconcile calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::reconcile@344", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "rollback calls head_sha", "relation": "calls", "source": "sym:tools/update_sources.py::rollback@535", "target": "sym:tools/update_sources.py::head_sha@261", "weight": 1.0}
+{"confidence": "INFERRED", "description": "rollback calls is_dirty", "relation": "calls", "source": "sym:tools/update_sources.py::rollback@535", "target": "sym:tools/update_sources.py::is_dirty@276", "weight": 1.0}
+{"confidence": "INFERRED", "description": "rollback calls resolve_path", "relation": "calls", "source": "sym:tools/update_sources.py::rollback@535", "target": "sym:tools/update_sources.py::resolve_path@286", "weight": 1.0}
+{"confidence": "INFERRED", "description": "rollback calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::rollback@535", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "rollback calls short_sha", "relation": "calls", "source": "sym:tools/update_sources.py::rollback@535", "target": "sym:tools/update_sources.py::short_sha@266", "weight": 1.0}
+{"confidence": "INFERRED", "description": "run_git calls GitResult", "relation": "calls", "source": "sym:tools/update_sources.py::run_git@236", "target": "sym:tools/update_sources.py::GitResult@203", "weight": 1.0}
+{"confidence": "INFERRED", "description": "select_repos calls list", "relation": "calls", "source": "sym:tools/update_sources.py::select_repos@599", "target": "sym:progs/nuklear/nuklear_minios.c::list@4", "weight": 1.0}
+{"confidence": "INFERRED", "description": "update_submodules calls run_git", "relation": "calls", "source": "sym:tools/update_sources.py::update_submodules@365", "target": "sym:tools/update_sources.py::run_git@236", "weight": 1.0}
+{"confidence": "INFERRED", "description": "upstream_target calls git_out", "relation": "calls", "source": "sym:tools/update_sources.py::upstream_target@316", "target": "sym:tools/update_sources.py::git_out@253", "weight": 1.0}
 {"confidence": "INFERRED", "description": "discover calls WmLayoutSyncResult", "relation": "calls", "source": "sym:tools/wm_layout_sync.py::discover@53", "target": "sym:tools/wm_layout_sync.py::WmLayoutSyncResult@36", "weight": 1.0}
 {"confidence": "INFERRED", "description": "discover calls _count_layout_checks", "relation": "calls", "source": "sym:tools/wm_layout_sync.py::discover@53", "target": "sym:tools/wm_layout_sync.py::_count_layout_checks@133", "weight": 1.0}
 {"confidence": "INFERRED", "description": "discover calls _extract_modes", "relation": "calls", "source": "sym:tools/wm_layout_sync.py::discover@53", "target": "sym:tools/wm_layout_sync.py::_extract_modes@116", "weight": 1.0}

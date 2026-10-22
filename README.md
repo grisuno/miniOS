@@ -20,6 +20,7 @@ git clone https://github.com/grisuno/miniOS.git
 cd miniOS
 make sources        # clone the toolchain siblings (miniGCC, ld, cvm, ...)
 make                # build os.img
+make update         # bring the newest sources (all of them, or `make update freedom`)
 
 make run-kvm        # boot it in KVM mode
 make run-headless   # boot it on the serial console

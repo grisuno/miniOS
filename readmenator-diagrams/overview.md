@@ -48,7 +48,7 @@ graph LR
 
 ## Details
 
-Static architecture map of 588 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.
+Static architecture map of 589 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.
 
 ### headers: kernel (1)
 

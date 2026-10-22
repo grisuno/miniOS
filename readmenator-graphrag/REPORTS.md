@@ -1,12 +1,12 @@
 # GraphRAG Community Reports
 
-Entities: 13756 | Relationships: 25506 | Communities: 11 | Themes: 4 | Text units: 13508
+Entities: 13791 | Relationships: 25621 | Communities: 11 | Themes: 4 | Text units: 13542
 
 Query with `readmenator . ask "<question>"` (local: BM25 + Personalized PageRank; global: map-reduce over these reports) or the MCP tool `readmenator.graphrag`.
 
 ## Project overview (`root`, root, rating 7.0)
 
-588 files in 11 communities and 4 themes. Highest-impact communities: headers: kernel (7.0), progs/doomgeneric: d_englsh (6.4), progs/src (4.9). God nodes: kernel/string.c, progs/doomgeneric/doomtype.h, progs/doomgeneric/doomdef.h, kernel/syscalls.c, progs/doomgeneric/doomstat.h.
+589 files in 11 communities and 4 themes. Highest-impact communities: headers: kernel (7.0), progs/doomgeneric: d_englsh (6.4), progs/src (4.9). God nodes: kernel/string.c, progs/doomgeneric/doomtype.h, progs/doomgeneric/doomdef.h, kernel/syscalls.c, progs/doomgeneric/doomstat.h.
 
 - [headers: kernel] rating 7.0: `headers/spinlock.h` ranks 1 by PageRank, 9 importers, 19 symbols: Lightweight spinlock for MiniOS kernel.
 - [progs/doomgeneric: d_englsh] rating 6.4: `progs/doomgeneric/doomtype.h` ranks 1 by PageRank, 50 importers, 14 symbols: Copyright(C) 1993-1996 Id Software, Inc.
@@ -54,7 +54,7 @@ Theme of 5 communities and 310 files: progs/doomgeneric: d_englsh (99 files, rat
 
 ## unassigned files (`t2`, theme, rating 3.4)
 
-Theme of 1 communities and 116 files: unassigned files (116 files, rating 3.4).
+Theme of 1 communities and 117 files: unassigned files (117 files, rating 3.4).
 
 - [unassigned files] `arch/x86/ctx_sw.S` ranks 1 by PageRank, 0 importers, 9 symbols: sched_park_capture: captured the rest.
 - [unassigned files] `arch/x86/isr_stubs.S` ranks 2 by PageRank, 0 importers, 24 symbols.
@@ -102,7 +102,7 @@ Theme of 1 communities and 2 files: tools: doom_pwad (2 files, rating 0.1).
 
 ## progs/src (`c2`, community, rating 4.9)
 
-86 files under tests (c 62, h 24), mostly utility. Core file kernel/string.c (PageRank 0.0353, imported by 90 files): Kernel string and memory functions. Key abstractions: kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp, kstrncmp. Depends on progs/doomgeneric: d_englsh (3), headers: kernel (2), progs/doomgeneric: p_spec (1). Used by progs/doomgeneric: d_englsh (21), headers: kernel (17), tools: tls_crypto (7).
+86 files under tests (c 62, h 24), mostly utility. Core file kernel/string.c (PageRank 0.0352, imported by 90 files): Kernel string and memory functions. Key abstractions: kstrlen, kstrcpy, kstrncpy, kstrncat, kstrcmp, kstrncmp. Depends on progs/doomgeneric: d_englsh (3), headers: kernel (2), progs/doomgeneric: p_spec (1). Used by progs/doomgeneric: d_englsh (21), headers: kernel (17), tools: tls_crypto (7).
 
 - `kernel/string.c` ranks 1 by PageRank, 90 importers, 13 symbols: Kernel string and memory functions.
 - `progs/minios_abi.h` ranks 2 by PageRank, 32 importers, 156 symbols: Single source of truth for the MiniOS user-kernel ABI.
@@ -130,7 +130,7 @@ Theme of 1 communities and 2 files: tools: doom_pwad (2 files, rating 0.1).
 
 ## unassigned files (`c10`, community, rating 3.4)
 
-116 files under tools (c 43, py 37, sh 17, s 13, S 3, h 2, lua 1), mostly utility. Core file arch/x86/ctx_sw.S (PageRank 0.0009, imported by 0 files): sched_park_capture: captured the rest. Key abstractions: sched_park_capture, switch_save_only, switch_to, switch_to_notrap, user_trampoline, fork_trampoline.
+117 files under tools (c 43, py 38, sh 17, s 13, S 3, h 2, lua 1), mostly utility. Core file arch/x86/ctx_sw.S (PageRank 0.0009, imported by 0 files): sched_park_capture: captured the rest. Key abstractions: sched_park_capture, switch_save_only, switch_to, switch_to_notrap, user_trampoline, fork_trampoline.
 
 - `arch/x86/ctx_sw.S` ranks 1 by PageRank, 0 importers, 9 symbols: sched_park_capture: captured the rest.
 - `arch/x86/isr_stubs.S` ranks 2 by PageRank, 0 importers, 24 symbols.

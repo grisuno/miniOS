@@ -135,6 +135,7 @@ Full target list (every target and its purpose): `docs/spec/build-run.md`.
 |--------|--------|
 | `make` / `os.img` | build the full image (zero warnings required) |
 | `make sources` | clone missing sibling repos (never touches existing dirs) |
+| `make update [repo...]` | bring the newest sources: all of them, or only the named ones (`make update freedom`) |
 | `make run` / `run-kvm` / `run-headless` | boot with display / KVM / serial only |
 | `make debug` / `serial` | boot with the QEMU monitor on stdio / boot on the serial console |
 | `make test` | behavioural suite |

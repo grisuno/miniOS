@@ -1,6 +1,6 @@
 # miniOS
 
-> Static analysis knowledge base for miniOS: 10 communities, 588 files, 2240 imports, 7 languages, 12992 symbols.
+> Static analysis knowledge base for miniOS: 10 communities, 589 files, 2248 imports, 7 languages, 13025 symbols.
 
 Generated offline by readmenator (zero LLM tokens). Start with the wiki index for the big picture, then the agent INDEX for file lookup.
 

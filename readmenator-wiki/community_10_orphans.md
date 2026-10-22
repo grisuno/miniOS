@@ -1,14 +1,14 @@
 # orphans
 
-*Community 10 | 116 files | cohesion 0.00*
+*Community 10 | 117 files | cohesion 0.00*
 
 ## Definition
 
-This community groups 116 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (107 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
+This community groups 117 file(s) rooted at `tools` with dominant language c (cohesion 0.00). Central symbols: `AES_AFFINE_C`, `AES_BLOCK`, `AES_EXIT_FAIL`, `AES_HDR_SIZE`, `AES_KEY_BYTES`, `AES_MAGIC0`, `AES_MAGIC1`, `AES_MAGIC2`. Core file: `mcp/test_minios_mcp.py` (107 symbols). Documented purpose: Docstring: boot/uefi_stub.c -- Minimal MiniOS UEFI stub (Phase 1)..
 
 ## Files
 
-### `tools` (42 files)
+### `tools` (43 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -103,7 +103,7 @@ This community groups 116 file(s) rooted at `tools` with dominant language c (co
 |------|----------|-------|---------|-----|
 | `progs/pokemon/fetch.sh` | sh | utility | 0 | yes |
 
-*... and 96 more files in this community.*
+*... and 97 more files in this community.*
 
 
 ## Key Symbols
@@ -147,6 +147,7 @@ This community groups 116 file(s) rooted at `tools` with dominant language c (co
 ## Connections
 
 - [INFERRED] shares_context community 0 <-> 10 (strength 0.5): Inferred shared context (language c and layer utility) with no import path between community 0 (headers: kernel) and community 10 (orphans).
+- [INFERRED] shares_context community 1 <-> 10 (strength 0.5): Inferred shared context (layer utility) with no import path between community 1 (progs/doomgeneric: d_englsh) and community 10 (orphans).
 
 ## Risks
 
@@ -185,4 +186,4 @@ This community groups 116 file(s) rooted at `tools` with dominant language c (co
 - `progs/asm/aes.s`
 - `progs/asm/cp.s`
 - `progs/asm/cvmfmt.s`
-- *... and 96 more*
+- *... and 97 more*

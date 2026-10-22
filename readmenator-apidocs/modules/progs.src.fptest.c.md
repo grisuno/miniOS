@@ -19,8 +19,10 @@ flowchart LR
     n_progs_src_fptest_c__main(["main"])
     n_progs_src_mthreads_h__mthread_create["mthreads.mthread_create"]
     n_progs_src_mthreads_h__mthread_join["mthreads.mthread_join"]
+    n_tools_update_sources_py__GitResult_ok["update_sources.GitResult.ok"]
     n_progs_src_fptest_c__main -.-> n_progs_src_mthreads_h__mthread_create
     n_progs_src_fptest_c__main -.-> n_progs_src_mthreads_h__mthread_join
+    n_progs_src_fptest_c__main -.-> n_tools_update_sources_py__GitResult_ok
 ```
 
 ## Structs
@@ -72,7 +74,7 @@ int main(void)
 
 **Returns:** `int`
 
-*Calls:* [`mthread_create`](progs.src.mthreads.h.md#mthread_create), [`mthread_join`](progs.src.mthreads.h.md#mthread_join)
+*Calls:* [`mthread_create`](progs.src.mthreads.h.md#mthread_create), [`mthread_join`](progs.src.mthreads.h.md#mthread_join), [`GitResult.ok`](tools.update_sources.py.md#gitresult-ok)
 
 ---
 
