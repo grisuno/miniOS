@@ -268,7 +268,7 @@ Returns the number of HID interfaces claimed, which is 0 on a machine with no HI
 
 ### `usbhid_poll_keyboard`
 
-`function` | [drivers/usbhid.c:483](../../drivers/usbhid.c#L483)
+`function` | [drivers/usbhid.c:485](../../drivers/usbhid.c#L485)
 
 ```c
 int usbhid_poll_keyboard(void)
@@ -290,7 +290,7 @@ One report per call; returns 1 when a report was processed.
 
 ### `usbhid_poll_mouse`
 
-`function` | [drivers/usbhid.c:491](../../drivers/usbhid.c#L491)
+`function` | [drivers/usbhid.c:493](../../drivers/usbhid.c#L493)
 
 ```c
 int usbhid_poll_mouse(void)
@@ -312,7 +312,7 @@ One report per call; returns 1 when a report was processed.
 
 ### `usbhid_poll`
 
-`function` | [drivers/usbhid.c:499](../../drivers/usbhid.c#L499)
+`function` | [drivers/usbhid.c:501](../../drivers/usbhid.c#L501)
 
 ```c
 int usbhid_poll(void)

@@ -1,7 +1,7 @@
 {
  "metadata": {
-  "generated_at": "2026-10-22T03:31:50.042189+00:00",
-  "source_tree_hash": "ecf00043e01d1567f9d0b6ca19146822688d1639d2b1b76c5f0e7206c90b1ca1",
+  "generated_at": "2026-10-23T22:14:47.719115+00:00",
+  "source_tree_hash": "c63ff4b10d2e0cef9d25ea76b82c72ab8d62aafbbd7b4ada4627bd349238405a",
   "repo_name": "miniOS",
   "depth_level": 2,
   "depth_cap": 3,
@@ -2309,7 +2309,7 @@
   },
   "tools/test_gui_freedom.py": {
    "language": "py",
-   "symbols": 28
+   "symbols": 30
   },
   "tools/test_gui_gfxview.py": {
    "language": "py",
@@ -6385,33 +6385,33 @@
    "file_path": "drivers/usbhid.c",
    "qualified_name": "drivers/usbhid.c::usbhid_poll_one",
    "start_line": 422,
-   "end_line": 482,
+   "end_line": 484,
    "type": "FUNCTION",
    "content_hash": "1cb024b37dfccc35"
   },
   "drivers/usbhid.c|drivers/usbhid.c::usbhid_poll_keyboard": {
    "file_path": "drivers/usbhid.c",
    "qualified_name": "drivers/usbhid.c::usbhid_poll_keyboard",
-   "start_line": 483,
-   "end_line": 490,
+   "start_line": 485,
+   "end_line": 492,
    "type": "FUNCTION",
-   "content_hash": "ead23b0ca0c1c80f"
+   "content_hash": "31e5e70e7c987a59"
   },
   "drivers/usbhid.c|drivers/usbhid.c::usbhid_poll_mouse": {
    "file_path": "drivers/usbhid.c",
    "qualified_name": "drivers/usbhid.c::usbhid_poll_mouse",
-   "start_line": 491,
-   "end_line": 498,
+   "start_line": 493,
+   "end_line": 500,
    "type": "FUNCTION",
-   "content_hash": "093bcf50ded1ed07"
+   "content_hash": "433a8873bc5dedd8"
   },
   "drivers/usbhid.c|drivers/usbhid.c::usbhid_poll": {
    "file_path": "drivers/usbhid.c",
    "qualified_name": "drivers/usbhid.c::usbhid_poll",
-   "start_line": 499,
-   "end_line": 501,
+   "start_line": 501,
+   "end_line": 503,
    "type": "FUNCTION",
-   "content_hash": "fc8be56aa39db72f"
+   "content_hash": "932af8579ff61a9a"
   },
   "drivers/virtio_blk.c|drivers/virtio_blk.c::VBLK_VENDOR": {
    "file_path": "drivers/virtio_blk.c",
@@ -75497,129 +75497,129 @@
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pump_mouse",
    "start_line": 224,
-   "end_line": 266,
+   "end_line": 267,
    "type": "FUNCTION",
    "content_hash": "64c766599abafcb1"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_display_wait": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_display_wait",
-   "start_line": 267,
-   "end_line": 291,
+   "start_line": 268,
+   "end_line": 292,
    "type": "FUNCTION",
-   "content_hash": "a53b2bc05bc60b52"
+   "content_hash": "370d580324e5d8b8"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_clipboard_available": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_clipboard_available",
-   "start_line": 292,
-   "end_line": 295,
+   "start_line": 293,
+   "end_line": 296,
    "type": "FUNCTION",
-   "content_hash": "bec53535780d3c36"
+   "content_hash": "b785d09be85598c1"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_clipboard_set_text": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_clipboard_set_text",
-   "start_line": 296,
-   "end_line": 302,
+   "start_line": 297,
+   "end_line": 303,
    "type": "FUNCTION",
-   "content_hash": "bedebd51e259c0bc"
+   "content_hash": "8b4e22cc9be71db5"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_clipboard_get_text": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_clipboard_get_text",
-   "start_line": 303,
-   "end_line": 318,
+   "start_line": 304,
+   "end_line": 319,
    "type": "FUNCTION",
-   "content_hash": "db4a818c0e85e504"
+   "content_hash": "34172f72725e006a"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_open": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_open",
-   "start_line": 319,
-   "end_line": 340,
+   "start_line": 320,
+   "end_line": 341,
    "type": "FUNCTION",
-   "content_hash": "c389f98a039bb729"
+   "content_hash": "912a4559ea391860"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_close": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_close",
-   "start_line": 341,
-   "end_line": 357,
+   "start_line": 342,
+   "end_line": 358,
    "type": "FUNCTION",
-   "content_hash": "97d6d015088c6d92"
+   "content_hash": "258510a7eb8441c1"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_surface": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_surface",
-   "start_line": 358,
-   "end_line": 372,
+   "start_line": 359,
+   "end_line": 373,
    "type": "FUNCTION",
-   "content_hash": "606f5c624e1a8ae5"
+   "content_hash": "f07b5c4a8a3f6cd6"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_present": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_present",
-   "start_line": 373,
-   "end_line": 406,
+   "start_line": 374,
+   "end_line": 407,
    "type": "FUNCTION",
-   "content_hash": "07eb3a7681a477a4"
+   "content_hash": "1c34d3d020205b1a"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_set_title": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_set_title",
-   "start_line": 407,
-   "end_line": 412,
+   "start_line": 408,
+   "end_line": 413,
    "type": "FUNCTION",
-   "content_hash": "30a3ac280ba050d5"
+   "content_hash": "297eb483647e784d"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::set_zoom_state": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::set_zoom_state",
-   "start_line": 413,
-   "end_line": 421,
+   "start_line": 414,
+   "end_line": 423,
    "type": "FUNCTION",
-   "content_hash": "b91e65c6eebf10af"
+   "content_hash": "efa120a52864a444"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_set_maximized": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_set_maximized",
-   "start_line": 422,
-   "end_line": 425,
+   "start_line": 424,
+   "end_line": 427,
    "type": "FUNCTION",
-   "content_hash": "7d0ab7bbabaa92fd"
+   "content_hash": "9ec5c791f8d52473"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_set_fullscreen": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_set_fullscreen",
-   "start_line": 426,
-   "end_line": 429,
+   "start_line": 428,
+   "end_line": 431,
    "type": "FUNCTION",
-   "content_hash": "54bb2c0843274c7a"
+   "content_hash": "5ca798b802a3ac8a"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_minimize": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_minimize",
-   "start_line": 430,
-   "end_line": 433,
+   "start_line": 432,
+   "end_line": 435,
    "type": "FUNCTION",
-   "content_hash": "1d14cab4a14a474d"
+   "content_hash": "33edeb6a8f151cf4"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_begin_move": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_begin_move",
-   "start_line": 434,
-   "end_line": 437,
+   "start_line": 436,
+   "end_line": 439,
    "type": "FUNCTION",
-   "content_hash": "787f4214f6c0144c"
+   "content_hash": "b200ea10669b200e"
   },
   "progs/freedomui/platform_minios.c|progs/freedomui/platform_minios.c::pf_window_begin_resize": {
    "file_path": "progs/freedomui/platform_minios.c",
    "qualified_name": "progs/freedomui/platform_minios.c::pf_window_begin_resize",
-   "start_line": 438,
-   "end_line": 441,
+   "start_line": 440,
+   "end_line": 443,
    "type": "FUNCTION",
-   "content_hash": "72d03ee9a6bc6b4f"
+   "content_hash": "5c0a858edec89815"
   },
   "progs/freedomui/ps2_keymap.c|progs/freedomui/ps2_keymap.c::PS2_PREFIX_EXTENDED": {
    "file_path": "progs/freedomui/ps2_keymap.c",
@@ -104137,225 +104137,241 @@
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::Config",
    "start_line": 45,
-   "end_line": 83,
+   "end_line": 97,
    "type": "CLASS",
    "content_hash": "cc45dbffe6c7033e"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::note": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::note",
-   "start_line": 84,
-   "end_line": 90,
+   "start_line": 98,
+   "end_line": 104,
    "type": "FUNCTION",
-   "content_hash": "a0a61ecd4e84e863"
+   "content_hash": "3146dd2b9f49a90f"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::Guest": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::Guest",
-   "start_line": 91,
-   "end_line": 93,
+   "start_line": 105,
+   "end_line": 107,
    "type": "CLASS",
-   "content_hash": "b341ecf037a9f537"
+   "content_hash": "5afc999c4bee01d7"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::__init__": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::__init__",
-   "start_line": 94,
-   "end_line": 117,
+   "start_line": 108,
+   "end_line": 131,
    "type": "FUNCTION",
-   "content_hash": "140e589304fb5b5e"
+   "content_hash": "671cafacd8219fbd"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::_connect": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::_connect",
-   "start_line": 118,
-   "end_line": 126,
+   "start_line": 132,
+   "end_line": 140,
    "type": "FUNCTION",
-   "content_hash": "5a4957d3f8823eca"
+   "content_hash": "d5db6c83d70db530"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::_serial": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::_serial",
-   "start_line": 127,
-   "end_line": 131,
+   "start_line": 141,
+   "end_line": 145,
    "type": "FUNCTION",
-   "content_hash": "2e258ed37863aa78"
+   "content_hash": "96b6956fcc191fa5"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::_reader": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::_reader",
-   "start_line": 132,
-   "end_line": 142,
+   "start_line": 146,
+   "end_line": 156,
    "type": "FUNCTION",
-   "content_hash": "fc3d76f10971d3dd"
+   "content_hash": "bd48e607ad61c46c"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::snapshot": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::snapshot",
-   "start_line": 143,
-   "end_line": 146,
+   "start_line": 157,
+   "end_line": 160,
    "type": "FUNCTION",
-   "content_hash": "e02147fe6c872a0c"
+   "content_hash": "2eee9e935dc14f30"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::wait_for": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::wait_for",
-   "start_line": 147,
-   "end_line": 155,
+   "start_line": 161,
+   "end_line": 169,
    "type": "FUNCTION",
-   "content_hash": "df9bd054cb0198f6"
+   "content_hash": "09873afb83be2ee1"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::send": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::send",
-   "start_line": 156,
-   "end_line": 166,
+   "start_line": 170,
+   "end_line": 180,
    "type": "FUNCTION",
-   "content_hash": "8b341bbaf8fcba74"
+   "content_hash": "4a48c9fc9d751ac6"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::qmp_cmd": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::qmp_cmd",
-   "start_line": 167,
-   "end_line": 173,
+   "start_line": 181,
+   "end_line": 187,
    "type": "FUNCTION",
-   "content_hash": "2b1b2df92e9f85a8"
+   "content_hash": "13029e80053a1087"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::_qmp": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::_qmp",
-   "start_line": 174,
-   "end_line": 181,
+   "start_line": 188,
+   "end_line": 195,
    "type": "FUNCTION",
-   "content_hash": "e79b95223f2691c1"
+   "content_hash": "7e6cfc1c3458e336"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::keys": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::keys",
-   "start_line": 182,
-   "end_line": 189,
+   "start_line": 196,
+   "end_line": 203,
    "type": "FUNCTION",
-   "content_hash": "5bdb8a93e76e389f"
+   "content_hash": "bf8e365ab1e49919"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::tap": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::tap",
-   "start_line": 190,
-   "end_line": 192,
+   "start_line": 204,
+   "end_line": 206,
    "type": "FUNCTION",
-   "content_hash": "d48258f4de4fd7df"
+   "content_hash": "d06cd13606420431"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::chord": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::chord",
-   "start_line": 193,
-   "end_line": 195,
+   "start_line": 207,
+   "end_line": 209,
    "type": "FUNCTION",
-   "content_hash": "b68361ac3003fc2c"
+   "content_hash": "9018a5acb92c6438"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::rel": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::rel",
-   "start_line": 196,
-   "end_line": 200,
+   "start_line": 210,
+   "end_line": 214,
    "type": "FUNCTION",
-   "content_hash": "0a34c5174f25c763"
+   "content_hash": "e37deba82fdf55dc"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::button": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::button",
-   "start_line": 201,
-   "end_line": 206,
+   "start_line": 215,
+   "end_line": 220,
    "type": "FUNCTION",
-   "content_hash": "681e75d838d44f57"
+   "content_hash": "83cf5311e1745943"
+  },
+  "tools/test_gui_freedom.py|tools/test_gui_freedom.py::wheel": {
+   "file_path": "tools/test_gui_freedom.py",
+   "qualified_name": "tools/test_gui_freedom.py::wheel",
+   "start_line": 221,
+   "end_line": 230,
+   "type": "FUNCTION",
+   "content_hash": "01ca90b1e761ebe3"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::dump": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::dump",
-   "start_line": 207,
-   "end_line": 212,
+   "start_line": 231,
+   "end_line": 236,
    "type": "FUNCTION",
-   "content_hash": "486cfe3309cc624c"
+   "content_hash": "b17c9aba82c36a1d"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::stop": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::stop",
-   "start_line": 213,
-   "end_line": 231,
+   "start_line": 237,
+   "end_line": 255,
    "type": "FUNCTION",
-   "content_hash": "4f4578a8ee7c9eda"
+   "content_hash": "b3be1a2f5ea4a975"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::region_diff": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::region_diff",
-   "start_line": 232,
-   "end_line": 239,
+   "start_line": 256,
+   "end_line": 263,
    "type": "FUNCTION",
-   "content_hash": "7736dae3368391e0"
+   "content_hash": "ba9ca56677d1ac66"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::content_origin": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::content_origin",
-   "start_line": 240,
-   "end_line": 248,
+   "start_line": 264,
+   "end_line": 272,
    "type": "FUNCTION",
-   "content_hash": "588784026bb80647"
+   "content_hash": "563fa7e59a74b337"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::changed_pixels": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::changed_pixels",
-   "start_line": 249,
-   "end_line": 258,
+   "start_line": 273,
+   "end_line": 282,
    "type": "FUNCTION",
-   "content_hash": "f498a6417d1b0379"
+   "content_hash": "0663782edb0e13ac"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::around": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::around",
-   "start_line": 259,
-   "end_line": 264,
+   "start_line": 283,
+   "end_line": 288,
    "type": "FUNCTION",
-   "content_hash": "93dae2d51c184428"
+   "content_hash": "7dd62113d0d39a5e"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::walk": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::walk",
-   "start_line": 265,
-   "end_line": 275,
+   "start_line": 289,
+   "end_line": 299,
    "type": "FUNCTION",
-   "content_hash": "9b1538db8d14f1c7"
+   "content_hash": "efcbf0fb0dd7c022"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::foreground_phase": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::foreground_phase",
-   "start_line": 276,
-   "end_line": 307,
+   "start_line": 300,
+   "end_line": 331,
    "type": "FUNCTION",
-   "content_hash": "1ee5f312b125b99a"
+   "content_hash": "0d2ee3211a0866bb"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::screen_box": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::screen_box",
-   "start_line": 308,
-   "end_line": 312,
+   "start_line": 332,
+   "end_line": 336,
    "type": "FUNCTION",
-   "content_hash": "1b2b455fd15dc903"
+   "content_hash": "a85d7313ba62f3cb"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::move_to": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::move_to",
-   "start_line": 313,
-   "end_line": 318,
+   "start_line": 337,
+   "end_line": 342,
    "type": "FUNCTION",
-   "content_hash": "ca25604c3fddf500"
+   "content_hash": "dce892820fc0bab4"
+  },
+  "tools/test_gui_freedom.py|tools/test_gui_freedom.py::fb_move": {
+   "file_path": "tools/test_gui_freedom.py",
+   "qualified_name": "tools/test_gui_freedom.py::fb_move",
+   "start_line": 343,
+   "end_line": 349,
+   "type": "FUNCTION",
+   "content_hash": "7784e929d4705010"
   },
   "tools/test_gui_freedom.py|tools/test_gui_freedom.py::main": {
    "file_path": "tools/test_gui_freedom.py",
    "qualified_name": "tools/test_gui_freedom.py::main",
-   "start_line": 319,
-   "end_line": 379,
+   "start_line": 350,
+   "end_line": 459,
    "type": "FUNCTION",
-   "content_hash": "406622d9c28b7175"
+   "content_hash": "23bf8c7dda8e3a5b"
   },
   "tools/test_gui_gfxview.py|tools/test_gui_gfxview.py::Config": {
    "file_path": "tools/test_gui_gfxview.py",
@@ -135705,6 +135721,7 @@
       "tools/test_gui_freedom.py::chord",
       "tools/test_gui_freedom.py::rel",
       "tools/test_gui_freedom.py::button",
+      "tools/test_gui_freedom.py::wheel",
       "tools/test_gui_freedom.py::dump",
       "tools/test_gui_freedom.py::stop",
       "tools/test_gui_freedom.py::region_diff",
@@ -135715,6 +135732,7 @@
       "tools/test_gui_freedom.py::foreground_phase",
       "tools/test_gui_freedom.py::screen_box",
       "tools/test_gui_freedom.py::move_to",
+      "tools/test_gui_freedom.py::fb_move",
       "tools/test_gui_freedom.py::main"
      ]
     },
@@ -137200,6 +137218,7 @@
         "tools/test_gui_freedom.py::chord",
         "tools/test_gui_freedom.py::rel",
         "tools/test_gui_freedom.py::button",
+        "tools/test_gui_freedom.py::wheel",
         "tools/test_gui_freedom.py::dump",
         "tools/test_gui_freedom.py::stop",
         "tools/test_gui_freedom.py::region_diff",
@@ -137210,6 +137229,7 @@
         "tools/test_gui_freedom.py::foreground_phase",
         "tools/test_gui_freedom.py::screen_box",
         "tools/test_gui_freedom.py::move_to",
+        "tools/test_gui_freedom.py::fb_move",
         "tools/test_gui_freedom.py::main"
        ]
       },
@@ -137316,7 +137336,7 @@
      "components": [],
      "components_relations": [],
      "layer": "testing",
-     "symbol_count": 219,
+     "symbol_count": 221,
      "top_symbols": [
       {
        "n": "note",
@@ -137331,7 +137351,7 @@
        "k": "method"
       }
      ],
-     "top_symbols_more": 114
+     "top_symbols_more": 116
     }
    ],
    "components_relations": [
@@ -139715,7 +139735,7 @@
        "target": "mcp/minios_mcp.py|mcp/minios_mcp.py::terminate",
        "call_sites": [
         {
-         "line": 220,
+         "line": 244,
          "column": 12
         }
        ],
@@ -139780,7 +139800,7 @@
     }
    ],
    "layer": "utility",
-   "symbol_count": 741,
+   "symbol_count": 743,
    "top_symbols": [
     {
      "n": "ktime_rdtsc",
@@ -139795,7 +139815,7 @@
      "k": "function"
     }
    ],
-   "top_symbols_more": 528,
+   "top_symbols_more": 530,
    "hub": false
   },
   {

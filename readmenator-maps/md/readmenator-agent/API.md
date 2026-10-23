@@ -352,9 +352,9 @@ Imported by: `tests/test_usbhid.c`
 - `usbhid_is_mouse_maxp` (function) `drivers/usbhid.c:380` `static int usbhid_is_mouse_maxp(int maxp)` -- Docstring: Endpoint packet size that distinguishes a boot keyboard (eight bytes) from a boot mouse (three or four).
 - `usbhid_init` (function) `drivers/usbhid.c:384` `int usbhid_init(void)`
 - `usbhid_poll_one` (function) `drivers/usbhid.c:422` `static int usbhid_poll_one(usbhid_dev_t *d)` -- Docstring: One interrupt-in report from a device and hand it to a decoder.
-- `usbhid_poll_keyboard` (function) `drivers/usbhid.c:483` `int usbhid_poll_keyboard(void)`
-- `usbhid_poll_mouse` (function) `drivers/usbhid.c:491` `int usbhid_poll_mouse(void)`
-- `usbhid_poll` (function) `drivers/usbhid.c:499` `int usbhid_poll(void)`
+- `usbhid_poll_keyboard` (function) `drivers/usbhid.c:485` `int usbhid_poll_keyboard(void)`
+- `usbhid_poll_mouse` (function) `drivers/usbhid.c:493` `int usbhid_poll_mouse(void)`
+- `usbhid_poll` (function) `drivers/usbhid.c:501` `int usbhid_poll(void)`
 
 ## drivers/virtio_blk.c
 Depends on: `headers/driver.h`, `headers/drivers/pci.h`, `headers/drivers/virtio_blk.h`

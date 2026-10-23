@@ -7,9 +7,9 @@ Previous: [SYMBOLS.md](SYMBOLS.md)
 | `usbhid_keyboard_present` | function | `drivers/usbhid.c:256` | `int usbhid_keyboard_present(void)` |
 | `usbhid_mouse_decode` | function | `drivers/usbhid.c:241` | `void usbhid_mouse_decode(const unsigned char prev[HID_MOUSE_REPORT_LEN],                         ...` |
 | `usbhid_mouse_present` | function | `drivers/usbhid.c:263` | `int usbhid_mouse_present(void)` |
-| `usbhid_poll` | function | `drivers/usbhid.c:499` | `int usbhid_poll(void)` |
-| `usbhid_poll_keyboard` | function | `drivers/usbhid.c:483` | `int usbhid_poll_keyboard(void)` |
-| `usbhid_poll_mouse` | function | `drivers/usbhid.c:491` | `int usbhid_poll_mouse(void)` |
+| `usbhid_poll` | function | `drivers/usbhid.c:501` | `int usbhid_poll(void)` |
+| `usbhid_poll_keyboard` | function | `drivers/usbhid.c:485` | `int usbhid_poll_keyboard(void)` |
+| `usbhid_poll_mouse` | function | `drivers/usbhid.c:493` | `int usbhid_poll_mouse(void)` |
 | `usbhid_poll_one` | function | `drivers/usbhid.c:422` | `static int usbhid_poll_one(usbhid_dev_t *d)` |
 | `usbhid_press_kbd_report` | function | `drivers/usbhid.c:274` | `int usbhid_press_kbd_report(const unsigned char report[HID_KBD_REPORT_LEN])` |
 | `usbhid_put` | function | `drivers/usbhid.c:153` | `static int usbhid_put(unsigned char *out, int max, int n, unsigned char sc)` |

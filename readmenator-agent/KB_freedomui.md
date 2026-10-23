@@ -80,22 +80,22 @@
   - `key_event` (function, line 183) `static void key_event(pf_display *d, const ps2_key *k, int kind)`
   - `pump_keyboard` (function, line 210) `static int pump_keyboard(pf_display *d)`
   - `pump_mouse` (function, line 224) `static int pump_mouse(pf_display *d)`
-  - `pf_display_wait` (function, line 267) `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
-  - `pf_clipboard_available` (function, line 292) `int pf_clipboard_available(const pf_display *d)`
-  - `pf_clipboard_set_text` (function, line 296) `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
-  - `pf_clipboard_get_text` (function, line 303) `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
-  - `pf_window_open` (function, line 319) `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
+  - `pf_display_wait` (function, line 268) `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
+  - `pf_clipboard_available` (function, line 293) `int pf_clipboard_available(const pf_display *d)`
+  - `pf_clipboard_set_text` (function, line 297) `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
+  - `pf_clipboard_get_text` (function, line 304) `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
+  - `pf_window_open` (function, line 320) `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
                          const p...`
-  - `pf_window_close` (function, line 341) `void pf_window_close(pf_window *w)`
-  - `pf_window_surface` (function, line 358) `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
-  - `pf_window_present` (function, line 373) `void pf_window_present(pf_window *w)`
-  - `pf_window_set_title` (function, line 407) `void pf_window_set_title(pf_window *w, const char *title)`
-  - `set_zoom_state` (function, line 413) `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
-  - `pf_window_set_maximized` (function, line 422) `void pf_window_set_maximized(pf_window *w, int on)`
-  - `pf_window_set_fullscreen` (function, line 426) `void pf_window_set_fullscreen(pf_window *w, int on)`
-  - `pf_window_minimize` (function, line 430) `void pf_window_minimize(pf_window *w)`
-  - `pf_window_begin_move` (function, line 434) `void pf_window_begin_move(pf_window *w)`
-  - `pf_window_begin_resize` (function, line 438) `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
+  - `pf_window_close` (function, line 342) `void pf_window_close(pf_window *w)`
+  - `pf_window_surface` (function, line 359) `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
+  - `pf_window_present` (function, line 374) `void pf_window_present(pf_window *w)`
+  - `pf_window_set_title` (function, line 408) `void pf_window_set_title(pf_window *w, const char *title)`
+  - `set_zoom_state` (function, line 414) `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
+  - `pf_window_set_maximized` (function, line 424) `void pf_window_set_maximized(pf_window *w, int on)`
+  - `pf_window_set_fullscreen` (function, line 428) `void pf_window_set_fullscreen(pf_window *w, int on)`
+  - `pf_window_minimize` (function, line 432) `void pf_window_minimize(pf_window *w)`
+  - `pf_window_begin_move` (function, line 436) `void pf_window_begin_move(pf_window *w)`
+  - `pf_window_begin_resize` (function, line 440) `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
   - `_GNU_SOURCE` (macro, line 11) `#define _GNU_SOURCE`
   - `FREEDOM_GUI_TICK_MS` (macro, line 27) `#define FREEDOM_GUI_TICK_MS`
   - `FREEDOM_GUI_KBD_DRAIN_MAX` (macro, line 29) `#define FREEDOM_GUI_KBD_DRAIN_MAX`

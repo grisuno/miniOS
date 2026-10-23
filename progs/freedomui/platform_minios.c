@@ -258,7 +258,8 @@ static int pump_mouse(pf_display *d) {
     }
     int wheel = m[FREEDOM_GUI_MOUSE_WHEEL];
     if (wheel != 0 && inside && d->top == w) {
-        if (w->h.pointer_axis) w->h.pointer_axis(w->ud, -(double)wheel);
+        /* kernel stores one up tick as -1 (PS/2 Intelli bytes, HID mirrored) */
+        if (w->h.pointer_axis) w->h.pointer_axis(w->ud, (double)wheel);
         handled = 1;
     }
     return handled;
@@ -412,7 +413,8 @@ void pf_window_set_title(pf_window *w, const char *title) {
 
 static void set_zoom_state(pf_window *w, unsigned bit, int on) {
     long arg = on ? (long)MINIOS_GFX_ZOOM_FULLSCREEN : (long)MINIOS_GFX_ZOOM_WINDOWED;
-    if (syscall(MINIOS_SYS_GFX_ZOOM, arg) != 0) return;
+    long r = syscall(MINIOS_SYS_GFX_ZOOM, arg);
+    if (r != 0) return;
     w->d->zoomed = on;
     w->states &= ~(PF_STATE_MAXIMIZED | PF_STATE_FULLSCREEN);
     if (on) w->states |= bit;

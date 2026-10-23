@@ -83,7 +83,7 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/test_call_align.py` | verify stack alignment at call sites, both parities. | tools | 4 | 0 |
 | `tools/test_codecs.sh` | exercise the lzss/lz4/aes command-pair tools inside the OS. | tools | 0 | 0 |
 | `tools/test_gui_fashion.py` | GUI proof for the cursor/flicker/quit fixes. | tools | 18 | 0 |
-| `tools/test_gui_freedom.py` | GUI proof that freedom-gui takes real input. | tools | 28 | 0 |
+| `tools/test_gui_freedom.py` | GUI proof that freedom-gui takes real input. | tools | 30 | 0 |
 | `tools/test_gui_gfxview.py` | pixel + serial proof of the graphics view contract. | tools | 7 | 0 |
 | `tools/test_gui_icon_cwd.py` | GUI proof that dock launches ignore shell cwd. | tools | 17 | 0 |
 | `tools/test_gui_menu.py` | serial proof that the minicraft pause menu works. | tools | 1 | 0 |

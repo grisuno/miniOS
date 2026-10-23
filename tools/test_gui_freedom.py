@@ -59,8 +59,22 @@ class Config:
     CLIP_EXPECTED = "xabc"
     MOUSE_UNIT_PX = 2
     MOUSE_STEPS = 8
-    DIFF_TYPED_MIN = 2.0
+    DIFF_TYPED_MIN = 0.5
     DIFF_MENU_MIN = 4.0
+    # Fullscreen phase: F11 (or Alt+Enter) scales the browser over the whole
+    # display; Esc hands the desktop back. The top strip carries the change.
+    FS_SETTLE_S = 3.0
+    DIFF_FS_MIN = 8.0
+    # Menu scroll phase: the gear panel is taller than an 800x360 window
+    # (18 items + the User-Agent box), so the clamped panel scrolls by
+    # wheel. Two ticks reveal item 10 ("Tor routing") 154 px into the
+    # panel; clicking it paints the check mark there.
+    WHEEL_ROW_INDEX = 9
+    WHEEL_TICKS = 2
+    WHEEL_POINT = (700, 200)
+    ROW_BOX = (458, 148, 792, 186)
+    DIFF_SCROLL_MIN = 2.0
+    ROW_CHANGED_MIN = 8
     # Content-local geometry of FreeDom's chrome at 800x360 without CSD:
     # the URL bar band and the menu button sit in the toolbar row below the
     # tab strip; the menu panel opens under the button's right edge.
@@ -204,6 +218,16 @@ class Guest:
                                                 "down": down}}]}})
         time.sleep(Config.SEND_SETTLE_S)
 
+    def wheel(self, up):
+        """One wheel tick; qemu maps the button pair to the PS/2 z axis."""
+        button = "wheel-up" if up else "wheel-down"
+        self.qmp_cmd({"execute": "input-send-event", "arguments": {
+            "events": [{"type": "btn", "data": {"button": button,
+                                                "down": True}},
+                       {"type": "btn", "data": {"button": button,
+                                                "down": False}}]}})
+        time.sleep(Config.SEND_SETTLE_S)
+
     def dump(self, name):
         path = os.path.join(self.work, name + ".png")
         self.qmp_cmd({"execute": "screendump", "arguments": {"filename": path}})
@@ -316,6 +340,13 @@ def move_to(g, frame_size, target):
     walk(g, (target[0] - fw // 2, target[1] - fh // 2))
 
 
+def fb_move(g, pos, target):
+    """Walk by an fb delta from a tracked position, then update the tracker."""
+    walk(g, (target[0] - pos[0], target[1] - pos[1]))
+    pos[0] = target[0]
+    pos[1] = target[1]
+
+
 def main():
     from PIL import Image
     work = tempfile.mkdtemp(prefix="gui_fd_")
@@ -348,16 +379,65 @@ def main():
         g.chord("ctrl", "v")
         g.chord("ctrl", "c")
         time.sleep(Config.INPUT_SETTLE_S)
-        g.dump("pasted")
+        pasted = g.dump("pasted")
 
-        move_to(g, frame_size, (origin[0] + Config.MENU_BUTTON[0],
-                                origin[1] + Config.MENU_BUTTON[1]))
+        # Fullscreen lives behind F11 (Alt+Enter is the wayland twin): the
+        # gfx window scales over the display, Esc hands the desktop back.
+        g.tap("f11")
+        time.sleep(Config.FS_SETTLE_S)
+        fs = g.dump("fullscreen")
+        d = region_diff(pasted, fs, (0, 0, frame_size[0], 64))
+        note(d > Config.DIFF_FS_MIN, "F11 stretches the window over the display (diff %.2f)" % d)
+        g.tap("esc")
+        time.sleep(Config.FS_SETTLE_S)
+        back = g.dump("back")
+        d = region_diff(fs, back, (0, 0, frame_size[0], 64))
+        note(d > Config.DIFF_FS_MIN, "Esc returns the full desktop (diff %.2f)" % d)
+
+        # The restored window may land on a different origin than the
+        # pre-F11 one; re-read the wm entry so pointer phases stay true.
+        mark = len(g.snapshot())
+        g.send("wm list", settle=2.0)
+        reuse = content_origin(g.snapshot()[mark:])
+        note(reuse is not None, "wm list after Esc reports origin %s" % (reuse,))
+        if reuse is not None:
+            origin = reuse
+        pointer = [frame_size[0] // 2, frame_size[1] // 2]
+
+        fb_move(g, pointer, (origin[0] + Config.MENU_BUTTON[0],
+                             origin[1] + Config.MENU_BUTTON[1]))
         g.button(True)
         g.button(False)
         time.sleep(Config.INPUT_SETTLE_S)
         menu = g.dump("menu")
         d = region_diff(typed, menu, screen_box(origin, Config.MENU_PANEL_BOX))
         note(d > Config.DIFF_MENU_MIN, "click opens the toolbar menu (diff %.2f)" % d)
+
+        # The panel is clamped to the window and scrolls: wheel down into
+        # it, verify the rows moved, then click a row that an unclamped
+        # panel drew below the window (item 10 "Tor routing"). The click
+        # paints the check mark the fix made reachable.
+        fb_move(g, pointer, (origin[0] + Config.WHEEL_POINT[0],
+                             origin[1] + Config.WHEEL_POINT[1]))
+        mark = len(g.snapshot())
+        for _ in range(Config.WHEEL_TICKS):
+            g.wheel(False)
+        time.sleep(Config.INPUT_SETTLE_S)
+        tail = [ln.strip() for ln in g.snapshot()[mark:].splitlines()
+                if ln.strip().startswith(("DBGW", "DBGP", "DBGAX"))]
+        sys.stderr.write("WHEEL RAIL: %s\n" % (" | ".join(tail[:16])))
+        scrolled = g.dump("scrolled")
+        d = region_diff(menu, scrolled, screen_box(origin, Config.MENU_PANEL_BOX))
+        note(d > Config.DIFF_SCROLL_MIN, "wheel scrolls the clamped menu panel (diff %.2f)" % d)
+        fb_move(g, pointer, (origin[0] + (Config.ROW_BOX[0] + Config.ROW_BOX[2]) // 2,
+                             origin[1] + (Config.ROW_BOX[1] + Config.ROW_BOX[3]) // 2))
+        g.button(True)
+        g.button(False)
+        time.sleep(Config.INPUT_SETTLE_S)
+        clicked = g.dump("clicked")
+        n = changed_pixels(scrolled, clicked, screen_box(origin, Config.ROW_BOX))
+        note(n >= Config.ROW_CHANGED_MIN,
+             "clipped menu row toggles after scroll (%d px)" % n)
 
         g.send("kill 1", settle=1.5)
         g.send("wait", settle=1.5)

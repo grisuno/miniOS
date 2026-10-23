@@ -20,15 +20,15 @@ These files have the most connections. Changes here have high blast radius.
 Editing these files can break the listed number of dependents. Run their tests after any change.
 
 - `kernel/string.c` -- 50 direct, 90 total dependents
-- `progs/doomgeneric/d_mode.h` -- 6 direct, 60 total dependents
+- `progs/minios_abi.h` -- 32 direct, 63 total dependents
 - `progs/doomgeneric/m_fixed.h` -- 9 direct, 59 total dependents
-- `progs/doomgeneric/d_think.h` -- 3 direct, 55 total dependents
 - `progs/doomgeneric/v_patch.h` -- 2 direct, 54 total dependents
 - `progs/doomgeneric/d_ticcmd.h` -- 6 direct, 53 total dependents
 - `progs/doomgeneric/i_video.h` -- 18 direct, 53 total dependents
-- `headers/vma.h` -- 8 direct, 52 total dependents
-- `progs/doomgeneric/doomdef.h` -- 41 direct, 52 total dependents
-- `progs/doomgeneric/net_defs.h` -- 9 direct, 52 total dependents
+- `progs/doomgeneric/sha1.h` -- 5 direct, 52 total dependents
+- `headers/vma.h` -- 8 direct, 51 total dependents
+- `progs/doomgeneric/d_items.h` -- 2 direct, 51 total dependents
+- `progs/doomgeneric/d_mode.h` -- 6 direct, 51 total dependents
 
 ## Hotspots (complexity + centrality)
 

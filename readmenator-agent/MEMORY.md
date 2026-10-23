@@ -2,7 +2,7 @@
 
 > Cross-session context for agents. Sections 1-6 are regenerated from the source tree with zero LLM tokens: declared rules are quoted verbatim with `file:line`, measured baselines come from the scan. Section 7 is written by agents and humans and is preserved across rebuilds.
 
-Generated from 589 files at commit `960686e51b0d`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
+Generated from 589 files at commit `cd87980b5eb5`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
 
 ## 1. Purpose and domain
 
@@ -73,7 +73,7 @@ Declared:
 Measured baseline:
 - c: 288 files, 7097 symbols; docstrings on 22% of symbols; functions snake_case (76%); types PascalCase (18%); median file 259 lines, max 4902.
 - h: 196 files, 4618 symbols; docstrings on 17% of symbols; functions snake_case (70%); types PascalCase (7%); median file 70 lines, max 1331.
-- py: 67 files, 817 symbols; docstrings on 40% of symbols; functions snake_case (97%); types PascalCase (99%); median file 135 lines, max 957.
+- py: 67 files, 819 symbols; docstrings on 40% of symbols; functions snake_case (97%); types PascalCase (99%); median file 135 lines, max 957.
 - sh: 17 files, 47 symbols; docstrings on 21% of symbols; functions snake_case (100%); median file 80 lines, max 2414.
 - Tests: 70 files under mcp, progs/src, tests; follow the existing naming (e.g. `test_minios_mcp.py`).
 

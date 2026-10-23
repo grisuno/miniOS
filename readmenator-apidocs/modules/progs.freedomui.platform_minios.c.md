@@ -165,7 +165,7 @@ void pf_display_set_cursor(pf_display *d, pf_cursor c)
 
 ### `pf_display_wait`
 
-`function` | [progs/freedomui/platform_minios.c:267](../../progs/freedomui/platform_minios.c#L267)
+`function` | [progs/freedomui/platform_minios.c:268](../../progs/freedomui/platform_minios.c#L268)
 
 ```c
 int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)
@@ -188,7 +188,7 @@ int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)
 
 ### `pf_clipboard_available`
 
-`function` | [progs/freedomui/platform_minios.c:292](../../progs/freedomui/platform_minios.c#L292)
+`function` | [progs/freedomui/platform_minios.c:293](../../progs/freedomui/platform_minios.c#L293)
 
 ```c
 int pf_clipboard_available(const pf_display *d)
@@ -208,7 +208,7 @@ int pf_clipboard_available(const pf_display *d)
 
 ### `pf_clipboard_set_text`
 
-`function` | [progs/freedomui/platform_minios.c:296](../../progs/freedomui/platform_minios.c#L296)
+`function` | [progs/freedomui/platform_minios.c:297](../../progs/freedomui/platform_minios.c#L297)
 
 ```c
 pf_status pf_clipboard_set_text(pf_display *d, const char *text)
@@ -229,7 +229,7 @@ pf_status pf_clipboard_set_text(pf_display *d, const char *text)
 
 ### `pf_clipboard_get_text`
 
-`function` | [progs/freedomui/platform_minios.c:303](../../progs/freedomui/platform_minios.c#L303)
+`function` | [progs/freedomui/platform_minios.c:304](../../progs/freedomui/platform_minios.c#L304)
 
 ```c
 pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)
@@ -251,7 +251,7 @@ pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)
 
 ### `pf_window_open`
 
-`function` | [progs/freedomui/platform_minios.c:319](../../progs/freedomui/platform_minios.c#L319)
+`function` | [progs/freedomui/platform_minios.c:320](../../progs/freedomui/platform_minios.c#L320)
 
 ```c
 pf_status pf_window_open(pf_display *d, const pf_window_opts *o, const pf_window_handlers *h, void *ud, pf_window **out)
@@ -275,7 +275,7 @@ pf_status pf_window_open(pf_display *d, const pf_window_opts *o, const pf_window
 
 ### `pf_window_close`
 
-`function` | [progs/freedomui/platform_minios.c:341](../../progs/freedomui/platform_minios.c#L341)
+`function` | [progs/freedomui/platform_minios.c:342](../../progs/freedomui/platform_minios.c#L342)
 
 ```c
 void pf_window_close(pf_window *w)
@@ -295,7 +295,7 @@ void pf_window_close(pf_window *w)
 
 ### `pf_window_surface`
 
-`function` | [progs/freedomui/platform_minios.c:358](../../progs/freedomui/platform_minios.c#L358)
+`function` | [progs/freedomui/platform_minios.c:359](../../progs/freedomui/platform_minios.c#L359)
 
 ```c
 cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)
@@ -317,7 +317,7 @@ cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)
 
 ### `pf_window_present`
 
-`function` | [progs/freedomui/platform_minios.c:373](../../progs/freedomui/platform_minios.c#L373)
+`function` | [progs/freedomui/platform_minios.c:374](../../progs/freedomui/platform_minios.c#L374)
 
 ```c
 void pf_window_present(pf_window *w)
@@ -337,7 +337,7 @@ void pf_window_present(pf_window *w)
 
 ### `pf_window_set_title`
 
-`function` | [progs/freedomui/platform_minios.c:407](../../progs/freedomui/platform_minios.c#L407)
+`function` | [progs/freedomui/platform_minios.c:408](../../progs/freedomui/platform_minios.c#L408)
 
 ```c
 void pf_window_set_title(pf_window *w, const char *title)
@@ -356,7 +356,7 @@ void pf_window_set_title(pf_window *w, const char *title)
 
 ### `pf_window_set_maximized`
 
-`function` | [progs/freedomui/platform_minios.c:422](../../progs/freedomui/platform_minios.c#L422)
+`function` | [progs/freedomui/platform_minios.c:424](../../progs/freedomui/platform_minios.c#L424)
 
 ```c
 void pf_window_set_maximized(pf_window *w, int on)
@@ -375,7 +375,7 @@ void pf_window_set_maximized(pf_window *w, int on)
 
 ### `pf_window_set_fullscreen`
 
-`function` | [progs/freedomui/platform_minios.c:426](../../progs/freedomui/platform_minios.c#L426)
+`function` | [progs/freedomui/platform_minios.c:428](../../progs/freedomui/platform_minios.c#L428)
 
 ```c
 void pf_window_set_fullscreen(pf_window *w, int on)
@@ -394,7 +394,7 @@ void pf_window_set_fullscreen(pf_window *w, int on)
 
 ### `pf_window_minimize`
 
-`function` | [progs/freedomui/platform_minios.c:430](../../progs/freedomui/platform_minios.c#L430)
+`function` | [progs/freedomui/platform_minios.c:432](../../progs/freedomui/platform_minios.c#L432)
 
 ```c
 void pf_window_minimize(pf_window *w)
@@ -412,7 +412,7 @@ void pf_window_minimize(pf_window *w)
 
 ### `pf_window_begin_move`
 
-`function` | [progs/freedomui/platform_minios.c:434](../../progs/freedomui/platform_minios.c#L434)
+`function` | [progs/freedomui/platform_minios.c:436](../../progs/freedomui/platform_minios.c#L436)
 
 ```c
 void pf_window_begin_move(pf_window *w)
@@ -430,7 +430,7 @@ void pf_window_begin_move(pf_window *w)
 
 ### `pf_window_begin_resize`
 
-`function` | [progs/freedomui/platform_minios.c:438](../../progs/freedomui/platform_minios.c#L438)
+`function` | [progs/freedomui/platform_minios.c:440](../../progs/freedomui/platform_minios.c#L440)
 
 ```c
 void pf_window_begin_resize(pf_window *w, pf_edge edge)

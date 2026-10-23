@@ -359,30 +359,30 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `key_event` | function | `progs/freedomui/platform_minios.c:183` | `static void key_event(pf_display *d, const ps2_key *k, int kind)` |
 | `minios_process_note` | struct | `progs/freedomui/platform_minios.c:124` | `` |
 | `now_ms` | function | `progs/freedomui/platform_minios.c:94` | `static long now_ms(void)` |
-| `pf_clipboard_available` | function | `progs/freedomui/platform_minios.c:292` | `int pf_clipboard_available(const pf_display *d)` |
-| `pf_clipboard_get_text` | function | `progs/freedomui/platform_minios.c:303` | `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)` |
-| `pf_clipboard_set_text` | function | `progs/freedomui/platform_minios.c:296` | `pf_status pf_clipboard_set_text(pf_display *d, const char *text)` |
+| `pf_clipboard_available` | function | `progs/freedomui/platform_minios.c:293` | `int pf_clipboard_available(const pf_display *d)` |
+| `pf_clipboard_get_text` | function | `progs/freedomui/platform_minios.c:304` | `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)` |
+| `pf_clipboard_set_text` | function | `progs/freedomui/platform_minios.c:297` | `pf_status pf_clipboard_set_text(pf_display *d, const char *text)` |
 | `pf_display` | struct | `progs/freedomui/platform_minios.c:68` | `` |
 | `pf_display_close` | function | `progs/freedomui/platform_minios.c:153` | `void pf_display_close(pf_display *d)` |
 | `pf_display_flush` | function | `progs/freedomui/platform_minios.c:162` | `void pf_display_flush(pf_display *d)` |
 | `pf_display_open` | function | `progs/freedomui/platform_minios.c:137` | `pf_status pf_display_open(pf_display **out)` |
 | `pf_display_set_cursor` | function | `progs/freedomui/platform_minios.c:166` | `void pf_display_set_cursor(pf_display *d, pf_cursor c)` |
-| `pf_display_wait` | function | `progs/freedomui/platform_minios.c:267` | `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)` |
+| `pf_display_wait` | function | `progs/freedomui/platform_minios.c:268` | `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)` |
 | `pf_window` | struct | `progs/freedomui/platform_minios.c:56` | `` |
-| `pf_window_begin_move` | function | `progs/freedomui/platform_minios.c:434` | `void pf_window_begin_move(pf_window *w)` |
-| `pf_window_begin_resize` | function | `progs/freedomui/platform_minios.c:438` | `void pf_window_begin_resize(pf_window *w, pf_edge edge)` |
-| `pf_window_close` | function | `progs/freedomui/platform_minios.c:341` | `void pf_window_close(pf_window *w)` |
-| `pf_window_minimize` | function | `progs/freedomui/platform_minios.c:430` | `void pf_window_minimize(pf_window *w)` |
-| `pf_window_open` | function | `progs/freedomui/platform_minios.c:319` | `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,                          const p...` |
-| `pf_window_present` | function | `progs/freedomui/platform_minios.c:373` | `void pf_window_present(pf_window *w)` |
-| `pf_window_set_fullscreen` | function | `progs/freedomui/platform_minios.c:426` | `void pf_window_set_fullscreen(pf_window *w, int on)` |
-| `pf_window_set_maximized` | function | `progs/freedomui/platform_minios.c:422` | `void pf_window_set_maximized(pf_window *w, int on)` |
-| `pf_window_set_title` | function | `progs/freedomui/platform_minios.c:407` | `void pf_window_set_title(pf_window *w, const char *title)` |
-| `pf_window_surface` | function | `progs/freedomui/platform_minios.c:358` | `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)` |
+| `pf_window_begin_move` | function | `progs/freedomui/platform_minios.c:436` | `void pf_window_begin_move(pf_window *w)` |
+| `pf_window_begin_resize` | function | `progs/freedomui/platform_minios.c:440` | `void pf_window_begin_resize(pf_window *w, pf_edge edge)` |
+| `pf_window_close` | function | `progs/freedomui/platform_minios.c:342` | `void pf_window_close(pf_window *w)` |
+| `pf_window_minimize` | function | `progs/freedomui/platform_minios.c:432` | `void pf_window_minimize(pf_window *w)` |
+| `pf_window_open` | function | `progs/freedomui/platform_minios.c:320` | `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,                          const p...` |
+| `pf_window_present` | function | `progs/freedomui/platform_minios.c:374` | `void pf_window_present(pf_window *w)` |
+| `pf_window_set_fullscreen` | function | `progs/freedomui/platform_minios.c:428` | `void pf_window_set_fullscreen(pf_window *w, int on)` |
+| `pf_window_set_maximized` | function | `progs/freedomui/platform_minios.c:424` | `void pf_window_set_maximized(pf_window *w, int on)` |
+| `pf_window_set_title` | function | `progs/freedomui/platform_minios.c:408` | `void pf_window_set_title(pf_window *w, const char *title)` |
+| `pf_window_surface` | function | `progs/freedomui/platform_minios.c:359` | `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)` |
 | `pump_keyboard` | function | `progs/freedomui/platform_minios.c:210` | `static int pump_keyboard(pf_display *d)` |
 | `pump_mouse` | function | `progs/freedomui/platform_minios.c:224` | `static int pump_mouse(pf_display *d)` |
 | `set_title` | function | `progs/freedomui/platform_minios.c:98` | `static void set_title(const char *title)` |
-| `set_zoom_state` | function | `progs/freedomui/platform_minios.c:413` | `static void set_zoom_state(pf_window *w, unsigned bit, int on)` |
+| `set_zoom_state` | function | `progs/freedomui/platform_minios.c:414` | `static void set_zoom_state(pf_window *w, unsigned bit, int on)` |
 | `sys_fb_info_rgb` | function | `progs/freedomui/platform_minios.c:83` | `static long sys_fb_info_rgb(int *rgb)` |
 | `ASCII_BS` | macro | `progs/freedomui/ps2_keymap.c:84` | `#define ASCII_BS` |
 | `ASCII_CR` | macro | `progs/freedomui/ps2_keymap.c:86` | `#define ASCII_CR` |

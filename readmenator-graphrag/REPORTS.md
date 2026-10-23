@@ -1,6 +1,6 @@
 # GraphRAG Community Reports
 
-Entities: 13791 | Relationships: 25621 | Communities: 11 | Themes: 4 | Text units: 13542
+Entities: 13793 | Relationships: 25628 | Communities: 11 | Themes: 4 | Text units: 13544
 
 Query with `readmenator . ask "<question>"` (local: BM25 + Personalized PageRank; global: map-reduce over these reports) or the MCP tool `readmenator.graphrag`.
 

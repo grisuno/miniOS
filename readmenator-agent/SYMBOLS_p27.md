@@ -25,33 +25,35 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `wait_for` | method | `tools/test_gui_fashion.py:110` | `def wait_for(self, marker, timeout)` |
 | `wait_prompt` | method | `tools/test_gui_fashion.py:102` | `def wait_prompt(self, timeout)` |
 | `Config` | class | `tools/test_gui_freedom.py:45` | `class Config` |
-| `Guest` | class | `tools/test_gui_freedom.py:91` | `class Guest` |
-| `__init__` | method | `tools/test_gui_freedom.py:94` | `def __init__(self, work)` |
-| `_connect` | method | `tools/test_gui_freedom.py:118` | `def _connect(self, path)` |
-| `_qmp` | method | `tools/test_gui_freedom.py:174` | `def _qmp(self, obj)` |
-| `_reader` | method | `tools/test_gui_freedom.py:132` | `def _reader(self)` |
-| `_serial` | method | `tools/test_gui_freedom.py:127` | `def _serial(self)` |
-| `around` | function | `tools/test_gui_freedom.py:259` | `def around(point)` |
-| `button` | method | `tools/test_gui_freedom.py:201` | `def button(self, down)` |
-| `changed_pixels` | function | `tools/test_gui_freedom.py:249` | `def changed_pixels(a_path, b_path, box)` |
-| `chord` | method | `tools/test_gui_freedom.py:193` | `def chord(self, mod, qcode)` |
-| `content_origin` | function | `tools/test_gui_freedom.py:240` | `def content_origin(listing)` |
-| `dump` | method | `tools/test_gui_freedom.py:207` | `def dump(self, name)` |
-| `foreground_phase` | function | `tools/test_gui_freedom.py:276` | `def foreground_phase(g)` |
-| `keys` | method | `tools/test_gui_freedom.py:182` | `def keys(self, events)` |
-| `main` | function | `tools/test_gui_freedom.py:319` | `def main()` |
-| `move_to` | function | `tools/test_gui_freedom.py:313` | `def move_to(g, frame_size, target)` |
-| `note` | function | `tools/test_gui_freedom.py:84` | `def note(ok, msg)` |
-| `qmp_cmd` | method | `tools/test_gui_freedom.py:167` | `def qmp_cmd(self, obj)` |
-| `region_diff` | function | `tools/test_gui_freedom.py:232` | `def region_diff(a_path, b_path, box)` |
-| `rel` | method | `tools/test_gui_freedom.py:196` | `def rel(self, dx, dy)` |
-| `screen_box` | function | `tools/test_gui_freedom.py:308` | `def screen_box(origin, box)` |
-| `send` | method | `tools/test_gui_freedom.py:156` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/test_gui_freedom.py:143` | `def snapshot(self)` |
-| `stop` | method | `tools/test_gui_freedom.py:213` | `def stop(self)` |
-| `tap` | method | `tools/test_gui_freedom.py:190` | `def tap(self, qcode)` |
-| `wait_for` | method | `tools/test_gui_freedom.py:147` | `def wait_for(self, text, timeout, since)` |
-| `walk` | function | `tools/test_gui_freedom.py:265` | `def walk(g, delta)` |
+| `Guest` | class | `tools/test_gui_freedom.py:105` | `class Guest` |
+| `__init__` | method | `tools/test_gui_freedom.py:108` | `def __init__(self, work)` |
+| `_connect` | method | `tools/test_gui_freedom.py:132` | `def _connect(self, path)` |
+| `_qmp` | method | `tools/test_gui_freedom.py:188` | `def _qmp(self, obj)` |
+| `_reader` | method | `tools/test_gui_freedom.py:146` | `def _reader(self)` |
+| `_serial` | method | `tools/test_gui_freedom.py:141` | `def _serial(self)` |
+| `around` | function | `tools/test_gui_freedom.py:283` | `def around(point)` |
+| `button` | method | `tools/test_gui_freedom.py:215` | `def button(self, down)` |
+| `changed_pixels` | function | `tools/test_gui_freedom.py:273` | `def changed_pixels(a_path, b_path, box)` |
+| `chord` | method | `tools/test_gui_freedom.py:207` | `def chord(self, mod, qcode)` |
+| `content_origin` | function | `tools/test_gui_freedom.py:264` | `def content_origin(listing)` |
+| `dump` | method | `tools/test_gui_freedom.py:231` | `def dump(self, name)` |
+| `fb_move` | function | `tools/test_gui_freedom.py:343` | `def fb_move(g, pos, target)` |
+| `foreground_phase` | function | `tools/test_gui_freedom.py:300` | `def foreground_phase(g)` |
+| `keys` | method | `tools/test_gui_freedom.py:196` | `def keys(self, events)` |
+| `main` | function | `tools/test_gui_freedom.py:350` | `def main()` |
+| `move_to` | function | `tools/test_gui_freedom.py:337` | `def move_to(g, frame_size, target)` |
+| `note` | function | `tools/test_gui_freedom.py:98` | `def note(ok, msg)` |
+| `qmp_cmd` | method | `tools/test_gui_freedom.py:181` | `def qmp_cmd(self, obj)` |
+| `region_diff` | function | `tools/test_gui_freedom.py:256` | `def region_diff(a_path, b_path, box)` |
+| `rel` | method | `tools/test_gui_freedom.py:210` | `def rel(self, dx, dy)` |
+| `screen_box` | function | `tools/test_gui_freedom.py:332` | `def screen_box(origin, box)` |
+| `send` | method | `tools/test_gui_freedom.py:170` | `def send(self, line, settle)` |
+| `snapshot` | method | `tools/test_gui_freedom.py:157` | `def snapshot(self)` |
+| `stop` | method | `tools/test_gui_freedom.py:237` | `def stop(self)` |
+| `tap` | method | `tools/test_gui_freedom.py:204` | `def tap(self, qcode)` |
+| `wait_for` | method | `tools/test_gui_freedom.py:161` | `def wait_for(self, text, timeout, since)` |
+| `walk` | function | `tools/test_gui_freedom.py:289` | `def walk(g, delta)` |
+| `wheel` | method | `tools/test_gui_freedom.py:221` | `def wheel(self, up)` |
 | `Config` | class | `tools/test_gui_gfxview.py:39` | `class Config` |
 | `dark_share` | function | `tools/test_gui_gfxview.py:84` | `def dark_share(img, box)` |
 | `gfx_row` | function | `tools/test_gui_gfxview.py:72` | `def gfx_row(g)` |

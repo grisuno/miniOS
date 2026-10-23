@@ -198,22 +198,22 @@ Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`, `progs/minios_abi
 - `key_event` (function) `progs/freedomui/platform_minios.c:183` `static void key_event(pf_display *d, const ps2_key *k, int kind)`
 - `pump_keyboard` (function) `progs/freedomui/platform_minios.c:210` `static int pump_keyboard(pf_display *d)`
 - `pump_mouse` (function) `progs/freedomui/platform_minios.c:224` `static int pump_mouse(pf_display *d)`
-- `pf_display_wait` (function) `progs/freedomui/platform_minios.c:267` `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
-- `pf_clipboard_available` (function) `progs/freedomui/platform_minios.c:292` `int pf_clipboard_available(const pf_display *d)`
-- `pf_clipboard_set_text` (function) `progs/freedomui/platform_minios.c:296` `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
-- `pf_clipboard_get_text` (function) `progs/freedomui/platform_minios.c:303` `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
-- `pf_window_open` (function) `progs/freedomui/platform_minios.c:319` `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
+- `pf_display_wait` (function) `progs/freedomui/platform_minios.c:268` `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)`
+- `pf_clipboard_available` (function) `progs/freedomui/platform_minios.c:293` `int pf_clipboard_available(const pf_display *d)`
+- `pf_clipboard_set_text` (function) `progs/freedomui/platform_minios.c:297` `pf_status pf_clipboard_set_text(pf_display *d, const char *text)`
+- `pf_clipboard_get_text` (function) `progs/freedomui/platform_minios.c:304` `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)`
+- `pf_window_open` (function) `progs/freedomui/platform_minios.c:320` `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,
                          const p...`
-- `pf_window_close` (function) `progs/freedomui/platform_minios.c:341` `void pf_window_close(pf_window *w)`
-- `pf_window_surface` (function) `progs/freedomui/platform_minios.c:358` `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
-- `pf_window_present` (function) `progs/freedomui/platform_minios.c:373` `void pf_window_present(pf_window *w)`
-- `pf_window_set_title` (function) `progs/freedomui/platform_minios.c:407` `void pf_window_set_title(pf_window *w, const char *title)`
-- `set_zoom_state` (function) `progs/freedomui/platform_minios.c:413` `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
-- `pf_window_set_maximized` (function) `progs/freedomui/platform_minios.c:422` `void pf_window_set_maximized(pf_window *w, int on)`
-- `pf_window_set_fullscreen` (function) `progs/freedomui/platform_minios.c:426` `void pf_window_set_fullscreen(pf_window *w, int on)`
-- `pf_window_minimize` (function) `progs/freedomui/platform_minios.c:430` `void pf_window_minimize(pf_window *w)`
-- `pf_window_begin_move` (function) `progs/freedomui/platform_minios.c:434` `void pf_window_begin_move(pf_window *w)`
-- `pf_window_begin_resize` (function) `progs/freedomui/platform_minios.c:438` `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
+- `pf_window_close` (function) `progs/freedomui/platform_minios.c:342` `void pf_window_close(pf_window *w)`
+- `pf_window_surface` (function) `progs/freedomui/platform_minios.c:359` `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)`
+- `pf_window_present` (function) `progs/freedomui/platform_minios.c:374` `void pf_window_present(pf_window *w)`
+- `pf_window_set_title` (function) `progs/freedomui/platform_minios.c:408` `void pf_window_set_title(pf_window *w, const char *title)`
+- `set_zoom_state` (function) `progs/freedomui/platform_minios.c:414` `static void set_zoom_state(pf_window *w, unsigned bit, int on)`
+- `pf_window_set_maximized` (function) `progs/freedomui/platform_minios.c:424` `void pf_window_set_maximized(pf_window *w, int on)`
+- `pf_window_set_fullscreen` (function) `progs/freedomui/platform_minios.c:428` `void pf_window_set_fullscreen(pf_window *w, int on)`
+- `pf_window_minimize` (function) `progs/freedomui/platform_minios.c:432` `void pf_window_minimize(pf_window *w)`
+- `pf_window_begin_move` (function) `progs/freedomui/platform_minios.c:436` `void pf_window_begin_move(pf_window *w)`
+- `pf_window_begin_resize` (function) `progs/freedomui/platform_minios.c:440` `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
 
 ## progs/freedomui/ps2_keymap.c
 Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`

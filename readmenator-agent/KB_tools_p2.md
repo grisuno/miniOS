@@ -172,33 +172,35 @@ Previous: [KB_tools.md](KB_tools.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 45) `class Config`
-  - `note` (function, line 84) `def note(ok, msg)`
-  - `Guest` (class, line 91) `class Guest`
-  - `region_diff` (function, line 232) `def region_diff(a_path, b_path, box)`
-  - `content_origin` (function, line 240) `def content_origin(listing)`
-  - `changed_pixels` (function, line 249) `def changed_pixels(a_path, b_path, box)`
-  - `around` (function, line 259) `def around(point)`
-  - `walk` (function, line 265) `def walk(g, delta)`
-  - `foreground_phase` (function, line 276) `def foreground_phase(g)`
-  - `screen_box` (function, line 308) `def screen_box(origin, box)`
-  - `move_to` (function, line 313) `def move_to(g, frame_size, target)`
-  - `main` (function, line 319) `def main()`
-  - `__init__` (method, line 94) `def __init__(self, work)`
-  - `_connect` (method, line 118) `def _connect(self, path)`
-  - `_serial` (method, line 127) `def _serial(self)`
-  - `_reader` (method, line 132) `def _reader(self)`
-  - `snapshot` (method, line 143) `def snapshot(self)`
-  - `wait_for` (method, line 147) `def wait_for(self, text, timeout, since)`
-  - `send` (method, line 156) `def send(self, line, settle)`
-  - `qmp_cmd` (method, line 167) `def qmp_cmd(self, obj)`
-  - `_qmp` (method, line 174) `def _qmp(self, obj)`
-  - `keys` (method, line 182) `def keys(self, events)`
-  - `tap` (method, line 190) `def tap(self, qcode)`
-  - `chord` (method, line 193) `def chord(self, mod, qcode)`
-  - `rel` (method, line 196) `def rel(self, dx, dy)`
-  - `button` (method, line 201) `def button(self, down)`
-  - `dump` (method, line 207) `def dump(self, name)`
-  - `stop` (method, line 213) `def stop(self)`
+  - `note` (function, line 98) `def note(ok, msg)`
+  - `Guest` (class, line 105) `class Guest`
+  - `region_diff` (function, line 256) `def region_diff(a_path, b_path, box)`
+  - `content_origin` (function, line 264) `def content_origin(listing)`
+  - `changed_pixels` (function, line 273) `def changed_pixels(a_path, b_path, box)`
+  - `around` (function, line 283) `def around(point)`
+  - `walk` (function, line 289) `def walk(g, delta)`
+  - `foreground_phase` (function, line 300) `def foreground_phase(g)`
+  - `screen_box` (function, line 332) `def screen_box(origin, box)`
+  - `move_to` (function, line 337) `def move_to(g, frame_size, target)`
+  - `fb_move` (function, line 343) `def fb_move(g, pos, target)`
+  - `main` (function, line 350) `def main()`
+  - `__init__` (method, line 108) `def __init__(self, work)`
+  - `_connect` (method, line 132) `def _connect(self, path)`
+  - `_serial` (method, line 141) `def _serial(self)`
+  - `_reader` (method, line 146) `def _reader(self)`
+  - `snapshot` (method, line 157) `def snapshot(self)`
+  - `wait_for` (method, line 161) `def wait_for(self, text, timeout, since)`
+  - `send` (method, line 170) `def send(self, line, settle)`
+  - `qmp_cmd` (method, line 181) `def qmp_cmd(self, obj)`
+  - `_qmp` (method, line 188) `def _qmp(self, obj)`
+  - `keys` (method, line 196) `def keys(self, events)`
+  - `tap` (method, line 204) `def tap(self, qcode)`
+  - `chord` (method, line 207) `def chord(self, mod, qcode)`
+  - `rel` (method, line 210) `def rel(self, dx, dy)`
+  - `button` (method, line 215) `def button(self, down)`
+  - `wheel` (method, line 221) `def wheel(self, up)`
+  - `dump` (method, line 231) `def dump(self, name)`
+  - `stop` (method, line 237) `def stop(self)`
 - Depends on: `kernel/time.c`
 
 ## tools/test_gui_gfxview.py

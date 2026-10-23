@@ -446,12 +446,14 @@ static int usbhid_poll_one(usbhid_dev_t *d) {
         int buttons;
         int wheel;
         usbhid_mouse_decode(d->prev, report, &dx, &dy, &buttons, &wheel);
-        if (dx || dy || buttons) {
+        if (dx || dy || buttons || wheel) {
             irqflags_t flags = spin_save_irq();
             mouse_state.x += dx * HAL_MOUSE_SCALE;
             mouse_state.y -= dy * HAL_MOUSE_SCALE;
             mouse_state.buttons = buttons;
-            mouse_state.wheel += wheel;
+            /* Wheel one convention across input paths: PS/2 Intelli stores
+             * one up tick as -1, so the HID +1-up nibble mirrors into it. */
+            mouse_state.wheel -= wheel;
             mouse_state.present = 1;
             spin_restore_irq(flags);
         }

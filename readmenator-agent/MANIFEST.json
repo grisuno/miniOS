@@ -1,17 +1,17 @@
 {
   "tool": "readmenator",
   "schema_version": 2,
-  "generated_at": "2026-10-22T03:29:15Z",
+  "generated_at": "2026-10-23T22:12:18Z",
   "project_root": ".",
   "project_name": "miniOS",
-  "git_commit": "960686e51b0dabd1107987ef97e32ce8eff69bd4",
+  "git_commit": "cd87980b5eb52ce2b57a7241736d1c9a23fca789",
   "git_branch": "main",
-  "source_fingerprint": "ecf00043e01d1567f9d0b6ca19146822688d1639d2b1b76c5f0e7206c90b1ca1",
+  "source_fingerprint": "c63ff4b10d2e0cef9d25ea76b82c72ab8d62aafbbd7b4ada4627bd349238405a",
   "freshness_check": "readmenator . fresh  # exit 0 = docs match sources, exit 1 = run: readmenator . --rebuild",
   "files": 589,
-  "symbols": 13025,
+  "symbols": 13027,
   "imports": 2248,
-  "calls": 5963,
+  "calls": 6007,
   "inherits": 27,
   "resolved_imports": 1394,
   "security_findings": 0,
@@ -209,7 +209,7 @@
     {
       "path": "GOTCHAS.md",
       "lines": 69,
-      "approx_tokens": 1004
+      "approx_tokens": 1001
     },
     {
       "path": "INDEX.md",
@@ -493,8 +493,8 @@
     },
     {
       "path": "KB_tools_p2.md",
-      "lines": 434,
-      "approx_tokens": 4844
+      "lines": 436,
+      "approx_tokens": 4874
     },
     {
       "path": "KB_wl.md",
@@ -508,8 +508,8 @@
     },
     {
       "path": "MEMORY.md",
-      "lines": 104,
-      "approx_tokens": 1799
+      "lines": 105,
+      "approx_tokens": 1822
     },
     {
       "path": "SECURITY.md",
@@ -613,8 +613,8 @@
     },
     {
       "path": "SYMBOLS_p27.md",
-      "lines": 213,
-      "approx_tokens": 4485
+      "lines": 215,
+      "approx_tokens": 4528
     },
     {
       "path": "SYMBOLS_p3.md",

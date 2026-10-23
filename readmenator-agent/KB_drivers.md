@@ -452,9 +452,9 @@ Pages: [KB_drivers.md](KB_drivers.md), [KB_drivers_p2.md](KB_drivers_p2.md)
   - `usbhid_is_mouse_maxp` (function, line 380) `static int usbhid_is_mouse_maxp(int maxp)`
   - `usbhid_init` (function, line 384) `int usbhid_init(void)`
   - `usbhid_poll_one` (function, line 422) `static int usbhid_poll_one(usbhid_dev_t *d)`
-  - `usbhid_poll_keyboard` (function, line 483) `int usbhid_poll_keyboard(void)`
-  - `usbhid_poll_mouse` (function, line 491) `int usbhid_poll_mouse(void)`
-  - `usbhid_poll` (function, line 499) `int usbhid_poll(void)`
+  - `usbhid_poll_keyboard` (function, line 485) `int usbhid_poll_keyboard(void)`
+  - `usbhid_poll_mouse` (function, line 493) `int usbhid_poll_mouse(void)`
+  - `usbhid_poll` (function, line 501) `int usbhid_poll(void)`
   - `USBHID_MAX_DEVS` (macro, line 35) `#define USBHID_MAX_DEVS`
   - `USBHID_INTERVAL` (macro, line 55) `#define USBHID_INTERVAL`
   - `USBHID_MAX_SCANCODES` (macro, line 204) `#define USBHID_MAX_SCANCODES`
