@@ -1,6 +1,6 @@
 # tools: tls_crypto
 
-tools: tls_crypto groups 43 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
+tools: tls_crypto groups 44 files (c, h, py) around ktime_rdtsc, ktime_init, ktime_ms, ktime_us, KTIME_H. pure time-conversion helpers shared by the kernel clock
 
 ```mermaid
 graph LR
@@ -60,7 +60,7 @@ tests groups 1 files (c) around CHECK, main. host test for the pure conversion m
 
 ## tools (5.8)
 
-tools groups 18 files (py) around note, Guest, __init__, _ser, _reader. boot the miniOS Wayland-mini desktop in one step.
+tools groups 19 files (py) around note, Guest, __init__, _ser, _reader. boot the miniOS Wayland-mini desktop in one step.
 
 **Files**:
 
@@ -106,4 +106,5 @@ tools groups 18 files (py) around note, Guest, __init__, _ser, _reader. boot the
 - tools/test_gui_wm.py
 - tools/test_gui_zoom.py
 - tools/test_http_server.py
+- tools/test_readme_shot.py
 - tools/tls_test.py

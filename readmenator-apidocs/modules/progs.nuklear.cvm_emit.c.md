@@ -18,7 +18,9 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_progs_nuklear_cvm_emit_c__cvm_compile(["cvm_compile"])
     n_progs_nuklear_cvm_emit_c__w32(["w32"])
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_nuklear_cvm_emit_c__cvm_compile --> n_progs_nuklear_cvm_emit_c__w32
+    n_progs_nuklear_cvm_emit_c__cvm_compile -.-> n_kernel_string_c__memcpy
 ```
 
 ## Structs
@@ -101,7 +103,7 @@ int cvm_compile(const struct cvm_node *nodes, int n, unsigned char **out, size_t
 
 **Returns:** `int`
 
-*Calls:* [`w32`](#w32)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`w32`](#w32)
 
 ---
 

@@ -1,6 +1,41 @@
 # Subsystem: kernel (page 3 of 4)
 Previous: [KB_kernel_p2.md](KB_kernel_p2.md)
 
+## kernel/sync.c
+- Doc: Blocking synchronization primitives (roadmap Phase 3.1).
+- Layer: utility
+- Language: c
+- Symbols:
+  - `wq_init` (function, line 29) `void wq_init(wait_queue_t *q)`
+  - `sleep_on` (function, line 35) `void sleep_on(wait_queue_t *q)`
+  - `wake_up` (function, line 56) `int wake_up(wait_queue_t *q)`
+  - `wake_up_all` (function, line 72) `int wake_up_all(wait_queue_t *q)`
+  - `mutex_init` (function, line 78) `void mutex_init(mutex_t *m)`
+  - `pi_valid` (function, line 95) `static int pi_valid(int pid)`
+  - `pi_set_base` (function, line 101) `void pi_set_base(int pid, int prio)`
+  - `pi_get_eff` (function, line 110) `int pi_get_eff(int pid)`
+  - `pi_recompute` (function, line 115) `static void pi_recompute(int pid)`
+  - `pi_boost` (function, line 126) `static void pi_boost(int waiter, int owner)`
+  - `mutex_lock` (function, line 152) `void mutex_lock(mutex_t *m)`
+  - `mutex_trylock` (function, line 172) `int mutex_trylock(mutex_t *m)`
+  - `mutex_unlock` (function, line 188) `void mutex_unlock(mutex_t *m)`
+  - `sem_init` (function, line 209) `void sem_init(sem_t *s, int value)`
+  - `sem_wait` (function, line 215) `void sem_wait(sem_t *s)`
+  - `sem_post` (function, line 229) `void sem_post(sem_t *s)`
+  - `cond_init` (function, line 237) `void cond_init(cond_t *c)`
+  - `cond_wait` (function, line 241) `void cond_wait(cond_t *c, mutex_t *m)`
+  - `cond_signal` (function, line 247) `void cond_signal(cond_t *c)`
+  - `cond_broadcast` (function, line 251) `void cond_broadcast(cond_t *c)`
+  - `rwlock_init` (function, line 255) `void rwlock_init(rwlock_t *rw)`
+  - `rwlock_read_trylock` (function, line 263) `int rwlock_read_trylock(rwlock_t *rw)`
+  - `rwlock_write_trylock` (function, line 277) `int rwlock_write_trylock(rwlock_t *rw)`
+  - `rwlock_read_lock` (function, line 289) `void rwlock_read_lock(rwlock_t *rw)`
+  - `rwlock_read_unlock` (function, line 296) `void rwlock_read_unlock(rwlock_t *rw)`
+  - `rwlock_write_lock` (function, line 306) `void rwlock_write_lock(rwlock_t *rw)`
+  - `rwlock_write_unlock` (function, line 328) `void rwlock_write_unlock(rwlock_t *rw)`
+  - `t_cur_pid` (variable, line 26) `extern int t_cur_pid;`
+- Depends on: `headers/sync.h`
+
 ## kernel/syscalls.c
 - Doc: Linux x86-64 syscall dispatcher and SYS_SPAWN.
 - Layer: utility
@@ -349,7 +384,7 @@ long sys_linux_wait4(long a...`
   - `ktime_ms` (function, line 33) `unsigned long ktime_ms(void)`
   - `ktime_us` (function, line 41) `unsigned long ktime_us(void)`
 - Depends on: `headers/ktime.h`
-- Imported by: `headers/tls_port.h`, `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/src/lxabi.c`, `progs/src/lxsel.c`, `progs/src/test_py.py`, `progs/tls_u/tls_u_port.c`, `tests/test_vma_bench.c`, `tools/boot_wl.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/minios_hyper.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_freedom.py`, `tools/test_gui_gfxview.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_menu.py`, `tools/test_gui_wm.py`, `tools/test_gui_zoom.py`, `tools/test_http_server.py`, `tools/tls_test.py`
+- Imported by: `headers/tls_port.h`, `mcp/mcp_dbg_driver.py`, `mcp/mcp_dogfood.py`, `mcp/minios_addons.py`, `mcp/minios_mcp.py`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/src/lxabi.c`, `progs/src/lxsel.c`, `progs/src/test_py.py`, `progs/tls_u/tls_u_port.c`, `tests/test_vma_bench.c`, `tools/boot_wl.py`, `tools/gdb_repro.py`, `tools/minios_cli.py`, `tools/minios_gui.py`, `tools/minios_hyper.py`, `tools/probe_compute_vga.py`, `tools/probe_minicraft.py`, `tools/qga_client.py`, `tools/repro_gui.py`, `tools/test_gui_fashion.py`, `tools/test_gui_freedom.py`, `tools/test_gui_gfxview.py`, `tools/test_gui_icon_cwd.py`, `tools/test_gui_menu.py`, `tools/test_gui_wm.py`, `tools/test_gui_zoom.py`, `tools/test_http_server.py`, `tools/test_readme_shot.py`, `tools/tls_test.py`
 
 ## kernel/vga_cursor.c
 - Doc: Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c).

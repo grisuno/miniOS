@@ -29,6 +29,8 @@ flowchart LR
     n_progs_doomgeneric_m_misc_c__M_snprintf(["M_snprintf"])
     n_progs_doomgeneric_i_system_h__I_Error["i_system.I_Error"]
     n_progs_doomgeneric_z_zone_h__Z_Malloc["z_zone.Z_Malloc"]
+    n_progs_doomgeneric_m_misc_c__M_ExtractFileBase(["M_ExtractFileBase"])
+    n_kernel_string_c__memset["string.memset"]
     n_progs_doomgeneric_m_misc_c__M_StrCaseStr(["M_StrCaseStr"])
     n_progs_doomgeneric_doomtype_h__strncasecmp["doomtype.strncasecmp"]
     n_progs_doomgeneric_m_misc_c__M_StringDuplicate(["M_StringDuplicate"])
@@ -43,6 +45,7 @@ flowchart LR
     n_progs_doomgeneric_m_misc_c__M_snprintf --> n_progs_doomgeneric_m_misc_c__M_vsnprintf
     n_progs_doomgeneric_m_misc_c__M_ReadFile -.-> n_progs_doomgeneric_i_system_h__I_Error
     n_progs_doomgeneric_m_misc_c__M_ReadFile -.-> n_progs_doomgeneric_z_zone_h__Z_Malloc
+    n_progs_doomgeneric_m_misc_c__M_ExtractFileBase -.-> n_kernel_string_c__memset
     n_progs_doomgeneric_m_misc_c__M_StrCaseStr -.-> n_progs_doomgeneric_doomtype_h__strncasecmp
     n_progs_doomgeneric_m_misc_c__M_StringDuplicate -.-> n_progs_doomgeneric_i_system_h__I_Error
     n_progs_doomgeneric_m_misc_c__M_StringReplace -.-> n_progs_doomgeneric_i_system_h__I_Error
@@ -222,6 +225,8 @@ void M_ExtractFileBase(char *path, char *dest)
 |---|---|---|---|
 | `path` | `char *` |  |  |
 | `dest` | `char *` |  |  |
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 ---
 

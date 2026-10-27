@@ -19,8 +19,11 @@ flowchart LR
     n_progs_doomgeneric_doomgeneric_soso_c__DG_Init(["DG_Init"])
     n_progs_doomgeneric_doomgeneric_soso_c__enableRawMode(["enableRawMode"])
     n_progs_doomgeneric_m_argv_h__M_CheckParmWithArgs["m_argv.M_CheckParmWithArgs"]
+    n_progs_doomgeneric_doomgeneric_soso_c__DG_DrawFrame(["DG_DrawFrame"])
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_doomgeneric_doomgeneric_soso_c__DG_Init --> n_progs_doomgeneric_doomgeneric_soso_c__enableRawMode
     n_progs_doomgeneric_doomgeneric_soso_c__DG_Init -.-> n_progs_doomgeneric_m_argv_h__M_CheckParmWithArgs
+    n_progs_doomgeneric_doomgeneric_soso_c__DG_DrawFrame -.-> n_kernel_string_c__memcpy
 ```
 
 ## Enums
@@ -88,6 +91,8 @@ void DG_Init()
 ```c
 void DG_DrawFrame()
 ```
+
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
 
 ---
 

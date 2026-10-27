@@ -441,11 +441,16 @@ static void shell_cmd_trac...`
   - `kstrncmp` (function, line 48) `int kstrncmp(const char *a, const char *b, unsigned long n)`
   - `kstrchr` (function, line 53) `char *kstrchr(const char *s, int c)`
   - `kstrstr` (function, line 58) `char *kstrstr(const char *hay, const char *ndl)`
-  - `kmemcpy` (function, line 68) `void *kmemcpy(void *dst, const void *src, unsigned long n)`
-  - `kmemset` (function, line 75) `void *kmemset(void *dst, int c, unsigned long n)`
-  - `kmemcmp` (function, line 81) `int kmemcmp(const void *a, const void *b, unsigned long n)`
-  - `kmemmove` (function, line 87) `void *kmemmove(void *dst, const void *src, unsigned long n)`
-  - `katol` (function, line 95) `long katol(const char *s)`
+  - `kmemcpy` (function, line 73) `NO_LOOP_IDIOM void *kmemcpy(void *dst, const void *src, unsigned long n)`
+  - `kmemset` (function, line 80) `NO_LOOP_IDIOM void *kmemset(void *dst, int c, unsigned long n)`
+  - `kmemcmp` (function, line 86) `int kmemcmp(const void *a, const void *b, unsigned long n)`
+  - `kmemmove` (function, line 92) `NO_LOOP_IDIOM void *kmemmove(void *dst, const void *src, unsigned long n)`
+  - `memcpy` (function, line 104) `void *memcpy(void *dst, const void *src, unsigned long n)`
+  - `memmove` (function, line 108) `void *memmove(void *dst, const void *src, unsigned long n)`
+  - `memset` (function, line 112) `void *memset(void *dst, int c, unsigned long n)`
+  - `memcmp` (function, line 116) `int memcmp(const void *a, const void *b, unsigned long n)`
+  - `katol` (function, line 120) `long katol(const char *s)`
+  - `NO_LOOP_IDIOM` (macro, line 68) `#define NO_LOOP_IDIOM`
 - Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/cvmfmt.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/src/pip.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_select_map.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
 
 ## kernel/symtab.c
@@ -459,41 +464,6 @@ static void shell_cmd_trac...`
   - `k_register_program` (function, line 49) `void k_register_program(const char *name, prog_entry_t entry)`
   - `k_register_process` (function, line 57) `void k_register_process(const char *name, void *proc_entry)`
   - `k_spawn` (function, line 65) `int k_spawn(const char *name, int argc, char **argv)`
-
-## kernel/sync.c
-- Doc: Blocking synchronization primitives (roadmap Phase 3.1).
-- Layer: utility
-- Language: c
-- Symbols:
-  - `wq_init` (function, line 29) `void wq_init(wait_queue_t *q)`
-  - `sleep_on` (function, line 35) `void sleep_on(wait_queue_t *q)`
-  - `wake_up` (function, line 56) `int wake_up(wait_queue_t *q)`
-  - `wake_up_all` (function, line 72) `int wake_up_all(wait_queue_t *q)`
-  - `mutex_init` (function, line 78) `void mutex_init(mutex_t *m)`
-  - `pi_valid` (function, line 95) `static int pi_valid(int pid)`
-  - `pi_set_base` (function, line 101) `void pi_set_base(int pid, int prio)`
-  - `pi_get_eff` (function, line 110) `int pi_get_eff(int pid)`
-  - `pi_recompute` (function, line 115) `static void pi_recompute(int pid)`
-  - `pi_boost` (function, line 126) `static void pi_boost(int waiter, int owner)`
-  - `mutex_lock` (function, line 152) `void mutex_lock(mutex_t *m)`
-  - `mutex_trylock` (function, line 172) `int mutex_trylock(mutex_t *m)`
-  - `mutex_unlock` (function, line 188) `void mutex_unlock(mutex_t *m)`
-  - `sem_init` (function, line 209) `void sem_init(sem_t *s, int value)`
-  - `sem_wait` (function, line 215) `void sem_wait(sem_t *s)`
-  - `sem_post` (function, line 229) `void sem_post(sem_t *s)`
-  - `cond_init` (function, line 237) `void cond_init(cond_t *c)`
-  - `cond_wait` (function, line 241) `void cond_wait(cond_t *c, mutex_t *m)`
-  - `cond_signal` (function, line 247) `void cond_signal(cond_t *c)`
-  - `cond_broadcast` (function, line 251) `void cond_broadcast(cond_t *c)`
-  - `rwlock_init` (function, line 255) `void rwlock_init(rwlock_t *rw)`
-  - `rwlock_read_trylock` (function, line 263) `int rwlock_read_trylock(rwlock_t *rw)`
-  - `rwlock_write_trylock` (function, line 277) `int rwlock_write_trylock(rwlock_t *rw)`
-  - `rwlock_read_lock` (function, line 289) `void rwlock_read_lock(rwlock_t *rw)`
-  - `rwlock_read_unlock` (function, line 296) `void rwlock_read_unlock(rwlock_t *rw)`
-  - `rwlock_write_lock` (function, line 306) `void rwlock_write_lock(rwlock_t *rw)`
-  - `rwlock_write_unlock` (function, line 328) `void rwlock_write_unlock(rwlock_t *rw)`
-  - `t_cur_pid` (variable, line 26) `extern int t_cur_pid;`
-- Depends on: `headers/sync.h`
 
 
 Next: [KB_kernel_p3.md](KB_kernel_p3.md)

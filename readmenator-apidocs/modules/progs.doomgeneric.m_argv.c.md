@@ -22,11 +22,13 @@ flowchart LR
     n_progs_doomgeneric_m_argv_c__M_CheckParmWithArgs(["M_CheckParmWithArgs"])
     n_progs_doomgeneric_doomtype_h__strcasecmp["doomtype.strcasecmp"]
     n_progs_doomgeneric_m_argv_c__MAXARGVS(["MAXARGVS"])
+    n_kernel_string_c__memset["string.memset"]
     n_progs_doomgeneric_i_system_h__I_Error["i_system.I_Error"]
     n_progs_doomgeneric_m_misc_h__M_FileLength["m_misc.M_FileLength"]
     n_progs_doomgeneric_m_argv_c__M_ParmExists --> n_progs_doomgeneric_m_argv_c__M_CheckParm
     n_progs_doomgeneric_m_argv_c__M_CheckParm --> n_progs_doomgeneric_m_argv_c__M_CheckParmWithArgs
     n_progs_doomgeneric_m_argv_c__M_CheckParmWithArgs -.-> n_progs_doomgeneric_doomtype_h__strcasecmp
+    n_progs_doomgeneric_m_argv_c__MAXARGVS -.-> n_kernel_string_c__memset
     n_progs_doomgeneric_m_argv_c__MAXARGVS -.-> n_progs_doomgeneric_i_system_h__I_Error
     n_progs_doomgeneric_m_argv_c__MAXARGVS -.-> n_progs_doomgeneric_m_misc_h__M_FileLength
 ```
@@ -152,6 +154,6 @@ char *M_GetExecutableName(void)
 #define MAXARGVS
 ```
 
-*Calls:* [`I_Error`](progs.doomgeneric.i_system.h.md#i_error), [`M_FileLength`](progs.doomgeneric.m_misc.h.md#m_filelength)
+*Calls:* [`memset`](kernel.string.c.md#memset), [`I_Error`](progs.doomgeneric.i_system.h.md#i_error), [`M_FileLength`](progs.doomgeneric.m_misc.h.md#m_filelength)
 
 ---

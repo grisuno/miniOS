@@ -29,6 +29,9 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_progs_nuklear_node_editor_c__parse_input(["parse_input"])
     n_progs_nuklear_node_editor_c__resolve(["resolve"])
+    n_progs_nuklear_node_editor_c__addrep(["addrep"])
+    n_kernel_string_c__memcpy["string.memcpy"]
+    n_progs_nuklear_node_editor_c__adderr(["adderr"])
     n_progs_nuklear_node_editor_c__main(["main"])
     n_progs_nuklear_nuklear_minios_h__nk_build_palette["nuklear_minios.nk_build_palette"]
     n_progs_nuklear_nuklear_minios_h__nk_minios_font["nuklear_minios.nk_minios_font"]
@@ -43,6 +46,8 @@ flowchart LR
     n_progs_nuklear_nuklear_minios_h__nk_sys_vga_mode["nuklear_minios.nk_sys_vga_mode"]
     n_tools_update_sources_py__GitResult_ok["update_sources.GitResult.ok"]
     n_progs_nuklear_node_editor_c__parse_input --> n_progs_nuklear_node_editor_c__resolve
+    n_progs_nuklear_node_editor_c__addrep -.-> n_kernel_string_c__memcpy
+    n_progs_nuklear_node_editor_c__adderr -.-> n_kernel_string_c__memcpy
     n_progs_nuklear_node_editor_c__main -.-> n_progs_nuklear_nuklear_minios_h__nk_build_palette
     n_progs_nuklear_node_editor_c__main -.-> n_progs_nuklear_nuklear_minios_h__nk_minios_font
     n_progs_nuklear_node_editor_c__main -.-> n_progs_nuklear_nuklear_minios_h__nk_rasterize
@@ -103,6 +108,8 @@ void addrep(const char *s)
 |---|---|---|---|
 | `s` | `char *` |  |  |
 
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
+
 ---
 
 <a id="adderr"></a>
@@ -120,6 +127,8 @@ void adderr(const char *s)
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `s` | `char *` |  |  |
+
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
 
 ---
 

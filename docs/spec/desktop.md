@@ -546,6 +546,48 @@ framebuffer is not.
   (open+close), beside the `gfx frames` climb. Eight `fx-*` mutants
   (default, toggle, reporting, skipped melts, stuck/clamp column logic)
   die in `make test-fx` and the `MATCH=fx` BDD slice.
+- **Window chrome (`wm_chrome.h`, `vga_fb.c`):** the true-color desktop
+  carries soft drop shadows, vertical-gradient title strips, anti-aliased
+  rounded top corners and a translucent rounded dock. The pixel math (alpha
+  blend, quadratic shadow falloff over a shifted rect, one-pixel anti-aliased
+  corner coverage, title gradient) is pure integer code in the header so
+  `make test-chrome` pins it on the host with exact values; the kernel only
+  moves pixels through `fb_read_packed`/`fb_write_packed`. Every tunable
+  lives in `wm_chrome_config_t` (`WM_CHROME_CONFIG_DEFAULT`). Rules:
+  - Chrome is painted only by the full desktop composition (terminals and
+    the graphics layer's shadow in `gfx_keep_restore`). The per-frame
+    graphics present never paints a shadow, which would darken a little more
+    on every frame because the pixels around the window are not repainted.
+  - The dock backing is one routine (`dock_paint_backing`) shared by the
+    full draw and the hover repaint; only the full draw adds the dock
+    shadow, since the hover strip erase does not reach it.
+  - A shadow never darkens the taskbar row. Top corners save the pixels
+    under them before the window paints and blend the window over that
+    saved background by coverage afterwards (`chrome_corners_t`, bounded by
+    `WM_CHROME_RADIUS_MAX`, so the stack frame stays small).
+  - 8-bit mode keeps the flat look, the dither dock and the square border:
+    the DAC palette has no room for intermediate shades, so every chrome
+    helper is a no-op there and an 8-bit frame is byte-identical.
+  - Title text and window buttons draw with `TEXT_BG_NONE` over the gradient
+    instead of a flat background fill.
+  - Corners are tracked per window (`chrome_win_t`): all four are cut, a
+    corner on the screen edge stays square, and the bottom ones are re-cut
+    at the two points that repaint them incrementally (the first cell of
+    the last row in `vga_fb_char`, the scrollbar in `draw_scrollbar`).
+    Slots reset at the start of every full composition and match the live
+    window by origin and width, so a stale slot can never cut a moved one.
+  - Window buttons are macOS-style discs (amber, green, red) in the same
+    three 8x8 hit cells; hit-testing is unchanged. 8-bit keeps the glyphs.
+  - The hovered dock icon gets a soft rounded glow; the hover repaint
+    erases its strip first, so the glow never accumulates.
+  - A profile card (glass panel, circular avatar with a ring, user name and
+    tagline `minios, btw`) sits in the top-right corner below the windows.
+    `tools/gen_avatar.py` renders `headers/avatar_data.h`: from the owner's
+    picture with `--source FILE --crop X,Y,SIZE` (only the 48x48 result is
+    committed, never the source), or a procedural portrait without them.
+  Ten `chrome-*` mutants (blend order, clamp, gradient, linear shadow,
+  ignored offsets, corner edge, corner box, disc mirror, disc box) die in
+  `make test-chrome`.
 
 ### Desktop GUI harness (`tools/minios_gui.py`)
 

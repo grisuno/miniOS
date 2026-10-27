@@ -8,17 +8,6 @@
 - **Functions:** [`main`](#main)
 - **Macros:** [`SYS_TIME`](#sys_time), [`SYS_SB16_OPEN`](#sys_sb16_open), [`SYS_SB16_SUBMIT`](#sys_sb16_submit), [`SYS_WRITE`](#sys_write), [`SAMPLE_RATE`](#sample_rate), [`STEREO_FRAMES`](#stereo_frames), [`MONO_BYTES`](#mono_bytes), [`BUF_MS`](#buf_ms), [`F_NUM_FACTOR`](#f_num_factor)
 
-## Call Graph
-
-Solid arrows stay in this module, dashed arrows leave it.
-
-```mermaid
-flowchart LR
-    n_progs_src_opl3_c__main(["main"])
-    n_tools_wm_layout_sync_py__WmLayoutSync_render["wm_layout_sync.WmLayoutSync.render"]
-    n_progs_src_opl3_c__main -.-> n_tools_wm_layout_sync_py__WmLayoutSync_render
-```
-
 ## Structs
 
 <a id="note_t"></a>
@@ -46,8 +35,6 @@ int main(void)
 ```
 
 **Returns:** `int`
-
-*Calls:* [`WmLayoutSync.render`](tools.wm_layout_sync.py.md#wmlayoutsync-render)
 
 ---
 

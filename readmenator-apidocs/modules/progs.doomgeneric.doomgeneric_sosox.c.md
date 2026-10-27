@@ -17,7 +17,10 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_progs_doomgeneric_doomgeneric_sosox_c__DG_Init(["DG_Init"])
     n_progs_doomgeneric_doomgeneric_sosox_c__enable_raw_mode(["enable_raw_mode"])
+    n_progs_doomgeneric_doomgeneric_sosox_c__DG_DrawFrame(["DG_DrawFrame"])
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_doomgeneric_doomgeneric_sosox_c__DG_Init --> n_progs_doomgeneric_doomgeneric_sosox_c__enable_raw_mode
+    n_progs_doomgeneric_doomgeneric_sosox_c__DG_DrawFrame -.-> n_kernel_string_c__memcpy
 ```
 
 ## Functions
@@ -71,6 +74,8 @@ void DG_Init()
 ```c
 void DG_DrawFrame()
 ```
+
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
 
 ---
 

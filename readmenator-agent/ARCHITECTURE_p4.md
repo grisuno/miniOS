@@ -216,6 +216,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tests/test_abi.c` -> stdio.h
 - `tests/test_arena.c` -> stdio.h
 - `tests/test_batch.c` -> stdio.h
+- `tests/test_chrome.c` -> stdio.h
 - `tests/test_doom_pwad.py` -> os, struct, sys, unittest
 - `tests/test_driver.c` -> assert.h, stdio.h
 - `tests/test_ext4.c` -> kernel.h, stdio.h, stdlib.h
@@ -278,6 +279,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tools/clip_bridge.py` -> re, sys
 - `tools/doom_pwad.py` -> math, struct, sys
 - `tools/gdb_repro.py` -> importlib.util, os, pty, select, socket, subprocess
+- `tools/gen_avatar.py` -> PIL, argparse, os, sys, tempfile
 - `tools/gen_desktop_pngs.py` -> PIL, argparse, os, sys
 - `tools/gen_icons.py` -> os, struct, sys, zlib
 - `tools/gen_minifs.py` -> os
@@ -310,6 +312,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tools/test_http_server.py` -> fcntl, http.server, struct, sys
 - `tools/test_lisp.py` -> argparse, os, shutil, subprocess, sys, tempfile
 - `tools/test_net_fixture.py` -> socket, sys, threading
+- `tools/test_readme_shot.py` -> PIL, argparse, os, shutil, sys, tempfile
 - `tools/tls_test.py` -> datetime, os, re, shlex, socket, ssl, subprocess, sys, threading
 - `tools/update_sources.py` -> __future__, argparse, dataclasses, datetime, json, pathlib, subprocess, sys
 - `tools/wm_layout_sync.py` -> __future__, argparse, pathlib, re, sys

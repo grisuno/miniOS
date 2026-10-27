@@ -428,6 +428,9 @@
 - [`automapactive`](modules/progs.doomgeneric.hu_lib.c.md#automapactive) variable in `progs/doomgeneric/hu_lib.c`
 - [`automapactive`](modules/progs.doomgeneric.st_lib.c.md#automapactive) variable in `progs/doomgeneric/st_lib.c`
 - [`autostart`](modules/progs.doomgeneric.doomstat.h.md#autostart) variable in `progs/doomgeneric/doomstat.h`
+- [`AVATAR_SIZE`](modules/headers.avatar_data.h.md#avatar_size) macro in `headers/avatar_data.h`
+- [`AvatarConfig`](modules/tools.gen_avatar.py.md#avatarconfig) class in `tools.gen_avatar`
+- [`AvatarPainter`](modules/tools.gen_avatar.py.md#avatarpainter) class in `tools.gen_avatar`
 
 <a id="b"></a>
 
@@ -435,9 +438,11 @@
 
 - [`BACKBUF`](modules/progs.minicraft.minicraft.c.md#backbuf) macro in `progs/minicraft/minicraft.c`
 - [`BACKBUF`](modules/progs.minicraft.minicraft.c.md#backbuf) macro in `progs/minicraft/minicraft.c`
+- [`background`](modules/tools.gen_avatar.py.md#avatarpainter-background) method of `AvatarPainter` in `tools.gen_avatar`
 - [`BACKGROUND`](modules/progs.doomgeneric.am_map.c.md#background) macro in `progs/doomgeneric/am_map.c`
 - [`backsector`](modules/progs.doomgeneric.r_bsp.h.md#backsector) variable in `progs/doomgeneric/r_bsp.h`
 - [`BACKUPTICS`](modules/progs.doomgeneric.net_defs.h.md#backuptics) macro in `progs/doomgeneric/net_defs.h`
+- [`bangs`](modules/tools.gen_avatar.py.md#avatarpainter-bangs) method of `AvatarPainter` in `tools.gen_avatar`
 - [`bare`](modules/drivers.kbd.c.md#bare) function in `drivers/kbd.c`
 - [`BASE`](modules/tools.mkpak1.py.md#base) constant in `tools.mkpak1`
 - [`base`](modules/headers.vma.h.md#base) type_alias in `headers/vma.h`
@@ -468,6 +473,8 @@
 - [`BEZIER_PAD`](modules/progs.nuklear.node_editor.c.md#bezier_pad) macro in `progs/nuklear/node_editor.c`
 - [`bfgedition`](modules/progs.doomgeneric.doomstat.h.md#bfgedition) variable in `progs/doomgeneric/doomstat.h`
 - [`bfs_min_hops`](modules/tools.check_surprising.py.md#bfs_min_hops) function in `tools.check_surprising`
+- [`BG_BOTTOM`](modules/tools.gen_avatar.py.md#avatarconfig-bg_bottom) attribute of `AvatarConfig` in `tools.gen_avatar`
+- [`BG_TOP`](modules/tools.gen_avatar.py.md#avatarconfig-bg_top) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`Binding`](modules/progs.lisp.lisp.c.md#binding) type_alias in `progs/lisp/lisp.c`
 - [`Binding`](modules/progs.lisp.lisp.c.md#binding) struct in `progs/lisp/lisp.c`
 - [`BIOS_DISK_EXT_ACK_MAGIC`](modules/headers.arch.x86.boot.bootdefs.h.md#bios_disk_ext_ack_magic) macro in `headers/arch/x86/boot/bootdefs.h`
@@ -531,6 +538,7 @@
 - [`blocks`](modules/fs.minifs.c.md#blocks) function in `fs/minifs.c`
 - [`BLUERANGE`](modules/progs.doomgeneric.am_map.c.md#bluerange) macro in `progs/doomgeneric/am_map.c`
 - [`BLUES`](modules/progs.doomgeneric.am_map.c.md#blues) macro in `progs/doomgeneric/am_map.c`
+- [`BLUSH`](modules/tools.gen_avatar.py.md#avatarconfig-blush) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`bmapheight`](modules/progs.doomgeneric.p_local.h.md#bmapheight) variable in `progs/doomgeneric/p_local.h`
 - [`bmaporgx`](modules/progs.doomgeneric.p_local.h.md#bmaporgx) variable in `progs/doomgeneric/p_local.h`
 - [`bmaporgy`](modules/progs.doomgeneric.p_local.h.md#bmaporgy) variable in `progs/doomgeneric/p_local.h`
@@ -605,6 +613,7 @@
 - [`BUTTON_AXIS`](modules/progs.doomgeneric.i_joystick.h.md#button_axis) macro in `progs/doomgeneric/i_joystick.h`
 - [`BUTTON_AXIS_NEG`](modules/progs.doomgeneric.i_joystick.h.md#button_axis_neg) macro in `progs/doomgeneric/i_joystick.h`
 - [`BUTTON_AXIS_POS`](modules/progs.doomgeneric.i_joystick.h.md#button_axis_pos) macro in `progs/doomgeneric/i_joystick.h`
+- [`by`](modules/headers.wm_chrome.h.md#by) function in `headers/wm_chrome.h`
 - [`by`](modules/kernel.syscalls.c.md#by) function in `kernel/syscalls.c`
 - [`byte`](modules/progs.doomgeneric.doomtype.h.md#byte) type_alias in `progs/doomgeneric/doomtype.h`
 - [`byte_gap`](modules/tools.boot_wl.py.md#wlbootconfig-byte_gap) attribute of `WlBootConfig` in `tools.boot_wl`
@@ -727,6 +736,8 @@
 - [`check_stubs`](modules/tools.check_fork_stubs.py.md#check_stubs) function in `tools.check_fork_stubs`
 - [`checked_names`](modules/tools.check_syscall_sanitize.py.md#checked_names) function in `tools.check_syscall_sanitize`
 - [`CHECKS`](modules/tools.minios_hyper.py.md#hyperconfig-checks) attribute of `HyperConfig` in `tools.minios_hyper`
+- [`chrome_tint_t`](modules/kernel.vga_fb.c.md#chrome_tint_t) struct in `kernel/vga_fb.c`
+- [`chrome_win_t`](modules/kernel.vga_fb.c.md#chrome_win_t) struct in `kernel/vga_fb.c`
 - [`cht_CheckCheat`](modules/progs.doomgeneric.m_cheat.c.md#cht_checkcheat) function in `progs/doomgeneric/m_cheat.c`
 - [`cht_CheckCheat`](modules/progs.doomgeneric.m_cheat.h.md#cht_checkcheat) function in `progs/doomgeneric/m_cheat.h`
 - [`cht_GetParam`](modules/progs.doomgeneric.m_cheat.c.md#cht_getparam) function in `progs/doomgeneric/m_cheat.c`
@@ -1105,6 +1116,7 @@
 - [`default_dir`](modules/tools.update_sources.py.md#repo-default_dir) attribute of `Repo` in `tools.update_sources`
 - [`DEFAULT_KB`](modules/tools.check_kb_sync.py.md#default_kb) constant in `tools.check_kb_sync`
 - [`DEFAULT_MIN_HOPS`](modules/tools.check_surprising.py.md#default_min_hops) constant in `tools.check_surprising`
+- [`DEFAULT_OUT`](modules/tools.gen_avatar.py.md#avatarconfig-default_out) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`DEFAULT_RAM`](modules/progs.doomgeneric.i_system.c.md#default_ram) macro in `progs/doomgeneric/i_system.c`
 - [`DEFAULT_SNAPSHOT`](modules/tools.update_sources.py.md#default_snapshot) constant in `tools.update_sources`
 - [`DEFAULT_SOCK`](modules/tools.qga_client.py.md#default_sock) constant in `tools.qga_client`
@@ -1425,6 +1437,7 @@
 - [`dock_click_count`](modules/kernel.vga_fb.c.md#dock_click_count) function in `kernel/vga_fb.c`
 - [`DOCK_CRYSTAL_STEP`](modules/headers.desktop_shortcuts.h.md#dock_crystal_step) macro in `headers/desktop_shortcuts.h`
 - [`DOCK_GAP`](modules/headers.desktop_shortcuts.h.md#dock_gap) macro in `headers/desktop_shortcuts.h`
+- [`DOCK_GLOW_PAD`](modules/kernel.vga_fb.c.md#dock_glow_pad) macro in `kernel/vga_fb.c`
 - [`DOCK_LABEL_GAP`](modules/headers.desktop_shortcuts.h.md#dock_label_gap) macro in `headers/desktop_shortcuts.h`
 - [`DOCK_MAG_W`](modules/headers.desktop_shortcuts.h.md#dock_mag_w) macro in `headers/desktop_shortcuts.h`
 - [`DOCK_NEAR_W`](modules/headers.desktop_shortcuts.h.md#dock_near_w) macro in `headers/desktop_shortcuts.h`
@@ -1705,6 +1718,8 @@
 - [`EXT_UP`](modules/progs.minicraft.minicraft.c.md#ext_up) macro in `progs/minicraft/minicraft.c`
 - [`extract_communities`](modules/tools.check_cohesion.py.md#extract_communities) function in `tools.check_cohesion`
 - [`extralight`](modules/progs.doomgeneric.r_main.h.md#extralight) variable in `progs/doomgeneric/r_main.h`
+- [`eye`](modules/tools.gen_avatar.py.md#avatarpainter-eye) method of `AvatarPainter` in `tools.gen_avatar`
+- [`eyes`](modules/tools.gen_avatar.py.md#avatarpainter-eyes) method of `AvatarPainter` in `tools.gen_avatar`
 
 <a id="f"></a>
 
@@ -1789,6 +1804,7 @@
 - [`f_vallen`](modules/progs.asm.freedom.s.md#f_vallen) function in `progs/asm/freedom.s`
 - [`f_waitq`](modules/progs.asm.freedom.s.md#f_waitq) function in `progs/asm/freedom.s`
 - [`f_ws`](modules/progs.asm.freedom.s.md#f_ws) function in `progs/asm/freedom.s`
+- [`face`](modules/tools.gen_avatar.py.md#avatarpainter-face) method of `AvatarPainter` in `tools.gen_avatar`
 - [`fail`](modules/tools.boot_wl.py.md#wlboot-fail) method of `WlBoot` in `tools.boot_wl`
 - [`fail`](modules/arch.x86.boot.stage1.S.md#fail) function in `arch/x86/boot/stage1.S`
 - [`failure`](modules/headers.drivers.virtio_net.h.md#failure) function in `headers/drivers/virtio_net.h`
@@ -1978,6 +1994,7 @@
 - [`first`](modules/kernel.vga_fb.c.md#first) function in `kernel/vga_fb.c`
 - [`firstflat`](modules/progs.doomgeneric.r_state.h.md#firstflat) variable in `progs/doomgeneric/r_state.h`
 - [`firstspritelump`](modules/progs.doomgeneric.r_state.h.md#firstspritelump) variable in `progs/doomgeneric/r_state.h`
+- [`fit_wallpaper`](modules/tools.gen_desktop_pngs.py.md#fit_wallpaper) function in `tools.gen_desktop_pngs`
 - [`fixed_t`](modules/progs.doomgeneric.m_fixed.h.md#fixed_t) type_alias in `progs/doomgeneric/m_fixed.h`
 - [`FIXED_TIME`](modules/tools.gen_zip_fixtures.py.md#fixed_time) constant in `tools.gen_zip_fixtures`
 - [`fixedcolormap`](modules/progs.doomgeneric.r_main.h.md#fixedcolormap) variable in `progs/doomgeneric/r_main.h`
@@ -2425,6 +2442,10 @@
 - [`h_cpu`](modules/progs.asm.mtop.s.md#h_cpu) function in `progs/asm/mtop.s`
 - [`h_fill`](modules/progs.asm.mtop.s.md#h_fill) function in `progs/asm/mtop.s`
 - [`h_mem`](modules/progs.asm.mtop.s.md#h_mem) function in `progs/asm/mtop.s`
+- [`HAIR`](modules/tools.gen_avatar.py.md#avatarconfig-hair) attribute of `AvatarConfig` in `tools.gen_avatar`
+- [`hair_back`](modules/tools.gen_avatar.py.md#avatarpainter-hair_back) method of `AvatarPainter` in `tools.gen_avatar`
+- [`HAIR_LIGHT`](modules/tools.gen_avatar.py.md#avatarconfig-hair_light) attribute of `AvatarConfig` in `tools.gen_avatar`
+- [`HAIR_SHADE`](modules/tools.gen_avatar.py.md#avatarconfig-hair_shade) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`hal_inb`](modules/headers.arch.x86.hal_io.h.md#hal_inb) function in `headers/arch/x86/hal_io.h`
 - [`hal_inb`](modules/headers.arch.x86.hal_io.h.md#hal_inb) function in `headers/arch/x86/hal_io.h`
 - [`hal_inw`](modules/headers.arch.x86.hal_io.h.md#hal_inw) function in `headers/arch/x86/hal_io.h`
@@ -2983,6 +3004,7 @@
 - [`inheritance`](modules/headers.sync.h.md#inheritance) function in `headers/sync.h`
 - [`INIT`](modules/smp.c.md#init) function in `smp.c`
 - [`__init__`](modules/mcp.minios_addons.py.md#addonstate-__init__) constructor of `AddonState` in `mcp.minios_addons`
+- [`__init__`](modules/tools.gen_avatar.py.md#avatarpainter-__init__) constructor of `AvatarPainter` in `tools.gen_avatar`
 - [`__init__`](modules/mcp.mcp_dbg_driver.py.md#client-__init__) constructor of `Client` in `mcp.mcp_dbg_driver`
 - [`__init__`](modules/mcp.mcp_dogfood.py.md#client-__init__) constructor of `Client` in `mcp.mcp_dogfood`
 - [`__init__`](modules/tools.minios_cli.py.md#client-__init__) constructor of `Client` in `tools.minios_cli`
@@ -3026,6 +3048,8 @@
 - [`inw`](modules/headers.kernel.h.md#inw) function in `headers/kernel.h`
 - [`iquehead`](modules/progs.doomgeneric.p_local.h.md#iquehead) variable in `progs/doomgeneric/p_local.h`
 - [`iquetail`](modules/progs.doomgeneric.p_local.h.md#iquetail) variable in `progs/doomgeneric/p_local.h`
+- [`IRIS_BOTTOM`](modules/tools.gen_avatar.py.md#avatarconfig-iris_bottom) attribute of `AvatarConfig` in `tools.gen_avatar`
+- [`IRIS_TOP`](modules/tools.gen_avatar.py.md#avatarconfig-iris_top) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`IRQ`](modules/drivers.sb16.c.md#irq) function in `drivers/sb16.c`
 - [`IRQ4`](modules/kernel.sched.c.md#irq4) function in `kernel/sched.c`
 - [`irqflags_t`](modules/headers.spinlock.h.md#irqflags_t) type_alias in `headers/spinlock.h`
@@ -3739,6 +3763,7 @@
 - [`lighttable_t`](modules/progs.doomgeneric.r_defs.h.md#lighttable_t) type_alias in `progs/doomgeneric/r_defs.h`
 - [`LIGHTZSHIFT`](modules/progs.doomgeneric.r_main.h.md#lightzshift) macro in `progs/doomgeneric/r_main.h`
 - [`limit`](modules/headers.sched.h.md#limit) type_alias in `headers/sched.h`
+- [`LINE`](modules/tools.gen_avatar.py.md#avatarconfig-line) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`line`](modules/kernel.shell.c.md#line) function in `kernel/shell.c`
 - [`line`](modules/kernel.vga_fb.c.md#line) function in `kernel/vga_fb.c`
 - [`LINE_NEVERSEE`](modules/progs.doomgeneric.am_map.c.md#line_neversee) macro in `progs/doomgeneric/am_map.c`
@@ -3974,6 +3999,7 @@
 - [`load_exec_elf_into`](modules/headers.kernel.h.md#load_exec_elf_into) function in `headers/kernel.h`
 - [`load_exec_elf_into`](modules/kernel.loader.c.md#load_exec_elf_into) function in `kernel/loader.c`
 - [`load_parser`](modules/tools.check_addons.py.md#load_parser) function in `tools.check_addons`
+- [`load_portrait`](modules/tools.gen_avatar.py.md#load_portrait) function in `tools.gen_avatar`
 - [`LOADNET`](modules/progs.doomgeneric.d_englsh.h.md#loadnet) macro in `progs/doomgeneric/d_englsh.h`
 - [`LogBuffer`](modules/mcp.minios_mcp.py.md#logbuffer) class in `mcp.minios_mcp`
 - [`logical_gamemission`](modules/progs.doomgeneric.doomstat.h.md#logical_gamemission) macro in `progs/doomgeneric/doomstat.h`
@@ -4365,6 +4391,7 @@
 - [`main`](modules/tools.clip_bridge.py.md#main) function in `tools.clip_bridge`
 - [`main`](modules/tools.doom_pwad.py.md#main) function in `tools.doom_pwad`
 - [`main`](modules/tools.gdb_repro.py.md#main) function in `tools.gdb_repro`
+- [`main`](modules/tools.gen_avatar.py.md#main) function in `tools.gen_avatar`
 - [`main`](modules/tools.gen_desktop_pngs.py.md#main) function in `tools.gen_desktop_pngs`
 - [`main`](modules/tools.gen_icons.py.md#main) function in `tools.gen_icons`
 - [`main`](modules/tools.gen_zip_fixtures.py.md#main) function in `tools.gen_zip_fixtures`
@@ -4563,10 +4590,14 @@
 - [`mem_get_buf`](modules/progs.doomgeneric.memio.c.md#mem_get_buf) function in `progs/doomgeneric/memio.c`
 - [`mem_get_buf`](modules/progs.doomgeneric.memio.h.md#mem_get_buf) function in `progs/doomgeneric/memio.h`
 - [`memblock_s`](modules/progs.doomgeneric.z_zone.c.md#memblock_s) struct in `progs/doomgeneric/z_zone.c`
+- [`memcmp`](modules/kernel.string.c.md#memcmp) function in `kernel/string.c`
+- [`memcpy`](modules/kernel.string.c.md#memcpy) function in `kernel/string.c`
 - [`memcpy`](modules/progs.src.freedom.c.md#memcpy) function in `progs/src/freedom.c`
 - [`memcpy`](modules/progs.topogpt3.topogpt3.c.md#memcpy) function in `progs/topogpt3/topogpt3.c`
 - [`MEMFILE`](modules/progs.doomgeneric.memio.h.md#memfile) type_alias in `progs/doomgeneric/memio.h`
 - [`_MEMFILE`](modules/progs.doomgeneric.memio.c.md#_memfile) struct in `progs/doomgeneric/memio.c`
+- [`memmove`](modules/kernel.string.c.md#memmove) function in `kernel/string.c`
+- [`memset`](modules/kernel.string.c.md#memset) function in `kernel/string.c`
 - [`memset`](modules/progs.src.freedom.c.md#memset) function in `progs/src/freedom.c`
 - [`memset`](modules/progs.topogpt3.topogpt3.c.md#memset) function in `progs/topogpt3/topogpt3.c`
 - [`memzone_t`](modules/progs.doomgeneric.z_zone.c.md#memzone_t) struct in `progs/doomgeneric/z_zone.c`
@@ -5046,6 +5077,7 @@
 - [`mousebstraferight`](modules/progs.doomgeneric.m_controls.h.md#mousebstraferight) variable in `progs/doomgeneric/m_controls.h`
 - [`mousebuse`](modules/progs.doomgeneric.m_controls.h.md#mousebuse) variable in `progs/doomgeneric/m_controls.h`
 - [`mouseSensitivity`](modules/progs.doomgeneric.doomstat.h.md#mousesensitivity) variable in `progs/doomgeneric/doomstat.h`
+- [`MOUTH`](modules/tools.gen_avatar.py.md#avatarconfig-mouth) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`moved_cursors`](modules/tools.minios_hyper.py.md#framediff-moved_cursors) staticmethod of `FrameDiff` in `tools.minios_hyper`
 - [`mpng_332_idx`](modules/progs.minios_png.h.md#mpng_332_idx) function in `progs/minios_png.h`
 - [`MPNG_BIG_DIM`](modules/progs.minios_png.h.md#mpng_big_dim) macro in `progs/minios_png.h`
@@ -5517,6 +5549,7 @@
 - [`NMI_IST_STACK_SZ`](modules/kernel.sched.c.md#nmi_ist_stack_sz) macro in `kernel/sched.c`
 - [`NMI_VECTOR`](modules/kernel.sched.c.md#nmi_vector) macro in `kernel/sched.c`
 - [`no_extensions`](modules/arch.x86.boot.stage1.S.md#no_extensions) function in `arch/x86/boot/stage1.S`
+- [`NO_LOOP_IDIOM`](modules/kernel.string.c.md#no_loop_idiom) macro in `kernel/string.c`
 - [`no_side`](modules/tools.doom_pwad.py.md#doompwadconfig-no_side) attribute of `DoomPwadConfig` in `tools.doom_pwad`
 - [`Node`](modules/progs.lisp.lisp.c.md#node) type_alias in `progs/lisp/lisp.c`
 - [`Node`](modules/progs.lisp.lisp.c.md#node) struct in `progs/lisp/lisp.c`
@@ -5534,6 +5567,7 @@
 - [`NORM_SEP`](modules/progs.doomgeneric.s_sound.c.md#norm_sep) macro in `progs/doomgeneric/s_sound.c`
 - [`normalize`](modules/arch.x86.boot.stage1.S.md#normalize) function in `arch/x86/boot/stage1.S`
 - [`normalize`](modules/tools.check_abi_numbers.py.md#normalize) function in `tools.check_abi_numbers`
+- [`nose_mouth`](modules/tools.gen_avatar.py.md#avatarpainter-nose_mouth) method of `AvatarPainter` in `tools.gen_avatar`
 - [`note_align`](modules/tools.sign_elf.py.md#config-note_align) attribute of `Config` in `tools.sign_elf`
 - [`note_name`](modules/tools.sign_elf.py.md#config-note_name) attribute of `Config` in `tools.sign_elf`
 - [`note_section`](modules/tools.sign_elf.py.md#config-note_section) attribute of `Config` in `tools.sign_elf`
@@ -5923,6 +5957,7 @@
 - [`parse_abi`](modules/tools.check_abi_numbers.py.md#parse_abi) function in `tools.check_abi_numbers`
 - [`parse_addon_yaml`](modules/mcp.minios_addons.py.md#parse_addon_yaml) function in `mcp.minios_addons`
 - [`parse_args`](modules/tools.wm_layout_sync.py.md#parse_args) function in `tools.wm_layout_sync`
+- [`parse_crop`](modules/tools.gen_avatar.py.md#parse_crop) function in `tools.gen_avatar`
 - [`parse_dispatch`](modules/tools.check_abi_numbers.py.md#parse_dispatch) function in `tools.check_abi_numbers`
 - [`parse_ehdr`](modules/tools.sign_elf.py.md#parse_ehdr) function in `tools.sign_elf`
 - [`parse_grid`](modules/tools.doom_pwad.py.md#parse_grid) function in `tools.doom_pwad`
@@ -6319,6 +6354,10 @@
 - [`process`](modules/tools.sign_elf.py.md#process) function in `tools.sign_elf`
 - [`procs`](modules/headers.sched.h.md#procs) variable in `headers/sched.h`
 - [`products`](modules/kernel.syscalls.c.md#products) function in `kernel/syscalls.c`
+- [`PROFILE_MARGIN`](modules/kernel.vga_fb.c.md#profile_margin) macro in `kernel/vga_fb.c`
+- [`PROFILE_PAD`](modules/kernel.vga_fb.c.md#profile_pad) macro in `kernel/vga_fb.c`
+- [`PROFILE_RING`](modules/kernel.vga_fb.c.md#profile_ring) macro in `kernel/vga_fb.c`
+- [`PROFILE_TEXT_COLS`](modules/kernel.vga_fb.c.md#profile_text_cols) macro in `kernel/vga_fb.c`
 - [`program`](modules/progs.src.execho.c.md#program) function in `progs/src/execho.c`
 - [`program_invocation_short_name`](modules/progs.nuklear.nuklear_minios.c.md#program_invocation_short_name) variable in `progs/nuklear/nuklear_minios.c`
 - [`PROGRAM_PREFIX`](modules/progs.doomgeneric.config.h.md#program_prefix) macro in `progs/doomgeneric/config.h`
@@ -6417,6 +6456,7 @@
 - [`pub_bytes`](modules/tools.sign_elf.py.md#config-pub_bytes) attribute of `Config` in `tools.sign_elf`
 - [`pub_for_key`](modules/tools.sign_elf.py.md#pub_for_key) function in `tools.sign_elf`
 - [`publickey`](modules/tools.sign_elf.py.md#publickey) function in `tools.sign_elf`
+- [`PUPIL`](modules/tools.gen_avatar.py.md#avatarconfig-pupil) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`put_entity`](modules/progs.asm.freedom.s.md#put_entity) function in `progs/asm/freedom.s`
 - [`put_text`](modules/progs.asm.freedom.s.md#put_text) function in `progs/asm/freedom.s`
 - [`put_utf`](modules/progs.asm.freedom.s.md#put_utf) function in `progs/asm/freedom.s`
@@ -6819,6 +6859,7 @@
 - [`regs`](modules/tools.minios_hyper.py.md#gdbchannel-regs) method of `GdbChannel` in `tools.minios_hyper`
 - [`rejectmatrix`](modules/progs.doomgeneric.p_local.h.md#rejectmatrix) variable in `progs/doomgeneric/p_local.h`
 - [`rel`](modules/tools.minios_hyper.py.md#qmpchannel-rel) method of `QmpChannel` in `tools.minios_hyper`
+- [`render`](modules/tools.gen_avatar.py.md#avatarpainter-render) method of `AvatarPainter` in `tools.gen_avatar`
 - [`render`](modules/tools.wm_layout_sync.py.md#wmlayoutsync-render) method of `WmLayoutSync` in `tools.wm_layout_sync`
 - [`render_text`](modules/tools.kernel_feature_survey.py.md#render_text) function in `tools.kernel_feature_survey`
 - [`repl`](modules/tools.minios_hyper.py.md#repl) function in `tools.minios_hyper`
@@ -6850,6 +6891,8 @@
 - [`rewind`](modules/progs.src.lz4.c.md#rewind) function in `progs/src/lz4.c`
 - [`rewind`](modules/progs.src.lzss.c.md#rewind) function in `progs/src/lzss.c`
 - [`rewind`](modules/progs.src.mtop.c.md#rewind) function in `progs/src/mtop.c`
+- [`RIBBON`](modules/tools.gen_avatar.py.md#avatarconfig-ribbon) attribute of `AvatarConfig` in `tools.gen_avatar`
+- [`ribbon`](modules/tools.gen_avatar.py.md#avatarpainter-ribbon) method of `AvatarPainter` in `tools.gen_avatar`
 - [`ring`](modules/headers.net.h.md#ring) function in `headers/net.h`
 - [`RLIM_AS`](modules/headers.sched.h.md#rlim_as) macro in `headers/sched.h`
 - [`RLIM_CPU`](modules/headers.sched.h.md#rlim_cpu) macro in `headers/sched.h`
@@ -7296,6 +7339,7 @@
 - [`SC_W`](modules/progs.minicraft.minicraft.c.md#sc_w) macro in `progs/minicraft/minicraft.c`
 - [`scalar_pattern`](modules/tools.check_syscall_sanitize.py.md#config-scalar_pattern) attribute of `Config` in `tools.check_syscall_sanitize`
 - [`scalarmult`](modules/tools.sign_elf.py.md#scalarmult) function in `tools.sign_elf`
+- [`scaled`](modules/tools.gen_desktop_pngs.py.md#scaled) function in `tools.gen_desktop_pngs`
 - [`scaledviewwidth`](modules/progs.doomgeneric.r_state.h.md#scaledviewwidth) variable in `progs/doomgeneric/r_state.h`
 - [`scalelightfixed`](modules/progs.doomgeneric.r_main.h.md#scalelightfixed) variable in `progs/doomgeneric/r_main.h`
 - [`scan_dir`](modules/tools.minifs_fsck.py.md#fsck-scan_dir) method of `FSCK` in `tools.minifs_fsck`
@@ -7650,8 +7694,11 @@
 - [`Sint16`](modules/progs.pokemon.minios_stubs.SDL.h.md#sint16) type_alias in `progs/pokemon/minios_stubs/SDL.h`
 - [`Sint32`](modules/progs.pokemon.minios_stubs.SDL.h.md#sint32) type_alias in `progs/pokemon/minios_stubs/SDL.h`
 - [`SIPI_VECTOR`](modules/smp.c.md#sipi_vector) macro in `smp.c`
+- [`SIZE`](modules/tools.gen_avatar.py.md#avatarconfig-size) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`size`](modules/kernel.c.md#size) function in `kernel.c`
 - [`size`](modules/progs.doomgeneric.z_zone.c.md#size) type_alias in `progs/doomgeneric/z_zone.c`
+- [`SKIN`](modules/tools.gen_avatar.py.md#avatarconfig-skin) attribute of `AvatarConfig` in `tools.gen_avatar`
+- [`SKIN_SHADE`](modules/tools.gen_avatar.py.md#avatarconfig-skin_shade) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`SKIP_DIRS`](modules/tools.kernel_feature_survey.py.md#surveyconfig-skip_dirs) attribute of `SurveyConfig` in `tools.kernel_feature_survey`
 - [`SKIP_TENSOR`](modules/progs.topogpt3.topogpt3.c.md#skip_tensor) macro in `progs/topogpt3/topogpt3.c`
 - [`SKIP_TENSOR16`](modules/progs.topogpt3.topogpt3.c.md#skip_tensor16) macro in `progs/topogpt3/topogpt3.c`
@@ -8096,6 +8143,7 @@
 - [`suffix`](modules/tools.check_spin_discipline.py.md#config-suffix) attribute of `Config` in `tools.check_spin_discipline`
 - [`suite`](modules/headers.rtc.h.md#suite) function in `headers/rtc.h`
 - [`summary`](modules/tools.update_sources.py.md#repo-summary) attribute of `Repo` in `tools.update_sources`
+- [`SUPERSAMPLE`](modules/tools.gen_avatar.py.md#avatarconfig-supersample) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`survey`](modules/tools.kernel_feature_survey.py.md#survey) function in `tools.kernel_feature_survey`
 - [`SurveyConfig`](modules/tools.kernel_feature_survey.py.md#surveyconfig) class in `tools.kernel_feature_survey`
 - [`SWAP_CHUNK_CMP`](modules/kernel.mm.swap.c.md#swap_chunk_cmp) macro in `kernel/mm/swap.c`
@@ -8309,6 +8357,7 @@
 - [`testcontrols_mousespeed`](modules/progs.doomgeneric.doomstat.h.md#testcontrols_mousespeed) variable in `progs/doomgeneric/doomstat.h`
 - [`texpatch_t`](modules/progs.doomgeneric.r_data.c.md#texpatch_t) struct in `progs/doomgeneric/r_data.c`
 - [`text`](modules/kernel.shell.c.md#text) function in `kernel/shell.c`
+- [`TEXT_BG_NONE`](modules/kernel.vga_fb.c.md#text_bg_none) macro in `kernel/vga_fb.c`
 - [`text_from`](modules/mcp.minios_mcp.py.md#logbuffer-text_from) method of `LogBuffer` in `mcp.minios_mcp`
 - [`textscreen_t`](modules/progs.doomgeneric.f_finale.c.md#textscreen_t) struct in `progs/doomgeneric/f_finale.c`
 - [`TEXTSPEED`](modules/progs.doomgeneric.f_finale.c.md#textspeed) macro in `progs/doomgeneric/f_finale.c`
@@ -9381,10 +9430,13 @@
 - [`wake_up`](modules/kernel.sync.c.md#wake_up) function in `kernel/sync.c`
 - [`wake_up_all`](modules/headers.sync.h.md#wake_up_all) function in `headers/sync.h`
 - [`wake_up_all`](modules/kernel.sync.c.md#wake_up_all) function in `kernel/sync.c`
+- [`WALL_BACKDROP_BLUR`](modules/tools.gen_desktop_pngs.py.md#wall_backdrop_blur) constant in `tools.gen_desktop_pngs`
+- [`WALL_BACKDROP_DIM`](modules/tools.gen_desktop_pngs.py.md#wall_backdrop_dim) constant in `tools.gen_desktop_pngs`
 - [`wall_chars`](modules/tools.doom_pwad.py.md#doompwadconfig-wall_chars) attribute of `DoomPwadConfig` in `tools.doom_pwad`
 - [`wall_mid`](modules/tools.doom_pwad.py.md#doompwadconfig-wall_mid) attribute of `DoomPwadConfig` in `tools.doom_pwad`
 - [`WALL_PAL_BASE`](modules/headers.vga_fb.h.md#wall_pal_base) macro in `headers/vga_fb.h`
 - [`WALL_PAL_SIZE`](modules/headers.vga_fb.h.md#wall_pal_size) macro in `headers/vga_fb.h`
+- [`WALL_SRC`](modules/tools.gen_desktop_pngs.py.md#wall_src) constant in `tools.gen_desktop_pngs`
 - [`wall_us_from_parts`](modules/headers.ktime.h.md#wall_us_from_parts) function in `headers/ktime.h`
 - [`wall_us_now`](modules/headers.kernel.h.md#wall_us_now) function in `headers/kernel.h`
 - [`wall_us_now`](modules/kernel.syscalls.c.md#wall_us_now) function in `kernel/syscalls.c`
@@ -9398,6 +9450,7 @@
 - [`weaponinfo`](modules/progs.doomgeneric.d_items.h.md#weaponinfo) variable in `progs/doomgeneric/d_items.h`
 - [`weaponinfo_t`](modules/progs.doomgeneric.d_items.h.md#weaponinfo_t) struct in `progs/doomgeneric/d_items.h`
 - [`WEAPONTOP`](modules/progs.doomgeneric.p_pspr.c.md#weapontop) macro in `progs/doomgeneric/p_pspr.c`
+- [`WHITE`](modules/tools.gen_avatar.py.md#avatarconfig-white) attribute of `AvatarConfig` in `tools.gen_avatar`
 - [`WHITE`](modules/progs.doomgeneric.am_map.c.md#white) macro in `progs/doomgeneric/am_map.c`
 - [`WI_checkForAccelerate`](modules/progs.doomgeneric.wi_stuff.c.md#wi_checkforaccelerate) function in `progs/doomgeneric/wi_stuff.c`
 - [`WI_drawAnimatedBack`](modules/progs.doomgeneric.wi_stuff.c.md#wi_drawanimatedback) function in `progs/doomgeneric/wi_stuff.c`
@@ -9630,6 +9683,19 @@
 - [`WM_BTN_PAD`](modules/headers.vga_fb.h.md#wm_btn_pad) macro in `headers/vga_fb.h`
 - [`WM_BTN_W`](modules/headers.vga_fb.h.md#wm_btn_w) macro in `headers/vga_fb.h`
 - [`wm_build_render_plan`](modules/headers.wm_render.h.md#wm_build_render_plan) function in `headers/wm_render.h`
+- [`WM_CHROME_ALPHA_OPAQUE`](modules/headers.wm_chrome.h.md#wm_chrome_alpha_opaque) macro in `headers/wm_chrome.h`
+- [`wm_chrome_blend`](modules/headers.wm_chrome.h.md#wm_chrome_blend) function in `headers/wm_chrome.h`
+- [`wm_chrome_blend_channel`](modules/headers.wm_chrome.h.md#wm_chrome_blend_channel) function in `headers/wm_chrome.h`
+- [`wm_chrome_clamp`](modules/headers.wm_chrome.h.md#wm_chrome_clamp) function in `headers/wm_chrome.h`
+- [`WM_CHROME_CONFIG_DEFAULT`](modules/headers.wm_chrome.h.md#wm_chrome_config_default) macro in `headers/wm_chrome.h`
+- [`wm_chrome_config_t`](modules/headers.wm_chrome.h.md#wm_chrome_config_t) struct in `headers/wm_chrome.h`
+- [`wm_chrome_corner_coverage`](modules/headers.wm_chrome.h.md#wm_chrome_corner_coverage) function in `headers/wm_chrome.h`
+- [`wm_chrome_disc_coverage`](modules/headers.wm_chrome.h.md#wm_chrome_disc_coverage) function in `headers/wm_chrome.h`
+- [`wm_chrome_gradient`](modules/headers.wm_chrome.h.md#wm_chrome_gradient) function in `headers/wm_chrome.h`
+- [`wm_chrome_isqrt`](modules/headers.wm_chrome.h.md#wm_chrome_isqrt) function in `headers/wm_chrome.h`
+- [`WM_CHROME_RADIUS_MAX`](modules/headers.wm_chrome.h.md#wm_chrome_radius_max) macro in `headers/wm_chrome.h`
+- [`wm_chrome_shadow_alpha`](modules/headers.wm_chrome.h.md#wm_chrome_shadow_alpha) function in `headers/wm_chrome.h`
+- [`wm_chrome_shift`](modules/headers.wm_chrome.h.md#wm_chrome_shift) function in `headers/wm_chrome.h`
 - [`wm_clamp_point`](modules/headers.wm_geom.h.md#wm_clamp_point) function in `headers/wm_geom.h`
 - [`wm_clear_close`](modules/headers.vga_fb.h.md#wm_clear_close) function in `headers/vga_fb.h`
 - [`wm_clear_close`](modules/kernel.vga_fb.c.md#wm_clear_close) function in `kernel/vga_fb.c`
@@ -9775,6 +9841,7 @@
 - [`write_atomic`](modules/tools.gen_desktop_pngs.py.md#write_atomic) function in `tools.gen_desktop_pngs`
 - [`write_dir`](modules/tools.mkfs.minifs.py.md#minifs-write_dir) method of `MiniFS` in `tools.mkfs.minifs`
 - [`write_file`](modules/tools.mkfs.minifs.py.md#minifs-write_file) method of `MiniFS` in `tools.mkfs.minifs`
+- [`write_header`](modules/tools.gen_avatar.py.md#write_header) function in `tools.gen_avatar`
 - [`write_snapshot`](modules/tools.update_sources.py.md#write_snapshot) function in `tools.update_sources`
 - [`write_zip`](modules/tools.gen_zip_fixtures.py.md#write_zip) function in `tools.gen_zip_fixtures`
 - [`WritePCXfile`](modules/progs.doomgeneric.v_video.c.md#writepcxfile) function in `progs/doomgeneric/v_video.c`

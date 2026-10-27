@@ -33,6 +33,7 @@ flowchart LR
     n_progs_doomgeneric_v_video_c__V_DrawMouseSpeedBox(["V_DrawMouseSpeedBox"])
     n_progs_doomgeneric_v_video_c__V_DrawFilledBox(["V_DrawFilledBox"])
     n_progs_doomgeneric_m_bbox_h__M_AddToBox["m_bbox.M_AddToBox"]
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_doomgeneric_i_system_h__I_Error["i_system.I_Error"]
     n_progs_doomgeneric_i_swap_h__LONG["i_swap.LONG"]
     n_progs_doomgeneric_i_swap_h__SHORT["i_swap.SHORT"]
@@ -51,6 +52,7 @@ flowchart LR
     n_progs_doomgeneric_v_video_c__V_DrawMouseSpeedBox --> n_progs_doomgeneric_v_video_c__V_DrawHorizLine
     n_progs_doomgeneric_v_video_c__V_DrawMouseSpeedBox --> n_progs_doomgeneric_v_video_c__V_DrawVertLine
     n_progs_doomgeneric_v_video_c__V_MarkRect -.-> n_progs_doomgeneric_m_bbox_h__M_AddToBox
+    n_progs_doomgeneric_v_video_c__V_CopyRect -.-> n_kernel_string_c__memcpy
     n_progs_doomgeneric_v_video_c__V_CopyRect -.-> n_progs_doomgeneric_i_system_h__I_Error
     n_progs_doomgeneric_v_video_c__V_DrawPatch -.-> n_progs_doomgeneric_i_swap_h__LONG
     n_progs_doomgeneric_v_video_c__V_DrawPatch -.-> n_progs_doomgeneric_i_swap_h__SHORT
@@ -60,7 +62,6 @@ flowchart LR
     n_progs_doomgeneric_v_video_c__V_DrawPatchFlipped -.-> n_progs_doomgeneric_i_system_h__I_Error
     n_progs_doomgeneric_v_video_c__V_DrawTLPatch -.-> n_progs_doomgeneric_i_swap_h__LONG
     n_progs_doomgeneric_v_video_c__V_DrawTLPatch -.-> n_progs_doomgeneric_i_swap_h__SHORT
-    n_progs_doomgeneric_v_video_c__V_DrawTLPatch -.-> n_progs_doomgeneric_i_system_h__I_Error
 ```
 
 ## Functions
@@ -116,7 +117,7 @@ V_CopyRect
 | `destx` | `int` |  |  |
 | `desty` | `int` |  |  |
 
-*Calls:* [`I_Error`](progs.doomgeneric.i_system.h.md#i_error), [`V_MarkRect`](#v_markrect)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`I_Error`](progs.doomgeneric.i_system.h.md#i_error), [`V_MarkRect`](#v_markrect)
 
 ---
 
@@ -351,7 +352,7 @@ void V_DrawBlock(int x, int y, int width, int height, byte *src)
 | `height` | `int` |  |  |
 | `src` | `byte *` |  |  |
 
-*Calls:* [`I_Error`](progs.doomgeneric.i_system.h.md#i_error), [`V_MarkRect`](#v_markrect)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`I_Error`](progs.doomgeneric.i_system.h.md#i_error), [`V_MarkRect`](#v_markrect)
 
 ---
 
@@ -467,6 +468,8 @@ void V_DrawRawScreen(byte *raw)
 |---|---|---|---|
 | `raw` | `byte *` |  |  |
 
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
+
 ---
 
 <a id="v_init"></a>
@@ -533,7 +536,7 @@ void WritePCXfile(char *filename, byte *data, int width, int height, byte *palet
 | `height` | `int` |  |  |
 | `palette` | `byte *` |  |  |
 
-*Calls:* [`SHORT`](progs.doomgeneric.i_swap.h.md#short), [`M_WriteFile`](progs.doomgeneric.m_misc.c.md#m_writefile), [`Z_Free`](progs.doomgeneric.z_zone.h.md#z_free), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
+*Calls:* [`memset`](kernel.string.c.md#memset), [`SHORT`](progs.doomgeneric.i_swap.h.md#short), [`M_WriteFile`](progs.doomgeneric.m_misc.c.md#m_writefile), [`Z_Free`](progs.doomgeneric.z_zone.h.md#z_free), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
 
 *Called by:* [`V_ScreenShot`](#v_screenshot)
 

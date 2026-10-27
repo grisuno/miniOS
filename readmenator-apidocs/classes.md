@@ -19,6 +19,8 @@ Project types nested under the project types they derive from. External bases ar
 - [`atexit_listentry_s`](modules/progs.doomgeneric.i_system.c.md#atexit_listentry_s) struct in `progs/doomgeneric/i_system.c`
 - [`atexit_listentry_t`](modules/progs.doomgeneric.i_system.c.md#atexit_listentry_t) type_alias in `progs/doomgeneric/i_system.c`
 - [`audio_ops_t`](modules/headers.driver.h.md#audio_ops_t) struct in `headers/driver.h`
+- [`AvatarConfig`](modules/tools.gen_avatar.py.md#avatarconfig) class in `tools.gen_avatar`
+- [`AvatarPainter`](modules/tools.gen_avatar.py.md#avatarpainter) class in `tools.gen_avatar`
 - [`base`](modules/headers.vma.h.md#base) type_alias in `headers/vma.h`
 - [`batch_op_t`](modules/headers.batch.h.md#batch_op_t) struct in `headers/batch.h`
 - [`Binding`](modules/progs.lisp.lisp.c.md#binding) type_alias in `progs/lisp/lisp.c`
@@ -29,6 +31,8 @@ Project types nested under the project types they derive from. External bases ar
 - [`castinfo_t`](modules/progs.doomgeneric.f_finale.c.md#castinfo_t) struct in `progs/doomgeneric/f_finale.c`
 - [`channel_t`](modules/progs.doomgeneric.s_sound.c.md#channel_t) struct in `progs/doomgeneric/s_sound.c`
 - [`cheatseq_t`](modules/progs.doomgeneric.m_cheat.h.md#cheatseq_t) struct in `progs/doomgeneric/m_cheat.h`
+- [`chrome_tint_t`](modules/kernel.vga_fb.c.md#chrome_tint_t) struct in `kernel/vga_fb.c`
+- [`chrome_win_t`](modules/kernel.vga_fb.c.md#chrome_win_t) struct in `kernel/vga_fb.c`
 - [`ChunkHeader`](modules/progs.minicraft.minicraft.c.md#chunkheader) struct in `progs/minicraft/minicraft.c`
 - [`Client`](modules/mcp.mcp_dbg_driver.py.md#client) class in `mcp.mcp_dbg_driver`
 - [`Client`](modules/mcp.mcp_dogfood.py.md#client) class in `mcp.mcp_dogfood`
@@ -405,6 +409,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`wlclient_pat_t`](modules/progs.wl.wlcomp.c.md#wlclient_pat_t) struct in `progs/wl/wlcomp.c`
 - [`wlcomp_cfg_t`](modules/progs.wl.wlcomp.c.md#wlcomp_cfg_t) struct in `progs/wl/wlcomp.c`
 - [`wlserv_t`](modules/progs.wl.wlcomp.c.md#wlserv_t) struct in `progs/wl/wlcomp.c`
+- [`wm_chrome_config_t`](modules/headers.wm_chrome.h.md#wm_chrome_config_t) struct in `headers/wm_chrome.h`
 - [`wm_combo_t`](modules/headers.wm_events.h.md#wm_combo_t) struct in `headers/wm_events.h`
 - [`wm_event_config_t`](modules/headers.wm_events.h.md#wm_event_config_t) struct in `headers/wm_events.h`
 - [`wm_event_t`](modules/headers.wm_events.h.md#wm_event_t) struct in `headers/wm_events.h`

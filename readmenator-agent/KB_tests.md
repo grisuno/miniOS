@@ -49,6 +49,15 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
 - Depends on: `headers/batch.h`
 
+## tests/test_chrome.c
+- Doc: Docstring: Host test for headers/wm_chrome.h (make test-chrome).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `main` (function, line 23) `int main(void)`
+  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
+- Depends on: `headers/wm_chrome.h`
+
 ## tests/test_doom_pwad.py
 - Doc: host contract suite for tools/doom_pwad.py.
 - Layer: testing

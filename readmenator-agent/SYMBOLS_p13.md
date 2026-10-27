@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ENDGAME` | macro | `progs/doomgeneric/d_englsh.h:61` | `#define ENDGAME` |
+| `GAMMALVL0` | macro | `progs/doomgeneric/d_englsh.h:67` | `#define GAMMALVL0` |
+| `GAMMALVL1` | macro | `progs/doomgeneric/d_englsh.h:68` | `#define GAMMALVL1` |
+| `GAMMALVL2` | macro | `progs/doomgeneric/d_englsh.h:69` | `#define GAMMALVL2` |
+| `GAMMALVL3` | macro | `progs/doomgeneric/d_englsh.h:70` | `#define GAMMALVL3` |
+| `GAMMALVL4` | macro | `progs/doomgeneric/d_englsh.h:71` | `#define GAMMALVL4` |
+| `GGSAVED` | macro | `progs/doomgeneric/d_englsh.h:132` | `#define GGSAVED` |
+| `GOTARMBONUS` | macro | `progs/doomgeneric/d_englsh.h:80` | `#define GOTARMBONUS` |
+| `GOTARMOR` | macro | `progs/doomgeneric/d_englsh.h:77` | `#define GOTARMOR` |
+| `GOTBACKPACK` | macro | `progs/doomgeneric/d_englsh.h:109` | `#define GOTBACKPACK` |
+| `GOTBERSERK` | macro | `progs/doomgeneric/d_englsh.h:94` | `#define GOTBERSERK` |
+| `GOTBFG9000` | macro | `progs/doomgeneric/d_englsh.h:111` | `#define GOTBFG9000` |
+| `GOTBLUECARD` | macro | `progs/doomgeneric/d_englsh.h:86` | `#define GOTBLUECARD` |
+| `GOTBLUESKUL` | macro | `progs/doomgeneric/d_englsh.h:89` | `#define GOTBLUESKUL` |
+| `GOTCELL` | macro | `progs/doomgeneric/d_englsh.h:105` | `#define GOTCELL` |
+| `GOTCELLBOX` | macro | `progs/doomgeneric/d_englsh.h:106` | `#define GOTCELLBOX` |
+| `GOTCHAINGUN` | macro | `progs/doomgeneric/d_englsh.h:112` | `#define GOTCHAINGUN` |
+| `GOTCHAINSAW` | macro | `progs/doomgeneric/d_englsh.h:113` | `#define GOTCHAINSAW` |
+| `GOTCLIP` | macro | `progs/doomgeneric/d_englsh.h:101` | `#define GOTCLIP` |
+| `GOTCLIPBOX` | macro | `progs/doomgeneric/d_englsh.h:102` | `#define GOTCLIPBOX` |
+| `GOTHTHBONUS` | macro | `progs/doomgeneric/d_englsh.h:79` | `#define GOTHTHBONUS` |
+| `GOTINVIS` | macro | `progs/doomgeneric/d_englsh.h:95` | `#define GOTINVIS` |
+| `GOTINVUL` | macro | `progs/doomgeneric/d_englsh.h:93` | `#define GOTINVUL` |
+| `GOTLAUNCHER` | macro | `progs/doomgeneric/d_englsh.h:114` | `#define GOTLAUNCHER` |
+| `GOTMAP` | macro | `progs/doomgeneric/d_englsh.h:97` | `#define GOTMAP` |
+| `GOTMEDIKIT` | macro | `progs/doomgeneric/d_englsh.h:83` | `#define GOTMEDIKIT` |
+| `GOTMEDINEED` | macro | `progs/doomgeneric/d_englsh.h:82` | `#define GOTMEDINEED` |
+| `GOTMEGA` | macro | `progs/doomgeneric/d_englsh.h:78` | `#define GOTMEGA` |
+| `GOTMSPHERE` | macro | `progs/doomgeneric/d_englsh.h:99` | `#define GOTMSPHERE` |
+| `GOTPLASMA` | macro | `progs/doomgeneric/d_englsh.h:115` | `#define GOTPLASMA` |
+| `GOTREDCARD` | macro | `progs/doomgeneric/d_englsh.h:88` | `#define GOTREDCARD` |
+| `GOTREDSKULL` | macro | `progs/doomgeneric/d_englsh.h:91` | `#define GOTREDSKULL` |
+| `GOTROCKBOX` | macro | `progs/doomgeneric/d_englsh.h:104` | `#define GOTROCKBOX` |
+| `GOTROCKET` | macro | `progs/doomgeneric/d_englsh.h:103` | `#define GOTROCKET` |
+| `GOTSHELLBOX` | macro | `progs/doomgeneric/d_englsh.h:108` | `#define GOTSHELLBOX` |
+| `GOTSHELLS` | macro | `progs/doomgeneric/d_englsh.h:107` | `#define GOTSHELLS` |
+| `GOTSHOTGUN` | macro | `progs/doomgeneric/d_englsh.h:116` | `#define GOTSHOTGUN` |
+| `GOTSHOTGUN2` | macro | `progs/doomgeneric/d_englsh.h:117` | `#define GOTSHOTGUN2` |
+| `GOTSTIM` | macro | `progs/doomgeneric/d_englsh.h:81` | `#define GOTSTIM` |
+| `GOTSUIT` | macro | `progs/doomgeneric/d_englsh.h:96` | `#define GOTSUIT` |
+| `GOTSUPER` | macro | `progs/doomgeneric/d_englsh.h:84` | `#define GOTSUPER` |
+| `GOTVISOR` | macro | `progs/doomgeneric/d_englsh.h:98` | `#define GOTVISOR` |
+| `GOTYELWCARD` | macro | `progs/doomgeneric/d_englsh.h:87` | `#define GOTYELWCARD` |
+| `GOTYELWSKUL` | macro | `progs/doomgeneric/d_englsh.h:90` | `#define GOTYELWSKUL` |
+| `HUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:179` | `#define HUSTR_1` |
+| `HUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:188` | `#define HUSTR_10` |
+| `HUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:189` | `#define HUSTR_11` |
+| `HUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:191` | `#define HUSTR_12` |
 | `HUSTR_13` | macro | `progs/doomgeneric/d_englsh.h:192` | `#define HUSTR_13` |
 | `HUSTR_14` | macro | `progs/doomgeneric/d_englsh.h:193` | `#define HUSTR_14` |
 | `HUSTR_15` | macro | `progs/doomgeneric/d_englsh.h:194` | `#define HUSTR_15` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric.h:15` | `void DG_DrawFrame();` |
 | `DG_GetKey` | function | `progs/doomgeneric/doomgeneric.h:18` | `int DG_GetKey(int* pressed, unsigned char* key);` |
 | `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric.h:17` | `uint32_t DG_GetTicksMs();` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric.h:14` | `void DG_Init();` |
-| `DG_ScreenBuffer` | variable | `progs/doomgeneric/doomgeneric.h:11` | `extern uint32_t* DG_ScreenBuffer;` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric.h:19` | `void DG_SetWindowTitle(const char * title);` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric.h:16` | `void DG_SleepMs(uint32_t ms);` |
-| `DOOMGENERIC_RESX` | macro | `progs/doomgeneric/doomgeneric.h:7` | `#define DOOMGENERIC_RESX` |
-| `DOOMGENERIC_RESY` | macro | `progs/doomgeneric/doomgeneric.h:8` | `#define DOOMGENERIC_RESY` |
-| `DOOM_GENERIC` | macro | `progs/doomgeneric/doomgeneric.h:2` | `#define DOOM_GENERIC` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_minios.c:243` | `void DG_DrawFrame(void)` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_minios.c:284` | `int DG_GetKey(int *pressed, unsigned char *key)` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_minios.c:280` | `uint32_t DG_GetTicksMs(void)` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric_minios.c:232` | `void DG_Init(void)` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_minios.c:295` | `void DG_SetWindowTitle(const char *title)` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_minios.c:274` | `void DG_SleepMs(uint32_t ms)` |
-| `FB_ADDR` | macro | `progs/doomgeneric/doomgeneric_minios.c:96` | `#define FB_ADDR` |
-| `FB_HEIGHT` | macro | `progs/doomgeneric/doomgeneric_minios.c:98` | `#define FB_HEIGHT` |
-| `FB_WIDTH` | macro | `progs/doomgeneric/doomgeneric_minios.c:97` | `#define FB_WIDTH` |
-| `I_VideoBuffer` | variable | `progs/doomgeneric/doomgeneric_minios.c:230` | `extern unsigned char *I_VideoBuffer;` |
-| `KBD_QUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_minios.c:178` | `#define KBD_QUEUE_SIZE` |
-| `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/doomgeneric/doomgeneric_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
-| `color` | struct | `progs/doomgeneric/doomgeneric_minios.c:103` | `` |
-| `colors` | variable | `progs/doomgeneric/doomgeneric_minios.c:104` | `extern struct color colors[256];` |
-| `kbd_enqueue` | function | `progs/doomgeneric/doomgeneric_minios.c:182` | `static void kbd_enqueue(unsigned char doom_key, int pressed)` |
-| `kbd_poll` | function | `progs/doomgeneric/doomgeneric_minios.c:189` | `static void kbd_poll(void)` |
-| `load_vga_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:110` | `static void load_vga_palette(void)` |
-| `mini_parse_autoframes` | function | `progs/doomgeneric/doomgeneric_minios.c:24` | `static void mini_parse_autoframes(int argc, char **argv)` |
-| `mini_parse_windowed` | function | `progs/doomgeneric/doomgeneric_minios.c:43` | `static void mini_parse_windowed(int argc, char **argv)` |
-| `myargc` | variable | `progs/doomgeneric/doomgeneric_minios.c:233` | `extern int myargc;` |
-| `myargv` | variable | `progs/doomgeneric/doomgeneric_minios.c:234` | `extern char **myargv;` |
-| `scancode_to_doom` | function | `progs/doomgeneric/doomgeneric_minios.c:123` | `static unsigned char scancode_to_doom(unsigned char raw)` |
-| `sys_doom_frame` | function | `progs/doomgeneric/doomgeneric_minios.c:86` | `static long sys_doom_frame(void)` |
-| `sys_gfx_zoom` | function | `progs/doomgeneric/doomgeneric_minios.c:81` | `static long sys_gfx_zoom(long mode)` |
-| `sys_kbd` | function | `progs/doomgeneric/doomgeneric_minios.c:61` | `static long sys_kbd(void)` |
-| `sys_kbd_raw` | function | `progs/doomgeneric/doomgeneric_minios.c:71` | `static long sys_kbd_raw(int on)` |
-| `sys_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:66` | `static long sys_palette(const unsigned char *pal)` |
-| `sys_time_ms` | function | `progs/doomgeneric/doomgeneric_minios.c:56` | `static long sys_time_ms(void)` |
-| `sys_vga_mode` | function | `progs/doomgeneric/doomgeneric_minios.c:76` | `static long sys_vga_mode(int on)` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_sdl.c:112` | `void DG_DrawFrame()` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_sdl.c:133` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_sdl.c:128` | `uint32_t DG_GetTicksMs()` |
-| `DG_Init` | function | `progs/doomgeneric/doomgeneric_sdl.c:93` | `void DG_Init()` |
-| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_sdl.c:152` | `void DG_SetWindowTitle(const char * title)` |
-| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_sdl.c:123` | `void DG_SleepMs(uint32_t ms)` |
-| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_sdl.c:17` | `#define KEYQUEUE_SIZE` |
-| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_sdl.c:63` | `static void addKeyToQueue(int pressed, unsigned int keyCode)` |
-| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_sdl.c:23` | `static unsigned char convertToDoomKey(unsigned int key)` |
-| `handleKeyInput` | function | `progs/doomgeneric/doomgeneric_sdl.c:72` | `static void handleKeyInput()` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_soso.c:214` | `void DG_DrawFrame()` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_soso.c:237` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

@@ -47,6 +47,7 @@ class Config:
     dark_level = 24
     dark_fraction = 0.90
     desk_fraction = 0.30
+    desk_probe = (0.68, 0.17, 0.98, 0.88)
 
 
 FAIL = []
@@ -136,7 +137,8 @@ def main():
         print("info " + row["raw"], flush=True)
         note(row.get("view") == "floating", "Alt+Enter returns to floating")
         shot = Image.open(g.dump("gv_float"))
-        corner = dark_share(shot, (0, 0, fw // 6, fh // 6))
+        px0, py0, px1, py1 = Config.desk_probe
+        corner = dark_share(shot, (int(fw * px0), int(fh * py0), int(fw * px1), int(fh * py1)))
         note(corner < 1.0 - Config.desk_fraction,
              "floating window shows the desktop around it (dark %.2f)" % corner)
 

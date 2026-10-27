@@ -2,53 +2,53 @@
  "schema_version": 1,
  "format": "jsonl",
  "meta": {
-  "modules": 512,
-  "entities": 10422,
+  "modules": 515,
+  "entities": 10492,
   "languages": {
    "S": 7,
    "c": 239,
-   "h": 194,
-   "py": 49,
+   "h": 196,
+   "py": 50,
    "s": 13,
    "sh": 10
   },
   "kinds": {
-   "attribute": 175,
-   "class": 37,
-   "constant": 186,
-   "constructor": 23,
+   "attribute": 193,
+   "class": 39,
+   "constant": 189,
+   "constructor": 24,
    "enum": 3,
    "exception": 5,
-   "function": 4514,
-   "macro": 3874,
-   "method": 116,
-   "module": 512,
+   "function": 4534,
+   "macro": 3885,
+   "method": 125,
+   "module": 515,
    "property": 2,
    "staticmethod": 6,
-   "struct": 317,
+   "struct": 320,
    "type_alias": 74,
    "variable": 578
   },
   "truncated": false,
-  "skipped_files": 77,
+  "skipped_files": 79,
   "privacy_mode": false
  },
  "coverage": {
   "overall": {
-   "documented": 2801,
-   "total": 9483,
-   "percent": 29.5
+   "documented": 2831,
+   "total": 9532,
+   "percent": 29.7
   },
   "by_kind": {
    "class": {
-    "documented": 25,
-    "total": 37,
-    "percent": 67.6
+    "documented": 27,
+    "total": 39,
+    "percent": 69.2
    },
    "constructor": {
     "documented": 3,
-    "total": 23,
-    "percent": 13.0
+    "total": 24,
+    "percent": 12.5
    },
    "enum": {
     "documented": 2,
@@ -61,24 +61,24 @@
     "percent": 100.0
    },
    "function": {
-    "documented": 1473,
-    "total": 4514,
-    "percent": 32.6
+    "documented": 1490,
+    "total": 4534,
+    "percent": 32.9
    },
    "macro": {
-    "documented": 664,
-    "total": 3874,
-    "percent": 17.1
+    "documented": 669,
+    "total": 3885,
+    "percent": 17.2
    },
    "method": {
     "documented": 24,
-    "total": 116,
-    "percent": 20.7
+    "total": 125,
+    "percent": 19.2
    },
    "module": {
-    "documented": 424,
-    "total": 512,
-    "percent": 82.8
+    "documented": 427,
+    "total": 515,
+    "percent": 82.9
    },
    "property": {
     "documented": 0,
@@ -91,9 +91,9 @@
     "percent": 100.0
    },
    "struct": {
-    "documented": 133,
-    "total": 317,
-    "percent": 42.0
+    "documented": 136,
+    "total": 320,
+    "percent": 42.5
    },
    "type_alias": {
     "documented": 42,
@@ -306,6 +306,11 @@
     "documented": 7,
     "total": 18,
     "percent": 38.9
+   },
+   "headers/avatar_data.h": {
+    "documented": 1,
+    "total": 2,
+    "percent": 50.0
    },
    "headers/batch.h": {
     "documented": 1,
@@ -637,6 +642,11 @@
     "total": 18,
     "percent": 22.2
    },
+   "headers/wm_chrome.h": {
+    "documented": 14,
+    "total": 15,
+    "percent": 93.3
+   },
    "headers/wm_events.h": {
     "documented": 16,
     "total": 39,
@@ -853,9 +863,9 @@
     "percent": 87.5
    },
    "kernel/string.c": {
-    "documented": 2,
-    "total": 14,
-    "percent": 14.3
+    "documented": 4,
+    "total": 19,
+    "percent": 21.1
    },
    "kernel/symtab.c": {
     "documented": 1,
@@ -893,9 +903,9 @@
     "percent": 88.9
    },
    "kernel/vga_fb.c": {
-    "documented": 57,
-    "total": 110,
-    "percent": 51.8
+    "documented": 61,
+    "total": 118,
+    "percent": 51.7
    },
    "kernel/vga_fx.c": {
     "documented": 3,
@@ -2507,10 +2517,15 @@
     "total": 3,
     "percent": 33.3
    },
+   "tools/gen_avatar.py": {
+    "documented": 7,
+    "total": 17,
+    "percent": 41.2
+   },
    "tools/gen_desktop_pngs.py": {
-    "documented": 1,
-    "total": 3,
-    "percent": 33.3
+    "documented": 3,
+    "total": 5,
+    "percent": 60.0
    },
    "tools/gen_icons.py": {
     "documented": 2,
@@ -2871,6 +2886,11 @@
    "entities": 18
   },
   {
+   "uid": "headers/avatar_data.h",
+   "path": "modules/headers.avatar_data.h.jsonl",
+   "entities": 2
+  },
+  {
    "uid": "headers/batch.h",
    "path": "modules/headers.batch.h.jsonl",
    "entities": 12
@@ -3201,6 +3221,11 @@
    "entities": 26
   },
   {
+   "uid": "headers/wm_chrome.h",
+   "path": "modules/headers.wm_chrome.h.jsonl",
+   "entities": 15
+  },
+  {
    "uid": "headers/wm_events.h",
    "path": "modules/headers.wm_events.h.jsonl",
    "entities": 39
@@ -3418,7 +3443,7 @@
   {
    "uid": "kernel/string.c",
    "path": "modules/kernel.string.c.jsonl",
-   "entities": 14
+   "entities": 19
   },
   {
    "uid": "kernel/symtab.c",
@@ -3458,7 +3483,7 @@
   {
    "uid": "kernel/vga_fb.c",
    "path": "modules/kernel.vga_fb.c.jsonl",
-   "entities": 110
+   "entities": 118
   },
   {
    "uid": "kernel/vga_fx.c",
@@ -5071,9 +5096,14 @@
    "entities": 3
   },
   {
+   "uid": "tools/gen_avatar.py",
+   "path": "modules/tools.gen_avatar.py.jsonl",
+   "entities": 35
+  },
+  {
    "uid": "tools/gen_desktop_pngs.py",
    "path": "modules/tools.gen_desktop_pngs.py.jsonl",
-   "entities": 5
+   "entities": 10
   },
   {
    "uid": "tools/gen_icons.py",
@@ -5228,7 +5258,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 6673
+  "total": 6691
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

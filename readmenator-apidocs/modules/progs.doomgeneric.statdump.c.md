@@ -14,9 +14,11 @@ Solid arrows stay in this module, dashed arrows leave it.
 ```mermaid
 flowchart LR
     n_progs_doomgeneric_statdump_c__StatCopy(["StatCopy"])
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_doomgeneric_m_argv_c__M_ParmExists["m_argv.M_ParmExists"]
     n_progs_doomgeneric_statdump_c__StatDump(["StatDump"])
     n_progs_doomgeneric_m_argv_h__M_CheckParmWithArgs["m_argv.M_CheckParmWithArgs"]
+    n_progs_doomgeneric_statdump_c__StatCopy -.-> n_kernel_string_c__memcpy
     n_progs_doomgeneric_statdump_c__StatCopy -.-> n_progs_doomgeneric_m_argv_c__M_ParmExists
     n_progs_doomgeneric_statdump_c__StatDump -.-> n_progs_doomgeneric_m_argv_h__M_CheckParmWithArgs
 ```
@@ -39,7 +41,7 @@ void StatCopy(wbstartstruct_t *stats)
 |---|---|---|---|
 | `stats` | `wbstartstruct_t *` |  |  |
 
-*Calls:* [`M_ParmExists`](progs.doomgeneric.m_argv.c.md#m_parmexists)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`M_ParmExists`](progs.doomgeneric.m_argv.c.md#m_parmexists)
 
 ---
 

@@ -7,6 +7,17 @@
 - **Functions:** [`main`](#main)
 - **Macros:** [`_GNU_SOURCE`](#_gnu_source), [`LXNET_WAIT_MS`](#lxnet_wait_ms), [`LXNET_BUF`](#lxnet_buf), [`LXNET_UDP_MSG`](#lxnet_udp_msg), [`LXNET_TCP_MSG`](#lxnet_tcp_msg), [`LXNET_LOOPBACK`](#lxnet_loopback), [`LXNET_IP_UNKNOWN`](#lxnet_ip_unknown)
 
+## Call Graph
+
+Solid arrows stay in this module, dashed arrows leave it.
+
+```mermaid
+flowchart LR
+    n_progs_src_lxnet_c__main(["main"])
+    n_kernel_string_c__memset["string.memset"]
+    n_progs_src_lxnet_c__main -.-> n_kernel_string_c__memset
+```
+
 ## Functions
 
 <a id="main"></a>
@@ -27,6 +38,8 @@ int main(int argc, char **argv)
 | `argv` | `char **` |  |  |
 
 **Returns:** `int`
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 ---
 

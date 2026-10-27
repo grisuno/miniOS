@@ -18,8 +18,10 @@ Solid arrows stay in this module, dashed arrows leave it.
 ```mermaid
 flowchart LR
     n_progs_doomgeneric_i_endoom_c__I_Endoom(["I_Endoom"])
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_doomgeneric_i_video_h__I_InitWindowIcon["i_video.I_InitWindowIcon"]
     n_progs_doomgeneric_i_video_h__I_InitWindowTitle["i_video.I_InitWindowTitle"]
+    n_progs_doomgeneric_i_endoom_c__I_Endoom -.-> n_kernel_string_c__memcpy
     n_progs_doomgeneric_i_endoom_c__I_Endoom -.-> n_progs_doomgeneric_i_video_h__I_InitWindowIcon
     n_progs_doomgeneric_i_endoom_c__I_Endoom -.-> n_progs_doomgeneric_i_video_h__I_InitWindowTitle
 ```
@@ -42,7 +44,7 @@ void I_Endoom(byte *endoom_data)
 |---|---|---|---|
 | `endoom_data` | `byte *` |  |  |
 
-*Calls:* [`I_InitWindowIcon`](progs.doomgeneric.i_video.h.md#i_initwindowicon), [`I_InitWindowTitle`](progs.doomgeneric.i_video.h.md#i_initwindowtitle)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`I_InitWindowIcon`](progs.doomgeneric.i_video.h.md#i_initwindowicon), [`I_InitWindowTitle`](progs.doomgeneric.i_video.h.md#i_initwindowtitle)
 
 ---
 

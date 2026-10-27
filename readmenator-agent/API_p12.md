@@ -1,6 +1,104 @@
 # API (page 12 of 21)
 Previous: [API_p11.md](API_p11.md)
 
+## progs/doomgeneric/i_cdmus.h
+Imported by: `progs/doomgeneric/i_cdmus.c`
+- `I_CDMusInit` (function) `progs/doomgeneric/i_cdmus.h:31` `int I_CDMusInit(void);`
+- `I_CDMusPrintStartup` (function) `progs/doomgeneric/i_cdmus.h:32` `void I_CDMusPrintStartup(void);`
+- `I_CDMusPlay` (function) `progs/doomgeneric/i_cdmus.h:33` `int I_CDMusPlay(int track);`
+- `I_CDMusStop` (function) `progs/doomgeneric/i_cdmus.h:34` `int I_CDMusStop(void);`
+- `I_CDMusResume` (function) `progs/doomgeneric/i_cdmus.h:35` `int I_CDMusResume(void);`
+- `I_CDMusSetVolume` (function) `progs/doomgeneric/i_cdmus.h:36` `int I_CDMusSetVolume(int volume);`
+- `I_CDMusFirstTrack` (function) `progs/doomgeneric/i_cdmus.h:37` `int I_CDMusFirstTrack(void);`
+- `I_CDMusLastTrack` (function) `progs/doomgeneric/i_cdmus.h:38` `int I_CDMusLastTrack(void);`
+- `I_CDMusTrackLength` (function) `progs/doomgeneric/i_cdmus.h:39` `int I_CDMusTrackLength(int track);`
+
+## progs/doomgeneric/i_endoom.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`
+- `I_Endoom` (function) `progs/doomgeneric/i_endoom.c:36` `void I_Endoom(byte *endoom_data)`
+
+## progs/doomgeneric/i_endoom.h
+Imported by: `progs/doomgeneric/d_main.c`
+- `I_Endoom` (function) `progs/doomgeneric/i_endoom.h:26` `void I_Endoom(byte *data);`
+
+## progs/doomgeneric/i_input.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_scale.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/tables.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `TranslateKey` (function) `progs/doomgeneric/i_input.c:225` `static unsigned char TranslateKey(unsigned char key)`
+- `GetTypedChar` (function) `progs/doomgeneric/i_input.c:242` `static unsigned char GetTypedChar(unsigned char key)`
+- `UpdateShiftStatus` (function) `progs/doomgeneric/i_input.c:263` `static void UpdateShiftStatus(int pressed, unsigned char key)`
+- `I_GetEvent` (function) `progs/doomgeneric/i_input.c:279` `void I_GetEvent(void)`
+- `I_InitInput` (function) `progs/doomgeneric/i_input.c:338` `void I_InitInput(void)`
+
+## progs/doomgeneric/i_joystick.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/pokemon/minios_stubs/SDL.h`
+- `I_ShutdownJoystick` (function) `progs/doomgeneric/i_joystick.c:77` `void I_ShutdownJoystick(void)`
+- `IsValidAxis` (function) `progs/doomgeneric/i_joystick.c:90` `static boolean IsValidAxis(int axis)` -- ifdef ORIGCODE
+- `I_InitJoystick` (function) `progs/doomgeneric/i_joystick.c:115` `void I_InitJoystick(void)`
+- `IsAxisButton` (function) `progs/doomgeneric/i_joystick.c:171` `static boolean IsAxisButton(int physbutton)` -- ifdef ORIGCODE
+- `ReadButtonState` (function) `progs/doomgeneric/i_joystick.c:203` `static int ReadButtonState(int vbutton)`
+- `GetButtonsState` (function) `progs/doomgeneric/i_joystick.c:228` `static int GetButtonsState(void)`
+- `GetAxisState` (function) `progs/doomgeneric/i_joystick.c:248` `static int GetAxisState(int axis, int invert)`
+- `I_UpdateJoystick` (function) `progs/doomgeneric/i_joystick.c:321` `void I_UpdateJoystick(void)` -- endif
+- `I_BindJoystickVariables` (function) `progs/doomgeneric/i_joystick.c:339` `void I_BindJoystickVariables(void)`
+
+## progs/doomgeneric/i_joystick.h
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.c`
+- `I_InitJoystick` (function) `progs/doomgeneric/i_joystick.h:63` `void I_InitJoystick(void);`
+- `I_ShutdownJoystick` (function) `progs/doomgeneric/i_joystick.h:64` `void I_ShutdownJoystick(void);`
+- `I_UpdateJoystick` (function) `progs/doomgeneric/i_joystick.h:65` `void I_UpdateJoystick(void);`
+- `I_BindJoystickVariables` (function) `progs/doomgeneric/i_joystick.h:67` `void I_BindJoystickVariables(void);`
+
+## progs/doomgeneric/i_main.c
+Depends on: `progs/doomgeneric/m_argv.h`
+- `D_DoomMain` (function) `progs/doomgeneric/i_main.c:33` `void D_DoomMain (void);`
+- `M_FindResponseFile` (function) `progs/doomgeneric/i_main.c:35` `void M_FindResponseFile(void);`
+- `dg_Create` (function) `progs/doomgeneric/i_main.c:37` `void dg_Create();`
+- `main` (function) `progs/doomgeneric/i_main.c:40` `int main(int argc, char **argv)`
+
+## progs/doomgeneric/i_minios_sound.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomgeneric.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`, `progs/minios_abi.h`
+- `sys_tone_hw` (function) `progs/doomgeneric/i_minios_sound.c:32` `static long sys_tone_hw(unsigned f)`
+- `sys_time` (function) `progs/doomgeneric/i_minios_sound.c:35` `static long sys_time(void)`
+- `sys_pcm2_open` (function) `progs/doomgeneric/i_minios_sound.c:38` `static long sys_pcm2_open(long flags)`
+- `sys_pcm2_write` (function) `progs/doomgeneric/i_minios_sound.c:41` `static long sys_pcm2_write(const void *buf, long len)`
+- `sys_pcm2_close` (function) `progs/doomgeneric/i_minios_sound.c:44` `static void sys_pcm2_close(void)`
+- `muted` (function) `progs/doomgeneric/i_minios_sound.c:51` `* pcm2 while sfx stay muted (effect tones ruined the melody);`
+- `audio_ensure` (function) `progs/doomgeneric/i_minios_sound.c:68` `static void audio_ensure(void)`
+- `audio_pump` (function) `progs/doomgeneric/i_minios_sound.c:77` `static void audio_pump(void)` -- SFX are muted on pcm2 (music only): effect tones ruined the melody, so audio_pump below only advances the shared...
+- `audio_tone` (function) `progs/doomgeneric/i_minios_sound.c:85` `static void audio_tone(unsigned freq)`
+- `audio_close` (function) `progs/doomgeneric/i_minios_sound.c:92` `static void audio_close(void)`
+- `mus_read_varlen` (function) `progs/doomgeneric/i_minios_sound.c:169` `static int mus_read_varlen(mus_player_t *m, unsigned long *out)`
+- `mus_next_block` (function) `progs/doomgeneric/i_minios_sound.c:183` `static int mus_next_block(mus_player_t *m, unsigned long *out)` -- Process one full block of events at the current tick and advance pos past * its delta.
+- `mus_note_cmp` (function) `progs/doomgeneric/i_minios_sound.c:228` `static int mus_note_cmp(const void *a, const void *b)`
+- `mus_build_chord` (function) `progs/doomgeneric/i_minios_sound.c:236` `static void mus_build_chord(mus_player_t *m)` -- Split the sounding notes into a bass pedal (the lowest note below the bass line) and the melody arpeggio (the...
+- `mus_hold_tone` (function) `progs/doomgeneric/i_minios_sound.c:261` `static void mus_hold_tone(unsigned freq, unsigned long ms)` -- Hold a tone for the given number of milliseconds.
+- `mus_play_chord` (function) `progs/doomgeneric/i_minios_sound.c:274` `static void mus_play_chord(mus_player_t *m)` -- Play one full cycle of the pseudo-polyphony: the bass pedal first, held long like the NES triangle voice, then the...
+- `mus_advance` (function) `progs/doomgeneric/i_minios_sound.c:288` `static void mus_advance(mus_player_t *m, unsigned long ms)`
+- `mus_render_pcm` (function) `progs/doomgeneric/i_minios_sound.c:320` `static void mus_render_pcm(mus_player_t *m, unsigned char *out, unsigned n)` -- Polyphonic pcm2 music: every sounding voice at once, as the score has it.
+- `mus_render_push` (function) `progs/doomgeneric/i_minios_sound.c:359` `static void mus_render_push(mus_player_t *m, unsigned n)`
+- `mus_advance_pcm` (function) `progs/doomgeneric/i_minios_sound.c:369` `static void mus_advance_pcm(mus_player_t *m)`
+- `MUS_Init` (function) `progs/doomgeneric/i_minios_sound.c:410` `static boolean MUS_Init(void)`
+- `MUS_Shutdown` (function) `progs/doomgeneric/i_minios_sound.c:415` `static void MUS_Shutdown(void)`
+- `MUS_SetMusicVolume` (function) `progs/doomgeneric/i_minios_sound.c:422` `static void MUS_SetMusicVolume(int volume)`
+- `MUS_Pause` (function) `progs/doomgeneric/i_minios_sound.c:424` `static void MUS_Pause(void)`
+- `MUS_Resume` (function) `progs/doomgeneric/i_minios_sound.c:425` `static void MUS_Resume(void)`
+- `MUS_RegisterSong` (function) `progs/doomgeneric/i_minios_sound.c:427` `static void *MUS_RegisterSong(void *data, int len)`
+- `MUS_UnRegisterSong` (function) `progs/doomgeneric/i_minios_sound.c:442` `static void MUS_UnRegisterSong(void *handle)`
+- `MUS_PlaySong` (function) `progs/doomgeneric/i_minios_sound.c:448` `static void MUS_PlaySong(void *handle, boolean looping)`
+- `MUS_StopSong` (function) `progs/doomgeneric/i_minios_sound.c:469` `static void MUS_StopSong(void)`
+- `MUS_MusicIsPlaying` (function) `progs/doomgeneric/i_minios_sound.c:474` `static boolean MUS_MusicIsPlaying(void)`
+- `MUS_Poll` (function) `progs/doomgeneric/i_minios_sound.c:478` `static void MUS_Poll(void)`
+- `PCSPK_Init` (function) `progs/doomgeneric/i_minios_sound.c:512` `static boolean PCSPK_Init(boolean use_sfx_prefix)`
+- `PCSPK_Shutdown` (function) `progs/doomgeneric/i_minios_sound.c:519` `static void PCSPK_Shutdown(void)`
+- `PCSPK_GetSfxLumpNum` (function) `progs/doomgeneric/i_minios_sound.c:529` `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)`
+- `free_channel` (function) `progs/doomgeneric/i_minios_sound.c:540` `static void free_channel(int i)`
+- `PCSPK_Update` (function) `progs/doomgeneric/i_minios_sound.c:549` `static void PCSPK_Update(void)`
+- `PCSPK_UpdateSoundParams` (function) `progs/doomgeneric/i_minios_sound.c:587` `static void PCSPK_UpdateSoundParams(int ch, int v, int s)`
+- `PCSPK_StartSound` (function) `progs/doomgeneric/i_minios_sound.c:591` `static int PCSPK_StartSound(sfxinfo_t *sfx, int channel, int vol, int sep)`
+- `PCSPK_StopSound` (function) `progs/doomgeneric/i_minios_sound.c:641` `static void PCSPK_StopSound(int channel)`
+- `PCSPK_SoundIsPlaying` (function) `progs/doomgeneric/i_minios_sound.c:647` `static boolean PCSPK_SoundIsPlaying(int channel)`
+- `PCSPK_CacheSounds` (function) `progs/doomgeneric/i_minios_sound.c:653` `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)`
+
 ## progs/doomgeneric/i_scale.c
 Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/z_zone.h`
 - `I_InitScale` (function) `progs/doomgeneric/i_scale.c:61` `void I_InitScale(byte *_src_buffer, byte *_dest_buffer, int _dest_pitch)`
@@ -392,95 +490,6 @@ FixedMul
 Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/info.c`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_fixed.c`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/r_sky.c`, `progs/doomgeneric/tables.h`
 - `FixedMul` (function) `progs/doomgeneric/m_fixed.h:34` `fixed_t FixedMul (fixed_t a, fixed_t b);`
 - `FixedDiv` (function) `progs/doomgeneric/m_fixed.h:35` `fixed_t FixedDiv (fixed_t a, fixed_t b);`
-
-## progs/doomgeneric/m_menu.c
-Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `M_StartGame` (function) `progs/doomgeneric/m_menu.c:193` `void M_StartGame(int choice);`
-- `M_ReadSaveStrings` (function) `progs/doomgeneric/m_menu.c:503` `void M_ReadSaveStrings(void)` -- M_ReadSaveStrings read the strings from the savegame files
-- `M_DrawLoad` (function) `progs/doomgeneric/m_menu.c:530` `void M_DrawLoad(void)` -- M_LoadGame & Cie.
-- `M_DrawSaveLoadBorder` (function) `progs/doomgeneric/m_menu.c:549` `void M_DrawSaveLoadBorder(int x,int y)` -- Draw border for the savegame description
-- `M_LoadSelect` (function) `progs/doomgeneric/m_menu.c:572` `void M_LoadSelect(int choice)` -- User wants to load this game
-- `M_LoadGame` (function) `progs/doomgeneric/m_menu.c:585` `void M_LoadGame (int choice)` -- Selected from DOOM menu
-- `M_DrawSave` (function) `progs/doomgeneric/m_menu.c:601` `void M_DrawSave(void)` -- M_SaveGame & Cie.
-- `M_DoSave` (function) `progs/doomgeneric/m_menu.c:622` `void M_DoSave(int slot)` -- M_Responder calls this when user is finished
-- `M_SaveSelect` (function) `progs/doomgeneric/m_menu.c:635` `void M_SaveSelect(int choice)` -- User wants to save.
-- `M_SaveGame` (function) `progs/doomgeneric/m_menu.c:650` `void M_SaveGame (int choice)` -- Selected from DOOM menu
-- `M_QuickSaveResponse` (function) `progs/doomgeneric/m_menu.c:672` `void M_QuickSaveResponse(int key)`
-- `M_QuickSave` (function) `progs/doomgeneric/m_menu.c:681` `void M_QuickSave(void)`
-- `M_QuickLoadResponse` (function) `progs/doomgeneric/m_menu.c:709` `void M_QuickLoadResponse(int key)` -- M_QuickLoad
-- `M_QuickLoad` (function) `progs/doomgeneric/m_menu.c:719` `void M_QuickLoad(void)`
-- `M_DrawReadThis1` (function) `progs/doomgeneric/m_menu.c:743` `void M_DrawReadThis1(void)` -- Read This Menus Had a "quick hack to fix romero bug"
-- `M_DrawReadThis2` (function) `progs/doomgeneric/m_menu.c:820` `void M_DrawReadThis2(void)` -- Read This Menus - optional second page.
-- `M_DrawSound` (function) `progs/doomgeneric/m_menu.c:834` `void M_DrawSound(void)` -- Change Sfx & Music volumes
-- `M_Sound` (function) `progs/doomgeneric/m_menu.c:845` `void M_Sound(int choice)`
-- `M_SfxVol` (function) `progs/doomgeneric/m_menu.c:850` `void M_SfxVol(int choice)`
-- `M_MusicVol` (function) `progs/doomgeneric/m_menu.c:867` `void M_MusicVol(int choice)`
-- `M_DrawMainMenu` (function) `progs/doomgeneric/m_menu.c:890` `void M_DrawMainMenu(void)` -- M_DrawMainMenu
-- `M_DrawNewGame` (function) `progs/doomgeneric/m_menu.c:902` `void M_DrawNewGame(void)` -- M_NewGame
-- `M_NewGame` (function) `progs/doomgeneric/m_menu.c:908` `void M_NewGame(int choice)`
-- `M_DrawEpisode` (function) `progs/doomgeneric/m_menu.c:930` `void M_DrawEpisode(void)`
-- `M_VerifyNightmare` (function) `progs/doomgeneric/m_menu.c:935` `void M_VerifyNightmare(int key)`
-- `M_ChooseSkill` (function) `progs/doomgeneric/m_menu.c:944` `void M_ChooseSkill(int choice)`
-- `M_Episode` (function) `progs/doomgeneric/m_menu.c:956` `void M_Episode(int choice)`
-- `M_DrawOptions` (function) `progs/doomgeneric/m_menu.c:987` `void M_DrawOptions(void)`
-- `M_Options` (function) `progs/doomgeneric/m_menu.c:1007` `void M_Options(int choice)`
-- `M_ChangeMessages` (function) `progs/doomgeneric/m_menu.c:1017` `void M_ChangeMessages(int choice)` -- Toggle messages on/off
-- `M_EndGameResponse` (function) `progs/doomgeneric/m_menu.c:1035` `void M_EndGameResponse(int key)` -- M_EndGame
-- `M_EndGame` (function) `progs/doomgeneric/m_menu.c:1045` `void M_EndGame(int choice)`
-- `M_ReadThis` (function) `progs/doomgeneric/m_menu.c:1069` `void M_ReadThis(int choice)` -- M_ReadThis
-- `M_ReadThis2` (function) `progs/doomgeneric/m_menu.c:1075` `void M_ReadThis2(int choice)`
-- `M_FinishReadThis` (function) `progs/doomgeneric/m_menu.c:1093` `void M_FinishReadThis(int choice)`
-- `M_QuitResponse` (function) `progs/doomgeneric/m_menu.c:1131` `void M_QuitResponse(int key)`
-- `M_SelectEndMessage` (function) `progs/doomgeneric/m_menu.c:1147` `static char *M_SelectEndMessage(void)`
-- `M_QuitDOOM` (function) `progs/doomgeneric/m_menu.c:1168` `void M_QuitDOOM(int choice)`
-- `M_ChangeSensitivity` (function) `progs/doomgeneric/m_menu.c:1179` `void M_ChangeSensitivity(int choice)`
-- `M_ChangeDetail` (function) `progs/doomgeneric/m_menu.c:1197` `void M_ChangeDetail(int choice)`
-- `M_SizeDisplay` (function) `progs/doomgeneric/m_menu.c:1213` `void M_SizeDisplay(int choice)`
-- `M_DrawThermo` (function) `progs/doomgeneric/m_menu.c:1244` `void
-M_DrawThermo
-( int	x,
-  int	y,
-  int	thermWidth,
-  int	thermDot )`
-- `M_DrawEmptyCell` (function) `progs/doomgeneric/m_menu.c:1270` `void
-M_DrawEmptyCell
-( menu_t*	menu,
-  int		item )`
-- `M_DrawSelCell` (function) `progs/doomgeneric/m_menu.c:1279` `void
-M_DrawSelCell
-( menu_t*	menu,
-  int		item )`
-- `M_StartMessage` (function) `progs/doomgeneric/m_menu.c:1289` `void
-M_StartMessage
-( char*		string,
-  void*		routine,
-  boolean	input )`
-- `M_StopMessage` (function) `progs/doomgeneric/m_menu.c:1304` `void M_StopMessage(void)`
-- `M_StringWidth` (function) `progs/doomgeneric/m_menu.c:1315` `int M_StringWidth(char* string)` -- Find string width from hu_font chars
-- `M_StringHeight` (function) `progs/doomgeneric/m_menu.c:1338` `int M_StringHeight(char* string)` -- Find string height from hu_font chars
-- `M_WriteText` (function) `progs/doomgeneric/m_menu.c:1357` `void
-M_WriteText
-( int		x,
-  int		y,
-  char*		string)`
-- `IsNullKey` (function) `progs/doomgeneric/m_menu.c:1403` `static boolean IsNullKey(int key)`
-- `M_Responder` (function) `progs/doomgeneric/m_menu.c:1416` `boolean M_Responder (event_t* ev)` -- M_Responder
-- `M_StartControlPanel` (function) `progs/doomgeneric/m_menu.c:1899` `void M_StartControlPanel (void)` -- M_StartControlPanel
-- `M_DrawOPLDev` (function) `progs/doomgeneric/m_menu.c:1913` `static void M_DrawOPLDev(void)`
-- `I_OPL_DevMessages` (function) `progs/doomgeneric/m_menu.c:1915` `extern void I_OPL_DevMessages(char *, size_t);`
-- `M_Drawer` (function) `progs/doomgeneric/m_menu.c:1951` `void M_Drawer (void)` -- M_Drawer Called after the view has been rendered, but before it has been blitted.
-- `M_ClearMenus` (function) `progs/doomgeneric/m_menu.c:2041` `void M_ClearMenus (void)` -- M_ClearMenus
-- `M_SetupNextMenu` (function) `progs/doomgeneric/m_menu.c:2054` `void M_SetupNextMenu(menu_t *menudef)` -- M_SetupNextMenu
-- `M_Ticker` (function) `progs/doomgeneric/m_menu.c:2064` `void M_Ticker (void)` -- M_Ticker
-- `M_Init` (function) `progs/doomgeneric/m_menu.c:2077` `void M_Init (void)` -- M_Init
-
-## progs/doomgeneric/m_menu.h
-Depends on: `progs/doomgeneric/d_event.h`
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/r_main.c`
-- `M_Ticker` (function) `progs/doomgeneric/m_menu.h:40` `void M_Ticker (void);` -- Called by main loop, only used for menu (skull cursor) animation.
-- `M_Drawer` (function) `progs/doomgeneric/m_menu.h:44` `void M_Drawer (void);` -- Called by main loop, draws the menus directly into the screen buffer.
-- `M_Init` (function) `progs/doomgeneric/m_menu.h:48` `void M_Init (void);` -- Called by D_DoomMain, loads the config file.
-- `M_StartControlPanel` (function) `progs/doomgeneric/m_menu.h:52` `void M_StartControlPanel (void);` -- Called by intro code to force menu up upon a keypress, does nothing if menu is already up.
 
 
 Next: [API_p13.md](API_p13.md)

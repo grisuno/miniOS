@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `StatCopy` | function | `progs/doomgeneric/statdump.c:333` | `void StatCopy(wbstartstruct_t *stats)` |
+| `StatDump` | function | `progs/doomgeneric/statdump.c:343` | `void StatDump(void)` |
+| `DOOM_STATDUMP_H` | macro | `progs/doomgeneric/statdump.h:18` | `#define DOOM_STATDUMP_H` |
+| `StatCopy` | function | `progs/doomgeneric/statdump.h:20` | `void StatCopy(wbstartstruct_t *stats);` |
+| `StatDump` | function | `progs/doomgeneric/statdump.h:21` | `void StatDump(void);` |
+| `SlopeDiv` | function | `progs/doomgeneric/tables.c:41` | `int SlopeDiv(unsigned int num, unsigned int den)` |
+| `ANG1` | macro | `progs/doomgeneric/tables.h:69` | `#define ANG1` |
+| `ANG180` | macro | `progs/doomgeneric/tables.h:65` | `#define ANG180` |
+| `ANG1_X` | macro | `progs/doomgeneric/tables.h:75` | `#define ANG1_X` |
+| `ANG270` | macro | `progs/doomgeneric/tables.h:66` | `#define ANG270` |
+| `ANG45` | macro | `progs/doomgeneric/tables.h:63` | `#define ANG45` |
+| `ANG60` | macro | `progs/doomgeneric/tables.h:70` | `#define ANG60` |
+| `ANG90` | macro | `progs/doomgeneric/tables.h:64` | `#define ANG90` |
+| `ANGLETOFINESHIFT` | macro | `progs/doomgeneric/tables.h:46` | `#define ANGLETOFINESHIFT` |
+| `ANG_MAX` | macro | `progs/doomgeneric/tables.h:67` | `#define ANG_MAX` |
+| `DBITS` | macro | `progs/doomgeneric/tables.h:79` | `#define DBITS` |
+| `FINEANGLES` | macro | `progs/doomgeneric/tables.h:41` | `#define FINEANGLES` |
+| `FINEMASK` | macro | `progs/doomgeneric/tables.h:42` | `#define FINEMASK` |
+| `SLOPEBITS` | macro | `progs/doomgeneric/tables.h:78` | `#define SLOPEBITS` |
+| `SLOPERANGE` | macro | `progs/doomgeneric/tables.h:77` | `#define SLOPERANGE` |
+| `SlopeDiv` | function | `progs/doomgeneric/tables.h:92` | `int SlopeDiv(unsigned int num, unsigned int den);` |
+| `__TABLES__` | macro | `progs/doomgeneric/tables.h:35` | `#define __TABLES__` |
+| `angle_t` | type_alias | `progs/doomgeneric/tables.h:80` | `typedef unsigned angle_t;` |
+| `finecosine` | variable | `progs/doomgeneric/tables.h:52` | `extern const fixed_t *finecosine;` |
+| `finesine` | variable | `progs/doomgeneric/tables.h:49` | `extern const fixed_t finesine[5*FINEANGLES/4];` |
+| `finetangent` | variable | `progs/doomgeneric/tables.h:56` | `extern const fixed_t finetangent[FINEANGLES/2];` |
+| `tantoangle` | variable | `progs/doomgeneric/tables.h:87` | `extern const angle_t tantoangle[SLOPERANGE+1];` |
+| `V_PATCH_H` | macro | `progs/doomgeneric/v_patch.h:21` | `#define V_PATCH_H` |
+| `column_t` | type_alias | `progs/doomgeneric/v_patch.h:47` | `typedef post_t column_t;` |
+| `MOUSE_SPEED_BOX_HEIGHT` | macro | `progs/doomgeneric/v_video.c:844` | `#define MOUSE_SPEED_BOX_HEIGHT` |
+| `MOUSE_SPEED_BOX_WIDTH` | macro | `progs/doomgeneric/v_video.c:843` | `#define MOUSE_SPEED_BOX_WIDTH` |
+| `RANGECHECK` | macro | `progs/doomgeneric/v_video.c:46` | `#define RANGECHECK` |
+| `V_CopyRect` | function | `progs/doomgeneric/v_video.c:85` | `void V_CopyRect(int srcx, int srcy, byte *source,                 int width, int height,         ...` |
+| `V_DrawAltTLPatch` | function | `progs/doomgeneric/v_video.c:378` | `void V_DrawAltTLPatch(int x, int y, patch_t * patch)` |
+| `V_DrawBlock` | function | `progs/doomgeneric/v_video.c:503` | `void V_DrawBlock(int x, int y, int width, int height, byte *src)` |
+| `V_DrawBox` | function | `progs/doomgeneric/v_video.c:576` | `void V_DrawBox(int x, int y, int w, int h, int c)` |
+| `V_DrawFilledBox` | function | `progs/doomgeneric/v_video.c:529` | `void V_DrawFilledBox(int x, int y, int w, int h, int c)` |
+| `V_DrawHorizLine` | function | `progs/doomgeneric/v_video.c:549` | `void V_DrawHorizLine(int x, int y, int w, int c)` |
+| `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.c:846` | `void V_DrawMouseSpeedBox(int speed)` |
+| `V_DrawPatch` | function | `progs/doomgeneric/v_video.c:139` | `void V_DrawPatch(int x, int y, patch_t *patch)` |
+| `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.c:268` | `void V_DrawPatchDirect(int x, int y, patch_t *patch)` |
+| `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.c:203` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch)` |
+| `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.c:589` | `void V_DrawRawScreen(byte *raw)` |
+| `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.c:428` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch)` |
+| `V_DrawTLPatch` | function | `progs/doomgeneric/v_video.c:279` | `void V_DrawTLPatch(int x, int y, patch_t * patch)` |
+| `V_DrawVertLine` | function | `progs/doomgeneric/v_video.c:562` | `void V_DrawVertLine(int x, int y, int h, int c)` |
+| `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.c:329` | `void V_DrawXlaPatch(int x, int y, patch_t * patch)` |
+| `V_Init` | function | `progs/doomgeneric/v_video.c:597` | `void V_Init (void)` |
 | `V_LoadTintTable` | function | `progs/doomgeneric/v_video.c:482` | `void V_LoadTintTable(void)` |
 | `V_LoadXlaTable` | function | `progs/doomgeneric/v_video.c:493` | `void V_LoadXlaTable(void)` |
 | `V_MarkRect` | function | `progs/doomgeneric/v_video.c:69` | `void V_MarkRect(int x, int y, int width, int height)` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `SC_F11` | macro | `progs/freedomui/ps2_keymap.c:43` | `#define SC_F11` |
 | `SC_F12` | macro | `progs/freedomui/ps2_keymap.c:44` | `#define SC_F12` |
 | `SC_KP_FIRST` | macro | `progs/freedomui/ps2_keymap.c:41` | `#define SC_KP_FIRST` |
-| `SC_KP_LAST` | macro | `progs/freedomui/ps2_keymap.c:42` | `#define SC_KP_LAST` |
-| `SC_KP_MUL` | macro | `progs/freedomui/ps2_keymap.c:34` | `#define SC_KP_MUL` |
-| `SC_LSHIFT` | macro | `progs/freedomui/ps2_keymap.c:32` | `#define SC_LSHIFT` |
-| `SC_NUMLOCK` | macro | `progs/freedomui/ps2_keymap.c:39` | `#define SC_NUMLOCK` |
-| `SC_RETURN` | macro | `progs/freedomui/ps2_keymap.c:30` | `#define SC_RETURN` |
-| `SC_RSHIFT` | macro | `progs/freedomui/ps2_keymap.c:33` | `#define SC_RSHIFT` |
-| `SC_SCROLL` | macro | `progs/freedomui/ps2_keymap.c:40` | `#define SC_SCROLL` |
-| `SC_TAB` | macro | `progs/freedomui/ps2_keymap.c:29` | `#define SC_TAB` |
-| `extended_key` | function | `progs/freedomui/ps2_keymap.c:195` | `static uint32_t extended_key(unsigned code, ps2_key *k)` |
-| `held_mods` | function | `progs/freedomui/ps2_keymap.c:150` | `static unsigned held_mods(const ps2_state *s)` |
-| `is_letter` | function | `progs/freedomui/ps2_keymap.c:164` | `static int is_letter(char c)` |
-| `modifier_key` | function | `progs/freedomui/ps2_keymap.c:169` | `static uint32_t modifier_key(ps2_state *s, unsigned code, int extended, int make)` |
-| `num_sym` | type_alias | `progs/freedomui/ps2_keymap.c:122` | `typedef struct ps2_keypad { uint32_t num_sym;` |
-| `plain_key` | function | `progs/freedomui/ps2_keymap.c:218` | `static uint32_t plain_key(const ps2_state *s, unsigned code, ps2_key *k)` |
-| `ps2_feed` | function | `progs/freedomui/ps2_keymap.c:253` | `int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out)` |
-| `ps2_init` | function | `progs/freedomui/ps2_keymap.c:144` | `void ps2_init(ps2_state *s)` |
-| `ps2_keypad` | struct | `progs/freedomui/ps2_keymap.c:122` | `` |
-| `set_text` | function | `progs/freedomui/ps2_keymap.c:158` | `static void set_text(ps2_key *k, char c)` |
-| `MINIOS_PS2_KEYMAP_H` | macro | `progs/freedomui/ps2_keymap.h:10` | `#define MINIOS_PS2_KEYMAP_H` |
-| `PS2_CODE_EXTENDED` | macro | `progs/freedomui/ps2_keymap.h:21` | `#define PS2_CODE_EXTENDED` |
-| `PS2_CODE_LIMIT` | macro | `progs/freedomui/ps2_keymap.h:24` | `#define PS2_CODE_LIMIT` |
-| `PS2_EV_NONE` | macro | `progs/freedomui/ps2_keymap.h:16` | `#define PS2_EV_NONE` |
-| `PS2_EV_PRESS` | macro | `progs/freedomui/ps2_keymap.h:17` | `#define PS2_EV_PRESS` |
-| `PS2_EV_RELEASE` | macro | `progs/freedomui/ps2_keymap.h:18` | `#define PS2_EV_RELEASE` |
-| `PS2_TEXT_MAX` | macro | `progs/freedomui/ps2_keymap.h:26` | `#define PS2_TEXT_MAX` |
-| `arguments` | function | `progs/freedomui/ps2_keymap.h:51` | `* arguments (out is then left untouched). */ int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out);` |
-| `held` | type_alias | `progs/freedomui/ps2_keymap.h:29` | `typedef struct ps2_state { unsigned held;` |
-| `ps2_init` | function | `progs/freedomui/ps2_keymap.h:47` | `void ps2_init(ps2_state *s);` |
-| `ps2_key` | struct | `progs/freedomui/ps2_keymap.h:38` | `` |
-| `ps2_state` | struct | `progs/freedomui/ps2_keymap.h:29` | `` |
-| `sym` | type_alias | `progs/freedomui/ps2_keymap.h:38` | `typedef struct ps2_key { uint32_t sym;` |
-| `AllocTracker` | type_alias | `progs/lisp/lisp.c:70` | `typedef struct AllocTracker AllocTracker;` |
-| `AllocTracker` | struct | `progs/lisp/lisp.c:157` | `` |
-| `Binding` | type_alias | `progs/lisp/lisp.c:69` | `typedef struct Binding Binding;` |
-| `Binding` | struct | `progs/lisp/lisp.c:140` | `` |
-| `Env` | type_alias | `progs/lisp/lisp.c:68` | `typedef struct Env Env;` |
-| `Env` | struct | `progs/lisp/lisp.c:149` | `` |
-| `LispConfig` | enum | `progs/lisp/lisp.c:41` | `` |
-| `Node` | type_alias | `progs/lisp/lisp.c:67` | `typedef struct Node Node;` |
-| `Node` | struct | `progs/lisp/lisp.c:113` | `` |
-| `ParseResult` | struct | `progs/lisp/lisp.c:104` | `` |
-| `PrimEntry` | struct | `progs/lisp/lisp.c:1960` | `` |
-| `Reader` | struct | `progs/lisp/lisp.c:181` | `` |
-| `Runtime` | type_alias | `progs/lisp/lisp.c:65` | `typedef struct Runtime Runtime;` |
-| `Runtime` | struct | `progs/lisp/lisp.c:165` | `` |
-| `StringBuilder` | struct | `progs/lisp/lisp.c:192` | `` |
-| `arg_at` | function | `progs/lisp/lisp.c:775` | `static Node *arg_at(Runtime *rt, Node *args, size_t index)` |
-| `arg_matches` | function | `progs/lisp/lisp.c:815` | `static bool arg_matches(const Node *value, ArgKind kind)` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

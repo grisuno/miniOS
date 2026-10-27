@@ -13,8 +13,11 @@ Solid arrows stay in this module, dashed arrows leave it.
 
 ```mermaid
 flowchart LR
+    n_progs_doomgeneric_doomgeneric_xlib_c__DG_Init(["DG_Init"])
+    n_kernel_string_c__memset["string.memset"]
     n_progs_doomgeneric_doomgeneric_xlib_c__DG_GetTicksMs(["DG_GetTicksMs"])
     n_headers_tls_port_h__gettimeofday["tls_port.gettimeofday"]
+    n_progs_doomgeneric_doomgeneric_xlib_c__DG_Init -.-> n_kernel_string_c__memset
     n_progs_doomgeneric_doomgeneric_xlib_c__DG_GetTicksMs -.-> n_headers_tls_port_h__gettimeofday
 ```
 
@@ -29,6 +32,8 @@ flowchart LR
 ```c
 void DG_Init()
 ```
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 ---
 

@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `Sint16` | type_alias | `progs/pokemon/minios_stubs/SDL.h:8` | `typedef int16_t Sint16;` |
+| `Sint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:7` | `typedef int32_t Sint32;` |
+| `Uint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:6` | `typedef uint32_t Uint32;` |
+| `Uint64` | type_alias | `progs/pokemon/minios_stubs/SDL.h:5` | `typedef uint64_t Uint64;` |
+| `Uint8` | type_alias | `progs/pokemon/minios_stubs/SDL.h:9` | `typedef uint8_t Uint8;` |
+| `FB_ADDR` | macro | `progs/pokemon/platform_minios.c:161` | `#define FB_ADDR` |
+| `FB_H` | macro | `progs/pokemon/platform_minios.c:163` | `#define FB_H` |
+| `FB_W` | macro | `progs/pokemon/platform_minios.c:162` | `#define FB_W` |
+| `GB_DST_H` | macro | `progs/pokemon/platform_minios.c:167` | `#define GB_DST_H` |
+| `GB_DST_W` | macro | `progs/pokemon/platform_minios.c:166` | `#define GB_DST_W` |
+| `GB_DST_X0` | macro | `progs/pokemon/platform_minios.c:168` | `#define GB_DST_X0` |
+| `GB_DST_Y0` | macro | `progs/pokemon/platform_minios.c:169` | `#define GB_DST_Y0` |
+| `GB_SCALE` | macro | `progs/pokemon/platform_minios.c:165` | `#define GB_SCALE` |
+| `MENU_BAR_H` | macro | `progs/pokemon/platform_minios.c:587` | `#define MENU_BAR_H` |
+| `MENU_BG` | macro | `progs/pokemon/platform_minios.c:596` | `#define MENU_BG` |
+| `MENU_DROP_W` | macro | `progs/pokemon/platform_minios.c:591` | `#define MENU_DROP_W` |
+| `MENU_DROP_X0` | macro | `progs/pokemon/platform_minios.c:590` | `#define MENU_DROP_X0` |
+| `MENU_FG` | macro | `progs/pokemon/platform_minios.c:597` | `#define MENU_FG` |
+| `MENU_FILE_X0` | macro | `progs/pokemon/platform_minios.c:588` | `#define MENU_FILE_X0` |
+| `MENU_FILE_X1` | macro | `progs/pokemon/platform_minios.c:589` | `#define MENU_FILE_X1` |
+| `MENU_HOVER` | macro | `progs/pokemon/platform_minios.c:598` | `#define MENU_HOVER` |
+| `MENU_ITEM_H` | macro | `progs/pokemon/platform_minios.c:592` | `#define MENU_ITEM_H` |
+| `MENU_NITEMS` | macro | `progs/pokemon/platform_minios.c:593` | `#define MENU_NITEMS` |
+| `MENU_OSD_BG` | macro | `progs/pokemon/platform_minios.c:599` | `#define MENU_OSD_BG` |
+| `MINIOS_ARP_BASS_MS` | macro | `progs/pokemon/platform_minios.c:238` | `#define MINIOS_ARP_BASS_MS` |
+| `MINIOS_ARP_MEL_MS` | macro | `progs/pokemon/platform_minios.c:239` | `#define MINIOS_ARP_MEL_MS` |
+| `MINIOS_AUDIO_MAX_HZ` | macro | `progs/pokemon/platform_minios.c:237` | `#define MINIOS_AUDIO_MAX_HZ` |
+| `MINIOS_AUDIO_MIN_HZ` | macro | `progs/pokemon/platform_minios.c:236` | `#define MINIOS_AUDIO_MIN_HZ` |
+| `MINIOS_AUDIO_RATE` | macro | `progs/pokemon/platform_minios.c:234` | `#define MINIOS_AUDIO_RATE` |
+| `MINIOS_AUDIO_SILENCE_E` | macro | `progs/pokemon/platform_minios.c:235` | `#define MINIOS_AUDIO_SILENCE_E` |
+| `MINIOS_AUTOSAVE_MS` | macro | `progs/pokemon/platform_minios.c:1194` | `#define MINIOS_AUTOSAVE_MS` |
+| `MINIOS_FF_FRAMESKIP` | macro | `progs/pokemon/platform_minios.c:1206` | `#define MINIOS_FF_FRAMESKIP` |
+| `STBI_NO_STDIO` | macro | `progs/pokemon/platform_minios.c:63` | `#define STBI_NO_STDIO` |
+| `STBI_ONLY_PNG` | macro | `progs/pokemon/platform_minios.c:62` | `#define STBI_ONLY_PNG` |
+| `STB_IMAGE_IMPLEMENTATION` | macro | `progs/pokemon/platform_minios.c:61` | `#define STB_IMAGE_IMPLEMENTATION` |
+| `_dl_argv` | function | `progs/pokemon/platform_minios.c:198` | `* usable _dl_argv (it bound to unrelated storage and strcmp faulted).  * DO NOT reintroduce argv ...` |
+| `audio` | function | `progs/pokemon/platform_minios.c:219` | `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...` |
+| `frames` | function | `progs/pokemon/platform_minios.c:1367` | `* frames (menu bar not on screen yet) and any frame after the          * LCD-off path zeroed the ...` |
+| `gain` | function | `progs/pokemon/platform_minios.c:143` | `* timing gain (overshoot is microseconds against millisecond waits).  * Difference-based, so it s...` |
+| `gb_platform_get_exit_action` | function | `progs/pokemon/platform_minios.c:1553` | `GBPlatformExitAction gb_platform_get_exit_action(void)` |
+| `gb_platform_get_joypad` | function | `progs/pokemon/platform_minios.c:1531` | `uint8_t gb_platform_get_joypad(void)` |
+| `gb_platform_get_smooth_lcd_transitions` | function | `progs/pokemon/platform_minios.c:1541` | `bool gb_platform_get_smooth_lcd_transitions(void)` |
+| `gb_platform_get_timing_info` | function | `progs/pokemon/platform_minios.c:1524` | `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)` |
+| `gb_platform_init` | function | `progs/pokemon/platform_minios.c:1057` | `bool gb_platform_init(int scale)` |
+| `gb_platform_poll_events` | function | `progs/pokemon/platform_minios.c:1322` | `bool gb_platform_poll_events(GBContext *ctx)` |
+| `gb_platform_present_framebuffer` | function | `progs/pokemon/platform_minios.c:1400` | `void gb_platform_present_framebuffer(const uint32_t *framebuffer)` |
+| `gb_platform_register_context` | function | `progs/pokemon/platform_minios.c:1289` | `void gb_platform_register_context(GBContext *ctx)` |
+| `gb_platform_render_frame` | function | `progs/pokemon/platform_minios.c:1331` | `void gb_platform_render_frame(const uint32_t *framebuffer)` |
 | `gb_platform_render_lcd_off_frame` | function | `progs/pokemon/platform_minios.c:1412` | `void gb_platform_render_lcd_off_frame(void)` |
 | `gb_platform_set_benchmark_mode` | function | `progs/pokemon/platform_minios.c:1451` | `void gb_platform_set_benchmark_mode(bool enabled)` |
 | `gb_platform_set_debug` | function | `progs/pokemon/platform_minios.c:191` | `void gb_platform_set_debug(bool enabled)` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `js_peek` | function | `progs/src/json.c:89` | `static int js_peek(void)` |
 | `js_print_str` | function | `progs/src/json.c:286` | `static void js_print_str(const char *s)` |
 | `js_print_value` | function | `progs/src/json.c:303` | `static void js_print_value(int node, int depth)` |
-| `js_query` | function | `progs/src/json.c:369` | `static int js_query(int root, const char *path)` |
-| `js_read_all` | function | `progs/src/json.c:58` | `static char *js_read_all(const char *name, int *len)` |
-| `js_skip_ws` | function | `progs/src/json.c:81` | `static void js_skip_ws(void)` |
-| `js_str` | function | `progs/src/json.c:5` | `* members keep their key in js_str (the member value node) and their value * in the node itself, and object members...` |
-| `main` | function | `progs/src/json.c:401` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/src/json.c:15` | `int printf();` |
-| `putchar` | function | `progs/src/json.c:16` | `int putchar();` |
-| `puts` | function | `progs/src/json.c:17` | `int puts();` |
-| `rewind` | function | `progs/src/json.c:25` | `void rewind();` |
-| `strcmp` | function | `progs/src/json.c:19` | `int strcmp();` |
-| `strlen` | function | `progs/src/json.c:18` | `int strlen();` |
-| `_start` | function | `progs/src/kmem.c:18` | `void _start(void)` |
-| `exit_now` | function | `progs/src/kmem.c:14` | `static void exit_now(long code)` |
-| `syscall3` | function | `progs/src/kmem.c:7` | `static long syscall3(long n, long a1, long a2, long a3)` |
-| `main` | function | `progs/src/ldhello.c:1` | `int main(void)` |
-| `LXABI_A6_MAGIC` | macro | `progs/src/lxabi.c:55` | `#define LXABI_A6_MAGIC` |
-| `LXABI_CHILD_BAD` | macro | `progs/src/lxabi.c:56` | `#define LXABI_CHILD_BAD` |
-| `LXABI_CHILD_DELAY_MS` | macro | `progs/src/lxabi.c:41` | `#define LXABI_CHILD_DELAY_MS` |
-| `LXABI_CLOCK_SKEW_S` | macro | `progs/src/lxabi.c:51` | `#define LXABI_CLOCK_SKEW_S` |
-| `LXABI_CLONE_NR` | macro | `progs/src/lxabi.c:53` | `#define LXABI_CLONE_NR` |
-| `LXABI_CLOSE_RANGE_NR` | macro | `progs/src/lxabi.c:59` | `#define LXABI_CLOSE_RANGE_NR` |
-| `LXABI_COW_WORD` | macro | `progs/src/lxabi.c:61` | `#define LXABI_COW_WORD` |
-| `LXABI_DETACHED` | macro | `progs/src/lxabi.c:44` | `#define LXABI_DETACHED` |
-| `LXABI_EPOCH_2023` | macro | `progs/src/lxabi.c:50` | `#define LXABI_EPOCH_2023` |
-| `LXABI_GROUP_EXIT_CODE` | macro | `progs/src/lxabi.c:46` | `#define LXABI_GROUP_EXIT_CODE` |
-| `LXABI_MAX_SANE_CPUS` | macro | `progs/src/lxabi.c:48` | `#define LXABI_MAX_SANE_CPUS` |
-| `LXABI_MKDIR_FILE` | macro | `progs/src/lxabi.c:58` | `#define LXABI_MKDIR_FILE` |
-| `LXABI_MKDIR_PATH` | macro | `progs/src/lxabi.c:57` | `#define LXABI_MKDIR_PATH` |
-| `LXABI_PAGE` | macro | `progs/src/lxabi.c:60` | `#define LXABI_PAGE` |
-| `LXABI_REG_PROBE_WORDS` | macro | `progs/src/lxabi.c:52` | `#define LXABI_REG_PROBE_WORDS` |
-| `LXABI_SIGCHLD` | macro | `progs/src/lxabi.c:54` | `#define LXABI_SIGCHLD` |
-| `LXABI_SLEEP_MS` | macro | `progs/src/lxabi.c:47` | `#define LXABI_SLEEP_MS` |
-| `LXABI_THREADS` | macro | `progs/src/lxabi.c:42` | `#define LXABI_THREADS` |
-| `LXABI_THREAD_ITERS` | macro | `progs/src/lxabi.c:43` | `#define LXABI_THREAD_ITERS` |
-| `LXABI_TIMEDWAIT_MS` | macro | `progs/src/lxabi.c:49` | `#define LXABI_TIMEDWAIT_MS` |
-| `LXABI_WAIT_SPINS` | macro | `progs/src/lxabi.c:45` | `#define LXABI_WAIT_SPINS` |
-| `_GNU_SOURCE` | macro | `progs/src/lxabi.c:17` | `#define _GNU_SOURCE` |
-| `abort_from_worker_body` | function | `progs/src/lxabi.c:555` | `static void abort_from_worker_body(void)` |
-| `busy_wait_ms` | function | `progs/src/lxabi.c:81` | `static void busy_wait_ms(long ms)` |
-| `check_close_range` | function | `progs/src/lxabi.c:443` | `static void check_close_range(void)` |
-| `check_condvar` | function | `progs/src/lxabi.c:285` | `static void check_condvar(void)` |
-| `check_detached_reaped` | function | `progs/src/lxabi.c:251` | `static void check_detached_reaped(void)` |
-| `check_eventfd` | function | `progs/src/lxabi.c:418` | `static void check_eventfd(void)` |
-| `check_fork_cow_kernel_write` | function | `progs/src/lxabi.c:160` | `static void check_fork_cow_kernel_write(void)` |
-| `check_fork_registers` | function | `progs/src/lxabi.c:138` | `static void check_fork_registers(void)` |
-| `check_getdents64` | function | `progs/src/lxabi.c:722` | `static void check_getdents64(void)` |
-| `check_limits` | function | `progs/src/lxabi.c:478` | `static void check_limits(void)` |
-| `check_mkdir` | function | `progs/src/lxabi.c:464` | `static void check_mkdir(void)` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)

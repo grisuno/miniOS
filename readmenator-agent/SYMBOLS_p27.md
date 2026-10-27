@@ -3,6 +3,77 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `restore_sources` | function | `tools/mutate.sh:138` | `` |
+| `usage` | function | `tools/mutate.sh:51` | `` |
+| `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
+| `main` | function | `tools/probe_compute_vga.py:22` | `def main()` |
+| `poll` | function | `tools/probe_compute_vga.py:61` | `def poll(timeout)` |
+| `qmp` | function | `tools/probe_compute_vga.py:88` | `def qmp(obj)` |
+| `rel` | function | `tools/probe_compute_vga.py:97` | `def rel(dx, dy)` |
+| `send` | function | `tools/probe_compute_vga.py:55` | `def send(line)` |
+| `grab` | function | `tools/probe_minicraft.py:85` | `def grab(pat, timeout)` |
+| `main` | function | `tools/probe_minicraft.py:34` | `def main()` |
+| `poll` | function | `tools/probe_minicraft.py:74` | `def poll(timeout)` |
+| `pos` | function | `tools/probe_minicraft.py:154` | `def pos(tag)` |
+| `qkey` | function | `tools/probe_minicraft.py:143` | `def qkey(qcode, down)` |
+| `send` | function | `tools/probe_minicraft.py:68` | `def send(line)` |
+| `connect` | function | `tools/qga_client.py:57` | `def connect(path)` |
+| `main` | function | `tools/qga_client.py:74` | `def main(argv)` |
+| `read_reply` | function | `tools/qga_client.py:41` | `def read_reply(sock, timeout)` |
+| `send_command` | function | `tools/qga_client.py:33` | `def send_command(sock, cmd, args)` |
+| `check` | function | `tools/qga_test.sh:31` | `` |
+| `cleanup` | function | `tools/qga_test.sh:25` | `` |
+| `expect_in` | function | `tools/qga_test.sh:43` | `` |
+| `QMP` | class | `tools/repro_gui.py:46` | `class QMP` |
+| `__init__` | method | `tools/repro_gui.py:47` | `def __init__(self, path)` |
+| `_recv` | method | `tools/repro_gui.py:63` | `def _recv(self)` |
+| `cmd` | method | `tools/repro_gui.py:59` | `def cmd(self, obj)` |
+| `key` | method | `tools/repro_gui.py:87` | `def key(self, qcode, down)` |
+| `main` | function | `tools/repro_gui.py:92` | `def main()` |
+| `mouse` | method | `tools/repro_gui.py:78` | `def mouse(self, dx, dy, left)` |
+| `mouse_state` | function | `tools/repro_gui.py:118` | `def mouse_state()` |
+| `read_serial` | function | `tools/repro_gui.py:30` | `def read_serial(master, timeout)` |
+| `send` | function | `tools/repro_gui.py:113` | `def send(line)` |
+| `Config` | class | `tools/sign_elf.py:31` | `class Config` |
+| `append_section` | function | `tools/sign_elf.py:257` | `def append_section(data, ehdr, desc)` |
+| `base_point` | function | `tools/sign_elf.py:99` | `def base_point()` |
+| `canonical_digest` | function | `tools/sign_elf.py:172` | `def canonical_digest(data, ehdr, phdrs)` |
+| `decode_point` | function | `tools/sign_elf.py:429` | `def decode_point(raw)` |
+| `edwards_add` | function | `tools/sign_elf.py:71` | `def edwards_add(p, q)` |
+| `encodepoint_raw` | function | `tools/sign_elf.py:66` | `def encodepoint_raw(x, y)` |
+| `fallback_verify` | function | `tools/sign_elf.py:408` | `def fallback_verify(sig, digest, pub)` |
+| `find_note_slots` | function | `tools/sign_elf.py:199` | `def find_note_slots(data, ehdr, phdrs)` |
+| `find_section_slot` | function | `tools/sign_elf.py:222` | `def find_section_slot(data, ehdr)` |
+| `key_material` | function | `tools/sign_elf.py:321` | `def key_material(key_id)` |
+| `main` | function | `tools/sign_elf.py:454` | `def main(argv)` |
+| `pad_to` | function | `tools/sign_elf.py:135` | `def pad_to(blob, alignment)` |
+| `parse_ehdr` | function | `tools/sign_elf.py:143` | `def parse_ehdr(data)` |
+| `parse_phdrs` | function | `tools/sign_elf.py:158` | `def parse_phdrs(data, ehdr)` |
+| `points_equal` | function | `tools/sign_elf.py:447` | `def points_equal(p, q)` |
+| `process` | function | `tools/sign_elf.py:341` | `def process(path, key_id, check_only)` |
+| `pub_for_key` | function | `tools/sign_elf.py:305` | `def pub_for_key(key_id)` |
+| `publickey` | function | `tools/sign_elf.py:112` | `def publickey(seed)` |
+| `scalarmult` | function | `tools/sign_elf.py:88` | `def scalarmult(p, e)` |
+| `sha512` | function | `tools/sign_elf.py:61` | `def sha512(data)` |
+| `sign_digest` | function | `tools/sign_elf.py:121` | `def sign_digest(digest, seed)` |
+| `verify_external` | function | `tools/sign_elf.py:395` | `def verify_external(sig, digest, pub)` |
+| `cleanup_stale_qemu` | function | `tools/test_bdd.sh:43` | `` |
+| `expect` | function | `tools/test_bdd.sh:100` | `` |
+| `expect_count` | function | `tools/test_bdd.sh:148` | `` |
+| `expect_min` | function | `tools/test_bdd.sh:123` | `` |
+| `http_fixture_start` | function | `tools/test_bdd.sh:1499` | `` |
+| `http_fixture_stop` | function | `tools/test_bdd.sh:1506` | `` |
+| `http_server_start` | function | `tools/test_bdd.sh:1487` | `` |
+| `http_server_stop` | function | `tools/test_bdd.sh:1494` | `` |
+| `net_fixture_start` | function | `tools/test_bdd.sh:1511` | `` |
+| `net_fixture_stop` | function | `tools/test_bdd.sh:1518` | `` |
+| `refute` | function | `tools/test_bdd.sh:171` | `` |
+| `scenario` | function | `tools/test_bdd.sh:56` | `` |
+| `scenario_smp` | function | `tools/test_bdd.sh:77` | `` |
+| `scenario_uefi` | function | `tools/test_bdd.sh:196` | `` |
+| `should_run` | function | `tools/test_bdd.sh:35` | `` |
+| `usb_stick_ready` | function | `tools/test_bdd.sh:672` | `` |
+| `AlignConfig` | class | `tools/test_call_align.py:24` | `class AlignConfig` |
 | `find_minigcc` | function | `tools/test_call_align.py:59` | `def find_minigcc(explicit)` |
 | `main` | function | `tools/test_call_align.py:79` | `def main(argv)` |
 | `run` | function | `tools/test_call_align.py:74` | `def run(argv)` |
@@ -55,12 +126,12 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `walk` | function | `tools/test_gui_freedom.py:289` | `def walk(g, delta)` |
 | `wheel` | method | `tools/test_gui_freedom.py:221` | `def wheel(self, up)` |
 | `Config` | class | `tools/test_gui_gfxview.py:39` | `class Config` |
-| `dark_share` | function | `tools/test_gui_gfxview.py:84` | `def dark_share(img, box)` |
-| `gfx_row` | function | `tools/test_gui_gfxview.py:72` | `def gfx_row(g)` |
-| `last_line` | function | `tools/test_gui_gfxview.py:62` | `def last_line(g, prefix)` |
-| `main` | function | `tools/test_gui_gfxview.py:109` | `def main()` |
-| `note` | function | `tools/test_gui_gfxview.py:55` | `def note(ok, msg)` |
-| `wait_frames` | function | `tools/test_gui_gfxview.py:94` | `def wait_frames(g, want)` |
+| `dark_share` | function | `tools/test_gui_gfxview.py:85` | `def dark_share(img, box)` |
+| `gfx_row` | function | `tools/test_gui_gfxview.py:73` | `def gfx_row(g)` |
+| `last_line` | function | `tools/test_gui_gfxview.py:63` | `def last_line(g, prefix)` |
+| `main` | function | `tools/test_gui_gfxview.py:110` | `def main()` |
+| `note` | function | `tools/test_gui_gfxview.py:56` | `def note(ok, msg)` |
+| `wait_frames` | function | `tools/test_gui_gfxview.py:95` | `def wait_frames(g, want)` |
 | `Guest` | class | `tools/test_gui_icon_cwd.py:42` | `class Guest` |
 | `__init__` | method | `tools/test_gui_icon_cwd.py:43` | `def __init__(self)` |
 | `_qmp` | method | `tools/test_gui_icon_cwd.py:130` | `def _qmp(self, obj)` |
@@ -121,6 +192,14 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `main` | function | `tools/test_net_fixture.py:64` | `def main()` |
 | `serve_tcp` | function | `tools/test_net_fixture.py:53` | `def serve_tcp(port)` |
 | `serve_udp` | function | `tools/test_net_fixture.py:34` | `def serve_udp(port)` |
+| `Config` | class | `tools/test_readme_shot.py:43` | `class Config` |
+| `check_frame` | function | `tools/test_readme_shot.py:84` | `def check_frame(img)` |
+| `count_pixels` | function | `tools/test_readme_shot.py:79` | `def count_pixels(img, box, predicate)` |
+| `crop_box` | function | `tools/test_readme_shot.py:66` | `def crop_box(size, fractions)` |
+| `main` | function | `tools/test_readme_shot.py:140` | `def main(argv)` |
+| `pixels` | function | `tools/test_readme_shot.py:73` | `def pixels(img)` |
+| `stage_scene` | function | `tools/test_readme_shot.py:131` | `def stage_scene(guest)` |
+| `write_atomic` | function | `tools/test_readme_shot.py:115` | `def write_atomic(img, path)` |
 | `fail_msg` | function | `tools/test_sb16.sh:45` | `` |
 | `Server` | class | `tools/tls_test.py:247` | `class Server(Thread)` |
 | `__init__` | method | `tools/tls_test.py:248` | `def __init__(self, cert, key, tls13_ok)` |

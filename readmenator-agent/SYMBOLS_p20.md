@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `SC_KP_LAST` | macro | `progs/freedomui/ps2_keymap.c:42` | `#define SC_KP_LAST` |
+| `SC_KP_MUL` | macro | `progs/freedomui/ps2_keymap.c:34` | `#define SC_KP_MUL` |
+| `SC_LSHIFT` | macro | `progs/freedomui/ps2_keymap.c:32` | `#define SC_LSHIFT` |
+| `SC_NUMLOCK` | macro | `progs/freedomui/ps2_keymap.c:39` | `#define SC_NUMLOCK` |
+| `SC_RETURN` | macro | `progs/freedomui/ps2_keymap.c:30` | `#define SC_RETURN` |
+| `SC_RSHIFT` | macro | `progs/freedomui/ps2_keymap.c:33` | `#define SC_RSHIFT` |
+| `SC_SCROLL` | macro | `progs/freedomui/ps2_keymap.c:40` | `#define SC_SCROLL` |
+| `SC_TAB` | macro | `progs/freedomui/ps2_keymap.c:29` | `#define SC_TAB` |
+| `extended_key` | function | `progs/freedomui/ps2_keymap.c:195` | `static uint32_t extended_key(unsigned code, ps2_key *k)` |
+| `held_mods` | function | `progs/freedomui/ps2_keymap.c:150` | `static unsigned held_mods(const ps2_state *s)` |
+| `is_letter` | function | `progs/freedomui/ps2_keymap.c:164` | `static int is_letter(char c)` |
+| `modifier_key` | function | `progs/freedomui/ps2_keymap.c:169` | `static uint32_t modifier_key(ps2_state *s, unsigned code, int extended, int make)` |
+| `num_sym` | type_alias | `progs/freedomui/ps2_keymap.c:122` | `typedef struct ps2_keypad { uint32_t num_sym;` |
+| `plain_key` | function | `progs/freedomui/ps2_keymap.c:218` | `static uint32_t plain_key(const ps2_state *s, unsigned code, ps2_key *k)` |
+| `ps2_feed` | function | `progs/freedomui/ps2_keymap.c:253` | `int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out)` |
+| `ps2_init` | function | `progs/freedomui/ps2_keymap.c:144` | `void ps2_init(ps2_state *s)` |
+| `ps2_keypad` | struct | `progs/freedomui/ps2_keymap.c:122` | `` |
+| `set_text` | function | `progs/freedomui/ps2_keymap.c:158` | `static void set_text(ps2_key *k, char c)` |
+| `MINIOS_PS2_KEYMAP_H` | macro | `progs/freedomui/ps2_keymap.h:10` | `#define MINIOS_PS2_KEYMAP_H` |
+| `PS2_CODE_EXTENDED` | macro | `progs/freedomui/ps2_keymap.h:21` | `#define PS2_CODE_EXTENDED` |
+| `PS2_CODE_LIMIT` | macro | `progs/freedomui/ps2_keymap.h:24` | `#define PS2_CODE_LIMIT` |
+| `PS2_EV_NONE` | macro | `progs/freedomui/ps2_keymap.h:16` | `#define PS2_EV_NONE` |
+| `PS2_EV_PRESS` | macro | `progs/freedomui/ps2_keymap.h:17` | `#define PS2_EV_PRESS` |
+| `PS2_EV_RELEASE` | macro | `progs/freedomui/ps2_keymap.h:18` | `#define PS2_EV_RELEASE` |
+| `PS2_TEXT_MAX` | macro | `progs/freedomui/ps2_keymap.h:26` | `#define PS2_TEXT_MAX` |
+| `arguments` | function | `progs/freedomui/ps2_keymap.h:51` | `* arguments (out is then left untouched). */ int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out);` |
+| `held` | type_alias | `progs/freedomui/ps2_keymap.h:29` | `typedef struct ps2_state { unsigned held;` |
+| `ps2_init` | function | `progs/freedomui/ps2_keymap.h:47` | `void ps2_init(ps2_state *s);` |
+| `ps2_key` | struct | `progs/freedomui/ps2_keymap.h:38` | `` |
+| `ps2_state` | struct | `progs/freedomui/ps2_keymap.h:29` | `` |
+| `sym` | type_alias | `progs/freedomui/ps2_keymap.h:38` | `typedef struct ps2_key { uint32_t sym;` |
+| `AllocTracker` | type_alias | `progs/lisp/lisp.c:70` | `typedef struct AllocTracker AllocTracker;` |
+| `AllocTracker` | struct | `progs/lisp/lisp.c:157` | `` |
+| `Binding` | type_alias | `progs/lisp/lisp.c:69` | `typedef struct Binding Binding;` |
+| `Binding` | struct | `progs/lisp/lisp.c:140` | `` |
+| `Env` | type_alias | `progs/lisp/lisp.c:68` | `typedef struct Env Env;` |
+| `Env` | struct | `progs/lisp/lisp.c:149` | `` |
+| `LispConfig` | enum | `progs/lisp/lisp.c:41` | `` |
+| `Node` | type_alias | `progs/lisp/lisp.c:67` | `typedef struct Node Node;` |
+| `Node` | struct | `progs/lisp/lisp.c:113` | `` |
+| `ParseResult` | struct | `progs/lisp/lisp.c:104` | `` |
+| `PrimEntry` | struct | `progs/lisp/lisp.c:1960` | `` |
+| `Reader` | struct | `progs/lisp/lisp.c:181` | `` |
+| `Runtime` | type_alias | `progs/lisp/lisp.c:65` | `typedef struct Runtime Runtime;` |
+| `Runtime` | struct | `progs/lisp/lisp.c:165` | `` |
+| `StringBuilder` | struct | `progs/lisp/lisp.c:192` | `` |
+| `arg_at` | function | `progs/lisp/lisp.c:775` | `static Node *arg_at(Runtime *rt, Node *args, size_t index)` |
+| `arg_matches` | function | `progs/lisp/lisp.c:815` | `static bool arg_matches(const Node *value, ArgKind kind)` |
 | `arity` | function | `progs/lisp/lisp.c:1300` | `* * Variable arity (0 or 1);` |
 | `arity0` | function | `progs/lisp/lisp.c:861` | `static bool arity0(Runtime *rt, Node *args)` |
 | `bind_argv` | function | `progs/lisp/lisp.c:2017` | `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:225` | `#define MINIOS_FB_HEIGHT_MAX` |
 | `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:224` | `#define MINIOS_FB_WIDTH_MAX` |
 | `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:416` | `#define MINIOS_GFX_BUF_GAME` |
-| `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:417` | `#define MINIOS_GFX_BUF_NK` |
-| `MINIOS_GFX_BUF_NK_RGB` | macro | `progs/minios_abi.h:418` | `#define MINIOS_GFX_BUF_NK_RGB` |
-| `MINIOS_GFX_ZOOM_2X` | macro | `progs/minios_abi.h:429` | `#define MINIOS_GFX_ZOOM_2X` |
-| `MINIOS_GFX_ZOOM_FULLSCREEN` | macro | `progs/minios_abi.h:430` | `#define MINIOS_GFX_ZOOM_FULLSCREEN` |
-| `MINIOS_GFX_ZOOM_NATIVE` | macro | `progs/minios_abi.h:428` | `#define MINIOS_GFX_ZOOM_NATIVE` |
-| `MINIOS_GFX_ZOOM_WINDOWED` | macro | `progs/minios_abi.h:431` | `#define MINIOS_GFX_ZOOM_WINDOWED` |
-| `MINIOS_HEAP_BASE` | macro | `progs/minios_abi.h:177` | `#define MINIOS_HEAP_BASE` |
-| `MINIOS_HEAP_SIZE` | macro | `progs/minios_abi.h:183` | `#define MINIOS_HEAP_SIZE` |
-| `MINIOS_LDSO_BASE` | macro | `progs/minios_abi.h:161` | `#define MINIOS_LDSO_BASE` |
-| `MINIOS_LDSO_END` | macro | `progs/minios_abi.h:163` | `#define MINIOS_LDSO_END` |
-| `MINIOS_LDSO_SIZE` | macro | `progs/minios_abi.h:162` | `#define MINIOS_LDSO_SIZE` |
-| `MINIOS_NK_BACKBUF_ADDR` | macro | `progs/minios_abi.h:144` | `#define MINIOS_NK_BACKBUF_ADDR` |
-| `MINIOS_NK_H` | macro | `progs/minios_abi.h:146` | `#define MINIOS_NK_H` |
-| `MINIOS_NK_RGB_ADDR` | macro | `progs/minios_abi.h:171` | `#define MINIOS_NK_RGB_ADDR` |
-| `MINIOS_NK_RGB_BYTES` | macro | `progs/minios_abi.h:172` | `#define MINIOS_NK_RGB_BYTES` |
-| `MINIOS_NK_W` | macro | `progs/minios_abi.h:145` | `#define MINIOS_NK_W` |
-| `MINIOS_NOTE_NAME` | macro | `progs/minios_abi.h:463` | `#define MINIOS_NOTE_NAME` |
-| `MINIOS_NOTE_PROCESS` | macro | `progs/minios_abi.h:464` | `#define MINIOS_NOTE_PROCESS` |
-| `MINIOS_NOTE_SIGN` | macro | `progs/minios_abi.h:465` | `#define MINIOS_NOTE_SIGN` |
-| `MINIOS_PCI_MMIO_SIZE` | macro | `progs/minios_abi.h:207` | `#define MINIOS_PCI_MMIO_SIZE` |
-| `MINIOS_PCM2_FRAG` | macro | `progs/minios_abi.h:405` | `#define MINIOS_PCM2_FRAG` |
-| `MINIOS_PCM2_NONBLOCK` | macro | `progs/minios_abi.h:400` | `#define MINIOS_PCM2_NONBLOCK` |
-| `MINIOS_PCM2_RATE` | macro | `progs/minios_abi.h:404` | `#define MINIOS_PCM2_RATE` |
-| `MINIOS_SYS_ACCESS` | macro | `progs/minios_abi.h:258` | `#define MINIOS_SYS_ACCESS` |
-| `MINIOS_SYS_ARCH_PRCTL` | macro | `progs/minios_abi.h:285` | `#define MINIOS_SYS_ARCH_PRCTL` |
-| `MINIOS_SYS_BRK` | macro | `progs/minios_abi.h:253` | `#define MINIOS_SYS_BRK` |
-| `MINIOS_SYS_CLIP_GET` | macro | `progs/minios_abi.h:382` | `#define MINIOS_SYS_CLIP_GET` |
-| `MINIOS_SYS_CLIP_SET` | macro | `progs/minios_abi.h:381` | `#define MINIOS_SYS_CLIP_SET` |
-| `MINIOS_SYS_CLOCK_GETTIME` | macro | `progs/minios_abi.h:303` | `#define MINIOS_SYS_CLOCK_GETTIME` |
-| `MINIOS_SYS_CLONE` | macro | `progs/minios_abi.h:407` | `#define MINIOS_SYS_CLONE` |
-| `MINIOS_SYS_CLOSE` | macro | `progs/minios_abi.h:246` | `#define MINIOS_SYS_CLOSE` |
-| `MINIOS_SYS_CONNECT` | macro | `progs/minios_abi.h:262` | `#define MINIOS_SYS_CONNECT` |
-| `MINIOS_SYS_DIR_LIST` | macro | `progs/minios_abi.h:357` | `#define MINIOS_SYS_DIR_LIST` |
-| `MINIOS_SYS_DNS` | macro | `progs/minios_abi.h:307` | `#define MINIOS_SYS_DNS` |
-| `MINIOS_SYS_DOOM_FRAME` | macro | `progs/minios_abi.h:325` | `#define MINIOS_SYS_DOOM_FRAME` |
-| `MINIOS_SYS_EXECVE` | macro | `progs/minios_abi.h:268` | `#define MINIOS_SYS_EXECVE` |
-| `MINIOS_SYS_EXIT` | macro | `progs/minios_abi.h:269` | `#define MINIOS_SYS_EXIT` |
-| `MINIOS_SYS_EXIT_GROUP` | macro | `progs/minios_abi.h:301` | `#define MINIOS_SYS_EXIT_GROUP` |
-| `MINIOS_SYS_FB_INFO` | macro | `progs/minios_abi.h:327` | `#define MINIOS_SYS_FB_INFO` |
-| `MINIOS_SYS_FDATASYNC` | macro | `progs/minios_abi.h:282` | `#define MINIOS_SYS_FDATASYNC` |
-| `MINIOS_SYS_FLOCK` | macro | `progs/minios_abi.h:280` | `#define MINIOS_SYS_FLOCK` |
-| `MINIOS_SYS_FORK` | macro | `progs/minios_abi.h:266` | `#define MINIOS_SYS_FORK` |
-| `MINIOS_SYS_FRAMEBUFFER_COMMIT` | macro | `progs/minios_abi.h:419` | `#define MINIOS_SYS_FRAMEBUFFER_COMMIT` |
-| `MINIOS_SYS_FSTAT` | macro | `progs/minios_abi.h:247` | `#define MINIOS_SYS_FSTAT` |
-| `MINIOS_SYS_FSYNC` | macro | `progs/minios_abi.h:281` | `#define MINIOS_SYS_FSYNC` |
-| `MINIOS_SYS_FUTEX_WAIT` | macro | `progs/minios_abi.h:349` | `#define MINIOS_SYS_FUTEX_WAIT` |
-| `MINIOS_SYS_FUTEX_WAKE` | macro | `progs/minios_abi.h:350` | `#define MINIOS_SYS_FUTEX_WAKE` |
-| `MINIOS_SYS_GETCWD` | macro | `progs/minios_abi.h:283` | `#define MINIOS_SYS_GETCWD` |
 
 Next: [SYMBOLS_p21.md](SYMBOLS_p21.md)

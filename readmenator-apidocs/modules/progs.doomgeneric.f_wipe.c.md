@@ -18,8 +18,10 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_progs_doomgeneric_f_wipe_c__wipe_initMelt(["wipe_initMelt"])
     n_progs_doomgeneric_f_wipe_c__wipe_shittyColMajorXform(["wipe_shittyColMajorXform"])
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_doomgeneric_z_zone_h__Z_Free["z_zone.Z_Free"]
     n_progs_doomgeneric_z_zone_h__Z_Malloc["z_zone.Z_Malloc"]
+    n_progs_doomgeneric_f_wipe_c__wipe_initColorXForm(["wipe_initColorXForm"])
     n_progs_doomgeneric_m_random_h__M_Random["m_random.M_Random"]
     n_progs_doomgeneric_f_wipe_c__wipe_exitMelt(["wipe_exitMelt"])
     n_progs_doomgeneric_f_wipe_c__wipe_StartScreen(["wipe_StartScreen"])
@@ -29,8 +31,11 @@ flowchart LR
     n_progs_doomgeneric_f_wipe_c__wipe_ScreenWipe(["wipe_ScreenWipe"])
     n_progs_doomgeneric_v_video_h__V_MarkRect["v_video.V_MarkRect"]
     n_progs_doomgeneric_f_wipe_c__wipe_initMelt --> n_progs_doomgeneric_f_wipe_c__wipe_shittyColMajorXform
+    n_progs_doomgeneric_f_wipe_c__wipe_shittyColMajorXform -.-> n_kernel_string_c__memcpy
     n_progs_doomgeneric_f_wipe_c__wipe_shittyColMajorXform -.-> n_progs_doomgeneric_z_zone_h__Z_Free
     n_progs_doomgeneric_f_wipe_c__wipe_shittyColMajorXform -.-> n_progs_doomgeneric_z_zone_h__Z_Malloc
+    n_progs_doomgeneric_f_wipe_c__wipe_initColorXForm -.-> n_kernel_string_c__memcpy
+    n_progs_doomgeneric_f_wipe_c__wipe_initMelt -.-> n_kernel_string_c__memcpy
     n_progs_doomgeneric_f_wipe_c__wipe_initMelt -.-> n_progs_doomgeneric_m_random_h__M_Random
     n_progs_doomgeneric_f_wipe_c__wipe_initMelt -.-> n_progs_doomgeneric_z_zone_h__Z_Malloc
     n_progs_doomgeneric_f_wipe_c__wipe_exitMelt -.-> n_progs_doomgeneric_z_zone_h__Z_Free
@@ -62,7 +67,7 @@ void wipe_shittyColMajorXform ( short* array, int width, int height )
 | `width` | `int` |  |  |
 | `height` | `int` |  |  |
 
-*Calls:* [`Z_Free`](progs.doomgeneric.z_zone.h.md#z_free), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`Z_Free`](progs.doomgeneric.z_zone.h.md#z_free), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
 
 *Called by:* [`wipe_initMelt`](#wipe_initmelt)
 
@@ -87,6 +92,8 @@ int wipe_initColorXForm ( int width, int height, int ticks )
 | `ticks` | `int` |  |  |
 
 **Returns:** `int`
+
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
 
 ---
 
@@ -154,7 +161,7 @@ int wipe_initMelt ( int width, int height, int ticks )
 
 **Returns:** `int`
 
-*Calls:* [`wipe_shittyColMajorXform`](#wipe_shittycolmajorxform), [`M_Random`](progs.doomgeneric.m_random.h.md#m_random), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`wipe_shittyColMajorXform`](#wipe_shittycolmajorxform), [`M_Random`](progs.doomgeneric.m_random.h.md#m_random), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
 
 ---
 

@@ -37,6 +37,7 @@ flowchart LR
     n_progs_doomgeneric_i_system_c__I_ConsoleStdout(["I_ConsoleStdout"])
     n_progs_doomgeneric_i_system_c__I_ZoneBase(["I_ZoneBase"])
     n_progs_doomgeneric_m_argv_h__M_CheckParmWithArgs["m_argv.M_CheckParmWithArgs"]
+    n_kernel_string_c__memset["string.memset"]
     n_progs_doomgeneric_m_argv_c__M_ParmExists["m_argv.M_ParmExists"]
     n_progs_doomgeneric_m_misc_h__M_vsnprintf["m_misc.M_vsnprintf"]
     n_progs_topogpt3_topogpt3_c__fflush["topogpt3.fflush"]
@@ -47,6 +48,7 @@ flowchart LR
     n_progs_doomgeneric_i_system_c__I_PrintStartupBanner --> n_progs_doomgeneric_i_system_c__I_PrintDivider
     n_progs_doomgeneric_i_system_c__I_Error --> n_progs_doomgeneric_i_system_c__I_ConsoleStdout
     n_progs_doomgeneric_i_system_c__I_ZoneBase -.-> n_progs_doomgeneric_m_argv_h__M_CheckParmWithArgs
+    n_progs_doomgeneric_i_system_c__I_Error -.-> n_kernel_string_c__memset
     n_progs_doomgeneric_i_system_c__I_Error -.-> n_progs_doomgeneric_m_argv_c__M_ParmExists
     n_progs_doomgeneric_i_system_c__I_Error -.-> n_progs_doomgeneric_m_misc_h__M_vsnprintf
     n_progs_doomgeneric_i_system_c__I_Error -.-> n_progs_topogpt3_topogpt3_c__fflush
@@ -257,7 +259,7 @@ void I_Error (char *error, ...)
 | `error` | `char *` |  |  |
 | `...` |  |  |  |
 
-*Calls:* [`I_ConsoleStdout`](#i_consolestdout), [`M_ParmExists`](progs.doomgeneric.m_argv.c.md#m_parmexists), [`M_vsnprintf`](progs.doomgeneric.m_misc.h.md#m_vsnprintf), [`fflush`](progs.topogpt3.topogpt3.c.md#fflush)
+*Calls:* [`memset`](kernel.string.c.md#memset), [`I_ConsoleStdout`](#i_consolestdout), [`M_ParmExists`](progs.doomgeneric.m_argv.c.md#m_parmexists), [`M_vsnprintf`](progs.doomgeneric.m_misc.h.md#m_vsnprintf), [`fflush`](progs.topogpt3.topogpt3.c.md#fflush)
 
 ---
 

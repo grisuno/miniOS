@@ -3,6 +3,8 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `pcache_stats` | function | `headers/pcache.h:106` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out, unsigned long *miss_out, unsigned long...` |
+| `pcache_unmap` | function | `headers/pcache.h:69` | `void pcache_unmap(int ino, unsigned index);` |
 | `PCM2_DMA_BYTES` | macro | `headers/pcm2.h:55` | `#define PCM2_DMA_BYTES` |
 | `PCM2_ERR_BUSY` | macro | `headers/pcm2.h:60` | `#define PCM2_ERR_BUSY` |
 | `PCM2_ERR_INVAL` | macro | `headers/pcm2.h:65` | `#define PCM2_ERR_INVAL` |
@@ -494,7 +496,5 @@ Previous: [SYMBOLS_p5.md](SYMBOLS_p5.md)
 | `rwlock_write_trylock` | function | `headers/sync.h:132` | `int rwlock_write_trylock(rwlock_t *rw);` |
 | `rwlock_write_unlock` | function | `headers/sync.h:128` | `void rwlock_write_unlock(rwlock_t *rw);` |
 | `sem_init` | function | `headers/sync.h:89` | `void sem_init(sem_t *s, int value);` |
-| `sem_post` | function | `headers/sync.h:91` | `void sem_post(sem_t *s);` |
-| `sem_t` | struct | `headers/sync.h:81` | `` |
 
 Next: [SYMBOLS_p7.md](SYMBOLS_p7.md)

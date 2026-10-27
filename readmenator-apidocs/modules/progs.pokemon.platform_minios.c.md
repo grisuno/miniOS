@@ -16,7 +16,19 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_progs_pokemon_platform_minios_c___dl_argv(["_dl_argv"])
     n_progs_topogpt3_topogpt3_c__fflush["topogpt3.fflush"]
+    n_progs_pokemon_platform_minios_c__gb_platform_init(["gb_platform_init"])
+    n_kernel_string_c__memset["string.memset"]
+    n_progs_pokemon_platform_minios_c__frames(["frames"])
+    n_kernel_string_c__memcmp["string.memcmp"]
+    n_progs_pokemon_platform_minios_c__gb_platform_present_framebuffer(["gb_platform_present_framebuffer"])
+    n_progs_pokemon_platform_minios_c__gb_platform_render_lcd_off_frame(["gb_platform_render_lcd_off_frame"])
+    n_progs_pokemon_platform_minios_c__gb_platform_test_audio_concurrency(["gb_platform_test_audio_concurrency"])
     n_progs_pokemon_platform_minios_c___dl_argv -.-> n_progs_topogpt3_topogpt3_c__fflush
+    n_progs_pokemon_platform_minios_c__gb_platform_init -.-> n_kernel_string_c__memset
+    n_progs_pokemon_platform_minios_c__frames -.-> n_kernel_string_c__memcmp
+    n_progs_pokemon_platform_minios_c__gb_platform_present_framebuffer -.-> n_kernel_string_c__memcmp
+    n_progs_pokemon_platform_minios_c__gb_platform_render_lcd_off_frame -.-> n_kernel_string_c__memset
+    n_progs_pokemon_platform_minios_c__gb_platform_test_audio_concurrency -.-> n_kernel_string_c__memset
 ```
 
 ## Structs
@@ -155,6 +167,8 @@ bool gb_platform_init(int scale)
 
 **Returns:** `bool`
 
+*Calls:* [`memset`](kernel.string.c.md#memset)
+
 ---
 
 <a id="gb_platform_register_context"></a>
@@ -243,6 +257,8 @@ void gb_platform_render_frame(const uint32_t *framebuffer)
 
 **Returns:** `*`
 
+*Calls:* [`memcmp`](kernel.string.c.md#memcmp)
+
 ---
 
 <a id="gb_platform_present_framebuffer"></a>
@@ -261,6 +277,8 @@ void gb_platform_present_framebuffer(const uint32_t *framebuffer)
 |---|---|---|---|
 | `framebuffer` | `uint32_t *` |  |  |
 
+*Calls:* [`memcmp`](kernel.string.c.md#memcmp)
+
 ---
 
 <a id="gb_platform_render_lcd_off_frame"></a>
@@ -272,6 +290,8 @@ void gb_platform_present_framebuffer(const uint32_t *framebuffer)
 ```c
 void gb_platform_render_lcd_off_frame(void)
 ```
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 ---
 
@@ -576,6 +596,8 @@ Test-hook stubs (no-ops on MiniOS)
 | `out_result` | `void *` |  |  |
 
 **Returns:** `bool`
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 ---
 

@@ -198,13 +198,40 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
   - `quit_doom` (function, line 70) `def quit_doom()`
 - Depends on: `kernel/time.c`
 
+## tools/gen_avatar.py
+- Doc: Generate the desktop profile avatar as a C header.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `AvatarConfig` (class, line 38) `class AvatarConfig`
+  - `AvatarPainter` (class, line 61) `class AvatarPainter`
+  - `load_portrait` (function, line 169) `def load_portrait(path, crop)`
+  - `parse_crop` (function, line 180) `def parse_crop(text)`
+  - `write_header` (function, line 191) `def write_header(image, path)`
+  - `main` (function, line 225) `def main(argv)`
+  - `__init__` (method, line 64) `def __init__(self, cfg)`
+  - `_pt` (method, line 70) `def _pt(self, p)`
+  - `_box` (method, line 73) `def _box(self, cx, cy, rx, ry)`
+  - `_gradient` (method, line 77) `def _gradient(self, top, bottom, y0, y1, box_fn)`
+  - `background` (method, line 83) `def background(self)`
+  - `hair_back` (method, line 86) `def hair_back(self)`
+  - `face` (method, line 96) `def face(self)`
+  - `eye` (method, line 103) `def eye(self, cx, cy)`
+  - `eyes` (method, line 123) `def eyes(self)`
+  - `nose_mouth` (method, line 127) `def nose_mouth(self)`
+  - `bangs` (method, line 134) `def bangs(self)`
+  - `ribbon` (method, line 149) `def ribbon(self)`
+  - `render` (method, line 157) `def render(self)`
+
 ## tools/gen_desktop_pngs.py
 - Doc: build MiniOS desktop art from user-supplied PNGs.
 - Layer: utility
 - Language: py
 - Symbols:
-  - `write_atomic` (function, line 71) `def write_atomic(img, path)`
-  - `main` (function, line 77) `def main()`
+  - `scaled` (function, line 75) `def scaled(im, scale)`
+  - `fit_wallpaper` (function, line 81) `def fit_wallpaper(im)`
+  - `write_atomic` (function, line 93) `def write_atomic(img, path)`
+  - `main` (function, line 99) `def main()`
 
 ## tools/gen_icons.py
 - Doc: generate 32x32 RGBA PNG icon files for the MiniOS desktop.
@@ -465,28 +492,6 @@ Pages: [KB_tools.md](KB_tools.md), [KB_tools_p2.md](KB_tools_p2.md)
 - Language: py
 - Symbols:
   - `main` (function, line 29) `def main()`
-
-## tools/mkramdisk.py
-- Doc: Build a MiniOS ramdisk image from files in a directory tree.
-- Layer: utility
-- Language: py
-- Symbols:
-  - `read_fname_bytes` (function, line 41) `def read_fname_bytes(kernel_h_path)`
-  - `pack_name` (function, line 64) `def pack_name(path, common)`
-  - `main` (function, line 74) `def main()`
-
-## tools/mkroots.sh
-- Doc: regenerate tls_roots.h from the DER files in tls_roots_src/.
-- Layer: utility
-- Language: sh
-
-## tools/mkvocab.py
-- Doc: Build progs/topogpt3/vocab.bin from the GPT-2 encoder.json.
-- Layer: utility
-- Language: py
-- Symbols:
-  - `bytes_to_unicode` (function, line 18) `def bytes_to_unicode()`
-  - `main` (function, line 35) `def main(encoder_path, vocab_path)`
 
 
 Next: [KB_tools_p2.md](KB_tools_p2.md)

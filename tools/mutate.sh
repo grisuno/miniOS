@@ -114,6 +114,7 @@ SOURCES="$SOURCES progs/src/lxabi.c tools/mkfs.minifs.py tools/minifs_fsck.py"
 SOURCES="$SOURCES kernel/proc_sec.c kernel/seccomp_bpf.c progs/src/lxsecc.c"
 SOURCES="$SOURCES progs/lisp/lisp.c headers/httpd.h"
 SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
+SOURCES="$SOURCES headers/wm_chrome.h tests/test_chrome.c"
 # gfxview-* rows (graphics view contract) target the header, the
 # compositor and the zoom syscall; the latter two are listed above.
 SOURCES="$SOURCES headers/wm_gfxview.h tests/test_wm.c"
@@ -490,6 +491,16 @@ fx-finish-skips-melt | s/    vga_fx_melt_rect(0, 0, fb_width, fb_height, oldb, n
 fx-open-never-armed | s/        fx_gfx_armed = 1;/        fx_gfx_armed = 0;/ | kernel/vga_fb.c
 fx-advance-stuck | s/            cols\[i\]++;/            cols[i] += 0;/ | headers/vga_fx.h
 fx-front-clamp-lost | s/    if (col_y > h) {/    if (col_y > h + 1) {/ | headers/vga_fx.h
+chrome-blend-inverted | s/    return (src \* a + dst \* (255 - a) + 127) \/ 255;/    return (dst * a + src * (255 - a) + 127) \/ 255;/ | headers/wm_chrome.h
+chrome-clamp-low-lost | s/    return v < 0 ? 0 : (v > 255 ? 255 : v);/    return v < 0 ? 0 : v;/ | headers/wm_chrome.h
+chrome-gradient-sink-lost | s/    delta = cfg->title_lift - ((cfg->title_lift + cfg->title_sink) \* row) \/ (span - 1);/    delta = cfg->title_lift - (cfg->title_lift * row) \/ (span - 1);/ | headers/wm_chrome.h
+chrome-shadow-linear | s/    return (int)(((long)wm_chrome_clamp(cfg->shadow_alpha) \* num \* num) \/ (r \* r));/    return (int)(((long)wm_chrome_clamp(cfg->shadow_alpha) * num) \/ r);/ | headers/wm_chrome.h
+chrome-shadow-dy-ignored | s/    ry += cfg->shadow_dy;/    ry += 0;/ | headers/wm_chrome.h
+chrome-shadow-dx-ignored | s/    rx += cfg->shadow_dx;/    rx += 0;/ | headers/wm_chrome.h
+chrome-corner-edge-shifted | s/    edge16 = 32L \* radius;/    edge16 = 30L * radius;/ | headers/wm_chrome.h
+chrome-corner-box-open | s/    if (x >= radius || y >= radius) {/    if (x >= radius \&\& y >= radius) {/ | headers/wm_chrome.h
+chrome-disc-mirror-lost | s/    return wm_chrome_corner_coverage(radius, x < radius ? x : side - x, y < radius ? y : side - y);/    return wm_chrome_corner_coverage(radius, x < radius ? x : x, y < radius ? y : side - y);/ | headers/wm_chrome.h
+chrome-disc-box-open | s/    if (radius <= 0 || x < 0 || y < 0 || x >= 2 \* radius || y >= 2 \* radius) {/    if (radius <= 0 || x < 0 || y < 0 || x > 2 * radius || y >= 2 * radius) {/ | headers/wm_chrome.h
 gfxview-fullscreen-request-dropped | s/        return vga_fb_gfx_set_fullscreen(a1 == MINIOS_GFX_ZOOM_FULLSCREEN) ? -22 : 0;/        return 0;/ | kernel/syscalls.c
 gfxview-tile-skips-graphics | s/                gfx_view_mode = WM_GFXVIEW_TILED;/                gfx_view_mode = gfx_view_mode;/ | kernel/vga_fb.c
 gfxview-minimize-closes | s/^        vga_fb_gfx_set_hidden(1);/        wm_close_request = 1;/ | kernel/vga_fb.c
@@ -828,6 +839,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         headers/vga_fx.h|tests/test_fx.c)
             make -C "$HERE" test-fx > "$BACKUP/suite.log" 2>&1
+            ;;
+        headers/wm_chrome.h|tests/test_chrome.c)
+            make -C "$HERE" test-chrome > "$BACKUP/suite.log" 2>&1
             ;;
         headers/wm_gfxview.h|tests/test_wm.c)
             make -C "$HERE" test-wm > "$BACKUP/suite.log" 2>&1

@@ -1,6 +1,21 @@
 # API (page 21 of 21)
 Previous: [API_p20.md](API_p20.md)
 
+## tools/gen_desktop_pngs.py
+- `scaled` (function) `tools/gen_desktop_pngs.py:75` `def scaled(im, scale)` -- Resize an image by a factor with Lanczos, never below one pixel.
+- `fit_wallpaper` (function) `tools/gen_desktop_pngs.py:81` `def fit_wallpaper(im)` -- Whole source, centred, over a blurred and dimmed cover-scaled copy.
+- `write_atomic` (function) `tools/gen_desktop_pngs.py:93` `def write_atomic(img, path)`
+- `main` (function) `tools/gen_desktop_pngs.py:99` `def main()`
+
+## tools/gen_icons.py
+- `make_png` (function) `tools/gen_icons.py:179` `def make_png(pixels, palette, width, height)` -- Create a minimal indexed-colour PNG from pixel indices and a palette.
+- `make_chunk` (function) `tools/gen_icons.py:209` `def make_chunk(chunk_type, data)`
+- `main` (function) `tools/gen_icons.py:214` `def main()`
+
+## tools/gen_zip_fixtures.py
+- `write_zip` (function) `tools/gen_zip_fixtures.py:28` `def write_zip(path, entries)` -- entries: list of (name, data_or_None).  data None marks a directory.
+- `main` (function) `tools/gen_zip_fixtures.py:42` `def main()`
+
 ## tools/kernel_feature_survey.py
 - `iter_sources` (function) `tools/kernel_feature_survey.py:34` `def iter_sources(root)` -- Yield C source paths under root, skipping vendored and cache dirs.
 - `find_fnptr_hits` (function) `tools/kernel_feature_survey.py:43` `def find_fnptr_hits(path, text)` -- Return line numbers declaring function pointers.
@@ -173,10 +188,10 @@ Depends on: `kernel/time.c`
 
 ## tools/mutate.sh
 - `usage` (function) `tools/mutate.sh:51`
-- `restore_sources` (function) `tools/mutate.sh:137`
-- `cleanup` (function) `tools/mutate.sh:144`
-- `record` (function) `tools/mutate.sh:536`
-- `find_index` (function) `tools/mutate.sh:542` -- Locate a mutant by name.
+- `restore_sources` (function) `tools/mutate.sh:138`
+- `cleanup` (function) `tools/mutate.sh:145`
+- `record` (function) `tools/mutate.sh:547`
+- `find_index` (function) `tools/mutate.sh:553` -- Locate a mutant by name.
 
 ## tools/probe_compute_vga.py
 Depends on: `kernel/time.c`

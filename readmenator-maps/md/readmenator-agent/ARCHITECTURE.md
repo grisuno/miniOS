@@ -298,6 +298,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/vga_cursor.c` -> `headers/kernel/vga_cursor.h`
 - `kernel/vga_cursor.c` -> `headers/vga_fb.h`
 - `kernel/vga_fb.c` -> `headers/arch/x86/boot/bootdefs.h`
+- `kernel/vga_fb.c` -> `headers/avatar_data.h`
 - `kernel/vga_fb.c` -> `headers/desktop_icons.h`
 - `kernel/vga_fb.c` -> `headers/desktop_shortcuts.h`
 - `kernel/vga_fb.c` -> `headers/drivers/kbd.h`
@@ -305,6 +306,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/vga_fb.c` -> `headers/sched.h`
 - `kernel/vga_fb.c` -> `headers/vga_fb.h`
 - `kernel/vga_fb.c` -> `headers/vga_fx.h`
+- `kernel/vga_fb.c` -> `headers/wm_chrome.h`
 - `kernel/vga_fb.c` -> `headers/wm_events.h`
 - `kernel/vga_fb.c` -> `headers/wm_focus.h`
 - `kernel/vga_fb.c` -> `headers/wm_geom.h`
@@ -494,7 +496,5 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `progs/doomgeneric/doomgeneric_win.c` -> `progs/doomgeneric/doomkeys.h`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/string.c`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/time.c`
-- `progs/doomgeneric/doomgeneric_xlib.c` -> `progs/doomgeneric/doomgeneric.h`
-- `progs/doomgeneric/doomgeneric_xlib.c` -> `progs/doomgeneric/doomkeys.h`
 
 Next: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)

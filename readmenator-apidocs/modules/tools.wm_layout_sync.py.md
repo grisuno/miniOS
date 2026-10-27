@@ -221,7 +221,7 @@ Docstring: Build manifest markdown from discovery result.
 
 **Returns:** `str`
 
-*Called by:* [`main`](progs.src.opl3.c.md#main), [`WmLayoutSync.synchronize`](#wmlayoutsync-synchronize), [`main`](#main)
+*Called by:* [`WmLayoutSync.synchronize`](#wmlayoutsync-synchronize), [`main`](#main)
 
 <a id="wmlayoutsync-synchronize"></a>
 

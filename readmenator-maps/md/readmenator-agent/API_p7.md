@@ -343,11 +343,15 @@ Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomed
 - `kstrncmp` (function) `kernel/string.c:48` `int kstrncmp(const char *a, const char *b, unsigned long n)`
 - `kstrchr` (function) `kernel/string.c:53` `char *kstrchr(const char *s, int c)`
 - `kstrstr` (function) `kernel/string.c:58` `char *kstrstr(const char *hay, const char *ndl)`
-- `kmemcpy` (function) `kernel/string.c:68` `void *kmemcpy(void *dst, const void *src, unsigned long n)`
-- `kmemset` (function) `kernel/string.c:75` `void *kmemset(void *dst, int c, unsigned long n)`
-- `kmemcmp` (function) `kernel/string.c:81` `int kmemcmp(const void *a, const void *b, unsigned long n)`
-- `kmemmove` (function) `kernel/string.c:87` `void *kmemmove(void *dst, const void *src, unsigned long n)`
-- `katol` (function) `kernel/string.c:95` `long katol(const char *s)`
+- `kmemcpy` (function) `kernel/string.c:73` `NO_LOOP_IDIOM void *kmemcpy(void *dst, const void *src, unsigned long n)` -- Docstring: Byte copy.
+- `kmemset` (function) `kernel/string.c:80` `NO_LOOP_IDIOM void *kmemset(void *dst, int c, unsigned long n)`
+- `kmemcmp` (function) `kernel/string.c:86` `int kmemcmp(const void *a, const void *b, unsigned long n)`
+- `kmemmove` (function) `kernel/string.c:92` `NO_LOOP_IDIOM void *kmemmove(void *dst, const void *src, unsigned long n)`
+- `memcpy` (function) `kernel/string.c:104` `void *memcpy(void *dst, const void *src, unsigned long n)` -- Docstring: ISO C entry points the compiler itself emits calls to for struct copies and large initializers, even...
+- `memmove` (function) `kernel/string.c:108` `void *memmove(void *dst, const void *src, unsigned long n)`
+- `memset` (function) `kernel/string.c:112` `void *memset(void *dst, int c, unsigned long n)`
+- `memcmp` (function) `kernel/string.c:116` `int memcmp(const void *a, const void *b, unsigned long n)`
+- `katol` (function) `kernel/string.c:120` `long katol(const char *s)`
 
 ## kernel/symtab.c
 - `k_register_symbol` (function) `kernel/symtab.c:10` `void k_register_symbol(const char *name, void *addr)`

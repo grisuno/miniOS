@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `IsAxisButton` | function | `progs/doomgeneric/i_joystick.c:171` | `static boolean IsAxisButton(int physbutton)` |
+| `IsValidAxis` | function | `progs/doomgeneric/i_joystick.c:90` | `static boolean IsValidAxis(int axis)` |
+| `ReadButtonState` | function | `progs/doomgeneric/i_joystick.c:203` | `static int ReadButtonState(int vbutton)` |
+| `BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:33` | `#define BUTTON_AXIS` |
+| `BUTTON_AXIS_NEG` | macro | `progs/doomgeneric/i_joystick.h:39` | `#define BUTTON_AXIS_NEG(axis)` |
+| `BUTTON_AXIS_POS` | macro | `progs/doomgeneric/i_joystick.h:40` | `#define BUTTON_AXIS_POS(axis)` |
+| `CREATE_BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:43` | `#define CREATE_BUTTON_AXIS(neg, pos)` |
+| `CREATE_HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:57` | `#define CREATE_HAT_AXIS(hat, direction)` |
+| `HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:48` | `#define HAT_AXIS` |
+| `HAT_AXIS_DIRECTION` | macro | `progs/doomgeneric/i_joystick.h:55` | `#define HAT_AXIS_DIRECTION(axis)` |
+| `HAT_AXIS_HAT` | macro | `progs/doomgeneric/i_joystick.h:53` | `#define HAT_AXIS_HAT(axis)` |
+| `HAT_AXIS_HORIZONTAL` | macro | `progs/doomgeneric/i_joystick.h:60` | `#define HAT_AXIS_HORIZONTAL` |
+| `HAT_AXIS_VERTICAL` | macro | `progs/doomgeneric/i_joystick.h:61` | `#define HAT_AXIS_VERTICAL` |
+| `IS_BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:36` | `#define IS_BUTTON_AXIS(axis)` |
+| `IS_HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:50` | `#define IS_HAT_AXIS(axis)` |
+| `I_BindJoystickVariables` | function | `progs/doomgeneric/i_joystick.h:67` | `void I_BindJoystickVariables(void);` |
+| `I_InitJoystick` | function | `progs/doomgeneric/i_joystick.h:63` | `void I_InitJoystick(void);` |
+| `I_ShutdownJoystick` | function | `progs/doomgeneric/i_joystick.h:64` | `void I_ShutdownJoystick(void);` |
+| `I_UpdateJoystick` | function | `progs/doomgeneric/i_joystick.h:65` | `void I_UpdateJoystick(void);` |
+| `NUM_VIRTUAL_BUTTONS` | macro | `progs/doomgeneric/i_joystick.h:25` | `#define NUM_VIRTUAL_BUTTONS` |
+| `__I_JOYSTICK__` | macro | `progs/doomgeneric/i_joystick.h:20` | `#define __I_JOYSTICK__` |
+| `D_DoomMain` | function | `progs/doomgeneric/i_main.c:33` | `void D_DoomMain (void);` |
+| `M_FindResponseFile` | function | `progs/doomgeneric/i_main.c:35` | `void M_FindResponseFile(void);` |
+| `dg_Create` | function | `progs/doomgeneric/i_main.c:37` | `void dg_Create();` |
+| `main` | function | `progs/doomgeneric/i_main.c:40` | `int main(int argc, char **argv)` |
+| `DOOM_PCM_DRUM_SMP` | macro | `progs/doomgeneric/i_minios_sound.c:125` | `#define DOOM_PCM_DRUM_SMP` |
+| `DOOM_PCM_RATE` | macro | `progs/doomgeneric/i_minios_sound.c:55` | `#define DOOM_PCM_RATE` |
+| `DOOM_PCM_VOL` | macro | `progs/doomgeneric/i_minios_sound.c:56` | `#define DOOM_PCM_VOL` |
+| `MUS_ARP_MAX` | macro | `progs/doomgeneric/i_minios_sound.c:123` | `#define MUS_ARP_MAX` |
+| `MUS_ARP_SLOT_MS` | macro | `progs/doomgeneric/i_minios_sound.c:120` | `#define MUS_ARP_SLOT_MS` |
+| `MUS_BASS_HOLD_MS` | macro | `progs/doomgeneric/i_minios_sound.c:121` | `#define MUS_BASS_HOLD_MS` |
+| `MUS_BASS_LINE_MIDI` | macro | `progs/doomgeneric/i_minios_sound.c:122` | `#define MUS_BASS_LINE_MIDI` |
+| `MUS_Init` | function | `progs/doomgeneric/i_minios_sound.c:410` | `static boolean MUS_Init(void)` |
+| `MUS_MusicIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:474` | `static boolean MUS_MusicIsPlaying(void)` |
+| `MUS_PERCUSSION_CHAN` | macro | `progs/doomgeneric/i_minios_sound.c:119` | `#define MUS_PERCUSSION_CHAN` |
+| `MUS_Pause` | function | `progs/doomgeneric/i_minios_sound.c:424` | `static void MUS_Pause(void)` |
+| `MUS_PlaySong` | function | `progs/doomgeneric/i_minios_sound.c:448` | `static void MUS_PlaySong(void *handle, boolean looping)` |
+| `MUS_Poll` | function | `progs/doomgeneric/i_minios_sound.c:478` | `static void MUS_Poll(void)` |
+| `MUS_RegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:427` | `static void *MUS_RegisterSong(void *data, int len)` |
+| `MUS_Resume` | function | `progs/doomgeneric/i_minios_sound.c:425` | `static void MUS_Resume(void)` |
+| `MUS_SetMusicVolume` | function | `progs/doomgeneric/i_minios_sound.c:422` | `static void MUS_SetMusicVolume(int volume)` |
+| `MUS_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:415` | `static void MUS_Shutdown(void)` |
+| `MUS_StopSong` | function | `progs/doomgeneric/i_minios_sound.c:469` | `static void MUS_StopSong(void)` |
+| `MUS_TICKS_PER_SEC` | macro | `progs/doomgeneric/i_minios_sound.c:118` | `#define MUS_TICKS_PER_SEC` |
+| `MUS_UnRegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:442` | `static void MUS_UnRegisterSong(void *handle)` |
+| `PCSPK_CHANNELS` | macro | `progs/doomgeneric/i_minios_sound.c:12` | `#define PCSPK_CHANNELS` |
+| `PCSPK_CacheSounds` | function | `progs/doomgeneric/i_minios_sound.c:653` | `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)` |
+| `PCSPK_GetSfxLumpNum` | function | `progs/doomgeneric/i_minios_sound.c:529` | `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)` |
 | `PCSPK_Init` | function | `progs/doomgeneric/i_minios_sound.c:512` | `static boolean PCSPK_Init(boolean use_sfx_prefix)` |
 | `PCSPK_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:519` | `static void PCSPK_Shutdown(void)` |
 | `PCSPK_SoundIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:647` | `static boolean PCSPK_SoundIsPlaying(int channel)` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 | `__M_CONTROLS_H__` | macro | `progs/doomgeneric/m_controls.h:18` | `#define __M_CONTROLS_H__` |
 | `dclick_use` | variable | `progs/doomgeneric/m_controls.h:154` | `extern int dclick_use;` |
 | `joybfire` | variable | `progs/doomgeneric/m_controls.h:139` | `extern int joybfire;` |
-| `joybjump` | variable | `progs/doomgeneric/m_controls.h:144` | `extern int joybjump;` |
-| `joybmenu` | variable | `progs/doomgeneric/m_controls.h:152` | `extern int joybmenu;` |
-| `joybnextweapon` | variable | `progs/doomgeneric/m_controls.h:150` | `extern int joybnextweapon;` |
-| `joybprevweapon` | variable | `progs/doomgeneric/m_controls.h:149` | `extern int joybprevweapon;` |
-| `joybspeed` | variable | `progs/doomgeneric/m_controls.h:142` | `extern int joybspeed;` |
-| `joybstrafe` | variable | `progs/doomgeneric/m_controls.h:140` | `extern int joybstrafe;` |
-| `joybstrafeleft` | variable | `progs/doomgeneric/m_controls.h:146` | `extern int joybstrafeleft;` |
-| `joybstraferight` | variable | `progs/doomgeneric/m_controls.h:147` | `extern int joybstraferight;` |
-| `joybuse` | variable | `progs/doomgeneric/m_controls.h:141` | `extern int joybuse;` |
-| `key_arti_all` | variable | `progs/doomgeneric/m_controls.h:70` | `extern int key_arti_all;` |
-| `key_arti_blastradius` | variable | `progs/doomgeneric/m_controls.h:73` | `extern int key_arti_blastradius;` |
-| `key_arti_egg` | variable | `progs/doomgeneric/m_controls.h:76` | `extern int key_arti_egg;` |
-| `key_arti_health` | variable | `progs/doomgeneric/m_controls.h:71` | `extern int key_arti_health;` |
-| `key_arti_invulnerability` | variable | `progs/doomgeneric/m_controls.h:77` | `extern int key_arti_invulnerability;` |
-| `key_arti_poisonbag` | variable | `progs/doomgeneric/m_controls.h:72` | `extern int key_arti_poisonbag;` |
-| `key_arti_teleport` | variable | `progs/doomgeneric/m_controls.h:74` | `extern int key_arti_teleport;` |
-| `key_arti_teleportother` | variable | `progs/doomgeneric/m_controls.h:75` | `extern int key_arti_teleportother;` |
-| `key_demo_quit` | variable | `progs/doomgeneric/m_controls.h:79` | `extern int key_demo_quit;` |
-| `key_down` | variable | `progs/doomgeneric/m_controls.h:24` | `extern int key_down;` |
-| `key_fire` | variable | `progs/doomgeneric/m_controls.h:27` | `extern int key_fire;` |
-| `key_flycenter` | variable | `progs/doomgeneric/m_controls.h:36` | `extern int key_flycenter;` |
-| `key_flydown` | variable | `progs/doomgeneric/m_controls.h:35` | `extern int key_flydown;` |
-| `key_flyup` | variable | `progs/doomgeneric/m_controls.h:34` | `extern int key_flyup;` |
-| `key_invdrop` | variable | `progs/doomgeneric/m_controls.h:53` | `extern int key_invdrop;` |
-| `key_invend` | variable | `progs/doomgeneric/m_controls.h:51` | `extern int key_invend;` |
-| `key_invhome` | variable | `progs/doomgeneric/m_controls.h:50` | `extern int key_invhome;` |
-| `key_invkey` | variable | `progs/doomgeneric/m_controls.h:49` | `extern int key_invkey;` |
-| `key_invleft` | variable | `progs/doomgeneric/m_controls.h:40` | `extern int key_invleft;` |
-| `key_invpop` | variable | `progs/doomgeneric/m_controls.h:48` | `extern int key_invpop;` |
-| `key_invquery` | variable | `progs/doomgeneric/m_controls.h:46` | `extern int key_invquery;` |
-| `key_invright` | variable | `progs/doomgeneric/m_controls.h:41` | `extern int key_invright;` |
-| `key_invuse` | variable | `progs/doomgeneric/m_controls.h:52` | `extern int key_invuse;` |
-| `key_jump` | variable | `progs/doomgeneric/m_controls.h:32` | `extern int key_jump;` |
-| `key_left` | variable | `progs/doomgeneric/m_controls.h:21` | `extern int key_left;` |
-| `key_lookcenter` | variable | `progs/doomgeneric/m_controls.h:39` | `extern int key_lookcenter;` |
-| `key_lookdown` | variable | `progs/doomgeneric/m_controls.h:38` | `extern int key_lookdown;` |
-| `key_lookup` | variable | `progs/doomgeneric/m_controls.h:37` | `extern int key_lookup;` |
-| `key_map_clearmark` | variable | `progs/doomgeneric/m_controls.h:95` | `extern int key_map_clearmark;` |
-| `key_map_east` | variable | `progs/doomgeneric/m_controls.h:86` | `extern int key_map_east;` |
-| `key_map_follow` | variable | `progs/doomgeneric/m_controls.h:92` | `extern int key_map_follow;` |
-| `key_map_grid` | variable | `progs/doomgeneric/m_controls.h:93` | `extern int key_map_grid;` |
-| `key_map_mark` | variable | `progs/doomgeneric/m_controls.h:94` | `extern int key_map_mark;` |
-| `key_map_maxzoom` | variable | `progs/doomgeneric/m_controls.h:91` | `extern int key_map_maxzoom;` |
-| `key_map_north` | variable | `progs/doomgeneric/m_controls.h:84` | `extern int key_map_north;` |
-| `key_map_south` | variable | `progs/doomgeneric/m_controls.h:85` | `extern int key_map_south;` |
-| `key_map_toggle` | variable | `progs/doomgeneric/m_controls.h:90` | `extern int key_map_toggle;` |
-| `key_map_west` | variable | `progs/doomgeneric/m_controls.h:87` | `extern int key_map_west;` |
-| `key_map_zoomin` | variable | `progs/doomgeneric/m_controls.h:88` | `extern int key_map_zoomin;` |
 
 Next: [SYMBOLS_p16.md](SYMBOLS_p16.md)

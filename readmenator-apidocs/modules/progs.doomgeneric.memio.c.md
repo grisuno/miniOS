@@ -19,12 +19,16 @@ Solid arrows stay in this module, dashed arrows leave it.
 flowchart LR
     n_progs_doomgeneric_memio_c__mem_fopen_read(["mem_fopen_read"])
     n_progs_doomgeneric_z_zone_h__Z_Malloc["z_zone.Z_Malloc"]
+    n_progs_doomgeneric_memio_c__mem_fread(["mem_fread"])
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_doomgeneric_memio_c__mem_fopen_write(["mem_fopen_write"])
     n_progs_doomgeneric_memio_c__mem_fwrite(["mem_fwrite"])
     n_progs_doomgeneric_z_zone_h__Z_Free["z_zone.Z_Free"]
     n_progs_doomgeneric_memio_c__mem_fclose(["mem_fclose"])
     n_progs_doomgeneric_memio_c__mem_fopen_read -.-> n_progs_doomgeneric_z_zone_h__Z_Malloc
+    n_progs_doomgeneric_memio_c__mem_fread -.-> n_kernel_string_c__memcpy
     n_progs_doomgeneric_memio_c__mem_fopen_write -.-> n_progs_doomgeneric_z_zone_h__Z_Malloc
+    n_progs_doomgeneric_memio_c__mem_fwrite -.-> n_kernel_string_c__memcpy
     n_progs_doomgeneric_memio_c__mem_fwrite -.-> n_progs_doomgeneric_z_zone_h__Z_Free
     n_progs_doomgeneric_memio_c__mem_fwrite -.-> n_progs_doomgeneric_z_zone_h__Z_Malloc
     n_progs_doomgeneric_memio_c__mem_fclose -.-> n_progs_doomgeneric_z_zone_h__Z_Free
@@ -90,6 +94,8 @@ size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)
 
 **Returns:** `size_t`
 
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
+
 ---
 
 <a id="mem_fopen_write"></a>
@@ -129,7 +135,7 @@ size_t mem_fwrite(const void *ptr, size_t size, size_t nmemb, MEMFILE *stream)
 
 **Returns:** `size_t`
 
-*Calls:* [`Z_Free`](progs.doomgeneric.z_zone.h.md#z_free), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`Z_Free`](progs.doomgeneric.z_zone.h.md#z_free), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
 
 ---
 

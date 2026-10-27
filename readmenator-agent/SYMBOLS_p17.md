@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `P_NoiseAlert` | function | `progs/doomgeneric/p_local.h:127` | `void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);` |
+| `P_PlayerThink` | function | `progs/doomgeneric/p_local.h:86` | `void P_PlayerThink (player_t* player);` |
+| `P_PointOnDivlineSide` | function | `progs/doomgeneric/p_local.h:164` | `int P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);` |
+| `P_PointOnLineSide` | function | `progs/doomgeneric/p_local.h:163` | `int P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);` |
+| `P_RadiusAttack` | function | `progs/doomgeneric/p_local.h:251` | `void P_RadiusAttack ( mobj_t* spot, mobj_t* source, int damage );` |
+| `P_RemoveMobj` | function | `progs/doomgeneric/p_local.h:113` | `void P_RemoveMobj (mobj_t* th);` |
+| `P_RemoveThinker` | function | `progs/doomgeneric/p_local.h:72` | `void P_RemoveThinker (thinker_t* thinker);` |
+| `P_RespawnSpecials` | function | `progs/doomgeneric/p_local.h:104` | `void P_RespawnSpecials (void);` |
+| `P_SetThingPosition` | function | `progs/doomgeneric/p_local.h:195` | `void P_SetThingPosition (mobj_t* thing);` |
+| `P_SetupPsprites` | function | `progs/doomgeneric/p_local.h:78` | `void P_SetupPsprites (player_t* curplayer);` |
+| `P_SlideMove` | function | `progs/doomgeneric/p_local.h:228` | `void P_SlideMove (mobj_t* mo);` |
+| `P_SpawnBlood` | function | `progs/doomgeneric/p_local.h:119` | `void P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage);` |
+| `P_SpawnMissile` | function | `progs/doomgeneric/p_local.h:120` | `mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);` |
+| `P_SpawnMobj` | function | `progs/doomgeneric/p_local.h:107` | `mobj_t* P_SpawnMobj ( fixed_t x, fixed_t y, fixed_t z, mobjtype_t type );` |
+| `P_SpawnPlayerMissile` | function | `progs/doomgeneric/p_local.h:121` | `void P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);` |
+| `P_SpawnPuff` | function | `progs/doomgeneric/p_local.h:118` | `void P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);` |
+| `P_SubstNullMobj` | function | `progs/doomgeneric/p_local.h:114` | `mobj_t* P_SubstNullMobj (mobj_t* th);` |
+| `P_TouchSpecialThing` | function | `progs/doomgeneric/p_local.h:279` | `void P_TouchSpecialThing ( mobj_t* special, mobj_t* toucher );` |
+| `P_UnsetThingPosition` | function | `progs/doomgeneric/p_local.h:194` | `void P_UnsetThingPosition (mobj_t* thing);` |
+| `P_UseLines` | function | `progs/doomgeneric/p_local.h:230` | `void P_UseLines (player_t* player);` |
+| `USERANGE` | macro | `progs/doomgeneric/p_local.h:53` | `#define USERANGE` |
+| `VIEWHEIGHT` | macro | `progs/doomgeneric/p_local.h:31` | `#define VIEWHEIGHT` |
+| `__P_LOCAL__` | macro | `progs/doomgeneric/p_local.h:21` | `#define __P_LOCAL__` |
+| `blocklinks` | variable | `progs/doomgeneric/p_local.h:268` | `extern mobj_t** blocklinks;` |
+| `blockmap` | variable | `progs/doomgeneric/p_local.h:263` | `extern short* blockmap;` |
+| `blockmaplump` | variable | `progs/doomgeneric/p_local.h:262` | `extern short* blockmaplump;` |
+| `bmapheight` | variable | `progs/doomgeneric/p_local.h:265` | `extern int bmapheight;` |
+| `bmaporgx` | variable | `progs/doomgeneric/p_local.h:266` | `extern fixed_t bmaporgx;` |
+| `bmaporgy` | variable | `progs/doomgeneric/p_local.h:267` | `extern fixed_t bmaporgy;` |
+| `bmapwidth` | variable | `progs/doomgeneric/p_local.h:264` | `extern int bmapwidth;` |
+| `ceilingline` | variable | `progs/doomgeneric/p_local.h:209` | `extern line_t* ceilingline;` |
+| `clipammo` | variable | `progs/doomgeneric/p_local.h:276` | `extern int clipammo[NUMAMMO];` |
+| `d` | struct | `progs/doomgeneric/p_local.h:142` | `` |
+| `divline_t` | struct | `progs/doomgeneric/p_local.h:133` | `` |
+| `floatok` | variable | `progs/doomgeneric/p_local.h:204` | `extern boolean floatok;` |
+| `intercept_p` | variable | `progs/doomgeneric/p_local.h:158` | `extern intercept_t* intercept_p;` |
+| `intercepts` | variable | `progs/doomgeneric/p_local.h:157` | `extern intercept_t intercepts[MAXINTERCEPTS];` |
+| `iquehead` | variable | `progs/doomgeneric/p_local.h:100` | `extern int iquehead;` |
+| `iquetail` | variable | `progs/doomgeneric/p_local.h:101` | `extern int iquetail;` |
+| `itemrespawnque` | variable | `progs/doomgeneric/p_local.h:98` | `extern mapthing_t itemrespawnque[ITEMQUESIZE];` |
+| `itemrespawntime` | variable | `progs/doomgeneric/p_local.h:99` | `extern int itemrespawntime[ITEMQUESIZE];` |
+| `linetarget` | variable | `progs/doomgeneric/p_local.h:234` | `extern mobj_t* linetarget;` |
+| `lowfloor` | variable | `progs/doomgeneric/p_local.h:172` | `extern fixed_t lowfloor;` |
+| `maxammo` | variable | `progs/doomgeneric/p_local.h:275` | `extern int maxammo[NUMAMMO];` |
+| `numspechit` | variable | `progs/doomgeneric/p_local.h:223` | `extern int numspechit;` |
+| `openbottom` | variable | `progs/doomgeneric/p_local.h:170` | `extern fixed_t openbottom;` |
+| `openrange` | variable | `progs/doomgeneric/p_local.h:171` | `extern fixed_t openrange;` |
+| `opentop` | variable | `progs/doomgeneric/p_local.h:169` | `extern fixed_t opentop;` |
 | `rejectmatrix` | variable | `progs/doomgeneric/p_local.h:261` | `extern byte* rejectmatrix;` |
 | `spechit` | variable | `progs/doomgeneric/p_local.h:222` | `extern line_t* spechit[MAXSPECIALCROSS];` |
 | `thinkercap` | variable | `progs/doomgeneric/p_local.h:67` | `extern thinker_t thinkercap;` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 | `vissprite_s` | struct | `progs/doomgeneric/r_defs.h:338` | `` |
 | `FUZZOFF` | macro | `progs/doomgeneric/r_draw.c:258` | `#define FUZZOFF` |
 | `FUZZTABLE` | macro | `progs/doomgeneric/r_draw.c:257` | `#define FUZZTABLE` |
-| `MAXHEIGHT` | macro | `progs/doomgeneric/r_draw.c:42` | `#define MAXHEIGHT` |
-| `MAXWIDTH` | macro | `progs/doomgeneric/r_draw.c:41` | `#define MAXWIDTH` |
-| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.c:102` | `void R_DrawColumn (void)` |
-| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.c:152` | `void R_DrawColumn (void)` |
-| `R_DrawColumnLow` | function | `progs/doomgeneric/r_draw.c:208` | `void R_DrawColumnLow (void)` |
-| `R_DrawFuzzColumn` | function | `progs/doomgeneric/r_draw.c:283` | `void R_DrawFuzzColumn (void)` |
-| `R_DrawFuzzColumnLow` | function | `progs/doomgeneric/r_draw.c:342` | `void R_DrawFuzzColumnLow (void)` |
-| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.c:590` | `void R_DrawSpan (void)` |
-| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.c:646` | `void R_DrawSpan (void)` |
-| `R_DrawSpanLow` | function | `progs/doomgeneric/r_draw.c:719` | `void R_DrawSpanLow (void)` |
-| `R_DrawTranslatedColumn` | function | `progs/doomgeneric/r_draw.c:424` | `void R_DrawTranslatedColumn (void)` |
-| `R_DrawTranslatedColumnLow` | function | `progs/doomgeneric/r_draw.c:468` | `void R_DrawTranslatedColumnLow (void)` |
-| `R_DrawViewBorder` | function | `progs/doomgeneric/r_draw.c:941` | `void R_DrawViewBorder (void)` |
-| `R_FillBackScreen` | function | `progs/doomgeneric/r_draw.c:812` | `void R_FillBackScreen (void)` |
-| `R_InitBuffer` | function | `progs/doomgeneric/r_draw.c:777` | `void R_InitBuffer ( int		width,   int		height )` |
-| `R_InitTranslationTables` | function | `progs/doomgeneric/r_draw.c:530` | `void R_InitTranslationTables (void)` |
-| `R_VideoErase` | function | `progs/doomgeneric/r_draw.c:919` | `void R_VideoErase ( unsigned	ofs,   int		count )` |
-| `SBARHEIGHT` | macro | `progs/doomgeneric/r_draw.c:45` | `#define SBARHEIGHT` |
-| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.h:40` | `void R_DrawColumn (void);` |
-| `R_DrawColumnLow` | function | `progs/doomgeneric/r_draw.h:41` | `void R_DrawColumnLow (void);` |
-| `R_DrawFuzzColumn` | function | `progs/doomgeneric/r_draw.h:44` | `void R_DrawFuzzColumn (void);` |
-| `R_DrawFuzzColumnLow` | function | `progs/doomgeneric/r_draw.h:45` | `void R_DrawFuzzColumnLow (void);` |
-| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.h:78` | `void R_DrawSpan (void);` |
-| `R_DrawSpanLow` | function | `progs/doomgeneric/r_draw.h:81` | `void R_DrawSpanLow (void);` |
-| `R_DrawTranslatedColumn` | function | `progs/doomgeneric/r_draw.h:50` | `void R_DrawTranslatedColumn (void);` |
-| `R_DrawTranslatedColumnLow` | function | `progs/doomgeneric/r_draw.h:51` | `void R_DrawTranslatedColumnLow (void);` |
-| `R_DrawViewBorder` | function | `progs/doomgeneric/r_draw.h:100` | `void R_DrawViewBorder (void);` |
-| `R_FillBackScreen` | function | `progs/doomgeneric/r_draw.h:97` | `void R_FillBackScreen (void);` |
-| `R_InitBuffer` | function | `progs/doomgeneric/r_draw.h:85` | `void R_InitBuffer ( int width, int height );` |
-| `R_InitTranslationTables` | function | `progs/doomgeneric/r_draw.h:92` | `void R_InitTranslationTables (void);` |
-| `R_VideoErase` | function | `progs/doomgeneric/r_draw.h:54` | `void R_VideoErase ( unsigned ofs, int count );` |
-| `__R_DRAW__` | macro | `progs/doomgeneric/r_draw.h:21` | `#define __R_DRAW__` |
-| `dc_colormap` | variable | `progs/doomgeneric/r_draw.h:26` | `extern lighttable_t* dc_colormap;` |
-| `dc_iscale` | variable | `progs/doomgeneric/r_draw.h:30` | `extern fixed_t dc_iscale;` |
-| `dc_source` | variable | `progs/doomgeneric/r_draw.h:34` | `extern byte* dc_source;` |
-| `dc_texturemid` | variable | `progs/doomgeneric/r_draw.h:31` | `extern fixed_t dc_texturemid;` |
-| `dc_translation` | variable | `progs/doomgeneric/r_draw.h:73` | `extern byte* dc_translation;` |
-| `dc_x` | variable | `progs/doomgeneric/r_draw.h:27` | `extern int dc_x;` |
-| `dc_yh` | variable | `progs/doomgeneric/r_draw.h:29` | `extern int dc_yh;` |
-| `dc_yl` | variable | `progs/doomgeneric/r_draw.h:28` | `extern int dc_yl;` |
-| `ds_colormap` | variable | `progs/doomgeneric/r_draw.h:62` | `extern lighttable_t* ds_colormap;` |
-| `ds_source` | variable | `progs/doomgeneric/r_draw.h:70` | `extern byte* ds_source;` |
-| `ds_x1` | variable | `progs/doomgeneric/r_draw.h:59` | `extern int ds_x1;` |
-| `ds_x2` | variable | `progs/doomgeneric/r_draw.h:60` | `extern int ds_x2;` |
-| `ds_xfrac` | variable | `progs/doomgeneric/r_draw.h:64` | `extern fixed_t ds_xfrac;` |
-| `ds_xstep` | variable | `progs/doomgeneric/r_draw.h:66` | `extern fixed_t ds_xstep;` |
-| `ds_y` | variable | `progs/doomgeneric/r_draw.h:58` | `extern int ds_y;` |
-| `ds_yfrac` | variable | `progs/doomgeneric/r_draw.h:65` | `extern fixed_t ds_yfrac;` |
 
 Next: [SYMBOLS_p18.md](SYMBOLS_p18.md)

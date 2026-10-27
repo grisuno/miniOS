@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric.h:14` | `void DG_Init();` |
+| `DG_ScreenBuffer` | variable | `progs/doomgeneric/doomgeneric.h:11` | `extern uint32_t* DG_ScreenBuffer;` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric.h:19` | `void DG_SetWindowTitle(const char * title);` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric.h:16` | `void DG_SleepMs(uint32_t ms);` |
+| `DOOMGENERIC_RESX` | macro | `progs/doomgeneric/doomgeneric.h:7` | `#define DOOMGENERIC_RESX` |
+| `DOOMGENERIC_RESY` | macro | `progs/doomgeneric/doomgeneric.h:8` | `#define DOOMGENERIC_RESY` |
+| `DOOM_GENERIC` | macro | `progs/doomgeneric/doomgeneric.h:2` | `#define DOOM_GENERIC` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_minios.c:243` | `void DG_DrawFrame(void)` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_minios.c:284` | `int DG_GetKey(int *pressed, unsigned char *key)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_minios.c:280` | `uint32_t DG_GetTicksMs(void)` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_minios.c:232` | `void DG_Init(void)` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_minios.c:295` | `void DG_SetWindowTitle(const char *title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_minios.c:274` | `void DG_SleepMs(uint32_t ms)` |
+| `FB_ADDR` | macro | `progs/doomgeneric/doomgeneric_minios.c:96` | `#define FB_ADDR` |
+| `FB_HEIGHT` | macro | `progs/doomgeneric/doomgeneric_minios.c:98` | `#define FB_HEIGHT` |
+| `FB_WIDTH` | macro | `progs/doomgeneric/doomgeneric_minios.c:97` | `#define FB_WIDTH` |
+| `I_VideoBuffer` | variable | `progs/doomgeneric/doomgeneric_minios.c:230` | `extern unsigned char *I_VideoBuffer;` |
+| `KBD_QUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_minios.c:178` | `#define KBD_QUEUE_SIZE` |
+| `MINIOS_DOOM_BACKBUF_ADDR` | function | `progs/doomgeneric/doomgeneric_minios.c:4` | `* MINIOS_DOOM_BACKBUF_ADDR (minios_abi.h);` |
+| `color` | struct | `progs/doomgeneric/doomgeneric_minios.c:103` | `` |
+| `colors` | variable | `progs/doomgeneric/doomgeneric_minios.c:104` | `extern struct color colors[256];` |
+| `kbd_enqueue` | function | `progs/doomgeneric/doomgeneric_minios.c:182` | `static void kbd_enqueue(unsigned char doom_key, int pressed)` |
+| `kbd_poll` | function | `progs/doomgeneric/doomgeneric_minios.c:189` | `static void kbd_poll(void)` |
+| `load_vga_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:110` | `static void load_vga_palette(void)` |
+| `mini_parse_autoframes` | function | `progs/doomgeneric/doomgeneric_minios.c:24` | `static void mini_parse_autoframes(int argc, char **argv)` |
+| `mini_parse_windowed` | function | `progs/doomgeneric/doomgeneric_minios.c:43` | `static void mini_parse_windowed(int argc, char **argv)` |
+| `myargc` | variable | `progs/doomgeneric/doomgeneric_minios.c:233` | `extern int myargc;` |
+| `myargv` | variable | `progs/doomgeneric/doomgeneric_minios.c:234` | `extern char **myargv;` |
+| `scancode_to_doom` | function | `progs/doomgeneric/doomgeneric_minios.c:123` | `static unsigned char scancode_to_doom(unsigned char raw)` |
+| `sys_doom_frame` | function | `progs/doomgeneric/doomgeneric_minios.c:86` | `static long sys_doom_frame(void)` |
+| `sys_gfx_zoom` | function | `progs/doomgeneric/doomgeneric_minios.c:81` | `static long sys_gfx_zoom(long mode)` |
+| `sys_kbd` | function | `progs/doomgeneric/doomgeneric_minios.c:61` | `static long sys_kbd(void)` |
+| `sys_kbd_raw` | function | `progs/doomgeneric/doomgeneric_minios.c:71` | `static long sys_kbd_raw(int on)` |
+| `sys_palette` | function | `progs/doomgeneric/doomgeneric_minios.c:66` | `static long sys_palette(const unsigned char *pal)` |
+| `sys_time_ms` | function | `progs/doomgeneric/doomgeneric_minios.c:56` | `static long sys_time_ms(void)` |
+| `sys_vga_mode` | function | `progs/doomgeneric/doomgeneric_minios.c:76` | `static long sys_vga_mode(int on)` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_sdl.c:112` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_sdl.c:133` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_sdl.c:128` | `uint32_t DG_GetTicksMs()` |
+| `DG_Init` | function | `progs/doomgeneric/doomgeneric_sdl.c:93` | `void DG_Init()` |
+| `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_sdl.c:152` | `void DG_SetWindowTitle(const char * title)` |
+| `DG_SleepMs` | function | `progs/doomgeneric/doomgeneric_sdl.c:123` | `void DG_SleepMs(uint32_t ms)` |
+| `KEYQUEUE_SIZE` | macro | `progs/doomgeneric/doomgeneric_sdl.c:17` | `#define KEYQUEUE_SIZE` |
+| `addKeyToQueue` | function | `progs/doomgeneric/doomgeneric_sdl.c:63` | `static void addKeyToQueue(int pressed, unsigned int keyCode)` |
+| `convertToDoomKey` | function | `progs/doomgeneric/doomgeneric_sdl.c:23` | `static unsigned char convertToDoomKey(unsigned int key)` |
+| `handleKeyInput` | function | `progs/doomgeneric/doomgeneric_sdl.c:72` | `static void handleKeyInput()` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric_soso.c:214` | `void DG_DrawFrame()` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric_soso.c:237` | `int DG_GetKey(int* pressed, unsigned char* doomKey)` |
 | `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric_soso.c:232` | `uint32_t DG_GetTicksMs()` |
 | `DG_Init` | function | `progs/doomgeneric/doomgeneric_soso.c:124` | `void DG_Init()` |
 | `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric_soso.c:258` | `void DG_SetWindowTitle(const char * title)` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 | `I_InitJoystick` | function | `progs/doomgeneric/i_joystick.c:115` | `void I_InitJoystick(void)` |
 | `I_ShutdownJoystick` | function | `progs/doomgeneric/i_joystick.c:77` | `void I_ShutdownJoystick(void)` |
 | `I_UpdateJoystick` | function | `progs/doomgeneric/i_joystick.c:321` | `void I_UpdateJoystick(void)` |
-| `IsAxisButton` | function | `progs/doomgeneric/i_joystick.c:171` | `static boolean IsAxisButton(int physbutton)` |
-| `IsValidAxis` | function | `progs/doomgeneric/i_joystick.c:90` | `static boolean IsValidAxis(int axis)` |
-| `ReadButtonState` | function | `progs/doomgeneric/i_joystick.c:203` | `static int ReadButtonState(int vbutton)` |
-| `BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:33` | `#define BUTTON_AXIS` |
-| `BUTTON_AXIS_NEG` | macro | `progs/doomgeneric/i_joystick.h:39` | `#define BUTTON_AXIS_NEG(axis)` |
-| `BUTTON_AXIS_POS` | macro | `progs/doomgeneric/i_joystick.h:40` | `#define BUTTON_AXIS_POS(axis)` |
-| `CREATE_BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:43` | `#define CREATE_BUTTON_AXIS(neg, pos)` |
-| `CREATE_HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:57` | `#define CREATE_HAT_AXIS(hat, direction)` |
-| `HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:48` | `#define HAT_AXIS` |
-| `HAT_AXIS_DIRECTION` | macro | `progs/doomgeneric/i_joystick.h:55` | `#define HAT_AXIS_DIRECTION(axis)` |
-| `HAT_AXIS_HAT` | macro | `progs/doomgeneric/i_joystick.h:53` | `#define HAT_AXIS_HAT(axis)` |
-| `HAT_AXIS_HORIZONTAL` | macro | `progs/doomgeneric/i_joystick.h:60` | `#define HAT_AXIS_HORIZONTAL` |
-| `HAT_AXIS_VERTICAL` | macro | `progs/doomgeneric/i_joystick.h:61` | `#define HAT_AXIS_VERTICAL` |
-| `IS_BUTTON_AXIS` | macro | `progs/doomgeneric/i_joystick.h:36` | `#define IS_BUTTON_AXIS(axis)` |
-| `IS_HAT_AXIS` | macro | `progs/doomgeneric/i_joystick.h:50` | `#define IS_HAT_AXIS(axis)` |
-| `I_BindJoystickVariables` | function | `progs/doomgeneric/i_joystick.h:67` | `void I_BindJoystickVariables(void);` |
-| `I_InitJoystick` | function | `progs/doomgeneric/i_joystick.h:63` | `void I_InitJoystick(void);` |
-| `I_ShutdownJoystick` | function | `progs/doomgeneric/i_joystick.h:64` | `void I_ShutdownJoystick(void);` |
-| `I_UpdateJoystick` | function | `progs/doomgeneric/i_joystick.h:65` | `void I_UpdateJoystick(void);` |
-| `NUM_VIRTUAL_BUTTONS` | macro | `progs/doomgeneric/i_joystick.h:25` | `#define NUM_VIRTUAL_BUTTONS` |
-| `__I_JOYSTICK__` | macro | `progs/doomgeneric/i_joystick.h:20` | `#define __I_JOYSTICK__` |
-| `D_DoomMain` | function | `progs/doomgeneric/i_main.c:33` | `void D_DoomMain (void);` |
-| `M_FindResponseFile` | function | `progs/doomgeneric/i_main.c:35` | `void M_FindResponseFile(void);` |
-| `dg_Create` | function | `progs/doomgeneric/i_main.c:37` | `void dg_Create();` |
-| `main` | function | `progs/doomgeneric/i_main.c:40` | `int main(int argc, char **argv)` |
-| `DOOM_PCM_DRUM_SMP` | macro | `progs/doomgeneric/i_minios_sound.c:125` | `#define DOOM_PCM_DRUM_SMP` |
-| `DOOM_PCM_RATE` | macro | `progs/doomgeneric/i_minios_sound.c:55` | `#define DOOM_PCM_RATE` |
-| `DOOM_PCM_VOL` | macro | `progs/doomgeneric/i_minios_sound.c:56` | `#define DOOM_PCM_VOL` |
-| `MUS_ARP_MAX` | macro | `progs/doomgeneric/i_minios_sound.c:123` | `#define MUS_ARP_MAX` |
-| `MUS_ARP_SLOT_MS` | macro | `progs/doomgeneric/i_minios_sound.c:120` | `#define MUS_ARP_SLOT_MS` |
-| `MUS_BASS_HOLD_MS` | macro | `progs/doomgeneric/i_minios_sound.c:121` | `#define MUS_BASS_HOLD_MS` |
-| `MUS_BASS_LINE_MIDI` | macro | `progs/doomgeneric/i_minios_sound.c:122` | `#define MUS_BASS_LINE_MIDI` |
-| `MUS_Init` | function | `progs/doomgeneric/i_minios_sound.c:410` | `static boolean MUS_Init(void)` |
-| `MUS_MusicIsPlaying` | function | `progs/doomgeneric/i_minios_sound.c:474` | `static boolean MUS_MusicIsPlaying(void)` |
-| `MUS_PERCUSSION_CHAN` | macro | `progs/doomgeneric/i_minios_sound.c:119` | `#define MUS_PERCUSSION_CHAN` |
-| `MUS_Pause` | function | `progs/doomgeneric/i_minios_sound.c:424` | `static void MUS_Pause(void)` |
-| `MUS_PlaySong` | function | `progs/doomgeneric/i_minios_sound.c:448` | `static void MUS_PlaySong(void *handle, boolean looping)` |
-| `MUS_Poll` | function | `progs/doomgeneric/i_minios_sound.c:478` | `static void MUS_Poll(void)` |
-| `MUS_RegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:427` | `static void *MUS_RegisterSong(void *data, int len)` |
-| `MUS_Resume` | function | `progs/doomgeneric/i_minios_sound.c:425` | `static void MUS_Resume(void)` |
-| `MUS_SetMusicVolume` | function | `progs/doomgeneric/i_minios_sound.c:422` | `static void MUS_SetMusicVolume(int volume)` |
-| `MUS_Shutdown` | function | `progs/doomgeneric/i_minios_sound.c:415` | `static void MUS_Shutdown(void)` |
-| `MUS_StopSong` | function | `progs/doomgeneric/i_minios_sound.c:469` | `static void MUS_StopSong(void)` |
-| `MUS_TICKS_PER_SEC` | macro | `progs/doomgeneric/i_minios_sound.c:118` | `#define MUS_TICKS_PER_SEC` |
-| `MUS_UnRegisterSong` | function | `progs/doomgeneric/i_minios_sound.c:442` | `static void MUS_UnRegisterSong(void *handle)` |
-| `PCSPK_CHANNELS` | macro | `progs/doomgeneric/i_minios_sound.c:12` | `#define PCSPK_CHANNELS` |
-| `PCSPK_CacheSounds` | function | `progs/doomgeneric/i_minios_sound.c:653` | `static void PCSPK_CacheSounds(sfxinfo_t *s, int n)` |
-| `PCSPK_GetSfxLumpNum` | function | `progs/doomgeneric/i_minios_sound.c:529` | `static int PCSPK_GetSfxLumpNum(sfxinfo_t *sfx)` |
 
 Next: [SYMBOLS_p15.md](SYMBOLS_p15.md)

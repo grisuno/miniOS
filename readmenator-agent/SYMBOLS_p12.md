@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `f_redir` | function | `progs/asm/freedom.s:44` | `` |
+| `f_rel_ss` | function | `progs/asm/freedom.s:176` | `` |
+| `f_secure` | function | `progs/asm/freedom.s:36` | `` |
+| `f_status` | function | `progs/asm/freedom.s:48` | `` |
+| `f_styleattr` | function | `progs/asm/freedom.s:180` | `` |
+| `f_stylelen` | function | `progs/asm/freedom.s:184` | `` |
+| `f_suppress` | function | `progs/asm/freedom.s:76` | `` |
+| `f_tag` | function | `progs/asm/freedom.s:72` | `` |
+| `f_tagn` | function | `progs/asm/freedom.s:88` | `` |
+| `f_tagnlen` | function | `progs/asm/freedom.s:92` | `` |
+| `f_utbuf` | function | `progs/asm/freedom.s:108` | `` |
+| `f_utlen` | function | `progs/asm/freedom.s:112` | `` |
+| `f_utrem` | function | `progs/asm/freedom.s:116` | `` |
+| `f_val` | function | `progs/asm/freedom.s:144` | `` |
+| `f_vallen` | function | `progs/asm/freedom.s:148` | `` |
+| `f_waitq` | function | `progs/asm/freedom.s:124` | `` |
+| `f_ws` | function | `progs/asm/freedom.s:104` | `` |
+| `fetch` | function | `progs/asm/freedom.s:7810` | `` |
+| `fetch_css` | function | `progs/asm/freedom.s:9293` | `` |
+| `has_scheme` | function | `progs/asm/freedom.s:789` | `` |
+| `head_line` | function | `progs/asm/freedom.s:7203` | `` |
+| `is_void_tag` | function | `progs/asm/freedom.s:4449` | `` |
+| `looks_like_url` | function | `progs/asm/freedom.s:715` | `` |
+| `main` | function | `progs/asm/freedom.s:10291` | `` |
+| `make_search` | function | `progs/asm/freedom.s:1064` | `` |
+| `parse_head` | function | `progs/asm/freedom.s:7460` | `` |
+| `print_css_dump` | function | `progs/asm/freedom.s:10112` | `` |
+| `print_dom_dump` | function | `progs/asm/freedom.s:10212` | `` |
+| `put_entity` | function | `progs/asm/freedom.s:3018` | `` |
+| `put_text` | function | `progs/asm/freedom.s:2915` | `` |
+| `put_utf` | function | `progs/asm/freedom.s:2379` | `` |
+| `put_ws` | function | `progs/asm/freedom.s:2333` | `` |
+| `record_attr` | function | `progs/asm/freedom.s:4117` | `` |
+| `recv_body` | function | `progs/asm/freedom.s:7676` | `` |
+| `resolve_redirect` | function | `progs/asm/freedom.s:1810` | `` |
+| `send_all` | function | `progs/asm/freedom.s:7736` | `` |
+| `split_url` | function | `progs/asm/freedom.s:1295` | `` |
+| `tls_close` | function | `progs/asm/freedom.s:3` | `` |
+| `_start` | function | `progs/asm/http.s:709` | `` |
+| `atoi` | function | `progs/asm/http.s:3` | `` |
+| `main` | function | `progs/asm/http.s:89` | `` |
+| `_start` | function | `progs/asm/json.s:4169` | `` |
+| `js_array_at` | function | `progs/asm/json.s:3391` | `` |
+| `js_count` | function | `progs/asm/json.s:23` | `` |
+| `js_err` | function | `progs/asm/json.s:55` | `` |
+| `js_find_member` | function | `progs/asm/json.s:3313` | `` |
+| `js_first` | function | `progs/asm/json.s:19` | `` |
+| `js_indent` | function | `progs/asm/json.s:2481` | `` |
 | `js_key` | function | `progs/asm/json.s:3` | `` |
 | `js_key_match` | function | `progs/asm/json.s:947` | `` |
 | `js_len` | function | `progs/asm/json.s:51` | `` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `E3TEXT` | macro | `progs/doomgeneric/d_englsh.h:394` | `#define E3TEXT` |
 | `E4TEXT` | macro | `progs/doomgeneric/d_englsh.h:414` | `#define E4TEXT` |
 | `EMPTYSTRING` | macro | `progs/doomgeneric/d_englsh.h:72` | `#define EMPTYSTRING` |
-| `ENDGAME` | macro | `progs/doomgeneric/d_englsh.h:61` | `#define ENDGAME` |
-| `GAMMALVL0` | macro | `progs/doomgeneric/d_englsh.h:67` | `#define GAMMALVL0` |
-| `GAMMALVL1` | macro | `progs/doomgeneric/d_englsh.h:68` | `#define GAMMALVL1` |
-| `GAMMALVL2` | macro | `progs/doomgeneric/d_englsh.h:69` | `#define GAMMALVL2` |
-| `GAMMALVL3` | macro | `progs/doomgeneric/d_englsh.h:70` | `#define GAMMALVL3` |
-| `GAMMALVL4` | macro | `progs/doomgeneric/d_englsh.h:71` | `#define GAMMALVL4` |
-| `GGSAVED` | macro | `progs/doomgeneric/d_englsh.h:132` | `#define GGSAVED` |
-| `GOTARMBONUS` | macro | `progs/doomgeneric/d_englsh.h:80` | `#define GOTARMBONUS` |
-| `GOTARMOR` | macro | `progs/doomgeneric/d_englsh.h:77` | `#define GOTARMOR` |
-| `GOTBACKPACK` | macro | `progs/doomgeneric/d_englsh.h:109` | `#define GOTBACKPACK` |
-| `GOTBERSERK` | macro | `progs/doomgeneric/d_englsh.h:94` | `#define GOTBERSERK` |
-| `GOTBFG9000` | macro | `progs/doomgeneric/d_englsh.h:111` | `#define GOTBFG9000` |
-| `GOTBLUECARD` | macro | `progs/doomgeneric/d_englsh.h:86` | `#define GOTBLUECARD` |
-| `GOTBLUESKUL` | macro | `progs/doomgeneric/d_englsh.h:89` | `#define GOTBLUESKUL` |
-| `GOTCELL` | macro | `progs/doomgeneric/d_englsh.h:105` | `#define GOTCELL` |
-| `GOTCELLBOX` | macro | `progs/doomgeneric/d_englsh.h:106` | `#define GOTCELLBOX` |
-| `GOTCHAINGUN` | macro | `progs/doomgeneric/d_englsh.h:112` | `#define GOTCHAINGUN` |
-| `GOTCHAINSAW` | macro | `progs/doomgeneric/d_englsh.h:113` | `#define GOTCHAINSAW` |
-| `GOTCLIP` | macro | `progs/doomgeneric/d_englsh.h:101` | `#define GOTCLIP` |
-| `GOTCLIPBOX` | macro | `progs/doomgeneric/d_englsh.h:102` | `#define GOTCLIPBOX` |
-| `GOTHTHBONUS` | macro | `progs/doomgeneric/d_englsh.h:79` | `#define GOTHTHBONUS` |
-| `GOTINVIS` | macro | `progs/doomgeneric/d_englsh.h:95` | `#define GOTINVIS` |
-| `GOTINVUL` | macro | `progs/doomgeneric/d_englsh.h:93` | `#define GOTINVUL` |
-| `GOTLAUNCHER` | macro | `progs/doomgeneric/d_englsh.h:114` | `#define GOTLAUNCHER` |
-| `GOTMAP` | macro | `progs/doomgeneric/d_englsh.h:97` | `#define GOTMAP` |
-| `GOTMEDIKIT` | macro | `progs/doomgeneric/d_englsh.h:83` | `#define GOTMEDIKIT` |
-| `GOTMEDINEED` | macro | `progs/doomgeneric/d_englsh.h:82` | `#define GOTMEDINEED` |
-| `GOTMEGA` | macro | `progs/doomgeneric/d_englsh.h:78` | `#define GOTMEGA` |
-| `GOTMSPHERE` | macro | `progs/doomgeneric/d_englsh.h:99` | `#define GOTMSPHERE` |
-| `GOTPLASMA` | macro | `progs/doomgeneric/d_englsh.h:115` | `#define GOTPLASMA` |
-| `GOTREDCARD` | macro | `progs/doomgeneric/d_englsh.h:88` | `#define GOTREDCARD` |
-| `GOTREDSKULL` | macro | `progs/doomgeneric/d_englsh.h:91` | `#define GOTREDSKULL` |
-| `GOTROCKBOX` | macro | `progs/doomgeneric/d_englsh.h:104` | `#define GOTROCKBOX` |
-| `GOTROCKET` | macro | `progs/doomgeneric/d_englsh.h:103` | `#define GOTROCKET` |
-| `GOTSHELLBOX` | macro | `progs/doomgeneric/d_englsh.h:108` | `#define GOTSHELLBOX` |
-| `GOTSHELLS` | macro | `progs/doomgeneric/d_englsh.h:107` | `#define GOTSHELLS` |
-| `GOTSHOTGUN` | macro | `progs/doomgeneric/d_englsh.h:116` | `#define GOTSHOTGUN` |
-| `GOTSHOTGUN2` | macro | `progs/doomgeneric/d_englsh.h:117` | `#define GOTSHOTGUN2` |
-| `GOTSTIM` | macro | `progs/doomgeneric/d_englsh.h:81` | `#define GOTSTIM` |
-| `GOTSUIT` | macro | `progs/doomgeneric/d_englsh.h:96` | `#define GOTSUIT` |
-| `GOTSUPER` | macro | `progs/doomgeneric/d_englsh.h:84` | `#define GOTSUPER` |
-| `GOTVISOR` | macro | `progs/doomgeneric/d_englsh.h:98` | `#define GOTVISOR` |
-| `GOTYELWCARD` | macro | `progs/doomgeneric/d_englsh.h:87` | `#define GOTYELWCARD` |
-| `GOTYELWSKUL` | macro | `progs/doomgeneric/d_englsh.h:90` | `#define GOTYELWSKUL` |
-| `HUSTR_1` | macro | `progs/doomgeneric/d_englsh.h:179` | `#define HUSTR_1` |
-| `HUSTR_10` | macro | `progs/doomgeneric/d_englsh.h:188` | `#define HUSTR_10` |
-| `HUSTR_11` | macro | `progs/doomgeneric/d_englsh.h:189` | `#define HUSTR_11` |
-| `HUSTR_12` | macro | `progs/doomgeneric/d_englsh.h:191` | `#define HUSTR_12` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)

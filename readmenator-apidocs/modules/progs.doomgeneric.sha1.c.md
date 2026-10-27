@@ -23,12 +23,16 @@ flowchart LR
     n_progs_doomgeneric_sha1_c__X(["X"])
     n_progs_doomgeneric_sha1_c__SHA1_UpdateInt32(["SHA1_UpdateInt32"])
     n_progs_doomgeneric_sha1_c__SHA1_UpdateString(["SHA1_UpdateString"])
+    n_kernel_string_c__memcpy["string.memcpy"]
+    n_kernel_string_c__memset["string.memset"]
     n_progs_doomgeneric_sha1_c__M --> n_progs_doomgeneric_sha1_c__rol
     n_progs_doomgeneric_sha1_c__R --> n_progs_doomgeneric_sha1_c__rol
     n_progs_doomgeneric_sha1_c__SHA1_Final --> n_progs_doomgeneric_sha1_c__SHA1_Update
     n_progs_doomgeneric_sha1_c__SHA1_Final --> n_progs_doomgeneric_sha1_c__X
     n_progs_doomgeneric_sha1_c__SHA1_UpdateInt32 --> n_progs_doomgeneric_sha1_c__SHA1_Update
     n_progs_doomgeneric_sha1_c__SHA1_UpdateString --> n_progs_doomgeneric_sha1_c__SHA1_Update
+    n_progs_doomgeneric_sha1_c__SHA1_Final -.-> n_kernel_string_c__memcpy
+    n_progs_doomgeneric_sha1_c__SHA1_Final -.-> n_kernel_string_c__memset
 ```
 
 ## Functions
@@ -92,7 +96,7 @@ void SHA1_Final(sha1_digest_t digest, sha1_context_t *hd)
 | `digest` | `sha1_digest_t` |  |  |
 | `hd` | `sha1_context_t *` |  |  |
 
-*Calls:* [`SHA1_Update`](#sha1_update), [`X`](#x)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`memset`](kernel.string.c.md#memset), [`SHA1_Update`](#sha1_update), [`X`](#x)
 
 ---
 

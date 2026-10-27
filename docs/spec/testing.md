@@ -58,6 +58,23 @@ Note that Quake 2's demo (`+map demo1`) needs a `baseq2/pak0.pak` that carries
 screen/console rather than a live map, but the frame count still climbs and the
 autoquit still returns cleanly.
 
+### README desktop image (`tools/test_readme_shot.py`, `make readme-shot`)
+
+The picture the README presents is a test artifact, not a hand-pasted
+upload. The test boots `os.img` headless in QEMU, runs `minifetch` in the
+terminal over the wallpaper, takes a QMP screendump and asserts the desktop
+is really painted before publishing it: the frame is 1024x768, lit, rich in
+colors, the profile-card avatar ring is bright, the terminal text is green
+and the dock is lit. Only then `docs/img/desktop.png` is replaced, through a
+temporary file renamed over it with mode 0644, so a black, partial or
+crashed frame can never reach the README (fail-closed; exit 2 when `os.img`
+or QEMU is absent, which blocks a release rather than shipping a stale
+picture). `deploynator.toml` lists `make test-host` and `make readme-shot`
+as the release test commands; deploynator runs tests before it stages and
+commits, so every release carries the refreshed image and the README that
+references it by relative path (`docs/img/desktop.png`). Thresholds live in
+the `Config` class of the tool.
+
 ### One-boot comprehensive test (`src/test_all.sh`)
 
 `sh src/test_all.sh` runs the full non-interactive test suite inside a single

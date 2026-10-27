@@ -1,14 +1,14 @@
 # tools: tls_crypto
 
-*Community 4 | 43 files | cohesion 0.77*
+*Community 4 | 44 files | cohesion 0.78*
 
 ## Definition
 
-This community groups 43 file(s) rooted at `tools` with dominant language py (cohesion 0.77). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `DG_DrawFrame`, `DG_GetKey`, `DG_GetTicksMs`. Core file: `net/tls_crypto.c` (78 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
+This community groups 44 file(s) rooted at `tools` with dominant language py (cohesion 0.78). Central symbols: `AddonError`, `AddonState`, `CHECK`, `Client`, `Config`, `DG_DrawFrame`, `DG_GetKey`, `DG_GetTicksMs`. Core file: `net/tls_crypto.c` (78 symbols). Documented purpose: pure time-conversion helpers shared by the kernel clock.
 
 ## Files
 
-### `tools` (18 files)
+### `tools` (19 files)
 
 | File | Language | Layer | Symbols | Doc |
 |------|----------|-------|---------|-----|
@@ -88,7 +88,7 @@ This community groups 43 file(s) rooted at `tools` with dominant language py (co
 |------|----------|-------|---------|-----|
 | `tests/test_ktime.c` | c | testing | 2 | yes |
 
-*... and 23 more files in this community.*
+*... and 24 more files in this community.*
 
 
 ## Key Symbols
@@ -126,7 +126,7 @@ This community groups 43 file(s) rooted at `tools` with dominant language py (co
 
 ## Internal vs External Edges
 
-- Internal resolved imports (EXTRACTED): 53
+- Internal resolved imports (EXTRACTED): 55
 - Cross-boundary resolved imports (EXTRACTED): 15
 
 ## Connections
@@ -158,7 +158,7 @@ This community groups 43 file(s) rooted at `tools` with dominant language py (co
 - Why do 2 file(s) lack file-level docs (e.g. `progs/doomgeneric/doomgeneric_xlib.c`)? What purpose do they serve?
 - Is the dangerous import `subprocess` in `mcp/mcp_dbg_driver.py` still required, or can it be isolated?
 - What would break if the most connected file in tools: tls_crypto changed?
-- Should tools: tls_crypto be split, given cohesion 0.77?
+- Should tools: tls_crypto be split, given cohesion 0.78?
 
 ## Sources
 
@@ -182,4 +182,4 @@ This community groups 43 file(s) rooted at `tools` with dominant language py (co
 - `progs/src/lxsel.c`
 - `progs/src/shell.py`
 - `progs/src/test.py`
-- *... and 23 more*
+- *... and 24 more*

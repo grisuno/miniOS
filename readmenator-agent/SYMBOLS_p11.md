@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `close` | method | `mcp/test_minios_mcp.py:120` | `def close(self)` |
+| `guard_server` | method | `mcp/test_minios_mcp.py:315` | `def guard_server(cls)` |
+| `guarded` | function | `mcp/test_minios_mcp.py:318` | `def guarded(name, params)` |
+| `have_qemu` | function | `mcp/test_minios_mcp.py:52` | `def have_qemu()` |
+| `initialize` | method | `mcp/test_minios_mcp.py:80` | `def initialize(self)` |
+| `load_module` | function | `mcp/test_minios_mcp.py:29` | `def load_module()` |
+| `make_addon` | method | `mcp/test_minios_mcp.py:747` | `def make_addon(self)` |
+| `raw` | method | `mcp/test_minios_mcp.py:91` | `def raw(self, line)` |
+| `request` | method | `mcp/test_minios_mcp.py:84` | `def request(self, method, params)` |
+| `send` | method | `mcp/test_minios_mcp.py:666` | `def send(self, line, timeout_ms)` |
+| `setUp` | method | `mcp/test_minios_mcp.py:336` | `def setUp(self)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:143` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:207` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:256` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:344` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:482` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:604` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:710` | `def setUpClass(cls)` |
+| `setUpClass` | method | `mcp/test_minios_mcp.py:848` | `def setUpClass(cls)` |
+| `tearDownClass` | method | `mcp/test_minios_mcp.py:149` | `def tearDownClass(cls)` |
+| `tearDownClass` | method | `mcp/test_minios_mcp.py:351` | `def tearDownClass(cls)` |
+| `tearDownClass` | method | `mcp/test_minios_mcp.py:742` | `def tearDownClass(cls)` |
+| `tearDownClass` | method | `mcp/test_minios_mcp.py:886` | `def tearDownClass(cls)` |
+| `test_addons_list` | method | `mcp/test_minios_mcp.py:894` | `def test_addons_list(self)` |
+| `test_bad_indent_rejected` | method | `mcp/test_minios_mcp.py:510` | `def test_bad_indent_rejected(self)` |
+| `test_bad_kind_rejected` | method | `mcp/test_minios_mcp.py:564` | `def test_bad_kind_rejected(self)` |
+| `test_bounds` | method | `mcp/test_minios_mcp.py:261` | `def test_bounds(self)` |
+| `test_cat_body_drops_console_framing` | method | `mcp/test_minios_mcp.py:292` | `def test_cat_body_drops_console_framing(self)` |
+| `test_content_accepts_ascii` | method | `mcp/test_minios_mcp.py:223` | `def test_content_accepts_ascii(self)` |
+| `test_content_rejects_non_printable` | method | `mcp/test_minios_mcp.py:226` | `def test_content_rejects_non_printable(self)` |
+| `test_cursor_prevents_stale_match` | method | `mcp/test_minios_mcp.py:275` | `def test_cursor_prevents_stale_match(self)` |
+| `test_editor_prompt_forms_cover_kernel_markers` | method | `mcp/test_minios_mcp.py:298` | `def test_editor_prompt_forms_cover_kernel_markers(self)` |
+| `test_exit_code_of` | method | `mcp/test_minios_mcp.py:629` | `def test_exit_code_of(self)` |
+| `test_find_and_total` | method | `mcp/test_minios_mcp.py:268` | `def test_find_and_total(self)` |
+| `test_host_kind_accepts_empty_files` | method | `mcp/test_minios_mcp.py:541` | `def test_host_kind_accepts_empty_files(self)` |
+| `test_host_kind_requires_artifact` | method | `mcp/test_minios_mcp.py:572` | `def test_host_kind_requires_artifact(self)` |
+| `test_initialize` | method | `mcp/test_minios_mcp.py:152` | `def test_initialize(self)` |
+| `test_install_build_failure_aborts` | method | `mcp/test_minios_mcp.py:835` | `def test_install_build_failure_aborts(self)` |
+| `test_install_fixture` | method | `mcp/test_minios_mcp.py:900` | `def test_install_fixture(self)` |
+| `test_install_mismatch_aborts_and_cleans` | method | `mcp/test_minios_mcp.py:782` | `def test_install_mismatch_aborts_and_cleans(self)` |
+| `test_install_multi_chunk_reassembly` | method | `mcp/test_minios_mcp.py:796` | `def test_install_multi_chunk_reassembly(self)` |
+| `test_install_refuses_host_before_touching_session` | method | `mcp/test_minios_mcp.py:586` | `def test_install_refuses_host_before_touching_session(self)` |
+| `test_install_success` | method | `mcp/test_minios_mcp.py:769` | `def test_install_success(self)` |
+| `test_install_unknown_addon_fails` | method | `mcp/test_minios_mcp.py:909` | `def test_install_unknown_addon_fails(self)` |
+| `test_install_verify_failure_aborts` | method | `mcp/test_minios_mcp.py:828` | `def test_install_verify_failure_aborts(self)` |
+| `test_malformed_json` | method | `mcp/test_minios_mcp.py:174` | `def test_malformed_json(self)` |
+| `test_parse_valid` | method | `mcp/test_minios_mcp.py:492` | `def test_parse_valid(self)` |
+| `test_path_accepts_plain_names` | method | `mcp/test_minios_mcp.py:212` | `def test_path_accepts_plain_names(self)` |
 | `test_path_rejects_long` | method | `mcp/test_minios_mcp.py:220` | `def test_path_rejects_long(self)` |
 | `test_path_rejects_unsafe` | method | `mcp/test_minios_mcp.py:216` | `def test_path_rejects_unsafe(self)` |
 | `test_ping` | method | `mcp/test_minios_mcp.py:166` | `def test_ping(self)` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `f_path` | function | `progs/asm/freedom.s:28` | `` |
 | `f_port` | function | `progs/asm/freedom.s:32` | `` |
 | `f_rawcap` | function | `progs/asm/freedom.s:200` | `` |
-| `f_redir` | function | `progs/asm/freedom.s:44` | `` |
-| `f_rel_ss` | function | `progs/asm/freedom.s:176` | `` |
-| `f_secure` | function | `progs/asm/freedom.s:36` | `` |
-| `f_status` | function | `progs/asm/freedom.s:48` | `` |
-| `f_styleattr` | function | `progs/asm/freedom.s:180` | `` |
-| `f_stylelen` | function | `progs/asm/freedom.s:184` | `` |
-| `f_suppress` | function | `progs/asm/freedom.s:76` | `` |
-| `f_tag` | function | `progs/asm/freedom.s:72` | `` |
-| `f_tagn` | function | `progs/asm/freedom.s:88` | `` |
-| `f_tagnlen` | function | `progs/asm/freedom.s:92` | `` |
-| `f_utbuf` | function | `progs/asm/freedom.s:108` | `` |
-| `f_utlen` | function | `progs/asm/freedom.s:112` | `` |
-| `f_utrem` | function | `progs/asm/freedom.s:116` | `` |
-| `f_val` | function | `progs/asm/freedom.s:144` | `` |
-| `f_vallen` | function | `progs/asm/freedom.s:148` | `` |
-| `f_waitq` | function | `progs/asm/freedom.s:124` | `` |
-| `f_ws` | function | `progs/asm/freedom.s:104` | `` |
-| `fetch` | function | `progs/asm/freedom.s:7810` | `` |
-| `fetch_css` | function | `progs/asm/freedom.s:9293` | `` |
-| `has_scheme` | function | `progs/asm/freedom.s:789` | `` |
-| `head_line` | function | `progs/asm/freedom.s:7203` | `` |
-| `is_void_tag` | function | `progs/asm/freedom.s:4449` | `` |
-| `looks_like_url` | function | `progs/asm/freedom.s:715` | `` |
-| `main` | function | `progs/asm/freedom.s:10291` | `` |
-| `make_search` | function | `progs/asm/freedom.s:1064` | `` |
-| `parse_head` | function | `progs/asm/freedom.s:7460` | `` |
-| `print_css_dump` | function | `progs/asm/freedom.s:10112` | `` |
-| `print_dom_dump` | function | `progs/asm/freedom.s:10212` | `` |
-| `put_entity` | function | `progs/asm/freedom.s:3018` | `` |
-| `put_text` | function | `progs/asm/freedom.s:2915` | `` |
-| `put_utf` | function | `progs/asm/freedom.s:2379` | `` |
-| `put_ws` | function | `progs/asm/freedom.s:2333` | `` |
-| `record_attr` | function | `progs/asm/freedom.s:4117` | `` |
-| `recv_body` | function | `progs/asm/freedom.s:7676` | `` |
-| `resolve_redirect` | function | `progs/asm/freedom.s:1810` | `` |
-| `send_all` | function | `progs/asm/freedom.s:7736` | `` |
-| `split_url` | function | `progs/asm/freedom.s:1295` | `` |
-| `tls_close` | function | `progs/asm/freedom.s:3` | `` |
-| `_start` | function | `progs/asm/http.s:709` | `` |
-| `atoi` | function | `progs/asm/http.s:3` | `` |
-| `main` | function | `progs/asm/http.s:89` | `` |
-| `_start` | function | `progs/asm/json.s:4169` | `` |
-| `js_array_at` | function | `progs/asm/json.s:3391` | `` |
-| `js_count` | function | `progs/asm/json.s:23` | `` |
-| `js_err` | function | `progs/asm/json.s:55` | `` |
-| `js_find_member` | function | `progs/asm/json.s:3313` | `` |
-| `js_first` | function | `progs/asm/json.s:19` | `` |
-| `js_indent` | function | `progs/asm/json.s:2481` | `` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

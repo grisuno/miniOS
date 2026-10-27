@@ -3,6 +3,8 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `sem_post` | function | `headers/sync.h:91` | `void sem_post(sem_t *s);` |
+| `sem_t` | struct | `headers/sync.h:81` | `` |
 | `sem_wait` | function | `headers/sync.h:90` | `void sem_wait(sem_t *s);` |
 | `sleep_on` | function | `headers/sync.h:51` | `void sleep_on(wait_queue_t *q);` |
 | `wait_queue_t` | struct | `headers/sync.h:42` | `` |
@@ -375,6 +377,21 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vma_view_load` | function | `headers/vma.h:87` | `void vma_view_load(const vma_view_t *v);` |
 | `vma_view_save` | function | `headers/vma.h:86` | `void vma_view_save(vma_view_t *v);` |
 | `vma_view_t` | struct | `headers/vma.h:76` | `` |
+| `WM_CHROME_ALPHA_OPAQUE` | macro | `headers/wm_chrome.h:15` | `#define WM_CHROME_ALPHA_OPAQUE` |
+| `WM_CHROME_CONFIG_DEFAULT` | macro | `headers/wm_chrome.h:35` | `#define WM_CHROME_CONFIG_DEFAULT` |
+| `WM_CHROME_H` | macro | `headers/wm_chrome.h:12` | `#define WM_CHROME_H` |
+| `WM_CHROME_RADIUS_MAX` | macro | `headers/wm_chrome.h:38` | `#define WM_CHROME_RADIUS_MAX` |
+| `by` | function | `headers/wm_chrome.h:107` | `* The shadow is the window rect shifted by (dx,dy);` |
+| `wm_chrome_blend` | function | `headers/wm_chrome.h:76` | `static inline unsigned long wm_chrome_blend(unsigned long dst, unsigned long src, int alpha)` |
+| `wm_chrome_blend_channel` | function | `headers/wm_chrome.h:67` | `static inline int wm_chrome_blend_channel(int dst, int src, int alpha)` |
+| `wm_chrome_clamp` | function | `headers/wm_chrome.h:61` | `static inline int wm_chrome_clamp(int v)` |
+| `wm_chrome_config_t` | struct | `headers/wm_chrome.h:18` | `` |
+| `wm_chrome_corner_coverage` | function | `headers/wm_chrome.h:141` | `static inline int wm_chrome_corner_coverage(int radius, int x, int y)` |
+| `wm_chrome_disc_coverage` | function | `headers/wm_chrome.h:162` | `static inline int wm_chrome_disc_coverage(int radius, int x, int y)` |
+| `wm_chrome_gradient` | function | `headers/wm_chrome.h:95` | `static inline unsigned long wm_chrome_gradient(unsigned long base, int row, int span,            ...` |
+| `wm_chrome_isqrt` | function | `headers/wm_chrome.h:41` | `static inline unsigned long wm_chrome_isqrt(unsigned long v)` |
+| `wm_chrome_shadow_alpha` | function | `headers/wm_chrome.h:110` | `static inline int wm_chrome_shadow_alpha(const wm_chrome_config_t *cfg, int px, int py,          ...` |
+| `wm_chrome_shift` | function | `headers/wm_chrome.h:85` | `static inline unsigned long wm_chrome_shift(unsigned long px, int delta)` |
 | `WM_COMBOS_N` | macro | `headers/wm_events.h:198` | `#define WM_COMBOS_N` |
 | `WM_EVENTS_H` | macro | `headers/wm_events.h:11` | `#define WM_EVENTS_H` |
 | `WM_EVENT_CONFIG_DEFAULT` | macro | `headers/wm_events.h:49` | `#define WM_EVENT_CONFIG_DEFAULT` |
@@ -479,22 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `wm_tile_cell_t` | struct | `headers/wm_tiling.h:13` | `` |
 | `wm_tile_layout` | function | `headers/wm_tiling.h:22` | `static inline int wm_tile_layout(const int *present, int nterms, int gfx_active, int max_cols, in...` |
 | `WM_WINDOW_GFX_ID` | macro | `headers/wm_window.h:23` | `#define WM_WINDOW_GFX_ID` |
-| `WM_WINDOW_H` | macro | `headers/wm_window.h:11` | `#define WM_WINDOW_H` |
-| `WM_WINDOW_MAX_TERMS` | macro | `headers/wm_window.h:26` | `#define WM_WINDOW_MAX_TERMS` |
-| `wm_focus_next_id` | function | `headers/wm_window.h:77` | `static inline int wm_focus_next_id(const int *present, int nterms, int gfx_active, int focus)` |
-| `wm_paint_order` | function | `headers/wm_window.h:114` | `static inline int wm_paint_order(const int *present, int nterms, int focus, int *order, int cap)` |
-| `wm_window_active` | function | `headers/wm_window.h:41` | `static inline int wm_window_active(const wm_window_t *w)` |
-| `wm_window_contains` | function | `headers/wm_window.h:58` | `static inline int wm_window_contains(const wm_window_t *w, int px, int py)` |
-| `wm_window_rect` | function | `headers/wm_window.h:47` | `static inline wm_rect_t wm_window_rect(const wm_window_t *w)` |
-| `wm_window_t` | struct | `headers/wm_window.h:29` | `` |
-| `wm_window_title_hits` | function | `headers/wm_window.h:68` | `static inline int wm_window_title_hits(const wm_geom_config_t *cfg, const wm_window_t *w, int px,...` |
-| `ZIP_H` | macro | `headers/zip.h:2` | `#define ZIP_H` |
-| `miniz` | function | `headers/zip.h:6` | `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the...` |
-| `shell_cmd_zip` | function | `headers/zip.h:15` | `void shell_cmd_zip(int argc, char **argv);` |
-| `BOOTLOG_MAX` | macro | `kernel.c:188` | `#define BOOTLOG_MAX` |
-| `KSYM_MAX` | macro | `kernel.c:107` | `#define KSYM_MAX` |
-| `__attribute__` | function | `kernel.c:207` | `__attribute__((section(".init.text"))) void kmain(void)` |
-| `bootlog_mark` | function | `kernel.c:192` | `void bootlog_mark(const char *name)` |
-| `bootlog_report` | function | `kernel.c:199` | `void bootlog_report(void)` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

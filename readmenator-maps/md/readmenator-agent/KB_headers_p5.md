@@ -418,6 +418,30 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `VMA_MAX` (macro, line 31) `#define VMA_MAX`
 - Imported by: `headers/kernel.h`, `headers/sched.h`, `headers/spawn.h`, `kernel/spawn.c`, `tests/test_fault.c`, `tests/test_vma.c`, `tests/test_vma_bench.c`, `vma.c`
 
+## headers/wm_chrome.h
+- Doc: Docstring: Window chrome pixel math for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_chrome_config_t` (struct, line 18)
+  - `wm_chrome_isqrt` (function, line 41) `static inline unsigned long wm_chrome_isqrt(unsigned long v)`
+  - `wm_chrome_clamp` (function, line 61) `static inline int wm_chrome_clamp(int v)`
+  - `wm_chrome_blend_channel` (function, line 67) `static inline int wm_chrome_blend_channel(int dst, int src, int alpha)`
+  - `wm_chrome_blend` (function, line 76) `static inline unsigned long wm_chrome_blend(unsigned long dst, unsigned long src, int alpha)`
+  - `wm_chrome_shift` (function, line 85) `static inline unsigned long wm_chrome_shift(unsigned long px, int delta)`
+  - `wm_chrome_gradient` (function, line 95) `static inline unsigned long wm_chrome_gradient(unsigned long base, int row, int span,
+           ...`
+  - `wm_chrome_shadow_alpha` (function, line 110) `static inline int wm_chrome_shadow_alpha(const wm_chrome_config_t *cfg, int px, int py,
+         ...`
+  - `wm_chrome_corner_coverage` (function, line 141) `static inline int wm_chrome_corner_coverage(int radius, int x, int y)`
+  - `wm_chrome_disc_coverage` (function, line 162) `static inline int wm_chrome_disc_coverage(int radius, int x, int y)`
+  - `by` (function, line 107) `* The shadow is the window rect shifted by (dx,dy);`
+  - `WM_CHROME_H` (macro, line 12) `#define WM_CHROME_H`
+  - `WM_CHROME_ALPHA_OPAQUE` (macro, line 15) `#define WM_CHROME_ALPHA_OPAQUE`
+  - `WM_CHROME_CONFIG_DEFAULT` (macro, line 35) `#define WM_CHROME_CONFIG_DEFAULT`
+  - `WM_CHROME_RADIUS_MAX` (macro, line 38) `#define WM_CHROME_RADIUS_MAX`
+- Imported by: `kernel/vga_fb.c`, `tests/test_chrome.c`
+
 ## headers/wm_events.h
 - Doc: Docstring: Window event contract for the MiniOS desktop.
 - Layer: infrastructure
@@ -464,37 +488,6 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `WM_COMBOS_N` (macro, line 198) `#define WM_COMBOS_N`
 - Depends on: `headers/drivers/modifiers.h`
 - Imported by: `drivers/kbd.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
-
-## headers/wm_focus.h
-- Doc: Docstring: Focus manager contract for the MiniOS desktop.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `wm_focus_state_t` (struct, line 15)
-  - `wm_focus_selectable` (function, line 23) `static inline int wm_focus_selectable(const wm_focus_state_t *st, int id)`
-  - `wm_focus_next` (function, line 38) `static inline int wm_focus_next(const wm_focus_state_t *st)`
-  - `wm_focus_set` (function, line 55) `static inline int wm_focus_set(const wm_focus_state_t *st, int id)`
-  - `WM_FOCUS_H` (macro, line 10) `#define WM_FOCUS_H`
-- Depends on: `headers/wm_window.h`
-- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
-
-## headers/wm_geom.h
-- Doc: Docstring: Window geometry contract for the MiniOS desktop.
-- Layer: utility
-- Language: h
-- Symbols:
-  - `wm_geom_config_t` (struct, line 14)
-  - `wm_rect_t` (struct, line 25)
-  - `wm_rect_valid` (function, line 33) `static inline int wm_rect_valid(const wm_rect_t *r)`
-  - `wm_rect_contains` (function, line 39) `static inline int wm_rect_contains(const wm_rect_t *r, int px, int py)`
-  - `wm_title_bar_rect` (function, line 48) `static inline wm_rect_t wm_title_bar_rect(const wm_geom_config_t *cfg, int px, int py, int w)`
-  - `wm_content_rect` (function, line 59) `static inline wm_rect_t wm_content_rect(const wm_geom_config_t *cfg, int px, int py, int w, int h)`
-  - `wm_scrollbar_rect` (function, line 71) `static inline wm_rect_t wm_scrollbar_rect(const wm_geom_config_t *cfg, int px, int py, int conten...`
-  - `wm_hit_title_bar` (function, line 84) `static inline int wm_hit_title_bar(const wm_geom_config_t *cfg, int wx, int wy, int w, int px, in...`
-  - `wm_clamp_point` (function, line 91) `static inline void wm_clamp_point(int *px, int *py, int fb_w, int fb_h)`
-  - `WM_GEOM_H` (macro, line 11) `#define WM_GEOM_H`
-  - `WM_GEOM_CONFIG_DEFAULT` (macro, line 22) `#define WM_GEOM_CONFIG_DEFAULT`
-- Imported by: `headers/wm_window.h`, `kernel/vga_fb.c`, `tests/test_wm.c`
 
 
 Next: [KB_headers_p6.md](KB_headers_p6.md)

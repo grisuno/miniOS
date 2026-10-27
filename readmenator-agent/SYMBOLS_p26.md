@@ -3,6 +3,56 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `probe_handler` | function | `tests/test_notify.c:16` | `static void probe_handler(const wm_notify_event_t *e)` |
+| `CHECK` | macro | `tests/test_paint.c:16` | `#define CHECK(cond, msg)` |
+| `T_H` | macro | `tests/test_paint.c:24` | `#define T_H` |
+| `T_N` | macro | `tests/test_paint.c:25` | `#define T_N` |
+| `T_PATH_MAX` | macro | `tests/test_paint.c:26` | `#define T_PATH_MAX` |
+| `T_W` | macro | `tests/test_paint.c:23` | `#define T_W` |
+| `main` | function | `tests/test_paint.c:300` | `int main(void)` |
+| `t_clamp` | function | `tests/test_paint.c:30` | `static int t_clamp(int v, int lo, int hi)` |
+| `t_crc` | function | `tests/test_paint.c:129` | `static unsigned long t_crc(const unsigned char *p, unsigned long n)` |
+| `t_crc_init` | function | `tests/test_paint.c:116` | `static void t_crc_init(void)` |
+| `t_flood` | function | `tests/test_paint.c:70` | `static int t_flood(unsigned char *buf, int w, int h, int x, int y,                    unsigned ch...` |
+| `t_line` | function | `tests/test_paint.c:44` | `static int t_line(unsigned char *buf, int w, int h, int x0, int y0, int x1,                   int...` |
+| `t_nearest` | function | `tests/test_paint.c:155` | `static int t_nearest(const unsigned char *pal, unsigned r, unsigned g,                      unsig...` |
+| `t_path_ok` | function | `tests/test_paint.c:138` | `static int t_path_ok(const char *p)` |
+| `t_plot` | function | `tests/test_paint.c:36` | `static int t_plot(unsigned char *buf, int w, int h, int x, int y,                   unsigned char c)` |
+| `test_flood` | function | `tests/test_paint.c:207` | `static void test_flood(void)` |
+| `test_line` | function | `tests/test_paint.c:188` | `static void test_line(void)` |
+| `test_nearest` | function | `tests/test_paint.c:287` | `static void test_nearest(void)` |
+| `test_path` | function | `tests/test_paint.c:273` | `static void test_path(void)` |
+| `test_plot` | function | `tests/test_paint.c:171` | `static void test_plot(void)` |
+| `test_png_codec` | function | `tests/test_paint.c:228` | `static void test_png_codec(void)` |
+| `test_png_layout` | function | `tests/test_paint.c:259` | `static void test_png_layout(void)` |
+| `CHECK` | macro | `tests/test_panic.c:16` | `#define CHECK(cond, msg)` |
+| `always_valid` | function | `tests/test_panic.c:23` | `static int always_valid(unsigned long addr)` |
+| `deny_valid` | function | `tests/test_panic.c:35` | `static int deny_valid(unsigned long addr)` |
+| `main` | function | `tests/test_panic.c:39` | `int main(void)` |
+| `never_valid` | function | `tests/test_panic.c:28` | `static int never_valid(unsigned long addr)` |
+| `CHECK` | macro | `tests/test_pcache.c:36` | `#define CHECK(cond, msg)` |
+| `kfree` | function | `tests/test_pcache.c:23` | `void kfree(void *ptr)` |
+| `kmalloc` | function | `tests/test_pcache.c:19` | `void *kmalloc(unsigned long size)` |
+| `kprintf` | function | `tests/test_pcache.c:27` | `int kprintf(const char *fmt, ...)` |
+| `main` | function | `tests/test_pcache.c:43` | `int main(void)` |
+| `CHECK` | macro | `tests/test_pci.c:26` | `#define CHECK(cond, msg)` |
+| `FAKE_BUSES` | macro | `tests/test_pci.c:33` | `#define FAKE_BUSES` |
+| `FAKE_REGS` | macro | `tests/test_pci.c:34` | `#define FAKE_REGS` |
+| `fake_inl` | function | `tests/test_pci.c:60` | `static unsigned fake_inl(unsigned short port)` |
+| `fake_outl` | function | `tests/test_pci.c:39` | `static void fake_outl(unsigned short port, unsigned val)` |
+| `main` | function | `tests/test_pci.c:79` | `int main(void)` |
+| `set_dev` | function | `tests/test_pci.c:73` | `static void set_dev(unsigned bus, unsigned dev, unsigned func,                     unsigned id, u...` |
+| `CHECK` | macro | `tests/test_pcm.c:21` | `#define CHECK(cond, msg)` |
+| `lcg_next` | function | `tests/test_pcm.c:104` | `static unsigned lcg_next(void)` |
+| `main` | function | `tests/test_pcm.c:144` | `int main(void)` |
+| `t_model` | function | `tests/test_pcm.c:109` | `static void t_model(void)` |
+| `t_overrun` | function | `tests/test_pcm.c:61` | `static void t_overrun(void)` |
+| `t_roundtrip` | function | `tests/test_pcm.c:28` | `static void t_roundtrip(void)` |
+| `t_underrun` | function | `tests/test_pcm.c:75` | `static void t_underrun(void)` |
+| `t_wrap` | function | `tests/test_pcm.c:44` | `static void t_wrap(void)` |
+| `t_zero_cap` | function | `tests/test_pcm.c:91` | `static void t_zero_cap(void)` |
+| `CHECK` | macro | `tests/test_percpu_rq.c:17` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_percpu_rq.c:24` | `int main(void)` |
 | `CHECK` | macro | `tests/test_pipe.c:16` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_pipe.c:23` | `int main(void)` |
 | `check` | function | `tests/test_ps2_keymap.c:19` | `static void check(int cond, const char *name)` |
@@ -251,8 +301,29 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `quit_doom` | function | `tools/gdb_repro.py:70` | `def quit_doom()` |
 | `rs` | function | `tools/gdb_repro.py:23` | `def rs(m, t)` |
 | `send` | function | `tools/gdb_repro.py:65` | `def send(line)` |
-| `main` | function | `tools/gen_desktop_pngs.py:77` | `def main()` |
-| `write_atomic` | function | `tools/gen_desktop_pngs.py:71` | `def write_atomic(img, path)` |
+| `AvatarConfig` | class | `tools/gen_avatar.py:38` | `class AvatarConfig` |
+| `AvatarPainter` | class | `tools/gen_avatar.py:61` | `class AvatarPainter` |
+| `__init__` | method | `tools/gen_avatar.py:64` | `def __init__(self, cfg)` |
+| `_box` | method | `tools/gen_avatar.py:73` | `def _box(self, cx, cy, rx, ry)` |
+| `_gradient` | method | `tools/gen_avatar.py:77` | `def _gradient(self, top, bottom, y0, y1, box_fn)` |
+| `_pt` | method | `tools/gen_avatar.py:70` | `def _pt(self, p)` |
+| `background` | method | `tools/gen_avatar.py:83` | `def background(self)` |
+| `bangs` | method | `tools/gen_avatar.py:134` | `def bangs(self)` |
+| `eye` | method | `tools/gen_avatar.py:103` | `def eye(self, cx, cy)` |
+| `eyes` | method | `tools/gen_avatar.py:123` | `def eyes(self)` |
+| `face` | method | `tools/gen_avatar.py:96` | `def face(self)` |
+| `hair_back` | method | `tools/gen_avatar.py:86` | `def hair_back(self)` |
+| `load_portrait` | function | `tools/gen_avatar.py:169` | `def load_portrait(path, crop)` |
+| `main` | function | `tools/gen_avatar.py:225` | `def main(argv)` |
+| `nose_mouth` | method | `tools/gen_avatar.py:127` | `def nose_mouth(self)` |
+| `parse_crop` | function | `tools/gen_avatar.py:180` | `def parse_crop(text)` |
+| `render` | method | `tools/gen_avatar.py:157` | `def render(self)` |
+| `ribbon` | method | `tools/gen_avatar.py:149` | `def ribbon(self)` |
+| `write_header` | function | `tools/gen_avatar.py:191` | `def write_header(image, path)` |
+| `fit_wallpaper` | function | `tools/gen_desktop_pngs.py:81` | `def fit_wallpaper(im)` |
+| `main` | function | `tools/gen_desktop_pngs.py:99` | `def main()` |
+| `scaled` | function | `tools/gen_desktop_pngs.py:75` | `def scaled(im, scale)` |
+| `write_atomic` | function | `tools/gen_desktop_pngs.py:93` | `def write_atomic(img, path)` |
 | `main` | function | `tools/gen_icons.py:214` | `def main()` |
 | `make_chunk` | function | `tools/gen_icons.py:209` | `def make_chunk(chunk_type, data)` |
 | `make_png` | function | `tools/gen_icons.py:179` | `def make_png(pixels, palette, width, height)` |
@@ -422,79 +493,8 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `read_fname_bytes` | function | `tools/mkramdisk.py:41` | `def read_fname_bytes(kernel_h_path)` |
 | `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
 | `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
-| `cleanup` | function | `tools/mutate.sh:144` | `` |
-| `find_index` | function | `tools/mutate.sh:542` | `` |
-| `record` | function | `tools/mutate.sh:536` | `` |
-| `restore_sources` | function | `tools/mutate.sh:137` | `` |
-| `usage` | function | `tools/mutate.sh:51` | `` |
-| `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
-| `main` | function | `tools/probe_compute_vga.py:22` | `def main()` |
-| `poll` | function | `tools/probe_compute_vga.py:61` | `def poll(timeout)` |
-| `qmp` | function | `tools/probe_compute_vga.py:88` | `def qmp(obj)` |
-| `rel` | function | `tools/probe_compute_vga.py:97` | `def rel(dx, dy)` |
-| `send` | function | `tools/probe_compute_vga.py:55` | `def send(line)` |
-| `grab` | function | `tools/probe_minicraft.py:85` | `def grab(pat, timeout)` |
-| `main` | function | `tools/probe_minicraft.py:34` | `def main()` |
-| `poll` | function | `tools/probe_minicraft.py:74` | `def poll(timeout)` |
-| `pos` | function | `tools/probe_minicraft.py:154` | `def pos(tag)` |
-| `qkey` | function | `tools/probe_minicraft.py:143` | `def qkey(qcode, down)` |
-| `send` | function | `tools/probe_minicraft.py:68` | `def send(line)` |
-| `connect` | function | `tools/qga_client.py:57` | `def connect(path)` |
-| `main` | function | `tools/qga_client.py:74` | `def main(argv)` |
-| `read_reply` | function | `tools/qga_client.py:41` | `def read_reply(sock, timeout)` |
-| `send_command` | function | `tools/qga_client.py:33` | `def send_command(sock, cmd, args)` |
-| `check` | function | `tools/qga_test.sh:31` | `` |
-| `cleanup` | function | `tools/qga_test.sh:25` | `` |
-| `expect_in` | function | `tools/qga_test.sh:43` | `` |
-| `QMP` | class | `tools/repro_gui.py:46` | `class QMP` |
-| `__init__` | method | `tools/repro_gui.py:47` | `def __init__(self, path)` |
-| `_recv` | method | `tools/repro_gui.py:63` | `def _recv(self)` |
-| `cmd` | method | `tools/repro_gui.py:59` | `def cmd(self, obj)` |
-| `key` | method | `tools/repro_gui.py:87` | `def key(self, qcode, down)` |
-| `main` | function | `tools/repro_gui.py:92` | `def main()` |
-| `mouse` | method | `tools/repro_gui.py:78` | `def mouse(self, dx, dy, left)` |
-| `mouse_state` | function | `tools/repro_gui.py:118` | `def mouse_state()` |
-| `read_serial` | function | `tools/repro_gui.py:30` | `def read_serial(master, timeout)` |
-| `send` | function | `tools/repro_gui.py:113` | `def send(line)` |
-| `Config` | class | `tools/sign_elf.py:31` | `class Config` |
-| `append_section` | function | `tools/sign_elf.py:257` | `def append_section(data, ehdr, desc)` |
-| `base_point` | function | `tools/sign_elf.py:99` | `def base_point()` |
-| `canonical_digest` | function | `tools/sign_elf.py:172` | `def canonical_digest(data, ehdr, phdrs)` |
-| `decode_point` | function | `tools/sign_elf.py:429` | `def decode_point(raw)` |
-| `edwards_add` | function | `tools/sign_elf.py:71` | `def edwards_add(p, q)` |
-| `encodepoint_raw` | function | `tools/sign_elf.py:66` | `def encodepoint_raw(x, y)` |
-| `fallback_verify` | function | `tools/sign_elf.py:408` | `def fallback_verify(sig, digest, pub)` |
-| `find_note_slots` | function | `tools/sign_elf.py:199` | `def find_note_slots(data, ehdr, phdrs)` |
-| `find_section_slot` | function | `tools/sign_elf.py:222` | `def find_section_slot(data, ehdr)` |
-| `key_material` | function | `tools/sign_elf.py:321` | `def key_material(key_id)` |
-| `main` | function | `tools/sign_elf.py:454` | `def main(argv)` |
-| `pad_to` | function | `tools/sign_elf.py:135` | `def pad_to(blob, alignment)` |
-| `parse_ehdr` | function | `tools/sign_elf.py:143` | `def parse_ehdr(data)` |
-| `parse_phdrs` | function | `tools/sign_elf.py:158` | `def parse_phdrs(data, ehdr)` |
-| `points_equal` | function | `tools/sign_elf.py:447` | `def points_equal(p, q)` |
-| `process` | function | `tools/sign_elf.py:341` | `def process(path, key_id, check_only)` |
-| `pub_for_key` | function | `tools/sign_elf.py:305` | `def pub_for_key(key_id)` |
-| `publickey` | function | `tools/sign_elf.py:112` | `def publickey(seed)` |
-| `scalarmult` | function | `tools/sign_elf.py:88` | `def scalarmult(p, e)` |
-| `sha512` | function | `tools/sign_elf.py:61` | `def sha512(data)` |
-| `sign_digest` | function | `tools/sign_elf.py:121` | `def sign_digest(digest, seed)` |
-| `verify_external` | function | `tools/sign_elf.py:395` | `def verify_external(sig, digest, pub)` |
-| `cleanup_stale_qemu` | function | `tools/test_bdd.sh:43` | `` |
-| `expect` | function | `tools/test_bdd.sh:100` | `` |
-| `expect_count` | function | `tools/test_bdd.sh:148` | `` |
-| `expect_min` | function | `tools/test_bdd.sh:123` | `` |
-| `http_fixture_start` | function | `tools/test_bdd.sh:1499` | `` |
-| `http_fixture_stop` | function | `tools/test_bdd.sh:1506` | `` |
-| `http_server_start` | function | `tools/test_bdd.sh:1487` | `` |
-| `http_server_stop` | function | `tools/test_bdd.sh:1494` | `` |
-| `net_fixture_start` | function | `tools/test_bdd.sh:1511` | `` |
-| `net_fixture_stop` | function | `tools/test_bdd.sh:1518` | `` |
-| `refute` | function | `tools/test_bdd.sh:171` | `` |
-| `scenario` | function | `tools/test_bdd.sh:56` | `` |
-| `scenario_smp` | function | `tools/test_bdd.sh:77` | `` |
-| `scenario_uefi` | function | `tools/test_bdd.sh:196` | `` |
-| `should_run` | function | `tools/test_bdd.sh:35` | `` |
-| `usb_stick_ready` | function | `tools/test_bdd.sh:672` | `` |
-| `AlignConfig` | class | `tools/test_call_align.py:24` | `class AlignConfig` |
+| `cleanup` | function | `tools/mutate.sh:145` | `` |
+| `find_index` | function | `tools/mutate.sh:553` | `` |
+| `record` | function | `tools/mutate.sh:547` | `` |
 
 Next: [SYMBOLS_p27.md](SYMBOLS_p27.md)

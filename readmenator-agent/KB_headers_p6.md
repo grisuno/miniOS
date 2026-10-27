@@ -1,6 +1,37 @@
 # Subsystem: headers (page 6 of 6)
 Previous: [KB_headers_p5.md](KB_headers_p5.md)
 
+## headers/wm_focus.h
+- Doc: Docstring: Focus manager contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_focus_state_t` (struct, line 15)
+  - `wm_focus_selectable` (function, line 23) `static inline int wm_focus_selectable(const wm_focus_state_t *st, int id)`
+  - `wm_focus_next` (function, line 38) `static inline int wm_focus_next(const wm_focus_state_t *st)`
+  - `wm_focus_set` (function, line 55) `static inline int wm_focus_set(const wm_focus_state_t *st, int id)`
+  - `WM_FOCUS_H` (macro, line 10) `#define WM_FOCUS_H`
+- Depends on: `headers/wm_window.h`
+- Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
+
+## headers/wm_geom.h
+- Doc: Docstring: Window geometry contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_geom_config_t` (struct, line 14)
+  - `wm_rect_t` (struct, line 25)
+  - `wm_rect_valid` (function, line 33) `static inline int wm_rect_valid(const wm_rect_t *r)`
+  - `wm_rect_contains` (function, line 39) `static inline int wm_rect_contains(const wm_rect_t *r, int px, int py)`
+  - `wm_title_bar_rect` (function, line 48) `static inline wm_rect_t wm_title_bar_rect(const wm_geom_config_t *cfg, int px, int py, int w)`
+  - `wm_content_rect` (function, line 59) `static inline wm_rect_t wm_content_rect(const wm_geom_config_t *cfg, int px, int py, int w, int h)`
+  - `wm_scrollbar_rect` (function, line 71) `static inline wm_rect_t wm_scrollbar_rect(const wm_geom_config_t *cfg, int px, int py, int conten...`
+  - `wm_hit_title_bar` (function, line 84) `static inline int wm_hit_title_bar(const wm_geom_config_t *cfg, int wx, int wy, int w, int px, in...`
+  - `wm_clamp_point` (function, line 91) `static inline void wm_clamp_point(int *px, int *py, int fb_w, int fb_h)`
+  - `WM_GEOM_H` (macro, line 11) `#define WM_GEOM_H`
+  - `WM_GEOM_CONFIG_DEFAULT` (macro, line 22) `#define WM_GEOM_CONFIG_DEFAULT`
+- Imported by: `headers/wm_window.h`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
 ## headers/wm_gfxview.h
 - Doc: Docstring: Graphics-window view contract for the MiniOS desktop.
 - Layer: utility

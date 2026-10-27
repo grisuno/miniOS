@@ -4,7 +4,7 @@
 
 These files have the most connections. Changes here have high blast radius.
 
-- `kernel/string.c` (score: 181.30, imported by 90 files)
+- `kernel/string.c` (score: 181.80, imported by 90 files)
 - `progs/doomgeneric/doomtype.h` (score: 101.40, imported by 50 files)
 - `progs/doomgeneric/doomdef.h` (score: 90.90, imported by 41 files)
 - `kernel/syscalls.c` (score: 90.30)
@@ -20,15 +20,15 @@ These files have the most connections. Changes here have high blast radius.
 Editing these files can break the listed number of dependents. Run their tests after any change.
 
 - `kernel/string.c` -- 50 direct, 90 total dependents
-- `progs/minios_abi.h` -- 32 direct, 63 total dependents
 - `progs/doomgeneric/m_fixed.h` -- 9 direct, 59 total dependents
+- `progs/doomgeneric/tables.h` -- 6 direct, 56 total dependents
+- `progs/doomgeneric/d_think.h` -- 3 direct, 55 total dependents
+- `progs/doomgeneric/info.h` -- 4 direct, 54 total dependents
 - `progs/doomgeneric/v_patch.h` -- 2 direct, 54 total dependents
 - `progs/doomgeneric/d_ticcmd.h` -- 6 direct, 53 total dependents
 - `progs/doomgeneric/i_video.h` -- 18 direct, 53 total dependents
+- `headers/vma.h` -- 8 direct, 52 total dependents
 - `progs/doomgeneric/sha1.h` -- 5 direct, 52 total dependents
-- `headers/vma.h` -- 8 direct, 51 total dependents
-- `progs/doomgeneric/d_items.h` -- 2 direct, 51 total dependents
-- `progs/doomgeneric/d_mode.h` -- 6 direct, 51 total dependents
 
 ## Hotspots (complexity + centrality)
 
@@ -37,9 +37,9 @@ Editing these files can break the listed number of dependents. Run their tests a
 - `progs/doomgeneric/d_main.c` -- complexity: 0.1, centrality: 0.9, combined: 0.6
 - `kernel/shell.c` -- complexity: 0.2, centrality: 0.7, combined: 0.5
 - `progs/doomgeneric/g_game.c` -- complexity: 0.1, centrality: 0.8, combined: 0.5
+- `kernel/vga_fb.c` -- complexity: 0.6, centrality: 0.4, combined: 0.5
 - `headers/kernel.h` -- complexity: 1.0, centrality: 0.2, combined: 0.5
 - `progs/doomgeneric/st_stuff.c` -- complexity: 0.3, centrality: 0.5, combined: 0.4
-- `kernel/vga_fb.c` -- complexity: 0.5, centrality: 0.4, combined: 0.4
 - `kernel/sched.c` -- complexity: 0.3, centrality: 0.4, combined: 0.4
 - `progs/doomgeneric/m_menu.c` -- complexity: 0.2, centrality: 0.5, combined: 0.4
 

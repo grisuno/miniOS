@@ -16,8 +16,8 @@ flowchart TB
         direction LR
         n_c1["progs/doomgeneric: d_englsh<br/>98 files, 2045 symbols<br/>Core / utility"]:::cycle
         n_c4["tools: tls_crypto<br/>30 files, 583 symbols<br/>Core / utility"]:::cycle
-        n_c5["headers: vga_fb<br/>15 files, 384 symbols<br/>Core / utility"]:::cycle
-        n_d_tools["tools<br/>35 files, 233 symbols<br/>Core / utility"]:::default
+        n_c5["headers: vga_fb<br/>17 files, 427 symbols<br/>Core / utility"]:::cycle
+        n_d_tools["tools<br/>36 files, 254 symbols<br/>Core / utility"]:::default
         n_d_progs["progs<br/>50 files, 813 symbols<br/>Core / utility"]:::default
         n_d_mcp["mcp<br/>2 files, 1 symbols<br/>Core / utility"]:::default
         n_d_kernel["kernel<br/>7 files, 83 symbols<br/>Core / utility"]:::default
@@ -39,7 +39,7 @@ flowchart TB
     end
     subgraph lane_3["Tier 4 - foundation"]
         direction LR
-        n_c2["progs/src<br/>67 files, 2550 symbols<br/>Core / utility"]:::cycle
+        n_c2["progs/src<br/>67 files, 2555 symbols<br/>Core / utility"]:::cycle
     end
     n_c0 ==>|"9"| n_c2
     n_c0 -->|"1"| n_c7
@@ -104,6 +104,7 @@ flowchart LR
     n_progs_nuklear_nuklear_minios_h__nk_sys_palette["nuklear_minios.nk_sys_palette<br/>nuklear_minios.h:43"]:::external
     n_progs_doomedit_doomedit_c__dmap_new["doomedit.dmap_new<br/>case DMAP_RSUIT: case DMAP_CMAP: case DMAP_LA...<br/>doomedit.c:639"]:::default
     n_progs_doomedit_doomedit_c__dmap_push_history["doomedit.dmap_push_history<br/>doomedit.c:272"]:::default
+    n_kernel_string_c__memcpy["string.memcpy<br/>Docstring: ISO C entry points the compiler it...<br/>string.c:104"]:::external
     n_progs_nuklear_nuklear_minios_h__nk_rasterize["nuklear_minios.nk_rasterize<br/>Hybrid palette: indices 0-14 are the desktop...<br/>nuklear_minios.h:66"]:::external
     n_progs_nuklear_nuklear_minios_h__nk_rgb_available["nuklear_minios.nk_rgb_available<br/>RGB companion buffer (R,G,B byte order, NK_W...<br/>nuklear_minios.h:33"]:::external
     n_progs_nuklear_nuklear_minios_h__nk_sys_nk_frame["nuklear_minios.nk_sys_nk_frame<br/>nuklear_minios.h:52"]:::external
@@ -134,6 +135,7 @@ flowchart LR
     n_progs_nuklear_nuklear_minios_h__nk_sys_palette -.->|"recursion"| n_progs_nuklear_nuklear_minios_h__nk_sys_palette
     n_progs_doomedit_doomedit_c__dmap_selftest -->|"6"| n_progs_doomedit_doomedit_c__dmap_new
     n_progs_doomedit_doomedit_c__dmap_new -->|"1"| n_progs_doomedit_doomedit_c__dmap_push_history
+    n_progs_doomedit_doomedit_c__dmap_push_history -->|"1"| n_kernel_string_c__memcpy
     n_progs_doomedit_doomedit_c__dmap_selftest -->|"7"| n_progs_nuklear_nuklear_minios_h__nk_rasterize
     n_progs_nuklear_nuklear_minios_h__nk_rasterize -.->|"recursion"| n_progs_nuklear_nuklear_minios_h__nk_rasterize
     n_progs_doomedit_doomedit_c__dmap_selftest -->|"8"| n_progs_nuklear_nuklear_minios_h__nk_rgb_available
@@ -159,8 +161,7 @@ flowchart LR
     n_progs_doomedit_doomedit_c__dmap_build_wad -->|"7"| n_progs_doomedit_doomedit_c__dmap_seg_angle
     n_progs_doomedit_doomedit_c__dmap_build_wad -->|"8"| n_progs_doomedit_doomedit_c__dmap_w8
     n_progs_doomedit_doomedit_c__dmap_build_wad -->|"9"| n_progs_doomedit_doomedit_c__dmap_w32
-    n_progs_doomedit_doomedit_c__dmap_w32 -.-> n_progs_doomedit_doomedit_c__dmap_w16
-    linkStyle 0,3,5,7,9,11,15,17,19,21 stroke:#f87171,stroke-width:2px;
+    linkStyle 0,3,5,7,9,11,16,18,20,22 stroke:#f87171,stroke-width:2px;
 ```
 
 Cross-file sequence:
@@ -170,11 +171,13 @@ sequenceDiagram
     autonumber
     participant p_progs_doomedit_doomedit_c as doomedit.c
     participant p_progs_nuklear_nuklear_minios_h as nuklear_minios.h
+    participant p_kernel_string_c as string.c
     p_progs_doomedit_doomedit_c->>p_progs_nuklear_nuklear_minios_h: nk_minios_font()
     p_progs_doomedit_doomedit_c->>p_progs_nuklear_nuklear_minios_h: nk_sys_vga_mode()
     p_progs_doomedit_doomedit_c->>p_progs_nuklear_nuklear_minios_h: nk_sys_kbd_raw()
     p_progs_doomedit_doomedit_c->>p_progs_nuklear_nuklear_minios_h: nk_build_palette()
     p_progs_doomedit_doomedit_c->>p_progs_nuklear_nuklear_minios_h: nk_sys_palette()
+    p_progs_doomedit_doomedit_c->>p_kernel_string_c: memcpy()
     p_progs_doomedit_doomedit_c->>p_progs_nuklear_nuklear_minios_h: nk_rasterize()
     p_progs_doomedit_doomedit_c->>p_progs_nuklear_nuklear_minios_h: nk_rgb_available()
     p_progs_doomedit_doomedit_c->>p_progs_nuklear_nuklear_minios_h: nk_sys_nk_frame()

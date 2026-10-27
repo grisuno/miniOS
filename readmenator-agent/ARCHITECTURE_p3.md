@@ -2,6 +2,8 @@
 Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/i_system.h`
+- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_local.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_sky.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/w_wad.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/z_zone.h`
@@ -284,6 +286,7 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `tests/test_arena.c` -> `headers/arena.h`
 - `tests/test_arena.c` -> `kernel/string.c`
 - `tests/test_batch.c` -> `headers/batch.h`
+- `tests/test_chrome.c` -> `headers/wm_chrome.h`
 - `tests/test_doom_pwad.py` -> `tools/doom_pwad.py`
 - `tests/test_driver.c` -> `headers/driver.h`
 - `tests/test_driver.c` -> `kernel/string.c`
@@ -402,6 +405,8 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `tools/test_gui_zoom.py` -> `kernel/time.c`
 - `tools/test_gui_zoom.py` -> `tools/test_gui_wm.py`
 - `tools/test_http_server.py` -> `kernel/time.c`
+- `tools/test_readme_shot.py` -> `kernel/time.c`
+- `tools/test_readme_shot.py` -> `tools/test_gui_wm.py`
 - `tools/tls_test.py` -> `kernel/time.c`
 - `vma.c` -> `headers/vma.h`
 

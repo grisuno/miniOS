@@ -31,9 +31,12 @@ flowchart LR
     n_progs_wl_wl_pixbuf_h__wpix_used(["wpix_used"])
     n_progs_wl_wl_pixbuf_h__wpix_tmp(["wpix_tmp"])
     n_headers_leakcheck_h__realloc["leakcheck.realloc"]
+    n_progs_wl_wl_pixbuf_h__wpix_commit(["wpix_commit"])
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_wl_wl_pixbuf_h__wpix_ensure --> n_progs_wl_wl_pixbuf_h__wpix_used
     n_progs_wl_wl_pixbuf_h__wpix_tmp -.-> n_headers_leakcheck_h__realloc
     n_progs_wl_wl_pixbuf_h__wpix_ensure -.-> n_headers_leakcheck_h__realloc
+    n_progs_wl_wl_pixbuf_h__wpix_commit -.-> n_kernel_string_c__memcpy
 ```
 
 ## Structs
@@ -297,6 +300,8 @@ Docstring: copy cells into a matching slot, fail closed on mismatch.
 | `h` | `int` |  |  |
 
 **Returns:** `int`
+
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
 
 ---
 

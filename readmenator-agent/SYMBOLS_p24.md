@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `test_ftest` | function | `progs/src/test.lua:90` | `` |
+| `test_hello` | function | `progs/src/test.lua:85` | `` |
+| `test_ld` | function | `progs/src/test.lua:100` | `` |
+| `test_minigcc` | function | `progs/src/test.lua:95` | `` |
+| `test_module_bindings` | function | `progs/src/test.lua:40` | `` |
+| `test_spawn_preserves_interpreter` | function | `progs/src/test.lua:122` | `` |
+| `test_stb` | function | `progs/src/test.lua:75` | `` |
+| `test_toolchain_roundtrip` | function | `progs/src/test.lua:112` | `` |
+| `test_xxhash` | function | `progs/src/test.lua:70` | `` |
+| `write_file` | function | `progs/src/test.lua:22` | `` |
+| `check` | function | `progs/src/test.py:15` | `def check(name, cond, detail)` |
+| `main` | function | `progs/src/test.py:261` | `def main()` |
+| `safe_run` | function | `progs/src/test.py:25` | `def safe_run()` |
+| `test_bin_aes` | function | `progs/src/test.py:209` | `def test_bin_aes()` |
+| `test_bin_cp` | function | `progs/src/test.py:148` | `def test_bin_cp()` |
+| `test_bin_freedom` | function | `progs/src/test.py:253` | `def test_bin_freedom()` |
+| `test_bin_json` | function | `progs/src/test.py:239` | `def test_bin_json()` |
+| `test_bin_lz4` | function | `progs/src/test.py:153` | `def test_bin_lz4()` |
+| `test_bin_lzss` | function | `progs/src/test.py:181` | `def test_bin_lzss()` |
+| `test_dlmalloc` | function | `progs/src/test.py:82` | `def test_dlmalloc()` |
+| `test_filesystem` | function | `progs/src/test.py:56` | `def test_filesystem()` |
+| `test_ftest` | function | `progs/src/test.py:92` | `def test_ftest()` |
+| `test_hello` | function | `progs/src/test.py:87` | `def test_hello()` |
+| `test_ld` | function | `progs/src/test.py:102` | `def test_ld()` |
+| `test_minigcc` | function | `progs/src/test.py:97` | `def test_minigcc()` |
+| `test_module_bindings` | function | `progs/src/test.py:38` | `def test_module_bindings()` |
+| `test_spawn_preserves_interpreter` | function | `progs/src/test.py:134` | `def test_spawn_preserves_interpreter()` |
+| `test_stb` | function | `progs/src/test.py:77` | `def test_stb()` |
+| `test_toolchain_roundtrip` | function | `progs/src/test.py:119` | `def test_toolchain_roundtrip()` |
+| `test_xxhash` | function | `progs/src/test.py:72` | `def test_xxhash()` |
+| `_asyncio_double` | function | `progs/src/test_py.py:79` | `def _asyncio_double(n, ms)` |
+| `_asyncio_main` | function | `progs/src/test_py.py:84` | `def _asyncio_main()` |
+| `_asyncio_wire_check` | function | `progs/src/test_py.py:88` | `def _asyncio_wire_check(host, port)` |
+| `_one` | function | `progs/src/test_py.py:89` | `def _one()` |
+| `check` | function | `progs/src/test_py.py:12` | `def check(name, cond)` |
+| `BUFSZ` | macro | `progs/src/thdemo.c:24` | `#define BUFSZ` |
+| `EXPECTED_N` | macro | `progs/src/thdemo.c:26` | `#define EXPECTED_N` |
+| `EXPECTED_SUM` | macro | `progs/src/thdemo.c:27` | `#define EXPECTED_SUM` |
+| `NCONS` | macro | `progs/src/thdemo.c:22` | `#define NCONS` |
+| `NPROD` | macro | `progs/src/thdemo.c:21` | `#define NPROD` |
+| `PER_PROD` | macro | `progs/src/thdemo.c:23` | `#define PER_PROD` |
+| `consumer` | function | `progs/src/thdemo.c:57` | `static void *consumer(void *p)` |
+| `main` | function | `progs/src/thdemo.c:82` | `int main(void)` |
+| `producer` | function | `progs/src/thdemo.c:36` | `static void *producer(void *p)` |
+| `threads` | function | `progs/src/thdemo.c:3` | `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall...` |
+| `main` | function | `progs/src/w1.c:3` | `int main(void)` |
+| `write` | function | `progs/src/w1.c:1` | `int write(int fd, char *buf, int n);` |
+| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_main.c:15` | `#define _DEFAULT_SOURCE` |
 | `_POSIX_C_SOURCE` | macro | `progs/tls_u/tls_u_main.c:14` | `#define _POSIX_C_SOURCE` |
 | `main` | function | `progs/tls_u/tls_u_main.c:61` | `int main(int argc, char **argv)` |
 | `parse_port` | function | `progs/tls_u/tls_u_main.c:47` | `static int parse_port(const char *s)` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `WL_HIT_BODY` | macro | `progs/wl/wl_mini.h:246` | `#define WL_HIT_BODY` |
 | `WL_HIT_CLOSE` | macro | `progs/wl/wl_mini.h:248` | `#define WL_HIT_CLOSE` |
 | `WL_HIT_NONE` | macro | `progs/wl/wl_mini.h:245` | `#define WL_HIT_NONE` |
-| `WL_HIT_RESIZE` | macro | `progs/wl/wl_mini.h:249` | `#define WL_HIT_RESIZE` |
-| `WL_HIT_TITLE` | macro | `progs/wl/wl_mini.h:247` | `#define WL_HIT_TITLE` |
-| `WL_ID_BUFFER_BASE` | macro | `progs/wl/wl_mini.h:46` | `#define WL_ID_BUFFER_BASE` |
-| `WL_ID_CLIPBOARD` | macro | `progs/wl/wl_mini.h:902` | `#define WL_ID_CLIPBOARD` |
-| `WL_ID_COMPOSITOR` | macro | `progs/wl/wl_mini.h:41` | `#define WL_ID_COMPOSITOR` |
-| `WL_ID_DISPLAY` | macro | `progs/wl/wl_mini.h:39` | `#define WL_ID_DISPLAY` |
-| `WL_ID_POOL_BASE` | macro | `progs/wl/wl_mini.h:45` | `#define WL_ID_POOL_BASE` |
-| `WL_ID_REGISTRY` | macro | `progs/wl/wl_mini.h:40` | `#define WL_ID_REGISTRY` |
-| `WL_ID_SHM` | macro | `progs/wl/wl_mini.h:42` | `#define WL_ID_SHM` |
-| `WL_ID_SURFACE_BASE` | macro | `progs/wl/wl_mini.h:44` | `#define WL_ID_SURFACE_BASE` |
-| `WL_ID_XDG_BASE` | macro | `progs/wl/wl_mini.h:43` | `#define WL_ID_XDG_BASE` |
-| `WL_IFACE_COUNT` | macro | `progs/wl/wl_mini.h:1185` | `#define WL_IFACE_COUNT` |
-| `WL_MAX_MSG` | macro | `progs/wl/wl_mini.h:20` | `#define WL_MAX_MSG` |
-| `WL_MAX_POOLS` | macro | `progs/wl/wl_mini.h:23` | `#define WL_MAX_POOLS` |
-| `WL_MAX_STR` | macro | `progs/wl/wl_mini.h:21` | `#define WL_MAX_STR` |
-| `WL_MAX_SURFACES` | macro | `progs/wl/wl_mini.h:22` | `#define WL_MAX_SURFACES` |
-| `WL_MINI_H` | macro | `progs/wl/wl_mini.h:18` | `#define WL_MINI_H` |
-| `WL_OP_CLIPBOARD_GET` | macro | `progs/wl/wl_mini.h:904` | `#define WL_OP_CLIPBOARD_GET` |
-| `WL_OP_CLIPBOARD_SET` | macro | `progs/wl/wl_mini.h:903` | `#define WL_OP_CLIPBOARD_SET` |
-| `WL_OP_COMPOSITOR_CREATE_SURFACE` | macro | `progs/wl/wl_mini.h:50` | `#define WL_OP_COMPOSITOR_CREATE_SURFACE` |
-| `WL_OP_DISPLAY_GET_REGISTRY` | macro | `progs/wl/wl_mini.h:48` | `#define WL_OP_DISPLAY_GET_REGISTRY` |
-| `WL_OP_POOL_CREATE_BUFFER` | macro | `progs/wl/wl_mini.h:52` | `#define WL_OP_POOL_CREATE_BUFFER` |
-| `WL_OP_REGISTRY_BIND` | macro | `progs/wl/wl_mini.h:49` | `#define WL_OP_REGISTRY_BIND` |
-| `WL_OP_SHM_CREATE_POOL` | macro | `progs/wl/wl_mini.h:51` | `#define WL_OP_SHM_CREATE_POOL` |
-| `WL_OP_SURFACE_ATTACH` | macro | `progs/wl/wl_mini.h:53` | `#define WL_OP_SURFACE_ATTACH` |
-| `WL_OP_SURFACE_COMMIT` | macro | `progs/wl/wl_mini.h:54` | `#define WL_OP_SURFACE_COMMIT` |
-| `WL_OP_XDG_GET_TOPLEVEL` | macro | `progs/wl/wl_mini.h:55` | `#define WL_OP_XDG_GET_TOPLEVEL` |
-| `WL_POOL_MAX` | macro | `progs/wl/wl_mini.h:26` | `#define WL_POOL_MAX` |
-| `WL_RESIZE_EDGE` | macro | `progs/wl/wl_mini.h:240` | `#define WL_RESIZE_EDGE` |
-| `WL_STREAM_CAP` | macro | `progs/wl/wl_mini.h:1122` | `#define WL_STREAM_CAP` |
-| `WL_SURF_MAX_H` | macro | `progs/wl/wl_mini.h:25` | `#define WL_SURF_MAX_H` |
-| `WL_SURF_MAX_W` | macro | `progs/wl/wl_mini.h:24` | `#define WL_SURF_MAX_W` |
-| `WL_TITLE_ACTIVE` | macro | `progs/wl/wl_mini.h:241` | `#define WL_TITLE_ACTIVE` |
-| `WL_TITLE_H` | macro | `progs/wl/wl_mini.h:238` | `#define WL_TITLE_H` |
-| `WL_TITLE_INACTIVE` | macro | `progs/wl/wl_mini.h:242` | `#define WL_TITLE_INACTIVE` |
-| `body` | function | `progs/wl/wl_mini.h:698` | `* resampled into the body (inside the 1 px border, below the title),  * the exact rect wl_ev_map ...` |
-| `coords` | function | `progs/wl/wl_mini.h:959` | `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw...` |
-| `wl_attach_decode` | function | `progs/wl/wl_mini.h:842` | `static inline int wl_attach_decode(const unsigned char *src, int len,         unsigned int *pool,...` |
-| `wl_attach_encode` | function | `progs/wl/wl_mini.h:823` | `static inline int wl_attach_encode(unsigned char *dst, int cap,         unsigned int pool, int w,...` |
-| `wl_cfg_t` | struct | `progs/wl/wl_mini.h:63` | `` |
-| `wl_client_init` | function | `progs/wl/wl_mini.h:1092` | `static inline void wl_client_init(wl_client_t *cl)` |
-| `wl_client_pool` | function | `progs/wl/wl_mini.h:1109` | `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)` |
-| `wl_client_surface` | function | `progs/wl/wl_mini.h:1100` | `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)` |
-| `wl_client_t` | struct | `progs/wl/wl_mini.h:1086` | `` |
-| `wl_clip_decode` | function | `progs/wl/wl_mini.h:930` | `static inline int wl_clip_decode(const unsigned char *src, int len,         unsigned char *dst, i...` |
-| `wl_clip_encode` | function | `progs/wl/wl_mini.h:907` | `static inline int wl_clip_encode(unsigned char *dst, int cap,         const unsigned char *text, ...` |
-| `wl_commit_decode` | function | `progs/wl/wl_mini.h:883` | `static inline int wl_commit_decode(const unsigned char *src, int len,         unsigned int *id)` |
-| `wl_commit_encode` | function | `progs/wl/wl_mini.h:870` | `static inline int wl_commit_encode(unsigned char *dst, int cap,         unsigned int id)` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

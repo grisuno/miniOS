@@ -1,6 +1,103 @@
 # API (page 10 of 21)
 Previous: [API_p9.md](API_p9.md)
 
+## progs/asm/freedom.s
+- `tls_close` (function) `progs/asm/freedom.s:3`
+- `f_host` (function) `progs/asm/freedom.s:24`
+- `f_path` (function) `progs/asm/freedom.s:28`
+- `f_port` (function) `progs/asm/freedom.s:32`
+- `f_secure` (function) `progs/asm/freedom.s:36`
+- `f_loc` (function) `progs/asm/freedom.s:40`
+- `f_redir` (function) `progs/asm/freedom.s:44`
+- `f_status` (function) `progs/asm/freedom.s:48`
+- `f_clen` (function) `progs/asm/freedom.s:52`
+- `f_has_clen` (function) `progs/asm/freedom.s:56`
+- `f_chunked` (function) `progs/asm/freedom.s:60`
+- `f_hdr` (function) `progs/asm/freedom.s:64`
+- `f_hlen` (function) `progs/asm/freedom.s:68`
+- `f_tag` (function) `progs/asm/freedom.s:72`
+- `f_suppress` (function) `progs/asm/freedom.s:76`
+- `f_comment` (function) `progs/asm/freedom.s:80`
+- `f_cmdash` (function) `progs/asm/freedom.s:84`
+- `f_tagn` (function) `progs/asm/freedom.s:88`
+- `f_tagnlen` (function) `progs/asm/freedom.s:92`
+- `f_ent` (function) `progs/asm/freedom.s:96`
+- `f_entlen` (function) `progs/asm/freedom.s:100`
+- `f_ws` (function) `progs/asm/freedom.s:104`
+- `f_utbuf` (function) `progs/asm/freedom.s:108`
+- `f_utlen` (function) `progs/asm/freedom.s:112`
+- `f_utrem` (function) `progs/asm/freedom.s:116`
+- `f_attr_on` (function) `progs/asm/freedom.s:120`
+- `f_waitq` (function) `progs/asm/freedom.s:124`
+- `f_inval` (function) `progs/asm/freedom.s:128`
+- `f_inval2` (function) `progs/asm/freedom.s:132`
+- `f_attr` (function) `progs/asm/freedom.s:136`
+- `f_attrlen` (function) `progs/asm/freedom.s:140`
+- `f_val` (function) `progs/asm/freedom.s:144`
+- `f_vallen` (function) `progs/asm/freedom.s:148`
+- `f_id` (function) `progs/asm/freedom.s:152`
+- `f_idlen` (function) `progs/asm/freedom.s:156`
+- `f_cls` (function) `progs/asm/freedom.s:160`
+- `f_clslen` (function) `progs/asm/freedom.s:164`
+- `f_href` (function) `progs/asm/freedom.s:168`
+- `f_hreflen` (function) `progs/asm/freedom.s:172`
+- `f_rel_ss` (function) `progs/asm/freedom.s:176`
+- `f_styleattr` (function) `progs/asm/freedom.s:180`
+- `f_stylelen` (function) `progs/asm/freedom.s:184`
+- `f_dump_css` (function) `progs/asm/freedom.s:188`
+- `f_dump_dom` (function) `progs/asm/freedom.s:192`
+- `f_mode` (function) `progs/asm/freedom.s:196`
+- `f_rawcap` (function) `progs/asm/freedom.s:200`
+- `f_depth` (function) `progs/asm/freedom.s:204`
+- `f_dom` (function) `progs/asm/freedom.s:208`
+- `f_domlen` (function) `progs/asm/freedom.s:212`
+- `f_css` (function) `progs/asm/freedom.s:216`
+- `f_csslen` (function) `progs/asm/freedom.s:220`
+- `f_linkhost` (function) `progs/asm/freedom.s:224`
+- `f_linkpath` (function) `progs/asm/freedom.s:228`
+- `f_linkn` (function) `progs/asm/freedom.s:232`
+- `f_cstage` (function) `progs/asm/freedom.s:236`
+- `f_csize` (function) `progs/asm/freedom.s:240`
+- `f_crem` (function) `progs/asm/freedom.s:244`
+- `f_bdone` (function) `progs/asm/freedom.s:248`
+- `atoi` (function) `progs/asm/freedom.s:252`
+- `append` (function) `progs/asm/freedom.s:338`
+- `ci_lower` (function) `progs/asm/freedom.s:437`
+- `ci_starts` (function) `progs/asm/freedom.s:486`
+- `ci_eq` (function) `progs/asm/freedom.s:559`
+- `ci_index` (function) `progs/asm/freedom.s:656`
+- `looks_like_url` (function) `progs/asm/freedom.s:715`
+- `has_scheme` (function) `progs/asm/freedom.s:789`
+- `make_search` (function) `progs/asm/freedom.s:1064`
+- `split_url` (function) `progs/asm/freedom.s:1295`
+- `resolve_redirect` (function) `progs/asm/freedom.s:1810`
+- `put_ws` (function) `progs/asm/freedom.s:2333`
+- `put_utf` (function) `progs/asm/freedom.s:2379`
+- `put_text` (function) `progs/asm/freedom.s:2915`
+- `put_entity` (function) `progs/asm/freedom.s:3018`
+- `css_append` (function) `progs/asm/freedom.s:3849`
+- `css_line` (function) `progs/asm/freedom.s:3920`
+- `dom_append` (function) `progs/asm/freedom.s:3978`
+- `dom_space` (function) `progs/asm/freedom.s:4049`
+- `dom_nl` (function) `progs/asm/freedom.s:4083`
+- `record_attr` (function) `progs/asm/freedom.s:4117`
+- `is_void_tag` (function) `progs/asm/freedom.s:4449`
+- `classify_tag` (function) `progs/asm/freedom.s:4757`
+- `body_byte` (function) `progs/asm/freedom.s:5961`
+- `head_line` (function) `progs/asm/freedom.s:7203`
+- `parse_head` (function) `progs/asm/freedom.s:7460`
+- `recv_body` (function) `progs/asm/freedom.s:7676`
+- `send_all` (function) `progs/asm/freedom.s:7736`
+- `fetch` (function) `progs/asm/freedom.s:7810`
+- `fetch_css` (function) `progs/asm/freedom.s:9293`
+- `print_css_dump` (function) `progs/asm/freedom.s:10112`
+- `print_dom_dump` (function) `progs/asm/freedom.s:10212`
+- `main` (function) `progs/asm/freedom.s:10291`
+
+## progs/asm/http.s
+- `atoi` (function) `progs/asm/http.s:3`
+- `main` (function) `progs/asm/http.s:89`
+
 ## progs/asm/json.s
 - `js_key` (function) `progs/asm/json.s:3`
 - `js_str` (function) `progs/asm/json.s:7`
@@ -398,103 +495,6 @@ Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_net.c`, `progs/d
 - `TryRunTics` (function) `progs/doomgeneric/d_loop.h:62` `void TryRunTics (void);` -- ? how many ticks to run?
 - `D_StartGameLoop` (function) `progs/doomgeneric/d_loop.h:65` `void D_StartGameLoop(void);` -- Called at start of game loop to initialize timers
 - `D_StartNetGame` (function) `progs/doomgeneric/d_loop.h:74` `void D_StartNetGame(net_gamesettings_t *settings, netgame_startup_callback_t callback);`
-
-## progs/doomgeneric/d_main.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/f_wipe.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_endoom.h`, `progs/doomgeneric/i_joystick.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_dedicated.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/p_setup.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/statdump.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
-- `D_ConnectNetGame` (function) `progs/doomgeneric/d_main.c:131` `void D_ConnectNetGame(void);`
-- `D_CheckNetGame` (function) `progs/doomgeneric/d_main.c:132` `void D_CheckNetGame(void);`
-- `D_ProcessEvents` (function) `progs/doomgeneric/d_main.c:139` `void D_ProcessEvents (void)` -- D_ProcessEvents Send all the events of the given timestamp down the responder chain
-- `R_ExecuteSetViewSize` (function) `progs/doomgeneric/d_main.c:167` `void R_ExecuteSetViewSize (void);`
-- `D_Display` (function) `progs/doomgeneric/d_main.c:169` `void D_Display (void)`
-- `D_BindVariables` (function) `progs/doomgeneric/d_main.c:335` `void D_BindVariables(void)`
-- `D_GrabMouseCallback` (function) `progs/doomgeneric/d_main.c:388` `boolean D_GrabMouseCallback(void)`
-- `D_DoomLoop` (function) `progs/doomgeneric/d_main.c:408` `void D_DoomLoop (void)` -- D_DoomLoop
-- `D_PageTicker` (function) `progs/doomgeneric/d_main.c:490` `void D_PageTicker (void)` -- D_PageTicker Handles timing for warped projection
-- `D_PageDrawer` (function) `progs/doomgeneric/d_main.c:501` `void D_PageDrawer (void)` -- D_PageDrawer
-- `D_AdvanceDemo` (function) `progs/doomgeneric/d_main.c:511` `void D_AdvanceDemo (void)` -- D_AdvanceDemo Called after each demo or intro demosequence finishes
-- `D_DoAdvanceDemo` (function) `progs/doomgeneric/d_main.c:521` `void D_DoAdvanceDemo (void)` -- This cycles through the demo sequences.
-- `D_StartTitle` (function) `progs/doomgeneric/d_main.c:609` `void D_StartTitle (void)` -- D_StartTitle
-- `GetGameName` (function) `progs/doomgeneric/d_main.c:658` `static char *GetGameName(char *gamename)`
-- `SetMissionForPackName` (function) `progs/doomgeneric/d_main.c:701` `static void SetMissionForPackName(char *pack_name)`
-- `D_IdentifyVersion` (function) `progs/doomgeneric/d_main.c:737` `void D_IdentifyVersion(void)`
-- `D_SetGameDescription` (function) `progs/doomgeneric/d_main.c:820` `void D_SetGameDescription(void)`
-- `D_AddFile` (function) `progs/doomgeneric/d_main.c:883` `static boolean D_AddFile(char *filename)`
-- `PrintDehackedBanners` (function) `progs/doomgeneric/d_main.c:918` `void PrintDehackedBanners(void)`
-- `InitGameVersion` (function) `progs/doomgeneric/d_main.c:963` `static void InitGameVersion(void)`
-- `PrintGameVersion` (function) `progs/doomgeneric/d_main.c:1065` `void PrintGameVersion(void)`
-- `D_Endoom` (function) `progs/doomgeneric/d_main.c:1082` `static void D_Endoom(void)`
-- `LoadIwadDeh` (function) `progs/doomgeneric/d_main.c:1105` `static void LoadIwadDeh(void)` -- if ORIGCODE Load dehacked patches needed for certain IWADs.
-- `D_DoomMain` (function) `progs/doomgeneric/d_main.c:1178` `void D_DoomMain (void)` -- D_DoomMain
-
-## progs/doomgeneric/d_main.h
-Depends on: `progs/doomgeneric/doomdef.h`
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`
-- `D_ProcessEvents` (function) `progs/doomgeneric/d_main.h:30` `void D_ProcessEvents (void);`
-- `D_PageTicker` (function) `progs/doomgeneric/d_main.h:36` `void D_PageTicker (void);` -- BASE LEVEL
-- `D_PageDrawer` (function) `progs/doomgeneric/d_main.h:37` `void D_PageDrawer (void);`
-- `D_AdvanceDemo` (function) `progs/doomgeneric/d_main.h:38` `void D_AdvanceDemo (void);`
-- `D_DoAdvanceDemo` (function) `progs/doomgeneric/d_main.h:39` `void D_DoAdvanceDemo (void);`
-- `D_StartTitle` (function) `progs/doomgeneric/d_main.h:40` `void D_StartTitle (void);`
-
-## progs/doomgeneric/d_mode.c
-Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`
-- `D_ValidGameMode` (function) `progs/doomgeneric/d_mode.c:50` `boolean D_ValidGameMode(GameMission_t mission, GameMode_t mode)`
-- `D_ValidEpisodeMap` (function) `progs/doomgeneric/d_mode.c:65` `boolean D_ValidEpisodeMap(GameMission_t mission, GameMode_t mode,
-                          int e...`
-- `D_GetNumEpisodes` (function) `progs/doomgeneric/d_mode.c:103` `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode)`
-- `D_ValidGameVersion` (function) `progs/doomgeneric/d_mode.c:135` `boolean D_ValidGameVersion(GameMission_t mission, GameVersion_t version)`
-- `D_IsEpisodeMap` (function) `progs/doomgeneric/d_mode.c:161` `boolean D_IsEpisodeMap(GameMission_t mission)`
-- `D_GameMissionString` (function) `progs/doomgeneric/d_mode.c:182` `char *D_GameMissionString(GameMission_t mission)`
-
-## progs/doomgeneric/d_mode.h
-Depends on: `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/d_mode.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/w_wad.h`
-- `D_GetNumEpisodes` (function) `progs/doomgeneric/d_mode.h:93` `int D_GetNumEpisodes(GameMission_t mission, GameMode_t mode);`
-- `D_GameMissionString` (function) `progs/doomgeneric/d_mode.h:95` `char *D_GameMissionString(GameMission_t mission);`
-
-## progs/doomgeneric/d_net.c
-Depends on: `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
-- `PlayerQuitGame` (function) `progs/doomgeneric/d_net.c:45` `static void PlayerQuitGame(player_t *player)`
-- `RunTic` (function) `progs/doomgeneric/d_net.c:71` `static void RunTic(ticcmd_t *cmds, boolean *ingame)`
-- `LoadGameSettings` (function) `progs/doomgeneric/d_net.c:108` `static void LoadGameSettings(net_gamesettings_t *settings)`
-- `SaveGameSettings` (function) `progs/doomgeneric/d_net.c:139` `static void SaveGameSettings(net_gamesettings_t *settings)`
-- `InitConnectData` (function) `progs/doomgeneric/d_net.c:159` `static void InitConnectData(net_connect_data_t *connect_data)`
-- `D_ConnectNetGame` (function) `progs/doomgeneric/d_net.c:215` `void D_ConnectNetGame(void)`
-- `D_CheckNetGame` (function) `progs/doomgeneric/d_net.c:240` `void D_CheckNetGame (void)` -- D_CheckNetGame Works out player numbers among the net participants
-
-## progs/doomgeneric/deh_main.h
-Depends on: `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/sha1.h`
-Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/wi_stuff.c`
-- `DEH_ParseCommandLine` (function) `progs/doomgeneric/deh_main.h:33` `void DEH_ParseCommandLine(void);`
-- `DEH_LoadFile` (function) `progs/doomgeneric/deh_main.h:34` `int DEH_LoadFile(char *filename);`
-- `DEH_LoadLump` (function) `progs/doomgeneric/deh_main.h:35` `int DEH_LoadLump(int lumpnum, boolean allow_long, boolean allow_error);`
-- `DEH_LoadLumpByName` (function) `progs/doomgeneric/deh_main.h:36` `int DEH_LoadLumpByName(char *name, boolean allow_long, boolean allow_error);`
-- `DEH_Checksum` (function) `progs/doomgeneric/deh_main.h:40` `void DEH_Checksum(sha1_digest_t digest);`
-
-## progs/doomgeneric/deh_str.h
-Depends on: `progs/doomgeneric/doomfeatures.h`
-Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/v_video.c`
-- `DEH_String` (function) `progs/doomgeneric/deh_str.h:29` `char *DEH_String(char *s);`
-- `DEH_printf` (function) `progs/doomgeneric/deh_str.h:30` `void DEH_printf(char *fmt, ...);`
-- `DEH_fprintf` (function) `progs/doomgeneric/deh_str.h:31` `void DEH_fprintf(FILE *fstream, char *fmt, ...);`
-- `DEH_snprintf` (function) `progs/doomgeneric/deh_str.h:32` `void DEH_snprintf(char *buffer, size_t len, char *fmt, ...);`
-- `DEH_AddStringReplacement` (function) `progs/doomgeneric/deh_str.h:33` `void DEH_AddStringReplacement(char *from_text, char *to_text);`
-
-## progs/doomgeneric/doom.h
-- `D_DoomMain` (function) `progs/doomgeneric/doom.h:28` `void D_DoomMain (void);`
-
-## progs/doomgeneric/doomgeneric.c
-Depends on: `progs/doomgeneric/doomgeneric.h`
-- `dg_Create` (function) `progs/doomgeneric/doomgeneric.c:6` `void dg_Create()`
-
-## progs/doomgeneric/doomgeneric.h
-Imported by: `progs/doomgeneric/doomgeneric.c`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_win.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_timer.c`, `progs/doomgeneric/i_video.c`
-- `DG_Init` (function) `progs/doomgeneric/doomgeneric.h:14` `void DG_Init();`
-- `DG_DrawFrame` (function) `progs/doomgeneric/doomgeneric.h:15` `void DG_DrawFrame();`
-- `DG_SleepMs` (function) `progs/doomgeneric/doomgeneric.h:16` `void DG_SleepMs(uint32_t ms);`
-- `DG_GetTicksMs` (function) `progs/doomgeneric/doomgeneric.h:17` `uint32_t DG_GetTicksMs();`
-- `DG_GetKey` (function) `progs/doomgeneric/doomgeneric.h:18` `int DG_GetKey(int* pressed, unsigned char* key);`
-- `DG_SetWindowTitle` (function) `progs/doomgeneric/doomgeneric.h:19` `void DG_SetWindowTitle(const char * title);`
 
 
 Next: [API_p11.md](API_p11.md)

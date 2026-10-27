@@ -15,11 +15,14 @@ Solid arrows stay in this module, dashed arrows leave it.
 
 ```mermaid
 flowchart LR
+    n_progs_quake2generic_snddma_minios_c__SNDDMA_Init(["SNDDMA_Init"])
+    n_kernel_string_c__memset["string.memset"]
     n_progs_quake2generic_snddma_minios_c__SNDDMA_Shutdown(["SNDDMA_Shutdown"])
     n_headers_sched_h__bytes["sched.bytes"]
     n_progs_quake2generic_snddma_minios_c__q2snd_probe(["q2snd_probe"])
     n_headers_kernel_h__refused["kernel.refused"]
     n_tools_update_sources_py__GitResult_ok["update_sources.GitResult.ok"]
+    n_progs_quake2generic_snddma_minios_c__SNDDMA_Init -.-> n_kernel_string_c__memset
     n_progs_quake2generic_snddma_minios_c__SNDDMA_Shutdown -.-> n_headers_sched_h__bytes
     n_progs_quake2generic_snddma_minios_c__q2snd_probe -.-> n_headers_kernel_h__refused
     n_progs_quake2generic_snddma_minios_c__q2snd_probe -.-> n_tools_update_sources_py__GitResult_ok
@@ -38,6 +41,8 @@ qboolean SNDDMA_Init(void)
 ```
 
 **Returns:** `qboolean`
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 ---
 

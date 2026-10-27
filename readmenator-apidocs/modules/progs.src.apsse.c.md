@@ -8,6 +8,17 @@
 - **Functions:** [`main`](#main)
 - **Macros:** [`_GNU_SOURCE`](#_gnu_source), [`APSSE_THREADS`](#apsse_threads), [`APSSE_ROUNDS`](#apsse_rounds), [`APSSE_SEED`](#apsse_seed), [`APSSE_BUF`](#apsse_buf), [`APSSE_NEEDLE`](#apsse_needle), [`APSSE_MAP_ROUNDS`](#apsse_map_rounds), [`APSSE_MAP_BYTES`](#apsse_map_bytes), [`APSSE_MAP_FILL`](#apsse_map_fill), [`APSSE_OK`](#apsse_ok), [`APSSE_BAD`](#apsse_bad)
 
+## Call Graph
+
+Solid arrows stay in this module, dashed arrows leave it.
+
+```mermaid
+flowchart LR
+    n_progs_src_apsse_c__main(["main"])
+    n_kernel_string_c__memset["string.memset"]
+    n_progs_src_apsse_c__main -.-> n_kernel_string_c__memset
+```
+
 ## Structs
 
 <a id="apsse_job"></a>
@@ -35,6 +46,8 @@ int main(void)
 ```
 
 **Returns:** `int`
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 ---
 

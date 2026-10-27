@@ -364,6 +364,8 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `audio_stream_submit` | function | `headers/audio.h:42` | `int audio_stream_submit(int id, const void *buf, unsigned len);` |
 | `audio_stream_volume` | function | `headers/audio.h:43` | `void audio_stream_volume(int id, unsigned char vol);` |
 | `audio_tone` | function | `headers/audio.h:24` | `void audio_tone(unsigned freq);` |
+| `AVATAR_DATA_H` | macro | `headers/avatar_data.h:6` | `#define AVATAR_DATA_H` |
+| `AVATAR_SIZE` | macro | `headers/avatar_data.h:8` | `#define AVATAR_SIZE` |
 | `BATCH_ERR_COUNT` | macro | `headers/batch.h:49` | `#define BATCH_ERR_COUNT` |
 | `BATCH_ERR_OPCODE` | macro | `headers/batch.h:51` | `#define BATCH_ERR_OPCODE` |
 | `BATCH_ERR_PTR` | macro | `headers/batch.h:50` | `#define BATCH_ERR_PTR` |
@@ -494,7 +496,5 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `PCI_CLASS_ANY` | macro | `headers/drivers/pci.h:62` | `#define PCI_CLASS_ANY` |
 | `PCI_CLASS_BRIDGE` | macro | `headers/drivers/pci.h:55` | `#define PCI_CLASS_BRIDGE` |
 | `PCI_CLASS_MAX_PASSES` | macro | `headers/drivers/pci.h:68` | `#define PCI_CLASS_MAX_PASSES` |
-| `PCI_CLASS_XHCI` | macro | `headers/drivers/pci.h:57` | `#define PCI_CLASS_XHCI` |
-| `PCI_COMMAND_BUS_MASTER` | macro | `headers/drivers/pci.h:34` | `#define PCI_COMMAND_BUS_MASTER` |
 
 Next: [SYMBOLS_p4.md](SYMBOLS_p4.md)

@@ -37,6 +37,7 @@ flowchart LR
     n_progs_doomgeneric_d_loop_c__D_QuitNetGame(["D_QuitNetGame"])
     n_progs_doomgeneric_net_client_h__NET_CL_Disconnect["net_client.NET_CL_Disconnect"]
     n_progs_doomgeneric_net_server_h__NET_SV_Shutdown["net_server.NET_SV_Shutdown"]
+    n_kernel_string_c__memcpy["string.memcpy"]
     n_progs_doomgeneric_i_timer_h__I_GetTime["i_timer.I_GetTime"]
     n_progs_doomgeneric_i_timer_h__I_Sleep["i_timer.I_Sleep"]
     n_progs_doomgeneric_d_loop_c__TryRunTics --> n_progs_doomgeneric_d_loop_c__NetUpdate
@@ -57,6 +58,7 @@ flowchart LR
     n_progs_doomgeneric_d_loop_c__D_InitNetGame -.-> n_progs_doomgeneric_net_server_h__NET_SV_RegisterWithMaster
     n_progs_doomgeneric_d_loop_c__D_QuitNetGame -.-> n_progs_doomgeneric_net_client_h__NET_CL_Disconnect
     n_progs_doomgeneric_d_loop_c__D_QuitNetGame -.-> n_progs_doomgeneric_net_server_h__NET_SV_Shutdown
+    n_progs_doomgeneric_d_loop_c__TryRunTics -.-> n_kernel_string_c__memcpy
     n_progs_doomgeneric_d_loop_c__TryRunTics -.-> n_progs_doomgeneric_i_system_h__I_Error
     n_progs_doomgeneric_d_loop_c__TryRunTics -.-> n_progs_doomgeneric_i_timer_h__I_GetTime
     n_progs_doomgeneric_d_loop_c__TryRunTics -.-> n_progs_doomgeneric_i_timer_h__I_Sleep
@@ -208,7 +210,7 @@ void TryRunTics (void)
 
 > **Inherited:** Documentation from [`TryRunTics`](#tryruntics) (progs/doomgeneric/d_loop.h:62).
 
-*Calls:* [`NetUpdate`](#netupdate), [`I_Error`](progs.doomgeneric.i_system.h.md#i_error), [`I_GetTime`](progs.doomgeneric.i_timer.h.md#i_gettime), [`I_Sleep`](progs.doomgeneric.i_timer.h.md#i_sleep)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`NetUpdate`](#netupdate), [`I_Error`](progs.doomgeneric.i_system.h.md#i_error), [`I_GetTime`](progs.doomgeneric.i_timer.h.md#i_gettime), [`I_Sleep`](progs.doomgeneric.i_timer.h.md#i_sleep)
 
 ---
 

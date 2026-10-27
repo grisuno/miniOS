@@ -19,10 +19,12 @@ flowchart LR
     n_headers_tls_h__tls_handshake["tls.tls_handshake"]
     n_headers_tls_h__tls_recv["tls.tls_recv"]
     n_headers_tls_h__tls_send["tls.tls_send"]
+    n_kernel_string_c__memset["string.memset"]
     n_progs_tls_u_tls_u_port_c__tls_u_resolve["tls_u_port.tls_u_resolve"]
     n_progs_tls_u_tls_u_main_c__main -.-> n_headers_tls_h__tls_handshake
     n_progs_tls_u_tls_u_main_c__main -.-> n_headers_tls_h__tls_recv
     n_progs_tls_u_tls_u_main_c__main -.-> n_headers_tls_h__tls_send
+    n_progs_tls_u_tls_u_main_c__main -.-> n_kernel_string_c__memset
     n_progs_tls_u_tls_u_main_c__main -.-> n_progs_tls_u_tls_u_port_c__tls_u_resolve
 ```
 
@@ -69,7 +71,7 @@ int main(int argc, char **argv)
 
 **Returns:** `int`
 
-*Calls:* [`tls_handshake`](headers.tls.h.md#tls_handshake), [`tls_recv`](headers.tls.h.md#tls_recv), [`tls_send`](headers.tls.h.md#tls_send), [`tls_u_resolve`](progs.tls_u.tls_u_port.c.md#tls_u_resolve)
+*Calls:* [`tls_handshake`](headers.tls.h.md#tls_handshake), [`tls_recv`](headers.tls.h.md#tls_recv), [`tls_send`](headers.tls.h.md#tls_send), [`memset`](kernel.string.c.md#memset), [`tls_u_resolve`](progs.tls_u.tls_u_port.c.md#tls_u_resolve)
 
 ---
 

@@ -22,6 +22,19 @@ classDiagram
     <<struct>> ps2_keypad
 ```
 
+## Call Graph
+
+Solid arrows stay in this module, dashed arrows leave it.
+
+```mermaid
+flowchart LR
+    n_progs_freedomui_ps2_keymap_c__ps2_init(["ps2_init"])
+    n_kernel_string_c__memset["string.memset"]
+    n_progs_freedomui_ps2_keymap_c__ps2_feed(["ps2_feed"])
+    n_progs_freedomui_ps2_keymap_c__ps2_init -.-> n_kernel_string_c__memset
+    n_progs_freedomui_ps2_keymap_c__ps2_feed -.-> n_kernel_string_c__memset
+```
+
 ## Structs
 
 <a id="ps2_keypad"></a>
@@ -76,6 +89,8 @@ Resets the state: nothing held, Caps Lock off, Num Lock on.
 
 > **Inherited:** Documentation from [`ps2_init`](#ps2_init) (progs/freedomui/ps2_keymap.h:47).
 
+*Calls:* [`memset`](kernel.string.c.md#memset)
+
 ---
 
 <a id="ps2_feed"></a>
@@ -97,6 +112,8 @@ int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out)
 | `out` | `ps2_key *` |  |  |
 
 **Returns:** `int`
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 ---
 

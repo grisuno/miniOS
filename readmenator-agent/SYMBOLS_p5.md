@@ -3,6 +3,8 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `kmemset` | function | `headers/kernel.h:554` | `void *kmemset(void *dst, int c, unsigned long n);` |
+| `kmm_make_uncached` | function | `headers/kernel.h:819` | `int kmm_make_uncached(unsigned long phys, unsigned long len);` |
 | `kpipe_empty_wopen` | function | `headers/kernel.h:869` | `int kpipe_empty_wopen(KFILE *f);` |
 | `kpipe_is_write_end` | function | `headers/kernel.h:870` | `int kpipe_is_write_end(KFILE *f);` |
 | `kpipe_pair` | function | `headers/kernel.h:868` | `int kpipe_pair(KFILE **rend_out, KFILE **wend_out);` |
@@ -494,7 +496,5 @@ Previous: [SYMBOLS_p4.md](SYMBOLS_p4.md)
 | `pcache_put` | function | `headers/pcache.h:55` | `void pcache_put(int slot);` |
 | `pcache_ref` | function | `headers/pcache.h:61` | `int pcache_ref(int ino, unsigned index);` |
 | `pcache_ref_if` | function | `headers/pcache.h:83` | `int pcache_ref_if(int ino, unsigned index, unsigned long phys);` |
-| `pcache_stats` | function | `headers/pcache.h:106` | `void pcache_stats(unsigned long *pages_out, unsigned long *hits_out, unsigned long *miss_out, unsigned long...` |
-| `pcache_unmap` | function | `headers/pcache.h:69` | `void pcache_unmap(int ino, unsigned index);` |
 
 Next: [SYMBOLS_p6.md](SYMBOLS_p6.md)

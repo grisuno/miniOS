@@ -120,7 +120,7 @@ If recording a demo, write it out
 | `cmd` | `ticcmd_t*` |  |  |
 | `maketic` | `int` |  |  |
 
-*Calls:* [`arrlen`](progs.doomgeneric.doomtype.h.md#arrlen), [`HU_dequeueChatChar`](progs.doomgeneric.hu_stuff.h.md#hu_dequeuechatchar)
+*Calls:* [`memset`](kernel.string.c.md#memset), [`arrlen`](progs.doomgeneric.doomtype.h.md#arrlen), [`HU_dequeueChatChar`](progs.doomgeneric.hu_stuff.h.md#hu_dequeuechatchar)
 
 ---
 
@@ -136,7 +136,7 @@ void G_DoLoadLevel (void)
 
 G_DoLoadLevel
 
-*Calls:* [`DEH_String`](progs.doomgeneric.deh_str.h.md#deh_string), [`P_SetupLevel`](progs.doomgeneric.p_setup.h.md#p_setuplevel), [`R_FlatNumForName`](progs.doomgeneric.r_data.h.md#r_flatnumforname), [`R_TextureNumForName`](progs.doomgeneric.r_data.h.md#r_texturenumforname), [`Z_CheckHeap`](progs.doomgeneric.z_zone.h.md#z_checkheap)
+*Calls:* [`memset`](kernel.string.c.md#memset), [`DEH_String`](progs.doomgeneric.deh_str.h.md#deh_string), [`P_SetupLevel`](progs.doomgeneric.p_setup.h.md#p_setuplevel), [`R_FlatNumForName`](progs.doomgeneric.r_data.h.md#r_flatnumforname), [`R_TextureNumForName`](progs.doomgeneric.r_data.h.md#r_texturenumforname), [`Z_CheckHeap`](progs.doomgeneric.z_zone.h.md#z_checkheap)
 
 *Called by:* [`G_DoWorldDone`](#g_doworlddone), [`G_InitNew`](#g_initnew), [`G_Ticker`](#g_ticker)
 
@@ -180,7 +180,7 @@ void G_Ticker (void)
 
 G_Ticker Make ticcmd_ts for the players.
 
-*Calls:* [`AM_Ticker`](progs.doomgeneric.am_map.h.md#am_ticker), [`D_PageTicker`](progs.doomgeneric.d_main.h.md#d_pageticker), [`DEH_String`](progs.doomgeneric.deh_str.h.md#deh_string), [`F_StartFinale`](progs.doomgeneric.f_finale.h.md#f_startfinale), [`F_Ticker`](progs.doomgeneric.f_finale.h.md#f_ticker), [`G_DoCompleted`](#g_docompleted), [`G_DoLoadGame`](#g_doloadgame), [`G_DoLoadLevel`](#g_doloadlevel), [`G_DoNewGame`](#g_donewgame), [`G_DoPlayDemo`](#g_doplaydemo), [`G_DoReborn`](#g_doreborn), [`G_DoSaveGame`](#g_dosavegame) and 14 more
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`AM_Ticker`](progs.doomgeneric.am_map.h.md#am_ticker), [`D_PageTicker`](progs.doomgeneric.d_main.h.md#d_pageticker), [`DEH_String`](progs.doomgeneric.deh_str.h.md#deh_string), [`F_StartFinale`](progs.doomgeneric.f_finale.h.md#f_startfinale), [`F_Ticker`](progs.doomgeneric.f_finale.h.md#f_ticker), [`G_DoCompleted`](#g_docompleted), [`G_DoLoadGame`](#g_doloadgame), [`G_DoLoadLevel`](#g_doloadlevel), [`G_DoNewGame`](#g_donewgame), [`G_DoPlayDemo`](#g_doplaydemo), [`G_DoReborn`](#g_doreborn) and 15 more
 
 ---
 
@@ -226,6 +226,8 @@ G_PlayerFinishLevel Can when a player completes a level.
 |---|---|---|---|
 | `player` | `int` |  |  |
 
+*Calls:* [`memset`](kernel.string.c.md#memset)
+
 *Called by:* [`G_DoCompleted`](#g_docompleted)
 
 ---
@@ -247,6 +249,8 @@ G_PlayerReborn Called after a player dies almost everything is cleared and initi
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `player` | `int` |  |  |
+
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`memset`](kernel.string.c.md#memset)
 
 *Called by:* [`G_InitPlayer`](#g_initplayer)
 
@@ -397,7 +401,7 @@ Here's for the german edition.
 void G_DoCompleted (void)
 ```
 
-*Calls:* [`AM_Stop`](progs.doomgeneric.am_map.h.md#am_stop), [`G_PlayerFinishLevel`](#g_playerfinishlevel), [`StatCopy`](progs.doomgeneric.statdump.h.md#statcopy), [`WI_Start`](progs.doomgeneric.wi_stuff.h.md#wi_start)
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy), [`AM_Stop`](progs.doomgeneric.am_map.h.md#am_stop), [`G_PlayerFinishLevel`](#g_playerfinishlevel), [`StatCopy`](progs.doomgeneric.statdump.h.md#statcopy), [`WI_Start`](progs.doomgeneric.wi_stuff.h.md#wi_start)
 
 *Called by:* [`G_Ticker`](#g_ticker)
 

@@ -3,6 +3,23 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `FSBASE` | function | `kernel/sched.c:913` | `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...` |
+| `IRQ4` | function | `kernel/sched.c:796` | `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...` |
+| `KSTACK_CANARY` | macro | `kernel/sched.c:169` | `#define KSTACK_CANARY` |
+| `KSTACK_PAINT` | macro | `kernel/sched.c:168` | `#define KSTACK_PAINT` |
+| `KSTACK_SZ` | macro | `kernel/sched.c:155` | `#define KSTACK_SZ` |
+| `MSR` | function | `kernel/sched.c:2633` | `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...` |
+| `MXCSR` | function | `kernel/sched.c:306` | `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all  * exceptions masked): fxsa...` |
+| `MY_SYS_KSTK_TOP` | macro | `kernel/sched.c:53` | `#define MY_SYS_KSTK_TOP` |
+| `MY_USER_LOAD_BASE` | macro | `kernel/sched.c:55` | `#define MY_USER_LOAD_BASE` |
+| `MY_USER_STACK_TOP` | macro | `kernel/sched.c:54` | `#define MY_USER_STACK_TOP` |
+| `NMI_IST_SLOT` | macro | `kernel/sched.c:125` | `#define NMI_IST_SLOT` |
+| `NMI_IST_STACK_SZ` | macro | `kernel/sched.c:123` | `#define NMI_IST_STACK_SZ` |
+| `NMI_VECTOR` | macro | `kernel/sched.c:124` | `#define NMI_VECTOR` |
+| `PROC_KSTACK_OFF` | function | `kernel/sched.c:82` | `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...` |
+| `PROC_SWITCHING` | function | `kernel/sched.c:2180` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...` |
+| `__attribute__` | function | `kernel/sched.c:109` | `typedef struct __attribute__((packed))` |
+| `__attribute__` | function | `kernel/sched.c:143` | `typedef struct __attribute__((packed))` |
 | `adopt` | function | `kernel/sched.c:2922` | `* adopt (armed by Linux O_CLOEXEC on open);` |
 | `alloc_kstack` | function | `kernel/sched.c:262` | `static uint64_t alloc_kstack(void)` |
 | `alloc_pid_locked` | function | `kernel/sched.c:3180` | `static int alloc_pid_locked(void)` |
@@ -258,11 +275,12 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `spawn_run_exec` | function | `kernel/spawn.c:222` | `static int spawn_run_exec(const char *resolved, const char *redirect,                            ...` |
 | `spawn_run_rel` | function | `kernel/spawn.c:196` | `static int spawn_run_rel(const char *resolved, const char *redirect,                          uns...` |
 | `spawn_validate_argv` | function | `kernel/spawn.c:143` | `int spawn_validate_argv(int argc, const char **uargv)` |
-| `katol` | function | `kernel/string.c:95` | `long katol(const char *s)` |
-| `kmemcmp` | function | `kernel/string.c:81` | `int kmemcmp(const void *a, const void *b, unsigned long n)` |
-| `kmemcpy` | function | `kernel/string.c:68` | `void *kmemcpy(void *dst, const void *src, unsigned long n)` |
-| `kmemmove` | function | `kernel/string.c:87` | `void *kmemmove(void *dst, const void *src, unsigned long n)` |
-| `kmemset` | function | `kernel/string.c:75` | `void *kmemset(void *dst, int c, unsigned long n)` |
+| `NO_LOOP_IDIOM` | macro | `kernel/string.c:68` | `#define NO_LOOP_IDIOM` |
+| `katol` | function | `kernel/string.c:120` | `long katol(const char *s)` |
+| `kmemcmp` | function | `kernel/string.c:86` | `int kmemcmp(const void *a, const void *b, unsigned long n)` |
+| `kmemcpy` | function | `kernel/string.c:73` | `NO_LOOP_IDIOM void *kmemcpy(void *dst, const void *src, unsigned long n)` |
+| `kmemmove` | function | `kernel/string.c:92` | `NO_LOOP_IDIOM void *kmemmove(void *dst, const void *src, unsigned long n)` |
+| `kmemset` | function | `kernel/string.c:80` | `NO_LOOP_IDIOM void *kmemset(void *dst, int c, unsigned long n)` |
 | `kstrchr` | function | `kernel/string.c:53` | `char *kstrchr(const char *s, int c)` |
 | `kstrcmp` | function | `kernel/string.c:43` | `int kstrcmp(const char *a, const char *b)` |
 | `kstrcpy` | function | `kernel/string.c:23` | `char *kstrcpy(char *dst, const char *src)` |
@@ -271,6 +289,10 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `kstrncmp` | function | `kernel/string.c:48` | `int kstrncmp(const char *a, const char *b, unsigned long n)` |
 | `kstrncpy` | function | `kernel/string.c:29` | `char *kstrncpy(char *dst, const char *src, unsigned long n)` |
 | `kstrstr` | function | `kernel/string.c:58` | `char *kstrstr(const char *hay, const char *ndl)` |
+| `memcmp` | function | `kernel/string.c:116` | `int memcmp(const void *a, const void *b, unsigned long n)` |
+| `memcpy` | function | `kernel/string.c:104` | `void *memcpy(void *dst, const void *src, unsigned long n)` |
+| `memmove` | function | `kernel/string.c:108` | `void *memmove(void *dst, const void *src, unsigned long n)` |
+| `memset` | function | `kernel/string.c:112` | `void *memset(void *dst, int c, unsigned long n)` |
 | `k_register_process` | function | `kernel/symtab.c:57` | `void k_register_process(const char *name, void *proc_entry)` |
 | `k_register_program` | function | `kernel/symtab.c:49` | `void k_register_program(const char *name, prog_entry_t entry)` |
 | `k_register_symbol` | function | `kernel/symtab.c:10` | `void k_register_symbol(const char *name, void *addr)` |
@@ -474,27 +496,5 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `sys_linux_geteuid` | function | `kernel/syscalls.c:3243` | `static long sys_linux_geteuid(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_linux_getgid` | function | `kernel/syscalls.c:3238` | `static long sys_linux_getgid(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_linux_getpeername` | function | `kernel/syscalls.c:2900` | `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getsockname` | function | `kernel/syscalls.c:2894` | `static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getsockopt` | function | `kernel/syscalls.c:2887` | `static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_gettimeofday` | function | `kernel/syscalls.c:3171` | `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_listen` | function | `kernel/syscalls.c:2712` | `static long sys_linux_listen(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_lseek` | function | `kernel/syscalls.c:1905` | `static long sys_linux_lseek(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_madvise` | function | `kernel/syscalls.c:3255` | `static long sys_linux_madvise(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_mkdir` | function | `kernel/syscalls.c:3263` | `static long sys_linux_mkdir(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_mmap` | function | `kernel/syscalls.c:1997` | `static long sys_linux_mmap(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_mremap` | function | `kernel/syscalls.c:2327` | `static long sys_linux_mremap(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_nanosleep` | function | `kernel/syscalls.c:2848` | `static long sys_linux_nanosleep(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_open` | function | `kernel/syscalls.c:1457` | `static long sys_linux_open(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_pause` | function | `kernel/syscalls.c:2840` | `static long sys_linux_pause(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_pipe` | function | `kernel/syscalls.c:1606` | `static long sys_linux_pipe(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_pipe2` | function | `kernel/syscalls.c:1578` | `static long sys_linux_pipe2(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_poll` | function | `kernel/syscalls.c:2920` | `static long sys_linux_poll(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_prctl` | function | `kernel/syscalls.c:3123` | `static long sys_linux_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_prlimit64` | function | `kernel/syscalls.c:2768` | `static long sys_linux_prlimit64(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_pselect6` | function | `kernel/syscalls.c:3036` | `static long sys_linux_pselect6(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_read` | function | `kernel/syscalls.c:1271` | `static long sys_linux_read(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_readlink` | function | `kernel/syscalls.c:3117` | `static long sys_linux_readlink(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_recvfrom` | function | `kernel/syscalls.c:2728` | `static long sys_linux_recvfrom(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_rename` | function | `kernel/syscalls.c:3132` | `static long sys_linux_rename(long a1, long a2, long a3, long a4, long a5, long a6)` |
 
 Next: [SYMBOLS_p10.md](SYMBOLS_p10.md)

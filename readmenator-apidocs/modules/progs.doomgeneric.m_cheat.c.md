@@ -10,6 +10,17 @@ Copyright(C) 2005-2014 Simon Howard  This program is free software; you can redi
 
 - **Functions:** [`cht_CheckCheat`](#cht_checkcheat), [`cht_GetParam`](#cht_getparam)
 
+## Call Graph
+
+Solid arrows stay in this module, dashed arrows leave it.
+
+```mermaid
+flowchart LR
+    n_progs_doomgeneric_m_cheat_c__cht_GetParam(["cht_GetParam"])
+    n_kernel_string_c__memcpy["string.memcpy"]
+    n_progs_doomgeneric_m_cheat_c__cht_GetParam -.-> n_kernel_string_c__memcpy
+```
+
 ## Functions
 
 <a id="cht_checkcheat"></a>
@@ -49,5 +60,7 @@ void cht_GetParam ( cheatseq_t* cht, char* buffer )
 |---|---|---|---|
 | `cht` | `cheatseq_t*` |  |  |
 | `buffer` | `char*` |  |  |
+
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
 
 ---

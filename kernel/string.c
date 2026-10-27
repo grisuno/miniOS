@@ -65,14 +65,19 @@ char *kstrstr(const char *hay, const char *ndl) {
     return 0;
 }
 
-void *kmemcpy(void *dst, const void *src, unsigned long n) {
+#define NO_LOOP_IDIOM __attribute__((optimize("no-tree-loop-distribute-patterns")))
+
+/** Docstring: Byte copy. Immune to loop-idiom recognition, which would turn
+ * the loop back into a call to memcpy and recurse through the wrappers
+ * below. */
+NO_LOOP_IDIOM void *kmemcpy(void *dst, const void *src, unsigned long n) {
     char *d = dst;
     const char *s = src;
     while (n--) *d++ = *s++;
     return dst;
 }
 
-void *kmemset(void *dst, int c, unsigned long n) {
+NO_LOOP_IDIOM void *kmemset(void *dst, int c, unsigned long n) {
     char *d = dst;
     while (n--) *d++ = (char)c;
     return dst;
@@ -84,12 +89,32 @@ int kmemcmp(const void *a, const void *b, unsigned long n) {
     return 0;
 }
 
-void *kmemmove(void *dst, const void *src, unsigned long n) {
+NO_LOOP_IDIOM void *kmemmove(void *dst, const void *src, unsigned long n) {
     char *d = dst;
     const char *s = src;
     if (d < s) { while (n--) *d++ = *s++; }
     else       { d += n; s += n; while (n--) *--d = *--s; }
     return dst;
+}
+
+/** Docstring: ISO C entry points the compiler itself emits calls to for
+ * struct copies and large initializers, even under -ffreestanding. Thin
+ * wrappers over the kernel primitives so the link never depends on the
+ * optimizer inlining them. */
+void *memcpy(void *dst, const void *src, unsigned long n) {
+    return kmemcpy(dst, src, n);
+}
+
+void *memmove(void *dst, const void *src, unsigned long n) {
+    return kmemmove(dst, src, n);
+}
+
+void *memset(void *dst, int c, unsigned long n) {
+    return kmemset(dst, c, n);
+}
+
+int memcmp(const void *a, const void *b, unsigned long n) {
+    return kmemcmp(a, b, n);
 }
 
 long katol(const char *s) {

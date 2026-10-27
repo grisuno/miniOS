@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `MAXHEIGHT` | macro | `progs/doomgeneric/r_draw.c:42` | `#define MAXHEIGHT` |
+| `MAXWIDTH` | macro | `progs/doomgeneric/r_draw.c:41` | `#define MAXWIDTH` |
+| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.c:102` | `void R_DrawColumn (void)` |
+| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.c:152` | `void R_DrawColumn (void)` |
+| `R_DrawColumnLow` | function | `progs/doomgeneric/r_draw.c:208` | `void R_DrawColumnLow (void)` |
+| `R_DrawFuzzColumn` | function | `progs/doomgeneric/r_draw.c:283` | `void R_DrawFuzzColumn (void)` |
+| `R_DrawFuzzColumnLow` | function | `progs/doomgeneric/r_draw.c:342` | `void R_DrawFuzzColumnLow (void)` |
+| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.c:590` | `void R_DrawSpan (void)` |
+| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.c:646` | `void R_DrawSpan (void)` |
+| `R_DrawSpanLow` | function | `progs/doomgeneric/r_draw.c:719` | `void R_DrawSpanLow (void)` |
+| `R_DrawTranslatedColumn` | function | `progs/doomgeneric/r_draw.c:424` | `void R_DrawTranslatedColumn (void)` |
+| `R_DrawTranslatedColumnLow` | function | `progs/doomgeneric/r_draw.c:468` | `void R_DrawTranslatedColumnLow (void)` |
+| `R_DrawViewBorder` | function | `progs/doomgeneric/r_draw.c:941` | `void R_DrawViewBorder (void)` |
+| `R_FillBackScreen` | function | `progs/doomgeneric/r_draw.c:812` | `void R_FillBackScreen (void)` |
+| `R_InitBuffer` | function | `progs/doomgeneric/r_draw.c:777` | `void R_InitBuffer ( int		width,   int		height )` |
+| `R_InitTranslationTables` | function | `progs/doomgeneric/r_draw.c:530` | `void R_InitTranslationTables (void)` |
+| `R_VideoErase` | function | `progs/doomgeneric/r_draw.c:919` | `void R_VideoErase ( unsigned	ofs,   int		count )` |
+| `SBARHEIGHT` | macro | `progs/doomgeneric/r_draw.c:45` | `#define SBARHEIGHT` |
+| `R_DrawColumn` | function | `progs/doomgeneric/r_draw.h:40` | `void R_DrawColumn (void);` |
+| `R_DrawColumnLow` | function | `progs/doomgeneric/r_draw.h:41` | `void R_DrawColumnLow (void);` |
+| `R_DrawFuzzColumn` | function | `progs/doomgeneric/r_draw.h:44` | `void R_DrawFuzzColumn (void);` |
+| `R_DrawFuzzColumnLow` | function | `progs/doomgeneric/r_draw.h:45` | `void R_DrawFuzzColumnLow (void);` |
+| `R_DrawSpan` | function | `progs/doomgeneric/r_draw.h:78` | `void R_DrawSpan (void);` |
+| `R_DrawSpanLow` | function | `progs/doomgeneric/r_draw.h:81` | `void R_DrawSpanLow (void);` |
+| `R_DrawTranslatedColumn` | function | `progs/doomgeneric/r_draw.h:50` | `void R_DrawTranslatedColumn (void);` |
+| `R_DrawTranslatedColumnLow` | function | `progs/doomgeneric/r_draw.h:51` | `void R_DrawTranslatedColumnLow (void);` |
+| `R_DrawViewBorder` | function | `progs/doomgeneric/r_draw.h:100` | `void R_DrawViewBorder (void);` |
+| `R_FillBackScreen` | function | `progs/doomgeneric/r_draw.h:97` | `void R_FillBackScreen (void);` |
+| `R_InitBuffer` | function | `progs/doomgeneric/r_draw.h:85` | `void R_InitBuffer ( int width, int height );` |
+| `R_InitTranslationTables` | function | `progs/doomgeneric/r_draw.h:92` | `void R_InitTranslationTables (void);` |
+| `R_VideoErase` | function | `progs/doomgeneric/r_draw.h:54` | `void R_VideoErase ( unsigned ofs, int count );` |
+| `__R_DRAW__` | macro | `progs/doomgeneric/r_draw.h:21` | `#define __R_DRAW__` |
+| `dc_colormap` | variable | `progs/doomgeneric/r_draw.h:26` | `extern lighttable_t* dc_colormap;` |
+| `dc_iscale` | variable | `progs/doomgeneric/r_draw.h:30` | `extern fixed_t dc_iscale;` |
+| `dc_source` | variable | `progs/doomgeneric/r_draw.h:34` | `extern byte* dc_source;` |
+| `dc_texturemid` | variable | `progs/doomgeneric/r_draw.h:31` | `extern fixed_t dc_texturemid;` |
+| `dc_translation` | variable | `progs/doomgeneric/r_draw.h:73` | `extern byte* dc_translation;` |
+| `dc_x` | variable | `progs/doomgeneric/r_draw.h:27` | `extern int dc_x;` |
+| `dc_yh` | variable | `progs/doomgeneric/r_draw.h:29` | `extern int dc_yh;` |
+| `dc_yl` | variable | `progs/doomgeneric/r_draw.h:28` | `extern int dc_yl;` |
+| `ds_colormap` | variable | `progs/doomgeneric/r_draw.h:62` | `extern lighttable_t* ds_colormap;` |
+| `ds_source` | variable | `progs/doomgeneric/r_draw.h:70` | `extern byte* ds_source;` |
+| `ds_x1` | variable | `progs/doomgeneric/r_draw.h:59` | `extern int ds_x1;` |
+| `ds_x2` | variable | `progs/doomgeneric/r_draw.h:60` | `extern int ds_x2;` |
+| `ds_xfrac` | variable | `progs/doomgeneric/r_draw.h:64` | `extern fixed_t ds_xfrac;` |
+| `ds_xstep` | variable | `progs/doomgeneric/r_draw.h:66` | `extern fixed_t ds_xstep;` |
+| `ds_y` | variable | `progs/doomgeneric/r_draw.h:58` | `extern int ds_y;` |
+| `ds_yfrac` | variable | `progs/doomgeneric/r_draw.h:65` | `extern fixed_t ds_yfrac;` |
 | `ds_ystep` | variable | `progs/doomgeneric/r_draw.h:67` | `extern fixed_t ds_ystep;` |
 | `translationtables` | variable | `progs/doomgeneric/r_draw.h:72` | `extern byte* translationtables;` |
 | `__R_LOCAL__` | macro | `progs/doomgeneric/r_local.h:21` | `#define __R_LOCAL__` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 | `PrintPercentage` | function | `progs/doomgeneric/statdump.c:155` | `static void PrintPercentage(FILE *stream, int amount, int total)` |
 | `PrintPlayerStats` | function | `progs/doomgeneric/statdump.c:180` | `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,         int player_num)` |
 | `PrintStats` | function | `progs/doomgeneric/statdump.c:301` | `static void PrintStats(FILE *stream, wbstartstruct_t *stats)` |
-| `StatCopy` | function | `progs/doomgeneric/statdump.c:333` | `void StatCopy(wbstartstruct_t *stats)` |
-| `StatDump` | function | `progs/doomgeneric/statdump.c:343` | `void StatDump(void)` |
-| `DOOM_STATDUMP_H` | macro | `progs/doomgeneric/statdump.h:18` | `#define DOOM_STATDUMP_H` |
-| `StatCopy` | function | `progs/doomgeneric/statdump.h:20` | `void StatCopy(wbstartstruct_t *stats);` |
-| `StatDump` | function | `progs/doomgeneric/statdump.h:21` | `void StatDump(void);` |
-| `SlopeDiv` | function | `progs/doomgeneric/tables.c:41` | `int SlopeDiv(unsigned int num, unsigned int den)` |
-| `ANG1` | macro | `progs/doomgeneric/tables.h:69` | `#define ANG1` |
-| `ANG180` | macro | `progs/doomgeneric/tables.h:65` | `#define ANG180` |
-| `ANG1_X` | macro | `progs/doomgeneric/tables.h:75` | `#define ANG1_X` |
-| `ANG270` | macro | `progs/doomgeneric/tables.h:66` | `#define ANG270` |
-| `ANG45` | macro | `progs/doomgeneric/tables.h:63` | `#define ANG45` |
-| `ANG60` | macro | `progs/doomgeneric/tables.h:70` | `#define ANG60` |
-| `ANG90` | macro | `progs/doomgeneric/tables.h:64` | `#define ANG90` |
-| `ANGLETOFINESHIFT` | macro | `progs/doomgeneric/tables.h:46` | `#define ANGLETOFINESHIFT` |
-| `ANG_MAX` | macro | `progs/doomgeneric/tables.h:67` | `#define ANG_MAX` |
-| `DBITS` | macro | `progs/doomgeneric/tables.h:79` | `#define DBITS` |
-| `FINEANGLES` | macro | `progs/doomgeneric/tables.h:41` | `#define FINEANGLES` |
-| `FINEMASK` | macro | `progs/doomgeneric/tables.h:42` | `#define FINEMASK` |
-| `SLOPEBITS` | macro | `progs/doomgeneric/tables.h:78` | `#define SLOPEBITS` |
-| `SLOPERANGE` | macro | `progs/doomgeneric/tables.h:77` | `#define SLOPERANGE` |
-| `SlopeDiv` | function | `progs/doomgeneric/tables.h:92` | `int SlopeDiv(unsigned int num, unsigned int den);` |
-| `__TABLES__` | macro | `progs/doomgeneric/tables.h:35` | `#define __TABLES__` |
-| `angle_t` | type_alias | `progs/doomgeneric/tables.h:80` | `typedef unsigned angle_t;` |
-| `finecosine` | variable | `progs/doomgeneric/tables.h:52` | `extern const fixed_t *finecosine;` |
-| `finesine` | variable | `progs/doomgeneric/tables.h:49` | `extern const fixed_t finesine[5*FINEANGLES/4];` |
-| `finetangent` | variable | `progs/doomgeneric/tables.h:56` | `extern const fixed_t finetangent[FINEANGLES/2];` |
-| `tantoangle` | variable | `progs/doomgeneric/tables.h:87` | `extern const angle_t tantoangle[SLOPERANGE+1];` |
-| `V_PATCH_H` | macro | `progs/doomgeneric/v_patch.h:21` | `#define V_PATCH_H` |
-| `column_t` | type_alias | `progs/doomgeneric/v_patch.h:47` | `typedef post_t column_t;` |
-| `MOUSE_SPEED_BOX_HEIGHT` | macro | `progs/doomgeneric/v_video.c:844` | `#define MOUSE_SPEED_BOX_HEIGHT` |
-| `MOUSE_SPEED_BOX_WIDTH` | macro | `progs/doomgeneric/v_video.c:843` | `#define MOUSE_SPEED_BOX_WIDTH` |
-| `RANGECHECK` | macro | `progs/doomgeneric/v_video.c:46` | `#define RANGECHECK` |
-| `V_CopyRect` | function | `progs/doomgeneric/v_video.c:85` | `void V_CopyRect(int srcx, int srcy, byte *source,                 int width, int height,         ...` |
-| `V_DrawAltTLPatch` | function | `progs/doomgeneric/v_video.c:378` | `void V_DrawAltTLPatch(int x, int y, patch_t * patch)` |
-| `V_DrawBlock` | function | `progs/doomgeneric/v_video.c:503` | `void V_DrawBlock(int x, int y, int width, int height, byte *src)` |
-| `V_DrawBox` | function | `progs/doomgeneric/v_video.c:576` | `void V_DrawBox(int x, int y, int w, int h, int c)` |
-| `V_DrawFilledBox` | function | `progs/doomgeneric/v_video.c:529` | `void V_DrawFilledBox(int x, int y, int w, int h, int c)` |
-| `V_DrawHorizLine` | function | `progs/doomgeneric/v_video.c:549` | `void V_DrawHorizLine(int x, int y, int w, int c)` |
-| `V_DrawMouseSpeedBox` | function | `progs/doomgeneric/v_video.c:846` | `void V_DrawMouseSpeedBox(int speed)` |
-| `V_DrawPatch` | function | `progs/doomgeneric/v_video.c:139` | `void V_DrawPatch(int x, int y, patch_t *patch)` |
-| `V_DrawPatchDirect` | function | `progs/doomgeneric/v_video.c:268` | `void V_DrawPatchDirect(int x, int y, patch_t *patch)` |
-| `V_DrawPatchFlipped` | function | `progs/doomgeneric/v_video.c:203` | `void V_DrawPatchFlipped(int x, int y, patch_t *patch)` |
-| `V_DrawRawScreen` | function | `progs/doomgeneric/v_video.c:589` | `void V_DrawRawScreen(byte *raw)` |
-| `V_DrawShadowedPatch` | function | `progs/doomgeneric/v_video.c:428` | `void V_DrawShadowedPatch(int x, int y, patch_t *patch)` |
-| `V_DrawTLPatch` | function | `progs/doomgeneric/v_video.c:279` | `void V_DrawTLPatch(int x, int y, patch_t * patch)` |
-| `V_DrawVertLine` | function | `progs/doomgeneric/v_video.c:562` | `void V_DrawVertLine(int x, int y, int h, int c)` |
-| `V_DrawXlaPatch` | function | `progs/doomgeneric/v_video.c:329` | `void V_DrawXlaPatch(int x, int y, patch_t * patch)` |
-| `V_Init` | function | `progs/doomgeneric/v_video.c:597` | `void V_Init (void)` |
 
 Next: [SYMBOLS_p19.md](SYMBOLS_p19.md)

@@ -3,6 +3,23 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `WM_WINDOW_H` | macro | `headers/wm_window.h:11` | `#define WM_WINDOW_H` |
+| `WM_WINDOW_MAX_TERMS` | macro | `headers/wm_window.h:26` | `#define WM_WINDOW_MAX_TERMS` |
+| `wm_focus_next_id` | function | `headers/wm_window.h:77` | `static inline int wm_focus_next_id(const int *present, int nterms, int gfx_active, int focus)` |
+| `wm_paint_order` | function | `headers/wm_window.h:114` | `static inline int wm_paint_order(const int *present, int nterms, int focus, int *order, int cap)` |
+| `wm_window_active` | function | `headers/wm_window.h:41` | `static inline int wm_window_active(const wm_window_t *w)` |
+| `wm_window_contains` | function | `headers/wm_window.h:58` | `static inline int wm_window_contains(const wm_window_t *w, int px, int py)` |
+| `wm_window_rect` | function | `headers/wm_window.h:47` | `static inline wm_rect_t wm_window_rect(const wm_window_t *w)` |
+| `wm_window_t` | struct | `headers/wm_window.h:29` | `` |
+| `wm_window_title_hits` | function | `headers/wm_window.h:68` | `static inline int wm_window_title_hits(const wm_geom_config_t *cfg, const wm_window_t *w, int px,...` |
+| `ZIP_H` | macro | `headers/zip.h:2` | `#define ZIP_H` |
+| `miniz` | function | `headers/zip.h:6` | `* * The shell builtins over miniz (see zip.c) are declared here so kernel.c's * shell dispatcher can route the...` |
+| `shell_cmd_zip` | function | `headers/zip.h:15` | `void shell_cmd_zip(int argc, char **argv);` |
+| `BOOTLOG_MAX` | macro | `kernel.c:188` | `#define BOOTLOG_MAX` |
+| `KSYM_MAX` | macro | `kernel.c:107` | `#define KSYM_MAX` |
+| `__attribute__` | function | `kernel.c:207` | `__attribute__((section(".init.text"))) void kmain(void)` |
+| `bootlog_mark` | function | `kernel.c:192` | `void bootlog_mark(const char *name)` |
+| `bootlog_report` | function | `kernel.c:199` | `void bootlog_report(void)` |
 | `kstack` | function | `kernel.c:146` | `* Reading gs:8 instead resolves every thread to the wrong kstack (0 on * the BSP, 1 on APs): harmless while a single...` |
 | `ksyscall` | function | `kernel.c:130` | `extern long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6);` |
 | `ms` | function | `kernel.c:185` | `* 0 ms (TSC ticks since power-on divided down, still monotonic);` |
@@ -479,22 +496,5 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `shell_report_exit` | function | `kernel/redirect.c:11` | `void shell_report_exit(int code)` |
 | `shell_take_redirect` | function | `kernel/redirect.c:25` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)` |
 | `BSP` | function | `kernel/sched.c:1780` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs          * running the shell contex...` |
-| `FSBASE` | function | `kernel/sched.c:913` | `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...` |
-| `IRQ4` | function | `kernel/sched.c:796` | `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...` |
-| `KSTACK_CANARY` | macro | `kernel/sched.c:169` | `#define KSTACK_CANARY` |
-| `KSTACK_PAINT` | macro | `kernel/sched.c:168` | `#define KSTACK_PAINT` |
-| `KSTACK_SZ` | macro | `kernel/sched.c:155` | `#define KSTACK_SZ` |
-| `MSR` | function | `kernel/sched.c:2633` | `* in the MSR (the PCB field refreshes on switch-out) and its FPU * regs live in the CPU (the PCB image refreshes on...` |
-| `MXCSR` | function | `kernel/sched.c:306` | `* A fresh image is explicit zeros plus the default MXCSR (0x1F80, all  * exceptions masked): fxsa...` |
-| `MY_SYS_KSTK_TOP` | macro | `kernel/sched.c:53` | `#define MY_SYS_KSTK_TOP` |
-| `MY_USER_LOAD_BASE` | macro | `kernel/sched.c:55` | `#define MY_USER_LOAD_BASE` |
-| `MY_USER_STACK_TOP` | macro | `kernel/sched.c:54` | `#define MY_USER_STACK_TOP` |
-| `NMI_IST_SLOT` | macro | `kernel/sched.c:125` | `#define NMI_IST_SLOT` |
-| `NMI_IST_STACK_SZ` | macro | `kernel/sched.c:123` | `#define NMI_IST_STACK_SZ` |
-| `NMI_VECTOR` | macro | `kernel/sched.c:124` | `#define NMI_VECTOR` |
-| `PROC_KSTACK_OFF` | function | `kernel/sched.c:82` | `* PROC_KSTACK_OFF (it cannot use C here). The asm derives both * immediates from headers/syscall_asm.h, so this...` |
-| `PROC_SWITCHING` | function | `kernel/sched.c:2180` | `* while the thread is still PROC_SWITCHING (never claimable), * then set the resume point and publish. A...` |
-| `__attribute__` | function | `kernel/sched.c:109` | `typedef struct __attribute__((packed))` |
-| `__attribute__` | function | `kernel/sched.c:143` | `typedef struct __attribute__((packed))` |
 
 Next: [SYMBOLS_p9.md](SYMBOLS_p9.md)

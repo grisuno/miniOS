@@ -26,6 +26,8 @@
 #include "wm_events.h"
 #include "wm_window.h"
 #include "wm_render.h"
+#include "wm_chrome.h"
+#include "avatar_data.h"
 #include "wm_tiling.h"
 #include "wm_focus.h"
 #include "wm_layout.h"
@@ -410,6 +412,24 @@ static const char *line_at(int abs, int *off) {
 }
 
 static void draw_scrollbar(void);
+static void chrome_win_recut_bottom(int corner);
+static int chrome_traffic_lights(int bx, int by);
+
+/** Docstring: Translucent terminal backdrop: the desktop behind a window's
+ * content rect already blended with the terminal background, so painting a
+ * background pixel is one lookup. Allocated once at screen size per window
+ * slot and never freed, like the composition shadow. */
+typedef struct {
+    unsigned int *px;
+    int valid;
+    int x, y, w, h;
+} chrome_tint_t;
+
+static const chrome_tint_t *chrome_tint_live(void);
+static int chrome_term_fill(void);
+
+/** Docstring: Corner indices of a rounded window. */
+enum { CHROME_TL = 0, CHROME_TR = 1, CHROME_BL = 2, CHROME_BR = 3, CHROME_CORNERS = 4 };
 static void term_render(void);
 
 /* Pointer sprite state and ops live in kernel/vga_cursor.c; this file
@@ -965,6 +985,7 @@ static int term_px_x, term_px_y, term_px_w, term_px_h;
  * so sharing it would merge both windows' content and alias park's copy.
  * Close drops the snapshot and re-homes window 0 on the static ring. */
 #define WM_MAX_TERMS 2
+static chrome_tint_t chrome_tints[WM_MAX_TERMS];
 #define WM_ELINE_SZ 256
 static void term_finish_layout(void);
 static void term_recalc(void);
@@ -2043,14 +2064,26 @@ void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg) {
     int px, py, i, j;
     uint8_t bits;
     const uint8_t *glyph;
+    const chrome_tint_t *tint = (bg == COL_TERMINAL && fb_bpp != 8) ? chrome_tint_live() : 0;
     glyph = fb_glyph((unsigned char)c);
     px = term_px_x + col * FONT_W;
     py = term_content_y() + row * FONT_H;
+    if (tint && (px < tint->x || py < tint->y || px + FONT_W > tint->x + tint->w ||
+                 py + FONT_H > tint->y + tint->h))
+        tint = 0;
     for (j = 0; j < FONT_H; j++) {
         bits = glyph[j];
-        for (i = 0; i < FONT_W; i++)
-            vga_fb_pixel(px + i, py + j, (bits & (0x80 >> i)) ? fg : bg);
+        for (i = 0; i < FONT_W; i++) {
+            int lit = (bits & (0x80 >> i)) != 0;
+            if (tint && !lit)
+                fb_write_packed(px + i, py + j,
+                                tint->px[(py + j - tint->y) * tint->w + (px + i - tint->x)]);
+            else
+                vga_fb_pixel(px + i, py + j, lit ? fg : bg);
+        }
     }
+    if (col == 0 && row == term_rows - 1)
+        chrome_win_recut_bottom(CHROME_BL);
 }
 
 void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg) {
@@ -2060,6 +2093,10 @@ void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg) {
         i++;
     }
 }
+
+/** Docstring: Background index meaning "leave the pixel alone": glyph
+ * pixels only, so text can sit on a gradient or translucent surface. */
+#define TEXT_BG_NONE 0xFFu
 
 /* Blit a text string at an absolute pixel position. Used for window chrome
  * (title bar, taskbar) which lives outside the content-relative coordinate
@@ -2073,9 +2110,12 @@ static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg) {
         glyph = fb_glyph(c);
         for (j = 0; j < FONT_H; j++) {
             bits = glyph[j];
-            for (i = 0; i < FONT_W; i++)
-                vga_fb_pixel(px + k * FONT_W + i, py + j,
-                             (bits & (0x80 >> i)) ? fg : bg);
+            for (i = 0; i < FONT_W; i++) {
+                int lit = (bits & (0x80 >> i)) != 0;
+                if (!lit && bg == TEXT_BG_NONE)
+                    continue;
+                vga_fb_pixel(px + k * FONT_W + i, py + j, lit ? fg : bg);
+            }
         }
     }
 }
@@ -2094,7 +2134,10 @@ static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg) {
     int bx = wm_buttons_x0(px, win_w);
     int by = py;
     int i;
-    vga_fb_rect(bx, by, 3 * WM_BTN_W + 2 * WM_BTN_PAD, WM_BTN_H, bg);
+    if (bg == TEXT_BG_NONE && chrome_traffic_lights(bx, by))
+        return;
+    if (bg != TEXT_BG_NONE)
+        vga_fb_rect(bx, by, 3 * WM_BTN_W + 2 * WM_BTN_PAD, WM_BTN_H, bg);
     /* minimize: a short bar across the lower half. */
     vga_fb_rect(bx + 1, by + WM_BTN_H - 3, WM_BTN_W - 2, 1, fg);
     bx += WM_BTN_W + WM_BTN_PAD;
@@ -2113,6 +2156,382 @@ static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg) {
         vga_fb_pixel(bx + i, by + i, fg);
         vga_fb_pixel(bx + WM_BTN_W - 1 - i, by + i, fg);
     }
+}
+
+/* ---- Window chrome (true color only) ----
+ * Soft drop shadows, gradient title strips, anti-aliased rounded corners and
+ * translucent glass panels. The pixel math lives in wm_chrome.h; this block
+ * only moves pixels. Every helper is a no-op in 8-bit mode, where the DAC
+ * palette has no room for intermediate shades, so the classic flat look is
+ * the fallback and nothing here can change an 8-bit frame. */
+static const wm_chrome_config_t chrome_cfg = WM_CHROME_CONFIG_DEFAULT;
+
+/** Docstring: Profile card geometry: padding, avatar ring width, margin
+ * from the screen corner and the name column width in characters. */
+#define DOCK_GLOW_PAD     3
+#define PROFILE_PAD       6
+#define PROFILE_RING      2
+#define PROFILE_MARGIN    12
+#define PROFILE_TEXT_COLS 11
+
+/** Docstring: Packed color of a desktop palette index. */
+static unsigned long chrome_color(unsigned idx)
+{
+    return fb_pack_idx(idx);
+}
+
+/** Docstring: Darken the pixels around a window rect with the soft shadow.
+ * Only the band outside the rect is touched (the window covers the rest)
+ * and nothing is darkened over the taskbar row. */
+static void chrome_shadow(int x, int y, int w, int h)
+{
+    int r = chrome_cfg.shadow_radius;
+    int x0, x1, y0, y1, yy, xx, ylimit;
+    if (fb_bpp == 8 || w <= 0 || h <= 0)
+        return;
+    x0 = x + chrome_cfg.shadow_dx - r;
+    x1 = x + chrome_cfg.shadow_dx + w + r;
+    y0 = y + chrome_cfg.shadow_dy - r;
+    y1 = y + chrome_cfg.shadow_dy + h + r;
+    ylimit = fb_height - TASKBAR_H;
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) y0 = 0;
+    if (x1 > fb_width) x1 = fb_width;
+    if (y1 > ylimit) y1 = ylimit;
+    for (yy = y0; yy < y1; yy++) {
+        int inside_row = yy >= y && yy < y + h;
+        for (xx = x0; xx < x1; xx++) {
+            int a;
+            if (inside_row && xx >= x && xx < x + w) {
+                xx = x + w - 1;
+                continue;
+            }
+            a = wm_chrome_shadow_alpha(&chrome_cfg, xx, yy, x, y, w, h);
+            if (a > 0)
+                fb_write_packed(xx, yy, wm_chrome_blend(fb_read_packed(xx, yy), 0UL, a));
+        }
+    }
+}
+
+/** Docstring: Gradient title strip for a window of width w. Returns 1 when
+ * painted, 0 in 8-bit mode where the caller keeps its flat fill. */
+static int chrome_title_strip(int x, int y, int w, int focused)
+{
+    unsigned long base;
+    int j;
+    if (fb_bpp == 8)
+        return 0;
+    base = chrome_color(focused ? COL_TITLEBAR : COL_SHADOW);
+    for (j = 0; j < FONT_H; j++)
+        fb_fill_run(x, y + j, w, wm_chrome_gradient(base, j, FONT_H, &chrome_cfg));
+    return 1;
+}
+
+/** Docstring: Per-window rounded-corner state: the window rect, which
+ * corners are cut (a corner on the screen edge stays square) and the
+ * background pixels under each, saved before the window paints so the
+ * arc can reveal them. Bounded by WM_CHROME_RADIUS_MAX. */
+typedef struct {
+    int valid;
+    int x, y, w, h;
+    int active[CHROME_CORNERS];
+    unsigned int px[CHROME_CORNERS][WM_CHROME_RADIUS_MAX][WM_CHROME_RADIUS_MAX];
+} chrome_win_t;
+
+static chrome_win_t chrome_wins[WM_MAX_TERMS];
+
+/** Docstring: Outer pixel of corner k of a window rect. */
+static void chrome_corner_origin(const chrome_win_t *c, int k, int *ox, int *oy)
+{
+    int r = chrome_cfg.corner_radius;
+    *ox = (k == CHROME_TL || k == CHROME_BL) ? c->x : c->x + c->w - r;
+    *oy = (k == CHROME_TL || k == CHROME_TR) ? c->y : c->y + c->h - r;
+}
+
+/** Docstring: Forget every window slot before a full desktop composition. */
+static void chrome_wins_reset(void)
+{
+    int i;
+    for (i = 0; i < WM_MAX_TERMS; i++) {
+        chrome_wins[i].valid = 0;
+        chrome_tints[i].valid = 0;
+    }
+}
+
+/** Docstring: Save the pixels under the corners of window slot idx before
+ * it paints. Corners that touch the screen edge stay square. */
+static void chrome_win_capture(int idx, int x, int y, int w, int h)
+{
+    chrome_win_t *c;
+    int r = chrome_cfg.corner_radius;
+    int k, i, j, ox, oy;
+    if (fb_bpp == 8 || idx < 0 || idx >= WM_MAX_TERMS)
+        return;
+    c = &chrome_wins[idx];
+    c->valid = 0;
+    if (r <= 0 || r > WM_CHROME_RADIUS_MAX || w < 2 * r || h < 2 * r)
+        return;
+    c->x = x; c->y = y; c->w = w; c->h = h;
+    c->active[CHROME_TL] = x > 0 && y > 0;
+    c->active[CHROME_TR] = x + w < fb_width && y > 0;
+    c->active[CHROME_BL] = x > 0 && y + h < fb_height;
+    c->active[CHROME_BR] = x + w < fb_width && y + h < fb_height;
+    for (k = 0; k < CHROME_CORNERS; k++) {
+        if (!c->active[k])
+            continue;
+        chrome_corner_origin(c, k, &ox, &oy);
+        for (j = 0; j < r; j++)
+            for (i = 0; i < r; i++)
+                c->px[k][j][i] = (unsigned int)fb_read_packed(ox + i, oy + j);
+    }
+    c->valid = 1;
+}
+
+/** Docstring: Cut corner k of a slot with the anti-aliased arc, blending
+ * the painted window pixel over the saved background by coverage. Call
+ * only right after the corner's pixels were repainted opaque. */
+static void chrome_win_cut(const chrome_win_t *c, int k)
+{
+    int r = chrome_cfg.corner_radius;
+    int i, j, ox, oy;
+    if (!c->valid || !c->active[k])
+        return;
+    chrome_corner_origin(c, k, &ox, &oy);
+    for (j = 0; j < r; j++)
+        for (i = 0; i < r; i++) {
+            int lx = (k == CHROME_TL || k == CHROME_BL) ? i : r - 1 - i;
+            int ly = (k == CHROME_TL || k == CHROME_TR) ? j : r - 1 - j;
+            int cov = wm_chrome_corner_coverage(r, lx, ly);
+            if (cov >= WM_CHROME_ALPHA_OPAQUE)
+                continue;
+            fb_write_packed(ox + i, oy + j,
+                wm_chrome_blend(c->px[k][j][i], fb_read_packed(ox + i, oy + j), cov));
+        }
+}
+
+/** Docstring: Slot whose window origin and width match the live terminal,
+ * or null when the window was not captured by the last composition. */
+static chrome_win_t *chrome_win_live(void)
+{
+    int i;
+    for (i = 0; i < WM_MAX_TERMS; i++) {
+        chrome_win_t *c = &chrome_wins[i];
+        if (c->valid && c->x == term_px_x && c->y == term_px_y &&
+            c->w == term_px_w + SCROLLBAR_W)
+            return c;
+    }
+    return 0;
+}
+
+/** Docstring: Re-cut a bottom corner after its pixels were repainted by an
+ * incremental update: the last-row first cell for the left corner, the
+ * scrollbar for the right one. */
+static void chrome_win_recut_bottom(int corner)
+{
+    chrome_win_t *c;
+    if (fb_bpp == 8)
+        return;
+    c = chrome_win_live();
+    if (c)
+        chrome_win_cut(c, corner);
+}
+
+/** Docstring: Build the tinted backdrop of window slot idx over its content
+ * rect, from what the composition has painted so far. A rect that leaves the
+ * screen, 8-bit mode, an opaque setting or an allocation failure leave the
+ * slot invalid, so the window keeps its solid background. */
+static void chrome_tint_capture(int idx, int x, int y, int w, int h)
+{
+    chrome_tint_t *t;
+    unsigned long bg, n, k;
+    int r;
+    if (idx < 0 || idx >= WM_MAX_TERMS)
+        return;
+    t = &chrome_tints[idx];
+    t->valid = 0;
+    if (fb_bpp == 8 || chrome_cfg.term_alpha >= WM_CHROME_ALPHA_OPAQUE || w <= 0 || h <= 0 ||
+        x < 0 || y < 0 || x + w > fb_width || y + h > fb_height)
+        return;
+    if (!t->px) {
+        unsigned long cap = (unsigned long)fb_width * (unsigned long)fb_height;
+        if (cap > (~0UL) / sizeof(unsigned int))
+            return;
+        t->px = (unsigned int *)kmalloc(cap * sizeof(unsigned int));
+        if (!t->px)
+            return;
+    }
+    bg = chrome_color(COL_TERMINAL);
+    for (r = 0; r < h; r++)
+        fb_read_row_packed(x, y + r, t->px + (unsigned long)r * (unsigned long)w, w);
+    n = (unsigned long)w * (unsigned long)h;
+    for (k = 0; k < n; k++)
+        t->px[k] = (unsigned int)wm_chrome_blend(t->px[k], bg, chrome_cfg.term_alpha);
+    t->x = x; t->y = y; t->w = w; t->h = h;
+    t->valid = 1;
+}
+
+/** Docstring: Tinted backdrop whose rect is exactly the live terminal's
+ * content rect, or null when the last composition did not capture it. */
+static const chrome_tint_t *chrome_tint_live(void)
+{
+    int i;
+    for (i = 0; i < WM_MAX_TERMS; i++) {
+        const chrome_tint_t *t = &chrome_tints[i];
+        if (t->valid && t->x == term_px_x && t->y == term_content_y() &&
+            t->w == term_px_w && t->h == term_px_h)
+            return t;
+    }
+    return 0;
+}
+
+/** Docstring: Paint the live terminal's content rect from its tinted
+ * backdrop. Returns 0 when there is none, so the caller fills solid. */
+static int chrome_term_fill(void)
+{
+    const chrome_tint_t *t;
+    int r;
+    if (fb_bpp == 8)
+        return 0;
+    t = chrome_tint_live();
+    if (!t)
+        return 0;
+    for (r = 0; r < t->h; r++)
+        fb_write_row_packed(t->x, t->y + r, t->px + (unsigned long)r * (unsigned long)t->w, t->w);
+    return 1;
+}
+
+/** Docstring: Coverage of pixel (xx,yy) of a w by h panel at (x,y) with all
+ * four corners rounded by the chrome radius. */
+static int chrome_panel_coverage(int xx, int yy, int x, int y, int w, int h)
+{
+    int r = chrome_cfg.corner_radius;
+    int lx = xx - x, ly = yy - y;
+    int cx = lx < r ? lx : (lx >= w - r ? w - 1 - lx : r);
+    int cy = ly < r ? ly : (ly >= h - r ? h - 1 - ly : r);
+    return wm_chrome_corner_coverage(r, cx, cy);
+}
+
+/** Docstring: Translucent rounded glass panel over whatever is already
+ * painted: the dock tint blends over the backdrop, scaled by the corner
+ * coverage so the corners dissolve into it. A 1 px border follows the
+ * outline. In 8-bit mode the classic dither and square border remain. */
+static void chrome_glass(int x, int y, int w, int h)
+{
+    int yy, xx;
+    unsigned long tint, edge;
+    if (fb_bpp == 8) {
+        for (yy = y; yy < y + h; yy++)
+            for (xx = x; xx < x + w; xx++)
+                if (((xx + yy) & (DOCK_CRYSTAL_STEP - 1)) == 0)
+                    vga_fb_pixel(xx, yy, COL_SHADOW);
+        vga_fb_rect(x, y, w, 1, COL_BORDER);
+        vga_fb_rect(x, y + h - 1, w, 1, COL_BORDER);
+        vga_fb_rect(x, y, 1, h, COL_BORDER);
+        vga_fb_rect(x + w - 1, y, 1, h, COL_BORDER);
+        return;
+    }
+    tint = chrome_color(COL_SHADOW);
+    edge = chrome_color(COL_BORDER);
+    for (yy = y; yy < y + h; yy++)
+        for (xx = x; xx < x + w; xx++) {
+            int cov = chrome_panel_coverage(xx, yy, x, y, w, h);
+            int on_edge = xx == x || xx == x + w - 1 || yy == y || yy == y + h - 1;
+            unsigned long px = fb_read_packed(xx, yy);
+            if (cov > 0)
+                px = wm_chrome_blend(px, tint, (chrome_cfg.glass_alpha * cov) / WM_CHROME_ALPHA_OPAQUE);
+            if (on_edge || cov < WM_CHROME_ALPHA_OPAQUE)
+                px = wm_chrome_blend(px, edge, cov > 0 ? cov : 0);
+            fb_write_packed(xx, yy, px);
+        }
+}
+
+/** Docstring: Anti-aliased filled disc of radius r (in 1/2 pixel units
+ * of the pixel centre) blended over the target at the given alpha. */
+static void chrome_disc(int cx2, int cy2, int r2, unsigned long color, int alpha)
+{
+    int x0 = (cx2 - r2) / 2 - 1, x1 = (cx2 + r2) / 2 + 2;
+    int y0 = (cy2 - r2) / 2 - 1, y1 = (cy2 + r2) / 2 + 2;
+    int xx, yy;
+    for (yy = y0; yy < y1; yy++)
+        for (xx = x0; xx < x1; xx++) {
+            long dx = 2L * xx + 1 - cx2, dy = 2L * yy + 1 - cy2;
+            long d16 = (long)wm_chrome_isqrt((unsigned long)((dx * dx + dy * dy) << 8));
+            long cov = ((16L * r2 + 16L - d16) * alpha) / 32L;
+            if (cov <= 0)
+                continue;
+            if (cov > alpha)
+                cov = alpha;
+            fb_write_packed(xx, yy, wm_chrome_blend(fb_read_packed(xx, yy), color, (int)cov));
+        }
+}
+
+/** Docstring: macOS-style window buttons in the existing three 8x8 hit
+ * cells: minimize amber, maximize green, close red. Same geometry as the
+ * glyph buttons, so hit-testing is untouched. Returns 0 in 8-bit mode,
+ * where the glyph buttons stay. */
+static int chrome_traffic_lights(int bx, int by)
+{
+    static const unsigned long lights[3] = { 0xFFBD2EUL, 0x27C93FUL, 0xFF5F56UL };
+    int i;
+    if (fb_bpp == 8)
+        return 0;
+    for (i = 0; i < 3; i++) {
+        int cx2 = 2 * (bx + i * (WM_BTN_W + WM_BTN_PAD)) + WM_BTN_W;
+        int cy2 = 2 * by + WM_BTN_H;
+        chrome_disc(cx2, cy2 + 2, WM_BTN_H - 2, wm_chrome_shift(lights[i], -40), WM_CHROME_ALPHA_OPAQUE);
+        chrome_disc(cx2, cy2, WM_BTN_H - 3, lights[i], WM_CHROME_ALPHA_OPAQUE);
+    }
+    return 1;
+}
+
+/** Docstring: Soft rounded highlight behind a hovered dock icon. */
+static void chrome_glow(int x, int y, int w, int h)
+{
+    int xx, yy;
+    unsigned long tint;
+    if (fb_bpp == 8)
+        return;
+    tint = chrome_color(COL_HIGHLIGHT);
+    for (yy = y; yy < y + h; yy++)
+        for (xx = x; xx < x + w; xx++) {
+            int cov = chrome_panel_coverage(xx, yy, x, y, w, h);
+            if (cov > 0)
+                fb_write_packed(xx, yy, wm_chrome_blend(fb_read_packed(xx, yy), tint,
+                                (chrome_cfg.glow_alpha * cov) / WM_CHROME_ALPHA_OPAQUE));
+        }
+}
+
+/** Docstring: Profile card in the top-right corner: glass panel with a
+ * soft shadow, the circular avatar with a bright ring, the user name and
+ * the tagline. True color only; painted by the full composition below
+ * the windows, so any window simply covers it. */
+static void chrome_profile_card(void)
+{
+    int w = PROFILE_PAD + PROFILE_RING + AVATAR_SIZE + PROFILE_RING + PROFILE_PAD +
+            PROFILE_TEXT_COLS * FONT_W + PROFILE_PAD;
+    int h = AVATAR_SIZE + 2 * (PROFILE_PAD + PROFILE_RING);
+    int x = fb_width - w - PROFILE_MARGIN;
+    int y = PROFILE_MARGIN;
+    int ax, ay, i, j, tx;
+    if (fb_bpp == 8 || x < 0 || y + h >= fb_height - TASKBAR_H)
+        return;
+    chrome_shadow(x, y, w, h);
+    chrome_glass(x, y, w, h);
+    ax = x + PROFILE_PAD + PROFILE_RING;
+    ay = y + PROFILE_PAD + PROFILE_RING;
+    chrome_disc(2 * ax + AVATAR_SIZE, 2 * ay + AVATAR_SIZE,
+                AVATAR_SIZE + 2 * PROFILE_RING, 0xFFFFFFUL, WM_CHROME_ALPHA_OPAQUE);
+    for (j = 0; j < AVATAR_SIZE; j++)
+        for (i = 0; i < AVATAR_SIZE; i++) {
+            int cov = wm_chrome_disc_coverage(AVATAR_SIZE / 2, i, j);
+            if (cov > 0)
+                fb_write_packed(ax + i, ay + j,
+                    wm_chrome_blend(fb_read_packed(ax + i, ay + j),
+                                    avatar_pixels[j * AVATAR_SIZE + i], cov));
+        }
+    tx = ax + AVATAR_SIZE + PROFILE_RING + PROFILE_PAD;
+    text_px(tx, ay + AVATAR_SIZE / 2 - FONT_H - 1, "user@minios", COL_WHITE, TEXT_BG_NONE);
+    text_px(tx, ay + AVATAR_SIZE / 2 + 2, "minios, btw", COL_HIGHLIGHT, TEXT_BG_NONE);
 }
 
 /* Return which window-control button is under (mx,my), or 0 for none. */
@@ -2334,6 +2753,8 @@ static void gfx_title(const wm_gfxview_t *v)
     if (v->title_h <= 0) return;
     gbg = (wm_focus == WM_FOCUS_GFX) ? COL_TITLEBAR : COL_SHADOW;
     vga_fb_rect(v->frame.x, v->frame.y, v->frame.w, v->title_h, gbg);
+    if (v->title_h >= FONT_H && chrome_title_strip(v->frame.x, v->frame.y, v->frame.w, wm_focus == WM_FOCUS_GFX))
+        gbg = TEXT_BG_NONE;
     text_px(v->frame.x + 4, v->frame.y, gfx_win_title, COL_TITLE_TXT, gbg);
     wm_draw_buttons(v->frame.x, v->frame.y, v->frame.w, COL_TITLE_TXT, gbg);
 }
@@ -2358,6 +2779,8 @@ static void gfx_keep_restore(void) {
         return;
     if (!gfx_view_for(gfx_keep_sw, gfx_keep_sh, &v)) return;
     gfx_view_publish(&v);
+    if (v.title_h > 0)
+        chrome_shadow(v.frame.x, v.frame.y, v.frame.w, v.frame.h);
     gfx_compose(gfx_keep, gfx_keep_kind, gfx_keep_sw, gfx_keep_sh, &v, 1);
     gfx_frame_dirty = 0;
 }
@@ -2491,6 +2914,8 @@ static void draw_title_win(int idx, int focused) {
     int w = term_px_w + SCROLLBAR_W;
     int tw = 3 * (WM_BTN_W + WM_BTN_PAD) + 8;   /* room for the controls */
     vga_fb_rect(term_px_x, term_px_y, w, FONT_H, bg);
+    if (chrome_title_strip(term_px_x, term_px_y, w, focused))
+        bg = TEXT_BG_NONE;
     if (w > tw)
         text_px(term_px_x + 4, term_px_y, title, COL_TITLE_TXT, bg);
     if (focused && w > tw + 2 * FONT_W)
@@ -2802,6 +3227,7 @@ static void draw_scrollbar(void) {
     vga_fb_rect(sx + SCROLLBAR_PAD, thumb_y + SCROLLBAR_PAD,
                 SCROLLBAR_W - 2 * SCROLLBAR_PAD,
                 thumb_h - 2 * SCROLLBAR_PAD, COL_SCROLL_THUMB);
+    chrome_win_recut_bottom(CHROME_BR);
 }
 
 /* Blank one viewport row: every cell is repainted with the terminal
@@ -2856,7 +3282,8 @@ static void term_render(void) {
     int top = disp_top();
     int v;
     if (!term_paintable()) return;
-    vga_fb_rect(term_px_x, term_content_y(), term_px_w, term_px_h, COL_TERMINAL);
+    if (!chrome_term_fill())
+        vga_fb_rect(term_px_x, term_content_y(), term_px_w, term_px_h, COL_TERMINAL);
     for (v = 0; v < term_rows; v++)
         render_row(v, top + v);
     draw_scrollbar();
@@ -3058,10 +3485,12 @@ void vga_fb_draw_desktop(void) {
     cur = wm_term;
     term_recalc();
     tw_park(cur);
+    chrome_wins_reset();
     wallpaper_draw();
     desktop_shortcuts_load();
     desktop_shortcuts_draw();
     taskbar_render();
+    chrome_profile_card();
     for (i = 0; i < wm_nterms && i < WM_MAX_TERMS; i++)
         present[i] = twins[i].present;
     focus_term = (wm_focus == WM_FOCUS_GFX) ? cur : wm_focus;
@@ -3073,9 +3502,16 @@ void vga_fb_draw_desktop(void) {
         tw_unpark(plan[i].id);
         term_recalc();
         if (!term_minimized) {
+            int win_w = term_px_w + SCROLLBAR_W;
+            int win_h = term_px_h + FONT_H;
+            chrome_shadow(term_px_x, term_px_y, win_w, win_h);
+            chrome_win_capture(plan[i].id, term_px_x, term_px_y, win_w, win_h);
+            chrome_tint_capture(plan[i].id, term_px_x, term_content_y(), term_px_w, term_px_h);
             draw_title_win(plan[i].id, plan[i].id == wm_focus);
             disp_clamp();
             term_render();
+            chrome_win_cut(&chrome_wins[plan[i].id], CHROME_TL);
+            chrome_win_cut(&chrome_wins[plan[i].id], CHROME_TR);
         }
     }
     tw_unpark(cur);
@@ -4031,6 +4467,9 @@ static void dock_paint_icons(int hover) {
         /* A bouncing icon lifts off its slot on top of any hover size. */
         if (i == dock_bounce_idx && dock_bounce_live())
             dy -= dock_bounce_height(dock_bounce_elapsed());
+        if (i == hover)
+            chrome_glow(dx - DOCK_GLOW_PAD, dy - DOCK_GLOW_PAD,
+                        dw + 2 * DOCK_GLOW_PAD, dh + 2 * DOCK_GLOW_PAD);
         if (sc->pixels) {
             shortcut_draw_scaled(sc, dx, dy, dw, dh);
         } else {
@@ -4048,8 +4487,18 @@ static void dock_paint_icons(int hover) {
     }
 }
 
+/** Docstring: Paint the dock backing: soft shadow first when requested
+ * (the hover repaint skips it, it lies outside the strip it erases and
+ * would otherwise darken a little more on every pass), then the glass. */
+static void dock_paint_backing(int x0, int y0, int dock_w, int dock_h, int with_shadow)
+{
+    if (with_shadow)
+        chrome_shadow(x0, y0, dock_w, dock_h);
+    chrome_glass(x0, y0, dock_w, dock_h);
+}
+
 void desktop_shortcuts_draw(void) {
-    int dock_w, dock_h, x0, y0, hover, yy, xx;
+    int dock_w, dock_h, x0, y0, hover;
     shortcuts_layout();
     if (shortcut_count <= 0) return;
     /* Dock bar: crystal backing over the wallpaper, Mac style. Only every
@@ -4060,14 +4509,7 @@ void desktop_shortcuts_draw(void) {
     if (x0 < 0) x0 = 0;
     y0 = fb_height - TASKBAR_H - DOCK_GAP - dock_h;
     if (y0 < 0) y0 = 0;
-    for (yy = y0; yy < y0 + dock_h; yy++)
-        for (xx = x0; xx < x0 + dock_w; xx++)
-            if (((xx + yy) & (DOCK_CRYSTAL_STEP - 1)) == 0)
-                vga_fb_pixel(xx, yy, COL_SHADOW);
-    vga_fb_rect(x0, y0, dock_w, 1, COL_BORDER);
-    vga_fb_rect(x0, y0 + dock_h - 1, dock_w, 1, COL_BORDER);
-    vga_fb_rect(x0, y0, 1, dock_h, COL_BORDER);
-    vga_fb_rect(x0 + dock_w - 1, y0, 1, dock_h, COL_BORDER);
+    dock_paint_backing(x0, y0, dock_w, dock_h, 1);
     hover = dock_hover_index(mouse_state.x, mouse_state.y);
     dock_paint_icons(hover);
     dock_last_hover = hover;
@@ -4107,7 +4549,7 @@ static void wallpaper_rect(int x0, int y0, int w, int h) {
  * that drag case is rare and heals on the next paint. Fullscreen
  * terminals hide the dock, so the tick never calls this there. */
 static void dock_paint_hover(int hover) {
-    int dock_w, dock_h, x0, y0, y_top, yy, xx;
+    int dock_w, dock_h, x0, y0, y_top;
     int bouncing = dock_bounce_live();
     shortcuts_layout();
     if (shortcut_count <= 0) return;
@@ -4122,14 +4564,7 @@ static void dock_paint_hover(int hover) {
     y_top = y0 - (DOCK_MAG_H - ICON_H) - DOCK_BOUNCE_H - 2;
     if (y_top < 0) y_top = 0;
     wallpaper_rect(x0, y_top, dock_w, y0 + dock_h - y_top);
-    for (yy = y0; yy < y0 + dock_h; yy++)
-        for (xx = x0; xx < x0 + dock_w; xx++)
-            if (((xx + yy) & (DOCK_CRYSTAL_STEP - 1)) == 0)
-                vga_fb_pixel(xx, yy, COL_SHADOW);
-    vga_fb_rect(x0, y0, dock_w, 1, COL_BORDER);
-    vga_fb_rect(x0, y0 + dock_h - 1, dock_w, 1, COL_BORDER);
-    vga_fb_rect(x0, y0, 1, dock_h, COL_BORDER);
-    vga_fb_rect(x0 + dock_w - 1, y0, 1, dock_h, COL_BORDER);
+    dock_paint_backing(x0, y0, dock_w, dock_h, 0);
     dock_paint_icons(hover);
     dock_last_hover = hover;
     if (bouncing) dock_bounce_paints++;

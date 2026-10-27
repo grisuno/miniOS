@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `js_query` | function | `progs/src/json.c:369` | `static int js_query(int root, const char *path)` |
+| `js_read_all` | function | `progs/src/json.c:58` | `static char *js_read_all(const char *name, int *len)` |
+| `js_skip_ws` | function | `progs/src/json.c:81` | `static void js_skip_ws(void)` |
+| `js_str` | function | `progs/src/json.c:5` | `* members keep their key in js_str (the member value node) and their value * in the node itself, and object members...` |
+| `main` | function | `progs/src/json.c:401` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/json.c:15` | `int printf();` |
+| `putchar` | function | `progs/src/json.c:16` | `int putchar();` |
+| `puts` | function | `progs/src/json.c:17` | `int puts();` |
+| `rewind` | function | `progs/src/json.c:25` | `void rewind();` |
+| `strcmp` | function | `progs/src/json.c:19` | `int strcmp();` |
+| `strlen` | function | `progs/src/json.c:18` | `int strlen();` |
+| `_start` | function | `progs/src/kmem.c:18` | `void _start(void)` |
+| `exit_now` | function | `progs/src/kmem.c:14` | `static void exit_now(long code)` |
+| `syscall3` | function | `progs/src/kmem.c:7` | `static long syscall3(long n, long a1, long a2, long a3)` |
+| `main` | function | `progs/src/ldhello.c:1` | `int main(void)` |
+| `LXABI_A6_MAGIC` | macro | `progs/src/lxabi.c:55` | `#define LXABI_A6_MAGIC` |
+| `LXABI_CHILD_BAD` | macro | `progs/src/lxabi.c:56` | `#define LXABI_CHILD_BAD` |
+| `LXABI_CHILD_DELAY_MS` | macro | `progs/src/lxabi.c:41` | `#define LXABI_CHILD_DELAY_MS` |
+| `LXABI_CLOCK_SKEW_S` | macro | `progs/src/lxabi.c:51` | `#define LXABI_CLOCK_SKEW_S` |
+| `LXABI_CLONE_NR` | macro | `progs/src/lxabi.c:53` | `#define LXABI_CLONE_NR` |
+| `LXABI_CLOSE_RANGE_NR` | macro | `progs/src/lxabi.c:59` | `#define LXABI_CLOSE_RANGE_NR` |
+| `LXABI_COW_WORD` | macro | `progs/src/lxabi.c:61` | `#define LXABI_COW_WORD` |
+| `LXABI_DETACHED` | macro | `progs/src/lxabi.c:44` | `#define LXABI_DETACHED` |
+| `LXABI_EPOCH_2023` | macro | `progs/src/lxabi.c:50` | `#define LXABI_EPOCH_2023` |
+| `LXABI_GROUP_EXIT_CODE` | macro | `progs/src/lxabi.c:46` | `#define LXABI_GROUP_EXIT_CODE` |
+| `LXABI_MAX_SANE_CPUS` | macro | `progs/src/lxabi.c:48` | `#define LXABI_MAX_SANE_CPUS` |
+| `LXABI_MKDIR_FILE` | macro | `progs/src/lxabi.c:58` | `#define LXABI_MKDIR_FILE` |
+| `LXABI_MKDIR_PATH` | macro | `progs/src/lxabi.c:57` | `#define LXABI_MKDIR_PATH` |
+| `LXABI_PAGE` | macro | `progs/src/lxabi.c:60` | `#define LXABI_PAGE` |
+| `LXABI_REG_PROBE_WORDS` | macro | `progs/src/lxabi.c:52` | `#define LXABI_REG_PROBE_WORDS` |
+| `LXABI_SIGCHLD` | macro | `progs/src/lxabi.c:54` | `#define LXABI_SIGCHLD` |
+| `LXABI_SLEEP_MS` | macro | `progs/src/lxabi.c:47` | `#define LXABI_SLEEP_MS` |
+| `LXABI_THREADS` | macro | `progs/src/lxabi.c:42` | `#define LXABI_THREADS` |
+| `LXABI_THREAD_ITERS` | macro | `progs/src/lxabi.c:43` | `#define LXABI_THREAD_ITERS` |
+| `LXABI_TIMEDWAIT_MS` | macro | `progs/src/lxabi.c:49` | `#define LXABI_TIMEDWAIT_MS` |
+| `LXABI_WAIT_SPINS` | macro | `progs/src/lxabi.c:45` | `#define LXABI_WAIT_SPINS` |
+| `_GNU_SOURCE` | macro | `progs/src/lxabi.c:17` | `#define _GNU_SOURCE` |
+| `abort_from_worker_body` | function | `progs/src/lxabi.c:555` | `static void abort_from_worker_body(void)` |
+| `busy_wait_ms` | function | `progs/src/lxabi.c:81` | `static void busy_wait_ms(long ms)` |
+| `check_close_range` | function | `progs/src/lxabi.c:443` | `static void check_close_range(void)` |
+| `check_condvar` | function | `progs/src/lxabi.c:285` | `static void check_condvar(void)` |
+| `check_detached_reaped` | function | `progs/src/lxabi.c:251` | `static void check_detached_reaped(void)` |
+| `check_eventfd` | function | `progs/src/lxabi.c:418` | `static void check_eventfd(void)` |
+| `check_fork_cow_kernel_write` | function | `progs/src/lxabi.c:160` | `static void check_fork_cow_kernel_write(void)` |
+| `check_fork_registers` | function | `progs/src/lxabi.c:138` | `static void check_fork_registers(void)` |
+| `check_getdents64` | function | `progs/src/lxabi.c:722` | `static void check_getdents64(void)` |
+| `check_limits` | function | `progs/src/lxabi.c:478` | `static void check_limits(void)` |
+| `check_mkdir` | function | `progs/src/lxabi.c:464` | `static void check_mkdir(void)` |
 | `check_pipe2_flags` | function | `progs/src/lxabi.c:307` | `static void check_pipe2_flags(void)` |
 | `check_pipe_blocking` | function | `progs/src/lxabi.c:334` | `static void check_pipe_blocking(void)` |
 | `check_pipe_epipe` | function | `progs/src/lxabi.c:356` | `static void check_pipe_epipe(void)` |
@@ -448,53 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `test_bin_lzss` | function | `progs/src/test.lua:158` | `` |
 | `test_dlmalloc` | function | `progs/src/test.lua:80` | `` |
 | `test_filesystem` | function | `progs/src/test.lua:53` | `` |
-| `test_ftest` | function | `progs/src/test.lua:90` | `` |
-| `test_hello` | function | `progs/src/test.lua:85` | `` |
-| `test_ld` | function | `progs/src/test.lua:100` | `` |
-| `test_minigcc` | function | `progs/src/test.lua:95` | `` |
-| `test_module_bindings` | function | `progs/src/test.lua:40` | `` |
-| `test_spawn_preserves_interpreter` | function | `progs/src/test.lua:122` | `` |
-| `test_stb` | function | `progs/src/test.lua:75` | `` |
-| `test_toolchain_roundtrip` | function | `progs/src/test.lua:112` | `` |
-| `test_xxhash` | function | `progs/src/test.lua:70` | `` |
-| `write_file` | function | `progs/src/test.lua:22` | `` |
-| `check` | function | `progs/src/test.py:15` | `def check(name, cond, detail)` |
-| `main` | function | `progs/src/test.py:261` | `def main()` |
-| `safe_run` | function | `progs/src/test.py:25` | `def safe_run()` |
-| `test_bin_aes` | function | `progs/src/test.py:209` | `def test_bin_aes()` |
-| `test_bin_cp` | function | `progs/src/test.py:148` | `def test_bin_cp()` |
-| `test_bin_freedom` | function | `progs/src/test.py:253` | `def test_bin_freedom()` |
-| `test_bin_json` | function | `progs/src/test.py:239` | `def test_bin_json()` |
-| `test_bin_lz4` | function | `progs/src/test.py:153` | `def test_bin_lz4()` |
-| `test_bin_lzss` | function | `progs/src/test.py:181` | `def test_bin_lzss()` |
-| `test_dlmalloc` | function | `progs/src/test.py:82` | `def test_dlmalloc()` |
-| `test_filesystem` | function | `progs/src/test.py:56` | `def test_filesystem()` |
-| `test_ftest` | function | `progs/src/test.py:92` | `def test_ftest()` |
-| `test_hello` | function | `progs/src/test.py:87` | `def test_hello()` |
-| `test_ld` | function | `progs/src/test.py:102` | `def test_ld()` |
-| `test_minigcc` | function | `progs/src/test.py:97` | `def test_minigcc()` |
-| `test_module_bindings` | function | `progs/src/test.py:38` | `def test_module_bindings()` |
-| `test_spawn_preserves_interpreter` | function | `progs/src/test.py:134` | `def test_spawn_preserves_interpreter()` |
-| `test_stb` | function | `progs/src/test.py:77` | `def test_stb()` |
-| `test_toolchain_roundtrip` | function | `progs/src/test.py:119` | `def test_toolchain_roundtrip()` |
-| `test_xxhash` | function | `progs/src/test.py:72` | `def test_xxhash()` |
-| `_asyncio_double` | function | `progs/src/test_py.py:79` | `def _asyncio_double(n, ms)` |
-| `_asyncio_main` | function | `progs/src/test_py.py:84` | `def _asyncio_main()` |
-| `_asyncio_wire_check` | function | `progs/src/test_py.py:88` | `def _asyncio_wire_check(host, port)` |
-| `_one` | function | `progs/src/test_py.py:89` | `def _one()` |
-| `check` | function | `progs/src/test_py.py:12` | `def check(name, cond)` |
-| `BUFSZ` | macro | `progs/src/thdemo.c:24` | `#define BUFSZ` |
-| `EXPECTED_N` | macro | `progs/src/thdemo.c:26` | `#define EXPECTED_N` |
-| `EXPECTED_SUM` | macro | `progs/src/thdemo.c:27` | `#define EXPECTED_SUM` |
-| `NCONS` | macro | `progs/src/thdemo.c:22` | `#define NCONS` |
-| `NPROD` | macro | `progs/src/thdemo.c:21` | `#define NPROD` |
-| `PER_PROD` | macro | `progs/src/thdemo.c:23` | `#define PER_PROD` |
-| `consumer` | function | `progs/src/thdemo.c:57` | `static void *consumer(void *p)` |
-| `main` | function | `progs/src/thdemo.c:82` | `int main(void)` |
-| `producer` | function | `progs/src/thdemo.c:36` | `static void *producer(void *p)` |
-| `threads` | function | `progs/src/thdemo.c:3` | `* * Ten threads (1 main + 5 producers + 4 consumers) share one address * space through thread_spawn (MiniOS syscall...` |
-| `main` | function | `progs/src/w1.c:3` | `int main(void)` |
-| `write` | function | `progs/src/w1.c:1` | `int write(int fd, char *buf, int n);` |
-| `_DEFAULT_SOURCE` | macro | `progs/tls_u/tls_u_main.c:15` | `#define _DEFAULT_SOURCE` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

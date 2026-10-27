@@ -1,6 +1,48 @@
 # API (page 16 of 21)
 Previous: [API_p15.md](API_p15.md)
 
+## progs/doomgeneric/w_merge.h
+Imported by: `progs/doomgeneric/w_main.c`
+- `W_MergeFile` (function) `progs/doomgeneric/w_merge.h:29` `void W_MergeFile(char *filename);`
+- `W_NWTMergeFile` (function) `progs/doomgeneric/w_merge.h:33` `void W_NWTMergeFile(char *filename, int flags);`
+- `W_NWTDashMerge` (function) `progs/doomgeneric/w_merge.h:37` `void W_NWTDashMerge(char *filename);`
+- `W_PrintDirectory` (function) `progs/doomgeneric/w_merge.h:41` `void W_PrintDirectory(void);`
+
+## progs/doomgeneric/w_wad.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `I_EndRead` (function) `progs/doomgeneric/w_wad.c:39` `void I_EndRead (void);`
+- `W_LumpNameHash` (function) `progs/doomgeneric/w_wad.c:72` `unsigned int W_LumpNameHash(const char *s)`
+- `ExtendLumpInfo` (function) `progs/doomgeneric/w_wad.c:89` `static void ExtendLumpInfo(int newnumlumps)` -- Increase the size of the lumpinfo[] array to the specified size.
+- `W_AddFile` (function) `progs/doomgeneric/w_wad.c:141` `wad_file_t *W_AddFile (char *filename)`
+- `W_NumLumps` (function) `progs/doomgeneric/w_wad.c:246` `int W_NumLumps (void)` -- W_NumLumps
+- `W_CheckNumForName` (function) `progs/doomgeneric/w_wad.c:258` `int W_CheckNumForName (char* name)`
+- `W_GetNumForName` (function) `progs/doomgeneric/w_wad.c:308` `int W_GetNumForName (char* name)` -- W_GetNumForName Calls W_CheckNumForName, but bombs out if not found.
+- `W_LumpLength` (function) `progs/doomgeneric/w_wad.c:327` `int W_LumpLength (unsigned int lump)` -- W_LumpLength Returns the buffer size needed to load the given lump.
+- `W_ReadLump` (function) `progs/doomgeneric/w_wad.c:344` `void W_ReadLump(unsigned int lump, void *dest)` -- W_ReadLump Loads the lump into the given buffer, which must be >= W_LumpLength().
+- `W_CacheLumpNum` (function) `progs/doomgeneric/w_wad.c:384` `void *W_CacheLumpNum(int lumpnum, int tag)`
+- `W_CacheLumpName` (function) `progs/doomgeneric/w_wad.c:431` `void *W_CacheLumpName(char *name, int tag)` -- W_CacheLumpName
+- `W_ReleaseLumpNum` (function) `progs/doomgeneric/w_wad.c:446` `void W_ReleaseLumpNum(int lumpnum)`
+- `W_ReleaseLumpName` (function) `progs/doomgeneric/w_wad.c:467` `void W_ReleaseLumpName(char *name)`
+- `W_Profile` (function) `progs/doomgeneric/w_wad.c:480` `void W_Profile (void)`
+- `W_GenerateHashTable` (function) `progs/doomgeneric/w_wad.c:541` `void W_GenerateHashTable(void)`
+- `W_CheckCorrectIWAD` (function) `progs/doomgeneric/w_wad.c:588` `void W_CheckCorrectIWAD(GameMission_t mission)`
+
+## progs/doomgeneric/w_wad.h
+Depends on: `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/w_file.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/r_plane.c`, `progs/doomgeneric/r_things.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_main.c`, `progs/doomgeneric/w_wad.c`, `progs/doomgeneric/wi_stuff.c`
+- `W_AddFile` (function) `progs/doomgeneric/w_wad.h:58` `wad_file_t *W_AddFile (char *filename);`
+- `W_CheckNumForName` (function) `progs/doomgeneric/w_wad.h:60` `int W_CheckNumForName (char* name);`
+- `W_GetNumForName` (function) `progs/doomgeneric/w_wad.h:61` `int W_GetNumForName (char* name);`
+- `W_LumpLength` (function) `progs/doomgeneric/w_wad.h:63` `int W_LumpLength (unsigned int lump);`
+- `W_ReadLump` (function) `progs/doomgeneric/w_wad.h:64` `void W_ReadLump (unsigned int lump, void *dest);`
+- `W_CacheLumpNum` (function) `progs/doomgeneric/w_wad.h:66` `void* W_CacheLumpNum (int lump, int tag);`
+- `W_CacheLumpName` (function) `progs/doomgeneric/w_wad.h:67` `void* W_CacheLumpName (char* name, int tag);`
+- `W_GenerateHashTable` (function) `progs/doomgeneric/w_wad.h:69` `void W_GenerateHashTable(void);`
+- `W_LumpNameHash` (function) `progs/doomgeneric/w_wad.h:71` `extern unsigned int W_LumpNameHash(const char *s);`
+- `W_ReleaseLumpNum` (function) `progs/doomgeneric/w_wad.h:73` `void W_ReleaseLumpNum(int lump);`
+- `W_ReleaseLumpName` (function) `progs/doomgeneric/w_wad.h:74` `void W_ReleaseLumpName(char *name);`
+- `W_CheckCorrectIWAD` (function) `progs/doomgeneric/w_wad.h:76` `void W_CheckCorrectIWAD(GameMission_t mission);`
+
 ## progs/doomgeneric/wi_stuff.c
 Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/wi_stuff.h`, `progs/doomgeneric/z_zone.h`
 - `WI_slamBackground` (function) `progs/doomgeneric/wi_stuff.c:402` `void WI_slamBackground(void)` -- slam background

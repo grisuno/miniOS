@@ -1,6 +1,22 @@
 # API (page 9 of 21)
 Previous: [API_p8.md](API_p8.md)
 
+## mcp/mcp_dbg_driver.py
+Depends on: `kernel/time.c`
+- `Client.__init__` (method) `mcp/mcp_dbg_driver.py:16` `def __init__(self)`
+- `Client.request` (method) `mcp/mcp_dbg_driver.py:28` `def request(self, method, params)`
+- `Client.tool` (method) `mcp/mcp_dbg_driver.py:46` `def tool(self, name, params)`
+- `Client.close` (method) `mcp/mcp_dbg_driver.py:54` `def close(self)`
+- `main` (function) `mcp/mcp_dbg_driver.py:64` `def main()`
+
+## mcp/mcp_dogfood.py
+Depends on: `kernel/time.c`
+- `Client.__init__` (method) `mcp/mcp_dogfood.py:20` `def __init__(self, addons_dir)`
+- `Client.request` (method) `mcp/mcp_dogfood.py:40` `def request(self, method, params)`
+- `Client.tool` (method) `mcp/mcp_dogfood.py:58` `def tool(self, name, params)`
+- `Client.close` (method) `mcp/mcp_dogfood.py:68` `def close(self)`
+- `main` (function) `mcp/mcp_dogfood.py:78` `def main()`
+
 ## mcp/minios_addons.py
 Depends on: `kernel/time.c`
 Imported by: `mcp/minios_mcp.py`
@@ -392,103 +408,6 @@ Depends on: `headers/tls.h`, `headers/tls_port.h`
 ## progs/asm/fib.s
 - `fib` (function) `progs/asm/fib.s:3`
 - `main` (function) `progs/asm/fib.s:61`
-
-## progs/asm/freedom.s
-- `tls_close` (function) `progs/asm/freedom.s:3`
-- `f_host` (function) `progs/asm/freedom.s:24`
-- `f_path` (function) `progs/asm/freedom.s:28`
-- `f_port` (function) `progs/asm/freedom.s:32`
-- `f_secure` (function) `progs/asm/freedom.s:36`
-- `f_loc` (function) `progs/asm/freedom.s:40`
-- `f_redir` (function) `progs/asm/freedom.s:44`
-- `f_status` (function) `progs/asm/freedom.s:48`
-- `f_clen` (function) `progs/asm/freedom.s:52`
-- `f_has_clen` (function) `progs/asm/freedom.s:56`
-- `f_chunked` (function) `progs/asm/freedom.s:60`
-- `f_hdr` (function) `progs/asm/freedom.s:64`
-- `f_hlen` (function) `progs/asm/freedom.s:68`
-- `f_tag` (function) `progs/asm/freedom.s:72`
-- `f_suppress` (function) `progs/asm/freedom.s:76`
-- `f_comment` (function) `progs/asm/freedom.s:80`
-- `f_cmdash` (function) `progs/asm/freedom.s:84`
-- `f_tagn` (function) `progs/asm/freedom.s:88`
-- `f_tagnlen` (function) `progs/asm/freedom.s:92`
-- `f_ent` (function) `progs/asm/freedom.s:96`
-- `f_entlen` (function) `progs/asm/freedom.s:100`
-- `f_ws` (function) `progs/asm/freedom.s:104`
-- `f_utbuf` (function) `progs/asm/freedom.s:108`
-- `f_utlen` (function) `progs/asm/freedom.s:112`
-- `f_utrem` (function) `progs/asm/freedom.s:116`
-- `f_attr_on` (function) `progs/asm/freedom.s:120`
-- `f_waitq` (function) `progs/asm/freedom.s:124`
-- `f_inval` (function) `progs/asm/freedom.s:128`
-- `f_inval2` (function) `progs/asm/freedom.s:132`
-- `f_attr` (function) `progs/asm/freedom.s:136`
-- `f_attrlen` (function) `progs/asm/freedom.s:140`
-- `f_val` (function) `progs/asm/freedom.s:144`
-- `f_vallen` (function) `progs/asm/freedom.s:148`
-- `f_id` (function) `progs/asm/freedom.s:152`
-- `f_idlen` (function) `progs/asm/freedom.s:156`
-- `f_cls` (function) `progs/asm/freedom.s:160`
-- `f_clslen` (function) `progs/asm/freedom.s:164`
-- `f_href` (function) `progs/asm/freedom.s:168`
-- `f_hreflen` (function) `progs/asm/freedom.s:172`
-- `f_rel_ss` (function) `progs/asm/freedom.s:176`
-- `f_styleattr` (function) `progs/asm/freedom.s:180`
-- `f_stylelen` (function) `progs/asm/freedom.s:184`
-- `f_dump_css` (function) `progs/asm/freedom.s:188`
-- `f_dump_dom` (function) `progs/asm/freedom.s:192`
-- `f_mode` (function) `progs/asm/freedom.s:196`
-- `f_rawcap` (function) `progs/asm/freedom.s:200`
-- `f_depth` (function) `progs/asm/freedom.s:204`
-- `f_dom` (function) `progs/asm/freedom.s:208`
-- `f_domlen` (function) `progs/asm/freedom.s:212`
-- `f_css` (function) `progs/asm/freedom.s:216`
-- `f_csslen` (function) `progs/asm/freedom.s:220`
-- `f_linkhost` (function) `progs/asm/freedom.s:224`
-- `f_linkpath` (function) `progs/asm/freedom.s:228`
-- `f_linkn` (function) `progs/asm/freedom.s:232`
-- `f_cstage` (function) `progs/asm/freedom.s:236`
-- `f_csize` (function) `progs/asm/freedom.s:240`
-- `f_crem` (function) `progs/asm/freedom.s:244`
-- `f_bdone` (function) `progs/asm/freedom.s:248`
-- `atoi` (function) `progs/asm/freedom.s:252`
-- `append` (function) `progs/asm/freedom.s:338`
-- `ci_lower` (function) `progs/asm/freedom.s:437`
-- `ci_starts` (function) `progs/asm/freedom.s:486`
-- `ci_eq` (function) `progs/asm/freedom.s:559`
-- `ci_index` (function) `progs/asm/freedom.s:656`
-- `looks_like_url` (function) `progs/asm/freedom.s:715`
-- `has_scheme` (function) `progs/asm/freedom.s:789`
-- `make_search` (function) `progs/asm/freedom.s:1064`
-- `split_url` (function) `progs/asm/freedom.s:1295`
-- `resolve_redirect` (function) `progs/asm/freedom.s:1810`
-- `put_ws` (function) `progs/asm/freedom.s:2333`
-- `put_utf` (function) `progs/asm/freedom.s:2379`
-- `put_text` (function) `progs/asm/freedom.s:2915`
-- `put_entity` (function) `progs/asm/freedom.s:3018`
-- `css_append` (function) `progs/asm/freedom.s:3849`
-- `css_line` (function) `progs/asm/freedom.s:3920`
-- `dom_append` (function) `progs/asm/freedom.s:3978`
-- `dom_space` (function) `progs/asm/freedom.s:4049`
-- `dom_nl` (function) `progs/asm/freedom.s:4083`
-- `record_attr` (function) `progs/asm/freedom.s:4117`
-- `is_void_tag` (function) `progs/asm/freedom.s:4449`
-- `classify_tag` (function) `progs/asm/freedom.s:4757`
-- `body_byte` (function) `progs/asm/freedom.s:5961`
-- `head_line` (function) `progs/asm/freedom.s:7203`
-- `parse_head` (function) `progs/asm/freedom.s:7460`
-- `recv_body` (function) `progs/asm/freedom.s:7676`
-- `send_all` (function) `progs/asm/freedom.s:7736`
-- `fetch` (function) `progs/asm/freedom.s:7810`
-- `fetch_css` (function) `progs/asm/freedom.s:9293`
-- `print_css_dump` (function) `progs/asm/freedom.s:10112`
-- `print_dom_dump` (function) `progs/asm/freedom.s:10212`
-- `main` (function) `progs/asm/freedom.s:10291`
-
-## progs/asm/http.s
-- `atoi` (function) `progs/asm/http.s:3`
-- `main` (function) `progs/asm/http.s:89`
 
 
 Next: [API_p10.md](API_p10.md)

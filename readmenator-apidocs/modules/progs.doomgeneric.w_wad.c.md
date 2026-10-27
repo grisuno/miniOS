@@ -343,6 +343,8 @@ void W_ReleaseLumpName(char *name)
 void W_Profile (void)
 ```
 
+*Calls:* [`memcpy`](kernel.string.c.md#memcpy)
+
 ---
 
 <a id="w_generatehashtable"></a>
@@ -355,7 +357,7 @@ void W_Profile (void)
 void W_GenerateHashTable(void)
 ```
 
-*Calls:* [`W_LumpNameHash`](#w_lumpnamehash), [`Z_Free`](progs.doomgeneric.z_zone.h.md#z_free), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
+*Calls:* [`memset`](kernel.string.c.md#memset), [`W_LumpNameHash`](#w_lumpnamehash), [`Z_Free`](progs.doomgeneric.z_zone.h.md#z_free), [`Z_Malloc`](progs.doomgeneric.z_zone.h.md#z_malloc)
 
 ---
 

@@ -1,0 +1,9 @@
+[project]
+name = "miniOS"
+
+[tests]
+commands = ["make test-host", "make readme-shot"]
+timeout_s = 1800
+
+[pypi]
+enabled = false

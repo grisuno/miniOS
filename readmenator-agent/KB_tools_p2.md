@@ -1,16 +1,38 @@
 # Subsystem: tools (page 2 of 2)
 Previous: [KB_tools.md](KB_tools.md)
 
+## tools/mkramdisk.py
+- Doc: Build a MiniOS ramdisk image from files in a directory tree.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `read_fname_bytes` (function, line 41) `def read_fname_bytes(kernel_h_path)`
+  - `pack_name` (function, line 64) `def pack_name(path, common)`
+  - `main` (function, line 74) `def main()`
+
+## tools/mkroots.sh
+- Doc: regenerate tls_roots.h from the DER files in tls_roots_src/.
+- Layer: utility
+- Language: sh
+
+## tools/mkvocab.py
+- Doc: Build progs/topogpt3/vocab.bin from the GPT-2 encoder.json.
+- Layer: utility
+- Language: py
+- Symbols:
+  - `bytes_to_unicode` (function, line 18) `def bytes_to_unicode()`
+  - `main` (function, line 35) `def main(encoder_path, vocab_path)`
+
 ## tools/mutate.sh
 - Doc: Mutation testing for MiniOS.
 - Layer: utility
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 137)
-  - `cleanup` (function, line 144)
-  - `record` (function, line 536)
-  - `find_index` (function, line 542)
+  - `restore_sources` (function, line 138)
+  - `cleanup` (function, line 145)
+  - `record` (function, line 547)
+  - `find_index` (function, line 553)
 
 ## tools/probe_compute_vga.py
 - Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute.
@@ -209,12 +231,12 @@ Previous: [KB_tools.md](KB_tools.md)
 - Language: py
 - Symbols:
   - `Config` (class, line 39) `class Config`
-  - `note` (function, line 55) `def note(ok, msg)`
-  - `last_line` (function, line 62) `def last_line(g, prefix)`
-  - `gfx_row` (function, line 72) `def gfx_row(g)`
-  - `dark_share` (function, line 84) `def dark_share(img, box)`
-  - `wait_frames` (function, line 94) `def wait_frames(g, want)`
-  - `main` (function, line 109) `def main()`
+  - `note` (function, line 56) `def note(ok, msg)`
+  - `last_line` (function, line 63) `def last_line(g, prefix)`
+  - `gfx_row` (function, line 73) `def gfx_row(g)`
+  - `dark_share` (function, line 85) `def dark_share(img, box)`
+  - `wait_frames` (function, line 95) `def wait_frames(g, want)`
+  - `main` (function, line 110) `def main()`
 - Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
 
 ## tools/test_gui_icon_cwd.py
@@ -272,7 +294,7 @@ Previous: [KB_tools.md](KB_tools.md)
   - `dump` (method, line 176) `def dump(self, name)`
   - `stop` (method, line 183) `def stop(self)`
 - Depends on: `kernel/time.c`
-- Imported by: `tools/test_gui_gfxview.py`, `tools/test_gui_menu.py`, `tools/test_gui_zoom.py`
+- Imported by: `tools/test_gui_gfxview.py`, `tools/test_gui_menu.py`, `tools/test_gui_zoom.py`, `tools/test_readme_shot.py`
 
 ## tools/test_gui_zoom.py
 - Doc: pixel proof that GFX_ZOOM doubles the game window.
@@ -323,6 +345,21 @@ Previous: [KB_tools.md](KB_tools.md)
   - `echo_stream` (function, line 43) `def echo_stream(conn)`
   - `serve_tcp` (function, line 53) `def serve_tcp(port)`
   - `main` (function, line 64) `def main()`
+
+## tools/test_readme_shot.py
+- Doc: verify the desktop and refresh the README image.
+- Layer: testing
+- Language: py
+- Symbols:
+  - `Config` (class, line 43) `class Config`
+  - `crop_box` (function, line 66) `def crop_box(size, fractions)`
+  - `pixels` (function, line 73) `def pixels(img)`
+  - `count_pixels` (function, line 79) `def count_pixels(img, box, predicate)`
+  - `check_frame` (function, line 84) `def check_frame(img)`
+  - `write_atomic` (function, line 115) `def write_atomic(img, path)`
+  - `stage_scene` (function, line 131) `def stage_scene(guest)`
+  - `main` (function, line 140) `def main(argv)`
+- Depends on: `kernel/time.c`, `tools/test_gui_wm.py`
 
 ## tools/test_sb16.sh
 - Doc: — targeted BDD harness for the SB16 audio path.

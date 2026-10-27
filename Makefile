@@ -2127,6 +2127,19 @@ fx_test: tests/test_fx.c vga_fx.h | $(TOOLS_DIR)
 test-fx: fx_test
 	$(TOOLS_DIR)/fx_test
 
+# Window chrome pixel math host test (headers/wm_chrome.h: shadows, corners, gradients).
+chrome_test: tests/test_chrome.c wm_chrome.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/chrome_test tests/test_chrome.c
+
+test-chrome: chrome_test
+	$(TOOLS_DIR)/chrome_test
+
+# README desktop image: boots the image headless, verifies the desktop is
+# painted and only then rewrites docs/img/desktop.png (tools/test_readme_shot.py).
+# deploynator runs it on every release through deploynator.toml.
+readme-shot: os.img
+	python3 tools/test_readme_shot.py
+
 # Window manager geometry and event host test (header-only wm_geom.h + wm_events.h).
 wm_test: tests/test_wm.c wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_layout.h wm_gfxview.h | $(TOOLS_DIR)
 	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/wm_test tests/test_wm.c
@@ -2150,7 +2163,7 @@ wl: os.img
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test sign_test hal_test driver_test ktime_test randmix_test wm_test fx_test modifiers_test notify_test abi_test wl_test fat_test ext4_test lisp-host
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test sign_test hal_test driver_test ktime_test randmix_test wm_test fx_test chrome_test modifiers_test notify_test abi_test wl_test fat_test ext4_test lisp-host
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -2165,6 +2178,7 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/randmix_test
 	$(TOOLS_DIR)/wm_test
 	$(TOOLS_DIR)/fx_test
+	$(TOOLS_DIR)/chrome_test
 	$(TOOLS_DIR)/modifiers_test
 	$(TOOLS_DIR)/notify_test
 	$(TOOLS_DIR)/abi_test
@@ -2473,11 +2487,11 @@ zip.o: fs/zip.c zip.h kernel.h third_party/miniz/miniz.h
 # global malloc/free symbols are emitted). kernel.c delegates kmalloc/kfree/
 # realloc/calloc to it via the dlmalloc_* accessors in dlmalloc_impl.c.
 dlmalloc_impl.o: third_party/dlmalloc/dlmalloc_impl.c third_party/dlmalloc/malloc.c kernel.h
-	$(CC) $(CFLAGS_UPSTREAM) -c $< -o $@
+	$(CC) $(CFLAGS_UPSTREAM) -Wno-unused-but-set-variable -c $< -o $@
 
 # Desktop icon PNGs: terminal is pixel art generated from
 # tools/gen_icons.py; doom/quake2/nuklear/piano/vedit/pokemon are custom art
-# converted from user-supplied sources (cgoblin.png wallpaper + icon PNGs in
+# converted from user-supplied sources (animegirl.png wallpaper + icon PNGs in
 # DESKTOP_SRC_DIR) by tools/gen_desktop_pngs.py. The two generators own
 # disjoint target sets so neither ever clobbers the other's output. The
 # art rule is a grouped target (&:): one generator run writes every file, so
@@ -2488,7 +2502,7 @@ $(PROGS_DIR)/icons/terminal.png: tools/gen_icons.py
 # Custom desktop art: location of the user sources is overridable and
 # defaults to images/; nothing assumes an absolute path.
 DESKTOP_SRC_DIR = images
-DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/cgoblin.png $(DESKTOP_SRC_DIR)/doom.png \
+DESKTOP_SRCS = $(DESKTOP_SRC_DIR)/animegirl.png $(DESKTOP_SRC_DIR)/doom.png \
                $(DESKTOP_SRC_DIR)/doomedit.png \
                $(DESKTOP_SRC_DIR)/quake2.png $(DESKTOP_SRC_DIR)/piano.png \
                $(DESKTOP_SRC_DIR)/nuklear.png $(DESKTOP_SRC_DIR)/vedit.png \
@@ -2573,7 +2587,7 @@ tick.o: kernel/tick.c tick.h drivers/xhci.h drivers/usbhid.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
-           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h vga_fx.h kernel/vga_cursor.h $(PROGS_DIR)/minios_abi.h
+           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h wm_chrome.h avatar_data.h vga_fx.h kernel/vga_cursor.h $(PROGS_DIR)/minios_abi.h
 # NOTE: -Os, same pattern as shell.o (measured -6.2 KB vs -O1). Revalidate
 # with test_gui_wm.py + test_gui_fashion.py (pixel proof) after any change.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@

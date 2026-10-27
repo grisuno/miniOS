@@ -1,6 +1,95 @@
 # API (page 13 of 21)
 Previous: [API_p12.md](API_p12.md)
 
+## progs/doomgeneric/m_menu.c
+Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `M_StartGame` (function) `progs/doomgeneric/m_menu.c:193` `void M_StartGame(int choice);`
+- `M_ReadSaveStrings` (function) `progs/doomgeneric/m_menu.c:503` `void M_ReadSaveStrings(void)` -- M_ReadSaveStrings read the strings from the savegame files
+- `M_DrawLoad` (function) `progs/doomgeneric/m_menu.c:530` `void M_DrawLoad(void)` -- M_LoadGame & Cie.
+- `M_DrawSaveLoadBorder` (function) `progs/doomgeneric/m_menu.c:549` `void M_DrawSaveLoadBorder(int x,int y)` -- Draw border for the savegame description
+- `M_LoadSelect` (function) `progs/doomgeneric/m_menu.c:572` `void M_LoadSelect(int choice)` -- User wants to load this game
+- `M_LoadGame` (function) `progs/doomgeneric/m_menu.c:585` `void M_LoadGame (int choice)` -- Selected from DOOM menu
+- `M_DrawSave` (function) `progs/doomgeneric/m_menu.c:601` `void M_DrawSave(void)` -- M_SaveGame & Cie.
+- `M_DoSave` (function) `progs/doomgeneric/m_menu.c:622` `void M_DoSave(int slot)` -- M_Responder calls this when user is finished
+- `M_SaveSelect` (function) `progs/doomgeneric/m_menu.c:635` `void M_SaveSelect(int choice)` -- User wants to save.
+- `M_SaveGame` (function) `progs/doomgeneric/m_menu.c:650` `void M_SaveGame (int choice)` -- Selected from DOOM menu
+- `M_QuickSaveResponse` (function) `progs/doomgeneric/m_menu.c:672` `void M_QuickSaveResponse(int key)`
+- `M_QuickSave` (function) `progs/doomgeneric/m_menu.c:681` `void M_QuickSave(void)`
+- `M_QuickLoadResponse` (function) `progs/doomgeneric/m_menu.c:709` `void M_QuickLoadResponse(int key)` -- M_QuickLoad
+- `M_QuickLoad` (function) `progs/doomgeneric/m_menu.c:719` `void M_QuickLoad(void)`
+- `M_DrawReadThis1` (function) `progs/doomgeneric/m_menu.c:743` `void M_DrawReadThis1(void)` -- Read This Menus Had a "quick hack to fix romero bug"
+- `M_DrawReadThis2` (function) `progs/doomgeneric/m_menu.c:820` `void M_DrawReadThis2(void)` -- Read This Menus - optional second page.
+- `M_DrawSound` (function) `progs/doomgeneric/m_menu.c:834` `void M_DrawSound(void)` -- Change Sfx & Music volumes
+- `M_Sound` (function) `progs/doomgeneric/m_menu.c:845` `void M_Sound(int choice)`
+- `M_SfxVol` (function) `progs/doomgeneric/m_menu.c:850` `void M_SfxVol(int choice)`
+- `M_MusicVol` (function) `progs/doomgeneric/m_menu.c:867` `void M_MusicVol(int choice)`
+- `M_DrawMainMenu` (function) `progs/doomgeneric/m_menu.c:890` `void M_DrawMainMenu(void)` -- M_DrawMainMenu
+- `M_DrawNewGame` (function) `progs/doomgeneric/m_menu.c:902` `void M_DrawNewGame(void)` -- M_NewGame
+- `M_NewGame` (function) `progs/doomgeneric/m_menu.c:908` `void M_NewGame(int choice)`
+- `M_DrawEpisode` (function) `progs/doomgeneric/m_menu.c:930` `void M_DrawEpisode(void)`
+- `M_VerifyNightmare` (function) `progs/doomgeneric/m_menu.c:935` `void M_VerifyNightmare(int key)`
+- `M_ChooseSkill` (function) `progs/doomgeneric/m_menu.c:944` `void M_ChooseSkill(int choice)`
+- `M_Episode` (function) `progs/doomgeneric/m_menu.c:956` `void M_Episode(int choice)`
+- `M_DrawOptions` (function) `progs/doomgeneric/m_menu.c:987` `void M_DrawOptions(void)`
+- `M_Options` (function) `progs/doomgeneric/m_menu.c:1007` `void M_Options(int choice)`
+- `M_ChangeMessages` (function) `progs/doomgeneric/m_menu.c:1017` `void M_ChangeMessages(int choice)` -- Toggle messages on/off
+- `M_EndGameResponse` (function) `progs/doomgeneric/m_menu.c:1035` `void M_EndGameResponse(int key)` -- M_EndGame
+- `M_EndGame` (function) `progs/doomgeneric/m_menu.c:1045` `void M_EndGame(int choice)`
+- `M_ReadThis` (function) `progs/doomgeneric/m_menu.c:1069` `void M_ReadThis(int choice)` -- M_ReadThis
+- `M_ReadThis2` (function) `progs/doomgeneric/m_menu.c:1075` `void M_ReadThis2(int choice)`
+- `M_FinishReadThis` (function) `progs/doomgeneric/m_menu.c:1093` `void M_FinishReadThis(int choice)`
+- `M_QuitResponse` (function) `progs/doomgeneric/m_menu.c:1131` `void M_QuitResponse(int key)`
+- `M_SelectEndMessage` (function) `progs/doomgeneric/m_menu.c:1147` `static char *M_SelectEndMessage(void)`
+- `M_QuitDOOM` (function) `progs/doomgeneric/m_menu.c:1168` `void M_QuitDOOM(int choice)`
+- `M_ChangeSensitivity` (function) `progs/doomgeneric/m_menu.c:1179` `void M_ChangeSensitivity(int choice)`
+- `M_ChangeDetail` (function) `progs/doomgeneric/m_menu.c:1197` `void M_ChangeDetail(int choice)`
+- `M_SizeDisplay` (function) `progs/doomgeneric/m_menu.c:1213` `void M_SizeDisplay(int choice)`
+- `M_DrawThermo` (function) `progs/doomgeneric/m_menu.c:1244` `void
+M_DrawThermo
+( int	x,
+  int	y,
+  int	thermWidth,
+  int	thermDot )`
+- `M_DrawEmptyCell` (function) `progs/doomgeneric/m_menu.c:1270` `void
+M_DrawEmptyCell
+( menu_t*	menu,
+  int		item )`
+- `M_DrawSelCell` (function) `progs/doomgeneric/m_menu.c:1279` `void
+M_DrawSelCell
+( menu_t*	menu,
+  int		item )`
+- `M_StartMessage` (function) `progs/doomgeneric/m_menu.c:1289` `void
+M_StartMessage
+( char*		string,
+  void*		routine,
+  boolean	input )`
+- `M_StopMessage` (function) `progs/doomgeneric/m_menu.c:1304` `void M_StopMessage(void)`
+- `M_StringWidth` (function) `progs/doomgeneric/m_menu.c:1315` `int M_StringWidth(char* string)` -- Find string width from hu_font chars
+- `M_StringHeight` (function) `progs/doomgeneric/m_menu.c:1338` `int M_StringHeight(char* string)` -- Find string height from hu_font chars
+- `M_WriteText` (function) `progs/doomgeneric/m_menu.c:1357` `void
+M_WriteText
+( int		x,
+  int		y,
+  char*		string)`
+- `IsNullKey` (function) `progs/doomgeneric/m_menu.c:1403` `static boolean IsNullKey(int key)`
+- `M_Responder` (function) `progs/doomgeneric/m_menu.c:1416` `boolean M_Responder (event_t* ev)` -- M_Responder
+- `M_StartControlPanel` (function) `progs/doomgeneric/m_menu.c:1899` `void M_StartControlPanel (void)` -- M_StartControlPanel
+- `M_DrawOPLDev` (function) `progs/doomgeneric/m_menu.c:1913` `static void M_DrawOPLDev(void)`
+- `I_OPL_DevMessages` (function) `progs/doomgeneric/m_menu.c:1915` `extern void I_OPL_DevMessages(char *, size_t);`
+- `M_Drawer` (function) `progs/doomgeneric/m_menu.c:1951` `void M_Drawer (void)` -- M_Drawer Called after the view has been rendered, but before it has been blitted.
+- `M_ClearMenus` (function) `progs/doomgeneric/m_menu.c:2041` `void M_ClearMenus (void)` -- M_ClearMenus
+- `M_SetupNextMenu` (function) `progs/doomgeneric/m_menu.c:2054` `void M_SetupNextMenu(menu_t *menudef)` -- M_SetupNextMenu
+- `M_Ticker` (function) `progs/doomgeneric/m_menu.c:2064` `void M_Ticker (void)` -- M_Ticker
+- `M_Init` (function) `progs/doomgeneric/m_menu.c:2077` `void M_Init (void)` -- M_Init
+
+## progs/doomgeneric/m_menu.h
+Depends on: `progs/doomgeneric/d_event.h`
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/r_main.c`
+- `M_Ticker` (function) `progs/doomgeneric/m_menu.h:40` `void M_Ticker (void);` -- Called by main loop, only used for menu (skull cursor) animation.
+- `M_Drawer` (function) `progs/doomgeneric/m_menu.h:44` `void M_Drawer (void);` -- Called by main loop, draws the menus directly into the screen buffer.
+- `M_Init` (function) `progs/doomgeneric/m_menu.h:48` `void M_Init (void);` -- Called by D_DoomMain, loads the config file.
+- `M_StartControlPanel` (function) `progs/doomgeneric/m_menu.h:52` `void M_StartControlPanel (void);` -- Called by intro code to force menu up upon a keypress, does nothing if menu is already up.
+
 ## progs/doomgeneric/m_misc.c
 Depends on: `kernel/string.c`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 - `M_MakeDirectory` (function) `progs/doomgeneric/m_misc.c:55` `void M_MakeDirectory(char *path)`
@@ -392,60 +481,6 @@ Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/g_game.c`, `progs/
 - `P_RadiusAttack` (function) `progs/doomgeneric/p_local.h:251` `void P_RadiusAttack ( mobj_t* spot, mobj_t* source, int damage );`
 - `P_TouchSpecialThing` (function) `progs/doomgeneric/p_local.h:279` `void P_TouchSpecialThing ( mobj_t* special, mobj_t* toucher );`
 - `P_DamageMobj` (function) `progs/doomgeneric/p_local.h:284` `void P_DamageMobj ( mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage );`
-
-## progs/doomgeneric/p_map.c
-Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
-- `PIT_StompThing` (function) `progs/doomgeneric/p_map.c:97` `boolean PIT_StompThing (mobj_t* thing)` -- PIT_StompThing
-- `P_TeleportMove` (function) `progs/doomgeneric/p_map.c:131` `boolean
-P_TeleportMove
-( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )`
-- `PIT_CheckLine` (function) `progs/doomgeneric/p_map.c:206` `boolean PIT_CheckLine (line_t* ld)` -- PIT_CheckLine Adjusts tmfloorz and tmceilingz as lines are contacted
-- `PIT_CheckThing` (function) `progs/doomgeneric/p_map.c:275` `boolean PIT_CheckThing (mobj_t* thing)` -- PIT_CheckThing
-- `P_CheckPosition` (function) `progs/doomgeneric/p_map.c:402` `boolean
-P_CheckPosition
-( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )`
-- `P_TryMove` (function) `progs/doomgeneric/p_map.c:478` `boolean
-P_TryMove
-( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )`
-- `P_ThingHeightClip` (function) `progs/doomgeneric/p_map.c:557` `boolean P_ThingHeightClip (mobj_t* thing)` -- P_ThingHeightClip Takes a valid thing and adjusts the thing->floorz, thing->ceilingz, and possibly thing->z.
-- `P_HitSlideLine` (function) `progs/doomgeneric/p_map.c:611` `void P_HitSlideLine (line_t* ld)` -- P_HitSlideLine Adjusts the xmove / ymove so that the next move will slide along the wall.
-- `PTR_SlideTraverse` (function) `progs/doomgeneric/p_map.c:663` `boolean PTR_SlideTraverse (intercept_t* in)` -- PTR_SlideTraverse
-- `P_SlideMove` (function) `progs/doomgeneric/p_map.c:722` `void P_SlideMove (mobj_t* mo)` -- P_SlideMove The momx / momy move is bad, so try to slide along a wall.
-- `PTR_AimTraverse` (function) `progs/doomgeneric/p_map.c:843` `boolean
-PTR_AimTraverse (intercept_t* in)`
-- `PTR_ShootTraverse` (function) `progs/doomgeneric/p_map.c:928` `boolean PTR_ShootTraverse (intercept_t* in)` -- PTR_ShootTraverse
-- `P_AimLineAttack` (function) `progs/doomgeneric/p_map.c:1068` `fixed_t
-P_AimLineAttack
-( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance )`
-- `P_LineAttack` (function) `progs/doomgeneric/p_map.c:1110` `void
-P_LineAttack
-( mobj_t*	t1,
-  angle_t	angle,
-  fixed_t	distance,
-  fixed_t	slope,
-  int		dama...`
-- `PTR_UseTraverse` (function) `progs/doomgeneric/p_map.c:1142` `boolean	PTR_UseTraverse (intercept_t* in)`
-- `P_UseLines` (function) `progs/doomgeneric/p_map.c:1177` `void P_UseLines (player_t*	player)` -- P_UseLines Looks for special lines in front of the player to activate.
-- `PIT_RadiusAttack` (function) `progs/doomgeneric/p_map.c:1211` `boolean PIT_RadiusAttack (mobj_t* thing)` -- PIT_RadiusAttack "bombsource" is the creature that caused the explosion at "bombspot".
-- `P_RadiusAttack` (function) `progs/doomgeneric/p_map.c:1253` `void
-P_RadiusAttack
-( mobj_t*	spot,
-  mobj_t*	source,
-  int		damage )`
-- `PIT_ChangeSector` (function) `progs/doomgeneric/p_map.c:1304` `boolean PIT_ChangeSector (mobj_t*	thing)` -- PIT_ChangeSector
-- `P_ChangeSector` (function) `progs/doomgeneric/p_map.c:1368` `boolean
-P_ChangeSector
-( sector_t*	sector,
-  boolean	crunch )`
-- `SpechitOverrun` (function) `progs/doomgeneric/p_map.c:1391` `static void SpechitOverrun(line_t *ld)`
 
 
 Next: [API_p14.md](API_p14.md)

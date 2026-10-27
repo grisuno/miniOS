@@ -23,10 +23,12 @@ flowchart LR
     n_headers_tls_port_h__gettimeofday["tls_port.gettimeofday"]
     n_progs_tls_u_tls_u_port_c__tls_random(["tls_random"])
     n_kernel_loader_c__time["loader.time"]
+    n_kernel_string_c__memset["string.memset"]
     n_progs_tls_u_tls_u_port_c__tls_close --> n_progs_tls_u_tls_u_port_c__tls_free_fd
     n_progs_tls_u_tls_u_port_c__net_dns_resolve --> n_progs_tls_u_tls_u_port_c__tls_u_resolve
     n_progs_tls_u_tls_u_port_c__tls_now_days -.-> n_headers_tls_port_h__gettimeofday
     n_progs_tls_u_tls_u_port_c__tls_random -.-> n_kernel_loader_c__time
+    n_progs_tls_u_tls_u_port_c__tls_u_resolve -.-> n_kernel_string_c__memset
 ```
 
 ## Functions
@@ -215,6 +217,8 @@ int tls_u_resolve(const char *host, unsigned *ip_out)
 | `ip_out` | `unsigned *` |  |  |
 
 **Returns:** `int`
+
+*Calls:* [`memset`](kernel.string.c.md#memset)
 
 *Called by:* [`main`](progs.tls_u.tls_u_main.c.md#main), [`net_dns_resolve`](#net_dns_resolve)
 

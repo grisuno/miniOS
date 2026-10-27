@@ -3,6 +3,54 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `WL_HIT_RESIZE` | macro | `progs/wl/wl_mini.h:249` | `#define WL_HIT_RESIZE` |
+| `WL_HIT_TITLE` | macro | `progs/wl/wl_mini.h:247` | `#define WL_HIT_TITLE` |
+| `WL_ID_BUFFER_BASE` | macro | `progs/wl/wl_mini.h:46` | `#define WL_ID_BUFFER_BASE` |
+| `WL_ID_CLIPBOARD` | macro | `progs/wl/wl_mini.h:902` | `#define WL_ID_CLIPBOARD` |
+| `WL_ID_COMPOSITOR` | macro | `progs/wl/wl_mini.h:41` | `#define WL_ID_COMPOSITOR` |
+| `WL_ID_DISPLAY` | macro | `progs/wl/wl_mini.h:39` | `#define WL_ID_DISPLAY` |
+| `WL_ID_POOL_BASE` | macro | `progs/wl/wl_mini.h:45` | `#define WL_ID_POOL_BASE` |
+| `WL_ID_REGISTRY` | macro | `progs/wl/wl_mini.h:40` | `#define WL_ID_REGISTRY` |
+| `WL_ID_SHM` | macro | `progs/wl/wl_mini.h:42` | `#define WL_ID_SHM` |
+| `WL_ID_SURFACE_BASE` | macro | `progs/wl/wl_mini.h:44` | `#define WL_ID_SURFACE_BASE` |
+| `WL_ID_XDG_BASE` | macro | `progs/wl/wl_mini.h:43` | `#define WL_ID_XDG_BASE` |
+| `WL_IFACE_COUNT` | macro | `progs/wl/wl_mini.h:1185` | `#define WL_IFACE_COUNT` |
+| `WL_MAX_MSG` | macro | `progs/wl/wl_mini.h:20` | `#define WL_MAX_MSG` |
+| `WL_MAX_POOLS` | macro | `progs/wl/wl_mini.h:23` | `#define WL_MAX_POOLS` |
+| `WL_MAX_STR` | macro | `progs/wl/wl_mini.h:21` | `#define WL_MAX_STR` |
+| `WL_MAX_SURFACES` | macro | `progs/wl/wl_mini.h:22` | `#define WL_MAX_SURFACES` |
+| `WL_MINI_H` | macro | `progs/wl/wl_mini.h:18` | `#define WL_MINI_H` |
+| `WL_OP_CLIPBOARD_GET` | macro | `progs/wl/wl_mini.h:904` | `#define WL_OP_CLIPBOARD_GET` |
+| `WL_OP_CLIPBOARD_SET` | macro | `progs/wl/wl_mini.h:903` | `#define WL_OP_CLIPBOARD_SET` |
+| `WL_OP_COMPOSITOR_CREATE_SURFACE` | macro | `progs/wl/wl_mini.h:50` | `#define WL_OP_COMPOSITOR_CREATE_SURFACE` |
+| `WL_OP_DISPLAY_GET_REGISTRY` | macro | `progs/wl/wl_mini.h:48` | `#define WL_OP_DISPLAY_GET_REGISTRY` |
+| `WL_OP_POOL_CREATE_BUFFER` | macro | `progs/wl/wl_mini.h:52` | `#define WL_OP_POOL_CREATE_BUFFER` |
+| `WL_OP_REGISTRY_BIND` | macro | `progs/wl/wl_mini.h:49` | `#define WL_OP_REGISTRY_BIND` |
+| `WL_OP_SHM_CREATE_POOL` | macro | `progs/wl/wl_mini.h:51` | `#define WL_OP_SHM_CREATE_POOL` |
+| `WL_OP_SURFACE_ATTACH` | macro | `progs/wl/wl_mini.h:53` | `#define WL_OP_SURFACE_ATTACH` |
+| `WL_OP_SURFACE_COMMIT` | macro | `progs/wl/wl_mini.h:54` | `#define WL_OP_SURFACE_COMMIT` |
+| `WL_OP_XDG_GET_TOPLEVEL` | macro | `progs/wl/wl_mini.h:55` | `#define WL_OP_XDG_GET_TOPLEVEL` |
+| `WL_POOL_MAX` | macro | `progs/wl/wl_mini.h:26` | `#define WL_POOL_MAX` |
+| `WL_RESIZE_EDGE` | macro | `progs/wl/wl_mini.h:240` | `#define WL_RESIZE_EDGE` |
+| `WL_STREAM_CAP` | macro | `progs/wl/wl_mini.h:1122` | `#define WL_STREAM_CAP` |
+| `WL_SURF_MAX_H` | macro | `progs/wl/wl_mini.h:25` | `#define WL_SURF_MAX_H` |
+| `WL_SURF_MAX_W` | macro | `progs/wl/wl_mini.h:24` | `#define WL_SURF_MAX_W` |
+| `WL_TITLE_ACTIVE` | macro | `progs/wl/wl_mini.h:241` | `#define WL_TITLE_ACTIVE` |
+| `WL_TITLE_H` | macro | `progs/wl/wl_mini.h:238` | `#define WL_TITLE_H` |
+| `WL_TITLE_INACTIVE` | macro | `progs/wl/wl_mini.h:242` | `#define WL_TITLE_INACTIVE` |
+| `body` | function | `progs/wl/wl_mini.h:698` | `* resampled into the body (inside the 1 px border, below the title),  * the exact rect wl_ev_map ...` |
+| `coords` | function | `progs/wl/wl_mini.h:959` | `* coords (mapped by wl_ev_map, -1 when outside), wheel is a * monotonic total the client diffs, scancodes are raw...` |
+| `wl_attach_decode` | function | `progs/wl/wl_mini.h:842` | `static inline int wl_attach_decode(const unsigned char *src, int len,         unsigned int *pool,...` |
+| `wl_attach_encode` | function | `progs/wl/wl_mini.h:823` | `static inline int wl_attach_encode(unsigned char *dst, int cap,         unsigned int pool, int w,...` |
+| `wl_cfg_t` | struct | `progs/wl/wl_mini.h:63` | `` |
+| `wl_client_init` | function | `progs/wl/wl_mini.h:1092` | `static inline void wl_client_init(wl_client_t *cl)` |
+| `wl_client_pool` | function | `progs/wl/wl_mini.h:1109` | `static inline int wl_client_pool(wl_client_t *cl, unsigned int *id)` |
+| `wl_client_surface` | function | `progs/wl/wl_mini.h:1100` | `static inline int wl_client_surface(wl_client_t *cl, unsigned int *id)` |
+| `wl_client_t` | struct | `progs/wl/wl_mini.h:1086` | `` |
+| `wl_clip_decode` | function | `progs/wl/wl_mini.h:930` | `static inline int wl_clip_decode(const unsigned char *src, int len,         unsigned char *dst, i...` |
+| `wl_clip_encode` | function | `progs/wl/wl_mini.h:907` | `static inline int wl_clip_encode(unsigned char *dst, int cap,         const unsigned char *text, ...` |
+| `wl_commit_decode` | function | `progs/wl/wl_mini.h:883` | `static inline int wl_commit_decode(const unsigned char *src, int len,         unsigned int *id)` |
+| `wl_commit_encode` | function | `progs/wl/wl_mini.h:870` | `static inline int wl_commit_encode(unsigned char *dst, int cap,         unsigned int id)` |
 | `wl_comp_add` | function | `progs/wl/wl_mini.h:309` | `static inline int wl_comp_add(wl_comp_t *c, unsigned int id, int w, int h)` |
 | `wl_comp_attach_buf` | function | `progs/wl/wl_mini.h:1218` | `static inline int wl_comp_attach_buf(wl_comp_t *c, unsigned int id,         unsigned int pool, in...` |
 | `wl_comp_focus` | function | `progs/wl/wl_mini.h:372` | `static inline int wl_comp_focus(wl_comp_t *c, unsigned int id)` |
@@ -209,6 +257,8 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `CHECK` | macro | `tests/test_batch.c:17` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_batch.c:31` | `int main(void)` |
 | `stub_dispatch` | function | `tests/test_batch.c:24` | `static long stub_dispatch(uint32_t opcode)` |
+| `CHECK` | macro | `tests/test_chrome.c:16` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_chrome.c:23` | `int main(void)` |
 | `ExtendedLegendTests` | class | `tests/test_doom_pwad.py:255` | `class ExtendedLegendTests(TestCase)` |
 | `GridValidationTests` | class | `tests/test_doom_pwad.py:29` | `class GridValidationTests(TestCase)` |
 | `MultiSectorMutationTests` | class | `tests/test_doom_pwad.py:388` | `class MultiSectorMutationTests(TestCase)` |
@@ -446,55 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `main` | function | `tests/test_modifiers.c:24` | `int main(void)` |
 | `CHECK` | macro | `tests/test_notify.c:9` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_notify.c:22` | `int main(void)` |
-| `probe_handler` | function | `tests/test_notify.c:16` | `static void probe_handler(const wm_notify_event_t *e)` |
-| `CHECK` | macro | `tests/test_paint.c:16` | `#define CHECK(cond, msg)` |
-| `T_H` | macro | `tests/test_paint.c:24` | `#define T_H` |
-| `T_N` | macro | `tests/test_paint.c:25` | `#define T_N` |
-| `T_PATH_MAX` | macro | `tests/test_paint.c:26` | `#define T_PATH_MAX` |
-| `T_W` | macro | `tests/test_paint.c:23` | `#define T_W` |
-| `main` | function | `tests/test_paint.c:300` | `int main(void)` |
-| `t_clamp` | function | `tests/test_paint.c:30` | `static int t_clamp(int v, int lo, int hi)` |
-| `t_crc` | function | `tests/test_paint.c:129` | `static unsigned long t_crc(const unsigned char *p, unsigned long n)` |
-| `t_crc_init` | function | `tests/test_paint.c:116` | `static void t_crc_init(void)` |
-| `t_flood` | function | `tests/test_paint.c:70` | `static int t_flood(unsigned char *buf, int w, int h, int x, int y,                    unsigned ch...` |
-| `t_line` | function | `tests/test_paint.c:44` | `static int t_line(unsigned char *buf, int w, int h, int x0, int y0, int x1,                   int...` |
-| `t_nearest` | function | `tests/test_paint.c:155` | `static int t_nearest(const unsigned char *pal, unsigned r, unsigned g,                      unsig...` |
-| `t_path_ok` | function | `tests/test_paint.c:138` | `static int t_path_ok(const char *p)` |
-| `t_plot` | function | `tests/test_paint.c:36` | `static int t_plot(unsigned char *buf, int w, int h, int x, int y,                   unsigned char c)` |
-| `test_flood` | function | `tests/test_paint.c:207` | `static void test_flood(void)` |
-| `test_line` | function | `tests/test_paint.c:188` | `static void test_line(void)` |
-| `test_nearest` | function | `tests/test_paint.c:287` | `static void test_nearest(void)` |
-| `test_path` | function | `tests/test_paint.c:273` | `static void test_path(void)` |
-| `test_plot` | function | `tests/test_paint.c:171` | `static void test_plot(void)` |
-| `test_png_codec` | function | `tests/test_paint.c:228` | `static void test_png_codec(void)` |
-| `test_png_layout` | function | `tests/test_paint.c:259` | `static void test_png_layout(void)` |
-| `CHECK` | macro | `tests/test_panic.c:16` | `#define CHECK(cond, msg)` |
-| `always_valid` | function | `tests/test_panic.c:23` | `static int always_valid(unsigned long addr)` |
-| `deny_valid` | function | `tests/test_panic.c:35` | `static int deny_valid(unsigned long addr)` |
-| `main` | function | `tests/test_panic.c:39` | `int main(void)` |
-| `never_valid` | function | `tests/test_panic.c:28` | `static int never_valid(unsigned long addr)` |
-| `CHECK` | macro | `tests/test_pcache.c:36` | `#define CHECK(cond, msg)` |
-| `kfree` | function | `tests/test_pcache.c:23` | `void kfree(void *ptr)` |
-| `kmalloc` | function | `tests/test_pcache.c:19` | `void *kmalloc(unsigned long size)` |
-| `kprintf` | function | `tests/test_pcache.c:27` | `int kprintf(const char *fmt, ...)` |
-| `main` | function | `tests/test_pcache.c:43` | `int main(void)` |
-| `CHECK` | macro | `tests/test_pci.c:26` | `#define CHECK(cond, msg)` |
-| `FAKE_BUSES` | macro | `tests/test_pci.c:33` | `#define FAKE_BUSES` |
-| `FAKE_REGS` | macro | `tests/test_pci.c:34` | `#define FAKE_REGS` |
-| `fake_inl` | function | `tests/test_pci.c:60` | `static unsigned fake_inl(unsigned short port)` |
-| `fake_outl` | function | `tests/test_pci.c:39` | `static void fake_outl(unsigned short port, unsigned val)` |
-| `main` | function | `tests/test_pci.c:79` | `int main(void)` |
-| `set_dev` | function | `tests/test_pci.c:73` | `static void set_dev(unsigned bus, unsigned dev, unsigned func,                     unsigned id, u...` |
-| `CHECK` | macro | `tests/test_pcm.c:21` | `#define CHECK(cond, msg)` |
-| `lcg_next` | function | `tests/test_pcm.c:104` | `static unsigned lcg_next(void)` |
-| `main` | function | `tests/test_pcm.c:144` | `int main(void)` |
-| `t_model` | function | `tests/test_pcm.c:109` | `static void t_model(void)` |
-| `t_overrun` | function | `tests/test_pcm.c:61` | `static void t_overrun(void)` |
-| `t_roundtrip` | function | `tests/test_pcm.c:28` | `static void t_roundtrip(void)` |
-| `t_underrun` | function | `tests/test_pcm.c:75` | `static void t_underrun(void)` |
-| `t_wrap` | function | `tests/test_pcm.c:44` | `static void t_wrap(void)` |
-| `t_zero_cap` | function | `tests/test_pcm.c:91` | `static void t_zero_cap(void)` |
-| `CHECK` | macro | `tests/test_percpu_rq.c:17` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_percpu_rq.c:24` | `int main(void)` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

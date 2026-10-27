@@ -3,6 +3,9 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_ktime.c` | host test for the pure conversion math in ktime.h | tests | 2 | 0 |
+| `tests/test_ldso.c` | Docstring: host test for the ld.so pure parser (make test-ldso). | tests | 12 | 0 |
+| `tests/test_leakcheck.c` | Docstring: host test for the leak tracker (make test-leakcheck). | tests | 4 | 0 |
 | `tests/test_minifs_tools.py` | Host suite for the MiniFS image tools (docs/spec/shell-fs.md).  tools/mkfs.minifs.py builds the... | tests | 12 | 0 |
 | `tests/test_minios_png.c` | Docstring: host test for the shared ring-3 PNG helpers (make test-png). | tests | 10 | 0 |
 | `tests/test_mip.py` | host test for the frozen MicroPython installer (make test-mip). | tests | 44 | 0 |
@@ -52,7 +55,8 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/doom_pwad.py` | grid map to vanilla Doom PWAD writer and checker. | tools | 25 | 1 |
 | `tools/extract_shell.py` | tools/extract_shell.py -- Plan for Phase 6.1 shell extraction. | tools | 0 | 0 |
 | `tools/gdb_repro.py` | — drive a graphics-program sequence under the GDB stub. | tools | 4 | 0 |
-| `tools/gen_desktop_pngs.py` | build MiniOS desktop art from user-supplied PNGs. | tools | 2 | 0 |
+| `tools/gen_avatar.py` | Generate the desktop profile avatar as a C header. | tools | 19 | 0 |
+| `tools/gen_desktop_pngs.py` | build MiniOS desktop art from user-supplied PNGs. | tools | 4 | 0 |
 | `tools/gen_icons.py` | generate 32x32 RGBA PNG icon files for the MiniOS desktop. | tools | 3 | 0 |
 | `tools/gen_minifs.py` | Generate minifs.c for MiniOS. | tools | 0 | 0 |
 | `tools/gen_zip_fixtures.py` | generate the zip test fixtures shipped on the ramdisk. | tools | 2 | 0 |
@@ -87,11 +91,12 @@ Previous: [INDEX.md](INDEX.md)
 | `tools/test_gui_gfxview.py` | pixel + serial proof of the graphics view contract. | tools | 7 | 0 |
 | `tools/test_gui_icon_cwd.py` | GUI proof that dock launches ignore shell cwd. | tools | 17 | 0 |
 | `tools/test_gui_menu.py` | serial proof that the minicraft pause menu works. | tools | 1 | 0 |
-| `tools/test_gui_wm.py` | GUI proof that graphics windows survive the WM. | tools | 17 | 3 |
+| `tools/test_gui_wm.py` | GUI proof that graphics windows survive the WM. | tools | 17 | 4 |
 | `tools/test_gui_zoom.py` | pixel proof that GFX_ZOOM doubles the game window. | tools | 1 | 0 |
 | `tools/test_http_server.py` | - | tools | 3 | 0 |
 | `tools/test_lisp.py` | Host test suite for the MiniOS Lisp interpreter. | tools | 16 | 0 |
 | `tools/test_net_fixture.py` | host-side UDP and TCP echo fixture for lxnet. | tools | 5 | 0 |
+| `tools/test_readme_shot.py` | verify the desktop and refresh the README image. | tools | 8 | 0 |
 | `tools/test_sb16.sh` | — targeted BDD harness for the SB16 audio path. | tools | 1 | 0 |
 | `tools/tls_test.py` | Host-side TLS test driver for the MiniOS kernel TLS client. | tools | 16 | 0 |
 | `tools/update_sources.py` | Update the sibling source checkouts MiniOS builds against. | tools | 33 | 0 |

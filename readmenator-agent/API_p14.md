@@ -1,6 +1,60 @@
 # API (page 14 of 21)
 Previous: [API_p13.md](API_p13.md)
 
+## progs/doomgeneric/p_map.c
+Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
+- `PIT_StompThing` (function) `progs/doomgeneric/p_map.c:97` `boolean PIT_StompThing (mobj_t* thing)` -- PIT_StompThing
+- `P_TeleportMove` (function) `progs/doomgeneric/p_map.c:131` `boolean
+P_TeleportMove
+( mobj_t*	thing,
+  fixed_t	x,
+  fixed_t	y )`
+- `PIT_CheckLine` (function) `progs/doomgeneric/p_map.c:206` `boolean PIT_CheckLine (line_t* ld)` -- PIT_CheckLine Adjusts tmfloorz and tmceilingz as lines are contacted
+- `PIT_CheckThing` (function) `progs/doomgeneric/p_map.c:275` `boolean PIT_CheckThing (mobj_t* thing)` -- PIT_CheckThing
+- `P_CheckPosition` (function) `progs/doomgeneric/p_map.c:402` `boolean
+P_CheckPosition
+( mobj_t*	thing,
+  fixed_t	x,
+  fixed_t	y )`
+- `P_TryMove` (function) `progs/doomgeneric/p_map.c:478` `boolean
+P_TryMove
+( mobj_t*	thing,
+  fixed_t	x,
+  fixed_t	y )`
+- `P_ThingHeightClip` (function) `progs/doomgeneric/p_map.c:557` `boolean P_ThingHeightClip (mobj_t* thing)` -- P_ThingHeightClip Takes a valid thing and adjusts the thing->floorz, thing->ceilingz, and possibly thing->z.
+- `P_HitSlideLine` (function) `progs/doomgeneric/p_map.c:611` `void P_HitSlideLine (line_t* ld)` -- P_HitSlideLine Adjusts the xmove / ymove so that the next move will slide along the wall.
+- `PTR_SlideTraverse` (function) `progs/doomgeneric/p_map.c:663` `boolean PTR_SlideTraverse (intercept_t* in)` -- PTR_SlideTraverse
+- `P_SlideMove` (function) `progs/doomgeneric/p_map.c:722` `void P_SlideMove (mobj_t* mo)` -- P_SlideMove The momx / momy move is bad, so try to slide along a wall.
+- `PTR_AimTraverse` (function) `progs/doomgeneric/p_map.c:843` `boolean
+PTR_AimTraverse (intercept_t* in)`
+- `PTR_ShootTraverse` (function) `progs/doomgeneric/p_map.c:928` `boolean PTR_ShootTraverse (intercept_t* in)` -- PTR_ShootTraverse
+- `P_AimLineAttack` (function) `progs/doomgeneric/p_map.c:1068` `fixed_t
+P_AimLineAttack
+( mobj_t*	t1,
+  angle_t	angle,
+  fixed_t	distance )`
+- `P_LineAttack` (function) `progs/doomgeneric/p_map.c:1110` `void
+P_LineAttack
+( mobj_t*	t1,
+  angle_t	angle,
+  fixed_t	distance,
+  fixed_t	slope,
+  int		dama...`
+- `PTR_UseTraverse` (function) `progs/doomgeneric/p_map.c:1142` `boolean	PTR_UseTraverse (intercept_t* in)`
+- `P_UseLines` (function) `progs/doomgeneric/p_map.c:1177` `void P_UseLines (player_t*	player)` -- P_UseLines Looks for special lines in front of the player to activate.
+- `PIT_RadiusAttack` (function) `progs/doomgeneric/p_map.c:1211` `boolean PIT_RadiusAttack (mobj_t* thing)` -- PIT_RadiusAttack "bombsource" is the creature that caused the explosion at "bombspot".
+- `P_RadiusAttack` (function) `progs/doomgeneric/p_map.c:1253` `void
+P_RadiusAttack
+( mobj_t*	spot,
+  mobj_t*	source,
+  int		damage )`
+- `PIT_ChangeSector` (function) `progs/doomgeneric/p_map.c:1304` `boolean PIT_ChangeSector (mobj_t*	thing)` -- PIT_ChangeSector
+- `P_ChangeSector` (function) `progs/doomgeneric/p_map.c:1368` `boolean
+P_ChangeSector
+( sector_t*	sector,
+  boolean	crunch )`
+- `SpechitOverrun` (function) `progs/doomgeneric/p_map.c:1391` `static void SpechitOverrun(line_t *ld)`
+
 ## progs/doomgeneric/p_maputl.c
 Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
 - `P_AproxDistance` (function) `progs/doomgeneric/p_maputl.c:44` `fixed_t
@@ -434,46 +488,6 @@ Imported by: `progs/doomgeneric/g_game.c`, `progs/doomgeneric/r_data.c`, `progs/
 - `R_FlatNumForName` (function) `progs/doomgeneric/r_data.h:43` `int R_FlatNumForName (char* name);` -- Retrieval.
 - `R_TextureNumForName` (function) `progs/doomgeneric/r_data.h:48` `int R_TextureNumForName (char *name);` -- Called by P_Ticker for switches and animations, returns the texture number for the texture name.
 - `R_CheckTextureNumForName` (function) `progs/doomgeneric/r_data.h:49` `int R_CheckTextureNumForName (char *name);`
-
-## progs/doomgeneric/r_draw.c
-Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `R_DrawColumn` (function) `progs/doomgeneric/r_draw.c:102` `void R_DrawColumn (void)` -- A column is a vertical slice/span from a wall texture that, given the DOOM style restrictions on the view...
-- `R_DrawColumn` (function) `progs/doomgeneric/r_draw.c:152` `void R_DrawColumn (void)` -- UNUSED.
-- `R_DrawColumnLow` (function) `progs/doomgeneric/r_draw.c:208` `void R_DrawColumnLow (void)`
-- `R_DrawFuzzColumn` (function) `progs/doomgeneric/r_draw.c:283` `void R_DrawFuzzColumn (void)` -- Framebuffer postprocessing.
-- `R_DrawFuzzColumnLow` (function) `progs/doomgeneric/r_draw.c:342` `void R_DrawFuzzColumnLow (void)`
-- `R_DrawTranslatedColumn` (function) `progs/doomgeneric/r_draw.c:424` `void R_DrawTranslatedColumn (void)`
-- `R_DrawTranslatedColumnLow` (function) `progs/doomgeneric/r_draw.c:468` `void R_DrawTranslatedColumnLow (void)`
-- `R_InitTranslationTables` (function) `progs/doomgeneric/r_draw.c:530` `void R_InitTranslationTables (void)` -- R_InitTranslationTables Creates the translation tables to map the green color ramp to gray, brown, red.
-- `R_DrawSpan` (function) `progs/doomgeneric/r_draw.c:590` `void R_DrawSpan (void)` -- Draws the actual span.
-- `R_DrawSpan` (function) `progs/doomgeneric/r_draw.c:646` `void R_DrawSpan (void)` -- UNUSED.
-- `R_DrawSpanLow` (function) `progs/doomgeneric/r_draw.c:719` `void R_DrawSpanLow (void)` -- Again..
-- `R_InitBuffer` (function) `progs/doomgeneric/r_draw.c:777` `void
-R_InitBuffer
-( int		width,
-  int		height )`
-- `R_FillBackScreen` (function) `progs/doomgeneric/r_draw.c:812` `void R_FillBackScreen (void)` -- R_FillBackScreen Fills the back screen with a pattern for variable screen sizes Also draws a beveled edge.
-- `R_VideoErase` (function) `progs/doomgeneric/r_draw.c:919` `void
-R_VideoErase
-( unsigned	ofs,
-  int		count )`
-- `R_DrawViewBorder` (function) `progs/doomgeneric/r_draw.c:941` `void R_DrawViewBorder (void)` -- R_DrawViewBorder Draws the border around the view for different size windows?
-
-## progs/doomgeneric/r_draw.h
-Imported by: `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/r_local.h`
-- `R_DrawColumn` (function) `progs/doomgeneric/r_draw.h:40` `void R_DrawColumn (void);` -- The span blitting interface.
-- `R_DrawColumnLow` (function) `progs/doomgeneric/r_draw.h:41` `void R_DrawColumnLow (void);`
-- `R_DrawFuzzColumn` (function) `progs/doomgeneric/r_draw.h:44` `void R_DrawFuzzColumn (void);` -- The Spectre/Invisibility effect.
-- `R_DrawFuzzColumnLow` (function) `progs/doomgeneric/r_draw.h:45` `void R_DrawFuzzColumnLow (void);`
-- `R_DrawTranslatedColumn` (function) `progs/doomgeneric/r_draw.h:50` `void R_DrawTranslatedColumn (void);` -- Draw with color translation tables, for player sprite rendering, Green/Red/Blue/Indigo shirts.
-- `R_DrawTranslatedColumnLow` (function) `progs/doomgeneric/r_draw.h:51` `void R_DrawTranslatedColumnLow (void);`
-- `R_VideoErase` (function) `progs/doomgeneric/r_draw.h:54` `void R_VideoErase ( unsigned ofs, int count );`
-- `R_DrawSpan` (function) `progs/doomgeneric/r_draw.h:78` `void R_DrawSpan (void);` -- Span blitting for rows, floor/ceiling.
-- `R_DrawSpanLow` (function) `progs/doomgeneric/r_draw.h:81` `void R_DrawSpanLow (void);` -- Low resolution mode, 160x200?
-- `R_InitBuffer` (function) `progs/doomgeneric/r_draw.h:85` `void R_InitBuffer ( int width, int height );`
-- `R_InitTranslationTables` (function) `progs/doomgeneric/r_draw.h:92` `void R_InitTranslationTables (void);` -- Initialize color translation tables, for player rendering etc.
-- `R_FillBackScreen` (function) `progs/doomgeneric/r_draw.h:97` `void R_FillBackScreen (void);` -- Rendering function.
-- `R_DrawViewBorder` (function) `progs/doomgeneric/r_draw.h:100` `void R_DrawViewBorder (void);` -- If the view size is not full screen, draws a border around it.
 
 
 Next: [API_p15.md](API_p15.md)

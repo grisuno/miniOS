@@ -15,7 +15,9 @@ Solid arrows stay in this module, dashed arrows leave it.
 ```mermaid
 flowchart LR
     n_progs_src_cvmfmt_c__main(["main"])
+    n_kernel_string_c__memset["string.memset"]
     n_progs_topogpt3_topogpt3_c__sprintf["topogpt3.sprintf"]
+    n_progs_src_cvmfmt_c__main -.-> n_kernel_string_c__memset
     n_progs_src_cvmfmt_c__main -.-> n_progs_topogpt3_topogpt3_c__sprintf
 ```
 
@@ -33,6 +35,6 @@ int main(void)
 
 **Returns:** `int`
 
-*Calls:* [`sprintf`](progs.topogpt3.topogpt3.c.md#sprintf)
+*Calls:* [`memset`](kernel.string.c.md#memset), [`sprintf`](progs.topogpt3.topogpt3.c.md#sprintf)
 
 ---

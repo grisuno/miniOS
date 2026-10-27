@@ -478,18 +478,21 @@ Depends on: `kernel/time.c`
 - `send` (function) `tools/gdb_repro.py:65` `def send(line)`
 - `quit_doom` (function) `tools/gdb_repro.py:70` `def quit_doom()`
 
-## tools/gen_desktop_pngs.py
-- `write_atomic` (function) `tools/gen_desktop_pngs.py:71` `def write_atomic(img, path)`
-- `main` (function) `tools/gen_desktop_pngs.py:77` `def main()`
-
-## tools/gen_icons.py
-- `make_png` (function) `tools/gen_icons.py:179` `def make_png(pixels, palette, width, height)` -- Create a minimal indexed-colour PNG from pixel indices and a palette.
-- `make_chunk` (function) `tools/gen_icons.py:209` `def make_chunk(chunk_type, data)`
-- `main` (function) `tools/gen_icons.py:214` `def main()`
-
-## tools/gen_zip_fixtures.py
-- `write_zip` (function) `tools/gen_zip_fixtures.py:28` `def write_zip(path, entries)` -- entries: list of (name, data_or_None).  data None marks a directory.
-- `main` (function) `tools/gen_zip_fixtures.py:42` `def main()`
+## tools/gen_avatar.py
+- `AvatarPainter.__init__` (method) `tools/gen_avatar.py:64` `def __init__(self, cfg)`
+- `AvatarPainter.background` (method) `tools/gen_avatar.py:83` `def background(self)`
+- `AvatarPainter.hair_back` (method) `tools/gen_avatar.py:86` `def hair_back(self)`
+- `AvatarPainter.face` (method) `tools/gen_avatar.py:96` `def face(self)`
+- `AvatarPainter.eye` (method) `tools/gen_avatar.py:103` `def eye(self, cx, cy)`
+- `AvatarPainter.eyes` (method) `tools/gen_avatar.py:123` `def eyes(self)`
+- `AvatarPainter.nose_mouth` (method) `tools/gen_avatar.py:127` `def nose_mouth(self)`
+- `AvatarPainter.bangs` (method) `tools/gen_avatar.py:134` `def bangs(self)`
+- `AvatarPainter.ribbon` (method) `tools/gen_avatar.py:149` `def ribbon(self)`
+- `AvatarPainter.render` (method) `tools/gen_avatar.py:157` `def render(self)`
+- `load_portrait` (function) `tools/gen_avatar.py:169` `def load_portrait(path, crop)` -- Crop the square face region of a picture and downsample it.
+- `parse_crop` (function) `tools/gen_avatar.py:180` `def parse_crop(text)` -- Parse 'X,Y,SIZE' into three integers or abort with a clear message.
+- `write_header` (function) `tools/gen_avatar.py:191` `def write_header(image, path)` -- Write the avatar as a C header, atomically.
+- `main` (function) `tools/gen_avatar.py:225` `def main(argv)` -- Entry point: render, write the header, optionally a preview PNG.
 
 
 Next: [API_p21.md](API_p21.md)

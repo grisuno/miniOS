@@ -12,9 +12,9 @@ graph LR
     headers -- "depends on" --> kernel
     kernel -- "calls into" --> headers
     progs -- "calls into" --> headers
-    progs -- "depends on" --> kernel
+    progs -- "calls into" --> kernel
     tests -- "calls into" --> headers
-    tests -- "depends on" --> kernel
+    tests -- "calls into" --> kernel
     tests -- "calls into" --> progs
     tools -- "depends on" --> progs
 ```

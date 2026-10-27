@@ -3,6 +3,8 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PCI_CLASS_XHCI` | macro | `headers/drivers/pci.h:57` | `#define PCI_CLASS_XHCI` |
+| `PCI_COMMAND_BUS_MASTER` | macro | `headers/drivers/pci.h:34` | `#define PCI_COMMAND_BUS_MASTER` |
 | `PCI_COMMAND_IO` | macro | `headers/drivers/pci.h:32` | `#define PCI_COMMAND_IO` |
 | `PCI_COMMAND_MEMORY` | macro | `headers/drivers/pci.h:33` | `#define PCI_COMMAND_MEMORY` |
 | `PCI_HDR_TYPE_BRIDGE` | macro | `headers/drivers/pci.h:47` | `#define PCI_HDR_TYPE_BRIDGE` |
@@ -494,7 +496,5 @@ Previous: [SYMBOLS_p3.md](SYMBOLS_p3.md)
 | `kmemcmp` | function | `headers/kernel.h:555` | `int kmemcmp(const void *a, const void *b, unsigned long n);` |
 | `kmemcpy` | function | `headers/kernel.h:553` | `void *kmemcpy(void *dst, const void *src, unsigned long n);` |
 | `kmemmove` | function | `headers/kernel.h:556` | `void *kmemmove(void *dst, const void *src, unsigned long n);` |
-| `kmemset` | function | `headers/kernel.h:554` | `void *kmemset(void *dst, int c, unsigned long n);` |
-| `kmm_make_uncached` | function | `headers/kernel.h:819` | `int kmm_make_uncached(unsigned long phys, unsigned long len);` |
 
 Next: [SYMBOLS_p5.md](SYMBOLS_p5.md)
