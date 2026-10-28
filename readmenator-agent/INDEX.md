@@ -116,6 +116,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `headers/wm_focus.h` | Docstring: Focus manager contract for the MiniOS desktop. | headers | 5 | 2 |
 | `headers/wm_geom.h` | Docstring: Window geometry contract for the MiniOS desktop. | headers | 11 | 3 |
 | `headers/wm_gfxview.h` | Docstring: Graphics-window view contract for the MiniOS desktop. | headers | 15 | 2 |
+| `headers/wm_jelly.h` | Docstring: Wobbly-window spring mesh contract for the MiniOS desktop. | headers | 14 | 2 |
 | `headers/wm_layout.h` | Docstring: Unified layout contract for the MiniOS desktop. | headers | 16 | 3 |
 | `headers/wm_notify.h` | Docstring: Focus event bus for the MiniOS desktop. | headers | 9 | 4 |
 | `headers/wm_render.h` | Docstring: Render pipeline contract for the MiniOS desktop. | headers | 5 | 2 |
@@ -163,7 +164,7 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `kernel/tick.c` | Docstring: Tick listener bus implementation. | kernel | 11 | 0 |
 | `kernel/time.c` | ktime_us: Microsecond resolution over the same calibrated ratio (Phase 0.2/0.3: clock_gettime... | kernel | 4 | 30 |
 | `kernel/vga_cursor.c` | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | kernel | 13 | 0 |
-| `kernel/vga_fb.c` | chrome_tint_t: Docstring: Translucent terminal backdrop: the desktop behind a window's content... | kernel | 236 | 0 |
+| `kernel/vga_fb.c` | chrome_tint_t: Docstring: Translucent terminal backdrop: the desktop behind a window's content... | kernel | 253 | 0 |
 | `kernel/vga_fx.c` | DOOM-melt desktop effects (see headers/vga_fx.h for the contract). | kernel | 9 | 0 |
 | `mcp/__init__.py` | - | mcp | 0 | 0 |
 | `mcp/mcp_dbg_driver.py` | Debug driver: boot MiniOS through the MCP bridge and run freedom. | mcp | 6 | 0 |
@@ -495,6 +496,5 @@ Pages: [INDEX.md](INDEX.md), [INDEX_p2.md](INDEX_p2.md)
 | `tests/test_futex.c` | Docstring: Host test for kernel/futex.c (make test-futex). | tests | 7 | 0 |
 | `tests/test_fx.c` | Docstring: Host test for headers/vga_fx.h (make test-fx). | tests | 2 | 0 |
 | `tests/test_hal_io.c` | Docstring: Host test for arch/x86/hal_io.h (make test-hal). | tests | 3 | 0 |
-| `tests/test_httpd.c` | Docstring: Host test for headers/httpd.h (make test-httpd). | tests | 2 | 0 |
 
 Next: [INDEX_p2.md](INDEX_p2.md)

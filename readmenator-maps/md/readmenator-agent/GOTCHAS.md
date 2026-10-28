@@ -20,24 +20,24 @@ These files have the most connections. Changes here have high blast radius.
 Editing these files can break the listed number of dependents. Run their tests after any change.
 
 - `kernel/string.c` -- 50 direct, 90 total dependents
-- `progs/doomgeneric/m_fixed.h` -- 9 direct, 59 total dependents
+- `progs/minios_abi.h` -- 32 direct, 64 total dependents
 - `progs/doomgeneric/tables.h` -- 6 direct, 56 total dependents
 - `progs/doomgeneric/d_think.h` -- 3 direct, 55 total dependents
 - `progs/doomgeneric/info.h` -- 4 direct, 54 total dependents
 - `progs/doomgeneric/v_patch.h` -- 2 direct, 54 total dependents
-- `progs/doomgeneric/d_ticcmd.h` -- 6 direct, 53 total dependents
 - `progs/doomgeneric/i_video.h` -- 18 direct, 53 total dependents
-- `headers/vma.h` -- 8 direct, 52 total dependents
-- `progs/doomgeneric/sha1.h` -- 5 direct, 52 total dependents
+- `progs/doomgeneric/sha1.h` -- 5 direct, 53 total dependents
+- `progs/doomgeneric/doomdata.h` -- 2 direct, 52 total dependents
+- `progs/doomgeneric/net_defs.h` -- 9 direct, 52 total dependents
 
 ## Hotspots (complexity + centrality)
 
 - `kernel/syscalls.c` -- complexity: 0.6, centrality: 0.7, combined: 0.7
 - `kernel/string.c` -- complexity: 0.0, centrality: 1.0, combined: 0.6
 - `progs/doomgeneric/d_main.c` -- complexity: 0.1, centrality: 0.9, combined: 0.6
+- `kernel/vga_fb.c` -- complexity: 0.6, centrality: 0.5, combined: 0.5
 - `kernel/shell.c` -- complexity: 0.2, centrality: 0.7, combined: 0.5
 - `progs/doomgeneric/g_game.c` -- complexity: 0.1, centrality: 0.8, combined: 0.5
-- `kernel/vga_fb.c` -- complexity: 0.6, centrality: 0.4, combined: 0.5
 - `headers/kernel.h` -- complexity: 1.0, centrality: 0.2, combined: 0.5
 - `progs/doomgeneric/st_stuff.c` -- complexity: 0.3, centrality: 0.5, combined: 0.4
 - `kernel/sched.c` -- complexity: 0.3, centrality: 0.4, combined: 0.4

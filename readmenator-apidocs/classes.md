@@ -418,6 +418,8 @@ Project types nested under the project types they derive from. External bases ar
 - [`wm_gfxview_config_t`](modules/headers.wm_gfxview.h.md#wm_gfxview_config_t) struct in `headers/wm_gfxview.h`
 - [`wm_gfxview_rect_t`](modules/headers.wm_gfxview.h.md#wm_gfxview_rect_t) struct in `headers/wm_gfxview.h`
 - [`wm_gfxview_t`](modules/headers.wm_gfxview.h.md#wm_gfxview_t) struct in `headers/wm_gfxview.h`
+- [`wm_jelly_config_t`](modules/headers.wm_jelly.h.md#wm_jelly_config_t) struct in `headers/wm_jelly.h`
+- [`wm_jelly_t`](modules/headers.wm_jelly.h.md#wm_jelly_t) struct in `headers/wm_jelly.h`
 - [`wm_layout_cell_t`](modules/headers.wm_layout.h.md#wm_layout_cell_t) struct in `headers/wm_layout.h`
 - [`wm_layout_config_t`](modules/headers.wm_layout.h.md#wm_layout_config_t) struct in `headers/wm_layout.h`
 - [`wm_layout_window_t`](modules/headers.wm_layout.h.md#wm_layout_window_t) struct in `headers/wm_layout.h`

@@ -1,6 +1,19 @@
 # API (page 7 of 21)
 Previous: [API_p6.md](API_p6.md)
 
+## kernel/percpu_rq.c
+Depends on: `headers/percpu_rq.h`
+- `rq_cpu_valid` (function) `kernel/percpu_rq.c:14` `static int rq_cpu_valid(int cpu)`
+- `rq_init` (function) `kernel/percpu_rq.c:19` `void rq_init(void)` -- topology and on spinlock.h for the ring locks, which keeps it host-testable (tests/test_percpu_rq.c, make...
+- `rq_enqueue` (function) `kernel/percpu_rq.c:41` `void rq_enqueue(int cpu, int pid)` -- Docstring: Record pid as READY work for cpu.
+- `rq_pop_local` (function) `kernel/percpu_rq.c:61` `int rq_pop_local(int cpu)` -- return; spin_lock_irqsave(&rqueues[cpu].lock, &flags); if (rqueues[cpu].count >= RQ_DEPTH) { rqueues[cpu].drops++...
+- `rq_steal_once` (function) `kernel/percpu_rq.c:89` `int rq_steal_once(int self_cpu, int *from_cpu)` -- Docstring: Non-blocking steal of one hint from another CPU's ring.
+- `rq_empty` (function) `kernel/percpu_rq.c:115` `int rq_empty(int cpu)` -- pid = rqueues[c].ring[rqueues[c].head]; rqueues[c].ring[rqueues[c].head] = WQ_NONE_HINT; rqueues[c].head =...
+- `rq_note_poll` (function) `kernel/percpu_rq.c:127` `void rq_note_poll(int cpu)` -- /** Docstring: True when cpu holds no hint.
+- `rq_should_rescan` (function) `kernel/percpu_rq.c:137` `int rq_should_rescan(int cpu)` -- return empty; } /** Docstring: Count an unsuccessful claim poll for the rescan schedule. void rq_note_poll(int cpu)...
+- `rq_stats` (function) `kernel/percpu_rq.c:152` `void rq_stats(int cpu, unsigned long *hits, unsigned long *steals,
+              unsigned long *d...` -- irqflags_t flags; int due = 0; if (!rq_cpu_valid(cpu)) return 1; spin_lock_irqsave(&rqueues[cpu].lock, &flags); if...
+
 ## kernel/printf.c
 - `putc_buf` (function) `kernel/printf.c:7` `static void putc_buf(char c, void *ctx, int *written)`
 - `putc_file` (function) `kernel/printf.c:13` `static void putc_file(char c, void *ctx, int *written)`

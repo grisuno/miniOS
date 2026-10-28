@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `PS2_HELD_RCTRL` | macro | `progs/freedomui/ps2_keymap.c:23` | `#define PS2_HELD_RCTRL` |
+| `PS2_HELD_RSHIFT` | macro | `progs/freedomui/ps2_keymap.c:21` | `#define PS2_HELD_RSHIFT` |
+| `PS2_PAUSE_TAIL` | macro | `progs/freedomui/ps2_keymap.c:15` | `#define PS2_PAUSE_TAIL` |
+| `PS2_PREFIX_EXTENDED` | macro | `progs/freedomui/ps2_keymap.c:13` | `#define PS2_PREFIX_EXTENDED` |
+| `PS2_PREFIX_PAUSE` | macro | `progs/freedomui/ps2_keymap.c:14` | `#define PS2_PREFIX_PAUSE` |
+| `PS2_TABLE_SIZE` | macro | `progs/freedomui/ps2_keymap.c:18` | `#define PS2_TABLE_SIZE` |
+| `SC_ALT` | macro | `progs/freedomui/ps2_keymap.c:35` | `#define SC_ALT` |
+| `SC_BACKSPACE` | macro | `progs/freedomui/ps2_keymap.c:28` | `#define SC_BACKSPACE` |
+| `SC_CAPS` | macro | `progs/freedomui/ps2_keymap.c:36` | `#define SC_CAPS` |
+| `SC_CTRL` | macro | `progs/freedomui/ps2_keymap.c:31` | `#define SC_CTRL` |
+| `SC_E0_DELETE` | macro | `progs/freedomui/ps2_keymap.c:56` | `#define SC_E0_DELETE` |
+| `SC_E0_DOWN` | macro | `progs/freedomui/ps2_keymap.c:53` | `#define SC_E0_DOWN` |
+| `SC_E0_END` | macro | `progs/freedomui/ps2_keymap.c:52` | `#define SC_E0_END` |
+| `SC_E0_HOME` | macro | `progs/freedomui/ps2_keymap.c:47` | `#define SC_E0_HOME` |
+| `SC_E0_INSERT` | macro | `progs/freedomui/ps2_keymap.c:55` | `#define SC_E0_INSERT` |
+| `SC_E0_KP_DIV` | macro | `progs/freedomui/ps2_keymap.c:45` | `#define SC_E0_KP_DIV` |
+| `SC_E0_LEFT` | macro | `progs/freedomui/ps2_keymap.c:50` | `#define SC_E0_LEFT` |
+| `SC_E0_MENU` | macro | `progs/freedomui/ps2_keymap.c:59` | `#define SC_E0_MENU` |
+| `SC_E0_NEXT` | macro | `progs/freedomui/ps2_keymap.c:54` | `#define SC_E0_NEXT` |
+| `SC_E0_PRINT` | macro | `progs/freedomui/ps2_keymap.c:46` | `#define SC_E0_PRINT` |
+| `SC_E0_PRIOR` | macro | `progs/freedomui/ps2_keymap.c:49` | `#define SC_E0_PRIOR` |
+| `SC_E0_RIGHT` | macro | `progs/freedomui/ps2_keymap.c:51` | `#define SC_E0_RIGHT` |
+| `SC_E0_SUPERL` | macro | `progs/freedomui/ps2_keymap.c:57` | `#define SC_E0_SUPERL` |
+| `SC_E0_SUPERR` | macro | `progs/freedomui/ps2_keymap.c:58` | `#define SC_E0_SUPERR` |
+| `SC_E0_UP` | macro | `progs/freedomui/ps2_keymap.c:48` | `#define SC_E0_UP` |
+| `SC_ESCAPE` | macro | `progs/freedomui/ps2_keymap.c:27` | `#define SC_ESCAPE` |
+| `SC_F1` | macro | `progs/freedomui/ps2_keymap.c:37` | `#define SC_F1` |
+| `SC_F10` | macro | `progs/freedomui/ps2_keymap.c:38` | `#define SC_F10` |
+| `SC_F11` | macro | `progs/freedomui/ps2_keymap.c:43` | `#define SC_F11` |
+| `SC_F12` | macro | `progs/freedomui/ps2_keymap.c:44` | `#define SC_F12` |
+| `SC_KP_FIRST` | macro | `progs/freedomui/ps2_keymap.c:41` | `#define SC_KP_FIRST` |
 | `SC_KP_LAST` | macro | `progs/freedomui/ps2_keymap.c:42` | `#define SC_KP_LAST` |
 | `SC_KP_MUL` | macro | `progs/freedomui/ps2_keymap.c:34` | `#define SC_KP_MUL` |
 | `SC_LSHIFT` | macro | `progs/freedomui/ps2_keymap.c:32` | `#define SC_LSHIFT` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `sc_hist_push` | function | `progs/minicraft/minicraft.c:2151` | `static void sc_hist_push(unsigned char b)` |
 | `selftest` | function | `progs/minicraft/minicraft.c:3345` | `static int selftest(void)` |
 | `ser_get` | function | `progs/minicraft/minicraft.c:373` | `static long ser_get(void)` |
-| `ser_unget` | function | `progs/minicraft/minicraft.c:386` | `static void ser_unget(unsigned char b)` |
-| `set_b` | function | `progs/minicraft/minicraft.c:774` | `static void set_b(int x, int y, int z, unsigned char b)` |
-| `set_b_raw` | function | `progs/minicraft/minicraft.c:790` | `static void set_b_raw(int x, int y, int z, unsigned char b)` |
-| `shade_block` | function | `progs/minicraft/minicraft.c:1602` | `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,              ...` |
-| `sky_color` | function | `progs/minicraft/minicraft.c:1569` | `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)` |
-| `sky_light` | function | `progs/minicraft/minicraft.c:801` | `static float sky_light(int x, int y, int z)` |
-| `tick_discover` | function | `progs/minicraft/minicraft.c:2630` | `static void tick_discover(long now)` |
-| `tick_goals` | function | `progs/minicraft/minicraft.c:2619` | `static void tick_goals(void)` |
-| `tick_hunger` | function | `progs/minicraft/minicraft.c:2596` | `static void tick_hunger(long now)` |
-| `tick_interact` | function | `progs/minicraft/minicraft.c:2668` | `static void tick_interact(void)` |
-| `tick_mob` | function | `progs/minicraft/minicraft.c:1386` | `static void tick_mob(Pig *p, int id, float dt, long now)` |
-| `tick_pigs` | function | `progs/minicraft/minicraft.c:1512` | `static void tick_pigs(float dt, long now)` |
-| `tick_player` | function | `progs/minicraft/minicraft.c:2449` | `static void tick_player(float dt)` |
-| `tick_water` | function | `progs/minicraft/minicraft.c:2548` | `static void tick_water(long now)` |
-| `title_menu` | function | `progs/minicraft/minicraft.c:3754` | `static int title_menu(int have_save, int *seed_io)` |
-| `try_autostep` | function | `progs/minicraft/minicraft.c:2413` | `static void try_autostep(float tx, float ty)` |
-| `voro_site` | function | `progs/minicraft/minicraft.c:861` | `static void voro_site(int cx, int cy, unsigned int seed, int cell,     int *sx, int *sy)` |
-| `world_max_recompute` | function | `progs/minicraft/minicraft.c:606` | `static void world_max_recompute(void)` |
-| `DOOM_BACKBUF_ADDR` | function | `progs/minios_abi.h:133` | `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...` |
-| `MINIOS_ABI_CHECKSUM` | macro | `progs/minios_abi.h:48` | `#define MINIOS_ABI_CHECKSUM` |
-| `MINIOS_ABI_H` | macro | `progs/minios_abi.h:2` | `#define MINIOS_ABI_H` |
-| `MINIOS_ABI_VERSION` | macro | `progs/minios_abi.h:44` | `#define MINIOS_ABI_VERSION` |
-| `MINIOS_DEV_MMIO_VBASE` | macro | `progs/minios_abi.h:219` | `#define MINIOS_DEV_MMIO_VBASE` |
-| `MINIOS_DOOM_BACKBUF_ADDR` | macro | `progs/minios_abi.h:140` | `#define MINIOS_DOOM_BACKBUF_ADDR` |
-| `MINIOS_DOOM_H` | macro | `progs/minios_abi.h:142` | `#define MINIOS_DOOM_H` |
-| `MINIOS_DOOM_W` | macro | `progs/minios_abi.h:141` | `#define MINIOS_DOOM_W` |
-| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:450` | `#define MINIOS_EABI_MISMATCH` |
-| `MINIOS_FB_ADDR` | macro | `progs/minios_abi.h:143` | `#define MINIOS_FB_ADDR` |
-| `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:225` | `#define MINIOS_FB_HEIGHT_MAX` |
-| `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:224` | `#define MINIOS_FB_WIDTH_MAX` |
-| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:416` | `#define MINIOS_GFX_BUF_GAME` |
 
 Next: [SYMBOLS_p21.md](SYMBOLS_p21.md)

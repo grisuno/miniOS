@@ -3,6 +3,8 @@ Previous: [INDEX.md](INDEX.md)
 
 | File | Purpose | Subsystem | Symbols | Used by |
 |------|---------|-----------|---------|---------|
+| `tests/test_httpd.c` | Docstring: Host test for headers/httpd.h (make test-httpd). | tests | 2 | 0 |
+| `tests/test_jelly.c` | Docstring: Host test for headers/wm_jelly.h (make test-jelly). | tests | 3 | 0 |
 | `tests/test_ktime.c` | host test for the pure conversion math in ktime.h | tests | 2 | 0 |
 | `tests/test_ldso.c` | Docstring: host test for the ld.so pure parser (make test-ldso). | tests | 12 | 0 |
 | `tests/test_leakcheck.c` | Docstring: host test for the leak tracker (make test-leakcheck). | tests | 4 | 0 |

@@ -2,6 +2,7 @@
 Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/doomstat.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/i_system.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_local.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_sky.h`
@@ -314,6 +315,7 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `tests/test_hal_io.c` -> `headers/arch/x86/hal_io.h`
 - `tests/test_httpd.c` -> `headers/httpd.h`
 - `tests/test_httpd.c` -> `kernel/string.c`
+- `tests/test_jelly.c` -> `headers/wm_jelly.h`
 - `tests/test_ktime.c` -> `headers/ktime.h`
 - `tests/test_ldso.c` -> `headers/ldso.h`
 - `tests/test_ldso.c` -> `kernel/ldso_parse.c`

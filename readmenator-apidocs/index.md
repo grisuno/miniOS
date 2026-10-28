@@ -1,10 +1,10 @@
 # miniOS API Reference
 
-> Generated offline by readmenator: 515 modules, 10492 documented entities, documentation coverage 29.7% (2831/9532 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
+> Generated offline by readmenator: 516 modules, 10509 documented entities, documentation coverage 29.8% (2846/9549 public items). Deterministic, zero tokens: signatures from source, docs parsed from Google, NumPy, reST, Javadoc/JSDoc/Doxygen, C# XML, and Rustdoc comments.
 
 Navigate: [Interactive architecture and flows](flows.html) | [Architecture and flows (Mermaid)](architecture.md) | [Class hierarchy](classes.md) | [General index](genindex.md) | [Coverage and warnings](COVERAGE.md) | [`api/index.json`](api/index.json) | [HTML browser](index.html)
 
-Languages: S (7), c (239), h (196), py (50), s (13), sh (10)
+Languages: S (7), c (239), h (197), py (50), s (13), sh (10)
 
 ## Modules
 
@@ -142,6 +142,7 @@ Languages: S (7), c (239), h (196), py (50), s (13), sh (10)
 | [`headers/wm_focus.h`](modules/headers.wm_focus.h.md) | Docstring: Focus manager contract for the MiniOS desktop. | 1 | 3 | 100.0% |
 | [`headers/wm_geom.h`](modules/headers.wm_geom.h.md) | Docstring: Window geometry contract for the MiniOS desktop. | 2 | 8 | 100.0% |
 | [`headers/wm_gfxview.h`](modules/headers.wm_gfxview.h.md) | Docstring: Graphics-window view contract for the MiniOS desktop. | 3 | 11 | 93.3% |
+| [`headers/wm_jelly.h`](modules/headers.wm_jelly.h.md) | Docstring: Wobbly-window spring mesh contract for the MiniOS desktop. | 2 | 11 | 100.0% |
 | [`headers/wm_layout.h`](modules/headers.wm_layout.h.md) | Docstring: Unified layout contract for the MiniOS desktop. | 3 | 12 | 100.0% |
 | [`headers/wm_notify.h`](modules/headers.wm_notify.h.md) | Docstring: Focus event bus for the MiniOS desktop. | 2 | 6 | 88.9% |
 | [`headers/wm_render.h`](modules/headers.wm_render.h.md) | Docstring: Render pipeline contract for the MiniOS desktop. | 2 | 2 | 100.0% |
@@ -231,7 +232,7 @@ Languages: S (7), c (239), h (196), py (50), s (13), sh (10)
 | [`kernel/tick.c`](modules/kernel.tick.c.md) | Docstring: Tick listener bus implementation. | 1 | 10 | 100.0% |
 | [`kernel/time.c`](modules/kernel.time.c.md) | ================================================================ | 0 | 2 | 100.0% |
 | [`kernel/vga_cursor.c`](modules/kernel.vga_cursor.c.md) | Docstring: Hardware pointer sprite layer (kernel/vga_cursor.c). | 0 | 8 | 88.9% |
-| [`kernel/vga_fb.c`](modules/kernel.vga_fb.c.md) |  | 3 | 114 | 51.7% |
+| [`kernel/vga_fb.c`](modules/kernel.vga_fb.c.md) |  | 3 | 117 | 51.2% |
 | [`kernel/vga_fx.c`](modules/kernel.vga_fx.c.md) | DOOM-melt desktop effects (see headers/vga_fx.h for the contract). | 0 | 8 | 33.3% |
 
 ### `kernel/mm`

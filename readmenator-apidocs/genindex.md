@@ -3089,6 +3089,9 @@
 
 ## J
 
+- [`JELLY_BLOCK`](modules/kernel.vga_fb.c.md#jelly_block) macro in `kernel/vga_fb.c`
+- [`JELLY_ROW_MAX`](modules/kernel.vga_fb.c.md#jelly_row_max) macro in `kernel/vga_fb.c`
+- [`JELLY_SUBSTEPS`](modules/kernel.vga_fb.c.md#jelly_substeps) macro in `kernel/vga_fb.c`
 - [`job_row`](modules/kernel.shell.c.md#job_row) struct in `kernel/shell.c`
 - [`joybfire`](modules/progs.doomgeneric.m_controls.h.md#joybfire) variable in `progs/doomgeneric/m_controls.h`
 - [`joybjump`](modules/progs.doomgeneric.m_controls.h.md#joybjump) variable in `progs/doomgeneric/m_controls.h`
@@ -9737,6 +9740,19 @@
 - [`wm_hit_title_bar`](modules/headers.wm_geom.h.md#wm_hit_title_bar) function in `headers/wm_geom.h`
 - [`wm_is_click_edge`](modules/headers.wm_events.h.md#wm_is_click_edge) function in `headers/wm_events.h`
 - [`wm_is_release_edge`](modules/headers.wm_events.h.md#wm_is_release_edge) function in `headers/wm_events.h`
+- [`wm_jelly_abs`](modules/headers.wm_jelly.h.md#wm_jelly_abs) function in `headers/wm_jelly.h`
+- [`wm_jelly_at_rest`](modules/headers.wm_jelly.h.md#wm_jelly_at_rest) function in `headers/wm_jelly.h`
+- [`wm_jelly_clamp`](modules/headers.wm_jelly.h.md#wm_jelly_clamp) function in `headers/wm_jelly.h`
+- [`WM_JELLY_CONFIG_DEFAULT`](modules/headers.wm_jelly.h.md#wm_jelly_config_default) macro in `headers/wm_jelly.h`
+- [`wm_jelly_config_t`](modules/headers.wm_jelly.h.md#wm_jelly_config_t) struct in `headers/wm_jelly.h`
+- [`WM_JELLY_FP`](modules/headers.wm_jelly.h.md#wm_jelly_fp) macro in `headers/wm_jelly.h`
+- [`WM_JELLY_GRID`](modules/headers.wm_jelly.h.md#wm_jelly_grid) macro in `headers/wm_jelly.h`
+- [`wm_jelly_neighbours`](modules/headers.wm_jelly.h.md#wm_jelly_neighbours) function in `headers/wm_jelly.h`
+- [`wm_jelly_reset`](modules/headers.wm_jelly.h.md#wm_jelly_reset) function in `headers/wm_jelly.h`
+- [`wm_jelly_sample`](modules/headers.wm_jelly.h.md#wm_jelly_sample) function in `headers/wm_jelly.h`
+- [`wm_jelly_step`](modules/headers.wm_jelly.h.md#wm_jelly_step) function in `headers/wm_jelly.h`
+- [`wm_jelly_t`](modules/headers.wm_jelly.h.md#wm_jelly_t) struct in `headers/wm_jelly.h`
+- [`WM_JELLY_WEIGHT_ONE`](modules/headers.wm_jelly.h.md#wm_jelly_weight_one) macro in `headers/wm_jelly.h`
 - [`wm_layout_cell_t`](modules/headers.wm_layout.h.md#wm_layout_cell_t) struct in `headers/wm_layout.h`
 - [`wm_layout_clamp_cell`](modules/headers.wm_layout.h.md#wm_layout_clamp_cell) function in `headers/wm_layout.h`
 - [`wm_layout_compute`](modules/headers.wm_layout.h.md#wm_layout_compute) function in `headers/wm_layout.h`

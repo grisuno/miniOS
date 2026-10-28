@@ -295,6 +295,16 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `CHECK` (macro, line 18) `#define CHECK(cond, msg)`
 - Depends on: `headers/httpd.h`, `kernel/string.c`
 
+## tests/test_jelly.c
+- Doc: Docstring: Host test for headers/wm_jelly.h (make test-jelly).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `absi` (function, line 24) `static int absi(int v)`
+  - `main` (function, line 29) `int main(void)`
+  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
+- Depends on: `headers/wm_jelly.h`
+
 ## tests/test_ktime.c
 - Doc: host test for the pure conversion math in ktime.h
 - Layer: testing
@@ -480,18 +490,6 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `main` (function, line 39) `int main(void)`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `headers/panic.h`
-
-## tests/test_pcache.c
-- Doc: Docstring: host test for the page cache store (make test-pcache).
-- Layer: testing
-- Language: c
-- Symbols:
-  - `kmalloc` (function, line 19) `void *kmalloc(unsigned long size)`
-  - `kfree` (function, line 23) `void kfree(void *ptr)`
-  - `kprintf` (function, line 27) `int kprintf(const char *fmt, ...)`
-  - `main` (function, line 43) `int main(void)`
-  - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
-- Depends on: `fs/pcache.c`, `headers/pcache.h`, `kernel/string.c`
 
 
 Next: [KB_tests_p2.md](KB_tests_p2.md)

@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `R_InitData` | function | `progs/doomgeneric/r_data.h:36` | `void R_InitData (void);` |
+| `R_PrecacheLevel` | function | `progs/doomgeneric/r_data.h:37` | `void R_PrecacheLevel (void);` |
+| `R_TextureNumForName` | function | `progs/doomgeneric/r_data.h:48` | `int R_TextureNumForName (char *name);` |
+| `__R_DATA__` | macro | `progs/doomgeneric/r_data.h:22` | `#define __R_DATA__` |
+| `MAXDRAWSEGS` | macro | `progs/doomgeneric/r_defs.h:51` | `#define MAXDRAWSEGS` |
+| `SIL_BOTH` | macro | `progs/doomgeneric/r_defs.h:49` | `#define SIL_BOTH` |
+| `SIL_BOTTOM` | macro | `progs/doomgeneric/r_defs.h:47` | `#define SIL_BOTTOM` |
+| `SIL_NONE` | macro | `progs/doomgeneric/r_defs.h:46` | `#define SIL_NONE` |
+| `SIL_TOP` | macro | `progs/doomgeneric/r_defs.h:48` | `#define SIL_TOP` |
+| `__R_DEFS__` | macro | `progs/doomgeneric/r_defs.h:21` | `#define __R_DEFS__` |
+| `curline` | type_alias | `progs/doomgeneric/r_defs.h:306` | `typedef struct drawseg_s { seg_t* curline;` |
+| `degenmobj_t` | struct | `progs/doomgeneric/r_defs.h:84` | `` |
+| `drawseg_s` | struct | `progs/doomgeneric/r_defs.h:306` | `` |
+| `lighttable_t` | type_alias | `progs/doomgeneric/r_defs.h:298` | `typedef byte lighttable_t;` |
+| `line_s` | struct | `progs/doomgeneric/r_defs.h:76` | `` |
+| `line_s` | struct | `progs/doomgeneric/r_defs.h:175` | `` |
+| `node_t` | struct | `progs/doomgeneric/r_defs.h:261` | `` |
+| `prev` | type_alias | `progs/doomgeneric/r_defs.h:338` | `typedef struct vissprite_s { // Doubly linked list. struct vissprite_s* prev;` |
+| `sector` | type_alias | `progs/doomgeneric/r_defs.h:223` | `typedef struct subsector_s { sector_t* sector;` |
+| `sector_t` | struct | `progs/doomgeneric/r_defs.h:97` | `` |
+| `seg_t` | struct | `progs/doomgeneric/r_defs.h:236` | `` |
+| `side_t` | struct | `progs/doomgeneric/r_defs.h:140` | `` |
+| `spritedef_t` | struct | `progs/doomgeneric/r_defs.h:411` | `` |
+| `spriteframe_t` | struct | `progs/doomgeneric/r_defs.h:390` | `` |
+| `subsector_s` | struct | `progs/doomgeneric/r_defs.h:223` | `` |
+| `v1` | type_alias | `progs/doomgeneric/r_defs.h:172` | `typedef struct line_s { // Vertices, from v1 to v2. vertex_t* v1;` |
+| `vertex_t` | struct | `progs/doomgeneric/r_defs.h:67` | `` |
+| `visplane_t` | struct | `progs/doomgeneric/r_defs.h:423` | `` |
+| `vissprite_s` | struct | `progs/doomgeneric/r_defs.h:338` | `` |
+| `FUZZOFF` | macro | `progs/doomgeneric/r_draw.c:258` | `#define FUZZOFF` |
+| `FUZZTABLE` | macro | `progs/doomgeneric/r_draw.c:257` | `#define FUZZTABLE` |
 | `MAXHEIGHT` | macro | `progs/doomgeneric/r_draw.c:42` | `#define MAXHEIGHT` |
 | `MAXWIDTH` | macro | `progs/doomgeneric/r_draw.c:41` | `#define MAXWIDTH` |
 | `R_DrawColumn` | function | `progs/doomgeneric/r_draw.c:102` | `void R_DrawColumn (void)` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 | `ST_refreshBackground` | function | `progs/doomgeneric/st_stuff.c:416` | `void ST_refreshBackground(void)` |
 | `ST_unloadCallback` | function | `progs/doomgeneric/st_stuff.c:1178` | `static void ST_unloadCallback(char *lumpname, patch_t **variable)` |
 | `ST_unloadData` | function | `progs/doomgeneric/st_stuff.c:1189` | `void ST_unloadData(void)` |
-| `ST_unloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1184` | `void ST_unloadGraphics(void)` |
-| `ST_updateFaceWidget` | function | `progs/doomgeneric/st_stuff.c:688` | `void ST_updateFaceWidget(void)` |
-| `ST_updateWidgets` | function | `progs/doomgeneric/st_stuff.c:860` | `void ST_updateWidgets(void)` |
-| `ST_Drawer` | function | `progs/doomgeneric/st_stuff.h:46` | `void ST_Drawer (boolean fullscreen, boolean refresh);` |
-| `ST_HEIGHT` | macro | `progs/doomgeneric/st_stuff.h:30` | `#define ST_HEIGHT` |
-| `ST_Init` | function | `progs/doomgeneric/st_stuff.h:52` | `void ST_Init (void);` |
-| `ST_Start` | function | `progs/doomgeneric/st_stuff.h:49` | `void ST_Start (void);` |
-| `ST_Ticker` | function | `progs/doomgeneric/st_stuff.h:43` | `void ST_Ticker (void);` |
-| `ST_WIDTH` | macro | `progs/doomgeneric/st_stuff.h:31` | `#define ST_WIDTH` |
-| `ST_Y` | macro | `progs/doomgeneric/st_stuff.h:32` | `#define ST_Y` |
-| `__STSTUFF_H__` | macro | `progs/doomgeneric/st_stuff.h:22` | `#define __STSTUFF_H__` |
-| `cheat_ammo` | variable | `progs/doomgeneric/st_stuff.h:79` | `extern cheatseq_t cheat_ammo;` |
-| `cheat_ammonokey` | variable | `progs/doomgeneric/st_stuff.h:80` | `extern cheatseq_t cheat_ammonokey;` |
-| `cheat_choppers` | variable | `progs/doomgeneric/st_stuff.h:84` | `extern cheatseq_t cheat_choppers;` |
-| `cheat_clev` | variable | `progs/doomgeneric/st_stuff.h:85` | `extern cheatseq_t cheat_clev;` |
-| `cheat_commercial_noclip` | variable | `progs/doomgeneric/st_stuff.h:82` | `extern cheatseq_t cheat_commercial_noclip;` |
-| `cheat_god` | variable | `progs/doomgeneric/st_stuff.h:78` | `extern cheatseq_t cheat_god;` |
-| `cheat_mus` | variable | `progs/doomgeneric/st_stuff.h:77` | `extern cheatseq_t cheat_mus;` |
-| `cheat_mypos` | variable | `progs/doomgeneric/st_stuff.h:86` | `extern cheatseq_t cheat_mypos;` |
-| `cheat_noclip` | variable | `progs/doomgeneric/st_stuff.h:81` | `extern cheatseq_t cheat_noclip;` |
-| `cheat_powerup` | variable | `progs/doomgeneric/st_stuff.h:83` | `extern cheatseq_t cheat_powerup[7];` |
-| `st_backing_screen` | variable | `progs/doomgeneric/st_stuff.h:76` | `extern byte *st_backing_screen;` |
-| `DiscoverGamemode` | function | `progs/doomgeneric/statdump.c:71` | `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)` |
-| `GetNumPlayers` | function | `progs/doomgeneric/statdump.c:130` | `static int GetNumPlayers(wbstartstruct_t *stats)` |
-| `MAX_CAPTURES` | macro | `progs/doomgeneric/statdump.c:56` | `#define MAX_CAPTURES` |
-| `PrintBanner` | function | `progs/doomgeneric/statdump.c:150` | `static void PrintBanner(FILE *stream)` |
-| `PrintFragsTable` | function | `progs/doomgeneric/statdump.c:213` | `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)` |
-| `PrintLevelName` | function | `progs/doomgeneric/statdump.c:272` | `static void PrintLevelName(FILE *stream, int episode, int level)` |
-| `PrintPercentage` | function | `progs/doomgeneric/statdump.c:155` | `static void PrintPercentage(FILE *stream, int amount, int total)` |
-| `PrintPlayerStats` | function | `progs/doomgeneric/statdump.c:180` | `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,         int player_num)` |
-| `PrintStats` | function | `progs/doomgeneric/statdump.c:301` | `static void PrintStats(FILE *stream, wbstartstruct_t *stats)` |
 
 Next: [SYMBOLS_p19.md](SYMBOLS_p19.md)

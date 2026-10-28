@@ -1,6 +1,6 @@
 # Audit Report
 
-*Project: miniOS | 2026-10-27 | offline, deterministic*
+*Project: miniOS | 2026-10-28 | offline, deterministic*
 
 ## Confidence Trail
 
@@ -8,15 +8,15 @@ Every edge is tagged. Extracted means parsed from source; inferred means derived
 
 | Confidence | Count | Meaning |
 |------------|-------|---------|
-| EXTRACTED | 1399 | Resolved import edges parsed from source |
-| EXTRACTED | 2266 | Raw import statements (may include externals) |
+| EXTRACTED | 1401 | Resolved import edges parsed from source |
+| EXTRACTED | 2269 | Raw import statements (may include externals) |
 | INFERRED | 5 | Surprising cross-community bridges |
 | AMBIGUOUS | 0 | No uncertain edges are emitted by the static scanner |
 
 ## Coverage
 
-- Files: 594, communities: 11
-- File doc coverage: 528/594
+- Files: 596, communities: 11
+- File doc coverage: 530/596
 - Orphans (no docs at any level): 47
 - Layers detected: 5
 - Security findings: 0
@@ -31,7 +31,7 @@ Every edge is tagged. Extracted means parsed from source; inferred means derived
 
 ## Token Benchmark
 
-- Wiki index plus community pages estimate: ~240489 tokens (chars/4).
+- Wiki index plus community pages estimate: ~242290 tokens (chars/4).
 - Full re-read of every source file would cost strictly more on any non-trivial project; this wiki is the cheaper entry point.
 - Generation cost: $0, offline, no network calls.
 

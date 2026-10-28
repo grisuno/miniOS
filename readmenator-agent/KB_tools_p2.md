@@ -29,10 +29,10 @@ Previous: [KB_tools.md](KB_tools.md)
 - Language: sh
 - Symbols:
   - `usage` (function, line 51)
-  - `restore_sources` (function, line 138)
-  - `cleanup` (function, line 145)
-  - `record` (function, line 547)
-  - `find_index` (function, line 553)
+  - `restore_sources` (function, line 139)
+  - `cleanup` (function, line 146)
+  - `record` (function, line 556)
+  - `find_index` (function, line 562)
 
 ## tools/probe_compute_vga.py
 - Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute.

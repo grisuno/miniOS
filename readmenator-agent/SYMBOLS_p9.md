@@ -3,6 +3,20 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `rcu_me` | function | `kernel/rcu.c:13` | `static cpu_t *rcu_me(void)` |
+| `rcu_me` | function | `kernel/rcu.c:17` | `static cpu_t *rcu_me(void)` |
+| `rcu_note_idle` | function | `kernel/rcu.c:137` | `void rcu_note_idle(int cpu)` |
+| `rcu_note_tick` | function | `kernel/rcu.c:126` | `void rcu_note_tick(int cpu)` |
+| `rcu_poll` | function | `kernel/rcu.c:152` | `void rcu_poll(void)` |
+| `rcu_publish` | function | `kernel/rcu.c:94` | `void rcu_publish(void *volatile *pp, void *v)` |
+| `rcu_read_lock` | function | `kernel/rcu.c:63` | `void rcu_read_lock(void)` |
+| `rcu_read_unlock` | function | `kernel/rcu.c:75` | `void rcu_read_unlock(void)` |
+| `rcu_slot_t` | struct | `kernel/rcu.c:22` | `` |
+| `rcu_state_t` | struct | `kernel/rcu.c:28` | `` |
+| `shell_report` | function | `kernel/redirect.c:17` | `void shell_report(const char *what, const char *detail)` |
+| `shell_report_exit` | function | `kernel/redirect.c:11` | `void shell_report_exit(int code)` |
+| `shell_take_redirect` | function | `kernel/redirect.c:25` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)` |
+| `BSP` | function | `kernel/sched.c:1780` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs          * running the shell contex...` |
 | `FSBASE` | function | `kernel/sched.c:913` | `* for FSBASE (per-proc TLS): a thread preempted after arch_prctl * would otherwise resume with whatever base the...` |
 | `IRQ4` | function | `kernel/sched.c:796` | `* IRQ4 (COM1, UART IER stays 0 so it never fires) + * IRQ5 (Sound Blaster 16 DMA done). In the mask register a bit...` |
 | `KSTACK_CANARY` | macro | `kernel/sched.c:169` | `#define KSTACK_CANARY` |
@@ -482,19 +496,5 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `sys_linux_dup` | function | `kernel/syscalls.c:1833` | `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_linux_dup2` | function | `kernel/syscalls.c:1848` | `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_linux_dup3` | function | `kernel/syscalls.c:1684` | `static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_eventfd` | function | `kernel/syscalls.c:1731` | `static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_eventfd2` | function | `kernel/syscalls.c:1718` | `static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fchmod` | function | `kernel/syscalls.c:3357` | `static long sys_linux_fchmod(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fdatasync` | function | `kernel/syscalls.c:3055` | `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_flock` | function | `kernel/syscalls.c:3041` | `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fstat` | function | `kernel/syscalls.c:3146` | `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_fsync` | function | `kernel/syscalls.c:3050` | `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_futex` | function | `kernel/syscalls.c:293` | `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getcwd` | function | `kernel/syscalls.c:3060` | `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getdents64` | function | `kernel/syscalls.c:976` | `static long sys_linux_getdents64(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getegid` | function | `kernel/syscalls.c:3248` | `static long sys_linux_getegid(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_geteuid` | function | `kernel/syscalls.c:3243` | `static long sys_linux_geteuid(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getgid` | function | `kernel/syscalls.c:3238` | `static long sys_linux_getgid(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_getpeername` | function | `kernel/syscalls.c:2900` | `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)` |
 
 Next: [SYMBOLS_p10.md](SYMBOLS_p10.md)

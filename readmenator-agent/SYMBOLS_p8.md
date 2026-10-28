@@ -3,6 +3,20 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `wm_notify_event_t` | struct | `headers/wm_notify.h:30` | `` |
+| `wm_notify_last` | function | `headers/wm_notify.h:90` | `static inline const wm_notify_event_t *wm_notify_last(     const wm_notify_bus_t *bus)` |
+| `wm_notify_reset` | function | `headers/wm_notify.h:51` | `static inline void wm_notify_reset(wm_notify_bus_t *bus)` |
+| `wm_notify_src_name` | function | `headers/wm_notify.h:98` | `static inline const char *wm_notify_src_name(int source)` |
+| `wm_notify_subscribe` | function | `headers/wm_notify.h:66` | `static inline int wm_notify_subscribe(wm_notify_bus_t *bus,                                      ...` |
+| `WM_RENDER_CONFIG_DEFAULT` | macro | `headers/wm_render.h:36` | `#define WM_RENDER_CONFIG_DEFAULT` |
+| `WM_RENDER_H` | macro | `headers/wm_render.h:11` | `#define WM_RENDER_H` |
+| `wm_build_render_plan` | function | `headers/wm_render.h:39` | `static inline int wm_build_render_plan(const wm_render_config_t *cfg, const int *present, int nte...` |
+| `wm_render_config_t` | struct | `headers/wm_render.h:31` | `` |
+| `wm_render_item_t` | struct | `headers/wm_render.h:25` | `` |
+| `WM_TILING_H` | macro | `headers/wm_tiling.h:10` | `#define WM_TILING_H` |
+| `wm_tile_cell_t` | struct | `headers/wm_tiling.h:13` | `` |
+| `wm_tile_layout` | function | `headers/wm_tiling.h:22` | `static inline int wm_tile_layout(const int *present, int nterms, int gfx_active, int max_cols, in...` |
+| `WM_WINDOW_GFX_ID` | macro | `headers/wm_window.h:23` | `#define WM_WINDOW_GFX_ID` |
 | `WM_WINDOW_H` | macro | `headers/wm_window.h:11` | `#define WM_WINDOW_H` |
 | `WM_WINDOW_MAX_TERMS` | macro | `headers/wm_window.h:26` | `#define WM_WINDOW_MAX_TERMS` |
 | `wm_focus_next_id` | function | `headers/wm_window.h:77` | `static inline int wm_focus_next_id(const int *present, int nterms, int gfx_active, int focus)` |
@@ -482,19 +496,5 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `rcu_cpu_valid` | function | `kernel/rcu.c:40` | `static int rcu_cpu_valid(int cpu)` |
 | `rcu_deref` | function | `kernel/rcu.c:88` | `void *rcu_deref(void *volatile *pp)` |
 | `rcu_init` | function | `kernel/rcu.c:45` | `void rcu_init(void)` |
-| `rcu_me` | function | `kernel/rcu.c:13` | `static cpu_t *rcu_me(void)` |
-| `rcu_me` | function | `kernel/rcu.c:17` | `static cpu_t *rcu_me(void)` |
-| `rcu_note_idle` | function | `kernel/rcu.c:137` | `void rcu_note_idle(int cpu)` |
-| `rcu_note_tick` | function | `kernel/rcu.c:126` | `void rcu_note_tick(int cpu)` |
-| `rcu_poll` | function | `kernel/rcu.c:152` | `void rcu_poll(void)` |
-| `rcu_publish` | function | `kernel/rcu.c:94` | `void rcu_publish(void *volatile *pp, void *v)` |
-| `rcu_read_lock` | function | `kernel/rcu.c:63` | `void rcu_read_lock(void)` |
-| `rcu_read_unlock` | function | `kernel/rcu.c:75` | `void rcu_read_unlock(void)` |
-| `rcu_slot_t` | struct | `kernel/rcu.c:22` | `` |
-| `rcu_state_t` | struct | `kernel/rcu.c:28` | `` |
-| `shell_report` | function | `kernel/redirect.c:17` | `void shell_report(const char *what, const char *detail)` |
-| `shell_report_exit` | function | `kernel/redirect.c:11` | `void shell_report_exit(int code)` |
-| `shell_take_redirect` | function | `kernel/redirect.c:25` | `int shell_take_redirect(int *argc, char **argv, char **path, int *append_mode)` |
-| `BSP` | function | `kernel/sched.c:1780` | `* CPU believe it is the BSP (wrong per-CPU identity, two CPUs          * running the shell contex...` |
 
 Next: [SYMBOLS_p9.md](SYMBOLS_p9.md)

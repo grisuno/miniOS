@@ -3,7 +3,41 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
-| `restore_sources` | function | `tools/mutate.sh:138` | `` |
+| `build_zip` | function | `tools/mkcpyzip.py:22` | `def build_zip(lib_dir, out_zip, skip)` |
+| `main` | function | `tools/mkcpyzip.py:41` | `def main()` |
+| `MiniFS` | class | `tools/mkfs.minifs.py:56` | `class MiniFS` |
+| `__init__` | method | `tools/mkfs.minifs.py:57` | `def __init__(self, total_blocks)` |
+| `add_dir_entry` | method | `tools/mkfs.minifs.py:154` | `def add_dir_entry(self, dir_ino, name, child_ino, ftype)` |
+| `alloc_block` | method | `tools/mkfs.minifs.py:94` | `def alloc_block(self)` |
+| `alloc_inode` | method | `tools/mkfs.minifs.py:88` | `def alloc_inode(self)` |
+| `claim_name` | method | `tools/mkfs.minifs.py:192` | `def claim_name(self, parent_ino, name, is_dir)` |
+| `count_free` | function | `tools/mkfs.minifs.py:50` | `def count_free(bitmap, count)` |
+| `crc16` | function | `tools/mkfs.minifs.py:34` | `def crc16(data)` |
+| `crc32` | function | `tools/mkfs.minifs.py:42` | `def crc32(data)` |
+| `create_inode` | method | `tools/mkfs.minifs.py:113` | `def create_inode(self, mode, links)` |
+| `create_root` | method | `tools/mkfs.minifs.py:100` | `def create_root(self)` |
+| `div_round_up` | function | `tools/mkfs.minifs.py:31` | `def div_round_up(n, d)` |
+| `inode_set_block` | method | `tools/mkfs.minifs.py:124` | `def inode_set_block(self, ino, logblk, phys)` |
+| `inode_set_size` | method | `tools/mkfs.minifs.py:120` | `def inode_set_size(self, ino, size)` |
+| `main` | function | `tools/mkfs.minifs.py:280` | `def main()` |
+| `mark_blocks_used` | method | `tools/mkfs.minifs.py:84` | `def mark_blocks_used(self, start, count)` |
+| `mark_inodes_used` | method | `tools/mkfs.minifs.py:80` | `def mark_inodes_used(self, start, count)` |
+| `pack_tree` | function | `tools/mkfs.minifs.py:310` | `def pack_tree(parent_ino, path, rel)` |
+| `roundup4` | function | `tools/mkfs.minifs.py:28` | `def roundup4(v)` |
+| `seal_inode` | method | `tools/mkfs.minifs.py:108` | `def seal_inode(self, ino)` |
+| `serialize` | method | `tools/mkfs.minifs.py:236` | `def serialize(self)` |
+| `write_dir` | method | `tools/mkfs.minifs.py:224` | `def write_dir(self, parent_ino, name)` |
+| `write_file` | method | `tools/mkfs.minifs.py:205` | `def write_file(self, parent_ino, name, data)` |
+| `main` | function | `tools/mkpak1.py:29` | `def main()` |
+| `main` | function | `tools/mkramdisk.py:74` | `def main()` |
+| `pack_name` | function | `tools/mkramdisk.py:64` | `def pack_name(path, common)` |
+| `read_fname_bytes` | function | `tools/mkramdisk.py:41` | `def read_fname_bytes(kernel_h_path)` |
+| `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
+| `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
+| `cleanup` | function | `tools/mutate.sh:146` | `` |
+| `find_index` | function | `tools/mutate.sh:562` | `` |
+| `record` | function | `tools/mutate.sh:556` | `` |
+| `restore_sources` | function | `tools/mutate.sh:139` | `` |
 | `usage` | function | `tools/mutate.sh:51` | `` |
 | `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |
 | `main` | function | `tools/probe_compute_vga.py:22` | `def main()` |

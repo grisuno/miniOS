@@ -2,12 +2,12 @@
  "schema_version": 1,
  "format": "jsonl",
  "meta": {
-  "modules": 515,
-  "entities": 10492,
+  "modules": 516,
+  "entities": 10509,
   "languages": {
    "S": 7,
    "c": 239,
-   "h": 196,
+   "h": 197,
    "py": 50,
    "s": 13,
    "sh": 10
@@ -19,25 +19,25 @@
    "constructor": 24,
    "enum": 3,
    "exception": 5,
-   "function": 4534,
-   "macro": 3885,
+   "function": 4541,
+   "macro": 3892,
    "method": 125,
-   "module": 515,
+   "module": 516,
    "property": 2,
    "staticmethod": 6,
-   "struct": 320,
+   "struct": 322,
    "type_alias": 74,
    "variable": 578
   },
   "truncated": false,
-  "skipped_files": 79,
+  "skipped_files": 80,
   "privacy_mode": false
  },
  "coverage": {
   "overall": {
-   "documented": 2831,
-   "total": 9532,
-   "percent": 29.7
+   "documented": 2846,
+   "total": 9549,
+   "percent": 29.8
   },
   "by_kind": {
    "class": {
@@ -61,14 +61,14 @@
     "percent": 100.0
    },
    "function": {
-    "documented": 1490,
-    "total": 4534,
-    "percent": 32.9
+    "documented": 1497,
+    "total": 4541,
+    "percent": 33.0
    },
    "macro": {
-    "documented": 669,
-    "total": 3885,
-    "percent": 17.2
+    "documented": 674,
+    "total": 3892,
+    "percent": 17.3
    },
    "method": {
     "documented": 24,
@@ -76,8 +76,8 @@
     "percent": 19.2
    },
    "module": {
-    "documented": 427,
-    "total": 515,
+    "documented": 428,
+    "total": 516,
     "percent": 82.9
    },
    "property": {
@@ -91,9 +91,9 @@
     "percent": 100.0
    },
    "struct": {
-    "documented": 136,
-    "total": 320,
-    "percent": 42.5
+    "documented": 138,
+    "total": 322,
+    "percent": 42.9
    },
    "type_alias": {
     "documented": 42,
@@ -667,6 +667,11 @@
     "total": 15,
     "percent": 93.3
    },
+   "headers/wm_jelly.h": {
+    "documented": 14,
+    "total": 14,
+    "percent": 100.0
+   },
    "headers/wm_layout.h": {
     "documented": 16,
     "total": 16,
@@ -903,9 +908,9 @@
     "percent": 88.9
    },
    "kernel/vga_fb.c": {
-    "documented": 61,
-    "total": 118,
-    "percent": 51.7
+    "documented": 62,
+    "total": 121,
+    "percent": 51.2
    },
    "kernel/vga_fx.c": {
     "documented": 3,
@@ -3246,6 +3251,11 @@
    "entities": 15
   },
   {
+   "uid": "headers/wm_jelly.h",
+   "path": "modules/headers.wm_jelly.h.jsonl",
+   "entities": 14
+  },
+  {
    "uid": "headers/wm_layout.h",
    "path": "modules/headers.wm_layout.h.jsonl",
    "entities": 16
@@ -3483,7 +3493,7 @@
   {
    "uid": "kernel/vga_fb.c",
    "path": "modules/kernel.vga_fb.c.jsonl",
-   "entities": 118
+   "entities": 121
   },
   {
    "uid": "kernel/vga_fx.c",
@@ -5258,7 +5268,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 6691
+  "total": 6693
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

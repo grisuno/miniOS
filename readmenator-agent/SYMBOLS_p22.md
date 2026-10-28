@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `kbd_semitone` | function | `progs/piano/piano.c:298` | `static int kbd_semitone(int code)` |
+| `key_rect` | function | `progs/piano/piano.c:511` | `static void key_rect(int key, int *x, int *y, int *w, int *h)` |
+| `main` | function | `progs/piano/piano.c:1042` | `int main(int argc, char **argv)` |
+| `midi_to_key` | function | `progs/piano/piano.c:211` | `static int midi_to_key(int midi)` |
+| `note_off_key` | function | `progs/piano/piano.c:268` | `static void note_off_key(int key)` |
+| `note_off_sc` | function | `progs/piano/piano.c:353` | `static void note_off_sc(int code)` |
+| `note_on_key` | function | `progs/piano/piano.c:281` | `static void note_on_key(int key, int midi, int vel)` |
+| `note_on_sc` | function | `progs/piano/piano.c:339` | `static void note_on_sc(int code, int vel)` |
+| `o3_chreg` | function | `progs/piano/piano.c:135` | `static void o3_chreg(int ch, int regbase, int val)` |
+| `o3_note` | function | `progs/piano/piano.c:173` | `static void o3_note(int ch, int midi, int on)` |
+| `o3_op` | function | `progs/piano/piano.c:127` | `static int o3_op(int ch, int is_car)` |
+| `o3_opreg` | function | `progs/piano/piano.c:131` | `static void o3_opreg(int ch, int is_car, int regbase, int val)` |
+| `pedal_set` | function | `progs/piano/piano.c:241` | `static void pedal_set(int on)` |
+| `piano_scancode` | function | `progs/piano/piano.c:369` | `static void piano_scancode(int code, int make, int e0, void *ud)` |
+| `rate` | function | `progs/piano/piano.c:818` | `* wait below caps the frame rate (bench mode skips it so the          * benchmark still measures ...` |
+| `render_audio` | function | `progs/piano/piano.c:484` | `static void render_audio(long ms)` |
+| `run_pcm2_probe` | function | `progs/piano/piano.c:1015` | `static int run_pcm2_probe(void)` |
+| `run_selftest` | function | `progs/piano/piano.c:836` | `static int run_selftest(void)` |
+| `sb_flush` | function | `progs/piano/piano.c:469` | `static void sb_flush(void)` |
+| `sys_pcm_close` | function | `progs/piano/piano.c:101` | `static void sys_pcm_close(void)` |
+| `sys_pcm_open` | function | `progs/piano/piano.c:93` | `static long sys_pcm_open(long flags)` |
+| `sys_pcm_write` | function | `progs/piano/piano.c:98` | `static long sys_pcm_write(const void *buf, long len)` |
+| `sys_present_idx` | function | `progs/piano/piano.c:112` | `static long sys_present_idx(int *origin)` |
+| `sys_yield` | function | `progs/piano/piano.c:104` | `static void sys_yield(void)` |
+| `ui_run` | function | `progs/piano/piano.c:594` | `static void ui_run(int bench_ms)` |
+| `voice_alloc` | function | `progs/piano/piano.c:255` | `static int voice_alloc(void)` |
+| `SDL_Delay` | function | `progs/pokemon/minios_stubs/SDL.h:14` | `static inline void SDL_Delay(Uint32 ms)` |
+| `SDL_GetPerformanceCounter` | function | `progs/pokemon/minios_stubs/SDL.h:11` | `static inline Uint64 SDL_GetPerformanceCounter(void)` |
+| `SDL_GetPerformanceFrequency` | function | `progs/pokemon/minios_stubs/SDL.h:12` | `static inline Uint64 SDL_GetPerformanceFrequency(void)` |
+| `SDL_GetTicks` | function | `progs/pokemon/minios_stubs/SDL.h:13` | `static inline Uint32 SDL_GetTicks(void)` |
+| `SDL_H_STUB_MINIOS` | macro | `progs/pokemon/minios_stubs/SDL.h:3` | `#define SDL_H_STUB_MINIOS` |
 | `Sint16` | type_alias | `progs/pokemon/minios_stubs/SDL.h:8` | `typedef int16_t Sint16;` |
 | `Sint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:7` | `typedef int32_t Sint32;` |
 | `Uint32` | type_alias | `progs/pokemon/minios_stubs/SDL.h:6` | `typedef uint32_t Uint32;` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `recvfrom` | function | `progs/src/http.c:8` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
 | `sendto` | function | `progs/src/http.c:7` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
 | `shutdown` | function | `progs/src/http.c:9` | `int shutdown(int fd, int how);` |
-| `strlen` | function | `progs/src/http.c:14` | `int strlen(char *s);` |
-| `JS_ARR` | macro | `progs/src/json.c:35` | `#define JS_ARR` |
-| `JS_BOOL` | macro | `progs/src/json.c:31` | `#define JS_BOOL` |
-| `JS_EXIT_FAIL` | macro | `progs/src/json.c:39` | `#define JS_EXIT_FAIL` |
-| `JS_EXIT_OK` | macro | `progs/src/json.c:38` | `#define JS_EXIT_OK` |
-| `JS_MAX_NODES` | macro | `progs/src/json.c:27` | `#define JS_MAX_NODES` |
-| `JS_NULL` | macro | `progs/src/json.c:30` | `#define JS_NULL` |
-| `JS_NUM` | macro | `progs/src/json.c:32` | `#define JS_NUM` |
-| `JS_OBJ` | macro | `progs/src/json.c:34` | `#define JS_OBJ` |
-| `JS_POOL` | macro | `progs/src/json.c:28` | `#define JS_POOL` |
-| `JS_SEEK_END` | macro | `progs/src/json.c:37` | `#define JS_SEEK_END` |
-| `JS_STR` | macro | `progs/src/json.c:33` | `#define JS_STR` |
-| `fclose` | function | `progs/src/json.c:21` | `int fclose();` |
-| `fopen` | function | `progs/src/json.c:20` | `void *fopen();` |
-| `fread` | function | `progs/src/json.c:22` | `int fread();` |
-| `free` | function | `progs/src/json.c:14` | `void free();` |
-| `fseek` | function | `progs/src/json.c:23` | `int fseek();` |
-| `ftell` | function | `progs/src/json.c:24` | `int ftell();` |
-| `js_array_at` | function | `progs/src/json.c:357` | `static int js_array_at(int arr, int idx)` |
-| `js_find_member` | function | `progs/src/json.c:347` | `static int js_find_member(int obj, const char *key)` |
-| `js_indent` | function | `progs/src/json.c:281` | `static void js_indent(int n)` |
-| `js_key_match` | function | `progs/src/json.c:143` | `static int js_key_match(int child, const char *key)` |
-| `js_new` | function | `progs/src/json.c:76` | `static int js_new(void)` |
-| `js_parse_array` | function | `progs/src/json.c:182` | `static int js_parse_array(void)` |
-| `js_parse_number` | function | `progs/src/json.c:133` | `static int js_parse_number(void)` |
-| `js_parse_object` | function | `progs/src/json.c:147` | `static int js_parse_object(void)` |
-| `js_parse_string` | function | `progs/src/json.c:97` | `static int js_parse_string(void)` |
-| `js_parse_value` | function | `progs/src/json.c:211` | `static int js_parse_value(void)` |
-| `js_peek` | function | `progs/src/json.c:89` | `static int js_peek(void)` |
-| `js_print_str` | function | `progs/src/json.c:286` | `static void js_print_str(const char *s)` |
-| `js_print_value` | function | `progs/src/json.c:303` | `static void js_print_value(int node, int depth)` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)

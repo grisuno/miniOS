@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `strlen` | function | `progs/src/http.c:14` | `int strlen(char *s);` |
+| `JS_ARR` | macro | `progs/src/json.c:35` | `#define JS_ARR` |
+| `JS_BOOL` | macro | `progs/src/json.c:31` | `#define JS_BOOL` |
+| `JS_EXIT_FAIL` | macro | `progs/src/json.c:39` | `#define JS_EXIT_FAIL` |
+| `JS_EXIT_OK` | macro | `progs/src/json.c:38` | `#define JS_EXIT_OK` |
+| `JS_MAX_NODES` | macro | `progs/src/json.c:27` | `#define JS_MAX_NODES` |
+| `JS_NULL` | macro | `progs/src/json.c:30` | `#define JS_NULL` |
+| `JS_NUM` | macro | `progs/src/json.c:32` | `#define JS_NUM` |
+| `JS_OBJ` | macro | `progs/src/json.c:34` | `#define JS_OBJ` |
+| `JS_POOL` | macro | `progs/src/json.c:28` | `#define JS_POOL` |
+| `JS_SEEK_END` | macro | `progs/src/json.c:37` | `#define JS_SEEK_END` |
+| `JS_STR` | macro | `progs/src/json.c:33` | `#define JS_STR` |
+| `fclose` | function | `progs/src/json.c:21` | `int fclose();` |
+| `fopen` | function | `progs/src/json.c:20` | `void *fopen();` |
+| `fread` | function | `progs/src/json.c:22` | `int fread();` |
+| `free` | function | `progs/src/json.c:14` | `void free();` |
+| `fseek` | function | `progs/src/json.c:23` | `int fseek();` |
+| `ftell` | function | `progs/src/json.c:24` | `int ftell();` |
+| `js_array_at` | function | `progs/src/json.c:357` | `static int js_array_at(int arr, int idx)` |
+| `js_find_member` | function | `progs/src/json.c:347` | `static int js_find_member(int obj, const char *key)` |
+| `js_indent` | function | `progs/src/json.c:281` | `static void js_indent(int n)` |
+| `js_key_match` | function | `progs/src/json.c:143` | `static int js_key_match(int child, const char *key)` |
+| `js_new` | function | `progs/src/json.c:76` | `static int js_new(void)` |
+| `js_parse_array` | function | `progs/src/json.c:182` | `static int js_parse_array(void)` |
+| `js_parse_number` | function | `progs/src/json.c:133` | `static int js_parse_number(void)` |
+| `js_parse_object` | function | `progs/src/json.c:147` | `static int js_parse_object(void)` |
+| `js_parse_string` | function | `progs/src/json.c:97` | `static int js_parse_string(void)` |
+| `js_parse_value` | function | `progs/src/json.c:211` | `static int js_parse_value(void)` |
+| `js_peek` | function | `progs/src/json.c:89` | `static int js_peek(void)` |
+| `js_print_str` | function | `progs/src/json.c:286` | `static void js_print_str(const char *s)` |
+| `js_print_value` | function | `progs/src/json.c:303` | `static void js_print_value(int node, int depth)` |
 | `js_query` | function | `progs/src/json.c:369` | `static int js_query(int root, const char *path)` |
 | `js_read_all` | function | `progs/src/json.c:58` | `static char *js_read_all(const char *name, int *len)` |
 | `js_skip_ws` | function | `progs/src/json.c:81` | `static void js_skip_ws(void)` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `sign_unhex` | function | `progs/src/sign.c:100` | `static void sign_unhex(char *out, char *in, int n)` |
 | `sign_write` | function | `progs/src/sign.c:1260` | `static int sign_write(char *name, char *data, int len)` |
 | `strcmp` | function | `progs/src/sign.c:29` | `int strcmp();` |
-| `SPIN_WLA` | macro | `progs/src/spin.c:58` | `#define SPIN_WLA` |
-| `SPIN_WLB` | macro | `progs/src/spin.c:59` | `#define SPIN_WLB` |
-| `SPIN_WLH` | macro | `progs/src/spin.c:57` | `#define SPIN_WLH` |
-| `SPIN_WLW` | macro | `progs/src/spin.c:56` | `#define SPIN_WLW` |
-| `lmain` | function | `progs/src/spin.c:225` | `int lmain(long argc, char **argv)` |
-| `lx_atoi` | function | `progs/src/spin.c:42` | `static long lx_atoi(const char *s)` |
-| `lx_strlen` | function | `progs/src/spin.c:20` | `static unsigned long lx_strlen(const char *s)` |
-| `lx_syscall3` | function | `progs/src/spin.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
-| `lx_write` | function | `progs/src/spin.c:26` | `static void lx_write(const char *s)` |
-| `lx_write_int` | function | `progs/src/spin.c:30` | `static void lx_write_int(long v)` |
-| `spin_box_ok` | function | `progs/src/spin.c:82` | `static int spin_box_ok(const char *box)` |
-| `spin_emit` | function | `progs/src/spin.c:114` | `static int spin_emit(const char *box, unsigned int seq,         const unsigned char *msg, long mlen)` |
-| `spin_hdr` | function | `progs/src/spin.c:73` | `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,         unsigned long ...` |
-| `spin_hex8` | function | `progs/src/spin.c:95` | `static void spin_hex8(unsigned int v, char *dst)` |
-| `spin_pixels` | function | `progs/src/spin.c:169` | `static void spin_pixels(long off)` |
-| `spin_raw_file` | function | `progs/src/spin.c:145` | `static int spin_raw_file(const char *box)` |
-| `spin_u32` | function | `progs/src/spin.c:66` | `static void spin_u32(unsigned char *d, unsigned long v)` |
-| `spin_wl` | function | `progs/src/spin.c:181` | `static int spin_wl(const char *box, const char *narg)` |
-| `spin_write_all` | function | `progs/src/spin.c:104` | `static long spin_write_all(long fd, const unsigned char *buf, long len)` |
-| `add` | function | `progs/src/test.c:1` | `int add(int a, int b)` |
-| `main` | function | `progs/src/test.c:2` | `int main(void)` |
-| `check` | function | `progs/src/test.lua:12` | `` |
-| `read_file` | function | `progs/src/test.lua:30` | `` |
-| `test_bin_aes` | function | `progs/src/test.lua:175` | `` |
-| `test_bin_cp` | function | `progs/src/test.lua:135` | `` |
-| `test_bin_freedom` | function | `progs/src/test.lua:205` | `` |
-| `test_bin_json` | function | `progs/src/test.lua:194` | `` |
-| `test_bin_lz4` | function | `progs/src/test.lua:141` | `` |
-| `test_bin_lzss` | function | `progs/src/test.lua:158` | `` |
-| `test_dlmalloc` | function | `progs/src/test.lua:80` | `` |
-| `test_filesystem` | function | `progs/src/test.lua:53` | `` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `wl_mbox_frame_encode` | function | `progs/wl/wl_mbox.h:310` | `static inline int wl_mbox_frame_encode(unsigned char *dst, int cap,         unsigned int seq, con...` |
+| `wl_mbox_fresh` | function | `progs/wl/wl_mbox.h:394` | `static inline int wl_mbox_fresh(const wl_mbox_box_t *boxes, int slot,         unsigned int seq)` |
+| `wl_mbox_hex` | function | `progs/wl/wl_mbox.h:74` | `static inline int wl_mbox_hex(unsigned int v, char *dst)` |
+| `wl_mbox_init` | function | `progs/wl/wl_mbox.h:36` | `static inline void wl_mbox_init(wl_mbox_box_t *boxes)` |
+| `wl_mbox_name` | function | `progs/wl/wl_mbox.h:103` | `static inline int wl_mbox_name(char *dst, int cap, const char *box,         unsigned int seq)` |
+| `wl_mbox_parse` | function | `progs/wl/wl_mbox.h:147` | `static inline int wl_mbox_parse(const char *path, char *box, int boxcap,         unsigned int *seq)` |
+| `wl_mbox_raw_name` | function | `progs/wl/wl_mbox.h:194` | `static inline int wl_mbox_raw_name(char *dst, int cap, const char *box)` |
+| `wl_mbox_route` | function | `progs/wl/wl_mbox.h:409` | `static inline int wl_mbox_route(wl_comp_t *c, wl_mbox_box_t *boxes,         const char *box, unsi...` |
+| `wl_mbox_unhex` | function | `progs/wl/wl_mbox.h:87` | `static inline int wl_mbox_unhex(char ch, unsigned int *v)` |
+| `WLCOMP_BG` | macro | `progs/wl/wl_mini.h:509` | `#define WLCOMP_BG` |
+| `WLCOMP_BORDER` | macro | `progs/wl/wl_mini.h:510` | `#define WLCOMP_BORDER` |
+| `WL_ATTACH_SZ` | macro | `progs/wl/wl_mini.h:28` | `#define WL_ATTACH_SZ` |
+| `WL_CFG_DEFAULT` | macro | `progs/wl/wl_mini.h:69` | `#define WL_CFG_DEFAULT` |
+| `WL_CLIP_MAX` | macro | `progs/wl/wl_mini.h:905` | `#define WL_CLIP_MAX` |
+| `WL_CLOSE_INK` | macro | `progs/wl/wl_mini.h:243` | `#define WL_CLOSE_INK` |
+| `WL_CLOSE_W` | macro | `progs/wl/wl_mini.h:239` | `#define WL_CLOSE_W` |
+| `WL_COMMIT_SZ` | macro | `progs/wl/wl_mini.h:29` | `#define WL_COMMIT_SZ` |
+| `WL_ERR_BOUND` | macro | `progs/wl/wl_mini.h:32` | `#define WL_ERR_BOUND` |
+| `WL_ERR_ID` | macro | `progs/wl/wl_mini.h:35` | `#define WL_ERR_ID` |
+| `WL_ERR_MORE` | macro | `progs/wl/wl_mini.h:37` | `#define WL_ERR_MORE` |
+| `WL_ERR_OK` | macro | `progs/wl/wl_mini.h:31` | `#define WL_ERR_OK` |
+| `WL_ERR_SIZE` | macro | `progs/wl/wl_mini.h:34` | `#define WL_ERR_SIZE` |
+| `WL_ERR_STR` | macro | `progs/wl/wl_mini.h:36` | `#define WL_ERR_STR` |
+| `WL_ERR_TRUNC` | macro | `progs/wl/wl_mini.h:33` | `#define WL_ERR_TRUNC` |
+| `WL_EV_MAGIC` | macro | `progs/wl/wl_mini.h:964` | `#define WL_EV_MAGIC` |
+| `WL_EV_SC_MAX` | macro | `progs/wl/wl_mini.h:965` | `#define WL_EV_SC_MAX` |
+| `WL_EV_SZ` | macro | `progs/wl/wl_mini.h:966` | `#define WL_EV_SZ` |
+| `WL_HDR_SZ` | macro | `progs/wl/wl_mini.h:27` | `#define WL_HDR_SZ` |
+| `WL_HIT_BODY` | macro | `progs/wl/wl_mini.h:246` | `#define WL_HIT_BODY` |
+| `WL_HIT_CLOSE` | macro | `progs/wl/wl_mini.h:248` | `#define WL_HIT_CLOSE` |
+| `WL_HIT_NONE` | macro | `progs/wl/wl_mini.h:245` | `#define WL_HIT_NONE` |
 | `WL_HIT_RESIZE` | macro | `progs/wl/wl_mini.h:249` | `#define WL_HIT_RESIZE` |
 | `WL_HIT_TITLE` | macro | `progs/wl/wl_mini.h:247` | `#define WL_HIT_TITLE` |
 | `WL_ID_BUFFER_BASE` | macro | `progs/wl/wl_mini.h:46` | `#define WL_ID_BUFFER_BASE` |
@@ -408,6 +439,9 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `main` | function | `tests/test_hal_io.c:30` | `int main(void)` |
 | `CHECK` | macro | `tests/test_httpd.c:18` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_httpd.c:25` | `int main(void)` |
+| `CHECK` | macro | `tests/test_jelly.c:17` | `#define CHECK(cond, msg)` |
+| `absi` | function | `tests/test_jelly.c:24` | `static int absi(int v)` |
+| `main` | function | `tests/test_jelly.c:29` | `int main(void)` |
 | `CHECK` | macro | `tests/test_ktime.c:14` | `#define CHECK(c, m)` |
 | `main` | function | `tests/test_ktime.c:16` | `int main(void)` |
 | `CHECK` | macro | `tests/test_ldso.c:20` | `#define CHECK(cond, msg)` |
@@ -462,39 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `tearDownClass` | method | `tests/test_mip.py:261` | `def tearDownClass(cls)` |
 | `test_absolute_url_keeps_absolute_location` | method | `tests/test_mip.py:187` | `def test_absolute_url_keeps_absolute_location(self)` |
 | `test_absolute_url_keeps_base_scheme` | method | `tests/test_mip.py:197` | `def test_absolute_url_keeps_base_scheme(self)` |
-| `test_absolute_url_refuses_relative_location` | method | `tests/test_mip.py:207` | `def test_absolute_url_refuses_relative_location(self)` |
-| `test_absolute_url_resolves_path_location` | method | `tests/test_mip.py:177` | `def test_absolute_url_resolves_path_location(self)` |
-| `test_cli_install` | method | `tests/test_mip.py:344` | `def test_cli_install(self)` |
-| `test_https_get_needs_minios_on_host` | method | `tests/test_mip.py:173` | `def test_https_get_needs_minios_on_host(self)` |
-| `test_install_404_fails` | method | `tests/test_mip.py:300` | `def test_install_404_fails(self)` |
-| `test_install_follows_redirect` | method | `tests/test_mip.py:290` | `def test_install_follows_redirect(self)` |
-| `test_install_https_needs_minios` | method | `tests/test_mip.py:308` | `def test_install_https_needs_minios(self)` |
-| `test_install_plain_and_load` | method | `tests/test_mip.py:280` | `def test_install_plain_and_load(self)` |
-| `test_install_refuses_chunked` | method | `tests/test_mip.py:319` | `def test_install_refuses_chunked(self)` |
-| `test_install_refuses_traversal_name` | method | `tests/test_mip.py:327` | `def test_install_refuses_traversal_name(self)` |
-| `test_install_twice_succeeds` | method | `tests/test_mip.py:334` | `def test_install_twice_succeeds(self)` |
-| `test_module_name_accepts_plain_module` | method | `tests/test_mip.py:112` | `def test_module_name_accepts_plain_module(self)` |
-| `test_module_name_refuses_unsafe_names` | method | `tests/test_mip.py:119` | `def test_module_name_refuses_unsafe_names(self)` |
-| `test_module_name_strips_query` | method | `tests/test_mip.py:116` | `def test_module_name_strips_query(self)` |
-| `test_parse_response_bare_lf` | method | `tests/test_mip.py:144` | `def test_parse_response_bare_lf(self)` |
-| `test_parse_response_crlf` | method | `tests/test_mip.py:135` | `def test_parse_response_crlf(self)` |
-| `test_parse_response_refuses_chunked` | method | `tests/test_mip.py:167` | `def test_parse_response_refuses_chunked(self)` |
-| `test_parse_response_rejects_content_length_mismatch` | method | `tests/test_mip.py:157` | `def test_parse_response_rejects_content_length_mismatch(self)` |
-| `test_parse_response_rejects_garbage` | method | `tests/test_mip.py:151` | `def test_parse_response_rejects_garbage(self)` |
-| `test_parse_url_reports_scheme` | method | `tests/test_mip.py:86` | `def test_parse_url_reports_scheme(self)` |
-| `test_split_https_url_default_port` | method | `tests/test_mip.py:70` | `def test_split_https_url_default_port(self)` |
-| `test_split_https_url_explicit_port` | method | `tests/test_mip.py:76` | `def test_split_https_url_explicit_port(self)` |
-| `test_split_https_url_refuses_plain_http` | method | `tests/test_mip.py:82` | `def test_split_https_url_refuses_plain_http(self)` |
-| `test_split_url_default_port` | method | `tests/test_mip.py:51` | `def test_split_url_default_port(self)` |
-| `test_split_url_explicit_port_and_query` | method | `tests/test_mip.py:57` | `def test_split_url_explicit_port_and_query(self)` |
-| `test_split_url_path_defaults_to_root` | method | `tests/test_mip.py:63` | `def test_split_url_path_defaults_to_root(self)` |
-| `test_split_url_refuses_bad_authority` | method | `tests/test_mip.py:101` | `def test_split_url_refuses_bad_authority(self)` |
-| `test_split_url_refuses_control_chars` | method | `tests/test_mip.py:107` | `def test_split_url_refuses_control_chars(self)` |
-| `test_split_url_refuses_https` | method | `tests/test_mip.py:66` | `def test_split_url_refuses_https(self)` |
-| `test_split_url_refuses_other_schemes` | method | `tests/test_mip.py:96` | `def test_split_url_refuses_other_schemes(self)` |
-| `CHECK` | macro | `tests/test_modifiers.c:17` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_modifiers.c:24` | `int main(void)` |
-| `CHECK` | macro | `tests/test_notify.c:9` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_notify.c:22` | `int main(void)` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

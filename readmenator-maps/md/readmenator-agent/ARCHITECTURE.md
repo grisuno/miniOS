@@ -311,6 +311,7 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `kernel/vga_fb.c` -> `headers/wm_focus.h`
 - `kernel/vga_fb.c` -> `headers/wm_geom.h`
 - `kernel/vga_fb.c` -> `headers/wm_gfxview.h`
+- `kernel/vga_fb.c` -> `headers/wm_jelly.h`
 - `kernel/vga_fb.c` -> `headers/wm_layout.h`
 - `kernel/vga_fb.c` -> `headers/wm_notify.h`
 - `kernel/vga_fb.c` -> `headers/wm_render.h`
@@ -495,6 +496,5 @@ Pages: [ARCHITECTURE.md](ARCHITECTURE.md), [ARCHITECTURE_p2.md](ARCHITECTURE_p2.
 - `progs/doomgeneric/doomgeneric_win.c` -> `progs/doomgeneric/doomgeneric.h`
 - `progs/doomgeneric/doomgeneric_win.c` -> `progs/doomgeneric/doomkeys.h`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/string.c`
-- `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/time.c`
 
 Next: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)

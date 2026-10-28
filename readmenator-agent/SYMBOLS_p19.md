@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ST_unloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1184` | `void ST_unloadGraphics(void)` |
+| `ST_updateFaceWidget` | function | `progs/doomgeneric/st_stuff.c:688` | `void ST_updateFaceWidget(void)` |
+| `ST_updateWidgets` | function | `progs/doomgeneric/st_stuff.c:860` | `void ST_updateWidgets(void)` |
+| `ST_Drawer` | function | `progs/doomgeneric/st_stuff.h:46` | `void ST_Drawer (boolean fullscreen, boolean refresh);` |
+| `ST_HEIGHT` | macro | `progs/doomgeneric/st_stuff.h:30` | `#define ST_HEIGHT` |
+| `ST_Init` | function | `progs/doomgeneric/st_stuff.h:52` | `void ST_Init (void);` |
+| `ST_Start` | function | `progs/doomgeneric/st_stuff.h:49` | `void ST_Start (void);` |
+| `ST_Ticker` | function | `progs/doomgeneric/st_stuff.h:43` | `void ST_Ticker (void);` |
+| `ST_WIDTH` | macro | `progs/doomgeneric/st_stuff.h:31` | `#define ST_WIDTH` |
+| `ST_Y` | macro | `progs/doomgeneric/st_stuff.h:32` | `#define ST_Y` |
+| `__STSTUFF_H__` | macro | `progs/doomgeneric/st_stuff.h:22` | `#define __STSTUFF_H__` |
+| `cheat_ammo` | variable | `progs/doomgeneric/st_stuff.h:79` | `extern cheatseq_t cheat_ammo;` |
+| `cheat_ammonokey` | variable | `progs/doomgeneric/st_stuff.h:80` | `extern cheatseq_t cheat_ammonokey;` |
+| `cheat_choppers` | variable | `progs/doomgeneric/st_stuff.h:84` | `extern cheatseq_t cheat_choppers;` |
+| `cheat_clev` | variable | `progs/doomgeneric/st_stuff.h:85` | `extern cheatseq_t cheat_clev;` |
+| `cheat_commercial_noclip` | variable | `progs/doomgeneric/st_stuff.h:82` | `extern cheatseq_t cheat_commercial_noclip;` |
+| `cheat_god` | variable | `progs/doomgeneric/st_stuff.h:78` | `extern cheatseq_t cheat_god;` |
+| `cheat_mus` | variable | `progs/doomgeneric/st_stuff.h:77` | `extern cheatseq_t cheat_mus;` |
+| `cheat_mypos` | variable | `progs/doomgeneric/st_stuff.h:86` | `extern cheatseq_t cheat_mypos;` |
+| `cheat_noclip` | variable | `progs/doomgeneric/st_stuff.h:81` | `extern cheatseq_t cheat_noclip;` |
+| `cheat_powerup` | variable | `progs/doomgeneric/st_stuff.h:83` | `extern cheatseq_t cheat_powerup[7];` |
+| `st_backing_screen` | variable | `progs/doomgeneric/st_stuff.h:76` | `extern byte *st_backing_screen;` |
+| `DiscoverGamemode` | function | `progs/doomgeneric/statdump.c:71` | `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)` |
+| `GetNumPlayers` | function | `progs/doomgeneric/statdump.c:130` | `static int GetNumPlayers(wbstartstruct_t *stats)` |
+| `MAX_CAPTURES` | macro | `progs/doomgeneric/statdump.c:56` | `#define MAX_CAPTURES` |
+| `PrintBanner` | function | `progs/doomgeneric/statdump.c:150` | `static void PrintBanner(FILE *stream)` |
+| `PrintFragsTable` | function | `progs/doomgeneric/statdump.c:213` | `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)` |
+| `PrintLevelName` | function | `progs/doomgeneric/statdump.c:272` | `static void PrintLevelName(FILE *stream, int episode, int level)` |
+| `PrintPercentage` | function | `progs/doomgeneric/statdump.c:155` | `static void PrintPercentage(FILE *stream, int amount, int total)` |
+| `PrintPlayerStats` | function | `progs/doomgeneric/statdump.c:180` | `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,         int player_num)` |
+| `PrintStats` | function | `progs/doomgeneric/statdump.c:301` | `static void PrintStats(FILE *stream, wbstartstruct_t *stats)` |
 | `StatCopy` | function | `progs/doomgeneric/statdump.c:333` | `void StatCopy(wbstartstruct_t *stats)` |
 | `StatDump` | function | `progs/doomgeneric/statdump.c:343` | `void StatDump(void)` |
 | `DOOM_STATDUMP_H` | macro | `progs/doomgeneric/statdump.h:18` | `#define DOOM_STATDUMP_H` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `PS2_HELD_LCTRL` | macro | `progs/freedomui/ps2_keymap.c:22` | `#define PS2_HELD_LCTRL` |
 | `PS2_HELD_LSHIFT` | macro | `progs/freedomui/ps2_keymap.c:20` | `#define PS2_HELD_LSHIFT` |
 | `PS2_HELD_RALT` | macro | `progs/freedomui/ps2_keymap.c:25` | `#define PS2_HELD_RALT` |
-| `PS2_HELD_RCTRL` | macro | `progs/freedomui/ps2_keymap.c:23` | `#define PS2_HELD_RCTRL` |
-| `PS2_HELD_RSHIFT` | macro | `progs/freedomui/ps2_keymap.c:21` | `#define PS2_HELD_RSHIFT` |
-| `PS2_PAUSE_TAIL` | macro | `progs/freedomui/ps2_keymap.c:15` | `#define PS2_PAUSE_TAIL` |
-| `PS2_PREFIX_EXTENDED` | macro | `progs/freedomui/ps2_keymap.c:13` | `#define PS2_PREFIX_EXTENDED` |
-| `PS2_PREFIX_PAUSE` | macro | `progs/freedomui/ps2_keymap.c:14` | `#define PS2_PREFIX_PAUSE` |
-| `PS2_TABLE_SIZE` | macro | `progs/freedomui/ps2_keymap.c:18` | `#define PS2_TABLE_SIZE` |
-| `SC_ALT` | macro | `progs/freedomui/ps2_keymap.c:35` | `#define SC_ALT` |
-| `SC_BACKSPACE` | macro | `progs/freedomui/ps2_keymap.c:28` | `#define SC_BACKSPACE` |
-| `SC_CAPS` | macro | `progs/freedomui/ps2_keymap.c:36` | `#define SC_CAPS` |
-| `SC_CTRL` | macro | `progs/freedomui/ps2_keymap.c:31` | `#define SC_CTRL` |
-| `SC_E0_DELETE` | macro | `progs/freedomui/ps2_keymap.c:56` | `#define SC_E0_DELETE` |
-| `SC_E0_DOWN` | macro | `progs/freedomui/ps2_keymap.c:53` | `#define SC_E0_DOWN` |
-| `SC_E0_END` | macro | `progs/freedomui/ps2_keymap.c:52` | `#define SC_E0_END` |
-| `SC_E0_HOME` | macro | `progs/freedomui/ps2_keymap.c:47` | `#define SC_E0_HOME` |
-| `SC_E0_INSERT` | macro | `progs/freedomui/ps2_keymap.c:55` | `#define SC_E0_INSERT` |
-| `SC_E0_KP_DIV` | macro | `progs/freedomui/ps2_keymap.c:45` | `#define SC_E0_KP_DIV` |
-| `SC_E0_LEFT` | macro | `progs/freedomui/ps2_keymap.c:50` | `#define SC_E0_LEFT` |
-| `SC_E0_MENU` | macro | `progs/freedomui/ps2_keymap.c:59` | `#define SC_E0_MENU` |
-| `SC_E0_NEXT` | macro | `progs/freedomui/ps2_keymap.c:54` | `#define SC_E0_NEXT` |
-| `SC_E0_PRINT` | macro | `progs/freedomui/ps2_keymap.c:46` | `#define SC_E0_PRINT` |
-| `SC_E0_PRIOR` | macro | `progs/freedomui/ps2_keymap.c:49` | `#define SC_E0_PRIOR` |
-| `SC_E0_RIGHT` | macro | `progs/freedomui/ps2_keymap.c:51` | `#define SC_E0_RIGHT` |
-| `SC_E0_SUPERL` | macro | `progs/freedomui/ps2_keymap.c:57` | `#define SC_E0_SUPERL` |
-| `SC_E0_SUPERR` | macro | `progs/freedomui/ps2_keymap.c:58` | `#define SC_E0_SUPERR` |
-| `SC_E0_UP` | macro | `progs/freedomui/ps2_keymap.c:48` | `#define SC_E0_UP` |
-| `SC_ESCAPE` | macro | `progs/freedomui/ps2_keymap.c:27` | `#define SC_ESCAPE` |
-| `SC_F1` | macro | `progs/freedomui/ps2_keymap.c:37` | `#define SC_F1` |
-| `SC_F10` | macro | `progs/freedomui/ps2_keymap.c:38` | `#define SC_F10` |
-| `SC_F11` | macro | `progs/freedomui/ps2_keymap.c:43` | `#define SC_F11` |
-| `SC_F12` | macro | `progs/freedomui/ps2_keymap.c:44` | `#define SC_F12` |
-| `SC_KP_FIRST` | macro | `progs/freedomui/ps2_keymap.c:41` | `#define SC_KP_FIRST` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

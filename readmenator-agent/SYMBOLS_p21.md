@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ser_unget` | function | `progs/minicraft/minicraft.c:386` | `static void ser_unget(unsigned char b)` |
+| `set_b` | function | `progs/minicraft/minicraft.c:774` | `static void set_b(int x, int y, int z, unsigned char b)` |
+| `set_b_raw` | function | `progs/minicraft/minicraft.c:790` | `static void set_b_raw(int x, int y, int z, unsigned char b)` |
+| `shade_block` | function | `progs/minicraft/minicraft.c:1602` | `static unsigned char shade_block(unsigned char b, int face, int bx, int by, int bz,              ...` |
+| `sky_color` | function | `progs/minicraft/minicraft.c:1569` | `static unsigned char sky_color(float dz, float sun_dot, int x, int y, float tsec)` |
+| `sky_light` | function | `progs/minicraft/minicraft.c:801` | `static float sky_light(int x, int y, int z)` |
+| `tick_discover` | function | `progs/minicraft/minicraft.c:2630` | `static void tick_discover(long now)` |
+| `tick_goals` | function | `progs/minicraft/minicraft.c:2619` | `static void tick_goals(void)` |
+| `tick_hunger` | function | `progs/minicraft/minicraft.c:2596` | `static void tick_hunger(long now)` |
+| `tick_interact` | function | `progs/minicraft/minicraft.c:2668` | `static void tick_interact(void)` |
+| `tick_mob` | function | `progs/minicraft/minicraft.c:1386` | `static void tick_mob(Pig *p, int id, float dt, long now)` |
+| `tick_pigs` | function | `progs/minicraft/minicraft.c:1512` | `static void tick_pigs(float dt, long now)` |
+| `tick_player` | function | `progs/minicraft/minicraft.c:2449` | `static void tick_player(float dt)` |
+| `tick_water` | function | `progs/minicraft/minicraft.c:2548` | `static void tick_water(long now)` |
+| `title_menu` | function | `progs/minicraft/minicraft.c:3754` | `static int title_menu(int have_save, int *seed_io)` |
+| `try_autostep` | function | `progs/minicraft/minicraft.c:2413` | `static void try_autostep(float tx, float ty)` |
+| `voro_site` | function | `progs/minicraft/minicraft.c:861` | `static void voro_site(int cx, int cy, unsigned int seed, int cell,     int *sx, int *sy)` |
+| `world_max_recompute` | function | `progs/minicraft/minicraft.c:606` | `static void world_max_recompute(void)` |
+| `DOOM_BACKBUF_ADDR` | function | `progs/minios_abi.h:133` | `* * All three sit in the reserved tail above DOOM_BACKBUF_ADDR (the brk cap), * so a growing heap or mmap region can...` |
+| `MINIOS_ABI_CHECKSUM` | macro | `progs/minios_abi.h:48` | `#define MINIOS_ABI_CHECKSUM` |
+| `MINIOS_ABI_H` | macro | `progs/minios_abi.h:2` | `#define MINIOS_ABI_H` |
+| `MINIOS_ABI_VERSION` | macro | `progs/minios_abi.h:44` | `#define MINIOS_ABI_VERSION` |
+| `MINIOS_DEV_MMIO_VBASE` | macro | `progs/minios_abi.h:219` | `#define MINIOS_DEV_MMIO_VBASE` |
+| `MINIOS_DOOM_BACKBUF_ADDR` | macro | `progs/minios_abi.h:140` | `#define MINIOS_DOOM_BACKBUF_ADDR` |
+| `MINIOS_DOOM_H` | macro | `progs/minios_abi.h:142` | `#define MINIOS_DOOM_H` |
+| `MINIOS_DOOM_W` | macro | `progs/minios_abi.h:141` | `#define MINIOS_DOOM_W` |
+| `MINIOS_EABI_MISMATCH` | macro | `progs/minios_abi.h:450` | `#define MINIOS_EABI_MISMATCH` |
+| `MINIOS_FB_ADDR` | macro | `progs/minios_abi.h:143` | `#define MINIOS_FB_ADDR` |
+| `MINIOS_FB_HEIGHT_MAX` | macro | `progs/minios_abi.h:225` | `#define MINIOS_FB_HEIGHT_MAX` |
+| `MINIOS_FB_WIDTH_MAX` | macro | `progs/minios_abi.h:224` | `#define MINIOS_FB_WIDTH_MAX` |
+| `MINIOS_GFX_BUF_GAME` | macro | `progs/minios_abi.h:416` | `#define MINIOS_GFX_BUF_GAME` |
 | `MINIOS_GFX_BUF_NK` | macro | `progs/minios_abi.h:417` | `#define MINIOS_GFX_BUF_NK` |
 | `MINIOS_GFX_BUF_NK_RGB` | macro | `progs/minios_abi.h:418` | `#define MINIOS_GFX_BUF_NK_RGB` |
 | `MINIOS_GFX_ZOOM_2X` | macro | `progs/minios_abi.h:429` | `#define MINIOS_GFX_ZOOM_2X` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `hit_key` | function | `progs/piano/piano.c:518` | `static int hit_key(int mx, int my)` |
 | `hit_velocity` | function | `progs/piano/piano.c:535` | `static int hit_velocity(int key, int my)` |
 | `kbd_all_off` | function | `progs/piano/piano.c:333` | `static void kbd_all_off(void)` |
-| `kbd_semitone` | function | `progs/piano/piano.c:298` | `static int kbd_semitone(int code)` |
-| `key_rect` | function | `progs/piano/piano.c:511` | `static void key_rect(int key, int *x, int *y, int *w, int *h)` |
-| `main` | function | `progs/piano/piano.c:1042` | `int main(int argc, char **argv)` |
-| `midi_to_key` | function | `progs/piano/piano.c:211` | `static int midi_to_key(int midi)` |
-| `note_off_key` | function | `progs/piano/piano.c:268` | `static void note_off_key(int key)` |
-| `note_off_sc` | function | `progs/piano/piano.c:353` | `static void note_off_sc(int code)` |
-| `note_on_key` | function | `progs/piano/piano.c:281` | `static void note_on_key(int key, int midi, int vel)` |
-| `note_on_sc` | function | `progs/piano/piano.c:339` | `static void note_on_sc(int code, int vel)` |
-| `o3_chreg` | function | `progs/piano/piano.c:135` | `static void o3_chreg(int ch, int regbase, int val)` |
-| `o3_note` | function | `progs/piano/piano.c:173` | `static void o3_note(int ch, int midi, int on)` |
-| `o3_op` | function | `progs/piano/piano.c:127` | `static int o3_op(int ch, int is_car)` |
-| `o3_opreg` | function | `progs/piano/piano.c:131` | `static void o3_opreg(int ch, int is_car, int regbase, int val)` |
-| `pedal_set` | function | `progs/piano/piano.c:241` | `static void pedal_set(int on)` |
-| `piano_scancode` | function | `progs/piano/piano.c:369` | `static void piano_scancode(int code, int make, int e0, void *ud)` |
-| `rate` | function | `progs/piano/piano.c:818` | `* wait below caps the frame rate (bench mode skips it so the          * benchmark still measures ...` |
-| `render_audio` | function | `progs/piano/piano.c:484` | `static void render_audio(long ms)` |
-| `run_pcm2_probe` | function | `progs/piano/piano.c:1015` | `static int run_pcm2_probe(void)` |
-| `run_selftest` | function | `progs/piano/piano.c:836` | `static int run_selftest(void)` |
-| `sb_flush` | function | `progs/piano/piano.c:469` | `static void sb_flush(void)` |
-| `sys_pcm_close` | function | `progs/piano/piano.c:101` | `static void sys_pcm_close(void)` |
-| `sys_pcm_open` | function | `progs/piano/piano.c:93` | `static long sys_pcm_open(long flags)` |
-| `sys_pcm_write` | function | `progs/piano/piano.c:98` | `static long sys_pcm_write(const void *buf, long len)` |
-| `sys_present_idx` | function | `progs/piano/piano.c:112` | `static long sys_present_idx(int *origin)` |
-| `sys_yield` | function | `progs/piano/piano.c:104` | `static void sys_yield(void)` |
-| `ui_run` | function | `progs/piano/piano.c:594` | `static void ui_run(int bench_ms)` |
-| `voice_alloc` | function | `progs/piano/piano.c:255` | `static int voice_alloc(void)` |
-| `SDL_Delay` | function | `progs/pokemon/minios_stubs/SDL.h:14` | `static inline void SDL_Delay(Uint32 ms)` |
-| `SDL_GetPerformanceCounter` | function | `progs/pokemon/minios_stubs/SDL.h:11` | `static inline Uint64 SDL_GetPerformanceCounter(void)` |
-| `SDL_GetPerformanceFrequency` | function | `progs/pokemon/minios_stubs/SDL.h:12` | `static inline Uint64 SDL_GetPerformanceFrequency(void)` |
-| `SDL_GetTicks` | function | `progs/pokemon/minios_stubs/SDL.h:13` | `static inline Uint32 SDL_GetTicks(void)` |
-| `SDL_H_STUB_MINIOS` | macro | `progs/pokemon/minios_stubs/SDL.h:3` | `#define SDL_H_STUB_MINIOS` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

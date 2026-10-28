@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `MAPBLOCKUNITS` | macro | `progs/doomgeneric/p_local.h:35` | `#define MAPBLOCKUNITS` |
+| `MAPBMASK` | macro | `progs/doomgeneric/p_local.h:38` | `#define MAPBMASK` |
+| `MAPBTOFRAC` | macro | `progs/doomgeneric/p_local.h:39` | `#define MAPBTOFRAC` |
+| `MAXHEALTH` | macro | `progs/doomgeneric/p_local.h:30` | `#define MAXHEALTH` |
+| `MAXINTERCEPTS` | macro | `progs/doomgeneric/p_local.h:155` | `#define MAXINTERCEPTS` |
+| `MAXINTERCEPTS_ORIGINAL` | macro | `progs/doomgeneric/p_local.h:154` | `#define MAXINTERCEPTS_ORIGINAL` |
+| `MAXMOVE` | macro | `progs/doomgeneric/p_local.h:51` | `#define MAXMOVE` |
+| `MAXRADIUS` | macro | `progs/doomgeneric/p_local.h:48` | `#define MAXRADIUS` |
+| `MAXSPECIALCROSS` | macro | `progs/doomgeneric/p_local.h:219` | `#define MAXSPECIALCROSS` |
+| `MAXSPECIALCROSS_ORIGINAL` | macro | `progs/doomgeneric/p_local.h:220` | `#define MAXSPECIALCROSS_ORIGINAL` |
+| `MELEERANGE` | macro | `progs/doomgeneric/p_local.h:54` | `#define MELEERANGE` |
+| `MISSILERANGE` | macro | `progs/doomgeneric/p_local.h:55` | `#define MISSILERANGE` |
+| `ONCEILINGZ` | macro | `progs/doomgeneric/p_local.h:93` | `#define ONCEILINGZ` |
+| `ONFLOORZ` | macro | `progs/doomgeneric/p_local.h:92` | `#define ONFLOORZ` |
+| `PLAYERRADIUS` | macro | `progs/doomgeneric/p_local.h:43` | `#define PLAYERRADIUS` |
+| `PT_ADDLINES` | macro | `progs/doomgeneric/p_local.h:179` | `#define PT_ADDLINES` |
+| `PT_ADDTHINGS` | macro | `progs/doomgeneric/p_local.h:180` | `#define PT_ADDTHINGS` |
+| `PT_EARLYOUT` | macro | `progs/doomgeneric/p_local.h:181` | `#define PT_EARLYOUT` |
+| `P_AddThinker` | function | `progs/doomgeneric/p_local.h:71` | `void P_AddThinker (thinker_t* thinker);` |
+| `P_AimLineAttack` | function | `progs/doomgeneric/p_local.h:237` | `fixed_t P_AimLineAttack ( mobj_t* t1, angle_t angle, fixed_t distance );` |
+| `P_AproxDistance` | function | `progs/doomgeneric/p_local.h:162` | `fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);` |
+| `P_BoxOnLineSide` | function | `progs/doomgeneric/p_local.h:167` | `int P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);` |
+| `P_DamageMobj` | function | `progs/doomgeneric/p_local.h:284` | `void P_DamageMobj ( mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage );` |
+| `P_DropWeapon` | function | `progs/doomgeneric/p_local.h:80` | `void P_DropWeapon (player_t* player);` |
+| `P_InitThinkers` | function | `progs/doomgeneric/p_local.h:70` | `void P_InitThinkers (void);` |
+| `P_InterceptVector` | function | `progs/doomgeneric/p_local.h:166` | `fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);` |
+| `P_LineAttack` | function | `progs/doomgeneric/p_local.h:243` | `void P_LineAttack ( mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope, int damage );` |
+| `P_LineOpening` | function | `progs/doomgeneric/p_local.h:174` | `void P_LineOpening (line_t* linedef);` |
+| `P_MakeDivline` | function | `progs/doomgeneric/p_local.h:165` | `void P_MakeDivline (line_t* li, divline_t* dl);` |
+| `P_MobjThinker` | function | `progs/doomgeneric/p_local.h:116` | `void P_MobjThinker (mobj_t* mobj);` |
+| `P_MovePsprites` | function | `progs/doomgeneric/p_local.h:79` | `void P_MovePsprites (player_t* curplayer);` |
 | `P_NoiseAlert` | function | `progs/doomgeneric/p_local.h:127` | `void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);` |
 | `P_PlayerThink` | function | `progs/doomgeneric/p_local.h:86` | `void P_PlayerThink (player_t* player);` |
 | `P_PointOnDivlineSide` | function | `progs/doomgeneric/p_local.h:164` | `int P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 | `R_CheckTextureNumForName` | function | `progs/doomgeneric/r_data.h:49` | `int R_CheckTextureNumForName (char *name);` |
 | `R_FlatNumForName` | function | `progs/doomgeneric/r_data.h:43` | `int R_FlatNumForName (char* name);` |
 | `R_GetColumn` | function | `progs/doomgeneric/r_data.h:30` | `byte* R_GetColumn ( int tex, int col );` |
-| `R_InitData` | function | `progs/doomgeneric/r_data.h:36` | `void R_InitData (void);` |
-| `R_PrecacheLevel` | function | `progs/doomgeneric/r_data.h:37` | `void R_PrecacheLevel (void);` |
-| `R_TextureNumForName` | function | `progs/doomgeneric/r_data.h:48` | `int R_TextureNumForName (char *name);` |
-| `__R_DATA__` | macro | `progs/doomgeneric/r_data.h:22` | `#define __R_DATA__` |
-| `MAXDRAWSEGS` | macro | `progs/doomgeneric/r_defs.h:51` | `#define MAXDRAWSEGS` |
-| `SIL_BOTH` | macro | `progs/doomgeneric/r_defs.h:49` | `#define SIL_BOTH` |
-| `SIL_BOTTOM` | macro | `progs/doomgeneric/r_defs.h:47` | `#define SIL_BOTTOM` |
-| `SIL_NONE` | macro | `progs/doomgeneric/r_defs.h:46` | `#define SIL_NONE` |
-| `SIL_TOP` | macro | `progs/doomgeneric/r_defs.h:48` | `#define SIL_TOP` |
-| `__R_DEFS__` | macro | `progs/doomgeneric/r_defs.h:21` | `#define __R_DEFS__` |
-| `curline` | type_alias | `progs/doomgeneric/r_defs.h:306` | `typedef struct drawseg_s { seg_t* curline;` |
-| `degenmobj_t` | struct | `progs/doomgeneric/r_defs.h:84` | `` |
-| `drawseg_s` | struct | `progs/doomgeneric/r_defs.h:306` | `` |
-| `lighttable_t` | type_alias | `progs/doomgeneric/r_defs.h:298` | `typedef byte lighttable_t;` |
-| `line_s` | struct | `progs/doomgeneric/r_defs.h:76` | `` |
-| `line_s` | struct | `progs/doomgeneric/r_defs.h:175` | `` |
-| `node_t` | struct | `progs/doomgeneric/r_defs.h:261` | `` |
-| `prev` | type_alias | `progs/doomgeneric/r_defs.h:338` | `typedef struct vissprite_s { // Doubly linked list. struct vissprite_s* prev;` |
-| `sector` | type_alias | `progs/doomgeneric/r_defs.h:223` | `typedef struct subsector_s { sector_t* sector;` |
-| `sector_t` | struct | `progs/doomgeneric/r_defs.h:97` | `` |
-| `seg_t` | struct | `progs/doomgeneric/r_defs.h:236` | `` |
-| `side_t` | struct | `progs/doomgeneric/r_defs.h:140` | `` |
-| `spritedef_t` | struct | `progs/doomgeneric/r_defs.h:411` | `` |
-| `spriteframe_t` | struct | `progs/doomgeneric/r_defs.h:390` | `` |
-| `subsector_s` | struct | `progs/doomgeneric/r_defs.h:223` | `` |
-| `v1` | type_alias | `progs/doomgeneric/r_defs.h:172` | `typedef struct line_s { // Vertices, from v1 to v2. vertex_t* v1;` |
-| `vertex_t` | struct | `progs/doomgeneric/r_defs.h:67` | `` |
-| `visplane_t` | struct | `progs/doomgeneric/r_defs.h:423` | `` |
-| `vissprite_s` | struct | `progs/doomgeneric/r_defs.h:338` | `` |
-| `FUZZOFF` | macro | `progs/doomgeneric/r_draw.c:258` | `#define FUZZOFF` |
-| `FUZZTABLE` | macro | `progs/doomgeneric/r_draw.c:257` | `#define FUZZTABLE` |
 
 Next: [SYMBOLS_p18.md](SYMBOLS_p18.md)

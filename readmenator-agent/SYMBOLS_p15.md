@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `CDERR_NOAUDIOSUPPORT` | macro | `progs/doomgeneric/i_cdmus.h:22` | `#define CDERR_NOAUDIOSUPPORT` |
+| `CDERR_NOAUDIOTRACKS` | macro | `progs/doomgeneric/i_cdmus.h:23` | `#define CDERR_NOAUDIOTRACKS` |
+| `CDERR_NOTINSTALLED` | macro | `progs/doomgeneric/i_cdmus.h:21` | `#define CDERR_NOTINSTALLED` |
+| `I_CDMusFirstTrack` | function | `progs/doomgeneric/i_cdmus.h:37` | `int I_CDMusFirstTrack(void);` |
+| `I_CDMusInit` | function | `progs/doomgeneric/i_cdmus.h:31` | `int I_CDMusInit(void);` |
+| `I_CDMusLastTrack` | function | `progs/doomgeneric/i_cdmus.h:38` | `int I_CDMusLastTrack(void);` |
+| `I_CDMusPlay` | function | `progs/doomgeneric/i_cdmus.h:33` | `int I_CDMusPlay(int track);` |
+| `I_CDMusPrintStartup` | function | `progs/doomgeneric/i_cdmus.h:32` | `void I_CDMusPrintStartup(void);` |
+| `I_CDMusResume` | function | `progs/doomgeneric/i_cdmus.h:35` | `int I_CDMusResume(void);` |
+| `I_CDMusSetVolume` | function | `progs/doomgeneric/i_cdmus.h:36` | `int I_CDMusSetVolume(int volume);` |
+| `I_CDMusStop` | function | `progs/doomgeneric/i_cdmus.h:34` | `int I_CDMusStop(void);` |
+| `I_CDMusTrackLength` | function | `progs/doomgeneric/i_cdmus.h:39` | `int I_CDMusTrackLength(int track);` |
+| `__ICDMUS__` | macro | `progs/doomgeneric/i_cdmus.h:19` | `#define __ICDMUS__` |
+| `cd_Error` | variable | `progs/doomgeneric/i_cdmus.h:29` | `extern int cd_Error;` |
+| `ENDOOM_H` | macro | `progs/doomgeneric/i_endoom.c:30` | `#define ENDOOM_H` |
+| `ENDOOM_W` | macro | `progs/doomgeneric/i_endoom.c:29` | `#define ENDOOM_W` |
+| `I_Endoom` | function | `progs/doomgeneric/i_endoom.c:36` | `void I_Endoom(byte *endoom_data)` |
+| `I_Endoom` | function | `progs/doomgeneric/i_endoom.h:26` | `void I_Endoom(byte *data);` |
+| `__I_ENDOOM__` | macro | `progs/doomgeneric/i_endoom.h:21` | `#define __I_ENDOOM__` |
+| `GetTypedChar` | function | `progs/doomgeneric/i_input.c:242` | `static unsigned char GetTypedChar(unsigned char key)` |
+| `I_GetEvent` | function | `progs/doomgeneric/i_input.c:279` | `void I_GetEvent(void)` |
+| `I_InitInput` | function | `progs/doomgeneric/i_input.c:338` | `void I_InitInput(void)` |
+| `TranslateKey` | function | `progs/doomgeneric/i_input.c:225` | `static unsigned char TranslateKey(unsigned char key)` |
+| `UpdateShiftStatus` | function | `progs/doomgeneric/i_input.c:263` | `static void UpdateShiftStatus(int pressed, unsigned char key)` |
+| `DEAD_ZONE` | macro | `progs/doomgeneric/i_joystick.c:38` | `#define DEAD_ZONE` |
+| `GetAxisState` | function | `progs/doomgeneric/i_joystick.c:248` | `static int GetAxisState(int axis, int invert)` |
+| `GetButtonsState` | function | `progs/doomgeneric/i_joystick.c:228` | `static int GetButtonsState(void)` |
+| `I_BindJoystickVariables` | function | `progs/doomgeneric/i_joystick.c:339` | `void I_BindJoystickVariables(void)` |
+| `I_InitJoystick` | function | `progs/doomgeneric/i_joystick.c:115` | `void I_InitJoystick(void)` |
+| `I_ShutdownJoystick` | function | `progs/doomgeneric/i_joystick.c:77` | `void I_ShutdownJoystick(void)` |
+| `I_UpdateJoystick` | function | `progs/doomgeneric/i_joystick.c:321` | `void I_UpdateJoystick(void)` |
 | `IsAxisButton` | function | `progs/doomgeneric/i_joystick.c:171` | `static boolean IsAxisButton(int physbutton)` |
 | `IsValidAxis` | function | `progs/doomgeneric/i_joystick.c:90` | `static boolean IsValidAxis(int axis)` |
 | `ReadButtonState` | function | `progs/doomgeneric/i_joystick.c:203` | `static int ReadButtonState(int vbutton)` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 | `default_t` | struct | `progs/doomgeneric/m_config.c:61` | `` |
 | `M_BindVariable` | function | `progs/doomgeneric/m_config.h:29` | `void M_BindVariable(char *name, void *variable);` |
 | `M_GetFloatVariable` | function | `progs/doomgeneric/m_config.h:33` | `float M_GetFloatVariable(char *name);` |
-| `M_GetIntVariable` | function | `progs/doomgeneric/m_config.h:31` | `int M_GetIntVariable(char *name);` |
-| `M_GetSaveGameDir` | function | `progs/doomgeneric/m_config.h:35` | `char *M_GetSaveGameDir(char *iwadname);` |
-| `M_GetStrVariable` | function | `progs/doomgeneric/m_config.h:32` | `const char *M_GetStrVariable(char *name);` |
-| `M_LoadDefaults` | function | `progs/doomgeneric/m_config.h:25` | `void M_LoadDefaults(void);` |
-| `M_SaveDefaults` | function | `progs/doomgeneric/m_config.h:26` | `void M_SaveDefaults(void);` |
-| `M_SaveDefaultsAlternate` | function | `progs/doomgeneric/m_config.h:27` | `void M_SaveDefaultsAlternate(char *main, char *extra);` |
-| `M_SetConfigDir` | function | `progs/doomgeneric/m_config.h:28` | `void M_SetConfigDir(char *dir);` |
-| `M_SetConfigFilenames` | function | `progs/doomgeneric/m_config.h:34` | `void M_SetConfigFilenames(char *main_config, char *extra_config);` |
-| `__M_CONFIG__` | macro | `progs/doomgeneric/m_config.h:21` | `#define __M_CONFIG__` |
-| `configdir` | variable | `progs/doomgeneric/m_config.h:37` | `extern char *configdir;` |
-| `M_ApplyPlatformDefaults` | function | `progs/doomgeneric/m_controls.c:394` | `void M_ApplyPlatformDefaults(void)` |
-| `M_BindBaseControls` | function | `progs/doomgeneric/m_controls.c:204` | `void M_BindBaseControls(void)` |
-| `M_BindChatControls` | function | `progs/doomgeneric/m_controls.c:375` | `void M_BindChatControls(unsigned int num_players)` |
-| `M_BindHereticControls` | function | `progs/doomgeneric/m_controls.c:241` | `void M_BindHereticControls(void)` |
-| `M_BindHexenControls` | function | `progs/doomgeneric/m_controls.c:256` | `void M_BindHexenControls(void)` |
-| `M_BindMapControls` | function | `progs/doomgeneric/m_controls.c:328` | `void M_BindMapControls(void)` |
-| `M_BindMenuControls` | function | `progs/doomgeneric/m_controls.c:344` | `void M_BindMenuControls(void)` |
-| `M_BindStrifeControls` | function | `progs/doomgeneric/m_controls.c:272` | `void M_BindStrifeControls(void)` |
-| `M_BindWeaponControls` | function | `progs/doomgeneric/m_controls.c:307` | `void M_BindWeaponControls(void)` |
-| `M_ApplyPlatformDefaults` | function | `progs/doomgeneric/m_controls.h:165` | `void M_ApplyPlatformDefaults(void);` |
-| `M_BindBaseControls` | function | `progs/doomgeneric/m_controls.h:156` | `void M_BindBaseControls(void);` |
-| `M_BindChatControls` | function | `progs/doomgeneric/m_controls.h:163` | `void M_BindChatControls(unsigned int num_players);` |
-| `M_BindHereticControls` | function | `progs/doomgeneric/m_controls.h:157` | `void M_BindHereticControls(void);` |
-| `M_BindHexenControls` | function | `progs/doomgeneric/m_controls.h:158` | `void M_BindHexenControls(void);` |
-| `M_BindMapControls` | function | `progs/doomgeneric/m_controls.h:161` | `void M_BindMapControls(void);` |
-| `M_BindMenuControls` | function | `progs/doomgeneric/m_controls.h:162` | `void M_BindMenuControls(void);` |
-| `M_BindStrifeControls` | function | `progs/doomgeneric/m_controls.h:159` | `void M_BindStrifeControls(void);` |
-| `M_BindWeaponControls` | function | `progs/doomgeneric/m_controls.h:160` | `void M_BindWeaponControls(void);` |
-| `__M_CONTROLS_H__` | macro | `progs/doomgeneric/m_controls.h:18` | `#define __M_CONTROLS_H__` |
-| `dclick_use` | variable | `progs/doomgeneric/m_controls.h:154` | `extern int dclick_use;` |
-| `joybfire` | variable | `progs/doomgeneric/m_controls.h:139` | `extern int joybfire;` |
 
 Next: [SYMBOLS_p16.md](SYMBOLS_p16.md)

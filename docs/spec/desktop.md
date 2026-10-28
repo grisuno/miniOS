@@ -589,6 +589,44 @@ framebuffer is not.
   ignored offsets, corner edge, corner box, disc mirror, disc box) die in
   `make test-chrome`.
 
+- **Wobbly windows (`wm_jelly.h`, `vga_fb.c` `jelly_*`):** dragging a
+  terminal or the graphics window by its title bar wobbles it like jelly
+  (the Compiz wobbly-windows effect). `wm_jelly.h` is a header-only 4x4
+  spring mesh in 24.8 fixed point: a window move kicks every node against
+  the motion in proportion to its distance from the grab point (the grab
+  stays pinned, the far corners lag), then a damped spring with neighbour
+  coupling pulls the mesh home with a visible overshoot; sampling is
+  bilinear so any window pixel can ask for its displacement. Every tunable
+  lives in `wm_jelly_config_t` (`WM_JELLY_CONFIG_DEFAULT`: reach 72 px, a move
+  also launches the nodes at two thirds of its speed, rest under half a
+  pixel). `make test-jelly` pins the physics on the host
+  and eight `jelly-*` mutants die in it. Kernel rules:
+  - No heap: the desktop tick runs from the timer interrupt and the kernel
+    heap has no lock, so the effect owns only one static row buffer.
+    `vga_fb_draw_desktop` leaves the window flat in the shadow and arms the
+    wobble band (`jelly_arm`, outermost composition only, never on a held
+    present); `fb_present_shadow` then copies everything outside the band
+    and `jelly_warp_band` writes the band straight to the framebuffer,
+    sampling the window pixels from the shadow through the mesh in 8 px
+    blocks, so no flat frame of the window ever reaches the screen. Where
+    no displaced pixel lands inside the old window rect the wallpaper shows
+    (windows paint over the dock and wallpaper). The taskbar row is never
+    touched and a rect off screen or wider than `JELLY_ROW_MAX` stays flat.
+  - The animation is tick driven, never blocking: the pointer tick steps
+    the mesh at most once per tick (`JELLY_SUBSTEPS` finer steps), redraws
+    while the window is held even with a still pointer, and keeps playing
+    after the drop until the mesh is at rest, then frees the texture and
+    ends with a plain redraw, so the final frame is byte-identical with the
+    effect on or off.
+  - 8-bit modes and `fx off` keep the flat drag; a focus change cancels the
+    animation (`wm_drag_reset`), so a settle never wobbles the wrong window.
+  - The drop shadow stays at the window's logical rect while the window
+    wobbles around it; only the window itself is warped.
+  - A regression to remember: a full `make` recompiles `progs/bin/*` with
+    the host compiler (the piano then spams `READ: EFAULT` over its
+    window); `git checkout -- progs/bin` and `touch progs/bin/*` before the
+    final `make` keeps the committed binaries.
+
 ### Desktop GUI harness (`tools/minios_gui.py`)
 
 The harness boots QEMU with the emulated std VGA device (the linear

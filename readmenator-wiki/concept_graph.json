@@ -597,6 +597,7 @@
         "headers/select_map.h",
         "headers/vga_fb.h",
         "headers/wm_geom.h",
+        "headers/wm_jelly.h",
         "kernel/console.c",
         "kernel/console_in.c",
         "kernel/ed25519.c",
@@ -818,7 +819,7 @@
         "tools/update_sources.py",
         "tools/wm_layout_sync.py"
       ],
-      "mentions": 478,
+      "mentions": 479,
       "confidence": "EXTRACTED"
     },
     {
@@ -1513,7 +1514,7 @@
         "tools/test_readme_shot.py",
         "tools/update_sources.py"
       ],
-      "mentions": 281,
+      "mentions": 282,
       "confidence": "EXTRACTED"
     },
     {
@@ -1531,6 +1532,7 @@
         "headers/fsimg.h",
         "headers/kernel.h",
         "headers/pcache.h",
+        "headers/wm_jelly.h",
         "kernel/mm/cow.c",
         "kernel/percpu_rq.c",
         "kernel/sched.c",
@@ -1733,7 +1735,7 @@
         "tools/test_bdd.sh",
         "tools/tls_test.py"
       ],
-      "mentions": 234,
+      "mentions": 236,
       "confidence": "EXTRACTED"
     },
     {
@@ -2907,6 +2909,7 @@
         "headers/drivers/xhci.h",
         "headers/pcache.h",
         "kernel/console_in.c",
+        "kernel/vga_fb.c",
         "progs/doomgeneric/am_map.c",
         "progs/doomgeneric/am_map.h",
         "progs/doomgeneric/d_englsh.h",
@@ -3083,7 +3086,7 @@
         "tools/sign_elf.py",
         "tools/test_net_fixture.py"
       ],
-      "mentions": 187,
+      "mentions": 188,
       "confidence": "EXTRACTED"
     },
     {
@@ -3463,6 +3466,7 @@
         "headers/ext4.h",
         "kernel/string.c",
         "kernel/syscalls.c",
+        "kernel/vga_fb.c",
         "progs/doomgeneric/am_map.c",
         "progs/doomgeneric/am_map.h",
         "progs/doomgeneric/d_englsh.h",
@@ -3638,7 +3642,7 @@
         "tools/test_call_align.py",
         "tools/test_gui_menu.py"
       ],
-      "mentions": 179,
+      "mentions": 180,
       "confidence": "EXTRACTED"
     },
     {
@@ -7603,6 +7607,7 @@
         "headers/wm_focus.h",
         "headers/wm_geom.h",
         "headers/wm_gfxview.h",
+        "headers/wm_jelly.h",
         "headers/wm_layout.h",
         "headers/wm_notify.h",
         "headers/wm_render.h",
@@ -7716,7 +7721,7 @@
         "tools/wm_layout_sync.py",
         "vma.c"
       ],
-      "mentions": 636,
+      "mentions": 645,
       "confidence": "EXTRACTED"
     },
     {
@@ -8417,6 +8422,7 @@
         "headers/wm_focus.h",
         "headers/wm_geom.h",
         "headers/wm_gfxview.h",
+        "headers/wm_jelly.h",
         "headers/wm_layout.h",
         "headers/wm_notify.h",
         "headers/wm_render.h",
@@ -8472,6 +8478,7 @@
         "tests/test_fx.c",
         "tests/test_hal_io.c",
         "tests/test_httpd.c",
+        "tests/test_jelly.c",
         "tests/test_ldso.c",
         "tests/test_leakcheck.c",
         "tests/test_minios_png.c",
@@ -8502,7 +8509,7 @@
         "tools/wm_scoped.sh",
         "vma.c"
       ],
-      "mentions": 1204,
+      "mentions": 1236,
       "confidence": "EXTRACTED"
     },
     {
@@ -8538,6 +8545,7 @@
         "headers/wm_focus.h",
         "headers/wm_geom.h",
         "headers/wm_gfxview.h",
+        "headers/wm_jelly.h",
         "headers/wm_layout.h",
         "headers/wm_notify.h",
         "headers/wm_render.h",
@@ -8647,7 +8655,7 @@
         "tools/update_sources.py",
         "tools/wl_scoped.sh"
       ],
-      "mentions": 255,
+      "mentions": 256,
       "confidence": "EXTRACTED"
     },
     {
@@ -8689,6 +8697,7 @@
         "headers/wm_focus.h",
         "headers/wm_geom.h",
         "headers/wm_gfxview.h",
+        "headers/wm_jelly.h",
         "headers/wm_layout.h",
         "headers/wm_notify.h",
         "kernel/abi.c",
@@ -8787,7 +8796,7 @@
         "tools/test_sb16.sh",
         "tools/update_sources.py"
       ],
-      "mentions": 312,
+      "mentions": 316,
       "confidence": "EXTRACTED"
     },
     {
@@ -8841,6 +8850,7 @@
         "headers/vma.h",
         "headers/wm_chrome.h",
         "headers/wm_gfxview.h",
+        "headers/wm_jelly.h",
         "headers/wm_layout.h",
         "headers/wm_notify.h",
         "headers/wm_render.h",
@@ -8926,7 +8936,7 @@
         "tools/check_cohesion.py",
         "tools/mkramdisk.py"
       ],
-      "mentions": 605,
+      "mentions": 610,
       "confidence": "EXTRACTED"
     },
     {
@@ -8976,6 +8986,7 @@
         "headers/wm_focus.h",
         "headers/wm_geom.h",
         "headers/wm_gfxview.h",
+        "headers/wm_jelly.h",
         "headers/wm_layout.h",
         "headers/wm_notify.h",
         "headers/wm_window.h",
@@ -9065,7 +9076,7 @@
         "tools/update_sources.py",
         "vma.c"
       ],
-      "mentions": 421,
+      "mentions": 426,
       "confidence": "EXTRACTED"
     },
     {
@@ -9642,7 +9653,7 @@
         "kernel/shell.c->headers/fat32.h",
         "kernel/shell.c->headers/pcache.h",
         "kernel/syscalls.c->headers/pcache.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h"
+        "kernel/vga_fb.c->headers/wm_jelly.h"
       ]
     },
     {
@@ -9772,10 +9783,10 @@
         "kernel/shell.c->headers/fat32.h",
         "kernel/shell.c->headers/pcache.h",
         "kernel/syscalls.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomedit/doomedit.c->kernel/string.c",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h"
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h"
       ]
     },
     {
@@ -9856,6 +9867,25 @@
     },
     {
       "source": "without",
+      "target": "any",
+      "verb": "depends_on",
+      "strength": 0.94,
+      "confidence": "INFERRED",
+      "evidence": [
+        "drivers/usbblk.c->headers/drivers/xhci.h",
+        "drivers/usbhid.c->headers/drivers/xhci.h",
+        "drivers/usbhid.c->headers/vga_fb.h",
+        "drivers/xhci.c->headers/drivers/pci.h",
+        "drivers/xhci.c->headers/drivers/xhci.h",
+        "fs/pcache.c->headers/pcache.h",
+        "headers/kernel.h->headers/ldso.h",
+        "kernel/console.c->headers/vga_fb.h",
+        "kernel/console_in.c->headers/drivers/xhci.h",
+        "kernel/console_in.c->headers/vga_fb.h"
+      ]
+    },
+    {
+      "source": "without",
       "target": "free",
       "verb": "depends_on",
       "strength": 0.94,
@@ -9905,10 +9935,10 @@
         "kernel/shell.c->headers/fat32.h",
         "kernel/shell.c->headers/pcache.h",
         "kernel/syscalls.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h"
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h"
       ]
     },
     {
@@ -10002,8 +10032,8 @@
         "kernel/shell.c->headers/fat32.h",
         "kernel/shell.c->headers/pcache.h",
         "kernel/syscalls.c->headers/pcache.h",
-        "progs/doomedit/doomedit.c->kernel/string.c",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h"
+        "kernel/vga_fb.c->headers/wm_jelly.h",
+        "progs/doomedit/doomedit.c->kernel/string.c"
       ]
     },
     {
@@ -10312,25 +10342,6 @@
     },
     {
       "source": "without",
-      "target": "any",
-      "verb": "depends_on",
-      "strength": 0.93,
-      "confidence": "INFERRED",
-      "evidence": [
-        "drivers/usbblk.c->headers/drivers/xhci.h",
-        "drivers/usbhid.c->headers/drivers/xhci.h",
-        "drivers/usbhid.c->headers/vga_fb.h",
-        "drivers/xhci.c->headers/drivers/pci.h",
-        "drivers/xhci.c->headers/drivers/xhci.h",
-        "fs/pcache.c->headers/pcache.h",
-        "headers/kernel.h->headers/ldso.h",
-        "kernel/console.c->headers/vga_fb.h",
-        "kernel/console_in.c->headers/drivers/xhci.h",
-        "kernel/console_in.c->headers/vga_fb.h"
-      ]
-    },
-    {
-      "source": "without",
       "target": "can",
       "verb": "depends_on",
       "strength": 0.93,
@@ -10509,6 +10520,25 @@
       "evidence": [
         "drivers/usbhid.c->headers/vga_fb.h",
         "kernel/console_in.c->headers/vga_fb.h",
+        "kernel/vga_fb.c->headers/vga_fb.h",
+        "kernel/vga_fb.c->headers/vga_fx.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h"
+      ]
+    },
+    {
+      "source": "either",
+      "target": "under",
+      "verb": "depends_on",
+      "strength": 0.92,
+      "confidence": "INFERRED",
+      "evidence": [
+        "fs/pcache.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
@@ -10520,13 +10550,33 @@
       ]
     },
     {
-      "source": "either",
+      "source": "even",
+      "target": "progs",
+      "verb": "depends_on",
+      "strength": 0.92,
+      "confidence": "INFERRED",
+      "evidence": [
+        "kernel/syscalls.c->headers/vga_fb.h",
+        "kernel/vga_fb.c->headers/vga_fb.h",
+        "kernel/vga_fb.c->headers/vga_fx.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h"
+      ]
+    },
+    {
+      "source": "even",
       "target": "under",
       "verb": "depends_on",
       "strength": 0.92,
       "confidence": "INFERRED",
       "evidence": [
-        "fs/pcache.c->headers/pcache.h",
+        "kernel/syscalls.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
@@ -10534,8 +10584,7 @@
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_cheat.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_controls.h"
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_cheat.h"
       ]
     },
     {
@@ -10775,14 +10824,14 @@
       "evidence": [
         "fs/pcache.c->headers/pcache.h",
         "kernel/sched.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_cheat.h"
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h"
       ]
     },
     {
@@ -11069,56 +11118,18 @@
         "progs/doomgeneric/am_map.c->progs/doomgeneric/m_controls.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/m_misc.h"
       ]
-    },
-    {
-      "source": "progs",
-      "target": "modify",
-      "verb": "depends_on",
-      "strength": 0.92,
-      "confidence": "INFERRED",
-      "evidence": [
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_cheat.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_controls.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_misc.h"
-      ]
-    },
-    {
-      "source": "progs",
-      "target": "more",
-      "verb": "depends_on",
-      "strength": 0.92,
-      "confidence": "INFERRED",
-      "evidence": [
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_cheat.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_controls.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_misc.h"
-      ]
     }
   ],
   "dialectic": [
-    "Thesis: `any` centralizes 240 files; Antithesis: `but` pulls 186 files with 181 shared (Jaccard 0.74); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `can` pulls 221 files with 196 shared (Jaccard 0.74); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `copyright` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `description` pulls 159 files with 159 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `details` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `distributed` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `doomgeneric` pulls 188 files with 170 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `either` pulls 182 files with 178 shared (Jaccard 0.73); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `even` pulls 177 files with 171 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?",
-    "Thesis: `any` centralizes 240 files; Antithesis: `fitness` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?"
+    "Thesis: `any` centralizes 241 files; Antithesis: `but` pulls 186 files with 181 shared (Jaccard 0.74); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `can` pulls 221 files with 196 shared (Jaccard 0.74); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `copyright` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `description` pulls 159 files with 159 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `details` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `distributed` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `doomgeneric` pulls 188 files with 170 shared (Jaccard 0.66); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `either` pulls 183 files with 179 shared (Jaccard 0.73); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `even` pulls 178 files with 172 shared (Jaccard 0.70); Synthesis: should they merge, split by layer, or keep `depends_on` explicit?",
+    "Thesis: `any` centralizes 241 files; Antithesis: `fitness` pulls 170 files with 170 shared (Jaccard 0.71); Synthesis: should they merge, split by layer, or keep `bridges` explicit?"
   ]
 }

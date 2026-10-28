@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `M_GetIntVariable` | function | `progs/doomgeneric/m_config.h:31` | `int M_GetIntVariable(char *name);` |
+| `M_GetSaveGameDir` | function | `progs/doomgeneric/m_config.h:35` | `char *M_GetSaveGameDir(char *iwadname);` |
+| `M_GetStrVariable` | function | `progs/doomgeneric/m_config.h:32` | `const char *M_GetStrVariable(char *name);` |
+| `M_LoadDefaults` | function | `progs/doomgeneric/m_config.h:25` | `void M_LoadDefaults(void);` |
+| `M_SaveDefaults` | function | `progs/doomgeneric/m_config.h:26` | `void M_SaveDefaults(void);` |
+| `M_SaveDefaultsAlternate` | function | `progs/doomgeneric/m_config.h:27` | `void M_SaveDefaultsAlternate(char *main, char *extra);` |
+| `M_SetConfigDir` | function | `progs/doomgeneric/m_config.h:28` | `void M_SetConfigDir(char *dir);` |
+| `M_SetConfigFilenames` | function | `progs/doomgeneric/m_config.h:34` | `void M_SetConfigFilenames(char *main_config, char *extra_config);` |
+| `__M_CONFIG__` | macro | `progs/doomgeneric/m_config.h:21` | `#define __M_CONFIG__` |
+| `configdir` | variable | `progs/doomgeneric/m_config.h:37` | `extern char *configdir;` |
+| `M_ApplyPlatformDefaults` | function | `progs/doomgeneric/m_controls.c:394` | `void M_ApplyPlatformDefaults(void)` |
+| `M_BindBaseControls` | function | `progs/doomgeneric/m_controls.c:204` | `void M_BindBaseControls(void)` |
+| `M_BindChatControls` | function | `progs/doomgeneric/m_controls.c:375` | `void M_BindChatControls(unsigned int num_players)` |
+| `M_BindHereticControls` | function | `progs/doomgeneric/m_controls.c:241` | `void M_BindHereticControls(void)` |
+| `M_BindHexenControls` | function | `progs/doomgeneric/m_controls.c:256` | `void M_BindHexenControls(void)` |
+| `M_BindMapControls` | function | `progs/doomgeneric/m_controls.c:328` | `void M_BindMapControls(void)` |
+| `M_BindMenuControls` | function | `progs/doomgeneric/m_controls.c:344` | `void M_BindMenuControls(void)` |
+| `M_BindStrifeControls` | function | `progs/doomgeneric/m_controls.c:272` | `void M_BindStrifeControls(void)` |
+| `M_BindWeaponControls` | function | `progs/doomgeneric/m_controls.c:307` | `void M_BindWeaponControls(void)` |
+| `M_ApplyPlatformDefaults` | function | `progs/doomgeneric/m_controls.h:165` | `void M_ApplyPlatformDefaults(void);` |
+| `M_BindBaseControls` | function | `progs/doomgeneric/m_controls.h:156` | `void M_BindBaseControls(void);` |
+| `M_BindChatControls` | function | `progs/doomgeneric/m_controls.h:163` | `void M_BindChatControls(unsigned int num_players);` |
+| `M_BindHereticControls` | function | `progs/doomgeneric/m_controls.h:157` | `void M_BindHereticControls(void);` |
+| `M_BindHexenControls` | function | `progs/doomgeneric/m_controls.h:158` | `void M_BindHexenControls(void);` |
+| `M_BindMapControls` | function | `progs/doomgeneric/m_controls.h:161` | `void M_BindMapControls(void);` |
+| `M_BindMenuControls` | function | `progs/doomgeneric/m_controls.h:162` | `void M_BindMenuControls(void);` |
+| `M_BindStrifeControls` | function | `progs/doomgeneric/m_controls.h:159` | `void M_BindStrifeControls(void);` |
+| `M_BindWeaponControls` | function | `progs/doomgeneric/m_controls.h:160` | `void M_BindWeaponControls(void);` |
+| `__M_CONTROLS_H__` | macro | `progs/doomgeneric/m_controls.h:18` | `#define __M_CONTROLS_H__` |
+| `dclick_use` | variable | `progs/doomgeneric/m_controls.h:154` | `extern int dclick_use;` |
+| `joybfire` | variable | `progs/doomgeneric/m_controls.h:139` | `extern int joybfire;` |
 | `joybjump` | variable | `progs/doomgeneric/m_controls.h:144` | `extern int joybjump;` |
 | `joybmenu` | variable | `progs/doomgeneric/m_controls.h:152` | `extern int joybmenu;` |
 | `joybnextweapon` | variable | `progs/doomgeneric/m_controls.h:150` | `extern int joybnextweapon;` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 | `ITEMQUESIZE` | macro | `progs/doomgeneric/p_local.h:96` | `#define ITEMQUESIZE` |
 | `MAPBLOCKSHIFT` | macro | `progs/doomgeneric/p_local.h:37` | `#define MAPBLOCKSHIFT` |
 | `MAPBLOCKSIZE` | macro | `progs/doomgeneric/p_local.h:36` | `#define MAPBLOCKSIZE` |
-| `MAPBLOCKUNITS` | macro | `progs/doomgeneric/p_local.h:35` | `#define MAPBLOCKUNITS` |
-| `MAPBMASK` | macro | `progs/doomgeneric/p_local.h:38` | `#define MAPBMASK` |
-| `MAPBTOFRAC` | macro | `progs/doomgeneric/p_local.h:39` | `#define MAPBTOFRAC` |
-| `MAXHEALTH` | macro | `progs/doomgeneric/p_local.h:30` | `#define MAXHEALTH` |
-| `MAXINTERCEPTS` | macro | `progs/doomgeneric/p_local.h:155` | `#define MAXINTERCEPTS` |
-| `MAXINTERCEPTS_ORIGINAL` | macro | `progs/doomgeneric/p_local.h:154` | `#define MAXINTERCEPTS_ORIGINAL` |
-| `MAXMOVE` | macro | `progs/doomgeneric/p_local.h:51` | `#define MAXMOVE` |
-| `MAXRADIUS` | macro | `progs/doomgeneric/p_local.h:48` | `#define MAXRADIUS` |
-| `MAXSPECIALCROSS` | macro | `progs/doomgeneric/p_local.h:219` | `#define MAXSPECIALCROSS` |
-| `MAXSPECIALCROSS_ORIGINAL` | macro | `progs/doomgeneric/p_local.h:220` | `#define MAXSPECIALCROSS_ORIGINAL` |
-| `MELEERANGE` | macro | `progs/doomgeneric/p_local.h:54` | `#define MELEERANGE` |
-| `MISSILERANGE` | macro | `progs/doomgeneric/p_local.h:55` | `#define MISSILERANGE` |
-| `ONCEILINGZ` | macro | `progs/doomgeneric/p_local.h:93` | `#define ONCEILINGZ` |
-| `ONFLOORZ` | macro | `progs/doomgeneric/p_local.h:92` | `#define ONFLOORZ` |
-| `PLAYERRADIUS` | macro | `progs/doomgeneric/p_local.h:43` | `#define PLAYERRADIUS` |
-| `PT_ADDLINES` | macro | `progs/doomgeneric/p_local.h:179` | `#define PT_ADDLINES` |
-| `PT_ADDTHINGS` | macro | `progs/doomgeneric/p_local.h:180` | `#define PT_ADDTHINGS` |
-| `PT_EARLYOUT` | macro | `progs/doomgeneric/p_local.h:181` | `#define PT_EARLYOUT` |
-| `P_AddThinker` | function | `progs/doomgeneric/p_local.h:71` | `void P_AddThinker (thinker_t* thinker);` |
-| `P_AimLineAttack` | function | `progs/doomgeneric/p_local.h:237` | `fixed_t P_AimLineAttack ( mobj_t* t1, angle_t angle, fixed_t distance );` |
-| `P_AproxDistance` | function | `progs/doomgeneric/p_local.h:162` | `fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);` |
-| `P_BoxOnLineSide` | function | `progs/doomgeneric/p_local.h:167` | `int P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);` |
-| `P_DamageMobj` | function | `progs/doomgeneric/p_local.h:284` | `void P_DamageMobj ( mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage );` |
-| `P_DropWeapon` | function | `progs/doomgeneric/p_local.h:80` | `void P_DropWeapon (player_t* player);` |
-| `P_InitThinkers` | function | `progs/doomgeneric/p_local.h:70` | `void P_InitThinkers (void);` |
-| `P_InterceptVector` | function | `progs/doomgeneric/p_local.h:166` | `fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);` |
-| `P_LineAttack` | function | `progs/doomgeneric/p_local.h:243` | `void P_LineAttack ( mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope, int damage );` |
-| `P_LineOpening` | function | `progs/doomgeneric/p_local.h:174` | `void P_LineOpening (line_t* linedef);` |
-| `P_MakeDivline` | function | `progs/doomgeneric/p_local.h:165` | `void P_MakeDivline (line_t* li, divline_t* dl);` |
-| `P_MobjThinker` | function | `progs/doomgeneric/p_local.h:116` | `void P_MobjThinker (mobj_t* mobj);` |
-| `P_MovePsprites` | function | `progs/doomgeneric/p_local.h:79` | `void P_MovePsprites (player_t* curplayer);` |
 
 Next: [SYMBOLS_p17.md](SYMBOLS_p17.md)

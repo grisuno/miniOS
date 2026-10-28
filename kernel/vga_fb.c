@@ -32,12 +32,15 @@
 #include "wm_focus.h"
 #include "wm_layout.h"
 #include "wm_notify.h"
+#include "wm_jelly.h"
 #include "wm_gfxview.h"
 #include "vga_fx.h"
 
 /** Docstring: Focus ids share one space across terminals and graphics. */
 _Static_assert(WM_FOCUS_GFX == WM_WINDOW_GFX_ID,
                "gfx focus id drifted from unified window contract");
+
+static void jelly_cancel(void);
 
 /** Docstring: File-scope drag state shared by the tick and focus paths. */
 static int wm_dragging;
@@ -70,6 +73,7 @@ static wm_event_config_t wm_event_cfg(void)
 /** Docstring: Reset terminal and graphics drag grabs on focus change. */
 static void wm_drag_reset(void)
 {
+    jelly_cancel();
     wm_dragging = 0;
     wm_grab_cx = 0;
     wm_skip_drag = 0;
@@ -208,10 +212,16 @@ static int fb_shadow_ready(void)
     return 1;
 }
 
-/** Docstring: Copy the whole shadow onto the visible framebuffer. */
+static int jelly_try_present(void);
+
+/** Docstring: Copy the whole shadow onto the visible framebuffer; an
+ * armed wobble band is presented through its mesh instead. */
 static void fb_present_shadow(void)
 {
     if (!fb_shadow) {
+        return;
+    }
+    if (jelly_try_present()) {
         return;
     }
     fb_copy_bytes(FB_ADDR, fb_shadow, fb_frame_bytes());
@@ -261,6 +271,7 @@ void fb_write_packed(int x, int y, unsigned long rgb);
 /* Forward: the wallpaper cache lives with the shortcut-icon code below, but
  * the desktop painter above needs it. */
 static void wallpaper_draw(void);
+static int wallpaper_packed(int x, int y, unsigned int *out);
 static int icon_nearest(int r, int g, int b);
 static const uint8_t *gfx_task_icon(void);
 static void taskbar_layout(void);
@@ -3452,6 +3463,258 @@ static void desktop_cursor_paint(void) {
     cursor_place(mouse_state.x, mouse_state.y);
 }
 
+/* ---- Wobbly windows (wm_jelly.h) ----
+ *
+ * Dragging a window kicks a spring mesh against the motion; the finished
+ * frame is then presented through that mesh, so the far corners lag the
+ * grab point and swing home after the drop. The effect owns no heap: the
+ * desktop tick runs from the timer interrupt, and the kernel heap has no
+ * lock, so an allocation here could land in the middle of another one.
+ * Instead the composition leaves the window untouched in the shadow,
+ * records the rect (jelly_arm), and the present (fb_present_shadow) copies
+ * everything outside the wobble band as usual and then writes the band
+ * straight to the framebuffer, row by row, sampling the window pixels from
+ * the shadow through the mesh. Pixels of the old window rect that no
+ * displaced pixel covers show the wallpaper (windows paint over the dock
+ * and wallpaper, so that is what they hid). One static row buffer is the
+ * only storage. Outside the settle the mesh is at rest and nothing is
+ * armed, so the end state is byte-identical with the effect on or off;
+ * 8-bit modes and `fx off` keep the flat drag. */
+#define JELLY_BLOCK     8
+#define JELLY_SUBSTEPS  2
+#define JELLY_ROW_MAX   2304
+
+enum { JELLY_NONE = 0, JELLY_TERM = 1, JELLY_GFX = 2 };
+
+static wm_jelly_config_t jelly_cfg = WM_JELLY_CONFIG_DEFAULT;
+static wm_jelly_t jelly_mesh;
+static int jelly_kind;
+static int jelly_gx, jelly_gy;
+static unsigned long jelly_last_tick;
+static unsigned long jelly_last_draw;
+static unsigned int jelly_row[JELLY_ROW_MAX];
+static int jelly_armed;
+static int jelly_rx, jelly_ry, jelly_rw, jelly_rh;
+static int jelly_bx0, jelly_bx1, jelly_by0, jelly_by1;
+
+/** Docstring: Drop the animation; callers redraw. */
+static void jelly_cancel(void)
+{
+    jelly_kind = JELLY_NONE;
+    jelly_armed = 0;
+    wm_jelly_reset(&jelly_mesh);
+}
+
+/** Docstring: Start wobbling the dragged window (kind, grab point inside
+ * the window). A no-op in 8-bit mode or with effects off. */
+static void jelly_begin(int kind, int gx, int gy)
+{
+    if (fb_bpp == 8 || !vga_fx_enabled())
+        return;
+    if (jelly_kind != kind)
+        wm_jelly_reset(&jelly_mesh);
+    jelly_kind = kind;
+    jelly_gx = gx;
+    jelly_gy = gy;
+}
+
+/** Docstring: Rect of the wobbling window in the composed frame. */
+static int jelly_rect(int *x, int *y, int *w, int *h)
+{
+    if (jelly_kind == JELLY_TERM) {
+        if (term_fullscreen || term_minimized)
+            return 0;
+        *x = term_px_x;
+        *y = term_px_y;
+        *w = term_px_w + SCROLLBAR_W;
+        *h = term_px_h + FONT_H;
+        return 1;
+    }
+    if (jelly_kind == JELLY_GFX && vga_fb_gfx_mode && !gfx_hidden && gfx_view_valid &&
+        gfx_view_mode != WM_GFXVIEW_FULL) {
+        *x = gfx_view.frame.x;
+        *y = gfx_view.frame.y;
+        *w = gfx_view.frame.w;
+        *h = gfx_view.frame.h;
+        return 1;
+    }
+    return 0;
+}
+
+/** Docstring: The pointer moved the window by (mx, my): shove the mesh. */
+static void jelly_kick(int mx, int my)
+{
+    int x, y, w, h;
+    if (jelly_kind == JELLY_NONE || (mx == 0 && my == 0) || !jelly_rect(&x, &y, &w, &h))
+        return;
+    wm_jelly_kick(&jelly_mesh, &jelly_cfg, mx, my, jelly_gx, jelly_gy, w, h);
+}
+
+/** Docstring: 1 while the mesh still has motion to show. */
+static int jelly_live(void)
+{
+    return jelly_kind != JELLY_NONE && !wm_jelly_at_rest(&jelly_cfg, &jelly_mesh);
+}
+
+/** Docstring: Record the wobble band of a finished outermost composition
+ * so the present can warp it. Every precondition failing leaves the frame
+ * flat. */
+static void jelly_arm(void)
+{
+    int reach = jelly_cfg.max_px;
+    int ylimit = fb_height - TASKBAR_H;
+    jelly_armed = 0;
+    if (!jelly_live() || fb_bpp == 8 || !fb_shadow ||
+        !jelly_rect(&jelly_rx, &jelly_ry, &jelly_rw, &jelly_rh))
+        return;
+    if (jelly_rw < 2 || jelly_rh < 2 || jelly_rx < 0 || jelly_ry < 0 ||
+        jelly_rx + jelly_rw > fb_width || jelly_ry + jelly_rh > fb_height)
+        return;
+    jelly_bx0 = jelly_rx - reach;
+    jelly_bx1 = jelly_rx + jelly_rw + reach;
+    jelly_by0 = jelly_ry - reach;
+    jelly_by1 = jelly_ry + jelly_rh + reach;
+    if (jelly_bx0 < 0) jelly_bx0 = 0;
+    if (jelly_bx1 > fb_width) jelly_bx1 = fb_width;
+    if (jelly_by0 < 0) jelly_by0 = 0;
+    if (jelly_by1 > ylimit) jelly_by1 = ylimit;
+    if (jelly_bx1 - jelly_bx0 > JELLY_ROW_MAX || jelly_bx1 <= jelly_bx0 || jelly_by1 <= jelly_by0)
+        return;
+    jelly_last_draw = (unsigned long)sys_ticks;
+    jelly_armed = 1;
+}
+
+/** Docstring: Packed pixel of the shadow at (x, y), 24 and 32-bit only. */
+static unsigned int jelly_shadow_px(int x, int y)
+{
+    const uint8_t *p = fb_shadow + (unsigned long)y * (unsigned long)fb_pitch;
+    if (fb_bpp == 32)
+        return *(const unsigned int *)(p + (unsigned long)x * 4UL) & 0x00FFFFFFu;
+    p += (unsigned long)x * 3UL;
+    return (unsigned int)p[0] | ((unsigned int)p[1] << 8) | ((unsigned int)p[2] << 16);
+}
+
+/** Docstring: Write one packed row segment to the visible framebuffer. */
+static void jelly_put_row(int x, int y, const unsigned int *src, int n)
+{
+    volatile uint8_t *p = FB_ADDR + (unsigned long)y * (unsigned long)fb_pitch;
+    int i;
+    if (fb_bpp == 32) {
+        volatile unsigned int *q = (volatile unsigned int *)(p + (unsigned long)x * 4UL);
+        for (i = 0; i < n; i++)
+            q[i] = src[i];
+    } else {
+        volatile uint8_t *q = p + (unsigned long)x * 3UL;
+        for (i = 0; i < n; i++) {
+            q[0] = (uint8_t)(src[i] & 0xFF);
+            q[1] = (uint8_t)((src[i] >> 8) & 0xFF);
+            q[2] = (uint8_t)((src[i] >> 16) & 0xFF);
+            q += 3;
+        }
+    }
+}
+
+/** Docstring: Write the wobble band to the framebuffer: every pixel takes
+ * the shadow pixel the mesh displaces onto it, the old window rect shows
+ * the wallpaper where nothing lands, everything else is the shadow. */
+static void jelly_warp_band(void)
+{
+    int yy;
+    int w = jelly_bx1 - jelly_bx0;
+    for (yy = jelly_by0; yy < jelly_by1; yy++) {
+        int xx;
+        int ly = yy - jelly_ry;
+        for (xx = 0; xx < w; xx++)
+            jelly_row[xx] = jelly_shadow_px(jelly_bx0 + xx, yy);
+        for (xx = jelly_bx0; xx < jelly_bx1; xx += JELLY_BLOCK) {
+            int ox, oy, i;
+            int bend = xx + JELLY_BLOCK < jelly_bx1 ? xx + JELLY_BLOCK : jelly_bx1;
+            wm_jelly_sample(&jelly_mesh, xx + JELLY_BLOCK / 2 - jelly_rx, ly, jelly_rw, jelly_rh, &ox, &oy);
+            for (i = xx; i < bend; i++) {
+                int lx = i - jelly_rx;
+                int sx = lx - ox;
+                int sy = ly - oy;
+                if (sx >= 0 && sx < jelly_rw && sy >= 0 && sy < jelly_rh) {
+                    jelly_row[i - jelly_bx0] = jelly_shadow_px(jelly_rx + sx, jelly_ry + sy);
+                } else if (lx >= 0 && lx < jelly_rw && ly >= 0 && ly < jelly_rh) {
+                    unsigned int wp;
+                    if (wallpaper_packed(i, yy, &wp))
+                        jelly_row[i - jelly_bx0] = wp;
+                }
+            }
+        }
+        jelly_put_row(jelly_bx0, yy, jelly_row, w);
+    }
+}
+
+/** Docstring: Present the shadow, warping the armed band. The band rows
+ * copy only their left and right margins; the band itself is written by
+ * the warp, so no flat frame of the window ever reaches the screen. */
+static void jelly_present(void)
+{
+    unsigned long pitch = (unsigned long)fb_pitch;
+    unsigned long bpp = (unsigned long)fb_bytes_per_pixel();
+    int y;
+    if (jelly_by0 > 0)
+        fb_copy_bytes(FB_ADDR, fb_shadow, pitch * (unsigned long)jelly_by0);
+    for (y = jelly_by0; y < jelly_by1; y++) {
+        unsigned long row = pitch * (unsigned long)y;
+        if (jelly_bx0 > 0)
+            fb_copy_bytes(FB_ADDR + row, fb_shadow + row, (unsigned long)jelly_bx0 * bpp);
+        if (jelly_bx1 < fb_width)
+            fb_copy_bytes(FB_ADDR + row + (unsigned long)jelly_bx1 * bpp,
+                          fb_shadow + row + (unsigned long)jelly_bx1 * bpp,
+                          (unsigned long)(fb_width - jelly_bx1) * bpp);
+    }
+    if (jelly_by1 < fb_height)
+        fb_copy_bytes(FB_ADDR + pitch * (unsigned long)jelly_by1, fb_shadow + pitch * (unsigned long)jelly_by1,
+                      pitch * (unsigned long)(fb_height - jelly_by1));
+    jelly_warp_band();
+}
+
+/** Docstring: Present through the mesh when a band is armed; 1 when the
+ * frame was presented here. The arm is consumed either way. */
+static int jelly_try_present(void)
+{
+    if (!jelly_armed)
+        return 0;
+    jelly_armed = 0;
+    jelly_present();
+    return 1;
+}
+
+/** Docstring: Advance the spring at most once per desktop tick, in
+ * JELLY_SUBSTEPS finer steps so the wobble stays smooth at the tick rate. */
+static void jelly_advance(void)
+{
+    int i;
+    if (jelly_kind == JELLY_NONE || (unsigned long)sys_ticks == jelly_last_tick)
+        return;
+    jelly_last_tick = (unsigned long)sys_ticks;
+    for (i = 0; i < JELLY_SUBSTEPS; i++)
+        wm_jelly_step(&jelly_cfg, &jelly_mesh);
+}
+
+/** Docstring: Desktop-tick driver. While the window is held it keeps the
+ * mesh moving even when the pointer is still; after the drop it plays the
+ * settle and finishes with a plain redraw once the mesh is at rest. */
+static void jelly_tick(int held)
+{
+    if (jelly_kind == JELLY_NONE)
+        return;
+    if (!jelly_live()) {
+        if (!held) {
+            jelly_cancel();
+            vga_fb_draw_desktop();
+        }
+        return;
+    }
+    if (jelly_last_draw == (unsigned long)sys_ticks)
+        return;
+    jelly_advance();
+    vga_fb_draw_desktop();
+}
+
 /** Docstring: Repaint the desktop through the shared render plan.
  * The whole frame composes off-screen (see the render-target section)
  * and is presented once, pointer included, so a redraw never flashes a
@@ -3517,6 +3780,9 @@ void vga_fb_draw_desktop(void) {
     tw_unpark(cur);
     gfx_frame_dirty = 1;
     gfx_keep_restore();
+    jelly_armed = 0;
+    if (owner && !fb_hold_present)
+        jelly_arm();
     if (fx_do) {
         unsigned int *fx_new = vga_fx_snap_rect(fx_cx, fx_cy, fx_cw, fx_ch);
         cursor_invalidate();
@@ -4000,9 +4266,12 @@ static void vga_fb_drag_terminal(int mx, int my, int grab_cx) {
     if (nx > max_x) nx = max_x;
     if (ny > max_y) ny = max_y;
     if (nx == term_x && ny == term_y) return;
+    jelly_begin(JELLY_TERM, grab_cx * FONT_W, FONT_H / 2);
+    jelly_kick(nx * FONT_W - term_px_x, ny * FONT_H - term_px_y);
     term_x = nx; term_y = ny;
     term_px_x = term_x * FONT_W;
     term_px_y = term_y * FONT_H;
+    jelly_advance();
     vga_fb_draw_desktop();
 }
 
@@ -4094,6 +4363,18 @@ static void wallpaper_draw(void) {
     for (y = 0; y < fb_height; y++)
         fb_copy_bytes(FBT + (unsigned long)y * (unsigned long)fb_pitch,
                       wall_native + (unsigned long)y * row, row);
+}
+
+/** Docstring: Packed 0x00RRGGBB wallpaper pixel at (x, y); 0 when the
+ * cache is unusable, the coordinate is off screen or the mode is 8-bit. */
+static int wallpaper_packed(int x, int y, unsigned int *out)
+{
+    const uint8_t *d;
+    if (!wallpaper_usable() || wall_bpx < 3 || x < 0 || y < 0 || x >= fb_width || y >= fb_height)
+        return 0;
+    d = wall_native + ((unsigned long)y * (unsigned long)fb_width + (unsigned long)x) * (unsigned long)wall_bpx;
+    *out = (unsigned int)d[0] | ((unsigned int)d[1] << 8) | ((unsigned int)d[2] << 16);
+    return 1;
 }
 
 /* ---- Desktop shortcut icons ----
@@ -4704,8 +4985,13 @@ static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)
         cy = (fb_height - ff.h) / 2;
         gfx_win_ox = mx - wm_ggx - cx;
         gfx_win_oy = my - wm_ggy - cy;
-        if (gfx_win_ox != old_ox || gfx_win_oy != old_oy)
+        if (gfx_win_ox != old_ox || gfx_win_oy != old_oy) {
+            jelly_begin(JELLY_GFX, wm_ggx, wm_ggy);
+            if (old_ox != 0x7FFFFFFF && old_oy != 0x7FFFFFFF)
+                jelly_kick(gfx_win_ox - old_ox, gfx_win_oy - old_oy);
+            jelly_advance();
             vga_fb_draw_desktop();
+        }
     } else if (was) {
         vga_fb_draw_desktop();
     }
@@ -4881,6 +5167,7 @@ void vga_fb_mouse_tick(void) {
         mx = mouse_state.x;
         my = mouse_state.y;
     }
+    jelly_tick(wm_dragging || wm_gdrag);
 
     mouse_scrollbar(&gcfg, mx, my);
 

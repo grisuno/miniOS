@@ -3,6 +3,20 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `sys_linux_eventfd` | function | `kernel/syscalls.c:1731` | `static long sys_linux_eventfd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_eventfd2` | function | `kernel/syscalls.c:1718` | `static long sys_linux_eventfd2(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fchmod` | function | `kernel/syscalls.c:3357` | `static long sys_linux_fchmod(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fdatasync` | function | `kernel/syscalls.c:3055` | `static long sys_linux_fdatasync(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_flock` | function | `kernel/syscalls.c:3041` | `static long sys_linux_flock(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fstat` | function | `kernel/syscalls.c:3146` | `static long sys_linux_fstat(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_fsync` | function | `kernel/syscalls.c:3050` | `static long sys_linux_fsync(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_futex` | function | `kernel/syscalls.c:293` | `static long sys_linux_futex(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getcwd` | function | `kernel/syscalls.c:3060` | `static long sys_linux_getcwd(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getdents64` | function | `kernel/syscalls.c:976` | `static long sys_linux_getdents64(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getegid` | function | `kernel/syscalls.c:3248` | `static long sys_linux_getegid(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_geteuid` | function | `kernel/syscalls.c:3243` | `static long sys_linux_geteuid(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getgid` | function | `kernel/syscalls.c:3238` | `static long sys_linux_getgid(long a1, long a2, long a3, long a4, long a5, long a6)` |
+| `sys_linux_getpeername` | function | `kernel/syscalls.c:2900` | `static long sys_linux_getpeername(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_linux_getsockname` | function | `kernel/syscalls.c:2894` | `static long sys_linux_getsockname(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_linux_getsockopt` | function | `kernel/syscalls.c:2887` | `static long sys_linux_getsockopt(long a1, long a2, long a3, long a4, long a5, long a6)` |
 | `sys_linux_gettimeofday` | function | `kernel/syscalls.c:3171` | `static long sys_linux_gettimeofday(long a1, long a2, long a3, long a4, long a5, long a6)` |
@@ -150,242 +164,259 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 | `cursor_place` | function | `kernel/vga_cursor.c:106` | `void cursor_place(int mx, int my)` |
 | `cursor_restore` | function | `kernel/vga_cursor.c:81` | `static void cursor_restore(int mx, int my)` |
 | `cursor_save_bg` | function | `kernel/vga_cursor.c:40` | `static void cursor_save_bg(int mx, int my)` |
-| `DOCK_GLOW_PAD` | macro | `kernel/vga_fb.c:2171` | `#define DOCK_GLOW_PAD` |
-| `FBT` | macro | `kernel/vga_fb.c:147` | `#define FBT` |
-| `FB_OFFSET` | macro | `kernel/vga_fb.c:1708` | `#define FB_OFFSET(x,y)` |
-| `GFX_CURSOR_FOLLOW_TICKS` | macro | `kernel/vga_fb.c:578` | `#define GFX_CURSOR_FOLLOW_TICKS` |
-| `GFX_CURSOR_IDLE_TICKS` | macro | `kernel/vga_fb.c:572` | `#define GFX_CURSOR_IDLE_TICKS` |
-| `GFX_KEEP_BYTES` | macro | `kernel/vga_fb.c:546` | `#define GFX_KEEP_BYTES` |
-| `GFX_PROG_LEN` | macro | `kernel/vga_fb.c:630` | `#define GFX_PROG_LEN` |
-| `GFX_SRC_IDX` | macro | `kernel/vga_fb.c:544` | `#define GFX_SRC_IDX` |
-| `GFX_SRC_RGB` | macro | `kernel/vga_fb.c:545` | `#define GFX_SRC_RGB` |
-| `LG_LINE` | macro | `kernel/vga_fb.c:298` | `#define LG_LINE(a)` |
-| `PROFILE_MARGIN` | macro | `kernel/vga_fb.c:2174` | `#define PROFILE_MARGIN` |
-| `PROFILE_PAD` | macro | `kernel/vga_fb.c:2172` | `#define PROFILE_PAD` |
-| `PROFILE_RING` | macro | `kernel/vga_fb.c:2173` | `#define PROFILE_RING` |
-| `PROFILE_TEXT_COLS` | macro | `kernel/vga_fb.c:2175` | `#define PROFILE_TEXT_COLS` |
-| `TB_GFX_TITLE_MAX` | macro | `kernel/vga_fb.c:2942` | `#define TB_GFX_TITLE_MAX` |
-| `TEXT_BG_NONE` | macro | `kernel/vga_fb.c:2099` | `#define TEXT_BG_NONE` |
-| `WIN_DEF_COLS` | macro | `kernel/vga_fb.c:956` | `#define WIN_DEF_COLS` |
-| `WIN_DEF_ROWS` | macro | `kernel/vga_fb.c:957` | `#define WIN_DEF_ROWS` |
-| `WIN_DEF_X` | macro | `kernel/vga_fb.c:958` | `#define WIN_DEF_X` |
-| `WIN_DEF_Y` | macro | `kernel/vga_fb.c:959` | `#define WIN_DEF_Y` |
-| `WM_ELINE_SZ` | macro | `kernel/vga_fb.c:989` | `#define WM_ELINE_SZ` |
-| `WM_MAX_TERMS` | macro | `kernel/vga_fb.c:987` | `#define WM_MAX_TERMS` |
-| `act_nrows` | function | `kernel/vga_fb.c:373` | `static int act_nrows(void)` |
-| `alone` | function | `kernel/vga_fb.c:1420` | `* window alone (an unfocused graphics window minimizes to the taskbar,  * exactly like the hidden...` |
-| `app` | function | `kernel/vga_fb.c:1216` | `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep...` |
-| `buffer` | function | `kernel/vga_fb.c:3297` | `* owns the buffer (indices reset, render reads an empty ring). */ void term_clear(void)` |
-| `chrome_color` | function | `kernel/vga_fb.c:2178` | `static unsigned long chrome_color(unsigned idx)` |
-| `chrome_corner_origin` | function | `kernel/vga_fb.c:2244` | `static void chrome_corner_origin(const chrome_win_t *c, int k, int *ox, int *oy)` |
-| `chrome_disc` | function | `kernel/vga_fb.c:2450` | `static void chrome_disc(int cx2, int cy2, int r2, unsigned long color, int alpha)` |
-| `chrome_glass` | function | `kernel/vga_fb.c:2418` | `static void chrome_glass(int x, int y, int w, int h)` |
-| `chrome_glow` | function | `kernel/vga_fb.c:2488` | `static void chrome_glow(int x, int y, int w, int h)` |
-| `chrome_panel_coverage` | function | `kernel/vga_fb.c:2405` | `static int chrome_panel_coverage(int xx, int yy, int x, int y, int w, int h)` |
-| `chrome_profile_card` | function | `kernel/vga_fb.c:2508` | `static void chrome_profile_card(void)` |
-| `chrome_term_fill` | function | `kernel/vga_fb.c:2389` | `static int chrome_term_fill(void)` |
-| `chrome_tint_capture` | function | `kernel/vga_fb.c:2343` | `static void chrome_tint_capture(int idx, int x, int y, int w, int h)` |
-| `chrome_tint_live` | function | `kernel/vga_fb.c:2375` | `static const chrome_tint_t *chrome_tint_live(void)` |
-| `chrome_tint_t` | struct | `kernel/vga_fb.c:422` | `` |
-| `chrome_title_strip` | function | `kernel/vga_fb.c:2218` | `static int chrome_title_strip(int x, int y, int w, int focused)` |
-| `chrome_traffic_lights` | function | `kernel/vga_fb.c:2472` | `static int chrome_traffic_lights(int bx, int by)` |
-| `chrome_win_capture` | function | `kernel/vga_fb.c:2263` | `static void chrome_win_capture(int idx, int x, int y, int w, int h)` |
-| `chrome_win_cut` | function | `kernel/vga_fb.c:2293` | `static void chrome_win_cut(const chrome_win_t *c, int k)` |
-| `chrome_win_live` | function | `kernel/vga_fb.c:2314` | `static chrome_win_t *chrome_win_live(void)` |
-| `chrome_win_recut_bottom` | function | `kernel/vga_fb.c:2329` | `static void chrome_win_recut_bottom(int corner)` |
-| `chrome_win_t` | struct | `kernel/vga_fb.c:2234` | `` |
-| `chrome_wins_reset` | function | `kernel/vga_fb.c:2252` | `static void chrome_wins_reset(void)` |
-| `ci_eq` | function | `kernel/vga_fb.c:669` | `static int ci_eq(const char *a, const char *b)` |
-| `command` | function | `kernel/vga_fb.c:4575` | `* its launch command (config-driven, covers apps that never set a window * title);` |
-| `compositions` | function | `kernel/vga_fb.c:135` | `* compositions (an ISR tick composing inside a syscall composition) draw * into the same shadow and leave the...` |
-| `content` | function | `kernel/vga_fb.c:1290` | `* windows would share content (same prompt/output on both) and a park  * would alias src == dst. ...` |
-| `coordinates` | function | `kernel/vga_fb.c:802` | `* windows keep the exact historical coordinates (including outside the * window);` |
-| `desktop_shortcuts_draw` | function | `kernel/vga_fb.c:4500` | `void desktop_shortcuts_draw(void)` |
-| `desktop_shortcuts_hit_test` | function | `kernel/vga_fb.c:4601` | `const char *desktop_shortcuts_hit_test(int mx, int my)` |
-| `desktop_shortcuts_load` | function | `kernel/vga_fb.c:4261` | `void desktop_shortcuts_load(void)` |
-| `directly` | function | `kernel/vga_fb.c:2626` | `* RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */ static void gfx_scale_...` |
-| `disp_clamp` | function | `kernel/vga_fb.c:384` | `static void disp_clamp(void)` |
-| `dock_bounce_counts` | function | `kernel/vga_fb.c:4369` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)` |
-| `dock_bounce_elapsed` | function | `kernel/vga_fb.c:4385` | `static unsigned long dock_bounce_elapsed(void)` |
-| `dock_bounce_live` | function | `kernel/vga_fb.c:4393` | `static int dock_bounce_live(void)` |
-| `dock_click_count` | function | `kernel/vga_fb.c:4379` | `void dock_click_count(unsigned long *edges)` |
-| `dock_hover_index` | function | `kernel/vga_fb.c:4342` | `static int dock_hover_index(int mx, int my)` |
-| `dock_label_px` | function | `kernel/vga_fb.c:4227` | `static int dock_label_px(const struct desktop_shortcut *sc)` |
-| `dock_paint_backing` | function | `kernel/vga_fb.c:4493` | `static void dock_paint_backing(int x0, int y0, int dock_w, int dock_h, int with_shadow)` |
-| `dock_paint_hover` | function | `kernel/vga_fb.c:4551` | `static void dock_paint_hover(int hover)` |
-| `dock_paint_icons` | function | `kernel/vga_fb.c:4451` | `static void dock_paint_icons(int hover)` |
-| `dock_pending_active` | function | `kernel/vga_fb.c:4443` | `int dock_pending_active(void)` |
-| `draw_scrollbar` | function | `kernel/vga_fb.c:3200` | `static void draw_scrollbar(void)` |
-| `draw_speaker_icon` | function | `kernel/vga_fb.c:2975` | `static void draw_speaker_icon(int x, int y, uint8_t color)` |
-| `draw_title_win` | function | `kernel/vga_fb.c:2911` | `static void draw_title_win(int idx, int focused)` |
-| `escapes` | function | `kernel/vga_fb.c:3366` | `* swallowing them here keeps the escapes (which the serial side needs)      * from printing as li...` |
-| `fb_bytes_per_pixel` | function | `kernel/vga_fb.c:119` | `int fb_bytes_per_pixel(void)` |
-| `fb_compose_begin` | function | `kernel/vga_fb.c:223` | `static int fb_compose_begin(void)` |
-| `fb_compose_end` | function | `kernel/vga_fb.c:236` | `static void fb_compose_end(int owner)` |
-| `fb_copy_bytes` | function | `kernel/vga_fb.c:153` | `static void fb_copy_bytes(volatile void *dst, const volatile void *src, unsigned long n)` |
-| `fb_fill_run` | function | `kernel/vga_fb.c:1903` | `static void fb_fill_run(int x, int y, int n, unsigned long px)` |
-| `fb_fill_u32` | function | `kernel/vga_fb.c:171` | `static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n)` |
-| `fb_frame_bytes` | function | `kernel/vga_fb.c:185` | `static unsigned long fb_frame_bytes(void)` |
-| `fb_glyph` | function | `kernel/vga_fb.c:1991` | `static const uint8_t *fb_glyph(unsigned char c)` |
-| `fb_pack_idx` | function | `kernel/vga_fb.c:1786` | `static unsigned long fb_pack_idx(unsigned idx)` |
-| `fb_present_shadow` | function | `kernel/vga_fb.c:212` | `static void fb_present_shadow(void)` |
-| `fb_read_packed` | function | `kernel/vga_fb.c:1822` | `unsigned long fb_read_packed(int x, int y)` |
-| `fb_read_row_packed` | function | `kernel/vga_fb.c:1881` | `void fb_read_row_packed(int x, int y, unsigned int *dst, int n)` |
-| `fb_shadow_ready` | function | `kernel/vga_fb.c:191` | `static int fb_shadow_ready(void)` |
-| `fb_write_packed` | function | `kernel/vga_fb.c:1802` | `void fb_write_packed(int x, int y, unsigned long rgb)` |
-| `fb_write_row_packed` | function | `kernel/vga_fb.c:1851` | `void fb_write_row_packed(int x, int y, const unsigned int *src, int n)` |
-| `first` | function | `kernel/vga_fb.c:476` | `* screen ever showing it whole first (the old flash-then-melt). */ static unsigned int *fx_start_...` |
-| `flag` | function | `kernel/vga_fb.c:553` | `* is the minimized flag (the program keeps running, nothing composites);` |
-| `from` | function | `kernel/vga_fb.c:3682` | `* leaving returns to the view it came from (floating or tiled). Returns  * 0 on success, -1 witho...` |
-| `gfx_animate` | function | `kernel/vga_fb.c:3584` | `static void gfx_animate(const wm_gfxview_rect_t *from, const wm_gfxview_rect_t *to,              ...` |
-| `gfx_compose` | function | `kernel/vga_fb.c:2764` | `static void gfx_compose(const volatile uint8_t *src, int kind, int sw, int sh,                   ...` |
-| `gfx_covers_screen` | function | `kernel/vga_fb.c:601` | `static int gfx_covers_screen(void)` |
-| `gfx_cursor_follow_idle` | function | `kernel/vga_fb.c:2848` | `static void gfx_cursor_follow_idle(void)` |
-| `gfx_drop_focus` | function | `kernel/vga_fb.c:3671` | `static void gfx_drop_focus(int source)` |
-| `gfx_float_frame` | function | `kernel/vga_fb.c:772` | `static int gfx_float_frame(wm_gfxview_rect_t *out)` |
-| `gfx_keep_save` | function | `kernel/vga_fb.c:607` | `static void gfx_keep_save(const volatile uint8_t *src, int kind, int sw, int sh)` |
-| `gfx_letterbox` | function | `kernel/vga_fb.c:2731` | `static void gfx_letterbox(const wm_gfxview_t *v)` |
-| `gfx_present` | function | `kernel/vga_fb.c:2832` | `static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)` |
-| `gfx_prog_icon` | function | `kernel/vga_fb.c:682` | `static const uint8_t *gfx_prog_icon(void)` |
-| `gfx_snap` | function | `kernel/vga_fb.c:3803` | `static void gfx_snap(int zone)` |
-| `gfx_task_icon` | function | `kernel/vga_fb.c:4580` | `static const uint8_t *gfx_task_icon(void)` |
-| `gfx_taskbar_rect` | function | `kernel/vga_fb.c:3634` | `static void gfx_taskbar_rect(wm_gfxview_rect_t *r)` |
-| `gfx_title` | function | `kernel/vga_fb.c:2750` | `static void gfx_title(const wm_gfxview_t *v)` |
-| `gfx_transition` | function | `kernel/vga_fb.c:997` | `static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled);` |
-| `gfx_view_cfg` | function | `kernel/vga_fb.c:592` | `static wm_gfxview_config_t gfx_view_cfg(void)` |
-| `gfx_view_for` | function | `kernel/vga_fb.c:746` | `static int gfx_view_for(int sw, int sh, wm_gfxview_t *v)` |
-| `gfx_view_in_rect` | function | `kernel/vga_fb.c:3565` | `static void gfx_view_in_rect(const wm_gfxview_rect_t *r, int titled, wm_gfxview_t *v)` |
-| `gfx_view_publish` | function | `kernel/vga_fb.c:758` | `static void gfx_view_publish(const wm_gfxview_t *v)` |
-| `icon_decode` | function | `kernel/vga_fb.c:4165` | `static const uint8_t *icon_decode(const char *path)` |
-| `icon_embedded` | function | `kernel/vga_fb.c:4145` | `static const uint8_t *icon_embedded(const char *name)` |
-| `icon_embedded_rgba` | function | `kernel/vga_fb.c:4199` | `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` |
-| `icon_nearest` | function | `kernel/vga_fb.c:4129` | `static int icon_nearest(int r, int g, int b)` |
-| `letterbox` | function | `kernel/vga_fb.c:557` | `* present to repaint chrome plus letterbox (after a desktop redraw or a * view change);` |
-| `lg_alloc` | function | `kernel/vga_fb.c:335` | `static void lg_alloc(void)` |
-| `lg_get` | function | `kernel/vga_fb.c:307` | `static const char *lg_get(int i)` |
-| `lg_push` | function | `kernel/vga_fb.c:314` | `static void lg_push(const char *line, int len)` |
-| `line` | function | `kernel/vga_fb.c:3357` | `* display stale bytes left over from a longer previous line (e.g. the prompt  * would show the ta...` |
-| `line_at` | function | `kernel/vga_fb.c:402` | `static const char *line_at(int abs, int *off)` |
-| `line_nrows` | function | `kernel/vga_fb.c:366` | `static int line_nrows(int len)` |
-| `mouse_apply_wheel` | function | `kernel/vga_fb.c:4641` | `static void mouse_apply_wheel(int wheel, int step)` |
-| `mouse_drag_gfx` | function | `kernel/vga_fb.c:4665` | `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` |
-| `mouse_drag_term` | function | `kernel/vga_fb.c:4717` | `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` |
-| `mouse_focus_topmost` | function | `kernel/vga_fb.c:4615` | `static int mouse_focus_topmost(int mx, int my)` |
-| `mouse_scrollbar` | function | `kernel/vga_fb.c:4740` | `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` |
-| `path` | function | `kernel/vga_fb.c:4789` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...` |
-| `pipe_field` | function | `kernel/vga_fb.c:4111` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
-| `pointer` | function | `kernel/vga_fb.c:4662` | `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...` |
-| `render_blank_row` | function | `kernel/vga_fb.c:3236` | `static void render_blank_row(int vrow)` |
-| `render_row` | function | `kernel/vga_fb.c:3246` | `static void render_row(int vrow, int abs)` |
-| `shcmd_base` | function | `kernel/vga_fb.c:652` | `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` |
-| `shortcut_cell_left` | function | `kernel/vga_fb.c:4254` | `static int shortcut_cell_left(int i)` |
-| `shortcut_draw_scaled` | function | `kernel/vga_fb.c:4317` | `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,                              ...` |
-| `shortcuts_layout` | function | `kernel/vga_fb.c:4236` | `static void shortcuts_layout(void)` |
-| `state` | function | `kernel/vga_fb.c:4902` | `* ignores the button state (the arming press is consumed) and settles      * once on expiry, so t...` |
-| `taskbar` | function | `kernel/vga_fb.c:2578` | `* minimize hides the app to the taskbar (it never closes it), maximize  * toggles true fullscreen...` |
-| `taskbar_handle_click` | function | `kernel/vga_fb.c:3140` | `static void taskbar_handle_click(int mx, int my)` |
-| `taskbar_layout` | function | `kernel/vga_fb.c:2944` | `static void taskbar_layout(void)` |
-| `taskbar_render` | function | `kernel/vga_fb.c:2984` | `static void taskbar_render(void)` |
-| `taskbar_theme_cycle` | function | `kernel/vga_fb.c:3100` | `static void taskbar_theme_cycle(void)` |
-| `taskbar_tick` | function | `kernel/vga_fb.c:3063` | `static void taskbar_tick(void)` |
-| `term_close_default` | function | `kernel/vga_fb.c:3836` | `static void term_close_default(void)` |
-| `term_finish_layout` | function | `kernel/vga_fb.c:3920` | `static void term_finish_layout(void)` |
-| `term_max_cols` | function | `kernel/vga_fb.c:3911` | `static int term_max_cols(void)` |
-| `term_max_rows` | function | `kernel/vga_fb.c:3915` | `static int term_max_rows(void)` |
-| `term_recalc` | function | `kernel/vga_fb.c:2885` | `static void term_recalc(void)` |
-| `term_render` | function | `kernel/vga_fb.c:3281` | `static void term_render(void)` |
-| `term_render_active` | function | `kernel/vga_fb.c:3314` | `static void term_render_active(void)` |
-| `term_toggle_fullscreen` | function | `kernel/vga_fb.c:3756` | `static void term_toggle_fullscreen(void)` |
-| `term_toggle_minimize` | function | `kernel/vga_fb.c:3779` | `static void term_toggle_minimize(void)` |
-| `termwin_t` | struct | `kernel/vga_fb.c:999` | `` |
-| `text_px` | function | `kernel/vga_fb.c:2104` | `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` |
-| `title` | function | `kernel/vga_fb.c:2994` | `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...` |
-| `total_rows` | function | `kernel/vga_fb.c:376` | `static int total_rows(void)` |
-| `tw_hit` | function | `kernel/vga_fb.c:1665` | `static int tw_hit(int i, int mx, int my)` |
-| `tw_park` | function | `kernel/vga_fb.c:1056` | `static void tw_park(int i)` |
-| `tw_select` | function | `kernel/vga_fb.c:1146` | `static void tw_select(int i)` |
-| `tw_unpark` | function | `kernel/vga_fb.c:1086` | `static void tw_unpark(int i)` |
-| `vga_fb_act_empty` | function | `kernel/vga_fb.c:1605` | `int vga_fb_act_empty(void)` |
-| `vga_fb_blit_gfx_window` | function | `kernel/vga_fb.c:2861` | `void vga_fb_blit_gfx_window(void)` |
-| `vga_fb_blit_nk_rgb_window` | function | `kernel/vga_fb.c:2876` | `void vga_fb_blit_nk_rgb_window(void)` |
-| `vga_fb_blit_nk_window` | function | `kernel/vga_fb.c:2870` | `void vga_fb_blit_nk_window(void)` |
-| `vga_fb_boot_config` | function | `kernel/vga_fb.c:92` | `void vga_fb_boot_config(void)` |
-| `vga_fb_boot_history_to_active` | function | `kernel/vga_fb.c:1275` | `static void vga_fb_boot_history_to_active(void)` |
-| `vga_fb_char` | function | `kernel/vga_fb.c:2063` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)` |
-| `vga_fb_clear` | function | `kernel/vga_fb.c:2022` | `void vga_fb_clear(void)` |
-| `vga_fb_clear_prompt` | function | `kernel/vga_fb.c:1614` | `void vga_fb_clear_prompt(void)` |
-| `vga_fb_close_active` | function | `kernel/vga_fb.c:3852` | `int vga_fb_close_active(void)` |
-| `vga_fb_draw_desktop` | function | `kernel/vga_fb.c:3461` | `void vga_fb_draw_desktop(void)` |
-| `vga_fb_focus_event` | function | `kernel/vga_fb.c:1041` | `const wm_notify_event_t *vga_fb_focus_event(void)` |
-| `vga_fb_focus_get` | function | `kernel/vga_fb.c:1158` | `int vga_fb_focus_get(void)` |
-| `vga_fb_focus_id` | function | `kernel/vga_fb.c:1240` | `int vga_fb_focus_id(int id)` |
-| `vga_fb_focus_next` | function | `kernel/vga_fb.c:1175` | `void vga_fb_focus_next(void)` |
-| `vga_fb_focus_report` | function | `kernel/vga_fb.c:1047` | `void vga_fb_focus_report(int before, int source)` |
-| `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:830` | `static void vga_fb_gfx_cursor_draw(void)` |
-| `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:820` | `static void vga_fb_gfx_cursor_erase(void)` |
-| `vga_fb_gfx_map_mouse` | function | `kernel/vga_fb.c:805` | `void vga_fb_gfx_map_mouse(int *x, int *y)` |
-| `vga_fb_gfx_origin` | function | `kernel/vga_fb.c:788` | `void vga_fb_gfx_origin(int *x, int *y)` |
-| `vga_fb_gfx_set_hidden` | function | `kernel/vga_fb.c:3716` | `int vga_fb_gfx_set_hidden(int hide)` |
-| `vga_fb_gfx_view_name` | function | `kernel/vga_fb.c:3744` | `const char *vga_fb_gfx_view_name(void)` |
-| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:3437` | `void vga_fb_hide_text_cursor(void)` |
-| `vga_fb_history_page` | function | `kernel/vga_fb.c:5034` | `void vga_fb_history_page(int dir)` |
-| `vga_fb_init` | function | `kernel/vga_fb.c:5046` | `void vga_fb_init(void)` |
-| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:3798` | `int vga_fb_is_fullscreen(void)` |
-| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:3797` | `int vga_fb_is_minimized(void)` |
-| `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:1386` | `void vga_fb_layout_cycle(void)` |
-| `vga_fb_layout_get` | function | `kernel/vga_fb.c:1402` | `int vga_fb_layout_get(void)` |
-| `vga_fb_layout_name` | function | `kernel/vga_fb.c:1408` | `const char *vga_fb_layout_name(void)` |
-| `vga_fb_layout_set` | function | `kernel/vga_fb.c:1375` | `int vga_fb_layout_set(int mode)` |
-| `vga_fb_list_windows` | function | `kernel/vga_fb.c:1547` | `void vga_fb_list_windows(void)` |
-| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:4980` | `void vga_fb_mouse_init(void)` |
-| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:4778` | `void vga_fb_mouse_tick(void)` |
-| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:3866` | `void vga_fb_move_terminal(int dx, int dy)` |
-| `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1609` | `void vga_fb_note_prompt(void)` |
-| `vga_fb_nterms_get` | function | `kernel/vga_fb.c:1159` | `int vga_fb_nterms_get(void)` |
-| `vga_fb_park_line` | function | `kernel/vga_fb.c:1635` | `void vga_fb_park_line(const char *b, int p)` |
-| `vga_fb_pixel` | function | `kernel/vga_fb.c:2012` | `void vga_fb_pixel(int x, int y, uint8_t color)` |
-| `vga_fb_pixel_rgb` | function | `kernel/vga_fb.c:2047` | `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` |
-| `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1628` | `int vga_fb_prompt_live(void)` |
-| `vga_fb_prompted` | function | `kernel/vga_fb.c:1619` | `int vga_fb_prompted(void)` |
-| `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:2558` | `int vga_fb_ps2_owner(int pid)` |
-| `vga_fb_puts_term` | function | `kernel/vga_fb.c:3423` | `void vga_fb_puts_term(const char *s)` |
-| `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1846` | `unsigned long vga_fb_read_rgb(int x, int y)` |
-| `vga_fb_rect` | function | `kernel/vga_fb.c:2032` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
-| `vga_fb_rect_rgb` | function | `kernel/vga_fb.c:2056` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)` |
-| `vga_fb_reset_default` | function | `kernel/vga_fb.c:3974` | `void vga_fb_reset_default(void)` |
-| `vga_fb_resize` | function | `kernel/vga_fb.c:3954` | `void vga_fb_resize(int dcols, int drows)` |
-| `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:695` | `void vga_fb_set_gfx_mode(int on)` |
-| `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1771` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
-| `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:633` | `void vga_fb_set_gfx_program(const char *name)` |
-| `vga_fb_set_palette` | function | `kernel/vga_fb.c:1938` | `static void vga_fb_set_palette(void)` |
-| `vga_fb_snap_window` | function | `kernel/vga_fb.c:3926` | `void vga_fb_snap_window(int zone)` |
-| `vga_fb_str` | function | `kernel/vga_fb.c:2089` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
-| `vga_fb_term_feed` | function | `kernel/vga_fb.c:359` | `void vga_fb_term_feed(const char *line, int len)` |
-| `vga_fb_term_ring_init` | function | `kernel/vga_fb.c:351` | `void vga_fb_term_ring_init(void)` |
-| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:3429` | `void vga_fb_text_cursor(int col)` |
-| `vga_fb_theme_name` | function | `kernel/vga_fb.c:3079` | `int vga_fb_theme_name(char *dst, int cap)` |
-| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:3768` | `void vga_fb_toggle_fullscreen(void)` |
-| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:3789` | `void vga_fb_toggle_minimize(void)` |
-| `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1650` | `int vga_fb_unpark_line(char *b, int *p)` |
-| `vga_fb_wait_tick` | function | `kernel/vga_fb.c:4769` | `void vga_fb_wait_tick(void)` |
-| `wall_level` | function | `kernel/vga_fb.c:1929` | `static int wall_level(int v)` |
-| `wallpaper_draw` | function | `kernel/vga_fb.c:4085` | `static void wallpaper_draw(void)` |
-| `wallpaper_ensure` | function | `kernel/vga_fb.c:4028` | `static void wallpaper_ensure(void)` |
-| `wallpaper_rect` | function | `kernel/vga_fb.c:4520` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
-| `wallpaper_usable` | function | `kernel/vga_fb.c:4080` | `static int wallpaper_usable(void)` |
-| `wm_buttons_hit` | function | `kernel/vga_fb.c:2538` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
-| `wm_clear_close` | function | `kernel/vga_fb.c:2554` | `void wm_clear_close(void)` |
-| `wm_close_pending` | function | `kernel/vga_fb.c:2553` | `int wm_close_pending(void)` |
-| `wm_drag_reset` | function | `kernel/vga_fb.c:71` | `static void wm_drag_reset(void)` |
-| `wm_draw_buttons` | function | `kernel/vga_fb.c:2133` | `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` |
-| `wm_emit_focus_moved` | function | `kernel/vga_fb.c:1029` | `static void wm_emit_focus_moved(int before, int source)` |
-| `wm_event_cfg` | function | `kernel/vga_fb.c:62` | `static wm_event_config_t wm_event_cfg(void)` |
-| `wm_focus_cursor_sync` | function | `kernel/vga_fb.c:1022` | `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` |
-| `wm_geom_cfg` | function | `kernel/vga_fb.c:51` | `static wm_geom_config_t wm_geom_cfg(void)` |
-| `wm_gfx_focus_sync` | function | `kernel/vga_fb.c:1221` | `static void wm_gfx_focus_sync(int on)` |
-| `wm_gfx_mode_active` | function | `kernel/vga_fb.c:2555` | `int wm_gfx_mode_active(void)` |
-| `wm_init_once` | function | `kernel/vga_fb.c:1121` | `static void wm_init_once(void)` |
-| `wm_snapshot_state` | function | `kernel/vga_fb.c:1162` | `static void wm_snapshot_state(wm_focus_state_t *st)` |
+| `DOCK_GLOW_PAD` | macro | `kernel/vga_fb.c:2182` | `#define DOCK_GLOW_PAD` |
+| `FBT` | macro | `kernel/vga_fb.c:151` | `#define FBT` |
+| `FB_OFFSET` | macro | `kernel/vga_fb.c:1719` | `#define FB_OFFSET(x,y)` |
+| `GFX_CURSOR_FOLLOW_TICKS` | macro | `kernel/vga_fb.c:589` | `#define GFX_CURSOR_FOLLOW_TICKS` |
+| `GFX_CURSOR_IDLE_TICKS` | macro | `kernel/vga_fb.c:583` | `#define GFX_CURSOR_IDLE_TICKS` |
+| `GFX_KEEP_BYTES` | macro | `kernel/vga_fb.c:557` | `#define GFX_KEEP_BYTES` |
+| `GFX_PROG_LEN` | macro | `kernel/vga_fb.c:641` | `#define GFX_PROG_LEN` |
+| `GFX_SRC_IDX` | macro | `kernel/vga_fb.c:555` | `#define GFX_SRC_IDX` |
+| `GFX_SRC_RGB` | macro | `kernel/vga_fb.c:556` | `#define GFX_SRC_RGB` |
+| `JELLY_BLOCK` | macro | `kernel/vga_fb.c:3483` | `#define JELLY_BLOCK` |
+| `JELLY_ROW_MAX` | macro | `kernel/vga_fb.c:3485` | `#define JELLY_ROW_MAX` |
+| `JELLY_SUBSTEPS` | macro | `kernel/vga_fb.c:3484` | `#define JELLY_SUBSTEPS` |
+| `LG_LINE` | macro | `kernel/vga_fb.c:309` | `#define LG_LINE(a)` |
+| `PROFILE_MARGIN` | macro | `kernel/vga_fb.c:2185` | `#define PROFILE_MARGIN` |
+| `PROFILE_PAD` | macro | `kernel/vga_fb.c:2183` | `#define PROFILE_PAD` |
+| `PROFILE_RING` | macro | `kernel/vga_fb.c:2184` | `#define PROFILE_RING` |
+| `PROFILE_TEXT_COLS` | macro | `kernel/vga_fb.c:2186` | `#define PROFILE_TEXT_COLS` |
+| `TB_GFX_TITLE_MAX` | macro | `kernel/vga_fb.c:2953` | `#define TB_GFX_TITLE_MAX` |
+| `TEXT_BG_NONE` | macro | `kernel/vga_fb.c:2110` | `#define TEXT_BG_NONE` |
+| `WIN_DEF_COLS` | macro | `kernel/vga_fb.c:967` | `#define WIN_DEF_COLS` |
+| `WIN_DEF_ROWS` | macro | `kernel/vga_fb.c:968` | `#define WIN_DEF_ROWS` |
+| `WIN_DEF_X` | macro | `kernel/vga_fb.c:969` | `#define WIN_DEF_X` |
+| `WIN_DEF_Y` | macro | `kernel/vga_fb.c:970` | `#define WIN_DEF_Y` |
+| `WM_ELINE_SZ` | macro | `kernel/vga_fb.c:1000` | `#define WM_ELINE_SZ` |
+| `WM_MAX_TERMS` | macro | `kernel/vga_fb.c:998` | `#define WM_MAX_TERMS` |
+| `act_nrows` | function | `kernel/vga_fb.c:384` | `static int act_nrows(void)` |
+| `alone` | function | `kernel/vga_fb.c:1431` | `* window alone (an unfocused graphics window minimizes to the taskbar,  * exactly like the hidden...` |
+| `app` | function | `kernel/vga_fb.c:1227` | `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep...` |
+| `buffer` | function | `kernel/vga_fb.c:3308` | `* owns the buffer (indices reset, render reads an empty ring). */ void term_clear(void)` |
+| `chrome_color` | function | `kernel/vga_fb.c:2189` | `static unsigned long chrome_color(unsigned idx)` |
+| `chrome_corner_origin` | function | `kernel/vga_fb.c:2255` | `static void chrome_corner_origin(const chrome_win_t *c, int k, int *ox, int *oy)` |
+| `chrome_disc` | function | `kernel/vga_fb.c:2461` | `static void chrome_disc(int cx2, int cy2, int r2, unsigned long color, int alpha)` |
+| `chrome_glass` | function | `kernel/vga_fb.c:2429` | `static void chrome_glass(int x, int y, int w, int h)` |
+| `chrome_glow` | function | `kernel/vga_fb.c:2499` | `static void chrome_glow(int x, int y, int w, int h)` |
+| `chrome_panel_coverage` | function | `kernel/vga_fb.c:2416` | `static int chrome_panel_coverage(int xx, int yy, int x, int y, int w, int h)` |
+| `chrome_profile_card` | function | `kernel/vga_fb.c:2519` | `static void chrome_profile_card(void)` |
+| `chrome_term_fill` | function | `kernel/vga_fb.c:2400` | `static int chrome_term_fill(void)` |
+| `chrome_tint_capture` | function | `kernel/vga_fb.c:2354` | `static void chrome_tint_capture(int idx, int x, int y, int w, int h)` |
+| `chrome_tint_live` | function | `kernel/vga_fb.c:2386` | `static const chrome_tint_t *chrome_tint_live(void)` |
+| `chrome_tint_t` | struct | `kernel/vga_fb.c:433` | `` |
+| `chrome_title_strip` | function | `kernel/vga_fb.c:2229` | `static int chrome_title_strip(int x, int y, int w, int focused)` |
+| `chrome_traffic_lights` | function | `kernel/vga_fb.c:2483` | `static int chrome_traffic_lights(int bx, int by)` |
+| `chrome_win_capture` | function | `kernel/vga_fb.c:2274` | `static void chrome_win_capture(int idx, int x, int y, int w, int h)` |
+| `chrome_win_cut` | function | `kernel/vga_fb.c:2304` | `static void chrome_win_cut(const chrome_win_t *c, int k)` |
+| `chrome_win_live` | function | `kernel/vga_fb.c:2325` | `static chrome_win_t *chrome_win_live(void)` |
+| `chrome_win_recut_bottom` | function | `kernel/vga_fb.c:2340` | `static void chrome_win_recut_bottom(int corner)` |
+| `chrome_win_t` | struct | `kernel/vga_fb.c:2245` | `` |
+| `chrome_wins_reset` | function | `kernel/vga_fb.c:2263` | `static void chrome_wins_reset(void)` |
+| `ci_eq` | function | `kernel/vga_fb.c:680` | `static int ci_eq(const char *a, const char *b)` |
+| `command` | function | `kernel/vga_fb.c:4856` | `* its launch command (config-driven, covers apps that never set a window * title);` |
+| `compositions` | function | `kernel/vga_fb.c:139` | `* compositions (an ISR tick composing inside a syscall composition) draw * into the same shadow and leave the...` |
+| `content` | function | `kernel/vga_fb.c:1301` | `* windows would share content (same prompt/output on both) and a park  * would alias src == dst. ...` |
+| `coordinates` | function | `kernel/vga_fb.c:813` | `* windows keep the exact historical coordinates (including outside the * window);` |
+| `desktop_shortcuts_draw` | function | `kernel/vga_fb.c:4781` | `void desktop_shortcuts_draw(void)` |
+| `desktop_shortcuts_hit_test` | function | `kernel/vga_fb.c:4882` | `const char *desktop_shortcuts_hit_test(int mx, int my)` |
+| `desktop_shortcuts_load` | function | `kernel/vga_fb.c:4542` | `void desktop_shortcuts_load(void)` |
+| `directly` | function | `kernel/vga_fb.c:2637` | `* RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */ static void gfx_scale_...` |
+| `disp_clamp` | function | `kernel/vga_fb.c:395` | `static void disp_clamp(void)` |
+| `dock_bounce_counts` | function | `kernel/vga_fb.c:4650` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)` |
+| `dock_bounce_elapsed` | function | `kernel/vga_fb.c:4666` | `static unsigned long dock_bounce_elapsed(void)` |
+| `dock_bounce_live` | function | `kernel/vga_fb.c:4674` | `static int dock_bounce_live(void)` |
+| `dock_click_count` | function | `kernel/vga_fb.c:4660` | `void dock_click_count(unsigned long *edges)` |
+| `dock_hover_index` | function | `kernel/vga_fb.c:4623` | `static int dock_hover_index(int mx, int my)` |
+| `dock_label_px` | function | `kernel/vga_fb.c:4508` | `static int dock_label_px(const struct desktop_shortcut *sc)` |
+| `dock_paint_backing` | function | `kernel/vga_fb.c:4774` | `static void dock_paint_backing(int x0, int y0, int dock_w, int dock_h, int with_shadow)` |
+| `dock_paint_hover` | function | `kernel/vga_fb.c:4832` | `static void dock_paint_hover(int hover)` |
+| `dock_paint_icons` | function | `kernel/vga_fb.c:4732` | `static void dock_paint_icons(int hover)` |
+| `dock_pending_active` | function | `kernel/vga_fb.c:4724` | `int dock_pending_active(void)` |
+| `draw_scrollbar` | function | `kernel/vga_fb.c:3211` | `static void draw_scrollbar(void)` |
+| `draw_speaker_icon` | function | `kernel/vga_fb.c:2986` | `static void draw_speaker_icon(int x, int y, uint8_t color)` |
+| `draw_title_win` | function | `kernel/vga_fb.c:2922` | `static void draw_title_win(int idx, int focused)` |
+| `escapes` | function | `kernel/vga_fb.c:3377` | `* swallowing them here keeps the escapes (which the serial side needs)      * from printing as li...` |
+| `fb_bytes_per_pixel` | function | `kernel/vga_fb.c:123` | `int fb_bytes_per_pixel(void)` |
+| `fb_compose_begin` | function | `kernel/vga_fb.c:233` | `static int fb_compose_begin(void)` |
+| `fb_compose_end` | function | `kernel/vga_fb.c:246` | `static void fb_compose_end(int owner)` |
+| `fb_copy_bytes` | function | `kernel/vga_fb.c:157` | `static void fb_copy_bytes(volatile void *dst, const volatile void *src, unsigned long n)` |
+| `fb_fill_run` | function | `kernel/vga_fb.c:1914` | `static void fb_fill_run(int x, int y, int n, unsigned long px)` |
+| `fb_fill_u32` | function | `kernel/vga_fb.c:175` | `static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n)` |
+| `fb_frame_bytes` | function | `kernel/vga_fb.c:189` | `static unsigned long fb_frame_bytes(void)` |
+| `fb_glyph` | function | `kernel/vga_fb.c:2002` | `static const uint8_t *fb_glyph(unsigned char c)` |
+| `fb_pack_idx` | function | `kernel/vga_fb.c:1797` | `static unsigned long fb_pack_idx(unsigned idx)` |
+| `fb_present_shadow` | function | `kernel/vga_fb.c:219` | `static void fb_present_shadow(void)` |
+| `fb_read_packed` | function | `kernel/vga_fb.c:1833` | `unsigned long fb_read_packed(int x, int y)` |
+| `fb_read_row_packed` | function | `kernel/vga_fb.c:1892` | `void fb_read_row_packed(int x, int y, unsigned int *dst, int n)` |
+| `fb_shadow_ready` | function | `kernel/vga_fb.c:195` | `static int fb_shadow_ready(void)` |
+| `fb_write_packed` | function | `kernel/vga_fb.c:1813` | `void fb_write_packed(int x, int y, unsigned long rgb)` |
+| `fb_write_row_packed` | function | `kernel/vga_fb.c:1862` | `void fb_write_row_packed(int x, int y, const unsigned int *src, int n)` |
+| `first` | function | `kernel/vga_fb.c:487` | `* screen ever showing it whole first (the old flash-then-melt). */ static unsigned int *fx_start_...` |
+| `flag` | function | `kernel/vga_fb.c:564` | `* is the minimized flag (the program keeps running, nothing composites);` |
+| `from` | function | `kernel/vga_fb.c:3948` | `* leaving returns to the view it came from (floating or tiled). Returns  * 0 on success, -1 witho...` |
+| `gfx_animate` | function | `kernel/vga_fb.c:3850` | `static void gfx_animate(const wm_gfxview_rect_t *from, const wm_gfxview_rect_t *to,              ...` |
+| `gfx_compose` | function | `kernel/vga_fb.c:2775` | `static void gfx_compose(const volatile uint8_t *src, int kind, int sw, int sh,                   ...` |
+| `gfx_covers_screen` | function | `kernel/vga_fb.c:612` | `static int gfx_covers_screen(void)` |
+| `gfx_cursor_follow_idle` | function | `kernel/vga_fb.c:2859` | `static void gfx_cursor_follow_idle(void)` |
+| `gfx_drop_focus` | function | `kernel/vga_fb.c:3937` | `static void gfx_drop_focus(int source)` |
+| `gfx_float_frame` | function | `kernel/vga_fb.c:783` | `static int gfx_float_frame(wm_gfxview_rect_t *out)` |
+| `gfx_keep_save` | function | `kernel/vga_fb.c:618` | `static void gfx_keep_save(const volatile uint8_t *src, int kind, int sw, int sh)` |
+| `gfx_letterbox` | function | `kernel/vga_fb.c:2742` | `static void gfx_letterbox(const wm_gfxview_t *v)` |
+| `gfx_present` | function | `kernel/vga_fb.c:2843` | `static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)` |
+| `gfx_prog_icon` | function | `kernel/vga_fb.c:693` | `static const uint8_t *gfx_prog_icon(void)` |
+| `gfx_snap` | function | `kernel/vga_fb.c:4069` | `static void gfx_snap(int zone)` |
+| `gfx_task_icon` | function | `kernel/vga_fb.c:4861` | `static const uint8_t *gfx_task_icon(void)` |
+| `gfx_taskbar_rect` | function | `kernel/vga_fb.c:3900` | `static void gfx_taskbar_rect(wm_gfxview_rect_t *r)` |
+| `gfx_title` | function | `kernel/vga_fb.c:2761` | `static void gfx_title(const wm_gfxview_t *v)` |
+| `gfx_transition` | function | `kernel/vga_fb.c:1008` | `static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled);` |
+| `gfx_view_cfg` | function | `kernel/vga_fb.c:603` | `static wm_gfxview_config_t gfx_view_cfg(void)` |
+| `gfx_view_for` | function | `kernel/vga_fb.c:757` | `static int gfx_view_for(int sw, int sh, wm_gfxview_t *v)` |
+| `gfx_view_in_rect` | function | `kernel/vga_fb.c:3831` | `static void gfx_view_in_rect(const wm_gfxview_rect_t *r, int titled, wm_gfxview_t *v)` |
+| `gfx_view_publish` | function | `kernel/vga_fb.c:769` | `static void gfx_view_publish(const wm_gfxview_t *v)` |
+| `icon_decode` | function | `kernel/vga_fb.c:4446` | `static const uint8_t *icon_decode(const char *path)` |
+| `icon_embedded` | function | `kernel/vga_fb.c:4426` | `static const uint8_t *icon_embedded(const char *name)` |
+| `icon_embedded_rgba` | function | `kernel/vga_fb.c:4480` | `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` |
+| `icon_nearest` | function | `kernel/vga_fb.c:4410` | `static int icon_nearest(int r, int g, int b)` |
+| `jelly_advance` | function | `kernel/vga_fb.c:3688` | `static void jelly_advance(void)` |
+| `jelly_arm` | function | `kernel/vga_fb.c:3562` | `static void jelly_arm(void)` |
+| `jelly_begin` | function | `kernel/vga_fb.c:3510` | `static void jelly_begin(int kind, int gx, int gy)` |
+| `jelly_cancel` | function | `kernel/vga_fb.c:3501` | `static void jelly_cancel(void)` |
+| `jelly_kick` | function | `kernel/vga_fb.c:3545` | `static void jelly_kick(int mx, int my)` |
+| `jelly_live` | function | `kernel/vga_fb.c:3554` | `static int jelly_live(void)` |
+| `jelly_present` | function | `kernel/vga_fb.c:3653` | `static void jelly_present(void)` |
+| `jelly_put_row` | function | `kernel/vga_fb.c:3598` | `static void jelly_put_row(int x, int y, const unsigned int *src, int n)` |
+| `jelly_rect` | function | `kernel/vga_fb.c:3522` | `static int jelly_rect(int *x, int *y, int *w, int *h)` |
+| `jelly_shadow_px` | function | `kernel/vga_fb.c:3588` | `static unsigned int jelly_shadow_px(int x, int y)` |
+| `jelly_tick` | function | `kernel/vga_fb.c:3701` | `static void jelly_tick(int held)` |
+| `jelly_try_present` | function | `kernel/vga_fb.c:3677` | `static int jelly_try_present(void)` |
+| `jelly_warp_band` | function | `kernel/vga_fb.c:3620` | `static void jelly_warp_band(void)` |
+| `letterbox` | function | `kernel/vga_fb.c:568` | `* present to repaint chrome plus letterbox (after a desktop redraw or a * view change);` |
+| `lg_alloc` | function | `kernel/vga_fb.c:346` | `static void lg_alloc(void)` |
+| `lg_get` | function | `kernel/vga_fb.c:318` | `static const char *lg_get(int i)` |
+| `lg_push` | function | `kernel/vga_fb.c:325` | `static void lg_push(const char *line, int len)` |
+| `line` | function | `kernel/vga_fb.c:3368` | `* display stale bytes left over from a longer previous line (e.g. the prompt  * would show the ta...` |
+| `line_at` | function | `kernel/vga_fb.c:413` | `static const char *line_at(int abs, int *off)` |
+| `line_nrows` | function | `kernel/vga_fb.c:377` | `static int line_nrows(int len)` |
+| `mouse_apply_wheel` | function | `kernel/vga_fb.c:4922` | `static void mouse_apply_wheel(int wheel, int step)` |
+| `mouse_drag_gfx` | function | `kernel/vga_fb.c:4946` | `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` |
+| `mouse_drag_term` | function | `kernel/vga_fb.c:5003` | `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` |
+| `mouse_focus_topmost` | function | `kernel/vga_fb.c:4896` | `static int mouse_focus_topmost(int mx, int my)` |
+| `mouse_scrollbar` | function | `kernel/vga_fb.c:5026` | `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` |
+| `path` | function | `kernel/vga_fb.c:5075` | `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...` |
+| `pipe_field` | function | `kernel/vga_fb.c:4392` | `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` |
+| `pointer` | function | `kernel/vga_fb.c:4943` | `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...` |
+| `render_blank_row` | function | `kernel/vga_fb.c:3247` | `static void render_blank_row(int vrow)` |
+| `render_row` | function | `kernel/vga_fb.c:3257` | `static void render_row(int vrow, int abs)` |
+| `shcmd_base` | function | `kernel/vga_fb.c:663` | `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` |
+| `shortcut_cell_left` | function | `kernel/vga_fb.c:4535` | `static int shortcut_cell_left(int i)` |
+| `shortcut_draw_scaled` | function | `kernel/vga_fb.c:4598` | `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,                              ...` |
+| `shortcuts_layout` | function | `kernel/vga_fb.c:4517` | `static void shortcuts_layout(void)` |
+| `state` | function | `kernel/vga_fb.c:5189` | `* ignores the button state (the arming press is consumed) and settles      * once on expiry, so t...` |
+| `taskbar` | function | `kernel/vga_fb.c:2589` | `* minimize hides the app to the taskbar (it never closes it), maximize  * toggles true fullscreen...` |
+| `taskbar_handle_click` | function | `kernel/vga_fb.c:3151` | `static void taskbar_handle_click(int mx, int my)` |
+| `taskbar_layout` | function | `kernel/vga_fb.c:2955` | `static void taskbar_layout(void)` |
+| `taskbar_render` | function | `kernel/vga_fb.c:2995` | `static void taskbar_render(void)` |
+| `taskbar_theme_cycle` | function | `kernel/vga_fb.c:3111` | `static void taskbar_theme_cycle(void)` |
+| `taskbar_tick` | function | `kernel/vga_fb.c:3074` | `static void taskbar_tick(void)` |
+| `term_close_default` | function | `kernel/vga_fb.c:4102` | `static void term_close_default(void)` |
+| `term_finish_layout` | function | `kernel/vga_fb.c:4186` | `static void term_finish_layout(void)` |
+| `term_max_cols` | function | `kernel/vga_fb.c:4177` | `static int term_max_cols(void)` |
+| `term_max_rows` | function | `kernel/vga_fb.c:4181` | `static int term_max_rows(void)` |
+| `term_recalc` | function | `kernel/vga_fb.c:2896` | `static void term_recalc(void)` |
+| `term_render` | function | `kernel/vga_fb.c:3292` | `static void term_render(void)` |
+| `term_render_active` | function | `kernel/vga_fb.c:3325` | `static void term_render_active(void)` |
+| `term_toggle_fullscreen` | function | `kernel/vga_fb.c:4022` | `static void term_toggle_fullscreen(void)` |
+| `term_toggle_minimize` | function | `kernel/vga_fb.c:4045` | `static void term_toggle_minimize(void)` |
+| `termwin_t` | struct | `kernel/vga_fb.c:1010` | `` |
+| `text_px` | function | `kernel/vga_fb.c:2115` | `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` |
+| `title` | function | `kernel/vga_fb.c:3005` | `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...` |
+| `total_rows` | function | `kernel/vga_fb.c:387` | `static int total_rows(void)` |
+| `tw_hit` | function | `kernel/vga_fb.c:1676` | `static int tw_hit(int i, int mx, int my)` |
+| `tw_park` | function | `kernel/vga_fb.c:1067` | `static void tw_park(int i)` |
+| `tw_select` | function | `kernel/vga_fb.c:1157` | `static void tw_select(int i)` |
+| `tw_unpark` | function | `kernel/vga_fb.c:1097` | `static void tw_unpark(int i)` |
+| `vga_fb_act_empty` | function | `kernel/vga_fb.c:1616` | `int vga_fb_act_empty(void)` |
+| `vga_fb_blit_gfx_window` | function | `kernel/vga_fb.c:2872` | `void vga_fb_blit_gfx_window(void)` |
+| `vga_fb_blit_nk_rgb_window` | function | `kernel/vga_fb.c:2887` | `void vga_fb_blit_nk_rgb_window(void)` |
+| `vga_fb_blit_nk_window` | function | `kernel/vga_fb.c:2881` | `void vga_fb_blit_nk_window(void)` |
+| `vga_fb_boot_config` | function | `kernel/vga_fb.c:96` | `void vga_fb_boot_config(void)` |
+| `vga_fb_boot_history_to_active` | function | `kernel/vga_fb.c:1286` | `static void vga_fb_boot_history_to_active(void)` |
+| `vga_fb_char` | function | `kernel/vga_fb.c:2074` | `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)` |
+| `vga_fb_clear` | function | `kernel/vga_fb.c:2033` | `void vga_fb_clear(void)` |
+| `vga_fb_clear_prompt` | function | `kernel/vga_fb.c:1625` | `void vga_fb_clear_prompt(void)` |
+| `vga_fb_close_active` | function | `kernel/vga_fb.c:4118` | `int vga_fb_close_active(void)` |
+| `vga_fb_draw_desktop` | function | `kernel/vga_fb.c:3724` | `void vga_fb_draw_desktop(void)` |
+| `vga_fb_focus_event` | function | `kernel/vga_fb.c:1052` | `const wm_notify_event_t *vga_fb_focus_event(void)` |
+| `vga_fb_focus_get` | function | `kernel/vga_fb.c:1169` | `int vga_fb_focus_get(void)` |
+| `vga_fb_focus_id` | function | `kernel/vga_fb.c:1251` | `int vga_fb_focus_id(int id)` |
+| `vga_fb_focus_next` | function | `kernel/vga_fb.c:1186` | `void vga_fb_focus_next(void)` |
+| `vga_fb_focus_report` | function | `kernel/vga_fb.c:1058` | `void vga_fb_focus_report(int before, int source)` |
+| `vga_fb_gfx_cursor_draw` | function | `kernel/vga_fb.c:841` | `static void vga_fb_gfx_cursor_draw(void)` |
+| `vga_fb_gfx_cursor_erase` | function | `kernel/vga_fb.c:831` | `static void vga_fb_gfx_cursor_erase(void)` |
+| `vga_fb_gfx_map_mouse` | function | `kernel/vga_fb.c:816` | `void vga_fb_gfx_map_mouse(int *x, int *y)` |
+| `vga_fb_gfx_origin` | function | `kernel/vga_fb.c:799` | `void vga_fb_gfx_origin(int *x, int *y)` |
+| `vga_fb_gfx_set_hidden` | function | `kernel/vga_fb.c:3982` | `int vga_fb_gfx_set_hidden(int hide)` |
+| `vga_fb_gfx_view_name` | function | `kernel/vga_fb.c:4010` | `const char *vga_fb_gfx_view_name(void)` |
+| `vga_fb_hide_text_cursor` | function | `kernel/vga_fb.c:3448` | `void vga_fb_hide_text_cursor(void)` |
+| `vga_fb_history_page` | function | `kernel/vga_fb.c:5321` | `void vga_fb_history_page(int dir)` |
+| `vga_fb_init` | function | `kernel/vga_fb.c:5333` | `void vga_fb_init(void)` |
+| `vga_fb_is_fullscreen` | function | `kernel/vga_fb.c:4064` | `int vga_fb_is_fullscreen(void)` |
+| `vga_fb_is_minimized` | function | `kernel/vga_fb.c:4063` | `int vga_fb_is_minimized(void)` |
+| `vga_fb_layout_cycle` | function | `kernel/vga_fb.c:1397` | `void vga_fb_layout_cycle(void)` |
+| `vga_fb_layout_get` | function | `kernel/vga_fb.c:1413` | `int vga_fb_layout_get(void)` |
+| `vga_fb_layout_name` | function | `kernel/vga_fb.c:1419` | `const char *vga_fb_layout_name(void)` |
+| `vga_fb_layout_set` | function | `kernel/vga_fb.c:1386` | `int vga_fb_layout_set(int mode)` |
+| `vga_fb_list_windows` | function | `kernel/vga_fb.c:1558` | `void vga_fb_list_windows(void)` |
+| `vga_fb_mouse_init` | function | `kernel/vga_fb.c:5267` | `void vga_fb_mouse_init(void)` |
+| `vga_fb_mouse_tick` | function | `kernel/vga_fb.c:5064` | `void vga_fb_mouse_tick(void)` |
+| `vga_fb_move_terminal` | function | `kernel/vga_fb.c:4132` | `void vga_fb_move_terminal(int dx, int dy)` |
+| `vga_fb_note_prompt` | function | `kernel/vga_fb.c:1620` | `void vga_fb_note_prompt(void)` |
+| `vga_fb_nterms_get` | function | `kernel/vga_fb.c:1170` | `int vga_fb_nterms_get(void)` |
+| `vga_fb_park_line` | function | `kernel/vga_fb.c:1646` | `void vga_fb_park_line(const char *b, int p)` |
+| `vga_fb_pixel` | function | `kernel/vga_fb.c:2023` | `void vga_fb_pixel(int x, int y, uint8_t color)` |
+| `vga_fb_pixel_rgb` | function | `kernel/vga_fb.c:2058` | `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` |
+| `vga_fb_prompt_live` | function | `kernel/vga_fb.c:1639` | `int vga_fb_prompt_live(void)` |
+| `vga_fb_prompted` | function | `kernel/vga_fb.c:1630` | `int vga_fb_prompted(void)` |
+| `vga_fb_ps2_owner` | function | `kernel/vga_fb.c:2569` | `int vga_fb_ps2_owner(int pid)` |
+| `vga_fb_puts_term` | function | `kernel/vga_fb.c:3434` | `void vga_fb_puts_term(const char *s)` |
+| `vga_fb_read_rgb` | function | `kernel/vga_fb.c:1857` | `unsigned long vga_fb_read_rgb(int x, int y)` |
+| `vga_fb_rect` | function | `kernel/vga_fb.c:2043` | `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` |
+| `vga_fb_rect_rgb` | function | `kernel/vga_fb.c:2067` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)` |
+| `vga_fb_reset_default` | function | `kernel/vga_fb.c:4240` | `void vga_fb_reset_default(void)` |
+| `vga_fb_resize` | function | `kernel/vga_fb.c:4220` | `void vga_fb_resize(int dcols, int drows)` |
+| `vga_fb_set_gfx_mode` | function | `kernel/vga_fb.c:706` | `void vga_fb_set_gfx_mode(int on)` |
+| `vga_fb_set_gfx_palette` | function | `kernel/vga_fb.c:1782` | `void vga_fb_set_gfx_palette(const unsigned char *pal)` |
+| `vga_fb_set_gfx_program` | function | `kernel/vga_fb.c:644` | `void vga_fb_set_gfx_program(const char *name)` |
+| `vga_fb_set_palette` | function | `kernel/vga_fb.c:1949` | `static void vga_fb_set_palette(void)` |
+| `vga_fb_snap_window` | function | `kernel/vga_fb.c:4192` | `void vga_fb_snap_window(int zone)` |
+| `vga_fb_str` | function | `kernel/vga_fb.c:2100` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)` |
+| `vga_fb_term_feed` | function | `kernel/vga_fb.c:370` | `void vga_fb_term_feed(const char *line, int len)` |
+| `vga_fb_term_ring_init` | function | `kernel/vga_fb.c:362` | `void vga_fb_term_ring_init(void)` |
+| `vga_fb_text_cursor` | function | `kernel/vga_fb.c:3440` | `void vga_fb_text_cursor(int col)` |
+| `vga_fb_theme_name` | function | `kernel/vga_fb.c:3090` | `int vga_fb_theme_name(char *dst, int cap)` |
+| `vga_fb_toggle_fullscreen` | function | `kernel/vga_fb.c:4034` | `void vga_fb_toggle_fullscreen(void)` |
+| `vga_fb_toggle_minimize` | function | `kernel/vga_fb.c:4055` | `void vga_fb_toggle_minimize(void)` |
+| `vga_fb_unpark_line` | function | `kernel/vga_fb.c:1661` | `int vga_fb_unpark_line(char *b, int *p)` |
+| `vga_fb_wait_tick` | function | `kernel/vga_fb.c:5055` | `void vga_fb_wait_tick(void)` |
+| `wall_level` | function | `kernel/vga_fb.c:1940` | `static int wall_level(int v)` |
+| `wallpaper_draw` | function | `kernel/vga_fb.c:4354` | `static void wallpaper_draw(void)` |
+| `wallpaper_ensure` | function | `kernel/vga_fb.c:4297` | `static void wallpaper_ensure(void)` |
+| `wallpaper_packed` | function | `kernel/vga_fb.c:4370` | `static int wallpaper_packed(int x, int y, unsigned int *out)` |
+| `wallpaper_rect` | function | `kernel/vga_fb.c:4801` | `static void wallpaper_rect(int x0, int y0, int w, int h)` |
+| `wallpaper_usable` | function | `kernel/vga_fb.c:4349` | `static int wallpaper_usable(void)` |
+| `wm_buttons_hit` | function | `kernel/vga_fb.c:2549` | `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` |
+| `wm_clear_close` | function | `kernel/vga_fb.c:2565` | `void wm_clear_close(void)` |
+| `wm_close_pending` | function | `kernel/vga_fb.c:2564` | `int wm_close_pending(void)` |
+| `wm_drag_reset` | function | `kernel/vga_fb.c:74` | `static void wm_drag_reset(void)` |
+| `wm_draw_buttons` | function | `kernel/vga_fb.c:2144` | `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` |
+| `wm_emit_focus_moved` | function | `kernel/vga_fb.c:1040` | `static void wm_emit_focus_moved(int before, int source)` |
+| `wm_event_cfg` | function | `kernel/vga_fb.c:65` | `static wm_event_config_t wm_event_cfg(void)` |
+| `wm_focus_cursor_sync` | function | `kernel/vga_fb.c:1033` | `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` |
+| `wm_geom_cfg` | function | `kernel/vga_fb.c:54` | `static wm_geom_config_t wm_geom_cfg(void)` |
+| `wm_gfx_focus_sync` | function | `kernel/vga_fb.c:1232` | `static void wm_gfx_focus_sync(int on)` |
+| `wm_gfx_mode_active` | function | `kernel/vga_fb.c:2566` | `int wm_gfx_mode_active(void)` |
+| `wm_init_once` | function | `kernel/vga_fb.c:1132` | `static void wm_init_once(void)` |
+| `wm_snapshot_state` | function | `kernel/vga_fb.c:1173` | `static void wm_snapshot_state(wm_focus_state_t *st)` |
 | `fx_wait_until` | function | `kernel/vga_fx.c:35` | `static void fx_wait_until(unsigned long deadline)` |
 | `once` | function | `kernel/vga_fx.c:90` | `* once (prev[] tracks the revealed frontier per column), then the final  * restore guarantees the...` |
 | `vga_fx_enabled` | function | `kernel/vga_fx.c:27` | `int vga_fx_enabled(void)` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p9.md](SYMBOLS_p9.md)
 | `run_test` | method | `mcp/minios_mcp.py:391` | `def run_test(self, commands, expect, refute, timeout_ms)` |
 | `send` | method | `mcp/minios_mcp.py:356` | `def send(self, line, timeout_ms)` |
 | `snapshot` | method | `mcp/minios_mcp.py:381` | `def snapshot(self, max_bytes)` |
-| `status` | method | `mcp/minios_mcp.py:233` | `def status(self)` |
-| `subprocess_launch` | function | `mcp/minios_mcp.py:580` | `def subprocess_launch(cfg, slave_fd)` |
-| `terminate` | method | `mcp/minios_mcp.py:557` | `def terminate(self)` |
-| `text_from` | method | `mcp/minios_mcp.py:168` | `def text_from(self, pos, end)` |
-| `validate_content` | function | `mcp/minios_mcp.py:118` | `def validate_content(text)` |
-| `validate_path` | function | `mcp/minios_mcp.py:102` | `def validate_path(name)` |
-| `wait_for` | method | `mcp/minios_mcp.py:179` | `def wait_for(self, marker, start, timeout_ms)` |
-| `wait_for_any` | method | `mcp/minios_mcp.py:192` | `def wait_for_any(self, markers, start, timeout_ms)` |
-| `write` | method | `mcp/minios_mcp.py:500` | `def write(self, path, content)` |
-| `run_one` | function | `mcp/mutate_mcp.sh:116` | `` |
-| `FakeOS` | class | `mcp/test_minios_mcp.py:642` | `class FakeOS` |
-| `MCPServer` | class | `mcp/test_minios_mcp.py:58` | `class MCPServer` |
-| `TestAddonBDD` | class | `mcp/test_minios_mcp.py:844` | `class TestAddonBDD(_ConsoleBDDBase)` |
-| `TestAddonHelpers` | class | `mcp/test_minios_mcp.py:602` | `class TestAddonHelpers(TestCase)` |
-| `TestAddonInstall` | class | `mcp/test_minios_mcp.py:708` | `class TestAddonInstall(TestCase)` |
-| `TestAddonYaml` | class | `mcp/test_minios_mcp.py:480` | `class TestAddonYaml(TestCase)` |
-| `TestLogBuffer` | class | `mcp/test_minios_mcp.py:254` | `class TestLogBuffer(TestCase)` |
-| `TestMiniOSBDD` | class | `mcp/test_minios_mcp.py:342` | `class TestMiniOSBDD(_ConsoleBDDBase)` |
-| `TestProtocol` | class | `mcp/test_minios_mcp.py:141` | `class TestProtocol(TestCase)` |
-| `TestValidation` | class | `mcp/test_minios_mcp.py:205` | `class TestValidation(TestCase)` |
-| `_ConsoleBDDBase` | class | `mcp/test_minios_mcp.py:306` | `class _ConsoleBDDBase(TestCase)` |
-| `__init__` | method | `mcp/test_minios_mcp.py:61` | `def __init__(self, env_extra)` |
-| `__init__` | method | `mcp/test_minios_mcp.py:645` | `def __init__(self, exit_codes)` |
-| `_cleanup_parts` | method | `mcp/test_minios_mcp.py:702` | `def _cleanup_parts(self, parts)` |
-| `_read_response` | method | `mcp/test_minios_mcp.py:96` | `def _read_response(self)` |
-| `_roundtrip` | method | `mcp/test_minios_mcp.py:102` | `def _roundtrip(self, msg)` |
-| `_toolerror` | class | `mcp/test_minios_mcp.py:697` | `class _toolerror(Exception)` |
-| `boot` | method | `mcp/test_minios_mcp.py:655` | `def boot(self, timeout_ms)` |
-| `booted` | method | `mcp/test_minios_mcp.py:652` | `def booted(self)` |
-| `broken_cat` | function | `mcp/test_minios_mcp.py:786` | `def broken_cat(path, missing_ok)` |
-| `cat_body` | method | `mcp/test_minios_mcp.py:690` | `def cat_body(self, path, missing_ok)` |
 
 Next: [SYMBOLS_p11.md](SYMBOLS_p11.md)

@@ -1,19 +1,19 @@
 {
  "metadata": {
-  "generated_at": "2026-10-27T05:12:26.958933+00:00",
-  "source_tree_hash": "6c78300f87605bd9bb10e425c665396e871d3baefb773cbe63f8e0d199158c0f",
+  "generated_at": "2026-10-28T14:58:01.886421+00:00",
+  "source_tree_hash": "5c435169e1d1c4a1764002f786d7fa08fdaa77ec7da5bb108c72083ee873ab6a",
   "repo_name": "miniOS",
   "depth_level": 2,
   "depth_cap": 3,
   "file_coverage_summary": {
-   "total_files": 594,
-   "analyzed": 594,
+   "total_files": 596,
+   "analyzed": 596,
    "not_analyzed": 0,
    "not_analyzed_by_reason": {}
   },
   "tree_spec": {}
  },
- "description": "Static architecture map of 594 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.",
+ "description": "Static architecture map of 596 files (S, c, h, lua, py, s, sh) in 10 components: headers: kernel, progs/doomgeneric: d_englsh, progs/src, progs/doomgeneric: p_spec, tools: tls_crypto, headers: vga_fb, progs/doomgeneric: net_defs, headers: batch. Structure is extracted statically without LLM calls; component prose may be enriched locally.",
  "files": {
   "arch/x86/ap_entry.S": {
    "language": "S",
@@ -467,6 +467,10 @@
    "language": "h",
    "symbols": 15
   },
+  "headers/wm_jelly.h": {
+   "language": "h",
+   "symbols": 14
+  },
   "headers/wm_layout.h": {
    "language": "h",
    "symbols": 16
@@ -657,7 +661,7 @@
   },
   "kernel/vga_fb.c": {
    "language": "c",
-   "symbols": 236
+   "symbols": 253
   },
   "kernel/vga_fx.c": {
    "language": "c",
@@ -1986,6 +1990,10 @@
   "tests/test_httpd.c": {
    "language": "c",
    "symbols": 2
+  },
+  "tests/test_jelly.c": {
+   "language": "c",
+   "symbols": 3
   },
   "tests/test_ktime.c": {
    "language": "c",
@@ -29377,6 +29385,118 @@
    "type": "FUNCTION",
    "content_hash": "466f4d3877d921c1"
   },
+  "headers/wm_jelly.h|headers/wm_jelly.h::WM_JELLY_H": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::WM_JELLY_H",
+   "start_line": 16,
+   "end_line": 18,
+   "type": "FUNCTION",
+   "content_hash": "1e4de8732e0a8c68"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::WM_JELLY_GRID": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::WM_JELLY_GRID",
+   "start_line": 19,
+   "end_line": 21,
+   "type": "FUNCTION",
+   "content_hash": "bef0607b681f1158"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::WM_JELLY_FP": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::WM_JELLY_FP",
+   "start_line": 22,
+   "end_line": 24,
+   "type": "FUNCTION",
+   "content_hash": "e79e508b48db1500"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::WM_JELLY_WEIGHT_ONE": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::WM_JELLY_WEIGHT_ONE",
+   "start_line": 25,
+   "end_line": 32,
+   "type": "FUNCTION",
+   "content_hash": "fbf961fecb533c60"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_config_t": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_config_t",
+   "start_line": 33,
+   "end_line": 47,
+   "type": "CLASS",
+   "content_hash": "380ca3874fe4cd26"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::WM_JELLY_CONFIG_DEFAULT": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::WM_JELLY_CONFIG_DEFAULT",
+   "start_line": 48,
+   "end_line": 50,
+   "type": "FUNCTION",
+   "content_hash": "5022c7d254c57404"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_t": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_t",
+   "start_line": 51,
+   "end_line": 58,
+   "type": "CLASS",
+   "content_hash": "03e16cca8d186478"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_clamp": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_clamp",
+   "start_line": 59,
+   "end_line": 70,
+   "type": "FUNCTION",
+   "content_hash": "bf44a628e890c178"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_abs": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_abs",
+   "start_line": 71,
+   "end_line": 76,
+   "type": "FUNCTION",
+   "content_hash": "86e0ab294865dccf"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_reset": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_reset",
+   "start_line": 77,
+   "end_line": 129,
+   "type": "FUNCTION",
+   "content_hash": "2134924528e1382d"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_neighbours": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_neighbours",
+   "start_line": 130,
+   "end_line": 154,
+   "type": "FUNCTION",
+   "content_hash": "3f84f6131c875065"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_step": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_step",
+   "start_line": 155,
+   "end_line": 185,
+   "type": "FUNCTION",
+   "content_hash": "c6eea00eaa94b568"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_at_rest": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_at_rest",
+   "start_line": 186,
+   "end_line": 202,
+   "type": "FUNCTION",
+   "content_hash": "82d7a5bd6b93c741"
+  },
+  "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_sample": {
+   "file_path": "headers/wm_jelly.h",
+   "qualified_name": "headers/wm_jelly.h::wm_jelly_sample",
+   "start_line": 203,
+   "end_line": 240,
+   "type": "FUNCTION",
+   "content_hash": "3c2ec61a47eb4435"
+  },
   "headers/wm_layout.h|headers/wm_layout.h::WM_LAYOUT_H": {
    "file_path": "headers/wm_layout.h",
    "qualified_name": "headers/wm_layout.h::WM_LAYOUT_H",
@@ -38684,1890 +38804,2026 @@
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_geom_cfg": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_geom_cfg",
-   "start_line": 51,
-   "end_line": 61,
+   "start_line": 54,
+   "end_line": 64,
    "type": "FUNCTION",
-   "content_hash": "04ecf561eb59f6e1"
+   "content_hash": "78cbd085aa7822b1"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_event_cfg": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_event_cfg",
-   "start_line": 62,
-   "end_line": 70,
+   "start_line": 65,
+   "end_line": 73,
    "type": "FUNCTION",
-   "content_hash": "cf271fbf000cc6b8"
+   "content_hash": "7619bc3bd5e06e83"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_drag_reset": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_drag_reset",
-   "start_line": 71,
-   "end_line": 91,
+   "start_line": 74,
+   "end_line": 95,
    "type": "FUNCTION",
-   "content_hash": "6533d1a2c12cebea"
+   "content_hash": "51654d3dfceed30f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_boot_config": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_boot_config",
-   "start_line": 92,
-   "end_line": 118,
+   "start_line": 96,
+   "end_line": 122,
    "type": "FUNCTION",
-   "content_hash": "f909f350763fc47b"
+   "content_hash": "11d10978667a113b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_bytes_per_pixel": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_bytes_per_pixel",
-   "start_line": 119,
-   "end_line": 134,
+   "start_line": 123,
+   "end_line": 138,
    "type": "FUNCTION",
-   "content_hash": "ef4f9d27939db462"
+   "content_hash": "002e04a3515e7832"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::compositions": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::compositions",
-   "start_line": 135,
-   "end_line": 146,
+   "start_line": 139,
+   "end_line": 150,
    "type": "FUNCTION",
-   "content_hash": "b60905ee563af2e9"
+   "content_hash": "5204cf9740c27600"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::FBT": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::FBT",
-   "start_line": 147,
-   "end_line": 152,
+   "start_line": 151,
+   "end_line": 156,
    "type": "FUNCTION",
-   "content_hash": "0b6ff33ab7ae1c7f"
+   "content_hash": "3e39c75b8d2bd886"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_copy_bytes": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_copy_bytes",
-   "start_line": 153,
-   "end_line": 170,
+   "start_line": 157,
+   "end_line": 174,
    "type": "FUNCTION",
-   "content_hash": "d20ee932bcb4d040"
+   "content_hash": "968b7b2eb8e99cf0"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_fill_u32": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_fill_u32",
-   "start_line": 171,
-   "end_line": 184,
+   "start_line": 175,
+   "end_line": 188,
    "type": "FUNCTION",
-   "content_hash": "ad03c81126cf0fc0"
+   "content_hash": "2f8835fcd195de79"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_frame_bytes": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_frame_bytes",
-   "start_line": 185,
-   "end_line": 190,
+   "start_line": 189,
+   "end_line": 194,
    "type": "FUNCTION",
-   "content_hash": "c5080c9acb8161d7"
+   "content_hash": "39f526bf96f24d77"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_shadow_ready": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_shadow_ready",
-   "start_line": 191,
-   "end_line": 211,
+   "start_line": 195,
+   "end_line": 218,
    "type": "FUNCTION",
-   "content_hash": "063d9d48ac5e05f7"
+   "content_hash": "ca10a04ad1486848"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_present_shadow": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_present_shadow",
-   "start_line": 212,
-   "end_line": 222,
+   "start_line": 219,
+   "end_line": 232,
    "type": "FUNCTION",
-   "content_hash": "49141fe8dc8d0626"
+   "content_hash": "e49582e43528dc7e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_compose_begin": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_compose_begin",
-   "start_line": 223,
-   "end_line": 235,
+   "start_line": 233,
+   "end_line": 245,
    "type": "FUNCTION",
-   "content_hash": "7a2d78580ced4f5f"
+   "content_hash": "7b76c2c4cfb8ba0e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_compose_end": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_compose_end",
-   "start_line": 236,
-   "end_line": 297,
+   "start_line": 246,
+   "end_line": 308,
    "type": "FUNCTION",
-   "content_hash": "3d28b34e1e54f110"
+   "content_hash": "88918cad6cabc366"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::LG_LINE": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::LG_LINE",
-   "start_line": 298,
-   "end_line": 306,
+   "start_line": 309,
+   "end_line": 317,
    "type": "FUNCTION",
-   "content_hash": "29ad13a1e035f869"
+   "content_hash": "ff7fcb801890d35d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::lg_get": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::lg_get",
-   "start_line": 307,
-   "end_line": 313,
+   "start_line": 318,
+   "end_line": 324,
    "type": "FUNCTION",
-   "content_hash": "8ab9e2d910b3737e"
+   "content_hash": "a85ac484c115f385"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::lg_push": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::lg_push",
-   "start_line": 314,
-   "end_line": 334,
+   "start_line": 325,
+   "end_line": 345,
    "type": "FUNCTION",
-   "content_hash": "2c8fae909cc85782"
+   "content_hash": "eba66f1aef16e28f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::lg_alloc": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::lg_alloc",
-   "start_line": 335,
-   "end_line": 350,
+   "start_line": 346,
+   "end_line": 361,
    "type": "FUNCTION",
-   "content_hash": "4e7800251f43b363"
+   "content_hash": "f848529fe2bbdd7d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_term_ring_init": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_term_ring_init",
-   "start_line": 351,
-   "end_line": 358,
+   "start_line": 362,
+   "end_line": 369,
    "type": "FUNCTION",
-   "content_hash": "4888c8c0c7a0941e"
+   "content_hash": "ca238ea2cfaa9c0c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_term_feed": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_term_feed",
-   "start_line": 359,
-   "end_line": 365,
+   "start_line": 370,
+   "end_line": 376,
    "type": "FUNCTION",
-   "content_hash": "408550ccbfe41d18"
+   "content_hash": "dbe78610afb99d92"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::line_nrows": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::line_nrows",
-   "start_line": 366,
-   "end_line": 372,
+   "start_line": 377,
+   "end_line": 383,
    "type": "FUNCTION",
-   "content_hash": "fcb4334f9d171008"
+   "content_hash": "59ccd76c89585f68"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::act_nrows": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::act_nrows",
-   "start_line": 373,
-   "end_line": 375,
+   "start_line": 384,
+   "end_line": 386,
    "type": "FUNCTION",
-   "content_hash": "d1db5c39023add85"
+   "content_hash": "5bb0dc4eca57970f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::total_rows": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::total_rows",
-   "start_line": 376,
-   "end_line": 383,
+   "start_line": 387,
+   "end_line": 394,
    "type": "FUNCTION",
-   "content_hash": "0866cc07a579930a"
+   "content_hash": "583a0bd7b84ea803"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::disp_clamp": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::disp_clamp",
-   "start_line": 384,
-   "end_line": 401,
+   "start_line": 395,
+   "end_line": 412,
    "type": "FUNCTION",
-   "content_hash": "66f779bde2dbfdc8"
+   "content_hash": "73f056a241aef26e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::line_at": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::line_at",
-   "start_line": 402,
-   "end_line": 421,
+   "start_line": 413,
+   "end_line": 432,
    "type": "FUNCTION",
-   "content_hash": "ff5b4d7dffa29dd3"
+   "content_hash": "d0b51110dc93c2ce"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_tint_t": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_tint_t",
-   "start_line": 422,
-   "end_line": 475,
+   "start_line": 433,
+   "end_line": 486,
    "type": "CLASS",
-   "content_hash": "d993ae3b1e285c4c"
+   "content_hash": "9c25ea4398d36de0"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::first": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::first",
-   "start_line": 476,
-   "end_line": 543,
+   "start_line": 487,
+   "end_line": 554,
    "type": "FUNCTION",
-   "content_hash": "6362d875a38f5d39"
+   "content_hash": "ef9f7210cdbb0bd7"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::GFX_SRC_IDX": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::GFX_SRC_IDX",
-   "start_line": 544,
-   "end_line": 544,
+   "start_line": 555,
+   "end_line": 555,
    "type": "FUNCTION",
-   "content_hash": "925a7badff2f001e"
+   "content_hash": "b6f5c77ea6c16e5a"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::GFX_SRC_RGB": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::GFX_SRC_RGB",
-   "start_line": 545,
-   "end_line": 545,
+   "start_line": 556,
+   "end_line": 556,
    "type": "FUNCTION",
-   "content_hash": "5b6db270c2ff9295"
+   "content_hash": "bb1e37fa5b948007"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::GFX_KEEP_BYTES": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::GFX_KEEP_BYTES",
-   "start_line": 546,
-   "end_line": 552,
+   "start_line": 557,
+   "end_line": 563,
    "type": "FUNCTION",
-   "content_hash": "8a3b17990b28eb8d"
+   "content_hash": "3120b782445d80f3"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::flag": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::flag",
-   "start_line": 553,
-   "end_line": 556,
+   "start_line": 564,
+   "end_line": 567,
    "type": "FUNCTION",
-   "content_hash": "b6c4deb23057ab09"
+   "content_hash": "6e21c6e9bf304b74"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::letterbox": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::letterbox",
-   "start_line": 557,
-   "end_line": 571,
+   "start_line": 568,
+   "end_line": 582,
    "type": "FUNCTION",
-   "content_hash": "edccbac1d85f0b66"
+   "content_hash": "605cde23bd82914f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::GFX_CURSOR_IDLE_TICKS": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::GFX_CURSOR_IDLE_TICKS",
-   "start_line": 572,
-   "end_line": 577,
+   "start_line": 583,
+   "end_line": 588,
    "type": "FUNCTION",
-   "content_hash": "43e65ec26ca685d8"
+   "content_hash": "0133cad58ceb626c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::GFX_CURSOR_FOLLOW_TICKS": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::GFX_CURSOR_FOLLOW_TICKS",
-   "start_line": 578,
-   "end_line": 591,
+   "start_line": 589,
+   "end_line": 602,
    "type": "FUNCTION",
-   "content_hash": "45ae50bdbc8d0297"
+   "content_hash": "b9be77435cd8c17b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_view_cfg": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_view_cfg",
-   "start_line": 592,
-   "end_line": 600,
+   "start_line": 603,
+   "end_line": 611,
    "type": "FUNCTION",
-   "content_hash": "8d7e445526af8dd4"
+   "content_hash": "f0e1e2932f6c6628"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_covers_screen": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_covers_screen",
-   "start_line": 601,
-   "end_line": 606,
+   "start_line": 612,
+   "end_line": 617,
    "type": "FUNCTION",
-   "content_hash": "d707e91228ee4e74"
+   "content_hash": "1d78a4652639cb0b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_keep_save": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_keep_save",
-   "start_line": 607,
-   "end_line": 629,
+   "start_line": 618,
+   "end_line": 640,
    "type": "FUNCTION",
-   "content_hash": "df0d0f8f7e07a346"
+   "content_hash": "419c1e18ff79c06a"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::GFX_PROG_LEN": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::GFX_PROG_LEN",
-   "start_line": 630,
-   "end_line": 632,
+   "start_line": 641,
+   "end_line": 643,
    "type": "FUNCTION",
-   "content_hash": "8135cabe56b52a36"
+   "content_hash": "6866ed13050ddec4"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_set_gfx_program": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_set_gfx_program",
-   "start_line": 633,
-   "end_line": 651,
+   "start_line": 644,
+   "end_line": 662,
    "type": "FUNCTION",
-   "content_hash": "62c8baf76765c4fb"
+   "content_hash": "6813e9d22d4e5168"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::shcmd_base": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::shcmd_base",
-   "start_line": 652,
-   "end_line": 668,
+   "start_line": 663,
+   "end_line": 679,
    "type": "FUNCTION",
-   "content_hash": "0a4d16a41d63a190"
+   "content_hash": "b538a45845716286"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::ci_eq": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::ci_eq",
-   "start_line": 669,
-   "end_line": 681,
+   "start_line": 680,
+   "end_line": 692,
    "type": "FUNCTION",
-   "content_hash": "2c8b8d78e6333fa0"
+   "content_hash": "415464941a54fc6b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_prog_icon": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_prog_icon",
-   "start_line": 682,
-   "end_line": 694,
+   "start_line": 693,
+   "end_line": 705,
    "type": "FUNCTION",
-   "content_hash": "24b3bbbc5de76f88"
+   "content_hash": "75230ab6cdfcf55b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_set_gfx_mode": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_set_gfx_mode",
-   "start_line": 695,
-   "end_line": 745,
+   "start_line": 706,
+   "end_line": 756,
    "type": "FUNCTION",
-   "content_hash": "092c83487e3b14b2"
+   "content_hash": "8de388bf71a5c9e2"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_view_for": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_view_for",
-   "start_line": 746,
-   "end_line": 757,
+   "start_line": 757,
+   "end_line": 768,
    "type": "FUNCTION",
-   "content_hash": "f76e1f4372de90d1"
+   "content_hash": "905f8e8a0acbf327"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_view_publish": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_view_publish",
-   "start_line": 758,
-   "end_line": 771,
+   "start_line": 769,
+   "end_line": 782,
    "type": "FUNCTION",
-   "content_hash": "cb6cd40fa38f47b5"
+   "content_hash": "252e12d4fb841911"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_float_frame": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_float_frame",
-   "start_line": 772,
-   "end_line": 787,
+   "start_line": 783,
+   "end_line": 798,
    "type": "FUNCTION",
-   "content_hash": "c1af7cbfe3938ad4"
+   "content_hash": "ba751c2683526162"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_gfx_origin": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_gfx_origin",
-   "start_line": 788,
-   "end_line": 801,
+   "start_line": 799,
+   "end_line": 812,
    "type": "FUNCTION",
-   "content_hash": "778de54fdf22d7f3"
+   "content_hash": "67ecf804c21a3b1f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::coordinates": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::coordinates",
-   "start_line": 802,
-   "end_line": 804,
+   "start_line": 813,
+   "end_line": 815,
    "type": "FUNCTION",
-   "content_hash": "4bca1ed7cae97ad7"
+   "content_hash": "245399703c9db383"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_gfx_map_mouse": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_gfx_map_mouse",
-   "start_line": 805,
-   "end_line": 819,
+   "start_line": 816,
+   "end_line": 830,
    "type": "FUNCTION",
-   "content_hash": "244d622e2225651e"
+   "content_hash": "e5f0f9d40005747e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_gfx_cursor_erase": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_gfx_cursor_erase",
-   "start_line": 820,
-   "end_line": 829,
+   "start_line": 831,
+   "end_line": 840,
    "type": "FUNCTION",
-   "content_hash": "96671f67cd8259b1"
+   "content_hash": "a5c4e8435e4144cf"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_gfx_cursor_draw": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_gfx_cursor_draw",
-   "start_line": 830,
-   "end_line": 955,
+   "start_line": 841,
+   "end_line": 966,
    "type": "FUNCTION",
-   "content_hash": "da21441812cac498"
+   "content_hash": "9c7ddde5e6b08079"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::WIN_DEF_COLS": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::WIN_DEF_COLS",
-   "start_line": 956,
-   "end_line": 956,
+   "start_line": 967,
+   "end_line": 967,
    "type": "FUNCTION",
-   "content_hash": "49b48e270f55b301"
+   "content_hash": "05634c5ae1a00686"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::WIN_DEF_ROWS": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::WIN_DEF_ROWS",
-   "start_line": 957,
-   "end_line": 957,
+   "start_line": 968,
+   "end_line": 968,
    "type": "FUNCTION",
-   "content_hash": "76f90ff96b3be1d5"
+   "content_hash": "7ae28bb78dfb6351"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::WIN_DEF_X": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::WIN_DEF_X",
-   "start_line": 958,
-   "end_line": 958,
+   "start_line": 969,
+   "end_line": 969,
    "type": "FUNCTION",
-   "content_hash": "4bc70a38da3be1b1"
+   "content_hash": "0f435b23ae66255c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::WIN_DEF_Y": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::WIN_DEF_Y",
-   "start_line": 959,
-   "end_line": 986,
+   "start_line": 970,
+   "end_line": 997,
    "type": "FUNCTION",
-   "content_hash": "1f01d0aaec056f75"
+   "content_hash": "2167caaf3597de45"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::WM_MAX_TERMS": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::WM_MAX_TERMS",
-   "start_line": 987,
-   "end_line": 988,
+   "start_line": 998,
+   "end_line": 999,
    "type": "FUNCTION",
-   "content_hash": "217eeadb117e945b"
+   "content_hash": "6b406155f904dc71"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::WM_ELINE_SZ": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::WM_ELINE_SZ",
-   "start_line": 989,
-   "end_line": 996,
+   "start_line": 1000,
+   "end_line": 1007,
    "type": "FUNCTION",
-   "content_hash": "64d57aa0567ad8ae"
+   "content_hash": "9fde5340d2334bbd"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_transition": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_transition",
-   "start_line": 997,
-   "end_line": 998,
+   "start_line": 1008,
+   "end_line": 1009,
    "type": "FUNCTION",
-   "content_hash": "5fdc08622c0e26d7"
+   "content_hash": "2016c911be13d925"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::termwin_t": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::termwin_t",
-   "start_line": 999,
-   "end_line": 1021,
+   "start_line": 1010,
+   "end_line": 1032,
    "type": "CLASS",
-   "content_hash": "d2fe97a0659263e9"
+   "content_hash": "dc5c1c8ca75ce947"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_focus_cursor_sync": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_focus_cursor_sync",
-   "start_line": 1022,
-   "end_line": 1028,
+   "start_line": 1033,
+   "end_line": 1039,
    "type": "FUNCTION",
-   "content_hash": "7931da2ff5bd1376"
+   "content_hash": "4d916391b04e6428"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_emit_focus_moved": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_emit_focus_moved",
-   "start_line": 1029,
-   "end_line": 1040,
+   "start_line": 1040,
+   "end_line": 1051,
    "type": "FUNCTION",
-   "content_hash": "75d024ecd2fba0d7"
+   "content_hash": "147dc80241190387"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_focus_event": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_focus_event",
-   "start_line": 1041,
-   "end_line": 1046,
+   "start_line": 1052,
+   "end_line": 1057,
    "type": "FUNCTION",
-   "content_hash": "a20a93f2a7527b1e"
+   "content_hash": "37166ddbaac0aa5e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_focus_report": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_focus_report",
-   "start_line": 1047,
-   "end_line": 1055,
+   "start_line": 1058,
+   "end_line": 1066,
    "type": "FUNCTION",
-   "content_hash": "9c7f6adbeaf89843"
+   "content_hash": "e003958f33784fc5"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::tw_park": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::tw_park",
-   "start_line": 1056,
-   "end_line": 1085,
+   "start_line": 1067,
+   "end_line": 1096,
    "type": "FUNCTION",
-   "content_hash": "ca1c0dd8c9596e2e"
+   "content_hash": "701dd85bc5ac477e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::tw_unpark": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::tw_unpark",
-   "start_line": 1086,
-   "end_line": 1120,
+   "start_line": 1097,
+   "end_line": 1131,
    "type": "FUNCTION",
-   "content_hash": "9c990cd975d2aa1f"
+   "content_hash": "9b2ad4236ae4e8ec"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_init_once": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_init_once",
-   "start_line": 1121,
-   "end_line": 1145,
+   "start_line": 1132,
+   "end_line": 1156,
    "type": "FUNCTION",
-   "content_hash": "d6b6e7f640d66504"
+   "content_hash": "aa62d74a9fdb2e1e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::tw_select": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::tw_select",
-   "start_line": 1146,
-   "end_line": 1157,
+   "start_line": 1157,
+   "end_line": 1168,
    "type": "FUNCTION",
-   "content_hash": "bc5db0eaa930bd39"
+   "content_hash": "43abb3c47a2fc8f7"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_focus_get": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_focus_get",
-   "start_line": 1158,
-   "end_line": 1158,
+   "start_line": 1169,
+   "end_line": 1169,
    "type": "FUNCTION",
-   "content_hash": "c8a2cdbd46a6a634"
+   "content_hash": "eaff4f9d6f8317a8"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_nterms_get": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_nterms_get",
-   "start_line": 1159,
-   "end_line": 1161,
+   "start_line": 1170,
+   "end_line": 1172,
    "type": "FUNCTION",
-   "content_hash": "a125699f163c6ea1"
+   "content_hash": "ab050c8b8b3e0197"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_snapshot_state": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_snapshot_state",
-   "start_line": 1162,
-   "end_line": 1174,
+   "start_line": 1173,
+   "end_line": 1185,
    "type": "FUNCTION",
-   "content_hash": "a116e1c84b238b49"
+   "content_hash": "2eae91cfdf2aa6f1"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_focus_next": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_focus_next",
-   "start_line": 1175,
-   "end_line": 1215,
+   "start_line": 1186,
+   "end_line": 1226,
    "type": "FUNCTION",
-   "content_hash": "1b7ca28cb76e7cca"
+   "content_hash": "b1114ae19a7273bc"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::app": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::app",
-   "start_line": 1216,
-   "end_line": 1220,
+   "start_line": 1227,
+   "end_line": 1231,
    "type": "FUNCTION",
-   "content_hash": "87460bfa48e070d8"
+   "content_hash": "9cac8e2f1e4feec6"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_gfx_focus_sync": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_gfx_focus_sync",
-   "start_line": 1221,
-   "end_line": 1239,
+   "start_line": 1232,
+   "end_line": 1250,
    "type": "FUNCTION",
-   "content_hash": "933662800cc42338"
+   "content_hash": "ba73620a96a7177d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_focus_id": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_focus_id",
-   "start_line": 1240,
-   "end_line": 1274,
+   "start_line": 1251,
+   "end_line": 1285,
    "type": "FUNCTION",
-   "content_hash": "8bd29e14fc2b1664"
+   "content_hash": "36fb21121d7a8e99"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_boot_history_to_active": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_boot_history_to_active",
-   "start_line": 1275,
-   "end_line": 1289,
+   "start_line": 1286,
+   "end_line": 1300,
    "type": "FUNCTION",
-   "content_hash": "ceee4deb103b943a"
+   "content_hash": "34892c86097fa749"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::content": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::content",
-   "start_line": 1290,
-   "end_line": 1374,
+   "start_line": 1301,
+   "end_line": 1385,
    "type": "FUNCTION",
-   "content_hash": "5acc4056020ffabb"
+   "content_hash": "c87a256cc8b548af"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_layout_set": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_layout_set",
-   "start_line": 1375,
-   "end_line": 1385,
+   "start_line": 1386,
+   "end_line": 1396,
    "type": "FUNCTION",
-   "content_hash": "827e086fe8ad8126"
+   "content_hash": "b162afe436e09b96"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_layout_cycle": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_layout_cycle",
-   "start_line": 1386,
-   "end_line": 1401,
+   "start_line": 1397,
+   "end_line": 1412,
    "type": "FUNCTION",
-   "content_hash": "6371989ab3f5f89c"
+   "content_hash": "f5dbdfeeb6945ceb"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_layout_get": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_layout_get",
-   "start_line": 1402,
-   "end_line": 1407,
+   "start_line": 1413,
+   "end_line": 1418,
    "type": "FUNCTION",
-   "content_hash": "83030943e7ff8297"
+   "content_hash": "11cfed4fa44e2b91"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_layout_name": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_layout_name",
-   "start_line": 1408,
-   "end_line": 1419,
+   "start_line": 1419,
+   "end_line": 1430,
    "type": "FUNCTION",
-   "content_hash": "14ce88abcc9acd53"
+   "content_hash": "34256459ed9eda4a"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::alone": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::alone",
-   "start_line": 1420,
-   "end_line": 1546,
+   "start_line": 1431,
+   "end_line": 1557,
    "type": "FUNCTION",
-   "content_hash": "22050c0ba506a3f8"
+   "content_hash": "cbeb4a314c2a6a88"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_list_windows": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_list_windows",
-   "start_line": 1547,
-   "end_line": 1604,
+   "start_line": 1558,
+   "end_line": 1615,
    "type": "FUNCTION",
-   "content_hash": "36fce83844d35c5a"
+   "content_hash": "f783b02e8d23b7ca"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_act_empty": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_act_empty",
-   "start_line": 1605,
-   "end_line": 1608,
+   "start_line": 1616,
+   "end_line": 1619,
    "type": "FUNCTION",
-   "content_hash": "e4365428e42703c4"
+   "content_hash": "6394af344aa9d424"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_note_prompt": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_note_prompt",
-   "start_line": 1609,
-   "end_line": 1613,
+   "start_line": 1620,
+   "end_line": 1624,
    "type": "FUNCTION",
-   "content_hash": "7a70e672e17bf098"
+   "content_hash": "f1b3da252f13db43"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_clear_prompt": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_clear_prompt",
-   "start_line": 1614,
-   "end_line": 1618,
+   "start_line": 1625,
+   "end_line": 1629,
    "type": "FUNCTION",
-   "content_hash": "eeebb8b75335f018"
+   "content_hash": "2bdab9e5c9602cc1"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_prompted": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_prompted",
-   "start_line": 1619,
-   "end_line": 1627,
+   "start_line": 1630,
+   "end_line": 1638,
    "type": "FUNCTION",
-   "content_hash": "a9b3f59ed3aae673"
+   "content_hash": "9214f5d27306349c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_prompt_live": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_prompt_live",
-   "start_line": 1628,
-   "end_line": 1634,
+   "start_line": 1639,
+   "end_line": 1645,
    "type": "FUNCTION",
-   "content_hash": "13179c37a5a93245"
+   "content_hash": "0aa6b696af54c6af"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_park_line": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_park_line",
-   "start_line": 1635,
-   "end_line": 1649,
+   "start_line": 1646,
+   "end_line": 1660,
    "type": "FUNCTION",
-   "content_hash": "1ae1f67901bc465b"
+   "content_hash": "2a7c527092cb8827"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_unpark_line": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_unpark_line",
-   "start_line": 1650,
-   "end_line": 1664,
+   "start_line": 1661,
+   "end_line": 1675,
    "type": "FUNCTION",
-   "content_hash": "644e81c3d1b3bca3"
+   "content_hash": "95ffbba93f3e420e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::tw_hit": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::tw_hit",
-   "start_line": 1665,
-   "end_line": 1707,
+   "start_line": 1676,
+   "end_line": 1718,
    "type": "FUNCTION",
-   "content_hash": "2bbaaebbfd18546d"
+   "content_hash": "4484272a39a0ee1b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::FB_OFFSET": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::FB_OFFSET",
-   "start_line": 1708,
-   "end_line": 1770,
+   "start_line": 1719,
+   "end_line": 1781,
    "type": "FUNCTION",
-   "content_hash": "6e046e3df5ac1c7c"
+   "content_hash": "a7d1c8d4e63aac07"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_set_gfx_palette": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_set_gfx_palette",
-   "start_line": 1771,
-   "end_line": 1785,
+   "start_line": 1782,
+   "end_line": 1796,
    "type": "FUNCTION",
-   "content_hash": "404ddc49493ddf1a"
+   "content_hash": "36ee2254dce3fd92"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_pack_idx": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_pack_idx",
-   "start_line": 1786,
-   "end_line": 1801,
+   "start_line": 1797,
+   "end_line": 1812,
    "type": "FUNCTION",
-   "content_hash": "0804569f5c4e7c8f"
+   "content_hash": "2f5c0bcc39c37413"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_write_packed": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_write_packed",
-   "start_line": 1802,
-   "end_line": 1821,
+   "start_line": 1813,
+   "end_line": 1832,
    "type": "FUNCTION",
-   "content_hash": "04da4f64f97f1ef5"
+   "content_hash": "99933c3d00df0295"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_read_packed": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_read_packed",
-   "start_line": 1822,
-   "end_line": 1845,
+   "start_line": 1833,
+   "end_line": 1856,
    "type": "FUNCTION",
-   "content_hash": "d91d76fa4de78461"
+   "content_hash": "b532af85c7256c88"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_read_rgb": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_read_rgb",
-   "start_line": 1846,
-   "end_line": 1850,
+   "start_line": 1857,
+   "end_line": 1861,
    "type": "FUNCTION",
-   "content_hash": "6a7fc5d9d51e239e"
+   "content_hash": "927458e82a4b0518"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_write_row_packed": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_write_row_packed",
-   "start_line": 1851,
-   "end_line": 1880,
+   "start_line": 1862,
+   "end_line": 1891,
    "type": "FUNCTION",
-   "content_hash": "03d42232504615e0"
+   "content_hash": "82af3aba856804c9"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_read_row_packed": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_read_row_packed",
-   "start_line": 1881,
-   "end_line": 1902,
+   "start_line": 1892,
+   "end_line": 1913,
    "type": "FUNCTION",
-   "content_hash": "925491c89269f340"
+   "content_hash": "470556884a021c26"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_fill_run": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_fill_run",
-   "start_line": 1903,
-   "end_line": 1928,
+   "start_line": 1914,
+   "end_line": 1939,
    "type": "FUNCTION",
-   "content_hash": "da438259d39af69d"
+   "content_hash": "3dbd8e5f52c740e4"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wall_level": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wall_level",
-   "start_line": 1929,
-   "end_line": 1937,
+   "start_line": 1940,
+   "end_line": 1948,
    "type": "FUNCTION",
-   "content_hash": "6e9c14874b256763"
+   "content_hash": "66361dbf7eb875ae"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_set_palette": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_set_palette",
-   "start_line": 1938,
-   "end_line": 1990,
+   "start_line": 1949,
+   "end_line": 2001,
    "type": "FUNCTION",
-   "content_hash": "46e82efc6df61a4e"
+   "content_hash": "75e30d5f42814a27"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::fb_glyph": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::fb_glyph",
-   "start_line": 1991,
-   "end_line": 2011,
+   "start_line": 2002,
+   "end_line": 2022,
    "type": "FUNCTION",
-   "content_hash": "e39f89d9a139d5d9"
+   "content_hash": "eba0eba30a4549b6"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_pixel": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_pixel",
-   "start_line": 2012,
-   "end_line": 2021,
+   "start_line": 2023,
+   "end_line": 2032,
    "type": "FUNCTION",
-   "content_hash": "594a8d47bb39d207"
+   "content_hash": "f1be3397b5503b7f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_clear": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_clear",
-   "start_line": 2022,
-   "end_line": 2031,
+   "start_line": 2033,
+   "end_line": 2042,
    "type": "FUNCTION",
-   "content_hash": "ab3ea8168de3c5bf"
+   "content_hash": "3b770c0778de8008"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_rect": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_rect",
-   "start_line": 2032,
-   "end_line": 2046,
+   "start_line": 2043,
+   "end_line": 2057,
    "type": "FUNCTION",
-   "content_hash": "72d1c49c2bdedb49"
+   "content_hash": "1db253ea19494bfa"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_pixel_rgb": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_pixel_rgb",
-   "start_line": 2047,
-   "end_line": 2055,
+   "start_line": 2058,
+   "end_line": 2066,
    "type": "FUNCTION",
-   "content_hash": "19edd4cb1a3c97af"
+   "content_hash": "7fbf75728c193049"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_rect_rgb": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_rect_rgb",
-   "start_line": 2056,
-   "end_line": 2062,
+   "start_line": 2067,
+   "end_line": 2073,
    "type": "FUNCTION",
-   "content_hash": "9889896f5ca7ed7f"
+   "content_hash": "abd10c5757449b9c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_char": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_char",
-   "start_line": 2063,
-   "end_line": 2088,
+   "start_line": 2074,
+   "end_line": 2099,
    "type": "FUNCTION",
-   "content_hash": "c34a2e51ec63ed1e"
+   "content_hash": "40dcf2c6629b9572"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_str": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_str",
-   "start_line": 2089,
-   "end_line": 2098,
+   "start_line": 2100,
+   "end_line": 2109,
    "type": "FUNCTION",
-   "content_hash": "00d0134cb03e4524"
+   "content_hash": "f0d4961c9bdade13"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::TEXT_BG_NONE": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::TEXT_BG_NONE",
-   "start_line": 2099,
-   "end_line": 2103,
+   "start_line": 2110,
+   "end_line": 2114,
    "type": "FUNCTION",
-   "content_hash": "5ec644ec4ca26dff"
+   "content_hash": "75314345fef81407"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::text_px": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::text_px",
-   "start_line": 2104,
-   "end_line": 2132,
+   "start_line": 2115,
+   "end_line": 2143,
    "type": "FUNCTION",
-   "content_hash": "2dd6fd9189369dbd"
+   "content_hash": "31a18eb46a1230b7"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_draw_buttons": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_draw_buttons",
-   "start_line": 2133,
-   "end_line": 2170,
+   "start_line": 2144,
+   "end_line": 2181,
    "type": "FUNCTION",
-   "content_hash": "0b0f1ef7992ff15c"
+   "content_hash": "af4ee3a72ad85cb5"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::DOCK_GLOW_PAD": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::DOCK_GLOW_PAD",
-   "start_line": 2171,
-   "end_line": 2171,
+   "start_line": 2182,
+   "end_line": 2182,
    "type": "FUNCTION",
-   "content_hash": "b7eda5a9b1462761"
+   "content_hash": "e96ba1dfa7c9060c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::PROFILE_PAD": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::PROFILE_PAD",
-   "start_line": 2172,
-   "end_line": 2172,
+   "start_line": 2183,
+   "end_line": 2183,
    "type": "FUNCTION",
-   "content_hash": "2f1081a5c6ff26c6"
+   "content_hash": "cf19a1b335b8682f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::PROFILE_RING": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::PROFILE_RING",
-   "start_line": 2173,
-   "end_line": 2173,
+   "start_line": 2184,
+   "end_line": 2184,
    "type": "FUNCTION",
-   "content_hash": "ef22785c929333d6"
+   "content_hash": "5e786c36e5e97c44"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::PROFILE_MARGIN": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::PROFILE_MARGIN",
-   "start_line": 2174,
-   "end_line": 2174,
+   "start_line": 2185,
+   "end_line": 2185,
    "type": "FUNCTION",
-   "content_hash": "bbc083daaa5a8d98"
+   "content_hash": "948646804d6f539c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::PROFILE_TEXT_COLS": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::PROFILE_TEXT_COLS",
-   "start_line": 2175,
-   "end_line": 2177,
+   "start_line": 2186,
+   "end_line": 2188,
    "type": "FUNCTION",
-   "content_hash": "25de4156c6292ce0"
+   "content_hash": "a2b22ebe58cd186d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_color": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_color",
-   "start_line": 2178,
-   "end_line": 2217,
+   "start_line": 2189,
+   "end_line": 2228,
    "type": "FUNCTION",
-   "content_hash": "573ba056a50bc2a4"
+   "content_hash": "4015baf745895f0a"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_title_strip": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_title_strip",
-   "start_line": 2218,
-   "end_line": 2233,
+   "start_line": 2229,
+   "end_line": 2244,
    "type": "FUNCTION",
-   "content_hash": "be8a13d86de900d0"
+   "content_hash": "189632616f3c798d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_win_t": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_win_t",
-   "start_line": 2234,
-   "end_line": 2243,
+   "start_line": 2245,
+   "end_line": 2254,
    "type": "CLASS",
-   "content_hash": "4e3be350098e631d"
+   "content_hash": "5f1986c856b841a4"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_corner_origin": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_corner_origin",
-   "start_line": 2244,
-   "end_line": 2251,
+   "start_line": 2255,
+   "end_line": 2262,
    "type": "FUNCTION",
-   "content_hash": "69438cbc979d1b52"
+   "content_hash": "72167b92240a8b9d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_wins_reset": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_wins_reset",
-   "start_line": 2252,
-   "end_line": 2262,
+   "start_line": 2263,
+   "end_line": 2273,
    "type": "FUNCTION",
-   "content_hash": "5633434fbe4f90b9"
+   "content_hash": "2be629d9fa107c08"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_win_capture": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_win_capture",
-   "start_line": 2263,
-   "end_line": 2292,
+   "start_line": 2274,
+   "end_line": 2303,
    "type": "FUNCTION",
-   "content_hash": "861807487747b3c8"
+   "content_hash": "dd41fce398a71aa6"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_win_cut": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_win_cut",
-   "start_line": 2293,
-   "end_line": 2313,
+   "start_line": 2304,
+   "end_line": 2324,
    "type": "FUNCTION",
-   "content_hash": "4b8ed7d100dc9a07"
+   "content_hash": "09eea216f3983fb8"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_win_live": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_win_live",
-   "start_line": 2314,
-   "end_line": 2328,
+   "start_line": 2325,
+   "end_line": 2339,
    "type": "FUNCTION",
-   "content_hash": "ab4120b6e6803a83"
+   "content_hash": "aa88c512b4cc4412"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_win_recut_bottom": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_win_recut_bottom",
-   "start_line": 2329,
-   "end_line": 2342,
+   "start_line": 2340,
+   "end_line": 2353,
    "type": "FUNCTION",
-   "content_hash": "31355226e879fb6b"
+   "content_hash": "88b6dce6d5dd4d85"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_tint_capture": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_tint_capture",
-   "start_line": 2343,
-   "end_line": 2374,
+   "start_line": 2354,
+   "end_line": 2385,
    "type": "FUNCTION",
-   "content_hash": "ff9a68f3d974b548"
+   "content_hash": "4083b2191c0bd2cf"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_tint_live": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_tint_live",
-   "start_line": 2375,
-   "end_line": 2388,
+   "start_line": 2386,
+   "end_line": 2399,
    "type": "FUNCTION",
-   "content_hash": "b017244a11398b5a"
+   "content_hash": "b66895c580ee3a0d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_term_fill": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_term_fill",
-   "start_line": 2389,
-   "end_line": 2404,
+   "start_line": 2400,
+   "end_line": 2415,
    "type": "FUNCTION",
-   "content_hash": "a5c818653a025d4a"
+   "content_hash": "13958a22f24c16eb"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_panel_coverage": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_panel_coverage",
-   "start_line": 2405,
-   "end_line": 2417,
+   "start_line": 2416,
+   "end_line": 2428,
    "type": "FUNCTION",
-   "content_hash": "d2b19eaaf575a20b"
+   "content_hash": "b479d890a6c1f9a3"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_glass": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_glass",
-   "start_line": 2418,
-   "end_line": 2449,
+   "start_line": 2429,
+   "end_line": 2460,
    "type": "FUNCTION",
-   "content_hash": "464c99ff322f9024"
+   "content_hash": "34a71a8ecf124508"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_disc": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_disc",
-   "start_line": 2450,
-   "end_line": 2471,
+   "start_line": 2461,
+   "end_line": 2482,
    "type": "FUNCTION",
-   "content_hash": "32f2977ed7c3e337"
+   "content_hash": "f924665d9e4ea860"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_traffic_lights": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_traffic_lights",
-   "start_line": 2472,
-   "end_line": 2487,
+   "start_line": 2483,
+   "end_line": 2498,
    "type": "FUNCTION",
-   "content_hash": "17cc32a50c418b25"
+   "content_hash": "997372d286af9554"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_glow": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_glow",
-   "start_line": 2488,
-   "end_line": 2507,
+   "start_line": 2499,
+   "end_line": 2518,
    "type": "FUNCTION",
-   "content_hash": "9a67ada07cae964e"
+   "content_hash": "ee4b7752fb95c01f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::chrome_profile_card": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::chrome_profile_card",
-   "start_line": 2508,
-   "end_line": 2537,
+   "start_line": 2519,
+   "end_line": 2548,
    "type": "FUNCTION",
-   "content_hash": "09a26bec56fc7954"
+   "content_hash": "e82b1ebdc2403db8"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_buttons_hit": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_buttons_hit",
-   "start_line": 2538,
-   "end_line": 2552,
+   "start_line": 2549,
+   "end_line": 2563,
    "type": "FUNCTION",
-   "content_hash": "6bae5f0b2ab250b1"
+   "content_hash": "ff68ea6c28331a48"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_close_pending": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_close_pending",
-   "start_line": 2553,
-   "end_line": 2553,
+   "start_line": 2564,
+   "end_line": 2564,
    "type": "FUNCTION",
-   "content_hash": "5142f08403620cac"
+   "content_hash": "0767add99635f336"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_clear_close": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_clear_close",
-   "start_line": 2554,
-   "end_line": 2554,
+   "start_line": 2565,
+   "end_line": 2565,
    "type": "FUNCTION",
-   "content_hash": "0e6dc474bb386c3d"
+   "content_hash": "6e16d75123ae8cf7"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wm_gfx_mode_active": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wm_gfx_mode_active",
-   "start_line": 2555,
-   "end_line": 2557,
+   "start_line": 2566,
+   "end_line": 2568,
    "type": "FUNCTION",
-   "content_hash": "a4e4f54a8cfdb9b9"
+   "content_hash": "d7c6c08504f7ba4d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_ps2_owner": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_ps2_owner",
-   "start_line": 2558,
-   "end_line": 2577,
+   "start_line": 2569,
+   "end_line": 2588,
    "type": "FUNCTION",
-   "content_hash": "3dccffeed74e3ef1"
+   "content_hash": "247804f39cec5308"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::taskbar": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::taskbar",
-   "start_line": 2578,
-   "end_line": 2625,
+   "start_line": 2589,
+   "end_line": 2636,
    "type": "FUNCTION",
-   "content_hash": "2f6285196dfdeac2"
+   "content_hash": "0c5cb7b19a604319"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::directly": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::directly",
-   "start_line": 2626,
-   "end_line": 2730,
+   "start_line": 2637,
+   "end_line": 2741,
    "type": "FUNCTION",
-   "content_hash": "7a7c1bb43cf06e72"
+   "content_hash": "d47f473913ccea0c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_letterbox": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_letterbox",
-   "start_line": 2731,
-   "end_line": 2749,
+   "start_line": 2742,
+   "end_line": 2760,
    "type": "FUNCTION",
-   "content_hash": "26a3f3f8917fe3e5"
+   "content_hash": "112bdf21fb1bccdb"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_title": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_title",
-   "start_line": 2750,
-   "end_line": 2763,
+   "start_line": 2761,
+   "end_line": 2774,
    "type": "FUNCTION",
-   "content_hash": "c828917b5ed528a1"
+   "content_hash": "1d8456815b56f85a"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_compose": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_compose",
-   "start_line": 2764,
-   "end_line": 2831,
+   "start_line": 2775,
+   "end_line": 2842,
    "type": "FUNCTION",
-   "content_hash": "1f175f7cb250a033"
+   "content_hash": "12b2e766343562cb"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_present": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_present",
-   "start_line": 2832,
-   "end_line": 2847,
+   "start_line": 2843,
+   "end_line": 2858,
    "type": "FUNCTION",
-   "content_hash": "4673ff1646041c87"
+   "content_hash": "9429662839d9ec39"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_cursor_follow_idle": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_cursor_follow_idle",
-   "start_line": 2848,
-   "end_line": 2860,
+   "start_line": 2859,
+   "end_line": 2871,
    "type": "FUNCTION",
-   "content_hash": "8dec857df9221638"
+   "content_hash": "30c2e7663a298a5f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_blit_gfx_window": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_blit_gfx_window",
-   "start_line": 2861,
-   "end_line": 2869,
+   "start_line": 2872,
+   "end_line": 2880,
    "type": "FUNCTION",
-   "content_hash": "8b72263222bcb1de"
+   "content_hash": "40a517fdce345736"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_blit_nk_window": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_blit_nk_window",
-   "start_line": 2870,
-   "end_line": 2875,
+   "start_line": 2881,
+   "end_line": 2886,
    "type": "FUNCTION",
-   "content_hash": "63ec65d3e4f136fc"
+   "content_hash": "33d37d2c80653f76"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_blit_nk_rgb_window": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_blit_nk_rgb_window",
-   "start_line": 2876,
-   "end_line": 2884,
+   "start_line": 2887,
+   "end_line": 2895,
    "type": "FUNCTION",
-   "content_hash": "9bbfe9d671bbf201"
+   "content_hash": "4c4a7e2832d24ebe"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_recalc": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_recalc",
-   "start_line": 2885,
-   "end_line": 2910,
+   "start_line": 2896,
+   "end_line": 2921,
    "type": "FUNCTION",
-   "content_hash": "8148d72cf98847c7"
+   "content_hash": "c6c3a7f488a83200"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::draw_title_win": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::draw_title_win",
-   "start_line": 2911,
-   "end_line": 2941,
+   "start_line": 2922,
+   "end_line": 2952,
    "type": "FUNCTION",
-   "content_hash": "dc5a1f65e78737a2"
+   "content_hash": "b0f21c82c4ba6364"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::TB_GFX_TITLE_MAX": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::TB_GFX_TITLE_MAX",
-   "start_line": 2942,
-   "end_line": 2943,
+   "start_line": 2953,
+   "end_line": 2954,
    "type": "FUNCTION",
-   "content_hash": "a0139950f781f194"
+   "content_hash": "063a64d901eee5bf"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::taskbar_layout": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::taskbar_layout",
-   "start_line": 2944,
-   "end_line": 2974,
+   "start_line": 2955,
+   "end_line": 2985,
    "type": "FUNCTION",
-   "content_hash": "1af313a68fab1acd"
+   "content_hash": "6d853d9ef2262821"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::draw_speaker_icon": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::draw_speaker_icon",
-   "start_line": 2975,
-   "end_line": 2983,
+   "start_line": 2986,
+   "end_line": 2994,
    "type": "FUNCTION",
-   "content_hash": "1ef60e498dee142d"
+   "content_hash": "198e6f582d76db5b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::taskbar_render": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::taskbar_render",
-   "start_line": 2984,
-   "end_line": 2993,
+   "start_line": 2995,
+   "end_line": 3004,
    "type": "FUNCTION",
-   "content_hash": "b700e70d8c8b7a6a"
+   "content_hash": "3b2fcf2b436ab98e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::title": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::title",
-   "start_line": 2994,
-   "end_line": 3062,
+   "start_line": 3005,
+   "end_line": 3073,
    "type": "FUNCTION",
-   "content_hash": "3df92cee1abe9051"
+   "content_hash": "ecd0d9a783538db6"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::taskbar_tick": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::taskbar_tick",
-   "start_line": 3063,
-   "end_line": 3078,
+   "start_line": 3074,
+   "end_line": 3089,
    "type": "FUNCTION",
-   "content_hash": "d0bc6b96ff8fc3b1"
+   "content_hash": "aca2eca0078ff40f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_theme_name": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_theme_name",
-   "start_line": 3079,
-   "end_line": 3099,
+   "start_line": 3090,
+   "end_line": 3110,
    "type": "FUNCTION",
-   "content_hash": "301b400cbb0f9a59"
+   "content_hash": "486a11fb21752f5c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::taskbar_theme_cycle": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::taskbar_theme_cycle",
-   "start_line": 3100,
-   "end_line": 3139,
+   "start_line": 3111,
+   "end_line": 3150,
    "type": "FUNCTION",
-   "content_hash": "11dc48cc62a7af30"
+   "content_hash": "395f6c63690acb34"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::taskbar_handle_click": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::taskbar_handle_click",
-   "start_line": 3140,
-   "end_line": 3199,
+   "start_line": 3151,
+   "end_line": 3210,
    "type": "FUNCTION",
-   "content_hash": "389f7eb2d69537ae"
+   "content_hash": "f657af472f3db26d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::draw_scrollbar": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::draw_scrollbar",
-   "start_line": 3200,
-   "end_line": 3235,
+   "start_line": 3211,
+   "end_line": 3246,
    "type": "FUNCTION",
-   "content_hash": "0ad414f46f76129c"
+   "content_hash": "fa649af61d9ee924"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::render_blank_row": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::render_blank_row",
-   "start_line": 3236,
-   "end_line": 3245,
+   "start_line": 3247,
+   "end_line": 3256,
    "type": "FUNCTION",
-   "content_hash": "2f3ba9a07b72fc72"
+   "content_hash": "68e8cd8704b848af"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::render_row": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::render_row",
-   "start_line": 3246,
-   "end_line": 3280,
+   "start_line": 3257,
+   "end_line": 3291,
    "type": "FUNCTION",
-   "content_hash": "2a64451583abc76a"
+   "content_hash": "031e3008bd4c5231"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_render": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_render",
-   "start_line": 3281,
-   "end_line": 3296,
+   "start_line": 3292,
+   "end_line": 3307,
    "type": "FUNCTION",
-   "content_hash": "0c1af88445c80026"
+   "content_hash": "b37d4d797b6aef0f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::buffer": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::buffer",
-   "start_line": 3297,
-   "end_line": 3313,
+   "start_line": 3308,
+   "end_line": 3324,
    "type": "FUNCTION",
-   "content_hash": "fe8bb76948111f64"
+   "content_hash": "8a7229c728f98a89"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_render_active": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_render_active",
-   "start_line": 3314,
-   "end_line": 3356,
+   "start_line": 3325,
+   "end_line": 3367,
    "type": "FUNCTION",
-   "content_hash": "aaefa8408bee6514"
+   "content_hash": "cfc454eb6aefc5c0"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::line": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::line",
-   "start_line": 3357,
-   "end_line": 3365,
+   "start_line": 3368,
+   "end_line": 3376,
    "type": "FUNCTION",
-   "content_hash": "60e15948b49a81e3"
+   "content_hash": "0cd8b32f2125fe83"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::escapes": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::escapes",
-   "start_line": 3366,
-   "end_line": 3422,
+   "start_line": 3377,
+   "end_line": 3433,
    "type": "FUNCTION",
-   "content_hash": "5b9acb6226f3c34f"
+   "content_hash": "39b5e8152ba80637"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_puts_term": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_puts_term",
-   "start_line": 3423,
-   "end_line": 3428,
+   "start_line": 3434,
+   "end_line": 3439,
    "type": "FUNCTION",
-   "content_hash": "22799cb3b0f29356"
+   "content_hash": "50b0175b1d7db035"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_text_cursor": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_text_cursor",
-   "start_line": 3429,
-   "end_line": 3436,
+   "start_line": 3440,
+   "end_line": 3447,
    "type": "FUNCTION",
-   "content_hash": "ad03d2b0beb99809"
+   "content_hash": "01ba001960f81826"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_hide_text_cursor": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_hide_text_cursor",
-   "start_line": 3437,
-   "end_line": 3460,
+   "start_line": 3448,
+   "end_line": 3482,
    "type": "FUNCTION",
-   "content_hash": "7f9e12be1264ad15"
+   "content_hash": "833aa3ee92b4a75f"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::JELLY_BLOCK": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::JELLY_BLOCK",
+   "start_line": 3483,
+   "end_line": 3483,
+   "type": "FUNCTION",
+   "content_hash": "4ab5540df5f95ef8"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::JELLY_SUBSTEPS": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::JELLY_SUBSTEPS",
+   "start_line": 3484,
+   "end_line": 3484,
+   "type": "FUNCTION",
+   "content_hash": "7148f11ea82887ce"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::JELLY_ROW_MAX": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::JELLY_ROW_MAX",
+   "start_line": 3485,
+   "end_line": 3500,
+   "type": "FUNCTION",
+   "content_hash": "aa5e1d464fdc1a02"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_cancel": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_cancel",
+   "start_line": 3501,
+   "end_line": 3509,
+   "type": "FUNCTION",
+   "content_hash": "9654e589223015c4"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_begin": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_begin",
+   "start_line": 3510,
+   "end_line": 3521,
+   "type": "FUNCTION",
+   "content_hash": "b7de71338ffe7272"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_rect": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_rect",
+   "start_line": 3522,
+   "end_line": 3544,
+   "type": "FUNCTION",
+   "content_hash": "3d8149f84614a058"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_kick": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_kick",
+   "start_line": 3545,
+   "end_line": 3553,
+   "type": "FUNCTION",
+   "content_hash": "908d872259057b6e"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_live": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_live",
+   "start_line": 3554,
+   "end_line": 3561,
+   "type": "FUNCTION",
+   "content_hash": "da6951c1d2d1ebd8"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_arm": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_arm",
+   "start_line": 3562,
+   "end_line": 3587,
+   "type": "FUNCTION",
+   "content_hash": "d21f35bb2cd358e7"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_shadow_px": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_shadow_px",
+   "start_line": 3588,
+   "end_line": 3597,
+   "type": "FUNCTION",
+   "content_hash": "f24ba87042cc43e9"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_put_row": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_put_row",
+   "start_line": 3598,
+   "end_line": 3619,
+   "type": "FUNCTION",
+   "content_hash": "0dc38b0991e8820b"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_warp_band": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_warp_band",
+   "start_line": 3620,
+   "end_line": 3652,
+   "type": "FUNCTION",
+   "content_hash": "461c3dc8885c3e6f"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_present": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_present",
+   "start_line": 3653,
+   "end_line": 3676,
+   "type": "FUNCTION",
+   "content_hash": "8c17f2dfcfbfce04"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_try_present": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_try_present",
+   "start_line": 3677,
+   "end_line": 3687,
+   "type": "FUNCTION",
+   "content_hash": "51846fdda475e1f0"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_advance": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_advance",
+   "start_line": 3688,
+   "end_line": 3700,
+   "type": "FUNCTION",
+   "content_hash": "9f2b5f8ced4846da"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::jelly_tick": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::jelly_tick",
+   "start_line": 3701,
+   "end_line": 3723,
+   "type": "FUNCTION",
+   "content_hash": "8ce6950e5a93452e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_draw_desktop": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_draw_desktop",
-   "start_line": 3461,
-   "end_line": 3564,
+   "start_line": 3724,
+   "end_line": 3830,
    "type": "FUNCTION",
-   "content_hash": "81a4e08ca2fbe43d"
+   "content_hash": "cbe7fe20c6d22ad3"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_view_in_rect": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_view_in_rect",
-   "start_line": 3565,
-   "end_line": 3583,
+   "start_line": 3831,
+   "end_line": 3849,
    "type": "FUNCTION",
-   "content_hash": "6aa0be8cfc83cc3b"
+   "content_hash": "32f30cf3cb547fad"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_animate": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_animate",
-   "start_line": 3584,
-   "end_line": 3633,
+   "start_line": 3850,
+   "end_line": 3899,
    "type": "FUNCTION",
-   "content_hash": "369e13aa7e2d2715"
+   "content_hash": "add734ea0da78c24"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_taskbar_rect": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_taskbar_rect",
-   "start_line": 3634,
-   "end_line": 3670,
+   "start_line": 3900,
+   "end_line": 3936,
    "type": "FUNCTION",
-   "content_hash": "9f25c23df9ab5807"
+   "content_hash": "a781d1051ff6cd08"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_drop_focus": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_drop_focus",
-   "start_line": 3671,
-   "end_line": 3681,
+   "start_line": 3937,
+   "end_line": 3947,
    "type": "FUNCTION",
-   "content_hash": "65238e16a4420382"
+   "content_hash": "0eeddec7c4ac18d6"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::from": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::from",
-   "start_line": 3682,
-   "end_line": 3715,
+   "start_line": 3948,
+   "end_line": 3981,
    "type": "FUNCTION",
-   "content_hash": "4b99179f04628e5b"
+   "content_hash": "dbe5af499b28d190"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_gfx_set_hidden": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_gfx_set_hidden",
-   "start_line": 3716,
-   "end_line": 3743,
+   "start_line": 3982,
+   "end_line": 4009,
    "type": "FUNCTION",
-   "content_hash": "464c0a39567a8ec2"
+   "content_hash": "3cc343d7ef53fbf9"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_gfx_view_name": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_gfx_view_name",
-   "start_line": 3744,
-   "end_line": 3755,
+   "start_line": 4010,
+   "end_line": 4021,
    "type": "FUNCTION",
-   "content_hash": "f441cdf3c288750e"
+   "content_hash": "9f1e8584f054edef"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_toggle_fullscreen": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_toggle_fullscreen",
-   "start_line": 3756,
-   "end_line": 3767,
+   "start_line": 4022,
+   "end_line": 4033,
    "type": "FUNCTION",
-   "content_hash": "8a306f91629dc985"
+   "content_hash": "5b1da44c9cdfe35a"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_toggle_fullscreen": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_toggle_fullscreen",
-   "start_line": 3768,
-   "end_line": 3778,
+   "start_line": 4034,
+   "end_line": 4044,
    "type": "FUNCTION",
-   "content_hash": "532465514f910ca5"
+   "content_hash": "7e3bdf3828ca8a55"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_toggle_minimize": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_toggle_minimize",
-   "start_line": 3779,
-   "end_line": 3788,
+   "start_line": 4045,
+   "end_line": 4054,
    "type": "FUNCTION",
-   "content_hash": "2145abca088940d5"
+   "content_hash": "ff2acb65678136ff"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_toggle_minimize": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_toggle_minimize",
-   "start_line": 3789,
-   "end_line": 3796,
+   "start_line": 4055,
+   "end_line": 4062,
    "type": "FUNCTION",
-   "content_hash": "d853e3363926ad64"
+   "content_hash": "e6e79c056326a8aa"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_is_minimized": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_is_minimized",
-   "start_line": 3797,
-   "end_line": 3797,
+   "start_line": 4063,
+   "end_line": 4063,
    "type": "FUNCTION",
-   "content_hash": "cf805a866bcc25f5"
+   "content_hash": "6862d539d416a87d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_is_fullscreen": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_is_fullscreen",
-   "start_line": 3798,
-   "end_line": 3802,
+   "start_line": 4064,
+   "end_line": 4068,
    "type": "FUNCTION",
-   "content_hash": "9e22c7b47d70a89c"
+   "content_hash": "20da20c1e61e40de"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_snap": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_snap",
-   "start_line": 3803,
-   "end_line": 3835,
+   "start_line": 4069,
+   "end_line": 4101,
    "type": "FUNCTION",
-   "content_hash": "70b50736227b28e3"
+   "content_hash": "e92114ce2f529546"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_close_default": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_close_default",
-   "start_line": 3836,
-   "end_line": 3851,
+   "start_line": 4102,
+   "end_line": 4117,
    "type": "FUNCTION",
-   "content_hash": "4b6e9ee6eb98b8c1"
+   "content_hash": "3d28edd1f8d8918d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_close_active": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_close_active",
-   "start_line": 3852,
-   "end_line": 3865,
+   "start_line": 4118,
+   "end_line": 4131,
    "type": "FUNCTION",
-   "content_hash": "81eebd72af4c8932"
+   "content_hash": "8422b0dcd5c66c9b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_move_terminal": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_move_terminal",
-   "start_line": 3866,
-   "end_line": 3910,
+   "start_line": 4132,
+   "end_line": 4176,
    "type": "FUNCTION",
-   "content_hash": "7d45aab77ef26fd8"
+   "content_hash": "49d7cc83360eee89"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_max_cols": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_max_cols",
-   "start_line": 3911,
-   "end_line": 3914,
+   "start_line": 4177,
+   "end_line": 4180,
    "type": "FUNCTION",
-   "content_hash": "95e68e30de1b37a6"
+   "content_hash": "8ad674708b2ae1ab"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_max_rows": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_max_rows",
-   "start_line": 3915,
-   "end_line": 3919,
+   "start_line": 4181,
+   "end_line": 4185,
    "type": "FUNCTION",
-   "content_hash": "6a4651d0810deb55"
+   "content_hash": "ae2bf4997a3d3369"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::term_finish_layout": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::term_finish_layout",
-   "start_line": 3920,
-   "end_line": 3925,
+   "start_line": 4186,
+   "end_line": 4191,
    "type": "FUNCTION",
-   "content_hash": "3bd890fd6a03ebcf"
+   "content_hash": "23d3abdfa4409842"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_snap_window": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_snap_window",
-   "start_line": 3926,
-   "end_line": 3953,
+   "start_line": 4192,
+   "end_line": 4219,
    "type": "FUNCTION",
-   "content_hash": "d089eb001db00135"
+   "content_hash": "32efa2fb87484b35"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_resize": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_resize",
-   "start_line": 3954,
-   "end_line": 3973,
+   "start_line": 4220,
+   "end_line": 4239,
    "type": "FUNCTION",
-   "content_hash": "9912ca3fb6fe7c0d"
+   "content_hash": "f1b3a6fc2a606bd8"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_reset_default": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_reset_default",
-   "start_line": 3974,
-   "end_line": 4027,
+   "start_line": 4240,
+   "end_line": 4296,
    "type": "FUNCTION",
-   "content_hash": "3784abfc49c33412"
+   "content_hash": "485a3d0ea8af8ac1"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wallpaper_ensure": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wallpaper_ensure",
-   "start_line": 4028,
-   "end_line": 4079,
+   "start_line": 4297,
+   "end_line": 4348,
    "type": "FUNCTION",
-   "content_hash": "6b7493bb42e4884f"
+   "content_hash": "6021582954ba8a57"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wallpaper_usable": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wallpaper_usable",
-   "start_line": 4080,
-   "end_line": 4084,
+   "start_line": 4349,
+   "end_line": 4353,
    "type": "FUNCTION",
-   "content_hash": "901469420baf558c"
+   "content_hash": "3b4e5fda61682f3b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wallpaper_draw": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wallpaper_draw",
-   "start_line": 4085,
-   "end_line": 4110,
+   "start_line": 4354,
+   "end_line": 4369,
    "type": "FUNCTION",
-   "content_hash": "15cab04505c029fc"
+   "content_hash": "bc424acbab31bbad"
+  },
+  "kernel/vga_fb.c|kernel/vga_fb.c::wallpaper_packed": {
+   "file_path": "kernel/vga_fb.c",
+   "qualified_name": "kernel/vga_fb.c::wallpaper_packed",
+   "start_line": 4370,
+   "end_line": 4391,
+   "type": "FUNCTION",
+   "content_hash": "96e88fc23f48ce5f"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::pipe_field": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::pipe_field",
-   "start_line": 4111,
-   "end_line": 4128,
+   "start_line": 4392,
+   "end_line": 4409,
    "type": "FUNCTION",
-   "content_hash": "a0e3e7d69b8323e3"
+   "content_hash": "b37be08a17fe8e9b"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::icon_nearest": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::icon_nearest",
-   "start_line": 4129,
-   "end_line": 4144,
+   "start_line": 4410,
+   "end_line": 4425,
    "type": "FUNCTION",
-   "content_hash": "a42ec24fe48bcd85"
+   "content_hash": "93113adbc2895768"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::icon_embedded": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::icon_embedded",
-   "start_line": 4145,
-   "end_line": 4164,
+   "start_line": 4426,
+   "end_line": 4445,
    "type": "FUNCTION",
-   "content_hash": "30cf9e847f84198c"
+   "content_hash": "b936538874dcdbfb"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::icon_decode": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::icon_decode",
-   "start_line": 4165,
-   "end_line": 4198,
+   "start_line": 4446,
+   "end_line": 4479,
    "type": "FUNCTION",
-   "content_hash": "aae348bcaed2e6a7"
+   "content_hash": "3f71ba559615f319"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::icon_embedded_rgba": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::icon_embedded_rgba",
-   "start_line": 4199,
-   "end_line": 4226,
+   "start_line": 4480,
+   "end_line": 4507,
    "type": "FUNCTION",
-   "content_hash": "c319553fdbf8f17b"
+   "content_hash": "2810062492915b05"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_label_px": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_label_px",
-   "start_line": 4227,
-   "end_line": 4235,
+   "start_line": 4508,
+   "end_line": 4516,
    "type": "FUNCTION",
-   "content_hash": "86e81480279b7507"
+   "content_hash": "1a13b15e4678f37d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::shortcuts_layout": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::shortcuts_layout",
-   "start_line": 4236,
-   "end_line": 4253,
+   "start_line": 4517,
+   "end_line": 4534,
    "type": "FUNCTION",
-   "content_hash": "f804230d3e078472"
+   "content_hash": "e681691c0b6d5c81"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::shortcut_cell_left": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::shortcut_cell_left",
-   "start_line": 4254,
-   "end_line": 4260,
+   "start_line": 4535,
+   "end_line": 4541,
    "type": "FUNCTION",
-   "content_hash": "9a53a088832d9990"
+   "content_hash": "eaf5320ebbaf7885"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::desktop_shortcuts_load": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::desktop_shortcuts_load",
-   "start_line": 4261,
-   "end_line": 4316,
+   "start_line": 4542,
+   "end_line": 4597,
    "type": "FUNCTION",
-   "content_hash": "a93376e5af19d84f"
+   "content_hash": "e67e8806cdb623ff"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::shortcut_draw_scaled": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::shortcut_draw_scaled",
-   "start_line": 4317,
-   "end_line": 4341,
+   "start_line": 4598,
+   "end_line": 4622,
    "type": "FUNCTION",
-   "content_hash": "18541d80e77270d6"
+   "content_hash": "19c41946bb22c5b9"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_hover_index": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_hover_index",
-   "start_line": 4342,
-   "end_line": 4368,
+   "start_line": 4623,
+   "end_line": 4649,
    "type": "FUNCTION",
-   "content_hash": "3f857a5734356a01"
+   "content_hash": "57287d9ac24af302"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_bounce_counts": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_bounce_counts",
-   "start_line": 4369,
-   "end_line": 4378,
+   "start_line": 4650,
+   "end_line": 4659,
    "type": "FUNCTION",
-   "content_hash": "c0e8419718f14028"
+   "content_hash": "94f16d71f926ebec"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_click_count": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_click_count",
-   "start_line": 4379,
-   "end_line": 4384,
+   "start_line": 4660,
+   "end_line": 4665,
    "type": "FUNCTION",
-   "content_hash": "0334e063563a11c1"
+   "content_hash": "04e2ffbd243eb35e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_bounce_elapsed": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_bounce_elapsed",
-   "start_line": 4385,
-   "end_line": 4392,
+   "start_line": 4666,
+   "end_line": 4673,
    "type": "FUNCTION",
-   "content_hash": "d573f2d3702f4588"
+   "content_hash": "b9066fcd4be22298"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_bounce_live": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_bounce_live",
-   "start_line": 4393,
-   "end_line": 4442,
+   "start_line": 4674,
+   "end_line": 4723,
    "type": "FUNCTION",
-   "content_hash": "4f3346bd9326458b"
+   "content_hash": "59051fd0a1e5a23d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_pending_active": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_pending_active",
-   "start_line": 4443,
-   "end_line": 4450,
+   "start_line": 4724,
+   "end_line": 4731,
    "type": "FUNCTION",
-   "content_hash": "6a5f5e5461db1cb6"
+   "content_hash": "4b4583c835492443"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_paint_icons": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_paint_icons",
-   "start_line": 4451,
-   "end_line": 4492,
+   "start_line": 4732,
+   "end_line": 4773,
    "type": "FUNCTION",
-   "content_hash": "b41d58fd03d97cf1"
+   "content_hash": "f88255ab1d9c7da2"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_paint_backing": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_paint_backing",
-   "start_line": 4493,
-   "end_line": 4499,
+   "start_line": 4774,
+   "end_line": 4780,
    "type": "FUNCTION",
-   "content_hash": "073d3546d0d3e850"
+   "content_hash": "ef982249e3692d9c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::desktop_shortcuts_draw": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::desktop_shortcuts_draw",
-   "start_line": 4500,
-   "end_line": 4519,
+   "start_line": 4781,
+   "end_line": 4800,
    "type": "FUNCTION",
-   "content_hash": "d87f4cd88288d6a4"
+   "content_hash": "4b86bd1a05475972"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::wallpaper_rect": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::wallpaper_rect",
-   "start_line": 4520,
-   "end_line": 4550,
+   "start_line": 4801,
+   "end_line": 4831,
    "type": "FUNCTION",
-   "content_hash": "d50e411c7ae203e5"
+   "content_hash": "cae048353a134701"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::dock_paint_hover": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::dock_paint_hover",
-   "start_line": 4551,
-   "end_line": 4574,
+   "start_line": 4832,
+   "end_line": 4855,
    "type": "FUNCTION",
-   "content_hash": "273b10b665190b3d"
+   "content_hash": "95b762db1e141350"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::command": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::command",
-   "start_line": 4575,
-   "end_line": 4579,
+   "start_line": 4856,
+   "end_line": 4860,
    "type": "FUNCTION",
-   "content_hash": "48bc8d636d5b160e"
+   "content_hash": "ccda91817b495223"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::gfx_task_icon": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::gfx_task_icon",
-   "start_line": 4580,
-   "end_line": 4600,
+   "start_line": 4861,
+   "end_line": 4881,
    "type": "FUNCTION",
-   "content_hash": "a7590b76d84746f6"
+   "content_hash": "720b0a3169d03947"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::desktop_shortcuts_hit_test": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::desktop_shortcuts_hit_test",
-   "start_line": 4601,
-   "end_line": 4614,
+   "start_line": 4882,
+   "end_line": 4895,
    "type": "FUNCTION",
-   "content_hash": "6b63c9b4efeefe93"
+   "content_hash": "5ac8ecd1ddacca24"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::mouse_focus_topmost": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::mouse_focus_topmost",
-   "start_line": 4615,
-   "end_line": 4640,
+   "start_line": 4896,
+   "end_line": 4921,
    "type": "FUNCTION",
-   "content_hash": "6845142e6e36503d"
+   "content_hash": "64e58e79831208cc"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::mouse_apply_wheel": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::mouse_apply_wheel",
-   "start_line": 4641,
-   "end_line": 4661,
+   "start_line": 4922,
+   "end_line": 4942,
    "type": "FUNCTION",
-   "content_hash": "dc69937e2f8b48ee"
+   "content_hash": "2ffa082dc1afaa5d"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::pointer": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::pointer",
-   "start_line": 4662,
-   "end_line": 4664,
+   "start_line": 4943,
+   "end_line": 4945,
    "type": "FUNCTION",
-   "content_hash": "ba0c4439accbfe34"
+   "content_hash": "f70727548a1f7cce"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::mouse_drag_gfx": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::mouse_drag_gfx",
-   "start_line": 4665,
-   "end_line": 4716,
+   "start_line": 4946,
+   "end_line": 5002,
    "type": "FUNCTION",
-   "content_hash": "510de085b2df57f9"
+   "content_hash": "907f05fb6aafc166"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::mouse_drag_term": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::mouse_drag_term",
-   "start_line": 4717,
-   "end_line": 4739,
+   "start_line": 5003,
+   "end_line": 5025,
    "type": "FUNCTION",
-   "content_hash": "fab87aa7a3138dea"
+   "content_hash": "6f9f379a6b0f643e"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::mouse_scrollbar": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::mouse_scrollbar",
-   "start_line": 4740,
-   "end_line": 4768,
+   "start_line": 5026,
+   "end_line": 5054,
    "type": "FUNCTION",
-   "content_hash": "56f309937e2a6a73"
+   "content_hash": "e89d503754115406"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_wait_tick": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_wait_tick",
-   "start_line": 4769,
-   "end_line": 4777,
+   "start_line": 5055,
+   "end_line": 5063,
    "type": "FUNCTION",
-   "content_hash": "cd2a18626104825c"
+   "content_hash": "6a4319553e1be168"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_mouse_tick": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_mouse_tick",
-   "start_line": 4778,
-   "end_line": 4788,
+   "start_line": 5064,
+   "end_line": 5074,
    "type": "FUNCTION",
-   "content_hash": "aadc5dd9dc2a15e4"
+   "content_hash": "b58607f3a95200f9"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::path": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::path",
-   "start_line": 4789,
-   "end_line": 4901,
+   "start_line": 5075,
+   "end_line": 5188,
    "type": "FUNCTION",
-   "content_hash": "263a71b83d2905fe"
+   "content_hash": "16ff8a12236a7190"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::state": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::state",
-   "start_line": 4902,
-   "end_line": 4979,
+   "start_line": 5189,
+   "end_line": 5266,
    "type": "FUNCTION",
-   "content_hash": "d0ea96314308bbfd"
+   "content_hash": "72ea385956af5158"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_mouse_init": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_mouse_init",
-   "start_line": 4980,
-   "end_line": 5033,
+   "start_line": 5267,
+   "end_line": 5320,
    "type": "FUNCTION",
-   "content_hash": "7cd1ddda44a4adb8"
+   "content_hash": "397cd112b2cf5e03"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_history_page": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_history_page",
-   "start_line": 5034,
-   "end_line": 5045,
+   "start_line": 5321,
+   "end_line": 5332,
    "type": "FUNCTION",
-   "content_hash": "e8013e6b2df250d1"
+   "content_hash": "54b8fb213b330a3c"
   },
   "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_init": {
    "file_path": "kernel/vga_fb.c",
    "qualified_name": "kernel/vga_fb.c::vga_fb_init",
-   "start_line": 5046,
-   "end_line": 5073,
+   "start_line": 5333,
+   "end_line": 5360,
    "type": "FUNCTION",
-   "content_hash": "a07359eaed7da692"
+   "content_hash": "1cfe499ce44d9f56"
   },
   "kernel/vga_fx.c|kernel/vga_fx.c::vga_fx_set_enabled": {
    "file_path": "kernel/vga_fx.c",
@@ -99385,6 +99641,30 @@
    "type": "FUNCTION",
    "content_hash": "4fab31dd15181194"
   },
+  "tests/test_jelly.c|tests/test_jelly.c::CHECK": {
+   "file_path": "tests/test_jelly.c",
+   "qualified_name": "tests/test_jelly.c::CHECK",
+   "start_line": 17,
+   "end_line": 23,
+   "type": "FUNCTION",
+   "content_hash": "6497f2f31d456f10"
+  },
+  "tests/test_jelly.c|tests/test_jelly.c::absi": {
+   "file_path": "tests/test_jelly.c",
+   "qualified_name": "tests/test_jelly.c::absi",
+   "start_line": 24,
+   "end_line": 28,
+   "type": "FUNCTION",
+   "content_hash": "af1376e0d6eb0528"
+  },
+  "tests/test_jelly.c|tests/test_jelly.c::main": {
+   "file_path": "tests/test_jelly.c",
+   "qualified_name": "tests/test_jelly.c::main",
+   "start_line": 29,
+   "end_line": 187,
+   "type": "FUNCTION",
+   "content_hash": "65ba49e31470cdbb"
+  },
   "tests/test_ktime.c|tests/test_ktime.c::CHECK": {
    "file_path": "tests/test_ktime.c",
    "qualified_name": "tests/test_ktime.c::CHECK",
@@ -103965,41 +104245,41 @@
    "file_path": "tools/mutate.sh",
    "qualified_name": "tools/mutate.sh::usage",
    "start_line": 51,
-   "end_line": 137,
+   "end_line": 138,
    "type": "FUNCTION",
    "content_hash": "c1d58c89b9aa2c3c"
   },
   "tools/mutate.sh|tools/mutate.sh::restore_sources": {
    "file_path": "tools/mutate.sh",
    "qualified_name": "tools/mutate.sh::restore_sources",
-   "start_line": 138,
-   "end_line": 144,
+   "start_line": 139,
+   "end_line": 145,
    "type": "FUNCTION",
-   "content_hash": "0216c76b20721dcd"
+   "content_hash": "f3dbbb52db624f8a"
   },
   "tools/mutate.sh|tools/mutate.sh::cleanup": {
    "file_path": "tools/mutate.sh",
    "qualified_name": "tools/mutate.sh::cleanup",
-   "start_line": 145,
-   "end_line": 546,
+   "start_line": 146,
+   "end_line": 555,
    "type": "FUNCTION",
-   "content_hash": "0e43f64138dc5311"
+   "content_hash": "211669dfb761a19d"
   },
   "tools/mutate.sh|tools/mutate.sh::record": {
    "file_path": "tools/mutate.sh",
    "qualified_name": "tools/mutate.sh::record",
-   "start_line": 547,
-   "end_line": 552,
+   "start_line": 556,
+   "end_line": 561,
    "type": "FUNCTION",
-   "content_hash": "d619aee8d8ba5d3b"
+   "content_hash": "ad7aa286cc1d4f34"
   },
   "tools/mutate.sh|tools/mutate.sh::find_index": {
    "file_path": "tools/mutate.sh",
    "qualified_name": "tools/mutate.sh::find_index",
-   "start_line": 553,
-   "end_line": 1045,
+   "start_line": 562,
+   "end_line": 1057,
    "type": "FUNCTION",
-   "content_hash": "d4e4dcec0c64783c"
+   "content_hash": "05d6c61dd0eabd5c"
   },
   "tools/probe_compute_vga.py|tools/probe_compute_vga.py::main": {
    "file_path": "tools/probe_compute_vga.py",
@@ -141810,7 +142090,7 @@
   },
   {
    "name": "headers: vga_fb",
-   "description": "headers: vga_fb groups 20 files (c, h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. Docstring: Desktop profile avatar, generated by tools/gen_avatar.py.",
+   "description": "headers: vga_fb groups 22 files (c, h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. Docstring: Desktop profile avatar, generated by tools/gen_avatar.py.",
    "key_entities": [
     {
      "qualified_name": "headers/wm_geom.h::WM_GEOM_H",
@@ -142046,6 +142326,25 @@
       "headers/wm_gfxview.h::wm_gfxview_ease",
       "headers/wm_gfxview.h::wm_gfxview_lerp_rect",
       "headers/wm_gfxview.h::wm_gfxview_rect_same"
+     ]
+    },
+    {
+     "file_path": "headers/wm_jelly.h",
+     "methods": [
+      "headers/wm_jelly.h::WM_JELLY_H",
+      "headers/wm_jelly.h::WM_JELLY_GRID",
+      "headers/wm_jelly.h::WM_JELLY_FP",
+      "headers/wm_jelly.h::WM_JELLY_WEIGHT_ONE",
+      "headers/wm_jelly.h::wm_jelly_config_t",
+      "headers/wm_jelly.h::WM_JELLY_CONFIG_DEFAULT",
+      "headers/wm_jelly.h::wm_jelly_t",
+      "headers/wm_jelly.h::wm_jelly_clamp",
+      "headers/wm_jelly.h::wm_jelly_abs",
+      "headers/wm_jelly.h::wm_jelly_reset",
+      "headers/wm_jelly.h::wm_jelly_neighbours",
+      "headers/wm_jelly.h::wm_jelly_step",
+      "headers/wm_jelly.h::wm_jelly_at_rest",
+      "headers/wm_jelly.h::wm_jelly_sample"
      ]
     },
     {
@@ -142295,6 +142594,22 @@
       "kernel/vga_fb.c::vga_fb_puts_term",
       "kernel/vga_fb.c::vga_fb_text_cursor",
       "kernel/vga_fb.c::vga_fb_hide_text_cursor",
+      "kernel/vga_fb.c::JELLY_BLOCK",
+      "kernel/vga_fb.c::JELLY_SUBSTEPS",
+      "kernel/vga_fb.c::JELLY_ROW_MAX",
+      "kernel/vga_fb.c::jelly_cancel",
+      "kernel/vga_fb.c::jelly_begin",
+      "kernel/vga_fb.c::jelly_rect",
+      "kernel/vga_fb.c::jelly_kick",
+      "kernel/vga_fb.c::jelly_live",
+      "kernel/vga_fb.c::jelly_arm",
+      "kernel/vga_fb.c::jelly_shadow_px",
+      "kernel/vga_fb.c::jelly_put_row",
+      "kernel/vga_fb.c::jelly_warp_band",
+      "kernel/vga_fb.c::jelly_present",
+      "kernel/vga_fb.c::jelly_try_present",
+      "kernel/vga_fb.c::jelly_advance",
+      "kernel/vga_fb.c::jelly_tick",
       "kernel/vga_fb.c::vga_fb_draw_desktop",
       "kernel/vga_fb.c::gfx_view_in_rect",
       "kernel/vga_fb.c::gfx_animate",
@@ -142322,6 +142637,7 @@
       "kernel/vga_fb.c::wallpaper_ensure",
       "kernel/vga_fb.c::wallpaper_usable",
       "kernel/vga_fb.c::wallpaper_draw",
+      "kernel/vga_fb.c::wallpaper_packed",
       "kernel/vga_fb.c::pipe_field",
       "kernel/vga_fb.c::icon_nearest",
       "kernel/vga_fb.c::icon_embedded",
@@ -142390,6 +142706,14 @@
      ]
     },
     {
+     "file_path": "tests/test_jelly.c",
+     "methods": [
+      "tests/test_jelly.c::CHECK",
+      "tests/test_jelly.c::absi",
+      "tests/test_jelly.c::main"
+     ]
+    },
+    {
      "file_path": "tests/test_wm.c",
      "methods": [
       "tests/test_wm.c::CHECK",
@@ -142402,7 +142726,7 @@
    "components": [
     {
      "name": "headers",
-     "description": "headers groups 14 files (h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. Docstring: Desktop profile avatar, generated by tools/gen_avatar.py.",
+     "description": "headers groups 15 files (h) around WM_GEOM_H, wm_geom_config_t, WM_GEOM_CONFIG_DEFAULT, wm_rect_t, wm_rect_valid. Docstring: Desktop profile avatar, generated by tools/gen_avatar.py.",
      "key_entities": [
       {
        "qualified_name": "headers/wm_geom.h::WM_GEOM_H",
@@ -142641,6 +142965,25 @@
        ]
       },
       {
+       "file_path": "headers/wm_jelly.h",
+       "methods": [
+        "headers/wm_jelly.h::WM_JELLY_H",
+        "headers/wm_jelly.h::WM_JELLY_GRID",
+        "headers/wm_jelly.h::WM_JELLY_FP",
+        "headers/wm_jelly.h::WM_JELLY_WEIGHT_ONE",
+        "headers/wm_jelly.h::wm_jelly_config_t",
+        "headers/wm_jelly.h::WM_JELLY_CONFIG_DEFAULT",
+        "headers/wm_jelly.h::wm_jelly_t",
+        "headers/wm_jelly.h::wm_jelly_clamp",
+        "headers/wm_jelly.h::wm_jelly_abs",
+        "headers/wm_jelly.h::wm_jelly_reset",
+        "headers/wm_jelly.h::wm_jelly_neighbours",
+        "headers/wm_jelly.h::wm_jelly_step",
+        "headers/wm_jelly.h::wm_jelly_at_rest",
+        "headers/wm_jelly.h::wm_jelly_sample"
+       ]
+      },
+      {
        "file_path": "headers/wm_layout.h",
        "methods": [
         "headers/wm_layout.h::WM_LAYOUT_H",
@@ -142700,7 +143043,7 @@
      "components": [],
      "components_relations": [],
      "layer": "utility",
-     "symbol_count": 169,
+     "symbol_count": 183,
      "top_symbols": [
       {
        "n": "WM_GEOM_H",
@@ -142715,7 +143058,7 @@
        "k": "macro"
       }
      ],
-     "top_symbols_more": 166
+     "top_symbols_more": 180
     },
     {
      "name": "kernel",
@@ -142965,6 +143308,22 @@
         "kernel/vga_fb.c::vga_fb_puts_term",
         "kernel/vga_fb.c::vga_fb_text_cursor",
         "kernel/vga_fb.c::vga_fb_hide_text_cursor",
+        "kernel/vga_fb.c::JELLY_BLOCK",
+        "kernel/vga_fb.c::JELLY_SUBSTEPS",
+        "kernel/vga_fb.c::JELLY_ROW_MAX",
+        "kernel/vga_fb.c::jelly_cancel",
+        "kernel/vga_fb.c::jelly_begin",
+        "kernel/vga_fb.c::jelly_rect",
+        "kernel/vga_fb.c::jelly_kick",
+        "kernel/vga_fb.c::jelly_live",
+        "kernel/vga_fb.c::jelly_arm",
+        "kernel/vga_fb.c::jelly_shadow_px",
+        "kernel/vga_fb.c::jelly_put_row",
+        "kernel/vga_fb.c::jelly_warp_band",
+        "kernel/vga_fb.c::jelly_present",
+        "kernel/vga_fb.c::jelly_try_present",
+        "kernel/vga_fb.c::jelly_advance",
+        "kernel/vga_fb.c::jelly_tick",
         "kernel/vga_fb.c::vga_fb_draw_desktop",
         "kernel/vga_fb.c::gfx_view_in_rect",
         "kernel/vga_fb.c::gfx_animate",
@@ -142992,6 +143351,7 @@
         "kernel/vga_fb.c::wallpaper_ensure",
         "kernel/vga_fb.c::wallpaper_usable",
         "kernel/vga_fb.c::wallpaper_draw",
+        "kernel/vga_fb.c::wallpaper_packed",
         "kernel/vga_fb.c::pipe_field",
         "kernel/vga_fb.c::icon_nearest",
         "kernel/vga_fb.c::icon_embedded",
@@ -143051,7 +143411,7 @@
      "components": [],
      "components_relations": [],
      "layer": "utility",
-     "symbol_count": 258,
+     "symbol_count": 275,
      "top_symbols": [
       {
        "n": "CURSOR_TIP_X",
@@ -143066,11 +143426,11 @@
        "k": "function"
       }
      ],
-     "top_symbols_more": 255
+     "top_symbols_more": 272
     },
     {
      "name": "tests",
-     "description": "tests groups 3 files (c) around CHECK, main, CHECK, main, CHECK. Docstring: Host test for headers/wm_chrome.h (make test-chrome).",
+     "description": "tests groups 4 files (c) around CHECK, main, CHECK, main, CHECK. Docstring: Host test for headers/wm_chrome.h (make test-chrome).",
      "key_entities": [
       {
        "qualified_name": "tests/test_chrome.c::CHECK",
@@ -143097,16 +143457,28 @@
        "reference_end_line": 120
       },
       {
+       "qualified_name": "tests/test_jelly.c::CHECK",
+       "reference_file": "tests/test_jelly.c",
+       "reference_start_line": 17,
+       "reference_end_line": 23
+      },
+      {
+       "qualified_name": "tests/test_jelly.c::absi",
+       "reference_file": "tests/test_jelly.c",
+       "reference_start_line": 24,
+       "reference_end_line": 28
+      },
+      {
+       "qualified_name": "tests/test_jelly.c::main",
+       "reference_file": "tests/test_jelly.c",
+       "reference_start_line": 29,
+       "reference_end_line": 187
+      },
+      {
        "qualified_name": "tests/test_wm.c::CHECK",
        "reference_file": "tests/test_wm.c",
        "reference_start_line": 22,
        "reference_end_line": 28
-      },
-      {
-       "qualified_name": "tests/test_wm.c::main",
-       "reference_file": "tests/test_wm.c",
-       "reference_start_line": 29,
-       "reference_end_line": 464
       }
      ],
      "source_cluster_ids": [],
@@ -143126,6 +143498,14 @@
        ]
       },
       {
+       "file_path": "tests/test_jelly.c",
+       "methods": [
+        "tests/test_jelly.c::CHECK",
+        "tests/test_jelly.c::absi",
+        "tests/test_jelly.c::main"
+       ]
+      },
+      {
        "file_path": "tests/test_wm.c",
        "methods": [
         "tests/test_wm.c::CHECK",
@@ -143138,7 +143518,7 @@
      "components": [],
      "components_relations": [],
      "layer": "testing",
-     "symbol_count": 6,
+     "symbol_count": 9,
      "top_symbols": [
       {
        "n": "CHECK",
@@ -143161,16 +143541,16 @@
      "relation": "calls into",
      "src_name": "kernel",
      "dst_name": "headers",
-     "evidence": "16 imports, 77 calls across the boundary",
-     "import_count": 16,
-     "call_count": 77,
+     "evidence": "17 imports, 82 calls across the boundary",
+     "import_count": 17,
+     "call_count": 82,
      "key_edges": [
       {
        "source": "kernel/vga_fb.c|kernel/vga_fb.c::first",
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_erase",
        "call_sites": [
         {
-         "line": 483,
+         "line": 494,
          "column": 4
         }
        ],
@@ -143181,7 +143561,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 511,
+         "line": 522,
          "column": 12
         }
        ],
@@ -143192,7 +143572,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 525,
+         "line": 536,
          "column": 4
         }
        ],
@@ -143203,7 +143583,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 698,
+         "line": 709,
          "column": 8
         }
        ],
@@ -143214,7 +143594,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_erase",
        "call_sites": [
         {
-         "line": 722,
+         "line": 733,
          "column": 8
         }
        ],
@@ -143225,7 +143605,7 @@
        "target": "headers/wm_gfxview.h|headers/wm_gfxview.h::wm_gfxview_map_point",
        "call_sites": [
         {
-         "line": 814,
+         "line": 825,
          "column": 4
         }
        ],
@@ -143236,7 +143616,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_erase",
        "call_sites": [
         {
-         "line": 822,
+         "line": 833,
          "column": 4
         }
        ],
@@ -143247,7 +143627,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_place",
        "call_sites": [
         {
-         "line": 849,
+         "line": 860,
          "column": 4
         }
        ],
@@ -143263,7 +143643,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_erase",
        "call_sites": [
         {
-         "line": 483,
+         "line": 494,
          "column": 4
         }
        ],
@@ -143274,7 +143654,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 511,
+         "line": 522,
          "column": 12
         }
        ],
@@ -143285,7 +143665,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 525,
+         "line": 536,
          "column": 4
         }
        ],
@@ -143296,7 +143676,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 698,
+         "line": 709,
          "column": 8
         }
        ],
@@ -143307,7 +143687,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_erase",
        "call_sites": [
         {
-         "line": 722,
+         "line": 733,
          "column": 8
         }
        ],
@@ -143318,7 +143698,7 @@
        "target": "headers/wm_gfxview.h|headers/wm_gfxview.h::wm_gfxview_map_point",
        "call_sites": [
         {
-         "line": 814,
+         "line": 825,
          "column": 4
         }
        ],
@@ -143329,7 +143709,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_erase",
        "call_sites": [
         {
-         "line": 822,
+         "line": 833,
          "column": 4
         }
        ],
@@ -143340,7 +143720,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_place",
        "call_sites": [
         {
-         "line": 849,
+         "line": 860,
          "column": 4
         }
        ],
@@ -143351,7 +143731,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 1025,
+         "line": 1036,
          "column": 4
         }
        ],
@@ -143362,7 +143742,7 @@
        "target": "headers/wm_focus.h|headers/wm_focus.h::wm_focus_next",
        "call_sites": [
         {
-         "line": 1186,
+         "line": 1197,
          "column": 9
         }
        ],
@@ -143373,7 +143753,7 @@
        "target": "headers/wm_focus.h|headers/wm_focus.h::wm_focus_selectable",
        "call_sites": [
         {
-         "line": 1188,
+         "line": 1199,
          "column": 9
         }
        ],
@@ -143384,7 +143764,7 @@
        "target": "headers/wm_focus.h|headers/wm_focus.h::wm_focus_set",
        "call_sites": [
         {
-         "line": 1243,
+         "line": 1254,
          "column": 8
         }
        ],
@@ -143395,7 +143775,7 @@
        "target": "headers/wm_layout.h|headers/wm_layout.h::wm_layout_mode_valid",
        "call_sites": [
         {
-         "line": 1377,
+         "line": 1388,
          "column": 9
         }
        ],
@@ -143406,7 +143786,7 @@
        "target": "headers/wm_layout.h|headers/wm_layout.h::wm_layout_mode_name",
        "call_sites": [
         {
-         "line": 1410,
+         "line": 1421,
          "column": 20
         }
        ],
@@ -143417,7 +143797,7 @@
        "target": "headers/wm_layout.h|headers/wm_layout.h::wm_layout_compute",
        "call_sites": [
         {
-         "line": 1463,
+         "line": 1474,
          "column": 8
         }
        ],
@@ -143428,7 +143808,7 @@
        "target": "headers/wm_layout.h|headers/wm_layout.h::wm_layout_same",
        "call_sites": [
         {
-         "line": 1490,
+         "line": 1501,
          "column": 26
         }
        ],
@@ -143439,7 +143819,7 @@
        "target": "headers/wm_gfxview.h|headers/wm_gfxview.h::wm_gfxview_mode_name",
        "call_sites": [
         {
-         "line": 1587,
+         "line": 1598,
          "column": 52
         }
        ],
@@ -143450,7 +143830,7 @@
        "target": "headers/wm_window.h|headers/wm_window.h::wm_window_contains",
        "call_sites": [
         {
-         "line": 1677,
+         "line": 1688,
          "column": 11
         }
        ],
@@ -143461,7 +143841,7 @@
        "target": "headers/wm_window.h|headers/wm_window.h::wm_window_contains",
        "call_sites": [
         {
-         "line": 1695,
+         "line": 1706,
          "column": 11
         }
        ],
@@ -143472,7 +143852,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_shadow_alpha",
        "call_sites": [
         {
-         "line": 2209,
+         "line": 2220,
          "column": 16
         }
        ],
@@ -143483,7 +143863,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_blend",
        "call_sites": [
         {
-         "line": 2211,
+         "line": 2222,
          "column": 40
         }
        ],
@@ -143494,7 +143874,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_gradient",
        "call_sites": [
         {
-         "line": 2226,
+         "line": 2237,
          "column": 33
         }
        ],
@@ -143505,7 +143885,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_corner_coverage",
        "call_sites": [
         {
-         "line": 2304,
+         "line": 2315,
          "column": 22
         }
        ],
@@ -143516,7 +143896,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_blend",
        "call_sites": [
         {
-         "line": 2308,
+         "line": 2319,
          "column": 16
         }
        ],
@@ -143527,7 +143907,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_blend",
        "call_sites": [
         {
-         "line": 2368,
+         "line": 2379,
          "column": 33
         }
        ],
@@ -143538,7 +143918,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_corner_coverage",
        "call_sites": [
         {
-         "line": 2411,
+         "line": 2422,
          "column": 11
         }
        ],
@@ -143549,7 +143929,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_blend",
        "call_sites": [
         {
-         "line": 2441,
+         "line": 2452,
          "column": 21
         }
        ],
@@ -143560,7 +143940,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_blend",
        "call_sites": [
         {
-         "line": 2443,
+         "line": 2454,
          "column": 21
         }
        ],
@@ -143571,7 +143951,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_isqrt",
        "call_sites": [
         {
-         "line": 2458,
+         "line": 2469,
          "column": 29
         }
        ],
@@ -143582,7 +143962,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_blend",
        "call_sites": [
         {
-         "line": 2464,
+         "line": 2475,
          "column": 36
         }
        ],
@@ -143593,7 +143973,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_shift",
        "call_sites": [
         {
-         "line": 2481,
+         "line": 2492,
          "column": 48
         }
        ],
@@ -143604,7 +143984,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_blend",
        "call_sites": [
         {
-         "line": 2499,
+         "line": 2510,
          "column": 40
         }
        ],
@@ -143615,7 +143995,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_disc_coverage",
        "call_sites": [
         {
-         "line": 2526,
+         "line": 2537,
          "column": 22
         }
        ],
@@ -143626,7 +144006,7 @@
        "target": "headers/wm_chrome.h|headers/wm_chrome.h::wm_chrome_blend",
        "call_sites": [
         {
-         "line": 2529,
+         "line": 2540,
          "column": 20
         }
        ],
@@ -143637,7 +144017,7 @@
        "target": "headers/wm_gfxview.h|headers/wm_gfxview.h::wm_gfxview_rect_same",
        "call_sites": [
         {
-         "line": 2802,
+         "line": 2813,
          "column": 34
         }
        ],
@@ -143648,7 +144028,7 @@
        "target": "headers/wm_gfxview.h|headers/wm_gfxview.h::wm_gfxview_rect_same",
        "call_sites": [
         {
-         "line": 2803,
+         "line": 2814,
          "column": 15
         }
        ],
@@ -143659,7 +144039,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_note_repaint",
        "call_sites": [
         {
-         "line": 3072,
+         "line": 3083,
          "column": 4
         }
        ],
@@ -143670,7 +144050,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_note_repaint",
        "call_sites": [
         {
-         "line": 3168,
+         "line": 3179,
          "column": 8
         }
        ],
@@ -143681,7 +144061,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_note_repaint",
        "call_sites": [
         {
-         "line": 3174,
+         "line": 3185,
          "column": 8
         }
        ],
@@ -143692,7 +144072,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 3445,
+         "line": 3456,
          "column": 4
         }
        ],
@@ -143703,7 +144083,7 @@
        "target": "headers/wm_geom.h|headers/wm_geom.h::wm_clamp_point",
        "call_sites": [
         {
-         "line": 3451,
+         "line": 3462,
          "column": 4
         }
        ],
@@ -143714,8 +144094,63 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_place",
        "call_sites": [
         {
-         "line": 3452,
+         "line": 3463,
          "column": 4
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "kernel/vga_fb.c|kernel/vga_fb.c::jelly_cancel",
+       "target": "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_reset",
+       "call_sites": [
+        {
+         "line": 3505,
+         "column": 4
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "kernel/vga_fb.c|kernel/vga_fb.c::jelly_begin",
+       "target": "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_reset",
+       "call_sites": [
+        {
+         "line": 3515,
+         "column": 8
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "kernel/vga_fb.c|kernel/vga_fb.c::jelly_live",
+       "target": "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_at_rest",
+       "call_sites": [
+        {
+         "line": 3556,
+         "column": 40
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "kernel/vga_fb.c|kernel/vga_fb.c::jelly_warp_band",
+       "target": "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_sample",
+       "call_sites": [
+        {
+         "line": 3632,
+         "column": 12
+        }
+       ],
+       "description": ""
+      },
+      {
+       "source": "kernel/vga_fb.c|kernel/vga_fb.c::jelly_advance",
+       "target": "headers/wm_jelly.h|headers/wm_jelly.h::wm_jelly_step",
+       "call_sites": [
+        {
+         "line": 3695,
+         "column": 8
         }
        ],
        "description": ""
@@ -143725,7 +144160,7 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_erase",
        "call_sites": [
         {
-         "line": 3475,
+         "line": 3738,
          "column": 8
         }
        ],
@@ -143736,7 +144171,7 @@
        "target": "headers/wm_render.h|headers/wm_render.h::wm_build_render_plan",
        "call_sites": [
         {
-         "line": 3497,
+         "line": 3760,
          "column": 12
         }
        ],
@@ -143747,63 +144182,8 @@
        "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
        "call_sites": [
         {
-         "line": 3522,
+         "line": 3788,
          "column": 8
-        }
-       ],
-       "description": ""
-      },
-      {
-       "source": "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_draw_desktop",
-       "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
-       "call_sites": [
-        {
-         "line": 3532,
-         "column": 8
-        }
-       ],
-       "description": ""
-      },
-      {
-       "source": "kernel/vga_fb.c|kernel/vga_fb.c::vga_fb_draw_desktop",
-       "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_invalidate",
-       "call_sites": [
-        {
-         "line": 3538,
-         "column": 8
-        }
-       ],
-       "description": ""
-      },
-      {
-       "source": "kernel/vga_fb.c|kernel/vga_fb.c::gfx_view_in_rect",
-       "target": "headers/wm_gfxview.h|headers/wm_gfxview.h::wm_gfxview_place_content",
-       "call_sites": [
-        {
-         "line": 3577,
-         "column": 9
-        }
-       ],
-       "description": ""
-      },
-      {
-       "source": "kernel/vga_fb.c|kernel/vga_fb.c::gfx_animate",
-       "target": "headers/wm_gfxview.h|headers/wm_gfxview.h::wm_gfxview_rect_same",
-       "call_sites": [
-        {
-         "line": 3595,
-         "column": 8
-        }
-       ],
-       "description": ""
-      },
-      {
-       "source": "kernel/vga_fb.c|kernel/vga_fb.c::gfx_animate",
-       "target": "headers/kernel/vga_cursor.h|headers/kernel/vga_cursor.h::cursor_erase",
-       "call_sites": [
-        {
-         "line": 3611,
-         "column": 4
         }
        ],
        "description": ""
@@ -143814,9 +144194,9 @@
      "relation": "calls into",
      "src_name": "tests",
      "dst_name": "headers",
-     "evidence": "10 imports, 222 calls across the boundary",
-     "import_count": 10,
-     "call_count": 222,
+     "evidence": "11 imports, 270 calls across the boundary",
+     "import_count": 11,
+     "call_count": 270,
      "key_edges": [
       {
        "source": "tests/test_chrome.c|tests/test_chrome.c::main",
@@ -144465,7 +144845,7 @@
     }
    ],
    "layer": "utility",
-   "symbol_count": 433,
+   "symbol_count": 467,
    "top_symbols": [
     {
      "n": "WM_GEOM_H",
@@ -144480,7 +144860,7 @@
      "k": "macro"
     }
    ],
-   "top_symbols_more": 417,
+   "top_symbols_more": 449,
    "hub": false
   },
   {
@@ -151697,9 +152077,9 @@
    "relation": "calls into",
    "src_name": "headers: vga_fb",
    "dst_name": "headers: kernel",
-   "evidence": "8 imports, 64 calls across the boundary",
+   "evidence": "8 imports, 67 calls across the boundary",
    "import_count": 8,
-   "call_count": 64,
+   "call_count": 67,
    "key_edges": [
     {
      "source": "kernel/vga_cursor.c|kernel/vga_cursor.c::cursor_save_bg",
@@ -151750,7 +152130,7 @@
      "target": "headers/net.h|headers/net.h::ring",
      "call_sites": [
       {
-       "line": 340,
+       "line": 351,
        "column": 36
       }
      ],
@@ -151761,7 +152141,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_enabled",
      "call_sites": [
       {
-       "line": 480,
+       "line": 491,
        "column": 9
       }
      ],
@@ -151772,7 +152152,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 484,
+       "line": 495,
        "column": 11
       }
      ],
@@ -151783,7 +152163,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 506,
+       "line": 517,
        "column": 15
       }
      ],
@@ -151843,7 +152223,7 @@
      "target": "headers/net.h|headers/net.h::ring",
      "call_sites": [
       {
-       "line": 340,
+       "line": 351,
        "column": 36
       }
      ],
@@ -151854,7 +152234,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_enabled",
      "call_sites": [
       {
-       "line": 480,
+       "line": 491,
        "column": 9
       }
      ],
@@ -151865,7 +152245,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 484,
+       "line": 495,
        "column": 11
       }
      ],
@@ -151876,7 +152256,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 506,
+       "line": 517,
        "column": 15
       }
      ],
@@ -151887,7 +152267,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_free",
      "call_sites": [
       {
-       "line": 510,
+       "line": 521,
        "column": 12
       }
      ],
@@ -151898,7 +152278,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 515,
+       "line": 526,
        "column": 15
       }
      ],
@@ -151909,7 +152289,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_free",
      "call_sites": [
       {
-       "line": 517,
+       "line": 528,
        "column": 12
       }
      ],
@@ -151920,7 +152300,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_restore_rect",
      "call_sites": [
       {
-       "line": 520,
+       "line": 531,
        "column": 8
       }
      ],
@@ -151931,7 +152311,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_melt_rect",
      "call_sites": [
       {
-       "line": 522,
+       "line": 533,
        "column": 4
       }
      ],
@@ -151942,7 +152322,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_free",
      "call_sites": [
       {
-       "line": 523,
+       "line": 534,
        "column": 4
       }
      ],
@@ -151953,7 +152333,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_free",
      "call_sites": [
       {
-       "line": 524,
+       "line": 535,
        "column": 4
       }
      ],
@@ -151964,7 +152344,7 @@
      "target": "headers/wm_notify.h|headers/wm_notify.h::wm_notify_emit",
      "call_sites": [
       {
-       "line": 1037,
+       "line": 1048,
        "column": 4
       }
      ],
@@ -151975,7 +152355,7 @@
      "target": "headers/wm_notify.h|headers/wm_notify.h::wm_notify_last",
      "call_sites": [
       {
-       "line": 1043,
+       "line": 1054,
        "column": 11
       }
      ],
@@ -151986,7 +152366,7 @@
      "target": "headers/wm_notify.h|headers/wm_notify.h::wm_notify_reset",
      "call_sites": [
       {
-       "line": 1140,
+       "line": 1151,
        "column": 8
       }
      ],
@@ -151997,7 +152377,7 @@
      "target": "headers/wm_notify.h|headers/wm_notify.h::wm_notify_subscribe",
      "call_sites": [
       {
-       "line": 1141,
+       "line": 1152,
        "column": 8
       }
      ],
@@ -152008,7 +152388,7 @@
      "target": "headers/drivers/kbd.h|headers/drivers/kbd.h::kbd_raw_flush",
      "call_sites": [
       {
-       "line": 1194,
+       "line": 1205,
        "column": 8
       }
      ],
@@ -152019,7 +152399,7 @@
      "target": "headers/drivers/kbd.h|headers/drivers/kbd.h::kbd_raw_flush",
      "call_sites": [
       {
-       "line": 1228,
+       "line": 1239,
        "column": 12
       }
      ],
@@ -152030,7 +152410,7 @@
      "target": "headers/drivers/kbd.h|headers/drivers/kbd.h::kbd_raw_flush",
      "call_sites": [
       {
-       "line": 1254,
+       "line": 1265,
        "column": 12
       }
      ],
@@ -152041,7 +152421,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_term_split",
      "call_sites": [
       {
-       "line": 1292,
+       "line": 1303,
        "column": 4
       }
      ],
@@ -152052,7 +152432,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_tile_all",
      "call_sites": [
       {
-       "line": 1331,
+       "line": 1342,
        "column": 4
       }
      ],
@@ -152063,7 +152443,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_term_close_focused",
      "call_sites": [
       {
-       "line": 1349,
+       "line": 1360,
        "column": 4
       }
      ],
@@ -152074,7 +152454,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_tile_all",
      "call_sites": [
       {
-       "line": 1398,
+       "line": 1409,
        "column": 4
       }
      ],
@@ -152085,7 +152465,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_tile_all",
      "call_sites": [
       {
-       "line": 1422,
+       "line": 1433,
        "column": 5
       }
      ],
@@ -152096,7 +152476,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_gfx_set_fullscreen",
      "call_sites": [
       {
-       "line": 2592,
+       "line": 2603,
        "column": 12
       }
      ],
@@ -152107,7 +152487,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_enabled",
      "call_sites": [
       {
-       "line": 2809,
+       "line": 2820,
        "column": 28
       }
      ],
@@ -152118,7 +152498,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 2813,
+       "line": 2824,
        "column": 17
       }
      ],
@@ -152129,7 +152509,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 2818,
+       "line": 2829,
        "column": 31
       }
      ],
@@ -152140,7 +152520,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_restore_rect",
      "call_sites": [
       {
-       "line": 2820,
+       "line": 2831,
        "column": 12
       }
      ],
@@ -152151,7 +152531,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_melt_rect",
      "call_sites": [
       {
-       "line": 2821,
+       "line": 2832,
        "column": 12
       }
      ],
@@ -152162,7 +152542,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_free",
      "call_sites": [
       {
-       "line": 2822,
+       "line": 2833,
        "column": 12
       }
      ],
@@ -152173,7 +152553,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_free",
      "call_sites": [
       {
-       "line": 2824,
+       "line": 2835,
        "column": 8
       }
      ],
@@ -152184,7 +152564,7 @@
      "target": "headers/drivers/kbd.h|headers/drivers/kbd.h::kbd_get_layout",
      "call_sites": [
       {
-       "line": 3041,
+       "line": 3052,
        "column": 12
       }
      ],
@@ -152195,7 +152575,7 @@
      "target": "headers/drivers/kbd.h|headers/drivers/kbd.h::kbd_toggle_layout",
      "call_sites": [
       {
-       "line": 3166,
+       "line": 3177,
        "column": 8
       }
      ],
@@ -152206,7 +152586,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::term_clear",
      "call_sites": [
       {
-       "line": 3298,
+       "line": 3309,
        "column": 5
       }
      ],
@@ -152217,7 +152597,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_putc_term",
      "call_sites": [
       {
-       "line": 3360,
+       "line": 3371,
        "column": 5
       }
      ],
@@ -152228,8 +152608,19 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_putc_term",
      "call_sites": [
       {
-       "line": 3424,
+       "line": 3435,
        "column": 15
+      }
+     ],
+     "description": ""
+    },
+    {
+     "source": "kernel/vga_fb.c|kernel/vga_fb.c::jelly_begin",
+     "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_enabled",
+     "call_sites": [
+      {
+       "line": 3512,
+       "column": 24
       }
      ],
      "description": ""
@@ -152239,7 +152630,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_enabled",
      "call_sites": [
       {
-       "line": 3472,
+       "line": 3735,
        "column": 36
       }
      ],
@@ -152250,7 +152641,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 3476,
+       "line": 3739,
        "column": 17
       }
      ],
@@ -152261,7 +152652,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_snap_rect",
      "call_sites": [
       {
-       "line": 3521,
+       "line": 3787,
        "column": 31
       }
      ],
@@ -152272,7 +152663,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_restore_rect",
      "call_sites": [
       {
-       "line": 3524,
+       "line": 3790,
        "column": 12
       }
      ],
@@ -152283,7 +152674,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_melt_rect",
      "call_sites": [
       {
-       "line": 3526,
+       "line": 3792,
        "column": 12
       }
      ],
@@ -152294,7 +152685,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_free",
      "call_sites": [
       {
-       "line": 3527,
+       "line": 3793,
        "column": 12
       }
      ],
@@ -152305,7 +152696,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_free",
      "call_sites": [
       {
-       "line": 3531,
+       "line": 3797,
        "column": 8
       }
      ],
@@ -152316,7 +152707,7 @@
      "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fx_enabled",
      "call_sites": [
       {
-       "line": 3593,
+       "line": 3859,
        "column": 25
       }
      ],
@@ -152327,18 +152718,7 @@
      "target": "headers/drivers/kbd.h|headers/drivers/kbd.h::kbd_raw_flush",
      "call_sites": [
       {
-       "line": 3666,
-       "column": 4
-      }
-     ],
-     "description": ""
-    },
-    {
-     "source": "kernel/vga_fb.c|kernel/vga_fb.c::from",
-     "target": "headers/vga_fb.h|headers/vga_fb.h::vga_fb_gfx_set_fullscreen",
-     "call_sites": [
-      {
-       "line": 3684,
+       "line": 3932,
        "column": 4
       }
      ],

@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `C3TEXT` | macro | `progs/doomgeneric/d_englsh.h:473` | `#define C3TEXT` |
+| `C4TEXT` | macro | `progs/doomgeneric/d_englsh.h:487` | `#define C4TEXT` |
+| `C5TEXT` | macro | `progs/doomgeneric/d_englsh.h:508` | `#define C5TEXT` |
+| `C6TEXT` | macro | `progs/doomgeneric/d_englsh.h:518` | `#define C6TEXT` |
+| `CC_ARACH` | macro | `progs/doomgeneric/d_englsh.h:683` | `#define CC_ARACH` |
+| `CC_ARCH` | macro | `progs/doomgeneric/d_englsh.h:687` | `#define CC_ARCH` |
+| `CC_BARON` | macro | `progs/doomgeneric/d_englsh.h:682` | `#define CC_BARON` |
+| `CC_CACO` | macro | `progs/doomgeneric/d_englsh.h:680` | `#define CC_CACO` |
+| `CC_CYBER` | macro | `progs/doomgeneric/d_englsh.h:689` | `#define CC_CYBER` |
+| `CC_DEMON` | macro | `progs/doomgeneric/d_englsh.h:678` | `#define CC_DEMON` |
+| `CC_HEAVY` | macro | `progs/doomgeneric/d_englsh.h:676` | `#define CC_HEAVY` |
+| `CC_HELL` | macro | `progs/doomgeneric/d_englsh.h:681` | `#define CC_HELL` |
+| `CC_HERO` | macro | `progs/doomgeneric/d_englsh.h:690` | `#define CC_HERO` |
+| `CC_IMP` | macro | `progs/doomgeneric/d_englsh.h:677` | `#define CC_IMP` |
+| `CC_LOST` | macro | `progs/doomgeneric/d_englsh.h:679` | `#define CC_LOST` |
+| `CC_MANCU` | macro | `progs/doomgeneric/d_englsh.h:686` | `#define CC_MANCU` |
+| `CC_PAIN` | macro | `progs/doomgeneric/d_englsh.h:684` | `#define CC_PAIN` |
+| `CC_REVEN` | macro | `progs/doomgeneric/d_englsh.h:685` | `#define CC_REVEN` |
+| `CC_SHOTGUN` | macro | `progs/doomgeneric/d_englsh.h:675` | `#define CC_SHOTGUN` |
+| `CC_SPIDER` | macro | `progs/doomgeneric/d_englsh.h:688` | `#define CC_SPIDER` |
+| `CC_ZOMBIE` | macro | `progs/doomgeneric/d_englsh.h:674` | `#define CC_ZOMBIE` |
+| `DETAILHI` | macro | `progs/doomgeneric/d_englsh.h:65` | `#define DETAILHI` |
+| `DETAILLO` | macro | `progs/doomgeneric/d_englsh.h:66` | `#define DETAILLO` |
+| `DOSY` | macro | `progs/doomgeneric/d_englsh.h:63` | `#define DOSY` |
+| `D_CDROM` | macro | `progs/doomgeneric/d_englsh.h:31` | `#define D_CDROM` |
+| `D_DEVSTR` | macro | `progs/doomgeneric/d_englsh.h:30` | `#define D_DEVSTR` |
+| `E1TEXT` | macro | `progs/doomgeneric/d_englsh.h:356` | `#define E1TEXT` |
+| `E2TEXT` | macro | `progs/doomgeneric/d_englsh.h:374` | `#define E2TEXT` |
+| `E3TEXT` | macro | `progs/doomgeneric/d_englsh.h:394` | `#define E3TEXT` |
+| `E4TEXT` | macro | `progs/doomgeneric/d_englsh.h:414` | `#define E4TEXT` |
+| `EMPTYSTRING` | macro | `progs/doomgeneric/d_englsh.h:72` | `#define EMPTYSTRING` |
 | `ENDGAME` | macro | `progs/doomgeneric/d_englsh.h:61` | `#define ENDGAME` |
 | `GAMMALVL0` | macro | `progs/doomgeneric/d_englsh.h:67` | `#define GAMMALVL0` |
 | `GAMMALVL1` | macro | `progs/doomgeneric/d_englsh.h:68` | `#define GAMMALVL1` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `DEH_fprintf` | function | `progs/doomgeneric/deh_str.h:31` | `void DEH_fprintf(FILE *fstream, char *fmt, ...);` |
 | `DEH_fprintf` | macro | `progs/doomgeneric/deh_str.h:40` | `#define DEH_fprintf` |
 | `DEH_printf` | function | `progs/doomgeneric/deh_str.h:30` | `void DEH_printf(char *fmt, ...);` |
-| `DEH_printf` | macro | `progs/doomgeneric/deh_str.h:39` | `#define DEH_printf` |
-| `DEH_snprintf` | function | `progs/doomgeneric/deh_str.h:32` | `void DEH_snprintf(char *buffer, size_t len, char *fmt, ...);` |
-| `DEH_snprintf` | macro | `progs/doomgeneric/deh_str.h:41` | `#define DEH_snprintf` |
-| `D_DoomMain` | function | `progs/doomgeneric/doom.h:28` | `void D_DoomMain (void);` |
-| `SRC_CHOCDOOM_DOOM_H_` | macro | `progs/doomgeneric/doom.h:10` | `#define SRC_CHOCDOOM_DOOM_H_` |
-| `ML_BLOCKING` | macro | `progs/doomgeneric/doomdata.h:98` | `#define ML_BLOCKING` |
-| `ML_BLOCKMONSTERS` | macro | `progs/doomgeneric/doomdata.h:101` | `#define ML_BLOCKMONSTERS` |
-| `ML_DONTDRAW` | macro | `progs/doomgeneric/doomdata.h:129` | `#define ML_DONTDRAW` |
-| `ML_DONTPEGBOTTOM` | macro | `progs/doomgeneric/doomdata.h:120` | `#define ML_DONTPEGBOTTOM` |
-| `ML_DONTPEGTOP` | macro | `progs/doomgeneric/doomdata.h:117` | `#define ML_DONTPEGTOP` |
-| `ML_MAPPED` | macro | `progs/doomgeneric/doomdata.h:132` | `#define ML_MAPPED` |
-| `ML_SECRET` | macro | `progs/doomgeneric/doomdata.h:123` | `#define ML_SECRET` |
-| `ML_SOUNDBLOCK` | macro | `progs/doomgeneric/doomdata.h:126` | `#define ML_SOUNDBLOCK` |
-| `ML_TWOSIDED` | macro | `progs/doomgeneric/doomdata.h:105` | `#define ML_TWOSIDED` |
-| `NF_SUBSECTOR` | macro | `progs/doomgeneric/doomdata.h:175` | `#define	NF_SUBSECTOR` |
-| `__DOOMDATA__` | macro | `progs/doomgeneric/doomdata.h:22` | `#define __DOOMDATA__` |
-| `DOOM_191_VERSION` | macro | `progs/doomgeneric/doomdef.h:37` | `#define DOOM_191_VERSION` |
-| `DOOM_VERSION` | macro | `progs/doomgeneric/doomdef.h:34` | `#define DOOM_VERSION` |
-| `MAXPLAYERS` | macro | `progs/doomgeneric/doomdef.h:45` | `#define MAXPLAYERS` |
-| `MTF_AMBUSH` | macro | `progs/doomgeneric/doomdef.h:82` | `#define	MTF_AMBUSH` |
-| `MTF_EASY` | macro | `progs/doomgeneric/doomdef.h:77` | `#define	MTF_EASY` |
-| `MTF_HARD` | macro | `progs/doomgeneric/doomdef.h:79` | `#define	MTF_HARD` |
-| `MTF_NORMAL` | macro | `progs/doomgeneric/doomdef.h:78` | `#define	MTF_NORMAL` |
-| `RANGECHECK` | macro | `progs/doomgeneric/doomdef.h:42` | `#define RANGECHECK` |
-| `__DOOMDEF__` | macro | `progs/doomgeneric/doomdef.h:21` | `#define __DOOMDEF__` |
-| `DOOM_FEATURES_H` | macro | `progs/doomgeneric/doomfeatures.h:20` | `#define DOOM_FEATURES_H` |
-| `FEATURE_SOUND` | macro | `progs/doomgeneric/doomfeatures.h:36` | `#define FEATURE_SOUND` |
-| `dg_Create` | function | `progs/doomgeneric/doomgeneric.c:6` | `void dg_Create()` |
-| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric.h:15` | `void DG_DrawFrame();` |
-| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric.h:18` | `int DG_GetKey(int* pressed, unsigned char* key);` |
-| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric.h:17` | `uint32_t DG_GetTicksMs();` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

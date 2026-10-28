@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `status` | method | `mcp/minios_mcp.py:233` | `def status(self)` |
+| `subprocess_launch` | function | `mcp/minios_mcp.py:580` | `def subprocess_launch(cfg, slave_fd)` |
+| `terminate` | method | `mcp/minios_mcp.py:557` | `def terminate(self)` |
+| `text_from` | method | `mcp/minios_mcp.py:168` | `def text_from(self, pos, end)` |
+| `validate_content` | function | `mcp/minios_mcp.py:118` | `def validate_content(text)` |
+| `validate_path` | function | `mcp/minios_mcp.py:102` | `def validate_path(name)` |
+| `wait_for` | method | `mcp/minios_mcp.py:179` | `def wait_for(self, marker, start, timeout_ms)` |
+| `wait_for_any` | method | `mcp/minios_mcp.py:192` | `def wait_for_any(self, markers, start, timeout_ms)` |
+| `write` | method | `mcp/minios_mcp.py:500` | `def write(self, path, content)` |
+| `run_one` | function | `mcp/mutate_mcp.sh:116` | `` |
+| `FakeOS` | class | `mcp/test_minios_mcp.py:642` | `class FakeOS` |
+| `MCPServer` | class | `mcp/test_minios_mcp.py:58` | `class MCPServer` |
+| `TestAddonBDD` | class | `mcp/test_minios_mcp.py:844` | `class TestAddonBDD(_ConsoleBDDBase)` |
+| `TestAddonHelpers` | class | `mcp/test_minios_mcp.py:602` | `class TestAddonHelpers(TestCase)` |
+| `TestAddonInstall` | class | `mcp/test_minios_mcp.py:708` | `class TestAddonInstall(TestCase)` |
+| `TestAddonYaml` | class | `mcp/test_minios_mcp.py:480` | `class TestAddonYaml(TestCase)` |
+| `TestLogBuffer` | class | `mcp/test_minios_mcp.py:254` | `class TestLogBuffer(TestCase)` |
+| `TestMiniOSBDD` | class | `mcp/test_minios_mcp.py:342` | `class TestMiniOSBDD(_ConsoleBDDBase)` |
+| `TestProtocol` | class | `mcp/test_minios_mcp.py:141` | `class TestProtocol(TestCase)` |
+| `TestValidation` | class | `mcp/test_minios_mcp.py:205` | `class TestValidation(TestCase)` |
+| `_ConsoleBDDBase` | class | `mcp/test_minios_mcp.py:306` | `class _ConsoleBDDBase(TestCase)` |
+| `__init__` | method | `mcp/test_minios_mcp.py:61` | `def __init__(self, env_extra)` |
+| `__init__` | method | `mcp/test_minios_mcp.py:645` | `def __init__(self, exit_codes)` |
+| `_cleanup_parts` | method | `mcp/test_minios_mcp.py:702` | `def _cleanup_parts(self, parts)` |
+| `_read_response` | method | `mcp/test_minios_mcp.py:96` | `def _read_response(self)` |
+| `_roundtrip` | method | `mcp/test_minios_mcp.py:102` | `def _roundtrip(self, msg)` |
+| `_toolerror` | class | `mcp/test_minios_mcp.py:697` | `class _toolerror(Exception)` |
+| `boot` | method | `mcp/test_minios_mcp.py:655` | `def boot(self, timeout_ms)` |
+| `booted` | method | `mcp/test_minios_mcp.py:652` | `def booted(self)` |
+| `broken_cat` | function | `mcp/test_minios_mcp.py:786` | `def broken_cat(path, missing_ok)` |
+| `cat_body` | method | `mcp/test_minios_mcp.py:690` | `def cat_body(self, path, missing_ok)` |
 | `close` | method | `mcp/test_minios_mcp.py:120` | `def close(self)` |
 | `guard_server` | method | `mcp/test_minios_mcp.py:315` | `def guard_server(cls)` |
 | `guarded` | function | `mcp/test_minios_mcp.py:318` | `def guarded(name, params)` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `f_cls` | function | `progs/asm/freedom.s:160` | `` |
 | `f_clslen` | function | `progs/asm/freedom.s:164` | `` |
 | `f_cmdash` | function | `progs/asm/freedom.s:84` | `` |
-| `f_comment` | function | `progs/asm/freedom.s:80` | `` |
-| `f_crem` | function | `progs/asm/freedom.s:244` | `` |
-| `f_csize` | function | `progs/asm/freedom.s:240` | `` |
-| `f_css` | function | `progs/asm/freedom.s:216` | `` |
-| `f_csslen` | function | `progs/asm/freedom.s:220` | `` |
-| `f_cstage` | function | `progs/asm/freedom.s:236` | `` |
-| `f_depth` | function | `progs/asm/freedom.s:204` | `` |
-| `f_dom` | function | `progs/asm/freedom.s:208` | `` |
-| `f_domlen` | function | `progs/asm/freedom.s:212` | `` |
-| `f_dump_css` | function | `progs/asm/freedom.s:188` | `` |
-| `f_dump_dom` | function | `progs/asm/freedom.s:192` | `` |
-| `f_ent` | function | `progs/asm/freedom.s:96` | `` |
-| `f_entlen` | function | `progs/asm/freedom.s:100` | `` |
-| `f_has_clen` | function | `progs/asm/freedom.s:56` | `` |
-| `f_hdr` | function | `progs/asm/freedom.s:64` | `` |
-| `f_hlen` | function | `progs/asm/freedom.s:68` | `` |
-| `f_host` | function | `progs/asm/freedom.s:24` | `` |
-| `f_href` | function | `progs/asm/freedom.s:168` | `` |
-| `f_hreflen` | function | `progs/asm/freedom.s:172` | `` |
-| `f_id` | function | `progs/asm/freedom.s:152` | `` |
-| `f_idlen` | function | `progs/asm/freedom.s:156` | `` |
-| `f_inval` | function | `progs/asm/freedom.s:128` | `` |
-| `f_inval2` | function | `progs/asm/freedom.s:132` | `` |
-| `f_linkhost` | function | `progs/asm/freedom.s:224` | `` |
-| `f_linkn` | function | `progs/asm/freedom.s:232` | `` |
-| `f_linkpath` | function | `progs/asm/freedom.s:228` | `` |
-| `f_loc` | function | `progs/asm/freedom.s:40` | `` |
-| `f_mode` | function | `progs/asm/freedom.s:196` | `` |
-| `f_path` | function | `progs/asm/freedom.s:28` | `` |
-| `f_port` | function | `progs/asm/freedom.s:32` | `` |
-| `f_rawcap` | function | `progs/asm/freedom.s:200` | `` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

@@ -3,6 +3,40 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `test_absolute_url_refuses_relative_location` | method | `tests/test_mip.py:207` | `def test_absolute_url_refuses_relative_location(self)` |
+| `test_absolute_url_resolves_path_location` | method | `tests/test_mip.py:177` | `def test_absolute_url_resolves_path_location(self)` |
+| `test_cli_install` | method | `tests/test_mip.py:344` | `def test_cli_install(self)` |
+| `test_https_get_needs_minios_on_host` | method | `tests/test_mip.py:173` | `def test_https_get_needs_minios_on_host(self)` |
+| `test_install_404_fails` | method | `tests/test_mip.py:300` | `def test_install_404_fails(self)` |
+| `test_install_follows_redirect` | method | `tests/test_mip.py:290` | `def test_install_follows_redirect(self)` |
+| `test_install_https_needs_minios` | method | `tests/test_mip.py:308` | `def test_install_https_needs_minios(self)` |
+| `test_install_plain_and_load` | method | `tests/test_mip.py:280` | `def test_install_plain_and_load(self)` |
+| `test_install_refuses_chunked` | method | `tests/test_mip.py:319` | `def test_install_refuses_chunked(self)` |
+| `test_install_refuses_traversal_name` | method | `tests/test_mip.py:327` | `def test_install_refuses_traversal_name(self)` |
+| `test_install_twice_succeeds` | method | `tests/test_mip.py:334` | `def test_install_twice_succeeds(self)` |
+| `test_module_name_accepts_plain_module` | method | `tests/test_mip.py:112` | `def test_module_name_accepts_plain_module(self)` |
+| `test_module_name_refuses_unsafe_names` | method | `tests/test_mip.py:119` | `def test_module_name_refuses_unsafe_names(self)` |
+| `test_module_name_strips_query` | method | `tests/test_mip.py:116` | `def test_module_name_strips_query(self)` |
+| `test_parse_response_bare_lf` | method | `tests/test_mip.py:144` | `def test_parse_response_bare_lf(self)` |
+| `test_parse_response_crlf` | method | `tests/test_mip.py:135` | `def test_parse_response_crlf(self)` |
+| `test_parse_response_refuses_chunked` | method | `tests/test_mip.py:167` | `def test_parse_response_refuses_chunked(self)` |
+| `test_parse_response_rejects_content_length_mismatch` | method | `tests/test_mip.py:157` | `def test_parse_response_rejects_content_length_mismatch(self)` |
+| `test_parse_response_rejects_garbage` | method | `tests/test_mip.py:151` | `def test_parse_response_rejects_garbage(self)` |
+| `test_parse_url_reports_scheme` | method | `tests/test_mip.py:86` | `def test_parse_url_reports_scheme(self)` |
+| `test_split_https_url_default_port` | method | `tests/test_mip.py:70` | `def test_split_https_url_default_port(self)` |
+| `test_split_https_url_explicit_port` | method | `tests/test_mip.py:76` | `def test_split_https_url_explicit_port(self)` |
+| `test_split_https_url_refuses_plain_http` | method | `tests/test_mip.py:82` | `def test_split_https_url_refuses_plain_http(self)` |
+| `test_split_url_default_port` | method | `tests/test_mip.py:51` | `def test_split_url_default_port(self)` |
+| `test_split_url_explicit_port_and_query` | method | `tests/test_mip.py:57` | `def test_split_url_explicit_port_and_query(self)` |
+| `test_split_url_path_defaults_to_root` | method | `tests/test_mip.py:63` | `def test_split_url_path_defaults_to_root(self)` |
+| `test_split_url_refuses_bad_authority` | method | `tests/test_mip.py:101` | `def test_split_url_refuses_bad_authority(self)` |
+| `test_split_url_refuses_control_chars` | method | `tests/test_mip.py:107` | `def test_split_url_refuses_control_chars(self)` |
+| `test_split_url_refuses_https` | method | `tests/test_mip.py:66` | `def test_split_url_refuses_https(self)` |
+| `test_split_url_refuses_other_schemes` | method | `tests/test_mip.py:96` | `def test_split_url_refuses_other_schemes(self)` |
+| `CHECK` | macro | `tests/test_modifiers.c:17` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_modifiers.c:24` | `int main(void)` |
+| `CHECK` | macro | `tests/test_notify.c:9` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_notify.c:22` | `int main(void)` |
 | `probe_handler` | function | `tests/test_notify.c:16` | `static void probe_handler(const wm_notify_event_t *e)` |
 | `CHECK` | macro | `tests/test_paint.c:16` | `#define CHECK(cond, msg)` |
 | `T_H` | macro | `tests/test_paint.c:24` | `#define T_H` |
@@ -462,39 +496,5 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `vga_cursor` | method | `tools/minios_hyper.py:427` | `def vga_cursor(self)` |
 | `vga_idle` | method | `tools/minios_hyper.py:415` | `def vga_idle(self)` |
 | `wait_for` | method | `tools/minios_hyper.py:280` | `def wait_for(self, marker, timeout)` |
-| `build_zip` | function | `tools/mkcpyzip.py:22` | `def build_zip(lib_dir, out_zip, skip)` |
-| `main` | function | `tools/mkcpyzip.py:41` | `def main()` |
-| `MiniFS` | class | `tools/mkfs.minifs.py:56` | `class MiniFS` |
-| `__init__` | method | `tools/mkfs.minifs.py:57` | `def __init__(self, total_blocks)` |
-| `add_dir_entry` | method | `tools/mkfs.minifs.py:154` | `def add_dir_entry(self, dir_ino, name, child_ino, ftype)` |
-| `alloc_block` | method | `tools/mkfs.minifs.py:94` | `def alloc_block(self)` |
-| `alloc_inode` | method | `tools/mkfs.minifs.py:88` | `def alloc_inode(self)` |
-| `claim_name` | method | `tools/mkfs.minifs.py:192` | `def claim_name(self, parent_ino, name, is_dir)` |
-| `count_free` | function | `tools/mkfs.minifs.py:50` | `def count_free(bitmap, count)` |
-| `crc16` | function | `tools/mkfs.minifs.py:34` | `def crc16(data)` |
-| `crc32` | function | `tools/mkfs.minifs.py:42` | `def crc32(data)` |
-| `create_inode` | method | `tools/mkfs.minifs.py:113` | `def create_inode(self, mode, links)` |
-| `create_root` | method | `tools/mkfs.minifs.py:100` | `def create_root(self)` |
-| `div_round_up` | function | `tools/mkfs.minifs.py:31` | `def div_round_up(n, d)` |
-| `inode_set_block` | method | `tools/mkfs.minifs.py:124` | `def inode_set_block(self, ino, logblk, phys)` |
-| `inode_set_size` | method | `tools/mkfs.minifs.py:120` | `def inode_set_size(self, ino, size)` |
-| `main` | function | `tools/mkfs.minifs.py:280` | `def main()` |
-| `mark_blocks_used` | method | `tools/mkfs.minifs.py:84` | `def mark_blocks_used(self, start, count)` |
-| `mark_inodes_used` | method | `tools/mkfs.minifs.py:80` | `def mark_inodes_used(self, start, count)` |
-| `pack_tree` | function | `tools/mkfs.minifs.py:310` | `def pack_tree(parent_ino, path, rel)` |
-| `roundup4` | function | `tools/mkfs.minifs.py:28` | `def roundup4(v)` |
-| `seal_inode` | method | `tools/mkfs.minifs.py:108` | `def seal_inode(self, ino)` |
-| `serialize` | method | `tools/mkfs.minifs.py:236` | `def serialize(self)` |
-| `write_dir` | method | `tools/mkfs.minifs.py:224` | `def write_dir(self, parent_ino, name)` |
-| `write_file` | method | `tools/mkfs.minifs.py:205` | `def write_file(self, parent_ino, name, data)` |
-| `main` | function | `tools/mkpak1.py:29` | `def main()` |
-| `main` | function | `tools/mkramdisk.py:74` | `def main()` |
-| `pack_name` | function | `tools/mkramdisk.py:64` | `def pack_name(path, common)` |
-| `read_fname_bytes` | function | `tools/mkramdisk.py:41` | `def read_fname_bytes(kernel_h_path)` |
-| `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
-| `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
-| `cleanup` | function | `tools/mutate.sh:145` | `` |
-| `find_index` | function | `tools/mutate.sh:553` | `` |
-| `record` | function | `tools/mutate.sh:547` | `` |
 
 Next: [SYMBOLS_p27.md](SYMBOLS_p27.md)

@@ -58,6 +58,28 @@ Previous: [KB_headers_p5.md](KB_headers_p5.md)
   - `WM_GFXVIEW_DIM_MAX` (macro, line 44) `#define WM_GFXVIEW_DIM_MAX`
 - Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
 
+## headers/wm_jelly.h
+- Doc: Docstring: Wobbly-window spring mesh contract for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_jelly_config_t` (struct, line 33)
+  - `wm_jelly_t` (struct, line 51)
+  - `wm_jelly_clamp` (function, line 59) `static inline int wm_jelly_clamp(int v, int lim)`
+  - `wm_jelly_abs` (function, line 71) `static inline int wm_jelly_abs(int v)`
+  - `wm_jelly_reset` (function, line 77) `static inline void wm_jelly_reset(wm_jelly_t *j)`
+  - `wm_jelly_neighbours` (function, line 130) `static inline int wm_jelly_neighbours(const int *d, int r, int c)`
+  - `wm_jelly_step` (function, line 155) `static inline void wm_jelly_step(const wm_jelly_config_t *cfg, wm_jelly_t *j)`
+  - `wm_jelly_at_rest` (function, line 186) `static inline int wm_jelly_at_rest(const wm_jelly_config_t *cfg, const wm_jelly_t *j)`
+  - `wm_jelly_sample` (function, line 203) `static inline void wm_jelly_sample(const wm_jelly_t *j, int x, int y, int w, int h,
+             ...`
+  - `WM_JELLY_H` (macro, line 16) `#define WM_JELLY_H`
+  - `WM_JELLY_GRID` (macro, line 19) `#define WM_JELLY_GRID`
+  - `WM_JELLY_FP` (macro, line 22) `#define WM_JELLY_FP`
+  - `WM_JELLY_WEIGHT_ONE` (macro, line 25) `#define WM_JELLY_WEIGHT_ONE`
+  - `WM_JELLY_CONFIG_DEFAULT` (macro, line 48) `#define WM_JELLY_CONFIG_DEFAULT`
+- Imported by: `kernel/vga_fb.c`, `tests/test_jelly.c`
+
 ## headers/wm_layout.h
 - Doc: Docstring: Unified layout contract for the MiniOS desktop.
 - Layer: presentation

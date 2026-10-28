@@ -6,256 +6,273 @@ Previous: [KB_kernel_p3.md](KB_kernel_p3.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `chrome_tint_t` (struct, line 422)
-  - `termwin_t` (struct, line 999)
-  - `chrome_win_t` (struct, line 2234)
-  - `wm_geom_cfg` (function, line 51) `static wm_geom_config_t wm_geom_cfg(void)`
-  - `wm_event_cfg` (function, line 62) `static wm_event_config_t wm_event_cfg(void)`
-  - `wm_drag_reset` (function, line 71) `static void wm_drag_reset(void)`
-  - `vga_fb_boot_config` (function, line 92) `void vga_fb_boot_config(void)`
-  - `fb_bytes_per_pixel` (function, line 119) `int fb_bytes_per_pixel(void)`
-  - `fb_copy_bytes` (function, line 153) `static void fb_copy_bytes(volatile void *dst, const volatile void *src, unsigned long n)`
-  - `fb_fill_u32` (function, line 171) `static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n)`
-  - `fb_frame_bytes` (function, line 185) `static unsigned long fb_frame_bytes(void)`
-  - `fb_shadow_ready` (function, line 191) `static int fb_shadow_ready(void)`
-  - `fb_present_shadow` (function, line 212) `static void fb_present_shadow(void)`
-  - `fb_compose_begin` (function, line 223) `static int fb_compose_begin(void)`
-  - `fb_compose_end` (function, line 236) `static void fb_compose_end(int owner)`
-  - `lg_get` (function, line 307) `static const char *lg_get(int i)`
-  - `lg_push` (function, line 314) `static void lg_push(const char *line, int len)`
-  - `lg_alloc` (function, line 335) `static void lg_alloc(void)`
-  - `vga_fb_term_ring_init` (function, line 351) `void vga_fb_term_ring_init(void)`
-  - `vga_fb_term_feed` (function, line 359) `void vga_fb_term_feed(const char *line, int len)`
-  - `line_nrows` (function, line 366) `static int line_nrows(int len)`
-  - `act_nrows` (function, line 373) `static int act_nrows(void)`
-  - `total_rows` (function, line 376) `static int total_rows(void)`
-  - `disp_clamp` (function, line 384) `static void disp_clamp(void)`
-  - `line_at` (function, line 402) `static const char *line_at(int abs, int *off)`
-  - `first` (function, line 476) `* screen ever showing it whole first (the old flash-then-melt). */
+  - `chrome_tint_t` (struct, line 433)
+  - `termwin_t` (struct, line 1010)
+  - `chrome_win_t` (struct, line 2245)
+  - `wm_geom_cfg` (function, line 54) `static wm_geom_config_t wm_geom_cfg(void)`
+  - `wm_event_cfg` (function, line 65) `static wm_event_config_t wm_event_cfg(void)`
+  - `wm_drag_reset` (function, line 74) `static void wm_drag_reset(void)`
+  - `vga_fb_boot_config` (function, line 96) `void vga_fb_boot_config(void)`
+  - `fb_bytes_per_pixel` (function, line 123) `int fb_bytes_per_pixel(void)`
+  - `fb_copy_bytes` (function, line 157) `static void fb_copy_bytes(volatile void *dst, const volatile void *src, unsigned long n)`
+  - `fb_fill_u32` (function, line 175) `static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n)`
+  - `fb_frame_bytes` (function, line 189) `static unsigned long fb_frame_bytes(void)`
+  - `fb_shadow_ready` (function, line 195) `static int fb_shadow_ready(void)`
+  - `fb_present_shadow` (function, line 219) `static void fb_present_shadow(void)`
+  - `fb_compose_begin` (function, line 233) `static int fb_compose_begin(void)`
+  - `fb_compose_end` (function, line 246) `static void fb_compose_end(int owner)`
+  - `lg_get` (function, line 318) `static const char *lg_get(int i)`
+  - `lg_push` (function, line 325) `static void lg_push(const char *line, int len)`
+  - `lg_alloc` (function, line 346) `static void lg_alloc(void)`
+  - `vga_fb_term_ring_init` (function, line 362) `void vga_fb_term_ring_init(void)`
+  - `vga_fb_term_feed` (function, line 370) `void vga_fb_term_feed(const char *line, int len)`
+  - `line_nrows` (function, line 377) `static int line_nrows(int len)`
+  - `act_nrows` (function, line 384) `static int act_nrows(void)`
+  - `total_rows` (function, line 387) `static int total_rows(void)`
+  - `disp_clamp` (function, line 395) `static void disp_clamp(void)`
+  - `line_at` (function, line 413) `static const char *line_at(int abs, int *off)`
+  - `first` (function, line 487) `* screen ever showing it whole first (the old flash-then-melt). */
 static unsigned int *fx_start_...`
-  - `gfx_view_cfg` (function, line 592) `static wm_gfxview_config_t gfx_view_cfg(void)`
-  - `gfx_covers_screen` (function, line 601) `static int gfx_covers_screen(void)`
-  - `gfx_keep_save` (function, line 607) `static void gfx_keep_save(const volatile uint8_t *src, int kind, int sw, int sh)`
-  - `vga_fb_set_gfx_program` (function, line 633) `void vga_fb_set_gfx_program(const char *name)`
-  - `shcmd_base` (function, line 652) `static void shcmd_base(const char *cmd, char *out, unsigned long cap)`
-  - `ci_eq` (function, line 669) `static int ci_eq(const char *a, const char *b)`
-  - `gfx_prog_icon` (function, line 682) `static const uint8_t *gfx_prog_icon(void)`
-  - `vga_fb_set_gfx_mode` (function, line 695) `void vga_fb_set_gfx_mode(int on)`
-  - `gfx_view_for` (function, line 746) `static int gfx_view_for(int sw, int sh, wm_gfxview_t *v)`
-  - `gfx_view_publish` (function, line 758) `static void gfx_view_publish(const wm_gfxview_t *v)`
-  - `gfx_float_frame` (function, line 772) `static int gfx_float_frame(wm_gfxview_rect_t *out)`
-  - `vga_fb_gfx_origin` (function, line 788) `void vga_fb_gfx_origin(int *x, int *y)`
-  - `vga_fb_gfx_map_mouse` (function, line 805) `void vga_fb_gfx_map_mouse(int *x, int *y)`
-  - `vga_fb_gfx_cursor_erase` (function, line 820) `static void vga_fb_gfx_cursor_erase(void)`
-  - `vga_fb_gfx_cursor_draw` (function, line 830) `static void vga_fb_gfx_cursor_draw(void)`
-  - `wm_focus_cursor_sync` (function, line 1022) `static void wm_focus_cursor_sync(const wm_notify_event_t *e)`
-  - `wm_emit_focus_moved` (function, line 1029) `static void wm_emit_focus_moved(int before, int source)`
-  - `vga_fb_focus_event` (function, line 1041) `const wm_notify_event_t *vga_fb_focus_event(void)`
-  - `vga_fb_focus_report` (function, line 1047) `void vga_fb_focus_report(int before, int source)`
-  - `tw_park` (function, line 1056) `static void tw_park(int i)`
-  - `tw_unpark` (function, line 1086) `static void tw_unpark(int i)`
-  - `wm_init_once` (function, line 1121) `static void wm_init_once(void)`
-  - `tw_select` (function, line 1146) `static void tw_select(int i)`
-  - `vga_fb_focus_get` (function, line 1158) `int vga_fb_focus_get(void)`
-  - `vga_fb_nterms_get` (function, line 1159) `int vga_fb_nterms_get(void)`
-  - `wm_snapshot_state` (function, line 1162) `static void wm_snapshot_state(wm_focus_state_t *st)`
-  - `vga_fb_focus_next` (function, line 1175) `void vga_fb_focus_next(void)`
-  - `wm_gfx_focus_sync` (function, line 1221) `static void wm_gfx_focus_sync(int on)`
-  - `vga_fb_focus_id` (function, line 1240) `int vga_fb_focus_id(int id)`
-  - `vga_fb_boot_history_to_active` (function, line 1275) `static void vga_fb_boot_history_to_active(void)`
-  - `content` (function, line 1290) `* windows would share content (same prompt/output on both) and a park
+  - `gfx_view_cfg` (function, line 603) `static wm_gfxview_config_t gfx_view_cfg(void)`
+  - `gfx_covers_screen` (function, line 612) `static int gfx_covers_screen(void)`
+  - `gfx_keep_save` (function, line 618) `static void gfx_keep_save(const volatile uint8_t *src, int kind, int sw, int sh)`
+  - `vga_fb_set_gfx_program` (function, line 644) `void vga_fb_set_gfx_program(const char *name)`
+  - `shcmd_base` (function, line 663) `static void shcmd_base(const char *cmd, char *out, unsigned long cap)`
+  - `ci_eq` (function, line 680) `static int ci_eq(const char *a, const char *b)`
+  - `gfx_prog_icon` (function, line 693) `static const uint8_t *gfx_prog_icon(void)`
+  - `vga_fb_set_gfx_mode` (function, line 706) `void vga_fb_set_gfx_mode(int on)`
+  - `gfx_view_for` (function, line 757) `static int gfx_view_for(int sw, int sh, wm_gfxview_t *v)`
+  - `gfx_view_publish` (function, line 769) `static void gfx_view_publish(const wm_gfxview_t *v)`
+  - `gfx_float_frame` (function, line 783) `static int gfx_float_frame(wm_gfxview_rect_t *out)`
+  - `vga_fb_gfx_origin` (function, line 799) `void vga_fb_gfx_origin(int *x, int *y)`
+  - `vga_fb_gfx_map_mouse` (function, line 816) `void vga_fb_gfx_map_mouse(int *x, int *y)`
+  - `vga_fb_gfx_cursor_erase` (function, line 831) `static void vga_fb_gfx_cursor_erase(void)`
+  - `vga_fb_gfx_cursor_draw` (function, line 841) `static void vga_fb_gfx_cursor_draw(void)`
+  - `wm_focus_cursor_sync` (function, line 1033) `static void wm_focus_cursor_sync(const wm_notify_event_t *e)`
+  - `wm_emit_focus_moved` (function, line 1040) `static void wm_emit_focus_moved(int before, int source)`
+  - `vga_fb_focus_event` (function, line 1052) `const wm_notify_event_t *vga_fb_focus_event(void)`
+  - `vga_fb_focus_report` (function, line 1058) `void vga_fb_focus_report(int before, int source)`
+  - `tw_park` (function, line 1067) `static void tw_park(int i)`
+  - `tw_unpark` (function, line 1097) `static void tw_unpark(int i)`
+  - `wm_init_once` (function, line 1132) `static void wm_init_once(void)`
+  - `tw_select` (function, line 1157) `static void tw_select(int i)`
+  - `vga_fb_focus_get` (function, line 1169) `int vga_fb_focus_get(void)`
+  - `vga_fb_nterms_get` (function, line 1170) `int vga_fb_nterms_get(void)`
+  - `wm_snapshot_state` (function, line 1173) `static void wm_snapshot_state(wm_focus_state_t *st)`
+  - `vga_fb_focus_next` (function, line 1186) `void vga_fb_focus_next(void)`
+  - `wm_gfx_focus_sync` (function, line 1232) `static void wm_gfx_focus_sync(int on)`
+  - `vga_fb_focus_id` (function, line 1251) `int vga_fb_focus_id(int id)`
+  - `vga_fb_boot_history_to_active` (function, line 1286) `static void vga_fb_boot_history_to_active(void)`
+  - `content` (function, line 1301) `* windows would share content (same prompt/output on both) and a park
  * would alias src == dst. ...`
-  - `vga_fb_layout_set` (function, line 1375) `int vga_fb_layout_set(int mode)`
-  - `vga_fb_layout_cycle` (function, line 1386) `void vga_fb_layout_cycle(void)`
-  - `vga_fb_layout_get` (function, line 1402) `int vga_fb_layout_get(void)`
-  - `vga_fb_layout_name` (function, line 1408) `const char *vga_fb_layout_name(void)`
-  - `alone` (function, line 1420) `* window alone (an unfocused graphics window minimizes to the taskbar,
+  - `vga_fb_layout_set` (function, line 1386) `int vga_fb_layout_set(int mode)`
+  - `vga_fb_layout_cycle` (function, line 1397) `void vga_fb_layout_cycle(void)`
+  - `vga_fb_layout_get` (function, line 1413) `int vga_fb_layout_get(void)`
+  - `vga_fb_layout_name` (function, line 1419) `const char *vga_fb_layout_name(void)`
+  - `alone` (function, line 1431) `* window alone (an unfocused graphics window minimizes to the taskbar,
  * exactly like the hidden...`
-  - `vga_fb_list_windows` (function, line 1547) `void vga_fb_list_windows(void)`
-  - `vga_fb_act_empty` (function, line 1605) `int vga_fb_act_empty(void)`
-  - `vga_fb_note_prompt` (function, line 1609) `void vga_fb_note_prompt(void)`
-  - `vga_fb_clear_prompt` (function, line 1614) `void vga_fb_clear_prompt(void)`
-  - `vga_fb_prompted` (function, line 1619) `int vga_fb_prompted(void)`
-  - `vga_fb_prompt_live` (function, line 1628) `int vga_fb_prompt_live(void)`
-  - `vga_fb_park_line` (function, line 1635) `void vga_fb_park_line(const char *b, int p)`
-  - `vga_fb_unpark_line` (function, line 1650) `int vga_fb_unpark_line(char *b, int *p)`
-  - `tw_hit` (function, line 1665) `static int tw_hit(int i, int mx, int my)`
-  - `vga_fb_set_gfx_palette` (function, line 1771) `void vga_fb_set_gfx_palette(const unsigned char *pal)`
-  - `fb_pack_idx` (function, line 1786) `static unsigned long fb_pack_idx(unsigned idx)`
-  - `fb_write_packed` (function, line 1802) `void fb_write_packed(int x, int y, unsigned long rgb)`
-  - `fb_read_packed` (function, line 1822) `unsigned long fb_read_packed(int x, int y)`
-  - `vga_fb_read_rgb` (function, line 1846) `unsigned long vga_fb_read_rgb(int x, int y)`
-  - `fb_write_row_packed` (function, line 1851) `void fb_write_row_packed(int x, int y, const unsigned int *src, int n)`
-  - `fb_read_row_packed` (function, line 1881) `void fb_read_row_packed(int x, int y, unsigned int *dst, int n)`
-  - `fb_fill_run` (function, line 1903) `static void fb_fill_run(int x, int y, int n, unsigned long px)`
-  - `wall_level` (function, line 1929) `static int wall_level(int v)`
-  - `vga_fb_set_palette` (function, line 1938) `static void vga_fb_set_palette(void)`
-  - `fb_glyph` (function, line 1991) `static const uint8_t *fb_glyph(unsigned char c)`
-  - `vga_fb_pixel` (function, line 2012) `void vga_fb_pixel(int x, int y, uint8_t color)`
-  - `vga_fb_clear` (function, line 2022) `void vga_fb_clear(void)`
-  - `vga_fb_rect` (function, line 2032) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
-  - `vga_fb_pixel_rgb` (function, line 2047) `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)`
-  - `vga_fb_rect_rgb` (function, line 2056) `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)`
-  - `vga_fb_char` (function, line 2063) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
-  - `vga_fb_str` (function, line 2089) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
-  - `text_px` (function, line 2104) `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
-  - `wm_draw_buttons` (function, line 2133) `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
-  - `chrome_color` (function, line 2178) `static unsigned long chrome_color(unsigned idx)`
-  - `chrome_title_strip` (function, line 2218) `static int chrome_title_strip(int x, int y, int w, int focused)`
-  - `chrome_corner_origin` (function, line 2244) `static void chrome_corner_origin(const chrome_win_t *c, int k, int *ox, int *oy)`
-  - `chrome_wins_reset` (function, line 2252) `static void chrome_wins_reset(void)`
-  - `chrome_win_capture` (function, line 2263) `static void chrome_win_capture(int idx, int x, int y, int w, int h)`
-  - `chrome_win_cut` (function, line 2293) `static void chrome_win_cut(const chrome_win_t *c, int k)`
-  - `chrome_win_live` (function, line 2314) `static chrome_win_t *chrome_win_live(void)`
-  - `chrome_win_recut_bottom` (function, line 2329) `static void chrome_win_recut_bottom(int corner)`
-  - `chrome_tint_capture` (function, line 2343) `static void chrome_tint_capture(int idx, int x, int y, int w, int h)`
-  - `chrome_tint_live` (function, line 2375) `static const chrome_tint_t *chrome_tint_live(void)`
-  - `chrome_term_fill` (function, line 2389) `static int chrome_term_fill(void)`
-  - `chrome_panel_coverage` (function, line 2405) `static int chrome_panel_coverage(int xx, int yy, int x, int y, int w, int h)`
-  - `chrome_glass` (function, line 2418) `static void chrome_glass(int x, int y, int w, int h)`
-  - `chrome_disc` (function, line 2450) `static void chrome_disc(int cx2, int cy2, int r2, unsigned long color, int alpha)`
-  - `chrome_traffic_lights` (function, line 2472) `static int chrome_traffic_lights(int bx, int by)`
-  - `chrome_glow` (function, line 2488) `static void chrome_glow(int x, int y, int w, int h)`
-  - `chrome_profile_card` (function, line 2508) `static void chrome_profile_card(void)`
-  - `wm_buttons_hit` (function, line 2538) `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
-  - `wm_close_pending` (function, line 2553) `int wm_close_pending(void)`
-  - `wm_clear_close` (function, line 2554) `void wm_clear_close(void)`
-  - `wm_gfx_mode_active` (function, line 2555) `int wm_gfx_mode_active(void)`
-  - `vga_fb_ps2_owner` (function, line 2558) `int vga_fb_ps2_owner(int pid)`
-  - `taskbar` (function, line 2578) `* minimize hides the app to the taskbar (it never closes it), maximize
+  - `vga_fb_list_windows` (function, line 1558) `void vga_fb_list_windows(void)`
+  - `vga_fb_act_empty` (function, line 1616) `int vga_fb_act_empty(void)`
+  - `vga_fb_note_prompt` (function, line 1620) `void vga_fb_note_prompt(void)`
+  - `vga_fb_clear_prompt` (function, line 1625) `void vga_fb_clear_prompt(void)`
+  - `vga_fb_prompted` (function, line 1630) `int vga_fb_prompted(void)`
+  - `vga_fb_prompt_live` (function, line 1639) `int vga_fb_prompt_live(void)`
+  - `vga_fb_park_line` (function, line 1646) `void vga_fb_park_line(const char *b, int p)`
+  - `vga_fb_unpark_line` (function, line 1661) `int vga_fb_unpark_line(char *b, int *p)`
+  - `tw_hit` (function, line 1676) `static int tw_hit(int i, int mx, int my)`
+  - `vga_fb_set_gfx_palette` (function, line 1782) `void vga_fb_set_gfx_palette(const unsigned char *pal)`
+  - `fb_pack_idx` (function, line 1797) `static unsigned long fb_pack_idx(unsigned idx)`
+  - `fb_write_packed` (function, line 1813) `void fb_write_packed(int x, int y, unsigned long rgb)`
+  - `fb_read_packed` (function, line 1833) `unsigned long fb_read_packed(int x, int y)`
+  - `vga_fb_read_rgb` (function, line 1857) `unsigned long vga_fb_read_rgb(int x, int y)`
+  - `fb_write_row_packed` (function, line 1862) `void fb_write_row_packed(int x, int y, const unsigned int *src, int n)`
+  - `fb_read_row_packed` (function, line 1892) `void fb_read_row_packed(int x, int y, unsigned int *dst, int n)`
+  - `fb_fill_run` (function, line 1914) `static void fb_fill_run(int x, int y, int n, unsigned long px)`
+  - `wall_level` (function, line 1940) `static int wall_level(int v)`
+  - `vga_fb_set_palette` (function, line 1949) `static void vga_fb_set_palette(void)`
+  - `fb_glyph` (function, line 2002) `static const uint8_t *fb_glyph(unsigned char c)`
+  - `vga_fb_pixel` (function, line 2023) `void vga_fb_pixel(int x, int y, uint8_t color)`
+  - `vga_fb_clear` (function, line 2033) `void vga_fb_clear(void)`
+  - `vga_fb_rect` (function, line 2043) `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)`
+  - `vga_fb_pixel_rgb` (function, line 2058) `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)`
+  - `vga_fb_rect_rgb` (function, line 2067) `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)`
+  - `vga_fb_char` (function, line 2074) `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
+  - `vga_fb_str` (function, line 2100) `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
+  - `text_px` (function, line 2115) `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)`
+  - `wm_draw_buttons` (function, line 2144) `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)`
+  - `chrome_color` (function, line 2189) `static unsigned long chrome_color(unsigned idx)`
+  - `chrome_title_strip` (function, line 2229) `static int chrome_title_strip(int x, int y, int w, int focused)`
+  - `chrome_corner_origin` (function, line 2255) `static void chrome_corner_origin(const chrome_win_t *c, int k, int *ox, int *oy)`
+  - `chrome_wins_reset` (function, line 2263) `static void chrome_wins_reset(void)`
+  - `chrome_win_capture` (function, line 2274) `static void chrome_win_capture(int idx, int x, int y, int w, int h)`
+  - `chrome_win_cut` (function, line 2304) `static void chrome_win_cut(const chrome_win_t *c, int k)`
+  - `chrome_win_live` (function, line 2325) `static chrome_win_t *chrome_win_live(void)`
+  - `chrome_win_recut_bottom` (function, line 2340) `static void chrome_win_recut_bottom(int corner)`
+  - `chrome_tint_capture` (function, line 2354) `static void chrome_tint_capture(int idx, int x, int y, int w, int h)`
+  - `chrome_tint_live` (function, line 2386) `static const chrome_tint_t *chrome_tint_live(void)`
+  - `chrome_term_fill` (function, line 2400) `static int chrome_term_fill(void)`
+  - `chrome_panel_coverage` (function, line 2416) `static int chrome_panel_coverage(int xx, int yy, int x, int y, int w, int h)`
+  - `chrome_glass` (function, line 2429) `static void chrome_glass(int x, int y, int w, int h)`
+  - `chrome_disc` (function, line 2461) `static void chrome_disc(int cx2, int cy2, int r2, unsigned long color, int alpha)`
+  - `chrome_traffic_lights` (function, line 2483) `static int chrome_traffic_lights(int bx, int by)`
+  - `chrome_glow` (function, line 2499) `static void chrome_glow(int x, int y, int w, int h)`
+  - `chrome_profile_card` (function, line 2519) `static void chrome_profile_card(void)`
+  - `wm_buttons_hit` (function, line 2549) `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)`
+  - `wm_close_pending` (function, line 2564) `int wm_close_pending(void)`
+  - `wm_clear_close` (function, line 2565) `void wm_clear_close(void)`
+  - `wm_gfx_mode_active` (function, line 2566) `int wm_gfx_mode_active(void)`
+  - `vga_fb_ps2_owner` (function, line 2569) `int vga_fb_ps2_owner(int pid)`
+  - `taskbar` (function, line 2589) `* minimize hides the app to the taskbar (it never closes it), maximize
  * toggles true fullscreen...`
-  - `directly` (function, line 2626) `* RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */
+  - `directly` (function, line 2637) `* RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */
 static void gfx_scale_...`
-  - `gfx_letterbox` (function, line 2731) `static void gfx_letterbox(const wm_gfxview_t *v)`
-  - `gfx_title` (function, line 2750) `static void gfx_title(const wm_gfxview_t *v)`
-  - `gfx_compose` (function, line 2764) `static void gfx_compose(const volatile uint8_t *src, int kind, int sw, int sh,
+  - `gfx_letterbox` (function, line 2742) `static void gfx_letterbox(const wm_gfxview_t *v)`
+  - `gfx_title` (function, line 2761) `static void gfx_title(const wm_gfxview_t *v)`
+  - `gfx_compose` (function, line 2775) `static void gfx_compose(const volatile uint8_t *src, int kind, int sw, int sh,
                   ...`
-  - `gfx_present` (function, line 2832) `static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)`
-  - `gfx_cursor_follow_idle` (function, line 2848) `static void gfx_cursor_follow_idle(void)`
-  - `vga_fb_blit_gfx_window` (function, line 2861) `void vga_fb_blit_gfx_window(void)`
-  - `vga_fb_blit_nk_window` (function, line 2870) `void vga_fb_blit_nk_window(void)`
-  - `vga_fb_blit_nk_rgb_window` (function, line 2876) `void vga_fb_blit_nk_rgb_window(void)`
-  - `term_recalc` (function, line 2885) `static void term_recalc(void)`
-  - `draw_title_win` (function, line 2911) `static void draw_title_win(int idx, int focused)`
-  - `taskbar_layout` (function, line 2944) `static void taskbar_layout(void)`
-  - `draw_speaker_icon` (function, line 2975) `static void draw_speaker_icon(int x, int y, uint8_t color)`
-  - `taskbar_render` (function, line 2984) `static void taskbar_render(void)`
-  - `taskbar_tick` (function, line 3063) `static void taskbar_tick(void)`
-  - `vga_fb_theme_name` (function, line 3079) `int vga_fb_theme_name(char *dst, int cap)`
-  - `taskbar_theme_cycle` (function, line 3100) `static void taskbar_theme_cycle(void)`
-  - `taskbar_handle_click` (function, line 3140) `static void taskbar_handle_click(int mx, int my)`
-  - `draw_scrollbar` (function, line 3200) `static void draw_scrollbar(void)`
-  - `render_blank_row` (function, line 3236) `static void render_blank_row(int vrow)`
-  - `render_row` (function, line 3246) `static void render_row(int vrow, int abs)`
-  - `term_render` (function, line 3281) `static void term_render(void)`
-  - `buffer` (function, line 3297) `* owns the buffer (indices reset, render reads an empty ring). */
+  - `gfx_present` (function, line 2843) `static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)`
+  - `gfx_cursor_follow_idle` (function, line 2859) `static void gfx_cursor_follow_idle(void)`
+  - `vga_fb_blit_gfx_window` (function, line 2872) `void vga_fb_blit_gfx_window(void)`
+  - `vga_fb_blit_nk_window` (function, line 2881) `void vga_fb_blit_nk_window(void)`
+  - `vga_fb_blit_nk_rgb_window` (function, line 2887) `void vga_fb_blit_nk_rgb_window(void)`
+  - `term_recalc` (function, line 2896) `static void term_recalc(void)`
+  - `draw_title_win` (function, line 2922) `static void draw_title_win(int idx, int focused)`
+  - `taskbar_layout` (function, line 2955) `static void taskbar_layout(void)`
+  - `draw_speaker_icon` (function, line 2986) `static void draw_speaker_icon(int x, int y, uint8_t color)`
+  - `taskbar_render` (function, line 2995) `static void taskbar_render(void)`
+  - `taskbar_tick` (function, line 3074) `static void taskbar_tick(void)`
+  - `vga_fb_theme_name` (function, line 3090) `int vga_fb_theme_name(char *dst, int cap)`
+  - `taskbar_theme_cycle` (function, line 3111) `static void taskbar_theme_cycle(void)`
+  - `taskbar_handle_click` (function, line 3151) `static void taskbar_handle_click(int mx, int my)`
+  - `draw_scrollbar` (function, line 3211) `static void draw_scrollbar(void)`
+  - `render_blank_row` (function, line 3247) `static void render_blank_row(int vrow)`
+  - `render_row` (function, line 3257) `static void render_row(int vrow, int abs)`
+  - `term_render` (function, line 3292) `static void term_render(void)`
+  - `buffer` (function, line 3308) `* owns the buffer (indices reset, render reads an empty ring). */
 void term_clear(void)`
-  - `term_render_active` (function, line 3314) `static void term_render_active(void)`
-  - `line` (function, line 3357) `* display stale bytes left over from a longer previous line (e.g. the prompt
+  - `term_render_active` (function, line 3325) `static void term_render_active(void)`
+  - `line` (function, line 3368) `* display stale bytes left over from a longer previous line (e.g. the prompt
  * would show the ta...`
-  - `escapes` (function, line 3366) `* swallowing them here keeps the escapes (which the serial side needs)
+  - `escapes` (function, line 3377) `* swallowing them here keeps the escapes (which the serial side needs)
      * from printing as li...`
-  - `vga_fb_puts_term` (function, line 3423) `void vga_fb_puts_term(const char *s)`
-  - `vga_fb_text_cursor` (function, line 3429) `void vga_fb_text_cursor(int col)`
-  - `vga_fb_hide_text_cursor` (function, line 3437) `void vga_fb_hide_text_cursor(void)`
-  - `vga_fb_draw_desktop` (function, line 3461) `void vga_fb_draw_desktop(void)`
-  - `gfx_view_in_rect` (function, line 3565) `static void gfx_view_in_rect(const wm_gfxview_rect_t *r, int titled, wm_gfxview_t *v)`
-  - `gfx_animate` (function, line 3584) `static void gfx_animate(const wm_gfxview_rect_t *from, const wm_gfxview_rect_t *to,
+  - `vga_fb_puts_term` (function, line 3434) `void vga_fb_puts_term(const char *s)`
+  - `vga_fb_text_cursor` (function, line 3440) `void vga_fb_text_cursor(int col)`
+  - `vga_fb_hide_text_cursor` (function, line 3448) `void vga_fb_hide_text_cursor(void)`
+  - `jelly_cancel` (function, line 3501) `static void jelly_cancel(void)`
+  - `jelly_begin` (function, line 3510) `static void jelly_begin(int kind, int gx, int gy)`
+  - `jelly_rect` (function, line 3522) `static int jelly_rect(int *x, int *y, int *w, int *h)`
+  - `jelly_kick` (function, line 3545) `static void jelly_kick(int mx, int my)`
+  - `jelly_live` (function, line 3554) `static int jelly_live(void)`
+  - `jelly_arm` (function, line 3562) `static void jelly_arm(void)`
+  - `jelly_shadow_px` (function, line 3588) `static unsigned int jelly_shadow_px(int x, int y)`
+  - `jelly_put_row` (function, line 3598) `static void jelly_put_row(int x, int y, const unsigned int *src, int n)`
+  - `jelly_warp_band` (function, line 3620) `static void jelly_warp_band(void)`
+  - `jelly_present` (function, line 3653) `static void jelly_present(void)`
+  - `jelly_try_present` (function, line 3677) `static int jelly_try_present(void)`
+  - `jelly_advance` (function, line 3688) `static void jelly_advance(void)`
+  - `jelly_tick` (function, line 3701) `static void jelly_tick(int held)`
+  - `vga_fb_draw_desktop` (function, line 3724) `void vga_fb_draw_desktop(void)`
+  - `gfx_view_in_rect` (function, line 3831) `static void gfx_view_in_rect(const wm_gfxview_rect_t *r, int titled, wm_gfxview_t *v)`
+  - `gfx_animate` (function, line 3850) `static void gfx_animate(const wm_gfxview_rect_t *from, const wm_gfxview_rect_t *to,
              ...`
-  - `gfx_taskbar_rect` (function, line 3634) `static void gfx_taskbar_rect(wm_gfxview_rect_t *r)`
-  - `gfx_drop_focus` (function, line 3671) `static void gfx_drop_focus(int source)`
-  - `from` (function, line 3682) `* leaving returns to the view it came from (floating or tiled). Returns
+  - `gfx_taskbar_rect` (function, line 3900) `static void gfx_taskbar_rect(wm_gfxview_rect_t *r)`
+  - `gfx_drop_focus` (function, line 3937) `static void gfx_drop_focus(int source)`
+  - `from` (function, line 3948) `* leaving returns to the view it came from (floating or tiled). Returns
  * 0 on success, -1 witho...`
-  - `vga_fb_gfx_set_hidden` (function, line 3716) `int vga_fb_gfx_set_hidden(int hide)`
-  - `vga_fb_gfx_view_name` (function, line 3744) `const char *vga_fb_gfx_view_name(void)`
-  - `term_toggle_fullscreen` (function, line 3756) `static void term_toggle_fullscreen(void)`
-  - `vga_fb_toggle_fullscreen` (function, line 3768) `void vga_fb_toggle_fullscreen(void)`
-  - `term_toggle_minimize` (function, line 3779) `static void term_toggle_minimize(void)`
-  - `vga_fb_toggle_minimize` (function, line 3789) `void vga_fb_toggle_minimize(void)`
-  - `vga_fb_is_minimized` (function, line 3797) `int vga_fb_is_minimized(void)`
-  - `vga_fb_is_fullscreen` (function, line 3798) `int vga_fb_is_fullscreen(void)`
-  - `gfx_snap` (function, line 3803) `static void gfx_snap(int zone)`
-  - `term_close_default` (function, line 3836) `static void term_close_default(void)`
-  - `vga_fb_close_active` (function, line 3852) `int vga_fb_close_active(void)`
-  - `vga_fb_move_terminal` (function, line 3866) `void vga_fb_move_terminal(int dx, int dy)`
-  - `term_max_cols` (function, line 3911) `static int term_max_cols(void)`
-  - `term_max_rows` (function, line 3915) `static int term_max_rows(void)`
-  - `term_finish_layout` (function, line 3920) `static void term_finish_layout(void)`
-  - `vga_fb_snap_window` (function, line 3926) `void vga_fb_snap_window(int zone)`
-  - `vga_fb_resize` (function, line 3954) `void vga_fb_resize(int dcols, int drows)`
-  - `vga_fb_reset_default` (function, line 3974) `void vga_fb_reset_default(void)`
-  - `wallpaper_ensure` (function, line 4028) `static void wallpaper_ensure(void)`
-  - `wallpaper_usable` (function, line 4080) `static int wallpaper_usable(void)`
-  - `wallpaper_draw` (function, line 4085) `static void wallpaper_draw(void)`
-  - `pipe_field` (function, line 4111) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
-  - `icon_nearest` (function, line 4129) `static int icon_nearest(int r, int g, int b)`
-  - `icon_embedded` (function, line 4145) `static const uint8_t *icon_embedded(const char *name)`
-  - `icon_decode` (function, line 4165) `static const uint8_t *icon_decode(const char *path)`
-  - `icon_embedded_rgba` (function, line 4199) `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
-  - `dock_label_px` (function, line 4227) `static int dock_label_px(const struct desktop_shortcut *sc)`
-  - `shortcuts_layout` (function, line 4236) `static void shortcuts_layout(void)`
-  - `shortcut_cell_left` (function, line 4254) `static int shortcut_cell_left(int i)`
-  - `desktop_shortcuts_load` (function, line 4261) `void desktop_shortcuts_load(void)`
-  - `shortcut_draw_scaled` (function, line 4317) `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
+  - `vga_fb_gfx_set_hidden` (function, line 3982) `int vga_fb_gfx_set_hidden(int hide)`
+  - `vga_fb_gfx_view_name` (function, line 4010) `const char *vga_fb_gfx_view_name(void)`
+  - `term_toggle_fullscreen` (function, line 4022) `static void term_toggle_fullscreen(void)`
+  - `vga_fb_toggle_fullscreen` (function, line 4034) `void vga_fb_toggle_fullscreen(void)`
+  - `term_toggle_minimize` (function, line 4045) `static void term_toggle_minimize(void)`
+  - `vga_fb_toggle_minimize` (function, line 4055) `void vga_fb_toggle_minimize(void)`
+  - `vga_fb_is_minimized` (function, line 4063) `int vga_fb_is_minimized(void)`
+  - `vga_fb_is_fullscreen` (function, line 4064) `int vga_fb_is_fullscreen(void)`
+  - `gfx_snap` (function, line 4069) `static void gfx_snap(int zone)`
+  - `term_close_default` (function, line 4102) `static void term_close_default(void)`
+  - `vga_fb_close_active` (function, line 4118) `int vga_fb_close_active(void)`
+  - `vga_fb_move_terminal` (function, line 4132) `void vga_fb_move_terminal(int dx, int dy)`
+  - `term_max_cols` (function, line 4177) `static int term_max_cols(void)`
+  - `term_max_rows` (function, line 4181) `static int term_max_rows(void)`
+  - `term_finish_layout` (function, line 4186) `static void term_finish_layout(void)`
+  - `vga_fb_snap_window` (function, line 4192) `void vga_fb_snap_window(int zone)`
+  - `vga_fb_resize` (function, line 4220) `void vga_fb_resize(int dcols, int drows)`
+  - `vga_fb_reset_default` (function, line 4240) `void vga_fb_reset_default(void)`
+  - `wallpaper_ensure` (function, line 4297) `static void wallpaper_ensure(void)`
+  - `wallpaper_usable` (function, line 4349) `static int wallpaper_usable(void)`
+  - `wallpaper_draw` (function, line 4354) `static void wallpaper_draw(void)`
+  - `wallpaper_packed` (function, line 4370) `static int wallpaper_packed(int x, int y, unsigned int *out)`
+  - `pipe_field` (function, line 4392) `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)`
+  - `icon_nearest` (function, line 4410) `static int icon_nearest(int r, int g, int b)`
+  - `icon_embedded` (function, line 4426) `static const uint8_t *icon_embedded(const char *name)`
+  - `icon_decode` (function, line 4446) `static const uint8_t *icon_decode(const char *path)`
+  - `icon_embedded_rgba` (function, line 4480) `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)`
+  - `dock_label_px` (function, line 4508) `static int dock_label_px(const struct desktop_shortcut *sc)`
+  - `shortcuts_layout` (function, line 4517) `static void shortcuts_layout(void)`
+  - `shortcut_cell_left` (function, line 4535) `static int shortcut_cell_left(int i)`
+  - `desktop_shortcuts_load` (function, line 4542) `void desktop_shortcuts_load(void)`
+  - `shortcut_draw_scaled` (function, line 4598) `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
                              ...`
-  - `dock_hover_index` (function, line 4342) `static int dock_hover_index(int mx, int my)`
-  - `dock_bounce_counts` (function, line 4369) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)`
-  - `dock_click_count` (function, line 4379) `void dock_click_count(unsigned long *edges)`
-  - `dock_bounce_elapsed` (function, line 4385) `static unsigned long dock_bounce_elapsed(void)`
-  - `dock_bounce_live` (function, line 4393) `static int dock_bounce_live(void)`
-  - `dock_pending_active` (function, line 4443) `int dock_pending_active(void)`
-  - `dock_paint_icons` (function, line 4451) `static void dock_paint_icons(int hover)`
-  - `dock_paint_backing` (function, line 4493) `static void dock_paint_backing(int x0, int y0, int dock_w, int dock_h, int with_shadow)`
-  - `desktop_shortcuts_draw` (function, line 4500) `void desktop_shortcuts_draw(void)`
-  - `wallpaper_rect` (function, line 4520) `static void wallpaper_rect(int x0, int y0, int w, int h)`
-  - `dock_paint_hover` (function, line 4551) `static void dock_paint_hover(int hover)`
-  - `gfx_task_icon` (function, line 4580) `static const uint8_t *gfx_task_icon(void)`
-  - `desktop_shortcuts_hit_test` (function, line 4601) `const char *desktop_shortcuts_hit_test(int mx, int my)`
-  - `mouse_focus_topmost` (function, line 4615) `static int mouse_focus_topmost(int mx, int my)`
-  - `mouse_apply_wheel` (function, line 4641) `static void mouse_apply_wheel(int wheel, int step)`
-  - `mouse_drag_gfx` (function, line 4665) `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)`
-  - `mouse_drag_term` (function, line 4717) `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)`
-  - `mouse_scrollbar` (function, line 4740) `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)`
-  - `vga_fb_wait_tick` (function, line 4769) `void vga_fb_wait_tick(void)`
-  - `vga_fb_mouse_tick` (function, line 4778) `void vga_fb_mouse_tick(void)`
-  - `state` (function, line 4902) `* ignores the button state (the arming press is consumed) and settles
+  - `dock_hover_index` (function, line 4623) `static int dock_hover_index(int mx, int my)`
+  - `dock_bounce_counts` (function, line 4650) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)`
+  - `dock_click_count` (function, line 4660) `void dock_click_count(unsigned long *edges)`
+  - `dock_bounce_elapsed` (function, line 4666) `static unsigned long dock_bounce_elapsed(void)`
+  - `dock_bounce_live` (function, line 4674) `static int dock_bounce_live(void)`
+  - `dock_pending_active` (function, line 4724) `int dock_pending_active(void)`
+  - `dock_paint_icons` (function, line 4732) `static void dock_paint_icons(int hover)`
+  - `dock_paint_backing` (function, line 4774) `static void dock_paint_backing(int x0, int y0, int dock_w, int dock_h, int with_shadow)`
+  - `desktop_shortcuts_draw` (function, line 4781) `void desktop_shortcuts_draw(void)`
+  - `wallpaper_rect` (function, line 4801) `static void wallpaper_rect(int x0, int y0, int w, int h)`
+  - `dock_paint_hover` (function, line 4832) `static void dock_paint_hover(int hover)`
+  - `gfx_task_icon` (function, line 4861) `static const uint8_t *gfx_task_icon(void)`
+  - `desktop_shortcuts_hit_test` (function, line 4882) `const char *desktop_shortcuts_hit_test(int mx, int my)`
+  - `mouse_focus_topmost` (function, line 4896) `static int mouse_focus_topmost(int mx, int my)`
+  - `mouse_apply_wheel` (function, line 4922) `static void mouse_apply_wheel(int wheel, int step)`
+  - `mouse_drag_gfx` (function, line 4946) `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)`
+  - `mouse_drag_term` (function, line 5003) `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)`
+  - `mouse_scrollbar` (function, line 5026) `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)`
+  - `vga_fb_wait_tick` (function, line 5055) `void vga_fb_wait_tick(void)`
+  - `vga_fb_mouse_tick` (function, line 5064) `void vga_fb_mouse_tick(void)`
+  - `state` (function, line 5189) `* ignores the button state (the arming press is consumed) and settles
      * once on expiry, so t...`
-  - `vga_fb_mouse_init` (function, line 4980) `void vga_fb_mouse_init(void)`
-  - `vga_fb_history_page` (function, line 5034) `void vga_fb_history_page(int dir)`
-  - `vga_fb_init` (function, line 5046) `void vga_fb_init(void)`
-  - `compositions` (function, line 135) `* compositions (an ISR tick composing inside a syscall composition) draw * into the same shadow and leave the...`
-  - `flag` (function, line 553) `* is the minimized flag (the program keeps running, nothing composites);`
-  - `letterbox` (function, line 557) `* present to repaint chrome plus letterbox (after a desktop redraw or a * view change);`
-  - `coordinates` (function, line 802) `* windows keep the exact historical coordinates (including outside the * window);`
-  - `gfx_transition` (function, line 997) `static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled);`
-  - `app` (function, line 1216) `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep...`
-  - `title` (function, line 2994) `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...`
-  - `command` (function, line 4575) `* its launch command (config-driven, covers apps that never set a window * title);`
-  - `pointer` (function, line 4662) `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...`
-  - `path` (function, line 4789) `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...`
-  - `FBT` (macro, line 147) `#define FBT`
-  - `LG_LINE` (macro, line 298) `#define LG_LINE(a)`
-  - `GFX_SRC_IDX` (macro, line 544) `#define GFX_SRC_IDX`
-  - `GFX_SRC_RGB` (macro, line 545) `#define GFX_SRC_RGB`
-  - `GFX_KEEP_BYTES` (macro, line 546) `#define GFX_KEEP_BYTES`
-  - `GFX_CURSOR_IDLE_TICKS` (macro, line 572) `#define GFX_CURSOR_IDLE_TICKS`
-  - `GFX_CURSOR_FOLLOW_TICKS` (macro, line 578) `#define GFX_CURSOR_FOLLOW_TICKS`
-  - `GFX_PROG_LEN` (macro, line 630) `#define GFX_PROG_LEN`
-  - `WIN_DEF_COLS` (macro, line 956) `#define WIN_DEF_COLS`
-  - `WIN_DEF_ROWS` (macro, line 957) `#define WIN_DEF_ROWS`
-  - `WIN_DEF_X` (macro, line 958) `#define WIN_DEF_X`
-  - `WIN_DEF_Y` (macro, line 959) `#define WIN_DEF_Y`
-  - `WM_MAX_TERMS` (macro, line 987) `#define WM_MAX_TERMS`
-  - `WM_ELINE_SZ` (macro, line 989) `#define WM_ELINE_SZ`
-  - `FB_OFFSET` (macro, line 1708) `#define FB_OFFSET(x,y)`
-  - `TEXT_BG_NONE` (macro, line 2099) `#define TEXT_BG_NONE`
-  - `DOCK_GLOW_PAD` (macro, line 2171) `#define DOCK_GLOW_PAD`
-  - `PROFILE_PAD` (macro, line 2172) `#define PROFILE_PAD`
-  - `PROFILE_RING` (macro, line 2173) `#define PROFILE_RING`
-  - `PROFILE_MARGIN` (macro, line 2174) `#define PROFILE_MARGIN`
-  - `PROFILE_TEXT_COLS` (macro, line 2175) `#define PROFILE_TEXT_COLS`
-  - `TB_GFX_TITLE_MAX` (macro, line 2942) `#define TB_GFX_TITLE_MAX`
-- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/avatar_data.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_chrome.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_gfxview.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+  - `vga_fb_mouse_init` (function, line 5267) `void vga_fb_mouse_init(void)`
+  - `vga_fb_history_page` (function, line 5321) `void vga_fb_history_page(int dir)`
+  - `vga_fb_init` (function, line 5333) `void vga_fb_init(void)`
+  - `compositions` (function, line 139) `* compositions (an ISR tick composing inside a syscall composition) draw * into the same shadow and leave the...`
+  - `flag` (function, line 564) `* is the minimized flag (the program keeps running, nothing composites);`
+  - `letterbox` (function, line 568) `* present to repaint chrome plus letterbox (after a desktop redraw or a * view change);`
+  - `coordinates` (function, line 813) `* windows keep the exact historical coordinates (including outside the * window);`
+  - `gfx_transition` (function, line 1008) `static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled);`
+  - `app` (function, line 1227) `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep...`
+  - `title` (function, line 3005) `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...`
+  - `command` (function, line 4856) `* its launch command (config-driven, covers apps that never set a window * title);`
+  - `pointer` (function, line 4943) `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...`
+  - `path` (function, line 5075) `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...`
+  - `FBT` (macro, line 151) `#define FBT`
+  - `LG_LINE` (macro, line 309) `#define LG_LINE(a)`
+  - `GFX_SRC_IDX` (macro, line 555) `#define GFX_SRC_IDX`
+  - `GFX_SRC_RGB` (macro, line 556) `#define GFX_SRC_RGB`
+  - `GFX_KEEP_BYTES` (macro, line 557) `#define GFX_KEEP_BYTES`
+  - `GFX_CURSOR_IDLE_TICKS` (macro, line 583) `#define GFX_CURSOR_IDLE_TICKS`
+  - `GFX_CURSOR_FOLLOW_TICKS` (macro, line 589) `#define GFX_CURSOR_FOLLOW_TICKS`
+  - `GFX_PROG_LEN` (macro, line 641) `#define GFX_PROG_LEN`
+  - `WIN_DEF_COLS` (macro, line 967) `#define WIN_DEF_COLS`
+  - `WIN_DEF_ROWS` (macro, line 968) `#define WIN_DEF_ROWS`
+  - `WIN_DEF_X` (macro, line 969) `#define WIN_DEF_X`
+  - `WIN_DEF_Y` (macro, line 970) `#define WIN_DEF_Y`
+  - `WM_MAX_TERMS` (macro, line 998) `#define WM_MAX_TERMS`
+  - `WM_ELINE_SZ` (macro, line 1000) `#define WM_ELINE_SZ`
+  - `FB_OFFSET` (macro, line 1719) `#define FB_OFFSET(x,y)`
+  - `TEXT_BG_NONE` (macro, line 2110) `#define TEXT_BG_NONE`
+  - `DOCK_GLOW_PAD` (macro, line 2182) `#define DOCK_GLOW_PAD`
+  - `PROFILE_PAD` (macro, line 2183) `#define PROFILE_PAD`
+  - `PROFILE_RING` (macro, line 2184) `#define PROFILE_RING`
+  - `PROFILE_MARGIN` (macro, line 2185) `#define PROFILE_MARGIN`
+  - `PROFILE_TEXT_COLS` (macro, line 2186) `#define PROFILE_TEXT_COLS`
+  - `TB_GFX_TITLE_MAX` (macro, line 2953) `#define TB_GFX_TITLE_MAX`
+  - `JELLY_BLOCK` (macro, line 3483) `#define JELLY_BLOCK`
+  - `JELLY_SUBSTEPS` (macro, line 3484) `#define JELLY_SUBSTEPS`
+  - `JELLY_ROW_MAX` (macro, line 3485) `#define JELLY_ROW_MAX`
+- Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/avatar_data.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_chrome.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_gfxview.h`, `headers/wm_jelly.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
 
 ## kernel/vga_fx.c
 - Doc: DOOM-melt desktop effects (see headers/vga_fx.h for the contract).

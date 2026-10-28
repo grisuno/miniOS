@@ -1,6 +1,6 @@
 # Documentation Coverage
 
-Overall: **29.7%** (2831 of 9532 public modules, types, and callables). Data members are excluded from the ratio.
+Overall: **29.8%** (2846 of 9549 public modules, types, and callables). Data members are excluded from the ratio.
 
 [Back to index](index.md)
 
@@ -12,13 +12,13 @@ Overall: **29.7%** (2831 of 9532 public modules, types, and callables). Data mem
 | constructor | 3 | 24 | 12.5% |
 | enum | 2 | 3 | 66.7% |
 | exception | 5 | 5 | 100.0% |
-| function | 1490 | 4534 | 32.9% |
-| macro | 669 | 3885 | 17.2% |
+| function | 1497 | 4541 | 33.0% |
+| macro | 674 | 3892 | 17.3% |
 | method | 24 | 125 | 19.2% |
-| module | 427 | 515 | 82.9% |
+| module | 428 | 516 | 82.9% |
 | property | 0 | 2 | 0.0% |
 | staticmethod | 6 | 6 | 100.0% |
-| struct | 136 | 320 | 42.5% |
+| struct | 138 | 322 | 42.9% |
 | type_alias | 42 | 74 | 56.8% |
 
 ## By module (lowest first)
@@ -380,7 +380,7 @@ Overall: **29.7%** (2831 of 9532 public modules, types, and callables). Data mem
 | [`tools.mkramdisk`](modules/tools.mkramdisk.py.md) | 2 | 4 | 50.0% |
 | [`tools.probe_compute_vga`](modules/tools.probe_compute_vga.py.md) | 1 | 2 | 50.0% |
 | [`tools.probe_minicraft`](modules/tools.probe_minicraft.py.md) | 1 | 2 | 50.0% |
-| [`kernel/vga_fb.c`](modules/kernel.vga_fb.c.md) | 61 | 118 | 51.7% |
+| [`kernel/vga_fb.c`](modules/kernel.vga_fb.c.md) | 62 | 121 | 51.2% |
 | [`progs/minios_png.h`](modules/progs.minios_png.h.md) | 11 | 21 | 52.4% |
 | [`progs/doomgeneric/z_zone.c`](modules/progs.doomgeneric.z_zone.c.md) | 10 | 19 | 52.6% |
 | [`headers/pipe.h`](modules/headers.pipe.h.md) | 9 | 17 | 52.9% |
@@ -495,6 +495,7 @@ Overall: **29.7%** (2831 of 9532 public modules, types, and callables). Data mem
 | [`headers/vga_fx.h`](modules/headers.vga_fx.h.md) | 9 | 9 | 100.0% |
 | [`headers/wm_focus.h`](modules/headers.wm_focus.h.md) | 5 | 5 | 100.0% |
 | [`headers/wm_geom.h`](modules/headers.wm_geom.h.md) | 11 | 11 | 100.0% |
+| [`headers/wm_jelly.h`](modules/headers.wm_jelly.h.md) | 14 | 14 | 100.0% |
 | [`headers/wm_layout.h`](modules/headers.wm_layout.h.md) | 16 | 16 | 100.0% |
 | [`headers/wm_render.h`](modules/headers.wm_render.h.md) | 5 | 5 | 100.0% |
 | [`headers/wm_tiling.h`](modules/headers.wm_tiling.h.md) | 3 | 3 | 100.0% |
@@ -545,7 +546,7 @@ Overall: **29.7%** (2831 of 9532 public modules, types, and callables). Data mem
 
 DOC001 undocumented public item, DOC002 parameter not documented, DOC003 documented parameter missing from the signature (stale doc), DOC004 return value not documented, DOC005 raised exception not documented.
 
-DOC001: 6690, DOC005: 1
+DOC001: 6692, DOC005: 1
 
 - DOC001 `arch/x86/ap_entry.S:21` function ap_stub_start is not documented
 - DOC001 `arch/x86/ap_entry.S:39` function ap_pm is not documented
@@ -1047,4 +1048,4 @@ DOC001: 6690, DOC005: 1
 - DOC001 `fs/ext4.c:666` function ext4_vfs_write is not documented
 - DOC001 `fs/ext4.c:675` function ext4_vfs_close is not documented
 - DOC001 `fs/ext4.c:680` function ext4_vfs_fstat is not documented
-- ... 6191 more in `api/warnings.jsonl`
+- ... 6193 more in `api/warnings.jsonl`

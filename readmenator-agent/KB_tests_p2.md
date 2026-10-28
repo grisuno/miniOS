@@ -1,6 +1,18 @@
 # Subsystem: tests (page 2 of 2)
 Previous: [KB_tests.md](KB_tests.md)
 
+## tests/test_pcache.c
+- Doc: Docstring: host test for the page cache store (make test-pcache).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `kmalloc` (function, line 19) `void *kmalloc(unsigned long size)`
+  - `kfree` (function, line 23) `void kfree(void *ptr)`
+  - `kprintf` (function, line 27) `int kprintf(const char *fmt, ...)`
+  - `main` (function, line 43) `int main(void)`
+  - `CHECK` (macro, line 36) `#define CHECK(cond, msg)`
+- Depends on: `fs/pcache.c`, `headers/pcache.h`, `kernel/string.c`
+
 ## tests/test_pci.c
 - Doc: Docstring: Host test for headers/drivers/pci.h (make test-pci).
 - Layer: testing

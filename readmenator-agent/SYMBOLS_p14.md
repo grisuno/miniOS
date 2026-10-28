@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `DEH_printf` | macro | `progs/doomgeneric/deh_str.h:39` | `#define DEH_printf` |
+| `DEH_snprintf` | function | `progs/doomgeneric/deh_str.h:32` | `void DEH_snprintf(char *buffer, size_t len, char *fmt, ...);` |
+| `DEH_snprintf` | macro | `progs/doomgeneric/deh_str.h:41` | `#define DEH_snprintf` |
+| `D_DoomMain` | function | `progs/doomgeneric/doom.h:28` | `void D_DoomMain (void);` |
+| `SRC_CHOCDOOM_DOOM_H_` | macro | `progs/doomgeneric/doom.h:10` | `#define SRC_CHOCDOOM_DOOM_H_` |
+| `ML_BLOCKING` | macro | `progs/doomgeneric/doomdata.h:98` | `#define ML_BLOCKING` |
+| `ML_BLOCKMONSTERS` | macro | `progs/doomgeneric/doomdata.h:101` | `#define ML_BLOCKMONSTERS` |
+| `ML_DONTDRAW` | macro | `progs/doomgeneric/doomdata.h:129` | `#define ML_DONTDRAW` |
+| `ML_DONTPEGBOTTOM` | macro | `progs/doomgeneric/doomdata.h:120` | `#define ML_DONTPEGBOTTOM` |
+| `ML_DONTPEGTOP` | macro | `progs/doomgeneric/doomdata.h:117` | `#define ML_DONTPEGTOP` |
+| `ML_MAPPED` | macro | `progs/doomgeneric/doomdata.h:132` | `#define ML_MAPPED` |
+| `ML_SECRET` | macro | `progs/doomgeneric/doomdata.h:123` | `#define ML_SECRET` |
+| `ML_SOUNDBLOCK` | macro | `progs/doomgeneric/doomdata.h:126` | `#define ML_SOUNDBLOCK` |
+| `ML_TWOSIDED` | macro | `progs/doomgeneric/doomdata.h:105` | `#define ML_TWOSIDED` |
+| `NF_SUBSECTOR` | macro | `progs/doomgeneric/doomdata.h:175` | `#define	NF_SUBSECTOR` |
+| `__DOOMDATA__` | macro | `progs/doomgeneric/doomdata.h:22` | `#define __DOOMDATA__` |
+| `DOOM_191_VERSION` | macro | `progs/doomgeneric/doomdef.h:37` | `#define DOOM_191_VERSION` |
+| `DOOM_VERSION` | macro | `progs/doomgeneric/doomdef.h:34` | `#define DOOM_VERSION` |
+| `MAXPLAYERS` | macro | `progs/doomgeneric/doomdef.h:45` | `#define MAXPLAYERS` |
+| `MTF_AMBUSH` | macro | `progs/doomgeneric/doomdef.h:82` | `#define	MTF_AMBUSH` |
+| `MTF_EASY` | macro | `progs/doomgeneric/doomdef.h:77` | `#define	MTF_EASY` |
+| `MTF_HARD` | macro | `progs/doomgeneric/doomdef.h:79` | `#define	MTF_HARD` |
+| `MTF_NORMAL` | macro | `progs/doomgeneric/doomdef.h:78` | `#define	MTF_NORMAL` |
+| `RANGECHECK` | macro | `progs/doomgeneric/doomdef.h:42` | `#define RANGECHECK` |
+| `__DOOMDEF__` | macro | `progs/doomgeneric/doomdef.h:21` | `#define __DOOMDEF__` |
+| `DOOM_FEATURES_H` | macro | `progs/doomgeneric/doomfeatures.h:20` | `#define DOOM_FEATURES_H` |
+| `FEATURE_SOUND` | macro | `progs/doomgeneric/doomfeatures.h:36` | `#define FEATURE_SOUND` |
+| `dg_Create` | function | `progs/doomgeneric/doomgeneric.c:6` | `void dg_Create()` |
+| `DG_DrawFrame` | function | `progs/doomgeneric/doomgeneric.h:15` | `void DG_DrawFrame();` |
+| `DG_GetKey` | function | `progs/doomgeneric/doomgeneric.h:18` | `int DG_GetKey(int* pressed, unsigned char* key);` |
+| `DG_GetTicksMs` | function | `progs/doomgeneric/doomgeneric.h:17` | `uint32_t DG_GetTicksMs();` |
 | `DG_Init` | function | `progs/doomgeneric/doomgeneric.h:14` | `void DG_Init();` |
 | `DG_ScreenBuffer` | variable | `progs/doomgeneric/doomgeneric.h:11` | `extern uint32_t* DG_ScreenBuffer;` |
 | `DG_SetWindowTitle` | function | `progs/doomgeneric/doomgeneric.h:19` | `void DG_SetWindowTitle(const char * title);` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 | `CDERR_BADTRACK` | macro | `progs/doomgeneric/i_cdmus.h:25` | `#define CDERR_BADTRACK` |
 | `CDERR_DEVREQBASE` | macro | `progs/doomgeneric/i_cdmus.h:27` | `#define CDERR_DEVREQBASE` |
 | `CDERR_IOCTLBUFFMEM` | macro | `progs/doomgeneric/i_cdmus.h:26` | `#define CDERR_IOCTLBUFFMEM` |
-| `CDERR_NOAUDIOSUPPORT` | macro | `progs/doomgeneric/i_cdmus.h:22` | `#define CDERR_NOAUDIOSUPPORT` |
-| `CDERR_NOAUDIOTRACKS` | macro | `progs/doomgeneric/i_cdmus.h:23` | `#define CDERR_NOAUDIOTRACKS` |
-| `CDERR_NOTINSTALLED` | macro | `progs/doomgeneric/i_cdmus.h:21` | `#define CDERR_NOTINSTALLED` |
-| `I_CDMusFirstTrack` | function | `progs/doomgeneric/i_cdmus.h:37` | `int I_CDMusFirstTrack(void);` |
-| `I_CDMusInit` | function | `progs/doomgeneric/i_cdmus.h:31` | `int I_CDMusInit(void);` |
-| `I_CDMusLastTrack` | function | `progs/doomgeneric/i_cdmus.h:38` | `int I_CDMusLastTrack(void);` |
-| `I_CDMusPlay` | function | `progs/doomgeneric/i_cdmus.h:33` | `int I_CDMusPlay(int track);` |
-| `I_CDMusPrintStartup` | function | `progs/doomgeneric/i_cdmus.h:32` | `void I_CDMusPrintStartup(void);` |
-| `I_CDMusResume` | function | `progs/doomgeneric/i_cdmus.h:35` | `int I_CDMusResume(void);` |
-| `I_CDMusSetVolume` | function | `progs/doomgeneric/i_cdmus.h:36` | `int I_CDMusSetVolume(int volume);` |
-| `I_CDMusStop` | function | `progs/doomgeneric/i_cdmus.h:34` | `int I_CDMusStop(void);` |
-| `I_CDMusTrackLength` | function | `progs/doomgeneric/i_cdmus.h:39` | `int I_CDMusTrackLength(int track);` |
-| `__ICDMUS__` | macro | `progs/doomgeneric/i_cdmus.h:19` | `#define __ICDMUS__` |
-| `cd_Error` | variable | `progs/doomgeneric/i_cdmus.h:29` | `extern int cd_Error;` |
-| `ENDOOM_H` | macro | `progs/doomgeneric/i_endoom.c:30` | `#define ENDOOM_H` |
-| `ENDOOM_W` | macro | `progs/doomgeneric/i_endoom.c:29` | `#define ENDOOM_W` |
-| `I_Endoom` | function | `progs/doomgeneric/i_endoom.c:36` | `void I_Endoom(byte *endoom_data)` |
-| `I_Endoom` | function | `progs/doomgeneric/i_endoom.h:26` | `void I_Endoom(byte *data);` |
-| `__I_ENDOOM__` | macro | `progs/doomgeneric/i_endoom.h:21` | `#define __I_ENDOOM__` |
-| `GetTypedChar` | function | `progs/doomgeneric/i_input.c:242` | `static unsigned char GetTypedChar(unsigned char key)` |
-| `I_GetEvent` | function | `progs/doomgeneric/i_input.c:279` | `void I_GetEvent(void)` |
-| `I_InitInput` | function | `progs/doomgeneric/i_input.c:338` | `void I_InitInput(void)` |
-| `TranslateKey` | function | `progs/doomgeneric/i_input.c:225` | `static unsigned char TranslateKey(unsigned char key)` |
-| `UpdateShiftStatus` | function | `progs/doomgeneric/i_input.c:263` | `static void UpdateShiftStatus(int pressed, unsigned char key)` |
-| `DEAD_ZONE` | macro | `progs/doomgeneric/i_joystick.c:38` | `#define DEAD_ZONE` |
-| `GetAxisState` | function | `progs/doomgeneric/i_joystick.c:248` | `static int GetAxisState(int axis, int invert)` |
-| `GetButtonsState` | function | `progs/doomgeneric/i_joystick.c:228` | `static int GetButtonsState(void)` |
-| `I_BindJoystickVariables` | function | `progs/doomgeneric/i_joystick.c:339` | `void I_BindJoystickVariables(void)` |
-| `I_InitJoystick` | function | `progs/doomgeneric/i_joystick.c:115` | `void I_InitJoystick(void)` |
-| `I_ShutdownJoystick` | function | `progs/doomgeneric/i_joystick.c:77` | `void I_ShutdownJoystick(void)` |
-| `I_UpdateJoystick` | function | `progs/doomgeneric/i_joystick.c:321` | `void I_UpdateJoystick(void)` |
 
 Next: [SYMBOLS_p15.md](SYMBOLS_p15.md)

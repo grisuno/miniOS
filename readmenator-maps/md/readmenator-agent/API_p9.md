@@ -1,6 +1,20 @@
 # API (page 9 of 21)
 Previous: [API_p8.md](API_p8.md)
 
+## kernel/vga_fx.c
+Depends on: `headers/vga_fb.h`, `headers/vga_fx.h`
+- `vga_fx_set_enabled` (function) `kernel/vga_fx.c:22` `void vga_fx_set_enabled(int on)`
+- `vga_fx_enabled` (function) `kernel/vga_fx.c:27` `int vga_fx_enabled(void)`
+- `fx_wait_until` (function) `kernel/vga_fx.c:35` `static void fx_wait_until(unsigned long deadline)` -- Deadline pacing over the PIT-calibrated TSC clock.
+- `vga_fx_snap_rect` (function) `kernel/vga_fx.c:41` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)`
+- `vga_fx_restore_rect` (function) `kernel/vga_fx.c:63` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)`
+- `vga_fx_free` (function) `kernel/vga_fx.c:77` `void vga_fx_free(unsigned int *buf)`
+- `once` (function) `kernel/vga_fx.c:90` `* once (prev[] tracks the revealed frontier per column), then the final
+ * restore guarantees the...`
+- `vga_fx_melt_rect` (function) `kernel/vga_fx.c:150` `void vga_fx_melt_rect(int x, int y, int w, int h,
+    const unsigned int *oldb, const unsigned in...` -- Drive one old->new melt.
+- `vga_fx_melt_from_black` (function) `kernel/vga_fx.c:159` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` -- Boot melt: the framebuffer is already cleared to black on entry, so no * old snapshot is needed; the new frame...
+
 ## mcp/mcp_dbg_driver.py
 Depends on: `kernel/time.c`
 - `Client.__init__` (method) `mcp/mcp_dbg_driver.py:16` `def __init__(self)`

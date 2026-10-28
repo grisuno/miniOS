@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `SPIN_WLA` | macro | `progs/src/spin.c:58` | `#define SPIN_WLA` |
+| `SPIN_WLB` | macro | `progs/src/spin.c:59` | `#define SPIN_WLB` |
+| `SPIN_WLH` | macro | `progs/src/spin.c:57` | `#define SPIN_WLH` |
+| `SPIN_WLW` | macro | `progs/src/spin.c:56` | `#define SPIN_WLW` |
+| `lmain` | function | `progs/src/spin.c:225` | `int lmain(long argc, char **argv)` |
+| `lx_atoi` | function | `progs/src/spin.c:42` | `static long lx_atoi(const char *s)` |
+| `lx_strlen` | function | `progs/src/spin.c:20` | `static unsigned long lx_strlen(const char *s)` |
+| `lx_syscall3` | function | `progs/src/spin.c:11` | `static long lx_syscall3(long n, long a1, long a2, long a3)` |
+| `lx_write` | function | `progs/src/spin.c:26` | `static void lx_write(const char *s)` |
+| `lx_write_int` | function | `progs/src/spin.c:30` | `static void lx_write_int(long v)` |
+| `spin_box_ok` | function | `progs/src/spin.c:82` | `static int spin_box_ok(const char *box)` |
+| `spin_emit` | function | `progs/src/spin.c:114` | `static int spin_emit(const char *box, unsigned int seq,         const unsigned char *msg, long mlen)` |
+| `spin_hdr` | function | `progs/src/spin.c:73` | `static void spin_hdr(unsigned char *d, unsigned long id, unsigned long op,         unsigned long ...` |
+| `spin_hex8` | function | `progs/src/spin.c:95` | `static void spin_hex8(unsigned int v, char *dst)` |
+| `spin_pixels` | function | `progs/src/spin.c:169` | `static void spin_pixels(long off)` |
+| `spin_raw_file` | function | `progs/src/spin.c:145` | `static int spin_raw_file(const char *box)` |
+| `spin_u32` | function | `progs/src/spin.c:66` | `static void spin_u32(unsigned char *d, unsigned long v)` |
+| `spin_wl` | function | `progs/src/spin.c:181` | `static int spin_wl(const char *box, const char *narg)` |
+| `spin_write_all` | function | `progs/src/spin.c:104` | `static long spin_write_all(long fd, const unsigned char *buf, long len)` |
+| `add` | function | `progs/src/test.c:1` | `int add(int a, int b)` |
+| `main` | function | `progs/src/test.c:2` | `int main(void)` |
+| `check` | function | `progs/src/test.lua:12` | `` |
+| `read_file` | function | `progs/src/test.lua:30` | `` |
+| `test_bin_aes` | function | `progs/src/test.lua:175` | `` |
+| `test_bin_cp` | function | `progs/src/test.lua:135` | `` |
+| `test_bin_freedom` | function | `progs/src/test.lua:205` | `` |
+| `test_bin_json` | function | `progs/src/test.lua:194` | `` |
+| `test_bin_lz4` | function | `progs/src/test.lua:141` | `` |
+| `test_bin_lzss` | function | `progs/src/test.lua:158` | `` |
+| `test_dlmalloc` | function | `progs/src/test.lua:80` | `` |
+| `test_filesystem` | function | `progs/src/test.lua:53` | `` |
 | `test_ftest` | function | `progs/src/test.lua:90` | `` |
 | `test_hello` | function | `progs/src/test.lua:85` | `` |
 | `test_ld` | function | `progs/src/test.lua:100` | `` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `wl_mbox_box_t` | struct | `progs/wl/wl_mbox.h:30` | `` |
 | `wl_mbox_ev_name` | function | `progs/wl/wl_mbox.h:225` | `static inline int wl_mbox_ev_name(char *dst, int cap, const char *box)` |
 | `wl_mbox_frame_decode` | function | `progs/wl/wl_mbox.h:332` | `static inline int wl_mbox_frame_decode(const unsigned char *src, int len,         unsigned int *s...` |
-| `wl_mbox_frame_encode` | function | `progs/wl/wl_mbox.h:310` | `static inline int wl_mbox_frame_encode(unsigned char *dst, int cap,         unsigned int seq, con...` |
-| `wl_mbox_fresh` | function | `progs/wl/wl_mbox.h:394` | `static inline int wl_mbox_fresh(const wl_mbox_box_t *boxes, int slot,         unsigned int seq)` |
-| `wl_mbox_hex` | function | `progs/wl/wl_mbox.h:74` | `static inline int wl_mbox_hex(unsigned int v, char *dst)` |
-| `wl_mbox_init` | function | `progs/wl/wl_mbox.h:36` | `static inline void wl_mbox_init(wl_mbox_box_t *boxes)` |
-| `wl_mbox_name` | function | `progs/wl/wl_mbox.h:103` | `static inline int wl_mbox_name(char *dst, int cap, const char *box,         unsigned int seq)` |
-| `wl_mbox_parse` | function | `progs/wl/wl_mbox.h:147` | `static inline int wl_mbox_parse(const char *path, char *box, int boxcap,         unsigned int *seq)` |
-| `wl_mbox_raw_name` | function | `progs/wl/wl_mbox.h:194` | `static inline int wl_mbox_raw_name(char *dst, int cap, const char *box)` |
-| `wl_mbox_route` | function | `progs/wl/wl_mbox.h:409` | `static inline int wl_mbox_route(wl_comp_t *c, wl_mbox_box_t *boxes,         const char *box, unsi...` |
-| `wl_mbox_unhex` | function | `progs/wl/wl_mbox.h:87` | `static inline int wl_mbox_unhex(char ch, unsigned int *v)` |
-| `WLCOMP_BG` | macro | `progs/wl/wl_mini.h:509` | `#define WLCOMP_BG` |
-| `WLCOMP_BORDER` | macro | `progs/wl/wl_mini.h:510` | `#define WLCOMP_BORDER` |
-| `WL_ATTACH_SZ` | macro | `progs/wl/wl_mini.h:28` | `#define WL_ATTACH_SZ` |
-| `WL_CFG_DEFAULT` | macro | `progs/wl/wl_mini.h:69` | `#define WL_CFG_DEFAULT` |
-| `WL_CLIP_MAX` | macro | `progs/wl/wl_mini.h:905` | `#define WL_CLIP_MAX` |
-| `WL_CLOSE_INK` | macro | `progs/wl/wl_mini.h:243` | `#define WL_CLOSE_INK` |
-| `WL_CLOSE_W` | macro | `progs/wl/wl_mini.h:239` | `#define WL_CLOSE_W` |
-| `WL_COMMIT_SZ` | macro | `progs/wl/wl_mini.h:29` | `#define WL_COMMIT_SZ` |
-| `WL_ERR_BOUND` | macro | `progs/wl/wl_mini.h:32` | `#define WL_ERR_BOUND` |
-| `WL_ERR_ID` | macro | `progs/wl/wl_mini.h:35` | `#define WL_ERR_ID` |
-| `WL_ERR_MORE` | macro | `progs/wl/wl_mini.h:37` | `#define WL_ERR_MORE` |
-| `WL_ERR_OK` | macro | `progs/wl/wl_mini.h:31` | `#define WL_ERR_OK` |
-| `WL_ERR_SIZE` | macro | `progs/wl/wl_mini.h:34` | `#define WL_ERR_SIZE` |
-| `WL_ERR_STR` | macro | `progs/wl/wl_mini.h:36` | `#define WL_ERR_STR` |
-| `WL_ERR_TRUNC` | macro | `progs/wl/wl_mini.h:33` | `#define WL_ERR_TRUNC` |
-| `WL_EV_MAGIC` | macro | `progs/wl/wl_mini.h:964` | `#define WL_EV_MAGIC` |
-| `WL_EV_SC_MAX` | macro | `progs/wl/wl_mini.h:965` | `#define WL_EV_SC_MAX` |
-| `WL_EV_SZ` | macro | `progs/wl/wl_mini.h:966` | `#define WL_EV_SZ` |
-| `WL_HDR_SZ` | macro | `progs/wl/wl_mini.h:27` | `#define WL_HDR_SZ` |
-| `WL_HIT_BODY` | macro | `progs/wl/wl_mini.h:246` | `#define WL_HIT_BODY` |
-| `WL_HIT_CLOSE` | macro | `progs/wl/wl_mini.h:248` | `#define WL_HIT_CLOSE` |
-| `WL_HIT_NONE` | macro | `progs/wl/wl_mini.h:245` | `#define WL_HIT_NONE` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

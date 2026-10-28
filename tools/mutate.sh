@@ -115,6 +115,7 @@ SOURCES="$SOURCES kernel/proc_sec.c kernel/seccomp_bpf.c progs/src/lxsecc.c"
 SOURCES="$SOURCES progs/lisp/lisp.c headers/httpd.h"
 SOURCES="$SOURCES kernel/vga_fx.c kernel/vga_fb.c headers/vga_fx.h tests/test_fx.c"
 SOURCES="$SOURCES headers/wm_chrome.h tests/test_chrome.c"
+SOURCES="$SOURCES headers/wm_jelly.h tests/test_jelly.c"
 # gfxview-* rows (graphics view contract) target the header, the
 # compositor and the zoom syscall; the latter two are listed above.
 SOURCES="$SOURCES headers/wm_gfxview.h tests/test_wm.c"
@@ -501,6 +502,14 @@ chrome-corner-edge-shifted | s/    edge16 = 32L \* radius;/    edge16 = 30L * ra
 chrome-corner-box-open | s/    if (x >= radius || y >= radius) {/    if (x >= radius \&\& y >= radius) {/ | headers/wm_chrome.h
 chrome-disc-mirror-lost | s/    return wm_chrome_corner_coverage(radius, x < radius ? x : side - x, y < radius ? y : side - y);/    return wm_chrome_corner_coverage(radius, x < radius ? x : x, y < radius ? y : side - y);/ | headers/wm_chrome.h
 chrome-disc-box-open | s/    if (radius <= 0 || x < 0 || y < 0 || x >= 2 \* radius || y >= 2 \* radius) {/    if (radius <= 0 || x < 0 || y < 0 || x > 2 * radius || y >= 2 * radius) {/ | headers/wm_chrome.h
+jelly-kick-sign-flipped | s/            j->dx\[i\] = wm_jelly_clamp(j->dx\[i\] - ((mx \* wt)/            j->dx[i] = wm_jelly_clamp(j->dx[i] + ((mx * wt)/ | headers/wm_jelly.h
+jelly-grab-pin-lost | s/    int ax = (wm_jelly_abs(px - gx)/    int ax = (wm_jelly_abs(px)/ | headers/wm_jelly.h
+jelly-damping-lost | s/                     - cfg->damping \* j->vx\[i\]) \/ WM_JELLY_WEIGHT_ONE;/                     - 0 * j->vx[i]) \/ WM_JELLY_WEIGHT_ONE;/ | headers/wm_jelly.h
+jelly-spring-lost | s/            ax\[i\] = (-cfg->stiffness \* j->dx\[i\]/            ax[i] = (-0 * j->dx[i]/ | headers/wm_jelly.h
+jelly-accum-clamp-lost | s/        j->dy\[i\] = wm_jelly_clamp(j->dy\[i\] + j->vy\[i\], lim);/        j->dy[i] = j->dy[i] + j->vy[i];/ | headers/wm_jelly.h
+jelly-sample-frac-lost | s/    fu = u - c \* WM_JELLY_WEIGHT_ONE;/    fu = 0;/ | headers/wm_jelly.h
+jelly-rest-velocity-x-ignored | s/            wm_jelly_abs(j->vx\[i\]) > cfg->rest_vel ||/            0 ||/ | headers/wm_jelly.h
+jelly-impulse-sign-flipped | s/            j->vx\[i\] -= ((((mx \* wt)/            j->vx[i] += ((((mx * wt)/ | headers/wm_jelly.h
 gfxview-fullscreen-request-dropped | s/        return vga_fb_gfx_set_fullscreen(a1 == MINIOS_GFX_ZOOM_FULLSCREEN) ? -22 : 0;/        return 0;/ | kernel/syscalls.c
 gfxview-tile-skips-graphics | s/                gfx_view_mode = WM_GFXVIEW_TILED;/                gfx_view_mode = gfx_view_mode;/ | kernel/vga_fb.c
 gfxview-minimize-closes | s/^        vga_fb_gfx_set_hidden(1);/        wm_close_request = 1;/ | kernel/vga_fb.c
@@ -842,6 +851,9 @@ for (( i = START; i < ${#NAMES[@]}; i++ )); do
             ;;
         headers/wm_chrome.h|tests/test_chrome.c)
             make -C "$HERE" test-chrome > "$BACKUP/suite.log" 2>&1
+            ;;
+        headers/wm_jelly.h|tests/test_jelly.c)
+            make -C "$HERE" test-jelly > "$BACKUP/suite.log" 2>&1
             ;;
         headers/wm_gfxview.h|tests/test_wm.c)
             make -C "$HERE" test-wm > "$BACKUP/suite.log" 2>&1

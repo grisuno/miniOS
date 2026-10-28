@@ -229,6 +229,7 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tests/test_fx.c` -> stdio.h
 - `tests/test_hal_io.c` -> stdio.h
 - `tests/test_httpd.c` -> stdio.h
+- `tests/test_jelly.c` -> stdio.h
 - `tests/test_ktime.c` -> stdio.h
 - `tests/test_ldso.c` -> stdio.h
 - `tests/test_leakcheck.c` -> stdio.h

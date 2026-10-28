@@ -462,6 +462,20 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `wm_gfxview_rect_same` | function | `headers/wm_gfxview.h:336` | `static inline int wm_gfxview_rect_same(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b)` |
 | `wm_gfxview_rect_t` | struct | `headers/wm_gfxview.h:47` | `` |
 | `wm_gfxview_t` | struct | `headers/wm_gfxview.h:56` | `` |
+| `WM_JELLY_CONFIG_DEFAULT` | macro | `headers/wm_jelly.h:48` | `#define WM_JELLY_CONFIG_DEFAULT` |
+| `WM_JELLY_FP` | macro | `headers/wm_jelly.h:22` | `#define WM_JELLY_FP` |
+| `WM_JELLY_GRID` | macro | `headers/wm_jelly.h:19` | `#define WM_JELLY_GRID` |
+| `WM_JELLY_H` | macro | `headers/wm_jelly.h:16` | `#define WM_JELLY_H` |
+| `WM_JELLY_WEIGHT_ONE` | macro | `headers/wm_jelly.h:25` | `#define WM_JELLY_WEIGHT_ONE` |
+| `wm_jelly_abs` | function | `headers/wm_jelly.h:71` | `static inline int wm_jelly_abs(int v)` |
+| `wm_jelly_at_rest` | function | `headers/wm_jelly.h:186` | `static inline int wm_jelly_at_rest(const wm_jelly_config_t *cfg, const wm_jelly_t *j)` |
+| `wm_jelly_clamp` | function | `headers/wm_jelly.h:59` | `static inline int wm_jelly_clamp(int v, int lim)` |
+| `wm_jelly_config_t` | struct | `headers/wm_jelly.h:33` | `` |
+| `wm_jelly_neighbours` | function | `headers/wm_jelly.h:130` | `static inline int wm_jelly_neighbours(const int *d, int r, int c)` |
+| `wm_jelly_reset` | function | `headers/wm_jelly.h:77` | `static inline void wm_jelly_reset(wm_jelly_t *j)` |
+| `wm_jelly_sample` | function | `headers/wm_jelly.h:203` | `static inline void wm_jelly_sample(const wm_jelly_t *j, int x, int y, int w, int h,              ...` |
+| `wm_jelly_step` | function | `headers/wm_jelly.h:155` | `static inline void wm_jelly_step(const wm_jelly_config_t *cfg, wm_jelly_t *j)` |
+| `wm_jelly_t` | struct | `headers/wm_jelly.h:51` | `` |
 | `WM_LAYOUT_CONFIG_DEFAULT` | macro | `headers/wm_layout.h:45` | `#define WM_LAYOUT_CONFIG_DEFAULT` |
 | `WM_LAYOUT_H` | macro | `headers/wm_layout.h:12` | `#define WM_LAYOUT_H` |
 | `WM_LAYOUT_MODE_COUNT` | macro | `headers/wm_layout.h:24` | `#define WM_LAYOUT_MODE_COUNT` |
@@ -482,19 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `WM_NOTIFY_MAX_HANDLERS` | macro | `headers/wm_notify.h:41` | `#define WM_NOTIFY_MAX_HANDLERS` |
 | `wm_notify_bus_t` | struct | `headers/wm_notify.h:43` | `` |
 | `wm_notify_emit` | function | `headers/wm_notify.h:76` | `static inline void wm_notify_emit(wm_notify_bus_t *bus,                                   const w...` |
-| `wm_notify_event_t` | struct | `headers/wm_notify.h:30` | `` |
-| `wm_notify_last` | function | `headers/wm_notify.h:90` | `static inline const wm_notify_event_t *wm_notify_last(     const wm_notify_bus_t *bus)` |
-| `wm_notify_reset` | function | `headers/wm_notify.h:51` | `static inline void wm_notify_reset(wm_notify_bus_t *bus)` |
-| `wm_notify_src_name` | function | `headers/wm_notify.h:98` | `static inline const char *wm_notify_src_name(int source)` |
-| `wm_notify_subscribe` | function | `headers/wm_notify.h:66` | `static inline int wm_notify_subscribe(wm_notify_bus_t *bus,                                      ...` |
-| `WM_RENDER_CONFIG_DEFAULT` | macro | `headers/wm_render.h:36` | `#define WM_RENDER_CONFIG_DEFAULT` |
-| `WM_RENDER_H` | macro | `headers/wm_render.h:11` | `#define WM_RENDER_H` |
-| `wm_build_render_plan` | function | `headers/wm_render.h:39` | `static inline int wm_build_render_plan(const wm_render_config_t *cfg, const int *present, int nte...` |
-| `wm_render_config_t` | struct | `headers/wm_render.h:31` | `` |
-| `wm_render_item_t` | struct | `headers/wm_render.h:25` | `` |
-| `WM_TILING_H` | macro | `headers/wm_tiling.h:10` | `#define WM_TILING_H` |
-| `wm_tile_cell_t` | struct | `headers/wm_tiling.h:13` | `` |
-| `wm_tile_layout` | function | `headers/wm_tiling.h:22` | `static inline int wm_tile_layout(const int *present, int nterms, int gfx_active, int max_cols, in...` |
-| `WM_WINDOW_GFX_ID` | macro | `headers/wm_window.h:23` | `#define WM_WINDOW_GFX_ID` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

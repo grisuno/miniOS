@@ -3,6 +3,37 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `f_comment` | function | `progs/asm/freedom.s:80` | `` |
+| `f_crem` | function | `progs/asm/freedom.s:244` | `` |
+| `f_csize` | function | `progs/asm/freedom.s:240` | `` |
+| `f_css` | function | `progs/asm/freedom.s:216` | `` |
+| `f_csslen` | function | `progs/asm/freedom.s:220` | `` |
+| `f_cstage` | function | `progs/asm/freedom.s:236` | `` |
+| `f_depth` | function | `progs/asm/freedom.s:204` | `` |
+| `f_dom` | function | `progs/asm/freedom.s:208` | `` |
+| `f_domlen` | function | `progs/asm/freedom.s:212` | `` |
+| `f_dump_css` | function | `progs/asm/freedom.s:188` | `` |
+| `f_dump_dom` | function | `progs/asm/freedom.s:192` | `` |
+| `f_ent` | function | `progs/asm/freedom.s:96` | `` |
+| `f_entlen` | function | `progs/asm/freedom.s:100` | `` |
+| `f_has_clen` | function | `progs/asm/freedom.s:56` | `` |
+| `f_hdr` | function | `progs/asm/freedom.s:64` | `` |
+| `f_hlen` | function | `progs/asm/freedom.s:68` | `` |
+| `f_host` | function | `progs/asm/freedom.s:24` | `` |
+| `f_href` | function | `progs/asm/freedom.s:168` | `` |
+| `f_hreflen` | function | `progs/asm/freedom.s:172` | `` |
+| `f_id` | function | `progs/asm/freedom.s:152` | `` |
+| `f_idlen` | function | `progs/asm/freedom.s:156` | `` |
+| `f_inval` | function | `progs/asm/freedom.s:128` | `` |
+| `f_inval2` | function | `progs/asm/freedom.s:132` | `` |
+| `f_linkhost` | function | `progs/asm/freedom.s:224` | `` |
+| `f_linkn` | function | `progs/asm/freedom.s:232` | `` |
+| `f_linkpath` | function | `progs/asm/freedom.s:228` | `` |
+| `f_loc` | function | `progs/asm/freedom.s:40` | `` |
+| `f_mode` | function | `progs/asm/freedom.s:196` | `` |
+| `f_path` | function | `progs/asm/freedom.s:28` | `` |
+| `f_port` | function | `progs/asm/freedom.s:32` | `` |
+| `f_rawcap` | function | `progs/asm/freedom.s:200` | `` |
 | `f_redir` | function | `progs/asm/freedom.s:44` | `` |
 | `f_rel_ss` | function | `progs/asm/freedom.s:176` | `` |
 | `f_secure` | function | `progs/asm/freedom.s:36` | `` |
@@ -465,36 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `AMSTR_MARKSCLEARED` | macro | `progs/doomgeneric/d_englsh.h:330` | `#define AMSTR_MARKSCLEARED` |
 | `C1TEXT` | macro | `progs/doomgeneric/d_englsh.h:435` | `#define C1TEXT` |
 | `C2TEXT` | macro | `progs/doomgeneric/d_englsh.h:451` | `#define C2TEXT` |
-| `C3TEXT` | macro | `progs/doomgeneric/d_englsh.h:473` | `#define C3TEXT` |
-| `C4TEXT` | macro | `progs/doomgeneric/d_englsh.h:487` | `#define C4TEXT` |
-| `C5TEXT` | macro | `progs/doomgeneric/d_englsh.h:508` | `#define C5TEXT` |
-| `C6TEXT` | macro | `progs/doomgeneric/d_englsh.h:518` | `#define C6TEXT` |
-| `CC_ARACH` | macro | `progs/doomgeneric/d_englsh.h:683` | `#define CC_ARACH` |
-| `CC_ARCH` | macro | `progs/doomgeneric/d_englsh.h:687` | `#define CC_ARCH` |
-| `CC_BARON` | macro | `progs/doomgeneric/d_englsh.h:682` | `#define CC_BARON` |
-| `CC_CACO` | macro | `progs/doomgeneric/d_englsh.h:680` | `#define CC_CACO` |
-| `CC_CYBER` | macro | `progs/doomgeneric/d_englsh.h:689` | `#define CC_CYBER` |
-| `CC_DEMON` | macro | `progs/doomgeneric/d_englsh.h:678` | `#define CC_DEMON` |
-| `CC_HEAVY` | macro | `progs/doomgeneric/d_englsh.h:676` | `#define CC_HEAVY` |
-| `CC_HELL` | macro | `progs/doomgeneric/d_englsh.h:681` | `#define CC_HELL` |
-| `CC_HERO` | macro | `progs/doomgeneric/d_englsh.h:690` | `#define CC_HERO` |
-| `CC_IMP` | macro | `progs/doomgeneric/d_englsh.h:677` | `#define CC_IMP` |
-| `CC_LOST` | macro | `progs/doomgeneric/d_englsh.h:679` | `#define CC_LOST` |
-| `CC_MANCU` | macro | `progs/doomgeneric/d_englsh.h:686` | `#define CC_MANCU` |
-| `CC_PAIN` | macro | `progs/doomgeneric/d_englsh.h:684` | `#define CC_PAIN` |
-| `CC_REVEN` | macro | `progs/doomgeneric/d_englsh.h:685` | `#define CC_REVEN` |
-| `CC_SHOTGUN` | macro | `progs/doomgeneric/d_englsh.h:675` | `#define CC_SHOTGUN` |
-| `CC_SPIDER` | macro | `progs/doomgeneric/d_englsh.h:688` | `#define CC_SPIDER` |
-| `CC_ZOMBIE` | macro | `progs/doomgeneric/d_englsh.h:674` | `#define CC_ZOMBIE` |
-| `DETAILHI` | macro | `progs/doomgeneric/d_englsh.h:65` | `#define DETAILHI` |
-| `DETAILLO` | macro | `progs/doomgeneric/d_englsh.h:66` | `#define DETAILLO` |
-| `DOSY` | macro | `progs/doomgeneric/d_englsh.h:63` | `#define DOSY` |
-| `D_CDROM` | macro | `progs/doomgeneric/d_englsh.h:31` | `#define D_CDROM` |
-| `D_DEVSTR` | macro | `progs/doomgeneric/d_englsh.h:30` | `#define D_DEVSTR` |
-| `E1TEXT` | macro | `progs/doomgeneric/d_englsh.h:356` | `#define E1TEXT` |
-| `E2TEXT` | macro | `progs/doomgeneric/d_englsh.h:374` | `#define E2TEXT` |
-| `E3TEXT` | macro | `progs/doomgeneric/d_englsh.h:394` | `#define E3TEXT` |
-| `E4TEXT` | macro | `progs/doomgeneric/d_englsh.h:414` | `#define E4TEXT` |
-| `EMPTYSTRING` | macro | `progs/doomgeneric/d_englsh.h:72` | `#define EMPTYSTRING` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)
