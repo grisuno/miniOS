@@ -1,6 +1,6 @@
 # Documentation Coverage
 
-Overall: **29.8%** (2846 of 9549 public modules, types, and callables). Data members are excluded from the ratio.
+Overall: **29.9%** (2861 of 9567 public modules, types, and callables). Data members are excluded from the ratio.
 
 [Back to index](index.md)
 
@@ -12,13 +12,13 @@ Overall: **29.8%** (2846 of 9549 public modules, types, and callables). Data mem
 | constructor | 3 | 24 | 12.5% |
 | enum | 2 | 3 | 66.7% |
 | exception | 5 | 5 | 100.0% |
-| function | 1497 | 4541 | 33.0% |
-| macro | 674 | 3892 | 17.3% |
+| function | 1506 | 4553 | 33.1% |
+| macro | 679 | 3897 | 17.4% |
 | method | 24 | 125 | 19.2% |
 | module | 428 | 516 | 82.9% |
 | property | 0 | 2 | 0.0% |
 | staticmethod | 6 | 6 | 100.0% |
-| struct | 138 | 322 | 42.9% |
+| struct | 139 | 323 | 43.0% |
 | type_alias | 42 | 74 | 56.8% |
 
 ## By module (lowest first)
@@ -243,7 +243,7 @@ Overall: **29.8%** (2846 of 9549 public modules, types, and callables). Data mem
 | [`progs/src/lxsel.c`](modules/progs.src.lxsel.c.md) | 2 | 8 | 25.0% |
 | [`progs.src.shell`](modules/progs.src.shell.py.md) | 1 | 4 | 25.0% |
 | [`progs/doomgeneric/st_stuff.c`](modules/progs.doomgeneric.st_stuff.c.md) | 34 | 135 | 25.2% |
-| [`headers/vga_fb.h`](modules/headers.vga_fb.h.md) | 35 | 136 | 25.7% |
+| [`headers/vga_fb.h`](modules/headers.vga_fb.h.md) | 35 | 138 | 25.4% |
 | [`progs/doomgeneric/wi_stuff.c`](modules/progs.doomgeneric.wi_stuff.c.md) | 17 | 66 | 25.8% |
 | [`progs/doomgeneric/am_map.c`](modules/progs.doomgeneric.am_map.c.md) | 23 | 88 | 26.1% |
 | [`progs/doomgeneric/st_lib.h`](modules/progs.doomgeneric.st_lib.h.md) | 4 | 15 | 26.7% |
@@ -483,6 +483,7 @@ Overall: **29.8%** (2846 of 9549 public modules, types, and callables). Data mem
 | [`headers/wm_gfxview.h`](modules/headers.wm_gfxview.h.md) | 14 | 15 | 93.3% |
 | [`headers/pcache.h`](modules/headers.pcache.h.md) | 16 | 17 | 94.1% |
 | [`tools.update_sources`](modules/tools.update_sources.py.md) | 32 | 34 | 94.1% |
+| [`headers/vga_fx.h`](modules/headers.vga_fx.h.md) | 24 | 25 | 96.0% |
 | [`drivers/usbhid.c`](modules/drivers.usbhid.c.md) | 16 | 16 | 100.0% |
 | [`fs/fsimg.c`](modules/fs.fsimg.c.md) | 5 | 5 | 100.0% |
 | [`headers/ap_stub.h`](modules/headers.ap_stub.h.md) | 1 | 1 | 100.0% |
@@ -492,7 +493,6 @@ Overall: **29.8%** (2846 of 9549 public modules, types, and callables). Data mem
 | [`headers/kernel/vga_cursor.h`](modules/headers.kernel.vga_cursor.h.md) | 8 | 8 | 100.0% |
 | [`headers/tick.h`](modules/headers.tick.h.md) | 16 | 16 | 100.0% |
 | [`headers/tls_roots.h`](modules/headers.tls_roots.h.md) | 1 | 1 | 100.0% |
-| [`headers/vga_fx.h`](modules/headers.vga_fx.h.md) | 9 | 9 | 100.0% |
 | [`headers/wm_focus.h`](modules/headers.wm_focus.h.md) | 5 | 5 | 100.0% |
 | [`headers/wm_geom.h`](modules/headers.wm_geom.h.md) | 11 | 11 | 100.0% |
 | [`headers/wm_jelly.h`](modules/headers.wm_jelly.h.md) | 14 | 14 | 100.0% |
@@ -546,7 +546,7 @@ Overall: **29.8%** (2846 of 9549 public modules, types, and callables). Data mem
 
 DOC001 undocumented public item, DOC002 parameter not documented, DOC003 documented parameter missing from the signature (stale doc), DOC004 return value not documented, DOC005 raised exception not documented.
 
-DOC001: 6692, DOC005: 1
+DOC001: 6695, DOC005: 1
 
 - DOC001 `arch/x86/ap_entry.S:21` function ap_stub_start is not documented
 - DOC001 `arch/x86/ap_entry.S:39` function ap_pm is not documented
@@ -1048,4 +1048,4 @@ DOC001: 6692, DOC005: 1
 - DOC001 `fs/ext4.c:666` function ext4_vfs_write is not documented
 - DOC001 `fs/ext4.c:675` function ext4_vfs_close is not documented
 - DOC001 `fs/ext4.c:680` function ext4_vfs_fstat is not documented
-- ... 6193 more in `api/warnings.jsonl`
+- ... 6196 more in `api/warnings.jsonl`

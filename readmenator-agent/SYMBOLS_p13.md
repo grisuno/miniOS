@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `HAVE_INTTYPES_H` | macro | `progs/doomgeneric/config.h:10` | `#define HAVE_INTTYPES_H` |
+| `HAVE_STDINT_H` | macro | `progs/doomgeneric/config.h:46` | `#define HAVE_STDINT_H` |
+| `HAVE_STDLIB_H` | macro | `progs/doomgeneric/config.h:49` | `#define HAVE_STDLIB_H` |
+| `HAVE_STRINGS_H` | macro | `progs/doomgeneric/config.h:52` | `#define HAVE_STRINGS_H` |
+| `HAVE_STRING_H` | macro | `progs/doomgeneric/config.h:55` | `#define HAVE_STRING_H` |
+| `HAVE_SYS_TYPES_H` | macro | `progs/doomgeneric/config.h:61` | `#define HAVE_SYS_TYPES_H` |
+| `PACKAGE` | macro | `progs/doomgeneric/config.h:67` | `#define PACKAGE` |
+| `PACKAGE_NAME` | macro | `progs/doomgeneric/config.h:73` | `#define PACKAGE_NAME` |
+| `PACKAGE_STRING` | macro | `progs/doomgeneric/config.h:76` | `#define PACKAGE_STRING` |
+| `PACKAGE_TARNAME` | macro | `progs/doomgeneric/config.h:79` | `#define PACKAGE_TARNAME` |
+| `PACKAGE_URL` | macro | `progs/doomgeneric/config.h:82` | `#define PACKAGE_URL` |
+| `PACKAGE_VERSION` | macro | `progs/doomgeneric/config.h:85` | `#define PACKAGE_VERSION` |
+| `PROGRAM_PREFIX` | macro | `progs/doomgeneric/config.h:88` | `#define PROGRAM_PREFIX` |
+| `STDC_HEADERS` | macro | `progs/doomgeneric/config.h:91` | `#define STDC_HEADERS` |
+| `VERSION` | macro | `progs/doomgeneric/config.h:94` | `#define VERSION` |
+| `AMSTR_FOLLOWOFF` | macro | `progs/doomgeneric/d_englsh.h:324` | `#define AMSTR_FOLLOWOFF` |
+| `AMSTR_FOLLOWON` | macro | `progs/doomgeneric/d_englsh.h:323` | `#define AMSTR_FOLLOWON` |
+| `AMSTR_GRIDOFF` | macro | `progs/doomgeneric/d_englsh.h:327` | `#define AMSTR_GRIDOFF` |
+| `AMSTR_GRIDON` | macro | `progs/doomgeneric/d_englsh.h:326` | `#define AMSTR_GRIDON` |
+| `AMSTR_MARKEDSPOT` | macro | `progs/doomgeneric/d_englsh.h:329` | `#define AMSTR_MARKEDSPOT` |
+| `AMSTR_MARKSCLEARED` | macro | `progs/doomgeneric/d_englsh.h:330` | `#define AMSTR_MARKSCLEARED` |
+| `C1TEXT` | macro | `progs/doomgeneric/d_englsh.h:435` | `#define C1TEXT` |
+| `C2TEXT` | macro | `progs/doomgeneric/d_englsh.h:451` | `#define C2TEXT` |
 | `C3TEXT` | macro | `progs/doomgeneric/d_englsh.h:473` | `#define C3TEXT` |
 | `C4TEXT` | macro | `progs/doomgeneric/d_englsh.h:487` | `#define C4TEXT` |
 | `C5TEXT` | macro | `progs/doomgeneric/d_englsh.h:508` | `#define C5TEXT` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `deh_idkfa_armor_class` | variable | `progs/doomgeneric/deh_misc.h:55` | `extern int deh_idkfa_armor_class;` |
 | `deh_idkfa_armor_class` | macro | `progs/doomgeneric/deh_misc.h:76` | `#define deh_idkfa_armor_class` |
 | `deh_initial_bullets` | variable | `progs/doomgeneric/deh_misc.h:43` | `extern int deh_initial_bullets;` |
-| `deh_initial_bullets` | macro | `progs/doomgeneric/deh_misc.h:64` | `#define deh_initial_bullets` |
-| `deh_initial_health` | variable | `progs/doomgeneric/deh_misc.h:42` | `extern int deh_initial_health;` |
-| `deh_initial_health` | macro | `progs/doomgeneric/deh_misc.h:63` | `#define deh_initial_health` |
-| `deh_max_armor` | variable | `progs/doomgeneric/deh_misc.h:45` | `extern int deh_max_armor;` |
-| `deh_max_armor` | macro | `progs/doomgeneric/deh_misc.h:66` | `#define deh_max_armor` |
-| `deh_max_health` | variable | `progs/doomgeneric/deh_misc.h:44` | `extern int deh_max_health;` |
-| `deh_max_health` | macro | `progs/doomgeneric/deh_misc.h:65` | `#define deh_max_health` |
-| `deh_max_soulsphere` | variable | `progs/doomgeneric/deh_misc.h:48` | `extern int deh_max_soulsphere;` |
-| `deh_max_soulsphere` | macro | `progs/doomgeneric/deh_misc.h:69` | `#define deh_max_soulsphere` |
-| `deh_megasphere_health` | variable | `progs/doomgeneric/deh_misc.h:50` | `extern int deh_megasphere_health;` |
-| `deh_megasphere_health` | macro | `progs/doomgeneric/deh_misc.h:71` | `#define deh_megasphere_health` |
-| `deh_soulsphere_health` | variable | `progs/doomgeneric/deh_misc.h:49` | `extern int deh_soulsphere_health;` |
-| `deh_soulsphere_health` | macro | `progs/doomgeneric/deh_misc.h:70` | `#define deh_soulsphere_health` |
-| `deh_species_infighting` | variable | `progs/doomgeneric/deh_misc.h:57` | `extern int deh_species_infighting;` |
-| `deh_species_infighting` | macro | `progs/doomgeneric/deh_misc.h:78` | `#define deh_species_infighting` |
-| `DEH_AddStringReplacement` | function | `progs/doomgeneric/deh_str.h:33` | `void DEH_AddStringReplacement(char *from_text, char *to_text);` |
-| `DEH_AddStringReplacement` | macro | `progs/doomgeneric/deh_str.h:42` | `#define DEH_AddStringReplacement(x, y)` |
-| `DEH_STR_H` | macro | `progs/doomgeneric/deh_str.h:19` | `#define DEH_STR_H` |
-| `DEH_String` | function | `progs/doomgeneric/deh_str.h:29` | `char *DEH_String(char *s);` |
-| `DEH_String` | macro | `progs/doomgeneric/deh_str.h:38` | `#define DEH_String(x)` |
-| `DEH_fprintf` | function | `progs/doomgeneric/deh_str.h:31` | `void DEH_fprintf(FILE *fstream, char *fmt, ...);` |
-| `DEH_fprintf` | macro | `progs/doomgeneric/deh_str.h:40` | `#define DEH_fprintf` |
-| `DEH_printf` | function | `progs/doomgeneric/deh_str.h:30` | `void DEH_printf(char *fmt, ...);` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

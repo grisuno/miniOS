@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `MAX_VOICES` | macro | `progs/piano/piano.c:221` | `#define MAX_VOICES` |
+| `NCTRLS` | macro | `progs/piano/piano.c:561` | `#define NCTRLS` |
+| `NKEYS` | macro | `progs/piano/piano.c:209` | `#define NKEYS` |
+| `PCM_BUF` | macro | `progs/piano/piano.c:63` | `#define PCM_BUF` |
+| `PCM_FRAG` | macro | `progs/piano/piano.c:62` | `#define PCM_FRAG` |
+| `PIANO_BASE_MIDI` | macro | `progs/piano/piano.c:195` | `#define PIANO_BASE_MIDI` |
+| `PIANO_FRAME_MS` | macro | `progs/piano/piano.c:84` | `#define PIANO_FRAME_MS` |
+| `PIANO_FRAME_PERIOD` | macro | `progs/piano/piano.c:91` | `#define PIANO_FRAME_PERIOD` |
+| `PIANO_OCTAVES` | macro | `progs/piano/piano.c:196` | `#define PIANO_OCTAVES` |
+| `RATE` | macro | `progs/piano/piano.c:61` | `#define RATE` |
+| `SYS_PCM2_CLOSE` | macro | `progs/piano/piano.c:59` | `#define SYS_PCM2_CLOSE` |
+| `SYS_PCM2_OPEN` | macro | `progs/piano/piano.c:57` | `#define SYS_PCM2_OPEN` |
+| `SYS_PCM2_WRITE` | macro | `progs/piano/piano.c:58` | `#define SYS_PCM2_WRITE` |
+| `UI_MEMORY` | macro | `progs/piano/piano.c:54` | `#define UI_MEMORY` |
+| `clamp_midi` | function | `progs/piano/piano.c:234` | `static int clamp_midi(int m)` |
+| `ctrl_active` | function | `progs/piano/piano.c:567` | `static int ctrl_active(int id)` |
+| `ctrl_hit` | function | `progs/piano/piano.c:563` | `static int ctrl_hit(int id, int mx, int my)` |
+| `ctrl_press` | function | `progs/piano/piano.c:577` | `static void ctrl_press(int id)` |
+| `fx_configure` | function | `progs/piano/piano.c:421` | `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` |
+| `fx_process` | function | `progs/piano/piano.c:440` | `static float fx_process(float x)` |
+| `hit_key` | function | `progs/piano/piano.c:518` | `static int hit_key(int mx, int my)` |
+| `hit_velocity` | function | `progs/piano/piano.c:535` | `static int hit_velocity(int key, int my)` |
+| `kbd_all_off` | function | `progs/piano/piano.c:333` | `static void kbd_all_off(void)` |
 | `kbd_semitone` | function | `progs/piano/piano.c:298` | `static int kbd_semitone(int code)` |
 | `key_rect` | function | `progs/piano/piano.c:511` | `static void key_rect(int key, int *x, int *y, int *w, int *h)` |
 | `main` | function | `progs/piano/piano.c:1042` | `int main(int argc, char **argv)` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `wl_split_url` | function | `progs/src/freedom_wl.c:544` | `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...` |
 | `wl_status_text` | function | `progs/src/freedom_wl.c:951` | `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...` |
 | `wl_strlen` | function | `progs/src/freedom_wl.c:388` | `static long wl_strlen(char *s, long cap)` |
-| `errno` | variable | `progs/src/ftest.c:10` | `extern int errno;` |
-| `exit` | function | `progs/src/ftest.c:7` | `extern void exit(int code);` |
-| `fopen` | function | `progs/src/ftest.c:11` | `extern void *fopen(const char *path, const char *mode);` |
-| `fprintf` | function | `progs/src/ftest.c:4` | `extern int fprintf(void *stream, const char *fmt, ...);` |
-| `main` | function | `progs/src/ftest.c:13` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/src/ftest.c:6` | `extern int printf(const char *fmt, ...);` |
-| `snprintf` | function | `progs/src/ftest.c:5` | `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);` |
-| `stderr` | variable | `progs/src/ftest.c:9` | `extern void *stderr;` |
-| `stdout` | variable | `progs/src/ftest.c:8` | `extern void *stdout;` |
-| `main` | function | `progs/src/hello.c:4` | `int main(int argc, char **argv)` |
-| `printf` | function | `progs/src/hello.c:2` | `extern int printf(const char *fmt, ...);` |
-| `atoi` | function | `progs/src/http.c:18` | `int atoi(char *s)` |
-| `close` | function | `progs/src/http.c:10` | `int close(int fd);` |
-| `connect` | function | `progs/src/http.c:6` | `int connect(int fd, void *addr, int addrlen);` |
-| `kernel` | function | `progs/src/http.c:3` | `* Hostnames are resolved by the kernel (net_dns_resolve syscall). */ int socket(int domain, int type, int proto);` |
-| `main` | function | `progs/src/http.c:29` | `int main(int argc, char **argv)` |
-| `net_dns_resolve` | function | `progs/src/http.c:11` | `int net_dns_resolve(const char *host);` |
-| `printf` | function | `progs/src/http.c:13` | `int printf(char *fmt, ...);` |
-| `putchar` | function | `progs/src/http.c:15` | `int putchar(int c);` |
-| `puts` | function | `progs/src/http.c:12` | `int puts(char *s);` |
-| `recvfrom` | function | `progs/src/http.c:8` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
-| `sendto` | function | `progs/src/http.c:7` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
-| `shutdown` | function | `progs/src/http.c:9` | `int shutdown(int fd, int how);` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)

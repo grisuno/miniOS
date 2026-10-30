@@ -268,7 +268,9 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `fb_width` | variable | `headers/vga_fb.h:23` | `extern int fb_width;` |
 | `fb_write_packed` | function | `headers/vga_fb.h:201` | `void fb_write_packed(int x, int y, unsigned long rgb);` |
 | `fb_write_row_packed` | function | `headers/vga_fb.h:224` | `void fb_write_row_packed(int x, int y, const unsigned int *src, int n);` |
-| `fx_melts_completed` | variable | `headers/vga_fb.h:284` | `extern unsigned long fx_melts_completed;` |
+| `fx_burns_completed` | variable | `headers/vga_fb.h:289` | `extern unsigned long fx_burns_completed;` |
+| `fx_genies_completed` | variable | `headers/vga_fb.h:290` | `extern unsigned long fx_genies_completed;` |
+| `fx_melts_completed` | variable | `headers/vga_fb.h:288` | `extern unsigned long fx_melts_completed;` |
 | `gfx_frames_composited` | variable | `headers/vga_fb.h:59` | `extern unsigned long gfx_frames_composited;` |
 | `gfx_win_title` | variable | `headers/vga_fb.h:50` | `extern const char *gfx_win_title;` |
 | `mouse_state` | variable | `headers/vga_fb.h:167` | `extern mouse_state_t mouse_state;` |
@@ -277,7 +279,7 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `pixels` | function | `headers/vga_fb.h:270` | `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...` |
 | `term_clear` | function | `headers/vga_fb.h:195` | `void term_clear(void);` |
 | `term_rows` | variable | `headers/vga_fb.h:156` | `extern int term_x, term_y, term_cols, term_rows;` |
-| `vga_fb_active` | variable | `headers/vga_fb.h:293` | `extern int vga_fb_active;` |
+| `vga_fb_active` | variable | `headers/vga_fb.h:299` | `extern int vga_fb_active;` |
 | `vga_fb_blit_nk_rgb_window` | function | `headers/vga_fb.h:76` | `void vga_fb_blit_nk_rgb_window(void);` |
 | `vga_fb_blit_nk_window` | function | `headers/vga_fb.h:75` | `void vga_fb_blit_nk_window(void);` |
 | `vga_fb_boot_config` | function | `headers/vga_fb.h:40` | `void vga_fb_boot_config(void);` |
@@ -319,7 +321,7 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vga_fb_rect_rgb` | function | `headers/vga_fb.h:190` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);` |
 | `vga_fb_reset_default` | function | `headers/vga_fb.h:207` | `void vga_fb_reset_default(void);` |
 | `vga_fb_resize` | function | `headers/vga_fb.h:206` | `void vga_fb_resize(int dcols, int drows);` |
-| `vga_fb_set_gfx_mode` | function | `headers/vga_fb.h:291` | `void vga_fb_set_gfx_mode(int on);` |
+| `vga_fb_set_gfx_mode` | function | `headers/vga_fb.h:297` | `void vga_fb_set_gfx_mode(int on);` |
 | `vga_fb_set_gfx_palette` | function | `headers/vga_fb.h:38` | `void vga_fb_set_gfx_palette(const unsigned char *pal);` |
 | `vga_fb_snap_window` | function | `headers/vga_fb.h:205` | `void vga_fb_snap_window(int zone);` |
 | `vga_fb_str` | function | `headers/vga_fb.h:192` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);` |
@@ -333,8 +335,10 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vga_fb_toggle_fullscreen` | function | `headers/vga_fb.h:203` | `void vga_fb_toggle_fullscreen(void);` |
 | `vga_fb_toggle_minimize` | function | `headers/vga_fb.h:208` | `void vga_fb_toggle_minimize(void);` |
 | `vga_fb_wait_tick` | function | `headers/vga_fb.h:260` | `void vga_fb_wait_tick(void);` |
+| `vga_fx_burn_rect` | function | `headers/vga_fb.h:281` | `void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);` |
 | `vga_fx_enabled` | function | `headers/vga_fb.h:274` | `int vga_fx_enabled(void);` |
 | `vga_fx_free` | function | `headers/vga_fb.h:277` | `void vga_fx_free(unsigned int *buf);` |
+| `vga_fx_genie_rect` | function | `headers/vga_fb.h:283` | `void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int...` |
 | `vga_fx_melt_from_black` | function | `headers/vga_fb.h:280` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);` |
 | `vga_fx_melt_rect` | function | `headers/vga_fb.h:278` | `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);` |
 | `vga_fx_restore_rect` | function | `headers/vga_fb.h:276` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);` |
@@ -344,13 +348,29 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `wm_gfx_mode_active` | function | `headers/vga_fb.h:255` | `int wm_gfx_mode_active(void);` |
 | `VGA_FX_COLS_MAX` | macro | `headers/vga_fx.h:27` | `#define VGA_FX_COLS_MAX` |
 | `VGA_FX_CONFIG_DEFAULT` | macro | `headers/vga_fx.h:24` | `#define VGA_FX_CONFIG_DEFAULT` |
+| `VGA_FX_FRAME_MS` | macro | `headers/vga_fx.h:140` | `#define VGA_FX_FRAME_MS` |
 | `VGA_FX_H` | macro | `headers/vga_fx.h:13` | `#define VGA_FX_H` |
+| `VGA_FX_HEAT_MAX` | macro | `headers/vga_fx.h:146` | `#define VGA_FX_HEAT_MAX` |
+| `VGA_FX_HEAT_STEP` | macro | `headers/vga_fx.h:143` | `#define VGA_FX_HEAT_STEP` |
+| `VGA_FX_MOTION_DEFAULT` | macro | `headers/vga_fx.h:173` | `#define VGA_FX_MOTION_DEFAULT` |
+| `VGA_FX_PROG_ONE` | macro | `headers/vga_fx.h:136` | `#define VGA_FX_PROG_ONE` |
+| `longer` | function | `headers/vga_fx.h:353` | `* longer (the lag), every row follows the same smoothstep toward the  * target and narrows to gen...` |
 | `vga_fx_advance` | function | `headers/vga_fx.h:71` | `static inline int vga_fx_advance(const vga_fx_config_t *cfg, int *cols, int w, int h)` |
+| `vga_fx_burn_compose` | function | `headers/vga_fx.h:340` | `static inline unsigned int vga_fx_burn_compose(unsigned int base, int heat)` |
+| `vga_fx_burn_pixel` | function | `headers/vga_fx.h:260` | `static inline int vga_fx_burn_pixel(const vga_fx_motion_t *cfg, int thr, int prog, int *heat)` |
+| `vga_fx_burn_span` | function | `headers/vga_fx.h:230` | `static inline int vga_fx_burn_span(const vga_fx_motion_t *cfg)` |
+| `vga_fx_burn_threshold` | function | `headers/vga_fx.h:241` | `static inline int vga_fx_burn_threshold(const vga_fx_motion_t *cfg, int lx, int ly, int w, int h)` |
 | `vga_fx_clamp_rect` | function | `headers/vga_fx.h:109` | `static inline int vga_fx_clamp_rect(int *x, int *y, int *w, int *h, int fb_w, int fb_h)` |
 | `vga_fx_config_t` | struct | `headers/vga_fx.h:16` | `` |
+| `vga_fx_fire_color` | function | `headers/vga_fx.h:289` | `static inline unsigned int vga_fx_fire_color(int heat)` |
 | `vga_fx_front` | function | `headers/vga_fx.h:97` | `static inline int vga_fx_front(int col_y, int h)` |
+| `vga_fx_hash2` | function | `headers/vga_fx.h:191` | `static inline unsigned long vga_fx_hash2(int x, int y, unsigned long seed)` |
 | `vga_fx_init_cols` | function | `headers/vga_fx.h:47` | `static inline int vga_fx_init_cols(const vga_fx_config_t *cfg, int *cols, int w)` |
+| `vga_fx_mix` | function | `headers/vga_fx.h:319` | `static inline unsigned int vga_fx_mix(unsigned int a, unsigned int b, int alpha)` |
+| `vga_fx_motion_t` | struct | `headers/vga_fx.h:155` | `` |
+| `vga_fx_noise` | function | `headers/vga_fx.h:204` | `static inline int vga_fx_noise(int x, int y, int cell, unsigned long seed)` |
 | `vga_fx_rand` | function | `headers/vga_fx.h:30` | `static inline unsigned long vga_fx_rand(unsigned long *s)` |
+| `vga_fx_smooth` | function | `headers/vga_fx.h:177` | `static inline int vga_fx_smooth(int q)` |
 | `VMA_H` | macro | `headers/vma.h:2` | `#define VMA_H` |
 | `VMA_MAX` | macro | `headers/vma.h:31` | `#define VMA_MAX` |
 | `VMA_NIL` | variable | `headers/vma.h:55` | `extern vma_node_t *VMA_NIL;` |
@@ -476,25 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `wm_jelly_sample` | function | `headers/wm_jelly.h:203` | `static inline void wm_jelly_sample(const wm_jelly_t *j, int x, int y, int w, int h,              ...` |
 | `wm_jelly_step` | function | `headers/wm_jelly.h:155` | `static inline void wm_jelly_step(const wm_jelly_config_t *cfg, wm_jelly_t *j)` |
 | `wm_jelly_t` | struct | `headers/wm_jelly.h:51` | `` |
-| `WM_LAYOUT_CONFIG_DEFAULT` | macro | `headers/wm_layout.h:45` | `#define WM_LAYOUT_CONFIG_DEFAULT` |
-| `WM_LAYOUT_H` | macro | `headers/wm_layout.h:12` | `#define WM_LAYOUT_H` |
-| `WM_LAYOUT_MODE_COUNT` | macro | `headers/wm_layout.h:24` | `#define WM_LAYOUT_MODE_COUNT` |
-| `wm_layout_cell_t` | struct | `headers/wm_layout.h:48` | `` |
-| `wm_layout_clamp_cell` | function | `headers/wm_layout.h:82` | `static inline int wm_layout_clamp_cell(wm_layout_cell_t *cell, int max_cols, int max_rows)` |
-| `wm_layout_compute` | function | `headers/wm_layout.h:361` | `static inline int wm_layout_compute(const wm_layout_config_t *cfg, const wm_layout_window_t *wins...` |
-| `wm_layout_compute_bsp` | function | `headers/wm_layout.h:182` | `static inline int wm_layout_compute_bsp(const wm_layout_window_t *wins, int nwin, int max_cols, i...` |
-| `wm_layout_compute_cascade` | function | `headers/wm_layout.h:250` | `static inline int wm_layout_compute_cascade(const wm_layout_config_t *cfg, const wm_layout_window...` |
-| `wm_layout_compute_fibonacci` | function | `headers/wm_layout.h:285` | `static inline int wm_layout_compute_fibonacci(const wm_layout_config_t *cfg, const wm_layout_wind...` |
-| `wm_layout_compute_tile` | function | `headers/wm_layout.h:135` | `static inline int wm_layout_compute_tile(const wm_layout_window_t *wins, int nwin, int max_cols, ...` |
-| `wm_layout_config_t` | struct | `headers/wm_layout.h:36` | `` |
-| `wm_layout_fullscreen_cell` | function | `headers/wm_layout.h:118` | `static inline int wm_layout_fullscreen_cell(int max_cols, int max_rows, wm_layout_cell_t *out)` |
-| `wm_layout_mode_name` | function | `headers/wm_layout.h:57` | `static inline const char *wm_layout_mode_name(int mode)` |
-| `wm_layout_mode_valid` | function | `headers/wm_layout.h:76` | `static inline int wm_layout_mode_valid(int mode)` |
-| `wm_layout_same` | function | `headers/wm_layout.h:443` | `static inline int wm_layout_same(const wm_layout_cell_t *a, const wm_layout_cell_t *b, int n)` |
-| `wm_layout_window_t` | struct | `headers/wm_layout.h:27` | `` |
-| `WM_NOTIFY_H` | macro | `headers/wm_notify.h:2` | `#define WM_NOTIFY_H` |
-| `WM_NOTIFY_MAX_HANDLERS` | macro | `headers/wm_notify.h:41` | `#define WM_NOTIFY_MAX_HANDLERS` |
-| `wm_notify_bus_t` | struct | `headers/wm_notify.h:43` | `` |
-| `wm_notify_emit` | function | `headers/wm_notify.h:76` | `static inline void wm_notify_emit(wm_notify_bus_t *bus,                                   const w...` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

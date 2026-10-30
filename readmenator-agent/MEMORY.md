@@ -2,12 +2,12 @@
 
 > Cross-session context for agents. Sections 1-6 are regenerated from the source tree with zero LLM tokens: declared rules are quoted verbatim with `file:line`, measured baselines come from the scan. Section 7 is written by agents and humans and is preserved across rebuilds.
 
-Generated from 596 files at commit `108aed281b12`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
+Generated from 596 files at commit `d64a8fe9383a`. Read this first, then `readmenator-wiki/index.md`, then `readmenator . ask "<question>"` for anything specific.
 
 ## 1. Purpose and domain
 
 - What it is: I had some things programmed, a [kernel](https://github.com/grisuno/miniOS), [a C to ASM transpiler](https://github.com/grisuno/miniGCC), [compiler/linker](https://github.com/grisuno/ld), [a browser](https://github.com/grisuno/FreeDom), I had a [beacon](https://github.com/grisuno/blacksandbeacon) with an ELF loader which was basically the first prototype of [CVM](https://github.com/grisuno/cvm). (`README.md:10`)
-- Domain vocabulary (term, files): `progs` (319), `free` (241), `any` (241), `without` (232), `program` (221), `can` (221), `under` (214), `see` (192), `doomgeneric` (188), `version` (186), `but` (186), `later` (184), `more` (183), `either` (183), `public` (179)
+- Domain vocabulary (term, files): `progs` (319), `free` (241), `any` (241), `without` (232), `program` (221), `can` (221), `under` (215), `see` (192), `doomgeneric` (188), `version` (186), `but` (186), `later` (184), `more` (183), `either` (183), `public` (179)
 - Subsystem `headers: kernel`: 137 files, core `headers/kernel.h`: The user-window memory layout (load base, stack, brk cap, graphics
 - Subsystem `progs/doomgeneric: d_englsh`: 99 files, core `progs/doomgeneric/d_englsh.h`: Copyright(C) 1993-1996 Id Software, Inc.
 - Subsystem `progs/src`: 86 files, core `progs/vedit/vedit.c`: vedit IDE build and run contract.
@@ -71,10 +71,10 @@ Declared:
 - none declared in instruction files (add them to AGENTS.md or record them in section 7)
 
 Measured baseline:
-- c: 290 files, 7150 symbols; docstrings on 22% of symbols; functions snake_case (76%); types PascalCase (18%); median file 257 lines, max 5360.
-- h: 199 files, 4649 symbols; docstrings on 17% of symbols; functions snake_case (70%); types PascalCase (7%); median file 70 lines, max 1331.
+- c: 290 files, 7153 symbols; docstrings on 22% of symbols; functions snake_case (76%); types PascalCase (18%); median file 259 lines, max 5466.
+- h: 199 files, 4669 symbols; docstrings on 17% of symbols; functions snake_case (71%); types PascalCase (7%); median file 70 lines, max 1331.
 - py: 69 files, 848 symbols; docstrings on 40% of symbols; functions snake_case (97%); types PascalCase (99%); median file 143 lines, max 957.
-- sh: 17 files, 47 symbols; docstrings on 21% of symbols; functions snake_case (100%); median file 80 lines, max 2414.
+- sh: 17 files, 47 symbols; docstrings on 21% of symbols; functions snake_case (100%); median file 80 lines, max 2433.
 - Tests: 73 files under mcp, progs/src, tests; follow the existing naming (e.g. `test_minios_mcp.py`).
 
 ## 5. Minimum deliverables

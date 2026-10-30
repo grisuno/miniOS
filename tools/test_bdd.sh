@@ -2338,12 +2338,31 @@ fx
 gfx frames
 poweroff"
 expect "fx: on melts=1"
-expect "fx: on melts=3"
+expect "fx: on melts=3 burns=0 genies=2"
 expect "nuklear: frame ok (800x360)"
-expect "fx: on melts=5"
+expect "fx: on melts=5 burns=1 genies=2"
 # The nuklear selftest presents twice: the indexed frame and the RGB
 # proof frame, so the compositor counted two frames.
 expect "gfx: frames composited 2"
+
+scenario "fx genie flows on minimize and fire burns a closed window" "wm minimize
+wm minimize
+fx
+wm split
+wm close
+fx
+poweroff"
+expect "fx: on melts=3 burns=0 genies=2"
+expect "fx: on melts=5 burns=1 genies=2"
+
+scenario "fx off skips genie and fire" "fx off
+wm minimize
+wm minimize
+wm split
+wm close
+fx
+poweroff"
+expect "fx: off melts=1 burns=0 genies=0"
 
 # ── Quake 2 (quake2generic) ─────────────────────────────────────────
 

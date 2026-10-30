@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `vedit_yank` | function | `progs/vedit/vedit.c:1383` | `static int vedit_yank(void)` |
+| `WL_CLIENT_H` | macro | `progs/wl/wl_client.h:14` | `#define WL_CLIENT_H` |
+| `WL_CLIENT_MSGS` | macro | `progs/wl/wl_client.h:18` | `#define WL_CLIENT_MSGS` |
+| `wl_client_attach` | function | `progs/wl/wl_client.h:75` | `static inline int wl_client_attach(const char *box, unsigned int seq0,         const unsigned cha...` |
+| `wl_client_emit_file` | function | `progs/wl/wl_client.h:21` | `static inline int wl_client_emit_file(const char *box, unsigned int seq,         const unsigned c...` |
+| `wl_client_raw_file` | function | `progs/wl/wl_client.h:48` | `static inline int wl_client_raw_file(const char *box,         const unsigned char *px, int w, int h)` |
+| `WL_MBOX_BOX_MAX` | macro | `progs/wl/wl_mbox.h:23` | `#define WL_MBOX_BOX_MAX` |
+| `WL_MBOX_DIR` | macro | `progs/wl/wl_mbox.h:19` | `#define WL_MBOX_DIR` |
+| `WL_MBOX_EV_SUFFIX` | macro | `progs/wl/wl_mbox.h:22` | `#define WL_MBOX_EV_SUFFIX` |
+| `WL_MBOX_FRAME_HEAD` | macro | `progs/wl/wl_mbox.h:26` | `#define WL_MBOX_FRAME_HEAD` |
+| `WL_MBOX_H` | macro | `progs/wl/wl_mbox.h:15` | `#define WL_MBOX_H` |
+| `WL_MBOX_MAGIC` | macro | `progs/wl/wl_mbox.h:25` | `#define WL_MBOX_MAGIC` |
+| `WL_MBOX_NAME_MAX` | macro | `progs/wl/wl_mbox.h:24` | `#define WL_MBOX_NAME_MAX` |
+| `WL_MBOX_POLL_MAX` | macro | `progs/wl/wl_mbox.h:27` | `#define WL_MBOX_POLL_MAX` |
+| `WL_MBOX_RAW_SUFFIX` | macro | `progs/wl/wl_mbox.h:21` | `#define WL_MBOX_RAW_SUFFIX` |
+| `WL_MBOX_SEQ_HEX` | macro | `progs/wl/wl_mbox.h:28` | `#define WL_MBOX_SEQ_HEX` |
+| `WL_MBOX_SUFFIX` | macro | `progs/wl/wl_mbox.h:20` | `#define WL_MBOX_SUFFIX` |
+| `wl_client_box` | function | `progs/wl/wl_mbox.h:257` | `static inline int wl_client_box(const char *prog, long pid, char *dst,         int cap)` |
+| `wl_mbox_assign` | function | `progs/wl/wl_mbox.h:358` | `static inline int wl_mbox_assign(wl_mbox_box_t *boxes, const char *box)` |
+| `wl_mbox_box_ok` | function | `progs/wl/wl_mbox.h:51` | `static inline int wl_mbox_box_ok(const char *box)` |
+| `wl_mbox_box_t` | struct | `progs/wl/wl_mbox.h:30` | `` |
+| `wl_mbox_ev_name` | function | `progs/wl/wl_mbox.h:225` | `static inline int wl_mbox_ev_name(char *dst, int cap, const char *box)` |
+| `wl_mbox_frame_decode` | function | `progs/wl/wl_mbox.h:332` | `static inline int wl_mbox_frame_decode(const unsigned char *src, int len,         unsigned int *s...` |
 | `wl_mbox_frame_encode` | function | `progs/wl/wl_mbox.h:310` | `static inline int wl_mbox_frame_encode(unsigned char *dst, int cap,         unsigned int seq, con...` |
 | `wl_mbox_fresh` | function | `progs/wl/wl_mbox.h:394` | `static inline int wl_mbox_fresh(const wl_mbox_box_t *boxes, int slot,         unsigned int seq)` |
 | `wl_mbox_hex` | function | `progs/wl/wl_mbox.h:74` | `static inline int wl_mbox_hex(unsigned int v, char *dst)` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `test_same_named_directories_merge` | method | `tests/test_minifs_tools.py:93` | `def test_same_named_directories_merge(self)` |
 | `tree` | method | `tests/test_minifs_tools.py:50` | `def tree(self, root, rel, data)` |
 | `CHECK` | macro | `tests/test_minios_png.c:16` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_minios_png.c:191` | `int main(void)` |
-| `t_332` | function | `tests/test_minios_png.c:24` | `static void t_332(void)` |
-| `t_blit` | function | `tests/test_minios_png.c:139` | `static void t_blit(void)` |
-| `t_geom` | function | `tests/test_minios_png.c:58` | `static void t_geom(void)` |
-| `t_load` | function | `tests/test_minios_png.c:157` | `static void t_load(void)` |
-| `t_nearest` | function | `tests/test_minios_png.c:33` | `static void t_nearest(void)` |
-| `t_policy` | function | `tests/test_minios_png.c:176` | `static void t_policy(void)` |
-| `t_scale` | function | `tests/test_minios_png.c:70` | `static void t_scale(void)` |
-| `t_scale_big` | function | `tests/test_minios_png.c:99` | `static void t_scale_big(void)` |
-| `MipLiveTests` | class | `tests/test_mip.py:242` | `class MipLiveTests(TestCase)` |
-| `MipPureTests` | class | `tests/test_mip.py:44` | `class MipPureTests(TestCase)` |
-| `_Handler` | class | `tests/test_mip.py:212` | `class _Handler(BaseHTTPRequestHandler)` |
-| `combined` | method | `tests/test_mip.py:277` | `def combined(self, proc)` |
-| `do_GET` | method | `tests/test_mip.py:220` | `def do_GET(self)` |
-| `load_mip` | function | `tests/test_mip.py:36` | `def load_mip()` |
-| `log_message` | method | `tests/test_mip.py:217` | `def log_message(self, fmt)` |
-| `run_in_elf` | method | `tests/test_mip.py:270` | `def run_in_elf(self, code)` |
-| `setUp` | method | `tests/test_mip.py:266` | `def setUp(self)` |
-| `setUpClass` | method | `tests/test_mip.py:48` | `def setUpClass(cls)` |
-| `setUpClass` | method | `tests/test_mip.py:246` | `def setUpClass(cls)` |
-| `tearDownClass` | method | `tests/test_mip.py:261` | `def tearDownClass(cls)` |
-| `test_absolute_url_keeps_absolute_location` | method | `tests/test_mip.py:187` | `def test_absolute_url_keeps_absolute_location(self)` |
-| `test_absolute_url_keeps_base_scheme` | method | `tests/test_mip.py:197` | `def test_absolute_url_keeps_base_scheme(self)` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

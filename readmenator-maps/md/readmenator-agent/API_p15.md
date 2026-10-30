@@ -1,6 +1,234 @@
 # API (page 15 of 21)
 Previous: [API_p14.md](API_p14.md)
 
+## progs/doomgeneric/p_saveg.c
+Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
+- `P_TempSaveGameFile` (function) `progs/doomgeneric/p_saveg.c:47` `char *P_TempSaveGameFile(void)`
+- `P_SaveGameFile` (function) `progs/doomgeneric/p_saveg.c:61` `char *P_SaveGameFile(int slot)`
+- `saveg_read8` (function) `progs/doomgeneric/p_saveg.c:81` `static byte saveg_read8(void)`
+- `saveg_write8` (function) `progs/doomgeneric/p_saveg.c:99` `static void saveg_write8(byte value)`
+- `saveg_read16` (function) `progs/doomgeneric/p_saveg.c:112` `static short saveg_read16(void)`
+- `saveg_write16` (function) `progs/doomgeneric/p_saveg.c:122` `static void saveg_write16(short value)`
+- `saveg_read32` (function) `progs/doomgeneric/p_saveg.c:128` `static int saveg_read32(void)`
+- `saveg_write32` (function) `progs/doomgeneric/p_saveg.c:140` `static void saveg_write32(int value)`
+- `saveg_read_pad` (function) `progs/doomgeneric/p_saveg.c:150` `static void saveg_read_pad(void)`
+- `saveg_write_pad` (function) `progs/doomgeneric/p_saveg.c:166` `static void saveg_write_pad(void)`
+- `saveg_readp` (function) `progs/doomgeneric/p_saveg.c:185` `static void *saveg_readp(void)`
+- `saveg_writep` (function) `progs/doomgeneric/p_saveg.c:190` `static void saveg_writep(void *p)`
+- `saveg_read_mapthing_t` (function) `progs/doomgeneric/p_saveg.c:208` `static void saveg_read_mapthing_t(mapthing_t *str)`
+- `saveg_write_mapthing_t` (function) `progs/doomgeneric/p_saveg.c:226` `static void saveg_write_mapthing_t(mapthing_t *str)`
+- `saveg_read_actionf_t` (function) `progs/doomgeneric/p_saveg.c:248` `static void saveg_read_actionf_t(actionf_t *str)`
+- `saveg_write_actionf_t` (function) `progs/doomgeneric/p_saveg.c:254` `static void saveg_write_actionf_t(actionf_t *str)`
+- `saveg_read_thinker_t` (function) `progs/doomgeneric/p_saveg.c:273` `static void saveg_read_thinker_t(thinker_t *str)`
+- `saveg_write_thinker_t` (function) `progs/doomgeneric/p_saveg.c:285` `static void saveg_write_thinker_t(thinker_t *str)`
+- `saveg_read_mobj_t` (function) `progs/doomgeneric/p_saveg.c:301` `static void saveg_read_mobj_t(mobj_t *str)`
+- `saveg_write_mobj_t` (function) `progs/doomgeneric/p_saveg.c:421` `static void saveg_write_mobj_t(mobj_t *str)`
+- `saveg_read_ticcmd_t` (function) `progs/doomgeneric/p_saveg.c:541` `static void saveg_read_ticcmd_t(ticcmd_t *str)`
+- `saveg_write_ticcmd_t` (function) `progs/doomgeneric/p_saveg.c:563` `static void saveg_write_ticcmd_t(ticcmd_t *str)`
+- `saveg_read_pspdef_t` (function) `progs/doomgeneric/p_saveg.c:589` `static void saveg_read_pspdef_t(pspdef_t *str)`
+- `saveg_write_pspdef_t` (function) `progs/doomgeneric/p_saveg.c:615` `static void saveg_write_pspdef_t(pspdef_t *str)`
+- `saveg_read_player_t` (function) `progs/doomgeneric/p_saveg.c:641` `static void saveg_read_player_t(player_t *str)`
+- `saveg_write_player_t` (function) `progs/doomgeneric/p_saveg.c:772` `static void saveg_write_player_t(player_t *str)`
+- `saveg_read_ceiling_t` (function) `progs/doomgeneric/p_saveg.c:908` `static void saveg_read_ceiling_t(ceiling_t *str)`
+- `saveg_write_ceiling_t` (function) `progs/doomgeneric/p_saveg.c:944` `static void saveg_write_ceiling_t(ceiling_t *str)`
+- `saveg_read_vldoor_t` (function) `progs/doomgeneric/p_saveg.c:981` `static void saveg_read_vldoor_t(vldoor_t *str)`
+- `saveg_write_vldoor_t` (function) `progs/doomgeneric/p_saveg.c:1011` `static void saveg_write_vldoor_t(vldoor_t *str)`
+- `saveg_read_floormove_t` (function) `progs/doomgeneric/p_saveg.c:1042` `static void saveg_read_floormove_t(floormove_t *str)`
+- `saveg_write_floormove_t` (function) `progs/doomgeneric/p_saveg.c:1075` `static void saveg_write_floormove_t(floormove_t *str)`
+- `saveg_read_plat_t` (function) `progs/doomgeneric/p_saveg.c:1109` `static void saveg_read_plat_t(plat_t *str)`
+- `saveg_write_plat_t` (function) `progs/doomgeneric/p_saveg.c:1151` `static void saveg_write_plat_t(plat_t *str)`
+- `saveg_read_lightflash_t` (function) `progs/doomgeneric/p_saveg.c:1194` `static void saveg_read_lightflash_t(lightflash_t *str)`
+- `saveg_write_lightflash_t` (function) `progs/doomgeneric/p_saveg.c:1221` `static void saveg_write_lightflash_t(lightflash_t *str)`
+- `saveg_read_strobe_t` (function) `progs/doomgeneric/p_saveg.c:1249` `static void saveg_read_strobe_t(strobe_t *str)`
+- `saveg_write_strobe_t` (function) `progs/doomgeneric/p_saveg.c:1276` `static void saveg_write_strobe_t(strobe_t *str)`
+- `saveg_read_glow_t` (function) `progs/doomgeneric/p_saveg.c:1304` `static void saveg_read_glow_t(glow_t *str)`
+- `saveg_write_glow_t` (function) `progs/doomgeneric/p_saveg.c:1325` `static void saveg_write_glow_t(glow_t *str)`
+- `P_WriteSaveGameHeader` (function) `progs/doomgeneric/p_saveg.c:1347` `void P_WriteSaveGameHeader(char *description)`
+- `P_ReadSaveGameHeader` (function) `progs/doomgeneric/p_saveg.c:1379` `boolean P_ReadSaveGameHeader(void)`
+- `P_ReadSaveGameEOF` (function) `progs/doomgeneric/p_saveg.c:1419` `boolean P_ReadSaveGameEOF(void)`
+- `P_WriteSaveGameEOF` (function) `progs/doomgeneric/p_saveg.c:1432` `void P_WriteSaveGameEOF(void)`
+- `P_ArchivePlayers` (function) `progs/doomgeneric/p_saveg.c:1440` `void P_ArchivePlayers (void)` -- P_ArchivePlayers
+- `P_UnArchivePlayers` (function) `progs/doomgeneric/p_saveg.c:1460` `void P_UnArchivePlayers (void)` -- P_UnArchivePlayers
+- `P_ArchiveWorld` (function) `progs/doomgeneric/p_saveg.c:1484` `void P_ArchiveWorld (void)` -- P_ArchiveWorld
+- `P_UnArchiveWorld` (function) `progs/doomgeneric/p_saveg.c:1532` `void P_UnArchiveWorld (void)` -- P_UnArchiveWorld
+- `P_ArchiveThinkers` (function) `progs/doomgeneric/p_saveg.c:1592` `void P_ArchiveThinkers (void)` -- P_ArchiveThinkers
+- `P_UnArchiveThinkers` (function) `progs/doomgeneric/p_saveg.c:1620` `void P_UnArchiveThinkers (void)` -- P_UnArchiveThinkers
+- `P_ArchiveSpecials` (function) `progs/doomgeneric/p_saveg.c:1704` `void P_ArchiveSpecials (void)` -- Things to handle:  T_MoveCeiling, (ceiling_t: sector_t * swizzle), - active list T_VerticalDoor, (vldoor_t: sector_t...
+- `P_UnArchiveSpecials` (function) `progs/doomgeneric/p_saveg.c:1793` `void P_UnArchiveSpecials (void)` -- P_UnArchiveSpecials
+
+## progs/doomgeneric/p_saveg.h
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_saveg.c`
+- `P_TempSaveGameFile` (function) `progs/doomgeneric/p_saveg.h:31` `char *P_TempSaveGameFile(void);`
+- `P_SaveGameFile` (function) `progs/doomgeneric/p_saveg.h:35` `char *P_SaveGameFile(int slot);`
+- `P_WriteSaveGameHeader` (function) `progs/doomgeneric/p_saveg.h:40` `void P_WriteSaveGameHeader(char *description);`
+- `P_WriteSaveGameEOF` (function) `progs/doomgeneric/p_saveg.h:45` `void P_WriteSaveGameEOF(void);`
+- `P_ArchivePlayers` (function) `progs/doomgeneric/p_saveg.h:49` `void P_ArchivePlayers (void);` -- Persistent storage/archiving.
+- `P_UnArchivePlayers` (function) `progs/doomgeneric/p_saveg.h:50` `void P_UnArchivePlayers (void);`
+- `P_ArchiveWorld` (function) `progs/doomgeneric/p_saveg.h:51` `void P_ArchiveWorld (void);`
+- `P_UnArchiveWorld` (function) `progs/doomgeneric/p_saveg.h:52` `void P_UnArchiveWorld (void);`
+- `P_ArchiveThinkers` (function) `progs/doomgeneric/p_saveg.h:53` `void P_ArchiveThinkers (void);`
+- `P_UnArchiveThinkers` (function) `progs/doomgeneric/p_saveg.h:54` `void P_UnArchiveThinkers (void);`
+- `P_ArchiveSpecials` (function) `progs/doomgeneric/p_saveg.h:55` `void P_ArchiveSpecials (void);`
+- `P_UnArchiveSpecials` (function) `progs/doomgeneric/p_saveg.h:56` `void P_UnArchiveSpecials (void);`
+
+## progs/doomgeneric/p_setup.c
+Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `P_SpawnMapThing` (function) `progs/doomgeneric/p_setup.c:44` `void P_SpawnMapThing (mapthing_t* mthing);`
+- `P_LoadVertexes` (function) `progs/doomgeneric/p_setup.c:118` `void P_LoadVertexes (int lump)` -- P_LoadVertexes
+- `GetSectorAtNullAddress` (function) `progs/doomgeneric/p_setup.c:153` `sector_t* GetSectorAtNullAddress(void)` -- GetSectorAtNullAddress
+- `P_LoadSegs` (function) `progs/doomgeneric/p_setup.c:172` `void P_LoadSegs (int lump)` -- P_LoadSegs
+- `P_LoadSubsectors` (function) `progs/doomgeneric/p_setup.c:236` `void P_LoadSubsectors (int lump)` -- P_LoadSubsectors
+- `P_LoadSectors` (function) `progs/doomgeneric/p_setup.c:265` `void P_LoadSectors (int lump)` -- P_LoadSectors
+- `P_LoadNodes` (function) `progs/doomgeneric/p_setup.c:298` `void P_LoadNodes (int lump)` -- P_LoadNodes
+- `P_LoadThings` (function) `progs/doomgeneric/p_setup.c:335` `void P_LoadThings (int lump)` -- P_LoadThings
+- `P_LoadLineDefs` (function) `progs/doomgeneric/p_setup.c:392` `void P_LoadLineDefs (int lump)` -- P_LoadLineDefs Also counts secret lines for intermissions.
+- `P_LoadSideDefs` (function) `progs/doomgeneric/p_setup.c:473` `void P_LoadSideDefs (int lump)` -- P_LoadSideDefs
+- `P_LoadBlockMap` (function) `progs/doomgeneric/p_setup.c:504` `void P_LoadBlockMap (int lump)` -- P_LoadBlockMap
+- `P_GroupLines` (function) `progs/doomgeneric/p_setup.c:545` `void P_GroupLines (void)` -- P_GroupLines Builds sector line lists and subsector sector numbers.
+- `PadRejectArray` (function) `progs/doomgeneric/p_setup.c:661` `static void PadRejectArray(byte *array, unsigned int len)`
+- `P_LoadReject` (function) `progs/doomgeneric/p_setup.c:712` `static void P_LoadReject(int lumpnum)`
+- `P_SetupLevel` (function) `progs/doomgeneric/p_setup.c:744` `void
+P_SetupLevel
+( int		episode,
+  int		map,
+  int		playermask,
+  skill_t	skill)`
+- `P_Init` (function) `progs/doomgeneric/p_setup.c:847` `void P_Init (void)` -- P_Init
+
+## progs/doomgeneric/p_setup.h
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`
+- `P_SetupLevel` (function) `progs/doomgeneric/p_setup.h:28` `void P_SetupLevel ( int episode, int map, int playermask, skill_t skill);`
+- `P_Init` (function) `progs/doomgeneric/p_setup.h:35` `void P_Init (void);` -- Called by startup code.
+
+## progs/doomgeneric/p_sight.c
+Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
+- `P_DivlineSide` (function) `progs/doomgeneric/p_sight.c:48` `int
+P_DivlineSide
+( fixed_t	x,
+  fixed_t	y,
+  divline_t*	node )`
+- `P_InterceptVector2` (function) `progs/doomgeneric/p_sight.c:102` `fixed_t
+P_InterceptVector2
+( divline_t*	v2,
+  divline_t*	v1 )`
+- `P_CrossSubsector` (function) `progs/doomgeneric/p_sight.c:128` `boolean P_CrossSubsector (int num)` -- P_CrossSubsector Returns true if strace crosses the given subsector successfully.
+- `P_CrossBSPNode` (function) `progs/doomgeneric/p_sight.c:258` `boolean P_CrossBSPNode (int bspnum)` -- P_CrossBSPNode Returns true if strace crosses the given node successfully.
+- `P_CheckSight` (function) `progs/doomgeneric/p_sight.c:301` `boolean
+P_CheckSight
+( mobj_t*	t1,
+  mobj_t*	t2 )`
+
+## progs/doomgeneric/p_switch.c
+Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
+- `P_InitSwitchList` (function) `progs/doomgeneric/p_switch.c:101` `void P_InitSwitchList(void)` -- P_InitSwitchList Only called at game initialization.
+- `P_StartButton` (function) `progs/doomgeneric/p_switch.c:149` `void
+P_StartButton
+( line_t*	line,
+  bwhere_e	w,
+  int		texture,
+  int		time )`
+- `P_ChangeSwitchTexture` (function) `progs/doomgeneric/p_switch.c:195` `void
+P_ChangeSwitchTexture
+( line_t*	line,
+  int 		useAgain )`
+- `P_UseSpecialLine` (function) `progs/doomgeneric/p_switch.c:270` `boolean
+P_UseSpecialLine
+( mobj_t*	thing,
+  line_t*	line,
+  int		side )`
+
+## progs/doomgeneric/p_telept.c
+Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
+- `EV_Teleport` (function) `progs/doomgeneric/p_telept.c:42` `int
+EV_Teleport
+( line_t*	line,
+  int		side,
+  mobj_t*	thing )`
+
+## progs/doomgeneric/p_tick.c
+Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
+- `P_InitThinkers` (function) `progs/doomgeneric/p_tick.c:46` `void P_InitThinkers (void)` -- P_InitThinkers
+- `P_AddThinker` (function) `progs/doomgeneric/p_tick.c:58` `void P_AddThinker (thinker_t* thinker)` -- P_AddThinker Adds a new thinker at the end of the list.
+- `P_RemoveThinker` (function) `progs/doomgeneric/p_tick.c:73` `void P_RemoveThinker (thinker_t* thinker)` -- P_RemoveThinker Deallocation is lazy -- it will not actually be freed until its thinking turn comes up.
+- `P_AllocateThinker` (function) `progs/doomgeneric/p_tick.c:85` `void P_AllocateThinker (thinker_t*	thinker)` -- P_AllocateThinker Allocates memory and adds a new thinker at the end of the list.
+- `P_RunThinkers` (function) `progs/doomgeneric/p_tick.c:94` `void P_RunThinkers (void)` -- P_RunThinkers
+- `P_Ticker` (function) `progs/doomgeneric/p_tick.c:123` `void P_Ticker (void)`
+
+## progs/doomgeneric/p_tick.h
+Imported by: `progs/doomgeneric/g_game.c`
+- `P_Ticker` (function) `progs/doomgeneric/p_tick.h:29` `void P_Ticker (void);` -- Called by C_Ticker, can call G_PlayerExited.
+
+## progs/doomgeneric/p_user.c
+Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`
+- `P_Thrust` (function) `progs/doomgeneric/p_user.c:52` `void
+P_Thrust
+( player_t*	player,
+  angle_t	angle,
+  fixed_t	move )`
+- `P_CalcHeight` (function) `progs/doomgeneric/p_user.c:70` `void P_CalcHeight (player_t* player)` -- P_CalcHeight Calculate the walking / running height adjustment
+- `P_MovePlayer` (function) `progs/doomgeneric/p_user.c:141` `void P_MovePlayer (player_t* player)` -- P_MovePlayer
+- `P_DeathThink` (function) `progs/doomgeneric/p_user.c:175` `void P_DeathThink (player_t* player)`
+- `P_PlayerThink` (function) `progs/doomgeneric/p_user.c:229` `void P_PlayerThink (player_t* player)` -- P_PlayerThink
+
+## progs/doomgeneric/r_bsp.c
+Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
+- `R_StoreWallRange` (function) `progs/doomgeneric/r_bsp.c:51` `void R_StoreWallRange ( int start, int stop );`
+- `R_ClearDrawSegs` (function) `progs/doomgeneric/r_bsp.c:61` `void R_ClearDrawSegs (void)` -- R_ClearDrawSegs
+- `R_ClipSolidWallSegment` (function) `progs/doomgeneric/r_bsp.c:97` `void
+R_ClipSolidWallSegment
+( int			first,
+  int			last )`
+- `R_ClipPassWallSegment` (function) `progs/doomgeneric/r_bsp.c:190` `void
+R_ClipPassWallSegment
+( int	first,
+  int	last )`
+- `R_ClearClipSegs` (function) `progs/doomgeneric/r_bsp.c:238` `void R_ClearClipSegs (void)` -- R_ClearClipSegs
+- `R_AddLine` (function) `progs/doomgeneric/r_bsp.c:252` `void R_AddLine (seg_t*	line)` -- R_AddLine Clips the given segment and adds any visible pieces to the line list.
+- `R_CheckBBox` (function) `progs/doomgeneric/r_bsp.c:374` `boolean R_CheckBBox (fixed_t*	bspcoord)`
+- `R_Subsector` (function) `progs/doomgeneric/r_bsp.c:490` `void R_Subsector (int num)` -- R_Subsector Determine floor/ceiling planes.
+- `R_RenderBSPNode` (function) `progs/doomgeneric/r_bsp.c:545` `void R_RenderBSPNode (int bspnum)` -- RenderBSPNode Renders all subsectors below a given node, traversing subtree recursively.
+
+## progs/doomgeneric/r_bsp.h
+Imported by: `progs/doomgeneric/r_local.h`
+- `R_ClearClipSegs` (function) `progs/doomgeneric/r_bsp.h:54` `void R_ClearClipSegs (void);` -- BSP?
+- `R_ClearDrawSegs` (function) `progs/doomgeneric/r_bsp.h:55` `void R_ClearDrawSegs (void);`
+- `R_RenderBSPNode` (function) `progs/doomgeneric/r_bsp.h:58` `void R_RenderBSPNode (int bspnum);`
+
+## progs/doomgeneric/r_data.c
+Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `R_DrawColumnInCache` (function) `progs/doomgeneric/r_data.c:186` `void
+R_DrawColumnInCache
+( column_t*	patch,
+  byte*		cache,
+  int		originy,
+  int		cacheheight )`
+- `R_GenerateComposite` (function) `progs/doomgeneric/r_data.c:226` `void R_GenerateComposite (int texnum)` -- R_GenerateComposite Using the texture definition, the composite texture is created from the patches, and each column...
+- `R_GenerateLookup` (function) `progs/doomgeneric/r_data.c:294` `void R_GenerateLookup (int texnum)` -- R_GenerateLookup
+- `R_GetColumn` (function) `progs/doomgeneric/r_data.c:383` `byte*
+R_GetColumn
+( int		tex,
+  int		col )`
+- `GenerateTextureHashTable` (function) `progs/doomgeneric/r_data.c:404` `static void GenerateTextureHashTable(void)`
+- `R_InitTextures` (function) `progs/doomgeneric/r_data.c:451` `void R_InitTextures (void)` -- R_InitTextures Initializes the texture list with the textures from the world map.
+- `R_InitFlats` (function) `progs/doomgeneric/r_data.c:633` `void R_InitFlats (void)` -- R_InitFlats
+- `R_InitSpriteLumps` (function) `progs/doomgeneric/r_data.c:655` `void R_InitSpriteLumps (void)` -- R_InitSpriteLumps Finds the width and hoffset of all sprites in the wad, so the sprite does not need to be cached...
+- `R_InitColormaps` (function) `progs/doomgeneric/r_data.c:685` `void R_InitColormaps (void)` -- R_InitColormaps
+- `R_InitData` (function) `progs/doomgeneric/r_data.c:703` `void R_InitData (void)` -- R_InitData Locates all the lumps that will be used by all views Must be called after W_Init.
+- `R_FlatNumForName` (function) `progs/doomgeneric/r_data.c:720` `int R_FlatNumForName (char* name)` -- R_FlatNumForName Retrieval, get a flat number for a flat name.
+- `R_CheckTextureNumForName` (function) `progs/doomgeneric/r_data.c:744` `int	R_CheckTextureNumForName (char *name)` -- R_CheckTextureNumForName Check whether texture is available.
+- `R_TextureNumForName` (function) `progs/doomgeneric/r_data.c:775` `int	R_TextureNumForName (char* name)` -- R_TextureNumForName Calls R_CheckTextureNumForName, aborts with error message.
+- `R_PrecacheLevel` (function) `progs/doomgeneric/r_data.c:800` `void R_PrecacheLevel (void)`
+
+## progs/doomgeneric/r_data.h
+Depends on: `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/r_state.h`
+Imported by: `progs/doomgeneric/g_game.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_sky.c`, `progs/doomgeneric/r_state.h`
+- `R_GetColumn` (function) `progs/doomgeneric/r_data.h:30` `byte* R_GetColumn ( int tex, int col );`
+- `R_InitData` (function) `progs/doomgeneric/r_data.h:36` `void R_InitData (void);` -- I/O, setting up the stuff.
+- `R_PrecacheLevel` (function) `progs/doomgeneric/r_data.h:37` `void R_PrecacheLevel (void);`
+- `R_FlatNumForName` (function) `progs/doomgeneric/r_data.h:43` `int R_FlatNumForName (char* name);` -- Retrieval.
+- `R_TextureNumForName` (function) `progs/doomgeneric/r_data.h:48` `int R_TextureNumForName (char *name);` -- Called by P_Ticker for switches and animations, returns the texture number for the texture name.
+- `R_CheckTextureNumForName` (function) `progs/doomgeneric/r_data.h:49` `int R_CheckTextureNumForName (char *name);`
+
 ## progs/doomgeneric/r_draw.c
 Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 - `R_DrawColumn` (function) `progs/doomgeneric/r_draw.c:102` `void R_DrawColumn (void)` -- A column is a vertical slice/span from a wall texture that, given the DOOM style restrictions on the view...
@@ -263,236 +491,6 @@ Imported by: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/net_client.h`, `
 - `SHA1_Final` (function) `progs/doomgeneric/sha1.h:35` `void SHA1_Final(sha1_digest_t digest, sha1_context_t *context);`
 - `SHA1_UpdateInt32` (function) `progs/doomgeneric/sha1.h:36` `void SHA1_UpdateInt32(sha1_context_t *context, unsigned int val);`
 - `SHA1_UpdateString` (function) `progs/doomgeneric/sha1.h:37` `void SHA1_UpdateString(sha1_context_t *context, char *str);`
-
-## progs/doomgeneric/st_lib.c
-Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `STlib_init` (function) `progs/doomgeneric/st_lib.c:51` `void STlib_init(void)`
-- `STlib_initNum` (function) `progs/doomgeneric/st_lib.c:59` `void
-STlib_initNum
-( st_number_t*		n,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
-  bool...`
-- `STlib_drawNum` (function) `progs/doomgeneric/st_lib.c:84` `void
-STlib_drawNum
-( st_number_t*	n,
-  boolean	refresh )`
-- `STlib_updateNum` (function) `progs/doomgeneric/st_lib.c:146` `void
-STlib_updateNum
-( st_number_t*		n,
-  boolean		refresh )`
-- `STlib_initPercent` (function) `progs/doomgeneric/st_lib.c:156` `void
-STlib_initPercent
-( st_percent_t*		p,
-  int			x,
-  int			y,
-  patch_t**		pl,
-  int*			num,
- ...`
-- `STlib_updatePercent` (function) `progs/doomgeneric/st_lib.c:173` `void
-STlib_updatePercent
-( st_percent_t*		per,
-  int			refresh )`
-- `STlib_initMultIcon` (function) `progs/doomgeneric/st_lib.c:186` `void
-STlib_initMultIcon
-( st_multicon_t*	i,
-  int			x,
-  int			y,
-  patch_t**		il,
-  int*			inum,...`
-- `STlib_updateMultIcon` (function) `progs/doomgeneric/st_lib.c:205` `void
-STlib_updateMultIcon
-( st_multicon_t*	mi,
-  boolean		refresh )`
-- `STlib_initBinIcon` (function) `progs/doomgeneric/st_lib.c:236` `void
-STlib_initBinIcon
-( st_binicon_t*		b,
-  int			x,
-  int			y,
-  patch_t*		i,
-  boolean*		val,
-...`
-- `STlib_updateBinIcon` (function) `progs/doomgeneric/st_lib.c:255` `void
-STlib_updateBinIcon
-( st_binicon_t*		bi,
-  boolean		refresh )`
-
-## progs/doomgeneric/st_lib.h
-Depends on: `progs/doomgeneric/r_defs.h`
-Imported by: `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`
-- `STlib_init` (function) `progs/doomgeneric/st_lib.h:138` `void STlib_init(void);` -- Initializes widget library.
-- `STlib_initNum` (function) `progs/doomgeneric/st_lib.h:144` `void STlib_initNum ( st_number_t* n, int x, int y, patch_t** pl, int* num, boolean* on, int width );`
-- `STlib_updateNum` (function) `progs/doomgeneric/st_lib.h:154` `void STlib_updateNum ( st_number_t* n, boolean refresh );`
-- `STlib_initPercent` (function) `progs/doomgeneric/st_lib.h:161` `void STlib_initPercent ( st_percent_t* p, int x, int y, patch_t** pl, int* num, boolean* on, patch_t* percent );`
-- `STlib_updatePercent` (function) `progs/doomgeneric/st_lib.h:172` `void STlib_updatePercent ( st_percent_t* per, int refresh );`
-- `STlib_initMultIcon` (function) `progs/doomgeneric/st_lib.h:179` `void STlib_initMultIcon ( st_multicon_t* mi, int x, int y, patch_t** il, int* inum, boolean* on );`
-- `STlib_updateMultIcon` (function) `progs/doomgeneric/st_lib.h:189` `void STlib_updateMultIcon ( st_multicon_t* mi, boolean refresh );`
-- `STlib_initBinIcon` (function) `progs/doomgeneric/st_lib.h:196` `void STlib_initBinIcon ( st_binicon_t* b, int x, int y, patch_t* i, boolean* val, boolean* on );`
-- `STlib_updateBinIcon` (function) `progs/doomgeneric/st_lib.h:205` `void STlib_updateBinIcon ( st_binicon_t* bi, boolean refresh );`
-
-## progs/doomgeneric/st_stuff.c
-Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `ST_refreshBackground` (function) `progs/doomgeneric/st_stuff.c:416` `void ST_refreshBackground(void)`
-- `ST_Responder` (function) `progs/doomgeneric/st_stuff.c:439` `boolean
-ST_Responder (event_t* ev)`
-- `ST_calcPainOffset` (function) `progs/doomgeneric/st_stuff.c:665` `int ST_calcPainOffset(void)`
-- `ST_updateFaceWidget` (function) `progs/doomgeneric/st_stuff.c:688` `void ST_updateFaceWidget(void)` -- This is a not-very-pretty routine which handles the face states and their timing. the precedence of expressions is...
-- `ST_updateWidgets` (function) `progs/doomgeneric/st_stuff.c:860` `void ST_updateWidgets(void)`
-- `ST_Ticker` (function) `progs/doomgeneric/st_stuff.c:924` `void ST_Ticker (void)`
-- `ST_doPaletteStuff` (function) `progs/doomgeneric/st_stuff.c:936` `void ST_doPaletteStuff(void)`
-- `ST_drawWidgets` (function) `progs/doomgeneric/st_stuff.c:1001` `void ST_drawWidgets(boolean refresh)`
-- `ST_doRefresh` (function) `progs/doomgeneric/st_stuff.c:1036` `void ST_doRefresh(void)`
-- `ST_diffDraw` (function) `progs/doomgeneric/st_stuff.c:1049` `void ST_diffDraw(void)`
-- `ST_Drawer` (function) `progs/doomgeneric/st_stuff.c:1055` `void ST_Drawer (boolean fullscreen, boolean refresh)`
-- `ST_loadUnloadGraphics` (function) `progs/doomgeneric/st_stuff.c:1076` `static void ST_loadUnloadGraphics(load_callback_t callback)`
-- `ST_loadCallback` (function) `progs/doomgeneric/st_stuff.c:1162` `static void ST_loadCallback(char *lumpname, patch_t **variable)`
-- `ST_loadGraphics` (function) `progs/doomgeneric/st_stuff.c:1167` `void ST_loadGraphics(void)`
-- `ST_loadData` (function) `progs/doomgeneric/st_stuff.c:1172` `void ST_loadData(void)`
-- `ST_unloadCallback` (function) `progs/doomgeneric/st_stuff.c:1178` `static void ST_unloadCallback(char *lumpname, patch_t **variable)`
-- `ST_unloadGraphics` (function) `progs/doomgeneric/st_stuff.c:1184` `void ST_unloadGraphics(void)`
-- `ST_unloadData` (function) `progs/doomgeneric/st_stuff.c:1189` `void ST_unloadData(void)`
-- `ST_initData` (function) `progs/doomgeneric/st_stuff.c:1194` `void ST_initData(void)`
-- `ST_createWidgets` (function) `progs/doomgeneric/st_stuff.c:1227` `void ST_createWidgets(void)`
-- `ST_Start` (function) `progs/doomgeneric/st_stuff.c:1389` `void ST_Start (void)`
-- `ST_Stop` (function) `progs/doomgeneric/st_stuff.c:1401` `void ST_Stop (void)`
-- `ST_Init` (function) `progs/doomgeneric/st_stuff.c:1411` `void ST_Init (void)`
-
-## progs/doomgeneric/st_stuff.h
-Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
-Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`
-- `ST_Ticker` (function) `progs/doomgeneric/st_stuff.h:43` `void ST_Ticker (void);` -- Called by main loop.
-- `ST_Drawer` (function) `progs/doomgeneric/st_stuff.h:46` `void ST_Drawer (boolean fullscreen, boolean refresh);` -- Called by main loop.
-- `ST_Start` (function) `progs/doomgeneric/st_stuff.h:49` `void ST_Start (void);` -- Called when the console player is spawned on each level.
-- `ST_Init` (function) `progs/doomgeneric/st_stuff.h:52` `void ST_Init (void);` -- Called by startup code.
-
-## progs/doomgeneric/statdump.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
-- `DiscoverGamemode` (function) `progs/doomgeneric/statdump.c:71` `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)`
-- `GetNumPlayers` (function) `progs/doomgeneric/statdump.c:130` `static int GetNumPlayers(wbstartstruct_t *stats)`
-- `PrintBanner` (function) `progs/doomgeneric/statdump.c:150` `static void PrintBanner(FILE *stream)`
-- `PrintPercentage` (function) `progs/doomgeneric/statdump.c:155` `static void PrintPercentage(FILE *stream, int amount, int total)`
-- `PrintPlayerStats` (function) `progs/doomgeneric/statdump.c:180` `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,
-        int player_num)`
-- `PrintFragsTable` (function) `progs/doomgeneric/statdump.c:213` `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)`
-- `PrintLevelName` (function) `progs/doomgeneric/statdump.c:272` `static void PrintLevelName(FILE *stream, int episode, int level)`
-- `PrintStats` (function) `progs/doomgeneric/statdump.c:301` `static void PrintStats(FILE *stream, wbstartstruct_t *stats)`
-- `StatCopy` (function) `progs/doomgeneric/statdump.c:333` `void StatCopy(wbstartstruct_t *stats)`
-- `StatDump` (function) `progs/doomgeneric/statdump.c:343` `void StatDump(void)`
-
-## progs/doomgeneric/statdump.h
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/statdump.c`
-- `StatCopy` (function) `progs/doomgeneric/statdump.h:20` `void StatCopy(wbstartstruct_t *stats);`
-- `StatDump` (function) `progs/doomgeneric/statdump.h:21` `void StatDump(void);`
-
-## progs/doomgeneric/tables.c
-Depends on: `progs/doomgeneric/tables.h`
-- `SlopeDiv` (function) `progs/doomgeneric/tables.c:41` `int SlopeDiv(unsigned int num, unsigned int den)`
-
-## progs/doomgeneric/tables.h
-Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_fixed.h`
-Imported by: `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/tables.c`
-- `SlopeDiv` (function) `progs/doomgeneric/tables.h:92` `int SlopeDiv(unsigned int num, unsigned int den);` -- Utility function, called by R_PointToAngle.
-
-## progs/doomgeneric/v_video.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `V_MarkRect` (function) `progs/doomgeneric/v_video.c:69` `void V_MarkRect(int x, int y, int width, int height)` -- V_MarkRect
-- `V_CopyRect` (function) `progs/doomgeneric/v_video.c:85` `void V_CopyRect(int srcx, int srcy, byte *source,
-                int width, int height,
-        ...` -- V_CopyRect
-- `V_SetPatchClipCallback` (function) `progs/doomgeneric/v_video.c:129` `void V_SetPatchClipCallback(vpatchclipfunc_t func)` -- V_SetPatchClipCallback  haleyjd 08/28/10: Added for Strife support.
-- `V_DrawPatch` (function) `progs/doomgeneric/v_video.c:139` `void V_DrawPatch(int x, int y, patch_t *patch)`
-- `V_DrawPatchFlipped` (function) `progs/doomgeneric/v_video.c:203` `void V_DrawPatchFlipped(int x, int y, patch_t *patch)`
-- `V_DrawPatchDirect` (function) `progs/doomgeneric/v_video.c:268` `void V_DrawPatchDirect(int x, int y, patch_t *patch)`
-- `V_DrawTLPatch` (function) `progs/doomgeneric/v_video.c:279` `void V_DrawTLPatch(int x, int y, patch_t * patch)`
-- `V_DrawXlaPatch` (function) `progs/doomgeneric/v_video.c:329` `void V_DrawXlaPatch(int x, int y, patch_t * patch)`
-- `V_DrawAltTLPatch` (function) `progs/doomgeneric/v_video.c:378` `void V_DrawAltTLPatch(int x, int y, patch_t * patch)`
-- `V_DrawShadowedPatch` (function) `progs/doomgeneric/v_video.c:428` `void V_DrawShadowedPatch(int x, int y, patch_t *patch)`
-- `V_LoadTintTable` (function) `progs/doomgeneric/v_video.c:482` `void V_LoadTintTable(void)`
-- `V_LoadXlaTable` (function) `progs/doomgeneric/v_video.c:493` `void V_LoadXlaTable(void)`
-- `V_DrawBlock` (function) `progs/doomgeneric/v_video.c:503` `void V_DrawBlock(int x, int y, int width, int height, byte *src)`
-- `V_DrawFilledBox` (function) `progs/doomgeneric/v_video.c:529` `void V_DrawFilledBox(int x, int y, int w, int h, int c)`
-- `V_DrawHorizLine` (function) `progs/doomgeneric/v_video.c:549` `void V_DrawHorizLine(int x, int y, int w, int c)`
-- `V_DrawVertLine` (function) `progs/doomgeneric/v_video.c:562` `void V_DrawVertLine(int x, int y, int h, int c)`
-- `V_DrawBox` (function) `progs/doomgeneric/v_video.c:576` `void V_DrawBox(int x, int y, int w, int h, int c)`
-- `V_DrawRawScreen` (function) `progs/doomgeneric/v_video.c:589` `void V_DrawRawScreen(byte *raw)`
-- `V_Init` (function) `progs/doomgeneric/v_video.c:597` `void V_Init (void)` -- V_Init
-- `V_UseBuffer` (function) `progs/doomgeneric/v_video.c:606` `void V_UseBuffer(byte *buffer)`
-- `V_RestoreBuffer` (function) `progs/doomgeneric/v_video.c:613` `void V_RestoreBuffer(void)`
-- `WritePCXfile` (function) `progs/doomgeneric/v_video.c:653` `void WritePCXfile(char *filename, byte *data,
-                  int width, int height,
-          ...`
-- `error_fn` (function) `progs/doomgeneric/v_video.c:711` `static void error_fn(png_structp p, png_const_charp s)`
-- `warning_fn` (function) `progs/doomgeneric/v_video.c:716` `static void warning_fn(png_structp p, png_const_charp s)`
-- `WritePNGfile` (function) `progs/doomgeneric/v_video.c:721` `void WritePNGfile(char *filename, byte *data,
-                  int width, int height,
-          ...`
-- `V_ScreenShot` (function) `progs/doomgeneric/v_video.c:791` `void V_ScreenShot(char *format)`
-- `V_DrawMouseSpeedBox` (function) `progs/doomgeneric/v_video.c:846` `void V_DrawMouseSpeedBox(int speed)`
-
-## progs/doomgeneric/v_video.h
-Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/v_patch.h`
-Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/wi_stuff.c`
-- `V_SetPatchClipCallback` (function) `progs/doomgeneric/v_video.h:45` `void V_SetPatchClipCallback(vpatchclipfunc_t func);`
-- `V_Init` (function) `progs/doomgeneric/v_video.h:49` `void V_Init (void);` -- Allocates buffer screens, call before R_Init.
-- `V_CopyRect` (function) `progs/doomgeneric/v_video.h:53` `void V_CopyRect(int srcx, int srcy, byte *source, int width, int height, int destx, int desty);`
-- `V_DrawPatch` (function) `progs/doomgeneric/v_video.h:57` `void V_DrawPatch(int x, int y, patch_t *patch);`
-- `V_DrawPatchFlipped` (function) `progs/doomgeneric/v_video.h:58` `void V_DrawPatchFlipped(int x, int y, patch_t *patch);`
-- `V_DrawTLPatch` (function) `progs/doomgeneric/v_video.h:59` `void V_DrawTLPatch(int x, int y, patch_t *patch);`
-- `V_DrawAltTLPatch` (function) `progs/doomgeneric/v_video.h:60` `void V_DrawAltTLPatch(int x, int y, patch_t * patch);`
-- `V_DrawShadowedPatch` (function) `progs/doomgeneric/v_video.h:61` `void V_DrawShadowedPatch(int x, int y, patch_t *patch);`
-- `V_DrawXlaPatch` (function) `progs/doomgeneric/v_video.h:62` `void V_DrawXlaPatch(int x, int y, patch_t * patch);`
-- `V_DrawPatchDirect` (function) `progs/doomgeneric/v_video.h:63` `void V_DrawPatchDirect(int x, int y, patch_t *patch);`
-- `V_DrawBlock` (function) `progs/doomgeneric/v_video.h:67` `void V_DrawBlock(int x, int y, int width, int height, byte *src);`
-- `V_MarkRect` (function) `progs/doomgeneric/v_video.h:69` `void V_MarkRect(int x, int y, int width, int height);`
-- `V_DrawFilledBox` (function) `progs/doomgeneric/v_video.h:71` `void V_DrawFilledBox(int x, int y, int w, int h, int c);`
-- `V_DrawHorizLine` (function) `progs/doomgeneric/v_video.h:72` `void V_DrawHorizLine(int x, int y, int w, int c);`
-- `V_DrawVertLine` (function) `progs/doomgeneric/v_video.h:73` `void V_DrawVertLine(int x, int y, int h, int c);`
-- `V_DrawBox` (function) `progs/doomgeneric/v_video.h:74` `void V_DrawBox(int x, int y, int w, int h, int c);`
-- `V_DrawRawScreen` (function) `progs/doomgeneric/v_video.h:78` `void V_DrawRawScreen(byte *raw);`
-- `V_UseBuffer` (function) `progs/doomgeneric/v_video.h:82` `void V_UseBuffer(byte *buffer);`
-- `V_RestoreBuffer` (function) `progs/doomgeneric/v_video.h:86` `void V_RestoreBuffer(void);`
-- `V_ScreenShot` (function) `progs/doomgeneric/v_video.h:92` `void V_ScreenShot(char *format);`
-- `V_LoadTintTable` (function) `progs/doomgeneric/v_video.h:97` `void V_LoadTintTable(void);`
-- `V_LoadXlaTable` (function) `progs/doomgeneric/v_video.h:103` `void V_LoadXlaTable(void);`
-- `V_DrawMouseSpeedBox` (function) `progs/doomgeneric/v_video.h:105` `void V_DrawMouseSpeedBox(int speed);`
-
-## progs/doomgeneric/w_checksum.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
-- `GetFileNumber` (function) `progs/doomgeneric/w_checksum.c:31` `static int GetFileNumber(wad_file_t *handle)`
-- `ChecksumAddLump` (function) `progs/doomgeneric/w_checksum.c:57` `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)`
-- `W_Checksum` (function) `progs/doomgeneric/w_checksum.c:68` `void W_Checksum(sha1_digest_t digest)`
-
-## progs/doomgeneric/w_checksum.h
-Depends on: `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/d_net.c`, `progs/doomgeneric/w_checksum.c`
-- `W_Checksum` (function) `progs/doomgeneric/w_checksum.h:24` `extern void W_Checksum(sha1_digest_t digest);`
-
-## progs/doomgeneric/w_file.c
-Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_file.h`
-- `W_OpenFile` (function) `progs/doomgeneric/w_file.c:53` `wad_file_t *W_OpenFile(char *path)`
-- `W_CloseFile` (function) `progs/doomgeneric/w_file.c:85` `void W_CloseFile(wad_file_t *wad)`
-- `W_Read` (function) `progs/doomgeneric/w_file.c:90` `size_t W_Read(wad_file_t *wad, unsigned int offset,
-              void *buffer, size_t buffer_len)`
-
-## progs/doomgeneric/w_file.h
-Depends on: `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/w_file.c`, `progs/doomgeneric/w_file_stdc.c`, `progs/doomgeneric/w_wad.h`
-- `W_OpenFile` (function) `progs/doomgeneric/w_file.h:65` `wad_file_t *W_OpenFile(char *path);`
-- `W_CloseFile` (function) `progs/doomgeneric/w_file.h:69` `void W_CloseFile(wad_file_t *wad);`
-- `W_Read` (function) `progs/doomgeneric/w_file.h:75` `size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len);`
-
-## progs/doomgeneric/w_file_stdc.c
-Depends on: `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/z_zone.h`
-- `W_StdC_OpenFile` (function) `progs/doomgeneric/w_file_stdc.c:33` `static wad_file_t *W_StdC_OpenFile(char *path)`
-- `W_StdC_CloseFile` (function) `progs/doomgeneric/w_file_stdc.c:56` `static void W_StdC_CloseFile(wad_file_t *wad)`
-- `W_StdC_Read` (function) `progs/doomgeneric/w_file_stdc.c:69` `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
-                   void *buffer, size_t ...`
-
-## progs/doomgeneric/w_main.c
-Depends on: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_merge.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `W_ParseCommandLine` (function) `progs/doomgeneric/w_main.c:30` `boolean W_ParseCommandLine(void)`
 
 
 Next: [API_p16.md](API_p16.md)

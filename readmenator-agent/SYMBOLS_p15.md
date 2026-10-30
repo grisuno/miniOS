@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `HU_MSGHEIGHT` | macro | `progs/doomgeneric/hu_stuff.h:38` | `#define HU_MSGHEIGHT` |
+| `HU_MSGTIMEOUT` | macro | `progs/doomgeneric/hu_stuff.h:40` | `#define HU_MSGTIMEOUT` |
+| `HU_MSGWIDTH` | macro | `progs/doomgeneric/hu_stuff.h:37` | `#define HU_MSGWIDTH` |
+| `HU_MSGX` | macro | `progs/doomgeneric/hu_stuff.h:35` | `#define HU_MSGX` |
+| `HU_MSGY` | macro | `progs/doomgeneric/hu_stuff.h:36` | `#define HU_MSGY` |
+| `HU_Start` | function | `progs/doomgeneric/hu_stuff.h:47` | `void HU_Start(void);` |
+| `HU_Ticker` | function | `progs/doomgeneric/hu_stuff.h:51` | `void HU_Ticker(void);` |
+| `HU_dequeueChatChar` | function | `progs/doomgeneric/hu_stuff.h:53` | `char HU_dequeueChatChar(void);` |
+| `__HU_STUFF_H__` | macro | `progs/doomgeneric/hu_stuff.h:19` | `#define __HU_STUFF_H__` |
+| `chat_macros` | variable | `progs/doomgeneric/hu_stuff.h:56` | `extern char *chat_macros[10];` |
+| `I_CDMusFirstTrack` | function | `progs/doomgeneric/i_cdmus.c:169` | `int I_CDMusFirstTrack(void)` |
+| `I_CDMusInit` | function | `progs/doomgeneric/i_cdmus.c:38` | `int I_CDMusInit(void)` |
+| `I_CDMusLastTrack` | function | `progs/doomgeneric/i_cdmus.c:202` | `int I_CDMusLastTrack(void)` |
+| `I_CDMusPlay` | function | `progs/doomgeneric/i_cdmus.c:107` | `int I_CDMusPlay(int track)` |
+| `I_CDMusPrintStartup` | function | `progs/doomgeneric/i_cdmus.c:92` | `void I_CDMusPrintStartup(void)` |
+| `I_CDMusResume` | function | `progs/doomgeneric/i_cdmus.c:145` | `int I_CDMusResume(void)` |
+| `I_CDMusSetVolume` | function | `progs/doomgeneric/i_cdmus.c:160` | `int I_CDMusSetVolume(int volume)` |
+| `I_CDMusStop` | function | `progs/doomgeneric/i_cdmus.c:130` | `int I_CDMusStop(void)` |
+| `I_CDMusTrackLength` | function | `progs/doomgeneric/i_cdmus.c:219` | `int I_CDMusTrackLength(int track_num)` |
+| `CDERR_BADDRIVE` | macro | `progs/doomgeneric/i_cdmus.h:24` | `#define CDERR_BADDRIVE` |
+| `CDERR_BADTRACK` | macro | `progs/doomgeneric/i_cdmus.h:25` | `#define CDERR_BADTRACK` |
+| `CDERR_DEVREQBASE` | macro | `progs/doomgeneric/i_cdmus.h:27` | `#define CDERR_DEVREQBASE` |
+| `CDERR_IOCTLBUFFMEM` | macro | `progs/doomgeneric/i_cdmus.h:26` | `#define CDERR_IOCTLBUFFMEM` |
 | `CDERR_NOAUDIOSUPPORT` | macro | `progs/doomgeneric/i_cdmus.h:22` | `#define CDERR_NOAUDIOSUPPORT` |
 | `CDERR_NOAUDIOTRACKS` | macro | `progs/doomgeneric/i_cdmus.h:23` | `#define CDERR_NOAUDIOTRACKS` |
 | `CDERR_NOTINSTALLED` | macro | `progs/doomgeneric/i_cdmus.h:21` | `#define CDERR_NOTINSTALLED` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 | `CONFIG_VARIABLE_INT` | macro | `progs/doomgeneric/m_config.c:100` | `#define CONFIG_VARIABLE_INT(name)` |
 | `CONFIG_VARIABLE_INT_HEX` | macro | `progs/doomgeneric/m_config.c:102` | `#define CONFIG_VARIABLE_INT_HEX(name)` |
 | `CONFIG_VARIABLE_KEY` | macro | `progs/doomgeneric/m_config.c:98` | `#define CONFIG_VARIABLE_KEY(name)` |
-| `CONFIG_VARIABLE_STRING` | macro | `progs/doomgeneric/m_config.c:106` | `#define CONFIG_VARIABLE_STRING(name)` |
-| `GetDefaultConfigDir` | function | `progs/doomgeneric/m_config.c:2043` | `static char *GetDefaultConfigDir(void)` |
-| `GetDefaultForName` | function | `progs/doomgeneric/m_config.c:1937` | `static default_t *GetDefaultForName(char *name)` |
-| `LoadDefaultCollection` | function | `progs/doomgeneric/m_config.c:1771` | `static void LoadDefaultCollection(default_collection_t *collection)` |
-| `M_BindVariable` | function | `progs/doomgeneric/m_config.c:1964` | `void M_BindVariable(char *name, void *location)` |
-| `M_GetFloatVariable` | function | `progs/doomgeneric/m_config.c:2025` | `float M_GetFloatVariable(char *name)` |
-| `M_GetIntVariable` | function | `progs/doomgeneric/m_config.c:1995` | `int M_GetIntVariable(char *name)` |
-| `M_GetSaveGameDir` | function | `progs/doomgeneric/m_config.c:2087` | `char *M_GetSaveGameDir(char *iwadname)` |
-| `M_GetStrVariable` | function | `progs/doomgeneric/m_config.c:2010` | `const char *M_GetStrVariable(char *name)` |
-| `M_LoadDefaults` | function | `progs/doomgeneric/m_config.c:1881` | `void M_LoadDefaults (void)` |
-| `M_SaveDefaults` | function | `progs/doomgeneric/m_config.c:1846` | `void M_SaveDefaults (void)` |
-| `M_SaveDefaultsAlternate` | function | `progs/doomgeneric/m_config.c:1856` | `void M_SaveDefaultsAlternate(char *main, char *extra)` |
-| `M_SetConfigDir` | function | `progs/doomgeneric/m_config.c:2059` | `void M_SetConfigDir(char *dir)` |
-| `M_SetConfigFilenames` | function | `progs/doomgeneric/m_config.c:1836` | `void M_SetConfigFilenames(char *main_config, char *extra_config)` |
-| `M_SetVariable` | function | `progs/doomgeneric/m_config.c:1977` | `boolean M_SetVariable(char *name, char *value)` |
-| `ParseIntParameter` | function | `progs/doomgeneric/m_config.c:1716` | `static int ParseIntParameter(char *strparm)` |
-| `SaveDefaultCollection` | function | `progs/doomgeneric/m_config.c:1609` | `static void SaveDefaultCollection(default_collection_t *collection)` |
-| `SearchCollection` | function | `progs/doomgeneric/m_config.c:1563` | `static default_t *SearchCollection(default_collection_t *collection, char *name)` |
-| `SetVariable` | function | `progs/doomgeneric/m_config.c:1728` | `static void SetVariable(default_t *def, char *value)` |
-| `default_collection_t` | struct | `progs/doomgeneric/m_config.c:88` | `` |
-| `default_t` | struct | `progs/doomgeneric/m_config.c:61` | `` |
-| `M_BindVariable` | function | `progs/doomgeneric/m_config.h:29` | `void M_BindVariable(char *name, void *variable);` |
-| `M_GetFloatVariable` | function | `progs/doomgeneric/m_config.h:33` | `float M_GetFloatVariable(char *name);` |
 
 Next: [SYMBOLS_p16.md](SYMBOLS_p16.md)

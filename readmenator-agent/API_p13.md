@@ -1,6 +1,226 @@
 # API (page 13 of 21)
 Previous: [API_p12.md](API_p12.md)
 
+## progs/doomgeneric/i_video.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_wad.c`
+- `I_InitGraphics` (function) `progs/doomgeneric/i_video.h:97` `void I_InitGraphics (void);` -- Called by D_DoomMain, determines the hardware configuration and sets up the video mode
+- `I_GraphicsCheckCommandLine` (function) `progs/doomgeneric/i_video.h:99` `void I_GraphicsCheckCommandLine(void);`
+- `I_ShutdownGraphics` (function) `progs/doomgeneric/i_video.h:101` `void I_ShutdownGraphics(void);`
+- `I_SetPalette` (function) `progs/doomgeneric/i_video.h:104` `void I_SetPalette (byte* palette);` -- Takes full 8 bit values.
+- `I_GetPaletteIndex` (function) `progs/doomgeneric/i_video.h:105` `int I_GetPaletteIndex(int r, int g, int b);`
+- `I_UpdateNoBlit` (function) `progs/doomgeneric/i_video.h:107` `void I_UpdateNoBlit (void);`
+- `I_FinishUpdate` (function) `progs/doomgeneric/i_video.h:108` `void I_FinishUpdate (void);`
+- `I_ReadScreen` (function) `progs/doomgeneric/i_video.h:110` `void I_ReadScreen (byte* scr);`
+- `I_BeginRead` (function) `progs/doomgeneric/i_video.h:112` `void I_BeginRead (void);`
+- `I_SetWindowTitle` (function) `progs/doomgeneric/i_video.h:114` `void I_SetWindowTitle(char *title);`
+- `I_CheckIsScreensaver` (function) `progs/doomgeneric/i_video.h:116` `void I_CheckIsScreensaver(void);`
+- `I_SetGrabMouseCallback` (function) `progs/doomgeneric/i_video.h:117` `void I_SetGrabMouseCallback(grabmouse_callback_t func);`
+- `I_DisplayFPSDots` (function) `progs/doomgeneric/i_video.h:119` `void I_DisplayFPSDots(boolean dots_on);`
+- `I_BindVideoVariables` (function) `progs/doomgeneric/i_video.h:120` `void I_BindVideoVariables(void);`
+- `I_InitWindowTitle` (function) `progs/doomgeneric/i_video.h:122` `void I_InitWindowTitle(void);`
+- `I_InitWindowIcon` (function) `progs/doomgeneric/i_video.h:123` `void I_InitWindowIcon(void);`
+- `I_StartFrame` (function) `progs/doomgeneric/i_video.h:128` `void I_StartFrame (void);`
+- `I_StartTic` (function) `progs/doomgeneric/i_video.h:133` `void I_StartTic (void);`
+- `I_EnableLoadingDisk` (function) `progs/doomgeneric/i_video.h:137` `void I_EnableLoadingDisk(void);`
+
+## progs/doomgeneric/info.c
+Depends on: `progs/doomgeneric/info.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/sounds.h`
+- `A_Light0` (function) `progs/doomgeneric/info.c:51` `void A_Light0();` -- Doesn't work with g++, needs actionf_p1
+- `A_WeaponReady` (function) `progs/doomgeneric/info.c:52` `void A_WeaponReady();`
+- `A_Lower` (function) `progs/doomgeneric/info.c:53` `void A_Lower();`
+- `A_Raise` (function) `progs/doomgeneric/info.c:54` `void A_Raise();`
+- `A_Punch` (function) `progs/doomgeneric/info.c:55` `void A_Punch();`
+- `A_ReFire` (function) `progs/doomgeneric/info.c:56` `void A_ReFire();`
+- `A_FirePistol` (function) `progs/doomgeneric/info.c:57` `void A_FirePistol();`
+- `A_Light1` (function) `progs/doomgeneric/info.c:58` `void A_Light1();`
+- `A_FireShotgun` (function) `progs/doomgeneric/info.c:59` `void A_FireShotgun();`
+- `A_Light2` (function) `progs/doomgeneric/info.c:60` `void A_Light2();`
+- `A_FireShotgun2` (function) `progs/doomgeneric/info.c:61` `void A_FireShotgun2();`
+- `A_CheckReload` (function) `progs/doomgeneric/info.c:62` `void A_CheckReload();`
+- `A_OpenShotgun2` (function) `progs/doomgeneric/info.c:63` `void A_OpenShotgun2();`
+- `A_LoadShotgun2` (function) `progs/doomgeneric/info.c:64` `void A_LoadShotgun2();`
+- `A_CloseShotgun2` (function) `progs/doomgeneric/info.c:65` `void A_CloseShotgun2();`
+- `A_FireCGun` (function) `progs/doomgeneric/info.c:66` `void A_FireCGun();`
+- `A_GunFlash` (function) `progs/doomgeneric/info.c:67` `void A_GunFlash();`
+- `A_FireMissile` (function) `progs/doomgeneric/info.c:68` `void A_FireMissile();`
+- `A_Saw` (function) `progs/doomgeneric/info.c:69` `void A_Saw();`
+- `A_FirePlasma` (function) `progs/doomgeneric/info.c:70` `void A_FirePlasma();`
+- `A_BFGsound` (function) `progs/doomgeneric/info.c:71` `void A_BFGsound();`
+- `A_FireBFG` (function) `progs/doomgeneric/info.c:72` `void A_FireBFG();`
+- `A_BFGSpray` (function) `progs/doomgeneric/info.c:73` `void A_BFGSpray();`
+- `A_Explode` (function) `progs/doomgeneric/info.c:74` `void A_Explode();`
+- `A_Pain` (function) `progs/doomgeneric/info.c:75` `void A_Pain();`
+- `A_PlayerScream` (function) `progs/doomgeneric/info.c:76` `void A_PlayerScream();`
+- `A_Fall` (function) `progs/doomgeneric/info.c:77` `void A_Fall();`
+- `A_XScream` (function) `progs/doomgeneric/info.c:78` `void A_XScream();`
+- `A_Look` (function) `progs/doomgeneric/info.c:79` `void A_Look();`
+- `A_Chase` (function) `progs/doomgeneric/info.c:80` `void A_Chase();`
+- `A_FaceTarget` (function) `progs/doomgeneric/info.c:81` `void A_FaceTarget();`
+- `A_PosAttack` (function) `progs/doomgeneric/info.c:82` `void A_PosAttack();`
+- `A_Scream` (function) `progs/doomgeneric/info.c:83` `void A_Scream();`
+- `A_SPosAttack` (function) `progs/doomgeneric/info.c:84` `void A_SPosAttack();`
+- `A_VileChase` (function) `progs/doomgeneric/info.c:85` `void A_VileChase();`
+- `A_VileStart` (function) `progs/doomgeneric/info.c:86` `void A_VileStart();`
+- `A_VileTarget` (function) `progs/doomgeneric/info.c:87` `void A_VileTarget();`
+- `A_VileAttack` (function) `progs/doomgeneric/info.c:88` `void A_VileAttack();`
+- `A_StartFire` (function) `progs/doomgeneric/info.c:89` `void A_StartFire();`
+- `A_Fire` (function) `progs/doomgeneric/info.c:90` `void A_Fire();`
+- `A_FireCrackle` (function) `progs/doomgeneric/info.c:91` `void A_FireCrackle();`
+- `A_Tracer` (function) `progs/doomgeneric/info.c:92` `void A_Tracer();`
+- `A_SkelWhoosh` (function) `progs/doomgeneric/info.c:93` `void A_SkelWhoosh();`
+- `A_SkelFist` (function) `progs/doomgeneric/info.c:94` `void A_SkelFist();`
+- `A_SkelMissile` (function) `progs/doomgeneric/info.c:95` `void A_SkelMissile();`
+- `A_FatRaise` (function) `progs/doomgeneric/info.c:96` `void A_FatRaise();`
+- `A_FatAttack1` (function) `progs/doomgeneric/info.c:97` `void A_FatAttack1();`
+- `A_FatAttack2` (function) `progs/doomgeneric/info.c:98` `void A_FatAttack2();`
+- `A_FatAttack3` (function) `progs/doomgeneric/info.c:99` `void A_FatAttack3();`
+- `A_BossDeath` (function) `progs/doomgeneric/info.c:100` `void A_BossDeath();`
+- `A_CPosAttack` (function) `progs/doomgeneric/info.c:101` `void A_CPosAttack();`
+- `A_CPosRefire` (function) `progs/doomgeneric/info.c:102` `void A_CPosRefire();`
+- `A_TroopAttack` (function) `progs/doomgeneric/info.c:103` `void A_TroopAttack();`
+- `A_SargAttack` (function) `progs/doomgeneric/info.c:104` `void A_SargAttack();`
+- `A_HeadAttack` (function) `progs/doomgeneric/info.c:105` `void A_HeadAttack();`
+- `A_BruisAttack` (function) `progs/doomgeneric/info.c:106` `void A_BruisAttack();`
+- `A_SkullAttack` (function) `progs/doomgeneric/info.c:107` `void A_SkullAttack();`
+- `A_Metal` (function) `progs/doomgeneric/info.c:108` `void A_Metal();`
+- `A_SpidRefire` (function) `progs/doomgeneric/info.c:109` `void A_SpidRefire();`
+- `A_BabyMetal` (function) `progs/doomgeneric/info.c:110` `void A_BabyMetal();`
+- `A_BspiAttack` (function) `progs/doomgeneric/info.c:111` `void A_BspiAttack();`
+- `A_Hoof` (function) `progs/doomgeneric/info.c:112` `void A_Hoof();`
+- `A_CyberAttack` (function) `progs/doomgeneric/info.c:113` `void A_CyberAttack();`
+- `A_PainAttack` (function) `progs/doomgeneric/info.c:114` `void A_PainAttack();`
+- `A_PainDie` (function) `progs/doomgeneric/info.c:115` `void A_PainDie();`
+- `A_KeenDie` (function) `progs/doomgeneric/info.c:116` `void A_KeenDie();`
+- `A_BrainPain` (function) `progs/doomgeneric/info.c:117` `void A_BrainPain();`
+- `A_BrainScream` (function) `progs/doomgeneric/info.c:118` `void A_BrainScream();`
+- `A_BrainDie` (function) `progs/doomgeneric/info.c:119` `void A_BrainDie();`
+- `A_BrainAwake` (function) `progs/doomgeneric/info.c:120` `void A_BrainAwake();`
+- `A_BrainSpit` (function) `progs/doomgeneric/info.c:121` `void A_BrainSpit();`
+- `A_SpawnSound` (function) `progs/doomgeneric/info.c:122` `void A_SpawnSound();`
+- `A_SpawnFly` (function) `progs/doomgeneric/info.c:123` `void A_SpawnFly();`
+- `A_BrainExplode` (function) `progs/doomgeneric/info.c:124` `void A_BrainExplode();`
+
+## progs/doomgeneric/m_argv.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`
+- `M_CheckParmWithArgs` (function) `progs/doomgeneric/m_argv.c:43` `int M_CheckParmWithArgs(char *check, int num_args)`
+- `M_ParmExists` (function) `progs/doomgeneric/m_argv.c:63` `boolean M_ParmExists(char *check)`
+- `M_CheckParm` (function) `progs/doomgeneric/m_argv.c:68` `int M_CheckParm(char *check)`
+- `LoadResponseFile` (function) `progs/doomgeneric/m_argv.c:75` `static void LoadResponseFile(int argv_index)`
+- `M_FindResponseFile` (function) `progs/doomgeneric/m_argv.c:235` `void M_FindResponseFile(void)`
+- `M_GetExecutableName` (function) `progs/doomgeneric/m_argv.c:250` `char *M_GetExecutableName(void)`
+
+## progs/doomgeneric/m_argv.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/doomgeneric_sdl.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_main.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/w_file.c`, `progs/doomgeneric/w_main.c`
+- `M_CheckParm` (function) `progs/doomgeneric/m_argv.h:33` `int M_CheckParm (char* check);` -- Returns the position of the given parameter in the arg list (0 if not found).
+- `M_CheckParmWithArgs` (function) `progs/doomgeneric/m_argv.h:37` `int M_CheckParmWithArgs(char *check, int num_args);` -- Same as M_CheckParm, but checks that num_args arguments are available following the specified argument.
+- `M_FindResponseFile` (function) `progs/doomgeneric/m_argv.h:39` `void M_FindResponseFile(void);`
+- `M_GetExecutableName` (function) `progs/doomgeneric/m_argv.h:47` `char *M_GetExecutableName(void);`
+
+## progs/doomgeneric/m_bbox.c
+Depends on: `progs/doomgeneric/m_bbox.h`
+- `M_ClearBox` (function) `progs/doomgeneric/m_bbox.c:29` `void M_ClearBox (fixed_t *box)`
+- `M_AddToBox` (function) `progs/doomgeneric/m_bbox.c:36` `void
+M_AddToBox
+( fixed_t*	box,
+  fixed_t	x,
+  fixed_t	y )`
+
+## progs/doomgeneric/m_bbox.h
+Depends on: `progs/doomgeneric/m_fixed.h`
+Imported by: `progs/doomgeneric/m_bbox.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_maputl.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/r_bsp.c`, `progs/doomgeneric/r_main.c`, `progs/doomgeneric/v_video.c`
+- `M_ClearBox` (function) `progs/doomgeneric/m_bbox.h:38` `void M_ClearBox (fixed_t* box);` -- Bounding box functions.
+- `M_AddToBox` (function) `progs/doomgeneric/m_bbox.h:41` `void M_AddToBox ( fixed_t* box, fixed_t x, fixed_t y );`
+
+## progs/doomgeneric/m_cheat.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
+- `cht_CheckCheat` (function) `progs/doomgeneric/m_cheat.c:35` `int
+cht_CheckCheat
+( cheatseq_t*	cht,
+  char		key )`
+- `cht_GetParam` (function) `progs/doomgeneric/m_cheat.c:82` `void
+cht_GetParam
+( cheatseq_t*	cht,
+  char*		buffer )`
+
+## progs/doomgeneric/m_cheat.h
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/st_stuff.h`
+- `cht_CheckCheat` (function) `progs/doomgeneric/m_cheat.h:51` `int cht_CheckCheat ( cheatseq_t* cht, char key );`
+- `cht_GetParam` (function) `progs/doomgeneric/m_cheat.h:57` `void cht_GetParam ( cheatseq_t* cht, char* buffer );`
+
+## progs/doomgeneric/m_config.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/z_zone.h`
+- `SearchCollection` (function) `progs/doomgeneric/m_config.c:1563` `static default_t *SearchCollection(default_collection_t *collection, char *name)`
+- `SaveDefaultCollection` (function) `progs/doomgeneric/m_config.c:1609` `static void SaveDefaultCollection(default_collection_t *collection)`
+- `ParseIntParameter` (function) `progs/doomgeneric/m_config.c:1716` `static int ParseIntParameter(char *strparm)`
+- `SetVariable` (function) `progs/doomgeneric/m_config.c:1728` `static void SetVariable(default_t *def, char *value)`
+- `LoadDefaultCollection` (function) `progs/doomgeneric/m_config.c:1771` `static void LoadDefaultCollection(default_collection_t *collection)`
+- `M_SetConfigFilenames` (function) `progs/doomgeneric/m_config.c:1836` `void M_SetConfigFilenames(char *main_config, char *extra_config)`
+- `M_SaveDefaults` (function) `progs/doomgeneric/m_config.c:1846` `void M_SaveDefaults (void)`
+- `M_SaveDefaultsAlternate` (function) `progs/doomgeneric/m_config.c:1856` `void M_SaveDefaultsAlternate(char *main, char *extra)`
+- `M_LoadDefaults` (function) `progs/doomgeneric/m_config.c:1881` `void M_LoadDefaults (void)`
+- `GetDefaultForName` (function) `progs/doomgeneric/m_config.c:1937` `static default_t *GetDefaultForName(char *name)`
+- `M_BindVariable` (function) `progs/doomgeneric/m_config.c:1964` `void M_BindVariable(char *name, void *location)`
+- `M_SetVariable` (function) `progs/doomgeneric/m_config.c:1977` `boolean M_SetVariable(char *name, char *value)`
+- `M_GetIntVariable` (function) `progs/doomgeneric/m_config.c:1995` `int M_GetIntVariable(char *name)`
+- `M_GetStrVariable` (function) `progs/doomgeneric/m_config.c:2010` `const char *M_GetStrVariable(char *name)`
+- `M_GetFloatVariable` (function) `progs/doomgeneric/m_config.c:2025` `float M_GetFloatVariable(char *name)`
+- `GetDefaultConfigDir` (function) `progs/doomgeneric/m_config.c:2043` `static char *GetDefaultConfigDir(void)`
+- `M_SetConfigDir` (function) `progs/doomgeneric/m_config.c:2059` `void M_SetConfigDir(char *dir)`
+- `M_GetSaveGameDir` (function) `progs/doomgeneric/m_config.c:2087` `char *M_GetSaveGameDir(char *iwadname)`
+
+## progs/doomgeneric/m_config.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_sound.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_controls.c`
+- `M_LoadDefaults` (function) `progs/doomgeneric/m_config.h:25` `void M_LoadDefaults(void);`
+- `M_SaveDefaults` (function) `progs/doomgeneric/m_config.h:26` `void M_SaveDefaults(void);`
+- `M_SaveDefaultsAlternate` (function) `progs/doomgeneric/m_config.h:27` `void M_SaveDefaultsAlternate(char *main, char *extra);`
+- `M_SetConfigDir` (function) `progs/doomgeneric/m_config.h:28` `void M_SetConfigDir(char *dir);`
+- `M_BindVariable` (function) `progs/doomgeneric/m_config.h:29` `void M_BindVariable(char *name, void *variable);`
+- `M_GetIntVariable` (function) `progs/doomgeneric/m_config.h:31` `int M_GetIntVariable(char *name);`
+- `M_GetStrVariable` (function) `progs/doomgeneric/m_config.h:32` `const char *M_GetStrVariable(char *name);`
+- `M_GetFloatVariable` (function) `progs/doomgeneric/m_config.h:33` `float M_GetFloatVariable(char *name);`
+- `M_SetConfigFilenames` (function) `progs/doomgeneric/m_config.h:34` `void M_SetConfigFilenames(char *main_config, char *extra_config);`
+- `M_GetSaveGameDir` (function) `progs/doomgeneric/m_config.h:35` `char *M_GetSaveGameDir(char *iwadname);`
+
+## progs/doomgeneric/m_controls.c
+Depends on: `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`
+- `M_BindBaseControls` (function) `progs/doomgeneric/m_controls.c:204` `void M_BindBaseControls(void)`
+- `M_BindHereticControls` (function) `progs/doomgeneric/m_controls.c:241` `void M_BindHereticControls(void)`
+- `M_BindHexenControls` (function) `progs/doomgeneric/m_controls.c:256` `void M_BindHexenControls(void)`
+- `M_BindStrifeControls` (function) `progs/doomgeneric/m_controls.c:272` `void M_BindStrifeControls(void)`
+- `M_BindWeaponControls` (function) `progs/doomgeneric/m_controls.c:307` `void M_BindWeaponControls(void)`
+- `M_BindMapControls` (function) `progs/doomgeneric/m_controls.c:328` `void M_BindMapControls(void)`
+- `M_BindMenuControls` (function) `progs/doomgeneric/m_controls.c:344` `void M_BindMenuControls(void)`
+- `M_BindChatControls` (function) `progs/doomgeneric/m_controls.c:375` `void M_BindChatControls(unsigned int num_players)`
+- `M_ApplyPlatformDefaults` (function) `progs/doomgeneric/m_controls.c:394` `void M_ApplyPlatformDefaults(void)`
+
+## progs/doomgeneric/m_controls.h
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_stuff.c`, `progs/doomgeneric/m_menu.c`
+- `M_BindBaseControls` (function) `progs/doomgeneric/m_controls.h:156` `void M_BindBaseControls(void);`
+- `M_BindHereticControls` (function) `progs/doomgeneric/m_controls.h:157` `void M_BindHereticControls(void);`
+- `M_BindHexenControls` (function) `progs/doomgeneric/m_controls.h:158` `void M_BindHexenControls(void);`
+- `M_BindStrifeControls` (function) `progs/doomgeneric/m_controls.h:159` `void M_BindStrifeControls(void);`
+- `M_BindWeaponControls` (function) `progs/doomgeneric/m_controls.h:160` `void M_BindWeaponControls(void);`
+- `M_BindMapControls` (function) `progs/doomgeneric/m_controls.h:161` `void M_BindMapControls(void);`
+- `M_BindMenuControls` (function) `progs/doomgeneric/m_controls.h:162` `void M_BindMenuControls(void);`
+- `M_BindChatControls` (function) `progs/doomgeneric/m_controls.h:163` `void M_BindChatControls(unsigned int num_players);`
+- `M_ApplyPlatformDefaults` (function) `progs/doomgeneric/m_controls.h:165` `void M_ApplyPlatformDefaults(void);`
+
+## progs/doomgeneric/m_fixed.c
+Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_fixed.h`
+- `FixedMul` (function) `progs/doomgeneric/m_fixed.c:34` `fixed_t
+FixedMul
+( fixed_t	a,
+  fixed_t	b )`
+- `FixedDiv` (function) `progs/doomgeneric/m_fixed.c:47` `fixed_t FixedDiv(fixed_t a, fixed_t b)`
+
+## progs/doomgeneric/m_fixed.h
+Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/info.c`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_fixed.c`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/r_sky.c`, `progs/doomgeneric/tables.h`
+- `FixedMul` (function) `progs/doomgeneric/m_fixed.h:34` `fixed_t FixedMul (fixed_t a, fixed_t b);`
+- `FixedDiv` (function) `progs/doomgeneric/m_fixed.h:35` `fixed_t FixedDiv (fixed_t a, fixed_t b);`
+
 ## progs/doomgeneric/m_menu.c
 Depends on: `progs/doomgeneric/d_main.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
 - `M_StartGame` (function) `progs/doomgeneric/m_menu.c:193` `void M_StartGame(int choice);`
@@ -271,216 +491,6 @@ P_SpawnDoorRaiseIn5Mins
 EV_SlidingDoor
 ( line_t*	line,
   mobj_t*	thing )`
-
-## progs/doomgeneric/p_enemy.c
-Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
-- `P_RecursiveSound` (function) `progs/doomgeneric/p_enemy.c:99` `void
-P_RecursiveSound
-( sector_t*	sec,
-  int		soundblocks )`
-- `P_NoiseAlert` (function) `progs/doomgeneric/p_enemy.c:152` `void
-P_NoiseAlert
-( mobj_t*	target,
-  mobj_t*	emmiter )`
-- `P_CheckMeleeRange` (function) `progs/doomgeneric/p_enemy.c:167` `boolean P_CheckMeleeRange (mobj_t*	actor)` -- P_CheckMeleeRange
-- `P_CheckMissileRange` (function) `progs/doomgeneric/p_enemy.c:190` `boolean P_CheckMissileRange (mobj_t* actor)` -- P_CheckMissileRange
-- `P_Move` (function) `progs/doomgeneric/p_enemy.c:260` `boolean P_Move (mobj_t*	actor)`
-- `P_TryWalk` (function) `progs/doomgeneric/p_enemy.c:337` `boolean P_TryWalk (mobj_t* actor)` -- TryWalk Attempts to move actor on in its current (ob->moveangle) direction.
-- `P_NewChaseDir` (function) `progs/doomgeneric/p_enemy.c:351` `void P_NewChaseDir (mobj_t*	actor)`
-- `P_LookForPlayers` (function) `progs/doomgeneric/p_enemy.c:487` `boolean
-P_LookForPlayers
-( mobj_t*	actor,
-  boolean	allaround )`
-- `A_KeenDie` (function) `progs/doomgeneric/p_enemy.c:551` `void A_KeenDie (mobj_t* mo)` -- A_KeenDie DOOM II special, map 32.
-- `A_Look` (function) `progs/doomgeneric/p_enemy.c:589` `void A_Look (mobj_t* actor)` -- A_Look Stay in state until a player is sighted.
-- `A_Chase` (function) `progs/doomgeneric/p_enemy.c:657` `void A_Chase (mobj_t*	actor)` -- A_Chase Actor has a melee attack, so it tries to close as fast as possible
-- `A_FaceTarget` (function) `progs/doomgeneric/p_enemy.c:767` `void A_FaceTarget (mobj_t* actor)` -- A_FaceTarget
-- `A_PosAttack` (function) `progs/doomgeneric/p_enemy.c:787` `void A_PosAttack (mobj_t* actor)` -- A_PosAttack
-- `A_SPosAttack` (function) `progs/doomgeneric/p_enemy.c:806` `void A_SPosAttack (mobj_t* actor)`
-- `A_CPosAttack` (function) `progs/doomgeneric/p_enemy.c:830` `void A_CPosAttack (mobj_t* actor)`
-- `A_CPosRefire` (function) `progs/doomgeneric/p_enemy.c:850` `void A_CPosRefire (mobj_t* actor)`
-- `A_SpidRefire` (function) `progs/doomgeneric/p_enemy.c:867` `void A_SpidRefire (mobj_t* actor)`
-- `A_BspiAttack` (function) `progs/doomgeneric/p_enemy.c:883` `void A_BspiAttack (mobj_t *actor)`
-- `A_TroopAttack` (function) `progs/doomgeneric/p_enemy.c:898` `void A_TroopAttack (mobj_t* actor)` -- A_TroopAttack
-- `A_SargAttack` (function) `progs/doomgeneric/p_enemy.c:920` `void A_SargAttack (mobj_t* actor)`
-- `A_HeadAttack` (function) `progs/doomgeneric/p_enemy.c:935` `void A_HeadAttack (mobj_t* actor)`
-- `A_CyberAttack` (function) `progs/doomgeneric/p_enemy.c:954` `void A_CyberAttack (mobj_t* actor)`
-- `A_BruisAttack` (function) `progs/doomgeneric/p_enemy.c:964` `void A_BruisAttack (mobj_t* actor)`
-- `A_SkelMissile` (function) `progs/doomgeneric/p_enemy.c:987` `void A_SkelMissile (mobj_t* actor)` -- A_SkelMissile
-- `A_Tracer` (function) `progs/doomgeneric/p_enemy.c:1006` `void A_Tracer (mobj_t* actor)`
-- `A_SkelWhoosh` (function) `progs/doomgeneric/p_enemy.c:1078` `void A_SkelWhoosh (mobj_t*	actor)`
-- `A_SkelFist` (function) `progs/doomgeneric/p_enemy.c:1086` `void A_SkelFist (mobj_t*	actor)`
-- `PIT_VileCheck` (function) `progs/doomgeneric/p_enemy.c:1114` `boolean PIT_VileCheck (mobj_t*	thing)`
-- `A_VileChase` (function) `progs/doomgeneric/p_enemy.c:1152` `void A_VileChase (mobj_t* actor)` -- A_VileChase Check for ressurecting a body
-- `A_VileStart` (function) `progs/doomgeneric/p_enemy.c:1218` `void A_VileStart (mobj_t* actor)` -- A_VileStart
-- `A_StartFire` (function) `progs/doomgeneric/p_enemy.c:1230` `void A_StartFire (mobj_t* actor)`
-- `A_FireCrackle` (function) `progs/doomgeneric/p_enemy.c:1236` `void A_FireCrackle (mobj_t* actor)`
-- `A_Fire` (function) `progs/doomgeneric/p_enemy.c:1242` `void A_Fire (mobj_t* actor)`
-- `A_VileTarget` (function) `progs/doomgeneric/p_enemy.c:1273` `void A_VileTarget (mobj_t*	actor)` -- A_VileTarget Spawn the hellfire
-- `A_VileAttack` (function) `progs/doomgeneric/p_enemy.c:1298` `void A_VileAttack (mobj_t* actor)` -- A_VileAttack
-- `A_FatRaise` (function) `progs/doomgeneric/p_enemy.c:1339` `void A_FatRaise (mobj_t *actor)`
-- `A_FatAttack1` (function) `progs/doomgeneric/p_enemy.c:1346` `void A_FatAttack1 (mobj_t* actor)`
-- `A_FatAttack2` (function) `progs/doomgeneric/p_enemy.c:1366` `void A_FatAttack2 (mobj_t* actor)`
-- `A_FatAttack3` (function) `progs/doomgeneric/p_enemy.c:1385` `void A_FatAttack3 (mobj_t*	actor)`
-- `A_SkullAttack` (function) `progs/doomgeneric/p_enemy.c:1415` `void A_SkullAttack (mobj_t* actor)`
-- `A_PainShootSkull` (function) `progs/doomgeneric/p_enemy.c:1446` `void
-A_PainShootSkull
-( mobj_t*	actor,
-  angle_t	angle )`
-- `A_PainAttack` (function) `progs/doomgeneric/p_enemy.c:1508` `void A_PainAttack (mobj_t* actor)` -- A_PainAttack Spawn a lost soul and launch it at the target
-- `A_PainDie` (function) `progs/doomgeneric/p_enemy.c:1518` `void A_PainDie (mobj_t* actor)`
-- `A_Scream` (function) `progs/doomgeneric/p_enemy.c:1531` `void A_Scream (mobj_t* actor)`
-- `A_XScream` (function) `progs/doomgeneric/p_enemy.c:1568` `void A_XScream (mobj_t* actor)`
-- `A_Pain` (function) `progs/doomgeneric/p_enemy.c:1573` `void A_Pain (mobj_t* actor)`
-- `A_Fall` (function) `progs/doomgeneric/p_enemy.c:1581` `void A_Fall (mobj_t *actor)`
-- `A_Explode` (function) `progs/doomgeneric/p_enemy.c:1594` `void A_Explode (mobj_t* thingy)` -- A_Explode
-- `CheckBossEnd` (function) `progs/doomgeneric/p_enemy.c:1605` `static boolean CheckBossEnd(mobjtype_t motype)`
-- `A_BossDeath` (function) `progs/doomgeneric/p_enemy.c:1656` `void A_BossDeath (mobj_t* mo)` -- A_BossDeath Possibly trigger special effects if on first boss level
-- `A_Hoof` (function) `progs/doomgeneric/p_enemy.c:1757` `void A_Hoof (mobj_t* mo)`
-- `A_Metal` (function) `progs/doomgeneric/p_enemy.c:1763` `void A_Metal (mobj_t* mo)`
-- `A_BabyMetal` (function) `progs/doomgeneric/p_enemy.c:1769` `void A_BabyMetal (mobj_t* mo)`
-- `A_OpenShotgun2` (function) `progs/doomgeneric/p_enemy.c:1776` `void
-A_OpenShotgun2
-( player_t*	player,
-  pspdef_t*	psp )`
-- `A_LoadShotgun2` (function) `progs/doomgeneric/p_enemy.c:1784` `void
-A_LoadShotgun2
-( player_t*	player,
-  pspdef_t*	psp )`
-- `A_ReFire` (function) `progs/doomgeneric/p_enemy.c:1792` `void A_ReFire ( player_t* player, pspdef_t* psp );`
-- `A_CloseShotgun2` (function) `progs/doomgeneric/p_enemy.c:1797` `void
-A_CloseShotgun2
-( player_t*	player,
-  pspdef_t*	psp )`
-- `A_BrainAwake` (function) `progs/doomgeneric/p_enemy.c:1811` `void A_BrainAwake (mobj_t* mo)`
-- `A_BrainPain` (function) `progs/doomgeneric/p_enemy.c:1841` `void A_BrainPain (mobj_t*	mo)`
-- `A_BrainScream` (function) `progs/doomgeneric/p_enemy.c:1847` `void A_BrainScream (mobj_t*	mo)`
-- `A_BrainExplode` (function) `progs/doomgeneric/p_enemy.c:1873` `void A_BrainExplode (mobj_t* mo)`
-- `A_BrainDie` (function) `progs/doomgeneric/p_enemy.c:1894` `void A_BrainDie (mobj_t*	mo)`
-- `A_BrainSpit` (function) `progs/doomgeneric/p_enemy.c:1899` `void A_BrainSpit (mobj_t*	mo)`
-- `A_SpawnSound` (function) `progs/doomgeneric/p_enemy.c:1928` `void A_SpawnSound (mobj_t* mo)` -- travelling cube sound
-- `A_SpawnFly` (function) `progs/doomgeneric/p_enemy.c:1934` `void A_SpawnFly (mobj_t* mo)`
-- `A_PlayerScream` (function) `progs/doomgeneric/p_enemy.c:1992` `void A_PlayerScream (mobj_t* mo)`
-
-## progs/doomgeneric/p_floor.c
-Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
-- `T_MovePlane` (function) `progs/doomgeneric/p_floor.c:42` `result_e
-T_MovePlane
-( sector_t*	sector,
-  fixed_t	speed,
-  fixed_t	dest,
-  boolean	crush,
-  int	...`
-- `T_MoveFloor` (function) `progs/doomgeneric/p_floor.c:202` `void T_MoveFloor(floormove_t* floor)` -- MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN)
-- `EV_DoFloor` (function) `progs/doomgeneric/p_floor.c:251` `int
-EV_DoFloor
-( line_t*	line,
-  floor_e	floortype )`
-- `EV_BuildStairs` (function) `progs/doomgeneric/p_floor.c:444` `int
-EV_BuildStairs
-( line_t*	line,
-  stair_e	type )`
-
-## progs/doomgeneric/p_inter.c
-Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
-- `P_GiveAmmo` (function) `progs/doomgeneric/p_inter.c:66` `boolean
-P_GiveAmmo
-( player_t*	player,
-  ammotype_t	ammo,
-  int		num )`
-- `P_GiveWeapon` (function) `progs/doomgeneric/p_inter.c:160` `boolean
-P_GiveWeapon
-( player_t*	player,
-  weapontype_t	weapon,
-  boolean	dropped )`
-- `P_GiveBody` (function) `progs/doomgeneric/p_inter.c:223` `boolean
-P_GiveBody
-( player_t*	player,
-  int		num )`
-- `P_GiveArmor` (function) `progs/doomgeneric/p_inter.c:246` `boolean
-P_GiveArmor
-( player_t*	player,
-  int		armortype )`
-- `P_GiveCard` (function) `progs/doomgeneric/p_inter.c:268` `void
-P_GiveCard
-( player_t*	player,
-  card_t	card )`
-- `P_GivePower` (function) `progs/doomgeneric/p_inter.c:284` `boolean
-P_GivePower
-( player_t*	player,
-  int /*powertype_t*/	power )`
-- `P_TouchSpecialThing` (function) `progs/doomgeneric/p_inter.c:333` `void
-P_TouchSpecialThing
-( mobj_t*	special,
-  mobj_t*	toucher )`
-- `P_KillMobj` (function) `progs/doomgeneric/p_inter.c:666` `void
-P_KillMobj
-( mobj_t*	source,
-  mobj_t*	target )`
-- `P_DamageMobj` (function) `progs/doomgeneric/p_inter.c:779` `void
-P_DamageMobj
-( mobj_t*	target,
-  mobj_t*	inflictor,
-  mobj_t*	source,
-  int 		damage )`
-
-## progs/doomgeneric/p_lights.c
-Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
-- `T_FireFlicker` (function) `progs/doomgeneric/p_lights.c:39` `void T_FireFlicker (fireflicker_t* flick)` -- T_FireFlicker
-- `P_SpawnFireFlicker` (function) `progs/doomgeneric/p_lights.c:61` `void P_SpawnFireFlicker (sector_t*	sector)` -- P_SpawnFireFlicker
-- `T_LightFlash` (function) `progs/doomgeneric/p_lights.c:91` `void T_LightFlash (lightflash_t* flash)` -- T_LightFlash Do flashing lights.
-- `P_SpawnLightFlash` (function) `progs/doomgeneric/p_lights.c:117` `void P_SpawnLightFlash (sector_t*	sector)` -- P_SpawnLightFlash After the map has been loaded, scan each sector for specials that spawn thinkers
-- `T_StrobeFlash` (function) `progs/doomgeneric/p_lights.c:148` `void T_StrobeFlash (strobe_t*		flash)` -- T_StrobeFlash
-- `P_SpawnStrobeFlash` (function) `progs/doomgeneric/p_lights.c:174` `void
-P_SpawnStrobeFlash
-( sector_t*	sector,
-  int		fastOrSlow,
-  int		inSync )`
-- `EV_StartLightStrobing` (function) `progs/doomgeneric/p_lights.c:208` `void EV_StartLightStrobing(line_t*	line)` -- Start strobing lights (usually from a trigger)
-- `EV_TurnTagLightsOff` (function) `progs/doomgeneric/p_lights.c:229` `void EV_TurnTagLightsOff(line_t* line)` -- TURN LINE'S TAG LIGHTS OFF
-- `EV_LightTurnOn` (function) `progs/doomgeneric/p_lights.c:264` `void
-EV_LightTurnOn
-( line_t*	line,
-  int		bright )`
-- `T_Glow` (function) `progs/doomgeneric/p_lights.c:307` `void T_Glow(glow_t*	g)`
-- `P_SpawnGlowingLight` (function) `progs/doomgeneric/p_lights.c:334` `void P_SpawnGlowingLight(sector_t*	sector)`
-
-## progs/doomgeneric/p_local.h
-Depends on: `progs/doomgeneric/p_spec.h`, `progs/doomgeneric/r_local.h`
-Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_lights.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_maputl.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_sight.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/p_tick.c`, `progs/doomgeneric/p_user.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`
-- `P_InitThinkers` (function) `progs/doomgeneric/p_local.h:70` `void P_InitThinkers (void);`
-- `P_AddThinker` (function) `progs/doomgeneric/p_local.h:71` `void P_AddThinker (thinker_t* thinker);`
-- `P_RemoveThinker` (function) `progs/doomgeneric/p_local.h:72` `void P_RemoveThinker (thinker_t* thinker);`
-- `P_SetupPsprites` (function) `progs/doomgeneric/p_local.h:78` `void P_SetupPsprites (player_t* curplayer);` -- P_PSPR
-- `P_MovePsprites` (function) `progs/doomgeneric/p_local.h:79` `void P_MovePsprites (player_t* curplayer);`
-- `P_DropWeapon` (function) `progs/doomgeneric/p_local.h:80` `void P_DropWeapon (player_t* player);`
-- `P_PlayerThink` (function) `progs/doomgeneric/p_local.h:86` `void P_PlayerThink (player_t* player);` -- P_USER
-- `P_RespawnSpecials` (function) `progs/doomgeneric/p_local.h:104` `void P_RespawnSpecials (void);`
-- `P_SpawnMobj` (function) `progs/doomgeneric/p_local.h:107` `mobj_t* P_SpawnMobj ( fixed_t x, fixed_t y, fixed_t z, mobjtype_t type );`
-- `P_RemoveMobj` (function) `progs/doomgeneric/p_local.h:113` `void P_RemoveMobj (mobj_t* th);`
-- `P_SubstNullMobj` (function) `progs/doomgeneric/p_local.h:114` `mobj_t* P_SubstNullMobj (mobj_t* th);`
-- `P_MobjThinker` (function) `progs/doomgeneric/p_local.h:116` `void P_MobjThinker (mobj_t* mobj);`
-- `P_SpawnPuff` (function) `progs/doomgeneric/p_local.h:118` `void P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);`
-- `P_SpawnBlood` (function) `progs/doomgeneric/p_local.h:119` `void P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage);`
-- `P_SpawnMissile` (function) `progs/doomgeneric/p_local.h:120` `mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);`
-- `P_SpawnPlayerMissile` (function) `progs/doomgeneric/p_local.h:121` `void P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);`
-- `P_NoiseAlert` (function) `progs/doomgeneric/p_local.h:127` `void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);` -- P_ENEMY
-- `P_AproxDistance` (function) `progs/doomgeneric/p_local.h:162` `fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);`
-- `P_PointOnLineSide` (function) `progs/doomgeneric/p_local.h:163` `int P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);`
-- `P_PointOnDivlineSide` (function) `progs/doomgeneric/p_local.h:164` `int P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);`
-- `P_MakeDivline` (function) `progs/doomgeneric/p_local.h:165` `void P_MakeDivline (line_t* li, divline_t* dl);`
-- `P_InterceptVector` (function) `progs/doomgeneric/p_local.h:166` `fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);`
-- `P_BoxOnLineSide` (function) `progs/doomgeneric/p_local.h:167` `int P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);`
-- `P_LineOpening` (function) `progs/doomgeneric/p_local.h:174` `void P_LineOpening (line_t* linedef);`
-- `P_UnsetThingPosition` (function) `progs/doomgeneric/p_local.h:194` `void P_UnsetThingPosition (mobj_t* thing);`
-- `P_SetThingPosition` (function) `progs/doomgeneric/p_local.h:195` `void P_SetThingPosition (mobj_t* thing);`
-- `P_SlideMove` (function) `progs/doomgeneric/p_local.h:228` `void P_SlideMove (mobj_t* mo);`
-- `P_UseLines` (function) `progs/doomgeneric/p_local.h:230` `void P_UseLines (player_t* player);`
-- `P_AimLineAttack` (function) `progs/doomgeneric/p_local.h:237` `fixed_t P_AimLineAttack ( mobj_t* t1, angle_t angle, fixed_t distance );`
-- `P_LineAttack` (function) `progs/doomgeneric/p_local.h:243` `void P_LineAttack ( mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope, int damage );`
-- `P_RadiusAttack` (function) `progs/doomgeneric/p_local.h:251` `void P_RadiusAttack ( mobj_t* spot, mobj_t* source, int damage );`
-- `P_TouchSpecialThing` (function) `progs/doomgeneric/p_local.h:279` `void P_TouchSpecialThing ( mobj_t* special, mobj_t* toucher );`
-- `P_DamageMobj` (function) `progs/doomgeneric/p_local.h:284` `void P_DamageMobj ( mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage );`
 
 
 Next: [API_p14.md](API_p14.md)

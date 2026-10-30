@@ -1,6 +1,6 @@
 # GraphRAG Community Reports
 
-Entities: 13913 | Relationships: 25845 | Communities: 11 | Themes: 4 | Text units: 13664
+Entities: 13936 | Relationships: 25869 | Communities: 11 | Themes: 4 | Text units: 13687
 
 Query with `readmenator . ask "<question>"` (local: BM25 + Personalized PageRank; global: map-reduce over these reports) or the MCP tool `readmenator.graphrag`.
 
@@ -83,7 +83,7 @@ Theme of 1 communities and 2 files: tools: doom_pwad (2 files, rating 0.1).
 - Hotspot `kernel/shell.c`: 98 symbols, 64 connections (score 0.52).
 - Dataflow: 27 INFERRED issues (first: DEAD_STORE in sb16_pump).
 - Surprising bridge: qga.h <-> d_englsh.h (9 hops across communities).
-- Key entities: file:headers/kernel.h, file:kernel/syscalls.c, file:drivers/xhci.c, file:headers/sched.h, file:headers/arch/x86/boot/bootdefs.h, file:net/net.c, file:headers/vga_fb.h, file:kernel/sched.c
+- Key entities: file:headers/kernel.h, file:kernel/syscalls.c, file:drivers/xhci.c, file:headers/sched.h, file:headers/arch/x86/boot/bootdefs.h, file:headers/vga_fb.h, file:net/net.c, file:kernel/sched.c
 - Rating 7.0/10 = 7 x PageRank share 1.00 + 3 x risk 0.00. Internal imports: 319.
 
 ## progs/doomgeneric: d_englsh (`c1`, community, rating 6.4)
@@ -162,12 +162,12 @@ Theme of 1 communities and 2 files: tools: doom_pwad (2 files, rating 0.1).
 
 - `headers/wm_geom.h` ranks 1 by PageRank, 3 importers, 11 symbols: Docstring: Window geometry contract for the MiniOS desktop.
 - `headers/wm_window.h` ranks 2 by PageRank, 4 importers, 10 symbols: Docstring: Unified window contract for the MiniOS desktop.
-- `headers/vga_fx.h` ranks 3 by PageRank, 3 importers, 9 symbols: Docstring: DOOM-melt desktop effect contract for MiniOS.
-- Hotspot `kernel/vga_fb.c`: 253 symbols, 42 connections (score 0.52).
+- `headers/vga_fx.h` ranks 3 by PageRank, 3 importers, 25 symbols: Docstring: DOOM-melt desktop effect contract for MiniOS.
+- Hotspot `kernel/vga_fb.c`: 256 symbols, 42 connections (score 0.53).
 - Hotspot `tests/test_wm.c`: 2 symbols, 17 connections (score 0.11).
 - 2 layer violations, e.g. test_wm.c (testing) -> wm_render.h (presentation).
 - Dataflow: 8 INFERRED issues (first: DEAD_STORE in taskbar_render).
-- Key entities: file:kernel/vga_fb.c, file:headers/wm_events.h, file:headers/desktop_shortcuts.h, file:headers/wm_layout.h, file:headers/wm_chrome.h, file:headers/wm_gfxview.h, file:headers/wm_jelly.h, file:kernel/vga_cursor.c
+- Key entities: file:kernel/vga_fb.c, file:headers/wm_events.h, file:headers/desktop_shortcuts.h, file:headers/vga_fx.h, file:headers/wm_layout.h, file:headers/wm_gfxview.h, file:headers/wm_chrome.h, file:headers/wm_jelly.h
 - Rating 0.9/10 = 7 x PageRank share 0.13 + 3 x risk 0.00. Internal imports: 31.
 
 ## progs/doomgeneric: net_defs (`c6`, community, rating 0.9)

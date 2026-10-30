@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `sign_digest` | function | `progs/src/sign.c:1112` | `static void sign_digest(char *sig, char *digest)` |
+| `sign_digest_of` | function | `progs/src/sign.c:1307` | `static int sign_digest_of(char *img, int size, int entry, char *ph, int phnum, char *digest)` |
+| `sign_feed32` | function | `progs/src/sign.c:490` | `static void sign_feed32(unsigned int v)` |
+| `sign_file` | function | `progs/src/sign.c:1529` | `static int sign_file(char *name)` |
+| `sign_hexval` | function | `progs/src/sign.c:89` | `static unsigned int sign_hexval(char c)` |
+| `sign_key_init` | function | `progs/src/sign.c:500` | `static void sign_key_init(void)` |
+| `sign_le16` | function | `progs/src/sign.c:136` | `static unsigned int sign_le16(char *p, int off)` |
+| `sign_le32` | function | `progs/src/sign.c:141` | `static unsigned int sign_le32(char *p, int off)` |
+| `sign_note_span` | function | `progs/src/sign.c:1273` | `static int sign_note_span(char *img, int off, int len, int *desc)` |
+| `sign_offok` | function | `progs/src/sign.c:180` | `static int sign_offok(char *p, int off, int *lo)` |
+| `sign_patch_notes` | function | `progs/src/sign.c:1356` | `static int sign_patch_notes(char *img, int size, char *ph, int phnum, char *desc)` |
+| `sign_points_init` | function | `progs/src/sign.c:1081` | `static void sign_points_init(void)` |
+| `sign_put32` | function | `progs/src/sign.c:147` | `static void sign_put32(char *p, int off, unsigned int v)` |
+| `sign_read` | function | `progs/src/sign.c:1232` | `static char *sign_read(char *name, int *len)` |
+| `sign_rev32` | function | `progs/src/sign.c:1070` | `static void sign_rev32(char *b)` |
+| `sign_selftest` | function | `progs/src/sign.c:1637` | `static int sign_selftest(void)` |
+| `sign_sha_final` | function | `progs/src/sign.c:442` | `static void sign_sha_final(char *out)` |
+| `sign_sha_init` | function | `progs/src/sign.c:387` | `static void sign_sha_init(void)` |
+| `sign_sha_update` | function | `progs/src/sign.c:410` | `static void sign_sha_update(char *data, int len)` |
+| `sign_strlen` | function | `progs/src/sign.c:128` | `static int sign_strlen(char *s)` |
+| `sign_unhex` | function | `progs/src/sign.c:100` | `static void sign_unhex(char *out, char *in, int n)` |
+| `sign_write` | function | `progs/src/sign.c:1260` | `static int sign_write(char *name, char *data, int len)` |
+| `strcmp` | function | `progs/src/sign.c:29` | `int strcmp();` |
 | `SPIN_WLA` | macro | `progs/src/spin.c:58` | `#define SPIN_WLA` |
 | `SPIN_WLB` | macro | `progs/src/spin.c:59` | `#define SPIN_WLB` |
 | `SPIN_WLH` | macro | `progs/src/spin.c:57` | `#define SPIN_WLH` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `vedit_vga` | function | `progs/vedit/vedit.c:68` | `static long vedit_vga(int on)` |
 | `vedit_word_move` | function | `progs/vedit/vedit.c:1416` | `static int vedit_word_move(int dir)` |
 | `vedit_write_region` | function | `progs/vedit/vedit.c:3477` | `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,                    ...` |
-| `vedit_yank` | function | `progs/vedit/vedit.c:1383` | `static int vedit_yank(void)` |
-| `WL_CLIENT_H` | macro | `progs/wl/wl_client.h:14` | `#define WL_CLIENT_H` |
-| `WL_CLIENT_MSGS` | macro | `progs/wl/wl_client.h:18` | `#define WL_CLIENT_MSGS` |
-| `wl_client_attach` | function | `progs/wl/wl_client.h:75` | `static inline int wl_client_attach(const char *box, unsigned int seq0,         const unsigned cha...` |
-| `wl_client_emit_file` | function | `progs/wl/wl_client.h:21` | `static inline int wl_client_emit_file(const char *box, unsigned int seq,         const unsigned c...` |
-| `wl_client_raw_file` | function | `progs/wl/wl_client.h:48` | `static inline int wl_client_raw_file(const char *box,         const unsigned char *px, int w, int h)` |
-| `WL_MBOX_BOX_MAX` | macro | `progs/wl/wl_mbox.h:23` | `#define WL_MBOX_BOX_MAX` |
-| `WL_MBOX_DIR` | macro | `progs/wl/wl_mbox.h:19` | `#define WL_MBOX_DIR` |
-| `WL_MBOX_EV_SUFFIX` | macro | `progs/wl/wl_mbox.h:22` | `#define WL_MBOX_EV_SUFFIX` |
-| `WL_MBOX_FRAME_HEAD` | macro | `progs/wl/wl_mbox.h:26` | `#define WL_MBOX_FRAME_HEAD` |
-| `WL_MBOX_H` | macro | `progs/wl/wl_mbox.h:15` | `#define WL_MBOX_H` |
-| `WL_MBOX_MAGIC` | macro | `progs/wl/wl_mbox.h:25` | `#define WL_MBOX_MAGIC` |
-| `WL_MBOX_NAME_MAX` | macro | `progs/wl/wl_mbox.h:24` | `#define WL_MBOX_NAME_MAX` |
-| `WL_MBOX_POLL_MAX` | macro | `progs/wl/wl_mbox.h:27` | `#define WL_MBOX_POLL_MAX` |
-| `WL_MBOX_RAW_SUFFIX` | macro | `progs/wl/wl_mbox.h:21` | `#define WL_MBOX_RAW_SUFFIX` |
-| `WL_MBOX_SEQ_HEX` | macro | `progs/wl/wl_mbox.h:28` | `#define WL_MBOX_SEQ_HEX` |
-| `WL_MBOX_SUFFIX` | macro | `progs/wl/wl_mbox.h:20` | `#define WL_MBOX_SUFFIX` |
-| `wl_client_box` | function | `progs/wl/wl_mbox.h:257` | `static inline int wl_client_box(const char *prog, long pid, char *dst,         int cap)` |
-| `wl_mbox_assign` | function | `progs/wl/wl_mbox.h:358` | `static inline int wl_mbox_assign(wl_mbox_box_t *boxes, const char *box)` |
-| `wl_mbox_box_ok` | function | `progs/wl/wl_mbox.h:51` | `static inline int wl_mbox_box_ok(const char *box)` |
-| `wl_mbox_box_t` | struct | `progs/wl/wl_mbox.h:30` | `` |
-| `wl_mbox_ev_name` | function | `progs/wl/wl_mbox.h:225` | `static inline int wl_mbox_ev_name(char *dst, int cap, const char *box)` |
-| `wl_mbox_frame_decode` | function | `progs/wl/wl_mbox.h:332` | `static inline int wl_mbox_frame_decode(const unsigned char *src, int len,         unsigned int *s...` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

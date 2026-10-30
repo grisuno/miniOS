@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `main` | function | `tests/test_minios_png.c:191` | `int main(void)` |
+| `t_332` | function | `tests/test_minios_png.c:24` | `static void t_332(void)` |
+| `t_blit` | function | `tests/test_minios_png.c:139` | `static void t_blit(void)` |
+| `t_geom` | function | `tests/test_minios_png.c:58` | `static void t_geom(void)` |
+| `t_load` | function | `tests/test_minios_png.c:157` | `static void t_load(void)` |
+| `t_nearest` | function | `tests/test_minios_png.c:33` | `static void t_nearest(void)` |
+| `t_policy` | function | `tests/test_minios_png.c:176` | `static void t_policy(void)` |
+| `t_scale` | function | `tests/test_minios_png.c:70` | `static void t_scale(void)` |
+| `t_scale_big` | function | `tests/test_minios_png.c:99` | `static void t_scale_big(void)` |
+| `MipLiveTests` | class | `tests/test_mip.py:242` | `class MipLiveTests(TestCase)` |
+| `MipPureTests` | class | `tests/test_mip.py:44` | `class MipPureTests(TestCase)` |
+| `_Handler` | class | `tests/test_mip.py:212` | `class _Handler(BaseHTTPRequestHandler)` |
+| `combined` | method | `tests/test_mip.py:277` | `def combined(self, proc)` |
+| `do_GET` | method | `tests/test_mip.py:220` | `def do_GET(self)` |
+| `load_mip` | function | `tests/test_mip.py:36` | `def load_mip()` |
+| `log_message` | method | `tests/test_mip.py:217` | `def log_message(self, fmt)` |
+| `run_in_elf` | method | `tests/test_mip.py:270` | `def run_in_elf(self, code)` |
+| `setUp` | method | `tests/test_mip.py:266` | `def setUp(self)` |
+| `setUpClass` | method | `tests/test_mip.py:48` | `def setUpClass(cls)` |
+| `setUpClass` | method | `tests/test_mip.py:246` | `def setUpClass(cls)` |
+| `tearDownClass` | method | `tests/test_mip.py:261` | `def tearDownClass(cls)` |
+| `test_absolute_url_keeps_absolute_location` | method | `tests/test_mip.py:187` | `def test_absolute_url_keeps_absolute_location(self)` |
+| `test_absolute_url_keeps_base_scheme` | method | `tests/test_mip.py:197` | `def test_absolute_url_keeps_base_scheme(self)` |
 | `test_absolute_url_refuses_relative_location` | method | `tests/test_mip.py:207` | `def test_absolute_url_refuses_relative_location(self)` |
 | `test_absolute_url_resolves_path_location` | method | `tests/test_mip.py:177` | `def test_absolute_url_resolves_path_location(self)` |
 | `test_cli_install` | method | `tests/test_mip.py:344` | `def test_cli_install(self)` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `encode` | method | `tools/minios_hyper.py:77` | `def encode(payload)` |
 | `gdb_chan` | method | `tools/minios_hyper.py:303` | `def gdb_chan(self)` |
 | `gfx_frames` | method | `tools/minios_hyper.py:439` | `def gfx_frames(self)` |
-| `halt` | method | `tools/minios_hyper.py:195` | `def halt(self)` |
-| `key` | method | `tools/minios_hyper.py:132` | `def key(self, qcode)` |
-| `main` | function | `tools/minios_hyper.py:591` | `def main(argv)` |
-| `mean_diff` | method | `tools/minios_hyper.py:343` | `def mean_diff(a_path, b_path)` |
-| `moved_cursors` | method | `tools/minios_hyper.py:399` | `def moved_cursors(before_path, after_path)` |
-| `pixel_oob` | method | `tools/minios_hyper.py:452` | `def pixel_oob(self)` |
-| `qmp_chan` | method | `tools/minios_hyper.py:298` | `def qmp_chan(self)` |
-| `raw` | method | `tools/minios_hyper.py:117` | `def raw(self, obj)` |
-| `read_mem` | method | `tools/minios_hyper.py:185` | `def read_mem(self, addr, length)` |
-| `regs` | method | `tools/minios_hyper.py:181` | `def regs(self)` |
-| `rel` | method | `tools/minios_hyper.py:126` | `def rel(self, dx, dy)` |
-| `repl` | function | `tools/minios_hyper.py:561` | `def repl(guest)` |
-| `run_boot` | function | `tools/minios_hyper.py:523` | `def run_boot(checks, extra_shell, interactive)` |
-| `run_selftest` | function | `tools/minios_hyper.py:491` | `def run_selftest()` |
-| `screendump` | method | `tools/minios_hyper.py:121` | `def screendump(self, path)` |
-| `send` | method | `tools/minios_hyper.py:288` | `def send(self, line, settle)` |
-| `snapshot` | method | `tools/minios_hyper.py:276` | `def snapshot(self)` |
-| `status` | method | `tools/minios_hyper.py:141` | `def status(self)` |
-| `stop` | method | `tools/minios_hyper.py:314` | `def stop(self)` |
-| `sys_trace` | method | `tools/minios_hyper.py:465` | `def sys_trace(self)` |
-| `vga_cursor` | method | `tools/minios_hyper.py:427` | `def vga_cursor(self)` |
-| `vga_idle` | method | `tools/minios_hyper.py:415` | `def vga_idle(self)` |
-| `wait_for` | method | `tools/minios_hyper.py:280` | `def wait_for(self, marker, timeout)` |
 
 Next: [SYMBOLS_p27.md](SYMBOLS_p27.md)

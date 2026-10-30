@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `render_frame` | function | `progs/minicraft/minicraft.c:2038` | `static void render_frame(void)` |
+| `render_mob_array` | function | `progs/minicraft/minicraft.c:1979` | `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,     float rx, float r...` |
+| `render_pigs` | function | `progs/minicraft/minicraft.c:2030` | `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)` |
+| `render_terrain` | function | `progs/minicraft/minicraft.c:1910` | `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,                       ...` |
+| `s_getc_raw` | function | `progs/minicraft/minicraft.c:359` | `static long s_getc_raw(void)` |
+| `s_kbd` | function | `progs/minicraft/minicraft.c:342` | `static long s_kbd(void)` |
+| `s_kbd_raw` | function | `progs/minicraft/minicraft.c:347` | `static long s_kbd_raw(long on)` |
+| `s_mouse` | function | `progs/minicraft/minicraft.c:453` | `static long s_mouse(int *m)` |
+| `s_pal` | function | `progs/minicraft/minicraft.c:438` | `static long s_pal(const unsigned char *p)` |
+| `s_pcspk_init` | function | `progs/minicraft/minicraft.c:468` | `static long s_pcspk_init(void)` |
+| `s_present` | function | `progs/minicraft/minicraft.c:443` | `static long s_present(void)` |
+| `s_time_ms` | function | `progs/minicraft/minicraft.c:337` | `static long s_time_ms(void)` |
+| `s_title` | function | `progs/minicraft/minicraft.c:448` | `static long s_title(const char *t)` |
+| `s_vga` | function | `progs/minicraft/minicraft.c:433` | `static long s_vga(long on)` |
+| `s_yield` | function | `progs/minicraft/minicraft.c:463` | `static void s_yield(void)` |
+| `s_zoom` | function | `progs/minicraft/minicraft.c:458` | `static long s_zoom(long on)` |
+| `save_chunk_file` | function | `progs/minicraft/minicraft.c:2942` | `static int save_chunk_file(int slot)` |
+| `save_compute_crc` | function | `progs/minicraft/minicraft.c:2932` | `static uint32_t save_compute_crc(const SaveHeader *hd)` |
+| `save_validate_loaded` | function | `progs/minicraft/minicraft.c:3056` | `static int save_validate_loaded(void)` |
+| `save_world` | function | `progs/minicraft/minicraft.c:330` | `static int save_world(void);` |
+| `sc_hist_push` | function | `progs/minicraft/minicraft.c:2151` | `static void sc_hist_push(unsigned char b)` |
+| `selftest` | function | `progs/minicraft/minicraft.c:3345` | `static int selftest(void)` |
+| `ser_get` | function | `progs/minicraft/minicraft.c:373` | `static long ser_get(void)` |
 | `ser_unget` | function | `progs/minicraft/minicraft.c:386` | `static void ser_unget(unsigned char b)` |
 | `set_b` | function | `progs/minicraft/minicraft.c:774` | `static void set_b(int x, int y, int z, unsigned char b)` |
 | `set_b_raw` | function | `progs/minicraft/minicraft.c:790` | `static void set_b_raw(int x, int y, int z, unsigned char b)` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `KEY_W` | macro | `progs/piano/piano.c:190` | `#define KEY_W` |
 | `KEY_Y` | macro | `progs/piano/piano.c:194` | `#define KEY_Y` |
 | `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:76` | `#define MAX_AUDIO_MS` |
-| `MAX_VOICES` | macro | `progs/piano/piano.c:221` | `#define MAX_VOICES` |
-| `NCTRLS` | macro | `progs/piano/piano.c:561` | `#define NCTRLS` |
-| `NKEYS` | macro | `progs/piano/piano.c:209` | `#define NKEYS` |
-| `PCM_BUF` | macro | `progs/piano/piano.c:63` | `#define PCM_BUF` |
-| `PCM_FRAG` | macro | `progs/piano/piano.c:62` | `#define PCM_FRAG` |
-| `PIANO_BASE_MIDI` | macro | `progs/piano/piano.c:195` | `#define PIANO_BASE_MIDI` |
-| `PIANO_FRAME_MS` | macro | `progs/piano/piano.c:84` | `#define PIANO_FRAME_MS` |
-| `PIANO_FRAME_PERIOD` | macro | `progs/piano/piano.c:91` | `#define PIANO_FRAME_PERIOD` |
-| `PIANO_OCTAVES` | macro | `progs/piano/piano.c:196` | `#define PIANO_OCTAVES` |
-| `RATE` | macro | `progs/piano/piano.c:61` | `#define RATE` |
-| `SYS_PCM2_CLOSE` | macro | `progs/piano/piano.c:59` | `#define SYS_PCM2_CLOSE` |
-| `SYS_PCM2_OPEN` | macro | `progs/piano/piano.c:57` | `#define SYS_PCM2_OPEN` |
-| `SYS_PCM2_WRITE` | macro | `progs/piano/piano.c:58` | `#define SYS_PCM2_WRITE` |
-| `UI_MEMORY` | macro | `progs/piano/piano.c:54` | `#define UI_MEMORY` |
-| `clamp_midi` | function | `progs/piano/piano.c:234` | `static int clamp_midi(int m)` |
-| `ctrl_active` | function | `progs/piano/piano.c:567` | `static int ctrl_active(int id)` |
-| `ctrl_hit` | function | `progs/piano/piano.c:563` | `static int ctrl_hit(int id, int mx, int my)` |
-| `ctrl_press` | function | `progs/piano/piano.c:577` | `static void ctrl_press(int id)` |
-| `fx_configure` | function | `progs/piano/piano.c:421` | `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` |
-| `fx_process` | function | `progs/piano/piano.c:440` | `static float fx_process(float x)` |
-| `hit_key` | function | `progs/piano/piano.c:518` | `static int hit_key(int mx, int my)` |
-| `hit_velocity` | function | `progs/piano/piano.c:535` | `static int hit_velocity(int key, int my)` |
-| `kbd_all_off` | function | `progs/piano/piano.c:333` | `static void kbd_all_off(void)` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

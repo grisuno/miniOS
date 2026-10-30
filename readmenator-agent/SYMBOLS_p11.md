@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `_read_loop` | method | `mcp/minios_mcp.py:319` | `def _read_loop(self)` |
+| `_reap_stale` | method | `mcp/minios_mcp.py:242` | `def _reap_stale(self)` |
+| `_reply` | method | `mcp/minios_mcp.py:884` | `def _reply(self, msg)` |
+| `_write_editor_line` | method | `mcp/minios_mcp.py:348` | `def _write_editor_line(self, line)` |
+| `_write_line` | method | `mcp/minios_mcp.py:339` | `def _write_line(self, line)` |
+| `append` | method | `mcp/minios_mcp.py:155` | `def append(self, data)` |
+| `boot` | method | `mcp/minios_mcp.py:284` | `def boot(self, timeout_ms)` |
+| `booted` | method | `mcp/minios_mcp.py:230` | `def booted(self)` |
+| `bytes_from` | method | `mcp/minios_mcp.py:163` | `def bytes_from(self, pos)` |
+| `cat` | method | `mcp/minios_mcp.py:447` | `def cat(self, path)` |
+| `cat_body` | method | `mcp/minios_mcp.py:464` | `def cat_body(self, path, missing_ok)` |
+| `clamp_timeout` | function | `mcp/minios_mcp.py:89` | `def clamp_timeout(ms)` |
+| `close` | method | `mcp/minios_mcp.py:576` | `def close(self)` |
+| `env_config` | function | `mcp/minios_mcp.py:71` | `def env_config()` |
+| `expect` | method | `mcp/minios_mcp.py:367` | `def expect(self, marker, timeout_ms)` |
+| `find` | method | `mcp/minios_mcp.py:175` | `def find(self, marker, start)` |
+| `main` | function | `mcp/minios_mcp.py:888` | `def main()` |
+| `poweroff` | method | `mcp/minios_mcp.py:537` | `def poweroff(self, timeout_ms)` |
+| `run` | method | `mcp/minios_mcp.py:738` | `def run(self)` |
+| `run_python` | method | `mcp/minios_mcp.py:453` | `def run_python(self, script, args, timeout_ms)` |
+| `run_test` | method | `mcp/minios_mcp.py:391` | `def run_test(self, commands, expect, refute, timeout_ms)` |
+| `send` | method | `mcp/minios_mcp.py:356` | `def send(self, line, timeout_ms)` |
+| `snapshot` | method | `mcp/minios_mcp.py:381` | `def snapshot(self, max_bytes)` |
 | `status` | method | `mcp/minios_mcp.py:233` | `def status(self)` |
 | `subprocess_launch` | function | `mcp/minios_mcp.py:580` | `def subprocess_launch(cfg, slave_fd)` |
 | `terminate` | method | `mcp/minios_mcp.py:557` | `def terminate(self)` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `_start` | function | `progs/asm/fib.s:82` | `` |
 | `fib` | function | `progs/asm/fib.s:3` | `` |
 | `main` | function | `progs/asm/fib.s:61` | `` |
-| `_start` | function | `progs/asm/freedom.s:11761` | `` |
-| `append` | function | `progs/asm/freedom.s:338` | `` |
-| `atoi` | function | `progs/asm/freedom.s:252` | `` |
-| `body_byte` | function | `progs/asm/freedom.s:5961` | `` |
-| `ci_eq` | function | `progs/asm/freedom.s:559` | `` |
-| `ci_index` | function | `progs/asm/freedom.s:656` | `` |
-| `ci_lower` | function | `progs/asm/freedom.s:437` | `` |
-| `ci_starts` | function | `progs/asm/freedom.s:486` | `` |
-| `classify_tag` | function | `progs/asm/freedom.s:4757` | `` |
-| `css_append` | function | `progs/asm/freedom.s:3849` | `` |
-| `css_line` | function | `progs/asm/freedom.s:3920` | `` |
-| `dom_append` | function | `progs/asm/freedom.s:3978` | `` |
-| `dom_nl` | function | `progs/asm/freedom.s:4083` | `` |
-| `dom_space` | function | `progs/asm/freedom.s:4049` | `` |
-| `f_attr` | function | `progs/asm/freedom.s:136` | `` |
-| `f_attr_on` | function | `progs/asm/freedom.s:120` | `` |
-| `f_attrlen` | function | `progs/asm/freedom.s:140` | `` |
-| `f_bdone` | function | `progs/asm/freedom.s:248` | `` |
-| `f_chunked` | function | `progs/asm/freedom.s:60` | `` |
-| `f_clen` | function | `progs/asm/freedom.s:52` | `` |
-| `f_cls` | function | `progs/asm/freedom.s:160` | `` |
-| `f_clslen` | function | `progs/asm/freedom.s:164` | `` |
-| `f_cmdash` | function | `progs/asm/freedom.s:84` | `` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

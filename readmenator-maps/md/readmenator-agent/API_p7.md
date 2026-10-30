@@ -1,6 +1,21 @@
 # API (page 7 of 21)
 Previous: [API_p6.md](API_p6.md)
 
+## kernel/mm/tlb.c
+Depends on: `headers/sched.h`, `headers/smp.h`, `headers/spinlock.h`, `headers/tlb.h`
+- `tlb_others_on` (function) `kernel/mm/tlb.c:36` `static int tlb_others_on(unsigned long cr3)` -- 1 when another online CPU is running address space cr3 right now.
+- `tlb_shootdown` (function) `kernel/mm/tlb.c:49` `void tlb_shootdown(unsigned long cr3)`
+- `tlb_shootdown_count` (function) `kernel/mm/tlb.c:71` `unsigned long tlb_shootdown_count(void)`
+- `tlb_shootdown_timeouts` (function) `kernel/mm/tlb.c:75` `unsigned long tlb_shootdown_timeouts(void)`
+
+## kernel/panic.c
+Depends on: `headers/panic.h`, `headers/sched.h`, `headers/vga_fb.h`
+- `panic_hex` (function) `kernel/panic.c:23` `static void panic_hex(unsigned long v, int digits)`
+- `panic_fb_puts` (function) `kernel/panic.c:30` `static void panic_fb_puts(const char *s)`
+- `panic_fb_hex` (function) `kernel/panic.c:61` `static void panic_fb_hex(unsigned long v, int digits)`
+- `panic_screen` (function) `kernel/panic.c:98` `void panic_screen(unsigned long vector, unsigned long err,
+        unsigned long rip, unsigned lo...` -- Docstring: Paint the panic screen for an unrecoverable fault and halt when asked. vector/err/rip/rsp come from the...
+
 ## kernel/percpu_rq.c
 Depends on: `headers/percpu_rq.h`
 - `rq_cpu_valid` (function) `kernel/percpu_rq.c:14` `static int rq_cpu_valid(int cpu)`
@@ -326,9 +341,9 @@ static void shell_cmd_trac...`
 - `driver` (function) `kernel/shell.c:3331` `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
 - `frame` (function) `kernel/shell.c:3725` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-- `stdout` (function) `kernel/shell.c:4093` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
-- `shell_is_pipe_tok` (function) `kernel/shell.c:4105` `static int shell_is_pipe_tok(const char *a)`
-- `shell_run_stage` (function) `kernel/shell.c:4144` `static char *shell_run_stage(char **sargv, int sargc,
+- `stdout` (function) `kernel/shell.c:4094` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+- `shell_is_pipe_tok` (function) `kernel/shell.c:4106` `static int shell_is_pipe_tok(const char *a)`
+- `shell_run_stage` (function) `kernel/shell.c:4145` `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...` -- Run one pipeline stage with stdin/out doors installed. input may be 0 (first stage reads the live console).
 
 ## kernel/spawn.c

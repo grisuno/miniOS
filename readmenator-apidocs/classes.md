@@ -383,6 +383,7 @@ Project types nested under the project types they derive from. External bases ar
 - [`vfs_mount_t`](modules/fs.vfs.c.md#vfs_mount_t) struct in `fs/vfs.c`
 - [`vfs_ops`](modules/headers.kernel.h.md#vfs_ops) struct in `headers/kernel.h`
 - [`vga_fx_config_t`](modules/headers.vga_fx.h.md#vga_fx_config_t) struct in `headers/vga_fx.h`
+- [`vga_fx_motion_t`](modules/headers.vga_fx.h.md#vga_fx_motion_t) struct in `headers/vga_fx.h`
 - [`visplane_t`](modules/progs.doomgeneric.r_defs.h.md#visplane_t) struct in `progs/doomgeneric/r_defs.h`
 - [`vissprite_s`](modules/progs.doomgeneric.r_defs.h.md#vissprite_s) struct in `progs/doomgeneric/r_defs.h`
 - [`vma_ctx_t`](modules/headers.vma.h.md#vma_ctx_t) struct in `headers/vma.h`

@@ -1,6 +1,194 @@
 # API (page 10 of 21)
 Previous: [API_p9.md](API_p9.md)
 
+## net/tls_crypto.c
+Depends on: `headers/tls.h`, `headers/tls_port.h`
+- `sha256_rotr` (function) `net/tls_crypto.c:33` `static unsigned sha256_rotr(unsigned x, unsigned n)`
+- `sha256_init` (function) `net/tls_crypto.c:37` `void sha256_init(struct sha256_ctx *c)`
+- `sha256_block` (function) `net/tls_crypto.c:50` `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)`
+- `sha256_update` (function) `net/tls_crypto.c:80` `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len)`
+- `sha256_final` (function) `net/tls_crypto.c:105` `void sha256_final(struct sha256_ctx *c, unsigned char out[32])`
+- `sha256` (function) `net/tls_crypto.c:126` `void sha256(const unsigned char *data, unsigned len, unsigned char out[32])`
+- `hmac_sha256` (function) `net/tls_crypto.c:135` `void hmac_sha256(const unsigned char *key, unsigned klen,
+                 const unsigned char *d...`
+- `p_hash` (function) `net/tls_crypto.c:165` `static void p_hash(const unsigned char *secret, unsigned secret_len,
+                   const uns...`
+- `tls_prf` (function) `net/tls_crypto.c:188` `void tls_prf(const unsigned char *secret, unsigned secret_len,
+             const char *label, co...`
+- `aes_xtime` (function) `net/tls_crypto.c:230` `static unsigned aes_xtime(unsigned x)`
+- `aes_key_expand` (function) `net/tls_crypto.c:235` `static void aes_key_expand(const unsigned char key[16], unsigned rk[44])`
+- `aes_mixcol` (function) `net/tls_crypto.c:253` `static void aes_mixcol(unsigned a0, unsigned a1, unsigned a2, unsigned a3,
+                      ...`
+- `aes128_encrypt_block` (function) `net/tls_crypto.c:263` `void aes128_encrypt_block(const unsigned char key[16],
+                          const unsigned c...`
+- `gf_shift_right` (function) `net/tls_crypto.c:321` `static gf128 gf_shift_right(gf128 v)`
+- `word` (function) `net/tls_crypto.c:326` `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */...`
+- `gf_mul` (function) `net/tls_crypto.c:334` `static gf128 gf_mul(gf128 z, gf128 h)` -- z = z * h, in GF(2^128), MSB-first.
+- `gf_put` (function) `net/tls_crypto.c:351` `static gf128 gf_put(const unsigned char *p)`
+- `ghash_blocks` (function) `net/tls_crypto.c:361` `static gf128 ghash_blocks(gf128 z, gf128 h, const unsigned char *data, unsigned len)`
+- `gcm_tag_core` (function) `net/tls_crypto.c:384` `static void gcm_tag_core(const unsigned char key[16],
+                         const unsigned cha...` -- if (len > 0) { unsigned char pad[16]; gf128 b; TLS_MEMSET(pad, 0, 16); TLS_MEMCPY(pad, data, len); b = gf_put(pad)...
+- `gcm_ctr_core` (function) `net/tls_crypto.c:427` `static void gcm_ctr_core(const unsigned char key[16],
+                         const unsigned cha...`
+- `tls_nonce` (function) `net/tls_crypto.c:450` `static void tls_nonce(const unsigned char salt[4], unsigned long long seq,
+                      ...` -- TLS_MEMCPY(blk, nonce, 12); blk[12] = (unsigned char)(ctr >> 24); blk[13] = (unsigned char)(ctr >> 16); blk[14] =...
+- `gcm_tag` (function) `net/tls_crypto.c:457` `static void gcm_tag(const unsigned char key[16], const unsigned char salt[4],
+                   ...`
+- `gcm_ctr` (function) `net/tls_crypto.c:467` `static void gcm_ctr(const unsigned char key[16], const unsigned char salt[4],
+                   ...`
+- `aes128_gcm_seal` (function) `net/tls_crypto.c:475` `int aes128_gcm_seal(const unsigned char key[16],
+                    const unsigned char salt[4],...`
+- `aes128_gcm_open` (function) `net/tls_crypto.c:487` `int aes128_gcm_open(const unsigned char key[16],
+                    const unsigned char salt[4],...`
+- `aes128_gcm_seal_core` (function) `net/tls_crypto.c:505` `int aes128_gcm_seal_core(const unsigned char key[16],
+                         const unsigned cha...`
+- `aes128_gcm_open_core` (function) `net/tls_crypto.c:516` `int aes128_gcm_open_core(const unsigned char key[16],
+                         const unsigned cha...`
+- `bn_zero` (function) `net/tls_crypto.c:537` `static void bn_zero(unsigned *a, int nw)`
+- `bn_is_zero` (function) `net/tls_crypto.c:542` `static int bn_is_zero(const unsigned *a, int nw)`
+- `bn_cmp` (function) `net/tls_crypto.c:549` `static int bn_cmp(const unsigned *a, const unsigned *b, int nw)`
+- `bn_add` (function) `net/tls_crypto.c:559` `static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw)` -- for (i = 0; i < nw; i++) v |= a[i]; return v == 0; } static int bn_cmp(const unsigned *a, const unsigned *b, int nw)...
+- `bn_sub` (function) `net/tls_crypto.c:571` `static unsigned bn_sub(const unsigned *a, const unsigned *b, unsigned *r, int nw)` -- /* r = a + b; returns carry out. static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw) {...
+- `bn_dbl_mod` (function) `net/tls_crypto.c:584` `static void bn_dbl_mod(const unsigned *a, const unsigned *n, const unsigned *v,
+                 ...` -- r = 2a mod n, for a < n. v = 2^(32nw) mod n = 2^(32nw) - n (the * Montgomery "one"): 2a + carry means 2a - 2^(32nw)...
+- `bn_mont_mul` (function) `net/tls_crypto.c:596` `static void bn_mont_mul(const unsigned *a, const unsigned *b, const unsigned *n,
+                ...` -- Montgomery multiplication. n is odd, n0inv = -n^(-1) mod 2^32. r = a*b*R^-1 mod n, R = 2^(32nw). * a, b < n.
+- `bn_mont_n0inv` (function) `net/tls_crypto.c:635` `static unsigned bn_mont_n0inv(unsigned n0)` -- carry = v >> 32; } s = (unsigned long long)t[nw] + carry; t[nw - 1] = (unsigned)s; t[nw] = t[nw + 1] + (unsigned)(s...
+- `bn_mont_r2` (function) `net/tls_crypto.c:643` `static void bn_mont_r2(const unsigned *n, const unsigned *v, int nw,
+                       unsig...` -- } else { for (i = 0; i < nw; i++) r[i] = t[i]; } } /* -n^(-1) mod 2^32 via Newton iteration (n0 must be odd). static...
+- `bn_from_be` (function) `net/tls_crypto.c:663` `static void bn_from_be(const unsigned char *bytes, unsigned len,
+                       unsigned ...`
+- `bn_to_be` (function) `net/tls_crypto.c:671` `static void bn_to_be(const unsigned *a, unsigned char *out, unsigned len)`
+- `mont_init` (function) `net/tls_crypto.c:677` `static void mont_init(struct mont_ctx *m, const unsigned char *p_bytes,
+                      uns...`
+- `mont_to` (function) `net/tls_crypto.c:689` `static void mont_to(struct mont_ctx *m, const unsigned *a, unsigned *r)`
+- `mont_from` (function) `net/tls_crypto.c:693` `static void mont_from(struct mont_ctx *m, const unsigned *a, unsigned *r)`
+- `mont_mul` (function) `net/tls_crypto.c:700` `static void mont_mul(struct mont_ctx *m, const unsigned *a, const unsigned *b,
+                  ...`
+- `mont_sqr` (function) `net/tls_crypto.c:705` `static void mont_sqr(struct mont_ctx *m, const unsigned *a, unsigned *r)`
+- `mont_add` (function) `net/tls_crypto.c:712` `static void mont_add(struct mont_ctx *m, const unsigned *a, const unsigned *b,
+                  ...` -- Field add/sub over the mont modulus (in Montgomery domain).
+- `mont_sub` (function) `net/tls_crypto.c:721` `static void mont_sub(struct mont_ctx *m, const unsigned *a, const unsigned *b,
+                  ...`
+- `mont_inv` (function) `net/tls_crypto.c:736` `static void mont_inv(struct mont_ctx *m, const unsigned *a, unsigned *r)` -- Field inverse via Fermat: a^(p-2) mod p (a in Montgomery domain; * the result stays in Montgomery domain).
+- `ec_init` (function) `net/tls_crypto.c:848` `static void ec_init(struct ec_curve *c, const unsigned char *p,
+                    const unsigne...`
+- `jpt_is_inf` (function) `net/tls_crypto.c:865` `static int jpt_is_inf(const struct jpt *p, int nw)`
+- `jpt_set_inf` (function) `net/tls_crypto.c:869` `static void jpt_set_inf(struct jpt *p, int nw)`
+- `jpt_copy` (function) `net/tls_crypto.c:875` `static void jpt_copy(struct jpt *d, const struct jpt *s, int nw)`
+- `jpt_cswap` (function) `net/tls_crypto.c:885` `static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask, int nw)` -- bn_zero(p->y, nw); bn_zero(p->z, nw); } static void jpt_copy(struct jpt *d, const struct jpt *s, int nw) { int i...
+- `jpt_dbl` (function) `net/tls_crypto.c:896` `static void jpt_dbl(struct ec_curve *c, const struct jpt *p1, struct jpt *p3)` -- } /* Constant-time swap of two points on a 0/~0 mask. static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned...
+- `jpt_add` (function) `net/tls_crypto.c:936` `static void jpt_add(struct ec_curve *c, const struct jpt *p1, const struct jpt *p2,
+             ...` -- mont_sqr(m, E, F); mont_add(m, D, D, t);          /* 2D mont_sub(m, F, t, p3->x);      /* X3 = F - 2D mont_sub(m, D...
+- `jpt_scalar_mult` (function) `net/tls_crypto.c:980` `static void jpt_scalar_mult(struct ec_curve *c, const struct jpt *base,
+                         ...` -- Constant-iteration scalar multiplication: the classic ladder. * Fixed iteration count, no table lookups indexed by...
+- `jpt_to_affine` (function) `net/tls_crypto.c:1007` `static void jpt_to_affine(struct ec_curve *c, const struct jpt *p,
+                          unsi...` -- Affine from Jacobian: x = X/Z^2, y = Y/Z^3.
+- `jpt_from_affine` (function) `net/tls_crypto.c:1032` `static int jpt_from_affine(struct ec_curve *c, const unsigned char *x_bytes,
+                    ...` -- Affine from bytes with on-curve validation.
+- `ec_curve_by_id` (function) `net/tls_crypto.c:1076` `static struct ec_curve *ec_curve_by_id(int curve)`
+- `ec_boot` (function) `net/tls_crypto.c:1080` `static void ec_boot(void)`
+- `p256_scalar_mult` (function) `net/tls_crypto.c:1088` `int p256_scalar_mult(const unsigned char scalar[32],
+                     const unsigned char qx[...`
+- `p384_scalar_mult` (function) `net/tls_crypto.c:1101` `int p384_scalar_mult(const unsigned char scalar[48],
+                     const unsigned char qx[...`
+- `p256_ecdh` (function) `net/tls_crypto.c:1114` `int p256_ecdh(const unsigned char priv[32],
+              const unsigned char peer_x[32], const u...`
+- `der_parse_sig` (function) `net/tls_crypto.c:1129` `static int der_parse_sig(const unsigned char *sig, unsigned sig_len,
+                         con...`
+- `ecdsa_verify` (function) `net/tls_crypto.c:1163` `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[],
+           ...`
+- `rsa_verify_digestinfo` (function) `net/tls_crypto.c:1261` `static int rsa_verify_digestinfo(const unsigned char *em, unsigned em_len,
+                      ...` -- EMSA-PKCS1-v1_5 DigestInfo check for an arbitrary hash: the encoding is 00 01 FF..
+- `rsa_pkcs1_verify_raw` (function) `net/tls_crypto.c:1285` `static int rsa_pkcs1_verify_raw(const unsigned char *n, unsigned n_len,
+                         ...` -- diff |= em[i] ^ 0xff; } if (i >= em_len) return -1;         /* no separator if (i < 10) return -1;              /*...
+- `rsa_pkcs1_verify_sha256` (function) `net/tls_crypto.c:1326` `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len,
+                            c...`
+- `rsa_pkcs1_verify_sha384` (function) `net/tls_crypto.c:1340` `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len,
+                            c...`
+- `sha384_rotr` (function) `net/tls_crypto.c:1386` `static unsigned long long sha384_rotr(unsigned long long x, unsigned n)`
+- `sha384_raw` (function) `net/tls_crypto.c:1390` `static void sha384_raw(const unsigned char *data, unsigned len,
+                       unsigned c...`
+- `sha384` (function) `net/tls_crypto.c:1506` `void sha384(const unsigned char *data, unsigned len, unsigned char out[48])`
+- `p256_point_valid` (function) `net/tls_crypto.c:1512` `int p256_point_valid(const unsigned char x[32], const unsigned char y[32])`
+- `p256_pub` (function) `net/tls_crypto.c:1520` `int p256_pub(const unsigned char priv[32],
+             unsigned char x[32], unsigned char y[32])`
+- `p256_scalar_valid` (function) `net/tls_crypto.c:1539` `int p256_scalar_valid(const unsigned char scalar[32])`
+
+## net/tls_x509.c
+Depends on: `headers/tls.h`, `headers/tls_port.h`
+- `oid_eq` (function) `net/tls_x509.c:36` `static int oid_eq(const unsigned char *bytes, unsigned len,
+                  const unsigned char...`
+- `der_next` (function) `net/tls_x509.c:51` `static int der_next(const unsigned char *p, unsigned limit, unsigned *pos,
+                    st...` -- Parse the TLV at p[pos]; advances pos to the first byte after it. * Returns 0 on success, -1 on any bound violation.
+- `der_container` (function) `net/tls_x509.c:82` `static int der_container(const unsigned char *p, unsigned limit, unsigned *pos,
+                 ...` -- len = (len << 8) | p[(*pos)++]; } } else { len = p[(*pos)++]; } if (len > limit - *pos) return -1; out->val = p +...
+- `days_from_civil` (function) `net/tls_x509.c:94` `static long days_from_civil(int y, int m, int d)`
+- `der_time_to_days` (function) `net/tls_x509.c:106` `static long der_time_to_days(const struct der_tlv *t)` -- /* ---- Time ---- static long days_from_civil(int y, int m, int d) { long era, doe, yoe; int doy; y -= m <= 2 ?
+- `name_find_cn` (function) `net/tls_x509.c:135` `static int name_find_cn(const unsigned char *p, unsigned limit,
+                        struct x5...` -- } if (mon < 1 || mon > 12 || day < 1 || day > 31 || year < 1970 || year > 2100) return -1; return...
+- `san_add` (function) `net/tls_x509.c:178` `static void san_add(struct x509_sans *out, const unsigned char *v, unsigned len)`
+- `san_parse` (function) `net/tls_x509.c:186` `static void san_parse(const unsigned char *p, unsigned limit,
+                      struct x509_s...` -- struct x509_sans { unsigned char dns[TLS_SAN_MAX][64]; unsigned      len[TLS_SAN_MAX]; int           count; }...
+- `spki_parse` (function) `net/tls_x509.c:203` `static int spki_parse(const unsigned char *p, unsigned limit,
+                      struct tls_pu...` -- unsigned seq_len, pos = 0; out->count = 0; if (der_container(p, limit, &pos, &seq, &seq_len) != 0) return; pos = 0...
+- `cert_parse` (function) `net/tls_x509.c:279` `static int cert_parse(const unsigned char *der, unsigned len,
+                      struct x509_c...`
+- `ascii_lower` (function) `net/tls_x509.c:392` `static int ascii_lower(int c)`
+- `host_match_exact` (function) `net/tls_x509.c:397` `static int host_match_exact(const char *host, const unsigned char *name,
+                        ...` -- } } } } return 0; } /* ---- Hostname matching ---- static int ascii_lower(int c) { return (c >= 'A' && c <= 'Z') ? c...
+- `host_match_wildcard` (function) `net/tls_x509.c:410` `static int host_match_wildcard(const char *host, const unsigned char *name,
+                     ...` -- Wildcard: "*.example.com" matches exactly one label ("a.example.com", * never "a.b.example.com" nor "example.com").
+- `host_matches` (function) `net/tls_x509.c:431` `static int host_matches(const char *host, const struct x509_cert *leaf)`
+- `tls_x509_parse_pubkey` (function) `net/tls_x509.c:452` `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,
+                          struc...`
+- `pubkey_equal` (function) `net/tls_x509.c:468` `static int pubkey_equal(const struct tls_pubkey *a, const struct tls_pubkey *b)` -- Trust anchors are matched by public key, not by self-signature: a presented root is often a cross-signed copy...
+- `cert_verify_signature` (function) `net/tls_x509.c:479` `static int cert_verify_signature(const struct x509_cert *cert,
+                                 c...` -- signature-verified: an attacker cannot present a top cert carrying an embedded root's public key unless the chain...
+- `tls_x509_verify_chain` (function) `net/tls_x509.c:521` `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,
+                       ...`
+
+## progs/asm/aes.s
+- `aes_rk` (function) `progs/asm/aes.s:3`
+- `aes_sb` (function) `progs/asm/aes.s:7`
+- `aes_rc` (function) `progs/asm/aes.s:11`
+- `aes_st` (function) `progs/asm/aes.s:15`
+- `aes_iv` (function) `progs/asm/aes.s:19`
+- `aes_read_all` (function) `progs/asm/aes.s:23`
+- `aes_write_all` (function) `progs/asm/aes.s:238`
+- `aes_has` (function) `progs/asm/aes.s:345`
+- `hex_val` (function) `progs/asm/aes.s:498`
+- `aes_parse_hex` (function) `progs/asm/aes.s:620`
+- `aes_gf_mul` (function) `progs/asm/aes.s:783`
+- `aes_xtime` (function) `progs/asm/aes.s:884`
+- `aes_rotl8` (function) `progs/asm/aes.s:933`
+- `aes_init_tables` (function) `progs/asm/aes.s:970`
+- `aes_key_expand` (function) `progs/asm/aes.s:1197`
+- `aes_add_round_key` (function) `progs/asm/aes.s:1646`
+- `aes_sub_bytes` (function) `progs/asm/aes.s:1721`
+- `aes_shift_rows` (function) `progs/asm/aes.s:1774`
+- `aes_mix_columns` (function) `progs/asm/aes.s:1993`
+- `aes_cipher` (function) `progs/asm/aes.s:2466`
+- `aes_iv_increment` (function) `progs/asm/aes.s:2565`
+- `aes_ctr_crypt` (function) `progs/asm/aes.s:2648`
+- `aes_hdr_put` (function) `progs/asm/aes.s:2791`
+- `aes_hdr_get` (function) `progs/asm/aes.s:2906`
+- `aes_tool_name` (function) `progs/asm/aes.s:3059`
+- `aes_run` (function) `progs/asm/aes.s:3077`
+- `main` (function) `progs/asm/aes.s:3807`
+
+## progs/asm/cp.s
+- `main` (function) `progs/asm/cp.s:3`
+
+## progs/asm/cvmfmt.s
+- `fwin` (function) `progs/asm/cvmfmt.s:3`
+- `fcanary` (function) `progs/asm/cvmfmt.s:7`
+- `main` (function) `progs/asm/cvmfmt.s:11`
+
+## progs/asm/fib.s
+- `fib` (function) `progs/asm/fib.s:3`
+- `main` (function) `progs/asm/fib.s:61`
+
 ## progs/asm/freedom.s
 - `tls_close` (function) `progs/asm/freedom.s:3`
 - `f_host` (function) `progs/asm/freedom.s:24`
@@ -298,203 +486,6 @@ Previous: [API_p9.md](API_p9.md)
 
 ## progs/asm/w1.s
 - `main` (function) `progs/asm/w1.s:3`
-
-## progs/doomedit/doomedit.c
-Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-- `dmap_thing_type` (function) `progs/doomedit/doomedit.c:165` `static int dmap_thing_type(int cell)` -- Thing type ids from the engine mobjinfo table, each with its sprite * verified present in the shareware IWAD.
-- `dmap_push_history` (function) `progs/doomedit/doomedit.c:272` `static void dmap_push_history(void)`
-- `dmap_undo` (function) `progs/doomedit/doomedit.c:289` `static int dmap_undo(void)`
-- `dmap_redo` (function) `progs/doomedit/doomedit.c:307` `static int dmap_redo(void)`
-- `dmap_apply_cell` (function) `progs/doomedit/doomedit.c:326` `static void dmap_apply_cell(int r, int c, int brush)` -- dmap_undo_h[dmap_undo_top] = dmap_h; memcpy(dmap_undo_g[dmap_undo_top], dmap_grid, sizeof(dmap_grid))...
-- `dmap_flood_fill` (function) `progs/doomedit/doomedit.c:344` `static void dmap_flood_fill(int sr, int sc, int new_cell)` -- if (brush == DMAP_PLAYER || brush == DMAP_EXIT) { for (rr = 0; rr < dmap_h; rr++) for (cc = 0; cc < dmap_w; cc++) if...
-- `dmap_draw_line` (function) `progs/doomedit/doomedit.c:383` `static void dmap_draw_line(int r0, int c0, int r1, int c1, int cell)` -- if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if (dmap_grid[nr][nc] != old_cell) continue...
-- `dmap_draw_rect` (function) `progs/doomedit/doomedit.c:411` `static void dmap_draw_rect(int r0, int c0, int r1, int c1, int cell)` -- e2 = err; if (e2 > -dr) { err -= dc; r0 += sr; } if (e2 < dc) { err += dr; c0 += sc; } } dmap_level_sel = 0; } /**...
-- `dmap_reach_map` (function) `progs/doomedit/doomedit.c:440` `static void dmap_reach_map(int seen[DMAP_MAX_H][DMAP_MAX_W])` -- for (r = rt; r <= rb; r++) { if (r >= 0 && r < dmap_h && cl >= 0 && cl < dmap_w) { if (dmap_grid[r][cl] !=...
-- `dmap_path_len` (function) `progs/doomedit/doomedit.c:480` `static int dmap_path_len(void)` -- int nr = cr + dirs[k][0], nc = cc + dirs[k][1]; if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if...
-- `dmap_stats` (function) `progs/doomedit/doomedit.c:522` `static void dmap_stats(char *out, int max)` -- if (nr < 0 || nc < 0 || nr >= dmap_h || nc >= dmap_w) continue; if (dist[nr][nc] >= 0 ||...
-- `dmap_spawn` (function) `progs/doomedit/doomedit.c:550` `static long dmap_spawn(const char *path, int argc, const char **argv)` -- } path = dmap_path_len(); if (dmap_validate(msg, sizeof(msg)) == 0) snprintf(out, (size_t)max, "%dx%d %d sect path...
-- `dmap_vga` (function) `progs/doomedit/doomedit.c:561` `static long dmap_vga(int on)` -- static int dmap_validate(char *msg, int max); /** Run a program through SYS_SPAWN, preserving the editor. static...
-- `dmap_is_wall` (function) `progs/doomedit/doomedit.c:570` `static int dmap_is_wall(int row, int col)` -- : "rcx", "r11", "memory"); return ret; } /** Release or reclaim the display around a spawned child. static long...
-- `dmap_walkable` (function) `progs/doomedit/doomedit.c:577` `static int dmap_walkable(int cell)` -- __asm__ volatile("syscall" : "=a"(ret) : "a"(MINIOS_SYS_VGA_MODE), "D"((long)on) : "rcx", "r11", "memory"); return...
-- `dmap_cell_class` (function) `progs/doomedit/doomedit.c:583` `static int dmap_cell_class(int cell)` -- /** True for solid cells; out of bounds counts as wall to stay closed. static int dmap_is_wall(int row, int col) {...
-- `dmap_cell_color` (function) `progs/doomedit/doomedit.c:594` `static struct nk_color dmap_cell_color(int cell)` -- } /** Sector class of a walkable cell: doors stand alone, styles never merge. static int dmap_cell_class(int cell) {...
-- `dmap_new` (function) `progs/doomedit/doomedit.c:639` `static void dmap_new(void)` -- case DMAP_RSUIT: case DMAP_CMAP: case DMAP_LAMP: return nk_rgb(200, 90, 200); case DMAP_KEYB: case DMAP_KEYR: case...
-- `dmap_recenter` (function) `progs/doomedit/doomedit.c:804` `static void dmap_recenter(void)`
-- `dmap_load_preset` (function) `progs/doomedit/doomedit.c:816` `static int dmap_load_preset(int idx)` -- /** Move the preview camera onto the player start tile. static void dmap_recenter(void) { int r, c; for (r = 0; r <...
-- `dmap_rand` (function) `progs/doomedit/doomedit.c:849` `static unsigned dmap_rand(void)` -- int ch = dmap_levels[idx][row][k]; if (!dmap_walkable(ch) && ch != DMAP_WALL) return -1; dmap_grid[row][k] =...
-- `dmap_free_cell` (function) `progs/doomedit/doomedit.c:857` `static int dmap_free_cell(int *r, int *c)` -- dmap_level_sel = idx + 1; snprintf(dmap_status, sizeof(dmap_status), "level: %s", dmap_level_names[idx]); return 0...
-- `dmap_random_map` (function) `progs/doomedit/doomedit.c:871` `static void dmap_random_map(unsigned seed)` -- Procedural map of connected rooms: several non-overlapping rect rooms carved out of solid rock, joined in sequence...
-- `dmap_load` (function) `progs/doomedit/doomedit.c:1077` `static int dmap_load(const char *path)` -- } if (dmap_validate(msg, sizeof(msg)) == 0) { dmap_recenter(); snprintf(dmap_status, sizeof(dmap_status), "random...
-- `dmap_save_txt` (function) `progs/doomedit/doomedit.c:1129` `static int dmap_save_txt(const char *path)` -- if (row < 3 || w < 3 || w > DMAP_MAX_W) return -1; dmap_push_history(); dmap_anchor_active = 0; dmap_w = w; dmap_h =...
-- `areas` (function) `progs/doomedit/doomedit.c:1150` `* floor areas (doors stand alone, dark and nukage never merge);`
-- `dmap_label_regions` (function) `progs/doomedit/doomedit.c:1163` `static int dmap_label_regions(void)` -- Sector table backing the multi-sector exporter.
-- `dmap_validate` (function) `progs/doomedit/doomedit.c:1244` `static int dmap_validate(char *msg, int max)` -- dmap_sec_floor[nsec] = DMAP_FLOOR_H; dmap_sec_ceil[nsec] = DMAP_CEIL_H; dmap_sec_flat[nsec] = DMAP_FLOOR_FLAT...
-- `dmap_w8` (function) `progs/doomedit/doomedit.c:1317` `static void dmap_w8(unsigned v)`
-- `dmap_w16` (function) `progs/doomedit/doomedit.c:1318` `static void dmap_w16(int v)`
-- `dmap_w32` (function) `progs/doomedit/doomedit.c:1322` `static void dmap_w32(int v)`
-- `dmap_wtex` (function) `progs/doomedit/doomedit.c:1326` `static void dmap_wtex(const char *name)`
-- `dmap_seg_angle` (function) `progs/doomedit/doomedit.c:1333` `static int dmap_seg_angle(int dx, int dy)` -- dmap_wp++ = (unsigned char)(v & 0xFF); dmap_wp++ = (unsigned char)((v >> 8) & 0xFF); } static void dmap_w32(int v) {...
-- `dmap_build_wad` (function) `progs/doomedit/doomedit.c:1343` `static int dmap_build_wad(int *size_out)` -- Compile the grid into a vanilla multi-sector E1M1 PWAD image.
-- `dmap_export_wad` (function) `progs/doomedit/doomedit.c:1660` `static int dmap_export_wad(const char *path)` -- dmap_wp = dmap_wad; dmap_w8('P'); dmap_w8('W'); dmap_w8('A'); dmap_w8('D'); dmap_w32(11); dmap_w32(table_off)...
-- `dmap_check_wad` (function) `progs/doomedit/doomedit.c:1675` `static int dmap_check_wad(const char *path)` -- int size = 0; FILE *fp; size_t wrote; if (dmap_build_wad(&size) != 0) return -1; fp = fopen(path, "wb"); if (!fp)...
-- `dmap_preview` (function) `progs/doomedit/doomedit.c:1693` `static void dmap_preview(struct nk_command_buffer *canvas, struct nk_rect area)` -- if (!fp) return -1; if (fread(head, 1, 12, fp) != 12) { fclose(fp); return -1; } fclose(fp); magic_ok = head[0] ==...
-- `dmap_brush_combo` (function) `progs/doomedit/doomedit.c:1760` `static void dmap_brush_combo(struct nk_context *ctx)` -- dist = 0.05f; line_h = (int)(area.h / dist); if (line_h > (int)area.h) line_h = (int)area.h; y0 = (int)(area.y +...
-- `dmap_canvas` (function) `progs/doomedit/doomedit.c:1773` `static void dmap_canvas(struct nk_context *ctx)` -- Paintable tile canvas with per-category colors.
-- `dmap_preview_row` (function) `progs/doomedit/doomedit.c:1863` `static void dmap_preview_row(struct nk_context *ctx)` -- dmap_draw_rect(dmap_anchor_r, dmap_anchor_c, r, c, dmap_brush); dmap_anchor_active = 0; dmap_level_sel = 0; } } else...
-- `dmap_run_map` (function) `progs/doomedit/doomedit.c:1898` `static void dmap_run_map(void)` -- } if (nk_button_label(ctx, "Reset")) { int r, c; for (r = 0; r < dmap_h; r++) for (c = 0; c < dmap_w; c++) if...
-- `dmap_scancode` (function) `progs/doomedit/doomedit.c:2037` `static void dmap_scancode(int code, int make, int e0, void *ud)`
-- `dmap_gui_run` (function) `progs/doomedit/doomedit.c:2056` `static void dmap_gui_run(void)` -- dmap_ctrl_held = make; return; } if (!make || !dmap_ctrl_held) return; if (code == 0x13) dmap_run_requested = 1...
-- `dmap_demo_room` (function) `progs/doomedit/doomedit.c:2110` `static void dmap_demo_room(void)` -- nk_set_window_origin(origin[0], origin[1]); nk_clear(&ctx); { unsigned t0 = (unsigned)nk_sys_time_ms(); while...
-- `dmap_selftest` (function) `progs/doomedit/doomedit.c:2122` `static int dmap_selftest(void)` -- /** Headless demo room shared by --demo and the selftest build check. static void dmap_demo_room(void) { dmap_w = 9...
-- `main` (function) `progs/doomedit/doomedit.c:2246` `int main(int argc, char **argv)`
-
-## progs/doomgeneric/am_map.c
-Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_controls.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `AM_getIslope` (function) `progs/doomgeneric/am_map.c:275` `void
-AM_getIslope
-( mline_t*	ml,
-  islope_t*	is )`
-- `AM_activateNewScale` (function) `progs/doomgeneric/am_map.c:293` `void AM_activateNewScale(void)`
-- `AM_saveScaleAndLoc` (function) `progs/doomgeneric/am_map.c:308` `void AM_saveScaleAndLoc(void)`
-- `AM_restoreScaleAndLoc` (function) `progs/doomgeneric/am_map.c:319` `void AM_restoreScaleAndLoc(void)`
-- `AM_addMark` (function) `progs/doomgeneric/am_map.c:343` `void AM_addMark(void)` -- adds a marker at the current location
-- `AM_findMinMaxBoundaries` (function) `progs/doomgeneric/am_map.c:355` `void AM_findMinMaxBoundaries(void)` -- Determines bounding box of all vertices, sets global variables controlling zoom range.
-- `AM_changeWindowLoc` (function) `progs/doomgeneric/am_map.c:395` `void AM_changeWindowLoc(void)`
-- `AM_initVariables` (function) `progs/doomgeneric/am_map.c:424` `void AM_initVariables(void)`
-- `AM_loadPics` (function) `progs/doomgeneric/am_map.c:480` `void AM_loadPics(void)`
-- `AM_unloadPics` (function) `progs/doomgeneric/am_map.c:493` `void AM_unloadPics(void)`
-- `AM_clearMarks` (function) `progs/doomgeneric/am_map.c:505` `void AM_clearMarks(void)`
-- `AM_LevelInit` (function) `progs/doomgeneric/am_map.c:518` `void AM_LevelInit(void)` -- should be called at the start of every level right now, i figure it out myself
-- `AM_Stop` (function) `progs/doomgeneric/am_map.c:541` `void AM_Stop (void)`
-- `AM_Start` (function) `progs/doomgeneric/am_map.c:554` `void AM_Start (void)`
-- `AM_minOutWindowScale` (function) `progs/doomgeneric/am_map.c:573` `void AM_minOutWindowScale(void)` -- set the window scale to the maximum size
-- `AM_maxOutWindowScale` (function) `progs/doomgeneric/am_map.c:583` `void AM_maxOutWindowScale(void)` -- set the window scale to the minimum size
-- `AM_Responder` (function) `progs/doomgeneric/am_map.c:595` `boolean
-AM_Responder
-( event_t*	ev )`
-- `AM_changeWindowScale` (function) `progs/doomgeneric/am_map.c:742` `void AM_changeWindowScale(void)` -- Zooming
-- `AM_doFollowPlayer` (function) `progs/doomgeneric/am_map.c:761` `void AM_doFollowPlayer(void)`
-- `AM_updateLightLev` (function) `progs/doomgeneric/am_map.c:785` `void AM_updateLightLev(void)`
-- `AM_Ticker` (function) `progs/doomgeneric/am_map.c:806` `void AM_Ticker (void)` -- Updates on Game Tick
-- `AM_clearFB` (function) `progs/doomgeneric/am_map.c:834` `void AM_clearFB(int color)` -- Clear automap frame buffer.
-- `AM_clipMline` (function) `progs/doomgeneric/am_map.c:848` `boolean
-AM_clipMline
-( mline_t*	ml,
-  fline_t*	fl )`
-- `AM_drawFline` (function) `progs/doomgeneric/am_map.c:984` `void
-AM_drawFline
-( fline_t*	fl,
-  int		color )`
-- `AM_drawMline` (function) `progs/doomgeneric/am_map.c:1062` `void
-AM_drawMline
-( mline_t*	ml,
-  int		color )`
-- `AM_drawGrid` (function) `progs/doomgeneric/am_map.c:1077` `void AM_drawGrid(int color)` -- Draws flat (floor/ceiling tile) aligned grid lines.
-- `AM_drawWalls` (function) `progs/doomgeneric/am_map.c:1123` `void AM_drawWalls(void)` -- Determines visible lines, draws them.
-- `AM_rotate` (function) `progs/doomgeneric/am_map.c:1179` `void
-AM_rotate
-( fixed_t*	x,
-  fixed_t*	y,
-  angle_t	a )`
-- `AM_drawLineCharacter` (function) `progs/doomgeneric/am_map.c:1198` `void
-AM_drawLineCharacter
-( mline_t*	lineguy,
-  int		lineguylines,
-  fixed_t	scale,
-  angle_t	ang...`
-- `AM_drawPlayers` (function) `progs/doomgeneric/am_map.c:1246` `void AM_drawPlayers(void)`
-- `AM_drawThings` (function) `progs/doomgeneric/am_map.c:1291` `void
-AM_drawThings
-( int	colors,
-  int 	colorrange)`
-- `AM_drawMarks` (function) `progs/doomgeneric/am_map.c:1311` `void AM_drawMarks(void)`
-- `AM_drawCrosshair` (function) `progs/doomgeneric/am_map.c:1332` `void AM_drawCrosshair(int color)`
-- `AM_Drawer` (function) `progs/doomgeneric/am_map.c:1338` `void AM_Drawer (void)`
-
-## progs/doomgeneric/am_map.h
-Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/m_cheat.h`
-Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/st_stuff.c`
-- `AM_Ticker` (function) `progs/doomgeneric/am_map.h:35` `void AM_Ticker (void);` -- Called by main loop.
-- `AM_Drawer` (function) `progs/doomgeneric/am_map.h:39` `void AM_Drawer (void);` -- Called by main loop, called instead of view drawer if automap active.
-- `AM_Stop` (function) `progs/doomgeneric/am_map.h:43` `void AM_Stop (void);` -- Called to force the automap to quit if the level is completed while it is up.
-
-## progs/doomgeneric/d_event.c
-Depends on: `progs/doomgeneric/d_event.h`
-- `D_PostEvent` (function) `progs/doomgeneric/d_event.c:35` `void D_PostEvent (event_t* ev)` -- D_PostEvent Called by the I/O functions when input is detected
-- `D_PopEvent` (function) `progs/doomgeneric/d_event.c:43` `event_t *D_PopEvent(void)`
-
-## progs/doomgeneric/d_event.h
-Depends on: `progs/doomgeneric/doomtype.h`
-Imported by: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/f_finale.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/hu_stuff.h`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.h`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_user.c`, `progs/doomgeneric/st_stuff.h`
-- `D_PostEvent` (function) `progs/doomgeneric/d_event.h:129` `void D_PostEvent (event_t *ev);` -- Called by IO functions when input is detected.
-- `D_PopEvent` (function) `progs/doomgeneric/d_event.h:133` `event_t *D_PopEvent(void);`
-
-## progs/doomgeneric/d_iwad.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_config.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `AddIWADDir` (function) `progs/doomgeneric/d_iwad.c:64` `static void AddIWADDir(char *dir)`
-- `GetRegistryString` (function) `progs/doomgeneric/d_iwad.c:192` `static char *GetRegistryString(registry_value_t *reg_val)`
-- `CheckUninstallStrings` (function) `progs/doomgeneric/d_iwad.c:236` `static void CheckUninstallStrings(void)`
-- `CheckCollectorsEdition` (function) `progs/doomgeneric/d_iwad.c:270` `static void CheckCollectorsEdition(void)`
-- `CheckSteamEdition` (function) `progs/doomgeneric/d_iwad.c:297` `static void CheckSteamEdition(void)`
-- `CheckSteamGUSPatches` (function) `progs/doomgeneric/d_iwad.c:324` `static void CheckSteamGUSPatches(void)`
-- `CheckDOSDefaults` (function) `progs/doomgeneric/d_iwad.c:364` `static void CheckDOSDefaults(void)`
-- `DirIsFile` (function) `progs/doomgeneric/d_iwad.c:391` `static boolean DirIsFile(char *path, char *filename)`
-- `CheckDirectoryHasIWAD` (function) `progs/doomgeneric/d_iwad.c:408` `static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)`
-- `SearchDirectoryForIWAD` (function) `progs/doomgeneric/d_iwad.c:449` `static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)`
-- `IdentifyIWADByName` (function) `progs/doomgeneric/d_iwad.c:477` `static GameMission_t IdentifyIWADByName(char *name, int mask)`
-- `AddDoomWadPath` (function) `progs/doomgeneric/d_iwad.c:518` `static void AddDoomWadPath(void)`
-- `BuildIWADDirList` (function) `progs/doomgeneric/d_iwad.c:569` `static void BuildIWADDirList(void)`
-- `D_FindWADByName` (function) `progs/doomgeneric/d_iwad.c:630` `char *D_FindWADByName(char *name)`
-- `D_TryFindWADByName` (function) `progs/doomgeneric/d_iwad.c:681` `char *D_TryFindWADByName(char *filename)`
-- `D_FindIWAD` (function) `progs/doomgeneric/d_iwad.c:704` `char *D_FindIWAD(int mask, GameMission_t *mission)`
-- `D_FindAllIWADs` (function) `progs/doomgeneric/d_iwad.c:757` `const iwad_t **D_FindAllIWADs(int mask)`
-- `D_SaveGameIWADName` (function) `progs/doomgeneric/d_iwad.c:796` `char *D_SaveGameIWADName(GameMission_t gamemission)`
-- `D_SuggestIWADName` (function) `progs/doomgeneric/d_iwad.c:820` `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode)`
-- `D_SuggestGameName` (function) `progs/doomgeneric/d_iwad.c:835` `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)`
-
-## progs/doomgeneric/d_iwad.h
-Depends on: `progs/doomgeneric/d_mode.h`
-Imported by: `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/w_main.c`, `progs/doomgeneric/w_wad.c`
-- `D_FindWADByName` (function) `progs/doomgeneric/d_iwad.h:42` `char *D_FindWADByName(char *filename);`
-- `D_TryFindWADByName` (function) `progs/doomgeneric/d_iwad.h:43` `char *D_TryFindWADByName(char *filename);`
-- `D_FindIWAD` (function) `progs/doomgeneric/d_iwad.h:44` `char *D_FindIWAD(int mask, GameMission_t *mission);`
-- `D_FindAllIWADs` (function) `progs/doomgeneric/d_iwad.h:45` `const iwad_t **D_FindAllIWADs(int mask);`
-- `D_SaveGameIWADName` (function) `progs/doomgeneric/d_iwad.h:46` `char *D_SaveGameIWADName(GameMission_t gamemission);`
-- `D_SuggestIWADName` (function) `progs/doomgeneric/d_iwad.h:47` `char *D_SuggestIWADName(GameMission_t mission, GameMode_t mode);`
-- `D_SuggestGameName` (function) `progs/doomgeneric/d_iwad.h:48` `char *D_SuggestGameName(GameMission_t mission, GameMode_t mode);`
-- `D_CheckCorrectIWAD` (function) `progs/doomgeneric/d_iwad.h:49` `void D_CheckCorrectIWAD(GameMission_t mission);`
-
-## progs/doomgeneric/d_loop.c
-Depends on: `kernel/string.c`, `progs/doomgeneric/d_event.h`, `progs/doomgeneric/d_loop.h`, `progs/doomgeneric/d_ticcmd.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_timer.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_fixed.h`, `progs/doomgeneric/net_client.h`, `progs/doomgeneric/net_gui.h`, `progs/doomgeneric/net_io.h`, `progs/doomgeneric/net_loop.h`, `progs/doomgeneric/net_query.h`, `progs/doomgeneric/net_sdl.h`, `progs/doomgeneric/net_server.h`
-- `GetAdjustedTime` (function) `progs/doomgeneric/d_loop.c:119` `static int GetAdjustedTime(void)`
-- `BuildNewTic` (function) `progs/doomgeneric/d_loop.c:136` `static boolean BuildNewTic(void)`
-- `NetUpdate` (function) `progs/doomgeneric/d_loop.c:203` `void NetUpdate (void)`
-- `D_Disconnected` (function) `progs/doomgeneric/d_loop.c:252` `static void D_Disconnected(void)`
-- `D_ReceiveTic` (function) `progs/doomgeneric/d_loop.c:271` `void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)`
-- `D_StartGameLoop` (function) `progs/doomgeneric/d_loop.c:305` `void D_StartGameLoop(void)`
-- `BlockUntilStart` (function) `progs/doomgeneric/d_loop.c:315` `static void BlockUntilStart(net_gamesettings_t *settings,
-                            netgame_sta...`
-- `D_StartNetGame` (function) `progs/doomgeneric/d_loop.c:340` `void D_StartNetGame(net_gamesettings_t *settings,
-                    netgame_startup_callback_t ...`
-- `D_InitNetGame` (function) `progs/doomgeneric/d_loop.c:452` `boolean D_InitNetGame(net_connect_data_t *connect_data)`
-- `D_QuitNetGame` (function) `progs/doomgeneric/d_loop.c:560` `void D_QuitNetGame (void)` -- D_QuitNetGame Called before quitting to leave a net game without hanging the other players
-- `GetLowTic` (function) `progs/doomgeneric/d_loop.c:568` `static int GetLowTic(void)`
-- `OldNetSync` (function) `progs/doomgeneric/d_loop.c:591` `static void OldNetSync(void)`
-- `PlayersInGame` (function) `progs/doomgeneric/d_loop.c:642` `static boolean PlayersInGame(void)`
-- `TicdupSquash` (function) `progs/doomgeneric/d_loop.c:672` `static void TicdupSquash(ticcmd_set_t *set)`
-- `SinglePlayerClear` (function) `progs/doomgeneric/d_loop.c:689` `static void SinglePlayerClear(ticcmd_set_t *set)`
-- `TryRunTics` (function) `progs/doomgeneric/d_loop.c:706` `void TryRunTics (void)`
-- `D_RegisterLoopCallbacks` (function) `progs/doomgeneric/d_loop.c:822` `void D_RegisterLoopCallbacks(loop_interface_t *i)`
-
-## progs/doomgeneric/d_loop.h
-Depends on: `progs/doomgeneric/net_defs.h`
-Imported by: `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_net.c`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/r_main.c`
-- `D_RegisterLoopCallbacks` (function) `progs/doomgeneric/d_loop.h:52` `void D_RegisterLoopCallbacks(loop_interface_t *i);` -- Register callback functions for the main loop code to use.
-- `NetUpdate` (function) `progs/doomgeneric/d_loop.h:55` `void NetUpdate (void);` -- Create any new ticcmds and broadcast to other players.
-- `D_QuitNetGame` (function) `progs/doomgeneric/d_loop.h:59` `void D_QuitNetGame (void);` -- Broadcasts special packets to other players to notify of game exit
-- `TryRunTics` (function) `progs/doomgeneric/d_loop.h:62` `void TryRunTics (void);` -- ? how many ticks to run?
-- `D_StartGameLoop` (function) `progs/doomgeneric/d_loop.h:65` `void D_StartGameLoop(void);` -- Called at start of game loop to initialize timers
-- `D_StartNetGame` (function) `progs/doomgeneric/d_loop.h:74` `void D_StartNetGame(net_gamesettings_t *settings, netgame_startup_callback_t callback);`
 
 
 Next: [API_p11.md](API_p11.md)

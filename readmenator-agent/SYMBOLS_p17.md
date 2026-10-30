@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `P_GiveCard` | function | `progs/doomgeneric/p_inter.c:268` | `void P_GiveCard ( player_t*	player,   card_t	card )` |
+| `P_GivePower` | function | `progs/doomgeneric/p_inter.c:284` | `boolean P_GivePower ( player_t*	player,   int /*powertype_t*/	power )` |
+| `P_GiveWeapon` | function | `progs/doomgeneric/p_inter.c:160` | `boolean P_GiveWeapon ( player_t*	player,   weapontype_t	weapon,   boolean	dropped )` |
+| `P_KillMobj` | function | `progs/doomgeneric/p_inter.c:666` | `void P_KillMobj ( mobj_t*	source,   mobj_t*	target )` |
+| `P_TouchSpecialThing` | function | `progs/doomgeneric/p_inter.c:333` | `void P_TouchSpecialThing ( mobj_t*	special,   mobj_t*	toucher )` |
+| `__P_INTER__` | macro | `progs/doomgeneric/p_inter.h:21` | `#define __P_INTER__` |
+| `EV_LightTurnOn` | function | `progs/doomgeneric/p_lights.c:264` | `void EV_LightTurnOn ( line_t*	line,   int		bright )` |
+| `EV_StartLightStrobing` | function | `progs/doomgeneric/p_lights.c:208` | `void EV_StartLightStrobing(line_t*	line)` |
+| `EV_TurnTagLightsOff` | function | `progs/doomgeneric/p_lights.c:229` | `void EV_TurnTagLightsOff(line_t* line)` |
+| `P_SpawnFireFlicker` | function | `progs/doomgeneric/p_lights.c:61` | `void P_SpawnFireFlicker (sector_t*	sector)` |
+| `P_SpawnGlowingLight` | function | `progs/doomgeneric/p_lights.c:334` | `void P_SpawnGlowingLight(sector_t*	sector)` |
+| `P_SpawnLightFlash` | function | `progs/doomgeneric/p_lights.c:117` | `void P_SpawnLightFlash (sector_t*	sector)` |
+| `P_SpawnStrobeFlash` | function | `progs/doomgeneric/p_lights.c:174` | `void P_SpawnStrobeFlash ( sector_t*	sector,   int		fastOrSlow,   int		inSync )` |
+| `T_FireFlicker` | function | `progs/doomgeneric/p_lights.c:39` | `void T_FireFlicker (fireflicker_t* flick)` |
+| `T_Glow` | function | `progs/doomgeneric/p_lights.c:307` | `void T_Glow(glow_t*	g)` |
+| `T_LightFlash` | function | `progs/doomgeneric/p_lights.c:91` | `void T_LightFlash (lightflash_t* flash)` |
+| `T_StrobeFlash` | function | `progs/doomgeneric/p_lights.c:148` | `void T_StrobeFlash (strobe_t*		flash)` |
+| `BASETHRESHOLD` | macro | `progs/doomgeneric/p_local.h:58` | `#define	BASETHRESHOLD` |
+| `FLOATSPEED` | macro | `progs/doomgeneric/p_local.h:27` | `#define FLOATSPEED` |
+| `GRAVITY` | macro | `progs/doomgeneric/p_local.h:50` | `#define GRAVITY` |
+| `ITEMQUESIZE` | macro | `progs/doomgeneric/p_local.h:96` | `#define ITEMQUESIZE` |
+| `MAPBLOCKSHIFT` | macro | `progs/doomgeneric/p_local.h:37` | `#define MAPBLOCKSHIFT` |
+| `MAPBLOCKSIZE` | macro | `progs/doomgeneric/p_local.h:36` | `#define MAPBLOCKSIZE` |
 | `MAPBLOCKUNITS` | macro | `progs/doomgeneric/p_local.h:35` | `#define MAPBLOCKUNITS` |
 | `MAPBMASK` | macro | `progs/doomgeneric/p_local.h:38` | `#define MAPBMASK` |
 | `MAPBTOFRAC` | macro | `progs/doomgeneric/p_local.h:39` | `#define MAPBTOFRAC` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 | `rw_stopx` | variable | `progs/doomgeneric/r_bsp.h:32` | `extern int rw_stopx;` |
 | `rw_x` | variable | `progs/doomgeneric/r_bsp.h:31` | `extern int rw_x;` |
 | `segtextured` | variable | `progs/doomgeneric/r_bsp.h:34` | `extern boolean segtextured;` |
-| `sidedef` | variable | `progs/doomgeneric/r_bsp.h:26` | `extern side_t* sidedef;` |
-| `skymap` | variable | `progs/doomgeneric/r_bsp.h:40` | `extern boolean skymap;` |
-| `vscalelight` | variable | `progs/doomgeneric/r_bsp.h:46` | `extern lighttable_t** vscalelight;` |
-| `GenerateTextureHashTable` | function | `progs/doomgeneric/r_data.c:404` | `static void GenerateTextureHashTable(void)` |
-| `R_CheckTextureNumForName` | function | `progs/doomgeneric/r_data.c:744` | `int	R_CheckTextureNumForName (char *name)` |
-| `R_DrawColumnInCache` | function | `progs/doomgeneric/r_data.c:186` | `void R_DrawColumnInCache ( column_t*	patch,   byte*		cache,   int		originy,   int		cacheheight )` |
-| `R_FlatNumForName` | function | `progs/doomgeneric/r_data.c:720` | `int R_FlatNumForName (char* name)` |
-| `R_GenerateComposite` | function | `progs/doomgeneric/r_data.c:226` | `void R_GenerateComposite (int texnum)` |
-| `R_GenerateLookup` | function | `progs/doomgeneric/r_data.c:294` | `void R_GenerateLookup (int texnum)` |
-| `R_GetColumn` | function | `progs/doomgeneric/r_data.c:383` | `byte* R_GetColumn ( int		tex,   int		col )` |
-| `R_InitColormaps` | function | `progs/doomgeneric/r_data.c:685` | `void R_InitColormaps (void)` |
-| `R_InitData` | function | `progs/doomgeneric/r_data.c:703` | `void R_InitData (void)` |
-| `R_InitFlats` | function | `progs/doomgeneric/r_data.c:633` | `void R_InitFlats (void)` |
-| `R_InitSpriteLumps` | function | `progs/doomgeneric/r_data.c:655` | `void R_InitSpriteLumps (void)` |
-| `R_InitTextures` | function | `progs/doomgeneric/r_data.c:451` | `void R_InitTextures (void)` |
-| `R_PrecacheLevel` | function | `progs/doomgeneric/r_data.c:800` | `void R_PrecacheLevel (void)` |
-| `R_TextureNumForName` | function | `progs/doomgeneric/r_data.c:775` | `int	R_TextureNumForName (char* name)` |
-| `texpatch_t` | struct | `progs/doomgeneric/r_data.c:89` | `` |
-| `texture_s` | struct | `progs/doomgeneric/r_data.c:106` | `` |
-| `texture_t` | type_alias | `progs/doomgeneric/r_data.c:103` | `typedef struct texture_s texture_t;` |
-| `R_CheckTextureNumForName` | function | `progs/doomgeneric/r_data.h:49` | `int R_CheckTextureNumForName (char *name);` |
-| `R_FlatNumForName` | function | `progs/doomgeneric/r_data.h:43` | `int R_FlatNumForName (char* name);` |
-| `R_GetColumn` | function | `progs/doomgeneric/r_data.h:30` | `byte* R_GetColumn ( int tex, int col );` |
 
 Next: [SYMBOLS_p18.md](SYMBOLS_p18.md)

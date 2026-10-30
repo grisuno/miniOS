@@ -1,6 +1,170 @@
 # API (page 19 of 21)
 Previous: [API_p18.md](API_p18.md)
 
+## progs/src/json.c
+- `js_str` (function) `progs/src/json.c:5` `* members keep their key in js_str (the member value node) and their value * in the node itself, and object members...`
+- `free` (function) `progs/src/json.c:14` `void free();`
+- `printf` (function) `progs/src/json.c:15` `int printf();`
+- `putchar` (function) `progs/src/json.c:16` `int putchar();`
+- `puts` (function) `progs/src/json.c:17` `int puts();`
+- `strlen` (function) `progs/src/json.c:18` `int strlen();`
+- `strcmp` (function) `progs/src/json.c:19` `int strcmp();`
+- `fopen` (function) `progs/src/json.c:20` `void *fopen();`
+- `fclose` (function) `progs/src/json.c:21` `int fclose();`
+- `fread` (function) `progs/src/json.c:22` `int fread();`
+- `fseek` (function) `progs/src/json.c:23` `int fseek();`
+- `ftell` (function) `progs/src/json.c:24` `int ftell();`
+- `rewind` (function) `progs/src/json.c:25` `void rewind();`
+- `js_read_all` (function) `progs/src/json.c:58` `static char *js_read_all(const char *name, int *len)`
+- `js_new` (function) `progs/src/json.c:76` `static int js_new(void)`
+- `js_skip_ws` (function) `progs/src/json.c:81` `static void js_skip_ws(void)`
+- `js_peek` (function) `progs/src/json.c:89` `static int js_peek(void)`
+- `js_parse_string` (function) `progs/src/json.c:97` `static int js_parse_string(void)`
+- `js_parse_number` (function) `progs/src/json.c:133` `static int js_parse_number(void)`
+- `js_key_match` (function) `progs/src/json.c:143` `static int js_key_match(int child, const char *key)`
+- `js_parse_object` (function) `progs/src/json.c:147` `static int js_parse_object(void)`
+- `js_parse_array` (function) `progs/src/json.c:182` `static int js_parse_array(void)`
+- `js_parse_value` (function) `progs/src/json.c:211` `static int js_parse_value(void)`
+- `js_indent` (function) `progs/src/json.c:281` `static void js_indent(int n)`
+- `js_print_str` (function) `progs/src/json.c:286` `static void js_print_str(const char *s)`
+- `js_print_value` (function) `progs/src/json.c:303` `static void js_print_value(int node, int depth)`
+- `js_find_member` (function) `progs/src/json.c:347` `static int js_find_member(int obj, const char *key)`
+- `js_array_at` (function) `progs/src/json.c:357` `static int js_array_at(int arr, int idx)`
+- `js_query` (function) `progs/src/json.c:369` `static int js_query(int root, const char *path)`
+- `main` (function) `progs/src/json.c:401` `int main(int argc, char **argv)`
+
+## progs/src/kmem.c
+- `syscall3` (function) `progs/src/kmem.c:7` `static long syscall3(long n, long a1, long a2, long a3)` -- Kernel-pointer rejection probe.
+- `exit_now` (function) `progs/src/kmem.c:14` `static void exit_now(long code)`
+
+## progs/src/ldhello.c
+- `main` (function) `progs/src/ldhello.c:1` `int main(void)`
+
+## progs/src/lxabi.c
+Depends on: `headers/sched.h`, `kernel/string.c`, `kernel/time.c`
+- `report` (function) `progs/src/lxabi.c:65` `static void report(const char *name, int ok, const char *detail)`
+- `now_ms` (function) `progs/src/lxabi.c:75` `static long now_ms(void)`
+- `busy_wait_ms` (function) `progs/src/lxabi.c:81` `static void busy_wait_ms(long ms)`
+- `fork_probe` (function) `progs/src/lxabi.c:95` `static void fork_probe(uint64_t *out)` -- Raw clone(SIGCHLD) with known values in every callee-saved register and in * the argument registers; both sides...
+- `regs_match` (function) `progs/src/lxabi.c:132` `static int regs_match(const uint64_t *r)`
+- `check_fork_registers` (function) `progs/src/lxabi.c:138` `static void check_fork_registers(void)`
+- `check_fork_cow_kernel_write` (function) `progs/src/lxabi.c:160` `static void check_fork_cow_kernel_write(void)`
+- `worker` (function) `progs/src/lxabi.c:201` `static void *worker(void *arg)`
+- `check_threads` (function) `progs/src/lxabi.c:215` `static void check_threads(void)`
+- `detached_worker` (function) `progs/src/lxabi.c:245` `static void *detached_worker(void *arg)`
+- `check_detached_reaped` (function) `progs/src/lxabi.c:251` `static void check_detached_reaped(void)`
+- `signaller` (function) `progs/src/lxabi.c:275` `static void *signaller(void *arg)`
+- `check_condvar` (function) `progs/src/lxabi.c:285` `static void check_condvar(void)`
+- `check_pipe2_flags` (function) `progs/src/lxabi.c:307` `static void check_pipe2_flags(void)`
+- `check_pipe_blocking` (function) `progs/src/lxabi.c:334` `static void check_pipe_blocking(void)`
+- `check_pipe_epipe` (function) `progs/src/lxabi.c:356` `static void check_pipe_epipe(void)`
+- `check_writev_pipe` (function) `progs/src/lxabi.c:382` `static void check_writev_pipe(void)`
+- `check_poll` (function) `progs/src/lxabi.c:394` `static void check_poll(void)`
+- `check_eventfd` (function) `progs/src/lxabi.c:418` `static void check_eventfd(void)`
+- `check_close_range` (function) `progs/src/lxabi.c:443` `static void check_close_range(void)`
+- `check_time` (function) `progs/src/lxabi.c:455` `static void check_time(void)`
+- `check_mkdir` (function) `progs/src/lxabi.c:464` `static void check_mkdir(void)`
+- `check_limits` (function) `progs/src/lxabi.c:478` `static void check_limits(void)` -- The answers glibc sizes memory from: a finite stack limit (thread stacks default to it) and a CPU count that matches...
+- `mono_us` (function) `progs/src/lxabi.c:491` `static long mono_us(void)`
+- `check_sleep` (function) `progs/src/lxabi.c:500` `static void check_sleep(void)` -- Sleeps really wait: nanosleep for a relative interval, clock_nanosleep until an absolute monotonic deadline, and a...
+- `lxabi_sleeper` (function) `progs/src/lxabi.c:527` `static void *lxabi_sleeper(void *arg)` -- rc = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &abs_t, NULL); waited = mono_us() - t0...
+- `child_status` (function) `progs/src/lxabi.c:535` `static int child_status(void (*body)(void))` -- Fork a child that runs body, wait for it with a bounded spin and return * its wait status, or -1 when it never ended...
+- `abort_from_worker_body` (function) `progs/src/lxabi.c:555` `static void abort_from_worker_body(void)`
+- `lxabi_exit_group_worker` (function) `progs/src/lxabi.c:561` `static void *lxabi_exit_group_worker(void *arg)`
+- `exit_group_from_worker_body` (function) `progs/src/lxabi.c:567` `static void exit_group_from_worker_body(void)`
+- `wild_jump_body` (function) `progs/src/lxabi.c:573` `static void wild_jump_body(void)`
+- `process` (function) `progs/src/lxabi.c:581` `* process (never a kernel panic), and kill(pid, 0) or a harmless signal
+ * leaves the target aliv...`
+- `check_uid_gid` (function) `progs/src/lxabi.c:642` `static void check_uid_gid(void)` -- Every process runs as root (uid/gid 0); glibc and CPython's startup * read these, and -ENOSYS made them answer...
+- `check_rename_dir` (function) `progs/src/lxabi.c:649` `static void check_rename_dir(void)` -- Directory rename within one parent: Linux allows it, and pip's * uninstall stashes a whole dist-info/pycache...
+- `copy_dentry_name` (function) `progs/src/lxabi.c:715` `static void copy_dentry_name(char *dst, size_t cap, const char *src)` -- getdents64 (217): a directory fd enumerates MiniFS entries with the right d_type and resumes across calls; a regular...
+- `check_getdents64` (function) `progs/src/lxabi.c:722` `static void check_getdents64(void)`
+- `main` (function) `progs/src/lxabi.c:789` `int main(void)`
+
+## progs/src/lxhello.c
+- `lx_syscall3` (function) `progs/src/lxhello.c:11` `static long lx_syscall3(long n, long a1, long a2, long a3)`
+- `lx_strlen` (function) `progs/src/lxhello.c:23` `static unsigned long lx_strlen(const char *s)`
+- `lx_write` (function) `progs/src/lxhello.c:29` `static void lx_write(const char *s)`
+- `lx_write_int` (function) `progs/src/lxhello.c:33` `static void lx_write_int(long v)`
+- `lmain` (function) `progs/src/lxhello.c:46` `int lmain(long argc, char **argv)` -- static void lx_write_int(long v) { char buf[24]; int i = (int)sizeof(buf); int neg = 0; buf[--i] = 0; if (v < 0) {...
+
+## progs/src/lxnet.c
+Depends on: `kernel/string.c`
+- `report` (function) `progs/src/lxnet.c:49` `static void report(const char *name, int ok, const char *detail)`
+- `wait_for` (function) `progs/src/lxnet.c:55` `static int wait_for(int fd, short events)`
+- `read_all` (function) `progs/src/lxnet.c:62` `static int read_all(int fd, char *buf, size_t len)` -- static void report(const char *name, int ok, const char *detail) { if (ok) printf("lxnet: %s ok\n", name); else {...
+- `check_udp` (function) `progs/src/lxnet.c:73` `static void check_udp(const struct sockaddr_in *peer)`
+- `check_refused` (function) `progs/src/lxnet.c:150` `static void check_refused(const struct sockaddr_in *peer)` -- A non-blocking connect to a port nobody listens on fails through poll * (POLLERR) with SO_ERROR = ECONNREFUSED...
+- `check_tcp` (function) `progs/src/lxnet.c:174` `static void check_tcp(const struct sockaddr_in *peer)`
+- `check_misc` (function) `progs/src/lxnet.c:217` `static void check_misc(void)`
+- `dial` (function) `progs/src/lxnet.c:236` `static int dial(const char *host, const char *port)` -- if (fd >= 0) close(fd); struct addrinfo hints, *res = NULL; memset(&hints, 0, sizeof hints); hints.ai_family =...
+- `main` (function) `progs/src/lxnet.c:280` `int main(int argc, char **argv)`
+
+## progs/src/lxproc.c
+Depends on: `progs/minios_abi.h`
+- `report_exe` (function) `progs/src/lxproc.c:50` `static int report_exe(void)` -- uint32_t namesz; uint32_t descsz; uint32_t type; char     name[sizeof MINIOS_NOTE_NAME]; uint32_t desc; }...
+- `report_fork` (function) `progs/src/lxproc.c:64` `static int report_fork(void)` -- Fork a child that exits with LXPROC_CHILD_CODE and reap it; 0 when the * outcome is one of the two the contract allows.
+- `main` (function) `progs/src/lxproc.c:91` `int main(void)`
+
+## progs/src/lxsecc.c
+Depends on: `kernel/string.c`
+- `report` (function) `progs/src/lxsecc.c:44` `static void report(const char *name, int ok, const char *detail)`
+- `exit_code_of` (function) `progs/src/lxsecc.c:53` `static int exit_code_of(int st)` -- Exit code of a reaped child under both encodings: Linux's status word (code << 8, signal in the low bits) and...
+- `run_child` (function) `progs/src/lxsecc.c:58` `static int run_child(void (*body)(void))`
+- `install_filter` (function) `progs/src/lxsecc.c:72` `static int install_filter(unsigned getpid_action)` -- Filter: arch guard, getpid -> ERRNO(err_getpid), write/exit/exit_group/ * rt_sigreturn/mprotect(no PROT_EXEC)/fork...
+- `child_errno_action` (function) `progs/src/lxsecc.c:100` `static void child_errno_action(void)`
+- `child_kill_action` (function) `progs/src/lxsecc.c:107` `static void child_kill_action(void)`
+- `child_wx` (function) `progs/src/lxsecc.c:116` `static void child_wx(void)` -- The page is the child's own anonymous mapping, made before the filter (which forbids mmap): a copy-on-write page...
+- `grandchild_inherits` (function) `progs/src/lxsecc.c:127` `static void grandchild_inherits(void)`
+- `child_inherit` (function) `progs/src/lxsecc.c:133` `static void child_inherit(void)`
+- `child_stacked` (function) `progs/src/lxsecc.c:142` `static void child_stacked(void)`
+- `child_strict` (function) `progs/src/lxsecc.c:150` `static void child_strict(void)`
+- `child_no_nnp` (function) `progs/src/lxsecc.c:157` `static void child_no_nnp(void)`
+- `child_bad_program` (function) `progs/src/lxsecc.c:165` `static void child_bad_program(void)`
+- `check_prctl_flags` (function) `progs/src/lxsecc.c:177` `static void check_prctl_flags(void)`
+- `check_proc_self_exe` (function) `progs/src/lxsecc.c:197` `static void check_proc_self_exe(const char *argv0)`
+- `main` (function) `progs/src/lxsecc.c:215` `int main(int argc, char **argv)`
+
+## progs/src/lxsel.c
+Depends on: `kernel/time.c`
+- `report` (function) `progs/src/lxsel.c:36` `static void report(const char *name, int ok)`
+- `raw_select` (function) `progs/src/lxsel.c:45` `static long raw_select(long nfds, fd_set *r, fd_set *w, fd_set *e,
+                       struct ...`
+- `raw_pselect6` (function) `progs/src/lxsel.c:50` `static long raw_pselect6(long nfds, fd_set *r, fd_set *w, fd_set *e,
+                         str...`
+- `elapsed_ms` (function) `progs/src/lxsel.c:55` `static long elapsed_ms(struct timespec *a, struct timespec *b)`
+- `main` (function) `progs/src/lxsel.c:60` `int main(void)`
+
+## progs/src/lxtls.c
+Depends on: `kernel/string.c`
+- `lxtls_sink` (function) `progs/src/lxtls.c:39` `static size_t lxtls_sink(char *data, size_t size, size_t nmemb, void *user)` -- Count the body without storing it: the probe proves transport, not * content.
+- `lxtls_debug` (function) `progs/src/lxtls.c:46` `static int lxtls_debug(CURL *h, curl_infotype type, char *data, size_t size, void *user)` -- Count the body without storing it: the probe proves transport, not * content. static size_t lxtls_sink(char *data...
+- `lxtls_step` (function) `progs/src/lxtls.c:65` `static int lxtls_step(const char *name, int ok)` -- return 0; for (i = 0; i <= size; i++) { if (i == size || data[i] == '\n') { size_t len = i - start; if (len > 0 &&...
+- `lxtls_rand` (function) `progs/src/lxtls.c:73` `static int lxtls_rand(void)` -- } fflush(stdout); return 0; } /* Report one RAND step and, on failure, OpenSSL's error queue. static int...
+- `main` (function) `progs/src/lxtls.c:87` `int main(int argc, char **argv)`
+
+## progs/src/lz4.c
+- `kernel` (function) `progs/src/lz4.c:6` `* * The codec lives in the kernel (lz4_kernel.c, the same one MiniFS uses), so * these tools are thin front-ends...`
+- `free` (function) `progs/src/lz4.c:15` `void free();`
+- `printf` (function) `progs/src/lz4.c:16` `int printf();`
+- `strcmp` (function) `progs/src/lz4.c:17` `int strcmp();`
+- `strlen` (function) `progs/src/lz4.c:18` `int strlen();`
+- `fopen` (function) `progs/src/lz4.c:19` `void *fopen();`
+- `fclose` (function) `progs/src/lz4.c:20` `int fclose();`
+- `fread` (function) `progs/src/lz4.c:21` `int fread();`
+- `fwrite` (function) `progs/src/lz4.c:22` `int fwrite();`
+- `fseek` (function) `progs/src/lz4.c:23` `int fseek();`
+- `ftell` (function) `progs/src/lz4.c:24` `int ftell();`
+- `rewind` (function) `progs/src/lz4.c:25` `void rewind();`
+- `lz4_compress` (function) `progs/src/lz4.c:27` `int lz4_compress(char *src, int srclen, char *dst, int dstcap);`
+- `lz4_decompress` (function) `progs/src/lz4.c:28` `int lz4_decompress(char *src, int srclen, char *dst, int dstcap);`
+- `lz4_has` (function) `progs/src/lz4.c:39` `static int lz4_has(const char *s, const char *needle)`
+- `lz4_read_all` (function) `progs/src/lz4.c:53` `static char *lz4_read_all(const char *name, int *len)`
+- `lz4_write_all` (function) `progs/src/lz4.c:70` `static int lz4_write_all(const char *name, char *data, int len)`
+- `lz4_compress_file` (function) `progs/src/lz4.c:80` `static int lz4_compress_file(const char *src, const char *dst)`
+- `lz4_decompress_file` (function) `progs/src/lz4.c:117` `static int lz4_decompress_file(const char *src, const char *dst)`
+- `main` (function) `progs/src/lz4.c:164` `int main(int argc, char **argv)`
+
 ## progs/src/lzss.c
 - `malloc` (function) `progs/src/lzss.c:13` `void *malloc();`
 - `free` (function) `progs/src/lzss.c:14` `void free();`
@@ -292,104 +456,6 @@ Depends on: `kernel/string.c`, `kernel/time.c`
 - `tls_u_resolve` (function) `progs/tls_u/tls_u_port.c:147` `int tls_u_resolve(const char *host, unsigned *ip_out)`
 - `answer` (function) `progs/tls_u/tls_u_port.c:163` `* answer (some resolvers go IPv6-only on the first query). */ memset(&hints, 0, sizeof(hints));`
 - `net_dns_resolve` (function) `progs/tls_u/tls_u_port.c:183` `int net_dns_resolve(const char *host)` -- freedom's resolver name: kernel DNS value semantics (u32 host order, * -1 on failure).
-
-## progs/topogpt3/topogpt3.c
-Depends on: `kernel/string.c`
-- `printf` (function) `progs/topogpt3/topogpt3.c:28` `extern int printf(const char *, ...);`
-- `fprintf` (function) `progs/topogpt3/topogpt3.c:29` `extern int fprintf(FILE *, const char *, ...);`
-- `sprintf` (function) `progs/topogpt3/topogpt3.c:30` `extern int sprintf(char *, const char *, ...);`
-- `snprintf` (function) `progs/topogpt3/topogpt3.c:31` `extern int snprintf(char *, unsigned long, const char *, ...);`
-- `puts` (function) `progs/topogpt3/topogpt3.c:32` `extern int puts(const char *);`
-- `putchar` (function) `progs/topogpt3/topogpt3.c:33` `extern int putchar(int);`
-- `fputc` (function) `progs/topogpt3/topogpt3.c:34` `extern int fputc(int, FILE *);`
-- `fputs` (function) `progs/topogpt3/topogpt3.c:35` `extern int fputs(const char *, FILE *);`
-- `fopen` (function) `progs/topogpt3/topogpt3.c:36` `extern FILE *fopen(const char *, const char *);`
-- `fclose` (function) `progs/topogpt3/topogpt3.c:37` `extern int fclose(FILE *);`
-- `fread` (function) `progs/topogpt3/topogpt3.c:38` `extern unsigned long fread(void *, unsigned long, unsigned long, FILE *);`
-- `fwrite` (function) `progs/topogpt3/topogpt3.c:39` `extern unsigned long fwrite(const void *, unsigned long, unsigned long, FILE *);`
-- `fseek` (function) `progs/topogpt3/topogpt3.c:40` `extern int fseek(FILE *, long, int);`
-- `ftell` (function) `progs/topogpt3/topogpt3.c:41` `extern long ftell(FILE *);`
-- `fflush` (function) `progs/topogpt3/topogpt3.c:42` `extern int fflush(FILE *);`
-- `malloc` (function) `progs/topogpt3/topogpt3.c:47` `extern void *malloc(unsigned long);` -- define NULL ((void*)0) define SEEK_SET 0 define SEEK_CUR 1 define SEEK_END 2
-- `free` (function) `progs/topogpt3/topogpt3.c:48` `extern void free(void *);`
-- `memcpy` (function) `progs/topogpt3/topogpt3.c:49` `extern void *memcpy(void *, const void *, unsigned long);`
-- `memset` (function) `progs/topogpt3/topogpt3.c:50` `extern void *memset(void *, int, unsigned long);`
-- `strcmp` (function) `progs/topogpt3/topogpt3.c:51` `extern int strcmp(const char *, const char *);`
-- `strncmp` (function) `progs/topogpt3/topogpt3.c:52` `extern int strncmp(const char *, const char *, unsigned long);`
-- `strlen` (function) `progs/topogpt3/topogpt3.c:53` `extern unsigned long strlen(const char *);`
-- `strstr` (function) `progs/topogpt3/topogpt3.c:54` `extern char *strstr(const char *, const char *);`
-- `tg_exp` (function) `progs/topogpt3/topogpt3.c:114` `static float tg_exp(float x)`
-- `tg_tanh` (function) `progs/topogpt3/topogpt3.c:128` `static float tg_tanh(float x)`
-- `tg_sin` (function) `progs/topogpt3/topogpt3.c:135` `static float tg_sin(float x)`
-- `tg_cos` (function) `progs/topogpt3/topogpt3.c:144` `static float tg_cos(float x)`
-- `tg_fabs` (function) `progs/topogpt3/topogpt3.c:148` `static float tg_fabs(float x)`
-- `tg_log` (function) `progs/topogpt3/topogpt3.c:152` `static float tg_log(float x)`
-- `tg_fmax` (function) `progs/topogpt3/topogpt3.c:164` `static float tg_fmax(float a, float b)`
-- `tg_fmin` (function) `progs/topogpt3/topogpt3.c:168` `static float tg_fmin(float a, float b)`
-- `load_vocab` (function) `progs/topogpt3/topogpt3.c:255` `static void load_vocab(const char *path)`
-- `build_torus_graph` (function) `progs/topogpt3/topogpt3.c:296` `static void build_torus_graph(void)`
-- `precompute_rope` (function) `progs/topogpt3/topogpt3.c:327` `static void precompute_rope(void)`
-- `matvec` (function) `progs/topogpt3/topogpt3.c:359` `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
-- `matvec_bias` (function) `progs/topogpt3/topogpt3.c:370` `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
-               ...`
-- `rmsnorm` (function) `progs/topogpt3/topogpt3.c:382` `static void rmsnorm(const float *x, const float *w, float *y, int d)`
-- `softmax` (function) `progs/topogpt3/topogpt3.c:391` `static void softmax(float *x, int n)`
-- `gelu` (function) `progs/topogpt3/topogpt3.c:400` `static void gelu(float *x, int n)`
-- `silu` (function) `progs/topogpt3/topogpt3.c:410` `static void silu(float *x, int n)`
-- `swiglu` (function) `progs/topogpt3/topogpt3.c:418` `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
-                 ...`
-- `quat_normalize` (function) `progs/topogpt3/topogpt3.c:435` `static void quat_normalize(float *q)`
-- `quat_hamilton` (function) `progs/topogpt3/topogpt3.c:440` `static void quat_hamilton(const float *a, const float *b, float *c)`
-- `quat_linear` (function) `progs/topogpt3/topogpt3.c:448` `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,
-     ...` -- static void quat_normalize(float *q) { float n = tg_sqrt(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]); if (n >...
-- `ifft_radix2` (function) `progs/topogpt3/topogpt3.c:505` `static void ifft_radix2(float *real, float *imag, int n)`
-- `rfft` (function) `progs/topogpt3/topogpt3.c:513` `static void rfft(const float *x, float *Xr, float *Xi, int n)` -- cur_r = nr; } } } } static void ifft_radix2(float *real, float *imag, int n) { int i; for (i = 0; i < n; i++)...
-- `irfft` (function) `progs/topogpt3/topogpt3.c:522` `static void irfft(const float *Xr, const float *Xi, float *x, int n)` -- fft_radix2(real, imag, n); for (i = 0; i < n; i++) { real[i] /= (float)n; imag[i] = -imag[i] / (float)n; } } /* Real...
-- `filter1d` (function) `progs/topogpt3/topogpt3.c:537` `static void filter1d(const float *x, const float *kr, const float *ki,
-                      floa...`
-- `ifft2d` (function) `progs/topogpt3/topogpt3.c:580` `static void ifft2d(float *data_r, float *data_i, int h, int w)`
-- `rfft2d_real` (function) `progs/topogpt3/topogpt3.c:602` `static void rfft2d_real(const float *data, float *out_r, float *out_i,
-                         i...` -- ifft_radix2(row_re, row_im, w); for (c = 0; c < w; c++) { re[r*w+c] = row_re[c]; im[r*w+c] = row_im[c]; } } /* IFFT...
-- `irfft2d` (function) `progs/topogpt3/topogpt3.c:629` `static void irfft2d(const float *in_r, const float *in_i, float *out,
-                     int h,...` -- for (r = 0; r < h; r++) { col_re[r] = re[r*w+c]; col_im[r] = im[r*w+c]; } fft_radix2(col_re, col_im, h); for (r = 0...
-- `cmul` (function) `progs/topogpt3/topogpt3.c:664` `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)`
-- `spectral_contract` (function) `progs/topogpt3/topogpt3.c:670` `static void spectral_contract(const float *Wr, const float *Wi,
-                               co...`
-- `quat_spectral_layer_2d` (function) `progs/topogpt3/topogpt3.c:695` `static void quat_spectral_layer_2d(
-    const float *x, float *y,
-    const float *kr_w, const fl...`
-- `spectral_ae_encode` (function) `progs/topogpt3/topogpt3.c:785` `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
-- `spectral_ae_decode` (function) `progs/topogpt3/topogpt3.c:793` `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
-- `process_torus_grid` (function) `progs/topogpt3/topogpt3.c:800` `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
-- `torus_soft_assign` (function) `progs/topogpt3/topogpt3.c:821` `static void torus_soft_assign(const float *phi1, const float *phi2,
-                             ...`
-- `message_passing` (function) `progs/topogpt3/topogpt3.c:843` `static void message_passing(const float *node_feat, float *out,
-                             cons...`
-- `torus_brain_forward` (function) `progs/topogpt3/topogpt3.c:888` `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
-                  ...`
-- `attention_forward` (function) `progs/topogpt3/topogpt3.c:978` `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
-- `moe_forward` (function) `progs/topogpt3/topogpt3.c:1078` `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
-- `forward` (function) `progs/topogpt3/topogpt3.c:1128` `static void forward(const int *token_ids, int seq_len, float *logits_out)`
-- `tokenize_string` (function) `progs/topogpt3/topogpt3.c:1195` `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
-- `apply_temperature` (function) `progs/topogpt3/topogpt3.c:1210` `static void apply_temperature(float *logits, int n, float temp)`
-- `apply_repetition_penalty` (function) `progs/topogpt3/topogpt3.c:1216` `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
-                   ...`
-- `apply_top_k` (function) `progs/topogpt3/topogpt3.c:1229` `static void apply_top_k(float *logits, int n, int k)`
-- `sample` (function) `progs/topogpt3/topogpt3.c:1248` `static int sample(const float *logits, int n)`
-- `load_weights` (function) `progs/topogpt3/topogpt3.c:1282` `static int load_weights(const char *path)`
-- `load_weights_fp16` (function) `progs/topogpt3/topogpt3.c:1452` `static int load_weights_fp16(const char *path)`
-- `load_weights_auto` (function) `progs/topogpt3/topogpt3.c:1583` `static int load_weights_auto(const char *path)` -- printf("  Layer %d loaded\n", i); } READ_TENSOR16(W.final_norm, D_MODEL); #undef SKIP_TENSOR16 #undef READ_TENSOR16...
-- `time_now_ms` (function) `progs/topogpt3/topogpt3.c:1600` `static double time_now_ms(void)`
-- `decode_token` (function) `progs/topogpt3/topogpt3.c:1614` `static void decode_token(int tid)`
-- `load_token_file` (function) `progs/topogpt3/topogpt3.c:1629` `static int load_token_file(const char *path, int *out_ids, int max_ids)` -- if (tid < 256) { /* Map GPT-2 byte-level encoding back to original byte int n = tid; if (n < 94) n += 33; else if (n...
-- `decode_token_tiktoken` (function) `progs/topogpt3/topogpt3.c:1652` `static void decode_token_tiktoken(int tid)` -- if (fread(&n, 4, 1, f) != 1) { fclose(f); return 0; } if (n > (unsigned)max_ids) n = max_ids; int count = (int)n...
-- `generate_tokens` (function) `progs/topogpt3/topogpt3.c:1661` `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
-               ...`
-- `generate` (function) `progs/topogpt3/topogpt3.c:1725` `static void generate(const char *prompt, int max_new_tokens, float temperature,
-                 ...`
-- `interactive_mode` (function) `progs/topogpt3/topogpt3.c:1736` `static void interactive_mode(void)`
-- `print_help` (function) `progs/topogpt3/topogpt3.c:1850` `static void print_help(void)`
-- `main` (function) `progs/topogpt3/topogpt3.c:1885` `int main(int argc, char **argv)`
 
 
 Next: [API_p20.md](API_p20.md)

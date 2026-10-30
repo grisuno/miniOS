@@ -1,6 +1,176 @@
 # API (page 17 of 21)
 Previous: [API_p16.md](API_p16.md)
 
+## progs/freedomui/ps2_keymap.c
+Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`
+- `ps2_init` (function) `progs/freedomui/ps2_keymap.c:144` `void ps2_init(ps2_state *s)`
+- `held_mods` (function) `progs/freedomui/ps2_keymap.c:150` `static unsigned held_mods(const ps2_state *s)`
+- `set_text` (function) `progs/freedomui/ps2_keymap.c:158` `static void set_text(ps2_key *k, char c)`
+- `is_letter` (function) `progs/freedomui/ps2_keymap.c:164` `static int is_letter(char c)`
+- `modifier_key` (function) `progs/freedomui/ps2_keymap.c:169` `static uint32_t modifier_key(ps2_state *s, unsigned code, int extended, int make)` -- return m; } static void set_text(ps2_key *k, char c) { k->text[0] = c; k->text[1] = '\0'; k->text_len = 1; } static...
+- `extended_key` (function) `progs/freedomui/ps2_keymap.c:195` `static uint32_t extended_key(unsigned code, ps2_key *k)` -- if (make) s->caps_lock = !s->caps_lock; return KE_KEY_Caps_Lock; } else if (!extended && code == SC_NUMLOCK) { if...
+- `plain_key` (function) `progs/freedomui/ps2_keymap.c:218` `static uint32_t plain_key(const ps2_state *s, unsigned code, ps2_key *k)` -- case SC_E0_RIGHT:  return KE_KEY_Right; case SC_E0_END:    return KE_KEY_End; case SC_E0_DOWN:   return KE_KEY_Down...
+- `ps2_feed` (function) `progs/freedomui/ps2_keymap.c:253` `int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out)`
+
+## progs/freedomui/ps2_keymap.h
+Imported by: `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `tests/test_ps2_keymap.c`
+- `ps2_init` (function) `progs/freedomui/ps2_keymap.h:47` `void ps2_init(ps2_state *s);` -- int      extended;  /* an E0 prefix is pending int      skip;      /* bytes of an E1 sequence still to swallow }...
+- `arguments` (function) `progs/freedomui/ps2_keymap.h:51` `* arguments (out is then left untouched). */ int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out);`
+
+## progs/lisp/lisp.c
+Depends on: `kernel/string.c`, `progs/minios_abi.h`
+- `numbers` (function) `progs/lisp/lisp.c:9` `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special...`
+- `lisp_version` (function) `progs/lisp/lisp.c:62` `static const char *lisp_version(void)` -- Version string printed by --version and the REPL banner.
+- `msys` (function) `progs/lisp/lisp.c:205` `static long msys(long n, long a1, long a2, long a3)` -- Raw 3-argument syscall through the x86-64 Linux ABI.
+- `msys5` (function) `progs/lisp/lisp.c:218` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- Raw 5-argument syscall for SYS_SPAWN with path, redirect, argc, argv.
+- `fatal` (function) `progs/lisp/lisp.c:233` `static void fatal(Runtime *rt, const char *message)` -- Report a fatal internal failure and terminate the process.
+- `xalloc` (function) `progs/lisp/lisp.c:242` `static void *xalloc(Runtime *rt, size_t size)` -- Allocate zeroed tracked memory that frees with the runtime.
+- `xstrdup` (function) `progs/lisp/lisp.c:266` `static char *xstrdup(Runtime *rt, const char *source)` -- Duplicate a string into tracked memory.
+- `make_node` (function) `progs/lisp/lisp.c:284` `static Node *make_node(Runtime *rt, NodeType type)` -- Allocate a node of the given type in tracked memory.
+- `make_error` (function) `progs/lisp/lisp.c:293` `static Node *make_error(Runtime *rt, const char *message)` -- Build an error value carrying a diagnostic message.
+- `make_num` (function) `progs/lisp/lisp.c:302` `static Node *make_num(Runtime *rt, int64_t value)` -- Build a numeric value node.
+- `make_str` (function) `progs/lisp/lisp.c:311` `static Node *make_str(Runtime *rt, const char *value)` -- Build a string value node from a NUL-terminated source.
+- `make_sym` (function) `progs/lisp/lisp.c:320` `static Node *make_sym(Runtime *rt, const char *value)` -- Build a symbol value node from a NUL-terminated name.
+- `make_prim` (function) `progs/lisp/lisp.c:329` `static Node *make_prim(Runtime *rt, PrimFn function)` -- Build a primitive function value node.
+- `cons` (function) `progs/lisp/lisp.c:338` `static Node *cons(Runtime *rt, Node *car, Node *cdr)` -- Build a cons cell from two values.
+- `is_nil` (function) `progs/lisp/lisp.c:348` `static bool is_nil(Runtime *rt, const Node *node)` -- Test whether a node is the empty list in any of its spellings.
+- `make_file` (function) `progs/lisp/lisp.c:355` `static Node *make_file(Runtime *rt, FILE *handle)` -- Register an open FILE handle and wrap it in a file value node.
+- `cleanup` (function) `progs/lisp/lisp.c:377` `static void cleanup(Runtime *rt)` -- Close every tracked file and release every tracked allocation.
+- `runtime_init` (function) `progs/lisp/lisp.c:399` `static void runtime_init(Runtime *rt)` -- Initialize a runtime with streams, constants and empty tables.
+- `env_new` (function) `progs/lisp/lisp.c:411` `static Env *env_new(Runtime *rt, Env *parent)` -- Allocate a new environment frame with an optional parent.
+- `env_bind` (function) `progs/lisp/lisp.c:421` `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)` -- Bind a symbol to a value in the innermost frame.
+- `env_set` (function) `progs/lisp/lisp.c:432` `static bool env_set(Env *env, Node *symbol, Node *value)` -- Update the nearest visible binding of a symbol.
+- `env_lookup` (function) `progs/lisp/lisp.c:454` `static Node *env_lookup(Env *env, Node *symbol)` -- Resolve the nearest visible binding of a symbol.
+- `reader_peek` (function) `progs/lisp/lisp.c:475` `static char reader_peek(const Reader *reader)` -- Peek at the current reader character without consuming it.
+- `reader_next` (function) `progs/lisp/lisp.c:482` `static char reader_next(Reader *reader)` -- Consume one reader character and track line and column.
+- `reader_at_end` (function) `progs/lisp/lisp.c:500` `static bool reader_at_end(const Reader *reader)` -- Test whether the reader reached the end of its buffer.
+- `skip_space_and_comments` (function) `progs/lisp/lisp.c:507` `static void skip_space_and_comments(Reader *reader)` -- Skip whitespace and line comments starting with a semicolon.
+- `sb_init` (function) `progs/lisp/lisp.c:523` `static void sb_init(StringBuilder *builder)` -- Initialize a string builder with a bounded initial capacity.
+- `sb_push` (function) `progs/lisp/lisp.c:536` `static void sb_push(StringBuilder *builder, char value)` -- Append one byte to a string builder with overflow-checked growth.
+- `parse_ok` (function) `progs/lisp/lisp.c:562` `static ParseResult parse_ok(Node *value)` -- Build a successful parse result.
+- `parse_eof` (function) `progs/lisp/lisp.c:573` `static ParseResult parse_eof(void)` -- Build an end-of-input parse result.
+- `parse_error` (function) `progs/lisp/lisp.c:584` `static ParseResult parse_error(const char *message)` -- Build a parse error result with a bounded message.
+- `read_list` (function) `progs/lisp/lisp.c:596` `static ParseResult read_list(Runtime *rt, Reader *reader)` -- Read a parenthesized list terminated by a closing paren.
+- `read_string` (function) `progs/lisp/lisp.c:626` `static ParseResult read_string(Runtime *rt, Reader *reader)` -- Read a double-quoted string with backslash escapes.
+- `token_delimiter` (function) `progs/lisp/lisp.c:677` `static bool token_delimiter(char c)` -- Test whether a character terminates an atom token.
+- `read_atom` (function) `progs/lisp/lisp.c:685` `static ParseResult read_atom(Runtime *rt, Reader *reader)` -- Read a number, nil, t or symbol token.
+- `read_expr` (function) `progs/lisp/lisp.c:721` `static ParseResult read_expr(Runtime *rt, Reader *reader)` -- Read one expression, skipping whitespace and comments first.
+- `list_count` (function) `progs/lisp/lisp.c:750` `static size_t list_count(Runtime *rt, Node *list, bool *proper)` -- Count proper list elements and report whether the spine is proper.
+- `has_arity` (function) `progs/lisp/lisp.c:767` `static bool has_arity(Runtime *rt, Node *args, size_t expected)` -- Test whether an argument list has exactly the expected length.
+- `arg_at` (function) `progs/lisp/lisp.c:775` `static Node *arg_at(Runtime *rt, Node *args, size_t index)` -- Fetch the positional argument at an index or NULL when absent.
+- `arg_matches` (function) `progs/lisp/lisp.c:815` `static bool arg_matches(const Node *value, ArgKind kind)` -- Test whether an already-fetched argument matches one ArgKind.
+- `check_args` (function) `progs/lisp/lisp.c:841` `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
+    size_t n, Node **out)` -- Validate that args is a proper list of exactly n elements whose types match kinds[0..n), writing each fetched...
+- `arity0` (function) `progs/lisp/lisp.c:861` `static bool arity0(Runtime *rt, Node *args)` -- Validate that args is the empty argument list.
+- `prim_add` (function) `progs/lisp/lisp.c:869` `static Node *prim_add(Runtime *rt, Node *args)` -- Add two numbers with overflow reported as an error value.
+- `prim_sub` (function) `progs/lisp/lisp.c:885` `static Node *prim_sub(Runtime *rt, Node *args)` -- Subtract two numbers with overflow reported as an error value.
+- `prim_mul` (function) `progs/lisp/lisp.c:901` `static Node *prim_mul(Runtime *rt, Node *args)` -- Multiply two numbers with overflow reported as an error value.
+- `prim_div` (function) `progs/lisp/lisp.c:917` `static Node *prim_div(Runtime *rt, Node *args)` -- Divide two numbers with zero and overflow reported as errors.
+- `prim_eq` (function) `progs/lisp/lisp.c:939` `static Node *prim_eq(Runtime *rt, Node *args)` -- Compare two numbers for equality.
+- `prim_lt` (function) `progs/lisp/lisp.c:951` `static Node *prim_lt(Runtime *rt, Node *args)` -- Compare two numbers with less-than.
+- `prim_car` (function) `progs/lisp/lisp.c:963` `static Node *prim_car(Runtime *rt, Node *args)` -- Return the first element of a cons cell or nil.
+- `prim_cdr` (function) `progs/lisp/lisp.c:975` `static Node *prim_cdr(Runtime *rt, Node *args)` -- Return the rest of a cons cell or nil.
+- `prim_cons` (function) `progs/lisp/lisp.c:987` `static Node *prim_cons(Runtime *rt, Node *args)` -- Build a cons cell from two values.
+- `prim_string_concat` (function) `progs/lisp/lisp.c:999` `static Node *prim_string_concat(Runtime *rt, Node *args)` -- Concatenate two strings with an overflow-checked allocation.
+- `prim_string_eq` (function) `progs/lisp/lisp.c:1026` `static Node *prim_string_eq(Runtime *rt, Node *args)` -- Compare two strings for equality.
+- `prim_string_length` (function) `progs/lisp/lisp.c:1038` `static Node *prim_string_length(Runtime *rt, Node *args)` -- Return the byte length of a string.
+- `prim_string_at` (function) `progs/lisp/lisp.c:1050` `static Node *prim_string_at(Runtime *rt, Node *args)` -- Return the one-character string at a byte index or nil when out of range.
+- `prim_char_code` (function) `progs/lisp/lisp.c:1072` `static Node *prim_char_code(Runtime *rt, Node *args)` -- Convert between a one-character string and its byte value.
+- `prim_print` (function) `progs/lisp/lisp.c:1094` `static Node *prim_print(Runtime *rt, Node *args)` -- Print a value without a trailing newline.
+- `prim_println` (function) `progs/lisp/lisp.c:1108` `static Node *prim_println(Runtime *rt, Node *args)` -- Print a value with a trailing newline.
+- `file_mode_allowed` (function) `progs/lisp/lisp.c:1123` `static bool file_mode_allowed(const char *mode)` -- Test whether a file mode string belongs to the safe whitelist.
+- `prim_read_char` (function) `progs/lisp/lisp.c:1183` `static Node *prim_read_char(Runtime *rt, Node *args)` -- Read one byte from a file or nil at end of file.
+- `prim_write` (function) `progs/lisp/lisp.c:1200` `static Node *prim_write(Runtime *rt, Node *args)` -- Write a string or byte value to an open file.
+- `prim_close_file` (function) `progs/lisp/lisp.c:1224` `static Node *prim_close_file(Runtime *rt, Node *args)` -- Close an open file and release its runtime slot.
+- `prim_null_p` (function) `progs/lisp/lisp.c:1249` `static Node *prim_null_p(Runtime *rt, Node *args)` -- Test whether a value is nil.
+- `prim_number_p` (function) `progs/lisp/lisp.c:1261` `static Node *prim_number_p(Runtime *rt, Node *args)` -- Test whether a value is a number.
+- `prim_string_p` (function) `progs/lisp/lisp.c:1273` `static Node *prim_string_p(Runtime *rt, Node *args)` -- Test whether a value is a string.
+- `prim_error_message` (function) `progs/lisp/lisp.c:1285` `static Node *prim_error_message(Runtime *rt, Node *args)` -- Return the message of an error value or nil for other values.
+- `arity` (function) `progs/lisp/lisp.c:1300` `* * Variable arity (0 or 1);`
+- `prim_exit` (function) `progs/lisp/lisp.c:1303` `static Node *prim_exit(Runtime *rt, Node *args)` -- Terminate the process with a numeric exit status.
+- `prim_time_ms` (function) `progs/lisp/lisp.c:1330` `static Node *prim_time_ms(Runtime *rt, Node *args)` -- Return milliseconds since boot through the kernel time service.
+- `prim_rtc` (function) `progs/lisp/lisp.c:1340` `static Node *prim_rtc(Runtime *rt, Node *args)` -- Return the clock time as a three-element list or nil when unavailable.
+- `prim_fb_info` (function) `progs/lisp/lisp.c:1357` `static Node *prim_fb_info(Runtime *rt, Node *args)` -- Return framebuffer width, height and pitch or nil when unavailable.
+- `prim_vol` (function) `progs/lisp/lisp.c:1377` `static Node *prim_vol(Runtime *rt, Node *args)` -- Read or set the speaker volume, clamped to the valid range.
+- `prim_pal` (function) `progs/lisp/lisp.c:1405` `static Node *prim_pal(Runtime *rt, Node *args)` -- Load a 768-byte VGA palette from a string value.
+- `prim_pcspeaker` (function) `progs/lisp/lisp.c:1421` `static Node *prim_pcspeaker(Runtime *rt, Node *args)` -- Play a speaker tone for a bounded millisecond duration.
+- `prim_minios_run` (function) `progs/lisp/lisp.c:1465` `static Node *prim_minios_run(Runtime *rt, Node *args)` -- Run a program through SYS_SPAWN and return its exit code.
+- `eval_list` (function) `progs/lisp/lisp.c:1527` `static Node *eval_list(Runtime *rt, Node *list, Env *env)` -- Evaluate every element of a list into a fresh proper list.
+- `eval_sequence` (function) `progs/lisp/lisp.c:1551` `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)` -- Evaluate a body sequence and return the last value.
+- `valid_params` (function) `progs/lisp/lisp.c:1569` `static bool valid_params(Runtime *rt, Node *params)` -- Test whether a parameter list holds only symbols.
+- `eval` (function) `progs/lisp/lisp.c:1583` `static Node *eval(Runtime *rt, Node *expression, Env *env)` -- Evaluate an expression with tail-call reuse and a bounded depth.
+- `print_escaped_string` (function) `progs/lisp/lisp.c:1846` `static void print_escaped_string(FILE *out, const char *value)` -- Write a string with escape sequences for readable output.
+- `print_node` (function) `progs/lisp/lisp.c:1877` `static void print_node(Runtime *rt, Node *node, bool readable)` -- Print a value in readable or display form with a bounded depth.
+- `bind_primitive` (function) `progs/lisp/lisp.c:1948` `static void bind_primitive(Runtime *rt, Env *env, const char *name,
+    PrimFn function)` -- Register one named primitive in an environment frame.
+- `init_env` (function) `progs/lisp/lisp.c:2004` `static Env *init_env(Runtime *rt)` -- Build the global environment with arithmetic, strings, files and MiniOS.
+- `bind_argv` (function) `progs/lisp/lisp.c:2017` `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` -- Expose the script argument vector as a proper list of strings.
+- `read_all_file` (function) `progs/lisp/lisp.c:2029` `static char *read_all_file(const char *filename, size_t max_bytes)` -- Read a whole file into memory with a hard size cap.
+- `process_source` (function) `progs/lisp/lisp.c:2087` `static int process_source(Runtime *rt, const char *source,
+    const char *source_name, bool echo)` -- Evaluate every form in a source buffer and report the first failure.
+- `process_inline` (function) `progs/lisp/lisp.c:2129` `static int process_inline(Runtime *rt, const char *code)` -- Evaluate one inline expression from the -e flag.
+- `print_usage` (function) `progs/lisp/lisp.c:2136` `static void print_usage(Runtime *rt)` -- Print usage for the command line interface.
+- `repl` (function) `progs/lisp/lisp.c:2143` `static int repl(Runtime *rt)` -- Run the interactive read-eval loop on the runtime input stream.
+- `main` (function) `progs/lisp/lisp.c:2190` `int main(int argc, char **argv)` -- Entry point with -e, script and REPL modes plus bounded arguments.
+
+## progs/lisp/tin.c
+- `main` (function) `progs/lisp/tin.c:1` `int main()`
+
+## progs/lua/lua_main.c
+Depends on: `kernel/string.c`
+- `module` (function) `progs/lua/lua_main.c:5` `* C module (minios.c) can be registered globally before any script runs: * `minios.run(...)`, `minios.time_ms()`...`
+- `luaL_require_global` (function) `progs/lua/lua_main.c:22` `static void luaL_require_global(lua_State *L, const char *name,
+                                l...`
+- `set_arg_table` (function) `progs/lua/lua_main.c:28` `static void set_arg_table(lua_State *L, int argc, char **argv, int first)`
+- `docode` (function) `progs/lua/lua_main.c:41` `static int docode(lua_State *L, const char *code)`
+- `dofile` (function) `progs/lua/lua_main.c:51` `static int dofile(lua_State *L, const char *name)`
+- `repl` (function) `progs/lua/lua_main.c:61` `static int repl(lua_State *L)`
+- `main` (function) `progs/lua/lua_main.c:105` `int main(int argc, char **argv)`
+
+## progs/lua/minios.c
+Depends on: `progs/minios_abi.h`
+Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/micropython/variants/minios/lib/mip.py`, `progs/src/shell.py`, `progs/src/test.py`
+- `msys5` (function) `progs/lua/minios.c:37` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2...
+- `minios_time_ms` (function) `progs/lua/minios.c:62` `static int minios_time_ms(lua_State *L)` -- } /* ── MiniOS syscall numbers (canonical table from minios_abi.h) ─────── #include "minios_abi.h" #define...
+- `minios_rtc` (function) `progs/lua/minios.c:68` `static int minios_rtc(lua_State *L)` -- #define SYS_PCSPK_INIT  MINIOS_SYS_PCSPK_INIT #define SYS_PCSPK_TONE  MINIOS_SYS_PCSPK_TONE #define SYS_RTC...
+- `minios_fb_info` (function) `progs/lua/minios.c:82` `static int minios_fb_info(lua_State *L)` -- static int minios_rtc(lua_State *L) { int h, m, s; if (msys(SYS_RTC, (long)&h, (long)&m, (long)&s) < 0) {...
+- `minios_vol` (function) `progs/lua/minios.c:96` `static int minios_vol(lua_State *L)` -- static int minios_fb_info(lua_State *L) { int w, h, p; if (msys(SYS_FB_INFO, (long)&w, (long)&h, (long)&p) < 0) {...
+- `minios_pal` (function) `progs/lua/minios.c:109` `static int minios_pal(lua_State *L)` -- /* ── minios.vol([v]) -> current volume ─────────────────────────────── static int minios_vol(lua_State *L) { if...
+- `minios_pcspeaker` (function) `progs/lua/minios.c:119` `static int minios_pcspeaker(lua_State *L)` -- return 1; } /* ── minios.pal(buf) -- load a 768-byte VGA DAC palette ────────────── static int minios_pal(lua_State...
+- `minios_run` (function) `progs/lua/minios.c:136` `static int minios_run(lua_State *L)` -- ── minios.run(path[, args][, redirect]) -> exit code ─────────────── Runs a program through SYS_SPAWN (215)...
+- `luaopen_minios` (function) `progs/lua/minios.c:192` `int luaopen_minios(lua_State *L)`
+
+## progs/micropython/variants/minios/lib/mip.py
+Depends on: `progs/lua/minios.c`
+Imported by: `progs/src/test_py.py`
+- `parse_url` (function) `progs/micropython/variants/minios/lib/mip.py:49` `def parse_url(url)` -- Split an http/https URL into (scheme, host, port, path).
+- `split_url` (function) `progs/micropython/variants/minios/lib/mip.py:98` `def split_url(url)` -- Split an http URL into (host, port, path); https is refused here.
+- `split_https_url` (function) `progs/micropython/variants/minios/lib/mip.py:106` `def split_https_url(url)` -- Split an https URL into (host, port, path); http is refused here.
+- `module_name` (function) `progs/micropython/variants/minios/lib/mip.py:114` `def module_name(url)` -- Return the .py file name a URL installs, validating it is bare.
+- `parse_response` (function) `progs/micropython/variants/minios/lib/mip.py:150` `def parse_response(data)` -- Split one HTTP/1.x response into (status, headers, body).
+- `absolute_url` (function) `progs/micropython/variants/minios/lib/mip.py:202` `def absolute_url(base, location)` -- Resolve a redirect Location against base; http and https survive.
+- `http_get` (function) `progs/micropython/variants/minios/lib/mip.py:222` `def http_get(host, port, path)` -- Fetch http://host:port/path, returning the raw response bytes.
+- `ensure_dir` (function) `progs/micropython/variants/minios/lib/mip.py:276` `def ensure_dir(path)` -- Create path and its parents; existing directories are fine.
+- `https_get` (function) `progs/micropython/variants/minios/lib/mip.py:298` `def https_get(host, port, path)` -- Fetch https://host:port/path through the ring-3 TLS engine.
+- `install` (function) `progs/micropython/variants/minios/lib/mip.py:336` `def install(url, dest)` -- Fetch url and write it as <dest>/<module>.py; returns the path.
+- `main` (function) `progs/micropython/variants/minios/lib/mip.py:394` `def main(argv)` -- CLI entry point: install <url> [dest]; returns the exit code.
+
+## progs/micropython/variants/minios/minios_module.c
+Depends on: `progs/minios_abi.h`
+- `msys5` (function) `progs/micropython/variants/minios/minios_module.c:26` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- /* ── raw syscall helper (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2...
+- `minios_time_ms` (function) `progs/micropython/variants/minios/minios_module.c:52` `static mp_obj_t minios_time_ms(void)`
+- `MP_DEFINE_CONST_FUN_OBJ_0` (function) `progs/micropython/variants/minios/minios_module.c:55` `static MP_DEFINE_CONST_FUN_OBJ_0(minios_time_ms_obj, minios_time_ms);`
+- `minios_rtc` (function) `progs/micropython/variants/minios/minios_module.c:59` `static mp_obj_t minios_rtc(void)`
+- `minios_fb_info` (function) `progs/micropython/variants/minios/minios_module.c:76` `static mp_obj_t minios_fb_info(void)`
+- `MP_DEFINE_CONST_FUN_OBJ_VAR` (function) `progs/micropython/variants/minios/minios_module.c:107` `static MP_DEFINE_CONST_FUN_OBJ_VAR(minios_vol_obj, 0, minios_vol);`
+- `minios_pal` (function) `progs/micropython/variants/minios/minios_module.c:111` `static mp_obj_t minios_pal(mp_obj_t buf_in)`
+- `MP_DEFINE_CONST_FUN_OBJ_1` (function) `progs/micropython/variants/minios/minios_module.c:123` `static MP_DEFINE_CONST_FUN_OBJ_1(minios_pal_obj, minios_pal);`
+- `minios_pcspeaker` (function) `progs/micropython/variants/minios/minios_module.c:127` `static mp_obj_t minios_pcspeaker(mp_obj_t freq_in, mp_obj_t ms_in)`
+- `MP_DEFINE_CONST_FUN_OBJ_2` (function) `progs/micropython/variants/minios/minios_module.c:140` `static MP_DEFINE_CONST_FUN_OBJ_2(minios_pcspeaker_obj, minios_pcspeaker);`
+- `minios_run` (function) `progs/micropython/variants/minios/minios_module.c:149` `static mp_obj_t minios_run(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)`
+- `MP_DEFINE_CONST_FUN_OBJ_KW` (function) `progs/micropython/variants/minios/minios_module.c:193` `static MP_DEFINE_CONST_FUN_OBJ_KW(minios_run_obj, 1, minios_run);`
+- `MP_DEFINE_CONST_DICT` (function) `progs/micropython/variants/minios/minios_module.c:207` `static MP_DEFINE_CONST_DICT(minios_module_globals, minios_module_globals_table);`
+
 ## progs/minicraft/minicraft.c
 Depends on: `kernel/string.c`, `progs/minios_abi.h`
 - `best_tool_for` (function) `progs/minicraft/minicraft.c:231` `static int best_tool_for(unsigned char b)`
@@ -305,182 +475,6 @@ Imported by: `progs/doomedit/doomedit.c`, `progs/file/file.c`, `progs/nuklear/no
 - `nk_theme_active` (function) `progs/nuklear/nuklear_theme.h:62` `int nk_theme_active(char *dst, int cap);` -- X(scrollbar_cursor, 24) \ X(scrollbar_cursor_hover, 25) \ X(scrollbar_cursor_active, 26) \ X(tab_header, 27) \...
 - `nk_theme_probe` (function) `progs/nuklear/nuklear_theme.h:65` `int nk_theme_probe(const char *name, unsigned char rgb[NK_THEME_KEY_COUNT][3]);` -- X(tab_header, 27) \ X(knob, 28) \ X(knob_cursor, 29) \ X(knob_cursor_hover, 30) \ X(knob_cursor_active, 31) #define...
 - `nk_theme_apply` (function) `progs/nuklear/nuklear_theme.h:68` `int nk_theme_apply(struct nk_context *ctx, const char *name);` -- X(knob_cursor_hover, 30) \ X(knob_cursor_active, 31) #define NK_THEME_KEY_COUNT 32 struct nk_context; /** Resolve...
-
-## progs/paint/paint.c
-Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
-- `paint_clamp` (function) `progs/paint/paint.c:92` `static int paint_clamp(int v, int lo, int hi)` -- static int paint_size = 0; static int paint_down = 0; static int paint_lastx; static int paint_lasty; static int...
-- `paint_plot` (function) `progs/paint/paint.c:99` `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,
-                      unsig...` -- static float paint_recty; static char paint_path[PAINT_PATH_MAX] = PAINT_DEFAULT_PATH; static char...
-- `paint_dab` (function) `progs/paint/paint.c:108` `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,
-                      unsig...` -- if (v > hi) return hi; return v; } /** Bound-checked pixel plot, fail closed outside the canvas. static int...
-- `paint_line` (function) `progs/paint/paint.c:119` `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,
-                      int...` -- } /** Filled square dab of side s centered on (x, y). static void paint_dab(unsigned char *buf, int w, int h, int x...
-- `paint_rect_fill` (function) `progs/paint/paint.c:144` `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,
-                    ...` -- paint_dab(buf, w, h, x0, y0, c, s); n++; } if (x0 == x1 && y0 == y1) break; { int e2 = 2 * err; if (e2 > -dy) { err...
-- `paint_circle_fill` (function) `progs/paint/paint.c:161` `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,
-                          ...` -- int xb = x0 < x1 ? x1 : x0; int ya = y0 < y1 ? y0 : y1; int yb = y0 < y1 ? y1 : y0; int x; int y; int n = 0; if...
-- `paint_flood` (function) `progs/paint/paint.c:179` `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,
-                       uns...` -- Bounded flood fill with mark-on-push: every cell is marked once, so * the explicit stack never exceeds the canvas size.
-- `paint_nearest` (function) `progs/paint/paint.c:223` `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,
-                      ...` -- } if (cy + 1 < h && buf[(cy + 1) * w + cx] == oc) { buf[(cy + 1) * w + cx] = nc; sx[top] = cx; sy[top] = cy + 1...
-- `paint_pal` (function) `progs/paint/paint.c:240` `static const unsigned char *paint_pal(void)` -- unsigned long bd = 0xFFFFFFFFUL; unsigned k; if (!pal) return -1; for (k = 0; k < 256; k++) { long dr = (long)pal[k...
-- `paint_path_ok` (function) `progs/paint/paint.c:251` `static int paint_path_ok(const char *p)` -- } /** Cached hybrid palette: built once, shared by picker, save and load. static const unsigned char...
-- `paint_crc_init` (function) `progs/paint/paint.c:272` `static void paint_crc_init(void)`
-- `paint_crc_update` (function) `progs/paint/paint.c:285` `static unsigned long paint_crc_update(unsigned long c,
-                                      cons...`
-- `paint_adler` (function) `progs/paint/paint.c:296` `static unsigned long paint_adler(const unsigned char *p, unsigned long n)` -- paint_crc_ready = 1; } static unsigned long paint_crc_update(unsigned long c, const unsigned char *p, unsigned long...
-- `paint_put_u32` (function) `progs/paint/paint.c:308` `static int paint_put_u32(unsigned char *dst, unsigned long cap,
-                         unsigned...` -- /** Adler-32 over one buffer (the zlib trailer of a single IDAT). static unsigned long paint_adler(const unsigned...
-- `paint_put_bytes` (function) `progs/paint/paint.c:320` `static int paint_put_bytes(unsigned char *dst, unsigned long cap,
-                           unsi...` -- /** Bound-checked big-endian u32 store for the PNG writer. static int paint_put_u32(unsigned char *dst, unsigned...
-- `paint_png_encode` (function) `progs/paint/paint.c:333` `static long paint_png_encode(unsigned char *dst, unsigned long cap,
-                             ...` -- Encode indexed pixels as 8-bit truecolor PNG (stored deflate blocks). * Returns the byte count or a negative code on...
-- `paint_load_file` (function) `progs/paint/paint.c:461` `static int paint_load_file(const char *path)` -- Decode a PNG file into the canvas (top-left, clamped, nearest-mapped). * Reports through the status line, never a...
-- `paint_save_file` (function) `progs/paint/paint.c:514` `static int paint_save_file(const char *path)` -- for (x = 0; x < cw; x++) { int v = paint_nearest(pal768, px[(y * w + x) * 3], px[(y * w + x) * 3 + 1], px[(y * w +...
-- `paint_blit` (function) `progs/paint/paint.c:549` `static void paint_blit(int ox, int oy)` -- Blit the canvas into the NK back-buffer after rasterize (and its RGB * twin when the kernel maps it, so the canvas...
-- `paint_ink` (function) `progs/paint/paint.c:570` `static unsigned char paint_ink(void)` -- int dx = ox + x; int dy = oy + y; unsigned char r, g, b; volatile uint8_t *d; if (dx < 0 || dx >= NK_W || dy < 0 ||...
-- `paint_handle_input` (function) `progs/paint/paint.c:577` `static void paint_handle_input(struct nk_context *ctx)` -- nk_idx_to_rgb(paint_px[y * PAINT_W + x], &r, &g, &b); d = NK_RGB_BUF + ((dy * NK_W) + dx) * 3; d[0] = r; d[1] = g...
-- `paint_ui_build` (function) `progs/paint/paint.c:636` `static void paint_ui_build(struct nk_context *ctx)` -- Build the file row, the exact-size canvas beside the tool panel, and the status row.
-- `paint_pattern_present` (function) `progs/paint/paint.c:720` `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)` -- Scan the whole framebuffer for the canvas marker run (first four swatches consecutive).
-- `paint_selftest` (function) `progs/paint/paint.c:755` `static int paint_selftest(void)` -- break; } } if (hit) { ox = x; oy = y; return 1; } } } return 0; } /** Headless selftest for BDD: core vectors, PNG...
-- `paint_gui_run` (function) `progs/paint/paint.c:942` `static void paint_gui_run(void)` -- printf("paint: composite did not land (canvas %d,%d origin %d,%d)\n", (int)paint_rectx, (int)paint_recty, origin[0]...
-- `main` (function) `progs/paint/paint.c:992` `int main(int argc, char **argv)`
-
-## progs/piano/piano.c
-Depends on: `kernel/string.c`, `progs/minios_abi.h`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`, `progs/src/opl3.c`
-- `sys_pcm_open` (function) `progs/piano/piano.c:93` `static long sys_pcm_open(long flags)`
-- `sys_pcm_write` (function) `progs/piano/piano.c:98` `static long sys_pcm_write(const void *buf, long len)` -- Returns bytes taken (NONBLOCK short count on backpressure, never a * stall), or negative on a dead path.
-- `sys_pcm_close` (function) `progs/piano/piano.c:101` `static void sys_pcm_close(void)`
-- `sys_yield` (function) `progs/piano/piano.c:104` `static void sys_yield(void)`
-- `sys_present_idx` (function) `progs/piano/piano.c:112` `static long sys_present_idx(int *origin)` -- Indexed present (buffer id 1): the 288 KB indexed copy instead of the 864 KB RGB twin.
-- `o3_op` (function) `progs/piano/piano.c:127` `static int o3_op(int ch, int is_car)`
-- `o3_opreg` (function) `progs/piano/piano.c:131` `static void o3_opreg(int ch, int is_car, int regbase, int val)`
-- `o3_chreg` (function) `progs/piano/piano.c:135` `static void o3_chreg(int ch, int regbase, int val)`
-- `o3_note` (function) `progs/piano/piano.c:173` `static void o3_note(int ch, int midi, int on)`
-- `midi_to_key` (function) `progs/piano/piano.c:211` `static int midi_to_key(int midi)`
-- `clamp_midi` (function) `progs/piano/piano.c:234` `static int clamp_midi(int m)`
-- `pedal_set` (function) `progs/piano/piano.c:241` `static void pedal_set(int on)` -- pressed scancode owns its channel until release.
-- `voice_alloc` (function) `progs/piano/piano.c:255` `static int voice_alloc(void)`
-- `note_off_key` (function) `progs/piano/piano.c:268` `static void note_off_key(int key)`
-- `note_on_key` (function) `progs/piano/piano.c:281` `static void note_on_key(int key, int midi, int vel)`
-- `kbd_semitone` (function) `progs/piano/piano.c:298` `static int kbd_semitone(int code)` -- ── PC-keyboard MIDI map (Fruity Loops style) ───────────────────────── PS/2 set-1 scancodes (7-bit code, E0 clear)...
-- `kbd_all_off` (function) `progs/piano/piano.c:333` `static void kbd_all_off(void)`
-- `note_on_sc` (function) `progs/piano/piano.c:339` `static void note_on_sc(int code, int vel)`
-- `note_off_sc` (function) `progs/piano/piano.c:353` `static void note_off_sc(int code)`
-- `piano_scancode` (function) `progs/piano/piano.c:369` `static void piano_scancode(int code, int make, int e0, void *ud)` -- Raw scancode hook (registered with nk_set_scancode_hook): note on/off * plus comma/period octave shift.
-- `fx_configure` (function) `progs/piano/piano.c:421` `static void fx_configure(int delay_ms, int tremolo_pct, int clip, int vol)` -- #define FX_DELAY_CAP (RATE)           /* 1 s of delay at 22050 Hz #define FX_DELAY_MAX_MS 800 #define FX_FEEDBACK...
-- `fx_process` (function) `progs/piano/piano.c:440` `static float fx_process(float x)`
-- `sb_flush` (function) `progs/piano/piano.c:469` `static void sb_flush(void)` -- Flush held bytes to the low-latency ring.
-- `render_audio` (function) `progs/piano/piano.c:484` `static void render_audio(long ms)`
-- `key_rect` (function) `progs/piano/piano.c:511` `static void key_rect(int key, int *x, int *y, int *w, int *h)`
-- `hit_key` (function) `progs/piano/piano.c:518` `static int hit_key(int mx, int my)`
-- `hit_velocity` (function) `progs/piano/piano.c:535` `static int hit_velocity(int key, int my)` -- Velocity 1..100 from the click's vertical position inside a key: the very * top is soft, the bottom is loud.
-- `ctrl_hit` (function) `progs/piano/piano.c:563` `static int ctrl_hit(int id, int mx, int my)`
-- `ctrl_active` (function) `progs/piano/piano.c:567` `static int ctrl_active(int id)`
-- `ctrl_press` (function) `progs/piano/piano.c:577` `static void ctrl_press(int id)`
-- `ui_run` (function) `progs/piano/piano.c:594` `static void ui_run(int bench_ms)` -- case 1: if (octave < 2) octave++; break; case 2: if (volume > 0) volume -= 5; break; case 3: if (volume < 100)...
-- `rate` (function) `progs/piano/piano.c:818` `* wait below caps the frame rate (bench mode skips it so the
-         * benchmark still measures ...`
-- `run_selftest` (function) `progs/piano/piano.c:836` `static int run_selftest(void)` -- sys_yield(); } else { sys_yield(); } } nk_set_scancode_hook(0, 0); nk_free(&ctx); nk_sys_kbd_raw(0)...
-- `run_pcm2_probe` (function) `progs/piano/piano.c:1015` `static int run_pcm2_probe(void)` -- Headless pcm2 plumbing probe (BDD hook): open NONBLOCK, stream one 2048-byte pattern, close, reopen (release...
-- `main` (function) `progs/piano/piano.c:1042` `int main(int argc, char **argv)`
-
-## progs/pokemon/platform_minios.c
-Depends on: `headers/audio.h`, `kernel/string.c`, `progs/minios_abi.h`, `progs/minios_png.h`
-- `sys_time_ms` (function) `progs/pokemon/platform_minios.c:70` `static long sys_time_ms(void)`
-- `sys_kbd` (function) `progs/pokemon/platform_minios.c:76` `static long sys_kbd(void)`
-- `sys_nk_frame` (function) `progs/pokemon/platform_minios.c:82` `static long sys_nk_frame(int *origin)`
-- `sys_mouse` (function) `progs/pokemon/platform_minios.c:88` `static long sys_mouse(int *xybw)`
-- `sys_vga_mode` (function) `progs/pokemon/platform_minios.c:94` `static long sys_vga_mode(int on)`
-- `sys_kbd_raw` (function) `progs/pokemon/platform_minios.c:100` `static long sys_kbd_raw(int on)`
-- `sys_palette` (function) `progs/pokemon/platform_minios.c:106` `static long sys_palette(const unsigned char *pal)`
-- `sys_gfx_title` (function) `progs/pokemon/platform_minios.c:112` `static long sys_gfx_title(const char *t)`
-- `sys_tone` (function) `progs/pokemon/platform_minios.c:118` `static long sys_tone(unsigned f)`
-- `sys_pcm2_open` (function) `progs/pokemon/platform_minios.c:124` `static long sys_pcm2_open(long flags)`
-- `sys_pcm2_write` (function) `progs/pokemon/platform_minios.c:130` `static long sys_pcm2_write(const void *buf, long len)`
-- `sys_pcm2_close` (function) `progs/pokemon/platform_minios.c:136` `static void sys_pcm2_close(void)`
-- `gain` (function) `progs/pokemon/platform_minios.c:143` `* timing gain (overshoot is microseconds against millisecond waits).
- * Difference-based, so it s...`
-- `gb_platform_set_debug` (function) `progs/pokemon/platform_minios.c:191` `void gb_platform_set_debug(bool enabled)`
-- `audio` (function) `progs/pokemon/platform_minios.c:219` `* PC speaker audio (DOOM-style: sparse syscalls from poll points) * * Per rendered frame, live voice frequencies...`
-- `minios_audio_sample` (function) `progs/pokemon/platform_minios.c:263` `static void minios_audio_sample(GBContext *ctx, int16_t left, int16_t right)`
-- `gb_voice_in_range` (function) `progs/pokemon/platform_minios.c:307` `static bool gb_voice_in_range(unsigned f)`
-- `sample_apu_voices` (function) `progs/pokemon/platform_minios.c:311` `static void sample_apu_voices(gb_voice_t *v)`
-- `minios_audio_play` (function) `progs/pokemon/platform_minios.c:331` `static void minios_audio_play(const gb_voice_t *v, bool pcm_audible,
-                            ...`
-- `rebuild_joypad` (function) `progs/pokemon/platform_minios.c:403` `static void rebuild_joypad(void)`
-- `poll_keyboard` (function) `progs/pokemon/platform_minios.c:417` `static void poll_keyboard(void)`
-- `push_332_palette` (function) `progs/pokemon/platform_minios.c:456` `static void push_332_palette(void)` -- 3-3-2 RGB palette ramp, pushed ONCE at init (not per frame). * Pixel index = (R & 0xE0) | ((G & 0xE0) >> 3) | ((B &...
-- `menu` (function) `progs/pokemon/platform_minios.c:572` `* FILE menu (no Nuklear on purpose) * * A 16 px menu bar lives in the top margin the 2x GB image never touches * (it...`
-- `ui_fringe_dirty` (function) `progs/pokemon/platform_minios.c:621` `static bool ui_fringe_dirty(uint32_t now)`
-- `ui_fringe_sync` (function) `progs/pokemon/platform_minios.c:627` `static void ui_fringe_sync(uint32_t now)`
-- `menu_fill` (function) `progs/pokemon/platform_minios.c:633` `static void menu_fill(int x0, int y0, int w, int h, uint8_t idx)`
-- `menu_text` (function) `progs/pokemon/platform_minios.c:646` `static void menu_text(int x, int y, const char *s, uint8_t fg)`
-- `menu_osd` (function) `progs/pokemon/platform_minios.c:665` `static void menu_osd(const char *s)`
-- `menu_draw` (function) `progs/pokemon/platform_minios.c:671` `static void menu_draw(void)`
-- `menu_item_at` (function) `progs/pokemon/platform_minios.c:701` `static int menu_item_at(int lx, int ly)`
-- `menu_do_save` (function) `progs/pokemon/platform_minios.c:708` `static void menu_do_save(void)`
-- `menu_do_load` (function) `progs/pokemon/platform_minios.c:724` `static void menu_do_load(void)`
-- `menu_activate` (function) `progs/pokemon/platform_minios.c:743` `static void menu_activate(int it)`
-- `poll_menu` (function) `progs/pokemon/platform_minios.c:777` `static void poll_menu(void)` -- Esc toggles, Up/Down move, Enter activates; the mouse is a bonus. * PS/2 Set 1: Esc = 0x01, Up = 0x48, Down = 0x50...
-- `pokemon_art_load_one` (function) `progs/pokemon/platform_minios.c:845` `static int pokemon_art_load_one(const char *path, unsigned char **rgb,
-                          ...`
-- `pokemon_art_load` (function) `progs/pokemon/platform_minios.c:870` `static void pokemon_art_load(void)`
-- `pokemon_art_draw_one` (function) `progs/pokemon/platform_minios.c:888` `static void pokemon_art_draw_one(const unsigned char *rgb, int sw, int sh,
-                      ...`
-- `pokemon_art_draw` (function) `progs/pokemon/platform_minios.c:926` `static void pokemon_art_draw(void)`
-- `px_to_idx` (function) `progs/pokemon/platform_minios.c:957` `static uint8_t px_to_idx(uint32_t pixel)`
-- `upload_frame` (function) `progs/pokemon/platform_minios.c:976` `static void upload_frame(const uint32_t *framebuffer)`
-- `gb_platform_init` (function) `progs/pokemon/platform_minios.c:1057` `bool gb_platform_init(int scale)`
-- `minios_persist_path` (function) `progs/pokemon/platform_minios.c:1089` `static void minios_persist_path(char *out, size_t n, const GBContext *ctx,
-                      ...`
-- `minios_legacy_path` (function) `progs/pokemon/platform_minios.c:1098` `static void minios_legacy_path(char *out, size_t n, const GBContext *ctx,
-                       ...` -- Legacy ramdisk path (pre-MiniFS fix wrote bin/<id>.* onto volatile ramdisk).
-- `minios_load_helper` (function) `progs/pokemon/platform_minios.c:1104` `static bool minios_load_helper(const char *path, void *data, size_t size,
-                       ...`
-- `minios_save_helper` (function) `progs/pokemon/platform_minios.c:1122` `static bool minios_save_helper(const char *path, const void *data, size_t size)`
-- `minios_load_battery_ram` (function) `progs/pokemon/platform_minios.c:1133` `static bool minios_load_battery_ram(GBContext *ctx, const char *rom_name,
-                       ...`
-- `minios_save_battery_ram` (function) `progs/pokemon/platform_minios.c:1148` `static bool minios_save_battery_ram(GBContext *ctx, const char *rom_name,
-                       ...`
-- `minios_load_rtc_data` (function) `progs/pokemon/platform_minios.c:1158` `static bool minios_load_rtc_data(GBContext *ctx, const char *rom_name,
-                          ...`
-- `minios_save_rtc_data` (function) `progs/pokemon/platform_minios.c:1171` `static bool minios_save_rtc_data(GBContext *ctx, const char *rom_name,
-                          ...`
-- `minios_fast_forward` (function) `progs/pokemon/platform_minios.c:1209` `static inline bool minios_fast_forward(void)`
-- `minios_state_path` (function) `progs/pokemon/platform_minios.c:1213` `static void minios_state_path(char *out, size_t n, const GBContext *ctx)`
-- `minios_legacy_state_path` (function) `progs/pokemon/platform_minios.c:1218` `static void minios_legacy_state_path(char *out, size_t n, const GBContext *ctx)`
-- `minios_autosave` (function) `progs/pokemon/platform_minios.c:1223` `static void minios_autosave(uint32_t now)`
-- `poll_hotkeys` (function) `progs/pokemon/platform_minios.c:1237` `static void poll_hotkeys(void)` -- PS/2 Set 1: F5 = 0x3F, F8 = 0x42, Ctrl = 0x1D, S = 0x1F, L = 0x26, SPACE = 0x39, Shift = 0x2A/0x36.
-- `gb_platform_register_context` (function) `progs/pokemon/platform_minios.c:1289` `void gb_platform_register_context(GBContext *ctx)`
-- `gb_platform_shutdown` (function) `progs/pokemon/platform_minios.c:1311` `void gb_platform_shutdown(void)`
-- `gb_platform_poll_events` (function) `progs/pokemon/platform_minios.c:1322` `bool gb_platform_poll_events(GBContext *ctx)`
-- `gb_platform_render_frame` (function) `progs/pokemon/platform_minios.c:1331` `void gb_platform_render_frame(const uint32_t *framebuffer)`
-- `frames` (function) `progs/pokemon/platform_minios.c:1367` `* frames (menu bar not on screen yet) and any frame after the
-         * LCD-off path zeroed the ...`
-- `gb_platform_present_framebuffer` (function) `progs/pokemon/platform_minios.c:1400` `void gb_platform_present_framebuffer(const uint32_t *framebuffer)`
-- `gb_platform_render_lcd_off_frame` (function) `progs/pokemon/platform_minios.c:1412` `void gb_platform_render_lcd_off_frame(void)`
-- `gb_platform_vsync` (function) `progs/pokemon/platform_minios.c:1434` `void gb_platform_vsync(uint32_t frame_cycles)`
-- `gb_platform_set_benchmark_mode` (function) `progs/pokemon/platform_minios.c:1451` `void gb_platform_set_benchmark_mode(bool enabled)`
-- `gb_platform_set_input_script` (function) `progs/pokemon/platform_minios.c:1455` `bool gb_platform_set_input_script(const char *script)`
-- `gb_platform_set_input_record_file` (function) `progs/pokemon/platform_minios.c:1461` `void gb_platform_set_input_record_file(const char *path)`
-- `gb_platform_set_persistence_dir` (function) `progs/pokemon/platform_minios.c:1466` `bool gb_platform_set_persistence_dir(const char *path)`
-- `gb_platform_set_dump_frames` (function) `progs/pokemon/platform_minios.c:1475` `void gb_platform_set_dump_frames(const char *frames)`
-- `gb_platform_set_dump_present_frames` (function) `progs/pokemon/platform_minios.c:1497` `void gb_platform_set_dump_present_frames(const char *frames)`
-- `gb_platform_set_screenshot_prefix` (function) `progs/pokemon/platform_minios.c:1518` `void gb_platform_set_screenshot_prefix(const char *prefix)`
-- `gb_platform_get_timing_info` (function) `progs/pokemon/platform_minios.c:1524` `void gb_platform_get_timing_info(GBPlatformTimingInfo *out)`
-- `gb_platform_get_joypad` (function) `progs/pokemon/platform_minios.c:1531` `uint8_t gb_platform_get_joypad(void)`
-- `gb_platform_set_title` (function) `progs/pokemon/platform_minios.c:1535` `void gb_platform_set_title(const char *title)`
-- `gb_platform_get_smooth_lcd_transitions` (function) `progs/pokemon/platform_minios.c:1541` `bool gb_platform_get_smooth_lcd_transitions(void)`
-- `gb_platform_set_smooth_lcd_transitions` (function) `progs/pokemon/platform_minios.c:1545` `void gb_platform_set_smooth_lcd_transitions(bool enabled)`
-- `gb_platform_set_launcher_return_enabled` (function) `progs/pokemon/platform_minios.c:1549` `void gb_platform_set_launcher_return_enabled(bool enabled)`
-- `gb_platform_get_exit_action` (function) `progs/pokemon/platform_minios.c:1553` `GBPlatformExitAction gb_platform_get_exit_action(void)`
-- `gb_platform_submit_port_frame` (function) `progs/pokemon/platform_minios.c:1557` `void gb_platform_submit_port_frame(void *user, const GBPortFrame *frame)`
-- `gb_platform_test_audio_concurrency` (function) `progs/pokemon/platform_minios.c:1563` `bool gb_platform_test_audio_concurrency(uint32_t frames,
-                                        ...` -- void gb_platform_set_launcher_return_enabled(bool enabled) { (void)enabled; } GBPlatformExitAction...
-- `gb_platform_test_inject_persistence_fault` (function) `progs/pokemon/platform_minios.c:1572` `void gb_platform_test_inject_persistence_fault(
-    GBPersistenceTestTarget target,
-    GBPersist...`
 
 
 Next: [API_p18.md](API_p18.md)

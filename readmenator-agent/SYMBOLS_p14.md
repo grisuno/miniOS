@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `deh_initial_bullets` | macro | `progs/doomgeneric/deh_misc.h:64` | `#define deh_initial_bullets` |
+| `deh_initial_health` | variable | `progs/doomgeneric/deh_misc.h:42` | `extern int deh_initial_health;` |
+| `deh_initial_health` | macro | `progs/doomgeneric/deh_misc.h:63` | `#define deh_initial_health` |
+| `deh_max_armor` | variable | `progs/doomgeneric/deh_misc.h:45` | `extern int deh_max_armor;` |
+| `deh_max_armor` | macro | `progs/doomgeneric/deh_misc.h:66` | `#define deh_max_armor` |
+| `deh_max_health` | variable | `progs/doomgeneric/deh_misc.h:44` | `extern int deh_max_health;` |
+| `deh_max_health` | macro | `progs/doomgeneric/deh_misc.h:65` | `#define deh_max_health` |
+| `deh_max_soulsphere` | variable | `progs/doomgeneric/deh_misc.h:48` | `extern int deh_max_soulsphere;` |
+| `deh_max_soulsphere` | macro | `progs/doomgeneric/deh_misc.h:69` | `#define deh_max_soulsphere` |
+| `deh_megasphere_health` | variable | `progs/doomgeneric/deh_misc.h:50` | `extern int deh_megasphere_health;` |
+| `deh_megasphere_health` | macro | `progs/doomgeneric/deh_misc.h:71` | `#define deh_megasphere_health` |
+| `deh_soulsphere_health` | variable | `progs/doomgeneric/deh_misc.h:49` | `extern int deh_soulsphere_health;` |
+| `deh_soulsphere_health` | macro | `progs/doomgeneric/deh_misc.h:70` | `#define deh_soulsphere_health` |
+| `deh_species_infighting` | variable | `progs/doomgeneric/deh_misc.h:57` | `extern int deh_species_infighting;` |
+| `deh_species_infighting` | macro | `progs/doomgeneric/deh_misc.h:78` | `#define deh_species_infighting` |
+| `DEH_AddStringReplacement` | function | `progs/doomgeneric/deh_str.h:33` | `void DEH_AddStringReplacement(char *from_text, char *to_text);` |
+| `DEH_AddStringReplacement` | macro | `progs/doomgeneric/deh_str.h:42` | `#define DEH_AddStringReplacement(x, y)` |
+| `DEH_STR_H` | macro | `progs/doomgeneric/deh_str.h:19` | `#define DEH_STR_H` |
+| `DEH_String` | function | `progs/doomgeneric/deh_str.h:29` | `char *DEH_String(char *s);` |
+| `DEH_String` | macro | `progs/doomgeneric/deh_str.h:38` | `#define DEH_String(x)` |
+| `DEH_fprintf` | function | `progs/doomgeneric/deh_str.h:31` | `void DEH_fprintf(FILE *fstream, char *fmt, ...);` |
+| `DEH_fprintf` | macro | `progs/doomgeneric/deh_str.h:40` | `#define DEH_fprintf` |
+| `DEH_printf` | function | `progs/doomgeneric/deh_str.h:30` | `void DEH_printf(char *fmt, ...);` |
 | `DEH_printf` | macro | `progs/doomgeneric/deh_str.h:39` | `#define DEH_printf` |
 | `DEH_snprintf` | function | `progs/doomgeneric/deh_str.h:32` | `void DEH_snprintf(char *buffer, size_t len, char *fmt, ...);` |
 | `DEH_snprintf` | macro | `progs/doomgeneric/deh_str.h:41` | `#define DEH_snprintf` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 | `HU_FONTSIZE` | macro | `progs/doomgeneric/hu_stuff.h:31` | `#define HU_FONTSIZE` |
 | `HU_FONTSTART` | macro | `progs/doomgeneric/hu_stuff.h:27` | `#define HU_FONTSTART` |
 | `HU_Init` | function | `progs/doomgeneric/hu_stuff.h:46` | `void HU_Init(void);` |
-| `HU_MSGHEIGHT` | macro | `progs/doomgeneric/hu_stuff.h:38` | `#define HU_MSGHEIGHT` |
-| `HU_MSGTIMEOUT` | macro | `progs/doomgeneric/hu_stuff.h:40` | `#define HU_MSGTIMEOUT` |
-| `HU_MSGWIDTH` | macro | `progs/doomgeneric/hu_stuff.h:37` | `#define HU_MSGWIDTH` |
-| `HU_MSGX` | macro | `progs/doomgeneric/hu_stuff.h:35` | `#define HU_MSGX` |
-| `HU_MSGY` | macro | `progs/doomgeneric/hu_stuff.h:36` | `#define HU_MSGY` |
-| `HU_Start` | function | `progs/doomgeneric/hu_stuff.h:47` | `void HU_Start(void);` |
-| `HU_Ticker` | function | `progs/doomgeneric/hu_stuff.h:51` | `void HU_Ticker(void);` |
-| `HU_dequeueChatChar` | function | `progs/doomgeneric/hu_stuff.h:53` | `char HU_dequeueChatChar(void);` |
-| `__HU_STUFF_H__` | macro | `progs/doomgeneric/hu_stuff.h:19` | `#define __HU_STUFF_H__` |
-| `chat_macros` | variable | `progs/doomgeneric/hu_stuff.h:56` | `extern char *chat_macros[10];` |
-| `I_CDMusFirstTrack` | function | `progs/doomgeneric/i_cdmus.c:169` | `int I_CDMusFirstTrack(void)` |
-| `I_CDMusInit` | function | `progs/doomgeneric/i_cdmus.c:38` | `int I_CDMusInit(void)` |
-| `I_CDMusLastTrack` | function | `progs/doomgeneric/i_cdmus.c:202` | `int I_CDMusLastTrack(void)` |
-| `I_CDMusPlay` | function | `progs/doomgeneric/i_cdmus.c:107` | `int I_CDMusPlay(int track)` |
-| `I_CDMusPrintStartup` | function | `progs/doomgeneric/i_cdmus.c:92` | `void I_CDMusPrintStartup(void)` |
-| `I_CDMusResume` | function | `progs/doomgeneric/i_cdmus.c:145` | `int I_CDMusResume(void)` |
-| `I_CDMusSetVolume` | function | `progs/doomgeneric/i_cdmus.c:160` | `int I_CDMusSetVolume(int volume)` |
-| `I_CDMusStop` | function | `progs/doomgeneric/i_cdmus.c:130` | `int I_CDMusStop(void)` |
-| `I_CDMusTrackLength` | function | `progs/doomgeneric/i_cdmus.c:219` | `int I_CDMusTrackLength(int track_num)` |
-| `CDERR_BADDRIVE` | macro | `progs/doomgeneric/i_cdmus.h:24` | `#define CDERR_BADDRIVE` |
-| `CDERR_BADTRACK` | macro | `progs/doomgeneric/i_cdmus.h:25` | `#define CDERR_BADTRACK` |
-| `CDERR_DEVREQBASE` | macro | `progs/doomgeneric/i_cdmus.h:27` | `#define CDERR_DEVREQBASE` |
-| `CDERR_IOCTLBUFFMEM` | macro | `progs/doomgeneric/i_cdmus.h:26` | `#define CDERR_IOCTLBUFFMEM` |
 
 Next: [SYMBOLS_p15.md](SYMBOLS_p15.md)

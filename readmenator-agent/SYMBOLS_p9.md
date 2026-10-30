@@ -3,6 +3,26 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `SOCK_FPROG_SIZE` | macro | `kernel/proc_sec.c:39` | `#define SOCK_FPROG_SIZE` |
+| `chain_put` | function | `kernel/proc_sec.c:78` | `static void chain_put(sec_filter_t *f)` |
+| `pid_ok` | function | `kernel/proc_sec.c:74` | `static int pid_ok(int pid)` |
+| `proc_sec_exe` | function | `kernel/proc_sec.c:125` | `const char *proc_sec_exe(int pid)` |
+| `proc_sec_exec` | function | `kernel/proc_sec.c:115` | `void proc_sec_exec(int pid)` |
+| `proc_sec_filter` | function | `kernel/proc_sec.c:136` | `int proc_sec_filter(long n, long a1, long a2, long a3, long a4, long a5, long a6, long *ret)` |
+| `proc_sec_inherit` | function | `kernel/proc_sec.c:87` | `void proc_sec_inherit(int child, int parent)` |
+| `proc_sec_prctl` | function | `kernel/proc_sec.c:235` | `long proc_sec_prctl(long option, long a2, long a3, long a4, long a5)` |
+| `proc_sec_release` | function | `kernel/proc_sec.c:101` | `void proc_sec_release(int pid)` |
+| `proc_sec_seccomp` | function | `kernel/proc_sec.c:290` | `long proc_sec_seccomp(long op, long flags, long uargs)` |
+| `proc_sec_set_exe` | function | `kernel/proc_sec.c:119` | `void proc_sec_set_exe(int pid, const char *resolved)` |
+| `ref` | type_alias | `kernel/proc_sec.c:47` | `typedef struct sec_filter { int ref;` |
+| `sec_filter` | struct | `kernel/proc_sec.c:48` | `` |
+| `sec_install` | function | `kernel/proc_sec.c:191` | `static long sec_install(const sbpf_insn *prog, unsigned len, int strict)` |
+| `sec_install_user` | function | `kernel/proc_sec.c:224` | `static long sec_install_user(long ufprog)` |
+| `sec_kill` | function | `kernel/proc_sec.c:130` | `static void sec_kill(long n, int whole_group)` |
+| `expires` | function | `kernel/rcu.c:193` | `* expires (ticks stalled, never a hang). No completion assert is  * possible here by design: a re...` |
+| `rcu_cpu_valid` | function | `kernel/rcu.c:40` | `static int rcu_cpu_valid(int cpu)` |
+| `rcu_deref` | function | `kernel/rcu.c:88` | `void *rcu_deref(void *volatile *pp)` |
+| `rcu_init` | function | `kernel/rcu.c:45` | `void rcu_init(void)` |
 | `rcu_me` | function | `kernel/rcu.c:13` | `static cpu_t *rcu_me(void)` |
 | `rcu_me` | function | `kernel/rcu.c:17` | `static cpu_t *rcu_me(void)` |
 | `rcu_note_idle` | function | `kernel/rcu.c:137` | `void rcu_note_idle(int cpu)` |
@@ -184,7 +204,7 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `serial_tx_ready` | function | `kernel/serial.c:30` | `static int serial_tx_ready(void)` |
 | `HTTPD_IO_CHUNK` | macro | `kernel/shell.c:2564` | `#define HTTPD_IO_CHUNK` |
 | `HTTPD_REQ_CAP` | macro | `kernel/shell.c:2563` | `#define HTTPD_REQ_CAP` |
-| `PIPE_HOP_MAX` | macro | `kernel/shell.c:4103` | `#define PIPE_HOP_MAX` |
+| `PIPE_HOP_MAX` | macro | `kernel/shell.c:4104` | `#define PIPE_HOP_MAX` |
 | `QEMU_PM_PORT` | macro | `kernel/shell.c:1033` | `#define QEMU_PM_PORT` |
 | `SHELL_BUILTIN_COUNT` | macro | `kernel/shell.c:232` | `#define SHELL_BUILTIN_COUNT` |
 | `SHELL_CVM_INTERP` | macro | `kernel/shell.c:53` | `#define SHELL_CVM_INTERP` |
@@ -237,7 +257,7 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `shell_hist_show` | function | `kernel/shell.c:346` | `static void shell_hist_show(char *buf, int size, int *pos, const char *text)` |
 | `shell_httpd_one` | function | `kernel/shell.c:2570` | `static void shell_httpd_one(int child, const char *root)` |
 | `shell_httpd_serve` | function | `kernel/shell.c:2655` | `static void shell_httpd_serve(unsigned short port, const char *root,         int max_conn)` |
-| `shell_is_pipe_tok` | function | `kernel/shell.c:4105` | `static int shell_is_pipe_tok(const char *a)` |
+| `shell_is_pipe_tok` | function | `kernel/shell.c:4106` | `static int shell_is_pipe_tok(const char *a)` |
 | `shell_line_backspace` | function | `kernel/shell.c:390` | `static void shell_line_backspace(char *buf, int size, int *pos)` |
 | `shell_line_delete` | function | `kernel/shell.c:398` | `static void shell_line_delete(char *buf, int size, int *pos)` |
 | `shell_line_insert` | function | `kernel/shell.c:381` | `static void shell_line_insert(char *buf, int size, int *pos, char c)` |
@@ -272,8 +292,8 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `shell_run_file` | function | `kernel/shell.c:1302` | `static int shell_run_file(const char *name, int argc, char **argv)` |
 | `shell_run_init` | function | `kernel/shell.c:855` | `static void shell_run_init(void)` |
 | `shell_run_pipeline` | function | `kernel/shell.c:151` | `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);` |
-| `shell_run_stage` | function | `kernel/shell.c:4144` | `static char *shell_run_stage(char **sargv, int sargc,         const char *input, unsigned long in...` |
-| `stdout` | function | `kernel/shell.c:4093` | `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...` |
+| `shell_run_stage` | function | `kernel/shell.c:4145` | `static char *shell_run_stage(char **sargv, int sargc,         const char *input, unsigned long in...` |
+| `stdout` | function | `kernel/shell.c:4094` | `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...` |
 | `terminal` | function | `kernel/shell.c:2980` | `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...` |
 | `text` | function | `kernel/shell.c:594` | `* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */...` |
 | `this` | function | `kernel/shell.c:1544` | `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...` |
@@ -476,25 +496,5 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `readlink` | function | `kernel/syscalls.c:3801` | `* readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);` |
 | `readlink_path` | function | `kernel/syscalls.c:3101` | `static long readlink_path(const char *path, char *buf, long bufsz)` |
 | `rmdir_kpath` | function | `kernel/syscalls.c:3299` | `static long rmdir_kpath(const char *path)` |
-| `sb16_audio_device` | function | `kernel/syscalls.c:669` | `static device_t *sb16_audio_device(void)` |
-| `sc_extra_name` | struct | `kernel/syscalls.c:3455` | `` |
-| `sc_hex` | function | `kernel/syscalls.c:3557` | `static void sc_hex(unsigned long v)` |
-| `sc_log` | struct | `kernel/syscalls.c:3534` | `` |
-| `sc_record` | struct | `kernel/syscalls.c:3533` | `` |
-| `sc_record` | function | `kernel/syscalls.c:3537` | `static void sc_record(long n, long a1, long a2, long a3, long ret)` |
-| `sc_record_dump` | function | `kernel/syscalls.c:3567` | `void sc_record_dump(int pid)` |
-| `select_timeout_ms` | function | `kernel/syscalls.c:2946` | `static int select_timeout_ms(const long *t, int pselect, long *out)` |
-| `split` | function | `kernel/syscalls.c:2126` | `* hold a split (the mapping is restored untouched). */ static long sys_linux_munmap(long a1, long...` |
-| `sys_linux_accept` | function | `kernel/syscalls.c:2717` | `static long sys_linux_accept(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_access` | function | `kernel/syscalls.c:2673` | `static long sys_linux_access(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_arch_prctl` | function | `kernel/syscalls.c:3194` | `static long sys_linux_arch_prctl(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_bind` | function | `kernel/syscalls.c:2706` | `static long sys_linux_bind(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_brk` | function | `kernel/syscalls.c:1932` | `static long sys_linux_brk(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_close` | function | `kernel/syscalls.c:1882` | `static long sys_linux_close(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_close_range` | function | `kernel/syscalls.c:1694` | `static long sys_linux_close_range(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_connect` | function | `kernel/syscalls.c:2700` | `static long sys_linux_connect(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_dup` | function | `kernel/syscalls.c:1833` | `static long sys_linux_dup(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_dup2` | function | `kernel/syscalls.c:1848` | `static long sys_linux_dup2(long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `sys_linux_dup3` | function | `kernel/syscalls.c:1684` | `static long sys_linux_dup3(long a1, long a2, long a3, long a4, long a5, long a6)` |
 
 Next: [SYMBOLS_p10.md](SYMBOLS_p10.md)

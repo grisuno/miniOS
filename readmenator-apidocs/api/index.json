@@ -3,7 +3,7 @@
  "format": "jsonl",
  "meta": {
   "modules": 516,
-  "entities": 10509,
+  "entities": 10529,
   "languages": {
    "S": 7,
    "c": 239,
@@ -19,15 +19,15 @@
    "constructor": 24,
    "enum": 3,
    "exception": 5,
-   "function": 4541,
-   "macro": 3892,
+   "function": 4553,
+   "macro": 3897,
    "method": 125,
    "module": 516,
    "property": 2,
    "staticmethod": 6,
-   "struct": 322,
+   "struct": 323,
    "type_alias": 74,
-   "variable": 578
+   "variable": 580
   },
   "truncated": false,
   "skipped_files": 80,
@@ -35,9 +35,9 @@
  },
  "coverage": {
   "overall": {
-   "documented": 2846,
-   "total": 9549,
-   "percent": 29.8
+   "documented": 2861,
+   "total": 9567,
+   "percent": 29.9
   },
   "by_kind": {
    "class": {
@@ -61,14 +61,14 @@
     "percent": 100.0
    },
    "function": {
-    "documented": 1497,
-    "total": 4541,
-    "percent": 33.0
+    "documented": 1506,
+    "total": 4553,
+    "percent": 33.1
    },
    "macro": {
-    "documented": 674,
-    "total": 3892,
-    "percent": 17.3
+    "documented": 679,
+    "total": 3897,
+    "percent": 17.4
    },
    "method": {
     "documented": 24,
@@ -91,9 +91,9 @@
     "percent": 100.0
    },
    "struct": {
-    "documented": 138,
-    "total": 322,
-    "percent": 42.9
+    "documented": 139,
+    "total": 323,
+    "percent": 43.0
    },
    "type_alias": {
     "documented": 42,
@@ -629,13 +629,13 @@
    },
    "headers/vga_fb.h": {
     "documented": 35,
-    "total": 136,
-    "percent": 25.7
+    "total": 138,
+    "percent": 25.4
    },
    "headers/vga_fx.h": {
-    "documented": 9,
-    "total": 9,
-    "percent": 100.0
+    "documented": 24,
+    "total": 25,
+    "percent": 96.0
    },
    "headers/vma.h": {
     "documented": 4,
@@ -3213,12 +3213,12 @@
   {
    "uid": "headers/vga_fb.h",
    "path": "modules/headers.vga_fb.h.jsonl",
-   "entities": 148
+   "entities": 152
   },
   {
    "uid": "headers/vga_fx.h",
    "path": "modules/headers.vga_fx.h.jsonl",
-   "entities": 9
+   "entities": 25
   },
   {
    "uid": "headers/vma.h",
@@ -5268,7 +5268,7 @@
  ],
  "warnings": {
   "path": "warnings.jsonl",
-  "total": 6693
+  "total": 6696
  },
  "usage": [
   "grep -h '\"name\":\"<Name>\"' readmenator-apidocs/api/modules/*.jsonl",

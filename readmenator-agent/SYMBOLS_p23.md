@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `errno` | variable | `progs/src/ftest.c:10` | `extern int errno;` |
+| `exit` | function | `progs/src/ftest.c:7` | `extern void exit(int code);` |
+| `fopen` | function | `progs/src/ftest.c:11` | `extern void *fopen(const char *path, const char *mode);` |
+| `fprintf` | function | `progs/src/ftest.c:4` | `extern int fprintf(void *stream, const char *fmt, ...);` |
+| `main` | function | `progs/src/ftest.c:13` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/ftest.c:6` | `extern int printf(const char *fmt, ...);` |
+| `snprintf` | function | `progs/src/ftest.c:5` | `extern int snprintf(char *buf, unsigned long size, const char *fmt, ...);` |
+| `stderr` | variable | `progs/src/ftest.c:9` | `extern void *stderr;` |
+| `stdout` | variable | `progs/src/ftest.c:8` | `extern void *stdout;` |
+| `main` | function | `progs/src/hello.c:4` | `int main(int argc, char **argv)` |
+| `printf` | function | `progs/src/hello.c:2` | `extern int printf(const char *fmt, ...);` |
+| `atoi` | function | `progs/src/http.c:18` | `int atoi(char *s)` |
+| `close` | function | `progs/src/http.c:10` | `int close(int fd);` |
+| `connect` | function | `progs/src/http.c:6` | `int connect(int fd, void *addr, int addrlen);` |
+| `kernel` | function | `progs/src/http.c:3` | `* Hostnames are resolved by the kernel (net_dns_resolve syscall). */ int socket(int domain, int type, int proto);` |
+| `main` | function | `progs/src/http.c:29` | `int main(int argc, char **argv)` |
+| `net_dns_resolve` | function | `progs/src/http.c:11` | `int net_dns_resolve(const char *host);` |
+| `printf` | function | `progs/src/http.c:13` | `int printf(char *fmt, ...);` |
+| `putchar` | function | `progs/src/http.c:15` | `int putchar(int c);` |
+| `puts` | function | `progs/src/http.c:12` | `int puts(char *s);` |
+| `recvfrom` | function | `progs/src/http.c:8` | `int recvfrom(int fd, char *buf, int len, int flags, void *from, int *fromlen);` |
+| `sendto` | function | `progs/src/http.c:7` | `int sendto(int fd, char *buf, int len, int flags, void *to, int tolen);` |
+| `shutdown` | function | `progs/src/http.c:9` | `int shutdown(int fd, int how);` |
 | `strlen` | function | `progs/src/http.c:14` | `int strlen(char *s);` |
 | `JS_ARR` | macro | `progs/src/json.c:35` | `#define JS_ARR` |
 | `JS_BOOL` | macro | `progs/src/json.c:31` | `#define JS_BOOL` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `sign_borrow2` | function | `progs/src/sign.c:230` | `static unsigned int sign_borrow2(unsigned int x, unsigned int y, unsigned int s)` |
 | `sign_byte` | function | `progs/src/sign.c:111` | `static unsigned int sign_byte(char *p, int i)` |
 | `sign_copy` | function | `progs/src/sign.c:119` | `static void sign_copy(char *dst, char *src, int n)` |
-| `sign_digest` | function | `progs/src/sign.c:1112` | `static void sign_digest(char *sig, char *digest)` |
-| `sign_digest_of` | function | `progs/src/sign.c:1307` | `static int sign_digest_of(char *img, int size, int entry, char *ph, int phnum, char *digest)` |
-| `sign_feed32` | function | `progs/src/sign.c:490` | `static void sign_feed32(unsigned int v)` |
-| `sign_file` | function | `progs/src/sign.c:1529` | `static int sign_file(char *name)` |
-| `sign_hexval` | function | `progs/src/sign.c:89` | `static unsigned int sign_hexval(char c)` |
-| `sign_key_init` | function | `progs/src/sign.c:500` | `static void sign_key_init(void)` |
-| `sign_le16` | function | `progs/src/sign.c:136` | `static unsigned int sign_le16(char *p, int off)` |
-| `sign_le32` | function | `progs/src/sign.c:141` | `static unsigned int sign_le32(char *p, int off)` |
-| `sign_note_span` | function | `progs/src/sign.c:1273` | `static int sign_note_span(char *img, int off, int len, int *desc)` |
-| `sign_offok` | function | `progs/src/sign.c:180` | `static int sign_offok(char *p, int off, int *lo)` |
-| `sign_patch_notes` | function | `progs/src/sign.c:1356` | `static int sign_patch_notes(char *img, int size, char *ph, int phnum, char *desc)` |
-| `sign_points_init` | function | `progs/src/sign.c:1081` | `static void sign_points_init(void)` |
-| `sign_put32` | function | `progs/src/sign.c:147` | `static void sign_put32(char *p, int off, unsigned int v)` |
-| `sign_read` | function | `progs/src/sign.c:1232` | `static char *sign_read(char *name, int *len)` |
-| `sign_rev32` | function | `progs/src/sign.c:1070` | `static void sign_rev32(char *b)` |
-| `sign_selftest` | function | `progs/src/sign.c:1637` | `static int sign_selftest(void)` |
-| `sign_sha_final` | function | `progs/src/sign.c:442` | `static void sign_sha_final(char *out)` |
-| `sign_sha_init` | function | `progs/src/sign.c:387` | `static void sign_sha_init(void)` |
-| `sign_sha_update` | function | `progs/src/sign.c:410` | `static void sign_sha_update(char *data, int len)` |
-| `sign_strlen` | function | `progs/src/sign.c:128` | `static int sign_strlen(char *s)` |
-| `sign_unhex` | function | `progs/src/sign.c:100` | `static void sign_unhex(char *out, char *in, int n)` |
-| `sign_write` | function | `progs/src/sign.c:1260` | `static int sign_write(char *name, char *data, int len)` |
-| `strcmp` | function | `progs/src/sign.c:29` | `int strcmp();` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

@@ -176,7 +176,6 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 - [EXTRACTED] depends_on community 1 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
 - [EXTRACTED] depends_on community 6 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_loop.c imports kernel/string.c.
 - [EXTRACTED] depends_on community 3 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomdef.h imports kernel/string.c.
-- [INFERRED] shares_context community 2 <-> 5 (strength 0.5): Inferred shared context (layer utility) with no import path between community 2 (progs/src) and community 5 (headers: vga_fb).
 
 ## Risks
 

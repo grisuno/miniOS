@@ -9,8 +9,8 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 | `any` | 241 | 479 | `arch/x86/boot/stage2.S`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/ext4.c`, `fs/kfile.c` |
 | `without` | 232 | 459 | `arch/x86/ctx_sw.S`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/pcache.c` |
 | `program` | 221 | 447 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `headers/drivers/pci.h` |
-| `can` | 221 | 282 | `arch/x86/boot/stage2.S`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/fat32.c` |
-| `under` | 214 | 236 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/kfile.c`, `fs/pcache.c` |
+| `can` | 221 | 281 | `arch/x86/boot/stage2.S`, `drivers/sb16.c`, `drivers/usbhid.c`, `drivers/xhci.c`, `fs/fat32.c` |
+| `under` | 215 | 237 | `drivers/pcm2.c`, `drivers/usbblk.c`, `drivers/usbhid.c`, `fs/kfile.c`, `fs/pcache.c` |
 | `see` | 192 | 201 | `drivers/xhci.c`, `fs/kfile.c`, `fs/pcache.c`, `headers/arch/x86/hal_io.h`, `headers/ext4.h` |
 | `doomgeneric` | 188 | 211 | `headers/vga_fx.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/config.h`, `progs/doomgeneric/d_englsh.h` |
 | `version` | 186 | 378 | `drivers/nvme.c`, `headers/abi.h`, `headers/drivers/nvme.h`, `headers/drivers/xhci.h`, `headers/httpd.h` |
@@ -24,7 +24,7 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 | `purpose` | 177 | 177 | `kernel/mm/paging.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
 | `published` | 175 | 176 | `kernel/rcu.c`, `kernel/sched.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h` |
 | `software` | 172 | 499 | `drivers/pcspk.c`, `mcp/minios_mcp.py`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h` |
-| `terms` | 172 | 177 | `headers/wm_window.h`, `kernel/vga_fb.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h` |
+| `terms` | 172 | 176 | `headers/wm_window.h`, `kernel/vga_fb.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h` |
 | `general` | 171 | 341 | `headers/kernel.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
 | `option` | 171 | 174 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h` |
 | `foundation` | 171 | 172 | `headers/vma.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
@@ -43,16 +43,16 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 | `redistribute` | 170 | 170 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h` |
 | `howard` | 168 | 168 | `headers/rtc.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
 | `simon` | 167 | 167 | `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c`, `progs/doomgeneric/d_event.h` |
-| `one` | 161 | 645 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/usbblk.c` |
+| `one` | 161 | 654 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/kbd.c`, `drivers/pcm2.c`, `drivers/usbblk.c` |
 | `description` | 159 | 169 | `fs/kfile.c`, `kernel/syscalls.c`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h` |
 | `kernel` | 154 | 379 | `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/sb16.c`, `drivers/xhci.c`, `fs/kfile.c` |
 | `read` | 149 | 455 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c` |
 | `inc` | 146 | 147 | `headers/wm_events.h`, `progs/doomgeneric/am_map.c`, `progs/doomgeneric/am_map.h`, `progs/doomgeneric/d_englsh.h`, `progs/doomgeneric/d_event.c` |
-| `docstring` | 145 | 1236 | `boot/uefi_stub.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/sb16.c` |
+| `docstring` | 145 | 1247 | `boot/uefi_stub.c`, `drivers/block.c`, `drivers/kbd.c`, `drivers/mouse.c`, `drivers/sb16.c` |
 | `mini` | 139 | 256 | `arch/x86/boot/stage1.S`, `arch/x86/boot/stage2.S`, `boot/uefi_stub.c`, `drivers/block.c`, `drivers/ide.c` |
-| `every` | 134 | 316 | `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c` |
-| `max` | 133 | 610 | `boot/uefi_stub.c`, `drivers/nvme.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/usbblk.c` |
-| `when` | 133 | 426 | `drivers/block.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c` |
+| `every` | 134 | 317 | `drivers/usbblk.c`, `drivers/usbhid.c`, `drivers/virtio_blk.c`, `drivers/virtio_net.c`, `drivers/xhci.c` |
+| `max` | 133 | 606 | `boot/uefi_stub.c`, `drivers/nvme.c`, `drivers/pcspk.c`, `drivers/rtc.c`, `drivers/usbblk.c` |
+| `when` | 133 | 428 | `drivers/block.c`, `drivers/kbd.c`, `drivers/sb16.c`, `drivers/usbblk.c`, `drivers/usbhid.c` |
 | `file` | 131 | 605 | `boot/uefi_stub.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/kfile.c` |
 
 ## Verb Edges
@@ -107,8 +107,8 @@ Second-brain semantic layer: nouns map atomically to file sets (EXTRACTED); verb
 | `doomgeneric` | `depends_on` | `version` | 0.93 |
 | `free` | `depends_on` | `see` | 0.93 |
 | `more` | `depends_on` | `progs` | 0.93 |
+| `more` | `depends_on` | `under` | 0.93 |
 | `program` | `depends_on` | `any` | 0.93 |
-| `program` | `depends_on` | `can` | 0.93 |
 
 ## Dialectic Prompts
 

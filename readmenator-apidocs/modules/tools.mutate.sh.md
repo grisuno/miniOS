@@ -54,7 +54,7 @@ cleanup()
 
 ### `record`
 
-`function` | [tools/mutate.sh:556](../../tools/mutate.sh#L556)
+`function` | [tools/mutate.sh:570](../../tools/mutate.sh#L570)
 
 ```bash
 record()
@@ -66,7 +66,7 @@ record()
 
 ### `find_index`
 
-`function` | [tools/mutate.sh:562](../../tools/mutate.sh#L562)
+`function` | [tools/mutate.sh:576](../../tools/mutate.sh#L576)
 
 ```bash
 find_index()

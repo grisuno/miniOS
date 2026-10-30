@@ -1,6 +1,104 @@
 # API (page 20 of 21)
 Previous: [API_p19.md](API_p19.md)
 
+## progs/topogpt3/topogpt3.c
+Depends on: `kernel/string.c`
+- `printf` (function) `progs/topogpt3/topogpt3.c:28` `extern int printf(const char *, ...);`
+- `fprintf` (function) `progs/topogpt3/topogpt3.c:29` `extern int fprintf(FILE *, const char *, ...);`
+- `sprintf` (function) `progs/topogpt3/topogpt3.c:30` `extern int sprintf(char *, const char *, ...);`
+- `snprintf` (function) `progs/topogpt3/topogpt3.c:31` `extern int snprintf(char *, unsigned long, const char *, ...);`
+- `puts` (function) `progs/topogpt3/topogpt3.c:32` `extern int puts(const char *);`
+- `putchar` (function) `progs/topogpt3/topogpt3.c:33` `extern int putchar(int);`
+- `fputc` (function) `progs/topogpt3/topogpt3.c:34` `extern int fputc(int, FILE *);`
+- `fputs` (function) `progs/topogpt3/topogpt3.c:35` `extern int fputs(const char *, FILE *);`
+- `fopen` (function) `progs/topogpt3/topogpt3.c:36` `extern FILE *fopen(const char *, const char *);`
+- `fclose` (function) `progs/topogpt3/topogpt3.c:37` `extern int fclose(FILE *);`
+- `fread` (function) `progs/topogpt3/topogpt3.c:38` `extern unsigned long fread(void *, unsigned long, unsigned long, FILE *);`
+- `fwrite` (function) `progs/topogpt3/topogpt3.c:39` `extern unsigned long fwrite(const void *, unsigned long, unsigned long, FILE *);`
+- `fseek` (function) `progs/topogpt3/topogpt3.c:40` `extern int fseek(FILE *, long, int);`
+- `ftell` (function) `progs/topogpt3/topogpt3.c:41` `extern long ftell(FILE *);`
+- `fflush` (function) `progs/topogpt3/topogpt3.c:42` `extern int fflush(FILE *);`
+- `malloc` (function) `progs/topogpt3/topogpt3.c:47` `extern void *malloc(unsigned long);` -- define NULL ((void*)0) define SEEK_SET 0 define SEEK_CUR 1 define SEEK_END 2
+- `free` (function) `progs/topogpt3/topogpt3.c:48` `extern void free(void *);`
+- `memcpy` (function) `progs/topogpt3/topogpt3.c:49` `extern void *memcpy(void *, const void *, unsigned long);`
+- `memset` (function) `progs/topogpt3/topogpt3.c:50` `extern void *memset(void *, int, unsigned long);`
+- `strcmp` (function) `progs/topogpt3/topogpt3.c:51` `extern int strcmp(const char *, const char *);`
+- `strncmp` (function) `progs/topogpt3/topogpt3.c:52` `extern int strncmp(const char *, const char *, unsigned long);`
+- `strlen` (function) `progs/topogpt3/topogpt3.c:53` `extern unsigned long strlen(const char *);`
+- `strstr` (function) `progs/topogpt3/topogpt3.c:54` `extern char *strstr(const char *, const char *);`
+- `tg_exp` (function) `progs/topogpt3/topogpt3.c:114` `static float tg_exp(float x)`
+- `tg_tanh` (function) `progs/topogpt3/topogpt3.c:128` `static float tg_tanh(float x)`
+- `tg_sin` (function) `progs/topogpt3/topogpt3.c:135` `static float tg_sin(float x)`
+- `tg_cos` (function) `progs/topogpt3/topogpt3.c:144` `static float tg_cos(float x)`
+- `tg_fabs` (function) `progs/topogpt3/topogpt3.c:148` `static float tg_fabs(float x)`
+- `tg_log` (function) `progs/topogpt3/topogpt3.c:152` `static float tg_log(float x)`
+- `tg_fmax` (function) `progs/topogpt3/topogpt3.c:164` `static float tg_fmax(float a, float b)`
+- `tg_fmin` (function) `progs/topogpt3/topogpt3.c:168` `static float tg_fmin(float a, float b)`
+- `load_vocab` (function) `progs/topogpt3/topogpt3.c:255` `static void load_vocab(const char *path)`
+- `build_torus_graph` (function) `progs/topogpt3/topogpt3.c:296` `static void build_torus_graph(void)`
+- `precompute_rope` (function) `progs/topogpt3/topogpt3.c:327` `static void precompute_rope(void)`
+- `matvec` (function) `progs/topogpt3/topogpt3.c:359` `static void matvec(const float *W, const float *x, float *y, int rows, int cols)`
+- `matvec_bias` (function) `progs/topogpt3/topogpt3.c:370` `static void matvec_bias(const float *W, const float *b, const float *x, float *y,
+               ...`
+- `rmsnorm` (function) `progs/topogpt3/topogpt3.c:382` `static void rmsnorm(const float *x, const float *w, float *y, int d)`
+- `softmax` (function) `progs/topogpt3/topogpt3.c:391` `static void softmax(float *x, int n)`
+- `gelu` (function) `progs/topogpt3/topogpt3.c:400` `static void gelu(float *x, int n)`
+- `silu` (function) `progs/topogpt3/topogpt3.c:410` `static void silu(float *x, int n)`
+- `swiglu` (function) `progs/topogpt3/topogpt3.c:418` `static void swiglu(const float *gate_w, const float *up_w, const float *down_w,
+                 ...`
+- `quat_normalize` (function) `progs/topogpt3/topogpt3.c:435` `static void quat_normalize(float *q)`
+- `quat_hamilton` (function) `progs/topogpt3/topogpt3.c:440` `static void quat_hamilton(const float *a, const float *b, float *c)`
+- `quat_linear` (function) `progs/topogpt3/topogpt3.c:448` `static void quat_linear(const float *Ww, const float *Wx, const float *Wy, const float *Wz,
+     ...` -- static void quat_normalize(float *q) { float n = tg_sqrt(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]); if (n >...
+- `ifft_radix2` (function) `progs/topogpt3/topogpt3.c:505` `static void ifft_radix2(float *real, float *imag, int n)`
+- `rfft` (function) `progs/topogpt3/topogpt3.c:513` `static void rfft(const float *x, float *Xr, float *Xi, int n)` -- cur_r = nr; } } } } static void ifft_radix2(float *real, float *imag, int n) { int i; for (i = 0; i < n; i++)...
+- `irfft` (function) `progs/topogpt3/topogpt3.c:522` `static void irfft(const float *Xr, const float *Xi, float *x, int n)` -- fft_radix2(real, imag, n); for (i = 0; i < n; i++) { real[i] /= (float)n; imag[i] = -imag[i] / (float)n; } } /* Real...
+- `filter1d` (function) `progs/topogpt3/topogpt3.c:537` `static void filter1d(const float *x, const float *kr, const float *ki,
+                      floa...`
+- `ifft2d` (function) `progs/topogpt3/topogpt3.c:580` `static void ifft2d(float *data_r, float *data_i, int h, int w)`
+- `rfft2d_real` (function) `progs/topogpt3/topogpt3.c:602` `static void rfft2d_real(const float *data, float *out_r, float *out_i,
+                         i...` -- ifft_radix2(row_re, row_im, w); for (c = 0; c < w; c++) { re[r*w+c] = row_re[c]; im[r*w+c] = row_im[c]; } } /* IFFT...
+- `irfft2d` (function) `progs/topogpt3/topogpt3.c:629` `static void irfft2d(const float *in_r, const float *in_i, float *out,
+                     int h,...` -- for (r = 0; r < h; r++) { col_re[r] = re[r*w+c]; col_im[r] = im[r*w+c]; } fft_radix2(col_re, col_im, h); for (r = 0...
+- `cmul` (function) `progs/topogpt3/topogpt3.c:664` `static void cmul(float ar, float ai, float cr, float di, float *rr, float *ri)`
+- `spectral_contract` (function) `progs/topogpt3/topogpt3.c:670` `static void spectral_contract(const float *Wr, const float *Wi,
+                               co...`
+- `quat_spectral_layer_2d` (function) `progs/topogpt3/topogpt3.c:695` `static void quat_spectral_layer_2d(
+    const float *x, float *y,
+    const float *kr_w, const fl...`
+- `spectral_ae_encode` (function) `progs/topogpt3/topogpt3.c:785` `static void spectral_ae_encode(const float *x, float *z, const LayerWeights *lw)`
+- `spectral_ae_decode` (function) `progs/topogpt3/topogpt3.c:793` `static void spectral_ae_decode(const float *z, float *x, const LayerWeights *lw)`
+- `process_torus_grid` (function) `progs/topogpt3/topogpt3.c:800` `static void process_torus_grid(const float *grid, float *out, const LayerWeights *lw)`
+- `torus_soft_assign` (function) `progs/topogpt3/topogpt3.c:821` `static void torus_soft_assign(const float *phi1, const float *phi2,
+                             ...`
+- `message_passing` (function) `progs/topogpt3/topogpt3.c:843` `static void message_passing(const float *node_feat, float *out,
+                             cons...`
+- `torus_brain_forward` (function) `progs/topogpt3/topogpt3.c:888` `static void torus_brain_forward(const float *x, float *out, float *recon_loss,
+                  ...`
+- `attention_forward` (function) `progs/topogpt3/topogpt3.c:978` `static void attention_forward(const float *x, float *out, int layer_idx, int pos, int total_kv_co...`
+- `moe_forward` (function) `progs/topogpt3/topogpt3.c:1078` `static void moe_forward(const float *x, float *out, const LayerWeights *lw)`
+- `forward` (function) `progs/topogpt3/topogpt3.c:1128` `static void forward(const int *token_ids, int seq_len, float *logits_out)`
+- `tokenize_string` (function) `progs/topogpt3/topogpt3.c:1195` `static int tokenize_string(const char *text, int *tokens, int max_tokens)`
+- `apply_temperature` (function) `progs/topogpt3/topogpt3.c:1210` `static void apply_temperature(float *logits, int n, float temp)`
+- `apply_repetition_penalty` (function) `progs/topogpt3/topogpt3.c:1216` `static void apply_repetition_penalty(float *logits, int n, const int *tokens,
+                   ...`
+- `apply_top_k` (function) `progs/topogpt3/topogpt3.c:1229` `static void apply_top_k(float *logits, int n, int k)`
+- `sample` (function) `progs/topogpt3/topogpt3.c:1248` `static int sample(const float *logits, int n)`
+- `load_weights` (function) `progs/topogpt3/topogpt3.c:1282` `static int load_weights(const char *path)`
+- `load_weights_fp16` (function) `progs/topogpt3/topogpt3.c:1452` `static int load_weights_fp16(const char *path)`
+- `load_weights_auto` (function) `progs/topogpt3/topogpt3.c:1583` `static int load_weights_auto(const char *path)` -- printf("  Layer %d loaded\n", i); } READ_TENSOR16(W.final_norm, D_MODEL); #undef SKIP_TENSOR16 #undef READ_TENSOR16...
+- `time_now_ms` (function) `progs/topogpt3/topogpt3.c:1600` `static double time_now_ms(void)`
+- `decode_token` (function) `progs/topogpt3/topogpt3.c:1614` `static void decode_token(int tid)`
+- `load_token_file` (function) `progs/topogpt3/topogpt3.c:1629` `static int load_token_file(const char *path, int *out_ids, int max_ids)` -- if (tid < 256) { /* Map GPT-2 byte-level encoding back to original byte int n = tid; if (n < 94) n += 33; else if (n...
+- `decode_token_tiktoken` (function) `progs/topogpt3/topogpt3.c:1652` `static void decode_token_tiktoken(int tid)` -- if (fread(&n, 4, 1, f) != 1) { fclose(f); return 0; } if (n > (unsigned)max_ids) n = max_ids; int count = (int)n...
+- `generate_tokens` (function) `progs/topogpt3/topogpt3.c:1661` `static void generate_tokens(int *prompt_tokens, int n_prompt, int max_new_tokens,
+               ...`
+- `generate` (function) `progs/topogpt3/topogpt3.c:1725` `static void generate(const char *prompt, int max_new_tokens, float temperature,
+                 ...`
+- `interactive_mode` (function) `progs/topogpt3/topogpt3.c:1736` `static void interactive_mode(void)`
+- `print_help` (function) `progs/topogpt3/topogpt3.c:1850` `static void print_help(void)`
+- `main` (function) `progs/topogpt3/topogpt3.c:1885` `int main(int argc, char **argv)`
+
 ## progs/vedit/vedit.c
 Depends on: `headers/leakcheck.h`, `kernel/string.c`, `progs/nuklear/nuklear_minios.h`, `progs/nuklear/nuklear_theme.h`
 - `vedit_getc_raw` (function) `progs/vedit/vedit.c:38` `static long vedit_getc_raw(long blocking)` -- #include <stdio.h> #include <stdlib.h> #include <string.h> #include <stdint.h> #include <sys/stat.h> #include...
@@ -395,104 +493,6 @@ Depends on: `kernel/time.c`
 ## tools/check_addons.py
 - `load_parser` (function) `tools/check_addons.py:22` `def load_parser()`
 - `main` (function) `tools/check_addons.py:31` `def main()`
-
-## tools/check_cohesion.py
-- `load_cpg` (function) `tools/check_cohesion.py:23` `def load_cpg(path)` -- Load and parse the CPG JSON-LD file.
-- `compute_cohesion` (function) `tools/check_cohesion.py:31` `def compute_cohesion(community_nodes, community_edges)` -- Compute cohesion as internal_edges / max_possible_edges.
-- `extract_communities` (function) `tools/check_cohesion.py:42` `def extract_communities(cpg)` -- Extract communities and their internal edges from CPG.
-- `main` (function) `tools/check_cohesion.py:58` `def main()`
-
-## tools/check_complexity.py
-- `count_symbols` (function) `tools/check_complexity.py:24` `def count_symbols(filepath)` -- Count top-level function and global variable definitions.
-- `load_approval` (function) `tools/check_complexity.py:46` `def load_approval(policy_path)` -- Load explicit complexity approval from ARCH_POLICY.yaml.
-- `main` (function) `tools/check_complexity.py:61` `def main()`
-
-## tools/check_kb_sync.py
-- `regenerate_kb` (function) `tools/check_kb_sync.py:24` `def regenerate_kb()` -- Attempt to regenerate KNOWLEDGE_BASE.md using readmenator.
-- `main` (function) `tools/check_kb_sync.py:43` `def main()`
-
-## tools/check_mutant_anchors.py
-- `bash_unquote` (function) `tools/check_mutant_anchors.py:26` `def bash_unquote(expr)` -- Collapse the escapes bash applies inside the MUTATIONS string.
-- `unescaped_quote` (function) `tools/check_mutant_anchors.py:41` `def unescaped_quote(expr)` -- True when expr holds a double quote bash would not keep.
-- `parse_mutations` (function) `tools/check_mutant_anchors.py:58` `def parse_mutations(text)` -- Extract (name, expression, target) triples from the MUTATIONS block.
-- `anchor_matches` (function) `tools/check_mutant_anchors.py:84` `def anchor_matches(repo, target, expr)` -- Apply the sed expression to a scratch copy; True when it changes it.
-- `main` (function) `tools/check_mutant_anchors.py:105` `def main()` -- Entry point: report anchors that change nothing and exit nonzero.
-
-## tools/check_spin_discipline.py
-- `iter_functions` (function) `tools/check_spin_discipline.py:38` `def iter_functions(path)` -- Yield (name, first_line, body_lines) with a brace-depth split.
-- `check_file` (function) `tools/check_spin_discipline.py:64` `def check_file(path)` -- Return a list of violation strings for one translation unit.
-- `main` (function) `tools/check_spin_discipline.py:99` `def main(argv)` -- Walk the configured roots and fail closed on any violation.
-
-## tools/check_surprising.py
-- `load_cpg` (function) `tools/check_surprising.py:25` `def load_cpg(path)` -- Load and parse the CPG JSON-LD file.
-- `build_graph` (function) `tools/check_surprising.py:33` `def build_graph(cpg)` -- Build adjacency list from CPG nodes and edges.
-- `bfs_min_hops` (function) `tools/check_surprising.py:56` `def bfs_min_hops(nodes, edges, source, target_community, max_hops)` -- BFS from source to any node in target_community, returning hop count.
-- `find_surprising_connections` (function) `tools/check_surprising.py:87` `def find_surprising_connections(nodes, edges, min_hops)` -- Find connections of min_hops or more between distinct communities.
-- `main` (function) `tools/check_surprising.py:118` `def main()`
-
-## tools/check_syscall_sanitize.py
-- `split_functions` (function) `tools/check_syscall_sanitize.py:70` `def split_functions(lines)` -- Yield (name, start, body_lines) triples using brace depth.
-- `checked_names` (function) `tools/check_syscall_sanitize.py:113` `def checked_names(body)` -- Return identifiers named inside sanitizer checks in a body.
-- `delegated_only` (function) `tools/check_syscall_sanitize.py:123` `def delegated_only(body, alias)` -- Decide whether an alias flows only into sanitizing callees.
-- `split_top_args` (function) `tools/check_syscall_sanitize.py:144` `def split_top_args(argtext)` -- Split a call argument list on top-level commas only.
-- `audit_body` (function) `tools/check_syscall_sanitize.py:163` `def audit_body(name, body)` -- Return violation strings for one function body.
-- `audit_file` (function) `tools/check_syscall_sanitize.py:218` `def audit_file(path)` -- Audit every handler in one file, return violation strings.
-- `main` (function) `tools/check_syscall_sanitize.py:229` `def main()` -- Entry point used by lint and CI.
-
-## tools/clip_bridge.py
-- `valid_dst` (function) `tools/clip_bridge.py:41` `def valid_dst(name, cfg)` -- True when name is a safe guest path.
-- `printable_line` (function) `tools/clip_bridge.py:52` `def printable_line(line, cfg)` -- True when every char survives the kernel readline.
-- `build_plan` (function) `tools/clip_bridge.py:59` `def build_plan(text, dst, cfg)` -- Return (ok, lines, diagnostic) for carrying text to dst.
-- `main` (function) `tools/clip_bridge.py:84` `def main(argv)` -- Entry point: clip_bridge.py <src-file> <dst-name>.
-
-## tools/doom_pwad.py
-Imported by: `tests/test_doom_pwad.py`
-- `pad_tex` (function) `tools/doom_pwad.py:165` `def pad_tex(raw)` -- Return a texture or flat name padded to its 8-byte field.
-- `parse_grid` (function) `tools/doom_pwad.py:172` `def parse_grid(text)` -- Parse grid text into rows, refusing empty or ragged input.
-- `grid_extents` (function) `tools/doom_pwad.py:195` `def grid_extents(rows)` -- Return coordinate bounds of the lattice in map units.
-- `is_wall` (function) `tools/doom_pwad.py:203` `def is_wall(rows, row, col)` -- Treat out-of-bounds cells as solid wall so maps stay closed.
-- `flood_reachable` (function) `tools/doom_pwad.py:210` `def flood_reachable(rows)` -- Return the walkable set reachable from the player start tile.
-- `validate_grid` (function) `tools/doom_pwad.py:240` `def validate_grid(rows)` -- Enforce single player, single exit, and full reachability.
-- `cell_corners` (function) `tools/doom_pwad.py:269` `def cell_corners(row, col)` -- Return cell corners as (x0, x1, y_top, y_bottom) in map units.
-- `cell_class` (function) `tools/doom_pwad.py:279` `def cell_class(cell)` -- Classify a walkable cell: doors stand alone, styles never merge.
-- `label_regions` (function) `tools/doom_pwad.py:291` `def label_regions(rows)` -- Flood same-class walkable cells into region ids; walls stay -1.
-- `region_sector` (function) `tools/doom_pwad.py:326` `def region_sector(region, door_tag)` -- Map a labelled region to its sector record fields and wall skin.
-- `compile_geometry` (function) `tools/doom_pwad.py:371` `def compile_geometry(rows, exit_pos, wall_side)` -- Compile edges into vertexes, two-sided rooms and tagged doors.
-- `vertex` (function) `tools/doom_pwad.py:386` `def vertex(x, y)` -- Deduplicate lattice points shared by adjacent edges.
-- `compile_things` (function) `tools/doom_pwad.py:485` `def compile_things(rows)` -- Compile thing stamps into mapthing records in scan order.
-- `seg_angle` (function) `tools/doom_pwad.py:506` `def seg_angle(dx, dy)` -- Return the stored short angle for a seg direction vector.
-- `build_lumps` (function) `tools/doom_pwad.py:516` `def build_lumps(rows)` -- Compile a validated grid into the eleven E1M1 lump payloads.
-- `build_pwad` (function) `tools/doom_pwad.py:597` `def build_pwad(rows)` -- Assemble lump payloads into a complete PWAD byte string.
-- `read_pwad` (function) `tools/doom_pwad.py:616` `def read_pwad(data)` -- Split PWAD bytes into header fields and an ordered lump table.
-- `check_pwad` (function) `tools/doom_pwad.py:639` `def check_pwad(data)` -- Validate lump order, record sizes and cross-lump references.
-- `payload` (function) `tools/doom_pwad.py:650` `def payload(name)` -- Slice one lump payload out of the file image.
-- `check_multiple` (function) `tools/doom_pwad.py:655` `def check_multiple(name, fmt)` -- Require the lump length to hold whole records only.
-- `cmd_build` (function) `tools/doom_pwad.py:816` `def cmd_build(grid_path, out_path)` -- Build a PWAD from a grid file, refusing to write on any error.
-- `cmd_check` (function) `tools/doom_pwad.py:826` `def cmd_check(path)` -- Validate a PWAD file and report its lump census on success.
-- `main` (function) `tools/doom_pwad.py:834` `def main(argv)` -- Dispatch the build, check and info verbs with host-safe errors.
-
-## tools/gdb_repro.py
-Depends on: `kernel/time.c`
-- `rs` (function) `tools/gdb_repro.py:23` `def rs(m, t)`
-- `main` (function) `tools/gdb_repro.py:27` `def main()`
-- `send` (function) `tools/gdb_repro.py:65` `def send(line)`
-- `quit_doom` (function) `tools/gdb_repro.py:70` `def quit_doom()`
-
-## tools/gen_avatar.py
-- `AvatarPainter.__init__` (method) `tools/gen_avatar.py:64` `def __init__(self, cfg)`
-- `AvatarPainter.background` (method) `tools/gen_avatar.py:83` `def background(self)`
-- `AvatarPainter.hair_back` (method) `tools/gen_avatar.py:86` `def hair_back(self)`
-- `AvatarPainter.face` (method) `tools/gen_avatar.py:96` `def face(self)`
-- `AvatarPainter.eye` (method) `tools/gen_avatar.py:103` `def eye(self, cx, cy)`
-- `AvatarPainter.eyes` (method) `tools/gen_avatar.py:123` `def eyes(self)`
-- `AvatarPainter.nose_mouth` (method) `tools/gen_avatar.py:127` `def nose_mouth(self)`
-- `AvatarPainter.bangs` (method) `tools/gen_avatar.py:134` `def bangs(self)`
-- `AvatarPainter.ribbon` (method) `tools/gen_avatar.py:149` `def ribbon(self)`
-- `AvatarPainter.render` (method) `tools/gen_avatar.py:157` `def render(self)`
-- `load_portrait` (function) `tools/gen_avatar.py:169` `def load_portrait(path, crop)` -- Crop the square face region of a picture and downsample it.
-- `parse_crop` (function) `tools/gen_avatar.py:180` `def parse_crop(text)` -- Parse 'X,Y,SIZE' into three integers or abort with a clear message.
-- `write_header` (function) `tools/gen_avatar.py:191` `def write_header(image, path)` -- Write the avatar as a C header, atomically.
-- `main` (function) `tools/gen_avatar.py:225` `def main(argv)` -- Entry point: render, write the header, optionally a preview PNG.
 
 
 Next: [API_p21.md](API_p21.md)

@@ -1,6 +1,236 @@
 # API (page 16 of 21)
 Previous: [API_p15.md](API_p15.md)
 
+## progs/doomgeneric/st_lib.c
+Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `STlib_init` (function) `progs/doomgeneric/st_lib.c:51` `void STlib_init(void)`
+- `STlib_initNum` (function) `progs/doomgeneric/st_lib.c:59` `void
+STlib_initNum
+( st_number_t*		n,
+  int			x,
+  int			y,
+  patch_t**		pl,
+  int*			num,
+  bool...`
+- `STlib_drawNum` (function) `progs/doomgeneric/st_lib.c:84` `void
+STlib_drawNum
+( st_number_t*	n,
+  boolean	refresh )`
+- `STlib_updateNum` (function) `progs/doomgeneric/st_lib.c:146` `void
+STlib_updateNum
+( st_number_t*		n,
+  boolean		refresh )`
+- `STlib_initPercent` (function) `progs/doomgeneric/st_lib.c:156` `void
+STlib_initPercent
+( st_percent_t*		p,
+  int			x,
+  int			y,
+  patch_t**		pl,
+  int*			num,
+ ...`
+- `STlib_updatePercent` (function) `progs/doomgeneric/st_lib.c:173` `void
+STlib_updatePercent
+( st_percent_t*		per,
+  int			refresh )`
+- `STlib_initMultIcon` (function) `progs/doomgeneric/st_lib.c:186` `void
+STlib_initMultIcon
+( st_multicon_t*	i,
+  int			x,
+  int			y,
+  patch_t**		il,
+  int*			inum,...`
+- `STlib_updateMultIcon` (function) `progs/doomgeneric/st_lib.c:205` `void
+STlib_updateMultIcon
+( st_multicon_t*	mi,
+  boolean		refresh )`
+- `STlib_initBinIcon` (function) `progs/doomgeneric/st_lib.c:236` `void
+STlib_initBinIcon
+( st_binicon_t*		b,
+  int			x,
+  int			y,
+  patch_t*		i,
+  boolean*		val,
+...`
+- `STlib_updateBinIcon` (function) `progs/doomgeneric/st_lib.c:255` `void
+STlib_updateBinIcon
+( st_binicon_t*		bi,
+  boolean		refresh )`
+
+## progs/doomgeneric/st_lib.h
+Depends on: `progs/doomgeneric/r_defs.h`
+Imported by: `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`
+- `STlib_init` (function) `progs/doomgeneric/st_lib.h:138` `void STlib_init(void);` -- Initializes widget library.
+- `STlib_initNum` (function) `progs/doomgeneric/st_lib.h:144` `void STlib_initNum ( st_number_t* n, int x, int y, patch_t** pl, int* num, boolean* on, int width );`
+- `STlib_updateNum` (function) `progs/doomgeneric/st_lib.h:154` `void STlib_updateNum ( st_number_t* n, boolean refresh );`
+- `STlib_initPercent` (function) `progs/doomgeneric/st_lib.h:161` `void STlib_initPercent ( st_percent_t* p, int x, int y, patch_t** pl, int* num, boolean* on, patch_t* percent );`
+- `STlib_updatePercent` (function) `progs/doomgeneric/st_lib.h:172` `void STlib_updatePercent ( st_percent_t* per, int refresh );`
+- `STlib_initMultIcon` (function) `progs/doomgeneric/st_lib.h:179` `void STlib_initMultIcon ( st_multicon_t* mi, int x, int y, patch_t** il, int* inum, boolean* on );`
+- `STlib_updateMultIcon` (function) `progs/doomgeneric/st_lib.h:189` `void STlib_updateMultIcon ( st_multicon_t* mi, boolean refresh );`
+- `STlib_initBinIcon` (function) `progs/doomgeneric/st_lib.h:196` `void STlib_initBinIcon ( st_binicon_t* b, int x, int y, patch_t* i, boolean* val, boolean* on );`
+- `STlib_updateBinIcon` (function) `progs/doomgeneric/st_lib.h:205` `void STlib_updateBinIcon ( st_binicon_t* bi, boolean refresh );`
+
+## progs/doomgeneric/st_stuff.c
+Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomkeys.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_cheat.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/st_lib.h`, `progs/doomgeneric/st_stuff.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `ST_refreshBackground` (function) `progs/doomgeneric/st_stuff.c:416` `void ST_refreshBackground(void)`
+- `ST_Responder` (function) `progs/doomgeneric/st_stuff.c:439` `boolean
+ST_Responder (event_t* ev)`
+- `ST_calcPainOffset` (function) `progs/doomgeneric/st_stuff.c:665` `int ST_calcPainOffset(void)`
+- `ST_updateFaceWidget` (function) `progs/doomgeneric/st_stuff.c:688` `void ST_updateFaceWidget(void)` -- This is a not-very-pretty routine which handles the face states and their timing. the precedence of expressions is...
+- `ST_updateWidgets` (function) `progs/doomgeneric/st_stuff.c:860` `void ST_updateWidgets(void)`
+- `ST_Ticker` (function) `progs/doomgeneric/st_stuff.c:924` `void ST_Ticker (void)`
+- `ST_doPaletteStuff` (function) `progs/doomgeneric/st_stuff.c:936` `void ST_doPaletteStuff(void)`
+- `ST_drawWidgets` (function) `progs/doomgeneric/st_stuff.c:1001` `void ST_drawWidgets(boolean refresh)`
+- `ST_doRefresh` (function) `progs/doomgeneric/st_stuff.c:1036` `void ST_doRefresh(void)`
+- `ST_diffDraw` (function) `progs/doomgeneric/st_stuff.c:1049` `void ST_diffDraw(void)`
+- `ST_Drawer` (function) `progs/doomgeneric/st_stuff.c:1055` `void ST_Drawer (boolean fullscreen, boolean refresh)`
+- `ST_loadUnloadGraphics` (function) `progs/doomgeneric/st_stuff.c:1076` `static void ST_loadUnloadGraphics(load_callback_t callback)`
+- `ST_loadCallback` (function) `progs/doomgeneric/st_stuff.c:1162` `static void ST_loadCallback(char *lumpname, patch_t **variable)`
+- `ST_loadGraphics` (function) `progs/doomgeneric/st_stuff.c:1167` `void ST_loadGraphics(void)`
+- `ST_loadData` (function) `progs/doomgeneric/st_stuff.c:1172` `void ST_loadData(void)`
+- `ST_unloadCallback` (function) `progs/doomgeneric/st_stuff.c:1178` `static void ST_unloadCallback(char *lumpname, patch_t **variable)`
+- `ST_unloadGraphics` (function) `progs/doomgeneric/st_stuff.c:1184` `void ST_unloadGraphics(void)`
+- `ST_unloadData` (function) `progs/doomgeneric/st_stuff.c:1189` `void ST_unloadData(void)`
+- `ST_initData` (function) `progs/doomgeneric/st_stuff.c:1194` `void ST_initData(void)`
+- `ST_createWidgets` (function) `progs/doomgeneric/st_stuff.c:1227` `void ST_createWidgets(void)`
+- `ST_Start` (function) `progs/doomgeneric/st_stuff.c:1389` `void ST_Start (void)`
+- `ST_Stop` (function) `progs/doomgeneric/st_stuff.c:1401` `void ST_Stop (void)`
+- `ST_Init` (function) `progs/doomgeneric/st_stuff.c:1411` `void ST_Init (void)`
+
+## progs/doomgeneric/st_stuff.h
+Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_cheat.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`
+- `ST_Ticker` (function) `progs/doomgeneric/st_stuff.h:43` `void ST_Ticker (void);` -- Called by main loop.
+- `ST_Drawer` (function) `progs/doomgeneric/st_stuff.h:46` `void ST_Drawer (boolean fullscreen, boolean refresh);` -- Called by main loop.
+- `ST_Start` (function) `progs/doomgeneric/st_stuff.h:49` `void ST_Start (void);` -- Called when the console player is spawned on each level.
+- `ST_Init` (function) `progs/doomgeneric/st_stuff.h:52` `void ST_Init (void);` -- Called by startup code.
+
+## progs/doomgeneric/statdump.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/d_mode.h`, `progs/doomgeneric/d_player.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/statdump.h`
+- `DiscoverGamemode` (function) `progs/doomgeneric/statdump.c:71` `static void DiscoverGamemode(wbstartstruct_t *stats, int num_stats)`
+- `GetNumPlayers` (function) `progs/doomgeneric/statdump.c:130` `static int GetNumPlayers(wbstartstruct_t *stats)`
+- `PrintBanner` (function) `progs/doomgeneric/statdump.c:150` `static void PrintBanner(FILE *stream)`
+- `PrintPercentage` (function) `progs/doomgeneric/statdump.c:155` `static void PrintPercentage(FILE *stream, int amount, int total)`
+- `PrintPlayerStats` (function) `progs/doomgeneric/statdump.c:180` `static void PrintPlayerStats(FILE *stream, wbstartstruct_t *stats,
+        int player_num)`
+- `PrintFragsTable` (function) `progs/doomgeneric/statdump.c:213` `static void PrintFragsTable(FILE *stream, wbstartstruct_t *stats)`
+- `PrintLevelName` (function) `progs/doomgeneric/statdump.c:272` `static void PrintLevelName(FILE *stream, int episode, int level)`
+- `PrintStats` (function) `progs/doomgeneric/statdump.c:301` `static void PrintStats(FILE *stream, wbstartstruct_t *stats)`
+- `StatCopy` (function) `progs/doomgeneric/statdump.c:333` `void StatCopy(wbstartstruct_t *stats)`
+- `StatDump` (function) `progs/doomgeneric/statdump.c:343` `void StatDump(void)`
+
+## progs/doomgeneric/statdump.h
+Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/statdump.c`
+- `StatCopy` (function) `progs/doomgeneric/statdump.h:20` `void StatCopy(wbstartstruct_t *stats);`
+- `StatDump` (function) `progs/doomgeneric/statdump.h:21` `void StatDump(void);`
+
+## progs/doomgeneric/tables.c
+Depends on: `progs/doomgeneric/tables.h`
+- `SlopeDiv` (function) `progs/doomgeneric/tables.c:41` `int SlopeDiv(unsigned int num, unsigned int den)`
+
+## progs/doomgeneric/tables.h
+Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_fixed.h`
+Imported by: `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/p_mobj.h`, `progs/doomgeneric/p_pspr.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/tables.c`
+- `SlopeDiv` (function) `progs/doomgeneric/tables.h:92` `int SlopeDiv(unsigned int num, unsigned int den);` -- Utility function, called by R_PointToAngle.
+
+## progs/doomgeneric/v_video.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/config.h`, `progs/doomgeneric/deh_str.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/i_video.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/v_video.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `V_MarkRect` (function) `progs/doomgeneric/v_video.c:69` `void V_MarkRect(int x, int y, int width, int height)` -- V_MarkRect
+- `V_CopyRect` (function) `progs/doomgeneric/v_video.c:85` `void V_CopyRect(int srcx, int srcy, byte *source,
+                int width, int height,
+        ...` -- V_CopyRect
+- `V_SetPatchClipCallback` (function) `progs/doomgeneric/v_video.c:129` `void V_SetPatchClipCallback(vpatchclipfunc_t func)` -- V_SetPatchClipCallback  haleyjd 08/28/10: Added for Strife support.
+- `V_DrawPatch` (function) `progs/doomgeneric/v_video.c:139` `void V_DrawPatch(int x, int y, patch_t *patch)`
+- `V_DrawPatchFlipped` (function) `progs/doomgeneric/v_video.c:203` `void V_DrawPatchFlipped(int x, int y, patch_t *patch)`
+- `V_DrawPatchDirect` (function) `progs/doomgeneric/v_video.c:268` `void V_DrawPatchDirect(int x, int y, patch_t *patch)`
+- `V_DrawTLPatch` (function) `progs/doomgeneric/v_video.c:279` `void V_DrawTLPatch(int x, int y, patch_t * patch)`
+- `V_DrawXlaPatch` (function) `progs/doomgeneric/v_video.c:329` `void V_DrawXlaPatch(int x, int y, patch_t * patch)`
+- `V_DrawAltTLPatch` (function) `progs/doomgeneric/v_video.c:378` `void V_DrawAltTLPatch(int x, int y, patch_t * patch)`
+- `V_DrawShadowedPatch` (function) `progs/doomgeneric/v_video.c:428` `void V_DrawShadowedPatch(int x, int y, patch_t *patch)`
+- `V_LoadTintTable` (function) `progs/doomgeneric/v_video.c:482` `void V_LoadTintTable(void)`
+- `V_LoadXlaTable` (function) `progs/doomgeneric/v_video.c:493` `void V_LoadXlaTable(void)`
+- `V_DrawBlock` (function) `progs/doomgeneric/v_video.c:503` `void V_DrawBlock(int x, int y, int width, int height, byte *src)`
+- `V_DrawFilledBox` (function) `progs/doomgeneric/v_video.c:529` `void V_DrawFilledBox(int x, int y, int w, int h, int c)`
+- `V_DrawHorizLine` (function) `progs/doomgeneric/v_video.c:549` `void V_DrawHorizLine(int x, int y, int w, int c)`
+- `V_DrawVertLine` (function) `progs/doomgeneric/v_video.c:562` `void V_DrawVertLine(int x, int y, int h, int c)`
+- `V_DrawBox` (function) `progs/doomgeneric/v_video.c:576` `void V_DrawBox(int x, int y, int w, int h, int c)`
+- `V_DrawRawScreen` (function) `progs/doomgeneric/v_video.c:589` `void V_DrawRawScreen(byte *raw)`
+- `V_Init` (function) `progs/doomgeneric/v_video.c:597` `void V_Init (void)` -- V_Init
+- `V_UseBuffer` (function) `progs/doomgeneric/v_video.c:606` `void V_UseBuffer(byte *buffer)`
+- `V_RestoreBuffer` (function) `progs/doomgeneric/v_video.c:613` `void V_RestoreBuffer(void)`
+- `WritePCXfile` (function) `progs/doomgeneric/v_video.c:653` `void WritePCXfile(char *filename, byte *data,
+                  int width, int height,
+          ...`
+- `error_fn` (function) `progs/doomgeneric/v_video.c:711` `static void error_fn(png_structp p, png_const_charp s)`
+- `warning_fn` (function) `progs/doomgeneric/v_video.c:716` `static void warning_fn(png_structp p, png_const_charp s)`
+- `WritePNGfile` (function) `progs/doomgeneric/v_video.c:721` `void WritePNGfile(char *filename, byte *data,
+                  int width, int height,
+          ...`
+- `V_ScreenShot` (function) `progs/doomgeneric/v_video.c:791` `void V_ScreenShot(char *format)`
+- `V_DrawMouseSpeedBox` (function) `progs/doomgeneric/v_video.c:846` `void V_DrawMouseSpeedBox(int speed)`
+
+## progs/doomgeneric/v_video.h
+Depends on: `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/v_patch.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/f_finale.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/hu_lib.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_video.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/r_draw.c`, `progs/doomgeneric/st_lib.c`, `progs/doomgeneric/st_stuff.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/wi_stuff.c`
+- `V_SetPatchClipCallback` (function) `progs/doomgeneric/v_video.h:45` `void V_SetPatchClipCallback(vpatchclipfunc_t func);`
+- `V_Init` (function) `progs/doomgeneric/v_video.h:49` `void V_Init (void);` -- Allocates buffer screens, call before R_Init.
+- `V_CopyRect` (function) `progs/doomgeneric/v_video.h:53` `void V_CopyRect(int srcx, int srcy, byte *source, int width, int height, int destx, int desty);`
+- `V_DrawPatch` (function) `progs/doomgeneric/v_video.h:57` `void V_DrawPatch(int x, int y, patch_t *patch);`
+- `V_DrawPatchFlipped` (function) `progs/doomgeneric/v_video.h:58` `void V_DrawPatchFlipped(int x, int y, patch_t *patch);`
+- `V_DrawTLPatch` (function) `progs/doomgeneric/v_video.h:59` `void V_DrawTLPatch(int x, int y, patch_t *patch);`
+- `V_DrawAltTLPatch` (function) `progs/doomgeneric/v_video.h:60` `void V_DrawAltTLPatch(int x, int y, patch_t * patch);`
+- `V_DrawShadowedPatch` (function) `progs/doomgeneric/v_video.h:61` `void V_DrawShadowedPatch(int x, int y, patch_t *patch);`
+- `V_DrawXlaPatch` (function) `progs/doomgeneric/v_video.h:62` `void V_DrawXlaPatch(int x, int y, patch_t * patch);`
+- `V_DrawPatchDirect` (function) `progs/doomgeneric/v_video.h:63` `void V_DrawPatchDirect(int x, int y, patch_t *patch);`
+- `V_DrawBlock` (function) `progs/doomgeneric/v_video.h:67` `void V_DrawBlock(int x, int y, int width, int height, byte *src);`
+- `V_MarkRect` (function) `progs/doomgeneric/v_video.h:69` `void V_MarkRect(int x, int y, int width, int height);`
+- `V_DrawFilledBox` (function) `progs/doomgeneric/v_video.h:71` `void V_DrawFilledBox(int x, int y, int w, int h, int c);`
+- `V_DrawHorizLine` (function) `progs/doomgeneric/v_video.h:72` `void V_DrawHorizLine(int x, int y, int w, int c);`
+- `V_DrawVertLine` (function) `progs/doomgeneric/v_video.h:73` `void V_DrawVertLine(int x, int y, int h, int c);`
+- `V_DrawBox` (function) `progs/doomgeneric/v_video.h:74` `void V_DrawBox(int x, int y, int w, int h, int c);`
+- `V_DrawRawScreen` (function) `progs/doomgeneric/v_video.h:78` `void V_DrawRawScreen(byte *raw);`
+- `V_UseBuffer` (function) `progs/doomgeneric/v_video.h:82` `void V_UseBuffer(byte *buffer);`
+- `V_RestoreBuffer` (function) `progs/doomgeneric/v_video.h:86` `void V_RestoreBuffer(void);`
+- `V_ScreenShot` (function) `progs/doomgeneric/v_video.h:92` `void V_ScreenShot(char *format);`
+- `V_LoadTintTable` (function) `progs/doomgeneric/v_video.h:97` `void V_LoadTintTable(void);`
+- `V_LoadXlaTable` (function) `progs/doomgeneric/v_video.h:103` `void V_LoadXlaTable(void);`
+- `V_DrawMouseSpeedBox` (function) `progs/doomgeneric/v_video.h:105` `void V_DrawMouseSpeedBox(int speed);`
+
+## progs/doomgeneric/w_checksum.c
+Depends on: `kernel/string.c`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/sha1.h`, `progs/doomgeneric/w_checksum.h`, `progs/doomgeneric/w_wad.h`
+- `GetFileNumber` (function) `progs/doomgeneric/w_checksum.c:31` `static int GetFileNumber(wad_file_t *handle)`
+- `ChecksumAddLump` (function) `progs/doomgeneric/w_checksum.c:57` `static void ChecksumAddLump(sha1_context_t *sha1_context, lumpinfo_t *lump)`
+- `W_Checksum` (function) `progs/doomgeneric/w_checksum.c:68` `void W_Checksum(sha1_digest_t digest)`
+
+## progs/doomgeneric/w_checksum.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/d_net.c`, `progs/doomgeneric/w_checksum.c`
+- `W_Checksum` (function) `progs/doomgeneric/w_checksum.h:24` `extern void W_Checksum(sha1_digest_t digest);`
+
+## progs/doomgeneric/w_file.c
+Depends on: `progs/doomgeneric/config.h`, `progs/doomgeneric/doomtype.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_file.h`
+- `W_OpenFile` (function) `progs/doomgeneric/w_file.c:53` `wad_file_t *W_OpenFile(char *path)`
+- `W_CloseFile` (function) `progs/doomgeneric/w_file.c:85` `void W_CloseFile(wad_file_t *wad)`
+- `W_Read` (function) `progs/doomgeneric/w_file.c:90` `size_t W_Read(wad_file_t *wad, unsigned int offset,
+              void *buffer, size_t buffer_len)`
+
+## progs/doomgeneric/w_file.h
+Depends on: `progs/doomgeneric/doomtype.h`
+Imported by: `progs/doomgeneric/w_file.c`, `progs/doomgeneric/w_file_stdc.c`, `progs/doomgeneric/w_wad.h`
+- `W_OpenFile` (function) `progs/doomgeneric/w_file.h:65` `wad_file_t *W_OpenFile(char *path);`
+- `W_CloseFile` (function) `progs/doomgeneric/w_file.h:69` `void W_CloseFile(wad_file_t *wad);`
+- `W_Read` (function) `progs/doomgeneric/w_file.h:75` `size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer, size_t buffer_len);`
+
+## progs/doomgeneric/w_file_stdc.c
+Depends on: `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/w_file.h`, `progs/doomgeneric/z_zone.h`
+- `W_StdC_OpenFile` (function) `progs/doomgeneric/w_file_stdc.c:33` `static wad_file_t *W_StdC_OpenFile(char *path)`
+- `W_StdC_CloseFile` (function) `progs/doomgeneric/w_file_stdc.c:56` `static void W_StdC_CloseFile(wad_file_t *wad)`
+- `W_StdC_Read` (function) `progs/doomgeneric/w_file_stdc.c:69` `size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
+                   void *buffer, size_t ...`
+
+## progs/doomgeneric/w_main.c
+Depends on: `progs/doomgeneric/d_iwad.h`, `progs/doomgeneric/doomfeatures.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/w_main.h`, `progs/doomgeneric/w_merge.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
+- `W_ParseCommandLine` (function) `progs/doomgeneric/w_main.c:30` `boolean W_ParseCommandLine(void)`
+
 ## progs/doomgeneric/w_merge.h
 Imported by: `progs/doomgeneric/w_main.c`
 - `W_MergeFile` (function) `progs/doomgeneric/w_merge.h:29` `void W_MergeFile(char *filename);`
@@ -256,176 +486,6 @@ Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`, `progs/minios_abi
 - `pf_window_minimize` (function) `progs/freedomui/platform_minios.c:432` `void pf_window_minimize(pf_window *w)`
 - `pf_window_begin_move` (function) `progs/freedomui/platform_minios.c:436` `void pf_window_begin_move(pf_window *w)`
 - `pf_window_begin_resize` (function) `progs/freedomui/platform_minios.c:440` `void pf_window_begin_resize(pf_window *w, pf_edge edge)`
-
-## progs/freedomui/ps2_keymap.c
-Depends on: `kernel/string.c`, `progs/freedomui/ps2_keymap.h`
-- `ps2_init` (function) `progs/freedomui/ps2_keymap.c:144` `void ps2_init(ps2_state *s)`
-- `held_mods` (function) `progs/freedomui/ps2_keymap.c:150` `static unsigned held_mods(const ps2_state *s)`
-- `set_text` (function) `progs/freedomui/ps2_keymap.c:158` `static void set_text(ps2_key *k, char c)`
-- `is_letter` (function) `progs/freedomui/ps2_keymap.c:164` `static int is_letter(char c)`
-- `modifier_key` (function) `progs/freedomui/ps2_keymap.c:169` `static uint32_t modifier_key(ps2_state *s, unsigned code, int extended, int make)` -- return m; } static void set_text(ps2_key *k, char c) { k->text[0] = c; k->text[1] = '\0'; k->text_len = 1; } static...
-- `extended_key` (function) `progs/freedomui/ps2_keymap.c:195` `static uint32_t extended_key(unsigned code, ps2_key *k)` -- if (make) s->caps_lock = !s->caps_lock; return KE_KEY_Caps_Lock; } else if (!extended && code == SC_NUMLOCK) { if...
-- `plain_key` (function) `progs/freedomui/ps2_keymap.c:218` `static uint32_t plain_key(const ps2_state *s, unsigned code, ps2_key *k)` -- case SC_E0_RIGHT:  return KE_KEY_Right; case SC_E0_END:    return KE_KEY_End; case SC_E0_DOWN:   return KE_KEY_Down...
-- `ps2_feed` (function) `progs/freedomui/ps2_keymap.c:253` `int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out)`
-
-## progs/freedomui/ps2_keymap.h
-Imported by: `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `tests/test_ps2_keymap.c`
-- `ps2_init` (function) `progs/freedomui/ps2_keymap.h:47` `void ps2_init(ps2_state *s);` -- int      extended;  /* an E0 prefix is pending int      skip;      /* bytes of an E1 sequence still to swallow }...
-- `arguments` (function) `progs/freedomui/ps2_keymap.h:51` `* arguments (out is then left untouched). */ int ps2_feed(ps2_state *s, uint8_t byte, ps2_key *out);`
-
-## progs/lisp/lisp.c
-Depends on: `kernel/string.c`, `progs/minios_abi.h`
-- `numbers` (function) `progs/lisp/lisp.c:9` `* * Language surface: numbers (int64), strings, symbols, cons cells, closures * with lexical scope, and the special...`
-- `lisp_version` (function) `progs/lisp/lisp.c:62` `static const char *lisp_version(void)` -- Version string printed by --version and the REPL banner.
-- `msys` (function) `progs/lisp/lisp.c:205` `static long msys(long n, long a1, long a2, long a3)` -- Raw 3-argument syscall through the x86-64 Linux ABI.
-- `msys5` (function) `progs/lisp/lisp.c:218` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- Raw 5-argument syscall for SYS_SPAWN with path, redirect, argc, argv.
-- `fatal` (function) `progs/lisp/lisp.c:233` `static void fatal(Runtime *rt, const char *message)` -- Report a fatal internal failure and terminate the process.
-- `xalloc` (function) `progs/lisp/lisp.c:242` `static void *xalloc(Runtime *rt, size_t size)` -- Allocate zeroed tracked memory that frees with the runtime.
-- `xstrdup` (function) `progs/lisp/lisp.c:266` `static char *xstrdup(Runtime *rt, const char *source)` -- Duplicate a string into tracked memory.
-- `make_node` (function) `progs/lisp/lisp.c:284` `static Node *make_node(Runtime *rt, NodeType type)` -- Allocate a node of the given type in tracked memory.
-- `make_error` (function) `progs/lisp/lisp.c:293` `static Node *make_error(Runtime *rt, const char *message)` -- Build an error value carrying a diagnostic message.
-- `make_num` (function) `progs/lisp/lisp.c:302` `static Node *make_num(Runtime *rt, int64_t value)` -- Build a numeric value node.
-- `make_str` (function) `progs/lisp/lisp.c:311` `static Node *make_str(Runtime *rt, const char *value)` -- Build a string value node from a NUL-terminated source.
-- `make_sym` (function) `progs/lisp/lisp.c:320` `static Node *make_sym(Runtime *rt, const char *value)` -- Build a symbol value node from a NUL-terminated name.
-- `make_prim` (function) `progs/lisp/lisp.c:329` `static Node *make_prim(Runtime *rt, PrimFn function)` -- Build a primitive function value node.
-- `cons` (function) `progs/lisp/lisp.c:338` `static Node *cons(Runtime *rt, Node *car, Node *cdr)` -- Build a cons cell from two values.
-- `is_nil` (function) `progs/lisp/lisp.c:348` `static bool is_nil(Runtime *rt, const Node *node)` -- Test whether a node is the empty list in any of its spellings.
-- `make_file` (function) `progs/lisp/lisp.c:355` `static Node *make_file(Runtime *rt, FILE *handle)` -- Register an open FILE handle and wrap it in a file value node.
-- `cleanup` (function) `progs/lisp/lisp.c:377` `static void cleanup(Runtime *rt)` -- Close every tracked file and release every tracked allocation.
-- `runtime_init` (function) `progs/lisp/lisp.c:399` `static void runtime_init(Runtime *rt)` -- Initialize a runtime with streams, constants and empty tables.
-- `env_new` (function) `progs/lisp/lisp.c:411` `static Env *env_new(Runtime *rt, Env *parent)` -- Allocate a new environment frame with an optional parent.
-- `env_bind` (function) `progs/lisp/lisp.c:421` `static void env_bind(Runtime *rt, Env *env, Node *symbol, Node *value)` -- Bind a symbol to a value in the innermost frame.
-- `env_set` (function) `progs/lisp/lisp.c:432` `static bool env_set(Env *env, Node *symbol, Node *value)` -- Update the nearest visible binding of a symbol.
-- `env_lookup` (function) `progs/lisp/lisp.c:454` `static Node *env_lookup(Env *env, Node *symbol)` -- Resolve the nearest visible binding of a symbol.
-- `reader_peek` (function) `progs/lisp/lisp.c:475` `static char reader_peek(const Reader *reader)` -- Peek at the current reader character without consuming it.
-- `reader_next` (function) `progs/lisp/lisp.c:482` `static char reader_next(Reader *reader)` -- Consume one reader character and track line and column.
-- `reader_at_end` (function) `progs/lisp/lisp.c:500` `static bool reader_at_end(const Reader *reader)` -- Test whether the reader reached the end of its buffer.
-- `skip_space_and_comments` (function) `progs/lisp/lisp.c:507` `static void skip_space_and_comments(Reader *reader)` -- Skip whitespace and line comments starting with a semicolon.
-- `sb_init` (function) `progs/lisp/lisp.c:523` `static void sb_init(StringBuilder *builder)` -- Initialize a string builder with a bounded initial capacity.
-- `sb_push` (function) `progs/lisp/lisp.c:536` `static void sb_push(StringBuilder *builder, char value)` -- Append one byte to a string builder with overflow-checked growth.
-- `parse_ok` (function) `progs/lisp/lisp.c:562` `static ParseResult parse_ok(Node *value)` -- Build a successful parse result.
-- `parse_eof` (function) `progs/lisp/lisp.c:573` `static ParseResult parse_eof(void)` -- Build an end-of-input parse result.
-- `parse_error` (function) `progs/lisp/lisp.c:584` `static ParseResult parse_error(const char *message)` -- Build a parse error result with a bounded message.
-- `read_list` (function) `progs/lisp/lisp.c:596` `static ParseResult read_list(Runtime *rt, Reader *reader)` -- Read a parenthesized list terminated by a closing paren.
-- `read_string` (function) `progs/lisp/lisp.c:626` `static ParseResult read_string(Runtime *rt, Reader *reader)` -- Read a double-quoted string with backslash escapes.
-- `token_delimiter` (function) `progs/lisp/lisp.c:677` `static bool token_delimiter(char c)` -- Test whether a character terminates an atom token.
-- `read_atom` (function) `progs/lisp/lisp.c:685` `static ParseResult read_atom(Runtime *rt, Reader *reader)` -- Read a number, nil, t or symbol token.
-- `read_expr` (function) `progs/lisp/lisp.c:721` `static ParseResult read_expr(Runtime *rt, Reader *reader)` -- Read one expression, skipping whitespace and comments first.
-- `list_count` (function) `progs/lisp/lisp.c:750` `static size_t list_count(Runtime *rt, Node *list, bool *proper)` -- Count proper list elements and report whether the spine is proper.
-- `has_arity` (function) `progs/lisp/lisp.c:767` `static bool has_arity(Runtime *rt, Node *args, size_t expected)` -- Test whether an argument list has exactly the expected length.
-- `arg_at` (function) `progs/lisp/lisp.c:775` `static Node *arg_at(Runtime *rt, Node *args, size_t index)` -- Fetch the positional argument at an index or NULL when absent.
-- `arg_matches` (function) `progs/lisp/lisp.c:815` `static bool arg_matches(const Node *value, ArgKind kind)` -- Test whether an already-fetched argument matches one ArgKind.
-- `check_args` (function) `progs/lisp/lisp.c:841` `static bool check_args(Runtime *rt, Node *args, const ArgKind *kinds,
-    size_t n, Node **out)` -- Validate that args is a proper list of exactly n elements whose types match kinds[0..n), writing each fetched...
-- `arity0` (function) `progs/lisp/lisp.c:861` `static bool arity0(Runtime *rt, Node *args)` -- Validate that args is the empty argument list.
-- `prim_add` (function) `progs/lisp/lisp.c:869` `static Node *prim_add(Runtime *rt, Node *args)` -- Add two numbers with overflow reported as an error value.
-- `prim_sub` (function) `progs/lisp/lisp.c:885` `static Node *prim_sub(Runtime *rt, Node *args)` -- Subtract two numbers with overflow reported as an error value.
-- `prim_mul` (function) `progs/lisp/lisp.c:901` `static Node *prim_mul(Runtime *rt, Node *args)` -- Multiply two numbers with overflow reported as an error value.
-- `prim_div` (function) `progs/lisp/lisp.c:917` `static Node *prim_div(Runtime *rt, Node *args)` -- Divide two numbers with zero and overflow reported as errors.
-- `prim_eq` (function) `progs/lisp/lisp.c:939` `static Node *prim_eq(Runtime *rt, Node *args)` -- Compare two numbers for equality.
-- `prim_lt` (function) `progs/lisp/lisp.c:951` `static Node *prim_lt(Runtime *rt, Node *args)` -- Compare two numbers with less-than.
-- `prim_car` (function) `progs/lisp/lisp.c:963` `static Node *prim_car(Runtime *rt, Node *args)` -- Return the first element of a cons cell or nil.
-- `prim_cdr` (function) `progs/lisp/lisp.c:975` `static Node *prim_cdr(Runtime *rt, Node *args)` -- Return the rest of a cons cell or nil.
-- `prim_cons` (function) `progs/lisp/lisp.c:987` `static Node *prim_cons(Runtime *rt, Node *args)` -- Build a cons cell from two values.
-- `prim_string_concat` (function) `progs/lisp/lisp.c:999` `static Node *prim_string_concat(Runtime *rt, Node *args)` -- Concatenate two strings with an overflow-checked allocation.
-- `prim_string_eq` (function) `progs/lisp/lisp.c:1026` `static Node *prim_string_eq(Runtime *rt, Node *args)` -- Compare two strings for equality.
-- `prim_string_length` (function) `progs/lisp/lisp.c:1038` `static Node *prim_string_length(Runtime *rt, Node *args)` -- Return the byte length of a string.
-- `prim_string_at` (function) `progs/lisp/lisp.c:1050` `static Node *prim_string_at(Runtime *rt, Node *args)` -- Return the one-character string at a byte index or nil when out of range.
-- `prim_char_code` (function) `progs/lisp/lisp.c:1072` `static Node *prim_char_code(Runtime *rt, Node *args)` -- Convert between a one-character string and its byte value.
-- `prim_print` (function) `progs/lisp/lisp.c:1094` `static Node *prim_print(Runtime *rt, Node *args)` -- Print a value without a trailing newline.
-- `prim_println` (function) `progs/lisp/lisp.c:1108` `static Node *prim_println(Runtime *rt, Node *args)` -- Print a value with a trailing newline.
-- `file_mode_allowed` (function) `progs/lisp/lisp.c:1123` `static bool file_mode_allowed(const char *mode)` -- Test whether a file mode string belongs to the safe whitelist.
-- `prim_read_char` (function) `progs/lisp/lisp.c:1183` `static Node *prim_read_char(Runtime *rt, Node *args)` -- Read one byte from a file or nil at end of file.
-- `prim_write` (function) `progs/lisp/lisp.c:1200` `static Node *prim_write(Runtime *rt, Node *args)` -- Write a string or byte value to an open file.
-- `prim_close_file` (function) `progs/lisp/lisp.c:1224` `static Node *prim_close_file(Runtime *rt, Node *args)` -- Close an open file and release its runtime slot.
-- `prim_null_p` (function) `progs/lisp/lisp.c:1249` `static Node *prim_null_p(Runtime *rt, Node *args)` -- Test whether a value is nil.
-- `prim_number_p` (function) `progs/lisp/lisp.c:1261` `static Node *prim_number_p(Runtime *rt, Node *args)` -- Test whether a value is a number.
-- `prim_string_p` (function) `progs/lisp/lisp.c:1273` `static Node *prim_string_p(Runtime *rt, Node *args)` -- Test whether a value is a string.
-- `prim_error_message` (function) `progs/lisp/lisp.c:1285` `static Node *prim_error_message(Runtime *rt, Node *args)` -- Return the message of an error value or nil for other values.
-- `arity` (function) `progs/lisp/lisp.c:1300` `* * Variable arity (0 or 1);`
-- `prim_exit` (function) `progs/lisp/lisp.c:1303` `static Node *prim_exit(Runtime *rt, Node *args)` -- Terminate the process with a numeric exit status.
-- `prim_time_ms` (function) `progs/lisp/lisp.c:1330` `static Node *prim_time_ms(Runtime *rt, Node *args)` -- Return milliseconds since boot through the kernel time service.
-- `prim_rtc` (function) `progs/lisp/lisp.c:1340` `static Node *prim_rtc(Runtime *rt, Node *args)` -- Return the clock time as a three-element list or nil when unavailable.
-- `prim_fb_info` (function) `progs/lisp/lisp.c:1357` `static Node *prim_fb_info(Runtime *rt, Node *args)` -- Return framebuffer width, height and pitch or nil when unavailable.
-- `prim_vol` (function) `progs/lisp/lisp.c:1377` `static Node *prim_vol(Runtime *rt, Node *args)` -- Read or set the speaker volume, clamped to the valid range.
-- `prim_pal` (function) `progs/lisp/lisp.c:1405` `static Node *prim_pal(Runtime *rt, Node *args)` -- Load a 768-byte VGA palette from a string value.
-- `prim_pcspeaker` (function) `progs/lisp/lisp.c:1421` `static Node *prim_pcspeaker(Runtime *rt, Node *args)` -- Play a speaker tone for a bounded millisecond duration.
-- `prim_minios_run` (function) `progs/lisp/lisp.c:1465` `static Node *prim_minios_run(Runtime *rt, Node *args)` -- Run a program through SYS_SPAWN and return its exit code.
-- `eval_list` (function) `progs/lisp/lisp.c:1527` `static Node *eval_list(Runtime *rt, Node *list, Env *env)` -- Evaluate every element of a list into a fresh proper list.
-- `eval_sequence` (function) `progs/lisp/lisp.c:1551` `static Node *eval_sequence(Runtime *rt, Node *body, Env *env)` -- Evaluate a body sequence and return the last value.
-- `valid_params` (function) `progs/lisp/lisp.c:1569` `static bool valid_params(Runtime *rt, Node *params)` -- Test whether a parameter list holds only symbols.
-- `eval` (function) `progs/lisp/lisp.c:1583` `static Node *eval(Runtime *rt, Node *expression, Env *env)` -- Evaluate an expression with tail-call reuse and a bounded depth.
-- `print_escaped_string` (function) `progs/lisp/lisp.c:1846` `static void print_escaped_string(FILE *out, const char *value)` -- Write a string with escape sequences for readable output.
-- `print_node` (function) `progs/lisp/lisp.c:1877` `static void print_node(Runtime *rt, Node *node, bool readable)` -- Print a value in readable or display form with a bounded depth.
-- `bind_primitive` (function) `progs/lisp/lisp.c:1948` `static void bind_primitive(Runtime *rt, Env *env, const char *name,
-    PrimFn function)` -- Register one named primitive in an environment frame.
-- `init_env` (function) `progs/lisp/lisp.c:2004` `static Env *init_env(Runtime *rt)` -- Build the global environment with arithmetic, strings, files and MiniOS.
-- `bind_argv` (function) `progs/lisp/lisp.c:2017` `static void bind_argv(Runtime *rt, Env *env, int argc, char **argv, int first)` -- Expose the script argument vector as a proper list of strings.
-- `read_all_file` (function) `progs/lisp/lisp.c:2029` `static char *read_all_file(const char *filename, size_t max_bytes)` -- Read a whole file into memory with a hard size cap.
-- `process_source` (function) `progs/lisp/lisp.c:2087` `static int process_source(Runtime *rt, const char *source,
-    const char *source_name, bool echo)` -- Evaluate every form in a source buffer and report the first failure.
-- `process_inline` (function) `progs/lisp/lisp.c:2129` `static int process_inline(Runtime *rt, const char *code)` -- Evaluate one inline expression from the -e flag.
-- `print_usage` (function) `progs/lisp/lisp.c:2136` `static void print_usage(Runtime *rt)` -- Print usage for the command line interface.
-- `repl` (function) `progs/lisp/lisp.c:2143` `static int repl(Runtime *rt)` -- Run the interactive read-eval loop on the runtime input stream.
-- `main` (function) `progs/lisp/lisp.c:2190` `int main(int argc, char **argv)` -- Entry point with -e, script and REPL modes plus bounded arguments.
-
-## progs/lisp/tin.c
-- `main` (function) `progs/lisp/tin.c:1` `int main()`
-
-## progs/lua/lua_main.c
-Depends on: `kernel/string.c`
-- `module` (function) `progs/lua/lua_main.c:5` `* C module (minios.c) can be registered globally before any script runs: * `minios.run(...)`, `minios.time_ms()`...`
-- `luaL_require_global` (function) `progs/lua/lua_main.c:22` `static void luaL_require_global(lua_State *L, const char *name,
-                                l...`
-- `set_arg_table` (function) `progs/lua/lua_main.c:28` `static void set_arg_table(lua_State *L, int argc, char **argv, int first)`
-- `docode` (function) `progs/lua/lua_main.c:41` `static int docode(lua_State *L, const char *code)`
-- `dofile` (function) `progs/lua/lua_main.c:51` `static int dofile(lua_State *L, const char *name)`
-- `repl` (function) `progs/lua/lua_main.c:61` `static int repl(lua_State *L)`
-- `main` (function) `progs/lua/lua_main.c:105` `int main(int argc, char **argv)`
-
-## progs/lua/minios.c
-Depends on: `progs/minios_abi.h`
-Imported by: `progs/micropython/variants/minios/lib/hello.py`, `progs/micropython/variants/minios/lib/mip.py`, `progs/src/shell.py`, `progs/src/test.py`
-- `msys5` (function) `progs/lua/minios.c:37` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- /* ── raw syscall helpers (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2...
-- `minios_time_ms` (function) `progs/lua/minios.c:62` `static int minios_time_ms(lua_State *L)` -- } /* ── MiniOS syscall numbers (canonical table from minios_abi.h) ─────── #include "minios_abi.h" #define...
-- `minios_rtc` (function) `progs/lua/minios.c:68` `static int minios_rtc(lua_State *L)` -- #define SYS_PCSPK_INIT  MINIOS_SYS_PCSPK_INIT #define SYS_PCSPK_TONE  MINIOS_SYS_PCSPK_TONE #define SYS_RTC...
-- `minios_fb_info` (function) `progs/lua/minios.c:82` `static int minios_fb_info(lua_State *L)` -- static int minios_rtc(lua_State *L) { int h, m, s; if (msys(SYS_RTC, (long)&h, (long)&m, (long)&s) < 0) {...
-- `minios_vol` (function) `progs/lua/minios.c:96` `static int minios_vol(lua_State *L)` -- static int minios_fb_info(lua_State *L) { int w, h, p; if (msys(SYS_FB_INFO, (long)&w, (long)&h, (long)&p) < 0) {...
-- `minios_pal` (function) `progs/lua/minios.c:109` `static int minios_pal(lua_State *L)` -- /* ── minios.vol([v]) -> current volume ─────────────────────────────── static int minios_vol(lua_State *L) { if...
-- `minios_pcspeaker` (function) `progs/lua/minios.c:119` `static int minios_pcspeaker(lua_State *L)` -- return 1; } /* ── minios.pal(buf) -- load a 768-byte VGA DAC palette ────────────── static int minios_pal(lua_State...
-- `minios_run` (function) `progs/lua/minios.c:136` `static int minios_run(lua_State *L)` -- ── minios.run(path[, args][, redirect]) -> exit code ─────────────── Runs a program through SYS_SPAWN (215)...
-- `luaopen_minios` (function) `progs/lua/minios.c:192` `int luaopen_minios(lua_State *L)`
-
-## progs/micropython/variants/minios/lib/mip.py
-Depends on: `progs/lua/minios.c`
-Imported by: `progs/src/test_py.py`
-- `parse_url` (function) `progs/micropython/variants/minios/lib/mip.py:49` `def parse_url(url)` -- Split an http/https URL into (scheme, host, port, path).
-- `split_url` (function) `progs/micropython/variants/minios/lib/mip.py:98` `def split_url(url)` -- Split an http URL into (host, port, path); https is refused here.
-- `split_https_url` (function) `progs/micropython/variants/minios/lib/mip.py:106` `def split_https_url(url)` -- Split an https URL into (host, port, path); http is refused here.
-- `module_name` (function) `progs/micropython/variants/minios/lib/mip.py:114` `def module_name(url)` -- Return the .py file name a URL installs, validating it is bare.
-- `parse_response` (function) `progs/micropython/variants/minios/lib/mip.py:150` `def parse_response(data)` -- Split one HTTP/1.x response into (status, headers, body).
-- `absolute_url` (function) `progs/micropython/variants/minios/lib/mip.py:202` `def absolute_url(base, location)` -- Resolve a redirect Location against base; http and https survive.
-- `http_get` (function) `progs/micropython/variants/minios/lib/mip.py:222` `def http_get(host, port, path)` -- Fetch http://host:port/path, returning the raw response bytes.
-- `ensure_dir` (function) `progs/micropython/variants/minios/lib/mip.py:276` `def ensure_dir(path)` -- Create path and its parents; existing directories are fine.
-- `https_get` (function) `progs/micropython/variants/minios/lib/mip.py:298` `def https_get(host, port, path)` -- Fetch https://host:port/path through the ring-3 TLS engine.
-- `install` (function) `progs/micropython/variants/minios/lib/mip.py:336` `def install(url, dest)` -- Fetch url and write it as <dest>/<module>.py; returns the path.
-- `main` (function) `progs/micropython/variants/minios/lib/mip.py:394` `def main(argv)` -- CLI entry point: install <url> [dest]; returns the exit code.
-
-## progs/micropython/variants/minios/minios_module.c
-Depends on: `progs/minios_abi.h`
-- `msys5` (function) `progs/micropython/variants/minios/minios_module.c:26` `static long msys5(long n, long a1, long a2, long a3, long a4, long a5)` -- /* ── raw syscall helper (x86-64 Linux ABI) ─────────────────────────── static long msys(long n, long a1, long a2...
-- `minios_time_ms` (function) `progs/micropython/variants/minios/minios_module.c:52` `static mp_obj_t minios_time_ms(void)`
-- `MP_DEFINE_CONST_FUN_OBJ_0` (function) `progs/micropython/variants/minios/minios_module.c:55` `static MP_DEFINE_CONST_FUN_OBJ_0(minios_time_ms_obj, minios_time_ms);`
-- `minios_rtc` (function) `progs/micropython/variants/minios/minios_module.c:59` `static mp_obj_t minios_rtc(void)`
-- `minios_fb_info` (function) `progs/micropython/variants/minios/minios_module.c:76` `static mp_obj_t minios_fb_info(void)`
-- `MP_DEFINE_CONST_FUN_OBJ_VAR` (function) `progs/micropython/variants/minios/minios_module.c:107` `static MP_DEFINE_CONST_FUN_OBJ_VAR(minios_vol_obj, 0, minios_vol);`
-- `minios_pal` (function) `progs/micropython/variants/minios/minios_module.c:111` `static mp_obj_t minios_pal(mp_obj_t buf_in)`
-- `MP_DEFINE_CONST_FUN_OBJ_1` (function) `progs/micropython/variants/minios/minios_module.c:123` `static MP_DEFINE_CONST_FUN_OBJ_1(minios_pal_obj, minios_pal);`
-- `minios_pcspeaker` (function) `progs/micropython/variants/minios/minios_module.c:127` `static mp_obj_t minios_pcspeaker(mp_obj_t freq_in, mp_obj_t ms_in)`
-- `MP_DEFINE_CONST_FUN_OBJ_2` (function) `progs/micropython/variants/minios/minios_module.c:140` `static MP_DEFINE_CONST_FUN_OBJ_2(minios_pcspeaker_obj, minios_pcspeaker);`
-- `minios_run` (function) `progs/micropython/variants/minios/minios_module.c:149` `static mp_obj_t minios_run(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)`
-- `MP_DEFINE_CONST_FUN_OBJ_KW` (function) `progs/micropython/variants/minios/minios_module.c:193` `static MP_DEFINE_CONST_FUN_OBJ_KW(minios_run_obj, 1, minios_run);`
-- `MP_DEFINE_CONST_DICT` (function) `progs/micropython/variants/minios/minios_module.c:207` `static MP_DEFINE_CONST_DICT(minios_module_globals, minios_module_globals_table);`
 
 
 Next: [API_p17.md](API_p17.md)

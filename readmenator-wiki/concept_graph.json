@@ -1514,7 +1514,7 @@
         "tools/test_readme_shot.py",
         "tools/update_sources.py"
       ],
-      "mentions": 282,
+      "mentions": 281,
       "confidence": "EXTRACTED"
     },
     {
@@ -1532,6 +1532,7 @@
         "headers/fsimg.h",
         "headers/kernel.h",
         "headers/pcache.h",
+        "headers/vga_fx.h",
         "headers/wm_jelly.h",
         "kernel/mm/cow.c",
         "kernel/percpu_rq.c",
@@ -1735,7 +1736,7 @@
         "tools/test_bdd.sh",
         "tools/tls_test.py"
       ],
-      "mentions": 236,
+      "mentions": 237,
       "confidence": "EXTRACTED"
     },
     {
@@ -4366,7 +4367,7 @@
         "progs/doomgeneric/z_zone.c",
         "progs/doomgeneric/z_zone.h"
       ],
-      "mentions": 177,
+      "mentions": 176,
       "confidence": "EXTRACTED"
     },
     {
@@ -7721,7 +7722,7 @@
         "tools/wm_layout_sync.py",
         "vma.c"
       ],
-      "mentions": 645,
+      "mentions": 654,
       "confidence": "EXTRACTED"
     },
     {
@@ -8509,7 +8510,7 @@
         "tools/wm_scoped.sh",
         "vma.c"
       ],
-      "mentions": 1236,
+      "mentions": 1247,
       "confidence": "EXTRACTED"
     },
     {
@@ -8796,7 +8797,7 @@
         "tools/test_sb16.sh",
         "tools/update_sources.py"
       ],
-      "mentions": 316,
+      "mentions": 317,
       "confidence": "EXTRACTED"
     },
     {
@@ -8936,7 +8937,7 @@
         "tools/check_cohesion.py",
         "tools/mkramdisk.py"
       ],
-      "mentions": 610,
+      "mentions": 606,
       "confidence": "EXTRACTED"
     },
     {
@@ -9076,7 +9077,7 @@
         "tools/update_sources.py",
         "vma.c"
       ],
-      "mentions": 426,
+      "mentions": 428,
       "confidence": "EXTRACTED"
     },
     {
@@ -9653,7 +9654,7 @@
         "kernel/shell.c->headers/fat32.h",
         "kernel/shell.c->headers/pcache.h",
         "kernel/syscalls.c->headers/pcache.h",
-        "kernel/vga_fb.c->headers/wm_jelly.h"
+        "kernel/vga_fb.c->headers/vga_fx.h"
       ]
     },
     {
@@ -9783,10 +9784,10 @@
         "kernel/shell.c->headers/fat32.h",
         "kernel/shell.c->headers/pcache.h",
         "kernel/syscalls.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/vga_fx.h",
         "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomedit/doomedit.c->kernel/string.c",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h"
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h"
       ]
     },
     {
@@ -9935,10 +9936,10 @@
         "kernel/shell.c->headers/fat32.h",
         "kernel/shell.c->headers/pcache.h",
         "kernel/syscalls.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/vga_fx.h",
         "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h"
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h"
       ]
     },
     {
@@ -10032,8 +10033,8 @@
         "kernel/shell.c->headers/fat32.h",
         "kernel/shell.c->headers/pcache.h",
         "kernel/syscalls.c->headers/pcache.h",
-        "kernel/vga_fb.c->headers/wm_jelly.h",
-        "progs/doomedit/doomedit.c->kernel/string.c"
+        "kernel/vga_fb.c->headers/vga_fx.h",
+        "kernel/vga_fb.c->headers/wm_jelly.h"
       ]
     },
     {
@@ -10123,6 +10124,25 @@
         "kernel/sched.c->headers/vga_fb.h",
         "kernel/vga_fb.c->headers/vga_fb.h",
         "kernel/vga_fb.c->headers/vga_fx.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h"
+      ]
+    },
+    {
+      "source": "more",
+      "target": "under",
+      "verb": "depends_on",
+      "strength": 0.93,
+      "confidence": "INFERRED",
+      "evidence": [
+        "fs/pcache.c->headers/pcache.h",
+        "kernel/sched.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/vga_fx.h",
+        "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
@@ -10538,6 +10558,7 @@
       "confidence": "INFERRED",
       "evidence": [
         "fs/pcache.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/vga_fx.h",
         "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
@@ -10545,8 +10566,7 @@
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_cheat.h"
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h"
       ]
     },
     {
@@ -10576,6 +10596,7 @@
       "confidence": "INFERRED",
       "evidence": [
         "kernel/syscalls.c->headers/pcache.h",
+        "kernel/vga_fb.c->headers/vga_fx.h",
         "kernel/vga_fb.c->headers/wm_jelly.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
@@ -10583,8 +10604,7 @@
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/m_cheat.h"
+        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h"
       ]
     },
     {
@@ -10813,25 +10833,6 @@
         "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
         "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h"
-      ]
-    },
-    {
-      "source": "more",
-      "target": "under",
-      "verb": "depends_on",
-      "strength": 0.92,
-      "confidence": "INFERRED",
-      "evidence": [
-        "fs/pcache.c->headers/pcache.h",
-        "kernel/sched.c->headers/pcache.h",
-        "kernel/vga_fb.c->headers/wm_jelly.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/am_map.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/deh_main.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomdef.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomkeys.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/doomstat.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/dstrings.h",
-        "progs/doomgeneric/am_map.c->progs/doomgeneric/i_system.h"
       ]
     },
     {

@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `sidedef` | variable | `progs/doomgeneric/r_bsp.h:26` | `extern side_t* sidedef;` |
+| `skymap` | variable | `progs/doomgeneric/r_bsp.h:40` | `extern boolean skymap;` |
+| `vscalelight` | variable | `progs/doomgeneric/r_bsp.h:46` | `extern lighttable_t** vscalelight;` |
+| `GenerateTextureHashTable` | function | `progs/doomgeneric/r_data.c:404` | `static void GenerateTextureHashTable(void)` |
+| `R_CheckTextureNumForName` | function | `progs/doomgeneric/r_data.c:744` | `int	R_CheckTextureNumForName (char *name)` |
+| `R_DrawColumnInCache` | function | `progs/doomgeneric/r_data.c:186` | `void R_DrawColumnInCache ( column_t*	patch,   byte*		cache,   int		originy,   int		cacheheight )` |
+| `R_FlatNumForName` | function | `progs/doomgeneric/r_data.c:720` | `int R_FlatNumForName (char* name)` |
+| `R_GenerateComposite` | function | `progs/doomgeneric/r_data.c:226` | `void R_GenerateComposite (int texnum)` |
+| `R_GenerateLookup` | function | `progs/doomgeneric/r_data.c:294` | `void R_GenerateLookup (int texnum)` |
+| `R_GetColumn` | function | `progs/doomgeneric/r_data.c:383` | `byte* R_GetColumn ( int		tex,   int		col )` |
+| `R_InitColormaps` | function | `progs/doomgeneric/r_data.c:685` | `void R_InitColormaps (void)` |
+| `R_InitData` | function | `progs/doomgeneric/r_data.c:703` | `void R_InitData (void)` |
+| `R_InitFlats` | function | `progs/doomgeneric/r_data.c:633` | `void R_InitFlats (void)` |
+| `R_InitSpriteLumps` | function | `progs/doomgeneric/r_data.c:655` | `void R_InitSpriteLumps (void)` |
+| `R_InitTextures` | function | `progs/doomgeneric/r_data.c:451` | `void R_InitTextures (void)` |
+| `R_PrecacheLevel` | function | `progs/doomgeneric/r_data.c:800` | `void R_PrecacheLevel (void)` |
+| `R_TextureNumForName` | function | `progs/doomgeneric/r_data.c:775` | `int	R_TextureNumForName (char* name)` |
+| `texpatch_t` | struct | `progs/doomgeneric/r_data.c:89` | `` |
+| `texture_s` | struct | `progs/doomgeneric/r_data.c:106` | `` |
+| `texture_t` | type_alias | `progs/doomgeneric/r_data.c:103` | `typedef struct texture_s texture_t;` |
+| `R_CheckTextureNumForName` | function | `progs/doomgeneric/r_data.h:49` | `int R_CheckTextureNumForName (char *name);` |
+| `R_FlatNumForName` | function | `progs/doomgeneric/r_data.h:43` | `int R_FlatNumForName (char* name);` |
+| `R_GetColumn` | function | `progs/doomgeneric/r_data.h:30` | `byte* R_GetColumn ( int tex, int col );` |
 | `R_InitData` | function | `progs/doomgeneric/r_data.h:36` | `void R_InitData (void);` |
 | `R_PrecacheLevel` | function | `progs/doomgeneric/r_data.h:37` | `void R_PrecacheLevel (void);` |
 | `R_TextureNumForName` | function | `progs/doomgeneric/r_data.h:48` | `int R_TextureNumForName (char *name);` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 | `ST_WEAPON2X` | macro | `progs/doomgeneric/st_stuff.c:214` | `#define ST_WEAPON2X` |
 | `ST_WEAPON2Y` | macro | `progs/doomgeneric/st_stuff.c:215` | `#define ST_WEAPON2Y` |
 | `ST_WEAPON3X` | macro | `progs/doomgeneric/st_stuff.c:218` | `#define ST_WEAPON3X` |
-| `ST_WEAPON3Y` | macro | `progs/doomgeneric/st_stuff.c:219` | `#define ST_WEAPON3Y` |
-| `ST_WEAPON4X` | macro | `progs/doomgeneric/st_stuff.c:222` | `#define ST_WEAPON4X` |
-| `ST_WEAPON4Y` | macro | `progs/doomgeneric/st_stuff.c:223` | `#define ST_WEAPON4Y` |
-| `ST_WEAPON5X` | macro | `progs/doomgeneric/st_stuff.c:226` | `#define ST_WEAPON5X` |
-| `ST_WEAPON5Y` | macro | `progs/doomgeneric/st_stuff.c:227` | `#define ST_WEAPON5Y` |
-| `ST_WPNSX` | macro | `progs/doomgeneric/st_stuff.c:230` | `#define ST_WPNSX` |
-| `ST_WPNSY` | macro | `progs/doomgeneric/st_stuff.c:231` | `#define ST_WPNSY` |
-| `ST_X` | macro | `progs/doomgeneric/st_stuff.c:83` | `#define ST_X` |
-| `ST_X2` | macro | `progs/doomgeneric/st_stuff.c:84` | `#define ST_X2` |
-| `ST_calcPainOffset` | function | `progs/doomgeneric/st_stuff.c:665` | `int ST_calcPainOffset(void)` |
-| `ST_createWidgets` | function | `progs/doomgeneric/st_stuff.c:1227` | `void ST_createWidgets(void)` |
-| `ST_diffDraw` | function | `progs/doomgeneric/st_stuff.c:1049` | `void ST_diffDraw(void)` |
-| `ST_doPaletteStuff` | function | `progs/doomgeneric/st_stuff.c:936` | `void ST_doPaletteStuff(void)` |
-| `ST_doRefresh` | function | `progs/doomgeneric/st_stuff.c:1036` | `void ST_doRefresh(void)` |
-| `ST_drawWidgets` | function | `progs/doomgeneric/st_stuff.c:1001` | `void ST_drawWidgets(boolean refresh)` |
-| `ST_initData` | function | `progs/doomgeneric/st_stuff.c:1194` | `void ST_initData(void)` |
-| `ST_loadCallback` | function | `progs/doomgeneric/st_stuff.c:1162` | `static void ST_loadCallback(char *lumpname, patch_t **variable)` |
-| `ST_loadData` | function | `progs/doomgeneric/st_stuff.c:1172` | `void ST_loadData(void)` |
-| `ST_loadGraphics` | function | `progs/doomgeneric/st_stuff.c:1167` | `void ST_loadGraphics(void)` |
-| `ST_loadUnloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1076` | `static void ST_loadUnloadGraphics(load_callback_t callback)` |
-| `ST_refreshBackground` | function | `progs/doomgeneric/st_stuff.c:416` | `void ST_refreshBackground(void)` |
-| `ST_unloadCallback` | function | `progs/doomgeneric/st_stuff.c:1178` | `static void ST_unloadCallback(char *lumpname, patch_t **variable)` |
-| `ST_unloadData` | function | `progs/doomgeneric/st_stuff.c:1189` | `void ST_unloadData(void)` |
 
 Next: [SYMBOLS_p19.md](SYMBOLS_p19.md)

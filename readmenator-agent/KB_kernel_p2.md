@@ -384,8 +384,8 @@ static void shell_cmd_trac...`
   - `shell_exec_builtin` (function, line 2905) `void shell_exec_builtin(int argc, char **argv)`
   - `driver` (function, line 3331) `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
-  - `shell_is_pipe_tok` (function, line 4105) `static int shell_is_pipe_tok(const char *a)`
-  - `shell_run_stage` (function, line 4144) `static char *shell_run_stage(char **sargv, int sargc,
+  - `shell_is_pipe_tok` (function, line 4106) `static int shell_is_pipe_tok(const char *a)`
+  - `shell_run_stage` (function, line 4145) `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...`
   - `shell_run_pipeline` (function, line 151) `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
   - `text` (function, line 594) `* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */...`
@@ -396,7 +396,7 @@ static void shell_cmd_trac...`
   - `context` (function, line 1705) `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
   - `terminal` (function, line 2980) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
   - `frame` (function, line 3725) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-  - `stdout` (function, line 4093) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+  - `stdout` (function, line 4094) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 25) `#define XXH_STATIC_LINKING_ONLY`
   - `SHELL_CVM_INTERP` (macro, line 53) `#define SHELL_CVM_INTERP`
   - `SHELL_RUN_DIRS` (macro, line 72) `#define SHELL_RUN_DIRS`
@@ -406,7 +406,7 @@ static void shell_cmd_trac...`
   - `HTTPD_REQ_CAP` (macro, line 2563) `#define HTTPD_REQ_CAP`
   - `HTTPD_IO_CHUNK` (macro, line 2564) `#define HTTPD_IO_CHUNK`
   - `SHELL_LS_CAP` (macro, line 2821) `#define SHELL_LS_CAP`
-  - `PIPE_HOP_MAX` (macro, line 4103) `#define PIPE_HOP_MAX`
+  - `PIPE_HOP_MAX` (macro, line 4104) `#define PIPE_HOP_MAX`
 - Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ## kernel/spawn.c

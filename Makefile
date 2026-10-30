@@ -147,14 +147,18 @@ KASLR_FLAG =
 endif
 
 # The KASLR flag is a variable, not a file, so a flag change would otherwise
-# leave a stale stage2.o behind. A stamp records the value in effect and is
-# rewritten only when the value changes, so stage2.o rebuilds exactly when
-# the flag does.
-KASLR_STAMP = .kaslrflag
-.PHONY: kaslr-flag-force
-$(KASLR_STAMP): kaslr-flag-force
-	@new='$(KASLR_FLAG)'; old="$$(cat $@ 2>/dev/null)"; \
-	 if [ "$$new" != "$$old" ]; then printf '%s\n' "$$new" > $@; fi
+# leave a stale stage2.o behind. The stamp's NAME carries the value in
+# effect, so it is an ordinary file target: it exists and is older than
+# stage2.o on every later make (nothing rebuilds), and a changed value
+# names a different, missing stamp that is created fresh and so is newer
+# than stage2.o (it rebuilds). Stamps of other values are removed when one
+# is created, so flipping the flag back can never match a stale stamp. A
+# .PHONY prerequisite here would be wrong: make treats a target that
+# depends on a phony as remade on every run, which rebuilt stage2, every
+# program and os.img each time, even with no source change.
+KASLR_STAMP = .kaslrflag-$(ENABLE_KASLR)
+$(KASLR_STAMP):
+	@rm -f .kaslrflag .kaslrflag-*; touch $@
 
 CFLAGS_BOOT = -m32 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs -Wall -Os -Iheaders -Iheaders/arch/x86/boot
 CFLAGS_KERN = -m64 -ffreestanding -nostdlib -nostartfiles -nodefaultlibs \
@@ -3032,7 +3036,7 @@ test: os.img
 clean: saves-backup
 	rm -rf $(TOOLS_DIR)
 	rm -f *.o *.elf *.bin *.img os.iso os.vdi ramdisk_data.c ramdisk.bin
-	rm -f .kaslrflag .mutate-state Makefile.bak
+	rm -f .kaslrflag .kaslrflag-* .mutate-state Makefile.bak
 	rm -f *.log qemu.log qemu_trace.log qemu_trace2.log test_bdd.log
 	rm -f $(OBJ_DIR)/*.o
 	rm -f $(BIN_DIR)/lxhello.elf $(BIN_DIR)/ldhello.elf \

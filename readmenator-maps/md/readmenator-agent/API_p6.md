@@ -1,6 +1,23 @@
 # API (page 6 of 21)
 Previous: [API_p5.md](API_p5.md)
 
+## headers/wm_events.h
+Depends on: `headers/drivers/modifiers.h`
+Imported by: `drivers/kbd.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+- `wm_is_click_edge` (function) `headers/wm_events.h:52` `static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons)` -- int button; int wheel; } wm_event_t; /** Docstring: Centralized event translator configuration. typedef struct { int...
+- `wm_is_release_edge` (function) `headers/wm_events.h:59` `static inline int wm_is_release_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_but...` -- int wheel_step; } wm_event_config_t; /** Docstring: Default event configuration matching the PS/2 mouse path....
+- `wm_translate_event` (function) `headers/wm_events.h:66` `static inline wm_event_t wm_translate_event(const wm_event_config_t *cfg, const wm_mouse_t *prev,...` -- static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons) { int mask =...
+- `wm_event_suppresses_drag` (function) `headers/wm_events.h:104` `static inline int wm_event_suppresses_drag(const wm_event_t *evt)` -- return evt; } if (curr->wheel != 0) { evt.type = WM_EVT_SCROLL; return evt; } if (curr->x != prev->x || curr->y !=...
+- `wm_combo_lookup` (function) `headers/wm_events.h:201` `static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zon...` -- {1, 0, 1, WM_SC_HOME, WM_PATH_COOKED, WM_COMBO_SNAP, WM_SNAP_TOP_LEFT}, {1, 0, 1, WM_SC_END, WM_PATH_COOKED...
+- `wm_combo_lookup_mods` (function) `headers/wm_events.h:238` `static inline int wm_combo_lookup_mods(const modifier_state_t *st, int e0, int sc, int path, int ...` -- continue; } if (!(WM_COMBOS[i].paths & path)) { continue; } if (zone_out != 0) { zone_out = WM_COMBOS[i].zone; }...
+
+## headers/wm_focus.h
+Depends on: `headers/wm_window.h`
+Imported by: `kernel/vga_fb.c`, `tests/test_wm.c`
+- `wm_focus_selectable` (function) `headers/wm_focus.h:23` `static inline int wm_focus_selectable(const wm_focus_state_t *st, int id)` -- #ifndef WM_FOCUS_H #define WM_FOCUS_H #include "wm_window.h" /** Docstring: Focus state snapshot consumed by every...
+- `wm_focus_next` (function) `headers/wm_focus.h:38` `static inline int wm_focus_next(const wm_focus_state_t *st)` -- { if (st == 0) { return 0; } if (id == WM_WINDOW_GFX_ID) { return st->gfx_active ?
+- `wm_focus_set` (function) `headers/wm_focus.h:55` `static inline int wm_focus_set(const wm_focus_state_t *st, int id)` -- int i; if (st == 0) { return 0; } for (i = 0; i < 4; i++) { flat[i] = 0; } for (i = 0; i < st->nterms && i < 4; i++)...
+
 ## headers/wm_geom.h
 Imported by: `headers/wm_window.h`, `kernel/vga_fb.c`, `tests/test_wm.c`
 - `wm_rect_valid` (function) `headers/wm_geom.h:33` `static inline int wm_rect_valid(const wm_rect_t *r)` -- } wm_geom_config_t; /** Docstring: Default geometry matching the kernel 8x8 font layout. #define...
@@ -477,21 +494,6 @@ Depends on: `headers/ide.h`, `headers/lz4_kernel.h`
 - `swap_lba` (function) `kernel/mm/swap.c:41` `static unsigned long swap_lba(void)`
 - `swap_out` (function) `kernel/mm/swap.c:47` `int swap_out(unsigned long window_sz)`
 - `swap_in` (function) `kernel/mm/swap.c:97` `int swap_in(void)`
-
-## kernel/mm/tlb.c
-Depends on: `headers/sched.h`, `headers/smp.h`, `headers/spinlock.h`, `headers/tlb.h`
-- `tlb_others_on` (function) `kernel/mm/tlb.c:36` `static int tlb_others_on(unsigned long cr3)` -- 1 when another online CPU is running address space cr3 right now.
-- `tlb_shootdown` (function) `kernel/mm/tlb.c:49` `void tlb_shootdown(unsigned long cr3)`
-- `tlb_shootdown_count` (function) `kernel/mm/tlb.c:71` `unsigned long tlb_shootdown_count(void)`
-- `tlb_shootdown_timeouts` (function) `kernel/mm/tlb.c:75` `unsigned long tlb_shootdown_timeouts(void)`
-
-## kernel/panic.c
-Depends on: `headers/panic.h`, `headers/sched.h`, `headers/vga_fb.h`
-- `panic_hex` (function) `kernel/panic.c:23` `static void panic_hex(unsigned long v, int digits)`
-- `panic_fb_puts` (function) `kernel/panic.c:30` `static void panic_fb_puts(const char *s)`
-- `panic_fb_hex` (function) `kernel/panic.c:61` `static void panic_fb_hex(unsigned long v, int digits)`
-- `panic_screen` (function) `kernel/panic.c:98` `void panic_screen(unsigned long vector, unsigned long err,
-        unsigned long rip, unsigned lo...` -- Docstring: Paint the panic screen for an unrecoverable fault and halt when asked. vector/err/rip/rsp come from the...
 
 
 Next: [API_p7.md](API_p7.md)

@@ -278,10 +278,16 @@ void vga_fx_free(unsigned int *buf);
 void vga_fx_melt_rect(int x, int y, int w, int h,
     const unsigned int *oldb, const unsigned int *newb);
 void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);
+void vga_fx_burn_rect(int x, int y, int w, int h,
+    const unsigned int *oldb, const unsigned int *newb, int stride);
+void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty,
+    const unsigned int *bgb, const unsigned int *winb, int reverse);
 /* Melt transitions completed since boot (boot melt counts, so a fresh shell
  * already reports 1 with the effect on). Serial-observable proof the melts
  * ran, in the same spirit as `gfx frames`. */
 extern unsigned long fx_melts_completed;
+extern unsigned long fx_burns_completed;
+extern unsigned long fx_genies_completed;
 
 /* Graphics-mode pointer. SYS_VGA_MODE toggles vga_fb_set_gfx_mode; while a
  * ring-3 graphics program owns the display the kernel idle loop (and with it

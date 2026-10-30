@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `KS_KP_DIVIDE` | macro | `progs/freedomui/ps2_keymap.c:82` | `#define KS_KP_DIVIDE` |
+| `KS_KP_DOWN` | macro | `progs/freedomui/ps2_keymap.c:74` | `#define KS_KP_DOWN` |
+| `KS_KP_END` | macro | `progs/freedomui/ps2_keymap.c:77` | `#define KS_KP_END` |
+| `KS_KP_HOME` | macro | `progs/freedomui/ps2_keymap.c:70` | `#define KS_KP_HOME` |
+| `KS_KP_INSERT` | macro | `progs/freedomui/ps2_keymap.c:79` | `#define KS_KP_INSERT` |
+| `KS_KP_LEFT` | macro | `progs/freedomui/ps2_keymap.c:71` | `#define KS_KP_LEFT` |
+| `KS_KP_MULTIPLY` | macro | `progs/freedomui/ps2_keymap.c:80` | `#define KS_KP_MULTIPLY` |
+| `KS_KP_NEXT` | macro | `progs/freedomui/ps2_keymap.c:76` | `#define KS_KP_NEXT` |
+| `KS_KP_PRIOR` | macro | `progs/freedomui/ps2_keymap.c:75` | `#define KS_KP_PRIOR` |
+| `KS_KP_RIGHT` | macro | `progs/freedomui/ps2_keymap.c:73` | `#define KS_KP_RIGHT` |
+| `KS_KP_UP` | macro | `progs/freedomui/ps2_keymap.c:72` | `#define KS_KP_UP` |
+| `KS_MENU` | macro | `progs/freedomui/ps2_keymap.c:65` | `#define KS_MENU` |
+| `KS_NUM_LOCK` | macro | `progs/freedomui/ps2_keymap.c:67` | `#define KS_NUM_LOCK` |
+| `KS_PRINT` | macro | `progs/freedomui/ps2_keymap.c:64` | `#define KS_PRINT` |
+| `KS_SCROLL_LOCK` | macro | `progs/freedomui/ps2_keymap.c:66` | `#define KS_SCROLL_LOCK` |
+| `KS_SUPER_L` | macro | `progs/freedomui/ps2_keymap.c:68` | `#define KS_SUPER_L` |
+| `KS_SUPER_R` | macro | `progs/freedomui/ps2_keymap.c:69` | `#define KS_SUPER_R` |
+| `PS2_BREAK_BIT` | macro | `progs/freedomui/ps2_keymap.c:16` | `#define PS2_BREAK_BIT` |
+| `PS2_CODE_MASK` | macro | `progs/freedomui/ps2_keymap.c:17` | `#define PS2_CODE_MASK` |
+| `PS2_HELD_LALT` | macro | `progs/freedomui/ps2_keymap.c:24` | `#define PS2_HELD_LALT` |
+| `PS2_HELD_LCTRL` | macro | `progs/freedomui/ps2_keymap.c:22` | `#define PS2_HELD_LCTRL` |
+| `PS2_HELD_LSHIFT` | macro | `progs/freedomui/ps2_keymap.c:20` | `#define PS2_HELD_LSHIFT` |
+| `PS2_HELD_RALT` | macro | `progs/freedomui/ps2_keymap.c:25` | `#define PS2_HELD_RALT` |
 | `PS2_HELD_RCTRL` | macro | `progs/freedomui/ps2_keymap.c:23` | `#define PS2_HELD_RCTRL` |
 | `PS2_HELD_RSHIFT` | macro | `progs/freedomui/ps2_keymap.c:21` | `#define PS2_HELD_RSHIFT` |
 | `PS2_PAUSE_TAIL` | macro | `progs/freedomui/ps2_keymap.c:15` | `#define PS2_PAUSE_TAIL` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `pig_collides` | function | `progs/minicraft/minicraft.c:1243` | `static int pig_collides(float x, float y, float z)` |
 | `player_collides` | function | `progs/minicraft/minicraft.c:2355` | `static int player_collides(float x, float y, float z)` |
 | `poll_kbd` | function | `progs/minicraft/minicraft.c:2162` | `static void poll_kbd(void)` |
-| `render_frame` | function | `progs/minicraft/minicraft.c:2038` | `static void render_frame(void)` |
-| `render_mob_array` | function | `progs/minicraft/minicraft.c:1979` | `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,     float rx, float r...` |
-| `render_pigs` | function | `progs/minicraft/minicraft.c:2030` | `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)` |
-| `render_terrain` | function | `progs/minicraft/minicraft.c:1910` | `static void render_terrain(RayHit tgt, float cyaw, float syaw, float cpit,                       ...` |
-| `s_getc_raw` | function | `progs/minicraft/minicraft.c:359` | `static long s_getc_raw(void)` |
-| `s_kbd` | function | `progs/minicraft/minicraft.c:342` | `static long s_kbd(void)` |
-| `s_kbd_raw` | function | `progs/minicraft/minicraft.c:347` | `static long s_kbd_raw(long on)` |
-| `s_mouse` | function | `progs/minicraft/minicraft.c:453` | `static long s_mouse(int *m)` |
-| `s_pal` | function | `progs/minicraft/minicraft.c:438` | `static long s_pal(const unsigned char *p)` |
-| `s_pcspk_init` | function | `progs/minicraft/minicraft.c:468` | `static long s_pcspk_init(void)` |
-| `s_present` | function | `progs/minicraft/minicraft.c:443` | `static long s_present(void)` |
-| `s_time_ms` | function | `progs/minicraft/minicraft.c:337` | `static long s_time_ms(void)` |
-| `s_title` | function | `progs/minicraft/minicraft.c:448` | `static long s_title(const char *t)` |
-| `s_vga` | function | `progs/minicraft/minicraft.c:433` | `static long s_vga(long on)` |
-| `s_yield` | function | `progs/minicraft/minicraft.c:463` | `static void s_yield(void)` |
-| `s_zoom` | function | `progs/minicraft/minicraft.c:458` | `static long s_zoom(long on)` |
-| `save_chunk_file` | function | `progs/minicraft/minicraft.c:2942` | `static int save_chunk_file(int slot)` |
-| `save_compute_crc` | function | `progs/minicraft/minicraft.c:2932` | `static uint32_t save_compute_crc(const SaveHeader *hd)` |
-| `save_validate_loaded` | function | `progs/minicraft/minicraft.c:3056` | `static int save_validate_loaded(void)` |
-| `save_world` | function | `progs/minicraft/minicraft.c:330` | `static int save_world(void);` |
-| `sc_hist_push` | function | `progs/minicraft/minicraft.c:2151` | `static void sc_hist_push(unsigned char b)` |
-| `selftest` | function | `progs/minicraft/minicraft.c:3345` | `static int selftest(void)` |
-| `ser_get` | function | `progs/minicraft/minicraft.c:373` | `static long ser_get(void)` |
 
 Next: [SYMBOLS_p21.md](SYMBOLS_p21.md)

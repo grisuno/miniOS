@@ -1,6 +1,104 @@
 # API (page 21 of 21)
 Previous: [API_p20.md](API_p20.md)
 
+## tools/check_cohesion.py
+- `load_cpg` (function) `tools/check_cohesion.py:23` `def load_cpg(path)` -- Load and parse the CPG JSON-LD file.
+- `compute_cohesion` (function) `tools/check_cohesion.py:31` `def compute_cohesion(community_nodes, community_edges)` -- Compute cohesion as internal_edges / max_possible_edges.
+- `extract_communities` (function) `tools/check_cohesion.py:42` `def extract_communities(cpg)` -- Extract communities and their internal edges from CPG.
+- `main` (function) `tools/check_cohesion.py:58` `def main()`
+
+## tools/check_complexity.py
+- `count_symbols` (function) `tools/check_complexity.py:24` `def count_symbols(filepath)` -- Count top-level function and global variable definitions.
+- `load_approval` (function) `tools/check_complexity.py:46` `def load_approval(policy_path)` -- Load explicit complexity approval from ARCH_POLICY.yaml.
+- `main` (function) `tools/check_complexity.py:61` `def main()`
+
+## tools/check_kb_sync.py
+- `regenerate_kb` (function) `tools/check_kb_sync.py:24` `def regenerate_kb()` -- Attempt to regenerate KNOWLEDGE_BASE.md using readmenator.
+- `main` (function) `tools/check_kb_sync.py:43` `def main()`
+
+## tools/check_mutant_anchors.py
+- `bash_unquote` (function) `tools/check_mutant_anchors.py:26` `def bash_unquote(expr)` -- Collapse the escapes bash applies inside the MUTATIONS string.
+- `unescaped_quote` (function) `tools/check_mutant_anchors.py:41` `def unescaped_quote(expr)` -- True when expr holds a double quote bash would not keep.
+- `parse_mutations` (function) `tools/check_mutant_anchors.py:58` `def parse_mutations(text)` -- Extract (name, expression, target) triples from the MUTATIONS block.
+- `anchor_matches` (function) `tools/check_mutant_anchors.py:84` `def anchor_matches(repo, target, expr)` -- Apply the sed expression to a scratch copy; True when it changes it.
+- `main` (function) `tools/check_mutant_anchors.py:105` `def main()` -- Entry point: report anchors that change nothing and exit nonzero.
+
+## tools/check_spin_discipline.py
+- `iter_functions` (function) `tools/check_spin_discipline.py:38` `def iter_functions(path)` -- Yield (name, first_line, body_lines) with a brace-depth split.
+- `check_file` (function) `tools/check_spin_discipline.py:64` `def check_file(path)` -- Return a list of violation strings for one translation unit.
+- `main` (function) `tools/check_spin_discipline.py:99` `def main(argv)` -- Walk the configured roots and fail closed on any violation.
+
+## tools/check_surprising.py
+- `load_cpg` (function) `tools/check_surprising.py:25` `def load_cpg(path)` -- Load and parse the CPG JSON-LD file.
+- `build_graph` (function) `tools/check_surprising.py:33` `def build_graph(cpg)` -- Build adjacency list from CPG nodes and edges.
+- `bfs_min_hops` (function) `tools/check_surprising.py:56` `def bfs_min_hops(nodes, edges, source, target_community, max_hops)` -- BFS from source to any node in target_community, returning hop count.
+- `find_surprising_connections` (function) `tools/check_surprising.py:87` `def find_surprising_connections(nodes, edges, min_hops)` -- Find connections of min_hops or more between distinct communities.
+- `main` (function) `tools/check_surprising.py:118` `def main()`
+
+## tools/check_syscall_sanitize.py
+- `split_functions` (function) `tools/check_syscall_sanitize.py:70` `def split_functions(lines)` -- Yield (name, start, body_lines) triples using brace depth.
+- `checked_names` (function) `tools/check_syscall_sanitize.py:113` `def checked_names(body)` -- Return identifiers named inside sanitizer checks in a body.
+- `delegated_only` (function) `tools/check_syscall_sanitize.py:123` `def delegated_only(body, alias)` -- Decide whether an alias flows only into sanitizing callees.
+- `split_top_args` (function) `tools/check_syscall_sanitize.py:144` `def split_top_args(argtext)` -- Split a call argument list on top-level commas only.
+- `audit_body` (function) `tools/check_syscall_sanitize.py:163` `def audit_body(name, body)` -- Return violation strings for one function body.
+- `audit_file` (function) `tools/check_syscall_sanitize.py:218` `def audit_file(path)` -- Audit every handler in one file, return violation strings.
+- `main` (function) `tools/check_syscall_sanitize.py:229` `def main()` -- Entry point used by lint and CI.
+
+## tools/clip_bridge.py
+- `valid_dst` (function) `tools/clip_bridge.py:41` `def valid_dst(name, cfg)` -- True when name is a safe guest path.
+- `printable_line` (function) `tools/clip_bridge.py:52` `def printable_line(line, cfg)` -- True when every char survives the kernel readline.
+- `build_plan` (function) `tools/clip_bridge.py:59` `def build_plan(text, dst, cfg)` -- Return (ok, lines, diagnostic) for carrying text to dst.
+- `main` (function) `tools/clip_bridge.py:84` `def main(argv)` -- Entry point: clip_bridge.py <src-file> <dst-name>.
+
+## tools/doom_pwad.py
+Imported by: `tests/test_doom_pwad.py`
+- `pad_tex` (function) `tools/doom_pwad.py:165` `def pad_tex(raw)` -- Return a texture or flat name padded to its 8-byte field.
+- `parse_grid` (function) `tools/doom_pwad.py:172` `def parse_grid(text)` -- Parse grid text into rows, refusing empty or ragged input.
+- `grid_extents` (function) `tools/doom_pwad.py:195` `def grid_extents(rows)` -- Return coordinate bounds of the lattice in map units.
+- `is_wall` (function) `tools/doom_pwad.py:203` `def is_wall(rows, row, col)` -- Treat out-of-bounds cells as solid wall so maps stay closed.
+- `flood_reachable` (function) `tools/doom_pwad.py:210` `def flood_reachable(rows)` -- Return the walkable set reachable from the player start tile.
+- `validate_grid` (function) `tools/doom_pwad.py:240` `def validate_grid(rows)` -- Enforce single player, single exit, and full reachability.
+- `cell_corners` (function) `tools/doom_pwad.py:269` `def cell_corners(row, col)` -- Return cell corners as (x0, x1, y_top, y_bottom) in map units.
+- `cell_class` (function) `tools/doom_pwad.py:279` `def cell_class(cell)` -- Classify a walkable cell: doors stand alone, styles never merge.
+- `label_regions` (function) `tools/doom_pwad.py:291` `def label_regions(rows)` -- Flood same-class walkable cells into region ids; walls stay -1.
+- `region_sector` (function) `tools/doom_pwad.py:326` `def region_sector(region, door_tag)` -- Map a labelled region to its sector record fields and wall skin.
+- `compile_geometry` (function) `tools/doom_pwad.py:371` `def compile_geometry(rows, exit_pos, wall_side)` -- Compile edges into vertexes, two-sided rooms and tagged doors.
+- `vertex` (function) `tools/doom_pwad.py:386` `def vertex(x, y)` -- Deduplicate lattice points shared by adjacent edges.
+- `compile_things` (function) `tools/doom_pwad.py:485` `def compile_things(rows)` -- Compile thing stamps into mapthing records in scan order.
+- `seg_angle` (function) `tools/doom_pwad.py:506` `def seg_angle(dx, dy)` -- Return the stored short angle for a seg direction vector.
+- `build_lumps` (function) `tools/doom_pwad.py:516` `def build_lumps(rows)` -- Compile a validated grid into the eleven E1M1 lump payloads.
+- `build_pwad` (function) `tools/doom_pwad.py:597` `def build_pwad(rows)` -- Assemble lump payloads into a complete PWAD byte string.
+- `read_pwad` (function) `tools/doom_pwad.py:616` `def read_pwad(data)` -- Split PWAD bytes into header fields and an ordered lump table.
+- `check_pwad` (function) `tools/doom_pwad.py:639` `def check_pwad(data)` -- Validate lump order, record sizes and cross-lump references.
+- `payload` (function) `tools/doom_pwad.py:650` `def payload(name)` -- Slice one lump payload out of the file image.
+- `check_multiple` (function) `tools/doom_pwad.py:655` `def check_multiple(name, fmt)` -- Require the lump length to hold whole records only.
+- `cmd_build` (function) `tools/doom_pwad.py:816` `def cmd_build(grid_path, out_path)` -- Build a PWAD from a grid file, refusing to write on any error.
+- `cmd_check` (function) `tools/doom_pwad.py:826` `def cmd_check(path)` -- Validate a PWAD file and report its lump census on success.
+- `main` (function) `tools/doom_pwad.py:834` `def main(argv)` -- Dispatch the build, check and info verbs with host-safe errors.
+
+## tools/gdb_repro.py
+Depends on: `kernel/time.c`
+- `rs` (function) `tools/gdb_repro.py:23` `def rs(m, t)`
+- `main` (function) `tools/gdb_repro.py:27` `def main()`
+- `send` (function) `tools/gdb_repro.py:65` `def send(line)`
+- `quit_doom` (function) `tools/gdb_repro.py:70` `def quit_doom()`
+
+## tools/gen_avatar.py
+- `AvatarPainter.__init__` (method) `tools/gen_avatar.py:64` `def __init__(self, cfg)`
+- `AvatarPainter.background` (method) `tools/gen_avatar.py:83` `def background(self)`
+- `AvatarPainter.hair_back` (method) `tools/gen_avatar.py:86` `def hair_back(self)`
+- `AvatarPainter.face` (method) `tools/gen_avatar.py:96` `def face(self)`
+- `AvatarPainter.eye` (method) `tools/gen_avatar.py:103` `def eye(self, cx, cy)`
+- `AvatarPainter.eyes` (method) `tools/gen_avatar.py:123` `def eyes(self)`
+- `AvatarPainter.nose_mouth` (method) `tools/gen_avatar.py:127` `def nose_mouth(self)`
+- `AvatarPainter.bangs` (method) `tools/gen_avatar.py:134` `def bangs(self)`
+- `AvatarPainter.ribbon` (method) `tools/gen_avatar.py:149` `def ribbon(self)`
+- `AvatarPainter.render` (method) `tools/gen_avatar.py:157` `def render(self)`
+- `load_portrait` (function) `tools/gen_avatar.py:169` `def load_portrait(path, crop)` -- Crop the square face region of a picture and downsample it.
+- `parse_crop` (function) `tools/gen_avatar.py:180` `def parse_crop(text)` -- Parse 'X,Y,SIZE' into three integers or abort with a clear message.
+- `write_header` (function) `tools/gen_avatar.py:191` `def write_header(image, path)` -- Write the avatar as a C header, atomically.
+- `main` (function) `tools/gen_avatar.py:225` `def main(argv)` -- Entry point: render, write the header, optionally a preview PNG.
+
 ## tools/gen_desktop_pngs.py
 - `scaled` (function) `tools/gen_desktop_pngs.py:75` `def scaled(im, scale)` -- Resize an image by a factor with Lanczos, never below one pixel.
 - `fit_wallpaper` (function) `tools/gen_desktop_pngs.py:81` `def fit_wallpaper(im)` -- Whole source, centred, over a blurred and dimmed cover-scaled copy.
@@ -190,8 +288,8 @@ Depends on: `kernel/time.c`
 - `usage` (function) `tools/mutate.sh:51`
 - `restore_sources` (function) `tools/mutate.sh:139`
 - `cleanup` (function) `tools/mutate.sh:146`
-- `record` (function) `tools/mutate.sh:556`
-- `find_index` (function) `tools/mutate.sh:562` -- Locate a mutant by name.
+- `record` (function) `tools/mutate.sh:570`
+- `find_index` (function) `tools/mutate.sh:576` -- Locate a mutant by name.
 
 ## tools/probe_compute_vga.py
 Depends on: `kernel/time.c`

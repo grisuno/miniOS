@@ -1,6 +1,53 @@
 # Subsystem: headers (page 6 of 6)
 Previous: [KB_headers_p5.md](KB_headers_p5.md)
 
+## headers/wm_events.h
+- Doc: Docstring: Window event contract for the MiniOS desktop.
+- Layer: infrastructure
+- Language: h
+- Symbols:
+  - `wm_mouse_t` (struct, line 25)
+  - `wm_event_t` (struct, line 34)
+  - `wm_event_config_t` (struct, line 43)
+  - `wm_combo_t` (struct, line 158)
+  - `wm_is_click_edge` (function, line 52) `static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons)`
+  - `wm_is_release_edge` (function, line 59) `static inline int wm_is_release_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_but...`
+  - `wm_translate_event` (function, line 66) `static inline wm_event_t wm_translate_event(const wm_event_config_t *cfg, const wm_mouse_t *prev,...`
+  - `wm_event_suppresses_drag` (function, line 104) `static inline int wm_event_suppresses_drag(const wm_event_t *evt)`
+  - `wm_combo_lookup` (function, line 201) `static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zon...`
+  - `wm_combo_lookup_mods` (function, line 238) `static inline int wm_combo_lookup_mods(const modifier_state_t *st, int e0, int sc, int path, int ...`
+  - `WM_EVENTS_H` (macro, line 11) `#define WM_EVENTS_H`
+  - `WM_EVENT_CONFIG_DEFAULT` (macro, line 49) `#define WM_EVENT_CONFIG_DEFAULT`
+  - `WM_SC_TAB` (macro, line 110) `#define WM_SC_TAB`
+  - `WM_SC_ENTER` (macro, line 111) `#define WM_SC_ENTER`
+  - `WM_SC_MINUS` (macro, line 112) `#define WM_SC_MINUS`
+  - `WM_SC_EQUAL` (macro, line 113) `#define WM_SC_EQUAL`
+  - `WM_SC_ZERO` (macro, line 114) `#define WM_SC_ZERO`
+  - `WM_SC_Q` (macro, line 115) `#define WM_SC_Q`
+  - `WM_SC_LBRACKET` (macro, line 116) `#define WM_SC_LBRACKET`
+  - `WM_SC_RBRACKET` (macro, line 117) `#define WM_SC_RBRACKET`
+  - `WM_SC_M` (macro, line 118) `#define WM_SC_M`
+  - `WM_SC_X` (macro, line 119) `#define WM_SC_X`
+  - `WM_SC_UP` (macro, line 120) `#define WM_SC_UP`
+  - `WM_SC_DOWN` (macro, line 121) `#define WM_SC_DOWN`
+  - `WM_SC_LEFT` (macro, line 122) `#define WM_SC_LEFT`
+  - `WM_SC_RIGHT` (macro, line 123) `#define WM_SC_RIGHT`
+  - `WM_SC_HOME` (macro, line 124) `#define WM_SC_HOME`
+  - `WM_SC_END` (macro, line 125) `#define WM_SC_END`
+  - `WM_SNAP_LEFT` (macro, line 128) `#define WM_SNAP_LEFT`
+  - `WM_SNAP_RIGHT` (macro, line 129) `#define WM_SNAP_RIGHT`
+  - `WM_SNAP_TOP` (macro, line 130) `#define WM_SNAP_TOP`
+  - `WM_SNAP_BOTTOM` (macro, line 131) `#define WM_SNAP_BOTTOM`
+  - `WM_SNAP_TOP_LEFT` (macro, line 132) `#define WM_SNAP_TOP_LEFT`
+  - `WM_SNAP_TOP_RIGHT` (macro, line 133) `#define WM_SNAP_TOP_RIGHT`
+  - `WM_SNAP_BOTTOM_LEFT` (macro, line 134) `#define WM_SNAP_BOTTOM_LEFT`
+  - `WM_SNAP_BOTTOM_RIGHT` (macro, line 135) `#define WM_SNAP_BOTTOM_RIGHT`
+  - `WM_PATH_COOKED` (macro, line 138) `#define WM_PATH_COOKED`
+  - `WM_PATH_RAW` (macro, line 139) `#define WM_PATH_RAW`
+  - `WM_COMBOS_N` (macro, line 198) `#define WM_COMBOS_N`
+- Depends on: `headers/drivers/modifiers.h`
+- Imported by: `drivers/kbd.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
+
 ## headers/wm_focus.h
 - Doc: Docstring: Focus manager contract for the MiniOS desktop.
 - Layer: utility

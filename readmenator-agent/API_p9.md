@@ -1,19 +1,263 @@
 # API (page 9 of 21)
 Previous: [API_p8.md](API_p8.md)
 
+## kernel/vga_fb.c
+Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/avatar_data.h`, `headers/desktop_icons.h`, `headers/desktop_shortcuts.h`, `headers/drivers/kbd.h`, `headers/kernel/vga_cursor.h`, `headers/sched.h`, `headers/vga_fb.h`, `headers/vga_fx.h`, `headers/wm_chrome.h`, `headers/wm_events.h`, `headers/wm_focus.h`, `headers/wm_geom.h`, `headers/wm_gfxview.h`, `headers/wm_jelly.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/wm_render.h`, `headers/wm_tiling.h`, `headers/wm_window.h`
+- `wm_geom_cfg` (function) `kernel/vga_fb.c:54` `static wm_geom_config_t wm_geom_cfg(void)` -- _Static_assert(WM_FOCUS_GFX == WM_WINDOW_GFX_ID, "gfx focus id drifted from unified window contract"); static void...
+- `wm_event_cfg` (function) `kernel/vga_fb.c:65` `static wm_event_config_t wm_event_cfg(void)` -- static int wm_ggy; /** Docstring: Geometry config derived once from the font layout. static wm_geom_config_t...
+- `wm_drag_reset` (function) `kernel/vga_fb.c:74` `static void wm_drag_reset(void)` -- cfg.title_h = FONT_H; return cfg; } /** Docstring: Event config for the PS/2 mouse button mask. static...
+- `vga_fb_boot_config` (function) `kernel/vga_fb.c:96` `void vga_fb_boot_config(void)`
+- `fb_bytes_per_pixel` (function) `kernel/vga_fb.c:123` `int fb_bytes_per_pixel(void)`
+- `compositions` (function) `kernel/vga_fb.c:139` `* compositions (an ISR tick composing inside a syscall composition) draw * into the same shadow and leave the...`
+- `fb_copy_bytes` (function) `kernel/vga_fb.c:157` `static void fb_copy_bytes(volatile void *dst, const volatile void *src, unsigned long n)` -- Docstring: Bulk copy through the string engine: quadwords first (rep movsq, an eighth of the iterations, which is...
+- `fb_fill_u32` (function) `kernel/vga_fb.c:175` `static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n)` -- Docstring: Fill n 32-bit words with one value: pairs as quadwords * (rep stosq), then the odd word.
+- `fb_frame_bytes` (function) `kernel/vga_fb.c:189` `static unsigned long fb_frame_bytes(void)` -- static void fb_fill_u32(volatile void *dst, unsigned int v, unsigned long n) { void *d = (void *)dst; unsigned long...
+- `fb_shadow_ready` (function) `kernel/vga_fb.c:195` `static int fb_shadow_ready(void)` -- : "+D"(d), "+c"(q) : "a"(pat) : "memory"); if (n & 1UL) (volatile unsigned int *)d = v; } /** Docstring: Bytes one...
+- `fb_present_shadow` (function) `kernel/vga_fb.c:219` `static void fb_present_shadow(void)` -- Docstring: Copy the whole shadow onto the visible framebuffer; an * armed wobble band is presented through its mesh...
+- `fb_compose_begin` (function) `kernel/vga_fb.c:233` `static int fb_compose_begin(void)` -- Docstring: Enter a composition.
+- `fb_compose_end` (function) `kernel/vga_fb.c:246` `static void fb_compose_end(int owner)` -- entry that must not present. static int fb_compose_begin(void) { if (fb_compose_depth++ > 0) { return 0; } if...
+- `lg_get` (function) `kernel/vga_fb.c:319` `static const char *lg_get(int i)` -- Docstring: Completed-logical-lines ring, heap-owned since the .bss diet (256 x TERM_MAX_COLS).
+- `lg_push` (function) `kernel/vga_fb.c:326` `static void lg_push(const char *line, int len)` -- Append a completed logical line to the ring.
+- `lg_alloc` (function) `kernel/vga_fb.c:347` `static void lg_alloc(void)`
+- `vga_fb_term_ring_init` (function) `kernel/vga_fb.c:363` `void vga_fb_term_ring_init(void)` -- Docstring: Create the terminal history ring.
+- `vga_fb_term_feed` (function) `kernel/vga_fb.c:371` `void vga_fb_term_feed(const char *line, int len)` -- Docstring: Feed one completed console line into the terminal history.
+- `line_nrows` (function) `kernel/vga_fb.c:378` `static int line_nrows(int len)` -- Docstring: Feed one completed console line into the terminal history.
+- `act_nrows` (function) `kernel/vga_fb.c:385` `static int act_nrows(void)`
+- `total_rows` (function) `kernel/vga_fb.c:388` `static int total_rows(void)` -- lg_push(line, len); } /* Display rows a logical line of `len` characters occupies at term_cols. static int...
+- `disp_clamp` (function) `kernel/vga_fb.c:396` `static void disp_clamp(void)` -- return n; } static int act_nrows(void) { return line_nrows(act_len); } /* Total display rows of the whole history...
+- `line_at` (function) `kernel/vga_fb.c:414` `static const char *line_at(int abs, int *off)` -- Locate the logical line contributing the display row `abs`, and set *off to the character offset where that display...
+- `fx_plan_burn` (function) `kernel/vga_fb.c:494` `static void fx_plan_burn(int x, int y, int w, int h)`
+- `fx_plan_genie` (function) `kernel/vga_fb.c:500` `static void fx_plan_genie(int x, int y, int w, int h, int tx, int ty, int reverse)`
+- `first` (function) `kernel/vga_fb.c:512` `* screen ever showing it whole first (the old flash-then-melt). */
+static unsigned int *fx_start_...`
+- `flag` (function) `kernel/vga_fb.c:606` `* is the minimized flag (the program keeps running, nothing composites);`
+- `letterbox` (function) `kernel/vga_fb.c:610` `* present to repaint chrome plus letterbox (after a desktop redraw or a * view change);`
+- `gfx_view_cfg` (function) `kernel/vga_fb.c:645` `static wm_gfxview_config_t gfx_view_cfg(void)` -- Handshake between the present path and the desktop tick, the two painters of the graphics-mode pointer.
+- `gfx_covers_screen` (function) `kernel/vga_fb.c:654` `static int gfx_covers_screen(void)` -- Docstring: 1 while a visible fullscreen graphics window owns every * pixel: the terminals, taskbar and dock must not...
+- `gfx_keep_save` (function) `kernel/vga_fb.c:660` `static void gfx_keep_save(const volatile uint8_t *src, int kind, int sw, int sh)` -- Docstring: 1 while a visible fullscreen graphics window owns every * pixel: the terminals, taskbar and dock must not...
+- `vga_fb_set_gfx_program` (function) `kernel/vga_fb.c:686` `void vga_fb_set_gfx_program(const char *name)`
+- `shcmd_base` (function) `kernel/vga_fb.c:705` `static void shcmd_base(const char *cmd, char *out, unsigned long cap)` -- Basename of a shortcut command's program: first token after an optional `run`, then past the last '/'. "run...
+- `ci_eq` (function) `kernel/vga_fb.c:722` `static int ci_eq(const char *a, const char *b)`
+- `gfx_prog_icon` (function) `kernel/vga_fb.c:735` `static const uint8_t *gfx_prog_icon(void)` -- Icon of the running program via the shortcuts config: whoever composited * last, resolved through its launch command.
+- `vga_fb_set_gfx_mode` (function) `kernel/vga_fb.c:748` `void vga_fb_set_gfx_mode(int on)`
+- `gfx_view_for` (function) `kernel/vga_fb.c:806` `static int gfx_view_for(int sw, int sh, wm_gfxview_t *v)` -- Docstring: Compute the view for a sw x sh source under the current mode.
+- `gfx_view_publish` (function) `kernel/vga_fb.c:818` `static void gfx_view_publish(const wm_gfxview_t *v)` -- mode.
+- `gfx_float_frame` (function) `kernel/vga_fb.c:832` `static int gfx_float_frame(wm_gfxview_rect_t *out)` -- Docstring: Floating-mode frame of the current source, used by the * snap and drag math, which move the native...
+- `vga_fb_gfx_origin` (function) `kernel/vga_fb.c:848` `void vga_fb_gfx_origin(int *x, int *y)` -- Docstring: Content origin of the graphics window (the point an app * subtracts from SYS_MOUSE coordinates), for the...
+- `coordinates` (function) `kernel/vga_fb.c:862` `* windows keep the exact historical coordinates (including outside the * window);`
+- `vga_fb_gfx_map_mouse` (function) `kernel/vga_fb.c:865` `void vga_fb_gfx_map_mouse(int *x, int *y)` -- Docstring: Map a desktop pointer into the graphics app's back-buffer space when its view is scaled.
+- `vga_fb_gfx_cursor_erase` (function) `kernel/vga_fb.c:880` `static void vga_fb_gfx_cursor_erase(void)` -- Restore the last composite's pointer before the new frame covers it.
+- `vga_fb_gfx_cursor_draw` (function) `kernel/vga_fb.c:890` `static void vga_fb_gfx_cursor_draw(void)` -- Clamp the mouse into the framebuffer (the idle loop that normally clamps never runs in graphics mode) and draw the...
+- `gfx_transition` (function) `kernel/vga_fb.c:1057` `static void gfx_transition(const wm_gfxview_rect_t *from, int from_titled);`
+- `wm_focus_cursor_sync` (function) `kernel/vga_fb.c:1082` `static void wm_focus_cursor_sync(const wm_notify_event_t *e)` -- char eline[WM_ELINE_SZ]; int epos, has_line; int prompted; } termwin_t; static termwin_t twins[WM_MAX_TERMS]; static...
+- `wm_emit_focus_moved` (function) `kernel/vga_fb.c:1089` `static void wm_emit_focus_moved(int before, int source)` -- static int wm_term; static int wm_inited; /** Docstring: Single focus event bus owned by the desktop. static...
+- `vga_fb_focus_event` (function) `kernel/vga_fb.c:1101` `const wm_notify_event_t *vga_fb_focus_event(void)` -- /** Docstring: Emit one focus event when the id actually moved. static void wm_emit_focus_moved(int before, int...
+- `vga_fb_focus_report` (function) `kernel/vga_fb.c:1107` `void vga_fb_focus_report(int before, int source)` -- e.type = WM_NOTIFY_FOCUS; e.old_focus = before; e.new_focus = wm_focus; e.source = source; wm_notify_emit(&wm_bus...
+- `tw_park` (function) `kernel/vga_fb.c:1116` `static void tw_park(int i)`
+- `tw_unpark` (function) `kernel/vga_fb.c:1146` `static void tw_unpark(int i)`
+- `wm_init_once` (function) `kernel/vga_fb.c:1181` `static void wm_init_once(void)`
+- `tw_select` (function) `kernel/vga_fb.c:1206` `static void tw_select(int i)` -- twins[k].has_line = 0; twins[k].eline[0] = '\0'; twins[k].epos = 0; twins[k].prompted = 0; } twins[0].lg = lg; if...
+- `vga_fb_focus_get` (function) `kernel/vga_fb.c:1218` `int vga_fb_focus_get(void)`
+- `vga_fb_nterms_get` (function) `kernel/vga_fb.c:1219` `int vga_fb_nterms_get(void)`
+- `wm_snapshot_state` (function) `kernel/vga_fb.c:1222` `static void wm_snapshot_state(wm_focus_state_t *st)` -- if (!twins[i].present) return; if (shell_readline_active()) shell_focus_park(); tw_park(wm_term); wm_focus = i...
+- `vga_fb_focus_next` (function) `kernel/vga_fb.c:1235` `void vga_fb_focus_next(void)` -- /** Docstring: Single snapshot of every window for focus decisions. static void wm_snapshot_state(wm_focus_state_t...
+- `app` (function) `kernel/vga_fb.c:1276` `* a gfx child spawned from another gfx app (file -> vedit) keeps the * terminal focused, so its keys and wheel keep...`
+- `wm_gfx_focus_sync` (function) `kernel/vga_fb.c:1281` `static void wm_gfx_focus_sync(int on)` -- Docstring: Route WM focus with the graphics mode switch.
+- `vga_fb_focus_id` (function) `kernel/vga_fb.c:1300` `int vga_fb_focus_id(int id)` -- tw_park(wm_term); wm_focus = WM_FOCUS_GFX; kbd_raw_flush(); wm_emit_focus_moved(before, WM_FOCUS_SRC_MODE); } } else...
+- `vga_fb_boot_history_to_active` (function) `kernel/vga_fb.c:1335` `static void vga_fb_boot_history_to_active(void)` -- Docstring: Copy the boot-time history into the terminal that owns the screen after the desktop comes up.
+- `content` (function) `kernel/vga_fb.c:1350` `* windows would share content (same prompt/output on both) and a park
+ * would alias src == dst. ...`
+- `vga_fb_layout_set` (function) `kernel/vga_fb.c:1440` `int vga_fb_layout_set(int mode)` -- twins[1].lg = 0; twins[1].present = 0; twins[1].has_line = 0; twins[1].eline[0] = '\0'; twins[1].epos = 0...
+- `vga_fb_layout_cycle` (function) `kernel/vga_fb.c:1451` `void vga_fb_layout_cycle(void)` -- /** Docstring: Tile terminals through the tiling contract, graphics right. /** Docstring: Set active layout mode...
+- `vga_fb_layout_get` (function) `kernel/vga_fb.c:1467` `int vga_fb_layout_get(void)` -- if (wm_layout_mode == WM_LAYOUT_TILE) { wm_layout_mode = WM_LAYOUT_BSP; } else if (wm_layout_mode == WM_LAYOUT_BSP)...
+- `vga_fb_layout_name` (function) `kernel/vga_fb.c:1473` `const char *vga_fb_layout_name(void)` -- } else { wm_layout_mode = WM_LAYOUT_TILE; } wm_last_n = -1; vga_fb_tile_all(); } /** Docstring: Active layout mode...
+- `alone` (function) `kernel/vga_fb.c:1485` `* window alone (an unfocused graphics window minimizes to the taskbar,
+ * exactly like the hidden...`
+- `vga_fb_list_windows` (function) `kernel/vga_fb.c:1612` `void vga_fb_list_windows(void)`
+- `vga_fb_act_empty` (function) `kernel/vga_fb.c:1670` `int vga_fb_act_empty(void)` -- vn ? vn : "floating", gfx_view_valid ? gfx_view.content.x : gfx_win_x, gfx_view_valid ? gfx_view.content.y...
+- `vga_fb_note_prompt` (function) `kernel/vga_fb.c:1674` `void vga_fb_note_prompt(void)` -- The shell loop calls note after printing a prompt (it is live in the * focused window) and clear once the line is...
+- `vga_fb_clear_prompt` (function) `kernel/vga_fb.c:1679` `void vga_fb_clear_prompt(void)`
+- `vga_fb_prompted` (function) `kernel/vga_fb.c:1684` `int vga_fb_prompted(void)`
+- `vga_fb_prompt_live` (function) `kernel/vga_fb.c:1693` `int vga_fb_prompt_live(void)` -- 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate...
+- `vga_fb_park_line` (function) `kernel/vga_fb.c:1700` `void vga_fb_park_line(const char *b, int p)` -- 1 when the active line is empty or holds exactly a fresh prompt, so printing another one would stack duplicate...
+- `vga_fb_unpark_line` (function) `kernel/vga_fb.c:1715` `int vga_fb_unpark_line(char *b, int *p)` -- A fresh prompt parks empty: record no line, so `wm list` does not * claim a half-typed command that never existed....
+- `tw_hit` (function) `kernel/vga_fb.c:1730` `static int tw_hit(int i, int mx, int my)` -- termwin_t *t; int k; wm_init_once(); if (wm_focus < 0 || wm_focus >= WM_MAX_TERMS) return 0; t = &twins[wm_focus]...
+- `vga_fb_set_gfx_palette` (function) `kernel/vga_fb.c:1836` `void vga_fb_set_gfx_palette(const unsigned char *pal)`
+- `fb_pack_idx` (function) `kernel/vga_fb.c:1851` `static unsigned long fb_pack_idx(unsigned idx)` -- --- True-color pixel layer ---- VBE true-color framebuffers store pixels natively as B,G,R(,X) bytes, so the DAC is...
+- `fb_write_packed` (function) `kernel/vga_fb.c:1867` `void fb_write_packed(int x, int y, unsigned long rgb)`
+- `fb_read_packed` (function) `kernel/vga_fb.c:1887` `unsigned long fb_read_packed(int x, int y)`
+- `vga_fb_read_rgb` (function) `kernel/vga_fb.c:1911` `unsigned long vga_fb_read_rgb(int x, int y)`
+- `fb_write_row_packed` (function) `kernel/vga_fb.c:1916` `void fb_write_row_packed(int x, int y, const unsigned int *src, int n)` -- Docstring: Write n packed pixels (0x00RRGGBB, or raw indices in 8-bit mode) to row y from column x, clipped once.
+- `fb_read_row_packed` (function) `kernel/vga_fb.c:1946` `void fb_read_row_packed(int x, int y, unsigned int *dst, int n)` -- Docstring: Read n packed pixels of row y from column x into dst, * clipped once; pixels outside the screen read as 0.
+- `fb_fill_run` (function) `kernel/vga_fb.c:1968` `static void fb_fill_run(int x, int y, int n, unsigned long px)` -- int xx = x + i; if (xx < 0 || xx >= fb_width) continue; if (fb_bpp == 32) { dst[i] = *(volatile unsigned int *)(p +...
+- `wall_level` (function) `kernel/vga_fb.c:1994` `static int wall_level(int v)` -- for (i = 0; i < n; i++) { q[0] = (uint8_t)(px & 0xFF); q[1] = (uint8_t)((px >> 8) & 0xFF); q[2] = (uint8_t)((px >>...
+- `vga_fb_set_palette` (function) `kernel/vga_fb.c:2003` `static void vga_fb_set_palette(void)`
+- `fb_glyph` (function) `kernel/vga_fb.c:2056` `static const uint8_t *fb_glyph(unsigned char c)` -- Resolve one byte to its 8-row glyph: ASCII through font8x8, Spanish Latin-1 through the table above, anything else...
+- `vga_fb_pixel` (function) `kernel/vga_fb.c:2077` `void vga_fb_pixel(int x, int y, uint8_t color)` -- case 0xAC: return glyph_notsign; case 0xB4: return glyph_acute; case 0xB7: return glyph_middot; case 0xBA: return...
+- `vga_fb_clear` (function) `kernel/vga_fb.c:2087` `void vga_fb_clear(void)` -- } } /* ---- Drawing primitives ---- void vga_fb_pixel(int x, int y, uint8_t color) { if (fb_bpp == 8) { if (x >= 0...
+- `vga_fb_rect` (function) `kernel/vga_fb.c:2097` `void vga_fb_rect(int x, int y, int w, int h, uint8_t color)` -- Docstring: Solid rectangle: the color resolves once, every row is one * clipped run fill instead of a per-pixel...
+- `vga_fb_pixel_rgb` (function) `kernel/vga_fb.c:2112` `void vga_fb_pixel_rgb(int x, int y, uint8_t r, uint8_t g, uint8_t b)` -- Direct RGB pixel: full color depth in true-color modes, best-effort quantization in 8-bit mode.
+- `vga_fb_rect_rgb` (function) `kernel/vga_fb.c:2121` `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b)`
+- `vga_fb_char` (function) `kernel/vga_fb.c:2128` `void vga_fb_char(int col, int row, char c, uint8_t fg, uint8_t bg)`
+- `vga_fb_str` (function) `kernel/vga_fb.c:2154` `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg)`
+- `text_px` (function) `kernel/vga_fb.c:2169` `static void text_px(int px, int py, const char *s, uint8_t fg, uint8_t bg)` -- Blit a text string at an absolute pixel position.
+- `wm_draw_buttons` (function) `kernel/vga_fb.c:2198` `static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg)` -- --- Window controls ---- Three glyph buttons at the right end of a window's title bar: minimize (_), maximize...
+- `chrome_color` (function) `kernel/vga_fb.c:2243` `static unsigned long chrome_color(unsigned idx)` -- Docstring: Profile card geometry: padding, avatar ring width, margin * from the screen corner and the name column...
+- `chrome_title_strip` (function) `kernel/vga_fb.c:2283` `static int chrome_title_strip(int x, int y, int w, int focused)` -- Docstring: Gradient title strip for a window of width w.
+- `chrome_win_rect` (function) `kernel/vga_fb.c:2310` `static int chrome_win_rect(int id, int *x, int *y, int *w, int *h)` -- Docstring: Last composed rect of terminal window id; 0 when the window * was never composed or id is out of range.
+- `chrome_corner_origin` (function) `kernel/vga_fb.c:2322` `static void chrome_corner_origin(const chrome_win_t *c, int k, int *ox, int *oy)` -- Docstring: Last composed rect of terminal window id; 0 when the window * was never composed or id is out of range....
+- `chrome_wins_reset` (function) `kernel/vga_fb.c:2330` `static void chrome_wins_reset(void)` -- w = chrome_wins[id].w; h = chrome_wins[id].h; return 1; } /** Docstring: Outer pixel of corner k of a window rect....
+- `chrome_win_capture` (function) `kernel/vga_fb.c:2341` `static void chrome_win_capture(int idx, int x, int y, int w, int h)` -- Docstring: Save the pixels under the corners of window slot idx before * it paints.
+- `chrome_win_cut` (function) `kernel/vga_fb.c:2371` `static void chrome_win_cut(const chrome_win_t *c, int k)` -- Docstring: Cut corner k of a slot with the anti-aliased arc, blending the painted window pixel over the saved...
+- `chrome_win_live` (function) `kernel/vga_fb.c:2392` `static chrome_win_t *chrome_win_live(void)` -- Docstring: Slot whose window origin and width match the live terminal, * or null when the window was not captured by...
+- `chrome_win_recut_bottom` (function) `kernel/vga_fb.c:2407` `static void chrome_win_recut_bottom(int corner)` -- Docstring: Re-cut a bottom corner after its pixels were repainted by an incremental update: the last-row first cell...
+- `chrome_tint_capture` (function) `kernel/vga_fb.c:2421` `static void chrome_tint_capture(int idx, int x, int y, int w, int h)` -- Docstring: Build the tinted backdrop of window slot idx over its content rect, from what the composition has painted...
+- `chrome_tint_live` (function) `kernel/vga_fb.c:2453` `static const chrome_tint_t *chrome_tint_live(void)` -- Docstring: Tinted backdrop whose rect is exactly the live terminal's * content rect, or null when the last...
+- `chrome_term_fill` (function) `kernel/vga_fb.c:2467` `static int chrome_term_fill(void)` -- Docstring: Paint the live terminal's content rect from its tinted * backdrop.
+- `chrome_panel_coverage` (function) `kernel/vga_fb.c:2483` `static int chrome_panel_coverage(int xx, int yy, int x, int y, int w, int h)` -- Docstring: Coverage of pixel (xx,yy) of a w by h panel at (x,y) with all * four corners rounded by the chrome radius.
+- `chrome_glass` (function) `kernel/vga_fb.c:2496` `static void chrome_glass(int x, int y, int w, int h)` -- Docstring: Translucent rounded glass panel over whatever is already painted: the dock tint blends over the backdrop...
+- `chrome_disc` (function) `kernel/vga_fb.c:2528` `static void chrome_disc(int cx2, int cy2, int r2, unsigned long color, int alpha)` -- Docstring: Anti-aliased filled disc of radius r (in 1/2 pixel units * of the pixel centre) blended over the target...
+- `chrome_traffic_lights` (function) `kernel/vga_fb.c:2550` `static int chrome_traffic_lights(int bx, int by)` -- Docstring: macOS-style window buttons in the existing three 8x8 hit cells: minimize amber, maximize green, close red.
+- `chrome_glow` (function) `kernel/vga_fb.c:2566` `static void chrome_glow(int x, int y, int w, int h)` -- static const unsigned long lights[3] = { 0xFFBD2EUL, 0x27C93FUL, 0xFF5F56UL }; int i; if (fb_bpp == 8) return 0; for...
+- `chrome_profile_card` (function) `kernel/vga_fb.c:2586` `static void chrome_profile_card(void)` -- Docstring: Profile card in the top-right corner: glass panel with a soft shadow, the circular avatar with a bright...
+- `wm_buttons_hit` (function) `kernel/vga_fb.c:2616` `static int wm_buttons_hit(int mx, int my, int win_x, int win_y, int win_w)` -- for (j = 0; j < AVATAR_SIZE; j++) for (i = 0; i < AVATAR_SIZE; i++) { int cov = wm_chrome_disc_coverage(AVATAR_SIZE...
+- `wm_close_pending` (function) `kernel/vga_fb.c:2631` `int wm_close_pending(void)` -- Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the...
+- `wm_clear_close` (function) `kernel/vga_fb.c:2632` `void wm_clear_close(void)`
+- `wm_gfx_mode_active` (function) `kernel/vga_fb.c:2633` `int wm_gfx_mode_active(void)`
+- `vga_fb_ps2_owner` (function) `kernel/vga_fb.c:2636` `int vga_fb_ps2_owner(int pid)` -- Close request bridge: the syscall dispatcher polls this so a graphics * program's next syscall exits it on the...
+- `taskbar` (function) `kernel/vga_fb.c:2656` `* minimize hides the app to the taskbar (it never closes it), maximize
+ * toggles true fullscreen...`
+- `directly` (function) `kernel/vga_fb.c:2704` `* RGB sources pack directly (quantized to the wallpaper cube in 8-bit). */
+static void gfx_scale_...`
+- `gfx_letterbox` (function) `kernel/vga_fb.c:2809` `static void gfx_letterbox(const wm_gfxview_t *v)` -- Docstring: Clear the frame area the content does not cover (the * letterbox bars of a tiled or fullscreen view) to...
+- `gfx_title` (function) `kernel/vga_fb.c:2828` `static void gfx_title(const wm_gfxview_t *v)` -- int ah = v->frame.h - v->title_h; const wm_gfxview_rect_t *c = &v->content; if (aw <= 0 || ah <= 0) return; if (c->y...
+- `gfx_compose` (function) `kernel/vga_fb.c:2842` `static void gfx_compose(const volatile uint8_t *src, int kind, int sw, int sh,
+                  ...` -- Docstring: Compose one graphics frame at a view into the render target: * title, letterbox (when full is set) and...
+- `gfx_present` (function) `kernel/vga_fb.c:2910` `static void gfx_present(const volatile uint8_t *bb, int kind, int sw, int sh)` -- Docstring: Present under the pointer handshake: wait out a desktop tick that is moving the sprite, composite, then...
+- `gfx_cursor_follow_idle` (function) `kernel/vga_fb.c:2926` `static void gfx_cursor_follow_idle(void)` -- Docstring: Move the graphics-mode pointer from the desktop tick while the app is idle.
+- `vga_fb_blit_gfx_window` (function) `kernel/vga_fb.c:2939` `void vga_fb_blit_gfx_window(void)`
+- `vga_fb_blit_nk_window` (function) `kernel/vga_fb.c:2948` `void vga_fb_blit_nk_window(void)`
+- `vga_fb_blit_nk_rgb_window` (function) `kernel/vga_fb.c:2954` `void vga_fb_blit_nk_rgb_window(void)` -- Composite the Nuklear RGB back-buffer (NK_RGB_ADDR, NK_W x NK_H x 3 bytes) * through the same present path as the...
+- `term_recalc` (function) `kernel/vga_fb.c:2963` `static void term_recalc(void)`
+- `draw_title_win` (function) `kernel/vga_fb.c:2989` `static void draw_title_win(int idx, int focused)` -- Preserve the current window position, clamping it into range so a * drag or Ctrl+arrow move is not undone by the...
+- `taskbar_layout` (function) `kernel/vga_fb.c:3022` `static void taskbar_layout(void)`
+- `draw_speaker_icon` (function) `kernel/vga_fb.c:3053` `static void draw_speaker_icon(int x, int y, uint8_t color)` -- Running-app button right after it: mini icon + title while a graphics program owns the display.
+- `taskbar_render` (function) `kernel/vga_fb.c:3062` `static void taskbar_render(void)`
+- `title` (function) `kernel/vga_fb.c:3072` `* 8px row plus its title (bright when focused). The hint line * starts after it instead of underneath. */ const...`
+- `taskbar_tick` (function) `kernel/vga_fb.c:3141` `static void taskbar_tick(void)` -- Redraw the clock only when the wall-clock second changes.
+- `vga_fb_theme_name` (function) `kernel/vga_fb.c:3157` `int vga_fb_theme_name(char *dst, int cap)` -- Docstring: Active Nuklear theme name for the taskbar widget.
+- `taskbar_theme_cycle` (function) `kernel/vga_fb.c:3178` `static void taskbar_theme_cycle(void)` -- Cycle the active theme to the next etc/themes/ entry (ramdisk).
+- `taskbar_handle_click` (function) `kernel/vga_fb.c:3218` `static void taskbar_handle_click(int mx, int my)` -- Click handling for the keyboard widget, the speaker icon and -/+ buttons, plus the restore button that reappears...
+- `draw_scrollbar` (function) `kernel/vga_fb.c:3278` `static void draw_scrollbar(void)` -- return; } if (mx >= tb_minus_x && mx < tb_minus_x + TASKBAR_BTN_W) { v = pcspk_get_volume(); pcspk_set_volume(v >...
+- `render_blank_row` (function) `kernel/vga_fb.c:3314` `static void render_blank_row(int vrow)` -- Blank one viewport row: every cell is repainted with the terminal background. vga_fb_str with an empty string would...
+- `render_row` (function) `kernel/vga_fb.c:3324` `static void render_row(int vrow, int abs)` -- Render one display row at viewport row `vrow` for the absolute display row `abs`.
+- `term_render` (function) `kernel/vga_fb.c:3359` `static void term_render(void)`
+- `buffer` (function) `kernel/vga_fb.c:3375` `* owns the buffer (indices reset, render reads an empty ring). */
+void term_clear(void)`
+- `term_render_active` (function) `kernel/vga_fb.c:3392` `static void term_render_active(void)` -- Repaint only the bottom region that a live edit touches: from the active line's first visible display row to the...
+- `line` (function) `kernel/vga_fb.c:3435` `* display stale bytes left over from a longer previous line (e.g. the prompt
+ * would show the ta...`
+- `escapes` (function) `kernel/vga_fb.c:3444` `* swallowing them here keeps the escapes (which the serial side needs)
+     * from printing as li...`
+- `vga_fb_puts_term` (function) `kernel/vga_fb.c:3501` `void vga_fb_puts_term(const char *s)`
+- `vga_fb_text_cursor` (function) `kernel/vga_fb.c:3507` `void vga_fb_text_cursor(int col)` -- Show the text cursor at character column `col` of the active line, or hide * it with a negative column.
+- `vga_fb_hide_text_cursor` (function) `kernel/vga_fb.c:3515` `void vga_fb_hide_text_cursor(void)` -- Show the text cursor at character column `col` of the active line, or hide * it with a negative column.
+- `jelly_cancel` (function) `kernel/vga_fb.c:3568` `static void jelly_cancel(void)` -- enum { JELLY_NONE = 0, JELLY_TERM = 1, JELLY_GFX = 2 }; static wm_jelly_config_t jelly_cfg =...
+- `jelly_begin` (function) `kernel/vga_fb.c:3577` `static void jelly_begin(int kind, int gx, int gy)` -- Docstring: Start wobbling the dragged window (kind, grab point inside * the window).
+- `jelly_rect` (function) `kernel/vga_fb.c:3589` `static int jelly_rect(int *x, int *y, int *w, int *h)` -- Docstring: Start wobbling the dragged window (kind, grab point inside * the window).
+- `jelly_kick` (function) `kernel/vga_fb.c:3612` `static void jelly_kick(int mx, int my)` -- return 1; } if (jelly_kind == JELLY_GFX && vga_fb_gfx_mode && !gfx_hidden && gfx_view_valid && gfx_view_mode !=...
+- `jelly_live` (function) `kernel/vga_fb.c:3621` `static int jelly_live(void)` -- } return 0; } /** Docstring: The pointer moved the window by (mx, my): shove the mesh. static void jelly_kick(int...
+- `jelly_arm` (function) `kernel/vga_fb.c:3629` `static void jelly_arm(void)` -- Docstring: Record the wobble band of a finished outermost composition so the present can warp it.
+- `jelly_shadow_px` (function) `kernel/vga_fb.c:3655` `static unsigned int jelly_shadow_px(int x, int y)` -- jelly_bx1 = jelly_rx + jelly_rw + reach; jelly_by0 = jelly_ry - reach; jelly_by1 = jelly_ry + jelly_rh + reach; if...
+- `jelly_put_row` (function) `kernel/vga_fb.c:3665` `static void jelly_put_row(int x, int y, const unsigned int *src, int n)` -- jelly_armed = 1; } /** Docstring: Packed pixel of the shadow at (x, y), 24 and 32-bit only. static unsigned int...
+- `jelly_warp_band` (function) `kernel/vga_fb.c:3687` `static void jelly_warp_band(void)` -- Docstring: Write the wobble band to the framebuffer: every pixel takes the shadow pixel the mesh displaces onto it...
+- `jelly_present` (function) `kernel/vga_fb.c:3720` `static void jelly_present(void)` -- Docstring: Present the shadow, warping the armed band.
+- `jelly_try_present` (function) `kernel/vga_fb.c:3744` `static int jelly_try_present(void)` -- Docstring: Present through the mesh when a band is armed; 1 when the * frame was presented here.
+- `jelly_advance` (function) `kernel/vga_fb.c:3755` `static void jelly_advance(void)` -- Docstring: Advance the spring at most once per desktop tick, in * JELLY_SUBSTEPS finer steps so the wobble stays...
+- `jelly_tick` (function) `kernel/vga_fb.c:3768` `static void jelly_tick(int held)` -- Docstring: Desktop-tick driver.
+- `vga_fb_draw_desktop` (function) `kernel/vga_fb.c:3791` `void vga_fb_draw_desktop(void)` -- Docstring: Repaint the desktop through the shared render plan.
+- `gfx_view_in_rect` (function) `kernel/vga_fb.c:3903` `static void gfx_view_in_rect(const wm_gfxview_rect_t *r, int titled, wm_gfxview_t *v)` -- Docstring: View of the persistent source inside an arbitrary frame, * titled when the frame is tall enough to carry...
+- `gfx_animate` (function) `kernel/vga_fb.c:3922` `static void gfx_animate(const wm_gfxview_rect_t *from, const wm_gfxview_rect_t *to,
+             ...` -- Docstring: Glide the persistent source frame from one rect to * another over the desktop, then settle with a plain...
+- `gfx_taskbar_rect` (function) `kernel/vga_fb.c:3972` `static void gfx_taskbar_rect(wm_gfxview_rect_t *r)` -- fb_tgt = fb_shadow; gfx_compose(gfx_keep, gfx_keep_kind, gfx_keep_sw, gfx_keep_sh, &v, 0); fb_tgt = 0...
+- `gfx_drop_focus` (function) `kernel/vga_fb.c:4009` `static void gfx_drop_focus(int source)` -- Docstring: Hand keyboard focus to the graphics window without a * redraw (callers repaint once afterwards). static...
+- `from` (function) `kernel/vga_fb.c:4020` `* leaving returns to the view it came from (floating or tiled). Returns
+ * 0 on success, -1 witho...`
+- `vga_fb_gfx_set_hidden` (function) `kernel/vga_fb.c:4054` `int vga_fb_gfx_set_hidden(int hide)` -- Docstring: Minimize (hide) or restore the graphics window.
+- `vga_fb_gfx_view_name` (function) `kernel/vga_fb.c:4104` `const char *vga_fb_gfx_view_name(void)` -- gfx_hidden = 0; gfx_take_focus(WM_FOCUS_SRC_TASKBAR); wm_last_n = -1; if (fx_old) { gfx_frame_dirty = 1...
+- `term_toggle_fullscreen` (function) `kernel/vga_fb.c:4116` `static void term_toggle_fullscreen(void)` -- /** Docstring: Graphics view state for `wm state`/`wm list`. const char *vga_fb_gfx_view_name(void) { const char *n...
+- `vga_fb_toggle_fullscreen` (function) `kernel/vga_fb.c:4128` `void vga_fb_toggle_fullscreen(void)` -- Docstring: Toggle fullscreen on the focused window: the graphics * window scales to the whole display, a terminal...
+- `term_toggle_minimize` (function) `kernel/vga_fb.c:4139` `static void term_toggle_minimize(void)` -- Minimize/restore the terminal window.
+- `vga_fb_toggle_minimize` (function) `kernel/vga_fb.c:4161` `void vga_fb_toggle_minimize(void)` -- fx_plan_genie(term_px_x, term_px_y, term_px_w + SCROLLBAR_W, term_px_h + FONT_H, tx, ty, 0); fx_old =...
+- `vga_fb_is_minimized` (function) `kernel/vga_fb.c:4169` `int vga_fb_is_minimized(void)`
+- `vga_fb_is_fullscreen` (function) `kernel/vga_fb.c:4170` `int vga_fb_is_fullscreen(void)`
+- `gfx_snap` (function) `kernel/vga_fb.c:4175` `static void gfx_snap(int zone)` -- Snap the focused graphics window into a screen region (halves place it against that edge, quadrants into that...
+- `term_close_default` (function) `kernel/vga_fb.c:4208` `static void term_close_default(void)` -- Docstring: Terminal close button: restore the default geometry (the * shell cannot be closed).
+- `vga_fb_close_active` (function) `kernel/vga_fb.c:4224` `int vga_fb_close_active(void)` -- Close the focused window.
+- `vga_fb_move_terminal` (function) `kernel/vga_fb.c:4238` `void vga_fb_move_terminal(int dx, int dy)`
+- `term_max_cols` (function) `kernel/vga_fb.c:4283` `static int term_max_cols(void)` -- --- Tiling window operations (Alt = WM modifier) ---- Snap places the window in a screen half or quadrant and sizes...
+- `term_max_rows` (function) `kernel/vga_fb.c:4287` `static int term_max_rows(void)`
+- `term_finish_layout` (function) `kernel/vga_fb.c:4292` `static void term_finish_layout(void)`
+- `vga_fb_snap_window` (function) `kernel/vga_fb.c:4298` `void vga_fb_snap_window(int zone)`
+- `vga_fb_resize` (function) `kernel/vga_fb.c:4326` `void vga_fb_resize(int dcols, int drows)`
+- `vga_fb_reset_default` (function) `kernel/vga_fb.c:4346` `void vga_fb_reset_default(void)` -- int ncol = term_sz_cols + dcols; int nrow = term_sz_rows + drows; if (ncol < 1) ncol = 1; if (nrow < 1) nrow = 1; if...
+- `wallpaper_ensure` (function) `kernel/vga_fb.c:4403` `static void wallpaper_ensure(void)`
+- `wallpaper_usable` (function) `kernel/vga_fb.c:4455` `static int wallpaper_usable(void)` -- d[2] = px[0]; if (bpx == 4) d[3] = 0; } } } stbi_image_free(img); wall_native = cache; wall_cw = fb_width; wall_ch =...
+- `wallpaper_draw` (function) `kernel/vga_fb.c:4460` `static void wallpaper_draw(void)`
+- `wallpaper_packed` (function) `kernel/vga_fb.c:4476` `static int wallpaper_packed(int x, int y, unsigned int *out)` -- Docstring: Packed 0x00RRGGBB wallpaper pixel at (x, y); 0 when the * cache is unusable, the coordinate is off screen...
+- `pipe_field` (function) `kernel/vga_fb.c:4498` `static const char *pipe_field(const char *line, int idx, char *buf, int buflen)` -- --- Desktop shortcut icons ---- Shortcuts are defined in etc/shortcuts on the ramdisk, one per line...
+- `icon_nearest` (function) `kernel/vga_fb.c:4516` `static int icon_nearest(int r, int g, int b)` -- Nearest entry in the 16-colour icon palette (squared RGB distance, * integer-only: at most 3*255*255 per entry, far...
+- `icon_embedded` (function) `kernel/vga_fb.c:4532` `static const uint8_t *icon_embedded(const char *name)` -- for (i = 0; i < ICON_PAL_SIZE; i++) { int dr = r - icon_pal[i][0]; int dg = g - icon_pal[i][1]; int db = b...
+- `icon_decode` (function) `kernel/vga_fb.c:4552` `static const uint8_t *icon_decode(const char *path)` -- Decode a shortcut's PNG to raw 32x32 RGBA pixels.
+- `icon_embedded_rgba` (function) `kernel/vga_fb.c:4586` `static const uint8_t *icon_embedded_rgba(const uint8_t *idx)` -- Expand an embedded index icon (desktop_icons.h, transparent 0) to RGBA through the icon palette, so fallback art...
+- `dock_label_px` (function) `kernel/vga_fb.c:4614` `static int dock_label_px(const struct desktop_shortcut *sc)` -- Width of the longest shortcut label in pixels (cached after load).
+- `shortcuts_layout` (function) `kernel/vga_fb.c:4623` `static void shortcuts_layout(void)` -- Dock layout: one centred row just above the taskbar.
+- `shortcut_cell_left` (function) `kernel/vga_fb.c:4641` `static int shortcut_cell_left(int i)` -- dock_h = ICON_H + DOCK_LABEL_GAP + ICON_LABEL_H + 2 * DOCK_PAD_Y; x0 = (fb_width - dock_w) / 2; if (x0 < 0) x0 = 0...
+- `desktop_shortcuts_load` (function) `kernel/vga_fb.c:4648` `void desktop_shortcuts_load(void)`
+- `shortcut_draw_scaled` (function) `kernel/vga_fb.c:4704` `static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
+                             ...` -- Blit one shortcut icon scaled to dw x dh at (dx, dy), nearest neighbour from the cached 32x32 RGBA source.
+- `dock_hover_index` (function) `kernel/vga_fb.c:4729` `static int dock_hover_index(int mx, int my)` -- Index of the shortcut column under (mx, my), or -1.
+- `dock_bounce_counts` (function) `kernel/vga_fb.c:4756` `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints)`
+- `dock_click_count` (function) `kernel/vga_fb.c:4766` `void dock_click_count(unsigned long *edges)`
+- `dock_bounce_elapsed` (function) `kernel/vga_fb.c:4772` `static unsigned long dock_bounce_elapsed(void)` -- Ticks elapsed since the bounce click, capped so the subtraction can * never wrap on a late read.
+- `dock_bounce_live` (function) `kernel/vga_fb.c:4780` `static int dock_bounce_live(void)` -- Ticks elapsed since the bounce click, capped so the subtraction can * never wrap on a late read. static unsigned...
+- `dock_pending_active` (function) `kernel/vga_fb.c:4830` `int dock_pending_active(void)`
+- `dock_paint_icons` (function) `kernel/vga_fb.c:4838` `static void dock_paint_icons(int hover)` -- Paint every shortcut icon and label at the given hover sizes.
+- `dock_paint_backing` (function) `kernel/vga_fb.c:4880` `static void dock_paint_backing(int x0, int y0, int dock_w, int dock_h, int with_shadow)` -- Docstring: Paint the dock backing: soft shadow first when requested (the hover repaint skips it, it lies outside the...
+- `desktop_shortcuts_draw` (function) `kernel/vga_fb.c:4887` `void desktop_shortcuts_draw(void)`
+- `wallpaper_rect` (function) `kernel/vga_fb.c:4907` `static void wallpaper_rect(int x0, int y0, int w, int h)` -- Paint one wallpaper rectangle from the cache (solid fill when the cache * is absent or stale): the strip-erase...
+- `dock_paint_hover` (function) `kernel/vga_fb.c:4938` `static void dock_paint_hover(int hover)` -- Hover repaint without the fullscreen flash: erase only the dock strip (bar plus the overflow the magnified icons...
+- `command` (function) `kernel/vga_fb.c:4962` `* its launch command (config-driven, covers apps that never set a window * title);`
+- `gfx_task_icon` (function) `kernel/vga_fb.c:4967` `static const uint8_t *gfx_task_icon(void)` -- Icon for the taskbar running-app button.
+- `desktop_shortcuts_hit_test` (function) `kernel/vga_fb.c:4988` `const char *desktop_shortcuts_hit_test(int mx, int my)`
+- `mouse_focus_topmost` (function) `kernel/vga_fb.c:5002` `static int mouse_focus_topmost(int mx, int my)` -- const char *desktop_shortcuts_hit_test(int mx, int my) { shortcuts_layout(); for (int i = 0; i < shortcut_count...
+- `mouse_apply_wheel` (function) `kernel/vga_fb.c:5028` `static void mouse_apply_wheel(int wheel, int step)` -- if (!twins[f].present) continue; if (tw_hit(f, mx, my)) { if (f == wm_focus) return 0; before = wm_focus...
+- `pointer` (function) `kernel/vga_fb.c:5049` `* tiled window floats it at native size under the pointer (the grab point * keeps its relative position along the...`
+- `mouse_drag_gfx` (function) `kernel/vga_fb.c:5052` `static void mouse_drag_gfx(const wm_geom_config_t *gcfg, int mx, int my)` -- Docstring: Title-bar drag of the graphics window.
+- `mouse_drag_term` (function) `kernel/vga_fb.c:5109` `static void mouse_drag_term(const wm_geom_config_t *gcfg, int win_w, int mx, int my, int gfx_cursor)` -- Docstring: Title-bar drag of the focused terminal window.
+- `mouse_scrollbar` (function) `kernel/vga_fb.c:5132` `static void mouse_scrollbar(const wm_geom_config_t *gcfg, int mx, int my)` -- wm_grab_cx = (mx - term_px_x) / FONT_W; } } else { wm_dragging = 0; } if (wm_dragging) { vga_fb_drag_terminal(mx...
+- `vga_fb_wait_tick` (function) `kernel/vga_fb.c:5161` `void vga_fb_wait_tick(void)` -- Docstring: Drive the desktop from a kernel wait loop.
+- `vga_fb_mouse_tick` (function) `kernel/vga_fb.c:5170` `void vga_fb_mouse_tick(void)` -- timer ISR drives it only for the pid-0 exec frame (user_program_active) and the shell's input loop is not running...
+- `path` (function) `kernel/vga_fb.c:5181` `* present path (blit_gfx_buf) is the sole cursor painter. The tick * used to share the sprite state with it and...`
+- `state` (function) `kernel/vga_fb.c:5295` `* ignores the button state (the arming press is consumed) and settles
+     * once on expiry, so t...`
+- `vga_fb_mouse_init` (function) `kernel/vga_fb.c:5373` `void vga_fb_mouse_init(void)`
+- `vga_fb_history_page` (function) `kernel/vga_fb.c:5427` `void vga_fb_history_page(int dir)` -- Docstring: Page the terminal history by one screen (dir -1 up, +1 down).
+- `vga_fb_init` (function) `kernel/vga_fb.c:5439` `void vga_fb_init(void)`
+
 ## kernel/vga_fx.c
 Depends on: `headers/vga_fb.h`, `headers/vga_fx.h`
-- `vga_fx_set_enabled` (function) `kernel/vga_fx.c:22` `void vga_fx_set_enabled(int on)`
-- `vga_fx_enabled` (function) `kernel/vga_fx.c:27` `int vga_fx_enabled(void)`
-- `fx_wait_until` (function) `kernel/vga_fx.c:35` `static void fx_wait_until(unsigned long deadline)` -- Deadline pacing over the PIT-calibrated TSC clock.
-- `vga_fx_snap_rect` (function) `kernel/vga_fx.c:41` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)`
-- `vga_fx_restore_rect` (function) `kernel/vga_fx.c:63` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)`
-- `vga_fx_free` (function) `kernel/vga_fx.c:77` `void vga_fx_free(unsigned int *buf)`
-- `once` (function) `kernel/vga_fx.c:90` `* once (prev[] tracks the revealed frontier per column), then the final
+- `vga_fx_set_enabled` (function) `kernel/vga_fx.c:27` `void vga_fx_set_enabled(int on)`
+- `vga_fx_enabled` (function) `kernel/vga_fx.c:32` `int vga_fx_enabled(void)`
+- `fx_wait_until` (function) `kernel/vga_fx.c:40` `static void fx_wait_until(unsigned long deadline)` -- Deadline pacing over the PIT-calibrated TSC clock.
+- `vga_fx_snap_rect` (function) `kernel/vga_fx.c:46` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)`
+- `vga_fx_restore_rect` (function) `kernel/vga_fx.c:68` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)`
+- `vga_fx_free` (function) `kernel/vga_fx.c:82` `void vga_fx_free(unsigned int *buf)`
+- `once` (function) `kernel/vga_fx.c:95` `* once (prev[] tracks the revealed frontier per column), then the final
  * restore guarantees the...`
-- `vga_fx_melt_rect` (function) `kernel/vga_fx.c:150` `void vga_fx_melt_rect(int x, int y, int w, int h,
+- `vga_fx_melt_rect` (function) `kernel/vga_fx.c:155` `void vga_fx_melt_rect(int x, int y, int w, int h,
     const unsigned int *oldb, const unsigned in...` -- Drive one old->new melt.
-- `vga_fx_melt_from_black` (function) `kernel/vga_fx.c:159` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` -- Boot melt: the framebuffer is already cleared to black on entry, so no * old snapshot is needed; the new frame...
+- `vga_fx_melt_from_black` (function) `kernel/vga_fx.c:164` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)` -- Boot melt: the framebuffer is already cleared to black on entry, so no * old snapshot is needed; the new frame...
 
 ## mcp/mcp_dbg_driver.py
 Depends on: `kernel/time.c`
@@ -234,194 +478,6 @@ Depends on: `headers/tls.h`, `headers/tls_port.h`, `headers/tls_roots.h`
 - `inb` (function) `net/tls.c:813` `static inline unsigned char inb(unsigned short port)`
 - `cmos_read` (function) `net/tls.c:821` `static inline unsigned char cmos_read(unsigned char reg)` -- /* The port helpers in net.c are static; these live here for the RTC. #ifndef PORT_IO_DEFINED #define...
 - `tls_now_days` (function) `net/tls.c:826` `long tls_now_days(void)`
-
-## net/tls_crypto.c
-Depends on: `headers/tls.h`, `headers/tls_port.h`
-- `sha256_rotr` (function) `net/tls_crypto.c:33` `static unsigned sha256_rotr(unsigned x, unsigned n)`
-- `sha256_init` (function) `net/tls_crypto.c:37` `void sha256_init(struct sha256_ctx *c)`
-- `sha256_block` (function) `net/tls_crypto.c:50` `static void sha256_block(struct sha256_ctx *c, const unsigned char *p)`
-- `sha256_update` (function) `net/tls_crypto.c:80` `void sha256_update(struct sha256_ctx *c, const unsigned char *data, unsigned len)`
-- `sha256_final` (function) `net/tls_crypto.c:105` `void sha256_final(struct sha256_ctx *c, unsigned char out[32])`
-- `sha256` (function) `net/tls_crypto.c:126` `void sha256(const unsigned char *data, unsigned len, unsigned char out[32])`
-- `hmac_sha256` (function) `net/tls_crypto.c:135` `void hmac_sha256(const unsigned char *key, unsigned klen,
-                 const unsigned char *d...`
-- `p_hash` (function) `net/tls_crypto.c:165` `static void p_hash(const unsigned char *secret, unsigned secret_len,
-                   const uns...`
-- `tls_prf` (function) `net/tls_crypto.c:188` `void tls_prf(const unsigned char *secret, unsigned secret_len,
-             const char *label, co...`
-- `aes_xtime` (function) `net/tls_crypto.c:230` `static unsigned aes_xtime(unsigned x)`
-- `aes_key_expand` (function) `net/tls_crypto.c:235` `static void aes_key_expand(const unsigned char key[16], unsigned rk[44])`
-- `aes_mixcol` (function) `net/tls_crypto.c:253` `static void aes_mixcol(unsigned a0, unsigned a1, unsigned a2, unsigned a3,
-                      ...`
-- `aes128_encrypt_block` (function) `net/tls_crypto.c:263` `void aes128_encrypt_block(const unsigned char key[16],
-                          const unsigned c...`
-- `gf_shift_right` (function) `net/tls_crypto.c:321` `static gf128 gf_shift_right(gf128 v)`
-- `word` (function) `net/tls_crypto.c:326` `* of the low word (hi holds bits 64..127, lo bits 0..63). Masked in, * so the shift never branches on key bits. */...`
-- `gf_mul` (function) `net/tls_crypto.c:334` `static gf128 gf_mul(gf128 z, gf128 h)` -- z = z * h, in GF(2^128), MSB-first.
-- `gf_put` (function) `net/tls_crypto.c:351` `static gf128 gf_put(const unsigned char *p)`
-- `ghash_blocks` (function) `net/tls_crypto.c:361` `static gf128 ghash_blocks(gf128 z, gf128 h, const unsigned char *data, unsigned len)`
-- `gcm_tag_core` (function) `net/tls_crypto.c:384` `static void gcm_tag_core(const unsigned char key[16],
-                         const unsigned cha...` -- if (len > 0) { unsigned char pad[16]; gf128 b; TLS_MEMSET(pad, 0, 16); TLS_MEMCPY(pad, data, len); b = gf_put(pad)...
-- `gcm_ctr_core` (function) `net/tls_crypto.c:427` `static void gcm_ctr_core(const unsigned char key[16],
-                         const unsigned cha...`
-- `tls_nonce` (function) `net/tls_crypto.c:450` `static void tls_nonce(const unsigned char salt[4], unsigned long long seq,
-                      ...` -- TLS_MEMCPY(blk, nonce, 12); blk[12] = (unsigned char)(ctr >> 24); blk[13] = (unsigned char)(ctr >> 16); blk[14] =...
-- `gcm_tag` (function) `net/tls_crypto.c:457` `static void gcm_tag(const unsigned char key[16], const unsigned char salt[4],
-                   ...`
-- `gcm_ctr` (function) `net/tls_crypto.c:467` `static void gcm_ctr(const unsigned char key[16], const unsigned char salt[4],
-                   ...`
-- `aes128_gcm_seal` (function) `net/tls_crypto.c:475` `int aes128_gcm_seal(const unsigned char key[16],
-                    const unsigned char salt[4],...`
-- `aes128_gcm_open` (function) `net/tls_crypto.c:487` `int aes128_gcm_open(const unsigned char key[16],
-                    const unsigned char salt[4],...`
-- `aes128_gcm_seal_core` (function) `net/tls_crypto.c:505` `int aes128_gcm_seal_core(const unsigned char key[16],
-                         const unsigned cha...`
-- `aes128_gcm_open_core` (function) `net/tls_crypto.c:516` `int aes128_gcm_open_core(const unsigned char key[16],
-                         const unsigned cha...`
-- `bn_zero` (function) `net/tls_crypto.c:537` `static void bn_zero(unsigned *a, int nw)`
-- `bn_is_zero` (function) `net/tls_crypto.c:542` `static int bn_is_zero(const unsigned *a, int nw)`
-- `bn_cmp` (function) `net/tls_crypto.c:549` `static int bn_cmp(const unsigned *a, const unsigned *b, int nw)`
-- `bn_add` (function) `net/tls_crypto.c:559` `static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw)` -- for (i = 0; i < nw; i++) v |= a[i]; return v == 0; } static int bn_cmp(const unsigned *a, const unsigned *b, int nw)...
-- `bn_sub` (function) `net/tls_crypto.c:571` `static unsigned bn_sub(const unsigned *a, const unsigned *b, unsigned *r, int nw)` -- /* r = a + b; returns carry out. static unsigned bn_add(const unsigned *a, const unsigned *b, unsigned *r, int nw) {...
-- `bn_dbl_mod` (function) `net/tls_crypto.c:584` `static void bn_dbl_mod(const unsigned *a, const unsigned *n, const unsigned *v,
-                 ...` -- r = 2a mod n, for a < n. v = 2^(32nw) mod n = 2^(32nw) - n (the * Montgomery "one"): 2a + carry means 2a - 2^(32nw)...
-- `bn_mont_mul` (function) `net/tls_crypto.c:596` `static void bn_mont_mul(const unsigned *a, const unsigned *b, const unsigned *n,
-                ...` -- Montgomery multiplication. n is odd, n0inv = -n^(-1) mod 2^32. r = a*b*R^-1 mod n, R = 2^(32nw). * a, b < n.
-- `bn_mont_n0inv` (function) `net/tls_crypto.c:635` `static unsigned bn_mont_n0inv(unsigned n0)` -- carry = v >> 32; } s = (unsigned long long)t[nw] + carry; t[nw - 1] = (unsigned)s; t[nw] = t[nw + 1] + (unsigned)(s...
-- `bn_mont_r2` (function) `net/tls_crypto.c:643` `static void bn_mont_r2(const unsigned *n, const unsigned *v, int nw,
-                       unsig...` -- } else { for (i = 0; i < nw; i++) r[i] = t[i]; } } /* -n^(-1) mod 2^32 via Newton iteration (n0 must be odd). static...
-- `bn_from_be` (function) `net/tls_crypto.c:663` `static void bn_from_be(const unsigned char *bytes, unsigned len,
-                       unsigned ...`
-- `bn_to_be` (function) `net/tls_crypto.c:671` `static void bn_to_be(const unsigned *a, unsigned char *out, unsigned len)`
-- `mont_init` (function) `net/tls_crypto.c:677` `static void mont_init(struct mont_ctx *m, const unsigned char *p_bytes,
-                      uns...`
-- `mont_to` (function) `net/tls_crypto.c:689` `static void mont_to(struct mont_ctx *m, const unsigned *a, unsigned *r)`
-- `mont_from` (function) `net/tls_crypto.c:693` `static void mont_from(struct mont_ctx *m, const unsigned *a, unsigned *r)`
-- `mont_mul` (function) `net/tls_crypto.c:700` `static void mont_mul(struct mont_ctx *m, const unsigned *a, const unsigned *b,
-                  ...`
-- `mont_sqr` (function) `net/tls_crypto.c:705` `static void mont_sqr(struct mont_ctx *m, const unsigned *a, unsigned *r)`
-- `mont_add` (function) `net/tls_crypto.c:712` `static void mont_add(struct mont_ctx *m, const unsigned *a, const unsigned *b,
-                  ...` -- Field add/sub over the mont modulus (in Montgomery domain).
-- `mont_sub` (function) `net/tls_crypto.c:721` `static void mont_sub(struct mont_ctx *m, const unsigned *a, const unsigned *b,
-                  ...`
-- `mont_inv` (function) `net/tls_crypto.c:736` `static void mont_inv(struct mont_ctx *m, const unsigned *a, unsigned *r)` -- Field inverse via Fermat: a^(p-2) mod p (a in Montgomery domain; * the result stays in Montgomery domain).
-- `ec_init` (function) `net/tls_crypto.c:848` `static void ec_init(struct ec_curve *c, const unsigned char *p,
-                    const unsigne...`
-- `jpt_is_inf` (function) `net/tls_crypto.c:865` `static int jpt_is_inf(const struct jpt *p, int nw)`
-- `jpt_set_inf` (function) `net/tls_crypto.c:869` `static void jpt_set_inf(struct jpt *p, int nw)`
-- `jpt_copy` (function) `net/tls_crypto.c:875` `static void jpt_copy(struct jpt *d, const struct jpt *s, int nw)`
-- `jpt_cswap` (function) `net/tls_crypto.c:885` `static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned mask, int nw)` -- bn_zero(p->y, nw); bn_zero(p->z, nw); } static void jpt_copy(struct jpt *d, const struct jpt *s, int nw) { int i...
-- `jpt_dbl` (function) `net/tls_crypto.c:896` `static void jpt_dbl(struct ec_curve *c, const struct jpt *p1, struct jpt *p3)` -- } /* Constant-time swap of two points on a 0/~0 mask. static void jpt_cswap(struct jpt *a, struct jpt *b, unsigned...
-- `jpt_add` (function) `net/tls_crypto.c:936` `static void jpt_add(struct ec_curve *c, const struct jpt *p1, const struct jpt *p2,
-             ...` -- mont_sqr(m, E, F); mont_add(m, D, D, t);          /* 2D mont_sub(m, F, t, p3->x);      /* X3 = F - 2D mont_sub(m, D...
-- `jpt_scalar_mult` (function) `net/tls_crypto.c:980` `static void jpt_scalar_mult(struct ec_curve *c, const struct jpt *base,
-                         ...` -- Constant-iteration scalar multiplication: the classic ladder. * Fixed iteration count, no table lookups indexed by...
-- `jpt_to_affine` (function) `net/tls_crypto.c:1007` `static void jpt_to_affine(struct ec_curve *c, const struct jpt *p,
-                          unsi...` -- Affine from Jacobian: x = X/Z^2, y = Y/Z^3.
-- `jpt_from_affine` (function) `net/tls_crypto.c:1032` `static int jpt_from_affine(struct ec_curve *c, const unsigned char *x_bytes,
-                    ...` -- Affine from bytes with on-curve validation.
-- `ec_curve_by_id` (function) `net/tls_crypto.c:1076` `static struct ec_curve *ec_curve_by_id(int curve)`
-- `ec_boot` (function) `net/tls_crypto.c:1080` `static void ec_boot(void)`
-- `p256_scalar_mult` (function) `net/tls_crypto.c:1088` `int p256_scalar_mult(const unsigned char scalar[32],
-                     const unsigned char qx[...`
-- `p384_scalar_mult` (function) `net/tls_crypto.c:1101` `int p384_scalar_mult(const unsigned char scalar[48],
-                     const unsigned char qx[...`
-- `p256_ecdh` (function) `net/tls_crypto.c:1114` `int p256_ecdh(const unsigned char priv[32],
-              const unsigned char peer_x[32], const u...`
-- `der_parse_sig` (function) `net/tls_crypto.c:1129` `static int der_parse_sig(const unsigned char *sig, unsigned sig_len,
-                         con...`
-- `ecdsa_verify` (function) `net/tls_crypto.c:1163` `int ecdsa_verify(int curve, const unsigned char pub_x[], const unsigned char pub_y[],
-           ...`
-- `rsa_verify_digestinfo` (function) `net/tls_crypto.c:1261` `static int rsa_verify_digestinfo(const unsigned char *em, unsigned em_len,
-                      ...` -- EMSA-PKCS1-v1_5 DigestInfo check for an arbitrary hash: the encoding is 00 01 FF..
-- `rsa_pkcs1_verify_raw` (function) `net/tls_crypto.c:1285` `static int rsa_pkcs1_verify_raw(const unsigned char *n, unsigned n_len,
-                         ...` -- diff |= em[i] ^ 0xff; } if (i >= em_len) return -1;         /* no separator if (i < 10) return -1;              /*...
-- `rsa_pkcs1_verify_sha256` (function) `net/tls_crypto.c:1326` `int rsa_pkcs1_verify_sha256(const unsigned char *n, unsigned n_len,
-                            c...`
-- `rsa_pkcs1_verify_sha384` (function) `net/tls_crypto.c:1340` `int rsa_pkcs1_verify_sha384(const unsigned char *n, unsigned n_len,
-                            c...`
-- `sha384_rotr` (function) `net/tls_crypto.c:1386` `static unsigned long long sha384_rotr(unsigned long long x, unsigned n)`
-- `sha384_raw` (function) `net/tls_crypto.c:1390` `static void sha384_raw(const unsigned char *data, unsigned len,
-                       unsigned c...`
-- `sha384` (function) `net/tls_crypto.c:1506` `void sha384(const unsigned char *data, unsigned len, unsigned char out[48])`
-- `p256_point_valid` (function) `net/tls_crypto.c:1512` `int p256_point_valid(const unsigned char x[32], const unsigned char y[32])`
-- `p256_pub` (function) `net/tls_crypto.c:1520` `int p256_pub(const unsigned char priv[32],
-             unsigned char x[32], unsigned char y[32])`
-- `p256_scalar_valid` (function) `net/tls_crypto.c:1539` `int p256_scalar_valid(const unsigned char scalar[32])`
-
-## net/tls_x509.c
-Depends on: `headers/tls.h`, `headers/tls_port.h`
-- `oid_eq` (function) `net/tls_x509.c:36` `static int oid_eq(const unsigned char *bytes, unsigned len,
-                  const unsigned char...`
-- `der_next` (function) `net/tls_x509.c:51` `static int der_next(const unsigned char *p, unsigned limit, unsigned *pos,
-                    st...` -- Parse the TLV at p[pos]; advances pos to the first byte after it. * Returns 0 on success, -1 on any bound violation.
-- `der_container` (function) `net/tls_x509.c:82` `static int der_container(const unsigned char *p, unsigned limit, unsigned *pos,
-                 ...` -- len = (len << 8) | p[(*pos)++]; } } else { len = p[(*pos)++]; } if (len > limit - *pos) return -1; out->val = p +...
-- `days_from_civil` (function) `net/tls_x509.c:94` `static long days_from_civil(int y, int m, int d)`
-- `der_time_to_days` (function) `net/tls_x509.c:106` `static long der_time_to_days(const struct der_tlv *t)` -- /* ---- Time ---- static long days_from_civil(int y, int m, int d) { long era, doe, yoe; int doy; y -= m <= 2 ?
-- `name_find_cn` (function) `net/tls_x509.c:135` `static int name_find_cn(const unsigned char *p, unsigned limit,
-                        struct x5...` -- } if (mon < 1 || mon > 12 || day < 1 || day > 31 || year < 1970 || year > 2100) return -1; return...
-- `san_add` (function) `net/tls_x509.c:178` `static void san_add(struct x509_sans *out, const unsigned char *v, unsigned len)`
-- `san_parse` (function) `net/tls_x509.c:186` `static void san_parse(const unsigned char *p, unsigned limit,
-                      struct x509_s...` -- struct x509_sans { unsigned char dns[TLS_SAN_MAX][64]; unsigned      len[TLS_SAN_MAX]; int           count; }...
-- `spki_parse` (function) `net/tls_x509.c:203` `static int spki_parse(const unsigned char *p, unsigned limit,
-                      struct tls_pu...` -- unsigned seq_len, pos = 0; out->count = 0; if (der_container(p, limit, &pos, &seq, &seq_len) != 0) return; pos = 0...
-- `cert_parse` (function) `net/tls_x509.c:279` `static int cert_parse(const unsigned char *der, unsigned len,
-                      struct x509_c...`
-- `ascii_lower` (function) `net/tls_x509.c:392` `static int ascii_lower(int c)`
-- `host_match_exact` (function) `net/tls_x509.c:397` `static int host_match_exact(const char *host, const unsigned char *name,
-                        ...` -- } } } } return 0; } /* ---- Hostname matching ---- static int ascii_lower(int c) { return (c >= 'A' && c <= 'Z') ? c...
-- `host_match_wildcard` (function) `net/tls_x509.c:410` `static int host_match_wildcard(const char *host, const unsigned char *name,
-                     ...` -- Wildcard: "*.example.com" matches exactly one label ("a.example.com", * never "a.b.example.com" nor "example.com").
-- `host_matches` (function) `net/tls_x509.c:431` `static int host_matches(const char *host, const struct x509_cert *leaf)`
-- `tls_x509_parse_pubkey` (function) `net/tls_x509.c:452` `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,
-                          struc...`
-- `pubkey_equal` (function) `net/tls_x509.c:468` `static int pubkey_equal(const struct tls_pubkey *a, const struct tls_pubkey *b)` -- Trust anchors are matched by public key, not by self-signature: a presented root is often a cross-signed copy...
-- `cert_verify_signature` (function) `net/tls_x509.c:479` `static int cert_verify_signature(const struct x509_cert *cert,
-                                 c...` -- signature-verified: an attacker cannot present a top cert carrying an embedded root's public key unless the chain...
-- `tls_x509_verify_chain` (function) `net/tls_x509.c:521` `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,
-                       ...`
-
-## progs/asm/aes.s
-- `aes_rk` (function) `progs/asm/aes.s:3`
-- `aes_sb` (function) `progs/asm/aes.s:7`
-- `aes_rc` (function) `progs/asm/aes.s:11`
-- `aes_st` (function) `progs/asm/aes.s:15`
-- `aes_iv` (function) `progs/asm/aes.s:19`
-- `aes_read_all` (function) `progs/asm/aes.s:23`
-- `aes_write_all` (function) `progs/asm/aes.s:238`
-- `aes_has` (function) `progs/asm/aes.s:345`
-- `hex_val` (function) `progs/asm/aes.s:498`
-- `aes_parse_hex` (function) `progs/asm/aes.s:620`
-- `aes_gf_mul` (function) `progs/asm/aes.s:783`
-- `aes_xtime` (function) `progs/asm/aes.s:884`
-- `aes_rotl8` (function) `progs/asm/aes.s:933`
-- `aes_init_tables` (function) `progs/asm/aes.s:970`
-- `aes_key_expand` (function) `progs/asm/aes.s:1197`
-- `aes_add_round_key` (function) `progs/asm/aes.s:1646`
-- `aes_sub_bytes` (function) `progs/asm/aes.s:1721`
-- `aes_shift_rows` (function) `progs/asm/aes.s:1774`
-- `aes_mix_columns` (function) `progs/asm/aes.s:1993`
-- `aes_cipher` (function) `progs/asm/aes.s:2466`
-- `aes_iv_increment` (function) `progs/asm/aes.s:2565`
-- `aes_ctr_crypt` (function) `progs/asm/aes.s:2648`
-- `aes_hdr_put` (function) `progs/asm/aes.s:2791`
-- `aes_hdr_get` (function) `progs/asm/aes.s:2906`
-- `aes_tool_name` (function) `progs/asm/aes.s:3059`
-- `aes_run` (function) `progs/asm/aes.s:3077`
-- `main` (function) `progs/asm/aes.s:3807`
-
-## progs/asm/cp.s
-- `main` (function) `progs/asm/cp.s:3`
-
-## progs/asm/cvmfmt.s
-- `fwin` (function) `progs/asm/cvmfmt.s:3`
-- `fcanary` (function) `progs/asm/cvmfmt.s:7`
-- `main` (function) `progs/asm/cvmfmt.s:11`
-
-## progs/asm/fib.s
-- `fib` (function) `progs/asm/fib.s:3`
-- `main` (function) `progs/asm/fib.s:61`
 
 
 Next: [API_p10.md](API_p10.md)

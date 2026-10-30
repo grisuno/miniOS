@@ -642,7 +642,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `stdout`
 
-`function` | [kernel/shell.c:4093](../../kernel/shell.c#L4093)
+`function` | [kernel/shell.c:4094](../../kernel/shell.c#L4094)
 
 ```c
 * the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console, never into the * pipe (shell_report suspends the capture), so `run x | cat` shows the *
@@ -782,7 +782,7 @@ Shared by the fat and ext4 builtins.
 
 ### `PIPE_HOP_MAX`
 
-`macro` | [kernel/shell.c:4103](../../kernel/shell.c#L4103)
+`macro` | [kernel/shell.c:4104](../../kernel/shell.c#L4104)
 
 ```c
 #define PIPE_HOP_MAX

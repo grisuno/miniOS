@@ -290,7 +290,9 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `vga_fx_free` (function, line 277) `void vga_fx_free(unsigned int *buf);`
   - `vga_fx_melt_rect` (function, line 278) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
   - `vga_fx_melt_from_black` (function, line 280) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
-  - `vga_fb_set_gfx_mode` (function, line 291) `void vga_fb_set_gfx_mode(int on);`
+  - `vga_fx_burn_rect` (function, line 281) `void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);`
+  - `vga_fx_genie_rect` (function, line 283) `void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int...`
+  - `vga_fb_set_gfx_mode` (function, line 297) `void vga_fb_set_gfx_mode(int on);`
   - `fb_width` (variable, line 23) `extern int fb_width;`
   - `fb_height` (variable, line 24) `extern int fb_height;`
   - `fb_pitch` (variable, line 25) `extern int fb_pitch;`
@@ -301,8 +303,10 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `nk_win_y` (variable, line 79) `extern int nk_win_x, nk_win_y;`
   - `term_rows` (variable, line 156) `extern int term_x, term_y, term_cols, term_rows;`
   - `mouse_state` (variable, line 167) `extern mouse_state_t mouse_state;`
-  - `fx_melts_completed` (variable, line 284) `extern unsigned long fx_melts_completed;`
-  - `vga_fb_active` (variable, line 293) `extern int vga_fb_active;`
+  - `fx_melts_completed` (variable, line 288) `extern unsigned long fx_melts_completed;`
+  - `fx_burns_completed` (variable, line 289) `extern unsigned long fx_burns_completed;`
+  - `fx_genies_completed` (variable, line 290) `extern unsigned long fx_genies_completed;`
+  - `vga_fb_active` (variable, line 299) `extern int vga_fb_active;`
   - `VGA_FB_H` (macro, line 2) `#define VGA_FB_H`
   - `FB_ADDR` (macro, line 22) `#define FB_ADDR`
   - `DOOM_W` (macro, line 46) `#define DOOM_W`
@@ -375,14 +379,31 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
 - Language: h
 - Symbols:
   - `vga_fx_config_t` (struct, line 16)
+  - `vga_fx_motion_t` (struct, line 155)
   - `vga_fx_rand` (function, line 30) `static inline unsigned long vga_fx_rand(unsigned long *s)`
   - `vga_fx_init_cols` (function, line 47) `static inline int vga_fx_init_cols(const vga_fx_config_t *cfg, int *cols, int w)`
   - `vga_fx_advance` (function, line 71) `static inline int vga_fx_advance(const vga_fx_config_t *cfg, int *cols, int w, int h)`
   - `vga_fx_front` (function, line 97) `static inline int vga_fx_front(int col_y, int h)`
   - `vga_fx_clamp_rect` (function, line 109) `static inline int vga_fx_clamp_rect(int *x, int *y, int *w, int *h, int fb_w, int fb_h)`
+  - `vga_fx_smooth` (function, line 177) `static inline int vga_fx_smooth(int q)`
+  - `vga_fx_hash2` (function, line 191) `static inline unsigned long vga_fx_hash2(int x, int y, unsigned long seed)`
+  - `vga_fx_noise` (function, line 204) `static inline int vga_fx_noise(int x, int y, int cell, unsigned long seed)`
+  - `vga_fx_burn_span` (function, line 230) `static inline int vga_fx_burn_span(const vga_fx_motion_t *cfg)`
+  - `vga_fx_burn_threshold` (function, line 241) `static inline int vga_fx_burn_threshold(const vga_fx_motion_t *cfg, int lx, int ly, int w, int h)`
+  - `vga_fx_burn_pixel` (function, line 260) `static inline int vga_fx_burn_pixel(const vga_fx_motion_t *cfg, int thr, int prog, int *heat)`
+  - `vga_fx_fire_color` (function, line 289) `static inline unsigned int vga_fx_fire_color(int heat)`
+  - `vga_fx_mix` (function, line 319) `static inline unsigned int vga_fx_mix(unsigned int a, unsigned int b, int alpha)`
+  - `vga_fx_burn_compose` (function, line 340) `static inline unsigned int vga_fx_burn_compose(unsigned int base, int heat)`
+  - `longer` (function, line 353) `* longer (the lag), every row follows the same smoothstep toward the
+ * target and narrows to gen...`
   - `VGA_FX_H` (macro, line 13) `#define VGA_FX_H`
   - `VGA_FX_CONFIG_DEFAULT` (macro, line 24) `#define VGA_FX_CONFIG_DEFAULT`
   - `VGA_FX_COLS_MAX` (macro, line 27) `#define VGA_FX_COLS_MAX`
+  - `VGA_FX_PROG_ONE` (macro, line 136) `#define VGA_FX_PROG_ONE`
+  - `VGA_FX_FRAME_MS` (macro, line 140) `#define VGA_FX_FRAME_MS`
+  - `VGA_FX_HEAT_STEP` (macro, line 143) `#define VGA_FX_HEAT_STEP`
+  - `VGA_FX_HEAT_MAX` (macro, line 146) `#define VGA_FX_HEAT_MAX`
+  - `VGA_FX_MOTION_DEFAULT` (macro, line 173) `#define VGA_FX_MOTION_DEFAULT`
 - Imported by: `kernel/vga_fb.c`, `kernel/vga_fx.c`, `tests/test_fx.c`
 
 ## headers/vma.h
@@ -441,53 +462,6 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `WM_CHROME_CONFIG_DEFAULT` (macro, line 35) `#define WM_CHROME_CONFIG_DEFAULT`
   - `WM_CHROME_RADIUS_MAX` (macro, line 38) `#define WM_CHROME_RADIUS_MAX`
 - Imported by: `kernel/vga_fb.c`, `tests/test_chrome.c`
-
-## headers/wm_events.h
-- Doc: Docstring: Window event contract for the MiniOS desktop.
-- Layer: infrastructure
-- Language: h
-- Symbols:
-  - `wm_mouse_t` (struct, line 25)
-  - `wm_event_t` (struct, line 34)
-  - `wm_event_config_t` (struct, line 43)
-  - `wm_combo_t` (struct, line 158)
-  - `wm_is_click_edge` (function, line 52) `static inline int wm_is_click_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_buttons)`
-  - `wm_is_release_edge` (function, line 59) `static inline int wm_is_release_edge(const wm_event_config_t *cfg, int prev_buttons, int curr_but...`
-  - `wm_translate_event` (function, line 66) `static inline wm_event_t wm_translate_event(const wm_event_config_t *cfg, const wm_mouse_t *prev,...`
-  - `wm_event_suppresses_drag` (function, line 104) `static inline int wm_event_suppresses_drag(const wm_event_t *evt)`
-  - `wm_combo_lookup` (function, line 201) `static inline int wm_combo_lookup(int alt, int altgr, int sup, int e0, int sc, int path, int *zon...`
-  - `wm_combo_lookup_mods` (function, line 238) `static inline int wm_combo_lookup_mods(const modifier_state_t *st, int e0, int sc, int path, int ...`
-  - `WM_EVENTS_H` (macro, line 11) `#define WM_EVENTS_H`
-  - `WM_EVENT_CONFIG_DEFAULT` (macro, line 49) `#define WM_EVENT_CONFIG_DEFAULT`
-  - `WM_SC_TAB` (macro, line 110) `#define WM_SC_TAB`
-  - `WM_SC_ENTER` (macro, line 111) `#define WM_SC_ENTER`
-  - `WM_SC_MINUS` (macro, line 112) `#define WM_SC_MINUS`
-  - `WM_SC_EQUAL` (macro, line 113) `#define WM_SC_EQUAL`
-  - `WM_SC_ZERO` (macro, line 114) `#define WM_SC_ZERO`
-  - `WM_SC_Q` (macro, line 115) `#define WM_SC_Q`
-  - `WM_SC_LBRACKET` (macro, line 116) `#define WM_SC_LBRACKET`
-  - `WM_SC_RBRACKET` (macro, line 117) `#define WM_SC_RBRACKET`
-  - `WM_SC_M` (macro, line 118) `#define WM_SC_M`
-  - `WM_SC_X` (macro, line 119) `#define WM_SC_X`
-  - `WM_SC_UP` (macro, line 120) `#define WM_SC_UP`
-  - `WM_SC_DOWN` (macro, line 121) `#define WM_SC_DOWN`
-  - `WM_SC_LEFT` (macro, line 122) `#define WM_SC_LEFT`
-  - `WM_SC_RIGHT` (macro, line 123) `#define WM_SC_RIGHT`
-  - `WM_SC_HOME` (macro, line 124) `#define WM_SC_HOME`
-  - `WM_SC_END` (macro, line 125) `#define WM_SC_END`
-  - `WM_SNAP_LEFT` (macro, line 128) `#define WM_SNAP_LEFT`
-  - `WM_SNAP_RIGHT` (macro, line 129) `#define WM_SNAP_RIGHT`
-  - `WM_SNAP_TOP` (macro, line 130) `#define WM_SNAP_TOP`
-  - `WM_SNAP_BOTTOM` (macro, line 131) `#define WM_SNAP_BOTTOM`
-  - `WM_SNAP_TOP_LEFT` (macro, line 132) `#define WM_SNAP_TOP_LEFT`
-  - `WM_SNAP_TOP_RIGHT` (macro, line 133) `#define WM_SNAP_TOP_RIGHT`
-  - `WM_SNAP_BOTTOM_LEFT` (macro, line 134) `#define WM_SNAP_BOTTOM_LEFT`
-  - `WM_SNAP_BOTTOM_RIGHT` (macro, line 135) `#define WM_SNAP_BOTTOM_RIGHT`
-  - `WM_PATH_COOKED` (macro, line 138) `#define WM_PATH_COOKED`
-  - `WM_PATH_RAW` (macro, line 139) `#define WM_PATH_RAW`
-  - `WM_COMBOS_N` (macro, line 198) `#define WM_COMBOS_N`
-- Depends on: `headers/drivers/modifiers.h`
-- Imported by: `drivers/kbd.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
 
 
 Next: [KB_headers_p6.md](KB_headers_p6.md)

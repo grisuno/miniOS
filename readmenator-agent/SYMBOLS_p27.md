@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `halt` | method | `tools/minios_hyper.py:195` | `def halt(self)` |
+| `key` | method | `tools/minios_hyper.py:132` | `def key(self, qcode)` |
+| `main` | function | `tools/minios_hyper.py:591` | `def main(argv)` |
+| `mean_diff` | method | `tools/minios_hyper.py:343` | `def mean_diff(a_path, b_path)` |
+| `moved_cursors` | method | `tools/minios_hyper.py:399` | `def moved_cursors(before_path, after_path)` |
+| `pixel_oob` | method | `tools/minios_hyper.py:452` | `def pixel_oob(self)` |
+| `qmp_chan` | method | `tools/minios_hyper.py:298` | `def qmp_chan(self)` |
+| `raw` | method | `tools/minios_hyper.py:117` | `def raw(self, obj)` |
+| `read_mem` | method | `tools/minios_hyper.py:185` | `def read_mem(self, addr, length)` |
+| `regs` | method | `tools/minios_hyper.py:181` | `def regs(self)` |
+| `rel` | method | `tools/minios_hyper.py:126` | `def rel(self, dx, dy)` |
+| `repl` | function | `tools/minios_hyper.py:561` | `def repl(guest)` |
+| `run_boot` | function | `tools/minios_hyper.py:523` | `def run_boot(checks, extra_shell, interactive)` |
+| `run_selftest` | function | `tools/minios_hyper.py:491` | `def run_selftest()` |
+| `screendump` | method | `tools/minios_hyper.py:121` | `def screendump(self, path)` |
+| `send` | method | `tools/minios_hyper.py:288` | `def send(self, line, settle)` |
+| `snapshot` | method | `tools/minios_hyper.py:276` | `def snapshot(self)` |
+| `status` | method | `tools/minios_hyper.py:141` | `def status(self)` |
+| `stop` | method | `tools/minios_hyper.py:314` | `def stop(self)` |
+| `sys_trace` | method | `tools/minios_hyper.py:465` | `def sys_trace(self)` |
+| `vga_cursor` | method | `tools/minios_hyper.py:427` | `def vga_cursor(self)` |
+| `vga_idle` | method | `tools/minios_hyper.py:415` | `def vga_idle(self)` |
+| `wait_for` | method | `tools/minios_hyper.py:280` | `def wait_for(self, marker, timeout)` |
 | `build_zip` | function | `tools/mkcpyzip.py:22` | `def build_zip(lib_dir, out_zip, skip)` |
 | `main` | function | `tools/mkcpyzip.py:41` | `def main()` |
 | `MiniFS` | class | `tools/mkfs.minifs.py:56` | `class MiniFS` |
@@ -35,8 +58,8 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 | `bytes_to_unicode` | function | `tools/mkvocab.py:18` | `def bytes_to_unicode()` |
 | `main` | function | `tools/mkvocab.py:35` | `def main(encoder_path, vocab_path)` |
 | `cleanup` | function | `tools/mutate.sh:146` | `` |
-| `find_index` | function | `tools/mutate.sh:562` | `` |
-| `record` | function | `tools/mutate.sh:556` | `` |
+| `find_index` | function | `tools/mutate.sh:576` | `` |
+| `record` | function | `tools/mutate.sh:570` | `` |
 | `restore_sources` | function | `tools/mutate.sh:139` | `` |
 | `usage` | function | `tools/mutate.sh:51` | `` |
 | `dump` | function | `tools/probe_compute_vga.py:104` | `def dump(name)` |

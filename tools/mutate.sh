@@ -492,6 +492,20 @@ fx-finish-skips-melt | s/    vga_fx_melt_rect(0, 0, fb_width, fb_height, oldb, n
 fx-open-never-armed | s/        fx_gfx_armed = 1;/        fx_gfx_armed = 0;/ | kernel/vga_fb.c
 fx-advance-stuck | s/            cols\[i\]++;/            cols[i] += 0;/ | headers/vga_fx.h
 fx-front-clamp-lost | s/    if (col_y > h) {/    if (col_y > h + 1) {/ | headers/vga_fx.h
+fx-burn-never-ignites | s/    d = prog - thr;/    d = prog - thr - VGA_FX_PROG_ONE;/ | headers/vga_fx.h
+fx-burn-top-first | s/    rise = ((h - 1 - ly) \* cfg->burn_rise) \/ h;/    rise = (ly * cfg->burn_rise) \/ h;/ | headers/vga_fx.h
+fx-fire-ember-black | s/{ 60, 0, 0 }/{ 0, 0, 0 }/ | headers/vga_fx.h
+fx-mix-inverted | s/        return a & 0x00FFFFFFu;/        return b \& 0x00FFFFFFu;/ | headers/vga_fx.h
+fx-genie-no-lag | s/    delay = ((long)cfg->genie_lag \* (long)(wh - 1 - r)) \/ wh;/    delay = 0;/ | headers/vga_fx.h
+fx-genie-no-narrow | s/    wd = ww + (minw - ww) \* e \/ VGA_FX_PROG_ONE;/    wd = ww;/ | headers/vga_fx.h
+fx-genie-target-unheld | s/    if (ty < wy + wh - 1) {/    if (0) {/ | headers/vga_fx.h
+fx-smooth-linear | s/    v = (long)q \* (long)q \* (3L \* VGA_FX_PROG_ONE - 2L \* (long)q);/    v = (long)q * (long)VGA_FX_PROG_ONE * (long)VGA_FX_PROG_ONE;/ | headers/vga_fx.h
+fx-gfx-close-not-burned | s/vga_fx_burn_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old, fx_new, fx_cw);/vga_fx_melt_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old, fx_new);/ | kernel/vga_fb.c
+fx-term-close-not-burned | s/            fx_plan_burn(bx, by, bw, bh);/            (void)bx;/ | kernel/vga_fb.c
+fx-minimize-not-genie | s/^        fx_plan_genie(term_px_x, term_px_y, term_px_w + SCROLLBAR_W, term_px_h + FONT_H, tx, ty, 0);/        (void)ty;/ | kernel/vga_fb.c
+fx-plan-leaks | s/    fx_plan_kind = FX_PLAN_MELT;/    (void)kind;/ | kernel/vga_fb.c
+fx-genie-uncounted | s/    fx_genies_completed++;/    (void)rh;/ | kernel/vga_fx.c
+fx-burn-uncounted | s/    fx_burns_completed++;/    (void)w;/ | kernel/vga_fx.c
 chrome-blend-inverted | s/    return (src \* a + dst \* (255 - a) + 127) \/ 255;/    return (dst * a + src * (255 - a) + 127) \/ 255;/ | headers/wm_chrome.h
 chrome-clamp-low-lost | s/    return v < 0 ? 0 : (v > 255 ? 255 : v);/    return v < 0 ? 0 : v;/ | headers/wm_chrome.h
 chrome-gradient-sink-lost | s/    delta = cfg->title_lift - ((cfg->title_lift + cfg->title_sink) \* row) \/ (span - 1);/    delta = cfg->title_lift - (cfg->title_lift * row) \/ (span - 1);/ | headers/wm_chrome.h

@@ -42,7 +42,7 @@ flowchart LR
 
 ### `vga_fx_set_enabled`
 
-`function` | [kernel/vga_fx.c:22](../../kernel/vga_fx.c#L22)
+`function` | [kernel/vga_fx.c:27](../../kernel/vga_fx.c#L27)
 
 ```c
 void vga_fx_set_enabled(int on)
@@ -60,7 +60,7 @@ void vga_fx_set_enabled(int on)
 
 ### `vga_fx_enabled`
 
-`function` | [kernel/vga_fx.c:27](../../kernel/vga_fx.c#L27)
+`function` | [kernel/vga_fx.c:32](../../kernel/vga_fx.c#L32)
 
 ```c
 int vga_fx_enabled(void)
@@ -74,7 +74,7 @@ int vga_fx_enabled(void)
 
 ### `vga_fx_snap_rect`
 
-`function` | [kernel/vga_fx.c:41](../../kernel/vga_fx.c#L41)
+`function` | [kernel/vga_fx.c:46](../../kernel/vga_fx.c#L46)
 
 ```c
 unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)
@@ -99,7 +99,7 @@ unsigned int *vga_fx_snap_rect(int x, int y, int w, int h)
 
 ### `vga_fx_restore_rect`
 
-`function` | [kernel/vga_fx.c:63](../../kernel/vga_fx.c#L63)
+`function` | [kernel/vga_fx.c:68](../../kernel/vga_fx.c#L68)
 
 ```c
 void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)
@@ -125,7 +125,7 @@ void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf)
 
 ### `vga_fx_free`
 
-`function` | [kernel/vga_fx.c:77](../../kernel/vga_fx.c#L77)
+`function` | [kernel/vga_fx.c:82](../../kernel/vga_fx.c#L82)
 
 ```c
 void vga_fx_free(unsigned int *buf)
@@ -143,7 +143,7 @@ void vga_fx_free(unsigned int *buf)
 
 ### `once`
 
-`function` | [kernel/vga_fx.c:90](../../kernel/vga_fx.c#L90)
+`function` | [kernel/vga_fx.c:95](../../kernel/vga_fx.c#L95)
 
 ```c
 * once (prev[] tracks the revealed frontier per column), then the final * restore guarantees the...
@@ -165,7 +165,7 @@ void vga_fx_free(unsigned int *buf)
 
 ### `vga_fx_melt_rect`
 
-`function` | [kernel/vga_fx.c:150](../../kernel/vga_fx.c#L150)
+`function` | [kernel/vga_fx.c:155](../../kernel/vga_fx.c#L155)
 
 ```c
 void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb)
@@ -192,7 +192,7 @@ The framebuffer must show the old rect on entry and shows the new rect on return
 
 ### `vga_fx_melt_from_black`
 
-`function` | [kernel/vga_fx.c:159](../../kernel/vga_fx.c#L159)
+`function` | [kernel/vga_fx.c:164](../../kernel/vga_fx.c#L164)
 
 ```c
 void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb)

@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ST_WEAPON3Y` | macro | `progs/doomgeneric/st_stuff.c:219` | `#define ST_WEAPON3Y` |
+| `ST_WEAPON4X` | macro | `progs/doomgeneric/st_stuff.c:222` | `#define ST_WEAPON4X` |
+| `ST_WEAPON4Y` | macro | `progs/doomgeneric/st_stuff.c:223` | `#define ST_WEAPON4Y` |
+| `ST_WEAPON5X` | macro | `progs/doomgeneric/st_stuff.c:226` | `#define ST_WEAPON5X` |
+| `ST_WEAPON5Y` | macro | `progs/doomgeneric/st_stuff.c:227` | `#define ST_WEAPON5Y` |
+| `ST_WPNSX` | macro | `progs/doomgeneric/st_stuff.c:230` | `#define ST_WPNSX` |
+| `ST_WPNSY` | macro | `progs/doomgeneric/st_stuff.c:231` | `#define ST_WPNSY` |
+| `ST_X` | macro | `progs/doomgeneric/st_stuff.c:83` | `#define ST_X` |
+| `ST_X2` | macro | `progs/doomgeneric/st_stuff.c:84` | `#define ST_X2` |
+| `ST_calcPainOffset` | function | `progs/doomgeneric/st_stuff.c:665` | `int ST_calcPainOffset(void)` |
+| `ST_createWidgets` | function | `progs/doomgeneric/st_stuff.c:1227` | `void ST_createWidgets(void)` |
+| `ST_diffDraw` | function | `progs/doomgeneric/st_stuff.c:1049` | `void ST_diffDraw(void)` |
+| `ST_doPaletteStuff` | function | `progs/doomgeneric/st_stuff.c:936` | `void ST_doPaletteStuff(void)` |
+| `ST_doRefresh` | function | `progs/doomgeneric/st_stuff.c:1036` | `void ST_doRefresh(void)` |
+| `ST_drawWidgets` | function | `progs/doomgeneric/st_stuff.c:1001` | `void ST_drawWidgets(boolean refresh)` |
+| `ST_initData` | function | `progs/doomgeneric/st_stuff.c:1194` | `void ST_initData(void)` |
+| `ST_loadCallback` | function | `progs/doomgeneric/st_stuff.c:1162` | `static void ST_loadCallback(char *lumpname, patch_t **variable)` |
+| `ST_loadData` | function | `progs/doomgeneric/st_stuff.c:1172` | `void ST_loadData(void)` |
+| `ST_loadGraphics` | function | `progs/doomgeneric/st_stuff.c:1167` | `void ST_loadGraphics(void)` |
+| `ST_loadUnloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1076` | `static void ST_loadUnloadGraphics(load_callback_t callback)` |
+| `ST_refreshBackground` | function | `progs/doomgeneric/st_stuff.c:416` | `void ST_refreshBackground(void)` |
+| `ST_unloadCallback` | function | `progs/doomgeneric/st_stuff.c:1178` | `static void ST_unloadCallback(char *lumpname, patch_t **variable)` |
+| `ST_unloadData` | function | `progs/doomgeneric/st_stuff.c:1189` | `void ST_unloadData(void)` |
 | `ST_unloadGraphics` | function | `progs/doomgeneric/st_stuff.c:1184` | `void ST_unloadGraphics(void)` |
 | `ST_updateFaceWidget` | function | `progs/doomgeneric/st_stuff.c:688` | `void ST_updateFaceWidget(void)` |
 | `ST_updateWidgets` | function | `progs/doomgeneric/st_stuff.c:860` | `void ST_updateWidgets(void)` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `KS_INSERT` | macro | `progs/freedomui/ps2_keymap.c:63` | `#define KS_INSERT` |
 | `KS_KP_BEGIN` | macro | `progs/freedomui/ps2_keymap.c:78` | `#define KS_KP_BEGIN` |
 | `KS_KP_DECIMAL` | macro | `progs/freedomui/ps2_keymap.c:81` | `#define KS_KP_DECIMAL` |
-| `KS_KP_DIVIDE` | macro | `progs/freedomui/ps2_keymap.c:82` | `#define KS_KP_DIVIDE` |
-| `KS_KP_DOWN` | macro | `progs/freedomui/ps2_keymap.c:74` | `#define KS_KP_DOWN` |
-| `KS_KP_END` | macro | `progs/freedomui/ps2_keymap.c:77` | `#define KS_KP_END` |
-| `KS_KP_HOME` | macro | `progs/freedomui/ps2_keymap.c:70` | `#define KS_KP_HOME` |
-| `KS_KP_INSERT` | macro | `progs/freedomui/ps2_keymap.c:79` | `#define KS_KP_INSERT` |
-| `KS_KP_LEFT` | macro | `progs/freedomui/ps2_keymap.c:71` | `#define KS_KP_LEFT` |
-| `KS_KP_MULTIPLY` | macro | `progs/freedomui/ps2_keymap.c:80` | `#define KS_KP_MULTIPLY` |
-| `KS_KP_NEXT` | macro | `progs/freedomui/ps2_keymap.c:76` | `#define KS_KP_NEXT` |
-| `KS_KP_PRIOR` | macro | `progs/freedomui/ps2_keymap.c:75` | `#define KS_KP_PRIOR` |
-| `KS_KP_RIGHT` | macro | `progs/freedomui/ps2_keymap.c:73` | `#define KS_KP_RIGHT` |
-| `KS_KP_UP` | macro | `progs/freedomui/ps2_keymap.c:72` | `#define KS_KP_UP` |
-| `KS_MENU` | macro | `progs/freedomui/ps2_keymap.c:65` | `#define KS_MENU` |
-| `KS_NUM_LOCK` | macro | `progs/freedomui/ps2_keymap.c:67` | `#define KS_NUM_LOCK` |
-| `KS_PRINT` | macro | `progs/freedomui/ps2_keymap.c:64` | `#define KS_PRINT` |
-| `KS_SCROLL_LOCK` | macro | `progs/freedomui/ps2_keymap.c:66` | `#define KS_SCROLL_LOCK` |
-| `KS_SUPER_L` | macro | `progs/freedomui/ps2_keymap.c:68` | `#define KS_SUPER_L` |
-| `KS_SUPER_R` | macro | `progs/freedomui/ps2_keymap.c:69` | `#define KS_SUPER_R` |
-| `PS2_BREAK_BIT` | macro | `progs/freedomui/ps2_keymap.c:16` | `#define PS2_BREAK_BIT` |
-| `PS2_CODE_MASK` | macro | `progs/freedomui/ps2_keymap.c:17` | `#define PS2_CODE_MASK` |
-| `PS2_HELD_LALT` | macro | `progs/freedomui/ps2_keymap.c:24` | `#define PS2_HELD_LALT` |
-| `PS2_HELD_LCTRL` | macro | `progs/freedomui/ps2_keymap.c:22` | `#define PS2_HELD_LCTRL` |
-| `PS2_HELD_LSHIFT` | macro | `progs/freedomui/ps2_keymap.c:20` | `#define PS2_HELD_LSHIFT` |
-| `PS2_HELD_RALT` | macro | `progs/freedomui/ps2_keymap.c:25` | `#define PS2_HELD_RALT` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

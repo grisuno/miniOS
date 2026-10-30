@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `CONFIG_VARIABLE_STRING` | macro | `progs/doomgeneric/m_config.c:106` | `#define CONFIG_VARIABLE_STRING(name)` |
+| `GetDefaultConfigDir` | function | `progs/doomgeneric/m_config.c:2043` | `static char *GetDefaultConfigDir(void)` |
+| `GetDefaultForName` | function | `progs/doomgeneric/m_config.c:1937` | `static default_t *GetDefaultForName(char *name)` |
+| `LoadDefaultCollection` | function | `progs/doomgeneric/m_config.c:1771` | `static void LoadDefaultCollection(default_collection_t *collection)` |
+| `M_BindVariable` | function | `progs/doomgeneric/m_config.c:1964` | `void M_BindVariable(char *name, void *location)` |
+| `M_GetFloatVariable` | function | `progs/doomgeneric/m_config.c:2025` | `float M_GetFloatVariable(char *name)` |
+| `M_GetIntVariable` | function | `progs/doomgeneric/m_config.c:1995` | `int M_GetIntVariable(char *name)` |
+| `M_GetSaveGameDir` | function | `progs/doomgeneric/m_config.c:2087` | `char *M_GetSaveGameDir(char *iwadname)` |
+| `M_GetStrVariable` | function | `progs/doomgeneric/m_config.c:2010` | `const char *M_GetStrVariable(char *name)` |
+| `M_LoadDefaults` | function | `progs/doomgeneric/m_config.c:1881` | `void M_LoadDefaults (void)` |
+| `M_SaveDefaults` | function | `progs/doomgeneric/m_config.c:1846` | `void M_SaveDefaults (void)` |
+| `M_SaveDefaultsAlternate` | function | `progs/doomgeneric/m_config.c:1856` | `void M_SaveDefaultsAlternate(char *main, char *extra)` |
+| `M_SetConfigDir` | function | `progs/doomgeneric/m_config.c:2059` | `void M_SetConfigDir(char *dir)` |
+| `M_SetConfigFilenames` | function | `progs/doomgeneric/m_config.c:1836` | `void M_SetConfigFilenames(char *main_config, char *extra_config)` |
+| `M_SetVariable` | function | `progs/doomgeneric/m_config.c:1977` | `boolean M_SetVariable(char *name, char *value)` |
+| `ParseIntParameter` | function | `progs/doomgeneric/m_config.c:1716` | `static int ParseIntParameter(char *strparm)` |
+| `SaveDefaultCollection` | function | `progs/doomgeneric/m_config.c:1609` | `static void SaveDefaultCollection(default_collection_t *collection)` |
+| `SearchCollection` | function | `progs/doomgeneric/m_config.c:1563` | `static default_t *SearchCollection(default_collection_t *collection, char *name)` |
+| `SetVariable` | function | `progs/doomgeneric/m_config.c:1728` | `static void SetVariable(default_t *def, char *value)` |
+| `default_collection_t` | struct | `progs/doomgeneric/m_config.c:88` | `` |
+| `default_t` | struct | `progs/doomgeneric/m_config.c:61` | `` |
+| `M_BindVariable` | function | `progs/doomgeneric/m_config.h:29` | `void M_BindVariable(char *name, void *variable);` |
+| `M_GetFloatVariable` | function | `progs/doomgeneric/m_config.h:33` | `float M_GetFloatVariable(char *name);` |
 | `M_GetIntVariable` | function | `progs/doomgeneric/m_config.h:31` | `int M_GetIntVariable(char *name);` |
 | `M_GetSaveGameDir` | function | `progs/doomgeneric/m_config.h:35` | `char *M_GetSaveGameDir(char *iwadname);` |
 | `M_GetStrVariable` | function | `progs/doomgeneric/m_config.h:32` | `const char *M_GetStrVariable(char *name);` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 | `P_GiveAmmo` | function | `progs/doomgeneric/p_inter.c:66` | `boolean P_GiveAmmo ( player_t*	player,   ammotype_t	ammo,   int		num )` |
 | `P_GiveArmor` | function | `progs/doomgeneric/p_inter.c:246` | `boolean P_GiveArmor ( player_t*	player,   int		armortype )` |
 | `P_GiveBody` | function | `progs/doomgeneric/p_inter.c:223` | `boolean P_GiveBody ( player_t*	player,   int		num )` |
-| `P_GiveCard` | function | `progs/doomgeneric/p_inter.c:268` | `void P_GiveCard ( player_t*	player,   card_t	card )` |
-| `P_GivePower` | function | `progs/doomgeneric/p_inter.c:284` | `boolean P_GivePower ( player_t*	player,   int /*powertype_t*/	power )` |
-| `P_GiveWeapon` | function | `progs/doomgeneric/p_inter.c:160` | `boolean P_GiveWeapon ( player_t*	player,   weapontype_t	weapon,   boolean	dropped )` |
-| `P_KillMobj` | function | `progs/doomgeneric/p_inter.c:666` | `void P_KillMobj ( mobj_t*	source,   mobj_t*	target )` |
-| `P_TouchSpecialThing` | function | `progs/doomgeneric/p_inter.c:333` | `void P_TouchSpecialThing ( mobj_t*	special,   mobj_t*	toucher )` |
-| `__P_INTER__` | macro | `progs/doomgeneric/p_inter.h:21` | `#define __P_INTER__` |
-| `EV_LightTurnOn` | function | `progs/doomgeneric/p_lights.c:264` | `void EV_LightTurnOn ( line_t*	line,   int		bright )` |
-| `EV_StartLightStrobing` | function | `progs/doomgeneric/p_lights.c:208` | `void EV_StartLightStrobing(line_t*	line)` |
-| `EV_TurnTagLightsOff` | function | `progs/doomgeneric/p_lights.c:229` | `void EV_TurnTagLightsOff(line_t* line)` |
-| `P_SpawnFireFlicker` | function | `progs/doomgeneric/p_lights.c:61` | `void P_SpawnFireFlicker (sector_t*	sector)` |
-| `P_SpawnGlowingLight` | function | `progs/doomgeneric/p_lights.c:334` | `void P_SpawnGlowingLight(sector_t*	sector)` |
-| `P_SpawnLightFlash` | function | `progs/doomgeneric/p_lights.c:117` | `void P_SpawnLightFlash (sector_t*	sector)` |
-| `P_SpawnStrobeFlash` | function | `progs/doomgeneric/p_lights.c:174` | `void P_SpawnStrobeFlash ( sector_t*	sector,   int		fastOrSlow,   int		inSync )` |
-| `T_FireFlicker` | function | `progs/doomgeneric/p_lights.c:39` | `void T_FireFlicker (fireflicker_t* flick)` |
-| `T_Glow` | function | `progs/doomgeneric/p_lights.c:307` | `void T_Glow(glow_t*	g)` |
-| `T_LightFlash` | function | `progs/doomgeneric/p_lights.c:91` | `void T_LightFlash (lightflash_t* flash)` |
-| `T_StrobeFlash` | function | `progs/doomgeneric/p_lights.c:148` | `void T_StrobeFlash (strobe_t*		flash)` |
-| `BASETHRESHOLD` | macro | `progs/doomgeneric/p_local.h:58` | `#define	BASETHRESHOLD` |
-| `FLOATSPEED` | macro | `progs/doomgeneric/p_local.h:27` | `#define FLOATSPEED` |
-| `GRAVITY` | macro | `progs/doomgeneric/p_local.h:50` | `#define GRAVITY` |
-| `ITEMQUESIZE` | macro | `progs/doomgeneric/p_local.h:96` | `#define ITEMQUESIZE` |
-| `MAPBLOCKSHIFT` | macro | `progs/doomgeneric/p_local.h:37` | `#define MAPBLOCKSHIFT` |
-| `MAPBLOCKSIZE` | macro | `progs/doomgeneric/p_local.h:36` | `#define MAPBLOCKSIZE` |
 
 Next: [SYMBOLS_p17.md](SYMBOLS_p17.md)

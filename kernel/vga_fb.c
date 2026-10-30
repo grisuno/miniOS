@@ -275,6 +275,7 @@ static int wallpaper_packed(int x, int y, unsigned int *out);
 static int icon_nearest(int r, int g, int b);
 static const uint8_t *gfx_task_icon(void);
 static void taskbar_layout(void);
+static int chrome_win_rect(int id, int *x, int *y, int *w, int *h);
 static int tb_gfx_x, tb_gfx_w;
 static struct desktop_shortcut shortcuts[MAX_SHORTCUTS];
 static int shortcut_count;
@@ -479,6 +480,30 @@ static int fx_gfx_armed;
 static int fx_close_pending;
 static int fx_close_x, fx_close_y, fx_close_w, fx_close_h;
 
+/* Kind of the next full-frame show/hide transition. Melt is the default;
+ * a caller that knows which window is closing or minimizing sets a plan
+ * before fx_start_full and fx_finish_full consumes it, so a plan can never
+ * leak into the next transition. Burn needs the closing window rect, genie
+ * the rect plus the taskbar point it flows to and its direction. 8-bit
+ * modes have no room for flame colours and always melt. */
+enum { FX_PLAN_MELT, FX_PLAN_BURN, FX_PLAN_GENIE };
+static int fx_plan_kind;
+static int fx_plan_x, fx_plan_y, fx_plan_w, fx_plan_h;
+static int fx_plan_tx, fx_plan_ty, fx_plan_reverse;
+
+static void fx_plan_burn(int x, int y, int w, int h)
+{
+    fx_plan_kind = FX_PLAN_BURN;
+    fx_plan_x = x; fx_plan_y = y; fx_plan_w = w; fx_plan_h = h;
+}
+
+static void fx_plan_genie(int x, int y, int w, int h, int tx, int ty, int reverse)
+{
+    fx_plan_kind = FX_PLAN_GENIE;
+    fx_plan_x = x; fx_plan_y = y; fx_plan_w = w; fx_plan_h = h;
+    fx_plan_tx = tx; fx_plan_ty = ty; fx_plan_reverse = reverse;
+}
+
 /* Snapshot the current fullscreen frame for a show/hide melt. Cursor erased
  * first so its pixels do not bake into the old frame. Returns 0 when the
  * effect is off or the snapshot OOMs, and the caller then just redraws.
@@ -508,6 +533,8 @@ static void fx_finish_full(unsigned int *oldb)
 {
     unsigned int *newb;
     int held = fb_hold_present;
+    int kind = fx_plan_kind;
+    fx_plan_kind = FX_PLAN_MELT;
     if (!oldb) {
         return;
     }
@@ -530,7 +557,22 @@ static void fx_finish_full(unsigned int *oldb)
         }
         vga_fx_restore_rect(0, 0, fb_width, fb_height, oldb);
     }
-    vga_fx_melt_rect(0, 0, fb_width, fb_height, oldb, newb);
+    if (kind == FX_PLAN_BURN && fb_bpp != 8) {
+        unsigned long off = (unsigned long)fx_plan_y * (unsigned long)fb_width + (unsigned long)fx_plan_x;
+        vga_fx_restore_rect(0, 0, fb_width, fb_height, oldb);
+        vga_fx_burn_rect(fx_plan_x, fx_plan_y, fx_plan_w, fx_plan_h, oldb + off, newb + off, fb_width);
+        vga_fx_restore_rect(0, 0, fb_width, fb_height, newb);
+    } else if (kind == FX_PLAN_GENIE && fb_bpp != 8) {
+        vga_fx_restore_rect(0, 0, fb_width, fb_height, oldb);
+        if (fx_plan_reverse)
+            vga_fx_genie_rect(fx_plan_x, fx_plan_y, fx_plan_w, fx_plan_h, fx_plan_tx, fx_plan_ty,
+                oldb, newb, 1);
+        else
+            vga_fx_genie_rect(fx_plan_x, fx_plan_y, fx_plan_w, fx_plan_h, fx_plan_tx, fx_plan_ty,
+                newb, oldb, 0);
+    } else {
+        vga_fx_melt_rect(0, 0, fb_width, fb_height, oldb, newb);
+    }
     vga_fx_free(oldb);
     vga_fx_free(newb);
     cursor_invalidate();
@@ -710,10 +752,17 @@ void vga_fb_set_gfx_mode(int on) {
         gfx_win_ox = 0;
         gfx_win_oy = 0;
         gfx_prog[0] = '\0';
-        /* Arm the close melt: the redraw that follows still shows the
-         * graphics window, so draw_desktop snapshots this rect first. A
-         * hidden window is not on screen, so there is nothing to melt. */
-        if (gfx_win_w > 0 && gfx_win_h > 0 && !gfx_hidden) {
+        /* Arm the close burn: the redraw that follows still shows the
+         * graphics window, so draw_desktop snapshots this rect first (the
+         * live view frame, which also covers a fullscreen window). A
+         * hidden window is not on screen, so there is nothing to burn. */
+        if (gfx_view_valid && !gfx_hidden) {
+            fx_close_x = gfx_view.frame.x;
+            fx_close_y = gfx_view.frame.y;
+            fx_close_w = gfx_view.frame.w;
+            fx_close_h = gfx_view.frame.h;
+            fx_close_pending = 1;
+        } else if (gfx_win_w > 0 && gfx_win_h > 0 && !gfx_hidden) {
             fx_close_x = gfx_win_x;
             fx_close_y = gfx_win_y;
             fx_close_w = gfx_win_w;
@@ -1361,6 +1410,11 @@ int vga_fb_term_close_focused(void) {
     unsigned int *fx_old;
     wm_init_once();
     if (!twins[1].present) return 0;
+    {
+        int bx, by, bw, bh;
+        if (chrome_win_rect(1, &bx, &by, &bw, &bh))
+            fx_plan_burn(bx, by, bw, bh);
+    }
     fx_old = fx_start_full();
     if (twins[0].lg && twins[0].lg != lg) kfree(twins[0].lg);
     twins[0].lg = lg;
@@ -2250,6 +2304,19 @@ typedef struct {
 } chrome_win_t;
 
 static chrome_win_t chrome_wins[WM_MAX_TERMS];
+
+/** Docstring: Last composed rect of terminal window id; 0 when the window
+ * was never composed or id is out of range. */
+static int chrome_win_rect(int id, int *x, int *y, int *w, int *h)
+{
+    if (id < 0 || id >= WM_MAX_TERMS || !chrome_wins[id].valid)
+        return 0;
+    *x = chrome_wins[id].x;
+    *y = chrome_wins[id].y;
+    *w = chrome_wins[id].w;
+    *h = chrome_wins[id].h;
+    return 1;
+}
 
 /** Docstring: Outer pixel of corner k of a window rect. */
 static void chrome_corner_origin(const chrome_win_t *c, int k, int *ox, int *oy)
@@ -3734,6 +3801,8 @@ void vga_fb_draw_desktop(void) {
     unsigned int *fx_old = 0;
     int fx_do = fx_close_pending && vga_fx_enabled();
     fx_close_pending = 0;
+    if (fx_do && vga_fx_clamp_rect(&fx_cx, &fx_cy, &fx_cw, &fx_ch, fb_width, fb_height))
+        fx_do = 0;
     if (fx_do) {
         cursor_erase();
         fx_old = vga_fx_snap_rect(fx_cx, fx_cy, fx_cw, fx_ch);
@@ -3789,7 +3858,10 @@ void vga_fb_draw_desktop(void) {
         if (fx_new) {
             vga_fx_restore_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old);
             fb_compose_end(owner);
-            vga_fx_melt_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old, fx_new);
+            if (fb_bpp != 8)
+                vga_fx_burn_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old, fx_new, fx_cw);
+            else
+                vga_fx_melt_rect(fx_cx, fx_cy, fx_cw, fx_ch, fx_old, fx_new);
             vga_fx_free(fx_new);
         } else {
             fb_compose_end(owner);
@@ -3988,21 +4060,43 @@ int vga_fb_gfx_set_hidden(int hide)
     if ((hide ? 1 : 0) == gfx_hidden) return 0;
     gfx_taskbar_rect(&btn);
     if (hide) {
+        unsigned int *fx_old = 0;
         from = gfx_view.frame;
         titled = gfx_view.title_h > 0;
+        if (gfx_view_valid && fb_bpp != 8) {
+            fx_plan_genie(from.x, from.y, from.w, from.h, btn.x + btn.w / 2, btn.y + btn.h / 2, 0);
+            fx_old = fx_start_full();
+        }
         gfx_hidden = 1;
         gfx_drop_focus(WM_FOCUS_SRC_TASKBAR);
         wm_last_n = -1;
-        if (gfx_view_valid)
+        if (fx_old) {
+            vga_fb_draw_desktop();
+            fx_finish_full(fx_old);
+        } else if (gfx_view_valid)
             gfx_animate(&from, &btn, titled, 0);
         else
             vga_fb_draw_desktop();
         return 0;
     }
-    gfx_hidden = 0;
-    gfx_take_focus(WM_FOCUS_SRC_TASKBAR);
-    wm_last_n = -1;
-    gfx_transition(&btn, 0);
+    {
+        unsigned int *fx_old = 0;
+        wm_gfxview_t to;
+        if (gfx_keep_valid && fb_bpp != 8 && gfx_view_for(gfx_keep_sw, gfx_keep_sh, &to)) {
+            fx_plan_genie(to.frame.x, to.frame.y, to.frame.w, to.frame.h,
+                btn.x + btn.w / 2, btn.y + btn.h / 2, 1);
+            fx_old = fx_start_full();
+        }
+        gfx_hidden = 0;
+        gfx_take_focus(WM_FOCUS_SRC_TASKBAR);
+        wm_last_n = -1;
+        if (fx_old) {
+            gfx_frame_dirty = 1;
+            vga_fb_draw_desktop();
+            fx_finish_full(fx_old);
+        } else
+            gfx_transition(&btn, 0);
+    }
     return 0;
 }
 
@@ -4043,10 +4137,22 @@ void vga_fb_toggle_fullscreen(void) {
  * window is merely hidden and repainted on restore. Fullscreen and minimize
  * are mutually exclusive: entering fullscreen un-minimizes. */
 static void term_toggle_minimize(void) {
-    unsigned int *fx_old = fx_start_full();
+    unsigned int *fx_old;
+    int tx, ty;
+    term_recalc();
+    taskbar_layout();
+    tx = tb_restore_x + tb_restore_w / 2;
+    ty = fb_height - FONT_H / 2;
+    if (!term_minimized)
+        fx_plan_genie(term_px_x, term_px_y, term_px_w + SCROLLBAR_W, term_px_h + FONT_H, tx, ty, 0);
+    fx_old = fx_start_full();
     term_minimized = !term_minimized;
     if (term_minimized) term_fullscreen = 0;
     disp_off = 0;
+    if (!term_minimized) {
+        term_recalc();
+        fx_plan_genie(term_px_x, term_px_y, term_px_w + SCROLLBAR_W, term_px_h + FONT_H, tx, ty, 1);
+    }
     vga_fb_draw_desktop();
     fx_finish_full(fx_old);
 }

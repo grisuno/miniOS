@@ -3,6 +3,29 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `_start` | function | `progs/asm/freedom.s:11761` | `` |
+| `append` | function | `progs/asm/freedom.s:338` | `` |
+| `atoi` | function | `progs/asm/freedom.s:252` | `` |
+| `body_byte` | function | `progs/asm/freedom.s:5961` | `` |
+| `ci_eq` | function | `progs/asm/freedom.s:559` | `` |
+| `ci_index` | function | `progs/asm/freedom.s:656` | `` |
+| `ci_lower` | function | `progs/asm/freedom.s:437` | `` |
+| `ci_starts` | function | `progs/asm/freedom.s:486` | `` |
+| `classify_tag` | function | `progs/asm/freedom.s:4757` | `` |
+| `css_append` | function | `progs/asm/freedom.s:3849` | `` |
+| `css_line` | function | `progs/asm/freedom.s:3920` | `` |
+| `dom_append` | function | `progs/asm/freedom.s:3978` | `` |
+| `dom_nl` | function | `progs/asm/freedom.s:4083` | `` |
+| `dom_space` | function | `progs/asm/freedom.s:4049` | `` |
+| `f_attr` | function | `progs/asm/freedom.s:136` | `` |
+| `f_attr_on` | function | `progs/asm/freedom.s:120` | `` |
+| `f_attrlen` | function | `progs/asm/freedom.s:140` | `` |
+| `f_bdone` | function | `progs/asm/freedom.s:248` | `` |
+| `f_chunked` | function | `progs/asm/freedom.s:60` | `` |
+| `f_clen` | function | `progs/asm/freedom.s:52` | `` |
+| `f_cls` | function | `progs/asm/freedom.s:160` | `` |
+| `f_clslen` | function | `progs/asm/freedom.s:164` | `` |
+| `f_cmdash` | function | `progs/asm/freedom.s:84` | `` |
 | `f_comment` | function | `progs/asm/freedom.s:80` | `` |
 | `f_crem` | function | `progs/asm/freedom.s:244` | `` |
 | `f_csize` | function | `progs/asm/freedom.s:240` | `` |
@@ -473,28 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `__AMMAP_H__` | macro | `progs/doomgeneric/am_map.h:20` | `#define __AMMAP_H__` |
 | `cheat_amap` | variable | `progs/doomgeneric/am_map.h:46` | `extern cheatseq_t cheat_amap;` |
 | `FILES_DIR` | macro | `progs/doomgeneric/config.h:100` | `#define FILES_DIR` |
-| `HAVE_INTTYPES_H` | macro | `progs/doomgeneric/config.h:10` | `#define HAVE_INTTYPES_H` |
-| `HAVE_STDINT_H` | macro | `progs/doomgeneric/config.h:46` | `#define HAVE_STDINT_H` |
-| `HAVE_STDLIB_H` | macro | `progs/doomgeneric/config.h:49` | `#define HAVE_STDLIB_H` |
-| `HAVE_STRINGS_H` | macro | `progs/doomgeneric/config.h:52` | `#define HAVE_STRINGS_H` |
-| `HAVE_STRING_H` | macro | `progs/doomgeneric/config.h:55` | `#define HAVE_STRING_H` |
-| `HAVE_SYS_TYPES_H` | macro | `progs/doomgeneric/config.h:61` | `#define HAVE_SYS_TYPES_H` |
-| `PACKAGE` | macro | `progs/doomgeneric/config.h:67` | `#define PACKAGE` |
-| `PACKAGE_NAME` | macro | `progs/doomgeneric/config.h:73` | `#define PACKAGE_NAME` |
-| `PACKAGE_STRING` | macro | `progs/doomgeneric/config.h:76` | `#define PACKAGE_STRING` |
-| `PACKAGE_TARNAME` | macro | `progs/doomgeneric/config.h:79` | `#define PACKAGE_TARNAME` |
-| `PACKAGE_URL` | macro | `progs/doomgeneric/config.h:82` | `#define PACKAGE_URL` |
-| `PACKAGE_VERSION` | macro | `progs/doomgeneric/config.h:85` | `#define PACKAGE_VERSION` |
-| `PROGRAM_PREFIX` | macro | `progs/doomgeneric/config.h:88` | `#define PROGRAM_PREFIX` |
-| `STDC_HEADERS` | macro | `progs/doomgeneric/config.h:91` | `#define STDC_HEADERS` |
-| `VERSION` | macro | `progs/doomgeneric/config.h:94` | `#define VERSION` |
-| `AMSTR_FOLLOWOFF` | macro | `progs/doomgeneric/d_englsh.h:324` | `#define AMSTR_FOLLOWOFF` |
-| `AMSTR_FOLLOWON` | macro | `progs/doomgeneric/d_englsh.h:323` | `#define AMSTR_FOLLOWON` |
-| `AMSTR_GRIDOFF` | macro | `progs/doomgeneric/d_englsh.h:327` | `#define AMSTR_GRIDOFF` |
-| `AMSTR_GRIDON` | macro | `progs/doomgeneric/d_englsh.h:326` | `#define AMSTR_GRIDON` |
-| `AMSTR_MARKEDSPOT` | macro | `progs/doomgeneric/d_englsh.h:329` | `#define AMSTR_MARKEDSPOT` |
-| `AMSTR_MARKSCLEARED` | macro | `progs/doomgeneric/d_englsh.h:330` | `#define AMSTR_MARKSCLEARED` |
-| `C1TEXT` | macro | `progs/doomgeneric/d_englsh.h:435` | `#define C1TEXT` |
-| `C2TEXT` | macro | `progs/doomgeneric/d_englsh.h:451` | `#define C2TEXT` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)

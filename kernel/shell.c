@@ -3985,7 +3985,8 @@ void shell_exec_builtin(int argc, char **argv) {
                 vga_fx_set_enabled(0);
             else { vga_puts("usage: fx [on|off]\n"); return; }
         }
-        kprintf("fx: %s melts=%lu\n", vga_fx_enabled() ? "on" : "off", fx_melts_completed);
+        kprintf("fx: %s melts=%lu burns=%lu genies=%lu\n", vga_fx_enabled() ? "on" : "off",
+                fx_melts_completed, fx_burns_completed, fx_genies_completed);
     }
     else if (kstrcmp(argv[0], "wm") == 0) {
         shell_cmd_wm(argc, argv);

@@ -9,6 +9,7 @@ ramdisk_data.c
 
 # Stamp / temp
 .kaslrflag
+.kaslrflag-*
 Makefile.bak
 .readmenator_cache/
 .mutate-state

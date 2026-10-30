@@ -1,6 +1,216 @@
 # API (page 14 of 21)
 Previous: [API_p13.md](API_p13.md)
 
+## progs/doomgeneric/p_enemy.c
+Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
+- `P_RecursiveSound` (function) `progs/doomgeneric/p_enemy.c:99` `void
+P_RecursiveSound
+( sector_t*	sec,
+  int		soundblocks )`
+- `P_NoiseAlert` (function) `progs/doomgeneric/p_enemy.c:152` `void
+P_NoiseAlert
+( mobj_t*	target,
+  mobj_t*	emmiter )`
+- `P_CheckMeleeRange` (function) `progs/doomgeneric/p_enemy.c:167` `boolean P_CheckMeleeRange (mobj_t*	actor)` -- P_CheckMeleeRange
+- `P_CheckMissileRange` (function) `progs/doomgeneric/p_enemy.c:190` `boolean P_CheckMissileRange (mobj_t* actor)` -- P_CheckMissileRange
+- `P_Move` (function) `progs/doomgeneric/p_enemy.c:260` `boolean P_Move (mobj_t*	actor)`
+- `P_TryWalk` (function) `progs/doomgeneric/p_enemy.c:337` `boolean P_TryWalk (mobj_t* actor)` -- TryWalk Attempts to move actor on in its current (ob->moveangle) direction.
+- `P_NewChaseDir` (function) `progs/doomgeneric/p_enemy.c:351` `void P_NewChaseDir (mobj_t*	actor)`
+- `P_LookForPlayers` (function) `progs/doomgeneric/p_enemy.c:487` `boolean
+P_LookForPlayers
+( mobj_t*	actor,
+  boolean	allaround )`
+- `A_KeenDie` (function) `progs/doomgeneric/p_enemy.c:551` `void A_KeenDie (mobj_t* mo)` -- A_KeenDie DOOM II special, map 32.
+- `A_Look` (function) `progs/doomgeneric/p_enemy.c:589` `void A_Look (mobj_t* actor)` -- A_Look Stay in state until a player is sighted.
+- `A_Chase` (function) `progs/doomgeneric/p_enemy.c:657` `void A_Chase (mobj_t*	actor)` -- A_Chase Actor has a melee attack, so it tries to close as fast as possible
+- `A_FaceTarget` (function) `progs/doomgeneric/p_enemy.c:767` `void A_FaceTarget (mobj_t* actor)` -- A_FaceTarget
+- `A_PosAttack` (function) `progs/doomgeneric/p_enemy.c:787` `void A_PosAttack (mobj_t* actor)` -- A_PosAttack
+- `A_SPosAttack` (function) `progs/doomgeneric/p_enemy.c:806` `void A_SPosAttack (mobj_t* actor)`
+- `A_CPosAttack` (function) `progs/doomgeneric/p_enemy.c:830` `void A_CPosAttack (mobj_t* actor)`
+- `A_CPosRefire` (function) `progs/doomgeneric/p_enemy.c:850` `void A_CPosRefire (mobj_t* actor)`
+- `A_SpidRefire` (function) `progs/doomgeneric/p_enemy.c:867` `void A_SpidRefire (mobj_t* actor)`
+- `A_BspiAttack` (function) `progs/doomgeneric/p_enemy.c:883` `void A_BspiAttack (mobj_t *actor)`
+- `A_TroopAttack` (function) `progs/doomgeneric/p_enemy.c:898` `void A_TroopAttack (mobj_t* actor)` -- A_TroopAttack
+- `A_SargAttack` (function) `progs/doomgeneric/p_enemy.c:920` `void A_SargAttack (mobj_t* actor)`
+- `A_HeadAttack` (function) `progs/doomgeneric/p_enemy.c:935` `void A_HeadAttack (mobj_t* actor)`
+- `A_CyberAttack` (function) `progs/doomgeneric/p_enemy.c:954` `void A_CyberAttack (mobj_t* actor)`
+- `A_BruisAttack` (function) `progs/doomgeneric/p_enemy.c:964` `void A_BruisAttack (mobj_t* actor)`
+- `A_SkelMissile` (function) `progs/doomgeneric/p_enemy.c:987` `void A_SkelMissile (mobj_t* actor)` -- A_SkelMissile
+- `A_Tracer` (function) `progs/doomgeneric/p_enemy.c:1006` `void A_Tracer (mobj_t* actor)`
+- `A_SkelWhoosh` (function) `progs/doomgeneric/p_enemy.c:1078` `void A_SkelWhoosh (mobj_t*	actor)`
+- `A_SkelFist` (function) `progs/doomgeneric/p_enemy.c:1086` `void A_SkelFist (mobj_t*	actor)`
+- `PIT_VileCheck` (function) `progs/doomgeneric/p_enemy.c:1114` `boolean PIT_VileCheck (mobj_t*	thing)`
+- `A_VileChase` (function) `progs/doomgeneric/p_enemy.c:1152` `void A_VileChase (mobj_t* actor)` -- A_VileChase Check for ressurecting a body
+- `A_VileStart` (function) `progs/doomgeneric/p_enemy.c:1218` `void A_VileStart (mobj_t* actor)` -- A_VileStart
+- `A_StartFire` (function) `progs/doomgeneric/p_enemy.c:1230` `void A_StartFire (mobj_t* actor)`
+- `A_FireCrackle` (function) `progs/doomgeneric/p_enemy.c:1236` `void A_FireCrackle (mobj_t* actor)`
+- `A_Fire` (function) `progs/doomgeneric/p_enemy.c:1242` `void A_Fire (mobj_t* actor)`
+- `A_VileTarget` (function) `progs/doomgeneric/p_enemy.c:1273` `void A_VileTarget (mobj_t*	actor)` -- A_VileTarget Spawn the hellfire
+- `A_VileAttack` (function) `progs/doomgeneric/p_enemy.c:1298` `void A_VileAttack (mobj_t* actor)` -- A_VileAttack
+- `A_FatRaise` (function) `progs/doomgeneric/p_enemy.c:1339` `void A_FatRaise (mobj_t *actor)`
+- `A_FatAttack1` (function) `progs/doomgeneric/p_enemy.c:1346` `void A_FatAttack1 (mobj_t* actor)`
+- `A_FatAttack2` (function) `progs/doomgeneric/p_enemy.c:1366` `void A_FatAttack2 (mobj_t* actor)`
+- `A_FatAttack3` (function) `progs/doomgeneric/p_enemy.c:1385` `void A_FatAttack3 (mobj_t*	actor)`
+- `A_SkullAttack` (function) `progs/doomgeneric/p_enemy.c:1415` `void A_SkullAttack (mobj_t* actor)`
+- `A_PainShootSkull` (function) `progs/doomgeneric/p_enemy.c:1446` `void
+A_PainShootSkull
+( mobj_t*	actor,
+  angle_t	angle )`
+- `A_PainAttack` (function) `progs/doomgeneric/p_enemy.c:1508` `void A_PainAttack (mobj_t* actor)` -- A_PainAttack Spawn a lost soul and launch it at the target
+- `A_PainDie` (function) `progs/doomgeneric/p_enemy.c:1518` `void A_PainDie (mobj_t* actor)`
+- `A_Scream` (function) `progs/doomgeneric/p_enemy.c:1531` `void A_Scream (mobj_t* actor)`
+- `A_XScream` (function) `progs/doomgeneric/p_enemy.c:1568` `void A_XScream (mobj_t* actor)`
+- `A_Pain` (function) `progs/doomgeneric/p_enemy.c:1573` `void A_Pain (mobj_t* actor)`
+- `A_Fall` (function) `progs/doomgeneric/p_enemy.c:1581` `void A_Fall (mobj_t *actor)`
+- `A_Explode` (function) `progs/doomgeneric/p_enemy.c:1594` `void A_Explode (mobj_t* thingy)` -- A_Explode
+- `CheckBossEnd` (function) `progs/doomgeneric/p_enemy.c:1605` `static boolean CheckBossEnd(mobjtype_t motype)`
+- `A_BossDeath` (function) `progs/doomgeneric/p_enemy.c:1656` `void A_BossDeath (mobj_t* mo)` -- A_BossDeath Possibly trigger special effects if on first boss level
+- `A_Hoof` (function) `progs/doomgeneric/p_enemy.c:1757` `void A_Hoof (mobj_t* mo)`
+- `A_Metal` (function) `progs/doomgeneric/p_enemy.c:1763` `void A_Metal (mobj_t* mo)`
+- `A_BabyMetal` (function) `progs/doomgeneric/p_enemy.c:1769` `void A_BabyMetal (mobj_t* mo)`
+- `A_OpenShotgun2` (function) `progs/doomgeneric/p_enemy.c:1776` `void
+A_OpenShotgun2
+( player_t*	player,
+  pspdef_t*	psp )`
+- `A_LoadShotgun2` (function) `progs/doomgeneric/p_enemy.c:1784` `void
+A_LoadShotgun2
+( player_t*	player,
+  pspdef_t*	psp )`
+- `A_ReFire` (function) `progs/doomgeneric/p_enemy.c:1792` `void A_ReFire ( player_t* player, pspdef_t* psp );`
+- `A_CloseShotgun2` (function) `progs/doomgeneric/p_enemy.c:1797` `void
+A_CloseShotgun2
+( player_t*	player,
+  pspdef_t*	psp )`
+- `A_BrainAwake` (function) `progs/doomgeneric/p_enemy.c:1811` `void A_BrainAwake (mobj_t* mo)`
+- `A_BrainPain` (function) `progs/doomgeneric/p_enemy.c:1841` `void A_BrainPain (mobj_t*	mo)`
+- `A_BrainScream` (function) `progs/doomgeneric/p_enemy.c:1847` `void A_BrainScream (mobj_t*	mo)`
+- `A_BrainExplode` (function) `progs/doomgeneric/p_enemy.c:1873` `void A_BrainExplode (mobj_t* mo)`
+- `A_BrainDie` (function) `progs/doomgeneric/p_enemy.c:1894` `void A_BrainDie (mobj_t*	mo)`
+- `A_BrainSpit` (function) `progs/doomgeneric/p_enemy.c:1899` `void A_BrainSpit (mobj_t*	mo)`
+- `A_SpawnSound` (function) `progs/doomgeneric/p_enemy.c:1928` `void A_SpawnSound (mobj_t* mo)` -- travelling cube sound
+- `A_SpawnFly` (function) `progs/doomgeneric/p_enemy.c:1934` `void A_SpawnFly (mobj_t* mo)`
+- `A_PlayerScream` (function) `progs/doomgeneric/p_enemy.c:1992` `void A_PlayerScream (mobj_t* mo)`
+
+## progs/doomgeneric/p_floor.c
+Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`, `progs/doomgeneric/z_zone.h`
+- `T_MovePlane` (function) `progs/doomgeneric/p_floor.c:42` `result_e
+T_MovePlane
+( sector_t*	sector,
+  fixed_t	speed,
+  fixed_t	dest,
+  boolean	crush,
+  int	...`
+- `T_MoveFloor` (function) `progs/doomgeneric/p_floor.c:202` `void T_MoveFloor(floormove_t* floor)` -- MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN)
+- `EV_DoFloor` (function) `progs/doomgeneric/p_floor.c:251` `int
+EV_DoFloor
+( line_t*	line,
+  floor_e	floortype )`
+- `EV_BuildStairs` (function) `progs/doomgeneric/p_floor.c:444` `int
+EV_BuildStairs
+( line_t*	line,
+  stair_e	type )`
+
+## progs/doomgeneric/p_inter.c
+Depends on: `progs/doomgeneric/am_map.h`, `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_inter.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
+- `P_GiveAmmo` (function) `progs/doomgeneric/p_inter.c:66` `boolean
+P_GiveAmmo
+( player_t*	player,
+  ammotype_t	ammo,
+  int		num )`
+- `P_GiveWeapon` (function) `progs/doomgeneric/p_inter.c:160` `boolean
+P_GiveWeapon
+( player_t*	player,
+  weapontype_t	weapon,
+  boolean	dropped )`
+- `P_GiveBody` (function) `progs/doomgeneric/p_inter.c:223` `boolean
+P_GiveBody
+( player_t*	player,
+  int		num )`
+- `P_GiveArmor` (function) `progs/doomgeneric/p_inter.c:246` `boolean
+P_GiveArmor
+( player_t*	player,
+  int		armortype )`
+- `P_GiveCard` (function) `progs/doomgeneric/p_inter.c:268` `void
+P_GiveCard
+( player_t*	player,
+  card_t	card )`
+- `P_GivePower` (function) `progs/doomgeneric/p_inter.c:284` `boolean
+P_GivePower
+( player_t*	player,
+  int /*powertype_t*/	power )`
+- `P_TouchSpecialThing` (function) `progs/doomgeneric/p_inter.c:333` `void
+P_TouchSpecialThing
+( mobj_t*	special,
+  mobj_t*	toucher )`
+- `P_KillMobj` (function) `progs/doomgeneric/p_inter.c:666` `void
+P_KillMobj
+( mobj_t*	source,
+  mobj_t*	target )`
+- `P_DamageMobj` (function) `progs/doomgeneric/p_inter.c:779` `void
+P_DamageMobj
+( mobj_t*	target,
+  mobj_t*	inflictor,
+  mobj_t*	source,
+  int 		damage )`
+
+## progs/doomgeneric/p_lights.c
+Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
+- `T_FireFlicker` (function) `progs/doomgeneric/p_lights.c:39` `void T_FireFlicker (fireflicker_t* flick)` -- T_FireFlicker
+- `P_SpawnFireFlicker` (function) `progs/doomgeneric/p_lights.c:61` `void P_SpawnFireFlicker (sector_t*	sector)` -- P_SpawnFireFlicker
+- `T_LightFlash` (function) `progs/doomgeneric/p_lights.c:91` `void T_LightFlash (lightflash_t* flash)` -- T_LightFlash Do flashing lights.
+- `P_SpawnLightFlash` (function) `progs/doomgeneric/p_lights.c:117` `void P_SpawnLightFlash (sector_t*	sector)` -- P_SpawnLightFlash After the map has been loaded, scan each sector for specials that spawn thinkers
+- `T_StrobeFlash` (function) `progs/doomgeneric/p_lights.c:148` `void T_StrobeFlash (strobe_t*		flash)` -- T_StrobeFlash
+- `P_SpawnStrobeFlash` (function) `progs/doomgeneric/p_lights.c:174` `void
+P_SpawnStrobeFlash
+( sector_t*	sector,
+  int		fastOrSlow,
+  int		inSync )`
+- `EV_StartLightStrobing` (function) `progs/doomgeneric/p_lights.c:208` `void EV_StartLightStrobing(line_t*	line)` -- Start strobing lights (usually from a trigger)
+- `EV_TurnTagLightsOff` (function) `progs/doomgeneric/p_lights.c:229` `void EV_TurnTagLightsOff(line_t* line)` -- TURN LINE'S TAG LIGHTS OFF
+- `EV_LightTurnOn` (function) `progs/doomgeneric/p_lights.c:264` `void
+EV_LightTurnOn
+( line_t*	line,
+  int		bright )`
+- `T_Glow` (function) `progs/doomgeneric/p_lights.c:307` `void T_Glow(glow_t*	g)`
+- `P_SpawnGlowingLight` (function) `progs/doomgeneric/p_lights.c:334` `void P_SpawnGlowingLight(sector_t*	sector)`
+
+## progs/doomgeneric/p_local.h
+Depends on: `progs/doomgeneric/p_spec.h`, `progs/doomgeneric/r_local.h`
+Imported by: `progs/doomgeneric/am_map.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/p_ceilng.c`, `progs/doomgeneric/p_doors.c`, `progs/doomgeneric/p_enemy.c`, `progs/doomgeneric/p_floor.c`, `progs/doomgeneric/p_inter.c`, `progs/doomgeneric/p_lights.c`, `progs/doomgeneric/p_map.c`, `progs/doomgeneric/p_maputl.c`, `progs/doomgeneric/p_mobj.c`, `progs/doomgeneric/p_plats.c`, `progs/doomgeneric/p_pspr.c`, `progs/doomgeneric/p_saveg.c`, `progs/doomgeneric/p_setup.c`, `progs/doomgeneric/p_sight.c`, `progs/doomgeneric/p_spec.c`, `progs/doomgeneric/p_switch.c`, `progs/doomgeneric/p_telept.c`, `progs/doomgeneric/p_tick.c`, `progs/doomgeneric/p_user.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/s_sound.c`, `progs/doomgeneric/st_stuff.c`
+- `P_InitThinkers` (function) `progs/doomgeneric/p_local.h:70` `void P_InitThinkers (void);`
+- `P_AddThinker` (function) `progs/doomgeneric/p_local.h:71` `void P_AddThinker (thinker_t* thinker);`
+- `P_RemoveThinker` (function) `progs/doomgeneric/p_local.h:72` `void P_RemoveThinker (thinker_t* thinker);`
+- `P_SetupPsprites` (function) `progs/doomgeneric/p_local.h:78` `void P_SetupPsprites (player_t* curplayer);` -- P_PSPR
+- `P_MovePsprites` (function) `progs/doomgeneric/p_local.h:79` `void P_MovePsprites (player_t* curplayer);`
+- `P_DropWeapon` (function) `progs/doomgeneric/p_local.h:80` `void P_DropWeapon (player_t* player);`
+- `P_PlayerThink` (function) `progs/doomgeneric/p_local.h:86` `void P_PlayerThink (player_t* player);` -- P_USER
+- `P_RespawnSpecials` (function) `progs/doomgeneric/p_local.h:104` `void P_RespawnSpecials (void);`
+- `P_SpawnMobj` (function) `progs/doomgeneric/p_local.h:107` `mobj_t* P_SpawnMobj ( fixed_t x, fixed_t y, fixed_t z, mobjtype_t type );`
+- `P_RemoveMobj` (function) `progs/doomgeneric/p_local.h:113` `void P_RemoveMobj (mobj_t* th);`
+- `P_SubstNullMobj` (function) `progs/doomgeneric/p_local.h:114` `mobj_t* P_SubstNullMobj (mobj_t* th);`
+- `P_MobjThinker` (function) `progs/doomgeneric/p_local.h:116` `void P_MobjThinker (mobj_t* mobj);`
+- `P_SpawnPuff` (function) `progs/doomgeneric/p_local.h:118` `void P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);`
+- `P_SpawnBlood` (function) `progs/doomgeneric/p_local.h:119` `void P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage);`
+- `P_SpawnMissile` (function) `progs/doomgeneric/p_local.h:120` `mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);`
+- `P_SpawnPlayerMissile` (function) `progs/doomgeneric/p_local.h:121` `void P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);`
+- `P_NoiseAlert` (function) `progs/doomgeneric/p_local.h:127` `void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);` -- P_ENEMY
+- `P_AproxDistance` (function) `progs/doomgeneric/p_local.h:162` `fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);`
+- `P_PointOnLineSide` (function) `progs/doomgeneric/p_local.h:163` `int P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);`
+- `P_PointOnDivlineSide` (function) `progs/doomgeneric/p_local.h:164` `int P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);`
+- `P_MakeDivline` (function) `progs/doomgeneric/p_local.h:165` `void P_MakeDivline (line_t* li, divline_t* dl);`
+- `P_InterceptVector` (function) `progs/doomgeneric/p_local.h:166` `fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);`
+- `P_BoxOnLineSide` (function) `progs/doomgeneric/p_local.h:167` `int P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);`
+- `P_LineOpening` (function) `progs/doomgeneric/p_local.h:174` `void P_LineOpening (line_t* linedef);`
+- `P_UnsetThingPosition` (function) `progs/doomgeneric/p_local.h:194` `void P_UnsetThingPosition (mobj_t* thing);`
+- `P_SetThingPosition` (function) `progs/doomgeneric/p_local.h:195` `void P_SetThingPosition (mobj_t* thing);`
+- `P_SlideMove` (function) `progs/doomgeneric/p_local.h:228` `void P_SlideMove (mobj_t* mo);`
+- `P_UseLines` (function) `progs/doomgeneric/p_local.h:230` `void P_UseLines (player_t* player);`
+- `P_AimLineAttack` (function) `progs/doomgeneric/p_local.h:237` `fixed_t P_AimLineAttack ( mobj_t* t1, angle_t angle, fixed_t distance );`
+- `P_LineAttack` (function) `progs/doomgeneric/p_local.h:243` `void P_LineAttack ( mobj_t* t1, angle_t angle, fixed_t distance, fixed_t slope, int damage );`
+- `P_RadiusAttack` (function) `progs/doomgeneric/p_local.h:251` `void P_RadiusAttack ( mobj_t* spot, mobj_t* source, int damage );`
+- `P_TouchSpecialThing` (function) `progs/doomgeneric/p_local.h:279` `void P_TouchSpecialThing ( mobj_t* special, mobj_t* toucher );`
+- `P_DamageMobj` (function) `progs/doomgeneric/p_local.h:284` `void P_DamageMobj ( mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage );`
+
 ## progs/doomgeneric/p_map.c
 Depends on: `progs/doomgeneric/deh_misc.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/m_random.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
 - `PIT_StompThing` (function) `progs/doomgeneric/p_map.c:97` `boolean PIT_StompThing (mobj_t* thing)` -- PIT_StompThing
@@ -260,234 +470,6 @@ A_BFGsound
   pspdef_t*	psp )`
 - `P_SetupPsprites` (function) `progs/doomgeneric/p_pspr.c:840` `void P_SetupPsprites (player_t* player)` -- P_SetupPsprites Called at start of level for each player.
 - `P_MovePsprites` (function) `progs/doomgeneric/p_pspr.c:860` `void P_MovePsprites (player_t* player)` -- P_MovePsprites Called every tic by player thinking routine.
-
-## progs/doomgeneric/p_saveg.c
-Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/dstrings.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/p_saveg.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/z_zone.h`
-- `P_TempSaveGameFile` (function) `progs/doomgeneric/p_saveg.c:47` `char *P_TempSaveGameFile(void)`
-- `P_SaveGameFile` (function) `progs/doomgeneric/p_saveg.c:61` `char *P_SaveGameFile(int slot)`
-- `saveg_read8` (function) `progs/doomgeneric/p_saveg.c:81` `static byte saveg_read8(void)`
-- `saveg_write8` (function) `progs/doomgeneric/p_saveg.c:99` `static void saveg_write8(byte value)`
-- `saveg_read16` (function) `progs/doomgeneric/p_saveg.c:112` `static short saveg_read16(void)`
-- `saveg_write16` (function) `progs/doomgeneric/p_saveg.c:122` `static void saveg_write16(short value)`
-- `saveg_read32` (function) `progs/doomgeneric/p_saveg.c:128` `static int saveg_read32(void)`
-- `saveg_write32` (function) `progs/doomgeneric/p_saveg.c:140` `static void saveg_write32(int value)`
-- `saveg_read_pad` (function) `progs/doomgeneric/p_saveg.c:150` `static void saveg_read_pad(void)`
-- `saveg_write_pad` (function) `progs/doomgeneric/p_saveg.c:166` `static void saveg_write_pad(void)`
-- `saveg_readp` (function) `progs/doomgeneric/p_saveg.c:185` `static void *saveg_readp(void)`
-- `saveg_writep` (function) `progs/doomgeneric/p_saveg.c:190` `static void saveg_writep(void *p)`
-- `saveg_read_mapthing_t` (function) `progs/doomgeneric/p_saveg.c:208` `static void saveg_read_mapthing_t(mapthing_t *str)`
-- `saveg_write_mapthing_t` (function) `progs/doomgeneric/p_saveg.c:226` `static void saveg_write_mapthing_t(mapthing_t *str)`
-- `saveg_read_actionf_t` (function) `progs/doomgeneric/p_saveg.c:248` `static void saveg_read_actionf_t(actionf_t *str)`
-- `saveg_write_actionf_t` (function) `progs/doomgeneric/p_saveg.c:254` `static void saveg_write_actionf_t(actionf_t *str)`
-- `saveg_read_thinker_t` (function) `progs/doomgeneric/p_saveg.c:273` `static void saveg_read_thinker_t(thinker_t *str)`
-- `saveg_write_thinker_t` (function) `progs/doomgeneric/p_saveg.c:285` `static void saveg_write_thinker_t(thinker_t *str)`
-- `saveg_read_mobj_t` (function) `progs/doomgeneric/p_saveg.c:301` `static void saveg_read_mobj_t(mobj_t *str)`
-- `saveg_write_mobj_t` (function) `progs/doomgeneric/p_saveg.c:421` `static void saveg_write_mobj_t(mobj_t *str)`
-- `saveg_read_ticcmd_t` (function) `progs/doomgeneric/p_saveg.c:541` `static void saveg_read_ticcmd_t(ticcmd_t *str)`
-- `saveg_write_ticcmd_t` (function) `progs/doomgeneric/p_saveg.c:563` `static void saveg_write_ticcmd_t(ticcmd_t *str)`
-- `saveg_read_pspdef_t` (function) `progs/doomgeneric/p_saveg.c:589` `static void saveg_read_pspdef_t(pspdef_t *str)`
-- `saveg_write_pspdef_t` (function) `progs/doomgeneric/p_saveg.c:615` `static void saveg_write_pspdef_t(pspdef_t *str)`
-- `saveg_read_player_t` (function) `progs/doomgeneric/p_saveg.c:641` `static void saveg_read_player_t(player_t *str)`
-- `saveg_write_player_t` (function) `progs/doomgeneric/p_saveg.c:772` `static void saveg_write_player_t(player_t *str)`
-- `saveg_read_ceiling_t` (function) `progs/doomgeneric/p_saveg.c:908` `static void saveg_read_ceiling_t(ceiling_t *str)`
-- `saveg_write_ceiling_t` (function) `progs/doomgeneric/p_saveg.c:944` `static void saveg_write_ceiling_t(ceiling_t *str)`
-- `saveg_read_vldoor_t` (function) `progs/doomgeneric/p_saveg.c:981` `static void saveg_read_vldoor_t(vldoor_t *str)`
-- `saveg_write_vldoor_t` (function) `progs/doomgeneric/p_saveg.c:1011` `static void saveg_write_vldoor_t(vldoor_t *str)`
-- `saveg_read_floormove_t` (function) `progs/doomgeneric/p_saveg.c:1042` `static void saveg_read_floormove_t(floormove_t *str)`
-- `saveg_write_floormove_t` (function) `progs/doomgeneric/p_saveg.c:1075` `static void saveg_write_floormove_t(floormove_t *str)`
-- `saveg_read_plat_t` (function) `progs/doomgeneric/p_saveg.c:1109` `static void saveg_read_plat_t(plat_t *str)`
-- `saveg_write_plat_t` (function) `progs/doomgeneric/p_saveg.c:1151` `static void saveg_write_plat_t(plat_t *str)`
-- `saveg_read_lightflash_t` (function) `progs/doomgeneric/p_saveg.c:1194` `static void saveg_read_lightflash_t(lightflash_t *str)`
-- `saveg_write_lightflash_t` (function) `progs/doomgeneric/p_saveg.c:1221` `static void saveg_write_lightflash_t(lightflash_t *str)`
-- `saveg_read_strobe_t` (function) `progs/doomgeneric/p_saveg.c:1249` `static void saveg_read_strobe_t(strobe_t *str)`
-- `saveg_write_strobe_t` (function) `progs/doomgeneric/p_saveg.c:1276` `static void saveg_write_strobe_t(strobe_t *str)`
-- `saveg_read_glow_t` (function) `progs/doomgeneric/p_saveg.c:1304` `static void saveg_read_glow_t(glow_t *str)`
-- `saveg_write_glow_t` (function) `progs/doomgeneric/p_saveg.c:1325` `static void saveg_write_glow_t(glow_t *str)`
-- `P_WriteSaveGameHeader` (function) `progs/doomgeneric/p_saveg.c:1347` `void P_WriteSaveGameHeader(char *description)`
-- `P_ReadSaveGameHeader` (function) `progs/doomgeneric/p_saveg.c:1379` `boolean P_ReadSaveGameHeader(void)`
-- `P_ReadSaveGameEOF` (function) `progs/doomgeneric/p_saveg.c:1419` `boolean P_ReadSaveGameEOF(void)`
-- `P_WriteSaveGameEOF` (function) `progs/doomgeneric/p_saveg.c:1432` `void P_WriteSaveGameEOF(void)`
-- `P_ArchivePlayers` (function) `progs/doomgeneric/p_saveg.c:1440` `void P_ArchivePlayers (void)` -- P_ArchivePlayers
-- `P_UnArchivePlayers` (function) `progs/doomgeneric/p_saveg.c:1460` `void P_UnArchivePlayers (void)` -- P_UnArchivePlayers
-- `P_ArchiveWorld` (function) `progs/doomgeneric/p_saveg.c:1484` `void P_ArchiveWorld (void)` -- P_ArchiveWorld
-- `P_UnArchiveWorld` (function) `progs/doomgeneric/p_saveg.c:1532` `void P_UnArchiveWorld (void)` -- P_UnArchiveWorld
-- `P_ArchiveThinkers` (function) `progs/doomgeneric/p_saveg.c:1592` `void P_ArchiveThinkers (void)` -- P_ArchiveThinkers
-- `P_UnArchiveThinkers` (function) `progs/doomgeneric/p_saveg.c:1620` `void P_UnArchiveThinkers (void)` -- P_UnArchiveThinkers
-- `P_ArchiveSpecials` (function) `progs/doomgeneric/p_saveg.c:1704` `void P_ArchiveSpecials (void)` -- Things to handle:  T_MoveCeiling, (ceiling_t: sector_t * swizzle), - active list T_VerticalDoor, (vldoor_t: sector_t...
-- `P_UnArchiveSpecials` (function) `progs/doomgeneric/p_saveg.c:1793` `void P_UnArchiveSpecials (void)` -- P_UnArchiveSpecials
-
-## progs/doomgeneric/p_saveg.h
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/m_menu.c`, `progs/doomgeneric/p_saveg.c`
-- `P_TempSaveGameFile` (function) `progs/doomgeneric/p_saveg.h:31` `char *P_TempSaveGameFile(void);`
-- `P_SaveGameFile` (function) `progs/doomgeneric/p_saveg.h:35` `char *P_SaveGameFile(int slot);`
-- `P_WriteSaveGameHeader` (function) `progs/doomgeneric/p_saveg.h:40` `void P_WriteSaveGameHeader(char *description);`
-- `P_WriteSaveGameEOF` (function) `progs/doomgeneric/p_saveg.h:45` `void P_WriteSaveGameEOF(void);`
-- `P_ArchivePlayers` (function) `progs/doomgeneric/p_saveg.h:49` `void P_ArchivePlayers (void);` -- Persistent storage/archiving.
-- `P_UnArchivePlayers` (function) `progs/doomgeneric/p_saveg.h:50` `void P_UnArchivePlayers (void);`
-- `P_ArchiveWorld` (function) `progs/doomgeneric/p_saveg.h:51` `void P_ArchiveWorld (void);`
-- `P_UnArchiveWorld` (function) `progs/doomgeneric/p_saveg.h:52` `void P_UnArchiveWorld (void);`
-- `P_ArchiveThinkers` (function) `progs/doomgeneric/p_saveg.h:53` `void P_ArchiveThinkers (void);`
-- `P_UnArchiveThinkers` (function) `progs/doomgeneric/p_saveg.h:54` `void P_UnArchiveThinkers (void);`
-- `P_ArchiveSpecials` (function) `progs/doomgeneric/p_saveg.h:55` `void P_ArchiveSpecials (void);`
-- `P_UnArchiveSpecials` (function) `progs/doomgeneric/p_saveg.h:56` `void P_UnArchiveSpecials (void);`
-
-## progs/doomgeneric/p_setup.c
-Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_argv.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `P_SpawnMapThing` (function) `progs/doomgeneric/p_setup.c:44` `void P_SpawnMapThing (mapthing_t* mthing);`
-- `P_LoadVertexes` (function) `progs/doomgeneric/p_setup.c:118` `void P_LoadVertexes (int lump)` -- P_LoadVertexes
-- `GetSectorAtNullAddress` (function) `progs/doomgeneric/p_setup.c:153` `sector_t* GetSectorAtNullAddress(void)` -- GetSectorAtNullAddress
-- `P_LoadSegs` (function) `progs/doomgeneric/p_setup.c:172` `void P_LoadSegs (int lump)` -- P_LoadSegs
-- `P_LoadSubsectors` (function) `progs/doomgeneric/p_setup.c:236` `void P_LoadSubsectors (int lump)` -- P_LoadSubsectors
-- `P_LoadSectors` (function) `progs/doomgeneric/p_setup.c:265` `void P_LoadSectors (int lump)` -- P_LoadSectors
-- `P_LoadNodes` (function) `progs/doomgeneric/p_setup.c:298` `void P_LoadNodes (int lump)` -- P_LoadNodes
-- `P_LoadThings` (function) `progs/doomgeneric/p_setup.c:335` `void P_LoadThings (int lump)` -- P_LoadThings
-- `P_LoadLineDefs` (function) `progs/doomgeneric/p_setup.c:392` `void P_LoadLineDefs (int lump)` -- P_LoadLineDefs Also counts secret lines for intermissions.
-- `P_LoadSideDefs` (function) `progs/doomgeneric/p_setup.c:473` `void P_LoadSideDefs (int lump)` -- P_LoadSideDefs
-- `P_LoadBlockMap` (function) `progs/doomgeneric/p_setup.c:504` `void P_LoadBlockMap (int lump)` -- P_LoadBlockMap
-- `P_GroupLines` (function) `progs/doomgeneric/p_setup.c:545` `void P_GroupLines (void)` -- P_GroupLines Builds sector line lists and subsector sector numbers.
-- `PadRejectArray` (function) `progs/doomgeneric/p_setup.c:661` `static void PadRejectArray(byte *array, unsigned int len)`
-- `P_LoadReject` (function) `progs/doomgeneric/p_setup.c:712` `static void P_LoadReject(int lumpnum)`
-- `P_SetupLevel` (function) `progs/doomgeneric/p_setup.c:744` `void
-P_SetupLevel
-( int		episode,
-  int		map,
-  int		playermask,
-  skill_t	skill)`
-- `P_Init` (function) `progs/doomgeneric/p_setup.c:847` `void P_Init (void)` -- P_Init
-
-## progs/doomgeneric/p_setup.h
-Imported by: `progs/doomgeneric/d_main.c`, `progs/doomgeneric/g_game.c`
-- `P_SetupLevel` (function) `progs/doomgeneric/p_setup.h:28` `void P_SetupLevel ( int episode, int map, int playermask, skill_t skill);`
-- `P_Init` (function) `progs/doomgeneric/p_setup.h:35` `void P_Init (void);` -- Called by startup code.
-
-## progs/doomgeneric/p_sight.c
-Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`
-- `P_DivlineSide` (function) `progs/doomgeneric/p_sight.c:48` `int
-P_DivlineSide
-( fixed_t	x,
-  fixed_t	y,
-  divline_t*	node )`
-- `P_InterceptVector2` (function) `progs/doomgeneric/p_sight.c:102` `fixed_t
-P_InterceptVector2
-( divline_t*	v2,
-  divline_t*	v1 )`
-- `P_CrossSubsector` (function) `progs/doomgeneric/p_sight.c:128` `boolean P_CrossSubsector (int num)` -- P_CrossSubsector Returns true if strace crosses the given subsector successfully.
-- `P_CrossBSPNode` (function) `progs/doomgeneric/p_sight.c:258` `boolean P_CrossBSPNode (int bspnum)` -- P_CrossBSPNode Returns true if strace crosses the given node successfully.
-- `P_CheckSight` (function) `progs/doomgeneric/p_sight.c:301` `boolean
-P_CheckSight
-( mobj_t*	t1,
-  mobj_t*	t2 )`
-
-## progs/doomgeneric/p_switch.c
-Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/g_game.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
-- `P_InitSwitchList` (function) `progs/doomgeneric/p_switch.c:101` `void P_InitSwitchList(void)` -- P_InitSwitchList Only called at game initialization.
-- `P_StartButton` (function) `progs/doomgeneric/p_switch.c:149` `void
-P_StartButton
-( line_t*	line,
-  bwhere_e	w,
-  int		texture,
-  int		time )`
-- `P_ChangeSwitchTexture` (function) `progs/doomgeneric/p_switch.c:195` `void
-P_ChangeSwitchTexture
-( line_t*	line,
-  int 		useAgain )`
-- `P_UseSpecialLine` (function) `progs/doomgeneric/p_switch.c:270` `boolean
-P_UseSpecialLine
-( mobj_t*	thing,
-  line_t*	line,
-  int		side )`
-
-## progs/doomgeneric/p_telept.c
-Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/s_sound.h`, `progs/doomgeneric/sounds.h`
-- `EV_Teleport` (function) `progs/doomgeneric/p_telept.c:42` `int
-EV_Teleport
-( line_t*	line,
-  int		side,
-  mobj_t*	thing )`
-
-## progs/doomgeneric/p_tick.c
-Depends on: `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/z_zone.h`
-- `P_InitThinkers` (function) `progs/doomgeneric/p_tick.c:46` `void P_InitThinkers (void)` -- P_InitThinkers
-- `P_AddThinker` (function) `progs/doomgeneric/p_tick.c:58` `void P_AddThinker (thinker_t* thinker)` -- P_AddThinker Adds a new thinker at the end of the list.
-- `P_RemoveThinker` (function) `progs/doomgeneric/p_tick.c:73` `void P_RemoveThinker (thinker_t* thinker)` -- P_RemoveThinker Deallocation is lazy -- it will not actually be freed until its thinking turn comes up.
-- `P_AllocateThinker` (function) `progs/doomgeneric/p_tick.c:85` `void P_AllocateThinker (thinker_t*	thinker)` -- P_AllocateThinker Allocates memory and adds a new thinker at the end of the list.
-- `P_RunThinkers` (function) `progs/doomgeneric/p_tick.c:94` `void P_RunThinkers (void)` -- P_RunThinkers
-- `P_Ticker` (function) `progs/doomgeneric/p_tick.c:123` `void P_Ticker (void)`
-
-## progs/doomgeneric/p_tick.h
-Imported by: `progs/doomgeneric/g_game.c`
-- `P_Ticker` (function) `progs/doomgeneric/p_tick.h:29` `void P_Ticker (void);` -- Called by C_Ticker, can call G_PlayerExited.
-
-## progs/doomgeneric/p_user.c
-Depends on: `progs/doomgeneric/d_event.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/p_local.h`
-- `P_Thrust` (function) `progs/doomgeneric/p_user.c:52` `void
-P_Thrust
-( player_t*	player,
-  angle_t	angle,
-  fixed_t	move )`
-- `P_CalcHeight` (function) `progs/doomgeneric/p_user.c:70` `void P_CalcHeight (player_t* player)` -- P_CalcHeight Calculate the walking / running height adjustment
-- `P_MovePlayer` (function) `progs/doomgeneric/p_user.c:141` `void P_MovePlayer (player_t* player)` -- P_MovePlayer
-- `P_DeathThink` (function) `progs/doomgeneric/p_user.c:175` `void P_DeathThink (player_t* player)`
-- `P_PlayerThink` (function) `progs/doomgeneric/p_user.c:229` `void P_PlayerThink (player_t* player)` -- P_PlayerThink
-
-## progs/doomgeneric/r_bsp.c
-Depends on: `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_bbox.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_state.h`, `progs/doomgeneric/r_things.h`
-- `R_StoreWallRange` (function) `progs/doomgeneric/r_bsp.c:51` `void R_StoreWallRange ( int start, int stop );`
-- `R_ClearDrawSegs` (function) `progs/doomgeneric/r_bsp.c:61` `void R_ClearDrawSegs (void)` -- R_ClearDrawSegs
-- `R_ClipSolidWallSegment` (function) `progs/doomgeneric/r_bsp.c:97` `void
-R_ClipSolidWallSegment
-( int			first,
-  int			last )`
-- `R_ClipPassWallSegment` (function) `progs/doomgeneric/r_bsp.c:190` `void
-R_ClipPassWallSegment
-( int	first,
-  int	last )`
-- `R_ClearClipSegs` (function) `progs/doomgeneric/r_bsp.c:238` `void R_ClearClipSegs (void)` -- R_ClearClipSegs
-- `R_AddLine` (function) `progs/doomgeneric/r_bsp.c:252` `void R_AddLine (seg_t*	line)` -- R_AddLine Clips the given segment and adds any visible pieces to the line list.
-- `R_CheckBBox` (function) `progs/doomgeneric/r_bsp.c:374` `boolean R_CheckBBox (fixed_t*	bspcoord)`
-- `R_Subsector` (function) `progs/doomgeneric/r_bsp.c:490` `void R_Subsector (int num)` -- R_Subsector Determine floor/ceiling planes.
-- `R_RenderBSPNode` (function) `progs/doomgeneric/r_bsp.c:545` `void R_RenderBSPNode (int bspnum)` -- RenderBSPNode Renders all subsectors below a given node, traversing subtree recursively.
-
-## progs/doomgeneric/r_bsp.h
-Imported by: `progs/doomgeneric/r_local.h`
-- `R_ClearClipSegs` (function) `progs/doomgeneric/r_bsp.h:54` `void R_ClearClipSegs (void);` -- BSP?
-- `R_ClearDrawSegs` (function) `progs/doomgeneric/r_bsp.h:55` `void R_ClearDrawSegs (void);`
-- `R_RenderBSPNode` (function) `progs/doomgeneric/r_bsp.h:58` `void R_RenderBSPNode (int bspnum);`
-
-## progs/doomgeneric/r_data.c
-Depends on: `progs/doomgeneric/deh_main.h`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomstat.h`, `progs/doomgeneric/i_swap.h`, `progs/doomgeneric/i_system.h`, `progs/doomgeneric/m_misc.h`, `progs/doomgeneric/p_local.h`, `progs/doomgeneric/r_data.h`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_sky.h`, `progs/doomgeneric/w_wad.h`, `progs/doomgeneric/z_zone.h`
-- `R_DrawColumnInCache` (function) `progs/doomgeneric/r_data.c:186` `void
-R_DrawColumnInCache
-( column_t*	patch,
-  byte*		cache,
-  int		originy,
-  int		cacheheight )`
-- `R_GenerateComposite` (function) `progs/doomgeneric/r_data.c:226` `void R_GenerateComposite (int texnum)` -- R_GenerateComposite Using the texture definition, the composite texture is created from the patches, and each column...
-- `R_GenerateLookup` (function) `progs/doomgeneric/r_data.c:294` `void R_GenerateLookup (int texnum)` -- R_GenerateLookup
-- `R_GetColumn` (function) `progs/doomgeneric/r_data.c:383` `byte*
-R_GetColumn
-( int		tex,
-  int		col )`
-- `GenerateTextureHashTable` (function) `progs/doomgeneric/r_data.c:404` `static void GenerateTextureHashTable(void)`
-- `R_InitTextures` (function) `progs/doomgeneric/r_data.c:451` `void R_InitTextures (void)` -- R_InitTextures Initializes the texture list with the textures from the world map.
-- `R_InitFlats` (function) `progs/doomgeneric/r_data.c:633` `void R_InitFlats (void)` -- R_InitFlats
-- `R_InitSpriteLumps` (function) `progs/doomgeneric/r_data.c:655` `void R_InitSpriteLumps (void)` -- R_InitSpriteLumps Finds the width and hoffset of all sprites in the wad, so the sprite does not need to be cached...
-- `R_InitColormaps` (function) `progs/doomgeneric/r_data.c:685` `void R_InitColormaps (void)` -- R_InitColormaps
-- `R_InitData` (function) `progs/doomgeneric/r_data.c:703` `void R_InitData (void)` -- R_InitData Locates all the lumps that will be used by all views Must be called after W_Init.
-- `R_FlatNumForName` (function) `progs/doomgeneric/r_data.c:720` `int R_FlatNumForName (char* name)` -- R_FlatNumForName Retrieval, get a flat number for a flat name.
-- `R_CheckTextureNumForName` (function) `progs/doomgeneric/r_data.c:744` `int	R_CheckTextureNumForName (char *name)` -- R_CheckTextureNumForName Check whether texture is available.
-- `R_TextureNumForName` (function) `progs/doomgeneric/r_data.c:775` `int	R_TextureNumForName (char* name)` -- R_TextureNumForName Calls R_CheckTextureNumForName, aborts with error message.
-- `R_PrecacheLevel` (function) `progs/doomgeneric/r_data.c:800` `void R_PrecacheLevel (void)`
-
-## progs/doomgeneric/r_data.h
-Depends on: `progs/doomgeneric/r_defs.h`, `progs/doomgeneric/r_state.h`
-Imported by: `progs/doomgeneric/g_game.c`, `progs/doomgeneric/r_data.c`, `progs/doomgeneric/r_local.h`, `progs/doomgeneric/r_main.h`, `progs/doomgeneric/r_plane.h`, `progs/doomgeneric/r_sky.c`, `progs/doomgeneric/r_state.h`
-- `R_GetColumn` (function) `progs/doomgeneric/r_data.h:30` `byte* R_GetColumn ( int tex, int col );`
-- `R_InitData` (function) `progs/doomgeneric/r_data.h:36` `void R_InitData (void);` -- I/O, setting up the stuff.
-- `R_PrecacheLevel` (function) `progs/doomgeneric/r_data.h:37` `void R_PrecacheLevel (void);`
-- `R_FlatNumForName` (function) `progs/doomgeneric/r_data.h:43` `int R_FlatNumForName (char* name);` -- Retrieval.
-- `R_TextureNumForName` (function) `progs/doomgeneric/r_data.h:48` `int R_TextureNumForName (char *name);` -- Called by P_Ticker for switches and animations, returns the texture number for the texture name.
-- `R_CheckTextureNumForName` (function) `progs/doomgeneric/r_data.h:49` `int R_CheckTextureNumForName (char *name);`
 
 
 Next: [API_p15.md](API_p15.md)

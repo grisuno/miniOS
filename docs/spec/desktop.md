@@ -538,7 +538,7 @@ framebuffer is not.
   8 ms after every paint, so the duration grew with the draw cost), and
   snapshots/restores move whole rows through `fb_read/write_row_packed`.
   A show/hide melt holds the present of the redraws in between, so the new
-  frame is melted in from the shadow instead of flashing whole first. `fx` reports `fx: on melts=N` (`off` skips every
+  frame is melted in from the shadow instead of flashing whole first. `fx` reports `fx: on melts=N burns=B genies=G` (`off` skips every
   transition; default on), `wm state` carries `wm: fx on`, and the melts
   counter is the serial proof a transition ran — a skipped melt leaves the
   same pixels behind, so the BDD suite pins `melts=1` after boot, `melts=3`
@@ -546,6 +546,49 @@ framebuffer is not.
   (open+close), beside the `gfx frames` climb. Eight `fx-*` mutants
   (default, toggle, reporting, skipped melts, stuck/clamp column logic)
   die in `make test-fx` and the `MATCH=fx` BDD slice.
+- **Fire on close, genie on minimize (`vga_fx.h`, `vga_fx.c`, `vga_fb.c`):**
+  two more transitions share the melt's snapshot/hold machinery
+  (`fx_start_full`/`fx_finish_full`) and its rules: synchronous, heap
+  snapshots freed per transition, OOM degrades to a plain redraw, the final
+  frame is the exact new frame with the effects on or off. A caller sets a
+  plan (`fx_plan_burn`, `fx_plan_genie`) before `fx_start_full`;
+  `fx_finish_full` consumes it and resets it on every exit, so a plan can
+  never leak into the next transition. 8-bit modes have no colours for
+  flames and always melt.
+  - **Fire** (`vga_fx_burn_rect`): closing a window burns it away. Every
+    pixel gets an ignition time (`vga_fx_burn_threshold`): the bottom
+    ignites first and the front climbs, bent by coarse and fine value noise
+    into blobs and tongues. At a pixel's time a flame overlay ramps from an
+    ember glow ahead of the front to a white-hot peak, where the base
+    switches from the old pixel to the new one under full cover, then cools
+    through yellow, orange and red to nothing, leaving the desktop below.
+    Ignition times are computed once per transition (a `short` per pixel),
+    each frame only compares them with the elapsed-time progress. Triggers:
+    graphics-window close (the rect is the live view frame, so a
+    fullscreen window burns whole) and `wm close` of the second terminal
+    (its last composed rect, `chrome_win_rect`).
+  - **Genie** (`vga_fx_genie_rect`): minimize flows the window into its
+    taskbar button and restore pulls it back out, like the macOS genie or
+    Compiz magic lamp. Per source row (`vga_fx_genie_row`) the bottom row
+    leaves first and each higher row waits longer (`genie_lag`), all rows
+    follow one smoothstep toward the button and narrow to `genie_min_w`, so
+    the window bends into a funnel. The target row is held at or below the
+    window's last row, which keeps rows ordered and the scatter gap-free;
+    each frame writes every screen row of the band once (background with
+    the narrowed row over it, nearest-neighbour). Triggers: terminal
+    minimize/restore (target: the restore button) and graphics-window
+    hide/restore through the taskbar (target: its taskbar button); focus
+    changes that un-hide a window do not animate.
+  - Tuning lives in `vga_fx_motion_t` (`VGA_FX_MOTION_DEFAULT`: fire 700
+    ms, genie 420 ms, painted at most every `VGA_FX_FRAME_MS`).
+  - Proof: `make test-fx` pins the pure logic (ignition order, flame
+    stages and colours, blend, funnel ordering and bounds); the counters
+    `burns=` and `genies=` (each also counts in `melts=`) are the serial
+    proof the dispatch picked the right effect, pinned by the BDD scenarios
+    `fx genie flows on minimize and fire burns a closed window` and `fx off
+    skips genie and fire`; fifteen `fx-*` mutants cover both. Not covered by
+    the suite: the visual shape itself and the restore direction (the final
+    frame is identical either way); both were checked on QMP screendumps.
 - **Window chrome (`wm_chrome.h`, `vga_fb.c`):** the true-color desktop
   carries soft drop shadows, vertical-gradient title strips, anti-aliased
   rounded top corners and a translucent rounded dock. The pixel math (alpha

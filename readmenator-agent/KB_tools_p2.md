@@ -31,8 +31,8 @@ Previous: [KB_tools.md](KB_tools.md)
   - `usage` (function, line 51)
   - `restore_sources` (function, line 139)
   - `cleanup` (function, line 146)
-  - `record` (function, line 556)
-  - `find_index` (function, line 562)
+  - `record` (function, line 570)
+  - `find_index` (function, line 576)
 
 ## tools/probe_compute_vga.py
 - Doc: Docstring: VGA liveness probe during CPU-bound ring-3 compute.
