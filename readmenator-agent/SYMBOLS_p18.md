@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `P_RemoveThinker` | function | `progs/doomgeneric/p_tick.c:73` | `void P_RemoveThinker (thinker_t* thinker)` |
+| `P_RunThinkers` | function | `progs/doomgeneric/p_tick.c:94` | `void P_RunThinkers (void)` |
+| `P_Ticker` | function | `progs/doomgeneric/p_tick.c:123` | `void P_Ticker (void)` |
+| `P_Ticker` | function | `progs/doomgeneric/p_tick.h:29` | `void P_Ticker (void);` |
+| `__P_TICK__` | macro | `progs/doomgeneric/p_tick.h:21` | `#define __P_TICK__` |
+| `ANG5` | macro | `progs/doomgeneric/p_user.c:173` | `#define ANG5` |
+| `INVERSECOLORMAP` | macro | `progs/doomgeneric/p_user.c:34` | `#define INVERSECOLORMAP` |
+| `MAXBOB` | macro | `progs/doomgeneric/p_user.c:42` | `#define MAXBOB` |
+| `P_CalcHeight` | function | `progs/doomgeneric/p_user.c:70` | `void P_CalcHeight (player_t* player)` |
+| `P_DeathThink` | function | `progs/doomgeneric/p_user.c:175` | `void P_DeathThink (player_t* player)` |
+| `P_MovePlayer` | function | `progs/doomgeneric/p_user.c:141` | `void P_MovePlayer (player_t* player)` |
+| `P_PlayerThink` | function | `progs/doomgeneric/p_user.c:229` | `void P_PlayerThink (player_t* player)` |
+| `P_Thrust` | function | `progs/doomgeneric/p_user.c:52` | `void P_Thrust ( player_t*	player,   angle_t	angle,   fixed_t	move )` |
+| `MAXSEGS` | macro | `progs/doomgeneric/r_bsp.c:81` | `#define MAXSEGS` |
+| `R_AddLine` | function | `progs/doomgeneric/r_bsp.c:252` | `void R_AddLine (seg_t*	line)` |
+| `R_CheckBBox` | function | `progs/doomgeneric/r_bsp.c:374` | `boolean R_CheckBBox (fixed_t*	bspcoord)` |
+| `R_ClearClipSegs` | function | `progs/doomgeneric/r_bsp.c:238` | `void R_ClearClipSegs (void)` |
+| `R_ClearDrawSegs` | function | `progs/doomgeneric/r_bsp.c:61` | `void R_ClearDrawSegs (void)` |
+| `R_ClipPassWallSegment` | function | `progs/doomgeneric/r_bsp.c:190` | `void R_ClipPassWallSegment ( int	first,   int	last )` |
+| `R_ClipSolidWallSegment` | function | `progs/doomgeneric/r_bsp.c:97` | `void R_ClipSolidWallSegment ( int			first,   int			last )` |
+| `R_RenderBSPNode` | function | `progs/doomgeneric/r_bsp.c:545` | `void R_RenderBSPNode (int bspnum)` |
+| `R_StoreWallRange` | function | `progs/doomgeneric/r_bsp.c:51` | `void R_StoreWallRange ( int start, int stop );` |
+| `R_Subsector` | function | `progs/doomgeneric/r_bsp.c:490` | `void R_Subsector (int num)` |
+| `cliprange_t` | struct | `progs/doomgeneric/r_bsp.c:73` | `` |
+| `R_ClearClipSegs` | function | `progs/doomgeneric/r_bsp.h:54` | `void R_ClearClipSegs (void);` |
+| `R_ClearDrawSegs` | function | `progs/doomgeneric/r_bsp.h:55` | `void R_ClearDrawSegs (void);` |
+| `R_RenderBSPNode` | function | `progs/doomgeneric/r_bsp.h:58` | `void R_RenderBSPNode (int bspnum);` |
+| `__R_BSP__` | macro | `progs/doomgeneric/r_bsp.h:21` | `#define __R_BSP__` |
+| `backsector` | variable | `progs/doomgeneric/r_bsp.h:29` | `extern sector_t* backsector;` |
+| `curline` | variable | `progs/doomgeneric/r_bsp.h:25` | `extern seg_t* curline;` |
+| `drawsegs` | variable | `progs/doomgeneric/r_bsp.h:42` | `extern drawseg_t drawsegs[MAXDRAWSEGS];` |
+| `ds_p` | variable | `progs/doomgeneric/r_bsp.h:43` | `extern drawseg_t* ds_p;` |
+| `dscalelight` | variable | `progs/doomgeneric/r_bsp.h:47` | `extern lighttable_t** dscalelight;` |
+| `frontsector` | variable | `progs/doomgeneric/r_bsp.h:28` | `extern sector_t* frontsector;` |
+| `hscalelight` | variable | `progs/doomgeneric/r_bsp.h:45` | `extern lighttable_t** hscalelight;` |
+| `linedef` | variable | `progs/doomgeneric/r_bsp.h:27` | `extern line_t* linedef;` |
+| `markceiling` | variable | `progs/doomgeneric/r_bsp.h:38` | `extern boolean markceiling;` |
+| `markfloor` | variable | `progs/doomgeneric/r_bsp.h:37` | `extern boolean markfloor;` |
+| `rw_stopx` | variable | `progs/doomgeneric/r_bsp.h:32` | `extern int rw_stopx;` |
+| `rw_x` | variable | `progs/doomgeneric/r_bsp.h:31` | `extern int rw_x;` |
+| `segtextured` | variable | `progs/doomgeneric/r_bsp.h:34` | `extern boolean segtextured;` |
 | `sidedef` | variable | `progs/doomgeneric/r_bsp.h:26` | `extern side_t* sidedef;` |
 | `skymap` | variable | `progs/doomgeneric/r_bsp.h:40` | `extern boolean skymap;` |
 | `vscalelight` | variable | `progs/doomgeneric/r_bsp.h:46` | `extern lighttable_t** vscalelight;` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p17.md](SYMBOLS_p17.md)
 | `ST_MAXAMMO1WIDTH` | macro | `progs/doomgeneric/st_stuff.c:195` | `#define ST_MAXAMMO1WIDTH` |
 | `ST_MAXAMMO1X` | macro | `progs/doomgeneric/st_stuff.c:196` | `#define ST_MAXAMMO1X` |
 | `ST_MAXAMMO1Y` | macro | `progs/doomgeneric/st_stuff.c:197` | `#define ST_MAXAMMO1Y` |
-| `ST_MAXAMMO2WIDTH` | macro | `progs/doomgeneric/st_stuff.c:198` | `#define ST_MAXAMMO2WIDTH` |
-| `ST_MAXAMMO2X` | macro | `progs/doomgeneric/st_stuff.c:199` | `#define ST_MAXAMMO2X` |
-| `ST_MAXAMMO2Y` | macro | `progs/doomgeneric/st_stuff.c:200` | `#define ST_MAXAMMO2Y` |
-| `ST_MAXAMMO3WIDTH` | macro | `progs/doomgeneric/st_stuff.c:201` | `#define ST_MAXAMMO3WIDTH` |
-| `ST_MAXAMMO3X` | macro | `progs/doomgeneric/st_stuff.c:202` | `#define ST_MAXAMMO3X` |
-| `ST_MAXAMMO3Y` | macro | `progs/doomgeneric/st_stuff.c:203` | `#define ST_MAXAMMO3Y` |
-| `ST_MSGHEIGHT` | macro | `progs/doomgeneric/st_stuff.c:246` | `#define ST_MSGHEIGHT` |
-| `ST_MSGTEXTX` | macro | `progs/doomgeneric/st_stuff.c:241` | `#define ST_MSGTEXTX` |
-| `ST_MSGTEXTY` | macro | `progs/doomgeneric/st_stuff.c:242` | `#define ST_MSGTEXTY` |
-| `ST_MSGWIDTH` | macro | `progs/doomgeneric/st_stuff.c:244` | `#define ST_MSGWIDTH` |
-| `ST_MUCHPAIN` | macro | `progs/doomgeneric/st_stuff.c:123` | `#define ST_MUCHPAIN` |
-| `ST_NUMEXTRAFACES` | macro | `progs/doomgeneric/st_stuff.c:102` | `#define ST_NUMEXTRAFACES` |
-| `ST_NUMFACES` | macro | `progs/doomgeneric/st_stuff.c:104` | `#define ST_NUMFACES` |
-| `ST_NUMPAINFACES` | macro | `progs/doomgeneric/st_stuff.c:94` | `#define ST_NUMPAINFACES` |
-| `ST_NUMSPECIALFACES` | macro | `progs/doomgeneric/st_stuff.c:97` | `#define ST_NUMSPECIALFACES` |
-| `ST_NUMSTRAIGHTFACES` | macro | `progs/doomgeneric/st_stuff.c:95` | `#define ST_NUMSTRAIGHTFACES` |
-| `ST_NUMTURNFACES` | macro | `progs/doomgeneric/st_stuff.c:96` | `#define ST_NUMTURNFACES` |
-| `ST_OUCHCOUNT` | macro | `progs/doomgeneric/st_stuff.c:120` | `#define ST_OUCHCOUNT` |
-| `ST_OUCHOFFSET` | macro | `progs/doomgeneric/st_stuff.c:108` | `#define ST_OUCHOFFSET` |
-| `ST_OUTHEIGHT` | macro | `progs/doomgeneric/st_stuff.c:254` | `#define ST_OUTHEIGHT` |
-| `ST_OUTTEXTX` | macro | `progs/doomgeneric/st_stuff.c:248` | `#define ST_OUTTEXTX` |
-| `ST_OUTTEXTY` | macro | `progs/doomgeneric/st_stuff.c:249` | `#define ST_OUTTEXTY` |
-| `ST_OUTWIDTH` | macro | `progs/doomgeneric/st_stuff.c:252` | `#define ST_OUTWIDTH` |
-| `ST_RAMPAGEDELAY` | macro | `progs/doomgeneric/st_stuff.c:121` | `#define ST_RAMPAGEDELAY` |
-| `ST_RAMPAGEOFFSET` | macro | `progs/doomgeneric/st_stuff.c:110` | `#define ST_RAMPAGEOFFSET` |
-| `ST_Responder` | function | `progs/doomgeneric/st_stuff.c:439` | `boolean ST_Responder (event_t* ev)` |
-| `ST_STRAIGHTFACECOUNT` | macro | `progs/doomgeneric/st_stuff.c:118` | `#define ST_STRAIGHTFACECOUNT` |
-| `ST_Start` | function | `progs/doomgeneric/st_stuff.c:1389` | `void ST_Start (void)` |
-| `ST_Stop` | function | `progs/doomgeneric/st_stuff.c:1401` | `void ST_Stop (void)` |
-| `ST_TALLNUMWIDTH` | macro | `progs/doomgeneric/st_stuff.c:91` | `#define ST_TALLNUMWIDTH` |
-| `ST_TOGGLECHAT` | macro | `progs/doomgeneric/st_stuff.c:80` | `#define ST_TOGGLECHAT` |
-| `ST_TURNCOUNT` | macro | `progs/doomgeneric/st_stuff.c:119` | `#define ST_TURNCOUNT` |
-| `ST_TURNOFFSET` | macro | `progs/doomgeneric/st_stuff.c:107` | `#define ST_TURNOFFSET` |
-| `ST_Ticker` | function | `progs/doomgeneric/st_stuff.c:924` | `void ST_Ticker (void)` |
-| `ST_WEAPON0X` | macro | `progs/doomgeneric/st_stuff.c:206` | `#define ST_WEAPON0X` |
-| `ST_WEAPON0Y` | macro | `progs/doomgeneric/st_stuff.c:207` | `#define ST_WEAPON0Y` |
-| `ST_WEAPON1X` | macro | `progs/doomgeneric/st_stuff.c:210` | `#define ST_WEAPON1X` |
-| `ST_WEAPON1Y` | macro | `progs/doomgeneric/st_stuff.c:211` | `#define ST_WEAPON1Y` |
-| `ST_WEAPON2X` | macro | `progs/doomgeneric/st_stuff.c:214` | `#define ST_WEAPON2X` |
-| `ST_WEAPON2Y` | macro | `progs/doomgeneric/st_stuff.c:215` | `#define ST_WEAPON2Y` |
-| `ST_WEAPON3X` | macro | `progs/doomgeneric/st_stuff.c:218` | `#define ST_WEAPON3X` |
 
 Next: [SYMBOLS_p19.md](SYMBOLS_p19.md)

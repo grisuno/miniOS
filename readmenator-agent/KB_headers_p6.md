@@ -1,6 +1,28 @@
 # Subsystem: headers (page 6 of 6)
 Previous: [KB_headers_p5.md](KB_headers_p5.md)
 
+## headers/wm_dock.h
+- Doc: Docstring: Dock magnification math for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_dock_config_t` (struct, line 39)
+  - `wm_dock_abs` (function, line 46) `static inline long wm_dock_abs(long v)`
+  - `wm_dock_level_clamp` (function, line 52) `static inline int wm_dock_level_clamp(long level)`
+  - `wm_dock_level` (function, line 61) `static inline int wm_dock_level(int from, int rising, unsigned long elapsed,
+                    ...`
+  - `wm_dock_mag_size` (function, line 78) `static inline int wm_dock_mag_size(const wm_dock_config_t *cfg, long dist, int level)`
+  - `wm_dock_src_coord` (function, line 104) `static inline long wm_dock_src_coord(int o, int d, int s)`
+  - `wm_dock_sample` (function, line 120) `static inline unsigned long wm_dock_sample(const unsigned char *rgba, int sw, int sh,
+           ...`
+  - `WM_DOCK_H` (macro, line 18) `#define WM_DOCK_H`
+  - `WM_DOCK_LEVEL_ONE` (macro, line 21) `#define WM_DOCK_LEVEL_ONE`
+  - `WM_DOCK_REACH_MAX` (macro, line 25) `#define WM_DOCK_REACH_MAX`
+  - `WM_DOCK_SIZE_MAX` (macro, line 28) `#define WM_DOCK_SIZE_MAX`
+  - `WM_DOCK_FRAC_ONE` (macro, line 31) `#define WM_DOCK_FRAC_ONE`
+  - `WM_DOCK_ALPHA_OPAQUE` (macro, line 34) `#define WM_DOCK_ALPHA_OPAQUE`
+- Imported by: `kernel/vga_fb.c`, `tests/test_dock.c`
+
 ## headers/wm_events.h
 - Doc: Docstring: Window event contract for the MiniOS desktop.
 - Layer: infrastructure

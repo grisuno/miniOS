@@ -3,6 +3,33 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ERR_EACCES` | macro | `kernel/proc_sec.c:43` | `#define ERR_EACCES` |
+| `ERR_EINVAL` | macro | `kernel/proc_sec.c:44` | `#define ERR_EINVAL` |
+| `ERR_ENOMEM` | macro | `kernel/proc_sec.c:42` | `#define ERR_ENOMEM` |
+| `ERR_ENOSYS` | macro | `kernel/proc_sec.c:45` | `#define ERR_ENOSYS` |
+| `ERR_EOPNOTSUPP` | macro | `kernel/proc_sec.c:46` | `#define ERR_EOPNOTSUPP` |
+| `LINUX_ERRNO_MAX` | macro | `kernel/proc_sec.c:36` | `#define LINUX_ERRNO_MAX` |
+| `LINUX_NR_EXIT` | macro | `kernel/proc_sec.c:35` | `#define LINUX_NR_EXIT` |
+| `LINUX_NR_READ` | macro | `kernel/proc_sec.c:32` | `#define LINUX_NR_READ` |
+| `LINUX_NR_RT_SIGRETURN` | macro | `kernel/proc_sec.c:34` | `#define LINUX_NR_RT_SIGRETURN` |
+| `LINUX_NR_WRITE` | macro | `kernel/proc_sec.c:33` | `#define LINUX_NR_WRITE` |
+| `LINUX_PR_GET_DUMPABLE` | macro | `kernel/proc_sec.c:18` | `#define LINUX_PR_GET_DUMPABLE` |
+| `LINUX_PR_GET_NAME` | macro | `kernel/proc_sec.c:21` | `#define LINUX_PR_GET_NAME` |
+| `LINUX_PR_GET_NO_NEW_PRIVS` | macro | `kernel/proc_sec.c:25` | `#define LINUX_PR_GET_NO_NEW_PRIVS` |
+| `LINUX_PR_GET_SECCOMP` | macro | `kernel/proc_sec.c:22` | `#define LINUX_PR_GET_SECCOMP` |
+| `LINUX_PR_SET_DUMPABLE` | macro | `kernel/proc_sec.c:19` | `#define LINUX_PR_SET_DUMPABLE` |
+| `LINUX_PR_SET_NAME` | macro | `kernel/proc_sec.c:20` | `#define LINUX_PR_SET_NAME` |
+| `LINUX_PR_SET_NO_NEW_PRIVS` | macro | `kernel/proc_sec.c:24` | `#define LINUX_PR_SET_NO_NEW_PRIVS` |
+| `LINUX_PR_SET_SECCOMP` | macro | `kernel/proc_sec.c:23` | `#define LINUX_PR_SET_SECCOMP` |
+| `LINUX_SECCOMP_GET_ACTION_AVAIL` | macro | `kernel/proc_sec.c:31` | `#define LINUX_SECCOMP_GET_ACTION_AVAIL` |
+| `LINUX_SECCOMP_MODE_DISABLED` | macro | `kernel/proc_sec.c:26` | `#define LINUX_SECCOMP_MODE_DISABLED` |
+| `LINUX_SECCOMP_MODE_FILTER` | macro | `kernel/proc_sec.c:28` | `#define LINUX_SECCOMP_MODE_FILTER` |
+| `LINUX_SECCOMP_MODE_STRICT` | macro | `kernel/proc_sec.c:27` | `#define LINUX_SECCOMP_MODE_STRICT` |
+| `LINUX_SECCOMP_SET_MODE_FILTER` | macro | `kernel/proc_sec.c:30` | `#define LINUX_SECCOMP_SET_MODE_FILTER` |
+| `LINUX_SECCOMP_SET_MODE_STRICT` | macro | `kernel/proc_sec.c:29` | `#define LINUX_SECCOMP_SET_MODE_STRICT` |
+| `LINUX_TASK_COMM_LEN` | macro | `kernel/proc_sec.c:37` | `#define LINUX_TASK_COMM_LEN` |
+| `SEC_STRICT_LEN` | macro | `kernel/proc_sec.c:72` | `#define SEC_STRICT_LEN` |
+| `SOCK_FPROG_FILTER_OFF` | macro | `kernel/proc_sec.c:40` | `#define SOCK_FPROG_FILTER_OFF` |
 | `SOCK_FPROG_SIZE` | macro | `kernel/proc_sec.c:39` | `#define SOCK_FPROG_SIZE` |
 | `chain_put` | function | `kernel/proc_sec.c:78` | `static void chain_put(sec_filter_t *f)` |
 | `pid_ok` | function | `kernel/proc_sec.c:74` | `static int pid_ok(int pid)` |
@@ -202,17 +229,17 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `serial_puts` | function | `kernel/serial.c:40` | `void serial_puts(const char *s)` |
 | `serial_rx_ready` | function | `kernel/serial.c:31` | `static int serial_rx_ready(void)` |
 | `serial_tx_ready` | function | `kernel/serial.c:30` | `static int serial_tx_ready(void)` |
-| `HTTPD_IO_CHUNK` | macro | `kernel/shell.c:2564` | `#define HTTPD_IO_CHUNK` |
-| `HTTPD_REQ_CAP` | macro | `kernel/shell.c:2563` | `#define HTTPD_REQ_CAP` |
-| `PIPE_HOP_MAX` | macro | `kernel/shell.c:4104` | `#define PIPE_HOP_MAX` |
+| `HTTPD_IO_CHUNK` | macro | `kernel/shell.c:2574` | `#define HTTPD_IO_CHUNK` |
+| `HTTPD_REQ_CAP` | macro | `kernel/shell.c:2573` | `#define HTTPD_REQ_CAP` |
+| `PIPE_HOP_MAX` | macro | `kernel/shell.c:4114` | `#define PIPE_HOP_MAX` |
 | `QEMU_PM_PORT` | macro | `kernel/shell.c:1033` | `#define QEMU_PM_PORT` |
 | `SHELL_BUILTIN_COUNT` | macro | `kernel/shell.c:232` | `#define SHELL_BUILTIN_COUNT` |
 | `SHELL_CVM_INTERP` | macro | `kernel/shell.c:53` | `#define SHELL_CVM_INTERP` |
 | `SHELL_HIST_MAX` | macro | `kernel/shell.c:98` | `#define SHELL_HIST_MAX` |
-| `SHELL_LS_CAP` | macro | `kernel/shell.c:2821` | `#define SHELL_LS_CAP` |
+| `SHELL_LS_CAP` | macro | `kernel/shell.c:2831` | `#define SHELL_LS_CAP` |
 | `SHELL_RUN_DIRS` | macro | `kernel/shell.c:72` | `#define SHELL_RUN_DIRS` |
 | `ShellRunDir` | struct | `kernel/shell.c:61` | `` |
-| `VMA` | function | `kernel/shell.c:2208` | `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit  * stack, 128 regions prin...` |
+| `VMA` | function | `kernel/shell.c:2218` | `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit  * stack, 128 regions prin...` |
 | `XXH_STATIC_LINKING_ONLY` | macro | `kernel/shell.c:25` | `#define XXH_STATIC_LINKING_ONLY` |
 | `code` | function | `kernel/shell.c:1412` | `* the last exit code (130 when interrupted). */ static int shell_wait_fg(int *pids, int n, int ki...` |
 | `context` | function | `kernel/shell.c:1705` | `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...` |
@@ -221,43 +248,43 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `desktop_path` | function | `kernel/shell.c:1557` | `static void desktop_path(const char *name, char *dst, unsigned cap)` |
 | `desktop_srv_alive` | function | `kernel/shell.c:1598` | `static int desktop_srv_alive(void)` |
 | `desktop_unflag` | function | `kernel/shell.c:848` | `static void desktop_unflag(const char *name);` |
-| `driver` | function | `kernel/shell.c:3331` | `* stream through the fat: VFS driver ("img:fatpath" per open,      * registered at boot beside me...` |
+| `driver` | function | `kernel/shell.c:3341` | `* stream through the fat: VFS driver ("img:fatpath" per open,      * registered at boot beside me...` |
 | `etrel_path_trusted` | function | `kernel/shell.c:1123` | `static int etrel_path_trusted(const char *full)` |
 | `flows` | function | `kernel/shell.c:1590` | `* and external flows (make wl) set it themselves. */ static void desktop_unflag(const char *name)` |
-| `frame` | function | `kernel/shell.c:3725` | `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...` |
+| `frame` | function | `kernel/shell.c:3735` | `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...` |
 | `gfx_parse_int` | function | `kernel/shell.c:1751` | `static int gfx_parse_int(const char *s, int *out)` |
 | `gfx_read_palette` | function | `kernel/shell.c:1771` | `static void gfx_read_palette(unsigned char pal[768])` |
-| `job_row` | struct | `kernel/shell.c:2079` | `` |
+| `job_row` | struct | `kernel/shell.c:2089` | `` |
 | `line` | function | `kernel/shell.c:446` | `* to the live line (handled by the caller resetting shell_hist_idx). */ static void shell_hist_na...` |
 | `outw_port` | function | `kernel/shell.c:1029` | `static inline void outw_port(unsigned short port, unsigned short val)` |
-| `ps_row` | struct | `kernel/shell.c:3723` | `` |
+| `ps_row` | struct | `kernel/shell.c:3733` | `` |
 | `root` | function | `kernel/shell.c:665` | `* MiniFS root (where the big ELFs live under bare names), * and only the highest-priority non-empty tier is kept. An...` |
 | `shell_cmd_desktop` | function | `kernel/shell.c:1614` | `static void shell_cmd_desktop(int argc, char **argv)` |
-| `shell_cmd_gdb` | function | `kernel/shell.c:2402` | `static void shell_cmd_gdb(int argc, char **argv)` |
+| `shell_cmd_gdb` | function | `kernel/shell.c:2412` | `static void shell_cmd_gdb(int argc, char **argv)` |
 | `shell_cmd_gfx` | function | `kernel/shell.c:1778` | `static void shell_cmd_gfx(int argc, char **argv)` |
-| `shell_cmd_hash` | function | `kernel/shell.c:2445` | `static void shell_cmd_hash(int argc, char **argv)` |
-| `shell_cmd_jobs` | function | `kernel/shell.c:2078` | `static void shell_cmd_jobs(void)` |
-| `shell_cmd_kill` | function | `kernel/shell.c:2152` | `static void shell_cmd_kill(int argc, char **argv)` |
-| `shell_cmd_mem` | function | `kernel/shell.c:2175` | `static void shell_cmd_mem(void)` |
+| `shell_cmd_hash` | function | `kernel/shell.c:2455` | `static void shell_cmd_hash(int argc, char **argv)` |
+| `shell_cmd_jobs` | function | `kernel/shell.c:2088` | `static void shell_cmd_jobs(void)` |
+| `shell_cmd_kill` | function | `kernel/shell.c:2162` | `static void shell_cmd_kill(int argc, char **argv)` |
+| `shell_cmd_mem` | function | `kernel/shell.c:2185` | `static void shell_cmd_mem(void)` |
 | `shell_cmd_mrun` | function | `kernel/shell.c:1466` | `static void shell_cmd_mrun(int argc, char **argv)` |
 | `shell_cmd_poweroff` | function | `kernel/shell.c:1035` | `static void shell_cmd_poweroff(void)` |
-| `shell_cmd_wait` | function | `kernel/shell.c:2117` | `static void shell_cmd_wait(int argc, char **argv)` |
+| `shell_cmd_wait` | function | `kernel/shell.c:2127` | `static void shell_cmd_wait(int argc, char **argv)` |
 | `shell_cmd_wm` | function | `kernel/shell.c:1930` | `static void shell_cmd_wm(int argc, char **argv)` |
 | `shell_complete_minifs_arg` | function | `kernel/shell.c:271` | `static void shell_complete_minifs_arg(const char *word, unsigned long wlen,                      ...` |
 | `shell_complete_replace` | function | `kernel/shell.c:250` | `static void shell_complete_replace(char *buf, int size, int *pos,                                ...` |
 | `shell_complete_tier` | function | `kernel/shell.c:238` | `static int shell_complete_tier(const char *nm)` |
-| `shell_cross_cat` | function | `kernel/shell.c:2863` | `static void shell_cross_cat(const char *drv, const char *imgarg,                             cons...` |
-| `shell_cross_ls` | function | `kernel/shell.c:2822` | `static void shell_cross_ls(const char *drv, const char *imgarg,                            const ...` |
-| `shell_exec_builtin` | function | `kernel/shell.c:2905` | `void shell_exec_builtin(int argc, char **argv)` |
+| `shell_cross_cat` | function | `kernel/shell.c:2873` | `static void shell_cross_cat(const char *drv, const char *imgarg,                             cons...` |
+| `shell_cross_ls` | function | `kernel/shell.c:2832` | `static void shell_cross_ls(const char *drv, const char *imgarg,                            const ...` |
+| `shell_exec_builtin` | function | `kernel/shell.c:2915` | `void shell_exec_builtin(int argc, char **argv)` |
 | `shell_file_is_real` | function | `kernel/shell.c:1069` | `static int shell_file_is_real(const char *resolved)` |
 | `shell_focus_park` | function | `kernel/shell.c:116` | `void shell_focus_park(void)` |
 | `shell_focus_restore` | function | `kernel/shell.c:121` | `void shell_focus_restore(void)` |
-| `shell_has_child` | function | `kernel/shell.c:2107` | `static int shell_has_child(int pid)` |
+| `shell_has_child` | function | `kernel/shell.c:2117` | `static int shell_has_child(int pid)` |
 | `shell_hist_newest_match` | function | `kernel/shell.c:429` | `static int shell_hist_newest_match(const char *prefix, unsigned long plen)` |
 | `shell_hist_show` | function | `kernel/shell.c:346` | `static void shell_hist_show(char *buf, int size, int *pos, const char *text)` |
-| `shell_httpd_one` | function | `kernel/shell.c:2570` | `static void shell_httpd_one(int child, const char *root)` |
-| `shell_httpd_serve` | function | `kernel/shell.c:2655` | `static void shell_httpd_serve(unsigned short port, const char *root,         int max_conn)` |
-| `shell_is_pipe_tok` | function | `kernel/shell.c:4106` | `static int shell_is_pipe_tok(const char *a)` |
+| `shell_httpd_one` | function | `kernel/shell.c:2580` | `static void shell_httpd_one(int child, const char *root)` |
+| `shell_httpd_serve` | function | `kernel/shell.c:2665` | `static void shell_httpd_serve(unsigned short port, const char *root,         int max_conn)` |
+| `shell_is_pipe_tok` | function | `kernel/shell.c:4116` | `static int shell_is_pipe_tok(const char *a)` |
 | `shell_line_backspace` | function | `kernel/shell.c:390` | `static void shell_line_backspace(char *buf, int size, int *pos)` |
 | `shell_line_delete` | function | `kernel/shell.c:398` | `static void shell_line_delete(char *buf, int size, int *pos)` |
 | `shell_line_insert` | function | `kernel/shell.c:381` | `static void shell_line_insert(char *buf, int size, int *pos, char c)` |
@@ -268,9 +295,9 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `shell_load` | function | `kernel/shell.c:966` | `static int shell_load(const char *fname, char *progname_out, void **entry_out)` |
 | `shell_name_base` | function | `kernel/shell.c:213` | `static const char *shell_name_base(const char *path)` |
 | `shell_parse` | function | `kernel/shell.c:826` | `int shell_parse(char *line, char **argv, int max_args)` |
-| `shell_parse_long` | function | `kernel/shell.c:2366` | `int shell_parse_long(const char *s, long *out)` |
-| `shell_parse_pid` | function | `kernel/shell.c:2387` | `int shell_parse_pid(const char *s, int min_pid, int *out)` |
-| `shell_parse_u64` | function | `kernel/shell.c:2350` | `static int shell_parse_u64(const char *s, unsigned long *out)` |
+| `shell_parse_long` | function | `kernel/shell.c:2376` | `int shell_parse_long(const char *s, long *out)` |
+| `shell_parse_pid` | function | `kernel/shell.c:2397` | `int shell_parse_pid(const char *s, int min_pid, int *out)` |
+| `shell_parse_u64` | function | `kernel/shell.c:2360` | `static int shell_parse_u64(const char *s, unsigned long *out)` |
 | `shell_parse_vol` | function | `kernel/shell.c:158` | `static int shell_parse_vol(const char *s, unsigned *out)` |
 | `shell_prompt` | function | `kernel/shell.c:148` | `static void shell_prompt(void)` |
 | `shell_queue_launch` | function | `kernel/shell.c:87` | `void shell_queue_launch(const char *cmd)` |
@@ -279,7 +306,7 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `shell_readline_active` | function | `kernel/shell.c:115` | `int shell_readline_active(void)` |
 | `shell_readline_buf` | function | `kernel/shell.c:184` | `void shell_readline_buf(char *buf, int size)` |
 | `shell_readline_hist` | function | `kernel/shell.c:491` | `static void shell_readline_hist(char *buf, int size)` |
-| `shell_resolve_arg` | function | `kernel/shell.c:2464` | `static int shell_resolve_arg(const char *cmd, const char *arg,                              const...` |
+| `shell_resolve_arg` | function | `kernel/shell.c:2474` | `static int shell_resolve_arg(const char *cmd, const char *arg,                              const...` |
 | `shell_resolve_run` | function | `kernel/shell.c:1081` | `static int shell_resolve_run(const char *name, char *out, unsigned cap)` |
 | `shell_run` | function | `kernel/shell.c:894` | `void shell_run(void)` |
 | `shell_run_any` | function | `kernel/shell.c:1678` | `int shell_run_any(const char *name, int argc, char **argv)` |
@@ -292,13 +319,13 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `shell_run_file` | function | `kernel/shell.c:1302` | `static int shell_run_file(const char *name, int argc, char **argv)` |
 | `shell_run_init` | function | `kernel/shell.c:855` | `static void shell_run_init(void)` |
 | `shell_run_pipeline` | function | `kernel/shell.c:151` | `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);` |
-| `shell_run_stage` | function | `kernel/shell.c:4145` | `static char *shell_run_stage(char **sargv, int sargc,         const char *input, unsigned long in...` |
-| `stdout` | function | `kernel/shell.c:4094` | `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...` |
-| `terminal` | function | `kernel/shell.c:2980` | `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...` |
+| `shell_run_stage` | function | `kernel/shell.c:4155` | `static char *shell_run_stage(char **sargv, int sargc,         const char *input, unsigned long in...` |
+| `stdout` | function | `kernel/shell.c:4104` | `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...` |
+| `terminal` | function | `kernel/shell.c:2990` | `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...` |
 | `text` | function | `kernel/shell.c:594` | `* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */...` |
 | `this` | function | `kernel/shell.c:1544` | `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...` |
-| `to` | function | `kernel/shell.c:2281` | `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */ static void shell_cmd_trac...` |
-| `tree` | function | `kernel/shell.c:2065` | `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores  * Ctrl+C (it never poll...` |
+| `to` | function | `kernel/shell.c:2291` | `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */ static void shell_cmd_trac...` |
+| `tree` | function | `kernel/shell.c:2075` | `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores  * Ctrl+C (it never poll...` |
 | `window` | function | `kernel/shell.c:1339` | `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...` |
 | `spawn_backup` | function | `kernel/spawn.c:11` | `int spawn_backup(spawn_ctx_t *ctx)` |
 | `spawn_copy_argv` | function | `kernel/spawn.c:99` | `char **spawn_copy_argv(int argc, const char **uargv)` |
@@ -469,32 +496,5 @@ Previous: [SYMBOLS_p8.md](SYMBOLS_p8.md)
 | `kfd_get` | function | `kernel/syscalls.c:90` | `KFILE *kfd_get(int fd)` |
 | `kfd_install` | function | `kernel/syscalls.c:1403` | `static long kfd_install(KFILE *f, int cloexec)` |
 | `kfd_poll_revents` | function | `kernel/syscalls.c:1739` | `int kfd_poll_revents(int fd)` |
-| `kfd_put` | function | `kernel/syscalls.c:103` | `void kfd_put(KFILE *f)` |
-| `kfd_view_cloexec` | function | `kernel/syscalls.c:197` | `void kfd_view_cloexec(void)` |
-| `kfd_view_count` | function | `kernel/syscalls.c:115` | `static int kfd_view_count(kfd_view_t *v)` |
-| `kfd_view_current` | function | `kernel/syscalls.c:61` | `static kfd_view_t *kfd_view_current(void)` |
-| `kfd_view_root` | function | `kernel/syscalls.c:71` | `kfd_view_t *kfd_view_root(void)` |
-| `kfile_readable_bytes` | function | `kernel/syscalls.c:2617` | `static int kfile_readable_bytes(KFILE *f)` |
-| `kfile_status_flags` | function | `kernel/syscalls.c:1633` | `static long kfile_status_flags(KFILE *f)` |
-| `kfile_user_read` | function | `kernel/syscalls.c:1774` | `static long kfile_user_read(KFILE *f, char *buf, long cnt)` |
-| `kfile_user_write` | function | `kernel/syscalls.c:1804` | `static long kfile_user_write(KFILE *f, const char *buf, long cnt)` |
-| `kiovec` | struct | `kernel/syscalls.c:1229` | `` |
-| `ksyscall` | function | `kernel/syscalls.c:3585` | `long ksyscall(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `ksyscall_dispatch` | function | `kernel/syscalls.c:3654` | `static long ksyscall_dispatch(long n, long a1, long a2, long a3, long a4, long a5, long a6)` |
-| `linux_timespec_us` | function | `kernel/syscalls.c:2823` | `static long linux_timespec_us(long ts)` |
-| `long` | function | `kernel/syscalls.c:2865` | `unsigned long (*now)(void);` |
-| `minfo_sleep_init` | function | `kernel/syscalls.c:486` | `void minfo_sleep_init(int tick_ok)` |
-| `minfo_tick_wake` | function | `kernel/syscalls.c:491` | `void minfo_tick_wake(void *ctx)` |
-| `minios_syscall_entry_t` | struct | `kernel/syscalls.c:238` | `` |
-| `mm_ensure_cur` | function | `kernel/syscalls.c:1923` | `static int mm_ensure_cur(unsigned long start, unsigned long end)` |
-| `mmap_range_free` | function | `kernel/syscalls.c:1988` | `static int mmap_range_free(unsigned long base, unsigned long len)` |
-| `mmap_tag_file` | function | `kernel/syscalls.c:1973` | `static int mmap_tag_file(unsigned long base, int ino, unsigned long off)` |
-| `mprotect_pte` | function | `kernel/syscalls.c:2176` | `static volatile unsigned long *mprotect_pte(unsigned long cr3,         unsigned long va)` |
-| `node` | function | `kernel/syscalls.c:2322` | `* mapping is one exact live VMA node (what mmap inserts);` |
-| `proc_spawn_elf` | function | `kernel/syscalls.c:3923` | `* proc_spawn_elf (the same path mrun uses) and the caller blocks in * do_waitpid, so the parent address space is...` |
-| `products` | function | `kernel/syscalls.c:3641` | `* products (writev cnt*sizeof, poll a2*8, spawn (argc+1)*sizeof) are  * pre-bounded against (END-...` |
-| `readlink` | function | `kernel/syscalls.c:3801` | `* readlink (89). */ return readlink_path((const char *)a2, (char *)a3, a4);` |
-| `readlink_path` | function | `kernel/syscalls.c:3101` | `static long readlink_path(const char *path, char *buf, long bufsz)` |
-| `rmdir_kpath` | function | `kernel/syscalls.c:3299` | `static long rmdir_kpath(const char *path)` |
 
 Next: [SYMBOLS_p10.md](SYMBOLS_p10.md)

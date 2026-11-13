@@ -1,6 +1,6 @@
 # `headers/desktop_shortcuts.h`
 
-> Source: [headers/desktop_shortcuts.h:1](../../headers/desktop_shortcuts.h#L1) | language `h` | coverage 72.7% | [API index](../index.md)
+> Source: [headers/desktop_shortcuts.h:1](../../headers/desktop_shortcuts.h#L1) | language `h` | coverage 69.6% | [API index](../index.md)
 
 desktop_shortcuts.h -- configurable desktop icon shortcuts.
 
@@ -8,7 +8,7 @@ desktop_shortcuts.h -- configurable desktop icon shortcuts.
 
 - **Structs:** [`desktop_shortcut`](#desktop_shortcut)
 - **Functions:** [`desktop_shortcuts_load`](#desktop_shortcuts_load), [`desktop_shortcuts_draw`](#desktop_shortcuts_draw), [`desktop_shortcuts_hit_test`](#desktop_shortcuts_hit_test)
-- **Macros:** [`MAX_SHORTCUTS`](#max_shortcuts), [`SHORTCUT_NAME_LEN`](#shortcut_name_len), [`SHORTCUT_CMD_LEN`](#shortcut_cmd_len), [`SHORTCUT_PATH_LEN`](#shortcut_path_len), [`ICON_W`](#icon_w), [`ICON_PAD_X`](#icon_pad_x), [`ICON_PAD_Y`](#icon_pad_y), [`DOCK_PAD_X`](#dock_pad_x), [`DOCK_PAD_Y`](#dock_pad_y), [`DOCK_GAP`](#dock_gap), [`DOCK_LABEL_GAP`](#dock_label_gap), [`DOCK_CRYSTAL_STEP`](#dock_crystal_step), [`DOCK_MAG_W`](#dock_mag_w), [`DOCK_NEAR_W`](#dock_near_w), [`DOCK_BOUNCE_TICKS`](#dock_bounce_ticks), [`ICON_PAL_BASE`](#icon_pal_base), [`ICON_PAL_SIZE`](#icon_pal_size)
+- **Macros:** [`MAX_SHORTCUTS`](#max_shortcuts), [`SHORTCUT_NAME_LEN`](#shortcut_name_len), [`SHORTCUT_CMD_LEN`](#shortcut_cmd_len), [`SHORTCUT_PATH_LEN`](#shortcut_path_len), [`ICON_W`](#icon_w), [`ICON_PAD_X`](#icon_pad_x), [`ICON_PAD_Y`](#icon_pad_y), [`DOCK_PAD_X`](#dock_pad_x), [`DOCK_PAD_Y`](#dock_pad_y), [`DOCK_GAP`](#dock_gap), [`DOCK_LABEL_GAP`](#dock_label_gap), [`DOCK_CRYSTAL_STEP`](#dock_crystal_step), [`DOCK_MAG_W`](#dock_mag_w), [`DOCK_MAG_REACH_CELLS`](#dock_mag_reach_cells), [`DOCK_MAG_TICKS`](#dock_mag_ticks), [`DOCK_BOUNCE_TICKS`](#dock_bounce_ticks), [`ICON_PAL_BASE`](#icon_pal_base), [`ICON_PAL_SIZE`](#icon_pal_size)
 
 ## Call Graph
 
@@ -27,7 +27,7 @@ flowchart LR
 
 ### `desktop_shortcut`
 
-`struct` | [headers/desktop_shortcuts.h:72](../../headers/desktop_shortcuts.h#L72)
+`struct` | [headers/desktop_shortcuts.h:73](../../headers/desktop_shortcuts.h#L73)
 
 ```c
 struct desktop_shortcut
@@ -45,7 +45,7 @@ Pixels are raw RGBA bytes (ICON_W*ICON_H*4): the PNG's own colors, alpha below 1
 
 ### `desktop_shortcuts_load`
 
-`function` | [headers/desktop_shortcuts.h:82](../../headers/desktop_shortcuts.h#L82)
+`function` | [headers/desktop_shortcuts.h:83](../../headers/desktop_shortcuts.h#L83)
 
 ```c
 void desktop_shortcuts_load(void);
@@ -61,7 +61,7 @@ Called once from vga_fb_draw_desktop on first draw.
 
 ### `desktop_shortcuts_draw`
 
-`function` | [headers/desktop_shortcuts.h:85](../../headers/desktop_shortcuts.h#L85)
+`function` | [headers/desktop_shortcuts.h:86](../../headers/desktop_shortcuts.h#L86)
 
 ```c
 void desktop_shortcuts_draw(void);
@@ -75,7 +75,7 @@ Draw all shortcut icons and labels onto the framebuffer.
 
 ### `desktop_shortcuts_hit_test`
 
-`function` `const` | [headers/desktop_shortcuts.h:89](../../headers/desktop_shortcuts.h#L89)
+`function` `const` | [headers/desktop_shortcuts.h:90](../../headers/desktop_shortcuts.h#L90)
 
 ```c
 const char *desktop_shortcuts_hit_test(int mx, int my);
@@ -264,26 +264,38 @@ Crystal backing: the dock fill paints COL_SHADOW on a (x+y)&1 checker and leaves
 
 ### `DOCK_MAG_W`
 
-`macro` | [headers/desktop_shortcuts.h:48](../../headers/desktop_shortcuts.h#L48)
+`macro` | [headers/desktop_shortcuts.h:49](../../headers/desktop_shortcuts.h#L49)
 
 ```c
 #define DOCK_MAG_W
 ```
 
-Hover magnification (Mac style): the icon under the cursor grows to DOCK_MAG, its immediate neighbours to DOCK_NEAR, bottom-aligned on the slot so the growth rises above the dock.
+Hover magnification (Mac style, headers/wm_dock.h): every icon is sized by a bell curve over its distance to the pointer, DOCK_MAG under it and back to ICON at DOCK_MAG_REACH_CELLS dock columns away, bottom-aligned on the slot so the growth rises above the dock.
 
-2x hot / 1.5x neighbours, so the effect reads at a glance. One scaled blit per icon per hover crossing, so the 25 Hz desktop tick never notices.
+The bell eases in and out over DOCK_MAG_TICKS (100 Hz sys_ticks) when the pointer enters or leaves the dock.
 
 ---
 
-<a id="dock_near_w"></a>
+<a id="dock_mag_reach_cells"></a>
 
-### `DOCK_NEAR_W`
+### `DOCK_MAG_REACH_CELLS`
 
-`macro` | [headers/desktop_shortcuts.h:50](../../headers/desktop_shortcuts.h#L50)
+`macro` | [headers/desktop_shortcuts.h:51](../../headers/desktop_shortcuts.h#L51)
 
 ```c
-#define DOCK_NEAR_W
+#define DOCK_MAG_REACH_CELLS
+```
+
+---
+
+<a id="dock_mag_ticks"></a>
+
+### `DOCK_MAG_TICKS`
+
+`macro` | [headers/desktop_shortcuts.h:52](../../headers/desktop_shortcuts.h#L52)
+
+```c
+#define DOCK_MAG_TICKS
 ```
 
 ---
@@ -292,7 +304,7 @@ Hover magnification (Mac style): the icon under the cursor grows to DOCK_MAG, it
 
 ### `DOCK_BOUNCE_TICKS`
 
-`macro` | [headers/desktop_shortcuts.h:58](../../headers/desktop_shortcuts.h#L58)
+`macro` | [headers/desktop_shortcuts.h:59](../../headers/desktop_shortcuts.h#L59)
 
 ```c
 #define DOCK_BOUNCE_TICKS
@@ -304,7 +316,7 @@ Hover magnification (Mac style): the icon under the cursor grows to DOCK_MAG, it
 
 ### `ICON_PAL_BASE`
 
-`macro` | [headers/desktop_shortcuts.h:65](../../headers/desktop_shortcuts.h#L65)
+`macro` | [headers/desktop_shortcuts.h:66](../../headers/desktop_shortcuts.h#L66)
 
 ```c
 #define ICON_PAL_BASE
@@ -320,7 +332,7 @@ Indices 0-14 stay as the desktop palette; the icon palette gives enough range fo
 
 ### `ICON_PAL_SIZE`
 
-`macro` | [headers/desktop_shortcuts.h:66](../../headers/desktop_shortcuts.h#L66)
+`macro` | [headers/desktop_shortcuts.h:67](../../headers/desktop_shortcuts.h#L67)
 
 ```c
 #define ICON_PAL_SIZE

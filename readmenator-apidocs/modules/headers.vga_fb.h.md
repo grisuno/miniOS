@@ -1,11 +1,11 @@
 # `headers/vga_fb.h`
 
-> Source: [headers/vga_fb.h:1](../../headers/vga_fb.h#L1) | language `h` | coverage 25.4% | [API index](../index.md)
+> Source: [headers/vga_fb.h:1](../../headers/vga_fb.h#L1) | language `h` | coverage 26.4% | [API index](../index.md)
 
 ## Contents
 
 - **Structs:** [`mouse_state_t`](#mouse_state_t)
-- **Functions:** [`fb_bytes_per_pixel`](#fb_bytes_per_pixel), [`vga_fb_read_rgb`](#vga_fb_read_rgb), [`vga_fb_set_gfx_palette`](#vga_fb_set_gfx_palette), [`vga_fb_boot_config`](#vga_fb_boot_config), [`SYS_DOOM_FRAME`](#sys_doom_frame), [`SYS_NK_FRAME`](#sys_nk_frame), [`vga_fb_blit_nk_window`](#vga_fb_blit_nk_window), [`vga_fb_blit_nk_rgb_window`](#vga_fb_blit_nk_rgb_window), [`below`](#below), [`vga_fb_init`](#vga_fb_init), [`vga_fb_term_ring_init`](#vga_fb_term_ring_init), [`vga_fb_term_feed`](#vga_fb_term_feed), [`vga_fb_history_page`](#vga_fb_history_page), [`vga_fb_clear`](#vga_fb_clear), [`vga_fb_pixel`](#vga_fb_pixel), [`vga_fb_rect`](#vga_fb_rect), [`vga_fb_pixel_rgb`](#vga_fb_pixel_rgb), [`vga_fb_rect_rgb`](#vga_fb_rect_rgb), [`vga_fb_char`](#vga_fb_char), [`vga_fb_str`](#vga_fb_str), [`vga_fb_putc_term`](#vga_fb_putc_term), [`vga_fb_puts_term`](#vga_fb_puts_term), [`term_clear`](#term_clear), [`vga_fb_text_cursor`](#vga_fb_text_cursor), [`vga_fb_hide_text_cursor`](#vga_fb_hide_text_cursor), [`fb_read_packed`](#fb_read_packed), [`fb_write_packed`](#fb_write_packed), [`vga_fb_draw_desktop`](#vga_fb_draw_desktop), [`vga_fb_toggle_fullscreen`](#vga_fb_toggle_fullscreen), [`vga_fb_move_terminal`](#vga_fb_move_terminal), [`vga_fb_snap_window`](#vga_fb_snap_window), [`vga_fb_resize`](#vga_fb_resize), [`vga_fb_reset_default`](#vga_fb_reset_default), [`vga_fb_toggle_minimize`](#vga_fb_toggle_minimize), [`vga_fb_is_minimized`](#vga_fb_is_minimized), [`vga_fb_is_fullscreen`](#vga_fb_is_fullscreen), [`vga_fb_gfx_set_fullscreen`](#vga_fb_gfx_set_fullscreen), [`vga_fb_gfx_set_hidden`](#vga_fb_gfx_set_hidden), [`vga_fb_gfx_view_name`](#vga_fb_gfx_view_name), [`vga_fb_gfx_origin`](#vga_fb_gfx_origin), [`vga_fb_gfx_map_mouse`](#vga_fb_gfx_map_mouse), [`fb_write_row_packed`](#fb_write_row_packed), [`fb_read_row_packed`](#fb_read_row_packed), [`vga_fb_close_active`](#vga_fb_close_active), [`vga_fb_focus_next`](#vga_fb_focus_next), [`vga_fb_focus_id`](#vga_fb_focus_id), [`vga_fb_focus_get`](#vga_fb_focus_get), [`vga_fb_focus_event`](#vga_fb_focus_event), [`vga_fb_focus_report`](#vga_fb_focus_report), [`vga_fb_theme_name`](#vga_fb_theme_name), [`vga_fb_ps2_owner`](#vga_fb_ps2_owner), [`vga_fb_nterms_get`](#vga_fb_nterms_get), [`vga_fb_term_split`](#vga_fb_term_split), [`vga_fb_term_close_focused`](#vga_fb_term_close_focused), [`vga_fb_tile_all`](#vga_fb_tile_all), [`vga_fb_layout_set`](#vga_fb_layout_set), [`vga_fb_layout_cycle`](#vga_fb_layout_cycle), [`vga_fb_layout_get`](#vga_fb_layout_get), [`vga_fb_layout_name`](#vga_fb_layout_name), [`vga_fb_list_windows`](#vga_fb_list_windows), [`wm_close_pending`](#wm_close_pending), [`wm_clear_close`](#wm_clear_close), [`wm_gfx_mode_active`](#wm_gfx_mode_active), [`vga_fb_mouse_tick`](#vga_fb_mouse_tick), [`vga_fb_wait_tick`](#vga_fb_wait_tick), [`vga_fb_mouse_init`](#vga_fb_mouse_init), [`dock_bounce_counts`](#dock_bounce_counts), [`dock_click_count`](#dock_click_count), [`dock_pending_active`](#dock_pending_active), [`pixels`](#pixels), [`vga_fx_enabled`](#vga_fx_enabled), [`vga_fx_snap_rect`](#vga_fx_snap_rect), [`vga_fx_restore_rect`](#vga_fx_restore_rect), [`vga_fx_free`](#vga_fx_free), [`vga_fx_melt_rect`](#vga_fx_melt_rect), [`vga_fx_melt_from_black`](#vga_fx_melt_from_black), [`vga_fx_burn_rect`](#vga_fx_burn_rect), [`vga_fx_genie_rect`](#vga_fx_genie_rect), [`vga_fb_set_gfx_mode`](#vga_fb_set_gfx_mode)
+- **Functions:** [`fb_bytes_per_pixel`](#fb_bytes_per_pixel), [`vga_fb_read_rgb`](#vga_fb_read_rgb), [`vga_fb_set_gfx_palette`](#vga_fb_set_gfx_palette), [`vga_fb_boot_config`](#vga_fb_boot_config), [`SYS_DOOM_FRAME`](#sys_doom_frame), [`SYS_NK_FRAME`](#sys_nk_frame), [`vga_fb_blit_nk_window`](#vga_fb_blit_nk_window), [`vga_fb_blit_nk_rgb_window`](#vga_fb_blit_nk_rgb_window), [`below`](#below), [`vga_fb_init`](#vga_fb_init), [`vga_fb_term_ring_init`](#vga_fb_term_ring_init), [`vga_fb_term_feed`](#vga_fb_term_feed), [`vga_fb_history_page`](#vga_fb_history_page), [`vga_fb_clear`](#vga_fb_clear), [`vga_fb_pixel`](#vga_fb_pixel), [`vga_fb_rect`](#vga_fb_rect), [`vga_fb_pixel_rgb`](#vga_fb_pixel_rgb), [`vga_fb_rect_rgb`](#vga_fb_rect_rgb), [`vga_fb_char`](#vga_fb_char), [`vga_fb_str`](#vga_fb_str), [`vga_fb_putc_term`](#vga_fb_putc_term), [`vga_fb_puts_term`](#vga_fb_puts_term), [`term_clear`](#term_clear), [`vga_fb_text_cursor`](#vga_fb_text_cursor), [`vga_fb_hide_text_cursor`](#vga_fb_hide_text_cursor), [`fb_read_packed`](#fb_read_packed), [`fb_write_packed`](#fb_write_packed), [`vga_fb_draw_desktop`](#vga_fb_draw_desktop), [`vga_fb_toggle_fullscreen`](#vga_fb_toggle_fullscreen), [`vga_fb_move_terminal`](#vga_fb_move_terminal), [`vga_fb_snap_window`](#vga_fb_snap_window), [`vga_fb_resize`](#vga_fb_resize), [`vga_fb_reset_default`](#vga_fb_reset_default), [`vga_fb_toggle_minimize`](#vga_fb_toggle_minimize), [`vga_fb_is_minimized`](#vga_fb_is_minimized), [`vga_fb_is_fullscreen`](#vga_fb_is_fullscreen), [`vga_fb_gfx_set_fullscreen`](#vga_fb_gfx_set_fullscreen), [`vga_fb_gfx_set_hidden`](#vga_fb_gfx_set_hidden), [`vga_fb_gfx_view_name`](#vga_fb_gfx_view_name), [`vga_fb_gfx_origin`](#vga_fb_gfx_origin), [`vga_fb_gfx_map_mouse`](#vga_fb_gfx_map_mouse), [`fb_write_row_packed`](#fb_write_row_packed), [`fb_read_row_packed`](#fb_read_row_packed), [`vga_fb_close_active`](#vga_fb_close_active), [`vga_fb_focus_next`](#vga_fb_focus_next), [`vga_fb_focus_id`](#vga_fb_focus_id), [`vga_fb_focus_get`](#vga_fb_focus_get), [`vga_fb_focus_event`](#vga_fb_focus_event), [`vga_fb_focus_report`](#vga_fb_focus_report), [`vga_fb_theme_name`](#vga_fb_theme_name), [`vga_fb_ps2_owner`](#vga_fb_ps2_owner), [`vga_fb_nterms_get`](#vga_fb_nterms_get), [`vga_fb_term_split`](#vga_fb_term_split), [`vga_fb_term_close_focused`](#vga_fb_term_close_focused), [`vga_fb_tile_all`](#vga_fb_tile_all), [`vga_fb_layout_set`](#vga_fb_layout_set), [`vga_fb_layout_cycle`](#vga_fb_layout_cycle), [`vga_fb_layout_get`](#vga_fb_layout_get), [`vga_fb_layout_name`](#vga_fb_layout_name), [`vga_fb_list_windows`](#vga_fb_list_windows), [`wm_close_pending`](#wm_close_pending), [`wm_clear_close`](#wm_clear_close), [`wm_gfx_mode_active`](#wm_gfx_mode_active), [`vga_fb_mouse_tick`](#vga_fb_mouse_tick), [`vga_fb_wait_tick`](#vga_fb_wait_tick), [`vga_fb_mouse_init`](#vga_fb_mouse_init), [`dock_bounce_counts`](#dock_bounce_counts), [`dock_click_count`](#dock_click_count), [`dock_pending_active`](#dock_pending_active), [`dock_mag_counts`](#dock_mag_counts), [`chrome_blur_counts`](#chrome_blur_counts), [`pixels`](#pixels), [`vga_fx_enabled`](#vga_fx_enabled), [`vga_fx_snap_rect`](#vga_fx_snap_rect), [`vga_fx_restore_rect`](#vga_fx_restore_rect), [`vga_fx_free`](#vga_fx_free), [`vga_fx_melt_rect`](#vga_fx_melt_rect), [`vga_fx_melt_from_black`](#vga_fx_melt_from_black), [`vga_fx_burn_rect`](#vga_fx_burn_rect), [`vga_fx_genie_rect`](#vga_fx_genie_rect), [`vga_fb_set_gfx_mode`](#vga_fb_set_gfx_mode)
 - **Macros:** [`FB_ADDR`](#fb_addr), [`DOOM_W`](#doom_w), [`DOOM_BACKBUF_ADDR`](#doom_backbuf_addr), [`GFX_TITLE_DEFAULT`](#gfx_title_default), [`NK_W`](#nk_w), [`NK_BACKBUF_ADDR`](#nk_backbuf_addr), [`NK_RGB_ADDR`](#nk_rgb_addr), [`NK_RGB_BYTES`](#nk_rgb_bytes), [`COL_BLACK`](#col_black), [`COL_BG`](#col_bg), [`COL_TASKBAR`](#col_taskbar), [`COL_TASKBAR_TXT`](#col_taskbar_txt), [`COL_TITLEBAR`](#col_titlebar), [`COL_TITLE_TXT`](#col_title_txt), [`COL_TERMINAL`](#col_terminal), [`COL_TERM_TXT`](#col_term_txt), [`COL_TERM_CUR`](#col_term_cur), [`COL_BORDER`](#col_border), [`COL_WHITE`](#col_white), [`COL_SHADOW`](#col_shadow), [`COL_HIGHLIGHT`](#col_highlight), [`COL_SCROLLBAR`](#col_scrollbar), [`COL_SCROLL_THUMB`](#col_scroll_thumb), [`WALLPAPER_PATH`](#wallpaper_path), [`WALL_PAL_BASE`](#wall_pal_base), [`WALL_PAL_SIZE`](#wall_pal_size), [`FONT_W`](#font_w), [`TERM_MAX_COLS`](#term_max_cols), [`TERM_MAX_ROWS`](#term_max_rows), [`TASKBAR_PAD`](#taskbar_pad), [`TASKBAR_CLOCK_CH`](#taskbar_clock_ch), [`TASKBAR_VOL_CH`](#taskbar_vol_ch), [`TASKBAR_VOL_STEP`](#taskbar_vol_step), [`TASKBAR_ICON_W`](#taskbar_icon_w), [`TASKBAR_BTN_W`](#taskbar_btn_w), [`TASKBAR_KBD_CH`](#taskbar_kbd_ch), [`TASKBAR_KBD_W`](#taskbar_kbd_w), [`TASKBAR_THEME_CH`](#taskbar_theme_ch), [`TASKBAR_THEME_W`](#taskbar_theme_w), [`TILING_LEFT`](#tiling_left), [`TILING_RIGHT`](#tiling_right), [`TILING_TOP`](#tiling_top), [`TILING_BOTTOM`](#tiling_bottom), [`TILING_TOP_LEFT`](#tiling_top_left), [`TILING_TOP_RIGHT`](#tiling_top_right), [`TILING_BOTTOM_LEFT`](#tiling_bottom_left), [`TILING_BOTTOM_RIGHT`](#tiling_bottom_right), [`SCROLLBAR_W`](#scrollbar_w), [`SCROLLBAR_PAD`](#scrollbar_pad), [`WM_BTN_W`](#wm_btn_w), [`WM_BTN_PAD`](#wm_btn_pad), [`WM_BTN_MIN`](#wm_btn_min), [`WM_BTN_MAX`](#wm_btn_max), [`WM_BTN_CLOSE`](#wm_btn_close), [`SB_MAX_LINES`](#sb_max_lines), [`SB_LINE_MAX`](#sb_line_max), [`WM_FOCUS_GFX`](#wm_focus_gfx)
 - **Variables:** [`fb_width`](#fb_width), [`fb_height`](#fb_height), [`fb_pitch`](#fb_pitch), [`fb_bpp`](#fb_bpp), [`fb_phys_base`](#fb_phys_base), [`gfx_win_title`](#gfx_win_title), [`gfx_frames_composited`](#gfx_frames_composited), [`nk_win_y`](#nk_win_y), [`term_rows`](#term_rows), [`mouse_state`](#mouse_state), [`fx_melts_completed`](#fx_melts_completed), [`fx_burns_completed`](#fx_burns_completed), [`fx_genies_completed`](#fx_genies_completed), [`vga_fb_active`](#vga_fb_active)
 
@@ -1240,11 +1240,53 @@ int dock_pending_active(void);
 
 ---
 
+<a id="dock_mag_counts"></a>
+
+### `dock_mag_counts`
+
+`function` | [headers/vga_fb.h:269](../../headers/vga_fb.h#L269)
+
+```c
+void dock_mag_counts(int *level, unsigned long *paints);
+```
+
+Fluid dock magnification (headers/wm_dock.h): live bell level (0..WM_DOCK_LEVEL_ONE) and the strip repaints that drew a swollen icon.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `level` | `int *` |  |  |
+| `paints` | `unsigned long *` |  |  |
+
+---
+
+<a id="chrome_blur_counts"></a>
+
+### `chrome_blur_counts`
+
+`function` | [headers/vga_fb.h:272](../../headers/vga_fb.h#L272)
+
+```c
+void chrome_blur_counts(int *active, unsigned long *panels);
+```
+
+Frosted glass (headers/wm_blur.h): whether translucent panels blur their backdrop right now and how many have since boot.
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `active` | `int *` |  |  |
+| `panels` | `unsigned long *` |  |  |
+
+---
+
 <a id="pixels"></a>
 
 ### `pixels`
 
-`function` | [headers/vga_fb.h:270](../../headers/vga_fb.h#L270)
+`function` | [headers/vga_fb.h:276](../../headers/vga_fb.h#L276)
 
 ```c
 * are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a failed snapshot leaves the new * frame in place, so every entry fails closed to a pl
@@ -1266,7 +1308,7 @@ int dock_pending_active(void);
 
 ### `vga_fx_enabled`
 
-`function` | [headers/vga_fb.h:274](../../headers/vga_fb.h#L274)
+`function` | [headers/vga_fb.h:280](../../headers/vga_fb.h#L280)
 
 ```c
 int vga_fx_enabled(void);
@@ -1274,7 +1316,7 @@ int vga_fx_enabled(void);
 
 **Returns:** `int`
 
-*Called by:* [`first`](kernel.vga_fb.c.md#first), [`vga_fb_draw_desktop`](kernel.vga_fb.c.md#vga_fb_draw_desktop), [`vga_fb_init`](kernel.vga_fb.c.md#vga_fb_init)
+*Called by:* [`chrome_blur_counts`](kernel.vga_fb.c.md#chrome_blur_counts), [`first`](kernel.vga_fb.c.md#first), [`vga_fb_draw_desktop`](kernel.vga_fb.c.md#vga_fb_draw_desktop), [`vga_fb_init`](kernel.vga_fb.c.md#vga_fb_init)
 
 ---
 
@@ -1282,7 +1324,7 @@ int vga_fx_enabled(void);
 
 ### `vga_fx_snap_rect`
 
-`function` | [headers/vga_fb.h:275](../../headers/vga_fb.h#L275)
+`function` | [headers/vga_fb.h:281](../../headers/vga_fb.h#L281)
 
 ```c
 unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);
@@ -1307,7 +1349,7 @@ unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);
 
 ### `vga_fx_restore_rect`
 
-`function` | [headers/vga_fb.h:276](../../headers/vga_fb.h#L276)
+`function` | [headers/vga_fb.h:282](../../headers/vga_fb.h#L282)
 
 ```c
 void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);
@@ -1331,7 +1373,7 @@ void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);
 
 ### `vga_fx_free`
 
-`function` | [headers/vga_fb.h:277](../../headers/vga_fb.h#L277)
+`function` | [headers/vga_fb.h:283](../../headers/vga_fb.h#L283)
 
 ```c
 void vga_fx_free(unsigned int *buf);
@@ -1351,7 +1393,7 @@ void vga_fx_free(unsigned int *buf);
 
 ### `vga_fx_melt_rect`
 
-`function` | [headers/vga_fb.h:278](../../headers/vga_fb.h#L278)
+`function` | [headers/vga_fb.h:284](../../headers/vga_fb.h#L284)
 
 ```c
 void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);
@@ -1376,7 +1418,7 @@ void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, cons
 
 ### `vga_fx_melt_from_black`
 
-`function` | [headers/vga_fb.h:280](../../headers/vga_fb.h#L280)
+`function` | [headers/vga_fb.h:286](../../headers/vga_fb.h#L286)
 
 ```c
 void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);
@@ -1400,7 +1442,7 @@ void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb
 
 ### `vga_fx_burn_rect`
 
-`function` | [headers/vga_fb.h:281](../../headers/vga_fb.h#L281)
+`function` | [headers/vga_fb.h:287](../../headers/vga_fb.h#L287)
 
 ```c
 void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);
@@ -1426,7 +1468,7 @@ void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, cons
 
 ### `vga_fx_genie_rect`
 
-`function` | [headers/vga_fb.h:283](../../headers/vga_fb.h#L283)
+`function` | [headers/vga_fb.h:289](../../headers/vga_fb.h#L289)
 
 ```c
 void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int *winb, int reverse);
@@ -1452,7 +1494,7 @@ void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const uns
 
 ### `vga_fb_set_gfx_mode`
 
-`function` | [headers/vga_fb.h:297](../../headers/vga_fb.h#L297)
+`function` | [headers/vga_fb.h:303](../../headers/vga_fb.h#L303)
 
 ```c
 void vga_fb_set_gfx_mode(int on);
@@ -2348,7 +2390,7 @@ extern mouse_state_t mouse_state;
 
 ### `fx_melts_completed`
 
-`variable` `extern` | [headers/vga_fb.h:288](../../headers/vga_fb.h#L288)
+`variable` `extern` | [headers/vga_fb.h:294](../../headers/vga_fb.h#L294)
 
 ```c
 extern unsigned long fx_melts_completed;
@@ -2364,7 +2406,7 @@ Serial-observable proof the melts ran, in the same spirit as `gfx frames`.
 
 ### `fx_burns_completed`
 
-`variable` `extern` | [headers/vga_fb.h:289](../../headers/vga_fb.h#L289)
+`variable` `extern` | [headers/vga_fb.h:295](../../headers/vga_fb.h#L295)
 
 ```c
 extern unsigned long fx_burns_completed;
@@ -2376,7 +2418,7 @@ extern unsigned long fx_burns_completed;
 
 ### `fx_genies_completed`
 
-`variable` `extern` | [headers/vga_fb.h:290](../../headers/vga_fb.h#L290)
+`variable` `extern` | [headers/vga_fb.h:296](../../headers/vga_fb.h#L296)
 
 ```c
 extern unsigned long fx_genies_completed;
@@ -2388,7 +2430,7 @@ extern unsigned long fx_genies_completed;
 
 ### `vga_fb_active`
 
-`variable` `extern` | [headers/vga_fb.h:299](../../headers/vga_fb.h#L299)
+`variable` `extern` | [headers/vga_fb.h:305](../../headers/vga_fb.h#L305)
 
 ```c
 extern int vga_fb_active;

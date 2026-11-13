@@ -135,10 +135,10 @@ Pages: [KB_headers.md](KB_headers.md), [KB_headers_p2.md](KB_headers_p2.md), [KB
 - Layer: utility
 - Language: h
 - Symbols:
-  - `desktop_shortcut` (struct, line 72)
-  - `desktop_shortcuts_load` (function, line 82) `void desktop_shortcuts_load(void);`
-  - `desktop_shortcuts_draw` (function, line 85) `void desktop_shortcuts_draw(void);`
-  - `desktop_shortcuts_hit_test` (function, line 89) `const char *desktop_shortcuts_hit_test(int mx, int my);`
+  - `desktop_shortcut` (struct, line 73)
+  - `desktop_shortcuts_load` (function, line 83) `void desktop_shortcuts_load(void);`
+  - `desktop_shortcuts_draw` (function, line 86) `void desktop_shortcuts_draw(void);`
+  - `desktop_shortcuts_hit_test` (function, line 90) `const char *desktop_shortcuts_hit_test(int mx, int my);`
   - `DESKTOP_SHORTCUTS_H` (macro, line 13) `#define DESKTOP_SHORTCUTS_H`
   - `MAX_SHORTCUTS` (macro, line 18) `#define MAX_SHORTCUTS`
   - `SHORTCUT_NAME_LEN` (macro, line 19) `#define SHORTCUT_NAME_LEN`
@@ -154,14 +154,14 @@ Pages: [KB_headers.md](KB_headers.md), [KB_headers_p2.md](KB_headers_p2.md), [KB
   - `DOCK_GAP` (macro, line 35) `#define DOCK_GAP`
   - `DOCK_LABEL_GAP` (macro, line 36) `#define DOCK_LABEL_GAP`
   - `DOCK_CRYSTAL_STEP` (macro, line 41) `#define DOCK_CRYSTAL_STEP`
-  - `DOCK_MAG_W` (macro, line 48) `#define DOCK_MAG_W`
-  - `DOCK_MAG_H` (macro, line 49) `#define DOCK_MAG_H`
-  - `DOCK_NEAR_W` (macro, line 50) `#define DOCK_NEAR_W`
-  - `DOCK_NEAR_H` (macro, line 51) `#define DOCK_NEAR_H`
-  - `DOCK_BOUNCE_H` (macro, line 57) `#define DOCK_BOUNCE_H`
-  - `DOCK_BOUNCE_TICKS` (macro, line 58) `#define DOCK_BOUNCE_TICKS`
-  - `ICON_PAL_BASE` (macro, line 65) `#define ICON_PAL_BASE`
-  - `ICON_PAL_SIZE` (macro, line 66) `#define ICON_PAL_SIZE`
+  - `DOCK_MAG_W` (macro, line 49) `#define DOCK_MAG_W`
+  - `DOCK_MAG_H` (macro, line 50) `#define DOCK_MAG_H`
+  - `DOCK_MAG_REACH_CELLS` (macro, line 51) `#define DOCK_MAG_REACH_CELLS`
+  - `DOCK_MAG_TICKS` (macro, line 52) `#define DOCK_MAG_TICKS`
+  - `DOCK_BOUNCE_H` (macro, line 58) `#define DOCK_BOUNCE_H`
+  - `DOCK_BOUNCE_TICKS` (macro, line 59) `#define DOCK_BOUNCE_TICKS`
+  - `ICON_PAL_BASE` (macro, line 66) `#define ICON_PAL_BASE`
+  - `ICON_PAL_SIZE` (macro, line 67) `#define ICON_PAL_SIZE`
 - Imported by: `kernel/vga_fb.c`
 
 ## headers/driver.h

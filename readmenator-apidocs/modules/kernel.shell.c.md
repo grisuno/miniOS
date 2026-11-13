@@ -103,7 +103,7 @@ A bare name with no recognised suffix (cp, freedom, ...) resolves through bin/, 
 
 ### `job_row`
 
-`struct` | [kernel/shell.c:2079](../../kernel/shell.c#L2079)
+`struct` | [kernel/shell.c:2089](../../kernel/shell.c#L2089)
 
 ```c
 struct job_row { int pid; int state; char name[32]; };
@@ -115,7 +115,7 @@ struct job_row { int pid; int state; char name[32]; };
 
 ### `ps_row`
 
-`struct` | [kernel/shell.c:3723](../../kernel/shell.c#L3723)
+`struct` | [kernel/shell.c:3733](../../kernel/shell.c#L3733)
 
 ```c
 struct ps_row { int pid; int ppid; int state; int code; char name[32]; };
@@ -444,7 +444,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `tree`
 
-`function` | [kernel/shell.c:2065](../../kernel/shell.c#L2065)
+`function` | [kernel/shell.c:2075](../../kernel/shell.c#L2075)
 
 ```c
 * tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores * Ctrl+C (it never poll...
@@ -464,7 +464,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `VMA`
 
-`function` | [kernel/shell.c:2208](../../kernel/shell.c#L2208)
+`function` | [kernel/shell.c:2218](../../kernel/shell.c#L2218)
 
 ```c
 * plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit * stack, 128 regions prin...
@@ -480,7 +480,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `to`
 
-`function` | [kernel/shell.c:2281](../../kernel/shell.c#L2281)
+`function` | [kernel/shell.c:2291](../../kernel/shell.c#L2291)
 
 ```c
 * actually trap to (brk/mmap/munmap/mprotect) and says so up front. */ static void shell_cmd_trac...
@@ -502,7 +502,7 @@ Returns the exit code, or -1 when the name cannot be run.
 
 ### `shell_parse_long`
 
-`function` | [kernel/shell.c:2366](../../kernel/shell.c#L2366)
+`function` | [kernel/shell.c:2376](../../kernel/shell.c#L2376)
 
 ```c
 int shell_parse_long(const char *s, long *out)
@@ -529,7 +529,7 @@ The bound comes from the compiler's __LONG_MAX__ (freestanding-safe, no libc hea
 
 ### `shell_parse_pid`
 
-`function` | [kernel/shell.c:2387](../../kernel/shell.c#L2387)
+`function` | [kernel/shell.c:2397](../../kernel/shell.c#L2397)
 
 ```c
 int shell_parse_pid(const char *s, int min_pid, int *out)
@@ -557,7 +557,7 @@ Bounded pid parse shared by wait/kill/vmmap: one range check instead of three op
 
 ### `shell_exec_builtin`
 
-`function` | [kernel/shell.c:2905](../../kernel/shell.c#L2905)
+`function` | [kernel/shell.c:2915](../../kernel/shell.c#L2915)
 
 ```c
 void shell_exec_builtin(int argc, char **argv)
@@ -580,7 +580,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `terminal`
 
-`function` | [kernel/shell.c:2980](../../kernel/shell.c#L2980)
+`function` | [kernel/shell.c:2990](../../kernel/shell.c#L2990)
 
 ```c
 * sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */ if (vga_fb_active) term_clear();
@@ -600,7 +600,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `driver`
 
-`function` | [kernel/shell.c:3331](../../kernel/shell.c#L3331)
+`function` | [kernel/shell.c:3341](../../kernel/shell.c#L3341)
 
 ```c
 * stream through the fat: VFS driver ("img:fatpath" per open, * registered at boot beside mem:), 4 KB heap chunks so a hostile * size can never drive an oversized alloc. Bad magic, missing files * and overlong names are diagnostics. */ else if (kstrcmp(argv[0], "fat") == 0)
@@ -621,7 +621,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `frame`
 
-`function` | [kernel/shell.c:3725](../../kernel/shell.c#L3725)
+`function` | [kernel/shell.c:3735](../../kernel/shell.c#L3735)
 
 ```c
 * not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row *)kmalloc(sizeof(struct ps_row) * MAX_PROCS);
@@ -642,7 +642,7 @@ void shell_exec_builtin(int argc, char **argv)
 
 ### `stdout`
 
-`function` | [kernel/shell.c:4094](../../kernel/shell.c#L4094)
+`function` | [kernel/shell.c:4104](../../kernel/shell.c#L4104)
 
 ```c
 * the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console, never into the * pipe (shell_report suspends the capture), so `run x | cat` shows the *
@@ -738,7 +738,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `HTTPD_REQ_CAP`
 
-`macro` | [kernel/shell.c:2563](../../kernel/shell.c#L2563)
+`macro` | [kernel/shell.c:2573](../../kernel/shell.c#L2573)
 
 ```c
 #define HTTPD_REQ_CAP
@@ -750,7 +750,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `HTTPD_IO_CHUNK`
 
-`macro` | [kernel/shell.c:2564](../../kernel/shell.c#L2564)
+`macro` | [kernel/shell.c:2574](../../kernel/shell.c#L2574)
 
 ```c
 #define HTTPD_IO_CHUNK
@@ -764,7 +764,7 @@ The CVM interpreter ships on the ramdisk as objects/cvm.o and is loaded on deman
 
 ### `SHELL_LS_CAP`
 
-`macro` | [kernel/shell.c:2821](../../kernel/shell.c#L2821)
+`macro` | [kernel/shell.c:2831](../../kernel/shell.c#L2831)
 
 ```c
 #define SHELL_LS_CAP
@@ -782,7 +782,7 @@ Shared by the fat and ext4 builtins.
 
 ### `PIPE_HOP_MAX`
 
-`macro` | [kernel/shell.c:4104](../../kernel/shell.c#L4104)
+`macro` | [kernel/shell.c:4114](../../kernel/shell.c#L4114)
 
 ```c
 #define PIPE_HOP_MAX

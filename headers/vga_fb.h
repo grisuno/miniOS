@@ -264,6 +264,12 @@ void vga_fb_mouse_init(void);
 void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);
 void dock_click_count(unsigned long *edges);
 int dock_pending_active(void);
+/* Fluid dock magnification (headers/wm_dock.h): live bell level
+ * (0..WM_DOCK_LEVEL_ONE) and the strip repaints that drew a swollen icon. */
+void dock_mag_counts(int *level, unsigned long *paints);
+/* Frosted glass (headers/wm_blur.h): whether translucent panels blur their
+ * backdrop right now and how many have since boot. */
+void chrome_blur_counts(int *active, unsigned long *panels);
 
 /* Desktop effects (DOOM melt, kernel/vga_fx.c). The framebuffer must show
  * the old pixels on melt entry and shows the new pixels on return; snapshots

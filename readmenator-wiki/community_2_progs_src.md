@@ -167,7 +167,7 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 ## Internal vs External Edges
 
 - Internal resolved imports (EXTRACTED): 143
-- Cross-boundary resolved imports (EXTRACTED): 57
+- Cross-boundary resolved imports (EXTRACTED): 58
 
 ## Connections
 
@@ -176,6 +176,7 @@ This community groups 86 file(s) rooted at `tests` with dominant language c (coh
 - [EXTRACTED] depends_on community 1 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_iwad.c imports kernel/string.c.
 - [EXTRACTED] depends_on community 6 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/d_loop.c imports kernel/string.c.
 - [EXTRACTED] depends_on community 3 <-> 2 (strength 0.9): Extracted import edge crosses communities: progs/doomgeneric/doomdef.h imports kernel/string.c.
+- [EXTRACTED] depends_on community 5 <-> 2 (strength 0.9): Extracted import edge crosses communities: tests/test_blur.c imports kernel/string.c.
 
 ## Risks
 

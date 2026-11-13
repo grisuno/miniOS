@@ -1,6 +1,32 @@
 # API (page 6 of 21)
 Previous: [API_p5.md](API_p5.md)
 
+## headers/wm_chrome.h
+Imported by: `kernel/vga_fb.c`, `tests/test_chrome.c`
+- `wm_chrome_isqrt` (function) `headers/wm_chrome.h:41` `static inline unsigned long wm_chrome_isqrt(unsigned long v)` -- Docstring: Default chrome: 8 px soft shadow offset 2/4 px at 110/255, 4 px corners (an 8 px title strip cannot carry...
+- `wm_chrome_clamp` (function) `headers/wm_chrome.h:61` `static inline int wm_chrome_clamp(int v)` -- } while (bit != 0) { if (v >= r + bit) { v -= r + bit; r = (r >> 1) + bit; } else { r >>= 1; } bit >>= 2; } return...
+- `wm_chrome_blend_channel` (function) `headers/wm_chrome.h:67` `static inline int wm_chrome_blend_channel(int dst, int src, int alpha)` -- r >>= 1; } bit >>= 2; } return r; } /** Docstring: Clamp a channel to 0..255. static inline int wm_chrome_clamp(int...
+- `wm_chrome_blend` (function) `headers/wm_chrome.h:76` `static inline unsigned long wm_chrome_blend(unsigned long dst, unsigned long src, int alpha)` -- { return v < 0 ?
+- `wm_chrome_shift` (function) `headers/wm_chrome.h:85` `static inline unsigned long wm_chrome_shift(unsigned long px, int delta)` -- src = wm_chrome_clamp(src); return (src * a + dst * (255 - a) + 127) / 255; } /** Docstring: Blend a packed src...
+- `wm_chrome_gradient` (function) `headers/wm_chrome.h:95` `static inline unsigned long wm_chrome_gradient(unsigned long base, int row, int span,
+           ...` -- Docstring: Vertical gradient row: lighter by lift at row 0, darker by * sink at the last row of span rows, linear in...
+- `by` (function) `headers/wm_chrome.h:107` `* The shadow is the window rect shifted by (dx,dy);`
+- `wm_chrome_shadow_alpha` (function) `headers/wm_chrome.h:110` `static inline int wm_chrome_shadow_alpha(const wm_chrome_config_t *cfg, int px, int py,
+         ...` -- Docstring: Shadow alpha for pixel (px,py) of a window at (rx,ry,rw,rh).
+- `wm_chrome_corner_coverage` (function) `headers/wm_chrome.h:141` `static inline int wm_chrome_corner_coverage(int radius, int x, int y)` -- Docstring: Coverage 0..255 of pixel (x,y) inside a rounded corner of the given radius.
+- `wm_chrome_disc_coverage` (function) `headers/wm_chrome.h:162` `static inline int wm_chrome_disc_coverage(int radius, int x, int y)` -- Docstring: Coverage 0..255 of pixel (x,y) of a disc of the given radius inscribed in a 2*radius square, anti-aliased...
+
+## headers/wm_dock.h
+Imported by: `kernel/vga_fb.c`, `tests/test_dock.c`
+- `wm_dock_abs` (function) `headers/wm_dock.h:46` `static inline long wm_dock_abs(long v)` -- Docstring: Centralized magnification configuration, no magic numbers: resting size, size under the pointer, and the...
+- `wm_dock_level_clamp` (function) `headers/wm_dock.h:52` `static inline int wm_dock_level_clamp(long level)` -- icon is back to its resting size. typedef struct { int base; int peak; int reach; } wm_dock_config_t; /** Docstring...
+- `wm_dock_level` (function) `headers/wm_dock.h:61` `static inline int wm_dock_level(int from, int rising, unsigned long elapsed,
+                    ...` -- Docstring: Magnification level after elapsed ticks of a ramp that started at from: rising toward WM_DOCK_LEVEL_ONE...
+- `wm_dock_mag_size` (function) `headers/wm_dock.h:78` `static inline int wm_dock_mag_size(const wm_dock_config_t *cfg, long dist, int level)` -- Docstring: Size of an icon whose centre lies dist pixels from the pointer, at the given level.
+- `wm_dock_src_coord` (function) `headers/wm_dock.h:104` `static inline long wm_dock_src_coord(int o, int d, int s)` -- Docstring: Source coordinate, in 8.8 fixed point, that destination pixel o of a d-pixel span maps to in an s-texel span.
+- `wm_dock_sample` (function) `headers/wm_dock.h:120` `static inline unsigned long wm_dock_sample(const unsigned char *rgba, int sw, int sh,
+           ...` -- Docstring: Bilinear sample of destination pixel (ox,oy) of an sw by sh RGBA source scaled to dw by dh.
+
 ## headers/wm_events.h
 Depends on: `headers/drivers/modifiers.h`
 Imported by: `drivers/kbd.c`, `kernel/vga_fb.c`, `tests/test_wm.c`
@@ -450,50 +476,6 @@ unsigned long cow_fork_...`
 - `cow_resolve` (function) `kernel/mm/cow.c:356` `int cow_resolve(unsigned long cr3, unsigned long va)` -- Docstring: Resolve a write fault on a CoW page: last sharer gets a permission upgrade, otherwise the faulting window...
 - `cow_release_window` (function) `kernel/mm/cow.c:421` `void cow_release_window(unsigned long cr3)` -- Docstring: Drop one window's CoW shares before its pages are freed: multi-shared pages are unmapped here (phys...
 - `cow_shared` (function) `kernel/mm/cow.c:464` `int cow_shared(void)` -- idx = cow_find(phys); if (idx < 0) continue; if (cow_tab[idx].ref > 1) { cow_tab[idx].ref--; pt[k] = 0; } else {...
-
-## kernel/mm/paging.c
-Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/ldso.h`, `headers/minifs.h`, `headers/pcache.h`, `headers/tlb.h`, `headers/vga_fb.h`
-- `mm_page_aligned_alloc` (function) `kernel/mm/paging.c:32` `static unsigned char *mm_page_aligned_alloc(unsigned size,
-                                      ...` -- Page-align a kmalloc'd region.
-- `mm_setup_protections` (function) `kernel/mm/paging.c:41` `void mm_setup_protections(void)`
-- `kmm_ensure_pt` (function) `kernel/mm/paging.c:235` `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)` -- Docstring: Return the 4 KB page table backing a 2 MB identity slot, splitting the boot leaf if needed.
-- `coherent` (function) `kernel/mm/paging.c:259` `* for memory a device reads and writes by DMA: a controller that is not cache
- * coherent (and an...`
-- `kmm_map_device` (function) `kernel/mm/paging.c:296` `unsigned long kmm_map_device(unsigned long phys, unsigned long len)`
-- `mm_user_pte_update` (function) `kernel/mm/paging.c:336` `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
-- `mm_user_set_exec` (function) `kernel/mm/paging.c:356` `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
-- `pt_owned_index` (function) `kernel/mm/paging.c:374` `static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit)`
-- `pt_page_owned` (function) `kernel/mm/paging.c:385` `int pt_page_owned(unsigned long phys)` -- #define PT_OWNED_BYTES (HEAP_SIZE / 0x1000UL / 8UL) static unsigned char *pt_owned; static int...
-- `pt_page_alloc` (function) `kernel/mm/paging.c:392` `void *pt_page_alloc(void)`
-- `pt_page_free` (function) `kernel/mm/paging.c:411` `void pt_page_free(void *ptr)`
-- `pt_clone_user` (function) `kernel/mm/paging.c:420` `uint64_t pt_clone_user(uint64_t parent_cr3)`
-- `mt_shared_slot` (function) `kernel/mm/paging.c:549` `static int mt_shared_slot(unsigned long pd_idx)` -- The legacy path identity-maps the user window (VA == PA), so every CR3 built by pt_clone_user aliases the same...
-- `pt_clone_user_empty` (function) `kernel/mm/paging.c:568` `unsigned long pt_clone_user_empty(void)` -- Fresh user window: kernel mappings copied, every user PT zeroed, graphics slots re-shared from the boot tables.
-- `mm_user_ensure_page` (function) `kernel/mm/paging.c:625` `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` -- Ensure one 4 KB user page at va inside cr3 exists (heap-owned). * Returns 0 on success, -1 on OOM or when va leaves...
-- `honest` (function) `kernel/mm/paging.c:655` `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides
- * the documented T5 follow-up...`
-- `mm_demand_pte` (function) `kernel/mm/paging.c:704` `unsigned long mm_demand_pte(unsigned long prot)` -- Docstring: PTE walker shared by the fault, fork and teardown * paths (forward declaration; documented at the...
-- `mm_anon_frame` (function) `kernel/mm/paging.c:715` `static int mm_anon_frame(unsigned long phys)` -- Heap-owned anonymous frame: the only kind an unmap may free (the shared pid-0 window and graphics slots map fixed...
-- `mm_anon_fault` (function) `kernel/mm/paging.c:779` `int mm_anon_fault(unsigned long cr3, unsigned long va, int write)` -- Resolve a fault on a reservation: map a zeroed page with the reserved protection.
-- `mm_file_page_phys` (function) `kernel/mm/paging.c:861` `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` -- Docstring: Read the mapped phys for va in cr3, 0 when the PTE is absent or non-present.
-- `mm_file_pte` (function) `kernel/mm/paging.c:880` `static volatile unsigned long *mm_file_pte(unsigned long cr3,
-        unsigned long va)` -- Docstring: Locate the PTE for va in cr3 without allocating.
-- `tables` (function) `kernel/mm/paging.c:1010` `* tables (munmap/mremap in caller context, under their mm_lock);`
-- `explicitly` (function) `kernel/mm/paging.c:1011` `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
-- `PTE` (function) `kernel/mm/paging.c:1015` `* PTE (a cache page stays cached, but no stale writer may reach it).
- * Never allocates. */
-void ...`
-- `mm_file_break` (function) `kernel/mm/paging.c:1070` `int mm_file_break(unsigned long cr3, unsigned long va)` -- Docstring: Break a write fault on a cache-shared file page into a private copy (fail-closed).
-- `mm_copy_user_page` (function) `kernel/mm/paging.c:1149` `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` -- Copy one present user page from src_cr3 to the same VA in dst_cr3, allocating the destination page.
-- `pt_free_user` (function) `kernel/mm/paging.c:1227` `void pt_free_user(uint64_t cr3)`
-
-## kernel/mm/swap.c
-Depends on: `headers/ide.h`, `headers/lz4_kernel.h`
-- `unwired` (function) `kernel/mm/swap.c:7` `* * Currently unwired (the isolated-window spawn path superseded the * swap-out design);`
-- `swap_ensure` (function) `kernel/mm/swap.c:28` `static int swap_ensure(void)` -- #include "ide.h" #include "lz4_kernel.h" #define SWAP_CHUNK_RAW     65536 #define SWAP_CHUNK_CMP     (SWAP_CHUNK_RAW...
-- `swap_lba` (function) `kernel/mm/swap.c:41` `static unsigned long swap_lba(void)`
-- `swap_out` (function) `kernel/mm/swap.c:47` `int swap_out(unsigned long window_sz)`
-- `swap_in` (function) `kernel/mm/swap.c:97` `int swap_in(void)`
 
 
 Next: [API_p7.md](API_p7.md)

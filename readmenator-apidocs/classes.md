@@ -410,8 +410,10 @@ Project types nested under the project types they derive from. External bases ar
 - [`wlclient_pat_t`](modules/progs.wl.wlcomp.c.md#wlclient_pat_t) struct in `progs/wl/wlcomp.c`
 - [`wlcomp_cfg_t`](modules/progs.wl.wlcomp.c.md#wlcomp_cfg_t) struct in `progs/wl/wlcomp.c`
 - [`wlserv_t`](modules/progs.wl.wlcomp.c.md#wlserv_t) struct in `progs/wl/wlcomp.c`
+- [`wm_blur_config_t`](modules/headers.wm_blur.h.md#wm_blur_config_t) struct in `headers/wm_blur.h`
 - [`wm_chrome_config_t`](modules/headers.wm_chrome.h.md#wm_chrome_config_t) struct in `headers/wm_chrome.h`
 - [`wm_combo_t`](modules/headers.wm_events.h.md#wm_combo_t) struct in `headers/wm_events.h`
+- [`wm_dock_config_t`](modules/headers.wm_dock.h.md#wm_dock_config_t) struct in `headers/wm_dock.h`
 - [`wm_event_config_t`](modules/headers.wm_events.h.md#wm_event_config_t) struct in `headers/wm_events.h`
 - [`wm_event_t`](modules/headers.wm_events.h.md#wm_event_t) struct in `headers/wm_events.h`
 - [`wm_focus_state_t`](modules/headers.wm_focus.h.md#wm_focus_state_t) struct in `headers/wm_focus.h`

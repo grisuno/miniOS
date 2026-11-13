@@ -2145,6 +2145,20 @@ chrome_test: tests/test_chrome.c wm_chrome.h | $(TOOLS_DIR)
 test-chrome: chrome_test
 	$(TOOLS_DIR)/chrome_test
 
+# Frosted-glass box blur host test (headers/wm_blur.h).
+blur_test: tests/test_blur.c wm_blur.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/blur_test tests/test_blur.c
+
+test-blur: blur_test
+	$(TOOLS_DIR)/blur_test
+
+# Fluid dock magnification host test (headers/wm_dock.h: bell, ramp, sampler).
+dock_test: tests/test_dock.c wm_dock.h | $(TOOLS_DIR)
+	$(CC) $(CFLAGS_HOST) -I. -o $(TOOLS_DIR)/dock_test tests/test_dock.c
+
+test-dock: dock_test
+	$(TOOLS_DIR)/dock_test
+
 # README desktop image: boots the image headless, verifies the desktop is
 # painted and only then rewrites docs/img/desktop.png (tools/test_readme_shot.py).
 # deploynator runs it on every release through deploynator.toml.
@@ -2174,7 +2188,7 @@ wl: os.img
 
 # Fast host unit suites, one command for CI (excludes test-tls, which
 # drives openssl servers, and the QEMU-backed BDD/MCP suites).
-test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test sign_test hal_test driver_test ktime_test randmix_test wm_test fx_test jelly_test chrome_test modifiers_test notify_test abi_test wl_test fat_test ext4_test lisp-host
+test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sanitize_test tick_test pipe_test panic_test pci_test httpd_test sign_test hal_test driver_test ktime_test randmix_test wm_test fx_test jelly_test chrome_test blur_test dock_test modifiers_test notify_test abi_test wl_test fat_test ext4_test lisp-host
 	$(TOOLS_DIR)/sync_test
 	$(TOOLS_DIR)/vma_test
 	$(TOOLS_DIR)/futex_test
@@ -2191,6 +2205,8 @@ test-host: sync_test vma_test futex_test percpu_rq_test batch_test rcu_test sani
 	$(TOOLS_DIR)/fx_test
 	$(TOOLS_DIR)/jelly_test
 	$(TOOLS_DIR)/chrome_test
+	$(TOOLS_DIR)/blur_test
+	$(TOOLS_DIR)/dock_test
 	$(TOOLS_DIR)/modifiers_test
 	$(TOOLS_DIR)/notify_test
 	$(TOOLS_DIR)/abi_test
@@ -2599,7 +2615,7 @@ tick.o: kernel/tick.c tick.h drivers/xhci.h drivers/usbhid.h
 	$(CC) $(CFLAGS_KERN) -c $< -o $@
 
 vga_fb.o: kernel/vga_fb.c vga_fb.h kernel.h rtc.h pcspk.h desktop_shortcuts.h \
-           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h wm_chrome.h avatar_data.h vga_fx.h wm_jelly.h kernel/vga_cursor.h $(PROGS_DIR)/minios_abi.h
+           third_party/stb/stb_api.h wm_geom.h wm_events.h wm_window.h wm_render.h wm_tiling.h wm_focus.h wm_notify.h wm_chrome.h wm_blur.h wm_dock.h avatar_data.h vga_fx.h wm_jelly.h kernel/vga_cursor.h $(PROGS_DIR)/minios_abi.h
 # NOTE: -Os, same pattern as shell.o (measured -6.2 KB vs -O1). Revalidate
 # with test_gui_wm.py + test_gui_fashion.py (pixel proof) after any change.
 	$(CC) $(CFLAGS_KERN) -Os -c $< -o $@

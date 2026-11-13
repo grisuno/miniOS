@@ -27,6 +27,8 @@
 #include "wm_window.h"
 #include "wm_render.h"
 #include "wm_chrome.h"
+#include "wm_blur.h"
+#include "wm_dock.h"
 #include "avatar_data.h"
 #include "wm_tiling.h"
 #include "wm_focus.h"
@@ -2231,6 +2233,94 @@ static void wm_draw_buttons(int px, int py, int win_w, uint8_t fg, uint8_t bg) {
  * the fallback and nothing here can change an 8-bit frame. */
 static const wm_chrome_config_t chrome_cfg = WM_CHROME_CONFIG_DEFAULT;
 
+/** Docstring: Frosted glass (wm_blur.h). The backdrop of every translucent
+ * panel is blurred before its tint blends over it. The scratch (one screen
+ * of pixels plus one line) is reserved once by the full desktop composition
+ * and never freed, so the tick never allocates. A panel painted before the
+ * scratch exists, re-entered while it is in use, in 8-bit mode or with
+ * effects off keeps the plain tint. */
+static const wm_blur_config_t blur_cfg = WM_BLUR_CONFIG_DEFAULT;
+static unsigned int *blur_px;
+static unsigned int *blur_line;
+static unsigned long blur_px_cap;
+static unsigned long blur_line_cap;
+static volatile int blur_busy;
+static unsigned long blur_panels;
+
+/** Docstring: Serial-observable frost proof for `wm state`: whether panels
+ * are frosted right now and how many have been since boot. */
+void chrome_blur_counts(int *active, unsigned long *panels)
+{
+    if (active) *active = fb_bpp != 8 && vga_fx_enabled();
+    if (panels) *panels = blur_panels;
+}
+
+/** Docstring: Reserve the frost scratch once. Called only from the full
+ * desktop composition; an allocation failure leaves frost disabled. */
+static void blur_reserve(void)
+{
+    unsigned long px_cap, line_cap;
+    if (blur_px || fb_bpp == 8 || fb_width <= 0 || fb_height <= 0)
+        return;
+    px_cap = (unsigned long)fb_width * (unsigned long)fb_height;
+    line_cap = wm_blur_line_len(fb_width, fb_height);
+    if (px_cap > (~0UL) / sizeof(unsigned int) - line_cap)
+        return;
+    blur_px = (unsigned int *)kmalloc((px_cap + line_cap) * sizeof(unsigned int));
+    if (!blur_px)
+        return;
+    blur_line = blur_px + px_cap;
+    blur_px_cap = px_cap;
+    blur_line_cap = line_cap;
+}
+
+/** Docstring: 1 when a w by h backdrop can be frosted right now. */
+static int blur_usable(int w, int h)
+{
+    unsigned long len = wm_blur_line_len(w, h);
+    return fb_bpp != 8 && vga_fx_enabled() && blur_line != 0 && !blur_busy &&
+           len != 0 && len <= blur_line_cap;
+}
+
+/** Docstring: Frost a caller-owned w by h backdrop in place; untouched
+ * when frost is unavailable. */
+static void chrome_frost_buffer(unsigned int *px, int w, int h)
+{
+    if (!blur_usable(w, h))
+        return;
+    blur_busy = 1;
+    if (wm_blur_rect(px, w, h, &blur_cfg, blur_line))
+        blur_panels++;
+    blur_busy = 0;
+}
+
+/** Docstring: Frosted copy of the on-screen rect, w pixels per row, or
+ * null when frost is unavailable or the rect leaves the screen. A non-null
+ * result owns the shared scratch until chrome_frost_end. */
+static const unsigned int *chrome_frost_begin(int x, int y, int w, int h)
+{
+    int r;
+    if (!blur_usable(w, h) || x < 0 || y < 0 || x + w > fb_width || y + h > fb_height ||
+        (unsigned long)w * (unsigned long)h > blur_px_cap)
+        return 0;
+    blur_busy = 1;
+    for (r = 0; r < h; r++)
+        fb_read_row_packed(x, y + r, blur_px + (unsigned long)r * (unsigned long)w, w);
+    if (!wm_blur_rect(blur_px, w, h, &blur_cfg, blur_line)) {
+        blur_busy = 0;
+        return 0;
+    }
+    blur_panels++;
+    return blur_px;
+}
+
+/** Docstring: Release the scratch a non-null chrome_frost_begin took. */
+static void chrome_frost_end(const unsigned int *frost)
+{
+    if (frost)
+        blur_busy = 0;
+}
+
 /** Docstring: Profile card geometry: padding, avatar ring width, margin
  * from the screen corner and the name column width in characters. */
 #define DOCK_GLOW_PAD     3
@@ -2441,6 +2531,7 @@ static void chrome_tint_capture(int idx, int x, int y, int w, int h)
     bg = chrome_color(COL_TERMINAL);
     for (r = 0; r < h; r++)
         fb_read_row_packed(x, y + r, t->px + (unsigned long)r * (unsigned long)w, w);
+    chrome_frost_buffer(t->px, w, h);
     n = (unsigned long)w * (unsigned long)h;
     for (k = 0; k < n; k++)
         t->px[k] = (unsigned int)wm_chrome_blend(t->px[k], bg, chrome_cfg.term_alpha);
@@ -2490,13 +2581,15 @@ static int chrome_panel_coverage(int xx, int yy, int x, int y, int w, int h)
 }
 
 /** Docstring: Translucent rounded glass panel over whatever is already
- * painted: the dock tint blends over the backdrop, scaled by the corner
- * coverage so the corners dissolve into it. A 1 px border follows the
- * outline. In 8-bit mode the classic dither and square border remain. */
+ * painted: the backdrop is frosted when the scratch allows it, then the
+ * dock tint blends over it, scaled by the corner coverage so the corners
+ * dissolve into the sharp backdrop. A 1 px border follows the outline. In
+ * 8-bit mode the classic dither and square border remain. */
 static void chrome_glass(int x, int y, int w, int h)
 {
     int yy, xx;
     unsigned long tint, edge;
+    const unsigned int *frost;
     if (fb_bpp == 8) {
         for (yy = y; yy < y + h; yy++)
             for (xx = x; xx < x + w; xx++)
@@ -2510,17 +2603,22 @@ static void chrome_glass(int x, int y, int w, int h)
     }
     tint = chrome_color(COL_SHADOW);
     edge = chrome_color(COL_BORDER);
+    frost = chrome_frost_begin(x, y, w, h);
     for (yy = y; yy < y + h; yy++)
         for (xx = x; xx < x + w; xx++) {
             int cov = chrome_panel_coverage(xx, yy, x, y, w, h);
             int on_edge = xx == x || xx == x + w - 1 || yy == y || yy == y + h - 1;
             unsigned long px = fb_read_packed(xx, yy);
+            if (frost)
+                px = wm_chrome_blend(px, frost[(unsigned long)(yy - y) * (unsigned long)w +
+                                               (unsigned long)(xx - x)], cov);
             if (cov > 0)
                 px = wm_chrome_blend(px, tint, (chrome_cfg.glass_alpha * cov) / WM_CHROME_ALPHA_OPAQUE);
             if (on_edge || cov < WM_CHROME_ALPHA_OPAQUE)
                 px = wm_chrome_blend(px, edge, cov > 0 ? cov : 0);
             fb_write_packed(xx, yy, px);
         }
+    chrome_frost_end(frost);
 }
 
 /** Docstring: Anti-aliased filled disc of radius r (in 1/2 pixel units
@@ -3818,6 +3916,7 @@ void vga_fb_draw_desktop(void) {
     term_recalc();
     tw_park(cur);
     chrome_wins_reset();
+    blur_reserve();
     wallpaper_draw();
     desktop_shortcuts_load();
     desktop_shortcuts_draw();
@@ -4705,6 +4804,20 @@ static void shortcut_draw_scaled(const struct desktop_shortcut *sc,
                                  int dx, int dy, int dw, int dh) {
     int ox, oy;
     if (!sc->pixels || dw <= 0 || dh <= 0) return;
+    if (fb_bpp != 8) {
+        /* True color: filtered sample blended by coverage (wm_dock.h), so
+         * a growing icon stays smooth instead of stepping by texel. */
+        for (oy = 0; oy < dh; oy++) {
+            for (ox = 0; ox < dw; ox++) {
+                int a = 0;
+                unsigned long c = wm_dock_sample(sc->pixels, ICON_W, ICON_H, dw, dh, ox, oy, &a);
+                if (a <= 0) continue;
+                fb_write_packed(dx + ox, dy + oy,
+                                wm_chrome_blend(fb_read_packed(dx + ox, dy + oy), c, a));
+            }
+        }
+        return;
+    }
     for (oy = 0; oy < dh; oy++) {
         int sy = oy * ICON_H / dh;
         for (ox = 0; ox < dw; ox++) {
@@ -4831,47 +4944,119 @@ int dock_pending_active(void) {
     return dock_pending_len > 0;
 }
 
-/* Paint every shortcut icon and label at the given hover sizes. Shared by
- * the full desktop paint and the flicker-free hover repaint, so the two
- * can never diverge. Growth is bottom-aligned on the slot with no
- * relayout: it overlays upward and the strip erase restores it. */
+/** Docstring: Fluid magnification state (wm_dock.h). The bell is centred
+ * on the last pointer x seen over the dock and its level ramps in time
+ * from dock_mag_from since dock_mag_since: up while the pointer is over
+ * the dock, down once it leaves, so the icons swell and settle instead of
+ * snapping. dock_mag_sizes holds what the last paint drew; the tick
+ * repaints only when a size would change. */
+static int dock_mag_x;
+static int dock_mag_from;
+static int dock_mag_rising;
+static unsigned long dock_mag_since;
+static int dock_mag_sizes[MAX_SHORTCUTS];
+static unsigned long dock_mag_paints;
+
+/** Docstring: Level of the bell right now; effects off jump to the target. */
+static int dock_mag_level(void) {
+    return wm_dock_level(dock_mag_from, dock_mag_rising,
+                         (unsigned long)sys_ticks - dock_mag_since,
+                         vga_fx_enabled() ? (unsigned long)DOCK_MAG_TICKS : 0UL);
+}
+
+/** Docstring: Follow the pointer: recentre the bell while it is over the
+ * dock and restart the ramp from the current level when it enters or
+ * leaves. */
+static void dock_mag_track(int hover, int mx) {
+    int rising = hover >= 0;
+    if (rising)
+        dock_mag_x = mx;
+    if (rising != dock_mag_rising) {
+        dock_mag_from = dock_mag_level();
+        dock_mag_since = (unsigned long)sys_ticks;
+        dock_mag_rising = rising;
+    }
+}
+
+/** Docstring: Side in pixels of icon i at the given level. */
+static int dock_icon_size(int i, int level) {
+    wm_dock_config_t cfg;
+    cfg.base = ICON_W;
+    cfg.peak = DOCK_MAG_W;
+    cfg.reach = DOCK_MAG_REACH_CELLS * dock_cell_w;
+    return wm_dock_mag_size(&cfg, (long)dock_mag_x - (shortcut_cell_left(i) + dock_cell_w / 2),
+                            level);
+}
+
+/** Docstring: 1 when some icon would paint at a size other than the one
+ * on screen. */
+static int dock_mag_dirty(void) {
+    int level = dock_mag_level();
+    int i;
+    for (i = 0; i < shortcut_count; i++)
+        if (dock_icon_size(i, level) != dock_mag_sizes[i])
+            return 1;
+    return 0;
+}
+
+/** Docstring: Serial-observable magnification proof for `wm state`: the
+ * live level and the strip repaints that drew a swollen icon. */
+void dock_mag_counts(int *level, unsigned long *paints) {
+    if (level) *level = dock_mag_level();
+    if (paints) *paints = dock_mag_paints;
+}
+
+/** Docstring: Paint shortcut i and its label at the given side. Growth is
+ * bottom-aligned on the slot with no relayout: it overlays upward and the
+ * strip erase restores it. */
+static void dock_paint_icon(int i, int hover, int size) {
+    struct desktop_shortcut *sc = &shortcuts[i];
+    int cl = shortcut_cell_left(i);
+    int dw = size, dh = size;
+    int dx, dy;
+    dx = cl + (dock_cell_w - dw) / 2;
+    dy = sc->y + ICON_H - dh;
+    /* A bouncing icon lifts off its slot on top of any hover size. */
+    if (i == dock_bounce_idx && dock_bounce_live())
+        dy -= dock_bounce_height(dock_bounce_elapsed());
+    if (i == hover)
+        chrome_glow(dx - DOCK_GLOW_PAD, dy - DOCK_GLOW_PAD,
+                    dw + 2 * DOCK_GLOW_PAD, dh + 2 * DOCK_GLOW_PAD);
+    if (sc->pixels) {
+        shortcut_draw_scaled(sc, dx, dy, dw, dh);
+    } else {
+        /* No icon: draw a placeholder rectangle. */
+        vga_fb_rect(sc->x, sc->y, ICON_W, ICON_H, COL_SHADOW);
+    }
+    /* Draw label centred in its own column, on the dock backing, so it
+     * never runs into a neighbour's label. */
+    {
+        int label_w = dock_label_px(sc);
+        int lx = cl + (dock_cell_w - label_w) / 2;
+        text_px(lx, sc->y + ICON_H + DOCK_LABEL_GAP, sc->name,
+                COL_TASKBAR_TXT, fb_bpp == 8 ? COL_SHADOW : TEXT_BG_NONE);
+    }
+}
+
+/** Docstring: Paint every shortcut at its magnified size and record the
+ * sizes drawn. Shared by the full desktop paint and the strip repaint, so
+ * the two can never diverge. The hovered icon paints last, on top of the
+ * neighbours it overlaps. */
 static void dock_paint_icons(int hover) {
+    int level = dock_mag_level();
+    int swollen = 0;
     int i;
     for (i = 0; i < shortcut_count; i++) {
-        struct desktop_shortcut *sc = &shortcuts[i];
-        int cl = shortcut_cell_left(i);
-        int dw = ICON_W, dh = ICON_H;
-        int dx, dy;
-        if (i == hover) {
-            dw = DOCK_MAG_W;
-            dh = DOCK_MAG_H;
-        } else if (hover >= 0 && (i == hover - 1 || i == hover + 1)) {
-            dw = DOCK_NEAR_W;
-            dh = DOCK_NEAR_H;
-        }
-        dx = cl + (dock_cell_w - dw) / 2;
-        dy = sc->y + ICON_H - dh;
-        /* A bouncing icon lifts off its slot on top of any hover size. */
-        if (i == dock_bounce_idx && dock_bounce_live())
-            dy -= dock_bounce_height(dock_bounce_elapsed());
-        if (i == hover)
-            chrome_glow(dx - DOCK_GLOW_PAD, dy - DOCK_GLOW_PAD,
-                        dw + 2 * DOCK_GLOW_PAD, dh + 2 * DOCK_GLOW_PAD);
-        if (sc->pixels) {
-            shortcut_draw_scaled(sc, dx, dy, dw, dh);
-        } else {
-            /* No icon: draw a placeholder rectangle. */
-            vga_fb_rect(sc->x, sc->y, ICON_W, ICON_H, COL_SHADOW);
-        }
-        /* Draw label centred in its own column, on the dock backing, so it
-         * never runs into a neighbour's label. */
-        {
-            int label_w = dock_label_px(sc);
-            int lx = cl + (dock_cell_w - label_w) / 2;
-            text_px(lx, sc->y + ICON_H + DOCK_LABEL_GAP, sc->name,
-                    COL_TASKBAR_TXT, COL_SHADOW);
-        }
+        dock_mag_sizes[i] = dock_icon_size(i, level);
+        if (dock_mag_sizes[i] > ICON_W)
+            swollen = 1;
+        if (i != hover)
+            dock_paint_icon(i, hover, dock_mag_sizes[i]);
     }
+    if (hover >= 0 && hover < shortcut_count)
+        dock_paint_icon(hover, hover, dock_mag_sizes[hover]);
+    if (swollen)
+        dock_mag_paints++;
 }
 
 /** Docstring: Paint the dock backing: soft shadow first when requested
@@ -4898,6 +5083,7 @@ void desktop_shortcuts_draw(void) {
     if (y0 < 0) y0 = 0;
     dock_paint_backing(x0, y0, dock_w, dock_h, 1);
     hover = dock_hover_index(mouse_state.x, mouse_state.y);
+    dock_mag_track(hover, mouse_state.x);
     dock_paint_icons(hover);
     dock_last_hover = hover;
 }
@@ -4926,6 +5112,40 @@ static void wallpaper_rect(int x0, int y0, int w, int h) {
                       (unsigned long)w * (unsigned long)wall_bpx);
 }
 
+/** Docstring: Redirect drawing into the composition shadow for a strip
+ * repaint, so the erase-then-draw never reaches the screen. Returns 1 for
+ * the owner that must present the strip; 0 (draw where FBT already points)
+ * inside another composition, under a held present or without a shadow.
+ * Never allocates: the tick runs it. */
+static int strip_compose_begin(void) {
+    if (fb_compose_depth > 0 || fb_hold_present || !fb_shadow ||
+        fb_shadow_bytes < fb_frame_bytes())
+        return 0;
+    fb_compose_depth++;
+    fb_tgt = fb_shadow;
+    return 1;
+}
+
+/** Docstring: Leave a strip composition: the owner copies the finished
+ * rect, clipped to the screen, from the shadow onto the framebuffer. */
+static void strip_compose_end(int owner, int x, int y, int w, int h) {
+    unsigned long bpx = (unsigned long)fb_bytes_per_pixel();
+    int r;
+    if (!owner) return;
+    fb_tgt = 0;
+    fb_compose_depth--;
+    if (x < 0) { w += x; x = 0; }
+    if (y < 0) { h += y; y = 0; }
+    if (x + w > fb_width) w = fb_width - x;
+    if (y + h > fb_height) h = fb_height - y;
+    if (w <= 0 || h <= 0) return;
+    for (r = 0; r < h; r++) {
+        unsigned long off = (unsigned long)(y + r) * (unsigned long)fb_pitch +
+                            (unsigned long)x * bpx;
+        fb_copy_bytes(FB_ADDR + off, fb_shadow + off, (unsigned long)w * bpx);
+    }
+}
+
 /* Hover repaint without the fullscreen flash: erase only the dock strip
  * (bar plus the overflow the magnified icons rise into), restore the
  * crystal and repaint the icons at the new hover sizes. No clear, no
@@ -4938,6 +5158,7 @@ static void wallpaper_rect(int x0, int y0, int w, int h) {
 static void dock_paint_hover(int hover) {
     int dock_w, dock_h, x0, y0, y_top;
     int bouncing = dock_bounce_live();
+    int owner;
     shortcuts_layout();
     if (shortcut_count <= 0) return;
     dock_w = shortcut_count * dock_cell_w + 2 * DOCK_PAD_X;
@@ -4950,9 +5171,11 @@ static void dock_paint_hover(int hover) {
      * lift above the slot, so a hopping icon never smears. */
     y_top = y0 - (DOCK_MAG_H - ICON_H) - DOCK_BOUNCE_H - 2;
     if (y_top < 0) y_top = 0;
+    owner = strip_compose_begin();
     wallpaper_rect(x0, y_top, dock_w, y0 + dock_h - y_top);
     dock_paint_backing(x0, y0, dock_w, dock_h, 0);
     dock_paint_icons(hover);
+    strip_compose_end(owner, x0, y_top, dock_w, y0 + dock_h - y_top);
     dock_last_hover = hover;
     if (bouncing) dock_bounce_paints++;
     cursor_note_repaint(x0, y_top, dock_w, y0 + dock_h - y_top);
@@ -5300,12 +5523,15 @@ void vga_fb_mouse_tick(void) {
         int hover = dock_hover_index(mx, my);
         int bounce;
         int stable;
+        int swell;
         int fire = 0;
         char launch[128];
         irqflags_t dflags;
         launch[0] = 0;
         dflags = spin_save_irq();
         bounce = dock_bounce_live();
+        dock_mag_track(hover, mx);
+        swell = dock_mag_dirty();
         if (hover != dock_hover_cand) {
             dock_hover_cand = hover;
             dock_hover_n = 0;
@@ -5315,12 +5541,12 @@ void vga_fb_mouse_tick(void) {
         stable = (dock_hover_n >= 1);
         if (bounce) {
             int h = dock_bounce_height(dock_bounce_elapsed());
-            if (h != dock_last_bounce_h ||
+            if (h != dock_last_bounce_h || swell ||
                 (stable && hover != dock_last_hover)) {
                 dock_paint_hover(hover);
                 dock_last_bounce_h = h;
             }
-        } else if (stable && hover != dock_last_hover &&
+        } else if (((stable && hover != dock_last_hover) || swell) &&
                    !(mouse_state.buttons & 1)) {
             dock_paint_hover(hover);
             dock_last_bounce_h = -1;
@@ -5395,6 +5621,11 @@ void vga_fb_mouse_init(void) {
     dock_last_bounce_h = -1;
     dock_hover_cand = -2;
     dock_hover_n = 0;
+    dock_mag_x = 0;
+    dock_mag_from = 0;
+    dock_mag_rising = 0;
+    dock_mag_since = 0;
+    dock_mag_paints = 0;
     dock_pending_len = 0;
     dock_pending_cmd[0] = 0;
 }

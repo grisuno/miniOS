@@ -2,6 +2,8 @@
 Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/doomgeneric_win.c` -> `progs/doomgeneric/doomkeys.h`
+- `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/string.c`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `kernel/time.c`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `progs/doomgeneric/doomgeneric.h`
 - `progs/doomgeneric/doomgeneric_xlib.c` -> `progs/doomgeneric/doomkeys.h`
@@ -494,7 +496,5 @@ Previous: [ARCHITECTURE.md](ARCHITECTURE.md)
 - `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/r_local.h`
 - `progs/doomgeneric/r_main.c` -> `progs/doomgeneric/r_sky.h`
 - `progs/doomgeneric/r_main.h` -> `progs/doomgeneric/d_player.h`
-- `progs/doomgeneric/r_main.h` -> `progs/doomgeneric/r_data.h`
-- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/doomdef.h`
 
 Next: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)

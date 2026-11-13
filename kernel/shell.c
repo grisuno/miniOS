@@ -2031,6 +2031,16 @@ static void shell_cmd_wm(int argc, char **argv) {
                 kicks, paints, edges, dock_pending_active());
     }
     {
+        unsigned long panels = 0;
+        unsigned long paints = 0;
+        int active = 0;
+        int level = 0;
+        chrome_blur_counts(&active, &panels);
+        dock_mag_counts(&level, &paints);
+        kprintf("wm: blur %s panels=%lu\n", active ? "on" : "off", panels);
+        kprintf("wm: dock mag level=%d paints=%lu\n", level, paints);
+    }
+    {
         char theme[17];
         vga_fb_theme_name(theme, sizeof(theme));
         kprintf("wm: theme %s\n", theme);

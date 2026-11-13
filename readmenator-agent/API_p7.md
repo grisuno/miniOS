@@ -1,6 +1,50 @@
 # API (page 7 of 21)
 Previous: [API_p6.md](API_p6.md)
 
+## kernel/mm/paging.c
+Depends on: `headers/arch/x86/boot/bootdefs.h`, `headers/arch/x86/msr.h`, `headers/ldso.h`, `headers/minifs.h`, `headers/pcache.h`, `headers/tlb.h`, `headers/vga_fb.h`
+- `mm_page_aligned_alloc` (function) `kernel/mm/paging.c:32` `static unsigned char *mm_page_aligned_alloc(unsigned size,
+                                      ...` -- Page-align a kmalloc'd region.
+- `mm_setup_protections` (function) `kernel/mm/paging.c:41` `void mm_setup_protections(void)`
+- `kmm_ensure_pt` (function) `kernel/mm/paging.c:235` `static volatile unsigned long *kmm_ensure_pt(unsigned long phys)` -- Docstring: Return the 4 KB page table backing a 2 MB identity slot, splitting the boot leaf if needed.
+- `coherent` (function) `kernel/mm/paging.c:259` `* for memory a device reads and writes by DMA: a controller that is not cache
+ * coherent (and an...`
+- `kmm_map_device` (function) `kernel/mm/paging.c:296` `unsigned long kmm_map_device(unsigned long phys, unsigned long len)`
+- `mm_user_pte_update` (function) `kernel/mm/paging.c:336` `void mm_user_pte_update(unsigned long vaddr, int exec, unsigned long cr3)`
+- `mm_user_set_exec` (function) `kernel/mm/paging.c:356` `void mm_user_set_exec(unsigned long start, unsigned long end, unsigned long cr3)`
+- `pt_owned_index` (function) `kernel/mm/paging.c:374` `static int pt_owned_index(unsigned long phys, unsigned long *byte, unsigned *bit)`
+- `pt_page_owned` (function) `kernel/mm/paging.c:385` `int pt_page_owned(unsigned long phys)` -- #define PT_OWNED_BYTES (HEAP_SIZE / 0x1000UL / 8UL) static unsigned char *pt_owned; static int...
+- `pt_page_alloc` (function) `kernel/mm/paging.c:392` `void *pt_page_alloc(void)`
+- `pt_page_free` (function) `kernel/mm/paging.c:411` `void pt_page_free(void *ptr)`
+- `pt_clone_user` (function) `kernel/mm/paging.c:420` `uint64_t pt_clone_user(uint64_t parent_cr3)`
+- `mt_shared_slot` (function) `kernel/mm/paging.c:549` `static int mt_shared_slot(unsigned long pd_idx)` -- The legacy path identity-maps the user window (VA == PA), so every CR3 built by pt_clone_user aliases the same...
+- `pt_clone_user_empty` (function) `kernel/mm/paging.c:568` `unsigned long pt_clone_user_empty(void)` -- Fresh user window: kernel mappings copied, every user PT zeroed, graphics slots re-shared from the boot tables.
+- `mm_user_ensure_page` (function) `kernel/mm/paging.c:625` `int mm_user_ensure_page(unsigned long cr3, unsigned long va)` -- Ensure one 4 KB user page at va inside cr3 exists (heap-owned). * Returns 0 on success, -1 on OOM or when va leaves...
+- `honest` (function) `kernel/mm/paging.c:655` `* and invlpg keeps the local TLB honest (cross-CPU shootdown rides
+ * the documented T5 follow-up...`
+- `mm_demand_pte` (function) `kernel/mm/paging.c:704` `unsigned long mm_demand_pte(unsigned long prot)` -- Docstring: PTE walker shared by the fault, fork and teardown * paths (forward declaration; documented at the...
+- `mm_anon_frame` (function) `kernel/mm/paging.c:715` `static int mm_anon_frame(unsigned long phys)` -- Heap-owned anonymous frame: the only kind an unmap may free (the shared pid-0 window and graphics slots map fixed...
+- `mm_anon_fault` (function) `kernel/mm/paging.c:779` `int mm_anon_fault(unsigned long cr3, unsigned long va, int write)` -- Resolve a fault on a reservation: map a zeroed page with the reserved protection.
+- `mm_file_page_phys` (function) `kernel/mm/paging.c:861` `unsigned long mm_file_page_phys(unsigned long cr3, unsigned long va)` -- Docstring: Read the mapped phys for va in cr3, 0 when the PTE is absent or non-present.
+- `mm_file_pte` (function) `kernel/mm/paging.c:880` `static volatile unsigned long *mm_file_pte(unsigned long cr3,
+        unsigned long va)` -- Docstring: Locate the PTE for va in cr3 without allocating.
+- `tables` (function) `kernel/mm/paging.c:1010` `* tables (munmap/mremap in caller context, under their mm_lock);`
+- `explicitly` (function) `kernel/mm/paging.c:1011` `* teardown passes the dying window explicitly (zombie-exclusive, no * lock needed). unmap == 0 drops refs only...`
+- `PTE` (function) `kernel/mm/paging.c:1015` `* PTE (a cache page stays cached, but no stale writer may reach it).
+ * Never allocates. */
+void ...`
+- `mm_file_break` (function) `kernel/mm/paging.c:1070` `int mm_file_break(unsigned long cr3, unsigned long va)` -- Docstring: Break a write fault on a cache-shared file page into a private copy (fail-closed).
+- `mm_copy_user_page` (function) `kernel/mm/paging.c:1149` `int mm_copy_user_page(unsigned long dst_cr3, unsigned long src_cr3, unsigned long va)` -- Copy one present user page from src_cr3 to the same VA in dst_cr3, allocating the destination page.
+- `pt_free_user` (function) `kernel/mm/paging.c:1227` `void pt_free_user(uint64_t cr3)`
+
+## kernel/mm/swap.c
+Depends on: `headers/ide.h`, `headers/lz4_kernel.h`
+- `unwired` (function) `kernel/mm/swap.c:7` `* * Currently unwired (the isolated-window spawn path superseded the * swap-out design);`
+- `swap_ensure` (function) `kernel/mm/swap.c:28` `static int swap_ensure(void)` -- #include "ide.h" #include "lz4_kernel.h" #define SWAP_CHUNK_RAW     65536 #define SWAP_CHUNK_CMP     (SWAP_CHUNK_RAW...
+- `swap_lba` (function) `kernel/mm/swap.c:41` `static unsigned long swap_lba(void)`
+- `swap_out` (function) `kernel/mm/swap.c:47` `int swap_out(unsigned long window_sz)`
+- `swap_in` (function) `kernel/mm/swap.c:97` `int swap_in(void)`
+
 ## kernel/mm/tlb.c
 Depends on: `headers/sched.h`, `headers/smp.h`, `headers/spinlock.h`, `headers/tlb.h`
 - `tlb_others_on` (function) `kernel/mm/tlb.c:36` `static int tlb_others_on(unsigned long cr3)` -- 1 when another online CPU is running address space cr3 right now.
@@ -311,39 +355,39 @@ static void desktop_unflag(const char *name)`
 - `gfx_read_palette` (function) `kernel/shell.c:1771` `static void gfx_read_palette(unsigned char pal[768])` -- Read the current 256-entry VGA DAC palette (3x6-bit per entry, read at 8-bit precision by the kernel's normalisation).
 - `shell_cmd_gfx` (function) `kernel/shell.c:1778` `static void shell_cmd_gfx(int argc, char **argv)`
 - `shell_cmd_wm` (function) `kernel/shell.c:1930` `static void shell_cmd_wm(int argc, char **argv)` -- `wm <op>` — window-manager operations, exposed as a shell builtin so the tiling-WM behaviour is observable and...
-- `tree` (function) `kernel/shell.c:2065` `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+- `tree` (function) `kernel/shell.c:2075` `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-- `shell_cmd_jobs` (function) `kernel/shell.c:2078` `static void shell_cmd_jobs(void)`
-- `shell_has_child` (function) `kernel/shell.c:2107` `static int shell_has_child(int pid)` -- Live-child check for one pid: a slot that is neither FREE nor reparented still belongs to this shell.
-- `shell_cmd_wait` (function) `kernel/shell.c:2117` `static void shell_cmd_wait(int argc, char **argv)`
-- `shell_cmd_kill` (function) `kernel/shell.c:2152` `static void shell_cmd_kill(int argc, char **argv)`
-- `shell_cmd_mem` (function) `kernel/shell.c:2175` `static void shell_cmd_mem(void)` -- `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS...
-- `VMA` (function) `kernel/shell.c:2208` `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+- `shell_cmd_jobs` (function) `kernel/shell.c:2088` `static void shell_cmd_jobs(void)`
+- `shell_has_child` (function) `kernel/shell.c:2117` `static int shell_has_child(int pid)` -- Live-child check for one pid: a slot that is neither FREE nor reparented still belongs to this shell.
+- `shell_cmd_wait` (function) `kernel/shell.c:2127` `static void shell_cmd_wait(int argc, char **argv)`
+- `shell_cmd_kill` (function) `kernel/shell.c:2162` `static void shell_cmd_kill(int argc, char **argv)`
+- `shell_cmd_mem` (function) `kernel/shell.c:2185` `static void shell_cmd_mem(void)` -- `mem` — memory and disk pressure in one screenful: kernel heap use (dlmalloc), ramdisk use versus its cap, MiniFS...
+- `VMA` (function) `kernel/shell.c:2218` `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-- `to` (function) `kernel/shell.c:2281` `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+- `to` (function) `kernel/shell.c:2291` `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-- `shell_parse_u64` (function) `kernel/shell.c:2350` `static int shell_parse_u64(const char *s, unsigned long *out)` -- Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing...
-- `shell_parse_long` (function) `kernel/shell.c:2366` `int shell_parse_long(const char *s, long *out)` -- Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow...
-- `shell_parse_pid` (function) `kernel/shell.c:2387` `int shell_parse_pid(const char *s, int min_pid, int *out)` -- Bounded pid parse shared by wait/kill/vmmap: one range check instead of three open-coded copies. min_pid is 1 for...
-- `shell_cmd_gdb` (function) `kernel/shell.c:2402` `static void shell_cmd_gdb(int argc, char **argv)` -- `gdb <op>` -- in-OS inspector half of the debugger story.
-- `shell_cmd_hash` (function) `kernel/shell.c:2445` `static void shell_cmd_hash(int argc, char **argv)` -- `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file...
-- `shell_resolve_arg` (function) `kernel/shell.c:2464` `static int shell_resolve_arg(const char *cmd, const char *arg,
+- `shell_parse_u64` (function) `kernel/shell.c:2360` `static int shell_parse_u64(const char *s, unsigned long *out)` -- Strict unsigned parse for debugger/inspector operands: `0x`-prefixed hex or plain decimal, no signs, no trailing...
+- `shell_parse_long` (function) `kernel/shell.c:2376` `int shell_parse_long(const char *s, long *out)` -- Strict signed decimal twin of shell_parse_u64: optional sign, at least one digit, whole string consumed, overflow...
+- `shell_parse_pid` (function) `kernel/shell.c:2397` `int shell_parse_pid(const char *s, int min_pid, int *out)` -- Bounded pid parse shared by wait/kill/vmmap: one range check instead of three open-coded copies. min_pid is 1 for...
+- `shell_cmd_gdb` (function) `kernel/shell.c:2412` `static void shell_cmd_gdb(int argc, char **argv)` -- `gdb <op>` -- in-OS inspector half of the debugger story.
+- `shell_cmd_hash` (function) `kernel/shell.c:2455` `static void shell_cmd_hash(int argc, char **argv)` -- `hash <file>` — XXH64 (64-bit, seed 0) of a ramdisk/MiniFS file, streamed in bounded chunks so a large MiniFS file...
+- `shell_resolve_arg` (function) `kernel/shell.c:2474` `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...` -- Docstring: Resolve `arg` against the cwd into `out` (`RAMDISK_FNAME_LEN` bytes); on failure print `<cmd>: <arg>...
-- `shell_httpd_one` (function) `kernel/shell.c:2570` `static void shell_httpd_one(int child, const char *root)` -- Serve one accepted connection: read one request, map GET path onto the VFS mounts under root, stream head + body, close.
-- `shell_httpd_serve` (function) `kernel/shell.c:2655` `static void shell_httpd_serve(unsigned short port, const char *root,
+- `shell_httpd_one` (function) `kernel/shell.c:2580` `static void shell_httpd_one(int child, const char *root)` -- Serve one accepted connection: read one request, map GET path onto the VFS mounts under root, stream head + body, close.
+- `shell_httpd_serve` (function) `kernel/shell.c:2665` `static void shell_httpd_serve(unsigned short port, const char *root,
         int max_conn)` -- Accept loop: one connection at a time, Ctrl+C quits.
-- `shell_cross_ls` (function) `kernel/shell.c:2822` `static void shell_cross_ls(const char *drv, const char *imgarg,
+- `shell_cross_ls` (function) `kernel/shell.c:2832` `static void shell_cross_ls(const char *drv, const char *imgarg,
                            const ...` -- List one directory from a cross-filesystem VFS driver (fat:, ext4:) to the console: same "drv:/img:path" addressing...
-- `shell_cross_cat` (function) `kernel/shell.c:2863` `static void shell_cross_cat(const char *drv, const char *imgarg,
+- `shell_cross_cat` (function) `kernel/shell.c:2873` `static void shell_cross_cat(const char *drv, const char *imgarg,
                             cons...` -- Stream one file from a cross-filesystem VFS driver (fat:, ext4:) to the console: "drv:/img:path" per open (the...
-- `shell_exec_builtin` (function) `kernel/shell.c:2905` `void shell_exec_builtin(int argc, char **argv)`
-- `terminal` (function) `kernel/shell.c:2980` `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
-- `driver` (function) `kernel/shell.c:3331` `* stream through the fat: VFS driver ("img:fatpath" per open,
+- `shell_exec_builtin` (function) `kernel/shell.c:2915` `void shell_exec_builtin(int argc, char **argv)`
+- `terminal` (function) `kernel/shell.c:2990` `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
+- `driver` (function) `kernel/shell.c:3341` `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
-- `frame` (function) `kernel/shell.c:3725` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-- `stdout` (function) `kernel/shell.c:4094` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
-- `shell_is_pipe_tok` (function) `kernel/shell.c:4106` `static int shell_is_pipe_tok(const char *a)`
-- `shell_run_stage` (function) `kernel/shell.c:4145` `static char *shell_run_stage(char **sargv, int sargc,
+- `frame` (function) `kernel/shell.c:3735` `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
+- `stdout` (function) `kernel/shell.c:4104` `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+- `shell_is_pipe_tok` (function) `kernel/shell.c:4116` `static int shell_is_pipe_tok(const char *a)`
+- `shell_run_stage` (function) `kernel/shell.c:4155` `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...` -- Run one pipeline stage with stdin/out doors installed. input may be 0 (first stage reads the live console).
 
 ## kernel/spawn.c
@@ -362,7 +406,7 @@ Depends on: `headers/arch/x86/msr.h`, `headers/arena.h`, `headers/minifs.h`, `he
                   unsigned char *da...` -- do_kill(pid); do_waitpid(pid); rc = 130; break; } yield(); } } if (did_redirect && redirect_commit(redirect, 0) !=...
 
 ## kernel/string.c
-Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/cvmfmt.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/src/pip.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_select_map.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
+Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/cvmfmt.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/src/pip.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_blur.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_select_map.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
 - `kstrlen` (function) `kernel/string.c:17` `unsigned long kstrlen(const char *s)`
 - `kstrcpy` (function) `kernel/string.c:23` `char *kstrcpy(char *dst, const char *src)`
 - `kstrncpy` (function) `kernel/string.c:29` `char *kstrncpy(char *dst, const char *src, unsigned long n)`

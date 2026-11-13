@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `ST_MAXAMMO2WIDTH` | macro | `progs/doomgeneric/st_stuff.c:198` | `#define ST_MAXAMMO2WIDTH` |
+| `ST_MAXAMMO2X` | macro | `progs/doomgeneric/st_stuff.c:199` | `#define ST_MAXAMMO2X` |
+| `ST_MAXAMMO2Y` | macro | `progs/doomgeneric/st_stuff.c:200` | `#define ST_MAXAMMO2Y` |
+| `ST_MAXAMMO3WIDTH` | macro | `progs/doomgeneric/st_stuff.c:201` | `#define ST_MAXAMMO3WIDTH` |
+| `ST_MAXAMMO3X` | macro | `progs/doomgeneric/st_stuff.c:202` | `#define ST_MAXAMMO3X` |
+| `ST_MAXAMMO3Y` | macro | `progs/doomgeneric/st_stuff.c:203` | `#define ST_MAXAMMO3Y` |
+| `ST_MSGHEIGHT` | macro | `progs/doomgeneric/st_stuff.c:246` | `#define ST_MSGHEIGHT` |
+| `ST_MSGTEXTX` | macro | `progs/doomgeneric/st_stuff.c:241` | `#define ST_MSGTEXTX` |
+| `ST_MSGTEXTY` | macro | `progs/doomgeneric/st_stuff.c:242` | `#define ST_MSGTEXTY` |
+| `ST_MSGWIDTH` | macro | `progs/doomgeneric/st_stuff.c:244` | `#define ST_MSGWIDTH` |
+| `ST_MUCHPAIN` | macro | `progs/doomgeneric/st_stuff.c:123` | `#define ST_MUCHPAIN` |
+| `ST_NUMEXTRAFACES` | macro | `progs/doomgeneric/st_stuff.c:102` | `#define ST_NUMEXTRAFACES` |
+| `ST_NUMFACES` | macro | `progs/doomgeneric/st_stuff.c:104` | `#define ST_NUMFACES` |
+| `ST_NUMPAINFACES` | macro | `progs/doomgeneric/st_stuff.c:94` | `#define ST_NUMPAINFACES` |
+| `ST_NUMSPECIALFACES` | macro | `progs/doomgeneric/st_stuff.c:97` | `#define ST_NUMSPECIALFACES` |
+| `ST_NUMSTRAIGHTFACES` | macro | `progs/doomgeneric/st_stuff.c:95` | `#define ST_NUMSTRAIGHTFACES` |
+| `ST_NUMTURNFACES` | macro | `progs/doomgeneric/st_stuff.c:96` | `#define ST_NUMTURNFACES` |
+| `ST_OUCHCOUNT` | macro | `progs/doomgeneric/st_stuff.c:120` | `#define ST_OUCHCOUNT` |
+| `ST_OUCHOFFSET` | macro | `progs/doomgeneric/st_stuff.c:108` | `#define ST_OUCHOFFSET` |
+| `ST_OUTHEIGHT` | macro | `progs/doomgeneric/st_stuff.c:254` | `#define ST_OUTHEIGHT` |
+| `ST_OUTTEXTX` | macro | `progs/doomgeneric/st_stuff.c:248` | `#define ST_OUTTEXTX` |
+| `ST_OUTTEXTY` | macro | `progs/doomgeneric/st_stuff.c:249` | `#define ST_OUTTEXTY` |
+| `ST_OUTWIDTH` | macro | `progs/doomgeneric/st_stuff.c:252` | `#define ST_OUTWIDTH` |
+| `ST_RAMPAGEDELAY` | macro | `progs/doomgeneric/st_stuff.c:121` | `#define ST_RAMPAGEDELAY` |
+| `ST_RAMPAGEOFFSET` | macro | `progs/doomgeneric/st_stuff.c:110` | `#define ST_RAMPAGEOFFSET` |
+| `ST_Responder` | function | `progs/doomgeneric/st_stuff.c:439` | `boolean ST_Responder (event_t* ev)` |
+| `ST_STRAIGHTFACECOUNT` | macro | `progs/doomgeneric/st_stuff.c:118` | `#define ST_STRAIGHTFACECOUNT` |
+| `ST_Start` | function | `progs/doomgeneric/st_stuff.c:1389` | `void ST_Start (void)` |
+| `ST_Stop` | function | `progs/doomgeneric/st_stuff.c:1401` | `void ST_Stop (void)` |
+| `ST_TALLNUMWIDTH` | macro | `progs/doomgeneric/st_stuff.c:91` | `#define ST_TALLNUMWIDTH` |
+| `ST_TOGGLECHAT` | macro | `progs/doomgeneric/st_stuff.c:80` | `#define ST_TOGGLECHAT` |
+| `ST_TURNCOUNT` | macro | `progs/doomgeneric/st_stuff.c:119` | `#define ST_TURNCOUNT` |
+| `ST_TURNOFFSET` | macro | `progs/doomgeneric/st_stuff.c:107` | `#define ST_TURNOFFSET` |
+| `ST_Ticker` | function | `progs/doomgeneric/st_stuff.c:924` | `void ST_Ticker (void)` |
+| `ST_WEAPON0X` | macro | `progs/doomgeneric/st_stuff.c:206` | `#define ST_WEAPON0X` |
+| `ST_WEAPON0Y` | macro | `progs/doomgeneric/st_stuff.c:207` | `#define ST_WEAPON0Y` |
+| `ST_WEAPON1X` | macro | `progs/doomgeneric/st_stuff.c:210` | `#define ST_WEAPON1X` |
+| `ST_WEAPON1Y` | macro | `progs/doomgeneric/st_stuff.c:211` | `#define ST_WEAPON1Y` |
+| `ST_WEAPON2X` | macro | `progs/doomgeneric/st_stuff.c:214` | `#define ST_WEAPON2X` |
+| `ST_WEAPON2Y` | macro | `progs/doomgeneric/st_stuff.c:215` | `#define ST_WEAPON2Y` |
+| `ST_WEAPON3X` | macro | `progs/doomgeneric/st_stuff.c:218` | `#define ST_WEAPON3X` |
 | `ST_WEAPON3Y` | macro | `progs/doomgeneric/st_stuff.c:219` | `#define ST_WEAPON3Y` |
 | `ST_WEAPON4X` | macro | `progs/doomgeneric/st_stuff.c:222` | `#define ST_WEAPON4X` |
 | `ST_WEAPON4Y` | macro | `progs/doomgeneric/st_stuff.c:223` | `#define ST_WEAPON4Y` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p18.md](SYMBOLS_p18.md)
 | `FREEDOM_GUI_RGB_BPP` | macro | `progs/freedomui/platform_minios.c:48` | `#define FREEDOM_GUI_RGB_BPP` |
 | `FREEDOM_GUI_RGB_PRESENT` | macro | `progs/freedomui/platform_minios.c:50` | `#define FREEDOM_GUI_RGB_PRESENT` |
 | `FREEDOM_GUI_TICK_MS` | macro | `progs/freedomui/platform_minios.c:27` | `#define FREEDOM_GUI_TICK_MS` |
-| `FREEDOM_GUI_TITLE_MAX` | macro | `progs/freedomui/platform_minios.c:31` | `#define FREEDOM_GUI_TITLE_MAX` |
-| `_GNU_SOURCE` | macro | `progs/freedomui/platform_minios.c:11` | `#define _GNU_SOURCE` |
-| `deliver_pending` | function | `progs/freedomui/platform_minios.c:173` | `static int deliver_pending(pf_display *d)` |
-| `key_event` | function | `progs/freedomui/platform_minios.c:183` | `static void key_event(pf_display *d, const ps2_key *k, int kind)` |
-| `minios_process_note` | struct | `progs/freedomui/platform_minios.c:124` | `` |
-| `now_ms` | function | `progs/freedomui/platform_minios.c:94` | `static long now_ms(void)` |
-| `pf_clipboard_available` | function | `progs/freedomui/platform_minios.c:293` | `int pf_clipboard_available(const pf_display *d)` |
-| `pf_clipboard_get_text` | function | `progs/freedomui/platform_minios.c:304` | `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)` |
-| `pf_clipboard_set_text` | function | `progs/freedomui/platform_minios.c:297` | `pf_status pf_clipboard_set_text(pf_display *d, const char *text)` |
-| `pf_display` | struct | `progs/freedomui/platform_minios.c:68` | `` |
-| `pf_display_close` | function | `progs/freedomui/platform_minios.c:153` | `void pf_display_close(pf_display *d)` |
-| `pf_display_flush` | function | `progs/freedomui/platform_minios.c:162` | `void pf_display_flush(pf_display *d)` |
-| `pf_display_open` | function | `progs/freedomui/platform_minios.c:137` | `pf_status pf_display_open(pf_display **out)` |
-| `pf_display_set_cursor` | function | `progs/freedomui/platform_minios.c:166` | `void pf_display_set_cursor(pf_display *d, pf_cursor c)` |
-| `pf_display_wait` | function | `progs/freedomui/platform_minios.c:268` | `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)` |
-| `pf_window` | struct | `progs/freedomui/platform_minios.c:56` | `` |
-| `pf_window_begin_move` | function | `progs/freedomui/platform_minios.c:436` | `void pf_window_begin_move(pf_window *w)` |
-| `pf_window_begin_resize` | function | `progs/freedomui/platform_minios.c:440` | `void pf_window_begin_resize(pf_window *w, pf_edge edge)` |
-| `pf_window_close` | function | `progs/freedomui/platform_minios.c:342` | `void pf_window_close(pf_window *w)` |
-| `pf_window_minimize` | function | `progs/freedomui/platform_minios.c:432` | `void pf_window_minimize(pf_window *w)` |
-| `pf_window_open` | function | `progs/freedomui/platform_minios.c:320` | `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,                          const p...` |
-| `pf_window_present` | function | `progs/freedomui/platform_minios.c:374` | `void pf_window_present(pf_window *w)` |
-| `pf_window_set_fullscreen` | function | `progs/freedomui/platform_minios.c:428` | `void pf_window_set_fullscreen(pf_window *w, int on)` |
-| `pf_window_set_maximized` | function | `progs/freedomui/platform_minios.c:424` | `void pf_window_set_maximized(pf_window *w, int on)` |
-| `pf_window_set_title` | function | `progs/freedomui/platform_minios.c:408` | `void pf_window_set_title(pf_window *w, const char *title)` |
-| `pf_window_surface` | function | `progs/freedomui/platform_minios.c:359` | `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)` |
-| `pump_keyboard` | function | `progs/freedomui/platform_minios.c:210` | `static int pump_keyboard(pf_display *d)` |
-| `pump_mouse` | function | `progs/freedomui/platform_minios.c:224` | `static int pump_mouse(pf_display *d)` |
-| `set_title` | function | `progs/freedomui/platform_minios.c:98` | `static void set_title(const char *title)` |
-| `set_zoom_state` | function | `progs/freedomui/platform_minios.c:414` | `static void set_zoom_state(pf_window *w, unsigned bit, int on)` |
-| `sys_fb_info_rgb` | function | `progs/freedomui/platform_minios.c:83` | `static long sys_fb_info_rgb(int *rgb)` |
-| `ASCII_BS` | macro | `progs/freedomui/ps2_keymap.c:84` | `#define ASCII_BS` |
-| `ASCII_CR` | macro | `progs/freedomui/ps2_keymap.c:86` | `#define ASCII_CR` |
-| `ASCII_DEL` | macro | `progs/freedomui/ps2_keymap.c:88` | `#define ASCII_DEL` |
-| `ASCII_ESC` | macro | `progs/freedomui/ps2_keymap.c:87` | `#define ASCII_ESC` |
-| `ASCII_TAB` | macro | `progs/freedomui/ps2_keymap.c:85` | `#define ASCII_TAB` |
-| `KS_F1` | macro | `progs/freedomui/ps2_keymap.c:61` | `#define KS_F1` |
-| `KS_F11` | macro | `progs/freedomui/ps2_keymap.c:62` | `#define KS_F11` |
-| `KS_INSERT` | macro | `progs/freedomui/ps2_keymap.c:63` | `#define KS_INSERT` |
-| `KS_KP_BEGIN` | macro | `progs/freedomui/ps2_keymap.c:78` | `#define KS_KP_BEGIN` |
-| `KS_KP_DECIMAL` | macro | `progs/freedomui/ps2_keymap.c:81` | `#define KS_KP_DECIMAL` |
 
 Next: [SYMBOLS_p20.md](SYMBOLS_p20.md)

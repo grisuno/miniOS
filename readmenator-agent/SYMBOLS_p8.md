@@ -3,6 +3,33 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `WM_GFXVIEW_DIM_MAX` | macro | `headers/wm_gfxview.h:44` | `#define WM_GFXVIEW_DIM_MAX` |
+| `WM_GFXVIEW_H` | macro | `headers/wm_gfxview.h:21` | `#define WM_GFXVIEW_H` |
+| `wm_gfxview_clamp` | function | `headers/wm_gfxview.h:134` | `static inline void wm_gfxview_clamp(wm_gfxview_rect_t *r, int fb_w, int fb_h)` |
+| `wm_gfxview_config_t` | struct | `headers/wm_gfxview.h:31` | `` |
+| `wm_gfxview_dims_ok` | function | `headers/wm_gfxview.h:79` | `static inline int wm_gfxview_dims_ok(int w, int h)` |
+| `wm_gfxview_ease` | function | `headers/wm_gfxview.h:291` | `static inline long wm_gfxview_ease(int t, int n, long den)` |
+| `wm_gfxview_lerp_rect` | function | `headers/wm_gfxview.h:313` | `static inline int wm_gfxview_lerp_rect(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b,   ...` |
+| `wm_gfxview_map_point` | function | `headers/wm_gfxview.h:255` | `static inline int wm_gfxview_map_point(const wm_gfxview_t *v, int sw, int sh,                    ...` |
+| `wm_gfxview_mode_name` | function | `headers/wm_gfxview.h:64` | `static inline const char *wm_gfxview_mode_name(int mode)` |
+| `wm_gfxview_place_content` | function | `headers/wm_gfxview.h:160` | `static inline int wm_gfxview_place_content(const wm_gfxview_config_t *cfg, int sw, int sh,       ...` |
+| `wm_gfxview_rect_same` | function | `headers/wm_gfxview.h:336` | `static inline int wm_gfxview_rect_same(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b)` |
+| `wm_gfxview_rect_t` | struct | `headers/wm_gfxview.h:47` | `` |
+| `wm_gfxview_t` | struct | `headers/wm_gfxview.h:56` | `` |
+| `WM_JELLY_CONFIG_DEFAULT` | macro | `headers/wm_jelly.h:48` | `#define WM_JELLY_CONFIG_DEFAULT` |
+| `WM_JELLY_FP` | macro | `headers/wm_jelly.h:22` | `#define WM_JELLY_FP` |
+| `WM_JELLY_GRID` | macro | `headers/wm_jelly.h:19` | `#define WM_JELLY_GRID` |
+| `WM_JELLY_H` | macro | `headers/wm_jelly.h:16` | `#define WM_JELLY_H` |
+| `WM_JELLY_WEIGHT_ONE` | macro | `headers/wm_jelly.h:25` | `#define WM_JELLY_WEIGHT_ONE` |
+| `wm_jelly_abs` | function | `headers/wm_jelly.h:71` | `static inline int wm_jelly_abs(int v)` |
+| `wm_jelly_at_rest` | function | `headers/wm_jelly.h:186` | `static inline int wm_jelly_at_rest(const wm_jelly_config_t *cfg, const wm_jelly_t *j)` |
+| `wm_jelly_clamp` | function | `headers/wm_jelly.h:59` | `static inline int wm_jelly_clamp(int v, int lim)` |
+| `wm_jelly_config_t` | struct | `headers/wm_jelly.h:33` | `` |
+| `wm_jelly_neighbours` | function | `headers/wm_jelly.h:130` | `static inline int wm_jelly_neighbours(const int *d, int r, int c)` |
+| `wm_jelly_reset` | function | `headers/wm_jelly.h:77` | `static inline void wm_jelly_reset(wm_jelly_t *j)` |
+| `wm_jelly_sample` | function | `headers/wm_jelly.h:203` | `static inline void wm_jelly_sample(const wm_jelly_t *j, int x, int y, int w, int h,              ...` |
+| `wm_jelly_step` | function | `headers/wm_jelly.h:155` | `static inline void wm_jelly_step(const wm_jelly_config_t *cfg, wm_jelly_t *j)` |
+| `wm_jelly_t` | struct | `headers/wm_jelly.h:51` | `` |
 | `WM_LAYOUT_CONFIG_DEFAULT` | macro | `headers/wm_layout.h:45` | `#define WM_LAYOUT_CONFIG_DEFAULT` |
 | `WM_LAYOUT_H` | macro | `headers/wm_layout.h:12` | `#define WM_LAYOUT_H` |
 | `WM_LAYOUT_MODE_COUNT` | macro | `headers/wm_layout.h:24` | `#define WM_LAYOUT_MODE_COUNT` |
@@ -469,32 +496,5 @@ Previous: [SYMBOLS_p7.md](SYMBOLS_p7.md)
 | `putc_snbuf` | function | `kernel/printf.c:178` | `static void putc_snbuf(char c, void *ctx, int *written)` |
 | `putc_str` | function | `kernel/printf.c:19` | `static void putc_str(char c, void *ctx, int *written)` |
 | `snctx` | struct | `kernel/printf.c:177` | `` |
-| `ERR_EACCES` | macro | `kernel/proc_sec.c:43` | `#define ERR_EACCES` |
-| `ERR_EINVAL` | macro | `kernel/proc_sec.c:44` | `#define ERR_EINVAL` |
-| `ERR_ENOMEM` | macro | `kernel/proc_sec.c:42` | `#define ERR_ENOMEM` |
-| `ERR_ENOSYS` | macro | `kernel/proc_sec.c:45` | `#define ERR_ENOSYS` |
-| `ERR_EOPNOTSUPP` | macro | `kernel/proc_sec.c:46` | `#define ERR_EOPNOTSUPP` |
-| `LINUX_ERRNO_MAX` | macro | `kernel/proc_sec.c:36` | `#define LINUX_ERRNO_MAX` |
-| `LINUX_NR_EXIT` | macro | `kernel/proc_sec.c:35` | `#define LINUX_NR_EXIT` |
-| `LINUX_NR_READ` | macro | `kernel/proc_sec.c:32` | `#define LINUX_NR_READ` |
-| `LINUX_NR_RT_SIGRETURN` | macro | `kernel/proc_sec.c:34` | `#define LINUX_NR_RT_SIGRETURN` |
-| `LINUX_NR_WRITE` | macro | `kernel/proc_sec.c:33` | `#define LINUX_NR_WRITE` |
-| `LINUX_PR_GET_DUMPABLE` | macro | `kernel/proc_sec.c:18` | `#define LINUX_PR_GET_DUMPABLE` |
-| `LINUX_PR_GET_NAME` | macro | `kernel/proc_sec.c:21` | `#define LINUX_PR_GET_NAME` |
-| `LINUX_PR_GET_NO_NEW_PRIVS` | macro | `kernel/proc_sec.c:25` | `#define LINUX_PR_GET_NO_NEW_PRIVS` |
-| `LINUX_PR_GET_SECCOMP` | macro | `kernel/proc_sec.c:22` | `#define LINUX_PR_GET_SECCOMP` |
-| `LINUX_PR_SET_DUMPABLE` | macro | `kernel/proc_sec.c:19` | `#define LINUX_PR_SET_DUMPABLE` |
-| `LINUX_PR_SET_NAME` | macro | `kernel/proc_sec.c:20` | `#define LINUX_PR_SET_NAME` |
-| `LINUX_PR_SET_NO_NEW_PRIVS` | macro | `kernel/proc_sec.c:24` | `#define LINUX_PR_SET_NO_NEW_PRIVS` |
-| `LINUX_PR_SET_SECCOMP` | macro | `kernel/proc_sec.c:23` | `#define LINUX_PR_SET_SECCOMP` |
-| `LINUX_SECCOMP_GET_ACTION_AVAIL` | macro | `kernel/proc_sec.c:31` | `#define LINUX_SECCOMP_GET_ACTION_AVAIL` |
-| `LINUX_SECCOMP_MODE_DISABLED` | macro | `kernel/proc_sec.c:26` | `#define LINUX_SECCOMP_MODE_DISABLED` |
-| `LINUX_SECCOMP_MODE_FILTER` | macro | `kernel/proc_sec.c:28` | `#define LINUX_SECCOMP_MODE_FILTER` |
-| `LINUX_SECCOMP_MODE_STRICT` | macro | `kernel/proc_sec.c:27` | `#define LINUX_SECCOMP_MODE_STRICT` |
-| `LINUX_SECCOMP_SET_MODE_FILTER` | macro | `kernel/proc_sec.c:30` | `#define LINUX_SECCOMP_SET_MODE_FILTER` |
-| `LINUX_SECCOMP_SET_MODE_STRICT` | macro | `kernel/proc_sec.c:29` | `#define LINUX_SECCOMP_SET_MODE_STRICT` |
-| `LINUX_TASK_COMM_LEN` | macro | `kernel/proc_sec.c:37` | `#define LINUX_TASK_COMM_LEN` |
-| `SEC_STRICT_LEN` | macro | `kernel/proc_sec.c:72` | `#define SEC_STRICT_LEN` |
-| `SOCK_FPROG_FILTER_OFF` | macro | `kernel/proc_sec.c:40` | `#define SOCK_FPROG_FILTER_OFF` |
 
 Next: [SYMBOLS_p9.md](SYMBOLS_p9.md)

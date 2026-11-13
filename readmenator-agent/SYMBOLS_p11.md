@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `Client` | class | `mcp/mcp_dogfood.py:19` | `class Client` |
+| `__init__` | method | `mcp/mcp_dogfood.py:20` | `def __init__(self, addons_dir)` |
+| `close` | method | `mcp/mcp_dogfood.py:68` | `def close(self)` |
+| `main` | function | `mcp/mcp_dogfood.py:78` | `def main()` |
+| `request` | method | `mcp/mcp_dogfood.py:40` | `def request(self, method, params)` |
+| `tool` | method | `mcp/mcp_dogfood.py:58` | `def tool(self, name, params)` |
+| `AddonError` | class | `mcp/minios_addons.py:56` | `class AddonError(Exception)` |
+| `AddonState` | class | `mcp/minios_addons.py:377` | `class AddonState` |
+| `__init__` | method | `mcp/minios_addons.py:380` | `def __init__(self, path)` |
+| `_clean` | function | `mcp/minios_addons.py:62` | `def _clean(s)` |
+| `_unquote` | function | `mcp/minios_addons.py:66` | `def _unquote(v)` |
+| `exit_code_of` | function | `mcp/minios_addons.py:372` | `def exit_code_of(text)` |
+| `fail` | function | `mcp/minios_addons.py:85` | `def fail(lineno, why)` |
+| `install_addon` | function | `mcp/minios_addons.py:401` | `def install_addon(session, addon, cfg)` |
+| `load` | method | `mcp/minios_addons.py:383` | `def load(self)` |
+| `load_addons_dir` | function | `mcp/minios_addons.py:323` | `def load_addons_dir(addons_dir)` |
+| `parse_addon_yaml` | function | `mcp/minios_addons.py:73` | `def parse_addon_yaml(text)` |
+| `save` | method | `mcp/minios_addons.py:393` | `def save(self, addons)` |
+| `split_for_editor` | function | `mcp/minios_addons.py:347` | `def split_for_editor(text)` |
+| `validate_addon` | function | `mcp/minios_addons.py:205` | `def validate_addon(addon, source)` |
+| `validate_addon_path` | function | `mcp/minios_addons.py:295` | `def validate_addon_path(path)` |
+| `validate_shell_line` | function | `mcp/minios_addons.py:309` | `def validate_shell_line(line)` |
+| `LogBuffer` | class | `mcp/minios_mcp.py:146` | `class LogBuffer` |
+| `MCPServer` | class | `mcp/minios_mcp.py:731` | `class MCPServer` |
+| `MiniOSSession` | class | `mcp/minios_mcp.py:216` | `class MiniOSSession` |
+| `RPCError` | class | `mcp/minios_mcp.py:137` | `class RPCError(Exception)` |
+| `ToolError` | class | `mcp/minios_mcp.py:131` | `class ToolError(Exception)` |
+| `__init__` | method | `mcp/minios_mcp.py:140` | `def __init__(self, code, message)` |
+| `__init__` | method | `mcp/minios_mcp.py:149` | `def __init__(self, cap)` |
+| `__init__` | method | `mcp/minios_mcp.py:219` | `def __init__(self, cfg)` |
+| `__init__` | method | `mcp/minios_mcp.py:734` | `def __init__(self, cfg)` |
+| `_addon_install` | method | `mcp/minios_mcp.py:863` | `def _addon_install(self, args)` |
+| `_addons_list` | method | `mcp/minios_mcp.py:842` | `def _addons_list(self)` |
+| `_call` | method | `mcp/minios_mcp.py:779` | `def _call(self, params)` |
+| `_cleanup_parts` | method | `mcp/minios_mcp.py:493` | `def _cleanup_parts(self, parts)` |
+| `_close_pty` | method | `mcp/minios_mcp.py:329` | `def _close_pty(self)` |
+| `_dispatch` | method | `mcp/minios_mcp.py:796` | `def _dispatch(self, name, args)` |
+| `_drop_pidfile` | method | `mcp/minios_mcp.py:278` | `def _drop_pidfile(self)` |
+| `_find_locked` | method | `mcp/minios_mcp.py:206` | `def _find_locked(self, marker, start)` |
+| `_handle` | method | `mcp/minios_mcp.py:746` | `def _handle(self, line)` |
+| `_initialize` | method | `mcp/minios_mcp.py:772` | `def _initialize(self, params)` |
 | `_read_loop` | method | `mcp/minios_mcp.py:319` | `def _read_loop(self)` |
 | `_reap_stale` | method | `mcp/minios_mcp.py:242` | `def _reap_stale(self)` |
 | `_reply` | method | `mcp/minios_mcp.py:884` | `def _reply(self, msg)` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p10.md](SYMBOLS_p10.md)
 | `tls_x509_parse_pubkey` | function | `net/tls_x509.c:452` | `int tls_x509_parse_pubkey(const unsigned char *der, unsigned len,                           struc...` |
 | `tls_x509_verify_chain` | function | `net/tls_x509.c:521` | `int tls_x509_verify_chain(const unsigned char *chain, unsigned chain_len,                        ...` |
 | `x509_cert` | struct | `net/tls_x509.c:265` | `` |
-| `x509_name` | struct | `net/tls_x509.c:129` | `` |
-| `x509_sans` | struct | `net/tls_x509.c:172` | `` |
-| `__sl_3` | function | `progs/asm/aes.s:3087` | `` |
-| `__sl_4` | function | `progs/asm/aes.s:3091` | `` |
-| `_start` | function | `progs/asm/aes.s:4113` | `` |
-| `aes_add_round_key` | function | `progs/asm/aes.s:1646` | `` |
-| `aes_cipher` | function | `progs/asm/aes.s:2466` | `` |
-| `aes_ctr_crypt` | function | `progs/asm/aes.s:2648` | `` |
-| `aes_gf_mul` | function | `progs/asm/aes.s:783` | `` |
-| `aes_has` | function | `progs/asm/aes.s:345` | `` |
-| `aes_hdr_get` | function | `progs/asm/aes.s:2906` | `` |
-| `aes_hdr_put` | function | `progs/asm/aes.s:2791` | `` |
-| `aes_init_tables` | function | `progs/asm/aes.s:970` | `` |
-| `aes_iv` | function | `progs/asm/aes.s:19` | `` |
-| `aes_iv_increment` | function | `progs/asm/aes.s:2565` | `` |
-| `aes_key_expand` | function | `progs/asm/aes.s:1197` | `` |
-| `aes_mix_columns` | function | `progs/asm/aes.s:1993` | `` |
-| `aes_parse_hex` | function | `progs/asm/aes.s:620` | `` |
-| `aes_rc` | function | `progs/asm/aes.s:11` | `` |
-| `aes_read_all` | function | `progs/asm/aes.s:23` | `` |
-| `aes_rk` | function | `progs/asm/aes.s:3` | `` |
-| `aes_rotl8` | function | `progs/asm/aes.s:933` | `` |
-| `aes_run` | function | `progs/asm/aes.s:3077` | `` |
-| `aes_sb` | function | `progs/asm/aes.s:7` | `` |
-| `aes_shift_rows` | function | `progs/asm/aes.s:1774` | `` |
-| `aes_st` | function | `progs/asm/aes.s:15` | `` |
-| `aes_sub_bytes` | function | `progs/asm/aes.s:1721` | `` |
-| `aes_tool_name` | function | `progs/asm/aes.s:3059` | `` |
-| `aes_write_all` | function | `progs/asm/aes.s:238` | `` |
-| `aes_xtime` | function | `progs/asm/aes.s:884` | `` |
-| `hex_val` | function | `progs/asm/aes.s:498` | `` |
-| `main` | function | `progs/asm/aes.s:3807` | `` |
-| `_start` | function | `progs/asm/cp.s:322` | `` |
-| `main` | function | `progs/asm/cp.s:3` | `` |
-| `_start` | function | `progs/asm/cvmfmt.s:245` | `` |
-| `fcanary` | function | `progs/asm/cvmfmt.s:7` | `` |
-| `fwin` | function | `progs/asm/cvmfmt.s:3` | `` |
-| `main` | function | `progs/asm/cvmfmt.s:11` | `` |
-| `_start` | function | `progs/asm/fib.s:82` | `` |
-| `fib` | function | `progs/asm/fib.s:3` | `` |
-| `main` | function | `progs/asm/fib.s:61` | `` |
 
 Next: [SYMBOLS_p12.md](SYMBOLS_p12.md)

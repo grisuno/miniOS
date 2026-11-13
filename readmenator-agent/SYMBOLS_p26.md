@@ -3,6 +3,53 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `fresh_all` | function | `tests/test_futex.c:48` | `static void fresh_all(void)` |
+| `fresh_proc` | function | `tests/test_futex.c:39` | `static void fresh_proc(int pid)` |
+| `main` | function | `tests/test_futex.c:60` | `int main(void)` |
+| `masked` | function | `tests/test_futex.c:153` | `* with PRIVATE and CLOCK_REALTIME masked (393 = 9\|128\|256). */ CHECK(futex_linux_cmd(9) == LINUX_FUTEX_WAIT_BITSET...` |
+| `proc_get` | function | `tests/test_futex.c:18` | `proc_t *proc_get(int pid)` |
+| `schedule` | function | `tests/test_futex.c:26` | `void schedule(void)` |
+| `CHECK` | macro | `tests/test_fx.c:16` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_fx.c:23` | `int main(void)` |
+| `CHECK` | macro | `tests/test_hal_io.c:23` | `#define CHECK(cond, msg)` |
+| `HAL_IO_HOST_TEST` | macro | `tests/test_hal_io.c:11` | `#define HAL_IO_HOST_TEST` |
+| `main` | function | `tests/test_hal_io.c:30` | `int main(void)` |
+| `CHECK` | macro | `tests/test_httpd.c:18` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_httpd.c:25` | `int main(void)` |
+| `CHECK` | macro | `tests/test_jelly.c:17` | `#define CHECK(cond, msg)` |
+| `absi` | function | `tests/test_jelly.c:24` | `static int absi(int v)` |
+| `main` | function | `tests/test_jelly.c:29` | `int main(void)` |
+| `CHECK` | macro | `tests/test_ktime.c:14` | `#define CHECK(c, m)` |
+| `main` | function | `tests/test_ktime.c:16` | `int main(void)` |
+| `CHECK` | macro | `tests/test_ldso.c:20` | `#define CHECK(cond, msg)` |
+| `DYN_OFF` | macro | `tests/test_ldso.c:54` | `#define DYN_OFF` |
+| `HASH_OFF` | macro | `tests/test_ldso.c:57` | `#define HASH_OFF` |
+| `IMG_SZ` | macro | `tests/test_ldso.c:53` | `#define IMG_SZ` |
+| `RELA_OFF` | macro | `tests/test_ldso.c:58` | `#define RELA_OFF` |
+| `STR_OFF` | macro | `tests/test_ldso.c:55` | `#define STR_OFF` |
+| `SYM_OFF` | macro | `tests/test_ldso.c:56` | `#define SYM_OFF` |
+| `build_tables` | function | `tests/test_ldso.c:92` | `static void build_tables(unsigned char *img, int rela_type)` |
+| `main` | function | `tests/test_ldso.c:127` | `int main(void)` |
+| `w16` | function | `tests/test_ldso.c:27` | `static void w16(unsigned char *p, unsigned v)` |
+| `w32` | function | `tests/test_ldso.c:32` | `static void w32(unsigned char *p, unsigned long v)` |
+| `w64` | function | `tests/test_ldso.c:39` | `static void w64(unsigned char *p, unsigned long long v)` |
+| `CHECK` | macro | `tests/test_leakcheck.c:20` | `#define CHECK(cond, msg)` |
+| `MINIOS_LEAKCHECK_IMPL` | macro | `tests/test_leakcheck.c:10` | `#define MINIOS_LEAKCHECK_IMPL` |
+| `MINIOS_LK_ENABLE` | macro | `tests/test_leakcheck.c:11` | `#define MINIOS_LK_ENABLE` |
+| `main` | function | `tests/test_leakcheck.c:27` | `int main(void)` |
+| `Config` | class | `tests/test_minifs_tools.py:23` | `class Config` |
+| `MiniFSToolsTest` | class | `tests/test_minifs_tools.py:40` | `class MiniFSToolsTest(TestCase)` |
+| `mkfs` | method | `tests/test_minifs_tools.py:58` | `def mkfs(self)` |
+| `run` | function | `tests/test_minifs_tools.py:35` | `def run(args)` |
+| `setUp` | method | `tests/test_minifs_tools.py:43` | `def setUp(self)` |
+| `superblock_word` | method | `tests/test_minifs_tools.py:64` | `def superblock_word(self, image, off)` |
+| `tearDown` | method | `tests/test_minifs_tools.py:47` | `def tearDown(self)` |
+| `test_counters_match_bitmaps` | method | `tests/test_minifs_tools.py:69` | `def test_counters_match_bitmaps(self)` |
+| `test_duplicate_file_is_an_error` | method | `tests/test_minifs_tools.py:107` | `def test_duplicate_file_is_an_error(self)` |
+| `test_fsck_rejects_drifted_counters` | method | `tests/test_minifs_tools.py:79` | `def test_fsck_rejects_drifted_counters(self)` |
+| `test_same_named_directories_merge` | method | `tests/test_minifs_tools.py:93` | `def test_same_named_directories_merge(self)` |
+| `tree` | method | `tests/test_minifs_tools.py:50` | `def tree(self, root, rel, data)` |
+| `CHECK` | macro | `tests/test_minios_png.c:16` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_minios_png.c:191` | `int main(void)` |
 | `t_332` | function | `tests/test_minios_png.c:24` | `static void t_332(void)` |
 | `t_blit` | function | `tests/test_minios_png.c:139` | `static void t_blit(void)` |
@@ -449,52 +496,5 @@ Previous: [SYMBOLS_p25.md](SYMBOLS_p25.md)
 | `read_file_raw` | method | `tools/minifs_saves.py:173` | `def read_file_raw(self, st)` |
 | `resolve` | method | `tools/minifs_saves.py:197` | `def resolve(self, path)` |
 | `strict_name` | function | `tools/minifs_saves.py:224` | `def strict_name(nm)` |
-| `u16` | function | `tools/minifs_saves.py:53` | `def u16(d, o)` |
-| `u32` | function | `tools/minifs_saves.py:57` | `def u32(d, o)` |
-| `valid_name` | function | `tools/minifs_saves.py:216` | `def valid_name(nm)` |
-| `walk` | function | `tools/minifs_saves.py:293` | `def walk(dir_ino, rel)` |
-| `Client` | class | `tools/minios_cli.py:38` | `class Client` |
-| `__init__` | method | `tools/minios_cli.py:39` | `def __init__(self)` |
-| `close` | method | `tools/minios_cli.py:87` | `def close(self)` |
-| `main` | function | `tools/minios_cli.py:100` | `def main()` |
-| `request` | method | `tools/minios_cli.py:56` | `def request(self, method, params)` |
-| `tool` | method | `tools/minios_cli.py:77` | `def tool(self, name, params)` |
-| `QMP` | class | `tools/minios_gui.py:66` | `class QMP` |
-| `__init__` | method | `tools/minios_gui.py:67` | `def __init__(self, path)` |
-| `_recv` | method | `tools/minios_gui.py:83` | `def _recv(self)` |
-| `cmd` | method | `tools/minios_gui.py:79` | `def cmd(self, obj)` |
-| `key` | method | `tools/minios_gui.py:108` | `def key(self, qcode, up)` |
-| `main` | function | `tools/minios_gui.py:118` | `def main()` |
-| `mouse` | method | `tools/minios_gui.py:98` | `def mouse(self, dx, dy, click)` |
-| `read_serial` | function | `tools/minios_gui.py:50` | `def read_serial(master, timeout)` |
-| `screendump` | method | `tools/minios_gui.py:114` | `def screendump(self, path)` |
-| `FrameDiff` | class | `tools/minios_hyper.py:339` | `class FrameDiff` |
-| `GdbChannel` | class | `tools/minios_hyper.py:152` | `class GdbChannel` |
-| `Guest` | class | `tools/minios_hyper.py:211` | `class Guest` |
-| `HyperChecks` | class | `tools/minios_hyper.py:409` | `class HyperChecks` |
-| `HyperConfig` | class | `tools/minios_hyper.py:50` | `class HyperConfig` |
-| `QmpChannel` | class | `tools/minios_hyper.py:96` | `class QmpChannel` |
-| `RspCodec` | class | `tools/minios_hyper.py:73` | `class RspCodec` |
-| `__init__` | method | `tools/minios_hyper.py:99` | `def __init__(self, path)` |
-| `__init__` | method | `tools/minios_hyper.py:155` | `def __init__(self, port)` |
-| `__init__` | method | `tools/minios_hyper.py:214` | `def __init__(self, with_gdb)` |
-| `__init__` | method | `tools/minios_hyper.py:412` | `def __init__(self, guest)` |
-| `_cmd` | method | `tools/minios_hyper.py:168` | `def _cmd(self, payload)` |
-| `_drain` | method | `tools/minios_hyper.py:162` | `def _drain(self)` |
-| `_last_frames` | method | `tools/minios_hyper.py:476` | `def _last_frames(self)` |
-| `_reader` | method | `tools/minios_hyper.py:260` | `def _reader(self)` |
-| `_roundtrip` | method | `tools/minios_hyper.py:109` | `def _roundtrip(self, obj)` |
-| `_ser` | method | `tools/minios_hyper.py:248` | `def _ser(self)` |
-| `check` | function | `tools/minios_hyper.py:495` | `def check(ok, msg)` |
-| `close` | method | `tools/minios_hyper.py:145` | `def close(self)` |
-| `close` | method | `tools/minios_hyper.py:204` | `def close(self)` |
-| `cont` | method | `tools/minios_hyper.py:201` | `def cont(self)` |
-| `count_cursors` | method | `tools/minios_hyper.py:394` | `def count_cursors(shot_path)` |
-| `cursor_positions` | method | `tools/minios_hyper.py:356` | `def cursor_positions(shot_path)` |
-| `decode` | method | `tools/minios_hyper.py:85` | `def decode(frame)` |
-| `dump` | method | `tools/minios_hyper.py:308` | `def dump(self, name)` |
-| `encode` | method | `tools/minios_hyper.py:77` | `def encode(payload)` |
-| `gdb_chan` | method | `tools/minios_hyper.py:303` | `def gdb_chan(self)` |
-| `gfx_frames` | method | `tools/minios_hyper.py:439` | `def gfx_frames(self)` |
 
 Next: [SYMBOLS_p27.md](SYMBOLS_p27.md)

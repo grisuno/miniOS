@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `x509_name` | struct | `net/tls_x509.c:129` | `` |
+| `x509_sans` | struct | `net/tls_x509.c:172` | `` |
+| `__sl_3` | function | `progs/asm/aes.s:3087` | `` |
+| `__sl_4` | function | `progs/asm/aes.s:3091` | `` |
+| `_start` | function | `progs/asm/aes.s:4113` | `` |
+| `aes_add_round_key` | function | `progs/asm/aes.s:1646` | `` |
+| `aes_cipher` | function | `progs/asm/aes.s:2466` | `` |
+| `aes_ctr_crypt` | function | `progs/asm/aes.s:2648` | `` |
+| `aes_gf_mul` | function | `progs/asm/aes.s:783` | `` |
+| `aes_has` | function | `progs/asm/aes.s:345` | `` |
+| `aes_hdr_get` | function | `progs/asm/aes.s:2906` | `` |
+| `aes_hdr_put` | function | `progs/asm/aes.s:2791` | `` |
+| `aes_init_tables` | function | `progs/asm/aes.s:970` | `` |
+| `aes_iv` | function | `progs/asm/aes.s:19` | `` |
+| `aes_iv_increment` | function | `progs/asm/aes.s:2565` | `` |
+| `aes_key_expand` | function | `progs/asm/aes.s:1197` | `` |
+| `aes_mix_columns` | function | `progs/asm/aes.s:1993` | `` |
+| `aes_parse_hex` | function | `progs/asm/aes.s:620` | `` |
+| `aes_rc` | function | `progs/asm/aes.s:11` | `` |
+| `aes_read_all` | function | `progs/asm/aes.s:23` | `` |
+| `aes_rk` | function | `progs/asm/aes.s:3` | `` |
+| `aes_rotl8` | function | `progs/asm/aes.s:933` | `` |
+| `aes_run` | function | `progs/asm/aes.s:3077` | `` |
+| `aes_sb` | function | `progs/asm/aes.s:7` | `` |
+| `aes_shift_rows` | function | `progs/asm/aes.s:1774` | `` |
+| `aes_st` | function | `progs/asm/aes.s:15` | `` |
+| `aes_sub_bytes` | function | `progs/asm/aes.s:1721` | `` |
+| `aes_tool_name` | function | `progs/asm/aes.s:3059` | `` |
+| `aes_write_all` | function | `progs/asm/aes.s:238` | `` |
+| `aes_xtime` | function | `progs/asm/aes.s:884` | `` |
+| `hex_val` | function | `progs/asm/aes.s:498` | `` |
+| `main` | function | `progs/asm/aes.s:3807` | `` |
+| `_start` | function | `progs/asm/cp.s:322` | `` |
+| `main` | function | `progs/asm/cp.s:3` | `` |
+| `_start` | function | `progs/asm/cvmfmt.s:245` | `` |
+| `fcanary` | function | `progs/asm/cvmfmt.s:7` | `` |
+| `fwin` | function | `progs/asm/cvmfmt.s:3` | `` |
+| `main` | function | `progs/asm/cvmfmt.s:11` | `` |
+| `_start` | function | `progs/asm/fib.s:82` | `` |
+| `fib` | function | `progs/asm/fib.s:3` | `` |
+| `main` | function | `progs/asm/fib.s:61` | `` |
 | `_start` | function | `progs/asm/freedom.s:11761` | `` |
 | `append` | function | `progs/asm/freedom.s:338` | `` |
 | `atoi` | function | `progs/asm/freedom.s:252` | `` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p11.md](SYMBOLS_p11.md)
 | `GREENRANGE` | macro | `progs/doomgeneric/am_map.c:55` | `#define GREENRANGE` |
 | `GREENS` | macro | `progs/doomgeneric/am_map.c:54` | `#define GREENS` |
 | `GRIDCOLORS` | macro | `progs/doomgeneric/am_map.c:81` | `#define GRIDCOLORS` |
-| `GRIDRANGE` | macro | `progs/doomgeneric/am_map.c:82` | `#define GRIDRANGE` |
-| `INITSCALEMTOF` | macro | `progs/doomgeneric/am_map.c:90` | `#define INITSCALEMTOF` |
-| `LINE_NEVERSEE` | macro | `progs/doomgeneric/am_map.c:109` | `#define LINE_NEVERSEE` |
-| `MTOF` | macro | `progs/doomgeneric/am_map.c:103` | `#define MTOF(x)` |
-| `M_ZOOMIN` | macro | `progs/doomgeneric/am_map.c:96` | `#define M_ZOOMIN` |
-| `M_ZOOMOUT` | macro | `progs/doomgeneric/am_map.c:99` | `#define M_ZOOMOUT` |
-| `PUTDOT` | macro | `progs/doomgeneric/am_map.c:1010` | `#define PUTDOT(xx,yy,cc)` |
-| `R` | macro | `progs/doomgeneric/am_map.c:143` | `#define R` |
-| `R` | macro | `progs/doomgeneric/am_map.c:155` | `#define R` |
-| `R` | macro | `progs/doomgeneric/am_map.c:176` | `#define R` |
-| `R` | macro | `progs/doomgeneric/am_map.c:184` | `#define R` |
-| `REDRANGE` | macro | `progs/doomgeneric/am_map.c:51` | `#define REDRANGE` |
-| `REDS` | macro | `progs/doomgeneric/am_map.c:50` | `#define REDS` |
-| `SECRETWALLCOLORS` | macro | `progs/doomgeneric/am_map.c:79` | `#define SECRETWALLCOLORS` |
-| `SECRETWALLRANGE` | macro | `progs/doomgeneric/am_map.c:80` | `#define SECRETWALLRANGE` |
-| `THINGCOLORS` | macro | `progs/doomgeneric/am_map.c:77` | `#define THINGCOLORS` |
-| `THINGRANGE` | macro | `progs/doomgeneric/am_map.c:78` | `#define THINGRANGE` |
-| `TSWALLCOLORS` | macro | `progs/doomgeneric/am_map.c:71` | `#define TSWALLCOLORS` |
-| `TSWALLRANGE` | macro | `progs/doomgeneric/am_map.c:72` | `#define TSWALLRANGE` |
-| `WALLCOLORS` | macro | `progs/doomgeneric/am_map.c:69` | `#define WALLCOLORS` |
-| `WALLRANGE` | macro | `progs/doomgeneric/am_map.c:70` | `#define WALLRANGE` |
-| `WHITE` | macro | `progs/doomgeneric/am_map.c:63` | `#define WHITE` |
-| `XHAIRCOLORS` | macro | `progs/doomgeneric/am_map.c:83` | `#define XHAIRCOLORS` |
-| `YELLOWRANGE` | macro | `progs/doomgeneric/am_map.c:61` | `#define YELLOWRANGE` |
-| `YELLOWS` | macro | `progs/doomgeneric/am_map.c:60` | `#define YELLOWS` |
-| `YOURCOLORS` | macro | `progs/doomgeneric/am_map.c:67` | `#define YOURCOLORS` |
-| `YOURRANGE` | macro | `progs/doomgeneric/am_map.c:68` | `#define YOURRANGE` |
-| `fline_t` | struct | `progs/doomgeneric/am_map.c:116` | `` |
-| `fpoint_t` | struct | `progs/doomgeneric/am_map.c:111` | `` |
-| `islope_t` | struct | `progs/doomgeneric/am_map.c:131` | `` |
-| `mline_t` | struct | `progs/doomgeneric/am_map.c:126` | `` |
-| `mpoint_t` | struct | `progs/doomgeneric/am_map.c:121` | `` |
-| `AM_Drawer` | function | `progs/doomgeneric/am_map.h:39` | `void AM_Drawer (void);` |
-| `AM_MSGENTERED` | macro | `progs/doomgeneric/am_map.h:27` | `#define AM_MSGENTERED` |
-| `AM_MSGEXITED` | macro | `progs/doomgeneric/am_map.h:28` | `#define AM_MSGEXITED` |
-| `AM_MSGHEADER` | macro | `progs/doomgeneric/am_map.h:26` | `#define AM_MSGHEADER` |
-| `AM_Stop` | function | `progs/doomgeneric/am_map.h:43` | `void AM_Stop (void);` |
-| `AM_Ticker` | function | `progs/doomgeneric/am_map.h:35` | `void AM_Ticker (void);` |
-| `__AMMAP_H__` | macro | `progs/doomgeneric/am_map.h:20` | `#define __AMMAP_H__` |
-| `cheat_amap` | variable | `progs/doomgeneric/am_map.h:46` | `extern cheatseq_t cheat_amap;` |
-| `FILES_DIR` | macro | `progs/doomgeneric/config.h:100` | `#define FILES_DIR` |
 
 Next: [SYMBOLS_p13.md](SYMBOLS_p13.md)

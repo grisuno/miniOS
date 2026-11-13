@@ -2,6 +2,8 @@
 Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 
 ## Internal Dependencies (continued)
+- `progs/doomgeneric/r_main.h` -> `progs/doomgeneric/r_data.h`
+- `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/doomdef.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/doomstat.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/i_system.h`
 - `progs/doomgeneric/r_plane.c` -> `progs/doomgeneric/r_local.h`
@@ -287,7 +289,10 @@ Previous: [ARCHITECTURE_p2.md](ARCHITECTURE_p2.md)
 - `tests/test_arena.c` -> `headers/arena.h`
 - `tests/test_arena.c` -> `kernel/string.c`
 - `tests/test_batch.c` -> `headers/batch.h`
+- `tests/test_blur.c` -> `headers/wm_blur.h`
+- `tests/test_blur.c` -> `kernel/string.c`
 - `tests/test_chrome.c` -> `headers/wm_chrome.h`
+- `tests/test_dock.c` -> `headers/wm_dock.h`
 - `tests/test_doom_pwad.py` -> `tools/doom_pwad.py`
 - `tests/test_driver.c` -> `headers/driver.h`
 - `tests/test_driver.c` -> `kernel/string.c`

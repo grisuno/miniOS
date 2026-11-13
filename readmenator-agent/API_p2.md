@@ -489,9 +489,9 @@ Imported by: `drivers/block.c`, `fs/ext4.c`, `fs/fat32.c`, `fs/fsimg.c`, `fs/min
 
 ## headers/desktop_shortcuts.h
 Imported by: `kernel/vga_fb.c`
-- `desktop_shortcuts_load` (function) `headers/desktop_shortcuts.h:82` `void desktop_shortcuts_load(void);` -- Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first draw.
-- `desktop_shortcuts_draw` (function) `headers/desktop_shortcuts.h:85` `void desktop_shortcuts_draw(void);` -- Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first...
-- `desktop_shortcuts_hit_test` (function) `headers/desktop_shortcuts.h:89` `const char *desktop_shortcuts_hit_test(int mx, int my);` -- Handle a left-click at (mx, my).
+- `desktop_shortcuts_load` (function) `headers/desktop_shortcuts.h:83` `void desktop_shortcuts_load(void);` -- Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first draw.
+- `desktop_shortcuts_draw` (function) `headers/desktop_shortcuts.h:86` `void desktop_shortcuts_draw(void);` -- Load shortcuts from etc/shortcuts, decode icons, compute layout. * Called once from vga_fb_draw_desktop on first...
+- `desktop_shortcuts_hit_test` (function) `headers/desktop_shortcuts.h:90` `const char *desktop_shortcuts_hit_test(int mx, int my);` -- Handle a left-click at (mx, my).
 
 
 Next: [API_p3.md](API_p3.md)

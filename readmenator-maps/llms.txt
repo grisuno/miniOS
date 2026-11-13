@@ -1,6 +1,6 @@
 # miniOS
 
-> Static analysis knowledge base for miniOS: 10 communities, 596 files, 2269 imports, 7 languages, 13163 symbols.
+> Static analysis knowledge base for miniOS: 10 communities, 600 files, 2276 imports, 7 languages, 13210 symbols.
 
 Generated offline by readmenator (zero LLM tokens). Start with the wiki index for the big picture, then the agent INDEX for file lookup.
 
@@ -25,13 +25,13 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/API_p3.md](md/readmenator-agent/API_p3.md): Imported by: drivers/block.c, drivers/driver.c, drivers/ide.c, drivers/pcspk.c, drivers/sb16.c, drivers/usbblk.c, drivers/virtioblk.c, kernel/syscalls.c...
 - [readmenator-agent/API_p4.md](md/readmenator-agent/API_p4.md): Depends on: headers/ldso.h, headers/pipe.h, headers/spinlock.h, headers/vma.h, progs/miniosabi.h
 - [readmenator-agent/API_p5.md](md/readmenator-agent/API_p5.md): Imported by: drivers/pcspk.c, kernel/shell.c, kernel/syscalls.c
-- [readmenator-agent/API_p6.md](md/readmenator-agent/API_p6.md): Depends on: headers/drivers/modifiers.h
-- [readmenator-agent/API_p7.md](md/readmenator-agent/API_p7.md): Depends on: headers/sched.h, headers/smp.h, headers/spinlock.h, headers/tlb.h
+- [readmenator-agent/API_p6.md](md/readmenator-agent/API_p6.md): Imported by: kernel/vgafb.c, tests/testchrome.c
+- [readmenator-agent/API_p7.md](md/readmenator-agent/API_p7.md): Depends on: headers/arch/x86/boot/bootdefs.h, headers/arch/x86/msr.h, headers/ldso.h, headers/minifs.h, headers/pcache.h, headers/tlb.h, headers/vgafb.h
 - [readmenator-agent/API_p8.md](md/readmenator-agent/API_p8.md): Depends on: headers/arch/x86/boot/bootdefs.h, headers/arch/x86/halio.h, headers/arch/x86/msr.h, headers/batch.h, headers/block.h, headers/driver.h...
 - [readmenator-agent/API_p9.md](md/readmenator-agent/API_p9.md): Depends on: headers/arch/x86/boot/bootdefs.h, headers/avatardata.h, headers/desktopicons.h, headers/desktopshortcuts.h, headers/drivers/kbd.h...
 - [readmenator-agent/ARCHITECTURE.md](md/readmenator-agent/ARCHITECTURE.md): arch/x86/apentry.S -> headers/arch/x86/boot/bootdefs.h
-- [readmenator-agent/ARCHITECTURE_p2.md](md/readmenator-agent/ARCHITECTURE_p2.md): progs/doomgeneric/doomgenericxlib.c -> kernel/time.c
-- [readmenator-agent/ARCHITECTURE_p3.md](md/readmenator-agent/ARCHITECTURE_p3.md): progs/doomgeneric/rplane.c -> progs/doomgeneric/doomstat.h
+- [readmenator-agent/ARCHITECTURE_p2.md](md/readmenator-agent/ARCHITECTURE_p2.md): progs/doomgeneric/doomgenericwin.c -> progs/doomgeneric/doomkeys.h
+- [readmenator-agent/ARCHITECTURE_p3.md](md/readmenator-agent/ARCHITECTURE_p3.md): progs/doomgeneric/rmain.h -> progs/doomgeneric/rdata.h
 - [readmenator-agent/ARCHITECTURE_p4.md](md/readmenator-agent/ARCHITECTURE_p4.md): drivers/block.c -> kernel.h
 - [readmenator-agent/CONCEPTS.md](md/readmenator-agent/CONCEPTS.md): Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
 - [readmenator-agent/INDEX_p2.md](md/readmenator-agent/INDEX_p2.md)
@@ -62,7 +62,7 @@ Generated offline by readmenator (zero LLM tokens). Start with the wiki index fo
 - [readmenator-agent/KB_headers_p3.md](md/readmenator-agent/KB_headers_p3.md): Doc: Docstring: allocation tracker for MiniOS, STB leakcheck lineage.
 - [readmenator-agent/KB_headers_p4.md](md/readmenator-agent/KB_headers_p4.md): Doc: Docstring: sanitize.h -- Single choke point for syscall argument checks.
 - [readmenator-agent/KB_headers_p5.md](md/readmenator-agent/KB_headers_p5.md): Doc: process-management syscall handlers shared with the
-- [readmenator-agent/KB_headers_p6.md](md/readmenator-agent/KB_headers_p6.md): Doc: Docstring: Window event contract for the MiniOS desktop.
+- [readmenator-agent/KB_headers_p6.md](md/readmenator-agent/KB_headers_p6.md): Doc: Docstring: Dock magnification math for the MiniOS desktop.
 
 ## Project Docs
 

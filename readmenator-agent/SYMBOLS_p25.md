@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `vedit_read_key_poll` | function | `progs/vedit/vedit.c:3692` | `static int vedit_read_key_poll(void)` |
+| `vedit_region` | function | `progs/vedit/vedit.c:1248` | `static int vedit_region(int *y0, int *x0, int *y1, int *x1)` |
+| `vedit_region_to_clip` | function | `progs/vedit/vedit.c:3383` | `static int vedit_region_to_clip(void)` |
+| `vedit_replace_all` | function | `progs/vedit/vedit.c:1761` | `static int vedit_replace_all(const char *old_s, const char *new_s,                              i...` |
+| `vedit_replace_at` | function | `progs/vedit/vedit.c:1741` | `static int vedit_replace_at(int row, int col, const char *old_s,                             cons...` |
+| `vedit_row_ptr` | function | `progs/vedit/vedit.c:769` | `static char *vedit_row_ptr(int idx)` |
+| `vedit_run_kind` | function | `progs/vedit/vedit.c:2390` | `static int vedit_run_kind(const char *fname)` |
+| `vedit_run_rc` | function | `progs/vedit/vedit.c:3214` | `static void vedit_run_rc(const char *path)` |
+| `vedit_save` | function | `progs/vedit/vedit.c:1988` | `static int vedit_save(void)` |
+| `vedit_scan_line` | function | `progs/vedit/vedit.c:489` | `static int vedit_scan_line(const char *t, int len, int st)` |
+| `vedit_search_fwd` | function | `progs/vedit/vedit.c:1659` | `static int vedit_search_fwd(int row, int col, const char *needle, int magic,                     ...` |
+| `vedit_search_rev` | function | `progs/vedit/vedit.c:1691` | `static int vedit_search_rev(int row, int col, const char *needle, int magic)` |
+| `vedit_sel_clear` | function | `progs/vedit/vedit.c:3292` | `static void vedit_sel_clear(void)` |
+| `vedit_sel_copy` | function | `progs/vedit/vedit.c:3310` | `static int vedit_sel_copy(void)` |
+| `vedit_sel_norm` | function | `progs/vedit/vedit.c:3297` | `static void vedit_sel_norm(void)` |
+| `vedit_selftest` | function | `progs/vedit/vedit.c:4763` | `static int vedit_selftest(void)` |
+| `vedit_selftest_build` | function | `progs/vedit/vedit.c:2532` | `static int vedit_selftest_build(void)` |
+| `vedit_selftest_leak` | function | `progs/vedit/vedit.c:2725` | `static int vedit_selftest_leak(void)` |
+| `vedit_set_mark` | function | `progs/vedit/vedit.c:1240` | `static void vedit_set_mark(void)` |
+| `vedit_set_msg` | function | `progs/vedit/vedit.c:361` | `static void vedit_set_msg(const char *s)` |
+| `vedit_set_title` | function | `progs/vedit/vedit.c:47` | `static long vedit_set_title(const char *t)` |
+| `vedit_sh_split` | function | `progs/vedit/vedit.c:3428` | `static int vedit_sh_split(const char *line, char *buf, const char **argv)` |
+| `vedit_shell_command` | function | `progs/vedit/vedit.c:3448` | `static void vedit_shell_command(const char *line)` |
+| `vedit_sign_elf` | function | `progs/vedit/vedit.c:2366` | `static void vedit_sign_elf(const char *out)` |
+| `vedit_spawn` | function | `progs/vedit/vedit.c:56` | `static long vedit_spawn(const char *path, const char *redir, int argc,                         co...` |
+| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:2337` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,                   ...` |
+| `vedit_split` | function | `progs/vedit/vedit.c:916` | `static void vedit_split(void)` |
+| `vedit_split_set` | function | `progs/vedit/vedit.c:2822` | `static void vedit_split_set(int on)` |
+| `vedit_state_at` | function | `progs/vedit/vedit.c:760` | `static int vedit_state_at(int row)` |
+| `vedit_str_case` | function | `progs/vedit/vedit.c:1005` | `static void vedit_str_case(char *s, int mode)` |
+| `vedit_str_transpose` | function | `progs/vedit/vedit.c:1032` | `static void vedit_str_transpose(char *s, int len, int pos)` |
+| `vedit_sync_title` | function | `progs/vedit/vedit.c:4662` | `static void vedit_sync_title(void)` |
+| `vedit_tab` | function | `progs/vedit/vedit.c:969` | `static void vedit_tab(void)` |
+| `vedit_time_ms` | function | `progs/vedit/vedit.c:89` | `static unsigned long vedit_time_ms(void)` |
+| `vedit_top` | macro | `progs/vedit/vedit.c:298` | `#define vedit_top` |
+| `vedit_transpose` | function | `progs/vedit/vedit.c:1490` | `static int vedit_transpose(void)` |
+| `vedit_trunc` | macro | `progs/vedit/vedit.c:301` | `#define vedit_trunc` |
+| `vedit_used` | macro | `progs/vedit/vedit.c:294` | `#define vedit_used` |
+| `vedit_vga` | function | `progs/vedit/vedit.c:68` | `static long vedit_vga(int on)` |
+| `vedit_word_move` | function | `progs/vedit/vedit.c:1416` | `static int vedit_word_move(int dir)` |
+| `vedit_write_region` | function | `progs/vedit/vedit.c:3477` | `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,                    ...` |
 | `vedit_yank` | function | `progs/vedit/vedit.c:1383` | `static int vedit_yank(void)` |
 | `WL_CLIENT_H` | macro | `progs/wl/wl_client.h:14` | `#define WL_CLIENT_H` |
 | `WL_CLIENT_MSGS` | macro | `progs/wl/wl_client.h:18` | `#define WL_CLIENT_MSGS` |
@@ -311,8 +352,14 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `CHECK` | macro | `tests/test_batch.c:17` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_batch.c:31` | `int main(void)` |
 | `stub_dispatch` | function | `tests/test_batch.c:24` | `static long stub_dispatch(uint32_t opcode)` |
+| `CHECK` | macro | `tests/test_blur.c:19` | `#define CHECK(cond, msg)` |
+| `GRID_H` | macro | `tests/test_blur.c:27` | `#define GRID_H` |
+| `GRID_W` | macro | `tests/test_blur.c:26` | `#define GRID_W` |
+| `main` | function | `tests/test_blur.c:29` | `int main(void)` |
 | `CHECK` | macro | `tests/test_chrome.c:16` | `#define CHECK(cond, msg)` |
 | `main` | function | `tests/test_chrome.c:23` | `int main(void)` |
+| `CHECK` | macro | `tests/test_dock.c:17` | `#define CHECK(cond, msg)` |
+| `main` | function | `tests/test_dock.c:24` | `int main(void)` |
 | `ExtendedLegendTests` | class | `tests/test_doom_pwad.py:255` | `class ExtendedLegendTests(TestCase)` |
 | `GridValidationTests` | class | `tests/test_doom_pwad.py:29` | `class GridValidationTests(TestCase)` |
 | `MultiSectorMutationTests` | class | `tests/test_doom_pwad.py:388` | `class MultiSectorMutationTests(TestCase)` |
@@ -449,52 +496,5 @@ Previous: [SYMBOLS_p24.md](SYMBOLS_p24.md)
 | `FREEDOMUI_HOST_TEST` | macro | `tests/test_freedomui.c:10` | `#define FREEDOMUI_HOST_TEST` |
 | `main` | function | `tests/test_freedomui.c:24` | `int main(void)` |
 | `CHECK` | macro | `tests/test_futex.c:32` | `#define CHECK(cond, msg)` |
-| `fresh_all` | function | `tests/test_futex.c:48` | `static void fresh_all(void)` |
-| `fresh_proc` | function | `tests/test_futex.c:39` | `static void fresh_proc(int pid)` |
-| `main` | function | `tests/test_futex.c:60` | `int main(void)` |
-| `masked` | function | `tests/test_futex.c:153` | `* with PRIVATE and CLOCK_REALTIME masked (393 = 9\|128\|256). */ CHECK(futex_linux_cmd(9) == LINUX_FUTEX_WAIT_BITSET...` |
-| `proc_get` | function | `tests/test_futex.c:18` | `proc_t *proc_get(int pid)` |
-| `schedule` | function | `tests/test_futex.c:26` | `void schedule(void)` |
-| `CHECK` | macro | `tests/test_fx.c:16` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_fx.c:23` | `int main(void)` |
-| `CHECK` | macro | `tests/test_hal_io.c:23` | `#define CHECK(cond, msg)` |
-| `HAL_IO_HOST_TEST` | macro | `tests/test_hal_io.c:11` | `#define HAL_IO_HOST_TEST` |
-| `main` | function | `tests/test_hal_io.c:30` | `int main(void)` |
-| `CHECK` | macro | `tests/test_httpd.c:18` | `#define CHECK(cond, msg)` |
-| `main` | function | `tests/test_httpd.c:25` | `int main(void)` |
-| `CHECK` | macro | `tests/test_jelly.c:17` | `#define CHECK(cond, msg)` |
-| `absi` | function | `tests/test_jelly.c:24` | `static int absi(int v)` |
-| `main` | function | `tests/test_jelly.c:29` | `int main(void)` |
-| `CHECK` | macro | `tests/test_ktime.c:14` | `#define CHECK(c, m)` |
-| `main` | function | `tests/test_ktime.c:16` | `int main(void)` |
-| `CHECK` | macro | `tests/test_ldso.c:20` | `#define CHECK(cond, msg)` |
-| `DYN_OFF` | macro | `tests/test_ldso.c:54` | `#define DYN_OFF` |
-| `HASH_OFF` | macro | `tests/test_ldso.c:57` | `#define HASH_OFF` |
-| `IMG_SZ` | macro | `tests/test_ldso.c:53` | `#define IMG_SZ` |
-| `RELA_OFF` | macro | `tests/test_ldso.c:58` | `#define RELA_OFF` |
-| `STR_OFF` | macro | `tests/test_ldso.c:55` | `#define STR_OFF` |
-| `SYM_OFF` | macro | `tests/test_ldso.c:56` | `#define SYM_OFF` |
-| `build_tables` | function | `tests/test_ldso.c:92` | `static void build_tables(unsigned char *img, int rela_type)` |
-| `main` | function | `tests/test_ldso.c:127` | `int main(void)` |
-| `w16` | function | `tests/test_ldso.c:27` | `static void w16(unsigned char *p, unsigned v)` |
-| `w32` | function | `tests/test_ldso.c:32` | `static void w32(unsigned char *p, unsigned long v)` |
-| `w64` | function | `tests/test_ldso.c:39` | `static void w64(unsigned char *p, unsigned long long v)` |
-| `CHECK` | macro | `tests/test_leakcheck.c:20` | `#define CHECK(cond, msg)` |
-| `MINIOS_LEAKCHECK_IMPL` | macro | `tests/test_leakcheck.c:10` | `#define MINIOS_LEAKCHECK_IMPL` |
-| `MINIOS_LK_ENABLE` | macro | `tests/test_leakcheck.c:11` | `#define MINIOS_LK_ENABLE` |
-| `main` | function | `tests/test_leakcheck.c:27` | `int main(void)` |
-| `Config` | class | `tests/test_minifs_tools.py:23` | `class Config` |
-| `MiniFSToolsTest` | class | `tests/test_minifs_tools.py:40` | `class MiniFSToolsTest(TestCase)` |
-| `mkfs` | method | `tests/test_minifs_tools.py:58` | `def mkfs(self)` |
-| `run` | function | `tests/test_minifs_tools.py:35` | `def run(args)` |
-| `setUp` | method | `tests/test_minifs_tools.py:43` | `def setUp(self)` |
-| `superblock_word` | method | `tests/test_minifs_tools.py:64` | `def superblock_word(self, image, off)` |
-| `tearDown` | method | `tests/test_minifs_tools.py:47` | `def tearDown(self)` |
-| `test_counters_match_bitmaps` | method | `tests/test_minifs_tools.py:69` | `def test_counters_match_bitmaps(self)` |
-| `test_duplicate_file_is_an_error` | method | `tests/test_minifs_tools.py:107` | `def test_duplicate_file_is_an_error(self)` |
-| `test_fsck_rejects_drifted_counters` | method | `tests/test_minifs_tools.py:79` | `def test_fsck_rejects_drifted_counters(self)` |
-| `test_same_named_directories_merge` | method | `tests/test_minifs_tools.py:93` | `def test_same_named_directories_merge(self)` |
-| `tree` | method | `tests/test_minifs_tools.py:50` | `def tree(self, root, rel, data)` |
-| `CHECK` | macro | `tests/test_minios_png.c:16` | `#define CHECK(cond, msg)` |
 
 Next: [SYMBOLS_p26.md](SYMBOLS_p26.md)

@@ -255,8 +255,10 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `WM_BTN_W` | macro | `headers/vga_fb.h:148` | `#define WM_BTN_W` |
 | `WM_FOCUS_GFX` | macro | `headers/vga_fb.h:229` | `#define WM_FOCUS_GFX` |
 | `below` | function | `headers/vga_fb.h:99` | `* file below (800x600 RGB PNG on the ramdisk, produced by * tools/gen_desktop_pngs.py) is decoded once per boot via...` |
+| `chrome_blur_counts` | function | `headers/vga_fb.h:272` | `void chrome_blur_counts(int *active, unsigned long *panels);` |
 | `dock_bounce_counts` | function | `headers/vga_fb.h:264` | `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);` |
 | `dock_click_count` | function | `headers/vga_fb.h:265` | `void dock_click_count(unsigned long *edges);` |
+| `dock_mag_counts` | function | `headers/vga_fb.h:269` | `void dock_mag_counts(int *level, unsigned long *paints);` |
 | `dock_pending_active` | function | `headers/vga_fb.h:266` | `int dock_pending_active(void);` |
 | `fb_bpp` | variable | `headers/vga_fb.h:26` | `extern int fb_bpp;` |
 | `fb_bytes_per_pixel` | function | `headers/vga_fb.h:30` | `int fb_bytes_per_pixel(void);` |
@@ -268,18 +270,18 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `fb_width` | variable | `headers/vga_fb.h:23` | `extern int fb_width;` |
 | `fb_write_packed` | function | `headers/vga_fb.h:201` | `void fb_write_packed(int x, int y, unsigned long rgb);` |
 | `fb_write_row_packed` | function | `headers/vga_fb.h:224` | `void fb_write_row_packed(int x, int y, const unsigned int *src, int n);` |
-| `fx_burns_completed` | variable | `headers/vga_fb.h:289` | `extern unsigned long fx_burns_completed;` |
-| `fx_genies_completed` | variable | `headers/vga_fb.h:290` | `extern unsigned long fx_genies_completed;` |
-| `fx_melts_completed` | variable | `headers/vga_fb.h:288` | `extern unsigned long fx_melts_completed;` |
+| `fx_burns_completed` | variable | `headers/vga_fb.h:295` | `extern unsigned long fx_burns_completed;` |
+| `fx_genies_completed` | variable | `headers/vga_fb.h:296` | `extern unsigned long fx_genies_completed;` |
+| `fx_melts_completed` | variable | `headers/vga_fb.h:294` | `extern unsigned long fx_melts_completed;` |
 | `gfx_frames_composited` | variable | `headers/vga_fb.h:59` | `extern unsigned long gfx_frames_composited;` |
 | `gfx_win_title` | variable | `headers/vga_fb.h:50` | `extern const char *gfx_win_title;` |
 | `mouse_state` | variable | `headers/vga_fb.h:167` | `extern mouse_state_t mouse_state;` |
 | `mouse_state_t` | struct | `headers/vga_fb.h:159` | `` |
 | `nk_win_y` | variable | `headers/vga_fb.h:79` | `extern int nk_win_x, nk_win_y;` |
-| `pixels` | function | `headers/vga_fb.h:270` | `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...` |
+| `pixels` | function | `headers/vga_fb.h:276` | `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...` |
 | `term_clear` | function | `headers/vga_fb.h:195` | `void term_clear(void);` |
 | `term_rows` | variable | `headers/vga_fb.h:156` | `extern int term_x, term_y, term_cols, term_rows;` |
-| `vga_fb_active` | variable | `headers/vga_fb.h:299` | `extern int vga_fb_active;` |
+| `vga_fb_active` | variable | `headers/vga_fb.h:305` | `extern int vga_fb_active;` |
 | `vga_fb_blit_nk_rgb_window` | function | `headers/vga_fb.h:76` | `void vga_fb_blit_nk_rgb_window(void);` |
 | `vga_fb_blit_nk_window` | function | `headers/vga_fb.h:75` | `void vga_fb_blit_nk_window(void);` |
 | `vga_fb_boot_config` | function | `headers/vga_fb.h:40` | `void vga_fb_boot_config(void);` |
@@ -321,7 +323,7 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vga_fb_rect_rgb` | function | `headers/vga_fb.h:190` | `void vga_fb_rect_rgb(int x, int y, int w, int h, uint8_t r, uint8_t g, uint8_t b);` |
 | `vga_fb_reset_default` | function | `headers/vga_fb.h:207` | `void vga_fb_reset_default(void);` |
 | `vga_fb_resize` | function | `headers/vga_fb.h:206` | `void vga_fb_resize(int dcols, int drows);` |
-| `vga_fb_set_gfx_mode` | function | `headers/vga_fb.h:297` | `void vga_fb_set_gfx_mode(int on);` |
+| `vga_fb_set_gfx_mode` | function | `headers/vga_fb.h:303` | `void vga_fb_set_gfx_mode(int on);` |
 | `vga_fb_set_gfx_palette` | function | `headers/vga_fb.h:38` | `void vga_fb_set_gfx_palette(const unsigned char *pal);` |
 | `vga_fb_snap_window` | function | `headers/vga_fb.h:205` | `void vga_fb_snap_window(int zone);` |
 | `vga_fb_str` | function | `headers/vga_fb.h:192` | `void vga_fb_str(int col, int row, const char *s, uint8_t fg, uint8_t bg);` |
@@ -335,14 +337,14 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vga_fb_toggle_fullscreen` | function | `headers/vga_fb.h:203` | `void vga_fb_toggle_fullscreen(void);` |
 | `vga_fb_toggle_minimize` | function | `headers/vga_fb.h:208` | `void vga_fb_toggle_minimize(void);` |
 | `vga_fb_wait_tick` | function | `headers/vga_fb.h:260` | `void vga_fb_wait_tick(void);` |
-| `vga_fx_burn_rect` | function | `headers/vga_fb.h:281` | `void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);` |
-| `vga_fx_enabled` | function | `headers/vga_fb.h:274` | `int vga_fx_enabled(void);` |
-| `vga_fx_free` | function | `headers/vga_fb.h:277` | `void vga_fx_free(unsigned int *buf);` |
-| `vga_fx_genie_rect` | function | `headers/vga_fb.h:283` | `void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int...` |
-| `vga_fx_melt_from_black` | function | `headers/vga_fb.h:280` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);` |
-| `vga_fx_melt_rect` | function | `headers/vga_fb.h:278` | `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);` |
-| `vga_fx_restore_rect` | function | `headers/vga_fb.h:276` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);` |
-| `vga_fx_snap_rect` | function | `headers/vga_fb.h:275` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);` |
+| `vga_fx_burn_rect` | function | `headers/vga_fb.h:287` | `void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);` |
+| `vga_fx_enabled` | function | `headers/vga_fb.h:280` | `int vga_fx_enabled(void);` |
+| `vga_fx_free` | function | `headers/vga_fb.h:283` | `void vga_fx_free(unsigned int *buf);` |
+| `vga_fx_genie_rect` | function | `headers/vga_fb.h:289` | `void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int...` |
+| `vga_fx_melt_from_black` | function | `headers/vga_fb.h:286` | `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);` |
+| `vga_fx_melt_rect` | function | `headers/vga_fb.h:284` | `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);` |
+| `vga_fx_restore_rect` | function | `headers/vga_fb.h:282` | `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);` |
+| `vga_fx_snap_rect` | function | `headers/vga_fb.h:281` | `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);` |
 | `wm_clear_close` | function | `headers/vga_fb.h:254` | `void wm_clear_close(void);` |
 | `wm_close_pending` | function | `headers/vga_fb.h:253` | `int wm_close_pending(void);` |
 | `wm_gfx_mode_active` | function | `headers/vga_fb.h:255` | `int wm_gfx_mode_active(void);` |
@@ -397,6 +399,18 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `vma_view_load` | function | `headers/vma.h:87` | `void vma_view_load(const vma_view_t *v);` |
 | `vma_view_save` | function | `headers/vma.h:86` | `void vma_view_save(vma_view_t *v);` |
 | `vma_view_t` | struct | `headers/vma.h:76` | `` |
+| `WM_BLUR_CHANNEL_MASK` | macro | `headers/wm_blur.h:36` | `#define WM_BLUR_CHANNEL_MASK` |
+| `WM_BLUR_CONFIG_DEFAULT` | macro | `headers/wm_blur.h:47` | `#define WM_BLUR_CONFIG_DEFAULT` |
+| `WM_BLUR_H` | macro | `headers/wm_blur.h:21` | `#define WM_BLUR_H` |
+| `WM_BLUR_PASSES_MAX` | macro | `headers/wm_blur.h:28` | `#define WM_BLUR_PASSES_MAX` |
+| `WM_BLUR_RADIUS_MAX` | macro | `headers/wm_blur.h:25` | `#define WM_BLUR_RADIUS_MAX` |
+| `WM_BLUR_RECIP_SHIFT` | macro | `headers/wm_blur.h:33` | `#define WM_BLUR_RECIP_SHIFT` |
+| `wm_blur_config_t` | struct | `headers/wm_blur.h:39` | `` |
+| `wm_blur_config_valid` | function | `headers/wm_blur.h:50` | `static inline int wm_blur_config_valid(const wm_blur_config_t *cfg)` |
+| `wm_blur_edge` | function | `headers/wm_blur.h:84` | `static inline int wm_blur_edge(int i, int n)` |
+| `wm_blur_line` | function | `headers/wm_blur.h:93` | `static inline void wm_blur_line(unsigned int *px, long stride, int n, int radius,                ...` |
+| `wm_blur_line_len` | function | `headers/wm_blur.h:58` | `static inline unsigned long wm_blur_line_len(int w, int h)` |
+| `wm_blur_recip` | function | `headers/wm_blur.h:68` | `static inline unsigned long wm_blur_recip(int win)` |
 | `WM_CHROME_ALPHA_OPAQUE` | macro | `headers/wm_chrome.h:15` | `#define WM_CHROME_ALPHA_OPAQUE` |
 | `WM_CHROME_CONFIG_DEFAULT` | macro | `headers/wm_chrome.h:35` | `#define WM_CHROME_CONFIG_DEFAULT` |
 | `WM_CHROME_H` | macro | `headers/wm_chrome.h:12` | `#define WM_CHROME_H` |
@@ -412,6 +426,19 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `wm_chrome_isqrt` | function | `headers/wm_chrome.h:41` | `static inline unsigned long wm_chrome_isqrt(unsigned long v)` |
 | `wm_chrome_shadow_alpha` | function | `headers/wm_chrome.h:110` | `static inline int wm_chrome_shadow_alpha(const wm_chrome_config_t *cfg, int px, int py,          ...` |
 | `wm_chrome_shift` | function | `headers/wm_chrome.h:85` | `static inline unsigned long wm_chrome_shift(unsigned long px, int delta)` |
+| `WM_DOCK_ALPHA_OPAQUE` | macro | `headers/wm_dock.h:34` | `#define WM_DOCK_ALPHA_OPAQUE` |
+| `WM_DOCK_FRAC_ONE` | macro | `headers/wm_dock.h:31` | `#define WM_DOCK_FRAC_ONE` |
+| `WM_DOCK_H` | macro | `headers/wm_dock.h:18` | `#define WM_DOCK_H` |
+| `WM_DOCK_LEVEL_ONE` | macro | `headers/wm_dock.h:21` | `#define WM_DOCK_LEVEL_ONE` |
+| `WM_DOCK_REACH_MAX` | macro | `headers/wm_dock.h:25` | `#define WM_DOCK_REACH_MAX` |
+| `WM_DOCK_SIZE_MAX` | macro | `headers/wm_dock.h:28` | `#define WM_DOCK_SIZE_MAX` |
+| `wm_dock_abs` | function | `headers/wm_dock.h:46` | `static inline long wm_dock_abs(long v)` |
+| `wm_dock_config_t` | struct | `headers/wm_dock.h:39` | `` |
+| `wm_dock_level` | function | `headers/wm_dock.h:61` | `static inline int wm_dock_level(int from, int rising, unsigned long elapsed,                     ...` |
+| `wm_dock_level_clamp` | function | `headers/wm_dock.h:52` | `static inline int wm_dock_level_clamp(long level)` |
+| `wm_dock_mag_size` | function | `headers/wm_dock.h:78` | `static inline int wm_dock_mag_size(const wm_dock_config_t *cfg, long dist, int level)` |
+| `wm_dock_sample` | function | `headers/wm_dock.h:120` | `static inline unsigned long wm_dock_sample(const unsigned char *rgba, int sw, int sh,            ...` |
+| `wm_dock_src_coord` | function | `headers/wm_dock.h:104` | `static inline long wm_dock_src_coord(int o, int d, int s)` |
 | `WM_COMBOS_N` | macro | `headers/wm_events.h:198` | `#define WM_COMBOS_N` |
 | `WM_EVENTS_H` | macro | `headers/wm_events.h:11` | `#define WM_EVENTS_H` |
 | `WM_EVENT_CONFIG_DEFAULT` | macro | `headers/wm_events.h:49` | `#define WM_EVENT_CONFIG_DEFAULT` |
@@ -469,32 +496,5 @@ Previous: [SYMBOLS_p6.md](SYMBOLS_p6.md)
 | `wm_title_bar_rect` | function | `headers/wm_geom.h:48` | `static inline wm_rect_t wm_title_bar_rect(const wm_geom_config_t *cfg, int px, int py, int w)` |
 | `Downscale` | function | `headers/wm_gfxview.h:88` | `* Downscale (fit below 1x) always takes the exact fit. Returns 1 on  * success, 0 on degenerate i...` |
 | `WM_GFXVIEW_CONFIG_DEFAULT` | macro | `headers/wm_gfxview.h:41` | `#define WM_GFXVIEW_CONFIG_DEFAULT` |
-| `WM_GFXVIEW_DIM_MAX` | macro | `headers/wm_gfxview.h:44` | `#define WM_GFXVIEW_DIM_MAX` |
-| `WM_GFXVIEW_H` | macro | `headers/wm_gfxview.h:21` | `#define WM_GFXVIEW_H` |
-| `wm_gfxview_clamp` | function | `headers/wm_gfxview.h:134` | `static inline void wm_gfxview_clamp(wm_gfxview_rect_t *r, int fb_w, int fb_h)` |
-| `wm_gfxview_config_t` | struct | `headers/wm_gfxview.h:31` | `` |
-| `wm_gfxview_dims_ok` | function | `headers/wm_gfxview.h:79` | `static inline int wm_gfxview_dims_ok(int w, int h)` |
-| `wm_gfxview_ease` | function | `headers/wm_gfxview.h:291` | `static inline long wm_gfxview_ease(int t, int n, long den)` |
-| `wm_gfxview_lerp_rect` | function | `headers/wm_gfxview.h:313` | `static inline int wm_gfxview_lerp_rect(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b,   ...` |
-| `wm_gfxview_map_point` | function | `headers/wm_gfxview.h:255` | `static inline int wm_gfxview_map_point(const wm_gfxview_t *v, int sw, int sh,                    ...` |
-| `wm_gfxview_mode_name` | function | `headers/wm_gfxview.h:64` | `static inline const char *wm_gfxview_mode_name(int mode)` |
-| `wm_gfxview_place_content` | function | `headers/wm_gfxview.h:160` | `static inline int wm_gfxview_place_content(const wm_gfxview_config_t *cfg, int sw, int sh,       ...` |
-| `wm_gfxview_rect_same` | function | `headers/wm_gfxview.h:336` | `static inline int wm_gfxview_rect_same(const wm_gfxview_rect_t *a, const wm_gfxview_rect_t *b)` |
-| `wm_gfxview_rect_t` | struct | `headers/wm_gfxview.h:47` | `` |
-| `wm_gfxview_t` | struct | `headers/wm_gfxview.h:56` | `` |
-| `WM_JELLY_CONFIG_DEFAULT` | macro | `headers/wm_jelly.h:48` | `#define WM_JELLY_CONFIG_DEFAULT` |
-| `WM_JELLY_FP` | macro | `headers/wm_jelly.h:22` | `#define WM_JELLY_FP` |
-| `WM_JELLY_GRID` | macro | `headers/wm_jelly.h:19` | `#define WM_JELLY_GRID` |
-| `WM_JELLY_H` | macro | `headers/wm_jelly.h:16` | `#define WM_JELLY_H` |
-| `WM_JELLY_WEIGHT_ONE` | macro | `headers/wm_jelly.h:25` | `#define WM_JELLY_WEIGHT_ONE` |
-| `wm_jelly_abs` | function | `headers/wm_jelly.h:71` | `static inline int wm_jelly_abs(int v)` |
-| `wm_jelly_at_rest` | function | `headers/wm_jelly.h:186` | `static inline int wm_jelly_at_rest(const wm_jelly_config_t *cfg, const wm_jelly_t *j)` |
-| `wm_jelly_clamp` | function | `headers/wm_jelly.h:59` | `static inline int wm_jelly_clamp(int v, int lim)` |
-| `wm_jelly_config_t` | struct | `headers/wm_jelly.h:33` | `` |
-| `wm_jelly_neighbours` | function | `headers/wm_jelly.h:130` | `static inline int wm_jelly_neighbours(const int *d, int r, int c)` |
-| `wm_jelly_reset` | function | `headers/wm_jelly.h:77` | `static inline void wm_jelly_reset(wm_jelly_t *j)` |
-| `wm_jelly_sample` | function | `headers/wm_jelly.h:203` | `static inline void wm_jelly_sample(const wm_jelly_t *j, int x, int y, int w, int h,              ...` |
-| `wm_jelly_step` | function | `headers/wm_jelly.h:155` | `static inline void wm_jelly_step(const wm_jelly_config_t *cfg, wm_jelly_t *j)` |
-| `wm_jelly_t` | struct | `headers/wm_jelly.h:51` | `` |
 
 Next: [SYMBOLS_p8.md](SYMBOLS_p8.md)

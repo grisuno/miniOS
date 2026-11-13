@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `paint_adler` | function | `progs/paint/paint.c:296` | `static unsigned long paint_adler(const unsigned char *p, unsigned long n)` |
+| `paint_blit` | function | `progs/paint/paint.c:549` | `static void paint_blit(int ox, int oy)` |
+| `paint_circle_fill` | function | `progs/paint/paint.c:161` | `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,                           ...` |
+| `paint_clamp` | function | `progs/paint/paint.c:92` | `static int paint_clamp(int v, int lo, int hi)` |
+| `paint_crc_init` | function | `progs/paint/paint.c:272` | `static void paint_crc_init(void)` |
+| `paint_crc_update` | function | `progs/paint/paint.c:285` | `static unsigned long paint_crc_update(unsigned long c,                                       cons...` |
+| `paint_dab` | function | `progs/paint/paint.c:108` | `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,                       unsig...` |
+| `paint_flood` | function | `progs/paint/paint.c:179` | `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,                        uns...` |
+| `paint_gui_run` | function | `progs/paint/paint.c:942` | `static void paint_gui_run(void)` |
+| `paint_handle_input` | function | `progs/paint/paint.c:577` | `static void paint_handle_input(struct nk_context *ctx)` |
+| `paint_ink` | function | `progs/paint/paint.c:570` | `static unsigned char paint_ink(void)` |
+| `paint_line` | function | `progs/paint/paint.c:119` | `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,                       int...` |
+| `paint_load_file` | function | `progs/paint/paint.c:461` | `static int paint_load_file(const char *path)` |
+| `paint_nearest` | function | `progs/paint/paint.c:223` | `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,                       ...` |
+| `paint_pal` | function | `progs/paint/paint.c:240` | `static const unsigned char *paint_pal(void)` |
+| `paint_path_ok` | function | `progs/paint/paint.c:251` | `static int paint_path_ok(const char *p)` |
+| `paint_pattern_present` | function | `progs/paint/paint.c:720` | `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)` |
+| `paint_plot` | function | `progs/paint/paint.c:99` | `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,                       unsig...` |
+| `paint_png_encode` | function | `progs/paint/paint.c:333` | `static long paint_png_encode(unsigned char *dst, unsigned long cap,                              ...` |
+| `paint_put_bytes` | function | `progs/paint/paint.c:320` | `static int paint_put_bytes(unsigned char *dst, unsigned long cap,                            unsi...` |
+| `paint_put_u32` | function | `progs/paint/paint.c:308` | `static int paint_put_u32(unsigned char *dst, unsigned long cap,                          unsigned...` |
+| `paint_rect_fill` | function | `progs/paint/paint.c:144` | `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,                     ...` |
+| `paint_save_file` | function | `progs/paint/paint.c:514` | `static int paint_save_file(const char *path)` |
+| `paint_selftest` | function | `progs/paint/paint.c:755` | `static int paint_selftest(void)` |
+| `paint_ui_build` | function | `progs/paint/paint.c:636` | `static void paint_ui_build(struct nk_context *ctx)` |
+| `BK_H` | macro | `progs/piano/piano.c:193` | `#define BK_H` |
+| `BK_W` | macro | `progs/piano/piano.c:192` | `#define BK_W` |
+| `BTN_GAP` | macro | `progs/piano/piano.c:548` | `#define BTN_GAP` |
+| `BTN_W` | macro | `progs/piano/piano.c:547` | `#define BTN_W` |
+| `CTRL_H` | macro | `progs/piano/piano.c:546` | `#define CTRL_H` |
+| `CTRL_Y` | macro | `progs/piano/piano.c:545` | `#define CTRL_Y` |
+| `FX_DELAY_CAP` | macro | `progs/piano/piano.c:407` | `#define FX_DELAY_CAP` |
+| `FX_DELAY_MAX_MS` | macro | `progs/piano/piano.c:408` | `#define FX_DELAY_MAX_MS` |
+| `FX_FEEDBACK` | macro | `progs/piano/piano.c:409` | `#define FX_FEEDBACK` |
+| `FX_TREM_FREQ` | macro | `progs/piano/piano.c:411` | `#define FX_TREM_FREQ` |
+| `FX_WET` | macro | `progs/piano/piano.c:410` | `#define FX_WET` |
+| `KBD_NO_NOTE` | macro | `progs/piano/piano.c:297` | `#define KBD_NO_NOTE` |
+| `KEY_H` | macro | `progs/piano/piano.c:191` | `#define KEY_H` |
+| `KEY_W` | macro | `progs/piano/piano.c:190` | `#define KEY_W` |
+| `KEY_Y` | macro | `progs/piano/piano.c:194` | `#define KEY_Y` |
+| `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:76` | `#define MAX_AUDIO_MS` |
 | `MAX_VOICES` | macro | `progs/piano/piano.c:221` | `#define MAX_VOICES` |
 | `NCTRLS` | macro | `progs/piano/piano.c:561` | `#define NCTRLS` |
 | `NKEYS` | macro | `progs/piano/piano.c:209` | `#define NKEYS` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p21.md](SYMBOLS_p21.md)
 | `freedom_wl_build_palette` | function | `progs/src/freedom_wl.c:1039` | `static long freedom_wl_build_palette(unsigned char *pal, long cap)` |
 | `freedom_wl_clip_rect` | function | `progs/src/freedom_wl.c:196` | `static long freedom_wl_clip_rect(FreedomWlConfig *c, long *x, long *y, long *w, long *h)` |
 | `freedom_wl_default` | function | `progs/src/freedom_wl.c:158` | `static FreedomWlConfig freedom_wl_default(void)` |
-| `freedom_wl_frame_bytes` | function | `progs/src/freedom_wl.c:227` | `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)` |
-| `freedom_wl_host_probe` | function | `progs/src/freedom_wl.c:1696` | `int freedom_wl_host_probe(FreedomWlConfig *c)` |
-| `freedom_wl_keysym` | function | `progs/src/freedom_wl.c:246` | `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)` |
-| `freedom_wl_sanitize_utf8` | function | `progs/src/freedom_wl.c:286` | `static long freedom_wl_sanitize_utf8(char *s, long cap)` |
-| `freedom_wl_selftest` | function | `progs/src/freedom_wl.c:1613` | `static long freedom_wl_selftest(void)` |
-| `freedom_wl_surface_attach` | function | `progs/src/freedom_wl.c:129` | `static long freedom_wl_surface_attach(FreedomWlConfig *c)` |
-| `freedom_wl_surface_id` | function | `progs/src/freedom_wl.c:114` | `static long freedom_wl_surface_id(void)` |
-| `freedom_wl_sys_kbd` | function | `progs/src/freedom_wl.c:1090` | `static long freedom_wl_sys_kbd(void)` |
-| `freedom_wl_sys_kbd_raw` | function | `progs/src/freedom_wl.c:1104` | `static long freedom_wl_sys_kbd_raw(long on)` |
-| `freedom_wl_sys_mouse` | function | `progs/src/freedom_wl.c:1083` | `static long freedom_wl_sys_mouse(long *m)` |
-| `freedom_wl_sys_palette` | function | `progs/src/freedom_wl.c:1076` | `static long freedom_wl_sys_palette(unsigned char *pal)` |
-| `freedom_wl_sys_present` | function | `progs/src/freedom_wl.c:1062` | `static long freedom_wl_sys_present(long buf, long origin)` |
-| `freedom_wl_sys_title` | function | `progs/src/freedom_wl.c:1069` | `static long freedom_wl_sys_title(char *t)` |
-| `freedom_wl_sys_vga_mode` | function | `progs/src/freedom_wl.c:1097` | `static long freedom_wl_sys_vga_mode(long on)` |
-| `freedom_wl_sys_yield` | function | `progs/src/freedom_wl.c:1111` | `static long freedom_wl_sys_yield(void)` |
-| `freedom_wl_title_ok` | function | `progs/src/freedom_wl.c:359` | `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)` |
-| `main` | function | `progs/src/freedom_wl.c:1731` | `int main(int argc, char **argv)` |
-| `net_dns_resolve` | function | `progs/src/freedom_wl.c:42` | `int net_dns_resolve(const char *host);` |
-| `present_buf` | type_alias | `progs/src/freedom_wl.c:76` | `typedef struct FreedomWlConfig { long present_buf;` |
-| `tls_close` | function | `progs/src/freedom_wl.c:46` | `void tls_close(int fd);` |
-| `tls_handshake` | function | `progs/src/freedom_wl.c:43` | `int tls_handshake(int fd, char *host);` |
-| `tls_recv` | function | `progs/src/freedom_wl.c:45` | `int tls_recv(int fd, char *buf, int len);` |
-| `tls_send` | function | `progs/src/freedom_wl.c:44` | `int tls_send(int fd, char *buf, int len);` |
-| `wl_append` | function | `progs/src/freedom_wl.c:404` | `static long wl_append(char *dst, long pos, char *src, long cap)` |
-| `wl_browse` | function | `progs/src/freedom_wl.c:1532` | `static long wl_browse(FreedomWlConfig *c)` |
-| `wl_ci_contains` | function | `progs/src/freedom_wl.c:453` | `static long wl_ci_contains(char *s, char *needle)` |
-| `wl_ci_lower` | function | `progs/src/freedom_wl.c:427` | `static long wl_ci_lower(long ch)` |
-| `wl_ci_starts` | function | `progs/src/freedom_wl.c:435` | `static long wl_ci_starts(char *s, char *pre)` |
-| `wl_copy` | function | `progs/src/freedom_wl.c:370` | `static long wl_copy(char *dst, char *src, long cap)` |
-| `wl_fetch_raw` | function | `progs/src/freedom_wl.c:1210` | `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)` |
-| `wl_filter_wrap` | function | `progs/src/freedom_wl.c:708` | `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...` |
-| `wl_has_scheme` | function | `progs/src/freedom_wl.c:467` | `static long wl_has_scheme(char *s)` |
-| `wl_looks_like_url` | function | `progs/src/freedom_wl.c:493` | `static long wl_looks_like_url(char *s)` |
-| `wl_make_search` | function | `progs/src/freedom_wl.c:512` | `static long wl_make_search(char *out, char *query, long cap)` |
-| `wl_parse_headers` | function | `progs/src/freedom_wl.c:1118` | `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...` |
-| `wl_render` | function | `progs/src/freedom_wl.c:1445` | `static long wl_render(FreedomWlConfig *c, long off)` |
-| `wl_resolve_redirect` | function | `progs/src/freedom_wl.c:609` | `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...` |
-| `wl_scroll_clamp` | function | `progs/src/freedom_wl.c:689` | `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)` |
-| `wl_split_url` | function | `progs/src/freedom_wl.c:544` | `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...` |
-| `wl_status_text` | function | `progs/src/freedom_wl.c:951` | `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...` |
-| `wl_strlen` | function | `progs/src/freedom_wl.c:388` | `static long wl_strlen(char *s, long cap)` |
 
 Next: [SYMBOLS_p23.md](SYMBOLS_p23.md)

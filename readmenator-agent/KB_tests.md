@@ -49,6 +49,17 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
 - Depends on: `headers/batch.h`
 
+## tests/test_blur.c
+- Doc: Docstring: Host test for headers/wm_blur.h (make test-blur).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `main` (function, line 29) `int main(void)`
+  - `CHECK` (macro, line 19) `#define CHECK(cond, msg)`
+  - `GRID_W` (macro, line 26) `#define GRID_W`
+  - `GRID_H` (macro, line 27) `#define GRID_H`
+- Depends on: `headers/wm_blur.h`, `kernel/string.c`
+
 ## tests/test_chrome.c
 - Doc: Docstring: Host test for headers/wm_chrome.h (make test-chrome).
 - Layer: testing
@@ -57,6 +68,15 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `main` (function, line 23) `int main(void)`
   - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
 - Depends on: `headers/wm_chrome.h`
+
+## tests/test_dock.c
+- Doc: Docstring: Host test for headers/wm_dock.h (make test-dock).
+- Layer: testing
+- Language: c
+- Symbols:
+  - `main` (function, line 24) `int main(void)`
+  - `CHECK` (macro, line 17) `#define CHECK(cond, msg)`
+- Depends on: `headers/wm_dock.h`
 
 ## tests/test_doom_pwad.py
 - Doc: host contract suite for tools/doom_pwad.py.
@@ -446,50 +466,6 @@ Pages: [KB_tests.md](KB_tests.md), [KB_tests_p2.md](KB_tests_p2.md)
   - `main` (function, line 22) `int main(void)`
   - `CHECK` (macro, line 9) `#define CHECK(cond, msg)`
 - Depends on: `headers/wm_notify.h`
-
-## tests/test_paint.c
-- Doc: Docstring: host test for the paint canvas/PNG contract (make test-paint).
-- Layer: testing
-- Language: c
-- Symbols:
-  - `t_clamp` (function, line 30) `static int t_clamp(int v, int lo, int hi)`
-  - `t_plot` (function, line 36) `static int t_plot(unsigned char *buf, int w, int h, int x, int y,
-                  unsigned char c)`
-  - `t_line` (function, line 44) `static int t_line(unsigned char *buf, int w, int h, int x0, int y0, int x1,
-                  int...`
-  - `t_flood` (function, line 70) `static int t_flood(unsigned char *buf, int w, int h, int x, int y,
-                   unsigned ch...`
-  - `t_crc_init` (function, line 116) `static void t_crc_init(void)`
-  - `t_crc` (function, line 129) `static unsigned long t_crc(const unsigned char *p, unsigned long n)`
-  - `t_path_ok` (function, line 138) `static int t_path_ok(const char *p)`
-  - `t_nearest` (function, line 155) `static int t_nearest(const unsigned char *pal, unsigned r, unsigned g,
-                     unsig...`
-  - `test_plot` (function, line 171) `static void test_plot(void)`
-  - `test_line` (function, line 188) `static void test_line(void)`
-  - `test_flood` (function, line 207) `static void test_flood(void)`
-  - `test_png_codec` (function, line 228) `static void test_png_codec(void)`
-  - `test_png_layout` (function, line 259) `static void test_png_layout(void)`
-  - `test_path` (function, line 273) `static void test_path(void)`
-  - `test_nearest` (function, line 287) `static void test_nearest(void)`
-  - `main` (function, line 300) `int main(void)`
-  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
-  - `T_W` (macro, line 23) `#define T_W`
-  - `T_H` (macro, line 24) `#define T_H`
-  - `T_N` (macro, line 25) `#define T_N`
-  - `T_PATH_MAX` (macro, line 26) `#define T_PATH_MAX`
-- Depends on: `kernel/string.c`
-
-## tests/test_panic.c
-- Doc: Docstring: Host test for headers/panic.h (make test-panic).
-- Layer: testing
-- Language: c
-- Symbols:
-  - `always_valid` (function, line 23) `static int always_valid(unsigned long addr)`
-  - `never_valid` (function, line 28) `static int never_valid(unsigned long addr)`
-  - `deny_valid` (function, line 35) `static int deny_valid(unsigned long addr)`
-  - `main` (function, line 39) `int main(void)`
-  - `CHECK` (macro, line 16) `#define CHECK(cond, msg)`
-- Depends on: `headers/panic.h`
 
 
 Next: [KB_tests_p2.md](KB_tests_p2.md)

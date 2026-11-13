@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `FREEDOM_GUI_TITLE_MAX` | macro | `progs/freedomui/platform_minios.c:31` | `#define FREEDOM_GUI_TITLE_MAX` |
+| `_GNU_SOURCE` | macro | `progs/freedomui/platform_minios.c:11` | `#define _GNU_SOURCE` |
+| `deliver_pending` | function | `progs/freedomui/platform_minios.c:173` | `static int deliver_pending(pf_display *d)` |
+| `key_event` | function | `progs/freedomui/platform_minios.c:183` | `static void key_event(pf_display *d, const ps2_key *k, int kind)` |
+| `minios_process_note` | struct | `progs/freedomui/platform_minios.c:124` | `` |
+| `now_ms` | function | `progs/freedomui/platform_minios.c:94` | `static long now_ms(void)` |
+| `pf_clipboard_available` | function | `progs/freedomui/platform_minios.c:293` | `int pf_clipboard_available(const pf_display *d)` |
+| `pf_clipboard_get_text` | function | `progs/freedomui/platform_minios.c:304` | `pf_status pf_clipboard_get_text(pf_display *d, char **out, size_t *out_len)` |
+| `pf_clipboard_set_text` | function | `progs/freedomui/platform_minios.c:297` | `pf_status pf_clipboard_set_text(pf_display *d, const char *text)` |
+| `pf_display` | struct | `progs/freedomui/platform_minios.c:68` | `` |
+| `pf_display_close` | function | `progs/freedomui/platform_minios.c:153` | `void pf_display_close(pf_display *d)` |
+| `pf_display_flush` | function | `progs/freedomui/platform_minios.c:162` | `void pf_display_flush(pf_display *d)` |
+| `pf_display_open` | function | `progs/freedomui/platform_minios.c:137` | `pf_status pf_display_open(pf_display **out)` |
+| `pf_display_set_cursor` | function | `progs/freedomui/platform_minios.c:166` | `void pf_display_set_cursor(pf_display *d, pf_cursor c)` |
+| `pf_display_wait` | function | `progs/freedomui/platform_minios.c:268` | `int pf_display_wait(pf_display *d, struct pollfd *extra, int n, int timeout_ms)` |
+| `pf_window` | struct | `progs/freedomui/platform_minios.c:56` | `` |
+| `pf_window_begin_move` | function | `progs/freedomui/platform_minios.c:436` | `void pf_window_begin_move(pf_window *w)` |
+| `pf_window_begin_resize` | function | `progs/freedomui/platform_minios.c:440` | `void pf_window_begin_resize(pf_window *w, pf_edge edge)` |
+| `pf_window_close` | function | `progs/freedomui/platform_minios.c:342` | `void pf_window_close(pf_window *w)` |
+| `pf_window_minimize` | function | `progs/freedomui/platform_minios.c:432` | `void pf_window_minimize(pf_window *w)` |
+| `pf_window_open` | function | `progs/freedomui/platform_minios.c:320` | `pf_status pf_window_open(pf_display *d, const pf_window_opts *o,                          const p...` |
+| `pf_window_present` | function | `progs/freedomui/platform_minios.c:374` | `void pf_window_present(pf_window *w)` |
+| `pf_window_set_fullscreen` | function | `progs/freedomui/platform_minios.c:428` | `void pf_window_set_fullscreen(pf_window *w, int on)` |
+| `pf_window_set_maximized` | function | `progs/freedomui/platform_minios.c:424` | `void pf_window_set_maximized(pf_window *w, int on)` |
+| `pf_window_set_title` | function | `progs/freedomui/platform_minios.c:408` | `void pf_window_set_title(pf_window *w, const char *title)` |
+| `pf_window_surface` | function | `progs/freedomui/platform_minios.c:359` | `cairo_surface_t *pf_window_surface(pf_window *w, int width, int height)` |
+| `pump_keyboard` | function | `progs/freedomui/platform_minios.c:210` | `static int pump_keyboard(pf_display *d)` |
+| `pump_mouse` | function | `progs/freedomui/platform_minios.c:224` | `static int pump_mouse(pf_display *d)` |
+| `set_title` | function | `progs/freedomui/platform_minios.c:98` | `static void set_title(const char *title)` |
+| `set_zoom_state` | function | `progs/freedomui/platform_minios.c:414` | `static void set_zoom_state(pf_window *w, unsigned bit, int on)` |
+| `sys_fb_info_rgb` | function | `progs/freedomui/platform_minios.c:83` | `static long sys_fb_info_rgb(int *rgb)` |
+| `ASCII_BS` | macro | `progs/freedomui/ps2_keymap.c:84` | `#define ASCII_BS` |
+| `ASCII_CR` | macro | `progs/freedomui/ps2_keymap.c:86` | `#define ASCII_CR` |
+| `ASCII_DEL` | macro | `progs/freedomui/ps2_keymap.c:88` | `#define ASCII_DEL` |
+| `ASCII_ESC` | macro | `progs/freedomui/ps2_keymap.c:87` | `#define ASCII_ESC` |
+| `ASCII_TAB` | macro | `progs/freedomui/ps2_keymap.c:85` | `#define ASCII_TAB` |
+| `KS_F1` | macro | `progs/freedomui/ps2_keymap.c:61` | `#define KS_F1` |
+| `KS_F11` | macro | `progs/freedomui/ps2_keymap.c:62` | `#define KS_F11` |
+| `KS_INSERT` | macro | `progs/freedomui/ps2_keymap.c:63` | `#define KS_INSERT` |
+| `KS_KP_BEGIN` | macro | `progs/freedomui/ps2_keymap.c:78` | `#define KS_KP_BEGIN` |
+| `KS_KP_DECIMAL` | macro | `progs/freedomui/ps2_keymap.c:81` | `#define KS_KP_DECIMAL` |
 | `KS_KP_DIVIDE` | macro | `progs/freedomui/ps2_keymap.c:82` | `#define KS_KP_DIVIDE` |
 | `KS_KP_DOWN` | macro | `progs/freedomui/ps2_keymap.c:74` | `#define KS_KP_DOWN` |
 | `KS_KP_END` | macro | `progs/freedomui/ps2_keymap.c:77` | `#define KS_KP_END` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p19.md](SYMBOLS_p19.md)
 | `get_b` | function | `progs/minicraft/minicraft.c:764` | `static unsigned char get_b(int x, int y, int z)` |
 | `goal_text` | function | `progs/minicraft/minicraft.c:2608` | `static const char *goal_text(void)` |
 | `ground_h_seed` | function | `progs/minicraft/minicraft.c:909` | `static int ground_h_seed(int x, int y, unsigned int seed)` |
-| `hash2` | function | `progs/minicraft/minicraft.c:823` | `static unsigned int hash2(int x, int y)` |
-| `hash2_seed` | function | `progs/minicraft/minicraft.c:830` | `static unsigned int hash2_seed(int x, int y, unsigned int seed)` |
-| `hurt` | function | `progs/minicraft/minicraft.c:2424` | `static void hurt(int dmg, const char *why)` |
-| `in_water_at` | function | `progs/minicraft/minicraft.c:814` | `static int in_water_at(float x, float y, float z)` |
-| `in_world` | function | `progs/minicraft/minicraft.c:562` | `static int in_world(int x, int y, int z)` |
-| `inv_add` | function | `progs/minicraft/minicraft.c:931` | `static int inv_add(int b, int n)` |
-| `inv_remove` | function | `progs/minicraft/minicraft.c:945` | `static int inv_remove(int b, int n)` |
-| `is_cave` | function | `progs/minicraft/minicraft.c:901` | `static int is_cave(int x, int y, int z, unsigned int seed)` |
-| `is_solid` | function | `progs/minicraft/minicraft.c:811` | `static int is_solid(unsigned char b)` |
-| `is_visible` | function | `progs/minicraft/minicraft.c:819` | `static int is_visible(unsigned char b)` |
-| `kbd_drain` | function | `progs/minicraft/minicraft.c:428` | `static void kbd_drain(void)` |
-| `light_recompute_col` | function | `progs/minicraft/minicraft.c:735` | `static void light_recompute_col(int x, int y)` |
-| `load_apply_player` | function | `progs/minicraft/minicraft.c:3175` | `static void load_apply_player(const SaveHeader *hd)` |
-| `load_chunk_file` | function | `progs/minicraft/minicraft.c:2974` | `static int load_chunk_file(int slot, int cx, int cy)` |
-| `load_reset_runtime` | function | `progs/minicraft/minicraft.c:3075` | `static void load_reset_runtime(void)` |
-| `load_world` | function | `progs/minicraft/minicraft.c:3271` | `static int load_world(void)` |
-| `load_world_legacy` | function | `progs/minicraft/minicraft.c:3137` | `static int load_world_legacy(FILE *f)` |
-| `load_world_v2` | function | `progs/minicraft/minicraft.c:3234` | `static int load_world_v2(FILE *f, SaveHeader *hd)` |
-| `load_world_v3` | function | `progs/minicraft/minicraft.c:3194` | `static int load_world_v3(FILE *f, SaveHeader *hd)` |
-| `main` | function | `progs/minicraft/minicraft.c:4095` | `int main(int argc, char **argv)` |
-| `mc_block_name` | function | `progs/minicraft/minicraft.c:1857` | `static const char *mc_block_name(unsigned char b)` |
-| `mc_crc32` | function | `progs/minicraft/minicraft.c:2919` | `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)` |
-| `mc_facing` | function | `progs/minicraft/minicraft.c:1877` | `static char mc_facing(void)` |
-| `mc_glyph` | function | `progs/minicraft/minicraft.c:1817` | `static int mc_glyph(char ch)` |
-| `mc_pixel` | function | `progs/minicraft/minicraft.c:1825` | `static void mc_pixel(int x, int y, unsigned char c)` |
-| `mc_smoothstep` | function | `progs/minicraft/minicraft.c:839` | `static float mc_smoothstep(float t)` |
-| `mc_text` | function | `progs/minicraft/minicraft.c:1831` | `static void mc_text(int x, int y, const char *s, unsigned char fg)` |
-| `mc_text_bg` | function | `progs/minicraft/minicraft.c:1844` | `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)` |
-| `mc_toggle_zoom` | function | `progs/minicraft/minicraft.c:316` | `static void mc_toggle_zoom(void)` |
-| `menu_ser_key` | function | `progs/minicraft/minicraft.c:391` | `static long menu_ser_key(long b)` |
-| `mob_pixel` | function | `progs/minicraft/minicraft.c:1945` | `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)` |
-| `mob_spawn_one` | function | `progs/minicraft/minicraft.c:1191` | `static void mob_spawn_one(Pig *m, int id, int hp, long now)` |
-| `move_x` | function | `progs/minicraft/minicraft.c:2379` | `static void move_x(float nx)` |
-| `move_y` | function | `progs/minicraft/minicraft.c:2384` | `static void move_y(float ny)` |
-| `move_z_abs` | function | `progs/minicraft/minicraft.c:2389` | `static MoveResult move_z_abs(float nz)` |
-| `new_world` | function | `progs/minicraft/minicraft.c:1095` | `static void new_world(unsigned int seed)` |
-| `pal_set` | function | `progs/minicraft/minicraft.c:497` | `static void pal_set(int i, int r, int g, int b)` |
-| `pause_menu` | function | `progs/minicraft/minicraft.c:3922` | `static int pause_menu(int *seed_io)` |
-| `pig_collides` | function | `progs/minicraft/minicraft.c:1243` | `static int pig_collides(float x, float y, float z)` |
-| `player_collides` | function | `progs/minicraft/minicraft.c:2355` | `static int player_collides(float x, float y, float z)` |
-| `poll_kbd` | function | `progs/minicraft/minicraft.c:2162` | `static void poll_kbd(void)` |
 
 Next: [SYMBOLS_p21.md](SYMBOLS_p21.md)

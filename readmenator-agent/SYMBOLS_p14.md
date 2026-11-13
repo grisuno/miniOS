@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `DEH_ParseCommandLine` | function | `progs/doomgeneric/deh_main.h:33` | `void DEH_ParseCommandLine(void);` |
+| `DEH_VANILLA_NUMSFX` | macro | `progs/doomgeneric/deh_main.h:31` | `#define DEH_VANILLA_NUMSFX` |
+| `DEH_VANILLA_NUMSTATES` | macro | `progs/doomgeneric/deh_main.h:30` | `#define DEH_VANILLA_NUMSTATES` |
+| `deh_allow_extended_strings` | variable | `progs/doomgeneric/deh_main.h:42` | `extern boolean deh_allow_extended_strings;` |
+| `deh_allow_long_cheats` | variable | `progs/doomgeneric/deh_main.h:44` | `extern boolean deh_allow_long_cheats;` |
+| `deh_allow_long_strings` | variable | `progs/doomgeneric/deh_main.h:43` | `extern boolean deh_allow_long_strings;` |
+| `deh_apply_cheats` | variable | `progs/doomgeneric/deh_main.h:45` | `extern boolean deh_apply_cheats;` |
+| `DEH_DEFAULT_BFG_CELLS_PER_SHOT` | macro | `progs/doomgeneric/deh_misc.h:37` | `#define DEH_DEFAULT_BFG_CELLS_PER_SHOT` |
+| `DEH_DEFAULT_BLUE_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:28` | `#define DEH_DEFAULT_BLUE_ARMOR_CLASS` |
+| `DEH_DEFAULT_GOD_MODE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:32` | `#define DEH_DEFAULT_GOD_MODE_HEALTH` |
+| `DEH_DEFAULT_GREEN_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:27` | `#define DEH_DEFAULT_GREEN_ARMOR_CLASS` |
+| `DEH_DEFAULT_IDFA_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:33` | `#define DEH_DEFAULT_IDFA_ARMOR` |
+| `DEH_DEFAULT_IDFA_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:34` | `#define DEH_DEFAULT_IDFA_ARMOR_CLASS` |
+| `DEH_DEFAULT_IDKFA_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:35` | `#define DEH_DEFAULT_IDKFA_ARMOR` |
+| `DEH_DEFAULT_IDKFA_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:36` | `#define DEH_DEFAULT_IDKFA_ARMOR_CLASS` |
+| `DEH_DEFAULT_INITIAL_BULLETS` | macro | `progs/doomgeneric/deh_misc.h:24` | `#define DEH_DEFAULT_INITIAL_BULLETS` |
+| `DEH_DEFAULT_INITIAL_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:23` | `#define DEH_DEFAULT_INITIAL_HEALTH` |
+| `DEH_DEFAULT_MAX_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:26` | `#define DEH_DEFAULT_MAX_ARMOR` |
+| `DEH_DEFAULT_MAX_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:25` | `#define DEH_DEFAULT_MAX_HEALTH` |
+| `DEH_DEFAULT_MAX_SOULSPHERE` | macro | `progs/doomgeneric/deh_misc.h:29` | `#define DEH_DEFAULT_MAX_SOULSPHERE` |
+| `DEH_DEFAULT_MEGASPHERE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:31` | `#define DEH_DEFAULT_MEGASPHERE_HEALTH` |
+| `DEH_DEFAULT_SOULSPHERE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:30` | `#define DEH_DEFAULT_SOULSPHERE_HEALTH` |
+| `DEH_DEFAULT_SPECIES_INFIGHTING` | macro | `progs/doomgeneric/deh_misc.h:38` | `#define DEH_DEFAULT_SPECIES_INFIGHTING` |
+| `DEH_MISC_H` | macro | `progs/doomgeneric/deh_misc.h:19` | `#define DEH_MISC_H` |
+| `deh_bfg_cells_per_shot` | variable | `progs/doomgeneric/deh_misc.h:56` | `extern int deh_bfg_cells_per_shot;` |
+| `deh_bfg_cells_per_shot` | macro | `progs/doomgeneric/deh_misc.h:77` | `#define deh_bfg_cells_per_shot` |
+| `deh_blue_armor_class` | variable | `progs/doomgeneric/deh_misc.h:47` | `extern int deh_blue_armor_class;` |
+| `deh_blue_armor_class` | macro | `progs/doomgeneric/deh_misc.h:68` | `#define deh_blue_armor_class` |
+| `deh_god_mode_health` | variable | `progs/doomgeneric/deh_misc.h:51` | `extern int deh_god_mode_health;` |
+| `deh_god_mode_health` | macro | `progs/doomgeneric/deh_misc.h:72` | `#define deh_god_mode_health` |
+| `deh_green_armor_class` | variable | `progs/doomgeneric/deh_misc.h:46` | `extern int deh_green_armor_class;` |
+| `deh_green_armor_class` | macro | `progs/doomgeneric/deh_misc.h:67` | `#define deh_green_armor_class` |
+| `deh_idfa_armor` | variable | `progs/doomgeneric/deh_misc.h:52` | `extern int deh_idfa_armor;` |
+| `deh_idfa_armor` | macro | `progs/doomgeneric/deh_misc.h:73` | `#define deh_idfa_armor` |
+| `deh_idfa_armor_class` | variable | `progs/doomgeneric/deh_misc.h:53` | `extern int deh_idfa_armor_class;` |
+| `deh_idfa_armor_class` | macro | `progs/doomgeneric/deh_misc.h:74` | `#define deh_idfa_armor_class` |
+| `deh_idkfa_armor` | variable | `progs/doomgeneric/deh_misc.h:54` | `extern int deh_idkfa_armor;` |
+| `deh_idkfa_armor` | macro | `progs/doomgeneric/deh_misc.h:75` | `#define deh_idkfa_armor` |
+| `deh_idkfa_armor_class` | variable | `progs/doomgeneric/deh_misc.h:55` | `extern int deh_idkfa_armor_class;` |
+| `deh_idkfa_armor_class` | macro | `progs/doomgeneric/deh_misc.h:76` | `#define deh_idkfa_armor_class` |
+| `deh_initial_bullets` | variable | `progs/doomgeneric/deh_misc.h:43` | `extern int deh_initial_bullets;` |
 | `deh_initial_bullets` | macro | `progs/doomgeneric/deh_misc.h:64` | `#define deh_initial_bullets` |
 | `deh_initial_health` | variable | `progs/doomgeneric/deh_misc.h:42` | `extern int deh_initial_health;` |
 | `deh_initial_health` | macro | `progs/doomgeneric/deh_misc.h:63` | `#define deh_initial_health` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p13.md](SYMBOLS_p13.md)
 | `HUlib_eraseIText` | function | `progs/doomgeneric/hu_lib.h:180` | `void HUlib_eraseIText(hu_itext_t* it);` |
 | `HUlib_eraseLineFromIText` | function | `progs/doomgeneric/hu_lib.h:160` | `void HUlib_eraseLineFromIText(hu_itext_t* it);` |
 | `HUlib_eraseSText` | function | `progs/doomgeneric/hu_lib.h:144` | `void HUlib_eraseSText(hu_stext_t* s);` |
-| `HUlib_eraseTextLine` | function | `progs/doomgeneric/hu_lib.h:112` | `void HUlib_eraseTextLine(hu_textline_t *l);` |
-| `HUlib_init` | function | `progs/doomgeneric/hu_lib.h:91` | `void HUlib_init(void);` |
-| `HUlib_initIText` | function | `progs/doomgeneric/hu_lib.h:148` | `void HUlib_initIText ( hu_itext_t* it, int x, int y, patch_t** font, int startchar, boolean* on );` |
-| `HUlib_initSText` | function | `progs/doomgeneric/hu_lib.h:121` | `void HUlib_initSText ( hu_stext_t* s, int x, int y, int h, patch_t** font, int startchar, boolean* on );` |
-| `HUlib_initTextLine` | function | `progs/doomgeneric/hu_lib.h:100` | `void HUlib_initTextLine(hu_textline_t *t, int x, int y, patch_t **f, int sc);` |
-| `HUlib_resetIText` | function | `progs/doomgeneric/hu_lib.h:163` | `void HUlib_resetIText(hu_itext_t* it);` |
-| `__HULIB__` | macro | `progs/doomgeneric/hu_lib.h:19` | `#define __HULIB__` |
-| `hu_itext_t` | struct | `progs/doomgeneric/hu_lib.h:72` | `` |
-| `hu_stext_t` | struct | `progs/doomgeneric/hu_lib.h:56` | `` |
-| `hu_textline_t` | struct | `progs/doomgeneric/hu_lib.h:36` | `` |
-| `HU_Drawer` | function | `progs/doomgeneric/hu_stuff.c:383` | `void HU_Drawer(void)` |
-| `HU_Erase` | function | `progs/doomgeneric/hu_stuff.c:393` | `void HU_Erase(void)` |
-| `HU_INPUTHEIGHT` | macro | `progs/doomgeneric/hu_stuff.c:60` | `#define HU_INPUTHEIGHT` |
-| `HU_INPUTTOGGLE` | macro | `progs/doomgeneric/hu_stuff.c:56` | `#define HU_INPUTTOGGLE` |
-| `HU_INPUTWIDTH` | macro | `progs/doomgeneric/hu_stuff.c:59` | `#define HU_INPUTWIDTH` |
-| `HU_INPUTX` | macro | `progs/doomgeneric/hu_stuff.c:57` | `#define HU_INPUTX` |
-| `HU_INPUTY` | macro | `progs/doomgeneric/hu_stuff.c:58` | `#define HU_INPUTY` |
-| `HU_Init` | function | `progs/doomgeneric/hu_stuff.c:286` | `void HU_Init(void)` |
-| `HU_Responder` | function | `progs/doomgeneric/hu_stuff.c:512` | `boolean HU_Responder(event_t *ev)` |
-| `HU_Start` | function | `progs/doomgeneric/hu_stuff.c:308` | `void HU_Start(void)` |
-| `HU_Stop` | function | `progs/doomgeneric/hu_stuff.c:303` | `void HU_Stop(void)` |
-| `HU_TITLE` | macro | `progs/doomgeneric/hu_stuff.c:47` | `#define HU_TITLE` |
-| `HU_TITLE2` | macro | `progs/doomgeneric/hu_stuff.c:48` | `#define HU_TITLE2` |
-| `HU_TITLEHEIGHT` | macro | `progs/doomgeneric/hu_stuff.c:52` | `#define HU_TITLEHEIGHT` |
-| `HU_TITLEP` | macro | `progs/doomgeneric/hu_stuff.c:49` | `#define HU_TITLEP` |
-| `HU_TITLET` | macro | `progs/doomgeneric/hu_stuff.c:50` | `#define HU_TITLET` |
-| `HU_TITLEX` | macro | `progs/doomgeneric/hu_stuff.c:53` | `#define HU_TITLEX` |
-| `HU_TITLEY` | macro | `progs/doomgeneric/hu_stuff.c:54` | `#define HU_TITLEY` |
-| `HU_TITLE_CHEX` | macro | `progs/doomgeneric/hu_stuff.c:51` | `#define HU_TITLE_CHEX` |
-| `HU_Ticker` | function | `progs/doomgeneric/hu_stuff.c:402` | `void HU_Ticker(void)` |
-| `HU_dequeueChatChar` | function | `progs/doomgeneric/hu_stuff.c:495` | `char HU_dequeueChatChar(void)` |
-| `HU_queueChatChar` | function | `progs/doomgeneric/hu_stuff.c:482` | `void HU_queueChatChar(char c)` |
-| `QUEUESIZE` | macro | `progs/doomgeneric/hu_stuff.c:475` | `#define QUEUESIZE` |
-| `showMessages` | variable | `progs/doomgeneric/hu_stuff.c:103` | `extern int showMessages;` |
-| `HU_BROADCAST` | macro | `progs/doomgeneric/hu_stuff.h:33` | `#define HU_BROADCAST` |
-| `HU_Drawer` | function | `progs/doomgeneric/hu_stuff.h:52` | `void HU_Drawer(void);` |
-| `HU_Erase` | function | `progs/doomgeneric/hu_stuff.h:54` | `void HU_Erase(void);` |
-| `HU_FONTEND` | macro | `progs/doomgeneric/hu_stuff.h:28` | `#define HU_FONTEND` |
-| `HU_FONTSIZE` | macro | `progs/doomgeneric/hu_stuff.h:31` | `#define HU_FONTSIZE` |
-| `HU_FONTSTART` | macro | `progs/doomgeneric/hu_stuff.h:27` | `#define HU_FONTSTART` |
-| `HU_Init` | function | `progs/doomgeneric/hu_stuff.h:46` | `void HU_Init(void);` |
 
 Next: [SYMBOLS_p15.md](SYMBOLS_p15.md)

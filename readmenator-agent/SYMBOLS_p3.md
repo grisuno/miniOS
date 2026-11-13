@@ -396,32 +396,32 @@ Previous: [SYMBOLS_p2.md](SYMBOLS_p2.md)
 | `ICON_EMBEDDED_H` | macro | `headers/desktop_icons.h:13` | `#define ICON_EMBEDDED_H` |
 | `ICON_EMBEDDED_W` | macro | `headers/desktop_icons.h:12` | `#define ICON_EMBEDDED_W` |
 | `DESKTOP_SHORTCUTS_H` | macro | `headers/desktop_shortcuts.h:13` | `#define DESKTOP_SHORTCUTS_H` |
-| `DOCK_BOUNCE_H` | macro | `headers/desktop_shortcuts.h:57` | `#define DOCK_BOUNCE_H` |
-| `DOCK_BOUNCE_TICKS` | macro | `headers/desktop_shortcuts.h:58` | `#define DOCK_BOUNCE_TICKS` |
+| `DOCK_BOUNCE_H` | macro | `headers/desktop_shortcuts.h:58` | `#define DOCK_BOUNCE_H` |
+| `DOCK_BOUNCE_TICKS` | macro | `headers/desktop_shortcuts.h:59` | `#define DOCK_BOUNCE_TICKS` |
 | `DOCK_CRYSTAL_STEP` | macro | `headers/desktop_shortcuts.h:41` | `#define DOCK_CRYSTAL_STEP` |
 | `DOCK_GAP` | macro | `headers/desktop_shortcuts.h:35` | `#define DOCK_GAP` |
 | `DOCK_LABEL_GAP` | macro | `headers/desktop_shortcuts.h:36` | `#define DOCK_LABEL_GAP` |
-| `DOCK_MAG_H` | macro | `headers/desktop_shortcuts.h:49` | `#define DOCK_MAG_H` |
-| `DOCK_MAG_W` | macro | `headers/desktop_shortcuts.h:48` | `#define DOCK_MAG_W` |
-| `DOCK_NEAR_H` | macro | `headers/desktop_shortcuts.h:51` | `#define DOCK_NEAR_H` |
-| `DOCK_NEAR_W` | macro | `headers/desktop_shortcuts.h:50` | `#define DOCK_NEAR_W` |
+| `DOCK_MAG_H` | macro | `headers/desktop_shortcuts.h:50` | `#define DOCK_MAG_H` |
+| `DOCK_MAG_REACH_CELLS` | macro | `headers/desktop_shortcuts.h:51` | `#define DOCK_MAG_REACH_CELLS` |
+| `DOCK_MAG_TICKS` | macro | `headers/desktop_shortcuts.h:52` | `#define DOCK_MAG_TICKS` |
+| `DOCK_MAG_W` | macro | `headers/desktop_shortcuts.h:49` | `#define DOCK_MAG_W` |
 | `DOCK_PAD_X` | macro | `headers/desktop_shortcuts.h:33` | `#define DOCK_PAD_X` |
 | `DOCK_PAD_Y` | macro | `headers/desktop_shortcuts.h:34` | `#define DOCK_PAD_Y` |
 | `ICON_H` | macro | `headers/desktop_shortcuts.h:25` | `#define ICON_H` |
 | `ICON_LABEL_H` | macro | `headers/desktop_shortcuts.h:28` | `#define ICON_LABEL_H` |
 | `ICON_PAD_X` | macro | `headers/desktop_shortcuts.h:26` | `#define ICON_PAD_X` |
 | `ICON_PAD_Y` | macro | `headers/desktop_shortcuts.h:27` | `#define ICON_PAD_Y` |
-| `ICON_PAL_BASE` | macro | `headers/desktop_shortcuts.h:65` | `#define ICON_PAL_BASE` |
-| `ICON_PAL_SIZE` | macro | `headers/desktop_shortcuts.h:66` | `#define ICON_PAL_SIZE` |
+| `ICON_PAL_BASE` | macro | `headers/desktop_shortcuts.h:66` | `#define ICON_PAL_BASE` |
+| `ICON_PAL_SIZE` | macro | `headers/desktop_shortcuts.h:67` | `#define ICON_PAL_SIZE` |
 | `ICON_W` | macro | `headers/desktop_shortcuts.h:24` | `#define ICON_W` |
 | `MAX_SHORTCUTS` | macro | `headers/desktop_shortcuts.h:18` | `#define MAX_SHORTCUTS` |
 | `SHORTCUT_CMD_LEN` | macro | `headers/desktop_shortcuts.h:20` | `#define SHORTCUT_CMD_LEN` |
 | `SHORTCUT_NAME_LEN` | macro | `headers/desktop_shortcuts.h:19` | `#define SHORTCUT_NAME_LEN` |
 | `SHORTCUT_PATH_LEN` | macro | `headers/desktop_shortcuts.h:21` | `#define SHORTCUT_PATH_LEN` |
-| `desktop_shortcut` | struct | `headers/desktop_shortcuts.h:72` | `` |
-| `desktop_shortcuts_draw` | function | `headers/desktop_shortcuts.h:85` | `void desktop_shortcuts_draw(void);` |
-| `desktop_shortcuts_hit_test` | function | `headers/desktop_shortcuts.h:89` | `const char *desktop_shortcuts_hit_test(int mx, int my);` |
-| `desktop_shortcuts_load` | function | `headers/desktop_shortcuts.h:82` | `void desktop_shortcuts_load(void);` |
+| `desktop_shortcut` | struct | `headers/desktop_shortcuts.h:73` | `` |
+| `desktop_shortcuts_draw` | function | `headers/desktop_shortcuts.h:86` | `void desktop_shortcuts_draw(void);` |
+| `desktop_shortcuts_hit_test` | function | `headers/desktop_shortcuts.h:90` | `const char *desktop_shortcuts_hit_test(int mx, int my);` |
+| `desktop_shortcuts_load` | function | `headers/desktop_shortcuts.h:83` | `void desktop_shortcuts_load(void);` |
 | `DEV_MAX` | macro | `headers/driver.h:19` | `#define DEV_MAX` |
 | `DEV_NAME_LEN` | macro | `headers/driver.h:18` | `#define DEV_NAME_LEN` |
 | `DEV_TYPE_AUDIO` | macro | `headers/driver.h:22` | `#define DEV_TYPE_AUDIO` |

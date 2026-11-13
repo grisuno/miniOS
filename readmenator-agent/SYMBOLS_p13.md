@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `GRIDRANGE` | macro | `progs/doomgeneric/am_map.c:82` | `#define GRIDRANGE` |
+| `INITSCALEMTOF` | macro | `progs/doomgeneric/am_map.c:90` | `#define INITSCALEMTOF` |
+| `LINE_NEVERSEE` | macro | `progs/doomgeneric/am_map.c:109` | `#define LINE_NEVERSEE` |
+| `MTOF` | macro | `progs/doomgeneric/am_map.c:103` | `#define MTOF(x)` |
+| `M_ZOOMIN` | macro | `progs/doomgeneric/am_map.c:96` | `#define M_ZOOMIN` |
+| `M_ZOOMOUT` | macro | `progs/doomgeneric/am_map.c:99` | `#define M_ZOOMOUT` |
+| `PUTDOT` | macro | `progs/doomgeneric/am_map.c:1010` | `#define PUTDOT(xx,yy,cc)` |
+| `R` | macro | `progs/doomgeneric/am_map.c:143` | `#define R` |
+| `R` | macro | `progs/doomgeneric/am_map.c:155` | `#define R` |
+| `R` | macro | `progs/doomgeneric/am_map.c:176` | `#define R` |
+| `R` | macro | `progs/doomgeneric/am_map.c:184` | `#define R` |
+| `REDRANGE` | macro | `progs/doomgeneric/am_map.c:51` | `#define REDRANGE` |
+| `REDS` | macro | `progs/doomgeneric/am_map.c:50` | `#define REDS` |
+| `SECRETWALLCOLORS` | macro | `progs/doomgeneric/am_map.c:79` | `#define SECRETWALLCOLORS` |
+| `SECRETWALLRANGE` | macro | `progs/doomgeneric/am_map.c:80` | `#define SECRETWALLRANGE` |
+| `THINGCOLORS` | macro | `progs/doomgeneric/am_map.c:77` | `#define THINGCOLORS` |
+| `THINGRANGE` | macro | `progs/doomgeneric/am_map.c:78` | `#define THINGRANGE` |
+| `TSWALLCOLORS` | macro | `progs/doomgeneric/am_map.c:71` | `#define TSWALLCOLORS` |
+| `TSWALLRANGE` | macro | `progs/doomgeneric/am_map.c:72` | `#define TSWALLRANGE` |
+| `WALLCOLORS` | macro | `progs/doomgeneric/am_map.c:69` | `#define WALLCOLORS` |
+| `WALLRANGE` | macro | `progs/doomgeneric/am_map.c:70` | `#define WALLRANGE` |
+| `WHITE` | macro | `progs/doomgeneric/am_map.c:63` | `#define WHITE` |
+| `XHAIRCOLORS` | macro | `progs/doomgeneric/am_map.c:83` | `#define XHAIRCOLORS` |
+| `YELLOWRANGE` | macro | `progs/doomgeneric/am_map.c:61` | `#define YELLOWRANGE` |
+| `YELLOWS` | macro | `progs/doomgeneric/am_map.c:60` | `#define YELLOWS` |
+| `YOURCOLORS` | macro | `progs/doomgeneric/am_map.c:67` | `#define YOURCOLORS` |
+| `YOURRANGE` | macro | `progs/doomgeneric/am_map.c:68` | `#define YOURRANGE` |
+| `fline_t` | struct | `progs/doomgeneric/am_map.c:116` | `` |
+| `fpoint_t` | struct | `progs/doomgeneric/am_map.c:111` | `` |
+| `islope_t` | struct | `progs/doomgeneric/am_map.c:131` | `` |
+| `mline_t` | struct | `progs/doomgeneric/am_map.c:126` | `` |
+| `mpoint_t` | struct | `progs/doomgeneric/am_map.c:121` | `` |
+| `AM_Drawer` | function | `progs/doomgeneric/am_map.h:39` | `void AM_Drawer (void);` |
+| `AM_MSGENTERED` | macro | `progs/doomgeneric/am_map.h:27` | `#define AM_MSGENTERED` |
+| `AM_MSGEXITED` | macro | `progs/doomgeneric/am_map.h:28` | `#define AM_MSGEXITED` |
+| `AM_MSGHEADER` | macro | `progs/doomgeneric/am_map.h:26` | `#define AM_MSGHEADER` |
+| `AM_Stop` | function | `progs/doomgeneric/am_map.h:43` | `void AM_Stop (void);` |
+| `AM_Ticker` | function | `progs/doomgeneric/am_map.h:35` | `void AM_Ticker (void);` |
+| `__AMMAP_H__` | macro | `progs/doomgeneric/am_map.h:20` | `#define __AMMAP_H__` |
+| `cheat_amap` | variable | `progs/doomgeneric/am_map.h:46` | `extern cheatseq_t cheat_amap;` |
+| `FILES_DIR` | macro | `progs/doomgeneric/config.h:100` | `#define FILES_DIR` |
 | `HAVE_INTTYPES_H` | macro | `progs/doomgeneric/config.h:10` | `#define HAVE_INTTYPES_H` |
 | `HAVE_STDINT_H` | macro | `progs/doomgeneric/config.h:46` | `#define HAVE_STDINT_H` |
 | `HAVE_STDLIB_H` | macro | `progs/doomgeneric/config.h:49` | `#define HAVE_STDLIB_H` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p12.md](SYMBOLS_p12.md)
 | `DEH_LoadLump` | function | `progs/doomgeneric/deh_main.h:35` | `int DEH_LoadLump(int lumpnum, boolean allow_long, boolean allow_error);` |
 | `DEH_LoadLumpByName` | function | `progs/doomgeneric/deh_main.h:36` | `int DEH_LoadLumpByName(char *name, boolean allow_long, boolean allow_error);` |
 | `DEH_MAIN_H` | macro | `progs/doomgeneric/deh_main.h:19` | `#define DEH_MAIN_H` |
-| `DEH_ParseCommandLine` | function | `progs/doomgeneric/deh_main.h:33` | `void DEH_ParseCommandLine(void);` |
-| `DEH_VANILLA_NUMSFX` | macro | `progs/doomgeneric/deh_main.h:31` | `#define DEH_VANILLA_NUMSFX` |
-| `DEH_VANILLA_NUMSTATES` | macro | `progs/doomgeneric/deh_main.h:30` | `#define DEH_VANILLA_NUMSTATES` |
-| `deh_allow_extended_strings` | variable | `progs/doomgeneric/deh_main.h:42` | `extern boolean deh_allow_extended_strings;` |
-| `deh_allow_long_cheats` | variable | `progs/doomgeneric/deh_main.h:44` | `extern boolean deh_allow_long_cheats;` |
-| `deh_allow_long_strings` | variable | `progs/doomgeneric/deh_main.h:43` | `extern boolean deh_allow_long_strings;` |
-| `deh_apply_cheats` | variable | `progs/doomgeneric/deh_main.h:45` | `extern boolean deh_apply_cheats;` |
-| `DEH_DEFAULT_BFG_CELLS_PER_SHOT` | macro | `progs/doomgeneric/deh_misc.h:37` | `#define DEH_DEFAULT_BFG_CELLS_PER_SHOT` |
-| `DEH_DEFAULT_BLUE_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:28` | `#define DEH_DEFAULT_BLUE_ARMOR_CLASS` |
-| `DEH_DEFAULT_GOD_MODE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:32` | `#define DEH_DEFAULT_GOD_MODE_HEALTH` |
-| `DEH_DEFAULT_GREEN_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:27` | `#define DEH_DEFAULT_GREEN_ARMOR_CLASS` |
-| `DEH_DEFAULT_IDFA_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:33` | `#define DEH_DEFAULT_IDFA_ARMOR` |
-| `DEH_DEFAULT_IDFA_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:34` | `#define DEH_DEFAULT_IDFA_ARMOR_CLASS` |
-| `DEH_DEFAULT_IDKFA_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:35` | `#define DEH_DEFAULT_IDKFA_ARMOR` |
-| `DEH_DEFAULT_IDKFA_ARMOR_CLASS` | macro | `progs/doomgeneric/deh_misc.h:36` | `#define DEH_DEFAULT_IDKFA_ARMOR_CLASS` |
-| `DEH_DEFAULT_INITIAL_BULLETS` | macro | `progs/doomgeneric/deh_misc.h:24` | `#define DEH_DEFAULT_INITIAL_BULLETS` |
-| `DEH_DEFAULT_INITIAL_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:23` | `#define DEH_DEFAULT_INITIAL_HEALTH` |
-| `DEH_DEFAULT_MAX_ARMOR` | macro | `progs/doomgeneric/deh_misc.h:26` | `#define DEH_DEFAULT_MAX_ARMOR` |
-| `DEH_DEFAULT_MAX_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:25` | `#define DEH_DEFAULT_MAX_HEALTH` |
-| `DEH_DEFAULT_MAX_SOULSPHERE` | macro | `progs/doomgeneric/deh_misc.h:29` | `#define DEH_DEFAULT_MAX_SOULSPHERE` |
-| `DEH_DEFAULT_MEGASPHERE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:31` | `#define DEH_DEFAULT_MEGASPHERE_HEALTH` |
-| `DEH_DEFAULT_SOULSPHERE_HEALTH` | macro | `progs/doomgeneric/deh_misc.h:30` | `#define DEH_DEFAULT_SOULSPHERE_HEALTH` |
-| `DEH_DEFAULT_SPECIES_INFIGHTING` | macro | `progs/doomgeneric/deh_misc.h:38` | `#define DEH_DEFAULT_SPECIES_INFIGHTING` |
-| `DEH_MISC_H` | macro | `progs/doomgeneric/deh_misc.h:19` | `#define DEH_MISC_H` |
-| `deh_bfg_cells_per_shot` | variable | `progs/doomgeneric/deh_misc.h:56` | `extern int deh_bfg_cells_per_shot;` |
-| `deh_bfg_cells_per_shot` | macro | `progs/doomgeneric/deh_misc.h:77` | `#define deh_bfg_cells_per_shot` |
-| `deh_blue_armor_class` | variable | `progs/doomgeneric/deh_misc.h:47` | `extern int deh_blue_armor_class;` |
-| `deh_blue_armor_class` | macro | `progs/doomgeneric/deh_misc.h:68` | `#define deh_blue_armor_class` |
-| `deh_god_mode_health` | variable | `progs/doomgeneric/deh_misc.h:51` | `extern int deh_god_mode_health;` |
-| `deh_god_mode_health` | macro | `progs/doomgeneric/deh_misc.h:72` | `#define deh_god_mode_health` |
-| `deh_green_armor_class` | variable | `progs/doomgeneric/deh_misc.h:46` | `extern int deh_green_armor_class;` |
-| `deh_green_armor_class` | macro | `progs/doomgeneric/deh_misc.h:67` | `#define deh_green_armor_class` |
-| `deh_idfa_armor` | variable | `progs/doomgeneric/deh_misc.h:52` | `extern int deh_idfa_armor;` |
-| `deh_idfa_armor` | macro | `progs/doomgeneric/deh_misc.h:73` | `#define deh_idfa_armor` |
-| `deh_idfa_armor_class` | variable | `progs/doomgeneric/deh_misc.h:53` | `extern int deh_idfa_armor_class;` |
-| `deh_idfa_armor_class` | macro | `progs/doomgeneric/deh_misc.h:74` | `#define deh_idfa_armor_class` |
-| `deh_idkfa_armor` | variable | `progs/doomgeneric/deh_misc.h:54` | `extern int deh_idkfa_armor;` |
-| `deh_idkfa_armor` | macro | `progs/doomgeneric/deh_misc.h:75` | `#define deh_idkfa_armor` |
-| `deh_idkfa_armor_class` | variable | `progs/doomgeneric/deh_misc.h:55` | `extern int deh_idkfa_armor_class;` |
-| `deh_idkfa_armor_class` | macro | `progs/doomgeneric/deh_misc.h:76` | `#define deh_idkfa_armor_class` |
-| `deh_initial_bullets` | variable | `progs/doomgeneric/deh_misc.h:43` | `extern int deh_initial_bullets;` |
 
 Next: [SYMBOLS_p14.md](SYMBOLS_p14.md)

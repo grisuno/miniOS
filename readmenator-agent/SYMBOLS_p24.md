@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `bits` | function | `progs/src/sign.c:672` | `* values here always fit 32 bits (limbs below 2^16, carries and  * products below 2^32), so the s...` |
+| `fclose` | function | `progs/src/sign.c:31` | `int fclose();` |
+| `fe_add` | function | `progs/src/sign.c:617` | `static void fe_add(unsigned int *r, unsigned int *a, unsigned int *b)` |
+| `fe_cmov` | function | `progs/src/sign.c:573` | `static void fe_cmov(unsigned int *r, unsigned int *b, unsigned int flag)` |
+| `fe_copy` | function | `progs/src/sign.c:549` | `static void fe_copy(unsigned int *r, unsigned int *a)` |
+| `fe_curved` | function | `progs/src/sign.c:812` | `static void fe_curved(unsigned int *d, unsigned int *d2)` |
+| `fe_foldadd` | function | `progs/src/sign.c:690` | `static void fe_foldadd(unsigned int *row, int at, unsigned int x)` |
+| `fe_frombytes` | function | `progs/src/sign.c:790` | `static void fe_frombytes(unsigned int *r, char *b)` |
+| `fe_ge` | function | `progs/src/sign.c:586` | `static unsigned int fe_ge(unsigned int *a, unsigned int *b)` |
+| `fe_inv` | function | `progs/src/sign.c:771` | `static void fe_inv(unsigned int *r, unsigned int *a)` |
+| `fe_mul` | function | `progs/src/sign.c:696` | `static void fe_mul(unsigned int *r, unsigned int *a, unsigned int *b)` |
+| `fe_off` | function | `progs/src/sign.c:845` | `static unsigned int *fe_off(unsigned int *p, int n)` |
+| `fe_one` | function | `progs/src/sign.c:567` | `static void fe_one(unsigned int *r)` |
+| `fe_rawsub` | function | `progs/src/sign.c:601` | `static void fe_rawsub(unsigned int *r, unsigned int *a, unsigned int *b)` |
+| `fe_sq` | function | `progs/src/sign.c:766` | `static void fe_sq(unsigned int *r, unsigned int *a)` |
+| `fe_sub` | function | `progs/src/sign.c:636` | `static void fe_sub(unsigned int *r, unsigned int *a, unsigned int *b)` |
+| `fe_tobytes` | function | `progs/src/sign.c:800` | `static void fe_tobytes(char *b, unsigned int *a)` |
+| `fe_zero` | function | `progs/src/sign.c:558` | `static void fe_zero(unsigned int *r)` |
+| `fopen` | function | `progs/src/sign.c:30` | `void *fopen();` |
+| `fread` | function | `progs/src/sign.c:32` | `int fread();` |
+| `free` | function | `progs/src/sign.c:37` | `void free();` |
+| `fseek` | function | `progs/src/sign.c:34` | `int fseek();` |
+| `ftell` | function | `progs/src/sign.c:35` | `int ftell();` |
+| `fwrite` | function | `progs/src/sign.c:33` | `int fwrite();` |
+| `ge_add` | function | `progs/src/sign.c:860` | `static void ge_add(unsigned int *r, unsigned int *p, unsigned int *q, unsigned int *d2)` |
+| `ge_cmov` | function | `progs/src/sign.c:850` | `static void ge_cmov(unsigned int *r, unsigned int *b, unsigned int flag)` |
+| `ge_copy` | function | `progs/src/sign.c:829` | `static void ge_copy(unsigned int *r, unsigned int *a)` |
+| `ge_double` | function | `progs/src/sign.c:892` | `static void ge_double(unsigned int *r, unsigned int *p)` |
+| `ge_scalarmult` | function | `progs/src/sign.c:926` | `static void ge_scalarmult(unsigned int *r, unsigned int *p, char *s, unsigned int *d2)` |
+| `main` | function | `progs/src/sign.c:1657` | `int main(int argc, char **argv)` |
+| `malloc` | function | `progs/src/sign.c:36` | `void *malloc();` |
+| `printf` | function | `progs/src/sign.c:28` | `int printf();` |
+| `sc_mod_l` | function | `progs/src/sign.c:951` | `static void sc_mod_l(unsigned int *r, unsigned int *t16)` |
+| `sc_mul_add` | function | `progs/src/sign.c:1013` | `static void sc_mul_add(unsigned int *r, unsigned int *a, unsigned int *b, unsigned int *c)` |
+| `sign_add3` | function | `progs/src/sign.c:237` | `static unsigned int sign_add3(unsigned int *s, unsigned int a, unsigned int b, unsigned int c)` |
+| `sign_append` | function | `progs/src/sign.c:1393` | `static int sign_append(char *name, char *img, int size, int shoff, int shnum, int shentsize,     ...` |
+| `sign_be32` | function | `progs/src/sign.c:247` | `static unsigned int sign_be32(char *p, int off)` |
+| `sign_block` | function | `progs/src/sign.c:253` | `static void sign_block(void)` |
+| `sign_borrow2` | function | `progs/src/sign.c:230` | `static unsigned int sign_borrow2(unsigned int x, unsigned int y, unsigned int s)` |
+| `sign_byte` | function | `progs/src/sign.c:111` | `static unsigned int sign_byte(char *p, int i)` |
+| `sign_copy` | function | `progs/src/sign.c:119` | `static void sign_copy(char *dst, char *src, int n)` |
 | `sign_digest` | function | `progs/src/sign.c:1112` | `static void sign_digest(char *sig, char *digest)` |
 | `sign_digest_of` | function | `progs/src/sign.c:1307` | `static int sign_digest_of(char *img, int size, int entry, char *ph, int phnum, char *digest)` |
 | `sign_feed32` | function | `progs/src/sign.c:490` | `static void sign_feed32(unsigned int v)` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p23.md](SYMBOLS_p23.md)
 | `vedit_prompt_saveas` | function | `progs/vedit/vedit.c:3860` | `static void vedit_prompt_saveas(void)` |
 | `vedit_qrep_answer` | function | `progs/vedit/vedit.c:3821` | `static void vedit_qrep_answer(int key)` |
 | `vedit_qrep_next` | function | `progs/vedit/vedit.c:3809` | `static void vedit_qrep_next(int r, int c)` |
-| `vedit_read_key_poll` | function | `progs/vedit/vedit.c:3692` | `static int vedit_read_key_poll(void)` |
-| `vedit_region` | function | `progs/vedit/vedit.c:1248` | `static int vedit_region(int *y0, int *x0, int *y1, int *x1)` |
-| `vedit_region_to_clip` | function | `progs/vedit/vedit.c:3383` | `static int vedit_region_to_clip(void)` |
-| `vedit_replace_all` | function | `progs/vedit/vedit.c:1761` | `static int vedit_replace_all(const char *old_s, const char *new_s,                              i...` |
-| `vedit_replace_at` | function | `progs/vedit/vedit.c:1741` | `static int vedit_replace_at(int row, int col, const char *old_s,                             cons...` |
-| `vedit_row_ptr` | function | `progs/vedit/vedit.c:769` | `static char *vedit_row_ptr(int idx)` |
-| `vedit_run_kind` | function | `progs/vedit/vedit.c:2390` | `static int vedit_run_kind(const char *fname)` |
-| `vedit_run_rc` | function | `progs/vedit/vedit.c:3214` | `static void vedit_run_rc(const char *path)` |
-| `vedit_save` | function | `progs/vedit/vedit.c:1988` | `static int vedit_save(void)` |
-| `vedit_scan_line` | function | `progs/vedit/vedit.c:489` | `static int vedit_scan_line(const char *t, int len, int st)` |
-| `vedit_search_fwd` | function | `progs/vedit/vedit.c:1659` | `static int vedit_search_fwd(int row, int col, const char *needle, int magic,                     ...` |
-| `vedit_search_rev` | function | `progs/vedit/vedit.c:1691` | `static int vedit_search_rev(int row, int col, const char *needle, int magic)` |
-| `vedit_sel_clear` | function | `progs/vedit/vedit.c:3292` | `static void vedit_sel_clear(void)` |
-| `vedit_sel_copy` | function | `progs/vedit/vedit.c:3310` | `static int vedit_sel_copy(void)` |
-| `vedit_sel_norm` | function | `progs/vedit/vedit.c:3297` | `static void vedit_sel_norm(void)` |
-| `vedit_selftest` | function | `progs/vedit/vedit.c:4763` | `static int vedit_selftest(void)` |
-| `vedit_selftest_build` | function | `progs/vedit/vedit.c:2532` | `static int vedit_selftest_build(void)` |
-| `vedit_selftest_leak` | function | `progs/vedit/vedit.c:2725` | `static int vedit_selftest_leak(void)` |
-| `vedit_set_mark` | function | `progs/vedit/vedit.c:1240` | `static void vedit_set_mark(void)` |
-| `vedit_set_msg` | function | `progs/vedit/vedit.c:361` | `static void vedit_set_msg(const char *s)` |
-| `vedit_set_title` | function | `progs/vedit/vedit.c:47` | `static long vedit_set_title(const char *t)` |
-| `vedit_sh_split` | function | `progs/vedit/vedit.c:3428` | `static int vedit_sh_split(const char *line, char *buf, const char **argv)` |
-| `vedit_shell_command` | function | `progs/vedit/vedit.c:3448` | `static void vedit_shell_command(const char *line)` |
-| `vedit_sign_elf` | function | `progs/vedit/vedit.c:2366` | `static void vedit_sign_elf(const char *out)` |
-| `vedit_spawn` | function | `progs/vedit/vedit.c:56` | `static long vedit_spawn(const char *path, const char *redir, int argc,                         co...` |
-| `vedit_spawn_visible` | function | `progs/vedit/vedit.c:2337` | `static long vedit_spawn_visible(const char *tool, const char *redir, int argc,                   ...` |
-| `vedit_split` | function | `progs/vedit/vedit.c:916` | `static void vedit_split(void)` |
-| `vedit_split_set` | function | `progs/vedit/vedit.c:2822` | `static void vedit_split_set(int on)` |
-| `vedit_state_at` | function | `progs/vedit/vedit.c:760` | `static int vedit_state_at(int row)` |
-| `vedit_str_case` | function | `progs/vedit/vedit.c:1005` | `static void vedit_str_case(char *s, int mode)` |
-| `vedit_str_transpose` | function | `progs/vedit/vedit.c:1032` | `static void vedit_str_transpose(char *s, int len, int pos)` |
-| `vedit_sync_title` | function | `progs/vedit/vedit.c:4662` | `static void vedit_sync_title(void)` |
-| `vedit_tab` | function | `progs/vedit/vedit.c:969` | `static void vedit_tab(void)` |
-| `vedit_time_ms` | function | `progs/vedit/vedit.c:89` | `static unsigned long vedit_time_ms(void)` |
-| `vedit_top` | macro | `progs/vedit/vedit.c:298` | `#define vedit_top` |
-| `vedit_transpose` | function | `progs/vedit/vedit.c:1490` | `static int vedit_transpose(void)` |
-| `vedit_trunc` | macro | `progs/vedit/vedit.c:301` | `#define vedit_trunc` |
-| `vedit_used` | macro | `progs/vedit/vedit.c:294` | `#define vedit_used` |
-| `vedit_vga` | function | `progs/vedit/vedit.c:68` | `static long vedit_vga(int on)` |
-| `vedit_word_move` | function | `progs/vedit/vedit.c:1416` | `static int vedit_word_move(int dir)` |
-| `vedit_write_region` | function | `progs/vedit/vedit.c:3477` | `static int vedit_write_region(const char *path, int *y0o, int *x0o, int *y1o,                    ...` |
 
 Next: [SYMBOLS_p25.md](SYMBOLS_p25.md)

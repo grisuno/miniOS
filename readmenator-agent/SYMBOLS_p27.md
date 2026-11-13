@@ -3,6 +3,53 @@ Previous: [SYMBOLS_p26.md](SYMBOLS_p26.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `u16` | function | `tools/minifs_saves.py:53` | `def u16(d, o)` |
+| `u32` | function | `tools/minifs_saves.py:57` | `def u32(d, o)` |
+| `valid_name` | function | `tools/minifs_saves.py:216` | `def valid_name(nm)` |
+| `walk` | function | `tools/minifs_saves.py:293` | `def walk(dir_ino, rel)` |
+| `Client` | class | `tools/minios_cli.py:38` | `class Client` |
+| `__init__` | method | `tools/minios_cli.py:39` | `def __init__(self)` |
+| `close` | method | `tools/minios_cli.py:87` | `def close(self)` |
+| `main` | function | `tools/minios_cli.py:100` | `def main()` |
+| `request` | method | `tools/minios_cli.py:56` | `def request(self, method, params)` |
+| `tool` | method | `tools/minios_cli.py:77` | `def tool(self, name, params)` |
+| `QMP` | class | `tools/minios_gui.py:66` | `class QMP` |
+| `__init__` | method | `tools/minios_gui.py:67` | `def __init__(self, path)` |
+| `_recv` | method | `tools/minios_gui.py:83` | `def _recv(self)` |
+| `cmd` | method | `tools/minios_gui.py:79` | `def cmd(self, obj)` |
+| `key` | method | `tools/minios_gui.py:108` | `def key(self, qcode, up)` |
+| `main` | function | `tools/minios_gui.py:118` | `def main()` |
+| `mouse` | method | `tools/minios_gui.py:98` | `def mouse(self, dx, dy, click)` |
+| `read_serial` | function | `tools/minios_gui.py:50` | `def read_serial(master, timeout)` |
+| `screendump` | method | `tools/minios_gui.py:114` | `def screendump(self, path)` |
+| `FrameDiff` | class | `tools/minios_hyper.py:339` | `class FrameDiff` |
+| `GdbChannel` | class | `tools/minios_hyper.py:152` | `class GdbChannel` |
+| `Guest` | class | `tools/minios_hyper.py:211` | `class Guest` |
+| `HyperChecks` | class | `tools/minios_hyper.py:409` | `class HyperChecks` |
+| `HyperConfig` | class | `tools/minios_hyper.py:50` | `class HyperConfig` |
+| `QmpChannel` | class | `tools/minios_hyper.py:96` | `class QmpChannel` |
+| `RspCodec` | class | `tools/minios_hyper.py:73` | `class RspCodec` |
+| `__init__` | method | `tools/minios_hyper.py:99` | `def __init__(self, path)` |
+| `__init__` | method | `tools/minios_hyper.py:155` | `def __init__(self, port)` |
+| `__init__` | method | `tools/minios_hyper.py:214` | `def __init__(self, with_gdb)` |
+| `__init__` | method | `tools/minios_hyper.py:412` | `def __init__(self, guest)` |
+| `_cmd` | method | `tools/minios_hyper.py:168` | `def _cmd(self, payload)` |
+| `_drain` | method | `tools/minios_hyper.py:162` | `def _drain(self)` |
+| `_last_frames` | method | `tools/minios_hyper.py:476` | `def _last_frames(self)` |
+| `_reader` | method | `tools/minios_hyper.py:260` | `def _reader(self)` |
+| `_roundtrip` | method | `tools/minios_hyper.py:109` | `def _roundtrip(self, obj)` |
+| `_ser` | method | `tools/minios_hyper.py:248` | `def _ser(self)` |
+| `check` | function | `tools/minios_hyper.py:495` | `def check(ok, msg)` |
+| `close` | method | `tools/minios_hyper.py:145` | `def close(self)` |
+| `close` | method | `tools/minios_hyper.py:204` | `def close(self)` |
+| `cont` | method | `tools/minios_hyper.py:201` | `def cont(self)` |
+| `count_cursors` | method | `tools/minios_hyper.py:394` | `def count_cursors(shot_path)` |
+| `cursor_positions` | method | `tools/minios_hyper.py:356` | `def cursor_positions(shot_path)` |
+| `decode` | method | `tools/minios_hyper.py:85` | `def decode(frame)` |
+| `dump` | method | `tools/minios_hyper.py:308` | `def dump(self, name)` |
+| `encode` | method | `tools/minios_hyper.py:77` | `def encode(payload)` |
+| `gdb_chan` | method | `tools/minios_hyper.py:303` | `def gdb_chan(self)` |
+| `gfx_frames` | method | `tools/minios_hyper.py:439` | `def gfx_frames(self)` |
 | `halt` | method | `tools/minios_hyper.py:195` | `def halt(self)` |
 | `key` | method | `tools/minios_hyper.py:132` | `def key(self, qcode)` |
 | `main` | function | `tools/minios_hyper.py:591` | `def main(argv)` |

@@ -427,16 +427,18 @@ Imported by: `drivers/kbd.c`, `drivers/usbhid.c`, `kernel.c`, `kernel/console.c`
 - `dock_bounce_counts` (function) `headers/vga_fb.h:264` `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);` -- Dock click bounce (Mac style): arm count and strip repaints while live, * for the serial-observable proof (`wm...
 - `dock_click_count` (function) `headers/vga_fb.h:265` `void dock_click_count(unsigned long *edges);`
 - `dock_pending_active` (function) `headers/vga_fb.h:266` `int dock_pending_active(void);`
-- `pixels` (function) `headers/vga_fb.h:270` `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
-- `vga_fx_enabled` (function) `headers/vga_fb.h:274` `int vga_fx_enabled(void);`
-- `vga_fx_snap_rect` (function) `headers/vga_fb.h:275` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
-- `vga_fx_restore_rect` (function) `headers/vga_fb.h:276` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
-- `vga_fx_free` (function) `headers/vga_fb.h:277` `void vga_fx_free(unsigned int *buf);`
-- `vga_fx_melt_rect` (function) `headers/vga_fb.h:278` `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
-- `vga_fx_melt_from_black` (function) `headers/vga_fb.h:280` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
-- `vga_fx_burn_rect` (function) `headers/vga_fb.h:281` `void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);`
-- `vga_fx_genie_rect` (function) `headers/vga_fb.h:283` `void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int...`
-- `vga_fb_set_gfx_mode` (function) `headers/vga_fb.h:297` `void vga_fb_set_gfx_mode(int on);` -- Graphics-mode pointer.
+- `dock_mag_counts` (function) `headers/vga_fb.h:269` `void dock_mag_counts(int *level, unsigned long *paints);` -- Fluid dock magnification (headers/wm_dock.h): live bell level * (0..WM_DOCK_LEVEL_ONE) and the strip repaints that...
+- `chrome_blur_counts` (function) `headers/vga_fb.h:272` `void chrome_blur_counts(int *active, unsigned long *panels);` -- Frosted glass (headers/wm_blur.h): whether translucent panels blur their * backdrop right now and how many have...
+- `pixels` (function) `headers/vga_fb.h:276` `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
+- `vga_fx_enabled` (function) `headers/vga_fb.h:280` `int vga_fx_enabled(void);`
+- `vga_fx_snap_rect` (function) `headers/vga_fb.h:281` `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
+- `vga_fx_restore_rect` (function) `headers/vga_fb.h:282` `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
+- `vga_fx_free` (function) `headers/vga_fb.h:283` `void vga_fx_free(unsigned int *buf);`
+- `vga_fx_melt_rect` (function) `headers/vga_fb.h:284` `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
+- `vga_fx_melt_from_black` (function) `headers/vga_fb.h:286` `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+- `vga_fx_burn_rect` (function) `headers/vga_fb.h:287` `void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);`
+- `vga_fx_genie_rect` (function) `headers/vga_fb.h:289` `void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int...`
+- `vga_fb_set_gfx_mode` (function) `headers/vga_fb.h:303` `void vga_fb_set_gfx_mode(int on);` -- Graphics-mode pointer.
 
 ## headers/vga_fx.h
 Imported by: `kernel/vga_fb.c`, `kernel/vga_fx.c`, `tests/test_fx.c`
@@ -472,20 +474,14 @@ Imported by: `headers/kernel.h`, `headers/sched.h`, `headers/spawn.h`, `kernel/s
 - `vma_ctx_alloc` (function) `headers/vma.h:90` `vma_ctx_t *vma_ctx_alloc(void);` -- Heap-backed contexts live in sched.c (vma.c stays host-testable): * alloc returns a fresh context with a private...
 - `vma_ctx_free` (function) `headers/vma.h:91` `void vma_ctx_free(vma_ctx_t *c);`
 
-## headers/wm_chrome.h
-Imported by: `kernel/vga_fb.c`, `tests/test_chrome.c`
-- `wm_chrome_isqrt` (function) `headers/wm_chrome.h:41` `static inline unsigned long wm_chrome_isqrt(unsigned long v)` -- Docstring: Default chrome: 8 px soft shadow offset 2/4 px at 110/255, 4 px corners (an 8 px title strip cannot carry...
-- `wm_chrome_clamp` (function) `headers/wm_chrome.h:61` `static inline int wm_chrome_clamp(int v)` -- } while (bit != 0) { if (v >= r + bit) { v -= r + bit; r = (r >> 1) + bit; } else { r >>= 1; } bit >>= 2; } return...
-- `wm_chrome_blend_channel` (function) `headers/wm_chrome.h:67` `static inline int wm_chrome_blend_channel(int dst, int src, int alpha)` -- r >>= 1; } bit >>= 2; } return r; } /** Docstring: Clamp a channel to 0..255. static inline int wm_chrome_clamp(int...
-- `wm_chrome_blend` (function) `headers/wm_chrome.h:76` `static inline unsigned long wm_chrome_blend(unsigned long dst, unsigned long src, int alpha)` -- { return v < 0 ?
-- `wm_chrome_shift` (function) `headers/wm_chrome.h:85` `static inline unsigned long wm_chrome_shift(unsigned long px, int delta)` -- src = wm_chrome_clamp(src); return (src * a + dst * (255 - a) + 127) / 255; } /** Docstring: Blend a packed src...
-- `wm_chrome_gradient` (function) `headers/wm_chrome.h:95` `static inline unsigned long wm_chrome_gradient(unsigned long base, int row, int span,
-           ...` -- Docstring: Vertical gradient row: lighter by lift at row 0, darker by * sink at the last row of span rows, linear in...
-- `by` (function) `headers/wm_chrome.h:107` `* The shadow is the window rect shifted by (dx,dy);`
-- `wm_chrome_shadow_alpha` (function) `headers/wm_chrome.h:110` `static inline int wm_chrome_shadow_alpha(const wm_chrome_config_t *cfg, int px, int py,
-         ...` -- Docstring: Shadow alpha for pixel (px,py) of a window at (rx,ry,rw,rh).
-- `wm_chrome_corner_coverage` (function) `headers/wm_chrome.h:141` `static inline int wm_chrome_corner_coverage(int radius, int x, int y)` -- Docstring: Coverage 0..255 of pixel (x,y) inside a rounded corner of the given radius.
-- `wm_chrome_disc_coverage` (function) `headers/wm_chrome.h:162` `static inline int wm_chrome_disc_coverage(int radius, int x, int y)` -- Docstring: Coverage 0..255 of pixel (x,y) of a disc of the given radius inscribed in a 2*radius square, anti-aliased...
+## headers/wm_blur.h
+Imported by: `kernel/vga_fb.c`, `tests/test_blur.c`
+- `wm_blur_config_valid` (function) `headers/wm_blur.h:50` `static inline int wm_blur_config_valid(const wm_blur_config_t *cfg)` -- Docstring: Default frost: two passes of a 9-pixel box (radius 4), a triangle kernel 17 pixels wide that hides text...
+- `wm_blur_line_len` (function) `headers/wm_blur.h:58` `static inline unsigned long wm_blur_line_len(int w, int h)` -- Docstring: Scratch entries wm_blur_rect needs for a w by h rect: one * full line in either direction.
+- `wm_blur_recip` (function) `headers/wm_blur.h:68` `static inline unsigned long wm_blur_recip(int win)` -- Docstring: Reciprocal of a window of win pixels, rounded up, in * WM_BLUR_RECIP_SHIFT fixed point.
+- `wm_blur_edge` (function) `headers/wm_blur.h:84` `static inline int wm_blur_edge(int i, int n)` -- Docstring: Rounded average of a channel sum over win pixels through * the reciprocal: equals (sum + win / 2) / win...
+- `wm_blur_line` (function) `headers/wm_blur.h:93` `static inline void wm_blur_line(unsigned int *px, long stride, int n, int radius,
+               ...` -- Docstring: Box-blur one line of n pixels spaced stride entries apart, in place. line is a scratch of at least n...
 
 
 Next: [API_p6.md](API_p6.md)

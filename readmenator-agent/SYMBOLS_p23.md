@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `freedom_wl_frame_bytes` | function | `progs/src/freedom_wl.c:227` | `static long freedom_wl_frame_bytes(FreedomWlConfig *c, long w, long h)` |
+| `freedom_wl_host_probe` | function | `progs/src/freedom_wl.c:1696` | `int freedom_wl_host_probe(FreedomWlConfig *c)` |
+| `freedom_wl_keysym` | function | `progs/src/freedom_wl.c:246` | `static long freedom_wl_keysym(FreedomWlConfig *c, long sc)` |
+| `freedom_wl_sanitize_utf8` | function | `progs/src/freedom_wl.c:286` | `static long freedom_wl_sanitize_utf8(char *s, long cap)` |
+| `freedom_wl_selftest` | function | `progs/src/freedom_wl.c:1613` | `static long freedom_wl_selftest(void)` |
+| `freedom_wl_surface_attach` | function | `progs/src/freedom_wl.c:129` | `static long freedom_wl_surface_attach(FreedomWlConfig *c)` |
+| `freedom_wl_surface_id` | function | `progs/src/freedom_wl.c:114` | `static long freedom_wl_surface_id(void)` |
+| `freedom_wl_sys_kbd` | function | `progs/src/freedom_wl.c:1090` | `static long freedom_wl_sys_kbd(void)` |
+| `freedom_wl_sys_kbd_raw` | function | `progs/src/freedom_wl.c:1104` | `static long freedom_wl_sys_kbd_raw(long on)` |
+| `freedom_wl_sys_mouse` | function | `progs/src/freedom_wl.c:1083` | `static long freedom_wl_sys_mouse(long *m)` |
+| `freedom_wl_sys_palette` | function | `progs/src/freedom_wl.c:1076` | `static long freedom_wl_sys_palette(unsigned char *pal)` |
+| `freedom_wl_sys_present` | function | `progs/src/freedom_wl.c:1062` | `static long freedom_wl_sys_present(long buf, long origin)` |
+| `freedom_wl_sys_title` | function | `progs/src/freedom_wl.c:1069` | `static long freedom_wl_sys_title(char *t)` |
+| `freedom_wl_sys_vga_mode` | function | `progs/src/freedom_wl.c:1097` | `static long freedom_wl_sys_vga_mode(long on)` |
+| `freedom_wl_sys_yield` | function | `progs/src/freedom_wl.c:1111` | `static long freedom_wl_sys_yield(void)` |
+| `freedom_wl_title_ok` | function | `progs/src/freedom_wl.c:359` | `static long freedom_wl_title_ok(FreedomWlConfig *c, char *t, long n)` |
+| `main` | function | `progs/src/freedom_wl.c:1731` | `int main(int argc, char **argv)` |
+| `net_dns_resolve` | function | `progs/src/freedom_wl.c:42` | `int net_dns_resolve(const char *host);` |
+| `present_buf` | type_alias | `progs/src/freedom_wl.c:76` | `typedef struct FreedomWlConfig { long present_buf;` |
+| `tls_close` | function | `progs/src/freedom_wl.c:46` | `void tls_close(int fd);` |
+| `tls_handshake` | function | `progs/src/freedom_wl.c:43` | `int tls_handshake(int fd, char *host);` |
+| `tls_recv` | function | `progs/src/freedom_wl.c:45` | `int tls_recv(int fd, char *buf, int len);` |
+| `tls_send` | function | `progs/src/freedom_wl.c:44` | `int tls_send(int fd, char *buf, int len);` |
+| `wl_append` | function | `progs/src/freedom_wl.c:404` | `static long wl_append(char *dst, long pos, char *src, long cap)` |
+| `wl_browse` | function | `progs/src/freedom_wl.c:1532` | `static long wl_browse(FreedomWlConfig *c)` |
+| `wl_ci_contains` | function | `progs/src/freedom_wl.c:453` | `static long wl_ci_contains(char *s, char *needle)` |
+| `wl_ci_lower` | function | `progs/src/freedom_wl.c:427` | `static long wl_ci_lower(long ch)` |
+| `wl_ci_starts` | function | `progs/src/freedom_wl.c:435` | `static long wl_ci_starts(char *s, char *pre)` |
+| `wl_copy` | function | `progs/src/freedom_wl.c:370` | `static long wl_copy(char *dst, char *src, long cap)` |
+| `wl_fetch_raw` | function | `progs/src/freedom_wl.c:1210` | `static long wl_fetch_raw(FreedomWlConfig *c, char *host, char *path, long port, long secure)` |
+| `wl_filter_wrap` | function | `progs/src/freedom_wl.c:708` | `static long wl_filter_wrap(FreedomWlConfig *c, char *body, long n, char *lines, long maxlines, lo...` |
+| `wl_has_scheme` | function | `progs/src/freedom_wl.c:467` | `static long wl_has_scheme(char *s)` |
+| `wl_looks_like_url` | function | `progs/src/freedom_wl.c:493` | `static long wl_looks_like_url(char *s)` |
+| `wl_make_search` | function | `progs/src/freedom_wl.c:512` | `static long wl_make_search(char *out, char *query, long cap)` |
+| `wl_parse_headers` | function | `progs/src/freedom_wl.c:1118` | `static long wl_parse_headers(FreedomWlConfig *c, char *hdr, long *status, long *clen, long *hascl...` |
+| `wl_render` | function | `progs/src/freedom_wl.c:1445` | `static long wl_render(FreedomWlConfig *c, long off)` |
+| `wl_resolve_redirect` | function | `progs/src/freedom_wl.c:609` | `static long wl_resolve_redirect(FreedomWlConfig *c, char *loc, long secure, char *host, char *pat...` |
+| `wl_scroll_clamp` | function | `progs/src/freedom_wl.c:689` | `static long wl_scroll_clamp(FreedomWlConfig *c, long off, long nlines)` |
+| `wl_split_url` | function | `progs/src/freedom_wl.c:544` | `static long wl_split_url(FreedomWlConfig *c, char *url, char *host, char *path, long *port, long ...` |
+| `wl_status_text` | function | `progs/src/freedom_wl.c:951` | `static long wl_status_text(FreedomWlConfig *c, char *host, long nbytes, long off, long nlines, ch...` |
+| `wl_strlen` | function | `progs/src/freedom_wl.c:388` | `static long wl_strlen(char *s, long cap)` |
 | `errno` | variable | `progs/src/ftest.c:10` | `extern int errno;` |
 | `exit` | function | `progs/src/ftest.c:7` | `extern void exit(int code);` |
 | `fopen` | function | `progs/src/ftest.c:11` | `extern void *fopen(const char *path, const char *mode);` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p22.md](SYMBOLS_p22.md)
 | `SIGN_SHT_NOTE` | macro | `progs/src/sign.c:47` | `#define SIGN_SHT_NOTE` |
 | `SIGN_SIG_BYTES` | macro | `progs/src/sign.c:53` | `#define SIGN_SIG_BYTES` |
 | `below` | function | `progs/src/sign.c:195` | `* every other op below (`\|`, `<<`) is low-32 exact. */ static void sign_rotr(unsigned int *lo, un...` |
-| `bits` | function | `progs/src/sign.c:672` | `* values here always fit 32 bits (limbs below 2^16, carries and  * products below 2^32), so the s...` |
-| `fclose` | function | `progs/src/sign.c:31` | `int fclose();` |
-| `fe_add` | function | `progs/src/sign.c:617` | `static void fe_add(unsigned int *r, unsigned int *a, unsigned int *b)` |
-| `fe_cmov` | function | `progs/src/sign.c:573` | `static void fe_cmov(unsigned int *r, unsigned int *b, unsigned int flag)` |
-| `fe_copy` | function | `progs/src/sign.c:549` | `static void fe_copy(unsigned int *r, unsigned int *a)` |
-| `fe_curved` | function | `progs/src/sign.c:812` | `static void fe_curved(unsigned int *d, unsigned int *d2)` |
-| `fe_foldadd` | function | `progs/src/sign.c:690` | `static void fe_foldadd(unsigned int *row, int at, unsigned int x)` |
-| `fe_frombytes` | function | `progs/src/sign.c:790` | `static void fe_frombytes(unsigned int *r, char *b)` |
-| `fe_ge` | function | `progs/src/sign.c:586` | `static unsigned int fe_ge(unsigned int *a, unsigned int *b)` |
-| `fe_inv` | function | `progs/src/sign.c:771` | `static void fe_inv(unsigned int *r, unsigned int *a)` |
-| `fe_mul` | function | `progs/src/sign.c:696` | `static void fe_mul(unsigned int *r, unsigned int *a, unsigned int *b)` |
-| `fe_off` | function | `progs/src/sign.c:845` | `static unsigned int *fe_off(unsigned int *p, int n)` |
-| `fe_one` | function | `progs/src/sign.c:567` | `static void fe_one(unsigned int *r)` |
-| `fe_rawsub` | function | `progs/src/sign.c:601` | `static void fe_rawsub(unsigned int *r, unsigned int *a, unsigned int *b)` |
-| `fe_sq` | function | `progs/src/sign.c:766` | `static void fe_sq(unsigned int *r, unsigned int *a)` |
-| `fe_sub` | function | `progs/src/sign.c:636` | `static void fe_sub(unsigned int *r, unsigned int *a, unsigned int *b)` |
-| `fe_tobytes` | function | `progs/src/sign.c:800` | `static void fe_tobytes(char *b, unsigned int *a)` |
-| `fe_zero` | function | `progs/src/sign.c:558` | `static void fe_zero(unsigned int *r)` |
-| `fopen` | function | `progs/src/sign.c:30` | `void *fopen();` |
-| `fread` | function | `progs/src/sign.c:32` | `int fread();` |
-| `free` | function | `progs/src/sign.c:37` | `void free();` |
-| `fseek` | function | `progs/src/sign.c:34` | `int fseek();` |
-| `ftell` | function | `progs/src/sign.c:35` | `int ftell();` |
-| `fwrite` | function | `progs/src/sign.c:33` | `int fwrite();` |
-| `ge_add` | function | `progs/src/sign.c:860` | `static void ge_add(unsigned int *r, unsigned int *p, unsigned int *q, unsigned int *d2)` |
-| `ge_cmov` | function | `progs/src/sign.c:850` | `static void ge_cmov(unsigned int *r, unsigned int *b, unsigned int flag)` |
-| `ge_copy` | function | `progs/src/sign.c:829` | `static void ge_copy(unsigned int *r, unsigned int *a)` |
-| `ge_double` | function | `progs/src/sign.c:892` | `static void ge_double(unsigned int *r, unsigned int *p)` |
-| `ge_scalarmult` | function | `progs/src/sign.c:926` | `static void ge_scalarmult(unsigned int *r, unsigned int *p, char *s, unsigned int *d2)` |
-| `main` | function | `progs/src/sign.c:1657` | `int main(int argc, char **argv)` |
-| `malloc` | function | `progs/src/sign.c:36` | `void *malloc();` |
-| `printf` | function | `progs/src/sign.c:28` | `int printf();` |
-| `sc_mod_l` | function | `progs/src/sign.c:951` | `static void sc_mod_l(unsigned int *r, unsigned int *t16)` |
-| `sc_mul_add` | function | `progs/src/sign.c:1013` | `static void sc_mul_add(unsigned int *r, unsigned int *a, unsigned int *b, unsigned int *c)` |
-| `sign_add3` | function | `progs/src/sign.c:237` | `static unsigned int sign_add3(unsigned int *s, unsigned int a, unsigned int b, unsigned int c)` |
-| `sign_append` | function | `progs/src/sign.c:1393` | `static int sign_append(char *name, char *img, int size, int shoff, int shnum, int shentsize,     ...` |
-| `sign_be32` | function | `progs/src/sign.c:247` | `static unsigned int sign_be32(char *p, int off)` |
-| `sign_block` | function | `progs/src/sign.c:253` | `static void sign_block(void)` |
-| `sign_borrow2` | function | `progs/src/sign.c:230` | `static unsigned int sign_borrow2(unsigned int x, unsigned int y, unsigned int s)` |
-| `sign_byte` | function | `progs/src/sign.c:111` | `static unsigned int sign_byte(char *p, int i)` |
-| `sign_copy` | function | `progs/src/sign.c:119` | `static void sign_copy(char *dst, char *src, int n)` |
 
 Next: [SYMBOLS_p24.md](SYMBOLS_p24.md)

@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `A_WeaponReady` | function | `progs/doomgeneric/info.c:52` | `void A_WeaponReady();` |
+| `A_XScream` | function | `progs/doomgeneric/info.c:78` | `void A_XScream();` |
+| `__INFO__` | macro | `progs/doomgeneric/info.h:22` | `#define __INFO__` |
+| `mobjinfo` | variable | `progs/doomgeneric/info.h:1329` | `extern mobjinfo_t mobjinfo[NUMMOBJTYPES];` |
+| `mobjinfo_t` | struct | `progs/doomgeneric/info.h:1301` | `` |
+| `sprnames` | variable | `progs/doomgeneric/info.h:1157` | `extern char *sprnames[];` |
+| `state_t` | struct | `progs/doomgeneric/info.h:1144` | `` |
+| `states` | variable | `progs/doomgeneric/info.h:1156` | `extern state_t states[NUMSTATES];` |
+| `LoadResponseFile` | function | `progs/doomgeneric/m_argv.c:75` | `static void LoadResponseFile(int argv_index)` |
+| `MAXARGVS` | macro | `progs/doomgeneric/m_argv.c:73` | `#define MAXARGVS` |
+| `M_CheckParm` | function | `progs/doomgeneric/m_argv.c:68` | `int M_CheckParm(char *check)` |
+| `M_CheckParmWithArgs` | function | `progs/doomgeneric/m_argv.c:43` | `int M_CheckParmWithArgs(char *check, int num_args)` |
+| `M_FindResponseFile` | function | `progs/doomgeneric/m_argv.c:235` | `void M_FindResponseFile(void)` |
+| `M_GetExecutableName` | function | `progs/doomgeneric/m_argv.c:250` | `char *M_GetExecutableName(void)` |
+| `M_ParmExists` | function | `progs/doomgeneric/m_argv.c:63` | `boolean M_ParmExists(char *check)` |
+| `M_CheckParm` | function | `progs/doomgeneric/m_argv.h:33` | `int M_CheckParm (char* check);` |
+| `M_CheckParmWithArgs` | function | `progs/doomgeneric/m_argv.h:37` | `int M_CheckParmWithArgs(char *check, int num_args);` |
+| `M_FindResponseFile` | function | `progs/doomgeneric/m_argv.h:39` | `void M_FindResponseFile(void);` |
+| `M_GetExecutableName` | function | `progs/doomgeneric/m_argv.h:47` | `char *M_GetExecutableName(void);` |
+| `__M_ARGV__` | macro | `progs/doomgeneric/m_argv.h:21` | `#define __M_ARGV__` |
+| `myargc` | variable | `progs/doomgeneric/m_argv.h:28` | `extern int myargc;` |
+| `myargv` | variable | `progs/doomgeneric/m_argv.h:29` | `extern char** myargv;` |
+| `M_AddToBox` | function | `progs/doomgeneric/m_bbox.c:36` | `void M_AddToBox ( fixed_t*	box,   fixed_t	x,   fixed_t	y )` |
+| `M_ClearBox` | function | `progs/doomgeneric/m_bbox.c:29` | `void M_ClearBox (fixed_t *box)` |
+| `M_AddToBox` | function | `progs/doomgeneric/m_bbox.h:41` | `void M_AddToBox ( fixed_t* box, fixed_t x, fixed_t y );` |
+| `M_ClearBox` | function | `progs/doomgeneric/m_bbox.h:38` | `void M_ClearBox (fixed_t* box);` |
+| `__M_BBOX__` | macro | `progs/doomgeneric/m_bbox.h:21` | `#define __M_BBOX__` |
+| `cht_CheckCheat` | function | `progs/doomgeneric/m_cheat.c:35` | `int cht_CheckCheat ( cheatseq_t*	cht,   char		key )` |
+| `cht_GetParam` | function | `progs/doomgeneric/m_cheat.c:82` | `void cht_GetParam ( cheatseq_t*	cht,   char*		buffer )` |
+| `CHEAT` | macro | `progs/doomgeneric/m_cheat.h:29` | `#define CHEAT(value, parameters)` |
+| `MAX_CHEAT_LEN` | macro | `progs/doomgeneric/m_cheat.h:32` | `#define MAX_CHEAT_LEN` |
+| `MAX_CHEAT_PARAMS` | macro | `progs/doomgeneric/m_cheat.h:33` | `#define MAX_CHEAT_PARAMS` |
+| `__M_CHEAT__` | macro | `progs/doomgeneric/m_cheat.h:21` | `#define __M_CHEAT__` |
+| `cheatseq_t` | struct | `progs/doomgeneric/m_cheat.h:35` | `` |
+| `cht_CheckCheat` | function | `progs/doomgeneric/m_cheat.h:51` | `int cht_CheckCheat ( cheatseq_t* cht, char key );` |
+| `cht_GetParam` | function | `progs/doomgeneric/m_cheat.h:57` | `void cht_GetParam ( cheatseq_t* cht, char* buffer );` |
+| `CONFIG_VARIABLE_FLOAT` | macro | `progs/doomgeneric/m_config.c:104` | `#define CONFIG_VARIABLE_FLOAT(name)` |
+| `CONFIG_VARIABLE_GENERIC` | macro | `progs/doomgeneric/m_config.c:95` | `#define CONFIG_VARIABLE_GENERIC(name, type)` |
+| `CONFIG_VARIABLE_INT` | macro | `progs/doomgeneric/m_config.c:100` | `#define CONFIG_VARIABLE_INT(name)` |
+| `CONFIG_VARIABLE_INT_HEX` | macro | `progs/doomgeneric/m_config.c:102` | `#define CONFIG_VARIABLE_INT_HEX(name)` |
+| `CONFIG_VARIABLE_KEY` | macro | `progs/doomgeneric/m_config.c:98` | `#define CONFIG_VARIABLE_KEY(name)` |
 | `CONFIG_VARIABLE_STRING` | macro | `progs/doomgeneric/m_config.c:106` | `#define CONFIG_VARIABLE_STRING(name)` |
 | `GetDefaultConfigDir` | function | `progs/doomgeneric/m_config.c:2043` | `static char *GetDefaultConfigDir(void)` |
 | `GetDefaultForName` | function | `progs/doomgeneric/m_config.c:1937` | `static default_t *GetDefaultForName(char *name)` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p15.md](SYMBOLS_p15.md)
 | `A_PainDie` | function | `progs/doomgeneric/p_enemy.c:1518` | `void A_PainDie (mobj_t* actor)` |
 | `A_PainShootSkull` | function | `progs/doomgeneric/p_enemy.c:1446` | `void A_PainShootSkull ( mobj_t*	actor,   angle_t	angle )` |
 | `A_PlayerScream` | function | `progs/doomgeneric/p_enemy.c:1992` | `void A_PlayerScream (mobj_t* mo)` |
-| `A_PosAttack` | function | `progs/doomgeneric/p_enemy.c:787` | `void A_PosAttack (mobj_t* actor)` |
-| `A_ReFire` | function | `progs/doomgeneric/p_enemy.c:1792` | `void A_ReFire ( player_t* player, pspdef_t* psp );` |
-| `A_SPosAttack` | function | `progs/doomgeneric/p_enemy.c:806` | `void A_SPosAttack (mobj_t* actor)` |
-| `A_SargAttack` | function | `progs/doomgeneric/p_enemy.c:920` | `void A_SargAttack (mobj_t* actor)` |
-| `A_Scream` | function | `progs/doomgeneric/p_enemy.c:1531` | `void A_Scream (mobj_t* actor)` |
-| `A_SkelFist` | function | `progs/doomgeneric/p_enemy.c:1086` | `void A_SkelFist (mobj_t*	actor)` |
-| `A_SkelMissile` | function | `progs/doomgeneric/p_enemy.c:987` | `void A_SkelMissile (mobj_t* actor)` |
-| `A_SkelWhoosh` | function | `progs/doomgeneric/p_enemy.c:1078` | `void A_SkelWhoosh (mobj_t*	actor)` |
-| `A_SkullAttack` | function | `progs/doomgeneric/p_enemy.c:1415` | `void A_SkullAttack (mobj_t* actor)` |
-| `A_SpawnFly` | function | `progs/doomgeneric/p_enemy.c:1934` | `void A_SpawnFly (mobj_t* mo)` |
-| `A_SpawnSound` | function | `progs/doomgeneric/p_enemy.c:1928` | `void A_SpawnSound (mobj_t* mo)` |
-| `A_SpidRefire` | function | `progs/doomgeneric/p_enemy.c:867` | `void A_SpidRefire (mobj_t* actor)` |
-| `A_StartFire` | function | `progs/doomgeneric/p_enemy.c:1230` | `void A_StartFire (mobj_t* actor)` |
-| `A_Tracer` | function | `progs/doomgeneric/p_enemy.c:1006` | `void A_Tracer (mobj_t* actor)` |
-| `A_TroopAttack` | function | `progs/doomgeneric/p_enemy.c:898` | `void A_TroopAttack (mobj_t* actor)` |
-| `A_VileAttack` | function | `progs/doomgeneric/p_enemy.c:1298` | `void A_VileAttack (mobj_t* actor)` |
-| `A_VileChase` | function | `progs/doomgeneric/p_enemy.c:1152` | `void A_VileChase (mobj_t* actor)` |
-| `A_VileStart` | function | `progs/doomgeneric/p_enemy.c:1218` | `void A_VileStart (mobj_t* actor)` |
-| `A_VileTarget` | function | `progs/doomgeneric/p_enemy.c:1273` | `void A_VileTarget (mobj_t*	actor)` |
-| `A_XScream` | function | `progs/doomgeneric/p_enemy.c:1568` | `void A_XScream (mobj_t* actor)` |
-| `CheckBossEnd` | function | `progs/doomgeneric/p_enemy.c:1605` | `static boolean CheckBossEnd(mobjtype_t motype)` |
-| `FATSPREAD` | macro | `progs/doomgeneric/p_enemy.c:1337` | `#define	FATSPREAD` |
-| `PIT_VileCheck` | function | `progs/doomgeneric/p_enemy.c:1114` | `boolean PIT_VileCheck (mobj_t*	thing)` |
-| `P_CheckMeleeRange` | function | `progs/doomgeneric/p_enemy.c:167` | `boolean P_CheckMeleeRange (mobj_t*	actor)` |
-| `P_CheckMissileRange` | function | `progs/doomgeneric/p_enemy.c:190` | `boolean P_CheckMissileRange (mobj_t* actor)` |
-| `P_LookForPlayers` | function | `progs/doomgeneric/p_enemy.c:487` | `boolean P_LookForPlayers ( mobj_t*	actor,   boolean	allaround )` |
-| `P_Move` | function | `progs/doomgeneric/p_enemy.c:260` | `boolean P_Move (mobj_t*	actor)` |
-| `P_NewChaseDir` | function | `progs/doomgeneric/p_enemy.c:351` | `void P_NewChaseDir (mobj_t*	actor)` |
-| `P_NoiseAlert` | function | `progs/doomgeneric/p_enemy.c:152` | `void P_NoiseAlert ( mobj_t*	target,   mobj_t*	emmiter )` |
-| `P_RecursiveSound` | function | `progs/doomgeneric/p_enemy.c:99` | `void P_RecursiveSound ( sector_t*	sec,   int		soundblocks )` |
-| `P_TryWalk` | function | `progs/doomgeneric/p_enemy.c:337` | `boolean P_TryWalk (mobj_t* actor)` |
-| `SKULLSPEED` | macro | `progs/doomgeneric/p_enemy.c:1413` | `#define	SKULLSPEED` |
-| `EV_BuildStairs` | function | `progs/doomgeneric/p_floor.c:444` | `int EV_BuildStairs ( line_t*	line,   stair_e	type )` |
-| `EV_DoFloor` | function | `progs/doomgeneric/p_floor.c:251` | `int EV_DoFloor ( line_t*	line,   floor_e	floortype )` |
-| `T_MoveFloor` | function | `progs/doomgeneric/p_floor.c:202` | `void T_MoveFloor(floormove_t* floor)` |
-| `T_MovePlane` | function | `progs/doomgeneric/p_floor.c:42` | `result_e T_MovePlane ( sector_t*	sector,   fixed_t	speed,   fixed_t	dest,   boolean	crush,   int	...` |
-| `BONUSADD` | macro | `progs/doomgeneric/p_inter.c:43` | `#define BONUSADD` |
-| `P_DamageMobj` | function | `progs/doomgeneric/p_inter.c:779` | `void P_DamageMobj ( mobj_t*	target,   mobj_t*	inflictor,   mobj_t*	source,   int 		damage )` |
-| `P_GiveAmmo` | function | `progs/doomgeneric/p_inter.c:66` | `boolean P_GiveAmmo ( player_t*	player,   ammotype_t	ammo,   int		num )` |
-| `P_GiveArmor` | function | `progs/doomgeneric/p_inter.c:246` | `boolean P_GiveArmor ( player_t*	player,   int		armortype )` |
-| `P_GiveBody` | function | `progs/doomgeneric/p_inter.c:223` | `boolean P_GiveBody ( player_t*	player,   int		num )` |
 
 Next: [SYMBOLS_p17.md](SYMBOLS_p17.md)

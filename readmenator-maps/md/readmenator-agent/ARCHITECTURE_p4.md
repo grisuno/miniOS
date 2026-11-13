@@ -216,7 +216,9 @@ Previous: [ARCHITECTURE_p3.md](ARCHITECTURE_p3.md)
 - `tests/test_abi.c` -> stdio.h
 - `tests/test_arena.c` -> stdio.h
 - `tests/test_batch.c` -> stdio.h
+- `tests/test_blur.c` -> stdio.h
 - `tests/test_chrome.c` -> stdio.h
+- `tests/test_dock.c` -> stdio.h
 - `tests/test_doom_pwad.py` -> os, struct, sys, unittest
 - `tests/test_driver.c` -> assert.h, stdio.h
 - `tests/test_ext4.c` -> kernel.h, stdio.h, stdlib.h

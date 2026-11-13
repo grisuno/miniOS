@@ -293,8 +293,8 @@ Previous: [KB_kernel.md](KB_kernel.md)
 - Layer: utility
 - Language: c
 - Symbols:
-  - `job_row` (struct, line 2079)
-  - `ps_row` (struct, line 3723)
+  - `job_row` (struct, line 2089)
+  - `ps_row` (struct, line 3733)
   - `ShellRunDir` (struct, line 61)
   - `shell_queue_launch` (function, line 87) `void shell_queue_launch(const char *cmd)`
   - `shell_readline_active` (function, line 115) `int shell_readline_active(void)`
@@ -356,36 +356,36 @@ static void desktop_unflag(const char *name)`
   - `gfx_read_palette` (function, line 1771) `static void gfx_read_palette(unsigned char pal[768])`
   - `shell_cmd_gfx` (function, line 1778) `static void shell_cmd_gfx(int argc, char **argv)`
   - `shell_cmd_wm` (function, line 1930) `static void shell_cmd_wm(int argc, char **argv)`
-  - `tree` (function, line 2065) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
+  - `tree` (function, line 2075) `* tree (mmap-heavy jobs stay best-effort), legacy blocking `run` ignores
  * Ctrl+C (it never poll...`
-  - `shell_cmd_jobs` (function, line 2078) `static void shell_cmd_jobs(void)`
-  - `shell_has_child` (function, line 2107) `static int shell_has_child(int pid)`
-  - `shell_cmd_wait` (function, line 2117) `static void shell_cmd_wait(int argc, char **argv)`
-  - `shell_cmd_kill` (function, line 2152) `static void shell_cmd_kill(int argc, char **argv)`
-  - `shell_cmd_mem` (function, line 2175) `static void shell_cmd_mem(void)`
-  - `VMA` (function, line 2208) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
+  - `shell_cmd_jobs` (function, line 2088) `static void shell_cmd_jobs(void)`
+  - `shell_has_child` (function, line 2117) `static int shell_has_child(int pid)`
+  - `shell_cmd_wait` (function, line 2127) `static void shell_cmd_wait(int argc, char **argv)`
+  - `shell_cmd_kill` (function, line 2162) `static void shell_cmd_kill(int argc, char **argv)`
+  - `shell_cmd_mem` (function, line 2185) `static void shell_cmd_mem(void)`
+  - `VMA` (function, line 2218) `* plus the live VMA (mmap) tree. The walk is bounded (64-deep explicit
  * stack, 128 regions prin...`
-  - `to` (function, line 2281) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
+  - `to` (function, line 2291) `* actually trap to (brk/mmap/munmap/mprotect) and says so up front. */
 static void shell_cmd_trac...`
-  - `shell_parse_u64` (function, line 2350) `static int shell_parse_u64(const char *s, unsigned long *out)`
-  - `shell_parse_long` (function, line 2366) `int shell_parse_long(const char *s, long *out)`
-  - `shell_parse_pid` (function, line 2387) `int shell_parse_pid(const char *s, int min_pid, int *out)`
-  - `shell_cmd_gdb` (function, line 2402) `static void shell_cmd_gdb(int argc, char **argv)`
-  - `shell_cmd_hash` (function, line 2445) `static void shell_cmd_hash(int argc, char **argv)`
-  - `shell_resolve_arg` (function, line 2464) `static int shell_resolve_arg(const char *cmd, const char *arg,
+  - `shell_parse_u64` (function, line 2360) `static int shell_parse_u64(const char *s, unsigned long *out)`
+  - `shell_parse_long` (function, line 2376) `int shell_parse_long(const char *s, long *out)`
+  - `shell_parse_pid` (function, line 2397) `int shell_parse_pid(const char *s, int min_pid, int *out)`
+  - `shell_cmd_gdb` (function, line 2412) `static void shell_cmd_gdb(int argc, char **argv)`
+  - `shell_cmd_hash` (function, line 2455) `static void shell_cmd_hash(int argc, char **argv)`
+  - `shell_resolve_arg` (function, line 2474) `static int shell_resolve_arg(const char *cmd, const char *arg,
                              const...`
-  - `shell_httpd_one` (function, line 2570) `static void shell_httpd_one(int child, const char *root)`
-  - `shell_httpd_serve` (function, line 2655) `static void shell_httpd_serve(unsigned short port, const char *root,
+  - `shell_httpd_one` (function, line 2580) `static void shell_httpd_one(int child, const char *root)`
+  - `shell_httpd_serve` (function, line 2665) `static void shell_httpd_serve(unsigned short port, const char *root,
         int max_conn)`
-  - `shell_cross_ls` (function, line 2822) `static void shell_cross_ls(const char *drv, const char *imgarg,
+  - `shell_cross_ls` (function, line 2832) `static void shell_cross_ls(const char *drv, const char *imgarg,
                            const ...`
-  - `shell_cross_cat` (function, line 2863) `static void shell_cross_cat(const char *drv, const char *imgarg,
+  - `shell_cross_cat` (function, line 2873) `static void shell_cross_cat(const char *drv, const char *imgarg,
                             cons...`
-  - `shell_exec_builtin` (function, line 2905) `void shell_exec_builtin(int argc, char **argv)`
-  - `driver` (function, line 3331) `* stream through the fat: VFS driver ("img:fatpath" per open,
+  - `shell_exec_builtin` (function, line 2915) `void shell_exec_builtin(int argc, char **argv)`
+  - `driver` (function, line 3341) `* stream through the fat: VFS driver ("img:fatpath" per open,
      * registered at boot beside me...`
-  - `shell_is_pipe_tok` (function, line 4106) `static int shell_is_pipe_tok(const char *a)`
-  - `shell_run_stage` (function, line 4145) `static char *shell_run_stage(char **sargv, int sargc,
+  - `shell_is_pipe_tok` (function, line 4116) `static int shell_is_pipe_tok(const char *a)`
+  - `shell_run_stage` (function, line 4155) `static char *shell_run_stage(char **sargv, int sargc,
         const char *input, unsigned long in...`
   - `shell_run_pipeline` (function, line 151) `static int shell_run_pipeline(char **argv, int argc, const char *redir_path, int redir_append, int redirected);`
   - `text` (function, line 594) `* swallowed the sequence as plain text ("5~" in the * line) and the history was unreachable from the * prompt. */...`
@@ -394,19 +394,19 @@ static void shell_cmd_trac...`
   - `window` (function, line 1339) `* window (proc_spawn_elf) and waits for all of them. The 100 Hz timer * preempts the BSP across the READY set, so...`
   - `this` (function, line 1544) `* boot into the tiled Wayland desktop: every NK app started after * this (paint, vedit, file, nuklear, doomedit...`
   - `context` (function, line 1705) `* ISR context (which corrupts the running program's state) or * nesting a second foreground run inside the wait. */...`
-  - `terminal` (function, line 2980) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
-  - `frame` (function, line 3725) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
-  - `stdout` (function, line 4094) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
+  - `terminal` (function, line 2990) `* sequence clears serial consoles and is swallowed without * garbage by the framebuffer terminal (vedit pattern). */...`
+  - `frame` (function, line 3735) `* not live in this frame (stack discipline, CLAUDE.md). */ struct ps_row *snap = (struct ps_row...`
+  - `stdout` (function, line 4104) `* the pipe exactly like stdout (`2>` is an alias of `>`). * Per-stage `exit code:` lines report to the console...`
   - `XXH_STATIC_LINKING_ONLY` (macro, line 25) `#define XXH_STATIC_LINKING_ONLY`
   - `SHELL_CVM_INTERP` (macro, line 53) `#define SHELL_CVM_INTERP`
   - `SHELL_RUN_DIRS` (macro, line 72) `#define SHELL_RUN_DIRS`
   - `SHELL_HIST_MAX` (macro, line 98) `#define SHELL_HIST_MAX`
   - `SHELL_BUILTIN_COUNT` (macro, line 232) `#define SHELL_BUILTIN_COUNT`
   - `QEMU_PM_PORT` (macro, line 1033) `#define QEMU_PM_PORT`
-  - `HTTPD_REQ_CAP` (macro, line 2563) `#define HTTPD_REQ_CAP`
-  - `HTTPD_IO_CHUNK` (macro, line 2564) `#define HTTPD_IO_CHUNK`
-  - `SHELL_LS_CAP` (macro, line 2821) `#define SHELL_LS_CAP`
-  - `PIPE_HOP_MAX` (macro, line 4104) `#define PIPE_HOP_MAX`
+  - `HTTPD_REQ_CAP` (macro, line 2573) `#define HTTPD_REQ_CAP`
+  - `HTTPD_IO_CHUNK` (macro, line 2574) `#define HTTPD_IO_CHUNK`
+  - `SHELL_LS_CAP` (macro, line 2831) `#define SHELL_LS_CAP`
+  - `PIPE_HOP_MAX` (macro, line 4114) `#define PIPE_HOP_MAX`
 - Depends on: `headers/drivers/kbd.h`, `headers/drivers/nvme.h`, `headers/drivers/usbblk.h`, `headers/drivers/usbhid.h`, `headers/drivers/virtio_blk.h`, `headers/drivers/virtio_net.h`, `headers/drivers/xhci.h`, `headers/editor.h`, `headers/ext4.h`, `headers/fat32.h`, `headers/httpd.h`, `headers/kernel/console_in.h`, `headers/minifetch.h`, `headers/minifs.h`, `headers/net.h`, `headers/pcache.h`, `headers/pcm2.h`, `headers/pcspk.h`, `headers/percpu_rq.h`, `headers/proc_sec.h`, `headers/rtc.h`, `headers/sb16.h`, `headers/sched.h`, `headers/shell.h`, `headers/smp.h`, `headers/spawn.h`, `headers/tlb.h`, `headers/vga_fb.h`, `headers/wm_layout.h`, `headers/wm_notify.h`, `headers/zip.h`
 
 ## kernel/spawn.c
@@ -451,7 +451,7 @@ static void shell_cmd_trac...`
   - `memcmp` (function, line 116) `int memcmp(const void *a, const void *b, unsigned long n)`
   - `katol` (function, line 120) `long katol(const char *s)`
   - `NO_LOOP_IDIOM` (macro, line 68) `#define NO_LOOP_IDIOM`
-- Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/cvmfmt.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/src/pip.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_select_map.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
+- Imported by: `headers/leakcheck.h`, `headers/tls_port.h`, `progs/doomedit/doomedit.c`, `progs/doomgeneric/d_iwad.c`, `progs/doomgeneric/d_loop.c`, `progs/doomgeneric/d_main.c`, `progs/doomgeneric/doomdef.h`, `progs/doomgeneric/doomgeneric_minios.c`, `progs/doomgeneric/doomgeneric_soso.c`, `progs/doomgeneric/doomgeneric_sosox.c`, `progs/doomgeneric/doomgeneric_xlib.c`, `progs/doomgeneric/f_wipe.c`, `progs/doomgeneric/g_game.c`, `progs/doomgeneric/gusconf.c`, `progs/doomgeneric/i_endoom.c`, `progs/doomgeneric/i_input.c`, `progs/doomgeneric/i_joystick.c`, `progs/doomgeneric/i_minios_sound.c`, `progs/doomgeneric/i_scale.c`, `progs/doomgeneric/i_system.c`, `progs/doomgeneric/m_argv.c`, `progs/doomgeneric/m_cheat.c`, `progs/doomgeneric/m_config.c`, `progs/doomgeneric/m_misc.c`, `progs/doomgeneric/memio.c`, `progs/doomgeneric/sha1.c`, `progs/doomgeneric/statdump.c`, `progs/doomgeneric/v_video.c`, `progs/doomgeneric/w_checksum.c`, `progs/doomgeneric/w_wad.c`, `progs/file/file.c`, `progs/file/file_assoc.h`, `progs/freedomui/freedomui_minios.c`, `progs/freedomui/media_unavailable.c`, `progs/freedomui/platform_minios.c`, `progs/freedomui/ps2_keymap.c`, `progs/lisp/lisp.c`, `progs/lua/lua_main.c`, `progs/minicraft/minicraft.c`, `progs/nuklear/cvm_emit.c`, `progs/nuklear/node_editor.c`, `progs/nuklear/nuklear_minios.c`, `progs/nuklear/nuklear_theme.c`, `progs/paint/paint.c`, `progs/piano/piano.c`, `progs/pokemon/platform_minios.c`, `progs/quake2generic/q2generic_minios.c`, `progs/quake2generic/snddma_minios.c`, `progs/src/apsse.c`, `progs/src/cvmfmt.c`, `progs/src/freedom.c`, `progs/src/freedom_wl.c`, `progs/src/lxabi.c`, `progs/src/lxnet.c`, `progs/src/lxsecc.c`, `progs/src/lxtls.c`, `progs/src/opl3.c`, `progs/src/pip.c`, `progs/tls_u/tls_u_main.c`, `progs/tls_u/tls_u_port.c`, `progs/topogpt3/topogpt3.c`, `progs/vedit/vedit.c`, `progs/wl/wl_pixbuf.h`, `progs/wl/wlcomp.c`, `tests/stubs/kernel.h`, `tests/test_arena.c`, `tests/test_blur.c`, `tests/test_driver.c`, `tests/test_ext4.c`, `tests/test_fat32.c`, `tests/test_fault.c`, `tests/test_file_assoc.c`, `tests/test_freedomui.c`, `tests/test_httpd.c`, `tests/test_ldso.c`, `tests/test_leakcheck.c`, `tests/test_minios_png.c`, `tests/test_paint.c`, `tests/test_pcache.c`, `tests/test_pcm.c`, `tests/test_ps2_keymap.c`, `tests/test_sanitize.c`, `tests/test_seccomp_bpf.c`, `tests/test_select_map.c`, `tests/test_sign.c`, `tests/test_theme.c`, `tests/test_usbhid.c`, `tests/test_vedit_build.c`, `tests/test_wl.c`, `tests/test_xhci.c`, `tls_test.c`
 
 ## kernel/symtab.c
 - Layer: utility

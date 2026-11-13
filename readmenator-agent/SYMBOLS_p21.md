@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `hash2` | function | `progs/minicraft/minicraft.c:823` | `static unsigned int hash2(int x, int y)` |
+| `hash2_seed` | function | `progs/minicraft/minicraft.c:830` | `static unsigned int hash2_seed(int x, int y, unsigned int seed)` |
+| `hurt` | function | `progs/minicraft/minicraft.c:2424` | `static void hurt(int dmg, const char *why)` |
+| `in_water_at` | function | `progs/minicraft/minicraft.c:814` | `static int in_water_at(float x, float y, float z)` |
+| `in_world` | function | `progs/minicraft/minicraft.c:562` | `static int in_world(int x, int y, int z)` |
+| `inv_add` | function | `progs/minicraft/minicraft.c:931` | `static int inv_add(int b, int n)` |
+| `inv_remove` | function | `progs/minicraft/minicraft.c:945` | `static int inv_remove(int b, int n)` |
+| `is_cave` | function | `progs/minicraft/minicraft.c:901` | `static int is_cave(int x, int y, int z, unsigned int seed)` |
+| `is_solid` | function | `progs/minicraft/minicraft.c:811` | `static int is_solid(unsigned char b)` |
+| `is_visible` | function | `progs/minicraft/minicraft.c:819` | `static int is_visible(unsigned char b)` |
+| `kbd_drain` | function | `progs/minicraft/minicraft.c:428` | `static void kbd_drain(void)` |
+| `light_recompute_col` | function | `progs/minicraft/minicraft.c:735` | `static void light_recompute_col(int x, int y)` |
+| `load_apply_player` | function | `progs/minicraft/minicraft.c:3175` | `static void load_apply_player(const SaveHeader *hd)` |
+| `load_chunk_file` | function | `progs/minicraft/minicraft.c:2974` | `static int load_chunk_file(int slot, int cx, int cy)` |
+| `load_reset_runtime` | function | `progs/minicraft/minicraft.c:3075` | `static void load_reset_runtime(void)` |
+| `load_world` | function | `progs/minicraft/minicraft.c:3271` | `static int load_world(void)` |
+| `load_world_legacy` | function | `progs/minicraft/minicraft.c:3137` | `static int load_world_legacy(FILE *f)` |
+| `load_world_v2` | function | `progs/minicraft/minicraft.c:3234` | `static int load_world_v2(FILE *f, SaveHeader *hd)` |
+| `load_world_v3` | function | `progs/minicraft/minicraft.c:3194` | `static int load_world_v3(FILE *f, SaveHeader *hd)` |
+| `main` | function | `progs/minicraft/minicraft.c:4095` | `int main(int argc, char **argv)` |
+| `mc_block_name` | function | `progs/minicraft/minicraft.c:1857` | `static const char *mc_block_name(unsigned char b)` |
+| `mc_crc32` | function | `progs/minicraft/minicraft.c:2919` | `static uint32_t mc_crc32(const void *data, size_t len, uint32_t crc)` |
+| `mc_facing` | function | `progs/minicraft/minicraft.c:1877` | `static char mc_facing(void)` |
+| `mc_glyph` | function | `progs/minicraft/minicraft.c:1817` | `static int mc_glyph(char ch)` |
+| `mc_pixel` | function | `progs/minicraft/minicraft.c:1825` | `static void mc_pixel(int x, int y, unsigned char c)` |
+| `mc_smoothstep` | function | `progs/minicraft/minicraft.c:839` | `static float mc_smoothstep(float t)` |
+| `mc_text` | function | `progs/minicraft/minicraft.c:1831` | `static void mc_text(int x, int y, const char *s, unsigned char fg)` |
+| `mc_text_bg` | function | `progs/minicraft/minicraft.c:1844` | `static void mc_text_bg(int x, int y, const char *s, unsigned char fg, unsigned char bg)` |
+| `mc_toggle_zoom` | function | `progs/minicraft/minicraft.c:316` | `static void mc_toggle_zoom(void)` |
+| `menu_ser_key` | function | `progs/minicraft/minicraft.c:391` | `static long menu_ser_key(long b)` |
+| `mob_pixel` | function | `progs/minicraft/minicraft.c:1945` | `static unsigned char mob_pixel(Pig *m, int id, int px, int py, int x0, int x1, int y0, int y1)` |
+| `mob_spawn_one` | function | `progs/minicraft/minicraft.c:1191` | `static void mob_spawn_one(Pig *m, int id, int hp, long now)` |
+| `move_x` | function | `progs/minicraft/minicraft.c:2379` | `static void move_x(float nx)` |
+| `move_y` | function | `progs/minicraft/minicraft.c:2384` | `static void move_y(float ny)` |
+| `move_z_abs` | function | `progs/minicraft/minicraft.c:2389` | `static MoveResult move_z_abs(float nz)` |
+| `new_world` | function | `progs/minicraft/minicraft.c:1095` | `static void new_world(unsigned int seed)` |
+| `pal_set` | function | `progs/minicraft/minicraft.c:497` | `static void pal_set(int i, int r, int g, int b)` |
+| `pause_menu` | function | `progs/minicraft/minicraft.c:3922` | `static int pause_menu(int *seed_io)` |
+| `pig_collides` | function | `progs/minicraft/minicraft.c:1243` | `static int pig_collides(float x, float y, float z)` |
+| `player_collides` | function | `progs/minicraft/minicraft.c:2355` | `static int player_collides(float x, float y, float z)` |
+| `poll_kbd` | function | `progs/minicraft/minicraft.c:2162` | `static void poll_kbd(void)` |
 | `render_frame` | function | `progs/minicraft/minicraft.c:2038` | `static void render_frame(void)` |
 | `render_mob_array` | function | `progs/minicraft/minicraft.c:1979` | `static void render_mob_array(Pig *arr, int n, float fx, float fy, float fz,     float rx, float r...` |
 | `render_pigs` | function | `progs/minicraft/minicraft.c:2030` | `static void render_pigs(float cyaw, float syaw, float cpit, float spit, float ez)` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p20.md](SYMBOLS_p20.md)
 | `STBI_ONLY_PNG` | macro | `progs/paint/paint.c:27` | `#define STBI_ONLY_PNG` |
 | `STB_IMAGE_IMPLEMENTATION` | macro | `progs/paint/paint.c:26` | `#define STB_IMAGE_IMPLEMENTATION` |
 | `main` | function | `progs/paint/paint.c:992` | `int main(int argc, char **argv)` |
-| `paint_adler` | function | `progs/paint/paint.c:296` | `static unsigned long paint_adler(const unsigned char *p, unsigned long n)` |
-| `paint_blit` | function | `progs/paint/paint.c:549` | `static void paint_blit(int ox, int oy)` |
-| `paint_circle_fill` | function | `progs/paint/paint.c:161` | `static int paint_circle_fill(unsigned char *buf, int w, int h, int cx,                           ...` |
-| `paint_clamp` | function | `progs/paint/paint.c:92` | `static int paint_clamp(int v, int lo, int hi)` |
-| `paint_crc_init` | function | `progs/paint/paint.c:272` | `static void paint_crc_init(void)` |
-| `paint_crc_update` | function | `progs/paint/paint.c:285` | `static unsigned long paint_crc_update(unsigned long c,                                       cons...` |
-| `paint_dab` | function | `progs/paint/paint.c:108` | `static void paint_dab(unsigned char *buf, int w, int h, int x, int y,                       unsig...` |
-| `paint_flood` | function | `progs/paint/paint.c:179` | `static int paint_flood(unsigned char *buf, int w, int h, int x, int y,                        uns...` |
-| `paint_gui_run` | function | `progs/paint/paint.c:942` | `static void paint_gui_run(void)` |
-| `paint_handle_input` | function | `progs/paint/paint.c:577` | `static void paint_handle_input(struct nk_context *ctx)` |
-| `paint_ink` | function | `progs/paint/paint.c:570` | `static unsigned char paint_ink(void)` |
-| `paint_line` | function | `progs/paint/paint.c:119` | `static int paint_line(unsigned char *buf, int w, int h, int x0, int y0,                       int...` |
-| `paint_load_file` | function | `progs/paint/paint.c:461` | `static int paint_load_file(const char *path)` |
-| `paint_nearest` | function | `progs/paint/paint.c:223` | `static int paint_nearest(const unsigned char *pal, unsigned r, unsigned g,                       ...` |
-| `paint_pal` | function | `progs/paint/paint.c:240` | `static const unsigned char *paint_pal(void)` |
-| `paint_path_ok` | function | `progs/paint/paint.c:251` | `static int paint_path_ok(const char *p)` |
-| `paint_pattern_present` | function | `progs/paint/paint.c:720` | `static int paint_pattern_present(int fw, int fh, int fp, int *ox, int *oy)` |
-| `paint_plot` | function | `progs/paint/paint.c:99` | `static int paint_plot(unsigned char *buf, int w, int h, int x, int y,                       unsig...` |
-| `paint_png_encode` | function | `progs/paint/paint.c:333` | `static long paint_png_encode(unsigned char *dst, unsigned long cap,                              ...` |
-| `paint_put_bytes` | function | `progs/paint/paint.c:320` | `static int paint_put_bytes(unsigned char *dst, unsigned long cap,                            unsi...` |
-| `paint_put_u32` | function | `progs/paint/paint.c:308` | `static int paint_put_u32(unsigned char *dst, unsigned long cap,                          unsigned...` |
-| `paint_rect_fill` | function | `progs/paint/paint.c:144` | `static int paint_rect_fill(unsigned char *buf, int w, int h, int x0, int y0,                     ...` |
-| `paint_save_file` | function | `progs/paint/paint.c:514` | `static int paint_save_file(const char *path)` |
-| `paint_selftest` | function | `progs/paint/paint.c:755` | `static int paint_selftest(void)` |
-| `paint_ui_build` | function | `progs/paint/paint.c:636` | `static void paint_ui_build(struct nk_context *ctx)` |
-| `BK_H` | macro | `progs/piano/piano.c:193` | `#define BK_H` |
-| `BK_W` | macro | `progs/piano/piano.c:192` | `#define BK_W` |
-| `BTN_GAP` | macro | `progs/piano/piano.c:548` | `#define BTN_GAP` |
-| `BTN_W` | macro | `progs/piano/piano.c:547` | `#define BTN_W` |
-| `CTRL_H` | macro | `progs/piano/piano.c:546` | `#define CTRL_H` |
-| `CTRL_Y` | macro | `progs/piano/piano.c:545` | `#define CTRL_Y` |
-| `FX_DELAY_CAP` | macro | `progs/piano/piano.c:407` | `#define FX_DELAY_CAP` |
-| `FX_DELAY_MAX_MS` | macro | `progs/piano/piano.c:408` | `#define FX_DELAY_MAX_MS` |
-| `FX_FEEDBACK` | macro | `progs/piano/piano.c:409` | `#define FX_FEEDBACK` |
-| `FX_TREM_FREQ` | macro | `progs/piano/piano.c:411` | `#define FX_TREM_FREQ` |
-| `FX_WET` | macro | `progs/piano/piano.c:410` | `#define FX_WET` |
-| `KBD_NO_NOTE` | macro | `progs/piano/piano.c:297` | `#define KBD_NO_NOTE` |
-| `KEY_H` | macro | `progs/piano/piano.c:191` | `#define KEY_H` |
-| `KEY_W` | macro | `progs/piano/piano.c:190` | `#define KEY_W` |
-| `KEY_Y` | macro | `progs/piano/piano.c:194` | `#define KEY_Y` |
-| `MAX_AUDIO_MS` | macro | `progs/piano/piano.c:76` | `#define MAX_AUDIO_MS` |
 
 Next: [SYMBOLS_p22.md](SYMBOLS_p22.md)

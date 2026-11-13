@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `A_PosAttack` | function | `progs/doomgeneric/p_enemy.c:787` | `void A_PosAttack (mobj_t* actor)` |
+| `A_ReFire` | function | `progs/doomgeneric/p_enemy.c:1792` | `void A_ReFire ( player_t* player, pspdef_t* psp );` |
+| `A_SPosAttack` | function | `progs/doomgeneric/p_enemy.c:806` | `void A_SPosAttack (mobj_t* actor)` |
+| `A_SargAttack` | function | `progs/doomgeneric/p_enemy.c:920` | `void A_SargAttack (mobj_t* actor)` |
+| `A_Scream` | function | `progs/doomgeneric/p_enemy.c:1531` | `void A_Scream (mobj_t* actor)` |
+| `A_SkelFist` | function | `progs/doomgeneric/p_enemy.c:1086` | `void A_SkelFist (mobj_t*	actor)` |
+| `A_SkelMissile` | function | `progs/doomgeneric/p_enemy.c:987` | `void A_SkelMissile (mobj_t* actor)` |
+| `A_SkelWhoosh` | function | `progs/doomgeneric/p_enemy.c:1078` | `void A_SkelWhoosh (mobj_t*	actor)` |
+| `A_SkullAttack` | function | `progs/doomgeneric/p_enemy.c:1415` | `void A_SkullAttack (mobj_t* actor)` |
+| `A_SpawnFly` | function | `progs/doomgeneric/p_enemy.c:1934` | `void A_SpawnFly (mobj_t* mo)` |
+| `A_SpawnSound` | function | `progs/doomgeneric/p_enemy.c:1928` | `void A_SpawnSound (mobj_t* mo)` |
+| `A_SpidRefire` | function | `progs/doomgeneric/p_enemy.c:867` | `void A_SpidRefire (mobj_t* actor)` |
+| `A_StartFire` | function | `progs/doomgeneric/p_enemy.c:1230` | `void A_StartFire (mobj_t* actor)` |
+| `A_Tracer` | function | `progs/doomgeneric/p_enemy.c:1006` | `void A_Tracer (mobj_t* actor)` |
+| `A_TroopAttack` | function | `progs/doomgeneric/p_enemy.c:898` | `void A_TroopAttack (mobj_t* actor)` |
+| `A_VileAttack` | function | `progs/doomgeneric/p_enemy.c:1298` | `void A_VileAttack (mobj_t* actor)` |
+| `A_VileChase` | function | `progs/doomgeneric/p_enemy.c:1152` | `void A_VileChase (mobj_t* actor)` |
+| `A_VileStart` | function | `progs/doomgeneric/p_enemy.c:1218` | `void A_VileStart (mobj_t* actor)` |
+| `A_VileTarget` | function | `progs/doomgeneric/p_enemy.c:1273` | `void A_VileTarget (mobj_t*	actor)` |
+| `A_XScream` | function | `progs/doomgeneric/p_enemy.c:1568` | `void A_XScream (mobj_t* actor)` |
+| `CheckBossEnd` | function | `progs/doomgeneric/p_enemy.c:1605` | `static boolean CheckBossEnd(mobjtype_t motype)` |
+| `FATSPREAD` | macro | `progs/doomgeneric/p_enemy.c:1337` | `#define	FATSPREAD` |
+| `PIT_VileCheck` | function | `progs/doomgeneric/p_enemy.c:1114` | `boolean PIT_VileCheck (mobj_t*	thing)` |
+| `P_CheckMeleeRange` | function | `progs/doomgeneric/p_enemy.c:167` | `boolean P_CheckMeleeRange (mobj_t*	actor)` |
+| `P_CheckMissileRange` | function | `progs/doomgeneric/p_enemy.c:190` | `boolean P_CheckMissileRange (mobj_t* actor)` |
+| `P_LookForPlayers` | function | `progs/doomgeneric/p_enemy.c:487` | `boolean P_LookForPlayers ( mobj_t*	actor,   boolean	allaround )` |
+| `P_Move` | function | `progs/doomgeneric/p_enemy.c:260` | `boolean P_Move (mobj_t*	actor)` |
+| `P_NewChaseDir` | function | `progs/doomgeneric/p_enemy.c:351` | `void P_NewChaseDir (mobj_t*	actor)` |
+| `P_NoiseAlert` | function | `progs/doomgeneric/p_enemy.c:152` | `void P_NoiseAlert ( mobj_t*	target,   mobj_t*	emmiter )` |
+| `P_RecursiveSound` | function | `progs/doomgeneric/p_enemy.c:99` | `void P_RecursiveSound ( sector_t*	sec,   int		soundblocks )` |
+| `P_TryWalk` | function | `progs/doomgeneric/p_enemy.c:337` | `boolean P_TryWalk (mobj_t* actor)` |
+| `SKULLSPEED` | macro | `progs/doomgeneric/p_enemy.c:1413` | `#define	SKULLSPEED` |
+| `EV_BuildStairs` | function | `progs/doomgeneric/p_floor.c:444` | `int EV_BuildStairs ( line_t*	line,   stair_e	type )` |
+| `EV_DoFloor` | function | `progs/doomgeneric/p_floor.c:251` | `int EV_DoFloor ( line_t*	line,   floor_e	floortype )` |
+| `T_MoveFloor` | function | `progs/doomgeneric/p_floor.c:202` | `void T_MoveFloor(floormove_t* floor)` |
+| `T_MovePlane` | function | `progs/doomgeneric/p_floor.c:42` | `result_e T_MovePlane ( sector_t*	sector,   fixed_t	speed,   fixed_t	dest,   boolean	crush,   int	...` |
+| `BONUSADD` | macro | `progs/doomgeneric/p_inter.c:43` | `#define BONUSADD` |
+| `P_DamageMobj` | function | `progs/doomgeneric/p_inter.c:779` | `void P_DamageMobj ( mobj_t*	target,   mobj_t*	inflictor,   mobj_t*	source,   int 		damage )` |
+| `P_GiveAmmo` | function | `progs/doomgeneric/p_inter.c:66` | `boolean P_GiveAmmo ( player_t*	player,   ammotype_t	ammo,   int		num )` |
+| `P_GiveArmor` | function | `progs/doomgeneric/p_inter.c:246` | `boolean P_GiveArmor ( player_t*	player,   int		armortype )` |
+| `P_GiveBody` | function | `progs/doomgeneric/p_inter.c:223` | `boolean P_GiveBody ( player_t*	player,   int		num )` |
 | `P_GiveCard` | function | `progs/doomgeneric/p_inter.c:268` | `void P_GiveCard ( player_t*	player,   card_t	card )` |
 | `P_GivePower` | function | `progs/doomgeneric/p_inter.c:284` | `boolean P_GivePower ( player_t*	player,   int /*powertype_t*/	power )` |
 | `P_GiveWeapon` | function | `progs/doomgeneric/p_inter.c:160` | `boolean P_GiveWeapon ( player_t*	player,   weapontype_t	weapon,   boolean	dropped )` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p16.md](SYMBOLS_p16.md)
 | `P_AddThinker` | function | `progs/doomgeneric/p_tick.c:58` | `void P_AddThinker (thinker_t* thinker)` |
 | `P_AllocateThinker` | function | `progs/doomgeneric/p_tick.c:85` | `void P_AllocateThinker (thinker_t*	thinker)` |
 | `P_InitThinkers` | function | `progs/doomgeneric/p_tick.c:46` | `void P_InitThinkers (void)` |
-| `P_RemoveThinker` | function | `progs/doomgeneric/p_tick.c:73` | `void P_RemoveThinker (thinker_t* thinker)` |
-| `P_RunThinkers` | function | `progs/doomgeneric/p_tick.c:94` | `void P_RunThinkers (void)` |
-| `P_Ticker` | function | `progs/doomgeneric/p_tick.c:123` | `void P_Ticker (void)` |
-| `P_Ticker` | function | `progs/doomgeneric/p_tick.h:29` | `void P_Ticker (void);` |
-| `__P_TICK__` | macro | `progs/doomgeneric/p_tick.h:21` | `#define __P_TICK__` |
-| `ANG5` | macro | `progs/doomgeneric/p_user.c:173` | `#define ANG5` |
-| `INVERSECOLORMAP` | macro | `progs/doomgeneric/p_user.c:34` | `#define INVERSECOLORMAP` |
-| `MAXBOB` | macro | `progs/doomgeneric/p_user.c:42` | `#define MAXBOB` |
-| `P_CalcHeight` | function | `progs/doomgeneric/p_user.c:70` | `void P_CalcHeight (player_t* player)` |
-| `P_DeathThink` | function | `progs/doomgeneric/p_user.c:175` | `void P_DeathThink (player_t* player)` |
-| `P_MovePlayer` | function | `progs/doomgeneric/p_user.c:141` | `void P_MovePlayer (player_t* player)` |
-| `P_PlayerThink` | function | `progs/doomgeneric/p_user.c:229` | `void P_PlayerThink (player_t* player)` |
-| `P_Thrust` | function | `progs/doomgeneric/p_user.c:52` | `void P_Thrust ( player_t*	player,   angle_t	angle,   fixed_t	move )` |
-| `MAXSEGS` | macro | `progs/doomgeneric/r_bsp.c:81` | `#define MAXSEGS` |
-| `R_AddLine` | function | `progs/doomgeneric/r_bsp.c:252` | `void R_AddLine (seg_t*	line)` |
-| `R_CheckBBox` | function | `progs/doomgeneric/r_bsp.c:374` | `boolean R_CheckBBox (fixed_t*	bspcoord)` |
-| `R_ClearClipSegs` | function | `progs/doomgeneric/r_bsp.c:238` | `void R_ClearClipSegs (void)` |
-| `R_ClearDrawSegs` | function | `progs/doomgeneric/r_bsp.c:61` | `void R_ClearDrawSegs (void)` |
-| `R_ClipPassWallSegment` | function | `progs/doomgeneric/r_bsp.c:190` | `void R_ClipPassWallSegment ( int	first,   int	last )` |
-| `R_ClipSolidWallSegment` | function | `progs/doomgeneric/r_bsp.c:97` | `void R_ClipSolidWallSegment ( int			first,   int			last )` |
-| `R_RenderBSPNode` | function | `progs/doomgeneric/r_bsp.c:545` | `void R_RenderBSPNode (int bspnum)` |
-| `R_StoreWallRange` | function | `progs/doomgeneric/r_bsp.c:51` | `void R_StoreWallRange ( int start, int stop );` |
-| `R_Subsector` | function | `progs/doomgeneric/r_bsp.c:490` | `void R_Subsector (int num)` |
-| `cliprange_t` | struct | `progs/doomgeneric/r_bsp.c:73` | `` |
-| `R_ClearClipSegs` | function | `progs/doomgeneric/r_bsp.h:54` | `void R_ClearClipSegs (void);` |
-| `R_ClearDrawSegs` | function | `progs/doomgeneric/r_bsp.h:55` | `void R_ClearDrawSegs (void);` |
-| `R_RenderBSPNode` | function | `progs/doomgeneric/r_bsp.h:58` | `void R_RenderBSPNode (int bspnum);` |
-| `__R_BSP__` | macro | `progs/doomgeneric/r_bsp.h:21` | `#define __R_BSP__` |
-| `backsector` | variable | `progs/doomgeneric/r_bsp.h:29` | `extern sector_t* backsector;` |
-| `curline` | variable | `progs/doomgeneric/r_bsp.h:25` | `extern seg_t* curline;` |
-| `drawsegs` | variable | `progs/doomgeneric/r_bsp.h:42` | `extern drawseg_t drawsegs[MAXDRAWSEGS];` |
-| `ds_p` | variable | `progs/doomgeneric/r_bsp.h:43` | `extern drawseg_t* ds_p;` |
-| `dscalelight` | variable | `progs/doomgeneric/r_bsp.h:47` | `extern lighttable_t** dscalelight;` |
-| `frontsector` | variable | `progs/doomgeneric/r_bsp.h:28` | `extern sector_t* frontsector;` |
-| `hscalelight` | variable | `progs/doomgeneric/r_bsp.h:45` | `extern lighttable_t** hscalelight;` |
-| `linedef` | variable | `progs/doomgeneric/r_bsp.h:27` | `extern line_t* linedef;` |
-| `markceiling` | variable | `progs/doomgeneric/r_bsp.h:38` | `extern boolean markceiling;` |
-| `markfloor` | variable | `progs/doomgeneric/r_bsp.h:37` | `extern boolean markfloor;` |
-| `rw_stopx` | variable | `progs/doomgeneric/r_bsp.h:32` | `extern int rw_stopx;` |
-| `rw_x` | variable | `progs/doomgeneric/r_bsp.h:31` | `extern int rw_x;` |
-| `segtextured` | variable | `progs/doomgeneric/r_bsp.h:34` | `extern boolean segtextured;` |
 
 Next: [SYMBOLS_p18.md](SYMBOLS_p18.md)

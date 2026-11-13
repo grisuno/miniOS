@@ -3,6 +3,47 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 
 | Symbol | Kind | File:Line | Signature |
 |--------|------|-----------|-----------|
+| `HUlib_eraseTextLine` | function | `progs/doomgeneric/hu_lib.h:112` | `void HUlib_eraseTextLine(hu_textline_t *l);` |
+| `HUlib_init` | function | `progs/doomgeneric/hu_lib.h:91` | `void HUlib_init(void);` |
+| `HUlib_initIText` | function | `progs/doomgeneric/hu_lib.h:148` | `void HUlib_initIText ( hu_itext_t* it, int x, int y, patch_t** font, int startchar, boolean* on );` |
+| `HUlib_initSText` | function | `progs/doomgeneric/hu_lib.h:121` | `void HUlib_initSText ( hu_stext_t* s, int x, int y, int h, patch_t** font, int startchar, boolean* on );` |
+| `HUlib_initTextLine` | function | `progs/doomgeneric/hu_lib.h:100` | `void HUlib_initTextLine(hu_textline_t *t, int x, int y, patch_t **f, int sc);` |
+| `HUlib_resetIText` | function | `progs/doomgeneric/hu_lib.h:163` | `void HUlib_resetIText(hu_itext_t* it);` |
+| `__HULIB__` | macro | `progs/doomgeneric/hu_lib.h:19` | `#define __HULIB__` |
+| `hu_itext_t` | struct | `progs/doomgeneric/hu_lib.h:72` | `` |
+| `hu_stext_t` | struct | `progs/doomgeneric/hu_lib.h:56` | `` |
+| `hu_textline_t` | struct | `progs/doomgeneric/hu_lib.h:36` | `` |
+| `HU_Drawer` | function | `progs/doomgeneric/hu_stuff.c:383` | `void HU_Drawer(void)` |
+| `HU_Erase` | function | `progs/doomgeneric/hu_stuff.c:393` | `void HU_Erase(void)` |
+| `HU_INPUTHEIGHT` | macro | `progs/doomgeneric/hu_stuff.c:60` | `#define HU_INPUTHEIGHT` |
+| `HU_INPUTTOGGLE` | macro | `progs/doomgeneric/hu_stuff.c:56` | `#define HU_INPUTTOGGLE` |
+| `HU_INPUTWIDTH` | macro | `progs/doomgeneric/hu_stuff.c:59` | `#define HU_INPUTWIDTH` |
+| `HU_INPUTX` | macro | `progs/doomgeneric/hu_stuff.c:57` | `#define HU_INPUTX` |
+| `HU_INPUTY` | macro | `progs/doomgeneric/hu_stuff.c:58` | `#define HU_INPUTY` |
+| `HU_Init` | function | `progs/doomgeneric/hu_stuff.c:286` | `void HU_Init(void)` |
+| `HU_Responder` | function | `progs/doomgeneric/hu_stuff.c:512` | `boolean HU_Responder(event_t *ev)` |
+| `HU_Start` | function | `progs/doomgeneric/hu_stuff.c:308` | `void HU_Start(void)` |
+| `HU_Stop` | function | `progs/doomgeneric/hu_stuff.c:303` | `void HU_Stop(void)` |
+| `HU_TITLE` | macro | `progs/doomgeneric/hu_stuff.c:47` | `#define HU_TITLE` |
+| `HU_TITLE2` | macro | `progs/doomgeneric/hu_stuff.c:48` | `#define HU_TITLE2` |
+| `HU_TITLEHEIGHT` | macro | `progs/doomgeneric/hu_stuff.c:52` | `#define HU_TITLEHEIGHT` |
+| `HU_TITLEP` | macro | `progs/doomgeneric/hu_stuff.c:49` | `#define HU_TITLEP` |
+| `HU_TITLET` | macro | `progs/doomgeneric/hu_stuff.c:50` | `#define HU_TITLET` |
+| `HU_TITLEX` | macro | `progs/doomgeneric/hu_stuff.c:53` | `#define HU_TITLEX` |
+| `HU_TITLEY` | macro | `progs/doomgeneric/hu_stuff.c:54` | `#define HU_TITLEY` |
+| `HU_TITLE_CHEX` | macro | `progs/doomgeneric/hu_stuff.c:51` | `#define HU_TITLE_CHEX` |
+| `HU_Ticker` | function | `progs/doomgeneric/hu_stuff.c:402` | `void HU_Ticker(void)` |
+| `HU_dequeueChatChar` | function | `progs/doomgeneric/hu_stuff.c:495` | `char HU_dequeueChatChar(void)` |
+| `HU_queueChatChar` | function | `progs/doomgeneric/hu_stuff.c:482` | `void HU_queueChatChar(char c)` |
+| `QUEUESIZE` | macro | `progs/doomgeneric/hu_stuff.c:475` | `#define QUEUESIZE` |
+| `showMessages` | variable | `progs/doomgeneric/hu_stuff.c:103` | `extern int showMessages;` |
+| `HU_BROADCAST` | macro | `progs/doomgeneric/hu_stuff.h:33` | `#define HU_BROADCAST` |
+| `HU_Drawer` | function | `progs/doomgeneric/hu_stuff.h:52` | `void HU_Drawer(void);` |
+| `HU_Erase` | function | `progs/doomgeneric/hu_stuff.h:54` | `void HU_Erase(void);` |
+| `HU_FONTEND` | macro | `progs/doomgeneric/hu_stuff.h:28` | `#define HU_FONTEND` |
+| `HU_FONTSIZE` | macro | `progs/doomgeneric/hu_stuff.h:31` | `#define HU_FONTSIZE` |
+| `HU_FONTSTART` | macro | `progs/doomgeneric/hu_stuff.h:27` | `#define HU_FONTSTART` |
+| `HU_Init` | function | `progs/doomgeneric/hu_stuff.h:46` | `void HU_Init(void);` |
 | `HU_MSGHEIGHT` | macro | `progs/doomgeneric/hu_stuff.h:38` | `#define HU_MSGHEIGHT` |
 | `HU_MSGTIMEOUT` | macro | `progs/doomgeneric/hu_stuff.h:40` | `#define HU_MSGTIMEOUT` |
 | `HU_MSGWIDTH` | macro | `progs/doomgeneric/hu_stuff.h:37` | `#define HU_MSGWIDTH` |
@@ -455,46 +496,5 @@ Previous: [SYMBOLS_p14.md](SYMBOLS_p14.md)
 | `A_VileChase` | function | `progs/doomgeneric/info.c:85` | `void A_VileChase();` |
 | `A_VileStart` | function | `progs/doomgeneric/info.c:86` | `void A_VileStart();` |
 | `A_VileTarget` | function | `progs/doomgeneric/info.c:87` | `void A_VileTarget();` |
-| `A_WeaponReady` | function | `progs/doomgeneric/info.c:52` | `void A_WeaponReady();` |
-| `A_XScream` | function | `progs/doomgeneric/info.c:78` | `void A_XScream();` |
-| `__INFO__` | macro | `progs/doomgeneric/info.h:22` | `#define __INFO__` |
-| `mobjinfo` | variable | `progs/doomgeneric/info.h:1329` | `extern mobjinfo_t mobjinfo[NUMMOBJTYPES];` |
-| `mobjinfo_t` | struct | `progs/doomgeneric/info.h:1301` | `` |
-| `sprnames` | variable | `progs/doomgeneric/info.h:1157` | `extern char *sprnames[];` |
-| `state_t` | struct | `progs/doomgeneric/info.h:1144` | `` |
-| `states` | variable | `progs/doomgeneric/info.h:1156` | `extern state_t states[NUMSTATES];` |
-| `LoadResponseFile` | function | `progs/doomgeneric/m_argv.c:75` | `static void LoadResponseFile(int argv_index)` |
-| `MAXARGVS` | macro | `progs/doomgeneric/m_argv.c:73` | `#define MAXARGVS` |
-| `M_CheckParm` | function | `progs/doomgeneric/m_argv.c:68` | `int M_CheckParm(char *check)` |
-| `M_CheckParmWithArgs` | function | `progs/doomgeneric/m_argv.c:43` | `int M_CheckParmWithArgs(char *check, int num_args)` |
-| `M_FindResponseFile` | function | `progs/doomgeneric/m_argv.c:235` | `void M_FindResponseFile(void)` |
-| `M_GetExecutableName` | function | `progs/doomgeneric/m_argv.c:250` | `char *M_GetExecutableName(void)` |
-| `M_ParmExists` | function | `progs/doomgeneric/m_argv.c:63` | `boolean M_ParmExists(char *check)` |
-| `M_CheckParm` | function | `progs/doomgeneric/m_argv.h:33` | `int M_CheckParm (char* check);` |
-| `M_CheckParmWithArgs` | function | `progs/doomgeneric/m_argv.h:37` | `int M_CheckParmWithArgs(char *check, int num_args);` |
-| `M_FindResponseFile` | function | `progs/doomgeneric/m_argv.h:39` | `void M_FindResponseFile(void);` |
-| `M_GetExecutableName` | function | `progs/doomgeneric/m_argv.h:47` | `char *M_GetExecutableName(void);` |
-| `__M_ARGV__` | macro | `progs/doomgeneric/m_argv.h:21` | `#define __M_ARGV__` |
-| `myargc` | variable | `progs/doomgeneric/m_argv.h:28` | `extern int myargc;` |
-| `myargv` | variable | `progs/doomgeneric/m_argv.h:29` | `extern char** myargv;` |
-| `M_AddToBox` | function | `progs/doomgeneric/m_bbox.c:36` | `void M_AddToBox ( fixed_t*	box,   fixed_t	x,   fixed_t	y )` |
-| `M_ClearBox` | function | `progs/doomgeneric/m_bbox.c:29` | `void M_ClearBox (fixed_t *box)` |
-| `M_AddToBox` | function | `progs/doomgeneric/m_bbox.h:41` | `void M_AddToBox ( fixed_t* box, fixed_t x, fixed_t y );` |
-| `M_ClearBox` | function | `progs/doomgeneric/m_bbox.h:38` | `void M_ClearBox (fixed_t* box);` |
-| `__M_BBOX__` | macro | `progs/doomgeneric/m_bbox.h:21` | `#define __M_BBOX__` |
-| `cht_CheckCheat` | function | `progs/doomgeneric/m_cheat.c:35` | `int cht_CheckCheat ( cheatseq_t*	cht,   char		key )` |
-| `cht_GetParam` | function | `progs/doomgeneric/m_cheat.c:82` | `void cht_GetParam ( cheatseq_t*	cht,   char*		buffer )` |
-| `CHEAT` | macro | `progs/doomgeneric/m_cheat.h:29` | `#define CHEAT(value, parameters)` |
-| `MAX_CHEAT_LEN` | macro | `progs/doomgeneric/m_cheat.h:32` | `#define MAX_CHEAT_LEN` |
-| `MAX_CHEAT_PARAMS` | macro | `progs/doomgeneric/m_cheat.h:33` | `#define MAX_CHEAT_PARAMS` |
-| `__M_CHEAT__` | macro | `progs/doomgeneric/m_cheat.h:21` | `#define __M_CHEAT__` |
-| `cheatseq_t` | struct | `progs/doomgeneric/m_cheat.h:35` | `` |
-| `cht_CheckCheat` | function | `progs/doomgeneric/m_cheat.h:51` | `int cht_CheckCheat ( cheatseq_t* cht, char key );` |
-| `cht_GetParam` | function | `progs/doomgeneric/m_cheat.h:57` | `void cht_GetParam ( cheatseq_t* cht, char* buffer );` |
-| `CONFIG_VARIABLE_FLOAT` | macro | `progs/doomgeneric/m_config.c:104` | `#define CONFIG_VARIABLE_FLOAT(name)` |
-| `CONFIG_VARIABLE_GENERIC` | macro | `progs/doomgeneric/m_config.c:95` | `#define CONFIG_VARIABLE_GENERIC(name, type)` |
-| `CONFIG_VARIABLE_INT` | macro | `progs/doomgeneric/m_config.c:100` | `#define CONFIG_VARIABLE_INT(name)` |
-| `CONFIG_VARIABLE_INT_HEX` | macro | `progs/doomgeneric/m_config.c:102` | `#define CONFIG_VARIABLE_INT_HEX(name)` |
-| `CONFIG_VARIABLE_KEY` | macro | `progs/doomgeneric/m_config.c:98` | `#define CONFIG_VARIABLE_KEY(name)` |
 
 Next: [SYMBOLS_p16.md](SYMBOLS_p16.md)

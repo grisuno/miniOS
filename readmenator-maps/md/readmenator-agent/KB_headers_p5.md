@@ -283,16 +283,18 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `dock_bounce_counts` (function, line 264) `void dock_bounce_counts(unsigned long *kicks, unsigned long *paints);`
   - `dock_click_count` (function, line 265) `void dock_click_count(unsigned long *edges);`
   - `dock_pending_active` (function, line 266) `int dock_pending_active(void);`
-  - `pixels` (function, line 270) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
-  - `vga_fx_enabled` (function, line 274) `int vga_fx_enabled(void);`
-  - `vga_fx_snap_rect` (function, line 275) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
-  - `vga_fx_restore_rect` (function, line 276) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
-  - `vga_fx_free` (function, line 277) `void vga_fx_free(unsigned int *buf);`
-  - `vga_fx_melt_rect` (function, line 278) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
-  - `vga_fx_melt_from_black` (function, line 280) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
-  - `vga_fx_burn_rect` (function, line 281) `void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);`
-  - `vga_fx_genie_rect` (function, line 283) `void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int...`
-  - `vga_fb_set_gfx_mode` (function, line 297) `void vga_fb_set_gfx_mode(int on);`
+  - `dock_mag_counts` (function, line 269) `void dock_mag_counts(int *level, unsigned long *paints);`
+  - `chrome_blur_counts` (function, line 272) `void chrome_blur_counts(int *active, unsigned long *panels);`
+  - `pixels` (function, line 276) `* are heap buffers of packed pixels (fb_read_packed order), 0 on OOM or a * degenerate rect. A disabled effect or a...`
+  - `vga_fx_enabled` (function, line 280) `int vga_fx_enabled(void);`
+  - `vga_fx_snap_rect` (function, line 281) `unsigned int *vga_fx_snap_rect(int x, int y, int w, int h);`
+  - `vga_fx_restore_rect` (function, line 282) `void vga_fx_restore_rect(int x, int y, int w, int h, const unsigned int *buf);`
+  - `vga_fx_free` (function, line 283) `void vga_fx_free(unsigned int *buf);`
+  - `vga_fx_melt_rect` (function, line 284) `void vga_fx_melt_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb);`
+  - `vga_fx_melt_from_black` (function, line 286) `void vga_fx_melt_from_black(int x, int y, int w, int h, const unsigned int *newb);`
+  - `vga_fx_burn_rect` (function, line 287) `void vga_fx_burn_rect(int x, int y, int w, int h, const unsigned int *oldb, const unsigned int *newb, int stride);`
+  - `vga_fx_genie_rect` (function, line 289) `void vga_fx_genie_rect(int wx, int wy, int ww, int wh, int tx, int ty, const unsigned int *bgb, const unsigned int...`
+  - `vga_fb_set_gfx_mode` (function, line 303) `void vga_fb_set_gfx_mode(int on);`
   - `fb_width` (variable, line 23) `extern int fb_width;`
   - `fb_height` (variable, line 24) `extern int fb_height;`
   - `fb_pitch` (variable, line 25) `extern int fb_pitch;`
@@ -303,10 +305,10 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `nk_win_y` (variable, line 79) `extern int nk_win_x, nk_win_y;`
   - `term_rows` (variable, line 156) `extern int term_x, term_y, term_cols, term_rows;`
   - `mouse_state` (variable, line 167) `extern mouse_state_t mouse_state;`
-  - `fx_melts_completed` (variable, line 288) `extern unsigned long fx_melts_completed;`
-  - `fx_burns_completed` (variable, line 289) `extern unsigned long fx_burns_completed;`
-  - `fx_genies_completed` (variable, line 290) `extern unsigned long fx_genies_completed;`
-  - `vga_fb_active` (variable, line 299) `extern int vga_fb_active;`
+  - `fx_melts_completed` (variable, line 294) `extern unsigned long fx_melts_completed;`
+  - `fx_burns_completed` (variable, line 295) `extern unsigned long fx_burns_completed;`
+  - `fx_genies_completed` (variable, line 296) `extern unsigned long fx_genies_completed;`
+  - `vga_fb_active` (variable, line 305) `extern int vga_fb_active;`
   - `VGA_FB_H` (macro, line 2) `#define VGA_FB_H`
   - `FB_ADDR` (macro, line 22) `#define FB_ADDR`
   - `DOOM_W` (macro, line 46) `#define DOOM_W`
@@ -438,6 +440,26 @@ Previous: [KB_headers_p4.md](KB_headers_p4.md)
   - `VMA_H` (macro, line 2) `#define VMA_H`
   - `VMA_MAX` (macro, line 31) `#define VMA_MAX`
 - Imported by: `headers/kernel.h`, `headers/sched.h`, `headers/spawn.h`, `kernel/spawn.c`, `tests/test_fault.c`, `tests/test_vma.c`, `tests/test_vma_bench.c`, `vma.c`
+
+## headers/wm_blur.h
+- Doc: Docstring: Frosted-glass box blur for the MiniOS desktop.
+- Layer: utility
+- Language: h
+- Symbols:
+  - `wm_blur_config_t` (struct, line 39)
+  - `wm_blur_config_valid` (function, line 50) `static inline int wm_blur_config_valid(const wm_blur_config_t *cfg)`
+  - `wm_blur_line_len` (function, line 58) `static inline unsigned long wm_blur_line_len(int w, int h)`
+  - `wm_blur_recip` (function, line 68) `static inline unsigned long wm_blur_recip(int win)`
+  - `wm_blur_edge` (function, line 84) `static inline int wm_blur_edge(int i, int n)`
+  - `wm_blur_line` (function, line 93) `static inline void wm_blur_line(unsigned int *px, long stride, int n, int radius,
+               ...`
+  - `WM_BLUR_H` (macro, line 21) `#define WM_BLUR_H`
+  - `WM_BLUR_RADIUS_MAX` (macro, line 25) `#define WM_BLUR_RADIUS_MAX`
+  - `WM_BLUR_PASSES_MAX` (macro, line 28) `#define WM_BLUR_PASSES_MAX`
+  - `WM_BLUR_RECIP_SHIFT` (macro, line 33) `#define WM_BLUR_RECIP_SHIFT`
+  - `WM_BLUR_CHANNEL_MASK` (macro, line 36) `#define WM_BLUR_CHANNEL_MASK`
+  - `WM_BLUR_CONFIG_DEFAULT` (macro, line 47) `#define WM_BLUR_CONFIG_DEFAULT`
+- Imported by: `kernel/vga_fb.c`, `tests/test_blur.c`
 
 ## headers/wm_chrome.h
 - Doc: Docstring: Window chrome pixel math for the MiniOS desktop.

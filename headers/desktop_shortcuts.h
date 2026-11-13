@@ -40,15 +40,16 @@
  * glass on both 8-bit and true-color modes without any blending pass. */
 #define DOCK_CRYSTAL_STEP 2
 
-/* Hover magnification (Mac style): the icon under the cursor grows to
- * DOCK_MAG, its immediate neighbours to DOCK_NEAR, bottom-aligned on the
- * slot so the growth rises above the dock. 2x hot / 1.5x neighbours, so
- * the effect reads at a glance. One scaled blit per icon per hover
- * crossing, so the 25 Hz desktop tick never notices. */
+/* Hover magnification (Mac style, headers/wm_dock.h): every icon is sized
+ * by a bell curve over its distance to the pointer, DOCK_MAG under it and
+ * back to ICON at DOCK_MAG_REACH_CELLS dock columns away, bottom-aligned
+ * on the slot so the growth rises above the dock. The bell eases in and
+ * out over DOCK_MAG_TICKS (100 Hz sys_ticks) when the pointer enters or
+ * leaves the dock. */
 #define DOCK_MAG_W  64
 #define DOCK_MAG_H  64
-#define DOCK_NEAR_W 48
-#define DOCK_NEAR_H 48
+#define DOCK_MAG_REACH_CELLS 2
+#define DOCK_MAG_TICKS 12
 
 /* Click bounce (Mac style): the clicked icon hops while its program
  * launches. Two full parabolic hops over DOCK_BOUNCE_TICKS
